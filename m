@@ -1,150 +1,119 @@
-Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADAD93E1229
-	for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 09:26:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F733E3D8D;
+	Wed, 11 Mar 2026 09:26:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773221196; cv=none; b=h3l6RpkMLufBZ7EkBY5go9904z+dqWf5cc0m8sxmyICAozI6maoLjfdCrt4LeQTjP+YccKteuELpzjsjewKjs4OMiO/mEKiy47gTNnhy5+Ujy+hPW+AhPFygff0WAwbZETDJyi13GGNkZzxCJS34p2kcE/E2ajfgTO+t7IDwpjg=
+	t=1773221203; cv=none; b=VAXvRaXn9DH3GzlK7+rLQ8LRYFPVrFVq8/YgT0Nl+mE4mjY4jto0NX1mMSeeKriagYD3xo/fa5lyYWJHNX9nlIRsLzrnDq78UmpGH9lPcnAWttM8q7we4+KU0WVe/I5r6S4MEwS4PvlcEEEgSRuboj7MhWZbEjY8GKMEQwT+7Vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773221196; c=relaxed/simple;
-	bh=1tM0oRQHBCuuNG/TzmqoQ/gfD7hAYFwVEU8BpjGj9v0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z1Af2DKZ5zKDokbRvB//gV2hjuvD/5picaSgIWBx0ocjAz6A4iV0b3E8AJpDPCi00as2wO/FUfqCKg2i9bC0cq0tFV/3++qbDeRwSkPha3BvJuMfmpYIHX1EhlujSIACRF1WiDFYCw/Sem89/wjMs2nNs1eA1LUmyDp9zZuxWLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=PAfjEfoK; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=qQ0bxV19; arc=none smtp.client-ip=202.12.124.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	s=arc-20240116; t=1773221203; c=relaxed/simple;
+	bh=2YgEmPb/8Z5ies75f85PikO3mop/46dFbxulERPGDEo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To; b=RjMjfh4rG1/WiZ8Hxt9DvjB3TurYlaMqUAE1HqQUYYvVZzEFQhrhnVVM3jYvbVbLwiKHafu64/9zUsKXXoBOWs42xrb5qeQL00w+sNtVshrf3Mn+fDroUkSf+w8JlUJYbM2tv4/Dw8jNWlbOPOkwntpfeORHPBIrNz9meZouaoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lo1m1vQx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="PAfjEfoK";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="qQ0bxV19"
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfout.stl.internal (Postfix) with ESMTP id E96941D001BA;
-	Wed, 11 Mar 2026 05:26:30 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-12.internal (MEProxy); Wed, 11 Mar 2026 05:26:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm2;
-	 t=1773221190; x=1773307590; bh=bo9mQEVg1/lOkgOwxi+CBamO5vf7YEEP
-	0yFfAL+KxJc=; b=PAfjEfoKO+bB5l98pXNaRFGyMnT9a+ac/2TnFiGTjOKJgfTU
-	oMnPdcs35A1WsF1EO2QwiNUKy4++1+LUfxX8vsIJCncf+D/xvskOcIhjB9vGtjet
-	iV6DmKunBVgGGGSH/qUSXJ+blpTw6M09Qvmm+qrOPGkYckthP56ZO/OByNwPg6tR
-	yempsTBJA6dB1dkjG+HpII35GFyHCwd5E4ufpzYFjgaQRSRgFMA/mHRq/KXSrLVy
-	scfo43D2XZrJPsuBXohCs96VwuPFvGCcyHgNueGCldHBv8yPigyM3gh8//QsjpYI
-	/nWT2i2njOyHkFnJ26p54WLYMvdaGbwznW8HMg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773221190; x=
-	1773307590; bh=bo9mQEVg1/lOkgOwxi+CBamO5vf7YEEP0yFfAL+KxJc=; b=q
-	Q0bxV19+UKoZQeEFFsD+Kd8UUNG8JjvczUIGoeMTzrM5ZUbTwQbD6mVQ1NM/SgiC
-	1T5Zgp7rrFCMZJqz2gcMCar/cAxVC4QSJ7NaHg/Y79J3LN70+kI3OZc/6ue4eB8X
-	0CB2iYqridCMmdT5yBsk+hI4JbQ/EXZfGnCLorxXFK11c6lSN6u7+VF/H7sC8Q91
-	XeI149r87hXmRBECW72VwRvD2jKxkgAjXcS+f1ETLhS89mty2A3/97CK2ViJ3Uw6
-	ae9vq0CBrD7UOMuFNb66Y4HkJiaOZ/Rx/pnHaCzxlNBAin47tFvr7hjslspk5D4+
-	zUGRNcnG1Ufp+jaHWB0PQ==
-X-ME-Sender: <xms:RTWxabWOVINZTXAAr7SWHNVqrbeEdk97eoeK6Mtd2iBcIrT1o8xnZg>
-    <xme:RTWxaZnYFUGoqEhxvh1-QATAIHfvHoFt6TumFiiDSXkS5xAin9nAzlqdIEFSdXlCY
-    _Ho11zZtTK2bK-oFS3uis0S21PuRSBfna3ROWXTLmO5_NJ2F0r2HbKi>
-X-ME-Received: <xmr:RTWxaSMYs0VofiKQv6sfbgp8f5kFmjQ2Afu5ZIRgz1mHeqnvqj88P1XdRt9e>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeefheegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefurggsrhhi
-    nhgrucffuhgsrhhotggruceoshgusehquhgvrghshihsnhgrihhlrdhnvghtqeenucggtf
-    frrghtthgvrhhnpefgvdegieetffefvdfguddtleegiefhgeeuheetveevgeevjeduleef
-    ffeiheelvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
-    hmpehsugesqhhuvggrshihshhnrghilhdrnhgvthdpnhgspghrtghpthhtohepuddtpdhm
-    ohguvgepshhmthhpohhuthdprhgtphhtthhopegvhigrlhdrsghirhhgvghrsehgmhgrih
-    hlrdgtohhmpdhrtghpthhtohepihhmvhegsggvlhesghhmrghilhdrtghomhdprhgtphht
-    thhopehsthgvfhhfvghnrdhklhgrshhsvghrthesshgvtghunhgvthdrtghomhdprhgtph
-    htthhopehhvghrsggvrhhtsehgohhnughorhdrrghprghnrgdrohhrghdrrghupdhrtghp
-    thhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegvughumh
-    griigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdr
-    ohhrghdprhgtphhtthhopehprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtoh
-    ephhhorhhmsheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:RTWxaZLJpvExqg0-7NnMzrvaRo5vyD55lrNbNlkkayB1dnP2wQNUfQ>
-    <xmx:RTWxaU3BL7U1YFkwXAqpZ3W4v2Lr9qylwCbYJaCXRSjbgOtshOw6_g>
-    <xmx:RTWxadUBdWgHwEsr4U4tHM6L_ovwK0RMZ_6ENbMAjrTP07tFy9UtCw>
-    <xmx:RTWxaWNpIff-23NLk9uIVbX-VMB2ztFOVPB_KWb6-3UrLaCt-BJWTg>
-    <xmx:RjWxaYBaLYsUsbH3vcK7g_SpZOJOuxOCcMdPZNRQ72AT2J8ynq8QnBl6>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 11 Mar 2026 05:26:29 -0400 (EDT)
-Date: Wed, 11 Mar 2026 10:26:27 +0100
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Eyal Birger <eyal.birger@gmail.com>
-Cc: Hyunwoo Kim <imv4bel@gmail.com>, steffen.klassert@secunet.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net] xfrm: Fix work re-schedule after cancel in
- xfrm_nat_keepalive_net_fini()
-Message-ID: <abE1Q7BMvZ1l14jF@krikkit>
-References: <abBf_R81PYmafhWv@v4bel>
- <abCh2CgVS3Uw7W-_@krikkit>
- <CAHsH6GtYpoowPJe5VWMcm=CCdUernc1q-Sk6HznXxMy7LDAmrQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lo1m1vQx"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A16C7C2BC86;
+	Wed, 11 Mar 2026 09:26:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773221202;
+	bh=2YgEmPb/8Z5ies75f85PikO3mop/46dFbxulERPGDEo=;
+	h=From:Date:Subject:To:Reply-To:From;
+	b=lo1m1vQxMJPYPxVRLEfwSsXUa6HyH2HnFjpGRvXHm7w6feEnERo2JNaJ1O+N09oqF
+	 rrU6AfWVqs27omlQgl2K5vDOendlFXjqV/kDZw5Oi+L/zQab440vQFNX8QOXXLFlqB
+	 KRr+atf8zQn/lQZGMrtdUXaz7w5xiTOKLMRKuRzXhcv9c0glKfVgliwCBwcqTwLB/m
+	 ZegedTK+f6OJPzppOP/ra5zRPqFP2oRZ33CUgsJ2Ih06CLCBHudPr7UDKSdib1js4Z
+	 p0SqUlZmnSoHUtixcDbvalQGvejpVX77aa2R0T7DzsKp/0H6I2Uh6b+X9FM7eJ4MQ1
+	 fRsoBxrVcVwuQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8CB7F104950E;
+	Wed, 11 Mar 2026 09:26:42 +0000 (UTC)
+From: Carl Lee via B4 Relay <devnull+carl.lee.amd.com@kernel.org>
+Date: Wed, 11 Mar 2026 17:26:39 +0800
+Subject: [PATCH] nfc: nxp-nci: i2c: restore IRQ trigger fallback
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHsH6GtYpoowPJe5VWMcm=CCdUernc1q-Sk6HznXxMy7LDAmrQ@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260311-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v1-1-9e20714411d7@amd.com>
+X-B4-Tracking: v=1; b=H4sIAE81sWkC/x2N0QqDMAwAf0XyvEBbp7D9iuyhi2kXJlFTGYL47
+ ys+Hhx3BxQ24QLP5gDjnxSZtYK/NUCfqJlRxsoQXOhd6z1qItR9QSVBCYTGZZutarbiZpIzG6Y
+ 4Te9IX6QxPu6hax31DmpyMU6yX7vhdZ5/0iMdoX4AAAA=
+X-Change-ID: 20260311-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-cda942530c60
+To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, krzk@kernel.org, 
+ carl.lee@amd.com, peter.shen@amd.com, colin.huang2@amd.com
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773221201; l=1872;
+ i=carl.lee@amd.com; s=20260203; h=from:subject:message-id;
+ bh=d9zEHKYZOWYj9HwgrSBRqAmlYHUoxnu970Vb9ocM+pQ=;
+ b=PnTogQDYUwT2GIVK/ooEsD/zYmZXSC3pbnlbEbs1ziFsBf74kT27qLCG4pIgr8wN+zjSny8JF
+ VwK4kMt5viMD7VLb1IGsh0A4SNk2pe7yvn1DGgAV4KToY8R3Xo4lLGs
+X-Developer-Key: i=carl.lee@amd.com; a=ed25519;
+ pk=pyq7QaQvoxMg806KVkRwpCbiah+7ncWr4MBpK1AEyjA=
+X-Endpoint-Received: by B4 Relay for carl.lee@amd.com/20260203 with
+ auth_id=623
+X-Original-From: Carl Lee <carl.lee@amd.com>
+Reply-To: carl.lee@amd.com
 
-2026-03-10, 17:14:19 -0700, Eyal Birger wrote:
-> Hi,
-> 
-> On Tue, Mar 10, 2026 at 3:57 PM Sabrina Dubroca <sd@queasysnail.net> wrote:
-> >
-> > Please also CC the author, and maybe additional contributors, of the
-> > patch that introduced the problem you're fixing.
-> >
-> > 2026-03-11, 03:16:29 +0900, Hyunwoo Kim wrote:
-> > > After cancel_delayed_work_sync() is called from
-> > > xfrm_nat_keepalive_net_fini(), xfrm_state_fini() flushes remaining
-> > > states via __xfrm_state_delete(), which calls
-> > > xfrm_nat_keepalive_state_updated() to re-schedule nat_keepalive_work.
-> >
-> > Eyal, I'm wondering why __xfrm_state_delete() calls
-> > xfrm_nat_keepalive_state_updated(). At this point the state has been
-> > removed from the walk list so nat_keepalive_work() won't do
-> > anything. Am I missing something?
-> 
-> I don't remember for sure, but I think the idea was to have the work
-> run "now" so that when deleting the last nat-keepalive state it
-> won't run in the future, and in general to refresh the interval and
-> not wait for the next iteration.
-> 
-> Eyal.
+From: Carl Lee <carl.lee@amd.com>
 
-Ok. I thought about this, but I'm not seeing the benefit of doing
-that. Assuming we're deleting just this one state, the next run will
-process all the remaining states in the same way, whether it happens
-right now or at the previously scheduled time:
+The driver previously relied on IRQF_TRIGGER_RISING when requesting
+the interrupt. This was removed to rely on the trigger type provided
+by firmware.
 
- - if the next run was needed by the peer we're deleting, not much
-   changes except that we're recomputing the delay earlier than
-   otherwise (right now instead of when deleted_state's interval runs
-   out)
+However, some platforms do not propagate the interrupt trigger type
+to the IRQ descriptor, resulting in interrupts not being triggered.
 
- - if some other state was the first to need a keepalive, we do a run
-   for nothing
+Use the trigger type provided by firmware when available and fall
+back to the historically used rising-edge trigger otherwise.
 
-So I think we could drop the xfrm_nat_keepalive_state_updated call
-from __xfrm_state_delete.
+Signed-off-by: Carl Lee <carl.lee@amd.com>
+---
+ drivers/nfc/nxp-nci/i2c.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/nfc/nxp-nci/i2c.c b/drivers/nfc/nxp-nci/i2c.c
+index 6a5ce8ff91f0..6339586a6a1b 100644
+--- a/drivers/nfc/nxp-nci/i2c.c
++++ b/drivers/nfc/nxp-nci/i2c.c
+@@ -268,6 +268,7 @@ static int nxp_nci_i2c_probe(struct i2c_client *client)
+ 	struct device *dev = &client->dev;
+ 	struct nxp_nci_i2c_phy *phy;
+ 	int r;
++	unsigned long irqflags;
+ 
+ 	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
+ 		nfc_err(&client->dev, "Need I2C_FUNC_I2C\n");
+@@ -303,9 +304,17 @@ static int nxp_nci_i2c_probe(struct i2c_client *client)
+ 	if (r < 0)
+ 		return r;
+ 
++	/* Prefer the trigger type configured by firmware.
++	 * Some platforms do not provide it, so fall back to the
++	 * historically used rising-edge trigger.
++	 */
++	irqflags = irq_get_trigger_type(client->irq);
++	if (!irqflags)
++		irqflags = IRQF_TRIGGER_RISING;
++
+ 	r = request_threaded_irq(client->irq, NULL,
+ 				 nxp_nci_i2c_irq_thread_fn,
+-				 IRQF_ONESHOT,
++				 irqflags | IRQF_ONESHOT,
+ 				 NXP_NCI_I2C_DRIVER_NAME, phy);
+ 	if (r < 0)
+ 		nfc_err(&client->dev, "Unable to register IRQ handler\n");
 
-@Hyunwoo here again I'm not opposed to s/cancel/disable/, it makes
-sense to use disable_ in a "destruct" operation where we don't plan to
-need the work again. But AFAICT this schedule_delayed_work isn't
-really useful.
+---
+base-commit: 7109a2155340cc7b21f27e832ece6df03592f2e8
+change-id: 20260311-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-cda942530c60
 
+Best regards,
 -- 
-Sabrina
+Carl Lee <carl.lee@amd.com>
+
+
