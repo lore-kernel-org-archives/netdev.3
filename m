@@ -1,111 +1,141 @@
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7972D3739
-	for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 10:26:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773224812; cv=pass; b=Bpiul2VZrWLylhhU2Pv5z8XFiUaC+NwIKCKWP83t+t09Pd/3n1gpk4qclKNdOPi6stvqJ9MQ3b84dAMhLy4MaGCcP0oLbuUGumBQTmpUbZcbuNe8VAXc9yC8A0WN9ninRvyeOrIQSDWrmW+u937045YEQymDY2aRgm9Bw4k2a1w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773224812; c=relaxed/simple;
-	bh=eKf0LarMl2Wj8kangLrl8qGd7vnQ56basY47H72P2gk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=f1XAPobJChsjACEhoBpqzGR6/cCd6Z3UKxl6JFKqfNEEamXXRWMpACxTRq/yMJhQAu40Dt/Zz4GUwGvqnkmnCnONlOWsks/CKUWNaRMYc3QPIbiHyzwfq1sP+LAZ36rrOPXS5iLYeD1lmKkB+vfrMk9daI5hLiTWgPPXCL/NAMY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Xk1/SHJZ; arc=pass smtp.client-ip=209.85.160.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42E73CEB8C
+	for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 10:32:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773225121; cv=none; b=YTmOQi1WFWQB7ibZqqA4IHa8qSk19yIZf+HrYfzh57ZDApXPvn/OANSyC6O6/yXClCJKBm70lm799cr012yd9w3ihMWBV5rgNFuVQbbIFU1BlOjc/pBRsPUXtQXJrgQY3TDLnc4iyIPas5DgSlzvTKxk1sH/Uv4xJPKtscp9GkU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773225121; c=relaxed/simple;
+	bh=fyQi05yi+YGHZZzn8QiQsCM+51WDtHDJDoJqobfhF3I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eVmh2z5rrsTmN9o70TSpTSvR0ljhwrXcPXusF0uT/gbobMvi03kMSh81n2DzXcZYEsHIe/qhnNjVuNAMKS7kVubJ9J9zUHgYOt4L5f/F1vF8GZKM2UcrP+EyrkQxuKAe+vXS1hdq3VPOST8aeQXLZEjqmr0hb6+qNVXgQZdSSXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Eo2cDWuo; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Xk1/SHJZ"
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5090c48de85so37483021cf.0
-        for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 03:26:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773224810; cv=none;
-        d=google.com; s=arc-20240605;
-        b=i2mTMlysOmmTd8JoJj32KK1nA9R+L4G7iEhz16lvQwZWO5pdsmyhg8ILOvgWLBJTK0
-         9oOeBQ5+FwBXAamID3/rdfU60RF3PMue3ZX6gqkHVvaAwGGrp8VmxDAROJGxEGIfajql
-         0nh3gdM4USYnMvs3ob4lOr1efEDCfSNNPKLR4juvBx8yRtSURdnGV1pLorZQXyJD7rpe
-         AfsmXM2Wu0UQh1h4Tzjljw7mKLRTjxkb3uPrWv47YUi05a/ptrpgHZNgYCWiyOB0rl5X
-         jssI3F5iycUcxGUErGpoXQwiURdUBzWeQRzr8IXlBk8hmIeDWlQkptHzt7KHjSRCavLx
-         YRyw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=eKf0LarMl2Wj8kangLrl8qGd7vnQ56basY47H72P2gk=;
-        fh=BPyBPwxh6PHBPfDgfRydhKKE88Ej1tUcft2vn0UgVPA=;
-        b=KdSIpO5AupXQw+ka0NrTeNsfvKKeJtNqsIavbg7KpYPNanNW42YkuhT9Iadf4DSTZr
-         DADvB4EZFXp9R1vvN5MYCwldwWsAwUIaHpctsLX5yMn+Xv3Yxlvs0OAI2Ih+otYmgApo
-         tyYJjlCpZGoCnp8PS7u+ESbQvpfPqnAYumhJdQjuRY/3E8vukxY2nL4PAeaVF6dQgYXF
-         qgtLhkmPhpmqQpnoupC9Q55bSDn+hIyIUqfbABu1VQzbC4BHuBEbWQcSslDhvWWA85VO
-         cLN8fy4HKUH9S4k2LwRwoaY6E1XNe1ku6qjFbh1KbmkTwKk9TW8p1AkYNSWGTpH4C7yt
-         /I8g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Eo2cDWuo"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-829b2018c94so2739478b3a.0
+        for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 03:32:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773224810; x=1773829610; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eKf0LarMl2Wj8kangLrl8qGd7vnQ56basY47H72P2gk=;
-        b=Xk1/SHJZ4lS07Ose926XBvRWQvwZEQoEGaKGfcKC7r8crwaxPf9jhXjYBwcUx8tQxh
-         ykuZeH0BcMdKMihlMoGpK57Wei+izZLT5VhbGT/ECv2KjQHaY5vsMoJZf/BPlIz3ManH
-         wvflFcn5SwUAlChMhYYBuasDZnh4PF6I6JNXwGPy8xUPGrXWzcDWIgAoUf9ohmYs3a4r
-         miujbZKg25tb9vla7bfrwQAffAG/uiQyQXqpc1ldsQzQp+NL5iTQxzGX6EAvnnsryZ+F
-         0dMbHQwvFEATqVZcGYoLNt3oh9VduC9arV+l0En2a8a/PZgpe8bom80faT7OcQbiz6FU
-         oaOQ==
+        d=gmail.com; s=20230601; t=1773225120; x=1773829920; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=jbZwl7Vu7mvZt6WrQMimlStcWrx+rKxwiIubtts6C+E=;
+        b=Eo2cDWuol05Emf7RMl0ApqtSfkeC0bsVV2qxGT2C4o8pbPF4uL2gDsTgwKRBv5RLRw
+         KKA9TEI7sn0ZzgG5PDxQI2ey7Hgnqr1gSWCN+MWxW11aT0OPZsrvNa6P7pHV2FAZZ8Ne
+         IIvoMM0SCB6q1lOoqD6WVP73xTloww0ZuFaBll+FGosMJC0+V+jiXYgQA1MLwuDbGkqs
+         8fuwlXNh2zadzF3PfAHvDhj/9+Fd0skiw2n1mJ+y04AXKGqJ0W4CO2DfUMPXD1/IkqBK
+         tY+ciQ1wAdeFQjcTthHYgx22k/pEexbPGplviGOKBrenmiDZTjjMSaaEjD760ZvzoLfN
+         Bf+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773224810; x=1773829610;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=eKf0LarMl2Wj8kangLrl8qGd7vnQ56basY47H72P2gk=;
-        b=u/bBFDDDVLKslxot73blwl9uWUNxGkcBxh2jGx6U10VpjIQEiwlRCgy46/SKBvd4ob
-         gDDiI8F3QlIj7JJ0jLTIex6L5abtzYkLkkZLebX82lYmupqmtXPtvbFMjNcC1wwKdaWF
-         kE5x9rKsRf7ofRORy8h5Ovkgeij9Y5wpiOtensO11bULxV0ZCUFDJyDKh/eqBlAUU4lM
-         OzL2ne6qNe5fvRpIPzNvMT6FTqUDAwWAb0tN4YU1/H9D+zITs+w2lPtS3rtb6kCCGYkj
-         FMLHT8CW1cbfo0X0HVkmX1o7O2fgutteIBBxehFiu/RkEs5VZWfbQr3auakXSo+TY4eM
-         X+Og==
-X-Forwarded-Encrypted: i=1; AJvYcCVgOBOBKnj5u5m/NH94iDFAtI5FbHOhrkPnSgtl5adR0zxVrsKjMCSMdEUMhsvyvtHyAPQMGo8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4C5vFq8wrprMqYzMssPeqOF9Sbi9/ja1e63PpWs1F27hIUJcX
-	rAINQj27LaxtaSUCjdgcnBdR1I5F8cSDnMtBobsiPPFmFYinucLfLKSaABVJcmCjvVShZ3MwyuN
-	jsaLfy0cX2xNUcOYdcbcXRDbHn8+l1jNsb7a4foio
-X-Gm-Gg: ATEYQzyFHco05eZf5gLf9TiUOHL5bKeUc8XvKvhM1IX5xqgRjN2ZnFjWV2UWdXKvW18
-	6xN6Scq37hCb1/XkAl/W7S77PyUHncSy6U4qdpUgT4IP3svaaMmmHPubsgLEj1RR7doj/VWpSzQ
-	Uo3EmzYOQGEzxC2Qcc54xC9LDR48xPeNZyQoJOC/i1E6ZwENK+gO+lLuwC/ZuyhE/z7n+OHYdiV
-	+kL3SMAfFG62taxFE8LwLk+zvb5mKoazJcD7OeLJKE5HvBsc0+CO4p0vP09i92Fifm6x7abvgcF
-	HE8jA82l
-X-Received: by 2002:a05:622a:178b:b0:509:2d50:9788 with SMTP id
- d75a77b69052e-5093a0e7234mr24295631cf.32.1773224809745; Wed, 11 Mar 2026
- 03:26:49 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1773225120; x=1773829920;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jbZwl7Vu7mvZt6WrQMimlStcWrx+rKxwiIubtts6C+E=;
+        b=qhV3P++xKF1z7UBEQ/3PpHKWBeRt4Mjmdt7vzQxHh0xHcxnSQKVaElICrFe1ikVlu7
+         b1DrebaTojb/1o4s3tV/CYaSMS/OAsjXTo5g8go+KLXHY1hLEYKaFo9RqVH406QtD2QS
+         9CiIkfhmNZZhcOKs25RSEEOCMStt6YOekZ7PW5k0qgd/hQUSGl2HLaGrtHk9A/Hms1Cp
+         w9MiGm3gMYAEyk+PVexFZiGXnHtCCx2wBt+vcgW1Y9zITq0jLFJvSQed95Qhvj8uC0qI
+         4Pp3Moks0nc3fEYH/ruuTIZ+nqW1XcI8R2uIZntp4Cq7izRoTWG58D1c00ntjlMOlzcI
+         ARmg==
+X-Forwarded-Encrypted: i=1; AJvYcCXplyoOvQsjewhX+GQEgoyeTiKftrDzGDKGDOxu21EGJb967Ihu+aVe7nO0fwCszCslxbKk8Lw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRtpfA0e+iqwcYXnaUPW3reY6MXXXB86xQR+XxWKKecdI81/oY
+	sMmf5VmkTF8kO94r72zupDbzXxiwx3c2BFbQLr08yExQq5HpFBPBR4/i
+X-Gm-Gg: ATEYQzwi/xJ7TI91/Bs8rZiGKq7mEBdnqzAI79ddAkPTVipQovfA4BEgYdO/nIvdyfd
+	EQDQQn/RT15lIMJIR2/rez6LBD5dd8QtNQso0Sl7Y+UkfNQmHomgoYXSMqWVIW/l/cGQkqSgRdR
+	/Ycdaok01t02I/VnPqvFj6R02p56aXMo6shhFK7rm8VQfpUR4jfK1AO3Jn0OdeYjMYxRgy2HAh+
+	QaeTPbhwIQT0hpUIdUEnjGQbWEcKLlI+JDzw5UzgBk4jUM+NrdUyDxirsXat1UBRl+hBeUbJsFQ
+	5j+UWKGKFruMp/zpRKpkgriSVgFvJahnpnnVQlTpUpxS8a3jRjSdKBBqbjvfxW0s1YmvSVWH+sZ
+	9lKLxxHLoo+3X20M2dL8740ETTxkEkAO+CHqUocNowLzJulJ/u4fNFl8jJn1eEghMCjA9aYWcc8
+	808/KmJ1/MgT+76hj3At0YuR0tH6kc1da3Glgvi7h8Bw==
+X-Received: by 2002:a05:6a00:985:b0:801:eee2:45b6 with SMTP id d2e1a72fcca58-829f6ebbbf0mr2145569b3a.24.1773225119879;
+        Wed, 11 Mar 2026 03:31:59 -0700 (PDT)
+Received: from v4bel ([58.123.110.97])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-829f6f26dbasm2024859b3a.43.2026.03.11.03.31.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Mar 2026 03:31:59 -0700 (PDT)
+Date: Wed, 11 Mar 2026 19:31:51 +0900
+From: Hyunwoo Kim <imv4bel@gmail.com>
+To: Sabrina Dubroca <sd@queasysnail.net>
+Cc: Eyal Birger <eyal.birger@gmail.com>, steffen.klassert@secunet.com,
+	herbert@gondor.apana.org.au, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, netdev@vger.kernel.org, imv4bel@gmail.com
+Subject: Re: [PATCH net] xfrm: Fix work re-schedule after cancel in
+ xfrm_nat_keepalive_net_fini()
+Message-ID: <abFEl98lHzRIORgb@v4bel>
+References: <abBf_R81PYmafhWv@v4bel>
+ <abCh2CgVS3Uw7W-_@krikkit>
+ <CAHsH6GtYpoowPJe5VWMcm=CCdUernc1q-Sk6HznXxMy7LDAmrQ@mail.gmail.com>
+ <abE1Q7BMvZ1l14jF@krikkit>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <36d7f2e7f504d620c1b88526b25ebc89e3cb61d9.1773142315.git.chleroy@kernel.org>
-In-Reply-To: <36d7f2e7f504d620c1b88526b25ebc89e3cb61d9.1773142315.git.chleroy@kernel.org>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 11 Mar 2026 11:26:38 +0100
-X-Gm-Features: AaiRm53B50GTY8UnzKaLcgodqwhUvO9jIfRzrYAFDN15-xaW5BZME-8koYe_8EA
-Message-ID: <CANn89iJWkZTpM-5ymgDBztx-Be_maV_Ugv2xHdSHZVybfcHueQ@mail.gmail.com>
-Subject: Re: [PATCH net-next] net: Convert move_addr_to_user() to scoped user access
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <abE1Q7BMvZ1l14jF@krikkit>
 
-On Tue, Mar 10, 2026 at 12:33=E2=80=AFPM Christophe Leroy (CS GROUP)
-<chleroy@kernel.org> wrote:
->
-> move_addr_to_user() is a critical functions that was converted to
-> masked user access by commit 1fb0e471611d ("net: remove one stac/clac
-> pair from move_addr_to_user()")
->
-> Convert it to scoped user access to simplify the code.
->
-> Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-> Cc: Eric Dumazet <edumazet@google.com>
+On Wed, Mar 11, 2026 at 10:26:27AM +0100, Sabrina Dubroca wrote:
+> 2026-03-10, 17:14:19 -0700, Eyal Birger wrote:
+> > Hi,
+> > 
+> > On Tue, Mar 10, 2026 at 3:57 PM Sabrina Dubroca <sd@queasysnail.net> wrote:
+> > >
+> > > Please also CC the author, and maybe additional contributors, of the
+> > > patch that introduced the problem you're fixing.
+> > >
+> > > 2026-03-11, 03:16:29 +0900, Hyunwoo Kim wrote:
+> > > > After cancel_delayed_work_sync() is called from
+> > > > xfrm_nat_keepalive_net_fini(), xfrm_state_fini() flushes remaining
+> > > > states via __xfrm_state_delete(), which calls
+> > > > xfrm_nat_keepalive_state_updated() to re-schedule nat_keepalive_work.
+> > >
+> > > Eyal, I'm wondering why __xfrm_state_delete() calls
+> > > xfrm_nat_keepalive_state_updated(). At this point the state has been
+> > > removed from the walk list so nat_keepalive_work() won't do
+> > > anything. Am I missing something?
+> > 
+> > I don't remember for sure, but I think the idea was to have the work
+> > run "now" so that when deleting the last nat-keepalive state it
+> > won't run in the future, and in general to refresh the interval and
+> > not wait for the next iteration.
+> > 
+> > Eyal.
+> 
+> Ok. I thought about this, but I'm not seeing the benefit of doing
+> that. Assuming we're deleting just this one state, the next run will
+> process all the remaining states in the same way, whether it happens
+> right now or at the previously scheduled time:
+> 
+>  - if the next run was needed by the peer we're deleting, not much
+>    changes except that we're recomputing the delay earlier than
+>    otherwise (right now instead of when deleted_state's interval runs
+>    out)
+> 
+>  - if some other state was the first to need a keepalive, we do a run
+>    for nothing
+> 
+> So I think we could drop the xfrm_nat_keepalive_state_updated call
+> from __xfrm_state_delete.
+> 
+> 
+> @Hyunwoo here again I'm not opposed to s/cancel/disable/, it makes
+> sense to use disable_ in a "destruct" operation where we don't plan to
+> need the work again. But AFAICT this schedule_delayed_work isn't
+> really useful.
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+Thank you for the review. 
+Should I submit a v2 patch that removes the 
+xfrm_nat_keepalive_state_updated() call from __xfrm_state_delete()?
+
+
+Best regards,
+Hyunwoo Kim
