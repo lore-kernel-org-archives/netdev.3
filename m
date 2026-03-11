@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88E63B8D6B
-	for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 09:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A4C3BA240
+	for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 09:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773223115; cv=none; b=YyYvHCN7ZzZbCMW3c1K3mqdZa3u3+Cy7d6rRSQmZTdfNx449q+yI8vFToEVvs1FtnFDKEk17We3ehSE690z9/uWb2SR/GLGD+welcB0CiRkPIBPXlk+2PRL05eD9oG/zpzWz0yGMVhGd+zW4f1vsMNh/X4YiEFMPD6/Hq+pI7HA=
+	t=1773223119; cv=none; b=EQireV1BAlDQ5S5QZfrUWB+7/OmJ8pBCmOwDaOgOhUBLzFfy2n9Btzn01o2hbUyTkvj07z7xiE1BRXk2CL9qxZSslJCLfrndaLOtjM+zb8dsPPteLtrSCuuipsMnBwfc+p9u/zVZxRi8qadRLBqYi8zmbpBiX4CiySJ+wqTFk1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773223115; c=relaxed/simple;
-	bh=HzPj4fT4BTPw6WA53cGERH2WgByckd4BKoG2vrd/YnE=;
+	s=arc-20240116; t=1773223119; c=relaxed/simple;
+	bh=xmfQQSexzlItJbadxzX3S+VXv/F9hU4ivxKn31l7mzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MWkzx7CFZnDG9bz/RSUKaWpKMS0yPq7qmD0PVGMhW9WfReQhDJo6JsLnBShiXCmTpsYntg+2jq0+avW3Tx3nEutd8Y7NgWoVioJs7asP6k+CN/CLakvFRDBl+GQeP33GoyW6o2F74T3WlZ9CXwmhZ9nvQ044JkScQXAMG+MvKYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I8BoiLEN; arc=none smtp.client-ip=198.175.65.18
+	 MIME-Version; b=KuxOE+bHDALJUpvR2OHvXgNstI+Nc4jIHmTQeV547cKLBSquJTlqnEr5KETRkyVMtP503Fu/dvUFt0Owdj63x5FHTXbUl01eN6YTUesCLFuxWZ7B9np5ljQEtIntszHni1/vps+0sXUhKXSiJaCWbGXZEtAlBKK0aMajIiA3QtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FgBvaN8L; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I8BoiLEN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FgBvaN8L"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773223114; x=1804759114;
+  t=1773223117; x=1804759117;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=HzPj4fT4BTPw6WA53cGERH2WgByckd4BKoG2vrd/YnE=;
-  b=I8BoiLENtnp7jdJUQPUPzWEsUNozWMqG2i4O5g4+bVIR1XuSK8/jSQ5s
-   +bn4NhH6gPLAeY8f2Jsg9P/HFl6dYcHTG8LVc71TePjS42WzzZ3rxFyc6
-   FYDKMQB/12ZNGbv5xQZmkqf/z6fu6LY4MDMW7P49J/HyYwN7fbZms7/Jc
-   sP508gGVWOHiC7gqwpu0sKNy5ihdayO4qWOgK/SI/9MWh113VjEkpYBvP
-   C3j5QoED7LjMCbt4kQt8euIX+CSHvzT31JyfaG2KxU0ksSzUXXqupp9qp
-   bdTZI2cCoVElDrn2DCT5LpC9DK5n+KoOxRxrJtkqFjvSW3stvPqb5x6na
-   Q==;
-X-CSE-ConnectionGUID: MIKBoPEMQbeK77AxKR+J7g==
-X-CSE-MsgGUID: uqHDuYPJQ1SThkMowct09w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11725"; a="74326041"
+  bh=xmfQQSexzlItJbadxzX3S+VXv/F9hU4ivxKn31l7mzY=;
+  b=FgBvaN8LFFGsMOU+ndYrxqlUuWUHAO3UJsJ3tzuamCw7tulnMw8QOhjx
+   TaaD4WyUm+Y0Ge3JgIx3P9Ft25uRTxoEb56+nx4pRalXdFqwhbqYa+NKN
+   +CBRFTSOasnxdfQPe6qAaxM5U73KCHjPEE4Wp3KoJCUxUkRb+wy4/Trab
+   x+XozNFVnC7LsSMp5vgfqKJ6Q7lIa8lstQ3D5RAK5x2g14oeqHfIVzmfV
+   fJVQ/ShQxRs5gpcmdthDt/Hp2LjpCBm3g1LT6gYWhpiBm0e2++G1prqvL
+   ohX5sOv9GvZx1hqLxFMgh/QrD1mjI78ozAvaMMt1miS+DYSApUR6QC/Tt
+   w==;
+X-CSE-ConnectionGUID: PzTsBoqNT6SgAaJTynwUgw==
+X-CSE-MsgGUID: NstzalbiQoWuPfJZpED27A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11725"; a="74326063"
 X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; 
-   d="scan'208";a="74326041"
+   d="scan'208";a="74326063"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 02:58:29 -0700
-X-CSE-ConnectionGUID: dw6oik6XQXeAF+bYkMIWNg==
-X-CSE-MsgGUID: GfffPN51QkCdZ1iOiBQVrQ==
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 02:58:36 -0700
+X-CSE-ConnectionGUID: qprlaoAvRAG/K0jTR1a7EA==
+X-CSE-MsgGUID: Qx8StSelQVWFZ5pltWj46g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; 
-   d="scan'208";a="217095830"
+   d="scan'208";a="217095859"
 Received: from rtauro-desk.iind.intel.com ([10.190.238.50])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 02:58:24 -0700
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 02:58:30 -0700
 From: Riana Tauro <riana.tauro@intel.com>
 To: intel-xe@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org,
@@ -61,10 +61,17 @@ Cc: aravind.iddamsetty@linux.intel.com,
 	raag.jadav@intel.com,
 	anvesh.bakwad@intel.com,
 	maarten.lankhorst@linux.intel.com,
-	Riana Tauro <riana.tauro@intel.com>
-Subject: [PATCH 2/4] drm/xe/xe_drm_ras: Add support for clear-error-counter in XE DRM RAS
-Date: Wed, 11 Mar 2026 15:59:16 +0530
-Message-ID: <20260311102913.3387468-8-riana.tauro@intel.com>
+	Riana Tauro <riana.tauro@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Zack McKevitt <zachary.mckevitt@oss.qualcomm.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>
+Subject: [PATCH 3/4] drm/drm_ras: Add DRM RAS netlink error event notification
+Date: Wed, 11 Mar 2026 15:59:17 +0530
+Message-ID: <20260311102913.3387468-9-riana.tauro@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260311102913.3387468-6-riana.tauro@intel.com>
 References: <20260311102913.3387468-6-riana.tauro@intel.com>
@@ -76,89 +83,221 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add support for clear-error-counter command in XE DRM RAS.
-This resets the counter value.
+Add support for asynchronous error notifications in drm_ras.
 
-Usage:
+Define a new `error-event` netlink event and a new multicast
+group `error-notify` in drm_ras spec. Each event contains
+a node-id and error-id to identify the type and source
+of error.
 
-$ sudo ynl --family drm_ras  --do clear-error-counter --json \
-'{"node-id":1, "error-id":1}'
-None
+Add drm_ras_error_notify() to trigger this event from drivers.
+Userspace can receive this event by subscribing to the
+multicast group error-notify.
 
+Example: Using ynl tool
+
+$ sudo ynl --family drm_ras --subscribe error-notify
+
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Zack McKevitt <zachary.mckevitt@oss.qualcomm.com>
+Cc: Lijo Lazar <lijo.lazar@amd.com>
+Cc: Hawking Zhang <Hawking.Zhang@amd.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Eric Dumazet <edumazet@google.com>
 Signed-off-by: Riana Tauro <riana.tauro@intel.com>
 ---
- drivers/gpu/drm/xe/xe_drm_ras.c | 35 +++++++++++++++++++++++++++++++--
- 1 file changed, 33 insertions(+), 2 deletions(-)
+ Documentation/gpu/drm-ras.rst            |  9 +++++
+ Documentation/netlink/specs/drm_ras.yaml | 14 +++++++
+ drivers/gpu/drm/drm_ras.c                | 48 ++++++++++++++++++++++++
+ drivers/gpu/drm/drm_ras_nl.c             |  6 +++
+ drivers/gpu/drm/drm_ras_nl.h             |  4 ++
+ include/drm/drm_ras.h                    |  2 +
+ include/uapi/drm/drm_ras.h               |  3 ++
+ 7 files changed, 86 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_drm_ras.c b/drivers/gpu/drm/xe/xe_drm_ras.c
-index e07dc23a155e..c21c8b428de6 100644
---- a/drivers/gpu/drm/xe/xe_drm_ras.c
-+++ b/drivers/gpu/drm/xe/xe_drm_ras.c
-@@ -27,6 +27,16 @@ static int hw_query_error_counter(struct xe_drm_ras_counter *info,
- 	return 0;
+diff --git a/Documentation/gpu/drm-ras.rst b/Documentation/gpu/drm-ras.rst
+index 4636e68f5678..09b2918f67bd 100644
+--- a/Documentation/gpu/drm-ras.rst
++++ b/Documentation/gpu/drm-ras.rst
+@@ -54,6 +54,8 @@ User space tools can:
+   ``node-id`` and ``error-id`` as parameters.
+ * Clear specific error counters with the ``clear-error-counter`` command, using both
+   ``node-id`` and ``error-id`` as parameters.
++* Listen to ``error-event`` notifications for error events by subscribing to the
++  ``error-notify`` multicast group.
+ 
+ YAML-based Interface
+ --------------------
+@@ -109,3 +111,10 @@ Example: Clear an error counter for a given node
+ 
+     sudo ynl --family drm_ras --do clear-error-counter --json '{"node-id":0, "error-id":1}'
+     None
++
++Example: Listen to error events
++
++.. code-block:: bash
++
++    sudo ynl --family drm_ras --subscribe error-notify
++    {'msg': {'error-id': 1, 'node-id': 1}, 'name': 'error-event'}
+diff --git a/Documentation/netlink/specs/drm_ras.yaml b/Documentation/netlink/specs/drm_ras.yaml
+index e113056f8c01..4dc047be59e9 100644
+--- a/Documentation/netlink/specs/drm_ras.yaml
++++ b/Documentation/netlink/specs/drm_ras.yaml
+@@ -124,3 +124,17 @@ operations:
+       do:
+         request:
+           attributes: *id-attrs
++    -
++      name: error-event
++      doc: >-
++           Notify userspace of an error event.
++           The event includes the error-id and node-id of the error
++           that triggered the event.
++      attribute-set: error-counter-attrs
++      event:
++        attributes: *id-attrs
++
++mcast-groups:
++  list:
++    -
++      name: error-notify
+diff --git a/drivers/gpu/drm/drm_ras.c b/drivers/gpu/drm/drm_ras.c
+index d6eab29a1394..36a3a79cbbea 100644
+--- a/drivers/gpu/drm/drm_ras.c
++++ b/drivers/gpu/drm/drm_ras.c
+@@ -41,6 +41,10 @@
+  *    Userspace must provide Node ID, Error ID.
+  *    Clears specific error counter of a node if supported.
+  *
++ * 4. ERROR_EVENT: Notify userspace of an error event.
++ *    The event includes the error-id and node-id of the error
++ *    that triggered the event.
++ *
+  * Node registration:
+  *
+  * - drm_ras_node_register(): Registers a new node and assigns
+@@ -355,6 +359,50 @@ int drm_ras_nl_clear_error_counter_doit(struct sk_buff *skb,
+ 	return node->clear_error_counter(node, error_id);
  }
  
-+static int hw_clear_error_counter(struct xe_drm_ras_counter *info, u32 error_id)
++/**
++ * drm_ras_error_notify() - Notify userspace of an error event
++ * @node: Node structure
++ * @error_id: ID of the error counter that triggered the event
++ * @flags: GFP flags for memory allocation
++ *
++ * Notifies userspace of an error event related to a specific RAS node and error counter.
++ */
++void drm_ras_error_notify(struct drm_ras_node *node, u32 error_id, gfp_t flags)
 +{
-+	if (!info || !info[error_id].name)
-+		return -ENOENT;
++	struct genl_info info;
++	struct sk_buff *msg;
++	struct nlattr *hdr;
++	int ret;
 +
-+	atomic_set(&info[error_id].counter, 0);
++	genl_info_init_ntf(&info, &drm_ras_nl_family, DRM_RAS_CMD_ERROR_EVENT);
 +
-+	return 0;
++	msg = genlmsg_new(NLMSG_GOODSIZE, flags);
++	if (!msg)
++		return;
++
++	hdr = genlmsg_iput(msg, &info);
++	if (!hdr)
++		goto err_free;
++
++	ret = nla_put_u32(msg, DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID, node->id);
++	if (ret)
++		goto err_cancel;
++
++	ret = nla_put_u32(msg, DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID, error_id);
++	if (ret)
++		goto err_cancel;
++
++	genlmsg_end(msg, hdr);
++	genlmsg_multicast(&drm_ras_nl_family, msg, 0, DRM_RAS_NLGRP_ERROR_NOTIFY, flags);
++	return;
++
++err_cancel:
++	genlmsg_cancel(msg, hdr);
++err_free:
++	nlmsg_free(msg);
 +}
++EXPORT_SYMBOL(drm_ras_error_notify);
 +
- static int query_uncorrectable_error_counter(struct drm_ras_node *ep, u32 error_id,
- 					     const char **name, u32 *val)
- {
-@@ -37,6 +47,15 @@ static int query_uncorrectable_error_counter(struct drm_ras_node *ep, u32 error_
- 	return hw_query_error_counter(info, error_id, name, val);
- }
+ /**
+  * drm_ras_node_register() - Register a new RAS node
+  * @node: Node structure to register
+diff --git a/drivers/gpu/drm/drm_ras_nl.c b/drivers/gpu/drm/drm_ras_nl.c
+index dea1c1b2494e..ac724bb87a3b 100644
+--- a/drivers/gpu/drm/drm_ras_nl.c
++++ b/drivers/gpu/drm/drm_ras_nl.c
+@@ -58,6 +58,10 @@ static const struct genl_split_ops drm_ras_nl_ops[] = {
+ 	},
+ };
  
-+static int clear_uncorrectable_error_counter(struct drm_ras_node *node, u32 error_id)
-+{
-+	struct xe_device *xe = node->priv;
-+	struct xe_drm_ras *ras = &xe->ras;
-+	struct xe_drm_ras_counter *info = ras->info[DRM_XE_RAS_ERR_SEV_UNCORRECTABLE];
++static const struct genl_multicast_group drm_ras_nl_mcgrps[] = {
++	[DRM_RAS_NLGRP_ERROR_NOTIFY] = { "error-notify", },
++};
 +
-+	return hw_clear_error_counter(info, error_id);
-+}
-+
- static int query_correctable_error_counter(struct drm_ras_node *ep, u32 error_id,
- 					   const char **name, u32 *val)
- {
-@@ -47,6 +66,15 @@ static int query_correctable_error_counter(struct drm_ras_node *ep, u32 error_id
- 	return hw_query_error_counter(info, error_id, name, val);
- }
+ struct genl_family drm_ras_nl_family __ro_after_init = {
+ 	.name		= DRM_RAS_FAMILY_NAME,
+ 	.version	= DRM_RAS_FAMILY_VERSION,
+@@ -66,4 +70,6 @@ struct genl_family drm_ras_nl_family __ro_after_init = {
+ 	.module		= THIS_MODULE,
+ 	.split_ops	= drm_ras_nl_ops,
+ 	.n_split_ops	= ARRAY_SIZE(drm_ras_nl_ops),
++	.mcgrps		= drm_ras_nl_mcgrps,
++	.n_mcgrps	= ARRAY_SIZE(drm_ras_nl_mcgrps),
+ };
+diff --git a/drivers/gpu/drm/drm_ras_nl.h b/drivers/gpu/drm/drm_ras_nl.h
+index a398643572a5..17e1af8cc3b3 100644
+--- a/drivers/gpu/drm/drm_ras_nl.h
++++ b/drivers/gpu/drm/drm_ras_nl.h
+@@ -21,6 +21,10 @@ int drm_ras_nl_get_error_counter_dumpit(struct sk_buff *skb,
+ int drm_ras_nl_clear_error_counter_doit(struct sk_buff *skb,
+ 					struct genl_info *info);
  
-+static int clear_correctable_error_counter(struct drm_ras_node *node, u32 error_id)
-+{
-+	struct xe_device *xe = node->priv;
-+	struct xe_drm_ras *ras = &xe->ras;
-+	struct xe_drm_ras_counter *info = ras->info[DRM_XE_RAS_ERR_SEV_CORRECTABLE];
++enum {
++	DRM_RAS_NLGRP_ERROR_NOTIFY,
++};
 +
-+	return hw_clear_error_counter(info, error_id);
-+}
+ extern struct genl_family drm_ras_nl_family;
+ 
+ #endif /* _LINUX_DRM_RAS_GEN_H */
+diff --git a/include/drm/drm_ras.h b/include/drm/drm_ras.h
+index f2a787bc4f64..a2d4f257c9c2 100644
+--- a/include/drm/drm_ras.h
++++ b/include/drm/drm_ras.h
+@@ -78,9 +78,11 @@ struct drm_device;
+ #if IS_ENABLED(CONFIG_DRM_RAS)
+ int drm_ras_node_register(struct drm_ras_node *node);
+ void drm_ras_node_unregister(struct drm_ras_node *node);
++void drm_ras_error_notify(struct drm_ras_node *node, u32 error_id, gfp_t flags);
+ #else
+ static inline int drm_ras_node_register(struct drm_ras_node *node) { return 0; }
+ static inline void drm_ras_node_unregister(struct drm_ras_node *node) { }
++static inline void drm_ras_error_notify(struct drm_ras_node *node, u32 error_id, gfp_t flags) { }
+ #endif
+ 
+ #endif
+diff --git a/include/uapi/drm/drm_ras.h b/include/uapi/drm/drm_ras.h
+index 218a3ee86805..47fafeff93e7 100644
+--- a/include/uapi/drm/drm_ras.h
++++ b/include/uapi/drm/drm_ras.h
+@@ -42,9 +42,12 @@ enum {
+ 	DRM_RAS_CMD_LIST_NODES = 1,
+ 	DRM_RAS_CMD_GET_ERROR_COUNTER,
+ 	DRM_RAS_CMD_CLEAR_ERROR_COUNTER,
++	DRM_RAS_CMD_ERROR_EVENT,
+ 
+ 	__DRM_RAS_CMD_MAX,
+ 	DRM_RAS_CMD_MAX = (__DRM_RAS_CMD_MAX - 1)
+ };
+ 
++#define DRM_RAS_MCGRP_ERROR_NOTIFY	"error-notify"
 +
- static struct xe_drm_ras_counter *allocate_and_copy_counters(struct xe_device *xe)
- {
- 	struct xe_drm_ras_counter *counter;
-@@ -92,10 +120,13 @@ static int assign_node_params(struct xe_device *xe, struct drm_ras_node *node,
- 	if (IS_ERR(ras->info[severity]))
- 		return PTR_ERR(ras->info[severity]);
- 
--	if (severity == DRM_XE_RAS_ERR_SEV_CORRECTABLE)
-+	if (severity == DRM_XE_RAS_ERR_SEV_CORRECTABLE) {
- 		node->query_error_counter = query_correctable_error_counter;
--	else
-+		node->clear_error_counter = clear_correctable_error_counter;
-+	} else {
- 		node->query_error_counter = query_uncorrectable_error_counter;
-+		node->clear_error_counter = clear_uncorrectable_error_counter;
-+	}
- 
- 	return 0;
- }
+ #endif /* _UAPI_LINUX_DRM_RAS_H */
 -- 
 2.47.1
 
