@@ -1,81 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B3236C9C1
-	for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 09:55:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3832D3B775B
+	for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 09:57:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773222919; cv=none; b=m3ButFOhQ3RmFmPuxtWqRFm563Uy1PAmfqRariEeEBghJZnd7LCIhFJS3JcRxilaQPq6HWjtExkm1Cw4xkafUn7mOnl2+dfTSdyqdoC6kKjHrL4ZgXuxFp+rWN3XmQ7YfXreyirw3iPiVUQCBzpf+IenihO7rxIlSFTjAUFx32E=
+	t=1773223060; cv=none; b=oiDQHzAbbe3vP2FcXtqJcvxPRdwC1uhg4cxX1sW0d4cdKW2QHKEb0DCGGHZ+nkNJXSkRJYpZC9xzfVLGAl2t7lJbRVH/XoDmiMi9IAEr0PQP9zaLFx0VWgXhRuSBd6uQq+IJxnNkR516CZAZJmD75NsDyDAcT/3E5m5hYQMWtyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773222919; c=relaxed/simple;
-	bh=t3YWAFTGJfOXq166ei+fVp8S8uwUghjUXQoCv8h1vNQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=rjRdSCLbMRDmV42KmRz/aUVebrA5aSV8EEnVhw/QUHlPzp+wrHvtw/3Oz0IKwR97Bt2IjgHsxBN+vmdM9V2lmB5zYkw02wmszPPW6tBY+EyRKfMK5R4EpH9zu/e+yi3022Df3tik1qj5tkvJEI8wlcSPWBDDZLmv5w9Y4PKhsjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n2WwGH3O; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773223060; c=relaxed/simple;
+	bh=4bI/btbONON9G3trYcFCis9chSVGO43gW9VYlSHW2nU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oGfCW5bh/MEfUPwpUI2iOZ9sGrHzP0M2NFQt44sVR+H/+Z+xAHJBUkZAHVAC7TQ0cKU9d/7gmZcm6Qm+Zaj+Z39r9Dii0J7n89JijeBqwl+Mf9gIWtkub153m5jLAjMmyVt72WNgDbvL2URQmEbVXkkQ35bKkq7kmis7r+ZdjKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G/NhPocL; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n2WwGH3O"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C79C4CEF7;
-	Wed, 11 Mar 2026 09:55:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773222919;
-	bh=t3YWAFTGJfOXq166ei+fVp8S8uwUghjUXQoCv8h1vNQ=;
-	h=From:Date:Subject:To:Cc:From;
-	b=n2WwGH3Oubl+RCowhtf7QOox4ccYXoouIKknsp9xZq+3+xkBZdXAaVPo/L/W6X1KN
-	 fqlk75bWVJ4DeOMQ46Zhx2NUZL4lfKoD+hseFsPo9r58cEGlhXnTQ/W9TY5ghmPZsO
-	 lvGVap6Y9V8M9Rae4s7WWRLmttsf8cPuJZpD/cTN5UEde9uPM0B2C0CRMDwlVdyGmv
-	 H+R3VBIFtcbEi1d+VFdXK+KjUXTAUG10C7050EoQiYwMoqapsat47H6zt9XKjGWL3Q
-	 er+gUZTHTy2Eou6nArhNIcJWW30Rbu5OjuAXLZ13m3OdGAZD7DJ6hQHJVpRqcS2q1Z
-	 LBSLuG9jowyYw==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Wed, 11 Mar 2026 10:54:57 +0100
-Subject: [PATCH net-next] net: airoha: Remove airoha_dev_stop() in
- airoha_remove()
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G/NhPocL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773223058; x=1804759058;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=4bI/btbONON9G3trYcFCis9chSVGO43gW9VYlSHW2nU=;
+  b=G/NhPocLaFGepQ9OmLuxyj+9CvjAEU/L+WTX15SeSJApsRFwCcTB5bsv
+   KnU2Gh561C8HUBEUW/CrT/yAZdURiexAHYeiAd6zJsM2sFy2hh+OK1m2h
+   853kF2l33L8HROHAhQNVU5AskZW5znQR3kz6p7m1F/2SmKhxqUph41C+J
+   azz+qAwUUOBFQc5OXAKbSZErU27Vk4Ca1k8gnjZP73+wtNNQkNkbHcSmo
+   xxQF7I1423JUsn6PcsjJO/z9sbsuEsQGgY0jCRW3wqli1EvEjNQn+TwUH
+   VIQT2yTgQFMyyOuHC9ool9Pk11LuzFTHCswZzY4xlkmriN9gYoNJqVJEb
+   Q==;
+X-CSE-ConnectionGUID: joNQ7bdJQR+8qpnTAEkPhA==
+X-CSE-MsgGUID: WlFdASk3THWAbamiCqlXBQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11725"; a="74325902"
+X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; 
+   d="scan'208";a="74325902"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 02:57:38 -0700
+X-CSE-ConnectionGUID: P1Np9L/jRPKDRQekogkxWg==
+X-CSE-MsgGUID: o8q8qZd/TSavEXFw45L3UA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; 
+   d="scan'208";a="217095711"
+Received: from rtauro-desk.iind.intel.com ([10.190.238.50])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 02:57:33 -0700
+From: Riana Tauro <riana.tauro@intel.com>
+To: intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	netdev@vger.kernel.org
+Cc: aravind.iddamsetty@linux.intel.com,
+	anshuman.gupta@intel.com,
+	rodrigo.vivi@intel.com,
+	joonas.lahtinen@linux.intel.com,
+	simona.vetter@ffwll.ch,
+	airlied@gmail.com,
+	pratik.bari@intel.com,
+	joshua.santosh.ranjan@intel.com,
+	ashwin.kumar.kulkarni@intel.com,
+	shubham.kumar@intel.com,
+	ravi.kishore.koppuravuri@intel.com,
+	raag.jadav@intel.com,
+	anvesh.bakwad@intel.com,
+	maarten.lankhorst@linux.intel.com,
+	Riana Tauro <riana.tauro@intel.com>
+Subject: [PATCH 0/4] Add support for clear counter and error event in DRM RAS
+Date: Wed, 11 Mar 2026 15:59:14 +0530
+Message-ID: <20260311102913.3387468-6-riana.tauro@intel.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260311-airoha-remove-ndo_stop-remove-v1-1-596fe853b2e1@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/zXMQQqEMAwAwK9IzhZsq674lUUkatQctpFURBD/b
- lnwOJe5IJIyRWizC5QOjiwhweYZjCuGhQxPyeAKVxfeWoOssqJR+slBJkzSx12217ZqHH7KAdF
- 7SMemNPP5/7/dfT+/JnIIbwAAAA==
-X-Change-ID: 20260311-airoha-remove-ndo_stop-remove-1582a74baa33
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, netdev@vger.kernel.org, 
- Lorenzo Bianconi <lorenzo@kernel.org>
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
 
-Do not call airoha_dev_stop routine explicitly in airoha_remove()
-since it is already executed by unregister_netdev() if necessary
+Clear Error Counter : Add clear-error-counter command to DRM RAS to clear
+a specific error counter of a node. Implement the callback in XE driver
+to demonstrate usage.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/ethernet/airoha/airoha_eth.c | 1 -
- 1 file changed, 1 deletion(-)
+Usage with both get-error-counter and clear-error-counter:
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index 3e9ec5c178f86fdd055e079078a23461edf97951..de5089e7dcd85080188641ae4c976b3d731cc3b4 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -3095,7 +3095,6 @@ static void airoha_remove(struct platform_device *pdev)
- 		if (!port)
- 			continue;
- 
--		airoha_dev_stop(port->dev);
- 		unregister_netdev(port->dev);
- 		airoha_metadata_dst_free(port);
- 	}
+$ sudo ynl --family drm_ras  --dump get-error-counter --json '{"node-id":1}'
+[{'error-id': 1, 'error-name': 'core-compute', 'error-value': 0},
+ {'error-id': 2, 'error-name': 'soc-internal', 'error-value': 3}]
 
----
-base-commit: 482aac8b56ca21d06c588517970579474d56736e
-change-id: 20260311-airoha-remove-ndo_stop-remove-1582a74baa33
+$ sudo ynl --family drm_ras  --do clear-error-counter --json \
+'{"node-id":1, "error-id":2}'
+None
 
-Best regards,
+$ sudo ynl --family drm_ras  --dump get-error-counter --json '{"node-id":1}'
+[{'error-id': 1, 'error-name': 'core-compute', 'error-value': 0},
+ {'error-id': 2, 'error-name': 'soc-internal', 'error-value': 0}]
+
+Error Event Support:  Introduce `error-event` support in DRM RAS to notify
+userspace whenever an error occurs.
+
+Each notification includes the node-id and error-id to identify
+the source and type of the error. To receive notifications,
+userspace must subscribe to the 'error-notify' multicast group.
+
+Userspace can receive the event by subscribing to multicast group.
+
+$ sudo ynl --family drm_ras --subscribe error-notify
+{'msg': {'error-id': 2, 'node-id': 1}, 'name': 'error-event'}
+
+Riana Tauro (4):
+  drm/drm_ras: Add clear-error-counter netlink command to drm_ras
+  drm/xe/xe_drm_ras: Add support for clear-error-counter in XE DRM RAS
+  drm/drm_ras: Add DRM RAS netlink error event notification
+  drm/xe/xe_drm_ras: Add error-event support in XE DRM RAS
+
+ Documentation/gpu/drm-ras.rst            | 17 +++++
+ Documentation/netlink/specs/drm_ras.yaml | 27 ++++++-
+ drivers/gpu/drm/drm_ras.c                | 91 +++++++++++++++++++++++-
+ drivers/gpu/drm/drm_ras_nl.c             | 19 +++++
+ drivers/gpu/drm/drm_ras_nl.h             |  6 ++
+ drivers/gpu/drm/xe/xe_drm_ras.c          | 52 +++++++++++++-
+ drivers/gpu/drm/xe/xe_drm_ras.h          |  7 ++
+ drivers/gpu/drm/xe/xe_hw_error.c         |  5 ++
+ include/drm/drm_ras.h                    | 13 ++++
+ include/uapi/drm/drm_ras.h               |  4 ++
+ 10 files changed, 237 insertions(+), 4 deletions(-)
+
 -- 
-Lorenzo Bianconi <lorenzo@kernel.org>
+2.47.1
 
