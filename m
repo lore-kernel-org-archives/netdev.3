@@ -1,181 +1,181 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6757F35F8A8;
-	Wed, 11 Mar 2026 10:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34AD73C8703;
+	Wed, 11 Mar 2026 10:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773224096; cv=none; b=jktWi2TcFshHPe/yCkFZpLeCmCn5SiNvT4a2/ZesGk7RAyB4kpHFb77YX+iC6w+BvHl0bK7egpHnUh972JW8AvxWuulFmS+z6BCcNjRAc0UfengBpuXvhjsUwlU5xVVE+G8qFtbGOj8DE47pEG7Me8QUZHfifPjTSYt93I2U9dQ=
+	t=1773224292; cv=none; b=Kjjli8lhLqgkEs7hoKZpnqIOV9ikwOZQ0hlIA0476t6L51CVthLnD6IzaOFN3nAhg0QhK8E9tJ9/N/kaSDhOFaOuMBC+O/Op9Yc03uGLftPbWNji8vKxwnc9aEo6eKBrxylm/dKgcn0TMZoBPoxF2hRjOaqx9cKouettkIPJwHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773224096; c=relaxed/simple;
-	bh=8NzBTafHxFIIYzj/NK+6B25hapn0+IoGoAIp8GSAk2E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U8q1uHWpAvYSHMlrD3y3ZpIVj/2SrDGrgtYuaIVzyyX3Q4s37WHxI86f5+Vjt+riDapmDGKzDRR7f6Ho2Qc+VUbQajJdJJE01M+q8UvGThph6rdzdA8H/7gbI0QzXimBUv6N1UaSA2AIaT1zTiRH5NVNd7bs2m2uLFGPP8p40Ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=omvXq9dU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773224292; c=relaxed/simple;
+	bh=Q9V6sTMaJ2pd7d5NGrdgzvEcNvyFxJE7OuvaMwzwrfQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=WF3/RpK5zl3Cl6deRxNNIDk80okyggP52UrsVjbxP2kKC90q5Yz0ANheND4PhlJg6H6US2m1hxQq3C+d5in/Q/WjOazRpjJ4xKwau9BjRY8651AZJxbLIB7ywKpYWPe/e8aSZ0jmlZe6l4xfS/uSg6QaFP+muA0G+UQvP3hFCZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UINxgHhj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="omvXq9dU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37EDCC2BC86;
-	Wed, 11 Mar 2026 10:14:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UINxgHhj"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0CDA8C4CEF7;
+	Wed, 11 Mar 2026 10:18:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773224096;
-	bh=8NzBTafHxFIIYzj/NK+6B25hapn0+IoGoAIp8GSAk2E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=omvXq9dUVQ+8IEM4NP4nwWQTatXPPeZdmycSZhv/Qow9WNXIG6PXAxerxp3XY2UxY
-	 83entbEZw2AX1bg5/HQXnlgPYg08Q/BBtCeauWK3wfhbUcDe9VcUwO4jYncYAkDEZN
-	 lEjReDZHF65LF34/dZUwINs1eT9qZih1Z7GqhgbNmf3XPBchzgubdhXH6XOz/HCbk7
-	 sj/tmK4gljCTt189DfGMWlOHx3vSyCwQ1ddLG55Ca+PBMlmcXMEBBPFNxRYjxLs0v3
-	 wa7Mm+wSUiZ+Sac0HNu3TU2zBlSQRcOyQEovsSESMFzyCsFLLvl9a1Yj/h23Ib8wCL
-	 SMqtIflOJ1Rlw==
-Date: Wed, 11 Mar 2026 10:14:50 +0000
-From: Simon Horman <horms@kernel.org>
-To: Ratheesh Kannoth <rkannoth@marvell.com>
-Cc: cjubran@nvidia.com, matttbe@kernel.org, chuck.lever@oracle.com,
-	shshitrit@nvidia.com, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, sgoutham@marvell.com, jiri@resnulli.us,
-	davem@davemloft.net, saeedm@nvidia.com, kuba@kernel.org,
-	edumazet@google.com, pabeni@redhat.com, donald.hunter@gmail.com
-Subject: Re: [v3,net-next,5/5] octeontx2-af: Add support for loading custom
- KPU profile from filesystem
-Message-ID: <20260311101450.GR461701@kernel.org>
-References: <20260309024619.898211-6-rkannoth@marvell.com>
- <20260310172100.890161-1-horms@kernel.org>
- <abDeXLpMMxp7G1v3@rkannoth-OptiPlex-7090>
+	s=k20201202; t=1773224292;
+	bh=Q9V6sTMaJ2pd7d5NGrdgzvEcNvyFxJE7OuvaMwzwrfQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=UINxgHhj5nFHJdbk8R8jKEjQwnRTiyXul20oua9CGsmATA6RcX3jyt96stH4mODiT
+	 riK9uywOPih13MokiXk2zgklZnA7kYsahet7LRLfnKvVCek03PVR4m0s9C4QhHt5sV
+	 gNM7bPt6+dbE11FvJTu+5EMkJ+jv3cxt2P+01a59kdphbzs7dNWVFUk2ZWVlAz/mmT
+	 P4c4A6yG6kJ6Fh3EtpLThNNabr+JNTaQ0m9gchaRexMf6IYzXx1JPkUq7T4Q0sys+T
+	 UO9wFZ1W1w46/sT0slkujIP36qQ/FZAOS9lmJdYLaAnFaR8UIRqGgGaKRvtAwSjI3T
+	 ZDqtPBI9J3hpg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EC37E104BEC5;
+	Wed, 11 Mar 2026 10:18:11 +0000 (UTC)
+From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
+Date: Wed, 11 Mar 2026 11:17:58 +0100
+Subject: [PATCH v10 1/5] net: stmmac: Use helper macro for loop over
+ queue-based arrays
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <abDeXLpMMxp7G1v3@rkannoth-OptiPlex-7090>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260311-dwmac_multi_irq-v10-1-7ab1669759b5@oss.nxp.com>
+References: <20260311-dwmac_multi_irq-v10-0-7ab1669759b5@oss.nxp.com>
+In-Reply-To: <20260311-dwmac_multi_irq-v10-0-7ab1669759b5@oss.nxp.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
+ Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
+ NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, devicetree@vger.kernel.org, rmk+kernel@armlinux.org.uk, 
+ vladimir.oltean@nxp.com, boon.khai.ng@altera.com, 
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773224290; l=4143;
+ i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
+ bh=AN9BxArjvT+LtwWtaoyDzsO4XeDTxufZg6uDwPtH3+8=;
+ b=5GmT30ZsmnI//0cQZqIyqmK7gRXf93+3mWuwKF2QsS+zP9qDLp9dVlKTTFuR52dc4rr5IUTEi
+ tqlCVS1a1XyDDJB1U7gBvoP4QYZRbSHa1Rav6mqSTjzMn2I9T7rcWXJ
+X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
+ pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
+X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
+ auth_id=217
+X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+Reply-To: jan.petrous@oss.nxp.com
 
-On Wed, Mar 11, 2026 at 08:45:40AM +0530, Ratheesh Kannoth wrote:
-> On 2026-03-10 at 22:51:00, Simon Horman (horms@kernel.org) wrote:
-> > This is an AI-generated review of your patch. The human sending this
-> > email has considered the AI review valid, or at least plausible.
-> >
-> > For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
-> > ---
-> > octeontx2-af: Add support for loading custom KPU profile from filesystem
-> >
-> > This commit adds functionality to load custom KPU (Key Parse Unit)
-> > profiles from the filesystem at module load time, providing an
-> > alternative to flashing updated firmware on deployed devices.
-> >
-> > > diff --git a/drivers/net/ethernet/marvell/octeontx2/af/npc.h b/drivers/net/ethernet/marvell/octeontx2/af/npc.h
-> > > index cefc5d70f3e4..5928c4d3cc8b 100644
-> > > --- a/drivers/net/ethernet/marvell/octeontx2/af/npc.h
-> > > +++ b/drivers/net/ethernet/marvell/octeontx2/af/npc.h
-> >
-> > [ ... ]
-> >
-> > > @@ -290,6 +303,7 @@ struct npc_kpu_profile {
-> > >  	int action_entries;
-> > >  	struct npc_kpu_profile_cam *cam;
-> > >  	struct npc_kpu_profile_action *action;
-> > > +	struct npc_kpu_profile_cam2 *cam2;
-> > >  };
-> >
-> > [ ... ]
-> >
-> > > diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-> > > index a466181cf908..1efc53b63b67 100644
-> > > --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-> > > +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-> >
-> > [ ... ]
-> >
-> > > @@ -553,8 +553,8 @@ struct npc_kpu_profile_adapter {
-> > >  	const char			*name;
-> > >  	u64				version;
-> > >  	const struct npc_lt_def_cfg	*lt_def;
-> > > -	const struct npc_kpu_profile_action	*ikpu; /* array[pkinds] */
-> > > -	const struct npc_kpu_profile	*kpu; /* array[kpus] */
-> > > +	struct npc_kpu_profile_action	*ikpu; /* array[pkinds] */
-> > > +	struct npc_kpu_profile	*kpu; /* array[kpus] */
-> >
-> > [ ... ]
-> >
-> > > @@ -564,6 +564,7 @@ struct npc_kpu_profile_adapter {
-> > >  	bool				custom;
-> > >  	size_t				pkinds;
-> > >  	size_t				kpus;
-> > > +	bool				from_fs;
-> > >  };
-> >
-> > [ ... ]
-> >
-> > > diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-> > > index 352dc5f1d5b9..05aabe26f030 100644
-> > > --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-> > > +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-> >
-> > [ ... ]
-> >
-> > > @@ -1610,6 +1622,7 @@ u64 npc_enable_mask(int count)
-> > >  static void npc_program_kpu_profile(struct rvu *rvu, int blkaddr, int kpu,
-> > >  				    const struct npc_kpu_profile *profile)
-> > >  {
-> > > +	struct npc_kpu_profile_adapter *adapter = &rvu->kpu;
-> > >  	int entry, num_entries, max_entries;
-> > >  	u64 entry_mask;
-> > >
-> > > @@ -1621,10 +1634,15 @@ static void npc_program_kpu_profile(struct rvu *rvu, int blkaddr, int kpu,
-> > >
-> > >  	max_entries = rvu->hw->npc_kpu_entries;
-> > >
-> > > +	WARN(profile->cam_entries > max_entries,
-> > > +	     "KPU%u: err: hw max entries=%u, input entries=%u\n",
-> > > +	     kpu,  rvu->hw->npc_kpu_entries, profile->cam_entries);
-> > > +
-> > >  	/* Program CAM match entries for previous KPU extracted data */
-> > >  	num_entries = min_t(int, profile->cam_entries, max_entries);
-> > >  	for (entry = 0; entry < num_entries; entry++)
-> > >  		npc_config_kpucam(rvu, blkaddr,
-> > > +				  adapter->from_fs ? (void *)&profile->cam2[entry] :
-> > >  				  &profile->cam[entry], kpu, entry);
-> >
-> > Can this dereference NULL when from_fs is true for KPUs not covered by
-> > the filesystem firmware?
-> >
-> > Looking at the filesystem loading path in npc_apply_custom_kpu:
-> >
-> >     for (kpu = 0; kpu < fw->kpus; kpu++) {
-> >         ...
-> >         ret = npc_alloc_kpu_cam2_n_action(rvu, kpu, entries);
-> >         ...
-> >         for (entry = 0; entry < entries; entry++) {
-> >             profile->kpu[kpu].cam2[entry] = cam2[entry];
-> >             ...
-> >         }
-> >     }
-> >
-> > The code allocates cam2 and populates entries only for the first
-> > fw->kpus KPUs found in the firmware blob.
-> >
-> > However, npc_program_kpu_profile is later called for all KPUs in
-> > npc_parser_profile_init:
-> >
-> >     for (idx = 0; idx < num_kpus; idx++)
-> >         npc_program_kpu_profile(rvu, blkaddr, idx, &rvu->kpu.kpu[idx]);
-> >
-> > Since adapter->from_fs is a global flag (not per-KPU), when idx >=
-> > fw->kpus, profile->cam2 remains NULL (the default npc_kpu_profiles[]
-> > static initializer doesn't include cam2), causing &profile->cam2[entry]
-> > to compute an invalid pointer.
-> >
-> > Shouldn't there be a check to verify cam2 is non-NULL before
-> > dereferencing it, or allocate cam2 for all KPUs when from_fs is true?
-> 
-> The filsystem binary contains entries for all KPUs. So we can ignore this
-> case.
+From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
-Maybe it is just me. But I don't think it is entirely satisfactory for
-the kernel to rely on data supplied from the filesystem being well formed.
-E.g. what if it is corrupted?
+The stmmac driver contains similar pattern for processing queue-based
+arrays, ie. interrupt lines, etc. Factor out the for loop and provide
+a macro STMMAC_FOREACH_MTL_QUEUE(var, limit).
 
-I think all the points in the AI generated review hinge on this.
-So let's try and agree on the basic principles and move on from there.
+Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c |  2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h        |  3 +++
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c   | 16 ++++++++--------
+ 3 files changed, 12 insertions(+), 9 deletions(-)
 
-...
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+index 49893b9fb88c..3890e82c69f6 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+@@ -233,7 +233,7 @@ static void dwxgmac2_prog_mtl_tx_algorithms(struct mac_device_info *hw,
+ 	writel(value, ioaddr + XGMAC_MTL_OPMODE);
+ 
+ 	/* Set ETS if desired */
+-	for (i = 0; i < MTL_MAX_TX_QUEUES; i++) {
++	STMMAC_FOREACH_MTL_QUEUE(i, MTL_MAX_TX_QUEUES) {
+ 		value = readl(ioaddr + XGMAC_MTL_TCx_ETS_CONTROL(i));
+ 		value &= ~XGMAC_TSA;
+ 		if (ets)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac.h b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+index 51c96a738151..c972ad8e79f8 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac.h
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+@@ -382,6 +382,9 @@ enum stmmac_state {
+ 
+ extern const struct dev_pm_ops stmmac_simple_pm_ops;
+ 
++#define STMMAC_FOREACH_MTL_QUEUE(var, limit) \
++	for (var = 0; var < (limit); var++)
++
+ int stmmac_mdio_unregister(struct net_device *ndev);
+ int stmmac_mdio_register(struct net_device *ndev);
+ int stmmac_mdio_reset(struct mii_bus *mii);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index edf0799b7236..b920ca17b2be 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -3875,7 +3875,7 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ 	}
+ 
+ 	/* Request Rx MSI irq */
+-	for (i = 0; i < priv->plat->rx_queues_to_use; i++) {
++	STMMAC_FOREACH_MTL_QUEUE(i, priv->plat->rx_queues_to_use) {
+ 		if (i >= MTL_MAX_RX_QUEUES)
+ 			break;
+ 		if (priv->rx_irq[i] == 0)
+@@ -3899,7 +3899,7 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ 	}
+ 
+ 	/* Request Tx MSI irq */
+-	for (i = 0; i < priv->plat->tx_queues_to_use; i++) {
++	STMMAC_FOREACH_MTL_QUEUE(i, priv->plat->tx_queues_to_use) {
+ 		if (i >= MTL_MAX_TX_QUEUES)
+ 			break;
+ 		if (priv->tx_irq[i] == 0)
+@@ -4084,10 +4084,10 @@ static int __stmmac_open(struct net_device *dev,
+ 			 struct stmmac_dma_conf *dma_conf)
+ {
+ 	struct stmmac_priv *priv = netdev_priv(dev);
++	int ret, i;
+ 	u32 chan;
+-	int ret;
+ 
+-	for (int i = 0; i < MTL_MAX_TX_QUEUES; i++)
++	STMMAC_FOREACH_MTL_QUEUE(i, MTL_MAX_TX_QUEUES)
+ 		if (priv->dma_conf.tx_queue[i].tbs & STMMAC_TBS_EN)
+ 			dma_conf->tx_queue[i].tbs = priv->dma_conf.tx_queue[i].tbs;
+ 	memcpy(&priv->dma_conf, dma_conf, sizeof(*dma_conf));
+@@ -7734,9 +7734,9 @@ static int __stmmac_dvr_probe(struct device *device,
+ 	priv->device = device;
+ 	priv->dev = ndev;
+ 
+-	for (i = 0; i < MTL_MAX_RX_QUEUES; i++)
++	STMMAC_FOREACH_MTL_QUEUE(i, MTL_MAX_RX_QUEUES)
+ 		u64_stats_init(&priv->xstats.rxq_stats[i].napi_syncp);
+-	for (i = 0; i < MTL_MAX_TX_QUEUES; i++) {
++	STMMAC_FOREACH_MTL_QUEUE(i, MTL_MAX_TX_QUEUES) {
+ 		u64_stats_init(&priv->xstats.txq_stats[i].q_syncp);
+ 		u64_stats_init(&priv->xstats.txq_stats[i].napi_syncp);
+ 	}
+@@ -7759,9 +7759,9 @@ static int __stmmac_dvr_probe(struct device *device,
+ 	priv->sfty_irq = res->sfty_irq;
+ 	priv->sfty_ce_irq = res->sfty_ce_irq;
+ 	priv->sfty_ue_irq = res->sfty_ue_irq;
+-	for (i = 0; i < MTL_MAX_RX_QUEUES; i++)
++	STMMAC_FOREACH_MTL_QUEUE(i, MTL_MAX_RX_QUEUES)
+ 		priv->rx_irq[i] = res->rx_irq[i];
+-	for (i = 0; i < MTL_MAX_TX_QUEUES; i++)
++	STMMAC_FOREACH_MTL_QUEUE(i, MTL_MAX_TX_QUEUES)
+ 		priv->tx_irq[i] = res->tx_irq[i];
+ 
+ 	if (!is_zero_ether_addr(res->mac))
+
+-- 
+2.47.0
+
+
