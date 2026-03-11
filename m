@@ -1,106 +1,122 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E7413DDAA
-	for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 11:54:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169DF3D9035
+	for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 11:54:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773230043; cv=none; b=n0Jv2nzbXataIGYVmWh9hXEUS76MsCKDQgaKEhXGDk/NmzfOjxPH8lgDH8Cx4ahLQUpj0RCHO1MluI3Hnisb7FZzHp59IDOKbLAQFbsWBaI6hP5Gkpgh4mVfSng2uzn1dkxSjApl1nd/YSuBDav55Kt/BlvIFDAmC5KUCkVdU/c=
+	t=1773230062; cv=none; b=VsndsxQp9ICWBCDpVLhjM2EyD3hx/CE2tci9L+5MYnHZ6EQVW5+Coojl1a8FvK/hJyW/TkbtDukSInUSj6VbPuiHmNsEcmqrS1XZ0eMUKpXUjyqd6J0/VY+pVtJ16byU4o8ItLTQY0RShs+CSzYcaDnVUNfp2otaNgkx4kEpAhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773230043; c=relaxed/simple;
-	bh=TuYlb10rCFL8PwMrHyGpVLx9lejf1x6yL5QyRJrZinQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d7dQGgR2Rvgn4If5DJtX1FkYCkgcOpZrolxOTjyEUpnOPv2fDwYC4DZED/n0t/rex+wBDo16byqL77jnzT3HfYH6YKlL8jMt8NUNxqg1kit5/ZBRb8L/DN2eQPmqFyyrxrXhZZKS6MTaATyllyeF4hE5BoPaHBgsb1Kl0ppe4xM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HWWRXpiq; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1773230062; c=relaxed/simple;
+	bh=nFFcO2cjSFilSh0gdxu3xt5JV+ZSzRo+Bg1sSuCKN8s=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=KYDujqTlJvj2GRj2L/i3lnzAbOjBxaOYgBz3b7Y+YkkM7Y1LHtnHhBQmyASfmXch7pCsX4G7dlKAD5pTRqvDLGWsr/MhhZvegTebSp8314c0R3ziljUPZhofQcM8+I/dUMoaMeBT8DYN0zBEjHiAsscxB/s3ctq/ctQBEzktBDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=MOT4Y9Js; arc=none smtp.client-ip=115.124.30.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HWWRXpiq"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-485358f43e7so1656615e9.2
-        for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 04:54:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773230040; x=1773834840; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vAw6q4XY2+b8zt+2zhUzdOZV9aAh8z+HL3jAW2Wl3qY=;
-        b=HWWRXpiqc9Vy1Nsk6TXVy+T2R/YX/dictHGrXVvIZoR+78AyCk0IrJPg1PGFa+F3x3
-         WtwFGnu2DQuJfflqVcoclDJqNClvAnXAceQnw/fkansLqh++Ez3my76Rvc4dPEEdnAjz
-         1kdou/Bk4mtMo9L3VcS4jwOZ9zd/61oUxgCWm78AYntcqfWVOGYc7B/O6yhLC29IWrdT
-         i1u8jYBVgA0SKObE2j+c/hdidjTdPGGcYXf4gdG+15lChSwM0AAnDCqPGg2G5MitLXL5
-         zL5BUvu33o5Z9GKRIBQrKad8AAftF+vVKUHLE6T+LbIeiwirj9CmHXM42d9COBNMV6lc
-         LwnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773230040; x=1773834840;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vAw6q4XY2+b8zt+2zhUzdOZV9aAh8z+HL3jAW2Wl3qY=;
-        b=BBnhGK7OCbssnOKitKR4HGmIzp5O3bEHWITXR8lqb94LWi957p8ERfJX3JajnXojwX
-         t0sy8Wxi0T14S87I0SNmg1YOdE4ZOkXu5I5uNcv12CiB3FMvPC3FBwy+KhPsOov5tBJL
-         4ZemGLwEMoOwpgxwPnDQdq/v21AOe0UUJfu8wxXrFB+l+5XDpYaG14ArwsxLSotT9t1E
-         33JZCPQK6SgKOnysqW/h+1cN/5RZTpg1tgZJm2Fy6Xx3tudIhMZ93yw/U/VhQPYUak8R
-         LQLRjJQGVNIEHPEeqv9iM8ZITxdepn8M+B7JroT/JaH26G64XbXoTA188OIglcvnaoPf
-         WyHA==
-X-Forwarded-Encrypted: i=1; AJvYcCVfqudmw1MWMQojBk6YUV28VVLROux1G6KKg5/e0C7J87jtZ2qalxC+WF9oc7ZihChHPIdXPyE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPbFlltuwtjj9qYFTQ1kJkO0S8Sx5asKOMvg/C8exikl6x93Qd
-	hxUUGQNJzjTRD2tvy5fkEPHYzoJ7HaQRArrOD9UwxP/fEzjwJ4aLZnzN
-X-Gm-Gg: ATEYQzwWurkPNVYZ8Y0WuVfnmNrkjXzsv5YsGplTv3c5C8zrRL9sarrDsCprj3IkzMO
-	ooQGU2cTFtiYHV47cL4cTL3b4olU14ETK6rYYKtcFwKr5xpRwfIwziN13ZFv6930iRsNtdf53vk
-	p82b9aJoOBoJdVd1edLdpJXqgBVPYqPGDLz8pv8ZEVXvJmEnPDfaZ9XFL8IJr13z8J29WSH/g1e
-	5E94tQ7Eivjcc2mD5UMzRED0TW3DeCp3LiBC53SFMEOf8uK/fsWLNJ0jpQhRToi/pMp/8Z1HgD/
-	DEimmeQq3cKEVX+h+AfTigqyJsCsZmRlVrbe/3dxB0Qec3n6O6efrqON25Evx8HzU+0FLxqs7iG
-	aNZLeOFe48FM+JpnYdqki+AECfQcpFB2S4NZqGjqYFmbtn6v3jvMxY034IPGRiab+KXV1qAtN7d
-	QgREF00YxBxbjtzQ==
-X-Received: by 2002:a05:600c:c166:b0:485:2a02:38d with SMTP id 5b1f17b1804b1-4854b0fa222mr22550215e9.3.1773230040064;
-        Wed, 11 Mar 2026 04:54:00 -0700 (PDT)
-Received: from skbuf ([2a02:2f04:d00a:e00:43cb:c21c:efe7:d225])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4854b6756e4sm55180555e9.15.2026.03.11.04.53.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Mar 2026 04:53:58 -0700 (PDT)
-Date: Wed, 11 Mar 2026 13:53:56 +0200
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Bastien Curutchet <bastien.curutchet@bootlin.com>
-Cc: Woojung.Huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, richardcochran@gmail.com, horms@kernel.org,
-	pascal.eberhard@se.com, miquel.raynal@bootlin.com,
-	thomas.petazzoni@bootlin.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, maxime.chevallier@bootlin.com,
-	Tristram.Ha@microchip.com
-Subject: Re: [PATCH net-next v6 1/9] net: dsa: microchip: Add support for
- KSZ8463 global irq
-Message-ID: <20260311115356.windefb3j4kkuslg@skbuf>
-References: <20260304-ksz8463-ptp-v6-0-3f4c47954c71@bootlin.com>
- <20260304-ksz8463-ptp-v6-1-3f4c47954c71@bootlin.com>
- <20260305095656.vlyaztv6nbdqrmil@skbuf>
- <98944cef-0877-4fb9-83a0-92bbd3852f66@bootlin.com>
- <20260305125149.ejju5ptrkviqi3sm@skbuf>
- <a3a915af-5190-4582-a3e6-4ebf92a7e35d@bootlin.com>
- <DM3PR11MB87364DB5439A20F44AEB690DEC7AA@DM3PR11MB8736.namprd11.prod.outlook.com>
- <0658868d-671c-46a2-8daa-26420cdd2975@bootlin.com>
- <20260309205401.bk5fpw6kqnmlktbu@skbuf>
- <dde60639-af13-4653-9a34-38c4bd98b149@bootlin.com>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="MOT4Y9Js"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1773230058; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=j7lZTkK3C5F7Pd+Y07T3lUUGjG3+7QGV13ZA0xLtcF0=;
+	b=MOT4Y9JsWlNciA0uitjs82YNLr8ScOFq62uh3oQWWBQ4O9AXiNiR36KZD5mIx+ajJw5EzplQ6WB2UapJArUnUpZ38mzNeRyTStvPkzKGW1qiyUi4z3CXrdNV6RD3SSPo7mR20aiuQCfMR42CDx05TGulOhCBW9eV5AKgfeuvnAQ=
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0X-k-jU8_1773230056 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 11 Mar 2026 19:54:16 +0800
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+To: netdev@vger.kernel.org
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Alvaro Karsz <alvaro.karsz@solid-run.com>,
+	virtualization@lists.linux.dev
+Subject: [PATCH net v9 2/2] virtio-net: correct hdr_len handling for tunnel gso
+Date: Wed, 11 Mar 2026 19:54:14 +0800
+Message-Id: <20260311115414.31243-3-xuanzhuo@linux.alibaba.com>
+X-Mailer: git-send-email 2.32.0.3.g01195cf9f
+In-Reply-To: <20260311115414.31243-1-xuanzhuo@linux.alibaba.com>
+References: <20260311115414.31243-1-xuanzhuo@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dde60639-af13-4653-9a34-38c4bd98b149@bootlin.com>
+X-Git-Hash: e88adc2e5a2a
+Content-Transfer-Encoding: 8bit
 
-On Wed, Mar 11, 2026 at 11:02:35AM +0100, Bastien Curutchet wrote:
-> I, more or less, managed to fit this PTP support in the current framework,
-> but the next series I prepared to add periodic output support is full of
-> is_ksz8463() branches. So I think that I'll go with what you suggested and
-> try to move the KSZ8463 support in the ksz8995.c driver. It will probably be
-> cleaner this way.
-> 
-> TBH I'm a bit lost with all these KSZ variants but IIUC KSZ8463 and KSZ8995
-> both belong to the 'old generation' of the hardware. Maybe a good split
-> would be to have these old switches in the ksz8995.c driver and keep the
-> rest under ksz_common infra.
+The commit a2fb4bc4e2a6a03 ("net: implement virtio helpers to handle UDP
+GSO tunneling.") introduces support for the UDP GSO tunnel feature in
+virtio-net.
 
-Wait, to make sure I understand, you said you're going to rebase this
-series onto the ksz8995 driver?
+The virtio spec says:
+
+    If the \field{gso_type} has the VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV4 bit or
+    VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV6 bit set, \field{hdr_len} accounts for
+    all the headers up to and including the inner transport.
+
+The commit did not update the hdr_len to include the inner transport.
+
+I observed that the "hdr_len" is 116 for this packet:
+
+    17:36:18.241105 52:55:00:d1:27:0a > 2e:2c:df:46:a9:e1, ethertype IPv4 (0x0800), length 2912: (tos 0x0, ttl 64, id 45197, offset 0, flags [none], proto UDP (17), length 2898)
+        192.168.122.100.50613 > 192.168.122.1.4789: [bad udp cksum 0x8106 -> 0x26a0!] VXLAN, flags [I] (0x08), vni 1
+    fa:c3:ba:82:05:ee > ce:85:0c:31:77:e5, ethertype IPv4 (0x0800), length 2862: (tos 0x0, ttl 64, id 14678, offset 0, flags [DF], proto TCP (6), length 2848)
+        192.168.3.1.49880 > 192.168.3.2.9898: Flags [P.], cksum 0x9266 (incorrect -> 0xaa20), seq 515667:518463, ack 1, win 64, options [nop,nop,TS val 2990048824 ecr 2798801412], length 2796
+
+116 = 14(mac) + 20(ip) + 8(udp) + 8(vxlan) + 14(inner mac) + 20(inner ip) + 32(innner tcp)
+
+Fixes: a2fb4bc4e2a6a03 ("net: implement virtio helpers to handle UDP GSO tunneling.")
+Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+---
+ include/linux/virtio_net.h | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+index 48de4a16a96a..0fe69876d839 100644
+--- a/include/linux/virtio_net.h
++++ b/include/linux/virtio_net.h
+@@ -223,6 +223,21 @@ static inline void virtio_net_set_hdrlen(const struct sk_buff *skb,
+ 	hdr->hdr_len = __cpu_to_virtio16(little_endian, hdr_len);
+ }
+ 
++static inline void virtio_net_set_tnl_hdrlen(const struct sk_buff *skb,
++					     struct virtio_net_hdr *hdr)
++{
++	u16 hdr_len;
++
++	hdr_len = skb_inner_transport_offset(skb);
++
++	if (hdr->gso_type == VIRTIO_NET_HDR_GSO_UDP_L4)
++		hdr_len += sizeof(struct udphdr);
++	else
++		hdr_len += inner_tcp_hdrlen(skb);
++
++	hdr->hdr_len = cpu_to_le16(hdr_len);
++}
++
+ static inline int virtio_net_hdr_from_skb(const struct sk_buff *skb,
+ 					  struct virtio_net_hdr *hdr,
+ 					  bool little_endian,
+@@ -439,6 +454,9 @@ virtio_net_hdr_tnl_from_skb(const struct sk_buff *skb,
+ 	if (ret)
+ 		return ret;
+ 
++	if (feature_hdrlen && hdr->hdr_len)
++		virtio_net_set_tnl_hdrlen(skb, hdr);
++
+ 	if (skb->protocol == htons(ETH_P_IPV6))
+ 		hdr->gso_type |= VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV6;
+ 	else
+-- 
+2.32.0.3.g01195cf9f
+
