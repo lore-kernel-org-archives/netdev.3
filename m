@@ -1,82 +1,54 @@
-Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2D434D390
-	for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 02:44:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08AB5131E49;
+	Wed, 11 Mar 2026 02:45:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773197093; cv=none; b=gAUJlXTKURYWtjYcK2YTWu+3TQbOfaEEk2NSGhjo8Ey398vkU7ekyQFFU+yeiqtgPJsnn/Cv4U70OG3OjMair1MZUQSv2Cd29r7hlokJUOXt7olXiJNKzdY3WuUoYPpxnCY2mC+/q5BOYgXUyTv6RTZOqqcaFjf4axxqirZS1MI=
+	t=1773197152; cv=none; b=uKGjCu0f+4eOVyLA6Jm9mqNAQ3Hl4eo9IxJsY4debmb5/uBrjO5dBlBr5mmg+zIlqQMzNP8f/ISHfLKPGz+OF9UYhcIBDklJD3f1ZAzAwoKkz1YxQjEUbtItLNq9bnZF5KHnNQ4qyc36BjfpfU2D/CClwc0d4uxWQZxqkelbWIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773197093; c=relaxed/simple;
-	bh=AzxKAZm/nl7pcn7SMGa+wkaWx2pzjLH+P7jHPWrIvAM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CyBlXmlWSe1gYzEiua40slZaGRg9pt+SpubTI9XTj+ztpLgSniwKPJrpasmuyp4uUGyI480xYClRcDXs8vIj8vBLzM2IpF0at3Kx6wGPzJzf1zM/UMn2qVQtqstGl+Ct0rJNPMTNZMYrGDiVYtSRvtC/Mk2MriMFyTHIVcZ4VrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TzdueDN0; arc=none smtp.client-ip=209.85.210.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1773197152; c=relaxed/simple;
+	bh=tJBY0oKmShmrimbu8kR6Ic6jyXUaR6ocSPOVb/7bF74=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dlRPLykqDvRswyCCdCmILj2VVnLMaWXllMtAYqEjLNWZ4W/bK0U/2MAMuQ9MAlRjfKGl7AFq6VrRJXc6kS2MCsTkveC66Osmsqf/YJsNXfYFL88UdJevbtwKoG9UmGvh41DV/6UovFnOyJzFMPvrWtiL0rIY6BZ1XGisGcvRnLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bcHY7YfN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TzdueDN0"
-Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-7d74c1157a4so2572798a34.1
-        for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 19:44:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773197091; x=1773801891; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0+q0dNvBbupC+6tyHU0OlnBS7KtJOe+yMxAJG2X59mY=;
-        b=TzdueDN0lHuHBy6DsiK+fCmnhKZ2YDwIZPrN9+ZW32Lg71SMn6w2PetwFqbia/gvpY
-         iQdYgzuUTXAlYvLwNf7MxTBo/5zMCOEhCwXeyFYZWEY/QcsPB2Bv5Z2djygKO9JOBXtP
-         7DKAnXSQ0gBfx7207x5fABF3GGKbtL5/hJzy2g48vle3vDWlHAk0RNhM5ZdIcCUeijdS
-         1/uR8PYDxyIbj4muPOtxCCpbD0KIQzE2+bFiqilUI2/SNLubwOwwNwV5cxEZZs4uRgLA
-         V/FPy3LyyjBMUk4518/F8QWC63c6GG01mMJr3E1SCzX4030XhLrEO9TTWAvh89Xdxf4T
-         YNhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773197091; x=1773801891;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0+q0dNvBbupC+6tyHU0OlnBS7KtJOe+yMxAJG2X59mY=;
-        b=PKpNvXt9/5LtxjC7uY8MhLFBxqWXSHFXbGc4GtVQhzEFfFVfTwFkTs9IW6v9PQjiCx
-         ZMVThHsC1ya9FEVi4OZV7QgWl7Pdx9vBSdxqmJWv1e0cQV6abp+948vYxNc+VdSMbH41
-         FRwYKqSz9Jt2XnvERpTFFow3Y9SUlGyRfdgKFrsDwmo2F1etofprYq2NllYEbUxb1ZM7
-         V6qZxiSIJ3vw5GnUdzH6Z4bv/B5M+uI+8JkmkHhZzcUmq8B7Z5+gEn8fXzfMF3fDRUTT
-         iyhj6Di5xwWubmYpOD/LU/Q/cN11sl/26PefdVm7TmE2kV2iwFvmj/p1hnvvGf2RnVbD
-         qlng==
-X-Gm-Message-State: AOJu0YxWxWteBDS98DDsIEfIgeSz5HCMvzw0sZHhKjoxpBfYbh+j4HpF
-	Pxm0v8TESCjJC0CR8WxLnyngl57Tkd7YB3VD/ZmZ6oObd/ZtO/rOMHfMbZ7QP/1CvAA=
-X-Gm-Gg: ATEYQzx6lQ7olJr8sCCxie8n8iLr4VbFUye6KYDNL6R4qwoSnWIRw5comluZipYbTVy
-	G8KnLoe+1LD4m4TqDuWOzH9LqCQOK7T552pOHvXLsArLE9ZRyO9Ef8HIVSlzIM631Gk6xmkLPMW
-	T2h90SF//KrZTISRBBH1grjNHwlgZwPyXvipJGO7Mn/YnoYJdFYUAv+x47SS5QyeZt4mAcTqpbB
-	b2oXShbFFcvlthZU4aIygEL9miAC8mUbZj0ddBAViK4BEAW+TOU9qPsE7Yeldj0u1iRbOmhPbuW
-	q7LkE0a9oHyWAhgpvOuPIbi+0qgCKsiTR75+KQdjDvPKiB20EIPfBJO7toCfK+LKLZXy4SrrsxR
-	gosG6HBYaTOOH+bpN5CK8xUUDIk4NksV59vFY2psApjknM0457dUkS4Jt16jSNCjIEO5mymNtmY
-	2L1X6rSr3oynrcpdwCLp167tmSYMh2Jzdn/wQ376Z3ZP6hOhDtnxlFGPIrHtuRkr+t0zNIZ2WA6
-	5D5URxy0JvU
-X-Received: by 2002:a05:6830:67fe:b0:7d7:3c44:c80 with SMTP id 46e09a7af769-7d76a60ac0fmr822844a34.1.1773197091416;
-        Tue, 10 Mar 2026 19:44:51 -0700 (PDT)
-Received: from ShravyaPC.. (r74-192-25-180.bcstcmta01.clsttx.tl.dh.suddenlink.net. [74.192.25.180])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d76ae398fcsm691944a34.16.2026.03.10.19.44.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Mar 2026 19:44:50 -0700 (PDT)
-From: ShravyaPanchagiri <shravy112@gmail.com>
-To: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Cc: sgoutham@marvell.com,
-	lcherian@marvell.com,
-	gakula@marvell.com,
-	hkelam@marvell.com,
-	sbhatta@marvell.com,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bcHY7YfN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05D43C19423;
+	Wed, 11 Mar 2026 02:45:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773197151;
+	bh=tJBY0oKmShmrimbu8kR6Ic6jyXUaR6ocSPOVb/7bF74=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=bcHY7YfN0xxDYZkDgeIQqDhJxYQKS3t9xkkhjK+gZcdVXRFjaRYMhaU3K1/7IoHLm
+	 c+JPAszQ7UsaEJK1fqct9fywnOofUd1wWopM47nNuBRwTHmFGOhP++dVqMIJRp8P3e
+	 N8u3Rs2PSegu1Pa469mxsRNraYBip86fn2biNOfH4EsNn4bhE3q6y5zM3guiQ/3jUH
+	 iLEGYN87rbWCQp3A4pmK7eOFe9qVnSHNKYtu3lrNzt5t70ghSCsmrSbJkcORtfkY+3
+	 RsbJjvseKn1Dbp0BJ4TfzeadsYFYxFmeHMBSpVUCJhLuYfeShOtbbR6PWk3vCgT5qd
+	 zUW9gWKcGrG7w==
+From: Jakub Kicinski <kuba@kernel.org>
+To: matttbe@kernel.org
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	martineau@kernel.org,
 	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
+	netdev@vger.kernel.org,
 	pabeni@redhat.com,
+	fw@strlen.de,
 	horms@kernel.org,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	ShravyaPanchagiri <shravy112@gmail.com>
-Subject: [PATCH] docs: octeontx2: fix typo in documentation Fix spelling mistake "Crate" to "Create" in the documentation.
-Date: Tue, 10 Mar 2026 21:43:11 -0500
-Message-ID: <20260311024312.6760-1-shravy112@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	edumazet@google.com,
+	linux-kernel@vger.kernel.org,
+	mptcp@lists.linux.dev,
+	geliang@kernel.org,
+	mhiramat@kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	rostedt@goodmis.org,
+	mathieu.desnoyers@efficios.com
+Subject: Re: [net-next,1/2] mptcp: better mptcp-level RTT estimator
+Date: Tue, 10 Mar 2026 19:45:47 -0700
+Message-ID: <20260311024547.361027-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260309-net-next-mptcp-reduce-rbuf-v1-1-8f471206f9c5@kernel.org>
+References: <20260309-net-next-mptcp-reduce-rbuf-v1-1-8f471206f9c5@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -85,24 +57,137 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Signed-off-by: ShravyaPanchagiri <shravy112@gmail.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+
+For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
 ---
- .../networking/device_drivers/ethernet/marvell/octeontx2.rst    | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+mptcp: better mptcp-level RTT estimator
 
-diff --git a/Documentation/networking/device_drivers/ethernet/marvell/octeontx2.rst b/Documentation/networking/device_drivers/ethernet/marvell/octeontx2.rst
-index a52850602cd8..c31c6c197cdb 100644
---- a/Documentation/networking/device_drivers/ethernet/marvell/octeontx2.rst
-+++ b/Documentation/networking/device_drivers/ethernet/marvell/octeontx2.rst
-@@ -323,7 +323,7 @@ Setup HTB offload
- 
-         # ethtool -K <interface> hw-tc-offload on
- 
--2. Crate htb root::
-+2. Create htb root::
- 
-         # tc qdisc add dev <interface> clsact
-         # tc qdisc replace dev <interface> root handle 1: htb offload
+The current MPTCP-level RTT estimator has several issues. On high speed
+links, the MPTCP-level receive buffer auto-tuning happens with a
+frequency well above the TCP-level's one. That in turn can cause
+excessive/unneeded receive buffer increase.
+
+On such links, the initial rtt_us value is considerably higher than the
+actual delay, and the current mptcp_rcv_space_adjust() updates
+msk->rcvq_space.rtt_us with a period equal to the such field previous
+value. If the initial rtt_us is 40ms, its first update will happen after
+40ms, even if the subflows see actual RTT orders of magnitude lower.
+
+Additionally:
+- setting the msk RTT to the maximum among all the subflows RTTs makes
+  DRS constantly overshooting the rcvbuf size when a subflow has
+  considerable higher latency than the other(s).
+
+- during unidirectional bulk transfers with multiple active subflows,
+  the TCP-level RTT estimator occasionally sees considerably higher
+  value than the real link delay, i.e. when the packet scheduler reacts
+  to an incoming ACK on given subflow pushing data on a different
+  subflow.
+
+- currently inactive but still open subflows (i.e. switched to backup
+  mode) are always considered when computing the msk-level RTT.
+
+Address the all the issues above with a more accurate RTT estimation
+strategy: the MPTCP-level RTT is set to the minimum of all the subflows
+actually feeding data into the MPTCP receive buffer, using a small
+sliding window.
+
+> While at it, also use EWMA to compute the msk-level scaling_ratio, to
+> that MPTCP can avoid traversing the subflow list is
+> mptcp_rcv_space_adjust().
+
+This isn't a bug, but there are two typos here that make the sentence
+hard to parse. Should this be 'so that MPTCP can avoid traversing the
+subflow list in mptcp_rcv_space_adjust()'?
+
+Use some care to avoid updating msk and ssk level fields too often.
+
+Fixes: a6b118febbab ("mptcp: add receive buffer auto-tuning")
+
+[ ... ]
+
+> diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+> index 0bd1ee860316..6ec65c0ae655 100644
+> --- a/net/mptcp/protocol.h
+> +++ b/net/mptcp/protocol.h
+
+[ ... ]
+
+> @@ -422,6 +435,27 @@ static inline struct mptcp_data_frag *mptcp_send_head(const struct sock *sk)
+>  	return msk->first_pending;
+>  }
+>
+> +static inline void mptcp_init_rtt_est(struct mptcp_sock *msk)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i < MPTCP_RTT_SAMPLES; ++i)
+> +		msk->rcv_rtt_est.samples[i] = U32_MAX;
+> +	msk->rcv_rtt_est.next_sample = 0;
+> +	msk->scaling_ratio = TCP_DEFAULT_SCALING_RATIO;
+> +}
+> +
+> +static inline u32 mptcp_rtt_us_est(const struct mptcp_sock *msk)
+> +{
+> +	u32 rtt_us = msk->rcv_rtt_est.samples[0];
+                         ^^^^
+
+Is samples[0] missing a READ_ONCE()?
+
+The function comment says 'Lockless access of collected samples' and the
+writer mptcp_rcv_rtt_update() uses WRITE_ONCE() for all sample indices
+(including index 0) with a comment 'Pairs with READ_ONCE() in
+mptcp_rtt_us_est()':
+
+net/mptcp/protocol.c:mptcp_rcv_rtt_update() {
+	...
+	/* Pairs with READ_ONCE() in mptcp_rtt_us_est(). */
+	id = msk->rcv_rtt_est.next_sample;
+	WRITE_ONCE(msk->rcv_rtt_est.samples[id], rtt_us);
+	...
+}
+
+However, samples[0] is read with a plain load while samples[1..4] correctly
+use READ_ONCE():
+
+> +	int i;
+> +
+> +	/* Lockless access of collected samples. */
+> +	for (i = 1; i < MPTCP_RTT_SAMPLES; ++i)
+> +		rtt_us = min(rtt_us, READ_ONCE(msk->rcv_rtt_est.samples[i]));
+> +	return rtt_us;
+> +}
+
+The writer runs under mptcp_data_lock (spin_lock_bh) while the reader runs
+under the socket lock (msk_owned_by_me) -- these are different locks, so
+WRITE_ONCE/READ_ONCE pairing is required. KCSAN would flag this as a data
+race.
+
+> +
+>  static inline struct mptcp_data_frag *mptcp_send_next(struct sock *sk)
+>  {
+>  	struct mptcp_sock *msk = mptcp_sk(sk);
+
+[ ... ]
+
+> @@ -523,6 +557,8 @@ struct mptcp_subflow_context {
+>  	u32	map_data_len;
+>  	__wsum	map_data_csum;
+>  	u32	map_csum_len;
+> +	u32	prev_rtt_us;
+                    ^^^^
+
+Is this field used anywhere?
+
+The field 'prev_rtt_us' is added to struct mptcp_subflow_context but doesn't
+appear to be referenced anywhere in the codebase. Only 'prev_rtt_seq' is used
+in mptcp_rcv_rtt_update().
+
+> +	u32	prev_rtt_seq;
+>  	u32	request_mptcp : 1,  /* send MP_CAPABLE */
+>  		request_join : 1,   /* send MP_JOIN */
+>  		request_bkup : 1,
 -- 
-2.43.0
-
+pw-bot: cr
