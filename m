@@ -1,127 +1,119 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2057C3C345D;
-	Wed, 11 Mar 2026 10:02:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF763B637F;
+	Wed, 11 Mar 2026 10:05:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773223367; cv=none; b=S/OQ25MowwFNX4DrAp4bk1xCOm1eNLBkpWgEAMaQ5S2SOmsXDihxZmszyRMsVthG4WQ+sAULUtovxYGMaFlXU+lcyWfUTd/e5jNSyFS/2M2Jp7kCMg6Zg5/+YNea7EkLWJL2IhOS1akaloMiwnKvKy6LvoQ6AL5WoutbFAK3psk=
+	t=1773223523; cv=none; b=I+E05FCJmBcZbYJkJMs0O8rpEu2Oxu+FivjoQkZtGyufs06wkO1CLqkTLoDewku7d6hI0DbyUtUOjveoLWm/EWN+OVDEhoebljDlVmI2eSTqH84c9WKPcD6JUF0yxIQ3Rji5LbvyMk7ujplwCCOeR+Uql1Iu6EvoMUbFQIwALdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773223367; c=relaxed/simple;
-	bh=4PclmZAtnhelpk3sk6vMtb1x3hYbhe6F3O2W0njUaBs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TDxrHHZDGjGoX5sTwyIzNoohusGECfd4IrwMbGNnikeR280NJpmEAPBu20C4Zlh4dNmsaD+LQrs74K0Y5R6PDIfxqN7nPUeMDBoiD+Sf69sHprbV2+tI3HTqId4hV2WJjuBXO+MJPksEpTKvEumb0XE3qlO5HcE2EWWsJdMUzxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=iLNGMAdC; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1773223523; c=relaxed/simple;
+	bh=eqU/5BnJKOJlR1FdtcUXeRxD+EUuZKPFDPPHRgJzyvc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YPn7Awr/JhAT9M+OLxNupVVshB3Ql+kpN6eUKH0OsFMWUtVoPJ5gzDe8z2Flf6W9RIIK4oQz1Q0QzWhwd28jlKQUkTDyqIB1Y82EEqzZgp533q25Wpca+xkMPEaz0HMk3Cd+qBf5T2afxP3DVEe+0a3ver9jtxXjx6sr0KS6yQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ClFaG+B8; arc=none smtp.client-ip=95.215.58.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="iLNGMAdC"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 58917C41585;
-	Wed, 11 Mar 2026 10:03:03 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 00A7960004;
-	Wed, 11 Mar 2026 10:02:42 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9CC8610369CB1;
-	Wed, 11 Mar 2026 11:02:36 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1773223361; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=oFf5eXi8gUeRnoKjyNYI3Rchn6mvdThTlPK5FSibK9U=;
-	b=iLNGMAdCnbbSqAnYsM84Qd/iAfFI3GUkN6qGhMqjGng8YqUCdBcfrKW14Gu1NK2wovEliY
-	whh9motVkSTDIm7QnLHr9gWLCBZeYA5vh0rg9RlaTQl3kG8xyoXMujnqXbVPfmZLCEBd5C
-	XyBkpJSzpfHokTXUI2anpPs4D/0qEvJFAny/c5FoyGbYqh3NJr1miup+Z2lM5EFh1OMRDx
-	9FzwGBWH5LuV3ceOlTfvwYejvGJE1b2ZHWumqpJmBHzrrWj7ULFIzxaqKRerBm8nktTsRO
-	3knrqKTEGl6Bt9Fa1YF8p0Kz10Zh+uMRBdHMTD//ewdwSFgXJR+iQYYDt0Mslw==
-Message-ID: <dde60639-af13-4653-9a34-38c4bd98b149@bootlin.com>
-Date: Wed, 11 Mar 2026 11:02:35 +0100
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ClFaG+B8"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773223519;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=TJPijmcfrfEJXCi7cp3stmP+ZVQVwHsicfzn56uoQd8=;
+	b=ClFaG+B8mpPo/ijxxq2hh3niOfNzIUCOUhghsWGCMguuau412dcXGzRdG1cen4mxdgaloj
+	47DmfHQIyk7GXkrHc11CK5+BecE9389o5kHRLh5W/qBGY7b4b+Hrqid4zSg3ggQrK7NHao
+	tdVhOe1m6wZ0hzC5vwn+r1kyGwdFSOs=
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: linux-rdma@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Jianzhou Zhao <luckd0g@163.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Edward Srouji <edwards@nvidia.com>,
+	Or Har-Toov <ohartoov@nvidia.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Maher Sanalla <msanalla@nvidia.com>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Kees Cook <kees@kernel.org>,
+	Jang Ingyu <ingyujang25@korea.ac.kr>,
+	Moni Shoua <monis@mellanox.com>,
+	Doug Ledford <dledford@redhat.com>,
+	Christian Benvenuti <benve@cisco.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Yuval Shaia <yuval.shaia@oracle.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v1] IB/core: Fix use-after-free of ipvlan phy_dev in ib_get_eth_speed
+Date: Wed, 11 Mar 2026 18:03:08 +0800
+Message-ID: <20260311100313.284589-1-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v6 1/9] net: dsa: microchip: Add support for
- KSZ8463 global irq
-To: Vladimir Oltean <olteanv@gmail.com>
-Cc: Woojung.Huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, richardcochran@gmail.com, horms@kernel.org,
- pascal.eberhard@se.com, miquel.raynal@bootlin.com,
- thomas.petazzoni@bootlin.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, maxime.chevallier@bootlin.com,
- Tristram.Ha@microchip.com
-References: <20260304-ksz8463-ptp-v6-0-3f4c47954c71@bootlin.com>
- <20260304-ksz8463-ptp-v6-1-3f4c47954c71@bootlin.com>
- <20260305095656.vlyaztv6nbdqrmil@skbuf>
- <98944cef-0877-4fb9-83a0-92bbd3852f66@bootlin.com>
- <20260305125149.ejju5ptrkviqi3sm@skbuf>
- <a3a915af-5190-4582-a3e6-4ebf92a7e35d@bootlin.com>
- <DM3PR11MB87364DB5439A20F44AEB690DEC7AA@DM3PR11MB8736.namprd11.prod.outlook.com>
- <0658868d-671c-46a2-8daa-26420cdd2975@bootlin.com>
- <20260309205401.bk5fpw6kqnmlktbu@skbuf>
-From: Bastien Curutchet <bastien.curutchet@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20260309205401.bk5fpw6kqnmlktbu@skbuf>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On 3/9/26 9:54 PM, Vladimir Oltean wrote:
-> On Mon, Mar 09, 2026 at 01:54:28PM +0100, Bastien Curutchet wrote:
->> I have a new iteration ready. It uses only the high byte of the interrupt
->> registers for the KSZ8463, which keeps unchanged the current 8-bit accesses
->> logic.
->>
->> Shall I send it ? Or would you like more time to think/discuss about whether
->> we should split ksz_common into several drivers ?
-> 
-> "Send it", you mean on Thursday after the weekly 'net' -> 'net-next'
-> merge so it doesn't conflict with your "net: dsa: microchip: Fix error
-> path in PTP IRQ setup" change, right?
-> 
-> I don't know. I have to say that I may be partly responsible for guiding
-> Arun Ramadoss a few years ago towards unifying all ksz_switch drivers
-> under a single dsa_switch_ops, and that doesn't seem to have been a
-> great move, given their amount of differences.
-> 
-> Prior to Arun Ramadoss' refactoring such that lan937x could come in and
-> make use of ksz9477 code, we had two distinct core drivers: ksz8795.c
-> and ksz9477.c.  Having checked out an old kernel before his changes,
-> I'm not sure why I was so blinded by all the false code sharing hidden
-> behind dev_ops that was already there.  If you factor out the MIB worker
-> thread and other inconsequential small driver things like that, they're
-> perfectly separate hardware architectures which could use perfectly
-> isolated drivers with only minimal duplication, and we possibly wouldn't
-> even need the 8/16/32 regmap tables.
-> 
-> "Resources global in one family and per-port in another" is a recurring
-> theme, and the inability to have clearly distinct code paths that handle
-> these clearly distinct hardware architectures is a problem. I'm not sure
-> of the extent to which I was aware of it when making those suggestions
-> to Arun. I can recall this thread that indicates a still unsolved, to
-> this day, problem which was caused by the desire to have a unified driver:
-> https://patchwork.kernel.org/project/netdevbpf/patch/20230316161250.3286055-3-vladimir.oltean@nxp.com/
-> > I don't have a good plan, but the current state of affairs is not your
-> fault, and I don't want it to stop you from making progress with the
-> KSZ8463 PTP support. Maybe we can continue discussing a clean line for a
-> KSZ8 (and maybe even KSZ8463) split where the code duplication would be
-> minimal, with further input from Tristram.
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-I, more or less, managed to fit this PTP support in the current 
-framework, but the next series I prepared to add periodic output support 
-is full of is_ksz8463() branches. So I think that I'll go with what you 
-suggested and try to move the KSZ8463 support in the ksz8995.c driver. 
-It will probably be cleaner this way.
+Jianzhou Zhao reported a NULL pointer dereference in
+__ethtool_get_link_ksettings [1]. The root cause is a use-after-free
+of ipvlan->phy_dev.
 
-TBH I'm a bit lost with all these KSZ variants but IIUC KSZ8463 and 
-KSZ8995 both belong to the 'old generation' of the hardware. Maybe a 
-good split would be to have these old switches in the ksz8995.c driver 
-and keep the rest under ksz_common infra.
+In ib_get_eth_speed(), ib_device_get_netdev() obtains a reference to the
+ipvlan device outside of rtnl_lock(). This creates a race window: between
+ib_device_get_netdev() and rtnl_lock(), the underlying phy_dev (e.g. a
+dummy device) can be unregistered and freed by another thread. When the
+ethtool call later recurses through ipvlan_ethtool_get_link_ksettings()
+into the freed phy_dev, it dereferences freed memory whose ethtool_ops
+reads as NULL, causing the crash at offset 0x1f8.
 
+Fix this by moving ib_device_get_netdev() inside the rtnl_lock() section
+so that netdev lookup and the ethtool call are atomic with respect to
+device unregistration. Under RTNL, if the phy_dev has been deleted, the
+ipvlan device is also unregistered and ib_device_get_netdev() returns NULL
+safely.
 
-Best regards,
-BAstein
+None of the existing callers of ib_get_eth_speed() hold rtnl_lock, so this
+change does not introduce any deadlock.
 
+[1] https://lore.kernel.org/netdev/94089b74-def5-4dd0-9143-1cfbc722fe73@linux.dev/T/#t
+
+Fixes: d41861942fc5 ("IB/core: Add generic function to extract IB speed from netdev")
+Reported-by: Jianzhou Zhao <luckd0g@163.com>
+Closes: https://lore.kernel.org/netdev/94089b74-def5-4dd0-9143-1cfbc722fe73@linux.dev/T/#t
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+---
+ drivers/infiniband/core/verbs.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/infiniband/core/verbs.c b/drivers/infiniband/core/verbs.c
+index 575b4a4b200b..f16d11e7c2e3 100644
+--- a/drivers/infiniband/core/verbs.c
++++ b/drivers/infiniband/core/verbs.c
+@@ -2046,11 +2046,13 @@ int ib_get_eth_speed(struct ib_device *dev, u32 port_num, u16 *speed, u8 *width)
+ 	if (rdma_port_get_link_layer(dev, port_num) != IB_LINK_LAYER_ETHERNET)
+ 		return -EINVAL;
+ 
++	rtnl_lock();
+ 	netdev = ib_device_get_netdev(dev, port_num);
+-	if (!netdev)
++	if (!netdev) {
++		rtnl_unlock();
+ 		return -ENODEV;
++	}
+ 
+-	rtnl_lock();
+ 	rc = __ethtool_get_link_ksettings(netdev, &lksettings);
+ 	rtnl_unlock();
+ 
+-- 
+2.43.0
 
