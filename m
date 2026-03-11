@@ -1,163 +1,287 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65802D97BD;
-	Wed, 11 Mar 2026 23:47:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4783859EF
+	for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 23:59:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773272851; cv=none; b=dQ8tINZW287KSL8pSz7G1EhMfukg26ekIEAmTIlmdmix7NL3HxUs3XQtr9X1OWFLTLFDqZ1aMnHPj4t5ImnCPUe01EYGppqfou65NRNzLCDPlRP9yEueuuZkBgcvBhxuXVjsQhzzmu7triHwqViNIOjhBy5WPv/qM5V77QwKGjo=
+	t=1773273565; cv=none; b=MBzaJ3snRFr/IwnKEK6MRJrXxjCPoREJQ0lfEqH0pQhApNVD51pkORDkoc3Ep1ADczeDTDsvFvDCvwzzT4jFc4vpMlEYOljKrtTYMQLu71Osbwz+6tObQ7NCdQYXNWzZMTAjhHigar4J5Ir7EgWTIIHVlHlHAdEGnD4hQJCyHxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773272851; c=relaxed/simple;
-	bh=Jhpy5D2bTxyinfl4qRyNwxq72723up6pfEhbxjm5HFQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=flAL/LR/gWPj5PHz+Do+vTCl11v3/enMTBbdMvKui+X3pcvgM/xc1bLkapN0L5MQHcRksyix2ZhhJm+jjhjCCqHgaNNLbZtvB+yuF/NzDUDF8aDzvpOQj9D0pp4vYcX0fsJWYNyN6sNBpbWoarr2+Cn9HkwXDVjN6r0hyyFk5/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PVY/XB9z; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1773273565; c=relaxed/simple;
+	bh=z7O5uDrHFBa2yYFygk5BeTauqO9/Q4LLBn8f97UuQKw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mZZ4IEpqlRFL4S54MZnW2XVNztLSazSug2cGpQU4dYrifpHdNylThNQuSZIM/Pvtln0I4AyeTnClAWrgy04XD02MF7s3sXg+gBquOuY52A1oTWrkSu60OlqLzgZYRk3d1LC+dFcbTTwwByZll185JERFpiRghjumhqTDbxgKWBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hyAVifUR; arc=none smtp.client-ip=209.85.128.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PVY/XB9z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773272849; x=1804808849;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Jhpy5D2bTxyinfl4qRyNwxq72723up6pfEhbxjm5HFQ=;
-  b=PVY/XB9zplse0FZTd9t5C96i2D9hVcsdW7+on6pCdQ/rku7pZVZ7y989
-   yix2huzuTTQt4ByHMhujcRALi1FdRxlxP3EJ5UMhWKUKOf+Ppmbuyot4C
-   SQPlBN0Lm2iCog6SwYOYzmRYMfxWuyE8W+ikKX5q0Xf+yF97ECbteDkAY
-   KWjJ0dwkpz3BjSQeSeUpT56tk0X0Orj2HVER8Tpp7t2CVbIhn/yA2ltFj
-   AiSL1Dhb/T0Fv6Sk/PnOcBCQ+FLlxUy6D5KsX/SbYTVZUMr+Y03U41mOv
-   +KsMASAvuiHHDZGQ3kZZ6Kws20pe6k8Tp/9tWAbuTbdQ2jXndHD+djPD0
-   w==;
-X-CSE-ConnectionGUID: QbJFl+ltRk+1NkS3mjbO+g==
-X-CSE-MsgGUID: Z9W3fzfURbeJHgmhUUv0vA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="85443165"
-X-IronPort-AV: E=Sophos;i="6.23,115,1770624000"; 
-   d="scan'208";a="85443165"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 16:47:28 -0700
-X-CSE-ConnectionGUID: x4ZvwuHXTDenfvcfOP3dOA==
-X-CSE-MsgGUID: 3o6dEiGESXSIJ/yMcgjy0Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,115,1770624000"; 
-   d="scan'208";a="225606125"
-Received: from lkp-server01.sh.intel.com (HELO 418530b1a366) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 11 Mar 2026 16:47:26 -0700
-Received: from kbuild by 418530b1a366 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w0TGt-000000001qF-23U9;
-	Wed, 11 Mar 2026 23:47:23 +0000
-Date: Thu, 12 Mar 2026 07:46:48 +0800
-From: kernel test robot <lkp@intel.com>
-To: Carl Lee via B4 Relay <devnull+carl.lee.amd.com@kernel.org>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	krzk@kernel.org, carl.lee@amd.com, peter.shen@amd.com,
-	colin.huang2@amd.com
-Cc: oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] nfc: nxp-nci: i2c: restore IRQ trigger fallback
-Message-ID: <202603120758.LA4Bjngo-lkp@intel.com>
-References: <20260311-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v1-1-9e20714411d7@amd.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hyAVifUR"
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-798736fa734so8207b3.2
+        for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 16:59:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773273563; x=1773878363; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=I5vMzoAzlJoxa++WHdvyaDDYcqjmQvIi2gFcyOQrLKQ=;
+        b=hyAVifURSftj3087rkFWT+RFbX7SlYs8AqLT2m1usgu8YVhowBusbpwKH81dZFA1qQ
+         x3U9wizK3vePTy/bFEStTIk5DG1LAVX91+9klgorp435MK4DRPRP4pMTJLJp1HGszK63
+         J/heAEoV2QNNzEZ7FYns4DYA8C2fpEIoKDUNVzHWLscswDTJK6HEZbt3IymMtOrnK85I
+         x59dfFY4diFTA50y6do8IJfMQk0iH8XBMgc0HaHEEnPIGmMD6+paO3naQVer2J8Gd/xq
+         4fPS8MseWlKvrpNQzYWUslin/AW2Dpabeeg/WdI+KnWeHAzCkoArnZZKM7t6oq1dpHKV
+         46JA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773273563; x=1773878363;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=I5vMzoAzlJoxa++WHdvyaDDYcqjmQvIi2gFcyOQrLKQ=;
+        b=ciDW0HJjfEpdVjWuXx1BgLOkfQQNhPrRByocHlO7PWZai+RK4fEKKyVtY1i3ZTbXhu
+         qrJSFHSH4rx+ktT2gV8A2rDmBMdqAVqPQYa3gSySZPTFKHzSPi0a6arHXtQaL7Z2rH9B
+         /7oaKZ8J/xcQ/4jxy1V+hWPejHb3JgSu02c1AMHpjcT0ChExLteeDhenfc6ae3IJahNZ
+         rVRxF3OXahzJh31fU4XPjWxhD/NfylMy/wry9kDe6agEVP31PCAi/B5RohWyhd5jAmqk
+         qJofOg+vujNHDVV688f6Dw38rufCUCJfI2naGMxLl5ChUyT1E0gzKzjq/nXML3sNOqZ/
+         8D3w==
+X-Gm-Message-State: AOJu0YzqcI3OVaISNIIf71Kkwx+t65r6nZhZbqnb3dlUhc8p6YgkwWBr
+	nFtS4wxW8ASatf2lgn60qDDW+y1xjywnYGlbTRWGHC7upP1/kFu2kEj9jS2AB8Qu
+X-Gm-Gg: ATEYQzy0BkHcnzvLgrVUD8J7DtN9U+Zcv6oKln7nHfl3kFpVveXqHDXWBwtTxmmebd7
+	OdMIQcpQGAT+UYYAN411woxzw2q/EcF+bm7HJZsULe20fjTPp+bx27ojqoXCHyx3vwBbo8JQoeI
+	J01qv5zUgxw5glLqvWANEg4TRbBPoVoCTECGSiQtpQ0XgP2BB9ys/H4o453NDJPt+uUOLN2oPJz
+	h6SAmgCKGYPdtRRsJswUhJUwBjOpKHs7VNPNs/qL1Guwz5huzShii4REfN8zV475BU4qFtix+5g
+	dKyVXCQTf2DmLLw8u7jluZ+VA77PKQYOZ6fmkhFGI773IM/wO9omdohqAu/JVbttpuByaEe6G2w
+	Vlh1c96RHaA90vCpaRJJYZ5Wl99VusG+RMH+qsG2dqYQVKPTBAI5RWOmbW7QIo79qQXdgZsASPP
+	+C4ho7/DyQRIvc0HhvjuAgfHA=
+X-Received: by 2002:a05:690c:386:b0:798:78ea:f0ae with SMTP id 00721157ae682-79917d627d0mr33725277b3.0.1773273563175;
+        Wed, 11 Mar 2026 16:59:23 -0700 (PDT)
+Received: from localhost ([2a03:2880:21ff:c::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-79917df1a88sm21856557b3.11.2026.03.11.16.59.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Mar 2026 16:59:22 -0700 (PDT)
+From: Wei Wang <weibunny.kernel@gmail.com>
+To: netdev@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Daniel Zahka <daniel.zahka@gmail.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	David Wei <dw@davidwei.uk>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>
+Cc: Wei Wang <weibunny@fb.com>
+Subject: [PATCH v4 net-next 1/5] psp: add admin/non-admin version of psp_device_get_locked
+Date: Wed, 11 Mar 2026 16:58:59 -0700
+Message-ID: <20260311235904.2392010-2-weibunny.kernel@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260311235904.2392010-1-weibunny.kernel@gmail.com>
+References: <20260311235904.2392010-1-weibunny.kernel@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260311-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v1-1-9e20714411d7@amd.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Carl,
+From: Wei Wang <weibunny@fb.com>
 
-kernel test robot noticed the following build errors:
+Introduce 2 versions of psp_device_get_locked:
+1. psp_device_get_locked_admin(): This version is used for operations
+   that would change the status of the psd, and are currently used for
+   dev-set nad key-rotation.
+2. psp_device_get_locked(): This is the non-admin version, which are
+   used for broader user issued operations including: dev-get, rx-assoc,
+   tx-assoc, get-stats.
 
-[auto build test ERROR on 7109a2155340cc7b21f27e832ece6df03592f2e8]
+Following commit will be implementing both of the checks.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Carl-Lee-via-B4-Relay/nfc-nxp-nci-i2c-restore-IRQ-trigger-fallback/20260311-174025
-base:   7109a2155340cc7b21f27e832ece6df03592f2e8
-patch link:    https://lore.kernel.org/r/20260311-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v1-1-9e20714411d7%40amd.com
-patch subject: [PATCH] nfc: nxp-nci: i2c: restore IRQ trigger fallback
-config: i386-buildonly-randconfig-001-20260312 (https://download.01.org/0day-ci/archive/20260312/202603120758.LA4Bjngo-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.4.0-5) 12.4.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260312/202603120758.LA4Bjngo-lkp@intel.com/reproduce)
+Signed-off-by: Wei Wang <weibunny@fb.com>
+---
+ Documentation/netlink/specs/psp.yaml |  4 ++--
+ net/psp/psp-nl-gen.c                 |  4 ++--
+ net/psp/psp-nl-gen.h                 |  2 ++
+ net/psp/psp.h                        |  2 +-
+ net/psp/psp_main.c                   |  7 ++++++-
+ net/psp/psp_nl.c                     | 28 +++++++++++++++++++++-------
+ 6 files changed, 34 insertions(+), 13 deletions(-)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603120758.LA4Bjngo-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/nfc/nxp-nci/i2c.c: In function 'nxp_nci_i2c_probe':
->> drivers/nfc/nxp-nci/i2c.c:311:20: error: implicit declaration of function 'irq_get_trigger_type' [-Werror=implicit-function-declaration]
-     311 |         irqflags = irq_get_trigger_type(client->irq);
-         |                    ^~~~~~~~~~~~~~~~~~~~
-   cc1: some warnings being treated as errors
-
-
-vim +/irq_get_trigger_type +311 drivers/nfc/nxp-nci/i2c.c
-
-   265	
-   266	static int nxp_nci_i2c_probe(struct i2c_client *client)
-   267	{
-   268		struct device *dev = &client->dev;
-   269		struct nxp_nci_i2c_phy *phy;
-   270		int r;
-   271		unsigned long irqflags;
-   272	
-   273		if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
-   274			nfc_err(&client->dev, "Need I2C_FUNC_I2C\n");
-   275			return -ENODEV;
-   276		}
-   277	
-   278		phy = devm_kzalloc(&client->dev, sizeof(struct nxp_nci_i2c_phy),
-   279				   GFP_KERNEL);
-   280		if (!phy)
-   281			return -ENOMEM;
-   282	
-   283		phy->i2c_dev = client;
-   284		i2c_set_clientdata(client, phy);
-   285	
-   286		r = devm_acpi_dev_add_driver_gpios(dev, acpi_nxp_nci_gpios);
-   287		if (r)
-   288			dev_dbg(dev, "Unable to add GPIO mapping table\n");
-   289	
-   290		phy->gpiod_en = devm_gpiod_get(dev, "enable", GPIOD_OUT_LOW);
-   291		if (IS_ERR(phy->gpiod_en)) {
-   292			nfc_err(dev, "Failed to get EN gpio\n");
-   293			return PTR_ERR(phy->gpiod_en);
-   294		}
-   295	
-   296		phy->gpiod_fw = devm_gpiod_get_optional(dev, "firmware", GPIOD_OUT_LOW);
-   297		if (IS_ERR(phy->gpiod_fw)) {
-   298			nfc_err(dev, "Failed to get FW gpio\n");
-   299			return PTR_ERR(phy->gpiod_fw);
-   300		}
-   301	
-   302		r = nxp_nci_probe(phy, &client->dev, &i2c_phy_ops,
-   303				  NXP_NCI_I2C_MAX_PAYLOAD, &phy->ndev);
-   304		if (r < 0)
-   305			return r;
-   306	
-   307		/* Prefer the trigger type configured by firmware.
-   308		 * Some platforms do not provide it, so fall back to the
-   309		 * historically used rising-edge trigger.
-   310		 */
- > 311		irqflags = irq_get_trigger_type(client->irq);
-   312		if (!irqflags)
-   313			irqflags = IRQF_TRIGGER_RISING;
-   314	
-   315		r = request_threaded_irq(client->irq, NULL,
-   316					 nxp_nci_i2c_irq_thread_fn,
-   317					 irqflags | IRQF_ONESHOT,
-   318					 NXP_NCI_I2C_DRIVER_NAME, phy);
-   319		if (r < 0)
-   320			nfc_err(&client->dev, "Unable to register IRQ handler\n");
-   321	
-   322		return r;
-   323	}
-   324	
-
+diff --git a/Documentation/netlink/specs/psp.yaml b/Documentation/netlink/specs/psp.yaml
+index f3a57782d2cf..fe2cdc966604 100644
+--- a/Documentation/netlink/specs/psp.yaml
++++ b/Documentation/netlink/specs/psp.yaml
+@@ -195,7 +195,7 @@ operations:
+             - psp-versions-ena
+         reply:
+           attributes: []
+-        pre: psp-device-get-locked
++        pre: psp-device-get-locked-admin
+         post: psp-device-unlock
+     -
+       name: dev-change-ntf
+@@ -214,7 +214,7 @@ operations:
+         reply:
+           attributes:
+             - id
+-        pre: psp-device-get-locked
++        pre: psp-device-get-locked-admin
+         post: psp-device-unlock
+     -
+       name: key-rotate-ntf
+diff --git a/net/psp/psp-nl-gen.c b/net/psp/psp-nl-gen.c
+index 22a48d0fa378..1f5e73e7ccc1 100644
+--- a/net/psp/psp-nl-gen.c
++++ b/net/psp/psp-nl-gen.c
+@@ -71,7 +71,7 @@ static const struct genl_split_ops psp_nl_ops[] = {
+ 	},
+ 	{
+ 		.cmd		= PSP_CMD_DEV_SET,
+-		.pre_doit	= psp_device_get_locked,
++		.pre_doit	= psp_device_get_locked_admin,
+ 		.doit		= psp_nl_dev_set_doit,
+ 		.post_doit	= psp_device_unlock,
+ 		.policy		= psp_dev_set_nl_policy,
+@@ -80,7 +80,7 @@ static const struct genl_split_ops psp_nl_ops[] = {
+ 	},
+ 	{
+ 		.cmd		= PSP_CMD_KEY_ROTATE,
+-		.pre_doit	= psp_device_get_locked,
++		.pre_doit	= psp_device_get_locked_admin,
+ 		.doit		= psp_nl_key_rotate_doit,
+ 		.post_doit	= psp_device_unlock,
+ 		.policy		= psp_key_rotate_nl_policy,
+diff --git a/net/psp/psp-nl-gen.h b/net/psp/psp-nl-gen.h
+index 599c5f1c82f2..977355455395 100644
+--- a/net/psp/psp-nl-gen.h
++++ b/net/psp/psp-nl-gen.h
+@@ -17,6 +17,8 @@ extern const struct nla_policy psp_keys_nl_policy[PSP_A_KEYS_SPI + 1];
+ 
+ int psp_device_get_locked(const struct genl_split_ops *ops,
+ 			  struct sk_buff *skb, struct genl_info *info);
++int psp_device_get_locked_admin(const struct genl_split_ops *ops,
++				struct sk_buff *skb, struct genl_info *info);
+ int psp_assoc_device_get_locked(const struct genl_split_ops *ops,
+ 				struct sk_buff *skb, struct genl_info *info);
+ void
+diff --git a/net/psp/psp.h b/net/psp/psp.h
+index 9f19137593a0..0f9c4e4e52cb 100644
+--- a/net/psp/psp.h
++++ b/net/psp/psp.h
+@@ -14,7 +14,7 @@ extern struct xarray psp_devs;
+ extern struct mutex psp_devs_lock;
+ 
+ void psp_dev_free(struct psp_dev *psd);
+-int psp_dev_check_access(struct psp_dev *psd, struct net *net);
++int psp_dev_check_access(struct psp_dev *psd, struct net *net, bool admin);
+ 
+ void psp_nl_notify_dev(struct psp_dev *psd, u32 cmd);
+ 
+diff --git a/net/psp/psp_main.c b/net/psp/psp_main.c
+index 9508b6c38003..82de78a1d6bd 100644
+--- a/net/psp/psp_main.c
++++ b/net/psp/psp_main.c
+@@ -27,10 +27,15 @@ struct mutex psp_devs_lock;
+  * psp_dev_check_access() - check if user in a given net ns can access PSP dev
+  * @psd:	PSP device structure user is trying to access
+  * @net:	net namespace user is in
++ * @admin:	If true, only allow access from @psd's main device's netns,
++ *		for admin operations like config changes and key rotation.
++ *		If false, also allow access from network namespaces that have
++ *		an associated device with @psd, for read-only and association
++ *		management operations.
+  *
+  * Return: 0 if PSP device should be visible in @net, errno otherwise.
+  */
+-int psp_dev_check_access(struct psp_dev *psd, struct net *net)
++int psp_dev_check_access(struct psp_dev *psd, struct net *net, bool admin)
+ {
+ 	if (dev_net(psd->main_netdev) == net)
+ 		return 0;
+diff --git a/net/psp/psp_nl.c b/net/psp/psp_nl.c
+index 6afd7707ec12..b988f35412df 100644
+--- a/net/psp/psp_nl.c
++++ b/net/psp/psp_nl.c
+@@ -41,7 +41,8 @@ static int psp_nl_reply_send(struct sk_buff *rsp, struct genl_info *info)
+ /* Device stuff */
+ 
+ static struct psp_dev *
+-psp_device_get_and_lock(struct net *net, struct nlattr *dev_id)
++psp_device_get_and_lock(struct net *net, struct nlattr *dev_id,
++			bool admin)
+ {
+ 	struct psp_dev *psd;
+ 	int err;
+@@ -56,7 +57,7 @@ psp_device_get_and_lock(struct net *net, struct nlattr *dev_id)
+ 	mutex_lock(&psd->lock);
+ 	mutex_unlock(&psp_devs_lock);
+ 
+-	err = psp_dev_check_access(psd, net);
++	err = psp_dev_check_access(psd, net, admin);
+ 	if (err) {
+ 		mutex_unlock(&psd->lock);
+ 		return ERR_PTR(err);
+@@ -65,6 +66,18 @@ psp_device_get_and_lock(struct net *net, struct nlattr *dev_id)
+ 	return psd;
+ }
+ 
++int psp_device_get_locked_admin(const struct genl_split_ops *ops,
++				struct sk_buff *skb, struct genl_info *info)
++{
++	if (GENL_REQ_ATTR_CHECK(info, PSP_A_DEV_ID))
++		return -EINVAL;
++
++	info->user_ptr[0] = psp_device_get_and_lock(genl_info_net(info),
++						    info->attrs[PSP_A_DEV_ID],
++						    true);
++	return PTR_ERR_OR_ZERO(info->user_ptr[0]);
++}
++
+ int psp_device_get_locked(const struct genl_split_ops *ops,
+ 			  struct sk_buff *skb, struct genl_info *info)
+ {
+@@ -72,7 +85,8 @@ int psp_device_get_locked(const struct genl_split_ops *ops,
+ 		return -EINVAL;
+ 
+ 	info->user_ptr[0] = psp_device_get_and_lock(genl_info_net(info),
+-						    info->attrs[PSP_A_DEV_ID]);
++						    info->attrs[PSP_A_DEV_ID],
++						    false);
+ 	return PTR_ERR_OR_ZERO(info->user_ptr[0]);
+ }
+ 
+@@ -160,7 +174,7 @@ static int
+ psp_nl_dev_get_dumpit_one(struct sk_buff *rsp, struct netlink_callback *cb,
+ 			  struct psp_dev *psd)
+ {
+-	if (psp_dev_check_access(psd, sock_net(rsp->sk)))
++	if (psp_dev_check_access(psd, sock_net(rsp->sk), false))
+ 		return 0;
+ 
+ 	return psp_nl_dev_fill(psd, rsp, genl_info_dump(cb));
+@@ -305,7 +319,7 @@ int psp_assoc_device_get_locked(const struct genl_split_ops *ops,
+ 
+ 	psd = psp_dev_get_for_sock(socket->sk);
+ 	if (psd) {
+-		err = psp_dev_check_access(psd, genl_info_net(info));
++		err = psp_dev_check_access(psd, genl_info_net(info), false);
+ 		if (err) {
+ 			psp_dev_put(psd);
+ 			psd = NULL;
+@@ -330,7 +344,7 @@ int psp_assoc_device_get_locked(const struct genl_split_ops *ops,
+ 
+ 		psp_dev_put(psd);
+ 	} else {
+-		psd = psp_device_get_and_lock(genl_info_net(info), id);
++		psd = psp_device_get_and_lock(genl_info_net(info), id, false);
+ 		if (IS_ERR(psd)) {
+ 			err = PTR_ERR(psd);
+ 			goto err_sock_put;
+@@ -573,7 +587,7 @@ static int
+ psp_nl_stats_get_dumpit_one(struct sk_buff *rsp, struct netlink_callback *cb,
+ 			    struct psp_dev *psd)
+ {
+-	if (psp_dev_check_access(psd, sock_net(rsp->sk)))
++	if (psp_dev_check_access(psd, sock_net(rsp->sk), false))
+ 		return 0;
+ 
+ 	return psp_nl_stats_fill(psd, rsp, genl_info_dump(cb));
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.52.0
+
