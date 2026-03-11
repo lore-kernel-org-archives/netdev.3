@@ -1,210 +1,676 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazolkn19010004.outbound.protection.outlook.com [52.103.32.4])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C9629D291;
-	Wed, 11 Mar 2026 17:46:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.32.4
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773251173; cv=fail; b=RS+9va5ZjM24o+eYHr3NiHqS2mg3mLxZZQmBdLfarKhyEBRv6+q5v59JHP44zK09lk58OYoIOffEEYmlsNJZreJKfmfRx3Nff7WfqUeDcJuWD1Fz5FGv6Sj3WTVruyhEt/zY0qhANxr0basVHHoqO9tHkH7ICgSwmfqTWCSAhlM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773251173; c=relaxed/simple;
-	bh=U30qFP+QZllEHh1ByuKj85dT4Qf/YA4GWZ+RuIgpS2k=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=rswUByOFYDnIkkqI1Ygk0R0LDPR6fzgNhjTeGYuEfubxYxw+++V/p4PYa7IcOSZzCXZ76zisCpowg4QxdqdMeNPwFAmxG5UlVdyttg/y/x+V2/RULz1XehfH4aVUU4QupyoOouZbAi05gmBLpkev9J6Ac73+oEdE2Z3L9gEpFVw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.fr; spf=pass smtp.mailfrom=live.fr; dkim=pass (2048-bit key) header.d=LIVE.FR header.i=@LIVE.FR header.b=WRIxjpK+; arc=fail smtp.client-ip=52.103.32.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=live.fr
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE48B2FD68B;
+	Wed, 11 Mar 2026 17:46:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773251222; cv=none; b=mnPnvXsnHgS9A5xV6TUDJJxQn8QgnMOUZ0edEEiiPYRWCk6cp/FZX4/769sZUpMjyZ+DurhFbwxAm2bMSDYESU+8krzRhL8VDqIAKespQD4pVa9+2915+ea29bA3sH6U0XFKNpeuASc74u5/tAIDVRGJhJPtJlN3R1kRvIq7KF0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773251222; c=relaxed/simple;
+	bh=h6jbeDA9gXyuSmNcuXaj3JWcgu0pBi+oJOGx496T/Hs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AI2yT2Q1OPfpgGNhDfHe1F7uy6ozlTOSzECkdXb88glg7bJczI7IAdrvGgOn92jKBea/IBYPJv9S+TkqdX7+RQNmnlGPoB2qMBUvvkephwHnrJaCDtF9JNYItBIg4/ZZu+lshVUh5x8xaWpAOdaAnxbIUqDLSmoFc8AVu/QclNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Mngfxk09; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=LIVE.FR header.i=@LIVE.FR header.b="WRIxjpK+"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=N+nSQjLWT+XLcPKF11ZOsqtATu53T6iZLJsBQWlgJ1zLKdwRo16uOH6EWTprPD+UWMoSaCMfit0za+9yD32VzypJ9n4S8a++bw4MBCi6YCwi3UNMl78LbDJyRNy6YInOMyDxInTh/95x53XS7qMBdjBSpBl6uYUP7ff24z81+htcbdGT1C5un4UWt0yX2ZeEgpwYtfcy4bpFkDEN9MdW6pBLM3N/R80phghgnQ7T3HcwHbieF+IN00ROhWYZVm46vyrzozyszjQE9S7iU856fcCHsGQGNBYZlVx4PzgQvC1BUXyE20dXD4FsBK1Tmhh+pl37mV8G/EN/Oq8xTT+7Rg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EkrN6ALiciSxAE7OoHmt68zMvNFbSLKGPJPthMbSYjA=;
- b=lcqIRMTH94RKw1uvBECU6j9igfN1dlmirzUNRRkpVe83JqIOPenm7AGh28XKEZYWloheT/ABCIjo1NCtiCs9dzj4lxp9RLr7i/dvQUi4GhKVANdak62sWrhShGNglviCktZZpdOx3d6DK/tAKjeBRb/TBqbzqzNzJQjmgAd3XJbD1YYeJzi35jCDPmAiATu9O+a/CXVRi05c31sMAKx7pTWBk/nYg0mB5u0dIL1rdGj+C/LYytyANcVtV75m7Td5Ag4zOhAKFsKhWX0AQlPSb76SBg65vuWLqAEfvtEvnTBw/76SSYDn9WYzqjQxMksOqZ/s8xi7UFgqsKXgRXmTPQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=LIVE.FR; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EkrN6ALiciSxAE7OoHmt68zMvNFbSLKGPJPthMbSYjA=;
- b=WRIxjpK+dndyNpZXyvfYEOc8J1weQ/Dvv2VRCZ+tanqtR6agWKJKjF/+4ucd2aSXalhElQigxRYOCXrrENnoDkdYaJPq9C065lhPzStkNfkF1b6cttilkvgd6zEhsdGKj9PI5uiDiQi/TVt+2i4g+GF86oiw6oeAb3wKpuqnn7QN0huYIU+PT/qHbFKCRs35e469P7HRsc4B1eX4mLL8PHw/uLtS2VwEuyyE8SWvqE1vYQNJqOq2fNtat8rLYkGKFBoEU1mLYv0A+s7VkL+wfT5DSbvmfUE8gqNzRk/OIDZ3nq4fNrmSCKbzrdAHkhl8RDHMgYvFhtb/ckiVVNsaog==
-Received: from PAWP192MB2411.EURP192.PROD.OUTLOOK.COM (2603:10a6:102:46e::17)
- by AS8P192MB1725.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:525::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.25; Wed, 11 Mar
- 2026 17:46:09 +0000
-Received: from PAWP192MB2411.EURP192.PROD.OUTLOOK.COM
- ([fe80::9c57:1e4e:325e:d2e7]) by PAWP192MB2411.EURP192.PROD.OUTLOOK.COM
- ([fe80::9c57:1e4e:325e:d2e7%5]) with mapi id 15.20.9654.015; Wed, 11 Mar 2026
- 17:46:09 +0000
-From: Martin Olivier <martin.olivier@live.fr>
-To: netdev@vger.kernel.org,
-	linux-ppp@vger.kernel.org
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org,
-	Martin Olivier <martin.olivier@live.fr>
-Subject: [PATCH] ppp: add IFLA_PPP_UNIT netlink attribute
-Date: Wed, 11 Mar 2026 08:35:26 +0100
-Message-ID:
- <PAWP192MB2411A5E7D3BE1B55E155A92F9747A@PAWP192MB2411.EURP192.PROD.OUTLOOK.COM>
-X-Mailer: git-send-email 2.51.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: PR3P193CA0040.EURP193.PROD.OUTLOOK.COM
- (2603:10a6:102:51::15) To PAWP192MB2411.EURP192.PROD.OUTLOOK.COM
- (2603:10a6:102:46e::17)
-X-Microsoft-Original-Message-ID:
- <20260311073526.45490-1-martin.olivier@live.fr>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Mngfxk09"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=vkA02cIf1bCPsbEnaLlFrwiwhwE6F8sIdO8MLg/HiWE=; b=Mngfxk09kt4/krUPKb1Zn6lcvE
+	l9OOliC67agWfQrQug9P+Kg4KqL8K9pG1JGagHPp977ZBgRBJPBA6B3n6Nq7ZZjzNhNHBa04Aggd5
+	OxtnrJvRSidT247vak7uZRx4sFwM4zso4bxtCfWNXqbI/zKGUIPSu5Xf8u404kZVl3eFXdmVr6G4K
+	lO0ZoDXT9gXriqFDdnx8nO6ED36JLZ/Tw859kbvSISGE+Y5EZTdKRfgl8TrhT+cd35X399OGNYGsB
+	A9ja4GIOef9lTvNcGssfOGnV0KFRzjeIBBAF4bFnXTDE4eQQekh/xdRvVuaMtrlshIqYyXcwouNb5
+	LGP1XvZg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:35300)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1w0Ndi-000000006l7-0H7T;
+	Wed, 11 Mar 2026 17:46:34 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1w0Nde-000000006RR-1cKu;
+	Wed, 11 Mar 2026 17:46:30 +0000
+Date: Wed, 11 Mar 2026 17:46:30 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Bartosz Golaszewski <brgl@kernel.org>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+	Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Christophe Roullier <christophe.roullier@foss.st.com>,
+	Radu Rendec <rrendec@redhat.com>, linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	Drew Fustini <dfustini@tenstorrent.com>,
+	linux-sunxi@lists.linux.dev, linux-amlogic@lists.infradead.org,
+	linux-mips@vger.kernel.org, imx@lists.linux.dev,
+	linux-renesas-soc@vger.kernel.org,
+	linux-rockchip@lists.infradead.org, sophgo@lists.linux.dev,
+	linux-riscv@lists.infradead.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: Re: [PATCH net-next v8 2/6] net: stmmac: qcom-ethqos: use generic
+ device properties
+Message-ID: <abGqdncKMOweUUwO@shell.armlinux.org.uk>
+References: <20260311-qcom-sa8255p-emac-v8-0-58227bcf1018@oss.qualcomm.com>
+ <20260311-qcom-sa8255p-emac-v8-2-58227bcf1018@oss.qualcomm.com>
+ <abGizL-uYnahlcEt@shell.armlinux.org.uk>
+ <CAMRc=MdOXz6a4+-xNfmHD9insd+UcyF9xvZim7DtptKOj9B70Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAWP192MB2411:EE_|AS8P192MB1725:EE_
-X-MS-Office365-Filtering-Correlation-Id: c4f81697-4b7f-4e46-09bc-08de7f9613c5
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|5072599009|461199028|5062599005|19110799012|39105399006|15080799012|41001999006|25031999004|8060799015|23021999003|440099028|3412199025|40105399003|1710799026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?c6qDOlSlOy75Opm9+G82+dREhDsRB58xvcy9ZRlUCQVacecKHH2dqqI6/HnP?=
- =?us-ascii?Q?7oyb5tm9cr1sot3l6USAE2sAQPWv07uRzEmnB3OosR+BsQ4R+4nYcHYPtUJR?=
- =?us-ascii?Q?OjKEKxI+r75FOLfcIM5+kBRusAvNfCrOf1ozcfpiSKVWlYCpi6xq5HP4Yll7?=
- =?us-ascii?Q?L5UFuO/LtDy7EeRfdcK0YjdpkfDJl2W0fPTdyZtUxLpSoWVTR2TjgEZ3rP66?=
- =?us-ascii?Q?Tnk9wX9SDcx1WRJ3fvVq/UzwxSBJg9SL7XGc52x397Aa0rB8eg0QTQ1h/lHt?=
- =?us-ascii?Q?5JiOWOqGWmizVQlEPuyae0LBHkPLG3IL75E04MOX7/xPg0H7UCAVwTdVTD14?=
- =?us-ascii?Q?1s4pvzw78JlhxOVBnsqp0S/OpUBjaURxWaV0j4DcDb4hWxGAmLjI9aG7L7Ia?=
- =?us-ascii?Q?7DPlrEBBBFf49Mu3pQEHj9Cw6GfnPvwSpBIF6MCKhhfcm+fd4epP6+fapHGg?=
- =?us-ascii?Q?CeSL8afj65F2dCaup72hXIizJjKal0qW1VLiEAJIS6gJBBp1mIN/vB99Nmhm?=
- =?us-ascii?Q?wQMjG5kvIFIV0MpU+5kYtuCSvIUtn8OcVxz7Fz3NiPRM5qEugN6GyQXNO1K1?=
- =?us-ascii?Q?Xn+aLtTJBkQwatoBR8othFiXJYcM50Qwdz9mtqKKuTuD/haxiv/q5gxd4h9L?=
- =?us-ascii?Q?56WsTEj2lpFqbvHoAIIFtJvQCmFNZTbUDA4D/9mitpAyOOxOKXyVnROmlPfa?=
- =?us-ascii?Q?77ZBoBkIx/1XuKg1y5RgSRFYfpxIN77NSvFZoaFA/tSC6ykI7f+4OfzBaXgW?=
- =?us-ascii?Q?oz6bNd3Xi803ZY8FQf0IVE6tXTFXYYqO67F81MnGBRBUNOvoyOSu4Y9oJ8Mg?=
- =?us-ascii?Q?hE5eIUfRved3P1P2x6wUMRavL3d1Cgl7OdhfsrQrxUL+c3kxsdvfsUO0kDvC?=
- =?us-ascii?Q?7PZZKDYFh80yOqgCpQX8cimGGxNBcCFesB49M/gdxrq3N9+tk3Be9HavfYb9?=
- =?us-ascii?Q?Uhq26VCzsCCqNHK/LOpdK8p/4x+6PAIyIZTt7MP8cRieMx7Yd/e2YAAYeOBK?=
- =?us-ascii?Q?1+iNtWVEiyMaeEZdS3EuylvTNw=3D=3D?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?3z7/oziWRAP7dC+hKC3ADu4T8+Ntq0ckkIX0GR04KxBIsshymNjcr0YgLlO3?=
- =?us-ascii?Q?ZIumGbGcH/rT9EbgUUmnvot07pm4vk0AtALgvUBsXmpC8jt4O6PgBIQlGayy?=
- =?us-ascii?Q?Gf8H1jhzg0QZdKt6imI4weDds81mzbjoRrHW1NfxcbltbgJ7vEJEcYiPCTr2?=
- =?us-ascii?Q?ya3yeKlND9phxz6XSUlz6taqxlPo49JqkFcibh7gC+1GnwVJBLmg23Djwi5W?=
- =?us-ascii?Q?8jnFR9pa782FgdQbKOB+n17KnFCqAzK/n6Qq4QZJwyUD0+Vds1EGeL8J+2iH?=
- =?us-ascii?Q?MkNvhtpxBnf4SFVyaUlQlHE0C+ZWTbUggc9nwn4guEGligD8vSqYddLz1zAa?=
- =?us-ascii?Q?vXp2ViT2g96SYjRNFlybr/4vye2fcaaM7unPPwXkgTn/3/r5m4fYE3EWNPqH?=
- =?us-ascii?Q?kKcGaHqlHwLP/2lCPb13waJg8OGwbjZmPHRFVJoXEmZqgPQ+vQJVn0juoTYG?=
- =?us-ascii?Q?CtpTRWoEtdxIP2qsoavNP7X7KYs0y+DtYFMtseyUDwltk2AqZuc+DNuYRt0P?=
- =?us-ascii?Q?Jvw+2N/p79SjyPCcN9MwxOYsLgc5Muv81Ci/s/7dVb/ErwR3PoHrqaD63lOg?=
- =?us-ascii?Q?E/+VlySQjixjh7m3ShpSNdD8hZv5X32STUNNOZw0TjcITanA0GhfqIsUimwK?=
- =?us-ascii?Q?uEoTAAqhqDGwgnP8e7WOAwiVr/r+LOTc5hKx+6BqFlN2xpjHrMGSxQG8Xa/I?=
- =?us-ascii?Q?LStoHH1bVM89cOrrSF7xWAwrD3OB4y8EqkCUeYSn0fccJjvXEspRqr1sDYLP?=
- =?us-ascii?Q?Wb+fDbFqLOtDEMi2cfw2a6XFEBzFarlV8gB6Uof1yZ3OQyzhkv4e4zkcWKvk?=
- =?us-ascii?Q?OqXWZroXLfZYl7E7SLLtUrf4yzJQ5ktZpT+cpU+vdC22kwdG6C8GcHzK5eFO?=
- =?us-ascii?Q?+L99nBIyAPj1XhGfpo49UUFrOzjt2szg1RcSQtUCI5nC85GAcidPETsiYXTE?=
- =?us-ascii?Q?JkB3bKXLfTd/HfxKOcnU+CiInA+/x3IGo75ljiWO2QWZa+bJLGEwwzR2Ssr8?=
- =?us-ascii?Q?0vBMvtUSqjhBRa3p5IbyCznVDKK3RfFe1pFfVKqdEjCjYRPWQ7L1oGb1UaVK?=
- =?us-ascii?Q?yFFEubLv8HQHnTCRyCtORWF5s3O/ZrH2BF1OCNwIxues4L3RVE0Q2nD1C3WR?=
- =?us-ascii?Q?1hhsy0s7syRVTegKzGsb99odTLR1EW8a7OHP4RVyVlezreWKVYqBn5PW0Vd+?=
- =?us-ascii?Q?B41Y1ykX4jCO3R/G5D8nPi5Q9cAOpUiwpCNTi8nqKGxZRkfhGCGJTXPsiZJg?=
- =?us-ascii?Q?p4ZM6mPSSqctpVm4ljErnFvjySzlZAaI9RXWR2KnH5w3kyVpYfAFlYdnGgC7?=
- =?us-ascii?Q?cEnlMMWzbTDufzcIV/o3HcbQCrCnqK3VET92muyuh9iNypW0EFIuzRWFTFum?=
- =?us-ascii?Q?2XY96KH5ynAHI23R/YTjdU6iC7Ez?=
-X-OriginatorOrg: sct-15-20-9412-4-msonline-outlook-4fb8a.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: c4f81697-4b7f-4e46-09bc-08de7f9613c5
-X-MS-Exchange-CrossTenant-AuthSource: PAWP192MB2411.EURP192.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2026 17:46:08.9424
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8P192MB1725
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMRc=MdOXz6a4+-xNfmHD9insd+UcyF9xvZim7DtptKOj9B70Q@mail.gmail.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Currently, the PPP rtnetlink API allows creating a new network interface
-with a custom ifname, but it lacks the ability to specify a custom PPP
-unit id.
+On Wed, Mar 11, 2026 at 06:18:00PM +0100, Bartosz Golaszewski wrote:
+> On Wed, Mar 11, 2026 at 6:14 PM Russell King (Oracle)
+> <linux@armlinux.org.uk> wrote:
+> >
+> > On Wed, Mar 11, 2026 at 06:03:37PM +0100, Bartosz Golaszewski wrote:
+> > > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > >
+> > > In order to drop the dependency on CONFIG_OF, convert all device property
+> > > getters from OF-specific to generic device properties and stop pulling
+> > > in any linux/of.h symbols.
+> > >
+> > > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+> >
+> > Please postpone this for the time being - I'm trying to get stmmac's
+> > pain-in-the-arse PCS support sorted, and I've patch series out there
+> > and pending that make a large number of changes to this driver. This
+> > is likely to conflict with my work.
+> >
+> > I'm limited by the rate at which patches can be applied to net-next
+> > and the rate at which Mohd can provide me feedback. On that, I notice
+> > you haven't Cc'd Mohd who is now in MAINTAINERS for qcom-ethqos.
+> >
+> 
+> Do these two changesets interact with each other a lot? Do you have a
+> WIP branch I could take a look at? This has been post-poned several
+> times already, there always seem to be some new changes coming in. :/
 
-Setting a specific unit id is currently only possible with the
-PPPIOCNEWUNIT ioctl. If a user-space program also requires a custom
-interface name, it must create the interface first with PPPIOCNEWUNIT
-and then rename it.
+I don't have a public branch because this work is subject to rework
+depending on the feedback I receive. Mohd has another version of the
+series that I'm waiting for feedback for. As soon as I hear that it's
+fine, I will be sending it.
 
-Resolve this by introducing the IFLA_PPP_UNIT netlink attribute. This
-allows user-space programs to atomically request both a custom ifname
-and a specific PPP unit id during the RTM_NEWLINK creation process,
-eliminating the post-creation renaming for this use case.
+The problem I refer to has been a pain point for phylink since stmmac
+was converted in 2019, which pre-dates qcom-ethqos, the merging of
+which has made solving sthis much more painful as qcom-ethqos
+completely bypasses phylink by forcing the PCS inband state behind
+phylink's back.
 
-Signed-off-by: Martin Olivier <martin.olivier@live.fr>
+Honestly, over recent months, I've been washing that I'd NACK'd the
+merging of dwmac-qcom-ethqos at the time over this, but I didn't
+have any solution for stmmac at that point (it wasn't my
+responsibility, the broken phylink conversion of stmmac was merged
+without my knowledge, without even a Cc to me.)
+
+One of the biggest changes that will definitely conflict with your
+changes is the move of qcom-ethqos' SerDes support into stmmac core
+code - because the stmmac PCS code needs to know whether the SerDes
+can support 2.5Gbps speed. I got the changes for the generic PHY part
+of that merged last week.
+
+Another change that will conflict is your patch 3, where masses of
+changes in qcom_ethqos_probe() which will conflict with my
+"net: stmmac: qcom-ethqos: enable 2500BASE-X" patch.
+
+I've posted patches for that a couple of weeks ago, but Mohd reported
+problems, so I've had to rework the series - and now those patches
+are part of a follow-on series after sorting the bulk of the stmmac
+PCS mess.
+
+I'm currently waiting for Mohd's feedback on the reworked series.
+
+https://lore.kernel.org/r/aZ7ggfQanc8jeCb9@shell.armlinux.org.uk
+https://lore.kernel.org/r/aafxqCvJ_XY4YbWw@shell.armlinux.org.uk
+
+Latest version waiting for Mohd's feedback:
+
+https://lore.kernel.org/r/aa6sofjFxyi2nkpr@shell.armlinux.org.uk
+
+Below are the two patches which add and convert qcom-ethqos serdes
+support. Note that these two depend on other patches.
+
+
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Subject: [PATCH net-next] net: stmmac: add stmmac core serdes support
+
+Rather than having platform glue implement SerDes PHY support, add it
+to the core driver, specifically to the stmmac integrated PCS driver
+as the SerDes is connected to the integrated PCS.
+
+Platforms using external PCS can also populate plat->serdes, and the
+core driver will call phy_init() and phy_exit() when the administrative
+state of the interface changes, but the other phy methods will not be
+called.
+
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+--
+rfc->v1: avoid calling phy_get_mode() with NULL serdes PHY
+v2: add cleanup when dwmac_serdes_set_mode() fails, so that failure at
+  any point in the internal PCS enable method leaves the overall state
+  unchanged.
+v3: in a pending change to generic PHY documentation indicated by Vinod
+  recently, calling phy_set_mode(_ext)() before phy_power_on() will be
+  preferred, so re-organise to use that ordering.
+v4: move phy_set_mode() into .mac_finish(), add dwmac_has_serdes() to
+  make serdes calls conditional on dwmac's active phy interface, with
+  the exception of phy_init()/phy_exit() calls.
 ---
- drivers/net/ppp/ppp_generic.c      | 7 +++++++
- include/uapi/linux/if_link.h       | 1 +
- tools/include/uapi/linux/if_link.h | 1 +
- 3 files changed, 9 insertions(+)
+ drivers/net/ethernet/stmicro/stmmac/Makefile  |  2 +-
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 37 +++++++-
+ .../net/ethernet/stmicro/stmmac/stmmac_pcs.c  | 44 +++++++--
+ .../ethernet/stmicro/stmmac/stmmac_serdes.c   | 92 +++++++++++++++++++
+ .../ethernet/stmicro/stmmac/stmmac_serdes.h   | 15 +++
+ include/linux/stmmac.h                        |  2 +
+ 6 files changed, 181 insertions(+), 11 deletions(-)
+ create mode 100644 drivers/net/ethernet/stmicro/stmmac/stmmac_serdes.c
+ create mode 100644 drivers/net/ethernet/stmicro/stmmac/stmmac_serdes.h
 
-diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
-index e9b41777be80..57d0124b9f37 100644
---- a/drivers/net/ppp/ppp_generic.c
-+++ b/drivers/net/ppp/ppp_generic.c
-@@ -1292,6 +1292,7 @@ static int ppp_dev_configure(struct net *src_net, struct net_device *dev,
+diff --git a/drivers/net/ethernet/stmicro/stmmac/Makefile b/drivers/net/ethernet/stmicro/stmmac/Makefile
+index c9263987ef8d..a3c2cd5d0c91 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/Makefile
++++ b/drivers/net/ethernet/stmicro/stmmac/Makefile
+@@ -7,7 +7,7 @@ stmmac-objs:= stmmac_main.o stmmac_ethtool.o stmmac_mdio.o ring_mode.o	\
+ 	      dwmac4_dma.o dwmac4_lib.o dwmac4_core.o dwmac5.o hwif.o \
+ 	      stmmac_tc.o dwxgmac2_core.o dwxgmac2_dma.o dwxgmac2_descs.o \
+ 	      stmmac_xdp.o stmmac_est.o stmmac_fpe.o stmmac_vlan.o \
+-	      stmmac_pcs.o $(stmmac-y)
++	      stmmac_pcs.o stmmac_serdes.o $(stmmac-y)
  
- static const struct nla_policy ppp_nl_policy[IFLA_PPP_MAX + 1] = {
- 	[IFLA_PPP_DEV_FD]	= { .type = NLA_S32 },
-+	[IFLA_PPP_UNIT]		= { .type = NLA_S32 },
- };
+ stmmac-$(CONFIG_STMMAC_SELFTESTS) += stmmac_selftests.o
  
- static int ppp_nl_validate(struct nlattr *tb[], struct nlattr *data[],
-@@ -1305,6 +1306,9 @@ static int ppp_nl_validate(struct nlattr *tb[], struct nlattr *data[],
- 	if (nla_get_s32(data[IFLA_PPP_DEV_FD]) < 0)
- 		return -EBADF;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 37f6ee7566be..428b2e5bb4c4 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -49,6 +49,7 @@
+ #include "stmmac_fpe.h"
+ #include "stmmac.h"
+ #include "stmmac_pcs.h"
++#include "stmmac_serdes.h"
+ #include "stmmac_xdp.h"
+ #include <linux/reset.h>
+ #include <linux/of_mdio.h>
+@@ -969,7 +970,7 @@ static int stmmac_mac_finish(struct phylink_config *config, unsigned int mode,
+ 		priv->plat->mac_finish(ndev, priv->plat->bsp_priv, mode,
+ 				       interface);
  
-+	if (data[IFLA_PPP_UNIT] && nla_get_s32(data[IFLA_PPP_UNIT]) < 0)
-+		return -EINVAL;
-+
- 	return 0;
+-	return 0;
++	return dwmac_serdes_set_mode(priv, interface);
  }
  
-@@ -1326,6 +1330,9 @@ static int ppp_nl_newlink(struct net_device *dev,
- 	if (!file)
- 		return -EBADF;
+ static void stmmac_mac_link_down(struct phylink_config *config,
+@@ -3592,12 +3593,14 @@ static void stmmac_safety_feat_configuration(struct stmmac_priv *priv)
  
-+	if (data[IFLA_PPP_UNIT])
-+		conf.unit = nla_get_s32(data[IFLA_PPP_UNIT]);
+ static void stmmac_clk_rx_i_require(struct stmmac_priv *priv)
+ {
++	dwmac_serdes_power_on(priv);
+ 	phylink_rx_clk_stop_block(priv->phylink);
+ }
+ 
+ static void stmmac_clk_rx_i_release(struct stmmac_priv *priv)
+ {
+ 	phylink_rx_clk_stop_unblock(priv->phylink);
++	dwmac_serdes_power_off(priv);
+ }
+ 
+ /**
+@@ -4153,6 +4156,10 @@ static int stmmac_open(struct net_device *dev)
+ 	if (ret)
+ 		goto err_runtime_pm;
+ 
++	ret = dwmac_serdes_init(priv);
++	if (ret < 0)
++		goto err_disconnect_phy;
 +
- 	/* rtnl_lock is already held here, but ppp_create_interface() locks
- 	 * ppp_mutex before holding rtnl_lock. Using mutex_trylock() avoids
- 	 * possible deadlock due to lock order inversion, at the cost of
-diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
-index e9b5f79e1ee1..40523cd01a8b 100644
---- a/include/uapi/linux/if_link.h
-+++ b/include/uapi/linux/if_link.h
-@@ -1477,6 +1477,7 @@ enum {
- enum {
- 	IFLA_PPP_UNSPEC,
- 	IFLA_PPP_DEV_FD,
-+	IFLA_PPP_UNIT,
- 	__IFLA_PPP_MAX
- };
- #define IFLA_PPP_MAX (__IFLA_PPP_MAX - 1)
-diff --git a/tools/include/uapi/linux/if_link.h b/tools/include/uapi/linux/if_link.h
-index 7e46ca4cd31b..150a582ae498 100644
---- a/tools/include/uapi/linux/if_link.h
-+++ b/tools/include/uapi/linux/if_link.h
-@@ -1465,6 +1465,7 @@ enum {
- enum {
- 	IFLA_PPP_UNSPEC,
- 	IFLA_PPP_DEV_FD,
-+	IFLA_PPP_UNIT,
- 	__IFLA_PPP_MAX
- };
- #define IFLA_PPP_MAX (__IFLA_PPP_MAX - 1)
+ 	if (!(priv->plat->flags & STMMAC_FLAG_SERDES_UP_AFTER_PHY_LINKUP)) {
+ 		ret = stmmac_legacy_serdes_power_up(priv);
+ 		if (ret < 0)
+@@ -4172,6 +4179,7 @@ static int stmmac_open(struct net_device *dev)
+ 
+ err_serdes:
+ 	stmmac_legacy_serdes_power_down(priv);
++	dwmac_serdes_exit(priv);
+ err_disconnect_phy:
+ 	phylink_disconnect_phy(priv->phylink);
+ err_runtime_pm:
+@@ -4232,6 +4240,7 @@ static int stmmac_release(struct net_device *dev)
+ 	__stmmac_release(dev);
+ 
+ 	stmmac_legacy_serdes_power_down(priv);
++	dwmac_serdes_exit(priv);
+ 	phylink_disconnect_phy(priv->phylink);
+ 	pm_runtime_put(priv->device);
+ 
+@@ -7781,6 +7790,13 @@ static int __stmmac_dvr_probe(struct device *device,
+ 		return -EINVAL;
+ 	}
+ 
++	if (plat_dat->serdes &&
++	    (plat_dat->serdes_powerup || plat_dat->serdes_powerdown)) {
++		dev_err(device,
++			"generic PHY and SerDes platform callbacks are incompatible\n");
++		return -EINVAL;
++	}
++
+ 	ndev = devm_alloc_etherdev_mqs(device, sizeof(struct stmmac_priv),
+ 				       MTL_MAX_TX_QUEUES, MTL_MAX_RX_QUEUES);
+ 	if (!ndev)
+@@ -8194,6 +8210,15 @@ int stmmac_suspend(struct device *dev)
+ 
+ 	rtnl_lock();
+ 	phylink_suspend(priv->phylink, !!priv->wolopts);
++
++	/* If the MAC has WoL enabled, the SerDes needs to remain active.
++	 * Otherwise, phylink will have stopped the MAC and the PCS will
++	 * have been disabled, meaning the SerDes is already powered off.
++	 * Call its exit function so we can call init during resume.
++	 */
++	if (!priv->wolopts)
++		dwmac_serdes_exit(priv);
++
+ 	rtnl_unlock();
+ 
+ 	if (stmmac_fpe_supported(priv))
+@@ -8290,6 +8315,15 @@ int stmmac_resume(struct device *dev)
+ 
+ 	rtnl_lock();
+ 
++	/* If the MAC has WoL enabled, the SerDes was left active */
++	if (!priv->wolopts) {
++		ret = dwmac_serdes_init(priv);
++		if (ret) {
++			rtnl_unlock();
++			return ret;
++		}
++	}
++
+ 	/* Prepare the PHY to resume, ensuring that its clocks which are
+ 	 * necessary for the MAC DMA reset to complete are running
+ 	 */
+@@ -8307,6 +8341,7 @@ int stmmac_resume(struct device *dev)
+ 		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
+ 		stmmac_legacy_serdes_power_down(priv);
+ 		mutex_unlock(&priv->lock);
++		dwmac_serdes_exit(priv);
+ 		rtnl_unlock();
+ 		return ret;
+ 	}
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c
+index 0c0eb9e30b95..298d3c00b2fa 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ #include "stmmac.h"
+ #include "stmmac_pcs.h"
++#include "stmmac_serdes.h"
+ 
+ /*
+  * GMAC_AN_STATUS is equivalent to MII_BMSR
+@@ -60,8 +61,14 @@ static unsigned int dwmac_integrated_pcs_inband_caps(struct phylink_pcs *pcs,
+ static int dwmac_integrated_pcs_enable(struct phylink_pcs *pcs)
+ {
+ 	struct stmmac_pcs *spcs = phylink_pcs_to_stmmac_pcs(pcs);
++	struct stmmac_priv *priv = spcs->priv;
++	int ret;
+ 
+-	stmmac_mac_irq_modify(spcs->priv, 0, spcs->int_mask);
++	ret = dwmac_serdes_power_on(priv);
++	if (ret)
++		return ret;
++
++	stmmac_mac_irq_modify(priv, 0, spcs->int_mask);
+ 
+ 	return 0;
+ }
+@@ -69,8 +76,11 @@ static int dwmac_integrated_pcs_enable(struct phylink_pcs *pcs)
+ static void dwmac_integrated_pcs_disable(struct phylink_pcs *pcs)
+ {
+ 	struct stmmac_pcs *spcs = phylink_pcs_to_stmmac_pcs(pcs);
++	struct stmmac_priv *priv = spcs->priv;
++
++	stmmac_mac_irq_modify(priv, spcs->int_mask, 0);
+ 
+-	stmmac_mac_irq_modify(spcs->priv, spcs->int_mask, 0);
++	dwmac_serdes_power_off(priv);
+ }
+ 
+ static void dwmac_integrated_pcs_get_state(struct phylink_pcs *pcs,
+@@ -220,6 +230,22 @@ int stmmac_integrated_pcs_get_phy_intf_sel(struct phylink_pcs *pcs,
+ 	return -EINVAL;
+ }
+ 
++static void stmmac_integrated_pcs_check_support(struct stmmac_priv *priv,
++						struct stmmac_pcs *spcs,
++						phy_interface_t interface,
++						unsigned int flag)
++{
++	bool supported;
++
++	if (priv->plat->serdes)
++		supported = dwmac_serdes_validate(priv, interface) == 0;
++	else
++		supported = !flag || priv->plat->flags & flag;
++
++	if (supported)
++		__set_bit(interface, spcs->pcs.supported_interfaces);
++}
++
+ int stmmac_integrated_pcs_init(struct stmmac_priv *priv,
+ 			       const struct stmmac_pcs_info *pcs_info)
+ {
+@@ -243,13 +269,13 @@ int stmmac_integrated_pcs_init(struct stmmac_priv *priv,
+ 	if (readl(spcs->base + GMAC_AN_STATUS) & BMSR_ESTATEN)
+ 		spcs->support_tbi_rtbi = true;
+ 
+-	__set_bit(PHY_INTERFACE_MODE_SGMII, spcs->pcs.supported_interfaces);
+-	__set_bit(PHY_INTERFACE_MODE_1000BASEX, spcs->pcs.supported_interfaces);
+-
+-	/* Only allow 2500BASE-X if the SerDes has support. */
+-	if (priv->plat->flags & STMMAC_FLAG_SERDES_SUPPORTS_2500M)
+-		__set_bit(PHY_INTERFACE_MODE_2500BASEX,
+-			  spcs->pcs.supported_interfaces);
++	stmmac_integrated_pcs_check_support(priv, spcs,
++					    PHY_INTERFACE_MODE_SGMII, 0);
++	stmmac_integrated_pcs_check_support(priv, spcs,
++					    PHY_INTERFACE_MODE_1000BASEX, 0);
++	stmmac_integrated_pcs_check_support(priv, spcs,
++					    PHY_INTERFACE_MODE_2500BASEX,
++					    STMMAC_FLAG_SERDES_SUPPORTS_2500M);
+ 
+ 	priv->integrated_pcs = spcs;
+ 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_serdes.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_serdes.c
+new file mode 100644
+index 000000000000..a767c0553604
+--- /dev/null
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_serdes.c
+@@ -0,0 +1,92 @@
++#include <linux/phy/phy.h>
++
++#include "stmmac.h"
++#include "stmmac_serdes.h"
++
++static bool dwmac_has_serdes(struct stmmac_priv *priv)
++{
++	if (priv->plat->core_type == DWMAC_CORE_XGMAC)
++		return false;
++
++	return priv->dma_cap.actphyif == PHY_INTF_SEL_SGMII ||
++	       priv->dma_cap.actphyif == PHY_INTF_SEL_TBI ||
++	       priv->dma_cap.actphyif == PHY_INTF_SEL_RTBI;
++}
++
++int dwmac_serdes_validate(struct stmmac_priv *priv, phy_interface_t interface)
++{
++	struct phy *serdes = priv->plat->serdes;
++
++	return phy_validate(serdes, PHY_MODE_ETHERNET, interface, NULL);
++}
++
++int dwmac_serdes_init(struct stmmac_priv *priv)
++{
++	struct phy *serdes = priv->plat->serdes;
++	int ret;
++
++	ret = phy_init(serdes);
++	if (ret)
++		dev_err(priv->device, "failed to initialize SerDes: %pe\n",
++			ERR_PTR(ret));
++
++	return ret;
++}
++
++int dwmac_serdes_power_on(struct stmmac_priv *priv)
++{
++	struct phy *serdes = priv->plat->serdes;
++	int ret;
++
++	if (!dwmac_has_serdes(priv))
++		return 0;
++
++	ret = phy_power_on(serdes);
++	if (ret)
++		dev_err(priv->device, "failed to power on SerDes: %pe\n",
++			ERR_PTR(ret));
++
++	return ret;
++}
++
++int dwmac_serdes_set_mode(struct stmmac_priv *priv, phy_interface_t interface)
++{
++	struct phy *serdes = priv->plat->serdes;
++	int ret;
++
++	if (!dwmac_has_serdes(priv))
++		return 0;
++
++	ret = phy_set_mode_ext(serdes, PHY_MODE_ETHERNET, interface);
++	if (ret)
++		dev_err(priv->device,
++			"failed to set SerDes mode %s: %pe\n",
++			phy_modes(interface), ERR_PTR(ret));
++
++	return ret;
++}
++
++void dwmac_serdes_power_off(struct stmmac_priv *priv)
++{
++	struct phy *serdes = priv->plat->serdes;
++	int ret;
++
++	if (!dwmac_has_serdes(priv))
++		return;
++
++	ret = phy_power_off(serdes);
++	if (ret)
++		dev_err(priv->device, "failed to power off SerDes: %pe\n",
++			ERR_PTR(ret));
++}
++
++void dwmac_serdes_exit(struct stmmac_priv *priv)
++{
++	struct phy *serdes = priv->plat->serdes;
++	int ret;
++
++	ret = phy_exit(serdes);
++	if (ret)
++		dev_err(priv->device, "failed to shutdown SerDes: %pe\n",
++			ERR_PTR(ret));
++}
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_serdes.h b/drivers/net/ethernet/stmicro/stmmac/stmmac_serdes.h
+new file mode 100644
+index 000000000000..2ca37a7d0fde
+--- /dev/null
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_serdes.h
+@@ -0,0 +1,15 @@
++#ifndef STMMAC_SERDES_H
++#define STMMAC_SERDES_H
++
++#include <linux/phy.h>
++
++struct stmmac_priv;
++
++int dwmac_serdes_validate(struct stmmac_priv *priv, phy_interface_t interface);
++int dwmac_serdes_init(struct stmmac_priv *priv);
++int dwmac_serdes_power_on(struct stmmac_priv *priv);
++int dwmac_serdes_set_mode(struct stmmac_priv *priv, phy_interface_t interface);
++void dwmac_serdes_power_off(struct stmmac_priv *priv);
++void dwmac_serdes_exit(struct stmmac_priv *priv);
++
++#endif
+diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
+index a8e9b5d3289f..bedba4e23088 100644
+--- a/include/linux/stmmac.h
++++ b/include/linux/stmmac.h
+@@ -216,6 +216,7 @@ enum dwmac_core_type {
+ #define STMMAC_FLAG_SERDES_SUPPORTS_2500M	BIT(15)
+ 
+ struct mac_device_info;
++struct phy;
+ 
+ struct plat_stmmacenet_data {
+ 	enum dwmac_core_type core_type;
+@@ -245,6 +246,7 @@ struct plat_stmmacenet_data {
+ 	 * that phylink uses.
+ 	 */
+ 	phy_interface_t phy_interface;
++	struct phy *serdes;
+ 	struct stmmac_mdio_bus_data *mdio_bus_data;
+ 	struct device_node *phy_node;
+ 	struct device_node *mdio_node;
 -- 
-2.51.0
+2.47.3
 
+
+
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Subject: [PATCH net-next] net: stmmac: qcom-ethqos: convert to dwmac core
+ SerDes support
+
+Convert qcom-ethqos to use the dwmac core's generic SerDes support,
+which will handle SerDes initialisation, powering, and mode setting.
+
+Note that generic support requires the SerDes to support phy_validate()
+in order to probe which PHY interface modes are supported, and
+phy_set_mode_ext() to configure the appropriate PHY interface mode
+(and thus the speed.)
+
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+---
+ .../stmicro/stmmac/dwmac-qcom-ethqos.c        | 45 ++-----------------
+ 1 file changed, 4 insertions(+), 41 deletions(-)
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+index 9a2194fccb9b..a40a4bca197d 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+@@ -104,7 +104,6 @@ struct qcom_ethqos {
+ 			       phy_interface_t interface, int speed);
+ 
+ 	struct clk *link_clk;
+-	struct phy *serdes_phy;
+ 	phy_interface_t phy_mode;
+ 
+ 	const struct ethqos_emac_por *rgmii_por;
+@@ -627,45 +626,15 @@ static void ethqos_fix_mac_speed(void *priv, phy_interface_t interface,
+ 	ethqos_configure(ethqos, interface, speed);
+ }
+ 
+-static int qcom_ethqos_serdes_powerup(struct net_device *ndev, void *priv)
+-{
+-	struct qcom_ethqos *ethqos = priv;
+-	int ret;
+-
+-	ret = phy_init(ethqos->serdes_phy);
+-	if (ret)
+-		return ret;
+-
+-	ret = phy_power_on(ethqos->serdes_phy);
+-	if (ret)
+-		phy_exit(ethqos->serdes_phy);
+-
+-	return ret;
+-}
+-
+-static void qcom_ethqos_serdes_powerdown(struct net_device *ndev, void *priv)
+-{
+-	struct qcom_ethqos *ethqos = priv;
+-
+-	phy_power_off(ethqos->serdes_phy);
+-	phy_exit(ethqos->serdes_phy);
+-}
+-
+ static int ethqos_mac_finish_serdes(struct net_device *ndev, void *priv,
+ 				    unsigned int mode,
+ 				    phy_interface_t interface)
+ {
+ 	struct qcom_ethqos *ethqos = priv;
+-	int ret = 0;
+ 
+ 	qcom_ethqos_set_sgmii_loopback(ethqos, false);
+ 
+-	if (interface == PHY_INTERFACE_MODE_SGMII ||
+-	    interface == PHY_INTERFACE_MODE_2500BASEX)
+-		ret = phy_set_mode_ext(ethqos->serdes_phy, PHY_MODE_ETHERNET,
+-				       interface);
+-
+-	return ret;
++	return 0;
+ }
+ 
+ static int ethqos_clks_config(void *priv, bool enabled)
+@@ -789,9 +758,9 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
+ 
+-	ethqos->serdes_phy = devm_phy_optional_get(dev, "serdes");
+-	if (IS_ERR(ethqos->serdes_phy))
+-		return dev_err_probe(dev, PTR_ERR(ethqos->serdes_phy),
++	plat_dat->serdes = devm_phy_optional_get(dev, "serdes");
++	if (IS_ERR(plat_dat->serdes))
++		return dev_err_probe(dev, PTR_ERR(plat_dat->serdes),
+ 				     "Failed to get serdes phy\n");
+ 
+ 	ethqos_set_clk_tx_rate(ethqos, NULL, plat_dat->phy_interface,
+@@ -816,12 +785,6 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
+ 	if (data->dma_addr_width)
+ 		plat_dat->host_dma_width = data->dma_addr_width;
+ 
+-	if (ethqos->serdes_phy) {
+-		plat_dat->serdes_powerup = qcom_ethqos_serdes_powerup;
+-		plat_dat->serdes_powerdown  = qcom_ethqos_serdes_powerdown;
+-		plat_dat->flags |= STMMAC_FLAG_SERDES_SUPPORTS_2500M;
+-	}
+-
+ 	/* Enable TSO on queue0 and enable TBS on rest of the queues */
+ 	for (i = 1; i < plat_dat->tx_queues_to_use; i++)
+ 		plat_dat->tx_queues_cfg[i].tbs_en = 1;
+-- 
+2.47.3
+
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
