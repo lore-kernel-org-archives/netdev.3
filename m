@@ -1,65 +1,83 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5AA3E276F;
-	Wed, 11 Mar 2026 17:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F399B3E316B;
+	Wed, 11 Mar 2026 17:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773248784; cv=none; b=ldEjt8GKn2GFyIOv+bDMUB1/NuENfG6lv6dWU/7XAw9QXWDkJNqv6W2uSdbpFDsax9bsRHy5TMo/1EcmnYJFyI9EDkMM/6gi7vj89Jr3CUoNMDDlu/MeAej72c/YQKQcYQv2TP2HnixqoEDJewPOR00DOPzld5lokxliOLNS6FA=
+	t=1773249121; cv=none; b=ZxMpDtSfVaZVDRhX+YkncEeExOCTu3pQVgN9WazlPV3WPNEL/xG6jwUshYnE/UE0a7zSi8qU/fxvoi7qp4p41RekLEpXdE3JWmo1CYOkJ8LiHEe62u6BjfQ27vUzgMS8QYIPxQzU6P70VKs6cuDFapyxg/GkIPHmQZ4w6YkI6TU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773248784; c=relaxed/simple;
-	bh=a9SXR14qqh0v0ixFe06cRYgWDpfT84m+vR72jgFvJ8k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ClbSDXtJI58hVO3YXfdGM6iAqGMTqHIU/zNhOEx6/0XhIkYXK31enhdaN2LlYjFO66X/wtZ1AHHE9SAF1YqDu6cpmHkrExuYnfb8UuY9Npo58cBhXXJYPgf29jJxfbZIWIuSI48S1N4AaB8rz8wGcqU1UAsIsNvmHOP8JsdqeEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FPalNFZO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773249121; c=relaxed/simple;
+	bh=V1uzSJ0tCjKMzhK/Uuev8cSulP2s1ap+6ngofvlD4cc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UFAbdbe8kiSa6eClP1AdtYNomN+S4K1t940vunKS1/lH9ZENgu99TP31q17Tp+BusUdzZyxugSFT8i7fSCMVlR+sHrYvidT0THIWrf9Eu8RRjlfrwXMTpJit/POWRrgWU+Kbz0Q/ZMZ2mfrcK9xqK8ZefobUHcebfcbvR0Dl8U0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sz67wQls; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FPalNFZO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C6C6C19424;
-	Wed, 11 Mar 2026 17:06:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sz67wQls"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51EF0C4CEF7;
+	Wed, 11 Mar 2026 17:11:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773248783;
-	bh=a9SXR14qqh0v0ixFe06cRYgWDpfT84m+vR72jgFvJ8k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FPalNFZO5HTWu7Lvg1Qp+Pc3Xq6j5NmpZD6oor/KlCIlVLsU1Qp6+b59tFJtLRvAa
-	 PiGx9mBUe3N7X0LPLTwoI43v0yT3sYu42O1H2KUNJ6nCeZ1OAIHAdaa/HAkDL5Ddyz
-	 46+83BL+1m9TDdDFdk8tBW00vhfeKXR27ZGXmibNXowVYoVN18MxA1001H2Giwzqa+
-	 XpeHAwA8flvpTzQ/EEUwgPzD+g+6iExLyr4U2ndCOvehzq1HZoyHvAMezqT5fB1f+5
-	 bMZIAmpoTmj2yC2nOhDxnGTXR0kZ2nETVx+zn0ZNpn+5t+CyzoZ1jtumHwa9Uj98Su
-	 aXnM6U8rEwu7Q==
-Date: Wed, 11 Mar 2026 17:06:17 +0000
+	s=k20201202; t=1773249120;
+	bh=V1uzSJ0tCjKMzhK/Uuev8cSulP2s1ap+6ngofvlD4cc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=sz67wQlsCrIaZhIUfl5sQE2iri+uIzl1hwAyVZ5rykIUTb1RzXT6WHzJS6djC9mBE
+	 6YAkBD1xZ933dPi18lTB7uCQmy2eo2OJI7dr49chjotIiNYOXi/VRiEImiBISHa6ug
+	 9N/xNvj2uYrRxYlcPtG2FYL8qTOh2doSuRP9oLf8XYzUXbWhrsjgT2nPgTiyLJGmqx
+	 zr1x6emDjo0TH/my0phF5R0zY2HRmJtmLghdjj+tJFyueDx2Qprk7WwYD+w+Z8Yj0H
+	 ID5WjvTnf0WqM44n5h+BAsvpVucjJcP1ehkFKuCTWUd/OncSNE1XxUARfAL7VDZ05E
+	 pOlTesVQfqX1Q==
 From: Simon Horman <horms@kernel.org>
-To: Konstantin Taranov <kotaranov@linux.microsoft.com>
-Cc: shirazsaleem@microsoft.com, kotaranov@microsoft.com, pabeni@redhat.com,
-	haiyangz@microsoft.com, kys@microsoft.com, edumazet@google.com,
-	kuba@kernel.org, davem@davemloft.net, decui@microsoft.com,
-	wei.liu@kernel.org, longli@microsoft.com, jgg@ziepe.ca,
-	leon@kernel.org, linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net] net/mana: Null service_wq on setup error to prevent
- double destroy
-Message-ID: <20260311170617.GA1133151@kernel.org>
-References: <20260309172443.688392-1-kotaranov@linux.microsoft.com>
+To: p@1g4.org
+Cc: Simon Horman <horms@kernel.org>,
+	edumazet@google.com,
+	stable@vger.kernel.org,
+	herbert@gondor.apana.org.au,
+	linux-kernel@vger.kernel.org,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	steffen.klassert@secunet.com,
+	chopps@labn.net,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com
+Subject: Re: [net] xfrm: iptfs: only publish mode_data after clone setup
+Date: Wed, 11 Mar 2026 17:11:34 +0000
+Message-ID: <20260311171134.1134085-1-horms@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260309173033.537743-1-p@1g4.org>
+References: <20260309173033.537743-1-p@1g4.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260309172443.688392-1-kotaranov@linux.microsoft.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Mar 09, 2026 at 10:24:43AM -0700, Konstantin Taranov wrote:
-> From: Shiraz Saleem <shirazsaleem@microsoft.com>
-> 
-> In mana_gd_setup() error path, set gc->service_wq to NULL after
-> destroy_workqueue() to match the cleanup in mana_gd_cleanup().
-> This prevents a use-after-free if the workqueue pointer is checked
-> after a failed setup.
-> 
-> Fixes: f975a0955276 ("net: mana: Fix double destroy_workqueue on service rescan PCI path")
-> Signed-off-by: Shiraz Saleem <shirazsaleem@microsoft.com>
-> Signed-off-by: Konstantin Taranov <kotaranov@microsoft.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+---
+xfrm: iptfs: only publish mode_data after clone setup
 
+iptfs_clone_state() stores x->mode_data before allocating the reorder
+window. If that allocation fails, the code frees the cloned state and
+returns -ENOMEM, leaving x->mode_data pointing at freed memory. The xfrm
+clone unwind later runs destroy_state() through x->mode_data, so the failed
+clone path tears down IPTFS state that clone_state() already freed. Keep
+the cloned IPTFS state private until all allocations succeed so failed
+clones leave x->mode_data unset.
+
+> Fixes: 4b3faf610cc63 ("xfrm: iptfs: add new iptfs xfrm mode impl")
+
+Should this Fixes tag point to 6be02e3e4f37 instead?
+
+The original commit 4b3faf610cc63 added a simple iptfs_clone_state() function
+that did not have the buggy allocation pattern. Commit 6be02e3e4f37 ("xfrm:
+iptfs: handle reordering of received packets") added the reorder window
+allocation code (xtfs->w_saved) to iptfs_clone_state(), but set x->mode_data
+BEFORE the allocation, creating a use-after-free bug when the allocation
+fails.
+
+Suggested: Fixes: 6be02e3e4f37 ("xfrm: iptfs: handle reordering of received
+packets")
