@@ -1,172 +1,115 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24473C8703;
-	Wed, 11 Mar 2026 10:19:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3306B2ECD3A;
+	Wed, 11 Mar 2026 10:20:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773224399; cv=none; b=KCVg/LEK/Jowjj5hytH5icaCk/m1tGTsIK8XsX3M4jF/8r2dPtzyWC0mRLodn7w8LJmXZX9yajrM2IDh4HbnrH8KbW35HdMGiuvIZ9WrR/o5IIeSubzyIJMHcokMYSfhrO2bVtvBUlJFw+jjHWkiQPZCRaJQLImldshKRQ45+Z4=
+	t=1773224416; cv=none; b=Q0pKjk9bpSe23CN1IffvxUUmUDMfJni31Ydk3H71FU2nw2pvCcSEQ1hrFfppIYg2Q9mr7SafVG/RAs7TS/2L1wvRSmPY8tFNefNmbKIdmDhvJ1MTpmOco9M735yOzutRHzFHbYEtvp0TQB8UHkvF2Y/GOQ9U3nG0ZRxaymzzo4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773224399; c=relaxed/simple;
-	bh=wlHzuUH0gUssp1UjidQbhAVH/CdfFqbsFbfXxNH8yRQ=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=Uf5MppnCYSGHoVeIFQ3dy/L4NyPbOeSjpE9muRac9t3Ol3pDckCSrW/qODAyRMAaqmn69eXO3d23LUK/eG6kswcMELzNuyjqIDI7MxXvJHkrJdsQKeizvT7vtAy9eB643l8UL/NEmQyGfjfPp2A1K2hC6FXjzdNTVdwsbHg5HdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=wMo/5xuC; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="wMo/5xuC"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=jy7ZZYhO/l6AOCV4Dt/j5MRaTr5NmlKcOirpso5gcsI=; b=wMo/5xuCM6GHbf1VABNSVs8FvT
-	J73OKmQkiNMTevw2lC5BF7diZINev13LOSSGOH7DX9JAgM52l7SAtQt88Kc898211sHTdwQiDo5Ls
-	V7u+IrRHQIbwyUzgzkMNvYhk0qiJ2OzvKRBeSRHKMHTM4FGyo9VGo/T7tbS/POr6Z4gJ+Go51Qvlg
-	9VXIG7PS/NxWbJ+7X55bQcbLxgSdsDAyELN5uq54LGPz0IOHh8OozOdyb6u/w2d6HmeyXtl+ww/nl
-	d5n8RycOmq/0HD5UtTr1yLdqbjGFl9JYQe6DdyAMWiWzuRCGipWHVMZkyTPmp9PO1tlgvLPwH/XVu
-	ELJITC+g==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:48598 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1w0GFp-000000006BF-0GVv;
-	Wed, 11 Mar 2026 09:53:25 +0000
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1w0GFl-0000000CiU0-03iN;
-	Wed, 11 Mar 2026 09:53:21 +0000
-In-Reply-To: <abE7LWj04-JNxgS2@shell.armlinux.org.uk>
-References: <abE7LWj04-JNxgS2@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	bpf@vger.kernel.org,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
+	s=arc-20240116; t=1773224416; c=relaxed/simple;
+	bh=xkVGs8l8PubkL8xufzDUaujd/gGM1mTvuLsQl9qCiQU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IWY9kis6YIN513FaFY+Ron9Jc6jx9BaiICduFYk/Kj2JAll5mFXAWCBmMpIBA28ibExXhbLHfvyjU7wWvYFtNbLfYoBSKmHafFRTuLcdZwcJA0nJx/3/i6jJAaUUDb492Zsf5QWsGl7DBZ9/dYogWgT4fhV4XKoIxMTjaLq1GGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id C51921A28ED;
+	Wed, 11 Mar 2026 11:20:07 +0100 (CET)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id AD0BF1A2908;
+	Wed, 11 Mar 2026 11:20:07 +0100 (CET)
+Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 9F43C202D1;
+	Wed, 11 Mar 2026 11:20:06 +0100 (CET)
+Date: Wed, 11 Mar 2026 11:20:07 +0100
+From: Jan Petrous <jan.petrous@oss.nxp.com>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: NXP S32 Linux Team <s32@nxp.com>,
 	linux-stm32@st-md-mailman.stormreply.com,
-	netdev@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>, boon.khai.ng@altera.com,
+	vladimir.oltean@nxp.com, Sascha Hauer <s.hauer@pengutronix.de>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	rmk+kernel@armlinux.org.uk, linux-kernel@vger.kernel.org,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Eric Dumazet <edumazet@google.com>, devicetree@vger.kernel.org,
 	Paolo Abeni <pabeni@redhat.com>,
-	Stanislav Fomichev <sdf@fomichev.me>
-Subject: [PATCH net-next 15/15] net: stmmac: use queue rather than
- ->queue_index
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+	Fabio Estevam <festevam@gmail.com>,
+	Chester Lin <chester62515@gmail.com>, imx@lists.linux.dev
+Subject: Re: [PATCH v9 4/5] dt-bindings: net: nxp,s32-dwmac: Declare
+ per-queue interrupts
+Message-ID: <abFB1/uxq/ha5Bwm@lsv051416.swis.nl-cdc01.nxp.com>
+References: <20260311-dwmac_multi_irq-v9-0-f0c03ef8d01f@oss.nxp.com>
+ <20260311-dwmac_multi_irq-v9-4-f0c03ef8d01f@oss.nxp.com>
+ <177322108829.2695119.13138199275449513148.robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1w0GFl-0000000CiU0-03iN@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Wed, 11 Mar 2026 09:53:21 +0000
+In-Reply-To: <177322108829.2695119.13138199275449513148.robh@kernel.org>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-We use a lot of ->queue_index where we already have the queue / channel
-index (which are actually the same index), which has been used to get
-the queue struct. Since queue and queue_index are identical in
-priv->(tx|rx)_queue[queue]->queue_index there is no point using the
-queue_index where we already have queue.
+On Wed, Mar 11, 2026 at 04:24:48AM -0500, Rob Herring (Arm) wrote:
+> 
+> On Wed, 11 Mar 2026 08:53:59 +0100, Jan Petrous (OSS) wrote:
+> > The DWMAC IP on NXP S32G/R SoCs has connected queue-based IRQ lines,
+> > set them to allow using Multi-IRQ mode.
+> > 
+> > Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+> > ---
+> >  .../devicetree/bindings/net/nxp,s32-dwmac.yaml     | 47 +++++++++++++++++++---
+> >  1 file changed, 42 insertions(+), 5 deletions(-)
+> > 
+> 
+> My bot found errors running 'make dt_binding_check' on your patch:
+> 
+> yamllint warnings/errors:
+> ./Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml:57:7: [error] duplication of key "items" in mapping (key-duplicates)
+> 
+> dtschema/dtc warnings/errors:
+> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml: ignoring, error parsing file
+> ./Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml:57:7: found duplicate key "items" with value "[]" (original value: "[]")
+> make[2]: *** Deleting file 'Documentation/devicetree/bindings/net/nxp,s32-dwmac.example.dts'
+> Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml:57:7: found duplicate key "items" with value "[]" (original value: "[]")
+> make[2]: *** [Documentation/devicetree/bindings/Makefile:26: Documentation/devicetree/bindings/net/nxp,s32-dwmac.example.dts] Error 1
+> make[2]: *** Waiting for unfinished jobs....
+> make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1597: dt_binding_check] Error 2
+> make: *** [Makefile:248: __sub-make] Error 2
+> 
+> doc reference errors (make refcheckdocs):
+> 
+> See https://patchwork.kernel.org/project/devicetree/patch/20260311-dwmac_multi_irq-v9-4-f0c03ef8d01f@oss.nxp.com
+> 
+> The base for the series is generally the latest rc1. A different dependency
+> should be noted in *this* patch.
+> 
+> If you already ran 'make dt_binding_check' and didn't see the above
+> error(s), then make sure 'yamllint' is installed and dt-schema is up to
+> date:
+> 
+> pip3 install dtschema --upgrade
+> 
+> Please check and re-submit after running the above command yourself. Note
+> that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+> your schema. However, it must be unset to test all examples with your schema.
+> 
 
-Use queue rather than queue_index.
+Fixed in v10. Thanks Rob for review.
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 25 ++++++++-----------
- 1 file changed, 11 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 55b79e9e637f..8393cbd0875e 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -440,7 +440,7 @@ static void stmmac_set_queue_rx_buf_size(struct stmmac_priv *priv,
- 	else
- 		buf_size = priv->dma_conf.dma_buf_sz;
- 
--	stmmac_set_dma_bfsize(priv, priv->ioaddr, buf_size, rx_q->queue_index);
-+	stmmac_set_dma_bfsize(priv, priv->ioaddr, buf_size, chan);
- }
- 
- /**
-@@ -1902,7 +1902,7 @@ static int __init_dma_rx_desc_rings(struct stmmac_priv *priv,
- 						   NULL));
- 		netdev_info(priv->dev,
- 			    "Register MEM_TYPE_XSK_BUFF_POOL RxQ-%d\n",
--			    rx_q->queue_index);
-+			    queue);
- 		xsk_pool_set_rxq_info(rx_q->xsk_pool, &rx_q->xdp_rxq);
- 	} else {
- 		WARN_ON(xdp_rxq_info_reg_mem_model(&rx_q->xdp_rxq,
-@@ -1910,7 +1910,7 @@ static int __init_dma_rx_desc_rings(struct stmmac_priv *priv,
- 						   rx_q->page_pool));
- 		netdev_info(priv->dev,
- 			    "Register MEM_TYPE_PAGE_POOL RxQ-%d\n",
--			    rx_q->queue_index);
-+			    queue);
- 	}
- 
- 	if (rx_q->xsk_pool) {
-@@ -2310,9 +2310,7 @@ static int __alloc_dma_rx_desc_resources(struct stmmac_priv *priv,
- 	else
- 		napi_id = ch->rx_napi.napi_id;
- 
--	ret = xdp_rxq_info_reg(&rx_q->xdp_rxq, priv->dev,
--			       rx_q->queue_index,
--			       napi_id);
-+	ret = xdp_rxq_info_reg(&rx_q->xdp_rxq, priv->dev, queue, napi_id);
- 	if (ret) {
- 		netdev_err(priv->dev, "Failed to register xdp rxq info\n");
- 		return -EINVAL;
-@@ -3340,7 +3338,7 @@ static void stmmac_tx_timer_arm(struct stmmac_priv *priv, u32 queue)
- 	if (!tx_coal_timer)
- 		return;
- 
--	ch = &priv->channel[tx_q->queue_index];
-+	ch = &priv->channel[queue];
- 	napi = tx_q->xsk_pool ? &ch->rxtx_napi : &ch->tx_napi;
- 
- 	/* Arm timer only if napi is not already scheduled.
-@@ -6918,12 +6916,11 @@ void stmmac_enable_rx_queue(struct stmmac_priv *priv, u32 queue)
- 	stmmac_clear_rx_descriptors(priv, &priv->dma_conf, queue);
- 
- 	stmmac_init_rx_chan(priv, priv->ioaddr, priv->plat->dma_cfg,
--			    rx_q->dma_rx_phy, rx_q->queue_index);
-+			    rx_q->dma_rx_phy, queue);
- 
--	stmmac_set_queue_rx_tail_ptr(priv, rx_q, rx_q->queue_index,
--				     rx_q->buf_alloc_num);
-+	stmmac_set_queue_rx_tail_ptr(priv, rx_q, queue, rx_q->buf_alloc_num);
- 
--	stmmac_set_queue_rx_buf_size(priv, rx_q, rx_q->queue_index);
-+	stmmac_set_queue_rx_buf_size(priv, rx_q, queue);
- 
- 	stmmac_start_rx_dma(priv, queue);
- 
-@@ -6969,12 +6966,12 @@ void stmmac_enable_tx_queue(struct stmmac_priv *priv, u32 queue)
- 	stmmac_clear_tx_descriptors(priv, &priv->dma_conf, queue);
- 
- 	stmmac_init_tx_chan(priv, priv->ioaddr, priv->plat->dma_cfg,
--			    tx_q->dma_tx_phy, tx_q->queue_index);
-+			    tx_q->dma_tx_phy, queue);
- 
- 	if (tx_q->tbs & STMMAC_TBS_AVAIL)
--		stmmac_enable_tbs(priv, priv->ioaddr, 1, tx_q->queue_index);
-+		stmmac_enable_tbs(priv, priv->ioaddr, 1, queue);
- 
--	stmmac_set_queue_tx_tail_ptr(priv, tx_q, tx_q->queue_index, 0);
-+	stmmac_set_queue_tx_tail_ptr(priv, tx_q, queue, 0);
- 
- 	stmmac_start_tx_dma(priv, queue);
- 
--- 
-2.47.3
+BR.
+/Jan
 
