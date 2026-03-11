@@ -1,19 +1,19 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A8A36C9CF
-	for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 14:01:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D476E3CEBB6
+	for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 14:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773237708; cv=none; b=HqarW48ERwC7V1lw4QPVecVcbdu4f+BptJwaMW5fxydwInIy/tirVjqxTR4De6QKsGSmLKGHQAm7VHCIkxJtaSq3TufTOAEBpwYpVp/1bF1uvZIBFP+5hLo+IC4u83E7Ti/C7E5RO9vzB2hfde7OninjXCyV6hvptC8IBK7kbew=
+	t=1773237734; cv=none; b=Yk1qSysBWmZHBEUMUb8NDn0reYyHAs4Qf5gOKHt3nX0XvIFn9dT5epBcW1Mpn+de92+V6QWiqpHJ4cozxboz/R/6P+4mkT8w2iSMT6XSi9kwrfl/lQ5CVVdvS43JOwXfm0SFKIYX6foVo9SWYWxw6usiQgibsL+NYsdvYiwkQyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773237708; c=relaxed/simple;
+	s=arc-20240116; t=1773237734; c=relaxed/simple;
 	bh=S4UmMmjJrDTazcbT5LVID27SCCCkhWidRFPu6ff3d48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GDD1bbJWePjKk5kxemDIyT2r4LTYWBvZRBOV64WyEHWZVUGKbKigBXTbHfeMwRz6fBXruqUXGCyoUrxx/wGGozI612OcwXY44WzyfpdF7/gcEUJTZYFuD0A1p6zqG7sJ2+nzsSW8h57MAJO1lwgVDTW0wvLSYDGw1Euahu/r9Lc=
+	 MIME-Version; b=EzoO4GP9QSIhE6Td5h6Zu3SOhlPp692FICTh6bzt+Sv3LH3pHRSdsXKdVc62im1VQdd5If7fF407Dn52yhO/OOg1KB9zhcez32IXv9TduJW/sc6clockW6rua+CX4Ir+DJRZCPhsocY0K+FNbbEXJjweO8h2OeuGYc0TCNP8kZ0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0206FC19425;
-	Wed, 11 Mar 2026 14:01:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B330C4CEF7;
+	Wed, 11 Mar 2026 14:02:11 +0000 (UTC)
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: rmk+kernel@armlinux.org.uk
 Cc: andrew@lunn.ch,
@@ -24,9 +24,9 @@ Cc: andrew@lunn.ch,
 	netdev@vger.kernel.org,
 	pabeni@redhat.com,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH net-next] net: phy: vitesse: add inband caps and configuration
-Date: Wed, 11 Mar 2026 15:01:35 +0100
-Message-ID: <20260311140135.937544-1-geert+renesas@glider.be>
+Subject: Re: [PATCH net-next] net: phy: vitesse: add inband caps and configuration
+Date: Wed, 11 Mar 2026 15:02:08 +0100
+Message-ID: <20260311140208.937569-1-geert+renesas@glider.be>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <E1w082O-0000000ChNc-1wDz@rmk-PC.armlinux.org.uk>
 References: <E1w082O-0000000ChNc-1wDz@rmk-PC.armlinux.org.uk>
