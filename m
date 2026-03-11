@@ -1,248 +1,140 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756643B27C0
-	for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 07:33:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FFFE3B27FF
+	for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 07:36:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773214426; cv=none; b=ZrmtAvzPR7WdZz3XProJkKSehS3wYRuCstrsdOufAskQzWOnyHRZjd2eaeZ6l00GPNteYv87Kgb3Z8s2JfUEp52tyAqEIfVbZK3L6r+f/Q+NqTmfUYjVHMeZj1I/1tucS5iv6WhY89OorbTIdsJgKWDHeMxO0WozJGRAzEd8tho=
+	t=1773214600; cv=none; b=cLSQ5+3q7ey5ABc/EOeUhihrb0uqwiJcpuYB5jsms9Vpxyl0CBmrKvdl0fq5zYYtK/TUuzw/oLFWl3X65InYGtMRVEo4yWXiP5jY3kZk5Aqy6EdA6Wi7WKAdzOIEOwAFQGQ11PDRh7xQJRb3ktHpB1WI5YH32EO2nUfTf5qcp5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773214426; c=relaxed/simple;
-	bh=TnUwwV/B77eColgu+FTC3LP0ebszg38zOzmJYiOft34=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lYyXALLqlOrR3SmO85uBHQQozdgvwg4UHmBjsPcVJV5+U49dEQvQiZluBUCtZmLtLHQCjE/Hz8JB5Iz+YsnRhQbFsKxjFzN/qcn7PCnx36zMLl0y4rXYlyYYNhC+tphudcARjiHLlkREdSOfuiHOLzWnbKYfy18MziMfUDxYq8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=EWvhKPJ1; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1773214600; c=relaxed/simple;
+	bh=HcCA86If4wMPDKdIAoMLlvJ612HBDwwIc90rcnzJwNI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t3mmVqEV19i5RzS+37FKOVVkraOpZTJyyPCRVsalfNJEkpDbXbkEkJ5P8sJQfmrSKt5Gp/wQ+BgvxuMwwD2p9M18xZHL7IBByzQHDzzeASY8OnB7QkmWzIzpUEfi4cYNXlFgS6qvdG49hnpVUNygrwmfIFmRz8KCxAKPElR1bH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MQteAyR9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="EWvhKPJ1"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id A15881A235E;
-	Wed, 11 Mar 2026 07:33:36 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 710D560004;
-	Wed, 11 Mar 2026 07:33:36 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D351D10369B30;
-	Wed, 11 Mar 2026 08:33:27 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1773214415; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=n3wH772870P9IpL8j8omLHGVOBI6gpvI4kazRBxkKQU=;
-	b=EWvhKPJ1D02MgJTIdcjo6/tweA8f7JrxrAEY+uuuroqhEwOwZydPWLbS0Y4laB6GseyYgO
-	UdFSQrUUuAqN2ezIfgS7Z15b5D1fbQHlSzAlHIJGg9Ws4t7hG7iNxc+eyWjxO25e9p1YCX
-	JOUUpjSr3avSsNbQUtvMNrIBrZU1RihcEQEj4hjZEUVmB9gijeuoW1DDqORtn7y4fUYEYt
-	S2Te6EQEonBfw5A2O4iAuDSHrFrbXyB61DBLRL6YCj8KlSJWxpf+0lGPsJTdN1RdM2Etdb
-	LxotNJPIK+3HMww6dmYslKQAnR/S7r21luxnLVLWxksi4glXhvQD6WXz0ihxJQ==
-Message-ID: <580debbb-8f6c-4b60-95ef-22c68480ded1@bootlin.com>
-Date: Wed, 11 Mar 2026 08:33:26 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MQteAyR9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23AC0C4CEF7;
+	Wed, 11 Mar 2026 07:36:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773214599;
+	bh=HcCA86If4wMPDKdIAoMLlvJ612HBDwwIc90rcnzJwNI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MQteAyR9G5imXHR3ZpRw4vBPOx29pmZPQplR5qh0oIqnZGtYv7Ya+df0ECw70+b7G
+	 IusGbtgVeF3MVcKPgHFitNHIQCiUeG575GN3ePgbjTgD8hZODdO3LNeQV/wm8+pfQ2
+	 rkUxYUBIQ05AtI69hG4DlTl29m/xS5PFRbgEIBquYMypFQn98/CHlr+/Zv4z7V9hE8
+	 O6uAWams+6y75vZdqzaQFot3s0qYEb2JT1rV4V1/71EpmSQsU6UJDlU1uQc6uf3hzc
+	 X+Aa1t7OmKIU8Sjq4xE46HosRKVs6Ipd5qTSCPNRddmUWFCNDB8X3ardARiecABH9H
+	 IokssWnbu7YBw==
+Date: Wed, 11 Mar 2026 09:36:35 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Sabrina Dubroca <sd@queasysnail.net>
+Cc: Simon Horman <horms@kernel.org>, Florian Westphal <fw@strlen.de>,
+	netdev@vger.kernel.org,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: Re: [PATCH ipsec-next 01/10] xfrm: state: fix sparse warnings on
+ xfrm_state_hold_rcu
+Message-ID: <20260311073635.GR12611@unreal>
+References: <cover.1773051558.git.sd@queasysnail.net>
+ <7388df7238672a92be0e4048f0225e6db294e736.1773051558.git.sd@queasysnail.net>
+ <20260310103135.GB12611@unreal>
+ <abABg6aO9twGIk7F@krikkit>
+ <20260310182012.GF12611@unreal>
+ <abBv6zR4Qq_lrzuC@strlen.de>
+ <20260310194500.GO12611@unreal>
+ <abB12Ae769OivuYB@strlen.de>
+ <20260310201021.GP12611@unreal>
+ <abCQGh5Ce9uDbOo9@krikkit>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 02/11] ethtool: Add loopback netlink UAPI
- definitions
-To: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
- netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Donald Hunter
- <donald.hunter@gmail.com>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Naveen Mamindlapalli
- <naveenm@marvell.com>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>
-Cc: Danielle Ratson <danieller@nvidia.com>,
- Hariprasad Kelam <hkelam@marvell.com>, Ido Schimmel <idosch@nvidia.com>,
- Kory Maincent <kory.maincent@bootlin.com>, Leon Romanovsky
- <leon@kernel.org>, Michael Chan <michael.chan@broadcom.com>,
- Oleksij Rempel <o.rempel@pengutronix.de>,
- Pavan Chebbi <pavan.chebbi@broadcom.com>,
- Piergiorgio Beruto <piergiorgio.beruto@gmail.com>,
- Russell King <linux@armlinux.org.uk>, Saeed Mahameed <saeedm@nvidia.com>,
- Shuah Khan <shuah@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
- Willem de Bruijn <willemb@google.com>, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-rdma@vger.kernel.org
-References: <20260310104743.907818-1-bjorn@kernel.org>
- <20260310104743.907818-3-bjorn@kernel.org>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20260310104743.907818-3-bjorn@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <abCQGh5Ce9uDbOo9@krikkit>
 
-Hi again Björn,
-
-First, thanks for iterating so quick !
-
-On 10/03/2026 11:47, Björn Töpel wrote:
-> Add the netlink YAML spec and auto-generated UAPI header for a unified
-> loopback interface covering MAC, PCS, PHY, and pluggable module
-> components.
+On Tue, Mar 10, 2026 at 10:41:46PM +0100, Sabrina Dubroca wrote:
+> (adding Simon: maybe you can help with the "comment wording" issue here :))
 > 
-> Each loopback point is described by a nested entry attribute
-> containing:
+> 2026-03-10, 22:10:21 +0200, Leon Romanovsky wrote:
+> > On Tue, Mar 10, 2026 at 08:49:44PM +0100, Florian Westphal wrote:
+> > > Leon Romanovsky <leon@kernel.org> wrote:
+> > > > > You can only use xfrm_state_hold() if the refcount is already > 0.
+> > > > > xfrm_state_hold uses refcount_inc(), so you get a UaF warn splat
+> > > > > if this assuption doesn't hold true.
+> > > > 
+> > > > I know it, the thing that bothers me is that it is unclear how
+> > > > xfrm_state_hold_rcu() can have refcount equal to 0.
+> > > > 
+> > > > xfrm_state_put() decreases refcount and when it is zero, it calls
+> > > > to __xfrm_state_destroy(). The latter assumes that the state was
+> > > > already removed from various hlists.
+> > > 
+> > > Yes, insertion in the table means refcount is 1, but userspace
+> > > can zap states at any time, e.g.:
+> > > 
+> > > xfrm_del_sa -> xfrm_state_delete -> __xfrm_state_delete (which
+> > > unlinks from hash lists).
+> > > 
+> > > The last xfrm_state_put() in that function may cause 1 -> 0
+> > > transition.  Parallel lookup can still observe that state,
+> > > so it has to pretend it wasn't there to begin with.
 > 
->  - component  where in the path (MAC, PCS, PHY, MODULE)
->  - name       subsystem label, e.g. "cmis-host" or "cmis-media"
->  - id         optional instance selector (e.g. PHY id, port id)
->  - supported  bitmask of supported directions
->  - direction  NEAR_END, FAR_END, or 0 (disabled)
+> Thanks Florian.
 > 
-> Signed-off-by: Björn Töpel <bjorn@kernel.org>
-> ---
->  Documentation/netlink/specs/ethtool.yaml      | 123 ++++++++++++++++++
->  .../uapi/linux/ethtool_netlink_generated.h    |  59 +++++++++
->  2 files changed, 182 insertions(+)
 > 
-> diff --git a/Documentation/netlink/specs/ethtool.yaml b/Documentation/netlink/specs/ethtool.yaml
-> index 4707063af3b4..8bd14a3c946a 100644
-> --- a/Documentation/netlink/specs/ethtool.yaml
-> +++ b/Documentation/netlink/specs/ethtool.yaml
-> @@ -211,6 +211,49 @@ definitions:
->          name: discard
->          value: 31
->  
-> +  -
-> +    name: loopback-component
-> +    type: enum
-> +    doc: |
-> +      Loopback component. Identifies where in the network path the
-> +      loopback is applied.
-> +    entries:
-> +      -
-> +        name: mac
-> +        doc: MAC loopback. Loops traffic at the MAC block.
-> +      -
-> +        name: pcs
-> +        doc: |
-> +          PCS loopback. Loops traffic at the PCS sublayer between the
-> +          MAC and the PHY.
-> +      -
-> +        name: phy
-> +        doc: |
-> +          Ethernet PHY loopback. This refers to the Ethernet PHY managed
-> +          by phylib, not generic PHY drivers. A Base-T SFP module
-> +          containing an Ethernet PHY driven by Linux should report
-> +          loopback under this component, not module.
-> +      -
-> +        name: module
-> +        doc: |
-> +          Pluggable module (e.g. CMIS (Q)SFP) loopback. Covers loopback
-> +          modes controlled via module firmware or EEPROM registers. When
-> +          Linux drives an Ethernet PHY inside the module via phylib, use
-> +          the phy component instead.
+> > Yes, this is possible scenario and this is what is worth to document.
+> 
+> 
+> We could add something like:
+> 
+> /* Take a reference to @x, when we know the state has a refcount >= 1.
+>  * In this case, we can avoid refcount_inc_not_zero and the error
+>  * handling it requires.
+>  * In contexts where concurrent state deletion is possible and we
+>  * don't already hold a reference to that state, xfrm_state_hold_rcu
+>  * must be used.
+>  */
+> 
+> Though it may not make much sense to refer to xfrm_state_hold_rcu
+> (implemented in net/xfrm/xfrm_state.c) from include/net/xfrm.h.
+> 
+> And if we consider the hashtables to be private to
+> net/xfrm/xfrm_state.c, nothing outside of it should ever see a state
+> with refcount=0, since they will only ever see states that already
+> have one reference held by whatever gave them the pointer.
+> 
+> So maybe it's more xfrm_state_hold_rcu that needs a mention of
+> "concurrent state deletion could bring the refcount to 0 while we're
+> doing the lookup"? I don't know, for me it's pretty obvious with the
+> _rcu suffix that RCU -> unlocked -> could be deleted in parallel.
 
-So to get back on Andrew's remarks, let's see if we can get something
-closer to 802.3.
+It was the case when xfrm_state had __rcu marker, it is less obvious
+now. I agree with you that xfrm_state_hold_rcu() needs to be documented
+and not xfrm_state_hold().
 
-Here, we have loopback at various locations, which all depends on the
-Ethernet standard you use.
+Thanks
 
-It's usually in the PCS, PMA or PMD components. Thing is, we may have
-these in multiple places in our link.
-
-If we take an example with a 10G PHY, we may have :
-
-+----SoC-----+
-|            |
-|  MAC       |- drivers/net/ethernet
-|   |        |
-| Base-R PCS |- could be in drivers/net/pcs, or directly
-|   |        | in the MAC driver
-|   |        |
-|  SerDes    |- May be in drivers/phy, maybe handled by firmware,
-|   |        |  maybe by the MAC driver, maybe by the PCS driver ?
-+---|--------+
-    |
-    | 10GBase-R
-    |
-+---|-PHY+
-|   |    |
-| SerDes | \
-|   |    | |
-|  PCS   | |
-|   |    |  > All of that handled by the drivers/net/phy PHY driver
-|  PMA   | |
-|   |    | |
-|  PMD   | /
-+---|----+
-    |
-    v 10GBaseT
-
-So even the "PCS" loopback component is a bit ambiguous, are we talking
-about the PHY PCS or the MAC PCS ?
-
-Another thing to consider is that there may be multiple PCSs in the SoC
-(e.g. a BaseX and a BaseR PCS like we have in mvpp2), the one in use
-depends on the current interface between the MAC and the PHY.
-
-Another open question is, do we deal with loopbacks that may affect
-multi-netdev links ? Like the multi-lane modes we discussed with fbnic,
-or even for embedded, interfaces such as QSGMII ?
-
-As for the SerDes on the MAC side (say, the comphy on Marvell devices),
-can we say it's a PMA for 10GBase-KR ? Or is it something that's simply
-out of spec ?
-
-So I'd say, maybe we should not have a PCS loopback component at all,
-but instead loopback at the well-defined components on our link, that is:
-
- - MAC => MAC loopack, PCS on the MAC side, SerDes on the SoC, etc.
- - PHY => Loopbacks on the PCS/PHY/PMA withing the PHY device
- - Module => For non-PHY (Q)SFPs
-
-The important part would therefore to get the "name" part right, making
-sure we don't fall into driver specific names.
-
-We can name that 'pcs', 'pma', 'pmd', or maybe even 'mii' ? Let's see :
-
-+----SoC-----+
-|            |
-|  MAC       |- component = MAC, name = 'mac'
-|   |        |
-| Base-R PCS |- component = MAC, name = 'pcs'
-|   |        |
-|   |        |
-|  SerDes    |- component = MAC, name = 'mii' ?
-|   |        |
-+---|--------+
-    |
-    | 10GBase-R
-    |
-+---|-PHY+
-|   |    |
-| SerDes | - component = PHY, name = 'mii' ?
-|   |    |
-|  PCS   | - component = PHY, name = 'pcs'
-|   |    |
-|  PMA   | - component = PHY, name = 'pma'
-|   |    |
-|  PMD   |- component = PHY, name = 'pmd' or 'mdi' ?
-+---|----+
-    |
-    v 10GBaseT
-
-Sorry that's a lot of questions and I don't expect you to have the
-answer, but as what you've come-up with is taking a good shape, it's
-important to decide on the overall design and draw some lines about
-what do we support, and how :(
-
-> +  -
-> +    name: loopback-direction
-> +    type: flags
-> +    doc: |
-> +      Loopback direction flags. Used as a bitmask in supported, and as
-> +      a single value in direction.
-> +    entries:
-> +      -
-> +        name: near-end
-> +        doc: Near-end loopback; host-loop-host
-> +      -
-> +        name: far-end
-> +        doc: Far-end loopback; line-loop-line
-
-I was browsing 802.3, it uses the terminlogy of "local loopback" vs
-"remote loopback", I suggest we use those.
-
-Maxime
+> 
+> 
+> We also have __xfrm_state_put, the commit message that introduced it
+> states:
+> 
+>     We often just do an atomic_dec(&x->refcnt) on an xfrm_state object
+>     because we know there is more than 1 reference remaining and thus
+>     we can elide the heavier xfrm_state_put() call.
+> 
+> so we could add:
+> 
+> /* Drop a reference to @x, when we know there is more than 1 reference remaining.
+>  * In this case, we can avoid refcount_dec_and_test and just decrement refcnt.
+>  */
+> 
+> but maybe someone has a better suggestion.
+> 
+> 
+> -- 
+> Sabrina
