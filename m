@@ -1,217 +1,172 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33393CAE7D;
-	Wed, 11 Mar 2026 10:18:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24473C8703;
+	Wed, 11 Mar 2026 10:19:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773224292; cv=none; b=YyriCF9cAEs6Yta6Mf3LrHN3jls8ErHupdUO6546AuyFR3Dx5sqFhkrjQ5ghaOFAAGmnJHTg/ps7MupIKj4lWJ4Sk8GALvIw8yz35KRsz2lJwEccyY425yxGjpXQft2aLebLwTKnGD1zC/JqL03r4hf/YbGssFYvowDLpSUTMKk=
+	t=1773224399; cv=none; b=KCVg/LEK/Jowjj5hytH5icaCk/m1tGTsIK8XsX3M4jF/8r2dPtzyWC0mRLodn7w8LJmXZX9yajrM2IDh4HbnrH8KbW35HdMGiuvIZ9WrR/o5IIeSubzyIJMHcokMYSfhrO2bVtvBUlJFw+jjHWkiQPZCRaJQLImldshKRQ45+Z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773224292; c=relaxed/simple;
-	bh=ZezFSr32pT7ms/HOoEkJXINjhxxXzSKhdAF4TkA5u20=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=o0uEXbHJnchmzCH2qli8t1Hvfq1QxfVnFdGH0cLhLs6fdOzCfktKd9PSZ+h/StmcFIQrlO+220iCjXJ5GHoQUqqM14A0wU+/u942e8sbKxPA5se5eDsymnJJUgJYMxP0qqhbto99eZbO1R+qEzcUQnSBVewP+iOaheF+dxM5N+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bbc9Y2M8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773224399; c=relaxed/simple;
+	bh=wlHzuUH0gUssp1UjidQbhAVH/CdfFqbsFbfXxNH8yRQ=;
+	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
+	 Content-Disposition:Content-Type:Message-Id:Date; b=Uf5MppnCYSGHoVeIFQ3dy/L4NyPbOeSjpE9muRac9t3Ol3pDckCSrW/qODAyRMAaqmn69eXO3d23LUK/eG6kswcMELzNuyjqIDI7MxXvJHkrJdsQKeizvT7vtAy9eB643l8UL/NEmQyGfjfPp2A1K2hC6FXjzdNTVdwsbHg5HdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=wMo/5xuC; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bbc9Y2M8"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 84380C2BCC9;
-	Wed, 11 Mar 2026 10:18:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773224292;
-	bh=ZezFSr32pT7ms/HOoEkJXINjhxxXzSKhdAF4TkA5u20=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=bbc9Y2M80+lkO//9pfWVh3NvI4uL+8xU8y0h+bP1wT/ls6LJT7QXc/Yz9IDIK8V2A
-	 CSWnB8cRmvard5MLpbQIiDDCPltKfNYwqVj0d5fY07bWewm8kvv+UWjdi8JJB6/n63
-	 MT9gVQhOTaHDGiMoxSZnBF+aoyurSeveUAfOMWfS5mfYEluz0WKjz+Ta8UDdvwWN1u
-	 ZJ59fzuQRhC2vIpoE5yzt+CMVphP3kyJNghmyy3BPl+N85m8Rw2YtJkJFxH+pJpZbw
-	 NR+1XjoRZgaSbgaoct0IPB+DB2mPkEPChq9gqAHX57J9IzzeVdIZgVnuUCN1RcB3jH
-	 UiQPQG8ghInxQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 78D721049515;
-	Wed, 11 Mar 2026 10:18:12 +0000 (UTC)
-From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
-Date: Wed, 11 Mar 2026 11:18:02 +0100
-Subject: [PATCH v10 5/5] stmmac: s32: enable support for Multi-IRQ mode
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="wMo/5xuC"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
+	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=jy7ZZYhO/l6AOCV4Dt/j5MRaTr5NmlKcOirpso5gcsI=; b=wMo/5xuCM6GHbf1VABNSVs8FvT
+	J73OKmQkiNMTevw2lC5BF7diZINev13LOSSGOH7DX9JAgM52l7SAtQt88Kc898211sHTdwQiDo5Ls
+	V7u+IrRHQIbwyUzgzkMNvYhk0qiJ2OzvKRBeSRHKMHTM4FGyo9VGo/T7tbS/POr6Z4gJ+Go51Qvlg
+	9VXIG7PS/NxWbJ+7X55bQcbLxgSdsDAyELN5uq54LGPz0IOHh8OozOdyb6u/w2d6HmeyXtl+ww/nl
+	d5n8RycOmq/0HD5UtTr1yLdqbjGFl9JYQe6DdyAMWiWzuRCGipWHVMZkyTPmp9PO1tlgvLPwH/XVu
+	ELJITC+g==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:48598 helo=rmk-PC.armlinux.org.uk)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1w0GFp-000000006BF-0GVv;
+	Wed, 11 Mar 2026 09:53:25 +0000
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1w0GFl-0000000CiU0-03iN;
+	Wed, 11 Mar 2026 09:53:21 +0000
+In-Reply-To: <abE7LWj04-JNxgS2@shell.armlinux.org.uk>
+References: <abE7LWj04-JNxgS2@shell.armlinux.org.uk>
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	bpf@vger.kernel.org,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Stanislav Fomichev <sdf@fomichev.me>
+Subject: [PATCH net-next 15/15] net: stmmac: use queue rather than
+ ->queue_index
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260311-dwmac_multi_irq-v10-5-7ab1669759b5@oss.nxp.com>
-References: <20260311-dwmac_multi_irq-v10-0-7ab1669759b5@oss.nxp.com>
-In-Reply-To: <20260311-dwmac_multi_irq-v10-0-7ab1669759b5@oss.nxp.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
- Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
- NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, devicetree@vger.kernel.org, rmk+kernel@armlinux.org.uk, 
- vladimir.oltean@nxp.com, boon.khai.ng@altera.com, 
- "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773224290; l=4702;
- i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
- bh=Ccg7iBM1Fl+oVJULpuGtFE+LiMWCMv+ramMC+vtotcs=;
- b=NA4rOoHm0n/DYwZQSeJE866ARF5wXy/f96jN8tDBsziRpwH9UEFiInnaYeHEvf4bL31wwMWsa
- EDiwVlwm+hvA7vAiuGrMP0jzgGSPOaNhz3OmTjd7FnWkJIEWlkyCd7L
-X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
- pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
-X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
- auth_id=217
-X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
-Reply-To: jan.petrous@oss.nxp.com
+Message-Id: <E1w0GFl-0000000CiU0-03iN@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Wed, 11 Mar 2026 09:53:21 +0000
 
-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+We use a lot of ->queue_index where we already have the queue / channel
+index (which are actually the same index), which has been used to get
+the queue struct. Since queue and queue_index are identical in
+priv->(tx|rx)_queue[queue]->queue_index there is no point using the
+queue_index where we already have queue.
 
-Based on previous changes in platform driver, the vendor
-glue driver can enable Multi-IRQ mode, if needed.
+Use queue rather than queue_index.
 
-To get enabled Multi-IRQ mode for dwmac-s32, the driver checks:
-
-  1) property of 'snps,mtl-xx-config' subnode
-     defines 'snps,xx-queues-to-use' bigger then one, ie:
-
-     ethernet@4033c000 {
-         compatible = "nxp,s32g2-dwmac";
-         ...
-         snps,mtl-rx-config = <&mtl_rx_setup>;
-         ...
-
-         mtl_rx_setup: rx-queues-config {
-             snps,rx-queues-to-use = <2>;
-         };
-
-  2) queue based IRQs are set, ie:
-
-     ethernet@4033c000 {
-         compatible = "nxp,s32g2-dwmac";
-         ...
-         interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>,
-                      /* CHN 0: tx, rx */
-                      <GIC_SPI 58 IRQ_TYPE_LEVEL_HIGH>,
-                      <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>,
-                      /* CHN 1: tx, rx */
-                      <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>,
-                      <GIC_SPI 61 IRQ_TYPE_LEVEL_HIGH>;
-         interrupt-names = "macirq",
-                           "tx-queue-0", "rx-queue-0",
-                           "tx-queue-1", "rx-queue-1";
-
-If those prerequisites are met, the driver switches to Multi-IRQ mode,
-using per-queue IRQs for rx/tx data pathr:
-
-[    1.387045] s32-dwmac 4033c000.ethernet: Multi-IRQ mode (per queue IRQs) selected
-
-Now the driver owns all queues IRQs:
-
-root@s32g399aevb3:~# grep eth /proc/interrupts
- 29:    0    0    0    0    0    0    0    0    GICv3  89 Level   eth0:mac
- 30:    0    0    0    0    0    0    0    0    GICv3  91 Level   eth0:rx-0
- 31:    0    0    0    0    0    0    0    0    GICv3  93 Level   eth0:rx-1
- 32:    0    0    0    0    0    0    0    0    GICv3  95 Level   eth0:rx-2
- 33:    0    0    0    0    0    0    0    0    GICv3  97 Level   eth0:rx-3
- 34:    0    0    0    0    0    0    0    0    GICv3  99 Level   eth0:rx-4
- 35:    0    0    0    0    0    0    0    0    GICv3  90 Level   eth0:tx-0
- 36:    0    0    0    0    0    0    0    0    GICv3  92 Level   eth0:tx-1
- 37:    0    0    0    0    0    0    0    0    GICv3  94 Level   eth0:tx-2
- 38:    0    0    0    0    0    0    0    0    GICv3  96 Level   eth0:tx-3
- 39:    0    0    0    0    0    0    0    0    GICv3  98 Level   eth0:tx-4
-
-Otherwise, if one of the prerequisite don't met, the driver
-continue with MAC IRQ mode:
-
-[    1.387045] s32-dwmac 4033c000.ethernet: MAC IRQ mode selected
-
-And only MAC IRQ will be attached:
-
-root@s32g399aevb3:~# grep eth /proc/interrupts
- 29:    0    0    0    0    0    0    0    0    GICv3  89 Level   eth0:mac
-
-What represents the original MAC IRQ mode and is fully backward
-compatible.
-
-Reviewed-by: Matthias Brugger <mbrugger@suse.com>
-Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c | 36 ++++++++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 25 ++++++++-----------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
-index af594a096676..d4e0c9f44fb3 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
-@@ -2,7 +2,7 @@
- /*
-  * NXP S32G/R GMAC glue layer
-  *
-- * Copyright 2019-2024 NXP
-+ * Copyright 2019-2026 NXP
-  *
-  */
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 55b79e9e637f..8393cbd0875e 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -440,7 +440,7 @@ static void stmmac_set_queue_rx_buf_size(struct stmmac_priv *priv,
+ 	else
+ 		buf_size = priv->dma_conf.dma_buf_sz;
  
-@@ -110,6 +110,37 @@ static void s32_gmac_exit(struct device *dev, void *priv)
- 	clk_disable_unprepare(gmac->rx_clk);
+-	stmmac_set_dma_bfsize(priv, priv->ioaddr, buf_size, rx_q->queue_index);
++	stmmac_set_dma_bfsize(priv, priv->ioaddr, buf_size, chan);
  }
  
-+static void s32_gmac_setup_multi_irq(struct device *dev,
-+				     struct plat_stmmacenet_data *plat,
-+				     struct stmmac_resources *res)
-+{
-+	int i;
-+
-+	/* RX IRQs */
-+	STMMAC_FOREACH_MTL_QUEUE(i, plat->rx_queues_to_use) {
-+		if (res->rx_irq[i] <= 0) {
-+			dev_dbg(dev, "Missing RX queue %d interrupt\n", i);
-+			goto mac_irq_mode;
-+		}
-+	}
-+
-+	/* TX IRQs */
-+	STMMAC_FOREACH_MTL_QUEUE(i, plat->tx_queues_to_use) {
-+		if (res->tx_irq[i] <= 0) {
-+			dev_dbg(dev, "Missing TX queue %d interrupt\n", i);
-+			goto mac_irq_mode;
-+		}
-+	}
-+
-+	plat->flags |= STMMAC_FLAG_MULTI_MSI_EN;
-+	dev_info(dev, "Multi-IRQ mode (per queue IRQs) selected\n");
-+	return;
-+
-+mac_irq_mode:
-+	plat->flags &= ~STMMAC_FLAG_MULTI_MSI_EN;
-+	dev_info(dev, "MAC IRQ mode selected\n");
-+}
-+
- static int s32_dwmac_probe(struct platform_device *pdev)
- {
- 	struct plat_stmmacenet_data *plat;
-@@ -165,6 +196,9 @@ static int s32_dwmac_probe(struct platform_device *pdev)
- 	plat->core_type = DWMAC_CORE_GMAC4;
- 	plat->pmt = 1;
- 	plat->flags |= STMMAC_FLAG_SPH_DISABLE;
-+
-+	s32_gmac_setup_multi_irq(dev, plat, &res);
-+
- 	plat->rx_fifo_size = 20480;
- 	plat->tx_fifo_size = 20480;
+ /**
+@@ -1902,7 +1902,7 @@ static int __init_dma_rx_desc_rings(struct stmmac_priv *priv,
+ 						   NULL));
+ 		netdev_info(priv->dev,
+ 			    "Register MEM_TYPE_XSK_BUFF_POOL RxQ-%d\n",
+-			    rx_q->queue_index);
++			    queue);
+ 		xsk_pool_set_rxq_info(rx_q->xsk_pool, &rx_q->xdp_rxq);
+ 	} else {
+ 		WARN_ON(xdp_rxq_info_reg_mem_model(&rx_q->xdp_rxq,
+@@ -1910,7 +1910,7 @@ static int __init_dma_rx_desc_rings(struct stmmac_priv *priv,
+ 						   rx_q->page_pool));
+ 		netdev_info(priv->dev,
+ 			    "Register MEM_TYPE_PAGE_POOL RxQ-%d\n",
+-			    rx_q->queue_index);
++			    queue);
+ 	}
  
-
+ 	if (rx_q->xsk_pool) {
+@@ -2310,9 +2310,7 @@ static int __alloc_dma_rx_desc_resources(struct stmmac_priv *priv,
+ 	else
+ 		napi_id = ch->rx_napi.napi_id;
+ 
+-	ret = xdp_rxq_info_reg(&rx_q->xdp_rxq, priv->dev,
+-			       rx_q->queue_index,
+-			       napi_id);
++	ret = xdp_rxq_info_reg(&rx_q->xdp_rxq, priv->dev, queue, napi_id);
+ 	if (ret) {
+ 		netdev_err(priv->dev, "Failed to register xdp rxq info\n");
+ 		return -EINVAL;
+@@ -3340,7 +3338,7 @@ static void stmmac_tx_timer_arm(struct stmmac_priv *priv, u32 queue)
+ 	if (!tx_coal_timer)
+ 		return;
+ 
+-	ch = &priv->channel[tx_q->queue_index];
++	ch = &priv->channel[queue];
+ 	napi = tx_q->xsk_pool ? &ch->rxtx_napi : &ch->tx_napi;
+ 
+ 	/* Arm timer only if napi is not already scheduled.
+@@ -6918,12 +6916,11 @@ void stmmac_enable_rx_queue(struct stmmac_priv *priv, u32 queue)
+ 	stmmac_clear_rx_descriptors(priv, &priv->dma_conf, queue);
+ 
+ 	stmmac_init_rx_chan(priv, priv->ioaddr, priv->plat->dma_cfg,
+-			    rx_q->dma_rx_phy, rx_q->queue_index);
++			    rx_q->dma_rx_phy, queue);
+ 
+-	stmmac_set_queue_rx_tail_ptr(priv, rx_q, rx_q->queue_index,
+-				     rx_q->buf_alloc_num);
++	stmmac_set_queue_rx_tail_ptr(priv, rx_q, queue, rx_q->buf_alloc_num);
+ 
+-	stmmac_set_queue_rx_buf_size(priv, rx_q, rx_q->queue_index);
++	stmmac_set_queue_rx_buf_size(priv, rx_q, queue);
+ 
+ 	stmmac_start_rx_dma(priv, queue);
+ 
+@@ -6969,12 +6966,12 @@ void stmmac_enable_tx_queue(struct stmmac_priv *priv, u32 queue)
+ 	stmmac_clear_tx_descriptors(priv, &priv->dma_conf, queue);
+ 
+ 	stmmac_init_tx_chan(priv, priv->ioaddr, priv->plat->dma_cfg,
+-			    tx_q->dma_tx_phy, tx_q->queue_index);
++			    tx_q->dma_tx_phy, queue);
+ 
+ 	if (tx_q->tbs & STMMAC_TBS_AVAIL)
+-		stmmac_enable_tbs(priv, priv->ioaddr, 1, tx_q->queue_index);
++		stmmac_enable_tbs(priv, priv->ioaddr, 1, queue);
+ 
+-	stmmac_set_queue_tx_tail_ptr(priv, tx_q, tx_q->queue_index, 0);
++	stmmac_set_queue_tx_tail_ptr(priv, tx_q, queue, 0);
+ 
+ 	stmmac_start_tx_dma(priv, queue);
+ 
 -- 
-2.47.0
-
+2.47.3
 
