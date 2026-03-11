@@ -1,60 +1,62 @@
-Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E5973A5424
-	for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 23:59:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E65390222
+	for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 23:59:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773273567; cv=none; b=S5+PRZm/WAwxdwuqtlAr4qooOiI7A9KzZdvVDkE32OK0za9Jz/jPFMxZdxMP10yK9OSifn72C6i2zDbZIp1f7AV5EE/TrAucZJWl35hMLjEx00VnXjzCBsiq5PyuJ9/EuNJctaKykFEPPP67Y5vS3X5izDI2UqIrkVlcDXLpZS0=
+	t=1773273568; cv=none; b=O+0jlWZRt/cgylukIKy+vrbGMs1xyRlrwxerHTcHrPi5Nyts5l5x1D5jMGzpKThZOMFfRfxAn3WnUIU6tLU+b5q11lmEvtlxLZ9ItA02rRi76VNW0jGvyd9He3F7Hw8nsRsC2DBs1TWe+P4xJLAExYryvCv53crX6SYKjNwt7AE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773273567; c=relaxed/simple;
-	bh=xALfr9gLmb4EVc9ETm818gzsdS+pQQL7/OhbxqZPKvk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mcJm6zUHaKZs1NtDDM5E4UClGwlPZIXe+Eqgb4XAoII0oUTDhRlPUrap5Tk0V7zvLZKJujkoiWWzRr2WcIRvZseOccAXYFWyI+ph+nnAsvMFjIWfQmR8hu3j/AGXtVqvCITl+CrMC5O/tOsCbnGsbHsC78R7Jb7XF9rC/6WLut8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ToARCqZx; arc=none smtp.client-ip=74.125.224.44
+	s=arc-20240116; t=1773273568; c=relaxed/simple;
+	bh=ICk3v15m+U+7FUj25k5WGS6ePzX93vDJ5ulhtqU//kM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=cmekK2nEmR94KTNqAqPnRRsgjbYGIwa5jAoQ9EFtAS2PpP1SdubKm/bbJoQYZtm+ZyftTOXU21KFKRet+tUEQ/ZQjN1MmV/vydifpo+NCSFLjimyJXPfpMO9QMxhym2Dq2BH3DopYRILLO2n2UHDCIBA9GSzZJd0lC8h28QTq5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FmWfnUuu; arc=none smtp.client-ip=74.125.224.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ToARCqZx"
-Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-64ad775d002so48934d50.1
-        for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 16:59:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FmWfnUuu"
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-64ad775d002so48937d50.1
+        for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 16:59:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20230601; t=1773273565; x=1773878365; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1YvNZa5OyW3paqyFGigH39d2EYczniLgPpXU3KSwy6c=;
-        b=ToARCqZxSEJXZyMaF2qpLvn+aiK7bFRFA9agtiaWln7F+eKk7SufrxA1c82ZSmxowf
-         jghOra8uoqHdaMvlmcaUl04kTZ6900L1Y41Ok2/ZU84kXKE29RlrdylmcUZWkohQlGpM
-         5P1od9ijyD3vb45AT51tzTacCjS+B1wrBDnrOI555PbgDvt8gQA/9oQjQo36yPiL+yW3
-         rP0ZE1py2PNQ+kgeJRp8AqsjTJVwWUFRg1iBOEw+JkMyQdFKTIczBmI02Dd+yYKi6qrp
-         VPMM74pBb9afVCwhWFGmCpl8SR8y6sob9i9NNDFqjJO/2Zf43eDbQ9kn+oDyPBQ81yMW
-         wPcQ==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SWVoSREJeZ8OppTnDbb5sVZBn5G5Drxc4Jn2dL9E5JI=;
+        b=FmWfnUuujr0FN06KpB7wwrEG/r97iTvuTRgXfRWUyysVw9CEU8IHdjRrZpjrn0AjPE
+         s6PHYiZz98MVqGm9OWksznc1z/+i4CS1G7PorI92RKcDTYRWc9TkJmwu7ZoWEBRNHSIz
+         5m3dI+Rp2YX2+48/FYZlRfNaOycO+SLKFQqDPDcSOfHkH3a2P4smGbdkVAsKG2fycAOB
+         87HUDVlcD0rRNus6JYUeBm+LdaFB3SgGLbervvKEebxJ7iUOdLM0p2ZZq1NeIRNsamnh
+         MfHu39EpZSWEOSJ0pCV3QnyFVcbVrQvbyr2n4vDkf/YSdjdSSJpyg6WP3rNFABAj0fnv
+         tYEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1773273565; x=1773878365;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1YvNZa5OyW3paqyFGigH39d2EYczniLgPpXU3KSwy6c=;
-        b=P/ZZZbfsowcUYpeASmEvhYvtor+Ry3yCJzTcHXcq35c5TQ/s/JeohjJP0cuqbOF2JR
-         p3cEv5jTNlKTzK5467s47LV1bAHZC+Dj5vvT8Hbwcc3P524CVMpm6H62x9qXLTn0dbpg
-         521vac/vqSZewSHhDbkxpRHBBcR/LEIaDGDJ7prBriqjAcyijQJCinnFUfy1y6qdK2I4
-         uIj6zipze+NegNiaQ3uNy9r6kVDDcl7IdW/kK48lH1KITGmQTENUhWddTGuKIvQuqxql
-         3C8qAt73DBkF3DqTLVtDEz57chdWVI9NfE8J8eLK5j1CwPqACZFkXKQaLNtHZiagXR98
-         WOUw==
-X-Gm-Message-State: AOJu0Yx90jG4Yv1QCD3ETSNrDDu0zmP4Qls5v8zGzwgVOyDkobphCaJo
-	cTrSKlj4jSlk3wm6awf72UgLpGtB6USOzcxoL8D+6hy16gbYu8agpDwI4qQ8OogO
-X-Gm-Gg: ATEYQzxk5V62NOyysRDZD4mgoRZPGrFZFeFzoGJchLYy72Gze3NvWPRYReGRer2tQ0C
-	EyjCUSBXDkyz6ii53NkkqcgRhe8eGSZQaR9xSYHHqvSdAiWLu6aMISO9itSH4yvSkGx6plgAfWb
-	J0AfR1fQuEFpuFESibRWazP/4FqLrIbDdNvaLmZnkqhvUtBaaAFM8528ozbEie7sCvaMP5V5KM9
-	VsyZPisUuY63dOxbt5WnREyWFPRGxFdmV2c/Q/oWgQJwOSJGIwU/RO9vV7sPdOBGSvCkjm1nxlM
-	UQvf+wjOUtYLoOQ6SxpN+0SPRsD5atf63orWwXnv5HcP7ogdl/R8s7SLpUSeOfw9/ty3oGSg/d4
-	F4SJXGOVa9kM7t43/ynkrlHhAkt+NHp/b6bpSC5OUE/KO8CrEB0oLKnXM6Z4fy48rqDGt2RZhkH
-	I/uzMOIhjspfuw59jJuN/uUxo=
-X-Received: by 2002:a05:690c:ed6:b0:794:c0c7:43e8 with SMTP id 00721157ae682-79a11d4932amr2610417b3.3.1773273558029;
-        Wed, 11 Mar 2026 16:59:18 -0700 (PDT)
-Received: from localhost ([2a03:2880:21ff:b::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-79917dea7c9sm21570467b3.5.2026.03.11.16.59.17
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=SWVoSREJeZ8OppTnDbb5sVZBn5G5Drxc4Jn2dL9E5JI=;
+        b=II/zaGuDpWSC9gW8QLF1x/wePZhBHJYCyiJJRG/Wtb1sdahVErxg7FAIZbtLNKFpph
+         ZRgcFo3x+PeKe5yq1pRx4cYvveUN7wi3dn+vdfduKKMHKFnWOpWYrhWH3WSAKUz2zcCa
+         GJ3KgwazgIdbsaqn7MpLMeZuGHCWk0KgZ1eILssYPesWtQdI18tAN4cmtOygiBB/KWly
+         Ss4bgUYlwwaimBcTR0NFcv+QLRAk5oeZTv112XOQM7QHYZQQXlhCRqAJ87QXVs4hjYzn
+         JZWkJZyZ43f4hTJphz/wijCojltUuoTfZqp4eR+8wQrFj9dKQQ/KN7X3rA/oHZdKKA8v
+         N70A==
+X-Gm-Message-State: AOJu0Yyif6E0JTVodSJwCxjcv9m4ld76JDbrXY+lqVzM8IXmIYkGS9xQ
+	vLOl6iDH2m4+v892mQbysg/E8jAWnKaVbayxN+QSN+a8Ds4tWZp14QePW3pdYb7O
+X-Gm-Gg: ATEYQzzIQITPYHFp8L2/VI+1Xk2mcDabdaYZcwG0pbufUKLWhj/cmbQTKuaiW2le6XO
+	WQ0qzDHFCJRYvlnAo3REsUIafCeQVLuT4exRSRb1u2T6WOTRv/4erh79fVisbFuMrzUitOJWDMD
+	8KjDWXQ/QHk6CVQiQ20JRuWfTuf4NFNZToGVsaa2IxLMOA1S+6qwaKMvAzcbsqZMLaf42vM43nE
+	XKIOSpHW7EyX1O+MkF5lQf0aO+aCfVQJ7yhQ7eJySD6RGoFMLqjfLmbeA3CKElWH6S1835j6dAi
+	WvVnf/ixn0s0HdKklJozCr1V799F2cq4JEzMDBlX7fyafRXf/cFH7zEFWFrNiaLqTphMWWeZXvh
+	J7n1+PUMLfUWnXi1KWsKrVDX3MZScUjVyy1wfxPsnPSMtaUqfyjMezVbZ8x2kdrszjeedTe0LPx
+	MXjUDfMMcgWF9udvvQsRHn+vhuuT3W7UyxTpQ=
+X-Received: by 2002:a05:690e:11c6:b0:64a:e3b8:cc4d with SMTP id 956f58d0204a3-64e5976110bmr253749d50.3.1773273565307;
+        Wed, 11 Mar 2026 16:59:25 -0700 (PDT)
+Received: from localhost ([2a03:2880:21ff:70::])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-64d64f282aesm2297226d50.0.2026.03.11.16.59.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Mar 2026 16:59:17 -0700 (PDT)
+        Wed, 11 Mar 2026 16:59:25 -0700 (PDT)
 From: Wei Wang <weibunny.kernel@gmail.com>
 To: netdev@vger.kernel.org,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -65,115 +67,759 @@ To: netdev@vger.kernel.org,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>
 Cc: Wei Wang <weibunny@fb.com>
-Subject: [PATCH v4 net-next 0/5] psp: Add support for dev-assoc/disassoc 
-Date: Wed, 11 Mar 2026 16:58:58 -0700
-Message-ID: <20260311235904.2392010-1-weibunny.kernel@gmail.com>
+Subject: [PATCH v4 net-next 2/5] psp: add new netlink cmd for dev-assoc and dev-disassoc
+Date: Wed, 11 Mar 2026 16:59:00 -0700
+Message-ID: <20260311235904.2392010-3-weibunny.kernel@gmail.com>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260311235904.2392010-1-weibunny.kernel@gmail.com>
+References: <20260311235904.2392010-1-weibunny.kernel@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 From: Wei Wang <weibunny@fb.com>
 
-The main purpose of this feature is to associate virtual devices like
-veth or netkit with a real PSP device, so we could provide PSP
-functionality to the application running with virtual devices.
+The main purpose of this cmd is to be able to associate a
+non-psp-capable device (e.g. veth or netkit) with a psp device.
+One use case is if we create a pair of veth/netkit, and assign 1 end
+inside a netns, while leaving the other end within the default netns,
+with a real PSP device, e.g. netdevsim or a physical PSP-capable NIC.
+With this command, we could associate the veth/netkit inside the netns
+with PSP device, so the virtual device could act as PSP-capable device
+to initiate PSP connections, and performs PSP encryption/decryption on
+the real PSP device.
 
-A typical deployment that works with this feature is as follows:
-     Host Namespace:
-     psp_dev_local  ←──physically linked──→ psp_dev_peer
-	  (PSP device)
-	       │
-	       │ BPF on psp_dev_local ingress: bpf_redirect_peer() to nk_guest
-	       │
-	  nk_host / veth_host
-	       │
-	       │ BPF on nk_host ingress: bpf_redirect_neigh() to psp_dev_local
-	       │
-      Guest Namespace (netns):
-	       │
-	  nk_guest / veth_guest
-	  ★ PSP application run here
+Signed-off-by: Wei Wang <weibunny@fb.com>
+---
+ Documentation/netlink/specs/psp.yaml |  67 +++++-
+ include/net/psp/types.h              |  15 ++
+ include/uapi/linux/psp.h             |  13 ++
+ net/psp/psp-nl-gen.c                 |  32 +++
+ net/psp/psp-nl-gen.h                 |   2 +
+ net/psp/psp_main.c                   |  21 +-
+ net/psp/psp_nl.c                     | 330 ++++++++++++++++++++++++++-
+ 7 files changed, 466 insertions(+), 14 deletions(-)
 
-      Remote Namespace (_netns):
-	  psp_dev_peer
-	  ★ PSP server application runs here
-
-Note:
-The general requirement for this feature to work:
-For PSP to work correctly, the egress device at validate_xmit_skb()
-time must have psp_dev matching the association's psd. Any device
-stacking or traffic redirection that changes the egress device will
-cause either:
-1. TX validation failure (SKB_DROP_REASON_PSP_OUTPUT) - fail-safe
-2. RX policy failure after tx-assoc - packets without PSP extension
-   are rejected by receiver expecting encrypted traffic
-
-Here are a few examples that this feature would not work:
-- Bonding with load balancing in round-robin, XOR, 802.3ad mode across
-  multiple PSP devices, or mixed PSP and non-PSP devices
-- Bonding with active-backup mode might work without PSP migration for
-  failover case.
-- ipvlan/macvlan in bridge mode would not work given packets are
-  loopbacked locally without going through the PSP device.
-
-Changes since v3:
-- Make nsid optional for dev-assoc/dev-disassoc operation, and use
-  the ns user is in when it's not specified. Also added a test for this.
-- Fix psp_nl_notify_dev() to compute the correct nsid relative to the
-  listener's netns.
-- Only register the new netdev event for psp dev cleanup upon the first
-  successful dev-assoc operation.
-- Change the following in selftest:
-  - Add CONFIG_NETKIT to driver/net's config
-  - Fall back to NetDrvEpEnv and run basic test cases if NetDrvContEnv
-    does not load
-  - Use ksft_variants instead of psp_ip_ver_test_builder
-
-Changes since v2:
-- Change the newly added parameter to psp_device_get_and_lock() to
-  admin in patch 1. Introduce 2 device check functions:
-  - psp_device_get_locked_admin() for dev-set and key-rotate
-  - psp_device_get_locked() for all other operations
-  Flip the logic for checking the dev_assoc_list accordingly in patch 2.
-- Move psp_nl_notify_dev() before removing the dev from assoc_dev_list
-  in psp_nl_dev_disassoc_doit() and correct the typo in commit msg in
-  patch 2.
-- Remove the threading and subprocess and some comment updates in patch 5. 
-
-Changes since v1:
-- Update the first 4 patches to reflect the latest changes in
-  https://lore.kernel.org/netdev/20260302053315.1919859-1-dw@davidwei.uk/
-- Update patch 9 to add a param to NetDrvContEnv to control the loading
-  of the tx forwarding bpf program
-
-Wei Wang (5):
-  psp: add admin/non-admin version of psp_device_get_locked
-  psp: add new netlink cmd for dev-assoc and dev-disassoc
-  psp: add a new netdev event for dev unregister
-  selftests/net: Add bpf skb forwarding program
-  selftest/net: psp: Add test for dev-assoc/disassoc
-
- Documentation/netlink/specs/psp.yaml          |  71 ++-
- include/net/psp/types.h                       |  15 +
- include/uapi/linux/psp.h                      |  13 +
- net/psp/psp-nl-gen.c                          |  36 +-
- net/psp/psp-nl-gen.h                          |   4 +
- net/psp/psp.h                                 |   3 +-
- net/psp/psp_main.c                            | 106 +++-
- net/psp/psp_nl.c                              | 365 ++++++++++++-
- tools/testing/selftests/drivers/net/config    |   1 +
- .../drivers/net/hw/nk_redirect.bpf.c          |  60 +++
- .../selftests/drivers/net/lib/py/env.py       |  54 +-
- tools/testing/selftests/drivers/net/psp.py    | 500 ++++++++++++++++--
- 12 files changed, 1166 insertions(+), 62 deletions(-)
- create mode 100644 tools/testing/selftests/drivers/net/hw/nk_redirect.bpf.c
-
+diff --git a/Documentation/netlink/specs/psp.yaml b/Documentation/netlink/specs/psp.yaml
+index fe2cdc966604..336ef19155ff 100644
+--- a/Documentation/netlink/specs/psp.yaml
++++ b/Documentation/netlink/specs/psp.yaml
+@@ -13,6 +13,17 @@ definitions:
+               hdr0-aes-gmac-128, hdr0-aes-gmac-256]
+ 
+ attribute-sets:
++  -
++    name: assoc-dev-info
++    attributes:
++      -
++        name: ifindex
++        doc: ifindex of an associated network device.
++        type: u32
++      -
++        name: nsid
++        doc: Network namespace ID of the associated device.
++        type: s32
+   -
+     name: dev
+     attributes:
+@@ -24,7 +35,9 @@ attribute-sets:
+           min: 1
+       -
+         name: ifindex
+-        doc: ifindex of the main netdevice linked to the PSP device.
++        doc: |
++          ifindex of the main netdevice linked to the PSP device,
++          or the ifindex to associate with the PSP device.
+         type: u32
+       -
+         name: psp-versions-cap
+@@ -38,6 +51,28 @@ attribute-sets:
+         type: u32
+         enum: version
+         enum-as-flags: true
++      -
++        name: assoc-list
++        doc: List of associated virtual devices.
++        type: nest
++        nested-attributes: assoc-dev-info
++        multi-attr: true
++      -
++        name: nsid
++        doc: |
++          Network namespace ID for the device to associate/disassociate.
++          Optional for dev-assoc and dev-disassoc; if not present, the
++          device is looked up in the caller's network namespace.
++        type: s32
++      -
++        name: by-association
++        doc: |
++          Flag indicating the PSP device is an associated device from a
++          different network namespace.
++          Present when in associated namespace, absent when in primary/host
++          namespace.
++        type: flag
++
+   -
+     name: assoc
+     attributes:
+@@ -170,6 +205,8 @@ operations:
+             - ifindex
+             - psp-versions-cap
+             - psp-versions-ena
++            - assoc-list
++            - by-association
+         pre: psp-device-get-locked
+         post: psp-device-unlock
+       dump:
+@@ -271,6 +308,34 @@ operations:
+         post: psp-device-unlock
+       dump:
+         reply: *stats-all
++    -
++      name: dev-assoc
++      doc: Associate a network device with a PSP device.
++      attribute-set: dev
++      do:
++        request:
++          attributes:
++            - id
++            - ifindex
++            - nsid
++        reply:
++          attributes: []
++        pre: psp-device-get-locked
++        post: psp-device-unlock
++    -
++      name: dev-disassoc
++      doc: Disassociate a network device from a PSP device.
++      attribute-set: dev
++      do:
++        request:
++          attributes:
++            - id
++            - ifindex
++            - nsid
++        reply:
++          attributes: []
++        pre: psp-device-get-locked
++        post: psp-device-unlock
+ 
+ mcast-groups:
+   list:
+diff --git a/include/net/psp/types.h b/include/net/psp/types.h
+index 25a9096d4e7d..4bd432ed107a 100644
+--- a/include/net/psp/types.h
++++ b/include/net/psp/types.h
+@@ -5,6 +5,7 @@
+ 
+ #include <linux/mutex.h>
+ #include <linux/refcount.h>
++#include <net/net_trackers.h>
+ 
+ struct netlink_ext_ack;
+ 
+@@ -43,9 +44,22 @@ struct psp_dev_config {
+ 	u32 versions;
+ };
+ 
++/**
++ * struct psp_assoc_dev - wrapper for associated net_device
++ * @dev_list: list node for psp_dev::assoc_dev_list
++ * @assoc_dev: the associated net_device
++ * @dev_tracker: tracker for the net_device reference
++ */
++struct psp_assoc_dev {
++	struct list_head dev_list;
++	struct net_device *assoc_dev;
++	netdevice_tracker dev_tracker;
++};
++
+ /**
+  * struct psp_dev - PSP device struct
+  * @main_netdev: original netdevice of this PSP device
++ * @assoc_dev_list: list of psp_assoc_dev entries associated with this PSP device
+  * @ops:	driver callbacks
+  * @caps:	device capabilities
+  * @drv_priv:	driver priv pointer
+@@ -67,6 +81,7 @@ struct psp_dev_config {
+  */
+ struct psp_dev {
+ 	struct net_device *main_netdev;
++	struct list_head assoc_dev_list;
+ 
+ 	struct psp_dev_ops *ops;
+ 	struct psp_dev_caps *caps;
+diff --git a/include/uapi/linux/psp.h b/include/uapi/linux/psp.h
+index a3a336488dc3..1c8899cd4da5 100644
+--- a/include/uapi/linux/psp.h
++++ b/include/uapi/linux/psp.h
+@@ -17,11 +17,22 @@ enum psp_version {
+ 	PSP_VERSION_HDR0_AES_GMAC_256,
+ };
+ 
++enum {
++	PSP_A_ASSOC_DEV_INFO_IFINDEX = 1,
++	PSP_A_ASSOC_DEV_INFO_NSID,
++
++	__PSP_A_ASSOC_DEV_INFO_MAX,
++	PSP_A_ASSOC_DEV_INFO_MAX = (__PSP_A_ASSOC_DEV_INFO_MAX - 1)
++};
++
+ enum {
+ 	PSP_A_DEV_ID = 1,
+ 	PSP_A_DEV_IFINDEX,
+ 	PSP_A_DEV_PSP_VERSIONS_CAP,
+ 	PSP_A_DEV_PSP_VERSIONS_ENA,
++	PSP_A_DEV_ASSOC_LIST,
++	PSP_A_DEV_NSID,
++	PSP_A_DEV_BY_ASSOCIATION,
+ 
+ 	__PSP_A_DEV_MAX,
+ 	PSP_A_DEV_MAX = (__PSP_A_DEV_MAX - 1)
+@@ -74,6 +85,8 @@ enum {
+ 	PSP_CMD_RX_ASSOC,
+ 	PSP_CMD_TX_ASSOC,
+ 	PSP_CMD_GET_STATS,
++	PSP_CMD_DEV_ASSOC,
++	PSP_CMD_DEV_DISASSOC,
+ 
+ 	__PSP_CMD_MAX,
+ 	PSP_CMD_MAX = (__PSP_CMD_MAX - 1)
+diff --git a/net/psp/psp-nl-gen.c b/net/psp/psp-nl-gen.c
+index 1f5e73e7ccc1..114299c64423 100644
+--- a/net/psp/psp-nl-gen.c
++++ b/net/psp/psp-nl-gen.c
+@@ -53,6 +53,20 @@ static const struct nla_policy psp_get_stats_nl_policy[PSP_A_STATS_DEV_ID + 1] =
+ 	[PSP_A_STATS_DEV_ID] = NLA_POLICY_MIN(NLA_U32, 1),
+ };
+ 
++/* PSP_CMD_DEV_ASSOC - do */
++static const struct nla_policy psp_dev_assoc_nl_policy[PSP_A_DEV_NSID + 1] = {
++	[PSP_A_DEV_ID] = NLA_POLICY_MIN(NLA_U32, 1),
++	[PSP_A_DEV_IFINDEX] = { .type = NLA_U32, },
++	[PSP_A_DEV_NSID] = { .type = NLA_S32, },
++};
++
++/* PSP_CMD_DEV_DISASSOC - do */
++static const struct nla_policy psp_dev_disassoc_nl_policy[PSP_A_DEV_NSID + 1] = {
++	[PSP_A_DEV_ID] = NLA_POLICY_MIN(NLA_U32, 1),
++	[PSP_A_DEV_IFINDEX] = { .type = NLA_U32, },
++	[PSP_A_DEV_NSID] = { .type = NLA_S32, },
++};
++
+ /* Ops table for psp */
+ static const struct genl_split_ops psp_nl_ops[] = {
+ 	{
+@@ -119,6 +133,24 @@ static const struct genl_split_ops psp_nl_ops[] = {
+ 		.dumpit	= psp_nl_get_stats_dumpit,
+ 		.flags	= GENL_CMD_CAP_DUMP,
+ 	},
++	{
++		.cmd		= PSP_CMD_DEV_ASSOC,
++		.pre_doit	= psp_device_get_locked,
++		.doit		= psp_nl_dev_assoc_doit,
++		.post_doit	= psp_device_unlock,
++		.policy		= psp_dev_assoc_nl_policy,
++		.maxattr	= PSP_A_DEV_NSID,
++		.flags		= GENL_CMD_CAP_DO,
++	},
++	{
++		.cmd		= PSP_CMD_DEV_DISASSOC,
++		.pre_doit	= psp_device_get_locked,
++		.doit		= psp_nl_dev_disassoc_doit,
++		.post_doit	= psp_device_unlock,
++		.policy		= psp_dev_disassoc_nl_policy,
++		.maxattr	= PSP_A_DEV_NSID,
++		.flags		= GENL_CMD_CAP_DO,
++	},
+ };
+ 
+ static const struct genl_multicast_group psp_nl_mcgrps[] = {
+diff --git a/net/psp/psp-nl-gen.h b/net/psp/psp-nl-gen.h
+index 977355455395..4dd0f0f23053 100644
+--- a/net/psp/psp-nl-gen.h
++++ b/net/psp/psp-nl-gen.h
+@@ -33,6 +33,8 @@ int psp_nl_rx_assoc_doit(struct sk_buff *skb, struct genl_info *info);
+ int psp_nl_tx_assoc_doit(struct sk_buff *skb, struct genl_info *info);
+ int psp_nl_get_stats_doit(struct sk_buff *skb, struct genl_info *info);
+ int psp_nl_get_stats_dumpit(struct sk_buff *skb, struct netlink_callback *cb);
++int psp_nl_dev_assoc_doit(struct sk_buff *skb, struct genl_info *info);
++int psp_nl_dev_disassoc_doit(struct sk_buff *skb, struct genl_info *info);
+ 
+ enum {
+ 	PSP_NLGRP_MGMT,
+diff --git a/net/psp/psp_main.c b/net/psp/psp_main.c
+index 82de78a1d6bd..178b848989f1 100644
+--- a/net/psp/psp_main.c
++++ b/net/psp/psp_main.c
+@@ -37,8 +37,18 @@ struct mutex psp_devs_lock;
+  */
+ int psp_dev_check_access(struct psp_dev *psd, struct net *net, bool admin)
+ {
++	struct psp_assoc_dev *entry;
++
+ 	if (dev_net(psd->main_netdev) == net)
+ 		return 0;
++
++	if (!admin) {
++		list_for_each_entry(entry, &psd->assoc_dev_list, dev_list) {
++			if (dev_net(entry->assoc_dev) == net)
++				return 0;
++		}
++	}
++
+ 	return -ENOENT;
+ }
+ 
+@@ -74,6 +84,7 @@ psp_dev_create(struct net_device *netdev,
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	psd->main_netdev = netdev;
++	INIT_LIST_HEAD(&psd->assoc_dev_list);
+ 	psd->ops = psd_ops;
+ 	psd->caps = psd_caps;
+ 	psd->drv_priv = priv_ptr;
+@@ -121,6 +132,7 @@ void psp_dev_free(struct psp_dev *psd)
+  */
+ void psp_dev_unregister(struct psp_dev *psd)
+ {
++	struct psp_assoc_dev *entry, *entry_tmp;
+ 	struct psp_assoc *pas, *next;
+ 
+ 	mutex_lock(&psp_devs_lock);
+@@ -140,6 +152,14 @@ void psp_dev_unregister(struct psp_dev *psd)
+ 	list_for_each_entry_safe(pas, next, &psd->stale_assocs, assocs_list)
+ 		psp_dev_tx_key_del(psd, pas);
+ 
++	list_for_each_entry_safe(entry, entry_tmp, &psd->assoc_dev_list,
++				 dev_list) {
++		list_del(&entry->dev_list);
++		rcu_assign_pointer(entry->assoc_dev->psp_dev, NULL);
++		netdev_put(entry->assoc_dev, &entry->dev_tracker);
++		kfree(entry);
++	}
++
+ 	rcu_assign_pointer(psd->main_netdev->psp_dev, NULL);
+ 
+ 	psd->ops = NULL;
+@@ -361,5 +381,4 @@ static int __init psp_init(void)
+ 
+ 	return genl_register_family(&psp_nl_family);
+ }
+-
+ subsys_initcall(psp_init);
+diff --git a/net/psp/psp_nl.c b/net/psp/psp_nl.c
+index b988f35412df..ce67a4dd41ce 100644
+--- a/net/psp/psp_nl.c
++++ b/net/psp/psp_nl.c
+@@ -2,6 +2,7 @@
+ 
+ #include <linux/ethtool.h>
+ #include <linux/skbuff.h>
++#include <linux/net_namespace.h>
+ #include <linux/xarray.h>
+ #include <net/genetlink.h>
+ #include <net/psp.h>
+@@ -38,6 +39,90 @@ static int psp_nl_reply_send(struct sk_buff *rsp, struct genl_info *info)
+ 	return genlmsg_reply(rsp, info);
+ }
+ 
++static bool psp_nl_has_listeners_any_ns(struct psp_dev *psd, unsigned int group)
++{
++	struct psp_assoc_dev *entry;
++
++	if (genl_has_listeners(&psp_nl_family, dev_net(psd->main_netdev),
++			       group))
++		return true;
++
++	list_for_each_entry(entry, &psd->assoc_dev_list, dev_list) {
++		if (genl_has_listeners(&psp_nl_family,
++				       dev_net(entry->assoc_dev), group))
++			return true;
++	}
++
++	return false;
++}
++
++/**
++ * psp_nl_multicast_per_ns() - multicast a notification to each unique netns
++ * @psd: PSP device (must be locked)
++ * @group: multicast group
++ * @build_ntf: callback to build an skb for a given netns, or NULL on failure
++ * @ctx: opaque context passed to @build_ntf
++ *
++ * Iterates all unique network namespaces from the associated device list
++ * plus the main device's netns. For each unique netns, calls @build_ntf
++ * to construct a notification skb and multicasts it.
++ */
++static void psp_nl_multicast_per_ns(struct psp_dev *psd, unsigned int group,
++				    struct sk_buff *(*build_ntf)(struct psp_dev *,
++								 struct net *,
++								 void *),
++				    void *ctx)
++{
++	struct psp_assoc_dev *entry;
++	struct xarray sent_nets;
++	struct net *main_net;
++	struct sk_buff *ntf;
++
++	main_net = dev_net(psd->main_netdev);
++	xa_init(&sent_nets);
++
++	list_for_each_entry(entry, &psd->assoc_dev_list, dev_list) {
++		struct net *assoc_net = dev_net(entry->assoc_dev);
++		int ret;
++
++		if (net_eq(assoc_net, main_net))
++			continue;
++
++		ret = xa_insert(&sent_nets, (unsigned long)assoc_net, assoc_net,
++				GFP_KERNEL);
++		if (ret == -EBUSY)
++			continue;
++
++		ntf = build_ntf(psd, assoc_net, ctx);
++		if (!ntf)
++			continue;
++
++		genlmsg_multicast_netns(&psp_nl_family, assoc_net, ntf, 0,
++					group, GFP_KERNEL);
++	}
++	xa_destroy(&sent_nets);
++
++	/* Send to main device netns */
++	ntf = build_ntf(psd, main_net, ctx);
++	if (!ntf)
++		return;
++	genlmsg_multicast_netns(&psp_nl_family, main_net, ntf, 0, group,
++				GFP_KERNEL);
++}
++
++static struct sk_buff *psp_nl_clone_ntf(struct psp_dev *psd, struct net *net,
++					void *ctx)
++{
++	return skb_clone(ctx, GFP_KERNEL);
++}
++
++static void psp_nl_multicast_all_ns(struct psp_dev *psd, struct sk_buff *ntf,
++				    unsigned int group)
++{
++	psp_nl_multicast_per_ns(psd, group, psp_nl_clone_ntf, ntf);
++	nlmsg_free(ntf);
++}
++
+ /* Device stuff */
+ 
+ static struct psp_dev *
+@@ -102,11 +187,74 @@ psp_device_unlock(const struct genl_split_ops *ops, struct sk_buff *skb,
+ 		sockfd_put(socket);
+ }
+ 
++static bool psp_has_assoc_dev_in_ns(struct psp_dev *psd, struct net *net)
++{
++	struct psp_assoc_dev *entry;
++
++	list_for_each_entry(entry, &psd->assoc_dev_list, dev_list) {
++		if (dev_net(entry->assoc_dev) == net)
++			return true;
++	}
++
++	return false;
++}
++
++static int psp_nl_fill_assoc_dev_list(struct psp_dev *psd, struct sk_buff *rsp,
++				      struct net *cur_net,
++				      struct net *filter_net)
++{
++	struct psp_assoc_dev *entry;
++	struct net *dev_net_ns;
++	struct nlattr *nest;
++	int nsid;
++
++	list_for_each_entry(entry, &psd->assoc_dev_list, dev_list) {
++		dev_net_ns = dev_net(entry->assoc_dev);
++
++		if (filter_net && dev_net_ns != filter_net)
++			continue;
++
++		/* When filtering by namespace, all devices are in the caller's
++		 * namespace so nsid is always NETNSA_NSID_NOT_ASSIGNED (-1).
++		 * Otherwise, calculate the nsid relative to cur_net.
++		 */
++		nsid = filter_net ? NETNSA_NSID_NOT_ASSIGNED :
++				    peernet2id_alloc(cur_net, dev_net_ns,
++						     GFP_KERNEL);
++
++		nest = nla_nest_start(rsp, PSP_A_DEV_ASSOC_LIST);
++		if (!nest)
++			return -1;
++
++		if (nla_put_u32(rsp, PSP_A_ASSOC_DEV_INFO_IFINDEX,
++				entry->assoc_dev->ifindex) ||
++		    nla_put_s32(rsp, PSP_A_ASSOC_DEV_INFO_NSID, nsid)) {
++			nla_nest_cancel(rsp, nest);
++			return -1;
++		}
++
++		nla_nest_end(rsp, nest);
++	}
++
++	return 0;
++}
++
+ static int
+ psp_nl_dev_fill(struct psp_dev *psd, struct sk_buff *rsp,
+ 		const struct genl_info *info)
+ {
++	struct net *cur_net;
+ 	void *hdr;
++	int err;
++
++	cur_net = genl_info_net(info);
++
++	/* Skip this device if we're in an associated netns but have no
++	 * associated devices in cur_net
++	 */
++	if (cur_net != dev_net(psd->main_netdev) &&
++	    !psp_has_assoc_dev_in_ns(psd, cur_net))
++		return 0;
+ 
+ 	hdr = genlmsg_iput(rsp, info);
+ 	if (!hdr)
+@@ -118,6 +266,22 @@ psp_nl_dev_fill(struct psp_dev *psd, struct sk_buff *rsp,
+ 	    nla_put_u32(rsp, PSP_A_DEV_PSP_VERSIONS_ENA, psd->config.versions))
+ 		goto err_cancel_msg;
+ 
++	if (cur_net == dev_net(psd->main_netdev)) {
++		/* Primary device - dump assoc list */
++		err = psp_nl_fill_assoc_dev_list(psd, rsp, cur_net, NULL);
++		if (err)
++			goto err_cancel_msg;
++	} else {
++		/* In netns: set by-association flag and dump filtered
++		 * assoc list containing only devices in cur_net
++		 */
++		if (nla_put_flag(rsp, PSP_A_DEV_BY_ASSOCIATION))
++			goto err_cancel_msg;
++		err = psp_nl_fill_assoc_dev_list(psd, rsp, cur_net, cur_net);
++		if (err)
++			goto err_cancel_msg;
++	}
++
+ 	genlmsg_end(rsp, hdr);
+ 	return 0;
+ 
+@@ -126,27 +290,34 @@ psp_nl_dev_fill(struct psp_dev *psd, struct sk_buff *rsp,
+ 	return -EMSGSIZE;
+ }
+ 
+-void psp_nl_notify_dev(struct psp_dev *psd, u32 cmd)
++static struct sk_buff *psp_nl_build_dev_ntf(struct psp_dev *psd,
++					    struct net *net, void *ctx)
+ {
++	u32 cmd = *(u32 *)ctx;
+ 	struct genl_info info;
+ 	struct sk_buff *ntf;
+ 
+-	if (!genl_has_listeners(&psp_nl_family, dev_net(psd->main_netdev),
+-				PSP_NLGRP_MGMT))
+-		return;
+-
+ 	ntf = genlmsg_new(GENLMSG_DEFAULT_SIZE, GFP_KERNEL);
+ 	if (!ntf)
+-		return;
++		return NULL;
+ 
+ 	genl_info_init_ntf(&info, &psp_nl_family, cmd);
++	genl_info_net_set(&info, net);
+ 	if (psp_nl_dev_fill(psd, ntf, &info)) {
+ 		nlmsg_free(ntf);
+-		return;
++		return NULL;
+ 	}
+ 
+-	genlmsg_multicast_netns(&psp_nl_family, dev_net(psd->main_netdev), ntf,
+-				0, PSP_NLGRP_MGMT, GFP_KERNEL);
++	return ntf;
++}
++
++void psp_nl_notify_dev(struct psp_dev *psd, u32 cmd)
++{
++	if (!psp_nl_has_listeners_any_ns(psd, PSP_NLGRP_MGMT))
++		return;
++
++	psp_nl_multicast_per_ns(psd, PSP_NLGRP_MGMT,
++				psp_nl_build_dev_ntf, &cmd);
+ }
+ 
+ int psp_nl_dev_get_doit(struct sk_buff *req, struct genl_info *info)
+@@ -243,8 +414,8 @@ int psp_nl_dev_set_doit(struct sk_buff *skb, struct genl_info *info)
+ int psp_nl_key_rotate_doit(struct sk_buff *skb, struct genl_info *info)
+ {
+ 	struct psp_dev *psd = info->user_ptr[0];
+-	struct genl_info ntf_info;
+ 	struct sk_buff *ntf, *rsp;
++	struct genl_info ntf_info;
+ 	u8 prev_gen;
+ 	int err;
+ 
+@@ -280,8 +451,9 @@ int psp_nl_key_rotate_doit(struct sk_buff *skb, struct genl_info *info)
+ 	psd->stats.rotations++;
+ 
+ 	nlmsg_end(ntf, (struct nlmsghdr *)ntf->data);
+-	genlmsg_multicast_netns(&psp_nl_family, dev_net(psd->main_netdev), ntf,
+-				0, PSP_NLGRP_USE, GFP_KERNEL);
++
++	psp_nl_multicast_all_ns(psd, ntf, PSP_NLGRP_USE);
++
+ 	return psp_nl_reply_send(rsp, info);
+ 
+ err_free_ntf:
+@@ -291,6 +463,140 @@ int psp_nl_key_rotate_doit(struct sk_buff *skb, struct genl_info *info)
+ 	return err;
+ }
+ 
++int psp_nl_dev_assoc_doit(struct sk_buff *skb, struct genl_info *info)
++{
++	struct psp_dev *psd = info->user_ptr[0];
++	struct psp_assoc_dev *psp_assoc_dev;
++	struct net_device *assoc_dev;
++	u32 assoc_ifindex;
++	struct sk_buff *rsp;
++	struct net *net;
++	int nsid;
++
++	if (GENL_REQ_ATTR_CHECK(info, PSP_A_DEV_IFINDEX))
++		return -EINVAL;
++
++	if (info->attrs[PSP_A_DEV_NSID]) {
++		nsid = nla_get_s32(info->attrs[PSP_A_DEV_NSID]);
++
++		net = get_net_ns_by_id(genl_info_net(info), nsid);
++		if (!net) {
++			NL_SET_BAD_ATTR(info->extack,
++					info->attrs[PSP_A_DEV_NSID]);
++			return -EINVAL;
++		}
++	} else {
++		net = get_net(genl_info_net(info));
++	}
++
++	psp_assoc_dev = kzalloc(sizeof(*psp_assoc_dev), GFP_KERNEL);
++	if (!psp_assoc_dev) {
++		put_net(net);
++		return -ENOMEM;
++	}
++
++	assoc_ifindex = nla_get_u32(info->attrs[PSP_A_DEV_IFINDEX]);
++	assoc_dev = netdev_get_by_index(net, assoc_ifindex,
++					&psp_assoc_dev->dev_tracker,
++					GFP_KERNEL);
++	if (!assoc_dev) {
++		put_net(net);
++		kfree(psp_assoc_dev);
++		NL_SET_BAD_ATTR(info->extack, info->attrs[PSP_A_DEV_IFINDEX]);
++		return -ENODEV;
++	}
++
++	/* Check if device is already associated with a PSP device */
++	if (rcu_access_pointer(assoc_dev->psp_dev)) {
++		NL_SET_ERR_MSG(info->extack,
++			       "Device already associated with a PSP device");
++		netdev_put(assoc_dev, &psp_assoc_dev->dev_tracker);
++		put_net(net);
++		kfree(psp_assoc_dev);
++		return -EBUSY;
++	}
++
++	psp_assoc_dev->assoc_dev = assoc_dev;
++	rsp = psp_nl_reply_new(info);
++	if (!rsp) {
++		netdev_put(assoc_dev, &psp_assoc_dev->dev_tracker);
++		put_net(net);
++		kfree(psp_assoc_dev);
++		return -ENOMEM;
++	}
++
++	rcu_assign_pointer(assoc_dev->psp_dev, psd);
++	list_add_tail(&psp_assoc_dev->dev_list, &psd->assoc_dev_list);
++
++	put_net(net);
++
++	psp_nl_notify_dev(psd, PSP_CMD_DEV_CHANGE_NTF);
++
++	return psp_nl_reply_send(rsp, info);
++}
++
++int psp_nl_dev_disassoc_doit(struct sk_buff *skb, struct genl_info *info)
++{
++	struct psp_assoc_dev *entry, *found = NULL;
++	struct psp_dev *psd = info->user_ptr[0];
++	u32 assoc_ifindex;
++	struct sk_buff *rsp;
++	struct net *net;
++	int nsid;
++
++	if (GENL_REQ_ATTR_CHECK(info, PSP_A_DEV_IFINDEX))
++		return -EINVAL;
++
++	if (info->attrs[PSP_A_DEV_NSID]) {
++		nsid = nla_get_s32(info->attrs[PSP_A_DEV_NSID]);
++
++		net = get_net_ns_by_id(genl_info_net(info), nsid);
++		if (!net) {
++			NL_SET_BAD_ATTR(info->extack,
++					info->attrs[PSP_A_DEV_NSID]);
++			return -EINVAL;
++		}
++	} else {
++		net = get_net(genl_info_net(info));
++	}
++
++	assoc_ifindex = nla_get_u32(info->attrs[PSP_A_DEV_IFINDEX]);
++
++	/* Search the association list by ifindex and netns */
++	list_for_each_entry(entry, &psd->assoc_dev_list, dev_list) {
++		if (entry->assoc_dev->ifindex == assoc_ifindex &&
++		    dev_net(entry->assoc_dev) == net) {
++			found = entry;
++			break;
++		}
++	}
++
++	if (!found) {
++		put_net(net);
++		NL_SET_BAD_ATTR(info->extack, info->attrs[PSP_A_DEV_IFINDEX]);
++		return -ENODEV;
++	}
++
++	rsp = psp_nl_reply_new(info);
++	if (!rsp) {
++		put_net(net);
++		return -ENOMEM;
++	}
++
++	/* Notify before removal */
++	psp_nl_notify_dev(psd, PSP_CMD_DEV_CHANGE_NTF);
++
++	/* Remove from the association list */
++	list_del(&found->dev_list);
++	rcu_assign_pointer(found->assoc_dev->psp_dev, NULL);
++	netdev_put(found->assoc_dev, &found->dev_tracker);
++	kfree(found);
++
++	put_net(net);
++
++	return psp_nl_reply_send(rsp, info);
++}
++
+ /* Key etc. */
+ 
+ int psp_assoc_device_get_locked(const struct genl_split_ops *ops,
 -- 
 2.52.0
 
