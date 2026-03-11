@@ -1,140 +1,171 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FFFE3B27FF
-	for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 07:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C50CA358D3D;
+	Wed, 11 Mar 2026 07:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773214600; cv=none; b=cLSQ5+3q7ey5ABc/EOeUhihrb0uqwiJcpuYB5jsms9Vpxyl0CBmrKvdl0fq5zYYtK/TUuzw/oLFWl3X65InYGtMRVEo4yWXiP5jY3kZk5Aqy6EdA6Wi7WKAdzOIEOwAFQGQ11PDRh7xQJRb3ktHpB1WI5YH32EO2nUfTf5qcp5I=
+	t=1773215642; cv=none; b=bZ4p2T9wWLjbU7UjCZ4S00QsuEHHiquSCuuNV51ZqcieJo9WIQSUvGNexUnx1YN1xF99aTw8iwnkke7CoVnWTCnTYsKq2CTLnpaywh8SZknkxJqGJIwW8OxuII6lhqN8FDC/KBeskyBUULrQEYsjXiaSbdqoMfc2lNjuz94BIus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773214600; c=relaxed/simple;
-	bh=HcCA86If4wMPDKdIAoMLlvJ612HBDwwIc90rcnzJwNI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t3mmVqEV19i5RzS+37FKOVVkraOpZTJyyPCRVsalfNJEkpDbXbkEkJ5P8sJQfmrSKt5Gp/wQ+BgvxuMwwD2p9M18xZHL7IBByzQHDzzeASY8OnB7QkmWzIzpUEfi4cYNXlFgS6qvdG49hnpVUNygrwmfIFmRz8KCxAKPElR1bH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MQteAyR9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773215642; c=relaxed/simple;
+	bh=hvJFPTL0PBR5lBcMUCqrgiX6bA/dSIBwOKY3DXjrJPU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=BHSz6ZLkJiBCzYFdyZpDCVoK2ImqaNhxd5fPh1r27fCoB+iEMjL+9soZev3pX34tdctkWTjszXqVvrx763L/NM0dh/NW8ACwxUMvmPHKflxAKGqZBk66cAhd91qL/n+OAICBRDjL0OKnG6IBjRM5h54mfVqKIddTVZfYg1VpgTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X+ySyS8F; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MQteAyR9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23AC0C4CEF7;
-	Wed, 11 Mar 2026 07:36:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X+ySyS8F"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 2CFBCC2BCB7;
+	Wed, 11 Mar 2026 07:54:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773214599;
-	bh=HcCA86If4wMPDKdIAoMLlvJ612HBDwwIc90rcnzJwNI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MQteAyR9G5imXHR3ZpRw4vBPOx29pmZPQplR5qh0oIqnZGtYv7Ya+df0ECw70+b7G
-	 IusGbtgVeF3MVcKPgHFitNHIQCiUeG575GN3ePgbjTgD8hZODdO3LNeQV/wm8+pfQ2
-	 rkUxYUBIQ05AtI69hG4DlTl29m/xS5PFRbgEIBquYMypFQn98/CHlr+/Zv4z7V9hE8
-	 O6uAWams+6y75vZdqzaQFot3s0qYEb2JT1rV4V1/71EpmSQsU6UJDlU1uQc6uf3hzc
-	 X+Aa1t7OmKIU8Sjq4xE46HosRKVs6Ipd5qTSCPNRddmUWFCNDB8X3ardARiecABH9H
-	 IokssWnbu7YBw==
-Date: Wed, 11 Mar 2026 09:36:35 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Sabrina Dubroca <sd@queasysnail.net>
-Cc: Simon Horman <horms@kernel.org>, Florian Westphal <fw@strlen.de>,
-	netdev@vger.kernel.org,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: Re: [PATCH ipsec-next 01/10] xfrm: state: fix sparse warnings on
- xfrm_state_hold_rcu
-Message-ID: <20260311073635.GR12611@unreal>
-References: <cover.1773051558.git.sd@queasysnail.net>
- <7388df7238672a92be0e4048f0225e6db294e736.1773051558.git.sd@queasysnail.net>
- <20260310103135.GB12611@unreal>
- <abABg6aO9twGIk7F@krikkit>
- <20260310182012.GF12611@unreal>
- <abBv6zR4Qq_lrzuC@strlen.de>
- <20260310194500.GO12611@unreal>
- <abB12Ae769OivuYB@strlen.de>
- <20260310201021.GP12611@unreal>
- <abCQGh5Ce9uDbOo9@krikkit>
+	s=k20201202; t=1773215642;
+	bh=hvJFPTL0PBR5lBcMUCqrgiX6bA/dSIBwOKY3DXjrJPU=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=X+ySyS8FVBd6CaGyhBmYE6jsFGRDFTYSX6WNBbVOTzsaZfxBjJZw9F2Nntg80KpY0
+	 bmKRKCYiXRHkXSAukklVRdBodCMXWrZa8YVHtOJILZg/WtWUnF0faJIebSGPuL8Bkl
+	 HG1wKigt4DOe2SmtE1lz3rzDENeTklDyxPuD4e3VVwexFe1sG7dD2KKk7+5Rnzt2ls
+	 7cXyYVVtg9usjIz8EtOfDSPfD8CmrrA3VQfW4GOwT2ytbax32fYGk3LuxnD5ii8ea7
+	 nB+OryNC+Dn5aAJP9euSMDrD2cvwTZAI24tHYy8d8+sjGlVeDVsFgaa5nshwH5GZ/Z
+	 MYQga4uTIfHxQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 21BB2FD0652;
+	Wed, 11 Mar 2026 07:54:02 +0000 (UTC)
+From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
+Date: Wed, 11 Mar 2026 08:53:59 +0100
+Subject: [PATCH v9 4/5] dt-bindings: net: nxp,s32-dwmac: Declare per-queue
+ interrupts
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <abCQGh5Ce9uDbOo9@krikkit>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260311-dwmac_multi_irq-v9-4-f0c03ef8d01f@oss.nxp.com>
+References: <20260311-dwmac_multi_irq-v9-0-f0c03ef8d01f@oss.nxp.com>
+In-Reply-To: <20260311-dwmac_multi_irq-v9-0-f0c03ef8d01f@oss.nxp.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
+ Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
+ NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, devicetree@vger.kernel.org, rmk+kernel@armlinux.org.uk, 
+ vladimir.oltean@nxp.com, boon.khai.ng@altera.com, 
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773215640; l=3431;
+ i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
+ bh=/cg076X8F0Fw9UFRXkaiDF0p4JpYl1QE8urFK9ZIBLU=;
+ b=M2/5GhjqNCRPZWBLZC+lX5NF9sel4hy8joz8w+ZWy0YqIu9ehsewxpb4AaRyC34+j1Uj4SPSr
+ JBrARXDQNoLCU/W9TeFUaFMVrYWt1KhmEdiC5B/ZntoYNEDLbKMQFJW
+X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
+ pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
+X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
+ auth_id=217
+X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+Reply-To: jan.petrous@oss.nxp.com
 
-On Tue, Mar 10, 2026 at 10:41:46PM +0100, Sabrina Dubroca wrote:
-> (adding Simon: maybe you can help with the "comment wording" issue here :))
-> 
-> 2026-03-10, 22:10:21 +0200, Leon Romanovsky wrote:
-> > On Tue, Mar 10, 2026 at 08:49:44PM +0100, Florian Westphal wrote:
-> > > Leon Romanovsky <leon@kernel.org> wrote:
-> > > > > You can only use xfrm_state_hold() if the refcount is already > 0.
-> > > > > xfrm_state_hold uses refcount_inc(), so you get a UaF warn splat
-> > > > > if this assuption doesn't hold true.
-> > > > 
-> > > > I know it, the thing that bothers me is that it is unclear how
-> > > > xfrm_state_hold_rcu() can have refcount equal to 0.
-> > > > 
-> > > > xfrm_state_put() decreases refcount and when it is zero, it calls
-> > > > to __xfrm_state_destroy(). The latter assumes that the state was
-> > > > already removed from various hlists.
-> > > 
-> > > Yes, insertion in the table means refcount is 1, but userspace
-> > > can zap states at any time, e.g.:
-> > > 
-> > > xfrm_del_sa -> xfrm_state_delete -> __xfrm_state_delete (which
-> > > unlinks from hash lists).
-> > > 
-> > > The last xfrm_state_put() in that function may cause 1 -> 0
-> > > transition.  Parallel lookup can still observe that state,
-> > > so it has to pretend it wasn't there to begin with.
-> 
-> Thanks Florian.
-> 
-> 
-> > Yes, this is possible scenario and this is what is worth to document.
-> 
-> 
-> We could add something like:
-> 
-> /* Take a reference to @x, when we know the state has a refcount >= 1.
->  * In this case, we can avoid refcount_inc_not_zero and the error
->  * handling it requires.
->  * In contexts where concurrent state deletion is possible and we
->  * don't already hold a reference to that state, xfrm_state_hold_rcu
->  * must be used.
->  */
-> 
-> Though it may not make much sense to refer to xfrm_state_hold_rcu
-> (implemented in net/xfrm/xfrm_state.c) from include/net/xfrm.h.
-> 
-> And if we consider the hashtables to be private to
-> net/xfrm/xfrm_state.c, nothing outside of it should ever see a state
-> with refcount=0, since they will only ever see states that already
-> have one reference held by whatever gave them the pointer.
-> 
-> So maybe it's more xfrm_state_hold_rcu that needs a mention of
-> "concurrent state deletion could bring the refcount to 0 while we're
-> doing the lookup"? I don't know, for me it's pretty obvious with the
-> _rcu suffix that RCU -> unlocked -> could be deleted in parallel.
+From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
-It was the case when xfrm_state had __rcu marker, it is less obvious
-now. I agree with you that xfrm_state_hold_rcu() needs to be documented
-and not xfrm_state_hold().
+The DWMAC IP on NXP S32G/R SoCs has connected queue-based IRQ lines,
+set them to allow using Multi-IRQ mode.
 
-Thanks
+Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+---
+ .../devicetree/bindings/net/nxp,s32-dwmac.yaml     | 47 +++++++++++++++++++---
+ 1 file changed, 42 insertions(+), 5 deletions(-)
 
-> 
-> 
-> We also have __xfrm_state_put, the commit message that introduced it
-> states:
-> 
->     We often just do an atomic_dec(&x->refcnt) on an xfrm_state object
->     because we know there is more than 1 reference remaining and thus
->     we can elide the heavier xfrm_state_put() call.
-> 
-> so we could add:
-> 
-> /* Drop a reference to @x, when we know there is more than 1 reference remaining.
->  * In this case, we can avoid refcount_dec_and_test and just decrement refcnt.
->  */
-> 
-> but maybe someone has a better suggestion.
-> 
-> 
-> -- 
-> Sabrina
+diff --git a/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+index 1b2934f3c87c..c40f788c0ba8 100644
+--- a/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
++++ b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+@@ -1,5 +1,5 @@
+ # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+-# Copyright 2021-2024 NXP
++# Copyright 2021-2026 NXP
+ %YAML 1.2
+ ---
+ $id: http://devicetree.org/schemas/net/nxp,s32-dwmac.yaml#
+@@ -16,6 +16,8 @@ description:
+   the SoC S32R45 has two instances. The devices can use RGMII/RMII/MII
+   interface over Pinctrl device or the output can be routed
+   to the embedded SerDes for SGMII connectivity.
++  The DWMAC instances have connected all RX/TX queues interrupts,
++  enabling load balancing of data traffic across all CPU cores.
+ 
+ properties:
+   compatible:
+@@ -45,10 +47,25 @@ properties:
+       FlexTimer Modules connect to GMAC_0.
+ 
+   interrupts:
+-    maxItems: 1
++    minItems: 1
++    maxItems: 11
+ 
+   interrupt-names:
+-    const: macirq
++    oneOf:
++      items:
++        - const: macirq
++      items:
++        - const: macirq
++        - const: tx-queue-0
++        - const: rx-queue-0
++        - const: tx-queue-1
++        - const: rx-queue-1
++        - const: tx-queue-2
++        - const: rx-queue-2
++        - const: tx-queue-3
++        - const: rx-queue-3
++        - const: tx-queue-4
++        - const: rx-queue-4
+ 
+   clocks:
+     items:
+@@ -88,8 +105,28 @@ examples:
+               <0x0 0x4007c004 0x0 0x4>;    /* GMAC_0_CTRL_STS */
+         nxp,phy-sel = <&gpr 0x4>;
+         interrupt-parent = <&gic>;
+-        interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
+-        interrupt-names = "macirq";
++        interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>,
++                     /* CHN 0: tx, rx */
++                     <GIC_SPI 58 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>,
++                     /* CHN 1: tx, rx */
++                     <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 61 IRQ_TYPE_LEVEL_HIGH>,
++                     /* CHN 2: tx, rx */
++                     <GIC_SPI 62 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 63 IRQ_TYPE_LEVEL_HIGH>,
++                     /* CHN 3: tx, rx */
++                     <GIC_SPI 64 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 65 IRQ_TYPE_LEVEL_HIGH>,
++                     /* CHN 4: tx, rx */
++                     <GIC_SPI 66 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>;
++        interrupt-names = "macirq",
++                          "tx-queue-0", "rx-queue-0",
++                          "tx-queue-1", "rx-queue-1",
++                          "tx-queue-2", "rx-queue-2",
++                          "tx-queue-3", "rx-queue-3",
++                          "tx-queue-4", "rx-queue-4";
+         snps,mtl-rx-config = <&mtl_rx_setup>;
+         snps,mtl-tx-config = <&mtl_tx_setup>;
+         clocks = <&clks 24>, <&clks 17>, <&clks 16>, <&clks 15>;
+
+-- 
+2.47.0
+
+
