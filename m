@@ -1,87 +1,59 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-07.mail-europe.com (mail-0701.mail-europe.com [51.83.17.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75783D170D;
-	Wed, 11 Mar 2026 18:39:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5E23EB812
+	for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 18:47:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.83.17.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773254378; cv=none; b=MiRLa6YiyTNsy6RnKfV/chPSn5P+RSAart125U5fN3K90UUvtlpV997S9fApRzBXm3fhFIAQ6KKixrG6Pf0zTa3eUDd1/yfh1qlQY0ZhIRD1y/zQoqC7l8PxRrqsFTJDjjbUMqG/tDMM39fyqbgcwNvZQefpOAEQi06jp15dcN4=
+	t=1773254846; cv=none; b=UTq/m8lomgkt8YLHKpL2cuZNSDPVMr1ZxLmuDnFRvVK8jMepOMgI30skByl8c4FrUE7y20cR3jlwJVk0P1Vnqq9oM1bdUKNZmK7Rquk9XI3pYpwVPYbGOinlWg/GunqS+zidcvr8N/9SKV4bS/Ya1dlCfqq++GyVcT7Cg8KHCls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773254378; c=relaxed/simple;
-	bh=ASGMOVVlKPraU2epURzctOrNGTJoobbm41HEI2fCR1Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qi84t6CLAR1RyAJQGlYEEq3F8TO7imB//G4UAEtU0czUJa7aXsh/RHgzCM0AR1gjyrarddDRLHXnn7R3hb66AMScUNo77XIR/ZfzS1AVnIQ0ID3a91htvY7UX1VgkJNdWz/J/x4zqf0u5u3JibgthDnqtB0n4OqtGpnJfacQcg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ua9W7DXT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773254846; c=relaxed/simple;
+	bh=Jl7leThxnp/lGPAmTErmrNimY7QkLMfU1aZqqvKoU40=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KtozXVGW9WG66HglPHKZH6tQ6QVaTeFmI5q5P4jPTcExbhouZHKwrs6s5iZ3frpcjGnSI8NmKt3NGuimfAkMb2Mb6zrLJsdcHXLRJHVxwG97Pr0kXbN9NDAIQv1UAeGgWs4Ezcs4uiIVMe5fAojFzEm/dCObRJ224/XZpVef5a0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=fail smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=vbnC+Vk3; arc=none smtp.client-ip=51.83.17.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=1g4.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ua9W7DXT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28FA8C4CEF7;
-	Wed, 11 Mar 2026 18:39:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773254378;
-	bh=ASGMOVVlKPraU2epURzctOrNGTJoobbm41HEI2fCR1Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ua9W7DXTZhgcWR4Msm26H1ymyCpNtCktO4mEDuKUaRU8/TQf2VQYMBeEYjqXWMvNC
-	 Y2VRQgVu5ET/dFEkhMm0K+TVe7hzaJfwms1jOXumguH0bErw80PBGWID+o07SdSL40
-	 k8BAT2HFa9GSXZPtW3AskBTkTN0I4peF55s/0xpfyT8ZRfdkMxAT8+LPh3suv55/BK
-	 CYn96CLuCQ7YAEhoROMK9g6MQNPH82HirWEGDtNT5zjGTM12hxh0dqjHZTiagj+R77
-	 ZwzKEOPY8rEWJOMlXEpj51kWn3o08M66DKocs2Htr74hv5tNW9ZBZxniD/JbjEbT8C
-	 l/g22wevnwhWA==
-Date: Wed, 11 Mar 2026 18:39:30 +0000
-From: Conor Dooley <conor@kernel.org>
-To: jan.petrous@oss.nxp.com
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Chester Lin <chester62515@gmail.com>,
-	Matthias Brugger <mbrugger@suse.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
-	NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	rmk+kernel@armlinux.org.uk, vladimir.oltean@nxp.com,
-	boon.khai.ng@altera.com
-Subject: Re: [PATCH v10 4/5] dt-bindings: net: nxp,s32-dwmac: Declare
- per-queue interrupts
-Message-ID: <20260311-surname-implode-7ca49ed23079@spud>
-References: <20260311-dwmac_multi_irq-v10-0-7ab1669759b5@oss.nxp.com>
- <20260311-dwmac_multi_irq-v10-4-7ab1669759b5@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="vbnC+Vk3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
+	s=protonmail2; t=1773254829; x=1773514029;
+	bh=Jl7leThxnp/lGPAmTErmrNimY7QkLMfU1aZqqvKoU40=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=vbnC+Vk3tCDm99skCrj6obm6wxp1HQZt8aS+bc1z+/aa69PTErRtp37kWoM/dpVVB
+	 7DTxpUUJUyhq9vyAbZlPRzCS3vI0y2P/MV9zlLr8w46e9aRzNmnXMFwy9GCZOvjopd
+	 G9k/kfyfCnpZfRwP7ppQRnZrQfqI1aAgG/2xw41rJF7kdoLJzMJEaI5x9Uvm/nQpnW
+	 E8ovvpErJJTYcUvpj4kJ7UkO78UYQwYZv9B9LsZugaII7tKsN5CDN6fVBOFHwra/7K
+	 3PQxI1OrJYbkTox3ccDj0Ix8wwKLpfh2y/oy+YcldZ9erwpd8v8vhUeoSrPYNXexNU
+	 dq2Sq47WAsbnQ==
+Date: Wed, 11 Mar 2026 18:47:05 +0000
+To: Simon Horman <horms@kernel.org>
+From: Paul Moses <p@1g4.org>
+Cc: edumazet@google.com, stable@vger.kernel.org, herbert@gondor.apana.org.au, linux-kernel@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, steffen.klassert@secunet.com, chopps@labn.net, netdev@vger.kernel.org, pabeni@redhat.com
+Subject: Re: [net] xfrm: iptfs: only publish mode_data after clone setup
+Message-ID: <gMKu-eP2Z17VRGWDt3UsswTDUTaUJjm9BDstYEsXaGoK7ZFwEFDiflQT85gbZ1IiVx2mjZ09xI6Mn72M23V-3oYTNL8nMgb112XEGMoXcJY=@1g4.org>
+In-Reply-To: <20260311171134.1134085-1-horms@kernel.org>
+References: <20260309173033.537743-1-p@1g4.org> <20260311171134.1134085-1-horms@kernel.org>
+Feedback-ID: 8253658:user:proton
+X-Pm-Message-ID: ffd8969943b7fec8d286fa5d2d15212eda546b76
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="gzKQwFqV6iz70t2h"
-Content-Disposition: inline
-In-Reply-To: <20260311-dwmac_multi_irq-v10-4-7ab1669759b5@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
+>=20
+> > Fixes: 4b3faf610cc63 ("xfrm: iptfs: add new iptfs xfrm mode impl")
+>=20
+> Should this Fixes tag point to 6be02e3e4f37 instead?
+>=20
 
---gzKQwFqV6iz70t2h
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Yes
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-
-
---gzKQwFqV6iz70t2h
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCabG24gAKCRB4tDGHoIJi
-0i4EAP9b10n2cCkM9UMFiKRsDjhMNgnKFLf691BlIJH3dXwU+QEAt2QDDb5EgdT5
-KAbTSCGw9hwrM99VxedaO6ntRecwBA4=
-=xY2z
------END PGP SIGNATURE-----
-
---gzKQwFqV6iz70t2h--
+Thanks,
+Paul
