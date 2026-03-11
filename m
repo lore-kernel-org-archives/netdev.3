@@ -1,70 +1,139 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11FB018FDDE;
-	Wed, 11 Mar 2026 18:24:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E1C2E8DEF;
+	Wed, 11 Mar 2026 18:27:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773253491; cv=none; b=cGfn7gcpqgBIIu85o2P/yu6mH5uYEyp+WDegbbN84luuKgMvBCX0hsy7uota1YP7n0sRWO9Ilk+xC9PIziQ5lr0RanhWfqWQ0cjMzWU7ZeSG461IRX5N5sdJdy1Xr1qunYy88kpZPzEQUnthncz+EjusqxcZrg+X95KKJduV43A=
+	t=1773253659; cv=none; b=kXggo96UfhuIAlt8xxIs+drvA8W61+QY4RPxxoPsWfeP/nizJorgihN842d0/wWMp/0xis4UHCbTjWonulFIzT1u7mEhV8hL3CBERSgO5xUUb30588MwpXFLtO+jaMeiisHaqdSvYwM/+LERveZCBprvT9+Oi7aGpPvtb4e0G5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773253491; c=relaxed/simple;
-	bh=OXZJ3a4eImvzTCfcsyMa7gBbGVARrCrSGe9gQuXqEvY=;
+	s=arc-20240116; t=1773253659; c=relaxed/simple;
+	bh=psbKm+JUIEOmVDxhlExsmkrYZCYiynHWiEWJ93E/oIs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KUci3HqzJ7k7xKZXcsrQY8cs38rMaAJ8brTpR5dSVxjexzyVmQwsceTreOKDQR1PW3IzqrEM9joskiyH2DF+KtBtngqmSnBrpwL07fHD5sNFhcLgdrnx6elkbtfWK5znkClL/Q1di7vXPJ2Xysv09y3oVPrdp3T1YImZMTFwks0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=bT5ynAko; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=hAqeevxI1FdPfuyeOse365ZqX4NnHQPue4ItrYvE7vBlzrBRLBGT4mG+9zn51N0UgGnyrHYurNPxQD+NJkqdHMK4sK/81JEQKEAuQZgN3PxnzQ2EuSW7JaW63HCwntBgmY01wDYXUUBL5WXx4qvEwTjqd84D2e9MPNQCsqQnMFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dtP4RQTQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="bT5ynAko"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=YTexr7dpcyHGhGNlWafQmlROMLwbxDWQe14nAtF6Z/U=; b=bT5ynAkoXyKZmoOGPyjHaJvFNu
-	/TfUdkIyhoXMbFpJ1jNkEOg9cv/Veb70Q4zc640Twbp1K94lDhevx9Eh6eZkjPGkUUguBpUjxNpxG
-	az0hl8EO3EQZpbgsm55JXLVddwdRoKaNu4g/cai1ICNNvpJ0dsFkhZV+EDGSi+r7EAhY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1w0OEa-00BDkL-Hu; Wed, 11 Mar 2026 19:24:40 +0100
-Date: Wed, 11 Mar 2026 19:24:40 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Bastien Curutchet <bastien.curutchet@bootlin.com>
-Cc: Vladimir Oltean <olteanv@gmail.com>, Woojung.Huh@microchip.com,
-	UNGLinuxDriver@microchip.com, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	richardcochran@gmail.com, horms@kernel.org, pascal.eberhard@se.com,
-	miquel.raynal@bootlin.com, thomas.petazzoni@bootlin.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	maxime.chevallier@bootlin.com, Tristram.Ha@microchip.com
-Subject: Re: [PATCH net-next v6 1/9] net: dsa: microchip: Add support for
- KSZ8463 global irq
-Message-ID: <273e230a-b4ad-4ebf-9552-2416a9988019@lunn.ch>
-References: <20260305125149.ejju5ptrkviqi3sm@skbuf>
- <a3a915af-5190-4582-a3e6-4ebf92a7e35d@bootlin.com>
- <DM3PR11MB87364DB5439A20F44AEB690DEC7AA@DM3PR11MB8736.namprd11.prod.outlook.com>
- <0658868d-671c-46a2-8daa-26420cdd2975@bootlin.com>
- <20260309205401.bk5fpw6kqnmlktbu@skbuf>
- <dde60639-af13-4653-9a34-38c4bd98b149@bootlin.com>
- <20260311115356.windefb3j4kkuslg@skbuf>
- <c3812b1f-50b7-4663-92f5-14c5c6b483a2@bootlin.com>
- <20260311135610.oox5ahxcyvxkuegw@skbuf>
- <c9c990b2-0fe3-4329-9a1a-e29aa0c9a6a6@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dtP4RQTQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B17C4CEF7;
+	Wed, 11 Mar 2026 18:27:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773253659;
+	bh=psbKm+JUIEOmVDxhlExsmkrYZCYiynHWiEWJ93E/oIs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dtP4RQTQjVcXurfV+HjrB/RNKkQfN96ZR2NDOGYO/rWtfTDgc72vOznc27235rL3p
+	 Af0Op11P45Yz/5cL7zb05FEaBhxV9zavR8QnZs4JAYo77juxoWuhjlRLxNHDlANyu8
+	 M3Nm65Uyd/xRrfUs+XTOxwD6O8w5TSAiKPeZESb1iyzN/kcaaJX10YdAzppPRZYQkf
+	 pdXoaR4z6MeiiIDkcv5wHa1+VfhxrgMXIPloVu+uneoxAql8gLnBtF3mTP5208WD4M
+	 VEuiFNi0u2Mm39h+aUbKQBp91Nrlutd0dNIxnGoD6uXRAHdBpKUHy4R207/CZBo71+
+	 GngxM7FZnMPZg==
+Date: Wed, 11 Mar 2026 18:27:34 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Charles Perry <charles.perry@microchip.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH net-next v2 1/3] dt-bindings: net: cdns,macb: add a
+ compatible for Microchip pic64hpsc
+Message-ID: <20260311-quickstep-helmet-ea7f37444cfc@spud>
+References: <20260310212202.3991199-1-charles.perry@microchip.com>
+ <20260310212202.3991199-2-charles.perry@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="LzxDbwZaErEq3HMU"
+Content-Disposition: inline
+In-Reply-To: <20260310212202.3991199-2-charles.perry@microchip.com>
+
+
+--LzxDbwZaErEq3HMU
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c9c990b2-0fe3-4329-9a1a-e29aa0c9a6a6@bootlin.com>
+Content-Transfer-Encoding: quoted-printable
 
-> The biggest difference I see is the way KSZ8463 accesses the registers
-> through SPI. It uses byte enable bits in the command word that don't exist
-> on the other switches.
+On Tue, Mar 10, 2026 at 02:22:00PM -0700, Charles Perry wrote:
+> Add "microchip,pic64hpsc-gem" for "PIC64-HPSC" and
+> "microchip,pic64hx-gem" for "PIC64HX", compatible with the former.
+>=20
+> The generic compatible "cdns,gem" works but offers limited features.
+> Keep it as a fallback.
+>=20
+> The GEM IPs within pic64hpsc have their MDIO controllers
+> unconnected from any physical pin. Add a check to prevent adding PHYs
+> under the GEM node.
+>=20
+> Signed-off-by: Charles Perry <charles.perry@microchip.com>
 
-Can that be hidden away in regmap? Add reg_read/reg_write functions
-specific for this device which handle these byte enable bits?
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
-	Andrew
+> ---
+>  .../devicetree/bindings/net/cdns,macb.yaml    | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/net/cdns,macb.yaml b/Docum=
+entation/devicetree/bindings/net/cdns,macb.yaml
+> index cb14c35ba996..b934abd98e20 100644
+> --- a/Documentation/devicetree/bindings/net/cdns,macb.yaml
+> +++ b/Documentation/devicetree/bindings/net/cdns,macb.yaml
+> @@ -70,6 +70,14 @@ properties:
+>                - microchip,sama7d65-gem   # Microchip SAMA7D65 gigabit et=
+hernet interface
+>            - const: microchip,sama7g5-gem # Microchip SAMA7G5 gigabit eth=
+ernet interface
+> =20
+> +      - items:
+> +          - const: microchip,pic64hpsc-gem # Microchip PIC64-HPSC
+> +          - const: cdns,gem
+> +      - items:
+> +          - const: microchip,pic64hx-gem   # Microchip PIC64HX
+> +          - const: microchip,pic64hpsc-gem # Microchip PIC64-HPSC
+> +          - const: cdns,gem
+> +
+>    reg:
+>      minItems: 1
+>      items:
+> @@ -196,6 +204,17 @@ allOf:
+>        required:
+>          - phys
+> =20
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: microchip,p64h-gem
+> +    then:
+> +      patternProperties:
+> +        "^ethernet-phy@[0-9a-f]$": false
+> +      properties:
+> +        mdio: false
+> +
+>  unevaluatedProperties: false
+> =20
+>  examples:
+> --=20
+> 2.47.3
+>=20
+
+--LzxDbwZaErEq3HMU
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCabG0FgAKCRB4tDGHoIJi
+0vz+AQCTLDRkNbEjSXGxX44BY5pz1csSJ4nSQ+q9irleZdC0PgEApg7yHBTlVlQU
+IdAb5Z+z9AzJHBfwC4qIO8pr2q+/Ewc=
+=opRa
+-----END PGP SIGNATURE-----
+
+--LzxDbwZaErEq3HMU--
