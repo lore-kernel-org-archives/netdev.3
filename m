@@ -1,87 +1,120 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DAD0126F3B;
-	Wed, 11 Mar 2026 21:47:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D01C1B4138;
+	Wed, 11 Mar 2026 21:51:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773265643; cv=none; b=FIdJsBbqywbHR0pTbejwOa10o7h3JuUExXG1BHgC34wOijX4plnvrEqXkcfGasKHlpl3QZU7kesyHIWh8wv/6mDzrCbFWMDPk1GSwypD4yCF/hKNhwtNrC4tt0vywFcir3ngwkMceVYnOtwAzBCIvXj+T/5C9kEHXYErH4i8Ifo=
+	t=1773265903; cv=none; b=NCnTAVFQWTodrbljYCGXULPFo1pcbV/ezP1ahiNPsznt9pAKR7JS4+YGJFr22l0VOwLnjw98hodoWw+MYtvGkzL9C1jfcq564QcNjP7pswAxJfsj1VWdLyZbjfxao3KNFGuQ2iYGJX5SDabUHCLpiRxvEwfRwqaMaFe/gvrDr8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773265643; c=relaxed/simple;
-	bh=AfzgWescQI12VbDmGcofZ3H+xed6L8D2mUifEiyldjg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S1ctQwO40NAVMKrTzkkYZMFRGB+rniquZsGyr2Mqkj9LjlaELcegd2DxpqE4TgfATEQpEGBB4xwCFyNFO8jmJLOX/s5f5nc8kNpEVMJ6uCwOP2UbJh3MYUsWCrhI+KRpZZIoFfk3Ul+ZxR7nY2kdUCWiL5cUjbSa7Scc9VY++/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QEQtPWlA; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1773265903; c=relaxed/simple;
+	bh=Ky9x4Qc7sXMth54WdQkScEx8aBLAUtoTYC5EOd6QHxo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kirH1Dxr8ZcCkLz9BShAPPapML9f+calzP99PhVohWbeDFMznko5a6j37001W7iDhPfOx6GyskJHpwNkpZGBB1Xqxb+zD9eZEkFLRRH8c6pzE5+n5zdwIRHEu0Z4SazKmWmxnDpnfPfaerR59ELZh41JngmsffpC+MofqYlb1TA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dx7jFacZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QEQtPWlA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773265642; x=1804801642;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=AfzgWescQI12VbDmGcofZ3H+xed6L8D2mUifEiyldjg=;
-  b=QEQtPWlAUDhLOEBYlT9NFD6Q301D5HrmTrSisnpNkGKC3yy6epTBCBsq
-   Z1gYQyFA2ohJ5bzW6P36A62mcsgCf4s/t49ViCDEImMV0GnUEJksLlUzF
-   V9WZRz+H86y3G0jJYzaX2GqWNUi+U78vpSMvPsOizfIYQX7tlSENSDFc1
-   kasPdk/YpdfcYZfQiRNcERd6teudHsOE+aCuExInZYdZL22a2q1Ru6i52
-   QIuJ1z/jtQx56O1YJQrtyUtxEZQ0P9XnmBlXUBGNJJ86o3j+FGmiUiCN3
-   u/0cqSequJlb0jp+9fHcpujZgoWdmlFVwz7wEz3B7eTNbh2dIUsz6JUaJ
-   g==;
-X-CSE-ConnectionGUID: Pmwxxah1R/OwvNBwg75TKA==
-X-CSE-MsgGUID: EaEbJf6zTtGNcQw62taZkw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="91730013"
-X-IronPort-AV: E=Sophos;i="6.23,115,1770624000"; 
-   d="scan'208";a="91730013"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 14:47:21 -0700
-X-CSE-ConnectionGUID: RTEzrkycTEuwrVh0Fv2pPg==
-X-CSE-MsgGUID: SM4OfwNfSpO07ENE0Tpd8w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,115,1770624000"; 
-   d="scan'208";a="220781669"
-Received: from amilburn-desk.amilburn-desk (HELO localhost) ([10.245.244.178])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 14:47:19 -0700
-Date: Wed, 11 Mar 2026 23:47:17 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Sean Chang <seanwascoding@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Chuck Lever <chuck.lever@oracle.com>,
-	David Laight <david.laight.linux@gmail.com>,
-	Anna Schumaker <anna@kernel.org>, netdev@vger.kernel.org,
-	linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] sunrpc: simplify dprintk() macros and cleanup
- redundant debug guards
-Message-ID: <abHi5SOPaaly-v1l@ashevche-desk.local>
-References: <20260303140725.86260-1-seanwascoding@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dx7jFacZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27E2CC4CEF7;
+	Wed, 11 Mar 2026 21:51:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773265903;
+	bh=Ky9x4Qc7sXMth54WdQkScEx8aBLAUtoTYC5EOd6QHxo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Dx7jFacZSSM5wqhX2HqVl7lUpW0BEE9MOC0zg7RjB5ksIwDxAWiFZ8g3y/bFQrOJU
+	 KgyyZReYbkucYayZ/KcL7xAyjIJahjFxos8+5wjc172EkvLwKREPg6fUMCTTHH9e5e
+	 0SRr79WK766w8sZqtz4gS07VU1undwunt1g8fnAM8l9uaJP+41+dKTEgKAzgAC6bf/
+	 ZZLf4g5j9YtyfB0DJtKhpkgq99a3yhBGia1Y7+OvqI0ggZIZSbgKqyCcmC73P8o5ei
+	 3riUM+OF6hL5IX1V96Jb/coHSW0x2b0lzPO3IE2wBzbwAzqmJfj2pYMsEB2v8Ifrtc
+	 tyBfX4sVpALLQ==
+Date: Wed, 11 Mar 2026 14:51:26 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Or Har-Toov <ohartoov@nvidia.com>
+Cc: Jiri Pirko <jiri@resnulli.us>, Tariq Toukan <tariqt@nvidia.com>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Donald
+ Hunter <donald.hunter@gmail.com>, Jonathan Corbet <corbet@lwn.net>, Saeed
+ Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Mark Bloch
+ <mbloch@nvidia.com>, Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-kselftest@vger.kernel.org, Gal Pressman
+ <gal@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>, Shay Drory
+ <shayd@nvidia.com>, Jiri Pirko <jiri@nvidia.com>, Moshe Shemesh
+ <moshe@nvidia.com>
+Subject: Re: [PATCH net-next V3 00/10] devlink: add per-port resource
+ support
+Message-ID: <20260311145126.7dcca532@kernel.org>
+In-Reply-To: <5de5103e-e2e4-4b72-9c3c-22847728fbb8@nvidia.com>
+References: <20260226221916.1800227-1-tariqt@nvidia.com>
+	<20260302192640.49af074f@kernel.org>
+	<pmxkihhtsskkwsvdia4z2ss4wxpfc4a4kqxkjv5wk3mwdmpzii@6go7pizk2nst>
+	<jssifysprwuafkinc3dguspngxmplrngqxvotp76vhvu4e5lp6@e7mdrjqc5rme>
+	<20260304101522.09da1f58@kernel.org>
+	<np44uzfn6jea56uht4yq4te5clapgj7pk6ygyvkl22wxumwnvt@nrpvzjqzxenq>
+	<20260305063729.7e40775d@kernel.org>
+	<ni23r4jiwgc6zjjsubtl4ujjgxzwpxrylumofdwxgozfnieynm@zirlbneaz6p2>
+	<20260306120301.0ebe1ab2@kernel.org>
+	<74dcd7c5-8a2b-49a7-a23c-174d17a61955@nvidia.com>
+	<20260309133341.7e08b35d@kernel.org>
+	<5de5103e-e2e4-4b72-9c3c-22847728fbb8@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260303140725.86260-1-seanwascoding@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Mar 03, 2026 at 10:07:25PM +0800, Sean Chang wrote:
-> Following David Laight's suggestion, simplify the macro definitions by
-> removing the unnecessary 'fmt' argument and using no_printk(__VA_ARGS__)
-> directly.
+On Wed, 11 Mar 2026 20:24:08 +0200 Or Har-Toov wrote:
+> For the dump-it command:
+> devlink resource show
+> pci/0000:03:00.0:
+> <resource>
+> pci/0000:03:00.0/196608:
+> <port-resource>
+> pci/0000:03:00.0/196609:
+> <port-resource>
+> pci/0000:03:00.1:
+> <resource>
+> pci/0000:03:00.1/262144:
+> <port-resource>
 > 
-> Verification with .lst files under -O2 confirms that the compiler
-> successfully performs "dead code elimination". Even when variables
-> (like char buf[] in nfsfh.c) or static helper functions (like
-> nlmdbg_cookie2a() in svclock.c) are declared without #ifdef, they are
-> completely optimized out (no stack allocation, no symbol references in
-> the final executable) as they are only referenced within no_printk().
+> devlink resource show scope port
+> pci/0000:03:00.0/196608:
+> <port-resource>
+> pci/0000:03:00.0/196609:
+> <port-resource>
+> pci/0000:03:00.1/262144:
+> <port-resource>
+> 
+> devlink resource show scope dev
+> pci/0000:03:00.0:
+> <resource>
+> pci/0000:03:00.1:
+> <resource>
 
-Does this patch fixes also 202603110038.P6d14oxa-lkp@intel.com?
+LGTM
 
--- 
-With Best Regards,
-Andy Shevchenko
+> For the do-it command:
+> devlink resource show pci/0000:03:00.0
+> pci/0000:03:00.0:
+> <resource>
+> pci/0000:03:00.0/196608:
+> <port-resource>
+> pci/0000:03:00.0/196609:
+> <port-resource>
+> 
+> devlink resource show pci/0000:03:00.0 scope port
+> pci/0000:03:00.0/196608:
+> <port-resource>
+> pci/0000:03:00.0/196609:
+> <port-resource>
+> 
+> devlink resource show pci/0000:03:00.0  scope dev
+> pci/0000:03:00.0:
+> <resource>
 
-
+Do we have to touch doit? Maybe we should let doit be what it is now
+and consider it legacy going forward? doit which is in fact a filtered
+dump is a bit of a mistake in the first place, from Netlink's
+perspective.
