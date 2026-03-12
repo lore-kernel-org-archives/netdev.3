@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B5A1EF39E
-	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 02:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86604375F9F;
+	Thu, 12 Mar 2026 02:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773281416; cv=none; b=X0pqOf15Ssl53aaUODe32ab4NhqvUxE0RePuVZd9cs5I5xFYSYiif2FZBBcDJykyiyV8YK4qZWbmUjTup/KhwNM2Zex8kEl1abBMrcX5KpGAnxbbB3Shi74YIy/SLTPwqkwxgCbS8XJwEJxlgvjUhLUFkJiZps5GZCF39S+miDU=
+	t=1773281417; cv=none; b=k78MzuWw3c7Rex+zgvvPOtaeVARzRoLFBK0QaohSUPMB4rwMW5ehA3egJWgX4end5/tes1opfEpnXmZ328Tc7NicL6/HK4ecwwOAtwiQ/qw+2iMg1EXmfexm7xPkvaMqHA2rj40ykv9pgtqGkp0WnRheEWYeszVt32L1vkwrkms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773281416; c=relaxed/simple;
-	bh=cv1M1fghdZ4EhQ55aI1990xjAYWzNfrGUkNeREeUY20=;
+	s=arc-20240116; t=1773281417; c=relaxed/simple;
+	bh=VnzFnkrlCTLmrNTpntOestxzZJHPZEQt+LJJg2UbIxE=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=g1E5iwum5yimDcHSBMwEz0D+R5NKNdX87wN/eE/OxH58KGOHVR9WKhU8Es22Fi+iY6jh4B3xDmVVz+Iuiq+T2ub7CRfQNq7AUYc9QBkM+OM9NUuEtnSb2/TYKkCiiycWV9dNI2hpsjmqvImJ1FJP4XQLVgmtorURg7IDuUqzRi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z6mfRmHM; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=cbwhY07wnWf1hk+Mcsixis6GPFvic6Q5pVKa/GxHQfk/L67vMqPbGNHSjd+K1Yadifatl0wB4klj2Xg4vKxRM58VGVcEVWIZJXnvB05CV0bRF3QNaRK2CFqEx7AzRTzNUzkra+6EEFxdcDEF1D+M2P2BWsPS6+0pUJt0xL85l6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MVJ8WzEV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z6mfRmHM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3012C4CEF7;
-	Thu, 12 Mar 2026 02:10:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MVJ8WzEV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64B5EC19425;
+	Thu, 12 Mar 2026 02:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773281415;
-	bh=cv1M1fghdZ4EhQ55aI1990xjAYWzNfrGUkNeREeUY20=;
+	s=k20201202; t=1773281417;
+	bh=VnzFnkrlCTLmrNTpntOestxzZJHPZEQt+LJJg2UbIxE=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Z6mfRmHMvw6sLQbeSYLzo9y57AcZTxQ9shEFiHX8fJHRRxaujQHhl8DeRZofOy/j9
-	 d7tG3IuFAxM/5YofadpPezl4O5rm1Gv19lBunKNBrHWJszoqWp6niNf4yYAq+MRrni
-	 B2q9aS9NY2V0Iw/GuX0JaKR7rt8L7+CKCVy4d0xQPWXaGU6gfU20cK9tLBkj0BTvsO
-	 Aq9e2PVLzvbSm2/gh4t3mxcx/Vh6uUmH3jOKoQx6smA+JBiYxRBfM7imJfQw6rvj5X
-	 5DUPCbEQHfPFFggJ+sauSjN4uoVgHthFuq0P/mNcC0p/8/EL54rxRnKznn7r0Qxtl+
-	 P2XwrX24l9YAQ==
+	b=MVJ8WzEVQKDpF6r9yPKr0Fsg7mfxGsaXQVlffu1VTSDJXwxgUx1qNlCeYnA+2GS/9
+	 BYYnC09O8bGkm+ErInqw23PlocceEfurLlK7uHUbEmGV7DNmTN1PIkHycjyrgKALy/
+	 Kf5mhFMJsGAGatc30PzhjL/xhHgGF4NzbTVff48I/4epuTiUI1GZA70KHyjXyD0K2X
+	 QU5lnSeJKgZDpjMeoFZa6W5s8vbLwqVOabnXfrJtZ590BoWPy8BwVEdYIajxh31aAK
+	 TRFnQjtXwZ9jd6N8TqQ9uNXM+RJGsWwtRlM04HjuI0Gs4PtwsAqLSJbmniHcgs70di
+	 dyXOgKpuCFO0Q==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02F983808200;
-	Thu, 12 Mar 2026 02:10:13 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7D09F3808200;
+	Thu, 12 Mar 2026 02:10:14 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,37 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: dsa: realtek: Fix LED group port bit for
- non-zero
- LED group
+Subject: Re: [PATCH net v3] tipc: fix divide-by-zero in
+ tipc_sk_filter_connect()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177328141156.3905617.4397320883467393121.git-patchwork-notify@kernel.org>
-Date: Thu, 12 Mar 2026 02:10:11 +0000
-References: <20260311111237.29002-1-kabel@kernel.org>
-In-Reply-To: <20260311111237.29002-1-kabel@kernel.org>
-To: =?utf-8?q?Marek_Beh=C3=BAn_=3Ckabel=40kernel=2Eorg=3E?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
-Cc: linusw@kernel.org, alsi@bang-olufsen.dk, luizluca@gmail.com,
- netdev@vger.kernel.org
+ <177328141304.3905617.1945002746161310845.git-patchwork-notify@kernel.org>
+Date: Thu, 12 Mar 2026 02:10:13 +0000
+References: <20260310170730.28841-1-mehulrao@gmail.com>
+In-Reply-To: <20260310170730.28841-1-mehulrao@gmail.com>
+To: Mehul Rao <mehulrao@gmail.com>
+Cc: jmaloy@redhat.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, ying.xue@windriver.com,
+ tung.q.nguyen@dektech.com.au, netdev@vger.kernel.org,
+ tipc-discussion@lists.sourceforge.net, stable@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 11 Mar 2026 12:12:37 +0100 you wrote:
-> The rtl8366rb_led_group_port_mask() function always returns LED port
-> bit in LED group 0; the switch statement returns the same thing in all
-> non-default cases.
+On Tue, 10 Mar 2026 13:07:30 -0400 you wrote:
+> A user can set conn_timeout to any value via
+> setsockopt(TIPC_CONN_TIMEOUT), including values less than 4.  When a
+> SYN is rejected with TIPC_ERR_OVERLOAD and the retry path in
+> tipc_sk_filter_connect() executes:
 > 
-> This means that the driver does not currently support configuring LEDs
-> in non-zero LED groups.
+>     delay %= (tsk->conn_timeout / 4);
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: dsa: realtek: Fix LED group port bit for non-zero LED group
-    https://git.kernel.org/netdev/net/c/e8f0dc024ce5
+  - [net,v3] tipc: fix divide-by-zero in tipc_sk_filter_connect()
+    https://git.kernel.org/netdev/net/c/6c5a9baa15de
 
 You are awesome, thank you!
 -- 
