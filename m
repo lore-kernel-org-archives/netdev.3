@@ -1,128 +1,129 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7EDD38E5F9;
-	Thu, 12 Mar 2026 10:20:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5440735A3A5;
+	Thu, 12 Mar 2026 10:22:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773310816; cv=none; b=EZplruH9PC51mHWaPZQQmcCOe7z96Miip0tIjYGmkzlqtVb9t54qzpngDhCPegH4M7xkbiTbcKIM+sr5EUjX6SR9pP21mb5YYEKHpQm27f9zWLgdSMaueYbtNsYjnPkCWV7mtQnOcFiia3zlN+e4quipQmgdvfooWkQxhYPmXXw=
+	t=1773310951; cv=none; b=rGecPQoY5kqNimqikkHM7U1jV5adkSJ/4/TruDz7IfOdtROXWbBykLWf944rmQJspozYyfaGL8DciQ+EaehLHchFnPQ26ffi0iT5eH3QhbBUoZzUiKLiOiPCCYzxHYE0lFlMhuilRMG6pZcSGuk8XBiTX58yKTnv7XQ9bqg5xsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773310816; c=relaxed/simple;
-	bh=I1vxZBeAYePlmaNdX5KUzzlbvvDYAbB+OLK9C7muN8M=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=qw+YWWks+LmouJDoG30BJ610MyM3wuXSc6rGZ3qgtHlVSOM49aRcQYtcBEVY8t8Z+ULkamKYR6n1Zz5aBLH48H/+VuBiH5s16INucfO8+9qeD41ISdZUZw19JMK5CBkXeg25Acjac/qvLkSlw+qNPRaupGlpdJGfN+p7Ba0Dk6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=AgHfX0yw; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1773310951; c=relaxed/simple;
+	bh=h9YSKRTZGF583NYryI301XnKTB+VY4d9eZcYTI6L0mg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GwtRC6Fi8Qny9OO6m9/QmyB0Kr1lfDXpJKkcFn9qtMZVjiPLJRxLHNJ5vlsyW+cM9lbhIu6UypxzecRDcWUn7Lfs1/nH8iVFnV3i2EPSG0CoeMmYgGTNDEJbVQ3MyuHfFpscNNYoi2ukSF0m0kIsDXTE4yWXdDTgnK1vy24OTp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dXvpD/36; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="AgHfX0yw"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=7M4qvN4KUZhWeHz0+r2If9XfOaCaAnmKNLe00xCAwms=; b=AgHfX0ywq0f8GgRoj9tWRutBkV
-	9wnzNsFoonOhOX5BtxqwJQH+uO0MYHFSue9LQlpxcby+RMPfwLaOaUudOEeJT3ZHeQw+J+oN+MLbS
-	GfDdQ15a8DgIlOxl5s3wzciXSFUYvALymQDHArQ/jCrfLayRWv+X6gn66l1K7m8gQsTQe+Ob0IKjX
-	jXcVj2jLqKYgyNZB6o0rKLA/vv8W7rlQ0xzLocuArRZfaOe71f08qAm7U7iQRxdcigPGIyKRe1cxz
-	Jwj4caBAZ1Io7HuLhixt/2utknZkHkT92OyiZ6hxxnJaOcXPhg4lA5igrPkaj4/gfG0E7frtUZQ8Q
-	AJglKbMA==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:54042 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1w0czU-000000007bH-3XYl;
-	Thu, 12 Mar 2026 10:10:05 +0000
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1w0czP-0000000CzHE-1hSo;
-	Thu, 12 Mar 2026 10:09:59 +0000
-In-Reply-To: <abKQWloxp9_4OuJh@shell.armlinux.org.uk>
-References: <abKQWloxp9_4OuJh@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dXvpD/36"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7284FC4CEF7;
+	Thu, 12 Mar 2026 10:22:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773310950;
+	bh=h9YSKRTZGF583NYryI301XnKTB+VY4d9eZcYTI6L0mg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dXvpD/36HWhV2uAFhkuL3LSram9ibN5VHQQFuIdI0m0rBaKsbneKQQcixQFgFyeGR
+	 /ixKek6TghhDHQfK1toi4U8zUwd32mB7zh/FHRYI1qQH97AYgi8dp7q9I0Ty60SCFg
+	 3pNGR20ixSJXmwSHC2wJL5Tap4s2uyDb5volkxAW4Y5YIVGt7z9TpYTLzrcJsZPtaz
+	 jMJ/vdTC6kywXsyEGKMaAG6eBv+VJb0d9QbN1Unf7PnIdaW7cVQplCNrF/6D9aWKPk
+	 Mszd/NZFisaur0v2WahAMwj1i6F8YXDCYY3mQJoqe0jWA730ku49FHPd6mqo5J+1I3
+	 VZpuTIcy+ZBkA==
+Date: Thu, 12 Mar 2026 10:22:23 +0000
+From: Conor Dooley <conor@kernel.org>
+To: =?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>
+Cc: netdev@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>,
+	Valentina.FernandezAlanis@microchip.com,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
-	bpf@vger.kernel.org,
-	Daniel Borkmann <daniel@iogearbox.net>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Stanislav Fomichev <sdf@fomichev.me>
-Subject: [PATCH net-next v2 14/15] net: stmmac: remove tx_tail_addr
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Daire McNamara <daire.mcnamara@microchip.com>,
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Vineeth Karumanchi <vineeth.karumanchi@amd.com>,
+	Abin Joseph <abin.joseph@amd.com>, Ryan.Wanner@microchip.com,
+	=?iso-8859-1?Q?Gr=E9gory?= Clement <gregory.clement@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH net-next v3 00/10] macb usrio/tsu patches
+Message-ID: <20260312-fool-obsessed-3ba0a7c7cc37@spud>
+References: <20260310-moneyless-dispense-7bce14b16388@spud>
+ <DH0PZN0WJZC5.26KLH464PMMTP@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="wg429xnLYxmYuNFe"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1w0czP-0000000CzHE-1hSo@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Thu, 12 Mar 2026 10:09:59 +0000
+In-Reply-To: <DH0PZN0WJZC5.26KLH464PMMTP@bootlin.com>
 
-There is only one place where tx_q->tx_tail_addr is used - the new
-stmmac_set_queue_tx_tail_ptr(). Make this a local variable and remove
-it from struct stmmac_tx_queue.
 
-This commit does not change the semantics - the hardware relies upon
-the descriptor ring not crossing a 4GiB boundary as the high address
-bits are programmed into a separate register via stmmac_init_tx_chan().
-Hence, truncating the DMA address to 32-bit is fine as the register it
-will be programmed into is 32-bit, and the high bits are handled
-elsewhere.
+--wg429xnLYxmYuNFe
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Also change the type of desc_size to size_t, as this variable is
-initialised from sizeof().
+On Thu, Mar 12, 2026 at 11:09:24AM +0100, Th=E9o Lebrun wrote:
+> Hello Conor,
+>=20
+> On Tue Mar 10, 2026 at 6:17 PM CET, Conor Dooley wrote:
+> > At the very least, it'd be good of the soc vendor folks could check
+> > their platforms and see if their usrio stuff actually lines up with what
+> > the driver currently calls "macb_default_usrio". Ours didn't and it was
+> > a nasty surprise.
+> >
+> > Theo, you added eyeq5 recently. Does it genuinely have the same usrio
+> > bits as the at91 devices?
+>=20
+> Sorry I missed your direct mention. After checking (because I completely
+> ignored this part of the code before), the User I/O feature is disabled
+> on EyeQ5 & EyeQ6H. It can be seen from DCFG1 BIT(9). It was invisible
+> because the USRIO register turns read-only when User I/O is disabled.
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac.h      | 1 -
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 7 ++++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+Ye, my assumption was that on your platform and sifive it's not enabled
+but didn't have the behaviour of np4 where accesses don't complete.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac.h b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-index d1f8383d1c04..7cc5967aecd7 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-@@ -79,7 +79,6 @@ struct stmmac_tx_queue {
- 	unsigned int cur_tx;
- 	unsigned int dirty_tx;
- 	dma_addr_t dma_tx_phy;
--	dma_addr_t tx_tail_addr;
- 	u32 mss;
- };
- 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 4521469c5e1d..55b79e9e637f 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -389,12 +389,13 @@ static void stmmac_set_queue_tx_tail_ptr(struct stmmac_priv *priv,
- 					 struct stmmac_tx_queue *tx_q,
- 					 unsigned int chan, unsigned int index)
- {
--	int desc_size;
-+	size_t desc_size;
-+	u32 tx_tail_addr;
- 
- 	desc_size = stmmac_get_tx_desc_size(priv, tx_q);
- 
--	tx_q->tx_tail_addr = tx_q->dma_tx_phy + index * desc_size;
--	stmmac_set_tx_tail_ptr(priv, priv->ioaddr, tx_q->tx_tail_addr, chan);
-+	tx_tail_addr = tx_q->dma_tx_phy + index * desc_size;
-+	stmmac_set_tx_tail_ptr(priv, priv->ioaddr, tx_tail_addr, chan);
- }
- 
- static size_t stmmac_get_rx_desc_size(struct stmmac_priv *priv)
--- 
-2.47.3
+>=20
+> 1. So I thought about adding runtime detection.
+>=20
+> 2. But then having eyeq5_config->usrio made no sense so I dropped it.
+>=20
+> 3. And then I thought that a config having usrio being NULL should
+>    imply MACB_CAPS_USRIO_DISABLED to ensure we don't NULL dereference
+>    the bp->usrio pointer.
+>=20
+> #1 is useless for EyeQ combined with #2 and #3, but it should be useful
+> for the many compatibles that inherited the wrong default value of
+> at91_default_usrio.
 
+Yeah, that's a good shout. I never checked to see if this had a control.
+
+> I am sending those three patches as a reply, feel free to pick them up
+> if you consider them useful. They apply on top of your series and have
+> been tested on EyeQ5.
+
+Ye, I think they're a good idea. Thanks for sending em :)
+
+--wg429xnLYxmYuNFe
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCabKT3gAKCRB4tDGHoIJi
+0thYAQDSnsVDrIoSK3oA+E80W/ccq+tdstmAM6a0wgF6piT8EgD/Vd4hV89FYGSa
+JwJLyF8ZdrUYu6DQijMfSnjdpP6jcQA=
+=ZCzG
+-----END PGP SIGNATURE-----
+
+--wg429xnLYxmYuNFe--
