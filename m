@@ -1,253 +1,87 @@
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 532A1E573
-	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 01:32:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773279154; cv=pass; b=GqeKSdgCnXmXKc86dm9EDyTDSGj6N+UHgfGkonty2axXUwvnVNTzFej9oFjrmv73ORXORk7EXm3GJTH53F1Vdok+Joxv8wN8Y8I9JKvA1zVKGrLAtO/3tpm6UsApktyGI4taG3Fdxc9F9pMjGcImis5nnKukxvNKXZFSHCopMVI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773279154; c=relaxed/simple;
-	bh=y9uu7FcX/KxUjrUSZiND35L3q0YMiAGZBRoGZTxrt+M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=k6F+/AM4AWfLh1F0R42H8o+gGIgACrII2fiR3v3RnNSOde+tGk06H7zgIwS3lxS0jnp+ikm3LgZQGGklrCn04CiNsUdgPZ9rBfTNoD5McqN7DUKUIizMJzobeEKLJfdV0JOZd4YZ8utZXrctfZbmzQfmN/JX+OQI200VHTFcEAY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yf4aHP3E; arc=pass smtp.client-ip=209.85.219.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3F432E692;
+	Thu, 12 Mar 2026 01:48:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773280087; cv=none; b=Urob0Unt5y+IicIW3K0Hpp7Ca/RKJyK4SLAAmOytr/n0zQ23f9Ldm6+Lb5e3SiWUVvNvY0Q5bToUUoHRiydEifAV6xDyo6mjP9UCUImN76XXqmpa7+qPJw1TjOdpREe0CeRgbAojfoRC7R/UrYqPp9NowkdjOPD70/kkf39C+b0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773280087; c=relaxed/simple;
+	bh=g3zU/1nV6yV8qSKK59IKoogKsS8ghmFNA+vbOPXnYy8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t8NIAEKVmnJ4yEySYuDkNLtQDgl4sOuyikFhxoGT11Buprl5JB36JmghA0mIzNyQCvrnWHFTUTsBZsjLXnHiTAmWWj707DHSFbj6eDixI5gJ7/3NJ2wO9nJggm842W1P6t1FFXoHGEkvPkeUqFBSGRD+X+R/jWStGWRZMRpmy9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WBxdjXMU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yf4aHP3E"
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-899fc9853b7so6626276d6.2
-        for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 18:32:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773279152; cv=none;
-        d=google.com; s=arc-20240605;
-        b=S1jQ2xCG0OMLC8QU8jjwGXLNhcrfj+/xHcFFZtyNTkzTD0032n1eDWOgvCSx/7KgI8
-         iWdNA3pQVuMi2ln2b4EkJa/gviC7RAuqVvW/JVBDRk3h+Harf+Go3pedjdQ0Wz6+jmPH
-         Ws1p6Ovk/hB9x3ENIOCzeuX2Kusy/h0XRYwVJ8kJCpJVSoAEAbchnvkmp/cNsLLCJ2ZC
-         7goixxh2bvpAbnuMTzgkLzSAHl11ECeF4+yX6BKuQ+u2hSXcvZIRtDbgj/eXznerYPjL
-         9RvRpNwNsKROXBjPM21aUHrenrv0H7qxbDUl/wLAlTSuSYwKVin4UfPbgnffYeTYBZKw
-         PJ5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=/rkYFJbOUU313ISgdC9ZMKNJi4gSionYq1nRxXskUCI=;
-        fh=aFaLzrRfN1R74H7Jat4PIIqQu8SGdDE43SUWvANGDyg=;
-        b=kIRoTEcnJkgehrVtZkQIesVziF+e6WUr6GqmeT5KmRNwgmKfoa6MsMdw14kqU1cMR/
-         4eUVwqQqmf+Tobmvf4lhuSzZbjfjkHja3tlWPwGv6EC9vIZT6fdKRed/NT1thDCCsePm
-         BxwqQNas5Z0+sIUp572pOiB8l5nWikhGgJBQq0Zxktk/1xNLrWRsP8aBurjTiKlNDJM+
-         XQJbQdIerJeqOIeG0Jea8KHu+fo9bENkC01UazDw2vgJie9GPxfyyhCXt3DmQ6HnuL5e
-         zjYtlfEkVNh9dcPokOXXXpegpEEeTpzFXvORaaJDA6ltUp+HUcsCRxF6DL4BypKj4+D+
-         yjAw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773279152; x=1773883952; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/rkYFJbOUU313ISgdC9ZMKNJi4gSionYq1nRxXskUCI=;
-        b=yf4aHP3EoRYm11yoiqE6828AMtt7jBkZw/qFdY623ctCw4bI4OdQ5qvBQGxhQ7RFXw
-         x57fQLXV/hqMLK+42v0GHtNHbrRTtRmln3/cGdH1yPb9Yoiys8kEIakTWelqApi2Z6iZ
-         3N2p9ZspGKsc6SklyRMa+x7CVE/EWfoD1IVZuumnSAg0z/Ck4LGcZsN4WNRjKHpJsSuL
-         8PCLT40e15rXNorWLM53lyIsjxQUyqADXIkGUE/8j5ketiqQv2rQm3cwJD4BJiyRO8vw
-         tsP7bCrSyAm4ALtA4e3DRcwUbvgurxNZEX+psZ3eg5R8qyQ6JVK5XxIKX/zwPxJn0td/
-         aGlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773279152; x=1773883952;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/rkYFJbOUU313ISgdC9ZMKNJi4gSionYq1nRxXskUCI=;
-        b=eg2//L9nu0E6UB+DaGSKM+yrgzQzoIKe/LyOO+Srvtc3VoVa1Hi0CRcLlNfusNTAtN
-         PjckOlxLvf9aYy247/9kKDcuCG+ojhIGl7wFiyzzjinPcMvyiUKuwohS+RdbFP78VBCN
-         fkEIAGterSHqOovIfJ9kTkTWnlbJTNgRA9WqLCXb6jzGbtM34sGLixnjzuUHvgGz1zuT
-         gzcO4Z0mF1VIggCJ2K96BQ0JUKKig8XSVr5o1YTKlJHzvcEcmNmc9F0fRHnbAeJykZuK
-         iQmpf7c0CjaPWGTSAnpulyY6C1a3DV+YrzatbxLXRulsovTwDFNPAd6gX0NBgP3n7TP1
-         /ljw==
-X-Gm-Message-State: AOJu0YwwOwggzf1qdp/DZ20Yk8EMhJEwTfdgSd7zvTVz9MSWJNERF1eQ
-	RVZOaNxCg6UKHZpnZffkUhT8KZcfCs+YTHQKtuCmiAlZubroJet0UWfgghaKF2a+YG3SOQJAVut
-	ph4PdaEh2kQIpNKvvdqRwjsCd82Jm8qRyfKD+bE7o
-X-Gm-Gg: ATEYQzyCGrYctrBfcoczzan2ni3HictcRwK2SI+LI/AYwr6hRDc0FQyJMGlAHRxxg/c
-	1KYhlz1NGurXWvs/++YVCk6tdTBM1KpMbfKDD/gKzyPvj0ya6Eh4CVjSDnakfUjgXz8fm3WDyNV
-	QqiXo7zxZGY144pdUH91j1RO431FlnMN3sKRHa8OXRaqIQAJOgOPyy0xrwT9QEF62DjZgdXkL+K
-	azqWT35fi7nzdfkwFXeHOk5GNvKGzNo/CRrCIUcy3NPG+cJsUzEj58i16py+YL9iDebxGvllY61
-	D7DrGF0=
-X-Received: by 2002:a05:6214:1bc5:b0:899:e621:eac8 with SMTP id
- 6a1803df08f44-89a66a7a9a9mr63657196d6.39.1773279151761; Wed, 11 Mar 2026
- 18:32:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WBxdjXMU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92B11C4CEF7;
+	Thu, 12 Mar 2026 01:48:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773280087;
+	bh=g3zU/1nV6yV8qSKK59IKoogKsS8ghmFNA+vbOPXnYy8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=WBxdjXMUnZLCi1L30HMfT/NqjNuesWfU0csvFq4pLX6tYzEl/LjWwpuU7ajVsp45s
+	 TZ1WyppDHNB/tgBoZLYIVy7Uwa4cvwYOauOYnhbhg+3wLeCOApALV9/tMLiU7nULXG
+	 UhJzoc3yeXsMxG22kczBr9IkCBTvMpw3kBWULBqR6lb+dk5xU0P9+tbnVfq/Osgj6S
+	 8MjHqE3M9goWp3OqyivcvauTOFtGnc5DK+1tabENYfPiCZ8cYnfW2OamkSwAfpSybM
+	 YD2ES8rBjhDQ1LdtBIdRNx+JxNm4FpBR9cZ4O/ie1OJs4oPjZgjndQYOIpJyhIYfEB
+	 RZ97zMJnqW29g==
+From: Chuck Lever <cel@kernel.org>
+To: john.fastabend@gmail.com,
+	kuba@kernel.org,
+	sd@queasysnail.net
+Cc: netdev@vger.kernel.org,
+	kernel-tls-handshake@lists.linux.dev,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH v3 0/8] TLS read_sock performance scalability
+Date: Wed, 11 Mar 2026 21:47:56 -0400
+Message-ID: <20260312014804.5083-1-cel@kernel.org>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAFzOa14g0=VGLentBuj54ebm4rVWCXPrjGA1toxWHmZ4M1hKgg@mail.gmail.com>
- <CANn89iKBxREGEgFatAcFLb+PiHUtgMKUJ5u+Tm9-SD0OKh29tw@mail.gmail.com>
-In-Reply-To: <CANn89iKBxREGEgFatAcFLb+PiHUtgMKUJ5u+Tm9-SD0OKh29tw@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 12 Mar 2026 02:32:20 +0100
-X-Gm-Features: AaiRm52quo5Qh_3a-Tim6Z_I1EMVk7PFjMS57hI0QMFF6lvT-cuVb59NrwxGqQo
-Message-ID: <CANn89iKevHTf+MyJ+4PJ7ZR-+FcRqZiFubeLqRcyZ+gd4LWtsg@mail.gmail.com>
-Subject: Re: [PATCH] ipv6: ip6_tunnel: fix use-after-free in ip4ip6_err
-To: Guanni Qu <qguanni@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, dsahern@kernel.org, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	klaudia@vidocsecurity.com, dawid@vidocsecurity.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Mar 12, 2026 at 2:24=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
-wrote:
->
-> On Thu, Mar 12, 2026 at 1:47=E2=80=AFAM Guanni Qu <qguanni@gmail.com> wro=
-te:
-> >
-> > Hi,
-> >
-> > This vulnerability was discovered by Klaudia Kloc and Dawid Moczad=C5=
-=82o
-> > of Vidoc Security Lab using VIDOC tool, and independently validated
-> > and patched by
-> > Jenny Guanni Qu.
-> >
-> >
-> > 1. BUG DESCRIPTION
-> >
-> > In ip4ip6_err() in net/ipv6/ip6_tunnel.c, the route object returned by
-> > ip_route_output_ports() is released via ip_rt_put(rt), but rt->rt_flags
-> > is read immediately after the release. This is a use-after-free on a
-> > logically freed object.
-> >
-> >   skb2->dev =3D rt->dst.dev;
-> >   ip_rt_put(rt);              // frees the route
-> >
-> >   /* route "incoming" packet */
-> >   if (rt->rt_flags & RTCF_LOCAL) {   // use-after-free read
-> >
-> >
-> > 2. ROOT CAUSE
-> >
-> > File: net/ipv6/ip6_tunnel.c
-> > Function: ip4ip6_err()
-> >
-> > ip_rt_put() calls dst_release(), which schedules destruction via
-> > call_rcu_hurry(). The rt->rt_flags read happens in the same function
-> > context before any RCU grace period can elapse, so the memory is still
-> > accessible but the object is logically freed.
-> >
-> > Note: KASAN does not detect this because the RCU-deferred free has not
-> > completed by the time rt_flags is read. The memory is not yet poisoned.
-> >
-> >
-> > 3. AFFECTED VERSIONS
-> >
-> > - Confirmed on 6.12.64-87.122.amzn2023.x86_64 (via kprobe instrumentati=
-on)
-> > - Source-level analysis confirms the bug on 6.12.0 (arm64)
-> > - The put-then-use pattern has no fix in HEAD as of v6.12
-> > - Architecture-independent (logic bug)
-> >
-> >
-> > 4. EVIDENCE
-> >
-> > Kprobe instrumentation on x86_64 by Vidoc Security Lab showed 40/40
-> > path hits where the same rt pointer value is observed both before and
-> > after ip_rt_put():
-> >
-> >   vidoc_pre_put:  ip4ip6_err+0x1b6  rt=3D0xffff8bee1cad73c0
-> >   vidoc_post_put: ip4ip6_err+0x1bb  rt=3D0xffff8bee1cad73c0
-> >
-> > All 40 packets sent via ICMPv6 Dest Unreachable to an ipip6 tunnel
-> > endpoint hit the vulnerable path every time.
-> >
-> >
-> > 5. TRIGGER
-> >
-> > Send ICMPv6 Destination Unreachable (code 3) packets to a configured
-> > ipip6 tunnel endpoint.
-> >
-> >   from scapy.all import IPv6, IP, ICMPv6DestUnreach, send
-> >   inner =3D IPv6(src=3D"2001:db8::2", dst=3D"2001:db8::1", nh=3D4) / \
-> >           IP(src=3D"127.0.0.1", dst=3D"127.0.0.2") / (b"A" * 8)
-> >   pkt =3D IPv6(src=3D"::1", dst=3D"::1") / ICMPv6DestUnreach(code=3D3) =
-/ inner
-> >   send(pkt)
-> >
-> > Requirements:
-> > - ipip6 tunnel configured (ip6_tunnel module or built-in)
-> > - Ability to send ICMPv6 packets to the tunnel endpoint
-> >
-> >
-> > 6. IMPACT
-> >
-> > - Use-after-free read on a route object (struct rtable)
-> > - Under normal conditions: reads stale but valid memory (RCU protects
-> >   the actual free). Behavior is correct by accident.
-> > - Under memory pressure or with KASAN slab quarantine: could read
-> >   corrupted data, leading to incorrect routing decisions or crash
-> > - Exploitability: low in practice due to RCU grace period, but the
-> >   code is formally incorrect and violates memory safety
-> >
-> >
-> > 7. FIX
-> >
-> > Save rt->rt_flags into a local variable before calling ip_rt_put(rt).
-> >
-> > Reported-by: Klaudia Kloc (Vidoc Security Lab) <klaudia@vidocsecurity.c=
-om>
-> > Reported-by: Dawid Moczad=C5=82o (Vidoc Security Lab) <dawid@vidocsecur=
-ity.com>
-> > Co-developed-by: Jenny Guanni Qu <qguanni@gmail.com>
-> > Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
-> > ---
-> >  net/ipv6/ip6_tunnel.c | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-> > index b60e13c42bca..857a7ff8a041 100644
-> > --- a/net/ipv6/ip6_tunnel.c
-> > +++ b/net/ipv6/ip6_tunnel.c
-> > @@ -567,6 +567,7 @@ ip4ip6_err(struct sk_buff *skb, struct inet6_skb_pa=
-rm *opt,
-> >   u8 rel_type =3D type;
-> >   u8 rel_code =3D code;
-> >   struct rtable *rt;
-> > + unsigned int rt_flags;
-> >   struct flowi4 fl4;
-> >
-> >   err =3D ip6_tnl_err(skb, IPPROTO_IPIP, opt, &rel_type, &rel_code,
-> > @@ -615,10 +616,11 @@ ip4ip6_err(struct sk_buff *skb, struct
-> > inet6_skb_parm *opt,
-> >   goto out;
-> >
-> >   skb2->dev =3D rt->dst.dev;
-> > + rt_flags =3D rt->rt_flags;
-> >   ip_rt_put(rt);
-> >
-> >   /* route "incoming" packet */
-> > - if (rt->rt_flags & RTCF_LOCAL) {
-> > + if (rt_flags & RTCF_LOCAL) {
-> >   rt =3D ip_route_output_ports(dev_net(skb->dev), &fl4, NULL,
-> >      eiph->daddr, eiph->saddr, 0, 0,
-> >      IPPROTO_IPIP,
-> > --
-> > 2.34.1
-> >
-> >
->
-> ip4ip6_err() is supposed to be called under rcu_read_lock() protection.
-> call_rcu() and call_rcu_hurry() should not proceed until this thread
-> has reached rcu_read_unlock().
->
-> Can you share the stack trace so that we can root cause the issue ?
->
-> Your fix is not complete, because we latch rt->dst.dev into skb2->dev
->
-> skb2->dev =3D rt->dst.dev;
->
-> So the device could also disappear, and UAF would also happen.
+From: Chuck Lever <chuck.lever@oracle.com>
 
-Also you forgot to include a Fixes: tag
+I'd like to encourage in-kernel kTLS consumers (i.e., NFS and
+NVMe/TCP) to coalesce on the use of read_sock. When I suggested
+this to Hannes, he reported a number of nagging performance
+scalability issues with read_sock. This series is an attempt to run
+these issues down and get them fixed before we convert the above
+sock_recvmsg consumers over to read_sock.
 
-This is crucial for any patch targetting net tree.
+While I assemble performance data, let's nail down the preferred
+code structure.
 
-Thank you.
+Base commit: 05e059510edf ("Merge branch 'eth-fbnic-add-fbnic-self-tests'")
+---
+
+Changes since v2:
+- Fix short read self tests
+
+Changes since v1:
+- Add C11 reference
+- Extend data_ready reduction to recvmsg and splice
+- Restructure read_sock and recvmsg using shared helpers
+
+Chuck Lever (8):
+  tls: Factor tls_decrypt_async_drain() from recvmsg
+  tls: Factor tls_rx_decrypt_record() helper
+  tls: Fix dangling skb pointer in tls_sw_read_sock()
+  tls: Factor tls_strp_msg_release() from tls_strp_msg_done()
+  tls: Suppress spurious saved_data_ready on all receive paths
+  tls: Flush backlog before tls_rx_rec_wait in read_sock
+  tls: Restructure tls_sw_read_sock() into submit/deliver phases
+  tls: Enable batch async decryption in read_sock
+
+ net/tls/tls.h      |   3 +-
+ net/tls/tls_strp.c |  34 ++++++--
+ net/tls/tls_sw.c   | 213 ++++++++++++++++++++++++++++++++-------------
+ 3 files changed, 184 insertions(+), 66 deletions(-)
+
+-- 
+2.52.0
+
