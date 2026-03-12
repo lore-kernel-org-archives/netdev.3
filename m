@@ -1,63 +1,63 @@
-Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
+Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20EBB401A2D
-	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 20:07:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF48401A2B
+	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 20:07:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773346031; cv=none; b=rjprgusesbeYocrjOVLh85A8yAnzcbM2WKbwypghLW1mzt86uFT1zF9fZOEoT53/6agubq3htobGovDe4wu/fwd4BWnWcAyRAJc5XEDB3PanGzcRAW2HzGcFETCfubP4vFtUzmeLN9IJlyXWK3wkZbgVgUw3ST0oym8CzZy0MBo=
+	t=1773346031; cv=none; b=Y6hHpWnPiSGHotozaziMYJkr4kgo+zPIcsuy7SetfLHROrEdNbEC7doFw45jcgmfbdskl4pyR65JG33cd187NE+jcsTdaM4Miax2xVT6PE+SnvXTJmd73o4yZCQqbO+rY5BcnyjQC2IQ9CdKWpiYjSZ1w0Lq3WHpLq4eKPmSZ2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773346031; c=relaxed/simple;
-	bh=lKJ2mS8qshYtbORsyK0ngNUDnpsbzs9HMnnIPPn7MQw=;
+	bh=tkQxE/WaHOTyLw9z/sp813AJR6zA4pd2NdpV7fP6+0M=;
 	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=YyTWJFUf6G4Qd9DqbL7ykrwTseoBM111y67DXjtPoDlEaKJO5uijivkpNOnYVslWjQi9MR2itQKggesmOvjNgAdrjavXN28FrO2pwEROOz7Emo21dl+rEKeXkecYV2kwlRA9G5FuW3SMq4nnfHNypZOYbzEfpggy7OeuTpsVFMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=MbG9nDAJ; arc=none smtp.client-ip=209.85.160.54
+	 References:Date:Message-Id; b=Y7R3lOZlNaLsjsRynuFwyEfWfDthN5QfsZUSPFB1/qUD+b6s0SaBMfN1gM5DsWL7qy8BDtC2r9JQnURxxR6omSa6PeRkAzAv5lJCDwHg9OLgNTy281fHvL2kY+sx+CDp1+2XtbZgiOARRHy7Kd6V99kAMFooeL3PF6czj17hpIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=hkLUX7Ae; arc=none smtp.client-ip=209.85.160.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="MbG9nDAJ"
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-4043b27ddeaso951799fac.1
-        for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 13:07:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="hkLUX7Ae"
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-40ea36b56b7so1097480fac.3
+        for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 13:07:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1773346028; x=1773950828; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1773346029; x=1773950829; darn=vger.kernel.org;
         h=message-id:date:references:in-reply-to:cc:to:from:subject
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=r+y1WK9bKYEMzE5cM7mHmluwniDdPir3jTdVAfeucGs=;
-        b=MbG9nDAJG8oXVSVU8t/6DSIZFv7mTU2fUcI5uV5nA9/sa7PdWx7kcMNZDg1kPYzS6e
-         1NWXFt74kSIqAU1QrJ/C7q2k+ZPTioNZHDXu4XYborZ/1HK17MKWCJjnKm+oQ2DtAHL8
-         swpCIQEM2o8hOD3u9K7jWdIvHEZVVvwXw7KdsDjqLERZFiZKXGX2pu2IQP4V0RxbHghh
-         S2cI6nb8clmayty3SLl4XZflwpd3YjiUC4fvn3giwjua4pDYAtjH0RpK8aaSMp5vGXVL
-         dGYTKYzofzEpthE3kXGR1FnIG1EmLRNqYgax7mtvM1x7Q8+gpJOsn9DTJq93ESUmy7ZA
-         lI/Q==
+        bh=XrfqSRvy369yVc6mkzBE9cxk9/iWVTONTSjcJTlQJR0=;
+        b=hkLUX7AezApsn2UftlxCJ8GJ/vrCumzYXlseIeyLMluuINpCxDzs/Ae7ugqMbIeoKj
+         1nV5oXdDSpWXjLTvht+TRjhEfYBJF9luuw5agujzRoLdCK0QWQJlMJ23rB4AuXWsrMSf
+         ZVEO7KxxLrdwK0isqrQHjDA8cGDM2CARAuusAco8/1bErafCg86zlOZVjbJnKvZdyetB
+         75GiscdohhYZ8q+sT/wO1DUpdnMXzqxmdG9He93qeC5KRomW/d+9m4ahhDp1Op7WDV0Y
+         pyJsmT3TtTBOSfSdSYOsSL8KHAF8oI/eWrPveWjg2QgibaeW5YWu5/FfgalOZ3omS2TW
+         k4bA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773346028; x=1773950828;
+        d=1e100.net; s=20230601; t=1773346029; x=1773950829;
         h=message-id:date:references:in-reply-to:cc:to:from:subject
          :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=r+y1WK9bKYEMzE5cM7mHmluwniDdPir3jTdVAfeucGs=;
-        b=hFVmg934EMIx9Z11MxmauxVmFBbHPPnDe35Lg7mTVAwNO+hMLec93/k6xtNamFB5/d
-         GguFn+AoUPiBNMbzU63lbqOjkD98BaTMSTSye+R1DtNTCbGFFaHZQemXVjOdLyCtV7Fj
-         C4DkZbr7tL6D9pyrt8NHCouZk7Po1Heyeoha60WN36iTVD2PFA/Ht7gQKVAofyavxk0S
-         xZTOyADu0H21UeiAQECE74QLdJFIs2KpJfBZrzYSitRq6pj+1l8hOpX5/i5jjTOApJfL
-         PDzXfQvkpYVVwxSMSDXnSr6eloNEiiB8/rAstX+ohGI1g5gUvHKDQri9fho2p+8i7t4i
-         HBrw==
-X-Forwarded-Encrypted: i=1; AJvYcCVjBUHaQmauOw0je/k8Py3H/WNdCdJ++CJmI1qRtVl7cCDkfaixSSiYAakkLItFizxgOgl+l0I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhUjz3RwMa4r5H80MUPfmz2UwKbcEYkn0LWDPlPEmk6Mt8/GSv
-	RPLKnzUCQ0FdjJYvj8AFkS2GVB3YbkMSPkIjzUstHTCumi//EFbPdueoUxtOWCgmwrU=
-X-Gm-Gg: ATEYQzxMY7XnS0CEwymSpymMdGxNCqeZlRAiD6YNOuv2DqsqcasT+jfJwoRcIyaDRU3
-	JoQUnaHQZAI0pdWhpCJaE/2cD9ozRwoZj9l0j+zBoZsSFmPu6rfOPCxvbTL7Oqj9gbXcZI/6wc5
-	Z1llX7iApFVkUB2xtx5MkBJ5+a8ojcYAxGk8v1p1rXi7O4goo6AXyYcyY5a4UKwAeix9cMLHFrl
-	zBu1N6AF3HXXGNIKj2qrV8u1+hV2jOX4X3Qk+7a36ai83Ohs+/E7UAKPPa1Vna/sfCLte2LfiS6
-	TLkcX3Sj/wZJ/A4kAOkLz5AiTBwh4b39kWRag6c6nXm+Se1AlTQ483M2MBVppUrVb1JlOOGw6tG
-	J340xLfsz2GrXXh31xIU+I3Mxtfmno4n9f/Wkm9YcTDsbBV+A1HoOZ2xx/lR9rKFgdPOI74DDhj
-	YU/JYCRq9ufm6fO6K4uwKqKdZFKu5J
-X-Received: by 2002:a05:6871:3864:b0:409:7a01:6e2f with SMTP id 586e51a60fabf-417b906d7e5mr406126fac.11.1773346028068;
-        Thu, 12 Mar 2026 13:07:08 -0700 (PDT)
+        bh=XrfqSRvy369yVc6mkzBE9cxk9/iWVTONTSjcJTlQJR0=;
+        b=Wx8EkwxMW5scVSfNoqvGaHOFC+ZCyNq2IjOU6s/mI63cZq1bsQOpRh4TTNKC4fpK77
+         xk3wctxN66KeGOU1/aH36RGvtflhp8csGkBHKnVJ9DTChWYio/eVwUopGyjDh9o5Atcv
+         Mib+vy0icx2bahU735PzSka27QYJwpXvxZQsIH+05dd22wa79p6UQYzVcALi+Ec87F9f
+         xGYdG6jsyHEVZj7HIVmqg/OcvemZ+3oDXOkLER9TnVDXB8RYTCR+Tw3IEnXtdlntMOMr
+         KGVy9L4WNZOqGleEw87M4iY0l3ijZrHUFAyPXNXQFZEJT1+P8McqqbF/0YI+essi2lCB
+         DGaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVQelDNKcFF/lZBaIxdlMd6Xx41q6VIdnkAN/+gYFDGFddZzSTkoJrPRnNOuKrWbH+gMpq8WDU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxkaFM8ONiZvxeomIZV531SN1jcc0Pbn3YiHwVIQCz9j08adUKy
+	4dIJiUkfmqmuG+Rnz4GVKWCwAa2QZwLRhRaTEA6ZyQr0Ti+TaDsQPhafw5J9qDCshcA=
+X-Gm-Gg: ATEYQzxREMXLUJwCIilZaSbEh4mOCzr2L07s2wRbiRpoFb6fsfybcVbFB5EX0h9Escd
+	dd5MQPAXZRwp9/+BtCbiVVcpljidn2XW4ZGRSnjaJxQTIs/pG0UaH9Sf0phb4juWuShATIpEh91
+	clRilVx7tnnXZAB7QsGoep0YDrTiY+3yjMRR1f3Dz6CcaBGXnAppCCxhBzoa1+o1ygGCarXK/PG
+	E7yrzQOznwLW6JHIdTJ+eAcyJvo1y4VvZrhr7NrKxc5od+qVW1GnOxYd4/gU09yNryRifIM1xs3
+	7AJRJsYU3TGFzhR0AFXYzeWwt/mh0pM1ax1bFKw82EpNCqKA6djgJKV/rKLiha3mNBDHRRAY/9H
+	mdgzj5I9Ih5qBm+rFDX7iDwjAlxMmTsG2WziKwH9u2TAp0TH0hUQPYm6AzTMMm1XJE/DcBdm9dP
+	ksC8kijABgEGLimg0idzvtPHnU/DhYLHNMHQHVe7U=
+X-Received: by 2002:a05:6871:5292:b0:417:482c:5c0e with SMTP id 586e51a60fabf-417b93fd827mr366324fac.43.1773346029164;
+        Thu, 12 Mar 2026 13:07:09 -0700 (PDT)
 Received: from [127.0.1.1] ([2600:8803:e7e4:500:1f95:f82e:8747:8137])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4177e6c7885sm5600081fac.17.2026.03.12.13.07.07
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4177e6c7885sm5600081fac.17.2026.03.12.13.07.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2026 13:07:07 -0700 (PDT)
+        Thu, 12 Mar 2026 13:07:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,7 +66,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v6 00/18] Add support for MT8189 clock controller
+Subject: Re: [PATCH v6 01/18] dt-bindings: clock: Add MediaTek MT8189 clock
 From: David Lechner <dlechner@baylibre.com>
 To: "irving.ch.lin" <irving-ch.lin@mediatek.com>
 Cc: Michael Turquette <mturquette@baylibre.com>, 
@@ -83,35 +83,38 @@ Cc: Michael Turquette <mturquette@baylibre.com>,
  netdev@vger.kernel.org, Project_Global_Chrome_Upstream_Group@mediatek.com, 
  Qiqi Wang <qiqi.wang@mediatek.com>, sirius.wang@mediatek.com, 
  vince-wl.liu@mediatek.com, jh.hsu@mediatek.com
-In-Reply-To: <20260309120512.3624804-1-irving-ch.lin@mediatek.com>
+In-Reply-To: <20260309120512.3624804-2-irving-ch.lin@mediatek.com>
 References: <20260309120512.3624804-1-irving-ch.lin@mediatek.com>
+ <20260309120512.3624804-2-irving-ch.lin@mediatek.com>
 Date: Thu, 12 Mar 2026 15:06:36 -0500
-Message-Id: <177334599652.4124794.2284323207748123029@freyr>
+Message-Id: <177334599652.4124794.9130759829438828661@freyr>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=515; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=lKJ2mS8qshYtbORsyK0ngNUDnpsbzs9HMnnIPPn7MQw=;
- b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBpsxzPi+0zWeulMgYec/oNHyb8sbOm7PTreogHt
- ekbB22puQqJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCabMczwAKCRDCzCAB/wGP
- wDfIB/91n7afDNKVMM1YVnaRi8vpX9xoS/2fQLT+wzZC/3m9wr58g42+Hy7F1+SywRjBf8f8CWn
- BlwpL0zR+GBEnDlPiWeCojMa/oNotD6CWbl2gXYC33sllryI2rkGy18PxfunAxpNBAm06vWz6Lr
- YvsvuBJ7kEUcqf8+DH+bgCKLL/2fWxaI6Cpj/rggJGywF1rJMvK/5qwFPiuIUVDAV3xRL09Firz
- uDocVTpeY9TqTi2Nq1MU2MfD+UH2EKd/SzRjDlgDoyOmTefufsLWnJCeARld89Zvg/NIOTGWdkC
- WVTaGeyWsXb+6V8GO7rcJ8/3R5W+W5sdRGFjjE3ewiwYd1Gd
+X-Developer-Signature: v=1; a=openpgp-sha256; l=520; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=tkQxE/WaHOTyLw9z/sp813AJR6zA4pd2NdpV7fP6+0M=;
+ b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBpsxzWwLcwCiJ8Z4K49ki7iVfChNgBVHE7qCgpm
+ Y/2/Iw4lzGJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCabMc1gAKCRDCzCAB/wGP
+ wC7SB/0fcJl+IqsMtJ0KbpayFuuIWaEoKx2Y+kspgWFvDk3ZZN5eiVoAGyzSde4TNg8/MKEDTzR
+ zssxuG27VwnhdKRK5hXY3KyVuHfvUo+Q+l1vWWM6d47IkLLuJIESKy+aV6ajhGZD5ExQkBpqLUf
+ /vCSyDwGMkE9rkFHUQ9p6WuFUFifDb0HOWvcvuM9MQ36kTfp9Ub0ufAYs4MbrMujowXIBE5YR5K
+ 5KfOPmbBOw6gtvbrhPFp8Jcwft/caJjstn4wz3XNF9+w6So2N7A2xaO+U+M3NrKjgHLBAscD6wX
+ SU78NqGacCN8wXbg9BmNJJebWwHSdHSmXbCCXImCwsfnHKTq
 X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
  fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-On Mon, 09 Mar 2026 20:04:42 +0800, irving.ch.lin <irving-ch.lin@mediatek.com> wrote:
-> From: Irving-CH Lin <irving-ch.lin@mediatek.com>
+On Mon, 09 Mar 2026 20:04:43 +0800, irving.ch.lin <irving-ch.lin@mediatek.com> wrote:
+> Add dt schema and IDs for the clocks of MediaTek MT8189 SoC.
+> The MT8189 clock IP provide clock control for main system
+> (apmixedsys, topcksys and vlpcksys) and
+> subsys (eg. peri, mfg, venc/vdec ...).
 > 
-> Changes since v6:
 
-So this should have been [PATCH v7]?
+...
 
-> - vowpll/aud_adc_ext are fixed clocks in dts, remove from bindings.
-> - Remove unused clocks (clk_vlp_sej_13m, clk_vlp_sej_26m)
-> - Fix confused naming: vlpcfg and vlpcfg-ao
-> - Correct naming in vlp-clk driver: vlp_fmipi_csi_up26m, vlp_pwrap_ulposc_sel
->
+> +#define CLK_TOP_DRAMULP_CK_EN				205
+
+This one does not appear to be referenced anywhere.
+
+Should it be added to `static const struct mtk_gate top_clks[]`?
 
 -- 
 David Lechner <dlechner@baylibre.com>
