@@ -1,38 +1,38 @@
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1683C0628;
-	Thu, 12 Mar 2026 10:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F2EB3C0628;
+	Thu, 12 Mar 2026 10:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773310333; cv=none; b=UIJWjn0wNs7i7xPzyxZtGk81NwDpr+DcMNliwkhnjrhShxiR+zTuA5QBEfFSOdI6mKWzWQ5+FVkDLp6yydrah48WdU4ciT8/r5gDdiFuEg0qkaHPG/NSpJIu7QG2o1pQh2p4xtf3M3pN/wb4oTr0EzNWZRyRMKxGcrDOKL3DgYM=
+	t=1773310337; cv=none; b=Jr2KSgbcmy34QvyG+5r+MwEF/fkHpumO/VC/VaKCk3njIVI+259q9uIiQt4zYuwErsrqjM1nBWuAlQPjEd93AAyg1V/q/WXilgspIRzjL6vrGD+dOBaAeL0TEM7D2BpRxUVWZmn9BS/UqN8WRipyJpNFrrAEijmqKiqtmOe2fas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773310333; c=relaxed/simple;
-	bh=0JNH+vV9m6Q+pG8VsJX1wdlMdhhBGkOHek4F0EB6bdU=;
+	s=arc-20240116; t=1773310337; c=relaxed/simple;
+	bh=1snz4nu932BQaPGj1m5kJt/2+RkGMe8mWiHUlyDrJnY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jjAqqgUmT7cTAsYSMeDqpRVmj/1KMHzMZk/yorJaOWRVPIulJ2WJvfBGv6LohsLFB91puLyptm9D6JxrbhOwXziav9ZQRjw4Vwx6QUNi1YFyX9itWqey5xNGTggKLB5Xx4NKRmErt4dyIN/ebk7qOnCcBFsJB7BwMoRRDFliG3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=uTy1jOSg; arc=none smtp.client-ip=185.246.84.56
+	 MIME-Version:Content-Type; b=Rtl2+VuZxfH3K8950BDUc2nuwLFwe8DKl7Ubz5KmJU2uYt+9ujgmZpCX6dWw0EU+ONiKo0ih+s5ayoKe2jxP/gCOBXr5E6RtpjXy1HY5TTamQhZpOS5nLpAOmIp8Iewu1soZt7PJXGsDqIgeO8Cmcso4GzrHB0KHOQbgW7hGdDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=04hDAdl8; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="uTy1jOSg"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="04hDAdl8"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 19E0C1A2DEB;
-	Thu, 12 Mar 2026 10:12:10 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id D25371A2DF0;
+	Thu, 12 Mar 2026 10:12:14 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id DF6365FDEB;
-	Thu, 12 Mar 2026 10:12:09 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3782310369C61;
-	Thu, 12 Mar 2026 11:12:04 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A38075FDEB;
+	Thu, 12 Mar 2026 10:12:14 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1111D10369D7E;
+	Thu, 12 Mar 2026 11:12:08 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1773310327; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1773310333; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=ZScxyatlTWwp4VNBkqTha4B6duYhO6GHXUx9ibpGkcE=;
-	b=uTy1jOSgn+W8bTv2Bu4HIkJ8axtG/wxKhMn+PbT6zK+r5oqzCkIgeV0QZcW/LQGyWkDjIC
-	21cUmsPqAuliL36gz5dC82ca7VnYBtrVVlmCYMFT9c+OGPOzrVTACPxsT/Jsp79ELcW9ZL
-	yDHOVpcBarPpgEcakALDfZgunbdvLRP/lvbcGrwswLN2uzGPCP0LewYtKmyi3mzm6oqtYa
-	uQ+JpyQUuK7PfkpMx+RFci2j2NzaSgbgR0ci0gGlLRxhydcEChudsq5l6rvSM2BHdZhO6x
-	BF/fUQAiyBZ0xoCx4Z+5LKINSwkONA2qgogKbav9QeWb1pIqGRpxAWSKWSdxFw==
+	bh=x8skTqfbUD9JCb+byF4bxHeI2j2p4qGQHJqCgQ+a5aQ=;
+	b=04hDAdl8RvFZx/TOY2lTFmGctnnSllSuRGcHq5JwcC/6m7SIzb3AaUnyuLGuExembkBapt
+	frxtQrPrA2QqzhznosGaeVJNWuOsdpBq1zCCXGP5TMzKsnCc2lYS4YOXw29f2Gj7x4Eo6x
+	qTF3AAfBwWsHxobvSJQXKBym+nIc403gb2R+PtFvdSunV4zSERva++eiBn60+5Qf1mABt+
+	W/erSgrUVW7G62f3gNiWu0jbdPDtZ7l6uUf/3PoGR1IRoPWAG7+4Q2i0yf1EK2FDMYpxEc
+	9HJV2xkPllL+3TaRDULBsVrX3kZ1qo8aVEnxXIUmaP1F1/18MdtOK97hMa3V/g==
 From: =?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>
 To: theo.lebrun@bootlin.com
 Cc: Ryan.Wanner@microchip.com,
@@ -66,9 +66,9 @@ Cc: Ryan.Wanner@microchip.com,
 	sean.anderson@linux.dev,
 	thomas.petazzoni@bootlin.com,
 	vineeth.karumanchi@amd.com
-Subject: [PATCH 2/3] net: macb: set MACB_CAPS_USRIO_DISABLED if no usrio config is provided
-Date: Thu, 12 Mar 2026 11:11:37 +0100
-Message-ID: <20260312101138.465482-2-theo.lebrun@bootlin.com>
+Subject: [PATCH 3/3] net: macb: drop usrio pointer on EyeQ5 config
+Date: Thu, 12 Mar 2026 11:11:38 +0100
+Message-ID: <20260312101138.465482-3-theo.lebrun@bootlin.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312101138.465482-1-theo.lebrun@bootlin.com>
 References: <DH0PZN0WJZC5.26KLH464PMMTP@bootlin.com>
@@ -83,39 +83,30 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-bp->usrio is copied directly from dt_conf->usrio in macb_probe().
-
-If dt_conf->usrio is NULL, we do not want to land in USRIO write
-codepaths which dereference bp->usrio. Inherit automatically
-MACB_CAPS_USRIO_DISABLED to avoid those.
-
-This means a macb_config that wants to disable usrio can simply drop
-its .usrio field, rather than add the disabled capability explicitly.
-
-Nit: drop the dt_conf NULL check because the pointer is always valid.
+USRIO is disabled on this platform, drop its inherited usrio config.
+We will end up with MACB_CAPS_USRIO_DISABLED on this platform:
+ - We have no config->usrio so macb_configure_caps() deduces that the
+   feature is disabled.
+ - Anecdotally, we would also land in the runtime detection codepath
+   that reads DCFG1.
 
 Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index ecab7fdc962d..972499aa4191 100644
+index 972499aa4191..0e2200cf4206 100644
 --- a/drivers/net/ethernet/cadence/macb_main.c
 +++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -4470,8 +4470,10 @@ static void macb_configure_caps(struct macb *bp,
- {
- 	u32 dcfg;
+@@ -5592,7 +5592,6 @@ static const struct macb_config eyeq5_config = {
+ 	.clk_init = macb_clk_init,
+ 	.init = eyeq5_init,
+ 	.jumbo_max_len = 10240,
+-	.usrio = &at91_default_usrio,
+ };
  
--	if (dt_conf)
--		bp->caps = dt_conf->caps;
-+	bp->caps = dt_conf->caps;
-+
-+	if (!dt_conf->usrio)
-+		bp->caps |= MACB_CAPS_USRIO_DISABLED;
- 
- 	if (hw_is_gem(bp->regs, bp->native_io)) {
- 		bp->caps |= MACB_CAPS_MACB_IS_GEM;
+ static const struct macb_config raspberrypi_rp1_config = {
 -- 
 2.53.0
 
