@@ -1,40 +1,85 @@
-Received: from mout.web.de (mout.web.de [212.227.17.12])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D47919EED3;
-	Thu, 12 Mar 2026 09:40:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662FC3B2FFA
+	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 09:40:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773308443; cv=none; b=kjKL34B54QxZ+V7Gqy3G1IFvJ/ula4VTenOWdyvLB/5qCv8xmp3myCq4jd5cPZoktktr9I2QnQ0RMYDuc3WroovrCp0Twq/lXjv/ZnN/39bK+Q7vWhsC0ot+ptZ74TP/D9VIoZN2vaKlsaPCticU4S/Q//jJwbtwxmJyVPIigrk=
+	t=1773308451; cv=none; b=N2UMR+ACBoQ5upVZ2z89eNgUOev9rzEIlXr/ijIYax8iWeAk/D69/sgsIUfTV/NsJ62FyotpFH3DTBj7aCHBlsIfaeFfjUO8Jr8v4dnVbFgmkBVkL1F2lcMdH9aZiGKcgwwkByrNq1YCnaiB3RfYoo0WBBLvk/JAeyqleCsNarU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773308443; c=relaxed/simple;
-	bh=9AHum3gpR+3YNNMJecWJb7TEqvi5Ld5xBEzm1+lPvm0=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=KvLMBea0yqNAMFTQWHc0WkByHf/NfJ495ITsz1j3ifLc+Sf3876E+WpUE1RWVVSYpjdi34HdS82t+RG+qY9lL3cTHGQsqsyaoiwWpmSMD5fA1/xkAWQF92MogfSYi0wEBWUGMKb4q3BMYjTLQgkdfELZa2NWlrJ+0RviIh0pGAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=kBHKPxkT; arc=none smtp.client-ip=212.227.17.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	s=arc-20240116; t=1773308451; c=relaxed/simple;
+	bh=ddEVo4L1jDTJ75CDuotLTBCt2IwHCurzLzGzvhrGLB0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RbmigLvF0dlapTrhpw2t5MW2/suGhecpilnTGWFDqvZwHuQId9fjz7XZ1A/WYhaqCZCfUSN+TqweuGlQdrc+YiCauw1wvOAMbCp2TEM2WUTtQzvlawYMI930EMAGGSeUQxxxOVURGKJ3ena7DRhmtP8tKXdwZ/PtNnL7og+Y+8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=habS9Tvi; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=eIfEsEl4; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="kBHKPxkT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1773308419; x=1773913219; i=markus.elfring@web.de;
-	bh=9AHum3gpR+3YNNMJecWJb7TEqvi5Ld5xBEzm1+lPvm0=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=kBHKPxkTfFBj4yBccRF78U4++HzHDm+mm048hLsKYubOXruH8j/WVwplP+N70HxO
-	 fQtuJbhubGrSYts9KidqsooGOHkFrOg1fX5aajvcsbnrX0H0tQRKlvKCO4x/xC3Wg
-	 BZNfoCCRisfT5uofTC9GtDfHyUd3WeVFm8T9m01To2TTLIl4cTPfLoFlK2/UHI9jo
-	 1MUmSH2caxmxo0LdmHoAUMpL9toj4v6LIYTtLKTe/S7GyBvZd/Ce7sHM05lga3pT7
-	 JMb2ubWeEqtGsEZOQOSMqXPu9/Px40HLtJl9kggDQLyOr142YZQz4xgW1OVuuvAfp
-	 p0+HGZSLZtorCbg1uQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from client.hidden.invalid by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MOm0r-1wGvQi1slj-00L4Zx; Thu, 12
- Mar 2026 10:40:19 +0100
-Message-ID: <fa8a6d12-b292-4cb3-98b1-bd32aa45864e@web.de>
-Date: Thu, 12 Mar 2026 10:40:16 +0100
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="habS9Tvi";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="eIfEsEl4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773308449;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=e6EdyD35EC+SpPH1TY5bENOyft6Ge/0pFEQiQDyadAk=;
+	b=habS9TvitoXdA0y1Ol2EBDShvBplk6Z9I7msfNJw56LwzALTv28ogf+TP4aGY64qGBQlnc
+	x6AUi36K9fjLu3y64VX9m1SJPFkXyKza5MpwVXfOKO/vNmdp5kYZHe909By9qeN/uCMg1b
+	2KwPMaHAJBtVm0/6ILBOMt2oh5zXen0=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-184-BRNIAlXMO-SG1AfH1oNmiw-1; Thu, 12 Mar 2026 05:40:48 -0400
+X-MC-Unique: BRNIAlXMO-SG1AfH1oNmiw-1
+X-Mimecast-MFC-AGG-ID: BRNIAlXMO-SG1AfH1oNmiw_1773308447
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-439bab2d095so467458f8f.3
+        for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 02:40:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1773308447; x=1773913247; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=e6EdyD35EC+SpPH1TY5bENOyft6Ge/0pFEQiQDyadAk=;
+        b=eIfEsEl4s9AAZ3jWXp+IHQRc/xX60iWLK1BBo3LsBX0iINPerVsaHlOAoFCoxvRqIT
+         efIMsFpmroymfPY0xWCP+MfiIpwQolNJG+g0Xg31bkI0Yew+sH/BeagEfmp/nnMU7EIW
+         JR4HJa4aP76PDj1hkhFyiacHe1KbOWxFpTRq2zx2Y8MNUMgYAwk27fO8uyOkLRSmxTj9
+         jsCGHcLpstxu0Y5vDNZTYStzZHqMvrInAWNz6lJEcN2n6PZE/eeNdQVfCWJofQUtkJ4D
+         kOw5THz6NTYP18uE/OOlHu8PkZQDxGgXIU+6o1LmScEMDt7IaVNKhjN66+3yuA8g1BjN
+         9ATQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773308447; x=1773913247;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=e6EdyD35EC+SpPH1TY5bENOyft6Ge/0pFEQiQDyadAk=;
+        b=jLwJGitZGk5uMdIKVSJHBVol7F6Cmy742NlNJKEE2o9Zr0hIQKB5XibXOaguNyj2LN
+         pf5AYrQnjkrUb153YB8b7DJak+TnTpW+I97m8AylN6JkWIlYr8ZJ7Nq+2BF28nDgOpGx
+         LcEnQkd5VY9E95+LLO2clrcJL9VLKltuCd8jEJbx7h1DcyZJoj8FjQR/Yt4zFLbrshLN
+         z8++09bqBBckAtEWFmEJx1xkq1VF1jhLPvL7VHiwUKIS1nRrOMyRp9uq4PY0KBMo5Pr2
+         pT1uP5FVtnuUtTAMxNz9R65pLmP2SEJAm8N7WtmDktgXwgRhJvnSUsjblh/fJln8aRjt
+         ppdg==
+X-Forwarded-Encrypted: i=1; AJvYcCW4VdjpWzyYGm8u4HcNJV7/Icgs4yuDjcSHnVG4iHi9jf9f1c6XNCV/+HGsJVNfAuqmubCeYl0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywm02QWJBVYyxUWT3yUxBL6NEih2ZemXe34wff9ViPzJE7nsDDX
+	xSRerhGrq8YR3ne+eHP3Mz3OoaREjVKfZmoBvZo4j4rWD3aMyQEpNDN9v8c3E1WKwjJi3WICMcz
+	DPCjOsDfqfxmRY4oaCVaDU1209v+7dVO22Z3gQvT7L1o2SxFbYWpQEVFOJw==
+X-Gm-Gg: ATEYQzwonDwmUYOxX/xQ63qWjdKIQuri7b38C6fg0mVpxcroGNOxXlPjAqETapQLW5O
+	GglhdWjh3Z0wBgWGv+JVexmw+aqmrIMOESFOgoCSpeQggHKAg/xlxmW3c7wx/0MTmy32xx8wvLy
+	0nlmyXM8N3qWHVFivANk6SHeRf1biVoxZs3HvSuzgI+gHuJpSDwadkumovMvp6uIUS47qVFAqsi
+	b0YMhiBxlcownh4xap1RF3HgSwWgNbiB8CHw2g1TeSXhHwZplbnEzeaj5TMrMQKID0HhOteqg3Z
+	mH0fTPJfJ+U+h7/q1bJ8SJf5lP5C3Dae+w2l6puagTYbTNoJCIp/6x3KKdbLoxZ3loW+5eGJOpy
+	wfik8Rp1Ks6xyWNxQHyci1W6/bi2InbKvqJNYCfpLyv/JBT+EUYMfgK8=
+X-Received: by 2002:a05:6000:228a:b0:439:ca64:967c with SMTP id ffacd0b85a97d-439f822b9d9mr9932340f8f.44.1773308446716;
+        Thu, 12 Mar 2026 02:40:46 -0700 (PDT)
+X-Received: by 2002:a05:6000:228a:b0:439:ca64:967c with SMTP id ffacd0b85a97d-439f822b9d9mr9932296f8f.44.1773308446263;
+        Thu, 12 Mar 2026 02:40:46 -0700 (PDT)
+Received: from [192.168.88.32] ([216.128.11.95])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe22f3a4sm7155566f8f.38.2026.03.12.02.40.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Mar 2026 02:40:45 -0700 (PDT)
+Message-ID: <bcc536ac-dde1-4b63-8fed-70850818472b@redhat.com>
+Date: Thu, 12 Mar 2026 10:40:43 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,110 +87,67 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Oliver Neukum <oneukum@suse.com>, netdev@vger.kernel.org,
- linux-usb@vger.kernel.org
-Cc: LKML <linux-kernel@vger.kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-References: <20260312084612.1469853-1-oneukum@suse.com>
-Subject: Re: [PATCH v2 net-next] net: usb: cdc-ether: unify error handling in
- probe
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20260312084612.1469853-1-oneukum@suse.com>
+Subject: Re: [syzbot ci] Re: net: move netdev_compute_master_upper_features to
+ ndo_set_features
+To: Sabrina Dubroca <sd@queasysnail.net>, Hangbin Liu <liuhangbin@gmail.com>
+Cc: syzbot ci <syzbot+ci098fa7c1795eceac@syzkaller.appspotmail.com>,
+ andrew@lunn.ch, bridge@lists.linux.dev, davem@davemloft.net,
+ edumazet@google.com, horms@kernel.org, idosch@nvidia.com, jiri@resnulli.us,
+ jv@jvosburgh.net, kuba@kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, razor@blackwall.org, sridhar.samudrala@intel.com,
+ syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+References: <20260310-offload_compute-v1-0-3df79c09ea65@gmail.com>
+ <69b04e91.a70a0220.51e36.0000.GAE@google.com> <abBuLV3P6aTzUg3W@krikkit>
+ <abC7rdjxv9ENw-tA@fedora> <abHcP3GTO29rfKML@krikkit>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <abHcP3GTO29rfKML@krikkit>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:QgdERwvsGc6c890IgmWa79luGZOtwk8vwNyDPNSbi5EIMbt1jb3
- 8n+iNVpKor+myP8MH0pAf4q14pAysTLCITf2SLMTqEux8qs444cZ7IE5PTPHsMqlC/vz114
- WW9UETkkmj0aGDJuEKE9/r8RA4pWrwzH0yFGbXW0v0t7upmHnP4LgBtaGKWuDKNuF2OBZn5
- tbcz7rkWTyJQfaAKcJdAQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:N4fJCQVLUPA=;CQxQtgs/yAnQandMwlbZF1Oa9NT
- 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
 
-> usbnet_generic_cdc_bind() is duplicating the error handling
-> multiple times. That is bad. Unify it with jumps.
+On 3/11/26 10:18 PM, Sabrina Dubroca wrote:
+> 2026-03-11, 00:47:41 +0000, Hangbin Liu wrote:
+>> On Tue, Mar 10, 2026 at 08:17:01PM +0100, Sabrina Dubroca wrote:
+>>> 2026-03-10, 10:02:09 -0700, syzbot ci wrote:
+>>>> batman_adv: batadv0: Not using interface batadv_slave_1 (retrying later): interface not active
+>>>> hsr_slave_0: entered promiscuous mode
+>>>> hsr_slave_1: entered promiscuous mode
+>>>> ------------[ cut here ]------------
+>>>> err == -EMSGSIZE
+>>>> WARNING: net/core/rtnetlink.c:4421 at rtmsg_ifinfo_build_skb+0x218/0x260, CPU#0: syz-executor/6496
+>>>
+>>> I'm not sure this one is caused by this series, but either way,
+>>
+>>
+>>  rtnetlink_event+0x1b7/0x270
+>>  notifier_call_chain+0x1be/0x400
+>>  netdev_change_features+0x95/0xe0
+>>  __netdev_upper_dev_link+0xb20/0xc80
+>>  netdev_upper_dev_link+0xb0/0x100
+>>
+>>
+>> This patch calls netdev_change_features() after __netdev_upper_dev_link(),
+>> Which trigger a NETDEV_FEAT_CHANGE notify and calls rtmsg_ifinfo_event()
+>> to fill the new link info. Maybe the event is a bit early and macsec has
+>> data not ready?
+> 
+> But this would still mean that there's a mismatch between
+> if_nlmsg_size() and rtnl_fill_ifinfo(), and your patch is only
+> revealing it.
+> 
+> I'll send fixes for the stuff I mentioned, no idea if that's what
+> syzbot saw since we don't have a repro.
 
-I find such a change description improvable another bit.
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?h=v7.0-rc3#n659
+It looks like even the nipa CI is reproducing the issue, i.e.:
 
+https://netdev-ctrl.bots.linux.dev/logs/vmksft/net-dbg/results/554921/17-rtnetlink-sh/
 
-> V2: Update error logging with every cause a unique message
+more failures here:
 
-Please move patch version descriptions behind the marker line.
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?h=v7.0-rc3#n785
+https://netdev.bots.linux.dev/contest.html?pw-n=0&branch=net-next-2026-03-12--06-00&pw-n=0&pass=0
 
-Regards,
-Markus
+the fail in mascsec-offload looks quite deterministic, could you please
+have a look?
+
+/P
+
