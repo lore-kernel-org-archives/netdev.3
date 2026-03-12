@@ -1,162 +1,236 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013046.outbound.protection.outlook.com [52.101.83.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FFC01400C
-	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 15:05:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773327930; cv=fail; b=U0Hfa5AADY9GiJX/7yVxPFqc8s0UbLyC6QATs6ABqd1ZXSvgWsQrO4FhjbaH2eYQVxwk7De8P/Wg+4SfrAn8qGgKzXAWItZrO3F5jo+JTM88ZkHabcw6GYn5qnyWzg8tSAwsF3IZsyLy+/6iOGrDWNUiDl/ZHlb6pGPLQspwMHc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773327930; c=relaxed/simple;
-	bh=SA5/PiMKBDcO/l7Mf9tDqed39oZ0Dcqnnz1MYk6or9E=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=RpRlilK0x9QOa842nebTxRUgmI8ONfx1+UokCAMJdU3njrqczx0Fzg2CUbyOwsxcsGngeeh62ld41vMLFP2iJ4Zws6Qy5PeIRuAerC94lMzpTcRu3tWcAS8YrUBuARDe1fZoofrDYf03C7o4/TKb4VPWNoNvP3MXwyBWXD9qQoI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=@siemens.com header.b=zkgHMU1s; arc=fail smtp.client-ip=52.101.83.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=siemens.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D0D3BB9F9
+	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 15:05:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773327934; cv=none; b=sBpEI+jWVfFXB03QY9zSUdiw309gdYxW0TSp9wSewbOJuIJO9XiVwp00UQXlA97s+s2aNkWBtWIm3UMu4kjaEyfkbFcCPj13fg0OuIlOaBZo8OhgvKx4gtiXtEa9nL5jKNHBIdbFSRGMJj11YNB5JAadwZZaoA2YXpJ9lAYC340=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773327934; c=relaxed/simple;
+	bh=wFrH16wRP/ZRrLPrdvN9J5kV/62KiVf8oPQZXnkjAN4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JnzeMTRu25UJplEOcNVwjAdsb6/jB+oLFm4g1R/An135a2WuY8I/sqjOKIrcLhHPA4P2BhSiM4c0ul5Gy4OUJrEPKiIk7IOZhNyv7yCrbU9//5W21ea1ZlrSHlHGcrwRg2nqd4+iUbdgmu1fERDRSwbQEOaeLRysfve+xGRckww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bitbyteword.org; spf=pass smtp.mailfrom=bitbyteword.org; dkim=pass (2048-bit key) header.d=bitbyteword.org header.i=@bitbyteword.org header.b=OW/DV1AC; arc=none smtp.client-ip=209.85.210.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bitbyteword.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bitbyteword.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=@siemens.com header.b="zkgHMU1s"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GLufE3bqR9C66eRK2sDdjOnGGgL2bbeB7lcH6WcJnZa/d02ftPZ/3gsJnqgio6Btdw4+Wt10U6HEp3xYhAwscAeA5GMCPCPwn40eZ6P6zUrTxje1UxWCKfe/3JrIXzY/Yb7Y66nfQGrUcsG7F+18pud5rBi9uVuPG7TC3zm0tYA45yh6NxJEib0mwcWxrFZi68micUAeyABlXgokLAHb+hMOr8eHgd+f4J7/+K1x95EAvOzksOxIaIGojcplJD1XprLhK8Jv8Uvz8pPJrcjthy/mankgD8lV2U/95vcvvnTsylryHRCIvw3Pj1lWY136tElJmKv5VgcDY6VSMbXjRQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SA5/PiMKBDcO/l7Mf9tDqed39oZ0Dcqnnz1MYk6or9E=;
- b=N4w+dwrq+WO9BQQF7vfXxgCfYc/gl0tJC8mgkHug6/XuaoCIKztyd+jsaLGUdorv5RJJIQ23RF3RNyeT7BgoVVsjT4a43b5ZGKr6Cff7T9Ve0SCKIIz0EtbLkckuUfmz6iJnO2oVJmDnQq3ujUoJhiHFr9tiHqH0fwJMrK2n4PCpqeTvhlVqbNQ4vjoDbq/nrAKu0Sn2iDi52urcOGzscdn4tt9L2GArcXhd1TX/DTAlSPESwyHQ+KIjtDKsTpmtVFA5pgYziFZOUEGRFBzmSzrVxTDgSsyFlmgqSQel5kcepU2hwIg2mRpxf4abaUTx+wMSWTOZBMUaS04gLr4OOA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=siemens.com; dmarc=pass action=none header.from=siemens.com;
- dkim=pass header.d=siemens.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=siemens.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SA5/PiMKBDcO/l7Mf9tDqed39oZ0Dcqnnz1MYk6or9E=;
- b=zkgHMU1svR/8tRxcaXpRJ61m6excYTccivqynG4D2yrAEBDSVMw9Lh/8Fz7wyVUlcJU4LHSfBvwz0sJjJuNk8xV2N5OUnFPFnBopSdx1WztiU+/2iSNPs8Dq00uyzJlVr34hqZU3ziKT9mu6ePmc4PrUnseOGN8nA2kNgiAVYbHGOU6muDGCzsEZllvMR8jTcYOBmUMiTCnTPD8FGSGDLKss/DWZsKyLsZViT5ZPt/sc0vnpniumwn35YAxQ1qJPp9I3PpFCne9dbxpqk6wKK8LZUKgMhSmRmbWIc6+5/G+z+b7YP7ULEjPJcYFFbVq56dvdQk3yDfmxntpBRz4jvA==
-Received: from DB9PR10MB5689.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:30d::14)
- by AS8PR10MB6722.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:564::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.15; Thu, 12 Mar
- 2026 15:05:23 +0000
-Received: from DB9PR10MB5689.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::ea30:bdcf:399e:679]) by DB9PR10MB5689.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::ea30:bdcf:399e:679%5]) with mapi id 15.20.9700.013; Thu, 12 Mar 2026
- 15:05:23 +0000
-From: "Bezdeka, Florian" <florian.bezdeka@siemens.com>
-To: "rmk+kernel@armlinux.org.uk" <rmk+kernel@armlinux.org.uk>,
-	"andrew@lunn.ch" <andrew@lunn.ch>
-CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"alexandre.torgue@foss.st.com" <alexandre.torgue@foss.st.com>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"linux-stm32@st-md-mailman.stormreply.com"
-	<linux-stm32@st-md-mailman.stormreply.com>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "kuba@kernel.org" <kuba@kernel.org>,
-	"edumazet@google.com" <edumazet@google.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>
-Subject: Re: [PATCH net-next] net: stmmac: move MSI data out of struct
- stmmac_priv
-Thread-Topic: [PATCH net-next] net: stmmac: move MSI data out of struct
- stmmac_priv
-Thread-Index: AQHcshnFshdFNRptYUCfq4Ta73h+wbWq/xaA
-Date: Thu, 12 Mar 2026 15:05:22 +0000
-Message-ID: <b5b47ed3a98720b82f82217f6d7c3955559e121d.camel@siemens.com>
-References: <E1w0evD-0000000CzY1-19rN@rmk-PC.armlinux.org.uk>
-In-Reply-To: <E1w0evD-0000000CzY1-19rN@rmk-PC.armlinux.org.uk>
-Accept-Language: de-DE, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.58.3 (3.58.3-1.fc43) 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=siemens.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DB9PR10MB5689:EE_|AS8PR10MB6722:EE_
-x-ms-office365-filtering-correlation-id: 034ecdca-7bf7-47b0-a8ae-08de8048c8ed
-x-ms-exchange-atpmessageproperties: SA
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|10070799003|366016|1800799024|38070700021|56012099003|18002099003|22082099003|55112099003;
-x-microsoft-antispam-message-info:
- ecWDxenjGvjtvcrzu6wevubAXqPj5nBohKUnJgW1r53KbBJJc2rmW0qy1rpnWJAraReDB3B8tWtqWc7TS1fpmhUhQOpy/GfHKMnpL3Y8WvZ9CxWDDP6kMMdpkn/K7H6Wc1t+1rULOzFMlH95gCZGxqnffyLIFvVWsryIkgzaeBB1FHUuPk9bXLvXsA5K1uSbqsUjjvWtm9ThUCNDtoB8w7C5e90zueBeaMMclvVhNarvRf7jWF7q3Tv0iY729NE3wZAqux23ADHEXbAkdgHc195a0H3RLa17UVQjUZK/nf1f4EPyHo9vB3Fn4qh9agbGUfN3bACMZu1N7aMole+sbvcqCAB9al6fD7pDEPsOK50P6LDk3b46GpAILbn+A1za0c8Syt9Kfi/y4xSmtKw7G1W4lvmgjRRGDNYeLxptLcFGxZ/M4pPJNxqvSYjRDAhqTtYwbHcNZx8vosXghxkH6QoAuluFFWQA76hCQr0pNOLToHdLYyNnBw54LJZ4j1cE2S27cEGb+YXIwLCkEClHBfdJhGts3TysPP/duOWLgZApREhhoWOBRSA9VZU+2zQcn+Nn7TAFbn1gklXvM3GTiXyPupd4BWVuMnLz0tqRXecqw5IIxQGzTN57cnNv5YQ7DTLtUpyXIaCdtHkuQrh6WjqtKNvtk6k612NHQlIrrPS+IJ580sEnA0f38/MRUYatYQgZVzsfdcE7uAylzVqyvMjAsSi1J6c79K4cVkPwxnQ4yqHloo80PB+hviuHB3PDXLg5W9XQ8nQpnhpvUEEGAVKlo0io7HeJ4DcBa0pWDhM=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR10MB5689.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(366016)(1800799024)(38070700021)(56012099003)(18002099003)(22082099003)(55112099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 2
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?dUROa2taNEh1TWNPQmNDWUNVbmhVUDIxTnc1d2xUZGhlcm80dDlEUjhUTVAz?=
- =?utf-8?B?d1NIYnI5eUthNUdXeFFLSnYrMEUxdkZtend4Wk9GcitKcGVvUTdld2VBZnpF?=
- =?utf-8?B?M25hNnUybWFtWmNZQUtldGhxbkVrWXIvZ1Vxd0U2Zm0yV0lPRHVjK3BrZzBW?=
- =?utf-8?B?V2UzVEw2VC8vRy8zbWszUTlrL3A1UVJSTTVqdXUxeXk0REdmZnBKalZBMGky?=
- =?utf-8?B?WXFzY05pY011SFBnNlhGSFRnUE1WZWtkdHVCYkdxUUNtZm9OWWpnVEdQb0I2?=
- =?utf-8?B?cEZheFM5TzhjR2M5U2ZrVGZLVmRwcVhyYmQvVmltbWVzVTRIUGthMWdYMVpl?=
- =?utf-8?B?WW9TTittSG9ZSnhHaFZkRXkzcldVZzkzZ1dmeXc4Mzl1ZFdOUDNoTjB5dTcz?=
- =?utf-8?B?TWUwNXpmUFNTUm9jRHdoaEgyZTl5L2d3TmtUWGRNTzNzY2x1L1Z3YVhFenh6?=
- =?utf-8?B?WFlHek8vQTRhTXBRdWJDbXkwOWtYNlYrUEV1UDF1cWdxU0xDSUZpQy9VTFRN?=
- =?utf-8?B?S0V0eGViMXk1MG5ySCtBZEtRYUFUS2NxYUl5Uzh4dm91Y0RYMHVBUGxHOCtu?=
- =?utf-8?B?Z1VwczZjK1VGVGU4YUdDbEE5VXpTMy9pb0V0VmpzbWZreUxtS2xETUh2aDlR?=
- =?utf-8?B?ODQ4TWZnN2ViN1NLR3VkdldBdE1qbHJHU1AwNzgxV2pxWmFVTW0ydkJkaGYr?=
- =?utf-8?B?R3NSQ0M4cGQ3ODJaY3lzZmx1YUdEb0J0RGVGVFZ0MXVQd3VGL0pMckdOZkxN?=
- =?utf-8?B?SWxCbE41VHNISEp1RFhjWTM0ZlBaWUZINVF5eVNxT1ZoREpNbFBpRkhXVjZK?=
- =?utf-8?B?NkZ6R0xxcERYUnNNUUwxQVZESXZRSm5KWkdiczdoWU1HdEwwQTk0azQ0eC9o?=
- =?utf-8?B?UUdWa3BzbGhocWFaMVNwWlRHK25oOGQxM0QrZUZqQmlhbFAwNmxUYUNmM3lI?=
- =?utf-8?B?TFZGZEdwakxvZElGOFlWOHZJR2M1RksvaVJWWHdkQ1hKQk5uM2JIMnN2V1E5?=
- =?utf-8?B?NWM1aXB5ZVJQL1Z5SXEvQkxtd1ZOZHBPN3Q1cGJ1ekx3U1JXeUlpVFd0VVM2?=
- =?utf-8?B?UWE4aUE4VEFjU2hvQW94RFpXaTFzcmlLWjZzS1R3UU02YUw0NXc4c3V0TGxK?=
- =?utf-8?B?QjlRcld2TlZmVGdCVHZNdUhQK0trTExXQWhWYkwyYTJnMkdTSTlTMmh4MzRW?=
- =?utf-8?B?bHRyL1pUQ0l3SHBYeU44VTlGTkxJMGpFNUZIS2FlTElGNmUvbkU5OXE3QXdL?=
- =?utf-8?B?dEhPQnN6NzFKWE5YaG9VSU81RWgxTjl5Q2M1ZlRnUHpybzhOS2RRMmhWa2hB?=
- =?utf-8?B?S2dyMDJmcUlUaWNKazRtbDJqYW5aU1U0TUNvb3YxUVVPTFl6TUM3SzN3aHZN?=
- =?utf-8?B?UCtDWG45bWVYaUcvWFhFWFhleXoySmpCcEJZcFV5dWlpcVVja2NkSDhHbXVX?=
- =?utf-8?B?UHZoWEFNVWhnWmtTVUNJcG5FaldLMWNLM05VMlRFRyt2N3krQlN3cTFoMkM1?=
- =?utf-8?B?Nm04bmMrZkhwTkhyZ20wWmh4RnAwSWNqRWh0SUxJUHJzUkMxZnVZMk50eHdH?=
- =?utf-8?B?aHhJWktxd0E3RlBRR1hsaGtBRmgvT3pIblBFM1I3TjFYV3Zadk85dDhoMXBl?=
- =?utf-8?B?TSsxVUZrTzBlU1FCZ2pyb1JVcXllKytaQ2lWd0w3V0NnQlBUSWJYRFBDNVVW?=
- =?utf-8?B?NG1mQ0c5RTc1dXBLRlFKalI2a2pKdy9rT2s0aUxESUdwSUpDYXg3dVFWT3R5?=
- =?utf-8?B?TnJpeGxjSjlLelJJdWRCSEhKK0YwdzdCRTRzMm5iS3VLY0RsN0MySUp5ZE56?=
- =?utf-8?B?WXlOTWVZSTdzcEtPeE00dXloTE80aGNOZm5waU1VaTUrUnlQcGFpbEJQTDhx?=
- =?utf-8?B?UHhBOGVkNTRwdUQzWVFiT005UTdFVTZibXJuU3Nib2xpZ2FvNWxxQVhDQlB2?=
- =?utf-8?B?bEFYZzBhYWlSZUc2Z05qS1BRT1BreDJUV3d6Tjc5cjZBeTJQSFV6YjVseXZE?=
- =?utf-8?B?OFJDV2szRWFiL2xOM0t6NmZXWXUyOGpDTEFkQ05QNGNLbVhLQ2hvSEtXV2dG?=
- =?utf-8?B?VklzVWUzMkRKbHdQT0kxckc2UW1SeTRnYzBhSXhBSFZySmg1djNEdUh3a0Mv?=
- =?utf-8?B?dUNscVRsS3dKU3BmQWtVVjZTTHNETEpPeG10N3hHYUE0QUt3b1JEUHB6aElh?=
- =?utf-8?B?UkExNEFMYjJGTSs0VlVqMTJ5SUk4clkzWjJyUkU1Q2tPWDczbTBXaXpNLzY2?=
- =?utf-8?B?L2RsM1hzYWY4UmNQQlUxbEhRT0pKaHJsQVJRYkpHWTI4NnRDMjRpVXBaQ2JM?=
- =?utf-8?B?RTNDR3orSzhTVUhHUHhVNmVmZ1h5WDBxM3FEVTduQjdkMGVjYU1YTzVicDho?=
- =?utf-8?Q?astWTdgE53Q7Vtml90rqd/NXHNkMwrIVZjChcJ5mD8OTg?=
-x-ms-exchange-antispam-messagedata-1: SXxiKrbUcljfRSIiE+4OgKIFTYl55b3vzTQ=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <EBA0B5F73F9EC24BBB774B5CF6922507@EURPRD10.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=bitbyteword.org header.i=@bitbyteword.org header.b="OW/DV1AC"
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7d743cd9e5bso770928a34.2
+        for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 08:05:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bitbyteword.org; s=google; t=1773327931; x=1773932731; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=p/UukkhQcW1lhFqWI/Fw5V3bxdryulukbz8WWfM9zNY=;
+        b=OW/DV1ACXgC1meD5kqUaAm+FZL1lWnMvkS4yVJbykbP7K5vclRgwIJ0xyKjX7imhp/
+         JxxjkcYDPIFgCcRsHpsq5835/4tOiZXx4U2LrD/Jieum8wVn2Z6Z5nqk/9SiB45nd/qy
+         /BuK9l4E6H6ktN13lZ0Hr7tfv7gU2Q/gQrPyh80u+hQmfQJHWoBipgWsTEkUGem3Rz81
+         JNQzSDmb8/zc02tAEL+0aWPXdIdNl9rSHS9aSNKbrZ7DJXEXNUQ5AdKmtdWCkC9j1FJ2
+         ratzAuFfZH/Mj07Ii9/24wDft/5/id9dHt4PadP+Rpp8ksPWtVWSLG+Lvf0x5+CB9K5Z
+         62Vw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773327931; x=1773932731;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p/UukkhQcW1lhFqWI/Fw5V3bxdryulukbz8WWfM9zNY=;
+        b=D4pTeeRLawpgJTN7IYIP2xDNU2k6XHuk2ieS/Dsl+EEGPd/91RgWDaZBb2cuUNF31h
+         PfUmQUco7b9uhLFwcZPTQihJgVIXyfah8TyRKNh3mIKhwWZl8TcAi4HhZkjmJPzONcq3
+         MB00z01pnNm4V2ch/y0RehsMUEY1KG4TsH+UZ+QmyAz97Jq2SEHvQKUteVLeS9Tu38TQ
+         1vnQ/vfJJBGM3SV8ItOKYgfFrix+V2m86Y+caUrTso/rqTGdN+M+owDYLUNF5KHPVNz3
+         lrDCpRfTANBV2r1m3v2RWfP+sNqAXHb+6kOYTccHYK50ahkSq0ooynUUbpwgYJRfCIFV
+         2i7g==
+X-Forwarded-Encrypted: i=1; AJvYcCXm1gJAdZsI0LdOMgvT1YqP1/KaCSivDb8YM/vkgeQaPTo12762bYTHVauxi+1Q0zyHEn6ewwo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxP9CUh26cmewYU4J75+llcbi9kLRLGAzEXbVb2VM2MX48MZ3TE
+	+LJoLXDCMGIaoXAdZFNdJ9V51JRkjPjq48YBuj5r356Tc0usVuCcOFsCXK01zWGrtGk=
+X-Gm-Gg: ATEYQzzgnzjL1C8EYngZNOqNYZPqZynPatnpqM8QTHBmB/9dv6muJr/4wI/RDnjXjcf
+	HL0nGgbhfMaoz9zDYVkyf7DrRzbPDReuiXYlE+ll1fl/w4rZjKIgCr0WsdE2Z1KlRDVWX0x1jtj
+	ZZc0SwmtryUk2AxvuRkDWLKYiGDdMFAqpd7s8m2Qj6R9B1zskGiTULU8h/yVILBRnfUWyPiUxsP
+	RevRUp8VBhOflSRwIRYdLtdPcDUKhHtXHQPZXqsM1Eb8KSWbpEK0+fCCZQF+yp+gItFXCST44/v
+	uu4QbtOPnLOynMnJcWHhzHgaCu58EXMq0DE0ZCXSOIe5L0PAfhJPJLfWbUgKfK11kFVixYmHTjD
+	hvY908fTF/FJFZDPO585x90mfzm4h7hvV/2gxQ3ffyeB9C0vv5iO/nW9FzaBMT6ybYDzGmtzLdR
+	o20fsWQk6BgvTfIZwm26yN29tk7hW7yDvb0ZnYBpp5LU3kV9Rl9Q4e1HUaSL+VFXENfg==
+X-Received: by 2002:a05:6830:488d:b0:7d5:1101:9196 with SMTP id 46e09a7af769-7d76a6bdefamr3754389a34.6.1773327930614;
+        Thu, 12 Mar 2026 08:05:30 -0700 (PDT)
+Received: from vinmini.lan (c-73-143-21-186.hsd1.vt.comcast.net. [73.143.21.186])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d76aedae57sm4321776a34.28.2026.03.12.08.05.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Mar 2026 08:05:29 -0700 (PDT)
+From: "Vineeth Pillai (Google)" <vineeth@bitbyteword.org>
+To: Steven Rostedt <rostedt@goodmis.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Dmitry Ilvokhin <d@ilvokhin.com>
+Cc: "Vineeth Pillai (Google)" <vineeth@bitbyteword.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	io-uring@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jon Maloy <jmaloy@redhat.com>,
+	Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-sctp@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net,
+	dev@openvswitch.org,
+	Oded Gabbay <ogabbay@kernel.org>,
+	Koby Elbaz <koby.elbaz@intel.com>,
+	dri-devel@lists.freedesktop.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	Huang Rui <ray.huang@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Len Brown <lenb@kernel.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	linux-pm@vger.kernel.org,
+	MyungJoo Ham <myungjoo.ham@samsung.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	linaro-mm-sig@lists.linaro.org,
+	Eddie James <eajames@linux.ibm.com>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Joel Stanley <joel@jms.id.au>,
+	linux-fsi@lists.ozlabs.org,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Philipp Stanner <phasta@kernel.org>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Leo Li <sunpeng.li@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	linux-input@vger.kernel.org,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	linux-i2c@vger.kernel.org,
+	Mark Brown <broonie@kernel.org>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	linux-spi@vger.kernel.org,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	linux-scsi@vger.kernel.org,
+	Chris Mason <clm@fb.com>,
+	David Sterba <dsterba@suse.com>,
+	linux-btrfs@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 00/15] tracepoint: Avoid double static_branch evaluation at guarded call sites
+Date: Thu, 12 Mar 2026 11:04:55 -0400
+Message-ID: <20260312150523.2054552-1-vineeth@bitbyteword.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: siemens.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR10MB5689.EURPRD10.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 034ecdca-7bf7-47b0-a8ae-08de8048c8ed
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Mar 2026 15:05:22.9488
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 38ae3bcd-9579-4fd4-adda-b42e1495d55a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: FNN2JHWxNRTz5BrggnIB7WpVpf9yzOwF7//gZNrngsxxl3lU1JxbDkI8jyKcnXQCjgSzLuQscUFSFIz6OcuOmWo1fiRrLYtZEHYDB1cKHao=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR10MB6722
+Content-Transfer-Encoding: 8bit
 
-T24gVGh1LCAyMDI2LTAzLTEyIGF0IDEyOjEzICswMDAwLCBSdXNzZWxsIEtpbmcgKE9yYWNsZSkg
-d3JvdGU6DQo+IE9ubHkgdGhyZWUgcGxhdGZvcm1zIHN1cHBydCBNU0lzLCB3aGljaCBtZWFucyBo
-YXZpbmcgYWxsIHRoZSBzdHJpbmdzDQo+IGFuZCBpbnRlcnJ1cHQgYXJyYXlzIGFsd2F5cyBhbGxv
-Y2F0ZWQgd2FzdGVzIHNwYWNlLiBOb25lIG9mIHRoaXMgZGF0YQ0KPiBpcyBwZXJmb3JtYW5jZSBj
-cml0aWNhbCAtIHRoaXMgZGF0YSBpcyBvbmx5IHVzZWQgd2hlbiByZXF1ZXN0aW5nIGFuZA0KPiBy
-ZWxlYXNpbmcgdGhlIE1TSSBpbnRlcnJ1cHRzLg0KPiANCj4gTW92ZSB0aGUgTVNJIGRhdGEgb3V0
-IG9mIHN0cnVjdCBzdG1tYWNfcHJpdiBpbnRvIGl0cyBvd24gc2VwYXJhdGVseQ0KPiBhbGxvY2F0
-ZWQgc3RydWN0dXJlLCBhbmQgbW92ZSBpdHMgaW5pdGlhbGlzYXRpb24gdG8gYSBzZXBhcmF0ZQ0K
-PiBmdW5jdGlvbi4NCj4gDQo+IFRoaXMgcmVtb3ZlcyA3NjggYnl0ZXMgZnJvbSBzdHJ1Y3Qgc3Rt
-bWFjX3ByaXYuDQo+IA0KPiBMaW5rOiBodHRwczovL2xvcmUua2VybmVsLm9yZy9yL2FZdHE0eXB4
-WFR2bl9JczZAc2hlbGwuYXJtbGludXgub3JnLnVrDQo+IFNpZ25lZC1vZmYtYnk6IFJ1c3NlbGwg
-S2luZyAoT3JhY2xlKSA8cm1rK2tlcm5lbEBhcm1saW51eC5vcmcudWs+DQo+IC0tLQ0KPiANCg0K
-VGhhbmtzIGEgbG90IFJ1c3NlbGwsIEkgZGlkbid0IG1hbmFnZSB0byBjb21lIGJhY2sgdG8gdGhp
-cyBjbGVhbnVwDQp0b3BpYy4gSGlnaGx5IGFwcHJlY2lhdGVkIQ0KDQpSZXZpZXdlZC1ieTogRmxv
-cmlhbiBCZXpkZWthIDxmbG9yaWFuLmJlemRla2FAc2llbWVucy5jb20+DQoNCkJlc3QgcmVnYXJk
-cywNCkZsb3JpYW4NCg==
+When a caller already guards a tracepoint with an explicit enabled check:
+
+  if (trace_foo_enabled() && cond)
+      trace_foo(args);
+
+trace_foo() internally re-evaluates the static_branch_unlikely() key.
+Since static branches are patched binary instructions the compiler cannot
+fold the two evaluations, so every such site pays the cost twice.
+
+This series introduces trace_invoke_##name() as a companion to
+trace_##name().  It calls __do_trace_##name() directly, bypassing the
+redundant static-branch re-check, while preserving all other correctness
+properties of the normal path (RCU-watching assertion, might_fault() for
+syscall tracepoints).  The internal __do_trace_##name() symbol is not
+leaked to call sites; trace_invoke_##name() is the only new public API.
+
+  if (trace_foo_enabled() && cond)
+      trace_invoke_foo(args);   /* calls __do_trace_foo() directly */
+
+The first patch adds the three-location change to
+include/linux/tracepoint.h (__DECLARE_TRACE, __DECLARE_TRACE_SYSCALL,
+and the !TRACEPOINTS_ENABLED stub).  The remaining 14 patches
+mechanically convert all guarded call sites found in the tree:
+kernel/, io_uring/, net/, accel/habanalabs, cpufreq/, devfreq/,
+dma-buf/, fsi/, drm/, HID, i2c/, spi/, scsi/ufs/, and btrfs/.
+
+This series is motivated by Peter Zijlstra's observation in the discussion
+around Dmitry Ilvokhin's locking tracepoint instrumentation series, where
+he noted that compilers cannot optimize static branches and that guarded
+call sites end up evaluating the static branch twice for no reason, and
+by Steven Rostedt's suggestion to add a proper API instead of exposing
+internal implementation details like __do_trace_##name() directly to
+call sites:
+
+  https://lore.kernel.org/linux-trace-kernel/8298e098d3418cb446ef396f119edac58a3414e9.1772642407.git.d@ilvokhin.com
+
+Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+
+Vineeth Pillai (Google) (15):
+  tracepoint: Add trace_invoke_##name() API
+  kernel: Use trace_invoke_##name() at guarded tracepoint call sites
+  io_uring: Use trace_invoke_##name() at guarded tracepoint call sites
+  net: Use trace_invoke_##name() at guarded tracepoint call sites
+  accel/habanalabs: Use trace_invoke_##name() at guarded tracepoint call
+    sites
+  cpufreq: Use trace_invoke_##name() at guarded tracepoint call sites
+  devfreq: Use trace_invoke_##name() at guarded tracepoint call sites
+  dma-buf: Use trace_invoke_##name() at guarded tracepoint call sites
+  fsi: Use trace_invoke_##name() at guarded tracepoint call sites
+  drm: Use trace_invoke_##name() at guarded tracepoint call sites
+  HID: Use trace_invoke_##name() at guarded tracepoint call sites
+  i2c: Use trace_invoke_##name() at guarded tracepoint call sites
+  spi: Use trace_invoke_##name() at guarded tracepoint call sites
+  scsi: ufs: Use trace_invoke_##name() at guarded tracepoint call sites
+  btrfs: Use trace_invoke_##name() at guarded tracepoint call sites
+
+ drivers/accel/habanalabs/common/device.c          | 12 ++++++------
+ drivers/accel/habanalabs/common/mmu/mmu.c         |  3 ++-
+ drivers/accel/habanalabs/common/pci/pci.c         |  4 ++--
+ drivers/cpufreq/amd-pstate.c                      | 10 +++++-----
+ drivers/cpufreq/cpufreq.c                         |  2 +-
+ drivers/cpufreq/intel_pstate.c                    |  2 +-
+ drivers/devfreq/devfreq.c                         |  2 +-
+ drivers/dma-buf/dma-fence.c                       |  4 ++--
+ drivers/fsi/fsi-master-aspeed.c                   |  2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c            |  2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c            |  4 ++--
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |  2 +-
+ drivers/gpu/drm/scheduler/sched_entity.c          |  4 ++--
+ drivers/hid/intel-ish-hid/ipc/pci-ish.c           |  2 +-
+ drivers/i2c/i2c-core-slave.c                      |  2 +-
+ drivers/spi/spi-axi-spi-engine.c                  |  4 ++--
+ drivers/ufs/core/ufshcd.c                         | 12 ++++++------
+ fs/btrfs/extent_map.c                             |  4 ++--
+ fs/btrfs/raid56.c                                 |  4 ++--
+ include/linux/tracepoint.h                        | 11 +++++++++++
+ io_uring/io_uring.h                               |  2 +-
+ kernel/irq_work.c                                 |  2 +-
+ kernel/sched/ext.c                                |  2 +-
+ kernel/smp.c                                      |  2 +-
+ net/core/dev.c                                    |  2 +-
+ net/core/xdp.c                                    |  2 +-
+ net/openvswitch/actions.c                         |  2 +-
+ net/openvswitch/datapath.c                        |  2 +-
+ net/sctp/outqueue.c                               |  2 +-
+ net/tipc/node.c                                   |  2 +-
+ 30 files changed, 62 insertions(+), 50 deletions(-)
+
+-- 
+2.53.0
+
