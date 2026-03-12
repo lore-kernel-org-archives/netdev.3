@@ -1,43 +1,52 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBC2732AAA7;
-	Thu, 12 Mar 2026 00:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22C033B6DA
+	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 00:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773275168; cv=none; b=jCBZws9XIIaFnyOZPmVw/yKfpMdAXYkfSNDIGbq3N19Dd+Ej7ysC8nQ3Nvktt4uH0fNNfdIk7+PKWJZ+BpDtgXHXxP2u36q6j3suc6oGnT+kty7BIBfzkk5CaDNP2D5BJ1IogbYHdUPNlzs74wj2sGek/pP0nB2Tlr73ObeZfEM=
+	t=1773275354; cv=none; b=mGVnBC3D7Q6HfaR9EUSCajTTZ+sCytz+jJ/fST/DyK9s9p/C/oAJCwJSV2g7xJ9RjajXWw0xYtfBZFTP8l8GZJj1aezfLeS53xG0vd0T+ylpWpXKwUAumQLPV52k7pV3ubqi666ZFi/n6yhSI3NIEcQ9gRFJEu1Ru+e3Ee/R5vY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773275168; c=relaxed/simple;
-	bh=yAqxgCiaL/PbIercs51cQybjiF/dUfLJWosvRVyOFD0=;
+	s=arc-20240116; t=1773275354; c=relaxed/simple;
+	bh=IoR6lqedT9ZLR/3Sp34HdPCvvTBO8x+GArpju4CwWa8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BSBL/sXbZL9+gwpaFBSHBcqkPjRB6pg3uNlxGSmYYWrCiC8fq1I9aMbZJbR6Q6196yIDX73aFi+aliR2eWhKcN1XsvAC5Y0QrOAZkUkfhCzsnkvGK5trESkseIMuB6H1u+xPIiNSNOI8owPz+4Yb34HwDXaFHBebvhAUtOmIi9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FcNvn/LQ; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=N5+Y9m7iqIfncsqH1tbXBdiRFJOuKbXq5l2269JA45p9GovdztJ/VTDNOddmx4MSY6YmHhooTxm/o5qaawTI3bmMI2aiK0DUV19xTtLTnG/IXVCY8J5i9AMjLBsRbNTXKB5268yghh4rZ0EkKQdKBenDfNSOSExva+Im92EQ0XA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kspXrAFA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FcNvn/LQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41588C4CEF7;
-	Thu, 12 Mar 2026 00:26:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kspXrAFA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF247C4CEF7;
+	Thu, 12 Mar 2026 00:29:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773275168;
-	bh=yAqxgCiaL/PbIercs51cQybjiF/dUfLJWosvRVyOFD0=;
+	s=k20201202; t=1773275353;
+	bh=IoR6lqedT9ZLR/3Sp34HdPCvvTBO8x+GArpju4CwWa8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=FcNvn/LQPf+OP/jo6ihg8Cs07rXHB+i6jX0dIhHU5VkoAjDaHFqT+nJN9q4YffFFr
-	 rTJB7FMO7ZXtEgVkfGd/TkJ2SbVjTFSkAC8xtkv8on894lVvakFQKxnuE9uMFtnMwm
-	 zGkEavTanMm6ApxOU9v3xrNuOGC/kWA/51L1bMVuj06oeRaU9nSoyb4unv5Jm4oKUL
-	 NukKw6GjMSi9BKb5RDGpB3KvFX4xXqEXLUPpx/lDyDzTTFwgyS1CAYGnuh3A48sP9F
-	 9lPxSox3ANCJ2JaYZBP6jbmlGFTVK/acGoYcpnbJGtVRhJqqsLvL8WZPllMKXcKUg3
-	 eSVJpqiSIHWLQ==
-Date: Wed, 11 Mar 2026 17:25:59 -0700
+	b=kspXrAFAbogg3zaGMyeN7CcnfHo/BsvM4ffIYWlFDykGHvOy0wTuwpFgeCJo017oA
+	 EqGftW69oUQH+g/b69shg8LVok3mdp4ctYFd9p8hfJMdUPj/iPUWWzp4S6bvAET15z
+	 Ivx3rQIfLK3v8O5yunbRR43gAeg2shU3H73ryRjzLDLambkg7Tk5mRpDhWbNiB+6Dg
+	 mBVhs5TIHeHf/T669KC0MLbfYLoNOFXNEo+2jGTkmT66sJikwOrfwmI9iFyGdUgC0R
+	 N2NHfaK/zppW+eDdGD4NQprTfw3sDXBCRJUQobHtmZrZ4hLNdttCkc/vOerru+aUOM
+	 kuJTxu4B3cZ6A==
+Date: Wed, 11 Mar 2026 17:29:07 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Hangbin Liu <liuhangbin@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Donald Hunter <donald.hunter@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ynl: ethtool: remove duplicated unspec entry
-Message-ID: <20260311172559.7d7713f9@kernel.org>
-In-Reply-To: <20260311-b4-drop_dup_unspec-v1-1-e0dfa47b5981@gmail.com>
-References: <20260311-b4-drop_dup_unspec-v1-1-e0dfa47b5981@gmail.com>
+To: Riana Tauro <riana.tauro@intel.com>
+Cc: intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ netdev@vger.kernel.org, aravind.iddamsetty@linux.intel.com,
+ anshuman.gupta@intel.com, rodrigo.vivi@intel.com,
+ joonas.lahtinen@linux.intel.com, simona.vetter@ffwll.ch, airlied@gmail.com,
+ pratik.bari@intel.com, joshua.santosh.ranjan@intel.com,
+ ashwin.kumar.kulkarni@intel.com, shubham.kumar@intel.com,
+ ravi.kishore.koppuravuri@intel.com, raag.jadav@intel.com,
+ anvesh.bakwad@intel.com, maarten.lankhorst@linux.intel.com, Zack McKevitt
+ <zachary.mckevitt@oss.qualcomm.com>, Lijo Lazar <lijo.lazar@amd.com>,
+ Hawking Zhang <Hawking.Zhang@amd.com>, "David S. Miller"
+ <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet
+ <edumazet@google.com>
+Subject: Re: [PATCH 1/4] drm/drm_ras: Add clear-error-counter netlink
+ command to drm_ras
+Message-ID: <20260311172907.0ac81a25@kernel.org>
+In-Reply-To: <20260311102913.3387468-7-riana.tauro@intel.com>
+References: <20260311102913.3387468-6-riana.tauro@intel.com>
+	<20260311102913.3387468-7-riana.tauro@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,10 +56,8 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 11 Mar 2026 11:22:29 +0800 Hangbin Liu wrote:
-> There is a duplicated unspec entry. Remove it.
-> 
-> Fixes: 0187e602c03c ("ynl: add missing pieces to ethtool spec to better match uapi header")
+On Wed, 11 Mar 2026 15:59:15 +0530 Riana Tauro wrote:
+>  Documentation/gpu/drm-ras.rst            |  8 +++++
+>  Documentation/netlink/specs/drm_ras.yaml | 13 ++++++-
 
-Does it break some user space that assumes no duplicates?
-Otherwise I think we can merge it via net-next. (no need to repost)
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
