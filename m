@@ -1,221 +1,377 @@
-Received: from YT6PR01CU002.outbound.protection.outlook.com (mail-canadacentralazon11022092.outbound.protection.outlook.com [40.107.193.92])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic309-20.consmr.mail.ne1.yahoo.com (sonic309-20.consmr.mail.ne1.yahoo.com [66.163.184.146])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5554D375AD1;
-	Thu, 12 Mar 2026 15:57:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.193.92
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773331046; cv=fail; b=NQX8efcCXcSYrZMTbvnnZDR5V2r0jvMoRcB09MCiS0xHDOBV6lBFNvrhXn/ndJoNyJVsmvBJoSOzlCGSHgEO0wxMKWz2wjAovv4++IQM9qV+LX4xdP3/yl9KmyA4GjgXRYer9A3W1kGWGnrpJubxhjNgQ288rAG0memY2A70ow8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773331046; c=relaxed/simple;
-	bh=w8RzDv7BzuKN8s8cgRCGntm9SMCvU25P1a5St6YP7Zg=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=GRJadYdlIHGcmr8IVXZjHHq6/zUpQDckKz6K3t3eWLBhsWxViV23SUj/tazhlHXSIFfQ7m9wzqsfGJWobZFh7cGwndUMJx8p2WRBj458o1smJ4O8vwcmGmPEXulajJnR7eHv8lNld1Tf4u3d9npAN7rqK71GFrh3M2vsx7CTxaE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=efficios.com; spf=pass smtp.mailfrom=efficios.com; dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.b=GmE/XUVZ; arc=fail smtp.client-ip=40.107.193.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=efficios.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=efficios.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9733F2105
+	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 15:58:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.184.146
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773331117; cv=none; b=PH4u9gsY5j0H6738YqpA8Mn2+J4CvFDKW3xXZkwHpUJps36RgLAI/q1rME2M7Vg5aSaxp1YCKoagb15Uez9IlkL8AoOSCpEky6MrGqIEpLPcW+6xbyHJQdLcKX9al12TYDqF5GxpUwCb6LRz5pR8TXDvrP1QC19SI+cTNI+LBYI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773331117; c=relaxed/simple;
+	bh=CteEjqLkTGq0qRLrIq5NizVGhUKfiW5vkmPUCqAbq7M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ovzIcJV0OKoWbWWMCqSO3yN27uki+xmQJDqpkGFUE8azQ8ySAzsbjjAGd2eKvt1tDLFl1I4vdmxxoEvnYTG/WJTwN5cqmlbdcDxEpMIaOJWilCRYL9yzRf4esdu5X+6MSpbWAoJcSWaufcnUH11XtugnfWdKcx86A5AAg9r2d9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=L3ZuJkub; arc=none smtp.client-ip=66.163.184.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.b="GmE/XUVZ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GaMGwmHHjQQePAHMs5ijOduQ0xwWGKm18m1T0G9TqJLmAe3eIZ9nCG3PJlwDRwapDVPY59DggmaWeudeqdTeYGGe//OUIEPzG8KsJ5bxKAJ2VYTMn0szTSKBjLb9Y9f32XEtetkR/V/9Gv1TWDDebKvOWoMLPVv37m/nFtsBJzvrgRb6R9conQLD0eWLJFJ+TDBEvQ3dw4qUnO2qrZOcRSQ2QIpGvou1NDnZ4gDsOiVwBlQuFtZ3/NPs9dyKXmRrn45R1yuHEOt7+OtIoQPsYZ4bXREXIEAsR2z8xcuMDxMKWC8ZU/XowNNJNAX44PIVvY16fcOElTndi5f5W/vAJw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Jkqc7rcxY/K0RJfKNVqeImmYE24S7ANYYImzjvUHDHA=;
- b=lmCrGOIs9dctDGSvbmogHMrjYBkph9F3ou9IIkMOWryXsQ5mP9ecZd0PVSS3UqgXxj0uzf8Ck5Zcqol7H1++fPMt+TgLtaTYYR9y8Jw4D0SY+yFoaMMjK1fUkUK6xoNHX6Y2e9MfNu+FkKN+vP7Dyf2FWhgSZ9cBs8HstPy+eYJCEo4tJfzy5b265BBa8JRmSsOok7W74CJsIqLVC8enXMH+IXHRPpD7opd5MexQGycNYUsbpxo43iWkXk3+PmRUQTjy6O3BmZ3dJJlx/FA3jJvpC0zKk+QBP0swZdQCH2FqiEIxuCeVknq57G/6OwdkS8xd9fbN0UUleLqqkjJIfg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=efficios.com; dmarc=pass action=none header.from=efficios.com;
- dkim=pass header.d=efficios.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Jkqc7rcxY/K0RJfKNVqeImmYE24S7ANYYImzjvUHDHA=;
- b=GmE/XUVZYMlesL2VBsYq4FkQA+mqDEd2OBpdNuuv2sBRtZNB5KPlEe+fzI91Ezkz71AypVVcjIeiS+UUvU9PAXlsyvvbl1gz+wuHi78HOEXeXXA1YZmtTvgLfzBlRLDr0+eXW/Vjr6PkRgZfnKczWLFsdwNspfFqxfCDbxUs2NX7m/ySPRYTOSqB6AsTszocoUE1d1MvHRjJfxZEfN3EBBEHx7kvQE6rlI/h00NCNK5ZS+urv49HLw+iMF2kEpj8iD4gD0O1au+pprOH2KeVFNYxHsezV+GXwlGQsx3PP4DZsLXure05RiBmn3buplyY2rQZ7zvow2XtMK6JPNPIzw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=efficios.com;
-Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:be::5)
- by YT2PR01MB6497.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:6c::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.15; Thu, 12 Mar
- 2026 15:57:21 +0000
-Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::6004:a862:d45d:90c1]) by YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::6004:a862:d45d:90c1%3]) with mapi id 15.20.9700.015; Thu, 12 Mar 2026
- 15:57:18 +0000
-Message-ID: <d32e2250-6fac-4e2e-a010-1c1d21e39ac5@efficios.com>
-Date: Thu, 12 Mar 2026 11:57:17 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/15] tracepoint: Avoid double static_branch evaluation
- at guarded call sites
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
- "Vineeth Pillai (Google)" <vineeth@bitbyteword.org>,
- Dmitry Ilvokhin <d@ilvokhin.com>, Masami Hiramatsu <mhiramat@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Jens Axboe <axboe@kernel.dk>,
- io-uring@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
- Xin Long <lucien.xin@gmail.com>, Jon Maloy <jmaloy@redhat.com>,
- Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>,
- Ilya Maximets <i.maximets@ovn.org>, netdev@vger.kernel.org,
- bpf@vger.kernel.org, linux-sctp@vger.kernel.org,
- tipc-discussion@lists.sourceforge.net, dev@openvswitch.org,
- Oded Gabbay <ogabbay@kernel.org>, Koby Elbaz <koby.elbaz@intel.com>,
- dri-devel@lists.freedesktop.org, "Rafael J. Wysocki" <rafael@kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- "Gautham R. Shenoy" <gautham.shenoy@amd.com>, Huang Rui <ray.huang@amd.com>,
- Mario Limonciello <mario.limonciello@amd.com>, Len Brown <lenb@kernel.org>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- linux-pm@vger.kernel.org, MyungJoo Ham <myungjoo.ham@samsung.com>,
- Kyungmin Park <kyungmin.park@samsung.com>,
- Chanwoo Choi <cw00.choi@samsung.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Sumit Semwal <sumit.semwal@linaro.org>, linaro-mm-sig@lists.linaro.org,
- Eddie James <eajames@linux.ibm.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
- linux-fsi@lists.ozlabs.org, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Alex Deucher <alexander.deucher@amd.com>,
- Danilo Krummrich <dakr@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
- Philipp Stanner <phasta@kernel.org>, Harry Wentland
- <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
- amd-gfx@lists.freedesktop.org, Jiri Kosina <jikos@kernel.org>,
- Benjamin Tissoires <bentiss@kernel.org>, linux-input@vger.kernel.org,
- Wolfram Sang <wsa+renesas@sang-engineering.com>, linux-i2c@vger.kernel.org,
- Mark Brown <broonie@kernel.org>,
- Michael Hennerich <michael.hennerich@analog.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, linux-spi@vger.kernel.org,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- linux-scsi@vger.kernel.org, Chris Mason <clm@fb.com>,
- David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260312150523.2054552-1-vineeth@bitbyteword.org>
- <1e3c2830-765e-4271-89f7-0b6784b37597@efficios.com>
- <20260312112354.3dd99e36@gandalf.local.home>
- <219d015d-076b-4c80-8f63-88569115fdad@efficios.com>
- <20260312114041.5193c729@gandalf.local.home>
- <1becdbce-2c01-468a-bbab-42b5dea9fdf8@efficios.com>
- <20260312155429.GC1282955@noisy.programming.kicks-ass.net>
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Content-Language: en-US
-In-Reply-To: <20260312155429.GC1282955@noisy.programming.kicks-ass.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: YT4PR01CA0408.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:108::13) To YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:be::5)
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="L3ZuJkub"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1773331115; bh=e5q/bwQ71s5I/BF7m1b8GBX1wDtekJQoCTxwQui3LM8=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=L3ZuJkubGr0yLFB0lThnGD+xacSWBEjQegHvzW/Ibg4nu6BN+xpT6L+0P1CweGRxdD8VWPxF1tmoHrZIuOi7fd721zzBaMTnH02kDJpO8EV9lC64ST7kspx6y/aluiXG6y8zWYjeRXnCR1SX+e57i29lo/K7fC9wVDktdfm1LHnEq0vu1v7+Gj76feCZY/QRe0Ft1UfEQd5ERIIAuPVywZ+TZ8x4aG+Si6/nfnWk6a/hw7540JNZXEP162Z3p0mDemziyP1dtc61zlyyQc7oe2bwNWvU19Xo0rbaoC7Lb5PMHlQVJMJN1cuRwkLTSiUdZC0EypT3dg2XQPUBmTr3nA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1773331115; bh=WcaIaLdOkDNK+63F8VfH/4J0O3bvdVE+vdK4b/H9RZ7=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=s1xnwolqN5R5fafDLnEJMfuVIpO/X7IY7EfyC4rww12AzqgbHJga1lNf0i2Ni4IALY/ZpoEqJQY29HdyQIgYvLo4IXH4U1sxLD5iE6wXOS4CltgHW0GoWS+PlOcUGifacAHp5Wb3prbRmiv5BlP1dYOPuT8QrXG2WZ1/lqLBr5MvfAlDIubnLBXo01MZO+t5pn2zI/lTZdquI6Z/0SJTZX2oLelcf4XuAK/b0bEH9mM4PEPMtiOT4/DJKdJMhn2GPa8M71aV53bUm7HTTKdXHj08pDltGWydGRta3DUTc5scl8ZhBeMSCxU5VRAg5u67RXfjI+wh4yhD/CXqgAArpQ==
+X-YMail-OSG: rNeFoDIVM1mVV1B.3BY11qSqRDGamvm7JPhLq_UORm22laiRoeeuDmSLzRfJBSi
+ wh0sQC8HTMfkswpP8DynHHq0gsQyc7iswWIqB17mv4NEEHLFmEo7WtEKOq5Rfm0O48Fp8JRzU7a.
+ fwTmfv7OhZDbLGHhWJ1EX3atAZ0wP7pNsg2UvwNP7aDvTge7APvwzjDK3KAkz_qICKmXiDgA2xAV
+ SqyNuwYRaPfUjfFRxamnO0CxdAAEBExigbDft5IpZi1vx5.zKCVVZs7Z7FR2SDvoCUOMUicFbC7Y
+ 65xiSSeqpPav71kQ0RZ6EdQHDYYQrbc3maGq7FdZqKyLeNN1q2aeqm7g2AYk8FeI8We2U.XvvBQW
+ iSfvGCtjUji5.zAYFiFN7fqNk1Lm4oJwaWyHdBZ7foQbDuGNdKSHydGJDLQ_dI36WmYVlx8DPeoP
+ .ApyVUOPMgZTYyZUQ7nf0FoHoi8f3NQ2pIIZldg1EUa9QK4jkYX7zv2LL4q12o6kkUaekCNIbtRL
+ GHRKXC57t5_WDXhbIfyEj9.iiKpGOIDqWMhaK0CRSTLhxI4PwN8_DBMYKBGGitxc4xM5kUWlGsHf
+ EjW.ImtWg0QEuwty5b.Mnzz6qanUeiaroIqY8VFKLG2g9dzGzFSyKYHrw9B9iROkVVvQfh8Rz2mj
+ RBt.v3YMV9lLjJC5pVEwBP0YTL8ca2wKWNBfAr6ONRfvH.x4s5npZ2JM806FWj14h97w.xcuX02a
+ Xl5JEID1.w8MwN_XhMyj6htwY_NNiE4aGHEhktBBmh44U.PQVgGFrmOukVyqT_hPoLYgIltUBT39
+ 9zc4YI8odKwesN8cNhJG4bQEUro.p8zLb8qW2U29JyOcOvbjv67YLKONDhzo3ArAIi0BpCJFe8_6
+ 1QYX070joJVb3Hk0Woqf38dO7ryMB.vjiPJdSCttfMS4C0e4fIBS5ki..9IGCeDEBB3KX1WJl0kk
+ dIx3ahX7li8eZDha1LrlsDUD.jcSOfcCOuaSFens92UuRyVGiKB.YbW7jDYiFcrbC5wTPxXimo9U
+ kTcY0dIqiZsfwOlMr.CBqubh1UZ0w.Rt3mu9dB46qgKiuhQ8t_Ibwp6bqCQh.K4ilpSQ7jJUlmBo
+ pk90p_RQMgsdNaQrKrSxDV4D7Lq_ctTFMf8KOfodDoVKDVYlYf.kpnLToGtqUh524LHX3GRHVzBp
+ 9ZANM5ADg7MY2WDJRn1wYR8KGQjl8BJfw_tUmRq0SfgH4YfugGFActcfkFOLsii5ON3Jt5A.0e3h
+ nAeX.u3PrlSQ7n6IvYdTFvxPld7v1UTzpHmzPRVaqhE9NZZUF_ec7tZAIeImF3UMQRPHbXbINNkK
+ 0yh33h4_nnlZZ0vFWImDnZLOasZXKYXp9nsfdk2SeiZRI6GZn1QhIwGyDoDJAs6Lp4DbeL52IAvb
+ Zca2a9o5gncn1MUeNtGBstcB6MVEguuVgZPYtgZMTFTKE6pGfyA00ZWbct7B4YDU4RAimhSvJKlt
+ Tm9Tk8oSrajwjZnuZJ.neb8LjUDfVIJQT6L9A.9OvBFiZiH86RGXQoVN7p_s_VP96vNktjkj19Qt
+ YF3dubLL9AIdVNmsVJ2K4r0KkV8r1iszeaCTB1pPZagvKw0qZbZAh2k2RlNsBElMCOv72DrOuc96
+ 8bzFaCxLfsKmytS_Yz394LKqa4nGEE.YbAtqRrJmua_wGDinZyKtyrpGfq4Odpmopgkmvogun_PM
+ PFemKYofEHJOyV02SDFuPkj3t7v4xCyJUHo0oI57XNmWASIs48Lhr1y3FrwdezIiUvE7ky4uwqsT
+ hnIZ28qxh8E2VyfKIXhclrgJ_Iskv7QB446UqKXJzB66.a04Ke7GcUR260YOo71rp4criK7plT1E
+ gR1XvaCMiUw9CQUUHXpHHpDI_9rGhxrdacVRmxybLnHnGWuf.6eriAwq8l5FRKRTP1KFZQ4RDDxy
+ d6bUg96On5hf7cQPQd_iQxjs.4Do_M9dmYFXWdO9O.YPkgsRxAlOuE_vtsf6m9nhLx9LpHFm1Iud
+ 7bEN6enO1LQd.B4eZVxc8t_EyE.qxGGUnl_nTPOfNvGg1a5Rljyy4yXkzprdX8zAiTnDYQIeEp.a
+ ZJbpurfDS6kbUw6iTOcKX1ODVZrdy7TSiG4JgMndr_.8Y0MAQ9o.XqjX79N1WEazLvMz5ZsSKhbp
+ ZuGnrAo7HwtdJw2ugHYTQHuYhIKltAvq8G1FT4CktVAs.Bmm0.KjPFldf4Lo-
+X-Sonic-MF: <mmietus97@yahoo.com>
+X-Sonic-ID: 48020779-2d5d-468c-9660-b694ff0c7a40
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.ne1.yahoo.com with HTTP; Thu, 12 Mar 2026 15:58:35 +0000
+Received: by hermes--production-ir2-bbcfb4457-pgdzr (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 87d652406d88cc03e8e5278a11075b9d;
+          Thu, 12 Mar 2026 15:58:27 +0000 (UTC)
+From: Marek Mietus <mmietus97@yahoo.com>
+To: netdev@vger.kernel.org,
+	sd@queasysnail.net,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: Jason@zx2c4.com,
+	Marek Mietus <mmietus97@yahoo.com>
+Subject: [PATCH net-next v8 04/11] net: tunnel: return noref dsts in udp_tunnel{,6}_dst_lookup
+Date: Thu, 12 Mar 2026 16:56:50 +0100
+Message-ID: <20260312155657.25676-5-mmietus97@yahoo.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260312155657.25676-1-mmietus97@yahoo.com>
+References: <20260312155657.25676-1-mmietus97@yahoo.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: YT2PR01MB9175:EE_|YT2PR01MB6497:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6fd00cd6-b151-4a90-5e3c-08de80500992
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	UUGLab4+BeT04517YTgHOP8N2GpWt3KxXbtxDj4683LL8N07RhseGgfxvZTZrBcnihjdyKQYlgL4EyeRgy0yT2+v83JfPt9yOjiBZJntt/R7OQuMty/Y0jANmULqnJRA7KMgBMlMY4GEeYewN4InwEprlYIm9kxECy0G6XalJM+EkWeNxwX/RAbtGigptmnMIjkqAIY3MqEpoPfkTkZrf8GM0QhCEnfZzshQ1gHwMSr7QaUkh1MVAQvZJULcfqgsja559UCY8Kej3VJiNZvN1y0K5LmYE8mOlN1IBAQ6j0wlxJqdkeFeuHqmxlDDlE+bmVagN3aebmYi36VXaKdEKDmEFVPyOvXAo2MvX46JNZyw9x1B5+QfyEBMhxX4rsr4py9K4IfSg2R6htc3p1LGyaul1PGgl15BD+tFLYxttXI4Mavn9+k7MTxvIpjghU3fqaBxo5jgH+VTO7HwjORBNwgGWTS7geH5psPjsG4YEyHi7bh1J5iebKD+LDuELaX9211ltBfWJ2jAG4o7jtMeJwQJwXxZVmhBPUcYXjBYIPsXu3Aa97RPsy7ZaLHuSpaniJT70+g/PToKprCCxBCCpTAA4FrWoGXnWYXsJ3eQBR0K7rEXE9k4jJuW5U0PsDn1ayvmqFclkMQqS0sMDllFAT0/MuhIPeQTLj0IAdRcaxtC+iK0bFg7Jui0mi8Z5a4M
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?R3NhVFYxR0FyYURMRmZacUt6YmFMallpenlJamhCeUNsemVIY3pKRFBEbWQ3?=
- =?utf-8?B?eTdWRE5Kc0o2N2JBb2JEdzVkWGxnT1BONGtseGpiRlRKNk5TeXFJc2pZczB3?=
- =?utf-8?B?bnpwRm5vR1NhRUlRcUdMd1dSMlJoTHZYOVlaa1UxaXorL3BtUnRHTG1GTmRO?=
- =?utf-8?B?Q0IzRTBsRXR3QVhPMWF4cFY0NFVZb285MGV4ZDlUcFU3c1JYZzl6UlZYc01Y?=
- =?utf-8?B?bHc2NjBVS3NLeFMvd0g3c0pYd3F3V0JrZ2l2dkVWTnMvNGRleEk1Y29YaTQ4?=
- =?utf-8?B?S0ZxZitsZlVtbEk4Si9rSU1wbGtTZ2xJdUJoUE0waTFxN0poN1J1Q2ZSSDBH?=
- =?utf-8?B?KzI3eUNlY1kzdHJGT1hDNGFza0RCT29FTFE1RVlEUElRMHZGN3BEK2txZDNT?=
- =?utf-8?B?a1RwNVYyWGl3WUREeHdSUEp1QlFtQ1gwaVJFY1p3dVhnOUJBQzZGQmhWK09X?=
- =?utf-8?B?OVg2ZFJoQlE1MjFDeERGa2dhZ3oyZU1RcEZiMzd2eHdsQ0VJUTR6MkRJUEdP?=
- =?utf-8?B?UjVCRWpDODVkTk11LzdzZ1BrTWkwOGtzSTNlUExudHBtTnhCODE2NnViUWtY?=
- =?utf-8?B?TGFYYkJmZFdqZlBTc3FFQjY5K0d6MXpjN3pZYTR4aFYrUDgyNkxIRGZQclRS?=
- =?utf-8?B?ZTR1MTVjajdDamppSVBIbjBLMHFLcDhnMkRGNlVyZ2hHRkZlV2pRK0xpOThY?=
- =?utf-8?B?clBwQ1VKQnBYTVY4aGE2aUoxcEF2MTJSalRTU0FuTGthSDZPWCtJQmsvM2gx?=
- =?utf-8?B?Q0piUWNzYVRwSFk5SnlYM0ttWWROMUZGV3UyUkhETCsybnRuWWdoVGpmSllV?=
- =?utf-8?B?R2dMc2M3WlRpYTVET09QdkRqekRnK2lLQm9ZNk9zcjRNeXBHWE15R1NLQ0hK?=
- =?utf-8?B?MDF3elFSRmFJazVaV0NFZUorcTlzMngvd0VMYXVxZm1rTm4zZFZaMTZoNlRu?=
- =?utf-8?B?dkMzNE96c3IveTd2cXZHODJVMjNuSGFaU0xqWThmdGtuOVlhOGRNdW0zT1Qy?=
- =?utf-8?B?dVg0aW1VUkxiUy93bFo2SGMrYS9tbldpNjdOOVJYSXY5NmhyNWQ1R3NacTZY?=
- =?utf-8?B?NmFnYjRnY2NKbThkUXd2MnR2MXN5MEhTbFFOZk1kWWhYd0UreFV0VWhxWXg0?=
- =?utf-8?B?WXA5ZHJBWFdCSEFMRUFpdldsTm4yRmxXQ2k0bWo1SXRaWjNxQUN0RWZ2ajNt?=
- =?utf-8?B?UjNkWDY1cUo3N1BQd1JMaFdUNGVGb1RWbisvNUNSMjAxUlZPdEEycWxMZTdt?=
- =?utf-8?B?MUwrMVNjeS9XbTJCN2JxWWEyaVVBdDBKSEhOcS9ZajhGTzBuL1ZyN1lHaDll?=
- =?utf-8?B?SUZ5YTdtVnB3dDBKNUFRUTdScHoyQVBDUDdZektuK0x1MDdZay9ycFlQNTVr?=
- =?utf-8?B?dStGbGdsNytiWjJZZFpxcXFOcGt6T041dWFZTWlGaGNOZ1F2OUJubmp3Sm8r?=
- =?utf-8?B?Mk9LUlRHaFBWdUpwQlJlMTFHejRhdmx4TVlFTzhkb2x1RkpPU1c3dG53VmNh?=
- =?utf-8?B?elJzWTY0Um0xcnRlaTFKQituMHJDdDJqNDNEamlablc5V0xjeDlIUjM2MlZY?=
- =?utf-8?B?K0dyb3dZK1hybFdxOE1aS3ZObW5IQUp5QnFYQS8xeWNNUVB2K09tNDhMOVlR?=
- =?utf-8?B?OWtJUE9wTXZyV29hclJYUEJQTDlUdy9MSHExR043cTlVRFZxMWxWNEhwcVlw?=
- =?utf-8?B?RVViaFNMZlBObi9WYkZGTzdaZEN3Q2dnZGxiSDEvaTdLQnVuM0Z4bHNhcFhN?=
- =?utf-8?B?Si9sODJqbUVzT3Rzd1ZMUUVOS0V4QU5vV2NUdXhVdE04QkRqcnJlM0I1YWUr?=
- =?utf-8?B?Tk1qZXZLQ1BhREJVSEVuR2szQWpBUUNIelhqYmxESGlJbFlSbkY1ZEkwbkJX?=
- =?utf-8?B?TDJGN3R2WU4wRUJVTk5tbkxNVFdQVEdCTFZXeEtNZUJNa0xYMHF3cGlXRGhX?=
- =?utf-8?B?bm1wSTZLZy9qWUNLMk41V1lwZk42MWtGMXZMWGQrLzVOTkVFQ1BRR2I5L1lC?=
- =?utf-8?B?VDQyUG4zbWd0YjJsdHAvSUNUZngzMlZ4RVZJN1dFaHFTYURRaWxwYlBsRVNt?=
- =?utf-8?B?TDdIb05QWHNQYWxMelhUTjRjU3JRS2gvUkY4VkRiWFZvY3hQZUhnNlpFL2NE?=
- =?utf-8?B?eTBQRXhYSjhKYlJqTVlNNXRqRnlmQ0ZCano2UC9mRDhHNEp4T0hRQ1ZlTjJ6?=
- =?utf-8?B?VXU3TXRkVGZtZUxNVzFDQk5EV3pqTWwreDVtZWRuZnM1M1Y3RlArWnFkSUV4?=
- =?utf-8?B?Q2hCRDhYa04vSDc3S1BabFFRL0JINVFLNVVXZklxQkMxKzRFeUtuVkZneHVI?=
- =?utf-8?B?YTZyY0JMcmRrcnVqSGp0TnE3eEUzcHpaUlFsNjh4WHNCZE9sckY0VzRKbndi?=
- =?utf-8?Q?PBD4F2pFUgupWCIk=3D?=
-X-OriginatorOrg: efficios.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6fd00cd6-b151-4a90-5e3c-08de80500992
-X-MS-Exchange-CrossTenant-AuthSource: YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 15:57:18.1806
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4f278736-4ab6-415c-957e-1f55336bd31e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QKjm5x9qhHbT4H0LLd/HDfhoHan/mNvC5X/CbgM07M26Mtw1QKPjBob+uwM1iJUuel03OtM+YXGXIdTxO32K37vGF7miN2DsM/wnfw+M8Jg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: YT2PR01MB6497
+Content-Transfer-Encoding: 8bit
 
-On 2026-03-12 11:54, Peter Zijlstra wrote:
-> On Thu, Mar 12, 2026 at 11:49:23AM -0400, Mathieu Desnoyers wrote:
->> On 2026-03-12 11:40, Steven Rostedt wrote:
->>> On Thu, 12 Mar 2026 11:28:07 -0400
->>> Mathieu Desnoyers <mathieu.desnoyers@efficios.com> wrote:
->>>
->>>>> Note, Vineeth came up with the naming. I would have done "do" but when I
->>>>> saw "invoke" I thought it sounded better.
->>>>
->>>> It works as long as you don't have a tracing subsystem called
->>>> "invoke", then you get into identifier clash territory.
->>>
->>> True. Perhaps we should do the double underscore trick.
->>>
->>> Instead of:  trace_invoke_foo()
->>>
->>> use:  trace_invoke__foo()
->>>
->>>
->>> Which will make it more visible to what the trace event is.
->>>
->>> Hmm, we probably should have used: trace__foo() for all tracepoints, as
->>> there's still functions that are called trace_foo() that are not
->>> tracepoints :-p
->>
->> One certain way to eliminate identifier clash would be to go for a
->> prefix to "trace_", e.g.
-> 
-> Oh, I know!, call them __do_trace_##foo().
-> 
-> /me runs like hell
+Update udp_tunnel{,6}_dst_lookup to always return noref dsts. The dst
+is only valid inside the RCU read-side critical section in which it was
+queried.
 
-So s/__do_trace_/do_trace_/g and call it a day ?
+The dst is fetched from the dst cache (as noref) or returned by a routing
+lookup operation, in which case its refcount is either stolen into the
+cache, or decremented shortly before returning (in case the cache can't
+be used). This is safe, since this code runs in an RCU read-side critical
+section, and the dst only lingers until the end of said section.
 
-Thanks,
+Update all callers to use the new convention (of no longer calling
+dst_release, since all dsts are now noref). This affects the bareudp,
+geneve and vxlan tunnels.
 
-Mathieu
+Signed-off-by: Marek Mietus <mmietus97@yahoo.com>
+---
+ drivers/net/bareudp.c          |  6 ------
+ drivers/net/geneve.c           | 13 -------------
+ drivers/net/vxlan/vxlan_core.c |  8 --------
+ net/ipv4/udp_tunnel_core.c     |  6 ++++--
+ net/ipv6/ip6_udp_tunnel.c      |  8 ++++++--
+ 5 files changed, 10 insertions(+), 31 deletions(-)
 
+diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
+index 92ee4a36f86f..456bc17c352d 100644
+--- a/drivers/net/bareudp.c
++++ b/drivers/net/bareudp.c
+@@ -364,11 +364,9 @@ static int bareudp_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 			    !net_eq(bareudp->net, dev_net(bareudp->dev)),
+ 			    !test_bit(IP_TUNNEL_CSUM_BIT, info->key.tun_flags),
+ 			    0);
+-	ip_rt_put(rt);
+ 	return 0;
+ 
+ free_dst:
+-	dst_release(&rt->dst);
+ 	return err;
+ }
+ 
+@@ -434,11 +432,9 @@ static int bareudp6_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 			     !test_bit(IP_TUNNEL_CSUM_BIT,
+ 				       info->key.tun_flags),
+ 			     0);
+-	dst_release(dst);
+ 	return 0;
+ 
+ free_dst:
+-	dst_release(dst);
+ 	return err;
+ }
+ 
+@@ -524,7 +520,6 @@ static int bareudp_fill_metadata_dst(struct net_device *dev,
+ 		if (IS_ERR(rt))
+ 			return PTR_ERR(rt);
+ 
+-		ip_rt_put(rt);
+ 		info->key.u.ipv4.src = saddr;
+ 	} else if (ip_tunnel_info_af(info) == AF_INET6) {
+ 		struct dst_entry *dst;
+@@ -538,7 +533,6 @@ static int bareudp_fill_metadata_dst(struct net_device *dev,
+ 		if (IS_ERR(dst))
+ 			return PTR_ERR(dst);
+ 
+-		dst_release(dst);
+ 		info->key.u.ipv6.src = saddr;
+ 	} else {
+ 		return -EINVAL;
+diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
+index 4216a8ffd591..8a918bd009dc 100644
+--- a/drivers/net/geneve.c
++++ b/drivers/net/geneve.c
+@@ -1268,7 +1268,6 @@ static int geneve_build_skb(struct dst_entry *dst, struct sk_buff *skb,
+ 	return 0;
+ 
+ free_dst:
+-	dst_release(dst);
+ 	return err;
+ }
+ 
+@@ -1327,7 +1326,6 @@ static int geneve_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 				    geneve_build_gro_hint_opt(geneve, skb),
+ 				    netif_is_any_bridge_port(dev));
+ 	if (err < 0) {
+-		dst_release(&rt->dst);
+ 		return err;
+ 	} else if (err) {
+ 		struct ip_tunnel_info *info;
+@@ -1338,7 +1336,6 @@ static int geneve_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 
+ 			unclone = skb_tunnel_info_unclone(skb);
+ 			if (unlikely(!unclone)) {
+-				dst_release(&rt->dst);
+ 				return -ENOMEM;
+ 			}
+ 
+@@ -1347,13 +1344,11 @@ static int geneve_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 		}
+ 
+ 		if (!pskb_may_pull(skb, ETH_HLEN)) {
+-			dst_release(&rt->dst);
+ 			return -EINVAL;
+ 		}
+ 
+ 		skb->protocol = eth_type_trans(skb, geneve->dev);
+ 		__netif_rx(skb);
+-		dst_release(&rt->dst);
+ 		return -EMSGSIZE;
+ 	}
+ 
+@@ -1396,7 +1391,6 @@ static int geneve_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 			    !net_eq(geneve->net, dev_net(geneve->dev)),
+ 			    !test_bit(IP_TUNNEL_CSUM_BIT, info->key.tun_flags),
+ 			    0);
+-	ip_rt_put(rt);
+ 	return 0;
+ }
+ 
+@@ -1439,7 +1433,6 @@ static int geneve6_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 				    geneve_build_gro_hint_opt(geneve, skb),
+ 				    netif_is_any_bridge_port(dev));
+ 	if (err < 0) {
+-		dst_release(dst);
+ 		return err;
+ 	} else if (err) {
+ 		struct ip_tunnel_info *info = skb_tunnel_info(skb);
+@@ -1449,7 +1442,6 @@ static int geneve6_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 
+ 			unclone = skb_tunnel_info_unclone(skb);
+ 			if (unlikely(!unclone)) {
+-				dst_release(dst);
+ 				return -ENOMEM;
+ 			}
+ 
+@@ -1458,13 +1450,11 @@ static int geneve6_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 		}
+ 
+ 		if (!pskb_may_pull(skb, ETH_HLEN)) {
+-			dst_release(dst);
+ 			return -EINVAL;
+ 		}
+ 
+ 		skb->protocol = eth_type_trans(skb, geneve->dev);
+ 		__netif_rx(skb);
+-		dst_release(dst);
+ 		return -EMSGSIZE;
+ 	}
+ 
+@@ -1488,7 +1478,6 @@ static int geneve6_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 			     !test_bit(IP_TUNNEL_CSUM_BIT,
+ 				       info->key.tun_flags),
+ 			     0);
+-	dst_release(dst);
+ 	return 0;
+ }
+ #endif
+@@ -1576,7 +1565,6 @@ static int geneve_fill_metadata_dst(struct net_device *dev, struct sk_buff *skb)
+ 		if (IS_ERR(rt))
+ 			return PTR_ERR(rt);
+ 
+-		ip_rt_put(rt);
+ 		info->key.u.ipv4.src = saddr;
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	} else if (ip_tunnel_info_af(info) == AF_INET6) {
+@@ -1602,7 +1590,6 @@ static int geneve_fill_metadata_dst(struct net_device *dev, struct sk_buff *skb)
+ 		if (IS_ERR(dst))
+ 			return PTR_ERR(dst);
+ 
+-		dst_release(dst);
+ 		info->key.u.ipv6.src = saddr;
+ #endif
+ 	} else {
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index 4482a47dbe15..39fb2e6df6c4 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -2320,7 +2320,6 @@ static int encap_bypass_if_local(struct sk_buff *skb, struct net_device *dev,
+ 	    vxlan->cfg.flags & VXLAN_F_LOCALBYPASS) {
+ 		struct vxlan_dev *dst_vxlan;
+ 
+-		dst_release(dst);
+ 		dst_vxlan = vxlan_find_vni(vxlan->net, dst_ifindex, vni,
+ 					   addr_family, dst_port,
+ 					   vxlan->cfg.flags);
+@@ -2528,7 +2527,6 @@ void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
+ 				unclone->key.u.ipv4.dst = saddr;
+ 			}
+ 			vxlan_encap_bypass(skb, vxlan, vxlan, vni, false);
+-			dst_release(ndst);
+ 			goto out_unlock;
+ 		}
+ 
+@@ -2545,7 +2543,6 @@ void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
+ 				    pkey->u.ipv4.dst, tos, ttl, df,
+ 				    src_port, dst_port, xnet, !udp_sum,
+ 				    ipcb_flags);
+-		ip_rt_put(rt);
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	} else {
+ 		struct vxlan_sock *sock6;
+@@ -2603,7 +2600,6 @@ void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
+ 			}
+ 
+ 			vxlan_encap_bypass(skb, vxlan, vxlan, vni, false);
+-			dst_release(ndst);
+ 			goto out_unlock;
+ 		}
+ 
+@@ -2621,7 +2617,6 @@ void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
+ 				     &saddr, &pkey->u.ipv6.dst, tos, ttl,
+ 				     pkey->label, src_port, dst_port, !udp_sum,
+ 				     ip6cb_flags);
+-		dst_release(ndst);
+ #endif
+ 	}
+ 	vxlan_vnifilter_count(vxlan, vni, NULL, VXLAN_VNI_STATS_TX, pkt_len);
+@@ -2641,7 +2636,6 @@ void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
+ 		DEV_STATS_INC(dev, collisions);
+ 	else if (err == -ENETUNREACH)
+ 		DEV_STATS_INC(dev, tx_carrier_errors);
+-	dst_release(ndst);
+ 	DEV_STATS_INC(dev, tx_errors);
+ 	vxlan_vnifilter_count(vxlan, vni, NULL, VXLAN_VNI_STATS_TX_ERRORS, 0);
+ 	kfree_skb_reason(skb, reason);
+@@ -3248,7 +3242,6 @@ static int vxlan_fill_metadata_dst(struct net_device *dev, struct sk_buff *skb)
+ 					   &info->dst_cache);
+ 		if (IS_ERR(rt))
+ 			return PTR_ERR(rt);
+-		ip_rt_put(rt);
+ 	} else {
+ #if IS_ENABLED(CONFIG_IPV6)
+ 		struct vxlan_sock *sock6 = rcu_dereference(vxlan->vn6_sock);
+@@ -3264,7 +3257,6 @@ static int vxlan_fill_metadata_dst(struct net_device *dev, struct sk_buff *skb)
+ 					      &info->dst_cache);
+ 		if (IS_ERR(ndst))
+ 			return PTR_ERR(ndst);
+-		dst_release(ndst);
+ #else /* !CONFIG_IPV6 */
+ 		return -EPFNOSUPPORT;
+ #endif
+diff --git a/net/ipv4/udp_tunnel_core.c b/net/ipv4/udp_tunnel_core.c
+index b1f667c52cb2..c9c3fe8f0158 100644
+--- a/net/ipv4/udp_tunnel_core.c
++++ b/net/ipv4/udp_tunnel_core.c
+@@ -240,7 +240,7 @@ struct rtable *udp_tunnel_dst_lookup(struct sk_buff *skb,
+ 
+ #ifdef CONFIG_DST_CACHE
+ 	if (dst_cache) {
+-		rt = dst_cache_get_ip4(dst_cache, saddr);
++		rt = dst_cache_get_ip4_rcu(dst_cache, saddr);
+ 		if (rt)
+ 			return rt;
+ 	}
+@@ -269,8 +269,10 @@ struct rtable *udp_tunnel_dst_lookup(struct sk_buff *skb,
+ 	}
+ #ifdef CONFIG_DST_CACHE
+ 	if (dst_cache)
+-		dst_cache_set_ip4(dst_cache, &rt->dst, fl4.saddr);
++		dst_cache_steal_ip4(dst_cache, &rt->dst, fl4.saddr);
++	else
+ #endif
++		ip_rt_put(rt);
+ 	*saddr = fl4.saddr;
+ 	return rt;
+ }
+diff --git a/net/ipv6/ip6_udp_tunnel.c b/net/ipv6/ip6_udp_tunnel.c
+index d58815db8182..94901935c9e9 100644
+--- a/net/ipv6/ip6_udp_tunnel.c
++++ b/net/ipv6/ip6_udp_tunnel.c
+@@ -130,6 +130,8 @@ EXPORT_SYMBOL_GPL(udp_tunnel6_xmit_skb);
+  *
+  *      It returns a valid dst pointer and stores src address to be used in
+  *      tunnel in param saddr on success, else a pointer encoded error code.
++ *      The returned dst pointer is noref and must only be used in the RCU
++ *      read-side critical section in which it was queried.
+  */
+ 
+ struct dst_entry *udp_tunnel6_dst_lookup(struct sk_buff *skb,
+@@ -147,7 +149,7 @@ struct dst_entry *udp_tunnel6_dst_lookup(struct sk_buff *skb,
+ 
+ #ifdef CONFIG_DST_CACHE
+ 	if (dst_cache) {
+-		dst = dst_cache_get_ip6(dst_cache, saddr);
++		dst = dst_cache_get_ip6_rcu(dst_cache, saddr);
+ 		if (dst)
+ 			return dst;
+ 	}
+@@ -175,8 +177,10 @@ struct dst_entry *udp_tunnel6_dst_lookup(struct sk_buff *skb,
+ 	}
+ #ifdef CONFIG_DST_CACHE
+ 	if (dst_cache)
+-		dst_cache_set_ip6(dst_cache, dst, &fl6.saddr);
++		dst_cache_steal_ip6(dst_cache, dst, &fl6.saddr);
++	else
+ #endif
++		dst_release(dst);
+ 	*saddr = fl6.saddr;
+ 	return dst;
+ }
 -- 
-Mathieu Desnoyers
-EfficiOS Inc.
-https://www.efficios.com
+2.51.0
+
