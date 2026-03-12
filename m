@@ -1,162 +1,289 @@
-Received: from mail-oa1-f97.google.com (mail-oa1-f97.google.com [209.85.160.97])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E9140242B
-	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 20:08:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.97
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773346127; cv=none; b=lshFOqSC8Xg8Tf56eu/szPjT+4LnHkdB8LAaIHfPCA9zJWmidmHyj36/vl/EJuxU7FU+/fCHtKNPXADYlUO7khQKBjstFiJFSweH1xJnLCIC0TGCh1l3j26QzeM6W1XoPaILP0XtJ5caZrXFVRf82DMkFg8bJ4r5GTuFF4zkLaU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773346127; c=relaxed/simple;
-	bh=asThX1l8tDd6l/+GF6UQs2U5lUc2VBLgn12nAaEGiHA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FnIyQDbXWjingGIOQU8F4/A7qOqXsxnp4yzepxTJQk5j+QuxUzU2wVqY6U7/VquYdBIJARgT16zbuumu+n+VpNbhAf/JRSi8RuajKNuKfTl5H4O4fSBfMkexLgMIu56aSFBT5BwIZkgeXJuP5RJ3uNZGwZM6kWJMquj9th0Ge5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=OGvQK5Yu; arc=none smtp.client-ip=209.85.160.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C22F3AB291
+	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 20:10:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773346212; cv=pass; b=lHvRblEuFk+G0rBSAYQRRIYbjkWgWiWeMb6zYpUbvG4+xyvmh4EvrFh8icL1w0+UFLLcQk4shjGCF4+ffwccMejHMFt7WzA7E+E9NiXDvJzJx6qcWyzUUrAD2iEpMPEHkdLaEEvLBAhcJyCjI3IpO0Zg18u/shruG6//a3TsIHE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773346212; c=relaxed/simple;
+	bh=YrKSTG/KUU+5EZU9DCzic7bdcxeYtSaba7SKVjTjUc8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FyMlmfUf626o7GFX2PHqJYprgXtSHd45jrzwoqCVkZJeGe0B+I/1vPI1X2qxls+r/LoISW+pl4aJIorJJ7G6+R4q5TJT2dri8/YqWgrUPJH8Imjmmgej/3yCwAPUCNJtd5GDsC17vbL14NPGZ9420jP6LH9XVLpqqAoBdJ9Vnb8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Oo02eGGV; arc=pass smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="OGvQK5Yu"
-Received: by mail-oa1-f97.google.com with SMTP id 586e51a60fabf-4094b31a037so1068278fac.1
-        for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 13:08:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773346125; x=1773950925;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+Wj5xPQzYKHKClh0NTAHjyT/9SZz4TT3jIl1wrDgGOc=;
-        b=M+0rIhc/ft7UsqhmIsNF03q/u0WIAJmubGaMyBUhO/Ha0d+7WF3zUcOR97WXk+Xctm
-         dqKXxksb0O1uMtc9ziZghWUCzC/pEyiShpcImt8wU/copIOVnqYUYgn21uWaam1Ha/sW
-         SBp4A60iPwjZS3fISgVTPUcuZmAftvbCZDNz/ev5PHfw05oLGzhN/5b38DlRhLe1wpiK
-         eqGzDd8dEFYbCkAaPsouwgeygcf6IiHsI0yufawrf3K4++ZEFF+B53ADnoWzvUMW3+Je
-         OjysAsL8E3ok324p0VDSze92+sFnW2UZGSHMXdLTURI9b26Fpb5H3qecvfs4Qafjodlh
-         mQKQ==
-X-Gm-Message-State: AOJu0YyIcncCtabn3UBIIvtoSqJSWXnbhwOL6Qdy/eAhhCb5RTWKm9T3
-	5tLjvAMFeu4OcH+Tq1ozCjpWfEM5ySIWF0uid2qQWkbN+JQQRaDzj5dvaWHCSMkqmRFIwRQPPkL
-	gnujT8UakRHmimVtsyFJgpY5tFr53NkKVGbwnTEnP207xVp/kCWPCRJh3F4VFh3ZD/L1RWcGMIM
-	lD+IqNH3DTa3fSbNxNnrHQ8TWBouAudrR9w5vBDEmkL0pso4WDgCk46+blF9V60IZ2LqrhsuLwG
-	w3xjKOuiQ==
-X-Gm-Gg: ATEYQzy+CK/xkCK3sH9aD8cI/h7woJVCJWG6765WxBw75Gi6L/HhxMAQtZ5x6NffseD
-	sQKdhLTj6BFz1yuHomCIWZ7MONB5aMyXDcLdrmcmpvfriTmofUmF64/BQIY/TgWWP+aBfmPqX41
-	7DU9bImdv8u0fLh380jFLow37h3p8LwVgTD9eyw88vf4HyThOBHds6yl0b2YAEw9UYCJf67Ikn5
-	11f5/JBGwm3pU1hDLZzLDCZaHEKqh3mt2pyL4ED6RPbNXMZezjIPL2Jb3gaUTuFFh0xt+bLEEZM
-	pRC9yAfcLj+yKgk/UfjtJR1wd5M4YX3xCSAe/ZZYoSH8hJNcK2sdoJHYyxeAYNAmy4DqPNuwTUN
-	W6q8oK/ep2AsvcEi+uh2BtYKnXmd+hEHyT4LMGxk9Aji9l91pTo4bvgOvcuJwFH0pDz6fGLiRA8
-	vH/STKCUwcRns0UkkfquFvAuoq3ddmvcg52wn+ekEjHfmvxHl8eBpUkzQ=
-X-Received: by 2002:a05:6871:e708:b0:417:211:33ca with SMTP id 586e51a60fabf-417b946b07dmr500036fac.36.1773346124611;
-        Thu, 12 Mar 2026 13:08:44 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-27.dlp.protect.broadcom.com. [144.49.247.27])
-        by smtp-relay.gmail.com with ESMTPS id 586e51a60fabf-4177e1fb7d3sm872308fac.3.2026.03.12.13.08.44
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 12 Mar 2026 13:08:44 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-dl1-f72.google.com with SMTP id a92af1059eb24-128edc72e5bso9779378c88.1
-        for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 13:08:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Oo02eGGV"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ae8177446fso11442015ad.0
+        for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 13:10:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773346210; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jnGoX19db8Og0xw69TUX5EersdwV9k6Tvh7QISJcMokUNu+GFUDvsjpsDGtbozbAM2
+         pa+yJ+E6qCpmWetw7xvXXLfKuD4pR0fwmLmIkI5BpfcnSAxT0cme/lu3RnDVHnYhKvE4
+         F+aN449qMN/bIV9Mlz4mRAeb1/73TaZovm+NCixiDVo59vEXPABB9KCtdNGhXlz/LIDC
+         KWv9cis2+5qTLm+kD12y0HOSn0Daz6dqgxQi/gGiN5Mc+JwiXMsMjHeBI4zhvz565YQd
+         4NR19RKr29egJVkg/08wfmmw9tn1ThB+vICAld3Plyqlg+ij9i5rUN8DjlikGTqltkY2
+         LeIw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Gm2FCxY20BE6uUQnf+f3bxv0y7OjLwyxJWmXnboau2o=;
+        fh=LWbmzZJu+Y6OiLck2dkgcXdmAm7x/gknjqnNOincNy8=;
+        b=KUOcfLezkDQr6HoiCeWrHBGQC9wCiGVQyqx/fp6tICL0bo1vk3R9HzZzQSAeSIW042
+         VcVK2/yXN61dF3ej3xBWPPXn/px6PqNII/P86pvaTzXJn48OdHyN8/nofsm05iqpIqFf
+         725lphcupehUcoRnAf9g8PYClKp+RWXjdpxk/8bzDd+6FWfEJmbi3JbzCAkYKwEbz7YL
+         brtRXxf+WhYSSi/38VDKbKjH2xGY6QFMWCae2qb/Sr902sNCZKvnFtacrOIqjCiQLjKb
+         b/uR1YFrzyvwbIOCEwH71Nok7M+COW2mG3t3jOsuE9dw/pkVkOnFtQvpketETqt+sDWd
+         AXkg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1773346123; x=1773950923; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+Wj5xPQzYKHKClh0NTAHjyT/9SZz4TT3jIl1wrDgGOc=;
-        b=OGvQK5YuukgwQ/Dz/b91XjqSS2yJUjcZZzZWm6d7EJeP3okcOZSuHr8PdkKAzxqzUx
-         g03+F5e6FYxPlHkmTOUA+dsDRsUps7KRo2Rdh8T8Bs7A50W5MATlTocrym12hui/Q/T0
-         ruGcif/CEdjuB1JyqXVPsoo2pybIBmd9Oe+IQ=
-X-Received: by 2002:a05:7022:e1d:b0:11e:163:be60 with SMTP id a92af1059eb24-128f3deb72emr402568c88.31.1773346122757;
-        Thu, 12 Mar 2026 13:08:42 -0700 (PDT)
-X-Received: by 2002:a05:7022:e1d:b0:11e:163:be60 with SMTP id a92af1059eb24-128f3deb72emr402539c88.31.1773346121900;
-        Thu, 12 Mar 2026 13:08:41 -0700 (PDT)
-Received: from stbsdo-bld-1.sdg.broadcom.net ([192.19.161.248])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-128e7cb558fsm10210195c88.10.2026.03.12.13.08.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2026 13:08:41 -0700 (PDT)
-From: justin.chen@broadcom.com
-To: netdev@vger.kernel.org
-Cc: bcm-kernel-feedback-list@broadcom.com,
-	horms@kernel.org,
-	pabeni@redhat.com,
-	kuba@kernel.org,
-	edumazet@google.com,
-	davem@davemloft.net,
-	andrew+netdev@lunn.ch,
-	florian.fainelli@broadcom.com,
-	Justin Chen <justin.chen@broadcom.com>
-Subject: [PATCH net] net: bcmasp: fix double frees during remove
-Date: Thu, 12 Mar 2026 13:08:14 -0700
-Message-Id: <20260312200814.1977164-1-justin.chen@broadcom.com>
-X-Mailer: git-send-email 2.34.1
+        d=gmail.com; s=20230601; t=1773346210; x=1773951010; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Gm2FCxY20BE6uUQnf+f3bxv0y7OjLwyxJWmXnboau2o=;
+        b=Oo02eGGV9vYaYCscUNWSGh9KNd/s/AYWYRHCKQnK8gScRIWiUJ4uOZouaRqEewImhZ
+         nJtaaEJLDYftiQ6t9pWlnyhFOrpgGVqvRsPsgaloQroirHNVCgjEP5Tq9jamLQf7IDeB
+         Ol5Y1oeq4laq9WIvepmd980W3F9fNBi+ykmENJFY6O/MI+SXWjcLM5xbv1AVgfLUwQE1
+         e3ft7GSs++VcHjmWcQhydoFDJTweh7BZBQNH8eklE9jr/pK+f+D9Dxr+5AFLsGI2gf3Q
+         YLzLZbaQQnTNcQHp+SEN6s4bHf67535TR6hhbzK5ZsOqBsEpYs4WtrhimRAZoumEVVcf
+         rC7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773346210; x=1773951010;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Gm2FCxY20BE6uUQnf+f3bxv0y7OjLwyxJWmXnboau2o=;
+        b=cyvEV919erO8H2SdG+QW9+Q5O4buWeJjhsxJX5fpzYoM6er+pj/zIpToR4d6wpTA33
+         rn85vJQdRXPTbjhXVMmnaj38ryPtUxcVmX4oHYOpEWhn5KtG3CrYYJnkkDFaLqoV8kLw
+         GKrnfhzh4p+cwVBX/wDEviQF4i7/NInh5KlrFWW/zC7+P6Bu6EkKE0FxJWxGblhlgIu5
+         6TzMC3z26HoY3LWztWg1DBdKW6efH9AV7LxPeT8c2oGIm8KS1hKGw8LnxsXT56FMypUE
+         7Q0BPjVv4B8Zam/pRXl10fq5KbxExvqr3eo8rhvbtlkQJdTcJEtNQLpv+5yKqsbR8raK
+         fOgw==
+X-Forwarded-Encrypted: i=1; AJvYcCXCRk1L19m1UzbBWazZ/XcLwPf92o7nHyOkanFXlPzo5gzg0lNXhQsclEx91SbxXyJa1K7CLMs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxhcD2WafBqh4sPrs+Mm7sErB+gc9gHlxcbDKzl5KgqYoY9PnAq
+	3wjl9yx4cHv4RrbwrmqBpPDoSwsa6BxfzA5RQHkxnW///qDLrAbNn5zX9mL6ZYuaejSrF3gV9Vn
+	ttPUp4yEpNiDicLVQG9S6uDOfm7M01Mo=
+X-Gm-Gg: ATEYQzygLVSJm3pNMoaGUkr3EScYX38YBw5EC8FpbcOyVgV+GzVXOW/iKdi5ywD1JPQ
+	/m/7FnTGfMmP1F/k4ObKJX4tGzj3LcefQcPYGqVLhmZMmVOtpoOG1cjL3UEEHian7ooyXyYugQo
+	6e24/6TOH05ZM2xbuHIsWloqiWkA3AiKHadxwuQP9xv+6J3Oev4+Nq7IeEq6vwd9cvSLnnG5+Ja
+	cV3Czuv1PINbwu1PqnAtOlCpP+Vg5OCBsEBOkYPI6wL3l7bzn830GxfjdiVpPq/459dHPcjqVwR
+	HlTZRqUyesUgGKm+wK4NNi0=
+X-Received: by 2002:a17:903:3c43:b0:2ae:5baa:cef6 with SMTP id
+ d9443c01a7336-2aecaa26653mr6830965ad.19.1773346210204; Thu, 12 Mar 2026
+ 13:10:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+References: <20260307064439.3247440-1-ameryhung@gmail.com> <20260307064439.3247440-2-ameryhung@gmail.com>
+ <CAEf4BzZubPSaS8SQSEQJvTphwgbaBfdC0CYEhsfQN8CJ7HS3pw@mail.gmail.com>
+ <CAMB2axNR6qPRVy5YCiMygVseS+k9JxY9DFONNHD5Lt8=wD9MGQ@mail.gmail.com>
+ <CAEf4BzYTO9e-UAEd+W+ftqQZLUZCWHWXAYVnVjHeNtsZL1=Pdw@mail.gmail.com>
+ <CAMB2axN+8+V+29r9tuoVF57ObpvkUE5d5_8jtd5iRPYq4_gLGg@mail.gmail.com>
+ <CAEf4BzY1O1Ne9Rf+O2terCT8f9e6pNFr3N4hOv98N84ZoehCaw@mail.gmail.com> <CAMB2axN8Qe6r_siq5_6od7D_kDZPcYw_Z6KVOFtXNJVKzajqzw@mail.gmail.com>
+In-Reply-To: <CAMB2axN8Qe6r_siq5_6od7D_kDZPcYw_Z6KVOFtXNJVKzajqzw@mail.gmail.com>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Thu, 12 Mar 2026 13:09:55 -0700
+X-Gm-Features: AaiRm53caXxCZkzH0tGBQHZIM52CG4FziCPGYuMyjIEkMB56W7YV4fcZ0enQXQ8
+Message-ID: <CAEf4Bza5bNf6MsgNrr9WqE5ZKhRQ_PwtdCEwaWAVLJNmAZzv=A@mail.gmail.com>
+Subject: Re: [RFC PATCH bpf-next v2 01/11] bpf: Set kfunc dynptr arg type flag
+ based on prototype
+To: Amery Hung <ameryhung@gmail.com>
+Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, alexei.starovoitov@gmail.com, 
+	andrii@kernel.org, daniel@iogearbox.net, memxor@gmail.com, 
+	martin.lau@kernel.org, kernel-team@meta.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Justin Chen <justin.chen@broadcom.com>
+On Thu, Mar 12, 2026 at 9:59=E2=80=AFAM Amery Hung <ameryhung@gmail.com> wr=
+ote:
+>
+> On Wed, Mar 11, 2026 at 4:15=E2=80=AFPM Andrii Nakryiko
+> <andrii.nakryiko@gmail.com> wrote:
+> >
+> > On Wed, Mar 11, 2026 at 4:03=E2=80=AFPM Amery Hung <ameryhung@gmail.com=
+> wrote:
+> > >
+> > > On Wed, Mar 11, 2026 at 3:37=E2=80=AFPM Andrii Nakryiko
+> > > <andrii.nakryiko@gmail.com> wrote:
+> > > >
+> > > > On Wed, Mar 11, 2026 at 1:01=E2=80=AFPM Amery Hung <ameryhung@gmail=
+.com> wrote:
+> > > > >
+> > > > > On Wed, Mar 11, 2026 at 12:44=E2=80=AFPM Andrii Nakryiko
+> > > > > <andrii.nakryiko@gmail.com> wrote:
+> > > > > >
+> > > > > > On Fri, Mar 6, 2026 at 10:44=E2=80=AFPM Amery Hung <ameryhung@g=
+mail.com> wrote:
+> > > > > > >
+> > > > > > > The verifier should decide whether a dynptr argument is read-=
+only
+> > > > > > > based on if the type is "const struct bpf_dynptr *", not the =
+type of
+> > > > > > > the register passed to the kfunc. This currently does not cau=
+se issues
+> > > > > > > because existing kfuncs that mutate struct bpf_dynptr are con=
+structors
+> > > > > > > (e.g., bpf_dynptr_from_xxx and bpf_dynptr_clone). These kfunc=
+s have
+> > > > > > > additional check in process_dynptr_func() to make sure the st=
+ack slot
+> > > > > > > does not contain initialized dynptr. Nonetheless, this should=
+ still be
+> > > > > > > fixed to avoid future issues when there is a non-constructor =
+dynptr
+> > > > > > > kfunc that can mutate dynptr. This is also a small step towar=
+d unifying
+> > > > > > > kfunc and helper handling in the verifier, where the first st=
+ep is to
+> > > > > > > generate kfunc prototype similar to bpf_func_proto before the=
+ main
+> > > > > > > verification loop.
+> > > > > > >
+> > > > > > > We also need to correctly mark some kfunc arguments as "const=
+ struct
+> > > > > > > bpf_dynptr *" to align with other kfuncs that take non-mutabl=
+e dynptr
+> > > > > > > argument and to not break their usage. Adding const qualifier=
+ does
+> > > > > > > not break backward compatibility.
+> > > > > > >
+> > > > > > > Signed-off-by: Amery Hung <ameryhung@gmail.com>
+> > > > > > > ---
+> > > > > > >  fs/verity/measure.c                            |  2 +-
+> > > > > > >  include/linux/bpf.h                            |  8 ++++----
+> > > > > > >  kernel/bpf/helpers.c                           | 10 +++++---=
+--
+> > > > > > >  kernel/bpf/verifier.c                          | 18 ++++++++=
++++++++++-
+> > > > > > >  kernel/trace/bpf_trace.c                       | 18 ++++++++=
++---------
+> > > > > > >  tools/testing/selftests/bpf/bpf_kfuncs.h       |  6 +++---
+> > > > > > >  .../selftests/bpf/progs/dynptr_success.c       |  6 +++---
+> > > > > > >  .../bpf/progs/test_kfunc_dynptr_param.c        |  7 +------
+> > > > > > >  8 files changed, 43 insertions(+), 32 deletions(-)
+> > > > > > >
+> > > > > > > diff --git a/fs/verity/measure.c b/fs/verity/measure.c
+> > > > > > > index 6a35623ebdf0..3840436e4510 100644
+> > > > > > > --- a/fs/verity/measure.c
+> > > > > > > +++ b/fs/verity/measure.c
+> > > > > > > @@ -118,7 +118,7 @@ __bpf_kfunc_start_defs();
+> > > > > > >   *
+> > > > > > >   * Return: 0 on success, a negative value on error.
+> > > > > > >   */
+> > > > > > > -__bpf_kfunc int bpf_get_fsverity_digest(struct file *file, s=
+truct bpf_dynptr *digest_p)
+> > > > > > > +__bpf_kfunc int bpf_get_fsverity_digest(struct file *file, c=
+onst struct bpf_dynptr *digest_p)
+> > > > > >
+> > > > > > but kfunc is writing into digest_p, so that const is wrong?...
+> > > > > >
+> > > > > > >  {
+> > > > > > >         struct bpf_dynptr_kern *digest_ptr =3D (struct bpf_dy=
+nptr_kern *)digest_p;
+> > > > > > >         const struct inode *inode =3D file_inode(file);
+> > > > > >
+> > > > > > [...]
+> > > > > >
+> > > > > > > index 6eb6c82ed2ee..3d44896587ac 100644
+> > > > > > > --- a/kernel/bpf/helpers.c
+> > > > > > > +++ b/kernel/bpf/helpers.c
+> > > > > > > @@ -3000,8 +3000,8 @@ __bpf_kfunc int bpf_dynptr_clone(const =
+struct bpf_dynptr *p,
+> > > > > > >   * Copies data from source dynptr to destination dynptr.
+> > > > > > >   * Returns 0 on success; negative error, otherwise.
+> > > > > > >   */
+> > > > > > > -__bpf_kfunc int bpf_dynptr_copy(struct bpf_dynptr *dst_ptr, =
+u64 dst_off,
+> > > > > > > -                               struct bpf_dynptr *src_ptr, u=
+64 src_off, u64 size)
+> > > > > > > +__bpf_kfunc int bpf_dynptr_copy(const struct bpf_dynptr *dst=
+_ptr, u64 dst_off,
+> > > > > >
+> > > > > > again, dst_ptr clearly is modifiable because we are copying dat=
+a into it.
+> > > > > >
+> > > > > > What am I missing, why is this logically correct?
+> > > > > >
+> > > > > > (I understand that from purely C type system POV this is fine, =
+because
+> > > > > > we don't modify bpf_dynptr struct itself on the stack, but bpf_=
+dynptr
+> > > > > > is a representation of some memory, and if we are modifying thi=
+s
+> > > > > > memory, then I think it should be not marked as const)
+> > > > >
+> > > > > The patch is just to first make the arg type determination indepe=
+ndent
+> > > > > from bpf_reg_state and make kfunc signature consistent based on w=
+hat
+> > > > > commit 52f37c4e0f11 (bpf: Rework process_dynptr_func) has laid ou=
+t.
+> > > > >
+> > > > > Perhaps MEM_RDONLY is a bit misleading. In process_dynptr_func(),=
+ the
+> > > > > flag means the dynptr struct on the stack is immutable. Currently=
+,
+> > > > > there is no way (and maybe no need?) to specify read-only dynptr.
+> > > > >
+> > > >
+> > > > are you basically trying to determine if CONST_DYNPTR_PTR is allowe=
+d or not?
+> > >
+> > > Yes.
+> > >
+> > > >
+> > > > > > > The verifier should decide whether a dynptr argument is read-=
+only
+> > > >
+> > > > can you please remind us what "read-only dynptr argument" means for=
+ verifier?
+> > >
+> > > Oh well... my apologies for the inconsistency in commit message and
+> > > comments. It should be "immutable" instead of "read-only" here.
+> >
+> > I guess I'd suggest
+> >
+> > struct bpf_dyntpr *const dptr
+> >
+> > to mark this through type system? that is, *constant pointer* to
+> > dynptr, not a pointer to *constant dynptr*
+> >
+> > WDYT?
+>
+> I think they both make sense from different angles, but I am not sure
+> which one is better.
+>
+> From purely C's point of view. the pointer points to a struct dynptr
+> that should not be mutated so "const struct dynptr *p" is correct.
+>
+> From the BPF dynptr abstraction's point of view, the pointer points to
+> the underlying memory (e.gg., skb, file, ringbuf, etc.), so "struct
+> dynptr * const p".
+>
+> Any way we choose, I'd suggest that to be a separate patch. This patch
+> at least makes things consistent and fixes a logical bug.
 
-We have two double frees during remove.
-- We do not need to free wol_irq since it was instantiated with
-  devm_request_irq(). So devres will free for us.
-- Switch to devm_clk_get_optional() instead of
-  devm_clk_get_optional_enabled() so we can manage the clock ourselves.
-
-Fixes: a2f0751206b0 ("net: bcmasp: Add support for WoL magic packet")
-Fixes: 490cb412007d ("net: bcmasp: Add support for ASP2.0 Ethernet controller")
-Signed-off-by: Justin Chen <justin.chen@broadcom.com>
----
- drivers/net/ethernet/broadcom/asp2/bcmasp.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp.c b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
-index aa6d8606849f..1bfc1f90cd62 100644
---- a/drivers/net/ethernet/broadcom/asp2/bcmasp.c
-+++ b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
-@@ -1152,12 +1152,6 @@ void bcmasp_enable_wol(struct bcmasp_intf *intf, bool en)
- 	}
- }
- 
--static void bcmasp_wol_irq_destroy(struct bcmasp_priv *priv)
--{
--	if (priv->wol_irq > 0)
--		free_irq(priv->wol_irq, priv);
--}
--
- static void bcmasp_eee_fixup(struct bcmasp_intf *intf, bool en)
- {
- 	u32 reg, phy_lpi_overwrite;
-@@ -1255,11 +1249,15 @@ static int bcmasp_probe(struct platform_device *pdev)
- 	if (priv->irq <= 0)
- 		return -EINVAL;
- 
--	priv->clk = devm_clk_get_optional_enabled(dev, "sw_asp");
-+	priv->clk = devm_clk_get_optional(dev, "sw_asp");
- 	if (IS_ERR(priv->clk))
- 		return dev_err_probe(dev, PTR_ERR(priv->clk),
- 				     "failed to request clock\n");
- 
-+	ret = clk_prepare_enable(priv->clk);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to start clock\n");
-+
- 	/* Base from parent node */
- 	priv->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(priv->base))
-@@ -1363,7 +1361,6 @@ static int bcmasp_probe(struct platform_device *pdev)
- 	return ret;
- 
- err_cleanup:
--	bcmasp_wol_irq_destroy(priv);
- 	bcmasp_remove_intfs(priv);
- 
- 	return ret;
-@@ -1376,7 +1373,6 @@ static void bcmasp_remove(struct platform_device *pdev)
- 	if (!priv)
- 		return;
- 
--	bcmasp_wol_irq_destroy(priv);
- 	bcmasp_remove_intfs(priv);
- }
- 
--- 
-2.34.1
-
+if we could rely on decltag, I'd go with that. But *const is unusual
+and stands out, so I'd go with that. I wonder if anyone else has any
+thoughts.
+>
+> >
+> > >
+> > > >
+> > > > > >
+> > > > > > > +                               const struct bpf_dynptr *src_=
+ptr, u64 src_off, u64 size)
+> > > > > > >  {
+> > > > > > >         struct bpf_dynptr_kern *dst =3D (struct bpf_dynptr_ke=
+rn *)dst_ptr;
+> > > > > > >         struct bpf_dynptr_kern *src =3D (struct bpf_dynptr_ke=
+rn *)src_ptr;
+> > > > > >
+> > > > > > [...]
