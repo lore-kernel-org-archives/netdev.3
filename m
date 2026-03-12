@@ -1,58 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 765B0221FCD;
-	Thu, 12 Mar 2026 03:33:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB66E3590A4;
+	Thu, 12 Mar 2026 03:33:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773286401; cv=none; b=eeVVy4PxJfi9aSRsu+dqPPXj/EcQ9mDCRa0sFhZ605Q8HrvkMvfwwkQwqGGpKwDP8JKUzKY9SIziMzFKRdR4EpktaRFOj1K9SHiROqtVEGJZ4nX2CmBfoOj/bOgaQTErj8iuDAgwqIV20p2LkPcza0p5hAKhH/w+WY8w06EePhg=
+	t=1773286404; cv=none; b=CE3zxKxbvXlsW4Ws6soUahW2JsMRiy6nEYQXG5idBk59QVPWuLJHueSP0ZIUNcpZbNnLznqSmhfbFFbB9+YWrujrkf9VNOT00N6poS++QcgN/5rDKAyPnEBxK+pDF/IwFSK0rjPdIzL0TeNOzfNBDxZhLIyPZ687QfETsisZBFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773286401; c=relaxed/simple;
-	bh=9rgwBN4KgHcwoIa7ezCCM/dYf9VHg6Q0vDwthV2vBX4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SeHNr0lYBEXX4bCB7zxw3+N1nFYRSYNy7c+z0HNTDdqQ5daL3o+aZiwuNDYMXRgY35reRMXnawAA0vduIs/5x5mCUUBHIzMeef+RFG6d5ZXz4btN08ba6Ws+nESLRWC4dx7I+NJZQHXdHI78q0opAi6HHb66WEbpwHmXTIGBsxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ksofKqnc; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ksofKqnc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EF98C4CEF7;
-	Thu, 12 Mar 2026 03:33:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773286401;
-	bh=9rgwBN4KgHcwoIa7ezCCM/dYf9VHg6Q0vDwthV2vBX4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ksofKqncXZtbYl4At45xJWgbNVm6hsyFk+tqKaCoXRqhkav3s8eG04UrRV6XBO6Yk
-	 30mp7lB9ptoxmQEDyXLDxhrjqHCceWyOz8V0R1gL56ED+QMwGB3bLWDwRgXV29NijV
-	 ykCBY9D91r+ntUxeRi7sdd7Ejx1m5SYGplpAG4nKsoIQmGYkczrmCUdZj1OS6SyYK/
-	 eb52Bq5l4Z48Cv/Y9BCXHHv6rHgFNMD6ebvehoUmcVrfxfE2drsagbVrAvEHM4u/BM
-	 a963Llun88mve22IjfO66Q7qNW2qE1arHyTo5i2Co+t1/sWTXDAsNLDrT9qlcpknoh
-	 JFSY2E7UQn9iw==
-Date: Wed, 11 Mar 2026 20:33:19 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Saeed Mahameed <saeedm@nvidia.com>, "Mark Bloch"
- <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
- <netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, Gal Pressman <gal@nvidia.com>, Moshe
- Shemesh <moshe@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>
-Subject: Re: [PATCH net-next] net/mlx5e: Enable mac forwarding on uplink
- representor
-Message-ID: <20260311203319.76d35ce0@kernel.org>
-In-Reply-To: <20260310104841.1862380-1-tariqt@nvidia.com>
-References: <20260310104841.1862380-1-tariqt@nvidia.com>
+	s=arc-20240116; t=1773286404; c=relaxed/simple;
+	bh=J0qv9c0xgyxP+eVJf+VVgnnC8s+PRtQ4XLIl2LQ0p0s=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=fVQS6gya7gi5VN5Bs1qjVxAYAT151Q66wrwAHOmYdCnUdTBIoOQckHcI0pXcjGfrWZ6n230XWDwQXWjYtqD3rNGn7dIf4GDceQdS4p4mZerZPFehpyELSs63b9HdkDqRXxV0ijrAFXx5N0hiotqXyZcmiTfBvT00+EhVXFUV0Tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.99)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1w0WnL-000000005rk-2CZK;
+	Thu, 12 Mar 2026 03:33:07 +0000
+Date: Thu, 12 Mar 2026 03:33:03 +0000
+From: Daniel Golle <daniel@makrotopia.org>
+To: Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Frank Wunderlich <frankwu@gmx.de>, Chad Monroe <chad@monroe.io>,
+	Cezary Wilmanski <cezary.wilmanski@adtran.com>,
+	Liang Xu <lxu@maxlinear.com>,
+	"Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>,
+	Jose Maria Verdu Munoz <jverdu@maxlinear.com>,
+	Avinash Jayaraman <ajayaraman@maxlinear.com>,
+	John Crispin <john@phrozen.org>
+Subject: [PATCH net-next v4 0/2] net: dsa: mxl862xx: add support for bridge
+ offloading
+Message-ID: <cover.1773286076.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Tue, 10 Mar 2026 12:48:41 +0200 Tariq Toukan wrote:
-> This small patch enables mac forwarding to MPFs via uplink representor,
+As a next step to complete the mxl862xx DSA driver, add support for
+offloading forwarding between bridged ports to the switch hardware.
 
-"mac forwarding to MPF via uplink representor"
-Can't wrap my head around this "via". Could you explain this better?
-Perhaps some tool can spit out a little diagram to make the flow clear?
+This works pretty much without any big surprises, apart from two
+subtleties:
+ * per-port control over flooding behavior has to be implemented by
+   (ab)using a 0-rate QoS meters as stopper in lack of any better
+   option.
+ * STP state transition unconditionally enables learning on a port
+   even if it was previously explicitely disabled (a firmware bug)
+
+Note that as the driver is still lacking all VLAN features (which
+are going to be added next), at this point some of the
+bridge_vlan_aware.sh tests are failing after applying this series.
+
+This is expected and cannot be avoided without implementing
+port_vlan_filtering + port_vlan_add/del. And adding both bridge and
+VLAN offloading at the same time would be too much for anyone to
+review, so VLAN support is going to be submitted in a follow-up
+series immediately after this series has been accepted.
+
+All other relevant selftests (including bridge_vlan_unaware.sh) are
+still passing.
+
+Changes since v3:
+ * add missing cpu_to_le32 in mxl862xx_bridge_config_fwd()
+ * use little-endian 32-bit type for (unused) age_timer API field
+ * better comment in port_set_host_flood() documenting architectural
+   limitation
+ * fix typo in comment "matche" should be "matches"
+ * few whitespace fixes
+
+Changes since v2:
+ * refactor .port_bridge_join and .port_bridge_leave as requested
+   by Vladimir Oltean
+ * include linux/etherdevice.h which was missing and causing build
+   to fail (it accidentally slipped into a follow-up patch)
+ * remove left-over manual reset of learning state for port leaving
+   bridge
+ * remove unnecessary call to mxl862xx_port_fast_age() for port
+   leaving bridge
+ * add kernel-doc comments in mxl862xx.h instead of sporadic inline
+   comments covering only some of the struct members
+ * some other minor cosmetics (linebreaks, whitespace) here and there
+
+Changes since v1:
+ * don't set dsa_default_offload_fwd_mark() on link-local frames
+ * fix kernel-doc comments in API header
+ * use bitfield helpers for compound tci field in fdb API
+ * add missing endian conversion for mxl862xx_stp_port_cfg.port_state
+   as well as mxl862xx_mac_table_read.tci (spotted by AI review)
+ * drop manually resetting port learning state on bridge<->standalone
+   transitions, DSA framework takes care of that
+ * don't abort updating bridge ports on error, return error at the end
+ * report error in mxl862xx_port_bridge_leave()
+ * create mxl862xx_get_fid() helper and use it in
+   mxl862xx_port_fdb_add() and mxl862xx_port_fdb_del()
+ * propagete error of callback function in mxl862xx_port_fdb_dump()
+ * manually mxl862xx_port_fast_age() in mxl862xx_port_stp_state_set()
+   to avoid FDB poisoning due to race condition
+
+Daniel Golle (2):
+  dsa: tag_mxl862xx: set dsa_default_offload_fwd_mark()
+  net: dsa: mxl862xx: implement bridge offloading
+
+ drivers/net/dsa/mxl862xx/mxl862xx-api.h | 180 +++++++-
+ drivers/net/dsa/mxl862xx/mxl862xx-cmd.h |  19 +-
+ drivers/net/dsa/mxl862xx/mxl862xx.c     | 588 ++++++++++++++++++++++--
+ drivers/net/dsa/mxl862xx/mxl862xx.h     |  52 +++
+ net/dsa/tag_mxl862xx.c                  |   3 +
+ 5 files changed, 808 insertions(+), 34 deletions(-)
+
+-- 
+2.53.0
