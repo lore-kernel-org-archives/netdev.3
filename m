@@ -1,75 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11533B6362;
-	Thu, 12 Mar 2026 17:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B363A5427;
+	Thu, 12 Mar 2026 17:37:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773336923; cv=none; b=nwrES3THYgGAOXlzofBFqsswNRkWAJ3LVmCe2x2duWz4LxfJ+QO8wfSb74l0xepp3wmyW2K86Th+9QUwU/MCs9lVmY+4K/VmGFpDyUqTa3AFN1Gvu/cJErOw1M/+ySRaWNDWA1wJXNoeiTUZRwKdvdbxpyUki6EaQ+WsOp1D0MU=
+	t=1773337074; cv=none; b=DQXRfYASUps2E66AQrWKxiOnkZOtGaZwRSW6XkMoiKeCj8mshaTI8IL2RENBTyQrKTUzhS9zcqN9LcysT+wElMHW91RQnuSJVnPgS66x7Yr6/8zxZno+owj8h2bWJtcY0kFYa9V1dMH7U1iWvTG7/u9Gfn/N/27FLHKYYsxplMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773336923; c=relaxed/simple;
-	bh=zqJtnU1nEvbJJL1d/slZXEhUndKtU4g0Iwm1n6uuyTM=;
+	s=arc-20240116; t=1773337074; c=relaxed/simple;
+	bh=K+Cz/xB86Qa6TQnZ8lj+kGKU/XCB+CgbnDb4VCfLD+I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MvMJQ/deK28UlYgxN3ita1Zx5/IV6Aps4mTJTdUl4yyMMWZBiFWowU1FOD54oRRAPdCVZKlFXOmBcAR7qAVHbmqTp5GjKLZFFcfUsP0n+wek3HFjzgcw+74r1s23z1Wt2qY7xDKeYwb3CQ7/rMSFIYhdIB76xCutCoj4NtIZNqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cK1UchNb; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=JpYqyX7/vZfMybo4ai7scoAIzW/MqrbUxAWKPx6mtcSGkrD5kcqXqPkW84tv2G64C5xKTVCgx1fLa0SkBVxkgv+EVlzJouOhc3WuG5T3Nt5bVdhsxletAEtIeCdYXtsgbe128AZ4h5pGcVLKgWZG84FS5RCyNohpuRp265M6dE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aE5W8clO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cK1UchNb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9CFFC4CEF7;
-	Thu, 12 Mar 2026 17:35:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aE5W8clO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5279C116C6;
+	Thu, 12 Mar 2026 17:37:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773336923;
-	bh=zqJtnU1nEvbJJL1d/slZXEhUndKtU4g0Iwm1n6uuyTM=;
+	s=k20201202; t=1773337073;
+	bh=K+Cz/xB86Qa6TQnZ8lj+kGKU/XCB+CgbnDb4VCfLD+I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cK1UchNbfmhQwG2WGp2v/mmMfKXYWq8iXcgOznoHKuv2rEHDqHQJ0K9UpjfBJ/VMv
-	 l3iJmWN+mMwPejz/74wthUjM2BonkWl6r4ttnhI07Bks4RMlkythVN2v6F0R+kdzhE
-	 RNE/LDK+TMVZdL/VlOAnF2Vm+I0jqsHXnXzwU31gNfey2rcUWP1QjCVh8ygFUdJ0Rk
-	 2OHk80hLI3J09lvL4azsIrd3JhNQvZM7oGj9XrMYfI/PqxdPL7OP8qKr0/ylY/ZGx+
-	 33qrD7XROkdPthjWAs7mk4Eb2cGe+QNwC4onpPPWO2q7yhnnNKBI/0a5EBz7lN4E6k
-	 FnKiP0K/WEFwg==
-Date: Thu, 12 Mar 2026 17:35:18 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: Stefan Eichenberger <eichest@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH 2/2] dt-bindings: net: micrel: KSZ8041RNLI supports LED
- mode
-Message-ID: <20260312-chomp-liver-4b484d25f9b1@spud>
-References: <cover.1773321267.git.geert+renesas@glider.be>
- <6ccda7a00f250e87b0457e276ac1070cb0708d71.1773321267.git.geert+renesas@glider.be>
+	b=aE5W8clOzt3Mxvwhl1gA6YnoANTXGV4nJrrJxWwN/9VNCzwDZa2kZJhxP3hbQSjVx
+	 dm4sXPKwkFSvKdpYwJ54NAjzF7l2BRHBhicSWYiYFVSaFAXQDrrrlZvr3SRoLXNgFz
+	 ay2atzM8pYVb/M7QH48zoKf6sftfy4+ApIZyewIAhRqgPgjdPH1g5xi+A1y3vVFUj2
+	 2lU4Z3NKJaH4lmS+trZVSJhkWZmuqooYmGOUg2OtLPO4mUD1QpWaLu3VYQB3PR8I/k
+	 5sSeExGsgi8VRrMM0KoSrqOl0BAY2KWiU//amiRJevUVfqpwFE8F32JGe/4hLWRybH
+	 RopHsG6sBP4PQ==
+Date: Thu, 12 Mar 2026 17:37:48 +0000
+From: Simon Horman <horms@kernel.org>
+To: ShravyaPanchagiri <shravy112@gmail.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, sgoutham@marvell.com,
+	lcherian@marvell.com, gakula@marvell.com, hkelam@marvell.com,
+	sbhatta@marvell.com, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, corbet@lwn.net,
+	skhan@linuxfoundation.org
+Subject: Re: [PATCH v2] docs: octeontx2: fix typo in documentation
+Message-ID: <20260312173748.GA1270007@kernel.org>
+References: <20260311030450.8461-1-shravy112@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="jatNYVOcOCvwMss2"
-Content-Disposition: inline
-In-Reply-To: <6ccda7a00f250e87b0457e276ac1070cb0708d71.1773321267.git.geert+renesas@glider.be>
-
-
---jatNYVOcOCvwMss2
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20260311030450.8461-1-shravy112@gmail.com>
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+On Tue, Mar 10, 2026 at 10:04:50PM -0500, ShravyaPanchagiri wrote:
+> Fix spelling mistake "Crate" to "Create" in the documentation.
+> 
+> Signed-off-by: ShravyaPanchagiri <shravy112@gmail.com>
 
---jatNYVOcOCvwMss2
-Content-Type: application/pgp-signature; name="signature.asc"
+I note that this file is code-spell clean (before and after this patch).
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCabL5VgAKCRB4tDGHoIJi
-0qOVAP981BwJHmeinQ4TPuX6XyLTJOZRDN/soQfzPy8S6T25NQD+ODGHaXg732DT
-76G/x9Ck1a+XLyEPCiEoX4B0+lvywgA=
-=6U/t
------END PGP SIGNATURE-----
-
---jatNYVOcOCvwMss2--
+Reviewed-by: Simon Horman <horms@kernel.org>
