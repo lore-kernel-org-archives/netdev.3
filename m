@@ -1,355 +1,260 @@
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 928443603D8
-	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 02:26:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773282404; cv=pass; b=FZJsW+wA8sXd2H5aeg1ti6wI5wA97EKkqNnW+4IzNxxmw5Af8clh2jhW+K9Ilu11KkktELflAuh4wZe85ve0pHpL5x8o2HN1BODtIrHAY83Zs4wd6Hj88mZ0tNp7CBjd5eVhcHXaVf54nyhFRkSmVzIYRKgxq16oLsrC+WbqVlk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773282404; c=relaxed/simple;
-	bh=6H632KUZeL6qJZGs8TIAvo3Sqr13NLiDhXz7No3+HsE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rhz6QyrfR6IUSOH/oP+MmmgkZfyKAoxEVZLALt/zMFqmJHYeooL61gqPvOZYnxlpt8WUcMeOgZrijmBOve8mScOOP38lesvq+iZgMZMGqka2XhySHaa0lG8pudjAPRDMxf9S6FMOxyhd/KfN9wxhiMe+iq9rDXLnljioxpjKWek=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zyhkn5Fd; arc=pass smtp.client-ip=209.85.219.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81F23563D5
+	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 02:28:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.132
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773282487; cv=none; b=Vq75oMlPvUsGxYY//KI1IUli1jhAAoLfIJxR9gtMYphcTuzHLqmtzC7C2NUHvDLHv67zcYgoedjsbVHRNta7R1+Wp42hPHF7MM1yz1s2TNkWJQRmRLO2svtuW5jwVPT+6vhJcepFZ4SgriqDj3JYWglBK+XgMX2UP8nOl9gnnvg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773282487; c=relaxed/simple;
+	bh=yXRo2RJTNsN3F3RyQdHfIZwT6cbvdrCaOQ0Gcz3MuJw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ia9C5DLfOhONtJO8izLnryyRpVr9YMUNVgYU3DxvfIsf0mjJhuFantpsvsx6/mRkPgc6hqa4KY3gUWBQhTYkJc96gaZgm3lpdFKk73cLlRVIwD1/Vp+oyhbP8ovSgyxzAlMTvY5oQlKPvJhciRlNe9jFwuZQx+COOPgbThlhREg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=e/Ym9nyR; arc=none smtp.client-ip=115.124.30.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zyhkn5Fd"
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-899ee87355dso7330376d6.1
-        for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 19:26:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773282401; cv=none;
-        d=google.com; s=arc-20240605;
-        b=abLMSOM/73jTdEgzSSPPM2ybdd1ZV1397aSWtDIG7h+4IwXAt0Nv/GXDLVAQ9CPDup
-         EE1hkj85bAzIWEC4l84SvE0h+J+t3Fn4D69Ga5Rnwa4RiHo8rxRbbTw/NrK/teB+uEa7
-         maLMsPkVXvO7LRSkPJDfkxAkk98Sr9ou89Nha31ryX2KAyTfSY+ruL09heFQLr+0QCy1
-         IsOspTX2AAxSk1ZatLDnI5W19qCqbx1LmTVvII6qMyXD5Iwlm0Ynp+c5Oto7X0MHgESU
-         zBSXBEcDO+ct2M4fmIgn/4hqnoZbTNnCIFY0so7oIT3wn7aZfCtTixh1PbRxoDs0cyo0
-         5pig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=bcr+zV2qeLYyDRFxN6Memk911jsqXj4Ju7ZKYZqj0dw=;
-        fh=uJOxayjV8RE7bUakCZ766BiS7aouVFgIzrtMnCA10sM=;
-        b=RMXsTimEa+Dy3wt/jG+G5zffUXeluBn+2tTm8k/U5q2+fRPMHRCAVOLXTWAJ4yMSS8
-         cTnYUaGeE5wr09w6fuD7Q2z7v/tR4MCmrfFekIARyyPOc8HhQvjOrlYjhN+j3batMtR4
-         uVfq3adoZ5xAHWPFP08ka+3x/gvTCm5V46VVUDn76f5cNAtm4rVYUPSpP2Fxszj8N0By
-         B/71VzAaWsvay5eqTsryCA+T302g+XhkXLusS2f/oJ/H4hSobsdNl2wDLFRONc/FTDyA
-         abKWbP/k6OW0ngO3cr99xqnbxKOXcQ6cwPN90alyuxrjdWHMS0BcOBTC2PYADN6vTIgi
-         mrNg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773282401; x=1773887201; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bcr+zV2qeLYyDRFxN6Memk911jsqXj4Ju7ZKYZqj0dw=;
-        b=Zyhkn5FdIAF/s+fr8aO1u6CIYE0omSsWYShfcYMqQoCvgja5Q/UlCzbu3NcMHcpF4C
-         T4yAtq9KhxOyMcdeQteAE/iiA0nK8a1SJWXbQqdrTnGMFK1zPGKoAlB5u0iokeuiuX3p
-         cr8KuGzmYCjrNZGGv+jHrITP1kyj0IXVxAhz/X63XVJCXEYUeSkJ7eLcEOY/X28AQxht
-         BO7N2+4LXUS7Y8UC2n8DeankEqmzpMT80puayFzynxo6LG7pprqo+l5lDlltFhtLP83a
-         e84sxSkZgW74ztG8svIzFU/MS9iYW2QeSXDO/2ccPusliCPKouEQRdTupHMSRHXzO92B
-         g8bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773282401; x=1773887201;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=bcr+zV2qeLYyDRFxN6Memk911jsqXj4Ju7ZKYZqj0dw=;
-        b=psiog/LDJl8AOH7rSupRW38q3Q4vtEZONt4hEwWa08iPLKEDw6Bpb71/q+2EpIDigg
-         wFvtr1lrolOKoAP4a8QsJLQLMy6Ug0a3/3/iETu51u36zJjJ7lzBi+L7KvS6D2XFwlVt
-         8AR0CsDkwG+xKJPEKSFElngkjzVV6edNuHVC8saS2+p+R+tnhbpzfreyhPFwBh59k2F2
-         iEA+WDu1yc59z3FdS2pCVwcJ9afJOZMKIALLjagJQL/NCdmJa0FwHweE4I2zspOcufu4
-         UF6MLUVe3IIRlC+V9OY78RaBIbueA3ohModY5m49c2LpWg/nEdXhoi5xUP89k7KlfroH
-         TG9g==
-X-Gm-Message-State: AOJu0YzbZ4+D9im96hkxY6UJK3ylGnikADAiXldOdZ2Jo+ZgJDu9Ys4h
-	hCOlUZ9XhwgNvaOHyIKqrivk2qStNjqcFb6OXczRyAB+CwoQ3ROxp6Z2BYlsezLICHqFYDmkvg3
-	QBh2flkacJ4HeNSJd//i3I8cnIAQTYJ0=
-X-Gm-Gg: ATEYQzxCNIwLmFmDJMXo1XC1xingm22XmXsQ6pHXPQEooA6IfQ3upa/4wS+jE6RHAls
-	mpuKi2ZnxCAxPD3ri8k6S9wMW9ig9RmHGbD02zVsnepMvjTwTNVgWCBhku2aVcEn2hB/ncgwCOh
-	2RX1+U3rIGXpph/gMdYKoHH7dqF0dekmI8tgR26c8yFIkQVFfzBAb4pVPaBGOyKkrVDRpC/kwD1
-	tYFjHekGiI9M+DK6fZjhgBKOvSDjfnXf+EhLSHBbqamyEbLuEHr0na7d8lZTpIJCptCAkjfJihp
-	lqoX4pY=
-X-Received: by 2002:ad4:5765:0:b0:899:f0af:4f51 with SMTP id
- 6a1803df08f44-89a669f70femr68515206d6.20.1773282401464; Wed, 11 Mar 2026
- 19:26:41 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="e/Ym9nyR"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1773282482; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=aEbNHOSiNbLhcNtJJ9SUYMY/Og/8zJ8qKovyZsgVL8Q=;
+	b=e/Ym9nyRjQxFQDbWIrid+xAFmsZQm6IqEDaIQOA04zBHA8kTpbaJscp2Ud70ZAJ/FcVp40dPoctllxt4WsTFWOWFturnJIVosJCJ3Z5NIF2ZzDyTpx2Gn73S1f9Zh1C2Oq6m9SyrbxkeldQ1tR92DtkvZkvElatYrveQG2EJsd8=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R471e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=xuanzhuo@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0X-mlCjc_1773282481;
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0X-mlCjc_1773282481 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 12 Mar 2026 10:28:01 +0800
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+To: netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	Philo Lu <lulie@linux.alibaba.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Dong Yibo <dong100@mucse.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Dust Li <dust.li@linux.alibaba.com>
+Subject: [PATCH net-next v29 0/8] eea: Add basic driver framework for Alibaba Elastic Ethernet Adaptor
+Date: Thu, 12 Mar 2026 10:27:53 +0800
+Message-Id: <20260312022801.90699-1-xuanzhuo@linux.alibaba.com>
+X-Mailer: git-send-email 2.32.0.3.g01195cf9f
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAFzOa14g0=VGLentBuj54ebm4rVWCXPrjGA1toxWHmZ4M1hKgg@mail.gmail.com>
- <CANn89iKBxREGEgFatAcFLb+PiHUtgMKUJ5u+Tm9-SD0OKh29tw@mail.gmail.com> <CANn89iKevHTf+MyJ+4PJ7ZR-+FcRqZiFubeLqRcyZ+gd4LWtsg@mail.gmail.com>
-In-Reply-To: <CANn89iKevHTf+MyJ+4PJ7ZR-+FcRqZiFubeLqRcyZ+gd4LWtsg@mail.gmail.com>
-From: Guanni Qu <qguanni@gmail.com>
-Date: Wed, 11 Mar 2026 19:26:30 -0700
-X-Gm-Features: AaiRm52-jlJUojvAkPEmoMgSmzHeW25hcV4hFiUJPZZZFeED16Im-YMzScaJjfo
-Message-ID: <CAFzOa14ubmPEmst65Nmtyy3hwtdCYqviv8NNmfXeJ9v5EwwoSA@mail.gmail.com>
-Subject: Re: [PATCH] ipv6: ip6_tunnel: fix use-after-free in ip4ip6_err
-To: Eric Dumazet <edumazet@google.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, dsahern@kernel.org, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	klaudia@vidocsecurity.com, dawid@vidocsecurity.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Git-Hash: 2825a2ca1173
+Content-Transfer-Encoding: 8bit
 
-Hi Eric,
+Add a driver framework for EEA that will be available in the future.
 
-Thank you for the review.
+This driver is currently quite minimal, implementing only fundamental
+core functionalities. Key features include: I/O queue management via
+adminq, basic PCI-layer operations, and essential RX/TX data
+communication capabilities. It also supports the creation,
+initialization, and management of network devices (netdev). Furthermore,
+the ring structures for both I/O queues and adminq have been abstracted
+into a simple, unified, and reusable library implementation,
+facilitating future extension and maintenance.
 
-You're right that ip4ip6_err() is called under rcu_read_lock()
-protection via icmpv6_rcv() -> icmpv6_notify() -> .err_handler, so
-the RCU-deferred free via call_rcu_hurry() cannot complete while
-we're still in this function. I should not have characterized this
-as a use-after-free. It's a use-after-put that is currently safe
-due to RCU but violates refcount semantics.
+v29:
+    Address AI-generated review suggestions from the previous version.
 
-The original discovery used kprobe instrumentation (not KASAN), so
-there is no crash stack trace. The call path is:
+v28:
+    Address AI-generated review suggestions from the previous version.
 
-  icmpv6_rcv()
-    rcu_read_lock()
-    icmpv6_notify()
-      ip4ip6_err()        <-- .err_handler
-        ip_rt_put(rt)     <-- drops refcount
-        rt->dst.dev       <-- use-after-put
-        rt->rt_flags      <-- use-after-put
-    rcu_read_unlock()
+v27:
+    Address AI-generated review suggestions from the previous version.
 
-v2 addresses both issues and adds the Fixes: tag.
+v26:
+    Adopting suggestions from the previous AI review, another significant
+    change is the introduction of an IRQ block to implement IRQ proxying. With
+    this design, when an IRQ occurs, we no longer invoke the RX data structure
+    directly -- instead, the IRQ block serves as an intermediary proxy. This
+    approach offers several advantages: IRQ resources no longer need to be
+    reallocated during reset operations, and IRQs are decoupled from RX
+    structures. Consequently, when certain errors occur, we can fall back and
+    safely reuse the original memory resources.
 
-Changes since v1:
-- Also save rt->dst.dev before ip_rt_put(), as you pointed out
-- Reworded commit message: use-after-put, not use-after-free
-- Added Fixes: tag
-- Removed incorrect Co-developed-by
+v25:
+    I have adopted most of the suggestions from the AI's feedback. However, I
+    believe some of the feedback is incorrect. I have already replied in the
+    previous thread. http://lore.kernel.org/all/1770002612.3297296-2-xuanzhuo@linux.alibaba.com
 
----
+v24:
+    1. Add null checks for enet->rx and enet->tx in eea_get_ethtool_stat to
+       prevent errors when reading rx = enet->rx[i] in case enet->rx is null.
+       tx is similar. With rtnl protection in place, this check is sufficient.
+    2. Use 'received' as the return value in eea_poll.
 
-From 96a562ef1b602454841ba770d80fbe6b1eeb3d2b Mon Sep 17 00:00:00 2001
-From: Jenny Guanni Qu <qguanni@gmail.com>
-Date: Thu, 12 Mar 2026 02:19:24 +0000
-Subject: [PATCH v2] ipv6: ip6_tunnel: fix use-after-put in ip4ip6_err()
+v23:
+    I have moved netif_set_real_num_queues() out of eea_start_rxtx(), so
+    eea_start_rxtx() is now a void function. I believe enet_bind_new_q_and_cfg()
+    is a more suitable place to include netif_set_real_num_queues(). In
+    eea_active_ring_and_irq(), I first execute request_irq() before interacting
+    with the hardware to create queues. Therefore, during the NIC setup process,
+    all driver-internal operations (memory allocation, IRQ initialization, sysfs
+    configuration, etc.) will be completed before the final notification to the
+    hardware.
 
-In ip4ip6_err(), after ip_rt_put(rt) drops the route reference,
-both rt->dst.dev and rt->rt_flags are accessed. While this is
-currently safe because the function runs under rcu_read_lock()
-(via icmpv6_rcv -> icmpv6_notify), accessing a reference-counted
-object after dropping its reference violates refcount semantics.
+v22:
+    1. Use the budget from the NAPI poll function as the parameter for
+       napi_consume_skb.
+    2. Stop the TX queue when the remaining ring slots cannot hold an SKB.
 
-Save both rt->dst.dev and rt->rt_flags into local variables before
-calling ip_rt_put(rt).
+v21:
+    Fix two issues from the previous version:
+    1, a DMA unmap operation was missing.
+    2, RCU APIs were not used in eea_stats. Although the standard practice when
+        using RCU would require adding the __rcu annotation to both the rx and
+        tx fields, in many cases these fields are read without needing RCU
+        protection.  Therefore, I do not want to add the __rcu annotation.
+        Instead, I use a spin lock to protect modifications to rx and tx.
 
-Fixes: 77552cfa39c4 ("ip6_tunnel: clean up ip4ip6 and ip6ip6's err_handlers=
-")
-Reported-by: Klaudia Kloc <klaudia@vidocsecurity.com>
-Reported-by: Dawid Moczad=C5=82o <dawid@vidocsecurity.com>
-Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
----
- net/ipv6/ip6_tunnel.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+v20:
+    Fix the partially initialized structure passed to db. @Jakub
+    http://lore.kernel.org/all/20260113172353.2ae6ef81@kernel.org
 
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index b60e13c42bca..2bb9b54015e9 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -567,6 +567,8 @@ ip4ip6_err(struct sk_buff *skb, struct inet6_skb_parm *=
-opt,
-  u8 rel_type =3D type;
-  u8 rel_code =3D code;
-  struct rtable *rt;
-+ unsigned int rt_flags;
-+ struct net_device *rt_dev;
-  struct flowi4 fl4;
+v19:
+    fix the comments from @Simon Horman
 
-  err =3D ip6_tnl_err(skb, IPPROTO_IPIP, opt, &rel_type, &rel_code,
-@@ -614,11 +616,13 @@ ip4ip6_err(struct sk_buff *skb, struct
-inet6_skb_parm *opt,
-  if (IS_ERR(rt))
-  goto out;
+v18:
+    v17 with [PATCH] prefix.
 
-- skb2->dev =3D rt->dst.dev;
-+ rt_dev =3D rt->dst.dev;
-+ rt_flags =3D rt->rt_flags;
-+ skb2->dev =3D rt_dev;
-  ip_rt_put(rt);
+v17:
+    1. In `eea_adminq_dev_status`, uniformly use `enet->cfg.rx_ring_num`.
+    2. Add a `struct eea_net_cfg *cfg` parameter to `eea_free_rx` and
+        `eea_free_tx`. When called in the normal path, pass `enet->cfg` as
+        the argument; when called during initialization, pass the temporary
+        `cfg` instead.
+    3. Move the `.ndo_get_stats64` callback into `eea_net.c`.
+    4. In the `.ndo_get_stats64` callback, add a comment explaining how the TX
+        and RX statistics are protected by RCU.
 
-  /* route "incoming" packet */
-- if (rt->rt_flags & RTCF_LOCAL) {
-+ if (rt_flags & RTCF_LOCAL) {
-  rt =3D ip_route_output_ports(dev_net(skb->dev), &fl4, NULL,
-     eiph->daddr, eiph->saddr, 0, 0,
-     IPPROTO_IPIP,
---=20
-2.34.1
+       /* This function is protected by RCU. Here uses enet->tx and enet->rx
+        * to check whether the TX and RX structures are safe to access. In
+        * eea_free_rxtx_q_mem, before freeing the TX and RX resources, enet->rx
+        * and enet->tx are set to NULL, and synchronize_net is called.
+        */
 
-Thanks,
-Jenny
 
-On Wed, Mar 11, 2026 at 6:32=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
-wrote:
->
-> On Thu, Mar 12, 2026 at 2:24=E2=80=AFAM Eric Dumazet <edumazet@google.com=
-> wrote:
-> >
-> > On Thu, Mar 12, 2026 at 1:47=E2=80=AFAM Guanni Qu <qguanni@gmail.com> w=
-rote:
-> > >
-> > > Hi,
-> > >
-> > > This vulnerability was discovered by Klaudia Kloc and Dawid Moczad=C5=
-=82o
-> > > of Vidoc Security Lab using VIDOC tool, and independently validated
-> > > and patched by
-> > > Jenny Guanni Qu.
-> > >
-> > >
-> > > 1. BUG DESCRIPTION
-> > >
-> > > In ip4ip6_err() in net/ipv6/ip6_tunnel.c, the route object returned b=
-y
-> > > ip_route_output_ports() is released via ip_rt_put(rt), but rt->rt_fla=
-gs
-> > > is read immediately after the release. This is a use-after-free on a
-> > > logically freed object.
-> > >
-> > >   skb2->dev =3D rt->dst.dev;
-> > >   ip_rt_put(rt);              // frees the route
-> > >
-> > >   /* route "incoming" packet */
-> > >   if (rt->rt_flags & RTCF_LOCAL) {   // use-after-free read
-> > >
-> > >
-> > > 2. ROOT CAUSE
-> > >
-> > > File: net/ipv6/ip6_tunnel.c
-> > > Function: ip4ip6_err()
-> > >
-> > > ip_rt_put() calls dst_release(), which schedules destruction via
-> > > call_rcu_hurry(). The rt->rt_flags read happens in the same function
-> > > context before any RCU grace period can elapse, so the memory is stil=
-l
-> > > accessible but the object is logically freed.
-> > >
-> > > Note: KASAN does not detect this because the RCU-deferred free has no=
-t
-> > > completed by the time rt_flags is read. The memory is not yet poisone=
-d.
-> > >
-> > >
-> > > 3. AFFECTED VERSIONS
-> > >
-> > > - Confirmed on 6.12.64-87.122.amzn2023.x86_64 (via kprobe instrumenta=
-tion)
-> > > - Source-level analysis confirms the bug on 6.12.0 (arm64)
-> > > - The put-then-use pattern has no fix in HEAD as of v6.12
-> > > - Architecture-independent (logic bug)
-> > >
-> > >
-> > > 4. EVIDENCE
-> > >
-> > > Kprobe instrumentation on x86_64 by Vidoc Security Lab showed 40/40
-> > > path hits where the same rt pointer value is observed both before and
-> > > after ip_rt_put():
-> > >
-> > >   vidoc_pre_put:  ip4ip6_err+0x1b6  rt=3D0xffff8bee1cad73c0
-> > >   vidoc_post_put: ip4ip6_err+0x1bb  rt=3D0xffff8bee1cad73c0
-> > >
-> > > All 40 packets sent via ICMPv6 Dest Unreachable to an ipip6 tunnel
-> > > endpoint hit the vulnerable path every time.
-> > >
-> > >
-> > > 5. TRIGGER
-> > >
-> > > Send ICMPv6 Destination Unreachable (code 3) packets to a configured
-> > > ipip6 tunnel endpoint.
-> > >
-> > >   from scapy.all import IPv6, IP, ICMPv6DestUnreach, send
-> > >   inner =3D IPv6(src=3D"2001:db8::2", dst=3D"2001:db8::1", nh=3D4) / =
-\
-> > >           IP(src=3D"127.0.0.1", dst=3D"127.0.0.2") / (b"A" * 8)
-> > >   pkt =3D IPv6(src=3D"::1", dst=3D"::1") / ICMPv6DestUnreach(code=3D3=
-) / inner
-> > >   send(pkt)
-> > >
-> > > Requirements:
-> > > - ipip6 tunnel configured (ip6_tunnel module or built-in)
-> > > - Ability to send ICMPv6 packets to the tunnel endpoint
-> > >
-> > >
-> > > 6. IMPACT
-> > >
-> > > - Use-after-free read on a route object (struct rtable)
-> > > - Under normal conditions: reads stale but valid memory (RCU protects
-> > >   the actual free). Behavior is correct by accident.
-> > > - Under memory pressure or with KASAN slab quarantine: could read
-> > >   corrupted data, leading to incorrect routing decisions or crash
-> > > - Exploitability: low in practice due to RCU grace period, but the
-> > >   code is formally incorrect and violates memory safety
-> > >
-> > >
-> > > 7. FIX
-> > >
-> > > Save rt->rt_flags into a local variable before calling ip_rt_put(rt).
-> > >
-> > > Reported-by: Klaudia Kloc (Vidoc Security Lab) <klaudia@vidocsecurity=
-.com>
-> > > Reported-by: Dawid Moczad=C5=82o (Vidoc Security Lab) <dawid@vidocsec=
-urity.com>
-> > > Co-developed-by: Jenny Guanni Qu <qguanni@gmail.com>
-> > > Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
-> > > ---
-> > >  net/ipv6/ip6_tunnel.c | 4 +++-
-> > >  1 file changed, 3 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-> > > index b60e13c42bca..857a7ff8a041 100644
-> > > --- a/net/ipv6/ip6_tunnel.c
-> > > +++ b/net/ipv6/ip6_tunnel.c
-> > > @@ -567,6 +567,7 @@ ip4ip6_err(struct sk_buff *skb, struct inet6_skb_=
-parm *opt,
-> > >   u8 rel_type =3D type;
-> > >   u8 rel_code =3D code;
-> > >   struct rtable *rt;
-> > > + unsigned int rt_flags;
-> > >   struct flowi4 fl4;
-> > >
-> > >   err =3D ip6_tnl_err(skb, IPPROTO_IPIP, opt, &rel_type, &rel_code,
-> > > @@ -615,10 +616,11 @@ ip4ip6_err(struct sk_buff *skb, struct
-> > > inet6_skb_parm *opt,
-> > >   goto out;
-> > >
-> > >   skb2->dev =3D rt->dst.dev;
-> > > + rt_flags =3D rt->rt_flags;
-> > >   ip_rt_put(rt);
-> > >
-> > >   /* route "incoming" packet */
-> > > - if (rt->rt_flags & RTCF_LOCAL) {
-> > > + if (rt_flags & RTCF_LOCAL) {
-> > >   rt =3D ip_route_output_ports(dev_net(skb->dev), &fl4, NULL,
-> > >      eiph->daddr, eiph->saddr, 0, 0,
-> > >      IPPROTO_IPIP,
-> > > --
-> > > 2.34.1
-> > >
-> > >
-> >
-> > ip4ip6_err() is supposed to be called under rcu_read_lock() protection.
-> > call_rcu() and call_rcu_hurry() should not proceed until this thread
-> > has reached rcu_read_unlock().
-> >
-> > Can you share the stack trace so that we can root cause the issue ?
-> >
-> > Your fix is not complete, because we latch rt->dst.dev into skb2->dev
-> >
-> > skb2->dev =3D rt->dst.dev;
-> >
-> > So the device could also disappear, and UAF would also happen.
->
-> Also you forgot to include a Fixes: tag
->
-> This is crucial for any patch targetting net tree.
->
-> Thank you.
+v16:
+    1. follow the advices from @ALOK TIWARI
+       http://lore.kernel.org/all/5ff95a71-69e5-4cb6-9b2a-5224c983bdc2@oracle.com
+
+v15:
+    1. remove 'default m' from eea kconfig
+    2. free the resources when open failed.
+
+v14:
+    1. some tiny fixes
+
+v13:
+    1. fix some tiny fixes @Simon
+
+v12:
+    I encountered some issues with sending the v11 patches, as they were quite
+    messy. Therefore, I'm resending them as v12.
+
+v11:
+    1. remove auto clean __free(kfree)
+    2. some tiny fixes
+
+v10:
+    1. name the jump labels after the target @Jakub
+    2. rm __GFP_ZERO from dma_alloc_coherent @Jakub
+v9:
+    1. some fixes for ethtool from http://lore.kernel.org/all/20251027183754.52fe2a2c@kernel.org
+
+v8: 1. rename eea_net_tmp to eea_net_init_ctx
+    2. rm code that allocs memory to destroy queues
+    3. some other minor changes
+
+v7: 1. remove the irrelative code from ethtool commit
+    2. build every commits with W12
+
+v6: Split the big one commit to five commits
+v5: Thanks for the comments from Kalesh Anakkur Purayil, ALOK TIWARI
+v4: Thanks for the comments from Troy Mitchell, Przemek Kitszel, Andrew Lunn, Kalesh Anakkur Purayil
+v3: Thanks for the comments from Paolo Abenchi
+v2: Thanks for the comments from Simon Horman and Andrew Lunn
+v1: Thanks for the comments from Simon Horman and Andrew Lunn
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Xuan Zhuo (8):
+  eea: introduce PCI framework
+  eea: introduce ring and descriptor structures
+  eea: probe the netdevice and create adminq
+  eea: create/destroy rx,tx queues for netdevice open and stop
+  eea: implement packet receive logic
+  eea: implement packet transmit logic
+  eea: introduce ethtool support
+  eea: introduce callback for ndo_get_stats64
+
+ MAINTAINERS                                   |   8 +
+ drivers/net/ethernet/Kconfig                  |   1 +
+ drivers/net/ethernet/Makefile                 |   1 +
+ drivers/net/ethernet/alibaba/Kconfig          |  28 +
+ drivers/net/ethernet/alibaba/Makefile         |   5 +
+ drivers/net/ethernet/alibaba/eea/Makefile     |   9 +
+ drivers/net/ethernet/alibaba/eea/eea_adminq.c | 444 ++++++++++
+ drivers/net/ethernet/alibaba/eea/eea_adminq.h |  75 ++
+ drivers/net/ethernet/alibaba/eea/eea_desc.h   | 134 +++
+ .../net/ethernet/alibaba/eea/eea_ethtool.c    | 243 ++++++
+ .../net/ethernet/alibaba/eea/eea_ethtool.h    |  49 ++
+ drivers/net/ethernet/alibaba/eea/eea_net.c    | 789 ++++++++++++++++++
+ drivers/net/ethernet/alibaba/eea/eea_net.h    | 194 +++++
+ drivers/net/ethernet/alibaba/eea/eea_pci.c    | 585 +++++++++++++
+ drivers/net/ethernet/alibaba/eea/eea_pci.h    |  66 ++
+ drivers/net/ethernet/alibaba/eea/eea_ring.c   | 252 ++++++
+ drivers/net/ethernet/alibaba/eea/eea_ring.h   |  88 ++
+ drivers/net/ethernet/alibaba/eea/eea_rx.c     | 787 +++++++++++++++++
+ drivers/net/ethernet/alibaba/eea/eea_tx.c     | 404 +++++++++
+ 19 files changed, 4162 insertions(+)
+ create mode 100644 drivers/net/ethernet/alibaba/Kconfig
+ create mode 100644 drivers/net/ethernet/alibaba/Makefile
+ create mode 100644 drivers/net/ethernet/alibaba/eea/Makefile
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_adminq.c
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_adminq.h
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_desc.h
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ethtool.c
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ethtool.h
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_net.c
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_net.h
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_pci.c
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_pci.h
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ring.c
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ring.h
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_rx.c
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_tx.c
+
+--
+2.32.0.3.g01195cf9f
+
