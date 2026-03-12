@@ -1,112 +1,102 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A4B63C0637
-	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 10:09:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6A83C2764;
+	Thu, 12 Mar 2026 10:09:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773310180; cv=none; b=MBJXZ0e4yv9tnjecOd3hXOfHRyO/9+Zt/42OAOSTQ+S/GN/nHaFdIVfYO2Acs7wY6hAACebJXHQ+COKqIzezB0DxmKiVpL/V0Q2w4Xltl1IWpixWVmW15ML6OwpE9rvmucP6O/dJxsMQdHha2wTmGLP6hV7i57agISZQwYA2oaI=
+	t=1773310185; cv=none; b=tDrWTcZm4Mk/TgC3aeMeHnFuTTPUOLDUkh6XcIPkgFh1uPNrZj9HidNL5dJUtpW5F17HikcDJzb+Rd0MxjDK/f9dRBpA1NMKKTnwYK4Q4DYTI4upyvJDC2EfKYE2UQKrQVOSngK2NQQ8pq0BlLvKSK/fYshpasz0ARFRsbWpBdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773310180; c=relaxed/simple;
-	bh=o2tbAsjH3Bj3ITMbfCIfI6vFFtcflfvoE/FTmCVqn+8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=uZmI6WeZissH3lRvfIIIpx8rx6Ehmb3Os0vsORfqxsUYjpyeZ6izKLrdu0g0+4Nx5H0guRgLerUuSUAV87WLEMTaYY4dlf5iKodhEZ0LdcFWYCx8RIOI88xDZxjCEzUg3kX685b3GcRRKRS6b3qzUz1OGHOUl0e0wMFsQwvqnpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=fmSie3tw; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1773310185; c=relaxed/simple;
+	bh=ZWq64joZ2HzysBWsR0irO48NxLG3PCjk88eimnNVwaI=;
+	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
+	 Content-Disposition:Content-Type:Message-Id:Date; b=KCv5A5lN4NWbXBIZkOvrzkLV26/sC8feAi5m70rp5gqbuFTQJZZMmKLYJQosBVpmjwexQ1TEhu4BQA8947YjhuRinJ4cUJwq8Gorvj3VQpEGyowUZGnWqOpWUiPiIsVGxvzJRFtvlDzmHEMKfOs5JR9GJG2ZN+20MxElVATTAv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=bGfLDBxt; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="fmSie3tw"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id CD2CC4E42650;
-	Thu, 12 Mar 2026 10:09:35 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9BCD65FDEB;
-	Thu, 12 Mar 2026 10:09:35 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D14E710368916;
-	Thu, 12 Mar 2026 11:09:24 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1773310173; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=nFQgtZbZOzsOMmIw2RPypC2zKtBFpiQqQrkl+bjWfQM=;
-	b=fmSie3twSJgvMniuNeOaMgCypnaPOQgNSpPCA5mmJA5rcxWgqqto+u5Cb6zAWbB231nftB
-	NdyDoNg4Qqsslt1F+LmG1MVYyhJzMxY9fZCF2e1IGVHQfH6RnXievAt5cPKnJ4k3jyZm0C
-	igfswQiWXPdEojOZR3xlF/gTGROjw0W5V0nYOWjGg8jLtUU30e53NnTuDK7nPrl/Km4nAB
-	1iUL+Cx6LPrLpkG9bO3Kw50sQYnVnj4fNqjJ2T4R6f0IymoQpiHVlJ7FNf10C6+oHn2UDs
-	IKbcUGsdK9r1u0kqWq0PMgO5UQANDEOLyEmgyhWHXaCaAPS98UuWTPXJpNro3A==
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="bGfLDBxt"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
+	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=5rpidXVVDoCtCkRYl0DmYJZsfgbhv+B1m4hTkd40PP4=; b=bGfLDBxtgQ8jChCSiB8OJy+kgE
+	cbiW5FAmHjttGZrh7YGDvEW368zNk5PTOX9w4rPWfdlRiK8G7XmZYh6GINw5102rtcsFvj1SNc4VX
+	wBabFF5rNogd3DKtMqNiIQDGuC4PRrV3IsPjc3U82U7efNutd4FCdIXaLwGOpETaYfFiiFaVMUKHy
+	b0WgYk8oXLcUHO5PlGWF1sFMHnKUUf49fmlsk1XkrMfxF7bFia0lWubj6Fq25N7VWi5Hhqd9GXEYO
+	X1DTy18neBJQBpxguh70tv/zQl7Zx2XrtoZqulmQqOX8yvLQSef1gZaGMQEZTalfimzoHfthMTxL5
+	KIsb5WRg==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:60642 helo=rmk-PC.armlinux.org.uk)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1w0cyy-000000007ZN-2TlF;
+	Thu, 12 Mar 2026 10:09:33 +0000
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1w0cyu-0000000CzGZ-2poX;
+	Thu, 12 Mar 2026 10:09:28 +0000
+In-Reply-To: <abKQWloxp9_4OuJh@shell.armlinux.org.uk>
+References: <abKQWloxp9_4OuJh@shell.armlinux.org.uk>
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	bpf@vger.kernel.org,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Stanislav Fomichev <sdf@fomichev.me>
+Subject: [PATCH net-next v2 08/15] net: stmmac: use consistent tests for
+ receive buffer size
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 12 Mar 2026 11:09:24 +0100
-Message-Id: <DH0PZN0WJZC5.26KLH464PMMTP@bootlin.com>
-To: "Conor Dooley" <conor@kernel.org>, <netdev@vger.kernel.org>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: Re: [PATCH net-next v3 00/10] macb usrio/tsu patches
-Cc: "Conor Dooley" <conor.dooley@microchip.com>,
- <Valentina.FernandezAlanis@microchip.com>, "Andrew Lunn"
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
- Abeni" <pabeni@redhat.com>, "Rob Herring" <robh@kernel.org>, "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
- "Daire McNamara" <daire.mcnamara@microchip.com>, "Paul Walmsley"
- <pjw@kernel.org>, "Palmer Dabbelt" <palmer@dabbelt.com>, "Albert Ou"
- <aou@eecs.berkeley.edu>, "Alexandre Ghiti" <alex@ghiti.fr>, "Nicolas Ferre"
- <nicolas.ferre@microchip.com>, "Claudiu Beznea" <claudiu.beznea@tuxon.dev>,
- "Richard Cochran" <richardcochran@gmail.com>, "Samuel Holland"
- <samuel.holland@sifive.com>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-riscv@lists.infradead.org>, "Dave
- Stevenson" <dave.stevenson@raspberrypi.com>, "Sean Anderson"
- <sean.anderson@linux.dev>, "Vineeth Karumanchi"
- <vineeth.karumanchi@amd.com>, "Abin Joseph" <abin.joseph@amd.com>,
- =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>,
- <Ryan.Wanner@microchip.com>, =?utf-8?q?Gr=C3=A9gory_Clement?=
- <gregory.clement@bootlin.com>, "Thomas Petazzoni"
- <thomas.petazzoni@bootlin.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260310-moneyless-dispense-7bce14b16388@spud>
-In-Reply-To: <20260310-moneyless-dispense-7bce14b16388@spud>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1w0cyu-0000000CzGZ-2poX@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Thu, 12 Mar 2026 10:09:28 +0000
 
-Hello Conor,
+Two out of the three sites that set the receive buffer size (via
+stmmac_set_dma_bfsize()) check for rx_q->xsk_pool &&
+rx_q->buf_alloc_num. One uses just rx_q->xsk_pool.
 
-On Tue Mar 10, 2026 at 6:17 PM CET, Conor Dooley wrote:
-> At the very least, it'd be good of the soc vendor folks could check
-> their platforms and see if their usrio stuff actually lines up with what
-> the driver currently calls "macb_default_usrio". Ours didn't and it was
-> a nasty surprise.
->
-> Theo, you added eyeq5 recently. Does it genuinely have the same usrio
-> bits as the at91 devices?
+Discussing with Yoong Siang Song, the conclusion is that
+stmmac_dma_operation_mode() is missing the rx_q->buf_alloc_num
+check. Add this check.
 
-Sorry I missed your direct mention. After checking (because I completely
-ignored this part of the code before), the User I/O feature is disabled
-on EyeQ5 & EyeQ6H. It can be seen from DCFG1 BIT(9). It was invisible
-because the USRIO register turns read-only when User I/O is disabled.
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-1. So I thought about adding runtime detection.
-
-2. But then having eyeq5_config->usrio made no sense so I dropped it.
-
-3. And then I thought that a config having usrio being NULL should
-   imply MACB_CAPS_USRIO_DISABLED to ensure we don't NULL dereference
-   the bp->usrio pointer.
-
-#1 is useless for EyeQ combined with #2 and #3, but it should be useful
-for the many compatibles that inherited the wrong default value of
-at91_default_usrio.
-
-I am sending those three patches as a reply, feel free to pick them up
-if you consider them useful. They apply on top of your series and have
-been tested on EyeQ5.
-
-Thanks Conor,
-
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 1d40168ec68d..787b02c2607a 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -2612,7 +2612,7 @@ static void stmmac_dma_operation_mode(struct stmmac_priv *priv)
+ 		stmmac_dma_rx_mode(priv, priv->ioaddr, rxmode, chan,
+ 				rxfifosz, qmode);
+ 
+-		if (rx_q->xsk_pool) {
++		if (rx_q->xsk_pool && rx_q->buf_alloc_num) {
+ 			buf_size = xsk_pool_get_rx_frame_size(rx_q->xsk_pool);
+ 			stmmac_set_dma_bfsize(priv, priv->ioaddr,
+ 					      buf_size,
+-- 
+2.47.3
 
