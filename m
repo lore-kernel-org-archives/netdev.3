@@ -1,144 +1,170 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF1F38AC84;
-	Thu, 12 Mar 2026 08:54:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219A3385539;
+	Thu, 12 Mar 2026 08:55:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773305663; cv=none; b=VqjOCefkfkd357irls5/U+pvjR86jcTx0JBXCG6s+fXtmlTQypdwOtN5v2d7C8dCt2Jl0rI1ihyo3DBibPPKMkdXcuId7FHqDIy5XSjqU+vOguYVXBGfZPUOoeKGH77/G06WbDvbEUMfAtc09k1NMngXogfV5eh7ETO+VGmhXnk=
+	t=1773305745; cv=none; b=a1wU07xTE0CJCQO/7V3DP+i0gTxmkTDvnFbGJKV+Oy9drRDs88nMpGekeDJt3ZWOWEB7Htnkgr/4Ca0rDYuMTlK/aeiZkSl57lSbTIli7oCQJvGuQAW7kYKNk8LfAM+E3qOVQJcKJWpEX4llwbI1KNv1PhoI9HgnCqlyyfDuRpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773305663; c=relaxed/simple;
-	bh=GlrPT++KQGjeiawQcqTnhhlsX455IV6grrneho6bqhE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gDSDHKmSGZ8AuXUC4GOSBSa9BRVp1Zs4RjpJ9BhApunMaTVFgGOumnyBlP+D/qnIypgIO5izsi1003D188jzyrXvKEllfruwaDj8qCUFQuj453NXfG/BCPofwDkFStahLgiDXut7/V3BZL/jyiGPkdBXBX0S8Gql/wsAEcVahHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=aeYFHgEt; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1773305745; c=relaxed/simple;
+	bh=kqmV23/KKgoYMW5wvy45+BMtBWfmpPfndQ/Qb9fQxkQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=eLE6dtQyG4Aol4CdN3h6vu+q8Zv0AGHN/3XKQiBbNT5Uqm7T6ymBO0cEn7s+4aoeckO4zVQ2cImxPYirRFOH37T3lKK0G1ihPnyhjchjKGd8sn3Vinb4kH/ESjC7b2DHhzJb+bGIR7wSYRsUhKcp72HzPi7gMjL4hokd0RnSa30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sPrmJGUs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="aeYFHgEt"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=IX9QCS5b6Xn8/dE+/kiOOEMjyLxuCn5DnqDHXAakk1Q=; b=aeYFHgEtYTI5faN/d/LqgD2Dp6
-	odc7r897g1zvAU6wvFcuBnivPiYJbIxNehFn3ZKXukEe2Lxlm/YIfB6y71RBd1b1jq/1tcm2ntQmR
-	jikwtnBlvs5XmwbNZx+7HZiA62AWry4n2J4zruKOj7swfs9a6L8E1Z0jirq8Gdfwg7PQ3rCw2Rar/
-	JGdtsGje6JyAXnBsa2hGg8O8vtb6pesAjYqqcwwsQqYlKNp1QYkcRCTzKay133DvUxElIUtY/we0Q
-	FkVmm8WLGj37z1lgPHsrU5chrBFb7nygXNfFR4R3dx3U24Lq9sucIwaAV0lQlE/B3QaJMP/YRmZjX
-	hgjfxbpA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:51292)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1w0bo1-000000007QA-0LuK;
-	Thu, 12 Mar 2026 08:54:09 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1w0bnx-0000000076N-39Oq;
-	Thu, 12 Mar 2026 08:54:05 +0000
-Date: Thu, 12 Mar 2026 08:54:05 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, bpf@vger.kernel.org,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Stanislav Fomichev <sdf@fomichev.me>
-Subject: Re: [PATCH net-next 02/15] net: stmmac: helpers for filling
- tx_q->tx_skbuff_dma
-Message-ID: <abJ_Le1xOP6roesb@shell.armlinux.org.uk>
-References: <abE7LWj04-JNxgS2@shell.armlinux.org.uk>
- <E1w0GEg-0000000CiSj-2CVA@rmk-PC.armlinux.org.uk>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sPrmJGUs"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id EB3B8C116C6;
+	Thu, 12 Mar 2026 08:55:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773305745;
+	bh=kqmV23/KKgoYMW5wvy45+BMtBWfmpPfndQ/Qb9fQxkQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=sPrmJGUsoSpyK6ZetXu5FDiMD6i5Y5obt+eMwPCt3GPodXc+syoFA12rt/APjowo6
+	 9NcYAqqG6uVqEDydIaiMopoQHhCIzEZMg9tomVXEYhKovAiFHR+ej5NweyHgt40FGh
+	 rpNx/hrIvab/DmCWtdFwVbDVFpwhSFj7U+GvwmKS241Nl2td6492cPzEJBZUvDEVVa
+	 1B54DNNfUC6QEBhQKTlSkbMsu2DXL61ShJnDYSAt9BXyGKW1HM76qrjXTeeWvtO6F4
+	 su868UbIg0qDhzM/TOgfVDGMMOFalN0GrG/DQZ0jd7CK7pW3qNRiyFphBkOPMQt+p1
+	 sdomql41pvWQg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D59A0FED2F0;
+	Thu, 12 Mar 2026 08:55:44 +0000 (UTC)
+From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
+Date: Thu, 12 Mar 2026 09:55:27 +0100
+Subject: [PATCH v11 1/4] net: stmmac: platform: read channels irq
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <E1w0GEg-0000000CiSj-2CVA@rmk-PC.armlinux.org.uk>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260312-dwmac_multi_irq-v11-1-09621ccb040b@oss.nxp.com>
+References: <20260312-dwmac_multi_irq-v11-0-09621ccb040b@oss.nxp.com>
+In-Reply-To: <20260312-dwmac_multi_irq-v11-0-09621ccb040b@oss.nxp.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
+ Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
+ NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, devicetree@vger.kernel.org, rmk+kernel@armlinux.org.uk, 
+ vladimir.oltean@nxp.com, boon.khai.ng@altera.com, 
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773305743; l=2728;
+ i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
+ bh=GNNHDYswRD5lJmmr4Meo4HJ1mFsNFRWc8kw+/KjFGLw=;
+ b=vM9eg2WElPEFN7nCT4YplvEfunkAtCfZB1JEr1Ot3Q0f2/PQiS96QQwhd/h9M/I9TEEdd3NTi
+ vAfYC0ZBBQZCsQtyVGSo8Zr0seWU7ERMisGLi2SqLZll9EBPPSGcK/v
+X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
+ pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
+X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
+ auth_id=217
+X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+Reply-To: jan.petrous@oss.nxp.com
 
-On Wed, Mar 11, 2026 at 09:52:14AM +0000, Russell King (Oracle) wrote:
-> +static void stmmac_set_tx_dma_entry(struct stmmac_tx_queue *tx_q,
-> +				    unsigned int entry,
-> +				    enum stmmac_txbuf_type type,
-> +				    dma_addr_t addr, size_t len,
-> +				    bool map_as_page)
-> +{
-...
-> +	tx_q->tx_skbuff_dma[entry].buf_type = type;
-...
-> +}
-> +
-> +static void stmmac_set_tx_skb_dma_entry(struct stmmac_tx_queue *tx_q,
-> +					unsigned int entry, dma_addr_t addr,
-> +					size_t len, bool map_as_page)
-> +{
-> +	stmmac_set_tx_dma_entry(tx_q, entry, STMMAC_TXBUF_T_SKB, addr, len,
-> +				map_as_page);
-> +}
+From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
-...
+Read IRQ resources for all rx/tx channels, to allow Multi-IRQ mode
+for platform glue drivers.
 
-> @@ -4471,10 +4495,8 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
->  	 * this DMA buffer right after the DMA engine completely finishes the
->  	 * full buffer transmission.
->  	 */
-> -	tx_q->tx_skbuff_dma[tx_q->cur_tx].buf = des;
-> -	tx_q->tx_skbuff_dma[tx_q->cur_tx].len = skb_headlen(skb);
-> -	tx_q->tx_skbuff_dma[tx_q->cur_tx].map_as_page = false;
-> -	tx_q->tx_skbuff_dma[tx_q->cur_tx].buf_type = STMMAC_TXBUF_T_SKB;
-> +	stmmac_set_tx_skb_dma_entry(tx_q, tx_q->cur_tx, des, skb_headlen(skb),
-> +				    false);
+Reviewed-by: Matthias Brugger <mbrugger@suse.com>
+Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+---
+ .../net/ethernet/stmicro/stmmac/stmmac_platform.c  | 57 +++++++++++++++++++++-
+ 1 file changed, 56 insertions(+), 1 deletion(-)
 
-when nfrags is zero, tx_q->tx_skbuff_dma[tx_q->cur_tx].buf_type is set
-here.
-
->  
->  	/* Prepare fragments */
->  	for (i = 0; i < nfrags; i++) {
-> @@ -4489,17 +4511,14 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
->  		stmmac_tso_allocator(priv, des, skb_frag_size(frag),
->  				     (i == nfrags - 1), queue);
->  
-> -		tx_q->tx_skbuff_dma[tx_q->cur_tx].buf = des;
-> -		tx_q->tx_skbuff_dma[tx_q->cur_tx].len = skb_frag_size(frag);
-> -		tx_q->tx_skbuff_dma[tx_q->cur_tx].map_as_page = true;
-> -		tx_q->tx_skbuff_dma[tx_q->cur_tx].buf_type = STMMAC_TXBUF_T_SKB;
-> +		stmmac_set_tx_skb_dma_entry(tx_q, tx_q->cur_tx, des,
-> +					    skb_frag_size(frag), true);
->  	}
-
-... and tx_q->cur_tx is not incremented because the loop is not
-executed.
-
->  
-> -	tx_q->tx_skbuff_dma[tx_q->cur_tx].last_segment = true;
-> +	stmmac_set_tx_dma_last_segment(tx_q, tx_q->cur_tx);
->  
->  	/* Only the last descriptor gets to point to the skb. */
->  	tx_q->tx_skbuff[tx_q->cur_tx] = skb;
-> -	tx_q->tx_skbuff_dma[tx_q->cur_tx].buf_type = STMMAC_TXBUF_T_SKB;
-
-Thus this assignment of tx_q->tx_skbuff_dma[tx_q->cur_tx].buf_type is
-redundant. As the loop doesn't execute any code in the nfrags=0 case,
-there is no call to stmmac_tso_allocator(), and thus tx_q->cur_tx will
-be the same as when the previous stmmac_set_tx_skb_dma_entry() was
-called.
-
-Therefore, the AI review is incorrect.
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+index 5c9fd91a1db9..542cd629df11 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+@@ -697,9 +697,47 @@ struct clk *stmmac_pltfr_find_clk(struct plat_stmmacenet_data *plat_dat,
+ }
+ EXPORT_SYMBOL_GPL(stmmac_pltfr_find_clk);
+ 
++/**
++ * stmmac_pltfr_get_irq_array - Read per-channel IRQs from platform device
++ * @pdev: platform device
++ * @fmt: IRQ name format string (e.g., "tx-queue-%d")
++ * @irqs: array to store IRQ numbers
++ * @num: maximum number of IRQs to read
++ *
++ * Return: 0 on success, -EPROBE_DEFER if IRQ is deferred, -EINVAL on error.
++ * Missing IRQs are set to 0 and iteration stops at first missing IRQ.
++ */
++static int stmmac_pltfr_get_irq_array(struct platform_device *pdev,
++				      const char *fmt, int *irqs, size_t num)
++{
++	char name[16];
++	int i;
++
++	for (i = 0; i < num; i++) {
++		if (snprintf(name, sizeof(name), fmt, i) >= sizeof(name))
++			return -EINVAL;
++
++		irqs[i] = platform_get_irq_byname_optional(pdev, name);
++		if (irqs[i] == -EPROBE_DEFER)
++			return -EPROBE_DEFER;
++
++		if (irqs[i] <= 0) {
++			dev_dbg(&pdev->dev, "IRQ %s not found\n", name);
++
++			/* Stop silently on first unset irq */
++			irqs[i] = 0;
++			break;
++		}
++	}
++
++	return 0;
++}
++
+ int stmmac_get_platform_resources(struct platform_device *pdev,
+ 				  struct stmmac_resources *stmmac_res)
+ {
++	int ret;
++
+ 	memset(stmmac_res, 0, sizeof(*stmmac_res));
+ 
+ 	/* Get IRQ information early to have an ability to ask for deferred
+@@ -735,7 +773,24 @@ int stmmac_get_platform_resources(struct platform_device *pdev,
+ 
+ 	stmmac_res->addr = devm_platform_ioremap_resource(pdev, 0);
+ 
+-	return PTR_ERR_OR_ZERO(stmmac_res->addr);
++	if (IS_ERR(stmmac_res->addr))
++		return PTR_ERR(stmmac_res->addr);
++
++	/* TX channels irq */
++	ret = stmmac_pltfr_get_irq_array(pdev, "tx-queue-%d",
++					 stmmac_res->tx_irq,
++					 MTL_MAX_TX_QUEUES);
++	if (ret)
++		return ret;
++
++	/* RX channels irq */
++	ret = stmmac_pltfr_get_irq_array(pdev, "rx-queue-%d",
++					 stmmac_res->rx_irq,
++					 MTL_MAX_RX_QUEUES);
++	if (ret)
++		return ret;
++
++	return 0;
+ }
+ EXPORT_SYMBOL_GPL(stmmac_get_platform_resources);
+ 
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.47.0
+
+
