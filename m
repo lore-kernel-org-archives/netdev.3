@@ -1,122 +1,108 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE4B18A6A8
-	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 13:41:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08DE230B51D;
+	Thu, 12 Mar 2026 13:41:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773322872; cv=none; b=qNM6Mgz1xslaAf3r++7h40Hr/5a7yIdIUIAzAoixLVmcLhl+Nvw5iu7v56o/nBRP/TLl6hHM8bzoMWeb8CfsG0p9tsCpIYbitHkbJOTsIFxE1n9d4Wjzp9KLDTUUqQfCzwSR1K0c1srh/UAXod0FChOWlD6uFUCjT3WVVSSEn3o=
+	t=1773322906; cv=none; b=VJTSsjFLyQTdtcsCch+JfWf/4NuIQSmU8nhJWcnhQoaq+wR/m/D0/CIrxBDudBMsV6TrUjhYIqSqyS5Zc6Z/XDoP05xxd2QCZxZssVhrYyHfeFWtTD9cC/4lQUG5ciVdqBnSHlm0g7kLQsbZn7NGcZQGbk4n4uJ8G/CAjZ9Ykl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773322872; c=relaxed/simple;
-	bh=waraj5aVzmh8TaApwAwE+I7GTdNW5H0awz3aoMmNyyo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pNKK6NPMUCNmuI/nvq/ny03xfZdjf2dFzEsIuFJWMA0rNVx3zWktetlGeW8fGpMX0J+AGJjEbgF7rW9n/Cl1ctbWuaBwxdOnkCfuYTpk76/cdjILTcJPFwGFgoxDMfHyfdSdJK0FTTjZaYkMhBs6Lo5jwmLaziZYFJDdGH+DWDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FC+y+b3U; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1773322906; c=relaxed/simple;
+	bh=OIYxdZHWNquGPThxduQFNcu1VDsZM+QBbR+zNqLLiPg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Vvd1r22vT5Lkd/TWXvQLY+B88OPNVmxiP70yfgN7BqooOM+K0y+XXR90p+8QYpFMbYpAob/3RUQmlOeW2+LVPjRVXy1VXOtpsjq3jqeC5WxMjpbT3TLI2p8tDQGNcwQGYrMyoa9IFDxC3YYyiB4Xy1qSTWMzd3jNaSn3/A+z+oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=UwYZJNzx; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FC+y+b3U"
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-660ea6ceb5aso3332764a12.0
-        for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 06:41:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773322869; x=1773927669; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CAwHxaCXl501xCvwTjF8MsYHH2W+UlwYAi/493OFfIU=;
-        b=FC+y+b3UtlYe9p7/e8Br0wM5PCjo1zky6OiEZd3JefPnp6yIKL/UNYxWQMAafJSqkb
-         bvTK2QKxLx05oDfsfWu8j7OIqbN6aQc3sHHXiXfIIleWaLP5Z7dql1Pca3Z3thNBu25c
-         Ffk9rWEu97SruD0ImfeQDxOrHD3ghZGG5vWdHLno5WZj4EK19KU+s6zrVTyzFdJGCrDs
-         XlW1IzG7KDwWaosCwXmQa0jv0zqPGH0kYFu2ydQQI4FxDKdJWLPn4TIKPHZasesG8qbu
-         sefFwMrK9gYYJZjMnmPZqINqDFsznCd1jsd0pp0t2+5ZEssDrvK97I/tnuUJ2oGBR6Z0
-         r0Qw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773322869; x=1773927669;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CAwHxaCXl501xCvwTjF8MsYHH2W+UlwYAi/493OFfIU=;
-        b=wkKpQTAEHmehTkmvZLEJZtNCLaAw1Xdw4vZdC4cNMdkfYWxfdcI1EXkQrJuITlfHhs
-         ymTj61BcSFQrR6A9Gq5vvnXZlcYwkURn0vCWy3K0+Ekq5K2TQospjnYKEG93tBhpBqcE
-         rHNYJ0bOIYf49+IoW5laf5FZuasz/CP6aPPDELtf1Y5mJVvboiz56LyC/jqiZ3UxIPUT
-         iSZEC+ZfwaSajJWEoXHEAHBDkkfu+ERGVS+Cl3V7TwCT3DmDHaF06UGfxAuT9HSIbE6Z
-         rNfrPItxcwDZAqUg7OV4TuxEuxKZSw7XTvtP8hQZOpQkYQPpIgXjgucOVQX2NZN4Zda7
-         1+8g==
-X-Forwarded-Encrypted: i=1; AJvYcCWt61wu94RgWAMOAgY9sqyPG8aDWhMZbCPdxwR+KOLY0+PK32lWIvnW5GWIZyCFG5LLbcsC6rU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7KqwCQY6Xti7DYshe/xNk7LQ49lNYLJY2CfXMXTv0JWx0Mh25
-	eN+SaOJoBeRGc+dB5x/IjnkhsLiphkeIg1I6S7ucphlrWRJIsm9vUWrH
-X-Gm-Gg: ATEYQzxhq/6/UreOqyNDt1Ue6VU0EZn+UGJp4AxcvMUsmCQLvKzSAQPr3xzb/EtJHrL
-	x+Ft6KI8Su+2byGZ3Et9e0tm8HiyVVmBK8mpTutopw7Iu/nj9rktuuC0dYrv4QOxsJMnhV7wAfA
-	uRhJSCOrLQKcLrqlRvZXNW5DYuD3PSDpU+o+7wSpdqJv1El4rVeEUWziH///xcFQ4/j8Ve9E06B
-	obpwAwfuPDMaJEW0TqoB4yyNAotRnT2lfun38ZcSeZOQEH7NbZOm+s96o5pnRmPQCFjjCbzVEVP
-	HiMBU5HFGrZHI8EdM/Uy4zu43VLIoCR49LO38z6SofIC2LJrBEJHHAV67ad375xvC3OjvwjZwwA
-	Vr0jTOm0Yu/VTipdPYohtt70u+sKlzmAvHl/DC9D6i7OPd4raVMbgnicugR+lrizRc8jbc1Vilp
-	JURCvKcYNx40zW3whWjfglHK4=
-X-Received: by 2002:a17:906:fe49:b0:b96:f02b:3d5a with SMTP id a640c23a62f3a-b973ffcee42mr208925966b.16.1773322869240;
-        Thu, 12 Mar 2026 06:41:09 -0700 (PDT)
-Received: from eichest-laptop ([77.109.188.37])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b972e14dc3asm135857166b.39.2026.03.12.06.41.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2026 06:41:08 -0700 (PDT)
-Date: Thu, 12 Mar 2026 14:41:07 +0100
-From: Stefan Eichenberger <eichest@gmail.com>
-To: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: net: micrel: Sort lists
-Message-ID: <abLCc6Kb6xIQiMZr@eichest-laptop>
-References: <cover.1773321267.git.geert+renesas@glider.be>
- <013afe74bef9a4d4af8b5a204cb4891518f7274d.1773321267.git.geert+renesas@glider.be>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="UwYZJNzx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1773322905; x=1804858905;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=OIYxdZHWNquGPThxduQFNcu1VDsZM+QBbR+zNqLLiPg=;
+  b=UwYZJNzxqN7hjBnJoTi9C123BAKJQZf4s9YxJNdzDPCyi402XZxafeye
+   GTavtchqCQOU3/XFpeATa6uXgzexFB/PaYm/F/IC7++rToSFBw1ScAFXf
+   4LCx9S0kZwlF9nihck1RiJIk5gJxUERdngDurK6cpYdYTKFBSAfOcLDGH
+   n+0SOPugSoxFIkaznZA1KsOOh83QlHqOtQ9x4B44pK3XlVWRwpOvE6jO1
+   5WJkHKCnXUPWDF+VGH/bDmuXXIKDCfTlzwjwrTVjrSQlxeBolhccQ9npi
+   bKqyD2tjM+UA2H1atOSl21ZIpGmgxbr+w1Wp3nBaCK2brIigJWsT479Qu
+   A==;
+X-CSE-ConnectionGUID: RjybdDEQReW8VnevA8aLZA==
+X-CSE-MsgGUID: KwjeFn75QlephaHJsrijKg==
+X-IronPort-AV: E=Sophos;i="6.23,116,1770620400"; 
+   d="scan'208";a="54995152"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 06:41:44 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.87.152) by
+ chn-vm-ex1.mchp-main.com (10.10.87.30) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.35; Thu, 12 Mar 2026 06:41:13 -0700
+Received: from bby-cbu-swbuild03.eng.microchip.com (10.10.85.11) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Thu, 12 Mar 2026 06:41:12 -0700
+From: Charles Perry <charles.perry@microchip.com>
+To: <netdev@vger.kernel.org>
+CC: Conor Dooley <conor@kernel.org>, Charles Perry
+	<charles.perry@microchip.com>, Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>,
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH net-next] net: macb: set default_an_inband to true for SGMII
+Date: Thu, 12 Mar 2026 06:38:55 -0700
+Message-ID: <20260312133856.2911581-1-charles.perry@microchip.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <013afe74bef9a4d4af8b5a204cb4891518f7274d.1773321267.git.geert+renesas@glider.be>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On Thu, Mar 12, 2026 at 02:27:35PM +0100, Geert Uytterhoeven wrote:
-> Sort lists of PHY models and compatible values alphabetically.
-> 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> ---
->  Documentation/devicetree/bindings/net/micrel.yaml | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/micrel.yaml b/Documentation/devicetree/bindings/net/micrel.yaml
-> index ecc00169ef805dc2..5d25f0d0a508a6df 100644
-> --- a/Documentation/devicetree/bindings/net/micrel.yaml
-> +++ b/Documentation/devicetree/bindings/net/micrel.yaml
-> @@ -51,9 +51,9 @@ properties:
->        bits that are currently supported:
->  
->        KSZ8001: register 0x1e, bits 15..14
-> -      KSZ8041: register 0x1e, bits 15..14
->        KSZ8021: register 0x1f, bits 5..4
->        KSZ8031: register 0x1f, bits 5..4
-> +      KSZ8041: register 0x1e, bits 15..14
->        KSZ8051: register 0x1f, bits 5..4
->        KSZ8081: register 0x1f, bits 5..4
->        KSZ8091: register 0x1f, bits 5..4
-> @@ -80,9 +80,9 @@ allOf:
->              contains:
->                enum:
->                  - ethernet-phy-id0022.1510
-> +                - ethernet-phy-id0022.1550
->                  - ethernet-phy-id0022.1555
->                  - ethernet-phy-id0022.1556
-> -                - ethernet-phy-id0022.1550
->                  - ethernet-phy-id0022.1560
->                  - ethernet-phy-id0022.161a
->      then:
+Most platforms using GEM in SGMII mode use in-band autonegotiation
+because it is on by default in GEM's 1G PCS and is always on since
+commit e276e5e40e92 ("net: macb: Disable PCS auto-negotiation for SGMII
+fixed-link mode"). Leave it on if possible using the "default_an_inband"
+flag of "struct phylink_config" so that platforms that lack in-band
+autonegotiation configurability at the PHY do not break with commit
+1338cfef1ff1 ("net: macb: fix SGMII with inband aneg disabled") which
+will turn off in-band autoneg for non hot pluggable PHYs.
 
-Looks good to me, thanks for the cleanup.
+Once the majority of the PHY drivers that support SGMII have the
+->config_inband() callback, this commit could be reverted so that non
+hot pluggable PHY use outband negotiation with macb, like its the case
+for other MACs.
 
-Reviewed-by: Stefan Eichenberger <eichest@gmail.com>
+Fixes: 1338cfef1ff1 ("net: macb: fix SGMII with inband aneg disabled")
+Closes: https://lore.kernel.org/r/20260304-nebulizer-rounding-40fbc81a2ba1@spud
+Tested-by: Conor Dooley <conor@kernel.org>
+Signed-off-by: Charles Perry <charles.perry@microchip.com>
+---
+ drivers/net/ethernet/cadence/macb_main.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 963a5d4e1a88..d1fc6a9b9fe5 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -838,6 +838,12 @@ static int macb_mii_probe(struct net_device *dev)
+ 	if (bp->phy_interface == PHY_INTERFACE_MODE_SGMII) {
+ 		bp->phylink_config.poll_fixed_state = true;
+ 		bp->phylink_config.get_fixed_state = macb_get_pcs_fixed_state;
++		/* The PCSAUTONEG bit in PCSCNTRL is on out of reset. Setting
++		 * default_an_inband to true tells phylink to turn it off only
++		 * if necessary (e.g. a fixed link or a PHY that doesn't support
++		 * inband).
++		 */
++		bp->phylink_config.default_an_inband = true;
+ 	}
+ 
+ 	bp->phylink_config.mac_capabilities = MAC_ASYM_PAUSE |
+-- 
+2.47.3
+
