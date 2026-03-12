@@ -1,146 +1,188 @@
-Received: from sonic313-56.consmr.mail.ne1.yahoo.com (sonic313-56.consmr.mail.ne1.yahoo.com [66.163.185.31])
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B256F3EAC8C
-	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 16:09:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.185.31
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773331743; cv=none; b=HomFK6SyAs++wxG1bJkzodcNFMLRgbKOPdkF5yrBlj2UcKrnfwuN+kHvhzi4T7xwOyXm7z+9V6RfBZ9W6F69jF0dCMB2NpATiAIH1PoxXv1l58qkoDnuUd0MFTfDpHX8no/Q3JBewhSRXLpe8PZgs60gnKwXAzNrPt4c3lXAtzY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773331743; c=relaxed/simple;
-	bh=Mu3Rk8+MXl7mtovQC+JmV28aCiCbPwZDPXa62uywPZs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gMDi2F/vTwms+fa6LOkc3QM5U/zyyQgt6YR68svvRsA1wIPmH82NDNTemmkWlMg/9bI2Dmh0Tu3L7izdYrAeo6InoZsrC50duQSzBuohjX/DnjFlvp35S06dFyp/GaAAwNKV1wOGzp+XyHsAdTOxazJQAJINPmBuKm0InjNWJzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=tIJdMobY; arc=none smtp.client-ip=66.163.185.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EEE73EDAC0
+	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 16:09:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773331744; cv=pass; b=RW8mT0nWmqCDVMLcLOBP1KgUq4zBI0umrbdBgvmKMQmnHTIBQrI74Tn+8pw+Bh4vW/NQspTio/EZeO1xloh2E8f0h/HMlKvegHh92J0iXqltl8l3/BiHQ9BILA+lGxhaF/T/hUmqanwJDwcL0svWhinWKo+YTPYdktA61W2/wEY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773331744; c=relaxed/simple;
+	bh=/9ZhlXnE8IpHyY7rKGq8AMXoEoLmeVmAM+IAe1Oezhg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rwVM9tV12CvDAX3YFseBfOV5085cJJjZh7PkY7UydIqkCdhODDtA0Gh4guCKa4LBfl5o0NSzhzliMD4MhE9gx3+JgMHxNOR93NFc+BUfV+aAtYDb7F4HIa/WbqDmyFXpVANyF84+oskUy2qr4bD2LDp5bBV6aYcZ1Uh6nLBy9lc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bitbyteword.org; spf=pass smtp.mailfrom=bitbyteword.org; dkim=pass (2048-bit key) header.d=bitbyteword.org header.i=@bitbyteword.org header.b=m1ki3q6s; arc=pass smtp.client-ip=74.125.224.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bitbyteword.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bitbyteword.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="tIJdMobY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1773331740; bh=Dp7Oa6cKqpefFf22UXZPaJ4XtF7LuDQZAKLjG8BesSc=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=tIJdMobYEC13DzrjlijZcAbbcFbvGXQhSnx6nH8B9ry4UAwWdrir0UpuasASfkZ5pDYnM9maMR84N1icXJyDf710ymw7G6SH7tMzpzCkj85ozw2Tukm/wiN04MycRq7KDrNMmJKN9KD80opiXC5BkIKXV0q/veHR+zVniv1Q5OF74Ztn4Sqfx9iFN/Xrb+2H8iIlIKUqMWYAWd/kYvXEKXbZl1nMwN2/gwWlWwVQ7eaeaIhAM905ovJidmLJPWrUNkALslwBT1NCyHJXnHQSqCF66NEuRgQZ0Ow6zttRIZIN8jNWYyLrYJjczCPIw6vUGzXELdlWghaqO1t2LO0S8A==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1773331740; bh=T5zaOWST/jdw2/dcUu2h1oEMr90dX8KowOp4pSSNT+m=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=KSfk5PdyG+8UcCkUh/GxPTresTplQyGNGWR/p3DeJiZWfs8Uy4tFMVO58BD5UJ2WKmteIAj1k5gJvaWKQH4D4VHotqIC2bdUrIFRazIxjWpzPeoqVLlqAWFo2rwa6L8e2T2O4ZN1Fkx4QtId7vJhWSXMfDh/vSVqIB1y8fX5EdZcIi1Sus0OCo0AKrZeE8zJ18BczTdeNrTONiz3TdbpPAt9gQ2BQFAJ7rWJWPJJrit07AMDzXZsEnoP3Ro4JnFWSJ7ZZC6+uFE8SU1Kkg2UNEMNRUcM2r8AZyHWL+RI80C/eCtrCVgcJ+Ka2d8CWe1d5fOde8h9n0LfzhaLngFBoQ==
-X-YMail-OSG: hvfyh9MVM1l7CKYr.Xm_0RQToXy9inW0DqHtHo8cZp4.DEGCsqFIJ3vDYwy3BBa
- zGDjQygvMJaRU2rHJxLudriYyIKdwJe65egitGZsPyh.TeUko8DKeRUsCv63D5Rs8QUYyOORC2GR
- c5ajFWi05m6eLL7ByzfdL7PgVrdvW.YfxZXXzV72EBdw6TaioJOaBucczbJP9SCKur8Dr0FPnTTU
- U3mOmMzZz2e6stkhbn9YizO7vdTVXwMsyuK7l6uiIjIcgobRrHfWQPYrhHsyZCnywTGJUAEpEPXc
- 0jJU_To5PwOIe0lPaScsQD08nskq1REf81TEDrfHfCJ9IThE9R_SE1m4ZQ0AJLjysVC1FupSgxEC
- dX4DF8K0dD38gdD0Cfna2qjAq8brxkmGW8pE7Su4JZfeNbDTWHj41kVburGvRW3LBdf9VRnOkOTB
- c6plRbWkwmTVzq_tYQY9yaFQUwSn7Iq0soeRmHltWWQnzvcbw7gDVKELVgEPG_mMoQejFsiU54lg
- TS5pKCkmUbSSNXjnWcHvZbTD4hqvY.NLE1Rm25zmvRwC2OLVi5WldfhTnn9m9Vg.2YnMzHapcdjz
- a6PzAjT_qXbP64L390w2Jg53utckBEqCz3FE5wPOKArUJdeQCye57IiIkJQnlyRacT1QpVbPcTHD
- rrwuBKROGkwk.9jM4ngl9GhCTDkwkG1GpVJ.ebz503mCwRibzZf1KmIMtjLKFUx83MDf82zW8tHO
- z3VjPVTzsKs7rgfsPjH_6AynONmwEHTOywNvG4bAUK6Yq1YFi2Q6_BL8EPtZy9UgiJ_zIOwWZnkB
- Z_RLfDOYdiujzmRCvE6YT0GRIHQqPkOWg_GYDMTH2JLlBhxRMt6GZeiQrGJfdMMxGWQAUpgWydCZ
- 8O6z7SxchTuCKyTj1aQFnSdSCYsg5e5gXxuHxReUK7QFxv0paYHpZyXPK_OLc2HQKEWW_lVF0KpY
- JQKOmRRVMYeASOyQ.L4JhuBeCGnfmwCEsDdEJOFsMiov7Ycxs8D14Exe403vDQuvxiOQ6GRao1Sm
- AZaSvHA7kcUWqO4t4f.Klk0zFBAynCysln08s6U0maHTjQ7wOSN7DO6gzkKOHgfqdvT_pAoYfZ.x
- tTgUyAmuN9ieMEQnUVTO9Ha8bgFVAGrdTBu_M5K_0jZTpMXWrCKN9BZbKZUZbBhl7qxW48XDjCqa
- YM5iGNHR8i5jxWk5cJs43fV6hQCtc2JkwO6H4Bjp32xT_VXSNxdZYGyNxf8JUuKs4gHmUVY4mj4f
- UNcuhQPsYP2mA3fUDi7Ib9C6ZTcooxMj4KboAP64z69p3CTW6nEbcL9EAd1Z1cPvGHnfQgDyZhRZ
- NWJbk7N4wiRAmWEG7_xD.oZt1IkkoP0oWxLHiSwkuGyombbLGBkKupcqOgMISUnEIHaLHqt3pQGt
- hjhebfrExbZaXkqHzMLY2m.PgJDCweet7jc7OO2CCHSrE05Q6l2DDYh7QA3sWrfDpuijHCYQfl5k
- wcxiOhmd2Y36Kr3ztiZYnmOuQbRL9DTigzLHWodEQ.bXQdso9Bv9DA2ayPCZl8XEzhbdw649ZR_r
- 47DFwYS_QenQLRw7kAXBYk2.3ztRb8w_qOZwGChDgR.ql9yXQ2jeK9nyZHdauQ5K4zpPlQrjc1zW
- cmRw8FadlS3cSfD3b16_du5otkn0IvDx6SM4B2k.RqLTDRrfFZFBckba0K28r5_GPwcPtw4oR0YI
- nNloHCt4EnfTq4yqeYlNcRSpCnULeUKiVU.aGlTZhyOZKoHjjtLQa21H2o7QGiU7.1n4XkFnmqAZ
- aj64CpzNWwQJaPDeHMykWAE4bx7iAbCWNrMTlNV0TOpmHoy_iRTB7Kdgh2sfeP3dp4kVqde83YWA
- x2hj3hf_GJTiU88H0ZhqfPbdY8UXlCpBud3gYLTE7AM9UIb3w_qK3yz4I7razlQIOC8cL7pW.3rZ
- 1u.wpYwINrwykvDYGRhjD_.XSuprN28FOGJOrvshbFHIZH5icm.Y2phC9n4FZx7OVLBG4TsdW5Iy
- VgWhS7VmS3fUoJ1gvYGc07_YBwgGKufckh8hWc34ElWUO2rIuowjE4xtFVVjOjnHBxc.3DEceV88
- R40RpMhfI2.PhJR37rNkPBgl8rgu73FF58IBkQsPbIhTSdcgLgBXMEwhP4Iybe9y7LCuG8bGXchP
- 1_DhqJBS1LDguhMPX7kmoBRyC2jFGRfeAYks_JRzpeeSlKM6LtiM3iRlnF3M-
-X-Sonic-MF: <mmietus97@yahoo.com>
-X-Sonic-ID: 808331e1-125b-4ba5-8fe3-b08af9a7c52a
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic313.consmr.mail.ne1.yahoo.com with HTTP; Thu, 12 Mar 2026 16:09:00 +0000
-Received: by hermes--production-ir2-bbcfb4457-pgdzr (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 87d652406d88cc03e8e5278a11075b9d;
-          Thu, 12 Mar 2026 15:58:47 +0000 (UTC)
-From: Marek Mietus <mmietus97@yahoo.com>
-To: netdev@vger.kernel.org,
-	sd@queasysnail.net,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: Jason@zx2c4.com,
-	Marek Mietus <mmietus97@yahoo.com>
-Subject: [PATCH net-next v8 05/11] net: ovpn: convert ovpn_udp{4,6}_output to use a noref dst
-Date: Thu, 12 Mar 2026 16:56:51 +0100
-Message-ID: <20260312155657.25676-6-mmietus97@yahoo.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260312155657.25676-1-mmietus97@yahoo.com>
-References: <20260312155657.25676-1-mmietus97@yahoo.com>
+	dkim=pass (2048-bit key) header.d=bitbyteword.org header.i=@bitbyteword.org header.b="m1ki3q6s"
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-64aedd812baso1195686d50.3
+        for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 09:09:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773331741; cv=none;
+        d=google.com; s=arc-20240605;
+        b=fotJpYtND+UJPicCk2hWD42/n67jEep/nFMNUZGoQggi9R9kMSbraH2/orwwNj9di9
+         FHVbQdtqj9lqNlmj4my2k8rPJOQJsyKEDnDuBeWyqnkbYFr8Wfoxr+DEVdIfbNDT1YxD
+         owCPOz5Kb/NoqBhDkPF53PJBY8nJpVGMsIDGoumiGrb5ERgLw2eTdhRkqriSgcKS+169
+         IcehbwYPTt5Q3dHk02SJfMOUwahT0bRLZV+Gms9yA1Va9OHk6wDqhWnoDhg9jJpBZzoC
+         ALxkCueka9hmS4jcp0sICibadRgorfP7PO7FstP4tRUQb7qQYSMRrEcDfTspY8TMDNd5
+         wB8w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=kI5PTFr09piXXwe+dHgxbmefu5uh1N96l8rxcGpDT20=;
+        fh=Bp+cIotoemU4Syy/v73eT+Hsm5/CrHxHGuPHV/SLYWk=;
+        b=Xs/+CMXnbVbYVaKFeIKf/hub3MqQ0srM47mFbbds0p4h8Oiv7xc65VdjE8/fX8SrOR
+         /C87CM/gjTFH7K8/I9lsy1re+dW3shhiXI8Z46bR0x11WTeoqUDVwLSLyAGotqk80AEM
+         1F33GD03F4niI1PvfrQDHokhFqUt/Ne6tsQ+x+fO/esMQbdl5LZyG4oSQ2+b3irf5ggB
+         92yOO/1qUD+azQribj3f44kQmYKvwG3hYoeyQUZlUHkbEeAT5VjYnpqZP+oBvm8eXosf
+         sirZ2IXwyCS0jsH2mWzcLNdfa2r9B6/zHGyPqNFIbv76IrFVSJZbpOd1I70Je/Exbm4R
+         apsQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bitbyteword.org; s=google; t=1773331741; x=1773936541; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kI5PTFr09piXXwe+dHgxbmefu5uh1N96l8rxcGpDT20=;
+        b=m1ki3q6sM4E2UACesTTqdadtI+Q0abqlUwfIdHI+OjmsRX2whEFMpQZptypVWhQx7h
+         QD04yZlyfzP3xSivF9scjOrX5/FKYwiLrKA2X7JGefZSd1ksKzyMr15sFt8BUlBtCA1S
+         qJU7H/z8w1uO+F9Lf0dqC/P0kEVsXjabxHZfvBx9uTBgICn+qEBxH7rHMoE2jVFa285u
+         ZgHMmgqvOB2dgKagDrzwCVgXrpWT6UXW/+5qlE/3A3PliRynwsbURLgRm9zWpjrvx8vj
+         l50ZunSLyn6Bt2c18cyLVOhmld8Lw2f3Z/Tl83A9P3MTDzd0bDNTqIw9vU+Apak8seEn
+         KC5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773331741; x=1773936541;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=kI5PTFr09piXXwe+dHgxbmefu5uh1N96l8rxcGpDT20=;
+        b=HhbS4OWkxH8/sD+fNflFMrj1kuQd7xB4HLXww6X0wfrgzvls9bFCxcomheKDqaf+In
+         DjxRSm7kBiTDHkRYOBms0hk+2UZBLknwdAdopmZH490LRpZIemX9p5WiIEzSf+LDqfd9
+         oTCLpGS0gQRarak3JYO0KFn0FnienoZtZbQhVDxiMNoE3tBEyu5VKwyY7NPJ96yrSfXk
+         2AkdXcrkS3tIMHrcm2B/54wBaCPwPoTW8VosEhC+pNX5utrMuS6OM/n7Z5NZnlnCDms5
+         M7meiJs47Ua1R3jlSfOoy94nSJuzsiwH3m7XJQls8gs9hkE6Foa1tu0gYaYpvqg3Mfzm
+         +v/w==
+X-Forwarded-Encrypted: i=1; AJvYcCXK+0ro2E1tRlwGCWLB25sSq1DiCYrGdVcXe+Krk70aS+nrTymm9Sy9Ju7r9c3XrcmHgkN7OAE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YybssWLI409CiXpfnB7EP7XyG9cWwgjIc0Q9sTMwLaNhnqvhgLu
+	qsnfaLE8c5J78AF7aAxV1Nrkm56UirCdtTXPsqqwlPYGr6W99PF8EAtlslx7d9X1gwGZkNhLvsX
+	7szENSWshxvHTU91MTpsdKO4mzWkSNC8dIG6F9IclUw==
+X-Gm-Gg: ATEYQzxv4z/cY9ocdTvyLyViKpi5DUBAisKLJ+r92HRxj8ZRTODU4Ct0v8TtDYbdqlY
+	AlU7e1bqSCL76rtyDCbvade9j0FdytoUqD3lvUMdThmnsqB1+m19vrq8ka6kkLYod7R1yTtKxVt
+	rZiv9LtYuZlcuYDgQjVU3HocUtODDCla+c2HsRrqWR8n3EyUTqJJ4YkPvqzTJ5Lvh6l8pHqd+sa
+	vX7N3+HgRs1xcWSP1A20WbQM+oPsyrGRWOyYItb/I0jGzGDr/lSNfWtUimAO5dS2jsnCbA+ml8c
+	sSJ5iB8=
+X-Received: by 2002:a05:690e:448d:b0:64a:e799:1d9c with SMTP id
+ 956f58d0204a3-64e63079bb0mr62693d50.60.1773331741406; Thu, 12 Mar 2026
+ 09:09:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260312150523.2054552-1-vineeth@bitbyteword.org>
+ <1e3c2830-765e-4271-89f7-0b6784b37597@efficios.com> <20260312112354.3dd99e36@gandalf.local.home>
+ <219d015d-076b-4c80-8f63-88569115fdad@efficios.com> <20260312114041.5193c729@gandalf.local.home>
+ <1becdbce-2c01-468a-bbab-42b5dea9fdf8@efficios.com>
+In-Reply-To: <1becdbce-2c01-468a-bbab-42b5dea9fdf8@efficios.com>
+From: Vineeth Remanan Pillai <vineeth@bitbyteword.org>
+Date: Thu, 12 Mar 2026 12:08:49 -0400
+X-Gm-Features: AaiRm50l09G2avZYKQas6kLTqrDst8ZjnHTnngudy3h6MyVa79lzABXaRh3Trz0
+Message-ID: <CAO7JXPjnnruhM5oC6xMgnYaQ9efzYFqMCFiJLNM3HCQ+ZeCiJw@mail.gmail.com>
+Subject: Re: [PATCH 00/15] tracepoint: Avoid double static_branch evaluation
+ at guarded call sites
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Dmitry Ilvokhin <d@ilvokhin.com>, Masami Hiramatsu <mhiramat@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Jens Axboe <axboe@kernel.dk>, io-uring@vger.kernel.org, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, 
+	Xin Long <lucien.xin@gmail.com>, Jon Maloy <jmaloy@redhat.com>, 
+	Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>, 
+	Ilya Maximets <i.maximets@ovn.org>, netdev@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-sctp@vger.kernel.org, tipc-discussion@lists.sourceforge.net, 
+	dev@openvswitch.org, Oded Gabbay <ogabbay@kernel.org>, Koby Elbaz <koby.elbaz@intel.com>, 
+	dri-devel@lists.freedesktop.org, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, "Gautham R. Shenoy" <gautham.shenoy@amd.com>, 
+	Huang Rui <ray.huang@amd.com>, Mario Limonciello <mario.limonciello@amd.com>, 
+	Len Brown <lenb@kernel.org>, Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
+	linux-pm@vger.kernel.org, MyungJoo Ham <myungjoo.ham@samsung.com>, 
+	Kyungmin Park <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
+	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, linaro-mm-sig@lists.linaro.org, 
+	Eddie James <eajames@linux.ibm.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
+	Joel Stanley <joel@jms.id.au>, linux-fsi@lists.ozlabs.org, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Alex Deucher <alexander.deucher@amd.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Matthew Brost <matthew.brost@intel.com>, Philipp Stanner <phasta@kernel.org>, 
+	Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>, 
+	amd-gfx@lists.freedesktop.org, Jiri Kosina <jikos@kernel.org>, 
+	Benjamin Tissoires <bentiss@kernel.org>, linux-input@vger.kernel.org, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, linux-i2c@vger.kernel.org, 
+	Mark Brown <broonie@kernel.org>, Michael Hennerich <michael.hennerich@analog.com>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, linux-spi@vger.kernel.org, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	"Martin K. Petersen" <martin.petersen@oracle.com>, linux-scsi@vger.kernel.org, 
+	Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-ovpn_udp{4,6}_output unnecessarily reference the dst_entry from the
-dst_cache when interacting with the cache.
+On Thu, Mar 12, 2026 at 11:49=E2=80=AFAM Mathieu Desnoyers
+<mathieu.desnoyers@efficios.com> wrote:
+>
+> On 2026-03-12 11:40, Steven Rostedt wrote:
+> > On Thu, 12 Mar 2026 11:28:07 -0400
+> > Mathieu Desnoyers <mathieu.desnoyers@efficios.com> wrote:
+> >
+> >>> Note, Vineeth came up with the naming. I would have done "do" but whe=
+n I
+> >>> saw "invoke" I thought it sounded better.
+> >>
+> >> It works as long as you don't have a tracing subsystem called
+> >> "invoke", then you get into identifier clash territory.
+> >
+> > True. Perhaps we should do the double underscore trick.
+> >
+> > Instead of:  trace_invoke_foo()
+> >
+> > use:  trace_invoke__foo()
+> >
+> >
+> > Which will make it more visible to what the trace event is.
+> >
+> > Hmm, we probably should have used: trace__foo() for all tracepoints, as
+> > there's still functions that are called trace_foo() that are not
+> > tracepoints :-p
+>
+> One certain way to eliminate identifier clash would be to go for a
+> prefix to "trace_", e.g.
+>
+> do_trace_foo()
+> call_trace_foo()
 
-Reduce this overhead by avoiding the redundant refcount increments.
+This was the initial idea, but it had conflict in the existing source:
+call_trace_sched_update_nr_running. do_trace_##name also had
+collisions when I checked. So, went with trace_invoke_##name. Did not
+check rest of the suggestions here though.
 
-These changes are safe as both ipv4 and ip6 support noref xmit under RCU
-which is already the case for ovpn.
+Thanks,
+Vineeth
 
-Signed-off-by: Marek Mietus <mmietus97@yahoo.com>
----
- drivers/net/ovpn/udp.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/ovpn/udp.c b/drivers/net/ovpn/udp.c
-index 2e202bd2b73f..d2900a3e96ac 100644
---- a/drivers/net/ovpn/udp.c
-+++ b/drivers/net/ovpn/udp.c
-@@ -158,7 +158,7 @@ static int ovpn_udp4_output(struct ovpn_peer *peer, struct ovpn_bind *bind,
- 	int ret;
- 
- 	local_bh_disable();
--	rt = dst_cache_get_ip4(cache, &fl.saddr);
-+	rt = dst_cache_get_ip4_rcu(cache, &fl.saddr);
- 	if (rt)
- 		goto transmit;
- 
-@@ -194,13 +194,12 @@ static int ovpn_udp4_output(struct ovpn_peer *peer, struct ovpn_bind *bind,
- 				    ret);
- 		goto err;
- 	}
--	dst_cache_set_ip4(cache, &rt->dst, fl.saddr);
-+	dst_cache_steal_ip4(cache, &rt->dst, fl.saddr);
- 
- transmit:
- 	udp_tunnel_xmit_skb(rt, sk, skb, fl.saddr, fl.daddr, 0,
- 			    ip4_dst_hoplimit(&rt->dst), 0, fl.fl4_sport,
- 			    fl.fl4_dport, false, sk->sk_no_check_tx, 0);
--	ip_rt_put(rt);
- 	ret = 0;
- err:
- 	local_bh_enable();
-@@ -236,7 +235,7 @@ static int ovpn_udp6_output(struct ovpn_peer *peer, struct ovpn_bind *bind,
- 	};
- 
- 	local_bh_disable();
--	dst = dst_cache_get_ip6(cache, &fl.saddr);
-+	dst = dst_cache_get_ip6_rcu(cache, &fl.saddr);
- 	if (dst)
- 		goto transmit;
- 
-@@ -260,7 +259,7 @@ static int ovpn_udp6_output(struct ovpn_peer *peer, struct ovpn_bind *bind,
- 				    &bind->remote.in6, ret);
- 		goto err;
- 	}
--	dst_cache_set_ip6(cache, dst, &fl.saddr);
-+	dst_cache_steal_ip6(cache, dst, &fl.saddr);
- 
- transmit:
- 	/* user IPv6 packets may be larger than the transport interface
-@@ -276,7 +275,6 @@ static int ovpn_udp6_output(struct ovpn_peer *peer, struct ovpn_bind *bind,
- 	udp_tunnel6_xmit_skb(dst, sk, skb, skb->dev, &fl.saddr, &fl.daddr, 0,
- 			     ip6_dst_hoplimit(dst), 0, fl.fl6_sport,
- 			     fl.fl6_dport, udp_get_no_check6_tx(sk), 0);
--	dst_release(dst);
- 	ret = 0;
- err:
- 	local_bh_enable();
--- 
-2.51.0
-
+> emit_trace_foo()
+> __trace_foo()
+> invoke_trace_foo()
+> dispatch_trace_foo()
+>
+> Thanks,
+>
+> Mathieu
+>
+>
+>
+> --
+> Mathieu Desnoyers
+> EfficiOS Inc.
+> https://www.efficios.com
