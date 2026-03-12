@@ -1,86 +1,137 @@
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9759A3AD52C;
-	Thu, 12 Mar 2026 07:14:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4444A3B0AC8
+	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 07:49:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773299649; cv=none; b=f4BqKJ88Oba40OBkhWEkVhvbNMBoCw7dF+q6Byl7Ejcs00X+lIvmYynmoSku9C36/jeUZ2tv5inY0lb+xCFdd7sEqlmEn6QDfDIbJI6RT4E2/cmdAyluRAKLLmaMS8RtgaEoCpkF2XVrOCOWpuRcJZ9ANrxq29eUT8Wz0pLGlHc=
+	t=1773301796; cv=none; b=oliJSGb63Y/2z4yfSQTbb5FgUY/bPpt+eX1Kf52WeSW6vc6y7VLqU2Ck2vfYvYaeybO4xiDFt+uE2i6yAmliA/WZZ1Uhk2ETb+obWN1SGezUhdL8p3+ps28IYW7f44EEszscA5gWlvRZVHBGjLqOlcexPJo2WIlylQKzWy094CU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773299649; c=relaxed/simple;
-	bh=kAJYmrVEls0YoZt9UzkBYBbNgxbN7kMV09xJ/w6q5+E=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=n0E702hYTHrQBiiUjgxesOEG+zfuCU9ca2NWSkPlgjR/WvUQjlLn1GJB0oZLVENzWp2/rsVXJLQoUUluUGwxm2VW0NvgBPaI5yB7hNNUx1DhkF3HmIwZ/mX9Hi2yudTdiZvBb4RSTBEUMokqwzMppaOJEKSZv+wl18JwH612nis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=NrNGj9pO; arc=none smtp.client-ip=113.46.200.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1773301796; c=relaxed/simple;
+	bh=qc6nhP5c2KbUKz7TVprgeRZu7pcKDVuliPuq3MEFpFk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RlJvRa/iL4DbfjyqBkpQLgYww5EsYNRZFwGyIyaywv3kccRMglYFebHrdVVGLLbmuHAavywHGjqp1npIk4vuPYoWshXT2vUo0Yl7RYfPn6vs8flE6X0Q31dAhu5wOijaI7EUYeHdIqtrZG4F5azxFdfpmd+vi6MLwHspyvTVN7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Ax/gNMry; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="NrNGj9pO"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=XJSc5762LvYR3kRqzDFmENjhsjllF9/2iRjn3DqfmGQ=;
-	b=NrNGj9pOIL57+pNJbuSRPM6KhRTZL/HE6zLNVrMOK6v+17wCzR9bsV6RtQpWFHWfflfFUInVx
-	lZ+jPfRZChdztongCaYBQ0BUrNWVJsO6UCsXu1MShbJn3i4ZAys0KmPQ4jKEtctX79NLVOetjDZ
-	ZDlCh22VBq7Pgacc6xlX+w4=
-Received: from mail.maildlp.com (unknown [172.19.163.104])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4fWdyR2HTpzRhQX;
-	Thu, 12 Mar 2026 15:09:03 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 70C1F4056D;
-	Thu, 12 Mar 2026 15:13:58 +0800 (CST)
-Received: from kwepemq200017.china.huawei.com (7.202.195.228) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 12 Mar 2026 15:13:56 +0800
-Received: from hulk-vt.huawei.com (10.67.174.72) by
- kwepemq200017.china.huawei.com (7.202.195.228) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 12 Mar 2026 15:13:56 +0800
-From: Cai Xinchen <caixinchen1@huawei.com>
-To: <ioana.ciornei@nxp.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
-	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<caixinchen1@huawei.com>
-Subject: [PATCH v3 -next 0/2] dpaa2: fix config relation with FSL_DPAA2_SWITCH
-Date: Thu, 12 Mar 2026 06:59:05 +0000
-Message-ID: <20260312065907.476663-1-caixinchen1@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Ax/gNMry"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 1E85F1A2DAB;
+	Thu, 12 Mar 2026 07:49:50 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D2AC65FDEB;
+	Thu, 12 Mar 2026 07:49:49 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BE4DD103685B6;
+	Thu, 12 Mar 2026 08:49:40 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1773301788; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=oT1XxdAl50AWEmjTvDhxYXZzFl6EH2KJUz4HxFpnESQ=;
+	b=Ax/gNMry1zn+jSGCJbygPm1MqxQ4xxoTT66fSRTc5nLHZg0smRQfQsCBxzFAgGLzAa5lfd
+	Af4Hzw3beOAKGJa2JoN1tyRRgpFbt2P1DrjSQJLrLuFisE3KcRi9NuOajpxaUhtjQbuHEK
+	kR3cJQ7kSGJyJSKLk1FFFNgbzO9Llxvoc0l+zkG8/VZWxfJJLvshOLgAEPhd0YVzYaaAc3
+	wf1CqHn90p9oxKToETmVmvknFNcnGt4nnaLz9lclipHxPR9jfhGQ3zeSz9iFLtb5+nxz2S
+	99oywt/IIeSV4UXD45vO3Bd0BvPnK1F/DNbgdI8WLyq0hFw/oXtfNgrByjMj/Q==
+Message-ID: <ebab1d3e-8967-444b-be54-437e4dfe3c7e@bootlin.com>
+Date: Thu, 12 Mar 2026 08:49:39 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemq200017.china.huawei.com (7.202.195.228)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 02/11] ethtool: Add loopback netlink UAPI
+ definitions
+To: Oleksij Rempel <o.rempel@pengutronix.de>, Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@kernel.org>, netdev@vger.kernel.org,
+ "David S. Miller" <davem@davemloft.net>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Donald Hunter <donald.hunter@gmail.com>,
+ Eric Dumazet <edumazet@google.com>,
+ Naveen Mamindlapalli <naveenm@marvell.com>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Danielle Ratson <danieller@nvidia.com>,
+ Hariprasad Kelam <hkelam@marvell.com>, Ido Schimmel <idosch@nvidia.com>,
+ Kory Maincent <kory.maincent@bootlin.com>, Leon Romanovsky
+ <leon@kernel.org>, Michael Chan <michael.chan@broadcom.com>,
+ Pavan Chebbi <pavan.chebbi@broadcom.com>,
+ Piergiorgio Beruto <piergiorgio.beruto@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, Saeed Mahameed <saeedm@nvidia.com>,
+ Shuah Khan <shuah@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
+ Willem de Bruijn <willemb@google.com>, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-rdma@vger.kernel.org
+References: <20260310104743.907818-1-bjorn@kernel.org>
+ <20260310104743.907818-3-bjorn@kernel.org>
+ <580debbb-8f6c-4b60-95ef-22c68480ded1@bootlin.com>
+ <b3825c0d-02e5-4625-831f-4346ce4eabd2@lunn.ch>
+ <085bb0a9-85d3-4d62-9ac4-3461b61da5f3@bootlin.com>
+ <438dae03-4dac-4e66-9f4d-e08b0434c9b4@lunn.ch>
+ <20260311195052.1202174f@kernel.org> <abJJY8whzSOB8O-X@pengutronix.de>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <abJJY8whzSOB8O-X@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-When compile FSL_DPAA2_SWITCH, it needs to set CONFIG_FSL_DPAA2_ETH=y,
-otherwise it cannot be compiled.
-And as Ioana Ciornei sugggested, FSL_DPAA2_SWITCH included dpaa2-mac.o in
-the driver, but it does not select PCS_LYNX, PHYLINK and FSL_XGMAC_MDIO.
-And FSL_DPAA2_SWITCH depends on FSL_MC_BUS && FSL_MC_DPIO becuase it uses
-fsl_mc_driver APIs.
 
-v2->v3
-Add depends on FSL_MC_BUS && FSL_MC_DPIO for FSL_DPAA2_SWITCH which also
-satisfy FSL_XGMAC_MDIO's OF requirement.
 
-v1->v2
-There is no code dependency between the dpaa2-switch driver and the
-dpaa2-eth, so use Makefile to control dpaa2-eth instead of using depending
-on in Kconfig.
-And add select PCS_LYNX, PHYLINK and FSL_XGMAC_MDIO for FSL_DPAA2_SWITCH.
+On 12/03/2026 06:04, Oleksij Rempel wrote:
+> On Wed, Mar 11, 2026 at 07:50:52PM -0700, Jakub Kicinski wrote:
+>> On Wed, 11 Mar 2026 20:26:39 +0100 Andrew Lunn wrote:
+>>>> For that we have what we need with phy_link_topology, as each PHY has
+>>>> its index, we should be good to go in that regard hopefully :)  
+>>>
+>>> So depth would be local to a component? We could have two PHY
+>>> components, each with a different index, and depth = 0?
+>>>
+>>> I _think_ Jakub's depth was more at a global level? But then it would
+>>> need to be passed down as we do the enumeration.
+>>
+>> Oh, sorry, I responded without reading the whole discussion :)
+>> No, I imagined the depth would be within a single component, 
+>> so under control of a single driver (instance). The ordering
+>> between components should be defined by PHY topology etc so
+>> it's outside of the loopback config.
+> 
+> As for me, it is problematic to help the user to understand the datapath
+> depth on a switch. For example:
+> 
+> CPU -- xMII --- MAC1 [loop] --- fabric --- MAC2 [loop] --- xMII -- PHY
+>                                     \----- MACx [loop] ---
+> 
+> ... each port has two xMII loop configurations: towards the xMII or towards
+> the fabric. From a driver perspective, a loop towards the xMII is
+> "remote." However, from a system perspective, a "remote" loop on MAC1 is
+> a local loop at depth=0, whereas a "local" loop on MAC2 is a local loop
+> at depth=1.
 
-Cai Xinchen (2):
-  dpaa2: add independent dependencies for FSL_DPAA2_SWITCH
-  dpaa2: compile dpaa2 even CONFIG_FSL_DPAA2_ETH=n
+What's important is to specify clearly in the documentation from which
+end do we start, where representing the topology. From your scenario
+here, each block is already well represented and exposed, and if we use
+local depth definitions we should be fine ?
 
- drivers/net/ethernet/freescale/Makefile      | 3 +--
- drivers/net/ethernet/freescale/dpaa2/Kconfig | 4 ++++
- 2 files changed, 5 insertions(+), 2 deletions(-)
+> 
+> Other example would be where we have a chain of components which are
+> attached on the system in a unexpected direction, where the MDI
+> interface is pointing towards the main CPU, so the remote loopbacks
+> became to local loop.
 
--- 
-2.34.1
+I have a few of these types of setup on my desk, where 3 PHY devices are
+daisy-chained, we don't support that for now. If we one day add support
+for standalone PHYs acting as media converters, I expect we'll be able
+to tell which end is pointing where, and let it up to the user to figure
+out what "remote" and "local" means in that case.
+
+> 
+> One more issue is the test data generator location. The data generator
+> is not always the CPU. We have HW generators located in components like
+> PHYs or we may use external source (remote loopback).
+
+There were discussions about PRBS, I think the same idea of "pinpointing
+which block we want to use" can be applied for both loopback and
+generation ?
+
+Maxime
 
