@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822591EF39E
-	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 02:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443FE375F8C;
+	Thu, 12 Mar 2026 02:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773281429; cv=none; b=mg2KMoylvTgMInLGYTQU6NCRXQiRfgEuQQgE4lShSRYx9HADbDA+Wd/4dlQC41bo0mrLju6v9qQ3wGC315FX0HiBBEPBOFVcZXouJ/cAJ6rMyHptE2oPSqkIGtRkjMz6CYqdTbN+8Y2A02viXlJq4UlwRQV/P4ghKKV7at9DzUQ=
+	t=1773281431; cv=none; b=XX3PmtJNy0SQmQbQTe/3x+OnvZR0d+ECdIF/tL77BzVTRFZMgPxBR6YmEaPy1AXr8KmnIk+appd0/DJkb6Z+mVn5ZWhfj2xIYpcEuxKoRUFJCzQXviHUc1D6vO7WpihSqCoOMprSkUrN60O4oMshM2/rozT2q1Qk0Z7E/G6PLKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773281429; c=relaxed/simple;
-	bh=cHiqbX5cALQXQYhMjNpxGpo74yKGw3xLdqNRrP9GLLM=;
+	s=arc-20240116; t=1773281431; c=relaxed/simple;
+	bh=CVnfc4BIEPjo69A5r5Tk378IgCJLl4/GMYAI8lR8qKY=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=HLIh4Z8vcbjYA3aL6ZwSVytlBCYC2rca1QX0RFLRBtKjKNh+Ieq7+RY8TihveIiEUAPM/vnMOSV5Hs+uMai588qL/6IRMACpGbrhfqz5+cA85PsJdNcGCYf6+yuBrJNTKwNQeXC3vOuRF8kmTJs75f8/mlQUEw6dq+uq5D5g1u0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z9QRlt08; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Q2wygiXI9WKBiY1WKuyWepKyPXp1eVCrYOnux0QVxSSGr+dNVimHxG1kJk/zYC5pqHMJIm3qCzJ+kIR23OkOETOiofaJaS6VyAX4hcPpNseAc22O3KOaIQv76oxPmkqtZH5eJrUGRo9Q4L7lUJ8a0VLVIL47MndzF9o2KSao+So=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I/DlTBAk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z9QRlt08"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63168C4CEF7;
-	Thu, 12 Mar 2026 02:10:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I/DlTBAk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E97B3C4CEF7;
+	Thu, 12 Mar 2026 02:10:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773281429;
-	bh=cHiqbX5cALQXQYhMjNpxGpo74yKGw3xLdqNRrP9GLLM=;
+	s=k20201202; t=1773281431;
+	bh=CVnfc4BIEPjo69A5r5Tk378IgCJLl4/GMYAI8lR8qKY=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Z9QRlt08+4saGbCWyXyDvoqdCnCFmcnT+lYSGTwNn+1jqr/3ENa6pxtcZydqmb/jk
-	 eh+n9Se216GU7DMOoH2UzCpghvA5HKmlaTMUakTrZTavoGwzUh1OyhOaqdqxDWKlc+
-	 smdqY1X3XsJTmcrE2nr7+yVLqLcqRP6IsBQmhN2tQs3WUt0QQpIa3sGWzgvPfTZWxR
-	 vlO4iOe/18wK1BDDnqDQcy4Z+yf8WPPThVkJnbw5Ftd5wu/9IUb8tXU1As4lQV2WxA
-	 P4zc7zAeVHb14yKeinRaYCfv76qYtw/YANyAhJgrO9EdASwzUyBtGMpG/qSrVlxlCJ
-	 ICXpONEuWzBpQ==
+	b=I/DlTBAkv8WG1gdwY3bLZFRbvft+rPcSjsMxsrMAHvWmOEpoPslQGTaGXfovtBrGC
+	 4EKPr2R7acDWxSjPoc0qeXH/uNWHij4nq7JFQG3iQstIDQUkM7Z0BJV/nGzFii27wN
+	 3fCbrh5liyWYDVGLwoLqBJev/jVW2IL9sP3lxkMKLO9/ThTYAu5SeYZWbEjuM1dlu7
+	 L0ZnBfv1T3Ahe842FNy+Ty16y0U4rNNwlRp/XTFhChiucRDv+nz+6tgzT8tzrnwML0
+	 MZmRguzZAZ1W1HbBRmowg+B+zNKZITRYfrGxVgMJwjQKIDyEUxHWI+GSk2ZBeNqCEX
+	 iRgBV3aBxWyMw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CDCC3808200;
-	Thu, 12 Mar 2026 02:10:26 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02F6C3808200;
+	Thu, 12 Mar 2026 02:10:28 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,35 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] tcp: add sysctl_tcp_shrink_window to
- netns_ipv4_sysctl.rst
+Subject: Re: [PATCH net-next v2] selftests: net: local_termination: test
+ link-local protocols
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177328142504.3905617.6101864313089885036.git-patchwork-notify@kernel.org>
-Date: Thu, 12 Mar 2026 02:10:25 +0000
-References: <20260310073855.564927-1-edumazet@google.com>
-In-Reply-To: <20260310073855.564927-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- ncardwell@google.com, kuniyu@google.com, netdev@vger.kernel.org,
- eric.dumazet@gmail.com
+ <177328142654.3905617.10397683957251336017.git-patchwork-notify@kernel.org>
+Date: Thu, 12 Mar 2026 02:10:26 +0000
+References: 
+ <1a67081b2ede1e6d2d32f7dd54ae9688f3566152.1773166131.git.daniel@makrotopia.org>
+In-Reply-To: 
+ <1a67081b2ede1e6d2d32f7dd54ae9688f3566152.1773166131.git.daniel@makrotopia.org>
+To: Daniel Golle <daniel@makrotopia.org>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
+ alexander.sverdlin@gmail.com, vladimir.oltean@nxp.com,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 10 Mar 2026 07:38:55 +0000 you wrote:
-> Add missing entry for sysctl_tcp_shrink_window.
+On Tue, 10 Mar 2026 18:10:32 +0000 you wrote:
+> Add tests to local_termination.sh to verify that link-local frames
+> arrive. On some switches the DSA driver uses bridges to connect the
+> user ports to their CPU ports. More "intelligent" switches typically
+> don't forward link-local frames, but may trap them to an internal
+> microcontroller. The driver may have to change trapping rules, so
+> link-local frames end up on the DSA CPU ports instead of being
+> silently dropped or trapped to the internal microcontroller of the
+> switch.
 > 
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> ---
->  Documentation/networking/net_cachelines/netns_ipv4_sysctl.rst | 1 +
->  1 file changed, 1 insertion(+)
+> [...]
 
 Here is the summary with links:
-  - [net-next] tcp: add sysctl_tcp_shrink_window to netns_ipv4_sysctl.rst
-    https://git.kernel.org/netdev/net-next/c/410593fec752
+  - [net-next,v2] selftests: net: local_termination: test link-local protocols
+    https://git.kernel.org/netdev/net-next/c/7e27d6202e90
 
 You are awesome, thank you!
 -- 
