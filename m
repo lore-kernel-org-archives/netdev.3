@@ -1,168 +1,103 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ACE6346FCF
-	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 20:21:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.181
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773346881; cv=pass; b=eDuuNNlkEqAvOQGKmFm6VgGoRWnXL9aMe/QkMCriuTe3kdEUQa5rbldov6WFm0Dau+9FvZCWx7XhdPbigaComSVm+3Oac0TeGc3bSi0+XaXXeKv2DQBVi6Kb3YHanDfoYw/llB3WVWkWafuvrVW0H+40biuONE9JcwYr57m8PJA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773346881; c=relaxed/simple;
-	bh=rWFm2EJQYF+xKWmWkqIgMk3bsRLSIOMtzdcOxM5yeqc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=i/+U5Z+PKBRM9Ea56z1+1naUtR8bckt26RA/Ojbg8eI781s2VHhLVt8UnA1F8pmXj28N/yRqSqLWHcrz7LlRxc7GKUiPC9erWY/z3SEQta2n8WR1WZyY/hO4EBEs94BB9M2jiCUX+L0X3ZjWCKcqbfT3JboBroW9AJ50bKdPFkU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=kWpAfTXe; arc=pass smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6AB72D9EF0;
+	Thu, 12 Mar 2026 20:23:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773347017; cv=none; b=Qg/cjBw2NfGek3kqOPkxSb51ploKjcPxRGIp0YKKR2FxaDNcZO6dzs7/yMGghjh8rVZhU9VR6ePoUAfyb7uWHIpFKxlF0Td4lprs5FJpRc/tp09wk9zw1VtTHGNWs/d2bWPPnoqE17yTGlgFw6TmozrJMBmgsIazIXvqGf0BZwA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773347017; c=relaxed/simple;
+	bh=0t7Zjfl86gAcogx9eD4kCbzbz/ROtmtqZzdhjGQWNNI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Mr9He5/OvPF/dUuvZ9+DRS/TcQdvEHzif3KAtmL8zQ4UCTYBIoAjGASCDC+17UrdnfhC3GhVCcwOnak6m/5R4X86GeU3q7oWIPJBXb+yukPs8YqFl1rkkdKyDPkHdi4hGZrmdg5XS6EW+jc5HkM0i31PosD6/uglFhrueqcU1Kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBC2sHp8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="kWpAfTXe"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-82a13374cf6so777104b3a.1
-        for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 13:21:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773346880; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LwvBXTENx0xSadea+Cn50AU88xsiYmikVXxx0jbGz3iCOQTtNCw0+0+mjm5hNIGHaP
-         IR6AHkIFUMEfo9/thVUEzjJn1uawLzUK+DAby9rDzCbAyyl2TMZkc7+vf58R+1m482Nv
-         eZ6f58Yx41Xbob/gg71xSRUQd8bAiivHQvY+UT17gTDOeMQlthNPJMetv+JiQ29Yft68
-         QK5KQmTLsU7Gfh2+DbC6EQee7SGymrGF+gzRNJCIT12xy8mjJWrWh+eLsxhcRZPuUvB7
-         5cPzU2vbylvKU5pVFa4id0O2GsN/FIJPTT0yTjgh3UzQuJlmms7asgQ9G6vPqUu/PAXq
-         gvnw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=v+9P/uwGyyTSHvuS/JIPtKcbvn1iaK3U44+sV3iWdSA=;
-        fh=GwZSyst1/uwNDBzdOZIWelmvEDCuAqhGpiMErsPAPlU=;
-        b=AN0PDa3Zwau7hfpfTOiZhHJQRpBNmqhfpArkO8NNy7/uhMJu9Z9GoNnTi7gd6XmEXC
-         LI7si+razLKZ6zlIER96mpKGMCxN2dhZByG+HmQOu6HE8fDuudAgYJ3K1Jd/SdLJ8C7s
-         lGCLV9MHFaNnPJ66mQbsgas7XlccJID1H3kIsPWf+HJM7egb/wHtBa6uOYg7vjamphpS
-         LkCT8BfvVuwzckiIUg6Gvva6NjAxkQ26F2IaDhThruQ/N0x9LP7QqaW+tNdtPLbn2kXr
-         kLA1lIQewbEOZf8fbOVvmW6D1dcmoREZfqicNcGd+a72rj8+9X1VlSnDf6alRKcY9gqo
-         K6Dg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1773346880; x=1773951680; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=v+9P/uwGyyTSHvuS/JIPtKcbvn1iaK3U44+sV3iWdSA=;
-        b=kWpAfTXedUIHA2FqHttCVEz2fhKFR2zlWbdXyAWMBiKifSWlwZRoEvMPjYiOKKB5eO
-         OfSMkNZ6ROBW+1juzDaY8xz5Fo2bpenkVStxTpqVR4qKLzrVTJZu3wV8no1b/VP/cOwM
-         IaT38UA4p598Z7kbh0FlLKKbHNQfByEffGHP6WEJf3NRvThQ8h25uR/loRQ+J+9q8kZl
-         CK+jT2B51pxPYnuM4+Oe014wgyXBhCfqyhDb9xAWYXt58a+uGjbz0hElZJDvaYFUxJWx
-         mjZ0aCeQD8rULpd+mcjhbfQfQ4kgtO3rbF1JncNuCcNxBBkdTnTxEwiEDQN/Xpggsg2y
-         uLmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773346880; x=1773951680;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=v+9P/uwGyyTSHvuS/JIPtKcbvn1iaK3U44+sV3iWdSA=;
-        b=XVyGJro8FPqhe5Vx6tYkWSt0+P5pYdYK0yWYr3NAeQdO8b3wA2CWkNAW8RQV9AbOM5
-         bapIgre3Ya6gD1ZW+HPeW5cTS9WfuzUVLovMT9jVpxYil4ALoBoJ/rytYz5b0kf6us+X
-         oWS5ER+0E9fdHuC0iqPfLxSTfRWtzQ7v7HF/LBX4fZaVS/snNzpq9O8nAOjsrBMJ4NWP
-         585A7nnT5VqIZdU0xzfYixdoYqoeaUyko2JA5vT1TQv8bfhzQ4oqX1YxS2yqzjMke6zt
-         1VUTDfCihuqgD9BTE2oFaGJD/QZsPEII/xnLuEWw+Q9Wegev+0egssl5uEkkvrualUEz
-         JZgw==
-X-Gm-Message-State: AOJu0YwpyZ++MP7rCyjJmQ/3mlt93/j7yy6s+b71FHPZm4yHNWUjmvZf
-	soPFrm1zm6P26WTZC8lfZz9HwIYXy4m3jpaJ1qvzL4+tB1cbW9Q4jNmaZH7Be81mY8Vk1zGYj46
-	IRXHNdF1mKi8gXDIFZkdvmnj714SGgQMSkqUVyPLz
-X-Gm-Gg: ATEYQzyIuta0MaYX17dX/Ry1dvI7eo8yOVjRQAarmPS1D67fE0MmwWrKPREhLi/74j0
-	wr1FEpujgErTPmH007G6JRt+cOxLY8KckLJ0I5Mi32f76dq1ID1rty5+x4rgOWl/nqy05TOrzST
-	xqtUsD8UMtEfnKk3IrsI8rquBTKycvTkNK9il81Z978Ql4CI11Ke5l9O14AyfQSPt/F58Ypktuw
-	G5dNJberC61ctDZwBP7WvZC79ZbLkpvPT+zfS4yobxxVbp34XqaSXz13Tmdqh5m8IJnqedW51Od
-	Jq9u7l+r6fxlLls=
-X-Received: by 2002:a05:6a00:a25c:b0:827:171c:d0e2 with SMTP id
- d2e1a72fcca58-82a1971ec7cmr544957b3a.18.1773346879664; Thu, 12 Mar 2026
- 13:21:19 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBC2sHp8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CC95C4CEF7;
+	Thu, 12 Mar 2026 20:23:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773347017;
+	bh=0t7Zjfl86gAcogx9eD4kCbzbz/ROtmtqZzdhjGQWNNI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=EBC2sHp8BEKLvcqIavCor6NMMLiyn8IENzdh7MajoEG4iS3bGR3tLqoq1IUxoZwTQ
+	 TWI5Din6c7APIBmonoRx+Zzfis8AIBop5zTeXspc63lrVZK71GEtAJBU8T3Cj4m4O/
+	 IJyD1GQ2NAWmELdhFQaX8lrcQT/vBLAH0orwqO/g=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Thomas Gleixner <tglx@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	Joe Damato <joe@dama.to>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 181/265] i40e: Fix preempt count leak in napi poll tracepoint
+Date: Thu, 12 Mar 2026 21:09:28 +0100
+Message-ID: <20260312201024.845105273@linuxfoundation.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
+References: <20260312201018.128816016@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250701232915.377351-1-xiyou.wangcong@gmail.com> <20260312165757.GA3411905@mingi>
-In-Reply-To: <20260312165757.GA3411905@mingi>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Thu, 12 Mar 2026 16:21:07 -0400
-X-Gm-Features: AaiRm51xawozrpvQ12NLcSLFc3T40Y-m9MHDUIfw5JzZK28wMk_-CfnKyu090GM
-Message-ID: <CAM0EoM=v6AuzmR+s4OAiKa3jXp_Hb+qgp_gh7FeeGrvMiztiQQ@mail.gmail.com>
-Subject: Re: [RFC Patch net-next 0/2] net_sched: Move GSO segmentation to root qdisc
-To: Mingi Cho <mgcho.minic@gmail.com>
-Cc: netdev@vger.kernel.org, jiri@resnulli.us, mincho@theori.io, 
-	victor@mojatatu.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Mar 12, 2026 at 12:58=E2=80=AFPM Mingi Cho <mgcho.minic@gmail.com> =
-wrote:
->
-> On Tue, Jul 01, 2025 at 04:29:13PM -0700, Cong Wang wrote:
-> > This patchset attempts to move the GSO segmentation in Qdisc layer from
-> > child qdisc up to root qdisc. It fixes the complex handling of GSO
-> > segmentation logic and unifies the code in a generic way. The end resul=
-t
-> > is cleaner (see the patch stat) and hopefully keeps the original logic
-> > of handling GSO.
-> >
-> > This is an architectural change, hence I am sending it as an RFC. Pleas=
-e
-> > check each patch description for more details. Also note that although
-> > this patchset alone could fix the UAF reported by Mingi, the original
-> > UAF can also be fixed by Lion's patch [1], so this patchset is just an
-> > improvement for handling GSO segmentation.
-> >
-> > TODO: Add some selftests.
-> >
-> > 1. https://lore.kernel.org/netdev/d912cbd7-193b-4269-9857-525bee8bbb6a@=
-gmail.com/
-> >
-> > ---
-> > Cong Wang (2):
-> >   net_sched: Move GSO segmentation to root qdisc
-> >   net_sched: Propagate per-qdisc max_segment_size for GSO segmentation
-> >
-> >  include/net/sch_generic.h |  4 +-
-> >  net/core/dev.c            | 52 +++++++++++++++++++---
-> >  net/sched/sch_api.c       | 14 ++++++
-> >  net/sched/sch_cake.c      | 93 +++++++++++++--------------------------
-> >  net/sched/sch_netem.c     | 32 +-------------
-> >  net/sched/sch_taprio.c    | 76 +++++++-------------------------
-> >  net/sched/sch_tbf.c       | 59 +++++--------------------
-> >  7 files changed, 123 insertions(+), 207 deletions(-)
-> >
-> > --
-> > 2.34.1
-> >
->
-> Hi Cong,
->
-> I tested the proposed patch and found that the reported bug was fixed. A =
-qlen mismatch between Qdiscs can potentially cause UAF, so I believe this p=
-atch needs to be applied.
->
-> When executing the PoC on the latest kernel without the patch applied, a =
-warning message occurs in drr_dequeue() as shown below.
->
-> Before applying the patch:
->
-> root@test:~# ./poc
-> qdisc drr 1: dev lo root refcnt 2
-> qdisc tbf 2: dev lo parent 1:1 rate 1Mbit burst 1514b lat 50.0ms
-> qdisc choke 3: dev lo parent 2:1 limit 2p min 1p max 2p
-> [    7.588847] drr_dequeue: tbf qdisc 2: is non-work-conserving?
->
-> Testing after applying the patch to the v6.17 kernel shows that the warni=
-ng message has disappeared.
->
-> After applying the patch:
->
-> root@test:~# ./poc
-> qdisc drr 1: dev lo root refcnt 2
-> qdisc tbf 2: dev lo parent 1:1 rate 1Mbit burst 1514b lat 50.0ms
-> qdisc choke 3: dev lo parent 2:1 limit 2p min 1p max 2p
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
-Please test against latest net-next kernel then report back on the UAF
-- not a "potential" but a real one.
+------------------
 
-cheers,
-jamal
+From: Thomas Gleixner <tglx@kernel.org>
+
+[ Upstream commit 4b3d54a85bd37ebf2d9836f0d0de775c0ff21af9 ]
+
+Using get_cpu() in the tracepoint assignment causes an obvious preempt
+count leak because nothing invokes put_cpu() to undo it:
+
+  softirq: huh, entered softirq 3 NET_RX with preempt_count 00000100, exited with 00000101?
+
+This clearly has seen a lot of testing in the last 3+ years...
+
+Use smp_processor_id() instead.
+
+Fixes: 6d4d584a7ea8 ("i40e: Add i40e_napi_poll tracepoint")
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org
+Reviewed-by: Joe Damato <joe@dama.to>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/ethernet/intel/i40e/i40e_trace.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_trace.h b/drivers/net/ethernet/intel/i40e/i40e_trace.h
+index 759f3d1c4c8f0..dde0ccd789ed1 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_trace.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_trace.h
+@@ -88,7 +88,7 @@ TRACE_EVENT(i40e_napi_poll,
+ 		__entry->rx_clean_complete = rx_clean_complete;
+ 		__entry->tx_clean_complete = tx_clean_complete;
+ 		__entry->irq_num = q->irq_num;
+-		__entry->curr_cpu = get_cpu();
++		__entry->curr_cpu = smp_processor_id();
+ 		__assign_str(qname);
+ 		__assign_str(dev_name);
+ 		__assign_bitmask(irq_affinity, cpumask_bits(&q->affinity_mask),
+-- 
+2.51.0
+
+
+
