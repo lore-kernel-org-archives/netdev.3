@@ -1,193 +1,144 @@
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+Received: from sonic307-9.consmr.mail.ne1.yahoo.com (sonic307-9.consmr.mail.ne1.yahoo.com [66.163.190.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86923E6DFD
-	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 16:05:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773331550; cv=pass; b=t6VcgHeM7nDVnqqsIWwfd55ssyUBPV/uH//X6zWYykV0xt7gqicokF0Q+bxV01ajp6eVr93WMTtTUNuupThrRbWI6mtXtBG+HRAOTObuPeJf5/nXat7yl8Uks8L7WVBYXlcKp1aCv7fGhu+Xe36xCyf8pLHSqyawWHX/GG6c41I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773331550; c=relaxed/simple;
-	bh=uXwIo7R/AWmUX8v9NfNe8o8eyYKkzsQlLFxRYRKmo54=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RM/bVwwtBicSPeYUXyy1BVl7kBm0K8phGDB00u6Q+UTC7et3jxkaveKGZPT+2pq1GgcMjOJGhmS4XlFYBSrps5t9IWp41f+cpTKlGd2iOKmnNdrhH7awiDtBoA218pLmLbkYctgKpZXuYz2I4AgLARTa2GvNbdBxypFYfxuKqYI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bitbyteword.org; spf=pass smtp.mailfrom=bitbyteword.org; dkim=pass (2048-bit key) header.d=bitbyteword.org header.i=@bitbyteword.org header.b=ZV71t7Yr; arc=pass smtp.client-ip=209.85.128.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bitbyteword.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bitbyteword.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959DB3C5DBB
+	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 16:07:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.190.32
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773331656; cv=none; b=QbS4XgbBZ9EQVYUJ2qvETG8vUld/WuoF/ovy0SFSbd4zmS/UpMBvDF97366Q3WDBSOwrBotJz8PKOlKWIBljKnWssyNN9v9cHUZqZDN19uZC0OggbrVbDVhIF+KFWFRqxjWlTt6OS8AkR0x5SY7cP1TCRXbHgPWl8csx44I5E2w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773331656; c=relaxed/simple;
+	bh=KL2c+0gWja18QkcF4+JGFFSBsZsbD8ALfrpD7YrnWqE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=Qw+gdgoMOdSxFqu7DY8bgx+bEAHKsgHfHxDX10vP/VCfmuybguqDw6XZaBtVxXlrmQrI1mQwO5ss6zAmV+j+bKc+aqeWJeZmy7Xt3O3M2Omtutw8rRUsNBbcSoEKzgVy3hN/2hOl923kreaekBOJPGAI5RWT8z14m+QJVM1Lf1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=D8I5qElN; arc=none smtp.client-ip=66.163.190.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bitbyteword.org header.i=@bitbyteword.org header.b="ZV71t7Yr"
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-798374d0f44so35258487b3.0
-        for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 09:05:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773331548; cv=none;
-        d=google.com; s=arc-20240605;
-        b=S3O7pmSgiM0uD5e3GYm/5nCdukofwLN+d8GvA+n06CkQVAsAqN89HTOatJHekhd3VV
-         svBasB1mZAmu1F6deEWuHs83QhNi2fuMI6yKf+zkzyNfvxwgIBppBxIO58oR2p/hZsJv
-         f6NijltRp9yovIbzyWVjvOBaLGf6oOcPJPCBVaEhsUG/WAR7FJSUvoEesEhFZ+YwnKxj
-         GpbZlE0NXFoaXyjuXb/4fYlhOHGHKTEhjcaVtxVdHD6hlRhXxm7kBfldefjRKzgnGu++
-         kGLHsh8R2n/r1U25dIXGmxCM8y3C6euGwsYsdvcEASR674SFA3p4sHlqp7gMHleYYjsl
-         IT9A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=JmKlkavBf/yAOF4s82cTsdoYBcDg+c1w7g0d5bSER7o=;
-        fh=YEYeXQNKs98ofBg2zJzOcgFL3Kz1Ufgg9CfugWwVv3U=;
-        b=kBqV7/akvOb8qH21O4FgySbSgy6NNmKd8wzH5N7qB62YZDsIg3EO8daFkigu/LK6dc
-         b6TdLW4p9BGkuwrpfJpN2bLhz6gn88RcZ1hpRb0Xw+79rgC7cjUkPsSl3JEG4fTwtQHc
-         UstmpJ+rDwQyjDqtqxakqRHa8oMqETmEJcwSOYLf0Ccllamy10aLGb2lw0+lnJyVLjEQ
-         BNbBl+jYyXm/++DrfN1YKIrZAxVCMX1Fh1lU4zUmYqYhmobiyQSfwS+TwISX3pc4PkA7
-         uGGe8KsZEdAd/0+Mt1AHe+dfCcNNXDrkKU10HXLtiH4LFe4pdXuR85Hmp10Wy8XbwS+a
-         jQrA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bitbyteword.org; s=google; t=1773331548; x=1773936348; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JmKlkavBf/yAOF4s82cTsdoYBcDg+c1w7g0d5bSER7o=;
-        b=ZV71t7Yr1bKEaCrw5G92Jfwsdtqtd7yVBewYsWTdMu4hlPrngoMiOi9Tg98BUXGj7V
-         J8zfT8WZvuSQVQoHqLeSQshOj58obuQHxEJH3i8/pbu12eU6C7Ce24M/UJLLYQE6Gyj4
-         MBJKDgq3YAhHELLZd+5LiW+wYl057MgHnzcIvUsegkYPkvlEfdww7dLPjrHlDmsadUdM
-         wSRYkiv5Ntk9U+9jkH4To9xPIEAmJ9iWvbmxM8yMdXibURUG9CU4usIPwIAMNK/zJ+LU
-         w3EzMZjLrprjIUB0o8QsaOC68H8pgsKxw2R93SbRJDixW4oABx/etf2ISufqJ1uZrO5X
-         OKgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773331548; x=1773936348;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=JmKlkavBf/yAOF4s82cTsdoYBcDg+c1w7g0d5bSER7o=;
-        b=nlVrHc+Lu+/Xj358JMwntfuEXezTF23BtAEXQ8AQw/xPxFHYym9QuP+QKN1Uoi+xyS
-         liEIX2Lu5SDp4pITqyF26+qLA4hHdMuQplxjS3rO13bT+iQkPOtTJ9AKn/N5DxY8m3Tz
-         fA07KPlBRCxIkoxZQa0x8yCGHtLtxyjQJD+uvpt0PGkdezquSp7MAj7HWJAlR1Q1tZ9v
-         aONkge5jqE9Brz8JIix01VFSIC2J/zNRT5UYFg3l8UAw4MNoFBO6hD1Ir3ioH8pVTSDb
-         T4uO/E/O7PNrOKxVILSRJ3CPaCGUJ50GWUGtDgSItNo8LIyJiTgYyW0FbMssZGbX5uiQ
-         6Z4A==
-X-Forwarded-Encrypted: i=1; AJvYcCVJCidwczA8WSriMgWnMERkdEKxSs2cTjcmB7i30+voZGmLmf672LcXhXSOlEiY7jpeZ2GLWoE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAYOMvgataE3NTipGU6Tvdx8CQf5HPH5LaUg6/3ye7L02Re3rx
-	AUja589axksYFqX7r/PpMKLM3C2hX1oZMc+owxn1n8j79tBjG/9jV2sbQRPECeP0Q8y8MVM53Aw
-	hHjvtAIAK0M+rO2Y4lSaB9xgOOhWPXU0FadeHCGUGmA==
-X-Gm-Gg: ATEYQzyNO0POBITnpB1RCy+ihDWAgSIYTn6119ukTvUOgs3e336+8vVbddTjNULIMRe
-	VvfFIevp8Rm7kuMXYe0dgVfvHZJDIBiOim3UT+6tqVw5EntkLiPYCOw8uv8j3HNY0qS/z9KGyY3
-	qNvW97SorIPG/eiSnm40lSx40LSW7ir2rWmc5SIbk0vL9U360mtKUTHorXR3Qvu+VAYZeesf1AP
-	E8Gs3+uXH4cGSGQf8kp2SQR0jZDwb5pUpbMriya/5sovJI/yc1oUilccM6FbTbmmKLYk2wXEj23
-	J9iYrg8=
-X-Received: by 2002:a53:df06:0:b0:646:9ddf:5f2 with SMTP id
- 956f58d0204a3-64e62869514mr137952d50.31.1773331547890; Thu, 12 Mar 2026
- 09:05:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="D8I5qElN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1773331647; bh=vjmGQk2hoBYb67tsD/bAMtPiNr8ReIneaOpxAYD1UW4=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=D8I5qElNZtU0hg74FAZ2nZvJotsEizHKEZkpl+weKDZmqOVJ1on3pVT/sj6kEypw8N54eHB9n0H0YktZOMQ1ktqQNHxc5tNDcrNw4546Gs3lu6BUBkn9hHCmGTUGueklwc4SS/Gl89+8RqfZ9koYjxDg3L7nIFbOgjL0wJFatBj1GexsbO1luR1MXEE3jLVUadhg+SetMOAuO/rxOB26MEV8iBnn9stpvZf69gRvQ3OSoYs+jPfqlNUv4QG1DLuyilgQV0HGixdbGr8GPzLA7l3DGbqhwCExjMz11oDZHU5nBvi308ytlHo33jrVCsRpuh1QQburkaDPxuJov3h1sQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1773331647; bh=HmkWD+ydQtSpnfPP6QlJZh/Zj1gqndj7X4/AJWat85D=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=CKqa2+pMLyBQTxkIbDfixmEoIT4snwo7sxu/VIfw71k2Qs+Bun/9GKqu5WspATY2i+KkKripzExnAiRUNm0xWamvT0Pc2mCwuA75gXQvsjWqfBevvWoCtJgFCNL1aMu9gcE8knb5sIUcbBnUy9PlpxSY9stIVJBEWuR6X+/wZvzbxBkb6kRvBio3qO9A3pW5RXmujUFD4WqWULT88yMAZcnDp/mKpFw7gm/N99YgeSlrkShRC6bVDyqvvnXBiomgrQdisfSsUn8Y8MyzXkCFT1o9c1QRjD7QeiXhqh+CnosfbKhUMkpgyaVbgwDwhKIBVFDJuXVAsSs1HVpz/K4JjA==
+X-YMail-OSG: KuACKi4VM1kydNo0pUGfMtSN1sOwfQoJV1M.DPzePz4eX3f_oyzmR3qTuW9nW8m
+ YJ1PU.yB2x7NYsy9S5FeQqstvrjRoVU9hzGi9pNGtSqRCGcmJMSG._wCMQL_Kgn_bP9yosAb5RIF
+ UdR_a4w8v6ubGo7vcXc6npknZi_HSv25KcnKNOrApwghHPXo3UOfu7H8oY94VS.TZu9ExA6D0B_t
+ d54EtzxmSvdruoZUeeRy9673ArIucTYjYRY6dYik56G.rZeEGct7fPFU6Lbw9u211D9UQ5BrNXey
+ CoAdRTTUDTsYXf6ZMQ6wCU_SglXBrg19hnYT96nSva1U2IjYXK8oTNe8SM5SB0cPjuwzzOvOwkWQ
+ AsvWVFxUbziyiFxxfper8lPsi_VBWwDCJgE8qkoYSCfn8EUAKNHTyVxViDwsrn4E.FLYnHKK1vmU
+ _IRR1XcS3Gn21GYFrg1p21A5X8aNGzzrz9liufrlq11_wCjNTQVZb3oQQjUylRSKEZxJCvTqjN_9
+ lNP4WP0sqa1QR6ZYvy_SuBPz4slz1rVCO1.LUS599uwg8vOunJmGHMPFqKXRdwWSsu3eiPttyqIa
+ .yG5EJ0qsuGiDn5cVmDLraIejLwq7YCuUl351QMZGRjGB6xdP8XwPWsu1yG1Zy3TY6l1Hep_OBYo
+ n3y.rMrgFtFMyGP3GOD3QmJEvdelgqzqXqo2oXXlNT6BrT4DpsH0qbUXUVsNf6Slrf_X2jd2vsKr
+ RnbpqsfMSFOFhgshpWzT601t6DfEjGh3UR4zn9_uBLlzKlE5Nk70FKy316VjZnN6bRNJHfsHvQj_
+ M268o2QKExoUi_EsYLbO8XAxKRlbLGvoQTv06vARIAZfbHnKuRJnwCVHxOP5_rGNwecKCKtWnbnW
+ QKMC0OapvN9sG9wrN5MvcpMjSyeM7zWEhYwMsGb5m_QXw4RKFhuKbOSA_IQFLahuWAJTOkyb4kQk
+ lJE5_02C_1RkH2qwf0Qhh9hBq1DMWuSdQr2a1S1QUYTV3u2yfA914hi.OAf9YqMZgxSJXUuop4E8
+ h1uTc4ffcjEr267ojKfAz551HnwZ8SQrQ2iM14xfoig78EL5tgGhJuXsGStlBJv9RLVhlMn_tfT6
+ jQohK_rDoffYJ3WKs6.JrqItHTLyNooVqwL5mrazt0lJKca0TjzBjfWQUpOg61xJ0ayZ1EFX45Wj
+ kc3HGmWH5yo6FG_CpGtK5ueQ5HbXj8.4rrfTzdsJbkTzYB2_nufBviJYM..QvtTlPDSRVouQq1xz
+ pHAbtUKe03dWEHcj6PxyEoAv4EoE8hgXQlOzO3SpbKSHevhA6_9jeopYvEccqqp84Eb7N_IoAsFR
+ 0XOpIXHV7wSYpB0Px7wexRtFQ.Jq_CqKmR_rtPmA5kdXzPhDiR30873gz7JkMPgHk1Hy8O_fWDcn
+ tg9Jox._f6PaXsQjVajia4w0FitkU6bdQl5YGLNQM9FDOgsPJf3l9nfifvJQtZNEMlI.o3zk9Y9X
+ Er9rndj1dyDNhag0IyS17F42_tEJ21zEEVTv4tDf6egR_.tOmmLRbomg4KG83iwueRdVvejeSckD
+ eLgRy1YsYf.vkFa9Y69CN_XjN3RUpcqA0sg4ENFAfrSuFL2sBEHVdHeCtGs2QnzOYQFttdl8_q4P
+ Ye2fKy9WFURwI26UYVLsTsa32ip5K.j3mFFs2._rBVjltjMaMUzqxTKh4ixsBVPgEu5V6pkfQEek
+ _mzjEfRKsDQRaVg5YKXAtBoFdjDH0OZZ.ZAWOvKKfVD7W7294GktvpPsLrslIrlVpkpfftbnQAxV
+ rxbleG7kPrEuTQUkjMIwyFrob1dMDF4BeUfiAfdqf9BUrS3kBJ7tqFHIiq8xryqo.vDDJpEXu7.8
+ jJtTK09vK2lUaYk628EkseUU5Sa4_rKVwA_Z9CmWVGfSd0k.llOGA9ZF.bMgwfKhMECy_zeWDtN7
+ TppLPdPklfoDy20ClkZKtoihG1UZbq4E_09Xd.7vxqDMMSksHeYtbGc8aPLyKNPAXE.K1nq5DAo3
+ pKbPD5s3e1MQYA6KTVoY9cpULgxR5RFzLWNhV1u4ZXMO7fIk8.M1wHL601kFJvcgx9gYPxDaq6td
+ XVeBEeMhHnb4HuMEvQjTfYAU6Dko46fRLtmTXrggW3KcgLRu39ve1x2k3NnvcNIvcXWTN.O76PPT
+ Y_ievLjESkvi.V596MDJhY5jxvNRgtJFFXh5i6nIKIq_1IM_uZhzD
+X-Sonic-MF: <mmietus97@yahoo.com>
+X-Sonic-ID: cf444a6f-b26d-474c-800d-bd6f46c30609
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.ne1.yahoo.com with HTTP; Thu, 12 Mar 2026 16:07:27 +0000
+Received: by hermes--production-ir2-bbcfb4457-pgdzr (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 87d652406d88cc03e8e5278a11075b9d;
+          Thu, 12 Mar 2026 15:57:17 +0000 (UTC)
+From: Marek Mietus <mmietus97@yahoo.com>
+To: netdev@vger.kernel.org,
+	sd@queasysnail.net,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: Jason@zx2c4.com,
+	Marek Mietus <mmietus97@yahoo.com>
+Subject: [PATCH net-next v8 00/11] net: tunnel: introduce noref xmit flows for tunnels
+Date: Thu, 12 Mar 2026 16:56:46 +0100
+Message-ID: <20260312155657.25676-1-mmietus97@yahoo.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260312150523.2054552-1-vineeth@bitbyteword.org>
- <20260312150523.2054552-2-vineeth@bitbyteword.org> <20260312111255.7925b4e2@gandalf.local.home>
- <CAO7JXPhg-Etspj9YahZrq8cmZ2K6AGWDrMnHO+oD96P_SmOLBw@mail.gmail.com> <20260312155326.GB1282955@noisy.programming.kicks-ass.net>
-In-Reply-To: <20260312155326.GB1282955@noisy.programming.kicks-ass.net>
-From: Vineeth Remanan Pillai <vineeth@bitbyteword.org>
-Date: Thu, 12 Mar 2026 12:05:37 -0400
-X-Gm-Features: AaiRm52SVVT4jiV0FzOGXISct6FMh2E9oWpuKL1FA2qkv7l8yLE2a6rVIE8wyUY
-Message-ID: <CAO7JXPiu8-LE_gG001_GQLoGVYakPdzmH2SXLqfzJjEUxbn1Rw@mail.gmail.com>
-Subject: Re: [PATCH 01/15] tracepoint: Add trace_invoke_##name() API
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Dmitry Ilvokhin <d@ilvokhin.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Ingo Molnar <mingo@redhat.com>, Jens Axboe <axboe@kernel.dk>, io-uring@vger.kernel.org, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, 
-	Xin Long <lucien.xin@gmail.com>, Jon Maloy <jmaloy@redhat.com>, 
-	Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>, 
-	Ilya Maximets <i.maximets@ovn.org>, netdev@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-sctp@vger.kernel.org, tipc-discussion@lists.sourceforge.net, 
-	dev@openvswitch.org, Oded Gabbay <ogabbay@kernel.org>, Koby Elbaz <koby.elbaz@intel.com>, 
-	dri-devel@lists.freedesktop.org, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, "Gautham R. Shenoy" <gautham.shenoy@amd.com>, 
-	Huang Rui <ray.huang@amd.com>, Mario Limonciello <mario.limonciello@amd.com>, 
-	Len Brown <lenb@kernel.org>, Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
-	linux-pm@vger.kernel.org, MyungJoo Ham <myungjoo.ham@samsung.com>, 
-	Kyungmin Park <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
-	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, linaro-mm-sig@lists.linaro.org, 
-	Eddie James <eajames@linux.ibm.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
-	Joel Stanley <joel@jms.id.au>, linux-fsi@lists.ozlabs.org, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Alex Deucher <alexander.deucher@amd.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Matthew Brost <matthew.brost@intel.com>, Philipp Stanner <phasta@kernel.org>, 
-	Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>, 
-	amd-gfx@lists.freedesktop.org, Jiri Kosina <jikos@kernel.org>, 
-	Benjamin Tissoires <bentiss@kernel.org>, linux-input@vger.kernel.org, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, linux-i2c@vger.kernel.org, 
-	Mark Brown <broonie@kernel.org>, Michael Hennerich <michael.hennerich@analog.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, linux-spi@vger.kernel.org, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <martin.petersen@oracle.com>, linux-scsi@vger.kernel.org, 
-	Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+References: <20260312155657.25676-1-mmietus97.ref@yahoo.com>
 
-On Thu, Mar 12, 2026 at 11:53=E2=80=AFAM Peter Zijlstra <peterz@infradead.o=
-rg> wrote:
->
-> On Thu, Mar 12, 2026 at 11:39:06AM -0400, Vineeth Remanan Pillai wrote:
-> > On Thu, Mar 12, 2026 at 11:13=E2=80=AFAM Steven Rostedt <rostedt@goodmi=
-s.org> wrote:
-> > >
-> > > On Thu, 12 Mar 2026 11:04:56 -0400
-> > > "Vineeth Pillai (Google)" <vineeth@bitbyteword.org> wrote:
-> > >
-> > > > Add trace_invoke_##name() as a companion to trace_##name().  When a
-> > > > caller already guards a tracepoint with an explicit enabled check:
-> > > >
-> > > >   if (trace_foo_enabled() && cond)
-> > > >       trace_foo(args);
-> > > >
-> > > > trace_foo() internally repeats the static_branch_unlikely() test, w=
-hich
-> > > > the compiler cannot fold since static branches are patched binary
-> > > > instructions.  This results in two static-branch evaluations for ev=
-ery
-> > > > guarded call site.
-> > > >
-> > > > trace_invoke_##name() calls __do_trace_##name() directly, skipping =
-the
-> > > > redundant static-branch re-check.  This avoids leaking the internal
-> > > > __do_trace_##name() symbol into call sites while still eliminating =
-the
-> > > > double evaluation:
-> > > >
-> > > >   if (trace_foo_enabled() && cond)
-> > > >       trace_invoke_foo(args);   /* calls __do_trace_foo() directly =
-*/
-> > > >
-> > > > Three locations are updated:
-> > > > - __DECLARE_TRACE: invoke form omits static_branch_unlikely, retain=
-s
-> > > >   the LOCKDEP RCU-watching assertion.
-> > > > - __DECLARE_TRACE_SYSCALL: same, plus retains might_fault().
-> > > > - !TRACEPOINTS_ENABLED stub: empty no-op so callers compile cleanly
-> > > >   when tracepoints are compiled out.
-> > > >
-> > > > Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-> > > > Suggested-by: Peter Zijlstra <peterz@infradead.org>
-> > > > Signed-off-by: Vineeth Pillai (Google) <vineeth@bitbyteword.org>
-> > > > Assisted-by: Claude:claude-sonnet-4-6
-> > >
-> > > I'm guessing Claude helped with the other patches. Did it really help=
- with this one?
-> > >
-> >
-> > Claude wrote and build tested the whole series based on my guidance
-> > and prompt :-). I verified the series before sending it out, but
-> > claude did the initial work.
->
-> That seems like an unreasonable waste of energy. You could've had claude
-> write a Coccinelle script for you and saved a ton of tokens.
+Currently, tunnel xmit flows always take a reference on the dst_entry
+for each xmitted packet. These atomic operations are redundant in some
+flows.
 
-Yeah true, Steve also mentioned this to me offline. Haven't used
-Coccinelle before, but now I know :-)
+This patchset introduces the infrastructure required for converting
+the tunnel xmit flows to noref, and converts them where possible.
 
-Thanks,
-Vineeth
+These changes improve tunnel performance, since less atomic operations
+are used.
+
+There are already noref optimizations in both ipv4 and ip6.
+(See __ip_queue_xmit, inet6_csk_xmit)
+This patchset implements similar optimizations in ip and udp tunnels.
+
+Benchmarks:
+I used a vxlan tunnel over a pair of veth peers and measured the average
+throughput over multiple samples.
+
+I ran 100 samples on a clean build, and another 100 on a patched
+build. Each sample ran for 120 seconds. These were my results:
+
+clean:      72.52 gb/sec, stddev = 1.39
+patched:    75.39 gb/sec, stddev = 0.94
+
+TL;DR - This patchset results in a 4% improvement in throughput for
+vxlan. It's safe to assume that we might see similar results when testing
+other tunnels.
+
+Changes in v8:
+ - Removed repetitive "if (!noref) dst_release()" flows by updating the
+output routing lookup flow to decrement the refcount for the dst, essentially
+making all dsts noref.
+
+Link to v7: https://lore.kernel.org/netdev/20260127070452.6581-1-mmietus97@yahoo.com/
+
+Marek Mietus (11):
+  net: dst_cache: add noref versions for dst_cache
+  net: tunnel: convert iptunnel_xmit to noref
+  net: tunnel: convert udp_tunnel{6,}_xmit_skb to noref
+  net: tunnel: return noref dsts in udp_tunnel{,6}_dst_lookup
+  net: ovpn: convert ovpn_udp{4,6}_output to use a noref dst
+  wireguard: socket: convert send{4,6} to use a noref dst when possible
+  net: tunnel: convert ip_md_tunnel_xmit to use noref dsts
+  net: tunnel: convert ip_tunnel_xmit to use a noref dst when possible
+  net: sctp: convert sctp_v{4,6}_xmit to use a noref dst when possible
+  net: sit: convert ipip6_tunnel_xmit to use a noref dst
+  net: tipc: convert tipc_udp_xmit to use a noref dst
+
+ drivers/net/amt.c              |   3 +
+ drivers/net/bareudp.c          |   4 -
+ drivers/net/geneve.c           |  11 ---
+ drivers/net/gtp.c              |   7 ++
+ drivers/net/ovpn/udp.c         |   8 +-
+ drivers/net/vxlan/vxlan_core.c |   6 --
+ drivers/net/wireguard/socket.c |  12 ++-
+ include/net/dst_cache.h        |  71 ++++++++++++++++++
+ net/core/dst_cache.c           | 133 ++++++++++++++++++++++++++++++---
+ net/ipv4/ip_tunnel.c           |  32 ++++----
+ net/ipv4/ip_tunnel_core.c      |   2 +-
+ net/ipv4/udp_tunnel_core.c     |   6 +-
+ net/ipv6/ip6_udp_tunnel.c      |  10 ++-
+ net/ipv6/sit.c                 |  14 +---
+ net/sctp/ipv6.c                |   6 +-
+ net/sctp/protocol.c            |   7 +-
+ net/tipc/udp_media.c           |   6 +-
+ 17 files changed, 258 insertions(+), 80 deletions(-)
+
+-- 
+2.51.0
+
