@@ -1,63 +1,63 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD00D3B5832
-	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 22:35:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 796713BADAA
+	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 22:35:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773354919; cv=none; b=CKs7ZAk/rOMUygLLNfc4yB0SdGxvkb8iVTVdgN4as56b80affhtPHVs4XfwzSkOKFvQ+bt7tKV0hg+fWNzBJcbofaN9MURB3FiZFYXCNd9ctGmikum+uZX2EbgH4BzuNkbUYS/EVyDi24BuJtcvgqM6y7hu7romN51X2V+twRp0=
+	t=1773354921; cv=none; b=fjqYyuEDIi8pLoE52Yq8Bu+VesiXSB21j/182bqVBqPwlcsDvXQTfBuDkiEQW262q9gnqEFmFau2k5yV4TFy2VTwSfjyITnExce3egKMydJmAa58W8v04x+epLVLj1wKyKerR/nCB+ZUZHnvrCbDCgbVlI7Hq0Ky1255tDSGsJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773354919; c=relaxed/simple;
-	bh=PuJu+cuvxYyzLYu/heimivKoS0LlknYg8MItINKiTSc=;
+	s=arc-20240116; t=1773354921; c=relaxed/simple;
+	bh=7Zu0Dz91B8pcyek/pNRIrZNMIcp1uoJ9XU9YtqJIP40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CY6rlWN80PhGzU8y8TW8LPMETdqSDSPu5Oq7Z6lPl0g5XDLNieyTq+dQLOZV8mcYYN5Loyqknk6AVDUtMlwDe+xDMANpBFYf54Aip8KsTSDTruuwgP/iRB6FpRD8LTfqBjLzQvzrWsDgbxjWFaXiQjFZkCnhPoHkod8cnpAmBQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b=JEH9/HFi; arc=none smtp.client-ip=209.85.214.176
+	 MIME-Version; b=nuPtvV1BiQdKNu0mhoss4m+aC7eT5xymkhXP8yCtSwjZQ3gWfcuhiDtDHukC+2LEyzaqTSrIMAzPDO1/t9AGqJ9/PkDD+qLBf8umDdK3d/5yvKc2w9wvTR0mVz1vYyhlHzLd+3Sg8WWZbbsk1ldU/ZI6g8UxsgFfqrGdgXSPnjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b=WUVjAjC5; arc=none smtp.client-ip=209.85.210.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b="JEH9/HFi"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2ae4988e039so17774295ad.1
-        for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 15:35:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b="WUVjAjC5"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-827270d50d4so1494568b3a.3
+        for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 15:35:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20230601.gappssmtp.com; s=20230601; t=1773354914; x=1773959714; darn=vger.kernel.org;
+        d=dama-to.20230601.gappssmtp.com; s=20230601; t=1773354917; x=1773959717; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yhpU0qTAGa7ThLCGsekUFVuiiOUf0jdr/bUs5nRSlS8=;
-        b=JEH9/HFipRoY975DSUM3yxuNnuOUBeYc98szNskPCBO9PRL2pwVJNwFAJqA3CudUJR
-         UBNnVuolzAClTDrOtrdHtXIpDChUfVNLuiGOSzpMzIEVfoBlhkd+4zdbqZMuq1kXdz6D
-         842u68IV+FtyHYMETgWewlvr9UQwR4hcvUONl6wQyY4bF7gps4lpUOFDZjg4W+QAmnUv
-         UQGy5Kd5eakJeAgBIOYsJ5SpmlkkrYKZz1TbKbaTM1QuRVGI/qqMjhHWpcWE9hLDYv2Y
-         plo7IReDJAX5n+xQ+hS01b1BfqJELAizcBRdaOJwAH6Qw7DYxNOG8yUhTugmwD9rhgqX
-         q3NQ==
+        bh=SXOL9iubHrTOR9uFk5hJvutezBCpUTAEEHozBYZRA8g=;
+        b=WUVjAjC51YCuQPwHHr+wVDiRD0+jdwmT5qoTeRMaPAtZXenJzsZm+xn/PEqPiw7N9a
+         X/RS9EquPNeYo+RA4yQE4qFWP9wsY+bN9aAl4C9wqvXrhsVePQBXD0kvg6X1uva6HnOu
+         BYGu30rWA23z8MYVoRzarXDFzSBe8OdFiI8Sg/5geeC8N9XXWe8JsxPhzAIVuNczHSFA
+         dLpJFFWDS8Lw3CYoU9mqKt2oZI4x8lCe+6nUVeX779ncDyOul39bH3qqpad5BHB5uN4e
+         4iNOCU8m1NrvPzWEFlx63515wa/Wxr82rUm3ZOxrQpxIsC8NmdLVWfele3v0KtRONakS
+         o3qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773354914; x=1773959714;
+        d=1e100.net; s=20251104; t=1773354917; x=1773959717;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=yhpU0qTAGa7ThLCGsekUFVuiiOUf0jdr/bUs5nRSlS8=;
-        b=ksQS6RVLo/TITJA8YVk0yq+KJJihf4+wKukxjMXFABfNZfnh5QnWnY73doTon7MrZh
-         E6SvrVLVydOLQ1hCrj20/pak1u1kWH8BxfBCF5HHwyMRVtY+GJagDU4I+l90J4TfI9VI
-         K+Fhq3KSq9F8lA4cRUrjDzWIkl/n6w3KKmqVTtCRUmDz3CzLAqQ6JIV7haxsd8P7gxZI
-         1y/sQRsx4EYnnonMb6SRXcmrzhWvYKIPbX8GD+e8+LOHTDX9NU29QsMnV52N3iEVyEDz
-         58QFvq+v28uIz36MJ5FmTLDG+XIfeF91kp1/aBJs3hRn3sl9D5G6FomW5aL4kz/uJJmy
-         qAGw==
-X-Gm-Message-State: AOJu0YyeDo53XUE09QtJxJ3PBAuRb0BdUIZlZXNq3h89Ds434vf5Hz1h
-	S19zi9a4Sszh9Lm/3UngE9t4IavIxDLZ9YArXLpPfmFLpE+uG3AbVu4eNmtbUqY1iMfwlM7sJPy
-	VbDk6AIQ=
-X-Gm-Gg: ATEYQzy5nx+7Qf0+j8cRXB80f61sFRxzoLirUlrhFc74F/j2K6FtBxO7OASjgd8dxc3
-	V7eL5lKFJv4cpXmIN+20RMXQrUkom38br0C7xyr0kmNbLcoCOauHq9ruE7UdWgUzs92c8Ul7koa
-	cHyRhI496c6Z5fvg77wh/nZDmACJvW1FvLY51cntL8boRu68xe+QtR6iNL2MI0AREWJUhS9ozz8
-	09SsBb6oFIjfu69o98SZJPKGN1oM66WztUqzbBXh5xg4DsDL1DEz9v8/I2kRkL63algtOL4olYs
-	ajRVFg1ONZU9iv0P6x1P//POBsziB8KEH2g1qX0PXhckfHoZYKZevK5kYPQI5giDQxkbKWgqzXP
-	fZGrZk0YNAEkQ5xKJU2xaJ/gJSPuzv+x+mYNAwonHiGQDnbbqcY54sbHFEb1uNS7gDyEbGbkvOV
-	iMLU26
-X-Received: by 2002:a17:902:ec91:b0:2ae:4d6b:b2c7 with SMTP id d9443c01a7336-2aeca50068bmr10458835ad.9.1773354913863;
-        Thu, 12 Mar 2026 15:35:13 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:71::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aece8233e1sm31025ad.71.2026.03.12.15.35.13
+        bh=SXOL9iubHrTOR9uFk5hJvutezBCpUTAEEHozBYZRA8g=;
+        b=gaMbxnBVpe9+vOKcCEwROylj57gL+HoM7UW6JMG4M/bxdSLqZsQjCjO3IIkppADE6N
+         Z4qHoInNey32j7mCP8CDOXVEKgm1vGmfnxRYg87UCmKgvvZNe+zub6QZqrM/IA1L1TbP
+         YLfOd6UTPYFxsydT6q8nqe7UQR1NlypApYMfE3Yxl6rR0XB1Otr/ONcE41l6939ea56L
+         pHQFlF+xB9N0LYnQRWWQFLiJFdAAFHi3ry8GRch6jL7LSZ6Sr61oHDuTw2evln6vbKyC
+         utYpOFajg0aUhRGpEziMWhA3lAuTJwrRuWAmmmt5pI9ddQKDq4Q6MidnFmAz08bbjj4d
+         DR2w==
+X-Gm-Message-State: AOJu0YzyJmghUWxRT7wSCvlW8YDZPM7/clM+etLiKGxv30bwtojMMoOY
+	mpx4aJFiiweFiDxToj4ZbtTqpIBNOQO0AAaQtvaWnYBvdbOiZwCrTHpuPPN7PfGdtDqZOvna+3n
+	ltrRKTHc=
+X-Gm-Gg: ATEYQzzyp+WR4QAor/aj5iTtghGiY8Lh4sbxj5qo++NkhINhxmNB8s3n+N8A+Ixolf+
+	ldUlYdnxvugGKiqJkduemHxZaB5l3I9ocArSE557NY5MFcgqmHVZz3DC8Hn3wiGlkRg1P14nUPb
+	myPkBR5hAXBQhMsvHdCt1CYiTujKZYXphmF9RfwalB6888rlfx69goQjMJsiq0TnjOwg8SGIfUu
+	borlH0k/5ovRXKGbkeIqTybBOuWsCq8xws5RqW0xzClhW1YAatCyzGRacBv1anOZopJetyP9D0w
+	NuWz3Rqk0zc6FAjfP/rRt9W4FuU0X5RxaycLI807s11GFGytkmeZrBglGYIQGCNn2LyL4pqvx5N
+	L1o0C0anM6aWcsS0rqm2JW2X2BZoSaX0UttJKAooIy9LriHVCJ8B0aO2d1PulersXbonJ+tGAdZ
+	Mo6qPh
+X-Received: by 2002:a05:6a00:9293:b0:824:a01f:6335 with SMTP id d2e1a72fcca58-82a198505f1mr886315b3a.22.1773354917495;
+        Thu, 12 Mar 2026 15:35:17 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:47::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a073b265bsm4176803b3a.65.2026.03.12.15.35.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2026 15:35:13 -0700 (PDT)
+        Thu, 12 Mar 2026 15:35:17 -0700 (PDT)
 From: Joe Damato <joe@dama.to>
 To: netdev@vger.kernel.org,
 	Michael Chan <michael.chan@broadcom.com>,
@@ -69,9 +69,9 @@ To: netdev@vger.kernel.org,
 	Paolo Abeni <pabeni@redhat.com>
 Cc: linux-kernel@vger.kernel.org,
 	Joe Damato <joe@dama.to>
-Subject: [RFC net-next v2 04/12] net: bnxt: Add a helper for tx_bd_ext
-Date: Thu, 12 Mar 2026 15:34:41 -0700
-Message-ID: <20260312223457.1999489-5-joe@dama.to>
+Subject: [RFC net-next v2 06/12] net: bnxt: Add TX inline buffer infrastructure
+Date: Thu, 12 Mar 2026 15:34:43 -0700
+Message-ID: <20260312223457.1999489-7-joe@dama.to>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260312223457.1999489-1-joe@dama.to>
 References: <20260312223457.1999489-1-joe@dama.to>
@@ -83,80 +83,99 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Factor out some code to setup tx_bd_exts into a helper function. This
-helper will be used by SW USO implementation in the following commits.
+Add per-ring pre-allocated inline buffer fields (tx_inline_buf,
+tx_inline_dma, tx_inline_size) to bnxt_tx_ring_info and helpers to
+allocate and free them. A producer and consumer (tx_inline_prod,
+tx_inline_cons) are added to track which slot(s) of the inline buffer
+are in-use.
+
+The inline buffer will be used by the SW USO path for pre-allocated,
+pre-DMA-mapped per-segment header copies. In the future, this
+could be extended to support TX copybreak.
+
+Allocation helper is marked __maybe_unused in this commit because it
+will be wired in later.
 
 Suggested-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Joe Damato <joe@dama.to>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c |  9 ++-------
- drivers/net/ethernet/broadcom/bnxt/bnxt.h | 18 ++++++++++++++++++
- 2 files changed, 20 insertions(+), 7 deletions(-)
+ rfcv2:
+   - Added a producer and consumer to correctly track the in use header slots.
+
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 35 +++++++++++++++++++++++
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h |  6 ++++
+ 2 files changed, 41 insertions(+)
 
 diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index c9206977fd54..d12e4fcd5063 100644
+index ea8081aeb5ae..8929264a54b1 100644
 --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
 +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -663,10 +663,9 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	txbd->tx_bd_opaque = SET_TX_OPAQUE(bp, txr, prod, 2 + last_frag);
- 
- 	prod = NEXT_TX(prod);
--	txbd1 = (struct tx_bd_ext *)
--		&txr->tx_desc_ring[TX_RING(bp, prod)][TX_IDX(prod)];
-+	txbd1 = bnxt_init_ext_bd(bp, txr, prod, lflags, vlan_tag_flags,
-+				 cfa_action);
- 
--	txbd1->tx_bd_hsize_lflags = lflags;
- 	if (skb_is_gso(skb)) {
- 		bool udp_gso = !!(skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4);
- 		u32 hdr_len;
-@@ -693,7 +692,6 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	} else if (skb->ip_summed == CHECKSUM_PARTIAL) {
- 		txbd1->tx_bd_hsize_lflags |=
- 			cpu_to_le32(TX_BD_FLAGS_TCP_UDP_CHKSUM);
--		txbd1->tx_bd_mss = 0;
- 	}
- 
- 	length >>= 9;
-@@ -706,9 +704,6 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	flags |= bnxt_lhint_arr[length];
- 	txbd->tx_bd_len_flags_type = cpu_to_le32(flags);
- 
--	txbd1->tx_bd_cfa_meta = cpu_to_le32(vlan_tag_flags);
--	txbd1->tx_bd_cfa_action =
--			cpu_to_le32(cfa_action << TX_BD_CFA_ACTION_SHIFT);
- 	txbd0 = txbd;
- 	for (i = 0; i < last_frag; i++) {
- 		frag = &skb_shinfo(skb)->frags[i];
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-index 8147f31967b5..a822bbb71146 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-@@ -2834,6 +2834,24 @@ static inline u32 bnxt_tx_avail(struct bnxt *bp,
- 	return bp->tx_ring_size - (used & bp->tx_ring_mask);
+@@ -3983,6 +3983,39 @@ static int bnxt_alloc_rx_rings(struct bnxt *bp)
+ 	return rc;
  }
  
-+static inline struct tx_bd_ext *
-+bnxt_init_ext_bd(struct bnxt *bp, struct bnxt_tx_ring_info *txr,
-+		 u16 prod, __le32 lflags, u32 vlan_tag_flags,
-+		 u32 cfa_action)
++static void bnxt_free_tx_inline_buf(struct bnxt_tx_ring_info *txr,
++				    struct pci_dev *pdev)
 +{
-+	struct tx_bd_ext *txbd1;
++	if (!txr->tx_inline_buf)
++		return;
 +
-+	txbd1 = (struct tx_bd_ext *)
-+		&txr->tx_desc_ring[TX_RING(bp, prod)][TX_IDX(prod)];
-+	txbd1->tx_bd_hsize_lflags = lflags;
-+	txbd1->tx_bd_mss = 0;
-+	txbd1->tx_bd_cfa_meta = cpu_to_le32(vlan_tag_flags);
-+	txbd1->tx_bd_cfa_action =
-+		cpu_to_le32(cfa_action << TX_BD_CFA_ACTION_SHIFT);
-+
-+	return txbd1;
++	dma_unmap_single(&pdev->dev, txr->tx_inline_dma,
++			 txr->tx_inline_size, DMA_TO_DEVICE);
++	kfree(txr->tx_inline_buf);
++	txr->tx_inline_buf = NULL;
++	txr->tx_inline_size = 0;
 +}
 +
- static inline void bnxt_writeq(struct bnxt *bp, u64 val,
- 			       volatile void __iomem *addr)
++static int __maybe_unused bnxt_alloc_tx_inline_buf(struct bnxt_tx_ring_info *txr,
++						   struct pci_dev *pdev,
++						   unsigned int size)
++{
++	txr->tx_inline_buf = kmalloc(size, GFP_KERNEL);
++	if (!txr->tx_inline_buf)
++		return -ENOMEM;
++
++	txr->tx_inline_dma = dma_map_single(&pdev->dev, txr->tx_inline_buf,
++					    size, DMA_TO_DEVICE);
++	if (dma_mapping_error(&pdev->dev, txr->tx_inline_dma)) {
++		kfree(txr->tx_inline_buf);
++		txr->tx_inline_buf = NULL;
++		return -ENOMEM;
++	}
++	txr->tx_inline_size = size;
++
++	return 0;
++}
++
+ static void bnxt_free_tx_rings(struct bnxt *bp)
  {
+ 	int i;
+@@ -4001,6 +4034,8 @@ static void bnxt_free_tx_rings(struct bnxt *bp)
+ 			txr->tx_push = NULL;
+ 		}
+ 
++		bnxt_free_tx_inline_buf(txr, pdev);
++
+ 		ring = &txr->tx_ring_struct;
+ 
+ 		bnxt_free_ring(bp, &ring->ring_mem);
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+index a822bbb71146..d9543d6048d8 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+@@ -994,6 +994,12 @@ struct bnxt_tx_ring_info {
+ 	dma_addr_t		tx_push_mapping;
+ 	__le64			data_mapping;
+ 
++	void			*tx_inline_buf;
++	dma_addr_t		tx_inline_dma;
++	unsigned int		tx_inline_size;
++	u16			tx_inline_prod;
++	u16			tx_inline_cons;
++
+ #define BNXT_DEV_STATE_CLOSING	0x1
+ 	u32			dev_state;
+ 
 -- 
 2.52.0
 
