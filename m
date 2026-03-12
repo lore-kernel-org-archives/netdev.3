@@ -1,195 +1,114 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B1A3B2FF0
-	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 07:50:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D52F3164AA
+	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 08:14:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773301822; cv=none; b=gn0OSkUZV+XANQ8codSpqR3UWZjqn9I4aeUm8RtYFqePCDvoyVyuVSgp7FylvX5/Sy0uPVOCeZczaZTyR9gFOLwW3aMf3RJvYW2R398dkRjkdbMr23vguwLZW1eG+cQMVYw3ytu/NuXnjEQn8dH3mYAEX+FQZDDcohKC+qXsBEU=
+	t=1773303282; cv=none; b=nC1IS6o6nw3sq/fFR41eUud+IC7dlQOBgYJJ+zndEsams1A1WOEHU22NS9tGHuI6Vizi+QIiaVvchcaUUr3Ne+lr5W07o7k+nc3VjT6BAd/MKuUZII4Z4NiwRXtsfJx4MS53rZm4FbPgoirzsz8GBNf8iifGyoJhxYPlURz0z7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773301822; c=relaxed/simple;
-	bh=r2PdE6HYGVzZYpXyEn5kett8unUMILRQGQuMPOiuUPo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YWfeXL9DGiGMVa+J6lRX0eEiBltElI9pIEPQD+9JF31lb7SiZJGtsULxxcokKWPF/2wjgp+vcgyHtUF87aSTavGryAVhvFQjJ6fWLud+grxN4ZJdiioD7arloy5E6+DaQQ15SyUcehsyKbC6ovXxbsNU+eH0Cz8nyPAfq1ZK44o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+	s=arc-20240116; t=1773303282; c=relaxed/simple;
+	bh=er8uEkvKYbxMLBrtAkD/Ds/M1WLkmn8Sf0zjcM183JY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=GVA+lgeNe9KhDt6ertd9UvOPkz3IlLgWFtGbNRqQfwL9v5WIJRHwXgHs2CMf8NR5JuKE+FaaOHtg9NbdCyMsU8BpWzME1bQzV3DrNT4NMxYIRdQZRQFeRpwd9QtpiRHytEVwHe2h5Ix711JqhkDczSio6c3QZgEFvvJlaf2KerU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GScT1G/Q; arc=none smtp.client-ip=209.85.219.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-82a124f3a5bso29150b3a.0
-        for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 00:50:20 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GScT1G/Q"
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-89a09ef1e3aso10133096d6.0
+        for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 01:14:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773303279; x=1773908079; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FFkV5VaoXwwGdJuWMIX9rdpBK0Bevm1lwza2wIag9uc=;
+        b=GScT1G/QC06xwjZjYN4fFrJYyJxJmbl4ZisZxB4W5A/uG72wugoPvaypq0+s4v6SLD
+         KZ87wgBrD37o0xozTZeSvtAmoktf/FsZU7YqGpkK+dCvQ2PDPVcuCniCmeisHmeWUZYO
+         SesXyaia3c+w0tCUmey+8/B9YmQW7QYUcIaJ81nBuWnnAeYCMq+uP9B3bIV+e21ZT4w3
+         JI54AYhw0py911qybx4PYpf5Epcf8Y9jU/o0kAAxlmdcH7+oWr8VzQda4L6pC5vq8Y/l
+         +ZPluThT41N3n32mELnOv7uWGpY8okBHz2ub2T+YNo4/9CLfF9jskX6PTDhNH4JGUDsP
+         OfaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773301820; x=1773906620;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1773303279; x=1773908079;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/LhKuHInA3JH1whpdNQPR6DLSzWmpT0VhZEHTHtHiaY=;
-        b=vFbXlWrt0JYjxnRVe02O3dAZw/af/wEsRC/JEd0Jspj2iY34SzQ35RhxQ+onkzbG7J
-         7+2KihdLyU8EGI7TEWDWL2Vyrsa/kUgCDU5CDqLJN8BjKIJHpBgcTAIZmDPiP7YpOoaG
-         gMev0bouVORTbZZ67jZ/gmIgiKiA8cuma5doAAAHvZiLK6mT7s5I3s0VtOHMGIH4U62H
-         dnWINB+jigtkMLtKc+pfGC3wjmP0ndQm8k7w1nR05G/vK9JL0oNUdQQL6xJ5Zj1wvBrg
-         A0+B97zefDabP3gkFw+Y1pskeW1Gytam7tyXvVR065w0NgwvbbeTshdwXIvbZdTeBIlE
-         WlGQ==
-X-Gm-Message-State: AOJu0Yx4aNcTUNBapTnx0DHdIwoQXc9JV3Ht57d2JnmZu4lpGmCAe3/o
-	EP2ZkkwW3ZHtSPuv3f2YO06FpxpB9QihutLQVF44AxEX/cE95dNgsppqnFAJotEcBq+Arg==
-X-Gm-Gg: ATEYQzyDtJdsowIZRcrd3tFVKY+r72sMC0lfFarKs+LSmBPSBvoc1TtBZ2pxU6reDMK
-	mBUXqWSXL2p/8IXlAy3ih09v+iHWndThl2+KMT8jdWcZCc03ate0REAQwDCmUumsFnM1bz4ChBT
-	kmar8agVQhlkOKCo35nDbB4hDWmCd51M2K6stGoRgWoUhilMrUJKKFnABMtISYenLjoJngSH2cd
-	fGfRk687U8WokYLtPDcATfTDPQMyOuuG9yz6mbOao2to6pG8SlLUSfPLNL7J16BJxJFEK5ZM8zF
-	V6Dv2RJRv/EayQ1EVxT67eEhYfdl+QGOSvwyWq/AZnQrhenWQwXYTGyTV5GHqSpw1eby5nchaIy
-	CxbXF44KztrdTMwEV2omiDnj8J/3g4qhkQOPPKrb8fMxVSSDOvF9wFigq27LRZSGEF7qg4gRYHO
-	3N81hNXqPHDgT/vvNGcRI23EPXo+cwVM+Cs3kylNKym3syK4szU2IQTYyfTGXj3FM=
-X-Received: by 2002:a05:6a00:7595:b0:824:374a:1425 with SMTP id d2e1a72fcca58-829f70d58f3mr3400294b3a.53.1773301820500;
-        Thu, 12 Mar 2026 00:50:20 -0700 (PDT)
-Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com. [74.125.82.172])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a0725da07sm2014322b3a.19.2026.03.12.00.50.20
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Mar 2026 00:50:20 -0700 (PDT)
-Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-2be06c02f66so1252507eec.1
-        for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 00:50:20 -0700 (PDT)
-X-Received: by 2002:a05:6122:1b0f:b0:56a:9f03:1719 with SMTP id
- 71dfb90a1353d-56b47483c0fmr2043365e0c.7.1773301414536; Thu, 12 Mar 2026
- 00:43:34 -0700 (PDT)
+        bh=FFkV5VaoXwwGdJuWMIX9rdpBK0Bevm1lwza2wIag9uc=;
+        b=bthiMvXlJGbgHGtIWMYGlUoivetlo2+hFWQ/4D00qrQIpX+2MV2OTU7+mJkYds3NY5
+         AdYNfTkHApIDvloIglkbxSUurt4YC03Br/f3ar1ssVDlMNpUDcgKJ5CAo7w6b66Txctl
+         UdgHy/yh+bqGQh9/n2G8iKre/lp5TQit9h7l9icxpaefS9Gz/ySGp0hX2CqxTOIzda53
+         mtd7hMByUgGbTfRDe6eSGymrpMY1Hx7Ez1AIXuM74gmbA7teWyKQRGeYkEXBLI6vywpb
+         EVIgmgNaSXDg5AbU/uqOmSfzOWqHDwOq5K2r1kxF2w1JhfVVdvvHZpZjOpYYP/5KrfCc
+         mn4g==
+X-Gm-Message-State: AOJu0Ywt5WD4tXa1nj4zrSEiellxpJUcQeDAceABb+ap5m+QElVKtueB
+	McBNjKh5xGtfU4/b4VkrLsRD6KodriYylWcL6QGYQdXLeN5eAesw6SjR
+X-Gm-Gg: ATEYQzyME2JUDOd5Tes2fYt7xvgK6gkhRkcBIW0cp+IY9xmu6orRKAxGM6xYRLKewh3
+	cEzCoHkbSl0NPLy1Q3eTeKIOM2/WWOjye3RX1NFhmC3mjRkYRB8iUEiPIZisTvBvyc+heUoJEsG
+	/i/ngOZZk/u/qP2OEy548k9gQvtpMd+kSXX0IULhPN2gAVqg31ahaOnyaPE1UiakpFPYoOdPV8N
+	LltgVI1ETCUr5wtvt9mcG9KZyEuQPGiqygd7D58CuHOTjhZ8Wq68vykXpU2Z+XouYLEFZN7vkWR
+	uRkfOayp++JVpckvTXjuHFIxDOYHyV7jFOUMxvaMIEYwkSQ85Fc5+ZeZjNPg4LELDELr+m93LoZ
+	Ue2LThtRXlRo+Zb/lC5p6B04xgusOsBRiLuLWdfA0UEqUIREEu19Umx9zYg7nvxvHqHdBTzpAaD
+	wwomUWNER9Yh+illTJOg+B2w+IweAnmP3aQQ+g6Laqmq8=
+X-Received: by 2002:a0c:fec4:0:b0:89a:3013:be02 with SMTP id 6a1803df08f44-89a66b01056mr52519386d6.34.1773303278891;
+        Thu, 12 Mar 2026 01:14:38 -0700 (PDT)
+Received: from localhost.localdomain ([128.224.253.2])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a65c122c0sm30423076d6.23.2026.03.12.01.14.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Mar 2026 01:14:38 -0700 (PDT)
+From: Kevin Hao <haokexin@gmail.com>
+Subject: [PATCH net 0/2] net: macb: Fix Ethernet malfunction on AMD Versal
+ board after suspend
+Date: Thu, 12 Mar 2026 16:13:57 +0800
+Message-Id: <20260312-macb-versal-v1-0-467647173fa4@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260310153506.5181-1-fmancera@suse.de> <20260310153506.5181-2-fmancera@suse.de>
-In-Reply-To: <20260310153506.5181-2-fmancera@suse.de>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 12 Mar 2026 08:43:23 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdWj-7J5bMq=wpv12CGaV7xtq7=O3nLHLvOT_odxOE4ueA@mail.gmail.com>
-X-Gm-Features: AaiRm50vZ50YS2w5-6lod2s5W_kA6Ap8FK_nMN9HyVzDzz2AFRy7FAD50ZqnaYU
-Message-ID: <CAMuHMdWj-7J5bMq=wpv12CGaV7xtq7=O3nLHLvOT_odxOE4ueA@mail.gmail.com>
-Subject: Re: [PATCH 01/10 net-next v2] ipv6: convert CONFIG_IPV6 to built-in
- only and clean up Kconfigs
-To: Fernando Fernandez Mancera <fmancera@suse.de>
-Cc: netdev@vger.kernel.org, rbm@suse.com, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Leon Romanovsky <leon@kernel.org>, Selvin Xavier <selvin.xavier@broadcom.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, Simon Horman <horms@kernel.org>, 
-	Saurav Kashyap <skashyap@marvell.com>, Javed Hasan <jhasan@marvell.com>, 
-	"maintainer:BROADCOM BNX2FC 10 GIGABIT FCOE DRIVER" <GR-QLogic-Storage-Upstream@marvell.com>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <martin.petersen@oracle.com>, Nilesh Javali <njavali@marvell.com>, 
-	Manish Rangankar <mrangankar@marvell.com>, Varun Prakash <varun@chelsio.com>, 
-	Alexander Aring <aahringo@redhat.com>, David Teigland <teigland@redhat.com>, 
-	Andreas Gruenbacher <agruenba@redhat.com>, Nikolay Aleksandrov <razor@blackwall.org>, 
-	David Ahern <dsahern@kernel.org>, Pablo Neira Ayuso <pablo@netfilter.org>, 
-	Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>, David Howells <dhowells@redhat.com>, 
-	Marc Dionne <marc.dionne@auristor.com>, 
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, Xin Long <lucien.xin@gmail.com>, 
-	Jon Maloy <jmaloy@redhat.com>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Eric Biggers <ebiggers@kernel.org>, Michal Simek <michal.simek@amd.com>, 
-	Luca Weiss <luca.weiss@fairphone.com>, Sven Peter <sven@kernel.org>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Gow <david@davidgow.net>, 
-	Kuan-Wei Chiu <visitorckw@gmail.com>, Ryota Sakamoto <sakamo.ryota@gmail.com>, 
-	Kir Chou <note351@hotmail.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, Vikas Gupta <vikas.gupta@broadcom.com>, 
-	Bhargava Marreddy <bhargava.marreddy@broadcom.com>, 
-	Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>, =?UTF-8?Q?Markus_Bl=C3=B6chl?= <markus@blochl.de>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, open list <linux-kernel@vger.kernel.org>, 
-	"open list:M68K ARCHITECTURE" <linux-m68k@lists.linux-m68k.org>, 
-	"open list:INFINIBAND SUBSYSTEM" <linux-rdma@vger.kernel.org>, 
-	"open list:NETRONOME ETHERNET DRIVERS" <oss-drivers@corigine.com>, 
-	"open list:BROADCOM BNX2FC 10 GIGABIT FCOE DRIVER" <linux-scsi@vger.kernel.org>, 
-	"open list:DISTRIBUTED LOCK MANAGER (DLM)" <gfs2@lists.linux.dev>, "open list:ETHERNET BRIDGE" <bridge@lists.linux.dev>, 
-	"open list:NETFILTER" <netfilter-devel@vger.kernel.org>, 
-	"open list:NETFILTER" <coreteam@netfilter.org>, 
-	"open list:RXRPC SOCKETS (AF_RXRPC)" <linux-afs@lists.infradead.org>, 
-	"open list:SCTP PROTOCOL" <linux-sctp@vger.kernel.org>, 
-	"open list:TIPC NETWORK LAYER" <tipc-discussion@lists.sourceforge.net>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMV1smkC/x3MTQqAIBBA4avIrBPUfsCuEi3UxhooC40IxLsnL
+ b/FexkSRsIEI8sQ8aFEZ6iQDQO3mbAip6UalFCDaKXkh3GWPxiT2Tn2nW6tNU5oD7W4Inp6/9s
+ EAW+YS/kAAGvwsWIAAAA=
+X-Change-ID: 20260311-macb-versal-e5493bbac09f
+To: netdev@vger.kernel.org
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Kevin Hao <haokexin@gmail.com>, Quanyang Wang <quanyang.wang@windriver.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.2
 
-Hi Fernando,
+Hi,
 
-On Tue, 10 Mar 2026 at 16:37, Fernando Fernandez Mancera
-<fmancera@suse.de> wrote:
-> Maintaining a modular IPv6 stack offers image size and memory savings
-> for specific setups, this benefit is outweighed by the architectural
-> burden it imposes on the subsystems on implementation and maintenance.
-> Therefore, drop it.
->
-> Change CONFIG_IPV6 from tristate to bool. Remove all Kconfig
-> dependencies across the tree that explicitly checked for IPV6=m. In
-> addition, remove MODULE_DESCRIPTION(), MODULE_ALIAS(), MODULE_AUTHOR()
-> and MODULE_LICENSE().
->
-> This is also replacing module_init() by device_initcall(). It is not
-> possible to use fs_initcall() as IPv4 does because that creates a race
-> condition on IPv6 addrconf.
->
-> Finally, modify the default configs from CONFIG_IPV6=m to CONFIG_IPV6=y
-> except for m68k as according to the bloat-o-meter the image is
-> increasing by 330KB~ and that isn't acceptable. Instead, disable IPv6 on
-> this architecture by default. This is aligned with m68k RAM requirements
-> and recommendations [1].
->
-> [1] http://www.linux-m68k.org/faq/ram.html
->
-> Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+On Versal boards, the tx/rx queue pointer registers are cleared after suspend,
+which causes Ethernet malfunction. This patch series addresses this issue by
+reinitializing the tx/rx queue pointer registers and the rx ring.
 
-Thanks for your patch!
+---
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
+Cc: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
 
->  arch/m68k/configs/amiga_defconfig           | 45 +-------------------
->  arch/m68k/configs/apollo_defconfig          | 46 +-------------------
->  arch/m68k/configs/atari_defconfig           | 45 +-------------------
->  arch/m68k/configs/bvme6000_defconfig        | 45 +-------------------
->  arch/m68k/configs/hp300_defconfig           | 47 +--------------------
->  arch/m68k/configs/mac_defconfig             | 45 +-------------------
->  arch/m68k/configs/multi_defconfig           | 45 +-------------------
->  arch/m68k/configs/mvme147_defconfig         | 45 +-------------------
->  arch/m68k/configs/mvme16x_defconfig         | 45 +-------------------
->  arch/m68k/configs/q40_defconfig             | 45 +-------------------
->  arch/m68k/configs/sun3_defconfig            | 45 +-------------------
->  arch/m68k/configs/sun3x_defconfig           | 45 +-------------------
+---
+Kevin Hao (2):
+      net: macb: Introduce gem_init_rx_ring()
+      net: macb: Reinitialize tx/rx queue pointer registers and rx ring during resume
 
-Why are the stats not the same for each file?
+ drivers/net/ethernet/cadence/macb_main.c | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
+---
+base-commit: f90aadf1c67c8b4969d1e5e6d4fd7227adb6e4d7
+change-id: 20260311-macb-versal-e5493bbac09f
 
-> --- a/arch/m68k/configs/apollo_defconfig
-> +++ b/arch/m68k/configs/apollo_defconfig
-
-> @@ -384,7 +343,6 @@ CONFIG_FB=y
->  CONFIG_FRAMEBUFFER_CONSOLE=y
->  CONFIG_FRAMEBUFFER_CONSOLE_LEGACY_ACCELERATION=y
->  CONFIG_LOGO=y
-> -# CONFIG_LOGO_LINUX_VGA16 is not set
-
-Unrelated change.
-
->  # CONFIG_LOGO_LINUX_CLUT224 is not set
->  CONFIG_HID=m
->  CONFIG_HIDRAW=y
-
-> --- a/arch/m68k/configs/hp300_defconfig
-> +++ b/arch/m68k/configs/hp300_defconfig
-
-> @@ -386,8 +345,6 @@ CONFIG_FB=y
->  CONFIG_FRAMEBUFFER_CONSOLE=y
->  CONFIG_FRAMEBUFFER_CONSOLE_LEGACY_ACCELERATION=y
->  CONFIG_LOGO=y
-> -# CONFIG_LOGO_LINUX_MONO is not set
-> -# CONFIG_LOGO_LINUX_VGA16 is not set
-
-Two more.
-
->  CONFIG_HID=m
->  CONFIG_HIDRAW=y
->  CONFIG_UHID=m
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
+Best regards,
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Kevin Hao <haokexin@gmail.com>
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
