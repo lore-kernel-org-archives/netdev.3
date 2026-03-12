@@ -1,124 +1,162 @@
-Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
+Received: from mail-oa1-f97.google.com (mail-oa1-f97.google.com [209.85.160.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80DDF402B8A
-	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 20:07:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E9140242B
+	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 20:08:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773346035; cv=none; b=UQGsIbamAxZcBwlgY33SkyeOjfRGswTmAXrqSYNgR4tkCEje9hahRygFY6vputFgnFeHiGy2ltIedP0XQhbrouNCP1Zy93VExtKFnwQm8CsyFt7Td3zlf+7Xq3zDFyfOh6iZ/Ta9qJLNrxI18+GKLuMj6EHIpYPHf0VZHTpLcac=
+	t=1773346127; cv=none; b=lshFOqSC8Xg8Tf56eu/szPjT+4LnHkdB8LAaIHfPCA9zJWmidmHyj36/vl/EJuxU7FU+/fCHtKNPXADYlUO7khQKBjstFiJFSweH1xJnLCIC0TGCh1l3j26QzeM6W1XoPaILP0XtJ5caZrXFVRf82DMkFg8bJ4r5GTuFF4zkLaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773346035; c=relaxed/simple;
-	bh=CMNpkQG0OX1ZmIY4eNoRhc5pN1fKRttQ1DPPmQGZ5Ok=;
-	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=RvbKvORYRSoGYwXzBS3/D/kLA/c/rYnYu6vumdfd5i35EnDYK8B0vMi5qw2iHYmgvDkzKR+5xtKBqGmiuzzSK7F1oiwrq9G8cOfKeOwj8o2Lfl7nVMpkgWnlB2XMZBpmvmVwBGbrixCD+CSiaq97yfJVIUqf5a3GCc3vKD/A0ZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=mAm7PGQu; arc=none smtp.client-ip=209.85.167.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1773346127; c=relaxed/simple;
+	bh=asThX1l8tDd6l/+GF6UQs2U5lUc2VBLgn12nAaEGiHA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FnIyQDbXWjingGIOQU8F4/A7qOqXsxnp4yzepxTJQk5j+QuxUzU2wVqY6U7/VquYdBIJARgT16zbuumu+n+VpNbhAf/JRSi8RuajKNuKfTl5H4O4fSBfMkexLgMIu56aSFBT5BwIZkgeXJuP5RJ3uNZGwZM6kWJMquj9th0Ge5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=OGvQK5Yu; arc=none smtp.client-ip=209.85.160.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="mAm7PGQu"
-Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-463a0e14abfso949065b6e.2
-        for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 13:07:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1773346032; x=1773950832; darn=vger.kernel.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TE8SfkVbVBBUM4eryiGIysgS23QgsEj7qFxF34WfEmM=;
-        b=mAm7PGQu766QLdcOkMPI+qUB5mZZPzXals0SwH6kB2P+4sWPgb87QZPSYPCL11TtpI
-         AX+rgqNIK1TeOHSn30zOXJNgxv7H6LXbfhriQjSY7sjIKP/beCMLNEOEPeYh1Vj6YLqG
-         Nu/X7Bwf2kOCIE4tslvrqPNVSSnpuR6dJgstefLiAihaLia32PeBJK0dhMbg85k9UxwR
-         ZxWYe5yLniCfvazFw3scVVby8X+aIJ3Gxof3H3eExroFRWiaSrYtaZ9hdmYXYEXrCJRB
-         /Pl+BeXF97DSlmpqrfgaAhIGgYWUjN/xWBkDSQ7I/LdNQubEovFcFEc2uZ96fp7VaXKs
-         oqhQ==
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="OGvQK5Yu"
+Received: by mail-oa1-f97.google.com with SMTP id 586e51a60fabf-4094b31a037so1068278fac.1
+        for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 13:08:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773346032; x=1773950832;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TE8SfkVbVBBUM4eryiGIysgS23QgsEj7qFxF34WfEmM=;
-        b=Np7eIfA9KbFGDpFnGJMMLYcjl9bIovx5cxYrQPkPYgkaAam2TWEPhs4va3JrAaMF1n
-         xoLPhN+Occ+Ggm0aXtWgyoBBjSzogHbcaY13OUBIRiDrlR2BUsLD5CFjtfFaY9sduBSL
-         P6nt3rW4XsFEXDVg70gF6f7VKalCjCxa8a83YOnirhbBVTSMFB0on87831eHUGGEJ7oG
-         L7T77FM+30sIbTgazFL5031Qcck2m8bHq/S2z9ks7tgEhFLJ4d7poiNc+iiDHTUNHtyQ
-         U0nHI6dhqDllNUoHKidH5nTsOhBn5SUAKgQeQ23P77uSSOAznM2urh/s1bGRkzl1s+mx
-         LiVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWlV8Az8/rzMSAm6khaI/AUlGa6KqZtsTslc4tIt6Kh5FcW4gUfrxUbGQeg9itMdUBtj/S9nj0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzsUZ+hI8jsLbh8vL0gebPpw2obiwYWPaGSqag/YzDyvX0Y7r3K
-	Uc3R4mId7ojd0JaRk7/ZGbas87Aupb8x9UOTJcHYxcGTRELpa4WWUrZZyWi01m9O3Gk=
-X-Gm-Gg: ATEYQzxEdZ61X4FUbMOPV4GQv1fJtR4qNCEOOd5ZhqIrFB2lEvo4U8yVf+CsmbnROX2
-	4D4hT41yifhmfQwkJeBEynG2IexX0SJbBPB/KbMdU+q3xFZ6dfSjYXKimmVyQRIdoJRIzTuzMi0
-	7NxLp8LTU3An4i9LUaHJpsKayKiWCaghOAtnSGIB5ermS1+ffnMdCJ3EaW2KMyelJvz9Q9BVV11
-	De1SKv0P0Ph9DNli+r8KQmXemduE+bq/4VvS1fyV0bHJAb+fwzR88jBi9GkJpBdWqmJFU6Aad9N
-	HQ/6mkJGnB4xdsXwkBOQ2r+qbjxpPSg9CqM53pBwOKZt/CNpt10HEUOvSfOFn5scy9go1iP/S/6
-	tE+HdV0f+M5woQPMvPoMvHshBi8NknYB1jBZ7NcqF2eKH7jDM0Q2/bcqE7/rF/mXrA4l0n847An
-	mO0EgNUd91yZgUNkxBKgN4Ap0btAk14DmPqFhoTMY=
-X-Received: by 2002:a05:6808:86a4:b0:467:2584:873f with SMTP id 5614622812f47-467575432eamr241621b6e.40.1773346032433;
-        Thu, 12 Mar 2026 13:07:12 -0700 (PDT)
-Received: from [127.0.1.1] ([2600:8803:e7e4:500:1f95:f82e:8747:8137])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4177e6c7885sm5600081fac.17.2026.03.12.13.07.10
+        d=1e100.net; s=20230601; t=1773346125; x=1773950925;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+Wj5xPQzYKHKClh0NTAHjyT/9SZz4TT3jIl1wrDgGOc=;
+        b=M+0rIhc/ft7UsqhmIsNF03q/u0WIAJmubGaMyBUhO/Ha0d+7WF3zUcOR97WXk+Xctm
+         dqKXxksb0O1uMtc9ziZghWUCzC/pEyiShpcImt8wU/copIOVnqYUYgn21uWaam1Ha/sW
+         SBp4A60iPwjZS3fISgVTPUcuZmAftvbCZDNz/ev5PHfw05oLGzhN/5b38DlRhLe1wpiK
+         eqGzDd8dEFYbCkAaPsouwgeygcf6IiHsI0yufawrf3K4++ZEFF+B53ADnoWzvUMW3+Je
+         OjysAsL8E3ok324p0VDSze92+sFnW2UZGSHMXdLTURI9b26Fpb5H3qecvfs4Qafjodlh
+         mQKQ==
+X-Gm-Message-State: AOJu0YyIcncCtabn3UBIIvtoSqJSWXnbhwOL6Qdy/eAhhCb5RTWKm9T3
+	5tLjvAMFeu4OcH+Tq1ozCjpWfEM5ySIWF0uid2qQWkbN+JQQRaDzj5dvaWHCSMkqmRFIwRQPPkL
+	gnujT8UakRHmimVtsyFJgpY5tFr53NkKVGbwnTEnP207xVp/kCWPCRJh3F4VFh3ZD/L1RWcGMIM
+	lD+IqNH3DTa3fSbNxNnrHQ8TWBouAudrR9w5vBDEmkL0pso4WDgCk46+blF9V60IZ2LqrhsuLwG
+	w3xjKOuiQ==
+X-Gm-Gg: ATEYQzy+CK/xkCK3sH9aD8cI/h7woJVCJWG6765WxBw75Gi6L/HhxMAQtZ5x6NffseD
+	sQKdhLTj6BFz1yuHomCIWZ7MONB5aMyXDcLdrmcmpvfriTmofUmF64/BQIY/TgWWP+aBfmPqX41
+	7DU9bImdv8u0fLh380jFLow37h3p8LwVgTD9eyw88vf4HyThOBHds6yl0b2YAEw9UYCJf67Ikn5
+	11f5/JBGwm3pU1hDLZzLDCZaHEKqh3mt2pyL4ED6RPbNXMZezjIPL2Jb3gaUTuFFh0xt+bLEEZM
+	pRC9yAfcLj+yKgk/UfjtJR1wd5M4YX3xCSAe/ZZYoSH8hJNcK2sdoJHYyxeAYNAmy4DqPNuwTUN
+	W6q8oK/ep2AsvcEi+uh2BtYKnXmd+hEHyT4LMGxk9Aji9l91pTo4bvgOvcuJwFH0pDz6fGLiRA8
+	vH/STKCUwcRns0UkkfquFvAuoq3ddmvcg52wn+ekEjHfmvxHl8eBpUkzQ=
+X-Received: by 2002:a05:6871:e708:b0:417:211:33ca with SMTP id 586e51a60fabf-417b946b07dmr500036fac.36.1773346124611;
+        Thu, 12 Mar 2026 13:08:44 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-27.dlp.protect.broadcom.com. [144.49.247.27])
+        by smtp-relay.gmail.com with ESMTPS id 586e51a60fabf-4177e1fb7d3sm872308fac.3.2026.03.12.13.08.44
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 12 Mar 2026 13:08:44 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-dl1-f72.google.com with SMTP id a92af1059eb24-128edc72e5bso9779378c88.1
+        for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 13:08:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1773346123; x=1773950923; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+Wj5xPQzYKHKClh0NTAHjyT/9SZz4TT3jIl1wrDgGOc=;
+        b=OGvQK5YuukgwQ/Dz/b91XjqSS2yJUjcZZzZWm6d7EJeP3okcOZSuHr8PdkKAzxqzUx
+         g03+F5e6FYxPlHkmTOUA+dsDRsUps7KRo2Rdh8T8Bs7A50W5MATlTocrym12hui/Q/T0
+         ruGcif/CEdjuB1JyqXVPsoo2pybIBmd9Oe+IQ=
+X-Received: by 2002:a05:7022:e1d:b0:11e:163:be60 with SMTP id a92af1059eb24-128f3deb72emr402568c88.31.1773346122757;
+        Thu, 12 Mar 2026 13:08:42 -0700 (PDT)
+X-Received: by 2002:a05:7022:e1d:b0:11e:163:be60 with SMTP id a92af1059eb24-128f3deb72emr402539c88.31.1773346121900;
+        Thu, 12 Mar 2026 13:08:41 -0700 (PDT)
+Received: from stbsdo-bld-1.sdg.broadcom.net ([192.19.161.248])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-128e7cb558fsm10210195c88.10.2026.03.12.13.08.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2026 13:07:12 -0700 (PDT)
+        Thu, 12 Mar 2026 13:08:41 -0700 (PDT)
+From: justin.chen@broadcom.com
+To: netdev@vger.kernel.org
+Cc: bcm-kernel-feedback-list@broadcom.com,
+	horms@kernel.org,
+	pabeni@redhat.com,
+	kuba@kernel.org,
+	edumazet@google.com,
+	davem@davemloft.net,
+	andrew+netdev@lunn.ch,
+	florian.fainelli@broadcom.com,
+	Justin Chen <justin.chen@broadcom.com>
+Subject: [PATCH net] net: bcmasp: fix double frees during remove
+Date: Thu, 12 Mar 2026 13:08:14 -0700
+Message-Id: <20260312200814.1977164-1-justin.chen@broadcom.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v6 15/18] clk: mediatek: Add MT8189 dispsys clock
- support
-From: David Lechner <dlechner@baylibre.com>
-To: "irving.ch.lin" <irving-ch.lin@mediatek.com>
-Cc: Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Richard Cochran <richardcochran@gmail.com>, 
- Bartosz Golaszewski <brgl@kernel.org>, Chen-Yu Tsai <wenst@chromium.org>, 
- Miles Chen <miles.chen@mediatek.com>, linux-clk@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- netdev@vger.kernel.org, Project_Global_Chrome_Upstream_Group@mediatek.com, 
- Qiqi Wang <qiqi.wang@mediatek.com>, sirius.wang@mediatek.com, 
- vince-wl.liu@mediatek.com, jh.hsu@mediatek.com
-In-Reply-To: <20260309120512.3624804-16-irving-ch.lin@mediatek.com>
-References: <20260309120512.3624804-1-irving-ch.lin@mediatek.com>
- <20260309120512.3624804-16-irving-ch.lin@mediatek.com>
-Date: Thu, 12 Mar 2026 15:06:36 -0500
-Message-Id: <177334599652.4124794.12067751220383417571@freyr>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=622; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=CMNpkQG0OX1ZmIY4eNoRhc5pN1fKRttQ1DPPmQGZ5Ok=;
- b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBpsxzklpGpUf/ZQQIyqz1DGbRxkAj3JX3gj9Fst
- kHYKcWEcLiJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCabMc5AAKCRDCzCAB/wGP
- wAB9B/0amsj5mtHGl7JwYJ4m/8bCDd5vMrY9EYIYFmV67HC/3VsGnfj1wPsBIVVvEBbRl+IhIIA
- ZsVi+f/fEjvU6prplQZ/YZd8np1yTT1IWdeKgbGDDKpmhj+ay9gbv30oTZ7hntcUeH8jUMJrP/q
- tZU8uftAxgDKfME+lIWGswpoBwlUSOzobxeouycG+WNAHOkJA6P9MGeEtvRIK+FKpHbvhe8km04
- Ox8e94DXUVshX9UMS9lDnF5G0nMYaWHn1RibGjXUQ/s0dnAAbbdC5p20fdx+NRF7/D6TTyYAO4N
- AauC6vpKcGuJ+POQeLop+wx9WdMiq97CgGUQthHxIRLRvwFx
-X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
- fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-On Mon, 09 Mar 2026 20:04:57 +0800, irving.ch.lin <irving-ch.lin@mediatek.com> wrote:
-> Add support for the MT8189 dispsys clock controller,
-> which provides clock gate control for display system.
-> 
+From: Justin Chen <justin.chen@broadcom.com>
 
-...
+We have two double frees during remove.
+- We do not need to free wol_irq since it was instantiated with
+  devm_request_irq(). So devres will free for us.
+- Switch to devm_clk_get_optional() instead of
+  devm_clk_get_optional_enabled() so we can manage the clock ourselves.
 
-> +	GATE_MM0(CLK_MMSYS_0_DISP_DVO, "mmsys_0_disp_dvo", "disp0_sel", 20),
-> +	GATE_MM0(CLK_MMSYS_0_DISP_DSI0, "mmsys_0_CLK0", "disp0_sel", 21),
+Fixes: a2f0751206b0 ("net: bcmasp: Add support for WoL magic packet")
+Fixes: 490cb412007d ("net: bcmasp: Add support for ASP2.0 Ethernet controller")
+Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+---
+ drivers/net/ethernet/broadcom/asp2/bcmasp.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-Why the random CAPS here? Seems like the name should be "mmsys_0_disp_dsi0"
-instead of "mmsys_0_CLK0".
-
-> +	/* MM1 */
-> +	GATE_MM1(CLK_MMSYS_1_DISP_DSI0, "mmsys_1_CLK0", "dsi_occ_sel", 0),
-
-Similar case here.
-
+diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp.c b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
+index aa6d8606849f..1bfc1f90cd62 100644
+--- a/drivers/net/ethernet/broadcom/asp2/bcmasp.c
++++ b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
+@@ -1152,12 +1152,6 @@ void bcmasp_enable_wol(struct bcmasp_intf *intf, bool en)
+ 	}
+ }
+ 
+-static void bcmasp_wol_irq_destroy(struct bcmasp_priv *priv)
+-{
+-	if (priv->wol_irq > 0)
+-		free_irq(priv->wol_irq, priv);
+-}
+-
+ static void bcmasp_eee_fixup(struct bcmasp_intf *intf, bool en)
+ {
+ 	u32 reg, phy_lpi_overwrite;
+@@ -1255,11 +1249,15 @@ static int bcmasp_probe(struct platform_device *pdev)
+ 	if (priv->irq <= 0)
+ 		return -EINVAL;
+ 
+-	priv->clk = devm_clk_get_optional_enabled(dev, "sw_asp");
++	priv->clk = devm_clk_get_optional(dev, "sw_asp");
+ 	if (IS_ERR(priv->clk))
+ 		return dev_err_probe(dev, PTR_ERR(priv->clk),
+ 				     "failed to request clock\n");
+ 
++	ret = clk_prepare_enable(priv->clk);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to start clock\n");
++
+ 	/* Base from parent node */
+ 	priv->base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(priv->base))
+@@ -1363,7 +1361,6 @@ static int bcmasp_probe(struct platform_device *pdev)
+ 	return ret;
+ 
+ err_cleanup:
+-	bcmasp_wol_irq_destroy(priv);
+ 	bcmasp_remove_intfs(priv);
+ 
+ 	return ret;
+@@ -1376,7 +1373,6 @@ static void bcmasp_remove(struct platform_device *pdev)
+ 	if (!priv)
+ 		return;
+ 
+-	bcmasp_wol_irq_destroy(priv);
+ 	bcmasp_remove_intfs(priv);
+ }
+ 
 -- 
-David Lechner <dlechner@baylibre.com>
+2.34.1
+
