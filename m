@@ -1,91 +1,140 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C703BD65E;
-	Thu, 12 Mar 2026 19:58:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E1F2401A2D
+	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 20:07:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773345530; cv=none; b=lfuS0UuQsreyhOCF9AYCPKxLnnEjA4rscGxnVtgbl44rr3HACDfVHIpUyQaILG6mis0MNdwLjElMpIMjxfIaOGpyvKfkvWUHCV9yQOlmpR6ijFSekFnYhGSo22VRObY1boXEjEjObuwUEmcukSJpxiIKaomObFdFOe+ygkzmjLs=
+	t=1773346027; cv=none; b=b5xrA2sPd5eNkutQ1UFuENMKIWfVbo353nersLJGwAuV+Uau6ABIiv2x7Ynq1o3Cc8Qjz0zd1Vpj1Fg4likskYyCLdwWHUMH6it7PPU9KCvI0K5HC7bi0bxDizaohc+Lu5ALVKI4MlOurt4fkJ3/BVguhMp41lgFxI/TW65Mb9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773345530; c=relaxed/simple;
-	bh=cQtDzB0VK26/gkhZcE2vnXDoKRyVorkL63PuotcbCw4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HXVJ+QAk1UWxj2iwFIDWEw+elqCRClMsBCRJORphqpxUMXngGtW4dJMton19HsLkf6t/ff4t0h8H+pMQP+hTrGlKNw8VI3i7tweKTJIyw9/P2Ra0E1ql+JjX5AndchK1BzvhTMJ3bBFwvedecSYicYHka1/cHuVqmBuUTXV8OqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=U/xpEQlk; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1773346027; c=relaxed/simple;
+	bh=9LTfdfEyjL4iMdSHB+Kvse1ywfY0yqyvL/BRU9og3zk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QtbMdi1DUzgxgMsd8mi4d9Z/qllVujJSx0Pew3rIaUoJc+W4QLVn45/ffF+hqkzzRAyI8d8g+0OE+RR35LQyS5Xi0DytrW6jW6jnBvYX5H0dRn2WbzaJhBfNEIJEL2NFPQuw99nrDP7B2cOqWAsaIw42Y50i/eM0u9Pq526NOUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HjVY3MBO; arc=none smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="U/xpEQlk"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=ZgJABhOLNHlITvKzLeWHM0YIe4ZBlXE2o4k163INn4w=; b=U/xpEQlkF3IsNm2lh+nnErN9zq
-	epnmshj4pSw5KbQY+Nk1bzb6EFU0WZOGUKYDWVjAfIH95CLIYUAXKzyeopc/kRtP9qTiR72Ggy5jv
-	hE25aikp5v07JzsYWFQRpjrhhqX7+JLtNWE8w/aC5bEYWqvtpahShw4sQziqSfLGXxwx9L8IXk995
-	/+Ldsakxm9yFMIuJE860sz21xU6ayrlC3odjteHZ8iXykkf76+uJsxJRzCBOnQY4o1bN1OSQ5jws5
-	1mcuSZ4CmwDt5l9v4G61yzLn+k5uGpl37TUPOxFYtNz5w6lymS1pWZ/lip5bcCRy921j0+ChuQcbQ
-	qbTKrjQQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:37520)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1w0mBA-000000008In-2Tid;
-	Thu, 12 Mar 2026 19:58:44 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1w0mB8-000000007T6-0BQG;
-	Thu, 12 Mar 2026 19:58:42 +0000
-Date: Thu, 12 Mar 2026 19:58:41 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Charles Perry <charles.perry@microchip.com>
-Cc: netdev@vger.kernel.org, Conor Dooley <conor@kernel.org>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: macb: set default_an_inband to true for
- SGMII
-Message-ID: <abMa8e_2fjRkeOix@shell.armlinux.org.uk>
-References: <20260312133856.2911581-1-charles.perry@microchip.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HjVY3MBO"
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-79495b1aaa7so15404577b3.1
+        for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 13:07:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773346025; x=1773950825; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=R3HJ0No0Nr2joHFlv9JslreD/RzRYlwKb5xVL/UtKQ0=;
+        b=HjVY3MBOsPDlN34tbspbzg1rKSxiOgkfBMf+uQNZ5Y0ltkdMewG9ERmgRr/r+SdKOu
+         IdqHewxNrKpIm9CW7RCnUaKNRRNr2fTgmPTAjsi9Hr3jpdo9a7LyAEj9K1GcYSw6oWis
+         oGZzbFabF1Yl8KFeYe6sBoz0bqaJXZXj86svU8TqnTYU/PupprK6R3UjBig0yVIwSp7h
+         yQqCd1stNtEatYZIYa5wjS0kcpY2rtc5LE9IJ82k6X7VYmxojMcBsA75VoVLAydffUen
+         u9LLTZyKAPZwRuZNboSWcYLertWQA7bhy8iBvl/Alf4/j9JsvazKBgzHFPluIRpVsSS/
+         x71w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773346025; x=1773950825;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=R3HJ0No0Nr2joHFlv9JslreD/RzRYlwKb5xVL/UtKQ0=;
+        b=fGWSg7AJ/1RRVjyUr4nl6dZYESLDKOfBBNO2EiiypvluZC9qlAktye3S6yYL05aDUD
+         tWU0xwq7nMQwdVB+Hy9zt1GBRnFYpRDtJkDiEf8HpF3VLmB/0yWADa4+qzU9U3gYosTg
+         F7F9d7byqi6STRZ1jBrYR6pzhh7oWdYTu7hkM6/PcT0Fj0JB6EKWIVQgYhDSjfNmSd+t
+         M0DqogBNuOsndUTQohcyUleEcG4pA84ffSYb+1b5FOdNBxjS1CxfJYoxU+svKmqI1G1D
+         yqkL//idH3psBe1vi5pgwYZxMLAorSUGP5S+BWAYeUcY6CiqWDTUHcsLo/7b6lUfxdsn
+         QCFg==
+X-Forwarded-Encrypted: i=1; AJvYcCXXcYQ4YZOT82t1UCxOh4w/1gbsM2TOEV03NxgEPBJGlSBckIhbos+ZEezC+QoB865dLuljK34=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXCHaNUXzPZShFPQYSn5CMocccMfbFjzE+rhjGwNUc7Jd8sMnK
+	IL+Shg5NjMsxeWC+VSfbaF0Qu+4GNedK5di8GV2vnF0LfkQuKSQxkPG5
+X-Gm-Gg: ATEYQzxqz0RM1Qg2jjHzsZvXMeDi/eem1BrdJlIdBZFvkfxvHM89WOa3+gFr9MVaFzX
+	K7dXFcdnGF/vMdLKYQVE7/AncRLuVrouxkkVXAvmFayUJuGM/5dHIDk9A50xLhi72A3kKWo/8/h
+	d3AM96yVT/eWlASXfRFSacP4euTmeXUhJWnUp891rfne4oxAwxXTu3v+U4yoI/tP0THiQLl5Gkg
+	Smo2OfvByQ7JpvYm0MyJIV9mtwYbn7sbWsn3ua1rvXBh8LP0txK0pmh6/2aN70Oe6EsGCqi9UoO
+	xWURofSCehDWB07chB7AedaLQHF1v6EqmwDEPkCKeh2kEs3Gf9a2Q3BShkQe/5QNv0mmRIuJwD0
+	oJ5s8Y8y/0CAtGClSWa0ra6V5XE2c9I6bvCtRDezxwhYEGChL3cHR2wrZJkgV4L4BXj8Nofs1iu
+	okF87LLaUB9h6VUcBSMSz6k0h/PEGMyUhef/7a4ykaytAQEEn6se5cSJcgjGpbkf9JyzOirfFxC
+	KEH56hrG/nNDWDVzw==
+X-Received: by 2002:a05:690c:d88:b0:796:2fde:5dfe with SMTP id 00721157ae682-79a1c18d08amr10225327b3.38.1773346025526;
+        Thu, 12 Mar 2026 13:07:05 -0700 (PDT)
+Received: from lvondent-mobl5 ([72.188.211.115])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-79917f1d2f6sm35609007b3.42.2026.03.12.13.07.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Mar 2026 13:07:05 -0700 (PDT)
+From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+To: davem@davemloft.net,
+	kuba@kernel.org
+Cc: linux-bluetooth@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [GIT PULL] bluetooth 2026-03-12
+Date: Thu, 12 Mar 2026 16:06:54 -0400
+Message-ID: <20260312200655.1215688-1-luiz.dentz@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260312133856.2911581-1-charles.perry@microchip.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Mar 12, 2026 at 06:38:55AM -0700, Charles Perry wrote:
-> Most platforms using GEM in SGMII mode use in-band autonegotiation
-> because it is on by default in GEM's 1G PCS and is always on since
-> commit e276e5e40e92 ("net: macb: Disable PCS auto-negotiation for SGMII
-> fixed-link mode"). Leave it on if possible using the "default_an_inband"
-> flag of "struct phylink_config" so that platforms that lack in-band
-> autonegotiation configurability at the PHY do not break with commit
-> 1338cfef1ff1 ("net: macb: fix SGMII with inband aneg disabled") which
-> will turn off in-band autoneg for non hot pluggable PHYs.
-> 
-> Once the majority of the PHY drivers that support SGMII have the
-> ->config_inband() callback, this commit could be reverted so that non
-> hot pluggable PHY use outband negotiation with macb, like its the case
-> for other MACs.
-> 
-> Fixes: 1338cfef1ff1 ("net: macb: fix SGMII with inband aneg disabled")
-> Closes: https://lore.kernel.org/r/20260304-nebulizer-rounding-40fbc81a2ba1@spud
+The following changes since commit c38b8f5f791ecce13ab77e2257f8fd2444ba80f6:
 
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+  net: prevent NULL deref in ip[6]tunnel_xmit() (2026-03-12 16:03:41 +0100)
 
-Thanks!
+are available in the Git repository at:
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+  git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-03-12
+
+for you to fetch changes up to 99b2c531e0e797119ae1b9195a8764ee98b00e65:
+
+  Bluetooth: qca: fix ROM version reading on WCN3998 chips (2026-03-12 15:29:29 -0400)
+
+----------------------------------------------------------------
+bluetooth pull request for net:
+
+ - hci_sync: Fix hci_le_create_conn_sync
+ - MGMT: Fix list corruption and UAF in command complete handlers
+ - L2CAP: Disconnect if received packet's SDU exceeds IMTU
+ - L2CAP: Disconnect if sum of payload sizes exceed SDU
+ - L2CAP: Fix accepting multiple L2CAP_ECRED_CONN_REQ
+ - L2CAP: Fix type confusion in l2cap_ecred_reconf_rsp()
+ - L2CAP: Validate L2CAP_INFO_RSP payload length before access
+ - L2CAP: Fix use-after-free in l2cap_unregister_user
+ - ISO: Fix defer tests being unstable
+ - HIDP: Fix possible UAF
+ - SMP: make SM/PER/KDU/BI-04-C happy
+ - qca: fix ROM version reading on WCN3998 chips
+
+----------------------------------------------------------------
+Christian Eggers (3):
+      Bluetooth: LE L2CAP: Disconnect if received packet's SDU exceeds IMTU
+      Bluetooth: LE L2CAP: Disconnect if sum of payload sizes exceed SDU
+      Bluetooth: SMP: make SM/PER/KDU/BI-04-C happy
+
+Dmitry Baryshkov (1):
+      Bluetooth: qca: fix ROM version reading on WCN3998 chips
+
+Luiz Augusto von Dentz (3):
+      Bluetooth: ISO: Fix defer tests being unstable
+      Bluetooth: HIDP: Fix possible UAF
+      Bluetooth: L2CAP: Fix accepting multiple L2CAP_ECRED_CONN_REQ
+
+Lukas Johannes Möller (2):
+      Bluetooth: L2CAP: Fix type confusion in l2cap_ecred_reconf_rsp()
+      Bluetooth: L2CAP: Validate L2CAP_INFO_RSP payload length before access
+
+Michael Grzeschik (1):
+      Bluetooth: hci_sync: Fix hci_le_create_conn_sync
+
+Shaurya Rane (1):
+      Bluetooth: L2CAP: Fix use-after-free in l2cap_unregister_user
+
+Wang Tao (1):
+      Bluetooth: MGMT: Fix list corruption and UAF in command complete handlers
+
+ drivers/bluetooth/btqca.c  |  2 ++
+ net/bluetooth/hci_conn.c   |  4 ++--
+ net/bluetooth/hci_sync.c   |  2 +-
+ net/bluetooth/hidp/core.c  | 16 +++++++++++++--
+ net/bluetooth/l2cap_core.c | 51 ++++++++++++++++++++++++++++------------------
+ net/bluetooth/mgmt.c       |  7 ++-----
+ net/bluetooth/smp.c        |  2 +-
+ 7 files changed, 53 insertions(+), 31 deletions(-)
