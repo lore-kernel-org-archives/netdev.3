@@ -1,74 +1,140 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3963AD508
-	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 09:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE70B3B775C
+	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 09:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773308458; cv=none; b=FJImHMBh2U3umrVPDFMsHmG7tLuFPirXvhAs3lxjTZSbPXeGG38gSreFXkyCeimQsbAGM6vITFRXxfnIBqvra/rJqy/EyMxcZCh40PIRhcc40KYynouIbZwEQFVF6WoVXT3t0JomgrM1riPGYRdjxGXd/DUFU2+DPet/8FPeZU0=
+	t=1773308793; cv=none; b=rN27Jrwyzn6H116HI77sgFH8laYsQpqGg1MKKitr2/MJbuMsK41P51yXgjYNI1luW4DALBUj6DKC3jq+FkqapTiX6laod3dWgYOWUra/oPmsyW0va7hQq2QMyxxtbftI5KnT6XU8go6sDblrRK1Owf20XGTPg0jn2KGAYH6lz6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773308458; c=relaxed/simple;
-	bh=PQlAftZExJJEhtve/BXdj5xplMSgKtLse+ZbbPfDIYY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DYh0cMccxhNoLbd0PyWW8M37MZCSQa5ESr533q6UFn01jNKI3HiNP6+FQP2KofdfMFRqr3JkK2+w442VzbYB3IoiwxzUlITFXKBEEImUZ632ycJ/mMv3/E7mdpVY4yJemi5Ct8xmaa9GcKa0sTNcZe6VC0k3jvCp1EgBRt8M6A4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eWXluIG9; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1773308793; c=relaxed/simple;
+	bh=XmgO1TscYmjuACXGsGpTPCpFJQ8z+1vv7PMc1mKHSMM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DEDVEmRL/7GcXE4unJIUCE4X+dlYiA0NOS46Bq9i0m4o+fs8yzToD9ipd5Atmew0RI3jTesuEqE1R+6cHF4Q8ckLz4Cxnt+wrOpLH8j/c9Sdh3PyfqbWaXfDZvRbm8Rsv1vWhasbyheywi7fxIlQhoX1hqcbgH3w4ruujBn+lZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f0WpSmed; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=JNRYRrht; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eWXluIG9"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f0WpSmed";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="JNRYRrht"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773308455;
+	s=mimecast20190719; t=1773308790;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iLDD1ykdoRWruNygOA/Gi52min0abqQeBslR7+2fT2A=;
-	b=eWXluIG9WNqd2CkvaBk05h3JSQsBjH8DCW2/VuI+teyWnWe5p1UkRbO+q61//eUEW7s8rb
-	QmG2uZDo/HW1m70wdTlJhuQTgtK2qiM1cxb0lDndEhESFc6oQCWVZQ1TvxJgppqMWfWSmo
-	LS6gHX1UCizc/p++HU7lIBTTudqAuLI=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-621-s1jAbPTQMMi_diXEFQCqSA-1; Thu,
- 12 Mar 2026 05:40:51 -0400
-X-MC-Unique: s1jAbPTQMMi_diXEFQCqSA-1
-X-Mimecast-MFC-AGG-ID: s1jAbPTQMMi_diXEFQCqSA_1773308450
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1E00A1977698;
-	Thu, 12 Mar 2026 09:40:50 +0000 (UTC)
-Received: from jramaseu-thinkpadt14gen5.tpbc.csb (unknown [10.43.3.226])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 43740180058B;
-	Thu, 12 Mar 2026 09:40:47 +0000 (UTC)
-From: Jakub Ramaseuski <jramaseu@redhat.com>
-To: jramaseu@redhat.com
-Cc: anthony.l.nguyen@intel.com,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	przemyslaw.kitszel@intel.com,
-	przemyslaw.korba@intel.com
-Subject: Re: [Intel-wired-lan] [PATCH iwl-net v2] ice: enable NETIF_F_HW_CSUM for GSO packets
-Date: Thu, 12 Mar 2026 10:40:28 +0100
-Message-ID: <20260312094028.1394467-1-jramaseu@redhat.com>
-In-Reply-To: <20260310150557.1138437-1-jramaseu@redhat.com>
-References: <20260310150557.1138437-1-jramaseu@redhat.com>
+	bh=v3laAzH2RegSSG4RPB9RBAb4LG65Lm6P17O2gbvY3vM=;
+	b=f0WpSmed9CDPqlrhQERlgTu17lFHWNN1iKiDp7V82OddnmoswCx/kWRUGnjzbl114b0+Ln
+	boOaIevniJnL9yS3KPP0i6AFfWiL5XEdEYYGgbvxm7B4n6J6jVbap0Zg8AvOpzYWMtJbIF
+	MIvfvmNp3mjoUawKUfTv6J4JMi97yKM=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-311-UFeRO-bsOb-_cIk1GDfPgA-1; Thu, 12 Mar 2026 05:46:29 -0400
+X-MC-Unique: UFeRO-bsOb-_cIk1GDfPgA-1
+X-Mimecast-MFC-AGG-ID: UFeRO-bsOb-_cIk1GDfPgA_1773308788
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-439c4d71603so1590894f8f.0
+        for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 02:46:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1773308788; x=1773913588; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=v3laAzH2RegSSG4RPB9RBAb4LG65Lm6P17O2gbvY3vM=;
+        b=JNRYRrht5QpWTMmLPdd7IbMa14IC3u0eLB9Jl72JI3HqJjkJEIuHLqSxDEhXXVDNNl
+         wb4fRhnv7lq6MpDLWU8xaHMShn77HSmokfCekcYIKZmIC7S0YX5XLtdL41MFXvsfYqBH
+         xsrWzBO9U0lUUtB9Bcj9CBgK5uxhb3ieJoz2YF0l3s2FaSAKz9WIonSZYjOePa+ks9yQ
+         3MLLE/MVLndixUsdlBIIuC5vpGYa05qgsjt5vPxt5SQQi+T+ebCtDkKYjkB1r7nYqLr5
+         7zEis4KX43P3LBaAomrTslWjSp7PHfHAjQgBVb1HcQoNSNb/hJEX1+xcELoDP8L3QY4J
+         Xsew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773308788; x=1773913588;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=v3laAzH2RegSSG4RPB9RBAb4LG65Lm6P17O2gbvY3vM=;
+        b=CfOlkh+OL902SvNqzQntgbxEdmLhOGynQWRtWYef87FbNkYS+YFWgsQbfFCQLqypkj
+         2wA8Q4YQwCVN1Orn0yAV9Jqvv9lH3EnAF+K2VHf0qcqhxNHe+mhXK8MDc3L7aFqh4MBL
+         xkiewwqDm6dNatYwImmiLZ/XlSPo2BeUZJoibR+uueSqM7qYmidwGk6XYf6dVcZMXC6i
+         JV9OqznYqps1U6csbAg3zHMWHLZOttWqC+d2sB5GDQYuDckn6VQQcXVtZZSFVbFLRXMo
+         8PjVScGblcV2wXumrY9dm77XUg56wXbbVkv+/+DICnByJQA2TH+PpKawvEtZIoLpEP89
+         SYog==
+X-Gm-Message-State: AOJu0Yw73/wpfJnYVCn51ir61ksB6T+FNgr7r/njciUudTBQL0TZyhoZ
+	cwaD1kiwX8jrc21GcxCwWG3FAxgQcMzeluz7Y+R/n6mfRlfEgzzYp0y36JP3d02I/0qxCRwBFeA
+	VvmRyNASKDZbGez6AJDBBFiXptd5NKfzrBkiPC+ykSYXETgMkUY2ZUKguXQ==
+X-Gm-Gg: ATEYQzzSHk+VunuOmu94a9bIHWhUSkF0BnXAPtoXOuaVUm25U7MfngOwOPgk1GAPdlY
+	MssmA1xnUX/XUFjpYPpTsziuxqd7+xZmKn7X19uoXjdKoHy2Yo9f7AMaQyjcYJkdS7FoK/HzfgP
+	E2JfFlxDQqhtJLODRnwJeRUCxA4Fpm14fRxlaQ3S6QhmFmokx3Rqsk/R70vKH6xWXysWjSJd7y2
+	TW7zV9zTSSLDeDFH/LYSrYiO1Y4Qh0A5p81z2nfbJQAiz9+/6f3heKkju+BfjymKOcMGZ01MYHQ
+	PFXAU9C/5HM7DA9QSj9sko8Xyt9izdQw/3TzTc3+iv5b2VGI19g/hPZeHA6Eh9V1wXbVJjBT/zw
+	V6Yt+zSvhuYjO9j93rIsd3yHDKW0BaO0Kc1rg93FbRj8/jXjE1CasSjo=
+X-Received: by 2002:a05:6000:2c07:b0:439:c24b:ec15 with SMTP id ffacd0b85a97d-439fdf8aa4fmr4902926f8f.5.1773308788234;
+        Thu, 12 Mar 2026 02:46:28 -0700 (PDT)
+X-Received: by 2002:a05:6000:2c07:b0:439:c24b:ec15 with SMTP id ffacd0b85a97d-439fdf8aa4fmr4902885f8f.5.1773308787836;
+        Thu, 12 Mar 2026 02:46:27 -0700 (PDT)
+Received: from [192.168.88.32] ([216.128.11.95])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe1a76e5sm6445035f8f.12.2026.03.12.02.46.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Mar 2026 02:46:27 -0700 (PDT)
+Message-ID: <645d7dd2-9dd6-4af6-aae3-4e0b5af612dc@redhat.com>
+Date: Thu, 12 Mar 2026 10:46:25 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 0/3] net: move
+ netdev_compute_master_upper_features to ndo_set_features
+To: Hangbin Liu <liuhangbin@gmail.com>, Jay Vosburgh <jv@jvosburgh.net>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Jiri Pirko <jiri@resnulli.us>,
+ Nikolay Aleksandrov <razor@blackwall.org>, Ido Schimmel <idosch@nvidia.com>,
+ Simon Horman <horms@kernel.org>,
+ Sridhar Samudrala <sridhar.samudrala@intel.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ bridge@lists.linux.dev
+References: <20260310-offload_compute-v1-0-3df79c09ea65@gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260310-offload_compute-v1-0-3df79c09ea65@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-For whom it may concern
+On 3/10/26 8:45 AM, Hangbin Liu wrote:
+> Currently, master devices (bonding, bridge, team) manually call
+> netdev_compute_master_upper_features() scattered throughout their port
+> add/remove operations. This approach requires each driver to remember
+> to update features at the right times and leads to code duplication.
+> 
+> The series moves netdev_compute_master_upper_features() to callback
+> ndo_set_features so that the offload compute could automatically
+> invoked during feature updates when upper/lower device relationships
+> change. This centralizes the feature computation flow and removes the
+> burden from individual drivers.
+> 
+> ---
+> Hangbin Liu (3):
+>       net: use ndo_set_features to set offload features for bonding/bridge/team
+>       failover: use ndo_set_features for failover offload compute
+>       net: no need to disable LRO specifically
+> 
+>  drivers/net/bonding/bond_main.c | 14 +++++----
+>  drivers/net/net_failover.c      | 67 +++++------------------------------------
+>  drivers/net/team/team_core.c    | 15 ++++-----
+>  include/net/net_failover.h      |  7 -----
+>  net/8021q/vlan.c                |  2 --
+>  net/bridge/br_device.c          |  7 +++++
+>  net/bridge/br_if.c              |  6 ----
+>  net/core/dev.c                  |  8 +++--
+>  net/hsr/hsr_slave.c             |  1 -
+>  9 files changed, 37 insertions(+), 90 deletions(-)
 
-I forgot to include Reviewed-by section that was to be copied from v1 of the patch 
-(to be found here: https://lore.kernel.org/intel-wired-lan/20260310115556.1004263-1-jramaseu@redhat.com/T/#u),
-sorry for the inconvenience.
+I'm dropping this series from PW due to the self-tests failures. I guess
+it could be restored later if it turns out the real problem is elsewhere.
 
-Regards,
-Jakub Ramaseuski
+/P
 
