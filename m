@@ -1,243 +1,143 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E2C2D837C
-	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 13:55:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773323750; cv=none; b=lUURQZwD6uQcwMg4c8LT/5p1cZ9iJTHbJFyVMiAYzLAA0Dmtxn84SycT+VqT9Cf0iXuPxn7w9AyfIa4GSiMeuy9WHmC3BPzRBaD908F7hcLxvAQb9TbKVZffwbcZaqHIi9GMyA7C8BpAcWLvGfpeexM22H5lrms238mEY8l2V3U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773323750; c=relaxed/simple;
-	bh=pDwcH5sWvmvLtMK0Rq/VsVo4eeCmzGZVcSwBbbkMDNs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pU5DtNwBvbnqe1ZehJ7o8FUQXJ0oTOpzF25LmD9cJsWTOOE1rey4B5TuwRYyZhDTjQwyKXNMu+/o5i/QRBVYI4H4Sx759lyy6xvddb5Q9JRy6IWnhmxJeYZSoQZvlggBahRHAvhK0vJvrmXik9uk28nAdeUacbb3eBs5GLDwvJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Sgdy10sM; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=sWYHCHud; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38E526C39F
+	for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 14:02:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773324179; cv=pass; b=jwlTkQTojNSxecP7w2yWPJQs48FSuw2PUTYMH7g9EPQyne1Rqwy0p1svDwdYub3+C20alLuFWkAYxg/000tYj2VyaDEkzzKj5BoGAgTqak92JvwGpVO0KiiYllnyRJx4qBKGWVdzD5mJUfaBxCPXpxYV3uOTg50LPudS6DzcBQQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773324179; c=relaxed/simple;
+	bh=1cNkInBcHMDQN0rq2ebxd/Nn2LAPM9SYtoNSORESutA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WgGkZYNflGLxwYUVBLi/Fd1EuI0IbQMwdU2xS+tkX7x6QcT6f8AEp/KWidMjeL1bibZUQPNp0aXpLc/bdnm/btpp4/d7maR2DyEy/OxSo0IskYUUb45eyRY8v5J6jhfkEs9cgoFTS3XBasrH7cv8079ugSB4IbwxosghG0sO/zU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yq66R2ty; arc=pass smtp.client-ip=74.125.224.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Sgdy10sM";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="sWYHCHud"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773323747;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=k2e1MRF6EEdhdpvTu+HbMn5gU38H7GgDFPk5x0iwlRg=;
-	b=Sgdy10sM/3OJlY7B/mUYhOJrRzqnz0f0vZAlv5/ASOQZuqFQjCt6RnXwbiUKaIQ5uXt+ZW
-	Jf2Bx/LLgGFVySaUPqLD7z8TVzjbPpkpn7TteDPHo0V35QCt1qlzva4FwzosEtZFompp4O
-	UVkwmNIqaAuNDMsRSGtHH4RS6PvqPt0=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-94-SHWHT6oJOb6eLgd87CW3NQ-1; Thu, 12 Mar 2026 09:55:45 -0400
-X-MC-Unique: SHWHT6oJOb6eLgd87CW3NQ-1
-X-Mimecast-MFC-AGG-ID: SHWHT6oJOb6eLgd87CW3NQ_1773323744
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4853b00f9f5so9620785e9.2
-        for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 06:55:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yq66R2ty"
+Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-64c9a6d68e5so916470d50.3
+        for <netdev@vger.kernel.org>; Thu, 12 Mar 2026 07:02:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773324177; cv=none;
+        d=google.com; s=arc-20240605;
+        b=X4NE2187h2GWCm56HwNaI6zrRozwOoAifDxiq97Khg8fQyOqNcdGRxPXZEYrCAPVUe
+         sVUqQuUOlI0JIsasP5RCQvBYnd5ehAaqDOgZm9ySrLOiWFX3DgueWP8xHUxAxV74VBWm
+         igJ6KOAXFYrki1/cSqbWc3Zu8aXTstUHMjKG80qVuY7mVjZgfQlXGsKXyX1sGHBQmmNr
+         kKqNiDIb5Ty/ql6w4S31z7Hk3mgKWploMwk4RRNHsSxBLRGjQUkdVJ2DooNrJl4WR39Z
+         HrjZvwm+7BCaV3JJwxzT67XJpJelTDjroV1rYQJr8GLHSPMCZvXVLaaJHa9WQiDfeyi1
+         Movg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=1cNkInBcHMDQN0rq2ebxd/Nn2LAPM9SYtoNSORESutA=;
+        fh=u24o62hDtPR/kUn1zn3MY6radxHziw5codugFeKd0ys=;
+        b=IgfOo+3RLJ/EwUeVhtvkWv+yt/xc9HXc6aFBigMHNZNRPEWgemygM57nWaFVmnh7AJ
+         W/AAR601MnotALFf1rxo1cfgPN+J2DxNaPJLRYzSKH+SlB4HwZJs0lIGXCELrm9zWEsD
+         OLeRu2IMY4a5ZmxdzB7KagDyk+FTDOhkAAA9lX+q8XSGK3TFshkHee6tKurBTjDKKNej
+         1JXkTeYTYrgzEbpg4omt8FNmgvXAZsHFHqPWZhSSkRw4oq9qJ99tBBfkgIvDzNWnObwP
+         8sM6LLT0eyHU+IqnO6+aKfnfe6kYavH3pn8HvoWnN5BDy6brKgQj7PPgf3yflnShRilM
+         xheg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1773323744; x=1773928544; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=k2e1MRF6EEdhdpvTu+HbMn5gU38H7GgDFPk5x0iwlRg=;
-        b=sWYHCHud1jaif1GW2pwht+y4LF8CTwkqhdISMV1NuiJQ6kzksiaZspyyyPreT28BRu
-         H7zhcSwULS0jYl/abgbIKvmTkkIPAvJraS8X8Wr57Khlp4zmowkoS5bhWYYWV7PcxBuU
-         IzvVRGWYYGJt1GRroB3YYJ6oYd3nJqCw8MGzPnUzf2lnd7qbCanF3OcdzLFAZsXny/g8
-         gKqiOsEdcPH5yyscqbgaUzlV73S3RJK9ez7mdQa5wj1iO7h/zR0qQGbm0tprhv/sg/gj
-         RGDbP3uB5KoK8zzf7M50Doo2QoQcwzbDMy7Zo084G/aOUceZ/P35zLjfUN4mSECX5Sor
-         6qtQ==
+        d=gmail.com; s=20230601; t=1773324177; x=1773928977; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1cNkInBcHMDQN0rq2ebxd/Nn2LAPM9SYtoNSORESutA=;
+        b=Yq66R2tyhZvPsa/UF9BYsr7bWhsGdZrvUpROKVbQC1IewU0OdFZAWagRA8FsyO7vJX
+         b2/tMNBWjubYK+yAZZKiRPTXVNsbybKd56DXjgUZacUVLm9f0NWd2WsfZorly40AKhGp
+         caoglAXmOnB4RNfAcNHPTOMn1utWnzoIRisnxiixLJ5UNUgsRsu4aUKccIHP4uOr/t8k
+         JSIYCol66mydcOFIkh3+5yFw9rAoFT1De1S70D1fgTqfnibvaFWG65/uAx7dSXUXgnbF
+         YfK2tWuku1eWtmE2+VgQHAHzJnm21gFwETjq8Zd79bmjZ0IXH1FuUTg8tmmMqzM6O6Y/
+         ANBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773323744; x=1773928544;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=k2e1MRF6EEdhdpvTu+HbMn5gU38H7GgDFPk5x0iwlRg=;
-        b=FhbrNIjPo0VSbRHCfx2/+FnPIpp/uiI7dH3pp5KYrE48P9Lj8w+ngrhI5I1fJodjyi
-         Yj2LM++i9EemxEbcQJMyeIGx4Vhwnh/WwlprO6uLS5m9soTBkagV2MylTBYyMNYuP9zF
-         DgqphECgoGZLue6ZsoDLtCuq2MzmfMYEwMwhJS7TxGjv4kLoyxx05oMYycm+ZfQ0a12e
-         Py0bDTsMOWA2khygJq8JdD8apDcpjEck/9sVsCjaJ/JFR1O2JMOWSUPzIgnSE2w3nkma
-         4olxwSE6dAo0YU8mP4LJCswRcrjUkOgF9P84YGJonqIgILUm+VcL24mr8eqeQQN9iaRU
-         Y0Pw==
-X-Forwarded-Encrypted: i=1; AJvYcCX3l1UdQbIw/J5RtxAZq6y8++Sd8g4oIYaan6cVQpQY2h+nSEcwYA7ibyn5ol7Tq6H1dixR7Z0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyca9BQTLOgCo4V1Vfj/w/iaPNd8xCDPi/VoKGhvLbNjgMBt+yh
-	qDnhEy4onBe/ifUUR7OZqQqI/2uFyiyDQ4fy2vnKe0gLGA1wKjeSF0jso/7SXMg47Ju8AFgvdEw
-	XiZ4dZNSXtcmrcL2ywwsA5sZG95HbsgucduNklevfZy0tCK4ek8WSB1f16g==
-X-Gm-Gg: ATEYQzwMy8CWf3TSEZbNaqUSp99U1IhSRau7k0V+lvZZShdBVYckxPIUsG56LEoq8US
-	nZJf1QRk9stiKTYpePFhpCHKK1cUIA0zs/6nGG3d7f1kBoQtUQliz4pUY8MIYTmhVQ2VS18SM4K
-	gf/Jfirj1DDRBbjsg10yxXHPcd21h5ZPUuR1LwiLQRi/lOqRe7LPdDqLMTQ0bh9qwPqHzh8IbnN
-	Ev7bUJYLsCJKhdTuPR/1Jg9m7JNx24Db0g17uIm7zWebuvjjhdbNEtsSFrt/O3Snr/h9Br9iJLU
-	x+YCM+Z3QW9/AS8trsaffAiiqhzdcGntjtRQrmoggM1u9RKdqosECQRzzBiPkEqrAN3d0qZohlO
-	ICdtSf6vRrKhJXj9f6sppjBuu+n8/mvwNzfZydxZndR8C3w==
-X-Received: by 2002:a05:600c:8b45:b0:485:4388:3496 with SMTP id 5b1f17b1804b1-4854b10f9bfmr97333135e9.11.1773323743528;
-        Thu, 12 Mar 2026 06:55:43 -0700 (PDT)
-X-Received: by 2002:a05:600c:8b45:b0:485:4388:3496 with SMTP id 5b1f17b1804b1-4854b10f9bfmr97332345e9.11.1773323742923;
-        Thu, 12 Mar 2026 06:55:42 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-79-166.inter.net.il. [80.230.79.166])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48541b7f406sm226604625e9.13.2026.03.12.06.55.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2026 06:55:42 -0700 (PDT)
-Date: Thu, 12 Mar 2026 09:55:39 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Simon Schippers <simon.schippers@tu-dortmund.de>
-Cc: willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, eperezma@redhat.com,
-	leiyang@redhat.com, stephen@networkplumber.org, jon@nutanix.com,
-	tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	virtualization@lists.linux.dev
-Subject: Re: [PATCH net-next v8 0/4] tun/tap & vhost-net: apply qdisc
- backpressure on full ptr_ring to reduce TX drops
-Message-ID: <20260312095457-mutt-send-email-mst@kernel.org>
-References: <20260312130639.138988-1-simon.schippers@tu-dortmund.de>
+        d=1e100.net; s=20230601; t=1773324177; x=1773928977;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=1cNkInBcHMDQN0rq2ebxd/Nn2LAPM9SYtoNSORESutA=;
+        b=ReU/BEzrAgbY/+tiWuKD4oVrT9rbVjum1L26h50W2EKJEwDSi6hEQ8rE1FJyRivN0A
+         vkz40WDMgZJofuXO4eObaRNkiXW/2wi9K5c4Trmrit7T4xv3+NHSewV5Vl8i8XipGYt7
+         ETpcJq7AN5KTiqDH0XUQNss8OotEKGJEXYE40xOhfA3e0PomH1/rk4XoL8q/OIEekXp+
+         6PO7KY8HTaOmjaAc9taQrMtdN5DyCMcXtVd43zMyvDjCR6oxoUuY1eroFKZv2wl89/Hg
+         w+AzeCx1luvSUrxmjZkR7sa8pYg5QNQzfwNXGcbqFr+aCCqvMN/IJPVobwNhnmAOY4PB
+         SADw==
+X-Forwarded-Encrypted: i=1; AJvYcCWyFogtBD+SCwB5XOSsxceHgb6P93enxWuBZssc90ENpuLl1thHtwny+aoKI7Aq651TS29mioc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxU69n12QGWx65Nkl6Y2xRXRtuYRfApgrSYeYPcLxtleNLiExPr
+	7vvMEnoOk+mv20ck650An21YMtdGjC7dwYRq5N9Gcp8Lp962qxUPjkfwhOYfr0a82kvMxhETTX9
+	mmHjIkpSTSKfHo9goHxUDuq4CGeTyOfE3dGuu
+X-Gm-Gg: ATEYQzzQdUtCgEmNrDRwv2/mRaF1Tr0a6xH90kpGCcNM0EkXHZ1ZGpkUsIt3s1QFLEJ
+	ht3gSFV+Du53FPj3KoKlBqrK7VKKL/QejbmEACVUJkFk3Ox9ob7VcXwqDb7qvapTYHYgqj+RxZK
+	ztS9427J2+FGgQOuMqmzpSKHyELhuL+eAMGe0aGxpwY9i7FoLkVBJQbpXgkcK/oPTciuTF9TJpY
+	Z/cQrmnNwARXl232SHMOw0zw/6ytTMdrmEY64llsRtXw46mEAPnBtOL/hXPA6i+60hFhh9J0a7g
+	881BbA5sVwf4X3X5zfU=
+X-Received: by 2002:a53:e948:0:b0:64a:d1ac:4528 with SMTP id
+ 956f58d0204a3-64d65714ba6mr4408584d50.39.1773324176574; Thu, 12 Mar 2026
+ 07:02:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260312130639.138988-1-simon.schippers@tu-dortmund.de>
+References: <CAP6Zq1i31Z0kfDST1Xcoftxja-TFaxgSjKH6jX5eY0AGdASpTw@mail.gmail.com>
+ <b2868f3d-ef84-4ec0-ac37-e41029a1d385@lunn.ch> <abHV7rDryld4A-S_@shell.armlinux.org.uk>
+In-Reply-To: <abHV7rDryld4A-S_@shell.armlinux.org.uk>
+From: Tomer Maimon <tmaimon77@gmail.com>
+Date: Thu, 12 Mar 2026 16:02:45 +0200
+X-Gm-Features: AaiRm50tCEv4zsqzufzlSYmZV4JCkNJs1xlOYw5sE4BkoO-egg2hdHvLH3gyKtA
+Message-ID: <CAP6Zq1hKd19aLjWBnx3pkfeGyqrudqSHd0PTxUJhn7r9BG0oSA@mail.gmail.com>
+Subject: Re: stmmac: TX stalls with head OWN=1; requiring manual DMA kick (6.12.63)
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Andrew Lunn <andrew@lunn.ch>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 12, 2026 at 02:06:35PM +0100, Simon Schippers wrote:
-> This patch series deals with tun/tap & vhost-net which drop incoming
-> SKBs whenever their internal ptr_ring buffer is full. Instead, with this 
-> patch series, the associated netdev queue is stopped - but only when a
-> qdisc is attached. If no qdisc is present the existing behavior is
-> preserved. This patch series touches tun/tap and vhost-net, as they
-> share common logic and must be updated together. Modifying only one of
-> them would break the other.
-> 
-> By applying proper backpressure, this change allows the connected qdisc to 
-> operate correctly, as reported in [1], and significantly improves
-> performance in real-world scenarios, as demonstrated in our paper [2]. For 
-> example, we observed a 36% TCP throughput improvement for an OpenVPN 
-> connection between Germany and the USA.
-> 
-> Synthetic pktgen benchmarks indicate a slight regression.
-> Pktgen benchmarks are provided per commit, with the final commit showing
-> the overall performance.
-> 
-> Thanks!
+Hi Andrew and Russell,
 
-I posted a minor nit on patch 2.
+On Wed, 11 Mar 2026 at 22:52, Russell King (Oracle)
+<linux@armlinux.org.uk> wrote:
+>
+> On Wed, Mar 11, 2026 at 08:46:04PM +0100, Andrew Lunn wrote:
+> > On Wed, Mar 11, 2026 at 08:34:36PM +0200, Tomer Maimon wrote:
+> > > Hi Giuseppe,
+> > >
+> > > On kernel 6.12.63 (GMAC, normal 16=E2=80=91byte TX descriptors), we o=
+bserve
+> > > brief TX stalls when sending small packets.
+> >
+> > You might want to look at Russell Kings patches from this week to
+> > rework the descriptor handling.
+Could you point me to Russell Kings patches?
+> >
+> > Also, please don't report problems on dead kernels. 6.12.76 is the
+> > current version for the 6.12 LTS. There is a small chance your problem
+> > has already been fixed, and you are wasting everybody's time.
+Sorry, I mean 6.12 LTS.
+>
+> Yep.
+>
+> Not sure they'll materially affect any problem, because I try to avoid
+> functional changes in stuff like those.
+>
+> What's missing from the original report is a description of the
+> hardware. stmmac drives multiple different versions of the Synopsys
+> IP which have significant changes between them. Which platform glue
+> is being used, which core driver is being used (dwmac1000? dwmac4?
+> etc.)
+stmmac IP version is 3.73a
+The platform is glue is "snps,dwmac" and the core driver is "dwmac1000"
+>
+> Also what isn't mentioned is whether this is a regression, or whether
+> it's something that has never worked. If it's a regression, which
+> kernel version previously worked?
+We ran the test with kernel 5.10 LTS, and it didn't work.
+>
+> --
+> RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+> FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
-Otherwise LGTM:
+Thanks,
 
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-
-thanks for the work!
-
-
-> [1] Link: https://unix.stackexchange.com/questions/762935/traffic-shaping-ineffective-on-tun-device
-> [2] Link: https://cni.etit.tu-dortmund.de/storages/cni-etit/r/Research/Publications/2025/Gebauer_2025_VTCFall/Gebauer_VTCFall2025_AuthorsVersion.pdf
-> [3] Link: https://lore.kernel.org/r/174549940981.608169.4363875844729313831.stgit@firesoul
-> [4] Link: https://lore.kernel.org/r/176295323282.307447.14790015927673763094.stgit@firesoul
-> 
-> ---
-> Changelog:
-> V8:
-> - Drop code changes in drivers/net/tap.c; The code there deals with
->   ipvtap/macvtap which are unrelated to the goal of this patch series
->   and I did not realize that before
-> -> Greatly simplified logic, 4 instead of 9 commits
-> -> No more duplicated logics and distinction in vhost required
-> - Only wake after the queue stopped and half of the ring was consumed
->   as suggested by MST
-> -> Performance improvements for TAP, but still slightly slower
-> - Better benchmarking with pinned threads, XDP drop program for
->   tap+vhost-net and disabling CPU mitigations (and newer Ryzen 5 5600X
->   processor) as suggested by Jason Wang
-> 
-> V7: https://lore.kernel.org/netdev/20260107210448.37851-1-simon.schippers@tu-dortmund.de/
-> - Switch to an approach similar to veth [3] (excluding the recently fixed 
-> variant [4]), as suggested by MST, with minor adjustments discussed in V6
-> - Rename the cover-letter title
-> - Add multithreaded pktgen and iperf3 benchmarks, as suggested by Jason 
-> Wang
-> - Rework __ptr_ring_consume_created_space() so it can also be used after 
-> batched consume
-> 
-> V6: https://lore.kernel.org/netdev/20251120152914.1127975-1-simon.schippers@tu-dortmund.de/
-> General:
-> - Major adjustments to the descriptions. Special thanks to Jon Kohler!
-> - Fix git bisect by moving most logic into dedicated functions and only 
-> start using them in patch 7.
-> - Moved the main logic of the coupled producer and consumer into a single 
-> patch to avoid a chicken-and-egg dependency between commits :-)
-> - Rebased to 6.18-rc5 and ran benchmarks again that now also include lost 
-> packets (previously I missed a 0, so all benchmark results were higher by 
-> factor 10...).
-> - Also include the benchmark in patch 7.
-> 
-> Producer:
-> - Move logic into the new helper tun_ring_produce()
-> - Added a smp_rmb() paired with the consumer, ensuring freed space of the 
-> consumer is visible
-> - Assume that ptr_ring is not full when __ptr_ring_full_next() is called
-> 
-> Consumer:
-> - Use an unpaired smp_rmb() instead of barrier() to ensure that the 
-> netdev_tx_queue_stopped() call completes before discarding
-> - Also wake the netdev queue if it was stopped before discarding and then 
-> becomes empty
-> -> Fixes race with producer as identified by MST in V5
-> -> Waking the netdev queues upon resize is not required anymore
-> - Use __ptr_ring_consume_created_space() instead of messing with ptr_ring 
-> internals
-> -> Batched consume now just calls 
-> __tun_ring_consume()/__tap_ring_consume() in a loop
-> - Added an smp_wmb() before waking the netdev queue which is paired with 
-> the smp_rmb() discussed above
-> 
-> V5: https://lore.kernel.org/netdev/20250922221553.47802-1-simon.schippers@tu-dortmund.de/T/#u
-> - Stop the netdev queue prior to producing the final fitting ptr_ring entry
-> -> Ensures the consumer has the latest netdev queue state, making it safe 
-> to wake the queue
-> -> Resolves an issue in vhost-net where the netdev queue could remain 
-> stopped despite being empty
-> -> For TUN/TAP, the netdev queue no longer needs to be woken in the 
-> blocking loop
-> -> Introduces new helpers __ptr_ring_full_next and 
-> __ptr_ring_will_invalidate for this purpose
-> - vhost-net now uses wrappers of TUN/TAP for ptr_ring consumption rather 
-> than maintaining its own rx_ring pointer
-> 
-> V4: https://lore.kernel.org/netdev/20250902080957.47265-1-simon.schippers@tu-dortmund.de/T/#u
-> - Target net-next instead of net
-> - Changed to patch series instead of single patch
-> - Changed to new title from old title
-> "TUN/TAP: Improving throughput and latency by avoiding SKB drops"
-> - Wake netdev queue with new helpers wake_netdev_queue when there is any 
-> spare capacity in the ptr_ring instead of waiting for it to be empty
-> - Use tun_file instead of tun_struct in tun_ring_recv as a more consistent 
-> logic
-> - Use smp_wmb() and smp_rmb() barrier pair, which avoids any packet drops 
-> that happened rarely before
-> - Use safer logic for vhost-net using RCU read locks to access TUN/TAP data
-> 
-> V3: https://lore.kernel.org/netdev/20250825211832.84901-1-simon.schippers@tu-dortmund.de/T/#u
-> - Added support for TAP and TAP+vhost-net.
-> 
-> V2: https://lore.kernel.org/netdev/20250811220430.14063-1-simon.schippers@tu-dortmund.de/T/#u
-> - Removed NETDEV_TX_BUSY return case in tun_net_xmit and removed 
-> unnecessary netif_tx_wake_queue in tun_ring_recv.
-> 
-> V1: https://lore.kernel.org/netdev/20250808153721.261334-1-simon.schippers@tu-dortmund.de/T/#u
-> ---
-> 
-> Simon Schippers (4):
->   tun/tap: add ptr_ring consume helper with netdev queue wakeup
->   vhost-net: wake queue of tun/tap after ptr_ring consume
->   ptr_ring: move free-space check into separate helper
->   tun/tap & vhost-net: avoid ptr_ring tail-drop when a qdisc is present
-> 
->  drivers/net/tun.c        | 91 +++++++++++++++++++++++++++++++++++++---
->  drivers/vhost/net.c      | 15 +++++--
->  include/linux/if_tun.h   |  3 ++
->  include/linux/ptr_ring.h | 14 ++++++-
->  4 files changed, 111 insertions(+), 12 deletions(-)
-> 
-> -- 
-> 2.43.0
-
+Tomer
