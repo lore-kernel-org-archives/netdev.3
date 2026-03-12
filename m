@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B2729E114;
-	Thu, 12 Mar 2026 01:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855D9347510;
+	Thu, 12 Mar 2026 01:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773277817; cv=none; b=i+5JvCzgWI2gXcwXovVL6bfnCLhZPfW+o1V2ygNCS6E2ohP0/MJoeFRomu84rene81wzA/Hxio/Rx/xckBwiUfzDNl+sB086SqUc6SzzxVosBxkIWaa8O1HfxQW0ugPeYqrgEPcDdhZpOjTt9yn1m5ZousmnfPu9C4OAIPlMvwc=
+	t=1773277818; cv=none; b=qTZkwoUNlPVLSEneAjp4a1/hjQPfec+e9SJBr9cwYSNVbrIQx4QMcwIrI29DZtJ+Bv6Ols8YKNnmkqaWt6q8F1Q/wdGMXeggBfUyulrXTqHQoOulfIsiPWzEuTxWReRLtMQaIpxB+s56di1Wif67gCTess+64SnK5890aaaCAJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773277817; c=relaxed/simple;
-	bh=2VnEX2d2kKChCsMfXVjFhEUVpPvckvqNRzWmuUKDOZU=;
+	s=arc-20240116; t=1773277818; c=relaxed/simple;
+	bh=TKeJT/xjc5Pdb24yNwte/PfYRiwvbPDzgq9rKudiD1o=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=IAuVWhQqP7n5PUZnH1zvQaSn+YqXBUxAX+kXdMFzjh4L7Afdb/CJnH0ZkA9NZBDeG639XRz9yuLmkz+SlENRu+o8bwgs003chc4wQJRfmjkndtLKzmMsKjdo6hUjxhRTaHK2vxzqt+MhBNcxFkpvznsI3c1RiQpI7Td0tXckgq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MWH5v7i0; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=ghVxPdzkJsbC3DN8WePAiMffXxIMzNiCYaAbCA0wE49nGs8p5OdQHlRFmwxLl/ZHJWpeZXj+WhikR3gDm3fBoXJilLUgwr6oeCM9zWK0Kfb3mLakizRljPKNCgMrgv8Dc5EflfedAepnrOhfJV3b4e7W5SBSHV3hddwVg66wtQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aasaijiz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MWH5v7i0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD2F5C4CEF7;
-	Thu, 12 Mar 2026 01:10:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aasaijiz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B69BC19421;
+	Thu, 12 Mar 2026 01:10:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773277816;
-	bh=2VnEX2d2kKChCsMfXVjFhEUVpPvckvqNRzWmuUKDOZU=;
+	s=k20201202; t=1773277818;
+	bh=TKeJT/xjc5Pdb24yNwte/PfYRiwvbPDzgq9rKudiD1o=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=MWH5v7i0GAwzWOKLOmTkbyl08UKsT7GlzcQtJe8KWr/Sn/KIPa2W9zlBlfXtCCHcg
-	 59uEVMwwdGzhhVoQ0tvCqaJnly4/S1ow0fIyCVFgo3zWgWUFUXb6+vj64VSTGxtZh0
-	 0QXywMMf6UmeozKWdIa28iQ5VkuypUNV7a6gq33q9LzEFDFPTbxvpRr6B/UC9OQc1d
-	 +p+dLrfliEwKaWefEUqKSNFPTCN//B2bAa/EM36XlSr2FJtdNZEaWJBWwS8elz1g1k
-	 sKIFqsjAvJnu+bYS/tFg2ljFLtPlke3sMcKu9gb4RCs2AyHc7FJKA/CFSdF0dNHo9L
-	 J7LvC8HL/T1mg==
+	b=aasaijizLxUCax4qDJUxQG9vhHuby2UQJLj42UMGam6gHMDGV015yhzw32NPrGxZQ
+	 Mirsyq3wIM7PXGJQ8DoT82JDKtjMke4QjHWgWUyhyRfPCAdrTIbKyjyJoFp/oRxDga
+	 5jGAKlrKsECnK5Em1rYUabVs+9BZtkT+6gpTwqigQRT4c5pJSLRjTJF+M6GKHXmrJb
+	 vxfL/B4/UNMTDc5rDBmdoOyKe1OvHGNKyPXuIBGfNr1lVXNc1VxMn0DtqNM5jI1T7S
+	 vtOy3wBjNNs8Pioh8Pk3GG+IuGHVjlL3zIhzLVjsV4D/7FHYROGATyOpGiKUgRJvDP
+	 B5pH7WjFVePyw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02E8A3808200;
-	Thu, 12 Mar 2026 01:10:14 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FE523808200;
+	Thu, 12 Mar 2026 01:10:15 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,48 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: dsa: microchip: Fix error path in PTP IRQ setup
+Subject: Re: [PATCH net v4 0/4] {net,bpf}: nd_tbl fixes for when
+ ipv6.disable=1
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177327781280.3893274.11029073930876613838.git-patchwork-notify@kernel.org>
-Date: Thu, 12 Mar 2026 01:10:12 +0000
-References: <20260309-ksz-ptp-irq-fix-v1-1-757b3b985955@bootlin.com>
-In-Reply-To: <20260309-ksz-ptp-irq-fix-v1-1-757b3b985955@bootlin.com>
-To: Bastien Curutchet <bastien.curutchet@bootlin.com>
-Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
- olteanv@gmail.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, richardcochran@gmail.com, pascal.eberhard@se.com,
- miquel.raynal@bootlin.com, thomas.petazzoni@bootlin.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+ <177327781404.3893274.18137587721158211759.git-patchwork-notify@kernel.org>
+Date: Thu, 12 Mar 2026 01:10:14 +0000
+References: <20260307-net-nd_tbl_fixes-v4-0-e2677e85628c@suse.com>
+In-Reply-To: <20260307-net-nd_tbl_fixes-v4-0-e2677e85628c@suse.com>
+To: =?utf-8?b?UmljYXJkbyBCLiBNYXJsacOocmUgPHJibUBzdXNlLmNvbT4=?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
+Cc: martin.lau@linux.dev, daniel@iogearbox.net, john.fastabend@gmail.com,
+ sdf@fomichev.me, ast@kernel.org, andrii@kernel.org, eddyz87@gmail.com,
+ song@kernel.org, yonghong.song@linux.dev, kpsingh@kernel.org,
+ haoluo@google.com, jolsa@kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ toke@redhat.com, dsahern@kernel.org, jv@jvosburgh.net, andrew+netdev@lunn.ch,
+ liuhangbin@gmail.com, fmancera@suse.de, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 09 Mar 2026 14:15:43 +0100 you wrote:
-> If request_threaded_irq() fails during the PTP message IRQ setup, the
-> newly created IRQ mapping is never disposed. Indeed, the
-> ksz_ptp_irq_setup()'s error path only frees the mappings that were
-> successfully set up.
+On Sat, 07 Mar 2026 17:50:52 -0300 you wrote:
+> Hi,
 > 
-> Dispose the newly created mapping if the associated
-> request_threaded_irq() fails at setup.
+> Please consider merging these four patches to fix three crashes that were
+> found after this report:
+> 
+> https://lore.kernel.org/all/CAHXs0ORzd62QOG-Fttqa2Cx_A_VFp=utE2H2VTX5nqfgs7LDxQ@mail.gmail.com
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: dsa: microchip: Fix error path in PTP IRQ setup
-    https://git.kernel.org/netdev/net/c/99c8c16a4aad
+  - [net,v4,1/4] ipv6: move the disable_ipv6_mod knob to core code
+    https://git.kernel.org/netdev/net/c/94a4b1f95998
+  - [net,v4,2/4] net: bonding: Fix nd_tbl NULL dereference when IPv6 is disabled
+    https://git.kernel.org/netdev/net/c/30021e969d48
+  - [net,v4,3/4] bpf: bpf_out_neigh_v4: Fix nd_tbl NULL dereference when IPv6 is disabled
+    https://git.kernel.org/netdev/net/c/dcb4e2231469
+  - [net,v4,4/4] bpf: bpf_out_neigh_v6: Fix nd_tbl NULL dereference when IPv6 is disabled
+    https://git.kernel.org/netdev/net/c/d56b5d163458
 
 You are awesome, thank you!
 -- 
