@@ -1,115 +1,90 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E313519D093;
-	Fri, 13 Mar 2026 11:19:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3FCA2D5C83
+	for <netdev@vger.kernel.org>; Fri, 13 Mar 2026 11:27:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773400784; cv=none; b=QtB6l2FHbj+j7Y31ILAV9xsXoVMq15R0eLWsXjqdv71mQE/P33BL8wVWroS1ogvtLkkSezXgk7LrtXpvNi4I1uyG7MsPpd2Ok46it5eE/jZbu8nnbbHjYd/I1RupL79H8Jmg7e705CydKc6RkrvWNy2i9iMJJ2VZlCw2HB59qOg=
+	t=1773401238; cv=none; b=VH6nleDeoAC/YsBB9fB09EoavREFUw4eYQhVDY65bHMyWyJ9F74l8N3BIlcANxeWFCTxmT8lwxDZLIqV/o054CSurF6ECSUMM29/vrgh85cORgXAPQkX23EJbbJexxvPLfqvdFMujsE4HUaM/9G/PuUTJQilJoQfsm34wuqbhQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773400784; c=relaxed/simple;
-	bh=2bKNUHKO9OVnDiP4Hey8zgOy5NyoxQZu+h+aV1L5+kM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OaFPHrM+pZ2yP4zEuLp+pOnqSMNCSsqFzHa3ety8bDVOLJFx1MwpaFyEAKxWLB74cN9o6L+p0Ckq2lA1HRpxOfvazoSy+D2nI2rcLNvuRHQw6oY4QBGUlNgt8Z3rsr/7uIsVeKCkIHhdRPHzCA8S2Wdyok4t0AOJqcOxrxQF2M4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IUmbEiNk; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1773401238; c=relaxed/simple;
+	bh=yu3FkG+te6lxyT/bb+2rXQeEoH7RigJXJoMuJhFsNTo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=jkVIzPcGe2+cQxcPCIXI64Stx9I9Tdvrn42IvwI8rR8lfhZWvHDO58IGznr8emXewTfiuytSk+EVPt5n9yH6d+0G1+vOiSDB3BucDqJKtARxm/8kGD4n+eTlt3sRxnL+L9+Q1X9CQzA+n1L1zRmM13KAx0tX68USA+6YDXLWCOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VkuFG7Cq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IUmbEiNk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773400783; x=1804936783;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=2bKNUHKO9OVnDiP4Hey8zgOy5NyoxQZu+h+aV1L5+kM=;
-  b=IUmbEiNkO4Ey67QWmuZC5ppwq8bL8BYIIARjxyuUVG/xgAla9AFCL14z
-   QaATciJOZ/zaJXIOdSJ2ZP5/WeF4B40SgmU/062LUsW/1KP81NYXyo0XJ
-   65PiE0xtutbQmH6woHvS7tQLqAC0LBtrG/Wi8hnTOlP6tCyjkak+1GuLt
-   cfmAl7FGKr8Vckp0u6QrEoT21TzRNQqXGUh5RmAlSl7JsCE4YvVWZ3R3l
-   0IcdpCpjC4a88Ep5akKgbf5na9j9b1ieB8M+eh0uz/YB0FrqsuVJa3TIp
-   okQbUfI88074TdAHNih7BzHGv3Gx5xDQOyWg64+BhxxcDDF0/k2I1tJiP
-   w==;
-X-CSE-ConnectionGUID: U4upy9rRRRKuFqqXqjlYwQ==
-X-CSE-MsgGUID: 4NIXrUYlQ1uKkcZYajZXIA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="78396710"
-X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; 
-   d="scan'208";a="78396710"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2026 04:19:42 -0700
-X-CSE-ConnectionGUID: p0y83sdjTRuiB4PuOvBFdw==
-X-CSE-MsgGUID: 0k3ON2bTTo6WvrMh8jNhQQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; 
-   d="scan'208";a="221347191"
-Received: from boxer.igk.intel.com ([10.102.20.173])
-  by orviesa007.jf.intel.com with ESMTP; 13 Mar 2026 04:19:40 -0700
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-To: netdev@vger.kernel.org
-Cc: bpf@vger.kernel.org,
-	magnus.karlsson@intel.com,
-	stfomichev@gmail.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Subject: [PATCH v2 net-next] xsk: remove repeated defines
-Date: Fri, 13 Mar 2026 12:19:31 +0100
-Message-Id: <20260313111931.438911-1-maciej.fijalkowski@intel.com>
-X-Mailer: git-send-email 2.38.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VkuFG7Cq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18212C2BC87;
+	Fri, 13 Mar 2026 11:27:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773401238;
+	bh=yu3FkG+te6lxyT/bb+2rXQeEoH7RigJXJoMuJhFsNTo=;
+	h=From:Date:Subject:To:Cc:From;
+	b=VkuFG7CqgnngorKkNP8EVkcvw8KHppTq1S8ym9pdykjO6+Dx/sXPY9uPMZnGitYMA
+	 kN+q0FVrXimGMmJcoZynErulWon5i0aIgpQpHfbbp6Pegs9VCiFtNuaajaVY8TD+c0
+	 PhQfm10nWEj7eXyY4HK/4QxoOY1kIz+hR8vvRZqzjz7+UZtMli7Mn/AFRccrN/7day
+	 PIrmU5/+swJMtprhE/CW6bF/vPxKWrfcOlks2wHiou1lQxRvD0WrwOPMyZzxhEnwl6
+	 LVtgPbqm8M28mnMYn4wAeqcLM5U5ZvKPt/EtQ/pViqjN0UlpztAwCf4ZP+VuD5EFk8
+	 25Lu6REBCtozQ==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Date: Fri, 13 Mar 2026 12:27:00 +0100
+Subject: [PATCH net v2] net: airoha: Remove airoha_dev_stop() in
+ airoha_remove()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260313-airoha-remove-ndo_stop-remove-net-v2-1-67542c3ceeca@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/z3NQQqDMBCF4avIrDsQI1rpVUqRNJmYWZiRiUhBv
+ HuDC5cf/Lx3QCFlKvBqDlDaubDkCvtowCeXZ0IO1WCNHUzXduhYJTlUWmQnzEGmssl6mzYMg2/
+ 915nx2UeoO6tS5N/18YYawOc8/6J8JGJ4AAAA
+X-Change-ID: 20260313-airoha-remove-ndo_stop-remove-net-d6c1cba0875f
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, netdev@vger.kernel.org, 
+ Lorenzo Bianconi <lorenzo@kernel.org>
+X-Mailer: b4 0.14.2
 
-Seems we have been carrying around repeated defines for unaligned mode
-logic. Remove redundant ones.
+Do not run airoha_dev_stop routine explicitly in airoha_remove()
+since ndo_stop() callback is already executed by unregister_netdev() in
+__dev_close_many routine if necessary and, doing so, we will end up causing
+an underflow in the qdma users atomic counters. Rely on networking subsystem
+to stop the device removing the airoha_eth module.
 
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Fixes: 23020f0493270 ("net: airoha: Introduce ethernet support for EN7581 SoC")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
-v2: remove another repeated define (Stan, Paolo)
+Changes in v2:
+- Target net tree instead of net-next
+- Add missing Fixes tag and improve commit log.
+- Link to v1: https://lore.kernel.org/netdev/20260311-airoha-remove-ndo_stop-remove-v1-1-596fe853b2e1@kernel.org/
 ---
- include/net/xsk_buff_pool.h | 7 -------
- net/xdp/xsk.h               | 7 -------
- 2 files changed, 14 deletions(-)
+ drivers/net/ethernet/airoha/airoha_eth.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/include/net/xsk_buff_pool.h b/include/net/xsk_buff_pool.h
-index 0b1abdb99c9e..ccb3b350001f 100644
---- a/include/net/xsk_buff_pool.h
-+++ b/include/net/xsk_buff_pool.h
-@@ -174,13 +174,6 @@ static inline void xp_dma_sync_for_device(struct xsk_buff_pool *pool,
- 	dma_sync_single_for_device(pool->dev, dma, size, DMA_BIDIRECTIONAL);
- }
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index 62bcbbbe2a95651ac1f7f30c3752ccbc7bc5662f..56cf9a926a83da38bb03373ced9728f1fecdbce7 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -3083,7 +3083,6 @@ static void airoha_remove(struct platform_device *pdev)
+ 		if (!port)
+ 			continue;
  
--/* Masks for xdp_umem_page flags.
-- * The low 12-bits of the addr will be 0 since this is the page address, so we
-- * can use them for flags.
-- */
--#define XSK_NEXT_PG_CONTIG_SHIFT 0
--#define XSK_NEXT_PG_CONTIG_MASK BIT_ULL(XSK_NEXT_PG_CONTIG_SHIFT)
--
- static inline bool xp_desc_crosses_non_contig_pg(struct xsk_buff_pool *pool,
- 						 u64 addr, u32 len)
- {
-diff --git a/net/xdp/xsk.h b/net/xdp/xsk.h
-index a4bc4749faac..7c811b5cce76 100644
---- a/net/xdp/xsk.h
-+++ b/net/xdp/xsk.h
-@@ -4,13 +4,6 @@
- #ifndef XSK_H_
- #define XSK_H_
- 
--/* Masks for xdp_umem_page flags.
-- * The low 12-bits of the addr will be 0 since this is the page address, so we
-- * can use them for flags.
-- */
--#define XSK_NEXT_PG_CONTIG_SHIFT 0
--#define XSK_NEXT_PG_CONTIG_MASK BIT_ULL(XSK_NEXT_PG_CONTIG_SHIFT)
--
- struct xdp_ring_offset_v1 {
- 	__u64 producer;
- 	__u64 consumer;
+-		airoha_dev_stop(port->dev);
+ 		unregister_netdev(port->dev);
+ 		airoha_metadata_dst_free(port);
+ 	}
+
+---
+base-commit: 99600f79b28c83c68bae199a3d8e95049a758308
+change-id: 20260313-airoha-remove-ndo_stop-remove-net-d6c1cba0875f
+
+Best regards,
 -- 
-2.43.0
+Lorenzo Bianconi <lorenzo@kernel.org>
 
