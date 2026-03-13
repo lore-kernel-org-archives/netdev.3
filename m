@@ -1,256 +1,147 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013033.outbound.protection.outlook.com [40.107.162.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF89F2F83A0;
-	Fri, 13 Mar 2026 11:38:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773401893; cv=none; b=NmcYsyxIKR2GgwO62nG4g3qSz1CX+A3J0Glje4pxe55PBfW8J+Nvs5YPX4px3nmxtnO4XqhavkWeuw0Iul/GAXdCEB1QdGCvmPnUmZjtJbZsv3SuQKVJObZdH9GPvfCm4lPR5ZZpJSUCTkB9IvIMez64z4NcjHMmw9szJiJm+7g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773401893; c=relaxed/simple;
-	bh=/k/9FS974n+DKyLTVMVI5E16Wa5IxxQNZTyNtvpztug=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P+OnoF/IZ5pNZOzMk867XfAtC+MGQFO5mwIWv3Ka6aWwMvUuqMSB6wGVnJb6utTMu+SSwQFcxYHrMeNNK4tilM15iuDevfTpTp9sFJG9VHT5gugAzgEM1RSTDJJT8MvYmCzol1swX4zZtDw6C3hAlRJPeKS44kDV2Sq1ylggVPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=C7lsj7v6; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678D638A29A;
+	Fri, 13 Mar 2026 11:49:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.33
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773402578; cv=fail; b=JT+g0l8HP0cptTTyPAtCVP9hr84Mx2UO2Ag+KfNRkrsgQtlDGKX4nPYayEo6oNcHcOJHqQ65QX94H/BH0k3ZsKEdGZdcgogpQ/bgNpIcktaTcnqxWwbHvUMBt5gXYCoR7zhyiSHlOCDTxKK+xnuuI0PTsEBosl5GzsqzTb1FWVM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773402578; c=relaxed/simple;
+	bh=iRz/2vpou2aGU1RX4d2uo1y8E8ITbSQ2OnJhy8QQ7pk=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=kqbAHpwrFQaqCSHbDdJLWrhK18K/CHFcecQ6M9EmjPHGogNX49FJMz4vri/bXPTWFbnPPfQeWjYTC5oXWGECsMx8Gm3zmY0jPTIpPLZA4meVL05AeCIJLkIXfidFyHae4DBj1puR/7S9aibWnJvCFgKw4NmM8HrJR3UZfPnN3EY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=OAgOzC9t; arc=fail smtp.client-ip=40.107.162.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="C7lsj7v6"
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62D36FSh1377189;
-	Fri, 13 Mar 2026 04:37:45 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pfpt0220; bh=ynY30oRSIFo8M7mp17yjPMrqw
-	2/qScu4SUxC5B5v7cA=; b=C7lsj7v6BQl71gnlVBpCjDxGgqUV9ooRySaq1386b
-	Ky6LtvbVfV89e0q5SH+kRAMV0XefvkqNsRXQE/cb5bnGGWFu3+jJglv5U2mI+Rt0
-	CZqBB/VEfj0zQ4t/EwUH5rvp/JS6W9v1zv0INR8p3lrmCvk9zxAS87gtmBuDUEkT
-	TQbwQmqubQNW27l6BlBmNcVgor94n6MwXT24uXDFRsW7b5GLLi1QE4hN/pKTdMiH
-	3DE7rGjC4KQmzNJKVJrBHNaOVHIUg4x2QKHRabtlMuerA6fkO1129qcqYwVqnuOf
-	qpuPEF5TqYboyrbiLPCuyQqKkDbKarkvcBcFARxpfAcyw==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4cuh7f4ggb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 13 Mar 2026 04:37:45 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Fri, 13 Mar 2026 04:37:43 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Fri, 13 Mar 2026 04:37:43 -0700
-Received: from kernel-ep2 (unknown [10.29.36.53])
-	by maili.marvell.com (Postfix) with SMTP id C2B4A3F7071;
-	Fri, 13 Mar 2026 04:37:38 -0700 (PDT)
-Date: Fri, 13 Mar 2026 17:07:37 +0530
-From: Subbaraya Sundeep <sbhatta@marvell.com>
-To: Nicolai Buchwitz <nb@tipi-net.de>
-CC: Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S . Miller"
-	<davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Doug Berger
-	<opendmb@gmail.com>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-        Vikas Gupta <vikas.gupta@broadcom.com>,
-        Bhargava Marreddy
-	<bhargava.marreddy@broadcom.com>,
-        Rajashekar Hudumula
-	<rajashekar.hudumula@broadcom.com>,
-        Eric Biggers <ebiggers@kernel.org>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Markus =?iso-8859-1?Q?Bl=F6chl?=
-	<mbloch@rooftopnetworks.de>,
-        Arnd Bergmann <arnd@arndb.de>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next 4/6] net: bcmgenet: add XDP_TX support
-Message-ID: <20260313113737.GA209052@kernel-ep2>
-References: <20260313092101.1344954-1-nb@tipi-net.de>
- <20260313092101.1344954-5-nb@tipi-net.de>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="OAgOzC9t"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZJDr5//tCFGvBP+RLGoDgXGlZVNu9vQzxSCF8tIuiAQkynRIc2Vs8ZCWF9QoemkXJd432GTPhXvPMTo69SvfhHLhqm0MDnVfJdK0xxNuQy1bJR8H7FCk1zSRazknYae76zQJCSPs+sRmk8G3rqnr8zN/dy/w12WIbImjTa5QO4UvmkIChPjIAK2xCqHtJTHUNK+jf9HN8MdYI/2yNrrSFB5cOlgkF1OmWD1H0ml2iqEIMkATEJTxOF5NNc4iotnV7uhguLGLxUg/O54eBvNYVC+h+gc1B15evpuRAq8coVaRYE70t+brMy0gTe8wFBwAPdFoQ7P3yt0Gv4D9L1UKaQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gbUyBoetiM0+QdgMrQkZX16lG9liPmsIujMpsHy9dhM=;
+ b=SErhVTS44epknlfQo4b4qIaSpT7xwSAf3mktgfKEjfwKocGIJNmoX42nQfDXdxIwTYXlhpMp6VIakKA60BygFYX46R4iW4bYcC0TxKKl6M2yMEyyuRBdtCzurchqvnuqyhkQjk9qzuqde4lKOwktU/03+H6miAaC3MMkB2ozUqS7tqkwFLSAvfJBB3OQcy0Ki2OjV7osykdUTOhiBIo8A+39jJLQ2KLaKWMkY9ZQisRrTcO40ou2hU6NHReojfmB/ZrxJNijls5exEQ+BjaDOo7PZ5O24ZwpGGui5bOWf9dkl8l3ke5H9TWQwmX+RIVBud2NHZd2LbexBdDe0ZwYTA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gbUyBoetiM0+QdgMrQkZX16lG9liPmsIujMpsHy9dhM=;
+ b=OAgOzC9tqG9qMS1Fb52ooxvaoXkP07HnXwkJRVOs3yvqFQLaYpf3cLmbO2lyiIkIu1YgE06siaWX54snY2XbUHp98n3za9FRJITz0j6cjXhnEFHQ32mYXzBmntOyQ1epT2v2zlerFUkCauVge94sCqMTZWHz/fvGcVwEIqaeCc/gp0rddqyYQ38WjHbaLfAmwpFvMsSHvEmqcigKCwZY76mSjFa1GiUagt1kUbiqY59nEp1K57n+aLG0bu/BxC8YAJbyYpTzuY0+NboTfXcO+aCJpnm2bhS9L+rLNP6N/m49PAQOQKfh5GvbJnTnndJDI2XWSa0lMHzMg/hUWlZN0A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by VI1PR04MB6831.eurprd04.prod.outlook.com (2603:10a6:803:135::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.15; Fri, 13 Mar
+ 2026 11:49:24 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694%3]) with mapi id 15.20.9700.013; Fri, 13 Mar 2026
+ 11:49:28 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH net-next] net: enetc: remove stray semicolon
+Date: Fri, 13 Mar 2026 19:24:54 +0800
+Message-Id: <20260313112454.427191-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA5PR01CA0224.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1f3::7) To PAXPR04MB8510.eurprd04.prod.outlook.com
+ (2603:10a6:102:211::7)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260313092101.1344954-5-nb@tipi-net.de>
-X-Proofpoint-ORIG-GUID: 8JsapWJZe8ceQ8KRdyRwCh58DppsqHZR
-X-Proofpoint-GUID: 8JsapWJZe8ceQ8KRdyRwCh58DppsqHZR
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEzMDA5MCBTYWx0ZWRfXxgjGlLfwF6PR
- nKghp9x4NM13CeBMwc7+400aB39CwW0fhKoYdhTYMfIoNb6hXJ9AsgpzO3qUwMMiR4pziwWOHGv
- AY1jtlVlfbjNJL1tl9Lq/l10vQZGszrt/NR7fb0vNFj1BUPA8ibYCO4/i159gGzyVRPQBI2k/EB
- Cd5CqKK5yLAac8/qoMkGxUZWdJ1VY6+5r3YcyPYnKwNW7El6DQsxAtmO1i9kWEAF/f6IvgyPRVL
- aUVDankp+QgTcrfpwGTrQW7EumUQP+kP1qzxsvU39SohPLu3YzTBekB9vLeQD/MUlS641WK3MO2
- G8vtwsqQE2KvNvvfwKrs1jzeEzj3I9GI0xLdCtPKz5d/+k77BzePw2A5jqBOt+eJRfWXMABuMPq
- G9vMCmfbUG28rTtgH+LBfBQ0a4g5NKWjTCm2XuyBAduUD5+9cBMNZMJhcAgBafcrfNoy1yNtNty
- 8HwWHoUILQbyZzAybZg==
-X-Authority-Analysis: v=2.4 cv=GdMaXAXL c=1 sm=1 tr=0 ts=69b3f709 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=l0iWHRpgs5sLHlkKQ1IR:22 a=QXcCYyLzdtTjyudCfB6f:22 a=GmAonr037yk7Tq6c59oA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-13_02,2026-03-13_01,2025-10-01_01
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|VI1PR04MB6831:EE_
+X-MS-Office365-Filtering-Correlation-Id: 72bb8a1c-b5ff-4791-4039-08de80f694ef
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|19092799006|1800799024|376014|52116014|38350700014|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	vLGHgGEotJLjnk432j8Nm5kjR11Qj8H71xDpr469OreOj6APDvlfzMJsIgP8ZmiZyICk+VXlQQoRWFRpLjX7FdX5FQO0KRmNixYT6MTq6MwbTagFenWHS91nQka9U7uhMs6pzj7TQFfJed9QDOZDoO80EwhOIgrocP7+FzSgM9G+zfiTmPbQ9zPukZXuWwusve6h7berkOzDKyO/2vakVMOeabZuzxlQlddqpO+UCjSIF4MBzjJcKNz2YNlG/c9fnabxbtcr0crgwRWmVGIeAvmkvjPSP0iw3hv06hVlxmEB1dYm4kCBZBqq9ibggOGwgfexDIDSTKVWoyqpNEjn2GHU7Qs6YI8rGXuyn5jedBKm1ftOUZwUyaAtCYfRPVEScz4v+5TRRJUjVNHHzsADA/+W4E63kvWuIHYd2ex1wRD/gD6HnzOwE7cgi6r8a96gZjwW3NhlngNOgvpjhw2h8HJl2VJ4rDibINznR2xXlcYqBNvr73L2yT/aC7Ga5KCRa/U9chzBpW0tqzwANp1aWi4Xz2GycZPBW2rT8KmT4J6uSnPyrD5RsXl+mU/QY0HKwGzPv8WIBb0O91l/9YcydpOYaVHOw4L5YxG2/IkJFPNbLlG15v6bg+NQGnndh43pHsYPtUcfPLxpmVdq9cgqRedJFcEXxMlbkqPTLGg6/n0dFHJ5B+TgNJfiVU6l8BEBtxBFjZm2Vw3/xYL2ckiLdcWp2cLvfqAdwS6le+WqxJ60Ui2q90m8r87V1zgRhg91bIM9qn74px5orOHs5Af4FDfOOG8fEIr+TGN1DZOG4gI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(376014)(52116014)(38350700014)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?7GyS+nuo1jc0MvfHUxeaMSVgfZ4ZjjYyg+yArcRL2j7iMhIrCvzbICV33sXL?=
+ =?us-ascii?Q?oAoz41rf8HlL1T34YP/BYDcd8RBzKysFo6clDg5qjXlvEObkDlN59H7zfeDT?=
+ =?us-ascii?Q?UTUDx0WmagDimvwRn1A0vIWlJneELfHSqoe719rRSVE8aEnMJHKXottdtpre?=
+ =?us-ascii?Q?G2ZgJqhacFzJzk41wp6ry90mGLTbRcjJTTfg9XQPCy8oaLMJBhmHMOctRZ6h?=
+ =?us-ascii?Q?uEOzHIH+BG6nQJuRzocuq7cISjJaWiCaSzDAJCSEQE2WXM+6Xh5M8V5lbkLv?=
+ =?us-ascii?Q?AvSuMRAtct8cLzZRBDvAWCG0rl/44Jhnd3hHhv4c8ys+7xZqfV75rUDYvUPg?=
+ =?us-ascii?Q?mvgS9puC8BKKRTrIK7y0tnBD/QfkjTuX37yjPgGjqxmzPettm1XFlHY7iQIQ?=
+ =?us-ascii?Q?yMwUbhpLcPRJSRJk8AAJzj1g8oEErx7lLgfFjyz/lnPp/95zJkrxoGtdW/3j?=
+ =?us-ascii?Q?CX/Nk7wkrGUY1taTR3owxjfA8lwSS34qwh3inxUcOqfcBsdIxCNjfPuPiSTr?=
+ =?us-ascii?Q?HkP2kioYQ3143t2A5TlLSs9CdMtyUlGEj7YRiBylWUbpgO8bJ65YNUSArqJK?=
+ =?us-ascii?Q?YjfeDpUiaqP28QyCvZEaU/Yzoo9bL0TvhvQgFIefDQ6pEU8zibK7htFpS7/D?=
+ =?us-ascii?Q?h0qPuP5ZgL0U4y6g+p7JNgIgY8Az6WfE6Nh0CD+vkgisjpIYfxoXusi+c7k3?=
+ =?us-ascii?Q?3gwgjQ8YGG2Mp8+6L+abdWccBAh9lo1Nd7y2XgFR9eHGkiEjfEUS/wg4+ICn?=
+ =?us-ascii?Q?KuLMZYojcPH6OSQzTAbeOC56vqbEO8KTQFRTJNrXzyqNiHCUmdhZSbOA4Byf?=
+ =?us-ascii?Q?dQaBgzYwJZvrsSw+fOfvdKMl2/5KLKklQJVnZHO9079vtUcVQJUOKgz4LmFh?=
+ =?us-ascii?Q?zUY3dQFM1PWMX7ohQRmnBVu5rMWoz59N+AsataCEPOlulIBwLpAFwuqymFfA?=
+ =?us-ascii?Q?iLcNncDarelVRKLh7AfH0ShhCkGkJiNRc4qXSJUABUU1MnnZoaoLkeffoyhE?=
+ =?us-ascii?Q?9Y7dLW1IJ7XDsnjPurWB3CZmx0e/bKV+En0SAWm5iHEHVnwa0OA4C2ko2XqS?=
+ =?us-ascii?Q?V4wPTvM8/b6ATY6Hts4E8d2trSAdvG8lIgaJYuGFVkvILGO3ns0KPBxvxoG7?=
+ =?us-ascii?Q?NPVKyQ25GMH3qU8bEpvM+q6BjqpMtk9/GJP/QnO0GyNgLPAu9OaEpbD03DKV?=
+ =?us-ascii?Q?MXXSBXGDQ+Nci6LuODCt7SliRV5Ywrx82aoEKwyazhm/gOsb+a0e2GXEFjeJ?=
+ =?us-ascii?Q?SmoQNDye64riZCh9CiX9LqQfzQWSwfMFDXZ6qgIW10sabgTlI5mtVllSJZWD?=
+ =?us-ascii?Q?lhIG0cMc1ikZ0yZBIJTWGbZwDMAACv1Lkr/uKO3FXn62cztFyjC6eq+/19Ab?=
+ =?us-ascii?Q?M/bpftJlkR28YUHqTdf5K8DB/LVTsw5EBd+l5N6403n+TTIvW6JchZV/pOGt?=
+ =?us-ascii?Q?Fq9qAGGrIexJ/ifZaTOOrOMu80xhTa6JZ5OCRGg8XyD5d5t16TRe45TVrzga?=
+ =?us-ascii?Q?z5suyJMOO5zS4F/Zr9J3iKOK6AjFJFYWc/Bm5jlsHRtU/QAMMg2i7fqqIQiX?=
+ =?us-ascii?Q?Vc7Ves88OoWzj7+nbuVfeElv6icxbYiFhCZAjht6QD7kiG4JGtv2gz93Ucza?=
+ =?us-ascii?Q?sUxYxEIELtiBtIK1TnfgJZeorcek1AhraROzlg86z5FQXbUDVG3HVIJJ4vmC?=
+ =?us-ascii?Q?XlryMRPwC4ozit3e7OghOKm8VgG/9SORZiwXVm/gts8lcBEVclOBQ6F2QJ56?=
+ =?us-ascii?Q?Tg1kWOlG1g=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 72bb8a1c-b5ff-4791-4039-08de80f694ef
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2026 11:49:28.5885
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: LZyVcqGmdtZmDAkJNKR0sdFiVK2cf7H9h7vAKrEsbnCMPl1Nfc9UbTAuWjlRkIWFZxSqtCqwlVauR5Z8DD2Nlg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6831
 
-Hi,
+Remove stray semicolon from ntmp_table_name().
 
-On 2026-03-13 at 14:50:59, Nicolai Buchwitz (nb@tipi-net.de) wrote:
-> Implement XDP_TX by submitting XDP frames through the default TX ring
-> (DESC_INDEX). The frame is DMA-mapped and placed into a single TX
-> descriptor with SOP|EOP|APPEND_CRC flags.
-> 
-> The xdp_frame pointer is stored in the TX control block so that
-> bcmgenet_free_tx_cb() can call xdp_return_frame() on TX completion,
-> returning the page to the originating page_pool.
-> 
-> The page_pool DMA direction is changed from DMA_FROM_DEVICE to
-> DMA_BIDIRECTIONAL to support the TX DMA mapping of received pages.
-> 
-> Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
-> ---
->  .../net/ethernet/broadcom/genet/bcmgenet.c    | 73 ++++++++++++++++++-
->  .../net/ethernet/broadcom/genet/bcmgenet.h    |  1 +
->  2 files changed, 71 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> index d43729fc2b1b..373ba5878ca1 100644
-> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> @@ -1893,6 +1893,12 @@ static struct sk_buff *bcmgenet_free_tx_cb(struct device *dev,
->  		if (cb == GENET_CB(skb)->last_cb)
->  			return skb;
->  
-> +	} else if (cb->xdpf) {
-> +		dma_unmap_single(dev, dma_unmap_addr(cb, dma_addr),
-> +				 dma_unmap_len(cb, dma_len), DMA_TO_DEVICE);
-> +		dma_unmap_addr_set(cb, dma_addr, 0);
-> +		xdp_return_frame(cb->xdpf);
-> +		cb->xdpf = NULL;
->  	} else if (dma_unmap_addr(cb, dma_addr)) {
->  		dma_unmap_page(dev,
->  			       dma_unmap_addr(cb, dma_addr),
-> @@ -2299,10 +2305,62 @@ static struct sk_buff *bcmgenet_xdp_build_skb(struct bcmgenet_rx_ring *ring,
->  	return skb;
->  }
->  
-> +static bool bcmgenet_xdp_xmit_frame(struct bcmgenet_priv *priv,
-> +				     struct xdp_frame *xdpf)
-> +{
-> +	struct bcmgenet_tx_ring *ring = &priv->tx_rings[DESC_INDEX];
-> +	struct device *kdev = &priv->pdev->dev;
-> +	struct enet_cb *tx_cb_ptr;
-> +	dma_addr_t mapping;
-> +	u32 len_stat;
-> +
-> +	spin_lock(&ring->lock);
-> +
-> +	if (ring->free_bds < 1) {
-> +		spin_unlock(&ring->lock);
-> +		return false;
-> +	}
-> +
-> +	tx_cb_ptr = bcmgenet_get_txcb(priv, ring);
-> +
-> +	mapping = dma_map_single(kdev, xdpf->data, xdpf->len, DMA_TO_DEVICE);
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+---
+ drivers/net/ethernet/freescale/enetc/ntmp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-AFAIU you are transmitting the frame received on a RQ which is from the page pool
-and already dma mapped. Do you have to do dma_map again?
+diff --git a/drivers/net/ethernet/freescale/enetc/ntmp.c b/drivers/net/ethernet/freescale/enetc/ntmp.c
+index 0c1d343253bf..703752995e93 100644
+--- a/drivers/net/ethernet/freescale/enetc/ntmp.c
++++ b/drivers/net/ethernet/freescale/enetc/ntmp.c
+@@ -227,7 +227,7 @@ static const char *ntmp_table_name(int tbl_id)
+ 		return "RSS Table";
+ 	default:
+ 		return "Unknown Table";
+-	};
++	}
+ }
+ 
+ static int ntmp_delete_entry_by_id(struct ntmp_user *user, int tbl_id,
+-- 
+2.34.1
 
-Thanks,
-Sundeep
-
-> +	if (dma_mapping_error(kdev, mapping)) {
-> +		tx_cb_ptr->skb = NULL;
-> +		tx_cb_ptr->xdpf = NULL;
-> +		bcmgenet_put_txcb(priv, ring);
-> +		spin_unlock(&ring->lock);
-> +		return false;
-> +	}
-> +
-> +	dma_unmap_addr_set(tx_cb_ptr, dma_addr, mapping);
-> +	dma_unmap_len_set(tx_cb_ptr, dma_len, xdpf->len);
-> +	tx_cb_ptr->skb = NULL;
-> +	tx_cb_ptr->xdpf = xdpf;
-> +
-> +	len_stat = (xdpf->len << DMA_BUFLENGTH_SHIFT) |
-> +		   (priv->hw_params->qtag_mask << DMA_TX_QTAG_SHIFT) |
-> +		   DMA_TX_APPEND_CRC | DMA_SOP | DMA_EOP;
-> +
-> +	dmadesc_set(priv, tx_cb_ptr->bd_addr, mapping, len_stat);
-> +
-> +	ring->free_bds--;
-> +	ring->prod_index++;
-> +	ring->prod_index &= DMA_P_INDEX_MASK;
-> +
-> +	bcmgenet_tdma_ring_writel(priv, ring->index, ring->prod_index,
-> +				  TDMA_PROD_INDEX);
-> +
-> +	spin_unlock(&ring->lock);
-> +
-> +	return true;
-> +}
-> +
->  static unsigned int
->  bcmgenet_run_xdp(struct bcmgenet_rx_ring *ring, struct bpf_prog *prog,
->  		 struct xdp_buff *xdp, struct page *rx_page)
->  {
-> +	struct bcmgenet_priv *priv = ring->priv;
-> +	struct xdp_frame *xdpf;
->  	unsigned int act;
->  
->  	act = bpf_prog_run_xdp(prog, xdp);
-> @@ -2310,14 +2368,23 @@ bcmgenet_run_xdp(struct bcmgenet_rx_ring *ring, struct bpf_prog *prog,
->  	switch (act) {
->  	case XDP_PASS:
->  		return XDP_PASS;
-> +	case XDP_TX:
-> +		xdpf = xdp_convert_buff_to_frame(xdp);
-> +		if (unlikely(!xdpf) ||
-> +		    unlikely(!bcmgenet_xdp_xmit_frame(priv, xdpf))) {
-> +			page_pool_put_full_page(ring->page_pool, rx_page,
-> +						true);
-> +			return XDP_DROP;
-> +		}
-> +		return XDP_TX;
->  	case XDP_DROP:
->  		page_pool_put_full_page(ring->page_pool, rx_page, true);
->  		return XDP_DROP;
->  	default:
-> -		bpf_warn_invalid_xdp_action(ring->priv->dev, prog, act);
-> +		bpf_warn_invalid_xdp_action(priv->dev, prog, act);
->  		fallthrough;
->  	case XDP_ABORTED:
-> -		trace_xdp_exception(ring->priv->dev, prog, act);
-> +		trace_xdp_exception(priv->dev, prog, act);
->  		page_pool_put_full_page(ring->page_pool, rx_page, true);
->  		return XDP_ABORTED;
->  	}
-> @@ -2846,7 +2913,7 @@ static int bcmgenet_rx_ring_create_pool(struct bcmgenet_priv *priv,
->  		.pool_size = ring->size,
->  		.nid = NUMA_NO_NODE,
->  		.dev = &priv->pdev->dev,
-> -		.dma_dir = DMA_FROM_DEVICE,
-> +		.dma_dir = DMA_BIDIRECTIONAL,
->  		.offset = GENET_XDP_HEADROOM,
->  		.max_len = RX_BUF_LENGTH,
->  	};
-> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-> index 1459473ac1b0..192db0defbfc 100644
-> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-> @@ -472,6 +472,7 @@ struct bcmgenet_rx_stats64 {
->  
->  struct enet_cb {
->  	struct sk_buff      *skb;
-> +	struct xdp_frame    *xdpf;
->  	struct page         *rx_page;
->  	unsigned int        rx_page_offset;
->  	void __iomem *bd_addr;
-> -- 
-> 2.51.0
-> 
