@@ -1,157 +1,155 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011066.outbound.protection.outlook.com [40.107.208.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABAB534EEED
-	for <netdev@vger.kernel.org>; Fri, 13 Mar 2026 10:53:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.66
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773399183; cv=fail; b=VZNwAdbHkJ0dmhqCXHEy+WURoFTvrn2P1/UzpXDPxM3T2MLnoOLRpMRO8G+z9+igNJ37Ggo2pRdzqasB0spJda88K3NM1XsPJziVex94iPQXx+K7uqTEwSEPZ9eildqApD9yMP/NN4Qis19eOCbytNbPx4/yuAHcOYHlhAn5muk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773399183; c=relaxed/simple;
-	bh=Qv+FYXBjPk87XaY3CQ8hcXc13qNnwwfslQ/IYwTmwkE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nYtEUWSxNQRzsWyK47T6hOamYR7EIwBmqdv8Y8pp7oXvQffJXcHOCm6lGQ1KGgN+vpuoGK7rIOsLQ1rrddxI6iNS/YHfouBm3zdszUU8a8i5Tfp5V/3J+WSVZErBgrV7STKlYIp5SZ5HGho+m67WaToMwqv41wdgI2ddxTJofiQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=gToE92T6; arc=fail smtp.client-ip=40.107.208.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7CB38D6AC
+	for <netdev@vger.kernel.org>; Fri, 13 Mar 2026 10:53:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773399185; cv=none; b=XQGCA43/pbl0V4eUl/ZBNsgnygeh1JjjEV49vdPv041sIk7bTstXrVsaAZ8go2MIXNUIucQR+5Z8lRz2cuh7ZPH3jrqtRWLf20s780NRN9KUNeLx/x5n6YJovXWEuMK09f/uSnv6Kx2yxhjh1yLGOWL0rb7RUczmUH8XepHFwfs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773399185; c=relaxed/simple;
+	bh=2Xm0BRu2Cs2z3oeU+RWd6oUeKYAmIS1aqz1IYM1B3rM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PGk5C6vlGSckEnuDeDA0yzQ3KCtSRlgwt0JgH17YtzIdlE1Q+1FJiL1O3uDxmTDkraq7bYDmnjclvpfSf2S/Vyq9+wNAT4uL99ifZjIVwTf6MwzwRRzZhoKFEpokph+oAG05XBMjwIqOdBMJ9xBNLNl8vGEXipbvcAv23JrVUQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=Qgxrxi3Z; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="gToE92T6"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iKaiNodxcE4iiFERoc4wZn594FhtNbqlf3UwPvXkgETgwwM/J4cVukt8mRixH/fc5DfeCEjVnqRI+hgzn8Pa1lY9FL2IbURYEISnbQThJQCsv9ioUjsHcQ8D9jhN34ppRMi013m4L3SRx1jWDvFlqcDs2N1E+OP6eSbYrIpkGeEgflozKmjIhnGETI1E/EK1sD1Jh8uCiJeE0SL8fSILg2fn5tpEWMq9IiNJ94y4Vv2usid2Q06H7fHiAuaryZD/QqnYQ5nQxEzf5YpPYzrmyFt582zJUPSIynUJqnI9prrX69N1RJtJOYxd1AJUpyGIGdwbf47Vrdhtqdk2sUe5qw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9W6phtXY50DOpHTXAAYTAeqytjrNBCPSpiw1cwuIm0E=;
- b=hTeAmMKeB//zEvPEuOch8qEigW3A89d2H2yAuRwm9ZhwiiJNkFeAEaQXeWmjw0FvZolypU95daT+19CP5FtlmA+stvCpH7aKt2H2W1iXfz9ztb8Mt9x5th6E3tvd6vRDCwWBfk+hZFAv1EpjRumUj5Orl0EAlWaj+lMQrvJqe9Q8zaVA454sHMBBPskP9GFdh7keyOm/VwDQOEDFwDYSPJo2ZYKc7Sre3ZWB0NYAmHXl2VgHqsEaE7ydZUhiFgwsY61SU+o/h4k5jxxynxo49AlncDSEMhSJHGaUShCT7Ny0Y+ChpwGu5KJLIyw2/RBkg6ttPAUbIBj2G2WGMqdNew==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9W6phtXY50DOpHTXAAYTAeqytjrNBCPSpiw1cwuIm0E=;
- b=gToE92T6PDpYT2LTWHtgah7fALXP98nHTeUT8AsWUBhK7yXCGFnWWgtDD20OIDvY1T22le9xmUIUbCCDc6gvvF5jrdfgEyze/F+4IoJVrVtBxexSzFquGXoPqxvUMzsQd+01Di75yN/y3C+8gq9fxqo1i89yqNLtSEEsM0ybvacfnuNHZYzlzbQdk6rhiHByeAeuL8SRTZ1nhhTSkakQm+Kn8SUrkddYNHm+KzHBixdIcJpDt0YFWvNoJzxYK3fy2dFJQ3Pc9E/jxYSVlQfay8CriFr22ggvLHGrutoqIUT8NXzrgGD5CHQrHWveGPwLv8aOu0wz5f1UZl07DySdBw==
-Received: from SJ0PR03CA0273.namprd03.prod.outlook.com (2603:10b6:a03:39e::8)
- by CH3PR12MB8073.namprd12.prod.outlook.com (2603:10b6:610:126::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.7; Fri, 13 Mar
- 2026 10:52:55 +0000
-Received: from SJ5PEPF000001CA.namprd05.prod.outlook.com
- (2603:10b6:a03:39e:cafe::a6) by SJ0PR03CA0273.outlook.office365.com
- (2603:10b6:a03:39e::8) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.29 via Frontend Transport; Fri,
- 13 Mar 2026 10:52:55 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SJ5PEPF000001CA.mail.protection.outlook.com (10.167.242.39) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9700.17 via Frontend Transport; Fri, 13 Mar 2026 10:52:55 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 13 Mar
- 2026 03:52:47 -0700
-Received: from pylon.vdiclient.nvidia.com (10.126.230.35) by
- rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Fri, 13 Mar 2026 03:52:42 -0700
-From: Cosmin Ratiu <cratiu@nvidia.com>
-To: <netdev@vger.kernel.org>
-CC: Sabrina Dubroca <sd@queasysnail.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Cosmin
- Ratiu" <cratiu@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>
-Subject: [PATCH 0/3] macsec: Add support for VLAN filtering in offload mode
-Date: Fri, 13 Mar 2026 11:52:23 +0100
-Message-ID: <20260313105227.1884391-1-cratiu@nvidia.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="Qgxrxi3Z"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-48534b59cf3so18208835e9.2
+        for <netdev@vger.kernel.org>; Fri, 13 Mar 2026 03:53:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openvpn.net; s=google; t=1773399182; x=1774003982; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=DNZyinWuxfhj/HMKnN0a7zD6/loa3Iui4nBmpRal/7w=;
+        b=Qgxrxi3Z1pmqTpEf2hOuwp1v9wxDcikS6dCTFPGb3AFgX+a2Vt9wEVsBKJd0m7BkQc
+         rVmyshwWIlb85fo2wCPq3haizlv/iZmN/FTXhp7YCuJtfC3r3WjWxd9m/CRkqcWWmVw/
+         vA6dJgzohJTWTrE4zvFz9ChPdtx/xdv2KnbmoBV4HEHpxcy4ATZxTwYBJFY67qEM1mhE
+         m1VNFyf/5E+f9uGykeoAuCTlREUM6PRvuhsbUf8oj8XuRscNpn4wdoMM+EaFLPg+d4Il
+         bA6H4rXfQm4nbtZGtf/4DM7sETGx9yvo1KPeTn3A4kDvNc42gqR3s3nA2egT2B+9xpqi
+         esUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773399182; x=1774003982;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DNZyinWuxfhj/HMKnN0a7zD6/loa3Iui4nBmpRal/7w=;
+        b=h1ZVeu97BmTOFRNYkpTBZxUBDzu8di/81gCuRfLHAPjHpeEXPYKnGAjb8pTibYWeY1
+         LBJJlpkpaoYgsGKZ3apgoMG4PWtHYDoGvpyKRo4kVND/PhJnCmt6s8Ro0HPD/iyAVYmE
+         zzZyFEj+rgcc8xlUXxZyxr44Vft0nY5OjRx8KP0lKYV87Crwk3qeH0RvCRdiF4wVQRLD
+         hL+FFtpWHUncROr1R6UTukAmGoJjXZlVkyCRd95nkOUDgeqRlEduDIudET3K8iSczQgc
+         r9VakHF6sOqWdJsNjmIOg6Ip22IsqBtV8SHZyqluWWYuuTpBN00v7NpkCEiKh+YMKLlU
+         JFlw==
+X-Gm-Message-State: AOJu0Ywz1377WwXiCi1CQT8kj3kWfRnEk3tyg9yucf6Fz5WNPlH1g313
+	6g1o6qoT7WdG1gm3SXjocUmKIqFM5w16rRwYPaLS5zamDf29VcdcnNAsktTdEzLqz0+QtzR3rWI
+	Osd10AWzFSHu/7IrnM2RaraN6IDF/VMBmDQmsgylF3xOURUzfOJ8=
+X-Gm-Gg: ATEYQzy8A77jGu/6SRkjURhdxeQVn6Tvp/HUhhveoPOxhJA00PDxB1a0OY9t42WJhP6
+	/AkWJCYmY+Y+nTbPqRcbwxWH5H20Bg/bQNhgIfgx7Gmp6L0Z9sGxvLc7KA9PU1V6t9dOgs9DyN+
+	sWtVKfXzujziu4F2I5UEwxPmSY8rflG7/Shid20uqjZ4qYJpOIoArJ5NYlXJRiGe782dWNffDwz
+	nrhg0T2IpFUUU1vAkn9kRiGzwUWbVQ2nIxSfCD0d/S1n85CkADNMcZpeKRQQ4giE+vYTf5Tq3b6
+	Hqhh/QRNuryRcKTW4ifMmNnIt8kUXscObykm5XusbG7pWV/9RQQzudo32wt1otpKx6RWJ9s/R3e
+	AP776CytKQWNR960U9JCk9YEiOZhOyuRyHGdqAD3jeR8JLKE3mUC2vRgkkm47C0LD6UyMb9Mnqp
+	WDtfeppPYldqLbeUYL3WOaUCdYjArIIoXTTk66ir4cUWFnWWL4x3D2bIdydMhvmw==
+X-Received: by 2002:a05:600c:1f8d:b0:485:4278:24fb with SMTP id 5b1f17b1804b1-48556711dfcmr40023815e9.32.1773399182370;
+        Fri, 13 Mar 2026 03:53:02 -0700 (PDT)
+Received: from ?IPV6:2001:67c:2fbc:1:5172:7646:5893:2ac6? ([2001:67c:2fbc:1:5172:7646:5893:2ac6])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4855778d268sm24283095e9.8.2026.03.13.03.52.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Mar 2026 03:53:01 -0700 (PDT)
+Message-ID: <a2724a9d-4f03-431e-934d-b6aa64d1ad45@openvpn.net>
+Date: Fri, 13 Mar 2026 11:52:59 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001CA:EE_|CH3PR12MB8073:EE_
-X-MS-Office365-Filtering-Correlation-Id: b14fb4cf-fa90-4e22-6d8d-08de80eeaed8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|36860700016|1800799024|56012099003|18002099003|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	ZieuJzhaRW5xBVUt6cjvhj0PL/iOyiu0pfMRFye7gjo3yZ2IMvRkOm1q2YBznauXT9cUtF5WGvKP/7Cwu7OuX4Jell8THqvDTH6R+dEfMDXuVMI9uWtTIxCTWhQ5PmJmGq4rwV5kaCMieiQXQRL1y7m3bqEZAlqS+yxS4mYR4CKTo0oAyhuGnaI51eiyCghPWYNCTywnph1Vfk9xJBD87WzZkZaTz1hAyv5GcAXnh2W0jjIB94lGWULh7FX5TMnTQd9vbdpouHi+6lMfWwdVKzDGv0bd+JE5RSePmdXFlxT3EVwfCRaqN8od+auguFYq2L0WhHQtDOT6yWC8SrhGGZ7LzipKJ5T+ePd/xSWtzjE7igqs9xWMWNJnzSSkp1JQKrJM42g/p9qvgnZJ8B72CDUyX7i7gIEVWmW0sxD9eomH46Pz2n8AEGjmO81CiSndWL799TPXuXUtOx6eQeYw9l4b63yF9vXPEzXLtJoAcgkmfViOMh6evfh04QkXScpWGx7NMEuP5h1YK52SVYcTjRt9m3+mqsLXfhQOkWuhhLuRLKsVn3xn15+/jirUsF47bgAWoYJWFdsWSn+7c74OefwiWc0vVHzymYzIJAHIr2EkCoPmHcPbychEUyBr6snSf4h+sc5vUhOVYfPmT0jS62TcIYTrc+Uwtb/ByrLarSzVYfDvBV8YWRdnTeDMktaj+peQlKPYD29vbmFYzkJNq1VkiRBN/vr69zwtZFfG66nscMdAOkSrqBYYQXLlQGOh5CwUScOVJt10YH52FiE+5Q==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(82310400026)(36860700016)(1800799024)(56012099003)(18002099003)(13003099007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	aR88PYRli+o4lntrofJvdJMLhxbiu+713rIOSwuKtlee4SN3aG4JGFKdYEHyn2Rs4ZvTN9AXyrUdq+JkFysdK9Cz9+YpwhYKeJrWssmy4ac+9xw/FfdCNURC0wivOzMjiAzFXLgpsSkzW2T6BiIoawD1iVg9Qk2pr3LlrkGKEDDyh1tehGhglmCcwSyQQBsY7QAyVpbQL4rXSio2X5i/m8TaNnUPiU2O/pAzTH7nvXQ3Pd0XBTmYRmGKK7MgDKcE7zWk+GOqZAyqWbWPoLG2b6nG6JBx/0fYgt+Tm1cLivTkiuh6mEVagcn1PD1NXRLU+d/07cWIWPtyX2A0/u1hDDizxkoe2iV/asV7q+TRbsA0PTaO4JKXFLwlKRd8GK7ygULjzicw0YAdueMi40x0WJrfb0X6UFMP4iC70mCLDVmxZtIsv1e48ERWZNEPRmwv
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2026 10:52:55.5658
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b14fb4cf-fa90-4e22-6d8d-08de80eeaed8
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001CA.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8073
-
-This short series adds support for VLANs in macsec devices when offload
-mode is enabled. This allows VLAN netdevs on top of macsec netdevs to
-function, which accidentally used to be the case in the past, but was
-broken. This series adds back proper support.
-
-As part of this, the existing nsim-only macsec offload tests were
-translated to Python so they can run against real HW and new
-traffic-based tests were added for VLAN filter propagation, since
-there's currently no uAPI to check VLAN filters.
-
-V4:
-- Migrated nsim-only macsec tests to Python, usable against real hw.
-- Ran these tests against both nsim and mlx5 devs.
-- Gave up on nsim patches since the tests no longer use them.
-
-V3: https://lore.kernel.org/netdev/20260306151004.2862198-1-cratiu@nvidia.com/t/#u
-- Moved back to net.
-- Added proper rollback support for VLAN filters in case of failure.
-- Added VLAN as a requirement for the new macsec tests.
-
-V2: https://lore.kernel.org/netdev/20260227090227.1552512-1-cratiu@nvidia.com/
-- Sent to net-next instead of net because of apparent complexity.
-- Changed VLAN filtering to only function in offload mode.
-- Added tests.
-
-V1: https://lore.kernel.org/netdev/20260107104723.2750725-1-cratiu@nvidia.com/
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 5/9] selftests: ovpn: add notification parsing
+ and matching
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, Ralf Lici <ralf@mandelbit.com>,
+ Sabrina Dubroca <sd@queasysnail.net>, Paolo Abeni <pabeni@redhat.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ linux-kselftest@vger.kernel.org, shuah@kernel.org, horms@kernel.org
+References: <20260310145006.30858-1-antonio@openvpn.net>
+ <20260310145006.30858-6-antonio@openvpn.net>
+ <20260311201738.20d816bd@kernel.org>
+Content-Language: en-US
+From: Antonio Quartulli <antonio@openvpn.net>
+Autocrypt: addr=antonio@openvpn.net; keydata=
+ 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
+Organization: OpenVPN Inc.
+In-Reply-To: <20260311201738.20d816bd@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 
-Cosmin Ratiu (3):
-  selftests: Migrate nsim-only MACsec tests to Python
-  selftests: Add MACsec VLAN propagation traffic test
-  macsec: Support VLAN-filtering lower devices
 
- drivers/net/macsec.c                          |  44 +++++-
- tools/testing/selftests/drivers/net/Makefile  |   6 +
- .../selftests/drivers/net/macsec_api.py       | 103 ++++++++++++++
- .../selftests/drivers/net/macsec_lib.py       |  20 +++
- .../selftests/drivers/net/macsec_traffic.py   | 126 ++++++++++++++++++
- .../selftests/drivers/net/netdevsim/Makefile  |   1 -
- .../drivers/net/netdevsim/macsec-offload.sh   | 117 ----------------
- 7 files changed, 294 insertions(+), 123 deletions(-)
- create mode 100755 tools/testing/selftests/drivers/net/macsec_api.py
- create mode 100644 tools/testing/selftests/drivers/net/macsec_lib.py
- create mode 100755 tools/testing/selftests/drivers/net/macsec_traffic.py
- delete mode 100755 tools/testing/selftests/drivers/net/netdevsim/macsec-offload.sh
+On 12/03/2026 04:17, Jakub Kicinski wrote:
+> On Tue, 10 Mar 2026 15:50:02 +0100 Antonio Quartulli wrote:
+>> -TEST_FILES = common.sh
+>> +TEST_FILES = \
+>> +	common.sh \
+>> +	data64.key \
+>> +	tcp_peers.txt \
+>> +	udp_peers.txt \
+>> +	../../../../net/ynl/pyynl/cli.py \
+>> +	json
+>> +# end of TEST_FILES
+> 
+> needs alphabetical sorting
+
+Dang.
+
+> 
+> Please do use/steal the script from NIPA that validates the format of
+> Makefiles, cause it's really easy to make a mistake on these
+> https://github.com/linux-netdev/nipa/tree/main/tests/patch/check_selftest
+
+Thanks a lot! We were looking exactly for those.
+
+Regards,
+
 
 -- 
-2.43.0
+Antonio Quartulli
+OpenVPN Inc.
 
