@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D93366DCF;
-	Fri, 13 Mar 2026 07:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2E036828A;
+	Fri, 13 Mar 2026 07:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773386023; cv=none; b=b20pF5iJVdTc8A/O6EQZu8d37J6sXbrLJDqLu5JU9i6Eq27IA9LXO2nmn4il4sXvlFEq+0rTIWu7dj0OXECdNsq0dtQLRC9w9QWWgvGNjoowxoJE5fdvfV0uwo3FIZrNfSj0GQxNZ8nhd1ix/wc9gfAoMaH0yw8moIL2N3lp/I8=
+	t=1773386023; cv=none; b=Wj8dHx64l/9t8S9ZVhgzhZ6ja2kuwAGdk1tpQMATiDm3tNpbHgvJLpjNUP6IUePwmn5ZN2T6m0CObeTcc+YXPjWBw+n/rElzlfm63VNqjC1VfbMR2y5gb786HmLugzwESUw1YOyNJiIhjHWhudseUZWJ+dPTjsSqPEtkzUVm5sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773386023; c=relaxed/simple;
-	bh=40Cz4hesa3A7f6nuxyb4PMpfao9zv7QlEkjCMHd2dk0=;
+	bh=irkQSwZ0ZgATCbIp5Z59MJUY/oOrgGe+E+CmoJMzRtM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=LHLMdDy6rrfzHm0Jyt5NpnHtUTMPfkmo9+mSIGosLY2agMxKaqCf3gnh0aP+eOkdCBeO79dlsnKnKIAnp5h0H46KchtiwgK39d1IjLDUbP72R1U7lqxx6LHtyZ1NSoVGOi0z5CgYG9btCOCjdkbzCLe0MAto+meL0DllG+vJKgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bkLIe6u7; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=ogtQiisjjQG8t8aUMzEiL240XgfF0050u6elDZxQ5UUlEnAv53klUG7vx99KsjHFxZvEEhIl+s+EpgWSVRG9a0rqjSBsXEuc6DcOhZrW5/FPZypGhrNTIO5yrYtf0hgkZfuyv5dT2ZUEXMeNM4WGswwH52xhmVw0mmUjxmEo83o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VRlC+PmQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bkLIe6u7"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B1D72C19421;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VRlC+PmQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E069DC2BCAF;
 	Fri, 13 Mar 2026 07:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1773386022;
-	bh=40Cz4hesa3A7f6nuxyb4PMpfao9zv7QlEkjCMHd2dk0=;
+	bh=irkQSwZ0ZgATCbIp5Z59MJUY/oOrgGe+E+CmoJMzRtM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=bkLIe6u77B371GN9hRTU8YONJd+tsnZCkXYvDvBudpkraH1ZKEyz7W+7XzGEN6DP2
-	 4zqoZ1PrQnBPw6+lZCynlqRCHuNGXwbW/TTA+6bKNJPtbPoTwzMQzrkv9c9kv9KuI9
-	 owyu5KYQSELf7mYCxORWaBp2RlJG5E7vZlp2kw2SuqmLYzf+Kd6P+Onhau1cscaNhj
-	 NP0hJQWVC1qL2mrKOiuBaPIVesfAKpP2KmB2dPjvIjdSVXwS0S2jxsyI3aAjJ21/d6
-	 S8XfJ1KPKsL9NREaCpa4HCtLykbes8bzraaGrPOfZZx+jq1fgLTLjaj/kdTqFBzzHG
-	 xBV/zVfi0oDmg==
+	b=VRlC+PmQRD0Fqh8YxhKtXiE90sfe0ukQXCzD8jJTt3/c8X9eQkodiH+ccFHReKaj/
+	 +G4B8tAVo7Jo24+8Ks6MD0Aa54TD11swIW/6tH30NW36ql6K8CY7/+Zgkz4x4YUQih
+	 xEsQbkP5poQe4qiRqrdfkad0sluFrpK0G0NVlRHV5gabkCnccfkHzpaDrVF0dCDBlh
+	 L84nPYvS/W6B/YYeyswYQ4SVq0IOsdgN4N8sScgO1YdABg9K3CT027ZHsn/xLsUojM
+	 7NEWqTIcIZBotKpfR2lpxl5NPrbkbipjo4/6L2O3A8wy52YQONbkIcYlgRoCYgHqgx
+	 UNoXxqKjgmQpQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A4776106FD91;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D8969106FD8A;
 	Fri, 13 Mar 2026 07:13:42 +0000 (UTC)
 From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
-Date: Fri, 13 Mar 2026 08:13:32 +0100
-Subject: [PATCH net-next v12 1/4] net: stmmac: platform: read channels irq
+Date: Fri, 13 Mar 2026 08:13:35 +0100
+Subject: [PATCH net-next v12 4/4] stmmac: s32: enable support for Multi-IRQ
+ mode
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260313-dwmac_multi_irq-v12-1-b5c9d0aa13d6@oss.nxp.com>
+Message-Id: <20260313-dwmac_multi_irq-v12-4-b5c9d0aa13d6@oss.nxp.com>
 References: <20260313-dwmac_multi_irq-v12-0-b5c9d0aa13d6@oss.nxp.com>
 In-Reply-To: <20260313-dwmac_multi_irq-v12-0-b5c9d0aa13d6@oss.nxp.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -62,11 +63,11 @@ Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
  vladimir.oltean@nxp.com, boon.khai.ng@altera.com, 
  "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773386021; l=2728;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773386021; l=4691;
  i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
- bh=U5+X0LRT0aJVW/rwNRk17jxj0WPmT49gK8hZ1ZKJZvk=;
- b=+qvu9tbUVfssBr/Kelwmaz/57s0Cx+ZtNQ8YrnxuIKlBytk+lLO00OmH8ueH3m6xfHNOEaw//
- 8RGGjOUYwH/DmJQRw1nqfddvC7Bb5DXoOdCy3OBiI9Ne3TC6UIw9yqb
+ bh=Rdb+10aBIE2gR8Bncd1438yIs2mBOuENyRGkl1CSN58=;
+ b=fB8QPeHuIKTmONfEhXXoeF5KRPH8jL6K8S6vwriB04EmaXI6DaSFv6ZzMZyeJVT3EO9EP1OuA
+ E0qHUrIRz8BDcra8KcjoEkNKNEcLSnE9ELDzm5801yS23gfFATzO2SU
 X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
  pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
 X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
@@ -76,92 +77,139 @@ Reply-To: jan.petrous@oss.nxp.com
 
 From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
-Read IRQ resources for all rx/tx channels, to allow Multi-IRQ mode
-for platform glue drivers.
+Based on previous changes in platform driver, the vendor
+glue driver can enable Multi-IRQ mode, if needed.
+
+To get enabled Multi-IRQ mode for dwmac-s32, the driver checks:
+
+  1) property of 'snps,mtl-xx-config' subnode
+     defines 'snps,xx-queues-to-use' bigger then one, ie:
+
+     ethernet@4033c000 {
+         compatible = "nxp,s32g2-dwmac";
+         ...
+         snps,mtl-rx-config = <&mtl_rx_setup>;
+         ...
+
+         mtl_rx_setup: rx-queues-config {
+             snps,rx-queues-to-use = <2>;
+         };
+
+  2) queue based IRQs are set, ie:
+
+     ethernet@4033c000 {
+         compatible = "nxp,s32g2-dwmac";
+         ...
+         interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>,
+                      /* CHN 0: tx, rx */
+                      <GIC_SPI 58 IRQ_TYPE_LEVEL_HIGH>,
+                      <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>,
+                      /* CHN 1: tx, rx */
+                      <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>,
+                      <GIC_SPI 61 IRQ_TYPE_LEVEL_HIGH>;
+         interrupt-names = "macirq",
+                           "tx-queue-0", "rx-queue-0",
+                           "tx-queue-1", "rx-queue-1";
+
+If those prerequisites are met, the driver switches to Multi-IRQ mode,
+using per-queue IRQs for rx/tx data pathr:
+
+[    1.387045] s32-dwmac 4033c000.ethernet: Multi-IRQ mode (per queue IRQs) selected
+
+Now the driver owns all queues IRQs:
+
+root@s32g399aevb3:~# grep eth /proc/interrupts
+ 29:    0    0    0    0    0    0    0    0    GICv3  89 Level   eth0:mac
+ 30:    0    0    0    0    0    0    0    0    GICv3  91 Level   eth0:rx-0
+ 31:    0    0    0    0    0    0    0    0    GICv3  93 Level   eth0:rx-1
+ 32:    0    0    0    0    0    0    0    0    GICv3  95 Level   eth0:rx-2
+ 33:    0    0    0    0    0    0    0    0    GICv3  97 Level   eth0:rx-3
+ 34:    0    0    0    0    0    0    0    0    GICv3  99 Level   eth0:rx-4
+ 35:    0    0    0    0    0    0    0    0    GICv3  90 Level   eth0:tx-0
+ 36:    0    0    0    0    0    0    0    0    GICv3  92 Level   eth0:tx-1
+ 37:    0    0    0    0    0    0    0    0    GICv3  94 Level   eth0:tx-2
+ 38:    0    0    0    0    0    0    0    0    GICv3  96 Level   eth0:tx-3
+ 39:    0    0    0    0    0    0    0    0    GICv3  98 Level   eth0:tx-4
+
+Otherwise, if one of the prerequisite don't met, the driver
+continue with MAC IRQ mode:
+
+[    1.387045] s32-dwmac 4033c000.ethernet: MAC IRQ mode selected
+
+And only MAC IRQ will be attached:
+
+root@s32g399aevb3:~# grep eth /proc/interrupts
+ 29:    0    0    0    0    0    0    0    0    GICv3  89 Level   eth0:mac
+
+What represents the original MAC IRQ mode and is fully backward
+compatible.
 
 Reviewed-by: Matthias Brugger <mbrugger@suse.com>
 Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
 ---
- .../net/ethernet/stmicro/stmmac/stmmac_platform.c  | 57 +++++++++++++++++++++-
- 1 file changed, 56 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c | 36 ++++++++++++++++++++++++-
+ 1 file changed, 35 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-index 3b514a702612..59aac0afc609 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-@@ -695,9 +695,47 @@ struct clk *stmmac_pltfr_find_clk(struct plat_stmmacenet_data *plat_dat,
- }
- EXPORT_SYMBOL_GPL(stmmac_pltfr_find_clk);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+index 48fceadc55b1..024d8e10e918 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+@@ -2,7 +2,7 @@
+ /*
+  * NXP S32G/R GMAC glue layer
+  *
+- * Copyright 2019-2024 NXP
++ * Copyright 2019-2026 NXP
+  *
+  */
  
-+/**
-+ * stmmac_pltfr_get_irq_array - Read per-channel IRQs from platform device
-+ * @pdev: platform device
-+ * @fmt: IRQ name format string (e.g., "tx-queue-%d")
-+ * @irqs: array to store IRQ numbers
-+ * @num: maximum number of IRQs to read
-+ *
-+ * Return: 0 on success, -EPROBE_DEFER if IRQ is deferred, -EINVAL on error.
-+ * Missing IRQs are set to 0 and iteration stops at first missing IRQ.
-+ */
-+static int stmmac_pltfr_get_irq_array(struct platform_device *pdev,
-+				      const char *fmt, int *irqs, size_t num)
+@@ -110,6 +110,37 @@ static void s32_gmac_exit(struct device *dev, void *priv)
+ 	clk_disable_unprepare(gmac->rx_clk);
+ }
+ 
++static void s32_gmac_setup_multi_irq(struct device *dev,
++				     struct plat_stmmacenet_data *plat,
++				     struct stmmac_resources *res)
 +{
-+	char name[16];
 +	int i;
 +
-+	for (i = 0; i < num; i++) {
-+		if (snprintf(name, sizeof(name), fmt, i) >= sizeof(name))
-+			return -EINVAL;
-+
-+		irqs[i] = platform_get_irq_byname_optional(pdev, name);
-+		if (irqs[i] == -EPROBE_DEFER)
-+			return -EPROBE_DEFER;
-+
-+		if (irqs[i] <= 0) {
-+			dev_dbg(&pdev->dev, "IRQ %s not found\n", name);
-+
-+			/* Stop silently on first unset irq */
-+			irqs[i] = 0;
-+			break;
++	/* RX IRQs */
++	for (i = 0; i < plat->rx_queues_to_use; i++) {
++		if (res->rx_irq[i] <= 0) {
++			dev_dbg(dev, "Missing RX queue %d interrupt\n", i);
++			goto mac_irq_mode;
 +		}
 +	}
 +
-+	return 0;
++	/* TX IRQs */
++	for (i = 0; i < plat->tx_queues_to_use; i++) {
++		if (res->tx_irq[i] <= 0) {
++			dev_dbg(dev, "Missing TX queue %d interrupt\n", i);
++			goto mac_irq_mode;
++		}
++	}
++
++	plat->flags |= STMMAC_FLAG_MULTI_MSI_EN;
++	dev_info(dev, "Multi-IRQ mode (per queue IRQs) selected\n");
++	return;
++
++mac_irq_mode:
++	plat->flags &= ~STMMAC_FLAG_MULTI_MSI_EN;
++	dev_info(dev, "MAC IRQ mode selected\n");
 +}
 +
- int stmmac_get_platform_resources(struct platform_device *pdev,
- 				  struct stmmac_resources *stmmac_res)
+ static int s32_dwmac_probe(struct platform_device *pdev)
  {
-+	int ret;
+ 	struct plat_stmmacenet_data *plat;
+@@ -165,6 +196,9 @@ static int s32_dwmac_probe(struct platform_device *pdev)
+ 	plat->core_type = DWMAC_CORE_GMAC4;
+ 	plat->pmt = true;
+ 	plat->flags |= STMMAC_FLAG_SPH_DISABLE;
 +
- 	memset(stmmac_res, 0, sizeof(*stmmac_res));
- 
- 	/* Get IRQ information early to have an ability to ask for deferred
-@@ -733,7 +771,24 @@ int stmmac_get_platform_resources(struct platform_device *pdev,
- 
- 	stmmac_res->addr = devm_platform_ioremap_resource(pdev, 0);
- 
--	return PTR_ERR_OR_ZERO(stmmac_res->addr);
-+	if (IS_ERR(stmmac_res->addr))
-+		return PTR_ERR(stmmac_res->addr);
++	s32_gmac_setup_multi_irq(dev, plat, &res);
 +
-+	/* TX channels irq */
-+	ret = stmmac_pltfr_get_irq_array(pdev, "tx-queue-%d",
-+					 stmmac_res->tx_irq,
-+					 MTL_MAX_TX_QUEUES);
-+	if (ret)
-+		return ret;
-+
-+	/* RX channels irq */
-+	ret = stmmac_pltfr_get_irq_array(pdev, "rx-queue-%d",
-+					 stmmac_res->rx_irq,
-+					 MTL_MAX_RX_QUEUES);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(stmmac_get_platform_resources);
+ 	plat->rx_fifo_size = 20480;
+ 	plat->tx_fifo_size = 20480;
  
 
 -- 
