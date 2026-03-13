@@ -1,27 +1,28 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010059.outbound.protection.outlook.com [52.101.84.59])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013015.outbound.protection.outlook.com [40.107.162.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598DD38F636;
-	Fri, 13 Mar 2026 10:57:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.59
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54E12BEFF5;
+	Fri, 13 Mar 2026 10:57:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.15
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773399467; cv=fail; b=fU5m/eOQkcriu//abTrH6MZ6HJvxWzmVRxKM8prgoBrUQtrhgi9L77cXrH8xAUjdi4d8irWRGO3iBGdfHNJP/hxt4ooOAr3/zXp/f+kHBnByrb/QuOH77bkDaHuyXcth0/3CUCSV2XeTQbvXmx/mGaCeK9hgyF82E+l69UDqr6c=
+	t=1773399468; cv=fail; b=fWgAZUDaG2tmpQMLx5BP0mA2aCZb9A+hygIuEnxptnHPOmrgiNMpDfrtZFSRmll1kTG6H+RHOYUUQK5nHKYQCb72ceQjMr4br/9QpdurqPVJ4NNWiS+n6y/O+4OMyRFIR6SFt9Cz1AgAXkHWKg7kCFUt2wXmgYQuzYWqPNiUC/M=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773399467; c=relaxed/simple;
-	bh=ePSYKNyDMpsxtBRToMf3IPMuA7CVN3airfEMnHhSbQ0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QLNCESFWPENyai4E4NNguDxlRKQRl8093Q4Xu/4GJUUvYamX1KNrhqpI0fTr3BGHfZWkd1raBOA3XQaJQ91i+IHRL60u53Y8KFhmcYC5BpJZS4hJ+tvvd5dENWHHB0xgGih08Fz3cJO67qFy/fTu6OyT9zNrbq49ONgKJmQr4Tc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=mpmXzv0D; arc=fail smtp.client-ip=52.101.84.59
+	s=arc-20240116; t=1773399468; c=relaxed/simple;
+	bh=IhUDZXidQIR/5xm5DdRfpijg94FxbX21yktc10jOz68=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Mgk2JCl2ubyyatq1IG4f5z6buNUekftNtGQYnmR+9dGxVBuLQJGigUzvtlAJXts+ZqtAVylpJG46l0tndLMhfMhD2wYCf5HVoCNIWMllsrUbullrjb9qOpCw+3YVqICHqMAa/oxMss9QDUXvmitwqdQecD8FtJ5MYUhHJ6KztCo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=k2/DjPeG; arc=fail smtp.client-ip=40.107.162.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="mpmXzv0D"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="k2/DjPeG"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DrP6BSL+TlpZ65ZNPWdrXI5Npj175rj3GzU4v2tdrFEfZCeJ3u3Fc4qO79qeHWXWRecUhFER898rQcOLcJpuj0k+ao3jgX6nDEFOA41JS4S++kLm9+WfGiw+sMpa8UBN3U7XSVzis0nY8eUZJuqV565x4n7ezojhOIqnKh94hFyGdLKZElDX1GEdt1OFSQww6OHWv1YRSNalJqAAzQ+9nowitJkycujZTapdHGP6jqTfG5ri9wC7cntKMG5iCCa33GZ7Xkqua5DHCEEOtYOQORNZgykAhVde006FLCkVr5OqVE2U8dbm2+Y+/95b9lPzU0knQwcMt1p6rtfU/uTB8g==
+ b=hIMz1jh16vM4tXZpwbO7EC/XAKsnO5fzoVhAHo88+5tHVDoMLLRfcjYcyjHooVjSLGV/DNILmrfUAaXR3+i4W+yVsuyRZ0BDLGkhc6NU08Jd0z7i2jIkHgzArcgTtDE7aHBHY3pGvED9s+xA+OQ3G++SqeNKGsAUbx4na1YLezV15EVFbiRzfnAiqf/O0ImR7k2IfXZW42SdQyW6VCTd2hve5I8TKzIbiW3+Py4yEyC4PM/mylK9+cToGDHbSi3TbC3U9ew8N1qkYf2uASzmASQeWE4MIaBphGaiNp9PEVmOcskhhTs5MTAF0KE9FUr+bK2MPPmABtqRSxGQUBgPMA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TGQpx+AJllAdYpO+If5LgpzDRd1knbEJnsP2b/jmHxQ=;
- b=jLRcpSjGaGRa9wM9RDZNMAv2M5DyK71H1haqAkIAuf5o5ir+BValVvcISKH1iAJ+3+SYaJYRrqTKFUdxHpH1zi7TFGbrJXhQdLLAVR52//KG6GiGQTyzUvSkTP907CyelmKg1Sujx4rO5MzqPAixT3wRodnYoZJCM/2pCd+mPa6SHRZwLYFOW+1XakJc++yS2+Twfk3XGGseISTvhtNcJP3nvZuqBqyW/NnUtIbjzxhNo9CboIs66MdgoGGytO9cIOl2risVj6wN3RNPb8DbdThTfhdCHS5bFeLcVwSQngJsVuExINFye8gYOb/k1eC3j/vzKD0CvdjbHPth3gSvAA==
+ bh=SYtLkffXcghrqEz9c92EUpXP0OAIWFAcQwu5IlJoR3k=;
+ b=i7jcUoqCyXyvW136EHz6YpCU2uMwqYsGqVHS+vo5WaInbRKFtJWBaWgS+6Sst2lCFVoYCDnRtVuCUPri3svOc02kHuuC77Az3OgUYL11BQikLvmjAMMM2F4Av0NTWA9GE3M8vMOLhUEy/mstdibqLwrRcop5DOJSacYofRJ8KV5HUHLq6ejzBEwKEMuNjVLjRQY4vRMeqzSxIZobVJ3VFkUntUlCpJdqm9r5q+tKCZ6jXXaYn1kFG8qUSrOdT2XFizTfuSjaqn9GaC7KkFMwMcCy6K7gqS0MWFfx/uDzDvtAGym999Qd7KQghjf31XrVqpJ2Ibltm22mafRgMl7Npw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
  164.130.1.60) smtp.rcpttodomain=lunn.ch smtp.mailfrom=foss.st.com; dmarc=fail
  (p=none sp=none pct=100) action=none header.from=foss.st.com; dkim=none
@@ -29,16 +30,16 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TGQpx+AJllAdYpO+If5LgpzDRd1knbEJnsP2b/jmHxQ=;
- b=mpmXzv0DkQfyrKa/Fp7Fzf5sRm7fj7VF/Am8aEgfVsHRVsL9UfGMHeWuYeRO+rxYalqDpEQ2ye+bntm5VQitw1/H4QfccKcfWByCEHXG6YMbYW4McSJfEaOuLSDBtiN2nN8aUKs2VpkAxlf7Pi0QolAb5PgN3wFb4ldd3kV/IrV0uj8gb/91fmcDGiHWbnGnyZLEWhB+BjwLCq5F9iJOVerUFwjhFbB6jdZXmkg2S+fjOGFlDa+YZwZ7GZt9v4m5kj3vOhnjuN7B7OBISDRFGuXCDpf1eWlu0GZSLcBYd0W18B29Ihj/ejVq2gHYTXXT+J/iSn1ZLZabU8EzH3hItA==
-Received: from DB8P191CA0019.EURP191.PROD.OUTLOOK.COM (2603:10a6:10:130::29)
- by AM7PR10MB3159.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:10a::19) with
+ bh=SYtLkffXcghrqEz9c92EUpXP0OAIWFAcQwu5IlJoR3k=;
+ b=k2/DjPeGhiqcBpOWezHfXwV5tJRLrNDNkS/dHPF28bREv4sXz3e5GJgsrsn5+gCbkCwx9u9YmsqIf4zlE5wXFyBdaTwYk97C15zkTh0dhSFQjN4mA6BjPsrpIrKAC3d11wcrHT0FKxLX3Qmmr6+lhXAvRuxoendxmqLHqeOrK1snf3uZFcU0OGabITTIUT2TndIL0rVM1FZhfcPUX3dKS1V32+Hg6tYcsLt3eyxy9YsDdXDO+HvrDVp6y6MFIMZWshLYUgGYK6OmAIcDtvmDzOJq0eMsrQZDlu7k/OeAKE7Ojiyaeike486NwVU5lJYGMMtl9kws7WmA5vZm/Cv0nw==
+Received: from DB8P191CA0009.EURP191.PROD.OUTLOOK.COM (2603:10a6:10:130::19)
+ by DB8PR10MB3781.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:167::24) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.15; Fri, 13 Mar
- 2026 10:57:40 +0000
+ 2026 10:57:41 +0000
 Received: from DB1PEPF000509EE.eurprd03.prod.outlook.com
- (2603:10a6:10:130:cafe::29) by DB8P191CA0019.outlook.office365.com
- (2603:10a6:10:130::29) with Microsoft SMTP Server (version=TLS1_3,
+ (2603:10a6:10:130:cafe::ed) by DB8P191CA0009.outlook.office365.com
+ (2603:10a6:10:130::19) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.27 via Frontend Transport; Fri,
  13 Mar 2026 10:57:39 +0000
 X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 164.130.1.60)
@@ -50,15 +51,15 @@ Received-SPF: Fail (protection.outlook.com: domain of foss.st.com does not
 Received: from smtpO365.st.com (164.130.1.60) by
  DB1PEPF000509EE.mail.protection.outlook.com (10.167.242.72) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9678.18 via Frontend Transport; Fri, 13 Mar 2026 10:57:38 +0000
+ 15.20.9678.18 via Frontend Transport; Fri, 13 Mar 2026 10:57:40 +0000
 Received: from STKDAG1NODE2.st.com (10.75.128.133) by smtpO365.st.com
  (10.250.44.72) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Fri, 13 Mar
- 2026 11:59:54 +0100
+ 2026 11:59:55 +0100
 Received: from localhost (10.48.87.194) by STKDAG1NODE2.st.com (10.75.128.133)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Fri, 13 Mar
- 2026 11:57:38 +0100
+ 2026 11:57:39 +0100
 From: Christophe Roullier <christophe.roullier@foss.st.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
 	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
@@ -70,71 +71,71 @@ To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
 	Christophe Roullier <christophe.roullier@foss.st.com>
 CC: <netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
 	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 0/2] Fixes for stmmac driver
-Date: Fri, 13 Mar 2026 11:57:15 +0100
-Message-ID: <20260313105718.359614-1-christophe.roullier@foss.st.com>
+Subject: [PATCH v2 2/2] net: stmmac: manage error case during stmmac_dvr_probe
+Date: Fri, 13 Mar 2026 11:57:17 +0100
+Message-ID: <20260313105718.359614-3-christophe.roullier@foss.st.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260313105718.359614-1-christophe.roullier@foss.st.com>
+References: <20260313105718.359614-1-christophe.roullier@foss.st.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-ClientProxiedBy: ENXCAS1NODE2.st.com (10.75.128.138) To STKDAG1NODE2.st.com
  (10.75.128.133)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB1PEPF000509EE:EE_|AM7PR10MB3159:EE_
-X-MS-Office365-Filtering-Correlation-Id: a88ba5a4-722a-483d-4061-08de80ef57a4
+X-MS-TrafficTypeDiagnostic: DB1PEPF000509EE:EE_|DB8PR10MB3781:EE_
+X-MS-Office365-Filtering-Correlation-Id: 31b64024-d894-4241-12de-08de80ef5889
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|1800799024|82310400026|376014|7416014|921020|56012099003|18002099003;
+	BCL:0;ARA:13230040|1800799024|7416014|36860700016|376014|82310400026|921020|22082099003|18002099003|56012099003;
 X-Microsoft-Antispam-Message-Info:
-	ln6eSKLWpkC6Xk6yVUZhcWlsu3PMSHb2SBCBGBesEthiUflMkW7u2ZNqh6c6t07VBDSNbkG66S5J5EniyYx0daoMyDHiBuV+wBnAq9lqc1+1R5A6SPCOcK8+JKCkpauCOeCd0me39NP2wIV1pNg7unC+Xg3C2PKEsDDE1KU6ApLwH3LepTMEk/XQMtislUcIzgARaC8dTvWOMlqACxDAF+x/qHd0qeGmCb+nGuBl2XXKVOKIFqspJpoTLGtdZoJurhqZ/cqr4ZsAq9Bvz1g7m7S74pituGR9/wM3AqAdasMgbvFisMWXeUlwB3Z+qrvQHVwNLa9Wv32niiSvYni8ATOLdDvxA00jSJk81EhE4F71AKnIVueZKvXSQIvfk78ZOc5NuuILO1CtUtIVEssVtkvIchdHQY2wdw09i/LyzhvRcogYnw4KBkfPNbyerfytJ6n9sh0XCjwOw2Hx5X2P89NAnzxTzT4DXHVIVevrgex3Ohei33O7X+Fz0rUS2yt7FmkcykJobm1gyUqg6M5y84htJy2FzhbnW6uZaKYbEoZfV9P3bcfynKRevbbk5MT/h2E9fxsDeQa44O5JfKGgVJdRYg5rJ7ZSwMs3l/TvIMjiUOWgc9NOjb8FBX4TYPBt9gif2TTgYaQNbkmbTOyRI597x0npiPdlHWiVEgpP+6GjiqgBUTCzIZcz8HR0kbNQBfNyuKIqShnIGxr8PHukq9ZT6y5sDxkv6NzVtVWGwSRK1Ry1APDUD5VJKie8upl0oANlOUeTzGzoSdI4Mwuks+KgRzICAwbZvR2YSF19nCt7j0ABHS1ZAbdY+2nGYKH5
+	TvyonEfMHvLD6QHaZdcJDbEoIXj25TbuHmyOkMP4yc8PKg1aBRIVT6/PaygbMTLnrFF0z3ZlaQgJdb4eSZ1UYlxWyUwD3qdeoTTVUYTxzx07fDwgR1003xQS4gTN0qVBUM3vD0lxXjf5ySo2Qwo+1rtag62ZmQyj/aTjJnwKVSQAHfb/Ly93qv/H3H/qbM9qV6T7V3zpuTayHKXiymqKNsPJAaNo1EG1RqOE/EVkA31asChRgHzHHi4froC/2iklP5EOjAVbGShwMMinDqWcCCbhh6JV1ubmm0IdKrkXyhnU90rUU3WjDBMPKjNqEGJvXoxgjbi/V8BIezRML0gEU0ITz1/0uuhOqWBKo62h4fhagYhAmIFdEdZeOrgr//NZBoD5ecEqnUzx9X82fRUEowMSzXcLHa75kRIwTMwjsy24XG9Kg8eZKGInkiuHiixmKR6p4SMjqg0VKC9MLi0KraNCHKYe0ztqaZAItOzm8XI74e+FX96befGEumC1CDd49nG3UtW/VS95tqZBJ0RtVKMo0b5zTkfI27St+Iu/RxGLnnwOHpQpp00cfhw8+SL1145puezQZWxz3BwpkY7l71llgltbsvZres+rxYzFNtI7d3uXORvOWcx7tKhepLinwhU2Vb1XT4vVubb4aojTjnnvWIm3+TBHmz4hKcspG7B7nH9uP6TzKphdsKvsYPDJsI/l9bnvO4MtEzesLqZrS0F3vc2P6dacTFVn52v0130mlld9HzcngDxQazqI3LvnBJ87zEHtpIC0phRpQU7q8OeoNxNRETcUPEAKvk1J4OlrsSgTWjS31wk3onH+EhxT
 X-Forefront-Antispam-Report:
-	CIP:164.130.1.60;CTRY:IT;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:smtpO365.st.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(82310400026)(376014)(7416014)(921020)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:164.130.1.60;CTRY:IT;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:smtpO365.st.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(36860700016)(376014)(82310400026)(921020)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	nOOcSDqhZdurerV5KiA1Cj19yUYeZZASr+rxZWp0WsEHwqGlrtsuTP7FFm6qa3GY3vl4H53oUk5MnnhwHRlTJ3K9IipRppADGtBx6jB+c2ANws4CWV4y27wKOHCebkJ2/dznyRfkhBJI9kqQ4ekJsWJIhvQ21vdhzOMLvvz6DgHFO5opVVIqeG1kJX8v2mRYetl274ungG/lLDcdm3RI6xiqJkFS/I2p6Dj3ma7RRHuzr8BTWbuwOYNjwgGZkOpu0mZcBtNxZawWibNhjqcXYS7dTbipoKxtjuyz9nvsgYTv9oGLJujn4pDu8pxPck3vrSH7QuFW7Igy1yvhksLQpvkFE0UMuQJ01uuPOcJL4YZAyVQ/dwcPSSH1fwMJbkBecTO87Y6k70zowTUBsmKRttt7r2OJ3Sta8sfSO4xkciduzv5cJfvoRh350kAuaL4u
+	ywi9gMnoGpzeyJ6dXTwf0oUMkK3KuuVPToynuZExYGJ5DHFR/MlWjuRRGLZNxGUhby6r3Es+7QDUcJda28GVwra2arXBNquQ4dxuz73yVn9fxIzfbB/JfZb9CMtjg1GU4igUljyi+jDhCm57/ld1ec8yQY23rbXdyUTad5p3cvTQkVzIfqzeH8eoQtIPNV5zcl8LllAdX5sI6LKJIQ0aQsMqhMK1HcT51+LK4+qT0KkrQZ1XxWKP/tFNZQ8RJwvGnQocABnqEUkXFCgWkadZt5PO1IADax76GqGwoZutNaCy2t0/w/Uk7HcD8+R2gY4PqA+mTrEKlNxDztEPA9d6eT5+i9H0D4+fS+fIthqbDxouoq5nwUgBuZwNEQ9zgrcyXHZLO6uGuSrZGJGSnVWTCl4Q6OBrrFOS6lpYdY8UTfiuOU1Mho36oGIVaZTY1Sms
 X-OriginatorOrg: foss.st.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2026 10:57:38.7989
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2026 10:57:40.3029
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a88ba5a4-722a-483d-4061-08de80ef57a4
+X-MS-Exchange-CrossTenant-Network-Message-Id: 31b64024-d894-4241-12de-08de80ef5889
 X-MS-Exchange-CrossTenant-Id: 75e027c9-20d5-47d5-b82f-77d7cd041e8f
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=75e027c9-20d5-47d5-b82f-77d7cd041e8f;Ip=[164.130.1.60];Helo=[smtpO365.st.com]
 X-MS-Exchange-CrossTenant-AuthSource:
 	DB1PEPF000509EE.eurprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR10MB3159
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR10MB3781
 
-First commit fix error when :
-1 - Deactivated eth0 (ip link set eth0 down)
-2 - Perform low power procedure
-3 - Reactivate eth0 (ip link set eth0 up)
-=> eth0: stmmac_hw_setup: DMA engine initialization failed
-         stm32-dwmac 5800a000.ethernet eth0: stmmac_open: Hw setup failed
+In case of error during stmmac_mdio_register, pm_runtime is not
+cleaning before exit probe.
 
-Second commit fix bad cleaning when error during stmmac_mdio_register.
+Signed-off-by: Christophe Roullier <christophe.roullier@foss.st.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-V2: - put Reviewed-by from Russell for second commit.
-    - update first commit with Russell'remark.
-    - Dropped the third patch from v1. It requires additional work on the
-      pinctrl framework to add a new state, and I don’t want this to
-      block the other two patches.
-      I do not intend to drop this change; I will follow up on it in a
-      separate thread together with Antonio Borneo.
-
-Christophe Roullier (2):
-  net: stmmac: fix pinctrl management during suspend/resume
-  net: stmmac: manage error case during stmmac_dvr_probe
-
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
-
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 26ac1cdc561c2..c3eaeffcb6aee 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -8057,6 +8057,8 @@ static int __stmmac_dvr_probe(struct device *device,
+ error_pcs_setup:
+ 	stmmac_mdio_unregister(ndev);
+ error_mdio_register:
++	pm_runtime_put_sync(device);
++	pm_runtime_disable(device);
+ 	stmmac_napi_del(ndev);
+ error_hw_init:
+ 	destroy_workqueue(priv->wq);
 -- 
 2.43.0
 
