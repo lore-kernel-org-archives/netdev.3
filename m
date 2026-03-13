@@ -1,71 +1,81 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B8F34165B;
-	Fri, 13 Mar 2026 20:11:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8506C36165B
+	for <netdev@vger.kernel.org>; Fri, 13 Mar 2026 20:14:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773432686; cv=none; b=LTGDRhnbc43vhcY0AGPDhBVYm8oMVw1KVWhxpvtZrudzpnwGRCHJNvCnnRPxMTHLIooh//gjPuxHghY3FmoK1/BZBR4nqsYaDYr1rKPIY2ux4sgqufpA8igtuXgiN+QIO9ulLHoGb+r86GTX3mlfSlGLRTiWyxAL/FGfg5oquT8=
+	t=1773432887; cv=none; b=V91VqUFLkAeWCec6yTwTSjAGYZ2ufhDbwRFa08e78cC9ceMmeW+Z4HNklziyyX0uMB37Yz9Lsyl7B5RoHVGu6yeaPnksQ4OmD3qT0dtc0cvRlp3AHnk1D5VrJWVAfddI3/I1dZA2vlMdKgnJxbNLRrPYKSqj3uJVU7cSJlytAP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773432686; c=relaxed/simple;
-	bh=SMPmzclyOIKQEi+ShtklVqvxCpyJHokDbfVTltDu+3M=;
+	s=arc-20240116; t=1773432887; c=relaxed/simple;
+	bh=C6NaMAXwnq0RmKje+inKh/zM6mCLq25/URRVI50BuDc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kRlToBvQ0BCe/FMuF7qd2IdGJKRvezvhHVWcQ2aXCz87xiOfNwU1gN3wzLOTqW23DciW4mNHlNfrVRyTzhsxPNh9YPaCGjESxgnfDccUh+ObaVL8H/UssL1Ol5q1uNPhap4qbHAsFJekW8m5lEvHWEL6BkZgKs1bnljeW9ZeE/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bT4aDX6C; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=hbTKTtF2NinPhlLGMboEISL51SkMD72E1gvawYUnuDEHQLTZ0YSoNrhENU9Fn+mdGUEu4xkVXqe9N34tb+nWbfSOHOjwlVodZ8h2t604gotO/a4Tuu+2sCiQRC2GNFwQh3j3eLDosoe2NKQTv0rmlu7ugG6PrcXkbTYumqSbHEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b=vt+EsFRu; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bT4aDX6C"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773432686; x=1804968686;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=SMPmzclyOIKQEi+ShtklVqvxCpyJHokDbfVTltDu+3M=;
-  b=bT4aDX6CQcrOwxC21NijNFDx3OjWFPVlxOU3Fq5rOsiGlItu6GVicdM2
-   gBGXKpCQM+pKw0olRAXGm3eLWbINue2SsBh3o6BnUxdQP5Yaw+UXj6mky
-   +1H6iUs7A7bEqQMcATCSbbKLv25RZh9zH5qcQ15MD/qoUoDABRqR7TUpW
-   zrIieomoXV2kVULArviW3s8ooXfyCMLomLA6gT1baS3fS6BvCMmwWDJpx
-   3aiv0cQm2drgK9x466RftKxnIp/5DRdhCQJ/6tCbxYf5kI7ZElb82siWq
-   uV7bqP3FwBI2iPir203kOZsVobGn4oxvRHNx74jJEpHHBsd691hCunnEE
-   Q==;
-X-CSE-ConnectionGUID: a1Z5r507SLG30j1Uwh9gqA==
-X-CSE-MsgGUID: Sbj+0bzFSHCJVLLsp+9w7A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11728"; a="74517787"
-X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; 
-   d="scan'208";a="74517787"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2026 13:11:22 -0700
-X-CSE-ConnectionGUID: 2kUbeFEFSaKhLs70W7WvSQ==
-X-CSE-MsgGUID: ev3j7rCVSJW5exQ6b/MdoA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; 
-   d="scan'208";a="246403671"
-Received: from igk-lkp-server01.igk.intel.com (HELO 9958d990ccf2) ([10.211.93.152])
-  by fmviesa001.fm.intel.com with ESMTP; 13 Mar 2026 13:11:16 -0700
-Received: from kbuild by 9958d990ccf2 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w18qn-000000003hZ-0QxX;
-	Fri, 13 Mar 2026 20:11:13 +0000
-Date: Fri, 13 Mar 2026 21:10:41 +0100
-From: kernel test robot <lkp@intel.com>
-To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Andrew Lunn <andrew@lunn.ch>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Alexei Starovoitov <ast@kernel.org>, bpf@vger.kernel.org,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b="vt+EsFRu"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ae43042ea7so32431555ad.0
+        for <netdev@vger.kernel.org>; Fri, 13 Mar 2026 13:14:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20230601.gappssmtp.com; s=20230601; t=1773432886; x=1774037686; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=L2+oXD4u/vFbra8LKJvQTd92HWUFv8+tFdkTCdR+Q9s=;
+        b=vt+EsFRu5qpQ2yBOrEEmENWnp9y2D+lNXCnP/IhDCCE7JRjNMHGbKfc9+cQopQQvlC
+         vlSttWIBIxkmnfF0DSJFPthUUItX7dT1DrJcYz7h9hOu50PS78TiiMcNP0oiYmYAxi97
+         scouOHCcvHfMdX+anQsgFms+uGvCbAr7XUILxCJ+7L3Gjc5/IXDp232TZyGx3CzC4unR
+         Ajy+O2ovpJaYsyWLMjWs3WDahSeHmXzJaJYs5fclZ74GQxl2m9g+6fyIjOQ1CTTtyCNb
+         F8s9jymrgsnQp+glsizauXqon7Gq2alphJvYvql3cqB6Isj1LigqpJBzHIzyvPeNlc3X
+         CyaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773432886; x=1774037686;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=L2+oXD4u/vFbra8LKJvQTd92HWUFv8+tFdkTCdR+Q9s=;
+        b=fDmgzn7wZQLGLUQqA1cbDf03B3RkwJAuLJZvrabdOmzG/Sk2EYv9+47Ykb7SXB0CBK
+         WExcG4xhXOEJq8VGfU+iBYfCU+XObkYi087lvaDyShuZWl16yNDohus/29ZGDRgm2kq1
+         FVw1YPOH4HgYDX1TIa7i7OoWwY5iPXavn0O9sBzAsVXCEWOElInGXmCTgfbaKGCPWWX1
+         lpoa9/egMuWm9M+EUXszOYaV+ynQaDpPM6K4127MdmVTNMAW5u2ocwutTY589HkmGGmh
+         cuJVMCiZQUXEkKCHIq8Y1pCFaRbtLtR+ly+Ij6ILN9rztAYusi5och1pTlikElfKruoE
+         K07A==
+X-Forwarded-Encrypted: i=1; AJvYcCVkDkS7YIWIv7cl8cJ9xS1DyCmoj94PQoHskOZbwgQ617wNeuA9YPI3s94wxtGefcZLPqIrHX4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwH5/X/CDOZFcaWS5iZVshC8F9zZqsQOS6a9nTEGnAxgPOtlacR
+	/vNFplMexeKYoSPAwOQNMRWRe0QNvENxZa7/vK9IlzGCu69rVBXBfT3hyf1HStlVnU4=
+X-Gm-Gg: ATEYQzzNXTWBqZGUraY1xMhKxJPB78fSeFJwg4oE6cgjiJDVBsluHvaBRKQk4fwU3Eq
+	l48u9yKGw5jZirYtWWw34FayJS3th2qng716klRsDmXjR+J2doLVC9vqC42gL8NarZMsJpKMMcm
+	IchPB2zgnyCkkFZvyUuR3Wa8G10/MnZyPouLD3ckQTjTETSgKCEiIbh+b18D5l6NZrdwPgfjacC
+	FwqmOmxRwG3Lk2iTLRoXgbd76EvZS4qDnkN12NP2LVtQaLrJjb1FjzXO6CGo4cgzO/yk5b31IHM
+	5rrn3HrhmV3V1ngbteZnSe7jF5l+ZPdmMoAOqKhV7zo1gxrpPTqy7qvylfIdhvXN1DMhLIuO7cd
+	04hXUqCJr2bY+ncIBsYnh7ueTa6v8+ziW0S69449knY/gKbNZsI5HVfzqRSBVPDvmV3H4PkchD6
+	vyjhNeo19gzWfT0eQ=
+X-Received: by 2002:a17:903:2985:b0:2ae:b9cd:d2f2 with SMTP id d9443c01a7336-2aecaaad204mr47914175ad.33.1773432885928;
+        Fri, 13 Mar 2026 13:14:45 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:4a::])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c73eb993e40sm2505980a12.8.2026.03.13.13.14.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Mar 2026 13:14:45 -0700 (PDT)
+Date: Fri, 13 Mar 2026 13:14:44 -0700
+From: Joe Damato <joe@dama.to>
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	eric.dumazet@gmail.com
+Subject: Re: [PATCH net-next 1/2] net: dropreason: add
+ SKB_DROP_REASON_RECURSION_LIMIT
+Message-ID: <abRwNEwnn5httCSB@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Stanislav Fomichev <sdf@fomichev.me>
-Subject: Re: [PATCH net-next v2 13/15] net: stmmac: add helper to set
- transmit tail pointer
-Message-ID: <202603132104.OVIsnpBk-lkp@intel.com>
-References: <E1w0czK-0000000CzH7-19Fb@rmk-PC.armlinux.org.uk>
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	eric.dumazet@gmail.com
+References: <20260312201824.203093-1-edumazet@google.com>
+ <20260312201824.203093-2-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,90 +84,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <E1w0czK-0000000CzH7-19Fb@rmk-PC.armlinux.org.uk>
+In-Reply-To: <20260312201824.203093-2-edumazet@google.com>
 
-Hi Russell,
+On Thu, Mar 12, 2026 at 08:18:23PM +0000, Eric Dumazet wrote:
+> ip[6]tunnel_xmit() can drop packets if a too deep recursion level
+> is detected.
+> 
+> Add SKB_DROP_REASON_RECURSION_LIMIT drop reason.
+> 
+> We will use this reason later in __dev_queue_xmit().
+> 
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> ---
+>  include/net/dropreason-core.h | 3 +++
+>  include/net/ip6_tunnel.h      | 2 +-
+>  net/ipv4/ip_tunnel_core.c     | 2 +-
+>  3 files changed, 5 insertions(+), 2 deletions(-)
 
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on net-next/main]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Russell-King-Oracle/net-stmmac-rearrange-stmmac_tx_info-members-to-pack-better/20260313-225823
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/E1w0czK-0000000CzH7-19Fb%40rmk-PC.armlinux.org.uk
-patch subject: [PATCH net-next v2 13/15] net: stmmac: add helper to set transmit tail pointer
-config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20260313/202603132104.OVIsnpBk-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260313/202603132104.OVIsnpBk-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603132104.OVIsnpBk-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/net/ethernet/stmicro/stmmac/dwmac4_descs.c: In function 'dwmac4_display_ring':
->> drivers/net/ethernet/stmicro/stmmac/dwmac4_descs.c:430:40: error: implicit declaration of function 'dma_desc_to_edesc' [-Wimplicit-function-declaration]
-     430 |                 struct dma_edesc *ep = dma_desc_to_edesc(head);
-         |                                        ^~~~~~~~~~~~~~~~~
->> drivers/net/ethernet/stmicro/stmmac/dwmac4_descs.c:430:40: error: initialization of 'struct dma_edesc *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-
-
-vim +/dma_desc_to_edesc +430 drivers/net/ethernet/stmicro/stmmac/dwmac4_descs.c
-
-   396	
-   397	static void dwmac4_display_ring(void *head, unsigned int size, bool rx,
-   398					dma_addr_t dma_rx_phy, unsigned int desc_size)
-   399	{
-   400		dma_addr_t dma_addr;
-   401		int i;
-   402	
-   403		pr_info("%s descriptor ring:\n", rx ? "RX" : "TX");
-   404	
-   405		if (desc_size == sizeof(struct dma_desc)) {
-   406			struct dma_desc *p = (struct dma_desc *)head;
-   407	
-   408			for (i = 0; i < size; i++) {
-   409				dma_addr = dma_rx_phy + i * sizeof(*p);
-   410				pr_info("%03d [%pad]: 0x%x 0x%x 0x%x 0x%x\n",
-   411					i, &dma_addr,
-   412					le32_to_cpu(p->des0), le32_to_cpu(p->des1),
-   413					le32_to_cpu(p->des2), le32_to_cpu(p->des3));
-   414				p++;
-   415			}
-   416		} else if (desc_size == sizeof(struct dma_extended_desc)) {
-   417			struct dma_extended_desc *extp = (struct dma_extended_desc *)head;
-   418	
-   419			for (i = 0; i < size; i++) {
-   420				dma_addr = dma_rx_phy + i * sizeof(*extp);
-   421				pr_info("%03d [%pad]: 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x\n",
-   422					i, &dma_addr,
-   423					le32_to_cpu(extp->basic.des0), le32_to_cpu(extp->basic.des1),
-   424					le32_to_cpu(extp->basic.des2), le32_to_cpu(extp->basic.des3),
-   425					le32_to_cpu(extp->des4), le32_to_cpu(extp->des5),
-   426					le32_to_cpu(extp->des6), le32_to_cpu(extp->des7));
-   427				extp++;
-   428			}
-   429		} else if (desc_size == sizeof(struct dma_edesc)) {
- > 430			struct dma_edesc *ep = dma_desc_to_edesc(head);
-   431	
-   432			for (i = 0; i < size; i++) {
-   433				dma_addr = dma_rx_phy + i * sizeof(*ep);
-   434				pr_info("%03d [%pad]: 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x\n",
-   435					i, &dma_addr,
-   436					le32_to_cpu(ep->des4), le32_to_cpu(ep->des5),
-   437					le32_to_cpu(ep->des6), le32_to_cpu(ep->des7),
-   438					le32_to_cpu(ep->basic.des0), le32_to_cpu(ep->basic.des1),
-   439					le32_to_cpu(ep->basic.des2), le32_to_cpu(ep->basic.des3));
-   440				ep++;
-   441			}
-   442		} else {
-   443			pr_err("unsupported descriptor!");
-   444		}
-   445	}
-   446	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Reviewed-by: Joe Damato <joe@dama.to>
