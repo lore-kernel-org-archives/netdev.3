@@ -1,32 +1,32 @@
 Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C92A1C84C0;
-	Fri, 13 Mar 2026 09:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1336338C401;
+	Fri, 13 Mar 2026 09:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773393691; cv=none; b=WkA2PUclKLbpbaGOrt72thdWbkq9VIz6HO0IQIpUdbcwf1fZUSXveJ+RYhAFaJTgxrZsvaPKqSCdMznk0G6WbmUTuTh38pMNx7IW1+S++3AfmACLSg9kTKux4gcrp9aGbm7yEjbpKuq8oYCBbRvvm52rNZvSPL730nsAHLX+s7k=
+	t=1773393692; cv=none; b=K78VF59gH7XePKfEKnhVSM0lY4f10E291rf/QGjykWxlJFP4UpxdUb8H4MHRdf69tq6R83ACzVLlpOT89+mBC4Bcj0+ndu521Ybvb7Tb7ppd3S7s2spBb7DgoBL1cWRpKOQQBasvU/iSXJThoAltIIMhtr0mR6nkhAQp2zZPndQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773393691; c=relaxed/simple;
-	bh=NvfHN+YwB5Uh1b17ClXrK/yAJiY1ImX9zrosgTCVRM4=;
+	s=arc-20240116; t=1773393692; c=relaxed/simple;
+	bh=dje9lwINpGzPAN2nD/Zpfzj7I3u4WC3MpushQKChics=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JoNOI8Iv0zO79sFrIfY23D0cY2/FwOlI9lnMeaXsdFlR8dRiQmm4WI3kzOSUHin6MbF0nQ+sELjtdoO8Sg/VR05M8N2P4R49mR2rqesJkP+iBwpqxNwKFxdMOPwtxAVCbPzMr32fXx/JaZWnpd9GJ0Q2/iayXxKg6aVEzlRyv78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=fv9patpJ; arc=none smtp.client-ip=194.13.80.246
+	 MIME-Version; b=cpdPNB+/S+8Us8OI+diQ0PliClYHdzGlonhArrzQhNjANXMarz46LD9+W7tcl+dVnyG9/1ghM3Z3KWDWC893RsjQEvjKdDaT4WBel/GKVQkEJDvpRb/+V+RXTnMCvAJN89TztB9nB4hC2n5UDrAobsq/PjiE7PDuePu7+r83FmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=vBsSO7rU; arc=none smtp.client-ip=194.13.80.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="fv9patpJ"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7DBCFA5705;
-	Fri, 13 Mar 2026 10:21:21 +0100 (CET)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="vBsSO7rU"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3CDEBA570A;
+	Fri, 13 Mar 2026 10:21:23 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1773393682; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1773393683; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=JlNTVCCEMpLe+QdV6Hc3TyF9BpdyJ2SM/Cy6iXmvFjA=;
-	b=fv9patpJsg3eCa8jIZIvcWWwRH87qJRg3cCD0ytJlVuhF36FQKuZ8qMFbHexYkdROTEZ7Y
-	DRu6q2MB9lJ8Ua7JRKxJtDfq6kTuIZqFF7JPwrHU7uqFCCTyxI+9MDm81FiBt2TrsD4Vtb
-	ei25C7+LAqdDDY0jVdhErEaUgqW/+2vbJ36nRlJ0cDfiERZE1EnaIZcrfap5AdAGRkHay5
-	7TTl0oOQJScFCOanuOOu7vzm5+qn0uHNWci5jGm0azzCMeG6ns8pxOrmE5Qf3iry2qGP6A
-	z+jxVrvEDZdz1t95DSVHVhm1qSZ1L+tZPmfHKq2VZrGW11oTT2VPhhdKxRkdCg==
+	bh=nEAFoVy10TP5FGA/AYLXcX4sh50SwTFGkPjXzFPbrqw=;
+	b=vBsSO7rUUTqM4e7o1EAfqqYpMFznIs8fHA0LHuqRJ0kdcVOE3UbpWTFZrBlwUCkWoEj1F6
+	XBGNge+9op8r+17hMRziiq3g/H7KUxh77iqZm8CD1VhpLdtB0hSKeiV/irQxfc4YuLZv7f
+	WkWyrNmKB1J/crrW0IBXkRvi2aNRSnqp0wu0HlCxiOTcecwNSZQTdNZ9TnEFnhaPjrwi1a
+	UpVNSCKGmHl1hk8ng2rMgYe+0Xqi3B7xOXNzCqVQA1SbZgXCePXc3/tjmKPsh4V8NG7696
+	DIfjw7uGY4ptzJfetKi3WCgMZtSmQX404dEy95ESbH8L2WTf0oTXzGKdZ8IVWg==
 From: Nicolai Buchwitz <nb@tipi-net.de>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
@@ -46,9 +46,9 @@ Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Nicolai Buchwitz <nb@tipi-net.de>
-Subject: [PATCH net-next 4/6] net: bcmgenet: add XDP_TX support
-Date: Fri, 13 Mar 2026 10:20:59 +0100
-Message-ID: <20260313092101.1344954-5-nb@tipi-net.de>
+Subject: [PATCH net-next 6/6] net: bcmgenet: add XDP statistics counters
+Date: Fri, 13 Mar 2026 10:21:01 +0100
+Message-ID: <20260313092101.1344954-7-nb@tipi-net.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260313092101.1344954-1-nb@tipi-net.de>
 References: <20260313092101.1344954-1-nb@tipi-net.de>
@@ -61,150 +61,95 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Implement XDP_TX by submitting XDP frames through the default TX ring
-(DESC_INDEX). The frame is DMA-mapped and placed into a single TX
-descriptor with SOP|EOP|APPEND_CRC flags.
+Expose per-action XDP counters via ethtool -S: xdp_pass, xdp_drop,
+xdp_tx, xdp_tx_err, xdp_redirect, and xdp_redirect_err.
 
-The xdp_frame pointer is stored in the TX control block so that
-bcmgenet_free_tx_cb() can call xdp_return_frame() on TX completion,
-returning the page to the originating page_pool.
-
-The page_pool DMA direction is changed from DMA_FROM_DEVICE to
-DMA_BIDIRECTIONAL to support the TX DMA mapping of received pages.
+These use the existing soft MIB infrastructure and are incremented in
+bcmgenet_run_xdp() alongside the existing driver statistics.
 
 Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
 ---
- .../net/ethernet/broadcom/genet/bcmgenet.c    | 73 ++++++++++++++++++-
- .../net/ethernet/broadcom/genet/bcmgenet.h    |  1 +
- 2 files changed, 71 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 17 ++++++++++++++++-
+ drivers/net/ethernet/broadcom/genet/bcmgenet.h |  6 ++++++
+ 2 files changed, 22 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index d43729fc2b1b..373ba5878ca1 100644
+index 30181f9cff98..ef499192b325 100644
 --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -1893,6 +1893,12 @@ static struct sk_buff *bcmgenet_free_tx_cb(struct device *dev,
- 		if (cb == GENET_CB(skb)->last_cb)
- 			return skb;
+@@ -1168,6 +1168,13 @@ static const struct bcmgenet_stats bcmgenet_gstrings_stats[] = {
+ 	STAT_GENET_SOFT_MIB("tx_realloc_tsb", mib.tx_realloc_tsb),
+ 	STAT_GENET_SOFT_MIB("tx_realloc_tsb_failed",
+ 			    mib.tx_realloc_tsb_failed),
++	/* XDP counters */
++	STAT_GENET_SOFT_MIB("xdp_pass", mib.xdp_pass),
++	STAT_GENET_SOFT_MIB("xdp_drop", mib.xdp_drop),
++	STAT_GENET_SOFT_MIB("xdp_tx", mib.xdp_tx),
++	STAT_GENET_SOFT_MIB("xdp_tx_err", mib.xdp_tx_err),
++	STAT_GENET_SOFT_MIB("xdp_redirect", mib.xdp_redirect),
++	STAT_GENET_SOFT_MIB("xdp_redirect_err", mib.xdp_redirect_err),
+ 	/* Per TX queues */
+ 	STAT_GENET_Q(0),
+ 	STAT_GENET_Q(1),
+@@ -2368,6 +2375,7 @@ bcmgenet_run_xdp(struct bcmgenet_rx_ring *ring, struct bpf_prog *prog,
  
-+	} else if (cb->xdpf) {
-+		dma_unmap_single(dev, dma_unmap_addr(cb, dma_addr),
-+				 dma_unmap_len(cb, dma_len), DMA_TO_DEVICE);
-+		dma_unmap_addr_set(cb, dma_addr, 0);
-+		xdp_return_frame(cb->xdpf);
-+		cb->xdpf = NULL;
- 	} else if (dma_unmap_addr(cb, dma_addr)) {
- 		dma_unmap_page(dev,
- 			       dma_unmap_addr(cb, dma_addr),
-@@ -2299,10 +2305,62 @@ static struct sk_buff *bcmgenet_xdp_build_skb(struct bcmgenet_rx_ring *ring,
- 	return skb;
- }
- 
-+static bool bcmgenet_xdp_xmit_frame(struct bcmgenet_priv *priv,
-+				     struct xdp_frame *xdpf)
-+{
-+	struct bcmgenet_tx_ring *ring = &priv->tx_rings[DESC_INDEX];
-+	struct device *kdev = &priv->pdev->dev;
-+	struct enet_cb *tx_cb_ptr;
-+	dma_addr_t mapping;
-+	u32 len_stat;
-+
-+	spin_lock(&ring->lock);
-+
-+	if (ring->free_bds < 1) {
-+		spin_unlock(&ring->lock);
-+		return false;
-+	}
-+
-+	tx_cb_ptr = bcmgenet_get_txcb(priv, ring);
-+
-+	mapping = dma_map_single(kdev, xdpf->data, xdpf->len, DMA_TO_DEVICE);
-+	if (dma_mapping_error(kdev, mapping)) {
-+		tx_cb_ptr->skb = NULL;
-+		tx_cb_ptr->xdpf = NULL;
-+		bcmgenet_put_txcb(priv, ring);
-+		spin_unlock(&ring->lock);
-+		return false;
-+	}
-+
-+	dma_unmap_addr_set(tx_cb_ptr, dma_addr, mapping);
-+	dma_unmap_len_set(tx_cb_ptr, dma_len, xdpf->len);
-+	tx_cb_ptr->skb = NULL;
-+	tx_cb_ptr->xdpf = xdpf;
-+
-+	len_stat = (xdpf->len << DMA_BUFLENGTH_SHIFT) |
-+		   (priv->hw_params->qtag_mask << DMA_TX_QTAG_SHIFT) |
-+		   DMA_TX_APPEND_CRC | DMA_SOP | DMA_EOP;
-+
-+	dmadesc_set(priv, tx_cb_ptr->bd_addr, mapping, len_stat);
-+
-+	ring->free_bds--;
-+	ring->prod_index++;
-+	ring->prod_index &= DMA_P_INDEX_MASK;
-+
-+	bcmgenet_tdma_ring_writel(priv, ring->index, ring->prod_index,
-+				  TDMA_PROD_INDEX);
-+
-+	spin_unlock(&ring->lock);
-+
-+	return true;
-+}
-+
- static unsigned int
- bcmgenet_run_xdp(struct bcmgenet_rx_ring *ring, struct bpf_prog *prog,
- 		 struct xdp_buff *xdp, struct page *rx_page)
- {
-+	struct bcmgenet_priv *priv = ring->priv;
-+	struct xdp_frame *xdpf;
- 	unsigned int act;
- 
- 	act = bpf_prog_run_xdp(prog, xdp);
-@@ -2310,14 +2368,23 @@ bcmgenet_run_xdp(struct bcmgenet_rx_ring *ring, struct bpf_prog *prog,
  	switch (act) {
  	case XDP_PASS:
++		priv->mib.xdp_pass++;
  		return XDP_PASS;
-+	case XDP_TX:
-+		xdpf = xdp_convert_buff_to_frame(xdp);
-+		if (unlikely(!xdpf) ||
-+		    unlikely(!bcmgenet_xdp_xmit_frame(priv, xdpf))) {
-+			page_pool_put_full_page(ring->page_pool, rx_page,
-+						true);
-+			return XDP_DROP;
+ 	case XDP_TX: {
+ 		struct bcmgenet_tx_ring *tx_ring;
+@@ -2381,18 +2389,24 @@ bcmgenet_run_xdp(struct bcmgenet_rx_ring *ring, struct bpf_prog *prog,
+ 		if (unlikely(!bcmgenet_xdp_xmit_frame(priv, tx_ring, xdpf))) {
+ 			spin_unlock(&tx_ring->lock);
+ 			xdp_return_frame_rx_napi(xdpf);
++			priv->mib.xdp_tx_err++;
+ 			return XDP_DROP;
+ 		}
+ 		bcmgenet_xdp_ring_doorbell(priv, tx_ring);
+ 		spin_unlock(&tx_ring->lock);
++		priv->mib.xdp_tx++;
+ 		return XDP_TX;
+ 	}
+ 	case XDP_REDIRECT:
+-		if (unlikely(xdp_do_redirect(priv->dev, xdp, prog)))
++		if (unlikely(xdp_do_redirect(priv->dev, xdp, prog))) {
++			priv->mib.xdp_redirect_err++;
+ 			goto drop_page;
 +		}
-+		return XDP_TX;
++		priv->mib.xdp_redirect++;
+ 		return XDP_REDIRECT;
  	case XDP_DROP:
+ drop_page:
++		priv->mib.xdp_drop++;
  		page_pool_put_full_page(ring->page_pool, rx_page, true);
  		return XDP_DROP;
  	default:
--		bpf_warn_invalid_xdp_action(ring->priv->dev, prog, act);
-+		bpf_warn_invalid_xdp_action(priv->dev, prog, act);
+@@ -2400,6 +2414,7 @@ bcmgenet_run_xdp(struct bcmgenet_rx_ring *ring, struct bpf_prog *prog,
  		fallthrough;
  	case XDP_ABORTED:
--		trace_xdp_exception(ring->priv->dev, prog, act);
-+		trace_xdp_exception(priv->dev, prog, act);
+ 		trace_xdp_exception(priv->dev, prog, act);
++		priv->mib.xdp_drop++;
  		page_pool_put_full_page(ring->page_pool, rx_page, true);
  		return XDP_ABORTED;
  	}
-@@ -2846,7 +2913,7 @@ static int bcmgenet_rx_ring_create_pool(struct bcmgenet_priv *priv,
- 		.pool_size = ring->size,
- 		.nid = NUMA_NO_NODE,
- 		.dev = &priv->pdev->dev,
--		.dma_dir = DMA_FROM_DEVICE,
-+		.dma_dir = DMA_BIDIRECTIONAL,
- 		.offset = GENET_XDP_HEADROOM,
- 		.max_len = RX_BUF_LENGTH,
- 	};
 diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-index 1459473ac1b0..192db0defbfc 100644
+index 192db0defbfc..b3f1b7ed604a 100644
 --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
 +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-@@ -472,6 +472,7 @@ struct bcmgenet_rx_stats64 {
+@@ -156,6 +156,12 @@ struct bcmgenet_mib_counters {
+ 	u32	tx_dma_failed;
+ 	u32	tx_realloc_tsb;
+ 	u32	tx_realloc_tsb_failed;
++	u32	xdp_pass;
++	u32	xdp_drop;
++	u32	xdp_tx;
++	u32	xdp_tx_err;
++	u32	xdp_redirect;
++	u32	xdp_redirect_err;
+ };
  
- struct enet_cb {
- 	struct sk_buff      *skb;
-+	struct xdp_frame    *xdpf;
- 	struct page         *rx_page;
- 	unsigned int        rx_page_offset;
- 	void __iomem *bd_addr;
+ struct bcmgenet_tx_stats64 {
 -- 
 2.51.0
 
