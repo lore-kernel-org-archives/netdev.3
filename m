@@ -1,126 +1,152 @@
-Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
+Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D6134D909
-	for <netdev@vger.kernel.org>; Fri, 13 Mar 2026 22:15:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1C4382287
+	for <netdev@vger.kernel.org>; Fri, 13 Mar 2026 22:30:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773440157; cv=none; b=G1jhmMVXhH9aEjRym7JLqLfhcgoEkMtSq7IoJ9KuhHdnjp5hcsY7kyq8YKuADQHhCjSoOOSD6Rvi+o2Nqe18mzd8um63+3ET0KAZutbz1AxNNzn0HJ5ctbO82Pe9uYh580eeqDsE7Gzm43eG4lo2poYc+jNwdsLdf3cShp9HHC4=
+	t=1773441036; cv=none; b=bex+Wuc54wp/Zi8RCGZrSavjFtOy83fkor6IWByGw0bnmQSC+DM38JNdlr7bTdNLhmNo+JRTRe1H/ansYjcqmIMlD8IgAahOg/Tms4FV4p0YANgKYvToQb1T/wCfF7jv+7F4ZGd2ruF2eq76ffbepVGdHIsIWNj8T15ZS6kR8GA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773440157; c=relaxed/simple;
-	bh=rBRKXwPprM37HUegKVwfVcNsabxW+lLVWS1raaRWpgw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=s1rZEVEPOktEECDfqpLJW2qM2b2BahnAPBoqrGdnbpuwtBoKX6UKFY5gLdK3xmvT/iHnXiQJhywcCH0A9s/BXYPxq7ol1pz/gHJ5ey4kN1q8YTmBPefkJMbf9t4Hfwt64iJqXoBZdHCLJ1Fy57JobnGItOlSS2H2Lj1Vt2DS33k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JN4LYzaE; arc=none smtp.client-ip=74.125.224.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1773441036; c=relaxed/simple;
+	bh=OSIhld/8cPmcioyVfZ926MRv4gb50JYRi8mjnvQAO74=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uRpfpsTgDR44aC34rZRwy8xfyIn8jKrzhB/SqYPqs0+equflPhZgp6mxxlEEXfFf0QEhoiw8QKGxjxJeE9p4XcOLd0hc4/ZsNR5yon5lEmQCsO0mOt/6pdZ1fnYlMAwkJNyorXKWsaLp1YQDWy0rzQep23G6S5wANn4b8s0uCd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=Ff7n9r/z; arc=none smtp.client-ip=209.85.167.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JN4LYzaE"
-Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-649278a69c5so2528654d50.3
-        for <netdev@vger.kernel.org>; Fri, 13 Mar 2026 15:15:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="Ff7n9r/z"
+Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-463f00cda04so1691793b6e.2
+        for <netdev@vger.kernel.org>; Fri, 13 Mar 2026 15:30:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773440154; x=1774044954; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=DXzMG7YyZwcIs9g8M/AdNb6aJuadGUAGleE1leZ+rzM=;
-        b=JN4LYzaE2FORMA3UEmj/YKCmhZmxtr+W5epGwRa2siA4j1kJiwOBeR5fyaxkGjRUjJ
-         q1qw6BpdiBtFbRGZ718WHS0y27TipQk+WwR6q6j7CV0Dtus9QawMfweMVWThxt5RDbG0
-         8NzNFNvKWwBLEDGW/y7pMl67DUwH45cya3gLwnHSfKnyOilTNqS3TpTxWenCwPaD0otH
-         nqjAIEgH8UMaG9zyqpGJSMk5LCD5mPzQDklZjFMI+wbAiTXo92OES94r96NEDRvqxtfZ
-         rH82+LENQIlMZHEQH9v5ZlRb/7RSw67UiJQ9jLaFFKMTOi/2HuFkAez1x2NMAp2It+Qt
-         xKYQ==
+        d=cloudflare.com; s=google09082023; t=1773441032; x=1774045832; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=E4YrcG7dyAIkvfBnIr5QQD0gb9f+0O2huZFQNopL/90=;
+        b=Ff7n9r/zr+VKvyUBkUT3Z1vF/0Vy1YOUjtixiRJRd1gKvFRb08+KROWBFvvIOqyKiA
+         pM+JwvGlV/4u1uei202IMCJyYKUydAojOzYCBxLc1MSLRdCF/qwoQbzCUc5Ywq4JMPvY
+         EcrI/x+5enAu/3KfcsZwPqR8Nhzb5+qCnSsZVheSaHOeQrb7DVJGiPykjXvV9QCxSKGP
+         UJ9gibFE9AJHrvSd5j0gdbug3qeg/cDK3VEwNrTCyewV6rvWih1x9LBAavSP9xNhMxPP
+         TsP5Bnlj1bv9z4qD3mvV5fENjHU6IgXpjtHVmnaZhv9iAmSm906O1NYITYqJE/pOJNkg
+         4VdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773440154; x=1774044954;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1773441032; x=1774045832;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DXzMG7YyZwcIs9g8M/AdNb6aJuadGUAGleE1leZ+rzM=;
-        b=jfUEej7KSovw/6F5LbXoPl8kSmQxnk82pZg1m0sbnL1AajHVnrHQ1pJ2LAUVRU8EFJ
-         1oEwfOQbadf/iXwNmiogfGVSKyHruoqAC1HFDkz2B7a3iUlxe1pYdOBpJU0FaDJar3Vr
-         5bcTf9bTI1k9jSmW1N3NTBSloXnSQ66ePe2XrdVO/xbJ8BDbCBQLFt05h0kOhyKqr9vU
-         H7F5t92f85fAzHWO9/HliVAf9Qg2DiHC5Alnk7GKi76y7pWKEIHs/Pcpg1v/xVjAcgDz
-         VsWj9RT+uOEKNHDYdLBiAoTEGzfM9EF7yIN9Anz373agZgfMiIyb2mTujMoNedXZbnkQ
-         /Dqg==
-X-Forwarded-Encrypted: i=1; AJvYcCV5P70FvmF+N2nonRdVjqSM3ft/5aGBNh2FFklRkM9ReCHzPEqP3WrlnBDdeowAXzA4GTnmDUw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxY6E7sg+QRbnB2m5/bcjWRF/2ppKBT3mE8nhgy4qxJ/iugt6BY
-	rQxVePWPtK5/g6Vsx4AdBjh3Xgy5GL82R1X4tSs2MIMuVlq92WCxBpecZ4a6mQ==
-X-Gm-Gg: ATEYQzyL0P+3CqXRcqYI/6pXmiJIxzgEQ/gOS8L86tgvS4V1tg15JCSpPWqOdk4sj8H
-	Eg1F+73Wd4Gks2PxpV5O7lgxld4rWfl9iCDeAHsrnpomHS5YgHP9xsWciP3uEdWEJxYWGVFjBVj
-	1gSA4MqNMjx2VXUnvQyUPChc/PyCmTHGQz57CLpVebtLRRU300oeBu6KYTzqc+Og9m62fE6Ag3X
-	NBfCnjXJJ+LNo/FL9mAYJvTD6EffF4AcDbGk0ADyGMJl52176OcFsxm934ovC8Yg52KJvzKFwuU
-	rTmBGldJQRBFSiY/AqDOirc1P6vcj/Ye9Ei8IXhqkMmbZDRkcN4msPBz1Vj6kuqafckGNVlw0YY
-	NvbM/5u8H33LD/Ovtv8Bq/FijPkvs4c4WVmQ7jiVK973gnSmR+pKDlOx6GeDivewgcrUSkmNPHF
-	g0Mww9ZY8OL1rPAXI/XwCM0A==
-X-Received: by 2002:a05:690e:446:b0:64d:6658:3445 with SMTP id 956f58d0204a3-64e6304494bmr3950749d50.48.1773440153963;
-        Fri, 13 Mar 2026 15:15:53 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:50::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-64e65b39917sm1796322d50.13.2026.03.13.15.15.53
+        bh=E4YrcG7dyAIkvfBnIr5QQD0gb9f+0O2huZFQNopL/90=;
+        b=FE1YAAsnzM6zJi9rNcjtLE5dBrFJdrES25tit5zobKgvaLi69ikUIkuXeiukRlBB/z
+         LCA5CDFjUXbKNBGsGydhDBVg44SNiwQBLnFvQ3v7WpSd3a1CAGNvunUHNd2KX4Rmxngp
+         0sPfx2aeZdxVMkc1RInhYcbJ9zVkKGvr+cv+AhYOemi8P95uvCkGdXUioqd8YldF12D2
+         9u0UZ0c8M3hGrJACA5TgFV87T9oaUoo2FPpyWb3AdKPXKzXvOB9sw7bIoj58Tfa0nUA4
+         fQsCR+FA9lN0hvpB/Cy2+M7e/A8bwjz+oDOn8b7gf+wPJfMPcsSSBLfgzlzIVToiktg2
+         1/kA==
+X-Forwarded-Encrypted: i=1; AJvYcCVCEGubWqUqyWZFFqF0QCjQ9iWTvpFVvQIkoveeoje/49Uoo8d1yjguTUjnLtxRmkvfk1Zw1zI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6+0JtFM8XqPA2I6t6MNfsGgZovzRodAMKNIOPwi2SBmOB18vw
+	dj1cDTcFcp6wNBvXRyh2ygHjFaC89dQWTzDH6L8gLNUtxplOUKaTlMwq8dRRidpZtsg=
+X-Gm-Gg: ATEYQzzhjfCEaMmhxzQpjhhjzV/aMWOGk3KrIJd4ZTfrXc2TCTOpDN2x6naA6HikKj/
+	nA0sigwRfcBQKqPhIq+Qm6uvwsI56qicsmAxCtLkwbJaHk7mOSiTiUNI6yb03lRDFmMOh1mwLl2
+	4wCIJetXDzBCg5SDzL5ElGXduGKeshHV4JhmDojV7ym+fL8MRREWtoX2WLkPEiFXo5FRH1QzaF2
+	vYaLoFtKe0muuLRkKX4RGKNenCZ2LPMhkx0kugZ0HQe64QRGNYSJlj4EDMiLWQjnpkYMXZinPqA
+	JP+mwU5GdnuoEX3qiIxPwxPVQoaen19sE9lEMTuF1e0T5KHgsTaWSRwfMPrUqec2h2YwUJLrBd7
+	iC/fJPm2MJiPPwL4axdX0XIJNNKHxeCI+r6Rth+/seAkh140v03+3IFpZnQui1eJexM/qkqhAsq
+	GDBKRa3ylA
+X-Received: by 2002:a05:6808:23d1:b0:467:15ad:9de5 with SMTP id 5614622812f47-467570a27f2mr2598220b6e.13.1773441032469;
+        Fri, 13 Mar 2026 15:30:32 -0700 (PDT)
+Received: from 20HS2G4.. ([2a09:bac1:76c0:540::22f:7d])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-467342fab49sm5408516b6e.16.2026.03.13.15.30.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Mar 2026 15:15:53 -0700 (PDT)
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-Date: Fri, 13 Mar 2026 15:15:47 -0700
-Subject: [PATCH net-next] selftests/vsock: auto-detect kernel for guest VMs
+        Fri, 13 Mar 2026 15:30:30 -0700 (PDT)
+From: Chris J Arges <carges@cloudflare.com>
+To: Joe Damato <joe@dama.to>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Andy Gospodarek <gospo@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>
+Cc: Chris J Arges <carges@cloudflare.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH net-next v4 0/6] bnxt_en: Add XDP RSS hash metadata support
+Date: Fri, 13 Mar 2026 17:27:30 -0500
+Message-ID: <20260313223029.454755-1-carges@cloudflare.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260313-vsock-vmtest-autodetect-kernel-v1-1-705c35bdc7fe@meta.com>
-X-B4-Tracking: v=1; b=H4sIAJOMtGkC/x3NUQoCIRAG4KvIPO+ArrSRV4keRP9q2NLQSRaWv
- XvQd4Fvp44m6BTMTg1DutRCwbjJUHrG8gBLpmBotvNivfM8ek0rj7eiK8ev1gxFUl7RCl6c83I
- 5Ift4dpYmQ5+Gu2z/4EoFygWb0u04fprCRWJ6AAAA
-X-Change-ID: 20260313-vsock-vmtest-autodetect-kernel-dd695ed3a710
-To: Stefano Garzarella <sgarzare@redhat.com>, Shuah Khan <shuah@kernel.org>
-Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Jakub Kicinski <kuba@kernel.org>, Bobby Eshleman <bobbyeshleman@meta.com>
-X-Mailer: b4 0.14.3
+Content-Transfer-Encoding: 8bit
 
-From: Bobby Eshleman <bobbyeshleman@meta.com>
+This series adds XDP RSS hash metadata extraction support for the bnxt_en
+driver and includes selftests to validate the functionality. I was able
+to test this on a BCM57414 NIC.
 
-When running vmtest.sh inside a nested VM the running kernel may not be
-installed on the filesystem at the standard /boot/ or /usr/lib/modules/
-paths.
+Patches 1-4 implement the driver support:
+  - Patch 1 adds bnxt_xdp_buff to wrap xdp_buff with
+    pointers to the hardware RX completion descriptors and the
+    completion type. This is similar to other driver implementations.
+  - Patch 2 adds xmo_rx_hash callback for CMP_TYPE_RX_L2_CMP completions.
+  - Patch 3 moves bnxt_rss_ext_op to bnxt.h
+  - Patch 4 adds handling for CMP_TYPE_RX_L2_V3_CMP completions
 
-Previously, this would cause vng to fail with "does not exist" since it
-could not find the kernel image. Instead, this patch uses --dry-run to
-detect if the kernel is available. If not, then we fall back to the
-kernel in the kernel source tree. If that fails, then we die.
+Patches 5-6 add selftest coverage:
+  - Patch 5 refactors common BPF map helper functions out of the
+    existing xdp.py selftest into a shared net/lib/py/bpf.py module.
+  - Patch 6 adds an XDP metadata selftest that loads an XDP program
+    calling bpf_xdp_metadata_rx_hash. The test skips on devices without
+    xdp-rx-metadata-features.
 
-This way runners, like NIPA, can use vng --run arch/x86/boot/bzImage to
-setup an outer VM, and vmtest.sh will still do the right thing setting
-up the inner VM.
+Changes from v3: https://lore.kernel.org/netdev/20260306230600.1628196-1-carges@cloudflare.com/
+  - split out bnxt_rss_ext_op into header
+  - address RCT issue
+  - rebased on net-next
 
-Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
----
- tools/testing/selftests/vsock/vmtest.sh | 6 ++++++
- 1 file changed, 6 insertions(+)
+Changes from v2: https://lore.kernel.org/netdev/20260303024510.644962-1-carges@cloudflare.com/
+  - bnxt xdp: actually fixed RCT issues
+  - bnxt xdp: Added patch 3 to handle CMP_TYPE_RX_L2_V3_CMP completions.
 
-diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
-index 86e338886b33..7247ac99cf33 100755
---- a/tools/testing/selftests/vsock/vmtest.sh
-+++ b/tools/testing/selftests/vsock/vmtest.sh
-@@ -441,6 +441,12 @@ vm_start() {
- 
- 	if [[ "${BUILD}" -eq 1 ]]; then
- 		kernel_opt="${KERNEL_CHECKOUT}"
-+	elif vng --run --dry-run &>/dev/null; then
-+		kernel_opt=""
-+	elif vng --run "${KERNEL_CHECKOUT}" --dry-run &>/dev/null; then
-+		kernel_opt="${KERNEL_CHECKOUT}"
-+	else
-+		die "No suitable kernel found"
- 	fi
- 
- 	if [[ "${ns}" != "init_ns" ]]; then
+Changes from v1: https://lore.kernel.org/netdev/cover.1772211065.git.carges@cloudflare.com/
+  - selftests: moved tests into net/hw
+  - selftests: fix pylinter errors
+  - selftests: add check for no error count
+  - bnxt_xdp: followed RCT for variable declaration
+  - rebased on net-next
 
----
-base-commit: 8f921f61005450589c0bc1a941a5ddde21d9aed9
-change-id: 20260313-vsock-vmtest-autodetect-kernel-dd695ed3a710
+Chris J Arges (6):
+  bnxt_en: use bnxt_xdp_buff for xdp context
+  bnxt_en: Implement XDP RSS hash metadata extraction
+  bnxt_en: Move bnxt_rss_ext_op into header
+  bnxt_en: Implement XDP RSS hash metadata extraction for V3_CMP
+  selftests: net: move common xdp.py functions into lib
+  selftests: drv-net: xdp: Add rss_hash metadata tests
 
-Best regards,
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     |  47 +++--
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h     |  19 ++
+ drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c |  57 ++++++
+ drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.h |  10 ++
+ .../testing/selftests/drivers/net/hw/Makefile |   1 +
+ .../drivers/net/hw/lib/py/__init__.py         |   2 +
+ .../selftests/drivers/net/hw/xdp_metadata.py  | 146 ++++++++++++++++
+ .../selftests/drivers/net/lib/py/__init__.py  |   2 +
+ tools/testing/selftests/drivers/net/xdp.py    |  95 +++-------
+ .../testing/selftests/net/lib/py/__init__.py  |   2 +
+ tools/testing/selftests/net/lib/py/bpf.py     |  68 ++++++++
+ .../selftests/net/lib/xdp_metadata.bpf.c      | 163 ++++++++++++++++++
+ 12 files changed, 513 insertions(+), 99 deletions(-)
+ create mode 100644 tools/testing/selftests/drivers/net/hw/xdp_metadata.py
+ create mode 100644 tools/testing/selftests/net/lib/py/bpf.py
+ create mode 100644 tools/testing/selftests/net/lib/xdp_metadata.bpf.c
+
 -- 
-Bobby Eshleman <bobbyeshleman@meta.com>
+2.43.0
 
