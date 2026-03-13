@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC05E2571B8
-	for <netdev@vger.kernel.org>; Fri, 13 Mar 2026 01:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1187F305962;
+	Fri, 13 Mar 2026 01:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773363857; cv=none; b=bnsNFVk505KZd40icX418uGvnfVLTNXEqFvJalSIkQQvRk887IRIDjSOrb5djZAYwiopoTrgmCKqV5qXKiCUHRvsHMJJJHYOGS063/llAtur++jrrAZpoQIgvDlouIoGPIWViCgTLVxGFTE2FrdmnsXUWYF5B84id5pUTQECsB4=
+	t=1773364308; cv=none; b=jryMYaOr0Pq3EuLKwSeSDcGQk9SmOHsaPz/aLpuXGRIgqN6oMEEFO7GoxT1YQ6yRr7sV65BIrc59010cV/OX12s/EfW/gA8dh5Ilg4jHLLXH0yhGrf5H5WIyvo7GuPEyyuU0wWbLHhjDG6PsXQN8tbRiG31yTNYh9OuQ+2FVs4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773363857; c=relaxed/simple;
-	bh=TFLKTcSbAY+YGO1CvMB8s2NoY8AR9gmoCY2cHMTj9iM=;
+	s=arc-20240116; t=1773364308; c=relaxed/simple;
+	bh=+FHR5HkHe5dEzhU7wYfy3RYD1aPbmHxdo9/3TzU/KXU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PFUcuXrRtyZLCDGUbtwxzl0zyQkWk/9eVcyG12UDXTV9sooZ5EfuabgcbNAF2mkwjJJKsDUx9R7Pr0aQWfg4ZsZk/TJDLxgSJgw9WDiq3nkJhrAOnPnrMSQeQEoZfxaGQFk+t43xGzTAiKxzbnXCeqGWGziu6OLwL025LqDeH70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PMPP2EuX; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=b0rmf1y21bXfY2vvhbGdkrZZWRHTvbm9LSY8LDkWTf5IhptL5F8G0FUZQAgoJqA9p30u5BV2fjkCLhApJ3Qb+8cAK/2Si8jKF7IkGFUdC1EkABs7qCCBCTszFhhdv7PPe0mGzuu65KwN3iyRPH305L4JrPQM1ZZFiC7Z2IeBQ0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kSYbkoxk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PMPP2EuX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14ABCC4CEF7;
-	Fri, 13 Mar 2026 01:04:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kSYbkoxk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103E5C4CEF7;
+	Fri, 13 Mar 2026 01:11:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773363856;
-	bh=TFLKTcSbAY+YGO1CvMB8s2NoY8AR9gmoCY2cHMTj9iM=;
+	s=k20201202; t=1773364307;
+	bh=+FHR5HkHe5dEzhU7wYfy3RYD1aPbmHxdo9/3TzU/KXU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=PMPP2EuXpflqp3hZCfWW4ZFUNXi9wvKoYC/Iva5obBVFGgll6ZZkeBdUSHgl5NjdB
-	 Dl0jexFaZuUrORMGHEZrh9Wu8jpPQPrj6RbWGHEyG9TfipD2zOJTBqEFYat6bkM0r1
-	 HmDYfASuv5+oznYwN0TBHIIwobKfU3UnbTb/Sh+fak+rwyWkJqE1bpGk698iq/MGVX
-	 XOK/xfdS2eN55qNUP6+a6oHm+pIdbz3fh7OKQCpIBKwkod7i9wPBlXXBp5Wb1G/Bee
-	 74MBEXe4qv7gsqJYcCZuQqhH90t8nl3Np0uVWfyrgFV0xESjVVEnG/3NMQnlYHW5Rt
-	 4xGgEpaz3ED/A==
-Date: Thu, 12 Mar 2026 18:04:15 -0700
+	b=kSYbkoxkXLCF2EXzFtZkuTvxRz10PS0lUScodEdtI38UFNqAWzbF+ZMo8FO9xAv0T
+	 Uot+4vSqhIVV86hk8NQb9zf9uiVW9hmOKrAR7NmodasBrCLzqMIF7POKo0qI8SyegC
+	 1JWuRU/b61MHIwhL4yd/mtXZq8rijYU/1Q+F841OS9Gpk6b0mCSt1bCsMxyNnecs2b
+	 M/CtEVrnlvMHtHieJIh66gF1OTyxXxJVZ0Wyr3Kbn/qL9kl6s/Rs4G+Z2DAixjXcVx
+	 kD/lt+kmfa89qEXfZ94L4SZtY1xjZVCIc+X+/kTnl5TJZVPiLbmU0BwF1JSRD2KR8c
+	 hw7IkXaA1kSFA==
+Date: Thu, 12 Mar 2026 18:11:46 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>, David Ahern <dsahern@kernel.org>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Florian Westphal <fw@strlen.de>, Kuniyuki Iwashima
- <kuni1840@gmail.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH v3 net-next 07/15] udp: Remove partial csum code in RX.
-Message-ID: <20260312180415.1e44a111@kernel.org>
-In-Reply-To: <20260311052020.1213705-8-kuniyu@google.com>
-References: <20260311052020.1213705-1-kuniyu@google.com>
-	<20260311052020.1213705-8-kuniyu@google.com>
+To: Damien Dejean <dam.dejean@gmail.com>
+Cc: andrew@lunn.ch, krzk+dt@kernel.org, robh@kernel.org,
+ maxime.chevallier@bootlin.com, pabeni@redhat.com, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ edumazet@google.com, davem@davemloft.net, hkallweit1@gmail.com
+Subject: Re: [PATCH net-next v7 4/4] net: phy: realtek: add RTL8224 polarity
+ support
+Message-ID: <20260312181146.266c5205@kernel.org>
+In-Reply-To: <20260310173846.230923-5-dam.dejean@gmail.com>
+References: <20260310173846.230923-1-dam.dejean@gmail.com>
+	<20260310173846.230923-5-dam.dejean@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,23 +48,31 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 11 Mar 2026 05:19:54 +0000 Kuniyuki Iwashima wrote:
-> UDP-Lite supports the partial checksum and the coverage is
-> stored in the position of the length field of struct udphdr.
-> 
-> In RX paths, udp4_csum_init() / udp6_csum_init() save the value
-> in UDP_SKB_CB(skb)->cscov and set UDP_SKB_CB(skb)->partial_cov
-> to 1 if the coverage is not full.
-> 
-> The subsequent processing diverges depending on the value,
-> but such paths are now dead.
-> 
-> Also, these functions have some code guarded for UDP:
-> 
->   * udp_unicast_rcv_skb / udp6_unicast_rcv_skb
->   * __udp4_lib_rcv() and __udp6_lib_rcv().
-> 
-> Let's remove the partial csum code and the unnecessary
-> guard for UDP-Lite in RX.
+On Tue, 10 Mar 2026 18:38:46 +0100 Damien Dejean wrote:
+> +static int rtl8224_package_modify_mmd(struct phy_device *phydev, int devad,
+> +				      u32 regnum, u16 mask, u16 set)
+> +{
+> +	int val, ret;
+> +
+> +	phy_lock_mdio_bus(phydev);
+> +
+> +	val = __phy_package_read_mmd(phydev, 0, devad, regnum);
+> +	if (val < 0) {
+> +		ret = val;
+> +		goto exit;
+> +	}
+> +
+> +	val &= ~mask;
+> +	val |= set;
+> +
+> +	ret = __phy_package_write_mmd(phydev, 0, devad, regnum, val);
+> +
+> +exit:
+> +	phy_unlock_mdio_bus(phydev);
+> +	return ret;
+> +}
 
-Hi Willem, this lost your ack due to a bug fix, could you re-review?
+Can this helper be added in patch 2 so that we don't rewrite the code
+we just added? It makes the diff harder to follow.
+-- 
+pw-bot: cr
