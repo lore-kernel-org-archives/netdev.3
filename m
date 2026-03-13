@@ -1,155 +1,427 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010030.outbound.protection.outlook.com [52.101.46.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7CB38D6AC
-	for <netdev@vger.kernel.org>; Fri, 13 Mar 2026 10:53:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773399185; cv=none; b=XQGCA43/pbl0V4eUl/ZBNsgnygeh1JjjEV49vdPv041sIk7bTstXrVsaAZ8go2MIXNUIucQR+5Z8lRz2cuh7ZPH3jrqtRWLf20s780NRN9KUNeLx/x5n6YJovXWEuMK09f/uSnv6Kx2yxhjh1yLGOWL0rb7RUczmUH8XepHFwfs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773399185; c=relaxed/simple;
-	bh=2Xm0BRu2Cs2z3oeU+RWd6oUeKYAmIS1aqz1IYM1B3rM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PGk5C6vlGSckEnuDeDA0yzQ3KCtSRlgwt0JgH17YtzIdlE1Q+1FJiL1O3uDxmTDkraq7bYDmnjclvpfSf2S/Vyq9+wNAT4uL99ifZjIVwTf6MwzwRRzZhoKFEpokph+oAG05XBMjwIqOdBMJ9xBNLNl8vGEXipbvcAv23JrVUQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=Qgxrxi3Z; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8048B388388
+	for <netdev@vger.kernel.org>; Fri, 13 Mar 2026 10:53:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.30
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773399191; cv=fail; b=e1GlshpOprszfEJfsp2AEhjSClLLBcJo1igZZ4KE54Z1lS5Evm4cbQFLVQgS4/eV/OY64vIwyvNHiam6sesxbSYp1+UoCsggPgeEakvhrbibRf0eu7yY3ji5nOpPYuHvPUkciWArs9YDXsIZwJLZJqWe8xAMFlExkZ0SFReJWpQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773399191; c=relaxed/simple;
+	bh=svGlYMLq/8oEfvn7M+dGlnhfWTsUO/udbiZQKvkH6O4=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=appf2IjAFlFXjjPFzgoBN+i0BNc12JzowaJ6NUkkykPXbT+yGPOSm7rxL2KTqx2nSeng3XpclxxZXBuw9hUHJS4RN4y7rsQTrnr8gumEXVedNmMQjy58aqMHVrkq88JHGRXtYOrtoZJHtdPQT2ivlXvv0PKvoOghEJBOHf3s87o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=mBznYpvc; arc=fail smtp.client-ip=52.101.46.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="Qgxrxi3Z"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-48534b59cf3so18208835e9.2
-        for <netdev@vger.kernel.org>; Fri, 13 Mar 2026 03:53:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1773399182; x=1774003982; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=DNZyinWuxfhj/HMKnN0a7zD6/loa3Iui4nBmpRal/7w=;
-        b=Qgxrxi3Z1pmqTpEf2hOuwp1v9wxDcikS6dCTFPGb3AFgX+a2Vt9wEVsBKJd0m7BkQc
-         rVmyshwWIlb85fo2wCPq3haizlv/iZmN/FTXhp7YCuJtfC3r3WjWxd9m/CRkqcWWmVw/
-         vA6dJgzohJTWTrE4zvFz9ChPdtx/xdv2KnbmoBV4HEHpxcy4ATZxTwYBJFY67qEM1mhE
-         m1VNFyf/5E+f9uGykeoAuCTlREUM6PRvuhsbUf8oj8XuRscNpn4wdoMM+EaFLPg+d4Il
-         bA6H4rXfQm4nbtZGtf/4DM7sETGx9yvo1KPeTn3A4kDvNc42gqR3s3nA2egT2B+9xpqi
-         esUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773399182; x=1774003982;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DNZyinWuxfhj/HMKnN0a7zD6/loa3Iui4nBmpRal/7w=;
-        b=h1ZVeu97BmTOFRNYkpTBZxUBDzu8di/81gCuRfLHAPjHpeEXPYKnGAjb8pTibYWeY1
-         LBJJlpkpaoYgsGKZ3apgoMG4PWtHYDoGvpyKRo4kVND/PhJnCmt6s8Ro0HPD/iyAVYmE
-         zzZyFEj+rgcc8xlUXxZyxr44Vft0nY5OjRx8KP0lKYV87Crwk3qeH0RvCRdiF4wVQRLD
-         hL+FFtpWHUncROr1R6UTukAmGoJjXZlVkyCRd95nkOUDgeqRlEduDIudET3K8iSczQgc
-         r9VakHF6sOqWdJsNjmIOg6Ip22IsqBtV8SHZyqluWWYuuTpBN00v7NpkCEiKh+YMKLlU
-         JFlw==
-X-Gm-Message-State: AOJu0Ywz1377WwXiCi1CQT8kj3kWfRnEk3tyg9yucf6Fz5WNPlH1g313
-	6g1o6qoT7WdG1gm3SXjocUmKIqFM5w16rRwYPaLS5zamDf29VcdcnNAsktTdEzLqz0+QtzR3rWI
-	Osd10AWzFSHu/7IrnM2RaraN6IDF/VMBmDQmsgylF3xOURUzfOJ8=
-X-Gm-Gg: ATEYQzy8A77jGu/6SRkjURhdxeQVn6Tvp/HUhhveoPOxhJA00PDxB1a0OY9t42WJhP6
-	/AkWJCYmY+Y+nTbPqRcbwxWH5H20Bg/bQNhgIfgx7Gmp6L0Z9sGxvLc7KA9PU1V6t9dOgs9DyN+
-	sWtVKfXzujziu4F2I5UEwxPmSY8rflG7/Shid20uqjZ4qYJpOIoArJ5NYlXJRiGe782dWNffDwz
-	nrhg0T2IpFUUU1vAkn9kRiGzwUWbVQ2nIxSfCD0d/S1n85CkADNMcZpeKRQQ4giE+vYTf5Tq3b6
-	Hqhh/QRNuryRcKTW4ifMmNnIt8kUXscObykm5XusbG7pWV/9RQQzudo32wt1otpKx6RWJ9s/R3e
-	AP776CytKQWNR960U9JCk9YEiOZhOyuRyHGdqAD3jeR8JLKE3mUC2vRgkkm47C0LD6UyMb9Mnqp
-	WDtfeppPYldqLbeUYL3WOaUCdYjArIIoXTTk66ir4cUWFnWWL4x3D2bIdydMhvmw==
-X-Received: by 2002:a05:600c:1f8d:b0:485:4278:24fb with SMTP id 5b1f17b1804b1-48556711dfcmr40023815e9.32.1773399182370;
-        Fri, 13 Mar 2026 03:53:02 -0700 (PDT)
-Received: from ?IPV6:2001:67c:2fbc:1:5172:7646:5893:2ac6? ([2001:67c:2fbc:1:5172:7646:5893:2ac6])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4855778d268sm24283095e9.8.2026.03.13.03.52.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Mar 2026 03:53:01 -0700 (PDT)
-Message-ID: <a2724a9d-4f03-431e-934d-b6aa64d1ad45@openvpn.net>
-Date: Fri, 13 Mar 2026 11:52:59 +0100
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="mBznYpvc"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VIMDNy0IqtjeZGWmV0yHy1zPAUbf4g4xlPt8XCk56tPkHq82/wK46+4VH0bS5iakJiBy5zg04N97bWWFtWH5CoeEGR1uSNGdYIuy6VhtKjKHhqZakt7guKOEjL/kN9Epyer1hj034Vd2KMvrHCNyTFAsEkm95LPbTIskwgAQ5+CIu+bBzbCX8UmYywoKVF2BQ4vTPlvI4p7DTd2VP7tXSozoXUFhmNMd+VBOYpVkTkKOM0DpSEmcB6fh2DnEBfYgFkr/q3CMVe7MR8l4Ve2DrnU8Yd/e5G7W/dNRCGD4Upr3B65qow/lJe3BuUwDMcnV+9/rAIjQCwRNC1mYlpF/6Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Tzu05OqIvSHzqSTqkLYHO2bkJOL0GUg9rjps4uYt7MU=;
+ b=A7i3Qaf5aTujSvWm0FjjHtXy0BZAczmQHBs5MVIInWG2/OrfN4NtDhmd4QF/RUrH4CsNtRyX8u8RoeHUGq1ePjeD8DMOi875H/A59QZpsWvSTIx+wa9aiHKNBORh0A2Z4Z1NBqTnu33I/llNnsg8Eox1Yjl9Wpf0wNJpnYQ+5+lOxFK4Onh7zHHmcWyEBOXBWqm5kPU0YFkfYdG4G3arlMyFGgeYly12OvTXutjL3bY5syg0XAXMFtyct5AtpjyfnE4M84qG909C5sUmGyAXRqYLUz/TdkWTD9ZT1wtN72jNFCwRstSgFCW8XItD1pog4CbcrrxegPjt2q2GMVRoXA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Tzu05OqIvSHzqSTqkLYHO2bkJOL0GUg9rjps4uYt7MU=;
+ b=mBznYpvck2MHwnt7Hy5gZuNjfDK+10n78X53UOAzcd6u0ZRlpaYKgcnkNa38GQxq309G5IxBDXAZu3kEzAUWevvJwuW4cKfikIFcRAGbYmy2E2I+3uq/5YEJcmLqWcZSPg/o9/PRauCjIo+t7+WmON/svKG0WiMV0Oqii2t4nTohXT982RZ4GYFQVXo5/1/OuR+AvrIwEh5i08lntk5tzgNEPsQsFamsFRGr4zPVrvOOzXgvvHP4RAu8YS9Yh+DRPDPVlR79F61k83dBWgdmfEFy+Pb7NqT4lhegnu+HNLJMFQ7dNeFFcTf30ljqB9bmXNqk02VZPExxXdH9riQ/IQ==
+Received: from BYAPR06CA0053.namprd06.prod.outlook.com (2603:10b6:a03:14b::30)
+ by MN0PR12MB5833.namprd12.prod.outlook.com (2603:10b6:208:378::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.8; Fri, 13 Mar
+ 2026 10:53:04 +0000
+Received: from BY1PEPF0001AE1D.namprd04.prod.outlook.com
+ (2603:10b6:a03:14b:cafe::11) by BYAPR06CA0053.outlook.office365.com
+ (2603:10b6:a03:14b::30) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.27 via Frontend Transport; Fri,
+ 13 Mar 2026 10:53:03 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BY1PEPF0001AE1D.mail.protection.outlook.com (10.167.242.106) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9700.17 via Frontend Transport; Fri, 13 Mar 2026 10:53:03 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 13 Mar
+ 2026 03:52:53 -0700
+Received: from pylon.vdiclient.nvidia.com (10.126.230.35) by
+ rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Fri, 13 Mar 2026 03:52:48 -0700
+From: Cosmin Ratiu <cratiu@nvidia.com>
+To: <netdev@vger.kernel.org>
+CC: Sabrina Dubroca <sd@queasysnail.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Cosmin
+ Ratiu" <cratiu@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>
+Subject: [PATCH 1/3] selftests: Migrate nsim-only MACsec tests to Python
+Date: Fri, 13 Mar 2026 11:52:24 +0100
+Message-ID: <20260313105227.1884391-2-cratiu@nvidia.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260313105227.1884391-1-cratiu@nvidia.com>
+References: <20260313105227.1884391-1-cratiu@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 5/9] selftests: ovpn: add notification parsing
- and matching
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, Ralf Lici <ralf@mandelbit.com>,
- Sabrina Dubroca <sd@queasysnail.net>, Paolo Abeni <pabeni@redhat.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- linux-kselftest@vger.kernel.org, shuah@kernel.org, horms@kernel.org
-References: <20260310145006.30858-1-antonio@openvpn.net>
- <20260310145006.30858-6-antonio@openvpn.net>
- <20260311201738.20d816bd@kernel.org>
-Content-Language: en-US
-From: Antonio Quartulli <antonio@openvpn.net>
-Autocrypt: addr=antonio@openvpn.net; keydata=
- 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
-Organization: OpenVPN Inc.
-In-Reply-To: <20260311201738.20d816bd@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE1D:EE_|MN0PR12MB5833:EE_
+X-MS-Office365-Filtering-Correlation-Id: f216207d-d800-43c3-5a23-08de80eeb3c0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|376014|1800799024|82310400026|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	CT/sPMIsS/OtE5SptlMFsCwM7TwaInXsfjc2MTvpMfmtxpKTggrVfMltTta0VfNWumjVj1rx5Ls0ZSy0c2gmwSN3xEj7MldDVVAFqm/kIC1GfZx6AQZ9rhrtdgv/wPFQn79s4f/y3JAAUA2sRxcpAxadkICIMFBYXOy7/fd0eniBi60hGDWU3ME/kVWSETCdKVpNOC3qxCWDzAasoCGQjuEfqGkT7OndqsXXIZKY3XlfDF+nkDIHcMBuBuPjPTz0oXbwPaIioAvgnmwVuYIAbImqeyF7fsZ/NrJdVdyZci6pubBSE0VrayM5CAjIq19ZCcUAsFFDPCQOpTPcwza6uTuH5FE3YxKt46AEjIdEQFJsO8MWO7xapmrsVkuEzeUmxmy+iaj6daw6IolJZJlr9J5iilP0bTDfEJ9Xbj4wuuZ1FsEYdx51GBeCPVhpB11W8eoIuVNq+Ak/mvoW1UdAy/xColfs2rj/JAzOp6NJstFKPm8pt7/VXDhHON/RMtkgNnvT+RZxAEb2nGkPfnOEIrT4vCIcdJHC5W6jpU+awWNV+v0oTtrdocpyJZaZP4gTeMkubJcY3GXhPFMqtMkWq5Xcq7XVSACAfwlb3+S1MRJHTwFPwloGvAQcH+uEmhYIh8kog7Cqg/0CrgGgi+vLIAKtngThplEUZ8dYntZI03HW2dTlOFYDp5vKXP0wKxXqQ1HpKvEheYhpmt22w+vM8FPhwJk+6a3DLB6+sB2tirOh9ptbMNXr422zjDTZlCWtc6AfYRRhtmC2btYJG57xGg==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(376014)(1800799024)(82310400026)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	PCFFeJ+wN6PkDgGgZSb8Agxdi4/agG0vhbgmq04RN0p2t66NQq0PoZkCWiWUK2CG6C4MHRufHRidYdGLMWqpOJpxjKXNobF0rZFXgVgGZli2Xx/JNuUbkojeSwEwxMivGZue6cmgflBrujVWFEiwSKxD3cXGIKdpLSItsuGF4Izka3lslHSRrsXagCtoR9culWuteBoRYbIlu3K84EqALb+DQQv6XASpMw3fYshBultA9APUGvleMnnI/tOAmTHZHa2H4H6CH4iRze+fAiZ3Qw/JEhuh0hf95v3OvT1DD72GpRzIWF909i9MqhesHyz2/nPgNyzDNgpXTjdzZB/WE16eh0Zy1/1XWizzJNt4WVihLCCsz1y03ul4HhoaSoxGmgms3mQhtNnoUfWKw4Ouex3j36r2Z1zcOnyyoCHfI71AqrffOF6It5SBK+eMc4HV
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2026 10:53:03.9053
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f216207d-d800-43c3-5a23-08de80eeb3c0
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BY1PEPF0001AE1D.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5833
 
+Move MACsec offload API and ethtool feature tests from
+tools/testing/selftests/drivers/net/netdevsim/macsec-offload.sh to
+tools/testing/selftests/drivers/net/macsec_api.py using the NetDrvEnv
+framework so tests can run against both netdevsim (default) and real
+hardware (NETIF=ethX). As some real hardware requires macsec to use
+encryption, add that to the tests.
+Extract shared helpers into macsec_lib.py for reuse by upcoming traffic
+tests.
 
+Netdevsim-specific limit checks (max SecY, max RX SC) are guarded
+behind cfg._ns checks to avoid failures on real hardware.
 
-On 12/03/2026 04:17, Jakub Kicinski wrote:
-> On Tue, 10 Mar 2026 15:50:02 +0100 Antonio Quartulli wrote:
->> -TEST_FILES = common.sh
->> +TEST_FILES = \
->> +	common.sh \
->> +	data64.key \
->> +	tcp_peers.txt \
->> +	udp_peers.txt \
->> +	../../../../net/ynl/pyynl/cli.py \
->> +	json
->> +# end of TEST_FILES
-> 
-> needs alphabetical sorting
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+---
+ tools/testing/selftests/drivers/net/Makefile  |   5 +
+ .../selftests/drivers/net/macsec_api.py       | 103 +++++++++++++++
+ .../selftests/drivers/net/macsec_lib.py       |  20 +++
+ .../selftests/drivers/net/netdevsim/Makefile  |   1 -
+ .../drivers/net/netdevsim/macsec-offload.sh   | 117 ------------------
+ 5 files changed, 128 insertions(+), 118 deletions(-)
+ create mode 100755 tools/testing/selftests/drivers/net/macsec_api.py
+ create mode 100644 tools/testing/selftests/drivers/net/macsec_lib.py
+ delete mode 100755 tools/testing/selftests/drivers/net/netdevsim/macsec-offload.sh
 
-Dang.
-
-> 
-> Please do use/steal the script from NIPA that validates the format of
-> Makefiles, cause it's really easy to make a mistake on these
-> https://github.com/linux-netdev/nipa/tree/main/tests/patch/check_selftest
-
-Thanks a lot! We were looking exactly for those.
-
-Regards,
-
-
+diff --git a/tools/testing/selftests/drivers/net/Makefile b/tools/testing/selftests/drivers/net/Makefile
+index 8154d6d429d3..511346b7d9ec 100644
+--- a/tools/testing/selftests/drivers/net/Makefile
++++ b/tools/testing/selftests/drivers/net/Makefile
+@@ -10,9 +10,14 @@ TEST_GEN_FILES := \
+ 	napi_id_helper \
+ # end of TEST_GEN_FILES
+ 
++TEST_FILES := \
++	macsec_lib.py \
++# end of TEST_FILES
++
+ TEST_PROGS := \
+ 	gro.py \
+ 	hds.py \
++	macsec_api.py \
+ 	napi_id.py \
+ 	napi_threaded.py \
+ 	netpoll_basic.py \
+diff --git a/tools/testing/selftests/drivers/net/macsec_api.py b/tools/testing/selftests/drivers/net/macsec_api.py
+new file mode 100755
+index 000000000000..1d1185582bcd
+--- /dev/null
++++ b/tools/testing/selftests/drivers/net/macsec_api.py
+@@ -0,0 +1,103 @@
++#!/usr/bin/env python3
++# SPDX-License-Identifier: GPL-2.0
++
++"""MACsec offload API and ethtool feature tests."""
++
++from lib.py import ksft_run, ksft_exit, ksft_eq, ksft_raises
++from lib.py import CmdExitFailure
++from lib.py import NetDrvEnv
++from lib.py import ip, defer
++from macsec_lib import require_macsec_offload, get_macsec_offload
++
++
++def test_offload_api(cfg) -> None:
++    """MACsec offload API: create SecY, add SA/rx, toggle offload."""
++
++    require_macsec_offload(cfg)
++    # Create 3 SecY with offload
++    ip(f"link add link {cfg.ifname} macsec0 type macsec "
++       f"port 4 encrypt on offload mac")
++    defer(ip, f"link del macsec0")
++
++    ip(f"link add link {cfg.ifname} macsec1 type macsec "
++       f"address aa:bb:cc:dd:ee:ff port 5 encrypt on offload mac")
++    defer(ip, f"link del macsec1")
++
++    ip(f"link add link {cfg.ifname} macsec2 type macsec "
++       f"sci abbacdde01020304 encrypt on offload mac")
++    defer(ip, f"link del macsec2")
++
++    # nsim-only: 4th SecY should fail (max 3)
++    if cfg._ns is not None:
++        with ksft_raises(CmdExitFailure):
++            ip(f"link add link {cfg.ifname} macsec3 "
++               f"type macsec port 8 encrypt on offload mac")
++
++    # Add TX SA
++    ip(f"macsec add macsec0 tx sa 0 pn 1024 on "
++       f"key 01 12345678901234567890123456789012")
++
++    # Add RX SC + SA
++    ip(f'macsec add macsec0 rx port 1234 address 1c:ed:de:ad:be:ef')
++    ip(f'macsec add macsec0 rx port 1234 address 1c:ed:de:ad:be:ef '
++       f"sa 0 pn 1 on key 00 0123456789abcdef0123456789abcdef")
++
++    # nsim-only: 2nd RX SC should fail (max 1)
++    if cfg._ns is not None:
++        with ksft_raises(CmdExitFailure):
++            ip(f'macsec add macsec0 rx port 1235 address 1c:ed:de:ad:be:ef')
++
++    # Can't disable offload when SAs are configured
++    with ksft_raises(CmdExitFailure):
++        ip(f"link set macsec0 type macsec offload off")
++    with ksft_raises(CmdExitFailure):
++        ip(f"macsec offload macsec0 off")
++
++    # Toggle offload via rtnetlink on SA-free device
++    ip(f"link set macsec2 type macsec offload off")
++    ip(f"link set macsec2 type macsec encrypt on offload mac")
++
++    # Toggle offload via genetlink
++    ip(f"macsec offload macsec2 off")
++    ip(f"macsec offload macsec2 mac")
++
++
++def test_offload_state(cfg) -> None:
++    """Offload state reflects configuration changes."""
++
++    require_macsec_offload(cfg)
++    # Create with offload on
++    ip(f"link add link {cfg.ifname} macsec0 type macsec "
++       f"encrypt on offload mac")
++    ksft_eq(get_macsec_offload("macsec0"), "mac",
++            "created with offload: should be mac")
++
++    ip(f"link set macsec0 type macsec offload off")
++    ksft_eq(get_macsec_offload("macsec0"), "off",
++            "offload disabled: should be off")
++
++    ip(f"link set macsec0 type macsec encrypt on offload mac")
++    ksft_eq(get_macsec_offload("macsec0"), "mac",
++            "offload re-enabled: should be mac")
++
++    # Delete and recreate without offload
++    ip(f"link del macsec0")
++    ip(f"link add link {cfg.ifname} macsec0 type macsec")
++    defer(ip, f"link del macsec0")
++    ksft_eq(get_macsec_offload("macsec0"), "off",
++            "created without offload: should be off")
++
++    ip(f"link set macsec0 type macsec encrypt on offload mac")
++    ksft_eq(get_macsec_offload("macsec0"), "mac",
++            "offload enabled after create: should be mac")
++
++
++def main() -> None:
++    with NetDrvEnv(__file__) as cfg:
++        ksft_run([test_offload_api,
++                  test_offload_state], args=(cfg,))
++    ksft_exit()
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/tools/testing/selftests/drivers/net/macsec_lib.py b/tools/testing/selftests/drivers/net/macsec_lib.py
+new file mode 100644
+index 000000000000..452b0f9026c8
+--- /dev/null
++++ b/tools/testing/selftests/drivers/net/macsec_lib.py
+@@ -0,0 +1,20 @@
++# SPDX-License-Identifier: GPL-2.0
++
++"""Shared helpers for MACsec offload tests."""
++
++from lib.py import KsftSkipEx, ethtool, ip
++
++MACSEC_KEY = "12345678901234567890123456789012"
++
++
++def get_macsec_offload(dev):
++    """Return macsec offload mode string from ip -d link show."""
++    info = ip(f"-d link show dev {dev}", json=True)[0]
++    return info.get("linkinfo", {}).get("info_data", {}).get("offload")
++
++
++def require_macsec_offload(cfg):
++    """SKIP if lower device doesn't support macsec-hw-offload."""
++    feat = ethtool(f"-k {cfg.ifname}", json=True)[0]
++    if not feat.get("macsec-hw-offload", {}).get("active"):
++        raise KsftSkipEx("macsec-hw-offload not supported")
+diff --git a/tools/testing/selftests/drivers/net/netdevsim/Makefile b/tools/testing/selftests/drivers/net/netdevsim/Makefile
+index 1a228c5430f5..9808c2fbae9e 100644
+--- a/tools/testing/selftests/drivers/net/netdevsim/Makefile
++++ b/tools/testing/selftests/drivers/net/netdevsim/Makefile
+@@ -11,7 +11,6 @@ TEST_PROGS := \
+ 	fib.sh \
+ 	fib_notifications.sh \
+ 	hw_stats_l3.sh \
+-	macsec-offload.sh \
+ 	nexthop.sh \
+ 	peer.sh \
+ 	psample.sh \
+diff --git a/tools/testing/selftests/drivers/net/netdevsim/macsec-offload.sh b/tools/testing/selftests/drivers/net/netdevsim/macsec-offload.sh
+deleted file mode 100755
+index 98033e6667d2..000000000000
+--- a/tools/testing/selftests/drivers/net/netdevsim/macsec-offload.sh
++++ /dev/null
+@@ -1,117 +0,0 @@
+-#!/bin/bash
+-# SPDX-License-Identifier: GPL-2.0-only
+-
+-source ethtool-common.sh
+-
+-NSIM_NETDEV=$(make_netdev)
+-MACSEC_NETDEV=macsec_nsim
+-
+-set -o pipefail
+-
+-if ! ethtool -k $NSIM_NETDEV | grep -q 'macsec-hw-offload: on'; then
+-    echo "SKIP: netdevsim doesn't support MACsec offload"
+-    exit 4
+-fi
+-
+-if ! ip link add link $NSIM_NETDEV $MACSEC_NETDEV type macsec offload mac 2>/dev/null; then
+-    echo "SKIP: couldn't create macsec device"
+-    exit 4
+-fi
+-ip link del $MACSEC_NETDEV
+-
+-#
+-# test macsec offload API
+-#
+-
+-ip link add link $NSIM_NETDEV "${MACSEC_NETDEV}" type macsec port 4 offload mac
+-check $?
+-
+-ip link add link $NSIM_NETDEV "${MACSEC_NETDEV}2" type macsec address "aa:bb:cc:dd:ee:ff" port 5 offload mac
+-check $?
+-
+-ip link add link $NSIM_NETDEV "${MACSEC_NETDEV}3" type macsec sci abbacdde01020304 offload mac
+-check $?
+-
+-ip link add link $NSIM_NETDEV "${MACSEC_NETDEV}4" type macsec port 8 offload mac 2> /dev/null
+-check $? '' '' 1
+-
+-ip macsec add "${MACSEC_NETDEV}" tx sa 0 pn 1024 on key 01 12345678901234567890123456789012
+-check $?
+-
+-ip macsec add "${MACSEC_NETDEV}" rx port 1234 address "1c:ed:de:ad:be:ef"
+-check $?
+-
+-ip macsec add "${MACSEC_NETDEV}" rx port 1234 address "1c:ed:de:ad:be:ef" sa 0 pn 1 on \
+-    key 00 0123456789abcdef0123456789abcdef
+-check $?
+-
+-ip macsec add "${MACSEC_NETDEV}" rx port 1235 address "1c:ed:de:ad:be:ef" 2> /dev/null
+-check $? '' '' 1
+-
+-# can't disable macsec offload when SAs are configured
+-ip link set "${MACSEC_NETDEV}" type macsec offload off 2> /dev/null
+-check $? '' '' 1
+-
+-ip macsec offload "${MACSEC_NETDEV}" off 2> /dev/null
+-check $? '' '' 1
+-
+-# toggle macsec offload via rtnetlink
+-ip link set "${MACSEC_NETDEV}2" type macsec offload off
+-check $?
+-
+-ip link set "${MACSEC_NETDEV}2" type macsec offload mac
+-check $?
+-
+-# toggle macsec offload via genetlink
+-ip macsec offload "${MACSEC_NETDEV}2" off
+-check $?
+-
+-ip macsec offload "${MACSEC_NETDEV}2" mac
+-check $?
+-
+-for dev in ${MACSEC_NETDEV}{,2,3} ; do
+-    ip link del $dev
+-    check $?
+-done
+-
+-
+-#
+-# test ethtool features when toggling offload
+-#
+-
+-ip link add link $NSIM_NETDEV $MACSEC_NETDEV type macsec offload mac
+-TMP_FEATS_ON_1="$(ethtool -k $MACSEC_NETDEV)"
+-
+-ip link set $MACSEC_NETDEV type macsec offload off
+-TMP_FEATS_OFF_1="$(ethtool -k $MACSEC_NETDEV)"
+-
+-ip link set $MACSEC_NETDEV type macsec offload mac
+-TMP_FEATS_ON_2="$(ethtool -k $MACSEC_NETDEV)"
+-
+-[ "$TMP_FEATS_ON_1" = "$TMP_FEATS_ON_2" ]
+-check $?
+-
+-ip link del $MACSEC_NETDEV
+-
+-ip link add link $NSIM_NETDEV $MACSEC_NETDEV type macsec
+-check $?
+-
+-TMP_FEATS_OFF_2="$(ethtool -k $MACSEC_NETDEV)"
+-[ "$TMP_FEATS_OFF_1" = "$TMP_FEATS_OFF_2" ]
+-check $?
+-
+-ip link set $MACSEC_NETDEV type macsec offload mac
+-check $?
+-
+-TMP_FEATS_ON_3="$(ethtool -k $MACSEC_NETDEV)"
+-[ "$TMP_FEATS_ON_1" = "$TMP_FEATS_ON_3" ]
+-check $?
+-
+-
+-if [ $num_errors -eq 0 ]; then
+-    echo "PASSED all $((num_passes)) checks"
+-    exit 0
+-else
+-    echo "FAILED $num_errors/$((num_errors+num_passes)) checks"
+-    exit 1
+-fi
 -- 
-Antonio Quartulli
-OpenVPN Inc.
+2.43.0
 
