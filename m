@@ -1,147 +1,372 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013033.outbound.protection.outlook.com [40.107.162.33])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678D638A29A;
-	Fri, 13 Mar 2026 11:49:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.33
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773402578; cv=fail; b=JT+g0l8HP0cptTTyPAtCVP9hr84Mx2UO2Ag+KfNRkrsgQtlDGKX4nPYayEo6oNcHcOJHqQ65QX94H/BH0k3ZsKEdGZdcgogpQ/bgNpIcktaTcnqxWwbHvUMBt5gXYCoR7zhyiSHlOCDTxKK+xnuuI0PTsEBosl5GzsqzTb1FWVM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773402578; c=relaxed/simple;
-	bh=iRz/2vpou2aGU1RX4d2uo1y8E8ITbSQ2OnJhy8QQ7pk=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=kqbAHpwrFQaqCSHbDdJLWrhK18K/CHFcecQ6M9EmjPHGogNX49FJMz4vri/bXPTWFbnPPfQeWjYTC5oXWGECsMx8Gm3zmY0jPTIpPLZA4meVL05AeCIJLkIXfidFyHae4DBj1puR/7S9aibWnJvCFgKw4NmM8HrJR3UZfPnN3EY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=OAgOzC9t; arc=fail smtp.client-ip=40.107.162.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC2631E83C
+	for <netdev@vger.kernel.org>; Fri, 13 Mar 2026 11:52:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773402728; cv=none; b=XNe9s24K8kDX5kn5UVNVk/Bvu9NsaCGAwmavZI5oSKzpG+cqoWHCTmgppns6Eu1mdzi307ulYiIvNlAeu9w9L/TiavOde548tNSNNco8kTzZWkK7LLWfg+mmVsy6tHjUS80uKCG6NTP2+3SvqUlsJoRMnXJ1HKTmt0P05jnQ46w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773402728; c=relaxed/simple;
+	bh=R7HdYWmWF71ZVXY+heGFL/jb54o7UKb5SmiGlvqgM7k=;
+	h=From:To:Cc:Subject:MIME-Version:Content-Disposition:Content-Type:
+	 Message-Id:Date; b=Zwh7kPep2mSnZvF5aRaBJp5O4wDhyMOupmPR0z02HUc/3aQYTv30fR1jMevImNYdG7tjS6/lBFW/H1jdmp1n4skIVr9V+G8Srz0PoQlShleoVtDie5CovLRcjeplxSJ2DXiI8Oo5UL177sUg6VjS+VqIpO9C/DapP5lono6MMNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=JrW+dX61; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="OAgOzC9t"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZJDr5//tCFGvBP+RLGoDgXGlZVNu9vQzxSCF8tIuiAQkynRIc2Vs8ZCWF9QoemkXJd432GTPhXvPMTo69SvfhHLhqm0MDnVfJdK0xxNuQy1bJR8H7FCk1zSRazknYae76zQJCSPs+sRmk8G3rqnr8zN/dy/w12WIbImjTa5QO4UvmkIChPjIAK2xCqHtJTHUNK+jf9HN8MdYI/2yNrrSFB5cOlgkF1OmWD1H0ml2iqEIMkATEJTxOF5NNc4iotnV7uhguLGLxUg/O54eBvNYVC+h+gc1B15evpuRAq8coVaRYE70t+brMy0gTe8wFBwAPdFoQ7P3yt0Gv4D9L1UKaQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gbUyBoetiM0+QdgMrQkZX16lG9liPmsIujMpsHy9dhM=;
- b=SErhVTS44epknlfQo4b4qIaSpT7xwSAf3mktgfKEjfwKocGIJNmoX42nQfDXdxIwTYXlhpMp6VIakKA60BygFYX46R4iW4bYcC0TxKKl6M2yMEyyuRBdtCzurchqvnuqyhkQjk9qzuqde4lKOwktU/03+H6miAaC3MMkB2ozUqS7tqkwFLSAvfJBB3OQcy0Ki2OjV7osykdUTOhiBIo8A+39jJLQ2KLaKWMkY9ZQisRrTcO40ou2hU6NHReojfmB/ZrxJNijls5exEQ+BjaDOo7PZ5O24ZwpGGui5bOWf9dkl8l3ke5H9TWQwmX+RIVBud2NHZd2LbexBdDe0ZwYTA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gbUyBoetiM0+QdgMrQkZX16lG9liPmsIujMpsHy9dhM=;
- b=OAgOzC9tqG9qMS1Fb52ooxvaoXkP07HnXwkJRVOs3yvqFQLaYpf3cLmbO2lyiIkIu1YgE06siaWX54snY2XbUHp98n3za9FRJITz0j6cjXhnEFHQ32mYXzBmntOyQ1epT2v2zlerFUkCauVge94sCqMTZWHz/fvGcVwEIqaeCc/gp0rddqyYQ38WjHbaLfAmwpFvMsSHvEmqcigKCwZY76mSjFa1GiUagt1kUbiqY59nEp1K57n+aLG0bu/BxC8YAJbyYpTzuY0+NboTfXcO+aCJpnm2bhS9L+rLNP6N/m49PAQOQKfh5GvbJnTnndJDI2XWSa0lMHzMg/hUWlZN0A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by VI1PR04MB6831.eurprd04.prod.outlook.com (2603:10a6:803:135::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.15; Fri, 13 Mar
- 2026 11:49:24 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::b476:c19a:24cd:3694]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::b476:c19a:24cd:3694%3]) with mapi id 15.20.9700.013; Fri, 13 Mar 2026
- 11:49:28 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH net-next] net: enetc: remove stray semicolon
-Date: Fri, 13 Mar 2026 19:24:54 +0800
-Message-Id: <20260313112454.427191-1-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MA5PR01CA0224.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1f3::7) To PAXPR04MB8510.eurprd04.prod.outlook.com
- (2603:10a6:102:211::7)
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="JrW+dX61"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:Reply-To:Content-ID
+	:Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+	Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=pjvmOUdFPEzL0W797PPwOdGoxTvJI66nOK1+4vE46v4=; b=JrW+dX61X5zpzTRcfWVGANZhVw
+	akbCHK4En9AlQSYOFQZlAsDlOT3mthJ0KX6b91qJfQXoSvPK9oQ2w+Vm0cxkFSBuAgcencFUnzvt4
+	Zxkgyej65rrMzz/WhV9I96XnyBF8SQ589jArWrIQIAyR4hmkKxnEKFtWZZ/BgC9I9qC7Zg9Bjdj1q
+	ztTxldxKrizJgiLFG2qE0INDVQswoIuEZvYbDoKy82APv52xpkYB8mgwKvPSQOewEWN/Dl17is2gg
+	CJszDMO3hWfPbeCZ3K6akCFEnEKRozGpaVYx1qo094TydePWFHsJDIVuWvHW1u5HzNVVAzMVW3kU4
+	BaNPqclg==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:41352 helo=rmk-PC.armlinux.org.uk)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1w113f-000000000sI-25Ix;
+	Fri, 13 Mar 2026 11:51:59 +0000
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1w113e-0000000DDwc-2oRv;
+	Fri, 13 Mar 2026 11:51:58 +0000
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH net-next v2] net: stmmac: move MSI data out of struct
+ stmmac_priv
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|VI1PR04MB6831:EE_
-X-MS-Office365-Filtering-Correlation-Id: 72bb8a1c-b5ff-4791-4039-08de80f694ef
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|1800799024|376014|52116014|38350700014|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	vLGHgGEotJLjnk432j8Nm5kjR11Qj8H71xDpr469OreOj6APDvlfzMJsIgP8ZmiZyICk+VXlQQoRWFRpLjX7FdX5FQO0KRmNixYT6MTq6MwbTagFenWHS91nQka9U7uhMs6pzj7TQFfJed9QDOZDoO80EwhOIgrocP7+FzSgM9G+zfiTmPbQ9zPukZXuWwusve6h7berkOzDKyO/2vakVMOeabZuzxlQlddqpO+UCjSIF4MBzjJcKNz2YNlG/c9fnabxbtcr0crgwRWmVGIeAvmkvjPSP0iw3hv06hVlxmEB1dYm4kCBZBqq9ibggOGwgfexDIDSTKVWoyqpNEjn2GHU7Qs6YI8rGXuyn5jedBKm1ftOUZwUyaAtCYfRPVEScz4v+5TRRJUjVNHHzsADA/+W4E63kvWuIHYd2ex1wRD/gD6HnzOwE7cgi6r8a96gZjwW3NhlngNOgvpjhw2h8HJl2VJ4rDibINznR2xXlcYqBNvr73L2yT/aC7Ga5KCRa/U9chzBpW0tqzwANp1aWi4Xz2GycZPBW2rT8KmT4J6uSnPyrD5RsXl+mU/QY0HKwGzPv8WIBb0O91l/9YcydpOYaVHOw4L5YxG2/IkJFPNbLlG15v6bg+NQGnndh43pHsYPtUcfPLxpmVdq9cgqRedJFcEXxMlbkqPTLGg6/n0dFHJ5B+TgNJfiVU6l8BEBtxBFjZm2Vw3/xYL2ckiLdcWp2cLvfqAdwS6le+WqxJ60Ui2q90m8r87V1zgRhg91bIM9qn74px5orOHs5Af4FDfOOG8fEIr+TGN1DZOG4gI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(376014)(52116014)(38350700014)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?7GyS+nuo1jc0MvfHUxeaMSVgfZ4ZjjYyg+yArcRL2j7iMhIrCvzbICV33sXL?=
- =?us-ascii?Q?oAoz41rf8HlL1T34YP/BYDcd8RBzKysFo6clDg5qjXlvEObkDlN59H7zfeDT?=
- =?us-ascii?Q?UTUDx0WmagDimvwRn1A0vIWlJneELfHSqoe719rRSVE8aEnMJHKXottdtpre?=
- =?us-ascii?Q?G2ZgJqhacFzJzk41wp6ry90mGLTbRcjJTTfg9XQPCy8oaLMJBhmHMOctRZ6h?=
- =?us-ascii?Q?uEOzHIH+BG6nQJuRzocuq7cISjJaWiCaSzDAJCSEQE2WXM+6Xh5M8V5lbkLv?=
- =?us-ascii?Q?AvSuMRAtct8cLzZRBDvAWCG0rl/44Jhnd3hHhv4c8ys+7xZqfV75rUDYvUPg?=
- =?us-ascii?Q?mvgS9puC8BKKRTrIK7y0tnBD/QfkjTuX37yjPgGjqxmzPettm1XFlHY7iQIQ?=
- =?us-ascii?Q?yMwUbhpLcPRJSRJk8AAJzj1g8oEErx7lLgfFjyz/lnPp/95zJkrxoGtdW/3j?=
- =?us-ascii?Q?CX/Nk7wkrGUY1taTR3owxjfA8lwSS34qwh3inxUcOqfcBsdIxCNjfPuPiSTr?=
- =?us-ascii?Q?HkP2kioYQ3143t2A5TlLSs9CdMtyUlGEj7YRiBylWUbpgO8bJ65YNUSArqJK?=
- =?us-ascii?Q?YjfeDpUiaqP28QyCvZEaU/Yzoo9bL0TvhvQgFIefDQ6pEU8zibK7htFpS7/D?=
- =?us-ascii?Q?h0qPuP5ZgL0U4y6g+p7JNgIgY8Az6WfE6Nh0CD+vkgisjpIYfxoXusi+c7k3?=
- =?us-ascii?Q?3gwgjQ8YGG2Mp8+6L+abdWccBAh9lo1Nd7y2XgFR9eHGkiEjfEUS/wg4+ICn?=
- =?us-ascii?Q?KuLMZYojcPH6OSQzTAbeOC56vqbEO8KTQFRTJNrXzyqNiHCUmdhZSbOA4Byf?=
- =?us-ascii?Q?dQaBgzYwJZvrsSw+fOfvdKMl2/5KLKklQJVnZHO9079vtUcVQJUOKgz4LmFh?=
- =?us-ascii?Q?zUY3dQFM1PWMX7ohQRmnBVu5rMWoz59N+AsataCEPOlulIBwLpAFwuqymFfA?=
- =?us-ascii?Q?iLcNncDarelVRKLh7AfH0ShhCkGkJiNRc4qXSJUABUU1MnnZoaoLkeffoyhE?=
- =?us-ascii?Q?9Y7dLW1IJ7XDsnjPurWB3CZmx0e/bKV+En0SAWm5iHEHVnwa0OA4C2ko2XqS?=
- =?us-ascii?Q?V4wPTvM8/b6ATY6Hts4E8d2trSAdvG8lIgaJYuGFVkvILGO3ns0KPBxvxoG7?=
- =?us-ascii?Q?NPVKyQ25GMH3qU8bEpvM+q6BjqpMtk9/GJP/QnO0GyNgLPAu9OaEpbD03DKV?=
- =?us-ascii?Q?MXXSBXGDQ+Nci6LuODCt7SliRV5Ywrx82aoEKwyazhm/gOsb+a0e2GXEFjeJ?=
- =?us-ascii?Q?SmoQNDye64riZCh9CiX9LqQfzQWSwfMFDXZ6qgIW10sabgTlI5mtVllSJZWD?=
- =?us-ascii?Q?lhIG0cMc1ikZ0yZBIJTWGbZwDMAACv1Lkr/uKO3FXn62cztFyjC6eq+/19Ab?=
- =?us-ascii?Q?M/bpftJlkR28YUHqTdf5K8DB/LVTsw5EBd+l5N6403n+TTIvW6JchZV/pOGt?=
- =?us-ascii?Q?Fq9qAGGrIexJ/ifZaTOOrOMu80xhTa6JZ5OCRGg8XyD5d5t16TRe45TVrzga?=
- =?us-ascii?Q?z5suyJMOO5zS4F/Zr9J3iKOK6AjFJFYWc/Bm5jlsHRtU/QAMMg2i7fqqIQiX?=
- =?us-ascii?Q?Vc7Ves88OoWzj7+nbuVfeElv6icxbYiFhCZAjht6QD7kiG4JGtv2gz93Ucza?=
- =?us-ascii?Q?sUxYxEIELtiBtIK1TnfgJZeorcek1AhraROzlg86z5FQXbUDVG3HVIJJ4vmC?=
- =?us-ascii?Q?XlryMRPwC4ozit3e7OghOKm8VgG/9SORZiwXVm/gts8lcBEVclOBQ6F2QJ56?=
- =?us-ascii?Q?Tg1kWOlG1g=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 72bb8a1c-b5ff-4791-4039-08de80f694ef
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2026 11:49:28.5885
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LZyVcqGmdtZmDAkJNKR0sdFiVK2cf7H9h7vAKrEsbnCMPl1Nfc9UbTAuWjlRkIWFZxSqtCqwlVauR5Z8DD2Nlg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6831
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1w113e-0000000DDwc-2oRv@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Fri, 13 Mar 2026 11:51:58 +0000
 
-Remove stray semicolon from ntmp_table_name().
+Only three platforms supprt MSIs, which means having all the strings
+and interrupt arrays always allocated wastes space. None of this data
+is performance critical - this data is only used when requesting and
+releasing the MSI interrupts.
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Move the MSI data out of struct stmmac_priv into its own separately
+allocated structure, and move its initialisation to a separate
+function.
+
+This removes 768 bytes from struct stmmac_priv.
+
+Link: https://lore.kernel.org/r/aYtq4ypxXTvn_Is6@shell.armlinux.org.uk
+Reviewed-by: Florian Bezdeka <florian.bezdeka@siemens.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- drivers/net/ethernet/freescale/enetc/ntmp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v2: fix AI review comments in stmmac_free_irq() and resolve the 80 column
+wrap.
 
-diff --git a/drivers/net/ethernet/freescale/enetc/ntmp.c b/drivers/net/ethernet/freescale/enetc/ntmp.c
-index 0c1d343253bf..703752995e93 100644
---- a/drivers/net/ethernet/freescale/enetc/ntmp.c
-+++ b/drivers/net/ethernet/freescale/enetc/ntmp.c
-@@ -227,7 +227,7 @@ static const char *ntmp_table_name(int tbl_id)
- 		return "RSS Table";
- 	default:
- 		return "Unknown Table";
--	};
-+	}
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h  |  31 +++---
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 102 +++++++++++-------
+ 2 files changed, 81 insertions(+), 52 deletions(-)
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac.h b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+index bba9bb9c95bf..7a66edba8f66 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac.h
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+@@ -243,6 +243,23 @@ struct stmmac_est {
+ 	u32 max_sdu[MTL_MAX_TX_QUEUES];
+ };
+ 
++struct stmmac_msi {
++	int sfty_ce_irq;
++	int sfty_ue_irq;
++	int rx_irq[MTL_MAX_RX_QUEUES];
++	int tx_irq[MTL_MAX_TX_QUEUES];
++
++	/*irq name */
++	char int_name_mac[IFNAMSIZ + 9];
++	char int_name_wol[IFNAMSIZ + 9];
++	char int_name_lpi[IFNAMSIZ + 9];
++	char int_name_sfty[IFNAMSIZ + 10];
++	char int_name_sfty_ce[IFNAMSIZ + 10];
++	char int_name_sfty_ue[IFNAMSIZ + 10];
++	char int_name_rx_irq[MTL_MAX_RX_QUEUES][IFNAMSIZ + 14];
++	char int_name_tx_irq[MTL_MAX_TX_QUEUES][IFNAMSIZ + 18];
++};
++
+ struct stmmac_priv {
+ 	/* Frequently used values are kept adjacent for cache effect */
+ 	u32 tx_coal_frames[MTL_MAX_TX_QUEUES];
+@@ -329,19 +346,7 @@ struct stmmac_priv {
+ 	unsigned long active_vlans[BITS_TO_LONGS(VLAN_N_VID)];
+ 	unsigned int num_double_vlans;
+ 	int sfty_irq;
+-	int sfty_ce_irq;
+-	int sfty_ue_irq;
+-	int rx_irq[MTL_MAX_RX_QUEUES];
+-	int tx_irq[MTL_MAX_TX_QUEUES];
+-	/*irq name */
+-	char int_name_mac[IFNAMSIZ + 9];
+-	char int_name_wol[IFNAMSIZ + 9];
+-	char int_name_lpi[IFNAMSIZ + 9];
+-	char int_name_sfty[IFNAMSIZ + 10];
+-	char int_name_sfty_ce[IFNAMSIZ + 10];
+-	char int_name_sfty_ue[IFNAMSIZ + 10];
+-	char int_name_rx_irq[MTL_MAX_RX_QUEUES][IFNAMSIZ + 14];
+-	char int_name_tx_irq[MTL_MAX_TX_QUEUES][IFNAMSIZ + 18];
++	struct stmmac_msi *msi;
+ 
+ #ifdef CONFIG_DEBUG_FS
+ 	struct dentry *dbgfs_dir;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 11150bddd872..124d7a00f9f0 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -3725,6 +3725,7 @@ static void stmmac_free_irq(struct net_device *dev,
+ 			    enum request_irq_err irq_err, int irq_idx)
+ {
+ 	struct stmmac_priv *priv = netdev_priv(dev);
++	struct stmmac_msi *msi = priv->msi;
+ 	int j;
+ 
+ 	switch (irq_err) {
+@@ -3732,28 +3733,30 @@ static void stmmac_free_irq(struct net_device *dev,
+ 		irq_idx = priv->plat->tx_queues_to_use;
+ 		fallthrough;
+ 	case REQ_IRQ_ERR_TX:
+-		for (j = irq_idx - 1; j >= 0; j--) {
+-			if (priv->tx_irq[j] > 0) {
+-				irq_set_affinity_hint(priv->tx_irq[j], NULL);
+-				free_irq(priv->tx_irq[j], &priv->dma_conf.tx_queue[j]);
++		for (j = irq_idx - 1; msi && j >= 0; j--) {
++			if (msi->tx_irq[j] > 0) {
++				irq_set_affinity_hint(msi->tx_irq[j], NULL);
++				free_irq(msi->tx_irq[j],
++					 &priv->dma_conf.tx_queue[j]);
+ 			}
+ 		}
+ 		irq_idx = priv->plat->rx_queues_to_use;
+ 		fallthrough;
+ 	case REQ_IRQ_ERR_RX:
+-		for (j = irq_idx - 1; j >= 0; j--) {
+-			if (priv->rx_irq[j] > 0) {
+-				irq_set_affinity_hint(priv->rx_irq[j], NULL);
+-				free_irq(priv->rx_irq[j], &priv->dma_conf.rx_queue[j]);
++		for (j = irq_idx - 1; msi && j >= 0; j--) {
++			if (msi->rx_irq[j] > 0) {
++				irq_set_affinity_hint(msi->rx_irq[j], NULL);
++				free_irq(msi->rx_irq[j],
++					 &priv->dma_conf.rx_queue[j]);
+ 			}
+ 		}
+ 
+-		if (priv->sfty_ue_irq > 0 && priv->sfty_ue_irq != dev->irq)
+-			free_irq(priv->sfty_ue_irq, dev);
++		if (msi && msi->sfty_ue_irq > 0 && msi->sfty_ue_irq != dev->irq)
++			free_irq(msi->sfty_ue_irq, dev);
+ 		fallthrough;
+ 	case REQ_IRQ_ERR_SFTY_UE:
+-		if (priv->sfty_ce_irq > 0 && priv->sfty_ce_irq != dev->irq)
+-			free_irq(priv->sfty_ce_irq, dev);
++		if (msi && msi->sfty_ce_irq > 0 && msi->sfty_ce_irq != dev->irq)
++			free_irq(msi->sfty_ce_irq, dev);
+ 		fallthrough;
+ 	case REQ_IRQ_ERR_SFTY_CE:
+ 		if (priv->wol_irq > 0 && priv->wol_irq != dev->irq)
+@@ -3773,9 +3776,30 @@ static void stmmac_free_irq(struct net_device *dev,
+ 	}
  }
  
- static int ntmp_delete_entry_by_id(struct ntmp_user *user, int tbl_id,
++static int stmmac_msi_init(struct stmmac_priv *priv,
++			   struct stmmac_resources *res)
++{
++	int i;
++
++	priv->msi = devm_kmalloc(priv->device, sizeof(*priv->msi), GFP_KERNEL);
++	if (!priv->msi)
++		return -ENOMEM;
++
++	priv->msi->sfty_ce_irq = res->sfty_ce_irq;
++	priv->msi->sfty_ue_irq = res->sfty_ue_irq;
++
++	for (i = 0; i < MTL_MAX_RX_QUEUES; i++)
++		priv->msi->rx_irq[i] = res->rx_irq[i];
++	for (i = 0; i < MTL_MAX_TX_QUEUES; i++)
++		priv->msi->tx_irq[i] = res->tx_irq[i];
++
++	return 0;
++}
++
+ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ {
+ 	struct stmmac_priv *priv = netdev_priv(dev);
++	struct stmmac_msi *msi = priv->msi;
+ 	enum request_irq_err irq_err;
+ 	int irq_idx = 0;
+ 	char *int_name;
+@@ -3783,7 +3807,7 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ 	int i;
+ 
+ 	/* For common interrupt */
+-	int_name = priv->int_name_mac;
++	int_name = msi->int_name_mac;
+ 	sprintf(int_name, "%s:%s", dev->name, "mac");
+ 	ret = request_irq(dev->irq, stmmac_mac_interrupt,
+ 			  0, int_name, dev);
+@@ -3799,7 +3823,7 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ 	 * is used for WoL
+ 	 */
+ 	if (priv->wol_irq > 0 && priv->wol_irq != dev->irq) {
+-		int_name = priv->int_name_wol;
++		int_name = msi->int_name_wol;
+ 		sprintf(int_name, "%s:%s", dev->name, "wol");
+ 		ret = request_irq(priv->wol_irq,
+ 				  stmmac_mac_interrupt,
+@@ -3817,7 +3841,7 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ 	 * Error line in case of another line is used
+ 	 */
+ 	if (priv->sfty_irq > 0 && priv->sfty_irq != dev->irq) {
+-		int_name = priv->int_name_sfty;
++		int_name = msi->int_name_sfty;
+ 		sprintf(int_name, "%s:%s", dev->name, "safety");
+ 		ret = request_irq(priv->sfty_irq, stmmac_safety_interrupt,
+ 				  0, int_name, dev);
+@@ -3833,16 +3857,16 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ 	/* Request the Safety Feature Correctible Error line in
+ 	 * case of another line is used
+ 	 */
+-	if (priv->sfty_ce_irq > 0 && priv->sfty_ce_irq != dev->irq) {
+-		int_name = priv->int_name_sfty_ce;
++	if (msi->sfty_ce_irq > 0 && msi->sfty_ce_irq != dev->irq) {
++		int_name = msi->int_name_sfty_ce;
+ 		sprintf(int_name, "%s:%s", dev->name, "safety-ce");
+-		ret = request_irq(priv->sfty_ce_irq,
++		ret = request_irq(msi->sfty_ce_irq,
+ 				  stmmac_safety_interrupt,
+ 				  0, int_name, dev);
+ 		if (unlikely(ret < 0)) {
+ 			netdev_err(priv->dev,
+ 				   "%s: alloc sfty ce MSI %d (error: %d)\n",
+-				   __func__, priv->sfty_ce_irq, ret);
++				   __func__, msi->sfty_ce_irq, ret);
+ 			irq_err = REQ_IRQ_ERR_SFTY_CE;
+ 			goto irq_error;
+ 		}
+@@ -3851,16 +3875,16 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ 	/* Request the Safety Feature Uncorrectible Error line in
+ 	 * case of another line is used
+ 	 */
+-	if (priv->sfty_ue_irq > 0 && priv->sfty_ue_irq != dev->irq) {
+-		int_name = priv->int_name_sfty_ue;
++	if (msi->sfty_ue_irq > 0 && msi->sfty_ue_irq != dev->irq) {
++		int_name = msi->int_name_sfty_ue;
+ 		sprintf(int_name, "%s:%s", dev->name, "safety-ue");
+-		ret = request_irq(priv->sfty_ue_irq,
++		ret = request_irq(msi->sfty_ue_irq,
+ 				  stmmac_safety_interrupt,
+ 				  0, int_name, dev);
+ 		if (unlikely(ret < 0)) {
+ 			netdev_err(priv->dev,
+ 				   "%s: alloc sfty ue MSI %d (error: %d)\n",
+-				   __func__, priv->sfty_ue_irq, ret);
++				   __func__, msi->sfty_ue_irq, ret);
+ 			irq_err = REQ_IRQ_ERR_SFTY_UE;
+ 			goto irq_error;
+ 		}
+@@ -3870,23 +3894,23 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ 	for (i = 0; i < priv->plat->rx_queues_to_use; i++) {
+ 		if (i >= MTL_MAX_RX_QUEUES)
+ 			break;
+-		if (priv->rx_irq[i] == 0)
++		if (msi->rx_irq[i] == 0)
+ 			continue;
+ 
+-		int_name = priv->int_name_rx_irq[i];
++		int_name = msi->int_name_rx_irq[i];
+ 		sprintf(int_name, "%s:%s-%d", dev->name, "rx", i);
+-		ret = request_irq(priv->rx_irq[i],
++		ret = request_irq(msi->rx_irq[i],
+ 				  stmmac_msi_intr_rx,
+ 				  0, int_name, &priv->dma_conf.rx_queue[i]);
+ 		if (unlikely(ret < 0)) {
+ 			netdev_err(priv->dev,
+ 				   "%s: alloc rx-%d  MSI %d (error: %d)\n",
+-				   __func__, i, priv->rx_irq[i], ret);
++				   __func__, i, msi->rx_irq[i], ret);
+ 			irq_err = REQ_IRQ_ERR_RX;
+ 			irq_idx = i;
+ 			goto irq_error;
+ 		}
+-		irq_set_affinity_hint(priv->rx_irq[i],
++		irq_set_affinity_hint(msi->rx_irq[i],
+ 				      cpumask_of(i % num_online_cpus()));
+ 	}
+ 
+@@ -3894,23 +3918,23 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ 	for (i = 0; i < priv->plat->tx_queues_to_use; i++) {
+ 		if (i >= MTL_MAX_TX_QUEUES)
+ 			break;
+-		if (priv->tx_irq[i] == 0)
++		if (msi->tx_irq[i] == 0)
+ 			continue;
+ 
+-		int_name = priv->int_name_tx_irq[i];
++		int_name = msi->int_name_tx_irq[i];
+ 		sprintf(int_name, "%s:%s-%d", dev->name, "tx", i);
+-		ret = request_irq(priv->tx_irq[i],
++		ret = request_irq(msi->tx_irq[i],
+ 				  stmmac_msi_intr_tx,
+ 				  0, int_name, &priv->dma_conf.tx_queue[i]);
+ 		if (unlikely(ret < 0)) {
+ 			netdev_err(priv->dev,
+ 				   "%s: alloc tx-%d  MSI %d (error: %d)\n",
+-				   __func__, i, priv->tx_irq[i], ret);
++				   __func__, i, msi->tx_irq[i], ret);
+ 			irq_err = REQ_IRQ_ERR_TX;
+ 			irq_idx = i;
+ 			goto irq_error;
+ 		}
+-		irq_set_affinity_hint(priv->tx_irq[i],
++		irq_set_affinity_hint(msi->tx_irq[i],
+ 				      cpumask_of(i % num_online_cpus()));
+ 	}
+ 
+@@ -7806,12 +7830,12 @@ static int __stmmac_dvr_probe(struct device *device,
+ 	priv->dev->irq = res->irq;
+ 	priv->wol_irq = res->wol_irq;
+ 	priv->sfty_irq = res->sfty_irq;
+-	priv->sfty_ce_irq = res->sfty_ce_irq;
+-	priv->sfty_ue_irq = res->sfty_ue_irq;
+-	for (i = 0; i < MTL_MAX_RX_QUEUES; i++)
+-		priv->rx_irq[i] = res->rx_irq[i];
+-	for (i = 0; i < MTL_MAX_TX_QUEUES; i++)
+-		priv->tx_irq[i] = res->tx_irq[i];
++
++	if (priv->plat->flags & STMMAC_FLAG_MULTI_MSI_EN) {
++		ret = stmmac_msi_init(priv, res);
++		if (ret)
++			return ret;
++	}
+ 
+ 	if (!is_zero_ether_addr(res->mac))
+ 		eth_hw_addr_set(priv->dev, res->mac);
 -- 
-2.34.1
+2.47.3
 
