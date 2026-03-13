@@ -1,279 +1,92 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133EB38C406;
-	Fri, 13 Mar 2026 09:21:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2812379EFC
+	for <netdev@vger.kernel.org>; Fri, 13 Mar 2026 09:22:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773393692; cv=none; b=Z3v5RWmFxso54DtGpVLJ3WmdbV411Q60U6SML2XI+LF4o98L6bhhWZpi4z1CbDSB5JKi1LwgaNntTtswce8uiFUwcGNVZRttkc7dWF5OwGmUkdl9od2B5c/1wjgI9+aC6j3CFICA65WCniCyG2dJ6MvnqVBNeykMxKcmnoKMiPI=
+	t=1773393752; cv=none; b=N2O8tU868EUxv82zQZHktXAuIV6J0Sxy3Kq66g6PpyvpwjXLFEX5EFmC1bLS4CWjEIYGIs6JsabiHl0cL4Kxum5rgsiO9Ljiu12n0WVjPmFG2heJBP/+XQloMcgm4n3TzW2lUCDW4kPFIKPd+gvdG3I5LwXIXBbOdmcAPPTYhb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773393692; c=relaxed/simple;
-	bh=3kA9lM7oCDmwBK8M854mec3iiuzF6TGWVkELDzJqUno=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AX6ceSG/3OXiNbZgtd1TzGZb0mHar7OYrvmiZ91pATOmTU20RDj/nyhXVEw1G4kuzr2HqzcXtLN3wkL7tD1cp5a5J2Lbyh3laK0rrggW+0OeiyWmELImUR3sRO0mvypVVCaxVgB/xmy+s4bE37t3g8AE8jOQI5wEbfxL1TdzH+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=g/AiXdG2; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1773393752; c=relaxed/simple;
+	bh=/+WsiWwPai3aG6q0eTKytScZYgCVZiRVb1w1Ih/vpxU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uY3oN4UlsS2qgxKLnEw5dB/E3TL7AkjxPHkagfRqG4hiLBOxvwJgLQKcSDaPyuF2p4ZMmIrak3cAd+cqP2yc9NE1fENFILobWdBmFiALhYfj7PKuZKVi3Q6t1Vzq860jC4ZY/oDCUBmpbryQzU5xezVL/V2qVvB6MxWFdb0QfHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MG16jQRj; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=z5+i4IgW; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="g/AiXdG2"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4C946A5707;
-	Fri, 13 Mar 2026 10:21:22 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1773393683; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=sUBslANvz1iK7buw/1PFrNaGDaQNEW2r48m8snuZBHw=;
-	b=g/AiXdG2441GysUrJsgQlQZUg9YWTsI8GD16OlJSlofhqQbCEuWMjqkeAtfXdkCPOVo0Y+
-	8sENIDnCOC6mwyhrBwEJsEgC6sR+UXffqknD+Kl5oyrvEztlN6ou+UAR09ERKwZlIBU0P1
-	n/XAUu4LGj0Ddou+atCcTGqJMhIr1BRIvuAjdSTp4fxgdwsE/xtsR9FVD8TDVrY8Dvnwc0
-	VHWHcMet+x0Ay+NduqAhsafQHj1jeXhzZNawSxK3N+VySHLHpcTM7SOJibojGgQhAxQh+y
-	WSzmKSgrzRjfyFgNMrGbIAhmaH5qwqRuSYH1QLi4hvdJajRV+CoElXGKpxdF/Q==
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MG16jQRj";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="z5+i4IgW"
+Date: Fri, 13 Mar 2026 10:22:26 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1773393748;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/+WsiWwPai3aG6q0eTKytScZYgCVZiRVb1w1Ih/vpxU=;
+	b=MG16jQRjPr1WRab2yjkQd1oVAcIYGDbe/XRRkJNG5TsN+EOSLkIgDQHQpyBopDV1FQM2dX
+	lGLJBGrzZgdvyh7wcI8sRHp3XtsyLoMkOkGco7cozF9f5izJnsQTtRbsQ2fH3IREiS8cQB
+	z3m5JUq/VvnvqdNjuWcFoc6yX+aLWDS+5KZ3dBleoDMf4QjMF4iD0Ot3ORwPrKSaSOQrQ8
+	mMj3f1+qqEDojEzENYj77uda0DXocXiUprTs1NKTtjbfc+85xWX++SeqCCdJVRKDk04Ed5
+	SUig0K4wzhIdF1zCRz0YntiuqsXQNTxnS2IHMeox/aSpqauzn9QhA2SDiY0fDg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1773393748;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/+WsiWwPai3aG6q0eTKytScZYgCVZiRVb1w1Ih/vpxU=;
+	b=z5+i4IgWX5Avk8VmPKX7V7FdrTYxHUf1EQcFUdXrWjDfz0qUWiYTxidCqY1FKIYLz8JRpY
+	OQ/5KqkFE8iL4yCA==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, "(JC), Jayachandran" <j-rameshbabu@ti.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Chintan Vankar <c-vankar@ti.com>, Danish Anwar <danishanwar@ti.com>,
+	Daolin Qiu <d-qiu@ti.com>, Eric Dumazet <edumazet@google.com>,
+	Felix Maurer <fmaurer@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Vikas Gupta <vikas.gupta@broadcom.com>,
-	Bhargava Marreddy <bhargava.marreddy@broadcom.com>,
-	Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	=?UTF-8?q?Markus=20Bl=C3=B6chl?= <mbloch@rooftopnetworks.de>,
-	Arnd Bergmann <arnd@arndb.de>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Nicolai Buchwitz <nb@tipi-net.de>
-Subject: [PATCH net-next 5/6] net: bcmgenet: add XDP_REDIRECT and ndo_xdp_xmit support
-Date: Fri, 13 Mar 2026 10:21:00 +0100
-Message-ID: <20260313092101.1344954-6-nb@tipi-net.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260313092101.1344954-1-nb@tipi-net.de>
-References: <20260313092101.1344954-1-nb@tipi-net.de>
+	Richard Cochran <richardcochran@gmail.com>,
+	Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH RFC net-next v2 2/2] af_packet: Add port specific
+ handling for HSR
+Message-ID: <20260313092226.SscHp2zQ@linutronix.de>
+References: <20260309-hsr_ptp-v2-0-798262aad3a4@linutronix.de>
+ <20260309-hsr_ptp-v2-2-798262aad3a4@linutronix.de>
+ <willemdebruijn.kernel.3b7b5294c6434@gmail.com>
+ <20260310105544.EVXIekwG@linutronix.de>
+ <willemdebruijn.kernel.3693c9aa8271@gmail.com>
+ <20260312154253.UC-QUPvD@linutronix.de>
+ <willemdebruijn.kernel.be379ee17449@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <willemdebruijn.kernel.be379ee17449@gmail.com>
 
-Add XDP_REDIRECT support and implement ndo_xdp_xmit for receiving
-redirected frames from other devices.
+On 2026-03-12 17:43:36 [-0400], Willem de Bruijn wrote:
+> > Yes, this is RX. If I open packet socket, bind to hsr0, how do I filter
+> > for packets from one of the slaves?
+>=20
+> I was thinking of attaching directly to the slave devices.
 
-XDP_REDIRECT uses xdp_do_redirect() in the RX path with xdp_do_flush()
-called once per NAPI poll cycle.
+That could work. Let me see.
 
-ndo_xdp_xmit batches multiple frames into the default TX ring under a
-single spinlock acquisition, ringing the doorbell once after all frames
-are queued. Call xdp_features_set/clear_redirect_target in the setup
-path.
+> > After some thinking and browsing through the packet code:
+> > The hsr stack creates hsrX. If it would create additionally hsrX_A and
+> > hsrX_B in order to be able to send and receive only on the relevant
+> > slave device then I wouldn't need the filters in packet code. That could
+> > work=E2=80=A6
+>=20
+> That's another option.
 
-Advertise NETDEV_XDP_ACT_REDIRECT and NETDEV_XDP_ACT_NDO_XMIT in
-xdp_features.
+Okay. Let me add this as plan B then.
 
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
----
- .../net/ethernet/broadcom/genet/bcmgenet.c    | 93 +++++++++++++++----
- 1 file changed, 76 insertions(+), 17 deletions(-)
-
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index 373ba5878ca1..30181f9cff98 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -2305,21 +2305,21 @@ static struct sk_buff *bcmgenet_xdp_build_skb(struct bcmgenet_rx_ring *ring,
- 	return skb;
- }
- 
-+/* Submit a single XDP frame to the TX ring. Caller must hold ring->lock.
-+ * Returns true on success. Does not ring the doorbell - caller must
-+ * write TDMA_PROD_INDEX after batching.
-+ */
- static bool bcmgenet_xdp_xmit_frame(struct bcmgenet_priv *priv,
-+				     struct bcmgenet_tx_ring *ring,
- 				     struct xdp_frame *xdpf)
- {
--	struct bcmgenet_tx_ring *ring = &priv->tx_rings[DESC_INDEX];
- 	struct device *kdev = &priv->pdev->dev;
- 	struct enet_cb *tx_cb_ptr;
- 	dma_addr_t mapping;
- 	u32 len_stat;
- 
--	spin_lock(&ring->lock);
--
--	if (ring->free_bds < 1) {
--		spin_unlock(&ring->lock);
-+	if (ring->free_bds < 1)
- 		return false;
--	}
- 
- 	tx_cb_ptr = bcmgenet_get_txcb(priv, ring);
- 
-@@ -2328,7 +2328,6 @@ static bool bcmgenet_xdp_xmit_frame(struct bcmgenet_priv *priv,
- 		tx_cb_ptr->skb = NULL;
- 		tx_cb_ptr->xdpf = NULL;
- 		bcmgenet_put_txcb(priv, ring);
--		spin_unlock(&ring->lock);
- 		return false;
- 	}
- 
-@@ -2347,12 +2346,14 @@ static bool bcmgenet_xdp_xmit_frame(struct bcmgenet_priv *priv,
- 	ring->prod_index++;
- 	ring->prod_index &= DMA_P_INDEX_MASK;
- 
-+	return true;
-+}
-+
-+static void bcmgenet_xdp_ring_doorbell(struct bcmgenet_priv *priv,
-+					struct bcmgenet_tx_ring *ring)
-+{
- 	bcmgenet_tdma_ring_writel(priv, ring->index, ring->prod_index,
- 				  TDMA_PROD_INDEX);
--
--	spin_unlock(&ring->lock);
--
--	return true;
- }
- 
- static unsigned int
-@@ -2368,16 +2369,30 @@ bcmgenet_run_xdp(struct bcmgenet_rx_ring *ring, struct bpf_prog *prog,
- 	switch (act) {
- 	case XDP_PASS:
- 		return XDP_PASS;
--	case XDP_TX:
-+	case XDP_TX: {
-+		struct bcmgenet_tx_ring *tx_ring;
-+
-+		tx_ring = &priv->tx_rings[DESC_INDEX];
- 		xdpf = xdp_convert_buff_to_frame(xdp);
--		if (unlikely(!xdpf) ||
--		    unlikely(!bcmgenet_xdp_xmit_frame(priv, xdpf))) {
--			page_pool_put_full_page(ring->page_pool, rx_page,
--						true);
-+		if (unlikely(!xdpf))
-+			goto drop_page;
-+
-+		spin_lock(&tx_ring->lock);
-+		if (unlikely(!bcmgenet_xdp_xmit_frame(priv, tx_ring, xdpf))) {
-+			spin_unlock(&tx_ring->lock);
-+			xdp_return_frame_rx_napi(xdpf);
- 			return XDP_DROP;
- 		}
-+		bcmgenet_xdp_ring_doorbell(priv, tx_ring);
-+		spin_unlock(&tx_ring->lock);
- 		return XDP_TX;
-+	}
-+	case XDP_REDIRECT:
-+		if (unlikely(xdp_do_redirect(priv->dev, xdp, prog)))
-+			goto drop_page;
-+		return XDP_REDIRECT;
- 	case XDP_DROP:
-+drop_page:
- 		page_pool_put_full_page(ring->page_pool, rx_page, true);
- 		return XDP_DROP;
- 	default:
-@@ -2400,6 +2415,7 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 	struct bcmgenet_priv *priv = ring->priv;
- 	struct net_device *dev = priv->dev;
- 	struct bpf_prog *xdp_prog;
-+	bool xdp_flush = false;
- 	struct enet_cb *cb;
- 	struct sk_buff *skb;
- 	u32 dma_length_status;
-@@ -2538,6 +2554,8 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 
- 			xdp_act = bcmgenet_run_xdp(ring, xdp_prog, &xdp,
- 						   rx_page);
-+			if (xdp_act == XDP_REDIRECT)
-+				xdp_flush = true;
- 			if (xdp_act != XDP_PASS)
- 				goto next;
- 
-@@ -2611,6 +2629,9 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 		bcmgenet_rdma_ring_writel(priv, ring->index, ring->c_index, RDMA_CONS_INDEX);
- 	}
- 
-+	if (xdp_flush)
-+		xdp_do_flush();
-+
- 	ring->dim.bytes = bytes_processed;
- 	ring->dim.packets = rxpktprocessed;
- 
-@@ -3903,10 +3924,16 @@ static int bcmgenet_xdp_setup(struct net_device *dev,
- 		return -EOPNOTSUPP;
- 	}
- 
-+	if (!prog)
-+		xdp_features_clear_redirect_target(dev);
-+
- 	old_prog = xchg(&priv->xdp_prog, prog);
- 	if (old_prog)
- 		bpf_prog_put(old_prog);
- 
-+	if (prog)
-+		xdp_features_set_redirect_target(dev, false);
-+
- 	return 0;
- }
- 
-@@ -3920,6 +3947,36 @@ static int bcmgenet_xdp(struct net_device *dev, struct netdev_bpf *xdp)
- 	}
- }
- 
-+static int bcmgenet_xdp_xmit(struct net_device *dev, int num_frames,
-+			      struct xdp_frame **frames, u32 flags)
-+{
-+	struct bcmgenet_priv *priv = netdev_priv(dev);
-+	struct bcmgenet_tx_ring *ring = &priv->tx_rings[DESC_INDEX];
-+	int sent = 0;
-+	int i;
-+
-+	if (unlikely(flags & ~XDP_XMIT_FLAGS_MASK))
-+		return -EINVAL;
-+
-+	if (unlikely(!netif_running(dev)))
-+		return -ENETDOWN;
-+
-+	spin_lock(&ring->lock);
-+
-+	for (i = 0; i < num_frames; i++) {
-+		if (!bcmgenet_xdp_xmit_frame(priv, ring, frames[i]))
-+			break;
-+		sent++;
-+	}
-+
-+	if (sent)
-+		bcmgenet_xdp_ring_doorbell(priv, ring);
-+
-+	spin_unlock(&ring->lock);
-+
-+	return sent;
-+}
-+
- static const struct net_device_ops bcmgenet_netdev_ops = {
- 	.ndo_open		= bcmgenet_open,
- 	.ndo_stop		= bcmgenet_close,
-@@ -3932,6 +3989,7 @@ static const struct net_device_ops bcmgenet_netdev_ops = {
- 	.ndo_get_stats64	= bcmgenet_get_stats64,
- 	.ndo_change_carrier	= bcmgenet_change_carrier,
- 	.ndo_bpf		= bcmgenet_xdp,
-+	.ndo_xdp_xmit		= bcmgenet_xdp_xmit,
- };
- 
- /* GENET hardware parameters/characteristics */
-@@ -4234,7 +4292,8 @@ static int bcmgenet_probe(struct platform_device *pdev)
- 			 NETIF_F_RXCSUM;
- 	dev->hw_features |= dev->features;
- 	dev->vlan_features |= dev->features;
--	dev->xdp_features = NETDEV_XDP_ACT_BASIC;
-+	dev->xdp_features = NETDEV_XDP_ACT_BASIC | NETDEV_XDP_ACT_REDIRECT |
-+			    NETDEV_XDP_ACT_NDO_XMIT;
- 
- 	netdev_sw_irq_coalesce_default_on(dev);
- 
--- 
-2.51.0
-
+Sebastian
