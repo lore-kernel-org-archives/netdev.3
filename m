@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48CF33689D
-	for <netdev@vger.kernel.org>; Fri, 13 Mar 2026 22:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64EE530EF8B
+	for <netdev@vger.kernel.org>; Fri, 13 Mar 2026 22:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773439631; cv=none; b=GfDKD1LTn4TOxb5xv4vqOyd2KkEVZ+TYE69TBFjhiWzClSIqAgY9D/9n99VpbWOlpd5JAcZblzvCDDzIjYWuuU9hlJD+jSL2ouiAM5vFzLLn7AdKbtOLR3H0Bn6rtS7XcWOzDfe+l3RME/b+mRQBNcxPZz9rPzRBGG5PyV3UdDY=
+	t=1773439875; cv=none; b=l3XPGU9zs7JOKKWUDHVMQcQfmeRgZ+ixPoAYJGFJ/IeMhPMLipMje8aRuvG0uBqBdtxc6kWDUHXm4EUILJjMQxEyVxGXoIZW13IjwjQmZly/AneE2DnEjkDvs7uAUHoqgsVlHSp5PV8k0Mn2EH7l5sbW3GH1LX9fVBsP4hD+M4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773439631; c=relaxed/simple;
-	bh=36xZjDqxgbQRJoF9T+tfKZC50MAytjkKOe8z2qmQNKc=;
+	s=arc-20240116; t=1773439875; c=relaxed/simple;
+	bh=PKuIGfNiXvE8waOg9A1gvR2xR02zXM5dfhgbZgNOPU0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K7uT51/1Iq0T1GqpvvATPGui8SXQAV8tEuUDqCsxaIumpAnI3EoB3yw8tru7HdgqkBJQiB3N841kPWPPUfnOU0zI3irppXjJKBvf3Bvss2mqOcpKMx71MJJA7h4pvOqTuXMC11PfasjQtwIShZsRxyixc8s/vLFvOwzNz5ifqvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nuuEtUCl; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=eh+TxL+IWMhJjZ7ju9BcX8ZrOVWtH2eQDRCmdUlNtrMwa7xz5rz32Mk1SmFuZ37q57egANaPeR0IVC4IcG//z+rDEPZ5304AmpYZCLKItRQ2YvAF/hToB+lOLX8+P01x3J6DIWvM7vTeWJWIkcCfL6IuRIwLDUr+65EYxfrWduw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R2aTGTkx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nuuEtUCl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B6FC19421;
-	Fri, 13 Mar 2026 22:07:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R2aTGTkx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9535EC19421;
+	Fri, 13 Mar 2026 22:11:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773439631;
-	bh=36xZjDqxgbQRJoF9T+tfKZC50MAytjkKOe8z2qmQNKc=;
+	s=k20201202; t=1773439875;
+	bh=PKuIGfNiXvE8waOg9A1gvR2xR02zXM5dfhgbZgNOPU0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=nuuEtUClOYvgi5pB/X9IddMd+8PbTcMzUabvZCtelt0Lwkk4jZKg19JPArphJMQHO
-	 85fz/0waIL/PD1pH83U7D3KS0JphaCLKwA5tNClr1IK/9rpo9mgv+aIIgQL7HVAR02
-	 TTzut8L4b5NH9uD5UYYcK8QXSxdWGINPUL0He+2qWq4nM557O7vOcfqPLrGjx8gpDU
-	 +szE6/myLqrpegd8LAJk5tCcpgMkxcv6Z04QxxdxVALCWpXpaINd0wz5r1NQmY+Hzb
-	 l36rsHwAdAZYCGHzFtiQcjXHEbnKSAIKGgPZPG7hZukrEDMxQKjy+fPKP9Sm5mg9tQ
-	 Tdaw7mFW16Zsw==
-Date: Fri, 13 Mar 2026 15:07:10 -0700
+	b=R2aTGTkxTE3IhRqX2pUFJaXa6dWcJeB7VOOpy3cmvr0UX89U1WtdZaU01T7EiISB1
+	 ev2bBYfzKxSP+7QOYJUr1g0sdCjK/ejWLEff7Ws4x31ycLqWemIxNySkd7djRmracM
+	 qoM5ULnQ8bxmey5Pu0QfDte4XTBEW3xUVxy02JwzhJf6EB3jDZWBo5jOBdo3h8gqI6
+	 zgMvUMEhbL1P3tHK+LCQDSW3pDh4Khmn9oiio+d3NHWAo5rHOq6t/TvrXzWgDnuSJd
+	 ICqY0Ul79t/RAMtFt9NGorXX7gGtEuDEmiepX1nOLZ2tq/Hf1AH4gqGFRHbWucSjuY
+	 IQ97Kp7vd25Pg==
+Date: Fri, 13 Mar 2026 15:11:13 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Neal Cardwell
- <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
- netdev@vger.kernel.org, eric.dumazet@gmail.com
-Subject: Re: [PATCH net-next] tcp: add cwnd_event_tx_start to
- tcp_congestion_ops
-Message-ID: <20260313150710.0edaa6b9@kernel.org>
-In-Reply-To: <20260313202802.1201129-1-edumazet@google.com>
-References: <20260313202802.1201129-1-edumazet@google.com>
+To: Davide Caratti <dcaratti@redhat.com>, Victor Nogueira
+ <victor@mojatatu.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko
+ <jiri@resnulli.us>, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v2 0/3] netdevsim: support ETS offload
+Message-ID: <20260313151113.4b405c8f@kernel.org>
+In-Reply-To: <cover.1773411667.git.dcaratti@redhat.com>
+References: <cover.1773411667.git.dcaratti@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,21 +47,44 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 13 Mar 2026 20:28:02 +0000 Eric Dumazet wrote:
-> (tcp_congestion_ops)->cwnd_event() is called very often, with
-> @event oscillating between CA_EVENT_TX_START and other values.
-> 
-> This is not branch prediction friendly.
-> 
-> Provide a new cwnd_event_tx_start pointer dedicated for CA_EVENT_TX_START.
-> 
-> Both BBR and CUBIC benefit from this change, since they only care
-> about CA_EVENT_TX_START.
+On Fri, 13 Mar 2026 18:23:55 +0100 Davide Caratti wrote:
+>  - patch 1 moves netdevsim tc offloads to a dedicated file
+>  - patch 2 enables ETS offload on netdevsim
+>  - patch 3 is a tdc test for ets offload on netdevsim
 
-BPF selftest are not happy:
-857
-  progs/tcp_ca_kfunc.c:121:33: error: use of undeclared identifier 'cwnd_event_tx_start'
-    121 |         .cwnd_event_tx_start = (void *)cwnd_event_tx_start,
-        |                                        ^~~~~~~~~~~~~~~~~~~
--- 
-pw-bot: cr
+Looks like this is failing in TC CI
+Is it possible that the system / container doesn't have ethtool
+installed?  Adding Victor
+
+I'll drop this from PW for now LMK if it's a TDC thing I'll restore 
+it once fixed.
+
+#  -- ns/SubPlugin.__init__
+#  -- scapy/SubPlugin.__init__
+# Executing 1174 tests in parallel and 88 in serial
+# Using 38 batches and 4 workers
+# WARNING: No route found (no default route?)
+# WARNING: No route found (no default route?)
+# .WARNING: more No route found (no default route?)
+# ...................
+# -----> prepare stage *** Could not execute: "ethtool -K $ETH hw-tc-offload on"
+# 
+# -----> prepare stage *** Error message: "exec of "ethtool" failed: No such file or directory
+# "
+# 
+# -----> prepare stage *** Aborting test run.
+# 
+# 
+# <_io.BufferedReader name=6> *** stdout ***
+# 
+# 
+# <_io.BufferedReader name=17> *** stderr ***
+#   File "/nipa-data/kernel/tools/testing/selftests/tc-testing/./tdc.py", line 535, in test_runner
+#     res = run_one_test(pm, args, index, tidx)
+#           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#   File "/nipa-data/kernel/tools/testing/selftests/tc-testing/./tdc.py", line 419, in run_one_test
+#     prepare_env(tidx, args, pm, 'setup', "-----> prepare stage", tidx["setup"])
+#   File "/nipa-data/kernel/tools/testing/selftests/tc-testing/./tdc.py", line 267, in prepare_env
+#     raise PluginMgrTestFail(
+# ..........Test b438: Add basic filter with canid ematch and a combination of SFF/EFF with masks
+# Test 0811: Add multiple basic filter with cmp ematch u8/link layer and default action and dump them
