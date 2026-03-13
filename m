@@ -1,111 +1,151 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90CD7336897;
-	Fri, 13 Mar 2026 14:06:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773410799; cv=none; b=aPJigecIIOIQJUc9Z1nUqu0LFO/uJA57UFYBeACMYNgEzpuXO4LLvyX1BDGzQ4AytoMWxfpCm5SOoZuEq5gPkKJkrH64GwQJCav/vH2EaV2wvoC1weigQ1alANRYCJ9zCCEFstcNd73rZn8xHV68P+Ga5T4BFIo4eKAMjkabj/Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773410799; c=relaxed/simple;
-	bh=FiWJuaTAV456KJEFIeJ+agwFPFQTg9TTp2utqg9M0Sg=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Dpy888eiUHtSXCXk/9yjj4UIlhRcOrGSttLUFZxFlUVr4ytflZQpV6VPJWaBP17EPEuQMCDG6CjX8euvOwgv8JMYjC0UZoDE9M3pOJre9uHuYsRkCMvsJ41Xi49kaHWLJOgD5OjmAymk4osjYb2YR6NDJxeoH9ctw6wXV8jE3cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=zTKUO5Dm; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A3F334C0D
+	for <netdev@vger.kernel.org>; Fri, 13 Mar 2026 14:06:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773410801; cv=pass; b=GG5pEgd88LtY0fMxGMWOhhO20dJeWA9PlGu5P7y+EoPq4O1ieFeiu6D3TcAHKrUErq1b3D18Tr1/tDHKI9OBBIThdzBRinYDt3f/gaw9xozs7UuFdzCz84JXTTZP6c/8Jr2pApeqLSmooismocA3IRU5Hc04XjlA2jhGsRxkHEI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773410801; c=relaxed/simple;
+	bh=0i6RDod2fox+yuB4+Ur+sx2XCfZIlpbkAPl+B0njmdU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=D2/KmDOHyc+TCXCeG/G60NqRcK88ZLsLI7njAyQQBn9SuEspboODEifkGswstgm1ejzH2oina/BwRKlSQeTcNMgjLMUWI5OVDDBRxMP5LSdLnbNtdP4ciPAWh2uLSw/JUysZS2G1IjR/8Ep2qY4cbgPZ5s3kXmSMxX2kY9uAsvg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=QJQ945mM; arc=pass smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="zTKUO5Dm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1773410798; x=1804946798;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=FiWJuaTAV456KJEFIeJ+agwFPFQTg9TTp2utqg9M0Sg=;
-  b=zTKUO5DmlVDJXjDZwIN8OXWO+e5Et47X760YUgbRQxHwl/dJELhsViSM
-   O45CMZziSfQTG+Wg0VVR2q6AwFtBLxYIQd2sPZIpB+ou22PJN2jMeP5tI
-   A5CSUz2v+K7TCNsi0O3WqSNwRmOjpRM2wZrg9XRaIRIg/yiPtRaWnnCMn
-   mYs/O/XfazXkEmR/FwEoTmYYF8ral4RmJnWXOVvFAADGVgfnZQxYOVoK1
-   s/4JkejqulhUqXLS5xYKG7FjpRjkmJTwM4VjRm0Wgp39BsEu/tAJcEzV4
-   mExpHgXE5Whj70xyHKvB1xs583iAkVZV2qXNClLLx07VEhfS2/55DDi/x
-   w==;
-X-CSE-ConnectionGUID: CnTz56B+RliMtS1TY5Pc2A==
-X-CSE-MsgGUID: tdVpSKU7TfaqqIFKJLwr8w==
-X-IronPort-AV: E=Sophos;i="6.23,118,1770620400"; 
-   d="scan'208";a="53872935"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 13 Mar 2026 07:06:37 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Fri, 13 Mar 2026 07:06:32 -0700
-Received: from bby-cbu-swbuild03.eng.microchip.com (10.10.85.11) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Fri, 13 Mar 2026 07:06:31 -0700
-From: Charles Perry <charles.perry@microchip.com>
-To: <netdev@vger.kernel.org>
-CC: Charles Perry <charles.perry@microchip.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Nicolas Ferre
-	<nicolas.ferre@microchip.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH net-next v3 0/3] Initial support for PIC64-HPSC/HX Ethernet endpoint
-Date: Fri, 13 Mar 2026 07:06:07 -0700
-Message-ID: <20260313140610.3681752-1-charles.perry@microchip.com>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="QJQ945mM"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-65c4152313fso3158145a12.1
+        for <netdev@vger.kernel.org>; Fri, 13 Mar 2026 07:06:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773410798; cv=none;
+        d=google.com; s=arc-20240605;
+        b=PM1YdqVVonmTgcf/kJI/sPIP2TbE4Q8BRNH9reu2fq0NxfdSoF9kVU3Mm97e+B0UeF
+         2O40r4T4n/Ssdo6+cpinMJD3kETut3edNVsYtPHfVTVJsBqK+e3pVBiFbSM6kWzHfcDM
+         OPZomE9HaQkARpq8beY30d8QxV+l4aHK9y9ZlupuZjuh4+TPXXoH3y1ljbfkDZiy9f5P
+         Z96YxMQf+d07BA+wqJ56SxmcGMfSWS/mw3I9d2l0A3DyhVnQ/BthqNOPW3Ha1aZZDeWs
+         fvXWBC1Rm0nRhU28Q1V8vTyXj37e17Wx+Ln+h2xhu9s+x565Dtd1r+53gtZuYIdrmN8U
+         Gkpw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0i6RDod2fox+yuB4+Ur+sx2XCfZIlpbkAPl+B0njmdU=;
+        fh=hr4X8tK7fkBsDOxVE3NJtR0P9F9OtovUiOqu7Tvu0GM=;
+        b=fuKbtoN0BMszuiDx33EGcY7y4US5F8vPROn4Wo4ksP2Qci87yMGn6DQ5FkENVGbs04
+         6PNWjdDMefmCq1oy2/n933nnTw+Mo5rRKPDtfAqH8D1HRP1eXe6TTliouW5/MYjOsSWb
+         sL84LJAes4Kr3s2zEg+YVLnLmG3BRltFsmbJEPbIwnmBJGykEmidrHE631UB1ZaSrTw1
+         eL/vzEQSQuN9pCuAKZxtSqOnV2WDfggxCas+Qa9UC73QuYy2Bq+rIipMjTG4Qd+ckzhF
+         y32b4KWjm1o6yeYF0el11MveGTC4/KZ1omkd+ErKn4mbctRJyAeDQ/9aA/Q5Uo/eYHOm
+         3jTg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=6wind.com; s=google; t=1773410798; x=1774015598; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0i6RDod2fox+yuB4+Ur+sx2XCfZIlpbkAPl+B0njmdU=;
+        b=QJQ945mM43WRkFZXDx/TswogHMQ4DYiOGkM0kBfyVk+teCXo8yy8yKJCHw5Z+9Bpu4
+         pOKleym/FpAdV3+qkjL9PNG81ktrsJM5KUCXaPdBu80/3TiIppwpyUTquADLb+0qCJxU
+         l4Jb16gb9wdpS+acwELwd2gOSOUabpMTcN93id9WQ2N8Q6UljMhiURQDOU0LFY/zPvs8
+         Yzr/5YkL3LfnglgfFWkk2rfpJ4qazPuEwdOm5EpDm3eksOemelxBgHYlqR0VZy8XReQ+
+         G19L8b4v8biCaKf32zca2S4wD8gCnTCCxcjSZ/YHheee5Mk0i/L6lIc78Qqm79UMtNVR
+         edjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773410798; x=1774015598;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=0i6RDod2fox+yuB4+Ur+sx2XCfZIlpbkAPl+B0njmdU=;
+        b=LB7ONorz7Gyfr5sh4OR52vdnsy1m9mf/CQRB3De28rXY61E9fJAt3HbmrRkPbqHu8e
+         xX3KPNpaILyZtRWLz01Lqb4zvSOXC4+GgxzB4K4jXoRCrdypctSzXSe43B4p7+n+UJKo
+         98TG8NkqHElPzOw1u27BL1KwJcsOV20FwSKbauBYU6yJMkdXYIxXOnuJDBdojAXEMqIS
+         kgjRGB0DdeBn+pBaIDKb+Js3N58JpGxcE+lTk9KXZ/qAAh+C5JZ5ttSdZnPzruBjPiVR
+         FNMV8Kj/we82gQZpB9yhHKqjHf7YlJhvWsvX7n6jPFD/INweiaOyWzYjFGEgogFcOHdJ
+         jsrA==
+X-Forwarded-Encrypted: i=1; AJvYcCVbVOzgghQRLnTdl8uiaa0Ah7xZFcI+Y9fcEqbGCFBvtS1E+zbV1aeQfGl/p5Iy3cz1cHy4V+I=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8Sr4QImjcdPrq7iHERj7OE2u1WAilt3ipgrd9TXtP20ltOxXh
+	1/He4uO/vs/BcBIl3HrugaoKpvdKVziOHFbx17CETdaZltIizMSgd+xohtxTCrlzOp+SV73/vE9
+	MCbWmbwfS//i7I8taUBPHkrCLxFXNcuVZ25+TTXtrzA==
+X-Gm-Gg: ATEYQzzL+hZwA4u3yqCnX3tI3rK/oW+p+Ss6Gs3cXoBWz7oVQW+hESh4u79yhN4Cdvn
+	Sb6LObPHpZFCjKzZ8QG63fr1ikqcsYB3BVHXNJqNyL79Gm5y/nNxAy6IlLLiAp+PfLKyW4XVsYZ
+	o8lzLqm/6+QoJpp8Ziief6joA0lXvTQh9WBBwIqL9f5X2NiOne6VyUm5xRcZLdxajKn3QR/veE8
+	K3swZB0uc2bcQy85/fjwlh//divEUouj1d9uYIO8GQDtiWDBRfYOtFmvWF8Md4bktd/TEa7rxNQ
+	+GTeV8Y0gBDtimxt8lgx+O3JcfEC5dydBCQ45jyqlg==
+X-Received: by 2002:a05:6402:3646:b0:663:9739:6279 with SMTP id
+ 4fb4d7f45d1cf-663baab8397mr1482051a12.10.1773410798200; Fri, 13 Mar 2026
+ 07:06:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+References: <20260311152845.278354-1-justin.iurman@6wind.com>
+ <20260313030220.af70f3b5f2c5d2cb7b4a840e@uniroma2.it> <CAOY2Bqz8_8iT2Auw=sWob0-XUQg-sPmdAFvzRLg+KszrU6LMqA@mail.gmail.com>
+ <43e16e45-5fb1-4413-bbd1-4752bbcdec7d@6wind.com> <CAOY2Bqx6jjBc5FCoRg+64v2L17bBsaAE8sy7P4JCwVXc+1n7_Q@mail.gmail.com>
+ <3d9d384f-d001-4293-b7d5-7a88596ffc1d@6wind.com>
+In-Reply-To: <3d9d384f-d001-4293-b7d5-7a88596ffc1d@6wind.com>
+From: Justin Iurman <justin.iurman@6wind.com>
+Date: Fri, 13 Mar 2026 14:06:26 +0000
+X-Gm-Features: AaiRm50gtxvTcXaWwNHVbxEndfl29k3xpokRxbzGsr5r1noNqeMeFLl8iUKVksE
+Message-ID: <CAOY2BqwgYYibttTCc15a2SD=4RHMj43F47Ev20_u-a-siPzuOg@mail.gmail.com>
+Subject: Re: [PATCH net-next v2] seg6: add per-route tunnel source address
+To: nicolas.dichtel@6wind.com
+Cc: Andrea Mayer <andrea.mayer@uniroma2.it>, netdev@vger.kernel.org, davem@davemloft.net, 
+	dsahern@kernel.org, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	horms@kernel.org, justin.iurman@gmail.com, stefano.salsano@uniroma2.it
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+On Fri, Mar 13, 2026 at 10:59=E2=80=AFAM Nicolas Dichtel
+<nicolas.dichtel@6wind.com> wrote:
+>
+> Le 13/03/2026 =C3=A0 11:20, Justin Iurman a =C3=A9crit :
+> > On Fri, Mar 13, 2026 at 9:47=E2=80=AFAM Nicolas Dichtel
+> > <nicolas.dichtel@6wind.com> wrote:
+> >>
+> >> Le 13/03/2026 =C3=A0 09:44, Justin Iurman a =C3=A9crit :
+> >>> On Fri, Mar 13, 2026 at 2:02=E2=80=AFAM Andrea Mayer <andrea.mayer@un=
+iroma2.it> wrote:
+> >>>>
+> >>>> On Wed, 11 Mar 2026 16:28:45 +0100
+> >>>> Justin Iurman <justin.iurman@6wind.com> wrote:
+> >>
+> >
+> > [snip]
+> >
+> >>>> Whether to also reject link-local is debatable: ip6_forward() does
+> >>>> drop it, but is there a legitimate use case where a link-local tunne=
+l
+> >>>> source would actually be needed?!
+> >>>> I'd argue we should reject link-local addresses as well.
+> >>>> For instance, using them as a tunnel source violates scope boundarie=
+s and
+> >>>> breaks ICMPv6 error reporting.
+> >>>
+> >>> IMHO, I also think we could reasonably forbid LLs.
+> >>
+> >> Why rejecting LL? It's legal to use LL as a source address of a tunnel=
+ (and
+> >> forwarding packets in this tunnel). Is this forbidden with srv6?
+> >
+> > Well, this is indeed legal (at least nothing prevents it), but they're
+> > not routable. So question is does it make sense at all? We're talking
+> > about two nodes on the same layer-2 link as the only valid use-case
+> > here. I'm not sure it makes sense, especially in the context of SRv6.
+> Yes, you're probably right. I'm usually uncomfortable with a configuratio=
+n being
+> forbidden without any real problem/reason.
 
-This series add basic support for Microchip "PIC64-HPSC" and "PIC64HX"
-Ethernet endpoint. Both SoCs contain 4 GEM IP with support for
-MII/RGMII/SGMII/USXGMII at rates of 10M to 10G. Only RGMII and SGMII at a
-rate of 1G is tested for now. Each GEM IP has 8 priority queues and the
-revision register reads 0x220c010e.
+After consideration, it looks like ip6_forward() does filter LL source
+addresses (see [1]), so such packets are never forwarded and there is
+no violation of scope boundaries. I agree it makes little sense to
+allow LL source addresses in the context of SRv6, but Nicolas has a
+point too (i.e., it's not harmful, let's not restrict things
+unnecessarily). I guess both ways are fine, maybe others can shim in
+and share their opinions. For v3, I'll just keep it as is, we can
+still make a change later.
 
-One particularity of this instantiation of GEM is that the MDIO controller
-within the GEM IP is disconnected from any physical pin and the SoC rely on
-another standalone MDIO controller.
-
-The maximum jumbo frame size also seems to be different on PIC64-HPSC/HX
-(16383) than what most other platforms use (10240). I've found that I need
-to tweak a bit the MTU calculation for this, otherwise the RXBS field of
-the DMACFG register overflows. See patch 2 for more details.
-
-PIC64-HPSC/HX also supports other features guarded behind CAPS bit like
-MACB_CAPS_QBV but I've omitted those intentionally because I didn't test
-these.
-
-Thanks,
-Charles
-
-Changes in v3:
-  - Fix one more "p64h" -> "pic64hpsc"
-  - Remove .clk_init assignation since it's no longer required (patch 3)
-
-Changes in v2:
-  - Use separate compatibles for PIC64-HPSC and PIC64HX
-  - "p64h" -> "pic64hpsc"
-  - Merge patch 2 into patch 1
-
-Charles Perry (3):
-  dt-bindings: net: cdns,macb: add a compatible for Microchip pic64hpsc
-  net: macb: add safeguards for jumbo frame larger than 10240
-  net: macb: add support for Microchip pic64hpsc ethernet endpoint
-
- .../devicetree/bindings/net/cdns,macb.yaml    | 19 +++++++++++++++++++
- drivers/net/ethernet/cadence/macb_main.c      | 15 +++++++++++++--
- 2 files changed, 32 insertions(+), 2 deletions(-)
-
--- 
-2.47.3
-
+ [1] https://elixir.bootlin.com/linux/v6.19.7/source/net/ipv6/ip6_output.c#=
+L643
