@@ -1,80 +1,115 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2BC22A4F1;
-	Fri, 13 Mar 2026 11:08:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E313519D093;
+	Fri, 13 Mar 2026 11:19:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773400112; cv=none; b=jFS7aVmz8VEhh3l0KDk2PxJHHsBkjO5B6T54giCRM2AeW3+EHgnmXZ8E5mj4n27no53mJ5Qu6R31qr7OsZNKBKZTr0XTAqoEZrN8yFLUDOp1GzR+dd5GKE6vClzOCxS5fWgMfVoXYvTnMnjdBn2HiFrNmszSTLA071+O7djVTT0=
+	t=1773400784; cv=none; b=QtB6l2FHbj+j7Y31ILAV9xsXoVMq15R0eLWsXjqdv71mQE/P33BL8wVWroS1ogvtLkkSezXgk7LrtXpvNi4I1uyG7MsPpd2Ok46it5eE/jZbu8nnbbHjYd/I1RupL79H8Jmg7e705CydKc6RkrvWNy2i9iMJJ2VZlCw2HB59qOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773400112; c=relaxed/simple;
-	bh=6W6MWfjsIP0eFjA9jzPaP7CtxT1x9oxbzBwhb1w9owQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ARNIlqSQA4kj8XGngTmIvn956Jymq2r4mq9hmBH9rA9AY2ViDfEQfRaaUjnbg1rlnSgn4dP1Xaj9vHsNCVeE+Kk0oXjNvAVQwNeuQj4mYhihLFtZdJygth+aCkuazxWOMSJ/ogGmB/n/5E+DigxvCRbGsVriUwWyRIs0z4FXhrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=tlJw/A1U; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1773400784; c=relaxed/simple;
+	bh=2bKNUHKO9OVnDiP4Hey8zgOy5NyoxQZu+h+aV1L5+kM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OaFPHrM+pZ2yP4zEuLp+pOnqSMNCSsqFzHa3ety8bDVOLJFx1MwpaFyEAKxWLB74cN9o6L+p0Ckq2lA1HRpxOfvazoSy+D2nI2rcLNvuRHQw6oY4QBGUlNgt8Z3rsr/7uIsVeKCkIHhdRPHzCA8S2Wdyok4t0AOJqcOxrxQF2M4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IUmbEiNk; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="tlJw/A1U"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=04gqaMJ7nWJ/la8QtGxvljhh8gpBd2Y7ie/l7eGhAn4=; b=tlJw/A1UbK0Q9vbFr93ejntT8I
-	Nx2iJiwkgP75sChivKom8AZW7s/EOxvo/Ru3oDOMoC69QkTIzdqfG1XBfEkGwV4Q5o7EcXv1a117s
-	R+1GRBsMit93xU/oBixJPaXPcmjmf8Q5R1UwEHvJN8hX1QcWhFMEp3+9CD0tgSS9DHHmCtWyTjflZ
-	myvFkHzbjmwpr67coCFDb2rlXm0aTx13cfyLaumHRkiNpG2ZvCtrSio0v0fHkPHH/WJ98ZTHygxIv
-	/pVJpimEzyjiqdOo1EOcgj52QvpqQ5ovJNa1nHHdp+0e798YiZEJ2Pjzs0n9AazKO/XUdL4QNT2Ny
-	pKctI1AA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:53580)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1w10NP-000000000o3-05kB;
-	Fri, 13 Mar 2026 11:08:19 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1w10NK-0000000089x-2nw7;
-	Fri, 13 Mar 2026 11:08:14 +0000
-Date: Fri, 13 Mar 2026 11:08:14 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Christophe Roullier <christophe.roullier@foss.st.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, linusw@kernel.org,
-	antonio.borneo@foss.st.com,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] net: stmmac: fix pinctrl management during
- suspend/resume
-Message-ID: <abPwHh12MLwMwOIs@shell.armlinux.org.uk>
-References: <20260313105718.359614-1-christophe.roullier@foss.st.com>
- <20260313105718.359614-2-christophe.roullier@foss.st.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IUmbEiNk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773400783; x=1804936783;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=2bKNUHKO9OVnDiP4Hey8zgOy5NyoxQZu+h+aV1L5+kM=;
+  b=IUmbEiNkO4Ey67QWmuZC5ppwq8bL8BYIIARjxyuUVG/xgAla9AFCL14z
+   QaATciJOZ/zaJXIOdSJ2ZP5/WeF4B40SgmU/062LUsW/1KP81NYXyo0XJ
+   65PiE0xtutbQmH6woHvS7tQLqAC0LBtrG/Wi8hnTOlP6tCyjkak+1GuLt
+   cfmAl7FGKr8Vckp0u6QrEoT21TzRNQqXGUh5RmAlSl7JsCE4YvVWZ3R3l
+   0IcdpCpjC4a88Ep5akKgbf5na9j9b1ieB8M+eh0uz/YB0FrqsuVJa3TIp
+   okQbUfI88074TdAHNih7BzHGv3Gx5xDQOyWg64+BhxxcDDF0/k2I1tJiP
+   w==;
+X-CSE-ConnectionGUID: U4upy9rRRRKuFqqXqjlYwQ==
+X-CSE-MsgGUID: 4NIXrUYlQ1uKkcZYajZXIA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="78396710"
+X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; 
+   d="scan'208";a="78396710"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2026 04:19:42 -0700
+X-CSE-ConnectionGUID: p0y83sdjTRuiB4PuOvBFdw==
+X-CSE-MsgGUID: 0k3ON2bTTo6WvrMh8jNhQQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; 
+   d="scan'208";a="221347191"
+Received: from boxer.igk.intel.com ([10.102.20.173])
+  by orviesa007.jf.intel.com with ESMTP; 13 Mar 2026 04:19:40 -0700
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+To: netdev@vger.kernel.org
+Cc: bpf@vger.kernel.org,
+	magnus.karlsson@intel.com,
+	stfomichev@gmail.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Subject: [PATCH v2 net-next] xsk: remove repeated defines
+Date: Fri, 13 Mar 2026 12:19:31 +0100
+Message-Id: <20260313111931.438911-1-maciej.fijalkowski@intel.com>
+X-Mailer: git-send-email 2.38.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260313105718.359614-2-christophe.roullier@foss.st.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Mar 13, 2026 at 11:57:16AM +0100, Christophe Roullier wrote:
-> In the deepest low-power modes, the pinctrl configuration is lost
-> and is never restored if the interface is down.
-> This commit ensures that the pinctrl state is set in all cases.
+Seems we have been carrying around repeated defines for unaligned mode
+logic. Remove redundant ones.
 
-Shouldn't the pin state be restored by the pinctrl layer?
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+---
+v2: remove another repeated define (Stan, Paolo)
+---
+ include/net/xsk_buff_pool.h | 7 -------
+ net/xdp/xsk.h               | 7 -------
+ 2 files changed, 14 deletions(-)
 
+diff --git a/include/net/xsk_buff_pool.h b/include/net/xsk_buff_pool.h
+index 0b1abdb99c9e..ccb3b350001f 100644
+--- a/include/net/xsk_buff_pool.h
++++ b/include/net/xsk_buff_pool.h
+@@ -174,13 +174,6 @@ static inline void xp_dma_sync_for_device(struct xsk_buff_pool *pool,
+ 	dma_sync_single_for_device(pool->dev, dma, size, DMA_BIDIRECTIONAL);
+ }
+ 
+-/* Masks for xdp_umem_page flags.
+- * The low 12-bits of the addr will be 0 since this is the page address, so we
+- * can use them for flags.
+- */
+-#define XSK_NEXT_PG_CONTIG_SHIFT 0
+-#define XSK_NEXT_PG_CONTIG_MASK BIT_ULL(XSK_NEXT_PG_CONTIG_SHIFT)
+-
+ static inline bool xp_desc_crosses_non_contig_pg(struct xsk_buff_pool *pool,
+ 						 u64 addr, u32 len)
+ {
+diff --git a/net/xdp/xsk.h b/net/xdp/xsk.h
+index a4bc4749faac..7c811b5cce76 100644
+--- a/net/xdp/xsk.h
++++ b/net/xdp/xsk.h
+@@ -4,13 +4,6 @@
+ #ifndef XSK_H_
+ #define XSK_H_
+ 
+-/* Masks for xdp_umem_page flags.
+- * The low 12-bits of the addr will be 0 since this is the page address, so we
+- * can use them for flags.
+- */
+-#define XSK_NEXT_PG_CONTIG_SHIFT 0
+-#define XSK_NEXT_PG_CONTIG_MASK BIT_ULL(XSK_NEXT_PG_CONTIG_SHIFT)
+-
+ struct xdp_ring_offset_v1 {
+ 	__u64 producer;
+ 	__u64 consumer;
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.43.0
+
