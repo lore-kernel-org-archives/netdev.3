@@ -1,120 +1,105 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434DD1C68F
-	for <netdev@vger.kernel.org>; Sat, 14 Mar 2026 00:00:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 675DA70809
+	for <netdev@vger.kernel.org>; Sat, 14 Mar 2026 00:00:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773446447; cv=none; b=JWxpL1ngOwAraM+THrUj+C/eAim3wbAVcTw4urSNJ5UOgwyl63xRRssygiFENoLJ19Jtp+ney69i0d8w4ODqtLxGwrTlYj7okljOtHM9/furdPPY25qhbCwtIyE+kXZm2TzlKGqZwAtsrYuQPBE+Kc/unWIgydP7KBdUPwsAVps=
+	t=1773446451; cv=none; b=VzWtHRe7Ktw6MIc6mxtBfggpaZ36S+Ayd/005TqUPoYItOIhtCltIRKwE/J8E+btcyN0yFb0FWgBw+YjEzQ9OyecSOzFUG1FRWM/mSUf8f86FvPQZDkSziDJ5aAHDIAE+7yzhMMSbpffILrpQQCqlRNirV8Eok+KfcSjdgmVxMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773446447; c=relaxed/simple;
-	bh=Jdy8vtd4v2L5ybNRpXFG2S36VaTj65TmQCtQyBKvDY0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jPhLr61wvycEgvT1JLh1yhRiWq+STgKwXCP+acycWAN18jVW1RSXiuXbAFQxm2l8H2CBwTxf/xy6x2rmthiwRrvuXZfedRKZMtBoRNDoHX6QVmT4V9745w100ttoQ8ZFtK+QiZ1HwH1M7G3sDKpBz5PUOfZ99IYVomQLG4FIKDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b=BPm0St31; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	s=arc-20240116; t=1773446451; c=relaxed/simple;
+	bh=SzNVxez9V7PcAZk5QZpuj9c+Tw1VVy/fO1zY3LpJVPE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=GGH6eGAakOACr7C5R3oUC8bNnBfJAxk8mYwXsARcejPWPCD9tQ/wnT9DCrsLORlMvAJ0PE5oigXRukv9av15Y63atZAoAVK3dJZdFEkE8/afijwfTCz7k0EKmSp/7as6UCXAdHqpa/iz67faTzizpVzbS4PFD0MI/x/kP6kWdhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QN2vWmB7; arc=none smtp.client-ip=209.85.128.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b="BPm0St31"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2aecefc7503so8631555ad.1
-        for <netdev@vger.kernel.org>; Fri, 13 Mar 2026 17:00:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QN2vWmB7"
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-7986e0553bdso24627907b3.2
+        for <netdev@vger.kernel.org>; Fri, 13 Mar 2026 17:00:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20230601.gappssmtp.com; s=20230601; t=1773446445; x=1774051245; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vUNX9+er7eAIPoSIjhlN4xy336/lFgZH6wO1ycKkjxc=;
-        b=BPm0St317WSF+FDVXPZku8XqNcuapzNMxoqTPqE3OqKcIqMSS6UuC1igk6ubEatQdT
-         4Lzl8p63Q5q76TK26DZhZmZxN9KfN9elwCVF1MokzAa24HZA1WsvAX5pqTmq/svWXRXp
-         /2lf7e/9qQ+UiXvoEUWWmjJiXTFYoQeYyN1kqH8X7wAj2cAY/2pzbm9NDAiqjAVjvDPO
-         Z3v6BXj3oijos0ixwqzvU/jaDrqEVtiKneeSYWUoaEUblebmkWtIbWCqkbMnPuCduZYK
-         ljHkfHGzbwCOuk6gt9E/Hrry1v3zAirZ8vEkf9edtvjCzdJyaj3AIe3EKpTrwWlo1R+2
-         U2pw==
+        d=gmail.com; s=20230601; t=1773446449; x=1774051249; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WNbQtouWXaM1HjP+6LQU3raUMR1ZrEf/jm2QyUp1DKQ=;
+        b=QN2vWmB7n3xuS/e1Uh9/uWXSL4iSDvOe272H/UGq/jF62o76DizbTK4/4XvPxuRFe4
+         cgdaddZjqW78NeY2hZoWk5oSOZc3BQnYifOv+EmmldtgPFtvpG/Avj4LpAusxHlHva8b
+         +8nFU24KdWKPHN3MdnKSgXAF8c0JTA4rSqz3Kf5tgnD6Tn52HTX5M9fomXHgv5TCw/9q
+         HOeEblGPxYxG6UegVl1kEhgYXi4TfBYXZHb/fPg/b8G7HJuNk8kxLvjkFe1QcO9XavhW
+         TaxWe7SGOQLf7SrPnlAIdy2D/PKHsRsRDho7Ff5G3dumCqmdTgCqLoKHcqpm4lijkzVa
+         sqOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773446445; x=1774051245;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vUNX9+er7eAIPoSIjhlN4xy336/lFgZH6wO1ycKkjxc=;
-        b=FBsUaLoMgxzRb2fiv4PXAOHncxILe/LdwphOzs4wNQWYDJGLAKhr59aTJUJz4KRdHM
-         xcTdeO+qzbho+xl+JdF+so7wFxOciU2ccbn3gMAHUlZiZLPJ2/1VvnOE0yS0uvc1bRDH
-         J/N2+DNOpbRlLqk1RGNthg9WTyeRDug9az8+zXzBBJmK8Bx7xZm9eqFZ7oqpHj2s9xlN
-         9zov3we0jUsoBM18Na3THvM7ZW3TQYFItJ1pkhwKBKOgbuhoI18MYB/0sE3A3FqgDjdn
-         g93LTSyuylRQQ23hr1zeyyROPhrvzLaKbFaNqibRpS2bNIul2NorvzkvkAGP3EUCzxSz
-         DfOA==
-X-Forwarded-Encrypted: i=1; AJvYcCXpNaa7pJNpqznlV4bfEECrDFLU0QCqdpWVaBWY7Uz/rLCu6P8hcwfQtpg4Mw9xKP9YP62SFj4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzl4XsDx7dBv3a0NVb1qTkTJ5RW6+O3cc6zt+eXVpdZXOTaqpZL
-	+sIIXcVADeDQN1zXlsFGxX19GqEUmEUWbtKGr0QKYOZqsJJn4rWpgf4QaC0pTUXE1AcDnQ1xQmH
-	l4ycIN8o=
-X-Gm-Gg: ATEYQzyktymWLa/cx5oZZNwm519Cneur6WMz731FWvqtoL0gculeskfjcyvHBINGba0
-	Jve/6QZ5P+6EUHAHLsPMzdWrD8Qavic57n63j8VlCOIpAQb9ZYdyut0Okp4tGAdRggjwjCETXkY
-	HdU7uPKWGbm11iE94nDkb6IM92OqRlRpipYIxr2+2EDNk78zmbJkFTb2BIAlpJQ0Vy94cXYX+6G
-	mLQ+bX51aUM93fDHKr0wCaHp0dLuHcO5YTjZ83MBeyp7NZg6d8Kio3hj5hk7Rp4Gnzfy/sv8LnH
-	8hH8mFclYcUWDdTEaItIywE6Xw3Sd5XHISnSK6eZ5D+ss0ydDzFwk6lv3I2jW8P8twHuIAwog4S
-	+3gb2LG/87njmrp+Ll8sg2+0a4A9EJvBdlP+9xiuG0P+2YXQOQkEiw1QzKa3Va0MGHF+wamqzG0
-	Gd69g=
-X-Received: by 2002:a17:902:f70a:b0:2ae:5044:8dd4 with SMTP id d9443c01a7336-2aeca960929mr48646955ad.19.1773446445348;
-        Fri, 13 Mar 2026 17:00:45 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:5::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aece630b8asm33391945ad.40.2026.03.13.17.00.44
+        d=1e100.net; s=20251104; t=1773446449; x=1774051249;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WNbQtouWXaM1HjP+6LQU3raUMR1ZrEf/jm2QyUp1DKQ=;
+        b=iMsB5EN5wzTm5FfKWtqrnxWUhg3MSka3rDrkrOE430cnTyB4fHypGlAZAx85el26yI
+         okbkRAf7CaQRV/2gRZ0bzXtJZoOLKPSjDJ2/Q8wYunfeLXvyHZ72h0DgJhiqS47yz48T
+         di14CfpVcRNVWAUNBusHyyZQjNsIuW0X/cd//X92gZEthDngWPt0u3U5M5R1B7F5OXPH
+         tVC7cs2QWoZN7suHfT12oKMCCZ2wpgfoEASvMy0gSMAZ5OWTWgH0OE7opOO0Pq39UYcE
+         krHBnbU7ymOx00UDQOSFZVzPnMSRbt+cUKdZ94B2KL+p8rNCaUnGregUPjk96ReAD/tZ
+         HtvA==
+X-Forwarded-Encrypted: i=1; AJvYcCVNflRY2ofw7F6IDQ+pAErX5Puox1TmwTWybuC2MiCjt87WCmoRi6TNvArDG1dhRsmPfBk4gTs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwY5Z0MP1OaZGe72eJSkM4kd7vCEiY0o44QwOr8UWeuIxrt+GIk
+	vxlZk/cdDKlSpFrdc+iEm0+TkAGT3CglfE4B1WUdo1K6LOSFeZ9omnKW
+X-Gm-Gg: ATEYQzwMMIgq/Av4Xu9cHgda/C2oLH/3ieABXGAQHXjwmVzgetKzrr6sLUhCwxi0LIj
+	ulhoPFNsyiLCS+WnIuFxC1cQ2WokaiJjoCE7TxC3CqH7wEzt/V7ghb7pTb+v2DB7xD7HP1p2E/P
+	DU0TnQQkyv2EmcCoOqXmGhwXbnxZUjMemkx/9UUeWmm4HoHnmUnaSJlXjJ4/IAYXIDMKve+4QwQ
+	yUxwZHGq78bAMtyYh/t6u2Cx08j5mNHoGq6PSgrYdMaIK4ATAFXrxVTcMkFWJwxqVZdAc/ZPfgv
+	1W72Hjqq3hrpK0HTRvIuXHHmzHJh23T2r7l9LKKOi9qI1D5Gp4Ay04m1EsTq/s/0CDqrtw1tk+a
+	os+mOje6+TRFLVyXqAhnJndaj3eN/USDC609SnfuStw77KTaQCdECQheq0GB6qKTMjPALioHFVq
+	QsSv6LrpzR3ClcVRZ1FhErrsHm310HX3o=
+X-Received: by 2002:a05:690c:ec8:b0:796:5a14:87c6 with SMTP id 00721157ae682-79a1c0892b5mr54774307b3.4.1773446449477;
+        Fri, 13 Mar 2026 17:00:49 -0700 (PDT)
+Received: from localhost ([2a03:2880:25ff:7::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7991923673asm55811097b3.21.2026.03.13.17.00.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Mar 2026 17:00:44 -0700 (PDT)
-Date: Fri, 13 Mar 2026 17:00:44 -0700
-From: Joe Damato <joe@dama.to>
-To: Chris J Arges <carges@cloudflare.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, Andy Gospodarek <gospo@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH net-next v4 1/6] bnxt_en: use bnxt_xdp_buff for xdp
- context
-Message-ID: <abSlLEsmGAlmGkQk@devvm20253.cco0.facebook.com>
-Mail-Followup-To: Joe Damato <joe@dama.to>,
-	Chris J Arges <carges@cloudflare.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Andy Gospodarek <gospo@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-References: <20260313223029.454755-1-carges@cloudflare.com>
- <20260313223029.454755-2-carges@cloudflare.com>
+        Fri, 13 Mar 2026 17:00:49 -0700 (PDT)
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+Subject: [PATCH net-next 0/2] selftests/vsock: support nested VM runner for
+ vmtest.sh
+Date: Fri, 13 Mar 2026 17:00:13 -0700
+Message-Id: <20260313-vsock-vmtest-nested-fixes-v1-0-d0e6274c3193@meta.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260313223029.454755-2-carges@cloudflare.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAA6ltGkC/x3KQQqDMBAF0KsMf+2AMUVqrlK6EPNtQ2ksmRAE8
+ e6lXb93wFgSDUEOFLZkacsI4jrB8pzzg5oigmDoh7H3zmuzbXlpe1da1UyrjLqmnaaTu67xEv0
+ 8jQ6d4FP4BwS5IfO394r7eX4B8SxAJXUAAAA=
+X-Change-ID: 20260313-vsock-vmtest-nested-fixes-918fd4d3a961
+To: Stefano Garzarella <sgarzare@redhat.com>, Shuah Khan <shuah@kernel.org>
+Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Jakub Kicinski <kuba@kernel.org>, Bobby Eshleman <bobbyeshleman@meta.com>
+X-Mailer: b4 0.14.3
 
-On Fri, Mar 13, 2026 at 05:27:31PM -0500, Chris J Arges wrote:
-> This adds bnxt_xdp_buff which embeds the xdp_buff struct and stores
-> pointers to hardware RX completion descriptors (rx_cmp and rx_cmp_ext)
-> along with the completion type.
-> 
-> Signed-off-by: Chris J Arges <carges@cloudflare.com>
-> ---
-> v4: moved bnxt_xdp declaration to follow RCT style
-> ---
->  drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 25 +++++++++++--------
->  drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.h |  7 ++++++
->  2 files changed, 22 insertions(+), 10 deletions(-)
+This series fixes a few issues trying to launch vmtest.sh in a nested VM
+environment and were discovered when trying to prepare the tests for
+netdev CI/CD.
 
-Reviewed-by: Joe Damato <joe@dama.to>
+When taken together these patches make vmtest.sh work both on bare metal
+and in nested VMs, regardless of the outer VM's user, coincidental path
+overlaps, or filesystem settings.
+
+Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+---
+Bobby Eshleman (2):
+      selftests/vsock: fix vmtest.sh for read-only nested VM runners
+      selftests/vsock: fix vsock_test path shadowing in nested VMs
+
+ tools/testing/selftests/vsock/vmtest.sh | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
+---
+base-commit: 8f921f61005450589c0bc1a941a5ddde21d9aed9
+change-id: 20260313-vsock-vmtest-nested-fixes-918fd4d3a961
+
+Best regards,
+-- 
+Bobby Eshleman <bobbyeshleman@meta.com>
+
