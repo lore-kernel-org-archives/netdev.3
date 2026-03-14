@@ -1,147 +1,134 @@
-Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D27D4A35
-	for <netdev@vger.kernel.org>; Sat, 14 Mar 2026 00:17:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6C91E1DFC;
+	Sat, 14 Mar 2026 00:24:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773447477; cv=none; b=kDs4uFISL5kp+6QHgsHmdMHomTc0s07Dj4FT3AT2pbm31U6EMQsoQZFHyyvjWWRu8ouKeUYixVJ/kB5hAGT8mptwnqs0M1pQdUzcOwMSyAf+ULb2xN4ejUf2FWTxctHqZvyD/RFzZIKhFMCbzeBmNa1ghDCbj5BYuU7Cjc4F9xA=
+	t=1773447857; cv=none; b=OmkocTklgA31pph7YOFzSAPAIu9zBaDf4y45ruIhU0+40SD0g/vLUJ7qimS2NoWqjMLV1VnwcOzEEMoNfFwCtJp11/tE55yrT/tlaOaf/te6EbxJXo5rPn3UsJ+BGfgL3hd5/fnKrokdT+gM4fx1cJodd0sUuGlZ9NWiLxeKbtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773447477; c=relaxed/simple;
-	bh=quQ2b8S01YScE2o8Nv0HiEqF8yOiNwJckB8pdpJRrys=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=djeNpMrGMgc1b+VQi/3hOHdHE+x5AsfxGvEK2ECHX3CvrdJ1MJ9zIUHzOJM9kfZalWQzYXmvbLzx/+zliNnTlTms4XcHU7F/5m+d34edO0tIe27NhzWSk0zbRG9pWtTLH6TxNThYFNoDGarBpzi/66j3CXl93x3H2BtMSrHSshA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UXH9nnJA; arc=none smtp.client-ip=209.85.221.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1773447857; c=relaxed/simple;
+	bh=WQRXpjIwf6KYkSpJNf4xnZTekqBOFUxWV+yK0mOoxb8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IuXgEA8LGhFGAY716oX5be948llbvXznJxvd45NbEuNc0+F6rONKtXKYfWsPqkyhToOiDU0x9i09RVRYOv1NEaLi90l2V7mzYTW5u5is/EJ21nH6vc8euzuipTFjZN/qNJMlKrtJJbLKBCgHsYrSpZkuemFfRjcR4XX5iP4fVxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i0nggihj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UXH9nnJA"
-Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-56a9a7e762bso2565224e0c.3
-        for <netdev@vger.kernel.org>; Fri, 13 Mar 2026 17:17:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773447475; x=1774052275; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+OwkP6WWMLpt4ev+jMDNRA83YAMF+ug+nhsF73l1V2E=;
-        b=UXH9nnJAIs39WmtPkyCtHbVNIzBF7bNZI2HIQWThQPPjjjNonmLc9d4DQIUQ5MnBQQ
-         GsMH7XzYcL5xp+HJ0cIYzbKU/D42Ydwe0/5IAvZ3iDO7clBOv5IEbsXEkMJWdxRNj3df
-         kGzLIXknn+23ozQ/a2zZsMlJImSiJwF8tvWnKjmFd5PXdNIaVOjXbHrAppQUuhSehZB4
-         dDdu8W5Cqyq5OJcAei0PWVeCj+cmUdH1IgRKNmj04wemztbKf3FpH76tuyDHAnE8E3g0
-         RQQ2Q9vWjmZHsQIwnraI5PlRGZy3ktJVd/biegJbkUlcW5Gvp9KjI2LiHbOQS4ZnwXH3
-         dXwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773447475; x=1774052275;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+OwkP6WWMLpt4ev+jMDNRA83YAMF+ug+nhsF73l1V2E=;
-        b=tTz7nUYcQVozunu0JUvJwsIecFih9Ha92gNK1LvTLVei+11/KTr2QMONsdWL9+1RHM
-         ScSNUMsPGqUlPb/nMqtr8Ep0XBBr50EBx6MwG8JqwAyR9XN91T9UH/iMkjmbkcjSzSOh
-         mNqtnoaJL72euwmcGmI6YT7/bWGX6zU+8/DRwd4XKbDdsp9+aqt1o+kexunWCmVFp6OP
-         s/v8w6VLt01vNQ2EmTqfqnAw3XRXmPTjNLTIXTHJ8s+LIN/wjux9WkYUKUQJiEBr+0Wf
-         TvLzS4Y6oaBULxrQO9KGjAlY4QzA0mSCVx7KH3HylNbKU76qYZb1wKay70eFxQI1nfMB
-         6a/A==
-X-Gm-Message-State: AOJu0Yx0GY2ZwljjnOMOoaVDLoPycz1m8Ob4LQRuXDbcdG57kP6WSJEW
-	rlSpTHj9k/RK05ncnFpMWuDTsvQtMnOX1gV1KRfjCTKCiMwMATQqHM7f
-X-Gm-Gg: ATEYQzzDi+46Y4QyZwTyjTeDRVy5OVcmOYufha6ALj286BpbOv3KTYUi29mP4mpVDR6
-	QUIoz5GyTMZONzZyoj47dgPYNN6RF9sD2NWpFctZ+2YXLQh71sGtdNMfNXcciIACzi0MfzgzpPc
-	hMU/xUKK6xlaPVVr2kDGmXH8xcQO5cZV1f+GL4WQaR4xVZCGgH3BaeeO6O7mBtbgy6UELmbrPsH
-	Nf4kr5lg0Pbzjl1zCVpatgWhD/xt4LI2R3dNY+DO0fiOeY02jedNLkuZoG5KFgC7Q1QaHl7Bm69
-	7gISOl62D1N7/lSDC0edOINbHnvHgGbyWUfQ8DaH4ZsiokF6qTw6dvC+ylLgZDbqWQGrl/nCXbZ
-	f456hxbjGv/hd7PhM/gHU9lIc/TBF0sPk8H7xo91WD4j+zDO9Xx2TrcmMibZWWSHjwDbFnaAMy2
-	sCHVTAWW0HpeebqP+gDton
-X-Received: by 2002:a05:6122:8b01:b0:56b:5979:34c8 with SMTP id 71dfb90a1353d-56b62a3e65dmr2145795e0c.14.1773447474896;
-        Fri, 13 Mar 2026 17:17:54 -0700 (PDT)
-Received: from localhost ([2a03:2880:31ff:5f::])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-56b4634177esm4819415e0c.6.2026.03.13.17.17.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Mar 2026 17:17:54 -0700 (PDT)
-From: Mohsin Bashir <mohsin.bashr@gmail.com>
-To: mkubecek@suse.cz
-Cc: netdev@vger.kernel.org,
-	kuba@kernel.org,
-	alexander.duyck@gmail.com
-Subject: [PATCH ethtool-next 2/2] ethtool: Update doc for tunable
-Date: Fri, 13 Mar 2026 17:17:37 -0700
-Message-ID: <20260314001737.494082-3-mohsin.bashr@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260314001737.494082-1-mohsin.bashr@gmail.com>
-References: <20260314001737.494082-1-mohsin.bashr@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i0nggihj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 088E7C19421;
+	Sat, 14 Mar 2026 00:24:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773447856;
+	bh=WQRXpjIwf6KYkSpJNf4xnZTekqBOFUxWV+yK0mOoxb8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=i0nggihjXmXTKML8sut6lB5srcFWHmMKN3tSb0vnbiKDcMNVltZU2CmPxcxFrG3o3
+	 nQrXA1wQ5YuTbmhgcTPNORS+379TzqDGm/7lSrQ1+WOrB6YJhRCIjKA7zUUcBgPch0
+	 EYChM4p2xmMbNvogwcdaYFHJ9nHAZ56sOZLrj4G67jwJtQWWuJzeM6LK+rXxZtPvPL
+	 7hsCy1/fez24lkAmdr6y8xZG7yqBOpidyJ0h37yL3W7fcEPRQk675mEsDmHjbA8Xn+
+	 hN93oY8bX37rGdXAEkgAe3QI7f5zrI2DHLm42gIk1V7HmETARtzUHgwH52MHcPBfBz
+	 VF6ZMYEbGWSgg==
+Date: Fri, 13 Mar 2026 18:24:12 -0600
+From: Keith Busch <kbusch@kernel.org>
+To: Vineeth Remanan Pillai <vineeth@bitbyteword.org>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Dmitry Ilvokhin <d@ilvokhin.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Ingo Molnar <mingo@redhat.com>, Jens Axboe <axboe@kernel.dk>,
+	io-uring@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>, Jon Maloy <jmaloy@redhat.com>,
+	Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Ilya Maximets <i.maximets@ovn.org>, netdev@vger.kernel.org,
+	bpf@vger.kernel.org, linux-sctp@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net, dev@openvswitch.org,
+	Oded Gabbay <ogabbay@kernel.org>, Koby Elbaz <koby.elbaz@intel.com>,
+	dri-devel@lists.freedesktop.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	Huang Rui <ray.huang@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Len Brown <lenb@kernel.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	linux-pm@vger.kernel.org, MyungJoo Ham <myungjoo.ham@samsung.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	linaro-mm-sig@lists.linaro.org, Eddie James <eajames@linux.ibm.com>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Joel Stanley <joel@jms.id.au>, linux-fsi@lists.ozlabs.org,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Philipp Stanner <phasta@kernel.org>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Leo Li <sunpeng.li@amd.com>, amd-gfx@lists.freedesktop.org,
+	Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	linux-input@vger.kernel.org,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	linux-i2c@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	linux-spi@vger.kernel.org,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	linux-scsi@vger.kernel.org, Chris Mason <clm@fb.com>,
+	David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 01/15] tracepoint: Add trace_invoke_##name() API
+Message-ID: <abSqrJ1J59RQC47U@kbusch-mbp>
+References: <20260312150523.2054552-1-vineeth@bitbyteword.org>
+ <20260312150523.2054552-2-vineeth@bitbyteword.org>
+ <20260312111255.7925b4e2@gandalf.local.home>
+ <CAO7JXPhg-Etspj9YahZrq8cmZ2K6AGWDrMnHO+oD96P_SmOLBw@mail.gmail.com>
+ <20260312155326.GB1282955@noisy.programming.kicks-ass.net>
+ <CAO7JXPiu8-LE_gG001_GQLoGVYakPdzmH2SXLqfzJjEUxbn1Rw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAO7JXPiu8-LE_gG001_GQLoGVYakPdzmH2SXLqfzJjEUxbn1Rw@mail.gmail.com>
 
-ETHTOOL_PFC_PREVENTION_TOUT enables the configuration of timeout value
-for PFC storm prevention. This can also be used to configure storm
-detection timeout for global pause settings. In fact some existing
-drivers are already using it for the said purpose.
-Update the documentation to formalizes the use of this knob to
-configure timeout value for pause storm prevention mechanism
+On Thu, Mar 12, 2026 at 12:05:37PM -0400, Vineeth Remanan Pillai wrote:
+> On Thu, Mar 12, 2026 at 11:53 AM Peter Zijlstra <peterz@infradead.org> wrote:
+> >
+> > That seems like an unreasonable waste of energy. You could've had claude
+> > write a Coccinelle script for you and saved a ton of tokens.
+> 
+> Yeah true, Steve also mentioned this to me offline. Haven't used
+> Coccinelle before, but now I know :-)
 
-Kernel commit: 817de93c348a ("net: ethtool: Update doc for tunable")
+[+ Chris Mason]
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Mohsin Bashir <mohsin.bashr@gmail.com>
----
- ethtool.8.in         | 19 +++++++++++++++++--
- uapi/linux/ethtool.h |  2 +-
- 2 files changed, 18 insertions(+), 3 deletions(-)
+At the risk of creating a distraction...
 
-diff --git a/ethtool.8.in b/ethtool.8.in
-index e10a252..daac5a2 100644
---- a/ethtool.8.in
-+++ b/ethtool.8.in
-@@ -1550,7 +1550,13 @@ Get the current tx copybreak value in bytes.
- Get the current tx copybreak buffer size in bytes.
- .TP
- .B pfc\-prevention\-tout
--Get the current pfc prevention timeout value in msecs.
-+Get the PFC storm prevention timeout value in milliseconds.
-+This timeout value applies to both PFC (Priority Flow Control) and standard
-+link-level pause storms (IEEE 802.3x). A pause storm occurs when a device
-+continously sends TX pause frames to the switch, resulting in persistent
-+backpressure. When enabled, if the NIC detects that pause assertion has
-+exceeded the configured timeout, the device takes protective action (stops
-+sending pause frames) to prevent a complete traffic stall.
- .RE
- .TP
- .B \-\-set\-tunable
-@@ -1567,7 +1573,16 @@ Set the tx copybreak value in bytes.
- Set the tx copybreak buffer size in bytes.
- .TP
- .BI pfc\-prevention\-tout \ N
--Set pfc prevention timeout in msecs. Value of 0 means disable and 65535 means auto.
-+Set the PFC storm prevention timeout in milliseconds. The range of valid
-+values is device specific. Special values:
-+.RS 4
-+.TP
-+.B 0
-+Disable storm prevention.
-+.TP
-+.B 65535
-+Use device-local default timeout (auto).
-+.RE
- .RE
- .TP
- .B \-\-reset
-diff --git a/uapi/linux/ethtool.h b/uapi/linux/ethtool.h
-index 7a13192..a5d7d24 100644
---- a/uapi/linux/ethtool.h
-+++ b/uapi/linux/ethtool.h
-@@ -225,7 +225,7 @@ enum tunable_id {
- 	ETHTOOL_ID_UNSPEC,
- 	ETHTOOL_RX_COPYBREAK,
- 	ETHTOOL_TX_COPYBREAK,
--	ETHTOOL_PFC_PREVENTION_TOUT, /* timeout in msecs */
-+	ETHTOOL_PFC_PREVENTION_TOUT, /* both pause and pfc, see man ethtool */
- 	ETHTOOL_TX_COPYBREAK_BUF_SIZE,
- 	/*
- 	 * Add your fresh new tunable attribute above and remember to update
--- 
-2.52.0
+This discussion got me thinking the right skill loaded should have the
+AI implicitly use coccinelle to generate the patchset rather than do it
+by hand. You could prompt with simple language for a pattern
+substitution rather than explicitly request coccinelle, and it should
+generate a patch set using a script rather than spending tokens on doing
+it "by hand".
 
+I sent such a "skill" to Chris' kernel "review-prompts":
+
+  https://github.com/masoncl/review-prompts/pull/35
+
+I used patch one from this series as the starting point and let the AI
+figure the rest out. The result actually found additional patterns that
+could take advantage of the optimisation that this series did not
+include. The resulting kernel tree that the above github pull request
+references cost 2.8k tokens to create with the skill.
