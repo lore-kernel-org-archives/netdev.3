@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0F22F83A0
-	for <netdev@vger.kernel.org>; Sat, 14 Mar 2026 16:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D12130FC39
+	for <netdev@vger.kernel.org>; Sat, 14 Mar 2026 16:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773507011; cv=none; b=a6juoFt+RjweVA4VPVwSx6lZhF3FdMoQeKiSarbHCHtZR+m3sA2pNZ1s+sOPXZKkb8ectevHZf10RGh/XsRrezH39/r8u8JzDkt7H0s8n2kjgLzG5C0oxO4TnD9WXG+q+Ishdr1zbAAgzz0LkDIKMQ7MNo/MiRPcFcRnqwLF/fo=
+	t=1773507016; cv=none; b=QjuCR7nvjtYhjioZ2cIQSNRpslK5eDvitHzzdlRUUuFbtb4t+BYyBqH1GWYwB63sWSscZjQxXMbZ2ox27zU/+hGTg+zRoJKw2/MNxVB4jeZrPsruLMnPI81UU2/5dkUpVyK+J+7eFjys5IVI4ybesgzZ9wjcXbwwYJ1BbmRcWIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773507011; c=relaxed/simple;
-	bh=vfXPWwDhZY3mDv+Pgl8XaWAwTWG3oVTHdh8OMrdRdUM=;
+	s=arc-20240116; t=1773507016; c=relaxed/simple;
+	bh=C3bv/cpFRHoc6ucznQhWA3TBbqy2kVsBUcYIx9yO+V8=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=mALme/QfdOx/mWahWQQlguTtaOsNWXDjPdXCsCqDtFIYz/DqLR96b6yMRSX3T2Gf4Y9S8zg1jnLHiOHJSE1x4G17MNQuc82pdZySPKMEINgwp9s9ScNyZpkAGqdYnchybAZxUhV0byu6geUAQOzJju2rtfoCQoW3Efoe7QBW7Ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tJfrU3wz; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=tHlzviNbg7ZWm9H9vIhpVHFMtzlKtXKyzsEYswnTH7fhhyLtMxp7s0UtuclgJyl6K0KqnoLj8QnBw8qM85+BmLfYN4MYQ2XdaBkwTuPJfkjgDBq3a3iWwzyjJ9myR2bt+PClWsSVMOiz8JcbvyZs97ziYFFul9iZc5iXD6gLX78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EPrUC2Fm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tJfrU3wz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E72AC116C6;
-	Sat, 14 Mar 2026 16:50:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EPrUC2Fm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97B02C116C6;
+	Sat, 14 Mar 2026 16:50:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773507011;
-	bh=vfXPWwDhZY3mDv+Pgl8XaWAwTWG3oVTHdh8OMrdRdUM=;
+	s=k20201202; t=1773507015;
+	bh=C3bv/cpFRHoc6ucznQhWA3TBbqy2kVsBUcYIx9yO+V8=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=tJfrU3wzZxsNYknlvf9a66bE4Ow4810x7DiePB19gMw5apBGAdR8YSJI9x9yJQyT/
-	 VeKpdgD+FahqzdXzJ1jQEojwcTeA5ZFoV/EE8P0m08USOZf/xoVqCinOIBH9FQNEd5
-	 RuOLr6aJXRk0mYFHU8bHlQNMYi9wkmFX2RxeMf8kMmqZzI8dVzuCsju8f6vJrDL6zG
-	 TaeEsKzf28yao6rUYSz5kYu19ccqPoc1GJe0ZmNkg4DYYlRpo0GSmU5kM3kD684R2V
-	 ZFq3nnloPDqTGcumEEstrNZyRiyzUewQ+vWRilRsRLXY7RmSpCDrRrnIQTRcMrDvXY
-	 th2ywgx5iM3oA==
+	b=EPrUC2Fmi/yncgZXB4Cv7fgSekMsKgengVm2R41RpxZrFeP+A6WzSYXwevf4tijNg
+	 83I2iER0xLy/9DKO7vTbF9BmpXSG8jquVRlSGDopF0vVYz0Sa3st95BOC2nfL956Hv
+	 YlupVu9V2NSTz0m/sB+6zwsqZ8S2HQiCoXsVatY1BT9ohNQ4hV1KkVrafm5ssuyZcv
+	 DKDtXhWgkNfRzwh1fYz2J/dXWIL1JObp0TXmPSM65/qWCaQYsh8DvltEwUOn0CG+6n
+	 A1fQsK7LRtCTAQZffBQ3QX9ydCzVS6aUoNM666jkVx5qO3V52IbCcc8qLh+nFuKYrI
+	 lLuNA+h9xaLiw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA0523808200;
-	Sat, 14 Mar 2026 16:50:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02F523808200;
+	Sat, 14 Mar 2026 16:50:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,37 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: bcmgenet: increase WoL poll timeout
+Subject: Re: [PATCH net-next] net: stmmac: avoid passing pci_dev
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177350700538.1730865.6600612507507836878.git-patchwork-notify@kernel.org>
-Date: Sat, 14 Mar 2026 16:50:05 +0000
-References: <20260312191852.3904571-1-justin.chen@broadcom.com>
-In-Reply-To: <20260312191852.3904571-1-justin.chen@broadcom.com>
-To: Justin Chen <justin.chen@broadcom.com>
-Cc: netdev@vger.kernel.org, pabeni@redhat.com, kuba@kernel.org,
- edumazet@google.com, davem@davemloft.net, andrew+netdev@lunn.ch,
- bcm-kernel-feedback-list@broadcom.com, florian.fainelli@broadcom.com
+ <177350700978.1730865.6008377263416026243.git-patchwork-notify@kernel.org>
+Date: Sat, 14 Mar 2026 16:50:09 +0000
+References: <E1w0evI-0000000CzY7-1fyo@rmk-PC.armlinux.org.uk>
+In-Reply-To: <E1w0evI-0000000CzY7-1fyo@rmk-PC.armlinux.org.uk>
+To: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Cc: andrew@lunn.ch, alexandre.torgue@foss.st.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
+ pabeni@redhat.com
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 12 Mar 2026 12:18:52 -0700 you wrote:
-> From: Justin Chen <justin.chen@broadcom.com>
+On Thu, 12 Mar 2026 12:13:52 +0000 you wrote:
+> The pci_dev is only used to provide the ethtool bus_info using
+> pci_name(priv->plat->pdev). This is the same as dev_name(priv->device).
+> Thus, rather than passing the pci_dev, make use of what we already
+> have.
 > 
-> Some systems require more than 5ms to get into WoL mode. Increase the
-> timeout value to 50ms.
-> 
-> Fixes: c51de7f3976b ("net: bcmgenet: add Wake-on-LAN support code")
-> Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+> To avoid unexpectedly exposing the device name through ethtool where
+> it wasn't provided before, add a flag priv->plat->provide_bus_info
+> to enable this, which only dwmac-intel needs to set.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: bcmgenet: increase WoL poll timeout
-    https://git.kernel.org/netdev/net/c/6cfc3bc02b97
+  - [net-next] net: stmmac: avoid passing pci_dev
+    https://git.kernel.org/netdev/net-next/c/f807b5b9b89e
 
 You are awesome, thank you!
 -- 
