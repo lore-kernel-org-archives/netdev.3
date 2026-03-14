@@ -1,96 +1,74 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45EE6299A87;
-	Sat, 14 Mar 2026 15:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4C82BE7DC
+	for <netdev@vger.kernel.org>; Sat, 14 Mar 2026 15:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773502822; cv=none; b=vFdEN2ZT0eqfpEuLjDXeZ8bakMvn5sfq5Yk9bn/0LFMU6kDz0n5hIRCvOWaociLgCLXMgmRLNw5JGAYgctWsDERfPb1DUeZ9dgZSePow+kLeJwXPsYLNPQ9+Y2fQQVtSbygtmkNdwAvYT96DlvrVSRed+bjY8Qn7x2v8E7Oh4Nc=
+	t=1773503112; cv=none; b=FUAy+kJTSNgURKtnM7+6KoL+Dkft8YLOfyTF4/e1qP6+W0ZMMGpDCanaRg2pQ4cKJxJgsVMcsLBTDFcG4YsS9nkVTp2MK0DbG+dZysH0y2Tf9ESmE9yVzTlGiHmsqaGYYa5xOJNP8ZltjojSADYqE9aEvSXKCyq8hG2U7gOvYHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773502822; c=relaxed/simple;
-	bh=WoPbqZeSHQS7/U+Zg1lu7MCzHBCJT+hDh8F/zCHEdfU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=KCLhRnRaU07o/JSnEn23V9EnqMUCtIdj7OdRJWgNhNJVBTYsAnLRg/UUhA1Hu4WHm9vG0ylSR/r0Sc1QgndnSO8G2oE/M5a2Y38RHbR0Cj+2zc9jmdzIQloKCe6SVh0ZcD7puqVnAzC488JMEBNZ7xVANAZ9C99v1yN6iFiAS/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xj3JbUmK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773503112; c=relaxed/simple;
+	bh=ZIAI/j8BRn8YfpT/MlnHMtmzHz3iqWVWenZUSwnGPy0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=I36gNN49Rk89qFIDVdh3QpAtjNVmBcWDj/9gL8aSpx6egBLd8YCBC88JBwuaeTNQqRMeIgGULTHEZuzCW0VdTxGc7+YB4fuC10VN9iXge0vMzAJoOZqK6c+D1I8yRTfVP/9rTZ7Ivp7ievjBxhzhMEu59UdxXP11nNRTD4D8RDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qcbv+oMG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xj3JbUmK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC7DC116C6;
-	Sat, 14 Mar 2026 15:40:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qcbv+oMG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FDF1C116C6;
+	Sat, 14 Mar 2026 15:45:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773502821;
-	bh=WoPbqZeSHQS7/U+Zg1lu7MCzHBCJT+hDh8F/zCHEdfU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Xj3JbUmKkanbsDjkE/3Byh+gqQTGmHKnhZaI6Z1U35pQMoOszufYV3Qrne9mZSRBN
-	 ++Gj8dVw3EOi87nLPIm52u0T2zvchjYdpxIAMRORdR+qE/KLLSFRJLVmtzZbj+0kq1
-	 +/+VkLA8chEuMNvDXUhPvjEOr6/LkTcKRJBrb9340y++jggBFvIRT3/o3r36UyJFOo
-	 f4vzO/58MHMxP9qIEU0/JyUuuklqJmo4c7v8AYSfknR9+RYRYvIwiNCjgCeY7SyfPd
-	 Za+G/i3r0KlmG7RJ0ahd5l9TgclIFP6ghLhgcoKAh6wtVXf88i9VEnd0ijP52uiqCn
-	 0kSWvazn0MIpQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 402493808200;
-	Sat, 14 Mar 2026 15:40:17 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1773503112;
+	bh=ZIAI/j8BRn8YfpT/MlnHMtmzHz3iqWVWenZUSwnGPy0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Qcbv+oMGFA1WK2HXkTAxtC1bj+1YxF+oPigVoZ6RVeOJ3IvnzN0Wh/nwp0DXvzkGD
+	 Ps6u8T2fVoxBxKhg5N0xT8W9EQ26V22KsNb7ZzO+9c2FXr/nwbuUgQY1i3RBLEow/1
+	 Avcq06l2vATonk1ho/22SwwO4qtRKXsYNIO1pkGX2HQ/cq6ZokeFv7VyciTgXd6WxH
+	 Sv/fVIv0GSozoUuA1nD8EeTwtoN4FCb/YL3URptVYgNYtIarOzZjV8lV0N7S0hbzfx
+	 umMbXTAFV9Xu966qPXPsNAqHtx+SCZLqNr056niVjpWcGQAlsdoh/ELYJLavDW3RZy
+	 Y9KUovQ7UWooQ==
+Date: Sat, 14 Mar 2026 08:45:10 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Justin Chen <justin.chen@broadcom.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ bcm-kernel-feedback-list@broadcom.com, pabeni@redhat.com,
+ edumazet@google.com, davem@davemloft.net, andrew+netdev@lunn.ch,
+ florian.fainelli@broadcom.com
+Subject: Re: [PATCH net] net: bcmasp: fix double frees during remove
+Message-ID: <20260314084510.14f17e59@kernel.org>
+In-Reply-To: <02ddee5f-260d-47bc-a842-8938cddc55f5@broadcom.com>
+References: <20260312200814.1977164-1-justin.chen@broadcom.com>
+	<20260313165533.GA1368619@kernel.org>
+	<02ddee5f-260d-47bc-a842-8938cddc55f5@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v3 0/6] tcp: RFC 7323-compliant window retraction
- handling
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177350281603.1717807.13218820187988201902.git-patchwork-notify@kernel.org>
-Date: Sat, 14 Mar 2026 15:40:16 +0000
-References: <20260309-tcp_rfc7323_retract_wnd_rfc-v3-0-4c7f96b1ec69@gmail.com>
-In-Reply-To: 
- <20260309-tcp_rfc7323_retract_wnd_rfc-v3-0-4c7f96b1ec69@gmail.com>
-To: Simon Baatz <gmbnomis@gmail.com>
-Cc: edumazet@google.com, ncardwell@google.com, kuniyu@google.com,
- davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- corbet@lwn.net, skhan@linuxfoundation.org, dsahern@kernel.org,
- jmaloy@redhat.com, kerneljasonxing@gmail.com, mfreemon@cloudflare.com,
- shuah@kernel.org, sbrivio@redhat.com, matttbe@kernel.org,
- martineau@kernel.org, geliang@kernel.org, netdev@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, mptcp@lists.linux.dev
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Fri, 13 Mar 2026 13:21:13 -0700 Justin Chen wrote:
+> >> - Switch to devm_clk_get_optional() instead of
+> >>    devm_clk_get_optional_enabled() so we can manage the clock ourselves.  
+> > 
+> > But it is unclear to me what problem this is solving.
+> > Or how it relates to the first point - usually the aim
+> > is to have one fix per patch.
+> > 
+> > Could you elaborate?
+> >   
+> The double free happens because we double disable the clock. Guess it is 
+> not exactly a double free. We manage the clock at the driver level so we 
+> disable it when it is unneeded. The default state is clock disabled when
+> no interfaces are up. After we bring down the interfaces, the clock is 
+> disabled, then when we unbind the driver, it hits a double disable.
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+AI points out we're not missing a bunch of disable calls if we fail
+further down in .probe
 
-On Mon, 09 Mar 2026 09:02:25 +0100 you wrote:
-> Hi,
-> 
-> this series implements the receiver-side requirements for TCP window
-> retraction as specified in RFC 7323 and adds packetdrill tests to
-> cover the new behavior.
-> 
-> Please see the first patch for background and implementation
-> details. Since MPTCP adjusts the TCP receive window on subflows, the
-> relevant MPTCP code paths are updated accordingly.
-> 
-> [...]
+> Sure I can turn this into two fixes.
 
-Here is the summary with links:
-  - [net-next,v3,1/6] tcp: implement RFC 7323 window retraction receiver requirements
-    https://git.kernel.org/netdev/net-next/c/0e24d17bd966
-  - [net-next,v3,2/6] mptcp: keep rcv_mwnd_seq in sync with subflow rcv_wnd
-    https://git.kernel.org/netdev/net-next/c/81714374a29c
-  - [net-next,v3,3/6] tcp: increase LINUX_MIB_BEYOND_WINDOW for SKB_DROP_REASON_TCP_OVERWINDOW
-    https://git.kernel.org/netdev/net-next/c/e2b9c52a2b00
-  - [net-next,v3,4/6] selftests/net: packetdrill: add tcp_rcv_wnd_shrink_nomem.pkt
-    https://git.kernel.org/netdev/net-next/c/ec1adf8ecf95
-  - [net-next,v3,5/6] selftests/net: packetdrill: add tcp_rcv_wnd_shrink_allowed.pkt
-    https://git.kernel.org/netdev/net-next/c/ba58b3e70b86
-  - [net-next,v3,6/6] selftests/net: packetdrill: add tcp_rcv_neg_window.pkt
-    https://git.kernel.org/netdev/net-next/c/3eb371eddad0
-
-You are awesome, thank you!
+Yes, please
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
