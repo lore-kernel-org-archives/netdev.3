@@ -1,117 +1,86 @@
-Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A6733B97F;
-	Sat, 14 Mar 2026 09:31:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F080770818;
+	Sat, 14 Mar 2026 09:40:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773480717; cv=none; b=kX46xgcstotlpmHmmTO/4xBN4plv5naI5zVn39l07Y0TSHXX6VrUwyHKNQTojiZ6La3MHNaVCWZ0ys8ZZY4O2KqPildEw2PkxKVw9umrM4sWQBToScV4wvLqB1wJagGH764WrcJLLl9bG7wBeiTzMXI0HhryZegYsaoGlxqbzrM=
+	t=1773481255; cv=none; b=ZQScEvBHs1KtwXadHGGFg4APKpoy4ny2z2omlVo904gJvvqzmS3TG+8kaaKVpbprdATeRtcp+uBl4mqgrXh1f6wt1qigWf+20iuc+mpCtdVx1H23avdFf/SHMGQ4qxBz4AurqkqwuBMJ618AdPUtk0H0LmnA7+qFZfbs+yPQ2+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773480717; c=relaxed/simple;
-	bh=RKyQzshGVUa1z7B29iBMApIzTeMOOhOdYaPyb4r/zIw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Db1oeNHHpvMbaxWxESVKIjdA4sVahP8S80tlL1u3x+QeIe6XQQajMoxx7Tp3BzEPYYD2tzoK7KlkpRLmTyfj1sIDJ2Si83dieFP9Qy0VJ5XTYgdeAX/5QQrXcb62mU1KGjqBGi/6b5yc8Xfc0qZPTV65e437akHPp1rP47dQBOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=fQlvGUCu; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=JPrT6dta; arc=none smtp.client-ip=23.88.97.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
+	s=arc-20240116; t=1773481255; c=relaxed/simple;
+	bh=tapsd7sY+iaJfd5ufSW1IAp2nbsWh+HpxFDYsUl0rLI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=mneq5qwwZeiuitgiBzCvUqthERzmXuKN+QcLCUJh+jySf5bHK//J7qhM8KJLK5V2Dqd+I1zLGnYSoZb0fuIkJ2nwWGMIC2Q5WNkdop1shm8oL7lVGpOhzC5C/FdoeeMegSEZe4IlNVkLYb/+x6gYBWh4fM8yVmryS8KYlDepO7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=03V3inru; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="fQlvGUCu";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="JPrT6dta"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1773480709;
-	bh=RKyQzshGVUa1z7B29iBMApIzTeMOOhOdYaPyb4r/zIw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=fQlvGUCudHeCI2lGd0BNmy0VYVUynfluGxcidgVa5QEZ0LVguScCDstX8MLH1v09h
-	 /wS7p2MCKOWJiHP/pWEZMTCFHeUlKzWxb0iXp/M+oxdKWVyXStldZSPOt8AT+fOCJ2
-	 4gxv8LaPfLKBHEtYABV3rjnuyJGNi4PACryPwSXCudarz0WIGDCw1Ppfeor+Jdh2I6
-	 sGCdvlPMx9MleD5SA9d1+nWkrDOmtBkbAofEmgds9cmepI5ZVxZAzaB5KoO1Qi1q8k
-	 4Fm/40bAfKsVC1Xt+VW58WSpFa0B99knRq0JRMSh57bcqav+p9tqTY87o83x0UpWty
-	 fmLJWVOs6vddA==
-Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 781793FCCB; Sat, 14 Mar 2026 09:31:49 +0000 (UTC)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1773480704;
-	bh=RKyQzshGVUa1z7B29iBMApIzTeMOOhOdYaPyb4r/zIw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=JPrT6dta8VgPFGcPhFLhj0qlenSaO332HRM16QpuwTWSOZ+KSOh52DYbpzB8gprq/
-	 3eXsFXPehs8Sl4vbM4WpdE+TmCrH8NEAtou9hUHLm7K5Mlq1sW/rj9kb+gvHA0WszO
-	 Hn28yZLEmZha83wVGRKrlpGDSaPk7ro5JqQl72k8Jjan5/Ituk1vaLkOOdcb8MaCIr
-	 IK2s5lftHVfItJrQngiB9oepacOelPdzEaIyHnpAPBct+NLL+zL/xqQXDbv0i06FBB
-	 nQqqYTLDTChjfx3FJV3yDSEOsWpJ6un1fVJlOMyoYwSshD1H5MlDjf1PCjQzjt/qDa
-	 uq4z3INwgjVUw==
-Received: from AMDDesktop.lan (unknown [IPv6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 2BEA73FCCD;
-	Sat, 14 Mar 2026 09:31:44 +0000 (UTC)
-From: Birger Koblitz <mail@birger-koblitz.de>
-Date: Sat, 14 Mar 2026 10:31:44 +0100
-Subject: [PATCH net-next 8/9] r8152: Add support for 5GBit EEE
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="03V3inru"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=giw/FPcMzl3MM6EQUmYxXJkdtyw1xyqeK51ftMdqupE=; b=03V3inru0PLoJXwGQMDfz5TK2v
+	BpL62WmfhgC249rMgbEau0fi+HCUclWJL5+iPmbzp4qMEIzJ68VQKtS5xm6HcJY9cQLnA1dJ/Ypbo
+	9eSYCgQHavUv21avLBPDm7gdSc5P3YsOyL2IZmmLGgA0CD8r7ZMl/JSY02qkUfKP348laAEUBqeZj
+	XS2bgi+LJDD49LMElN54zuD+YQop7obZ8p60i2+A1ZZ0/YsDrWTGfxTSO+YdC1462gJ0WHQCRCtUb
+	B+NO3bmYdv0eA9vPdXlglCKC37IG/q21wkE+fwZKcBq+jF19cIdqh3mbA0djmX7UvICOaU7MsREmD
+	+aJ9Yl/Q==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:46212)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1w1LUB-000000001zP-2tES;
+	Sat, 14 Mar 2026 09:40:43 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1w1LU8-000000000hS-3fbY;
+	Sat, 14 Mar 2026 09:40:40 +0000
+Date: Sat, 14 Mar 2026 09:40:40 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, bpf@vger.kernel.org,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Stanislav Fomichev <sdf@fomichev.me>
+Subject: [PATCH net-next v4 00/15] net: stmmac: clean up descriptor handling
+ part 1
+Message-ID: <abUtGH9KB03PH5Ne@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260314-rtl8157_next-v1-8-9ba77b428afd@birger-koblitz.de>
-References: <20260314-rtl8157_next-v1-0-9ba77b428afd@birger-koblitz.de>
-In-Reply-To: <20260314-rtl8157_next-v1-0-9ba77b428afd@birger-koblitz.de>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Birger Koblitz <mail@birger-koblitz.de>
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-The RTL8157 supports 5GBit EEE. Add functionality for setup and ethtool
-get/set methods.
+Hi,
 
-Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
----
- drivers/net/usb/r8152.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+Part 1 of cleaning up the stmmac descriptor handling. Rearrange the
+struct stmmac_tx_info to pack better, and introduce helpers for
+duplicated code handing the transmit and receive descriptors. Remove
+unnecessary struct members that are only transitorily used.
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index f9498c39dc6ec8bf4605b17e2c81bbe180b1b2d3..427a05d166ad98622a113df994b01a96ad6b2872 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -5815,6 +5815,11 @@ static void r8156_eee_en(struct r8152 *tp, bool enable)
- 	else
- 		config &= ~MDIO_EEE_2_5GT;
- 
-+	if (enable && (tp->eee_adv2 & MDIO_EEE_5GT))
-+		config |= MDIO_EEE_5GT;
-+	else
-+		config &= ~MDIO_EEE_5GT;
-+
- 	ocp_reg_write(tp, OCP_EEE_ADV2, config);
- }
- 
-@@ -9473,7 +9478,7 @@ static int r8152_set_eee(struct r8152 *tp, struct ethtool_keee *eee)
- 
- 	tp->eee_en = eee->eee_enabled;
- 	tp->eee_adv = val;
--	if (tp->support_2500full) {
-+	if (tp->support_2500full || tp->support_5000full) {
- 		val = linkmode_to_mii_eee_cap2_t(eee->advertised);
- 		tp->eee_adv2 = val;
- 	}
-@@ -9510,6 +9515,13 @@ static int r8153_get_eee(struct r8152 *tp, struct ethtool_keee *eee)
- 			linkmode_set_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT, common);
- 	}
- 
-+	if (tp->support_5000full) {
-+		linkmode_set_bit(ETHTOOL_LINK_MODE_5000baseT_Full_BIT, eee->supported);
-+
-+		if (speed & _5000bps)
-+			linkmode_set_bit(ETHTOOL_LINK_MODE_5000baseT_Full_BIT, common);
-+	}
-+
- 	eee->eee_enabled = tp->eee_en;
- 
- 	if (speed & _1000bps)
+v4: merge fixes from v2 into correct patch (11 not 13)
+
+ drivers/net/ethernet/stmicro/stmmac/descs.h        |   2 +
+ drivers/net/ethernet/stmicro/stmmac/dwmac4_descs.c |   2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h       |   8 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  | 458 +++++++++------------
+ 4 files changed, 197 insertions(+), 273 deletions(-)
 
 -- 
-2.47.3
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
