@@ -1,111 +1,86 @@
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098A534D4D2
-	for <netdev@vger.kernel.org>; Sat, 14 Mar 2026 19:51:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D8B3126D7;
+	Sat, 14 Mar 2026 19:52:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773517894; cv=none; b=JUd+ObP2xJxvNNS/QzeaYYg1kOd7Akb0dCaz/PnpDp13ast6N3tkNraJQNXTRsvvknjwS6y6DN5CRUgyvAZlPT3SzSj195WJQTTCx6eERgsDkqdrytHY07cQ7B/dl0rbR25sAh4zVlLCPZZGQ31MAsS0+GH6E4wvns+jsNnnbzI=
+	t=1773517935; cv=none; b=swotoCYXzjfb28kRjzKfTKJ/yLA0ehB7G5KaQmpWjotBjA7WEDe25Y7H5EV/Hs7oXfd5dmpDEzv9q/5OcaHiiFartWHK+s1fLKFptRs3DvTm8Ak4cJH3agh3KslHMtElqOSy1ZiYsYu9DNQDMpWvstHzESorMvPwZuvIMUNbsUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773517894; c=relaxed/simple;
-	bh=OZ9OFmbP6TuS9LH8ItorPkelJsuPf6A9rFHE2B/4++w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GunkqVhixYqK6FzjUwbYvLVvH3q7URWrpLeA76zWwjTrHdJguDuGJVF+yq5tbsZBK2O0UUizJRFuxokHb28W4PnbvlCrD5FDiSPHbYFXcdJOlexiifiNBkuJctXJYQ7pSHd1EbQTTPPvfOOHjvc+9QXV5iGb9TJN1WfPCvVYFww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=FwfNWQce; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	s=arc-20240116; t=1773517935; c=relaxed/simple;
+	bh=05c/9binp24LS+w7F7qkuVqW7oXNweubfMnrDJ655lc=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=bxXAKrX9+7VDgwjpFxX8zlzaGQ5fY8MFXDQg2fG+Td9b+5wxvlTPtN7RYq5JbdDfyj1yFipQFLGOC8ZcNpR6VEnwsuUDRwl3LqbSGoSLB708PcgpXGd805jlgz7Em1VDkJ5Dk5fl+vSyqSxW2GqSbUii6pKnUiYVgOL/9jDdnhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=fCLn28nb; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="FwfNWQce"
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62EJl7v82386939;
-	Sat, 14 Mar 2026 19:51:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2025-04-25; bh=+Bm3WQs61NBk2odbiUk+GUajtdIC1
-	6elXxbzY6aHLxo=; b=FwfNWQceJLbFwQhyHm4YW3KkHdx5uRL9m8wK5HaD/HLII
-	5sDK1ZSB1s/Ilsn4qBP/ARpHq0e2564VK0jT+Gn2M4B4SQP5kUnGlWOsXiasO3UE
-	pzJDPSHV0DjDOcI5XKoyzV2mLPlOekO+jOaXdpDSgFI5eOBR/QI+LiJeC+ibrceN
-	sgHg/RI9lC4Thw8ajQV6jsJefbdJUOHg+UT2MkU+Tb43vGxzGUMI9oARq5xZX5jT
-	mhWXGdCZHKsRpe2o63ryEttDKbsJqFTtR7uoiGhdQQOyK/5w8IA9hWfHRVdNKK4K
-	3efIcVwLdDwi0w7vuTxi8VKQ6w1ISP1W0veJleuug==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4cvxk88e7p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 14 Mar 2026 19:51:13 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 62EDREg9013988;
-	Sat, 14 Mar 2026 19:51:12 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4cvx4785fc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 14 Mar 2026 19:51:12 +0000
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 62EJpBKP012188;
-	Sat, 14 Mar 2026 19:51:11 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4cvx4785f3-1;
-	Sat, 14 Mar 2026 19:51:11 +0000
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
-To: linux-afs@lists.infradead.org, marc.dionne@auristor.com,
-        dhowells@redhat.com, kuba@kernel.org, davem@davemloft.net,
-        edumazet@google.com, pabeni@redhat.com, horms@kernel.org
-Cc: alok.a.tiwari@oracle.com, netdev@vger.kernel.org
-Subject: [PATCH net-next] rxrpc: Correct rack timer warning to report unexpected mode
-Date: Sat, 14 Mar 2026 12:51:00 -0700
-Message-ID: <20260314195109.3867287-1-alok.a.tiwari@oracle.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="fCLn28nb"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BB7EEA0304;
+	Sat, 14 Mar 2026 20:52:11 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1773517932; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=TleW7hTd/KTKAu03za2P5eXbX0UrARAzI5aPN15z5fE=;
+	b=fCLn28nbuzPYu6B6/fMvxoZj+fAFNB+rV4pNwnG/jjnGWWIheCYHliv1gPSvEEV3WEPEmn
+	+8gS/esPbVujhoVlwENAzonU9St8LTCguF4LNNvAuwy7GfcYa1J+HFkRbz1UUWaG4STu0X
+	QjU6ZE4jdrhu3k7tacHT+JUd1a5j2wqhn1h0f67LryMy4iQwipn2X9mBYOOI6BM1HUr8R7
+	ozqrvkXGdIrhDAdROB+CdxvCnSkXwvNBYqrdj24NIYy40mxwBTXF1H6lMhJk9+yUodh78k
+	0ItIH617JuPQm+5KkGvUFNswhkU4NrhD9kHRlKRr65tup5vNWtUi1Ci68tXM2w==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-14_06,2026-03-13_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0 bulkscore=0
- phishscore=0 mlxscore=0 mlxlogscore=999 malwarescore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2603050001
- definitions=main-2603140155
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE0MDE1NSBTYWx0ZWRfX29ho9eviCWyI
- fDcr6nKsgcS4kPgfZrAF3EkiBP3OExX0xCkN2phRAtszm0xY/a42P0mgZtG6HnE+pY9xFetvL5I
- 6EFDlNwPP45FGA4bU2CaCEzLafe1LdldLJ9rZp0xs3TdBE67OcHmSVtUo0jHE3NdDgV1zkPwMSS
- 1E3AJ/d0AHrw6eZGLoldQgFqXwY7qlJENKldODs6LHs58WbM6gEJkNpXCn+3bK3lXGB1hS/H/W3
- iGlaYLjgEsyvlnyJaB4xeBAoAMad4SCK6fYajsMNrBNalxY7VD8lS5mkLuAMYOMCT0ne+ofEfuT
- 0x7QbIA9SoK50INyH5Pro0FqzUafYfpPwGYp3zlvMgnwLUrjJznC7WQgScliBbmP6tTZf1xtin+
- IUNg0VZxNxh1z+IQckIiMQ4ZPV5GJo8GU28keQotolqjIxY5SruiKeVz/nRJvRo/rKmx3KG3DeN
- 56B0jjPiQ4TSFIS92yA==
-X-Authority-Analysis: v=2.4 cv=AI0/m/Lt c=1 sm=1 tr=0 ts=69b5bc31 cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
- a=x0eKOSpe3m1H3M0S9YoZ:22 a=yPCof4ZbAAAA:8 a=agrZ4vOEPjAMkMzM_KgA:9
-X-Proofpoint-GUID: SgdAnQxKcFqrmPFdoDoUQN2F-lWodJ3M
-X-Proofpoint-ORIG-GUID: SgdAnQxKcFqrmPFdoDoUQN2F-lWodJ3M
+Date: Sat, 14 Mar 2026 20:52:11 +0100
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Doug Berger <opendmb@gmail.com>, Florian Fainelli
+ <florian.fainelli@broadcom.com>, Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Vikas Gupta
+ <vikas.gupta@broadcom.com>, Bhargava Marreddy
+ <bhargava.marreddy@broadcom.com>, Rajashekar Hudumula
+ <rajashekar.hudumula@broadcom.com>, Eric Biggers <ebiggers@kernel.org>,
+ Heiner Kallweit <hkallweit1@gmail.com>, =?UTF-8?Q?Markus_Bl=C3=B6chl?=
+ <mbloch@rooftopnetworks.de>, Arnd Bergmann <arnd@arndb.de>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 0/6] net: bcmgenet: add XDP support
+In-Reply-To: <20260314085232.089ea669@kernel.org>
+References: <20260313092101.1344954-1-nb@tipi-net.de>
+ <20260314085232.089ea669@kernel.org>
+Message-ID: <78fb6651f668390bd877a60597ba52fd@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-rxrpc_rack_timer_expired() clears call->rack_timer_mode to OFF before
-the switch. The default case warning therefore always prints OFF and
-doesn't identify the unexpected timer mode.
+On 14.3.2026 16:52, Jakub Kicinski wrote:
+> On Fri, 13 Mar 2026 10:20:55 +0100 Nicolai Buchwitz wrote:
+>> Add XDP support to the bcmgenet driver, covering XDP_PASS, XDP_DROP,
+>> XDP_TX, XDP_REDIRECT, and ndo_xdp_xmit.
+>> 
+>> The first patch converts the RX path from the existing kmalloc-based
+>> allocation to page_pool, which is a prerequisite for XDP. The 
+>> remaining
+>> patches incrementally add XDP functionality and per-action statistics.
+>> 
+>> Tested on Raspberry Pi CM4 (BCM2711, bcmgenet, 1Gbps link):
+>> - XDP_PASS: 943 Mbit/s TX, 935 Mbit/s RX (no regression vs baseline)
+>> - XDP_PASS latency: 0.164ms avg, 0% packet loss
+>> - XDP_DROP: all inbound traffic blocked as expected
+>> - XDP_TX: TX counter increments (packet reflection working)
+>> - Link flap with XDP attached: no errors
+>> - Program swap under iperf3 load: no errors
+> 
+> Have you had a chance to run the XDP tests from
+> tools/testing/selftests/drivers/net/hw/
+> ?
 
-Log the saved mode value instead so the warning reports the actual
-unexpected rack timer mode.
+Not yet - thanks for the poibter. I will run it and include results in 
+v2.
 
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
----
- net/rxrpc/input_rack.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/rxrpc/input_rack.c b/net/rxrpc/input_rack.c
-index 13c371261e0a..9eb109ffba56 100644
---- a/net/rxrpc/input_rack.c
-+++ b/net/rxrpc/input_rack.c
-@@ -413,6 +413,6 @@ void rxrpc_rack_timer_expired(struct rxrpc_call *call, ktime_t overran_by)
- 		break;
- 	//case RXRPC_CALL_RACKTIMER_ZEROWIN:
- 	default:
--		pr_warn("Unexpected rack timer %u", call->rack_timer_mode);
-+		pr_warn("Unexpected rack timer %u", mode);
- 	}
- }
--- 
-2.50.1
-
+Nicolai
