@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044721A8F97
-	for <netdev@vger.kernel.org>; Sat, 14 Mar 2026 16:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C3E2DEA8C
+	for <netdev@vger.kernel.org>; Sat, 14 Mar 2026 16:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773504132; cv=none; b=uxMrMseRPRPl2W2p3aLBttYeQDD5DNlOE4rWoqNU605tnAVrMryHnsvmupj7OYSDY/T6GdKgSSip+gkFnu9CfeVKrUJzUSEEvdtpjgUynx5kyhzu5IcbQoWd9qJiHVXnOndToq+OPwVOKHvH0PTjWLlU0hjH9YkBI3OSAxzPKkI=
+	t=1773504375; cv=none; b=gCF2Shdle0/TBdt41QzPlE8RuGQCROg58FvWoH5qfvVKYpYeVgJ3jT67EAtuDoQKsnb5zPUqVgYoMdUJOqIAuCcorJ+eGLGKMgWfrHIRaGJm0Sp6ueHlO+Dp1Ggo9iIjVLFYQPGIhWMBbMq6xkOQPIKYjVxXNPUKDlS71BY9ex8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773504132; c=relaxed/simple;
-	bh=Smcm86Ij1wsWitZt1z9fSB9bWtP35J/tCMhsdyLFYDQ=;
+	s=arc-20240116; t=1773504375; c=relaxed/simple;
+	bh=5iT9f/SQfYrkwdPGbepNnEtTWPIA6guAy88FhJub868=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J212A1hzEHyu0niCH5G+t74rziZj7nMZAca3jl7lqoxMCYC95y8FMtQpHfB4vQrlDihhLmyB6ucRhFdHy6ZUuH+RJHF+j/3boBa4tuAt6RpnUne68U4BoznxcMaV8kLrjYxkerJEB3eYaOsCmwCdLjHWAfnCjjFnmDTU1+E8wm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b7Z+BVyB; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=ewHZq6FSmw6ytrDomTmMho7xH0wme+VYw6r5YXfkj00j98OzuSPfvQ3rUqORa0uxtAOARHp1tmSf6cYFanB6E1Zmmcxnuifclq3wcgLZ6aza5w8zd023rwxvBvD+0HbtnR2muyVhYeNKAcB2Yg12C2eLTz7/mAVh+AC6fiacmps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HdllJmcA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b7Z+BVyB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5280BC2BC86;
-	Sat, 14 Mar 2026 16:02:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HdllJmcA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0EDBC116C6;
+	Sat, 14 Mar 2026 16:06:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773504131;
-	bh=Smcm86Ij1wsWitZt1z9fSB9bWtP35J/tCMhsdyLFYDQ=;
+	s=k20201202; t=1773504375;
+	bh=5iT9f/SQfYrkwdPGbepNnEtTWPIA6guAy88FhJub868=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=b7Z+BVyB9shwymR5Y++VcuaD03uITEu/0nRBYKOGXX/8FzxvwhFrYIz6TOAjflTxF
-	 v8Ot8Al8joDc3MJVkK/B0Pn2YJs+vMC09xA7r5Vvl199uu3x9Gye6Zr2NutHX5j/wT
-	 eS7wUUVkUuz+6ndeecq7vFtOTCpW8xJAS8XcVrbgBUkAFS5/K5r8EyWYSOOzz+ka41
-	 w17Jx17rgsookS3pw9qnIgHprbPmqJgVJkuEt3NRj1cyTTUPSIYyzRBBoe+U/9qisQ
-	 AJu8UYiWG9x5x/4HAjj9ruISs6Z3RhAFk0aQCYdtkd7A8thcbahcmaO1iNCappXd7T
-	 Uhz9hdvF/y8sA==
-Date: Sat, 14 Mar 2026 09:02:10 -0700
+	b=HdllJmcARJv8aPShIldh6My2Qwkimi8CpUEeJK1N/jka0+PG2H9XjFyWgVbTmFzMu
+	 c7jU1dMTmg4KJB1sTovyRPl0ByUSgNh8T0B26BUXU+bHFE/4PFfJ/7++KaUE7LSviU
+	 8dzYQvVQKm54QOunglS+CzlI6bF7CUCR8QSjuSHtUtleuNz/dSqaKVhVVc//ljQzUZ
+	 6I7GNIpJ9xE042EpvPBCK3hMRLJ/2DgyZlnWh9CKP6gVNqUNEwJiNgpzN/Sjsmf6DP
+	 Km0/Ec620rMMqYF/CsCHy9g1xm2cq7hFE8OoYkDxlLY8qrXpsTCavUQdSRmaOay3vV
+	 O/00MzlHej4sQ==
+Date: Sat, 14 Mar 2026 09:06:14 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Davide Caratti <dcaratti@redhat.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko
- <jiri@resnulli.us>, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v2 1/3] netdevsim: move TC offload code to a
- dedicated file
-Message-ID: <20260314090210.0b7260d4@kernel.org>
-In-Reply-To: <b9c3cab13359044df5e8fe52f47c09cf37754e92.1773411667.git.dcaratti@redhat.com>
-References: <cover.1773411667.git.dcaratti@redhat.com>
-	<b9c3cab13359044df5e8fe52f47c09cf37754e92.1773411667.git.dcaratti@redhat.com>
+To: Fernando Fernandez Mancera <fmancera@suse.de>
+Cc: David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org,
+ tgraf@infradead.org, horms@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, davem@davemloft.net
+Subject: Re: [PATCH net v4] ipv4: bump rt_genid when a relevant devconf
+ value changes through netlink
+Message-ID: <20260314090614.116f38cc@kernel.org>
+In-Reply-To: <633f5de1-daeb-48ac-aba1-92b3c3ccf5c8@suse.de>
+References: <20260313144555.4956-1-fmancera@suse.de>
+	<1644761b-4960-431f-bf3d-5593007212fc@kernel.org>
+	<633f5de1-daeb-48ac-aba1-92b3c3ccf5c8@suse.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,17 +48,34 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 13 Mar 2026 18:23:56 +0100 Davide Caratti wrote:
-> diff --git a/drivers/net/netdevsim/netdevsim.h b/drivers/net/netdevsim/netdevsim.h
-> index f767fc8a7505..fdd35ab29d98 100644
-> --- a/drivers/net/netdevsim/netdevsim.h
-> +++ b/drivers/net/netdevsim/netdevsim.h
-> @@ -470,3 +470,6 @@ struct nsim_bus_dev {
->  
->  int nsim_bus_init(void);
->  void nsim_bus_exit(void);
-> +
-> +int nsim_setup_tc(struct net_device *dev, enum tc_setup_type type,
-> +		  void *type_data);
+On Fri, 13 Mar 2026 16:13:20 +0100 Fernando Fernandez Mancera wrote:
+> > Also, you are flushing the cache for more values than sysfs does.  
+> 
+> I don't think so. The problem is that the handling of sysctl is 
+> scattered in several places.
+> 
+> IPV4_DEVCONF_FORWARDING is flushed at devinet_sysctl_forward().
+> 
+> IPV4_DEVCONF_NOXFRM, IPV4_DEVCONF_NOPOLICY, 
+> IPV4_DEVCONF_PROMOTE_SECONDARIES, IPV4_DEVCONF_ROUTE_LOCALNET, and 
+> IPV4_DEVCONF_DROP_UNICAST_IN_L2_MULTICAST are flushed at 
+> ipv4_doint_and_flush() used by macro DEVINET_SYSCTL_FLUSHING_ENTRY.
+> 
+> Finally, IPV4_DEVCONF_BC_FORWARDING and IPV4_DEVCONF_ACCEPT_LOCAL are 
+> flushed at devinet_conf_proc().
+> 
+> Yes, I know, the fact that they are scattered around is quite confusing. 
+> This could be all unified in a single place but that would be too much 
+> for net tree IMHO.
+> 
+> Please let me know if I am missing something.
 
-Put this above struct nsim_bus_dev please
+I think David means that for some knobs procfs only flushes when value
+changes "in one direct", eg
+
+                if (i == IPV4_DEVCONF_ACCEPT_LOCAL - 1 ||                       
+                    i == IPV4_DEVCONF_ROUTE_LOCALNET - 1)                       
+                        if ((new_value == 0) && (old_value != 0))               
+                                rt_cache_flush(net);       
+
+which means only flush on the 1 -> 0 transition.
