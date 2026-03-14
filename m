@@ -1,132 +1,118 @@
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD8213AD05
-	for <netdev@vger.kernel.org>; Sat, 14 Mar 2026 00:00:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECAB19CC0C
+	for <netdev@vger.kernel.org>; Sat, 14 Mar 2026 00:01:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773446454; cv=none; b=QMrsjRVMnhqgF35VBNUUJwTs4yX5xUDGGbdBXKqFfusbTSlFt8sXTH7IHPWHQE8o880cuH+XVoWD3jI3UjmXb5FDHAFLxcx8whtMjzXUoFv4JClB+KetemHbDHMZ5k8wDuYUmYveVjefHEUlgY5wBnRmXfvC/FnLr2wwEjfDaFc=
+	t=1773446469; cv=none; b=RvJOoAdgzfWxqQeY7p3ga1JDETnuL2CAQrDBgX43OWkprV5Yl4ebSSUsayYXMGiGo/H6xta9ARpmamCjh+QlTU7nNxtF6gEw+n9473dPwgxpgPj5+pDFd0Pankv9qjbwpV2bT2PMgrtPe9qxb1FmI6qYpus3UqHDd7S5Eewl9pE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773446454; c=relaxed/simple;
-	bh=qQSv/5WdpZH4XBXZwbx9dzgQ4o8yOA7GNQGX0IAwggY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dXWpBe9bE6452+qq5XuEtHBfYaw9s/yf2gyFikEmMHhUkaWf9qtzTBC0E321vXtupUZHC3ihbc8em4GudF9sUroB2DTZqZAwmv+ti6dbWOvCJTWRr+w/PjaztudKNkfRWqhAWOLwatQlsH6oD4o/ygOVY+nuXsIboZ3Rz86auLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hsmJ+vuU; arc=none smtp.client-ip=209.85.128.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1773446469; c=relaxed/simple;
+	bh=cs6t7X7CRK8Svud40jTvRkJsFctHRu5gwJsDJpMYvLc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cOV22dOU1UyMcHRPgFgjc7qDJkWIpouUIqadQvOP/txxI6mNY3iCc7RSNNaMMBzxOIMs1+L9h4+y81kLi4/oUv65jZlI4MaWO7SICUrYNl1Rx/emTN3vuc+eQvKtaa6CCSOVN8QDdHer1EirB0nxh+95zors/QJfQ6J1Sfwt8pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b=IfMjK7uf; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hsmJ+vuU"
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-79800183233so41961187b3.1
-        for <netdev@vger.kernel.org>; Fri, 13 Mar 2026 17:00:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b="IfMjK7uf"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-35a1f549e7eso1283758a91.0
+        for <netdev@vger.kernel.org>; Fri, 13 Mar 2026 17:01:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773446452; x=1774051252; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=W86A6Y/31ihOHZ6/xNMK1KyCGKpHT+7je3oM4+QBYPA=;
-        b=hsmJ+vuUSP3+l9K7+ZZrsfasOwOkxFRpqvn0JQex614/Zzu1lqLoddBjnygLZp5v/G
-         BmMD5Dx5oIkvZxDMZs/K3tmHRnqDAQ4mmAJkzR17Z40KQ0r/mjSslcRI1nrVTcokDvVG
-         x9zLIrVEdzmMUnfk7ihMl5Wk75Y2boItaGjCHFa7RnIQ+j5dqKZ75ygdrAyxmcBrUxY1
-         z6ZdL3j3TCcAZ9WjBMXpg7Aiqgmgkg4xaQ+8AaL/kM/MmVay5HZSlxRANySTkXNICLh2
-         iR984qlbdaRVOJWvw3Uwnjt4fS3DFcSpilF7sVJq3vSASHRLNIBNU9dcyBPbgNHcWmwp
-         hL9Q==
+        d=dama-to.20230601.gappssmtp.com; s=20230601; t=1773446468; x=1774051268; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NXbhoLYlxQyyo7Nw6ZYoN5BQZLWF6NXpzKSnh7TUmkA=;
+        b=IfMjK7uf2QXpButcCVHR3aQYiCKacYe5OE3hyUm2aL5X2pXs/W03iLB7Fi6UkCkpYR
+         gHhGImnppJEJJx79MfqxJfXWpYBQ5r+ee3QWZ/ar26FeB4pO74nB2hsB/+eprXhyOizm
+         KI2foTHffWDe1n1MAiUQkAIL7LmR3Q3D255afysOezp3XkOemCU59D0G/qIloLo79kJ9
+         /cvsYnJbFSICmgySDNEGIq8TYkYE9lYW5YcuTIxZHEi1mp279IGnaQNTR21qNI6kHtZ2
+         t4XOWJosIxtvWMMxd5mNqIXQRZU/3AZDQK905hq+GJXrgPQAyRy74Z65cQSyJihC/z+8
+         hJRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773446452; x=1774051252;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=W86A6Y/31ihOHZ6/xNMK1KyCGKpHT+7je3oM4+QBYPA=;
-        b=ZPGU4pSnzhANZ8F026cJAsKc1vuaN/hToLFEiCXDbip9g4OTb1+9vTmpphH1j7GqQi
-         JFaHsPqqSNqZNOw26oWhU2kSTfLYfr7uKx580PNDsX3T8nSpgTvw6t0aWMIFhn6T+uzn
-         LGWR/5A+Xaxsxz8lkgsxTWp8usF3z6Mo9akg46jKEGWevbD/HQpLo+cosOE4S6/XhX+T
-         rCxlo+MoTSIW3N+ebDQf3g3rHS/wQHQyZpWWqml2yl+u1FqrxwyHA0tcj4I4zTa24gK6
-         sORqSAXRcjVrwkKCd7TUuaEcrGROHbEj1MWF71KS2pg52rmnJMDXhluQn27uVmJkrg9q
-         xIPA==
-X-Forwarded-Encrypted: i=1; AJvYcCU/qHLQs5T57v/DpSZbSVM9idPgYmng9OfjyyeOdGUIc4orBzReZpXh4osSQs05d0AhuTX+aSs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4c+UZV9so+qiCZNxTvxbeq04+27+EdM41tvUfgIZVgT6XbcfG
-	WAuv4qWQPrn5/mp8Wqjv/ngtdgrPOUzbm9h4QxraP3o4IehO7nh7jDeVtx1OVQ==
-X-Gm-Gg: ATEYQzw+VfEDDxqW3p1T6dMxQ4iiy2Vc1PbqXJAh5/kneBXZK8Y3s/Fhw9C1mGC82nr
-	Wkd78Hdc8oRqJD3N1P83hUy+lJ0gJPSqdh8XlmJsJWN9uKgfkWmeWmkLL71vQmh5uklfwg0vyDk
-	tv63ow4srhIuiN0I3IQuvnX2aGzUJkGoaQ1bSopd7VxDu+U2GFZe2yUJ6lbZOe6kfMMnG8FohkU
-	l8Y7cdJgdZ0jxAgwSdfI2ZLiEatWH+5ipOOeiqd4YzPTwhhOIn7TyuzhJWfcQE5CL47YRG3NIbY
-	f4fstXBjle96WT1FnChu/YcdiL5htEUcE3gxbTlli9ocX+vretUW8dVLappfZlX6L87AhPZLQFB
-	rwFdfEITUg/0lRB5QUOqUHMyKhM+voVvSxqGBG1gGf4Quawxznm8RYYsrtGwAyNQ3s91qYBklj1
-	UasjDIwFirrGPNkbQtCAuZvg==
-X-Received: by 2002:a05:690c:348a:b0:794:a8ea:f04a with SMTP id 00721157ae682-799475ee218mr90550227b3.20.1773446452052;
-        Fri, 13 Mar 2026 17:00:52 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:54::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-79917f1ecd9sm54769307b3.45.2026.03.13.17.00.51
+        d=1e100.net; s=20251104; t=1773446468; x=1774051268;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NXbhoLYlxQyyo7Nw6ZYoN5BQZLWF6NXpzKSnh7TUmkA=;
+        b=ptTspuwrNwzMKvXtRM4onLzTTMIt4UybE1DRNd/2+1XNdrD4FLaAn70UomKkIUlHgw
+         T7sg4gJPcsqzme3dFDhjXYUaFMSwUEddDzF0iJEJkvXRIbXDgVX2Hw6kUSOWfWs624qy
+         PacyvK84BoLGvRzdSPqA+VZ4LMECFo10Tu3CqWH3ppLFXwEatxnTFeCE9gxBwjwLGyY1
+         /m2iCUtOsxpGgBLuvHxPgkR3dqazubYGMPmoA7/TlkaDIpbhU9sUZw8AFmFH2IE4JyhH
+         d+40LMHqFCjonVeURwHT4gLwphH2SDeifhE+9dD4eqyWwQ/7/3Pp8096LbTesgPhDnc/
+         S/YA==
+X-Forwarded-Encrypted: i=1; AJvYcCWu6b6cb5oVTGQkngeo32nSNxyci99F2YK96nIBbhV3ZPD0pi9EjwJSLlEloizp/v5uSG9KJ/o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yysbpdmf4y9wYLDze7M+r237fa7n+rELROZ5XgBi6Bh/lxYRFYy
+	ZWtxmh+Lmh3Z5LzpfS3pLRCErzLZknxr5DjDkj9PekCDBdkHOiQ4te3sKy/kUITP4XVx9Ct7vbj
+	Bmy2gM9A=
+X-Gm-Gg: ATEYQzxlbpmCHK7dxY2dNotM5IC6BXuJtMK9VMCWpfqSDongeR+y4N9suBWhowskmyq
+	4LRsLYISc+IXU3mji3BPMPPBd2pf5agIWGwdfD9o2fEkSSjDcR/XSY6dsqlIW8ls3381shvvg/h
+	ll653Sb6pXR4lccNVyNcbz9OHFoIlMfm3HcdbMYDIdCHGYnAXI638f09s2vUufxbMmL6/g9N6ts
+	tRkqx6SxhPktjT8iy77BS+GU2NBSUytFpYzjnMB352/0nulhX2i+KwjCQvxy8XpIqT1EUwHk4XC
+	68hHXyStCnGW1B8bsBfD5EHxUAM1/xe8PnH9ZvhYbzgvtSWmnxx8nEiC5GeCK7eiH4AfSR2ULqN
+	gFIbe5tmt7Ly/Mp73FATLTt8wwWwemnnVfuFCCqW5tlzHgyeZSXl/PD/6Y3sDEmdhrm9YuLQlDy
+	5MLunp
+X-Received: by 2002:a17:90b:380f:b0:359:f7d2:a1f6 with SMTP id 98e67ed59e1d1-35a21c7676dmr4837429a91.0.1773446467734;
+        Fri, 13 Mar 2026 17:01:07 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:71::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35a23d9f29fsm3630876a91.10.2026.03.13.17.01.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Mar 2026 17:00:51 -0700 (PDT)
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-Date: Fri, 13 Mar 2026 17:00:15 -0700
-Subject: [PATCH net-next 2/2] selftests/vsock: fix vsock_test path
- shadowing in nested VMs
+        Fri, 13 Mar 2026 17:01:07 -0700 (PDT)
+Date: Fri, 13 Mar 2026 17:01:06 -0700
+From: Joe Damato <joe@dama.to>
+To: Chris J Arges <carges@cloudflare.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, Andy Gospodarek <gospo@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+Subject: Re: [PATCH net-next v4 3/6] bnxt_en: Move bnxt_rss_ext_op into header
+Message-ID: <abSlQrYQcY2zWJy7@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>,
+	Chris J Arges <carges@cloudflare.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Andy Gospodarek <gospo@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+References: <20260313223029.454755-1-carges@cloudflare.com>
+ <20260313223029.454755-4-carges@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260313-vsock-vmtest-nested-fixes-v1-2-d0e6274c3193@meta.com>
-References: <20260313-vsock-vmtest-nested-fixes-v1-0-d0e6274c3193@meta.com>
-In-Reply-To: <20260313-vsock-vmtest-nested-fixes-v1-0-d0e6274c3193@meta.com>
-To: Stefano Garzarella <sgarzare@redhat.com>, Shuah Khan <shuah@kernel.org>
-Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Jakub Kicinski <kuba@kernel.org>, Bobby Eshleman <bobbyeshleman@meta.com>
-X-Mailer: b4 0.14.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260313223029.454755-4-carges@cloudflare.com>
 
-From: Bobby Eshleman <bobbyeshleman@meta.com>
+On Fri, Mar 13, 2026 at 05:27:33PM -0500, Chris J Arges wrote:
+> This allows bnxt_rss_ext_op to be used by other functions. In addition this
+> modifies the rxcmp argument to be const since the function only reads from
+> this structure.
+> 
+> Signed-off-by: Chris J Arges <carges@cloudflare.com>
+> ---
+>  drivers/net/ethernet/broadcom/bnxt/bnxt.c | 17 -----------------
+>  drivers/net/ethernet/broadcom/bnxt/bnxt.h | 17 +++++++++++++++++
+>  2 files changed, 17 insertions(+), 17 deletions(-)
+> 
 
-The /root mount introduced for nested VM support shadows any host paths
-under /root. This breaks systems where the outer VM runs as root and the
-vsock_test binary path is something like:
-
-/root/linux/tools/testing/selftests/vsock/vsock_test
-
-Fix this by copying vsock_test into the temporary home directory that
-gets mounted as /root in the guest, and using a relative path to invoke
-it.
-
-Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
----
- tools/testing/selftests/vsock/vmtest.sh | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
-index c2cfcdf05d99..8182c748f214 100755
---- a/tools/testing/selftests/vsock/vmtest.sh
-+++ b/tools/testing/selftests/vsock/vmtest.sh
-@@ -393,6 +393,7 @@ handle_build() {
- setup_home() {
- 	mkdir -p "$(dirname "${SSH_KEY_PATH}")"
- 	ssh-keygen -t ed25519 -f "${SSH_KEY_PATH}" -N "" -q
-+	cp "${VSOCK_TEST}" "${TEST_HOME}"/vsock_test
- }
- 
- create_pidfile() {
-@@ -601,7 +602,7 @@ vm_vsock_test() {
- 	# log output and use pipefail to respect vsock_test errors
- 	set -o pipefail
- 	if [[ "${host}" != server ]]; then
--		vm_ssh "${ns}" -- "${VSOCK_TEST}" \
-+		vm_ssh "${ns}" -- ./vsock_test \
- 			--mode=client \
- 			--control-host="${host}" \
- 			--peer-cid="${cid}" \
-@@ -609,7 +610,7 @@ vm_vsock_test() {
- 			2>&1 | log_guest
- 		rc=$?
- 	else
--		vm_ssh "${ns}" -- "${VSOCK_TEST}" \
-+		vm_ssh "${ns}" -- ./vsock_test \
- 			--mode=server \
- 			--peer-cid="${cid}" \
- 			--control-port="${port}" \
-
--- 
-2.52.0
-
+Reviewed-by: Joe Damato <joe@dama.to>
