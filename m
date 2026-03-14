@@ -1,164 +1,68 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD701A2545;
-	Sat, 14 Mar 2026 19:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD8F2046BA;
+	Sat, 14 Mar 2026 20:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773518070; cv=none; b=r/zsM2/zkwUMGhTljKU6hMAmd53VNy9yYq+oDDewiZrFFFt5mjOCJlge6c820+tHu6DCYhwbaY6zzUopj/pkZe0vsdY4acebYdqIY8DoPXbFSsfCUtqN1rYkIA85kpscjX1uYcbmXo7/Y8itoUstCt2yWNcnXlnatyDxcTKNVLU=
+	t=1773518763; cv=none; b=WrJNAbIzQKE9arKUlnSwzlV/WV9sUpuh4JfxfMRWEBFPgNqd3DXzf/if3HkAzrNdUXdz6/EURaNT9mstYgiN52PnJYbvwJ6JxUxzD0VwfVFmPpA0v2N4HL76OHKSzfZbd+V71bn7DoUdXZI7Ee44id2UstzGq0IeyxuFU4aUCDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773518070; c=relaxed/simple;
-	bh=bJuGitTBA6p6rQY56Y79glcnOKva1Edg3uB876JYbo8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bh0HKd48PtwBO4ZRzRIuFn+hZC8oYRmwgMBdCGiBJQMupg7DXCeB4FmlYyCVTaWss6I+vzca1JWZnFv8NfVLhZHslJbWtq74vqSv60uupaniTw+Fmib+mZSvcoICVIqhOOSb/bCI4LekFRN00G0mxURJ0RTlU2HLw8gwqUGgfAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DXOpG0pa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773518763; c=relaxed/simple;
+	bh=Vedks8gdVTP9wSEvN7dGkLWh0D4RhYNYqCAWeATFhWc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fgDl4ylmUK8JuRRjG+ZTnMOu513N93m1ecsZpayL2x9vzUyLJG4gZKWOVpEWfTzSSV91H5gMxmHlq2Sn5Yp4dlDdRPUSkk9dAzSBg04m4u1P10n718uP1IbftUhr59gKfWMxVnTg/pPf6r3+OPD5TEK4iA0nN5B85xzhwlnQ54g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pTdtN5xI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DXOpG0pa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B40C116C6;
-	Sat, 14 Mar 2026 19:54:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pTdtN5xI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 083B3C116C6;
+	Sat, 14 Mar 2026 20:06:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773518069;
-	bh=bJuGitTBA6p6rQY56Y79glcnOKva1Edg3uB876JYbo8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DXOpG0paxGYARHEzxEVC/LBjfeV0FO3VeDg6NdKuRawWE1FyY6cKVnR8eqMT8VdJr
-	 yFdcODMNeO+/In3O8+7r+m3CpAVt02Rt1/DoPSkpZEgCtanTT2Rk3tyGR0HOxMHkLZ
-	 Byb4BfGPMG8IC+aYxKDxpP/3T0h9KvrMm7DEa0xpsYP5GfdV0/vzhfIiC7bLnAwk0p
-	 bWEFUVBXLQXqcDNCBt4BRrmQSLSpnggcltihc9ly0OWGzMbFGVOteJLolJfE/XR5AA
-	 vgmurXGKJdc5YZWelA9yp3eUDeWHrmi0ingYZjQjIr/n7rvJa9L0UQAxrNozmGLAsq
-	 XeZZNTwn+FnlA==
+	s=k20201202; t=1773518762;
+	bh=Vedks8gdVTP9wSEvN7dGkLWh0D4RhYNYqCAWeATFhWc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=pTdtN5xIqR30KmjBfL2KVNQ1fJ3tNDtIqYf0GCDpV1TYBmDuvVkBMGOs1xffttMK/
+	 rOEr7rz960iJaHe/9QXE3nJa+ajDGXJmF3XUXdlUbOL2okafXfWZdmzYL7PFO1g09d
+	 Ez1wRArCWruFWBeoSaCEPbFOPm9zlt5lkJfJK/IbbXgpfP3pP1DxZfOHx6BsFD37aq
+	 LzB6E0tUoFeWcu5U/SkLXe/vKZowq0dG9UWgRWUxP3wjAZoihPMETtdKpvhIq2UOJv
+	 xq/jBiILKhz03EHljS//m30IMJdncPWeXxuSt+DIVqGCcW+ILnks6x0hUohjf5uhZd
+	 +mmtcOLhMVYhw==
+Date: Sat, 14 Mar 2026 13:06:01 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: ivecera@redhat.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	mschmidt@redhat.com,
-	linux-kernel@vger.kernel.org,
-	Prathosh.Satish@microchip.com,
-	horms@kernel.org,
-	vadim.fedorenko@linux.dev,
-	arkadiusz.kubalewski@intel.com,
-	jiri@resnulli.us,
-	poros@redhat.com,
-	netdev@vger.kernel.org
-Subject: Re: [net-next,5/6] dpll: zl3073x: add reference priority to zl3073x_chan
-Date: Sat, 14 Mar 2026 12:53:59 -0700
-Message-ID: <20260314195358.2710968-2-kuba@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260311190055.139006-6-ivecera@redhat.com>
-References: <20260311190055.139006-6-ivecera@redhat.com>
+To: I Viswanath <viswanathiyyappan@gmail.com>
+Cc: stfomichev@gmail.com, horms@kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ eperezma@redhat.com, xuanzhuo@linux.alibaba.com, jasowang@redhat.com,
+ mst@redhat.com, przemyslaw.kitszel@intel.com, anthony.l.nguyen@intel.com,
+ jacob.e.keller@intel.com, ronak.doshi@broadcom.com, pcnet32@frontier.com,
+ bcm-kernel-feedback-list@broadcom.com, netdev@vger.kernel.org,
+ virtualization@lists.linux.dev, intel-wired-lan@lists.osuosl.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v9 0/7] Introduce async callback
+ ndo_set_rx_mode_async
+Message-ID: <20260314130601.0ec7a534@kernel.org>
+In-Reply-To: <20260314182809.362808-1-viswanathiyyappan@gmail.com>
+References: <20260314182809.362808-1-viswanathiyyappan@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-This is an AI-generated review of your patch. The human sending this
-email says "Is this legit? Quite hard to follow the logic of this change :/"
+On Sat, 14 Mar 2026 23:58:02 +0530 I Viswanath wrote:
+> This is an implementation of the idea provided by Jakub here
+> 
+> https://lore.kernel.org/netdev/20250923163727.5e97abdb@kernel.org/
+> 
+> The set_rx_mode callback is invoked under the addr_lock spinlock which
+> makes it illegal to sleep. This means set_rx_mode is prone to
+> sleep-in-atomic bugs as drivers have a tendency to do the I/O directly
+> in the callback.
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
----
-dpll: zl3073x: add reference priority to zl3073x_chan
-
-This commit caches the ZL_REG_DPLL_REF_PRIO registers in the zl3073x_chan
-cfg group, adding a ref_prio[] array and inline helpers for accessing
-priority values. It extends state_fetch and state_set with DPLL mailbox
-operations to read and write these priority registers.
-
-> diff --git a/drivers/dpll/zl3073x/chan.c b/drivers/dpll/zl3073x/chan.c
-> index 10189c8a5ded..74d00cee624e 100644
-> --- a/drivers/dpll/zl3073x/chan.c
-> +++ b/drivers/dpll/zl3073x/chan.c
-
-[ ... ]
-
-> @@ -85,7 +102,9 @@ const struct zl3073x_chan *zl3073x_chan_state_get(struct zl3073x_dev *zldev,
->   * @chan: desired channel state
->   *
->   * Skips the HW write if the configuration is unchanged, and otherwise
-> - * writes the mode_refsel register to hardware.
-> + * writes only the changed registers to hardware. The mode_refsel register
-> + * is written directly, while the reference priority registers are written
-> + * via the DPLL mailbox interface.
->   *
->   * Return: 0 on success, <0 on HW error
->   */
-> @@ -93,14 +112,48 @@ int zl3073x_chan_state_set(struct zl3073x_dev *zldev, u8 index,
->  			   const struct zl3073x_chan *chan)
->  {
->  	struct zl3073x_chan *dchan = &zldev->chan[index];
-> -	int rc;
-> +	int rc, i;
->
->  	/* Skip HW write if configuration hasn't changed */
->  	if (!memcmp(&dchan->cfg, &chan->cfg, sizeof(chan->cfg)))
->  		return 0;
->
-> -	rc = zl3073x_write_u8(zldev, ZL_REG_DPLL_MODE_REFSEL(index),
-> -			      chan->mode_refsel);
-> +	/* Direct register write for mode_refsel */
-> +	if (dchan->mode_refsel != chan->mode_refsel) {
-> +		rc = zl3073x_write_u8(zldev, ZL_REG_DPLL_MODE_REFSEL(index),
-> +				      chan->mode_refsel);
-> +		if (rc)
-> +			return rc;
-> +	}
-> +
-> +	/* Mailbox write for ref_prio if changed */
-> +	if (!memcmp(dchan->ref_prio, chan->ref_prio, sizeof(chan->ref_prio))) {
-> +		dchan->cfg = chan->cfg;
-> +		return 0;
-> +	}
-> +
-> +	guard(mutex)(&zldev->multiop_lock);
-> +
-> +	/* Read DPLL configuration into mailbox */
-> +	rc = zl3073x_mb_op(zldev, ZL_REG_DPLL_MB_SEM, ZL_DPLL_MB_SEM_RD,
-> +			   ZL_REG_DPLL_MB_MASK, BIT(index));
-> +	if (rc)
-> +		return rc;
-> +
-> +	/* Update changed ref_prio registers */
-> +	for (i = 0; i < ARRAY_SIZE(chan->ref_prio); i++) {
-> +		if (dchan->ref_prio[i] != chan->ref_prio[i]) {
-> +			rc = zl3073x_write_u8(zldev,
-> +					      ZL_REG_DPLL_REF_PRIO(i),
-> +					      chan->ref_prio[i]);
-> +			if (rc)
-> +				return rc;
-> +		}
-> +	}
-> +
-> +	/* Commit DPLL configuration */
-> +	rc = zl3073x_mb_op(zldev, ZL_REG_DPLL_MB_SEM, ZL_DPLL_MB_SEM_WR,
-> +			   ZL_REG_DPLL_MB_MASK, BIT(index));
->  	if (rc)
->  		return rc;
->
-
-Could this function leave the cache and hardware out of sync?
-
-When both mode_refsel and ref_prio have changed, the function writes
-mode_refsel to hardware first. If the subsequent mailbox operation fails
-(during the mailbox read, a ref_prio write, or the mailbox commit), the
-function returns an error without executing 'dchan->cfg = chan->cfg'.
-
-This leaves dchan->mode_refsel cached at the old value while the hardware
-has the new value:
-
-zl3073x_chan_state_set()
-    dchan->mode_refsel != chan->mode_refsel is true
-    zl3073x_write_u8(... mode_refsel) succeeds
-        hardware now has new mode_refsel value
-    zl3073x_mb_op(...READ...) fails
-    return rc without updating dchan->cfg
-        dchan->mode_refsel still has old value
-
-Later calls that get state via zl3073x_chan_state_get() will see the stale
-cached mode_refsel. If they try to set mode_refsel back to the old value,
-the comparison 'dchan->mode_refsel != chan->mode_refsel' evaluates to false
-(both match the old value), skipping the write, while hardware retains the
-new value.
-
-Before this patch, mode_refsel was written in a single atomic step with no
-possibility of partial failure, so this desynchronization scenario couldn't
-occur.
+Stan is actively working on this:
+https://lore.kernel.org/20260313145113.1424442-1-sdf@fomichev.me
+I feel like I spent enough time reviewing your attempts and Stan
+will not need as much maintainer attention to bring this to 
+a closure so let him cook. Sorry.
