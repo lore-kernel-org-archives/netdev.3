@@ -1,29 +1,30 @@
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C1D2E975E
-	for <netdev@vger.kernel.org>; Sat, 14 Mar 2026 07:51:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5276525B30D
+	for <netdev@vger.kernel.org>; Sat, 14 Mar 2026 07:51:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773474692; cv=none; b=rBYUkXYVxTiAukfvnbGX5SS3e0uZb+3yZpLTZ5dfU4rV7etpZT1c7sri6rM8MQPXDYi+/1+GhNIrzL9J9O6Z2GoK7450kEvOY4M4tSvqnogAwMYfAIu8oEzx31fuQrO/K1vnJ0Ws8kvcWuuZMLpmllSunZbOdh3/40G9+frUF74=
+	t=1773474693; cv=none; b=FlipUpmeGUkOwDSUhnskYmbcBo860+ryq6OwEhux5o02/YWwvIGJP9zeDHWPqKM6zPyOLrPxTzkXcnCc/i/i96rFGNGpc52yNaFL5132TjqHyyf/fZ8CUKTPwxUSNd7u5YX01c9rnOS8ba5B0+f3kcUQodEnQuuLaATCLaKdoU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773474692; c=relaxed/simple;
-	bh=2Ac5ugfn/yh8dvW37pbdoCwbp6jX3PIxVARy9kLt7yc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=saUBSUoLtGEl/4P5xlJfesz/NnBScEq4d6iLCzGr20wBnCFw7yH9WtbJ2w4mBBnUk5SDYSDhztSST3/3SshUjleMBBXu4SVWH1D+upSO6hJeK9Hf5RRMdnolzuxj6fa3tQDX6Gxu50YwislSyNWaBQiRFhw4WFne5IiLGZXeUBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=acgHR+WL; arc=none smtp.client-ip=115.124.30.124
+	s=arc-20240116; t=1773474693; c=relaxed/simple;
+	bh=uKQO7zzsw9pn5//DZYD/b3rEY5IjLIh3vtm/Yo2NUEA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=fY9yGIg3KuXOUT/b5IEperMqHErOu9Hf5PglrZkkU8UMVkyu3e2JVLhF5X16wAipTsc6I89UVavMsoERVYnn7a1iuXTrIh8+zsZRw/5yRaufI7kK67hQQIIdhj/qaLfhCtu+6KhxvgGPoaJxo0NK8jMr4Q79nFyThNrs/NDy2Nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=s5tuGlrf; arc=none smtp.client-ip=115.124.30.100
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="acgHR+WL"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="s5tuGlrf"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1773474682; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=uzAj/f94trsh9AaKEm2C141AEJgPwAAS2d5/alPO62Q=;
-	b=acgHR+WLDySSp94azhaZjUU5KjjxO9h2cTYrWH7cpzJ2Zp/0ZK+vXNgnupXjGwd/fpL/C82p/cw3/l/PL0vB+Xn9x2dGpuDwWs5zAF2IQvfibbPgBdijXn2KAuf3mVm3DU2dwfwPh+hclGa5CLvEzbUvVowp0boTPPNsXAYDIcQ=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=xuanzhuo@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0X-v6sX9_1773474681;
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0X-v6sX9_1773474681 cluster:ay36)
+	t=1773474686; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=z3L4T/9WuKQxkSfd1XgtjOJ7a7Jkonw989U20eQcGRU=;
+	b=s5tuGlrfhr2x7rnjc7DIYKKT3rplHvQx4YfGJ9nUk75sM8NKtPnUIeD0uRFW0jW0F4fYKHImr4US/GqLTfCuR9xrZFt2hYBwLjE6piSU9mSVUKmE7vm31/+vt4SXUrgsOSwAE2rTuEnoqXEjJEMoIIBf6V3zVZWo6uersRMCYig=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=xuanzhuo@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0X-vFnK1_1773474685;
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0X-vFnK1_1773474685 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Sat, 14 Mar 2026 15:51:21 +0800
+          Sat, 14 Mar 2026 15:51:26 +0800
 From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 To: netdev@vger.kernel.org
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -38,10 +39,12 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	Dong Yibo <dong100@mucse.com>,
 	Heiner Kallweit <hkallweit1@gmail.com>,
 	Dust Li <dust.li@linux.alibaba.com>
-Subject: [PATCH net-next v31 0/8] eea: Add basic driver framework for Alibaba Elastic Ethernet Adaptor
-Date: Sat, 14 Mar 2026 15:51:13 +0800
-Message-Id: <20260314075121.9292-1-xuanzhuo@linux.alibaba.com>
+Subject: [PATCH net-next v31 6/8] eea: implement packet transmit logic
+Date: Sat, 14 Mar 2026 15:51:19 +0800
+Message-Id: <20260314075121.9292-7-xuanzhuo@linux.alibaba.com>
 X-Mailer: git-send-email 2.32.0.3.g01195cf9f
+In-Reply-To: <20260314075121.9292-1-xuanzhuo@linux.alibaba.com>
+References: <20260314075121.9292-1-xuanzhuo@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,218 +54,330 @@ MIME-Version: 1.0
 X-Git-Hash: fdd97c1af94d
 Content-Transfer-Encoding: 8bit
 
-Add a driver framework for EEA that will be available in the future.
+Implement the core logic for transmitting packets in the EEA TX path,
+including packet preparation and submission to the underlying transport.
 
-This driver is currently quite minimal, implementing only fundamental
-core functionalities. Key features include: I/O queue management via
-adminq, basic PCI-layer operations, and essential RX/TX data
-communication capabilities. It also supports the creation,
-initialization, and management of network devices (netdev). Furthermore,
-the ring structures for both I/O queues and adminq have been abstracted
-into a simple, unified, and reusable library implementation,
-facilitating future extension and maintenance.
+Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+Reviewed-by: Philo Lu <lulie@linux.alibaba.com>
+Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
+Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+---
+ drivers/net/ethernet/alibaba/eea/eea_tx.c | 283 +++++++++++++++++++++-
+ 1 file changed, 280 insertions(+), 3 deletions(-)
 
-v31:
-    1. remove unused parameter "enet" from eex_rx_post()
-
-v30:
-   1. fix some small problems
-
-v29:
-    Address AI-generated review suggestions from the previous version.
-
-v28:
-    Address AI-generated review suggestions from the previous version.
-
-v27:
-    Address AI-generated review suggestions from the previous version.
-
-v26:
-    Adopting suggestions from the previous AI review, another significant
-    change is the introduction of an IRQ block to implement IRQ proxying. With
-    this design, when an IRQ occurs, we no longer invoke the RX data structure
-    directly -- instead, the IRQ block serves as an intermediary proxy. This
-    approach offers several advantages: IRQ resources no longer need to be
-    reallocated during reset operations, and IRQs are decoupled from RX
-    structures. Consequently, when certain errors occur, we can fall back and
-    safely reuse the original memory resources.
-
-v25:
-    I have adopted most of the suggestions from the AI's feedback. However, I
-    believe some of the feedback is incorrect. I have already replied in the
-    previous thread. http://lore.kernel.org/all/1770002612.3297296-2-xuanzhuo@linux.alibaba.com
-
-v24:
-    1. Add null checks for enet->rx and enet->tx in eea_get_ethtool_stat to
-       prevent errors when reading rx = enet->rx[i] in case enet->rx is null.
-       tx is similar. With rtnl protection in place, this check is sufficient.
-    2. Use 'received' as the return value in eea_poll.
-
-v23:
-    I have moved netif_set_real_num_queues() out of eea_start_rxtx(), so
-    eea_start_rxtx() is now a void function. I believe enet_bind_new_q_and_cfg()
-    is a more suitable place to include netif_set_real_num_queues(). In
-    eea_active_ring_and_irq(), I first execute request_irq() before interacting
-    with the hardware to create queues. Therefore, during the NIC setup process,
-    all driver-internal operations (memory allocation, IRQ initialization, sysfs
-    configuration, etc.) will be completed before the final notification to the
-    hardware.
-
-v22:
-    1. Use the budget from the NAPI poll function as the parameter for
-       napi_consume_skb.
-    2. Stop the TX queue when the remaining ring slots cannot hold an SKB.
-
-v21:
-    Fix two issues from the previous version:
-    1, a DMA unmap operation was missing.
-    2, RCU APIs were not used in eea_stats. Although the standard practice when
-        using RCU would require adding the __rcu annotation to both the rx and
-        tx fields, in many cases these fields are read without needing RCU
-        protection.  Therefore, I do not want to add the __rcu annotation.
-        Instead, I use a spin lock to protect modifications to rx and tx.
-
-v20:
-    Fix the partially initialized structure passed to db. @Jakub
-    http://lore.kernel.org/all/20260113172353.2ae6ef81@kernel.org
-
-v19:
-    fix the comments from @Simon Horman
-
-v18:
-    v17 with [PATCH] prefix.
-
-v17:
-    1. In `eea_adminq_dev_status`, uniformly use `enet->cfg.rx_ring_num`.
-    2. Add a `struct eea_net_cfg *cfg` parameter to `eea_free_rx` and
-        `eea_free_tx`. When called in the normal path, pass `enet->cfg` as
-        the argument; when called during initialization, pass the temporary
-        `cfg` instead.
-    3. Move the `.ndo_get_stats64` callback into `eea_net.c`.
-    4. In the `.ndo_get_stats64` callback, add a comment explaining how the TX
-        and RX statistics are protected by RCU.
-
-       /* This function is protected by RCU. Here uses enet->tx and enet->rx
-        * to check whether the TX and RX structures are safe to access. In
-        * eea_free_rxtx_q_mem, before freeing the TX and RX resources, enet->rx
-        * and enet->tx are set to NULL, and synchronize_net is called.
-        */
-
-
-v16:
-    1. follow the advices from @ALOK TIWARI
-       http://lore.kernel.org/all/5ff95a71-69e5-4cb6-9b2a-5224c983bdc2@oracle.com
-
-v15:
-    1. remove 'default m' from eea kconfig
-    2. free the resources when open failed.
-
-v14:
-    1. some tiny fixes
-
-v13:
-    1. fix some tiny fixes @Simon
-
-v12:
-    I encountered some issues with sending the v11 patches, as they were quite
-    messy. Therefore, I'm resending them as v12.
-
-v11:
-    1. remove auto clean __free(kfree)
-    2. some tiny fixes
-
-v10:
-    1. name the jump labels after the target @Jakub
-    2. rm __GFP_ZERO from dma_alloc_coherent @Jakub
-v9:
-    1. some fixes for ethtool from http://lore.kernel.org/all/20251027183754.52fe2a2c@kernel.org
-
-v8: 1. rename eea_net_tmp to eea_net_init_ctx
-    2. rm code that allocs memory to destroy queues
-    3. some other minor changes
-
-v7: 1. remove the irrelative code from ethtool commit
-    2. build every commits with W12
-
-v6: Split the big one commit to five commits
-v5: Thanks for the comments from Kalesh Anakkur Purayil, ALOK TIWARI
-v4: Thanks for the comments from Troy Mitchell, Przemek Kitszel, Andrew Lunn, Kalesh Anakkur Purayil
-v3: Thanks for the comments from Paolo Abenchi
-v2: Thanks for the comments from Simon Horman and Andrew Lunn
-v1: Thanks for the comments from Simon Horman and Andrew Lunn
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Xuan Zhuo (8):
-  eea: introduce PCI framework
-  eea: introduce ring and descriptor structures
-  eea: probe the netdevice and create adminq
-  eea: create/destroy rx,tx queues for netdevice open and stop
-  eea: implement packet receive logic
-  eea: implement packet transmit logic
-  eea: introduce ethtool support
-  eea: introduce callback for ndo_get_stats64
-
- MAINTAINERS                                   |   8 +
- drivers/net/ethernet/Kconfig                  |   1 +
- drivers/net/ethernet/Makefile                 |   1 +
- drivers/net/ethernet/alibaba/Kconfig          |  28 +
- drivers/net/ethernet/alibaba/Makefile         |   5 +
- drivers/net/ethernet/alibaba/eea/Makefile     |   9 +
- drivers/net/ethernet/alibaba/eea/eea_adminq.c | 444 ++++++++++
- drivers/net/ethernet/alibaba/eea/eea_adminq.h |  75 ++
- drivers/net/ethernet/alibaba/eea/eea_desc.h   | 134 +++
- .../net/ethernet/alibaba/eea/eea_ethtool.c    | 243 ++++++
- .../net/ethernet/alibaba/eea/eea_ethtool.h    |  49 ++
- drivers/net/ethernet/alibaba/eea/eea_net.c    | 807 ++++++++++++++++++
- drivers/net/ethernet/alibaba/eea/eea_net.h    | 195 +++++
- drivers/net/ethernet/alibaba/eea/eea_pci.c    | 618 ++++++++++++++
- drivers/net/ethernet/alibaba/eea/eea_pci.h    |  73 ++
- drivers/net/ethernet/alibaba/eea/eea_ring.c   | 252 ++++++
- drivers/net/ethernet/alibaba/eea/eea_ring.h   |  88 ++
- drivers/net/ethernet/alibaba/eea/eea_rx.c     | 785 +++++++++++++++++
- drivers/net/ethernet/alibaba/eea/eea_tx.c     | 403 +++++++++
- 19 files changed, 4218 insertions(+)
- create mode 100644 drivers/net/ethernet/alibaba/Kconfig
- create mode 100644 drivers/net/ethernet/alibaba/Makefile
- create mode 100644 drivers/net/ethernet/alibaba/eea/Makefile
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_adminq.c
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_adminq.h
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_desc.h
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ethtool.c
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ethtool.h
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_net.c
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_net.h
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_pci.c
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_pci.h
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ring.c
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ring.h
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_rx.c
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_tx.c
-
---
+diff --git a/drivers/net/ethernet/alibaba/eea/eea_tx.c b/drivers/net/ethernet/alibaba/eea/eea_tx.c
+index 5b3df2e582e1..5986dd34094b 100644
+--- a/drivers/net/ethernet/alibaba/eea/eea_tx.c
++++ b/drivers/net/ethernet/alibaba/eea/eea_tx.c
+@@ -11,6 +11,11 @@
+ #include "eea_pci.h"
+ #include "eea_ring.h"
+ 
++struct eea_sq_free_stats {
++	u64 packets;
++	u64 bytes;
++};
++
+ struct eea_tx_meta {
+ 	struct eea_tx_meta *next;
+ 
+@@ -28,21 +33,293 @@ struct eea_tx_meta {
+ 	u16 dma_len;
+ };
+ 
++static struct eea_tx_meta *eea_tx_meta_get(struct eea_net_tx *tx)
++{
++	struct eea_tx_meta *meta;
++
++	if (!tx->free)
++		return NULL;
++
++	meta = tx->free;
++	tx->free = meta->next;
++
++	return meta;
++}
++
++static void eea_tx_meta_put_and_unmap(struct eea_net_tx *tx,
++				      struct eea_tx_meta *meta)
++{
++	struct eea_tx_meta *head;
++
++	head = meta;
++
++	while (true) {
++		if (head == meta)
++			dma_unmap_single(tx->dma_dev, meta->dma_addr,
++					 meta->dma_len, DMA_TO_DEVICE);
++		else
++			dma_unmap_page(tx->dma_dev, meta->dma_addr,
++				       meta->dma_len, DMA_TO_DEVICE);
++
++		if (meta->next) {
++			meta = meta->next;
++			continue;
++		}
++
++		break;
++	}
++
++	meta->next = tx->free;
++	tx->free = head;
++}
++
++static void eea_meta_free_xmit(struct eea_net_tx *tx,
++			       struct eea_tx_meta *meta,
++			       int budget,
++			       struct eea_tx_cdesc *desc,
++			       struct eea_sq_free_stats *stats)
++{
++	struct sk_buff *skb = meta->skb;
++
++	if (unlikely((skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) && desc)) {
++		struct skb_shared_hwtstamps ts = {};
++
++		ts.hwtstamp = EEA_DESC_TS(desc) + tx->enet->hw_ts_offset;
++		skb_tstamp_tx(skb, &ts);
++	}
++
++	++stats->packets;
++	stats->bytes += meta->skb->len;
++	napi_consume_skb(meta->skb, budget);
++
++	meta->data = NULL;
++}
++
++static u32 eea_clean_tx(struct eea_net_tx *tx, int budget)
++{
++	struct eea_sq_free_stats stats = {0};
++	struct eea_tx_cdesc *desc;
++	struct eea_tx_meta *meta;
++	int desc_n;
++	u16 id;
++
++	while ((desc = ering_cq_get_desc(tx->ering))) {
++		id = le16_to_cpu(desc->id);
++		if (unlikely(id >= tx->ering->num)) {
++			netdev_err(tx->enet->netdev, "tx invalid id %d\n", id);
++			ering_cq_ack_desc(tx->ering, 1);
++			continue;
++		}
++
++		meta = &tx->meta[id];
++
++		if (meta->data) {
++			eea_tx_meta_put_and_unmap(tx, meta);
++			eea_meta_free_xmit(tx, meta, budget, desc, &stats);
++			desc_n = meta->num;
++		} else {
++			netdev_err(tx->enet->netdev,
++				   "tx meta->data is null. id %d num: %d\n",
++				   meta->id, meta->num);
++			desc_n = 1;
++		}
++
++		ering_cq_ack_desc(tx->ering, desc_n);
++	}
++
++	return stats.packets;
++}
++
+ int eea_poll_tx(struct eea_net_tx *tx, int budget)
+ {
+-	/* Empty function; will be implemented in a subsequent commit. */
++	struct eea_net *enet = tx->enet;
++	u32 index = tx - enet->tx;
++	struct netdev_queue *txq;
++	u32 cleaned;
++
++	txq = netdev_get_tx_queue(enet->netdev, index);
++
++	__netif_tx_lock(txq, smp_processor_id());
++
++	cleaned = eea_clean_tx(tx, budget);
++
++	if (netif_tx_queue_stopped(txq) && cleaned > 0)
++		netif_tx_wake_queue(txq);
++
++	__netif_tx_unlock(txq);
++
++	return 0;
++}
++
++static int eea_fill_desc_from_skb(const struct sk_buff *skb,
++				  struct eea_tx_desc *desc)
++{
++	if (skb_is_gso(skb)) {
++		struct skb_shared_info *sinfo = skb_shinfo(skb);
++
++		desc->gso_size = cpu_to_le16(sinfo->gso_size);
++		if (sinfo->gso_type & SKB_GSO_TCPV4)
++			desc->gso_type = EEA_TX_GSO_TCPV4;
++
++		else if (sinfo->gso_type & SKB_GSO_TCPV6)
++			desc->gso_type = EEA_TX_GSO_TCPV6;
++
++		else if (sinfo->gso_type & SKB_GSO_UDP_L4)
++			desc->gso_type = EEA_TX_GSO_UDP_L4;
++
++		else
++			return -EINVAL;
++
++		if (sinfo->gso_type & SKB_GSO_TCP_ECN)
++			desc->gso_type |= EEA_TX_GSO_ECN;
++	} else {
++		desc->gso_type = EEA_TX_GSO_NONE;
++	}
++
++	if (skb->ip_summed == CHECKSUM_PARTIAL) {
++		desc->csum_start = cpu_to_le16(skb_checksum_start_offset(skb));
++		desc->csum_offset = cpu_to_le16(skb->csum_offset);
++	}
++
++	return 0;
++}
++
++static struct eea_tx_meta *eea_tx_desc_fill(struct eea_net_tx *tx,
++					    dma_addr_t addr, u32 len,
++					    bool is_last, void *data, u16 flags)
++{
++	struct eea_tx_meta *meta;
++	struct eea_tx_desc *desc;
++
++	meta = eea_tx_meta_get(tx);
++
++	desc = ering_sq_alloc_desc(tx->ering, meta->id, is_last, flags);
++	desc->addr = cpu_to_le64(addr);
++	desc->len = cpu_to_le16(len);
++
++	meta->next     = NULL;
++	meta->dma_len  = len;
++	meta->dma_addr = addr;
++	meta->data     = data;
++	meta->num      = 1;
++	meta->desc     = desc;
++
++	return meta;
++}
++
++static int eea_tx_add_skb_frag(struct eea_net_tx *tx,
++			       struct eea_tx_meta *head_meta,
++			       const skb_frag_t *frag, bool is_last)
++{
++	u32 len = skb_frag_size(frag);
++	struct eea_tx_meta *meta;
++	dma_addr_t addr;
++
++	addr = skb_frag_dma_map(tx->dma_dev, frag, 0, len, DMA_TO_DEVICE);
++	if (unlikely(dma_mapping_error(tx->dma_dev, addr)))
++		return -ENOMEM;
++
++	meta = eea_tx_desc_fill(tx, addr, len, is_last, NULL, 0);
++
++	meta->next = head_meta->next;
++	head_meta->next = meta;
++
+ 	return 0;
+ }
+ 
++static int eea_tx_post_skb(struct eea_net_tx *tx, struct sk_buff *skb)
++{
++	const struct skb_shared_info *shinfo = skb_shinfo(skb);
++	u32 hlen = skb_headlen(skb);
++	struct eea_tx_meta *meta;
++	dma_addr_t addr;
++	int i, err;
++	u16 flags;
++
++	addr = dma_map_single(tx->dma_dev, skb->data, hlen, DMA_TO_DEVICE);
++	if (unlikely(dma_mapping_error(tx->dma_dev, addr)))
++		return -ENOMEM;
++
++	flags = skb->ip_summed == CHECKSUM_PARTIAL ? EEA_DESC_F_DO_CSUM : 0;
++
++	meta = eea_tx_desc_fill(tx, addr, hlen, !shinfo->nr_frags, skb, flags);
++
++	err = eea_fill_desc_from_skb(skb, meta->desc);
++	if (err)
++		goto err_cancel;
++
++	for (i = 0; i < shinfo->nr_frags; i++) {
++		const skb_frag_t *frag = &shinfo->frags[i];
++		bool is_last = i == (shinfo->nr_frags - 1);
++
++		err = eea_tx_add_skb_frag(tx, meta, frag, is_last);
++		if (err)
++			goto err_cancel;
++	}
++
++	meta->num = shinfo->nr_frags + 1;
++	ering_sq_commit_desc(tx->ering);
++
++	return 0;
++
++err_cancel:
++	ering_sq_cancel(tx->ering);
++	eea_tx_meta_put_and_unmap(tx, meta);
++	meta->data = NULL;
++	return err;
++}
++
++static void eea_tx_kick(struct eea_net_tx *tx)
++{
++	ering_kick(tx->ering);
++}
++
+ netdev_tx_t eea_tx_xmit(struct sk_buff *skb, struct net_device *netdev)
+ {
+-	/* Empty function; will be implemented in a subsequent commit. */
+-	dev_kfree_skb_any(skb);
++	struct eea_net *enet = netdev_priv(netdev);
++	int qnum = skb_get_queue_mapping(skb);
++	struct eea_net_tx *tx = &enet->tx[qnum];
++	struct netdev_queue *txq;
++	int err, n;
++
++	txq = netdev_get_tx_queue(netdev, qnum);
++
++	skb_tx_timestamp(skb);
++
++	err = eea_tx_post_skb(tx, skb);
++	if (unlikely(err))
++		dev_kfree_skb_any(skb);
++
++	/* NETDEV_TX_BUSY is expensive. So stop advancing the TX queue. */
++	n = MAX_SKB_FRAGS + 1;
++	netif_txq_maybe_stop(txq, tx->ering->num_free, n, n);
++
++	if (!netdev_xmit_more() || netif_xmit_stopped(txq))
++		eea_tx_kick(tx);
++
+ 	return NETDEV_TX_OK;
+ }
+ 
+ static void eea_free_meta(struct eea_net_tx *tx, struct eea_net_cfg *cfg)
+ {
++	struct eea_sq_free_stats stats = {0};
++	struct eea_tx_meta *meta;
++	int i;
++
++	while ((meta = eea_tx_meta_get(tx)))
++		meta->skb = NULL;
++
++	for (i = 0; i < cfg->tx_ring_depth; i++) {
++		meta = &tx->meta[i];
++
++		if (!meta->skb)
++			continue;
++
++		eea_tx_meta_put_and_unmap(tx, meta);
++
++		eea_meta_free_xmit(tx, meta, 0, NULL, &stats);
++	}
++
+ 	kvfree(tx->meta);
+ 	tx->meta = NULL;
+ }
+-- 
 2.32.0.3.g01195cf9f
 
