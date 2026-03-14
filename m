@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2E0303C97;
-	Sat, 14 Mar 2026 19:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3F6CA52;
+	Sat, 14 Mar 2026 19:30:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773516614; cv=none; b=owlruiUoWaRvfowRWCxxvApgN0UJG3LJw5hus7kONil2OhtnFuJlSvDiMV7NbalIM8MZUdin73yWLHmPlOYYDk+elBCgwqxg+TteIPjXN/dJE4bh3v3+mzR3QgG5/ASl/aW6nedvkv1SxzpdPOR3XnXfJstCxEFJ8/4+m3v/v90=
+	t=1773516625; cv=none; b=JyWBuZfjkCbB5J0adnmULdiyBu7+CgQljaHCl0m1VGZ48tp4I2ZJZCDvqH8XZMFk/kbS0tS7n015kYexQo/vRkO4Va8hqLRnprQ/B+I4YEovLHTHIra5xRPKYnD/e/fiTvw8uhsXwFVo51p2hR8iyH9JTqinz+aiVB4teiWgbeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773516614; c=relaxed/simple;
-	bh=zmDFLImBATrlY5PX+2lUXOVkdP0lQVU0kz9DlM4p4Qk=;
+	s=arc-20240116; t=1773516625; c=relaxed/simple;
+	bh=APmw1QrkydnSiEcDg6aTb/isY0wGSJupEcg3DG3VK6w=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=VM92lByFQn40IHg43mX8GDQe6LEpRFBo9qdK3DuWI2sSaEln1GRd3GwTeZlebCVIORQohylJ4GqBnDeLuMI80R0fYGiEkbIsy43FZD+IuObrTjYU7cIhhQiBtXQaBjvwNW1yxlh+YAUq5pLAOPAm/aC1vMtSYrwJfVNz01ZKjOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aHh/Kztx; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Q8Rc1tO4miaOb9vXCjNH0E5AWkZsn3uudm00QiykSI/hLzMcI4L0eWDpBya6du1HaFxBRsSAMJ8mGjUDVroNtYudEtx9Pujf6ocfilV83KJ2Ru1NhX1Qd/KpZbvuw8qT1p1WoAG2KC76A4FwLRs5zZ7eCrmpaOlT9cUQ0PSxLn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MBG4Cnp8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aHh/Kztx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACFECC116C6;
-	Sat, 14 Mar 2026 19:30:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MBG4Cnp8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE5B6C116C6;
+	Sat, 14 Mar 2026 19:30:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773516613;
-	bh=zmDFLImBATrlY5PX+2lUXOVkdP0lQVU0kz9DlM4p4Qk=;
+	s=k20201202; t=1773516624;
+	bh=APmw1QrkydnSiEcDg6aTb/isY0wGSJupEcg3DG3VK6w=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=aHh/KztxU7iwBEtOksUZoBj0wDg9oZiP6+sw12vXDujKYB3B548tTMxG5E+SqcPlw
-	 mvKHgiqB2XnsfeL68MgLlkXiQCfmGJo2NZaQ2q3V+UkeZkzRsXK3ZjA0KL/li0OW6B
-	 3IRiS1RuB/IsD6iqgJF5emWUNTqANUlk2KClybyQ0CrCuq3dTf9Ak6LR5025jlP/FZ
-	 dXyt+gXy5pRTdzGFMjm9fjFJDBHxgW5K0ckiXl848VuMSetE70trjldecGP0NQth5r
-	 RJbM8VTKF3OWS81HWQHoD+1rktC+UU8cgm+N4kzgpncIGdbIVzOLY1czU6og4BWK1H
-	 NnlSqUUUI96GQ==
+	b=MBG4Cnp8TmSjYJ/nPnxaC9+u2NQoMP5Cuns3a18+6BsdMwq9YZ2NcgatqyssIO/b7
+	 WRdMneJ1Q0MBpcryi8nG3wDYPAIRKGv+KQgfJ2SwuSrkblVhuYBhuZ7URoUzgkB/D8
+	 CasuGk9/Vhz7SeKuOeCaXo2xctKobdWBw2EYfECkMCJeip56kGhSX377yFKzD+tirE
+	 LvgF3hW192z/pFCLEPUHIOVOSYB1yxQNseNgEK79wl9Dt/Tb+jigpAdOUZBMfj+BRH
+	 y4BV8zPhsbdhvYpu/SGqTQaNYj4Nm9qjf6jVDh+4klURhPzMzZ0XJ88KxTXJaCg8sS
+	 SToMnoVEOdOGw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02DC33808200;
-	Sat, 14 Mar 2026 19:30:09 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 4007B3808200;
+	Sat, 14 Mar 2026 19:30:20 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,40 +37,48 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/2] net: macb: Fix Ethernet malfunction on AMD Versal
- board after suspend
+Subject: Re: [PATCH v2 net-next 0/5] net: phy: further decouple provider from
+ consumer part
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177351660779.1763199.11769087375422491221.git-patchwork-notify@kernel.org>
-Date: Sat, 14 Mar 2026 19:30:07 +0000
-References: <20260312-macb-versal-v1-0-467647173fa4@gmail.com>
-In-Reply-To: <20260312-macb-versal-v1-0-467647173fa4@gmail.com>
-To: Kevin Hao <haokexin@gmail.com>
-Cc: netdev@vger.kernel.org, nicolas.ferre@microchip.com,
- claudiu.beznea@tuxon.dev, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- quanyang.wang@windriver.com, stable@vger.kernel.org
+ <177351661903.1763199.2542451163758230122.git-patchwork-notify@kernel.org>
+Date: Sat, 14 Mar 2026 19:30:19 +0000
+References: <9d5724bc-e525-4f8f-b3f8-b16dd5a1164e@gmail.com>
+In-Reply-To: <9d5724bc-e525-4f8f-b3f8-b16dd5a1164e@gmail.com>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: andrew@lunn.ch, linux@armlinux.org.uk, pabeni@redhat.com, kuba@kernel.org,
+ davem@davemloft.net, edumazet@google.com, andersson@kernel.org,
+ mturquette@baylibre.com, sboyd@kernel.org, vkoul@kernel.org,
+ neil.armstrong@linaro.org, netdev@vger.kernel.org, p.zabel@pengutronix.de,
+ linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+ linux-phy@lists.infradead.org
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 12 Mar 2026 16:13:57 +0800 you wrote:
-> Hi,
+On Mon, 9 Mar 2026 18:01:16 +0100 you wrote:
+> This series aims at further decoupling the provider and consumer part
+> in phylib.
 > 
-> On Versal boards, the tx/rx queue pointer registers are cleared after suspend,
-> which causes Ethernet malfunction. This patch series addresses this issue by
-> reinitializing the tx/rx queue pointer registers and the rx ring.
-> 
+> v2:
+> - patch 2: add needed Kconfig dependency changes
+> - patch 5: explain false positive checkpatch error
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/2] net: macb: Introduce gem_init_rx_ring()
-    https://git.kernel.org/netdev/net/c/1a7124ecd655
-  - [net,2/2] net: macb: Reinitialize tx/rx queue pointer registers and rx ring during resume
-    https://git.kernel.org/netdev/net/c/718d0766ce4c
+  - [v2,net-next,1/5] net: phy: move mdio_device reset handling functions in the code
+    https://git.kernel.org/netdev/net-next/c/2d7bebc9dd79
+  - [v2,net-next,2/5] net: phy: make mdio_device.c part of libphy
+    https://git.kernel.org/netdev/net-next/c/6df1459605ce
+  - [v2,net-next,3/5] net: phy: move (of_)mdio_find_bus to mdio_bus_provider.c
+    https://git.kernel.org/netdev/net-next/c/b69ceb387aca
+  - [v2,net-next,4/5] net: phy: move registering mdio_bus_class and mdio_bus_type to libphy
+    https://git.kernel.org/netdev/net-next/c/25b23d828318
+  - [v2,net-next,5/5] net: phy: move remaining provider code to mdio_bus_provider.c
+    https://git.kernel.org/netdev/net-next/c/c4399af5e556
 
 You are awesome, thank you!
 -- 
