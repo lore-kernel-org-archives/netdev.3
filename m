@@ -1,138 +1,101 @@
-Received: from r9206.ps.combzmail.jp (r9206.ps.combzmail.jp [160.16.62.99])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F75C1D5170
-	for <netdev@vger.kernel.org>; Sat, 14 Mar 2026 00:33:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.16.62.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7431A0BD6;
+	Sat, 14 Mar 2026 00:37:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773448391; cv=none; b=sGJpyvhpeii1NMkSwcChNMkAcKxiJ76dleKCLp3PcFkmHzT4DI5lntiW8XY212GLdjL8Q3B5oj6zDU/sY2c3v8Dn/guAoo3axEGmO5cdBZRWC0PYNVZYuqsq97LC799f7650TdsPi789N0n54PWgbhC6j5N6JN0cTwBCiWzDAxM=
+	t=1773448655; cv=none; b=BE5HOitTzoppDufkTJDTGW6rLLDauDL4bggHQfriCjU/t2CJs7NTbv5K3smMDtePSmd6PSZwKaImEsXkao+KwBlTwBID9c0/uyDut0GIY/to9rHEg6+d2vdbcixz7yLrEWDwyFIolKLby5iRjEVXRRWl3umZMPiy0GNNJc1nTy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773448391; c=relaxed/simple;
-	bh=gaxADsOpGh2R7TrfuYIbKk9k6zkvNv87ynFzd0C/yTc=;
-	h=To:From:Subject:Mime-Version:Content-Type:Message-Id:Date; b=Ye7/yDl47/m5l+Ag/PL3CVsT4nFDdknXCJxe5Rd93ibT39CGp6iFLrfUgnt2m2unyeDiBuSSj2EbE1LmsV/8o4oMd1cVACHbpRKipXNSfuXXjY2WqyGvTvJP86qAk+M1iSj4Y7NQKk7YvBU0Wg5GJtXvpE1KiPajze6UKicKVJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=j-pet-hotel.jp; spf=pass smtp.mailfrom=magerr.combzmail.jp; arc=none smtp.client-ip=160.16.62.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=j-pet-hotel.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=magerr.combzmail.jp
-Received: by r9206.ps.combzmail.jp (Postfix, from userid 99)
-	id DFB3F103353; Sat, 14 Mar 2026 09:20:49 +0900 (JST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 r9206.ps.combzmail.jp DFB3F103353
-To: netdev@vger.kernel.org
-From: =?ISO-2022-JP?B?GyRCRnxLXCVaJUMlSCVbJUYlazYoMnEbKEI=?= <info@j-pet-hotel.jp>
-X-Ip: 3390141040952548
-X-Ip-source: k85gj72w48dnsa51u0p6gd
-Precedence: bulk
-List-Unsubscribe-Post: List-Unsubscribe=One-Click
-Subject: =?ISO-2022-JP?B?GyRCJVolQyVIJHIwJiQ5JGshIjdQMUQ8VE1NGyhC?=
- =?ISO-2022-JP?B?GyRCJFgbKEI=?=
+	s=arc-20240116; t=1773448655; c=relaxed/simple;
+	bh=8Xhm0BI6G0WN1odJrirW3+Ubnsz1u/9Up3kuHfBpF6k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XLN5Q37Cw/DumYVakSTLpqm8Gm4y04qr9hpK8ywdngvs1ufWngqdTawfr+kJzap7bfaCAye/jz5RIERWFRsbaCGxDx9qsC0+gm9sWAkmC977Yolzau8IMeFsGb7Vsf9FN60ASrffm0GMrMNXGY3xFdV8ljt2OuWIdFhdoOno30s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=gvEPv2PX; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="gvEPv2PX"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=eZWqpZg1vOaiKoR4DSlmunCSlEkK8XZEpM9MEr5G5jo=; b=gvEPv2PX110hBhxslOImfIn0f9
+	LWAqEeoOdUn5h2RMYq340b79VLWjiw8QYQT8S9fpGdRrjvWvRXJhojIqIPrYBOtaPIfTAsVbmbnT0
+	LchiVCn6TZbpvagNcWV2HN9SKb1EYKqM6Z4jH5qMBbd8Q9AnoU7NgPSkFh+GeDGq1xVTc8gOqtNKr
+	EblEw+cHjU2I0ypHpYMQU4Z+W2NuLabkTO3euT5SO6bX/teM6DkzXhlhjbiphjuH98pVp1xy3FI5T
+	7q/ta1QFx5ut7ow/Wv187iiSm2oPibYZ3AiX1bHmgMXmM2Xk0eHDUAZ6AFv8UGuNl+wlncRxUk/Bg
+	py9Xu4KQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:48042)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1w1D0M-000000001eZ-3hM7;
+	Sat, 14 Mar 2026 00:37:22 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1w1D0J-000000000FZ-3Cxy;
+	Sat, 14 Mar 2026 00:37:19 +0000
+Date: Sat, 14 Mar 2026 00:37:19 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Linus Walleij <linusw@kernel.org>
+Cc: Christophe Roullier <christophe.roullier@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	antonio.borneo@foss.st.com,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] net: stmmac: fix pinctrl management during
+ suspend/resume
+Message-ID: <abStv0IPLfkKMD-W@shell.armlinux.org.uk>
+References: <20260313105718.359614-1-christophe.roullier@foss.st.com>
+ <20260313105718.359614-2-christophe.roullier@foss.st.com>
+ <abPwHh12MLwMwOIs@shell.armlinux.org.uk>
+ <CAD++jLmBP5Puwf1ZuFOzF6U0XowoF1nfqEL3gwLy-svXsXrbJA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-2022-jp
-Content-Transfer-Encoding: 7bit
-X-MagazineId: 2w51
-X-uId: 6764245238486059665034691009
-X-Sender: CombzMailSender
-X-Url: http://www.combzmail.jp/
-Message-Id: <20260314002114.DFB3F103353@r9206.ps.combzmail.jp>
-Date: Sat, 14 Mar 2026 09:20:49 +0900 (JST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAD++jLmBP5Puwf1ZuFOzF6U0XowoF1nfqEL3gwLy-svXsXrbJA@mail.gmail.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-$B!!(B
-$B!!%Z%C%H$r0&$9$k!"7P1D<TMM$X(B
-$B!!(B
-$B!!(B
-$B!!CO0h$G0&8$$r0B?4$7$FMB$1$i$l$k(B
-$B!!%Z%C%H%[%F%k!&%H%j%_%s%0;v6H$r;O$a$^$;$s$+!)(B
-$B!!(B
-$B!!(B
-$B!!"#!!%U%i%s%A%c%$%:%7%9%F%`@bL@2q!!"#(B
-$B!!(B
-$B!!!!!!0&8$2H$N%*!<%J!<B??t!*(B
-$B!!!!!!%Z%C%H%[%F%k!&%H%j%_%s%0%5%m%s(B
-$B!!!!!!!H(BONE LUKE$B!J%o%s%k!<%/!K!I(B
-$B!!(B
-$B!!!!!!"(!V3+6H%Q%C%/!W$r$4MQ0U$7$F$$$k$N$G(B
-$B!!!!!!!!7P83$d;q3J$,L5$/$F$b;O$a$i$l$^$9!#(B
-$B!!(B
-$B!!(B
-$B!!"#!!3+:EJ}<0(B
-$B!!!!!!%*%s%i%$%s!J?=9~8e$K;22CJ}K!$r$40FFb!K(B
-$B!!(B
-$B!!"#!!F|Dx(B
-$B!!!!!!(B3$B7n(B16$BF|!J7n!K(B11:00$B!A(B12:00$B!!;D$j(B1$BOH(B
-$B!!!!!!(B3$B7n(B19$BF|!JLZ!K(B15:00$B!A(B16:00$B!!;D$j(B1$BOH(B
-$B!!!!!!(B3$B7n(B24$BF|!J2P!K(B13:00$B!A(B14:00
+On Sat, Mar 14, 2026 at 12:44:56AM +0100, Linus Walleij wrote:
+> On Fri, Mar 13, 2026 at 12:08 PM Russell King (Oracle)
+> <linux@armlinux.org.uk> wrote:
+> > On Fri, Mar 13, 2026 at 11:57:16AM +0100, Christophe Roullier wrote:
+> > > In the deepest low-power modes, the pinctrl configuration is lost
+> > > and is never restored if the interface is down.
+> > > This commit ensures that the pinctrl state is set in all cases.
+> >
+> > Shouldn't the pin state be restored by the pinctrl layer?
+> 
+> What we have in the device core only applies "init" and "default"
+> states, and provides these handles for transitioning to "sleep"
+> and "default" again (like a state machine).
 
-$B!!"#!!Dj0w(B
-$B!!!!!!(B5$BL>(B
-$B!!(B
-$B!!"#!!;22C?=9~$O$3$A$i(B
-$B!!!!!!(Bhttps://oneluke-fc-seminar.jp/lp/
-$B!!(B
-$B!!(B
-$B!!$*@$OC$K$J$j$^$9!#(B
-$B!!(B
-$B!!$3$NEY$O!"%Z%C%H%[%F%k!&%H%j%_%s%0%5%m%s$N(B
-$B!!%U%i%A%c%$%:;v6H@bL@2q$N3+:E$r$40FFb$$$?$7$^$9!#(B
-$B!!(B
-$B!!%Z%C%H%[%F%k$H%H%j%_%s%0%5!<%S%9$rDs6!$9$k(B
-$B!!(B
-$B!!(BONE LUKE$B!J%o%s%k!<%/!K(B
-$B!!(B
-$B!!$O!"%o%s$A$c$s$,9%$-$9$.$kAO6H<T$,<B:]$K(B
-$B!!%Z%C%H%[%F%k$KMB$1$?$H$-$K46$8$?IT0B$d(B
-$B!!;W$C$?$3$H$r;\@_$E$/$j$K3h$+$7$F$$$^$9!#(B
-$B!!(B
-$B!!(B
-$B!!Nc$($P%o%s$A$c$s$,Gq$^$k$H$-$K!">/$7$G$b(B
-$B!!9-$/!"?4CO$h$/2a$4$7$FM_$7$$$H$$$&;W$$$+$i!"(B
-$B!!E4$N%2!<%8$G$O$J$/%*!<%@!<$G?&?M$5$s$K(B
-$B!!!V$*It20!W$r$D$/$C$F$$$?$@$$$F$$$^$9!#(B
-$B!!!!(B
-$B!!$=$&$7$?0&8$2HL\@~$N$-$a:Y$+$$%5!<%S%9$,;Y;}$5$l!"(B
-$B!!%o%s%k!<%/$rMxMQ$7$?J}$O9b$$3NN($G%j%T!<%H$7$F$/$l$^$9!#(B
-$B!!(B
-$B!!(B
-$B!!F|K\$G$O$$$^$d!V(B8$B@$BS$K(B1$B@$BS!W$,%Z%C%H$r;t$&$^$G$K(B
-$B!!A}$($F$-$^$7$?$,!"%Z%C%H%[%F%k$O$^$@$^$@E9J^?t$,(B
-$B!!B-$j$F$$$J$$$?$a!":#8e$b@.D9$,4|BT$G$-$^$9!#(B
-$B!!(B
-$B!!(B
-$B!!$3$3$^$G$3$NJ8>O$rFI$^$l$?$H$$$&$3$H$O!"(B
-$B!!$"$J$?$b%o%s$A$c$s$,Bg9%$-$J$N$G$O$J$$$G$7$g$&$+!#(B
-$B!!(B
-$B!!%o%s%k!<%/$N(BFC$B%*!<%J!<MM$b0&8$2H$,B?$/!"Cf$K$O(B
-$B!!$4<+?H$,MxMQ<T$@$C$?!"$H$$$&J}$b$$$i$C$7$c$$$^$9!#(B
-$B!!(B
-$B!!(B
-$B!!@bL@2q$K$F>\$7$$%S%8%M%9%b%G%k$r$*EA$($7$^$9$N$G!"(B
-$B!!?75,;v6H$rC5$7$F$$$k0&8$2H$N7P1D<TMM$O(B
-$B!!$3$N5!2q$K$<$R$4;22C$/$@$5$$!#(B
-$B!!(B
-$B!!(B
-$B!!CO0h$N%Z%C%H%i%$%U$rK-$+$K$7!"0&8$$,0B?4$7$F(B
-$B!!2a$4$;$k6u4V$r0l=o$K$D$/$C$F$$$-$^$7$g$&!#(B
-$B!!(B
-$B!!(B
-$B!!"#!!%U%i%s%A%c%$%:%7%9%F%`@bL@2q!!"#(B
-$B!!(B
-$B!!!!!!0&8$2H$N%*!<%J!<B??t!*(B
-$B!!!!!!%Z%C%H%[%F%k!&%H%j%_%s%0%5%m%s(B
-$B!!!!!!!H(BONE LUKE$B!J%o%s%k!<%/!K!I(B
-$B!!(B
-$B!!"#!!;22C?=9~$O$3$A$i(B
-$B!!!!!!(Bhttps://oneluke-fc-seminar.jp/lp/
-$B!!(B
-***********************************************************************
-$BK\%a!<%k$N$4ITMW$JJ}$K$OBgJQ$4LBOG$r$*$+$1$$$?$7$^$7$?!#(B
-$B$*<j?t$*3]$1$7$^$9$,!"%a!<%kITMW$N$*<jB3$-$O(B
-$B2<5-(BURL$B$h$j$*4j$$$$$?$7$^$9!#(B
-<$B%a!<%kDd;_%U%)!<%`(B>
-$B!!(Bhttps://oneluke-fc-seminar.jp/mail/
-***********************************************************************
-$BF|K\%Z%C%H%[%F%k6(2q3t<02q<R(B
-$B0&CN8)L>8E20;T@i<o6hFb;3(B3$BCzL\(B9-23 3F
-TEL:052-784-8416
-***********************************************************************
+What I was meaning is that - for a driver using the "default" state,
+if the hardware loses the pinctrl state during sleep, isn't it the
+responsibility of the pinctrl driver to restore the state rather
+than leaving it in whatever states it happens to be when the SoC
+comes back from suspend?
+
+If that is not the case, then don't we have a major issue where
+drivers using pinctrl but do not issue any pinctrl calls in the
+resume function are buggy?
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
