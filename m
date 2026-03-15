@@ -1,317 +1,283 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746CE175A73
-	for <netdev@vger.kernel.org>; Sun, 15 Mar 2026 23:46:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592EB2BE65B;
+	Sun, 15 Mar 2026 23:59:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773618365; cv=none; b=rxbRMZoa8Z1S2UK5QKoQxTG+ZehcC7Xm1bUGkFRkFF/nTyEiJe+AcUlErN1wu7IIt7wk10kvZ65gAIBFTAAuowOEabgzIafe+DX0EaCZErT+EgnV6DzI5jDu88EH9guxNK737NSYEEbVvzLtdb1MzH62p4YspqeSK5awxTDZM+Y=
+	t=1773619166; cv=none; b=pPky8h0lmadVjboZ5wPVT8pyDrYaMYb84+f49R+42g5dzAwSpO5ejXeiB/SZQIo4lswH47UMfjSOZ6CbZCfuSgx3OKE/1A+9DQ+8gh4+bCEwvKyvMpNWucWDb5svzMovIGPl5X/YmhbTwZBfdtNf9l9A9K0aMQqY1K88rTo5nQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773618365; c=relaxed/simple;
-	bh=KdFDrr71J8LoR2xT035mhXyIlBgN5GbB8uEGxEEj/Uw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GPHatvJWA1wBW49HJIx1v6nTLuOqAPDogAbB1fHXknUaTwsB46kzT33BEKDXaxaw9Wq4VJX0mjK+99gBTgjNL/pWmhlYVJNDDoOZ3rz23WsQoqz6jPtapSs26Pvu+DUA9UysXCLLrYXkAhKGlJ2AQrWYirgEKVO5Ovo6PPyrMng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=HjieKR2N; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=hM9ZxIMH; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1773619166; c=relaxed/simple;
+	bh=pUqvQ4L543THASTLxaotL2vpfSDTQPiKP3+I++E8IKg=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=DuAsw4Rn61UASo7QmbHnJB8HR9i6FN2VBURqN9JkE/dS+RntHDrxAYbq38LGhuMRGaq7ZFzNq2wvggtY7QOxnev/35I6nKAgPkwG9kBq5k8D6WoAPpDhPXxm6/YkdbkyQ8c5lLsRhGfQc5TRXtyFsRjmuTmcsFnF3a797WGagjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=iP3xSPx5; arc=none smtp.client-ip=185.226.149.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="HjieKR2N";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="hM9ZxIMH"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62FLYD703865785
-	for <netdev@vger.kernel.org>; Sun, 15 Mar 2026 23:46:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=jtCQPLyj84+GsPspBnbaXy0y
-	TRP7zEyOqjhe8ajtp8U=; b=HjieKR2NHTaR0CwoSzqXoqYE6PRpZxOASHyaEDNH
-	QFshIG5NlEVem27vTrGoaT878Ez1LcvJ5yroYihhQSlIfIsb4SWjehyOFqvFrggo
-	Kv3mt9KXQ9KPGVabe9T3vdIBUbyFvgN58FgzvPMxSgQAq+KxdmqwxDTVgF0DFqvk
-	kbQX0mkdZ/VYLq+QoT/R6wGACbbqXQxMP8qdfdT6Pah6uXNZR2S83++I+2/tKUYD
-	i4Gy2/SOAou9iJepI5mvkigfvpADUZsiI5wgfczhOQxjnzrE1h4o+eXNjuOkl5FH
-	Rcvg1kTObzAPWjcdiosC37p/YSrV8bfWCOw//vG07RXvjg==
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cw00bbkud-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Sun, 15 Mar 2026 23:46:02 +0000 (GMT)
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-829ad81b132so14751675b3a.1
-        for <netdev@vger.kernel.org>; Sun, 15 Mar 2026 16:46:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1773618361; x=1774223161; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jtCQPLyj84+GsPspBnbaXy0yTRP7zEyOqjhe8ajtp8U=;
-        b=hM9ZxIMHH6DMGF5C1ZK24p/p5W0H0OxJLn6nSQtXBt7o98to1YUM4PDJhYPfW+TK13
-         UNDrlFWIjkV+jAaw6QqFVYx2jnMUKLmvhq2mlbjbj9uWJ4hrIuZ+br374uMszuuC0dbo
-         UG3HTL5dzOLBrgpsfOyXwGv+g472oUkFtMEafjX7Cp0LxMFIl5nqKKUl5LCrKt3qhTE3
-         xOJRZZZI5ytJm2typsvnjjl4yS9U69Ia91J2YCxRGtX7sFD/cKvlZnyA00Pm+ztuE/OX
-         rZmOED6zYVM1zy8PbktasJJGpwTrjDjiYWNys9sOF1Ff7znMr3n5TmfRmTGWVyM6UQCM
-         CffA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773618361; x=1774223161;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jtCQPLyj84+GsPspBnbaXy0yTRP7zEyOqjhe8ajtp8U=;
-        b=DVD/8StKNzU6K7NZV35PzoGNukVnGFntlmBvxol1V6Wpo4p4QTutRQwY+y1MruEe9+
-         sX430P9CdUvCNRILZE9sViLjsg+8u5h8xiln/AGCIlcBz3AqPLrKyymiceMSrnez/d2D
-         j6pOke4luiQrn10Y960iHEhMX/w77+xjPS7In9iGZI/L3IKtUrgHwqwHFABsVbihjcWj
-         sPzPzhhhWUmJlXy4f2tmkXUKKg96WnZ28Poxd+rl6lMpPQ9n5QzHnddMWB8pl/roLaiD
-         OzZ09sASBNeI786QdXXJDXXOLkEcqn2RJjng+bHVBgFhhs+4p8zzSS+w3uqDNOSVlKcR
-         khRw==
-X-Forwarded-Encrypted: i=1; AJvYcCXrz1UzCfobB2gmIxaaKVrnf4MtG/g5GxbZf+ehiXID4EWE9S0C8jtYH6bFl01noEOhUMgNp7c=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy00cW9H9qZeXBDyZj9gyUPwnpB3T8i9K4MfNU9njJrxq9zXM/3
-	gPQIYPymMWjJvRXOa5BepcFSA30bA4rvSqNPDy23pPrMhL+74YldSlE33pGKfrV4kMw40wG6lAX
-	cmpcuWzKrTyis6bbkeIEZ19y1DeUlQMozEghC360SIHoa07fQyXqqEzo6g0g=
-X-Gm-Gg: ATEYQzwcVmvgNtOX1QlpR5PmfUVd+ogiMLLOo4zQV3rYWJA51BYE15inCu9f5JWRA2w
-	F+m8a49SIa1Zt//suKZ1slFA1tssBVaqP9OyQvaA5OQTrkRkdanZ2yOqKMdckBEcDfk6HjzgDjd
-	SBzgD2VZg7bGVj16IEFkX1hwiZXmzScle6mvnSaKAgoYViWOB8sHZDnXdZkhEnyrnC0REFXzQFi
-	a17aSk02Yjmlmr9zeu8pOO7Hdp10qAFMbDDG3KSCu0hV+Jkckkx1vPvDuejZXHVxfBe9TS376cn
-	A5K7w+3fhHGTnL2Pa/FgV1RQmXgSlAUhrmC5yeeR2AK5BCFsUWSM7uPSmT8CK7F8mGqq5MKG2/P
-	diYTIsptU9oELYTJkY9Tz/a+35t9Ll/pkdsE=
-X-Received: by 2002:a05:6a00:1a93:b0:829:793f:da6c with SMTP id d2e1a72fcca58-82a19899de0mr9844287b3a.39.1773618361035;
-        Sun, 15 Mar 2026 16:46:01 -0700 (PDT)
-X-Received: by 2002:a05:6a00:1a93:b0:829:793f:da6c with SMTP id d2e1a72fcca58-82a19899de0mr9844265b3a.39.1773618360324;
-        Sun, 15 Mar 2026 16:46:00 -0700 (PDT)
-Received: from oss.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a073b1d29sm11455561b3a.63.2026.03.15.16.45.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Mar 2026 16:45:59 -0700 (PDT)
-Date: Mon, 16 Mar 2026 05:15:53 +0530
-From: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Andrew Lunn <andrew@lunn.ch>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
-        Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>
-Subject: Re: [PATCH net-next 0/8] net: stmmac: improve PCS support
-Message-ID: <abdEscs44fU4kRag@oss.qualcomm.com>
-References: <abQC7r38QLhSeadl@shell.armlinux.org.uk>
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="iP3xSPx5"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1w1vMX-009wKv-N0; Mon, 16 Mar 2026 00:59:13 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector1; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
+	Cc:To:Subject:From:MIME-Version:Date:Message-ID;
+	bh=4jKTHizgmed/QxPJ5Oz1+TL9ejQhNst9sRE/CoWpmbQ=; b=iP3xSPx5T5O2cBZoYZ6/3zxpeM
+	RFPO6MZskaXJ8Yp5WGfrbIa1FpB0hphIizFvCnDjBQtZ6l+J2G95r0Oh+xMkxWnI/E+y3y4pUv6CA
+	u6dfAOnjuygGJQ/ctBzunNdGUKDOWE23lWirJvPxFL0wR8jyfYXKNzud/LgxKT+v4u9P720aOsY8i
+	+k2lC70e22/eI/mUcI6UtqG43U2jdrClZiJFMLaFGzuwaOaUT86CVldf+z4SlcdkTNSyjWW0ouxx0
+	AVMijTWw2apaHTMceZTEHdCXZAQ5Cb4TdFUDFpW84G0VI3+82jECXTrgRiq7ADTQB3jrcXJaX3Yhs
+	3h+2gAbA==;
+Received: from [10.9.9.72] (helo=submission01.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1w1vMX-00053c-5Y; Mon, 16 Mar 2026 00:59:13 +0100
+Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1w1vMF-006y37-HT; Mon, 16 Mar 2026 00:58:55 +0100
+Message-ID: <b74fa713-22e1-417c-8c72-b02937dbdaaa@rbox.co>
+Date: Mon, 16 Mar 2026 00:58:53 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <abQC7r38QLhSeadl@shell.armlinux.org.uk>
-X-Authority-Analysis: v=2.4 cv=IsATsb/g c=1 sm=1 tr=0 ts=69b744ba cx=c_pps
- a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
- a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=LzynlxIp8I5r7-4e--YA:9 a=CjuIK1q_8ugA:10 a=IoOABgeZipijB_acs4fv:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE1MDE4OSBTYWx0ZWRfX/XfLYz8c91Ij
- wXrEs106iDTka5tIhnfchft3PbueUL0cgHzDNXxzPuFMeWQxnpzSN9OAb2+//83b7OSN1hOUesj
- o4ah3Jd0JVLUz7PCAUzNUBMHCX7xrfV1HcWdkyA9nMwutKH4PEzq2uMSVeUFxopzySGfgcySGSX
- VYjLi38sk+7AjcaaZtDsb5Jsp4ZJQKG2ItJNzRVVLiWwsDAZM6/dx5y4cAW2zte3vxCu3s+BthL
- cPhre41VrwsCSZr1fJG80pj+aN1FzEebCTnQSZjLz+zb0O5HJ5m1S3ySM/1/0TWV4CxUHHkzp5o
- zKxy/YfiLtc7K7XGdUTsr+db/mXxaQ5AKtYiSheOtOwbUlxfMCCjgWDRnR4MpUJZtYQnxgxNoB0
- sQn6c3XhZaOUQccBjn88SDofERiZdAvJVZrlkhetZeoFBzqgzIvV9rgoAR2OZ02xTtXOIROcnHz
- r3ROUisjnf24YzyM1Qg==
-X-Proofpoint-GUID: LCKDkqBNhLum1B8HDoUPqI6Turz4F4Cq
-X-Proofpoint-ORIG-GUID: LCKDkqBNhLum1B8HDoUPqI6Turz4F4Cq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-15_08,2026-03-13_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0 priorityscore=1501 bulkscore=0 malwarescore=0
- lowpriorityscore=0 impostorscore=0 phishscore=0 suspectscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603150189
+User-Agent: Mozilla Thunderbird
+From: Michal Luczaj <mhal@rbox.co>
+Subject: Re: [PATCH bpf v3 2/5] bpf, sockmap: Use
+ sock_map_sk_{acquire,release}() where open-coded
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: John Fastabend <john.fastabend@gmail.com>,
+ Jakub Sitnicki <jakub@cloudflare.com>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>,
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Simon Horman <horms@kernel.org>, Yonghong Song <yhs@fb.com>,
+ Andrii Nakryiko <andrii@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman
+ <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>,
+ Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+ Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ Cong Wang <cong.wang@bytedance.com>, netdev@vger.kernel.org,
+ bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+References: <20260306-unix-proto-update-null-ptr-deref-v3-0-2f0c7410c523@rbox.co>
+ <20260306-unix-proto-update-null-ptr-deref-v3-2-2f0c7410c523@rbox.co>
+ <CAAVpQUCdzpwbu=fOrwCnaCFuD3U5SL73PB2nroqgUB4QdJ69og@mail.gmail.com>
+ <3bf84a79-7335-483c-b629-2437e360387d@rbox.co>
+ <CAAVpQUB8fvyKSQ8UjBs4=FHmz0iME4SO=3CviS_dCzLNTLkjHQ@mail.gmail.com>
+ <CAAVpQUADj21wNH=OkUVxW81Zf8RPd1TxLgcfU1wVbWXDY+W6Sg@mail.gmail.com>
+Content-Language: pl-PL, en-GB
+In-Reply-To: <CAAVpQUADj21wNH=OkUVxW81Zf8RPd1TxLgcfU1wVbWXDY+W6Sg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Russell,
-On Fri, Mar 13, 2026 at 12:28:30PM +0000, Russell King (Oracle) wrote:
-> This series is the next of the three part series sorting out the PCS
-> support in stmmac, building on part 2:
+On 3/11/26 05:57, Kuniyuki Iwashima wrote:
+> On Tue, Mar 10, 2026 at 9:17 PM Kuniyuki Iwashima <kuniyu@google.com> wrote:
+>>
+>> On Fri, Mar 6, 2026 at 6:05 AM Michal Luczaj <mhal@rbox.co> wrote:
+>>>
+>>> On 3/6/26 06:44, Kuniyuki Iwashima wrote:
+>>>> On Thu, Mar 5, 2026 at 3:32 PM Michal Luczaj <mhal@rbox.co> wrote:
+>>>>>
+>>>>> Instead of repeating the same (un)locking pattern, reuse
+>>>>> sock_map_sk_{acquire,release}(). This centralizes the code and makes it
+>>>>> easier to adapt sockmap to af_unix-specific locking.
+>>>>>
+>>>>> Signed-off-by: Michal Luczaj <mhal@rbox.co>
+>>>>> ---
+>>>>>  net/core/sock_map.c | 21 +++++++--------------
+>>>>>  1 file changed, 7 insertions(+), 14 deletions(-)
+>>>>>
+>>>>> diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+>>>>> index 02a68be3002a..7ba6a7f24ccd 100644
+>>>>> --- a/net/core/sock_map.c
+>>>>> +++ b/net/core/sock_map.c
+>>>>> @@ -353,11 +353,9 @@ static void sock_map_free(struct bpf_map *map)
+>>>>>                 sk = xchg(psk, NULL);
+>>>>>                 if (sk) {
+>>>>>                         sock_hold(sk);
+>>>>> -                       lock_sock(sk);
+>>>>> -                       rcu_read_lock();
+>>>>> +                       sock_map_sk_acquire(sk);
+>>>>>                         sock_map_unref(sk, psk);
+>>>>> -                       rcu_read_unlock();
+>>>>> -                       release_sock(sk);
+>>>>> +                       sock_map_sk_release(sk);
+>>>>>                         sock_put(sk);
+>>>>>                 }
+>>>>>         }
+>>>>> @@ -1176,11 +1174,9 @@ static void sock_hash_free(struct bpf_map *map)
+>>>>>                  */
+>>>>>                 hlist_for_each_entry_safe(elem, node, &unlink_list, node) {
+>>>>>                         hlist_del(&elem->node);
+>>>>> -                       lock_sock(elem->sk);
+>>>>> -                       rcu_read_lock();
+>>>>> +                       sock_map_sk_acquire(elem->sk);
+>>>>>                         sock_map_unref(elem->sk, elem);
+>>>>> -                       rcu_read_unlock();
+>>>>> -                       release_sock(elem->sk);
+>>>>> +                       sock_map_sk_release(elem->sk);
+>>>>>                         sock_put(elem->sk);
+>>>>>                         sock_hash_free_elem(htab, elem);
+>>>>>                 }
+>>>>> @@ -1676,8 +1672,7 @@ void sock_map_close(struct sock *sk, long timeout)
+>>>>>         void (*saved_close)(struct sock *sk, long timeout);
+>>>>>         struct sk_psock *psock;
+>>>>>
+>>>>> -       lock_sock(sk);
+>>>>> -       rcu_read_lock();
+>>>>> +       sock_map_sk_acquire(sk);
+>>>>>         psock = sk_psock(sk);
+>>>>>         if (likely(psock)) {
+>>>>>                 saved_close = psock->saved_close;
+>>>>> @@ -1685,16 +1680,14 @@ void sock_map_close(struct sock *sk, long timeout)
+>>>>>                 psock = sk_psock_get(sk);
+>>>>>                 if (unlikely(!psock))
+>>>>>                         goto no_psock;
+>>>>> -               rcu_read_unlock();
+>>>>>                 sk_psock_stop(psock);
+>>>>> -               release_sock(sk);
+>>>>> +               sock_map_sk_release(sk);
+>>>>
+>>>> I think sk_psock_stop() was intentionally put outside
+>>>> of rcu_read_lock() to not extend the grace period
+>>>> unnecessarily. e.g. while + __sk_msg_free().
+>>>>
+>>>> Maybe add __sock_map_sk_release() without
+>>>> rcu_read_unlock() ?
+>>>
+>>> How about dropping this patch completely? The more I stare at it, I see no
+>>> reason why af_unix state lock would matter in any of these places.
+>>
+>> I agree.  Actually, once it's held, it can be released right away.
+>> The lock is only to ensure that peer is set after checking
+>> TCP_ESTABLISHED, but it continues holding unix_state_lock()
+>> unnecessarily long.
+>>
+>> Honestly I prefer Martin's idea, using unix_peer_get() in
+>> unix_stream_bpf_update_proto().
 > 
-> 	net: stmmac: qcom-ethqos: further serdes reorganisation
+> Pondering again, I'm leaning to towards my initial approach,
+> just null check for peer, which allows bpf_iter to acquire
+> unix_state_lock() and make sure the socket is alive.
+> (still lock_sock() is needed for bpf_setsockopt())
 > 
-> Similar patches have been posted previously. This series does away with
-> the common SerDes PHY support, instead using a flag to indicate whether
-> 2500Mbps mode is supported (STMMAC_FLAG_SERDES_SUPPORTS_2500M.) At this
-> time, I have no plans to resurect the common SerDes PHY support - the
-> generic PHY layer implementations are just too random to consider that,
-> and I certainly do not want the extra work of fixing that.
-> 
-> Changes from RFC v3:
-> - only set default_an_inband if using SGMII/2500BASE-X mode.
->
+> The check is lightweight and SOCKMAP does not need to
+> hold the lock unnecessarily, and we can provide stable
+> result to bpf_iter.
 
-I encountered two NULL pointer dereferences and had to add a few
-workarounds to proceed with testing.
+Right, unix_state_lock() would keep the unix sock state. But is keeping the
+unix state that important in the context of bpf iter?
 
-1. On QCS9100 Ride R3, the mdio subnode is only defined for ethernet0
-   (see lemans-ride-ethernet-aqr115c.dtsi). ethernet1 uses ethernet0's
-   MDIO bus, so plat_dat->mdio_bus_data is NULL for ethernet1. Therefore,
-   we get:
-	[    9.205979] Hardware name: Qualcomm Technologies, Inc. Lemans Ride Rev3 (DT)
-	[    9.221071] pc : qcom_ethqos_probe+0xc4/0x478 [dwmac_qcom_ethqos]
-	[    9.221078] lr : qcom_ethqos_probe+0x7c/0x478 [dwmac_qcom_ethqos]
-	[    9.221080] sp : ffff800081aa37f0
-	[    9.221081] x29: ffff800081aa3860 x28: ffffcf84de69cfe8 x27: 0000000000000001
-	[    9.221084] x26: 0000000000000000 x25: ffff0000b4577c80 x24: ffff0000818fd010
-	[    9.221087] x23: ffff000ec7057628 x22: 0000000000000000 x21: ffffcf84ca2ce028
-	[    9.221089] x20: ffff0000818fd000
-	[    9.236975]  x19: ffff0000b3301740 x18: 00000000ffffffff
-	[    9.236977] x17: 0000000000000000 x16: ffffcf84dc4a5448 x15: ffff0000b3301ec5
-	[    9.236980] x14: 0000000000000000 x13: 0000000000000030 x12: 0101010101010101
-	[    9.236982] x11: 7f7f7f7f7f7f7f7f x10: 00000000001305b0 x9 : 0000000000000000
-	[    9.236984] x8 : ffff0000b3301780 x7 : 0000000000000000 x6 : 000000000000003f
-	[    9.236986] x5 : 0000000000000040 x4 : 0000000000000000 x3 : ffff0000818fd210
-	[    9.236988] x2 : 0000000000000017 x1 : 0000000000000000 x0 : 0000000000000001
-	[    9.236991] Call trace:
-	[    9.236991]  qcom_ethqos_probe+0xc4/0x478 [dwmac_qcom_ethqos] (P)
-	[    9.236994]  platform_probe+0x5c/0xac
-				...
-	[    9.343300] Code: 910a7000 f9400b21 f9010320 52800020 (39005420)
-	[    9.343302] ---[ end trace 0000000000000000 ]---
+> IOW, if we hold unix_state_lock() in the SOCKMAP path
+> (even unix_peer_get()), we cannot use unix_state_lock()
+> for bpf_iter and lose stability since it will trigger dead lock.
 
-   I added the following workaround:
-	--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-	+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-	@@ -765,7 +767,10 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
-			case PHY_INTERFACE_MODE_SGMII:
-					ethqos->configure_func = ethqos_configure_sgmii;
-					plat_dat->mac_finish = ethqos_mac_finish_serdes;
-	-               plat_dat->mdio_bus_data->default_an_inband = true;
-	+               if (plat_dat->mdio_bus_data)
-	+                       plat_dat->mdio_bus_data->default_an_inband = true;
-	+               else
-	+                       dev_err(dev, "plat_dat->mdio_bus_data is NULL");
-					break;
-			default:
-					dev_err(dev, "Unsupported phy mode %s\n",
+Assuming the answer to the question above is "not really", I'd say taking
+unix_state_lock() during sockmap update (both bpf and non-bpf context)
+makes sense for 2 reasons:
 
-2. After working around issue 1, I hit the following:
-	[   27.822907] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-	[   27.831944] Mem abort info:
-	[   27.834832]   ESR = 0x0000000086000006
-	[   27.838693]   EC = 0x21: IABT (current EL), IL = 32 bits
-	[   27.844163]   SET = 0, FnV = 0
-	[   27.847320]   EA = 0, S1PTW = 0
-	[   27.850563]   FSC = 0x06: level 2 translation fault
-	[   27.855587] user pgtable: 4k pages, 48-bit VAs, pgdp=0000000134b1c000
-	[   27.862212] [0000000000000000] pgd=080000010185c403, p4d=080000010185c403, pud=0800000134884403, pmd=0000000000000000
-	[   27.873107] Internal error: Oops: 0000000086000006 [#1]  SMP
-	[   28.001619] Hardware name: Qualcomm Technologies, Inc. Lemans Ride Rev3 (DT)
-	[   28.008853] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-	[   28.016001] pc : 0x0
-	[   28.018259] lr : phylink_pcs_an_restart+0x50/0x5c
-	[   28.023092] sp : ffff8000869fb900
-				...
-	[   28.185967] ---[ end trace 0000000000000000 ]---
+1. Fulfil sockmap's locking expectation as Martin pointed out; once the
+state lock is taken, no need to (additionally) protected against
+null-ptr-deref during sock_map_update_elem_sys().
 
-   This occurs due to pl->pcs->ops->pcs_an_restart being NULL. I added
-   the following workaround:
-	--- a/drivers/net/phy/phylink.c
-	+++ b/drivers/net/phy/phylink.c
-	@@ -1026,7 +1026,8 @@ static void phylink_pcs_an_restart(struct phylink *pl)
-			if (pl->pcs && linkmode_test_bit(ETHTOOL_LINK_MODE_Autoneg_BIT,
-							 pl->link_config.advertising) &&
-			    phy_interface_mode_is_8023z(pl->link_config.interface) &&
-	-		    phylink_autoneg_inband(pl->act_link_an_mode))
-	+		    phylink_autoneg_inband(pl->act_link_an_mode) &&
-	+		    pl->pcs->ops->pcs_an_restart)
-					pl->pcs->ops->pcs_an_restart(pl->pcs);
-	 }
+2. Slightly better handle the case of unix sock changing state unexpectedly
+_while_ it is being placed in a sockmap by sock_map_update_elem(). At least
+for now; in the follow up series we may be able to get rid of (or
+simplify?) sock_map_sk_{acquire,release}_fast().
 
-3. With the recent VLAN filter changes in net-next, ndo_open takes a long
-   time to complete as vlan_restore_hw_rx_fltr() tries to write filters
-   for all 32 indices. This board previously timed out once, but now
-   times out for each index. This is a separate issue unrelated to this
-   series but I added the following workaround to rule out any timing
-   issues.
-	--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c
-	+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c
-	@@ -158,7 +158,8 @@ static void vlan_restore_hw_rx_fltr(struct net_device *dev,
+So, what I'm saying is: let's drop changes touching sock_map_free(),
+sock_hash_free(), sock_map_close() (this patch), stick to lock_sock-only
+unix iter, for non-bpf-context update take the unix state lock (in series
+with lock_sock() per your suggestion) which tackles the null-ptr-deref, and
+for bpf-context update let's follow what's currently happening for
+non-af_unix socks: take the unix state spinlock.
 
-			/* Extended Rx VLAN Filter Enable */
-			for (i = 0; i < hw->num_vlan; i++)
-	-               vlan_write_filter(dev, hw, i, hw->vlan_filter[i]);
-	+               if (hw->vlan_filter[i])
-	+                       vlan_write_filter(dev, hw, i, hw->vlan_filter[i]);
-	 }
+This would boil down to:
 
-	 static void vlan_update_hash(struct mac_device_info *hw, u32 hash,
+diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+index 02a68be3002a..61d782db614c 100644
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -12,6 +12,7 @@
+ #include <linux/list.h>
+ #include <linux/jhash.h>
+ #include <linux/sock_diag.h>
++#include <net/af_unix.h>
+ #include <net/udp.h>
 
+ struct bpf_stab {
+@@ -115,19 +116,45 @@ int sock_map_prog_detach(const union bpf_attr *attr,
+enum bpf_prog_type ptype)
+ }
 
-With the above workarounds in place, 2.5G works fine, but 1G (and 100M)
-do not. With the RFC v1 series, only the 2.5G->1G speed change was
-broken. With this series, the link does not come up at 1G at all.
+ static void sock_map_sk_acquire(struct sock *sk)
+-	__acquires(&sk->sk_lock.slock)
+ {
+ 	lock_sock(sk);
++
++	if (sk_is_unix(sk))
++		unix_state_lock(sk);
++
+ 	rcu_read_lock();
+ }
 
-Some observations from my failed attempt at debugging so far:
- - No change in behaviour after adding the provisioning code in
-   aqr_gen4_config_init().
- - Setting GMAC_AN_CTRL_RAN in dwmac_integrated_pcs_config() did not
-   help.
- - After shifting to 1G, GMAC_AN_STATUS reads 0x00000008, i.e.,
-   BMSR_LSTATUS (bit 2) is clear. 
+ static void sock_map_sk_release(struct sock *sk)
+-	__releases(&sk->sk_lock.slock)
+ {
+ 	rcu_read_unlock();
++
++	if (sk_is_unix(sk))
++		unix_state_unlock(sk);
++
+ 	release_sock(sk);
+ }
 
++static void sock_map_sk_acquire_fast(struct sock *sk)
++{
++	if (sk_is_unix(sk)) {
++		unix_state_lock(sk);
++	} else {
++		local_bh_disable();
++		bh_lock_sock(sk);
++	}
++}
++
++static void sock_map_sk_release_fast(struct sock *sk)
++{
++	if (sk_is_unix(sk)) {
++		unix_state_unlock(sk);
++	} else {
++		bh_unlock_sock(sk);
++		local_bh_enable();
++	}
++}
++
+ static void sock_map_add_link(struct sk_psock *psock,
+ 			      struct sk_psock_link *link,
+ 			      struct bpf_map *map, void *link_raw)
+@@ -606,16 +633,14 @@ static long sock_map_update_elem(struct bpf_map *map,
+void *key,
+ 	if (!sock_map_sk_is_suitable(sk))
+ 		return -EOPNOTSUPP;
 
-Sharing logs for two 1G scenarios (net-next + this series + the three
-workarounds above):
+-	local_bh_disable();
+-	bh_lock_sock(sk);
++	sock_map_sk_acquire_fast(sk);
+ 	if (!sock_map_sk_state_allowed(sk))
+ 		ret = -EOPNOTSUPP;
+ 	else if (map->map_type == BPF_MAP_TYPE_SOCKMAP)
+ 		ret = sock_map_update_common(map, *(u32 *)key, sk, flags);
+ 	else
+ 		ret = sock_hash_update_common(map, key, sk, flags);
+-	bh_unlock_sock(sk);
+-	local_bh_enable();
++	sock_map_sk_release_fast(sk);
+ 	return ret;
+ }
 
-# Booting up with a 1G link
-	[    8.730854] qcom-ethqos 23040000.ethernet: IRQ eth_wake_irq not found
-	[    8.766778] qcom-ethqos 23040000.ethernet: User ID: 0x20, Synopsys ID: 0x52
-	[    8.780465] qcom-ethqos 23040000.ethernet:   DWMAC4/5
-	[    8.794253] qcom-ethqos 23040000.ethernet: DMA HW capability register supported
-	[    8.794258] qcom-ethqos 23040000.ethernet: Active PHY interface: SGMII (2)
-	<snip>
-	[    8.865690] qcom-ethqos 23040000.ethernet: Using 36/40 bits DMA host/device width
-	[    8.865707] qcom-ethqos 23040000.ethernet: clk_csr value out of range (0xffffff00 exceeds mask 0x00000f00), truncating
-	[   10.860749] qcom-ethqos 23040000.ethernet eth1: Register MEM_TYPE_PAGE_POOL RxQ-0
-	[   10.861119] qcom-ethqos 23040000.ethernet eth1: Register MEM_TYPE_PAGE_POOL RxQ-1
-	[   10.861510] qcom-ethqos 23040000.ethernet eth1: Register MEM_TYPE_PAGE_POOL RxQ-2
-	[   10.861906] qcom-ethqos 23040000.ethernet eth1: Register MEM_TYPE_PAGE_POOL RxQ-3
-	[   10.871763] qcom-ethqos 23040000.ethernet eth1: Enabling Safety Features
-	[   10.907513] qcom-ethqos 23040000.ethernet eth1: IEEE 1588-2008 Advanced Timestamp supported
-	[   10.921216] qcom-ethqos 23040000.ethernet eth1: registered PTP clock
-	[   10.921220] qcom-ethqos 23040000.ethernet eth1: configuring for inband/2500base-x link mode
-	[   10.921223] qcom-ethqos 23040000.ethernet eth1: major config, requested inband/2500base-x
-	[   10.921226] qcom-ethqos 23040000.ethernet eth1: interface 2500base-x inband modes: pcs=01 phy=00
-	[   10.921228] qcom-ethqos 23040000.ethernet eth1: major config, active inband/inband,an-disabled/2500base-x
-	[   10.921230] qcom-ethqos 23040000.ethernet eth1: phylink_mac_config: mode=inband/2500base-x/none adv=00000000,00000000,00008000,0000e240 pause=04
-
-No further messages appear after this point, and the link does not come
-up at 1G.
-
-# Switching from 2.5G to 1G
-	[    8.368113] qcom-ethqos 23040000.ethernet: IRQ eth_wake_irq not found
-	[    8.379601] qcom-ethqos 23040000.ethernet: User ID: 0x20, Synopsys ID: 0x52
-	[    8.392900] qcom-ethqos 23040000.ethernet:   DWMAC4/5
-	[    8.432379] qcom-ethqos 23040000.ethernet: DMA HW capability register supported
-	<snip>
-	[    8.480319] qcom-ethqos 23040000.ethernet: Using 36/40 bits DMA host/device width
-	[    8.488609] qcom-ethqos 23040000.ethernet: clk_csr value out of range (0xffffff00 exceeds mask 0x00000f00), truncating
-	[   11.192140] qcom-ethqos 23040000.ethernet eth1: Register MEM_TYPE_PAGE_POOL RxQ-0
-	[   11.200567] qcom-ethqos 23040000.ethernet eth1: Register MEM_TYPE_PAGE_POOL RxQ-1
-	[   11.216466] qcom-ethqos 23040000.ethernet eth1: Register MEM_TYPE_PAGE_POOL RxQ-2
-	[   11.232393] qcom-ethqos 23040000.ethernet eth1: Register MEM_TYPE_PAGE_POOL RxQ-3
-	[   11.250011] qcom-ethqos 23040000.ethernet eth1: Enabling Safety Features
-	[   11.269722] qcom-ethqos 23040000.ethernet eth1: IEEE 1588-2008 Advanced Timestamp supported
-	[   11.286758] qcom-ethqos 23040000.ethernet eth1: registered PTP clock
-	[   11.300593] qcom-ethqos 23040000.ethernet eth1: configuring for inband/2500base-x link mode
-	[   11.300596] qcom-ethqos 23040000.ethernet eth1: major config, requested inband/2500base-x
-	[   11.300599] qcom-ethqos 23040000.ethernet eth1: interface 2500base-x inband modes: pcs=01 phy=00
-	[   11.316311] qcom-ethqos 23040000.ethernet eth1: major config, active inband/inband,an-disabled/2500base-x
-	[   11.316317] qcom-ethqos 23040000.ethernet eth1: phylink_mac_config: mode=inband/2500base-x/none adv=00000000,00000000,00008000,0000e240 pause=04
-	[   14.125773] qcom-ethqos 23040000.ethernet: PCS Link Up
-	[   14.131081] qcom-ethqos 23040000.ethernet eth1: pcs link up
-	[   14.147059] qcom-ethqos 23040000.ethernet eth1: Link is Up - 2.5Gbps/Full - flow control rx/tx
-	<link speed changed to 1G>
-	[   25.868674] qcom-ethqos 23040000.ethernet: PCS Link Down
-	[   25.874184] qcom-ethqos 23040000.ethernet eth1: pcs link down
-	[   25.874745] qcom-ethqos 23040000.ethernet eth1: Link is Down
-
-No further messages appear after "Link is Down".
-
-I have been having some issues with the IQ9 EVK (QCA8081 PHY), so no
-results to report for it yet.
-
-	Ayaan
- 
