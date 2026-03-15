@@ -1,293 +1,109 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D762C37D128;
-	Sun, 15 Mar 2026 21:50:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB0437B02B
+	for <netdev@vger.kernel.org>; Sun, 15 Mar 2026 21:51:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773611411; cv=none; b=pofBe+egDUNiehwD0WFelUkl2W5uBp61T6DF6M15ugU/Cufx+o/xMuRyd0pZHxkzbiMXE/aE/21xNnqO3HDRzyLJJ9Y4T5qQpdl149dJ5e+52Tp4lEUpJYoMzy82IsCedkg/jZ6FpkeazXJ4b9b3DwkWp0jnIn99YeMUmWZVhjY=
+	t=1773611482; cv=none; b=gwKsnWUsXYSVDQ208xivR0EzXfb5LylMHcvF3sIuwVy5Xiac+4tfKJnJyJnoNrYQmHu4Ow+XqlMfjaBkjragm8R7fWRm3hDTeXhwwFL5LwXy/kLldGBtOPEwgGUgk1HUTGH5w4Ovo4wzqLv2nRRmfW1yu8PpAI59h/fFdTZTvfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773611411; c=relaxed/simple;
-	bh=vVlU/tLju4Y1C+amxm9HQKjeleu1zqO9lZT3LOSTwaY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uDffZ2uf7Y5RvOMbhQboy+RFy1ik8P1pfLBDGzPswyQxLF/4gm1ZfIrQfW/tL4D/OZqstaL7tzy+f2kKjNxQ+Ens2HhPZHEviBzaGosLAd3r5wN9fAHLg8WTQHV8TiX8qLYtMJfigdPhEUVSP85kE+bNzywz87JDWZH9diVuFjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=swzCEM2G; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1773611482; c=relaxed/simple;
+	bh=che4Q4OuxSKufNXTblHdN9Dc0eJDBdzbT8fKmEuSH5g=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nnbat9KD/PoYlK1QEPDd9NSzNlz4mhUjRzn/5dlrW3qb3GQMyqr/CIrKqSZtBjDpZ4mYP+2jBNJYKfGl7wwwb25z/MavJ7/qatm3UlM6NsXnf5v64lIxkGaWE8ixlt+OVpHfJc+ZYaBexuVzOQJVZMtFP5San+H5ZGBkW+UlKOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PDLWFYNX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="swzCEM2G"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 57229A575C;
-	Sun, 15 Mar 2026 22:50:02 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1773611403; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=Cll75lNtnT5wlTHQImlKL6wvWpXQYzV8bB5+50bW3fM=;
-	b=swzCEM2GU5G0GfDBKUZfUoZK6QelRFsAW57uUnb/9DgvWoaZgRavj4BhT1X4M2603sVbb7
-	DhpRjdBNOB57gsn0nCI3kaT1uqKDk7vENNpKgJUnmWF2v8mNvc/Wkjnd8sCPkEjHapcbqN
-	d97DII8sG242lxGN5HOqZD5hFsnRZf6fL5lW88tVFLtrsN9o9TpUl78LFAzzmYOpe01GpS
-	4mtIDz8xyu4yqxfJmirpXdO0Hjv8caNeKgUAUcn6/g27pa3M36kVUzFvj/hjd0BMPGDQNU
-	tSJuINrAQGwBMezgtJRSTfxYVyGn/BpdjpfcgrsMnAvIVa9PPm1vEWP5ZIlFvg==
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Vikas Gupta <vikas.gupta@broadcom.com>,
-	Bhargava Marreddy <bhargava.marreddy@broadcom.com>,
-	Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	=?UTF-8?q?Markus=20Bl=C3=B6chl?= <mbloch@rooftopnetworks.de>,
-	Arnd Bergmann <arnd@arndb.de>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Nicolai Buchwitz <nb@tipi-net.de>
-Subject: [PATCH net-next v2 5/6] net: bcmgenet: add XDP_REDIRECT and ndo_xdp_xmit support
-Date: Sun, 15 Mar 2026 22:49:13 +0100
-Message-ID: <20260315214914.1555777-6-nb@tipi-net.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260315214914.1555777-1-nb@tipi-net.de>
-References: <20260315214914.1555777-1-nb@tipi-net.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PDLWFYNX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDC34C4CEF7;
+	Sun, 15 Mar 2026 21:51:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773611482;
+	bh=che4Q4OuxSKufNXTblHdN9Dc0eJDBdzbT8fKmEuSH5g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=PDLWFYNX1CjrcIqNLF2Yg7McNGXwi3XE076BPu2HGM8GW97PAgA4aXQ3+Ms5XkSGs
+	 iDrEKqZqs8UE0eU1ZQSOlXH+eQqPb+Xoo0wq1qqyaaPpB3ajz/SklwDc66fqSvr5EJ
+	 GuEldLeedT8YMHr/GUKPi0HPumHrzXhrPiZfalhrqrqdlZ57CwKk+KIjbWG2I236oF
+	 gNpSxKEqIvIXt9iGtMsjFF2ddDyV/rmiKlmdroHboI/Lf7SkJ/JrApPaYbAJtwvveQ
+	 QAhzDzxKAH7mcw4GPccqST+AJy/o7VDcU7JkmNNBD46n/ealtcgAYKjCGASRk7GP4D
+	 42JDNn5QnbzIQ==
+Date: Sun, 15 Mar 2026 14:51:20 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Neal Cardwell
+ <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com
+Subject: Re: [PATCH v3 net-next] tcp: add cwnd_event_tx_start to
+ tcp_congestion_ops
+Message-ID: <20260315145120.1a555d81@kernel.org>
+In-Reply-To: <20260315154003.1851513-1-edumazet@google.com>
+References: <20260315154003.1851513-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Add XDP_REDIRECT support and implement ndo_xdp_xmit for receiving
-redirected frames from other devices.
+On Sun, 15 Mar 2026 15:40:03 +0000 Eric Dumazet wrote:
+> v3: fix tools/testing/selftests/bpf/progs/tcp_ca_kfunc.c (Jakub)
+> v2: fix tools/testing/selftests/bpf/progs/bpf_cc_cubic.c (Jakub)
+> v1: https://lore.kernel.org/netdev/20260313202802.1201129-1-edumazet@google.com/
 
-XDP_REDIRECT calls xdp_do_redirect() in the RX path with
-xdp_do_flush() once per NAPI poll cycle. ndo_xdp_xmit batches frames
-into ring 16 under a single spinlock acquisition.
+Builds but does not run:
+https://github.com/kernel-patches/bpf/actions/runs/23116079851/job/67142296478
 
-Advertise NETDEV_XDP_ACT_REDIRECT and NETDEV_XDP_ACT_NDO_XMIT in
-xdp_features.
+The BPF CI can be triggered by opening a pull request their
+kernel-patches/bpf repo. We can also also Martin to help.
 
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
----
- .../net/ethernet/broadcom/genet/bcmgenet.c    | 96 +++++++++++++++----
- 1 file changed, 78 insertions(+), 18 deletions(-)
-
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index 922895bc7461..5dfe6b764930 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -2320,23 +2320,23 @@ static struct sk_buff *bcmgenet_xdp_build_skb(struct bcmgenet_rx_ring *ring,
- 	return skb;
- }
- 
-+/* Submit a single XDP frame to the TX ring. Caller must hold ring->lock.
-+ * Returns true on success. Does not ring the doorbell - caller must
-+ * write TDMA_PROD_INDEX after batching.
-+ */
- static bool bcmgenet_xdp_xmit_frame(struct bcmgenet_priv *priv,
-+				     struct bcmgenet_tx_ring *ring,
- 				     struct xdp_frame *xdpf,
- 				     bool dma_map)
- {
--	struct bcmgenet_tx_ring *ring = &priv->tx_rings[DESC_INDEX];
- 	struct device *kdev = &priv->pdev->dev;
- 	struct enet_cb *tx_cb_ptr;
- 	dma_addr_t mapping;
- 	unsigned int dma_len;
- 	u32 len_stat;
- 
--	spin_lock(&ring->lock);
--
--	if (ring->free_bds < 1) {
--		spin_unlock(&ring->lock);
-+	if (ring->free_bds < 1)
- 		return false;
--	}
- 
- 	tx_cb_ptr = bcmgenet_get_txcb(priv, ring);
- 
-@@ -2350,7 +2350,6 @@ static bool bcmgenet_xdp_xmit_frame(struct bcmgenet_priv *priv,
- 		 */
- 		if (unlikely(xdpf->headroom < sizeof(struct status_64))) {
- 			bcmgenet_put_txcb(priv, ring);
--			spin_unlock(&ring->lock);
- 			return false;
- 		}
- 
-@@ -2364,7 +2363,6 @@ static bool bcmgenet_xdp_xmit_frame(struct bcmgenet_priv *priv,
- 			tx_cb_ptr->skb = NULL;
- 			tx_cb_ptr->xdpf = NULL;
- 			bcmgenet_put_txcb(priv, ring);
--			spin_unlock(&ring->lock);
- 			return false;
- 		}
- 	} else {
-@@ -2396,12 +2394,14 @@ static bool bcmgenet_xdp_xmit_frame(struct bcmgenet_priv *priv,
- 	ring->prod_index++;
- 	ring->prod_index &= DMA_P_INDEX_MASK;
- 
-+	return true;
-+}
-+
-+static void bcmgenet_xdp_ring_doorbell(struct bcmgenet_priv *priv,
-+					struct bcmgenet_tx_ring *ring)
-+{
- 	bcmgenet_tdma_ring_writel(priv, ring->index, ring->prod_index,
- 				  TDMA_PROD_INDEX);
--
--	spin_unlock(&ring->lock);
--
--	return true;
- }
- 
- static unsigned int
-@@ -2417,7 +2417,11 @@ bcmgenet_run_xdp(struct bcmgenet_rx_ring *ring, struct bpf_prog *prog,
- 	switch (act) {
- 	case XDP_PASS:
- 		return XDP_PASS;
--	case XDP_TX:
-+	case XDP_TX: {
-+		struct bcmgenet_tx_ring *tx_ring;
-+
-+		tx_ring = &priv->tx_rings[DESC_INDEX];
-+
- 		/* Prepend a zeroed TSB (Transmit Status Block).  The GENET
- 		 * MAC has TBUF_64B_EN set globally, so hardware expects every
- 		 * TX buffer to begin with a 64-byte struct status_64.  Back
-@@ -2429,14 +2433,26 @@ bcmgenet_run_xdp(struct bcmgenet_rx_ring *ring, struct bpf_prog *prog,
- 		memset(xdp->data, 0, sizeof(struct status_64));
- 
- 		xdpf = xdp_convert_buff_to_frame(xdp);
--		if (unlikely(!xdpf) ||
--		    unlikely(!bcmgenet_xdp_xmit_frame(priv, xdpf, false))) {
--			page_pool_put_full_page(ring->page_pool, rx_page,
--						true);
-+		if (unlikely(!xdpf))
-+			goto drop_page;
-+
-+		spin_lock(&tx_ring->lock);
-+		if (unlikely(!bcmgenet_xdp_xmit_frame(priv, tx_ring, xdpf,
-+						       false))) {
-+			spin_unlock(&tx_ring->lock);
-+			xdp_return_frame_rx_napi(xdpf);
- 			return XDP_DROP;
- 		}
-+		bcmgenet_xdp_ring_doorbell(priv, tx_ring);
-+		spin_unlock(&tx_ring->lock);
- 		return XDP_TX;
-+	}
-+	case XDP_REDIRECT:
-+		if (unlikely(xdp_do_redirect(priv->dev, xdp, prog)))
-+			goto drop_page;
-+		return XDP_REDIRECT;
- 	case XDP_DROP:
-+drop_page:
- 		page_pool_put_full_page(ring->page_pool, rx_page, true);
- 		return XDP_DROP;
- 	default:
-@@ -2459,6 +2475,7 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 	struct bcmgenet_priv *priv = ring->priv;
- 	struct net_device *dev = priv->dev;
- 	struct bpf_prog *xdp_prog;
-+	bool xdp_flush = false;
- 	struct enet_cb *cb;
- 	struct sk_buff *skb;
- 	u32 dma_length_status;
-@@ -2597,6 +2614,8 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 
- 			xdp_act = bcmgenet_run_xdp(ring, xdp_prog, &xdp,
- 						   rx_page);
-+			if (xdp_act == XDP_REDIRECT)
-+				xdp_flush = true;
- 			if (xdp_act != XDP_PASS)
- 				goto next;
- 
-@@ -2670,6 +2689,9 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 		bcmgenet_rdma_ring_writel(priv, ring->index, ring->c_index, RDMA_CONS_INDEX);
- 	}
- 
-+	if (xdp_flush)
-+		xdp_do_flush();
-+
- 	ring->dim.bytes = bytes_processed;
- 	ring->dim.packets = rxpktprocessed;
- 
-@@ -3996,10 +4018,16 @@ static int bcmgenet_xdp_setup(struct net_device *dev,
- 		return -EOPNOTSUPP;
- 	}
- 
-+	if (!prog)
-+		xdp_features_clear_redirect_target(dev);
-+
- 	old_prog = xchg(&priv->xdp_prog, prog);
- 	if (old_prog)
- 		bpf_prog_put(old_prog);
- 
-+	if (prog)
-+		xdp_features_set_redirect_target(dev, false);
-+
- 	return 0;
- }
- 
-@@ -4013,6 +4041,36 @@ static int bcmgenet_xdp(struct net_device *dev, struct netdev_bpf *xdp)
- 	}
- }
- 
-+static int bcmgenet_xdp_xmit(struct net_device *dev, int num_frames,
-+			      struct xdp_frame **frames, u32 flags)
-+{
-+	struct bcmgenet_priv *priv = netdev_priv(dev);
-+	struct bcmgenet_tx_ring *ring = &priv->tx_rings[DESC_INDEX];
-+	int sent = 0;
-+	int i;
-+
-+	if (unlikely(flags & ~XDP_XMIT_FLAGS_MASK))
-+		return -EINVAL;
-+
-+	if (unlikely(!netif_running(dev)))
-+		return -ENETDOWN;
-+
-+	spin_lock(&ring->lock);
-+
-+	for (i = 0; i < num_frames; i++) {
-+		if (!bcmgenet_xdp_xmit_frame(priv, ring, frames[i], true))
-+			break;
-+		sent++;
-+	}
-+
-+	if (sent)
-+		bcmgenet_xdp_ring_doorbell(priv, ring);
-+
-+	spin_unlock(&ring->lock);
-+
-+	return sent;
-+}
-+
- static const struct net_device_ops bcmgenet_netdev_ops = {
- 	.ndo_open		= bcmgenet_open,
- 	.ndo_stop		= bcmgenet_close,
-@@ -4025,6 +4083,7 @@ static const struct net_device_ops bcmgenet_netdev_ops = {
- 	.ndo_get_stats64	= bcmgenet_get_stats64,
- 	.ndo_change_carrier	= bcmgenet_change_carrier,
- 	.ndo_bpf		= bcmgenet_xdp,
-+	.ndo_xdp_xmit		= bcmgenet_xdp_xmit,
- };
- 
- /* GENET hardware parameters/characteristics */
-@@ -4327,7 +4386,8 @@ static int bcmgenet_probe(struct platform_device *pdev)
- 			 NETIF_F_RXCSUM;
- 	dev->hw_features |= dev->features;
- 	dev->vlan_features |= dev->features;
--	dev->xdp_features = NETDEV_XDP_ACT_BASIC;
-+	dev->xdp_features = NETDEV_XDP_ACT_BASIC | NETDEV_XDP_ACT_REDIRECT |
-+			    NETDEV_XDP_ACT_NDO_XMIT;
- 
- 	netdev_sw_irq_coalesce_default_on(dev);
- 
--- 
-2.51.0
-
+Error: #23 bpf_iter_setsockopt
+  Error: #23 bpf_iter_setsockopt
+  create_netns:PASS:create netns 0 nsec
+  create_netns:PASS:bring up lo 0 nsec
+  serial_test_bpf_iter_setsockopt:PASS:iter_skel 0 nsec
+  serial_test_bpf_iter_setsockopt:PASS:attach iter 0 nsec
+  libbpf: prog 'bpf_cubic_cwnd_event_tx_start': BPF program load failed: -ENOTSUPP
+  libbpf: prog 'bpf_cubic_cwnd_event_tx_start': -- BEGIN PROG LOAD LOG --
+  attach to unsupported member cwnd_event_tx_start of struct tcp_congestion_ops
+  processed 0 insns (limit 1000000) max_states_per_insn 0 total_states 0 peak_states 0 mark_read 0
+  -- END PROG LOAD LOG --
+  libbpf: prog 'bpf_cubic_cwnd_event_tx_start': failed to load: -ENOTSUPP
+  libbpf: failed to load object 'bpf_cubic'
+  libbpf: failed to load BPF skeleton 'bpf_cubic': -ENOTSUPP
+  serial_test_bpf_iter_setsockopt:FAIL:cubic_skel unexpected error: -524
+Error: #34 bpf_tcp_ca
+Error: #34/2 bpf_tcp_ca/cubic
+  Error: #34/2 bpf_tcp_ca/cubic
+  libbpf: prog 'bpf_cubic_cwnd_event_tx_start': BPF program load failed: -ENOTSUPP
+  libbpf: prog 'bpf_cubic_cwnd_event_tx_start': -- BEGIN PROG LOAD LOG --
+  attach to unsupported member cwnd_event_tx_start of struct tcp_congestion_ops
+  processed 0 insns (limit 1000000) max_states_per_insn 0 total_states 0 peak_states 0 mark_read 0
+  -- END PROG LOAD LOG --
+  libbpf: prog 'bpf_cubic_cwnd_event_tx_start': failed to load: -ENOTSUPP
+  libbpf: failed to load object 'bpf_cubic'
+  libbpf: failed to load BPF skeleton 'bpf_cubic': -ENOTSUPP
+  test_cubic:FAIL:bpf_cubic__open_and_load unexpected error: -524
+Error: #34/14 bpf_tcp_ca/tcp_ca_kfunc
+  Error: #34/14 bpf_tcp_ca/tcp_ca_kfunc
+  libbpf: prog 'cwnd_event_tx_start': BPF program load failed: -ENOTSUPP
+  libbpf: prog 'cwnd_event_tx_start': -- BEGIN PROG LOAD LOG --
+  attach to unsupported member cwnd_event_tx_start of struct tcp_congestion_ops
+  processed 0 insns (limit 1000000) max_states_per_insn 0 total_states 0 peak_states 0 mark_read 0
+  -- END PROG LOAD LOG --
+  libbpf: prog 'cwnd_event_tx_start': failed to load: -ENOTSUPP
+  libbpf: failed to load object 'tcp_ca_kfunc'
+  libbpf: failed to load BPF skeleton 'tcp_ca_kfunc': -ENOTSUPP
+  test_tcp_ca_kfunc:FAIL:tcp_ca_kfunc__open_and_load unexpected error: -524
+Error: #34/15 bpf_tcp_ca/cc_cubic
+  Error: #34/15 bpf_tcp_ca/cc_cubic
+  libbpf: prog 'bpf_cubic_cwnd_event_tx_start': BPF program load failed: -ENOTSUPP
+  libbpf: prog 'bpf_cubic_cwnd_event_tx_start': -- BEGIN PROG LOAD LOG --
+  attach to unsupported member cwnd_event_tx_start of struct tcp_congestion_ops
+  processed 0 insns (limit 1000000) max_states_per_insn 0 total_states 0 peak_states 0 mark_read 0
+  -- END PROG LOAD LOG --
+  libbpf: prog 'bpf_cubic_cwnd_event_tx_start': failed to load: -ENOTSUPP
+  libbpf: failed to load object 'bpf_cc_cubic'
+  libbpf: failed to load BPF skeleton 'bpf_cc_cubic': -ENOTSUPP
+  test_cc_cubic:FAIL:bpf_cc_cubic__open_and_load unexpected error: -524
