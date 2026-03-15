@@ -1,30 +1,32 @@
 Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049C737754B;
-	Sun, 15 Mar 2026 21:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3D437B3F2;
+	Sun, 15 Mar 2026 21:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773611408; cv=none; b=qLEFUHJHQh0mRQosSAtSO42KlLCbrqWlHhkiztCI9Lan/rvvNvEb+2gwqfrTogPPVTbB8I1J64zlKJTN178RIXvifhY/mzDbjeSVlBXFIUB1s7+fi2NJwvpB9bEFIucLXvWstpUfmIDrNoRmcZKLQrBcZjhcr49mEwoS+FYZ37U=
+	t=1773611409; cv=none; b=IyeJGLm9DXibkNHtE2N8LY1AkiGYSQTF77QtJDdHfHFOyf9affGk21I7ez3czdPs/CoyQPu7I+nRv8MmJGCY4tzYisPbg3uO8ci7w6A4PUFgDW7VFUVks4yX/MB49RXGB8jD2sqZqVPtA0ZD3YSM3nDHlZFiKsCsFYofgQjObpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773611408; c=relaxed/simple;
-	bh=d+WIJIXyXTkDIv/eHNe+vwweu639NsTf18saykCWjls=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tMukStGK/k8Re8m34PmLyRo4/XjxgBcPnpNFM39tBl4gmOMs0Z12p3gGYsbslZwmXYyndpoMkt/bvzdTjK6ZjYA9P0pm7ncfbM4A6WppGE3EEXQWX8fQGk2jPsfkr7PLsMpVApXssm/nvZjwxR/llgZVJu8VXDFwr+nzqbUjv5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=a2pZBRDD; arc=none smtp.client-ip=194.13.80.246
+	s=arc-20240116; t=1773611409; c=relaxed/simple;
+	bh=fllZxkDRUNeCABiWG3jVqUjJSnmkYnXd6EO39R29dWg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=itnza11CJO7ZHUlF+ytnBUF5i6K0/PUBmq+9P+UhxIbizVpOtNIrugW5wV/Im7Mm77xjdNIK8CreUxDcp7vJGvsjaPpZSyV2nZkye7EznVpFV9qZH46Aag5Q40rcXUAO7qJC1rVxj2CQH5V9tgI1Tfhu4zsepLUo4K+XkEBvNMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=wsS+e1vp; arc=none smtp.client-ip=194.13.80.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="a2pZBRDD"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 29938A0304;
-	Sun, 15 Mar 2026 22:49:51 +0100 (CET)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="wsS+e1vp"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 803DCA5756;
+	Sun, 15 Mar 2026 22:49:59 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1773611397; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=u0vASF/3eYmA3ofjMgZY9cyEbjg2KFkibsZbj/8hDVQ=;
-	b=a2pZBRDDybGOPrz/4C2YOacdDQrCt/fKKh9yrXCk1vXCZx9+68L6eDCA7npYeH0LZDfr9s
-	cFwAQJ+igm1iTn+WVv6KShIOEwrXh0TDVparluzSx6ejrssK6fRMXVwY2hixKf/bY2bkHR
-	6yVDd0aLOMECpS9MoC1jzDzMZi4MKDFRW0O1/PnkFnETh0qdl5Iqw3QSHZSmZukFEKyz5n
-	Q1tJ7RCnycdNLurW8kbY7NQEDP6QzJ/uA+FNQlqWqLevq0LPfPnP9jpbBOhmYMTru3YMzw
-	/c3o8HKBN0VQYgVhsx7SJ6n7FaTat2wCS6RZ2g9EwhA9xWorVcEavo2GfoNFaw==
+	t=1773611400; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=LrqSBjFg0lxjthVlm691SVDRHN7NxeZf6tRtCC91mf4=;
+	b=wsS+e1vpTBJdOficIvno/j9VLLzvkVJxBM87kV0sQW/gAn3ks25kq4OU7LwWKxncfpdYpW
+	Rb/z9l79eTJaV+7m3NtHvD+ztWkwkrgIx0C1upf0u88ADOTLfRMsHlZFaE+T7pVPqXZQeE
+	6OpilOZvCriOJE+lghICEf7ePMwNwrJMkNnSEnDaBIgKnKarXpm6Bcz6xFL8F1zxB4GxAi
+	Il5U7aI9HoBwhlkxFvrvM8TFhTGo14mjpnWMHNJ2LvL7MSJ9DALtqTbHTMqhXboKHMsY5D
+	Qu10VhhzJT/sqMuQjaiL4TeScKEyzhbGKanxT4vuqKPVDM11NV5q/OL1Dp3WNA==
 From: Nicolai Buchwitz <nb@tipi-net.de>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
@@ -44,10 +46,12 @@ Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Nicolai Buchwitz <nb@tipi-net.de>
-Subject: [PATCH net-next v2 0/6] net: bcmgenet: add XDP support
-Date: Sun, 15 Mar 2026 22:49:08 +0100
-Message-ID: <20260315214914.1555777-1-nb@tipi-net.de>
+Subject: [PATCH net-next v2 2/6] net: bcmgenet: register xdp_rxq_info for each RX ring
+Date: Sun, 15 Mar 2026 22:49:10 +0100
+Message-ID: <20260315214914.1555777-3-nb@tipi-net.de>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260315214914.1555777-1-nb@tipi-net.de>
+References: <20260315214914.1555777-1-nb@tipi-net.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,51 +61,94 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Add XDP support to the bcmgenet driver, covering XDP_PASS, XDP_DROP,
-XDP_TX, XDP_REDIRECT, and ndo_xdp_xmit.
+Register an xdp_rxq_info per RX ring and associate it with the ring's
+page_pool via MEM_TYPE_PAGE_POOL. This is required infrastructure for
+XDP program execution: the XDP framework needs to know the memory model
+backing each RX queue for correct page lifecycle management.
 
-The first patch converts the RX path from the existing kmalloc-based
-allocation to page_pool, which is a prerequisite for XDP. The remaining
-patches incrementally add XDP functionality and per-action statistics.
+No functional change - XDP programs are not yet attached or executed.
 
-Tested on Raspberry Pi CM4 (BCM2711, bcmgenet, 1Gbps link):
-- XDP_PASS: 943 Mbit/s TX, 935 Mbit/s RX (no regression vs baseline)
-- XDP_PASS latency: 0.164ms avg, 0% packet loss
-- XDP_DROP: all inbound traffic blocked as expected
-- XDP_TX: TX counter increments (packet reflection working)
-- Link flap with XDP attached: no errors
-- Program swap under iperf3 load: no errors
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+---
+ .../net/ethernet/broadcom/genet/bcmgenet.c    | 22 +++++++++++++++++--
+ .../net/ethernet/broadcom/genet/bcmgenet.h    |  2 ++
+ 2 files changed, 22 insertions(+), 2 deletions(-)
 
-Changes since v1:
-  - Fixed tx_rings[DESC_INDEX] out-of-bounds access. Expanded array
-    to DESC_INDEX+1 and initialized ring 16 with dedicated BDs.
-  - Use ring 16 (hardware default descriptor ring) for XDP TX,
-    isolating from normal SKB TX queues.
-  - Piggyback ring 16 TX completion on RX NAPI poll (INTRL2_1 bit
-    collision with RX ring 0).
-  - Fixed ring 16 TX reclaim: skip INTRL2_1 clear, skip BQL
-    completion, use non-destructive reclaim in RX poll path.
-  - Prepend zeroed TSB before XDP TX frame data (TBUF_64B_EN requires
-    64-byte struct status_64 prefix on all TX buffers).
-  - Tested with upstream XDP selftests (xdp.py): pass_sb, drop_sb,
-    tx_sb all passing. The multi-buffer tests (pass_mb, drop_mb,
-    tx_mb) fail because bcmgenet does not support jumbo frames /
-    MTU changes; I plan to add ndo_change_mtu support in a follow-up
-    series.
-
-Nicolai Buchwitz (6):
-  net: bcmgenet: convert RX path to page_pool
-  net: bcmgenet: register xdp_rxq_info for each RX ring
-  net: bcmgenet: add basic XDP support (PASS/DROP)
-  net: bcmgenet: add XDP_TX support
-  net: bcmgenet: add XDP_REDIRECT and ndo_xdp_xmit support
-  net: bcmgenet: add XDP statistics counters
-
- drivers/net/ethernet/broadcom/Kconfig         |   1 +
- .../net/ethernet/broadcom/genet/bcmgenet.c    | 607 +++++++++++++++---
- .../net/ethernet/broadcom/genet/bcmgenet.h    |  20 +-
- 3 files changed, 536 insertions(+), 92 deletions(-)
-
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index 7410034d9bdc..6e610e73e12f 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -2771,16 +2771,32 @@ static int bcmgenet_rx_ring_create_pool(struct bcmgenet_priv *priv,
+ 		.offset = GENET_XDP_HEADROOM,
+ 		.max_len = RX_BUF_LENGTH,
+ 	};
++	int err;
+ 
+ 	ring->page_pool = page_pool_create(&pp_params);
+ 	if (IS_ERR(ring->page_pool)) {
+-		int err = PTR_ERR(ring->page_pool);
+-
++		err = PTR_ERR(ring->page_pool);
+ 		ring->page_pool = NULL;
+ 		return err;
+ 	}
+ 
++	err = xdp_rxq_info_reg(&ring->xdp_rxq, priv->dev, ring->index, 0);
++	if (err)
++		goto err_free_pp;
++
++	err = xdp_rxq_info_reg_mem_model(&ring->xdp_rxq, MEM_TYPE_PAGE_POOL,
++					 ring->page_pool);
++	if (err)
++		goto err_unreg_rxq;
++
+ 	return 0;
++
++err_unreg_rxq:
++	xdp_rxq_info_unreg(&ring->xdp_rxq);
++err_free_pp:
++	page_pool_destroy(ring->page_pool);
++	ring->page_pool = NULL;
++	return err;
+ }
+ 
+ /* Initialize a RDMA ring */
+@@ -2807,6 +2823,7 @@ static int bcmgenet_init_rx_ring(struct bcmgenet_priv *priv,
+ 
+ 	ret = bcmgenet_alloc_rx_buffers(priv, ring);
+ 	if (ret) {
++		xdp_rxq_info_unreg(&ring->xdp_rxq);
+ 		page_pool_destroy(ring->page_pool);
+ 		ring->page_pool = NULL;
+ 		return ret;
+@@ -3012,6 +3029,7 @@ static void bcmgenet_destroy_rx_page_pools(struct bcmgenet_priv *priv)
+ 	for (i = 0; i <= priv->hw_params->rx_queues; ++i) {
+ 		ring = &priv->rx_rings[i];
+ 		if (ring->page_pool) {
++			xdp_rxq_info_unreg(&ring->xdp_rxq);
+ 			page_pool_destroy(ring->page_pool);
+ 			ring->page_pool = NULL;
+ 		}
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
+index 11a0ec563a89..82a6d29f481d 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
+@@ -16,6 +16,7 @@
+ #include <linux/dim.h>
+ #include <linux/ethtool.h>
+ #include <net/page_pool/helpers.h>
++#include <net/xdp.h>
+ 
+ #include "../unimac.h"
+ 
+@@ -579,6 +580,7 @@ struct bcmgenet_rx_ring {
+ 	u32		rx_max_coalesced_frames;
+ 	u32		rx_coalesce_usecs;
+ 	struct page_pool *page_pool;
++	struct xdp_rxq_info xdp_rxq;
+ 	struct bcmgenet_priv *priv;
+ };
+ 
 -- 
 2.51.0
 
