@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E66F37AA75
-	for <netdev@vger.kernel.org>; Sun, 15 Mar 2026 17:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998003793C8
+	for <netdev@vger.kernel.org>; Sun, 15 Mar 2026 17:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773596561; cv=none; b=bB7/Lzus17C7fO6q5E7D/GthSaUsv8uejsYpuXVmwxzkjFO0/7iDINqZrlLsJGN9W3bmUv7CqywZAj15Dy9hqClJs6dNM/HOwSKsJZM6TKBIhPIAmf5podlq7Jy6atdXw1ZO4G285hoGdQxhqizEsmY+dtsVpQKfmIQDaal/AXk=
+	t=1773596570; cv=none; b=l0psi6EReSlFSm5Iq7siajDvpqxb3CgupK3I528Vuf82FBwiY4gGRMAqAQUvAfXcLchn/MmTEc6//OpGl7KlPwnP/bJLlD1JSUwu6a4XWfji4dEKoZiRcdDqKOxvL0BIV2v9A47CUaj7Qi4miLLCpLAFMyXUu7LqxEEtZfOHjuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773596561; c=relaxed/simple;
-	bh=MfOJlid+nmwZdH87mYvqURwpvogZtyCih7DRGuqRcAk=;
+	s=arc-20240116; t=1773596570; c=relaxed/simple;
+	bh=oKX+3eriG2SioHUvTBqPQDyaoFl17Cg9VnGmr+nvcq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OCQfitkoi0fZcNB4kcNMtN3YpLeWFSoeTC2TVTsIsx08LXz7g022iB5BgDsX0+scdfP1iLoaMbTXrsA88J/qqpt/nLqmAM0x4dgLIexwwspcR19kkG/VAe78dY6WSwZ/33YaTQDNq53EQwO3QH1pjzG3SGQEpZp9ASQTQ695z5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cTkxRPib; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=mJa5KaNHFZW3VqJVF4LDIPPSB/BaC+ef3L2thtRhzJhv9Is8ZtHWH2qJH6bijA0n3YSG6DiHtrwZQ6dLIMXU0qDWZYdS06kiohLatdaHHm9kFDI7ZQlqvBHAJvWcxfOkUeGhHR9VB5v/XHwKyCmNxYMrH4uxYxSFsAoMbkB5ssE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VPPyOlUl; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cTkxRPib"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VPPyOlUl"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773596559;
+	s=mimecast20190719; t=1773596567;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZKQXm8kWOE2bAwatcjo/YgiVfdaRMcckipabGM05qTc=;
-	b=cTkxRPibUZPgg+Px+3ysQXy+NE4DvfLWXbATM7esPTMtVAuTOd5iRXShybEP3SZrgKRpgI
-	FLEye0SwmERjQvVnqmpSbiF37ZU+iXFiGwleBNxI1GBL3xeGmzbld7w00DJ4n6cf+JkgtG
-	ffqr0tnsm6FLlBHfHYmEeU8kTC5t5pY=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+	bh=c+yBoH3D6bqIyXFoBiHGN1fywwd96SsUINohBYXJbGo=;
+	b=VPPyOlUlI5CDXoLc+kMCffDsnn4q3ENafc4f95v3jSEfaCRBmQuNbGLOkMWYM91zLm4NlL
+	TK8T5TZm54sYyRwZ37IJGiDnA7rqmhBjjyVqAZMNo4S27JtVI6v5DAV4kPWG8eXlh4WAu7
+	kB8Ap3K1HkkjG4bZw9oQLmkRLafVuE0=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-98-wTuGSkgONv2CHprqYIGC8g-1; Sun,
- 15 Mar 2026 13:42:35 -0400
-X-MC-Unique: wTuGSkgONv2CHprqYIGC8g-1
-X-Mimecast-MFC-AGG-ID: wTuGSkgONv2CHprqYIGC8g_1773596554
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-218-tCHdKIyxPP-MdJevPcmDSg-1; Sun,
+ 15 Mar 2026 13:42:44 -0400
+X-MC-Unique: tCHdKIyxPP-MdJevPcmDSg-1
+X-Mimecast-MFC-AGG-ID: tCHdKIyxPP-MdJevPcmDSg_1773596563
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0DFD21800281;
-	Sun, 15 Mar 2026 17:42:34 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1072A1800344;
+	Sun, 15 Mar 2026 17:42:43 +0000 (UTC)
 Received: from p16v.redhat.com (unknown [10.45.224.46])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 575491955D87;
-	Sun, 15 Mar 2026 17:42:30 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 23B6A1955D87;
+	Sun, 15 Mar 2026 17:42:38 +0000 (UTC)
 From: Ivan Vecera <ivecera@redhat.com>
 To: netdev@vger.kernel.org
 Cc: Prathosh Satish <Prathosh.Satish@microchip.com>,
@@ -52,9 +52,9 @@ Cc: Prathosh Satish <Prathosh.Satish@microchip.com>,
 	Michal Schmidt <mschmidt@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 1/6] dpll: zl3073x: use struct_group to partition states
-Date: Sun, 15 Mar 2026 18:42:19 +0100
-Message-ID: <20260315174224.399074-2-ivecera@redhat.com>
+Subject: [PATCH net-next v2 3/6] dpll: zl3073x: introduce zl3073x_chan for DPLL channel state
+Date: Sun, 15 Mar 2026 18:42:21 +0100
+Message-ID: <20260315174224.399074-4-ivecera@redhat.com>
 In-Reply-To: <20260315174224.399074-1-ivecera@redhat.com>
 References: <20260315174224.399074-1-ivecera@redhat.com>
 Precedence: bulk
@@ -66,296 +66,558 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Organize the zl3073x_out, zl3073x_ref, and zl3073x_synth structures
-using struct_group() to partition fields into semantic groups:
+Extract DPLL channel state management into a dedicated zl3073x_chan
+module, following the pattern already established by zl3073x_ref,
+zl3073x_out and zl3073x_synth.
 
-  * cfg:  mutable configuration written to HW via state_set
-  * inv:  invariant fields set once during state_fetch
-  * stat: read-only status
+The new struct zl3073x_chan caches the raw mode_refsel register value
+in a cfg group with inline getters and setters to extract and update
+the bitfields. Three standard state management functions are provided:
 
-This enables group-level operations in place of field-by-field copies:
+ - zl3073x_chan_state_fetch: read the mode_refsel register from HW
+ - zl3073x_chan_state_get: return cached channel state
+ - zl3073x_chan_state_set: write changed state to HW, skip if unchanged
 
-  * state_set validates invariants haven't changed (WARN_ON + -EINVAL)
-  * state_set short-circuits when cfg is unchanged
-  * state_set copy entire groups in a single assignment instead of
-    enumerating each field
+The channel state array chan[ZL3073X_MAX_CHANNELS] is added to struct
+zl3073x_dev. Channel state is fetched as part of
+zl3073x_dev_state_fetch, using the chip-specific channel count.
 
-Add kernel doc for zl3073x_out_state_set and zl3073x_ref_state_set
-documenting the new invariant validation and short-circuit semantics.
-
-Remove forward declaration of zl3073x_synth_state_set().
+The refsel_mode and forced_ref fields are removed from struct
+zl3073x_dpll and all direct register accesses in dpll.c are replaced
+with the new chan state operations.
 
 Signed-off-by: Ivan Vecera <ivecera@redhat.com>
 ---
- drivers/dpll/zl3073x/out.c   | 27 +++++++++++++++++++------
- drivers/dpll/zl3073x/out.h   | 21 ++++++++++++--------
- drivers/dpll/zl3073x/ref.c   | 38 ++++++++++++++++++++++--------------
- drivers/dpll/zl3073x/ref.h   | 31 +++++++++++++++++------------
- drivers/dpll/zl3073x/synth.h | 16 +++++++--------
- 5 files changed, 84 insertions(+), 49 deletions(-)
+ drivers/dpll/zl3073x/Makefile |   4 +-
+ drivers/dpll/zl3073x/chan.c   |  79 ++++++++++++++++++++++++++
+ drivers/dpll/zl3073x/chan.h   |  74 ++++++++++++++++++++++++
+ drivers/dpll/zl3073x/core.c   |  10 ++++
+ drivers/dpll/zl3073x/core.h   |   3 +
+ drivers/dpll/zl3073x/dpll.c   | 104 ++++++++++++++++------------------
+ drivers/dpll/zl3073x/dpll.h   |   4 --
+ 7 files changed, 217 insertions(+), 61 deletions(-)
+ create mode 100644 drivers/dpll/zl3073x/chan.c
+ create mode 100644 drivers/dpll/zl3073x/chan.h
 
-diff --git a/drivers/dpll/zl3073x/out.c b/drivers/dpll/zl3073x/out.c
-index 86829a0c1c022..eb5628aebcee8 100644
---- a/drivers/dpll/zl3073x/out.c
-+++ b/drivers/dpll/zl3073x/out.c
-@@ -106,12 +106,32 @@ const struct zl3073x_out *zl3073x_out_state_get(struct zl3073x_dev *zldev,
- 	return &zldev->out[index];
- }
+diff --git a/drivers/dpll/zl3073x/Makefile b/drivers/dpll/zl3073x/Makefile
+index bd324c7fe7101..906ec3fbcc202 100644
+--- a/drivers/dpll/zl3073x/Makefile
++++ b/drivers/dpll/zl3073x/Makefile
+@@ -1,8 +1,8 @@
+ # SPDX-License-Identifier: GPL-2.0
  
+ obj-$(CONFIG_ZL3073X)		+= zl3073x.o
+-zl3073x-objs			:= core.o devlink.o dpll.o flash.o fw.o	\
+-				   out.o prop.o ref.o synth.o
++zl3073x-objs			:= chan.o core.o devlink.o dpll.o	\
++				   flash.o fw.o out.o prop.o ref.o synth.o
+ 
+ obj-$(CONFIG_ZL3073X_I2C)	+= zl3073x_i2c.o
+ zl3073x_i2c-objs		:= i2c.o
+diff --git a/drivers/dpll/zl3073x/chan.c b/drivers/dpll/zl3073x/chan.c
+new file mode 100644
+index 0000000000000..8019b8ce73514
+--- /dev/null
++++ b/drivers/dpll/zl3073x/chan.c
+@@ -0,0 +1,79 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#include <linux/dev_printk.h>
++#include <linux/string.h>
++#include <linux/types.h>
++
++#include "chan.h"
++#include "core.h"
++
 +/**
-+ * zl3073x_out_state_set - commit output state changes to hardware
++ * zl3073x_chan_state_fetch - fetch DPLL channel state from hardware
 + * @zldev: pointer to zl3073x_dev structure
-+ * @index: output index to set state for
-+ * @out: desired output state
++ * @index: DPLL channel index to fetch state for
 + *
-+ * Validates that invariant fields have not been modified, skips the HW
-+ * write if the mutable configuration is unchanged, and otherwise writes
-+ * only the changed cfg fields to hardware via the mailbox interface.
++ * Reads the mode_refsel register for the given DPLL channel and stores
++ * the raw value for later use.
 + *
-+ * Return: 0 on success, -EINVAL if invariants changed, <0 on HW error
++ * Return: 0 on success, <0 on error
 + */
- int zl3073x_out_state_set(struct zl3073x_dev *zldev, u8 index,
- 			  const struct zl3073x_out *out)
- {
- 	struct zl3073x_out *dout = &zldev->out[index];
- 	int rc;
- 
-+	/* Reject attempts to change invariant fields (set at fetch only) */
-+	if (WARN_ON(memcmp(&dout->inv, &out->inv, sizeof(out->inv))))
-+		return -EINVAL;
++int zl3073x_chan_state_fetch(struct zl3073x_dev *zldev, u8 index)
++{
++	struct zl3073x_chan *chan = &zldev->chan[index];
++	int rc;
++
++	rc = zl3073x_read_u8(zldev, ZL_REG_DPLL_MODE_REFSEL(index),
++			     &chan->mode_refsel);
++	if (rc)
++		return rc;
++
++	dev_dbg(zldev->dev, "DPLL%u mode: %u, ref: %u\n", index,
++		zl3073x_chan_mode_get(chan), zl3073x_chan_ref_get(chan));
++
++	return 0;
++}
++
++/**
++ * zl3073x_chan_state_get - get current DPLL channel state
++ * @zldev: pointer to zl3073x_dev structure
++ * @index: DPLL channel index to get state for
++ *
++ * Return: pointer to given DPLL channel state
++ */
++const struct zl3073x_chan *zl3073x_chan_state_get(struct zl3073x_dev *zldev,
++						  u8 index)
++{
++	return &zldev->chan[index];
++}
++
++/**
++ * zl3073x_chan_state_set - commit DPLL channel state changes to hardware
++ * @zldev: pointer to zl3073x_dev structure
++ * @index: DPLL channel index to set state for
++ * @chan: desired channel state
++ *
++ * Skips the HW write if the configuration is unchanged, and otherwise
++ * writes the mode_refsel register to hardware.
++ *
++ * Return: 0 on success, <0 on HW error
++ */
++int zl3073x_chan_state_set(struct zl3073x_dev *zldev, u8 index,
++			   const struct zl3073x_chan *chan)
++{
++	struct zl3073x_chan *dchan = &zldev->chan[index];
++	int rc;
 +
 +	/* Skip HW write if configuration hasn't changed */
-+	if (!memcmp(&dout->cfg, &out->cfg, sizeof(out->cfg)))
++	if (!memcmp(&dchan->cfg, &chan->cfg, sizeof(chan->cfg)))
 +		return 0;
 +
- 	guard(mutex)(&zldev->multiop_lock);
- 
- 	/* Read output configuration into mailbox */
-@@ -146,12 +166,7 @@ int zl3073x_out_state_set(struct zl3073x_dev *zldev, u8 index,
- 		return rc;
- 
- 	/* After successful commit store new state */
--	dout->div = out->div;
--	dout->width = out->width;
--	dout->esync_n_period = out->esync_n_period;
--	dout->esync_n_width = out->esync_n_width;
--	dout->mode = out->mode;
--	dout->phase_comp = out->phase_comp;
-+	dout->cfg = out->cfg;
- 
- 	return 0;
- }
-diff --git a/drivers/dpll/zl3073x/out.h b/drivers/dpll/zl3073x/out.h
-index 318f9bb8da3a0..edf40432bba5f 100644
---- a/drivers/dpll/zl3073x/out.h
-+++ b/drivers/dpll/zl3073x/out.h
-@@ -4,6 +4,7 @@
- #define _ZL3073X_OUT_H
- 
- #include <linux/bitfield.h>
++	rc = zl3073x_write_u8(zldev, ZL_REG_DPLL_MODE_REFSEL(index),
++			      chan->mode_refsel);
++	if (rc)
++		return rc;
++
++	/* After successful write store new state */
++	dchan->cfg = chan->cfg;
++
++	return 0;
++}
+diff --git a/drivers/dpll/zl3073x/chan.h b/drivers/dpll/zl3073x/chan.h
+new file mode 100644
+index 0000000000000..3e6ffaef0c743
+--- /dev/null
++++ b/drivers/dpll/zl3073x/chan.h
+@@ -0,0 +1,74 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++#ifndef _ZL3073X_CHAN_H
++#define _ZL3073X_CHAN_H
++
++#include <linux/bitfield.h>
 +#include <linux/stddef.h>
- #include <linux/types.h>
- 
- #include "regs.h"
-@@ -17,17 +18,21 @@ struct zl3073x_dev;
-  * @esync_n_period: embedded sync or n-pin period (for n-div formats)
-  * @esync_n_width: embedded sync or n-pin pulse width
-  * @phase_comp: phase compensation
-- * @ctrl: output control
-  * @mode: output mode
-+ * @ctrl: output control
-  */
- struct zl3073x_out {
--	u32	div;
--	u32	width;
--	u32	esync_n_period;
--	u32	esync_n_width;
--	s32	phase_comp;
--	u8	ctrl;
--	u8	mode;
-+	struct_group(cfg, /* Config */
-+		u32	div;
-+		u32	width;
-+		u32	esync_n_period;
-+		u32	esync_n_width;
-+		s32	phase_comp;
-+		u8	mode;
++#include <linux/types.h>
++
++#include "regs.h"
++
++struct zl3073x_dev;
++
++/**
++ * struct zl3073x_chan - DPLL channel state
++ * @mode_refsel: mode and reference selection register value
++ */
++struct zl3073x_chan {
++	struct_group(cfg,
++		u8	mode_refsel;
 +	);
-+	struct_group(inv, /* Invariants */
-+		u8	ctrl;
-+	);
- };
- 
- int zl3073x_out_state_fetch(struct zl3073x_dev *zldev, u8 index);
-diff --git a/drivers/dpll/zl3073x/ref.c b/drivers/dpll/zl3073x/ref.c
-index 6b65e61039999..8b4c4807bcc44 100644
---- a/drivers/dpll/zl3073x/ref.c
-+++ b/drivers/dpll/zl3073x/ref.c
-@@ -73,14 +73,8 @@ int zl3073x_ref_state_fetch(struct zl3073x_dev *zldev, u8 index)
- 		struct zl3073x_ref *p_ref = ref - 1; /* P-pin counterpart*/
- 
- 		/* Copy the shared items from the P-pin */
--		ref->config = p_ref->config;
--		ref->esync_n_div = p_ref->esync_n_div;
--		ref->freq_base = p_ref->freq_base;
--		ref->freq_mult = p_ref->freq_mult;
--		ref->freq_ratio_m = p_ref->freq_ratio_m;
--		ref->freq_ratio_n = p_ref->freq_ratio_n;
--		ref->phase_comp = p_ref->phase_comp;
--		ref->sync_ctrl = p_ref->sync_ctrl;
-+		ref->cfg = p_ref->cfg;
-+		ref->inv = p_ref->inv;
- 
- 		return 0; /* Finish - no non-shared items for now */
++};
++
++int zl3073x_chan_state_fetch(struct zl3073x_dev *zldev, u8 index);
++const struct zl3073x_chan *zl3073x_chan_state_get(struct zl3073x_dev *zldev,
++						 u8 index);
++int zl3073x_chan_state_set(struct zl3073x_dev *zldev, u8 index,
++			   const struct zl3073x_chan *chan);
++
++/**
++ * zl3073x_chan_mode_get - get DPLL channel operating mode
++ * @chan: pointer to channel state
++ *
++ * Return: reference selection mode of the given DPLL channel
++ */
++static inline u8 zl3073x_chan_mode_get(const struct zl3073x_chan *chan)
++{
++	return FIELD_GET(ZL_DPLL_MODE_REFSEL_MODE, chan->mode_refsel);
++}
++
++/**
++ * zl3073x_chan_ref_get - get manually selected reference
++ * @chan: pointer to channel state
++ *
++ * Return: reference selected in forced reference lock mode
++ */
++static inline u8 zl3073x_chan_ref_get(const struct zl3073x_chan *chan)
++{
++	return FIELD_GET(ZL_DPLL_MODE_REFSEL_REF, chan->mode_refsel);
++}
++
++/**
++ * zl3073x_chan_mode_set - set DPLL channel operating mode
++ * @chan: pointer to channel state
++ * @mode: mode to set
++ */
++static inline void zl3073x_chan_mode_set(struct zl3073x_chan *chan, u8 mode)
++{
++	chan->mode_refsel &= ~ZL_DPLL_MODE_REFSEL_MODE;
++	chan->mode_refsel |= FIELD_PREP(ZL_DPLL_MODE_REFSEL_MODE, mode);
++}
++
++/**
++ * zl3073x_chan_ref_set - set manually selected reference
++ * @chan: pointer to channel state
++ * @ref: reference to set
++ */
++static inline void zl3073x_chan_ref_set(struct zl3073x_chan *chan, u8 ref)
++{
++	chan->mode_refsel &= ~ZL_DPLL_MODE_REFSEL_REF;
++	chan->mode_refsel |= FIELD_PREP(ZL_DPLL_MODE_REFSEL_REF, ref);
++}
++
++#endif /* _ZL3073X_CHAN_H */
+diff --git a/drivers/dpll/zl3073x/core.c b/drivers/dpll/zl3073x/core.c
+index 07626082aae3b..b03e59fa0834b 100644
+--- a/drivers/dpll/zl3073x/core.c
++++ b/drivers/dpll/zl3073x/core.c
+@@ -539,6 +539,16 @@ zl3073x_dev_state_fetch(struct zl3073x_dev *zldev)
+ 		}
  	}
-@@ -154,12 +148,32 @@ zl3073x_ref_state_get(struct zl3073x_dev *zldev, u8 index)
- 	return &zldev->ref[index];
+ 
++	for (i = 0; i < zldev->info->num_channels; i++) {
++		rc = zl3073x_chan_state_fetch(zldev, i);
++		if (rc) {
++			dev_err(zldev->dev,
++				"Failed to fetch channel state: %pe\n",
++				ERR_PTR(rc));
++			return rc;
++		}
++	}
++
+ 	return rc;
  }
  
-+/**
-+ * zl3073x_ref_state_set - commit input reference state changes to hardware
-+ * @zldev: pointer to zl3073x_dev structure
-+ * @index: input reference index to set state for
-+ * @ref: desired reference state
-+ *
-+ * Validates that invariant fields have not been modified, skips the HW
-+ * write if the mutable configuration is unchanged, and otherwise writes
-+ * only the changed cfg fields to hardware via the mailbox interface.
-+ *
-+ * Return: 0 on success, -EINVAL if invariants changed, <0 on HW error
-+ */
- int zl3073x_ref_state_set(struct zl3073x_dev *zldev, u8 index,
- 			  const struct zl3073x_ref *ref)
+diff --git a/drivers/dpll/zl3073x/core.h b/drivers/dpll/zl3073x/core.h
+index b6f22ee1c0bd1..2cfb9dd74aa53 100644
+--- a/drivers/dpll/zl3073x/core.h
++++ b/drivers/dpll/zl3073x/core.h
+@@ -9,6 +9,7 @@
+ #include <linux/mutex.h>
+ #include <linux/types.h>
+ 
++#include "chan.h"
+ #include "out.h"
+ #include "ref.h"
+ #include "regs.h"
+@@ -61,6 +62,7 @@ struct zl3073x_chip_info {
+  * @ref: array of input references' invariants
+  * @out: array of outs' invariants
+  * @synth: array of synths' invariants
++ * @chan: array of DPLL channels' state
+  * @dplls: list of DPLLs
+  * @kworker: thread for periodic work
+  * @work: periodic work
+@@ -77,6 +79,7 @@ struct zl3073x_dev {
+ 	struct zl3073x_ref	ref[ZL3073X_NUM_REFS];
+ 	struct zl3073x_out	out[ZL3073X_NUM_OUTS];
+ 	struct zl3073x_synth	synth[ZL3073X_NUM_SYNTHS];
++	struct zl3073x_chan	chan[ZL3073X_MAX_CHANNELS];
+ 
+ 	/* DPLL channels */
+ 	struct list_head	dplls;
+diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
+index c201c974a7f9a..f56f073e57df4 100644
+--- a/drivers/dpll/zl3073x/dpll.c
++++ b/drivers/dpll/zl3073x/dpll.c
+@@ -259,10 +259,13 @@ static int
+ zl3073x_dpll_selected_ref_get(struct zl3073x_dpll *zldpll, u8 *ref)
  {
- 	struct zl3073x_ref *dref = &zldev->ref[index];
+ 	struct zl3073x_dev *zldev = zldpll->dev;
++	const struct zl3073x_chan *chan;
+ 	u8 state, value;
  	int rc;
  
-+	/* Reject attempts to change invariant fields (set at init only) */
-+	if (WARN_ON(memcmp(&dref->inv, &ref->inv, sizeof(ref->inv))))
-+		return -EINVAL;
+-	switch (zldpll->refsel_mode) {
++	chan = zl3073x_chan_state_get(zldev, zldpll->id);
 +
-+	/* Skip HW write if configuration hasn't changed */
-+	if (!memcmp(&dref->cfg, &ref->cfg, sizeof(ref->cfg)))
-+		return 0;
-+
- 	guard(mutex)(&zldev->multiop_lock);
++	switch (zl3073x_chan_mode_get(chan)) {
+ 	case ZL_DPLL_MODE_REFSEL_MODE_AUTO:
+ 		/* For automatic mode read refsel_status register */
+ 		rc = zl3073x_read_u8(zldev,
+@@ -282,7 +285,7 @@ zl3073x_dpll_selected_ref_get(struct zl3073x_dpll *zldpll, u8 *ref)
+ 		break;
+ 	case ZL_DPLL_MODE_REFSEL_MODE_REFLOCK:
+ 		/* For manual mode return stored value */
+-		*ref = zldpll->forced_ref;
++		*ref = zl3073x_chan_ref_get(chan);
+ 		break;
+ 	default:
+ 		/* For other modes like NCO, freerun... there is no input ref */
+@@ -307,10 +310,11 @@ static int
+ zl3073x_dpll_selected_ref_set(struct zl3073x_dpll *zldpll, u8 ref)
+ {
+ 	struct zl3073x_dev *zldev = zldpll->dev;
+-	u8 mode, mode_refsel;
+-	int rc;
++	struct zl3073x_chan chan;
++	u8 mode;
  
- 	/* Read reference configuration into mailbox */
-@@ -207,13 +221,7 @@ int zl3073x_ref_state_set(struct zl3073x_dev *zldev, u8 index,
+-	mode = zldpll->refsel_mode;
++	chan = *zl3073x_chan_state_get(zldev, zldpll->id);
++	mode = zl3073x_chan_mode_get(&chan);
+ 
+ 	switch (mode) {
+ 	case ZL_DPLL_MODE_REFSEL_MODE_REFLOCK:
+@@ -328,8 +332,8 @@ zl3073x_dpll_selected_ref_set(struct zl3073x_dpll *zldpll, u8 ref)
+ 				break;
+ 			}
+ 			/* Keep selected reference */
+-			ref = zldpll->forced_ref;
+-		} else if (ref == zldpll->forced_ref) {
++			ref = zl3073x_chan_ref_get(&chan);
++		} else if (ref == zl3073x_chan_ref_get(&chan)) {
+ 			/* No register update - same mode and same ref */
+ 			return 0;
+ 		}
+@@ -351,21 +355,10 @@ zl3073x_dpll_selected_ref_set(struct zl3073x_dpll *zldpll, u8 ref)
+ 		return -EOPNOTSUPP;
+ 	}
+ 
+-	/* Build mode_refsel value */
+-	mode_refsel = FIELD_PREP(ZL_DPLL_MODE_REFSEL_MODE, mode) |
+-		      FIELD_PREP(ZL_DPLL_MODE_REFSEL_REF, ref);
+-
+-	/* Update dpll_mode_refsel register */
+-	rc = zl3073x_write_u8(zldev, ZL_REG_DPLL_MODE_REFSEL(zldpll->id),
+-			      mode_refsel);
+-	if (rc)
+-		return rc;
+-
+-	/* Store new mode and forced reference */
+-	zldpll->refsel_mode = mode;
+-	zldpll->forced_ref = ref;
++	zl3073x_chan_mode_set(&chan, mode);
++	zl3073x_chan_ref_set(&chan, ref);
+ 
+-	return rc;
++	return zl3073x_chan_state_set(zldev, zldpll->id, &chan);
+ }
+ 
+ /**
+@@ -624,9 +617,11 @@ zl3073x_dpll_ref_state_get(struct zl3073x_dpll_pin *pin,
+ {
+ 	struct zl3073x_dpll *zldpll = pin->dpll;
+ 	struct zl3073x_dev *zldev = zldpll->dev;
++	const struct zl3073x_chan *chan;
+ 	u8 ref, ref_conn;
+ 	int rc;
+ 
++	chan = zl3073x_chan_state_get(zldev, zldpll->id);
+ 	ref = zl3073x_input_pin_ref_get(pin->id);
+ 
+ 	/* Get currently connected reference */
+@@ -643,7 +638,7 @@ zl3073x_dpll_ref_state_get(struct zl3073x_dpll_pin *pin,
+ 	 * selectable and its monitor does not report any error then report
+ 	 * pin as selectable.
+ 	 */
+-	if (zldpll->refsel_mode == ZL_DPLL_MODE_REFSEL_MODE_AUTO &&
++	if (zl3073x_chan_mode_get(chan) == ZL_DPLL_MODE_REFSEL_MODE_AUTO &&
+ 	    zl3073x_dev_ref_is_status_ok(zldev, ref) && pin->selectable) {
+ 		*state = DPLL_PIN_STATE_SELECTABLE;
+ 		return 0;
+@@ -678,10 +673,13 @@ zl3073x_dpll_input_pin_state_on_dpll_set(const struct dpll_pin *dpll_pin,
+ {
+ 	struct zl3073x_dpll *zldpll = dpll_priv;
+ 	struct zl3073x_dpll_pin *pin = pin_priv;
++	const struct zl3073x_chan *chan;
+ 	u8 new_ref;
+ 	int rc;
+ 
+-	switch (zldpll->refsel_mode) {
++	chan = zl3073x_chan_state_get(zldpll->dev, zldpll->id);
++
++	switch (zl3073x_chan_mode_get(chan)) {
+ 	case ZL_DPLL_MODE_REFSEL_MODE_REFLOCK:
+ 	case ZL_DPLL_MODE_REFSEL_MODE_FREERUN:
+ 	case ZL_DPLL_MODE_REFSEL_MODE_HOLDOVER:
+@@ -1092,10 +1090,13 @@ zl3073x_dpll_lock_status_get(const struct dpll_device *dpll, void *dpll_priv,
+ {
+ 	struct zl3073x_dpll *zldpll = dpll_priv;
+ 	struct zl3073x_dev *zldev = zldpll->dev;
++	const struct zl3073x_chan *chan;
+ 	u8 mon_status, state;
+ 	int rc;
+ 
+-	switch (zldpll->refsel_mode) {
++	chan = zl3073x_chan_state_get(zldev, zldpll->id);
++
++	switch (zl3073x_chan_mode_get(chan)) {
+ 	case ZL_DPLL_MODE_REFSEL_MODE_FREERUN:
+ 	case ZL_DPLL_MODE_REFSEL_MODE_NCO:
+ 		/* In FREERUN and NCO modes the DPLL is always unlocked */
+@@ -1140,13 +1141,16 @@ zl3073x_dpll_supported_modes_get(const struct dpll_device *dpll,
+ 				 struct netlink_ext_ack *extack)
+ {
+ 	struct zl3073x_dpll *zldpll = dpll_priv;
++	const struct zl3073x_chan *chan;
++
++	chan = zl3073x_chan_state_get(zldpll->dev, zldpll->id);
+ 
+ 	/* We support switching between automatic and manual mode, except in
+ 	 * a case where the DPLL channel is configured to run in NCO mode.
+ 	 * In this case, report only the manual mode to which the NCO is mapped
+ 	 * as the only supported one.
+ 	 */
+-	if (zldpll->refsel_mode != ZL_DPLL_MODE_REFSEL_MODE_NCO)
++	if (zl3073x_chan_mode_get(chan) != ZL_DPLL_MODE_REFSEL_MODE_NCO)
+ 		__set_bit(DPLL_MODE_AUTOMATIC, modes);
+ 
+ 	__set_bit(DPLL_MODE_MANUAL, modes);
+@@ -1159,8 +1163,11 @@ zl3073x_dpll_mode_get(const struct dpll_device *dpll, void *dpll_priv,
+ 		      enum dpll_mode *mode, struct netlink_ext_ack *extack)
+ {
+ 	struct zl3073x_dpll *zldpll = dpll_priv;
++	const struct zl3073x_chan *chan;
+ 
+-	switch (zldpll->refsel_mode) {
++	chan = zl3073x_chan_state_get(zldpll->dev, zldpll->id);
++
++	switch (zl3073x_chan_mode_get(chan)) {
+ 	case ZL_DPLL_MODE_REFSEL_MODE_FREERUN:
+ 	case ZL_DPLL_MODE_REFSEL_MODE_HOLDOVER:
+ 	case ZL_DPLL_MODE_REFSEL_MODE_NCO:
+@@ -1239,7 +1246,8 @@ zl3073x_dpll_mode_set(const struct dpll_device *dpll, void *dpll_priv,
+ 		      enum dpll_mode mode, struct netlink_ext_ack *extack)
+ {
+ 	struct zl3073x_dpll *zldpll = dpll_priv;
+-	u8 hw_mode, mode_refsel, ref;
++	struct zl3073x_chan chan;
++	u8 hw_mode, ref;
+ 	int rc;
+ 
+ 	rc = zl3073x_dpll_selected_ref_get(zldpll, &ref);
+@@ -1287,26 +1295,18 @@ zl3073x_dpll_mode_set(const struct dpll_device *dpll, void *dpll_priv,
+ 		hw_mode = ZL_DPLL_MODE_REFSEL_MODE_AUTO;
+ 	}
+ 
+-	/* Build mode_refsel value */
+-	mode_refsel = FIELD_PREP(ZL_DPLL_MODE_REFSEL_MODE, hw_mode);
+-
++	chan = *zl3073x_chan_state_get(zldpll->dev, zldpll->id);
++	zl3073x_chan_mode_set(&chan, hw_mode);
+ 	if (ZL3073X_DPLL_REF_IS_VALID(ref))
+-		mode_refsel |= FIELD_PREP(ZL_DPLL_MODE_REFSEL_REF, ref);
++		zl3073x_chan_ref_set(&chan, ref);
+ 
+-	/* Update dpll_mode_refsel register */
+-	rc = zl3073x_write_u8(zldpll->dev, ZL_REG_DPLL_MODE_REFSEL(zldpll->id),
+-			      mode_refsel);
++	rc = zl3073x_chan_state_set(zldpll->dev, zldpll->id, &chan);
+ 	if (rc) {
+ 		NL_SET_ERR_MSG_MOD(extack,
+ 				   "failed to set reference selection mode");
  		return rc;
+ 	}
  
- 	/* After successful commit store new state */
--	dref->freq_base = ref->freq_base;
--	dref->freq_mult = ref->freq_mult;
--	dref->freq_ratio_m = ref->freq_ratio_m;
--	dref->freq_ratio_n = ref->freq_ratio_n;
--	dref->esync_n_div = ref->esync_n_div;
--	dref->sync_ctrl = ref->sync_ctrl;
--	dref->phase_comp = ref->phase_comp;
-+	dref->cfg = ref->cfg;
- 
+-	zldpll->refsel_mode = hw_mode;
+-
+-	if (ZL3073X_DPLL_REF_IS_VALID(ref))
+-		zldpll->forced_ref = ref;
+-
  	return 0;
  }
-diff --git a/drivers/dpll/zl3073x/ref.h b/drivers/dpll/zl3073x/ref.h
-index 0d8618f5ce8df..ab3a816c29108 100644
---- a/drivers/dpll/zl3073x/ref.h
-+++ b/drivers/dpll/zl3073x/ref.h
-@@ -5,6 +5,7 @@
  
- #include <linux/bitfield.h>
- #include <linux/math64.h>
-+#include <linux/stddef.h>
- #include <linux/types.h>
+@@ -1559,15 +1559,18 @@ zl3073x_dpll_pin_is_registrable(struct zl3073x_dpll *zldpll,
+ 				enum dpll_pin_direction dir, u8 index)
+ {
+ 	struct zl3073x_dev *zldev = zldpll->dev;
++	const struct zl3073x_chan *chan;
+ 	bool is_diff, is_enabled;
+ 	const char *name;
  
- #include "regs.h"
-@@ -13,28 +14,34 @@ struct zl3073x_dev;
++	chan = zl3073x_chan_state_get(zldev, zldpll->id);
++
+ 	if (dir == DPLL_PIN_DIRECTION_INPUT) {
+ 		u8 ref_id = zl3073x_input_pin_ref_get(index);
+ 		const struct zl3073x_ref *ref;
  
- /**
-  * struct zl3073x_ref - input reference state
-- * @ffo: current fractional frequency offset
-  * @phase_comp: phase compensation
-  * @esync_n_div: divisor for embedded sync or n-divided signal formats
-  * @freq_base: frequency base
-  * @freq_mult: frequnecy multiplier
-  * @freq_ratio_m: FEC mode multiplier
-  * @freq_ratio_n: FEC mode divisor
-- * @config: reference config
-  * @sync_ctrl: reference sync control
-+ * @config: reference config
-+ * @ffo: current fractional frequency offset
-  * @mon_status: reference monitor status
-  */
- struct zl3073x_ref {
--	s64	ffo;
--	u64	phase_comp;
--	u32	esync_n_div;
--	u16	freq_base;
--	u16	freq_mult;
--	u16	freq_ratio_m;
--	u16	freq_ratio_n;
--	u8	config;
--	u8	sync_ctrl;
--	u8	mon_status;
-+	struct_group(cfg, /* Configuration */
-+		u64	phase_comp;
-+		u32	esync_n_div;
-+		u16	freq_base;
-+		u16	freq_mult;
-+		u16	freq_ratio_m;
-+		u16	freq_ratio_n;
-+		u8	sync_ctrl;
-+	);
-+	struct_group(inv, /* Invariants */
-+		u8	config;
-+	);
-+	struct_group(stat, /* Status */
-+		s64	ffo;
-+		u8	mon_status;
-+	);
- };
+ 		/* Skip the pin if the DPLL is running in NCO mode */
+-		if (zldpll->refsel_mode == ZL_DPLL_MODE_REFSEL_MODE_NCO)
++		if (zl3073x_chan_mode_get(chan) == ZL_DPLL_MODE_REFSEL_MODE_NCO)
+ 			return false;
  
- int zl3073x_ref_state_fetch(struct zl3073x_dev *zldev, u8 index);
-diff --git a/drivers/dpll/zl3073x/synth.h b/drivers/dpll/zl3073x/synth.h
-index 6c55eb8a888c2..89e13ea2e6d94 100644
---- a/drivers/dpll/zl3073x/synth.h
-+++ b/drivers/dpll/zl3073x/synth.h
-@@ -5,6 +5,7 @@
+ 		name = "REF";
+@@ -1675,21 +1678,8 @@ static int
+ zl3073x_dpll_device_register(struct zl3073x_dpll *zldpll)
+ {
+ 	struct zl3073x_dev *zldev = zldpll->dev;
+-	u8 dpll_mode_refsel;
+ 	int rc;
  
- #include <linux/bitfield.h>
- #include <linux/math64.h>
-+#include <linux/stddef.h>
- #include <linux/types.h>
- 
- #include "regs.h"
-@@ -20,11 +21,13 @@ struct zl3073x_dev;
-  * @ctrl: synth control
-  */
- struct zl3073x_synth {
--	u32	freq_mult;
--	u16	freq_base;
--	u16	freq_m;
--	u16	freq_n;
--	u8	ctrl;
-+	struct_group(inv, /* Invariants */
-+		u32	freq_mult;
-+		u16	freq_base;
-+		u16	freq_m;
-+		u16	freq_n;
-+		u8	ctrl;
-+	);
- };
- 
- int zl3073x_synth_state_fetch(struct zl3073x_dev *zldev, u8 synth_id);
-@@ -32,9 +35,6 @@ int zl3073x_synth_state_fetch(struct zl3073x_dev *zldev, u8 synth_id);
- const struct zl3073x_synth *zl3073x_synth_state_get(struct zl3073x_dev *zldev,
- 						    u8 synth_id);
- 
--int zl3073x_synth_state_set(struct zl3073x_dev *zldev, u8 synth_id,
--			    const struct zl3073x_synth *synth);
+-	/* Read DPLL mode and forcibly selected reference */
+-	rc = zl3073x_read_u8(zldev, ZL_REG_DPLL_MODE_REFSEL(zldpll->id),
+-			     &dpll_mode_refsel);
+-	if (rc)
+-		return rc;
 -
- /**
-  * zl3073x_synth_dpll_get - get DPLL ID the synth is driven by
-  * @synth: pointer to synth state
+-	/* Extract mode and selected input reference */
+-	zldpll->refsel_mode = FIELD_GET(ZL_DPLL_MODE_REFSEL_MODE,
+-					dpll_mode_refsel);
+-	zldpll->forced_ref = FIELD_GET(ZL_DPLL_MODE_REFSEL_REF,
+-				       dpll_mode_refsel);
+-
+ 	zldpll->ops = zl3073x_dpll_device_ops;
+ 	if (zldev->info->flags & ZL3073X_FLAG_DIE_TEMP)
+ 		zldpll->ops.temp_get = zl3073x_dpll_temp_get;
+@@ -1844,8 +1834,10 @@ zl3073x_dpll_changes_check(struct zl3073x_dpll *zldpll)
+ 	struct zl3073x_dev *zldev = zldpll->dev;
+ 	enum dpll_lock_status lock_status;
+ 	struct device *dev = zldev->dev;
++	const struct zl3073x_chan *chan;
+ 	struct zl3073x_dpll_pin *pin;
+ 	int rc;
++	u8 mode;
+ 
+ 	zldpll->check_count++;
+ 
+@@ -1867,8 +1859,10 @@ zl3073x_dpll_changes_check(struct zl3073x_dpll *zldpll)
+ 	/* Input pin monitoring does make sense only in automatic
+ 	 * or forced reference modes.
+ 	 */
+-	if (zldpll->refsel_mode != ZL_DPLL_MODE_REFSEL_MODE_AUTO &&
+-	    zldpll->refsel_mode != ZL_DPLL_MODE_REFSEL_MODE_REFLOCK)
++	chan = zl3073x_chan_state_get(zldev, zldpll->id);
++	mode = zl3073x_chan_mode_get(chan);
++	if (mode != ZL_DPLL_MODE_REFSEL_MODE_AUTO &&
++	    mode != ZL_DPLL_MODE_REFSEL_MODE_REFLOCK)
+ 		return;
+ 
+ 	/* Update phase offset latch registers for this DPLL if the phase
+diff --git a/drivers/dpll/zl3073x/dpll.h b/drivers/dpll/zl3073x/dpll.h
+index 278a24f357c9b..115ee4f67e7ab 100644
+--- a/drivers/dpll/zl3073x/dpll.h
++++ b/drivers/dpll/zl3073x/dpll.h
+@@ -13,8 +13,6 @@
+  * @list: this DPLL list entry
+  * @dev: pointer to multi-function parent device
+  * @id: DPLL index
+- * @refsel_mode: reference selection mode
+- * @forced_ref: selected reference in forced reference lock mode
+  * @check_count: periodic check counter
+  * @phase_monitor: is phase offset monitor enabled
+  * @ops: DPLL device operations for this instance
+@@ -28,8 +26,6 @@ struct zl3073x_dpll {
+ 	struct list_head		list;
+ 	struct zl3073x_dev		*dev;
+ 	u8				id;
+-	u8				refsel_mode;
+-	u8				forced_ref;
+ 	u8				check_count;
+ 	bool				phase_monitor;
+ 	struct dpll_device_ops		ops;
 -- 
 2.52.0
 
