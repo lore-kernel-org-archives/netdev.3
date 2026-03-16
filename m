@@ -1,126 +1,117 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010011.outbound.protection.outlook.com [52.101.61.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCB6372ED7;
-	Mon, 16 Mar 2026 10:49:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773658175; cv=fail; b=tWs59a49UX42U9ArrQ0rGcalhBX34IowG1KdJ8SMPyV3V7wXTLocYZ3Bz9xl4SY3wJAC/4tPj+K7NW0OVCo6EiqrNS0FwhyFgYLgNR4sq0rSmdTG9cKQlLebgRJiizIM5FA5yDH9csoJCGU55rlPoMdjAnO7Fh9tZqERGtPKuQI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773658175; c=relaxed/simple;
-	bh=xScQocWwUTo3g856MgeOWXj0yNnZyDhGzwFSpj/jxXA=;
-	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=KSwV0XyaOgty/lKrinNECxpjwzMiB4EneBshEFBr5GxVoDwW2f5IxKBa9pLY2rp0+5N2H0xMiSvdwnwuCC+2UvfOR/cvavUX+KyIwFgVmw4/i/EvSpCpEFVLaRbpkQUg8hBG2T09ZQKe70C0I0x50XIqDYnTRIMKo69ef7IR7lg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=L6ospCvs; arc=fail smtp.client-ip=52.101.61.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A2438F647;
+	Mon, 16 Mar 2026 10:50:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773658238; cv=none; b=hL5pjcnasASOZrzHGxUTC61sFITLw2sFsoJ6oLLpgZhI7DIfRqVVZHxy5cXUEnKvkHHpxteRnr9bzQ+8ElKqNThX0uYolT4ZHpmr5hWqNlTwPzorL6mvxr0XKLl4Rs0SDbYzYPet8nZ5+6XZKW9PQfRCzkQ4as/JUv7GH1rZXtg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773658238; c=relaxed/simple;
+	bh=BZzPB4RGiBjoObZCPldSipYUuHfqzEsnClur7CKQhQY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l6qe+vgWKFdfD1NCN5hTnFKGv6/TipnF7mRx75lqBv8lgKG05bV2kYx6pfaXH8vvCRGclzPxnE9sE/EKVPa3MbxhCNc0SiiQHrURYCMZxD4MR3i6cL5F0o4W28ypLXXijJ60EwybMnarvVzyKoO6wwW8exboTDAYf9gARZQhTy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MeI7MHvV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="L6ospCvs"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Bktd/B+1q0hyGYOOYgRNlv4hbcjtxpH0TzIognORrLL0vz9iZOpb53Yq8KyI/gUNLgsnqQnvFbvlFXtdArWmRuhqNAJ29RcgRN/6uvEr5mekXGxkg6ZNPNsYztSpn9pnsK7nfu3wlA5dlxdLfpaw+bv/ERVgextROn2q2ECu0IUfK2CpiTHuCb/IBiXykKBXfyc+Gv+xWHn8UGjX9BKRiu1xQ9U6QpYxwF2GlWpiwmnZxl2Qdu0+/fW2yLFOykJJfAamzFz39ZDjK24UxfNEXkI7Mfm4kwnDfuqoBS5OIv4B0Kt1Nz5v3vYegxA8wkKOi8v9LLceiIoXbJSr3Qhsug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VdPrAva5GtBuiPJl36ysVe8bqHTx8pJ8OLDVhca3+p0=;
- b=vTXutYN5DpQ0to01mPduCr0ebFXZ52QLCJ0HwFcQly4YQmH4DgxS3+0XLJpyiWLXS3KZ6IPcXwc1gwqR5V6KT/Xi48d0IpeZXXldPRwNOHeuZ0yIzSKozSvOx6/FHl5wcQvkIagGIWD9Rjwx3xLuv48Mi4ZYOtpvlO9MBxkTbjmLPY37F3nEMBtMg0ZZouRH+AiAdpBlrMZBbdtj0YlzcYdpB2OC+4FpmIt3SrEUjXkvCJub0GGV/ckUxDVTdKIjNIdq6ckM9BUEa8o9PrJq3A4Lf/FALwXh5SCIQtIjFxp83yNQT9kHMB5PNo+AzjD46C7JzJkuKNYmnxpSIEAIjQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VdPrAva5GtBuiPJl36ysVe8bqHTx8pJ8OLDVhca3+p0=;
- b=L6ospCvsRK3Cgv8IUCLmyyBQFYHJBpAakOyC8kNMGlpJd/0MmuLC+7W9c5BMxxMuyzQ3lSjqXIjBdJI9CoSPV6oAJ7kwT6IPlJMnd2s7Ch4BUtab4jfDJhPGxAhkve/Y2DhLsIiGsOVXhxQ4arbCkeTskTe02SNSWgHutCsSK/3e973kE2Lc7WVFcgX7Ctx3jm5ujHRpQqd/QDSy1+yQ3FOMRZSbeDiej0Cd+TX6H4rexFzfi7NMfD5s/p/penldtOAaqVlMXWOaunquI4FriDqMJua/6koTjKcVA4IM2ih+X4W35d+lFNjt2R1X7iRodmfdAUQ6aEnV97yP4pXvow==
-Received: from PH7P220CA0049.NAMP220.PROD.OUTLOOK.COM (2603:10b6:510:32b::16)
- by CY5PR12MB6405.namprd12.prod.outlook.com (2603:10b6:930:3e::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.13; Mon, 16 Mar
- 2026 10:49:29 +0000
-Received: from SN1PEPF00036F3F.namprd05.prod.outlook.com
- (2603:10b6:510:32b:cafe::70) by PH7P220CA0049.outlook.office365.com
- (2603:10b6:510:32b::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9700.22 via Frontend Transport; Mon,
- 16 Mar 2026 10:49:26 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SN1PEPF00036F3F.mail.protection.outlook.com (10.167.248.23) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9700.17 via Frontend Transport; Mon, 16 Mar 2026 10:49:28 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 16 Mar
- 2026 03:49:02 -0700
-Received: from fedora (10.126.230.35) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 16 Mar
- 2026 03:48:57 -0700
-References: <20260315160038.3187730-1-kuba@kernel.org>
-User-agent: mu4e 1.8.14; emacs 30.2
-From: Petr Machata <petrm@nvidia.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: <davem@davemloft.net>, <netdev@vger.kernel.org>, <edumazet@google.com>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>,
-	<shuah@kernel.org>, <petrm@nvidia.com>, <leitao@debian.org>,
-	<noren@nvidia.com>, <gal@nvidia.com>, <linux-kselftest@vger.kernel.org>
-Subject: Re: [PATCH net-next] selftests: net: py: give bpftrace more time to
- start
-Date: Mon, 16 Mar 2026 10:33:02 +0100
-In-Reply-To: <20260315160038.3187730-1-kuba@kernel.org>
-Message-ID: <87eclkcane.fsf@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MeI7MHvV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AE85C19424;
+	Mon, 16 Mar 2026 10:50:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773658237;
+	bh=BZzPB4RGiBjoObZCPldSipYUuHfqzEsnClur7CKQhQY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MeI7MHvVfgUY1ZES4MJjGrlm0yTKHWa/yVoomllr/yfW4agEPwm8UVyvhuK7vvhex
+	 ljgzsO61tNMdfuPdKQqPYjH8QQnKzaGgJYIhew0V3NZt+T2XgNNGlVXVtizodPlPJq
+	 yKzJsBNIhDXvjYcUROAe8OJXd2EuHJOuqBu876K0NVMhoNAHs3Giwucuy6kvlVobjd
+	 8LDer2p2GUfdzPA4zOvU1FCh0gjND4b6MkvbBJZBAYQZy/i5zbYHAfwAhlAzxNfH0r
+	 ULLbdMgh0SQ3K09/RwvH1uiS5DuSLrmYZmeZLqSkVzxknPXNDcPZ9BmB66bI8Io6mM
+	 6UCWNiMsqUlrQ==
+Date: Mon, 16 Mar 2026 10:50:33 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Daniel Borkmann <daniel@iogearbox.net>, 
+	Fernando Fernandez Mancera <fmancera@suse.de>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	horms@kernel.org, dsahern@kernel.org
+Subject: Re: [PATCH 00/10 net-next] Convert CONFIG_IPV6 to built-in and
+ remove stubs
+Message-ID: <7a5a442e-aa0d-4d01-b27c-c4479d53df06@lucifer.local>
+References: <20260309022013.5199-1-fmancera@suse.de>
+ <48ccec3f-dbc8-45c8-afda-e4f7e8f150d6@kernel.org>
+ <cd87ed46-b774-4896-b25e-4806eec9e0b3@suse.de>
+ <6c005900-3461-4e3c-a396-b2984735af9b@kernel.org>
+ <51102620-fb8a-467e-9144-786d1fe27e31@iogearbox.net>
+ <4e3cd289-2b7a-4f64-99f6-05eb9d67c0fc@kernel.org>
+ <c28d7cba-3805-4e6d-8051-d12e923c1973@lucifer.local>
+ <a1dc7907-39a0-4417-8589-c48a4a7cc839@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF00036F3F:EE_|CY5PR12MB6405:EE_
-X-MS-Office365-Filtering-Correlation-Id: c61ef5ee-a680-47d2-c207-08de8349b2a0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|7416014|376014|36860700016|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	lA0htUrEu05rBrgGk207jykuq5NrseKgeTbBHNgiN9Rl5jPv58LV8/TB6Gku/OS34qNjSmkmlmaNQUim6g2jcC90kLUe0XWoAAQGMiIJAFTHtcUPtfJprtSAIeFpPBx7EeAkJ9iZ1gW1rsfPKnbGqOvexKnZ0/tmrJuQXro5DOaVmTj+2nHJdcIHX/kVsoll9Ad92HC6FzM2aSgvw7omxpvekT7EwkOKDAP8ynln4sWEfZtqTfo7X8EeMb8mfXmXI9MfYL8WytEdoSW0PCP6vuN3CXLv8Vf5oEsKdPbax7yH6iNkVc47VK/HVk5lDA3fMlZQPZSKGooiXw5mR3KUkY4X4gTP3upCNZHoGM96kl5wAcpD8z6Ky7d9Ph6NBBO6AR2bhkXOm704bmvA+j649eAC95YSYElu8KOsSsUFlC5sdUpaaZUQF3hXBk4rfmu1zPZUhE/UkXutsZvpcY0KUYIUmqOjSBiZTVwVjsXMvPCVxMafUg0DCYq83PcVRJjTITwnAF4yCqQQk0pK05f+91d+2HgV+Z/ncKMfzNtw44sPA0L3Ukf4jNHBPnNTC+iOW3c+c5cPWEpz5Gpt3pD2ANsZswTcl78MjfA6CMMnfUSD4PdxzBHjVIHfxxgmgVIRko36mILNGM6dQ30Q86nFGcGkjxTHavuqYVAr3g07pA5uuU4Eyyhi7zTVQGtSRCMmSBOAy2MwHcCoe77MGEcXqa0ejVeMBSvbeTL/774ZcTNZ/j8/jx61MfUaiItEl53fVvLUsbwfExWhQXk8bqakvQ==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(7416014)(376014)(36860700016)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	JeGCHpijCjjz/gdRDcHb6TeDucFYLYzi3kTklcQDnva8ZvgYLSOT0kvjE3peURTgRc6Fe2ESqQgu43scU31FDXmeTqgSqz3wSH5TRJt3Wf3JP732QW/x1zYbwO5hoyVDdAYxxttm//H0Us9/YzF/T3uOa5YfNU9bO/Is0fnw0Zqx7fQ9EigBAeKXq6vS9iSb3+RJLjd185Ft3aOZ9LB5Rc3kHGBY4xWyMbarPrj7U4FE0dOdI9FBbJi6vubxy9jOg3Bc8+FUv1tvOeXejuDe7Xfs+L36hCUzivkuRAN4GX33T+4f9fbxI6uJ9rPM/1+4z/Rl7RiDaOz0XQ67oA7fWv0o8e4q3x5r+ZJdnNVcL3CAKPYXuzS2ue1IwiKcjutsqz8/G/o1/F9oeMLBjp6GWaDP1fLoTzRXlIac1sYLLI+IddsFdTyRcqCaDk8Kr+yX
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Mar 2026 10:49:28.4336
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c61ef5ee-a680-47d2-c207-08de8349b2a0
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF00036F3F.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6405
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a1dc7907-39a0-4417-8589-c48a4a7cc839@kernel.org>
 
-
-Jakub Kicinski <kuba@kernel.org> writes:
-
-> After commit under Fixes debug runners in the CI hit the following:
+On Mon, Mar 16, 2026 at 11:33:33AM +0100, Krzysztof Kozlowski wrote:
+> On 16/03/2026 11:24, Lorenzo Stoakes (Oracle) wrote:
+> > On Mon, Mar 09, 2026 at 02:02:45PM +0100, Krzysztof Kozlowski wrote:
+> >>> Are you talking about [0]? That's legacy hardware and in this case just
+> >>
+> >> Dunno what is legacy there...
+> >>
+> >
+> > Is this satire?
+> >
+> > I'm not sure why you're being quite so aggressive in your response overall
+> > here, but Amiga is ABSOLUTELY legacy and you are delusional if you think
+> > otherwise?
+> >
+> > I think the kernel should absolutely drop support for it, museum pieces
+> > like this cause undue maintenance burden, and sorry not sorry - if you own
+> > hardware that old, live with using older kernels.
+> >
+> > In any case this kind of facecious engagement, especially in response to
+> > somebody as lovely as Fernando, is really unhelpful.
 >
->   # subprocess.TimeoutExpired: Command '['bpftrace', '-f', 'json', '-q', '-e', 'kprobe:netpoll_poll_dev { @hits = count(); } interval:s:10 { exit(); }']' timed out after 15 seconds
->   # # Exception| net.lib.py.ksft.KsftFailEx: bpftrace failed to run!?: {}
->
-> in netpoll_basic.py >10% of the time. Let's give bpftool more time
-> to start, it can take a while on a debug kernel.
->
-> Fixes: 82562972b854 ("selftests: net: pass bpftrace timeout to cmd()")
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> Response was to Daniel. You come late to the thread, pick up one thing
+> and poke... great.
 
-Reviewed-by: Petr Machata <petrm@nvidia.com>
+I call out unpleasant/bullying behaviour when I see it, and I'm not going
+to apologise for that, especially when it comes from an experienced
+maintainer.
+
+And sure, s/Fernando/Daniel/, but I'm not sure that's the
+incredible riposte you seem to think it is.
+
+I'm not going to belabour the point, being civil to people when they are
+not being unreasonable should be a default, it's sad that it's not always
+the case in the kernel.
+
+>
+> >
+> > If I'm wrong and somehow Amiga isn't legacy in 2026, then SAY SO instead of
+> > giving an unnecessarily mean, dismissive and frankly embarassing response
+> > like the above.
+>
+> Calling something legacy in this thread is not really appropriate
+> because it is diminishing its important or requirements.
+>
+> Till we support given hardware, we are supposed to consider its
+> requirements. If you do not consider these requirements, then you do not
+> consider that hardware as worth being supported and this means you
+> should first propose patch to remove that hardware.
+>
+> If you do not want to care about that hardware, don't use arguments
+> "legacy" in discussions, but simply drop it. We do such with "legacy"
+> architectures.
+
+Perhaps you could have replied with this instead of rudely making the
+ludicrious claim that Amiga isn't legacy in 2026?
+
+>
+> Best regards,
+> Krzysztof
+
+Thanks, Lorenzo
