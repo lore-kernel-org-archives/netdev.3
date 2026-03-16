@@ -1,97 +1,72 @@
-Received: from mail-10626.protonmail.ch (mail-10626.protonmail.ch [79.135.106.26])
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D6C1F471F;
-	Mon, 16 Mar 2026 14:57:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.26
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C617030DEA6;
+	Mon, 16 Mar 2026 14:58:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773673027; cv=none; b=bKbStCyE8+GOAp1OJSLEy35SSawFqAQ9vCqhJ+27DQJxhA37GlRGQkmFUrOpHCBDjQXhctPVjjmflt42gDR8Ho2oL3kesv0XQHmmyKO0yVTWySwhKoWU0QS9H12nPFOFPbf95oW9bg3F6MSI2Egb6RjINKqKTEBMIggxuuFplCM=
+	t=1773673128; cv=none; b=KC0Ny0s4z7hqZR5JzUK2vY9nmT3r4zTPfzN+KhZ9aB4sau/3LeBpn6r3ZX8cwhv/pSe2NA1dVMXbExJwLUGOj4NYUVUG6Sd65/x5PPOGfZamBc4bOnmAj1gdNLKKMJME8IGNWTvnLakl+o19HysJhvvfvb8TW4L5jMzoJo1oa0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773673027; c=relaxed/simple;
-	bh=Y1ReUoDwMJO+LpydzwkDbXsa1KYgRtYo1UWlqvLRxbg=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=iLl/YXwVCyRwDMEOPBz88xya3YraQRhlutrTxv8l9JbfBkYoMJZSd38+FixtvLrtmt1UxJsSNkpneMqY/gRgZwUTTOu9foB1hbCv0YvFzEo6ZyuO05NRtx/PsMawtQIKY7LTJVXjylWz6mD+nGl08k0SjY0ebn4FotY0z+3/4mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=rZW/B/xb; arc=none smtp.client-ip=79.135.106.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="rZW/B/xb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
-	s=protonmail2; t=1773673016; x=1773932216;
-	bh=Y1ReUoDwMJO+LpydzwkDbXsa1KYgRtYo1UWlqvLRxbg=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=rZW/B/xbv8RTkcBgZxlEZAs0uBgOsFuhBGzcEto8Mt6Ih3gPJj6gVIE7KRH85cejC
-	 TrkzWg6ubYRaYKCGwwjljnTi6/ZN8XB4x+cMoPAhdPlgeBYFof9Y4nQYZ0djrtRFpg
-	 OpTQlMqRekuDcL1F9V0Rrvw+lpcL/UnscYmxr2TBQQI1DReWP7f0fRlTaXhFxhIqHa
-	 Y3OxoaUZNvDhYmf8JFoNIltwWpUBy7cO8yOgVrZ3vuZS56nzs9KtphtniVg5tG6k4C
-	 HcONW2GaNzRFBYS9cqEosyH48gXZlvLKLsTALhFX98DGnLqxagutQMoYr0Nsxhu8Yx
-	 cCIz8uVSzJRQg==
-Date: Mon, 16 Mar 2026 14:56:51 +0000
-To: netdev@vger.kernel.org
-From: Paul Moses <p@1g4.org>
-Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, chopps@labn.net, linux-kernel@vger.kernel.org, Paul Moses <p@1g4.org>, stable@vger.kernel.org
-Subject: [PATCH net v3] xfrm: iptfs: only publish mode_data after clone setup
-Message-ID: <20260316145642.4154656-1-p@1g4.org>
-Feedback-ID: 8253658:user:proton
-X-Pm-Message-ID: 47428d8ed8b1babe832c1a8256bc94242e64a3a3
+	s=arc-20240116; t=1773673128; c=relaxed/simple;
+	bh=WQ7+yzEPlsNgj0Vd3agRBCbV3mUnKYAhERmPGtYemAg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BlAy2XqFpYJDiojTiUqaiwEhcajufDEMyQbwEACIVza+4qLHiN5Yl/O/J35totQD5n+GvWgvgA/6um0Ya/cB7jpXvHuYGA5Z8je1lRLVxaB6r5KvVYCktWwaZIG7bzee0wdRB9GDGPtcreD7ZhEmyei7fy3AZKPTPFUx93WjjYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
+Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
+	id 7A121605C3; Mon, 16 Mar 2026 15:58:44 +0100 (CET)
+Date: Mon, 16 Mar 2026 15:58:48 +0100
+From: Florian Westphal <fw@strlen.de>
+To: Hyunwoo Kim <imv4bel@gmail.com>
+Cc: pablo@netfilter.org, phil@nwl.cc, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net] netfilter: nf_flow_table_offload: fix heap overflow
+ in flow_action_entry_next()
+Message-ID: <abgajW6KJM5KD3bN@strlen.de>
+References: <aaxe-uH2Qr6qM4E9@v4bel>
+ <aax2yZtJce0d19gd@strlen.de>
+ <abfhRFfZ1LOgWEsf@strlen.de>
+ <abfoTBGLhav-iPQb@v4bel>
+ <abfuEe_PpDCyA64B@strlen.de>
+ <abgQ7GSjz2v2_QnX@v4bel>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <abgQ7GSjz2v2_QnX@v4bel>
 
-iptfs_clone_state() stores x->mode_data before allocating the reorder
-window. If that allocation fails, the code frees the cloned state and
-returns -ENOMEM, leaving x->mode_data pointing at freed memory.
+Hyunwoo Kim <imv4bel@gmail.com> wrote:
+> hmm. So, based on what you said, I assume the run-time check would look 
+> something like this?
+> 
+> diff --git a/net/netfilter/nf_flow_table_offload.c b/net/netfilter/nf_flow_table_offload.c
+> index 9b677e116487..69ffefbdd5e8 100644
+> --- a/net/netfilter/nf_flow_table_offload.c
+> +++ b/net/netfilter/nf_flow_table_offload.c
+> @@ -218,6 +218,9 @@ flow_action_entry_next(struct nf_flow_rule *flow_rule)
+>  {
+>         int i = flow_rule->rule->action.num_entries++;
+> 
+> +       if (WARN_ON_ONCE(i >= NF_FLOW_RULE_ACTION_MAX))
+> +               return NULL;
+> +
+>         return &flow_rule->rule->action.entries[i];
+>  }
+> 
+> However, if we add a runtime check in this way, all callers of 
+> flow_action_entry_next() would also need to handle a NULL return value, 
+> since none of them currently perform a null check.
+> 
+> Because of the potential risk, this would require modifying quite a number 
+> of call sites carefully. What do you think about this approach?
 
-The xfrm clone unwind later runs destroy_state() through x->mode_data,
-so the failed clone path tears down IPTFS state that clone_state()
-already freed.
+Can't we reject this at configuration time?
 
-Keep the cloned IPTFS state private until all allocations succeed so
-failed clones leave x->mode_data unset. The destroy path already
-handles a NULL mode_data pointer.
-
-Fixes: 6be02e3e4f37 ("xfrm: iptfs: handle reordering of received packets")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paul Moses <p@1g4.org>
----
-Changes in v3:
-- Rebase on top of current ipsec tree
-
- net/xfrm/xfrm_iptfs.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-index 2c87290fe06c..7cd97c1dcd11 100644
---- a/net/xfrm/xfrm_iptfs.c
-+++ b/net/xfrm/xfrm_iptfs.c
-@@ -2664,9 +2664,6 @@ static int iptfs_clone_state(struct xfrm_state *x, st=
-ruct xfrm_state *orig)
- =09if (!xtfs)
- =09=09return -ENOMEM;
-=20
--=09x->mode_data =3D xtfs;
--=09xtfs->x =3D x;
--
- =09xtfs->ra_newskb =3D NULL;
- =09if (xtfs->cfg.reorder_win_size) {
- =09=09xtfs->w_saved =3D kcalloc(xtfs->cfg.reorder_win_size,
-@@ -2677,6 +2674,9 @@ static int iptfs_clone_state(struct xfrm_state *x, st=
-ruct xfrm_state *orig)
- =09=09}
- =09}
-=20
-+=09x->mode_data =3D xtfs;
-+=09xtfs->x =3D x;
-+
- =09return 0;
- }
-=20
---=20
-2.53.GIT
-
-
+I mean, userspace has to ask for this action sequence, no?
