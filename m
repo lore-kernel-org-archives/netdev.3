@@ -1,123 +1,204 @@
-Received: from zg8tmja5ljk3lje4mi4ymjia.icoremail.net (zg8tmja5ljk3lje4mi4ymjia.icoremail.net [209.97.182.222])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A439B21576E;
-	Mon, 16 Mar 2026 02:11:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.97.182.222
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773627097; cv=none; b=ef6QmWX2nSPF46St9YB039G6yuimE/h3jBLgGgk/+JIWiZbafUHcbatNUr0lrGqlS8MOZJvA31Gj64iNURu8gRaQ6dbOWL6AsPMlhgJpr1gAhy7Q4mJlTXmp+2DQFXWEbnmvLqesNLCttGmKBGKpxF1XuruSbgoSxfhdYAE0Onc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773627097; c=relaxed/simple;
-	bh=tcVjcNanPKF2klj9B77BjMU5RC+vSGUwsyVZ51JN9V0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=t9Rs274GY5vcRHNiLQ5q3OHRhjmNQMQZb0TsPAKXUSgoAo+rJ+IJ3FiSrZa4uFkCbcZ3Mgb+PfepiSscyEu/rP1MIBDAtIJnzP8JcvsZihSY33w72cQDLfKQzBrNyi1e1l7X2Gzd+viO8MA0Vl9f5EX/Evruuy1aoX87+nstMB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=eswincomputing.com; spf=pass smtp.mailfrom=eswincomputing.com; arc=none smtp.client-ip=209.97.182.222
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=eswincomputing.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=eswincomputing.com
-Received: from lizhi2$eswincomputing.com ( [10.11.96.26] ) by
- ajax-webmail-app1 (Coremail) ; Mon, 16 Mar 2026 10:10:43 +0800 (GMT+08:00)
-Date: Mon, 16 Mar 2026 10:10:43 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: =?UTF-8?B?5p2O5b+X?= <lizhi2@eswincomputing.com>
-To: "Simon Horman" <horms@kernel.org>
-Cc: alexandre.torgue@foss.st.com, devicetree@vger.kernel.org, alex@ghiti.fr,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com, ningyu@eswincomputing.com,
-	linux-riscv@lists.infradead.org, krzk+dt@kernel.org,
-	davem@davemloft.net, andrew+netdev@lunn.ch, conor+dt@kernel.org,
-	weishangjuan@eswincomputing.com, kuba@kernel.org, robh@kernel.org,
-	edumazet@google.com, pjw@kernel.org, rmk+kernel@armlinux.org.uk,
-	palmer@dabbelt.com, mcoquelin.stm32@gmail.com,
-	pinkesh.vaghela@einfochips.com, linux-kernel@vger.kernel.org,
-	pritesh.patel@einfochips.com, pabeni@redhat.com,
-	aou@eecs.berkeley.edu, wens@kernel.org, netdev@vger.kernel.org,
-	linmin@eswincomputing.com
-Subject: Re: Re: [net-next,v4,2/3] net: stmmac: eic7700: enable clocks
- before syscon access and correct RX sampling timing
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2024.2-cmXT6 build
- 20241203(6b039d88) Copyright (c) 2002-2026 www.mailtech.cn
- mispb-72143050-eaf5-4703-89e0-86624513b4ce-eswincomputing.com
-In-Reply-To: <20260315162735.1427325-1-horms@kernel.org>
-References: <20260313075416.1607-1-lizhi2@eswincomputing.com>
- <20260315162735.1427325-1-horms@kernel.org>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786E130BBB9
+	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 02:22:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773627740; cv=pass; b=o12y8uiL8DoI/S2YExwnC39a8OkvLCp+8qlhgEbtNZe1El2wrURHEVD685ky+i3NEa5XkP2hnmnIA0Th/LUshdOQixjJmIyEBi6j4BMP4B7W9sXLitcdsRqvvIE0Ba25ykH+mCgjemAvEmUMAXFN7d/+u/4XMlbwSsgFbqorIjQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773627740; c=relaxed/simple;
+	bh=zOT3dF3Qr1SLBSrSJN4L3csl5Uni8XIh/I9xkzcY5+o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ow+ApKNrwrQAMIPm53BK34RWKoF7u1EBdDGDTrpSrIijjOXJBa5aQkSWwB3X8Ni8t+oOhrmd/Fv1H9FqD3x0Ug9Gs/tQmDZlCct3gGpuaJrqwmwK9Wic2AKZrxbES5r6QJJC73AHOk0X2lchgc7gb9NU3LK0ex1jOYppYzFb0Dc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YXSwBLHb; arc=pass smtp.client-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YXSwBLHb"
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5091d71aa11so53184801cf.1
+        for <netdev@vger.kernel.org>; Sun, 15 Mar 2026 19:22:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773627738; cv=none;
+        d=google.com; s=arc-20240605;
+        b=UGBEm1JgIVAPn536HqwKoajU96F7AhJcDjQ99jfiXe6J9VyBopVDeejHzTbBvy9pWP
+         qmWWstdRXPqzfpl36Gc7GgdGNTQ6G381sqH9xxieRSwlxpB1dMLYDfKgo5iTLrhbFAsR
+         QEmY7V4U3ViTen5rpl2IJ+5+ZgYl2YmAWXtgm8c/sBS/TgAT1kKEXPm/WeAEVNawlRus
+         ud0qQ3A5HPkP0NlUPyo6BgNUTQ+B234hacCBK0ZbB3mvXLIPqrbXWMTNKmJhL16AW00a
+         5ZMUwTTElQGZaw4IvFaNa1wDZD8ed4M2aDHVk1QxO+prkuSPYAgph+L8X2YCKg3YNFBq
+         FpNg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=+tNHUxkY7tWmFwLsEk3Hh+UfARSHDjxgdzLE9MaCBMo=;
+        fh=enE2G8zM+FlJCQZkuOXbmpdVZEtjKPFUOFc43oP5qFk=;
+        b=Ik3oclFrochAAGTW/GOgWacwl8RH6IKeYwnkTxD+8yEHlYM4QLsRW7pp+xYt+BveRU
+         PqP52HUndZ5C+2iIF9q6W742ICxTPvRkNxl36zw3CC9wFc94y3reu3RicPoOGPWzg8+v
+         B/yzFyz34AEYa0grDjNbV5zqosJYml6q6IbQEvPpsHv+5VK2pSmYXm/bBdbYWrqqG1vE
+         FtJvEiEWi9RwulFFr4GNIX3u8OVOsVVnIXR2ARdzSpu+2bWaqcE/ktQomcNsPZK+94ii
+         fhjr4fDWPEL2pcExW+WmM9atwddJXY6VcvQ2+nkL/HT5Bb7zs3Xriu16OK4UoNElzTwG
+         KMtA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1773627738; x=1774232538; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+tNHUxkY7tWmFwLsEk3Hh+UfARSHDjxgdzLE9MaCBMo=;
+        b=YXSwBLHb7LF1dRdMuupIZ2a3WrHP55uFTaJIoVa1iOKjVlQyswjC+vZ2hR0WWz8o9A
+         gVVil2NfUVlxxsVosqfzsru87WdEBQTMMnmev0Vnpr0/XtSw1DQqfTlo7uNPO2k3E1ET
+         E1fyrEKDXRDLq+iwf8DrTym2nPUONt7aXnHNWPSKqj7A+zVaoYYojHFJtxAjvQJNxk8l
+         MSAVBzWIJ2UiHlta/4eeAI6rXoWAo/qRTxuGuz4WqIqiX9DRQJbfdsZF7dpuvderbv3C
+         hBe+Kzv5xwOH82E+HX6aysmxDc5o+K01T4LkFAXrhYwdnd8//w6iQDeMvNWSeeB/fA25
+         /MjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773627738; x=1774232538;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+tNHUxkY7tWmFwLsEk3Hh+UfARSHDjxgdzLE9MaCBMo=;
+        b=U8V53P2RW7BGUYBoywyUSQRP7YTB2G5hzi1sYrj63RZDVkKhj9udJAwhqxJYJCL08r
+         elLhQDIg0afLTpT3zLEs+6PXgmbpLHmNwf1n5h8tiQBX0eKE/REEsM+X91dYiihBb0ft
+         DUWKWBGiFr7h/AfZlQ6eIpApE125JyV4QfYL8yhm/S/GrumdfIJY1ARkFLsA3zE8JEOf
+         XhFbyLbkGCJLubPzX2tKbsSyenuflTUOmZxf8wJRtz0dGgJBlg9uvx4OYQX2W3G7xy/f
+         xG5xS1+5msQFxDI9rPTsd4K9nOCbpFxHQC1BGUwbzKYtev16yf/3jE25NZ6XjBCm7Riq
+         aS1A==
+X-Forwarded-Encrypted: i=1; AJvYcCUXL+kcUe5e8IpPwFyJvMkPDg5CUEhpkKa/92Vm+/0ZRfXbkgjZN7FYdlokwflBmtEAY6GVR0s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2+a9JJIWOwOYhSg44lFGCf9G21oh0BPW+cl/XP5Hq4WvJIpnn
+	ORH82kqdSSF2z6KsrNv0K7MgLYj1PeI64zyTnQxYqnFGvInGAfXA0mIAZVgDbfQ3adP9ZrnYuDC
+	Us6/67wD2JfmZXyqiAt0xfF3s/PZCQRSaMJ6ZpOgND17hFhVC64SVjEXGoqc=
+X-Gm-Gg: ATEYQzyr/WKTkGBp2jUs/+WdxK6gstrRGy5nSatAGk31Rlu8RPvZQqHyN7rLPiunq3p
+	tZo9FauxVN3/uxeimgNL7Zl3MqhsmDJbgf8k5N2MstNsnXOYqHuNRwfyFy8w8bniTeF73GJTYIs
+	P5RW5++ynuuP6SVIpenp53wgpWc60G2NXa476Gd4LgODXa5hBVtcVbCHRpsfluOh5n6zeg7qrd/
+	T8SlTVLebCloZgoqCm9W+X9QaNNVBAMmASWdgv7ljkz/DHCswu8rpeczApyB/l//MCEyTiveMCM
+	Z3QVo3A=
+X-Received: by 2002:ac8:7e92:0:b0:501:3c56:6239 with SMTP id
+ d75a77b69052e-5095714940cmr145199841cf.6.1773627737944; Sun, 15 Mar 2026
+ 19:22:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <c78ac2e.555c.19cf468f04e.Coremail.lizhi2@eswincomputing.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:TAJkCgBnCXOjZrdpC8gIAA--.2658W
-X-CM-SenderInfo: xol2xx2s6h245lqf0zpsxwx03jof0z/1tbiAQEIDGm23xQQkwABsS
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
-	CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
-	daVFxhVjvjDU=
+References: <20260315154003.1851513-1-edumazet@google.com> <20260315145120.1a555d81@kernel.org>
+In-Reply-To: <20260315145120.1a555d81@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 16 Mar 2026 03:22:06 +0100
+X-Gm-Features: AaiRm52flWYjRFbE53PhfWYNu97gQX1RT5PqiBk_UVjg9LcmI-wgWnZWz21Eces
+Message-ID: <CANn89iKLvjHpp+OxOJ4=YrKSm9cVAXe9qcSHcGjP84jLGJH-cw@mail.gmail.com>
+Subject: Re: [PATCH v3 net-next] tcp: add cwnd_event_tx_start to tcp_congestion_ops
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-CgoKPiAtLS0tLeWOn+Wni+mCruS7ti0tLS0tCj4g5Y+R5Lu25Lq6OiAiU2ltb24gSG9ybWFuIiA8
-aG9ybXNAa2VybmVsLm9yZz4KPiDlj5HpgIHml7bpl7Q6MjAyNi0wMy0xNiAwMDoyNzozNSAo5pif
-5pyf5LiAKQo+IOaUtuS7tuS6ujogbGl6aGkyQGVzd2luY29tcHV0aW5nLmNvbQo+IOaKhOmAgTog
-IlNpbW9uIEhvcm1hbiIgPGhvcm1zQGtlcm5lbC5vcmc+LCBhbGV4YW5kcmUudG9yZ3VlQGZvc3Mu
-c3QuY29tLCBkZXZpY2V0cmVlQHZnZXIua2VybmVsLm9yZywgYWxleEBnaGl0aS5mciwgbGludXgt
-YXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnLCBsaW51eC1zdG0zMkBzdC1tZC1tYWlsbWFu
-LnN0b3JtcmVwbHkuY29tLCBuaW5neXVAZXN3aW5jb21wdXRpbmcuY29tLCBsaW51eC1yaXNjdkBs
-aXN0cy5pbmZyYWRlYWQub3JnLCBrcnprK2R0QGtlcm5lbC5vcmcsIGRhdmVtQGRhdmVtbG9mdC5u
-ZXQsIGFuZHJldytuZXRkZXZAbHVubi5jaCwgY29ub3IrZHRAa2VybmVsLm9yZywgd2Vpc2hhbmdq
-dWFuQGVzd2luY29tcHV0aW5nLmNvbSwga3ViYUBrZXJuZWwub3JnLCByb2JoQGtlcm5lbC5vcmcs
-IGVkdW1hemV0QGdvb2dsZS5jb20sIHBqd0BrZXJuZWwub3JnLCBybWsra2VybmVsQGFybWxpbnV4
-Lm9yZy51aywgcGFsbWVyQGRhYmJlbHQuY29tLCBtY29xdWVsaW4uc3RtMzJAZ21haWwuY29tLCBw
-aW5rZXNoLnZhZ2hlbGFAZWluZm9jaGlwcy5jb20sIGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5v
-cmcsIHByaXRlc2gucGF0ZWxAZWluZm9jaGlwcy5jb20sIHBhYmVuaUByZWRoYXQuY29tLCBhb3VA
-ZWVjcy5iZXJrZWxleS5lZHUsIHdlbnNAa2VybmVsLm9yZywgbmV0ZGV2QHZnZXIua2VybmVsLm9y
-ZywgbGlubWluQGVzd2luY29tcHV0aW5nLmNvbQo+IOS4u+mimDogUmU6IFtuZXQtbmV4dCx2NCwy
-LzNdIG5ldDogc3RtbWFjOiBlaWM3NzAwOiBlbmFibGUgY2xvY2tzIGJlZm9yZSBzeXNjb24gYWNj
-ZXNzIGFuZCBjb3JyZWN0IFJYIHNhbXBsaW5nIHRpbWluZwo+IAo+IFRoaXMgaXMgYW4gQUktZ2Vu
-ZXJhdGVkIHJldmlldyBvZiB5b3VyIHBhdGNoLiBUaGUgaHVtYW4gc2VuZGluZyB0aGlzCj4gZW1h
-aWwgaGFzIGNvbnNpZGVyZWQgdGhlIEFJIHJldmlldyB2YWxpZCwgb3IgYXQgbGVhc3QgcGxhdXNp
-YmxlLgo+IAo+IEZvciBsb2NhbCByZXByb2R1Y3Rpb24gc3RlcHMgc2VlIGh0dHBzOi8vbmV0ZGV2
-LWFpLmJvdHMubGludXguZGV2L2FpLWxvY2FsLmh0bWwKPiAtLS0KPiBuZXQ6IHN0bW1hYzogZWlj
-NzcwMDogZW5hYmxlIGNsb2NrcyBiZWZvcmUgc3lzY29uIGFjY2VzcyBhbmQgY29ycmVjdCBSWCBz
-YW1wbGluZyB0aW1pbmcKPiAKPiBUaGUgc2Vjb25kIEV0aGVybmV0IGNvbnRyb2xsZXIgKGV0aDEp
-IG9uIHRoZSBFc3dpbiBFSUM3NzAwIFNvQyBtYXkgZmFpbAo+IHRvIHNhbXBsZSBSWCBkYXRhIGNv
-cnJlY3RseSBhdCBHaWdhYml0IHNwZWVkIGR1ZSB0byBFSUM3NzAwLXNwZWNpZmljCj4gcmVjZWl2
-ZSBjbG9jayB0byBkYXRhIHNrZXcgYXQgdGhlIE1BQyBpbnB1dCBpbiB0aGUgc2lsaWNvbi4gVGhl
-IGV4aXN0aW5nCj4gaW50ZXJuYWwgZGVsYXkgY29uZmlndXJhdGlvbiBkb2VzIG5vdCBwcm92aWRl
-IHN1ZmZpY2llbnQgYWRqdXN0bWVudCByYW5nZQo+IHRvIGNvbXBlbnNhdGUgZm9yIHRoaXMgY29u
-ZGl0aW9uIGF0IDEwMDBNYnBzLiBVcGRhdGUgdGhlIEVJQzc3MDAgRFdNQUMKPiBnbHVlIGRyaXZl
-ciB0byBhcHBseSBFSUM3NzAwLXNwZWNpZmljIGNsb2NrIHNhbXBsaW5nIGludmVyc2lvbiBvbmx5
-Cj4gZHVyaW5nIEdpZ2FiaXQgb3BlcmF0aW9uIG9uIE1BQyBpbnN0YW5jZXMgdGhhdCByZXF1aXJl
-IGl0Lgo+IAo+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L2V0aGVybmV0L3N0bWljcm8vc3Rt
-bWFjL2R3bWFjLWVpYzc3MDAuYyBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L3N0bWljcm8vc3RtbWFj
-L2R3bWFjLWVpYzc3MDAuYwo+ID4gaW5kZXggYmNiOGUwMDBlNzIwLi5iMjMwYmM1YjkwMmEgMTAw
-NjQ0Cj4gPiAtLS0gYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9zdG1pY3JvL3N0bW1hYy9kd21hYy1l
-aWM3NzAwLmMKPiA+ICsrKyBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L3N0bWljcm8vc3RtbWFjL2R3
-bWFjLWVpYzc3MDAuYwo+IAo+IFsgLi4uIF0KPiAKPiA+IEBAIC02MSw4ICs4MSwyNiBAQCBzdGF0
-aWMgaW50IGVpYzc3MDBfY2xrc19jb25maWcodm9pZCAqcHJpdiwgYm9vbCBlbmFibGVkKQo+ID4g
-IHN0YXRpYyBpbnQgZWljNzcwMF9kd21hY19pbml0KHN0cnVjdCBkZXZpY2UgKmRldiwgdm9pZCAq
-cHJpdikKPiA+ICB7Cj4gPiAgCXN0cnVjdCBlaWM3NzAwX3Fvc19wcml2ICpkd2MgPSBwcml2Owo+
-ID4gKwlpbnQgcmV0Owo+ID4gKwo+ID4gKwlyZXQgPSBlaWM3NzAwX2Nsa3NfY29uZmlnKGR3Yywg
-dHJ1ZSk7Cj4gPiArCWlmIChyZXQpCj4gPiArCQlyZXR1cm4gcmV0Owo+ID4gKwo+ID4gKwlyZXQg
-PSByZWdtYXBfc2V0X2JpdHMoZHdjLT5laWM3NzAwX2hzcF9yZWdtYXAsCj4gPiArCQkJICAgICAg
-ZHdjLT5ldGhfcGh5X2N0cmxfb2Zmc2V0LAo+ID4gKwkJCSAgICAgIEVJQzc3MDBfRVRIX1RYX0NM
-S19TRUwgfAo+ID4gKwkJCSAgICAgIEVJQzc3MDBfRVRIX1BIWV9JTlRGX1NFTEkpOwo+ID4gKwlp
-ZiAocmV0KQo+ID4gKwkJcmV0dXJuIHJldDsKPiAKPiBEb2VzIHRoaXMgY29kZSBsZWFrIHRoZSBl
-bmFibGVkIGNsb2Nrcz8gVGhlIGZ1bmN0aW9uIGNhbGxzCj4gZWljNzcwMF9jbGtzX2NvbmZpZyhk
-d2MsIHRydWUpIHRvIGVuYWJsZSB0aGUgY2xvY2tzLCB0aGVuIGxhdGVyIGNhbGxzCj4gcmVnbWFw
-X3NldF9iaXRzKCkuIElmIHJlZ21hcF9zZXRfYml0cygpIGZhaWxzLCB0aGUgZnVuY3Rpb24gcmV0
-dXJucwo+IHdpdGhvdXQgZGlzYWJsaW5nIHRoZSBjbG9ja3MuCj4gCj4gTG9va2luZyBhdCB0aGUg
-Y2FsbGVyIGluIHN0bW1hY19tYWluLmM6c3RtbWFjX2R2cl9wcm9iZSgpOgo+IAo+ICAgICBpZiAo
-cHJpdi0+cGxhdC0+aW5pdCkgewo+ICAgICAgICAgcmV0ID0gcHJpdi0+cGxhdC0+aW5pdChwcml2
-LT5kZXZpY2UsIHByaXYtPnBsYXQtPmJzcF9wcml2KTsKPiAgICAgICAgIGlmIChyZXQpCj4gICAg
-ICAgICAgICAgcmV0dXJuIHJldDsKPiAgICAgfQo+IAo+ICAgICByZXQgPSBfX3N0bW1hY19kdnJf
-cHJvYmUocHJpdi0+ZGV2aWNlLCBwcml2LT5wbGF0LCAmcmVzKTsKPiAgICAgaWYgKHJldCkKPiAg
-ICAgICAgIGdvdG8gZXJyb3JfZXhpdF9pbml0Owo+IAo+IFRoZSBleGl0IGhhbmRsZXIgaXMgb25s
-eSBjYWxsZWQgd2hlbiBfX3N0bW1hY19kdnJfcHJvYmUoKSBmYWlscywgbm90Cj4gd2hlbiBpbml0
-KCkgZmFpbHMuIFRoaXMgbGVhdmVzIHRoZSBidWxrIGNsb2NrcyBpbiB0aGUgcHJlcGFyZWQtYW5k
-LWVuYWJsZWQKPiBzdGF0ZSBvbiB0aGlzIGVycm9yIHBhdGguCj4gClRoYW5rcyBmb3IgdGhlIHJl
-dmlldyBhbmQgZm9yIGNhdGNoaW5nIHRoaXMuCgpZb3UncmUgcmlnaHQsIHRoZSBlcnJvciBwYXRo
-IGluIGVpYzc3MDBfZHdtYWNfaW5pdCgpIHdvdWxkIGxlYWsgdGhlIGVuYWJsZWQKY2xvY2tzIGlm
-IHJlZ21hcF9zZXRfYml0cygpIGZhaWxzLiBUaGlzIHdhcyBhbiBvdmVyc2lnaHQgZHVyaW5nIG15
-IG93biByZXZpZXcuCgpJJ2xsIGZpeCB0aGUgZXJyb3IgaGFuZGxpbmcgYW5kIGluY2x1ZGUgdGhl
-IHVwZGF0ZSBpbiB0aGUgbmV4dCB2ZXJzaW9uICh2NSkKb2YgdGhlIHBhdGNoIHNlcmllcy4KClRo
-YW5rcyBhZ2Fpbi4K
+On Sun, Mar 15, 2026 at 10:51=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> w=
+rote:
+>
+> On Sun, 15 Mar 2026 15:40:03 +0000 Eric Dumazet wrote:
+> > v3: fix tools/testing/selftests/bpf/progs/tcp_ca_kfunc.c (Jakub)
+> > v2: fix tools/testing/selftests/bpf/progs/bpf_cc_cubic.c (Jakub)
+> > v1: https://lore.kernel.org/netdev/20260313202802.1201129-1-edumazet@go=
+ogle.com/
+>
+> Builds but does not run:
+> https://github.com/kernel-patches/bpf/actions/runs/23116079851/job/671422=
+96478
+>
+> The BPF CI can be triggered by opening a pull request their
+> kernel-patches/bpf repo. We can also also Martin to help.
+>
+> Error: #23 bpf_iter_setsockopt
+>   Error: #23 bpf_iter_setsockopt
+>   create_netns:PASS:create netns 0 nsec
+>   create_netns:PASS:bring up lo 0 nsec
+>   serial_test_bpf_iter_setsockopt:PASS:iter_skel 0 nsec
+>   serial_test_bpf_iter_setsockopt:PASS:attach iter 0 nsec
+>   libbpf: prog 'bpf_cubic_cwnd_event_tx_start': BPF program load failed: =
+-ENOTSUPP
+>   libbpf: prog 'bpf_cubic_cwnd_event_tx_start': -- BEGIN PROG LOAD LOG --
+>   attach to unsupported member cwnd_event_tx_start of struct tcp_congesti=
+on_ops
+>   processed 0 insns (limit 1000000) max_states_per_insn 0 total_states 0 =
+peak_states 0 mark_read 0
+>   -- END PROG LOAD LOG --
+>   libbpf: prog 'bpf_cubic_cwnd_event_tx_start': failed to load: -ENOTSUPP
+>   libbpf: failed to load object 'bpf_cubic'
+>   libbpf: failed to load BPF skeleton 'bpf_cubic': -ENOTSUPP
+>   serial_test_bpf_iter_setsockopt:FAIL:cubic_skel unexpected error: -524
+> Error: #34 bpf_tcp_ca
+> Error: #34/2 bpf_tcp_ca/cubic
+>   Error: #34/2 bpf_tcp_ca/cubic
+>   libbpf: prog 'bpf_cubic_cwnd_event_tx_start': BPF program load failed: =
+-ENOTSUPP
+>   libbpf: prog 'bpf_cubic_cwnd_event_tx_start': -- BEGIN PROG LOAD LOG --
+>   attach to unsupported member cwnd_event_tx_start of struct tcp_congesti=
+on_ops
+>   processed 0 insns (limit 1000000) max_states_per_insn 0 total_states 0 =
+peak_states 0 mark_read 0
+>   -- END PROG LOAD LOG --
+>   libbpf: prog 'bpf_cubic_cwnd_event_tx_start': failed to load: -ENOTSUPP
+>   libbpf: failed to load object 'bpf_cubic'
+>   libbpf: failed to load BPF skeleton 'bpf_cubic': -ENOTSUPP
+>   test_cubic:FAIL:bpf_cubic__open_and_load unexpected error: -524
+> Error: #34/14 bpf_tcp_ca/tcp_ca_kfunc
+>   Error: #34/14 bpf_tcp_ca/tcp_ca_kfunc
+>   libbpf: prog 'cwnd_event_tx_start': BPF program load failed: -ENOTSUPP
+>   libbpf: prog 'cwnd_event_tx_start': -- BEGIN PROG LOAD LOG --
+>   attach to unsupported member cwnd_event_tx_start of struct tcp_congesti=
+on_ops
+>   processed 0 insns (limit 1000000) max_states_per_insn 0 total_states 0 =
+peak_states 0 mark_read 0
+>   -- END PROG LOAD LOG --
+>   libbpf: prog 'cwnd_event_tx_start': failed to load: -ENOTSUPP
+>   libbpf: failed to load object 'tcp_ca_kfunc'
+>   libbpf: failed to load BPF skeleton 'tcp_ca_kfunc': -ENOTSUPP
+>   test_tcp_ca_kfunc:FAIL:tcp_ca_kfunc__open_and_load unexpected error: -5=
+24
+> Error: #34/15 bpf_tcp_ca/cc_cubic
+>   Error: #34/15 bpf_tcp_ca/cc_cubic
+>   libbpf: prog 'bpf_cubic_cwnd_event_tx_start': BPF program load failed: =
+-ENOTSUPP
+>   libbpf: prog 'bpf_cubic_cwnd_event_tx_start': -- BEGIN PROG LOAD LOG --
+>   attach to unsupported member cwnd_event_tx_start of struct tcp_congesti=
+on_ops
+>   processed 0 insns (limit 1000000) max_states_per_insn 0 total_states 0 =
+peak_states 0 mark_read 0
+>   -- END PROG LOAD LOG --
+>   libbpf: prog 'bpf_cubic_cwnd_event_tx_start': failed to load: -ENOTSUPP
+>   libbpf: failed to load object 'bpf_cc_cubic'
+>   libbpf: failed to load BPF skeleton 'bpf_cc_cubic': -ENOTSUPP
+>   test_cc_cubic:FAIL:bpf_cc_cubic__open_and_load unexpected error: -524
+
+Maybe some black magic ;)
+
+diff --git a/net/ipv4/bpf_tcp_ca.c b/net/ipv4/bpf_tcp_ca.c
+index e01492234b0b349498f8e56c2f07d8bba092c00e..008edc7f6688523dc86963d9048=
+5655e9fa8374e
+100644
+--- a/net/ipv4/bpf_tcp_ca.c
++++ b/net/ipv4/bpf_tcp_ca.c
+@@ -272,6 +272,10 @@ static void bpf_tcp_ca_cwnd_event(struct sock
+*sk, enum tcp_ca_event ev)
+ {
+ }
+
++static void bpf_tcp_ca_cwnd_event_tx_start(struct sock *sk)
++{
++}
++
+ static void bpf_tcp_ca_in_ack_event(struct sock *sk, u32 flags)
+ {
+ }
+@@ -313,6 +317,7 @@ static struct tcp_congestion_ops
+__bpf_ops_tcp_congestion_ops =3D {
+        .cong_avoid =3D bpf_tcp_ca_cong_avoid,
+        .set_state =3D bpf_tcp_ca_set_state,
+        .cwnd_event =3D bpf_tcp_ca_cwnd_event,
++       .cwnd_event_tx_start =3D bpf_tcp_ca_cwnd_event_tx_start,
+        .in_ack_event =3D bpf_tcp_ca_in_ack_event,
+        .pkts_acked =3D bpf_tcp_ca_pkts_acked,
+        .min_tso_segs =3D bpf_tcp_ca_min_tso_segs,
