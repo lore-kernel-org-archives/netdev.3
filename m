@@ -1,29 +1,30 @@
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB932DE70B
-	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 01:58:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE2C2DEA7B
+	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 01:58:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773626321; cv=none; b=PxWmvsU8uJ2roGXjXzzgM+bOBSWD5LKS0RcIEWQBkcOFak5K5XMHnGRL5xMdePofzTNL6KrFSkv9F4tGQVqq93Rp0RCgBiHYi+asWduLupf6loVksvRqR0teFGVWCGZid4pIT/w0sfg26jGZ/eFKnnpX4oVr90d1kz4j6wKNr3Q=
+	t=1773626321; cv=none; b=f8DhWJ0cz9VySTYfHIHh2q6/xwBx+I83k5OhxdAtdAjmVmqfYm8V83UYJgU6aA3ZHKSdsapT0C5DFeqzMHOK4ouRf+BAON7j8BVdQO/oTUuQnPHeRTdVsQM/DjsBRzJmZ4E7YOl4GXTIy4Cl0oC0mPtqGOqg32lUMKBI2Ayxhwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773626321; c=relaxed/simple;
-	bh=l4CEmEmVPo7Rlnedq9fV7SChHHr5F1p3VlrEt8Y2ORw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HwkkF3hr2P3gjI/lF6FBHN1r2FRyM3aYTLlOkkdP0chOM4yHsi/qSTz4/d02Rmd4lFNMVVqXPpEE78G9hiaW8KQreGsqR7jjm3UmCaH0hYWUfbinD/LTpl3jRPZPcsFdYh5BS7g9iPt49Fel9CCHNa5Jh0GorrPuW0yq1x4Vtbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=aIRoR+7Q; arc=none smtp.client-ip=115.124.30.131
+	bh=ZyAlxZoxCBvDcd9jwNMN2ZpmkQcshawu3PdmgMoOpzg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=bjd+6H0V2hZd8NuTWx5L1O3vU1RLquHc1du5+ox1nf4Dm9gOmUm9eHBttZ0wiPR/5pwxXWsomX4vUBhifrGF9MwHIgweXnSeP1Tdz3G9Mx5ljcvEXJHVVqJpti9MkcANJzYGW1qNRRMLJS0cEuVc5HLdYtP7Gh9vxIU9s4b5AbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Ii7015Mv; arc=none smtp.client-ip=115.124.30.113
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="aIRoR+7Q"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Ii7015Mv"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1773626310; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=HA3XgGePOkPpp9E9TbLIP9YeZ4aA3saQUw6q6V6cXjM=;
-	b=aIRoR+7QlfBpXWPYCz3I163c4/yEH2eGWXoVXLUxEIBs5lLQeNi+xOJ8OiPVbzdKSd3uHCKC7oSEy8tfB+/YrBYHj9Vd6Wd4w4EqR8CMUp1aH6EC1/kyk/HklSRn9Pa7UArBpuGkHbY05ukrfAXUE/3SzYfNPdWhXwMQGmJ94fk=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R851e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=xuanzhuo@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0X.-3zYP_1773626309;
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0X.-3zYP_1773626309 cluster:ay36)
+	t=1773626317; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=9rLiBzmVsy5AgfXpvEYSoKEPq7n1Ma/une26xJ5jCE8=;
+	b=Ii7015MvWerrDOtDu+25vJD5vwoMnn/eW8/6LZe7f2GnK+uw0wPMrtegFtwVfqjn5TjqUslHHmodxc4v/bwBU22ZRTwn6tqK67LNS4mYsIyBZKuuTV+dLCiD0MOsnXR+VZt0dP/A0LuUoliLBCQt4ybRZEUJRS3iw9w0CBVZe0g=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R241e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=xuanzhuo@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0X.-3zaP_1773626316;
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0X.-3zaP_1773626316 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Mon, 16 Mar 2026 09:58:30 +0800
+          Mon, 16 Mar 2026 09:58:36 +0800
 From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 To: netdev@vger.kernel.org
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -38,10 +39,12 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	Dong Yibo <dong100@mucse.com>,
 	Heiner Kallweit <hkallweit1@gmail.com>,
 	Dust Li <dust.li@linux.alibaba.com>
-Subject: [PATCH net-next v32 0/8] eea: Add basic driver framework for Alibaba Elastic Ethernet Adaptor
-Date: Mon, 16 Mar 2026 09:58:21 +0800
-Message-Id: <20260316015829.65383-1-xuanzhuo@linux.alibaba.com>
+Subject: [PATCH net-next v32 8/8] eea: introduce callback for ndo_get_stats64
+Date: Mon, 16 Mar 2026 09:58:29 +0800
+Message-Id: <20260316015829.65383-9-xuanzhuo@linux.alibaba.com>
 X-Mailer: git-send-email 2.32.0.3.g01195cf9f
+In-Reply-To: <20260316015829.65383-1-xuanzhuo@linux.alibaba.com>
+References: <20260316015829.65383-1-xuanzhuo@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,223 +54,151 @@ MIME-Version: 1.0
 X-Git-Hash: a318e03b9506
 Content-Transfer-Encoding: 8bit
 
-Add a driver framework for EEA that will be available in the future.
+This commit introduces ndo_get_stats64 support.
 
-This driver is currently quite minimal, implementing only fundamental
-core functionalities. Key features include: I/O queue management via
-adminq, basic PCI-layer operations, and essential RX/TX data
-communication capabilities. It also supports the creation,
-initialization, and management of network devices (netdev). Furthermore,
-the ring structures for both I/O queues and adminq have been abstracted
-into a simple, unified, and reusable library implementation,
-facilitating future extension and maintenance.
+Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+Reviewed-by: Philo Lu <lulie@linux.alibaba.com>
+Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
+Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+---
+ drivers/net/ethernet/alibaba/eea/eea_net.c | 57 ++++++++++++++++++++++
+ drivers/net/ethernet/alibaba/eea/eea_net.h |  5 ++
+ 2 files changed, 62 insertions(+)
 
-v32:
-    1. remove unused parameters from eea_net_ha_reset_remove and eea_create_pp
-    2. call skb_mark_for_recycle for new skb for frag_list skbs
-
-v31:
-    1. remove unused parameter "enet" from eex_rx_post()
-
-v30:
-   1. fix some small problems
-
-v29:
-    Address AI-generated review suggestions from the previous version.
-
-v28:
-    Address AI-generated review suggestions from the previous version.
-
-v27:
-    Address AI-generated review suggestions from the previous version.
-
-v26:
-    Adopting suggestions from the previous AI review, another significant
-    change is the introduction of an IRQ block to implement IRQ proxying. With
-    this design, when an IRQ occurs, we no longer invoke the RX data structure
-    directly -- instead, the IRQ block serves as an intermediary proxy. This
-    approach offers several advantages: IRQ resources no longer need to be
-    reallocated during reset operations, and IRQs are decoupled from RX
-    structures. Consequently, when certain errors occur, we can fall back and
-    safely reuse the original memory resources.
-
-v25:
-    I have adopted most of the suggestions from the AI's feedback. However, I
-    believe some of the feedback is incorrect. I have already replied in the
-    previous thread. http://lore.kernel.org/all/1770002612.3297296-2-xuanzhuo@linux.alibaba.com
-
-v24:
-    1. Add null checks for enet->rx and enet->tx in eea_get_ethtool_stat to
-       prevent errors when reading rx = enet->rx[i] in case enet->rx is null.
-       tx is similar. With rtnl protection in place, this check is sufficient.
-    2. Use 'received' as the return value in eea_poll.
-
-v23:
-    I have moved netif_set_real_num_queues() out of eea_start_rxtx(), so
-    eea_start_rxtx() is now a void function. I believe enet_bind_new_q_and_cfg()
-    is a more suitable place to include netif_set_real_num_queues(). In
-    eea_active_ring_and_irq(), I first execute request_irq() before interacting
-    with the hardware to create queues. Therefore, during the NIC setup process,
-    all driver-internal operations (memory allocation, IRQ initialization, sysfs
-    configuration, etc.) will be completed before the final notification to the
-    hardware.
-
-v22:
-    1. Use the budget from the NAPI poll function as the parameter for
-       napi_consume_skb.
-    2. Stop the TX queue when the remaining ring slots cannot hold an SKB.
-
-v21:
-    Fix two issues from the previous version:
-    1, a DMA unmap operation was missing.
-    2, RCU APIs were not used in eea_stats. Although the standard practice when
-        using RCU would require adding the __rcu annotation to both the rx and
-        tx fields, in many cases these fields are read without needing RCU
-        protection.  Therefore, I do not want to add the __rcu annotation.
-        Instead, I use a spin lock to protect modifications to rx and tx.
-
-v20:
-    Fix the partially initialized structure passed to db. @Jakub
-    http://lore.kernel.org/all/20260113172353.2ae6ef81@kernel.org
-
-v19:
-    fix the comments from @Simon Horman
-
-v18:
-    v17 with [PATCH] prefix.
-
-v17:
-    1. In `eea_adminq_dev_status`, uniformly use `enet->cfg.rx_ring_num`.
-    2. Add a `struct eea_net_cfg *cfg` parameter to `eea_free_rx` and
-        `eea_free_tx`. When called in the normal path, pass `enet->cfg` as
-        the argument; when called during initialization, pass the temporary
-        `cfg` instead.
-    3. Move the `.ndo_get_stats64` callback into `eea_net.c`.
-    4. In the `.ndo_get_stats64` callback, add a comment explaining how the TX
-        and RX statistics are protected by RCU.
-
-       /* This function is protected by RCU. Here uses enet->tx and enet->rx
-        * to check whether the TX and RX structures are safe to access. In
-        * eea_free_rxtx_q_mem, before freeing the TX and RX resources, enet->rx
-        * and enet->tx are set to NULL, and synchronize_net is called.
-        */
-
-
-v16:
-    1. follow the advices from @ALOK TIWARI
-       http://lore.kernel.org/all/5ff95a71-69e5-4cb6-9b2a-5224c983bdc2@oracle.com
-
-v15:
-    1. remove 'default m' from eea kconfig
-    2. free the resources when open failed.
-
-v14:
-    1. some tiny fixes
-
-v13:
-    1. fix some tiny fixes @Simon
-
-v12:
-    I encountered some issues with sending the v11 patches, as they were quite
-    messy. Therefore, I'm resending them as v12.
-
-v11:
-    1. remove auto clean __free(kfree)
-    2. some tiny fixes
-
-v10:
-    1. name the jump labels after the target @Jakub
-    2. rm __GFP_ZERO from dma_alloc_coherent @Jakub
-v9:
-    1. some fixes for ethtool from http://lore.kernel.org/all/20251027183754.52fe2a2c@kernel.org
-
-v8: 1. rename eea_net_tmp to eea_net_init_ctx
-    2. rm code that allocs memory to destroy queues
-    3. some other minor changes
-
-v7: 1. remove the irrelative code from ethtool commit
-    2. build every commits with W12
-
-v6: Split the big one commit to five commits
-v5: Thanks for the comments from Kalesh Anakkur Purayil, ALOK TIWARI
-v4: Thanks for the comments from Troy Mitchell, Przemek Kitszel, Andrew Lunn, Kalesh Anakkur Purayil
-v3: Thanks for the comments from Paolo Abenchi
-v2: Thanks for the comments from Simon Horman and Andrew Lunn
-v1: Thanks for the comments from Simon Horman and Andrew Lunn
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Xuan Zhuo (8):
-  eea: introduce PCI framework
-  eea: introduce ring and descriptor structures
-  eea: probe the netdevice and create adminq
-  eea: create/destroy rx,tx queues for netdevice open and stop
-  eea: implement packet receive logic
-  eea: implement packet transmit logic
-  eea: introduce ethtool support
-  eea: introduce callback for ndo_get_stats64
-
- MAINTAINERS                                   |   8 +
- drivers/net/ethernet/Kconfig                  |   1 +
- drivers/net/ethernet/Makefile                 |   1 +
- drivers/net/ethernet/alibaba/Kconfig          |  28 +
- drivers/net/ethernet/alibaba/Makefile         |   5 +
- drivers/net/ethernet/alibaba/eea/Makefile     |   9 +
- drivers/net/ethernet/alibaba/eea/eea_adminq.c | 444 ++++++++++
- drivers/net/ethernet/alibaba/eea/eea_adminq.h |  75 ++
- drivers/net/ethernet/alibaba/eea/eea_desc.h   | 134 +++
- .../net/ethernet/alibaba/eea/eea_ethtool.c    | 243 ++++++
- .../net/ethernet/alibaba/eea/eea_ethtool.h    |  49 ++
- drivers/net/ethernet/alibaba/eea/eea_net.c    | 806 ++++++++++++++++++
- drivers/net/ethernet/alibaba/eea/eea_net.h    | 195 +++++
- drivers/net/ethernet/alibaba/eea/eea_pci.c    | 618 ++++++++++++++
- drivers/net/ethernet/alibaba/eea/eea_pci.h    |  73 ++
- drivers/net/ethernet/alibaba/eea/eea_ring.c   | 252 ++++++
- drivers/net/ethernet/alibaba/eea/eea_ring.h   |  88 ++
- drivers/net/ethernet/alibaba/eea/eea_rx.c     | 786 +++++++++++++++++
- drivers/net/ethernet/alibaba/eea/eea_tx.c     | 403 +++++++++
- 19 files changed, 4218 insertions(+)
- create mode 100644 drivers/net/ethernet/alibaba/Kconfig
- create mode 100644 drivers/net/ethernet/alibaba/Makefile
- create mode 100644 drivers/net/ethernet/alibaba/eea/Makefile
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_adminq.c
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_adminq.h
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_desc.h
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ethtool.c
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ethtool.h
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_net.c
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_net.h
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_pci.c
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_pci.h
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ring.c
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ring.h
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_rx.c
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_tx.c
-
---
+diff --git a/drivers/net/ethernet/alibaba/eea/eea_net.c b/drivers/net/ethernet/alibaba/eea/eea_net.c
+index 888a2a520ca8..fdb3daae8ee9 100644
+--- a/drivers/net/ethernet/alibaba/eea/eea_net.c
++++ b/drivers/net/ethernet/alibaba/eea/eea_net.c
+@@ -112,6 +112,8 @@ static void eea_bind_q_and_cfg(struct eea_net *enet,
+ 	struct eea_net_tx *tx;
+ 	int i;
+ 
++	spin_lock(&enet->stats_lock);
++
+ 	enet->cfg = ctx->cfg;
+ 	enet->rx = ctx->rx;
+ 	enet->tx = ctx->tx;
+@@ -131,6 +133,8 @@ static void eea_bind_q_and_cfg(struct eea_net *enet,
+ 
+ 		blk->rx = rx;
+ 	}
++
++	spin_unlock(&enet->stats_lock);
+ }
+ 
+ static void eea_unbind_q_and_cfg(struct eea_net *enet,
+@@ -140,6 +144,8 @@ static void eea_unbind_q_and_cfg(struct eea_net *enet,
+ 	struct eea_net_rx *rx;
+ 	int i;
+ 
++	spin_lock(&enet->stats_lock);
++
+ 	ctx->cfg = enet->cfg;
+ 	ctx->rx = enet->rx;
+ 	ctx->tx = enet->tx;
+@@ -156,6 +162,8 @@ static void eea_unbind_q_and_cfg(struct eea_net *enet,
+ 
+ 		blk->rx = NULL;
+ 	}
++
++	spin_unlock(&enet->stats_lock);
+ }
+ 
+ static void eea_free_rxtx_q_mem(struct eea_net_init_ctx *ctx)
+@@ -342,6 +350,50 @@ static int eea_netdev_open(struct net_device *netdev)
+ 	return err;
+ }
+ 
++static void eea_stats(struct net_device *netdev, struct rtnl_link_stats64 *tot)
++{
++	struct eea_net *enet = netdev_priv(netdev);
++	u64 packets, bytes;
++	u32 start;
++	int i;
++
++	spin_lock(&enet->stats_lock);
++
++	if (enet->rx) {
++		for (i = 0; i < enet->cfg.rx_ring_num; i++) {
++			struct eea_net_rx *rx = enet->rx[i];
++
++			do {
++				start = u64_stats_fetch_begin(&rx->stats.syncp);
++				packets = u64_stats_read(&rx->stats.packets);
++				bytes = u64_stats_read(&rx->stats.bytes);
++			} while (u64_stats_fetch_retry(&rx->stats.syncp,
++						       start));
++
++			tot->rx_packets += packets;
++			tot->rx_bytes   += bytes;
++		}
++	}
++
++	if (enet->tx) {
++		for (i = 0; i < enet->cfg.tx_ring_num; i++) {
++			struct eea_net_tx *tx = &enet->tx[i];
++
++			do {
++				start = u64_stats_fetch_begin(&tx->stats.syncp);
++				packets = u64_stats_read(&tx->stats.packets);
++				bytes = u64_stats_read(&tx->stats.bytes);
++			} while (u64_stats_fetch_retry(&tx->stats.syncp,
++						       start));
++
++			tot->tx_packets += packets;
++			tot->tx_bytes   += bytes;
++		}
++	}
++
++	spin_unlock(&enet->stats_lock);
++}
++
+ /* resources: ring, buffers, irq */
+ int eea_reset_hw_resources(struct eea_net *enet, struct eea_net_init_ctx *ctx)
+ {
+@@ -349,7 +401,9 @@ int eea_reset_hw_resources(struct eea_net *enet, struct eea_net_init_ctx *ctx)
+ 	int err, error;
+ 
+ 	if (!netif_running(enet->netdev) || !enet->started) {
++		spin_lock(&enet->stats_lock);
+ 		enet->cfg = ctx->cfg;
++		spin_unlock(&enet->stats_lock);
+ 		return 0;
+ 	}
+ 
+@@ -570,6 +624,7 @@ static const struct net_device_ops eea_netdev = {
+ 	.ndo_stop           = eea_netdev_stop,
+ 	.ndo_start_xmit     = eea_tx_xmit,
+ 	.ndo_validate_addr  = eth_validate_addr,
++	.ndo_get_stats64    = eea_stats,
+ 	.ndo_features_check = passthru_features_check,
+ };
+ 
+@@ -603,6 +658,8 @@ static struct eea_net *eea_netdev_alloc(struct eea_device *edev, u32 pairs)
+ 		return NULL;
+ 	}
+ 
++	spin_lock_init(&enet->stats_lock);
++
+ 	return enet;
+ }
+ 
+diff --git a/drivers/net/ethernet/alibaba/eea/eea_net.h b/drivers/net/ethernet/alibaba/eea/eea_net.h
+index a16d662c7fb3..c53c5bcb6bfc 100644
+--- a/drivers/net/ethernet/alibaba/eea/eea_net.h
++++ b/drivers/net/ethernet/alibaba/eea/eea_net.h
+@@ -163,6 +163,11 @@ struct eea_net {
+ 	u32 speed;
+ 
+ 	u64 hw_ts_offset;
++
++	/* Protect the tx and rx of struct eea_net, when eea_stats accesses the
++	 * stats from rx and tx queues.
++	 */
++	spinlock_t stats_lock;
+ };
+ 
+ int eea_net_probe(struct eea_device *edev);
+-- 
 2.32.0.3.g01195cf9f
 
