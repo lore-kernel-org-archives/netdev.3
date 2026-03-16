@@ -1,426 +1,759 @@
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 262EB15FA81;
-	Mon, 16 Mar 2026 22:31:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51BA820FAAB
+	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 22:32:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773700290; cv=none; b=iZhcKQVyNBG/cDhgJ8LHjyrYOwJgjuCqkwrpMoI/5F/AF1EsxODeRp5I7v2mJq9DuqYHkap2S2ZE1IBl/Pte/HAtcwtYbp0mowyjeLw5m6p81gqFFBSvndSzSdtEMk1Xkh+Kt0wIqDRkrXZDB+1pSY2IEXhqk16HPJyosxMI7BU=
+	t=1773700367; cv=none; b=G0GwtlOVZasj9kwVvrjO1ahYZhtwW5wyVw27OMxKNbx3OfZBfScHq/uaF3lCZ57F5NtY50uA32f5CuL2pme8r/bLNIcRaKCo470Vhoh5ip0zonvgrbfZHyWoE8MH91OZKvXECRs7U/CdMQZzF7wgn5gnoU09wRdy54p4nTHzsg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773700290; c=relaxed/simple;
-	bh=xyHC9ohvcAWbYaHq/N8MzMZhhf2bNvPa9wrZkAo/RJY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HVluME9pdB6K0g2ju7ArdxgPCRP0alWBGGBpNWENYwBSZ34VRluP0Toi/ZIDkvmMQeRC5Glzr3Pn1WSZgg03Bq6YQPiAc+5gT6HBxFwiUapolpAdpj5sx+5OymjSJ2CZzQ2jX6QHAwj0o+FQJSuE43N2i/eYrGXlz4I5jdFkL38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-c2dff70000001609-56-69b884bcd352
-From: Byungchul Park <byungchul@sk.com>
-To: linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	kernel_team@skhynix.com,
-	harry.yoo@oracle.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	sdf@fomichev.me,
-	saeedm@nvidia.com,
-	leon@kernel.org,
-	tariqt@nvidia.com,
-	mbloch@nvidia.com,
-	andrew+netdev@lunn.ch,
+	s=arc-20240116; t=1773700367; c=relaxed/simple;
+	bh=lQI1+2NVokkauJ2gSsle5U/BjYroeLy5Q1zhzmZkI5Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=q/UeRcwxDL0vfdEcFjINQCsPw19qB6WQCI6IAkO4PrMyw9fjrAcA4k5OR0rYMxlAXpn1didmN1/ScY4eRMFrjBfvZ39c2pjlHz+IOPNSVCUT9ftFO9YSVz3Rrq7/0rE5yl2IHaRibxMtPcYNRZga2UTD+z+Z6neC8S+QsTjblAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=WAqZSWiu; arc=none smtp.client-ip=171.64.64.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="WAqZSWiu"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=Y8d8Q5gB+2l4xi94M+jeyFY8TE81goNoe3dSU3tZbsA=; t=1773700365; x=1774564365; 
+	b=WAqZSWiuzd7ySAWptMMDJfq+yM3Sw/SLWcc2KLril7Yv17IBuz6hyxZ+nzJ7jePUX5j63T68Uef
+	TwfIfijpa1fa9Fr9Nnme811xUXw4FTmJvms2e4hGhE+KHvMl6W6YuzmwrwQS3Jlouy6lNk757t6wd
+	Kwx887W2xCvovG6pMdliLWtshQ/Gub1hC1KZ4o16XD1C4pEFn6t9K94GJKe5soIBBnvqMdnCtqbEy
+	9XROKg8JjnBMdWQ++3T5CgJHFNgApHy7BehNd9zDjFO+0IH50lIrdm+RE2Q4GyFbT3wllGS9jtMRF
+	fI2x4y3bpQYuDQtCL5oWxZu648GWKq3049NA==;
+Received: from ouster448.stanford.edu ([172.24.72.71]:53396 helo=ouster2022)
+	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ouster@cs.stanford.edu>)
+	id 1w2GUM-0004uJ-Tq; Mon, 16 Mar 2026 15:32:44 -0700
+From: John Ousterhout <ouster@cs.stanford.edu>
+To: netdev@vger.kernel.org
+Cc: pabeni@redhat.com,
 	edumazet@google.com,
-	pabeni@redhat.com,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
 	horms@kernel.org,
-	jackmanb@google.com,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	ilias.apalodimas@linaro.org,
-	willy@infradead.org,
-	brauner@kernel.org,
-	kas@kernel.org,
-	yuzhao@google.com,
-	usamaarif642@gmail.com,
-	baolin.wang@linux.alibaba.com,
-	almasrymina@google.com,
-	toke@redhat.com,
-	asml.silence@gmail.com,
-	bpf@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	sfr@canb.auug.org.au,
-	dw@davidwei.uk,
-	ap420073@gmail.com,
-	dtatulea@nvidia.com
-Subject: [PATCH v5] mm: introduce a new page type for page pool in page type
-Date: Tue, 17 Mar 2026 07:31:13 +0900
-Message-Id: <20260316223113.20097-1-byungchul@sk.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20260316222901.GA59948@system.software.com>
-References: <20260316222901.GA59948@system.software.com>
+	kuba@kernel.org,
+	John Ousterhout <ouster@cs.stanford.edu>
+Subject: [PATCH net-next v17 04/14] net: homa: create homa_pool.h and homa_pool.c
+Date: Mon, 16 Mar 2026 15:32:16 -0700
+Message-ID: <20260316223228.2611-5-ouster@cs.stanford.edu>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260316223228.2611-1-ouster@cs.stanford.edu>
+References: <20260316223228.2611-1-ouster@cs.stanford.edu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SW2yLYRjHvd/7nVYanxrecUEqIog5hHgWh7hw8ZFNCC6clX2xz7puaW02
-	CemYYNE5Lqor2SJqh9LprO2WFTuYDWGZjdZhmzEW7JBtRk1MaxHufnme///33Dw8Vj1kJvOy
-	br+k12m0alZBK7rG5M31Znjk+cMuHqwOOwtF31PhepuHgYD9IwXWQheCgcArDoa9tQj6ax6w
-	8Lm6D8HVvEEM1qcZNHx1/MBQVv4RwSfzDRY6ats5KHLGQKvtAw0Vx90Y2k/XsWDKGMLgDXRz
-	cMSTHxSXGDlocGUxcOHHNQxuYxsHz8qtLLTYhxn4UGWiod5SQENvdg2G1qyVUJs7EQYffUFQ
-	43BTMHjqMgvNl8opKPU2c3C+MZeFdxmtCBqr22nI/nmChZz0LARD34PK7jMDDOTcb+FWRorp
-	Ph8rVn/pweLtAj8lPjefpUXfnYeUWGZ5w4m5zmSxJH+2mOlrxKKz8CQrOvvOceLr5xWsWGce
-	osWyt1FimaefEk1Hu9l1E7YolsVKWjlF0s9bsUsR13mihEr6tT21x/6NMaL86EwUxhNhEel/
-	+pL7yy/q/FSIWWEm8fkCOMThQgy56WpCmUjBY6GbIxV3v7GhxXghmtS9CPxhWphB0i900SFW
-	CotJz7XHaEQ6lRQV3wuKeD5MiCKPOteHxioBSG9TBTMSH0fqL72nQxEcvOu4ogqNcbB5tDQH
-	h84SoZcnZnMpNaKMIJX5PvoMEiz/1S3/6pb/6rkIFyKVrEtJ0MjaRZFxaTo5NXJPYoITBT/M
-	dujnVg/qa9hQhQQeqccofYxHVjGaFENaQhUiPFaHK201LlmljNWkHZT0iTv1yVrJUIWm8LR6
-	knLh4IFYlbBXs1+Kl6QkSf93S/Fhk40omR1y2JY0JJkinuwYy7jvHl61zaZbUr+j80HlgdHF
-	4S89m590yP7s4xZv/L5of9Pe9Mzpd6IMczZHdLhjYrXl796Ex6+xd82pxAPNLWtNknX6tnZt
-	XvRFI7HosmdlrZ16bOPyq5v8q42Jt9qWniuwFMdXjmp1BqbN2h21gt/OvB2tpg1xmgWzsd6g
-	+Q2S4FsTXQMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTYRjHec97bo5GxyV2sEIadIXSouCJbtKXjreoT0EUOvPUTuqUrUyL
-	QnOQSTNNBZ0aRuVlzqyZc8rUUvNSQTlLF6s0K0srDTNtKtVWRH37839+z+/58rBYYaYCWElz
-	XNRqVPFKWkbK9mzNWGfX26TgzDcboKTWTEP19xSoGLJR4Da/J6DEZEUw5XYx8LO5E8HXji4a
-	PrZPIrh2dRpDyWM9Cd9qZzE0Nr1HMFZYQ8O7zmEGqi2RMFg+QoL9fAOG4UvdNBj0cxia3eMM
-	nLNVesR1aQy0l/ZQ8MSaTUH+7A0MDWlDDPQ1ldDwyvyTgpE2Awk9xioSvhR0YBjMDoHOMn+Y
-	fvgJQUdtAwHTF0tpeFbUREB98zMG8hxlNLzRDyJwtA+TUDCfSUNxejaCue8e5XjOFAXF918x
-	IUFCutNJC+2fJrBwp+o5IfQX5pKCs+UBITQaXzJCmeWEUFe5VshyOrBgMV2gBcvkZUZ40W+n
-	he7COVJofL1FaLR9JQRDxji91/+AbFusGC8li9qgHdEy9YfMOiLpx6GUCfMMlYYqI7KQD8tz
-	m/iB7ueEN9PcKt7pdGNv9uMi+ZvWpygLyVjMjTO8vXWG9g4WcRF894D7dya5FXx6/mfSm+Xc
-	Zn7ixiP0RxrIV9+66xGxrA+3hX/4YZ+3VnDAf3lqp/7gvnxP0VvSi2DP3dorCm+NPZsZ9cU4
-	B8mN/1HGf5TxP6oMYRPykzTJCSopfvN6XZw6VSOlrD+cmGBBnh8qPzOfa0NTfbvbEMci5QK5
-	k7JJCkqVrEtNaEM8i5V+8vIOq6SQx6pST4naxCjtiXhR14aWsKRysTxsvxit4I6qjotxopgk
-	av9OCdYnIA25rKsHpJR7vuS+k60JqlnNxx2jLnG3YSSO3WUtWhp2TD1UZzjPjK50VLTuPc1d
-	PzJ0Jzh4Z6grSJ8od2w/1ane2BtzN3AqdDggvGZNcpXv5LVzOktLVU/UyYJyHNMFeS3L0NuF
-	0TVJP0LD7VvHGnpdufnKnQfP9l+8HfHCtDzAT0nq1KoNa7FWp/oFypO+ET8DAAA=
-X-CFilter-Loop: Reflected
+X-Spam-Score: -101.0
+X-Scan-Signature: 97306571ea59926db9c3504cf134252e
 
-Currently, the condition 'page->pp_magic == PP_SIGNATURE' is used to
-determine if a page belongs to a page pool.  However, with the planned
-removal of @pp_magic, we should instead leverage the page_type in struct
-page, such as PGTY_netpp, for this purpose.
+These files implement Homa's mechanism for managing application-level
+buffer space for incoming messages This mechanism is needed to allow
+Homa to copy data out to user space in parallel with receiving packets;
+it was discussed in a talk at NetDev 0x17.
 
-Introduce and use the page type APIs e.g. PageNetpp(), __SetPageNetpp(),
-and __ClearPageNetpp() instead, and remove the existing APIs accessing
-@pp_magic e.g. page_pool_page_is_pp(), netmem_or_pp_magic(), and
-netmem_clear_pp_magic().
+Signed-off-by: John Ousterhout <ouster@cs.stanford.edu>
 
-Plus, add @page_type to struct net_iov at the same offset as struct page
-so as to use the page_type APIs for struct net_iov as well.  While at it,
-reorder @type and @owner in struct net_iov to avoid a hole and
-increasing the struct size.
-
-This work was inspired by the following link:
-
-  https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@gmail.com/
-
-While at it, move the sanity check for page pool to on the free path.
-
-Suggested-by: David Hildenbrand <david@redhat.com>
-Co-developed-by: Pavel Begunkov <asml.silence@gmail.com>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Signed-off-by: Byungchul Park <byungchul@sk.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 ---
-The following 'Acked-by's were given only for mm part:
+Changes for v16:
+* Add homa_pool_avail_bytes() for new HOMAIOCINFO ioctl
 
-  Acked-by: David Hildenbrand <david@redhat.com>
-  Acked-by: Zi Yan <ziy@nvidia.com>
-  Acked-by: Vlastimil Babka <vbabka@suse.cz>
-  Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Changes for v11:
+* Rework the mechanism for waking up RPCs that stalled waiting for
+  buffer pool space
 
-This patch changes both mm and page-pool, but I'm currently targetting
-mm tree because Jakub asked and I also think it's more about mm change.
-See the following link:
+Changes for v10:
+* Fix minor syntactic issues such as reverse xmas tree
 
-  https://lore.kernel.org/all/20250813075212.051b5178@kernel.org/
+Changes for v9:
+* Eliminate use of _Static_assert
+* Use new homa_clock abstraction layer.
+* Allow memory to be allocated without GFP_ATOMIC
+* Various name improvements (e.g. use "alloc" instead of "new" for functions
+  that allocate memory)
+* Remove sync.txt, move its contents into comments (mostly in homa_impl.h)
 
-Changes from v4:
-	1. Gate the sanity check, 'if (unlikely(PageNetpp(page)))' on
-	   free path, with is_check_pages_enabled(). (Feedbacked by
-	   Johannes Weiner)
-	2. Add 'Acked-by's.  Thanks.
+Changes for v8:
+* Refactor homa_pool APIs (move allocation/deallocation into homa_pool.c,
+  move locking responsibility out)
 
-Changes from v3:
-	1. Rebase on mm-new as of Feb 24, 2026.
-	2. Fix an issue reported by kernel test robot due to incorrect
-	   type.
-	3. Add 'Acked-by: Vlastimil Babka <vbabka@suse.cz>'.  Thanks.
-
-Changes from v2:
-	1. Fix an issue reported by kernel test robot due to incorrect
-	   type in argument of __netmem_to_page().
-
-Changes from v1:
-	1. Drop the finalizing patch removing the pp fields of struct
-	   page since I found that there is still code accessing a pp
-	   field via struct page.  I will retry the finalizing patch
-	   after resolving the issue.
+Changes for v7:
+* Use u64 and __u64 properly
+* Eliminate extraneous use of RCU
+* Refactor pool->cores to use percpu variable
+* Use smp_processor_id instead of raw_smp_processor_id
 ---
- .../net/ethernet/mellanox/mlx5/core/en/xdp.c  |  2 +-
- include/linux/mm.h                            | 27 +++----------------
- include/linux/page-flags.h                    |  6 +++++
- include/net/netmem.h                          | 15 +++++++++--
- mm/page_alloc.c                               | 13 ++++++---
- net/core/netmem_priv.h                        | 23 +++++++---------
- net/core/page_pool.c                          | 24 +++++++++++++++--
- 7 files changed, 64 insertions(+), 46 deletions(-)
+ net/homa/homa_pool.c | 507 +++++++++++++++++++++++++++++++++++++++++++
+ net/homa/homa_pool.h | 137 ++++++++++++
+ 2 files changed, 644 insertions(+)
+ create mode 100644 net/homa/homa_pool.c
+ create mode 100644 net/homa/homa_pool.h
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-index 80f9fc10877ad..7d90d2485c787 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-@@ -707,7 +707,7 @@ static void mlx5e_free_xdpsq_desc(struct mlx5e_xdpsq *sq,
- 				xdpi = mlx5e_xdpi_fifo_pop(xdpi_fifo);
- 				page = xdpi.page.page;
- 
--				/* No need to check page_pool_page_is_pp() as we
-+				/* No need to check PageNetpp() as we
- 				 * know this is a page_pool page.
- 				 */
- 				page_pool_recycle_direct(pp_page_to_nmdesc(page)->pp,
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 52206525af7c7..6f0a3edb24e14 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -5197,10 +5197,9 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
-  * DMA mapping IDs for page_pool
-  *
-  * When DMA-mapping a page, page_pool allocates an ID (from an xarray) and
-- * stashes it in the upper bits of page->pp_magic. We always want to be able to
-- * unambiguously identify page pool pages (using page_pool_page_is_pp()). Non-PP
-- * pages can have arbitrary kernel pointers stored in the same field as pp_magic
-- * (since it overlaps with page->lru.next), so we must ensure that we cannot
-+ * stashes it in the upper bits of page->pp_magic. Non-PP pages can have
-+ * arbitrary kernel pointers stored in the same field as pp_magic (since
-+ * it overlaps with page->lru.next), so we must ensure that we cannot
-  * mistake a valid kernel pointer with any of the values we write into this
-  * field.
-  *
-@@ -5235,26 +5234,6 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
- #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SHIFT - 1, \
- 				  PP_DMA_INDEX_SHIFT)
- 
--/* Mask used for checking in page_pool_page_is_pp() below. page->pp_magic is
-- * OR'ed with PP_SIGNATURE after the allocation in order to preserve bit 0 for
-- * the head page of compound page and bit 1 for pfmemalloc page, as well as the
-- * bits used for the DMA index. page_is_pfmemalloc() is checked in
-- * __page_pool_put_page() to avoid recycling the pfmemalloc page.
-- */
--#define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
--
--#ifdef CONFIG_PAGE_POOL
--static inline bool page_pool_page_is_pp(const struct page *page)
--{
--	return (page->pp_magic & PP_MAGIC_MASK) == PP_SIGNATURE;
--}
--#else
--static inline bool page_pool_page_is_pp(const struct page *page)
--{
--	return false;
--}
--#endif
--
- #define PAGE_SNAPSHOT_FAITHFUL (1 << 0)
- #define PAGE_SNAPSHOT_PG_BUDDY (1 << 1)
- #define PAGE_SNAPSHOT_PG_IDLE  (1 << 2)
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index 7223f6f4e2b40..0e03d816e8b9d 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -923,6 +923,7 @@ enum pagetype {
- 	PGTY_zsmalloc		= 0xf6,
- 	PGTY_unaccepted		= 0xf7,
- 	PGTY_large_kmalloc	= 0xf8,
-+	PGTY_netpp		= 0xf9,
- 
- 	PGTY_mapcount_underflow = 0xff
- };
-@@ -1055,6 +1056,11 @@ PAGE_TYPE_OPS(Zsmalloc, zsmalloc, zsmalloc)
- PAGE_TYPE_OPS(Unaccepted, unaccepted, unaccepted)
- PAGE_TYPE_OPS(LargeKmalloc, large_kmalloc, large_kmalloc)
- 
-+/*
-+ * Marks page_pool allocated pages.
+diff --git a/net/homa/homa_pool.c b/net/homa/homa_pool.c
+new file mode 100644
+index 000000000000..f89266c3a87d
+--- /dev/null
++++ b/net/homa/homa_pool.c
+@@ -0,0 +1,507 @@
++// SPDX-License-Identifier: BSD-2-Clause or GPL-2.0+
++
++#include "homa_impl.h"
++#include "homa_pool.h"
++
++/* This file contains functions that manage user-space buffer pools. */
++
++/* Pools must always have at least this many bpages (no particular
++ * reasoning behind this value).
 + */
-+PAGE_TYPE_OPS(Netpp, netpp, netpp)
++#define MIN_POOL_SIZE 2
 +
- /**
-  * PageHuge - Determine if the page belongs to hugetlbfs
-  * @page: The page to test.
-diff --git a/include/net/netmem.h b/include/net/netmem.h
-index a96b3e5e5574c..85e3b26ec547f 100644
---- a/include/net/netmem.h
-+++ b/include/net/netmem.h
-@@ -110,10 +110,21 @@ struct net_iov {
- 			atomic_long_t pp_ref_count;
- 		};
- 	};
--	struct net_iov_area *owner;
++/* Used when determining how many bpages to consider for allocation. */
++#define MIN_EXTRA 4
 +
-+	unsigned int page_type;
- 	enum net_iov_type type;
-+	struct net_iov_area *owner;
- };
- 
-+/* Make sure 'the offset of page_type in struct page == the offset of
-+ * type in struct net_iov'.
++/**
++ * set_bpages_needed() - Set the bpages_needed field of @pool based
++ * on the length of the first RPC that's waiting for buffer space.
++ * The caller must own the lock for @pool->hsk.
++ * @pool: Pool to update.
 + */
-+#define NET_IOV_ASSERT_OFFSET(pg, iov)			\
-+	static_assert(offsetof(struct page, pg) ==	\
-+		      offsetof(struct net_iov, iov))
-+NET_IOV_ASSERT_OFFSET(page_type, page_type);
-+#undef NET_IOV_ASSERT_OFFSET
++static void set_bpages_needed(struct homa_pool *pool)
++{
++	struct homa_rpc *rpc = list_first_entry(&pool->hsk->waiting_for_bufs,
++						struct homa_rpc, buf_links);
 +
- struct net_iov_area {
- 	/* Array of net_iovs for this area. */
- 	struct net_iov *niovs;
-@@ -256,7 +267,7 @@ static inline unsigned long netmem_pfn_trace(netmem_ref netmem)
-  */
- #define pp_page_to_nmdesc(p)						\
- ({									\
--	DEBUG_NET_WARN_ON_ONCE(!page_pool_page_is_pp(p));		\
-+	DEBUG_NET_WARN_ON_ONCE(!PageNetpp(p));				\
- 	__pp_page_to_nmdesc(p);						\
- })
- 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 9f2fe46ff69a1..ee81f5c67c18f 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1044,7 +1044,6 @@ static inline bool page_expected_state(struct page *page,
- #ifdef CONFIG_MEMCG
- 			page->memcg_data |
- #endif
--			page_pool_page_is_pp(page) |
- 			(page->flags.f & check_flags)))
- 		return false;
- 
-@@ -1071,8 +1070,6 @@ static const char *page_bad_reason(struct page *page, unsigned long flags)
- 	if (unlikely(page->memcg_data))
- 		bad_reason = "page still charged to cgroup";
- #endif
--	if (unlikely(page_pool_page_is_pp(page)))
--		bad_reason = "page_pool leak";
- 	return bad_reason;
- }
- 
-@@ -1381,9 +1378,17 @@ __always_inline bool __free_pages_prepare(struct page *page,
- 		mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
- 		folio->mapping = NULL;
- 	}
--	if (unlikely(page_has_type(page)))
-+	if (unlikely(page_has_type(page))) {
-+		/* networking expects to clear its page type before releasing */
-+		if (is_check_pages_enabled()) {
-+			if (unlikely(PageNetpp(page))) {
-+				bad_page(page, "page_pool leak");
-+				return false;
-+			}
-+		}
- 		/* Reset the page_type (which overlays _mapcount) */
- 		page->page_type = UINT_MAX;
++	pool->bpages_needed = (rpc->msgin.length + HOMA_BPAGE_SIZE - 1) >>
++			      HOMA_BPAGE_SHIFT;
++}
++
++/**
++ * homa_pool_alloc() - Allocate and initialize a new homa_pool (it will have
++ * no region associated with it until homa_pool_set_region is invoked).
++ * @hsk:          Socket the pool will be associated with.
++ * Return: A pointer to the new pool or a negative errno.
++ */
++struct homa_pool *homa_pool_alloc(struct homa_sock *hsk)
++{
++	struct homa_pool *pool;
++
++	pool = kzalloc_obj(*pool, GFP_KERNEL);
++	if (!pool)
++		return ERR_PTR(-ENOMEM);
++	pool->hsk = hsk;
++	return pool;
++}
++
++/**
++ * homa_pool_set_region() - Associate a region of memory with a pool.
++ * @hsk:          Socket whose pool the region will be associated with.
++ *                Must not be locked, and the pool must not currently
++ *                have a region associated with it.
++ * @region:       First byte of the memory region for the pool, allocated
++ *                by the application; must be page-aligned.
++ * @region_size:  Total number of bytes available at @buf_region.
++ * Return: Either zero (for success) or a negative errno for failure.
++ */
++int homa_pool_set_region(struct homa_sock *hsk, void __user *region,
++			 u64 region_size)
++{
++	struct homa_pool_core __percpu *cores;
++	struct homa_bpage *descriptors;
++	int i, result, num_bpages;
++	struct homa_pool *pool;
++
++	if (((uintptr_t)region) & ~PAGE_MASK)
++		return -EINVAL;
++
++	/* Allocate memory before locking the socket, so we can allocate
++	 * without GFP_ATOMIC.
++	 */
++	num_bpages = region_size >> HOMA_BPAGE_SHIFT;
++	if (num_bpages < MIN_POOL_SIZE)
++		return -EINVAL;
++	descriptors = kmalloc_array(num_bpages, sizeof(struct homa_bpage),
++				    GFP_KERNEL | __GFP_ZERO);
++	if (!descriptors)
++		return -ENOMEM;
++	cores = alloc_percpu_gfp(struct homa_pool_core, __GFP_ZERO);
++	if (!cores) {
++		result = -ENOMEM;
++		goto error;
 +	}
- 
- 	if (is_check_pages_enabled()) {
- 		if (free_page_is_bad(page))
-diff --git a/net/core/netmem_priv.h b/net/core/netmem_priv.h
-index 23175cb2bd866..3e6fde8f1726f 100644
---- a/net/core/netmem_priv.h
-+++ b/net/core/netmem_priv.h
-@@ -8,21 +8,18 @@ static inline unsigned long netmem_get_pp_magic(netmem_ref netmem)
- 	return netmem_to_nmdesc(netmem)->pp_magic & ~PP_DMA_INDEX_MASK;
- }
- 
--static inline void netmem_or_pp_magic(netmem_ref netmem, unsigned long pp_magic)
--{
--	netmem_to_nmdesc(netmem)->pp_magic |= pp_magic;
--}
--
--static inline void netmem_clear_pp_magic(netmem_ref netmem)
--{
--	WARN_ON_ONCE(netmem_to_nmdesc(netmem)->pp_magic & PP_DMA_INDEX_MASK);
--
--	netmem_to_nmdesc(netmem)->pp_magic = 0;
--}
--
- static inline bool netmem_is_pp(netmem_ref netmem)
- {
--	return (netmem_get_pp_magic(netmem) & PP_MAGIC_MASK) == PP_SIGNATURE;
-+	struct page *page;
 +
-+	/* XXX: Now that the offset of page_type is shared between
-+	 * struct page and net_iov, just cast the netmem to struct page
-+	 * unconditionally by clearing NET_IOV if any, no matter whether
-+	 * it comes from struct net_iov or struct page.  This should be
-+	 * adjusted once the offset is no longer shared.
++	homa_sock_lock(hsk);
++	pool = hsk->buffer_pool;
++	if (pool->region) {
++		result = -EINVAL;
++		homa_sock_unlock(hsk);
++		goto error;
++	}
++
++	pool->region = (char __user *)region;
++	pool->num_bpages = num_bpages;
++	pool->descriptors = descriptors;
++	atomic_set(&pool->free_bpages, pool->num_bpages);
++	pool->bpages_needed = INT_MAX;
++	pool->cores = cores;
++	pool->check_waiting_invoked = 0;
++
++	for (i = 0; i < pool->num_bpages; i++) {
++		struct homa_bpage *bp = &pool->descriptors[i];
++
++		spin_lock_init(&bp->lock);
++		bp->owner = -1;
++	}
++
++	homa_sock_unlock(hsk);
++	return 0;
++
++error:
++	kfree(descriptors);
++	free_percpu(cores);
++	return result;
++}
++
++/**
++ * homa_pool_free() - Destructor for homa_pool. After this method
++ * returns, the object should not be used (it will be freed here).
++ * @pool: Pool to destroy.
++ */
++void homa_pool_free(struct homa_pool *pool)
++{
++	if (pool->region) {
++		kfree(pool->descriptors);
++		free_percpu(pool->cores);
++		pool->region = NULL;
++	}
++	kfree(pool);
++}
++
++/**
++ * homa_pool_get_rcvbuf() - Return information needed to handle getsockopt
++ * for HOMA_SO_RCVBUF.
++ * @pool:         Pool for which information is needed.
++ * @args:         Store info here.
++ */
++void homa_pool_get_rcvbuf(struct homa_pool *pool,
++			  struct homa_rcvbuf_args *args)
++{
++	args->start = (uintptr_t)pool->region;
++	args->length = pool->num_bpages << HOMA_BPAGE_SHIFT;
++}
++
++/**
++ * homa_bpage_available() - Check whether a bpage is available for use.
++ * @bpage:      Bpage to check
++ * @now:        Current time (homa_clock() units)
++ * Return:      True if the bpage is free or if it can be stolen, otherwise
++ *              false.
++ */
++bool homa_bpage_available(struct homa_bpage *bpage, u64 now)
++{
++	int ref_count = atomic_read(&bpage->refs);
++
++	return ref_count == 0 || (ref_count == 1 && bpage->owner >= 0 &&
++			bpage->expiration <= now);
++}
++
++/**
++ * homa_pool_get_pages() - Allocate one or more full pages from the pool.
++ * @pool:         Pool from which to allocate pages
++ * @num_pages:    Number of pages needed
++ * @pages:        The indices of the allocated pages are stored here; caller
++ *                must ensure this array is big enough. Reference counts have
++ *                been set to 1 on all of these pages (or 2 if set_owner
++ *                was specified).
++ * @set_owner:    If nonzero, the current core is marked as owner of all
++ *                of the allocated pages (and the expiration time is also
++ *                set). Otherwise the pages are left unowned.
++ * Return: 0 for success, -1 if there wasn't enough free space in the pool.
++ */
++int homa_pool_get_pages(struct homa_pool *pool, int num_pages, u32 *pages,
++			int set_owner)
++{
++	int core_num = smp_processor_id();
++	struct homa_pool_core *core;
++	u64 now = homa_clock();
++	int alloced = 0;
++	int limit = 0;
++
++	core = this_cpu_ptr(pool->cores);
++	if (atomic_sub_return(num_pages, &pool->free_bpages) < 0) {
++		atomic_add(num_pages, &pool->free_bpages);
++		return -1;
++	}
++
++	/* Once we get to this point we know we will be able to find
++	 * enough free pages; now we just have to find them.
 +	 */
-+	page = (struct page *)((__force unsigned long)netmem & ~NET_IOV);
-+	return PageNetpp(page);
- }
- 
- static inline void netmem_set_pp(netmem_ref netmem, struct page_pool *pool)
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index 265a729431bb7..877bbf7a19389 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -702,8 +702,18 @@ s32 page_pool_inflight(const struct page_pool *pool, bool strict)
- 
- void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
- {
-+	struct page *page;
++	while (alloced != num_pages) {
++		struct homa_bpage *bpage;
++		int cur;
 +
- 	netmem_set_pp(netmem, pool);
--	netmem_or_pp_magic(netmem, PP_SIGNATURE);
++		/* If we don't need to use all of the bpages in the pool,
++		 * then try to use only the ones with low indexes. This
++		 * will reduce the cache footprint for the pool by reusing
++		 * a few bpages over and over. Specifically this code will
++		 * not consider any candidate page whose index is >= limit.
++		 * Limit is chosen to make sure there are a reasonable
++		 * number of free pages in the range, so we won't have to
++		 * check a huge number of pages.
++		 */
++		if (limit == 0) {
++			int extra;
 +
-+	/* XXX: Now that the offset of page_type is shared between
-+	 * struct page and net_iov, just cast the netmem to struct page
-+	 * unconditionally by clearing NET_IOV if any, no matter whether
-+	 * it comes from struct net_iov or struct page.  This should be
-+	 * adjusted once the offset is no longer shared.
++			limit = pool->num_bpages -
++				atomic_read(&pool->free_bpages);
++			extra = limit >> 2;
++			limit += (extra < MIN_EXTRA) ? MIN_EXTRA : extra;
++			if (limit > pool->num_bpages)
++				limit = pool->num_bpages;
++		}
++
++		cur = core->next_candidate;
++		core->next_candidate++;
++		if (cur >= limit) {
++			core->next_candidate = 0;
++
++			/* Must recompute the limit for each new loop through
++			 * the bpage array: we may need to consider a larger
++			 * range of pages because of concurrent allocations.
++			 */
++			limit = 0;
++			continue;
++		}
++		bpage = &pool->descriptors[cur];
++
++		/* Figure out whether this candidate is free (or can be
++		 * stolen). Do a quick check without locking the page, and
++		 * if the page looks promising, then lock it and check again
++		 * (must check again in case someone else snuck in and
++		 * grabbed the page).
++		 */
++		if (!homa_bpage_available(bpage, now))
++			continue;
++		if (!spin_trylock_bh(&bpage->lock))
++			/* Rather than wait for a locked page to become free,
++			 * just go on to the next page. If the page is locked,
++			 * it probably won't turn out to be available anyway.
++			 */
++			continue;
++		if (!homa_bpage_available(bpage, now)) {
++			spin_unlock_bh(&bpage->lock);
++			continue;
++		}
++		if (bpage->owner >= 0)
++			atomic_inc(&pool->free_bpages);
++		if (set_owner) {
++			atomic_set(&bpage->refs, 2);
++			bpage->owner = core_num;
++			bpage->expiration = now +
++					    pool->hsk->homa->bpage_lease_cycles;
++		} else {
++			atomic_set(&bpage->refs, 1);
++			bpage->owner = -1;
++		}
++		spin_unlock_bh(&bpage->lock);
++		pages[alloced] = cur;
++		alloced++;
++	}
++	return 0;
++}
++
++/**
++ * homa_pool_alloc_msg() - Allocate buffer space for an incoming message.
++ * @rpc:  RPC that needs space allocated for its incoming message (space must
++ *        not already have been allocated). The fields @msgin->num_buffers
++ *        and @msgin->buffers are filled in. Must be locked by caller.
++ * Return: The return value is normally 0, which means either buffer space
++ * was allocated or the @rpc was queued on @hsk->waiting. If a fatal error
++ * occurred, such as no buffer pool present, then a negative errno is
++ * returned.
++ */
++int homa_pool_alloc_msg(struct homa_rpc *rpc)
++	__must_hold(rpc->bucket->lock)
++{
++	struct homa_pool *pool = rpc->hsk->buffer_pool;
++	int full_pages, partial, i, core_id;
++	struct homa_pool_core *core;
++	u32 pages[HOMA_MAX_BPAGES];
++	struct homa_bpage *bpage;
++	struct homa_rpc *other;
++
++	if (!pool->region)
++		return -ENOMEM;
++
++	/* First allocate any full bpages that are needed. */
++	full_pages = rpc->msgin.length >> HOMA_BPAGE_SHIFT;
++	if (unlikely(full_pages)) {
++		if (homa_pool_get_pages(pool, full_pages, pages, 0) != 0)
++			goto out_of_space;
++		for (i = 0; i < full_pages; i++)
++			rpc->msgin.bpage_offsets[i] = pages[i] <<
++					HOMA_BPAGE_SHIFT;
++	}
++	rpc->msgin.num_bpages = full_pages;
++
++	/* The last chunk may be less than a full bpage; for this we use
++	 * the bpage that we own (and reuse it for multiple messages).
 +	 */
-+	page = (struct page *)((__force unsigned long)netmem & ~NET_IOV);
-+	__SetPageNetpp(page);
- 
- 	/* Ensuring all pages have been split into one fragment initially:
- 	 * page_pool_set_pp_info() is only called once for every page when it
-@@ -718,7 +728,17 @@ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
- 
- void page_pool_clear_pp_info(netmem_ref netmem)
- {
--	netmem_clear_pp_magic(netmem);
-+	struct page *page;
++	partial = rpc->msgin.length & (HOMA_BPAGE_SIZE - 1);
++	if (unlikely(partial == 0))
++		goto success;
++	core_id = smp_processor_id();
++	core = this_cpu_ptr(pool->cores);
++	bpage = &pool->descriptors[core->page_hint];
++	spin_lock_bh(&bpage->lock);
++	if (bpage->owner != core_id) {
++		spin_unlock_bh(&bpage->lock);
++		goto new_page;
++	}
++	if ((core->allocated + partial) > HOMA_BPAGE_SIZE) {
++		if (atomic_read(&bpage->refs) == 1) {
++			/* Bpage is totally free, so we can reuse it. */
++			core->allocated = 0;
++		} else {
++			bpage->owner = -1;
 +
-+	/* XXX: Now that the offset of page_type is shared between
-+	 * struct page and net_iov, just cast the netmem to struct page
-+	 * unconditionally by clearing NET_IOV if any, no matter whether
-+	 * it comes from struct net_iov or struct page.  This should be
-+	 * adjusted once the offset is no longer shared.
++			/* We know the reference count can't reach zero here
++			 * because of check above, so we won't have to decrement
++			 * pool->free_bpages.
++			 */
++			atomic_dec_return(&bpage->refs);
++			spin_unlock_bh(&bpage->lock);
++			goto new_page;
++		}
++	}
++	bpage->expiration = homa_clock() +
++			    pool->hsk->homa->bpage_lease_cycles;
++	atomic_inc(&bpage->refs);
++	spin_unlock_bh(&bpage->lock);
++	goto allocate_partial;
++
++	/* Can't use the current page; get another one. */
++new_page:
++	if (homa_pool_get_pages(pool, 1, pages, 1) != 0) {
++		homa_pool_release_buffers(pool, rpc->msgin.num_bpages,
++					  rpc->msgin.bpage_offsets);
++		rpc->msgin.num_bpages = 0;
++		goto out_of_space;
++	}
++	core->page_hint = pages[0];
++	core->allocated = 0;
++
++allocate_partial:
++	rpc->msgin.bpage_offsets[rpc->msgin.num_bpages] = core->allocated
++			+ (core->page_hint << HOMA_BPAGE_SHIFT);
++	rpc->msgin.num_bpages++;
++	core->allocated += partial;
++
++success:
++	return 0;
++
++	/* We get here if there wasn't enough buffer space for this
++	 * message; add the RPC to hsk->waiting_for_bufs. The list is sorted
++	 * by RPC length in order to implement SRPT.
 +	 */
-+	page = (struct page *)((__force unsigned long)netmem & ~NET_IOV);
-+	__ClearPageNetpp(page);
++out_of_space:
++	homa_sock_lock(pool->hsk);
++	list_for_each_entry(other, &pool->hsk->waiting_for_bufs, buf_links) {
++		if (other->msgin.length > rpc->msgin.length) {
++			list_add_tail(&rpc->buf_links, &other->buf_links);
++			goto queued;
++		}
++	}
++	list_add_tail(&rpc->buf_links, &pool->hsk->waiting_for_bufs);
 +
- 	netmem_set_pp(netmem, NULL);
- }
- 
++queued:
++	set_bpages_needed(pool);
++	homa_sock_unlock(pool->hsk);
++	return 0;
++}
++
++/**
++ * homa_pool_get_buffer() - Given an RPC, figure out where to store incoming
++ * message data.
++ * @rpc:        RPC for which incoming message data is being processed; its
++ *              msgin must be properly initialized and buffer space must have
++ *              been allocated for the message.
++ * @offset:     Offset within @rpc's incoming message.
++ * @available:  Will be filled in with the number of bytes of space available
++ *              at the returned address (could be zero if offset is
++ *              (erroneously) past the end of the message).
++ * Return:      The application's virtual address for buffer space corresponding
++ *              to @offset in the incoming message for @rpc.
++ */
++void __user *homa_pool_get_buffer(struct homa_rpc *rpc, int offset,
++				  int *available)
++{
++	int bpage_index, bpage_offset;
++
++	bpage_index = offset >> HOMA_BPAGE_SHIFT;
++	if (offset >= rpc->msgin.length) {
++		WARN_ONCE(true, "%s got offset %d >= message length %d\n",
++			  __func__, offset, rpc->msgin.length);
++		*available = 0;
++		return NULL;
++	}
++	bpage_offset = offset & (HOMA_BPAGE_SIZE - 1);
++	*available = (bpage_index < (rpc->msgin.num_bpages - 1))
++			? HOMA_BPAGE_SIZE - bpage_offset
++			: rpc->msgin.length - offset;
++	return rpc->hsk->buffer_pool->region +
++			rpc->msgin.bpage_offsets[bpage_index] + bpage_offset;
++}
++
++/**
++ * homa_pool_release_buffers() - Release buffer space so that it can be
++ * reused.
++ * @pool:         Pool that the buffer space belongs to. Doesn't need to
++ *                be locked.
++ * @num_buffers:  How many buffers to release.
++ * @buffers:      Points to @num_buffers values, each of which is an offset
++ *                from the start of the pool to the buffer to be released.
++ * Return:        0 for success, otherwise a negative errno.
++ */
++int homa_pool_release_buffers(struct homa_pool *pool, int num_buffers,
++			      u32 *buffers)
++{
++	int result = 0;
++	int i;
++
++	if (!pool->region)
++		return result;
++	for (i = 0; i < num_buffers; i++) {
++		u32 bpage_index = buffers[i] >> HOMA_BPAGE_SHIFT;
++		struct homa_bpage *bpage = &pool->descriptors[bpage_index];
++
++		if (bpage_index < pool->num_bpages) {
++			if (atomic_dec_return(&bpage->refs) == 0)
++				atomic_inc(&pool->free_bpages);
++		} else {
++			result = -EINVAL;
++		}
++	}
++	return result;
++}
++
++/**
++ * homa_pool_check_waiting() - Checks to see if there are enough free
++ * bpages to wake up any RPCs that were blocked. Whenever
++ * homa_pool_release_buffers is invoked, this function must be invoked later,
++ * at a point when the caller holds no locks (homa_pool_release_buffers may
++ * be invoked with locks held, so it can't safely invoke this function).
++ * This is regrettably tricky, but I can't think of a better solution.
++ * @pool:         Information about the buffer pool.
++ */
++void homa_pool_check_waiting(struct homa_pool *pool)
++{
++	if (!pool->region)
++		return;
++	while (atomic_read(&pool->free_bpages) >= pool->bpages_needed) {
++		struct homa_rpc *rpc;
++
++		homa_sock_lock(pool->hsk);
++		if (list_empty(&pool->hsk->waiting_for_bufs)) {
++			pool->bpages_needed = INT_MAX;
++			homa_sock_unlock(pool->hsk);
++			break;
++		}
++		rpc = list_first_entry(&pool->hsk->waiting_for_bufs,
++				       struct homa_rpc, buf_links);
++		if (!homa_rpc_try_lock(rpc)) {
++			/* Can't just spin on the RPC lock because we're
++			 * holding the socket lock and the lock order is
++			 * rpc-then-socket (see "Homa Locking Strategy" in
++			 * homa_impl.h). Instead, release the socket lock
++			 * and try the entire operation again.
++			 */
++			homa_sock_unlock(pool->hsk);
++			continue;
++		}
++		list_del_init(&rpc->buf_links);
++		if (list_empty(&pool->hsk->waiting_for_bufs))
++			pool->bpages_needed = INT_MAX;
++		else
++			set_bpages_needed(pool);
++		homa_sock_unlock(pool->hsk);
++		homa_pool_alloc_msg(rpc);
++		homa_rpc_unlock(rpc);
++	}
++}
++
++/**
++ * homa_pool_avail_bytes() - Return a count of the number of bytes currently
++ * unused and available for allocation in a pool.
++ * @pool:    Pool of interest.
++ * Return:    See above.
++ */
++u64 homa_pool_avail_bytes(struct homa_pool *pool)
++{
++	struct homa_pool_core *core;
++	u64 avail;
++	int cpu;
++
++	if (!pool->region)
++		return 0;
++	avail = atomic_read(&pool->free_bpages);
++	avail *= HOMA_BPAGE_SIZE;
++	for (cpu = 0; cpu < nr_cpu_ids; cpu++) {
++		core = per_cpu_ptr(pool->cores, cpu);
++		if (pool->descriptors[core->page_hint].owner == cpu)
++			avail += HOMA_BPAGE_SIZE - core->allocated;
++	}
++	return avail;
++}
+diff --git a/net/homa/homa_pool.h b/net/homa/homa_pool.h
+new file mode 100644
+index 000000000000..1f5455665c5d
+--- /dev/null
++++ b/net/homa/homa_pool.h
+@@ -0,0 +1,137 @@
++/* SPDX-License-Identifier: BSD-2-Clause or GPL-2.0+ */
++
++/* This file contains definitions used to manage user-space buffer pools.
++ */
++
++#ifndef _HOMA_POOL_H
++#define _HOMA_POOL_H
++
++#include <linux/percpu.h>
++
++#include "homa_rpc.h"
++
++/**
++ * struct homa_bpage - Contains information about a single page in
++ * a buffer pool.
++ */
++struct homa_bpage {
++	/** @lock: to synchronize shared access. */
++	spinlock_t lock;
++
++	/**
++	 * @refs: Counts number of distinct uses of this
++	 * bpage (1 tick for each message that is using
++	 * this page, plus an additional tick if the @owner
++	 * field is set).
++	 */
++	atomic_t refs;
++
++	/**
++	 * @owner: kernel core that currently owns this page
++	 * (< 0 if none).
++	 */
++	int owner;
++
++	/**
++	 * @expiration: homa_clock() time after which it's OK to steal this
++	 * page from its current owner (if @refs is 1).
++	 */
++	u64 expiration;
++} ____cacheline_aligned_in_smp;
++
++/**
++ * struct homa_pool_core - Holds core-specific data for a homa_pool (a bpage
++ * out of which that core is allocating small chunks).
++ */
++struct homa_pool_core {
++	/**
++	 * @page_hint: Index of bpage in pool->descriptors,
++	 * which may be owned by this core. If so, we'll use it
++	 * for allocating partial pages.
++	 */
++	int page_hint;
++
++	/**
++	 * @allocated: if the page given by @page_hint is
++	 * owned by this core, this variable gives the number of
++	 * (initial) bytes that have already been allocated
++	 * from the page.
++	 */
++	int allocated;
++
++	/**
++	 * @next_candidate: when searching for free bpages,
++	 * check this index next.
++	 */
++	int next_candidate;
++};
++
++/**
++ * struct homa_pool - Describes a pool of buffer space for incoming
++ * messages for a particular socket; managed by homa_pool.c. The pool is
++ * divided up into "bpages", which are a multiple of the hardware page size.
++ * A bpage may be owned by a particular core so that it can more efficiently
++ * allocate space for small messages.
++ */
++struct homa_pool {
++	/**
++	 * @hsk: the socket that this pool belongs to.
++	 */
++	struct homa_sock *hsk;
++
++	/**
++	 * @region: beginning of the pool's region (in the app's virtual
++	 * memory). Divided into bpages. 0 means the pool hasn't yet been
++	 * initialized.
++	 */
++	char __user *region;
++
++	/** @num_bpages: total number of bpages in the pool. */
++	int num_bpages;
++
++	/** @descriptors: kmalloced area containing one entry for each bpage. */
++	struct homa_bpage *descriptors;
++
++	/**
++	 * @free_bpages: the number of pages still available for allocation
++	 * by homa_pool_get pages. This equals the number of pages with zero
++	 * reference counts, minus the number of pages that have been claimed
++	 * by homa_get_pool_pages but not yet allocated.
++	 */
++	atomic_t free_bpages;
++
++	/**
++	 * @bpages_needed: the number of free bpages required to satisfy the
++	 * needs of the first RPC on @hsk->waiting_for_bufs, or INT_MAX if
++	 * that queue is empty.
++	 */
++	int bpages_needed;
++
++	/** @cores: core-specific info; dynamically allocated. */
++	struct homa_pool_core __percpu *cores;
++
++	/**
++	 * @check_waiting_invoked: incremented during unit tests when
++	 * homa_pool_check_waiting is invoked.
++	 */
++	int check_waiting_invoked;
++};
++
++bool     homa_bpage_available(struct homa_bpage *bpage, u64 now);
++struct   homa_pool *homa_pool_alloc(struct homa_sock *hsk);
++int      homa_pool_alloc_msg(struct homa_rpc *rpc);
++u64      homa_pool_avail_bytes(struct homa_pool *pool);
++void     homa_pool_check_waiting(struct homa_pool *pool);
++void     homa_pool_free(struct homa_pool *pool);
++void __user *homa_pool_get_buffer(struct homa_rpc *rpc, int offset,
++				  int *available);
++int      homa_pool_get_pages(struct homa_pool *pool, int num_pages,
++			     u32 *pages, int leave_locked);
++void     homa_pool_get_rcvbuf(struct homa_pool *pool,
++			      struct homa_rcvbuf_args *args);
++int      homa_pool_release_buffers(struct homa_pool *pool,
++				   int num_buffers, u32 *buffers);
++int      homa_pool_set_region(struct homa_sock *hsk, void __user *region,
++			      u64 region_size);
++
++#endif /* _HOMA_POOL_H */
 -- 
-2.17.1
+2.43.0
 
