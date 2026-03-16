@@ -1,169 +1,82 @@
-Received: from server.couthit.com (server.couthit.com [162.240.164.96])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11AB23ABB9;
-	Mon, 16 Mar 2026 12:17:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074F0392C21
+	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 12:18:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773663438; cv=none; b=aUJd2Vt5UsM6QWAqU1idBvQBrCqohOmuLGx4GJWNgjUw5SKZIhjjGq5noGxBIyc0ietEmw8WReURxnGbI6elnvYSeGPZ6xjUPyHiAWu13lUR0WzYV0x3Se3HYijUzT9eSfokm0wRjhkHRpI6ezg2AKTAiDq/Ro20OypE2YAf9BA=
+	t=1773663499; cv=none; b=Pk7KiFMW48zT/hM7lQmncqsd3M6t4DmS3BhT/VSE7YK4DSzkAZoZmkpdQGGrNnbysTx4DPlcE0ah9NvjpL68bSHkO/SnM6gShLjGXt7ibfNgYJjXbmED8qrQG4KJEgpOv8VMMHwAIcP/cIIrkXx0sYbkcJwZ3aGTCiltUyTpLXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773663438; c=relaxed/simple;
-	bh=V675jUKSH8QglSXawL5tz+HUbIQOaAylD68Q3+NgfGs=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=WZoVZJfTv+ZKW/NIy5LcbDKGOxwis55pxqSsnVSr96xK9eSCxGnbT40F42gXUYhJlmmtxj1XsSMBxJVWOYUoMvunlRH4wMskNMxQuXiAmDGQmhYRRjskFAM+TPWCbtW5uA1Hut8T+4IxrHnuzxUJEbvQciHwP+u3Du38cmLJPP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=nJEjkrTM; arc=none smtp.client-ip=162.240.164.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
+	s=arc-20240116; t=1773663499; c=relaxed/simple;
+	bh=W9XsTwJzp2b5zdMwuN9ZBm+/RCdLWXeEiFd5SUW/SMc=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=dF+X3+1ET95MHdWJmaaRNqOB7sU2yljvyaCy0FIs8mkTyjk3P/3OKHLuoZzRaULJrYqOaZsftz8oiadyLALGIsl4251Lt8oqjgkN/jeVhorEHc/BF8oZhVG1Q9fz/D7nUYb2/9Lz1C9lC7VwTPdeeXaazVxpuuGmRF8/Qzrag9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=XgUN8Nul; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="nJEjkrTM"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
-	; s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:
-	References:In-Reply-To:Message-ID:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=//0aebZLoJRPo6o2UvBp6ake9K/kNjwGQS7c0uT+0wM=; b=nJEjkrTMDlVnLh22xJoeXhg3+a
-	0JYhj7JKngxOrK3KgNpDhEfQxQO1tBRo55vpHMVAQD+vZwYJsWNGJJzktba9bUm0B04xKwVOX3u6W
-	JuEEsPsqFZzaW7XleaAzB9Jtz6CCVuDZuesm18nGiVOWKu0AcUbshq8v+0GeplUGorBCNL2yNUs0N
-	Ki+awxLqTZcOrpC0Z2Cwyh1T29QBnjwDrx7IDAWGC5iVgZOS6NIn1ujM2ZOqWAuOPErL4rKtgpWNZ
-	lPcfE/lcGpGSBUdJxHfJTfeKIzvf0Hb/tjhgSAPKo4NvkfytHcl6u1cDfG+vGDFrWq4xGkDYs4QmZ
-	n1D85yDg==;
-Received: from [115.246.246.98] (port=30658 helo=zimbra.couthit.local)
-	by server.couthit.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.1)
-	(envelope-from <parvathi@couthit.com>)
-	id 1w26cM-00000009cmG-44qP;
-	Mon, 16 Mar 2026 08:00:19 -0400
-Received: from localhost (localhost [127.0.0.1])
-	by zimbra.couthit.local (Postfix) with ESMTP id 75E901B6849C;
-	Mon, 16 Mar 2026 17:30:11 +0530 (IST)
-Received: from zimbra.couthit.local ([127.0.0.1])
- by localhost (zimbra.couthit.local [127.0.0.1]) (amavis, port 10032)
- with ESMTP id wNNMJAY4HRyR; Mon, 16 Mar 2026 17:30:09 +0530 (IST)
-Received: from localhost (localhost [127.0.0.1])
-	by zimbra.couthit.local (Postfix) with ESMTP id A61B11B6849B;
-	Mon, 16 Mar 2026 17:30:09 +0530 (IST)
-X-Virus-Scanned: amavis at couthit.local
-Received: from zimbra.couthit.local ([127.0.0.1])
- by localhost (zimbra.couthit.local [127.0.0.1]) (amavis, port 10026)
- with ESMTP id p85TJ2TKoeWh; Mon, 16 Mar 2026 17:30:09 +0530 (IST)
-Received: from zimbra.couthit.local (zimbra.couthit.local [10.10.10.103])
-	by zimbra.couthit.local (Postfix) with ESMTP id 423001B684A0;
-	Mon, 16 Mar 2026 17:30:09 +0530 (IST)
-Date: Mon, 16 Mar 2026 17:30:09 +0530 (IST)
-From: Parvathi Pudi <parvathi@couthit.com>
-To: Kevin Hilman <khilman@baylibre.com>
-Cc: Parvathi Pudi <parvathi@couthit.com>, nm <nm@ti.com>, 
-	Vignesh Raghavendra <vigneshr@ti.com>, afd <afd@ti.com>, 
-	rogerq <rogerq@kernel.org>, tony <tony@atomide.com>, 
-	robh <robh@kernel.org>, krzk+dt <krzk+dt@kernel.org>, 
-	conor+dt <conor+dt@kernel.org>, 
-	richardcochran <richardcochran@gmail.com>, 
-	aaro koskinen <aaro.koskinen@iki.fi>, andreas <andreas@kemnade.info>, 
-	Andrew Lunn <andrew@lunn.ch>, 
-	linux-omap <linux-omap@vger.kernel.org>, 
-	devicetree <devicetree@vger.kernel.org>, 
-	linux-kernel <linux-kernel@vger.kernel.org>, 
-	netdev <netdev@vger.kernel.org>, danishanwar <danishanwar@ti.com>, 
-	pratheesh <pratheesh@ti.com>, j-rameshbabu <j-rameshbabu@ti.com>, 
-	praneeth <praneeth@ti.com>, srk <srk@ti.com>, rogerq <rogerq@ti.com>, 
-	m-malladi <m-malladi@ti.com>, krishna <krishna@couthit.com>, 
-	mohan <mohan@couthit.com>, pmohan <pmohan@couthit.com>, 
-	basharath <basharath@couthit.com>, 
-	Murali Karicheri <m-karicheri2@ti.com>
-Message-ID: <91797572.667989.1773662409130.JavaMail.zimbra@couthit.local>
-In-Reply-To: <7ho6ks1r4s.fsf@baylibre.com>
-References: <20260307122641.738450-1-parvathi@couthit.com> <20260307122641.738450-4-parvathi@couthit.com> <7ho6ks1r4s.fsf@baylibre.com>
-Subject: Re: [PATCH v5 3/3] arm: dts: ti: Add device tree support for
- PRU-ICSS on AM335x
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="XgUN8Nul"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 84B64A22FD;
+	Mon, 16 Mar 2026 13:18:14 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1773663495; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=5H1Aaqvxc0Fxsx9kvGJ03wnGg2Cn8pRBnAes0ki/aps=;
+	b=XgUN8NulR6COkmsRDUs4j45ZXn3ipPFezemfDBCQo5HPFGuu5gLwL/D3oP9LIVZtpJ40oG
+	NTiwn0A1Q8jgNnYARqvGTHvyyCQxaiatpjnNzTbo7AudAs7Ap2ACK1Vc3t6LkJfE0HHaMI
+	0EsYvk2TeEX6vaD+EedRlvpJYZMoUkc5QmpjtDrbkOl27zxdjWXeJPWa8rv4yv6Fr82BN0
+	N4qA1n33cYIZy17l5inGFiIkl19zH0pPyv+HVA9UQc3g6ruK9Emg98hIQGekVMFGgb60F4
+	sqVOb1V6fY1BXKwD0Wda0A5Pe3bXKjBWhaSGNYuORuCPr2wkFw/yjd05e78s6Q==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Date: Mon, 16 Mar 2026 13:18:14 +0100
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Paolo Valerio <pvalerio@redhat.com>
+Cc: netdev@vger.kernel.org, Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Lorenzo Bianconi <lorenzo@kernel.org>,
+ =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Subject: Re: [PATCH net-next v5 6/8] net: macb: generalize tx buffer handling
+In-Reply-To: <20260313201433.2346119-7-pvalerio@redhat.com>
+References: <20260313201433.2346119-1-pvalerio@redhat.com>
+ <20260313201433.2346119-7-pvalerio@redhat.com>
+Message-ID: <b9db5e942faf2470b3d803f19e723f1c@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-X-Mailer: Zimbra 9.0.0_ZEXTRAS_20240927 (ZimbraWebClient - GC138 (Linux)/9.0.0_ZEXTRAS_20240927)
-Thread-Topic: Add device tree support for PRU-ICSS on AM335x
-Thread-Index: fNGDHpGUBv5DoqU899rekVrrDtuztA==
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.couthit.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - couthit.com
-X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: smtp@couthit.com
-X-Authenticated-Sender: server.couthit.com: smtp@couthit.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi,
-
-> Parvathi Pudi <parvathi@couthit.com> writes:
-> 
->> From: Roger Quadros <rogerq@ti.com>
->>
->> The TI Sitara AM335x ICE-V2 consists of single PRU-ICSS instance,
->> This patch adds the new device tree overlay file in-order to enable
->> PRU-ICSS instance, along with makefile changes.
->>
->> PRU-ICSS instance consists of two PRU cores along with various
->> peripherals such as the Interrupt Controller (PRU_INTC), the Industrial
->> Ethernet Peripheral(IEP), the Real Time Media Independent Interface
->> controller (MII_RT), and the Enhanced Capture (eCAP) event module.
->>
->> am33xx-l4.dtsi - Adds IEP and eCAP peripheral as child nodes
->> of the PRUSS subsystem node.
->>
->> am335x-icev2-prueth.dtso - Adds PRU-ICSS instance node along with PRU
->> eth port information and corresponding port configuration. It includes
->> interrupt mapping for packet reception, HW timestamp collection, and PRU
->> Ethernet ports in MII mode,
->>
->> GPIO configuration, boot strapping along with delay configuration for
->> individual PRU Ethernet port and other required nodes.
->>
->> Signed-off-by: Roger Quadros <rogerq@ti.com>
->> Signed-off-by: Andrew F. Davis <afd@ti.com>
->> Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
->> Signed-off-by: Basharath Hussain Khaja <basharath@couthit.com>
->> Signed-off-by: Parvathi Pudi <parvathi@couthit.com>
-> 
+On 13.3.2026 21:14, Paolo Valerio wrote:
 > [...]
 > 
->> +/*
->> + * Disable CPSW switch node and
->> + * MDIO configuration to prevent
->> + * conflict with PRU-ICSS
->> + */
->> +&mac_sw {
->> +        status = "disable";
->> +};
->> +
->> +&davinci_mdio_sw {
->> +        status = "disable";
->> +};
+>  			/* ctrl still refers to the first buffer descriptor
+> @@ -1396,20 +1397,22 @@ static bool ptp_one_step_sync(struct sk_buff 
+> *skb)
+>  static int macb_tx_complete(struct macb_queue *queue, int budget)
+>  {
+>  	struct macb *bp = queue->bp;
+> -	u16 queue_index = queue - bp->queues;
+>  	unsigned long flags;
+>  	unsigned int tail;
+>  	unsigned int head;
+> +	u16 queue_index;
+>  	int packets = 0;
+>  	u32 bytes = 0;
 > 
-> I think you need s/disable/disabled/?  (note the trailing 'd').  Without
-> that, I don't think you're disabling these nodes, so I'm curious how it
-> is not conflicting with the PRU-ICSS.
-> 
-> Kevin
+> +	queue_index  = queue - bp->queues;
 
-Thank you for pointing out this typo.
+nit: remove double space before =
 
-We checked the kernel code as to why this did not create any issue in our
-testing.  We found that the device availability check goes through
-of_device_is_available(), which only treats "ok" or "okay" as enabled.
-Anything else is effectively treated as not enabled.
+> [...]
 
-So even though "disable" isn't the usual DT value, it still prevents the
-node from being probed since it doesn't match "ok"/"okay".
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 
-We will update the value to "disabled" in the next version, since that is
-the standard.
-
-Thanks and Regards,
-Parvathi.
-
+Thanks,
+Nicolai
