@@ -1,63 +1,63 @@
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402E636403F
-	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 21:11:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE38135A391
+	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 21:11:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773695475; cv=none; b=S6iaUGZ39kGhShpcmfxBWke/3X9J4tpOKO5KiBOmSuMQvW+MkNti5mljPxxb12FLTZ4bBHhyiLalj++nMxXfkzU0gyUjLE2IsausFVo+QHkvqdXs61x2jUNFZzDVsqhryfOpiAZHrTq2+hnftp2GVe6A6MaCXk20rAEswxo33Mk=
+	t=1773695478; cv=none; b=V0T9aXoeBHcxMciru3tEUDOFO9G4530Y0il1mRO5SDHwSHoei2NIrFosVAgzW1jKZ0yPmZuZo5dgHys6OEXCM6NZmj1kNRoCsA+mIduI5tYKUtvYRBObicKKxvuTdmIvXAlBLpL8tuzpK35WWOYa5z1eGQjjS0NMbIgFDpYxK0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773695475; c=relaxed/simple;
-	bh=CAsS4J/t10sG/T5I0JKSMPwaRbUDZapGaHx1j261f38=;
+	s=arc-20240116; t=1773695478; c=relaxed/simple;
+	bh=qx55ooV+6T11EKr8LbEY4/9pXwPSeq3Qn7aMejeFIXc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=a/NqZFHUoK8meTiaZCVSBmLLBXp/zmxf8ZEUSA/ND5ZmcJvjkzPTRkpgtOwdCQvWSVgaaAhSbxKLFPL/E72r//0h7lYwv6421gCmm/tbwgsKm1SdgFz4HHxUcigp08ak/bbm8URmSlRSBJuXBo/0gO9Vqc2QUgAwNCiP7QOyj/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=0TOgnUWy; arc=none smtp.client-ip=209.85.219.43
+	 MIME-Version; b=Txx/TfDz5Z5ky1KI8bn4jNRehQpSkJeJbqkLgmubPRBTSPK8Kg9vdqLEjHcGdk7KO+T1WxJgZEGG5iB2LZ12Clshy8wPLnho+9Ic1h3sxzEVBtBq7ezQymm5w9Rw2k4KSLnzrHhLheZ+i9a1+UUkJUrDfa1Y8BU0UWpiWLJawFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=RlmVCnAt; arc=none smtp.client-ip=209.85.219.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="0TOgnUWy"
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-89a465bd7edso36601566d6.0
-        for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 14:11:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="RlmVCnAt"
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-89c43c4c383so22852696d6.1
+        for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 14:11:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1773695473; x=1774300273; darn=vger.kernel.org;
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1773695476; x=1774300276; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mV2WxSgOnrukTiiplrhReP9OynL7VhGvdToCkKNiSXQ=;
-        b=0TOgnUWylaA5JXzVLPIy/zuML6n4sa4jerdpRE1EmYQrS9+Lnzw0LtxyyMWVdMNEK3
-         4ZO/aghWaBBa8VM2sjG5gvCrPpfQic/8Ze4dz4Kbu5+Ep6oqGH99x6FEsE50kWxX/wMQ
-         eg7e7DBzRAuarPkGIDVhlF5eVP6Kdq7bQmFG44GK1ZLqLvBndGr5V+vneHB9YZOcCt9L
-         0gmL7mtTevKANQzqBd2vdj8EFVqx+QjowuBeZDIh3eWwxubE9cWjaSNVb2Aaw9ITx+t6
-         MI6hSdXAsCG23Dd25PM/nqy0/KB5wudiNSTCQIeaIz9KS57S9i3vxa23hG1YNjWLpD0X
-         SBOA==
+        bh=NBtIV/EG4mn9wrmEQoCttsPhqLjU58BaxF1sqnJtk6U=;
+        b=RlmVCnAtcg7T9nd+asr7AmOn5oa7qBtkf1vJeTc6Gm1cF685ncfNS9DQU217WV6IKf
+         3S7TNybc/TScK3Iw1XsA4cm84LQjvLuCq5vkuHHSiW/edQgkfr9yv6dhqpga4+YqLG41
+         6UqT55l7pUpSOtXXA7MgxnB4MbORvN/u97upMENf7zEw0BWYx7YdXpGmhSwYcOhx9ZkQ
+         JTqTX9IWKSEUkBsR3NAkgvSUNsiWKea4FzizEkuMbtNk3ZKU1wDkBPvn9B45abZCG+60
+         dfmFgMvwRy/nPpXT2xvgG2uo7Og1JLfO8sY70PCJ++RWytRBkdPnK21XeW4I2MDUs2G3
+         buYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773695473; x=1774300273;
+        d=1e100.net; s=20251104; t=1773695476; x=1774300276;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=mV2WxSgOnrukTiiplrhReP9OynL7VhGvdToCkKNiSXQ=;
-        b=PvojH0gxlTpeIKPoJdx9v2LoNQkCY+qT1jjHMC18a6pjoHC36VMar7naKmsFIPflZt
-         EdXvicsYe99l4o3Paw18l4ObmS4qaaiZT1l4AkJ0m0JPHPURVx/Nz8WGlNvEg73cetrb
-         oUa2r17let52t2OJYlp6ygM2CWzgQePqk0gG40WfDYDGGCY6BBuZMKepqRGxbjBzZ3oG
-         awCYfyMe+0OwquK13XB1eqT9JNKCQI98ex8xZDtpeIeIF/JuKPN2mDA0Sf1JoUY/WBCh
-         A3fhphdWJ6SlpTSMR3sURP+D48jus9AIemvdzIfFHl9bya1Ua+OSQBMHQoPCxhkc/VZu
-         UXrQ==
-X-Gm-Message-State: AOJu0YxU84J2PXORDy53B2tx4qFUukXQShOc6oUsojnMLBjoNDln2MQh
-	oWESnbjulCTpIV7puV7CgnRIyqPbgq3u7rudc2JmPuYRYiwUIdyMcVqIHuCjD3whKuSKMmaQaVE
-	r38A=
-X-Gm-Gg: ATEYQzx9DTZIn8+Fwou1qTR7oKpuNiqyC4TcKEw8hL0PV/kuyzbJNU53618uKH7ylNe
-	HdOqtA/RLKkm5ngV5KLFqTdZEZqZNsBlnxQ6tZC01jVL1pTTikjK1K6xGjWrGJjhAUKCN2C5KYy
-	KvNc4k7xUQ3NmmY1uKorMvwHfH95usKJMS0/2Qp7O8lGWPIy3k2pVpHo3jOS18Mw51R9mZsHGPK
-	5PnHn3Cu7FcjLnsrnvfihHjWHRFXksUE7xk3vooCz0ZvvR1wAvickmYNm5gjxoVgr/vmef306ON
-	r05dhB6JOfxtRyIS9Om2ETFGbLFIJGpaG5nUdR31OCDfNrtUu9EuMOLomcvOpSCSRUsZIKfvreC
-	qGES92NQ2akY/4lNXIH+Tuf/D16fFsnuBEGnKCjuM7CZdnoUCBeobCN8M4EFsqJ8CD0FBl7qdDw
-	PIJ3aTXx0auF3vVHP6RebhQ3FVaYB2Dy69xA==
-X-Received: by 2002:a05:6214:c6f:b0:89c:5385:3476 with SMTP id 6a1803df08f44-89c53853f1cmr65618776d6.39.1773695472727;
-        Mon, 16 Mar 2026 14:11:12 -0700 (PDT)
+        bh=NBtIV/EG4mn9wrmEQoCttsPhqLjU58BaxF1sqnJtk6U=;
+        b=YCedMq+nP+eSLxVLiF4O2E93645YNvj22cLmX9kJfGQWXoFVEqeOUSgwVJDj3/aOl4
+         vDKcvgasJyRl/xpLLiwGz9T/Jvk0ioVx4Jehr/QighrEwPAA5AiRzc15W7MHDDp/cOI/
+         QOYyWVkG/gWgH8gTBs06PW7PrgAH8I1TUyIZTR31sOigm439L/dvLH4As774/vpBREmR
+         Y1zFvpUQtffoCLRZKN1ijDsmyOwdIueZCbA05rQ+QHhJ9c650bzL+i/kI8tkfV6FQWLG
+         CI3e+o2Up96RPr8J/oNjjhps96giU0ljBuw5Z4YmQWvo9i58hoeahDQI19hfM8Z+qFEe
+         ZT7w==
+X-Gm-Message-State: AOJu0YzC9nuEJYwXd86m9tS69Vw3qVCseGyWUfVvpvK9e76C6XPOBVnE
+	uY4XzUqZ9An2J3vNEzeIR3fdLlvmpGWqqhK8PmQXiTk50RWv7N02CUvbtCubHt5RT7tzXXsL6BK
+	Ji8o=
+X-Gm-Gg: ATEYQzzK6KaWf98gxmpDO9sUOPBPNRfspfIhSskgmlq9we9X/W9sSpOBxR03O7lL8Rp
+	uROhAMeE4MiivHyw80tLKBN2pOKXbkH8BIgnwGvMPVM03Sj3AdoDmYdU1VPa4qyC9wQRRpFm0kg
+	L/rVgb0hdhQGIiWc6WT3JNs6dgwy3C9hMWNv8Fg4I3xe+Xgca5sSblPc9anIRQ1/sXmKtaNGE0+
+	V1yLHbLu1VdkuhQlSZeftcI4KhNtuwgPR14fhsRhN/TReBrLAlSAmESfdIUOXdB9B1M/1DXJM3c
+	V+x7wHVbezMjX04XnENSKGxDpsBT1YL2UtzSx2eYkxl87OUjAlesHRealBJ41dKpM13PCSeKNwR
+	y80gEt7OttnUhgAEmIzgDXzeoOdxTG26LldigL3/e5Way9vC0vjEnVbdzEHp02gmZsHFRVDw1zd
+	KV7bPuG1t+q2cZLIMOZkvvwjg=
+X-Received: by 2002:a05:6214:1242:b0:89a:3ad:8bd9 with SMTP id 6a1803df08f44-89a81fe3deamr207543596d6.50.1773695476327;
+        Mon, 16 Mar 2026 14:11:16 -0700 (PDT)
 Received: from majuu.waya ([70.50.89.69])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89c53374573sm27356266d6.7.2026.03.16.14.11.10
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89c53374573sm27356266d6.7.2026.03.16.14.11.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2026 14:11:11 -0700 (PDT)
+        Mon, 16 Mar 2026 14:11:15 -0700 (PDT)
 From: Jamal Hadi Salim <jhs@mojatatu.com>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -76,9 +76,9 @@ Cc: davem@davemloft.net,
 	toke@toke.dk,
 	willemdebruijnkernel@gmail.com,
 	Jamal Hadi Salim <jhs@mojatatu.com>
-Subject: [PATCH net v2 2/6] net/sched: Fix ethx:ingress -> ethy:egress -> ethx:ingress mirred loop
-Date: Mon, 16 Mar 2026 17:10:48 -0400
-Message-Id: <20260316211052.332383-3-jhs@mojatatu.com>
+Subject: [PATCH net v2 4/6] Revert "selftests/tc-testing: Add tests for restrictions on netem duplication"
+Date: Mon, 16 Mar 2026 17:10:50 -0400
+Message-Id: <20260316211052.332383-5-jhs@mojatatu.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260316211052.332383-1-jhs@mojatatu.com>
 References: <20260316211052.332383-1-jhs@mojatatu.com>
@@ -90,138 +90,128 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When mirred redirects to ingress (from either ingress or egress) the loop
-state from sched_mirred_dev array dev is lost because of 1) the packet
-deferral into the backlog and 2) the fact the sched_mirred_dev array is
-cleared. In such cases, if there was a loop we won't discover it.
+This reverts commit ecdec65ec78d67d3ebd17edc88b88312054abe0d.
 
-Here's a simple test to reproduce:
-ip a add dev port0 10.10.10.11/24
-
-tc qdisc add dev port0 clsact
-tc filter add dev port0 egress protocol ip \
-   prio 10 matchall action mirred ingress redirect dev port1
-
-tc qdisc add dev port1 clsact
-tc filter add dev port1 ingress protocol ip \
-   prio 10 matchall action mirred egress redirect dev port0
-
-ping -c 1 -W0.01 10.10.10.10
-
-Another bug fixed here is a false positive, example current code will claim
-this is a loop when its not:
-tc qdisc add dev port0 clsact
-tc qdisc add dev port1 clsact
-# port0 ingress --> port1 ingress
-tc filter add dev port0 ingress protocol ip \
-   prio 10 matchall action mirred ingress redirect dev port1
-# port1 ingress --> port1 egress
-tc filter add dev port1 ingress protocol ip \
-   prio 10 matchall action mirred egress redirect dev port1
-#port1 egress --> port0 egress
-tc filter add dev port1 egress protocol ip \
-   prio 11 matchall action mirred egress redirect dev port0
-
-ping -c 1 -W0.01 10.10.10.10
-And see the ping fail
-
-Fixes: fe946a751d9b ("net/sched: act_mirred: add loop detection")
 Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 ---
- net/sched/act_mirred.c | 45 ++++++++++++++++++++++++++----------------
- 1 file changed, 28 insertions(+), 17 deletions(-)
+ .../tc-testing/tc-tests/infra/qdiscs.json     |  5 +-
+ .../tc-testing/tc-tests/qdiscs/netem.json     | 81 -------------------
+ 2 files changed, 3 insertions(+), 83 deletions(-)
 
-diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
-index 05e0b14b5773..9ef261e19e40 100644
---- a/net/sched/act_mirred.c
-+++ b/net/sched/act_mirred.c
-@@ -26,6 +26,8 @@
- #include <net/tc_act/tc_mirred.h>
- #include <net/tc_wrapper.h>
- 
-+#define MIRRED_DEFER_LIMIT 3
-+
- static LIST_HEAD(mirred_list);
- static DEFINE_SPINLOCK(mirred_list_lock);
- 
-@@ -234,12 +236,15 @@ tcf_mirred_forward(bool at_ingress, bool want_ingress, struct sk_buff *skb)
- {
- 	int err;
- 
--	if (!want_ingress)
-+	if (!want_ingress) {
- 		err = tcf_dev_queue_xmit(skb, dev_queue_xmit);
--	else if (!at_ingress)
--		err = netif_rx(skb);
--	else
--		err = netif_receive_skb(skb);
-+	} else {
-+		skb->ttl++;
-+		if (!at_ingress)
-+			err = netif_rx(skb);
-+		else
-+			err = netif_receive_skb(skb);
-+	}
- 
- 	return err;
- }
-@@ -426,6 +431,7 @@ TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buff *skb,
- 	struct netdev_xmit *xmit;
- 	bool m_mac_header_xmit;
- 	struct net_device *dev;
-+	bool want_ingress;
- 	int i, m_eaction;
- 	u32 blockid;
- 
-@@ -434,7 +440,8 @@ TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buff *skb,
- #else
- 	xmit = this_cpu_ptr(&softnet_data.xmit);
- #endif
--	if (unlikely(xmit->sched_mirred_nest >= MIRRED_NEST_LIMIT)) {
-+	if (unlikely(xmit->sched_mirred_nest >= MIRRED_NEST_LIMIT ||
-+		     skb->ttl >= MIRRED_DEFER_LIMIT)) {
- 		net_warn_ratelimited("Packet exceeded mirred recursion limit on dev %s\n",
- 				     netdev_name(skb->dev));
- 		return TC_ACT_SHOT;
-@@ -453,23 +460,27 @@ TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buff *skb,
- 		tcf_action_inc_overlimit_qstats(&m->common);
- 		return retval;
- 	}
--	for (i = 0; i < xmit->sched_mirred_nest; i++) {
--		if (xmit->sched_mirred_dev[i] != dev)
--			continue;
--		pr_notice_once("tc mirred: loop on device %s\n",
--			       netdev_name(dev));
--		tcf_action_inc_overlimit_qstats(&m->common);
--		return retval;
--	}
- 
--	xmit->sched_mirred_dev[xmit->sched_mirred_nest++] = dev;
-+	m_eaction = READ_ONCE(m->tcfm_eaction);
-+	want_ingress = tcf_mirred_act_wants_ingress(m_eaction);
-+	if (!want_ingress) {
-+		for (i = 0; i < xmit->sched_mirred_nest; i++) {
-+			if (xmit->sched_mirred_dev[i] != dev)
-+				continue;
-+			pr_notice_once("tc mirred: loop on device %s\n",
-+				       netdev_name(dev));
-+			tcf_action_inc_overlimit_qstats(&m->common);
-+			return retval;
-+		}
-+		xmit->sched_mirred_dev[xmit->sched_mirred_nest++] = dev;
-+	}
- 
- 	m_mac_header_xmit = READ_ONCE(m->tcfm_mac_header_xmit);
--	m_eaction = READ_ONCE(m->tcfm_eaction);
- 
- 	retval = tcf_mirred_to_dev(skb, m, dev, m_mac_header_xmit, m_eaction,
- 				   retval);
--	xmit->sched_mirred_nest--;
-+	if (!want_ingress)
-+		xmit->sched_mirred_nest--;
- 
- 	return retval;
- }
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json b/tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json
+index 6a39640aa2a8..ceb993ed04b2 100644
+--- a/tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json
+@@ -702,6 +702,7 @@
+             "$TC qdisc add dev $DUMMY parent 1:1 handle 2:0 netem duplicate 100%",
+             "$TC filter add dev $DUMMY parent 1:0 protocol ip prio 1 u32 match ip dst 10.10.10.1/32 flowid 1:1",
+             "$TC class add dev $DUMMY parent 1:0 classid 1:2 hfsc ls m2 10Mbit",
++            "$TC qdisc add dev $DUMMY parent 1:2 handle 3:0 netem duplicate 100%",
+             "$TC filter add dev $DUMMY parent 1:0 protocol ip prio 2 u32 match ip dst 10.10.10.2/32 flowid 1:2",
+             "ping -c 1 10.10.10.1 -I$DUMMY > /dev/null || true",
+             "$TC filter del dev $DUMMY parent 1:0 protocol ip prio 1",
+@@ -714,8 +715,8 @@
+             {
+                 "kind": "hfsc",
+                 "handle": "1:",
+-                "bytes": 294,
+-                "packets": 3
++                "bytes": 392,
++                "packets": 4
+             }
+         ],
+         "matchCount": "1",
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/netem.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/netem.json
+index 718d2df2aafa..3c4444961488 100644
+--- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/netem.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/netem.json
+@@ -336,86 +336,5 @@
+         "teardown": [
+             "$TC qdisc del dev $DUMMY handle 1: root"
+         ]
+-    },
+-    {
+-        "id": "d34d",
+-        "name": "NETEM test qdisc duplication restriction in qdisc tree in netem_change root",
+-        "category": ["qdisc", "netem"],
+-        "plugins": {
+-            "requires": "nsPlugin"
+-        },
+-        "setup": [
+-            "$TC qdisc add dev $DUMMY root handle 1: netem limit 1",
+-            "$TC qdisc add dev $DUMMY parent 1: handle 2: netem limit 1"
+-        ],
+-        "cmdUnderTest": "$TC qdisc change dev $DUMMY handle 1: netem duplicate 50%",
+-        "expExitCode": "2",
+-        "verifyCmd": "$TC -s qdisc show dev $DUMMY",
+-        "matchPattern": "qdisc netem",
+-        "matchCount": "2",
+-        "teardown": [
+-            "$TC qdisc del dev $DUMMY handle 1:0 root"
+-        ]
+-    },
+-    {
+-        "id": "b33f",
+-        "name": "NETEM test qdisc duplication restriction in qdisc tree in netem_change non-root",
+-        "category": ["qdisc", "netem"],
+-        "plugins": {
+-            "requires": "nsPlugin"
+-        },
+-        "setup": [
+-            "$TC qdisc add dev $DUMMY root handle 1: netem limit 1",
+-            "$TC qdisc add dev $DUMMY parent 1: handle 2: netem limit 1"
+-        ],
+-        "cmdUnderTest": "$TC qdisc change dev $DUMMY handle 2: netem duplicate 50%",
+-        "expExitCode": "2",
+-        "verifyCmd": "$TC -s qdisc show dev $DUMMY",
+-        "matchPattern": "qdisc netem",
+-        "matchCount": "2",
+-        "teardown": [
+-            "$TC qdisc del dev $DUMMY handle 1:0 root"
+-        ]
+-    },
+-    {
+-        "id": "cafe",
+-        "name": "NETEM test qdisc duplication restriction in qdisc tree",
+-        "category": ["qdisc", "netem"],
+-        "plugins": {
+-            "requires": "nsPlugin"
+-        },
+-        "setup": [
+-            "$TC qdisc add dev $DUMMY root handle 1: netem limit 1 duplicate 100%"
+-        ],
+-        "cmdUnderTest": "$TC qdisc add dev $DUMMY parent 1: handle 2: netem duplicate 100%",
+-        "expExitCode": "2",
+-        "verifyCmd": "$TC -s qdisc show dev $DUMMY",
+-        "matchPattern": "qdisc netem",
+-        "matchCount": "1",
+-        "teardown": [
+-            "$TC qdisc del dev $DUMMY handle 1:0 root"
+-        ]
+-    },
+-    {
+-        "id": "1337",
+-        "name": "NETEM test qdisc duplication restriction in qdisc tree across branches",
+-        "category": ["qdisc", "netem"],
+-        "plugins": {
+-            "requires": "nsPlugin"
+-        },
+-        "setup": [
+-            "$TC qdisc add dev $DUMMY parent root handle 1:0 hfsc",
+-            "$TC class add dev $DUMMY parent 1:0 classid 1:1 hfsc rt m2 10Mbit",
+-            "$TC qdisc add dev $DUMMY parent 1:1 handle 2:0 netem",
+-            "$TC class add dev $DUMMY parent 1:0 classid 1:2 hfsc rt m2 10Mbit"
+-        ],
+-        "cmdUnderTest": "$TC qdisc add dev $DUMMY parent 1:2 handle 3:0 netem duplicate 100%",
+-        "expExitCode": "2",
+-        "verifyCmd": "$TC -s qdisc show dev $DUMMY",
+-        "matchPattern": "qdisc netem",
+-        "matchCount": "1",
+-        "teardown": [
+-            "$TC qdisc del dev $DUMMY handle 1:0 root"
+-        ]
+     }
+ ]
 -- 
 2.34.1
 
