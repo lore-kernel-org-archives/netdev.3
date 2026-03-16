@@ -1,148 +1,125 @@
-Received: from mail-ua1-f98.google.com (mail-ua1-f98.google.com [209.85.222.98])
+Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D8C33B95A
-	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 18:02:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.98
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773684151; cv=none; b=Na2ke6luFEdvpmHg8wIiWocJuc2NQL7MWZSKuU/Z8LfrRSjdQZWQmnE0jXYKS9YTwd1prq74J8CWqEsO66qJwOLP1ENE10nSUe7m5CeEYMcj+ICVOnaxgvM9YwBTJXLIhMZEvwzeLHLB+4RSARz/cDzaJGD3dtTAwmbL+pdkn04=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773684151; c=relaxed/simple;
-	bh=yhPCkquahL7WZSYcwrahzwjH/P9yi8cVens3TYwl/vQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XgsWd9SGCf+W/BV+A61Qpi+gzCySMKyXuk1ZbZnlBjTawQtHCgKzrJc8d8kt/Dc5IM5CsY7zQ4VF8hl9zjewVGOvOCuXR0tv7Gf0Y1NTR2qSXGIi8BKvXt1/50kCLdgImYmQsTDDIVOSm98hCAjDYSQFZeJ75kaFhDQ1V4MH57M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=PBe44P2a; arc=none smtp.client-ip=209.85.222.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23CD4C6D
+	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 18:03:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773684215; cv=pass; b=tYxXIeNvJI5L0JKPNFeKDkWgeZBlH5vApw4JtTDbz/rPil1J9nj9y+Gdq1cFq8x9pW9bzrDhMH45zR09O4IEC8avFjc16fspIrQIGaGAUFbHxzb/EPnMlcp0+kGcca3sp3/snlFHO6omdrIROLE2VzywzPsuKn1i9EQfxthSQP0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773684215; c=relaxed/simple;
+	bh=KNzIzyFdGwoJAVx7hy0kRK+gY5zPmTyPzd0Wd0WQTas=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SJHV0UvQfQy1bC6y+RVF0QTzBO+7H1OM2JQmiJIIcdHGG/MlInkIGaBJE6iorVaNohUyfiTbFB14wL1Y+t2TmXA8Z+9BF7KRf4AYR0kK6cvytf/rFy92oe5oXxflEZTGunQPdV0n2GdHq4neM9BgCnuBZZaWRXOWtp44kAWgzUQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O07WQe4D; arc=pass smtp.client-ip=74.125.82.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="PBe44P2a"
-Received: by mail-ua1-f98.google.com with SMTP id a1e0cc1a2514c-948029fb1f2so1291115241.0
-        for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 11:02:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773684149; x=1774288949;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NppxaAva73PDxNG7D55fTsjSwbkwGtyx2/u5D6WkKCc=;
-        b=QqcU6dqtHlpYG1SZ2QPZK8h/Hd0e0nCr2abUE8wIcQid1fEIatWP0WbJBrhO4cUgqA
-         byR2i+KdyOODIdPj7lT3oalEsw3mXUwjlTpNY6eB9nPdmvapuPSavdehEtVBrVN40w9R
-         c/jegO98lvbmksQ646ZtmZihkXC7SQtx1hTL8f/Ny+1DM4l4mguHaJxLYaGLPXIUnIiS
-         EAhMhagTBzWIyoAsI6nkG0kbdc9emPCin7pnQgrOZMACgWWt2/Kxg+l1PaGEG1xNHq7q
-         SiTztnjR5GObQ1Kn5Lc+mnnnCADuf4Msg7ThDPFPS0BNz36MexMdNvo9ULBkfyXLiJ0P
-         +d7Q==
-X-Gm-Message-State: AOJu0YwZee55Qygpih242Wocf3KV8WCQZdWaJ6Zsp7suBMDkiT/pvkKg
-	0Uy/654PkExIBXD31byz9b911q0GSRNIbzVTIviAJz08/xAGriajKa8J+47fxQ4/BxQqcQnv9Zu
-	VtysQOnyhDV5ELD3DWiqh5UbXllcPDsY/m+aBgwuKqZjakxsfmKskykV17mpxig6xX3ulchqf50
-	GOpxveAPe9OpgQjjY0h5OBCIVMxYd7bf5T4uo/+tXJiDhAhDkI8GDtSCt2WT0/lbAGbMVmvJS6o
-	rHQbcAH+w==
-X-Gm-Gg: ATEYQzzMUO4c5bIAmH+7qPmc9d2GvyWoca0sZPfrtW7mhNqXuwQRbmxWUjvMokSUCQD
-	z89+c+oUI09uoLHdWBsv7AQqcrBfPLBaiVCQ/hzrf+n6cZl2DlzlE/ZP/gndfCivbWycDr3ZgS+
-	WuunlHC7vc6PPnlQaPjjx3ofxGgYg8G1sC1OSQMROFbDDRKuaLDQ6H75hmjKXni3qt3cCk3XCcU
-	Mr/ZkSyNcJ1BU3I7KUiSd6ZpOunnlG2c/iA0rOQNQRsmIpm5GCS43UfodPngnkTddmPiYU5r5Mj
-	MQE6BMr8nyZStu5JbMz7h2f205H9PI3FoSiAEoXwPoLZzu1q6gU2yyVFaUnlXm2T+YH3cAZE8M4
-	UHlYAPUaixobXQ8B6lz6Sg4ifOXxURI8a6bOOxq1nlRbPYftqtWeHK/i0/wFnJ0ZFlXBhqm/q55
-	+dTQqoGSZjpPQ/Cai4gPk0IsJ5zaYxtBzD3H017/7YwGPYylMT3T3sfZRRgg==
-X-Received: by 2002:a05:6102:3a06:b0:5ff:fbe4:8a4 with SMTP id ada2fe7eead31-6020e586341mr4766313137.21.1773684133681;
-        Mon, 16 Mar 2026 11:02:13 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-117.dlp.protect.broadcom.com. [144.49.247.117])
-        by smtp-relay.gmail.com with ESMTPS id 6a1803df08f44-89c50180db0sm3852646d6.27.2026.03.16.11.02.12
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 16 Mar 2026 11:02:13 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8cd773dd409so666533285a.1
-        for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 11:02:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O07WQe4D"
+Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-1271195d2a7so345378c88.0
+        for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 11:03:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773684213; cv=none;
+        d=google.com; s=arc-20240605;
+        b=BdUVKfjEvo4n9ZWUVllEimD1j0UIKgb/qvWcPzuE+V1H4bwM4QCG+a4qgKpDQtEasx
+         VX/+/5vc7fDKj/XaUi7+P1sTJHc/pnnY/MCzAz39RHFpkYjgzuhiiyTQSmRa7a7D3zvN
+         2oVL36IRaxqga11voVUExm7hrzg8GBsRJxDFeW2d+jldsMJgJ8Q2pKiQB4MzUmeb+lv/
+         1+dIoOGLDIL/CrR5Ca2coZfsCBMLN2Ib5gQjBbh+5L5x/NjnTQSIEhMsNrcX6u9CFxZ0
+         kjZIHIAmq/CJM7I3RXxdN6HkB6KCZao4jBTsZ2dWFTG097ITDHN29dru+HLHQtuVZa69
+         tZkQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=KNzIzyFdGwoJAVx7hy0kRK+gY5zPmTyPzd0Wd0WQTas=;
+        fh=c/ArPb5ozjWSZSruHrj9eVmhhV8yJnZYBoB2be6juC4=;
+        b=PnevOt3QH8qv0VRqDQWyIEW243yfThVoWdD+c3oxuOoJj2G6wQlUDMfVYngSMIH6lv
+         06z6YZr8ALuM7FPry4kjZYpCheeG/QjX69ZQ3mW6uuUb9PymKddE5vHtyHDl9DKMID59
+         iv81dqdHsBWVrXrKT+egtEsSa6Ihluv/ok5tLIPdyqW4JdFVUw1GWmsf1DON9XJfsyPL
+         R7eQkis6EDZ60sd7N/SQHfByP0v4+cbWxhB57TYhTsn6hrPfcLJvnrKr+oivHWxoSjoa
+         ms5MVMPSIsfafytn4AcZsNYnYh8U3mmHKDg1phcDetdWfzdUJsbXNZY8BodQK6qL9uRz
+         Jbrw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1773684131; x=1774288931; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1773684213; x=1774289013; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=KNzIzyFdGwoJAVx7hy0kRK+gY5zPmTyPzd0Wd0WQTas=;
+        b=O07WQe4DY8rR2TalssFliMhJMUanx8+Nj7/aoptmrFfrw6TU5RopcWFn1u2FSG5wj6
+         WJdIdUVc/Jz6eCnjmFHsBrDLej9HM6xxU5LSAYT7wY1Nr5J1bsnTeGfQSWq0kfBKqxrp
+         XvwlEB7du/N87ct4LCBjpa9pnRhybUocVzNtb6uI5T8kJQanDtMKVR8UhHxsl/SADP5T
+         mzxmC+H2Cv7X9Hwrvl0HMDq4KajhQK3qoZVZ+9UoKOeh3YY8ehoAS3oRIrSqQ7/gFLMW
+         2kRGTnGFAmkfbrRP7PH1q65ynTPsQ0glkjdQYpyB7zlLTEroJput4cJbSf77Ec7xTZ/n
+         vr9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773684213; x=1774289013;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NppxaAva73PDxNG7D55fTsjSwbkwGtyx2/u5D6WkKCc=;
-        b=PBe44P2abCaAP9d0shykCrenDSbcYw9+MzL44nuID+0pUnfuJzbZ7506O0G/0z0IIL
-         U7AfThBFTdCmZL73OWhWmyFS1H+ZXAV+M9FcmnSudQYljoQJere7s4n0OUC1w8yu4eq6
-         r5b2QsUpzKGDLtNjhoJELraJUAVayr53CpPNw=
-X-Received: by 2002:a05:620a:170f:b0:8c9:e989:9d97 with SMTP id af79cd13be357-8cdb5b56e2fmr1730618285a.68.1773684131194;
-        Mon, 16 Mar 2026 11:02:11 -0700 (PDT)
-X-Received: by 2002:a05:620a:170f:b0:8c9:e989:9d97 with SMTP id af79cd13be357-8cdb5b56e2fmr1730608085a.68.1773684130245;
-        Mon, 16 Mar 2026 11:02:10 -0700 (PDT)
-Received: from stbsdo-bld-1.sdg.broadcom.net ([192.19.161.248])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cda1fc474dsm1412460685a.6.2026.03.16.11.02.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2026 11:02:09 -0700 (PDT)
-From: justin.chen@broadcom.com
-To: netdev@vger.kernel.org
-Cc: bcm-kernel-feedback-list@broadcom.com,
-	horms@kernel.org,
-	pabeni@redhat.com,
-	kuba@kernel.org,
-	edumazet@google.com,
-	davem@davemloft.net,
-	andrew+netdev@lunn.ch,
-	florian.fainelli@broadcom.com,
-	Justin Chen <justin.chen@broadcom.com>
-Subject: [PATCH net v2 1/2] net: bcmasp: fix double free of WoL irq
-Date: Mon, 16 Mar 2026 11:02:01 -0700
-Message-Id: <20260316180202.3371477-2-justin.chen@broadcom.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260316180202.3371477-1-justin.chen@broadcom.com>
-References: <20260316180202.3371477-1-justin.chen@broadcom.com>
+        bh=KNzIzyFdGwoJAVx7hy0kRK+gY5zPmTyPzd0Wd0WQTas=;
+        b=M1ucon4Si1zRv8pThbwNl/6d5ISlOc+jYzyeLaU3ELxCRugP3Bu2r2Hc5wdSHSOfTu
+         8JGvFvndEeYiAqD3iiP3zDuHs7zvRFY1MLzwRmYltNyvM79kqZtXghx8Bz5AF62sFFdr
+         Ce9+MpRVlPcBAtDBRslGcKkmBRcYuvErHmQy1THcRFOfu3lFlzKA4JqUFTgx3hPCXDmq
+         oWVvqxahSLxt+lxU7ZzTXnd1BHR0hNNKzKHjW66KLM8YwEGqP5eXXZfdaTuM8d29Ybh/
+         dE6fC8kEMCjhsF5E0dGxOMfILQbaaEcZtqUuqYMXDcoAWYBffB8jhpqpuK79a2q6yxOR
+         eZ0Q==
+X-Gm-Message-State: AOJu0YyHGWQtKMrsRzx7YYW4TFxfvLw9RXgdbbpMwM27MWRJy2SL6gZr
+	HSqLq9sRvp+FHkV04WZsoAKiS2TKelG56pUnGG8ir9V/vUggEQVRikZ+sQacAY7SRobegVDp8J9
+	6ryI6lGAZrWdIy4XkrZf82KLA7O5Hp3g=
+X-Gm-Gg: ATEYQzwkrJX3BEk/J45I4OpSfjLnzJqhtByq/lD4HmF+hbfETu8pZczQvpqnptXnSdI
+	X3D64VfLtqm4p6BhuAXhREptDTmKyWvF5qcwNbzn/O5j1aTsgWqMNQBU7vo39XVu8/B5K1N7ZFe
+	zeikvH6NiZfleAw5vpJCvKGfsVuo1GUaoeKg6ZHxApsnvR8uHfry7p8MZ2MAZ2gYU4bbE1fx0mV
+	2qb85XOP8JO+tWacIZT1n6BBiw4UfePoqd6XUqxU/DKWGVfac9+QuD316QDpdjQB/uoRK+pDJqN
+	ckhr/Q8HKamt85MiFdtFXQyY+slGtBYB9rpyWdHU
+X-Received: by 2002:a05:7022:e1d:b0:128:d786:8aca with SMTP id
+ a92af1059eb24-128f3c6b032mr6448350c88.0.1773684213034; Mon, 16 Mar 2026
+ 11:03:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+References: <20260314201348.1786972-1-atwellwea@gmail.com> <b042de90-79e3-4976-9bbe-b6df3266caea@redhat.com>
+ <CAN=sVvyNpkyok_bt8eQSmqc4f7g7QoZBUmRmNRLoFz1HasEzMA@mail.gmail.com> <e93ce797-4153-4e6e-89b6-3839a0b8bca2@redhat.com>
+In-Reply-To: <e93ce797-4153-4e6e-89b6-3839a0b8bca2@redhat.com>
+From: Wesley Atwell <atwellwea@gmail.com>
+Date: Mon, 16 Mar 2026 12:03:21 -0600
+X-Gm-Features: AaiRm50ReSwavo1j1ssacOUbWxtcgznlHmGlPHkMg2HYVcwTt0DGLUUEq90y36c
+Message-ID: <CAN=sVvx8jNC-OAMkv19Wv13jTpV5_wVEabwUCjPLMwTvS4czow@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 00/14] tcp: preserve receive-window accounting
+ across ratio drift
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
+	edumazet@google.com, ncardwell@google.com, linux-kernel@vger.kernel.org, 
+	linux-api@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	mptcp@lists.linux.dev, dsahern@kernel.org, horms@kernel.org, 
+	kuniyu@google.com, andrew+netdev@lunn.ch, willemdebruijn.kernel@gmail.com, 
+	jasowang@redhat.com, skhan@linuxfoundation.org, corbet@lwn.net, 
+	matttbe@kernel.org, martineau@kernel.org, geliang@kernel.org, 
+	rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com, 
+	0x7f454c46@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-From: Justin Chen <justin.chen@broadcom.com>
+Hi Paolo,
 
-We do not need to free wol_irq since it was instantiated with
-devm_request_irq(). So devres will free for us.
+The link I meant is the netdev regression discussion that led to:
 
-Fixes: a2f0751206b0 ("net: bcmasp: Add support for WoL magic packet")
-Signed-off-by: Justin Chen <justin.chen@broadcom.com>
----
-v2
-- Split into two patches.
+026dfef287c0 ("tcp: give up on stronger sk_rcvbuf checks (for now)")
 
- drivers/net/ethernet/broadcom/asp2/bcmasp.c | 8 --------
- 1 file changed, 8 deletions(-)
+The report/discussion thread is here:
 
-diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp.c b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
-index aa6d8606849f..2034a1593db7 100644
---- a/drivers/net/ethernet/broadcom/asp2/bcmasp.c
-+++ b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
-@@ -1152,12 +1152,6 @@ void bcmasp_enable_wol(struct bcmasp_intf *intf, bool en)
- 	}
- }
- 
--static void bcmasp_wol_irq_destroy(struct bcmasp_priv *priv)
--{
--	if (priv->wol_irq > 0)
--		free_irq(priv->wol_irq, priv);
--}
--
- static void bcmasp_eee_fixup(struct bcmasp_intf *intf, bool en)
- {
- 	u32 reg, phy_lpi_overwrite;
-@@ -1363,7 +1357,6 @@ static int bcmasp_probe(struct platform_device *pdev)
- 	return ret;
- 
- err_cleanup:
--	bcmasp_wol_irq_destroy(priv);
- 	bcmasp_remove_intfs(priv);
- 
- 	return ret;
-@@ -1376,7 +1369,6 @@ static void bcmasp_remove(struct platform_device *pdev)
- 	if (!priv)
- 		return;
- 
--	bcmasp_wol_irq_destroy(priv);
- 	bcmasp_remove_intfs(priv);
- }
- 
--- 
-2.34.1
+https://lore.kernel.org/20260225122355.585fd57b@kernel.org
 
+The revert posting itself is here:
+
+https://patch.msgid.link/20260227003359.2391017-1-kuba@kernel.org
+
+I should not have implied that there was a separate prior
+regression report beyond that thread.
+
+Thanks for the note on formatting. I will keep follow-ups in plaintext
+and avoid top-posting.
+
+Thanks,
+Wesley
