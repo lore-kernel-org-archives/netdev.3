@@ -1,266 +1,119 @@
-Received: from mail-ej1-f99.google.com (mail-ej1-f99.google.com [209.85.218.99])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6E03A1A59
-	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 16:30:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8EE73A1D07
+	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 16:31:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773678658; cv=none; b=nWLoeY1+iIWGqcWBirnoFrQWZ49RhY8nJek46CEBaWu/br9sFUhnt7GeNqZ5TJAW/eJIdyurGFcjWwNGC1/q6n0FuUx+yS8e2ZqvrhTAplzdrTeb2a3ElUds0/DSvhaDx+3yGFBgM8Qe6JNfXnZ8s0mcJkF6XMcfkjeLnOJLBXc=
+	t=1773678699; cv=none; b=gZBJDVrgv+nCu4VkfUDZUgCpMiKPKrHjwTmu+/wkb8kqbd7KL9QOTNJcHJhL4cFQe5ByQGuUcEK4mh1TY9qkNcHjW5JSlIxFdGWHG6niL8PzUL3YsUndvU0yv36b0Swxwsq5lvDdZyk7JDTf/eCNRR5AQV5sN4K5ZEUXZi1wlrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773678658; c=relaxed/simple;
-	bh=3eOUF/0t4xtstufAr4jTFkqeyICqNkit2RzVHVoXX9U=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VSdAdGBCEeqE76N16yfTX0KDBc/lLfFcLI7pmuYus0oV2QJRohg5RVgof5BZh93vZFOw9YFCBflEk4L04JZ48EyfhJiuRHt4cR1x30gkrEMVdLXhEbgjNrcytgQD+XhCJUsgoP9m+4FDrde3fjVCCUtZ4LCjFdloD/4O3BRa3ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=SGbR1334; arc=none smtp.client-ip=209.85.218.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
+	s=arc-20240116; t=1773678699; c=relaxed/simple;
+	bh=weUvuiugfWiI0Sg/ND1RsnpboRhIU5iRpS1NkIweLQQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dj/rZBJKGGSDEex32emJDRjzvk2Lrp3MOIzKVw5sLlxQetzL7tEPFHNrJPufDWW8FRrMEf3325lDqMGvdYhcDxfkEPcEGpM6WZmYr2fG2BIEGiEljIhdSkIxhQ3ZKda6gw0ztb1gYymdkcTagrq6RU/p6EB8zgGY1i6muRos9cE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b=I0gsVnV8; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="SGbR1334"
-Received: by mail-ej1-f99.google.com with SMTP id a640c23a62f3a-b97b30fa5e5so236088866b.3
-        for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 09:30:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b="I0gsVnV8"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c73bc3dd25fso1826596a12.1
+        for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 09:31:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=6wind.com; s=google; t=1773678656; x=1774283456; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PEh7BRKAizp8GGJ568E4oqZ+Kbjdlfk2PW2zSqId4BE=;
-        b=SGbR1334Yg4AoRJiyHGpNvoqEmL9aQ9JHHBd6NvcTyJMJoo+UPf28Di7AMablVTPFN
-         bxy0JSGI+544TgExv97J20eSql+dV7HsI7x42ZwBBZsFTkEjB4fBQfvbk50cK5s7yIfQ
-         KFBKsHWhnHkD9gmw12q2/sV5Ki01EC8f4YoXrm8dmSa1j9jliVXp1s1XjMHEP5EapKGl
-         L7ahAWcXaq+1jDKXT1aB1lckJ/KUMVtjO7LM7RYg5V0mSUV95ZTdi+e+R8tX9uviJYlw
-         4RsfGMt4zT3Uf2Adm9Uxof67OFppbaGfESbeSJLDA8EMpuq2CsSkEV2Z3QbdMWkyLTcp
-         UQdQ==
+        d=dama-to.20230601.gappssmtp.com; s=20230601; t=1773678697; x=1774283497; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SYHkrP1b0p79WeAJVelEfbeQEyFeubJRPvMAd91XCok=;
+        b=I0gsVnV8rgg7XDdBRr2scbCmFbB86Q1l/+aMhZLeX+ovVsAzo6DKGjMFKliHcGUldh
+         6o4jE61/Q4apP/AvP7dezSS4nN8ZcVzGYBLxcpkA0R83I70tQQpEe1t35Ol5u3FxgvwG
+         JMLmL2DiRjHxUjipqF/+HPP3tMdku4MFTXwgB/sJTJxgk2DkdB4ttlWxAysLt1tVh6T8
+         H3yBZWD4GOGtoAeCZgSsW2D1aA8d/8exrPvHqVTdl+of4lKuWft1LgKIKDMQmcUuGnY2
+         mVwe4saU9kfWyLajcvqDwNVwKjQUs/plMyixjuWtxkcdPZ2OFl8VYA4QAdGoVhnfM1ju
+         jXZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773678656; x=1774283456;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=PEh7BRKAizp8GGJ568E4oqZ+Kbjdlfk2PW2zSqId4BE=;
-        b=mspFe0mCGY/l1hShMiSVAe+zVvMY2XNteTstM7gh9hCMzQsWf31hf6wAHTNf70bJxO
-         ZlljN9sHPCicztDlNC2f9lSCKS9mTsZh6gkDIRjKHRYYZPYRZ0f+g7IGiZhPsK1E+5K3
-         l2KZ431dBUdBpFzvsyZl6MmMnT7WZyVUIUdewU6+1beIrR67qeatJE6+2SMH0wf56oIC
-         xL2iDY2FTW0ICfuNyTAVDIStF4FcHBOHThi2mYFANhxQsKXOMdK5p5aORUnn3bjeTWc/
-         XaGs0VeagLyE9ga82vvfoWuqqMLB6O49KrKHVww4xgDmGzJLxCQ/yUV4VUzj5Kohqsnv
-         53Rw==
-X-Gm-Message-State: AOJu0YxjafFrifJGHyMj/VXH9lRSoes9SGmHrg5IhITbaWZPk6dC2b44
-	fcjgH47Ud1xDR3jywtEbKzTakok0ZnZWKB6SYJDlA+HyijDN5BVk5VRY0MLZzbefJH0+S95YFsR
-	MIvLqH9mK7haWTD9a042BZqA+MCZEiZUZDYVl
-X-Gm-Gg: ATEYQzwLw36mgb3d2FWeoV8L/dpA959YMs4kCm8d3ntaHaVRgdlFOr4kG8vERWBrniZ
-	P001vXwMfYfVhIcb7jV2MmYd1249SWP/ONUT2UmDkjxBCokeD++0tDjrrhgj8QERjkK+vrbSBXc
-	O3HGgLGVp71JY9C1Ii5QGhD3PRVIFtC8Pchb7E49qMAcA9p5dZt0Gf3OLDt1QKY04cK56SQnNAO
-	mErF9giSSVC1IDPneyk5JVuxzG9S7PJwW4meiRqVmOY/IeoL85VLcOJor99/W+r/a6ZVe91F8uo
-	YfNxOsJBa9A0j5ml3a1Cn5yu20o5E4a73x0QcFWcf7EZx82IUWsbfBajBLWJU4cE4iLOTqOPEm4
-	Y/TuNvCyaOFJgsrcfM4YleDDA0/36PYa3+P/l6QorddDacuLl/u/wuNjOndQsuGs6NYRpdQWgcw
-	==
-X-Received: by 2002:a17:907:e106:b0:b8f:9525:1099 with SMTP id a640c23a62f3a-b9765345c16mr499076666b.35.1773678655357;
-        Mon, 16 Mar 2026 09:30:55 -0700 (PDT)
-Received: from smtpservice.6wind.com ([185.13.181.2])
-        by smtp-relay.gmail.com with ESMTP id a640c23a62f3a-b97a4dac429sm45802566b.17.2026.03.16.09.30.55;
-        Mon, 16 Mar 2026 09:30:55 -0700 (PDT)
-X-Relaying-Domain: 6wind.com
-Received: from localhost (kadavar.dev.6wind.com [10.17.1.232])
-	by smtpservice.6wind.com (Postfix) with ESMTP id 3111E19F7B;
-	Mon, 16 Mar 2026 17:30:55 +0100 (CET)
-From: Justin Iurman <justin.iurman@6wind.com>
-To: netdev@vger.kernel.org
-Cc: andrea.mayer@uniroma2.it,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	justin.iurman@gmail.com,
-	nicolas.dichtel@6wind.com,
-	stefano.salsano@uniroma2.it,
-	paolo.lungaroni@uniroma2.it,
-	ahabdels@cisco.com,
-	Justin Iurman <justin.iurman@6wind.com>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH net-next v3 2/2] selftests: add check for seg6 tunsrc
-Date: Mon, 16 Mar 2026 17:29:55 +0100
-Message-Id: <20260316162955.1253225-3-justin.iurman@6wind.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20260316162955.1253225-1-justin.iurman@6wind.com>
-References: <20260316162955.1253225-1-justin.iurman@6wind.com>
+        d=1e100.net; s=20251104; t=1773678697; x=1774283497;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SYHkrP1b0p79WeAJVelEfbeQEyFeubJRPvMAd91XCok=;
+        b=GjQPLNCn0uyFgBZx5sNuq+057UxrwIcHsYs064Xu9F6EDS6ebMNb0ef5Ktr32hQIq+
+         AMJXdbONZ/2ON8TeskbUwU6CL/ehdbIBUe+pdm463lrKoe1LYi+nsjzoEkb75TEVkvu/
+         JSbT3U+HAg/O5L0UlkPpVl5zsEm2TZ+iC+OvcdFa2aYWRuexTaIr+Kn/ex1k88BulFuX
+         d5bSyZF1oV2m9DGa+QD2Q4XPssnXMPUWkFHrCkZYPhxARD82OjdqJIpxCMj302TpYxxF
+         YvHia+BJY2SfDZJNJW54118xH+J/B8xB31ImQ+tBOASGnsLb+ReQSlN6VX8P4+NDesr9
+         4n/w==
+X-Forwarded-Encrypted: i=1; AJvYcCVBB9JesolI8YKNk4Lca8p1Je+Ol05+0tHq0BTZUKXA6NuuYwQHjpD20q8f1+gRHBMX89pk5FE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGVkncm2OkWOnEWflrcbH4lTQP7AZJ4rEC0MbaJ/WkfO1zzbs3
+	WgAEm+Gtiv+jnvRzJG7NbonTELpFo8ieQibtbIaPgl8lDd/3Q/Ronullbw/crj6vncY=
+X-Gm-Gg: ATEYQzy0gHzNufolGzuDzy0FkoFJbaWNmVp03raGL4QJfJUz/QkRE4wNrBrVn9wEgst
+	TLsgw6nsb35xOPirI2xTdIs9atxJe7l0Jd80Cexy6Cm1u/WHozuloWc9r3nYquhU0NmCxYY+tOu
+	Ieu1L+igNpb2BAzWeWTNKhvjOarycAhl4wvt3gEmih4rTfPykgBZm79qE57fSsKS6rpWyvwp4jn
+	zxzTVybyVPxGJwlgsrX/hYIJX2BsWwrgDTyLK3gZ8jY9JlcFPFn9S6QKif+qPCqX7H+h0q0hdOC
+	Y4vtvdLYHWTO0eJnMrCR91CvER3Xbl44LtJdrOAxEVXDOF91zP3veYR7XbJligyI5BXSCcLZDui
+	Zv5UUJ32P/aTGkrYirEcT9TVWR3AeuDryIyk7GzaXMaWkp8RTN0y+H4h8JWWzgC9rxsYhgWpBnK
+	CU6hCk
+X-Received: by 2002:a17:903:41ce:b0:2b0:5968:a6d5 with SMTP id d9443c01a7336-2b05968aa46mr35648275ad.18.1773678697057;
+        Mon, 16 Mar 2026 09:31:37 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:48::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aece8453cdsm107729715ad.84.2026.03.16.09.31.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Mar 2026 09:31:36 -0700 (PDT)
+Date: Mon, 16 Mar 2026 09:31:35 -0700
+From: Joe Damato <joe@dama.to>
+To: Ryohei Kinugawa <ryohei.kinugawa@gmail.com>
+Cc: rrameshbabu@nvidia.com, saeedm@nvidia.com, leon@kernel.org,
+	tariqt@nvidia.com, mbloch@nvidia.com, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, corbet@lwn.net, skhan@linuxfoundation.org,
+	netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH net-next] docs/mlx5: Fix typo subfuction
+Message-ID: <abgwZ0ye440CPdVw@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>,
+	Ryohei Kinugawa <ryohei.kinugawa@gmail.com>, rrameshbabu@nvidia.com,
+	saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com,
+	mbloch@nvidia.com, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	corbet@lwn.net, skhan@linuxfoundation.org, netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org, linux-doc@vger.kernel.org
+References: <20260316015621.41630-1-ryohei.kinugawa@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260316015621.41630-1-ryohei.kinugawa@gmail.com>
 
-Extend srv6_hencap_red_l3vpn_test.sh to include checks for the new
-"tunsrc" feature.
+On Mon, Mar 16, 2026 at 10:56:14AM +0900, Ryohei Kinugawa wrote:
+> 'subfuction' should be 'subfunction'
+> 
+> Signed-off-by: Ryohei Kinugawa <ryohei.kinugawa@gmail.com>
+> ---
+>  .../device_drivers/ethernet/mellanox/mlx5/kconfig.rst           | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/networking/device_drivers/ethernet/mellanox/mlx5/kconfig.rst b/Documentation/networking/device_drivers/ethernet/mellanox/mlx5/kconfig.rst
+> index 34e911480108..d549b43e00fa 100644
+> --- a/Documentation/networking/device_drivers/ethernet/mellanox/mlx5/kconfig.rst
+> +++ b/Documentation/networking/device_drivers/ethernet/mellanox/mlx5/kconfig.rst
+> @@ -120,7 +120,7 @@ Enabling the driver and kconfig options
+>  
+>  **CONFIG_MLX5_SF_MANAGER=(y/n)**
+>  
+> -|    Build support for subfuction port in the NIC. A Mellanox subfunction
+> +|    Build support for subfunction port in the NIC. A Mellanox subfunction
+>  |    port is managed through devlink.  A subfunction supports RDMA, netdevice
+>  |    and vdpa device. It is similar to a SRIOV VF but it doesn't require
+>  |    SRIOV support.
 
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: linux-kselftest@vger.kernel.org
-Signed-off-by: Justin Iurman <justin.iurman@6wind.com>
----
- .../net/srv6_hencap_red_l3vpn_test.sh         | 65 ++++++++++++++-----
- 1 file changed, 50 insertions(+), 15 deletions(-)
+It looks like "subfunction" is mispelled in the section directly above:
 
-diff --git a/tools/testing/selftests/net/srv6_hencap_red_l3vpn_test.sh b/tools/testing/selftests/net/srv6_hencap_red_l3vpn_test.sh
-index 6a68c7eff1dc..bdc485640f79 100755
---- a/tools/testing/selftests/net/srv6_hencap_red_l3vpn_test.sh
-+++ b/tools/testing/selftests/net/srv6_hencap_red_l3vpn_test.sh
-@@ -345,6 +345,10 @@ setup_rt_networking()
- 		ip -netns "${nsname}" addr \
- 			add "${net_prefix}::${rt}/64" dev "${devname}" nodad
- 
-+		ip -netns "${nsname}" addr \
-+			add "${net_prefix}::dead:${rt}/64" dev "${devname}" \
-+			nodad preferred_lft 0
-+
- 		ip -netns "${nsname}" link set "${devname}" up
- 	done
- 
-@@ -419,7 +423,8 @@ setup_rt_local_sids()
- #  $4 - SRv6 router configured for removing the SRv6 Policy (router connected
- #       to the destination host)
- #  $5 - encap mode (full or red)
--#  $6 - traffic type (IPv6 or IPv4)
-+#  $6 - force tunsrc (true or false)
-+#  $7 - traffic type (IPv6 or IPv4)
- __setup_rt_policy()
- {
- 	local dst="$1"
-@@ -427,11 +432,40 @@ __setup_rt_policy()
- 	local end_rts="$3"
- 	local dec_rt="$4"
- 	local mode="$5"
--	local traffic="$6"
-+	local with_tunsrc="$6"
-+	local traffic="$7"
- 	local nsname
- 	local policy=''
-+	local tunsrc=''
- 	local n
- 
-+	if [ "$with_tunsrc" = "true" ]; then
-+		local net_prefix
-+		local drule
-+		local nxt
-+
-+		[ "$end_rts" = "" ] && nxt="${dec_rt}" || nxt="${end_rts%% *}"
-+
-+		net_prefix="$(get_network_prefix "${encap_rt}" "${nxt}")"
-+		tunsrc="tunsrc ${net_prefix}::dead:${encap_rt}"
-+
-+		eval nsname=\${$(get_rtname "${dec_rt}")}
-+
-+		drule="PREROUTING \
-+		       -d ${VPN_LOCATOR_SERVICE}:${dec_rt}::${DT46_FUNC} \
-+		       -j DROP"
-+
-+		if ! ip netns exec "${nsname}" \
-+			ip6tables -t raw -C ${drule} &>/dev/null; then
-+			ip netns exec "${nsname}" ip6tables -t raw -A ${drule}
-+		fi
-+
-+		ip netns exec "${nsname}" ip6tables -t raw -I PREROUTING 1 \
-+			-s "${net_prefix}::dead:${encap_rt}" \
-+			-d ${VPN_LOCATOR_SERVICE}:${dec_rt}::${DT46_FUNC} \
-+			-j ACCEPT
-+	fi
-+
- 	eval nsname=\${$(get_rtname "${encap_rt}")}
- 
- 	for n in ${end_rts}; do
-@@ -444,7 +478,7 @@ __setup_rt_policy()
- 	if [ "${traffic}" -eq 6 ]; then
- 		ip -netns "${nsname}" -6 route \
- 			add "${IPv6_HS_NETWORK}::${dst}" vrf "${VRF_DEVNAME}" \
--			encap seg6 mode "${mode}" segs "${policy}" \
-+			encap seg6 mode "${mode}" ${tunsrc} segs "${policy}" \
- 			dev "${VRF_DEVNAME}"
- 
- 		ip -netns "${nsname}" -6 neigh \
-@@ -455,7 +489,7 @@ __setup_rt_policy()
- 		# received, otherwise the proxy arp does not work.
- 		ip -netns "${nsname}" -4 route \
- 			add "${IPv4_HS_NETWORK}.${dst}" vrf "${VRF_DEVNAME}" \
--			encap seg6 mode "${mode}" segs "${policy}" \
-+			encap seg6 mode "${mode}" ${tunsrc} segs "${policy}" \
- 			dev "${VRF_DEVNAME}"
- 	fi
- }
-@@ -463,13 +497,13 @@ __setup_rt_policy()
- # see __setup_rt_policy
- setup_rt_policy_ipv6()
- {
--	__setup_rt_policy "$1" "$2" "$3" "$4" "$5" 6
-+	__setup_rt_policy "$1" "$2" "$3" "$4" "$5" "$6" 6
- }
- 
- #see __setup_rt_policy
- setup_rt_policy_ipv4()
- {
--	__setup_rt_policy "$1" "$2" "$3" "$4" "$5" 4
-+	__setup_rt_policy "$1" "$2" "$3" "$4" "$5" "$6" 4
- }
- 
- setup_hs()
-@@ -567,41 +601,41 @@ setup()
- 	# the network path between hs-1 and hs-2 traverses several routers
- 	# depending on the direction of traffic.
- 	#
--	# Direction hs-1 -> hs-2 (H.Encaps.Red)
-+	# Direction hs-1 -> hs-2 (H.Encaps.Red + tunsrc)
- 	#  - rt-3,rt-4 (SRv6 End behaviors)
- 	#  - rt-2 (SRv6 End.DT46 behavior)
- 	#
- 	# Direction hs-2 -> hs-1 (H.Encaps.Red)
- 	#  - rt-1 (SRv6 End.DT46 behavior)
--	setup_rt_policy_ipv6 2 1 "3 4" 2 encap.red
--	setup_rt_policy_ipv6 1 2 "" 1 encap.red
-+	setup_rt_policy_ipv6 2 1 "3 4" 2 encap.red true
-+	setup_rt_policy_ipv6 1 2 "" 1 encap.red false
- 
- 	# create an IPv4 VPN between hosts hs-1 and hs-2
- 	# the network path between hs-1 and hs-2 traverses several routers
- 	# depending on the direction of traffic.
- 	#
--	# Direction hs-1 -> hs-2 (H.Encaps.Red)
-+	# Direction hs-1 -> hs-2 (H.Encaps.Red + tunsrc)
- 	# - rt-2 (SRv6 End.DT46 behavior)
- 	#
- 	# Direction hs-2 -> hs-1 (H.Encaps.Red)
- 	#  - rt-4,rt-3 (SRv6 End behaviors)
- 	#  - rt-1 (SRv6 End.DT46 behavior)
--	setup_rt_policy_ipv4 2 1 "" 2 encap.red
--	setup_rt_policy_ipv4 1 2 "4 3" 1 encap.red
-+	setup_rt_policy_ipv4 2 1 "" 2 encap.red true
-+	setup_rt_policy_ipv4 1 2 "4 3" 1 encap.red false
- 
- 	# create an IPv6 VPN between hosts hs-3 and hs-4
- 	# the network path between hs-3 and hs-4 traverses several routers
- 	# depending on the direction of traffic.
- 	#
--	# Direction hs-3 -> hs-4 (H.Encaps.Red)
-+	# Direction hs-3 -> hs-4 (H.Encaps.Red + tunsrc)
- 	# - rt-2 (SRv6 End Behavior)
- 	# - rt-4 (SRv6 End.DT46 behavior)
- 	#
- 	# Direction hs-4 -> hs-3 (H.Encaps.Red)
- 	#  - rt-1 (SRv6 End behavior)
- 	#  - rt-3 (SRv6 End.DT46 behavior)
--	setup_rt_policy_ipv6 4 3 "2" 4 encap.red
--	setup_rt_policy_ipv6 3 4 "1" 3 encap.red
-+	setup_rt_policy_ipv6 4 3 "2" 4 encap.red true
-+	setup_rt_policy_ipv6 3 4 "1" 3 encap.red false
- 
- 	# testing environment was set up successfully
- 	SETUP_ERR=0
-@@ -819,6 +853,7 @@ test_command_or_ksft_skip ip
- test_command_or_ksft_skip ping
- test_command_or_ksft_skip sysctl
- test_command_or_ksft_skip grep
-+test_command_or_ksft_skip ip6tables
- 
- test_iproute2_supp_or_ksft_skip
- test_vrf_or_ksft_skip
--- 
-2.39.2
+  "Subfunctons are more light weight than PCI SRIOV VFs."
 
+Maybe fix that one too and resubmit the patch? If you do that, you can feel
+free to add my tag:
+
+Reviewed-by: Joe Damato <joe@dama.to>
