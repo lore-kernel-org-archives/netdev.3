@@ -1,73 +1,72 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D00E3A1E73
-	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 15:44:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9BB3A6EFF
+	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 15:49:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773675868; cv=none; b=sd9M2W4HNR+ewJWwd2UmIvhaikVSQZBlCvQ++UKd5qk6CsWWUHfPa41rFg4+sLj2AhKLxZd9H8sjbsjvwGuhDYEs22d6anmanYJSmR3LH2UPn7wy5gK9V+AsOO9u369EZ3cSnrhFr5AXXn1+PQzFu6lrzbCh0ltmmLKjlHsJcPk=
+	t=1773676180; cv=none; b=UYF4JOOZJjKzr/b04ncaIowvXtnoF4KvAvSjsBE81eClYopK1Q+lQ694kyiH1YQsfgvE9sOjTFHGlsepPWdRnEPeBI1WxT5IbooR636zrapF9L5EKQprVIdykiMIi4EEQGud/F7vnYYy7/IgYSNf6PrC1ysmNnGf3ryvFYSeZCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773675868; c=relaxed/simple;
-	bh=ipQs/pnOj3C+qN131d1fldvdWOQBtYc0/dhAsl74UM0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xn097hfaN4svqBhVx9Y1rtv86A+nQeZ8bzb+BqmwCmmG/ZLwWxBNODPGPnbUGLzRHz0O1nqd9VVaMmpgjeo/8w6ahUpP6LAZukLdqtStiKjyhrkr8BLCYHTyriueq0oL4K6M9nUssW1Fzi17wUXi6pnBaGLy30iyPTIWPk/eX9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=vSCeAY/5; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	s=arc-20240116; t=1773676180; c=relaxed/simple;
+	bh=xhj7V5VOHhyPhjZT8w+2BQtGE00MYdrzk3o+IvpVuEQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hrrcUaL5I/nVmX1bwX+0N7foY0rBmyfuKtTI8SGlPnIZ77YveKW+CUCxn5zWCFqsWj1TOJvLrGeRmSYuOOfPMOMzAu11bpvA2oI77YbMD0QDaLDb0OIaO/Q22b8+mF8FQQAQgjBU7f/b+Ac0FLWM8YlanugoVLOoG9+r7r44Wao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cKRe4kkC; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="vSCeAY/5"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-43a03cb1df9so4666786f8f.1
-        for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 08:44:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cKRe4kkC"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-82a3d3235c9so1105413b3a.2
+        for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 08:49:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1773675865; x=1774280665; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ddfRTEAvGKSPvnCWeMTeF8TeOJoffU721DP6/2wjZd4=;
-        b=vSCeAY/5rUQOkWOaa8vj0HQw22hr0GOUcNUQz+7JMYRn65PsXMj7l224HjkpRTfigI
-         EOPVIGzTA+U1GjSM4eR5MlP/KKJKflm5yZ4qSLHIzXd7Hwdt5kawlZw08GaOoV0zqvlD
-         aOmSRrOHBl/KlAA3dyv2cz7yCYoqZob8pyjmjYveUG907tWZuvcmGbfhHduQQumS0Yov
-         LR2agkHwlE69INFeKpsaKGnuMt/Pc2IxzKlkNM7M+Kx2D4/8JKwwc20WJncUVVFHoK4D
-         8hw1tUPmESu/+9leafiN0sKyl2WcSs+LKT5F5oVex5s3UgudN+0cNsUoM9dsuyBdnrUI
-         ktXQ==
+        d=gmail.com; s=20230601; t=1773676177; x=1774280977; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=I6uZPXtzqz7Sbxlt8I3hTrbR+x+36hfWguC11NiV9bo=;
+        b=cKRe4kkC59oBmJ/78byqIkDm1LmxXNPPoJGE8qOKBJuQZUCnYTODgvPMoeLThip/gH
+         cqtA+wF5+eH2EZECS59Udi4JZTc6pOhB1Xb3+hd79gnVLdOxmsIS9wwt/cLohLhKnYJk
+         SJor9rSTQSIsr4Dbw0k44e8Dm6bahMoB7uUDQmhhnDcqu95UQX/XRomcik9/P16Btifk
+         kuntQnF/vDpwF/5cptIlXTe+aanMzsuWtFmftowKxVncKxL+GqEDFxIGeQkcAgL2ZfJU
+         /7+AbgolCVryXr6K2oEIt+5dz+39+J0H3e5FsNHWUiR8/jl4c6LtEFyby+lmigFcVP87
+         gckA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773675865; x=1774280665;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ddfRTEAvGKSPvnCWeMTeF8TeOJoffU721DP6/2wjZd4=;
-        b=I4yNcNMA75/jMV4fbInQ9+AKcFejGiEG+Yuo15BaTD/kmKe3+U1Mct6Jo8EaRJQeEs
-         kyXGxZHvXSMqGvRwPwOysK4OruQEoa85eC7z++aovw2ofq+WGs+pivlUn6kKAu8lQYMS
-         SqLcRNoN7WIDqI/leQsaLEKIkfrSf0iWVl4yO/yrRZQl3Duzuqfm3dfZXqzZ3w2EHy/F
-         Ua8UB5XO6WIUtAbbZrbj5CgjGFsDHl/Cq+92lCUhjynWTf9FzwtpKgz1Q0vRBfH1IYBs
-         mnQJ1nvRSL+Zv6CLZRsx6JJbkJKrNUnEqXmsMOWMDlhoJbRSIWcKQJ9E60N8O1qQH4ho
-         74Uw==
-X-Gm-Message-State: AOJu0Yyyp9IQjx7O2zRsMAnpbdH8xU78+1oqTpIBO4BkwTQX3IjcEGPw
-	eH0i2hYu0VTTuCer5IwrHW9lPxPa1KEJJz069/L8v4wOCxvY9Eh9fB5UA0TbE3biw1I75eMxXZ0
-	qMBJY9A8=
-X-Gm-Gg: ATEYQzwfm+Yiyfc/zH9fz/UQXPFQmU0MP6wXAZtfrzb0DQRiqj9cNdcWHStfUh7bqx1
-	oWAcmyJxx6pK04RgTPNrvKErx6DU8BN3HEeqUOgfm8CzmYjeek/WLGRyQi9FAji1L5PngVZPOUs
-	2ksXidQqsPaIKLN+DHD1HzWTwtmKQQiOwtkKbVtkEE5gZQVj4cPHj2JcBF66sC5hnneTMsLzGzk
-	YeB1Zl34skRQz4VUlmR12gPnWhOM0IyJy9TWWw/6TohoBeFejRNYPM5B8gRzEDscLspLIgdHQjB
-	BRaRR8/gcOExxY8U+iVLmte8xmY2ec1RdSoi2fP2IdAZtML2676m/ASqYaYAzpZiWn81n1qycLM
-	dzmW4QkmsjUk6mQ6nkVcTRMx21JIVJHC/x80x5vpyq2985zckudX9TmmEWHKWIdMsyP70MWUgJI
-	AL/12x4uBHp9AUFkeV5A==
-X-Received: by 2002:a05:6000:2385:b0:439:b114:60c0 with SMTP id ffacd0b85a97d-43a04db6008mr25880981f8f.35.1773675863471;
-        Mon, 16 Mar 2026 08:44:23 -0700 (PDT)
-Received: from localhost ([213.195.231.106])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe1affe9sm44939332f8f.15.2026.03.16.08.44.22
+        d=1e100.net; s=20251104; t=1773676177; x=1774280977;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=I6uZPXtzqz7Sbxlt8I3hTrbR+x+36hfWguC11NiV9bo=;
+        b=gVW0uRoZMqARCPsXLAg26v1HY4yLsssifiwxsgRXyTlBzCL3tsihYQ/OdDoofO05hQ
+         GTb54z+3gCYDh/YfewdGHQ0NhTCPbMEQTXHQBjARZral8D0Tx6lFQQRQYvkUWnmhmMSR
+         YS33HjXdtcYsV8MK6+GAIGSAtRC3D1YcUgwsaQDA8McX1DDBh16tLi2iOQhTi1YL9IeR
+         z7NHlscs9OBhENKXubUdlOypMX7GTZBtsDnmCwXwAl1A9x//bvqEmNe4eHS8pCJFuZDs
+         tpMxtJlVOrZsbIhgLQNCBOL+swEiYIkt1ppZ9DNrcXKy8gPlGfEQ6+VRKWMtLaO05ziy
+         i09g==
+X-Forwarded-Encrypted: i=1; AJvYcCVSZA+I6BGKyt/nNMP/+QfN5SNWZMDdnjWWREVtUnR4wwYKubemcbB5dK4KGoQIpbN93BnwEUY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhhXysT3IOPr/AmIATPQBL/qwCyLxF7h4mCuD9SQSd1RJfMBwx
+	SgwzwSPlgrGP0IG+K20ADl3EhTIz0RIAHj3Vox983CXeauYF7IZ3n43m
+X-Gm-Gg: ATEYQzw8LYC8IcoEscCDjHTQesSS4wiHP+eYmx61ZI8/LoXdCfc00bYiy8xj5pHJmhv
+	+CGKihqTURFDCZQFSa/Pq/w2aTO1WcacQTd+Kp/9iFQOQnGQGP379R20h6WP+IHywWecvgYwXmR
+	K5SwsM51McIAlyyjFESfldFiFcMsto9inzhcXM/pzUc4o087qwZ79biVQPrpekDIDdr1WA//VpL
+	ZxDJxBL6jsm0WotB+B0q0LBsUwCKseNEdNeik6Wa3boGG2mZ3Qk/vIfkBJCngAQVfXeWCExaaez
+	1p9KdN/YK8pvNWeMyuuZfx7B316omVzJo1v0vOQn3/XpP4qRgQfbDxRpYzWeN+KLZpI5AbejvaM
+	3CBOb3Pa4H4Aqpa0/3gCjgKuW39usaJcryWu6dAtd78tM7oGhXWuBwSxr0N1bqcNvuYQ1MeZ9pV
+	v5oMbVShznBR6OjBzm8sXdyxo3
+X-Received: by 2002:a05:6a20:a111:b0:398:72b7:ec8f with SMTP id adf61e73a8af0-398eca384d3mr12261294637.18.1773676177484;
+        Mon, 16 Mar 2026 08:49:37 -0700 (PDT)
+Received: from ubuntu.. ([152.58.131.4])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c73eb993e40sm9149350a12.8.2026.03.16.08.49.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2026 08:44:23 -0700 (PDT)
-From: Jiri Pirko <jiri@resnulli.us>
-To: netdev@vger.kernel.org
-Cc: stephen@networkplumber.org,
-	dsahern@gmail.com
-Subject: [PATCH iproute2-next 3/3] devlink: show devlink instance index in dev output
-Date: Mon, 16 Mar 2026 16:44:18 +0100
-Message-ID: <20260316154418.625026-4-jiri@resnulli.us>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20260316154418.625026-1-jiri@resnulli.us>
-References: <20260316154418.625026-1-jiri@resnulli.us>
+        Mon, 16 Mar 2026 08:49:37 -0700 (PDT)
+From: Anas Iqbal <mohd.abd.6602@gmail.com>
+To: Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Cc: io-uring@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Anas Iqbal <mohd.abd.6602@gmail.com>
+Subject: [PATCH] io_uring: cast id to u64 before shifting in io_allocate_rbuf_ring()
+Date: Mon, 16 Mar 2026 15:06:36 +0000
+Message-ID: <20260316150636.2123-1-mohd.abd.6602@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -76,34 +75,34 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Jiri Pirko <jiri@nvidia.com>
+Smatch warns:
+io_uring/zcrx.c:393 io_allocate_rbuf_ring() warn: should 'id << 16' be a 64 bit type?
 
-Print devlink instance index in dev show output when
-the kernel provides it.
+The expression 'id << IORING_OFF_PBUF_SHIFT' is evaluated using 32-bit
+arithmetic because id is a u32. This may overflow before being promoted
+to the 64-bit mmap_offset.
 
-Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+Cast id to u64 before shifting to ensure the shift is performed in
+64-bit arithmetic.
+
+Signed-off-by: Anas Iqbal <mohd.abd.6602@gmail.com>
 ---
- devlink/devlink.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ io_uring/zcrx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/devlink/devlink.c b/devlink/devlink.c
-index 39b0fac098c8..730515a78950 100644
---- a/devlink/devlink.c
-+++ b/devlink/devlink.c
-@@ -4095,8 +4095,12 @@ static void pr_out_dev(struct dl *dl, const struct nlmsghdr *nlh,
- {
- 	if ((tb[DEVLINK_ATTR_RELOAD_FAILED] && mnl_attr_get_u8(tb[DEVLINK_ATTR_RELOAD_FAILED])) ||
- 	    (tb[DEVLINK_ATTR_DEV_STATS] && dl->stats) ||
--	     tb[DEVLINK_ATTR_NESTED_DEVLINK]) {
-+	     tb[DEVLINK_ATTR_NESTED_DEVLINK] ||
-+	     tb[DEVLINK_ATTR_INDEX]) {
- 		__pr_out_handle_start(dl, tb, true, false);
-+		if (tb[DEVLINK_ATTR_INDEX])
-+			print_uint(PRINT_ANY, "index", " index %u",
-+				   mnl_attr_get_uint(tb[DEVLINK_ATTR_INDEX]));
- 		pr_out_reload_data(dl, tb);
- 		pr_out_dev_nested(dl, nlh);
- 		pr_out_handle_end(dl);
+diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
+index 62d693287457..d96d2802f3da 100644
+--- a/io_uring/zcrx.c
++++ b/io_uring/zcrx.c
+@@ -390,7 +390,7 @@ static int io_allocate_rbuf_ring(struct io_ring_ctx *ctx,
+ 		return -EINVAL;
+ 
+ 	mmap_offset = IORING_MAP_OFF_ZCRX_REGION;
+-	mmap_offset += id << IORING_OFF_PBUF_SHIFT;
++	mmap_offset += (u64)id << IORING_OFF_PBUF_SHIFT;
+ 
+ 	ret = io_create_region(ctx, &ifq->region, rd, mmap_offset);
+ 	if (ret < 0)
 -- 
-2.51.1
+2.43.0
 
