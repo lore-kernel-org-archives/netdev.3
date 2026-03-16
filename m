@@ -1,403 +1,120 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B1621A459
-	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 01:01:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF20F263C9F
+	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 01:02:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773622876; cv=none; b=RTJLHl5POYt5WSdxU4WvqKjWC7Sc0tM9r3I3nF2OTxmjjqHwbgmDpfkahVSdiIvklF7qGFfVnjRhipZBy8zQAesSWzgboO6dadwiU10F4urnif/JUVviHk7psUw8+eZ9C6ch95L95pXg7QaAcAOhaOQso05BxwQEbU2QCGWaGo4=
+	t=1773622935; cv=none; b=PsiC4DC30aflR01ZKBHqkfrluCmFq5rEhsjf2Dibm6QwYybWp0R+/euveHv89VeWW55aFvIgnp4LX5ID1K97TshYTYM2npWMOsH7A7j9166kOKdxfc+WdCed7dNV4Xx3HbA/JPpwthZrcrnLYkNAqg5YpMmB7l4aLa2BGvWl0jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773622876; c=relaxed/simple;
-	bh=zMY+wQlDklWgl8le1STkruwvAMaFDQADpN6fORV0f0c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ENz8epWQ1viU0Xy63mbWRL5WIpn30uojGhBbZoq2PskfWUlmniSOjV+ITT2co5njtWxyiOIjWnIZ6qiH5ZcD2SHzM4pkqBEpvmhFcjwjfVnbmR1YdvwiKFlI0ti7rboc0hwi1BafvmaEamGAMWrQi8+5XJj/Icb1ZklAdOUOBUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eFq4w0YJ; arc=none smtp.client-ip=209.85.216.52
+	s=arc-20240116; t=1773622935; c=relaxed/simple;
+	bh=Eky1nMoAs0udEY/YyYt5887/RWDwMv3LBHaMdNwTh0g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ek5Q5e5OHHtKUrTtbODsKDMpayGcdMgQs467hIaw8fuFQL8AGh5DNy2Uxu6cHXodo0QXeFL/NPs2QAOuGDFMyLBesEkinqJkl64Xu0jFS4LnBX/av3RgoyM9nYG4pgE1Ao9YxOANDryrDdbZOLvYhgq9LInm4h/HExDta/D0mio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jQ78TELj; arc=none smtp.client-ip=209.85.215.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eFq4w0YJ"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-35b88a4f123so626237a91.1
-        for <netdev@vger.kernel.org>; Sun, 15 Mar 2026 18:01:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jQ78TELj"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c70fb6aa323so1507583a12.3
+        for <netdev@vger.kernel.org>; Sun, 15 Mar 2026 18:02:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773622870; x=1774227670; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=n0V7qXuWIArDPv2NlPoLrnsFNgZn5cgLBVTIwcnjHHY=;
-        b=eFq4w0YJVOhkB2fNo+IrMKBIlmiwKSahzG67OijM9L+fbedbBFbVR3xS0bGMutDm6p
-         ImPcc+fMMcDXRxZticqRnjf4xAVIOjj9NbmnQiYL2hzinOBum498OTHNnwxp4BoWBGuV
-         F/NUQNuKxcH+DHBx0/sddQuVRpTwPlgJQgem4o2BsO4fIuxg0tpgVbcj1mc5OU0Tys93
-         +w9MoHlTmnI/6Lu5BDbQAok7rbliqpW1806i9JhhsBl9js/Z4uoqx7DFDfkTARCkRJvI
-         FggVJiAWkBzyejVqLZC3YJwWmgMQ6ihMyWdjNm8L1Tpgc0Walbw1aVWDyqO8uhTsRXYc
-         gqwA==
+        d=gmail.com; s=20230601; t=1773622931; x=1774227731; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=YLOS+CBHAqth4oLgPzOQhkefjgoFRG3KFqew2fphAF8=;
+        b=jQ78TELjF288JW/RtJknI1X8/y8fKQhIGJuJe04ZvBM0ZudTwE/OWs46b5ptm2ipdC
+         SOE+sjsMRK+BAzgaSzulO0/SZ98eMwJbT9dlJ+OQh46UbzNiBFIqM0UmzLJwAcYzuI25
+         /STGqVeQlSJhC3ZaUb7HmvV9xEWft94Y9mO7gZax2I2KCZOiijhgyJC88kBQ5283/f+q
+         f2bmNPS5JspfMtpdf8Q0ikrluxykkZsZ9byg07DvE0GKQBk/paXe9BmAFYm3JXA8c807
+         Nps/aUqrBy39tGdlur3D3etiIukfd+9RhR+QnTA014vfxcbLwQD3hlFYpHoMeHH+zarS
+         PGcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773622870; x=1774227670;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=n0V7qXuWIArDPv2NlPoLrnsFNgZn5cgLBVTIwcnjHHY=;
-        b=rbQ7TrdPhrQ4lWZycJClfO/L4K2RExHUnmOCr7rhanyLkLEc3gDBkrV49Y5R1k+gcj
-         YGg0XUA0uSK8cCH8H5sX4h1qUGYv+rYJ2oFlX7ad71Wu0h35NeAOXVfRzWz3SF1hv4yH
-         gmyawjU6W8m2hpEwCLlGhiVi7/dRrMmLBK93OuMsNn+KXqmdYd/s8cHWTzx4ZqYPDRi3
-         HcmT/ZOdERVZkM1Bfo/smFGs505Z7VpkEqKbNZdsayCEAHlQ7VCMZ6CKnYEhmUF37gws
-         SVU/LSP3WQxO8eBNuVYAKGV2VII5e4XjYDAq63Jzq19OMQJtmSjbV+Tm7tSTn/JFJso7
-         0JMg==
-X-Gm-Message-State: AOJu0Yxp8ajRO4eY8sXPvbRouYnsVvLOmoI9/ghePV2cfuNE2ELiTcsQ
-	Yu++85nOX7B/zL6jXLNmiS69Hz1OLCdYfG2U4625D273BvdvcFj1RQRz
-X-Gm-Gg: ATEYQzyxLVp5HmRXZXU/Q3/YslmnQOdjwyNYznIMNWTaVCnyALKVMIjN0CfY0OMxmFK
-	ARLJJMsGab2f4YcimWscpiO9hWcMP6i+dHywRBtG5yGI8lYF2tt//8n792hGUccSnbnFe06Pi9G
-	7WDzuaB2D9NNt1ymCicA9WfDa/2fxGca/RytKqv8GqctuVsMgVmD4oz/EiyDwl70wogy+UcgD3k
-	+b8fyuebMZofrnR1Nx3DnTcsHx0dTPWrA4oJeaVnwZmg2XCIBu7XIYv4w9wKYErSoPHJT0e2KEt
-	eAeR4YWEya8cLozFbpdhHfT4M1PILexHZrN0w5Mz6ijaKHd4eXKYnhVdEI6Js8epvIvvfM2ozTa
-	qvrcOgkcyphL/s0wUlNW9exionGWBLlxG+xtWjJUN3qm4AgPOYnO6dqk0p+N89vz1b0Uxw5i2Ol
-	mprkdQTO63XJvpYQ0Zj1tUnn4=
-X-Received: by 2002:a17:90b:3ec6:b0:359:f143:211a with SMTP id 98e67ed59e1d1-35a21c8507dmr8653846a91.0.1773622870160;
-        Sun, 15 Mar 2026 18:01:10 -0700 (PDT)
-Received: from localhost ([2001:19f0:8001:1b2d:5400:5ff:fefa:a95d])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35b9230f2fasm3655292a91.9.2026.03.15.18.01.09
+        d=1e100.net; s=20251104; t=1773622931; x=1774227731;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YLOS+CBHAqth4oLgPzOQhkefjgoFRG3KFqew2fphAF8=;
+        b=N4/6AmIw0oRPggj9IgOjwp8LO587Bir4MW7GS03A9uhOXVQLRwQ6Iqop8mMZ/9Cquw
+         8erzYsV3DyVgj4zDZXiF4wRM1lzw3zDWecSd4NjxZZ/1rHMeHWHxMuwWzFlL65xR97ra
+         ExENVyjKmUzmxHqFL+RDIVDIDOfwcLs1x4Btr9xWOgHMKCHdq7gDu5FTxLRqfPI02LXa
+         Z6O3yt14XosdKLhmyp3s2U21ckWBL2KMvnZ858NHjmfc4jMsPWmEvjelCxlB2lZK4ksd
+         spQy2g6ji9Hj3QNNtgVMNKrdSVEGkvUgtaZ0OfVovAIkiWqjBUueptZfv12mKZaekkZR
+         1X0g==
+X-Forwarded-Encrypted: i=1; AJvYcCW92buqp+LAt5EMHHSQMsNok+Qw2y9VMI9UJ7XW1tUcz2R9FhDdg/Z+eDQik+4UdS7M7GZ485Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEJz1LjYpL6wpR1Agzt1vWtgOZRd2/+veNFKZMB4XbvGIF5au8
+	2PXq0h7arb7QLQKnscBhZfiNSDpP0dfjwbHbIoFnBE04CuIDjgQ9UgOa
+X-Gm-Gg: ATEYQzzW2zsvhVpdO6n9nD2Y8Fn24/3Wo2lg+Gc51ER4FVzJPTHmJsawess46o+No+E
+	gDbvlQBRiR3eQifCYb7rgabXN9tbgHPVaTCrCxlEPZt5A/AsBQ1OXoG3Ve/CE4tBnmx6auquRhJ
+	oOIAcz/ANY9VNe7okHPZL+Jt2HUPPfWFZG//3qTn0hSUmIrpMc/155hjPwnkxE9ziBcSqWs/H6l
+	QAxXbXS9ejAOucGCzV/KR8F1c0B/S+oGRUVP9Ff6ZREG22AZ4MpATnY8zHqmySh+wPOxx4R2M6X
+	CjmlAs/AP5Tdb9MTBPUWbr1cLz+TZaOTSLb2hDy5vES2pj+w9NNfgxtlBWP4CgvDKoZR0GSjsIb
+	1pOtHoAGYb9io3iSkOtmhYWFE3mUM/DHCsH936vXOjfSfWaHq9NQRZZSEvmqnrQPOqi9WxET14c
+	I9Zs3KeL+Xm/0CCCWcZKope1zwtE291sDrD/gcGQ==
+X-Received: by 2002:a05:6300:6713:b0:35d:6b4e:91f1 with SMTP id adf61e73a8af0-398ecca4e41mr10054657637.34.1773622931501;
+        Sun, 15 Mar 2026 18:02:11 -0700 (PDT)
+Received: from fedora ([209.132.188.88])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c74029fa6eesm1891891a12.20.2026.03.15.18.02.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Mar 2026 18:01:09 -0700 (PDT)
-From: Inochi Amaoto <inochiama@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Yixun Lan <dlan@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Yao Zi <me@ziyao.cc>,
-	Yanteng Si <siyanteng@cqsoftware.com.cn>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Shangjuan Wei <weishangjuan@eswincomputing.com>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Zhi Li <lizhi2@eswincomputing.com>,
-	Boon Khai Ng <boon.khai.ng@altera.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	Jose Abreu <joabreu@synopsys.com>
-Cc: netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	spacemit@lists.linux.dev,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	Yixun Lan <dlan@gentoo.org>,
-	Longbin Li <looong.bin@gmail.com>
-Subject: [PATCH net-next v10 3/4] net: stmmac: Add glue layer for Spacemit K3 SoC
-Date: Mon, 16 Mar 2026 09:00:39 +0800
-Message-ID: <20260316010041.164360-4-inochiama@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260316010041.164360-1-inochiama@gmail.com>
-References: <20260316010041.164360-1-inochiama@gmail.com>
+        Sun, 15 Mar 2026 18:02:10 -0700 (PDT)
+Date: Mon, 16 Mar 2026 01:02:01 +0000
+From: Hangbin Liu <liuhangbin@gmail.com>
+To: Simon Horman <horms@kernel.org>
+Cc: jv@jvosburgh.net, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	davem@davemloft.net, sd@queasysnail.net, andrew+netdev@lunn.ch,
+	pabeni@redhat.com, sridhar.samudrala@intel.com, jiri@resnulli.us,
+	bridge@lists.linux.dev, edumazet@google.com, kuba@kernel.org,
+	razor@blackwall.org, idosch@nvidia.com
+Subject: Re: [net-next,v2,1/4] net: use ndo_set_features to set offload
+ features for bonding/bridge/team
+Message-ID: <abdWiYhu4IOldqtE@fedora>
+References: <20260313-offload_compute-v2-1-ffbc8ce5d50c@gmail.com>
+ <20260315161943.1419237-1-horms@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260315161943.1419237-1-horms@kernel.org>
 
-The ethernet controller on Spacemit K3 SoC is Synopsys DesignWare
-MAC (version 5.40a), with the following special points:
-1. The rate of the tx clock line is auto changed when the mac speed
-   rate is changed, and no need for changing the input tx clock.
-2. This controller require a extra syscon device to configure the
-   interface type, enable wake up interrupt and delay configuration
-   if needed.
+On Sun, Mar 15, 2026 at 04:19:43PM +0000, Simon Horman wrote:
+> > diff --git a/net/core/dev.c b/net/core/dev.c
+> > index f48dc299e4b2..16b3fc620807 100644
+> > --- a/net/core/dev.c
+> > +++ b/net/core/dev.c
+> > @@ -8920,6 +8920,9 @@ static int __netdev_upper_dev_link(struct net_device *dev,
+> >  	__netdev_walk_all_upper_dev(upper_dev, __netdev_update_lower_level,
+> >  				    priv);
+> >
+> > +	/* re-compute all features after adding link */
+> > +	netdev_change_features(upper_dev);
+> > +
+> >  	return 0;
+> >
+> >  rollback:
+> 
+> Can the feature computation skip updating ancillary fields when features
+> don't change?
+> 
+> The new architecture routes computation through netdev_change_features() ->
+> __netdev_update_features() -> ndo_set_features(). However,
+> __netdev_update_features() has this check:
+> 
+> net/core/dev.c:__netdev_update_features() {
+>     ...
+>     if (dev->features == features)
+>         goto sync_lower;
+> 
 
-Add Spacemit dwmac driver support on the Spacemit K3 SoC.
+Ah, yes. In the RFC patch set[1], I wanted to use a new ndo_update_offloads
+callback to handle offload updates. But in the formal patch, I thought we
+could avoid introducing a new callback and use ndo_set_features directly.
+However, it looks like we need to fall back to ndo_update_offloads now.
 
-Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/ethernet/stmicro/stmmac/Kconfig   |  12 +
- drivers/net/ethernet/stmicro/stmmac/Makefile  |   1 +
- .../ethernet/stmicro/stmmac/dwmac-spacemit.c  | 227 ++++++++++++++++++
- 3 files changed, 240 insertions(+)
- create mode 100644 drivers/net/ethernet/stmicro/stmmac/dwmac-spacemit.c
+[1] https://lore.kernel.org/netdev/20260226114208.27774-1-liuhangbin@gmail.com/
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-index 07088d03dbab..d3a6ab7383fc 100644
---- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
-+++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-@@ -216,6 +216,18 @@ config DWMAC_SOPHGO
- 	  for the stmmac device driver. This driver is used for the
- 	  ethernet controllers on various Sophgo SoCs.
- 
-+config DWMAC_SPACEMIT
-+	tristate "Spacemit dwmac support"
-+	depends on OF && (ARCH_SPACEMIT || COMPILE_TEST)
-+	select MFD_SYSCON
-+	default m if ARCH_SPACEMIT
-+	help
-+	  Support for ethernet controllers on Spacemit RISC-V SoCs
-+
-+	  This selects the Spacemit platform specific glue layer support
-+	  for the stmmac device driver. This driver is used for the
-+	  Spacemit K3 ethernet controllers.
-+
- config DWMAC_STARFIVE
- 	tristate "StarFive dwmac support"
- 	depends on OF && (ARCH_STARFIVE || COMPILE_TEST)
-diff --git a/drivers/net/ethernet/stmicro/stmmac/Makefile b/drivers/net/ethernet/stmicro/stmmac/Makefile
-index c9263987ef8d..945c5354eced 100644
---- a/drivers/net/ethernet/stmicro/stmmac/Makefile
-+++ b/drivers/net/ethernet/stmicro/stmmac/Makefile
-@@ -27,6 +27,7 @@ obj-$(CONFIG_DWMAC_RZN1)	+= dwmac-rzn1.o
- obj-$(CONFIG_DWMAC_S32)		+= dwmac-s32.o
- obj-$(CONFIG_DWMAC_SOCFPGA)	+= dwmac-altr-socfpga.o
- obj-$(CONFIG_DWMAC_SOPHGO)	+= dwmac-sophgo.o
-+obj-$(CONFIG_DWMAC_SPACEMIT)	+= dwmac-spacemit.o
- obj-$(CONFIG_DWMAC_STARFIVE)	+= dwmac-starfive.o
- obj-$(CONFIG_DWMAC_STI)		+= dwmac-sti.o
- obj-$(CONFIG_DWMAC_STM32)	+= dwmac-stm32.o
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-spacemit.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-spacemit.c
-new file mode 100644
-index 000000000000..223754cc5c79
---- /dev/null
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-spacemit.c
-@@ -0,0 +1,227 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Spacemit DWMAC platform driver
-+ *
-+ * Copyright (C) 2026 Inochi Amaoto <inochiama@gmail.com>
-+ */
-+
-+#include <linux/clk.h>
-+#include <linux/math.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/module.h>
-+#include <linux/mfd/syscon.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
-+#include <linux/property.h>
-+#include <linux/regmap.h>
-+
-+#include "stmmac_platform.h"
-+
-+/* ctrl register bits */
-+#define CTRL_PHY_INTF_RGMII		BIT(3)
-+#define CTRL_PHY_INTF_MII		BIT(4)
-+#define CTRL_WAKE_IRQ_EN		BIT(9)
-+#define CTRL_PHY_IRQ_EN			BIT(12)
-+
-+/* dline register bits */
-+#define RGMII_RX_DLINE_EN		BIT(0)
-+#define RGMII_RX_DLINE_STEP		GENMASK(5, 4)
-+#define RGMII_RX_DLINE_CODE		GENMASK(15, 8)
-+#define RGMII_TX_DLINE_EN		BIT(16)
-+#define RGMII_TX_DLINE_STEP		GENMASK(21, 20)
-+#define RGMII_TX_DLINE_CODE		GENMASK(31, 24)
-+
-+#define MAX_DLINE_DELAY_CODE		0xff
-+#define MAX_WORKED_DELAY		2800
-+/* Note: the delay step value is at 0.1ps */
-+#define K3_DELAY_STEP			367
-+
-+struct spacmit_dwmac {
-+	struct regmap *apmu;
-+	unsigned int ctrl_offset;
-+	unsigned int dline_offset;
-+};
-+
-+static int spacemit_dwmac_set_delay(struct spacmit_dwmac *dwmac,
-+				    unsigned int tx_code, unsigned int rx_code)
-+{
-+	unsigned int mask, val;
-+
-+	mask = RGMII_TX_DLINE_STEP | RGMII_TX_DLINE_CODE | RGMII_TX_DLINE_EN |
-+	       RGMII_RX_DLINE_STEP | RGMII_RX_DLINE_CODE | RGMII_RX_DLINE_EN;
-+
-+	/*
-+	 * Since the delay step provided by config 0 is small enough, and
-+	 * it can cover the range of the valid delay, so there is no needed
-+	 * to use other step config.
-+	 */
-+	val = FIELD_PREP(RGMII_TX_DLINE_STEP, 0) |
-+	      FIELD_PREP(RGMII_TX_DLINE_CODE, tx_code) | RGMII_TX_DLINE_EN |
-+	      FIELD_PREP(RGMII_RX_DLINE_STEP, 0) |
-+	      FIELD_PREP(RGMII_RX_DLINE_CODE, rx_code) | RGMII_RX_DLINE_EN;
-+
-+	return regmap_update_bits(dwmac->apmu, dwmac->dline_offset,
-+				  mask, val);
-+}
-+
-+static int spacemit_dwmac_detected_delay_value(unsigned int delay)
-+{
-+	if (delay == 0)
-+		return 0;
-+
-+	if (delay > MAX_WORKED_DELAY)
-+		return -EINVAL;
-+
-+	/*
-+	 * Note K3 require a specific factor for calculate
-+	 * the delay, in this scenario it is 0.9. So the
-+	 * formula is code * step / 10 * 0.9
-+	 */
-+	return DIV_ROUND_CLOSEST(delay * 10 * 10, K3_DELAY_STEP * 9);
-+}
-+
-+static int spacemit_dwmac_fix_delay(struct spacmit_dwmac *dwmac,
-+				    unsigned int tx_delay,
-+				    unsigned int rx_delay)
-+{
-+	int rx_code;
-+	int tx_code;
-+
-+	rx_code = spacemit_dwmac_detected_delay_value(rx_delay);
-+	if (rx_code < 0)
-+		return rx_code;
-+
-+	tx_code = spacemit_dwmac_detected_delay_value(tx_delay);
-+	if (tx_code < 0)
-+		return tx_code;
-+
-+	return spacemit_dwmac_set_delay(dwmac, tx_code, rx_code);
-+}
-+
-+static int spacemit_dwmac_update_irq_config(struct spacmit_dwmac *dwmac,
-+					    struct stmmac_resources *stmmac_res)
-+{
-+	unsigned int val = stmmac_res->wol_irq >= 0 ? CTRL_WAKE_IRQ_EN : 0;
-+	unsigned int mask = CTRL_WAKE_IRQ_EN;
-+
-+	return regmap_update_bits(dwmac->apmu, dwmac->ctrl_offset,
-+				  mask, val);
-+}
-+
-+static void spacemit_get_interfaces(struct stmmac_priv *priv, void *bsp_priv,
-+				    unsigned long *interfaces)
-+{
-+	__set_bit(PHY_INTERFACE_MODE_MII, interfaces);
-+	__set_bit(PHY_INTERFACE_MODE_RMII, interfaces);
-+	phy_interface_set_rgmii(interfaces);
-+}
-+
-+static int spacemit_set_phy_intf_sel(void *bsp_priv, u8 phy_intf_sel)
-+{
-+	unsigned int mask = CTRL_PHY_INTF_MII | CTRL_PHY_INTF_RGMII;
-+	struct spacmit_dwmac *dwmac = bsp_priv;
-+	unsigned int val = 0;
-+
-+	switch (phy_intf_sel) {
-+	case PHY_INTF_SEL_GMII_MII:
-+		val = CTRL_PHY_INTF_MII;
-+		break;
-+
-+	case PHY_INTF_SEL_RMII:
-+		break;
-+
-+	case PHY_INTF_SEL_RGMII:
-+		val = CTRL_PHY_INTF_RGMII;
-+		break;
-+
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return regmap_update_bits(dwmac->apmu, dwmac->ctrl_offset,
-+				  mask, val);
-+}
-+
-+static int spacemit_dwmac_probe(struct platform_device *pdev)
-+{
-+	struct plat_stmmacenet_data *plat_dat;
-+	struct stmmac_resources stmmac_res;
-+	struct device *dev = &pdev->dev;
-+	struct spacmit_dwmac *dwmac;
-+	unsigned int offset[2];
-+	struct regmap *apmu;
-+	struct clk *clk_tx;
-+	u32 rx_delay = 0;
-+	u32 tx_delay = 0;
-+	int ret;
-+
-+	ret = stmmac_get_platform_resources(pdev, &stmmac_res);
-+	if (ret)
-+		return dev_err_probe(dev, ret,
-+				     "failed to get platform resources\n");
-+
-+	dwmac = devm_kzalloc(&pdev->dev, sizeof(*dwmac), GFP_KERNEL);
-+	if (!dwmac)
-+		return -ENOMEM;
-+
-+	plat_dat = devm_stmmac_probe_config_dt(pdev, stmmac_res.mac);
-+	if (IS_ERR(plat_dat))
-+		return dev_err_probe(dev, PTR_ERR(plat_dat),
-+				     "failed to parse DT parameters\n");
-+
-+	clk_tx = devm_clk_get_enabled(&pdev->dev, "tx");
-+	if (IS_ERR(clk_tx))
-+		return dev_err_probe(&pdev->dev, PTR_ERR(clk_tx),
-+				     "failed to get tx clock\n");
-+
-+	apmu = syscon_regmap_lookup_by_phandle_args(pdev->dev.of_node,
-+						    "spacemit,apmu", 2,
-+						    offset);
-+	if (IS_ERR(apmu))
-+		return dev_err_probe(dev, PTR_ERR(apmu),
-+				     "Failed to get apmu regmap\n");
-+
-+	dwmac->apmu = apmu;
-+	dwmac->ctrl_offset = offset[0];
-+	dwmac->dline_offset = offset[1];
-+
-+	ret = spacemit_dwmac_update_irq_config(dwmac, &stmmac_res);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to configure irq config\n");
-+
-+	of_property_read_u32(pdev->dev.of_node, "tx-internal-delay-ps",
-+			     &tx_delay);
-+	of_property_read_u32(pdev->dev.of_node, "rx-internal-delay-ps",
-+			     &rx_delay);
-+
-+	plat_dat->get_interfaces = spacemit_get_interfaces;
-+	plat_dat->set_phy_intf_sel = spacemit_set_phy_intf_sel;
-+	plat_dat->bsp_priv = dwmac;
-+
-+	ret = spacemit_dwmac_fix_delay(dwmac, tx_delay, rx_delay);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to configure delay\n");
-+
-+	return stmmac_dvr_probe(dev, plat_dat, &stmmac_res);
-+}
-+
-+static const struct of_device_id spacemit_dwmac_match[] = {
-+	{ .compatible = "spacemit,k3-dwmac" },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(of, spacemit_dwmac_match);
-+
-+static struct platform_driver spacemit_dwmac_driver = {
-+	.probe  = spacemit_dwmac_probe,
-+	.remove = stmmac_pltfr_remove,
-+	.driver = {
-+		.name = "spacemit-dwmac",
-+		.pm = &stmmac_pltfr_pm_ops,
-+		.of_match_table = spacemit_dwmac_match,
-+	},
-+};
-+module_platform_driver(spacemit_dwmac_driver);
-+
-+MODULE_AUTHOR("Inochi Amaoto <inochiama@gmail.com>");
-+MODULE_DESCRIPTION("Spacemit DWMAC platform driver");
-+MODULE_LICENSE("GPL");
--- 
-2.53.0
-
+Thanks
+Hangbin
