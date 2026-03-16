@@ -1,38 +1,38 @@
 Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023F635F612
-	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 22:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A0320C029
+	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 22:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773700382; cv=none; b=aWa3IZ482S1mHUlPj/u19Blui1oJXv9PVVKwLZbCaH0iviFxy5pS+q3LbPGu51Af3XMctHKLC0fOgizQrRBf245qHAoG/+GXdBjF3obXVbPQ6hlcn9iLhJiJoMmfnHI+59MH3LbGqxaydEbFKYNaxOUBr9Inw94i2tI088d58tc=
+	t=1773700386; cv=none; b=jjL0VayFktlXdYvSEP7F/HE9fKIZGKyg/QlhwbCNKXiw9DN6dH3smaU8MLaLpKs00KlMmFhIib/eOqKndrnILoZP3BburGOdD1tOEUyOjsUwdn4sOa/JZ3IUlya7xmZ8VI9uVMTo6VWuFjQ8+x9eNp8G+5vd2+CXOLOukOAilTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773700382; c=relaxed/simple;
-	bh=yocbxbZS4Te5yoegydH2inHA5DpyCEKf5/aLoTkG1JM=;
+	s=arc-20240116; t=1773700386; c=relaxed/simple;
+	bh=kWU4Npc8rNDZXGZ1yeyQB6p8GQstxkBtR6MiiV2HQh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rtG8+3fhcgONO1qWusovpzFiv88Y9wKG/M5PazN5+U6tdSPElQQqnzewMBDSqmkQ0YuhLbNByxqHd7O9f/haQ8kUgZJ5k5DzhD7JxsUtpl/mQs0BzkOa/rJ/Yh5h+DroU7Aq+7j1IhbWowjwRCcu7PzOFpQafcXQ/iNkHBlLSNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=VP8l/30y; arc=none smtp.client-ip=171.64.64.25
+	 MIME-Version; b=VREPOrMi57F7piaSNv60VtH33chelOY5o8WvrZqmGCKF58Uf0PROiYUlEFs2dE/0lyZRCd8mBVEtkuvCg43m4KWNLhXY+Q6DmSPIBGV94plies0Xlm14uMivQw5akqXzj9ijsGHkURjPJc8s1DrGdMbtfhpAr+BJ6TiOyhTuK9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=it8N/oHP; arc=none smtp.client-ip=171.64.64.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="VP8l/30y"
+	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="it8N/oHP"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=G2s7Wi/0J9kwvrzZQ6oc5no23AWfN5OazxkjrTDkOAw=; t=1773700381; x=1774564381; 
-	b=VP8l/30y3DsjChLgNj7Pc5buGPNZ5MtHjtFy8lusEWMoytKoPLyrd2mWhwIW9GpQT0pLczHOI3h
-	hHiWNWr4R91rrYwNv8dKrI9bSvMytjGz9zPe13LG+Do6TaW0bsuLI3GoXNbOQd2sCWQHb028nQSgv
-	2zRY9QDMrtIPXjcq4/QSnP2sp3f6MwcxBjFzNSnn0iHQPsyrEunzMkMscrJiaguKRBeN1bs5oBwhH
-	b2YXUyd6d/bg2w7L3IQJTsdpVGB8gtD4cDYxF8JJ843sVbpjnKhwINpRcKh5Tp4Yimxzt1VfHooNi
-	qjtO2DcLGh9pbs+CJGPoWsxEGZe6PjjqEjcg==;
+	bh=XGa3abYoj7Y8k6jX5tkeD/taJlBw14A6MgB6E0B07FU=; t=1773700385; x=1774564385; 
+	b=it8N/oHPAITk26VDxXfsxsDY+oLdqJ4YAIC05b30IGSFlpDz4icrj96kX6Mlmey4PAHzhsIGVRU
+	015bQ6ZVUy25I1NlUu8geVPqmgy03UI0RmICBgxZhYHiOXZJ3kCHixREATXpuEKbCMRuU2oUjTHZa
+	Qg0kfq4zhLfpslxT268c23FkNHC62c9ecbKEQIN0nHGRMzZQ9up/rEwXykJu1gviPojuxnp/j/rcu
+	VR25JQGqxlIMcOXw+5cl9MuEHv3TLHtRD7ZOB3maoVgNLjzQwmVr70kyh1lJYiohItOvUW0+UtbO2
+	lvESwFpiBtdDpbjfV3jm+hr5iWD4v9VzgsVw==;
 Received: from ouster448.stanford.edu ([172.24.72.71]:53396 helo=ouster2022)
 	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ouster@cs.stanford.edu>)
-	id 1w2GUd-0004uJ-JO; Mon, 16 Mar 2026 15:33:00 -0700
+	id 1w2GUh-0004uJ-QI; Mon, 16 Mar 2026 15:33:04 -0700
 From: John Ousterhout <ouster@cs.stanford.edu>
 To: netdev@vger.kernel.org
 Cc: pabeni@redhat.com,
@@ -40,9 +40,9 @@ Cc: pabeni@redhat.com,
 	horms@kernel.org,
 	kuba@kernel.org,
 	John Ousterhout <ouster@cs.stanford.edu>
-Subject: [PATCH net-next v17 12/14] net: homa: create homa_timer.c
-Date: Mon, 16 Mar 2026 15:32:24 -0700
-Message-ID: <20260316223228.2611-13-ouster@cs.stanford.edu>
+Subject: [PATCH net-next v17 14/14] net: homa: create Makefile and Kconfig
+Date: Mon, 16 Mar 2026 15:32:26 -0700
+Message-ID: <20260316223228.2611-15-ouster@cs.stanford.edu>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260316223228.2611-1-ouster@cs.stanford.edu>
 References: <20260316223228.2611-1-ouster@cs.stanford.edu>
@@ -54,194 +54,96 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Score: -101.0
-X-Scan-Signature: 0ecaf295db8a04c0f692789316a3d0cf
+X-Scan-Signature: 1a99e790efc5595ebc7b409aae77a077
 
-This file contains code that wakes up periodically to check for
-missing data, initiate retransmissions, and declare peer nodes
-"dead".
+Before this commit the Homa code is "inert": it won't be compiled
+in kernel builds. This commit adds Homa's Makefile and Kconfig, and
+also links Homa into net/Makefile and net/Kconfig, so that Homa
+will be built during kernel builds if enabled (it is disabled by
+default).
 
 Signed-off-by: John Ousterhout <ouster@cs.stanford.edu>
-
 ---
-Changes for v14:
-* Use new homa_rpc_tx_end function
+ net/Kconfig       |  1 +
+ net/Makefile      |  1 +
+ net/homa/Kconfig  | 21 +++++++++++++++++++++
+ net/homa/Makefile | 15 +++++++++++++++
+ 4 files changed, 38 insertions(+)
+ create mode 100644 net/homa/Kconfig
+ create mode 100644 net/homa/Makefile
 
-Changes for v11:
-* Cleanup sparse annotations.
-
-Changes for v10:
-* Refactor resend mechanism
-
-Changes for v9:
-* Reflect changes in socket and peer management
-* Minor name changes for clarity
-
-Changes for v7:
-* Interface changes to homa_sock_start_scan etc.
-* Remove locker argument from locking functions
-* Use u64 and __u64 properly
----
- net/homa/homa_impl.h  |   3 +
- net/homa/homa_timer.c | 136 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 139 insertions(+)
- create mode 100644 net/homa/homa_timer.c
-
-diff --git a/net/homa/homa_impl.h b/net/homa/homa_impl.h
-index 779abd7bb1b7..9c7e80e49f82 100644
---- a/net/homa/homa_impl.h
-+++ b/net/homa/homa_impl.h
-@@ -387,6 +387,9 @@ void     homa_resend_pkt(struct sk_buff *skb, struct homa_rpc *rpc,
- void     homa_rpc_handoff(struct homa_rpc *rpc);
- int      homa_rpc_tx_end(struct homa_rpc *rpc);
- void     homa_spin(int ns);
-+void     homa_timer(struct homa *homa);
-+void     homa_timer_check_rpc(struct homa_rpc *rpc);
-+int      homa_timer_main(void *transport);
- struct sk_buff *homa_tx_data_pkt_alloc(struct homa_rpc *rpc,
- 				       struct iov_iter *iter, int offset,
- 				       int length, int max_seg_data);
-diff --git a/net/homa/homa_timer.c b/net/homa/homa_timer.c
+diff --git a/net/Kconfig b/net/Kconfig
+index 62266eaf0e95..41bcc80ee9ec 100644
+--- a/net/Kconfig
++++ b/net/Kconfig
+@@ -252,6 +252,7 @@ source "net/bridge/netfilter/Kconfig"
+ endif # if NETFILTER
+ 
+ source "net/sctp/Kconfig"
++source "net/homa/Kconfig"
+ source "net/rds/Kconfig"
+ source "net/tipc/Kconfig"
+ source "net/atm/Kconfig"
+diff --git a/net/Makefile b/net/Makefile
+index 90e3d72bf58b..17e0ba84bd15 100644
+--- a/net/Makefile
++++ b/net/Makefile
+@@ -44,6 +44,7 @@ ifneq ($(CONFIG_VLAN_8021Q),)
+ obj-y				+= 8021q/
+ endif
+ obj-$(CONFIG_IP_SCTP)		+= sctp/
++obj-$(CONFIG_HOMA)		+= homa/
+ obj-$(CONFIG_RDS)		+= rds/
+ obj-$(CONFIG_WIRELESS)		+= wireless/
+ obj-$(CONFIG_MAC80211)		+= mac80211/
+diff --git a/net/homa/Kconfig b/net/homa/Kconfig
 new file mode 100644
-index 000000000000..dcfdcc06c8ab
+index 000000000000..16fec3fd52ba
 --- /dev/null
-+++ b/net/homa/homa_timer.c
-@@ -0,0 +1,136 @@
-+// SPDX-License-Identifier: BSD-2-Clause or GPL-2.0+
++++ b/net/homa/Kconfig
+@@ -0,0 +1,21 @@
++# SPDX-License-Identifier: BSD-2-Clause or GPL-2.0+
++#
++# Homa transport protocol
++#
 +
-+/* This file handles timing-related functions for Homa, such as retries
-+ * and timeouts.
-+ */
++menuconfig HOMA
++	tristate "The Homa transport protocol"
++	depends on INET
++	depends on IPV6
 +
-+#include "homa_impl.h"
-+#include "homa_peer.h"
-+#include "homa_rpc.h"
-+#include "homa_stub.h"
++	help
++	  Homa is a network transport protocol for communication within
++	  a datacenter. It provides significantly lower latency than TCP,
++	  particularly for workloads containing a mixture of large and small
++	  messages operating at high network utilization. At present, Homa
++	  has been only partially upstreamed; this version provides bare-bones
++	  functionality but is not performant. For more information see the
++	  homa(7) man page or checkout the Homa Wiki at
++	  https://homa-transport.atlassian.net/wiki/spaces/HOMA/overview.
 +
-+/**
-+ * homa_timer_check_rpc() -  Invoked for each RPC during each timer pass; does
-+ * most of the work of checking for time-related actions such as sending
-+ * resends, aborting RPCs for which there is no response, and sending
-+ * requests for acks. It is separate from homa_timer because homa_timer
-+ * got too long and deeply indented.
-+ * @rpc:     RPC to check; must be locked by the caller.
-+ */
-+void homa_timer_check_rpc(struct homa_rpc *rpc)
-+	__must_hold(rpc->bucket->lock)
-+{
-+	struct homa *homa = rpc->hsk->homa;
-+	int tx_end = homa_rpc_tx_end(rpc);
++	  If unsure, say N.
+diff --git a/net/homa/Makefile b/net/homa/Makefile
+new file mode 100644
+index 000000000000..1e02be7f69d6
+--- /dev/null
++++ b/net/homa/Makefile
+@@ -0,0 +1,15 @@
++# SPDX-License-Identifier: BSD-2-Clause or GPL-2.0+
++#
++# Makefile for the Linux implementation of the Homa transport protocol.
 +
-+	/* See if we need to request an ack for this RPC. */
-+	if (!homa_is_client(rpc->id) && rpc->state == RPC_OUTGOING &&
-+	    tx_end == rpc->msgout.length) {
-+		if (rpc->done_timer_ticks == 0) {
-+			rpc->done_timer_ticks = homa->timer_ticks;
-+		} else {
-+			/* >= comparison that handles tick wrap-around. */
-+			if ((rpc->done_timer_ticks + homa->request_ack_ticks
-+					- 1 - homa->timer_ticks) & 1 << 31) {
-+				struct homa_need_ack_hdr h;
-+
-+				homa_xmit_control(NEED_ACK, &h, sizeof(h), rpc);
-+			}
-+		}
-+	}
-+
-+	if (rpc->state == RPC_INCOMING) {
-+		if (rpc->msgin.num_bpages == 0) {
-+			/* Waiting for buffer space, so no problem. */
-+			rpc->silent_ticks = 0;
-+			return;
-+		}
-+	} else if (!homa_is_client(rpc->id)) {
-+		/* We're the server and we've received the input message;
-+		 * no need to worry about retries.
-+		 */
-+		rpc->silent_ticks = 0;
-+		return;
-+	}
-+
-+	if (rpc->state == RPC_OUTGOING) {
-+		if (tx_end < rpc->msgout.length) {
-+			/* There are granted bytes that we haven't transmitted,
-+			 * so no need to be concerned; the ball is in our court.
-+			 */
-+			rpc->silent_ticks = 0;
-+			return;
-+		}
-+	}
-+
-+	if (rpc->silent_ticks < homa->resend_ticks)
-+		return;
-+	if (rpc->silent_ticks >= homa->timeout_ticks) {
-+		homa_rpc_abort(rpc, -ETIMEDOUT);
-+		return;
-+	}
-+	if (((rpc->silent_ticks - homa->resend_ticks) % homa->resend_interval)
-+			== 0)
-+		homa_request_retrans(rpc);
-+}
-+
-+/**
-+ * homa_timer() - This function is invoked at regular intervals ("ticks")
-+ * to implement retries and aborts for Homa.
-+ * @homa:    Overall data about the Homa protocol implementation.
-+ */
-+void homa_timer(struct homa *homa)
-+{
-+	struct homa_socktab_scan scan;
-+	struct homa_sock *hsk;
-+	struct homa_rpc *rpc;
-+	int rpc_count = 0;
-+
-+	homa->timer_ticks++;
-+
-+	/* Scan all existing RPCs in all sockets. */
-+	for (hsk = homa_socktab_start_scan(homa->socktab, &scan);
-+			hsk; hsk = homa_socktab_next(&scan)) {
-+		while (hsk->dead_skbs >= homa->dead_buffs_limit)
-+			/* If we get here, it means that Homa isn't keeping
-+			 * up with RPC reaping, so we'll help out.  See
-+			 * "RPC Reaping Strategy" in homa_rpc_reap code for
-+			 * details.
-+			 */
-+			if (homa_rpc_reap(hsk, false) == 0)
-+				break;
-+
-+		if (list_empty(&hsk->active_rpcs) || hsk->shutdown)
-+			continue;
-+
-+		if (!homa_protect_rpcs(hsk))
-+			continue;
-+		rcu_read_lock();
-+		list_for_each_entry_rcu(rpc, &hsk->active_rpcs, active_links) {
-+			homa_rpc_lock(rpc);
-+			if (rpc->state == RPC_IN_SERVICE) {
-+				rpc->silent_ticks = 0;
-+				homa_rpc_unlock(rpc);
-+				continue;
-+			}
-+			rpc->silent_ticks++;
-+			homa_timer_check_rpc(rpc);
-+			homa_rpc_unlock(rpc);
-+			rpc_count++;
-+			if (rpc_count >= 10) {
-+				/* Give other kernel threads a chance to run
-+				 * on this core.
-+				 */
-+				rcu_read_unlock();
-+				schedule();
-+				rcu_read_lock();
-+				rpc_count = 0;
-+			}
-+		}
-+		rcu_read_unlock();
-+		homa_unprotect_rpcs(hsk);
-+	}
-+	homa_socktab_end_scan(&scan);
-+	homa_skb_release_pages(homa);
-+	homa_peer_gc(homa->peertab);
-+}
++obj-$(CONFIG_HOMA) := homa.o
++homa-y:=        homa_incoming.o \
++		homa_interest.o \
++		homa_outgoing.o \
++		homa_peer.o \
++		homa_plumbing.o \
++		homa_pool.o \
++		homa_rpc.o \
++		homa_sock.o \
++		homa_timer.o \
++		homa_utils.o
 -- 
 2.43.0
 
