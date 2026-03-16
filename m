@@ -1,81 +1,273 @@
-Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 687412D97B8;
-	Mon, 16 Mar 2026 01:54:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB932DE70B
+	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 01:58:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773626095; cv=none; b=smCSqM4ccVCi0LWm8AuEA1UPgDjyZCKWqwVGzfcSIrPct6llQOUVMiLZIlz6oxvgeTOP7LFCZnNYUIyQ8ebFdN9U0rl837rG+ydklGtMgPhKeYtk6P6RL/KAlvwNJUaxGwXwws3Kls4tDRztZEB32mNQOy5EAnycSZLVx8Ct4WA=
+	t=1773626321; cv=none; b=PxWmvsU8uJ2roGXjXzzgM+bOBSWD5LKS0RcIEWQBkcOFak5K5XMHnGRL5xMdePofzTNL6KrFSkv9F4tGQVqq93Rp0RCgBiHYi+asWduLupf6loVksvRqR0teFGVWCGZid4pIT/w0sfg26jGZ/eFKnnpX4oVr90d1kz4j6wKNr3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773626095; c=relaxed/simple;
-	bh=J7/gESNJy6S3kRFzqwf0E0VTFd9Pp/MrdGZJfBuBI0o=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ofR7LkM0U+YQZg0MctE+/H3SOsJP62LKMh+VW8Dw0IFqvA6txtVJMT84TIggWfHkjmBFMicJHtObwQzay6M6VGAMERFUJC1KovwnExcStJO4SQ/Ns7JiIHgNwAwOxANMIioCKPrv3VYQLgGWoo0LLUOkHsZsKbhFtuqhn1r3w90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=R9ODD8kT; arc=none smtp.client-ip=113.46.200.225
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1773626321; c=relaxed/simple;
+	bh=l4CEmEmVPo7Rlnedq9fV7SChHHr5F1p3VlrEt8Y2ORw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HwkkF3hr2P3gjI/lF6FBHN1r2FRyM3aYTLlOkkdP0chOM4yHsi/qSTz4/d02Rmd4lFNMVVqXPpEE78G9hiaW8KQreGsqR7jjm3UmCaH0hYWUfbinD/LTpl3jRPZPcsFdYh5BS7g9iPt49Fel9CCHNa5Jh0GorrPuW0yq1x4Vtbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=aIRoR+7Q; arc=none smtp.client-ip=115.124.30.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="R9ODD8kT"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=FfYK48iz0QHiVZquZkBh70pLzRTF+BbJow8zuSGikbs=;
-	b=R9ODD8kTiPWBYT4eZeNFBpQgbjqMzCqKFGB69BtR0wOfpl5ZSpytbRr89XKvO/P1Yy++NTJJt
-	uE1YTYvtpDYvb92SXqUvjjdPeqXJ46QzIsr5H/8tf0nUvKYNQXu15/Mzw094C8b/cp3NfLnAv1z
-	JBe7kE2kTOMiecPyrjWNj5E=
-Received: from mail.maildlp.com (unknown [172.19.163.214])
-	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4fYyhC6Bkmz1K96N;
-	Mon, 16 Mar 2026 09:49:47 +0800 (CST)
-Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
-	by mail.maildlp.com (Postfix) with ESMTPS id B1C014056C;
-	Mon, 16 Mar 2026 09:54:43 +0800 (CST)
-Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.189.124) by
- kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Mon, 16 Mar 2026 09:54:42 +0800
-From: Fan Gong <gongfan1@huawei.com>
-To: <maxime.chevallier@bootlin.com>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<gongfan1@huawei.com>, <guoxin09@huawei.com>, <horms@kernel.org>,
-	<ioana.ciornei@nxp.com>, <kuba@kernel.org>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <luosifu@huawei.com>,
-	<netdev@vger.kernel.org>, <pabeni@redhat.com>, <shijing34@huawei.com>,
-	<wulike1@huawei.com>, <zhengjiezhen@h-partners.com>,
-	<zhoushuai28@huawei.com>, <zhuyikai1@h-partners.com>
-Subject: Re: [PATCH net-next v01 5/7] hinic3: Add MTU size validation
-Date: Mon, 16 Mar 2026 09:54:38 +0800
-Message-ID: <20260316015438.905-1-gongfan1@huawei.com>
-X-Mailer: git-send-email 2.51.0.windows.1
-In-Reply-To: <439753dc-496d-4e03-8480-ea409fb3d4bd@bootlin.com>
-References: <439753dc-496d-4e03-8480-ea409fb3d4bd@bootlin.com>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="aIRoR+7Q"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1773626310; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=HA3XgGePOkPpp9E9TbLIP9YeZ4aA3saQUw6q6V6cXjM=;
+	b=aIRoR+7QlfBpXWPYCz3I163c4/yEH2eGWXoVXLUxEIBs5lLQeNi+xOJ8OiPVbzdKSd3uHCKC7oSEy8tfB+/YrBYHj9Vd6Wd4w4EqR8CMUp1aH6EC1/kyk/HklSRn9Pa7UArBpuGkHbY05ukrfAXUE/3SzYfNPdWhXwMQGmJ94fk=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R851e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=xuanzhuo@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0X.-3zYP_1773626309;
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0X.-3zYP_1773626309 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 16 Mar 2026 09:58:30 +0800
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+To: netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	Philo Lu <lulie@linux.alibaba.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Dong Yibo <dong100@mucse.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Dust Li <dust.li@linux.alibaba.com>
+Subject: [PATCH net-next v32 0/8] eea: Add basic driver framework for Alibaba Elastic Ethernet Adaptor
+Date: Mon, 16 Mar 2026 09:58:21 +0800
+Message-Id: <20260316015829.65383-1-xuanzhuo@linux.alibaba.com>
+X-Mailer: git-send-email 2.32.0.3.g01195cf9f
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Git-Hash: a318e03b9506
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemf100013.china.huawei.com (7.202.181.12)
 
-On 3/13/2026 4:50 PM, Maxime Chevallier wrote:
-> Hi,
->
-> On 13/03/2026 08:54, Fan Gong wrote:
->>   Check whether the MTU size is within a reasonable range.
->
-> I don't get why this is needed when we have netdev->min_mtu and
-> netdev->max_mtu already to sanitize these parameters.
->
-> Is this patch needed, and if so can you explain why the
-> netdev->min/max_mtu parameters aren't enough ?
->
-> Maxime
->
+Add a driver framework for EEA that will be available in the future.
 
-Thanks for your two reviews. We overlooked redundant defensive code and
-pointer release operation in patch 2/7.
-We will fix them in next version.
+This driver is currently quite minimal, implementing only fundamental
+core functionalities. Key features include: I/O queue management via
+adminq, basic PCI-layer operations, and essential RX/TX data
+communication capabilities. It also supports the creation,
+initialization, and management of network devices (netdev). Furthermore,
+the ring structures for both I/O queues and adminq have been abstracted
+into a simple, unified, and reusable library implementation,
+facilitating future extension and maintenance.
 
-Fan gong
+v32:
+    1. remove unused parameters from eea_net_ha_reset_remove and eea_create_pp
+    2. call skb_mark_for_recycle for new skb for frag_list skbs
+
+v31:
+    1. remove unused parameter "enet" from eex_rx_post()
+
+v30:
+   1. fix some small problems
+
+v29:
+    Address AI-generated review suggestions from the previous version.
+
+v28:
+    Address AI-generated review suggestions from the previous version.
+
+v27:
+    Address AI-generated review suggestions from the previous version.
+
+v26:
+    Adopting suggestions from the previous AI review, another significant
+    change is the introduction of an IRQ block to implement IRQ proxying. With
+    this design, when an IRQ occurs, we no longer invoke the RX data structure
+    directly -- instead, the IRQ block serves as an intermediary proxy. This
+    approach offers several advantages: IRQ resources no longer need to be
+    reallocated during reset operations, and IRQs are decoupled from RX
+    structures. Consequently, when certain errors occur, we can fall back and
+    safely reuse the original memory resources.
+
+v25:
+    I have adopted most of the suggestions from the AI's feedback. However, I
+    believe some of the feedback is incorrect. I have already replied in the
+    previous thread. http://lore.kernel.org/all/1770002612.3297296-2-xuanzhuo@linux.alibaba.com
+
+v24:
+    1. Add null checks for enet->rx and enet->tx in eea_get_ethtool_stat to
+       prevent errors when reading rx = enet->rx[i] in case enet->rx is null.
+       tx is similar. With rtnl protection in place, this check is sufficient.
+    2. Use 'received' as the return value in eea_poll.
+
+v23:
+    I have moved netif_set_real_num_queues() out of eea_start_rxtx(), so
+    eea_start_rxtx() is now a void function. I believe enet_bind_new_q_and_cfg()
+    is a more suitable place to include netif_set_real_num_queues(). In
+    eea_active_ring_and_irq(), I first execute request_irq() before interacting
+    with the hardware to create queues. Therefore, during the NIC setup process,
+    all driver-internal operations (memory allocation, IRQ initialization, sysfs
+    configuration, etc.) will be completed before the final notification to the
+    hardware.
+
+v22:
+    1. Use the budget from the NAPI poll function as the parameter for
+       napi_consume_skb.
+    2. Stop the TX queue when the remaining ring slots cannot hold an SKB.
+
+v21:
+    Fix two issues from the previous version:
+    1, a DMA unmap operation was missing.
+    2, RCU APIs were not used in eea_stats. Although the standard practice when
+        using RCU would require adding the __rcu annotation to both the rx and
+        tx fields, in many cases these fields are read without needing RCU
+        protection.  Therefore, I do not want to add the __rcu annotation.
+        Instead, I use a spin lock to protect modifications to rx and tx.
+
+v20:
+    Fix the partially initialized structure passed to db. @Jakub
+    http://lore.kernel.org/all/20260113172353.2ae6ef81@kernel.org
+
+v19:
+    fix the comments from @Simon Horman
+
+v18:
+    v17 with [PATCH] prefix.
+
+v17:
+    1. In `eea_adminq_dev_status`, uniformly use `enet->cfg.rx_ring_num`.
+    2. Add a `struct eea_net_cfg *cfg` parameter to `eea_free_rx` and
+        `eea_free_tx`. When called in the normal path, pass `enet->cfg` as
+        the argument; when called during initialization, pass the temporary
+        `cfg` instead.
+    3. Move the `.ndo_get_stats64` callback into `eea_net.c`.
+    4. In the `.ndo_get_stats64` callback, add a comment explaining how the TX
+        and RX statistics are protected by RCU.
+
+       /* This function is protected by RCU. Here uses enet->tx and enet->rx
+        * to check whether the TX and RX structures are safe to access. In
+        * eea_free_rxtx_q_mem, before freeing the TX and RX resources, enet->rx
+        * and enet->tx are set to NULL, and synchronize_net is called.
+        */
+
+
+v16:
+    1. follow the advices from @ALOK TIWARI
+       http://lore.kernel.org/all/5ff95a71-69e5-4cb6-9b2a-5224c983bdc2@oracle.com
+
+v15:
+    1. remove 'default m' from eea kconfig
+    2. free the resources when open failed.
+
+v14:
+    1. some tiny fixes
+
+v13:
+    1. fix some tiny fixes @Simon
+
+v12:
+    I encountered some issues with sending the v11 patches, as they were quite
+    messy. Therefore, I'm resending them as v12.
+
+v11:
+    1. remove auto clean __free(kfree)
+    2. some tiny fixes
+
+v10:
+    1. name the jump labels after the target @Jakub
+    2. rm __GFP_ZERO from dma_alloc_coherent @Jakub
+v9:
+    1. some fixes for ethtool from http://lore.kernel.org/all/20251027183754.52fe2a2c@kernel.org
+
+v8: 1. rename eea_net_tmp to eea_net_init_ctx
+    2. rm code that allocs memory to destroy queues
+    3. some other minor changes
+
+v7: 1. remove the irrelative code from ethtool commit
+    2. build every commits with W12
+
+v6: Split the big one commit to five commits
+v5: Thanks for the comments from Kalesh Anakkur Purayil, ALOK TIWARI
+v4: Thanks for the comments from Troy Mitchell, Przemek Kitszel, Andrew Lunn, Kalesh Anakkur Purayil
+v3: Thanks for the comments from Paolo Abenchi
+v2: Thanks for the comments from Simon Horman and Andrew Lunn
+v1: Thanks for the comments from Simon Horman and Andrew Lunn
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Xuan Zhuo (8):
+  eea: introduce PCI framework
+  eea: introduce ring and descriptor structures
+  eea: probe the netdevice and create adminq
+  eea: create/destroy rx,tx queues for netdevice open and stop
+  eea: implement packet receive logic
+  eea: implement packet transmit logic
+  eea: introduce ethtool support
+  eea: introduce callback for ndo_get_stats64
+
+ MAINTAINERS                                   |   8 +
+ drivers/net/ethernet/Kconfig                  |   1 +
+ drivers/net/ethernet/Makefile                 |   1 +
+ drivers/net/ethernet/alibaba/Kconfig          |  28 +
+ drivers/net/ethernet/alibaba/Makefile         |   5 +
+ drivers/net/ethernet/alibaba/eea/Makefile     |   9 +
+ drivers/net/ethernet/alibaba/eea/eea_adminq.c | 444 ++++++++++
+ drivers/net/ethernet/alibaba/eea/eea_adminq.h |  75 ++
+ drivers/net/ethernet/alibaba/eea/eea_desc.h   | 134 +++
+ .../net/ethernet/alibaba/eea/eea_ethtool.c    | 243 ++++++
+ .../net/ethernet/alibaba/eea/eea_ethtool.h    |  49 ++
+ drivers/net/ethernet/alibaba/eea/eea_net.c    | 806 ++++++++++++++++++
+ drivers/net/ethernet/alibaba/eea/eea_net.h    | 195 +++++
+ drivers/net/ethernet/alibaba/eea/eea_pci.c    | 618 ++++++++++++++
+ drivers/net/ethernet/alibaba/eea/eea_pci.h    |  73 ++
+ drivers/net/ethernet/alibaba/eea/eea_ring.c   | 252 ++++++
+ drivers/net/ethernet/alibaba/eea/eea_ring.h   |  88 ++
+ drivers/net/ethernet/alibaba/eea/eea_rx.c     | 786 +++++++++++++++++
+ drivers/net/ethernet/alibaba/eea/eea_tx.c     | 403 +++++++++
+ 19 files changed, 4218 insertions(+)
+ create mode 100644 drivers/net/ethernet/alibaba/Kconfig
+ create mode 100644 drivers/net/ethernet/alibaba/Makefile
+ create mode 100644 drivers/net/ethernet/alibaba/eea/Makefile
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_adminq.c
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_adminq.h
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_desc.h
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ethtool.c
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ethtool.h
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_net.c
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_net.h
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_pci.c
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_pci.h
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ring.c
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ring.h
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_rx.c
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_tx.c
+
+--
+2.32.0.3.g01195cf9f
+
