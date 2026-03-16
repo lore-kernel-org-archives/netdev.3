@@ -1,127 +1,258 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF1B34F275
-	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 11:31:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773660690; cv=none; b=UjZNah+h115N6VOAhkRw8JlobXsbB9R9DFt+qGua+G1L3Bg/b1VD7BN2XhdVYH1honMxP5NloulTOp4kQpcuA+DilYyy+XbHXh1C4Dg4S89KXtQ4X7E0kD5b9rU0QlW455Py/M9mUJ5W4Z0gopSYDC32mK15clZcsbfRBVBBsd4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773660690; c=relaxed/simple;
-	bh=x41eV31hxlJisnvjCZwRk3vzucU2fR+zFSyw+lr74rQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hFxqLQuIm9i/OLa3M68yQMi3a03sVFv4NzWWjhRy0COlwCUI0ae288tA4syWHYaiIFPVorE0valXTB8dsG9CPSph8V7vr7Rtm2pcjUj0CTcv0pH0gxBUuwr6TubcaPv5svxIOHLOec5JnUCxg8BZX0zNJMlOs242pNGIsTYx/zQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e0yQ7JD+; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB2E2951B3;
+	Mon, 16 Mar 2026 11:35:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773660903; cv=fail; b=fivPm0SNnV679RqR5TREXXVK11ThjwikCV0MxPVWbQUzlux49Hm3+aKcMlBjJZQ80V6FrgSBQ4RsDJTxbqhtUJ9yrGKmZW6pE4LmkJJVZKuj6EZESX23tS7He7mQk/FCLlDwIT1FLzVgsa9fK2spzozOUrCq6tSb1ybrg0wEFyw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773660903; c=relaxed/simple;
+	bh=/pVL69eYvmKILaeP9bs9nsaVToHDmqeIvpflAWzPzKw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Zqc5fsNwkNIsTeGDzLbfH0sy77SMvlPa5mWV6c3dFNWz2BJVOFhHmr8efNIebSWEcp1CWO1w+vXLVWD3sAlCJW1BAUO4RVQqZMloZTwfdNtF8IS+MQWHOltg8B45QwwpqfPYGzizgDC0hrAwok6s0lZojFc6ZqX9ANKO7AZxkhI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DoMz/5Q1; arc=fail smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e0yQ7JD+"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2aecc6b0861so16934375ad.2
-        for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 04:31:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773660689; x=1774265489; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nUxyvqJzviVhefD42KOA7qmDsxVaOxQooZbeSkgqO4A=;
-        b=e0yQ7JD+wFYf2RhwmiPwGIx2Wpt+KWJLAOJE79ZXRtiS/hm6tnYtu6b+bMwgX7BBzS
-         MNaK2kqnZfOZEU6uL+d5sU9e24PHQCCNysMBSDnd9onvtv4/b9I/6OsDBTg3YnGNL8Cw
-         cTYEojYH/CGCPdls9yXymnYZ8N2q1ITA0VLMvRDs3TBpdbStBfcBoNJGWsalLawfL9+J
-         vISOKjO1qM62GyNvDlcDreWy8Jz9ZOZGuAbrtEUE+Nad3ugZGG9WvxEZyEc676h4ZIA6
-         /S0WX1643PCjFYQX7T0SdKfmcj4NhsA8XAdYlLTHMT65kwHz1dYxCwWrsGLXl5iSHlZk
-         c6Gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773660689; x=1774265489;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nUxyvqJzviVhefD42KOA7qmDsxVaOxQooZbeSkgqO4A=;
-        b=W+xpwTEQEUI8qr2IOI1PMJTT1451I3viDoauXzqCJiRZNK+5j/JYuh1D1HUgUwrp56
-         7/sDoxdAybJXBoRqjXDBrvKr+ubiHObspYExt1KaaQwLyLNCTvnEp0/bSf2v2HTYcXaX
-         ADEwVZRIVUPaN6nWjZg1gnE0qbaCXEtR5weUM6gAE8aTwL7ScR0iSZyNrproRi5rFpNS
-         y/8IrLjBwbGo5c9hnkKgqQVZYD6MxTlz04vk/+mBBnH/C51Ohp5MxmWdfQLmLqpEQg2w
-         9KkPPZ3tlIe9EpNcKlXqVkAEr/k/l0EUmiNGiR0Zmjn8RJ76KQFAUMryckdLRA3Qho88
-         NMwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWcCkryE6o8HLtYySwGa+WxmtmG4rfnG9Agmx2Jrm6c1AVqyaFAKcBJdvwvEOqHQez5PGZz/Qg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6DPmT3Kdeq9R91955DScoOAXrOAkhzo7hTYu5T3FAg7Vx+4RV
-	DKG+0OFZPftEfQYSyzgqRO9tsaIdC+fTSRdFBM8pIX8FrBqDgjuDM+k+
-X-Gm-Gg: ATEYQzwVLuV7hd1PIYwuDY+oeBHnNY03bixIuIjFdsZNij4ESmFCD5XR8sQ15jkMzyH
-	Cwyw0mLFh0uhhu0tIcHuzcb4jLteS7t3a8ntlhy8OEMV3zMtoPhVd12udWiYmSgyU8HxCbPsscI
-	khJpcplOTCLqx4ZspwBYtrdp+AqtPrwXu1jlyUH1EX3kPmP3AlBQSvgNGchuA6QvtbRBWwGQ12j
-	8dkUWKBP+v0ILEGjL8oT4hoCtIm6YcJujp98UIfuhcxd6i3mN7D2v+90PObVyq6oeeC4IIbWyr8
-	JIfXUDlbyWYMTRg5wqkkdbh6pNyRqrKs5wY5Dtb53lCq40iSZF8S1s/k42/g0n8gmlR9YQUgBYv
-	6PZVTl2UczzH99cfSrAvZUOO3L+/s57vM9R5ynbCiXtEkyVVkItQDZY1rX6uC+svVxc+Lcd7Cq7
-	PGAmYNJGtjJRfP3VIA1XupyctnzlKLgoJoOETRtXVHUA==
-X-Received: by 2002:a17:903:1447:b0:2ae:4800:141a with SMTP id d9443c01a7336-2aecaad02c7mr133260025ad.32.1773660688800;
-        Mon, 16 Mar 2026 04:31:28 -0700 (PDT)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b055cb5d60sm35787965ad.30.2026.03.16.04.31.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2026 04:31:28 -0700 (PDT)
-Date: Mon, 16 Mar 2026 20:31:24 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: Florian Westphal <fw@strlen.de>
-Cc: pablo@netfilter.org, phil@nwl.cc, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org, netdev@vger.kernel.org, imv4bel@gmail.com
-Subject: Re: [PATCH net] netfilter: nf_flow_table_offload: fix heap overflow
- in flow_action_entry_next()
-Message-ID: <abfqDMSC0cTGuvp0@v4bel>
-References: <aaxe-uH2Qr6qM4E9@v4bel>
- <aax2yZtJce0d19gd@strlen.de>
- <abfhRFfZ1LOgWEsf@strlen.de>
- <abfoTBGLhav-iPQb@v4bel>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DoMz/5Q1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773660902; x=1805196902;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=/pVL69eYvmKILaeP9bs9nsaVToHDmqeIvpflAWzPzKw=;
+  b=DoMz/5Q1y/yRFUAlZs63rXsiC0Uk7WLV9HI5v5ddjYRpwYzPa8Rg+ZRj
+   ofWX5a+vZ4yRvoxT9f7vKuVE8brSdaZbwkMsTV9EYrGJ6wBu3WhdIXDPC
+   nlaEOdT1YfZnYhfhWBAaO+7uzCpL14EhVwbDInUlqv7qZyAuNQj0sDR7v
+   czzyc85djGF3d6bLexh5AGmr4kakAGli0KSBbl+LszruC4wpkYBUPU5xj
+   mFOuyVSgQm8EZS5Q5AaGiOTdR7W1PiVmgVf04l4GloCLJz8YIkZWIrM5T
+   VtSm/neD3fbTtT85GJmGeJwwTOt/cE8vg2jakcdPNHbkCgu2DUTFxzIGN
+   Q==;
+X-CSE-ConnectionGUID: 3eyXBhkgTzGVZJwrTVX7iw==
+X-CSE-MsgGUID: USefvTA1Qp66YbGNHF+KdA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11730"; a="85374186"
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
+   d="scan'208";a="85374186"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 04:34:58 -0700
+X-CSE-ConnectionGUID: MYQlDWcYS22Zv1U/qd40nQ==
+X-CSE-MsgGUID: bqY7E41XRkWQ+GTeQeWcsQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
+   d="scan'208";a="218157226"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 04:34:57 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 16 Mar 2026 04:34:57 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Mon, 16 Mar 2026 04:34:57 -0700
+Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.58) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 16 Mar 2026 04:34:57 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NP1SujUuC7qJuc35MpMlffUM++6AMCqUh0luIrk/z7tQhPjyGfcxG7mB/C9cO9/Wj6nit/7WeFB/1y+1ErsUYMOYWaWK4Y+U41D4ZCDxoCX775/4NtUtaL0I2LfXd+Zt+w5i5PUcVPloyPyFp4xMCStWPLSqh4eeYcBJETNWrWaTWPR3p3DMI9e0lkhdicoSXXkWXszy4/7d9/MqVfaYsu5AFDbld4YJW+CIxy9tyJRjfV+mdFb/GnKVwFGAVeMtdQdqiPewY28SIH2nERLQBjolrPdi4XlFLYsz47Q7jnkrK7GOTTSWt57HDmwVsZpOqF5RxIOs8rKNeA2mVwMWvA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NNBZvvWnxug1QFGNnuAEshvu8aDrx+jXjI84vVg07fU=;
+ b=byCEFYny/s/nA5jUfF3eoAscAPqqkFltdjvXIyMRPOEmRHcgsld7T8oUQsADZTh6xvMvgS+0Miv2XkHcYbffIeijJikNbgtJmjNWnIumu/FXarFdhpK2vsHwLkFOe3iq8U/M73Fj05/LpUJ460L324fTQCYgpI3P1El60tVaIk/rstLjc4WKmyk+i3xLk7FJVhwO4P1MU48XFGPzchL1uXkDaAH59x0OFnTUyZUiKM5mmu2HHTZ751oFFD1Z7rhMV3nDyWRJeIIpH3YolkaLAesM2t4XHdKgHmcHV/zQyoLOQEDt7iFgrWbN4DX6J7/FLbBs0h9G3azJ16/dMJSACg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
+ by SA1PR11MB9657.namprd11.prod.outlook.com (2603:10b6:806:4dd::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.18; Mon, 16 Mar
+ 2026 11:34:54 +0000
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::e6f0:6afb:6ef9:ab5c]) by IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::e6f0:6afb:6ef9:ab5c%5]) with mapi id 15.20.9723.006; Mon, 16 Mar 2026
+ 11:34:54 +0000
+From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
+To: "Oros, Petr" <poros@redhat.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>
+CC: "Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>, Eric Dumazet
+	<edumazet@google.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, "Nguyen,
+ Anthony L" <anthony.l.nguyen@intel.com>, "intel-wired-lan@lists.osuosl.org"
+	<intel-wired-lan@lists.osuosl.org>, "Keller, Jacob E"
+	<jacob.e.keller@intel.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>
+Subject: RE: [Intel-wired-lan] [PATCH RFC iwl-next 1/4] iavf: rename
+ IAVF_VLAN_IS_NEW to IAVF_VLAN_ADDING
+Thread-Topic: [Intel-wired-lan] [PATCH RFC iwl-next 1/4] iavf: rename
+ IAVF_VLAN_IS_NEW to IAVF_VLAN_ADDING
+Thread-Index: AQHcqjl3DQLyrPIRZUueojti1eCG1LWxHU/g
+Date: Mon, 16 Mar 2026 11:34:54 +0000
+Message-ID: <IA3PR11MB89861519B35EE57D5D03969DE540A@IA3PR11MB8986.namprd11.prod.outlook.com>
+References: <20260302114025.1017985-1-poros@redhat.com>
+ <20260302114025.1017985-2-poros@redhat.com>
+In-Reply-To: <20260302114025.1017985-2-poros@redhat.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|SA1PR11MB9657:EE_
+x-ms-office365-filtering-correlation-id: 10e5cf0c-46c4-47b9-533b-08de83500b4c
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|1800799024|38070700021|18002099003|22082099003|56012099003;
+x-microsoft-antispam-message-info: S342cCa50pFO39QvAS54kG4W31FsLARV1IivvfEB5elNVJ4cKV/k/qV4YhwGLyVaFAaxvV5SHZedMu956rLRdAYmOG4MGZ+uWCu3lXlXwXQiRHkv0x63klfaibnu2C1sW4CySD+pzKlUxEBHbtLOZIcc7JQeBn3gUBL1qtWiSO1zFSIbBnl7D7M2kIE3xXogsbBgqG2hetmGINi9mEzhcklN3dm2JlqwWc+zgQGJqQ+ObiD/znvDtrGXXCanRW7PafP6j4Aa+Y/QIu6MxeVMcEO9tqdMEgYRq4/2NXhkAo1ofwfZ2Hm057jaAtZrAJIuX19hugEC9TH+C6ZsNJ462BfHgMlGquH/HU4iiUaX/RBueExmRJ+AW2ic1cwgvOTmsm2jkqbz7xkuWyrX5dwgSgzUe4xfmI+r4UMt1UGQdBjci5QKUENjy2EGNPCkV9MQYss7AAo5leF1ABi5j+uwubFne7A1ftL083l87HhiS7O6+utOl6caAOvYC2o1uT0TwPxiRglb63MkSk3at8XCpBMN9mGsJiM3kaP2Nu4Qgh4SvUJ/4XpFmw7T6ChtxU6bbXhUxGq5o0Vi9213JL18HgH2LhwiU6bLnqAAF1RH0sQJCsTo53ZA7uKzydhTGVDurdx7sG4WKpQLQZvIeyyjzT6NRsxdi1GS6Mh1oEMhd+mkyZ+tFfImRTydXVhalLkrEAdslFJUJVVUSo+2hloQhBerniRNbn9Qax7n9UiIv8sYyOp1RloiSE1uLKRabh80X6etsuZoNr10FH2TKsExHKVOH6KVrZCmtj3/Ufj/bD0=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(38070700021)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?sZ19WW634GrGCNExaQSYkEd3SfA+0HFb5wlmD1Die2kGddF/rQj2MThjbbZ8?=
+ =?us-ascii?Q?nX+Kwp01q/6MdsoCRB0gznXuIm8WeT1/eQ422tWj6yJ0hlB5LIAIvGKSUrn1?=
+ =?us-ascii?Q?uLY8KKC7cCR2T4IvVjtMRNy+xGZ1c2MSD09UKaHO1JeObZFMkkXTy9+Kay/L?=
+ =?us-ascii?Q?mG5U/pyt2n7uH5TW3MXHUM68OKPwoo1Y5WwLx6gQrSrqLbWL5+xsUxtC6hZT?=
+ =?us-ascii?Q?SDwjKWPEFmie1BonaLjZPlqy7xuGAmRdWdjAZIxl46+yb3z4fzAgmmBEwY7I?=
+ =?us-ascii?Q?69aVBD7MOcPRzYHe9K+nJbBcJLWIwwxKIir8c/5JTjgGJRX1nknu7goXt2Vn?=
+ =?us-ascii?Q?YOGBrQrPEdlKRkgdLM56lq86OjzxTH7eL2fbRDdmwqze+Pe4lFGit5iDwJO8?=
+ =?us-ascii?Q?dB0YxTGSgptByldYF+1GwNrFJ49zmRRsL/pur8j3JNIpb9lFsG5b67sn7rq+?=
+ =?us-ascii?Q?BPtp0Jwfa/Du53rAebbgY+ZbmR63rZ2cuCNgqMovATxikvWO6mWIyyUAR/11?=
+ =?us-ascii?Q?JTDz9AhYDq6rAII0lSjeyba8qCEbpwb/9j3onClttszWRvn4izqvCOVpdN8y?=
+ =?us-ascii?Q?dyAaBUHllMMRS2PPK/9iKPO7QLayk7S1qonHNrT8R5xXkimXJnMj4ZPi+wlz?=
+ =?us-ascii?Q?hTqicIXegi1IlRPNOWK1iJuDI2qoNFzui2HYePEQnxJaVCrZiL/nVY5Bv1vs?=
+ =?us-ascii?Q?Uo+Tk3ZWBiBDz7uxoVSSBg7IChBGEviIRVRw7ZiytTtIpumXew5NtVTqC9aw?=
+ =?us-ascii?Q?U8c0D4JJPnc2aQkzKjPTVz1W+kOp56XjSRn+7HGEDbhGi9krldMCb7Sxhdoz?=
+ =?us-ascii?Q?71ES941mXt2Eqfz7k9BUGhb6MgOqhIajnha3z6a+tyqPy1q0uCw1z7Bmvb/Z?=
+ =?us-ascii?Q?Qd02qQC6sDTLMwruhD7Acxt/bpn6N53WYKklq/bo+Oo2VezrcbHmAkUdez0K?=
+ =?us-ascii?Q?BjjlvSATwoA+Fo95uNsYMP6viAsJSxOZxEp+IMcB1+pc6xuvRjOVUhqUvswu?=
+ =?us-ascii?Q?kdI+zdUts26nsrBcREKPmsKM5FUK9bmnWZKQyHc9uwARpP4Rv/l0uI5Efvif?=
+ =?us-ascii?Q?RQ7bvMZfxlxS4jXaDl+tfsQbLfStZcbadhySO7HHlFcrBNYaqVagVYo0kLwY?=
+ =?us-ascii?Q?8ashp/p6gJ5lxVVbU/sU+Iy6rNTnSag7F5v2+F7fWwB/ngIeIi3AkpRDjA6K?=
+ =?us-ascii?Q?jD7hsvv0+ebZgHmUtrZE7fvgTMZw6MUMDGIy85Abn941MET9n6docZvUlYOA?=
+ =?us-ascii?Q?/i7amWN3MVmQDgA2cUkGReDbNJ96f3MR4zbJKq+lidMg9HT5Fu22MH9Oj+Ft?=
+ =?us-ascii?Q?PcjJg4S7E7+zQYcyojmSXo81hrG02G5RtBbwL6vt3K1XQOi7Q6YswSLTgo5b?=
+ =?us-ascii?Q?XEyecF1opyMfJPEqn2T5fFxvoKYaLetp8OauxGGy39Mv/iz3u/8xjMAWh3LK?=
+ =?us-ascii?Q?+bsMZMMQHF3I1NWU762taaui34Rg3S2KJLA/5u8o9k7z5xVsXPfSiMbVouEU?=
+ =?us-ascii?Q?ZnxhctR4mx+0VDTrHbNOPFVF/TpFe29SpIZgu9+JFU1FTnzZ97R0EUfrsQRD?=
+ =?us-ascii?Q?ckf9pbDhTron7DGCJyNgIjCjoqQXWys7LYuEGHlf1kMgk0dcXq8OFwVV+iJG?=
+ =?us-ascii?Q?xj9zrtyO94NYp0bGssY24HQJCiHSjZtlL7+ABfXNhmNDFWdiIGrrGdm6/IhQ?=
+ =?us-ascii?Q?cQlB4JSzlhFuhCesLWbuzYWcYYsy1GgsfX1G6+ORL1mWeODVokpuA2B2+mAr?=
+ =?us-ascii?Q?yQRP2q8OpLBqr8Sp1YM0alK1xK+RO0E=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <abfoTBGLhav-iPQb@v4bel>
+X-Exchange-RoutingPolicyChecked: IYyJ/kMa4NIdKYZ+GBd+ibMXfbeeZtFT/BHLred1lHqniBu9umo6pPcZ/4ppXt3Uju+S2YIbJaqsB99hB3yJnJNtkV5ToHVRciUx5shq/2Y3e+RU1cqGC7RaKjbNLqjwG3zFSZCZdoL/kd/X/vcj8nTUj368dccU842rewIpPI5US6SVosMnU9Pk2NbCeoBjekS0jIwTfswGg4DwzZCS51JHFLuxaD3Nq8vZyN9FRDV0B1aD9vb/TAmnB2jXD+iWr+khj/x8IokKdv2w8TMxnT/yP0ILBYpU33fAt89x5l9XLCbxX7VJs45vAyRmekGsoP/PQg+LmbzEBOV0tcLfVA==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 10e5cf0c-46c4-47b9-533b-08de83500b4c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Mar 2026 11:34:54.3071
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: +1hYfx4O/SKyUxPwEFZZqrlSG+iQzEBr+p11ChXcbGzYOc6qmiLQj2Fy4ttmg6GHN51EOdbjXwukfTJoGmbiWe7D1YgB/DL+15F9md+mU3w=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB9657
+X-OriginatorOrg: intel.com
 
-On Mon, Mar 16, 2026 at 08:23:56PM +0900, Hyunwoo Kim wrote:
-> On Mon, Mar 16, 2026 at 11:53:56AM +0100, Florian Westphal wrote:
-> > Florian Westphal <fw@strlen.de> wrote:
-> > > Hyunwoo Kim <imv4bel@gmail.com> wrote:
-> > > > flow_action_entry_next() increments num_entries and returns a pointer
-> > > > into the flow_action_entry array without any bounds checking.  The array
-> > > > is allocated with a fixed size of NF_FLOW_RULE_ACTION_MAX (16) entries,
-> > > > but certain combinations of IPv6 + SNAT + DNAT + double VLAN (QinQ)
-> > > > require 17 or more entries, causing a slab-out-of-bounds write in the
-> > > > kmalloc-4k slab.
-> > > > 
-> > > > The maximum possible entry count is:
-> > > >   tunnel(2) + eth(4) + VLAN(4) + IPv6_NAT(10) + redirect(1) = 21
-> > > > 
-> > > > Increase NF_FLOW_RULE_ACTION_MAX to 24 (with headroom) to cover the
-> > > >  
-> > > > -#define NF_FLOW_RULE_ACTION_MAX	16
-> > > > +#define NF_FLOW_RULE_ACTION_MAX	24
-> > > 
-> > > This fix looks rather fragile.
-> > > 
-> > > What guarantees that this stays right-sized?
-> > > 
-> > > Can you add a BUILD_BUG_ON or if needed, run-time check?
-> > 
-> > Ping.  I'm not even sure if there is a bug to begin with, see Pablos
-> 
-> Sorry for the late reply.
-> 
-> To clarify, I triggered the overflow using a dummy device that accepts
-> TC_SETUP_FT, as I don't have real offload-capable hardware. The 17 entry
-> scenario requires double VLAN (QinQ) + IPv6 + SNAT + DNAT simultaneously,
-> which is unlikely in real-world deployments, so it is hypothetical.
-> 
-> > response.  How did you conclude there is a missing bounds check and that
-> > this increase is the best fix?
-> > 
-> > Normally there should be a check that prevents such a configuration.
-> > If thats missing, please add one instead of increasing this define.
-> 
-> So, should I send a v2 with a bounds check, or drop this patch?
 
-+ Since this is not a real-world environment, it seems better not to apply 
-the patch.
+
+> -----Original Message-----
+> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
+> Of Petr Oros
+> Sent: Monday, March 2, 2026 12:40 PM
+> To: netdev@vger.kernel.org
+> Cc: Kitszel, Przemyslaw <przemyslaw.kitszel@intel.com>; Eric Dumazet
+> <edumazet@google.com>; linux-kernel@vger.kernel.org; Andrew Lunn
+> <andrew+netdev@lunn.ch>; Nguyen, Anthony L
+> <anthony.l.nguyen@intel.com>; intel-wired-lan@lists.osuosl.org;
+> Keller, Jacob E <jacob.e.keller@intel.com>; Jakub Kicinski
+> <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>; David S. Miller
+> <davem@davemloft.net>
+> Subject: [Intel-wired-lan] [PATCH RFC iwl-next 1/4] iavf: rename
+> IAVF_VLAN_IS_NEW to IAVF_VLAN_ADDING
+>=20
+> Rename the IAVF_VLAN_IS_NEW state to IAVF_VLAN_ADDING to better
+> describe what the state represents: an ADD request has been sent to
+> the PF and is waiting for a response.
+>=20
+> This is a pure rename with no behavioral change, preparing for a
+> cleanup of the VLAN filter state machine.
+>=20
+> Signed-off-by: Petr Oros <poros@redhat.com>
+> ---
+>  drivers/net/ethernet/intel/iavf/iavf.h          | 2 +-
+>  drivers/net/ethernet/intel/iavf/iavf_virtchnl.c | 8 ++++----
+>  2 files changed, 5 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/drivers/net/ethernet/intel/iavf/iavf.h
+> b/drivers/net/ethernet/intel/iavf/iavf.h
+> index a87e0c6d4017ad..8e6db72828ae14 100644
+> --- a/drivers/net/ethernet/intel/iavf/iavf.h
+> +++ b/drivers/net/ethernet/intel/iavf/iavf.h
+> @@ -158,7 +158,7 @@ struct iavf_vlan {
+>  enum iavf_vlan_state_t {
+>  	IAVF_VLAN_INVALID,
+>  	IAVF_VLAN_ADD,		/* filter needs to be added */
+> -	IAVF_VLAN_IS_NEW,	/* filter is new, wait for PF answer */
+> +	IAVF_VLAN_ADDING,	/* ADD sent to PF, waiting for response */
+>  	IAVF_VLAN_ACTIVE,	/* filter is accepted by PF */
+>  	IAVF_VLAN_DISABLE,	/* filter needs to be deleted by PF, then
+> marked INACTIVE */
+>  	IAVF_VLAN_INACTIVE,	/* filter is inactive, we are in IFF_DOWN
+> */
+> diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+> b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+> index 88156082a41da6..5114934fe81fa6 100644
+> --- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+> +++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+> @@ -746,7 +746,7 @@ static void iavf_vlan_add_reject(struct
+> iavf_adapter *adapter)
+>=20
+>  	spin_lock_bh(&adapter->mac_vlan_list_lock);
+>  	list_for_each_entry_safe(f, ftmp, &adapter->vlan_filter_list,
+> list) {
+> -		if (f->state =3D=3D IAVF_VLAN_IS_NEW) {
+> +		if (f->state =3D=3D IAVF_VLAN_ADDING) {
+>  			list_del(&f->list);
+>  			kfree(f);
+>  			adapter->num_vlan_filters--;
+> @@ -812,7 +812,7 @@ void iavf_add_vlans(struct iavf_adapter *adapter)
+>  			if (f->state =3D=3D IAVF_VLAN_ADD) {
+>  				vvfl->vlan_id[i] =3D f->vlan.vid;
+>  				i++;
+> -				f->state =3D IAVF_VLAN_IS_NEW;
+> +				f->state =3D IAVF_VLAN_ADDING;
+>  				if (i =3D=3D count)
+>  					break;
+>  			}
+> @@ -874,7 +874,7 @@ void iavf_add_vlans(struct iavf_adapter *adapter)
+>  				vlan->tpid =3D f->vlan.tpid;
+>=20
+>  				i++;
+> -				f->state =3D IAVF_VLAN_IS_NEW;
+> +				f->state =3D IAVF_VLAN_ADDING;
+>  			}
+>  		}
+>=20
+> @@ -2911,7 +2911,7 @@ void iavf_virtchnl_completion(struct
+> iavf_adapter *adapter,
+>=20
+>  		spin_lock_bh(&adapter->mac_vlan_list_lock);
+>  		list_for_each_entry(f, &adapter->vlan_filter_list, list)
+> {
+> -			if (f->state =3D=3D IAVF_VLAN_IS_NEW)
+> +			if (f->state =3D=3D IAVF_VLAN_ADDING)
+>  				f->state =3D IAVF_VLAN_ACTIVE;
+>  		}
+>  		spin_unlock_bh(&adapter->mac_vlan_list_lock);
+> --
+> 2.52.0
+
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
