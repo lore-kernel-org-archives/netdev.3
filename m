@@ -1,179 +1,126 @@
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010011.outbound.protection.outlook.com [52.101.61.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CEC38F647;
-	Mon, 16 Mar 2026 10:49:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773658148; cv=none; b=h/ToasZI4aLv2/crV2Kz0A+xzyUFnzMLe6V+OOT+9wmi/HucjDGXTOpsl4EU07i0NuE5i8dhn0teDgqcDHDccqqiIz55E88W1pmwz/LUYX6KvpLLN9R0dMm3IdWILzMJ+nb/f2BNL5q6wVtNjYkMNIPQLBiAKGwmcn0fVEw1xgw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773658148; c=relaxed/simple;
-	bh=pcBInRXljuxWY7idQ1IavWdC4W1j9biZUfLQAdA/ZYo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XQn2vXf8zo1RPg57YDLmoArkY8BTLx3BFNaZr56ffBEyOy4PtIn6QDvJZ645lmhhiCiajqVkn1PtA3CJlrUZ+ReyHhViYcYZcwoHbkfT590G7PcV951uEbc3Wd5xXUirZH4xPs/Hj50LLKV5/QV6yc6644ZcoNXVhIO9NNbYNuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=Wg+EpSmr; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCB6372ED7;
+	Mon, 16 Mar 2026 10:49:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773658175; cv=fail; b=tWs59a49UX42U9ArrQ0rGcalhBX34IowG1KdJ8SMPyV3V7wXTLocYZ3Bz9xl4SY3wJAC/4tPj+K7NW0OVCo6EiqrNS0FwhyFgYLgNR4sq0rSmdTG9cKQlLebgRJiizIM5FA5yDH9csoJCGU55rlPoMdjAnO7Fh9tZqERGtPKuQI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773658175; c=relaxed/simple;
+	bh=xScQocWwUTo3g856MgeOWXj0yNnZyDhGzwFSpj/jxXA=;
+	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=KSwV0XyaOgty/lKrinNECxpjwzMiB4EneBshEFBr5GxVoDwW2f5IxKBa9pLY2rp0+5N2H0xMiSvdwnwuCC+2UvfOR/cvavUX+KyIwFgVmw4/i/EvSpCpEFVLaRbpkQUg8hBG2T09ZQKe70C0I0x50XIqDYnTRIMKo69ef7IR7lg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=L6ospCvs; arc=fail smtp.client-ip=52.101.61.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="Wg+EpSmr"
-Received: from debian.intra.ispras.ru (unknown [10.10.165.34])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 08BA5413A4D8;
-	Mon, 16 Mar 2026 10:39:28 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 08BA5413A4D8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1773657568;
-	bh=cNyD/KYGWkpwWO1lBjOBW0L9+aqawWpVjwVrtSSo5fs=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Wg+EpSmryxhx46thTb9IQiXZJqjaAtV4V6NYGkZZ9nQP6TyrsBiyYX2ceuKNVCbn/
-	 GzQcf/5P5rG5XQT0RrytCnW/zW6CYv3uj/gHNjM8F3FMvqFrsmjg6NPuJG8lrm3FVt
-	 +5uzZ5wuo/NA57vqks736YHjuH5qsBvUrKfUlLN8=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Rafal Ozieblo <rafalo@cadence.com>,
-	"Andrei.Pistirica@microchip.com" <Andrei.Pistirica@microchip.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH net 1/2] net: macb: fix use-after-free access to PTP clock
-Date: Mon, 16 Mar 2026 13:38:24 +0300
-Message-ID: <20260316103826.74506-1-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="L6ospCvs"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Bktd/B+1q0hyGYOOYgRNlv4hbcjtxpH0TzIognORrLL0vz9iZOpb53Yq8KyI/gUNLgsnqQnvFbvlFXtdArWmRuhqNAJ29RcgRN/6uvEr5mekXGxkg6ZNPNsYztSpn9pnsK7nfu3wlA5dlxdLfpaw+bv/ERVgextROn2q2ECu0IUfK2CpiTHuCb/IBiXykKBXfyc+Gv+xWHn8UGjX9BKRiu1xQ9U6QpYxwF2GlWpiwmnZxl2Qdu0+/fW2yLFOykJJfAamzFz39ZDjK24UxfNEXkI7Mfm4kwnDfuqoBS5OIv4B0Kt1Nz5v3vYegxA8wkKOi8v9LLceiIoXbJSr3Qhsug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VdPrAva5GtBuiPJl36ysVe8bqHTx8pJ8OLDVhca3+p0=;
+ b=vTXutYN5DpQ0to01mPduCr0ebFXZ52QLCJ0HwFcQly4YQmH4DgxS3+0XLJpyiWLXS3KZ6IPcXwc1gwqR5V6KT/Xi48d0IpeZXXldPRwNOHeuZ0yIzSKozSvOx6/FHl5wcQvkIagGIWD9Rjwx3xLuv48Mi4ZYOtpvlO9MBxkTbjmLPY37F3nEMBtMg0ZZouRH+AiAdpBlrMZBbdtj0YlzcYdpB2OC+4FpmIt3SrEUjXkvCJub0GGV/ckUxDVTdKIjNIdq6ckM9BUEa8o9PrJq3A4Lf/FALwXh5SCIQtIjFxp83yNQT9kHMB5PNo+AzjD46C7JzJkuKNYmnxpSIEAIjQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VdPrAva5GtBuiPJl36ysVe8bqHTx8pJ8OLDVhca3+p0=;
+ b=L6ospCvsRK3Cgv8IUCLmyyBQFYHJBpAakOyC8kNMGlpJd/0MmuLC+7W9c5BMxxMuyzQ3lSjqXIjBdJI9CoSPV6oAJ7kwT6IPlJMnd2s7Ch4BUtab4jfDJhPGxAhkve/Y2DhLsIiGsOVXhxQ4arbCkeTskTe02SNSWgHutCsSK/3e973kE2Lc7WVFcgX7Ctx3jm5ujHRpQqd/QDSy1+yQ3FOMRZSbeDiej0Cd+TX6H4rexFzfi7NMfD5s/p/penldtOAaqVlMXWOaunquI4FriDqMJua/6koTjKcVA4IM2ih+X4W35d+lFNjt2R1X7iRodmfdAUQ6aEnV97yP4pXvow==
+Received: from PH7P220CA0049.NAMP220.PROD.OUTLOOK.COM (2603:10b6:510:32b::16)
+ by CY5PR12MB6405.namprd12.prod.outlook.com (2603:10b6:930:3e::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.13; Mon, 16 Mar
+ 2026 10:49:29 +0000
+Received: from SN1PEPF00036F3F.namprd05.prod.outlook.com
+ (2603:10b6:510:32b:cafe::70) by PH7P220CA0049.outlook.office365.com
+ (2603:10b6:510:32b::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9700.22 via Frontend Transport; Mon,
+ 16 Mar 2026 10:49:26 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ SN1PEPF00036F3F.mail.protection.outlook.com (10.167.248.23) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9700.17 via Frontend Transport; Mon, 16 Mar 2026 10:49:28 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 16 Mar
+ 2026 03:49:02 -0700
+Received: from fedora (10.126.230.35) by rnnvmail201.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 16 Mar
+ 2026 03:48:57 -0700
+References: <20260315160038.3187730-1-kuba@kernel.org>
+User-agent: mu4e 1.8.14; emacs 30.2
+From: Petr Machata <petrm@nvidia.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: <davem@davemloft.net>, <netdev@vger.kernel.org>, <edumazet@google.com>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>,
+	<shuah@kernel.org>, <petrm@nvidia.com>, <leitao@debian.org>,
+	<noren@nvidia.com>, <gal@nvidia.com>, <linux-kselftest@vger.kernel.org>
+Subject: Re: [PATCH net-next] selftests: net: py: give bpftrace more time to
+ start
+Date: Mon, 16 Mar 2026 10:33:02 +0100
+In-Reply-To: <20260315160038.3187730-1-kuba@kernel.org>
+Message-ID: <87eclkcane.fsf@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF00036F3F:EE_|CY5PR12MB6405:EE_
+X-MS-Office365-Filtering-Correlation-Id: c61ef5ee-a680-47d2-c207-08de8349b2a0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|7416014|376014|36860700016|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	lA0htUrEu05rBrgGk207jykuq5NrseKgeTbBHNgiN9Rl5jPv58LV8/TB6Gku/OS34qNjSmkmlmaNQUim6g2jcC90kLUe0XWoAAQGMiIJAFTHtcUPtfJprtSAIeFpPBx7EeAkJ9iZ1gW1rsfPKnbGqOvexKnZ0/tmrJuQXro5DOaVmTj+2nHJdcIHX/kVsoll9Ad92HC6FzM2aSgvw7omxpvekT7EwkOKDAP8ynln4sWEfZtqTfo7X8EeMb8mfXmXI9MfYL8WytEdoSW0PCP6vuN3CXLv8Vf5oEsKdPbax7yH6iNkVc47VK/HVk5lDA3fMlZQPZSKGooiXw5mR3KUkY4X4gTP3upCNZHoGM96kl5wAcpD8z6Ky7d9Ph6NBBO6AR2bhkXOm704bmvA+j649eAC95YSYElu8KOsSsUFlC5sdUpaaZUQF3hXBk4rfmu1zPZUhE/UkXutsZvpcY0KUYIUmqOjSBiZTVwVjsXMvPCVxMafUg0DCYq83PcVRJjTITwnAF4yCqQQk0pK05f+91d+2HgV+Z/ncKMfzNtw44sPA0L3Ukf4jNHBPnNTC+iOW3c+c5cPWEpz5Gpt3pD2ANsZswTcl78MjfA6CMMnfUSD4PdxzBHjVIHfxxgmgVIRko36mILNGM6dQ30Q86nFGcGkjxTHavuqYVAr3g07pA5uuU4Eyyhi7zTVQGtSRCMmSBOAy2MwHcCoe77MGEcXqa0ejVeMBSvbeTL/774ZcTNZ/j8/jx61MfUaiItEl53fVvLUsbwfExWhQXk8bqakvQ==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(7416014)(376014)(36860700016)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	JeGCHpijCjjz/gdRDcHb6TeDucFYLYzi3kTklcQDnva8ZvgYLSOT0kvjE3peURTgRc6Fe2ESqQgu43scU31FDXmeTqgSqz3wSH5TRJt3Wf3JP732QW/x1zYbwO5hoyVDdAYxxttm//H0Us9/YzF/T3uOa5YfNU9bO/Is0fnw0Zqx7fQ9EigBAeKXq6vS9iSb3+RJLjd185Ft3aOZ9LB5Rc3kHGBY4xWyMbarPrj7U4FE0dOdI9FBbJi6vubxy9jOg3Bc8+FUv1tvOeXejuDe7Xfs+L36hCUzivkuRAN4GX33T+4f9fbxI6uJ9rPM/1+4z/Rl7RiDaOz0XQ67oA7fWv0o8e4q3x5r+ZJdnNVcL3CAKPYXuzS2ue1IwiKcjutsqz8/G/o1/F9oeMLBjp6GWaDP1fLoTzRXlIac1sYLLI+IddsFdTyRcqCaDk8Kr+yX
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Mar 2026 10:49:28.4336
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c61ef5ee-a680-47d2-c207-08de8349b2a0
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF00036F3F.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6405
 
-PTP clock is registered on every opening of the interface and destroyed on
-every closing.  However it may be accessed via get_ts_info ethtool call
-which is possible while the interface is just present in the kernel.
 
-BUG: KASAN: use-after-free in ptp_clock_index+0x47/0x50 drivers/ptp/ptp_clock.c:426
-Read of size 4 at addr ffff8880194345cc by task syz.0.6/948
+Jakub Kicinski <kuba@kernel.org> writes:
 
-CPU: 1 PID: 948 Comm: syz.0.6 Not tainted 6.1.164+ #109
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.1-0-g3208b098f51a-prebuilt.qemu.org 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x8d/0xba lib/dump_stack.c:106
- print_address_description mm/kasan/report.c:316 [inline]
- print_report+0x17f/0x496 mm/kasan/report.c:420
- kasan_report+0xd9/0x180 mm/kasan/report.c:524
- ptp_clock_index+0x47/0x50 drivers/ptp/ptp_clock.c:426
- gem_get_ts_info+0x138/0x1e0 drivers/net/ethernet/cadence/macb_main.c:3349
- macb_get_ts_info+0x68/0xb0 drivers/net/ethernet/cadence/macb_main.c:3371
- __ethtool_get_ts_info+0x17c/0x260 net/ethtool/common.c:558
- ethtool_get_ts_info net/ethtool/ioctl.c:2367 [inline]
- __dev_ethtool net/ethtool/ioctl.c:3017 [inline]
- dev_ethtool+0x2b05/0x6290 net/ethtool/ioctl.c:3095
- dev_ioctl+0x637/0x1070 net/core/dev_ioctl.c:510
- sock_do_ioctl+0x20d/0x2c0 net/socket.c:1215
- sock_ioctl+0x577/0x6d0 net/socket.c:1320
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:870 [inline]
- __se_sys_ioctl fs/ioctl.c:856 [inline]
- __x64_sys_ioctl+0x18c/0x210 fs/ioctl.c:856
- do_syscall_x64 arch/x86/entry/common.c:46 [inline]
- do_syscall_64+0x35/0x80 arch/x86/entry/common.c:76
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
- </TASK>
+> After commit under Fixes debug runners in the CI hit the following:
+>
+>   # subprocess.TimeoutExpired: Command '['bpftrace', '-f', 'json', '-q', '-e', 'kprobe:netpoll_poll_dev { @hits = count(); } interval:s:10 { exit(); }']' timed out after 15 seconds
+>   # # Exception| net.lib.py.ksft.KsftFailEx: bpftrace failed to run!?: {}
+>
+> in netpoll_basic.py >10% of the time. Let's give bpftool more time
+> to start, it can take a while on a debug kernel.
+>
+> Fixes: 82562972b854 ("selftests: net: pass bpftrace timeout to cmd()")
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-Allocated by task 457:
- kmalloc include/linux/slab.h:563 [inline]
- kzalloc include/linux/slab.h:699 [inline]
- ptp_clock_register+0x144/0x10e0 drivers/ptp/ptp_clock.c:235
- gem_ptp_init+0x46f/0x930 drivers/net/ethernet/cadence/macb_ptp.c:375
- macb_open+0x901/0xd10 drivers/net/ethernet/cadence/macb_main.c:2920
- __dev_open+0x2ce/0x500 net/core/dev.c:1501
- __dev_change_flags+0x56a/0x740 net/core/dev.c:8651
- dev_change_flags+0x92/0x170 net/core/dev.c:8722
- do_setlink+0xaf8/0x3a80 net/core/rtnetlink.c:2833
- __rtnl_newlink+0xbf4/0x1940 net/core/rtnetlink.c:3608
- rtnl_newlink+0x63/0xa0 net/core/rtnetlink.c:3655
- rtnetlink_rcv_msg+0x3c6/0xed0 net/core/rtnetlink.c:6150
- netlink_rcv_skb+0x15d/0x430 net/netlink/af_netlink.c:2511
- netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
- netlink_unicast+0x6d7/0xa30 net/netlink/af_netlink.c:1344
- netlink_sendmsg+0x97e/0xeb0 net/netlink/af_netlink.c:1872
- sock_sendmsg_nosec net/socket.c:718 [inline]
- __sock_sendmsg+0x14b/0x180 net/socket.c:730
- __sys_sendto+0x320/0x3b0 net/socket.c:2152
- __do_sys_sendto net/socket.c:2164 [inline]
- __se_sys_sendto net/socket.c:2160 [inline]
- __x64_sys_sendto+0xdc/0x1b0 net/socket.c:2160
- do_syscall_x64 arch/x86/entry/common.c:46 [inline]
- do_syscall_64+0x35/0x80 arch/x86/entry/common.c:76
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-Freed by task 938:
- kasan_slab_free include/linux/kasan.h:177 [inline]
- slab_free_hook mm/slub.c:1729 [inline]
- slab_free_freelist_hook mm/slub.c:1755 [inline]
- slab_free mm/slub.c:3687 [inline]
- __kmem_cache_free+0xbc/0x320 mm/slub.c:3700
- device_release+0xa0/0x240 drivers/base/core.c:2507
- kobject_cleanup lib/kobject.c:681 [inline]
- kobject_release lib/kobject.c:712 [inline]
- kref_put include/linux/kref.h:65 [inline]
- kobject_put+0x1cd/0x350 lib/kobject.c:729
- put_device+0x1b/0x30 drivers/base/core.c:3805
- ptp_clock_unregister+0x171/0x270 drivers/ptp/ptp_clock.c:391
- gem_ptp_remove+0x4e/0x1f0 drivers/net/ethernet/cadence/macb_ptp.c:404
- macb_close+0x1c8/0x270 drivers/net/ethernet/cadence/macb_main.c:2966
- __dev_close_many+0x1b9/0x310 net/core/dev.c:1585
- __dev_close net/core/dev.c:1597 [inline]
- __dev_change_flags+0x2bb/0x740 net/core/dev.c:8649
- dev_change_flags+0x92/0x170 net/core/dev.c:8722
- dev_ifsioc+0x151/0xe00 net/core/dev_ioctl.c:326
- dev_ioctl+0x33e/0x1070 net/core/dev_ioctl.c:572
- sock_do_ioctl+0x20d/0x2c0 net/socket.c:1215
- sock_ioctl+0x577/0x6d0 net/socket.c:1320
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:870 [inline]
- __se_sys_ioctl fs/ioctl.c:856 [inline]
- __x64_sys_ioctl+0x18c/0x210 fs/ioctl.c:856
- do_syscall_x64 arch/x86/entry/common.c:46 [inline]
- do_syscall_64+0x35/0x80 arch/x86/entry/common.c:76
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-Set the PTP clock pointer to NULL after unregistering.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: c2594d804d5c ("macb: Common code to enable ptp support for MACB/GEM")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
----
- drivers/net/ethernet/cadence/macb_ptp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/cadence/macb_ptp.c b/drivers/net/ethernet/cadence/macb_ptp.c
-index c9e77819196e..d91f7b1aa39c 100644
---- a/drivers/net/ethernet/cadence/macb_ptp.c
-+++ b/drivers/net/ethernet/cadence/macb_ptp.c
-@@ -357,8 +357,10 @@ void gem_ptp_remove(struct net_device *ndev)
- {
- 	struct macb *bp = netdev_priv(ndev);
- 
--	if (bp->ptp_clock)
-+	if (bp->ptp_clock) {
- 		ptp_clock_unregister(bp->ptp_clock);
-+		bp->ptp_clock = NULL;
-+	}
- 
- 	gem_ptp_clear_timer(bp);
- 
--- 
-2.53.0
-
+Reviewed-by: Petr Machata <petrm@nvidia.com>
