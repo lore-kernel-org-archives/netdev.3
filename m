@@ -1,87 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419E13DEAF7
-	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 18:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B3A313E18;
+	Mon, 16 Mar 2026 18:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773686202; cv=none; b=R1pUox1/rbuD4MKYy8s4iugVjApUhEeOZl0VW6FWxVPmpulRlCaDVJ+DR3rxvB8S02T5OUIhRki6bvx+ckB2OSCpcz0y/7D6D13dvwAknNDyiPiOFM2/td7fZYmSVaOJwOHuouUG4VPFzqcFs+qPSmBEb2CK1JsxKmPNW1rXDQc=
+	t=1773686258; cv=none; b=k8JY15Xq0p2cuqtWqQ929c/Ei3g58uEebUNe6gpHFXyiPXKjJnRQfhtSYkyJpiGLZDlrJMGRSr7xGMqCLamKZZ2bewF5HZDbeikRHdx1PRxfPpI0PIdiuUf1biehw4QsXemULpfbrNgSRDGiNgssOT9g6YouoC2yj9sy+xEbtVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773686202; c=relaxed/simple;
-	bh=OFE/aVa+v1CfWNMpUZ2YoBhJ0BozyU+3cj3ruLgWHBE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qxQ3n++BCNuebEBz/JdBN9OgK54NQk5K8KrK8E2Vw0QnFejiIw2kxS9P6kJcXFTO14zaOU0Gln6Z3K9bPkMs0YbXBfLK7LjnSdoMc1OxTFQjtJXrTRTlLAuaaQeBaASCLTlXwow1kHHvp2r53oh2dhPXS5iY/lowb1dGp6Ty6jE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U2uhn/4B; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773686258; c=relaxed/simple;
+	bh=fbnaxQdPF1NKBtNr8u+6iRWFM3+H2AhkpAFjiOQfI9Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Hbkd+KpIi32IlOb/yUb6v5lwFSxxpyV5NeW5bqCZL9ulyluzOeAgcTl5/7rHJcjjhpnuKMckW7GYV2eIvObd4U7dN6APD8w5LsoUNe1gFgRafX18vR9Psc6mC+e51e4p4VjTtkDhrQhDHKCMFrEncx7y7O51e8k2V1diYBEQdsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eTJ5agef; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U2uhn/4B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E968C19421;
-	Mon, 16 Mar 2026 18:36:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eTJ5agef"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38678C19421;
+	Mon, 16 Mar 2026 18:37:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773686201;
-	bh=OFE/aVa+v1CfWNMpUZ2YoBhJ0BozyU+3cj3ruLgWHBE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=U2uhn/4BJnWNzENfLgqaK1rDiFDqUL7q+RjBlo4i56wUf34NC8NVfUaETHlL3bbpN
-	 QbM02R9PIpC0cMw9hc1pJoA/dlaxizRQgAH9CoXqurLp+KBTV7D1aL8BOxYWAUfsuN
-	 cjNh+/LspoXCcLJwR9me2jsp16K/U4Wk+jkDi2dqxcSzr8YO/En2PiEgN18Z7M/Kev
-	 mK6UdXl6LuMrszupehFfOeV0BAc1ofTINCjFIyCa+OIz3pD3pi82wknlo2kVEhJ1PQ
-	 RhtQGKSjxpAavuieZGAPLWBSm0Ht0SjeyKJWPw3NV0KsWJtqpU8FUbEYw60ZF2rmeQ
-	 kxTnmmq23LReQ==
-Message-ID: <622ad33e-f9f9-4039-b2ca-fdb480f979b5@kernel.org>
-Date: Mon, 16 Mar 2026 12:36:40 -0600
+	s=k20201202; t=1773686257;
+	bh=fbnaxQdPF1NKBtNr8u+6iRWFM3+H2AhkpAFjiOQfI9Q=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=eTJ5agefPpSPtm++Q+j7JuMdMQt/xEdjP2Fi5GUEz9hz72sTGBcO7pdKz/CRN/Fqc
+	 9ksaoZdl9AHYMLi/eyc3eNSWWhkjfDmGebGPBxFWfMo41xVz8J5fhy61g8LiJk89Ye
+	 Qo2w3dGDioaRu/ksuOuFLRZZ1nUSFZBii+4ErU8y6++8NfRbs3BuI4VPIsqqCEQ2d8
+	 OGPQYb0YdQU7TaxWRgNyFtdfrtY0t/f4SoABz7r3c6kD3h6Po+5vCvHAP76Oq81MDZ
+	 7Tt0FNJ4aQQTzwnwT54Q3Jk66cl9UXXG8aOi+hy28afD5qZwCC1rArVHl8LizmHdSk
+	 q1l86Gc0dxrSw==
+Date: Mon, 16 Mar 2026 11:37:36 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Christoph =?UTF-8?B?QsO2aG13YWxkZXI=?=
+ <christoph.boehmwalder@linbit.com>
+Cc: Philipp Reisner <philipp.reisner@linbit.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Alok Tiwari
+ <alok.a.tiwari@oracle.com>, Kees Cook <kees@kernel.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH] genetlink: add multi-version family support for
+ protocol negotiation
+Message-ID: <20260316113736.1085a124@kernel.org>
+In-Reply-To: <20260316151507.3958299-2-christoph.boehmwalder@linbit.com>
+References: <20260316151507.3958299-2-christoph.boehmwalder@linbit.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 net 0/2] ipv6: Fix two GC issues with permanent routes.
-Content-Language: en-US
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Kui-Feng Lee <thinker.li@gmail.com>,
- Xin Long <lucien.xin@gmail.com>, Simon Horman <horms@kernel.org>,
- Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
-References: <20260311052954.1224278-1-kuniyu@google.com>
- <20f079ac-3046-4b12-a9c4-381a077cf36a@kernel.org>
- <CAAVpQUAxyQESuJ_-H9vW3szTL_76LjksyswOmQYti1yj_jbeKQ@mail.gmail.com>
-From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <CAAVpQUAxyQESuJ_-H9vW3szTL_76LjksyswOmQYti1yj_jbeKQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-On 3/16/26 7:28 AM, Kuniyuki Iwashima wrote:
-> On Fri, Mar 13, 2026 at 8:03 AM David Ahern <dsahern@kernel.org> wrote:
->>
->> On 3/10/26 11:29 PM, Kuniyuki Iwashima wrote:
->>> Patch 1 fixes the unbounded growth of tb6_gc_hlist due to
->>> permanent routes whose exception routes have all expired.
->>>
->>> Patch 2 fixes an issue where exception routes tied to
->>> permanent routes are not properly aged.
->>>
->>>
->>
->> There are several tests covering gc and changing routes from permanent
->> to temp and back. Can you expand those tests to cover this problem?
-> 
-> I'll expand pmtu.sh or icmp_redirect.sh, but do you have something
-> in mind ?
+On Mon, 16 Mar 2026 16:15:06 +0100 Christoph B=C3=B6hmwalder wrote:
+> Extend the genetlink infrastructure to allow families to advertise a
+> range of supported protocol versions [min_version, max_version]. This
+> enables a single kernel module to serve both old and new userspace by
+> letting userspace discover the maximum version via CTRL_ATTR_MAX_VERSION
+> and select the desired protocol dialect in genlmsghdr.version.
+>=20
+> Rename genl_family.version to .min_version across all families (pure
+> rename, no behavioral change). This avoids updating all callers.
+>=20
+> Add genl_family.max_version. When 0 (default) the family behaves
+> exactly as before. When > min_version, the controller advertises
+> CTRL_ATTR_MAX_VERSION in CTRL_CMD_GETFAMILY replies.
+>=20
+> When sending a reply, echo the request's genlmsghdr.version, so
+> userspace receives responses in the protocol version it spoke.
+> Notifications (where info->nlhdr is NULL) continue to use min_version.
+>=20
+> Add genlmsg_put_ver() for families that need to stamp a specific
+> version on notifications.
+>=20
+> The immediate motivation is upstreaming DRBD 9 (genl family v1)
+> while keeping unmodified DRBD 8 userspace (family v2) working. The
+> DRBD family would register with min_version=3D1, max_version=3D2 and
+> handle both protocol dialects.
 
-tools/testing/selftests/net/fib_tests.sh based on:
-
-commit 3407df8dc2de07d6b80f28d1a19a5c24a835f69b
-Author: Kui-Feng Lee <thinker.li@gmail.com>
-Date:   Thu Feb 8 14:06:53 2024 -0800
-
-    selftests/net: Adding test cases of replacing routes and route
-advertisements.
-
-    Add tests of changing permanent routes to temporary routes and the
-reversed
-    case to make sure GC working correctly in these cases.  Add tests
-for the
-    temporary routes from RA.
-
-
+What's the delta between the families? Do you have any examples of=20
+the the version ends up being used?
