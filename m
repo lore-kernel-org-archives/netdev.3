@@ -1,200 +1,179 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392AA38D6A9
-	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 10:48:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CEC38F647;
+	Mon, 16 Mar 2026 10:49:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773658083; cv=none; b=NZ6fMmKjR7u71YsNYrc6mk9pmaD2eVeGLb1GrXMHicYYHjgMqs2fVf56w/hbrUs2cUn4iBYYWqJbOxqkJYzuIt2NiEXsZB7AgU+dNoXtz+a47SHmF/mD9vd6vrR+08hfEjiXi1s/0LvdQgC1aFJCkBAyXDDiILg5V7Ivn2dg3TI=
+	t=1773658148; cv=none; b=h/ToasZI4aLv2/crV2Kz0A+xzyUFnzMLe6V+OOT+9wmi/HucjDGXTOpsl4EU07i0NuE5i8dhn0teDgqcDHDccqqiIz55E88W1pmwz/LUYX6KvpLLN9R0dMm3IdWILzMJ+nb/f2BNL5q6wVtNjYkMNIPQLBiAKGwmcn0fVEw1xgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773658083; c=relaxed/simple;
-	bh=1QFgAt6v5G8ZF6zVoJAv0kj7kMi7gvlUjuhjHhXigUw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i18zZuGmC/DuKIw6StzFjClPb0TFYwTe/k338UCbc/IHmmMfqR3yXDheLNGzVHmvSmlx5RYneAK7IqYOh/yGvlXNzwFD9/lwAZnUVhALNsPNnC5/JEq9yEo8HP2AX7e8zOX+8ljRAHyPhRQUsp5LKWLsYnJqRcNIhldBq9Dteb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UGRhmHK/; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ptMh1i5P; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1773658148; c=relaxed/simple;
+	bh=pcBInRXljuxWY7idQ1IavWdC4W1j9biZUfLQAdA/ZYo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XQn2vXf8zo1RPg57YDLmoArkY8BTLx3BFNaZr56ffBEyOy4PtIn6QDvJZ645lmhhiCiajqVkn1PtA3CJlrUZ+ReyHhViYcYZcwoHbkfT590G7PcV951uEbc3Wd5xXUirZH4xPs/Hj50LLKV5/QV6yc6644ZcoNXVhIO9NNbYNuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=Wg+EpSmr; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UGRhmHK/";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ptMh1i5P"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773658081;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BfYGvWXFyEp3tl8sYK4EkCi7nOSDVzMxt5VwgIY+JXA=;
-	b=UGRhmHK/IuvGb2g2bMUsy9/e7eiL50CLcPxClCLx2AyyTgXnk0A0mvjMpV6qH/n0S3/DXk
-	ogn0N7SzQrV2SKVBs3GBU3NB1Fi5OM/K90Y8VqPu5AhofMYRyZQCrZjHuSVdAszFS9wz5Q
-	gPAEuuTOhrPtzI3qI9JvPRUOBY0P5gI=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-624-QH-Tf6TfMey2Q6KsZznIqA-1; Mon, 16 Mar 2026 06:47:59 -0400
-X-MC-Unique: QH-Tf6TfMey2Q6KsZznIqA-1
-X-Mimecast-MFC-AGG-ID: QH-Tf6TfMey2Q6KsZznIqA_1773658079
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-48541cac34dso41696505e9.0
-        for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 03:47:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1773658078; x=1774262878; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BfYGvWXFyEp3tl8sYK4EkCi7nOSDVzMxt5VwgIY+JXA=;
-        b=ptMh1i5P2tbchnYhOvY5pVcd/UtNdP4iQsVxkzuPFhEg0JFtIChciqhbIle0TihC/t
-         7JHmpCjYU2apUBX/Lu2h+jF5zSHrm1s+yNWbrgyXxLNjlfUu3PRUYFQtwnZpfkG3qWz4
-         dAFQF2dTUM0WZhyzoovsy/4a094OMKXkfgEZKzUphOhzHxqp/tHoeFdPolbS8ROvxyCO
-         ++y2eS7EPqEj23pYtx/1OTOLBR0Xn52OuEf76CNBUdk5kk5FGHNvYdBn27hYcO6GkxEi
-         0SAVEF/KyxAgrjf8QNmY1J5fMThNPZDYsM0w7kpryDmdYvMquLnUMm9dftdaxT1fWIMM
-         G2/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773658078; x=1774262878;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BfYGvWXFyEp3tl8sYK4EkCi7nOSDVzMxt5VwgIY+JXA=;
-        b=JxiVIcHIFWevxLb7icSLKHVLH5VOdUyXsEOMgLQ05MVPIVuRfCt5Y9v/nDS05WaHL2
-         JhX2Cbi3gqCEDbCWaRZnpWQHyI04+bmCIXy896/ynzVn/qXS+hxgunj9n2t8wfEkldU4
-         6owRyZpCuhyAKYXRQFQ3BihPuVlraDI3iDG81PaiEvAyIfrynWJ38Vr89utxEjxGZjOU
-         MnPpTJ3l5VcVVSHULT4wV3xsqTxVnHGli6/9Bpz5UvEntSLWD05aux+/jyjBiMgoDbe1
-         lIoAhJBYSvoSBBe8vAycVkZYjUtv9O/kXt0pSobOyjYcpq34pONjaUsN3nGSw3CPY8J8
-         stow==
-X-Forwarded-Encrypted: i=1; AJvYcCVCG1xpjrpZdLMFJ0ZIaesynn5l+UD+ups8EVPj6SJBBG+IpAM7Vn2m1jCD9BugKOK5u0gQDAU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyH4PETnR/AIuIIJJHUU1WWDlMNrgfa7wNQgGzs8EYmOk1L6t8U
-	8J7z/VD8Tz0RaerCXgcxzI7Oc0GLdKOxBiCqDmmIxL7SnvQm3vmg8t07HYkzrcGIdmI9hzgZkps
-	vIK8qfbTFJcQhpnYY6R5hgWqfIxh/zGp4OSv2Gup3FplrvKR05bVJ+hN7Swz0f2p94A==
-X-Gm-Gg: ATEYQzxHjwkVyFpAOzSh1M1wlEFBBBhGeU1EDsTfoS+dyO899Z/owJNhuJKEWD7ycXi
-	ZvG6M3eE9yc7QSTYuwHWxF5LCPqGtSY/rjd7q5Q285Hsr1mDflme/7UOO6cTMjK04wxF0OsKiPL
-	mkqLrgNRr6lvzeEo7HSggDxKQpKcqyRGIRtz7BsTbFnEb/Njk+0NbIxyYhHPHg/cDqXQOR+7M++
-	Zc+QbP63s9U7N/znkIBOaItZtwKYwa8EEdasGgH/VAcsduk9PwFo9EAKXn8GtPmyFIfeZmdpHSU
-	joMVGTxFiPfB+ElUsXMrtKPYBJiXpGJ9H0FoH4m2CySJaI7rr98x6Sbu6iNg5SJ0voDTy9aQWhE
-	gwXA1RwwRVFOkEu5xMX7Z6WpN685TM39hsE4HdsZ5HHnsAQ==
-X-Received: by 2002:a05:600c:4f8f:b0:485:4371:539a with SMTP id 5b1f17b1804b1-4855670f7admr178896755e9.31.1773658078259;
-        Mon, 16 Mar 2026 03:47:58 -0700 (PDT)
-X-Received: by 2002:a05:600c:4f8f:b0:485:4371:539a with SMTP id 5b1f17b1804b1-4855670f7admr178896555e9.31.1773658077775;
-        Mon, 16 Mar 2026 03:47:57 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-79-166.inter.net.il. [80.230.79.166])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4854b66ffe2sm383282095e9.13.2026.03.16.03.47.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2026 03:47:57 -0700 (PDT)
-Date: Mon, 16 Mar 2026 06:47:54 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Zhud <zhud@hygon.cn>
-Cc: "jasowang@redhat.com" <jasowang@redhat.com>,
-	"xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>,
-	"eperezma@redhat.com" <eperezma@redhat.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"willemb@google.com" <willemb@google.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
-	Jing Li <lijing@hygon.cn>, Zhiwei Ying <yingzhiwei@hygon.cn>
-Subject: Re: [PATCH net-next v2] virtio-net: enable NETIF_F_GRO_HW only if
- GRO-related offloads are supported
-Message-ID: <20260316063139-mutt-send-email-mst@kernel.org>
-References: <20260316072152.910857-1-zhud@hygon.cn>
- <20260316051327-mutt-send-email-mst@kernel.org>
- <607818aba89a44d88afa213f39611451@hygon.cn>
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="Wg+EpSmr"
+Received: from debian.intra.ispras.ru (unknown [10.10.165.34])
+	by mail.ispras.ru (Postfix) with ESMTPSA id 08BA5413A4D8;
+	Mon, 16 Mar 2026 10:39:28 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 08BA5413A4D8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1773657568;
+	bh=cNyD/KYGWkpwWO1lBjOBW0L9+aqawWpVjwVrtSSo5fs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Wg+EpSmryxhx46thTb9IQiXZJqjaAtV4V6NYGkZZ9nQP6TyrsBiyYX2ceuKNVCbn/
+	 GzQcf/5P5rG5XQT0RrytCnW/zW6CYv3uj/gHNjM8F3FMvqFrsmjg6NPuJG8lrm3FVt
+	 +5uzZ5wuo/NA57vqks736YHjuH5qsBvUrKfUlLN8=
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Rafal Ozieblo <rafalo@cadence.com>,
+	"Andrei.Pistirica@microchip.com" <Andrei.Pistirica@microchip.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	stable@vger.kernel.org
+Subject: [PATCH net 1/2] net: macb: fix use-after-free access to PTP clock
+Date: Mon, 16 Mar 2026 13:38:24 +0300
+Message-ID: <20260316103826.74506-1-pchelkin@ispras.ru>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <607818aba89a44d88afa213f39611451@hygon.cn>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Mar 16, 2026 at 10:18:04AM +0000, Zhud wrote:
-> > Thanks! Yes something to improve:
-> > 
-> > On Mon, Mar 16, 2026 at 03:21:52PM +0800, Di Zhu wrote:
-> > > Although VIRTIO_NET_F_CTRL_GUEST_OFFLOADS is negotiated, which
-> > > indicates the device supports dynamic control of guest offloads, it
-> > > does not necessarily mean the device supports specific hardware GRO features.
-> > >
-> > > If none of the features defined in GUEST_OFFLOAD_GRO_HW_MASK (such as
-> > > TSO4, TSO6, or UFO) are present in vi->guest_offloads_capable, the
-> > > device effectively lacks the hardware capability to perform GRO.
-> > 
-> > So what is the user-visible problem this is trying to address?
-> 
-> A key concern is that once a user enables NETIF_F_GRO_HW via ethtool, 
-> they might manually disable software GRO (ethtool -K eth0 gro off) assuming the 
-> hardware is now handling the aggregation.
+PTP clock is registered on every opening of the interface and destroyed on
+every closing.  However it may be accessed via get_ts_info ethtool call
+which is possible while the interface is just present in the kernel.
 
-Thanks!
-Sorry could you be even more specific please?
-Is this a theoretical concern or did some users encounter this?
-Note that NETIF_F_GRO_HW is best effort anyway: e.g.
-it can apply only to TCPv6 and v4 will still need software.
+BUG: KASAN: use-after-free in ptp_clock_index+0x47/0x50 drivers/ptp/ptp_clock.c:426
+Read of size 4 at addr ffff8880194345cc by task syz.0.6/948
 
-> Secondly, while we haven't encountered a specific hardware failure yet, 
-> enabling a hardware offload feature that the DPU does not physically support 
-> introduces the risk of undefined hardware behavior
+CPU: 1 PID: 948 Comm: syz.0.6 Not tainted 6.1.164+ #109
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.1-0-g3208b098f51a-prebuilt.qemu.org 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x8d/0xba lib/dump_stack.c:106
+ print_address_description mm/kasan/report.c:316 [inline]
+ print_report+0x17f/0x496 mm/kasan/report.c:420
+ kasan_report+0xd9/0x180 mm/kasan/report.c:524
+ ptp_clock_index+0x47/0x50 drivers/ptp/ptp_clock.c:426
+ gem_get_ts_info+0x138/0x1e0 drivers/net/ethernet/cadence/macb_main.c:3349
+ macb_get_ts_info+0x68/0xb0 drivers/net/ethernet/cadence/macb_main.c:3371
+ __ethtool_get_ts_info+0x17c/0x260 net/ethtool/common.c:558
+ ethtool_get_ts_info net/ethtool/ioctl.c:2367 [inline]
+ __dev_ethtool net/ethtool/ioctl.c:3017 [inline]
+ dev_ethtool+0x2b05/0x6290 net/ethtool/ioctl.c:3095
+ dev_ioctl+0x637/0x1070 net/core/dev_ioctl.c:510
+ sock_do_ioctl+0x20d/0x2c0 net/socket.c:1215
+ sock_ioctl+0x577/0x6d0 net/socket.c:1320
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:870 [inline]
+ __se_sys_ioctl fs/ioctl.c:856 [inline]
+ __x64_sys_ioctl+0x18c/0x210 fs/ioctl.c:856
+ do_syscall_x64 arch/x86/entry/common.c:46 [inline]
+ do_syscall_64+0x35/0x80 arch/x86/entry/common.c:76
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+ </TASK>
 
-This would be a major concern but I don't get it - how would one trigger this?
-It seems that guest_offloads_capable only includes offloads actually
-supported.
+Allocated by task 457:
+ kmalloc include/linux/slab.h:563 [inline]
+ kzalloc include/linux/slab.h:699 [inline]
+ ptp_clock_register+0x144/0x10e0 drivers/ptp/ptp_clock.c:235
+ gem_ptp_init+0x46f/0x930 drivers/net/ethernet/cadence/macb_ptp.c:375
+ macb_open+0x901/0xd10 drivers/net/ethernet/cadence/macb_main.c:2920
+ __dev_open+0x2ce/0x500 net/core/dev.c:1501
+ __dev_change_flags+0x56a/0x740 net/core/dev.c:8651
+ dev_change_flags+0x92/0x170 net/core/dev.c:8722
+ do_setlink+0xaf8/0x3a80 net/core/rtnetlink.c:2833
+ __rtnl_newlink+0xbf4/0x1940 net/core/rtnetlink.c:3608
+ rtnl_newlink+0x63/0xa0 net/core/rtnetlink.c:3655
+ rtnetlink_rcv_msg+0x3c6/0xed0 net/core/rtnetlink.c:6150
+ netlink_rcv_skb+0x15d/0x430 net/netlink/af_netlink.c:2511
+ netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+ netlink_unicast+0x6d7/0xa30 net/netlink/af_netlink.c:1344
+ netlink_sendmsg+0x97e/0xeb0 net/netlink/af_netlink.c:1872
+ sock_sendmsg_nosec net/socket.c:718 [inline]
+ __sock_sendmsg+0x14b/0x180 net/socket.c:730
+ __sys_sendto+0x320/0x3b0 net/socket.c:2152
+ __do_sys_sendto net/socket.c:2164 [inline]
+ __se_sys_sendto net/socket.c:2160 [inline]
+ __x64_sys_sendto+0xdc/0x1b0 net/socket.c:2160
+ do_syscall_x64 arch/x86/entry/common.c:46 [inline]
+ do_syscall_64+0x35/0x80 arch/x86/entry/common.c:76
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
 
-> > >
-> > > So, making NETIF_F_GRO_HW conditional on these feature bits ensures
-> > > the stack does not enable an unsupported hardware offload configuration.
-> > 
-> > I guess the assumption is that without this, something enables such a config? Which
-> > stack is this and what happens then?
-> > 
-> 
-> Sorry for the confusion, let me clarify the intent.
-> The 'stack' here refers to the ethtool interface and the netset (ioctl/netlink) path. 
+Freed by task 938:
+ kasan_slab_free include/linux/kasan.h:177 [inline]
+ slab_free_hook mm/slub.c:1729 [inline]
+ slab_free_freelist_hook mm/slub.c:1755 [inline]
+ slab_free mm/slub.c:3687 [inline]
+ __kmem_cache_free+0xbc/0x320 mm/slub.c:3700
+ device_release+0xa0/0x240 drivers/base/core.c:2507
+ kobject_cleanup lib/kobject.c:681 [inline]
+ kobject_release lib/kobject.c:712 [inline]
+ kref_put include/linux/kref.h:65 [inline]
+ kobject_put+0x1cd/0x350 lib/kobject.c:729
+ put_device+0x1b/0x30 drivers/base/core.c:3805
+ ptp_clock_unregister+0x171/0x270 drivers/ptp/ptp_clock.c:391
+ gem_ptp_remove+0x4e/0x1f0 drivers/net/ethernet/cadence/macb_ptp.c:404
+ macb_close+0x1c8/0x270 drivers/net/ethernet/cadence/macb_main.c:2966
+ __dev_close_many+0x1b9/0x310 net/core/dev.c:1585
+ __dev_close net/core/dev.c:1597 [inline]
+ __dev_change_flags+0x2bb/0x740 net/core/dev.c:8649
+ dev_change_flags+0x92/0x170 net/core/dev.c:8722
+ dev_ifsioc+0x151/0xe00 net/core/dev_ioctl.c:326
+ dev_ioctl+0x33e/0x1070 net/core/dev_ioctl.c:572
+ sock_do_ioctl+0x20d/0x2c0 net/socket.c:1215
+ sock_ioctl+0x577/0x6d0 net/socket.c:1320
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:870 [inline]
+ __se_sys_ioctl fs/ioctl.c:856 [inline]
+ __x64_sys_ioctl+0x18c/0x210 fs/ioctl.c:856
+ do_syscall_x64 arch/x86/entry/common.c:46 [inline]
+ do_syscall_64+0x35/0x80 arch/x86/entry/common.c:76
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
 
+Set the PTP clock pointer to NULL after unregistering.
 
-A bit more detail about the specific set of commands that leads to
-confusion in the commit log would be helpful.
-Thanks!
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-> > 
-> > > Fixes: a02e8964eaf9 ("virtio-net: ethtool configurable LRO")
-> > > Signed-off-by: Di Zhu <zhud@hygon.cn>
-> > 
-> > judging by this, has something to do with LRO?
-> > 
-> > > ---
-> > > /* v2 */
-> > >   -make the modified logic clearer
-> > > ---
-> > >  drivers/net/virtio_net.c | 6 ++++--
-> > >  1 file changed, 4 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c index
-> > > 72d6a9c6a5a2..b233c99925e9 100644
-> > > --- a/drivers/net/virtio_net.c
-> > > +++ b/drivers/net/virtio_net.c
-> > > @@ -6781,8 +6781,6 @@ static int virtnet_probe(struct virtio_device *vdev)
-> > >  	if (virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_TSO4) ||
-> > >  	    virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_TSO6))
-> > >  		dev->features |= NETIF_F_GRO_HW;
-> > > -	if (virtio_has_feature(vdev, VIRTIO_NET_F_CTRL_GUEST_OFFLOADS))
-> > > -		dev->hw_features |= NETIF_F_GRO_HW;
-> > >
-> > >  	dev->vlan_features = dev->features;
-> > >  	dev->xdp_features = NETDEV_XDP_ACT_BASIC |
-> > NETDEV_XDP_ACT_REDIRECT |
-> > > @@ -7058,6 +7056,10 @@ static int virtnet_probe(struct virtio_device *vdev)
-> > >  	}
-> > >  	vi->guest_offloads_capable = vi->guest_offloads;
-> > >
-> > > +	if (virtio_has_feature(vdev, VIRTIO_NET_F_CTRL_GUEST_OFFLOADS) &&
-> > > +	    (vi->guest_offloads_capable & GUEST_OFFLOAD_GRO_HW_MASK))
-> > > +		dev->hw_features |= NETIF_F_GRO_HW;
-> > > +
-> > >  	rtnl_unlock();
-> > >
-> > >  	err = virtnet_cpu_notif_add(vi);
-> > > --
-> > > 2.34.1
-> > >
-> > 
-> 
+Fixes: c2594d804d5c ("macb: Common code to enable ptp support for MACB/GEM")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+---
+ drivers/net/ethernet/cadence/macb_ptp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/cadence/macb_ptp.c b/drivers/net/ethernet/cadence/macb_ptp.c
+index c9e77819196e..d91f7b1aa39c 100644
+--- a/drivers/net/ethernet/cadence/macb_ptp.c
++++ b/drivers/net/ethernet/cadence/macb_ptp.c
+@@ -357,8 +357,10 @@ void gem_ptp_remove(struct net_device *ndev)
+ {
+ 	struct macb *bp = netdev_priv(ndev);
+ 
+-	if (bp->ptp_clock)
++	if (bp->ptp_clock) {
+ 		ptp_clock_unregister(bp->ptp_clock);
++		bp->ptp_clock = NULL;
++	}
+ 
+ 	gem_ptp_clear_timer(bp);
+ 
+-- 
+2.53.0
 
