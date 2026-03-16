@@ -1,151 +1,147 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE2539023B
-	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 10:42:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2266386577
+	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 10:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773657761; cv=none; b=DVwjh5mETyGMwP9ITUV+vUzdz75K7qJXSxd86X6iV60oJWGzCsPsxDqMQEd64yRmIseT2OnBm9GxRVlcQTigrRbIjH37y+E99xYg8QFMdkdPwR7uYSIDfdtpvYj5DkSwf5rahQ2+kXR4wxAPYuD1Vv1K97qc/eyoqxVW9xwxvVw=
+	t=1773657849; cv=none; b=RCru/XGN0daCkVMTfOpp5e8nlnLSKLLlsbmP08u2dRBR7fg9nLAlXHFaCIziCJnokig2kggG8Hkcu1T58TL5GbX+Nxd4L/wS7AdqeSpwysCL0XD1YY4YK1WRUPTuwY5vu19+3eG58m7r+xDM2VJIf4YcDNf2n+l50id+flHUPnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773657761; c=relaxed/simple;
-	bh=JCHvrEojksVEpHjmb8f0l8T6uIGVkerMflt9zKrQE80=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fb9FP9Welu2Kw+y3v4TL4eaNUlG5KEtyKEbZWFi0+1ZrGOfWBpfmfLidkT6Ds4WsxKTiDUYHhDDtOfB7Yi+Jrei6eTg2O5gM5Blqaz/6p1t0QsUcvwJWMYJi0QOjSTrgsuiLf3d+XG6KTDs2QofUgyBRE3vPopQZveeO5dyBcIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Q3C/GVeC; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1773657849; c=relaxed/simple;
+	bh=Sfai54yGfVswX06wKRJbvlx+Ae5w4/tFvgMB8FyVF0w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IuB74gJc/JwglA/pHVID2kmDkjMyqJDuKMLU/oAKp+pYPbWOLzKqrrc77yfJq4tfqCtX2QG5NbPyOf+4E240tJDNmFgVbR2l6yHIv8sym1BaF020hUcH0EfYV+s+DjGp3P5H7f2pWkCkY39n/VNk9zPgmzBTfp/hQeYdL69kIrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=G848RMsI; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=uLuI/13o; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q3C/GVeC"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="G848RMsI";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="uLuI/13o"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773657759;
+	s=mimecast20190719; t=1773657846;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TcCvlNKS2FtWNY/zDB/0qSw6naZ8LMZekz/Sa7hhVBQ=;
-	b=Q3C/GVeC4ihebBe4eEKAGH7+ngIO61JJ5c+RoE/k4yso6w724p97Po99l3MllEF7QzETFl
-	sff1PYaZnhT25rnVxtmvVCqDq8erFZplLOV2AQBvrXV+XsFNdWoWQ1EfS3Dm6U4VOKPsXA
-	afVp+Ze7MvSpjJXJEtENfqm+2uEqN/c=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-277-54-iBjSePL26S8rctg4q0A-1; Mon,
- 16 Mar 2026 06:42:36 -0400
-X-MC-Unique: 54-iBjSePL26S8rctg4q0A-1
-X-Mimecast-MFC-AGG-ID: 54-iBjSePL26S8rctg4q0A_1773657754
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 98A7D180AA95;
-	Mon, 16 Mar 2026 10:42:31 +0000 (UTC)
-Received: from ShadowPeak.redhat.com (unknown [10.45.224.235])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 116131800351;
-	Mon, 16 Mar 2026 10:42:27 +0000 (UTC)
-From: Petr Oros <poros@redhat.com>
-To: netdev@vger.kernel.org
-Cc: jacob.e.keller@intel.com,
-	Petr Oros <poros@redhat.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	bh=N/gyi8r2QqrmKNfnuildAwIe3Wu8jqbPwSPfbNMez1o=;
+	b=G848RMsIykfGvEzrRxY+2+Ez7Sc7my0bZqfvakOq16UZT8IgiyQbbk/SM5WBSuYzuA5JtS
+	TxAqz43MRUsp61Du0qrXvfKK7Qd4gTxwFTuNbT7rI4WEV9DLOo2i+CkDWP+R1JoaRvsvja
+	hlazSUMepqzlAbK/+Ntj2/M/SdJcCDI=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-195-PF0IuuE0OLWv3kISjfRnBg-1; Mon, 16 Mar 2026 06:44:04 -0400
+X-MC-Unique: PF0IuuE0OLWv3kISjfRnBg-1
+X-Mimecast-MFC-AGG-ID: PF0IuuE0OLWv3kISjfRnBg_1773657843
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-439cbc5fd75so2830926f8f.0
+        for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 03:44:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1773657843; x=1774262643; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=N/gyi8r2QqrmKNfnuildAwIe3Wu8jqbPwSPfbNMez1o=;
+        b=uLuI/13oe4sif2ofwTZvB8fNufqkvPnefy1nmZnOsEdwVaNHzyRfqNQKk7cQgGQbxd
+         jLBzjKsbguZ4UXPxr+6U4ZqD7ziXbH15f1q1hl1vNuHzcFgcdTzdftdITzbcazDKRx/V
+         mCCNqalZFEgO22aVHUycXwOEzRPHy9MltoqYrAiTvdRnH8qCviYGQWagABYli6P8I8OJ
+         Iec393l7Kemhh2TtaAvxXN862zmjgfi1wsg+PUKyRstHUUbco9LN+fFPfD+GWna1o0ic
+         USeiCCzcxdHx1j3V3T8V+eR0X0lY+hAzzZPeSmtk7WRwZUmD19AoaLbeX8j+n6o2Ypp2
+         hJ0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773657843; x=1774262643;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=N/gyi8r2QqrmKNfnuildAwIe3Wu8jqbPwSPfbNMez1o=;
+        b=YY7K5YjLiEPvSonhimAsEoWqxtPUaCH/mKo5NR5IqC2nlFsd1ReeNWl9bAiJ5OFln3
+         PbWSYzLAowlwxp3QCXZIdmhw7kGNhFOfRCqD3sthuI7SI4NVyociHfI2BtmkB6m7eGSm
+         RMT9G9tIMrwCOzFbJ2K6JzAYusnWJGLcEytMz+8DCC1sS19/v99IX2RF5hUFGMJpKaRz
+         PuUe3n97G95GVdEgD1EasWK1fTc4dqnD86kaJQJEZvYwoyQhwFu3hcJYbCHPD5sJXGxU
+         U6fTCR33h23Xt2YdZYPkhsLsQOVQLMUkurt6J5cqnHW5GG+8HOWIO2NXKdjjC6nEy3WE
+         Acww==
+X-Forwarded-Encrypted: i=1; AJvYcCVCM1WmIQpeDwfP133BN+hEN33FTZTGZ9NpSr6YXfsnDANERE9Hd5TJr2/bRyIUvTSv0pNTu3o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzKhrBbxN/VwrLCPCFGhyID2LHa0ElTWtOgNLF75hNcLbQ5dGKd
+	/pdfkEtUGoWaCCin+P/uSb+KPcjN3ATcT6tPI66T5xOFM9x5c8TIOJ/A1Q4RhhroikfU3HMgr55
+	iLEr7K5fgEkQhT4Lw67NmgNSoO1aL25714M4i6UXelpFSLvz6cZ8EJtVrmw==
+X-Gm-Gg: ATEYQzyA5funPoKU8LogTBgkv5ZOosX1gzSpiuuoy7bTh0LFuCNO0JoCenS4188p4E5
+	+u7NGorN0y80CU6zdtk4ucjqjzbGa1c6yNaZ3Gc1T0xYMIq+62TQgvtcY53LIfNOXXqRtrwFV/g
+	lg6YNY5XrAcZrThG1wrPcsO/d/0gVy4CEMMv8v/bmKZl1hOTJ66pFjAVvmNXO7sAwZIsT5JXgzS
+	JQPLrwPqtwy60KN3QhdhNiMI/N/yr0Gd2AThQjfQFCQexo7sWOrzAMVt+IZfueh6J1bbg4TtZnI
+	UmP7YA4tGlf1+nUG0ytIu7/698mPBZ7dWdVVHVLEOKkEgDQa/ch81wBYjEEs6KlFuDqiLNtiahY
+	9azX2zIbyQDjwd2RpDPZgpr6tnBnuIfOgsUNk0ML+r/OV4A==
+X-Received: by 2002:a05:6000:381:b0:439:d8cb:1392 with SMTP id ffacd0b85a97d-43a04d91a43mr23683339f8f.26.1773657843205;
+        Mon, 16 Mar 2026 03:44:03 -0700 (PDT)
+X-Received: by 2002:a05:6000:381:b0:439:d8cb:1392 with SMTP id ffacd0b85a97d-43a04d91a43mr23683282f8f.26.1773657842675;
+        Mon, 16 Mar 2026 03:44:02 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-79-166.inter.net.il. [80.230.79.166])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b45e51681sm3730121f8f.25.2026.03.16.03.44.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Mar 2026 03:44:02 -0700 (PDT)
+Date: Mon, 16 Mar 2026 06:43:58 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Vishwanath Seshagiri <vishs@meta.com>
+Cc: Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	intel-wired-lan@lists.osuosl.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH iwl-next 4/4] iavf: harden VLAN filter state machine race handling
-Date: Mon, 16 Mar 2026 11:42:09 +0100
-Message-ID: <20260316104209.1285962-5-poros@redhat.com>
-In-Reply-To: <20260316104209.1285962-1-poros@redhat.com>
-References: <20260316104209.1285962-1-poros@redhat.com>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	David Wei <dw@davidwei.uk>, Matteo Croce <technoboy85@gmail.com>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	netdev@vger.kernel.org, virtualization@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH net-next v11] virtio_net: add page_pool support for
+ buffer allocation
+Message-ID: <20260316064256-mutt-send-email-mst@kernel.org>
+References: <20260310183107.2822016-1-vishs@meta.com>
+ <20260316054232-mutt-send-email-mst@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260316054232-mutt-send-email-mst@kernel.org>
 
-Address remaining race windows in the VLAN filter state machine that
-were identified during cross-state analysis of ADD and DEL paths.
+On Mon, Mar 16, 2026 at 05:56:20AM -0400, Michael S. Tsirkin wrote:
+> On Tue, Mar 10, 2026 at 11:31:04AM -0700, Vishwanath Seshagiri wrote:
+> > @@ -5857,7 +5863,7 @@ static int virtnet_xsk_pool_enable(struct net_device *dev,
+> >  	/* In big_packets mode, xdp cannot work, so there is no need to
+> >  	 * initialize xsk of rq.
+> >  	 */
+> > -	if (vi->big_packets && !vi->mergeable_rx_bufs)
+> > +	if (!vi->rq[qid].page_pool)
+> >  		return -ENOENT;
+> >  
+> >  	if (qid >= vi->curr_queue_pairs)
+> 
+> 
+> 
+> It seems that a qid that exceeds curr_queue_pairs would previously get
+> -EINVAL and now gets -ENOENT.
 
-1. Add VIRTCHNL_OP_ADD_VLAN to the success completion handler.
+Or maybe this if (qid >= vi->curr_queue_pairs) is dead code?
+I looked at it some more and I can't find a path where this
+triggers.
 
-   The V1 ADD_VLAN opcode had no success handler -- filters sent via V1
-   stayed in ADDING state permanently.  Add a fallthrough case so V1
-   filters also transition ADDING -> ACTIVE on PF confirmation.
-
-   Critically, add an `if (v_retval) break` guard: the error switch
-   in iavf_virtchnl_completion() does NOT return after handling errors,
-   it falls through to the success switch.  Without this guard, a
-   PF-rejected ADD would incorrectly mark ADDING filters as ACTIVE,
-   creating a driver/HW mismatch where the driver believes the filter
-   is installed but the PF never accepted it.
-
-   For V2, this is harmless: iavf_vlan_add_reject() in the error
-   block already kfree'd all ADDING filters, so the success handler
-   finds nothing to transition.
-
-2. Skip DEL on filters already in REMOVING state.
-
-   In iavf_del_vlan(), if a filter is in IAVF_VLAN_REMOVING (DEL
-   already sent to PF, waiting for response), do not overwrite to
-   REMOVE and schedule a redundant DEL.  The pending DEL's
-   completion handler will either kfree the filter (PF confirms)
-   or revert to ACTIVE (PF rejects).
-
-   Without this, the sequence DEL(pending) -> user-del -> second DEL
-   could result in PF returning an error for the second DEL (filter
-   already gone), causing the completion handler to incorrectly revert
-   a deleted filter back to ACTIVE.
-
-Signed-off-by: Petr Oros <poros@redhat.com>
----
- drivers/net/ethernet/intel/iavf/iavf_main.c     | 5 ++++-
- drivers/net/ethernet/intel/iavf/iavf_virtchnl.c | 4 ++++
- 2 files changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 89e5aae20d5573..1ffc0ce3f35602 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -816,11 +816,14 @@ static void iavf_del_vlan(struct iavf_adapter *adapter, struct iavf_vlan vlan)
- 			list_del(&f->list);
- 			kfree(f);
- 			adapter->num_vlan_filters--;
--		} else {
-+		} else if (f->state != IAVF_VLAN_REMOVING) {
- 			f->state = IAVF_VLAN_REMOVE;
- 			iavf_schedule_aq_request(adapter,
- 						 IAVF_FLAG_AQ_DEL_VLAN_FILTER);
- 		}
-+		/* If REMOVING, DEL is already sent to PF; completion
-+		 * handler will free the filter when PF confirms.
-+		 */
- 	}
- 
- 	spin_unlock_bh(&adapter->mac_vlan_list_lock);
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-index d0b7b810679399..147adb76f64141 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-@@ -2877,9 +2877,13 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
- 		spin_unlock_bh(&adapter->adv_rss_lock);
- 		}
- 		break;
-+	case VIRTCHNL_OP_ADD_VLAN:
- 	case VIRTCHNL_OP_ADD_VLAN_V2: {
- 		struct iavf_vlan_filter *f;
- 
-+		if (v_retval)
-+			break;
-+
- 		spin_lock_bh(&adapter->mac_vlan_list_lock);
- 		list_for_each_entry(f, &adapter->vlan_filter_list, list) {
- 			if (f->state == IAVF_VLAN_ADDING)
--- 
-2.52.0
+> Maybe reorder the checks:
+> 
+>         if (qid >= vi->curr_queue_pairs)
+>                 return -EINVAL;
+> 
+>         /* In big_packets mode, xdp cannot work, so there is no need to
+>          * initialize xsk of rq.
+>          */ 
+>        if (!vi->rq[qid].page_pool)
+>                return -ENOENT;
+> 
+> 
+> Alternatively I think we can completely drop this chunk: we already seem
+> to init page_pull at all times except for big packets mode, so the
+> current code is fine I think.
+> 
+> 
+> -- 
+> MST
 
