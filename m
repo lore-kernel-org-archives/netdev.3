@@ -1,73 +1,75 @@
-Received: from mail-pl1-f228.google.com (mail-pl1-f228.google.com [209.85.214.228])
+Received: from mail-pl1-f227.google.com (mail-pl1-f227.google.com [209.85.214.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E02B14E2F2
-	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 18:02:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.228
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C6733B6F8
+	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 18:02:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773684132; cv=none; b=GwPDgTEcBXNpr4YbjRRMADgCW6KdeXAmDlqzpcd0z5ikcQzTYMcirvDfAB9HS9EydjHCxNueZR2DNBXSvOgoHrQ+W34oHMrGbgvxhI3LfDhL/WhLokoBQzPryM2ri5PUbr+wt0wcUIvKlmRjzieQHtzykNsI9kqWtyQaccUVAxc=
+	t=1773684137; cv=none; b=X1/7yqqxsGzf5CPYaqGTsYky0W+FwGD0YrGKvmPgyxxfwvEsVOC4bTrDeyqCFbOuoUtN8yTkP1l0ovx95d0sujqHK8/mc1BrVf3xSmJTISAql9LTvLK8iWEww2m5fLosl3YpoEbvA++1jFrMjLrCGSBNn1oB738T7b1dhPrDE8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773684132; c=relaxed/simple;
-	bh=GH+pkqi70qiZ1IlEYk3hXcGc3zxJGM0uucnwwlL9KkI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XarUKRXXsgAMGF1lm6cKH63c83FUT4XYuJG2RWQEkeDb7IMDKCQTPnkQIk6wUWLIwbHnQhxNxKApBltoXrFQQVVFx/oFcss+hCGULOfk4oiX/07nryMmwPjHH/tOlm/pTwOE2PKzcip8yCGAGDCKHknR1auKpR8RfLM6EDDLZPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=SKXS+OYm; arc=none smtp.client-ip=209.85.214.228
+	s=arc-20240116; t=1773684137; c=relaxed/simple;
+	bh=oyuj7t71LQjj1egom5dKyZPOH94Xoz5efKssUxQsga8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=JhzCj2aPaATuj5c7/lGoduY9H/R5uUocadoDWI95t/P/43QuLIriEysE2je2BjUiq2a7LROYZ4VbKcnMCG2YEgTKS8jTcAb/vAuYaVPRdilpJwHl224tWE0SDjbdIgylKtXHAuLA97Qp5s8ukFrqFRcHDnOI8fpHsvBP4OmJTK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=L3mS2Qrs; arc=none smtp.client-ip=209.85.214.227
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="SKXS+OYm"
-Received: by mail-pl1-f228.google.com with SMTP id d9443c01a7336-2b0603ee486so5318115ad.0
-        for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 11:02:11 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="L3mS2Qrs"
+Received: by mail-pl1-f227.google.com with SMTP id d9443c01a7336-2ab39b111b9so20713975ad.1
+        for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 11:02:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773684131; x=1774288931;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7lXVhIqXFl+WWACJ5oislkt3DrtKNmxISZZlQPPLQV4=;
-        b=WuPVoC9voMYyYj60KG0LppS0Wqq22whkl46QJd+uD2c2BROEJmExasJEetSJc/5DU/
-         56m1pMnLy2BBldy6mMNtW/mLsQpRoVhIKEz/EWkskSTSFTd3CkTN4dTduU5MP9Qt+kKx
-         nc3YA0SQI8jyghw5rFGU2sJcfNCq3fZ48E+Ao+/1N5JbUR+nxUZNcs4OHMtxxFV5LAIY
-         CsKxtQBSUJtimN+6H8n8zSdY3oTCH0vN03kVzQ+NQFXxFBcGNHNCeVXWn3GehV1n+uMj
-         C4YQykqS2DQ9VffXg1H7mMnssvJjkNjiXpyp16umUhSFtnSXAJQ3WrIGhWw4VZ4kQmFT
-         u7SQ==
-X-Gm-Message-State: AOJu0YwfqlTuo4ab3pRzlUaEWtlo/q706AR7dyA2IzNeNZBOnzykd0wG
-	8nYp53SipZp2k7T0VX3zK2KNmuSgMrjaQDuD1WYko6X1B3OoTBIAa8vSpgC8bQIMbd+c9nnptza
-	Y0duVDcxeaLeaqYX+2nyAW6cJ5dVyDRuPE+1D9HRG2APGPXYTXcuesQB88M0+QZkXl9bp1xJPBI
-	kfU1bnSC696IYJJj4sKrc3wZ0zv30FmicDS0oNEX+md9lfsBs4BDrUfO6MbmOp3nszOpnEIXGre
-	TvYUxuwvA==
-X-Gm-Gg: ATEYQzxuki7tLNhicWy6zbt8bCovgyqQJLHJEHiFP3sOdBiOjUGlRHUuQSMohX8vIdB
-	z7oEp4PTZU00Tz+s7Zc674F7r/4cbsu8VoP2z4a1gqExK1+BKyKzn9YCeGqz8aj2SJsvOeYfGMK
-	3bGh46eTSmyLP54V+sMnx55vfyDHUNwBIp03thZxFRdLjzkbfR3PT800jskcxtbwYRr3aKwD84n
-	lbCpAlR322X0Om6UHZHm5TqxPVmc6ttcGQsjEOaNcylX1bKzuR0kRbPf7LrtC7B+7fSLf/YgKRb
-	ihnzW6LXp+s8qpsWhf9+Tr9A1L/oCt/8MHrlKUwnaURWi3yHL5P1OgL0OqfNxQvxmfaEP2sSCdy
-	02O4ilezHpqCokJmoWReI+WYvTZnY9YZqKJ52g3dnP8ZGFc8llqR+z4sawbLv4NXNTu+XvxB8ZS
-	z+T1zA0BWsN1sZkhO0tfaXC5xdqxeqM3Yby7pcWaqtKblBxJgH8hhFfL4=
-X-Received: by 2002:a17:902:d482:b0:2b0:4eeb:f80a with SMTP id d9443c01a7336-2b04eebfabbmr64192955ad.29.1773684130425;
-        Mon, 16 Mar 2026 11:02:10 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-63.dlp.protect.broadcom.com. [144.49.247.63])
-        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2b04f8d6726sm7227015ad.28.2026.03.16.11.02.09
+        d=1e100.net; s=20251104; t=1773684136; x=1774288936;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zysSS8H60q+7QyxVieKzw0LalHW4e1jRZejA+TirTLk=;
+        b=K16feRNQEcNbIHM/DVkTqnuBsHOAvLZ3uAikiyr3pNwgc8p3wv8N5Vpih32F0DSn3/
+         eca2mdTVeXrQ/jy8zeuE9haQpDJKUcudr04+LUINL5zZQx9uPi2gC/bpG+jt9kzM+9Dc
+         UYWeI1qsFylbn01m3cbzuRvoO+sLzm6xEkSBgRvX6frYfsPqYKgerQDXjGgYoIlv3pE7
+         GG/TdJXZlQRBk7h1QzXFG5CEeXo8sbzPrukJOImkXavdNxUWn4C+X5V0K/AfLf8OicyC
+         xxgL9BdZZzbg8tAW3kVDL5gvZk8JR+1z8rIULTc8nFnckZMytz8G2IfMvAr4GVY7cUTA
+         eAeg==
+X-Gm-Message-State: AOJu0YyRpvMwpiFFtHYHV3K6vKqIwyXkFMI0nNOy4QzTYK+Gva9cepLn
+	FDH175Pk86pOSD579vA6z43ZjxIcdC6xoFtYuG6P4fSJ8wOh02yvMX1681Q/3q+WDE3mIC6Vo54
+	DzT3mLDa1HFVAGBdN5H/eH7o5y84QvbmqsNJ/Hi7C+ghB7npz9gnRNDCcKbiSUUTyiZ9deiuveB
+	KONvuOI7emBDydDSeG9R/ARL31s68qIAuzhs4IteqrQ/FPhmbNIc+DcXCalhXhP+j5eaJX4fhwr
+	gY85QDYMQ==
+X-Gm-Gg: ATEYQzxtI2IztL04ox+GpsuKuCiq7dyslrWtWZqOPvJLuNr0tcF9WUpE9BbDc0L8v2h
+	DhDGf8eB5M94GXKhdts9hwS/tBsrJwaxBMW6LXOPxv/mLe3YstAdLZNmIZ3EYianIJrHWobMawD
+	wpsudFUYo1QaVjUC5NkrgK50N1baWydtJoVjP4BW3AkVxZMotsBRPbCmJSX4pnC3+8fFVsBoHvc
+	N0r6YK2mj8YBcePRZtm7GuxXTRkaRUZIrQrNfOqvHlhhHOG79zH1gRcaRJyLElrt6T+0gsBWq7A
+	J0rIccrXyu6g+g+fPHiI6UNwaw3s9aWveCWM/JeEkr7UAiaxx88Oq+rPYuoH4T/TnBC7iIsH8n3
+	8Wt5TLPCCi34WNmZiDkdUtRNrwP5MmUMQuoLuHz+yhwYLla24UOTZ33skCtMPLmZQnvIE6vtvd+
+	hkY8Kj5ZPt2Iu37rwwrkPWmjuptKtGesThhRpfYqdQxC1VAKzVx6HYEaI=
+X-Received: by 2002:a17:902:d548:b0:2ae:5f65:171 with SMTP id d9443c01a7336-2aecab1ee59mr154818855ad.33.1773684135809;
+        Mon, 16 Mar 2026 11:02:15 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-22.dlp.protect.broadcom.com. [144.49.247.22])
+        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2aece81cc9fsm14274525ad.50.2026.03.16.11.02.15
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 16 Mar 2026 11:02:10 -0700 (PDT)
+        Mon, 16 Mar 2026 11:02:15 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8cd722c1a69so2909568385a.0
-        for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 11:02:09 -0700 (PDT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8cd81ce6fdcso4830291885a.3
+        for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 11:02:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1773684128; x=1774288928; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7lXVhIqXFl+WWACJ5oislkt3DrtKNmxISZZlQPPLQV4=;
-        b=SKXS+OYmuvHkudTg7Hg3dGTuWtK/fydBGTHUrcfktwucLcOINezDqwaPsgOCUbTKiu
-         5Jf1LU4pKNLPweYqKqML2Dj9bCrhkGPvnbsqZaYk4IOSIeyJVuMCOeFxOtTwS9/AKste
-         LCEkphm6QAkbvLJkdM1RBjPwZpYinfircejrs=
-X-Received: by 2002:a05:620a:31a0:b0:8cb:4066:7acc with SMTP id af79cd13be357-8cdb5b20c66mr1794433185a.50.1773684128453;
-        Mon, 16 Mar 2026 11:02:08 -0700 (PDT)
-X-Received: by 2002:a05:620a:31a0:b0:8cb:4066:7acc with SMTP id af79cd13be357-8cdb5b20c66mr1794426885a.50.1773684127818;
-        Mon, 16 Mar 2026 11:02:07 -0700 (PDT)
+        d=broadcom.com; s=google; t=1773684134; x=1774288934; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zysSS8H60q+7QyxVieKzw0LalHW4e1jRZejA+TirTLk=;
+        b=L3mS2QrsOp57fy7Mf5doohT4eo/jGXtQIRDtJGV1SbFAe5cLTLmzuZOpytPNA+DKWj
+         Yw95GmlAb59kTP4TvxPIGoxjo3cwZ2UB8DyhU43jFf52skAaFL+uhE/FLe7MhzLLpqYX
+         D7lLxsbwCstvWowMHmrJWydJih5bAUcH+/7Yg=
+X-Received: by 2002:a05:620a:1a19:b0:8cd:b315:6af6 with SMTP id af79cd13be357-8cdb59fe4f5mr1794591085a.8.1773684134074;
+        Mon, 16 Mar 2026 11:02:14 -0700 (PDT)
+X-Received: by 2002:a05:620a:1a19:b0:8cd:b315:6af6 with SMTP id af79cd13be357-8cdb59fe4f5mr1794585085a.8.1773684133342;
+        Mon, 16 Mar 2026 11:02:13 -0700 (PDT)
 Received: from stbsdo-bld-1.sdg.broadcom.net ([192.19.161.248])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cda1fc474dsm1412460685a.6.2026.03.16.11.02.04
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cda1fc474dsm1412460685a.6.2026.03.16.11.02.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2026 11:02:06 -0700 (PDT)
+        Mon, 16 Mar 2026 11:02:12 -0700 (PDT)
 From: justin.chen@broadcom.com
 To: netdev@vger.kernel.org
 Cc: bcm-kernel-feedback-list@broadcom.com,
@@ -79,10 +81,12 @@ Cc: bcm-kernel-feedback-list@broadcom.com,
 	andrew+netdev@lunn.ch,
 	florian.fainelli@broadcom.com,
 	Justin Chen <justin.chen@broadcom.com>
-Subject: [PATCH net v2 0/2] net: bcmasp: Fix issues during driver unbind
-Date: Mon, 16 Mar 2026 11:02:00 -0700
-Message-Id: <20260316180202.3371477-1-justin.chen@broadcom.com>
+Subject: [PATCH net v2 2/2] net: bcmasp: fix double disable of clk
+Date: Mon, 16 Mar 2026 11:02:02 -0700
+Message-Id: <20260316180202.3371477-3-justin.chen@broadcom.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260316180202.3371477-1-justin.chen@broadcom.com>
+References: <20260316180202.3371477-1-justin.chen@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -94,16 +98,99 @@ X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
 From: Justin Chen <justin.chen@broadcom.com>
 
-Fix two issues when we unbind the driver. We hit a double free of the
-WoL irq and a double disable of the clk.
+Switch to devm_clk_get_optional() so we can manage the clock ourselves.
+We dynamically control the clocks depending on the state of the interface
+for power savings. The default state is clock disabled, so unbinding the
+driver causes a double disable.
 
-Justin Chen (2):
-  net: bcmasp: fix double free of WoL irq
-  net: bcmasp: fix double disable of clk
+Fixes: 490cb412007d ("net: bcmasp: Add support for ASP2.0 Ethernet controller")
+Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+---
+v2
+- Split into two patches.
+- Add error path to disable clock if we fail during probe.
 
- drivers/net/ethernet/broadcom/asp2/bcmasp.c | 37 ++++++++++++---------
- 1 file changed, 21 insertions(+), 16 deletions(-)
+ drivers/net/ethernet/broadcom/asp2/bcmasp.c | 29 +++++++++++++++------
+ 1 file changed, 21 insertions(+), 8 deletions(-)
 
+diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp.c b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
+index 2034a1593db7..dda89afb2917 100644
+--- a/drivers/net/ethernet/broadcom/asp2/bcmasp.c
++++ b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
+@@ -1249,7 +1249,7 @@ static int bcmasp_probe(struct platform_device *pdev)
+ 	if (priv->irq <= 0)
+ 		return -EINVAL;
+ 
+-	priv->clk = devm_clk_get_optional_enabled(dev, "sw_asp");
++	priv->clk = devm_clk_get_optional(dev, "sw_asp");
+ 	if (IS_ERR(priv->clk))
+ 		return dev_err_probe(dev, PTR_ERR(priv->clk),
+ 				     "failed to request clock\n");
+@@ -1277,6 +1277,10 @@ static int bcmasp_probe(struct platform_device *pdev)
+ 
+ 	bcmasp_set_pdata(priv, pdata);
+ 
++	ret = clk_prepare_enable(priv->clk);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to start clock\n");
++
+ 	/* Enable all clocks to ensure successful probing */
+ 	bcmasp_core_clock_set(priv, ASP_CTRL_CLOCK_CTRL_ASP_ALL_DISABLE, 0);
+ 
+@@ -1288,8 +1292,10 @@ static int bcmasp_probe(struct platform_device *pdev)
+ 
+ 	ret = devm_request_irq(&pdev->dev, priv->irq, bcmasp_isr, 0,
+ 			       pdev->name, priv);
+-	if (ret)
+-		return dev_err_probe(dev, ret, "failed to request ASP interrupt: %d", ret);
++	if (ret) {
++		dev_err(dev, "Failed to request ASP interrupt: %d", ret);
++		goto err_clock_disable;
++	}
+ 
+ 	/* Register mdio child nodes */
+ 	of_platform_populate(dev->of_node, bcmasp_mdio_of_match, NULL, dev);
+@@ -1301,13 +1307,17 @@ static int bcmasp_probe(struct platform_device *pdev)
+ 
+ 	priv->mda_filters = devm_kcalloc(dev, priv->num_mda_filters,
+ 					 sizeof(*priv->mda_filters), GFP_KERNEL);
+-	if (!priv->mda_filters)
+-		return -ENOMEM;
++	if (!priv->mda_filters) {
++		ret = -ENOMEM;
++		goto err_clock_disable;
++	}
+ 
+ 	priv->net_filters = devm_kcalloc(dev, priv->num_net_filters,
+ 					 sizeof(*priv->net_filters), GFP_KERNEL);
+-	if (!priv->net_filters)
+-		return -ENOMEM;
++	if (!priv->net_filters) {
++		ret = -ENOMEM;
++		goto err_clock_disable;
++	}
+ 
+ 	bcmasp_core_init_filters(priv);
+ 
+@@ -1316,7 +1326,8 @@ static int bcmasp_probe(struct platform_device *pdev)
+ 	ports_node = of_find_node_by_name(dev->of_node, "ethernet-ports");
+ 	if (!ports_node) {
+ 		dev_warn(dev, "No ports found\n");
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto err_clock_disable;
+ 	}
+ 
+ 	i = 0;
+@@ -1358,6 +1369,8 @@ static int bcmasp_probe(struct platform_device *pdev)
+ 
+ err_cleanup:
+ 	bcmasp_remove_intfs(priv);
++err_clock_disable:
++	clk_disable_unprepare(priv->clk);
+ 
+ 	return ret;
+ }
 -- 
 2.34.1
 
