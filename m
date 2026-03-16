@@ -1,146 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9665526E6FA;
-	Mon, 16 Mar 2026 11:17:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E97A2848BE
+	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 11:24:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773659827; cv=none; b=Jc/EE6OpkoNgzg2CII1uLgqxvrUzTehlw5Wu2EktuLBXZSa68OrLd0l1EF+RywiufBklHiDfSUqkflRb7wk4xHR4xxqyQ19I8sGcNrh4lyP+aLUfrxzMRU5GlVVwapae/fLDWnGJrFZq+2endRY4oM5NBDBweZyIjQIip4JVqgM=
+	t=1773660242; cv=none; b=OF5Hvn9auDlEedpsOG3nPLZmGatAHp85zoT2qiRB4s3PKZ0O8BUU0bpT0Ff95NkHILrIiLBWuSfEY6lMG6CWUCQNUXbgRk7m3j6B/cegK3WHoaBpB9xWig8jVuWEGxktvrATivQ5nz6BkfTuEECzFZ4v+LO6ThraeCrVY9Brt5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773659827; c=relaxed/simple;
-	bh=FBWXL6VpEYqYyQ5ZhinvdF5kzjlfyO6qEgQ/eJxWwHQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=i5+hNzUw+2j0tYVH2jTCkp4Cx3FeKwjgpcw9VJzXxaMxUUwpjIAdy9UtWXrcvSRPxQfoBQgM77lWtMPpYK1vrqtynbHAFjPBayXCpDMWugq0zc09zGkv0Bn1Vbehma8j4WOn1Swtjx4w3xNG5aLmYXtq3M7Ltcp72PFeBzVFaXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XRWJr1cN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773660242; c=relaxed/simple;
+	bh=WXqCX/DwBCUUGd2jxkGds1I18CJzM7++LkFVv7eZUz8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AONC5wiLllQZN1fZK97MADi1XPabncqBrBvhYPsZN5NZqyYJHN1IaBFS1p067FFVynKjW6EMhpgu7qZ7ijFxJJaPCJTIFsXRkAO0VXhvJNJhz0AtYosdOt7YFFZ/yzcaXgeSQvwhcLhsqVFUIBYckin3ljVsFGEnVAhRf10iw90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c91I5Sta; arc=none smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XRWJr1cN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A6E5C19421;
-	Mon, 16 Mar 2026 11:17:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773659827;
-	bh=FBWXL6VpEYqYyQ5ZhinvdF5kzjlfyO6qEgQ/eJxWwHQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XRWJr1cNxCW8WW+XJSPFJRnWyL0WXyUtvvB1ZCujtlIHzA3JE9immclGKXC2a5n3U
-	 vbFFbIgfH+YHXuw4W6ReZLW1J475NZJwHAcnfhQZStF2f0TrOIq+a7ldG00+0pNC9W
-	 6APfusqT1tcZ8kfcydyEDR9TbWK9LcqGVj+ca3UhTzNmef/XY2JM5giqEqPxppkhjF
-	 cWwbbiHj5NRJ7mMGw9r5xfoTeCRLGmxKudTPdCqkxEG6m2oN4z3fqY3cSeSZIaBiUE
-	 D3R7zE41ZfXHFKxhTmglJyuMKO1OzTU6QncOhj7DvlfRHnPT0uC6FcSrtFf+mHWcOp
-	 EKr1i9Fdtmk+w==
-Message-ID: <56ad8ce8-a085-4f67-b4ae-25e5f28c3e51@kernel.org>
-Date: Mon, 16 Mar 2026 12:17:02 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c91I5Sta"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-c7393536e53so1700097a12.2
+        for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 04:24:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773660241; x=1774265041; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=99La0VK9SzA1EiGQSH9RsVBy9sx23iujvFhJrIbJm3c=;
+        b=c91I5Sta9FPou4QPyGld1nQtc6FYG+eV4/i6WzSa98TAmefoRw8phDMP+FMRt3uqbr
+         l5HiIr8J1aXqDqCvFW7MrCt7dFLhR4H1c4xRivk4lNxlMmOkVBT0zYJBzOeIKBRU9+oj
+         C5csM30Nk5Vld7ybHd5dtjnjW/EtW/OSNCvehnXltBTK0lof/Yp5ZGxEZhrf6ZlxW5iN
+         5n/9sshvHozlfeB29rlSIzjMcfQK/SmsYshoCxwX+rvdAAlW3n74qBcGtWCa5rh6WFjf
+         dt6y1UPEa0TAAur3Gva6ABTRd72bvhIkgYcd9p6QSKxV3L1A9gnZJKi15ry7plOxjJtZ
+         fbJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773660241; x=1774265041;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=99La0VK9SzA1EiGQSH9RsVBy9sx23iujvFhJrIbJm3c=;
+        b=Ouuj8Jg20Ex1zob/Wn164UaxMx1gdOMJJ0hIoh8OU467Lx9XORDufkRsHqTL+Wsj3w
+         P9K0zDeXjV9+qUhuaUWSzOu2OLeOhyeZmGohXGQQkDVKedIeLlMWKphs/zJ46KZjGVUU
+         tSITpiZdP4FTTVO8yEnrc1Mj3z+frWBUpSm5xepwvd/T1J+KSrfCdGIUPS3BoL3NAXjp
+         Y+QT+lX/cQLMhYGLU43n+viL28akLcUwyt7UOhlikNm4zXoXg3SFGMxEMPp+nKRFlUlp
+         rST8cTFcVxYGMAIdYMZk4skWrAWnwKnEkRkW8R6gH+x1aBLayEJRbT2MRDzbK5Dwv5EW
+         p7TQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUnuI6rgiRHgLVzzIWwVuP84Nq7Ww4w5OkdLMdj+oHpSetWLKZuPJ0/AeYnHG+yGPD6YOAfbSM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZrSd4/lSrcDe47lRuw4qgV8O1F8h+NxTvTalfMhmHq083K26W
+	bOU/1fxwF17VtN1KIUqNKUX8nGD25j7mKVQHOBEmVX/S8Iv2Nmumxr6+
+X-Gm-Gg: ATEYQzxEErsLgdqxThe7xGCpyqCIbLViptHhMF1qVqUOAPHutDZ5klSdCkXls7+RMQP
+	3kx78YwDqZeuUnDRpoqYxm6aJtnBnhaoeX6Jfp7fvF7Qld/tFmixLpGkLKU8CRdhF/pTH85KnLP
+	Q3h0ikq343efmkFrnyp1MnN8J9mDIrhIEjlySlb/IkHOEdayjVzA+uKL7nZK6YE66quXYRCVs80
+	Hvxe19pR2LYzwynNZeUXOygus5C5MzyAuZXkgFveb53a9mNo5MMowfK10lw2YzHguon9oU2hoWP
+	OqdkoCh/eaEDbulM9q+ZFYEzew3ETqJG4byG2sYtXwzjNvPR84/IYrrsIj+egYZnd0xCp6YV4x4
+	rBjDu8ZOX2tcr0HVhZ4TFcOD9wvVcj9PoZa2lNlD5rufkZaveGzfUYEXJnM8X7UT3xUS2X79dV2
+	LUf3h19AP2FkcXMX5PsRp1chxjqPjAxnWX0Ba6fYNmh/ldnihpahTJ
+X-Received: by 2002:a05:6a20:2588:b0:398:962e:83d7 with SMTP id adf61e73a8af0-398ecd32e67mr12122687637.43.1773660240526;
+        Mon, 16 Mar 2026 04:24:00 -0700 (PDT)
+Received: from v4bel ([58.123.110.97])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c740000056esm4842239a12.24.2026.03.16.04.23.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Mar 2026 04:24:00 -0700 (PDT)
+Date: Mon, 16 Mar 2026 20:23:56 +0900
+From: Hyunwoo Kim <imv4bel@gmail.com>
+To: Florian Westphal <fw@strlen.de>
+Cc: pablo@netfilter.org, phil@nwl.cc, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org, netdev@vger.kernel.org, imv4bel@gmail.com
+Subject: Re: [PATCH net] netfilter: nf_flow_table_offload: fix heap overflow
+ in flow_action_entry_next()
+Message-ID: <abfoTBGLhav-iPQb@v4bel>
+References: <aaxe-uH2Qr6qM4E9@v4bel>
+ <aax2yZtJce0d19gd@strlen.de>
+ <abfhRFfZ1LOgWEsf@strlen.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/10 net-next] Convert CONFIG_IPV6 to built-in and remove
- stubs
-To: Vlastimil Babka <vbabka@suse.com>,
- "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Daniel Borkmann <daniel@iogearbox.net>,
- Fernando Fernandez Mancera <fmancera@suse.de>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org
-References: <20260309022013.5199-1-fmancera@suse.de>
- <48ccec3f-dbc8-45c8-afda-e4f7e8f150d6@kernel.org>
- <cd87ed46-b774-4896-b25e-4806eec9e0b3@suse.de>
- <6c005900-3461-4e3c-a396-b2984735af9b@kernel.org>
- <51102620-fb8a-467e-9144-786d1fe27e31@iogearbox.net>
- <4e3cd289-2b7a-4f64-99f6-05eb9d67c0fc@kernel.org>
- <c28d7cba-3805-4e6d-8051-d12e923c1973@lucifer.local>
- <a1dc7907-39a0-4417-8589-c48a4a7cc839@kernel.org>
- <97d85c42-5ef3-4912-abb9-8d4fe6fa54df@suse.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <97d85c42-5ef3-4912-abb9-8d4fe6fa54df@suse.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <abfhRFfZ1LOgWEsf@strlen.de>
 
-On 16/03/2026 12:10, Vlastimil Babka wrote:
-> On 3/16/26 11:33, Krzysztof Kozlowski wrote:
->> On 16/03/2026 11:24, Lorenzo Stoakes (Oracle) wrote:
->>>
->>> If I'm wrong and somehow Amiga isn't legacy in 2026, then SAY SO instead of
->>> giving an unnecessarily mean, dismissive and frankly embarassing response
->>> like the above.
->>
->> Calling something legacy in this thread is not really appropriate
->> because it is diminishing its important or requirements.
->>
->> Till we support given hardware, we are supposed to consider its
->> requirements. If you do not consider these requirements, then you do not
->> consider that hardware as worth being supported and this means you
->> should first propose patch to remove that hardware.
+On Mon, Mar 16, 2026 at 11:53:56AM +0100, Florian Westphal wrote:
+> Florian Westphal <fw@strlen.de> wrote:
+> > Hyunwoo Kim <imv4bel@gmail.com> wrote:
+> > > flow_action_entry_next() increments num_entries and returns a pointer
+> > > into the flow_action_entry array without any bounds checking.  The array
+> > > is allocated with a fixed size of NF_FLOW_RULE_ACTION_MAX (16) entries,
+> > > but certain combinations of IPv6 + SNAT + DNAT + double VLAN (QinQ)
+> > > require 17 or more entries, causing a slab-out-of-bounds write in the
+> > > kmalloc-4k slab.
+> > > 
+> > > The maximum possible entry count is:
+> > >   tunnel(2) + eth(4) + VLAN(4) + IPv6_NAT(10) + redirect(1) = 21
+> > > 
+> > > Increase NF_FLOW_RULE_ACTION_MAX to 24 (with headroom) to cover the
+> > >  
+> > > -#define NF_FLOW_RULE_ACTION_MAX	16
+> > > +#define NF_FLOW_RULE_ACTION_MAX	24
+> > 
+> > This fix looks rather fragile.
+> > 
+> > What guarantees that this stays right-sized?
+> > 
+> > Can you add a BUILD_BUG_ON or if needed, run-time check?
 > 
-> I don't think it's so binary. AFAIU (and recall also Linus saying that) it's
-> ok to make things less optimal for older/less common hardware, if that's the
-> cost to make the kernel better for the major ones. So that's why we're e.g.
-> discussing removing CONFIG_HIMEM which could limit how much physical RAM
-> some 32bit  architectures can use. Or we can have new features e.g. 64-bit only.
+> Ping.  I'm not even sure if there is a bug to begin with, see Pablos
+
+Sorry for the late reply.
+
+To clarify, I triggered the overflow using a dummy device that accepts
+TC_SETUP_FT, as I don't have real offload-capable hardware. The 17 entry
+scenario requires double VLAN (QinQ) + IPv6 + SNAT + DNAT simultaneously,
+which is unlikely in real-world deployments, so it is hypothetical.
+
+> response.  How did you conclude there is a missing bounds check and that
+> this increase is the best fix?
 > 
-> We can call that older/less common hardware "legacy" or "museum" or
-> whatever, I wouldn't say it's diminishing it, just stating a fact.
+> Normally there should be a check that prevents such a configuration.
+> If thats missing, please add one instead of increasing this define.
 
-Yes. Amiga was the first thing I poked to discuss affecting less capable
-hardware. But we could also talk about ARM 32-bit, which is not yet
-considered "legacy" because new hardware is being manufactured and sold.
-Legacy in a meaning we do consider its requirements/support.
-
-> 
-> Of course the devil is in the details so that probably to some extent
-> depends on what exactly you mean as "requirements" above. AFAIU the
-> conclusion here was already that ipv6=m isn't consired one for Amiga to
-> stay, and it's enough to have ipv6=n there.
-> 
-
-Yes, and other replies (parallel threads) also provide context and
-arguments why most, not all though, distros don't even use IPV6=m, while
-they are making everything else modules by default.
-
-Best regards,
-Krzysztof
+So, should I send a v2 with a bounds check, or drop this patch?
