@@ -1,70 +1,70 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA363A1D0F
-	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 15:44:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D00E3A1E73
+	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 15:44:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773675866; cv=none; b=XVvE3cVnRycf5EFn8PzWBMTGaPtnE4nzLVQqPmgk7UmNaUsgjXGQAeatS9mEGO1dp0oFfgbACHGaHY3kxGef6Pyu2KmYLv1rddRaXacqWrXEUslcbbsSK1rmzGeaG9erbmN5rE2Nm5dcN9iaan5KQB6T6IOxYKWQAj3xSKBk1/k=
+	t=1773675868; cv=none; b=sd9M2W4HNR+ewJWwd2UmIvhaikVSQZBlCvQ++UKd5qk6CsWWUHfPa41rFg4+sLj2AhKLxZd9H8sjbsjvwGuhDYEs22d6anmanYJSmR3LH2UPn7wy5gK9V+AsOO9u369EZ3cSnrhFr5AXXn1+PQzFu6lrzbCh0ltmmLKjlHsJcPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773675866; c=relaxed/simple;
-	bh=DhSAWW7yXKQwhdDoIE29ZTxkDS3Ypu0PN4TvZoN24pY=;
+	s=arc-20240116; t=1773675868; c=relaxed/simple;
+	bh=ipQs/pnOj3C+qN131d1fldvdWOQBtYc0/dhAsl74UM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E0S5HlcsAIFsHS5SL9sSZTEtJUMppW19QwH9VE/W98jNqztvTbflEf6KHq8Y5f0tolFX9agiSr5TPoFyjw/uQ9PW82P6JSyPBTOTMrM/3dkhEnNp+5/oXer2nhyQz7PYpqPxg9LYC/sl4d/n6QbzFmNBfQAT+5g1qJWAvpgoDCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=WdwfvKlM; arc=none smtp.client-ip=209.85.128.49
+	 MIME-Version; b=Xn097hfaN4svqBhVx9Y1rtv86A+nQeZ8bzb+BqmwCmmG/ZLwWxBNODPGPnbUGLzRHz0O1nqd9VVaMmpgjeo/8w6ahUpP6LAZukLdqtStiKjyhrkr8BLCYHTyriueq0oL4K6M9nUssW1Fzi17wUXi6pnBaGLy30iyPTIWPk/eX9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=vSCeAY/5; arc=none smtp.client-ip=209.85.221.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="WdwfvKlM"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-48529c325f0so34006395e9.0
-        for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 08:44:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="vSCeAY/5"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-43a03cb1df9so4666786f8f.1
+        for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 08:44:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1773675861; x=1774280661; darn=vger.kernel.org;
+        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1773675865; x=1774280665; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yRhV2eIFfXHWWdGDRqPvlrS59XFmetyEjC6Y1O0GZwo=;
-        b=WdwfvKlMlFr7LXGQ8S0cFd/l+F2oBIy2hSwRAnJyQwxTIIcNKbLZUWMlb+7BJEL/+Z
-         ScXXixB6BAtQsZ7YEOwfsV73zNgjyk9vnmJ9VB8We7WcuXlnnZ39WMBycM0uci2D9K04
-         boycCsLo1LJZSPDCUONnVLlYsz945Yh9AbULmwDsWh1WSxGEAut6QHeUgnaKMey3XDjN
-         9OaVR3KXLvJbbo97zoIJT9x4ST/W3V/1RebNRK0+dc2AhR3qjeTIq/Y/mgc7nFpcemFo
-         maNjl6MJ2DnDwc9R+SohjK78MQ7EW0r19UgMtutPYbg2pKMkX52ZoiOG10gmlIZbe3Iv
-         wNAw==
+        bh=ddfRTEAvGKSPvnCWeMTeF8TeOJoffU721DP6/2wjZd4=;
+        b=vSCeAY/5rUQOkWOaa8vj0HQw22hr0GOUcNUQz+7JMYRn65PsXMj7l224HjkpRTfigI
+         EOPVIGzTA+U1GjSM4eR5MlP/KKJKflm5yZ4qSLHIzXd7Hwdt5kawlZw08GaOoV0zqvlD
+         aOmSRrOHBl/KlAA3dyv2cz7yCYoqZob8pyjmjYveUG907tWZuvcmGbfhHduQQumS0Yov
+         LR2agkHwlE69INFeKpsaKGnuMt/Pc2IxzKlkNM7M+Kx2D4/8JKwwc20WJncUVVFHoK4D
+         8hw1tUPmESu/+9leafiN0sKyl2WcSs+LKT5F5oVex5s3UgudN+0cNsUoM9dsuyBdnrUI
+         ktXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773675861; x=1774280661;
+        d=1e100.net; s=20251104; t=1773675865; x=1774280665;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=yRhV2eIFfXHWWdGDRqPvlrS59XFmetyEjC6Y1O0GZwo=;
-        b=bXDi/Pvg7Fw9PO1jIqvizJaGjRZE6393/7u1u8x/fBhVMEU/dpIJ1rtZkJml0BSmt0
-         kHTdlyiCowZBrgdRPBT1DJPoNVPEJPPuGGEYRlTF6WkAKMVj/hvDDdKlD6HxKm5yggMK
-         CwDoEi149OAxg2J8dWHuMp0KXBxwhYH1YxTge14SM/QfQPIVNDeg3UE3/xMizyd0ab02
-         vl8r/wayz8DlR1eWoPCGYEIIak/IcPDzVvR5w6mdjsR6NXYSH4uVQcLOd85JpvRwBosg
-         vS3xwzjzHPITyXbWJJQ/euiMBoCFnE9CQffoHbEHanr2s+tTqm46tWnLN62xtuGE3Unl
-         Bg4g==
-X-Gm-Message-State: AOJu0YzVJkCffrq730cifB1QdzfGPF7VHTcCQ0TVbts7sBG3uwnk3xcm
-	jA+NftpSlpLgkD9PRwAo8dtilYRxfuHDTOgaAn7IvCXVzzpry6Fq7W+9lWiZcawgp0cwj5csTq2
-	3ugKr3+A=
-X-Gm-Gg: ATEYQzzAsMkkQJ1o2awdl1m1Jpwp45k6VdQAo2up/gXm/arz8tGTTecWLuKK87qr3wm
-	trEhbQY6Mc+8Ok1hcQa8zKqOxjf0989fLvKTeehkGkQBJvWQPrPgoGsQWUnQS33FS9zftJFXrci
-	VA7kaKir7CChKWWl6lg1BEsE8dCjAa2lxYjr5kkEy9oDUB8qd9szXcI/K2RfIQurVqoCwGbpkBV
-	gQ61V/kgaNuLa+y37oYSHzRmDlIRdYOXGHdDfWqu/6/RtHq5SOHdY9yrnC7w70CFXn+p31Bt+G/
-	4w0qjCgrPuC+31zGaypISWQYhUpelM+XCKjXRTNqswamOVImJJTnBM7opK8st7dWBwE58G4aQk2
-	ZiXPLU+oGLRc9StKiE73yoHXZ4pAEuRTmcXg5D3PgMNM7cHp0kdxl20zt2oCIiUO4Ud+5MRw5Jp
-	JeujRUDG/nFPSVE8kB2w==
-X-Received: by 2002:a05:600c:3552:b0:485:46fd:100a with SMTP id 5b1f17b1804b1-4855670299dmr225248925e9.25.1773675860898;
-        Mon, 16 Mar 2026 08:44:20 -0700 (PDT)
+        bh=ddfRTEAvGKSPvnCWeMTeF8TeOJoffU721DP6/2wjZd4=;
+        b=I4yNcNMA75/jMV4fbInQ9+AKcFejGiEG+Yuo15BaTD/kmKe3+U1Mct6Jo8EaRJQeEs
+         kyXGxZHvXSMqGvRwPwOysK4OruQEoa85eC7z++aovw2ofq+WGs+pivlUn6kKAu8lQYMS
+         SqLcRNoN7WIDqI/leQsaLEKIkfrSf0iWVl4yO/yrRZQl3Duzuqfm3dfZXqzZ3w2EHy/F
+         Ua8UB5XO6WIUtAbbZrbj5CgjGFsDHl/Cq+92lCUhjynWTf9FzwtpKgz1Q0vRBfH1IYBs
+         mnQJ1nvRSL+Zv6CLZRsx6JJbkJKrNUnEqXmsMOWMDlhoJbRSIWcKQJ9E60N8O1qQH4ho
+         74Uw==
+X-Gm-Message-State: AOJu0Yyyp9IQjx7O2zRsMAnpbdH8xU78+1oqTpIBO4BkwTQX3IjcEGPw
+	eH0i2hYu0VTTuCer5IwrHW9lPxPa1KEJJz069/L8v4wOCxvY9Eh9fB5UA0TbE3biw1I75eMxXZ0
+	qMBJY9A8=
+X-Gm-Gg: ATEYQzwfm+Yiyfc/zH9fz/UQXPFQmU0MP6wXAZtfrzb0DQRiqj9cNdcWHStfUh7bqx1
+	oWAcmyJxx6pK04RgTPNrvKErx6DU8BN3HEeqUOgfm8CzmYjeek/WLGRyQi9FAji1L5PngVZPOUs
+	2ksXidQqsPaIKLN+DHD1HzWTwtmKQQiOwtkKbVtkEE5gZQVj4cPHj2JcBF66sC5hnneTMsLzGzk
+	YeB1Zl34skRQz4VUlmR12gPnWhOM0IyJy9TWWw/6TohoBeFejRNYPM5B8gRzEDscLspLIgdHQjB
+	BRaRR8/gcOExxY8U+iVLmte8xmY2ec1RdSoi2fP2IdAZtML2676m/ASqYaYAzpZiWn81n1qycLM
+	dzmW4QkmsjUk6mQ6nkVcTRMx21JIVJHC/x80x5vpyq2985zckudX9TmmEWHKWIdMsyP70MWUgJI
+	AL/12x4uBHp9AUFkeV5A==
+X-Received: by 2002:a05:6000:2385:b0:439:b114:60c0 with SMTP id ffacd0b85a97d-43a04db6008mr25880981f8f.35.1773675863471;
+        Mon, 16 Mar 2026 08:44:23 -0700 (PDT)
 Received: from localhost ([213.195.231.106])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4856ea96828sm2312435e9.5.2026.03.16.08.44.20
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe1affe9sm44939332f8f.15.2026.03.16.08.44.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2026 08:44:20 -0700 (PDT)
+        Mon, 16 Mar 2026 08:44:23 -0700 (PDT)
 From: Jiri Pirko <jiri@resnulli.us>
 To: netdev@vger.kernel.org
 Cc: stephen@networkplumber.org,
 	dsahern@gmail.com
-Subject: [PATCH iproute2-next 1/3] update kernel headers
-Date: Mon, 16 Mar 2026 16:44:16 +0100
-Message-ID: <20260316154418.625026-2-jiri@resnulli.us>
+Subject: [PATCH iproute2-next 3/3] devlink: show devlink instance index in dev output
+Date: Mon, 16 Mar 2026 16:44:18 +0100
+Message-ID: <20260316154418.625026-4-jiri@resnulli.us>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20260316154418.625026-1-jiri@resnulli.us>
 References: <20260316154418.625026-1-jiri@resnulli.us>
@@ -78,33 +78,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Jiri Pirko <jiri@nvidia.com>
 
+Print devlink instance index in dev show output when
+the kernel provides it.
+
 Signed-off-by: Jiri Pirko <jiri@nvidia.com>
 ---
- include/uapi/linux/devlink.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ devlink/devlink.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/include/uapi/linux/devlink.h b/include/uapi/linux/devlink.h
-index 3a8f8a3cc342..8040b9f58a8a 100644
---- a/include/uapi/linux/devlink.h
-+++ b/include/uapi/linux/devlink.h
-@@ -19,6 +19,8 @@
- #define DEVLINK_GENL_VERSION 0x1
- #define DEVLINK_GENL_MCGRP_CONFIG_NAME "config"
- 
-+#define DEVLINK_INDEX_BUS_NAME "devlink_index"
-+
- enum devlink_command {
- 	/* don't change the order or add anything between, this is ABI! */
- 	DEVLINK_CMD_UNSPEC,
-@@ -642,6 +644,8 @@ enum devlink_attr {
- 	DEVLINK_ATTR_PARAM_VALUE_DEFAULT,	/* dynamic */
- 	DEVLINK_ATTR_PARAM_RESET_DEFAULT,	/* flag */
- 
-+	DEVLINK_ATTR_INDEX,			/* uint */
-+
- 	/* Add new attributes above here, update the spec in
- 	 * Documentation/netlink/specs/devlink.yaml and re-generate
- 	 * net/devlink/netlink_gen.c.
+diff --git a/devlink/devlink.c b/devlink/devlink.c
+index 39b0fac098c8..730515a78950 100644
+--- a/devlink/devlink.c
++++ b/devlink/devlink.c
+@@ -4095,8 +4095,12 @@ static void pr_out_dev(struct dl *dl, const struct nlmsghdr *nlh,
+ {
+ 	if ((tb[DEVLINK_ATTR_RELOAD_FAILED] && mnl_attr_get_u8(tb[DEVLINK_ATTR_RELOAD_FAILED])) ||
+ 	    (tb[DEVLINK_ATTR_DEV_STATS] && dl->stats) ||
+-	     tb[DEVLINK_ATTR_NESTED_DEVLINK]) {
++	     tb[DEVLINK_ATTR_NESTED_DEVLINK] ||
++	     tb[DEVLINK_ATTR_INDEX]) {
+ 		__pr_out_handle_start(dl, tb, true, false);
++		if (tb[DEVLINK_ATTR_INDEX])
++			print_uint(PRINT_ANY, "index", " index %u",
++				   mnl_attr_get_uint(tb[DEVLINK_ATTR_INDEX]));
+ 		pr_out_reload_data(dl, tb);
+ 		pr_out_dev_nested(dl, nlh);
+ 		pr_out_handle_end(dl);
 -- 
 2.51.1
 
