@@ -1,134 +1,234 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F393A1DB;
-	Mon, 16 Mar 2026 12:19:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B61E34EEFB
+	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 12:19:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773663563; cv=none; b=frUHl+c+xlxZjfg/dLDT+aQIskaj1uw3Oe9SCjbrEk+3bSTzOFKTdPY86Io0XWj3DX9Sr8aAX6QUOmUJChuoOMnOg4KhY1bW/ZmOwqyFa/pAOQqc/iYP4rVTw952iW3uLuUafbZTFu2xaNyIvha/ynfvAltm3ZoD3cjjzAo1+fs=
+	t=1773663601; cv=none; b=jHWVyH5TE7ce6wK3lrwwlCb7Z3LG40DoO5AiqDk0OLJgirBuDzev/wuvbbEarVGY7ny0kvLLWM92S7IgjDFGA8+4erAr4fbxwwIk4l5rTJywW5v9cHJv3xCNnehM0PfYqmr0DPpzkmNSLTSyHlL0wIln4OrGmwJB/0c0rutnn88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773663563; c=relaxed/simple;
-	bh=+V81cM+GFTXdyBy40w4Yulv5X7DoF5rXneVOKOsiGlM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=POLPLER9e6BO3+JySUw5yuBZ8e0TZbQL/CgzmBfi1YXzQ2H2dR/8dKNvtYJzVVQBFF3XMN/paWIGkOc4pEdDEd/9qGOyV9eoxGuGO/16K9iwk4i2Cuhd9okdzQA0iykJDSRijuH+lvw0PpcZgDVs88MYzv5lxJEEWIhl9DXsjHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=NodKqvEJ; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+	s=arc-20240116; t=1773663601; c=relaxed/simple;
+	bh=V9Iwa2pcqgeOnhxlvAxXtX8SgYmVBbqN0rIBnHHMx9s=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=X2jYqE2fikAlbQcNW/TKU7UiCoWs8H4cvDUvoDrNtNfZ66BmmC7EpUsnpWg8qknwRd0f6GwmyuaAcXDOAmMLAmb6B3PirtQmPX4m4j9Nw0cEItJaip+qzDrMevBS9XlIR7+cbDF9UfWOGRfGukclqn1ruyFd3Uf57hi02hKwfPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=ImhfIs12; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="NodKqvEJ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
-	bh=Oa7jPB1YIuKWw5WzId5M/uorq6CdolcKa3s4kiDxINA=; b=NodKqvEJm+hhydCGBmgc//T/fe
-	FG1ffERPW2s41pG854JObBPEOtj0xx67Cx3rSRGc39QWt/l+Uwc+r3na97LGmVdZVXp4x7ofHK9bh
-	W7l3J7YPbKFTBQ26Kp+qZJION1djCwTKcp9GE/GGMCP9xpvbIk5D0Eb4DXl1V7Zv/YsgJmR+ZMMcx
-	5MUipBWKUQ9eX4TJZu1Ey8NtzhBRuUCYvFfdZ2jLI7KLMJZU0d3DLtKbboHviLhZSPc5b4hq6nVD0
-	nOJJHqDEgBOaLXxFd4OxLJhXU6LmpeqFEeG50rP++RsrO/glBE2VHsFp2/y1+1Imuht4/B2PQA7Tf
-	wgS6SnyQ==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1w26uj-0026mj-4w; Mon, 16 Mar 2026 12:19:16 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Mon, 16 Mar 2026 05:17:45 -0700
-Subject: [PATCH net-next] bonding: move utsrelease.h include out of
- bonding_priv.h
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="ImhfIs12"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2E83CA22FD;
+	Mon, 16 Mar 2026 13:19:55 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1773663597; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=zK/5CH68TULYQKal3KKBaPnNj3jLytugk1OKWSuiGOQ=;
+	b=ImhfIs12amDLPNw4lU/CPJEiZNJErS+IqoLlD9ZlixGrLfwIjXEf4ODWkTA1XX029DeFkJ
+	peLoqAcrzkKQqDzAeidTZEhQOHAaKObMgrB/N6zeEA2domC2uNxqc5L7rtXBfqmA00yZ1X
+	gUnQDXLxQy5gEpxyf+Qtg8YCacos6OcFjs++tu+M7PLa16d1jlUlZG5kYlpteSpguBZbtM
+	WyGsuSdo5LbTFNe0flnrtrTy12p9/9pYUmAcv03eQUWCLtgLza7VY4xWd1k+JNXilx9ega
+	1MpeNFSu7ffPG142L5meI+VEW5ibyvXHO6vlVmnNC1uzXl311xvWeCuoGsNXHQ==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260316-bond_uts-v1-1-428696ea79d5@debian.org>
-X-B4-Tracking: v=1; b=H4sIAOj0t2kC/yXMQQrCMBAF0KsMf91A2mIquYqItMlUx8VUMqkUS
- u8u6vrB22FchA2RdhR+i8miiNQ2hPQY9c5OMiKh813wfRvctGi+rdWcH4aZ8zknPgU0hFfhWbZ
- fdYFydcpbxfUvtk5PTvU74Tg+FZM/J3YAAAA=
-X-Change-ID: 20260316-bond_uts-077fed8dce56
-To: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- kernel-team@meta.com, Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.15-dev-363b9
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2162; i=leitao@debian.org;
- h=from:subject:message-id; bh=+V81cM+GFTXdyBy40w4Yulv5X7DoF5rXneVOKOsiGlM=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpt/U/oz9hZLi58u/WptrNBVs9fk3ViIgHMzvlQ
- tpvN5LXN92JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCabf1PwAKCRA1o5Of/Hh3
- bccuD/9J3bxR+lq4VUtZfcHRSxG35J//GmjlddqeWnOY5kGVRlQD10ppCZwF6EdCV/MdvAMqrfE
- pYvl76XaI+wfClyJi1TR8q+WxKe+Jz/LouuMsGUCBCdvQB4eeJ30kkFDHgM44FvCAY45sqqqhvU
- JLsIL6RroxmJK2Q9iGklB0HIe+BC0ta7nrsqHdA48zt5cSG2HIOY/UIFl8gquej0OIxDRramgeI
- +CN4sd04iJrdRWew1XQ5BM9UtOE41J8NjB5r35Wv+S/AwBdrG9w0yFAwTTG8yjby5COVFsv/Pwo
- 9YYOanGeTCKltxZ/WQhxytWFLSeq3WZrjkJEkutNCr39TIb4rnyt4dXfRmWi8e35c/pUefiPOSR
- ezqT+4isicNIH37kkYwmpBPsLETl8th6yTaYWCatGjYcrkDHHElJpFMxEb8FALe09+o1uGrV3jA
- kE8UmWfK+dBDaadPIcdIoRiT2qHTOrGJo4CmNBDV3eDGoGTpISD0/70SLywWTFwW+MrvTtNaxvu
- wJMcS8p82pr7Z6wJTEjSsdn+ulrffbW4Cr1fWg5y7TtI1YOCCCerFXSEfWKuiCqVP2qC6Nr6ohk
- 2p6x+YqMC/nWALGbp3NrctIPEDzDOqojKI57O0HA/zCgiemi2+SdHjOJJBPj1/UPmq1jvnnEAw8
- aOsp+6dlY0umoHw==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+Date: Mon, 16 Mar 2026 13:19:55 +0100
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Paolo Valerio <pvalerio@redhat.com>
+Cc: netdev@vger.kernel.org, Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Lorenzo Bianconi <lorenzo@kernel.org>,
+ =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Subject: Re: [PATCH net-next v5 1/8] net: macb: move Rx buffers alloc from
+ link up to open
+In-Reply-To: <20260313201433.2346119-2-pvalerio@redhat.com>
+References: <20260313201433.2346119-1-pvalerio@redhat.com>
+ <20260313201433.2346119-2-pvalerio@redhat.com>
+Message-ID: <45248cc48e32958303121b90255b553f@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-bonding_priv.h includes <generated/utsrelease.h> only to define
-bond_version, which is used solely in bond_procfs.c. This causes every
-file that includes bonding_priv.h to be recompiled whenever the kernel
-version string changes (bond_main.c specifically). With
-CONFIG_LOCALVERSION_AUTO=y, utsrelease.h is regenerated on every git
-commit, so any git operation (revert, cherry-pick, bissect etc.)
-triggers unnecessary recompilation of bond_main.
+On 13.3.2026 21:14, Paolo Valerio wrote:
+> From: Théo Lebrun <theo.lebrun@bootlin.com>
+> 
+> mog_alloc_rx_buffers(), getting called at open, does not do rx buffer
+> alloc on GEM. The bulk of the work is done by gem_rx_refill() filling
+> up all slots with valid buffers.
+> 
+> gem_rx_refill() is called at link up by
+> gem_init_rings() == bp->macbgem_ops.mog_init_rings().
+> 
+> Move operation to macb_open(), mostly to allow it to fail early and
+> loudly rather than init the device with Rx mostly broken.
+> 
+> About `bool fail_early`:
+>  - When called from macb_open(), ring init fails as soon as a queue
+>    cannot be refilled.
+>  - When called from macb_hresp_error_task(), we do our best to reinit
+>    the device: we still iterate over all queues and try refilling all
+>    even if a previous queue failed.
+> 
+> Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+> Signed-off-by: Paolo Valerio <pvalerio@redhat.com>
+> ---
+>  drivers/net/ethernet/cadence/macb.h      |  2 +-
+>  drivers/net/ethernet/cadence/macb_main.c | 35 ++++++++++++++++++------
+>  2 files changed, 28 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/cadence/macb.h 
+> b/drivers/net/ethernet/cadence/macb.h
+> index c69828b27dae..0acc188fe547 100644
+> --- a/drivers/net/ethernet/cadence/macb.h
+> +++ b/drivers/net/ethernet/cadence/macb.h
+> @@ -1195,7 +1195,7 @@ struct macb_queue;
+>  struct macb_or_gem_ops {
+>  	int	(*mog_alloc_rx_buffers)(struct macb *bp);
+>  	void	(*mog_free_rx_buffers)(struct macb *bp);
+> -	void	(*mog_init_rings)(struct macb *bp);
+> +	int	(*mog_init_rings)(struct macb *bp, bool fail_early);
+>  	int	(*mog_rx)(struct macb_queue *queue, struct napi_struct *napi,
+>  			  int budget);
+>  };
+> diff --git a/drivers/net/ethernet/cadence/macb_main.c 
+> b/drivers/net/ethernet/cadence/macb_main.c
+> index 5e27e0e87a55..2c36d3844bf5 100644
+> --- a/drivers/net/ethernet/cadence/macb_main.c
+> +++ b/drivers/net/ethernet/cadence/macb_main.c
+> @@ -1474,13 +1474,14 @@ static int macb_tx_complete(struct macb_queue 
+> *queue, int budget)
+>  	return packets;
+>  }
+> 
+> -static void gem_rx_refill(struct macb_queue *queue)
+> +static int gem_rx_refill(struct macb_queue *queue)
+>  {
+>  	unsigned int		entry;
+>  	struct sk_buff		*skb;
+>  	dma_addr_t		paddr;
+>  	struct macb *bp = queue->bp;
+>  	struct macb_dma_desc *desc;
+> +	int err = 0;
+> 
+>  	while (CIRC_SPACE(queue->rx_prepared_head, queue->rx_tail,
+>  			bp->rx_ring_size) > 0) {
+> @@ -1497,6 +1498,7 @@ static void gem_rx_refill(struct macb_queue 
+> *queue)
+>  			if (unlikely(!skb)) {
+>  				netdev_err(bp->dev,
+>  					   "Unable to allocate sk_buff\n");
+> +				err = -ENOMEM;
+>  				break;
+>  			}
+> 
+> @@ -1546,6 +1548,7 @@ static void gem_rx_refill(struct macb_queue 
+> *queue)
+> 
+>  	netdev_vdbg(bp->dev, "rx ring: queue: %p, prepared head %d, tail 
+> %d\n",
+>  			queue, queue->rx_prepared_head, queue->rx_tail);
+> +	return err;
+>  }
+> 
+>  /* Mark DMA descriptors from begin up to and not including end as 
+> unused */
+> @@ -1998,7 +2001,7 @@ static void macb_hresp_error_task(struct 
+> work_struct *work)
+>  	netif_tx_stop_all_queues(dev);
+>  	netif_carrier_off(dev);
+> 
+> -	bp->macbgem_ops.mog_init_rings(bp);
+> +	bp->macbgem_ops.mog_init_rings(bp, false);
+> 
+>  	/* Initialize TX and RX buffers */
+>  	macb_init_buffers(bp);
+> @@ -2772,8 +2775,6 @@ static int macb_alloc_consistent(struct macb *bp)
+>  		if (!queue->tx_skb)
+>  			goto out_err;
+>  	}
+> -	if (bp->macbgem_ops.mog_alloc_rx_buffers(bp))
+> -		goto out_err;
+> 
+>  	/* Required for tie off descriptor for PM cases */
+>  	if (!(bp->caps & MACB_CAPS_QUEUE_DISABLE)) {
+> @@ -2785,6 +2786,11 @@ static int macb_alloc_consistent(struct macb 
+> *bp)
+>  			goto out_err;
+>  	}
+> 
+> +	if (bp->macbgem_ops.mog_alloc_rx_buffers(bp))
+> +		goto out_err;
+> +	if (bp->macbgem_ops.mog_init_rings(bp, true))
+> +		goto out_err;
+> +
+>  	return 0;
+> 
+>  out_err:
+> @@ -2805,11 +2811,13 @@ static void macb_init_tieoff(struct macb *bp)
+>  	desc->ctrl = 0;
+>  }
+> 
+> -static void gem_init_rings(struct macb *bp)
+> +static int gem_init_rings(struct macb *bp, bool fail_early)
+>  {
+>  	struct macb_queue *queue;
+>  	struct macb_dma_desc *desc = NULL;
+> +	int last_err = 0;
+>  	unsigned int q;
+> +	int err;
+>  	int i;
+> 
+>  	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+> @@ -2825,13 +2833,24 @@ static void gem_init_rings(struct macb *bp)
+>  		queue->rx_tail = 0;
+>  		queue->rx_prepared_head = 0;
+> 
+> -		gem_rx_refill(queue);
+> +		/* We get called in two cases:
+> +		 *  - open: we can propagate alloc errors (so fail early),
+> +		 *  - HRESP error: cannot propagate, we attempt to reinit
+> +		 *    all queues in case of failure.
+> +		 */
+> +		err = gem_rx_refill(queue);
+> +		if (err) {
+> +			last_err = err;
+> +			if (fail_early)
+> +				break;
+> +		}
+>  	}
+> 
+>  	macb_init_tieoff(bp);
+> +	return last_err;
+>  }
+> 
+> -static void macb_init_rings(struct macb *bp)
+> +static int macb_init_rings(struct macb *bp, bool fail_early)
+>  {
+>  	int i;
+>  	struct macb_dma_desc *desc = NULL;
+> @@ -2848,6 +2867,7 @@ static void macb_init_rings(struct macb *bp)
+>  	desc->ctrl |= MACB_BIT(TX_WRAP);
+> 
+>  	macb_init_tieoff(bp);
+> +	return 0;
+>  }
+> 
+>  static void macb_reset_hw(struct macb *bp)
+> @@ -3179,7 +3199,6 @@ static int macb_open(struct net_device *dev)
+>  		goto pm_exit;
+>  	}
+> 
+> -	bp->macbgem_ops.mog_init_rings(bp);
+>  	macb_init_buffers(bp);
+> 
+>  	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
 
-Move the include and the bond_version definition to bond_procfs.c,
-which is the only consumer. This is consistent with how other drivers
-use UTS_RELEASE (ixgbe, ice, i40e, ionic, nvme/target, DRM drivers,
-firmware_loader, etc.), all of which include utsrelease.h directly in
-the .c file that needs it rather than in a shared header.
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- drivers/net/bonding/bond_procfs.c  | 3 +++
- drivers/net/bonding/bonding_priv.h | 4 ----
- 2 files changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/bonding/bond_procfs.c b/drivers/net/bonding/bond_procfs.c
-index 7edf72ec816ab..6abe8916202dc 100644
---- a/drivers/net/bonding/bond_procfs.c
-+++ b/drivers/net/bonding/bond_procfs.c
-@@ -6,8 +6,11 @@
- #include <net/netns/generic.h>
- #include <net/bonding.h>
- 
-+#include <generated/utsrelease.h>
- #include "bonding_priv.h"
- 
-+#define bond_version DRV_DESCRIPTION ": v" UTS_RELEASE "\n"
-+
- static void *bond_info_seq_start(struct seq_file *seq, loff_t *pos)
- 	__acquires(RCU)
- {
-diff --git a/drivers/net/bonding/bonding_priv.h b/drivers/net/bonding/bonding_priv.h
-index fef6288c6944f..f9b327b6a494a 100644
---- a/drivers/net/bonding/bonding_priv.h
-+++ b/drivers/net/bonding/bonding_priv.h
-@@ -12,11 +12,7 @@
- 
- #ifndef _BONDING_PRIV_H
- #define _BONDING_PRIV_H
--#include <generated/utsrelease.h>
--
- #define DRV_NAME	"bonding"
- #define DRV_DESCRIPTION	"Ethernet Channel Bonding Driver"
- 
--#define bond_version DRV_DESCRIPTION ": v" UTS_RELEASE "\n"
--
- #endif
-
----
-base-commit: 5446b8691eb8278f10deca92048fad84ffd1e4d5
-change-id: 20260316-bond_uts-077fed8dce56
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
-
+Thanks,
+Nicolai
