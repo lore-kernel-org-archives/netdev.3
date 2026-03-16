@@ -1,160 +1,371 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4202951B3
-	for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 11:24:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AC6A28B4FD;
+	Mon, 16 Mar 2026 11:25:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773660260; cv=none; b=R24QNHjnT46c48zy9kan6xoKq3HocJLJKi3kYsVtPs/Lfz1zrtMHo/xq6RT3EOD2uR+HSmONbLGNPyE6oJtUjcPprBSF47hUVVzhOSSAclpegFFldqQTaGpoJ4s212BlaktQawmP7AKbNSLQDM2fqTMs7ELytTnnHdJ8LxUwUcc=
+	t=1773660323; cv=none; b=N5B70n99HzsvZoWVi/4CSQUXdetpuSgOwo8eaGOm8DCaxQA3L7sDYKmXsSO8IjTnsdgISoZjX85l8TDlQ8jneYqLO7HHMC6PgsngBgWK6TUzKSnCArF18zYKVFoul/kDr8M2yDHwHIrWK7HKDtZ3UrkzvM7vy2ZcFtiTk/9kjh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773660260; c=relaxed/simple;
-	bh=vExqsQuY0TOh0C4OqHS5ONqjXZPb4O5dkQOinRtjo/I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R/DaW7e9OIIuPk8kHUOO8mRuU4q+jzW6CsmTcPVB2JYYBvNPjhrUu0xNYDElYvtoINctnaod81imiBj4Atv6fydGeZadLZDwJEGp3n/EkKGcLw0eF3LL7Nmqfi3F/cv3RaugOZ9qkj5TRfWqrSlsUCnc/IFnIT+p5Uo3617NQHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=B6Fqyz5I; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=NV6fEPkw; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1773660323; c=relaxed/simple;
+	bh=FpbdmlFt+vohy+22OJXoMhDgdQGspq+e2GwxjeL+cl4=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=ekNpRL64QbgoA+6sv6cS+35XH5QtDzru7nXMY61L1eYDSYM4MI72VbUbv0kSgZStxqohVK2zV8vyU5whDW7WnazGFK+W+q63Hurbbr3ZEq9djMQAJvdl8eVH2oEuGLkzg2vbqQCSHdgjouJ4GbvSszeoPwg0WZvjVlUvVm4xj28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=AjT4mVDI; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="B6Fqyz5I";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="NV6fEPkw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773660258;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H9hWHpx6fXvQ6tiAS+Vx6gKKziz7E3xCqMnpnyHx+ks=;
-	b=B6Fqyz5IVSt3GT1ulMlu9mvzM+CA70XjObXe+5Gd8yBnDbRV3zsSgLTfcMrhOcE/J71QOG
-	Zx2eMifGvjFmI/YyF4iMbpGml7mir8HQ2GfFjhBHsP4haMNshDJt7b35DI7za79IwcDZdm
-	EbzAGhVf3jD+0u46sDwYtQzxdKLcTbs=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-147-ikMB79m_NXCFbkV0mtdw6A-1; Mon, 16 Mar 2026 07:24:17 -0400
-X-MC-Unique: ikMB79m_NXCFbkV0mtdw6A-1
-X-Mimecast-MFC-AGG-ID: ikMB79m_NXCFbkV0mtdw6A_1773660256
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4852cf0318dso61308695e9.3
-        for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 04:24:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1773660256; x=1774265056; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=H9hWHpx6fXvQ6tiAS+Vx6gKKziz7E3xCqMnpnyHx+ks=;
-        b=NV6fEPkwo3NU6CHi+YqL3sv30eFK9RhGWJQR0Knl42QG5QcFR8RBiOI+JigYlrQ+ft
-         LGQ8FC4dvwlQ3gOowpzISZ1VOIpl7/aLKeHBalDrxcaglCK55flHNEs0qPgzy661nEHQ
-         z35/UnsD686/RIgK7SWhdl/mXAmJVaWLEV5LEDIot/ba+1/LUZUKjIGl6L+UjpRKWnup
-         h+QRARlNlUHN0TOsmfY/Qsndq9UJT3hYuCevWZVnPTlpJWvgBzmptRdqo4KZJcNFxA7n
-         fGXpt2MMVTI0W7xknSJXubk/Xxi824XhoEAacu613aezcKyhyoTGMiO0QpYEP7Pdl/0K
-         ud+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773660256; x=1774265056;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=H9hWHpx6fXvQ6tiAS+Vx6gKKziz7E3xCqMnpnyHx+ks=;
-        b=dtYnm+E0bQt2qbdrNNWzmesAvKw9pwhjg21BtmE4ghOC9fSNFI1mUoIEYiqx8tgMpK
-         iZ/SWoLMKcZPTiMkaO9f49gwEAqPzl6xZM1aVFG6ahM1Ef5DuUkI5pOqmDyZxWeVPPsm
-         DKW7IMN07DnVPSvp4GnF0lmDy4XS9JEKFusLHeyetb/Cz2S7hjFSdO2xpYa8Zy1ogaUi
-         MV98bNnrnk32QhzSaCC5VPS19fYJWuWiVVdStAAqRTRE60BG3qXrpYOVSWcuNXX47yCP
-         AdwHzwK4+TmSXpTnRh6r0+5WF3wEFPig/G3x68eQuEyZHQoFqeABoFIc3jNe93sEeq3K
-         OBzA==
-X-Forwarded-Encrypted: i=1; AJvYcCX1VtZRf6Hqiu38lIiYZRNzJv6F+NOQItyc80NiQFnzwjTnwq7cVI22K2mlSdluEgncLPRp50U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUCoD+tnclLKlh7abFBmRhziP7AQTJGwTi+vN9sDtyu9gMhrr6
-	0eEyjQ8OiA0XYnAm9J3saiiPaFfJ3QW1TeaLYYswBEIBsbRCnCOTqYPT+SpxNt4sZ1mLxku20B4
-	Z6M9KNnR70XFr8M0B5sYXPlv4YJuYEpN900DfKUX9sX7WgSX2cKFqkj3y+w==
-X-Gm-Gg: ATEYQzyA0TMkOZvv9K14d6iQhjRePlq/gOO/Ey/4ozUTUL2/xlo/musRo5urSJF1XXh
-	Xt/iyZcAnq0kcYV4WCxlffsntVcBuaQABRDXX9OUcgQ0fr0SY/C9SEapqLpAAHyBNx4e97jiv7P
-	NrvS6LMqFgiTqrUkeEDc/rbUJrSwE5ncmrdNlW1RGeW1xwmALR3bwhGHiHj2BOApmuP+ZRp+8U2
-	Dx6diS/imI+J+5TqxpdnWkxiTHRFJimzPNNezqqSaBhJJfn41qQ6bAzd6hkR7z7ozaC7vYlu/kx
-	XD/ql1qOTx4+UoRQREi4HkQWGppjZUsaTJJJu7aKky8KkEcdy8KhfH2B+PbZkM76XXR+jlCU++w
-	RCipV8DWCwbEpmzu2BvvLUjiR9YZr3NetUJ+Tu0ynEh/Uw3F1RG0uo7U=
-X-Received: by 2002:a05:600c:468e:b0:485:3f58:d9d with SMTP id 5b1f17b1804b1-48556714b67mr207129205e9.32.1773660256068;
-        Mon, 16 Mar 2026 04:24:16 -0700 (PDT)
-X-Received: by 2002:a05:600c:468e:b0:485:3f58:d9d with SMTP id 5b1f17b1804b1-48556714b67mr207128715e9.32.1773660255574;
-        Mon, 16 Mar 2026 04:24:15 -0700 (PDT)
-Received: from [192.168.88.32] ([216.128.11.95])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48541aa73dasm1215197765e9.2.2026.03.16.04.24.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Mar 2026 04:24:15 -0700 (PDT)
-Message-ID: <2551cc98-5280-4a9f-8345-0a39e0e09dac@redhat.com>
-Date: Mon, 16 Mar 2026 12:24:13 +0100
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="AjT4mVDI"
+Received: by linux.microsoft.com (Postfix, from userid 1173)
+	id 6CE9D20B710C; Mon, 16 Mar 2026 04:25:16 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 6CE9D20B710C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1773660316;
+	bh=uiIk9O4DnQlGJjCUlsecxsBWSKHWacv/bDOYe+d95sY=;
+	h=From:To:Subject:Date:From;
+	b=AjT4mVDIC/wEiZ47mdXvS0ixggNq7wEiiDT5xco4GIwDD7cURU9dkc2SswlDpRMOP
+	 FCvRU7kdQXz5IDd3kH04v/wSmhu707ZdAAzzwkfx9dh4/qXMHZiU5+lElutZmZ6Hl6
+	 ubXIT7ZAgiMGoLWBcAJLTOry+mH9JQ+fw0kOY3y4=
+From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+To: kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	longli@microsoft.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	kotaranov@microsoft.com,
+	horms@kernel.org,
+	shradhagupta@linux.microsoft.com,
+	dipayanroy@linux.microsoft.com,
+	yury.norov@gmail.com,
+	kees@kernel.org,
+	ssengar@linux.microsoft.com,
+	ernis@linux.microsoft.com,
+	gargaditya@linux.microsoft.com,
+	shirazsaleem@microsoft.com,
+	linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH net-next v3] net: mana: Expose hardware diagnostic info via debugfs
+Date: Mon, 16 Mar 2026 04:23:27 -0700
+Message-ID: <20260316112339.1208155-1-ernis@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 05/14] tcp: grow rcvbuf to back scaled-window
- quantization slack
-To: atwellwea@gmail.com, netdev@vger.kernel.org, davem@davemloft.net,
- kuba@kernel.org, edumazet@google.com, ncardwell@google.com
-Cc: linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, mptcp@lists.linux.dev,
- dsahern@kernel.org, horms@kernel.org, kuniyu@google.com,
- andrew+netdev@lunn.ch, willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
- skhan@linuxfoundation.org, corbet@lwn.net, matttbe@kernel.org,
- martineau@kernel.org, geliang@kernel.org, rostedt@goodmis.org,
- mhiramat@kernel.org, mathieu.desnoyers@efficios.com, 0x7f454c46@gmail.com
-References: <20260314201348.1786972-1-atwellwea@gmail.com>
- <20260314201348.1786972-6-atwellwea@gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260314201348.1786972-6-atwellwea@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 3/14/26 9:13 PM, atwellwea@gmail.com wrote:
-> From: Wesley Atwell <atwellwea@gmail.com>
-> 
-> Teach TCP to grow sk_rcvbuf when scale rounding would otherwise expose
-> more sender-visible window than the current hard receive-memory backing
-> can cover.
-> 
-> The new helper keeps backlog and memory-pressure limits in the same
-> units as the rest of the receive path, while __tcp_select_window()
-> backs any rounding slack before advertising it.
-> 
-> Signed-off-by: Wesley Atwell <atwellwea@gmail.com>
-> ---
->  include/net/tcp.h     | 12 ++++++++++++
->  net/ipv4/tcp_input.c  | 36 ++++++++++++++++++++++++++++++++++--
->  net/ipv4/tcp_output.c | 15 +++++++++++++--
->  3 files changed, 59 insertions(+), 4 deletions(-)
-> 
-> diff --git a/include/net/tcp.h b/include/net/tcp.h
-> index fc22ab6b80d5..5b479ad44f89 100644
-> --- a/include/net/tcp.h
-> +++ b/include/net/tcp.h
-> @@ -397,6 +397,7 @@ int tcp_ioctl(struct sock *sk, int cmd, int *karg);
->  enum skb_drop_reason tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb);
->  void tcp_rcv_established(struct sock *sk, struct sk_buff *skb);
->  void tcp_rcvbuf_grow(struct sock *sk, u32 newval);
-> +bool tcp_try_grow_rcvbuf(struct sock *sk, int needed);
->  void tcp_rcv_space_adjust(struct sock *sk);
->  int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp);
->  void tcp_twsk_destructor(struct sock *sk);
-> @@ -1844,6 +1845,17 @@ static inline int tcp_rwnd_avail(const struct sock *sk)
->  	return tcp_rmem_avail(sk) - READ_ONCE(sk->sk_backlog.len);
->  }
->  
-> +/* Passive children clone the listener's sk_socket until accept() grafts
-> + * their own struct socket, 
+Add debugfs entries to expose hardware configuration and diagnostic
+information that aids in debugging driver initialization and runtime
+operations without adding noise to dmesg.
 
-AFAICS, the above statement is false, see sk_set_socket() in sk_clone()
+The debugfs directory creation and removal for each PCI device is
+integrated into mana_gd_setup() and mana_gd_cleanup_device()
+respectively, so that all callers (probe, remove, suspend, resume,
+shutdown) share a single code path.
 
-> so only sockets that point back to themselves
-> + * should autotune receive-buffer backing.
-> + */
-> +static inline bool tcp_rcvbuf_grow_allowed(const struct sock *sk)
-> +{
-> +	struct socket *sock = READ_ONCE(sk->sk_socket);
+Device-level entries (under /sys/kernel/debug/mana/<slot>/):
+  - num_msix_usable, max_num_queues: Max resources from hardware
+  - gdma_protocol_ver, pf_cap_flags1: VF version negotiation results
+  - num_vports, bm_hostmode: Device configuration
 
-You can just check `sk->sk_socket`. Also you could re-use this helper in
-tcp_data_queue_ofo().
+Per-vPort entries (under /sys/kernel/debug/mana/<slot>/vportN/):
+  - port_handle: Hardware vPort handle
+  - max_sq, max_rq: Max queues from vPort config
+  - indir_table_sz: Indirection table size
+  - steer_rx, steer_rss, steer_update_tab, steer_cqe_coalescing:
+    Last applied steering configuration parameters
 
-/P
+Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+---
+Changes in v3:
+* Rename mana_gd_cleanup to mana_gd_cleanup_device.
+* Add creation of debugfs entries in mana_gd_setup.
+* Add removal of debugfs entries in mana_gd_cleanup_device.
+* Remove bm_hostmode and num_vports from debugfs in mana_remove itself,
+  because "ac" gets freed before debugfs_remove_recursive, to avoid
+  Use-After-Free error.
+* Add "goto out:" in mana_cfg_vport_steering to avoid populating apc
+  values when resp.hdr.status is not NULL.
+Changes in v2:
+* Add debugfs_remove_recursice for gc>mana_pci_debugfs in
+  mana_gd_suspend to handle multiple duplicates creation in
+  mana_gd_setup and mana_gd_resume path.
+* Move debugfs creation for num_vports and bm_hostmode out of
+  if(!resuming) condition since we have to create it again even for
+  resume.
+* Recreate mana_pci_debugfs in mana_gd_resume.
+---
+ .../net/ethernet/microsoft/mana/gdma_main.c   | 65 ++++++++++---------
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 35 ++++++++++
+ include/net/mana/gdma.h                       |  1 +
+ include/net/mana/mana.h                       |  8 +++
+ 4 files changed, 79 insertions(+), 30 deletions(-)
+
+diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+index ef0dbfaac8f4..4d77e7fa565a 100644
+--- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
++++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+@@ -169,6 +169,11 @@ static int mana_gd_query_max_resources(struct pci_dev *pdev)
+ 	if (gc->max_num_queues > gc->num_msix_usable - 1)
+ 		gc->max_num_queues = gc->num_msix_usable - 1;
+ 
++	debugfs_create_u32("num_msix_usable", 0400, gc->mana_pci_debugfs,
++			   &gc->num_msix_usable);
++	debugfs_create_u32("max_num_queues", 0400, gc->mana_pci_debugfs,
++			   &gc->max_num_queues);
++
+ 	return 0;
+ }
+ 
+@@ -1239,6 +1244,13 @@ int mana_gd_verify_vf_version(struct pci_dev *pdev)
+ 		return err ? err : -EPROTO;
+ 	}
+ 	gc->pf_cap_flags1 = resp.pf_cap_flags1;
++	gc->gdma_protocol_ver = resp.gdma_protocol_ver;
++
++	debugfs_create_x64("gdma_protocol_ver", 0400, gc->mana_pci_debugfs,
++			   &gc->gdma_protocol_ver);
++	debugfs_create_x64("pf_cap_flags1", 0400, gc->mana_pci_debugfs,
++			   &gc->pf_cap_flags1);
++
+ 	if (resp.pf_cap_flags1 & GDMA_DRV_CAP_FLAG_1_HWC_TIMEOUT_RECONFIG) {
+ 		err = mana_gd_query_hwc_timeout(pdev, &hwc->hwc_timeout);
+ 		if (err) {
+@@ -1918,15 +1930,23 @@ static int mana_gd_setup(struct pci_dev *pdev)
+ 	struct gdma_context *gc = pci_get_drvdata(pdev);
+ 	int err;
+ 
++	if (gc->is_pf)
++		gc->mana_pci_debugfs = debugfs_create_dir("0", mana_debugfs_root);
++	else
++		gc->mana_pci_debugfs = debugfs_create_dir(pci_slot_name(pdev->slot),
++							  mana_debugfs_root);
++
+ 	err = mana_gd_init_registers(pdev);
+ 	if (err)
+-		return err;
++		goto remove_debugfs;
+ 
+ 	mana_smc_init(&gc->shm_channel, gc->dev, gc->shm_base);
+ 
+ 	gc->service_wq = alloc_ordered_workqueue("gdma_service_wq", 0);
+-	if (!gc->service_wq)
+-		return -ENOMEM;
++	if (!gc->service_wq) {
++		err = -ENOMEM;
++		goto remove_debugfs;
++	}
+ 
+ 	err = mana_gd_setup_hwc_irqs(pdev);
+ 	if (err) {
+@@ -1966,11 +1986,14 @@ static int mana_gd_setup(struct pci_dev *pdev)
+ 	mana_gd_remove_irqs(pdev);
+ free_workqueue:
+ 	destroy_workqueue(gc->service_wq);
++remove_debugfs:
++	debugfs_remove_recursive(gc->mana_pci_debugfs);
++	gc->mana_pci_debugfs = NULL;
+ 	dev_err(&pdev->dev, "%s failed (error %d)\n", __func__, err);
+ 	return err;
+ }
+ 
+-static void mana_gd_cleanup(struct pci_dev *pdev)
++static void mana_gd_cleanup_device(struct pci_dev *pdev)
+ {
+ 	struct gdma_context *gc = pci_get_drvdata(pdev);
+ 
+@@ -1982,6 +2005,10 @@ static void mana_gd_cleanup(struct pci_dev *pdev)
+ 		destroy_workqueue(gc->service_wq);
+ 		gc->service_wq = NULL;
+ 	}
++
++	debugfs_remove_recursive(gc->mana_pci_debugfs);
++	gc->mana_pci_debugfs = NULL;
++
+ 	dev_dbg(&pdev->dev, "mana gdma cleanup successful\n");
+ }
+ 
+@@ -2039,12 +2066,6 @@ static int mana_gd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	gc->dev = &pdev->dev;
+ 	xa_init(&gc->irq_contexts);
+ 
+-	if (gc->is_pf)
+-		gc->mana_pci_debugfs = debugfs_create_dir("0", mana_debugfs_root);
+-	else
+-		gc->mana_pci_debugfs = debugfs_create_dir(pci_slot_name(pdev->slot),
+-							  mana_debugfs_root);
+-
+ 	err = mana_gd_setup(pdev);
+ 	if (err)
+ 		goto unmap_bar;
+@@ -2073,16 +2094,8 @@ static int mana_gd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ cleanup_mana:
+ 	mana_remove(&gc->mana, false);
+ cleanup_gd:
+-	mana_gd_cleanup(pdev);
++	mana_gd_cleanup_device(pdev);
+ unmap_bar:
+-	/*
+-	 * at this point we know that the other debugfs child dir/files
+-	 * are either not yet created or are already cleaned up.
+-	 * The pci debugfs folder clean-up now, will only be cleaning up
+-	 * adapter-MTU file and apc->mana_pci_debugfs folder.
+-	 */
+-	debugfs_remove_recursive(gc->mana_pci_debugfs);
+-	gc->mana_pci_debugfs = NULL;
+ 	xa_destroy(&gc->irq_contexts);
+ 	pci_iounmap(pdev, bar0_va);
+ free_gc:
+@@ -2132,11 +2145,7 @@ static void mana_gd_remove(struct pci_dev *pdev)
+ 	mana_rdma_remove(&gc->mana_ib);
+ 	mana_remove(&gc->mana, false);
+ 
+-	mana_gd_cleanup(pdev);
+-
+-	debugfs_remove_recursive(gc->mana_pci_debugfs);
+-
+-	gc->mana_pci_debugfs = NULL;
++	mana_gd_cleanup_device(pdev);
+ 
+ 	xa_destroy(&gc->irq_contexts);
+ 
+@@ -2158,7 +2167,7 @@ int mana_gd_suspend(struct pci_dev *pdev, pm_message_t state)
+ 	mana_rdma_remove(&gc->mana_ib);
+ 	mana_remove(&gc->mana, true);
+ 
+-	mana_gd_cleanup(pdev);
++	mana_gd_cleanup_device(pdev);
+ 
+ 	return 0;
+ }
+@@ -2197,11 +2206,7 @@ static void mana_gd_shutdown(struct pci_dev *pdev)
+ 	mana_rdma_remove(&gc->mana_ib);
+ 	mana_remove(&gc->mana, true);
+ 
+-	mana_gd_cleanup(pdev);
+-
+-	debugfs_remove_recursive(gc->mana_pci_debugfs);
+-
+-	gc->mana_pci_debugfs = NULL;
++	mana_gd_cleanup_device(pdev);
+ 
+ 	pci_disable_device(pdev);
+ }
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index ea71de39f996..3beaddb1d585 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -1263,6 +1263,9 @@ static int mana_query_vport_cfg(struct mana_port_context *apc, u32 vport_index,
+ 	apc->port_handle = resp.vport;
+ 	ether_addr_copy(apc->mac_addr, resp.mac_addr);
+ 
++	apc->vport_max_sq = *max_sq;
++	apc->vport_max_rq = *max_rq;
++
+ 	return 0;
+ }
+ 
+@@ -1405,10 +1408,16 @@ static int mana_cfg_vport_steering(struct mana_port_context *apc,
+ 		netdev_err(ndev, "vPort RX configuration failed: 0x%x\n",
+ 			   resp.hdr.status);
+ 		err = -EPROTO;
++		goto out;
+ 	}
+ 
+ 	netdev_info(ndev, "Configured steering vPort %llu entries %u\n",
+ 		    apc->port_handle, apc->indir_table_sz);
++
++	apc->steer_rx = rx;
++	apc->steer_rss = apc->rss_state;
++	apc->steer_update_tab = update_tab;
++	apc->steer_cqe_coalescing = req->cqe_coalescing_enable;
+ out:
+ 	kfree(req);
+ 	return err;
+@@ -3110,6 +3119,24 @@ static int mana_init_port(struct net_device *ndev)
+ 	eth_hw_addr_set(ndev, apc->mac_addr);
+ 	sprintf(vport, "vport%d", port_idx);
+ 	apc->mana_port_debugfs = debugfs_create_dir(vport, gc->mana_pci_debugfs);
++
++	debugfs_create_u64("port_handle", 0400, apc->mana_port_debugfs,
++			   &apc->port_handle);
++	debugfs_create_u32("max_sq", 0400, apc->mana_port_debugfs,
++			   &apc->vport_max_sq);
++	debugfs_create_u32("max_rq", 0400, apc->mana_port_debugfs,
++			   &apc->vport_max_rq);
++	debugfs_create_u32("indir_table_sz", 0400, apc->mana_port_debugfs,
++			   &apc->indir_table_sz);
++	debugfs_create_u32("steer_rx", 0400, apc->mana_port_debugfs,
++			   &apc->steer_rx);
++	debugfs_create_u32("steer_rss", 0400, apc->mana_port_debugfs,
++			   &apc->steer_rss);
++	debugfs_create_u32("steer_update_tab", 0400, apc->mana_port_debugfs,
++			   &apc->steer_update_tab);
++	debugfs_create_u32("steer_cqe_coalescing", 0400, apc->mana_port_debugfs,
++			   &apc->steer_cqe_coalescing);
++
+ 	return 0;
+ 
+ reset_apc:
+@@ -3598,6 +3625,11 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
+ 
+ 	ac->bm_hostmode = bm_hostmode;
+ 
++	debugfs_create_u16("num_vports", 0400, gc->mana_pci_debugfs,
++			   &ac->num_ports);
++	debugfs_create_u8("bm_hostmode", 0400, gc->mana_pci_debugfs,
++			  &ac->bm_hostmode);
++
+ 	if (!resuming) {
+ 		ac->num_ports = num_ports;
+ 
+@@ -3738,6 +3770,9 @@ void mana_remove(struct gdma_dev *gd, bool suspending)
+ 
+ 	mana_gd_deregister_device(gd);
+ 
++	debugfs_lookup_and_remove("num_vports", gc->mana_pci_debugfs);
++	debugfs_lookup_and_remove("bm_hostmode", gc->mana_pci_debugfs);
++
+ 	if (suspending)
+ 		return;
+ 
+diff --git a/include/net/mana/gdma.h b/include/net/mana/gdma.h
+index 7fe3a1b61b2d..c4e3ce5147f7 100644
+--- a/include/net/mana/gdma.h
++++ b/include/net/mana/gdma.h
+@@ -442,6 +442,7 @@ struct gdma_context {
+ 	struct gdma_dev		mana_ib;
+ 
+ 	u64 pf_cap_flags1;
++	u64 gdma_protocol_ver;
+ 
+ 	struct workqueue_struct *service_wq;
+ 
+diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
+index a078af283bdd..83f6de67c0cc 100644
+--- a/include/net/mana/mana.h
++++ b/include/net/mana/mana.h
+@@ -563,6 +563,14 @@ struct mana_port_context {
+ 
+ 	/* Debugfs */
+ 	struct dentry *mana_port_debugfs;
++
++	/* Cached vport/steering config for debugfs */
++	u32 vport_max_sq;
++	u32 vport_max_rq;
++	u32 steer_rx;
++	u32 steer_rss;
++	u32 steer_update_tab;
++	u32 steer_cqe_coalescing;
+ };
+ 
+ netdev_tx_t mana_start_xmit(struct sk_buff *skb, struct net_device *ndev);
+-- 
+2.43.0
 
