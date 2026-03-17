@@ -1,303 +1,128 @@
-Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57B53491C2
-	for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 07:40:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C65573921EA
+	for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 07:42:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773733259; cv=none; b=B/fp5g6ZaQaOYQrf1BXcEX4Xt8hCzDf+OsnAGru88LiLZu+QOB/fvU9tYU0H40/oUs0TuxOcz9znW41i6vSFmfDQEXi1LFOPq+IBXZnGXuNxoFvVyLqUCzxky1Lp18YoQf4qGVktddLkrQNVmYriShdrplYxNTZpAJu23rFGIHc=
+	t=1773733326; cv=none; b=HlKfifaeJm5n0OzLHfph8dJZOMakOLvxZeJGuoP+Vh6V6LDo0ezyrremKkJyDMT09wyDR6DoJLMZQkCH3FfilRUyAADnMRpnjlVhJ042S0S9yztPH2X4DhlXeq1AE5PBd+mSsPvJDzRUuhLt2dX930v52in9F7OBx7w4cLhlU5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773733259; c=relaxed/simple;
-	bh=qgZuH6SzcT3fNWoUHrJ1mpgpvwolc9XLsllqRdU5Xtc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YqlQdB7QOKjh8+bnPzFAiByD6qjtRoCBkSRSXKTldzGpfC0U2Wjw8PEhZTh9yaEdpUkcVIww+kBKUfvPTIEonOsrbAnq5CwfOZzMd4yppep+jP58kNufATJHkJwNScw9G1VNhzmrIe+lr1pMcV2SXVC/JEI70bVHpC9HUwuOxiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.206.16.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpgz11t1773733148t4ce8747a
-X-QQ-Originating-IP: nzQf5qKmso/FcyJrRY8i+DXWQqrgXoU/B6S4qEKRj1Y=
-Received: from lap-jiawenwu.trustnetic.com ( [122.235.239.227])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 17 Mar 2026 15:39:07 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 11866076680858377172
-EX-QQ-RecipientCnt: 18
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: netdev@vger.kernel.org
-Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Kees Cook <kees@kernel.org>,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Joe Damato <joe@dama.to>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Breno Leitao <leitao@debian.org>,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v5 10/11] net: wangxun: improve flow control setting
-Date: Tue, 17 Mar 2026 15:38:26 +0800
-Message-Id: <20260317073827.4300-11-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.21.0.windows.1
-In-Reply-To: <20260317073827.4300-1-jiawenwu@trustnetic.com>
-References: <20260317073827.4300-1-jiawenwu@trustnetic.com>
+	s=arc-20240116; t=1773733326; c=relaxed/simple;
+	bh=xg9tpnpgfg5SClBenXIK/4GssEYnuYsuYHsNrY8UiCY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lYmuJiiM0Y09LXvtR57R5nRpMGM9lMjxAmWbwWlNq+m7qdSqM4JtmtZDGMxd5M7zL5vRgwqT/QO/l85eJidt2AG4lATPd5jbnqkG8L/JGzOt+HvpGp+K+5FJSiLPzzM5tScjOQeyZ7Q9+cieNmf4BWCJGg1YYmCNgzG+VwzT3lA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JpcIVgEC; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JpcIVgEC"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-827270d50d4so5073548b3a.3
+        for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 00:42:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773733324; x=1774338124; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3gTRwPvoaoGKMWruMLfYdpsxbqLbc2avIWpIrbVdsbs=;
+        b=JpcIVgECwDFb+TNPexhIipO6ke7VswbUB0j0IrxMxTVU9yWPxZ1M3pFpxFTfMjHRqu
+         7OZ52HKI2W/WDmfJXv8tRfrAtZTQH1cVshLQZjnz6X2BfQEpaeGA0yrMZHKGVwVTw/LN
+         o2j1Gk4n5jTGZYb6s4xRWFmZyZmCJx9ejOVorc98HrPG+w9sGSh5Hh2b2w7iVXGd6fwb
+         hGQkvYeQIOG0yUmdr9Ib6Nh3qdLtJTCHc59g3vJX/rxVjXNa+zN7b+hgQ/OyMIdOvfJr
+         +DYDXJfmltmdO5ilOMDCzSTlz09u6B2rDcaojNAv7st/53wwMwLe35MSZG1gZDJvT6Aw
+         GjBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773733324; x=1774338124;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3gTRwPvoaoGKMWruMLfYdpsxbqLbc2avIWpIrbVdsbs=;
+        b=VyFf67+KGKny5axFqrLMSqsYs5c3VpsqWbEpvWymFOA4ZSmTo+yPOAQVQPx+6Ya8rv
+         xYp5w6IJLufnH4gvWcsdaLWY5HG+NS1enu31olbo3LI0KtzYOXpNi/IYwZPL/dLZFASh
+         EPcYX5esipUnl2D6Hw9WMJE1YFJSaZPfQEBgupM7fScv3LBJvM6z9bjeq8MCqmFGp9eI
+         WZb1eRYje/7NFGi0WN73wt1ImRAL9jlG69YKrap6gYAKbstGa9Mk17RAWn8FjtAnqzw/
+         jlKh37tIpt7BIwwmkvzT95Wq0npMbD71wgEK36/+MuWnrMtDp+9c9LdMh+gDbKwyuGZc
+         xVUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV2U/4xfCml1QyEYRM5L0rdpKBIaIHiTGH+qcbBiTbMwVLp+D4HGTsrQIPAICvHYhRptPpj/Cs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxK0NdJv/iDZgDrsckGTR+W5wl1scNpvtCJmm9RXqHSix+y0VHt
+	GVwioweqSImkVn+gJCMIqQ2BSb+tRStu2Uxd2gg1LvADb7etHS1jM2xw
+X-Gm-Gg: ATEYQzx7Bw+QjZWnMdmU+sa2HxezSNuVtm95fEJ6QwteWKWRLVON8nqFojqsz7VhxpW
+	fAqnwuYlRgSlbqE/WlAofdWTyVdE+6AMrvMTV/9BdncqY9yS5qQAwGEei7zmSHawsAAA6UlPSuq
+	HDMnaOwo+w7zwxP/dbV/1ocbPVgsFcMNgEim/ZOWwCMd9ibz2Ov7rzPjaE7r81DGQ97XvHEW2kC
+	MvFertwmIRwqBzl8ckk+ATE8LGg5EUxEiGH7tqJhv/aage4QnfoNoa600+sXfU6MCliYEzgdNAq
+	uiMTA3PG5Nu8/0EJO0BGJuNoyZ7/RdnDT6fimc/qhowUyFtRt0e7IZ1uY5BSAEHh4cucb0c6gZh
+	bXWEj3AFVF+Q1vj1qvemi2FhIznPhMiPasN5SiZ7Y/sPtHHMmceXDRs2JTDy3kc2isbPPpUQoxY
+	deIXhUGlNcYp8fBCUXr0xEP7E=
+X-Received: by 2002:aa7:88c9:0:b0:81f:4675:c2a9 with SMTP id d2e1a72fcca58-82a1957f3b6mr14731969b3a.0.1773733324070;
+        Tue, 17 Mar 2026 00:42:04 -0700 (PDT)
+Received: from localhost ([2001:19f0:8001:1b2d:5400:5ff:fefa:a95d])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a0736deb4sm15367325b3a.44.2026.03.17.00.42.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Mar 2026 00:42:03 -0700 (PDT)
+Date: Tue, 17 Mar 2026 15:41:56 +0800
+From: Inochi Amaoto <inochiama@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>, Inochi Amaoto <inochiama@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@kernel.org>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Richard Cochran <richardcochran@gmail.com>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, 
+	Yao Zi <me@ziyao.cc>, Yanteng Si <siyanteng@cqsoftware.com.cn>, 
+	Vladimir Oltean <vladimir.oltean@nxp.com>, Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
+	Shangjuan Wei <weishangjuan@eswincomputing.com>, Chen-Yu Tsai <wens@kernel.org>, 
+	Zhi Li <lizhi2@eswincomputing.com>, Boon Khai Ng <boon.khai.ng@altera.com>, 
+	Maxime Chevallier <maxime.chevallier@bootlin.com>, Quentin Schulz <quentin.schulz@cherry.de>, 
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>, Jose Abreu <joabreu@synopsys.com>, netdev@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	spacemit@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, Yixun Lan <dlan@gentoo.org>, Longbin Li <looong.bin@gmail.com>
+Subject: Re: [PATCH net-next v10 1/4] dt-bindings: net: Add support for
+ Spacemit K3 dwmac
+Message-ID: <abkEPCRBkQIgx5rx@inochi.infowork>
+References: <20260316010041.164360-1-inochiama@gmail.com>
+ <20260316010041.164360-2-inochiama@gmail.com>
+ <20260316202147.431d9aeb@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpgz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: MowrbTNkck0b/7HW9qq9jBgtmIWOndWWFlr1GNBl+FQn+5jPqJAEUBgj
-	7T+Q1QYf1vpGQKbRg7YsBic79y4sv9uzl1t1mwAJXijqcoREntPJ3crgCEM0flCLM9w5g2/
-	dUSsMnjEK+1uOcnvt5XTj/afOFaUr54RGeKuC/j/sDcLnAPaRdzjqRVxMnBXCIJ2NvfAPMC
-	/gE9qZYyYQ27Em9A+JI4XsViV1uiTaHa6cpKlvowL01EpRMegkM/sQ0TZ2wZU4U+Z2nD8fb
-	Tg1E+DRC4zFvXhkxR/gRPjnqbgp9wXtvOoUdBF8TCPzys87scoyyjC2GkRoze6flGhWhWOA
-	+tJos14ECZPnXw/inY5cOJSAHtYWEzscN9Hw14R5omAAhGIiL9wt1dDdcapbhiwaMzbAwYS
-	0ZlxEB2+v1lVA12HwOtq04IkMfyj5Gs7dsAf5yikfB4WGTLeWSTIu7KrL6ItDLd0HfryWL6
-	7+FrnQ8ixUnp4lbwRX1U+8ON3kKycsNB6HRSwMqCg5yGpE6O4ucEuWy+von3igu+MlOalTD
-	TCMfNWNT9K3lFw2os9OKaexPFplN8ygk15sgnCUe6OocQlAVT5zRNh4DGjNp44iMgZyRyUk
-	gfW+y2SUVyLVrMkdFneO1mcR6mMFV3sEMtZdwRQZvwosZ7LK0th1fAN0aByXUhef+shDcsr
-	fZXNxmG/Hg7KEx+wUn7sBDWk5tXExnGHm6HlD/9G1eM4h5lYApfvyAvv71KE3wWbMytFIKo
-	2p9njY7s/w6yHx4OGe0bIoATofUVqrce9LXjySfB47B+BDYgRNijHF00V8+4+BcQ+pmzMD0
-	HaJcoD0KBfQdzB0AdVh+XaOKJlpmEq3QEVy8i7iewMPDWh3UJV6Bl+0SJ4yP8b0D2TXh6zv
-	07pzG931OFD4XTWTt77cn9jIYONhUVfumFvzr7+1Yn+Okjku0zD+g5CU9o0jVZuTopjOceD
-	9QgwcBC0MhDkDk+G30ixrtkDmESVTv3jEBn7H9G3WwcuLVkxeWvaEIFtYmJbITdNbcPfOI1
-	1BhJYcD1RS/HUfZ/+PqCaBQhvtRlMv5difTYWNF7USiNwCGfoeBVPnSDtdvVRu/yKlvuLsD
-	+fnk9v2r/ZZeTW3LA1Q3JSdVkRx7el8sQ==
-X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260316202147.431d9aeb@kernel.org>
 
-Save the current mode of flow control, check the pause frame statistics
-in watchdog to clear WX_HANG_CHECK_ARMED.
+On Mon, Mar 16, 2026 at 08:21:47PM -0700, Jakub Kicinski wrote:
+> On Mon, 16 Mar 2026 09:00:37 +0800 Inochi Amaoto wrote:
+> > The GMAC IP on Spacemit K3 is almost a standard Synopsys DesignWare
+> > MAC (version 5.40a) with some extra clock.
+> > 
+> > Add necessary compatible string for this device.
+> 
+> In the previous version the AI reviewer complained that we're not
+> adding the new entry to the select at the top of the file. Other
+> compatibles appear in 3 places in
+> Documentation/devicetree/bindings/net/snps,dwmac.yaml
+> 
+> Also I asked whether we can drop the "default m"
+> 
 
-The received pause frames are divided into XON and XOFF to be counted.
-And due to the hardware defect of SP devices, XON packets cannot be
-trasmitted correctly, so Tx XON pause is disabled by default for those
-devices.
+For the Kconfig, I think it is better to keep the thing the
+same as others. And I guess this question may be related to
+some compromise that I do not know, and it is a hard thing
+for me to answer.
 
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
----
- .../net/ethernet/wangxun/libwx/wx_ethtool.c   |  2 +-
- drivers/net/ethernet/wangxun/libwx/wx_hw.c    | 52 +++++++++++++++++--
- drivers/net/ethernet/wangxun/libwx/wx_type.h  | 16 +++++-
- drivers/net/ethernet/wangxun/ngbe/ngbe_main.c |  3 +-
- .../net/ethernet/wangxun/txgbe/txgbe_main.c   |  3 +-
- 5 files changed, 66 insertions(+), 10 deletions(-)
+> Did you disagree with those comments or did you miss them?
+> stmmac is a strange beast I don't really know what's going on in 
+> the binding, so just double checking this is intentional.. 
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-index 9ab7dce956e3..d1356ff5d69b 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-@@ -211,7 +211,7 @@ void wx_get_pause_stats(struct net_device *netdev,
- 
- 	hwstats = &wx->stats;
- 	stats->tx_pause_frames = hwstats->lxontxc + hwstats->lxofftxc;
--	stats->rx_pause_frames = hwstats->lxonoffrxc;
-+	stats->rx_pause_frames = hwstats->lxonrxc + hwstats->lxoffrxc;
- }
- EXPORT_SYMBOL(wx_get_pause_stats);
- 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-index 2f71dc24306d..4e0195f7df39 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-@@ -2772,6 +2772,15 @@ int wx_fc_enable(struct wx *wx, bool tx_pause, bool rx_pause)
- 		}
- 	}
- 
-+	if (rx_pause && tx_pause)
-+		wx->fc.mode = wx_fc_full;
-+	else if (rx_pause)
-+		wx->fc.mode = wx_fc_rx_pause;
-+	else if (tx_pause)
-+		wx->fc.mode = wx_fc_tx_pause;
-+	else
-+		wx->fc.mode = wx_fc_none;
-+
- 	/* Disable any previous flow control settings */
- 	mflcn_reg = rd32(wx, WX_MAC_RX_FLOW_CTRL);
- 	mflcn_reg &= ~WX_MAC_RX_FLOW_CTRL_RFE;
-@@ -2790,7 +2799,9 @@ int wx_fc_enable(struct wx *wx, bool tx_pause, bool rx_pause)
- 
- 	/* Set up and enable Rx high/low water mark thresholds, enable XON. */
- 	if (tx_pause && wx->fc.high_water) {
--		fcrtl = (wx->fc.low_water << 10) | WX_RDB_RFCL_XONE;
-+		fcrtl = (wx->fc.low_water << 10);
-+		if (wx->mac.type != wx_mac_sp)
-+			fcrtl |= WX_RDB_RFCL_XONE;
- 		wr32(wx, WX_RDB_RFCL, fcrtl);
- 		fcrth = (wx->fc.high_water << 10) | WX_RDB_RFCH_XOFFE;
- 	} else {
-@@ -2831,6 +2842,28 @@ int wx_fc_enable(struct wx *wx, bool tx_pause, bool rx_pause)
- }
- EXPORT_SYMBOL(wx_fc_enable);
- 
-+static void wx_update_xoff_rx_lfc(struct wx *wx)
-+{
-+	struct wx_hw_stats *hwstats = &wx->stats;
-+	u64 data;
-+	int i;
-+
-+	if (wx->fc.mode != wx_fc_full &&
-+	    wx->fc.mode != wx_fc_rx_pause)
-+		return;
-+
-+	data = rd64(wx, WX_MAC_LXOFFRXC);
-+	hwstats->lxoffrxc += data;
-+
-+	/* refill credits (no tx hang) if we received xoff */
-+	if (!data)
-+		return;
-+
-+	for (i = 0; i < wx->num_tx_queues; i++)
-+		clear_bit(WX_HANG_CHECK_ARMED,
-+			  wx->tx_ring[i]->state);
-+}
-+
- /**
-  * wx_update_stats - Update the board statistics counters.
-  * @wx: board private structure
-@@ -2844,6 +2877,10 @@ void wx_update_stats(struct wx *wx)
- 	u64 restart_queue = 0, tx_busy = 0;
- 	u32 i;
- 
-+	if (!netif_running(wx->netdev) ||
-+	    test_bit(WX_STATE_RESETTING, wx->state))
-+		return;
-+
- 	/* gather some stats to the wx struct that are per queue */
- 	for (i = 0; i < wx->num_rx_queues; i++) {
- 		struct wx_ring *rx_ring = wx->rx_ring[i];
-@@ -2879,6 +2916,8 @@ void wx_update_stats(struct wx *wx)
- 	wx->restart_queue = restart_queue;
- 	wx->tx_busy = tx_busy;
- 
-+	wx_update_xoff_rx_lfc(wx);
-+
- 	hwstats->gprc += rd32(wx, WX_RDM_PKT_CNT);
- 	hwstats->gptc += rd32(wx, WX_TDM_PKT_CNT);
- 	hwstats->gorc += rd64(wx, WX_RDM_BYTE_CNT_LSB);
-@@ -2893,7 +2932,10 @@ void wx_update_stats(struct wx *wx)
- 	hwstats->mptc += rd64(wx, WX_TX_MC_FRAMES_GOOD_L);
- 	hwstats->roc += rd32(wx, WX_RX_OVERSIZE_FRAMES_GOOD);
- 	hwstats->ruc += rd32(wx, WX_RX_UNDERSIZE_FRAMES_GOOD);
--	hwstats->lxonoffrxc += rd32(wx, WX_MAC_LXONOFFRXC);
-+	if (wx->mac.type >= wx_mac_aml)
-+		hwstats->lxonrxc = rd32(wx, WX_MAC_LXONRXC_AML);
-+	else
-+		hwstats->lxonrxc += rd32(wx, WX_MAC_LXONRXC);
- 	hwstats->lxontxc += rd32(wx, WX_RDB_LXONTXC);
- 	hwstats->lxofftxc += rd32(wx, WX_RDB_LXOFFTXC);
- 	hwstats->o2bgptc += rd32(wx, WX_TDM_OS2BMC_CNT);
-@@ -2946,7 +2988,11 @@ void wx_clear_hw_cntrs(struct wx *wx)
- 	rd64(wx, WX_RX_LEN_ERROR_FRAMES_L);
- 	rd32(wx, WX_RDB_LXONTXC);
- 	rd32(wx, WX_RDB_LXOFFTXC);
--	rd32(wx, WX_MAC_LXONOFFRXC);
-+	if (wx->mac.type >= wx_mac_aml)
-+		wr32(wx, WX_MAC_LXONRXC_AML, 0);
-+	else
-+		rd32(wx, WX_MAC_LXONRXC);
-+	rd32(wx, WX_MAC_LXOFFRXC);
- }
- EXPORT_SYMBOL(wx_clear_hw_cntrs);
- 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-index 434a582393d7..510fab4b3a0f 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -79,7 +79,9 @@
- #define WX_RX_LEN_ERROR_FRAMES_L     0x11978
- #define WX_RX_UNDERSIZE_FRAMES_GOOD  0x11938
- #define WX_RX_OVERSIZE_FRAMES_GOOD   0x1193C
--#define WX_MAC_LXONOFFRXC            0x11E0C
-+#define WX_MAC_LXOFFRXC              0x11988
-+#define WX_MAC_LXONRXC               0x11E0C
-+#define WX_MAC_LXONRXC_AML           0x11F84
- 
- /*********************** Receive DMA registers **************************/
- #define WX_RDM_VF_RE(_i)             (0x12004 + ((_i) * 4))
-@@ -1156,9 +1158,18 @@ enum wx_isb_idx {
- 	WX_ISB_MAX
- };
- 
-+/* Flow Control Settings */
-+enum wx_fc_mode {
-+	wx_fc_none = 0,
-+	wx_fc_rx_pause,
-+	wx_fc_tx_pause,
-+	wx_fc_full
-+};
-+
- struct wx_fc_info {
- 	u32 high_water; /* Flow Ctrl High-water */
- 	u32 low_water; /* Flow Ctrl Low-water */
-+	enum wx_fc_mode mode; /* Flow Control Mode */
- };
- 
- /* Statistics counters collected by the MAC */
-@@ -1175,7 +1186,8 @@ struct wx_hw_stats {
- 	u64 mptc;
- 	u64 roc;
- 	u64 ruc;
--	u64 lxonoffrxc;
-+	u64 lxonrxc;
-+	u64 lxoffrxc;
- 	u64 lxontxc;
- 	u64 lxofftxc;
- 	u64 o2bgptc;
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-index e0f5d3b49db7..07e816720747 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-@@ -150,6 +150,7 @@ static void ngbe_service_task(struct work_struct *work)
- 	struct wx *wx = container_of(work, struct wx, service_task);
- 
- 	wx_handle_errors_subtask(wx);
-+	wx_update_stats(wx);
- 
- 	wx_service_event_complete(wx);
- }
-@@ -401,8 +402,6 @@ static void ngbe_disable_device(struct wx *wx)
- 
- 		wr32(wx, WX_PX_TR_CFG(reg_idx), WX_PX_TR_CFG_SWFLSH);
- 	}
--
--	wx_update_stats(wx);
- }
- 
- static void ngbe_reset(struct wx *wx)
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-index d4f87fbb9565..e9439e4ebe61 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-@@ -132,6 +132,7 @@ static void txgbe_service_task(struct work_struct *work)
- 	wx_handle_errors_subtask(wx);
- 	txgbe_module_detection_subtask(wx);
- 	txgbe_link_config_subtask(wx);
-+	wx_update_stats(wx);
- 
- 	wx_service_event_complete(wx);
- }
-@@ -261,8 +262,6 @@ static void txgbe_disable_device(struct wx *wx)
- 
- 	/* Disable the Tx DMA engine */
- 	wr32m(wx, WX_TDM_CTL, WX_TDM_CTL_TE, 0);
--
--	wx_update_stats(wx);
- }
- 
- void txgbe_down(struct wx *wx)
--- 
-2.48.1
+Oh, I have forgot to reply to the binding.
 
+Currently, I disagree to add something in the select, as a
+new binding is always required for a new device. Even if it
+is already supported in the existing kernel, the new device
+is required to add at least a new compatiable string for it.
+
+Regards,
+Inochi
