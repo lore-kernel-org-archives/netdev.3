@@ -1,107 +1,82 @@
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A99C2C027B
-	for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 03:06:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773716805; cv=pass; b=t/TfJ98QyEiA6PzuS4yuiMzN2Os7Wjulcp175txtbei42Hss+UJCQRx8oTRFBY3KA6yR1RCanyM970ctjkUx7ezx3mH9yfzQGblzwbbhTEsvlu3wXh6ousTSZXVPUJv6rD0oCkmMZp6KrCHAbJkwgBQp52p1oRTgVaNi6YCf3oY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773716805; c=relaxed/simple;
-	bh=KHyuNaMd/zewSaRimahrmp0hwQ4b9EQOYNegrTRKIpU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oGmMAt4I8N9dXGwhFf1UFZXIGCItplW81FHqIJblz+R1y4YyqmcmwXkHGtCXNftkwhW+AT/H9BV9XSbM/+oqasTwBsrTh+lD5pIgI0lu5WOsVE9oS/E16JRSlKTcXQtTNffpDdDc6/4Blu8UcToulmZNhPIo8G3GnuqYnAqYt/0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S0nXchQH; arc=pass smtp.client-ip=209.85.128.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8F628314E
+	for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 03:08:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.111
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773716903; cv=none; b=fLEj04bAUnZi0+6atZni1eBerHv3KEpT3Eeq4sVIooyR1SXqGlLkpJ3QVI8IKkdxIlywaLMXzQQzSklVpzSSUxABE1QMCzSdRETBoIe3CmPJhorxKWOfotw+qizXg9rc+AeNY09ShfdOFJyUQrCE1s5hFZwsbXDrGPWGz57WfGs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773716903; c=relaxed/simple;
+	bh=6VXcukEtq/Iisyi37qrAU7OE6MMDc4qqZXQM9ieuxCw=;
+	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To; b=U9C9tIJYAmpShh3aw0wYivawXikZ3xGn2Rufm8VEpTQGO189QleiI2KAURAdGrRwQw+Z7TzPI/4sxMnNO2KkyOaxzhA0/VzEpgPBtGtTm0G6EDlgXhlAS2RV83O5nsrZl1nvl2+gkQLlTc0tJe390dm6iVm6fXUg09E23OznFOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=EH2SRL+R; arc=none smtp.client-ip=115.124.30.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S0nXchQH"
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-7947cf097c1so47557617b3.2
-        for <netdev@vger.kernel.org>; Mon, 16 Mar 2026 20:06:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773716803; cv=none;
-        d=google.com; s=arc-20240605;
-        b=hBNdkmgq2LXoXmDJ7mkZ2T1dlLPUC98WhrJYM27FsaO6f+2AlVnLEtiRlkjuVDTtv4
-         LKeu+zaYnKC0qRMy7wqERyIh04wCqFU3087UzifcvF3z5o2BtBHTvaf8Wo6oOouIJt9/
-         seNgqrOgFcHXULmlhFz8puTRkBuQfFWeDCgCnykx8lT0yTXEQcV24AmUqMK4LovE02Yx
-         tv8dN3KjVWKxTyIZy4kRgqF1iUNTvFP80FRid49VVqfaubotyQFYM1SbD00dI4zGY1n2
-         WA7wdU05md5zv0U70siKrh+cer5vu0pRqHEzQoUGddxxEXF0eSaP41XZtpG4fnx1IzAY
-         ZQDw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=KHyuNaMd/zewSaRimahrmp0hwQ4b9EQOYNegrTRKIpU=;
-        fh=eFLiDnWdIAPsB1WOBgerXOZnQ2eoIjPGrY9uKzzSGcU=;
-        b=SQRE7CYGptEoI5TiXBXJF15eiJ3YvIJQQTHXBFHrKv6pq/F5IrAvGHOToTeAthz1YK
-         VE2Ug2HtCRLq54drXjhz0/SkkWa36610r3Qvsoh7zgCy67WTd8bxJZClGDbMvhXAV4iM
-         B0xIIXYmQ/iLFOYbqxQF08IKvzW8EQSa0JWToO4KK69uUzPvLxT9yzlhH4TTh6aIn8vH
-         xBP7wK614vYKYnLg1gB+GcvVMl804s8LhYAsohcR+yRRhDkjuDKvyCgaFpZcEdutZJU6
-         SnI7oER2Xy+B/5ZL3BKgboqTYbFEgokN+oOJVLsdsz3zUuVZX0SRHa4vSL7iSaZbmQ23
-         5wVg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773716803; x=1774321603; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KHyuNaMd/zewSaRimahrmp0hwQ4b9EQOYNegrTRKIpU=;
-        b=S0nXchQHYdRFr9eAa0GDMMfuJa9FHqzkSymQ2qfwGCtAAn5pzm50x2pQU/BxEPTAOG
-         U2jr9T8+fML2Zk/yzs89KUUaOJtXZT9HzxvjmuaWD5QlDwwr21NOL4ZqfDJa38eAWMRM
-         J/3xHZwV2WHdo7U564qnCGJIqtXx5c+Nf4AifsSIJOnTMiDO+lz8CaeFw8wUpxHwl+cf
-         wWiLrU3Oyai+LlRipRRo/cTheTzfYKQZdZUiapHzLBqwRKsq528gFQQucqC2SK8XZZR0
-         hsaJiGXNPh7/CfzCELCgjVn6TlHmY4wqVMEenOqfT/GypoP2R9RYIfKG7vRcR/Z4ko7O
-         FjnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773716803; x=1774321603;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=KHyuNaMd/zewSaRimahrmp0hwQ4b9EQOYNegrTRKIpU=;
-        b=QLYhLfJrgLNiDUDs0XFxKwYbzBzi+FWnsizFAUetNi5Xqi5HS5G/yIOR/U9/gODXNZ
-         9AaqXLZnLVAMgqNYz8wWGOgAafD8wF9duWmj7/eh8okE/qCR4+oRPGicUcPnoL5FvMFb
-         tIprpUG7JVelvRva579i/1Qpih1+/IReM18inqI1ar1zq7T3872C6zkcvlfYiMGSgciW
-         VjiesKNJnZAW31LqBtrv2OAFPjxXIV9yHpOk1AMC3l27Q3n3VJIyvbOOeSh/Mv9bXqXh
-         +p4sBzxkO1fOzxyBBr8FpIUW1YywcNdG9jenH/N9i6ow0V1DHmOMFFHjrvfTYfHeZbCw
-         vOdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXl1GjGB6actA1LtWu3jn0bG5uNXKgcpsgmSah7u1rrUixQpPjiZTTIxv9Yo9wqd+jQ/4/sokg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBTQX2r54lP7EWNOm2MqYKM9vuB49GnyO40xF+y0bwUSrH5Y5g
-	fepIdgUsJKG+FAeCOJmSkNRDmtlMj0wxLK2a8dHLooYrttH6/plJwX6PXPYKnpuHamAo1bumGnQ
-	bgy8b9/7AWESDPZQnXTLCVtXWYCkpSzU=
-X-Gm-Gg: ATEYQzyrr577ZTqloU8ea31W9AyGfOkgEZCGwl7MlxIfwNPshHR7DuhGtmqGfFCX+7l
-	Y/ZcuJ2XDplevE3QfIOUxi1m8hMXhjexuTbnMMpovAEybPinwJ2kNk/00Eo5K3MRD04jyFrelE4
-	M/BycIjZ8+GQSe/6IKB34q9lAKwgXJYv+2V+q97TeBHlBVmco2ErHcCmBUN8qPM+JYKmkaQG9KQ
-	XPmuL2F+YhnOKosrFGpI50Tj9HtefZCE4m2hY1bKnCvMFGRjzTCN//D2dhKj61CXETodkmhS6SJ
-	q0cFcpfh+YO3PAS6
-X-Received: by 2002:a05:690c:6d10:b0:794:b5aa:9c71 with SMTP id
- 00721157ae682-79a1c188226mr145576267b3.34.1773716803385; Mon, 16 Mar 2026
- 20:06:43 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="EH2SRL+R"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1773716897; h=Message-ID:Subject:Date:From:To;
+	bh=6VXcukEtq/Iisyi37qrAU7OE6MMDc4qqZXQM9ieuxCw=;
+	b=EH2SRL+RbIAg89kW6leDtIZxMw0TEkgmS63Wn2yS4TTyyIhuydb1M4cU/rjVdljssmTADpXmJW3uT3eMu8ateAcwleDn4/cFjKoK2O/LpnXLjaJ48qehvV6zo4QZsH5dFOsQguFvgsgy2e5LcNv7hyob6cbA6SCbbwgancnFewo=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=xuanzhuo@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0X.9SLQN_1773716896;
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0X.9SLQN_1773716896 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 17 Mar 2026 11:08:17 +0800
+Message-ID: <1773716496.6578078-1-xuanzhuo@linux.alibaba.com>
+Subject: Re: [PATCH net-next v33 0/8] eea: Add basic driver framework for Alibaba Elastic Ethernet Adaptor
+Date: Tue, 17 Mar 2026 11:01:36 +0800
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org,
+ Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S.  Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>,
+ Paolo  Abeni <pabeni@redhat.com>,
+ Wen Gu <guwen@linux.alibaba.com>,
+ Philo Lu <lulie@linux.alibaba.com>,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+ Dong Yibo <dong100@mucse.com>,
+ Heiner Kallweit <hkallweit1@gmail.com>,
+ Dust  Li <dust.li@linux.alibaba.com>
+References: <20260317015257.79494-1-xuanzhuo@linux.alibaba.com>
+ <20260316195252.7fa24729@kernel.org>
+In-Reply-To: <20260316195252.7fa24729@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260313034732.209792-1-dqfext@gmail.com> <20260316195459.6e4d6d9b@kernel.org>
-In-Reply-To: <20260316195459.6e4d6d9b@kernel.org>
-From: Qingfang Deng <dqfext@gmail.com>
-Date: Tue, 17 Mar 2026 11:06:32 +0800
-X-Gm-Features: AaiRm51kcVupIusAK_mL8GpvXC0j6yjDwi907eM0BgIIWSGZspNSviDkhtqURIs
-Message-ID: <CALW65jbz+tLH3h5HhHw_623VJf0SMMu9hcLJ9Ssd_k759beQwg@mail.gmail.com>
-Subject: Re: [PATCH net] l2tp: ppp: use max L2TP header size for PPP channel hdrlen
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: linux-ppp@vger.kernel.org, James Chapman <jchapman@katalix.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 17, 2026 at 10:55=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> w=
-rote:
-> If the main effect of this patch is that we avoid reallocations I think
-> this is an optimization and should go to net-next?
+On Mon, 16 Mar 2026 19:52:52 -0700, Jakub Kicinski <kuba@kernel.org> wrote:
+> On Tue, 17 Mar 2026 09:52:49 +0800 Xuan Zhuo wrote:
+> > Add a driver framework for EEA that will be available in the future.
+> >
+> > This driver is currently quite minimal, implementing only fundamental
+> > core functionalities. Key features include: I/O queue management via
+> > adminq, basic PCI-layer operations, and essential RX/TX data
+> > communication capabilities. It also supports the creation,
+> > initialization, and management of network devices (netdev). Furthermore,
+> > the ring structures for both I/O queues and adminq have been abstracted
+> > into a simple, unified, and reusable library implementation,
+> > facilitating future extension and maintenance.
+>
+> 4 minutes too early, v32 was 56 past the hour.
+>
+> Jokes aside, can't you got your own LLM subscription? The mailing list
+> is not a public CI. Please do not post this driver more than twice
+> a week.
 
-Yes, it is to avoid skb reallocations. I can repost it to net-next.
+Actually, I've been using LLMs for local review since v27 (or possibly v28).
+However, different models tend to produce inconsistent feedback. Since Claude is
+not accessible in my region, I'm using Qwen. This results in a clean local check,
+but minor issues still arise after submission. Since v28, the issues have
+been trivial-for instance, this time it was some incorrect references in
+the comments.
 
-Regards,
-Qingfang
+I'm not entirely sure what specific criteria need to be met for acceptance, but
+we are hoping to finalize this work as soon as possible. We have significant
+follow-up work planned, including qstats, RSS, and XDP...
+
+Thanks
