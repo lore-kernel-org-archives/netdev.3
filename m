@@ -1,133 +1,117 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15FEB3A6B95
-	for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 10:34:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32AF532FA2A
+	for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 10:40:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773743687; cv=none; b=oO9BtNcnqEOkQUH0vgaJ1u6XUD3R2EL5S+e72nKDP23HcF3JmpmYtPKbNw9HR+KOQhEP7PzaTox9aM05W6O+s/pUTbHqkbUDGD0KLregs+Fnj7UfUPhoK3zD60wcvkFeun5gEQBBdR8pI2hl/j2P2aEeVpLCa76CeR0NdYTwUYk=
+	t=1773744034; cv=none; b=LjlPfPt8H+t5xRY7wST5g50ZDLb14LYmQAk+rTlnaITEM6GR7ZSq0NId4kcLgwsoVBB4Ki9wCou9inlzRVJvNXnnJF610BvKHY5GXZLVa/DDYiPkXk9lt5yGCIvpUxUiV2f+hOHlQ4qufC2+NhKPk0phhghxJwo+8Pn94Bjq7iA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773743687; c=relaxed/simple;
-	bh=cOJ0pqLB05cW7l8D0d5y/xnlGOGTKB72z83QuCFoWlI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ggw/869W42wSHlP9bQcHomGWu9SM4Phx09oxafau15YylD3+Vba4q07l8u9GPEhB4b0F2i1tVme9lhEGj9E6H7BkHkeE7WYqLmku3KSjEecbVw6kpP5cek4lfTxeg1wKPLC5QnFgtBLRFasCKKzmCJ80XLLl8Y/hWCnKpNfccmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CRhIAl2f; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=jhU5lRmo; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1773744034; c=relaxed/simple;
+	bh=aTGdGKIbN78z0HccJeLIaLaLIQQWPHWa0zQSLVb6wio=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=W2uE5TbaipgPwphMrOttBewTlHWyDkK4FpZwFmRA/fU2wJjscACU/KQa9Q3AHUsfuw5pXH9RdIggRrrKWoEga1VAs86yUYbLoMnRwO7YAyikDol4qLnsJXEXskexWXme7X/taClLs0iB40QJl/HHvYcaewcKSf+aKoUqHCiZm/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=OJ3qrIXv; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CRhIAl2f";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="jhU5lRmo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773743685;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ny0IuTqhujPnnvktMKwVQKRIYww+FI37mlIAqoGoFS8=;
-	b=CRhIAl2fIPD+9Zy9h0eoRCjxNxwJZCHNhieCDyVKw+pk0ulC2P8ZQ0r3WiqH4F/4t9+Jir
-	RDCIYJcIzYKbORr69wetXv612iqpo43JDWxSPFZDSE+/5GiqtjwMB/VsgGJFdTq6BUZfLC
-	4JaosOAdwLARoIXbDE5nd5UkMesDN1w=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-407-Y4tGd5MNMeunHtE0yE1pDA-1; Tue, 17 Mar 2026 06:34:44 -0400
-X-MC-Unique: Y4tGd5MNMeunHtE0yE1pDA-1
-X-Mimecast-MFC-AGG-ID: Y4tGd5MNMeunHtE0yE1pDA_1773743683
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-43b41d45be4so361640f8f.0
-        for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 03:34:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="OJ3qrIXv"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-439b9b1900bso3661816f8f.1
+        for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 03:40:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1773743683; x=1774348483; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ny0IuTqhujPnnvktMKwVQKRIYww+FI37mlIAqoGoFS8=;
-        b=jhU5lRmoFBsvE9mcPAHRQtqhz+tZgTxj6HqNeh47C2/ltxxWR2vWB7ck4X4SlGru0D
-         c5rYqONkzbGUPKlbFAYIVRt1sOuBV6yyQeCJErqIf0vpp172ZYpMgvHxzcmLQ25KVPo6
-         tNIzSurYa9nHVyWF5RlptqzbmavlzWGl425840CVOqbf6oxzQKeXjGTvMtZT4KF55HMF
-         2MwVVDRxtbat5H8XKwkko91NHVhQBsfPv/dzLeqTtCV6BZzQiXeROJWYbho6DAPU+Vco
-         QkEO+UBETXqW/2mEe4ooZ1wt8wgqU0SLbrWM1ynZsDklfWf3UjSLx+yiK0+Zkpl3p60y
-         eNfg==
+        d=openvpn.net; s=google; t=1773744031; x=1774348831; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=C+c1YssimIKbOeI4y9o12dVhyqLS9jie10yKUyGHwPU=;
+        b=OJ3qrIXvkpRzOJIXsVUxJtJzTLHNI/d0Y5NpuVdaa38WOgkBdANgje9//Lfb1/ZGCo
+         Ul9hlt43u43/24UBofkyIagZby+tL0yqwKomFM6LNdRlocyaW/HWCnVf7iB0acp0V1nB
+         v9+nmoSRD//dTy2Cjr4o6m6DQRQ1X3tag0fOZkV0tZB1IPQ478/IrqgzvumPSQTMI7Sl
+         rPyP14UPDOh8KEMX/BSzJ21Q7eM0gaC5Se+0iRflwUDUvJ6fNxxqslJJ3PBNbreC6wGW
+         VQdgbDZuF3N/fijX9gO7yWNUWZ8YXl3RO363eW0IjcNUKSHydo64J+AlnwtLMfkdERFt
+         KSIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773743683; x=1774348483;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ny0IuTqhujPnnvktMKwVQKRIYww+FI37mlIAqoGoFS8=;
-        b=WYQnj2v583aawSlxkGHYYKWRE1LLT0MvCRcJwg27bgGyfZeNpzgh9ZDKXw8ZBkDzA/
-         BDRzFmVZ/cvEia5Z8gyhhzMbhLEbFIYazvMgXG6MmDgQ8+OwesmjoBIkW/HeSr5+H69o
-         N03G4bmBw7m99KEtWMmJxvTdjx7GcCJaGDFV66ITbc/JdqKUNiivUgTwXYYlMbUbaTYe
-         SYOmNgI1SnQm6SMrQK0Fx0gpOYbTvzVFzIsK7iyXAd68bHJvYRWISLyUkZueZhW7MbZF
-         e87Kv1i8HKQyr5UtTMFdkd43AENwqlfvPuiU8PIhh4idSvy87s12TfFCxX4B2i1jxRP8
-         w+PQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVudnLpxAUC6iDFonzfi1rjhal8JQW6DdQdLDqG9Nevkrg+THdCWTHmUpA80Z4GvxUQtUEfnJw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx7fi66rN0GXq3E12czcE6+QpXQfgEsm4jWoHn/QPvWxD6AsW5V
-	6d6RDAOjTLV5RRMuHtwcOPoOUTNvxEcgAkUYiq6/DbKfd+tacc0lSXiTRxuJ4E5C77d/kaliSfN
-	sHVjYTHJ7czq4RROR6BzVKWBRUqV2T/yZQezYVxA0FKk+Y7u2EXrRMze7tg==
-X-Gm-Gg: ATEYQzxh29cVJjr/1UyWXL4gP8ha7TATVYHFFGesc4q34V7Eb0/29u1PS2C99mr0Ioz
-	f8JBpe7atX6vWvocgtrovXywYGtFn0wnKGO/+/OdLQ8PNs3vj4aF0HJ3f5fqiAeg3NEgvVjt+QQ
-	A+qF3cWNkDH1WbwwwhB7qfRJwY77V1nylKl13n6hspmNH99g47zDYGAo7CG0F0n1PlPvW6xQ/S6
-	rVDipDi6+zSjXAylcQdzZsZsScyXhDfjceEJXkNWfcwUId3UaY1QNi1zF5UiCOSuY+zV/5H7Q0N
-	mmeEzsrYoaNrv6rHaB9+9dNr/OSDS+SefO3JRLIBObivzIkMqJRsZyRRxIj9LXubn3eA6mXY354
-	w1XYX++1099n6XDgsew9pnpc0sG2c6qJ0Dh0d9EuQROFRvaExzNZ+q3s=
-X-Received: by 2002:a5d:5d06:0:b0:439:9812:35ea with SMTP id ffacd0b85a97d-43b498127a9mr5655196f8f.3.1773743682866;
-        Tue, 17 Mar 2026 03:34:42 -0700 (PDT)
-X-Received: by 2002:a5d:5d06:0:b0:439:9812:35ea with SMTP id ffacd0b85a97d-43b498127a9mr5655135f8f.3.1773743682342;
-        Tue, 17 Mar 2026 03:34:42 -0700 (PDT)
-Received: from [192.168.88.32] ([216.128.11.95])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b3e9a4fcdsm22271699f8f.8.2026.03.17.03.34.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Mar 2026 03:34:41 -0700 (PDT)
-Message-ID: <19078c41-5ee8-402a-9b60-fc4ab0fb8ece@redhat.com>
-Date: Tue, 17 Mar 2026 11:34:34 +0100
+        d=1e100.net; s=20251104; t=1773744031; x=1774348831;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=C+c1YssimIKbOeI4y9o12dVhyqLS9jie10yKUyGHwPU=;
+        b=Vk2c0C+6BuZpvzTRw/2To162XmJURbE7YFQClGXzVJ4XjKxyWvD25v77Ob+5Xw1tNJ
+         RQaZ8iDmDmWle0ObYg1tGpZN0Yz4lChQsFPkPDWD7wHgzDL5/stSmD8H9xWBt5ftlXqj
+         CuTpH+1ZW17Uqbq2zGCSUqFp5gZxdtMPaMYQRde2+0rnf3rPAbaLCbHskZcm8H+dQTZn
+         Svl0QvhQVk+qreiqqcp4063UKWC10dB2LAPjRElttCorofOUbc2Lv52xcLZY8skoyCNG
+         czSn/YbjUAGUkdvvXxFCKYrD2eZ95+Tvkhnheur44kEcx23rbjP+VFWpggaukvJ4TXYZ
+         b0Eg==
+X-Gm-Message-State: AOJu0YyYheJSB9SWEjNUyh93IpPJySAQgFHefGyu0+cpkFzAJO/a/tQD
+	l2UOFNq6TbCCQLJdxdbLxg54fq0kfcRenVLOUiYSF0FscDLKgS4FRePqnvkCCAg0uugllmjU1t2
+	gfd5FhtOkuZtVyE4hXwYEP40zhNcsLlQToNjd00vd4CvPWHUuCcfjsoFGuxJvV6gQ
+X-Gm-Gg: ATEYQzx52i2a80VJ49XVzD2IQHX9IglWlctzA3YupkBuLREPvJ5zhppnhYMCLchJVKX
+	PXS8Zkif4ZSLtSyszfOSy1nXVtOC9Y61IUPvOmW2YvvwlqW7NbZ9QtpzU8xVYx2NvaOg113cuxq
+	GLi88ye7G9uozX3OCFNrHnf8owA9YPs0x2zpTqH9+JM3FxyMBA289jcd+9TrG/WYPgg+BIHtVHy
+	WbA3vxES9wqJRZHq5DtHd5Jl5uCQ5VFY5Tt3skgAxTkuXbs2AMZsfGGOE1gnEb+l1wIV3pYKZWb
+	v2JuId2iJFezvRIBccwpKvSfnRL/KjcIoF/3eHp5YxV/mexXgx0DEM+bk1Bz6OD1FrB9jEoCyJd
+	PFK4+L9JaiSq6UJTAseXjxwUtyCXFKuuqeiUmdvYQEiKyBBVNc/37i/ex6r1Q7u/E+nR4w7u90P
+	HlCU+bXuddzmgqVqt1L8cmorEirHA1SPBRVxzVEtfiMIj1Yw==
+X-Received: by 2002:a5d:5d86:0:b0:439:b3a3:7239 with SMTP id ffacd0b85a97d-43a04d78189mr28892497f8f.5.1773744030461;
+        Tue, 17 Mar 2026 03:40:30 -0700 (PDT)
+Received: from inifinity.mandelbit.com ([2001:67c:2fbc:1:4f22:3f9:13dd:cf23])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe22529csm49948215f8f.31.2026.03.17.03.40.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Mar 2026 03:40:30 -0700 (PDT)
+From: Antonio Quartulli <antonio@openvpn.net>
+To: netdev@vger.kernel.org
+Cc: ralf@mandelbit.com,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Antonio Quartulli <antonio@openvpn.net>
+Subject: [PATCH net-next 2/9] ovpn: use correct array size to parse nested attributes in ovpn_nl_key_swap_doit
+Date: Tue, 17 Mar 2026 11:40:16 +0100
+Message-ID: <20260317104023.192548-3-antonio@openvpn.net>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260317104023.192548-1-antonio@openvpn.net>
+References: <20260317104023.192548-1-antonio@openvpn.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/15] net: Use trace_invoke_##name() at guarded
- tracepoint call sites
-To: "Vineeth Pillai (Google)" <vineeth@bitbyteword.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
- Peter Zijlstra <peterz@infradead.org>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Aaron Conole <aconole@redhat.com>,
- Eelco Chaudron <echaudro@redhat.com>, Ilya Maximets <i.maximets@ovn.org>,
- Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
- Xin Long <lucien.xin@gmail.com>, Jon Maloy <jmaloy@redhat.com>,
- Kuniyuki Iwashima <kuniyu@google.com>,
- Samiullah Khawaja <skhawaja@google.com>, Hangbin Liu <liuhangbin@gmail.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- dev@openvswitch.org, linux-sctp@vger.kernel.org,
- tipc-discussion@lists.sourceforge.net, linux-trace-kernel@vger.kernel.org
-References: <20260312150523.2054552-1-vineeth@bitbyteword.org>
- <20260312150523.2054552-5-vineeth@bitbyteword.org>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260312150523.2054552-5-vineeth@bitbyteword.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 3/12/26 4:04 PM, Vineeth Pillai (Google) wrote:
-> Replace trace_foo() with the new trace_invoke_foo() at sites already
-> guarded by trace_foo_enabled(), avoiding a redundant
-> static_branch_unlikely() re-evaluation inside the tracepoint.
-> trace_invoke_foo() calls the tracepoint callbacks directly without
-> utilizing the static branch again.
-> 
-> Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-> Suggested-by: Peter Zijlstra <peterz@infradead.org>
-> Signed-off-by: Vineeth Pillai (Google) <vineeth@bitbyteword.org>
-> Assisted-by: Claude:claude-sonnet-4-6
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-Side question: which is the merge plan here? since this patch depends on
-1/15 I guess it's via the trace tree, am I correct?
+In ovpn_nl_key_swap_doit, the attributes array used to parse the
+OVPN_A_KEYCONF uses OVPN_A_PEER_MAX instead of
+OVPN_A_KEYCONF_MAX. Note that this does not cause any bug, since
+currently OVPN_A_KEYCONF_MAX < OVPN_A_PEER_MAX.
 
-/P
+The wrong constant was introduced by commit 203e2bf55990
+("ovpn: implement key add/get/del/swap via netlink")
+
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
+---
+ drivers/net/ovpn/netlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ovpn/netlink.c b/drivers/net/ovpn/netlink.c
+index c7f382437630..fed0e46b32a3 100644
+--- a/drivers/net/ovpn/netlink.c
++++ b/drivers/net/ovpn/netlink.c
+@@ -1061,8 +1061,8 @@ int ovpn_nl_key_get_doit(struct sk_buff *skb, struct genl_info *info)
+ 
+ int ovpn_nl_key_swap_doit(struct sk_buff *skb, struct genl_info *info)
+ {
++	struct nlattr *attrs[OVPN_A_KEYCONF_MAX + 1];
+ 	struct ovpn_priv *ovpn = info->user_ptr[0];
+-	struct nlattr *attrs[OVPN_A_PEER_MAX + 1];
+ 	struct ovpn_peer *peer;
+ 	u32 peer_id;
+ 	int ret;
+-- 
+2.52.0
 
