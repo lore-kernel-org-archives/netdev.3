@@ -1,86 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1E5192D97;
-	Tue, 17 Mar 2026 08:02:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5940E2BEFFD;
+	Tue, 17 Mar 2026 08:04:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773734577; cv=none; b=McvUrhSCoPRStmKudZwR6mk/YRe0UknZrqCGSsqOTk+CPjsol00StI+G2oQ+92j+J3zAjDF6cZjtD7vAU3QXWHRzi0FalMgupt8Hc7YYmAd01r1a4oxX+dLCqKFaMyTm4fa9BWcjDvFjB/CKXd5JoQoajYxPifnCW99tQLQ4EMU=
+	t=1773734689; cv=none; b=Ru58mMLmZ9T4UVefwZmmqCKG85Nbzwb7mkVJWZ74QWAsVe+b7Igjk+5UWNiXMCY+AWZ1TfObRY8CSdm7yi2C9sO2A44Z/Oxnnbj3l4Y2Cc7kGTzV2uQdhqNfkJ8v5N2xsjVRt2ZyJQ3x9wx5b5sV6N+EurxcctxhleD1wqZFwcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773734577; c=relaxed/simple;
-	bh=Fs6kGPlYcuRPzQ4A1YkvjL1EjGLW9fewcz/aUiikuys=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F5N0+WUuwtqzMZ4Lo+SlCmFL/9kT0r/xgmwHB6JipSskCGdu2xuoEpmXy8ZgA9J8xGFxCR9Qv2Uih+cznRN+y+YU92tbdGT73QYQ4I8h29uHrlukp2DwmWY/7m7wXjHZ6hXJCFudYGF2lsmq0rlNJLlmErz+w4WDV4MoBRTKlhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D613FC2BCAF;
-	Tue, 17 Mar 2026 08:02:54 +0000 (UTC)
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-To: Stefan Eichenberger <eichest@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
+	s=arc-20240116; t=1773734689; c=relaxed/simple;
+	bh=C5+6ibWMe+6CGLCJ89fg6/WRPHNmqm+d8HkwRrykciE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ksnGRuHM7Gu7cRkWb3Vxh46SeVQoE3uWDu8SKNVgQaJHWZpVX+G0QF3VVKvYkymDzhy/DlFl8W+r00c39cGDecKmXU86jEL61ACuOtfuMbsbS5x+SOnZOMx4lbQLVdApWDv7Kn47jSXOe6rilVRwvn7BY06vw/AmD+dw5VDXT/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TgoO7a9/; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TgoO7a9/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773734688; x=1805270688;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=C5+6ibWMe+6CGLCJ89fg6/WRPHNmqm+d8HkwRrykciE=;
+  b=TgoO7a9/ZtqohlD5M0xeGtc3gBMWEyxFVTJO5/cmHgLU523yAw3rtxbM
+   9W0Kxw2iOdJYKVmHPdhErmw1fFWTIzvR+bG+bmsHMYxN2UUzQnroPfwuR
+   YlZ6Z8ZyX+S5tBEnEs9/fLIhKLkdc7+8U8NoXRoCVJ2aQezjLZ9mKs0zH
+   XSRbhQc+1g5NPMNU0P5iTmwcNaLU40FEBYd0ewV5ewwAJxkHfrWdIXmw9
+   BjZecKgENs0+hOaM2fl02yJ009g4LR5Z5Egv5LViBBpqj1i8X2xjmrmXm
+   3TWya89xm9/1mXJXMYVRPzQg+hBFs14iAuAdgwEQv35ePx7x6ToWZVKk1
+   A==;
+X-CSE-ConnectionGUID: jDXmnQDbQO+VY5AfZuYQIg==
+X-CSE-MsgGUID: NUouNz5iTFi988rd/HmXJA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="100214527"
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
+   d="scan'208";a="100214527"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 01:04:44 -0700
+X-CSE-ConnectionGUID: 2FRFFUu5ROiSZGHfQOS4eQ==
+X-CSE-MsgGUID: 6ilrKriWSSuart1nhUvBbA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
+   d="scan'208";a="222244723"
+Received: from abityuts-desk.ger.corp.intel.com (HELO localhost) ([10.245.245.97])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 01:04:37 -0700
+Date: Tue, 17 Mar 2026 10:04:34 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: Douglas Anderson <dianders@chromium.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org,
+	Andrew Lunn <andrew@lunn.ch>, Daniel Scally <djrscally@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: [PATCH v2 2/2] dt-bindings: net: micrel: KSZ8041RNLI supports LED mode
-Date: Tue, 17 Mar 2026 09:02:46 +0100
-Message-ID: <efad6c7e024b3a9aa2882db65909ee5bbbcbdc45.1773734298.git.geert+renesas@glider.be>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1773734298.git.geert+renesas@glider.be>
-References: <cover.1773734298.git.geert+renesas@glider.be>
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
+	Mark Brown <broonie@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org,
+	driver-core@lists.linux.dev, imx@lists.linux.dev,
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH] device property: Make modifications of fwnode "flags"
+ thread safe
+Message-ID: <abkLEgrZbdb03VWg@ashevche-desk.local>
+References: <20260316154159.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
+ <abkCPU3rxHI49N4_@shikoro>
+ <abkD-VLprcbbEbB1@ashevche-desk.local>
+ <abkF0GO01sMcOhvb@shikoro>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <abkF0GO01sMcOhvb@shikoro>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Micrel KSZ8041RNLI supports LED mode, just like KSZ8041.
+On Tue, Mar 17, 2026 at 08:42:08AM +0100, Wolfram Sang wrote:
 
-This fixes (a.o.) the following "make dtbs_check" warning:
+> > > ... this change costs some memory on every system. Maybe it can be
+> > > avoided?
+> > 
+> > How much memory does it cost? On most 64-bit architectures is +4 bytes,
+> > rarely +0 bytes, on m68k it might be +2bytes. On 32-bit it most likely
+> > +0 bytes. I expect that 64-bit machines will cope with this bump.
+> 
+> I am not opposing that the issue should be fixed. If it is not possible
+> to take the lock everywhere, this is a proper solution. But if we don't
+> have to use more memory, then we could save it. Our new SoC easily has
+> 'struct device' in the hundreds.
 
-    arch/arm/boot/dts/renesas/r8a7791-koelsch.dtb: ethernet-phy@1 (ethernet-phy-id0022.1537): False schema does not allow 1
-	    from schema $id: http://devicetree.org/schemas/net/micrel.yaml
+What's the alignment for the u8 member in your SoC? 4 bytes or 8 bytes?
+(I assume it's 64-bit SoC.)
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Stefan Eichenberger <eichest@gmail.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
----
-v2:
-  - Add Reviewed-by, Acked-by,
-  - Fix KSZ8041RLNI typo.
----
- Documentation/devicetree/bindings/net/micrel.yaml | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/Documentation/devicetree/bindings/net/micrel.yaml b/Documentation/devicetree/bindings/net/micrel.yaml
-index 5d25f0d0a508a6df..6fa568057b927182 100644
---- a/Documentation/devicetree/bindings/net/micrel.yaml
-+++ b/Documentation/devicetree/bindings/net/micrel.yaml
-@@ -54,6 +54,7 @@ properties:
-       KSZ8021: register 0x1f, bits 5..4
-       KSZ8031: register 0x1f, bits 5..4
-       KSZ8041: register 0x1e, bits 15..14
-+      KSZ8041RNLI: register 0x1e, bits 15..14
-       KSZ8051: register 0x1f, bits 5..4
-       KSZ8081: register 0x1f, bits 5..4
-       KSZ8091: register 0x1f, bits 5..4
-@@ -80,6 +81,7 @@ allOf:
-             contains:
-               enum:
-                 - ethernet-phy-id0022.1510
-+                - ethernet-phy-id0022.1537
-                 - ethernet-phy-id0022.1550
-                 - ethernet-phy-id0022.1555
-                 - ethernet-phy-id0022.1556
 -- 
-2.43.0
+With Best Regards,
+Andy Shevchenko
+
 
