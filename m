@@ -1,141 +1,200 @@
-Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486373932F0
-	for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 11:28:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F86A34403D
+	for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 11:29:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773746898; cv=none; b=YFnwqqhNyXSRSneOoQUXW8jDrdqg4s/w/sdapgHiIB3836457QV9w2icfX9YPe02ILuhmBZtBJK+cRdVqs54f1sQ8KyWicW9tDADR7yVbWqs0WNf1FSrH7E4QcfrgUTiqCUe/lQn7A4AQFOnouiLVUFxTzBrbBBHyr1Ga+6UZz8=
+	t=1773746965; cv=none; b=ooQGgdIwm5HwV7E674GVBvfJMiqCVOcHKQrAMTjRv7z8Yh3UCdSM9RTBZcb7GYyq0RuOQrYuV5dzlz/tEpMkt66feFV50KMK7enhQagAR9iNJFkk82BLP3sBedFwx6L23IYYLcePUQw12RMJR8+yTGxNBxET/yKQlIMWm1oTp+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773746898; c=relaxed/simple;
-	bh=w/dJ58IgCVpshKP6UPHntiQM4ytcAyWRbjOfkYO8NYU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pkKdmqrP1cNDit2uRGJyYCYbZeAgypXodVVZ6K9Aq9BgqeYGg7+Cn6hud3zhOpjoBDOAppdEr6SAjTXo+s8zcf1ygySOdZhLL32d/onok0vHHd/jiKIlj9xTyMdpSb4kZ15R+C5UqCg+8I+F/mnPf+6rTnexhgcVjWEbL7ZAb1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=suStUPmP; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=IhFOkXiY; arc=none smtp.client-ip=202.12.124.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	s=arc-20240116; t=1773746965; c=relaxed/simple;
+	bh=4CSx9ZjbeRXfiJMtz5ON1cC5JPSin5oI4O9rPe/Ec7U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Nnk5WdC1WxeEgzF1goSJsUmNkHyc5HaGihrtLPzX3hmm9pXWkmswzcPogHildNVmo9/38DSqsZTQ0FJoVLM4LdkrmxGKUoCdkGt7a4LxtKHZauNVUL5nY5CGmlxkza/iLZsBFaiDRDsstKfB2yp1awNMnW11CTH4XyT7O+JPt24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PiD4dPhS; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=sWzBeiYU; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="suStUPmP";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="IhFOkXiY"
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 5E0827A01CB;
-	Tue, 17 Mar 2026 07:28:14 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Tue, 17 Mar 2026 07:28:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1773746894; x=
-	1773833294; bh=AuVMHT4ZPAVI6cSYmav71CqmTZ6hhsuQgZVYsv9wEPM=; b=s
-	uStUPmP9RWo8BaHWRDLgIt915kaK4Sw9gcWkfMoFtSiWjRxE7Qx/8DN4VAwkDF+X
-	hCshP1lOmN7I6taN/is4Ps1ZJMGVxRqQzX44cL19xyfvBeFFZuj7FpHnF2KtDZlh
-	I9vrOWpsOOdXLBQDqGDkChcXd3zYI58qRBeRE0YxS8C4W8UXN4Tc3IArwKx7eAEi
-	J9t/kCP7Ec0ANSek9wdA6j/PfOTLeQhT9STcKPqQ2Q41sjDKYk9JnxM0KZ1WxiEs
-	hIVH/aOVmaihcE0KbHf+uP0m1L4VGEO1AZgAFXoe/qWDHXqlfmK6In83PYEqz79D
-	3GTIF0sEx/ilNNQlhBkvQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1773746894; x=1773833294; bh=AuVMHT4ZPAVI6cSYmav71CqmTZ6hhsuQgZV
-	Ysv9wEPM=; b=IhFOkXiYoUEwADycWWh6OSAG6yfigIIg2q4t+PfBh5xWkbyq5N8
-	n8ElK10rlvkyhNy60aU6dNpP6lcQuS2gyFwPFXcHuad41TEptz3ZKr/aM0dtf8i6
-	E5DbS9fEIcvAzfFDBE92ElbuoKlTxcG5cGgg9T5NCg3P4eTWPuVJ2VpAzK9hBfEb
-	WHQkOfZWka/g2SgzorZW6OVIQ3DMX4SAHY0noAdDegK8/HfHimtDfT72pl2MfMfa
-	vz2AslnI6OocWppXq/X1qEpoQHUzlkfjPpNr+aRdRS6ZJr4XHuj0jQ1n4nc+Z0x3
-	bDg/NBQJXwgGKPsqF2lY0y2QejJPbpn/gEQ==
-X-ME-Sender: <xms:zTq5aTBxQRUzjOINihNgjQ73sqBc17wlDDYv_dg118fMQ1WPUI7fdg>
-    <xme:zTq5aQY4--uYV7tZdN3cU7aCNpYAGubkYayNL-9TLG9anbF_j_meL0dSZrgqWTa-R
-    z1XriCeJWRY7vQ8FFp4FRucgEF9Pkbs_sBgISDYwiPH_xRHcVdG_aY>
-X-ME-Received: <xmr:zTq5aW7R5qouh_pXJQHbj1ODW1Gqjp4Hi6whCXL8R0ge_6QeH9xcT4Nzs1ym>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdduudefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtjeenucfhrhhomhepufgrsghrihhn
-    rgcuffhusghrohgtrgcuoehsugesqhhuvggrshihshhnrghilhdrnhgvtheqnecuggftrf
-    grthhtvghrnhepuefhhfffgfffhfefueeiudegtdefhfekgeetheegheeifffguedvueff
-    fefgudffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epshgusehquhgvrghshihsnhgrihhlrdhnvghtpdhnsggprhgtphhtthhopeehpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopehprggsvghnihesrhgvughhrghtrdgtohhmpd
-    hrtghpthhtohepmhhmihgvthhusheljeeshigrhhhoohdrtghomhdprhgtphhtthhopehn
-    vghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehkuhgsrgeskh
-    gvrhhnvghlrdhorhhgpdhrtghpthhtohepjhgrshhonhesiiigvdgtgedrtghomh
-X-ME-Proxy: <xmx:zTq5aRYqeR8lbuHvMWKHw6XDeOJYeHIRi-CvnMwbaNlsJq1oOCxWTw>
-    <xmx:zTq5aVhsxFdhobRZpiubaqKYDAgtciPEYcF9ia59ITODofQ-svoifA>
-    <xmx:zTq5aS-LFQ0zpIFXK_8V1-turNSObOIG2DLJcj3bQpA2W_Ybsrc-eg>
-    <xmx:zTq5aQrFxVTA-5BVPsgFtpZyKya991MsIFg_1hsFzfKtNTA-wiKUfg>
-    <xmx:zjq5aXpskPoagc_8DbxTUvwzDJdMZypoK79oPcnBa3pdxwyP78bqcnMV>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 17 Mar 2026 07:28:13 -0400 (EDT)
-Date: Tue, 17 Mar 2026 12:28:10 +0100
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Marek Mietus <mmietus97@yahoo.com>, netdev@vger.kernel.org,
-	kuba@kernel.org, Jason@zx2c4.com
-Subject: Re: [PATCH net-next v5 00/11] net: tunnel: introduce noref xmit
- flows for tunnels
-Message-ID: <abk6yhfnry2NzkZh@krikkit>
-References: <20260113162954.5948-1-mmietus97.ref@yahoo.com>
- <20260113162954.5948-1-mmietus97@yahoo.com>
- <89df6470-027b-4d86-98a1-72042ca819ed@redhat.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PiD4dPhS";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="sWzBeiYU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773746962;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dFs80zw2O4/2NJrV7I0/zYaOrXH4RPoeh7BrpBnFPW0=;
+	b=PiD4dPhSmic8eSbnKmpg6kHiBFhUA0GuO6qOkVD9BBzZfEUA+/azLwKZoNN2/2SneBFj3U
+	ze8FfldDeWAGTkS5b1vKJH3c7I+qSQ4HPuSzNNn5DjW0cnMZtNsBjA/PNhCJs75ag1SVcp
+	miMJIDMfPtAR4hlbJo1ftDLRuPPkYf8=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-55-v0ydwhs2Oau2_LtKPP_T4Q-1; Tue, 17 Mar 2026 07:29:21 -0400
+X-MC-Unique: v0ydwhs2Oau2_LtKPP_T4Q-1
+X-Mimecast-MFC-AGG-ID: v0ydwhs2Oau2_LtKPP_T4Q_1773746960
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4839fc4cef6so5651235e9.0
+        for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 04:29:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1773746960; x=1774351760; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dFs80zw2O4/2NJrV7I0/zYaOrXH4RPoeh7BrpBnFPW0=;
+        b=sWzBeiYUy8H7s5XxDhNTm8JhTr3wPEQgGlQP3c3viaNdE90HLM3f96NJxqVT7MAtGa
+         7a0EQ5XoI8atBx6RqDvpxhagFgDH5UNPbXtgSTxifTlQ/B2+qtukmDYb1I5HHs15JFzt
+         s8f/nHnKAYRd1ip4042zgVFIXXazGb/CqIPReSFYGOV+r+ssDlIJ+fFl8sK4hIJJ/lQx
+         LZwa6fFUCxlt4G96sniheg7joW+WQgVP48iv38YUe3FIS1Vsxni2XAXWXZSqVp5Od3WK
+         gMyStnPTfcefdJ7JdDNsQDJ8PNIhpntaox2CHJy/JWsdLmZVYCjg30Q5NDZZOm/P3MYn
+         wULw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773746960; x=1774351760;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dFs80zw2O4/2NJrV7I0/zYaOrXH4RPoeh7BrpBnFPW0=;
+        b=jqnihRNepsqfzqWFJYzqY72Pt8exK0J5lKj91AvdSju1npyz+u8nf8oVqYYl7Qgv8B
+         y3MLZCDBE/6Rkgc76rE7O7Dsbh6flg4tXX+h8Ki1k5AL0rJ0iRUG/fXFoqAkPAYOLAR+
+         0k22+LqKNM9eRxk5j3uAANd0Vs7e+RvB9EcSP6c1YpCkYqTQCKqjAhAvSTcyo0BuardF
+         e94AfBKsAZWd10jvJOA2EFi1Tt9r2XJVfx1f7RyLIR8HkT6b8kKQf8Sk+aLuzwZGu/ZN
+         y/DQWdDkzEyC42X1EFxtCqCWU47hNmkoehbFGveFG5S5+CciLkkzBWk22I18HNv0M1G/
+         w4ew==
+X-Forwarded-Encrypted: i=1; AJvYcCVBqhrklXnrLK+TdkX/DirXpDdopQnA4Z2/goXbXZbXZlcKtgKkXvUD6mF91a7DxED3/5vYVfA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIECVHrtmKi0TqjP+R8/e0ojDHjdFbVTLL26YhfzABWo/JqAyx
+	vdrOkDvlettOSdHy+RjI0xiRfNILn1CBt6U2UGWMhkX0AMjR5QY2QVdGmR1Qz2z8Rk4sI4oFZ0J
+	+GEjRNPB0h9F1rVB9enBiLE2zwn2L22TjzktMPIp/W4Fank2X7MUMQZEi9g==
+X-Gm-Gg: ATEYQzw4jYynhD5BVD+BHG+oNLnoKY73H58yV5CK5kXWwrmgnZfb0JHGmaxam14B1F9
+	KuvSRaFI+kkggM/4HAOF7DJTWyBGZZ1sSZeSf8d3eRjTDapcsRhFrbUVVNNP+9bF++wXn+aT66Z
+	uIglyW2dXh1y+JlPYOLgbImqG+goERYfFCr5xKGn86FaA08UMMxDaikfqNy1ToO7tFVs50h4URX
+	UxOEr0RcZcejxA1yCF5PxaLDPs7+5FWZYMz3aR8oHYIhi6tU/IrtC7TZsyrylkHMelQ/y7rfybs
+	eZytU1530utl3fAd9luBiQZsJZe5uza+FIO/dHAb/aJMr76pQVE5flbcv7QWu8OeIBdUjR4KCi0
+	1qOKyBiFLuxkt/UcTdVfXrANXeMznJj6D/lfEefWcEUUfHOJNkdL6Q9g=
+X-Received: by 2002:a05:600c:5249:b0:485:38f1:5cec with SMTP id 5b1f17b1804b1-4856eac2b35mr51298685e9.7.1773746959754;
+        Tue, 17 Mar 2026 04:29:19 -0700 (PDT)
+X-Received: by 2002:a05:600c:5249:b0:485:38f1:5cec with SMTP id 5b1f17b1804b1-4856eac2b35mr51298285e9.7.1773746959237;
+        Tue, 17 Mar 2026 04:29:19 -0700 (PDT)
+Received: from [192.168.88.32] ([216.128.11.95])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4857f224d5asm16069915e9.24.2026.03.17.04.29.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Mar 2026 04:29:18 -0700 (PDT)
+Message-ID: <bc3a66a1-8c0d-4038-9b92-0fe3d10b1555@redhat.com>
+Date: Tue, 17 Mar 2026 12:29:17 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <89df6470-027b-4d86-98a1-72042ca819ed@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v10 1/2] virtio-net: correct hdr_len handling for
+ VIRTIO_NET_F_GUEST_HDRLEN
+To: Xuan Zhuo <xuanzhuo@linux.alibaba.com>, netdev@vger.kernel.org
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ Jason Wang <jasowang@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ Jiri Pirko <jiri@resnulli.us>, Alvaro Karsz <alvaro.karsz@solid-run.com>,
+ virtualization@lists.linux.dev
+References: <20260313075930.105466-1-xuanzhuo@linux.alibaba.com>
+ <20260313075930.105466-2-xuanzhuo@linux.alibaba.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260313075930.105466-2-xuanzhuo@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-2026-03-17, 12:02:30 +0100, Paolo Abeni wrote:
-> On 1/13/26 5:29 PM, Marek Mietus wrote:
-> > Currently, tunnel xmit flows always take a reference on the dst_entry
-> > for each xmitted packet. These atomic operations are redundant in some
-> > flows.
-> > 
-> > This patchset introduces the infrastructure required for converting
-> > the tunnel xmit flows to noref, and converts them where possible.
-> > 
-> > These changes improve tunnel performance, since less atomic operations
-> > are used.
-> > 
-> > There are already noref optimizations in both ipv4 and ip6.
-> > (See __ip_queue_xmit, inet6_csk_xmit)
-> > This patchset implements similar optimizations in ip and udp tunnels.
-> > 
-> > Benchmarks:
-> > I used a vxlan tunnel over a pair of veth peers and measured the average
-> > throughput over multiple samples.
-> > 
-> > I ran 100 samples on a clean build, and another 100 on a patched
-> > build. Each sample ran for 120 seconds. These were my results:
-> > 
-> > clean:      71.95 mb/sec, stddev = 1.71
-> > patched:    74.92 mb/sec, stddev = 1.35
-> > 
-> > TL;DR - This patchset results in a 4% improvement in throughput for
-> > vxlan. It's safe to assume that we might see similar results when testing
-> > other tunnels.
+On 3/13/26 8:59 AM, Xuan Zhuo wrote:
+> The commit be50da3e9d4a ("net: virtio_net: implement exact header length
+> guest feature") introduces support for the VIRTIO_NET_F_GUEST_HDRLEN
+> feature in virtio-net.
 > 
-> IMHO this performance delta is not enough to justify this amount of
-> changes.
+> This feature requires virtio-net to set hdr_len to the actual header
+> length of the packet when transmitting, the number of
+> bytes from the start of the packet to the beginning of the
+> transport-layer payload.
 > 
-> Additionally, the measured impact of removing the dst_hold/dst_release
-> does not fit with my direct experience on the same matter: it should be
-> below noise level in practice, as dst are per-cpu and and no
-> contention/false sharing is expected in a good setup.
+> However, in practice, hdr_len was being set using skb_headlen(skb),
+> which is clearly incorrect. This commit fixes that issue.
 > 
-> I think you are observing larger impact because in the veth test
-> dst_release can happen on a remote CPU. Note that this setup (vxlan over
-> veth) is not very relevant in practice.
+> Fixes: be50da3e9d4a ("net: virtio_net: implement exact header length guest feature")
+> Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+> ---
+>  drivers/net/tun_vnet.h     |  2 +-
+>  drivers/net/virtio_net.c   |  6 +++++-
+>  include/linux/virtio_net.h | 33 +++++++++++++++++++++++++++++----
+>  3 files changed, 35 insertions(+), 6 deletions(-)
 > 
-> I'm sorry I'm not applying this series.
+> diff --git a/drivers/net/tun_vnet.h b/drivers/net/tun_vnet.h
+> index a5f93b6c4482..fa5cab9d3e55 100644
+> --- a/drivers/net/tun_vnet.h
+> +++ b/drivers/net/tun_vnet.h
+> @@ -244,7 +244,7 @@ tun_vnet_hdr_tnl_from_skb(unsigned int flags,
+>  
+>  	if (virtio_net_hdr_tnl_from_skb(skb, tnl_hdr, has_tnl_offload,
+>  					tun_vnet_is_little_endian(flags),
+> -					vlan_hlen, true)) {
+> +					vlan_hlen, true, false)) {
+>  		struct virtio_net_hdr_v1 *hdr = &tnl_hdr->hash_hdr.hdr;
+>  		struct skb_shared_info *sinfo = skb_shinfo(skb);
+>  
+> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+> index 72d6a9c6a5a2..7106333ef904 100644
+> --- a/drivers/net/virtio_net.c
+> +++ b/drivers/net/virtio_net.c
+> @@ -3267,8 +3267,12 @@ static int xmit_skb(struct send_queue *sq, struct sk_buff *skb, bool orphan)
+>  	struct virtio_net_hdr_v1_hash_tunnel *hdr;
+>  	int num_sg;
+>  	unsigned hdr_len = vi->hdr_len;
+> +	bool feature_hdrlen;
+>  	bool can_push;
+>  
+> +	feature_hdrlen = virtio_has_feature(vi->vdev,
+> +					    VIRTIO_NET_F_GUEST_HDRLEN);
+> +
+>  	pr_debug("%s: xmit %p %pM\n", vi->dev->name, skb, dest);
+>  
+>  	/* Make sure it's safe to cast between formats */
+> @@ -3288,7 +3292,7 @@ static int xmit_skb(struct send_queue *sq, struct sk_buff *skb, bool orphan)
+>  
+>  	if (virtio_net_hdr_tnl_from_skb(skb, hdr, vi->tx_tnl,
+>  					virtio_is_little_endian(vi->vdev), 0,
+> -					false))
+> +					false, feature_hdrlen))
+>  		return -EPROTO;
+>  
+>  	if (vi->mergeable_rx_bufs)
+> diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+> index 75dabb763c65..48de4a16a96a 100644
+> --- a/include/linux/virtio_net.h
+> +++ b/include/linux/virtio_net.h
+> @@ -207,6 +207,22 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+>  	return __virtio_net_hdr_to_skb(skb, hdr, little_endian, hdr->gso_type);
+>  }
+>  
+> +static inline void virtio_net_set_hdrlen(const struct sk_buff *skb,
+> +					 struct virtio_net_hdr *hdr,
+> +					 bool little_endian)
+> +{
+> +	u16 hdr_len;
+> +
+> +	hdr_len = skb_transport_offset(skb);
+> +
+> +	if (hdr->gso_type == VIRTIO_NET_HDR_GSO_UDP_L4)
+> +		hdr_len += sizeof(struct udphdr);
+> +	else
+> +		hdr_len += tcp_hdrlen(skb);
+> +
+> +	hdr->hdr_len = __cpu_to_virtio16(little_endian, hdr_len);
+> +}
 
-This is probably fine for everybody who's been following this series,
-but you answered v5 (from January) instead of v8 (posted last week).
+The series LGTM, let's wait for Jason and or Michael.
 
--- 
-Sabrina
+If another revision is needed, please consider factoring out a
+__virtio_net_set_hdrlen() helper taking an additional explicit
+transport_offset argument, to deduplicate a bit the code between patch
+1/2 and 2.2. Not a blocked anyway for me.
+
+/P
+
