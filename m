@@ -1,197 +1,157 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D35A3E121D
-	for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 14:01:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA083A3E97
+	for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 14:01:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773756068; cv=none; b=CMl2p1c6YweEsnfe1Hu6+a6I0zL2gOpKaDTTC68FIEJ/5b9F6YHuvK0rvegUJSasCsXz7PBu+fARbBY49YvfNaOUsNlNyvP4CkHRzkAdrQ+PlNYe9qh2/kUb5JXpAS3BSSFhrs8QaBkUVpNARwBxxhI32pzH06qT6qiRe4VMRrA=
+	t=1773756092; cv=none; b=QyzreL5dCgk2m14BOKmxQXlszWdYC2/T4khTPckcBNDlO/hTBShQEdFqxSEipd4nY3w838OvT/G7JHm/18tf2OuuDXeW3pNrTECCChWjlEFso64HTUkMHwxc0fFWSJrvA+TVSYuzotD+LSrYgApC9GR7A6b/MHAxTeYf3KB8Wts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773756068; c=relaxed/simple;
-	bh=gyxmVw9w8IIW8kTl7ewnjbhQM9u6OeTRE5QFfrT/5N0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WRzGQ3TIp2JSM9fMSP3fOYOTcLsaOkptVUjzgrKxlWg4nAGvRsg/09/d5H1K69OpSgyOxwni/Nxm80umFIKbxE3dJUh8D6cGAiUp9z276mv/GBLQjleIY7xiLWHy4N2mcAWogBgGnodPEIX7QWsQ72OrHQ50LY2l0r7BA6WvHHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=X2ml0pbA; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=nz8bGRKe; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=PzLpze84; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=cbS+TY6W; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1773756092; c=relaxed/simple;
+	bh=QNGzhaws/ILgJmwyVqWJT7BY2rbvZFUGhFYWXKg1dmA=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=r+qOrNfqFOKyCss/F8l2+RTC+8LA+bf7ON569jbVN3CW7knaBb7HxjpqDHLZbZDymwnEPLRMZNsLi6gNSNX/g3S3yXiGV+ljH3OMeB90HrAjC2uvYSTxmWlnLT10JHN0izmM9Ag4AkRlSVEw+dWgoXljBwP5iQe4afpCGvvUQ9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TDP2A/Ek; arc=none smtp.client-ip=209.85.128.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="X2ml0pbA";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="nz8bGRKe";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="PzLpze84";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="cbS+TY6W"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 58AA24D337;
-	Tue, 17 Mar 2026 14:01:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773756065; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=Z42gc913v7qs82hn1hB8yx7ErxPW9ggLXqvAyIcz4oU=;
-	b=X2ml0pbAFz/6aqKGt6pgRhQL2Hl/w2d00SJVS1d3/5Q/qixaw5J6Vg5Il628neoi7RGf9K
-	3iKg/q5tCHivR2YRENH8bkKwFERBNJL9wXOg4CqwOyzcv8EP/fjQgNuHboQnzTZQZOOGph
-	BSbzSCO8QLeaHJ3liB/AjpEvUTQ4Nf8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773756065;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=Z42gc913v7qs82hn1hB8yx7ErxPW9ggLXqvAyIcz4oU=;
-	b=nz8bGRKefAFc1zH48fLvTHd8x8eVYwyQv9s+xoo0my4hQlYqwORkLGVER8EuznKvuj7Hjv
-	DN7pw2uIdq08ndDg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773756062; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=Z42gc913v7qs82hn1hB8yx7ErxPW9ggLXqvAyIcz4oU=;
-	b=PzLpze84/YZswWKbOpqheJUOTvlrxh2kCUc8N1qRZxvh5FfpY56/Rl20eg/FWJXMlnbAMj
-	NQcpP5Jxk9L1gt3SjwpJ+EulLpUeKVrhxuK4oYnhig/lxAVwysW2z3z0FeyWzrB/ao/qNj
-	Ys+LIGU0agQautlsYYHuHQjXdUp/i/Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773756062;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=Z42gc913v7qs82hn1hB8yx7ErxPW9ggLXqvAyIcz4oU=;
-	b=cbS+TY6W/h6Kw4wDA0lmiglzupArg2cW7RfwkwQM0ant1e4YuLVUnw0dMYVowzSmNzK9/b
-	jR/JSY0wjT3N+ZAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 395684273B;
-	Tue, 17 Mar 2026 14:01:02 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id HNbyDZ5euWmjYgAAD6G6ig
-	(envelope-from <iluceno@suse.de>); Tue, 17 Mar 2026 14:01:02 +0000
-From: Ismael Luceno <iluceno@suse.de>
-To: linux-kernel@vger.kernel.org,
-	Simon Horman <horms@verge.net.au>,
-	Julian Anastasov <ja@ssi.bg>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Ismael Luceno <iluceno@suse.de>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Federico Pinca <federico.pinca@suse.com>,
-	Andreas Taschner <andreas.taschner@suse.com>,
-	Brad Bendily <brad.bendily@suse.com>,
-	Brendon Caligari <brendon.caligari@suse.com>,
-	Clemens Famulla-Conrad <cfamullaconrad@suse.com>,
-	Firo Yang <firo.yang@suse.com>,
-	Gabriel Krisman Bertazi <gabriel.bertazi@suse.com>,
-	Hans van den Heuvel <hvdheuvel@suse.com>,
-	Jean Delvare <jdelvare@suse.com>,
-	Michal Hocko <mhocko@suse.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Petr Mladek <pmladek@suse.com>,
-	Petr Tesarik <ptesarik@suse.com>,
-	Richard Thompson <richard.thompson@suse.com>,
-	William Preston <wpreston@suse.com>,
-	Yu Xu <yu.xu@suse.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	lvs-devel@vger.kernel.org,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org
-Subject: [PATCH] ipvs: Move defense_work to system_dfl_long_wq
-Date: Tue, 17 Mar 2026 15:00:59 +0100
-Message-ID: <20260317140100.24993-2-iluceno@suse.de>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TDP2A/Ek"
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-79a3ba1653fso22375787b3.3
+        for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 07:01:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773756090; x=1774360890; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9T+kHlqZbPOUk2QRRSgAwGxeEJRArRfLuYjXKmhB30w=;
+        b=TDP2A/Eki2fRNnAMltAlHKxXa46RYiCFrjcfkITUE4ZwJvdw+dDruJ2DLoByaRxGN5
+         P8SMtjD6D8d/eZYpxeeK69qNy6o5CSB4x6QSARlbotFgiM51MsystVyA13RtqtD6v5Ur
+         dXeyuFMabNwkZI1AbAf9QDNEL/iAYwmJb8wYd8GFLIOPH5kCdo7pJsgoTAigLTBarJEx
+         hMcnc9xzydLGHaWKnZDsUfg6+rcHx5Af1+qH1aL9LK1wDZz70UBK4NQr7OEXn6PYGMFP
+         5RcmRTGA64mlswcjpD5dN4M/6MrEMz/MdoILMP2wjTVRQYxcGIHogVpOzR6rcDf5yrc3
+         tmjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773756090; x=1774360890;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9T+kHlqZbPOUk2QRRSgAwGxeEJRArRfLuYjXKmhB30w=;
+        b=dK6kP6OfckswWwMaVau09K2yH3wYZHOzn75L2M3m4f63yA1pQ9eYJ0SDEuqzBIfeIx
+         gClJkAL7dl4Jztu9JnxDMlEZ4C6qPor3A+tpy/8tC6dl2DEaW9XJ7uXRNf6CnkJ2+Us3
+         Y9wtNbOEOmEjWyjDnRJUsqvwAdigwOm+gOqtT/gcflPn9r/boNfol9nw1cnFh2BGYaad
+         AgA6OTUSxhpbVfbL4ymWUUFMqv/cKN6XnmkYEvFfMeTp07FV3UkEyH0rFetUr3+0blba
+         4CkoILoV6shS525JgYswkCXkzYvY9L64QnWv96iddJlMYexK6cH69SZxkxQWGychewi7
+         7ZuA==
+X-Forwarded-Encrypted: i=1; AJvYcCXU3gIfPT+wt1OsB7cEuHhUE46Xer5co2MD3H8KktlKyTvjsEjEVezRqIOtn5SxqhTALRX4yjc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGpzBgwyIESv4voI1bizJdDg5YW/ppi+iOSFiQFkq8sU3XuzGM
+	OzmlbyfeMwCl2n/vhs2aCz8eKyHjGr6Z/RDrua1GVUE5ppgQERyqPwqY
+X-Gm-Gg: ATEYQzzNHC0ZQZuYYBjYbfaXSyIWyaqJRe/pzmVC3chZWQS9DNBD5jUZTpNNnCaHxpk
+	8dYk4POzoH6NsPigZE9YB9+TH/wcpGhJ19VpencOiE6Yhh70e7kfasrXYZy+UwT3+j+XhmgxeE9
+	QLoD7sBALeJsMgd/KRki9Vetqk0WL9vHa1d7GpYI7YnvxRSQM7sF08D++b8DrX+PmHXnAxJW1Gq
+	f1bIsnEqFNxVFTc5tuDSy8NId7LeMBPiSafUQaMMo2yySoQ2J7ojoQkRZQ4op5Zqi2bDC+5uaJQ
+	BjmnDc8a1GI+wkd8H9jZSAhZfcO31fHn5n1Gslwj0AmevvojDawG7LoMTe37WXQOZ+EdpYUj4PH
+	stQWuEzetgQBC3JexkmWO/X/URe4Ypr9Z8azzLNABbmJCfJghZVlKzU0UwS1xw6lu5M5xlYIBo4
+	Wrh0Lxvcp2UKrj7Uh4dhLj171ElMDsU80M+nVmAHh8hz8o/EPnMdB5UQFqedQzEd9KOX6xgIZfb
+	JI7
+X-Received: by 2002:a05:690c:38b:b0:79a:46eb:d1c9 with SMTP id 00721157ae682-79a46ebe0e3mr81263797b3.0.1773756089988;
+        Tue, 17 Mar 2026 07:01:29 -0700 (PDT)
+Received: from gmail.com (180.134.85.34.bc.googleusercontent.com. [34.85.134.180])
+        by smtp.gmail.com with UTF8SMTPSA id 00721157ae682-79a2de73263sm58179747b3.43.2026.03.17.07.01.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Mar 2026 07:01:29 -0700 (PDT)
+Date: Tue, 17 Mar 2026 10:01:28 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: "Hudson, Nick" <nhudson@akamai.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: "bpf@vger.kernel.org" <bpf@vger.kernel.org>, 
+ "Tottenham, Max" <mtottenh@akamai.com>, 
+ "Glasgall, Anna" <aglasgal@akamai.com>, 
+ Alexei Starovoitov <ast@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, 
+ Andrii Nakryiko <andrii@kernel.org>, 
+ Martin KaFai Lau <martin.lau@linux.dev>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Message-ID: <willemdebruijn.kernel.1101cf7573cc9@gmail.com>
+In-Reply-To: <39BDB245-4486-4487-9985-0D4FDBCB382B@akamai.com>
+References: <20260317121429.2399539-1-nhudson@akamai.com>
+ <20260317121429.2399539-4-nhudson@akamai.com>
+ <willemdebruijn.kernel.3102df56d5f64@gmail.com>
+ <39BDB245-4486-4487-9985-0D4FDBCB382B@akamai.com>
+Subject: Re: [PATCH v1 3/5] bpf: add helper masks for ADJ_ROOM decap flags
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[33];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:email];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	R_RATELIMIT(0.00)[to_ip_from(RL4e5bdig4hxau1598td9p5syh)];
-	RCVD_TLS_ALL(0.00)[]
-X-Spam-Flag: NO
-X-Spam-Score: -2.80
-X-Spam-Level: 
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Under synflood conditions binding defense_work to system_long_wq may
-pin it to a saturated CPU.
+Hudson, Nick wrote:
+> =
 
-We've observed improved throughtput on a DPDK/VPP application with
-this change. We attribute this to the reduced context switching.
+> =
 
-The defense_work handler has no per-CPU data dependencies and no cache
-locality requirements that would justify this.
+> > On 17 Mar 2026, at 13:27, Willem de Bruijn <willemdebruijn.kernel@gma=
+il.com> wrote:
+> > =
 
-Signed-off-by: Ismael Luceno <iluceno@suse.de>
----
-Depends-on: wq/for-7.1 c116737e972e ("workqueue: Add system_dfl_long_wq for long unbound works")
+> > !-------------------------------------------------------------------|=
 
- net/netfilter/ipvs/ip_vs_ctl.c | 6 +++---
- net/netfilter/ipvs/ip_vs_est.c | 2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
+> >  This Message Is From an External Sender
+> >  This message came from outside your organization.
+> > |-------------------------------------------------------------------!=
 
-diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
-index 35642de2a0fe..948ae5882a70 100644
---- a/net/netfilter/ipvs/ip_vs_ctl.c
-+++ b/net/netfilter/ipvs/ip_vs_ctl.c
-@@ -234,7 +234,7 @@ #define DEFENSE_TIMER_PERIOD	1*HZ
- 	update_defense_level(ipvs);
- 	if (atomic_read(&ipvs->dropentry))
- 		ip_vs_random_dropentry(ipvs);
--	queue_delayed_work(system_long_wq, &ipvs->defense_work,
-+	queue_delayed_work(system_dfl_long_wq, &ipvs->defense_work,
- 			   DEFENSE_TIMER_PERIOD);
- }
- #endif
-@@ -273,7 +273,7 @@ #define DEFENSE_TIMER_PERIOD	1*HZ
- 	atomic_set(&ipvs->est_genid_done, genid);
- 
- 	if (repeat)
--		queue_delayed_work(system_long_wq, &ipvs->est_reload_work,
-+		queue_delayed_work(system_dfl_long_wq, &ipvs->est_reload_work,
- 				   delay);
- 
- unlock:
-@@ -4377,7 +4377,7 @@ do_ip_vs_get_ctl(struct sock *sk, int cmd, void __user *user, int *len)
- 		goto err;
- 
- 	/* Schedule defense work */
--	queue_delayed_work(system_long_wq, &ipvs->defense_work,
-+	queue_delayed_work(system_dfl_long_wq, &ipvs->defense_work,
- 			   DEFENSE_TIMER_PERIOD);
- 
- 	return 0;
-diff --git a/net/netfilter/ipvs/ip_vs_est.c b/net/netfilter/ipvs/ip_vs_est.c
-index b17de33314da..454ea24828cc 100644
---- a/net/netfilter/ipvs/ip_vs_est.c
-+++ b/net/netfilter/ipvs/ip_vs_est.c
-@@ -235,7 +235,7 @@ #define pr_fmt(fmt) "IPVS: " fmt
- 	ip_vs_est_stopped_recalc(ipvs);
- 	/* Bump the kthread configuration genid */
- 	atomic_inc(&ipvs->est_genid);
--	queue_delayed_work(system_long_wq, &ipvs->est_reload_work, 0);
-+	queue_delayed_work(system_dfl_long_wq, &ipvs->est_reload_work, 0);
- }
- 
- /* Start kthread task with current configuration */
+> > =
+
+> > Nick Hudson wrote:
+> >> Introduce helper masks for bpf_skb_adjust_room() decapsulation flags=
+
+> >> to simplify validation and keep flag handling readable:
+> >> =
+
+> >> - BPF_F_ADJ_ROOM_DECAP_L4_MASK
+> >> - BPF_F_ADJ_ROOM_DECAP_IPXIP_MASK
+> >> - BPF_F_ADJ_ROOM_ENCAP_MASK
+> >> - BPF_F_ADJ_ROOM_DECAP_MASK
+> >> =
+
+> >> Also fold these masks into BPF_F_ADJ_ROOM_MASK and per-path flag
+> >> validation checks.
+> >> =
+
+> >> This is a refactoring/plumbing change; functional decapsulation and
+> >> GSO behavior updates are handled in later patches.
+> >> =
+
+> >> Co-developed-by: Max Tottenham <mtottenh@akamai.com>
+> >> Signed-off-by: Max Tottenham <mtottenh@akamai.com>
+> >> Co-developed-by: Anna Glasgall <aglasgal@akamai.com>
+> >> Signed-off-by: Anna Glasgall <aglasgal@akamai.com>
+> >> Signed-off-by: Nick Hudson <nhudson@akamai.com>
+> > =
+
+> > Only patches 3 through 5 were sent to the netdev list.
+> =
+
+> oops.
+> =
+
+> > =
+
+> > Please resubmit the entire series (after the customary 24 hr min) to
+> > the full list.
+> =
+
+> Will do=E2=80=A6 as v2 with patch re-order you mentioned?
+ =
+
+Yes
+
+
