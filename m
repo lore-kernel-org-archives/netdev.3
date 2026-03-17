@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC04734D4E3;
-	Tue, 17 Mar 2026 02:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C313451CF;
+	Tue, 17 Mar 2026 02:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773714617; cv=none; b=CgCxoNAvm3bFvQmmxZqL9p2OC7nkRX1/FO0KGs6tpBoQSZnHg2iQbNHerX6b189xWG3LYUzoialhgjNQWPDW2sI5pmGKD2QOpGBEh6F52lRUMA+VfbC01IvQb2fdTM3cz9+ozXmFFOOS2/+cV4vYDs0ZRdX9z2SqJs3EkJWodfk=
+	t=1773714618; cv=none; b=gKyHxogh5DQUdKcW7Ve7Mr0Kgw/0zcAtN2myUa4ajUSi02bgxDKgz1aOWSJtkJNZ68Lq2Qu3pYofdrM1uNbdjJIvdDZ7Sb0Yobfzm4vXkkk1lQxnkICoz9+lITYbI3Oc8xYpx4Mn+AZ46xa7EMqnevqas8DWBELfCEUNUjVTQPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773714617; c=relaxed/simple;
-	bh=FTK3Ck0Vm2mylMVdtNZsM8W3IIsqFHcFgNrL9TyWz9g=;
+	s=arc-20240116; t=1773714618; c=relaxed/simple;
+	bh=jUpANb88sBObEKebtzWSQSh8EmC6A9BVVb3gWyUVarU=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=i495aqouSzgbC99inXADg+nrc4/Yy4wDyaYVp3kJ5oNBSR/Abm9yMd8IlIFY2q1oNnx7sGlGGrucoz6H3KMtikHyhIDYx8PehlNWeMAHsb6b63hanmM9OX4tOx53LStdL/AXiVpD0QnaHr8/6o168zjJQsg3ibMxlYegjza/8lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K3sPrDHg; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=kegPeQC6h9+w8WV6KIF3rUhPA6dtJFLN7aMHZIeRGhyu2UMd9ITJwWFOyU4cr9dPr0DGaK/LBJO13TtXAKBudy4zclCcsfR30Az5BS9OsdKaKFihQeLHbt8ZrNIjgKyKSrZoCgcSx6nctBNQrwCVdOmmEhKfmYc3OtzxZmmUfCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QO+0bvEj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K3sPrDHg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E06C19421;
-	Tue, 17 Mar 2026 02:30:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QO+0bvEj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE708C2BC87;
+	Tue, 17 Mar 2026 02:30:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773714616;
-	bh=FTK3Ck0Vm2mylMVdtNZsM8W3IIsqFHcFgNrL9TyWz9g=;
+	s=k20201202; t=1773714617;
+	bh=jUpANb88sBObEKebtzWSQSh8EmC6A9BVVb3gWyUVarU=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=K3sPrDHg/kgZtjxvnCHbPYXiD08AgRwtIvUhSXtz3ugrQdYc8ncq6hXxf5IGzXBRR
-	 RXjqGIrHsxS9BPFXFVArIxaPEF7O7BXLkIPG5oRbYKvwbfGeHx4K5MTnBOH1D5VhjW
-	 76f6VgVPNR8FzzekZrH86h2ochJd78Oezr7xsg+tU48/crGBz5zQ1pmqkHU6xyvGVH
-	 8AkE1e5lgeIeQxnFFTY7r0psjDNrd0jFhokKZtEWjSq0UaVoPkEForJgmJeBirG4hl
-	 7NBOz1nfaf/uSkQF9hHk1XlH/xohCcEEEDeTCAGgROF6wbWjeqtMl3DnCOqpvPyQl7
-	 3wdq2ie40cLbQ==
+	b=QO+0bvEjz4+fvBG6eCTXQRqM5Vtq+jFPptttS4Skv0Ud618zzcEQfgIVIpwcsxvGN
+	 VuQxhZ8z0b8em9+znL1SmpoBYYqW9ehfch2hZRyiZHMzzFtW3hxRf08JZqRgsh+SbZ
+	 +N3NDZmbyul5CMskAg1ii8o5WIzFvz7ocL1az5iLByX9JkzVC4kw3Cm/aajSxcfvC7
+	 xvfjJPkAM04cXe2VNjoGwOGVeHyLRVPK9MrAhurDZdMONx8bHLD2789GsbS1+7PbAj
+	 ad3WV9m+MXV3u2zglaYN7f7uUBVIB7vPKRn57f/anghIb+NZ8dW4+lcaOvggbk+i43
+	 T88Tnw3zh0aSw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CF643808200;
-	Tue, 17 Mar 2026 02:30:10 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9ECE3808200;
+	Tue, 17 Mar 2026 02:30:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,41 +37,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v11] virtio_net: add page_pool support for buffer
- allocation
+Subject: Re: [PATCH net-next] selftests: net: py: give bpftrace more time to
+ start
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177371460929.3397946.4827611096206644305.git-patchwork-notify@kernel.org>
-Date: Tue, 17 Mar 2026 02:30:09 +0000
-References: <20260310183107.2822016-1-vishs@meta.com>
-In-Reply-To: <20260310183107.2822016-1-vishs@meta.com>
-To: Vishwanath Seshagiri <vishs@meta.com>
-Cc: mst@redhat.com, jasowang@redhat.com, xuanzhuo@linux.alibaba.com,
- eperezma@redhat.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, dw@davidwei.uk,
- technoboy85@gmail.com, ilias.apalodimas@linaro.org, netdev@vger.kernel.org,
- virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
- kernel-team@meta.com
+ <177371461053.3397946.6102878609227085799.git-patchwork-notify@kernel.org>
+Date: Tue, 17 Mar 2026 02:30:10 +0000
+References: <20260315160038.3187730-1-kuba@kernel.org>
+In-Reply-To: <20260315160038.3187730-1-kuba@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, shuah@kernel.org,
+ petrm@nvidia.com, leitao@debian.org, noren@nvidia.com, gal@nvidia.com,
+ linux-kselftest@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 10 Mar 2026 11:31:04 -0700 you wrote:
-> Use page_pool for RX buffer allocation in mergeable and small buffer
-> modes to enable page recycling and avoid repeated page allocator calls.
-> skb_mark_for_recycle() enables page reuse in the network stack.
+On Sun, 15 Mar 2026 09:00:38 -0700 you wrote:
+> After commit under Fixes debug runners in the CI hit the following:
 > 
-> Big packets mode is unchanged because it uses page->private for linked
-> list chaining of multiple pages per buffer, which conflicts with
-> page_pool's internal use of page->private.
+>   # subprocess.TimeoutExpired: Command '['bpftrace', '-f', 'json', '-q', '-e', 'kprobe:netpoll_poll_dev { @hits = count(); } interval:s:10 { exit(); }']' timed out after 15 seconds
+>   # # Exception| net.lib.py.ksft.KsftFailEx: bpftrace failed to run!?: {}
+> 
+> in netpoll_basic.py >10% of the time. Let's give bpftool more time
+> to start, it can take a while on a debug kernel.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v11] virtio_net: add page_pool support for buffer allocation
-    https://git.kernel.org/netdev/net-next/c/24fbd3967f3f
+  - [net-next] selftests: net: py: give bpftrace more time to start
+    https://git.kernel.org/netdev/net-next/c/6a33a706265d
 
 You are awesome, thank you!
 -- 
