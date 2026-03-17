@@ -1,615 +1,194 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7FD93E866D
-	for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 14:04:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773756262; cv=none; b=pVrdmee5sE7zXdXhwx6/UvhX3/Ng+iEAVeWCIjCRSLCTjLn8C2dYC8LMDOR4NRhExssQcTwZ0fytwV7agb0rt1BYxhnYCWrXMgvEJEF2zIYMUhn50x5K82Fw/YLhP+c0ZtbfJhaO5DDnqthToD4vAZj83W2Y0kL225OLEWYN5ps=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773756262; c=relaxed/simple;
-	bh=f+GDNcSUStXGIn4wg5mFi4Tfes17h8SsuyaWtRUsTWw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TUPBxbWzeSLH9wlqbuxUzYVyruVwHI777COAE3FYS8Yz9/rA/0OnF4J0T+taa+mcjrOgLaCdtAD4PNNiS1UfJNj3r694+EqOaI7uxXd1i1h5Y/TS9vVkUG37VUW0v8MFL9A0jO3NvFnDn4EKH3I+x3SYlB7YML0/VZhQ9wM4Pdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ZiZitdjI; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ogC0PSYs; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Bmo3E/RE; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=T7o2Ooaj; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E499D3E3C5E
+	for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 14:07:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773756476; cv=fail; b=iaHZ1BYdMmLnzqmXcevkU7W8mlPv4M35Q9v2uvTEU0jz2XS2AZJBXBDMTJ7HfWc7O3nJXr2WtAtYFqTeBZM+DOIYoqvshiiklm+HwkIbItKIu1MiqpDraAFQqm6UBOKt/WFhfiTus4T1K1ldOBCAvgQ7PXU/BdDohLBoIu3Fycs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773756476; c=relaxed/simple;
+	bh=e/fSjokiqVlu/Jtfgqtnrwec3LyBN/faUAneT04I0d0=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=UenGr1z7/4KnYuHLtdKTJ8lG7xJl/rqF6kUyRl5wY/Gnj+d4LaGGvBJQQ/aVcN/NvXmOleEsLJxgSJiSqs6dwArrcvRokBy9aJMRCJEWLspnC4LwMbDXWHkA51yQGzVdPhBZ+Qlfr4wRRCrePwxpt2cfio0u8UbZuHBsSF0uxKc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MK3iyHhW; arc=fail smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ZiZitdjI";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ogC0PSYs";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Bmo3E/RE";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="T7o2Ooaj"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id DB2B74D2B2;
-	Tue, 17 Mar 2026 14:04:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773756259; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=z7JPRMc8Ci3PGSq32TTfjunwbbQOsAtAnFSWWqn0ocY=;
-	b=ZiZitdjICpz15CWQDPMbwJbWnLJiMlQ0nzgJ1yaKTdKze1kR+TghjLroPEk4+0oI/jyu9Z
-	jnF7E8GYlLdFz/8aIUBmgr3m0PzEtxIjyPsdA8z4dqWZeLcVGgzQvsy4oPh9Y6u4PeRxnO
-	WEKoHHMPcVul1ZrpKWSRBi/sBH51V5E=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773756259;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=z7JPRMc8Ci3PGSq32TTfjunwbbQOsAtAnFSWWqn0ocY=;
-	b=ogC0PSYs/zBskEDJAAd3FGkUuJHjYF6NErZcugVngKMv4Yc4kikfEGj1e3jSDVmDZRRJsF
-	UCxsJqgWr70FVkAA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773756257; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=z7JPRMc8Ci3PGSq32TTfjunwbbQOsAtAnFSWWqn0ocY=;
-	b=Bmo3E/REE5zrylgY+/830Va6slHksBNq+lnJnP7ruSuLUKLiLqvvQW2jvU7bk41pAr0mA6
-	ZW+m2SKxSpW3kRTnQxCE8xaoTZ5GMLyrvgZXvP3LhgkxGZHfGXzdiG0nuWEJz5ZocAGJgV
-	s6YTkwbu3S/pOc0wGp/1Had8DjMeFRc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773756257;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=z7JPRMc8Ci3PGSq32TTfjunwbbQOsAtAnFSWWqn0ocY=;
-	b=T7o2OoajQcVYkhe88dUL52uX9c74i6/Hg4KIqMIJM6cpSU2Jm3VLpLZU2+uw4BOuh1huqV
-	k94nXGKUlJrTWsCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D11784273B;
-	Tue, 17 Mar 2026 14:04:16 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id IHz8L2BfuWmpYwAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Tue, 17 Mar 2026 14:04:16 +0000
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-To: netdev@vger.kernel.org
-Cc: Fernando Fernandez Mancera <fmancera@suse.de>,
-	=?UTF-8?q?Ricardo=20B=2E=20Marli=C3=A8re?= <rbm@suse.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	linux-kernel@vger.kernel.org,
-	bridge@lists.linux.dev
-Subject: [PATCH 10/10 net-next v3] netfilter: remove nf_ipv6_ops and use direct function calls
-Date: Tue, 17 Mar 2026 15:01:06 +0100
-Message-ID: <20260317140141.5723-11-fmancera@suse.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260317140141.5723-1-fmancera@suse.de>
-References: <20260317140141.5723-1-fmancera@suse.de>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MK3iyHhW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773756475; x=1805292475;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=e/fSjokiqVlu/Jtfgqtnrwec3LyBN/faUAneT04I0d0=;
+  b=MK3iyHhWY1CGd06ONToJ18d4w2W/5piIXYES8MTAJS3jwmYW88wVXbNC
+   pYIz/HMe+yxqdmjsU6bHKluyodNSjECMqRpGyuTCjWuWUcsS9dIlO0fup
+   nsVKonB2Z5927bx3qCQurY52G0jfFdmdzrxu+4Rd/Q3A8seY15BpNq20O
+   7lY1/x6EWii5jy0DuNpG51thiZf4aEjaFrQxDLdwIyJWzmyqG7dqrOdnK
+   Nwb7IRkUCQO1i2xK4z+tWXzHL2YChqi0NYo3o+zRTG/sPwx+UMqHXlyIs
+   tZi08aAORvbifO51rTpciOB4RSXz+wakXL42BgM5wJgVWRXEyBWNBftmA
+   A==;
+X-CSE-ConnectionGUID: CN/Vqz1FSJ6rGvpoXAK2+w==
+X-CSE-MsgGUID: jilHCLDoQF+qKsueU38o1g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11732"; a="85415277"
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
+   d="scan'208";a="85415277"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 07:07:54 -0700
+X-CSE-ConnectionGUID: enm2aj+rTFGD/ivZW4oQeg==
+X-CSE-MsgGUID: p0dRvZl6TXW6mMKVAVMgjg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
+   d="scan'208";a="219381840"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 07:07:54 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 17 Mar 2026 07:07:53 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 17 Mar 2026 07:07:53 -0700
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.58)
+ by edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 17 Mar 2026 07:07:53 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PZVD7HtjfBOUV/yMcaaUtN/9AxaHvKRYyW3yf74oYx3PDYUNkPP2DNOmVaOMmPvoEVP70oI1px6U6cBtNCvHBbmmB8kpnsjNhB0FMzM3CFBKQ1R9VdgpCv8XYs5GT5U89E7P06U4hqbwPKRSfxNYQEjt4HKMHZWRwNnfadrRfVHqKDQG/xjooXAGD/lTlYV44bDYOwAKG4Ra44TEg000XBv3ovbSqnXArcN7HTFHTRXKT7yYW3JPhXOjhiMOESarnE9J8C+t9/sjykK/HcZZhVGYPZNae0bmg6iRAdzMLcWcgUm5tp7lJyl7a6fO6JLRcADZzC6g66HKrovdoyc/2A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5oQdP8FKlR149KfGKHkDTtnybLwz4c9RVeA6Mp3kC2c=;
+ b=FL3RUW7/rlvTt9mDgviQTSiNwHOPVI7yzvve3HPgEyznrL+jyS6gMCXvPGbBD5ss6RnM341ghp40+Xhq8r7fxU4/rpTMDohbwC9D5DvIDVvj4xf+G8Ze5694fE5Ctbq6Z2dvRiiX/jHPZPFhFJ8iCu38/eaFayfsY8JtmpHyD/qxa7jdKVohNEo6UoVDh7OEyci27Iqlm7tR9IIRTDgkQB4lsvqudngKtOCaUDtWaXwZv6z0c0zUi3+uvLDMvTJ1hjYyTofwfrt4i0XOHwJfUTMYiSNDCBOCC9npAqKQ4AgZ4aAY0H1FFw8JWgipR11QGb06daJVJ4EFYCDerWeg6A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from MN6PR11MB8102.namprd11.prod.outlook.com (2603:10b6:208:46d::9)
+ by SA2PR11MB5083.namprd11.prod.outlook.com (2603:10b6:806:11b::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Tue, 17 Mar
+ 2026 14:07:51 +0000
+Received: from MN6PR11MB8102.namprd11.prod.outlook.com
+ ([fe80::8d98:e538:8d7:6311]) by MN6PR11MB8102.namprd11.prod.outlook.com
+ ([fe80::8d98:e538:8d7:6311%5]) with mapi id 15.20.9723.016; Tue, 17 Mar 2026
+ 14:07:50 +0000
+Message-ID: <91d29df8-ebc1-4d9d-9d1f-022aafdc3e72@intel.com>
+Date: Tue, 17 Mar 2026 15:11:18 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Intel-wired-lan] [PATCH iwl-next v1] ice: add ethtool reset
+ support to safe mode ops
+To: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	<intel-wired-lan@lists.osuosl.org>, <anthony.l.nguyen@intel.com>
+CC: <netdev@vger.kernel.org>
+References: <20260317084459.2196606-1-aleksandr.loktionov@intel.com>
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Content-Language: en-US
+In-Reply-To: <20260317084459.2196606-1-aleksandr.loktionov@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: VI1PR10CA0095.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:803:28::24) To MN6PR11MB8102.namprd11.prod.outlook.com
+ (2603:10b6:208:46d::9)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-7.30 / 50.00];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	MIME_TRACE(0.00)[0:+];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,suse.com:email,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Flag: NO
-X-Spam-Score: -7.30
-X-Spam-Level: 
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN6PR11MB8102:EE_|SA2PR11MB5083:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2fe5b10b-bc8a-44c7-a8e4-08de842e9313
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info: Q1ZSlSF3h94bUf16xf3nBPz4aOfZLHgHEe8cjWxIGzIMIPIBDI6ubVIoHhwzE2mTe8CQd3JGvPksNju0t/2wtyqUSrdP/DW82cmab0WRlZSrnTfIxOTDUuzc7iuTz5qmHofNvxV1j3GBAj6rSdhnjz5jL8dG2dmsawIqlFeogE11VBm03MCQ/9+JhTeTEfFAzLQevXXkWg9SIwl41kv9mZepdCWHLj03D65v+b+sNKlRKof+vnk+kJsVpsIb+VpM0B5XkodYGpbxThOOn08UKT8bd10ZpcvCrePrOvf+VfHy2dE2DnIydz6NLrodH2objcaqet/Z4FoAE8BD8L4yX40vqIjmMXbsgq1sFgYUnCQ0fBHo1F0/cN5O92uMOxcmIo6rPaRY0SFjmHVE7k0IGNpfJr07MT0+adD+MDhMd7/36gMLy2AcIiu3vc6z5qn5vsOgAR4Tou6H4aWhyWWiG15R3OXFispSqbmy/O4tryXK3mrQPzIZ1DYrit60GX8b0XW2Q3kthQnbqlatSDg9qNPnF363frm7kysZ+D9JpOh2dlq3fzHdcnrdpjZeKyjEZh9W1elgA+CUzMYpekEF2gew4yBdL6LqCDU2KaZsSLPZx0QrYD/6q7mRnGv06IgCdCM8G+VEaU9YNhnkALi4UK0ebFyxeBz9McgiXUxSkliqp1TegRr8fCTXGO+QNBffxSrs8bzxQThh5SY4Xt1n1sU24uABjlVTcQbcrWKPaao=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN6PR11MB8102.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QU1BR1UrU1lZc1RFUURKNUE3V0Zad3FzNjV6U2NxcHRVNjFocFpPekl6alcw?=
+ =?utf-8?B?NlRudGxoa04xYXczNTZVdGRQczRuRUNGSytKS2RtVEh4NlhaRWt6QTVkOTFu?=
+ =?utf-8?B?T3BKTzNxYjgzREJ1RGR2Z2cyTFZ5OER2eDMwT3RBdGQvSmxyOFEyZS9ab3Vr?=
+ =?utf-8?B?L0oyRDljMW1CaEpUTmVBeUNIRmNLZngwNUJ2aE9XSUJiM2FFamljbXAxQStQ?=
+ =?utf-8?B?RVJDdE5obmFGekRjMFBnZ0tKRElydENrKzlsUjczU2ExaUlpL0VmV0JkNS9Y?=
+ =?utf-8?B?V3IvMURISlZJcDBRUmhTeG5lbGpWemJnNkY4cDNRU0twYzN4WmFNZzA2U1ds?=
+ =?utf-8?B?SHoyQThiQlI2R0V4a20vd3pOblE1aHBkNjcxWi8xeWJ0dmZZZDBJU0VIMTNP?=
+ =?utf-8?B?YVJ4cjluRlpaMzdENWxkbE85Y1JONzVTU213bWVkSUdickFpcllvMWNJL0lN?=
+ =?utf-8?B?elg0QlcydUFjcXRTa0JLQ3BkZFFHdnhqaTlJQjZHUXRGdFBxSnRDUWFQOHI5?=
+ =?utf-8?B?NVNzL3Evbld3cTExc3p4NWFqWHJNVFRYYW9mWXlnc0cvSFdEbHN1SmhxcU9J?=
+ =?utf-8?B?cko2WWhZRVM0eWFMWnFYK3o1TEdLMTkwUW15MFpOUDA4aGs4azcvdENJa2Ev?=
+ =?utf-8?B?a0RuTEl2cmxsQ3BCL1lDdDZIcE10cFl5eDRVdlVOYU5EWkFrU2plYWRKMWI4?=
+ =?utf-8?B?d25rT0I3SWtUakd2eHJ0cDBESzNPSzllTm91aUc3Q01xR1EwZzRmSmp3RTNN?=
+ =?utf-8?B?Wk5FVkgzMlBBUlBNYlhrb214UjdqRW03YVY4am1TM09IY2FvS1hmZU5wZ3V4?=
+ =?utf-8?B?cENFQTBUMmVaaisvalNNalJadWpJWE1CVUpKYWdNa1Q5SmRkOFJlMFFySks5?=
+ =?utf-8?B?MU5BOUFJL3NpeUUrVTloc2c1Vkc3cS9tS3lnQnpoME83NDQwc3NTRGM1TVph?=
+ =?utf-8?B?RDRaVXA4Ui91bk9qS1JCWFNnZXM5UWZzNWRGK1NmclJUQ3NONm5BL3RNK3pl?=
+ =?utf-8?B?Ymh2RDZiT0sxSWcra2hxcDZrQm05YkRKK05mdDYxbDFlRXJqS2oxcTJUR296?=
+ =?utf-8?B?S2h1UTVBNFBPb0FaVmZzMXdYK1lXRElyRDZtVnoyRnpvVDVrQlhKeHEzYUw3?=
+ =?utf-8?B?SVNwWWNIdmNUSWtwOXhBMGdqY2JVUTE2NnByM1g0dE5mMHB2dE43VGxPRkVo?=
+ =?utf-8?B?Ri9TK0tGbW5vNm5Zb3dWajdHc1JQV2JSeWgxNC92dFUzelRoRCtHUW9BU2cz?=
+ =?utf-8?B?QlRZQmc2b0hnV0JTOUZRTEN1U3JjNmtmS0lxcGhlNTdGRzNNWXlnazJKOGQ4?=
+ =?utf-8?B?OTVtQW45WXNDY1U4bW5aR2N2OE1kZEVFZ1NTZ3QrMENVTVNUd2dKRFFoVkpQ?=
+ =?utf-8?B?T0c0QVBTaFhOdmVLbXdXUDUrNmdKVnhUMmU5RVFpSm40WTVVNFVLT3lmRTU0?=
+ =?utf-8?B?WWlpaVBra054RWxFd2U0aFRIVldaaUFNYlVjRUNFaDkyTFNjOFUwcEt1N1JV?=
+ =?utf-8?B?Sm9lUEhHRUJwWGFyNXlmYXlQZlpuM0NnM2c0bHU5aUtCVkgwZXFnRXZrVWxl?=
+ =?utf-8?B?Y1VRNUM1cStxUENjTGowbVlZQVRZbHZqUjNOUk9HNGRVVFpYOXZ6MGI4SHNY?=
+ =?utf-8?B?RlRxay83a3lPdjVENFV0QWExUjVjc3JsZHoxWG5rQjJMK0RUQTUxMFRzVGJr?=
+ =?utf-8?B?eXZzNnViNWo0WVp2VEltenR5S3hMTWpOdzRSMWtjR1JHUGZ3WExkU3B5a1Zi?=
+ =?utf-8?B?bEpsZlNZdVFCbldoUXFhVTM1aEJyK1RDMUlKaVBWcjEvZVkxdGhlRXR0WWhy?=
+ =?utf-8?B?em9BMHhTN2szam5MSGNuakdxRlo0cC91Zmx3a3FGczFqeVVhcXZkK3lCSmtC?=
+ =?utf-8?B?OThJZEJzQkpxM0tBTXc3ekVsQTBzYmVGTGFhMDlIYjFVWXo0cWFOUks2MXFS?=
+ =?utf-8?B?TWpYSzk4WmkwWXpRM2lqL3lqbE52Vk11T1IzeFNGd29yV29FRmU4YzJRaURL?=
+ =?utf-8?B?WCtRSi8zSFNkNEdIMWlrYjdmcHc5L0NSQmYxTTdmRThzRDFZRjZ5OCt3bHlV?=
+ =?utf-8?B?Qk5sSWx1OS9nTEkrVG9UQktPWFZkY3NzQ2pGRjNJKy9PRk1lTnR0MGY5QW11?=
+ =?utf-8?B?OFNueXN1UzZqbzJHc2hlVDBpWEJ6MjllK2szVXlaQStLbW5RQTQ3c3c1R1B3?=
+ =?utf-8?B?dU1GaTJsZDA0WElmZ21LcHkwQ3Q5V3Nnb2lYdXUrYVF0ZE1QaXVKRVpnSHhN?=
+ =?utf-8?B?bXZ3bi9nTkFSczFkT1g5OUhjRnp6QWlWWE0zZ3Rtdk9naVR1SkkzOUVtQU81?=
+ =?utf-8?B?WlJlRHJ1QU40Z1BpV21KSzVCcnJuT2xiVy9ZeG1BMksxTWcvQ2xId3pTVllI?=
+ =?utf-8?Q?PpO4BKUd7ZFoF0nc=3D?=
+X-Exchange-RoutingPolicyChecked: TFZmp+2YuZ5zpC5tnjZ7EFF4//Ylp7BEVrX0k3qRT3DIPn9H9SbHUAJLG2MhfDfQ14df3GjXkSiQSnptFXQQRd6GWoqZcSFkKeUN304FuSsPywSlHJGHDSpkzyCCcAE5p7m9LV6bJ/Dx2KtTL0A+Ml9Rss7tVC+gK937bNfw2RG/CH/7ta0MA44A3+i5qFqXF4dzyNNTso29dzgoaH5kCSkujJ1sdfnLZRuSphHuCnG3iTYPrZQ/hIzkuQ+8nV59hkzLKUM7kyXZji7zJkig6fKSfGB1fjNPYL4sIvQbp/P7S8+tm6wTNdJwxAfZzNfRO6NmZKVgfxcJ1F05w1hiqw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2fe5b10b-bc8a-44c7-a8e4-08de842e9313
+X-MS-Exchange-CrossTenant-AuthSource: MN6PR11MB8102.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2026 14:07:50.7290
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: rxRwUOYdZ00TCKSJrJpAa5AfbSTLpA8RmiYanrcLz+Nsu8dZ4XAve62R8H040ghr1iMe4YwlKWw2WO4f+gFJ2mGlKzxiSeIhT2QJ2K+SEZM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5083
+X-OriginatorOrg: intel.com
 
-As IPv6 is built-in only, nf_ipv6_ops can be removed completely as it is
-not longer necessary.
+On 3/17/26 09:44, Aleksandr Loktionov wrote:
+> From: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+> 
+> Wire up ice_ethtool_reset() into ice_ethtool_safe_mode_ops so that the
+> .reset ethtool operation is available when the driver is operating in safe
+> mode, consistent with the behaviour exposed by the full ice_ethtool_ops.
+> 
+> Without this, a user-space call to ethtool --reset while the driver is in
+> safe mode would return EOPNOTSUPP even though the underlying reset logic
+> is fully implemented and works correctly.
+> 
+> Signed-off-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+> Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> ---
+>   drivers/net/ethernet/intel/ice/ice_ethtool.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+> index 301947d..bf90bd5 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+> @@ -4917,6 +4917,7 @@ static const struct ethtool_ops ice_ethtool_safe_mode_ops = {
+>   	.set_ringparam		= ice_set_ringparam,
+>   	.nway_reset		= ice_nway_reset,
+>   	.get_channels		= ice_get_channels,
+> +	.reset			= ice_ethtool_reset,
+>   };
+>   
+>   /**
 
-Convert all nf_ipv6_ops usage to direct function calls instead. In
-addition, remove the ipv6_netfilter_init/fini() functions as they are
-not necessary any longer.
-
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Tested-by: Ricardo B. Marlière <rbm@suse.com>
----
- include/linux/netfilter_ipv6.h    | 102 ++----------------------------
- include/net/ip.h                  |   5 --
- net/bridge/br_netfilter_hooks.c   |  12 +---
- net/bridge/br_netfilter_ipv6.c    |   7 +-
- net/ipv6/af_inet6.c               |   6 --
- net/ipv6/netfilter.c              |  48 --------------
- net/netfilter/core.c              |   3 -
- net/netfilter/nf_nat_masquerade.c |  21 +-----
- net/netfilter/nfnetlink_queue.c   |  22 +++++--
- net/netfilter/utils.c             |   1 -
- 10 files changed, 32 insertions(+), 195 deletions(-)
-
-diff --git a/include/linux/netfilter_ipv6.h b/include/linux/netfilter_ipv6.h
-index 61aa48f46dd7..5ce45b6d890f 100644
---- a/include/linux/netfilter_ipv6.h
-+++ b/include/linux/netfilter_ipv6.h
-@@ -34,59 +34,13 @@ struct ip6_rt_info {
- struct nf_queue_entry;
- struct nf_bridge_frag_data;
- 
--/*
-- * Hook functions for ipv6 to allow xt_* modules to be built-in even
-- * if IPv6 is a module.
-- */
--struct nf_ipv6_ops {
--#if IS_MODULE(CONFIG_IPV6)
--	int (*chk_addr)(struct net *net, const struct in6_addr *addr,
--			const struct net_device *dev, int strict);
--	int (*route_me_harder)(struct net *net, struct sock *sk, struct sk_buff *skb);
--	int (*dev_get_saddr)(struct net *net, const struct net_device *dev,
--		       const struct in6_addr *daddr, unsigned int srcprefs,
--		       struct in6_addr *saddr);
--	int (*route)(struct net *net, struct dst_entry **dst, struct flowi *fl,
--		     bool strict);
--	u32 (*cookie_init_sequence)(const struct ipv6hdr *iph,
--				    const struct tcphdr *th, u16 *mssp);
--	int (*cookie_v6_check)(const struct ipv6hdr *iph,
--			       const struct tcphdr *th);
--#endif
--	void (*route_input)(struct sk_buff *skb);
--	int (*fragment)(struct net *net, struct sock *sk, struct sk_buff *skb,
--			int (*output)(struct net *, struct sock *, struct sk_buff *));
--	int (*reroute)(struct sk_buff *skb, const struct nf_queue_entry *entry);
--#if IS_MODULE(CONFIG_IPV6)
--	int (*br_fragment)(struct net *net, struct sock *sk,
--			   struct sk_buff *skb,
--			   struct nf_bridge_frag_data *data,
--			   int (*output)(struct net *, struct sock *sk,
--					 const struct nf_bridge_frag_data *data,
--					 struct sk_buff *));
--#endif
--};
--
- #ifdef CONFIG_NETFILTER
- #include <net/addrconf.h>
- 
--extern const struct nf_ipv6_ops __rcu *nf_ipv6_ops;
--static inline const struct nf_ipv6_ops *nf_get_ipv6_ops(void)
--{
--	return rcu_dereference(nf_ipv6_ops);
--}
--
- static inline int nf_ipv6_chk_addr(struct net *net, const struct in6_addr *addr,
- 				   const struct net_device *dev, int strict)
- {
--#if IS_MODULE(CONFIG_IPV6)
--	const struct nf_ipv6_ops *v6_ops = nf_get_ipv6_ops();
--
--	if (!v6_ops)
--		return 1;
--
--	return v6_ops->chk_addr(net, addr, dev, strict);
--#elif IS_BUILTIN(CONFIG_IPV6)
-+#if IS_ENABLED(CONFIG_IPV6)
- 	return ipv6_chk_addr(net, addr, dev, strict);
- #else
- 	return 1;
-@@ -99,15 +53,7 @@ int __nf_ip6_route(struct net *net, struct dst_entry **dst,
- static inline int nf_ip6_route(struct net *net, struct dst_entry **dst,
- 			       struct flowi *fl, bool strict)
- {
--#if IS_MODULE(CONFIG_IPV6)
--	const struct nf_ipv6_ops *v6ops = nf_get_ipv6_ops();
--
--	if (v6ops)
--		return v6ops->route(net, dst, fl, strict);
--
--	return -EHOSTUNREACH;
--#endif
--#if IS_BUILTIN(CONFIG_IPV6)
-+#if IS_ENABLED(CONFIG_IPV6)
- 	return __nf_ip6_route(net, dst, fl, strict);
- #else
- 	return -EHOSTUNREACH;
-@@ -129,14 +75,7 @@ static inline int nf_br_ip6_fragment(struct net *net, struct sock *sk,
- 						   const struct nf_bridge_frag_data *data,
- 						   struct sk_buff *))
- {
--#if IS_MODULE(CONFIG_IPV6)
--	const struct nf_ipv6_ops *v6_ops = nf_get_ipv6_ops();
--
--	if (!v6_ops)
--		return 1;
--
--	return v6_ops->br_fragment(net, sk, skb, data, output);
--#elif IS_BUILTIN(CONFIG_IPV6)
-+#if IS_ENABLED(CONFIG_IPV6)
- 	return br_ip6_fragment(net, sk, skb, data, output);
- #else
- 	return 1;
-@@ -147,14 +86,7 @@ int ip6_route_me_harder(struct net *net, struct sock *sk, struct sk_buff *skb);
- 
- static inline int nf_ip6_route_me_harder(struct net *net, struct sock *sk, struct sk_buff *skb)
- {
--#if IS_MODULE(CONFIG_IPV6)
--	const struct nf_ipv6_ops *v6_ops = nf_get_ipv6_ops();
--
--	if (!v6_ops)
--		return -EHOSTUNREACH;
--
--	return v6_ops->route_me_harder(net, sk, skb);
--#elif IS_BUILTIN(CONFIG_IPV6)
-+#if IS_ENABLED(CONFIG_IPV6)
- 	return ip6_route_me_harder(net, sk, skb);
- #else
- 	return -EHOSTUNREACH;
-@@ -165,15 +97,8 @@ static inline u32 nf_ipv6_cookie_init_sequence(const struct ipv6hdr *iph,
- 					       const struct tcphdr *th,
- 					       u16 *mssp)
- {
--#if IS_ENABLED(CONFIG_SYN_COOKIES)
--#if IS_MODULE(CONFIG_IPV6)
--	const struct nf_ipv6_ops *v6_ops = nf_get_ipv6_ops();
--
--	if (v6_ops)
--		return v6_ops->cookie_init_sequence(iph, th, mssp);
--#elif IS_BUILTIN(CONFIG_IPV6)
-+#if IS_ENABLED(CONFIG_IPV6) && IS_ENABLED(CONFIG_SYN_COOKIES)
- 	return __cookie_v6_init_sequence(iph, th, mssp);
--#endif
- #endif
- 	return 0;
- }
-@@ -181,15 +106,8 @@ static inline u32 nf_ipv6_cookie_init_sequence(const struct ipv6hdr *iph,
- static inline int nf_cookie_v6_check(const struct ipv6hdr *iph,
- 				     const struct tcphdr *th)
- {
--#if IS_ENABLED(CONFIG_SYN_COOKIES)
--#if IS_MODULE(CONFIG_IPV6)
--	const struct nf_ipv6_ops *v6_ops = nf_get_ipv6_ops();
--
--	if (v6_ops)
--		return v6_ops->cookie_v6_check(iph, th);
--#elif IS_BUILTIN(CONFIG_IPV6)
-+#if IS_ENABLED(CONFIG_IPV6) && IS_ENABLED(CONFIG_SYN_COOKIES)
- 	return __cookie_v6_check(iph, th);
--#endif
- #endif
- 	return 0;
- }
-@@ -198,14 +116,6 @@ __sum16 nf_ip6_checksum(struct sk_buff *skb, unsigned int hook,
- 			unsigned int dataoff, u_int8_t protocol);
- 
- int nf_ip6_check_hbh_len(struct sk_buff *skb, u32 *plen);
--
--int ipv6_netfilter_init(void);
--void ipv6_netfilter_fini(void);
--
--#else /* CONFIG_NETFILTER */
--static inline int ipv6_netfilter_init(void) { return 0; }
--static inline void ipv6_netfilter_fini(void) { return; }
--static inline const struct nf_ipv6_ops *nf_get_ipv6_ops(void) { return NULL; }
- #endif /* CONFIG_NETFILTER */
- 
- #endif /*__LINUX_IP6_NETFILTER_H*/
-diff --git a/include/net/ip.h b/include/net/ip.h
-index f39a3787fedd..40aac82ea212 100644
---- a/include/net/ip.h
-+++ b/include/net/ip.h
-@@ -692,13 +692,8 @@ static __inline__ void inet_reset_saddr(struct sock *sk)
- 
- #endif
- 
--#if IS_MODULE(CONFIG_IPV6)
--#define EXPORT_IPV6_MOD(X) EXPORT_SYMBOL(X)
--#define EXPORT_IPV6_MOD_GPL(X) EXPORT_SYMBOL_GPL(X)
--#else
- #define EXPORT_IPV6_MOD(X)
- #define EXPORT_IPV6_MOD_GPL(X)
--#endif
- 
- static inline unsigned int ipv4_addr_hash(__be32 ip)
- {
-diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
-index 083e2fe96441..0ab1c94db4b9 100644
---- a/net/bridge/br_netfilter_hooks.c
-+++ b/net/bridge/br_netfilter_hooks.c
-@@ -32,6 +32,7 @@
- 
- #include <net/ip.h>
- #include <net/ipv6.h>
-+#include <net/ip6_route.h>
- #include <net/addrconf.h>
- #include <net/dst_metadata.h>
- #include <net/route.h>
-@@ -890,7 +891,6 @@ static int br_nf_dev_queue_xmit(struct net *net, struct sock *sk, struct sk_buff
- 	}
- 	if (IS_ENABLED(CONFIG_NF_DEFRAG_IPV6) &&
- 	    skb->protocol == htons(ETH_P_IPV6)) {
--		const struct nf_ipv6_ops *v6ops = nf_get_ipv6_ops();
- 		struct brnf_frag_data *data;
- 
- 		if (br_validate_ipv6(net, skb))
-@@ -906,15 +906,9 @@ static int br_nf_dev_queue_xmit(struct net *net, struct sock *sk, struct sk_buff
- 		skb_copy_from_linear_data_offset(skb, -data->size, data->mac,
- 						 data->size);
- 
--		if (v6ops) {
--			ret = v6ops->fragment(net, sk, skb, br_nf_push_frag_xmit);
--			local_unlock_nested_bh(&brnf_frag_data_storage.bh_lock);
--			return ret;
--		}
-+		ret = ip6_fragment(net, sk, skb, br_nf_push_frag_xmit);
- 		local_unlock_nested_bh(&brnf_frag_data_storage.bh_lock);
--
--		kfree_skb(skb);
--		return -EMSGSIZE;
-+		return ret;
- 	}
- 	nf_bridge_info_free(skb);
- 	return br_dev_queue_push_xmit(net, sk, skb);
-diff --git a/net/bridge/br_netfilter_ipv6.c b/net/bridge/br_netfilter_ipv6.c
-index 76ce70b4e7f3..d8548428929e 100644
---- a/net/bridge/br_netfilter_ipv6.c
-+++ b/net/bridge/br_netfilter_ipv6.c
-@@ -30,6 +30,7 @@
- 
- #include <net/ip.h>
- #include <net/ipv6.h>
-+#include <net/ip6_route.h>
- #include <net/addrconf.h>
- #include <net/route.h>
- #include <net/netfilter/br_netfilter.h>
-@@ -95,15 +96,13 @@ br_nf_ipv6_daddr_was_changed(const struct sk_buff *skb,
- 
- /* PF_BRIDGE/PRE_ROUTING: Undo the changes made for ip6tables
-  * PREROUTING and continue the bridge PRE_ROUTING hook. See comment
-- * for br_nf_pre_routing_finish(), same logic is used here but
-- * equivalent IPv6 function ip6_route_input() called indirectly.
-+ * for br_nf_pre_routing_finish(), same logic is used here.
-  */
- static int br_nf_pre_routing_finish_ipv6(struct net *net, struct sock *sk, struct sk_buff *skb)
- {
- 	struct nf_bridge_info *nf_bridge = nf_bridge_info_get(skb);
- 	struct rtable *rt;
- 	struct net_device *dev = skb->dev, *br_indev;
--	const struct nf_ipv6_ops *v6ops = nf_get_ipv6_ops();
- 
- 	br_indev = nf_bridge_get_physindev(skb, net);
- 	if (!br_indev) {
-@@ -120,7 +119,7 @@ static int br_nf_pre_routing_finish_ipv6(struct net *net, struct sock *sk, struc
- 	nf_bridge->in_prerouting = 0;
- 	if (br_nf_ipv6_daddr_was_changed(skb, nf_bridge)) {
- 		skb_dst_drop(skb);
--		v6ops->route_input(skb);
-+		ip6_route_input(skb);
- 
- 		if (skb_dst(skb)->error) {
- 			kfree_skb(skb);
-diff --git a/net/ipv6/af_inet6.c b/net/ipv6/af_inet6.c
-index 33abd8d8cd7d..ee341a8254bf 100644
---- a/net/ipv6/af_inet6.c
-+++ b/net/ipv6/af_inet6.c
-@@ -38,7 +38,6 @@
- #include <linux/inet.h>
- #include <linux/netdevice.h>
- #include <linux/icmpv6.h>
--#include <linux/netfilter_ipv6.h>
- 
- #include <net/ip.h>
- #include <net/ipv6.h>
-@@ -1066,9 +1065,6 @@ static int __init inet6_init(void)
- 	if (err)
- 		goto igmp_fail;
- 
--	err = ipv6_netfilter_init();
--	if (err)
--		goto netfilter_fail;
- 	/* Create /proc/foo6 entries. */
- #ifdef CONFIG_PROC_FS
- 	err = -ENOMEM;
-@@ -1199,8 +1195,6 @@ static int __init inet6_init(void)
- 	raw6_proc_exit();
- proc_raw6_fail:
- #endif
--	ipv6_netfilter_fini();
--netfilter_fail:
- 	igmp6_cleanup();
- igmp_fail:
- 	ndisc_cleanup();
-diff --git a/net/ipv6/netfilter.c b/net/ipv6/netfilter.c
-index c3dc90dfab80..6d80f85e55fa 100644
---- a/net/ipv6/netfilter.c
-+++ b/net/ipv6/netfilter.c
-@@ -86,21 +86,6 @@ int ip6_route_me_harder(struct net *net, struct sock *sk_partial, struct sk_buff
- }
- EXPORT_SYMBOL(ip6_route_me_harder);
- 
--static int nf_ip6_reroute(struct sk_buff *skb,
--			  const struct nf_queue_entry *entry)
--{
--	struct ip6_rt_info *rt_info = nf_queue_entry_reroute(entry);
--
--	if (entry->state.hook == NF_INET_LOCAL_OUT) {
--		const struct ipv6hdr *iph = ipv6_hdr(skb);
--		if (!ipv6_addr_equal(&iph->daddr, &rt_info->daddr) ||
--		    !ipv6_addr_equal(&iph->saddr, &rt_info->saddr) ||
--		    skb->mark != rt_info->mark)
--			return ip6_route_me_harder(entry->state.net, entry->state.sk, skb);
--	}
--	return 0;
--}
--
- int __nf_ip6_route(struct net *net, struct dst_entry **dst,
- 		   struct flowi *fl, bool strict)
- {
-@@ -243,36 +228,3 @@ int br_ip6_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(br_ip6_fragment);
--
--static const struct nf_ipv6_ops ipv6ops = {
--#if IS_MODULE(CONFIG_IPV6)
--	.chk_addr		= ipv6_chk_addr,
--	.route_me_harder	= ip6_route_me_harder,
--	.dev_get_saddr		= ipv6_dev_get_saddr,
--	.route			= __nf_ip6_route,
--#if IS_ENABLED(CONFIG_SYN_COOKIES)
--	.cookie_init_sequence	= __cookie_v6_init_sequence,
--	.cookie_v6_check	= __cookie_v6_check,
--#endif
--#endif
--	.route_input		= ip6_route_input,
--	.fragment		= ip6_fragment,
--	.reroute		= nf_ip6_reroute,
--#if IS_MODULE(CONFIG_IPV6)
--	.br_fragment		= br_ip6_fragment,
--#endif
--};
--
--int __init ipv6_netfilter_init(void)
--{
--	RCU_INIT_POINTER(nf_ipv6_ops, &ipv6ops);
--	return 0;
--}
--
--/* This can be called from inet6_init() on errors, so it cannot
-- * be marked __exit. -DaveM
-- */
--void ipv6_netfilter_fini(void)
--{
--	RCU_INIT_POINTER(nf_ipv6_ops, NULL);
--}
-diff --git a/net/netfilter/core.c b/net/netfilter/core.c
-index d5df44ea9e7b..675a1034b340 100644
---- a/net/netfilter/core.c
-+++ b/net/netfilter/core.c
-@@ -27,9 +27,6 @@
- 
- #include "nf_internals.h"
- 
--const struct nf_ipv6_ops __rcu *nf_ipv6_ops __read_mostly;
--EXPORT_SYMBOL_GPL(nf_ipv6_ops);
--
- #ifdef CONFIG_JUMP_LABEL
- struct static_key nf_hooks_needed[NFPROTO_NUMPROTO][NF_MAX_HOOKS];
- EXPORT_SYMBOL(nf_hooks_needed);
-diff --git a/net/netfilter/nf_nat_masquerade.c b/net/netfilter/nf_nat_masquerade.c
-index a5a23c03fda9..4de6e0a51701 100644
---- a/net/netfilter/nf_nat_masquerade.c
-+++ b/net/netfilter/nf_nat_masquerade.c
-@@ -220,23 +220,6 @@ static struct notifier_block masq_inet_notifier = {
- };
- 
- #if IS_ENABLED(CONFIG_IPV6)
--static int
--nat_ipv6_dev_get_saddr(struct net *net, const struct net_device *dev,
--		       const struct in6_addr *daddr, unsigned int srcprefs,
--		       struct in6_addr *saddr)
--{
--#ifdef CONFIG_IPV6_MODULE
--	const struct nf_ipv6_ops *v6_ops = nf_get_ipv6_ops();
--
--	if (!v6_ops)
--		return -EHOSTUNREACH;
--
--	return v6_ops->dev_get_saddr(net, dev, daddr, srcprefs, saddr);
--#else
--	return ipv6_dev_get_saddr(net, dev, daddr, srcprefs, saddr);
--#endif
--}
--
- unsigned int
- nf_nat_masquerade_ipv6(struct sk_buff *skb, const struct nf_nat_range2 *range,
- 		       const struct net_device *out)
-@@ -251,8 +234,8 @@ nf_nat_masquerade_ipv6(struct sk_buff *skb, const struct nf_nat_range2 *range,
- 	WARN_ON(!(ct && (ctinfo == IP_CT_NEW || ctinfo == IP_CT_RELATED ||
- 			 ctinfo == IP_CT_RELATED_REPLY)));
- 
--	if (nat_ipv6_dev_get_saddr(nf_ct_net(ct), out,
--				   &ipv6_hdr(skb)->daddr, 0, &src) < 0)
-+	if (ipv6_dev_get_saddr(nf_ct_net(ct), out,
-+			       &ipv6_hdr(skb)->daddr, 0, &src) < 0)
- 		return NF_DROP;
- 
- 	nat = nf_ct_nat_ext_add(ct);
-diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
-index a91ae07db059..2aa2380d976a 100644
---- a/net/netfilter/nfnetlink_queue.c
-+++ b/net/netfilter/nfnetlink_queue.c
-@@ -356,9 +356,25 @@ static int nf_ip_reroute(struct sk_buff *skb, const struct nf_queue_entry *entry
- 	return 0;
- }
- 
-+static int nf_ip6_reroute(struct sk_buff *skb,
-+			  const struct nf_queue_entry *entry)
-+{
-+	struct ip6_rt_info *rt_info = nf_queue_entry_reroute(entry);
-+
-+	if (entry->state.hook == NF_INET_LOCAL_OUT) {
-+		const struct ipv6hdr *iph = ipv6_hdr(skb);
-+
-+		if (!ipv6_addr_equal(&iph->daddr, &rt_info->daddr) ||
-+		    !ipv6_addr_equal(&iph->saddr, &rt_info->saddr) ||
-+		    skb->mark != rt_info->mark)
-+			return nf_ip6_route_me_harder(entry->state.net,
-+						      entry->state.sk, skb);
-+	}
-+	return 0;
-+}
-+
- static int nf_reroute(struct sk_buff *skb, struct nf_queue_entry *entry)
- {
--	const struct nf_ipv6_ops *v6ops;
- 	int ret = 0;
- 
- 	switch (entry->state.pf) {
-@@ -366,9 +382,7 @@ static int nf_reroute(struct sk_buff *skb, struct nf_queue_entry *entry)
- 		ret = nf_ip_reroute(skb, entry);
- 		break;
- 	case AF_INET6:
--		v6ops = rcu_dereference(nf_ipv6_ops);
--		if (v6ops)
--			ret = v6ops->reroute(skb, entry);
-+		ret = nf_ip6_reroute(skb, entry);
- 		break;
- 	}
- 	return ret;
-diff --git a/net/netfilter/utils.c b/net/netfilter/utils.c
-index 008419db815a..29c4dcc362c7 100644
---- a/net/netfilter/utils.c
-+++ b/net/netfilter/utils.c
-@@ -163,7 +163,6 @@ EXPORT_SYMBOL_GPL(nf_checksum_partial);
- int nf_route(struct net *net, struct dst_entry **dst, struct flowi *fl,
- 	     bool strict, unsigned short family)
- {
--	const struct nf_ipv6_ops *v6ops __maybe_unused;
- 	int ret = 0;
- 
- 	switch (family) {
--- 
-2.53.0
-
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
