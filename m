@@ -1,77 +1,79 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9BAD3A4F29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D730388E65
 	for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 10:40:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773744035; cv=none; b=WAbehYhUmx8UyL/3ePg2aXz8Hyi4cor9qFw+kDMIacNgMysfvGR+RvRTCMccuHDELGc1wrwev0+BHC0gnuI29rPTtFV0NSuxQ1iI1ocGS8HEXEctexvOH1P3Hy34qcr+QtXNGQr0H23z5HFMjDz29Sjj9h19vn1/cG96fYsO9ZY=
+	t=1773744035; cv=none; b=RIDrfbExi3hd0NTZj/iWsUYq7WKy8AFm/XcfrVMPf+1kVClwFggGRntnccuwq4c6p1UfLyHKUETVLcUb1crXe9iBs327Bf8OiTB7It5dJQXSIDWhUpZC8NWJzSZlgj9mSPIEFyv/CSWuud1kKZjNua8IeJFlZukBgqdrKfbSvTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773744035; c=relaxed/simple;
-	bh=rQhY7+1bOmJ74YZGAz74eZLwgNNakdU85i/zbOlXZQ8=;
+	bh=ORVIj64W7VWD/p2asQ9JCzIMDvSQTNmZHqK+BXBHmx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gKZ8Jnq0djyTwNcJkF100YV5YuY1hveRir80me7C+Mns/I4dBosf8mcScjWkXNhMxaUE+cYT4NKUeqS6Frsr19Qpy981zezsimXZMzzCy8sp5bHyddIcFgv0zcMiEhG56+kaagpCdQsi3tesJBe/cz3el/189Nfd2A0WCcONrg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=L3Ld6vh8; arc=none smtp.client-ip=209.85.221.47
+	 MIME-Version; b=MtQsmY556RTS5mambHQigUaJBr/kUxICIxczPCftNv4MzdHZackOQkaWYi1fA+ICWj3479wLtsAEoJKq8kwlGkTW4Xh1RL7x97QVSg2/J3Snjee8TiCdj5pH9oJ+V7/5a3uvof4PL6HEyf5kGyO9o7iPOyVNI5PISM0JFkaxvZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=dQvsFc0O; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="L3Ld6vh8"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-439b7c2788dso3415349f8f.1
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="dQvsFc0O"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-486b96760easo3632655e9.2
         for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 03:40:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=openvpn.net; s=google; t=1773744032; x=1774348832; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SUYcr2U2mfCc96RP5P5Op7nrp+GUJw5w4uHDKKcUTYY=;
-        b=L3Ld6vh8hK9M0PR37ZJzwNgfuxOgsuK4rofY/GFxvjSte+vONUY1lArxsR74bJMxdo
-         MXQpUOzs74ImnA1xoIegC8DlMG+/pldAQDhgl0xr9+AB4w2T98rMacCr+m10OgE0Grby
-         SH4hSYmbSUyovPX3WssdLXaUV/ANxrDx84nLFdINVbb6g+0W/C9yL1yeY9CHTaKfGRYu
-         TKKHivXqB8nCid7Lb5engrWcXmrdJA5ctOBF4qFKVRBdZmk6LGHTNNbYyB6ep1j+fJpd
-         vyLkgcENtdbHTlwYYI1MMT9gT0u7IV5plsUCEQ0w618EHj8L4UwUi+lYK0wZdUXBcF5/
-         Tp1g==
+        bh=iU21nHtfc0uUOnrIqrZQvQlu0yPBD1nd/T9GGkWWTvg=;
+        b=dQvsFc0OAhzSAznJ3mXUTR2qotQvKKKAX5ry1lYeRHkT5zC7f8tG0SBMTYig+Wx3JO
+         5l2DzKm/W7TJ+SV81JwnQDyxKfR0sJcLpEAMENqnJn6pPKDzikujxJChDbH3zYTUAK/t
+         ddCYlMLSxhB0iHAFY8pEUWFDszBs8VV9HXvId+qbmIB25pBiay4bI3OP/7U7wtFv6/YV
+         EfixbfEWQcNvZEmi6bvbVoIOYqfyC+l+3ccT89Ff6KQxdjKX0qlxcC0zM4tF5q4ToqP6
+         SqNHGe9aqrlihkEWZWSJFOSgLONAdE71J0Vogw7oC3VEdyF0R0OHgU65TrUCGVGzJ68/
+         JzEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1773744032; x=1774348832;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=SUYcr2U2mfCc96RP5P5Op7nrp+GUJw5w4uHDKKcUTYY=;
-        b=l9MVTGtvQYFYoVn78+9aOZjm/VqIYMmj6lvrBTL9LX86K/CQbheV1hskI2icOWM5hL
-         7yiLBG0iJevfJ2H6i3tSueENOQPhbmDp3ujQDyOwE5cSoE8bu5zkm0H9VI/i/GEuTMRD
-         SEiUomwf0aTC0WMy9r3i/7D4BGDR1nj/dc0XHxYVh9ibxqb2bLGKn9cmPrlgGRoIjnqv
-         dIrvbML3Pq2TqQhHTT8n0K0Ud2S/PvvavGMt8coRiEBUPKPV/7ViBkPzrcRxMKEgEWUe
-         mUM1onibdP6M/31e/BASBvITZYkvN0wT3a6NpKYTW4QioUiGt+QvM1ezYAGmcyBaNpEO
-         1W8A==
-X-Gm-Message-State: AOJu0Yw4TgHbsQHUDuoToJs0JBlp3Po4rDjgX23u0e3wKHfiA/ejbU2Y
-	2TjyxO3FHIVRpvd65Q0DJt3Y1IXVA840a5JPRmrA6Iukq/g+bX8B2gJ2r0XUOXzgUZ0iPTPurU4
-	vsW96D1hJ+7m7KxdgCPu5dHC3NgCNW9v3L9RcYK2Ob6t5OTb5gV1hZVPCyrgMFdLt
-X-Gm-Gg: ATEYQzyrNX/9tKmVXduagiojjdWCZZbfeRWHTqY9woDpVLu7MuDGjSKcPfbyFAGIdf2
-	LCrYaPXc7gWuLd5Wu+ic22pqSGkcQ+G+Er2x5rvVY5nhDKMYDW7b1dIIkbX8kJgfHJM0p15g3IK
-	gnWbbReNFdhBdt52P/IoAFvCGN1kqSkvgI+r+qmKO0rNt7h1dKAee8TOaS/Rt5CVe9j51bW8jAT
-	BVA6+vkC8dDRN5Sd3lXkKYNI6UPB/sN2V5A/JybUfe/YHYuhMOyw3e1W7067qop4oU9zR5OYJ3s
-	j4jbxKuOhaoNrN/WQmkG5Ik6wr3OqnhPj5wAVBFj3cFYib6MlNdmZOggj9ELjHc4XT7Ok5jwUKz
-	pPYgd01dIS/z2e1QDZA+9bfSLI3iO8lxLOWFb19e3LSCsCkROleMuijUvQTXpXJlHpVOkuaUgH1
-	xIzXZ99sYK4VnCUHKMrExtfoQmdsRIKnphqAHVlHo1A+8CmA==
-X-Received: by 2002:a05:600c:c162:b0:485:35ee:f836 with SMTP id 5b1f17b1804b1-485566c94a6mr271877395e9.2.1773744031641;
-        Tue, 17 Mar 2026 03:40:31 -0700 (PDT)
+        bh=iU21nHtfc0uUOnrIqrZQvQlu0yPBD1nd/T9GGkWWTvg=;
+        b=T8CGsfOhvYYGELdnn++VFZVQdNDjupnod6h/244sNHrnj0c3bc35x+8TIU7wK2ldA5
+         ZIJm5l2/fTkEyhkBErK03HII8wc10fMUY/wvXf23viWNiGxxBX6A+u0iQN/JRHrcOnZk
+         VYQO350ZDiCcTzq1AVNga9uek0xYdzdOAkveS1OOeVXe5lFF1KJFE42929K2Up8FyzKL
+         xvqlOtOIgCs6u8RGt4/V6w7Z6YT+akWDBMuBVs4RNmsL2cjB4CMAJNIz7PDvejWcz4J/
+         zPdj542iz0I8bXlYHp7ynFKrLQzaqxP2zZ03/8Tx+bMzVr+qMtEizBL7EBmyCsm3ZOwz
+         1ALw==
+X-Gm-Message-State: AOJu0YzEHltShcxgwTdMlPPvzjoVIF2lqB42IDW8g8k4AVcTUiYuMfPn
+	Hsbkc3ZWP5AP5IqPlTgRD93UHjaOnF9rjVYehP59UubLz7oMsZX44ZYM6eAc82kg4G0BWN4yHcg
+	ZA7IXgDLSx/D53WU8EjpQgDdVrhE7CauxoZdhIWxiu80CveIajKPoUCr+zCKQZb2U
+X-Gm-Gg: ATEYQzwcD10RJmrpsAbbOI7/WUaZVdoQbYgmgbGOvzuKUD7kgZaIFqrqc2R7TjHSoSe
+	NnpHS8hVwZVDMP0Y6ZPbEC7GRLv62xyA1/FRKM0bYCpRkeAMx1bgo5OBb9+1DF01Ub8mTldg4ji
+	zOlPvcuqiVDRXXQ2GlSPxrXYhL4uPLFWaXdd0SD03xxn0XX4FNxhnQlDiywqDbW8PuMnd50X3N3
+	P6KMeZTdwF75WtVjakm/BXSm48lN7UAZ2+jY0xw7HV/Wtw8SDwcYzUbT+zIcHcQbjlgRuUUeq7a
+	CQR25hyN8TR78BqI90G7tv5QJH5bYZZxSoU+Vamfo0nu+A30fRoEAz25xT3Jqtoh/gvTp1FV82x
+	I9urcPTsPxJUgO8IfnyN+JDqs+ltkyyg2YdWl1yD4qCQtbYlu9qpmnKihU2Jf1cITsHa4WGa0yi
+	D4D8Ph2w0+MShTzqCPR3AVue0cnOcwl3kG9NI=
+X-Received: by 2002:a05:6000:2c0e:b0:43b:50bd:bca3 with SMTP id ffacd0b85a97d-43b50bdbf28mr326844f8f.1.1773744029306;
+        Tue, 17 Mar 2026 03:40:29 -0700 (PDT)
 Received: from inifinity.mandelbit.com ([2001:67c:2fbc:1:4f22:3f9:13dd:cf23])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe22529csm49948215f8f.31.2026.03.17.03.40.30
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe22529csm49948215f8f.31.2026.03.17.03.40.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Mar 2026 03:40:31 -0700 (PDT)
+        Tue, 17 Mar 2026 03:40:28 -0700 (PDT)
 From: Antonio Quartulli <antonio@openvpn.net>
 To: netdev@vger.kernel.org
 Cc: ralf@mandelbit.com,
-	Qingfang Deng <dqfext@gmail.com>,
+	Antonio Quartulli <antonio@openvpn.net>,
 	Sabrina Dubroca <sd@queasysnail.net>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Antonio Quartulli <antonio@openvpn.net>
-Subject: [PATCH net-next 3/9] ovpn: pktid: use bitops.h API
-Date: Tue, 17 Mar 2026 11:40:17 +0100
-Message-ID: <20260317104023.192548-4-antonio@openvpn.net>
+	Shuah Khan <shuah@kernel.org>,
+	linux-kselftest@vger.kernel.org,
+	horms@kernel.org
+Subject: [PATCH net-next 1/9] selftests: ovpn: allow compiling ovpn-cli.c with mbedtls3
+Date: Tue, 17 Mar 2026 11:40:15 +0100
+Message-ID: <20260317104023.192548-2-antonio@openvpn.net>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260317104023.192548-1-antonio@openvpn.net>
 References: <20260317104023.192548-1-antonio@openvpn.net>
@@ -83,78 +85,71 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Qingfang Deng <dqfext@gmail.com>
+mbedtls 3 installs headers and calls the shared object
+differently than version 2, therefore we must now rely
+on pkgconfig to fill the right C/LDFLAGS.
 
-Use bitops.h for replay window to simplify code.
+Moreover the mbedtls3 library expects any base64 file to
+have their content on one line.
+Since this change does no break older versions,
+let's change the sample key file format and make mbedtls3
+happy.
 
-Signed-off-by: Qingfang Deng <dqfext@gmail.com>
-[antonio@openvpn.net: extended commit message]
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: linux-kselftest@vger.kernel.org
+Cc: horms@kernel.org
 Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
 ---
- drivers/net/ovpn/pktid.c | 11 ++++-------
- drivers/net/ovpn/pktid.h |  2 +-
- 2 files changed, 5 insertions(+), 8 deletions(-)
+ tools/testing/selftests/net/ovpn/Makefile   | 16 +++++++++++-----
+ tools/testing/selftests/net/ovpn/data64.key |  6 +-----
+ 2 files changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ovpn/pktid.c b/drivers/net/ovpn/pktid.c
-index 2f29049897e3..f1c243b84463 100644
---- a/drivers/net/ovpn/pktid.c
-+++ b/drivers/net/ovpn/pktid.c
-@@ -65,7 +65,7 @@ int ovpn_pktid_recv(struct ovpn_pktid_recv *pr, u32 pkt_id, u32 pkt_time)
- 	if (likely(pkt_id == pr->id + 1)) {
- 		/* well-formed ID sequence (incremented by 1) */
- 		pr->base = REPLAY_INDEX(pr->base, -1);
--		pr->history[pr->base / 8] |= (1 << (pr->base % 8));
-+		__set_bit(pr->base, pr->history);
- 		if (pr->extent < REPLAY_WINDOW_SIZE)
- 			++pr->extent;
- 		pr->id = pkt_id;
-@@ -77,14 +77,14 @@ int ovpn_pktid_recv(struct ovpn_pktid_recv *pr, u32 pkt_id, u32 pkt_time)
- 			unsigned int i;
+diff --git a/tools/testing/selftests/net/ovpn/Makefile b/tools/testing/selftests/net/ovpn/Makefile
+index dbe0388c8512..e59271a25d76 100644
+--- a/tools/testing/selftests/net/ovpn/Makefile
++++ b/tools/testing/selftests/net/ovpn/Makefile
+@@ -2,19 +2,25 @@
+ # Copyright (C) 2020-2025 OpenVPN, Inc.
+ #
+ CFLAGS = -pedantic -Wextra -Wall -Wl,--no-as-needed -g -O0 -ggdb $(KHDR_INCLUDES)
++CFLAGS += $(shell pkg-config --cflags mbedcrypto-3 mbedtls-3 2>/dev/null)
++
+ VAR_CFLAGS = $(shell pkg-config --cflags libnl-3.0 libnl-genl-3.0 2>/dev/null)
+ ifeq ($(VAR_CFLAGS),)
+ VAR_CFLAGS = -I/usr/include/libnl3
+ endif
+ CFLAGS += $(VAR_CFLAGS)
  
- 			pr->base = REPLAY_INDEX(pr->base, -delta);
--			pr->history[pr->base / 8] |= (1 << (pr->base % 8));
-+			__set_bit(pr->base, pr->history);
- 			pr->extent += delta;
- 			if (pr->extent > REPLAY_WINDOW_SIZE)
- 				pr->extent = REPLAY_WINDOW_SIZE;
- 			for (i = 1; i < delta; ++i) {
- 				unsigned int newb = REPLAY_INDEX(pr->base, i);
++MTLS_LDLIBS= $(shell pkg-config --libs mbedcrypto-3 mbedtls-3 2>/dev/null)
++ifeq ($(MTLS_LDLIBS),)
++MTLS_LDLIBS = -lmbedtls -lmbedcrypto
++endif
++LDLIBS += $(MTLS_LDLIBS)
  
--				pr->history[newb / 8] &= ~BIT(newb % 8);
-+				__clear_bit(newb, pr->history);
- 			}
- 		} else {
- 			pr->base = 0;
-@@ -103,14 +103,11 @@ int ovpn_pktid_recv(struct ovpn_pktid_recv *pr, u32 pkt_id, u32 pkt_time)
- 			if (pkt_id > pr->id_floor) {
- 				const unsigned int ri = REPLAY_INDEX(pr->base,
- 								     delta);
--				u8 *p = &pr->history[ri / 8];
--				const u8 mask = (1 << (ri % 8));
+-LDLIBS = -lmbedtls -lmbedcrypto
+-VAR_LDLIBS = $(shell pkg-config --libs libnl-3.0 libnl-genl-3.0 2>/dev/null)
+-ifeq ($(VAR_LDLIBS),)
+-VAR_LDLIBS = -lnl-genl-3 -lnl-3
++NL_LDLIBS = $(shell pkg-config --libs libnl-3.0 libnl-genl-3.0 2>/dev/null)
++ifeq ($(NL_LDLIBS),)
++NL_LDLIBS = -lnl-genl-3 -lnl-3
+ endif
+-LDLIBS += $(VAR_LDLIBS)
++LDLIBS += $(NL_LDLIBS)
  
--				if (*p & mask) {
-+				if (__test_and_set_bit(ri, pr->history)) {
- 					ret = -EINVAL;
- 					goto out;
- 				}
--				*p |= mask;
- 			} else {
- 				ret = -EINVAL;
- 				goto out;
-diff --git a/drivers/net/ovpn/pktid.h b/drivers/net/ovpn/pktid.h
-index 0262d026d15e..21845f353bc8 100644
---- a/drivers/net/ovpn/pktid.h
-+++ b/drivers/net/ovpn/pktid.h
-@@ -34,7 +34,7 @@ struct ovpn_pktid_xmit {
-  */
- struct ovpn_pktid_recv {
- 	/* "sliding window" bitmask of recent packet IDs received */
--	u8 history[REPLAY_WINDOW_BYTES];
-+	DECLARE_BITMAP(history, REPLAY_WINDOW_SIZE);
- 	/* bit position of deque base in history */
- 	unsigned int base;
- 	/* extent (in bits) of deque in history */
+ 
+ TEST_FILES = common.sh
+diff --git a/tools/testing/selftests/net/ovpn/data64.key b/tools/testing/selftests/net/ovpn/data64.key
+index a99e88c4e290..d04febcdf5a2 100644
+--- a/tools/testing/selftests/net/ovpn/data64.key
++++ b/tools/testing/selftests/net/ovpn/data64.key
+@@ -1,5 +1 @@
+-jRqMACN7d7/aFQNT8S7jkrBD8uwrgHbG5OQZP2eu4R1Y7tfpS2bf5RHv06Vi163CGoaIiTX99R3B
+-ia9ycAH8Wz1+9PWv51dnBLur9jbShlgZ2QHLtUc4a/gfT7zZwULXuuxdLnvR21DDeMBaTbkgbai9
+-uvAa7ne1liIgGFzbv+Bas4HDVrygxIxuAnP5Qgc3648IJkZ0QEXPF+O9f0n5+QIvGCxkAUVx+5K6
+-KIs+SoeWXnAopELmoGSjUpFtJbagXK82HfdqpuUxT2Tnuef0/14SzVE/vNleBNu2ZbyrSAaah8tE
+-BofkPJUBFY+YQcfZNM5Dgrw3i+Bpmpq/gpdg5w==
++jRqMACN7d7/aFQNT8S7jkrBD8uwrgHbG5OQZP2eu4R1Y7tfpS2bf5RHv06Vi163CGoaIiTX99R3Bia9ycAH8Wz1+9PWv51dnBLur9jbShlgZ2QHLtUc4a/gfT7zZwULXuuxdLnvR21DDeMBaTbkgbai9uvAa7ne1liIgGFzbv+Bas4HDVrygxIxuAnP5Qgc3648IJkZ0QEXPF+O9f0n5+QIvGCxkAUVx+5K6KIs+SoeWXnAopELmoGSjUpFtJbagXK82HfdqpuUxT2Tnuef0/14SzVE/vNleBNu2ZbyrSAaah8tEBofkPJUBFY+YQcfZNM5Dgrw3i+Bpmpq/gpdg5w==
 -- 
 2.52.0
 
