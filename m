@@ -1,91 +1,95 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A2D256C6C;
-	Wed, 18 Mar 2026 03:08:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8140129D288
+	for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 03:12:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773803282; cv=none; b=lSQEtlbja68iiDUf6VlPu/vRgjIL9LBuKbho0Ixb9XTBHyvmI9nlGfSJHJa0oGQmqTMx6JvTOaYtaWKgstYTVxpNk+idNzSKj/0yTPg/URZ9+cFWYj9gxfsUdlPtxxePj1VA/+b/xvyvQM3eVw3bUfwZ3K1ryvUKBua8wevc+co=
+	t=1773803541; cv=none; b=u4a/tcNp2Ii15pgPnSilN17XFPFJyblqcr1vZ5y4RPYryp5BFjh/FrSEwsV8sW5VMYNBDGl8dEaellQKruRbkvdK3GTC55umdgt4WtozuUmdG9x8nK6NFl9asLqhMyVOG1Yp2lqzNDjMj13qQcQEG3lOVdFJ5v0D4Ejg3SyWeo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773803282; c=relaxed/simple;
-	bh=pzcrMZE7hNfVVvaxkldQYtyCSFl9v3tUWGWga5ZDz6A=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=EQ4juJ3H3bkyFvxe1W+7UnTjrhyMfelxDI95NcASMq5/VBWqXyT7oEDhP1L2WXnQKRfYv2w7bmbgHr7v8UzvgxGNlwWMXKE/UMeMZreaC5NpcRVbgDs7nHObYzkVwluv88fXuoZzH0eAhzM+TdazJ1cpyPZKv6FeKwIi4hWqG/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.99)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1w2hGF-000000004GF-0jL3;
-	Wed, 18 Mar 2026 03:07:55 +0000
-Date: Wed, 18 Mar 2026 03:07:52 +0000
-From: Daniel Golle <daniel@makrotopia.org>
-To: Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] net: dsa: mxl862xx: don't read out-of-bounds
-Message-ID: <83356ad9c9a4470dd49b6b3d661c2a8dd85cc6a1.1773803190.git.daniel@makrotopia.org>
+	s=arc-20240116; t=1773803541; c=relaxed/simple;
+	bh=3pUDkXCIbbQSzBElrtyiHqwHZfJM/t5oVW8R2mOuWGU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TGIqc5Ljf6+AtXcTx+n/dUZXpeKkOUKQ3/39uvgsFxA7eJLPyLzECgcsVFtpUpGvXiangitmI+TMfwWsT5im7T0a6Az4SvTSqcLMQdJZiFVmuuWh550JsFCSKJUtEJWhAP4+Ku6u5OYacZFb2Ljs4vogBHn6h4CBSsn2y+4rPEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=BvNRRQAt; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="BvNRRQAt"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2a9296b3926so52292865ad.1
+        for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 20:12:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1773803540; x=1774408340; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nmt9Nb6iGmPmgCfMpxJvJLPWltN9srw4zOG8bLYlkhs=;
+        b=BvNRRQAt3QXoRw3bnVNLwnhaGq3yRtgIMpi6CdToEADtOpyTfq/NpfFY6xKQE5TVO+
+         S44C5aq/TXR/QTrnvVTrgxwdmIkoqxiyncN0dII4wOrNDNyjlZD3Z528ksXmzmjoEpzc
+         5kpDtnZ3oIP9fpEdY0bIpUm+9UxUeblxOhwymKOQ+clyQ6w4hbTamIF4LF5fKtdQmq8P
+         zWt4VJ6InV3kfTjZlrk+ZAq6yhCN4Ydcjnrl7QKPC8lkr7vEogMgxBXbU4a4H/mZxR92
+         Z5aCBNo7HP6iCBI0DDeNlRc4YFTBXVlmit3XnicbR+vB+vVh66pBJNp8sAVsUW9xdkzV
+         h+2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773803540; x=1774408340;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=nmt9Nb6iGmPmgCfMpxJvJLPWltN9srw4zOG8bLYlkhs=;
+        b=HQ/KzfG3bwAGurMRlMwzVWQAFN6DKEV6JbovdXBvwystHReFcvuH47J1is1erQNbRi
+         DWe4WGux7clzMcVQ5zAV4jNratQ6sNakrNNePYnm8PCWk6v0yc/5xwqQ52w8IvW3DMDN
+         5RxX9RMiH7xl86r/5wdaPOQMi9U4arKKfooJRCzI7FvdT3VGJykkDYp0ZtY4GlFE268P
+         Qec4pSlTwf/03YKCvxgYrQNvht7/aQvDjHq8WhnmSIU0IZ0fMSEOODkozJuwQNfMUg1/
+         u8Mhjywsa0UCxlhUKY4aBDZCXbcTdWFp2o8U/2FwmypBLbsyW0d9poXJ08TLLqUlRHy8
+         Q4Ag==
+X-Gm-Message-State: AOJu0YzLQeO1QgrJu1eZ8FNMm1XFdmC9XLMU1dWh/rpalUpxqWWhkTth
+	9qW7TXC0rUXHWsDMQEOGJ09h3/rN0SzF8XHzHnCnM0Nqx9faVhGyDF0eniREAzbaDqg=
+X-Gm-Gg: ATEYQzwbUWZlQsv0GCMo9MPf9JxkSOxemBVSES8UTpxyIKJVnOPQWbHaFx8TWXOn72R
+	8vDXqF+TIuQdog6fQaOqfxQXb16X0R7iXxMDonCVrVN6xtiEAg5awgm4J5DBT/KjZBKQ9DpBPsz
+	GfF2hHHAMv0G4qXtKmpkjWq5QWkr+G+egFOK17mvYod5k1TWVXnaJN8Cg2kRQ1G2z1X7rpDW2/b
+	tUxK/NPLVf/d7m0kkR/h6eQCJSQJN0mytvsAYKsI+RrE94qVifKJKznED/LcfGZpA/vvGm3hWyo
+	m4a+/vPzvQQWUxVlh6WlTsYcWGEgf4A/7vjOWtVB7JwDEFS0d/jhy8grQzLBjZG6Qpf7LYQqaXi
+	tmnfTGrI7nFf5s3J1mttCcQYJ7gcRo58qpCRPhpKbGEBgRld26iHh6AJkfZkE80bsbre7MS9CRK
+	4soF72J7Ftd7h7x9lnIEBUZpurN+ckvW0x3qJlxpe1y+UG/q2pByxE4+zOjw2OWnBZugbRq+/b5
+	BP3T60GxPHZnmpLq7L+sQ==
+X-Received: by 2002:a17:903:3bac:b0:2b0:4b3a:9b4b with SMTP id d9443c01a7336-2b06e34dfd3mr18296765ad.16.1773803539771;
+        Tue, 17 Mar 2026 20:12:19 -0700 (PDT)
+Received: from stephen-xps.local (h216-87-238-89.thvror.broadband.dynamic.tds.net. [216.87.238.89])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0704ccc67sm3889565ad.15.2026.03.17.20.12.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Mar 2026 20:12:19 -0700 (PDT)
+Date: Mon, 16 Mar 2026 17:58:13 -0700
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, jiri@resnulli.us,
+ victor@mojatatu.com, will@willsroot.io, xmei5@asu.edu,
+ pctammela@mojatatu.com, savy@syst3mfailure.io, kuniyu@google.com,
+ toke@toke.dk, willemdebruijnkernel@gmail.com
+Subject: Re: [PATCH net v2 6/6] selftests/tc-testing: Add netem/mirred test
+ cases exercising loops
+Message-ID: <20260316175801.3a1546b7@stephen-xps.local>
+In-Reply-To: <20260316211052.332383-7-jhs@mojatatu.com>
+References: <20260316211052.332383-1-jhs@mojatatu.com>
+	<20260316211052.332383-7-jhs@mojatatu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-The write loop in mxl862xx_api_wrap() computes the word count as
-(size + 1) / 2, rounding up for odd-sized structs.
+On Mon, 16 Mar 2026 17:10:52 -0400
+Jamal Hadi Salim <jhs@mojatatu.com> wrote:
 
-On the last iteration of an odd-sized buffer it reads a full __le16
-from data[i], accessing one byte past the end of the caller's struct.
-KASAN catches this as a stack-out-of-bounds read during probe (e.g.
-from mxl862xx_bridge_config_fwd() because of the odd length of
-sizeof(struct mxl862xx_bridge_config) == 49).
+> - Test netem's recursive duplicate
+> 
+> Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+> ---
+>  .../tc-testing/tc-tests/actions/mirred.json   | 616 +++++++++++++++++-
+>  .../tc-testing/tc-tests/qdiscs/netem.json     |  33 +-
 
-The read-back loop already handles this case, it writes only a single
-byte when (i * 2 + 1) == size. The write loop lacked the same guard.
-
-In practice the over-read is harmless: the extra stack byte is sent to
-the firmware which ignores trailing data beyond the command's declared
-payload size.
-
-Apply the same odd-size last-byte handling to the write path: when the
-final word contains only one valid byte, send *(u8 *)&data[i] instead
-of le16_to_cpu(data[i]). This is endian-safe because data is
-__le16-encoded and the low byte is always at the lowest address
-regardless of host byte order.
-
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
----
- drivers/net/dsa/mxl862xx/mxl862xx-host.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-host.c b/drivers/net/dsa/mxl862xx/mxl862xx-host.c
-index 8c55497a0ce89..4eefd2a759a7d 100644
---- a/drivers/net/dsa/mxl862xx/mxl862xx-host.c
-+++ b/drivers/net/dsa/mxl862xx/mxl862xx-host.c
-@@ -175,8 +175,14 @@ int mxl862xx_api_wrap(struct mxl862xx_priv *priv, u16 cmd, void *_data,
- 				goto out;
- 		}
- 
--		ret = mxl862xx_reg_write(priv, MXL862XX_MMD_REG_DATA_FIRST + off,
--					 le16_to_cpu(data[i]));
-+		if ((i * 2 + 1) == size)
-+			ret = mxl862xx_reg_write(priv,
-+						 MXL862XX_MMD_REG_DATA_FIRST + off,
-+						 *(u8 *)&data[i]);
-+		else
-+			ret = mxl862xx_reg_write(priv,
-+						 MXL862XX_MMD_REG_DATA_FIRST + off,
-+						 le16_to_cpu(data[i]));
- 		if (ret < 0)
- 			goto out;
- 	}
--- 
-2.53.0
+Please split mirred and netem into separate commits.
