@@ -1,114 +1,146 @@
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29C1284880;
-	Tue, 17 Mar 2026 16:01:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D14C2F290A;
+	Tue, 17 Mar 2026 16:01:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773763262; cv=none; b=IvBJD1tUpstreucyZicV1V+yIi7ZSHFUhEHLLmp7BC4+Ajh7ZKy22pgH9jTTmT3IT+h6qqq5YBBJTAI8mRaDYsXhsUS3wFpgGE/ZJk1ht4XfsgDJbNlMPyI0DZBilK9l8aaa3CTEqGYSbIhcrm7vw7wAOHFJU3GNaagUdksT6H0=
+	t=1773763298; cv=none; b=O00gZsLtEy+mBfNzzth5P7nuvWpFzUlf56O/XtGJNnu8BsWFz99tbcItYu/4OZ3aKhj2xYYE+vKk3wdz6ZT0RAXEORa5yFRDzKuW1HeQxSl/fbX8cUDfay/its3jLoEKFyULlGJnc6kahAZf9vhie6zKIA5Ia24KjRFWQX2RtCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773763262; c=relaxed/simple;
-	bh=GV6iBi3pSdNVXd8yD+APD3iD5U8pEoZAWjKTtickfCc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ik9TulYnmUjn2BZMknzC8cQDR41wnDwSPfmVbpX2aieuHCcBbgZupRxw/wJ1Rd9H2krUjS5LOHmp0PWfBtuTZq+3eFNkoyTgkNVHnoZu8zOOqoiaXM4jAruzVW/SuENdTbCM8GVpudZfEXb767Klx7Wow6UqJ/Rbkmo4HFn8u70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
-Received: from omf14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 86DB61A02AC;
-	Tue, 17 Mar 2026 16:00:51 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf14.hostedemail.com (Postfix) with ESMTPA id D0DF733;
-	Tue, 17 Mar 2026 16:00:23 +0000 (UTC)
-Date: Tue, 17 Mar 2026 12:00:49 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Vineeth Remanan Pillai <vineeth@bitbyteword.org>
-Cc: Andrii Nakryiko <andrii.nakryiko@gmail.com>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, Peter Zijlstra <peterz@infradead.org>,
- Dmitry Ilvokhin <d@ilvokhin.com>, Masami Hiramatsu <mhiramat@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Jens Axboe <axboe@kernel.dk>,
- io-uring@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, Daniel
- Borkmann <daniel@iogearbox.net>, Marcelo Ricardo Leitner
- <marcelo.leitner@gmail.com>, Xin Long <lucien.xin@gmail.com>, Jon Maloy
- <jmaloy@redhat.com>, Aaron Conole <aconole@redhat.com>, Eelco Chaudron
- <echaudro@redhat.com>, Ilya Maximets <i.maximets@ovn.org>,
- netdev@vger.kernel.org, bpf@vger.kernel.org, linux-sctp@vger.kernel.org,
- tipc-discussion@lists.sourceforge.net, dev@openvswitch.org, Oded Gabbay
- <ogabbay@kernel.org>, Koby Elbaz <koby.elbaz@intel.com>,
- dri-devel@lists.freedesktop.org, "Rafael J. Wysocki" <rafael@kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>, "Gautham R. Shenoy"
- <gautham.shenoy@amd.com>, Huang Rui <ray.huang@amd.com>, Mario Limonciello
- <mario.limonciello@amd.com>, Len Brown <lenb@kernel.org>, Srinivas
- Pandruvada <srinivas.pandruvada@linux.intel.com>, linux-pm@vger.kernel.org,
- MyungJoo Ham <myungjoo.ham@samsung.com>, Kyungmin Park
- <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>,
- Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>, Sumit Semwal
- <sumit.semwal@linaro.org>, linaro-mm-sig@lists.linaro.org, Eddie James
- <eajames@linux.ibm.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, Joel
- Stanley <joel@jms.id.au>, linux-fsi@lists.ozlabs.org, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Alex Deucher
- <alexander.deucher@amd.com>, Danilo Krummrich <dakr@kernel.org>, Matthew
- Brost <matthew.brost@intel.com>, Philipp Stanner <phasta@kernel.org>, Harry
- Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
- amd-gfx@lists.freedesktop.org, Jiri Kosina <jikos@kernel.org>, Benjamin
- Tissoires <bentiss@kernel.org>, linux-input@vger.kernel.org, Wolfram Sang
- <wsa+renesas@sang-engineering.com>, linux-i2c@vger.kernel.org, Mark Brown
- <broonie@kernel.org>, Michael Hennerich <michael.hennerich@analog.com>,
- Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, linux-spi@vger.kernel.org,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K.
- Petersen" <martin.petersen@oracle.com>, linux-scsi@vger.kernel.org, Chris
- Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
- linux-btrfs@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 00/15] tracepoint: Avoid double static_branch evaluation
- at guarded call sites
-Message-ID: <20260317120049.6a60fa88@gandalf.local.home>
-In-Reply-To: <CAO7JXPgHYZ9zF1HFahb2447X85YRZCQQBHB6ihOwKSDtiZi8kQ@mail.gmail.com>
-References: <20260312150523.2054552-1-vineeth@bitbyteword.org>
-	<1e3c2830-765e-4271-89f7-0b6784b37597@efficios.com>
-	<20260312112354.3dd99e36@gandalf.local.home>
-	<219d015d-076b-4c80-8f63-88569115fdad@efficios.com>
-	<20260312114041.5193c729@gandalf.local.home>
-	<1becdbce-2c01-468a-bbab-42b5dea9fdf8@efficios.com>
-	<CAO7JXPjnnruhM5oC6xMgnYaQ9efzYFqMCFiJLNM3HCQ+ZeCiJw@mail.gmail.com>
-	<CAEf4BzbnfyhCqp0ne=2gRnVxp-mdGmuZwDeFRyhRYH+eDcz2-w@mail.gmail.com>
-	<20260312130255.6476e560@gandalf.local.home>
-	<CAO7JXPgHYZ9zF1HFahb2447X85YRZCQQBHB6ihOwKSDtiZi8kQ@mail.gmail.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1773763298; c=relaxed/simple;
+	bh=AWri0f85fFtB3abpuUnYuGybc0M2uT6xMVli4DkCchg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=FWg5WJoybuR/njXtk1XD1NWxecFWWVqP3XI/VCd/XJgLZUw4koInnmiirYFr3zoKLlfLqK/X33N7diHUgEmRmQqouaoAiodL/HHehkael8tDctkODqfTg1rVb/V/pnyTusnrvlVkwK5ZYSBH4pR5mAlSUthVYQ3e0qakyT8CVis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=J1XpSxLp; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="J1XpSxLp"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 156554E42661;
+	Tue, 17 Mar 2026 16:01:35 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id DE17C5FC9A;
+	Tue, 17 Mar 2026 16:01:34 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AC8B710450632;
+	Tue, 17 Mar 2026 17:01:22 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1773763289; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=HhGa/RXAuKajY3CB9WPbpFraNRpSzGcKk0rpLOk9Mjc=;
+	b=J1XpSxLpRI/XD/FmQLEO+CaWSguzlyViJsHQHVtkPzZXXxyWqzxYdr87o9UwbfdjcqZvgC
+	a5x0Tj0JuEECI9PzJCudsKdYuqqrz602RNFGy+359NCnr3GJwnkO57ff8hPvKVcq/j/hrT
+	5uZHOvIN/MtgMBDpfVbrnotteR2IOSYS8OyFVMAa1a6f7AwFOyVaKCJvPskjCs9Njetbqi
+	v4FPrj+WB8Cg/T9L18t3FE1Uf3VEwRrc79RfC1Dygs35MOjd/xv9qJGL5WUKob5kyB5Xan
+	Qjm8dyWubDfbZkgnrygNC51wqdCqdtiiDt2owJcyFZs7N83h/+3udq2sp3S99g==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: eiowgk7zro9iwz8nfcjutbggq8cc8mcu
-X-Rspamd-Server: rspamout08
-X-Rspamd-Queue-Id: D0DF733
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX1/EZ/m41FERFj32TQCYYTyPgc7E7WqasUA=
-X-HE-Tag: 1773763223-363035
-X-HE-Meta: U2FsdGVkX1+o+fNh+z7n3E+PiUwqBZ68nGRwauLM+oVgtgpFs5MonLd3fqHB3rXD6BFYZexukj4pxl1VM45GwWde/4JCtp52s0VQK6pZ4Xqa4tvZvLsT4iKLFRi+KAPOR9ciwGsqu0KypbHl9hRVpw7ii/Socjjk14+RdTNwtL/9W3CF6CygSSKoXB/8hsfV+wEeLIu0+Vu7k1X1TT489JEuNfPyBVCGV+jWtTwa1GJMzmbQZEKNLjPpFlUNh0lxNaKm6XtoF736vhCLAK8SYy2ZwNIf/KDqLxnTevPHb/LrRG7US/kzn6HxPRPvbJNoIgt7v+iuU8ZuIBjndA9wdY4FVl8DtE3i2S6cBnN1WxdJr/SxTYBW2cUmiC+3UkuX
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 17 Mar 2026 17:01:21 +0100
+Message-Id: <DH56LUJ9OPV1.1VVOD6J6PKUHJ@bootlin.com>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Subject: Re: [PATCH net 1/2] net: macb: Move devm_{free,request}_irq() out
+ of spin lock area
+Cc: <netdev@vger.kernel.org>, "Nicolas Ferre" <nicolas.ferre@microchip.com>,
+ "Claudiu Beznea" <claudiu.beznea@tuxon.dev>, "Andrew Lunn"
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, "Vineeth Karumanchi"
+ <vineeth.karumanchi@amd.com>, "Harini Katakam" <harini.katakam@amd.com>,
+ <stable@vger.kernel.org>
+To: "Kevin Hao" <haokexin@gmail.com>, =?utf-8?q?Th=C3=A9o_Lebrun?=
+ <theo.lebrun@bootlin.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260315-macb-irq-v1-0-0154104cbf61@gmail.com>
+ <20260315-macb-irq-v1-1-0154104cbf61@gmail.com>
+ <DH4ER021HKCB.23RHADC1HSCTF@bootlin.com> <abitgDJLgpLiPgap@pek-khao-d3>
+In-Reply-To: <abitgDJLgpLiPgap@pek-khao-d3>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, 13 Mar 2026 10:02:32 -0400
-Vineeth Remanan Pillai <vineeth@bitbyteword.org> wrote:
+On Tue Mar 17, 2026 at 2:25 AM CET, Kevin Hao wrote:
+> On Mon, Mar 16, 2026 at 07:11:34PM +0100, Th=C3=A9o Lebrun wrote:
+>> On Sun Mar 15, 2026 at 12:44 PM CET, Kevin Hao wrote:
+>> > @@ -5962,6 +5962,7 @@ static int __maybe_unused macb_suspend(struct de=
+vice *dev)
+>> >  			/* write IP address into register */
+>> >  			tmp |=3D MACB_BFEXT(IP, be32_to_cpu(ifa->ifa_local));
+>> >  		}
+>> > +		spin_unlock_irqrestore(&bp->lock, flags);
+>> > =20
+>> >  		/* Change interrupt handler and
+>> >  		 * Enable WoL IRQ on queue 0
+>> > @@ -5974,11 +5975,12 @@ static int __maybe_unused macb_suspend(struct =
+device *dev)
+>> >  				dev_err(dev,
+>> >  					"Unable to request IRQ %d (error %d)\n",
+>> >  					bp->queues[0].irq, err);
+>> > -				spin_unlock_irqrestore(&bp->lock, flags);
+>> >  				return err;
+>> >  			}
+>> > +			spin_lock_irqsave(&bp->lock, flags);
+>> >  			queue_writel(bp->queues, IER, GEM_BIT(WOL));
+>> >  			gem_writel(bp, WOL, tmp);
+>> > +			spin_unlock_irqrestore(&bp->lock, flags);
+>> >  		} else {
+>> >  			err =3D devm_request_irq(dev, bp->queues[0].irq, macb_wol_interrup=
+t,
+>> >  					       IRQF_SHARED, netdev->name, bp->queues);
+>> > @@ -5986,13 +5988,13 @@ static int __maybe_unused macb_suspend(struct =
+device *dev)
+>> >  				dev_err(dev,
+>> >  					"Unable to request IRQ %d (error %d)\n",
+>> >  					bp->queues[0].irq, err);
+>> > -				spin_unlock_irqrestore(&bp->lock, flags);
+>> >  				return err;
+>> >  			}
+>> > +			spin_lock_irqsave(&bp->lock, flags);
+>> >  			queue_writel(bp->queues, IER, MACB_BIT(WOL));
+>> >  			macb_writel(bp, WOL, tmp);
+>> > +			spin_unlock_irqrestore(&bp->lock, flags);
+>> >  		}
+>> > -		spin_unlock_irqrestore(&bp->lock, flags);
+>> > =20
+>> >  		enable_irq_wake(bp->queues[0].irq);
+>> >  	}
+>>=20
+>> So it used to be that approximatively the whole macb_suspend() function
+>> was ran under the bp->lock spinlock. Now you split it in two to avoid
+>> calling IRQ functions in atomic context:
+>>  - (1) the disable queues & silence IRQs part and,
+>>  - (2) the enable WOL part (IER and WOL reg writes).
+>>=20
+>> Why do you need to grab bp->lock for the 2nd part? All queues are
+>> disabled anyway and IRQs masked. BH features like our work queues are
+>> disabled during the dev_pm_ops.suspend() calls anyway. Maybe I am
+>> forgetting?
+>
+> You are right. I agree that the lock may not be necessary in this scenari=
+o.
+>
+>> Or this was just out of caution?
+>
+> This is just out of cautious consideration. Do you think I should delete =
+these
+> spinlocks?
 
-> >
-> > Perhaps: call_trace_foo() ?
-> >  
-> call_trace_foo has one collision with the tracepoint
-> sched_update_nr_running and a function
-> call_trace_sched_update_nr_running. I had considered this and later
-> moved to trace_invoke_foo() because of the collision. But I can rename
-> call_trace_sched_update_nr_running to something else if call_trace_foo
-> is the general consensus.
+Nah, after all no one is going to be bothered by those locks that
+almost never happen. They have been here for a while after all. The
+macb_resume() ones as well are probably useless because IRQs are
+disabled.
 
-OK, then lets go with: trace_call__foo()
+Anyway, for this patch:
 
-The double underscore should prevent any name collisions.
+Reviewed-by: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
 
-Does anyone have an objections?
+Thanks,
 
--- Steve
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
