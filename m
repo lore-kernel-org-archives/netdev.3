@@ -1,217 +1,117 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52633264A9D;
-	Tue, 17 Mar 2026 13:31:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9DE2C11C6;
+	Tue, 17 Mar 2026 13:41:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773754268; cv=none; b=KOR1ubEnWamUna0f75DjmXa3b73z9SrxJgIFRbkgYFvkh/iqftjtham4vBxDaJzc2glZ0JRocu0xi8cC5IErJVFbm+MbF179flJKLAp+RBgbSjqWU4SYb5MRBgYNq4Q7yDmaszL3Ei+Y+DpmOQgjO/qIQxy0n+SbqQ2MOBTljsQ=
+	t=1773754906; cv=none; b=AeMe7r8KO+2tuZUk3HoiRIbw8vUEw8Mn9cqk44p+0Esv1UifIsSxxvKQV0O4/PMgXs8WWTOqaKNOqHhkegKQaatNRZdbs3z/SvittAcmoqvUDzbdSmPwayHbgm6K5NQTlyYfRwWD+pYfChtupXprStP8rDTiwQ38TmNH+Dzusbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773754268; c=relaxed/simple;
-	bh=lIWsD2ci2/DmvQPAIxFhRhk/jEMsvah2g+VU1OXqBHM=;
+	s=arc-20240116; t=1773754906; c=relaxed/simple;
+	bh=eitiTD1FHtSBD6EfMhAR7jk5fKmg00swNJqZWk7CXbo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EAm3zKpnH4NXCeDKNHO+I5vzgpps8qKOFqQI5ba05kl29ND7vKpb2/2OliXWXVbDFiqlyhFR9yD/pchfRUyzVpX8/+dtC5biXh4A7xNR6dUaNsljzD2IRzzjPpW4Yv0egxTR42HefeGRzS1E50oDdb+XMpc8xnHsJHTPwEn0bY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q5/D/0lT; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=A/7AVa9JJm03g5nLYtdRQE7PWdkk14XXbiHP1ZIA3iNTS9zMlrH5ZwxazD8kz0FKLsWgoH1g2EOe3T144GpAyysSP1bccR0rlyfzskMSJF/lXsq7KAgWCWmM0GW7RjBzXqbejWoRJbtASq3mCe447RaL/QamZqSkm9rleU7otOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fa72ZgqZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q5/D/0lT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773754266; x=1805290266;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=lIWsD2ci2/DmvQPAIxFhRhk/jEMsvah2g+VU1OXqBHM=;
-  b=Q5/D/0lTKYGdD71rnTyTW4M/Vl/G3CpgrexpdMHX2PKMoE43BxbhSvZY
-   BpTQ2VWMQgtoM3fZW71BD0M/eIEWUDCkukghVSAPmFqA8ZFT/f5I9mnbU
-   wAxsHo2YN6jXt7yVNOmBqg13uxgngPKVM4RZrmKnLqUupPb0crCDYNY8O
-   kNuJl1W3HvF0mZrCdjuFd2HJzciEzuBZhD6yVeoStlKg03QZHnZKmHt3F
-   7D6XS1/nMroNA/Q2KqU+XLPXtrEQWLHl9Px2A6bik3PwM4nOeHPoJcWwV
-   u5I3mHqvMPBhNMpBhEdBe7qQdBI96vx6TsweoRzsgeOaP82eWusL3iMnH
-   Q==;
-X-CSE-ConnectionGUID: Pt13bwh4TK2RyjV9UQMJlg==
-X-CSE-MsgGUID: k14SCLzbT22XwmLWXut9SQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11732"; a="74864521"
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
-   d="scan'208";a="74864521"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 06:31:05 -0700
-X-CSE-ConnectionGUID: tOdRrbAJSgilkEWdhpJ4kw==
-X-CSE-MsgGUID: iW5TAUcCSFynXaZPGd9kSg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
-   d="scan'208";a="222225635"
-Received: from lkp-server01.sh.intel.com (HELO 63737dd503cb) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 17 Mar 2026 06:31:02 -0700
-Received: from kbuild by 63737dd503cb with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w2UVf-000000000Sr-19nC;
-	Tue, 17 Mar 2026 13:30:59 +0000
-Date: Tue, 17 Mar 2026 21:30:00 +0800
-From: kernel test robot <lkp@intel.com>
-To: Adrian Moreno <amorenoz@redhat.com>, netdev@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, Adrian Moreno <amorenoz@redhat.com>,
-	Aaron Conole <aconole@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, dev@openvswitch.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v1] net: openvswitch: decouple flow_table from
- ovs_mutex
-Message-ID: <202603172153.FuWl19zD-lkp@intel.com>
-References: <20260313173114.1220551-1-amorenoz@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fa72ZgqZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7277C4CEF7;
+	Tue, 17 Mar 2026 13:41:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773754906;
+	bh=eitiTD1FHtSBD6EfMhAR7jk5fKmg00swNJqZWk7CXbo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Fa72ZgqZxl/KHHVKHPeg7mCKPavM+rFoBmIwUcJ/kPpYmJ/WJmopN4oiq1DL/XXl8
+	 HZgtqs/y6ZBCzG1C5jhvivFMsrwr6xlnzbyRo/9WTcoL1Obb5073HgCEA0oGkMlJXU
+	 Uw6Yq3WgbnCCwb/IjIXurnPm4gVuoRpUYEV0N9rAzuaMCSxtzyhQnsMe/Avg8KSr65
+	 JLZ6k5px9c1XsdW0Mdil3pxc376NbhgrYHaGKDrgArqHy/xeQ31X7ku8ISt7YHB+Yh
+	 sFtHAkQH/XOElsXjgPl5KQvokzFbortEkTLGWdL6bBSrsH36siCpILOWQGLtzUR1dC
+	 kR4q62TRY1xSA==
+Date: Tue, 17 Mar 2026 15:41:41 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Jianzhou Zhao <luckd0g@163.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Mark Bloch <mbloch@nvidia.com>, Edward Srouji <edwards@nvidia.com>,
+	Or Har-Toov <ohartoov@nvidia.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Maher Sanalla <msanalla@nvidia.com>,
+	Yishai Hadas <yishaih@nvidia.com>, Kees Cook <kees@kernel.org>,
+	Jang Ingyu <ingyujang25@korea.ac.kr>,
+	Moni Shoua <monis@mellanox.com>, Doug Ledford <dledford@redhat.com>,
+	Christian Benvenuti <benve@cisco.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Yuval Shaia <yuval.shaia@oracle.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v1] IB/core: Fix use-after-free of ipvlan phy_dev in
+ ib_get_eth_speed
+Message-ID: <20260317134141.GY61385@unreal>
+References: <20260311100313.284589-1-jiayuan.chen@linux.dev>
+ <20260316162909.GG61385@unreal>
+ <07b0ee06-aae7-4c48-8ac6-503ee8f8ea63@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260313173114.1220551-1-amorenoz@redhat.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <07b0ee06-aae7-4c48-8ac6-503ee8f8ea63@linux.dev>
 
-Hi Adrian,
+On Tue, Mar 17, 2026 at 05:48:55PM +0800, Jiayuan Chen wrote:
+> 
+> On 3/17/26 12:29 AM, Leon Romanovsky wrote:
+> > On Wed, Mar 11, 2026 at 06:03:08PM +0800, Jiayuan Chen wrote:
+> > > From: Jiayuan Chen <jiayuan.chen@shopee.com>
+> > > 
+> > > Jianzhou Zhao reported a NULL pointer dereference in
+> > > __ethtool_get_link_ksettings [1]. The root cause is a use-after-free
+> > > of ipvlan->phy_dev.
+> > > 
+> > > In ib_get_eth_speed(), ib_device_get_netdev() obtains a reference to the
+> > > ipvlan device outside of rtnl_lock(). This creates a race window: between
+> > > ib_device_get_netdev() and rtnl_lock(), the underlying phy_dev (e.g. a
+> > > dummy device) can be unregistered and freed by another thread.
+> > If ib_device_get_netdev() worked as it was supposed to work, it can't.
+> > That function grabs reference on netdev and returns or netdev with elevated
+> > reference counter which can't be freed or returns NULL.
+> > 
+> > Thanks
+> > 
+> 
+> ipvlan's phy_dev is safe in the data path — TX/RX runs in softirq
+> context with RCU protection, no lock needed per packet.
+> 
+> The issue here is in the control path. __ethtool_get_link_ksettings()
+> requires rtnl_lock() — all existing ethtool callers follow this:
+> 
+> - ioctl path: rtnl_lock() is taken first, then __dev_get_by_name()
+> looks up the dev without even holding a refcnt — relying entirely
+> on RTNL for safety. (net/ethtool/ioctl.c:3571, 3249)
+> - netlink path: dev is looked up with refcnt first, but the actual
+> ethtool ops run under rtnl_lock(). (net/ethtool/netlink.c:527-533)
+> 
+> Under RTNL, phy_dev cannot disappear because phy_dev unregistration
+> triggers NETDEV_UNREGISTER which deletes ipvlan first — all within
+> the same RTNL context. That's why no virtual netdev driver (ipvlan,
+> macvlan, bond, etc.) holds an extra refcnt on the lower dev in its
+> ethtool callbacks.
+> 
+> ib_get_eth_speed() calls __ethtool_get_link_ksettings() under
+> rtnl_lock(), but obtains the netdev before it. Moving the lookup
+> inside rtnl_lock() makes the netdev resolution and ethtool call
+> atomic w.r.t. device unregistration, consistent with how ethtool's
+> own paths work.
 
-kernel test robot noticed the following build warnings:
+Please reread my earlier response and explain how an ipvlan device can
+disappear immediately after a successful call to ib_device_get_netdev().
 
-[auto build test WARNING on net-next/main]
+Thanks
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Adrian-Moreno/net-openvswitch-decouple-flow_table-from-ovs_mutex/20260314-152511
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20260313173114.1220551-1-amorenoz%40redhat.com
-patch subject: [PATCH net-next v1] net: openvswitch: decouple flow_table from ovs_mutex
-config: arm-randconfig-r132-20260317 (https://download.01.org/0day-ci/archive/20260317/202603172153.FuWl19zD-lkp@intel.com/config)
-compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project f46a5153850c1303d687233d4adf699b01041da8)
-sparse: v0.6.5-rc1
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260317/202603172153.FuWl19zD-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603172153.FuWl19zD-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
->> net/openvswitch/datapath.c:2016:28: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct flow_table *table @@     got struct flow_table [noderef] __rcu *table @@
-   net/openvswitch/datapath.c:2016:28: sparse:     expected struct flow_table *table
-   net/openvswitch/datapath.c:2016:28: sparse:     got struct flow_table [noderef] __rcu *table
-
-vim +2016 net/openvswitch/datapath.c
-
-  1913	
-  1914	static int ovs_dp_cmd_new(struct sk_buff *skb, struct genl_info *info)
-  1915	{
-  1916		struct nlattr **a = info->attrs;
-  1917		struct flow_table *table;
-  1918		struct vport_parms parms;
-  1919		struct sk_buff *reply;
-  1920		struct datapath *dp;
-  1921		struct vport *vport;
-  1922		struct ovs_net *ovs_net;
-  1923		int err;
-  1924	
-  1925		err = -EINVAL;
-  1926		if (!a[OVS_DP_ATTR_NAME] || !a[OVS_DP_ATTR_UPCALL_PID])
-  1927			goto err;
-  1928	
-  1929		reply = ovs_dp_cmd_alloc_info();
-  1930		if (!reply)
-  1931			return -ENOMEM;
-  1932	
-  1933		err = -ENOMEM;
-  1934		dp = kzalloc_obj(*dp);
-  1935		if (dp == NULL)
-  1936			goto err_destroy_reply;
-  1937	
-  1938		ovs_dp_set_net(dp, sock_net(skb->sk));
-  1939	
-  1940		/* Allocate table. */
-  1941		table = ovs_flow_tbl_alloc();
-  1942		if (IS_ERR(table)) {
-  1943			err = PTR_ERR(table);
-  1944			goto err_destroy_dp;
-  1945		}
-  1946		rcu_assign_pointer(dp->table, table);
-  1947	
-  1948		err = ovs_dp_stats_init(dp);
-  1949		if (err)
-  1950			goto err_destroy_table;
-  1951	
-  1952		err = ovs_dp_vport_init(dp);
-  1953		if (err)
-  1954			goto err_destroy_stats;
-  1955	
-  1956		err = ovs_meters_init(dp);
-  1957		if (err)
-  1958			goto err_destroy_ports;
-  1959	
-  1960		/* Set up our datapath device. */
-  1961		parms.name = nla_data(a[OVS_DP_ATTR_NAME]);
-  1962		parms.type = OVS_VPORT_TYPE_INTERNAL;
-  1963		parms.options = NULL;
-  1964		parms.dp = dp;
-  1965		parms.port_no = OVSP_LOCAL;
-  1966		parms.upcall_portids = a[OVS_DP_ATTR_UPCALL_PID];
-  1967		parms.desired_ifindex = nla_get_s32_default(a[OVS_DP_ATTR_IFINDEX], 0);
-  1968	
-  1969		/* So far only local changes have been made, now need the lock. */
-  1970		ovs_lock();
-  1971	
-  1972		err = ovs_dp_change(dp, a);
-  1973		if (err)
-  1974			goto err_unlock_and_destroy_meters;
-  1975	
-  1976		vport = new_vport(&parms);
-  1977		if (IS_ERR(vport)) {
-  1978			err = PTR_ERR(vport);
-  1979			if (err == -EBUSY)
-  1980				err = -EEXIST;
-  1981	
-  1982			if (err == -EEXIST) {
-  1983				/* An outdated user space instance that does not understand
-  1984				 * the concept of user_features has attempted to create a new
-  1985				 * datapath and is likely to reuse it. Drop all user features.
-  1986				 */
-  1987				if (info->genlhdr->version < OVS_DP_VER_FEATURES)
-  1988					ovs_dp_reset_user_features(skb, info);
-  1989			}
-  1990	
-  1991			goto err_destroy_portids;
-  1992		}
-  1993	
-  1994		err = ovs_dp_cmd_fill_info(dp, reply, info->snd_portid,
-  1995					   info->snd_seq, 0, OVS_DP_CMD_NEW);
-  1996		BUG_ON(err < 0);
-  1997	
-  1998		ovs_net = net_generic(ovs_dp_get_net(dp), ovs_net_id);
-  1999		list_add_tail_rcu(&dp->list_node, &ovs_net->dps);
-  2000	
-  2001		ovs_unlock();
-  2002	
-  2003		ovs_notify(&dp_datapath_genl_family, reply, info);
-  2004		return 0;
-  2005	
-  2006	err_destroy_portids:
-  2007		kfree(rcu_dereference_raw(dp->upcall_portids));
-  2008	err_unlock_and_destroy_meters:
-  2009		ovs_unlock();
-  2010		ovs_meters_exit(dp);
-  2011	err_destroy_ports:
-  2012		kfree(dp->ports);
-  2013	err_destroy_stats:
-  2014		free_percpu(dp->stats_percpu);
-  2015	err_destroy_table:
-> 2016		ovs_flow_tbl_put(dp->table);
-  2017	err_destroy_dp:
-  2018		kfree(dp);
-  2019	err_destroy_reply:
-  2020		kfree_skb(reply);
-  2021	err:
-  2022		return err;
-  2023	}
-  2024	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> 
+> 
+> Thanks
+> 
+> 
