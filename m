@@ -1,43 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17EA02BCF68;
-	Tue, 17 Mar 2026 09:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B877C314D1E;
+	Tue, 17 Mar 2026 09:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773739634; cv=none; b=r45kKqMpKj2KERunRY0Ri53RcocJv+3b1bDBcaeZCoqqYC62O+qNolL/uMCcK/HiPtzeDPJU0oxmiGKQqblmktW7W+xqf49GPhtEvEaRbZnDeQ6RGmVLRbRo1eVAHRuNDTczYp4WwDMnNNtFkIq2oFVM9EtzH0OUg9hd55Gp4Vg=
+	t=1773739849; cv=none; b=Nqc3J211zrojT2cY/fR0QYeurO6tUCFs8uo6TvDHcXALJl3X4kw5gZ1Yl8jO/2G/clrTrj4ojwbAJwyqMr7hSW7F98zHAM6LywXXRaannfLOKgHGv98YdxqfTE+cj42RISnf3kSY+meLBuz4NFJ/qSS6UZQnrhKds/mP+GSbO+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773739634; c=relaxed/simple;
-	bh=46E2SlrKDMjiwhogUjCXQSWTkXudOZYJWyeylVxGdzs=;
+	s=arc-20240116; t=1773739849; c=relaxed/simple;
+	bh=Tw/rnTLYKS4Urzz+msvBuIWHlyg5TGSnKFRnFbTTRtk=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Haz/EFn5j44g/vnoIs020y66ArhUdpiDAj2foihIbcjzLRLECS7Qjin0swJa99vsP60Z6PpcAWqOG0c0SCQIB3c9VnFx3Ycje4QfcGyQIkK9g6WITfxr0M9InIz3pnyoA84lZX0HU8y3sRzHfrEiCkkugG1pD2MdytDCv8YCFiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qsaTgQwK; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=O9FO2YufYxHOk0FSJz862kAY+pH0nCBGPewhbtONmC2T0lYEc/Cu91YO09ufpbNW8fIQ3mgqHkzW3DKTLqlKtdhbfkmOZV/xbl3eGBEK7h+QygevmGI0Ysk96RC6H81I1b6OOeG3hCNcNTLSI97acXARv/KGjUPUo7hSxgeiUXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y0DB0rAa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qsaTgQwK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41523C4CEF7;
-	Tue, 17 Mar 2026 09:27:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y0DB0rAa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0FF0C2BC9E;
+	Tue, 17 Mar 2026 09:30:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773739633;
-	bh=46E2SlrKDMjiwhogUjCXQSWTkXudOZYJWyeylVxGdzs=;
+	s=k20201202; t=1773739849;
+	bh=Tw/rnTLYKS4Urzz+msvBuIWHlyg5TGSnKFRnFbTTRtk=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=qsaTgQwKxteJBbOmGDC6tJd5agwejIg80OIKBYudI9qwW5FbG98DhwvxV2RnQbUgM
-	 L3y3zTQC6HIFBmd53i5VB+PAv36z5qI+7LqtxvajF/q9I+jyQkg1KlyaOspG2NBctW
-	 jpmTQV8TaN8gmhHnNOljwmzKnT4OJECzdOPq9cUVB0qdtf/TuyzXnedgVg3C3+pQ+1
-	 FacJ2h52az4Me/ogl5LZYh5BCiX73lFOa94oE1xqKSCYmgEohN8Xn9R9IPtVJnRXMg
-	 ei5mqurfEI94uqOapIBSSCm4OaVKwTsD04xnJiExBbm23VYpTsN1duSjvH02n+FBK8
-	 Sowq8ccshIavg==
+	b=Y0DB0rAaK/nP2tGp/3BWOGWaGpnu1esqxrZ9Xmx2hDORUdO/zh7PYmlXU1Z8bac3a
+	 6GFZT1pHRrKkQ3rJ2ywlWidJKJKtvmBV/XmuUjQ7+tm/KPNzZHl32OkDYEd2GUeQ0H
+	 ej6os3egWujB1lD/9SG/g1tQdrumN92G+5SNjrb0wZ46ncnTLLNCDGyuTBmNKOF3/N
+	 BQHJWey5FUj0g0oRmad6FnhcmSipwv8d+h2YpI3fBfUIucS+DwnSC+A8/FO96kwvm0
+	 6dDHCSnEYilyjKaKtJiqtWH4m6NYlq9goHtA0I3Tf/DgMxJlC5Lx3x72e3PEc9u/G3
+	 tqk9tS7I2QkSA==
 From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
 To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>, netdev@vger.kernel.org
 Cc: bpf@vger.kernel.org, magnus.karlsson@intel.com, stfomichev@gmail.com,
  kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
  larysa.zaremba@intel.com, aleksander.lobakin@intel.com, Maciej Fijalkowski
  <maciej.fijalkowski@intel.com>
-Subject: Re: [PATCH net 5/6] selftests: bpf: fix pkt grow tests
-In-Reply-To: <20260316174550.462177-6-maciej.fijalkowski@intel.com>
+Subject: Re: [PATCH net 4/6] xsk: validate MTU against usable frame size on
+ bind
+In-Reply-To: <20260316174550.462177-5-maciej.fijalkowski@intel.com>
 References: <20260316174550.462177-1-maciej.fijalkowski@intel.com>
- <20260316174550.462177-6-maciej.fijalkowski@intel.com>
-Date: Tue, 17 Mar 2026 10:27:11 +0100
-Message-ID: <87v7euq00g.fsf@all.your.base.are.belong.to.us>
+ <20260316174550.462177-5-maciej.fijalkowski@intel.com>
+Date: Tue, 17 Mar 2026 10:30:46 +0100
+Message-ID: <87qzpipzuh.fsf@all.your.base.are.belong.to.us>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,52 +49,57 @@ Content-Type: text/plain
 
 Maciej Fijalkowski <maciej.fijalkowski@intel.com> writes:
 
-> Skip tail adjust tests in xskxceiver for SKB mode as it is not very
-> friendly for it. multi-buffer case does not work as xdp_rxq_info that is
-> registered for generic XDP does not report ::frag_size. The non-mbuf
-> path copies packet via skb_pp_cow_data() which only accounts for
-> headroom, leaving us with no tailroom and causing underlying XDP prog to
-> drop packets therefore.
+> AF_XDP bind currently accepts zero-copy pool configurations without
+> verifying that the device MTU fits into the usable frame space provided
+> by the UMEM chunk.
 >
-> For multi-buffer test on other modes, change the amount of bytes we use
-> for growth, assume worst-case scenario and take care of headroom and
-> tailroom.
+> This becomes a problem since we started to respect tailroom which is
+> subtracted from chunk_size (among with headroom). 2k chunk size might
+> not provide enough space for standard 1500 MTU, so let us catch such
+> settings at bind time.
+>
+> This prevents creating an already-invalid setup and complements the
+> MTU change restriction for devices with an attached XSK pool.
 >
 > Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 > ---
->  .../selftests/bpf/prog_tests/test_xsk.c       | 21 ++++++++++++++++---
->  1 file changed, 18 insertions(+), 3 deletions(-)
+>  net/xdp/xsk_buff_pool.c | 13 +++++++++++--
+>  1 file changed, 11 insertions(+), 2 deletions(-)
 >
-> diff --git a/tools/testing/selftests/bpf/prog_tests/test_xsk.c b/tools/testing/selftests/bpf/prog_tests/test_xsk.c
-> index 7e38ec6e656b..a496f1784b66 100644
-> --- a/tools/testing/selftests/bpf/prog_tests/test_xsk.c
-> +++ b/tools/testing/selftests/bpf/prog_tests/test_xsk.c
-> @@ -2551,16 +2551,31 @@ int testapp_adjust_tail_shrink_mb(struct test_spec *test)
->  
->  int testapp_adjust_tail_grow(struct test_spec *test)
+> diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
+> index 2cfc19e363e3..0a6d76df97dc 100644
+> --- a/net/xdp/xsk_buff_pool.c
+> +++ b/net/xdp/xsk_buff_pool.c
+> @@ -157,6 +157,7 @@ static void xp_disable_drv_zc(struct xsk_buff_pool *pool)
+>  int xp_assign_dev(struct xsk_buff_pool *pool,
+>  		  struct net_device *netdev, u16 queue_id, u16 flags)
 >  {
-> +	if (test->mode == TEST_MODE_SKB)
-> +		return TEST_SKIP;
-> +
->  	/* Grow by 4 bytes for testing purpose */
->  	return testapp_adjust_tail(test, 4, MIN_PKT_SIZE * 2);
->  }
+> +	bool mbuf = flags & XDP_USE_SG;
+>  	bool force_zc, force_copy;
+>  	struct netdev_bpf bpf;
+>  	int err = 0;
+> @@ -178,7 +179,7 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
+>  	if (err)
+>  		return err;
 >  
->  int testapp_adjust_tail_grow_mb(struct test_spec *test)
->  {
-> +	u32 grow_size;
-> +
-> +	if (test->mode == TEST_MODE_SKB)
-> +		return TEST_SKIP;
-> +
-> +	/* worst case scenario is when underlying setup will work on 3k
-> +	 * buffers, let us account for it; given that we will use 6k as
-> +	 * pkt_len, expect that it will be broken down to 2 descs each
-> +	 * with 3k payload;
-> +	 *
-> +	 * 4k is truesize, 3k payload, 256 HR, 320 TR;
-> +	 */
-> +	grow_size = XSK_UMEM__MAX_FRAME_SIZE - XSK_UMEM__LARGE_FRAME_SIZE - 256 - 320;
+> -	if (flags & XDP_USE_SG)
+> +	if (mbuf)
+>  		pool->umem->flags |= XDP_UMEM_SG_FLAG;
+>  
+>  	if (flags & XDP_USE_NEED_WAKEUP)
+> @@ -200,11 +201,19 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
+>  		goto err_unreg_pool;
+>  	}
+>  
+> -	if (netdev->xdp_zc_max_segs == 1 && (flags & XDP_USE_SG)) {
+> +	if (netdev->xdp_zc_max_segs == 1 && mbuf) {
+>  		err = -EOPNOTSUPP;
+>  		goto err_unreg_pool;
+>  	}
+>  
+> +	if (!mbuf) {
+> +		if (netdev->mtu + netdev->hard_header_len >
+> +				xsk_pool_get_rx_frame_size(pool)) {
+> +			err = -EOPNOTSUPP;
 
-nit: Use defines, XDP_PACKET_HEADROOM, and maybe
-SKB_DATA_ALIGN(sizeof(struct skb_shared_info))?
+Hmm, EINVAL?
