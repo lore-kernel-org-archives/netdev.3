@@ -1,59 +1,83 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F92D2D7DF3;
-	Tue, 17 Mar 2026 23:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BAC83F7AAA;
+	Tue, 17 Mar 2026 23:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773788990; cv=none; b=FemcwoIbciK8uh/Haw/t59Hpv2TZFhZyYzgZbUaxWY7zPhKjJ2o3fXLjrQrYtPCSgYdWgDdB1N6ZIBKsCZGglvt+VOQzM0FM+tDKOznvwhMJ+EbfgQiHpml5WlY0Nv/Fuxi4litMUCt3Ftfn7aeXv2/8Zfxb651QIStBbXp99KE=
+	t=1773789013; cv=none; b=MlLkJ5jngGvB6vWVZeSQaET1GJUphOI3e7B/glXdol1h+djmTcP7SRB/rnNzBP7KHCtEQb32L5+WuzJCctYUPJWFmJBh9ZyN+J9K29E2X6HOay4KZNu6buzPbiYwHIG81EUpAiv3cV4q24Q7CRGpp56KZS1i3Q/80HZYYumGGL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773788990; c=relaxed/simple;
-	bh=iC20zC/9D2U2kbeHwnm4GeZrbhM0rOArXLQNcEKTaEk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uZ0D+QT/9wE58jw82BPDiNmyL6fZ5SrK0oLWRjJOJu2tcIqQhuZ5MAsHYQQK7ubBMsfIU/hrleQPATxsXJiBMsYBKpLfa5HpV92G2lSFs7qz8l2knLm7Y2BwMHqykfxtMPwBj97nJMe+GJ9y/VQs6CAFM32AgkM9Dil1IcBQqh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YxqlXgul; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773789013; c=relaxed/simple;
+	bh=FRAR6S4Hyp36XlMC28mVMMAk5b3y1RKCHudTeTq665Y=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=PTyUZTfOgSsZPGafi/eKM3cgymlivh29Fe4i3WM0alTmxkyIiE3vdRBYCO+Vt9/T1VjX3UIDmfotcCmb85ARsH7r7kR3St/z5ndVPwJAjYcET6I/CMr0Xnd4XZdJasBdhFLLb1YAK3rpB8lHYhy4vCgGV12EbxNUDJ1TNKqg9iI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t3q9VPtV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YxqlXgul"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA22EC4CEF7;
-	Tue, 17 Mar 2026 23:09:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t3q9VPtV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 322A8C4CEF7;
+	Tue, 17 Mar 2026 23:10:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773788990;
-	bh=iC20zC/9D2U2kbeHwnm4GeZrbhM0rOArXLQNcEKTaEk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YxqlXgulEx/NSJxOOYUI53/0UcSZaX5txvgdzIuDJk0DC8FStWgSCbLIkI+ie7QZO
-	 Q15U+OsdaNEQkRaLV1lbgdDyu5oIqaT3cfToosl0LSisg/VD68cBR7eYhx3YmMnPTt
-	 740NQVTW113gVfklFGt05lM7A780XGZkQGXQkulWkmfVqZR+VweSKgD8dgnOA4Vlzn
-	 Z92Q1YNJRYwaiPva+bpx4yg4kXtaBdR/7ffh9fvxvuuO7qiBDNWzIRvj9D5EokEVC2
-	 oT2S9ZgtP18k+3qLUIrhrsRbh5fw8p6fgoXf2KfuCc1+5zInDC5VvdcXnJLHYmE/hk
-	 XHQAraCWgejjA==
-Date: Tue, 17 Mar 2026 16:09:48 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: donald.hunter@gmail.com
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- shuah@kernel.org, sdf@fomichev.me, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next] tools: ynl: rework policy access to support
- recursion
-Message-ID: <20260317160948.5a358df0@kernel.org>
-In-Reply-To: <20260313232047.2068518-1-kuba@kernel.org>
-References: <20260313232047.2068518-1-kuba@kernel.org>
+	s=k20201202; t=1773789013;
+	bh=FRAR6S4Hyp36XlMC28mVMMAk5b3y1RKCHudTeTq665Y=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=t3q9VPtV6deKsA7mefx6ca2YeiNCz+KnZ/G8V6YR/kDy7YaA9k6Av4NjVQv2Nf9UT
+	 Aku79GOIblJv3wPI50WiNkTYD6yDuMOBOTBXl9EbVLsU6saFxCSwUuQB53cPJpmNJP
+	 lhwOjG1IVYae3QEOrUdkF6Mmjxw80MSQ16QzU5rQh50pZVrI4ksw+wtJaHFgwJTSWo
+	 9KcQrclENSFIDatrU2lcVc83UEbU35CO4cB0hxRqar8de6E2qX+H2eY5oHsAiGlE/i
+	 Qqr64lsG+8+xFkrmbURMuzzgg8SoB/U3QlBSSS3qB7hPCOU1951Rvmq7gMIa8vDkgm
+	 sIARGQLxJRFjA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7D0413808200;
+	Tue, 17 Mar 2026 23:10:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3] bnxt_en: fix OOB access in DBG_BUF_PRODUCER async
+ event handler
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177378900504.50160.13928308847780304464.git-patchwork-notify@kernel.org>
+Date: Tue, 17 Mar 2026 23:10:05 +0000
+References: 
+ <SYBPR01MB7881A253A1C9775D277F30E9AF42A@SYBPR01MB7881.ausprd01.prod.outlook.com>
+In-Reply-To: 
+ <SYBPR01MB7881A253A1C9775D277F30E9AF42A@SYBPR01MB7881.ausprd01.prod.outlook.com>
+To: Junrui Luo <moonafterrain@outlook.com>
+Cc: michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, shruti.parab@broadcom.com,
+ hongguang.gao@broadcom.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, danisjiang@gmail.com, stable@vger.kernel.org
 
-On Fri, 13 Mar 2026 16:20:47 -0700 Jakub Kicinski wrote:
-> Donald points out that the current naive implementation using dicts
-> breaks if policy is recursive (child nest uses policy idx already
-> used by its parent).
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Sat, 14 Mar 2026 17:41:04 +0800 you wrote:
+> The ASYNC_EVENT_CMPL_EVENT_ID_DBG_BUF_PRODUCER handler in
+> bnxt_async_event_process() uses a firmware-supplied 'type' field
+> directly as an index into bp->bs_trace[] without bounds validation.
 > 
-> Lean more into the NlPolicy class. This lets us "render" the policy
-> on demand, when user accesses it. If someone wants to do an infinite
-> walk that's on them :) Show policy info as attributes of the class
-> and use dict format to descend into sub-policies for extra neatness.
+> The 'type' field is a 16-bit value extracted from DMA-mapped completion
+> ring memory that the NIC writes directly to host RAM. A malicious or
+> compromised NIC can supply any value from 0 to 65535, causing an
+> out-of-bounds access into kernel heap memory.
+> 
+> [...]
 
-Hi Donald, you promised to take a look when officially posted?
+Here is the summary with links:
+  - [net,v3] bnxt_en: fix OOB access in DBG_BUF_PRODUCER async event handler
+    https://git.kernel.org/netdev/net/c/64dcbde7f8f8
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
