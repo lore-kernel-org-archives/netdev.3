@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1999D3C13E3;
-	Tue, 17 Mar 2026 12:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A655C3BF680;
+	Tue, 17 Mar 2026 12:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773751213; cv=none; b=DLbOuAlgIeIX6pd6R1kSBqspBF4rLdUOOsNypj/XMKu7M83fXBOzGLP2T2TrEc3CUu4yQr+KtdZU8PoerD1Lim0GOr3Sd4M4aynxzGDGh1/dOeSuCKEZO9jFs48a6InvZikQjaeVtmr8V+gXDBKJBhtEr+scKXmtXuVeDIXRo0Q=
+	t=1773751226; cv=none; b=m18CNCHCK1IgC7m83vQC7ZOxp1bm6F6H1CH8Ygbh4cZnbgQ13ebfvoewNlLiZINDygP++4/Ts3ZJUAyTfm7zE9372VZbdiW9ofrbA987pTJx+mXBP+mcskDBuqQFhWV4RDnDEwT1d8HHVB3HRp1cwl5MJlIqQBYcbnGDG8B9dfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773751213; c=relaxed/simple;
-	bh=f9aCgqHc9Z9hg9SrBPxyGVP85yvakfMAePswxE1Hw3U=;
+	s=arc-20240116; t=1773751226; c=relaxed/simple;
+	bh=2qeHWhAoF0G156DYTY3GFY5qLC4Mm2k2zxKaDF4DXlM=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=SQz4WBeLkaoiES5z7mnTDRrftSdmTUqQciCKHRynai/p65GYf5qKEah2exh/2bTar9SLKY8LQj0ZLkBsw+s5azGCxeckD4/QD/CSbRGC4NwkdMXEVnTAcM8tK+O9DdM92R5e8ubkl8XSrjslBXxxHfbODTjReFOHY2lppgIrfDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L/ZcJhsB; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=bVnz/BxGffUcP5bWQE7spYue3Cbclx+921sMMJuYyxoe6aH7cWxEiUZwRNvwPmNqp+LLRAwJva/l+pvHuVji2AAtRkaHJTqo8ahAIJGzRLlUdoqAF/IuqPw1ZA83arQEZqUoZ5JJt0S9K8xbyb1iAUWDltK/OKftsAMUBI29Tnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FVcRrCPC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L/ZcJhsB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F4D2C4CEF7;
-	Tue, 17 Mar 2026 12:40:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FVcRrCPC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5836FC19425;
+	Tue, 17 Mar 2026 12:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773751212;
-	bh=f9aCgqHc9Z9hg9SrBPxyGVP85yvakfMAePswxE1Hw3U=;
+	s=k20201202; t=1773751226;
+	bh=2qeHWhAoF0G156DYTY3GFY5qLC4Mm2k2zxKaDF4DXlM=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=L/ZcJhsBey9Q0LnENoBjq4x1RHPgt/AiAL7UyV8IdcXyvV+OXfkhAVE2WJokDfibL
-	 7TDLqTutmTdxFsapZEuZ4vNJ+wJaAUnQUUiwhA6K3UgaHFq5lPEoytP5gbsiysQDM3
-	 J+gnJHmaX9mj/flcaDdMwOlUYrpLcSvuP6on761GaKVfqeQtwKgrAgFrWSadqG6ObV
-	 e21Lm+y1hGn7HqfjOgFkECVOtenoHE1zPbYaTcxFVBkZBpO5i8N+mZ+rnRszflTxIh
-	 aMrEMvhGkbBCGkd6PP06NBcYlO6HWAkJbcx5sKJciqQCo9gKrrqVKGHy9ElowqgtS7
-	 qkDkGAqVFXTzQ==
+	b=FVcRrCPCUXFqqM64gJVNBGDGZe4EARMgrXUgylvwoEgmE97NgoxXVkfKdGRzyj7C6
+	 zXaA9WisVCcDrbwhbByUXfTfRQENmwXlUWy0YZmFM7pbyYxq9CHh6aUvLpNt40s9bL
+	 c3VCbqAX/uIpS4qoVeVjVhUucv7SzCRCitHWWTae2fpqw7WzXIlo4L64KWkaKymtvO
+	 ShtZ0yyNc3XUi058oT9pT83kEa9MESxZMtrRwUkOZIMX8NJ9WJEoiiOagtoxPpy2Rh
+	 pFksavG+dBbHAVncNTEZ9k4GGLiQ5tmD5oWsE0Jl6HZF9WrtozxP5J7ydpSmOlhV/c
+	 dvNOLznkRIC8Q==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FE9D3808200;
-	Tue, 17 Mar 2026 12:40:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02F2A3808200;
+	Tue, 17 Mar 2026 12:40:20 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,45 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: usb: aqc111: Do not perform PM inside suspend
- callback
+Subject: Re: [PATCH net-next v3 0/3] Initial support for PIC64-HPSC/HX
+ Ethernet
+ endpoint
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177375120504.3601019.8300848005217374464.git-patchwork-notify@kernel.org>
-Date: Tue, 17 Mar 2026 12:40:05 +0000
-References: <20260313141643.1181386-1-zlatistiv@gmail.com>
-In-Reply-To: <20260313141643.1181386-1-zlatistiv@gmail.com>
-To: Nikola Z. Ivanov <zlatistiv@gmail.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, enelsonmoore@gmail.com, kees@kernel.org,
- oneukum@suse.com, n.zhandarovich@fintech.ru, linux-usb@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, dbezrukov@marvell.com,
- irusskikh@marvell.com, syzbot+48dc1e8dfc92faf1124c@syzkaller.appspotmail.com
+ <177375121878.3601019.14341430328492652693.git-patchwork-notify@kernel.org>
+Date: Tue, 17 Mar 2026 12:40:18 +0000
+References: <20260313140610.3681752-1-charles.perry@microchip.com>
+In-Reply-To: <20260313140610.3681752-1-charles.perry@microchip.com>
+To: Charles Perry <charles.perry@microchip.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, nicolas.ferre@microchip.com,
+ claudiu.beznea@tuxon.dev, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net-next.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Fri, 13 Mar 2026 16:16:43 +0200 you wrote:
-> syzbot reports "task hung in rpm_resume"
+On Fri, 13 Mar 2026 07:06:07 -0700 you wrote:
+> Hello,
 > 
-> This is caused by aqc111_suspend calling
-> the PM variant of its write_cmd routine.
-> 
-> The simplified call trace looks like this:
+> This series add basic support for Microchip "PIC64-HPSC" and "PIC64HX"
+> Ethernet endpoint. Both SoCs contain 4 GEM IP with support for
+> MII/RGMII/SGMII/USXGMII at rates of 10M to 10G. Only RGMII and SGMII at a
+> rate of 1G is tested for now. Each GEM IP has 8 priority queues and the
+> revision register reads 0x220c010e.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] net: usb: aqc111: Do not perform PM inside suspend callback
-    https://git.kernel.org/netdev/net/c/069c8f5aebe4
+  - [net-next,v3,1/3] dt-bindings: net: cdns,macb: add a compatible for Microchip pic64hpsc
+    https://git.kernel.org/netdev/net-next/c/63e9d434ddc8
+  - [net-next,v3,2/3] net: macb: add safeguards for jumbo frame larger than 10240
+    https://git.kernel.org/netdev/net-next/c/363a99af19a7
+  - [net-next,v3,3/3] net: macb: add support for Microchip pic64hpsc ethernet endpoint
+    https://git.kernel.org/netdev/net-next/c/f45797fe02df
 
 You are awesome, thank you!
 -- 
