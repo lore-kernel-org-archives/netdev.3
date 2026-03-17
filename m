@@ -1,153 +1,134 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013013.outbound.protection.outlook.com [40.93.201.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF20430AAB3
-	for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 08:51:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773737498; cv=none; b=bCv56pLYR0VAWf42fKLJW1I6cEuOnAWQ10WmG/z6G3sAcYe4kJGbWiJHbJu6verh+cedA15XjjfQZaL+w4PDVdp6Zj7F5VrN3crjuVZ1dRjr8HKLStdpBhYK6pYQdUHv4xCjFIqzAws5GmXjG+wdEWg+yjBs0cA9pHNi2JRRugE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773737498; c=relaxed/simple;
-	bh=4QgBtB8A9KYHumYiqPxwg3Mhj07QBFZK+AfRokd9Gas=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QKxsiwIIW0sXVs39N34hweZaYEncNnGx31YvnktsJu4rdYDLAZ0IkBEMYvPBaPab/gdCtFOwybSKnFITSuabe//jKhErh3scbhWTq/U1EUT3M6oWVFiYgALMRwOYOJsG37+FL70OqpJFbz7HAOxKr5zdEX0TXEtWFcnEOATS8EM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ASZ/MVVe; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=iCClEhJU; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ASZ/MVVe";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="iCClEhJU"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62H5hw9R1042729
-	for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 08:51:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	IxITSj4z8OO1NrLzEXCXkSrkOXhqxZm0zTAv5L09paM=; b=ASZ/MVVeGtJMu1Fc
-	XLhAANnTMxH1a/V03vG/LTkSxc0F4h1bFIMtAPhjCNfhnr3REamoVzaRvJ/Ifm5q
-	DWpnOtIKVZ2lztx3+oTq0s6N3eKWOBuea9uI0iDZ/3DENDJ2W4IrKaTj0qitnYsP
-	PTKVUSzhCM3E4DrZZcryCru4YuPS/gsXqVf5pYvK1u5TnwI4y6JlvXMSeP2McicD
-	+oZUlt7pYG43FnWbT6wLNcih1Qj/3DZZC3c8zJFvrpMgtwdfF/FtCG5S9fRhbnGF
-	JD5kglBhyIBwiy5g50f9b51gKOOlJnxwyhF91X4sV0+pn+xbASdGOs+h0EFSpdzf
-	YmkcHA==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cxkuy3782-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 08:51:36 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8cd98d96382so621142085a.0
-        for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 01:51:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1773737495; x=1774342295; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=IxITSj4z8OO1NrLzEXCXkSrkOXhqxZm0zTAv5L09paM=;
-        b=iCClEhJUF5Dcxya/Kwlwq5RgaYQDlrMdRhjSM+zbkfkNUe8Q2NQjwIb2whshr4RLRz
-         i6uA5HNBYbSMy10DqSa+MIdei7aW41WMeE5kz6tuahZO8PY6AqxAkGURslGhd/5EeOty
-         8wGZyJ01oDHlEn11oD3IYkpIaWH6PMlUJT4OypKjFfkOtGbhZSWYr0dV7NXE793GOa7c
-         MQgjqV3WcrGq3fWPplXE9TwZHfbD9EUvL5inAKAaI2bCdyPoEpqVqrgmpz/lEfF7V02J
-         qo81rN324pLXtKJRRPN1oUggUuSlI1CDATPlxnc+khQ4xSK4a6iR1vMd5wjHk0iTTZSY
-         6p8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773737495; x=1774342295;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IxITSj4z8OO1NrLzEXCXkSrkOXhqxZm0zTAv5L09paM=;
-        b=ohiIdRiN7/rpyVox3mau7BEYhvE1Vc/hHw7cxifWlB2RtH8smax7OuDRGNlqkTwbVl
-         6mid6T1YxKmWrvU5GNNNBhN6hCa3zI02vZwxIPuVgR6VgAsmUFH7PUnJ0+wllMy+16AA
-         ZQ9t7yGOxP27WOK0akv5YoxMgqXvdFY/zBiCPYEDZ9iO/f3QYiOMGWp/XfxWetGZmBrh
-         jXHJTvQI/xXVGpsC8LZ1HKf5GcqOMvGFogrUuaDsbQFr1RHhAHu1dyk7arQqkakd3rSW
-         JwbR0DXZLM6YRI9sf/hHDPufG/Z6kgVl1VXQG8XUzCZviRObudXeograpnRPcuw5PJVd
-         gwew==
-X-Forwarded-Encrypted: i=1; AJvYcCVDr2lV75PA7f8MXwavDmnM/eW5CBFguKGMUhhihVxrgtc7OxUqsee+aYCAJtUev5rPYuYE4x8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzw6PBo34NVsKKn0azYSSR7rDSMZpNGCbNMWqi1qiTFqCx8/6Sp
-	r2MeEkW6U1bS9zIqoMkP5TUyETnBdZavZF6ncXlhY7NGZYdKhkBcIxdsd7ImxJ5HCXvXV4kGyeg
-	GHuy4nbKUVVPxXnIeow93gxcdixC9L2hsjGbbQTTCE4NxfdaNFkgLxQ9gYNc=
-X-Gm-Gg: ATEYQzzwRgRy1G4aiJsumd+f+5LOKOD/Uju3Gz0hKoR+EEPQXBjEd/dh4oGnprKc6a0
-	oYtbx8tm8px/mri/T/6AX6J6XszKzbnqYUu4lVoQjjhB8iWDQOIGWUVixWQI+zTBHC4RVBV4VvP
-	F2GeKekIEB9VLUHnGQnin9Fhj6QeW1UXhF+QZEQvLErwr/Hq75nvxFgqUBzQFsML/DQ9bemzD5S
-	jA5ciUMHeBS2b5MM9ENaT1Us94rAHsul0aaLHpCGihnAVEuoLP2Oj7M/uwPDIkQLCXApoVj9LEv
-	RmbN52i38WCiWaPsw1X/H1ILQHHIGKS0VkEhCD9aGU4TOiDlcXoc6R+bJlPs7bXkwBn7jCQiaPn
-	VgKnu6mwNdJqLFS6pTGkvcdF9UpWxguYXYlT5/G34JtYOIMK3/7wPnWlbDDSqUlbdwo0+c6tDlk
-	zzMSuKhpSC
-X-Received: by 2002:a05:620a:2915:b0:8c6:e224:d55b with SMTP id af79cd13be357-8cdb5b0a024mr1966586785a.41.1773737495237;
-        Tue, 17 Mar 2026 01:51:35 -0700 (PDT)
-X-Received: by 2002:a05:620a:2915:b0:8c6:e224:d55b with SMTP id af79cd13be357-8cdb5b0a024mr1966583785a.41.1773737494732;
-        Tue, 17 Mar 2026 01:51:34 -0700 (PDT)
-Received: from ?IPV6:2a05:6e02:1041:c10:67fb:53f6:20ba:ff45? ([2a05:6e02:1041:c10:67fb:53f6:20ba:ff45])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4856eae3322sm46732245e9.10.2026.03.17.01.51.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Mar 2026 01:51:34 -0700 (PDT)
-Message-ID: <8757aec7-8c36-446a-9a34-f0717f64202a@oss.qualcomm.com>
-Date: Tue, 17 Mar 2026 09:51:32 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4616A39D6D9;
+	Tue, 17 Mar 2026 08:53:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773737629; cv=fail; b=m6pRpYQZ82tjad6WX89CfX+qD9Z4mhWeijEW1AtsLoJU71U31/adnKRfB105ylSZldGq6YmS6LA1UvRDZnDb0iAzCWU2aVhgpF20VYGcogiqjgBMxBeCOb59eoiFVrSO+F4jEe4KEDBwGc8wthLDc6poMf/VRf2YTKLXZcuIJ6I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773737629; c=relaxed/simple;
+	bh=7jW8UKu5rwzPccsxAx23pe03uaXQ5JhPTDo4zA6LmVI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=d0atppnky7oTOU6myyXnmsjnipUmoGjtHyyeIDTL4eVcfHuOhE/tTb6delRxXKhIr0pFJ8FLD4YN0QIXeS59PQkgiv1ycup6lwUgDocpCabTYsE2BOTA81TeRuuzFIo5GbpFEkWhLxytlIa6bJXobxf5vxrx8nZTcfMQLomyzqk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gehealthcare.com; spf=pass smtp.mailfrom=gehealthcare.com; arc=fail smtp.client-ip=40.93.201.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gehealthcare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gehealthcare.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=L/i9/nJdCxSvo+QPt3FZoq+fadAjow4DVE/Ztgu0ALPUVdy4ql4n0WFLBDG9r1Rgqh2RL0nl4arHCXJGNCnPzYRnhztLR/ICgRNjhWrgjAFHvX9mobwlVVYLqSTeGq5KF+SaPXSaeSWyuIopDIz5y3BSevyEDqEQtl/cPYDIr/YTgT6NcElfIdDApqGohnEI14umUy2gH4cegrYEsuCRC/EiSEMM0N/IN+TLxvDHh5nei5tHr13MsQhXvmPwHHETBiqgX9vo3bGIblrjtUsywhB2hHRUxyP9dHhJX4jTVQ+CTLJG+wGvpkrLljz8ZhECRqmOijRWdgxSw+sXDD2ilw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=O+e7m8SEfabIkWdxgvpEUCx8JtidmFe2TqP6GMggkZw=;
+ b=CMw89Iss5+ESu7au2R++yeJcmhJjnOU8PZV97UzrahkM0BxOtV4jwmMTV57PMeycaNma02Bp6somGb2RpgV8irXn1udXroZbOAa00V/Xf9htPo3RiRR40r07F7DZKEfKG1Mh9+o2w8wrt3r7DROtpmizu0wlFHoMugQxrbNTGYFGb/qR+D74LkWk90QQZ34UgT+GqAfoOG9h1oHShJxPzV6B7S3D4s5wHUJdjSmaysyB4do8CD1SlTNQ53eCvmrKCl30B8qjjYK148+puJ/UGB9YYFNxi+iwxA/sXumOXVjgLMg4Yj4f4m8J8am7+2JE30X602vQv+yEEbVt0CTjSg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 165.85.157.49) smtp.rcpttodomain=vger.kernel.org
+ smtp.mailfrom=gehealthcare.com; dmarc=fail (p=quarantine sp=quarantine
+ pct=100) action=quarantine header.from=gehealthcare.com; dkim=none (message
+ not signed); arc=none (0)
+Received: from BY3PR05CA0028.namprd05.prod.outlook.com (2603:10b6:a03:254::33)
+ by IA0PR22MB4259.namprd22.prod.outlook.com (2603:10b6:208:480::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.27; Tue, 17 Mar
+ 2026 08:53:43 +0000
+Received: from CO1PEPF000075F1.namprd03.prod.outlook.com
+ (2603:10b6:a03:254:cafe::59) by BY3PR05CA0028.outlook.office365.com
+ (2603:10b6:a03:254::33) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9700.24 via Frontend Transport; Tue,
+ 17 Mar 2026 08:53:42 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 165.85.157.49)
+ smtp.mailfrom=gehealthcare.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=quarantine header.from=gehealthcare.com;
+Received-SPF: Fail (protection.outlook.com: domain of gehealthcare.com does
+ not designate 165.85.157.49 as permitted sender)
+ receiver=protection.outlook.com; client-ip=165.85.157.49;
+ helo=atlrelay2.compute.ge-healthcare.net;
+Received: from atlrelay2.compute.ge-healthcare.net (165.85.157.49) by
+ CO1PEPF000075F1.mail.protection.outlook.com (10.167.249.40) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9700.17 via Frontend Transport; Tue, 17 Mar 2026 08:53:42 +0000
+Received: from zeus.fihel.lab.ge-healthcare.net (zoo13.fihel.lab.ge-healthcare.net [10.168.174.111])
+	by builder1.fihel.lab.ge-healthcare.net (Postfix) with ESMTP id C65FFD9C13;
+	Tue, 17 Mar 2026 10:53:39 +0200 (EET)
+From: Ian Ray <ian.ray@gehealthcare.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Ian Ray <ian.ray@gehealthcare.com>,
+	stable@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH V3] NFC: nxp-nci: allow GPIOs to sleep
+Date: Tue, 17 Mar 2026 10:53:36 +0200
+Message-ID: <20260317085337.146545-1-ian.ray@gehealthcare.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/4] Use the QMI service IDs from the QMI header
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: konradybcio@kernel.org, andersson@kernel.org, linux-kernel@vger.kernel.org,
-        Alex Elder <elder@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller"
- <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-        Jeff Johnson <jjohnson@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Srinivas Kandagatla <srini@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-        Kees Cook <kees@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Arnd Bergmann <arnd@arndb.de>, Mark Brown <broonie@kernel.org>,
-        Wesley Cheng <quic_wcheng@quicinc.com>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
-        ath11k@lists.infradead.org, ath12k@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        linux-sound@vger.kernel.org
-References: <20260316171419.2619620-1-daniel.lezcano@oss.qualcomm.com>
- <20260316172251.2d57d0aa@kernel.org>
-Content-Language: en-US
-From: Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>
-In-Reply-To: <20260316172251.2d57d0aa@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=br1BxUai c=1 sm=1 tr=0 ts=69b91618 cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22 a=rySjVtX6Rl8zv02YFYoA:9
- a=QEXdDO2ut3YA:10 a=bTQJ7kPSJx9SKPbeHEYW:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE3MDA3NyBTYWx0ZWRfX69Qzl1d8Nocn
- 6ufWVneIw7esVFL6rtVQ5bcUMxi5p4KAip2uKLDDoxmmppgrOMFxdR0Hnc7fi3kRUEKmHmZXTy/
- 54ELIwfGvBKQi5xaXAfvak/uZ14FgtjQPGlWiSwVwvE1yKYq+qbWGhGPorY/JLUNHRI7/KQGF2z
- AATCuLjYt+xF7B96Aowa8+C4F0a2RJ0Dn5Q1OE7S3LdA3xU8S9GUQ1kpx9BdNCT3Ckv3pdDZQ/I
- f+jSpBfFgq91wT3y6UBgtT5AsptPKt5dnGHpaRWcljHVkr7ipmFW82lZ7uTJB8CiqhIs2kt7NUY
- Kdd4Jy+5h1A12IOG2u6DZJlfBBU2ANs50P797Nv/81bQgraCywtdDd+Q8x6KIP9gS4GOV0gQziu
- aM9JOFa6S+yi1RSsrGC9vxnbr+mz68qhMjAYrHtvEFizeiHz5faVceSXwwHsueq6KdSG6N214TV
- tx48/M7tIeq0u1Pq5Vg==
-X-Proofpoint-ORIG-GUID: 0pz_PcCeMVk4wI5Curk9ggwH7eVRqBiZ
-X-Proofpoint-GUID: 0pz_PcCeMVk4wI5Curk9ggwH7eVRqBiZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-17_01,2026-03-16_06,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 priorityscore=1501 phishscore=0 clxscore=1015 impostorscore=0
- suspectscore=0 lowpriorityscore=0 adultscore=0 spamscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603170077
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000075F1:EE_|IA0PR22MB4259:EE_
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: 106ec0ba-2756-4dd5-9e64-08de8402b0d7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700016|376014|1800799024|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	n71U363nfiK8OUEErF/j3/oPzjebRh9PpS6X00NFfr2CBfE0zRVflDEmKY4LWnqoIeDUWxFizlUzKIcQkGG4mBDP5Ms80olFKJpBJryzz1jLImIsdGt63ohN2H2/HSQw4OKMWojJBDxbezSIMGR+8dCjXt3HtYdKcd/uUP73gCcyRUKgX/zfVYKWFx8QoDUHorOu0vziTzC6K391erVw6JWt5KJCo6v7ReaoaqR/DBquo0dKjtVH3SR299hSObNB2h23aGh0S6Q/flLABcrrMnpujfoOLBEqnRURmEwKdTkFBTvLg+rKpuuFVXrYwHtgqS5Tn10inMdF2KaJVYiMqjY3QaEO+XAr99nHTi9UG2Ugdu9a6B6uu24l3hPAgojmrZzCcublBP3ac9kj6I58i2luCPrWLF/FdmveeFMmgtNK71JjQ5GhOSaVUGJdQKNi3abr5mOrhTqqEoVLkjahKuWbhlJnSvBLoo+qivEmVxmWAaOEHwZ6+fBRCJ0av7IATh0eyM0+y/qKQ1o01BPB6cgZOTx8wR33pkvgL0TJIm/T+42ff8A7eajTzgM/p8FdziqWS1KbGNHnF2vH4DdbmGoA5acudDcH6jKc+EgCrtveWqIPhzG+409DPH1KSou8QKFit7RIXyi8+8H2LRXV0MPBTIW8WEHfdjco6oquRl0vOBCBhUgCBrABC5MRr1Nd6vJo19xghhgO6bTKSYFOdczHGO0LTPs3MRDkKerqeKFhfRDOMEY5uXkrPsYogOvXmAJyAiEXYKK6mg5Hxtxl/Q==
+X-Forefront-Antispam-Report:
+	CIP:165.85.157.49;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:atlrelay2.compute.ge-healthcare.net;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(376014)(1800799024)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	qeLvlQTOd8ZMlP6QXRVmJYbMU0Iya5yoYVmVJ3Dtymm0SspyaZq5gBm+CMVtxe5H11dsKEF6XAido88OU4+Yvkx+aBmf7IhEaeweAmuSFvwBpLo2HuyCYO9GUqOgETQdRO73ziSR6iiI2CwN1i8iYfLWSNXAGHbDY9yYFAkdUuA/g8I4WDEFoARgLaEcO0p6PiRRIiAxTXrBpI/MLqt3DWCvOEU3mzfeoRpJ9ypYqBw2H4W/1t4yHN766J86VGjGoJtxw3IUeF0BfLFSwWMhj5DjU64MtaOPNYCaEsMPe8eXauW5NVdQASBLJDbWmR6L/IUbyqOMY4j0g1QfMy87yZochZ5cjVTaGZRDlxhEXNey0zslDlW6QomXCTv7lKQPkxgq7jMx9dhrAHc83Itafk1qCiuaqtWg+ZTOQTH3Y8KW2Zmfp5FmNlWNwS4XXmp5
+X-OriginatorOrg: gehealthcare.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2026 08:53:42.0959
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 106ec0ba-2756-4dd5-9e64-08de8402b0d7
+X-MS-Exchange-CrossTenant-Id: 9a309606-d6ec-4188-a28a-298812b4bbbf
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=9a309606-d6ec-4188-a28a-298812b4bbbf;Ip=[165.85.157.49];Helo=[atlrelay2.compute.ge-healthcare.net]
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-CO1PEPF000075F1.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR22MB4259
 
-On 3/17/26 01:22, Jakub Kicinski wrote:
-> On Mon, 16 Mar 2026 18:14:10 +0100 Daniel Lezcano wrote:
->> This series is based on the immutable branch [1] containing the QMI
->> service id definitions along with some drivers using them.
->>
->> How a patch can be merged ?
-> 
-> Wait for the dependency to appear in respective trees after the merge
-> window then repost the patches individually. I'm starting to get
-> annoyed with all this cross-tree QMI/MHI noise.
+Allow the firmware and enable GPIOs to sleep.
 
-An ack is simpler for everyone, especially when they are trivial
+This fixes a `WARN_ON' and allows the driver to operate GPIOs which are
+connected to I2C GPIO expanders.
+
+-- >8 --
+kernel: WARNING: CPU: 3 PID: 2636 at drivers/gpio/gpiolib.c:3880 gpiod_set_value+0x88/0x98
+-- >8 --
+
+Fixes: 43201767b44c ("NFC: nxp-nci: Convert to use GPIO descriptor")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
+---
+Changes since v2:
+ - Correct the fixes tag (found by AI review)
+ - Use uppercase "NFC" in patch prefix
+---
+ drivers/nfc/nxp-nci/i2c.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/nfc/nxp-nci/i2c.c b/drivers/nfc/nxp-nci/i2c.c
+index 6a5ce8ff91f0..b3d34433bd14 100644
+--- a/drivers/nfc/nxp-nci/i2c.c
++++ b/drivers/nfc/nxp-nci/i2c.c
+@@ -47,8 +47,8 @@ static int nxp_nci_i2c_set_mode(void *phy_id,
+ {
+ 	struct nxp_nci_i2c_phy *phy = (struct nxp_nci_i2c_phy *) phy_id;
+ 
+-	gpiod_set_value(phy->gpiod_fw, (mode == NXP_NCI_MODE_FW) ? 1 : 0);
+-	gpiod_set_value(phy->gpiod_en, (mode != NXP_NCI_MODE_COLD) ? 1 : 0);
++	gpiod_set_value_cansleep(phy->gpiod_fw, (mode == NXP_NCI_MODE_FW) ? 1 : 0);
++	gpiod_set_value_cansleep(phy->gpiod_en, (mode != NXP_NCI_MODE_COLD) ? 1 : 0);
+ 	usleep_range(10000, 15000);
+ 
+ 	if (mode == NXP_NCI_MODE_COLD)
+-- 
+2.49.0
+
