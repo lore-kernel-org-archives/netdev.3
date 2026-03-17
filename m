@@ -1,71 +1,44 @@
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02353E5574
-	for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 14:28:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35841301016
+	for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 14:31:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773757686; cv=none; b=gdNLMX+rkSgqv5RIUFi6JVUl5Bw4g0R9BIxGuyJv45/GPYEWxBqZKI143VMOze/0NT+LgZNEX50CfQKf4SXKY2xupB8PHDdNZzSyi/ARYEc+reeP8AuzfgEizhkOa3nBqaLxdZQUlpjk6e+hDLliVcUu2ujaC0CqjT4Btufd4A4=
+	t=1773757906; cv=none; b=eDweLVxo0iXiCqEskZUjl9kWuz/xZUaqrtf1G0eecD9nCIRY/BO3vToF/cU5IqaEifNQF1W/90eT/oj3xVaVydIGzaIMfFkJ0VqP27bGnCFI9yOlUOq8TiMBbYVVjVVWUAsMpomKQdHA/IyGAVTqA0tAnCNPCBsjoo8lfTi/37g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773757686; c=relaxed/simple;
-	bh=XlJj6+XtRnLs033bhaxlmEjesLS+qafeUVhuDo8ItlA=;
+	s=arc-20240116; t=1773757906; c=relaxed/simple;
+	bh=FB0uLOtKw+Ms4Y4cq/DdYMe4SYVdJKlookY5qKPtMyE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bL5g92402RT2pwNYHOoFL99QcfwIUSL1kraROJ1yHu4/gsqpsNTd0qe9weKLKhG635li/u+7YsI81Gy75Lk+DfQLJXmV16olSrKPb7s+65r9QriLMXOSK+uQMhzalLMlGROFTFR7yQX9po1tAPwenbtUG5/GMLq47slveWRlp34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=bG2zxRXQ; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=dZPT82uC/TJvgWHJqBpv7n5RspvW/9USvnZhQOZPjGf3KaMcPqirJpzD1jxRgC4TX+fUoWH8ZxvjwV25StteYtK8RLZv3E0tRd5JCWG6+JXT6DUewAahiTTS0zyTu31vybcUSTq8MzgD7pqzTYo+44x1us1zO5YHkiAo5RvKXcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fU9HzRrT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="bG2zxRXQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=XlJj
-	6+XtRnLs033bhaxlmEjesLS+qafeUVhuDo8ItlA=; b=bG2zxRXQ9Fu9bCPjNpx3
-	P7wgiIDoMXLCFMRPPmDltjPAhFzrIRxLaSxIF85pzMhW3YyHuUmEPHx4tFc4UUho
-	Wo06erk7gncW5uU46/3R7WWSOx6aUij0lMRTitWmNhEITS6dBlW5FTJQJ9Lann3s
-	dlppwJoBzJT5UfzY5GRapN/vktmt/GFIZqfQ7PYY1fBvA6Tbh+0RN0wBNuR0C9Z/
-	Xyd1b5tVvedLvdm7mrVbuvLIWeLiCjAeTKnuo2FG1hjxzOQTRhAzR5B4ebBzP+t3
-	vgcwphcy28vVhUjbhXw+mZaFWm3+CISUtLErtDSyofA6mcDgcyIeFO1eGKVh/IO/
-	FQ==
-Received: (qmail 312797 invoked from network); 17 Mar 2026 15:27:57 +0100
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 17 Mar 2026 15:27:57 +0100
-X-UD-Smtp-Session: l3s3148p1@LnJGJDlN/LM+XdJ7
-Date: Tue, 17 Mar 2026 15:27:52 +0100
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org,
-	Andrew Lunn <andrew@lunn.ch>, Daniel Scally <djrscally@gmail.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fU9HzRrT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C06C2BCAF;
+	Tue, 17 Mar 2026 14:31:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773757905;
+	bh=FB0uLOtKw+Ms4Y4cq/DdYMe4SYVdJKlookY5qKPtMyE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fU9HzRrTPqZ7cl634CR6s0CEwBEj6S6ljyyq/9cWDIpAP7mafFPvyu6MLv0Yjvk4X
+	 hH7zRs254F428Isd7Tps7rp0Gdit+XOWkPlNeD36C0WjrRNQOqKrl2+6ba0RDwqy2O
+	 autJJ03bhMv1gF5QzXhABFo6xNjQcUltP9KJttLKtgk/tbgjA4tXLekseVbM8nh3Qf
+	 WOxfl+VS4vlSuuL/wZuQJmfvibYTCmAKLV7XESCVE56RNGw7nyghnnZJ98CK9roXJK
+	 7z/mEXRm5Dzsr3yBMCn2FHvftMLpVHuJlooiGb4O2ldOmGA9XXJ/TbD1GfVmT+SXNq
+	 OyJrCOYfBIQjA==
+Date: Tue, 17 Mar 2026 14:31:41 +0000
+From: Simon Horman <horms@kernel.org>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
-	Mark Brown <broonie@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org,
-	driver-core@lists.linux.dev, imx@lists.linux.dev,
-	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH] device property: Make modifications of fwnode "flags"
- thread safe
-Message-ID: <ablk6O2XMUc1EKK0@shikoro>
-References: <20260316154159.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
- <abkCPU3rxHI49N4_@shikoro>
- <abkD-VLprcbbEbB1@ashevche-desk.local>
- <abkF0GO01sMcOhvb@shikoro>
- <abkLEgrZbdb03VWg@ashevche-desk.local>
- <abkLY4AAQuFlTRC7@ashevche-desk.local>
- <abkT_jpjIki6pvX1@shikoro>
- <abkqEni3phP8dqqw@ashevche-desk.local>
- <abkuNpwmYGa6qJPZ@shikoro>
- <CAJZ5v0g=_HW7i8-emNdTtw_0Kjqri8qTehHvms52u-w7jqG6bQ@mail.gmail.com>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v2] net: airoha: select QDMA block according
+ LAN/WAN configuration
+Message-ID: <20260317143141.GA1710951@horms.kernel.org>
+References: <20260313-airoha-qdma-lan-wan-mode-v2-1-7d577db6e40c@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,14 +47,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAJZ5v0g=_HW7i8-emNdTtw_0Kjqri8qTehHvms52u-w7jqG6bQ@mail.gmail.com>
+In-Reply-To: <20260313-airoha-qdma-lan-wan-mode-v2-1-7d577db6e40c@kernel.org>
 
+On Fri, Mar 13, 2026 at 05:28:36PM +0100, Lorenzo Bianconi wrote:
+> Before this patch even GDM ports were assigned to QDMA0 while odd GDM
+> ports were using QDMA1, so, based on the DTS configuration, both QDMA0
+> and QDMA1 can theoretically receive traffic destinated to the host cpu
+> from LAN or WAN GDM ports.
+> Airoha folks reported the hw design assumes the LAN traffic destinated
+> to the host cpu is be forwarded to QDMA0 while traffic received on WAN
+> GDM port is managed by QDMA1. For this reason, select QDMA block according
+> to the GDM port LAN or WAN configuration:
+> - QDMA0 is used for GDM LAN devices
+> - QDMA1 is used for GDM WAN device
+> 
+> Assuming a device with three GDM ports, a typical configuration could be:
+> - MT7530 DSA switch -> GDM1 (eth0) -> QDMA0 (LAN traffic)
+> - External PHY      -> GDM2 (eth1) -> QDMA1 (WAN traffic)
+> - External PHY      -> GDM3 (eth2) -> QDMA0 (LAN traffic)
+> 
+> We can then bridge eth0 DSA port (lanX) with eth2 since they all tx/rx
+> LAN traffic.
+> 
+> Please note this patch introduces a change not visible to the user since
+> airoha_eth driver currently supports just the internal phy available via
+> the MT7530 DSA switch and there are no WAN interfaces officially supported
+> since PCS/external phy is not merged mainline yet (it will be posted with
+> following patches).
+> 
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+> Changes in v2:
+> - Update commit log.
+> - Link to v1: https://lore.kernel.org/r/20260310-airoha-qdma-lan-wan-mode-v1-1-64ec74dea872@kernel.org
 
-> I don't recall using any lock for this purpose.
+Thanks for the update.
 
-In that case:
-
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-
-counts as an ack for i2c, too, of course.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
