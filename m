@@ -1,103 +1,100 @@
-Received: from a3.inai.de (a3.inai.de [144.76.212.145])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897173254BB
-	for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 18:28:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.212.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6413EFD1A
+	for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 18:41:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773772135; cv=none; b=RHHnG20PHERzQB8HUjQapUxa297Oekz9AcYvjWqTyKdDS0J+sdfbGK5TqQGGHOOApwkaRxTF9aRYfCW2CAUREPUJ8PZV+VF4bLa0GL7+BmXsxu8UxsMUJTAxGOSB00uY2jW3jFyR2MMmeLuEhQ61YlhyO2xb/6QfZqy0RH+ECQ4=
+	t=1773772897; cv=none; b=RJuAeAtIuTfIto+wTcTyeOnlU399MIXavwt3mUywY1Pw6iWb3KIfZqfjXqSrvVokRsaJPWu/ksgDKQJBACmry582hOUNkUoYQWUKyACwt3TD+RhQQJuoby41AJUhOPHvGcsJD+rFIA6FC8itt6zPqg3gm7OFfFywUC+smv0wYIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773772135; c=relaxed/simple;
-	bh=UNarCqOBjIHmjt76KQoQwHuh0wmWGP9s3jZ6gDZi2Kc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fY827rrhbchqx63CXl9FKY9aeaU34+Z9JMW80WunOEA1ac34PSRe+54cMO8Xc4UbQdS0Dfjn2Vu4DMKiuQ/RITlKkOeNoKFo0BCgDakqkVtnFVR7N2971tRRBtJX1F1JZcPzoGzwPmbqAt736qznLV3MEPNPTA1KVD+GAJHWN6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=inai.de; spf=pass smtp.mailfrom=inai.de; arc=none smtp.client-ip=144.76.212.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=inai.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inai.de
-Received: by a3.inai.de (Postfix, from userid 65534)
-	id 1281B1003C513C; Tue, 17 Mar 2026 19:22:46 +0100 (CET)
-X-Spam-Level: 
-Received: from a4.inai.de (a4.inai.de [IPv6:2a01:4f8:202:600a::a4])
-	by a3.inai.de (Postfix) with ESMTP id E953A1003C5101;
-	Tue, 17 Mar 2026 19:22:45 +0100 (CET)
-From: Jan Engelhardt <jengelh@inai.de>
-To: stephen@networkplumber.org
-Cc: netdev@vger.kernel.org
-Subject: [PATCH iproute2] ss: print IPv6 zone identifier within the square backets
-Date: Tue, 17 Mar 2026 19:22:11 +0100
-Message-ID: <20260317182245.87996-1-jengelh@inai.de>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1773772897; c=relaxed/simple;
+	bh=uTWfqk6Ebi8CoYpNJEFKkfF7211leHYOFJR95rDk0MA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gwZQw46E61mMkfqKFs+34kNcxvOJ9FWRqmi7e5qIWrgrw+/aeS+HkoFsgdDznnzbuxRiS9fl3ggXqjLL32IkwSR46zpqub4OZTDzKfq8uVqTBdZRwXGjrlik7eIEDrgSGTxxXNxlIlX7uBcQe3hufPSD2Ld3nmOikUTHKwbByvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iK9sn039; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iK9sn039"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773772891; x=1805308891;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=uTWfqk6Ebi8CoYpNJEFKkfF7211leHYOFJR95rDk0MA=;
+  b=iK9sn039H2iWWCXrE+ClTptewx4T/4Ak3T/t1JvqRqbtkbR1mhNWkwS1
+   TSwfSJXsx1cC0HiMx1wWkzyzXCbHRD6mx/8dV6gCZMrbuk0Ti06IuzVEg
+   25e/8VdCp5eZEl+r6HmDnkc0ir3E5CWUQOwBQz/MTFJXzi0G7FSOTDLpc
+   o9qVqH7Mc2rB6rBZghR9TfnSefykIM7FQ4U+U2FCYWwwyt6MOzjkA8dG7
+   FBUT4PAjmNAqavUqiQm6O20W02LZmbfPyLS+5g4ZnkVnHgSftRfbQglae
+   v0ly+L8pflNpE0rJJfAHKPycies7Od/fSnkXYoOx0qRfK1RVwGdoT9VsZ
+   A==;
+X-CSE-ConnectionGUID: HzlCM/NbRfOB4j2MZsoW9A==
+X-CSE-MsgGUID: 0lPc0Bl8TOWvUk+hCCTnQQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11732"; a="74704439"
+X-IronPort-AV: E=Sophos;i="6.23,126,1770624000"; 
+   d="scan'208";a="74704439"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 11:41:31 -0700
+X-CSE-ConnectionGUID: 5A2o8ipkSdiBD/17C5EjAg==
+X-CSE-MsgGUID: n5uz3BV4TWSfpC/UfZUYgw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,126,1770624000"; 
+   d="scan'208";a="245377332"
+Received: from lkp-server01.sh.intel.com (HELO 63737dd503cb) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 17 Mar 2026 11:41:28 -0700
+Received: from kbuild by 63737dd503cb with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w2ZM5-000000001of-3clQ;
+	Tue, 17 Mar 2026 18:41:25 +0000
+Date: Wed, 18 Mar 2026 02:40:37 +0800
+From: kernel test robot <lkp@intel.com>
+To: John Ousterhout <ouster@cs.stanford.edu>, netdev@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, pabeni@redhat.com, edumazet@google.com,
+	horms@kernel.org, kuba@kernel.org,
+	John Ousterhout <ouster@cs.stanford.edu>
+Subject: Re: [PATCH net-next v17 01/14] net: homa: define user-visible API
+ for Homa
+Message-ID: <202603180251.ApKBYL2x-lkp@intel.com>
+References: <20260316223228.2611-2-ouster@cs.stanford.edu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260316223228.2611-2-ouster@cs.stanford.edu>
 
-ss was printing the zone identifier in the wrong place.
-The zone identifier belongs to the address [1][2][3], and should thus
-be enclosed within the square brackets, not outside of it.
+Hi John,
 
-[1] glibc (since about 2000) accepts "fe80::1%eth0" as an input to
-    the `getaddrinfo` function.
-[2] Zone architecture specification (drafted 2003; released 2005):
-    RFC 4007 §4: "The scope of an address is encoded as part of the
-    address".
-[3] RFC 6874 §2 pg. 4: ABNF syntax showing where zones go in
-    relation to square brackets.
+kernel test robot noticed the following build errors:
 
-Signed-off-by: Jan Engelhardt <jengelh@inai.de>
----
- misc/ss.c | 28 +++++++++++++++++-----------
- 1 file changed, 17 insertions(+), 11 deletions(-)
+[auto build test ERROR on net-next/main]
 
-diff --git a/misc/ss.c b/misc/ss.c
-index b3566f6b..f242d761 100644
---- a/misc/ss.c
-+++ b/misc/ss.c
-@@ -1484,10 +1484,23 @@ static void sock_details_print(struct sockstat *s)
- static void sock_addr_print(const char *addr, char *delim, const char *port,
- 		const char *ifname)
- {
--	if (ifname)
--		out("%s" "%%" "%s%s", addr, ifname, delim);
--	else
--		out("%s%s", addr, delim);
-+	/*
-+	 * Numeric IPv6 addresses should be bracketed.
-+	 * Come to think of it, any address with a port delimiter character
-+	 * should be bracketed; otherwise, it would be impossible to tell if
-+	 * ":N" is the port or part of the address.
-+	 */
-+	if (strpbrk(addr, delim) != NULL) {
-+		if (ifname)
-+			out("[%s" "%%" "%s]%s", addr, ifname, delim);
-+		else
-+			out("[%s]%s", addr, delim);
-+	} else {
-+		if (ifname)
-+			out("%s" "%%" "%s%s", addr, ifname, delim);
-+		else
-+			out("%s%s", addr, delim);
-+	}
- 
- 	field_next();
- 	out("%s", port);
-@@ -1725,13 +1738,6 @@ static void inet_addr_print(const inet_prefix *a, int port,
- 			buf[1] = 0;
- 		} else {
- 			ap = format_host(a->family, 16, a->data);
--
--			/* Numeric IPv6 addresses should be bracketed */
--			if (strchr(ap, ':')) {
--				snprintf(buf, sizeof(buf),
--					 "[%s]", ap);
--				ap = buf;
--			}
- 		}
- 	}
- 
+url:    https://github.com/intel-lab-lkp/linux/commits/John-Ousterhout/net-homa-define-user-visible-API-for-Homa/20260317-070659
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20260316223228.2611-2-ouster%40cs.stanford.edu
+patch subject: [PATCH net-next v17 01/14] net: homa: define user-visible API for Homa
+config: hexagon-randconfig-r071-20260317 (https://download.01.org/0day-ci/archive/20260318/202603180251.ApKBYL2x-lkp@intel.com/config)
+compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 4abb927bacf37f18f6359a41639a6d1b3bffffb5)
+smatch: v0.5.0-9004-gb810ac53
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260318/202603180251.ApKBYL2x-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603180251.ApKBYL2x-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from <built-in>:1:
+>> ./usr/include/linux/homa.h:11:10: fatal error: 'netinet/in.h' file not found
+      11 | #include <netinet/in.h>
+         |          ^~~~~~~~~~~~~~
+   1 error generated.
+
 -- 
-2.53.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
