@@ -1,144 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76EA32D9EEA
-	for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 15:26:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44164224249;
+	Tue, 17 Mar 2026 15:32:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773761217; cv=none; b=DCncm9u0tKvdz4Resw9ds/ZtDtgAjnP4N1+RYmTWxtcTENKLZ/sLG263nmna5ZVf/vbdlpy+U+C4pt8GpAjkByblVZm+7KO8hWpNXp4I8imFqFVx/iEPB6QcJRj4ENuM795ujk7JUmG4EyxmSVX734Cc7WxJgBgOajZMCRntR0g=
+	t=1773761524; cv=none; b=g/04h9Yao0voGTK0rKYtCjC/lHPkFX90S3EBBJbiKArbyRkgrUpOJtn4WY53RFvBOvaTm32DrXyvVkqTWxhM9ObcRCb886dBKQCDh3behcMLAbIwHyISV8lm1OuDiRH1NixPGZaM+6aMcPGQOU/1/cX4aKgFKhQDcc7sgN7AOYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773761217; c=relaxed/simple;
-	bh=0vg4W2GoR7PnbwNtmDdK3fkY20wSN6pc2k0whl27i3g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MXIg25MfuQ1fGty8Lw1mp5dq/7HBds9om6XT1EzlUGONHydrnSlXa9BVX3ivHokY31wQeIqU1grVLUIyKTbEGGmWB16cOvGw6MK4irUJwDIr8JaUbi2QLwSyiSm93s5Nz0ybHXIAiFkdpKNQ2uicpZfqfNUFtHl9GAPaz/yHuaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BUJiYIP/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773761524; c=relaxed/simple;
+	bh=OY0K6FBV/7jWVvsW7bGyr0VgEm5RsdpEOhpcLB2Y/WI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=Oay+/hhvJt3uHUb5laLMBcoSFvB/f5BKNVIH3ZldvtbsY3iIyq8SSb+UQu938ZNQVhd0VXxqezFZzCMMkjmeVZ9uG2ghOywdLMLjRrfq464F53qvNs4IcdJq16rICvdUP9dV0CZxD3n1e+ipbUsQVWghHB4HJd6aFTa5KSQFXe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=fhSBufwR; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BUJiYIP/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24758C4CEF7;
-	Tue, 17 Mar 2026 15:26:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773761217;
-	bh=0vg4W2GoR7PnbwNtmDdK3fkY20wSN6pc2k0whl27i3g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BUJiYIP/TZ+apFLiiMpIZG4rOUoOV4wP9fKMLqYw3vBRxEGKR9ghq2EI1vh6Mh0zE
-	 GUnPOZemR7S/CWTddUFxURipe+e4GvqEhehdZ1z78Is3dDLsz0qPtT+cNmrDAhqnul
-	 80kSee5/+BURffgpxSJZkBk5SdQDKgbzLGKpwVcKvgIRd81+vi+OwX9EeIIYtfpz7o
-	 soLm3XssUm2XRG2qztj6EDOqB4GFBYAMrCk2Ow0cHDmLeL2cRxSXeMQNnDldTuAaXt
-	 19NT+4jvlJMSqBXaIXMk1dgAZ/I/4YNVjq8gAkRHEsEdR8xV+gxUwO+W3MTEOFsbGi
-	 v9hFNkYQzlWww==
-From: Simon Horman <horms@kernel.org>
-To: tom@herbertland.com
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	justin.iurman@uliege.be,
-	willemdebruijn.kernel@gmail.com,
-	pabeni@redhat.com,
-	willemb@google.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	justin.iurman@gmail.com
-Subject: Re: [net-next,v9,09/10] test: Add ext_hdr.py in networking selftests
-Date: Tue, 17 Mar 2026 15:24:58 +0000
-Message-ID: <20260317152456.1742468-3-horms@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260314175124.47010-10-tom@herbertland.com>
-References: <20260314175124.47010-10-tom@herbertland.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="fhSBufwR"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id B24604E42656;
+	Tue, 17 Mar 2026 15:32:00 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 700675FC9A;
+	Tue, 17 Mar 2026 15:32:00 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CE93C10450617;
+	Tue, 17 Mar 2026 16:31:55 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1773761519; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=+5u6MoGFtgIcW2sEYj40m3lzX61iiWgVwntgDRRPBvA=;
+	b=fhSBufwRISuEzdz0zkFRjzambEReyZCL7JrHzTCRvyAQaYQbycsJ9ZO9nZopioc+pf8qUD
+	aefz0r3ADCV7pqSkpjO9MDbvgmsOsDI3lHYVKWL1VSfi3iQehryImAg8dE+CfjNogbAUWt
+	UDvIatrHVgBcn0PrnZNVTaboBA/1xHKuNBMer0TzavYh8s2TfZ8JrzSjgJ/n8UM4NP0jXn
+	xg1+YOW1gHr6CQ+HBSZ1OB3FHQu6pP87ETS7WELHPgXayx+juOPT1oAk6UgfW5+m7FIhNu
+	C2FjsdKNBwDy7tTXYuWOsxv4lA042sVerl5CF+4wPHm7DRECiq5eFSAeWtRupg==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 17 Mar 2026 16:31:55 +0100
+Message-Id: <DH55ZAW09CJW.18CMNS7Z3UWOY@bootlin.com>
+Subject: Re: [PATCH net-next v3 1/3] dt-bindings: net: cdns,macb: add a
+ compatible for Microchip pic64hpsc
+Cc: "Conor Dooley" <conor.dooley@microchip.com>, "Andrew Lunn"
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, "Rob Herring" <robh@kernel.org>, "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
+ "Nicolas Ferre" <nicolas.ferre@microchip.com>, "Claudiu Beznea"
+ <claudiu.beznea@tuxon.dev>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Charles Perry" <charles.perry@microchip.com>, <netdev@vger.kernel.org>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260313140610.3681752-1-charles.perry@microchip.com>
+ <20260313140610.3681752-2-charles.perry@microchip.com>
+In-Reply-To: <20260313140610.3681752-2-charles.perry@microchip.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+On Fri Mar 13, 2026 at 3:06 PM CET, Charles Perry wrote:
+> Add "microchip,pic64hpsc-gem" for "PIC64-HPSC" and
+> "microchip,pic64hx-gem" for "PIC64HX", compatible with the former.
+>
+> The generic compatible "cdns,gem" works but offers limited features.
+> Keep it as a fallback.
+>
+> The GEM IPs within pic64hpsc have their MDIO controllers unconnected
+> from any physical pin. Add a check to prevent adding PHYs under the GEM
+> node.
+>
+> Signed-off-by: Charles Perry <charles.perry@microchip.com>
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> ---
+>  .../devicetree/bindings/net/cdns,macb.yaml    | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+Reviewed-by: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
 
-Simon says: pylint also has quite a lot to say about this patch. I'm
-assuming it is all minor stuff. But could you look into addressing the
-issues it flags?
+Thanks,
 
----
-test: Add ext_hdr.py in networking selftests
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
-This commit adds a new Python helper file that contains Extension Header
-format definitions and related functions for building IPv6 extension
-header chains in networking selftests.
-
-> diff --git a/tools/testing/selftests/net/ext_hdr.py b/tools/testing/selftests/net/ext_hdr.py
-> new file mode 100755
-> index 000000000000..bfb7da4a7c88
-> --- /dev/null
-> +++ b/tools/testing/selftests/net/ext_hdr.py
-> @@ -0,0 +1,385 @@
-> +#!/usr/bin/env python3
-> +# SPDX-License-Identifier: GPL-2.0
-> +
-> +# Helper functions for creating extension headers using scapy
-> +
-> +import ctypes
-> +import shlex
-> +import socket
-> +import sys
-> +import subprocess
-> +import scapy
-> +import proto_nums
-> +
-> +
-> +# Read a sysctl
-> +def sysctl_read(name):
-> +    try:
-> +        # shlex.split helps handle arguments correctly
-> +        command = shlex.split(f"sysctl -n {name}")
-> +        # Use check=True to raise an exception if the command fails
-> +        result = subprocess.run(command, check=True,
-> +                    capture_output=True, text=True)
-> +        value = result.stdout.strip()
-> +    except subprocess.CalledProcessError as ex:
-> +        print(f"Error reading sysctl: {ex.stderr}")
-> +    except FileNotFoundError:
-> +        print("The 'sysctl' command was not found. "
-> +              "Check your system's PATH.")
-> +
-> +    return int(value)
-
-What happens when an exception is caught here? When either
-subprocess.CalledProcessError or FileNotFoundError occurs, the exception
-handlers print an error message but don't set 'value'. The function then
-reaches the 'return int(value)' statement, which will raise
-UnboundLocalError.
-
-This will crash the test in several places:
-
-tools/testing/selftests/net/ext_hdr.py:check_eh_order() uses the return:
-    do_check = sysctl_read("net.ipv6.enforce_ext_hdr_order")
-
-tools/testing/selftests/net/ext_hdr.py:make_eh_chain() uses the return:
-    pair = make_full_hbh_dst_options_list(nnext_hdr, args,
-        sysctl_read("net.ipv6.max_hbh_opts_number"),
-        sysctl_read("net.ipv6.max_hbh_length"))
-
-and:
-    pair = make_full_hbh_dst_options_list(nnext_hdr, args,
-        sysctl_read("net.ipv6.max_dst_opts_number"),
-        sysctl_read("net.ipv6.max_dst_opts_length"))
-
-Should the exception handlers return a default value or re-raise to let
-callers handle it?
-
-> +
-> +# Common definitions for Destination and Hop-by-Hop options
-
-[ ... ]
-
-Should ext_hdr.py be added to TEST_FILES in the Makefile? The selftests
-build system documentation requires that any file imported by test scripts
-must be added to TEST_FILES. Without this, tests will work in the source
-tree but fail after 'make install' with ModuleNotFoundError.
-
-The file is imported at line 12 ('import proto_nums'), and appears to be
-a library meant for import rather than direct execution. Both ext_hdr.py
-and proto_nums.py need to be added to TEST_FILES in
-tools/testing/selftests/net/Makefile.
