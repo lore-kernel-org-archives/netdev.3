@@ -1,124 +1,128 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F373EAC6F
-	for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 15:10:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E255B3EB818;
+	Tue, 17 Mar 2026 15:14:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773760259; cv=none; b=ek6RaXH2pEbv/WhQuoxj/r9JQ+RLsawgtUFXal0xd3N52xroY1ctR6M66Swi3IiF3rMYJgBR1BrAss9QuAXdv+iXD5G4WpDvxB8NcnoP/3EpmKhj8FXc40UM/1hEoncc2eXwRWhD9FVZgpaK8KeIUKeo46l7dNiJrU4UsSnkngc=
+	t=1773760483; cv=none; b=rqbRE/FX5hyJ3/pjlbZyfPWgW08uHKdR8BqI1kFUqQmuMx6hVBVoImyzJF2pozIXecy1SR1NqnxkPiiR6GefEybNhzTtyHjufaukEH8PQyZmAKGN31yEMFXXfzLRJ5rRuVd03KoSX2jH6NIk5MbzUyn1FXy7BZbVVcjVoGm7Ii4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773760259; c=relaxed/simple;
-	bh=jgU0tNZFCPmpjlPoVwCDmEoulDWKUBI0FHI3WjFiAqM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oDdJzzubd9RXdLngNNpQiVovf3D9396dQ4aGBjd0CTeJPMvENut7N9SYM0P1E/nhYhEi5CN+Dtejn2gVA7lifeZZSUaLWnD8Mf10yOth6N/C9T4A3RkPNhEUbM5kke6QRHkBKEN4wXbkMMyI0eET6LNveq6nJc82U4Zmza1RNPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=G5q1FwG+; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1773760483; c=relaxed/simple;
+	bh=D3y2WhnSJvE+wz/GFNo8yJ60vU7+uLn4ADUTqegr0Iw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UBY0mAm6dqrMEfJaBj9O/4grDsDbM9B1lSANDIIdxCLjz+XFXk7Mo5zt8/wsVXxiQeqfDq0jkfcTCsMdHB/CuKIldW8S46U8DEVO+C/qxm5RoZVsb4F+Dtt1pZQ17mxr9s2rcqnozxK00hbxVxNw9JWiOqZ0bRD4dVNIxLX2vew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=td5453Yu; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=qdSVKj3D; arc=none smtp.client-ip=202.12.124.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="G5q1FwG+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773760256;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d9Xz0PSB/XVkXUJiTv7pugffYZV6lkgCUnhl2GwakEc=;
-	b=G5q1FwG+GGFBYlJCzJ3MSOHo3mqYHz96EncM0P0RlQoCxIztJOrAjqwYs2ubaneDRfNGro
-	TeJN1khtqRz8/9siPIQUr+PE9L2a1jgOvqnnxSsqK3smmJ1SvUOUalVUgTrhzUQirEjUYp
-	Yl7mL5ecQWnSPEQSDyScuNVa5ybo3IQ=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-16-oeKBujoZNsWoWoCsn7-CyQ-1; Tue,
- 17 Mar 2026 11:10:52 -0400
-X-MC-Unique: oeKBujoZNsWoWoCsn7-CyQ-1
-X-Mimecast-MFC-AGG-ID: oeKBujoZNsWoWoCsn7-CyQ_1773760250
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 405A81800591;
-	Tue, 17 Mar 2026 15:10:50 +0000 (UTC)
-Received: from dcaratti.users.ipa.redhat.com (unknown [10.45.224.95])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 43A1F1955F19;
-	Tue, 17 Mar 2026 15:10:46 +0000 (UTC)
-From: Davide Caratti <dcaratti@redhat.com>
-To: Jakub Kicinski <kuba@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="td5453Yu";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="qdSVKj3D"
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 5FA467A003A;
+	Tue, 17 Mar 2026 11:14:39 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Tue, 17 Mar 2026 11:14:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1773760479; x=
+	1773846879; bh=62Hd5sMxPyXCHbiWA7pjRcn1UXJoQVCZ08Ew47em6gU=; b=t
+	d5453YulURXgjrTxnWAD+J9En6qLW5sK4Z0FxJcBu5R5Pr+xQHVMpCtyundg1rt9
+	Yo1mfaBazkE01OskmuMMGE3NcakSh6cv83n0yfxQCXTueWnQE4X6yDWztLOa5ueD
+	Ek4drKCPPaq1Cxb1UrZ677cwdM1fXK2cOWRmdysg+YrMUFhAZR50MiCgUltCc5/C
+	GMrnm4WQmJspUamp7tDzyFqFqJaBkIP3Hb8GJZ3B20fVA4Xhq5GqO2NFrYUk/k07
+	UbKIoXN07+A8iUl3hhThzkhpolXqFM/TAFqmdcxJAFNPucyN/Ndtd74574RZzhfQ
+	Wuwuh1CnZfusx3jyq2Dyg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1773760479; x=1773846879; bh=62Hd5sMxPyXCHbiWA7pjRcn1UXJoQVCZ08E
+	w47em6gU=; b=qdSVKj3DgfbAjvr+hBkRZUx2PWZ3Pzb5q5SEM0dXGThkiTre8jk
+	tEAdqFR83ZuhQwyDdc7e4kGifIqHJKmXF88MHfO34y/TxS1sD861ggcZIq2zzPM/
+	n/p0RFNnkQNaUNO+aGTRGCK3hPBL436Ze9KkguILqEQvULX58hQO13M1mpQqB3NV
+	oTI1mXmM8bnPsEOdAS0cSBPDuQ4Mb7O+y4b03jtlLymeYLlimc2Y8VIpiNY5gMzO
+	OHsT4xFSAX/jjOvDVupO4Wjmu32cp628dbg4nmX/m0SkukgXNNXdUY5VkwnSghoZ
+	vX20ad+Z7i2urZusFztgpGQqdby2fZUR+Fw==
+X-ME-Sender: <xms:3m-5aakSndrvQjFvGMuy1zz8mH1JwGg36qBXhXceGeOC28I-NN79tg>
+    <xme:3m-5aRTs1xBAKUTO4LmRfuu9K7_WXtQDNLNGuQ22IZODHiMRQCX3YkeN31uPRQtW3
+    fAtw8thIsjUI5pAF-sj5h7iUN7omnrXwxE18AqgMyguxl-wroutW3s>
+X-ME-Received: <xmr:3m-5aZuBpLiWNjwM-iwKpridktg1IfOPx5TtX4kqmuxvjFL2Co4o7Dp8GK6Q>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdduheekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtjeenucfhrhhomhepufgrsghrihhn
+    rgcuffhusghrohgtrgcuoehsugesqhhuvggrshihshhnrghilhdrnhgvtheqnecuggftrf
+    grthhtvghrnhepuefhhfffgfffhfefueeiudegtdefhfekgeetheegheeifffguedvueff
+    fefgudffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epshgusehquhgvrghshihsnhgrihhlrdhnvghtpdhnsggprhgtphhtthhopeduhedpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhiuhhhrghnghgsihhnsehgmhgrihhlrd
+    gtohhmpdhrtghpthhtohepjhhvsehjvhhoshgsuhhrghhhrdhnvghtpdhrtghpthhtohep
+    rghnughrvgifodhnvghtuggvvheslhhunhhnrdgthhdprhgtphhtthhopegurghvvghmse
+    gurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhl
+    vgdrtghomhdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
+    epphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehjihhrihesrhgvshhn
+    uhhllhhirdhushdprhgtphhtthhopehrrgiiohhrsegslhgrtghkfigrlhhlrdhorhhg
+X-ME-Proxy: <xmx:3m-5aS7kCoOXOjg9oWl-PVQgB9yeL6XMenODRIwGU2AYwU0wS-fCqg>
+    <xmx:3m-5acjr7zNu0uqiZ42p4mZAYYnD_UJUGYYomlfeoQMFQ3WnjVEGkQ>
+    <xmx:3m-5acnj7s12UZfJ5RnW5awDno8Om9vzBJtGkXrwx07zzCa9JAFUVQ>
+    <xmx:3m-5aTudVLXnm-CrZIUSWkgBE_dTzvzDTw-alMV5ErKzrR09PLdlEg>
+    <xmx:32-5aY4OIfWFph7Scuaor0Ymv7sQaAFN3QKJ6kMISZlsnP7RmRnAHfyI>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 17 Mar 2026 11:14:37 -0400 (EDT)
+Date: Tue, 17 Mar 2026 16:14:35 +0100
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Hangbin Liu <liuhangbin@gmail.com>
+Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>
-Cc: netdev@vger.kernel.org
-Subject: [PATCH net-next v3 3/3] tc-testing: add a test case for ETS offload
-Date: Tue, 17 Mar 2026 16:06:10 +0100
-Message-ID: <7759f1fffdd0360e28687b660caaedba8ac6bed1.1773759815.git.dcaratti@redhat.com>
-In-Reply-To: <cover.1773759815.git.dcaratti@redhat.com>
-References: <cover.1773759815.git.dcaratti@redhat.com>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>, Simon Horman <horms@kernel.org>,
+	Sridhar Samudrala <sridhar.samudrala@intel.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	bridge@lists.linux.dev
+Subject: Re: [PATCH net-next v3 1/5] net: add ndo_update_offloads for offload
+ computation
+Message-ID: <ablv266AIETvJwpP@krikkit>
+References: <20260316-offload_compute-v3-0-a5d4a07d86d3@gmail.com>
+ <20260316-offload_compute-v3-1-a5d4a07d86d3@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260316-offload_compute-v3-1-a5d4a07d86d3@gmail.com>
 
-While reviewing the fix for unintentional u32 overflows in ets offload
-code, Jamal said:
+2026-03-16, 12:26:09 +0800, Hangbin Liu wrote:
+> Add a new ndo_update_offloads callback to net_device_ops that allows
+> devices to compute and update their offload features during feature
+> updates.
+> 
+> This callback enables master devices to recompute their features
+> based on current slave device configuration. This is particularly
+> useful for bonding, bridging, team, and failover devices that need
+> to aggregate features from their lower devices.
+> 
+> The callback is optional and only implemented by devices that need
+> dynamic offload feature computation.
 
- [...]
+Maybe a dumb idea (and sorry to suggest this quite late in your
+submissions): since all implementations of this callback are only
+calling netdev_compute_master_upper_features(), does this need to be a
+new ndo, or could this be some kind of flag within struct net_device
+(2 flags since netdev_compute_master_upper_features takes a bool
+argument) that changes __netdev_update_features()'s behavior? Since
+the goal for the netdev_compute_master_upper_features() work was to
+make this code more common, not introducing a new ndo where random
+hacks can accumulate separately in each driver would maybe make more
+sense?
 
- > otherwise a tdc test should cover it fine (when you get to the
- > netdevsim change perhaps)
-
-Add a test case to reproduce the division by zero fixed in [1].
-
-[1] https://lore.kernel.org/all/CAM0EoMm17wsYZmdFLshH3_-GrZtzd=i0xnoO2yiVB=-N4761mw@mail.gmail.com/
-
-Suggested-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Davide Caratti <dcaratti@redhat.com>
----
- .../tc-testing/tc-tests/qdiscs/ets.json       | 23 +++++++++++++++++++
- 1 file changed, 23 insertions(+)
-
-diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/ets.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/ets.json
-index a5d94cdec605..479b866031bb 100644
---- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/ets.json
-+++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/ets.json
-@@ -984,5 +984,28 @@
-         "matchCount": "1",
-         "teardown": [
-         ]
-+    },
-+    {
-+        "id": "41f5",
-+        "name": "ETS offload where the sum of quanta wraps u32",
-+        "category": [
-+            "qdisc",
-+            "ets"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+            "echo \"1 1 4\" > /sys/bus/netdevsim/new_device",
-+            "ethtool -K $ETH hw-tc-offload on"
-+        ],
-+        "cmdUnderTest": "$TC qdisc add dev $ETH root ets quanta 4294967294 1 1",
-+        "expExitCode": "0",
-+        "verifyCmd": "$TC qdisc show dev $ETH",
-+        "matchPattern": "qdisc ets .*bands 3 quanta 4294967294 1 1",
-+        "matchCount": "1",
-+        "teardown": [
-+            "echo \"1\" > /sys/bus/netdevsim/del_device"
-+        ]
-     }
- ]
 -- 
-2.52.0
-
+Sabrina
