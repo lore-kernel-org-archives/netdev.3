@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB3725776;
-	Tue, 17 Mar 2026 00:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41302367D5;
+	Tue, 17 Mar 2026 00:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773708684; cv=none; b=smuM8VjhhTi5uv7w5VrruE2QF9Qjn9zn3DFKmBZNEuUfynefKZ7wbO+T9G+GwVPHl83o7iTDOwmErPAhg5qq6Xle0wqUqzZSzW2hIGQMlGzDdKq0DsS4PyYV8L5kqtued1U3upzpGsACnMiTwW5//DnOW8FV23m2lCD/AgaedLY=
+	t=1773708730; cv=none; b=hBtbLSTLY8cdaI3xTBRKSH3wcPNWZTJq0PuG15oAQLXiZtBcHUMD5gjNqw8MXVjeCrqI2j5MoMwQCF4oxnsHEvcWXp5V3SvE9+So1p7TiYR0X7HhyEHeLjs1pnq2ZCdqcyHF9Xd8pD10TDHXqsj5t/DQmd2L2v3mP9tICGWVrNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773708684; c=relaxed/simple;
-	bh=hKq5urP/wixznfIbLvze0TCe2a9t/Iql70l/e4Wb/yU=;
+	s=arc-20240116; t=1773708730; c=relaxed/simple;
+	bh=+0iqwdVhPk5ZGLF8d9XGnhWjF8iSMfOaud0rGq4gkfc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cAo/p6JC0RRAu03EKIVnk2xncqlLDTOI/dFXYQF2g3aJ3AkkNhIvFNTb4rTGyisJcEiFwZu4DfN8qUPDFdse7h92gZ/ByOZm2XsgSlq6XMpLdT2zUMdQEbaiQZ3EYQG8JAT9zn60Buhzh32VCkP/QO1WraYP8IW6OFctRoj1xt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wa7q8dhw; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=SHwcV9U5czG/1U/asT1eHHMkGWmM0pxvIfJ8UnlwaPjcAwo9XxSOTcZS2GA2vXgjGLwgC2R1Kx+aar940ZKyrtmF29cfrYptkINPceiUOfiQc8DZKtVuHuxPgLgt+s2z6djFLQm3LRPy0wlUPdectRLKvFiVSMx9EBQzEbfUwiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vEiFpola; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wa7q8dhw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E53EC2BC9E;
-	Tue, 17 Mar 2026 00:51:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vEiFpola"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46AE9C2BC9E;
+	Tue, 17 Mar 2026 00:52:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773708684;
-	bh=hKq5urP/wixznfIbLvze0TCe2a9t/Iql70l/e4Wb/yU=;
+	s=k20201202; t=1773708729;
+	bh=+0iqwdVhPk5ZGLF8d9XGnhWjF8iSMfOaud0rGq4gkfc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Wa7q8dhwyyYWWXW4nx/4Mm8XDl18aWJh7bSlHM/GO6TBWlBH0G57AQMwE9t7vgB2w
-	 AMklwHAxyo6DwwLBOLbUUXMC0jzynOZq1vDAAhbutI3bG5KM92bbQH7RYBVNoARkrb
-	 BPIONQhmzwpAc9Co2LPAtLtFyMeN3ZtHHkZazkkgkJ1W2IzTpsBrFAZ/8IndNha1su
-	 x/eGCoE8ilw2UNmC877Xe116JXCpMBwBbZY8/v1pRtfgvy5+W6pn6qHVUDD47uY5LW
-	 cMUPTZqJp3rhOqBW7ojOj/cpeMvQC3Fm7JTR2xAleNtWLd7GrS1+J+XD2kXPprK+Uw
-	 +2Q32eRFSMEtw==
-Date: Mon, 16 Mar 2026 17:51:23 -0700
+	b=vEiFpolah1Ig1QUMssfx2JDExWznmhUfUt5YyOW66y8/qHcAizWA2EY5oy+EYD8RH
+	 hv3U03rfx9xs0B4MYGxtm2Es5zNdBI9a03Wov5TrndAXylu/CHXCgTZPdD+LnYP0Zx
+	 YVeH/iPbLgmsAZebm37/3EgYiKXntiIHzwJCRvXA601IzHbZqXOa1EN+cici0/WEs1
+	 6NkTuqno0PXYylS60bxQ7dcvfOjZlQxabAdoLRQqjM3CD3UVbdC3F/ccDTPbgLQHCb
+	 X7Mh+84CfaHF570aT5BPU+HpmwBlg97KaTTD9lFfdC4TJAoQOC0FMCVRL3hWqtbIw+
+	 2tp0dEtlr2voA==
+Date: Mon, 16 Mar 2026 17:52:08 -0700
 From: Jakub Kicinski <kuba@kernel.org>
 To: Birger Koblitz <mail@birger-koblitz.de>
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
  <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
  <pabeni@redhat.com>, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 1/9] r8152: Add support for RTL8157 RX/TX
- descriptor format
-Message-ID: <20260316175123.45b8d6e1@kernel.org>
-In-Reply-To: <20260314-rtl8157_next-v1-1-9ba77b428afd@birger-koblitz.de>
+Subject: Re: [PATCH net-next 2/9] r8152: Add support for RTL8157 SRAM access
+ and ADV indirect access
+Message-ID: <20260316175208.3e14385e@kernel.org>
+In-Reply-To: <20260314-rtl8157_next-v1-2-9ba77b428afd@birger-koblitz.de>
 References: <20260314-rtl8157_next-v1-0-9ba77b428afd@birger-koblitz.de>
-	<20260314-rtl8157_next-v1-1-9ba77b428afd@birger-koblitz.de>
+	<20260314-rtl8157_next-v1-2-9ba77b428afd@birger-koblitz.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,20 +48,27 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 14 Mar 2026 10:31:37 +0100 Birger Koblitz wrote:
-> The RTL8157 uses a different packet descriptor format compared to the
-> previous generation of chips. Add support for this format by adding a
-> descriptor format structure into the r8152 structure and corresponding
-> desc_ops functions which abstract the vlan-tag, tx/rx len and
-> tx/rx checksum algorithms.
-> 
-> Adapt the previous functions for the first chip generation to support
-> abstraction and add additional functions for the second generation.
-> 
-> Replace all calls to the descriptor functions with abstracted functions.
+On Sat, 14 Mar 2026 10:31:38 +0100 Birger Koblitz wrote:
+> Add support for the SRAM access interface of the RTL8157 and
+> the ADV indirect access interface.
 
-drivers/net/usb/r8152.c:9646:12: warning: unused function 'r8157_desc_init' [-Wunused-function]
- 9646 | static int r8157_desc_init(struct r8152 *tp)
+../drivers/net/usb/r8152.c:1757:12: warning: unused function 'rtl_bmu_clr_bits' [-Wunused-function]
+ 1757 | static int rtl_bmu_clr_bits(struct r8152 *tp, u16 addr, u32 clear)
+      |            ^~~~~~~~~~~~~~~~
+../drivers/net/usb/r8152.c:1788:12: warning: unused function 'rtl_ip_clr_bits' [-Wunused-function]
+ 1788 | static int rtl_ip_clr_bits(struct r8152 *tp, u16 addr, u32 clear)
+      |            ^~~~~~~~~~~~~~~
+../drivers/net/usb/r8152.c:1793:12: warning: unused function 'rtl_ip_set_bits' [-Wunused-function]
+ 1793 | static int rtl_ip_set_bits(struct r8152 *tp, u16 addr, u32 set)
+      |            ^~~~~~~~~~~~~~~
+../drivers/net/usb/r8152.c:1810:13: warning: unused function 'sram_write_w0w1' [-Wunused-function]
+ 1810 | static void sram_write_w0w1(struct r8152 *tp, u16 addr, u16 clear, u16 set)
+      |             ^~~~~~~~~~~~~~~
+../drivers/net/usb/r8152.c:1824:13: warning: unused function 'sram2_write_w0w1' [-Wunused-function]
+ 1824 | static void sram2_write_w0w1(struct r8152 *tp, u16 addr, u16 clear, u16 set)
+      |             ^~~~~~~~~~~~~~~~
+../drivers/net/usb/r8152.c:9807:12: warning: unused function 'r8157_desc_init' [-Wunused-function]
+ 9807 | static int r8157_desc_init(struct r8152 *tp)
       |            ^~~~~~~~~~~~~~~
 -- 
 pw-bot: cr
