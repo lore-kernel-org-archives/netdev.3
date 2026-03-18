@@ -1,109 +1,228 @@
-Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9263C33F384;
-	Wed, 18 Mar 2026 17:06:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D891481DD;
+	Wed, 18 Mar 2026 17:18:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773853573; cv=none; b=mI2V9Ewbq7EwyyEaZS/+EGLIiITpsyLrjuny3gOkZxRXX1/LQYrosSAu2WYIKuoTdSBh5DuSPgHiP8FeskPU/H1nKpmFHXANSU4mVUzsRT+RjY1aLOOn3k4mdZpnDOKWUlloauUlrAN7mi1PLHi7vr2bjjReaMfNFEqIR4bbFAE=
+	t=1773854329; cv=none; b=OmNibWqv4/JJ5UCnXIu9//edzIWhKgNxJEsuasAaX8tjSqF24wV+XqC3DrHfEYbhhtoJT3r+qI8tEWkukEs/w83zBd4fG5jqG+fChUhJ6gRfO8eoHArG6zgWcKsJwr6jz4s9Pwqmj8XPe80yoWXFWBovb1toe1dXmggYFmnyxW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773853573; c=relaxed/simple;
-	bh=VbDdPt5V2iYDxuFM5o59Js8zGg623WZdAgM4YWkYbu8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oaRzUKJgohnE2RyyVnZt6Asv8sCsfvxLqAISg+QBv6nD2R0NjQpBTgEDZUKOdy/KEunKMa+DIYX2Fii6V3RBppdvQeov/hu2DexrDP0RjJg+K9RZ/ZQrOlfgMOQwJf2o8nfeA6PG7yp5Jf+nvwIRq/gQGVmPscKrexfjHj048+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=pHVGGxZ6; arc=none smtp.client-ip=185.226.149.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1773854329; c=relaxed/simple;
+	bh=IeS+fJBvanCUzNEq4cDDJvasRxfLqeM4K7W6+l7t124=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gzfzx+sjh+C8zLQhEIR8QwH5OF20j2MqBPRC62/+7OE/jmLOa+WYlZ4w2m4mqt489X/237E8j3A9KHvybz/a9sNBIsyxwNWKvEnh9tl5/DSetbG2XmXmbMY45DEzcXBPRRFx0Tf3DA7XJ42Y0tL3ZAb4Br/73M0WSvvKuGWhiEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tWSLGfkf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="pHVGGxZ6"
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1w2uLC-000PR0-G1; Wed, 18 Mar 2026 18:05:54 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector1; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID;
-	bh=9PjUi89Rq5UeOAy8wYWz7JCds8tIZvlL7cDob3xI8us=; b=pHVGGxZ6bGP58yl0P/YsBDrG4z
-	wP8Z+87vN2YGOtei8ZYgbf16cLT5hBZKtTRua5ogL1iAIyGk/pPz5eW3Px2k4vDVrU3bvWHmpWwbS
-	JrFVLIMJlDfRuMaIkv0Y8E0jFiCSW9RgwWKBRmYWKw+wHjMeCGS4nkoJE9ZSfyzbmvwfbR+pxGXEW
-	dlGaTfyl1diOBd/7+OUDJYz9i0O2q0iRcHmxH3RqE/5ohXLK1Oy9Oww1OBKAVhnMAzFL5Kz8Hw/kM
-	9ROKw1LMay1klkUjVLpeWBEsEIt6QNlEJDDNb0a4JderIMjPm8hq+9dLmIz8h7Qb/HltdF24Lch+1
-	3Gu8XxuA==;
-Received: from [10.9.9.74] (helo=submission03.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1w2uLB-0008NP-6n; Wed, 18 Mar 2026 18:05:53 +0100
-Received: by submission03.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1w2uL9-00D1bi-AC; Wed, 18 Mar 2026 18:05:51 +0100
-Message-ID: <c7742de5-7b68-4520-95b4-7ed5ed997c0a@rbox.co>
-Date: Wed, 18 Mar 2026 18:05:49 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tWSLGfkf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BB52C19421;
+	Wed, 18 Mar 2026 17:18:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773854328;
+	bh=IeS+fJBvanCUzNEq4cDDJvasRxfLqeM4K7W6+l7t124=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tWSLGfkfn4kK9/Z3our/XVh29knLWUy+Y1AuC9cMf0xxYP8i+tUOgvUHkVCa77OHR
+	 t2y6JaHao/ClOxz3qz4wLaBnVRYHbUXIdzsyInIvQTa9St8KJrHKbC1MiahHPefKnG
+	 zYso9BJ0gY9RVNKgsRkJVjbR6wpiPXXUk5THD+snUDQu+wmO3EVoWFWN/Wxyx/aKwQ
+	 91/1tfxboNZmF58QfIqpBQ5ZBWEj6fYta8aBQKVbZ/NpRy/nz19Mikf6kQEH6GkR37
+	 N179wD55yjRH0J9wS2ShuoedxCqdJVzAqXMREvxxaOxs+bhmdz8UjijBKLpcDbdjNU
+	 xyshD/EsbvAUw==
+Date: Wed, 18 Mar 2026 17:18:42 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Jens Emil Schulz Ostergaard <jensemil.schulzostergaard@microchip.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, UNGLinuxDriver@microchip.com,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Woojung Huh <woojung.huh@microchip.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Steen Hegelund <Steen.Hegelund@microchip.com>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH net-next 2/8] dt-bindings: net: lan9645x: add LAN9645X
+ switch bindings
+Message-ID: <20260318-visiting-tanning-7d1d6acff081@spud>
+References: <20260303-dsa_lan9645x_switch_driver_base-v1-0-bff8ca1396f5@microchip.com>
+ <20260303-dsa_lan9645x_switch_driver_base-v1-2-bff8ca1396f5@microchip.com>
+ <4088b0ff-b718-4137-8518-4c9b9764d56d@lunn.ch>
+ <20260303-mosaic-debate-90cf8c8bbb33@spud>
+ <1db45715a3a12b76b838d20c0e5904c3222053e7.camel@microchip.com>
+ <20260305-reliant-parchment-0ff685a9c78e@spud>
+ <7b62ace495084794336b19a9685d6b14ea3981a0.camel@microchip.com>
+ <20260306-pointless-purr-210540d4dc64@spud>
+ <207c7a47e0802dd4c34ba90f2532dc2e0c3f7f05.camel@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf v3 1/5] bpf, sockmap: Annotate af_unix sock::sk_state
- data-races
-To: John Fastabend <john.fastabend@gmail.com>,
- Jakub Sitnicki <jakub@cloudflare.com>, Eric Dumazet <edumazet@google.com>,
- Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Willem de Bruijn <willemb@google.com>, "David S. Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>, Yonghong Song <yhs@fb.com>,
- Andrii Nakryiko <andrii@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman
- <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>,
- Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
- Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>,
- Cong Wang <cong.wang@bytedance.com>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20260306-unix-proto-update-null-ptr-deref-v3-0-2f0c7410c523@rbox.co>
- <20260306-unix-proto-update-null-ptr-deref-v3-1-2f0c7410c523@rbox.co>
-Content-Language: pl-PL, en-GB
-From: Michal Luczaj <mhal@rbox.co>
-In-Reply-To: <20260306-unix-proto-update-null-ptr-deref-v3-1-2f0c7410c523@rbox.co>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="eZSKhplNaY5LqAw9"
+Content-Disposition: inline
+In-Reply-To: <207c7a47e0802dd4c34ba90f2532dc2e0c3f7f05.camel@microchip.com>
 
-On 3/6/26 00:30, Michal Luczaj wrote:
-> sock_map_sk_state_allowed() and sock_map_redirect_allowed() read af_unix
-> socket sk_state locklessly.
-> 
-> Use READ_ONCE(). Note that for sock_map_redirect_allowed() change affects
-> not only af_unix, but all non-TCP sockets (UDP, af_vsock).
-> 
-> Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
-> Suggested-by: Martin KaFai Lau <martin.lau@linux.dev>
-> Signed-off-by: Michal Luczaj <mhal@rbox.co>
-> ---
->  net/core/sock_map.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/core/sock_map.c b/net/core/sock_map.c
-> index b0e96337a269..02a68be3002a 100644
-> --- a/net/core/sock_map.c
-> +++ b/net/core/sock_map.c
 
-...
+--eZSKhplNaY5LqAw9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> @@ -543,7 +543,7 @@ static bool sock_map_sk_state_allowed(const struct sock *sk)
->  	if (sk_is_tcp(sk))
->  		return (1 << sk->sk_state) & (TCPF_ESTABLISHED | TCPF_LISTEN);
->  	if (sk_is_stream_unix(sk))
-> -		return (1 << sk->sk_state) & TCPF_ESTABLISHED;
-> +		return (1 << READ_ONCE(sk->sk_state)) & TCPF_ESTABLISHED;
->  	if (sk_is_vsock(sk) &&
->  	    (sk->sk_type == SOCK_STREAM || sk->sk_type == SOCK_SEQPACKET))
->  		return (1 << sk->sk_state) & TCPF_ESTABLISHED;
-> 
+Christian,
 
-Another reason to (conditionally) take unix_state_lock() at
-sock_map_update_elem{,_sys}(): chunk above can be dropped.
+On Wed, Mar 18, 2026 at 03:19:20PM +0100, Jens Emil Schulz Ostergaard wrote:
+> Hi Conor,
+>=20
+> On Fri, 2026-03-06 at 15:20 +0000, Conor Dooley wrote:
+> > On Fri, Mar 06, 2026 at 04:08:01PM +0100, Jens Emil Schulz Ostergaard w=
+rote:
+> > > On Thu, 2026-03-05 at 18:31 +0000, Conor Dooley wrote:
+> > > > On Thu, Mar 05, 2026 at 01:57:37PM +0100, Jens Emil Schulz Ostergaa=
+rd wrote:
+> > > > > On Tue, 2026-03-03 at 19:04 +0000, Conor Dooley wrote:
+> > > > > > On Tue, Mar 03, 2026 at 03:18:45PM +0100, Andrew Lunn wrote:
+> > > > > > > > +        properties:
+> > > > > > > > +          microchip,led-drive-mode:
+> > > > > > > > +            $ref: /schemas/types.yaml#/definitions/uint32
+> > > > > > > > +            description: |
+> > > > > > > > +              Set the LED drive mode for the copper PHY as=
+sociated with
+> > > > > > > > +              this port.
+> > > > > > > > +
+> > > > > > > > +                0 - LED1 and LED2 in open-drain mode
+> > > > > > > > +                1 - LED1 in active drive mode (can be used=
+ for single-LED
+> > > > > > > > +                    configurations requiring active drive)
+> > > > > > > > +                2 - Reserved
+> > > > > > > > +                3 - LED1 and LED2 in active drive mode
+> > > > > > > > +            minimum: 0
+> > > > > > > > +            maximum: 3
+> > > > > > >=20
+> > > > > > > I doubt the DT Maintainers will accept that. This looks a lot=
+ like a
+> > > > > > > value you write into a register. How are active drive and ope=
+n-drain
+> > > > > > > described in other DT bindings? Is there something you can re=
+use?
+> > > > > >=20
+> > > > > > I had a quick look and I didn't see anything really that stood =
+out to me
+> > > > > > that would be a drop-in replacement.
+> > > > > > I also tried looking in the datasheet for more information on t=
+hese
+> > > > > > modes, but I couldn't see anything obvious. For example, there =
+were zero
+> > > > > > hits for "drain" in either LAN9645xS or LAN9645xF datasheets.
+> > > > > >=20
+> > > > > > That said, yea you're right about DT maintainer feelings about =
+it.
+> > > > > > There's a couple things I could suggest, but I'd like to know a=
+bout what
+> > > > > > mode 1 means for LED2 first. If there's actually nothing simila=
+r, what
+> > > > > > about representing each led with a child node and having open-d=
+rain be
+> > > > > > the default with a property in the child for active-drive?
+> > > > > >=20
+> > > > > > >=20
+> > > > > > > For 1, what happens to LED2? Not used at all?
+> > > > >=20
+> > > > > In mode 1 LED2 will be open-drain. This mode only makes sense if =
+you have
+> > > > > just 1 LED. With two LEDs mode 0 or mode 3 should be used.
+> > > >=20
+> > > > Could we then have child nodes for each led, and have a property in=
+ each
+> > > > that sets the mode to either open-drain or active-drive? Or am I ju=
+st
+> > > > inserting complexity by asking for that?
+> > >=20
+> > > I think it sounds sensible, I will add this.
+> >=20
+> >=20
+> > You don't need a property for each, just make one mode the default (prob
+> > open-drain given it's the 0 setting, but whatever is default out of
+> > reset for the part) and have the property for the other mode. Just
+> > some bool property like "microchip,active-drive" or whatever.
+>=20
+>=20
+> Based on your feedback I went with this under port properties:
+>=20
+>           leds:
+>             patternProperties:
+>               '^led@[a-f0-9]+$':
+>                 $ref: /schemas/leds/common.yaml#
+>=20
+>                 properties:
+>                   reg:
+>                     maxItems: 1
+>=20
+>                   microchip,active-drive:
+>                     type: boolean
+>                     description:
+>                       Set the LED output to active drive mode. The default
+>                       is open-drain.
+>=20
+>                 required:
+>                   - reg
+>=20
+>                 unevaluatedProperties: false
+>=20
+> and then the example has
+>=20
+>           port@1 {
+>             reg =3D <1>;
+>             phy-mode =3D "gmii";
+>             phy-handle =3D <&cuphy1>;
+>=20
+>             leds {
+>               #address-cells =3D <1>;
+>               #size-cells =3D <0>;
+>=20
+>               led@0 {
+>                 reg =3D <0>;
+>                 microchip,active-drive;
+>               };
+>=20
+>               led@1 {
+>                 reg =3D <1>;
+>                 microchip,active-drive;
+>               };
+>             };
+>           }
+>=20
+> However, this does not pass dt_binding_check because we pull in $ref: dsa=
+-port.yaml,
+> which pulls in ethernet-controller.yaml.
+>=20
+> I believe the 'unevaluatedProperties: false' on LED nodes in ethernet-con=
+troller.yaml
+> prevents downstream bindings from adding vendor-specific LED properties.
+>=20
+> Is the right move removing unevaluatedProperties: false from the LED node=
+ in
+> ethernet-controller.yaml, or is there a preferred way to extend per-port =
+LEDs?
 
+The addition looks recent enough, should probably ask Christian why it
+was done this way and if removing it makes sense. Christian?
+
+Cheers,
+Conor.
+
+--eZSKhplNaY5LqAw9
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCabrecgAKCRB4tDGHoIJi
+0o+pAPkBaKtrIAIxdnz1AU1GiCiuQGAVbePpR95Zkz8XhLpJ9QD/UcBKmEed8ZVm
+muqyDHXqmzoNoXKyY0PVlvNo4vCs1A0=
+=0LE6
+-----END PGP SIGNATURE-----
+
+--eZSKhplNaY5LqAw9--
