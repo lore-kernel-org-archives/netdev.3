@@ -1,120 +1,93 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86EF33D9DC8
-	for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 13:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ED8D3DA7E9;
+	Wed, 18 Mar 2026 13:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773841735; cv=none; b=nBQT8Tt7Yhsoa92VuRXYrw0QOeUm8JAbBaCXf351pN36h6gNMJsDqRI2h5czIchGewYvrPU0v8hbQ6UwJYOvflgu7AbDow0afBhgzOLcAZTAlfqFxJPAOMJ2fnyCtRAdc71F3OChtTEVmoH56Nn0C/7g1K86rvqDKilP9XR9QZI=
+	t=1773841844; cv=none; b=HkxXYJ2+abPBefixoYufDGzQJ2QiE7tixhg8xf8bdejw2pIaIUMwP76GgPIq2eRreD+KussLYEZiIP+7PdqveZ88DrLmP13eOnlY23t73yia0c1BDsbXeVGnnenXQ53stBrYFL7VuQVxlwNRC5ClKq1xBrAk6FV5Jv+z+8ErYDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773841735; c=relaxed/simple;
-	bh=L0ieDmT5GiinMFr7D+jmWSLHSiAB9d8xkoyNARMPWqM=;
+	s=arc-20240116; t=1773841844; c=relaxed/simple;
+	bh=KWzc1RhRpcc1zceizbJVzn7r1CLlyMQaw4Z3lAe0GWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kFhfRbYLb+YwAaQI4s/R8GjaxK0XiKXgmf6ecTPh8gvmqeFAlflQr5oXyKQexsCmOji/83jAGo8xeGpicyKMHMBzvXAnuQGoe7YZHZR+6GKTyufXRw23znurGM+57rTN8AwClThj0FZ1MQjLP3XCv0C92ds+bZsJTnaS8+iwlCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ioVsn8bu; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=qB4kal3KQCAdtX7XZc9sw8j81rwwlBzdbF1KNUcOkx+L5MuaBTJ1QS1odBWn2C45U+kf5ke1l0vBvClirUZ2DQqOtNG56QeGY6DAqw3vBCi31MrDfsjOQI9xLpKu8UTISlqG0YQVG/AnI9jY749CjORPKmCrtmxqNamKPsQfwhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PKktueFs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ioVsn8bu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1A43C19421;
-	Wed, 18 Mar 2026 13:48:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PKktueFs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2A75C19424;
+	Wed, 18 Mar 2026 13:50:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773841735;
-	bh=L0ieDmT5GiinMFr7D+jmWSLHSiAB9d8xkoyNARMPWqM=;
+	s=k20201202; t=1773841844;
+	bh=KWzc1RhRpcc1zceizbJVzn7r1CLlyMQaw4Z3lAe0GWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ioVsn8buB7rZHHv8kELKML3bHiiPFX6M0RLCNu2AcK6DZyJ0/uPHjmoDJAGF/aZwc
-	 ZPjzljOb5zGVYHcECuJ3BWZafgs1VjPurpHdILMFJKOp5C5/yIlRlwq7e15Yt/uHli
-	 1bhWvoPPG/KNpL/Skw3o0/3l3S3xKDYJCRmoHBPFPcQc8eiRuAriWoh+w9kk6PPQMf
-	 CMbQvErQQvcb0L9fPGtHa5mBH3Mwo3WgT0jC3W9GINcqR5NBLJqL9w8sg3iZBbjKVR
-	 9UUwk/UfngHLTk6ySs/zpi4oyIiMOqsOc1LTptOeXrwWJ4ymWX6qs6W8bwynWucAQy
-	 Q+wJ02wOIIWwA==
-From: hawk@kernel.org
-To: netdev@vger.kernel.org
-Cc: edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	davem@davemloft.net,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	jhs@mojatatu.com,
-	jiri@resnulli.us,
-	toke@toke.dk,
-	sdf@fomichev.me,
-	j.koeppeler@tu-berlin.de,
-	mfreemon@cloudflare.com,
-	carges@cloudflare.com
-Subject: [RFC PATCH net-next 6/6] net_sched: codel: fix stale state for empty flows in fq_codel
-Date: Wed, 18 Mar 2026 14:48:26 +0100
-Message-ID: <20260318134826.1281205-7-hawk@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260318134826.1281205-1-hawk@kernel.org>
-References: <20260318134826.1281205-1-hawk@kernel.org>
+	b=PKktueFsubrLlQg02btkIb9U7h1du9eA2v15Uolv1AX53djENBo/UlLVylBPHHEKb
+	 b+ZMc+8uSSRCaZd+Ajl6F2h1IwAXoh+BHJhKzUu/zRjv9Q2wnyuWOLAVnR5zg0HiA/
+	 8ZrGnd/pAAF8YhkBUMegwZfBI1oGEOHxrgmhJidSrHb+L98vLt2/GJgid5gBmpz0U1
+	 LpNboWefW/vDgmTKmcDZnGWSOgZqGrPv2C2yVVw6jVpxFt1zw0qdiaxdCXiPTVcr8I
+	 5l5mmBd2RlG71q46pxzhaH/WA2lmQ/WkCbpZBkxsWsU3KENmzpqZhSbXIv7UgFrMLC
+	 CEbCDGKeLAnxQ==
+From: Bjorn Andersson <andersson@kernel.org>
+To: konradybcio@kernel.org,
+	Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>
+Cc: linux-kernel@vger.kernel.org,
+	Alex Elder <elder@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jeff Johnson <jjohnson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Kees Cook <kees@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Mark Brown <broonie@kernel.org>,
+	Wesley Cheng <quic_wcheng@quicinc.com>,
+	netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath10k@lists.infradead.org,
+	ath11k@lists.infradead.org,
+	ath12k@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org,
+	linux-sound@vger.kernel.org
+Subject: Re: (subset) [PATCH v1 0/8] Group QMI service IDs into the QMI header
+Date: Wed, 18 Mar 2026 08:50:06 -0500
+Message-ID: <177384182865.14526.18396654374290648632.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260309230346.3584252-1-daniel.lezcano@oss.qualcomm.com>
+References: <20260309230346.3584252-1-daniel.lezcano@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-From: Jonas Köppeler <j.koeppeler@tu-berlin.de>
 
-When codel_dequeue() finds an empty queue, it resets vars->dropping
-but does not reset vars->first_above_time.  The reference CoDel
-algorithm (Nichols & Jacobson, ACM Queue 2012) resets both:
+On Tue, 10 Mar 2026 00:03:29 +0100, Daniel Lezcano wrote:
+> The different subsystems implementing the QMI service protocol are
+> using their own definition of the service id. It is not a problem but
+> it results on having those duplicated with different names but the
+> same value and without consistency in their name.
+> 
+> It makes more sense to unify their names and move the definitions in
+> the QMI header file providing a consistent way to represent the
+> supported protocols. Consequently the different drivers will use them
+> instead of their own definition of the service id.
+> 
+> [...]
 
-  dodeque_result codel_queue_t::dodeque(time_t now) {
-      ...
-      if (r.p == NULL) {
-          first_above_time = 0;   // <-- Linux omits this
-      }
-      ...
-  }
+Applied, thanks!
 
-Note that codel_should_drop() does reset first_above_time when called
-with a NULL skb, but codel_dequeue() returns early before ever calling
-codel_should_drop() in the empty-queue case.  The post-drop code paths
-do reach codel_should_drop(NULL) and correctly reset the timer, so a
-dropped packet breaks the cycle -- but the next delivered packet
-re-arms first_above_time and the cycle repeats.
+[8/8] samples: qmi: Use the unified QMI service ID instead of defining it locally
+      commit: 8baf6b3b7695849581a91bdaf66af2be68ef32ed
 
-For sparse flows such as ICMP ping (one packet every 200ms-1s), the
-first packet arms first_above_time, the flow goes empty, and the
-second packet arrives after the interval has elapsed and gets dropped.
-The pattern repeats, producing sustained loss on flows that are not
-actually congested.
-
-Test: veth pair, fq_codel, BQL disabled, 30000 iptables rules in the
-consumer namespace (NAPI-64 cycle ~14ms, well above fq_codel's 5ms
-target), ping at 5 pps under UDP flood:
-
-  Before fix:  26% ping packet loss
-  After fix:    0% ping packet loss
-
-Fix by resetting first_above_time to zero in the empty-queue path
-of codel_dequeue(), matching the reference algorithm.
-
-Fixes: 76e3cc126bb2 ("codel: Controlled Delay AQM")
-Co-developed-by: Jesper Dangaard Brouer <hawk@kernel.org>
-Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
-Signed-off-by: Jonas Köppeler <j.koeppeler@tu-berlin.de>
-Reported-by: Chris Arges <carges@cloudflare.com>
-Tested-by: Jonas Köppeler <j.koeppeler@tu-berlin.de>
----
- include/net/codel_impl.h | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/include/net/codel_impl.h b/include/net/codel_impl.h
-index 78a27ac73070..b2c359c6dd1b 100644
---- a/include/net/codel_impl.h
-+++ b/include/net/codel_impl.h
-@@ -158,6 +158,7 @@ static struct sk_buff *codel_dequeue(void *ctx,
- 	bool drop;
- 
- 	if (!skb) {
-+		vars->first_above_time = 0;
- 		vars->dropping = false;
- 		return skb;
- 	}
+Best regards,
 -- 
-2.43.0
-
+Bjorn Andersson <andersson@kernel.org>
