@@ -1,201 +1,167 @@
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D02280309
-	for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 06:37:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5313A4A02
+	for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 06:48:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773815864; cv=none; b=KDTB/TaWHthdWd05nD4lI358moR1dVzCnnPkefFh/FlVH4tqguO1Xn8SfdQGfYU8qLtUSoFiYPOVWUJRrDk354oErtpIUWaLza+ZzfUlMUpuzK4sSLpq747jIEl6/KDNBXr0efiMFy0BuhbDsj+MVBOGfLpDyp4mScvXTeRKgrQ=
+	t=1773816539; cv=none; b=KWYCdddgoLI1qebk6UugwriwwvjBjCHYyYRcbTUNzLpYoC8/+2/tw8GtaSLZckXNi8pQAHRVclsdNPQebZe1K2cXrGJDgzbMYW4KHx7zr0vO+L1e4tunj/eS9fqe/pLtDz8c8hRAyQ0HjIRUFaRQxaZaDZ+EcobMxKwSTN5pmZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773815864; c=relaxed/simple;
-	bh=B6w9+t6iL/TOp54YhkDN8WKI5sr7szB/UfhThNsC4KY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AtZV45JB9p14yBi8Z70azNVgG7w09SwMW1FekO07+XU+IcB09P0F4Zxqb2jPhGqMeRGmJkjuxcfPJAfTAFCylC2ld/Zb7B5Qb/YiK4p6YviLsNCtVuERbdMwmt4sZzYcG/JfKzu7oHKA8H95EBRam+72l8LNkIy+7nvkLanyR8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SEKMxOWC; arc=none smtp.client-ip=209.85.160.169
+	s=arc-20240116; t=1773816539; c=relaxed/simple;
+	bh=Qj1QkGketFTLM6FhMiga1uXkk9E+QIhjnrMOjTAq2ZY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PazMCrC2L4/AtJlynEV1jx1eWbG9p6PEFioOSita6ZaiWDpYRLBsmruLOX5hwx++9PCSzaE63Ba9WV9b/4ctRGQ1vFr5dHr5Y0ISRpwRMgTrFSJ9P/5OP5nculu/C7JZzICrrIsjHygEo2MLN9iLMOzDjO4FuS43ZsNFPOynw/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YbT3p7Iw; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SEKMxOWC"
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-509307e3854so5076711cf.1
-        for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 23:37:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YbT3p7Iw"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2b05761bec1so2623225ad.1
+        for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 23:48:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773815862; x=1774420662; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dZGvwuMrOAu4OGXCJyfmhbRaVBhCV3KVK8W/0vxO3GY=;
-        b=SEKMxOWCeAoc3YF13OcCGHVLNnbFiAJl53HEMRxQh9XNDPxjjurZ0La7FdI4U7uKKZ
-         pzxQsGGEBHj5iuQw+L3SDEY19ub96w66qRfYZEeHlIF83UCEkuxs/guWFSg1mUurguYB
-         HVDWKBIVQPUqXl4FehYI+BERxHmbu+4uOJFL4MJxNaq59mopVJUJoILy/dtBk1ag1edP
-         it2ZXmV3bfhcjWAI/PyXNsX6xbgv8KLnirHSx9xEFRnVyeU9jSinMgreio82ISiXossk
-         rmJyJMQHWl6MaQpHRi2N+jKcrN7ZjdFmN8NvO5ZAxgk6/PBiXH6N+w2jFPIofEVBj2oE
-         B/Vw==
+        d=gmail.com; s=20230601; t=1773816537; x=1774421337; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=cwVGV5+seuNEQDXpmjKxLE/WMiIEl6PzK6G5vJJXXZA=;
+        b=YbT3p7IwofRR4B71gvIvW4EYvPkkHFAZKnxd325boEmEBFUL/kF+aumEjLzU6wTeVi
+         J4wJ1MlBDsN9y0A5iwvtdSJ6WmSy1fgLfWvB1FcCA0c8hEajcFDp+KLme9ciDi1sDa9W
+         wnj86JwfQquO42V7nWuafBoYJRLPlLE19MJG+CpRN+HqUHcmgB/T5sXbp7udQ4DobENp
+         Xa/wkzsznNFEVBZm/0k3L+K7vwji1nj4hG6WTj/rGJcx2MP6k5mzBQJ72ADF+v+qddPj
+         LNIAfnrimodMiZ9rkFX+rnCICM9/mmWOs4sgDi4BOs8m1Dd4IA6kPtUJd0AnV3ZN6DcP
+         1olQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773815862; x=1774420662;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=dZGvwuMrOAu4OGXCJyfmhbRaVBhCV3KVK8W/0vxO3GY=;
-        b=HSeuix6RuEdgSTs2U/smWRQ8VwCylX0egfNCwTJLS7oqZjNC7NhZN/vjTRCCwctZRp
-         4Bb3H2Ulr9Ke7bWYRxVD1Hf4Gm1ZYbSfmwdCjC2g7NQij7YG0LTIY/q7zee4vMQEiAPI
-         pS7GVprvsxraKF55l36B0qBk5ptzcxE2BsfZIXZYdqia/RcISKP0z9H+/SG6gKigd7PH
-         Ys1/aI/x7UrTyzt2VFA0yHjrWxaWW+jM2A0p7xw81UlSdu0xjPJS4lejGH8OmP4Z0bVT
-         r+i2CbDDOx5rSfT2cwzXP2Tj/Usfk+nn36LU2FyLOz9XX/nVjTyD7eumgGbZe7Fxry17
-         zB1w==
-X-Gm-Message-State: AOJu0YzQunaZi6TerQvebF4US+p4geklj0FdKuOiqDI/Wh48NV+xaB8I
-	mwCyOHrTVy//1L6q7M/WzpO0Qo4ulVOMoJgsQ3pxbYXQuyB/pVuZDQ05
-X-Gm-Gg: ATEYQzx5AN+/et6I4HaewA+WdcwwT3MtZg+znUzyBPAktL2NWxU7qjVeKoTAIW0dwHW
-	FxjrKCAtoLSi1aVV5LFJT0rLKTja3G//S4EJwUFUxD48mRRgQNlBamxjPldJGSDIqBpAd+zWT16
-	d6aCqlkWEUTOjWeUk91ZhEjbfEK6tIlfkxffW8hsTmo/XGFT6QNNFhHLGC5Hnki70U40i4zRpKJ
-	pFrlAQHWmKnXBY6BSpO9da7vCvmUhX0rLdCxC0MA6OSia54Oaulif+bHaOCcuHayviLvcoZmVgD
-	mvMRWvQO+whQpY74LvQ1scaVN8lIKjIxIqWXXSJCNM4u1tdlOUCLi9TeuVxOLkP72fQ66TtIIE9
-	4h3tjCrDKgO4iyLKuwqhkHnW0IVE8ukyqJA4M4FbEg46UhQs85zCJzrpnJVe8WMZetnsmIKvoiA
-	TYZHD2Gtes8NXDiqocSQwvNG8USo3jrOI4
-X-Received: by 2002:a05:622a:607:b0:501:4184:b59f with SMTP id d75a77b69052e-50b138674bamr30444081cf.15.1773815862249;
-        Tue, 17 Mar 2026 23:37:42 -0700 (PDT)
-Received: from localhost.localdomain ([128.224.253.2])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50b135b875esm15235351cf.25.2026.03.17.23.37.38
+        d=1e100.net; s=20251104; t=1773816537; x=1774421337;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cwVGV5+seuNEQDXpmjKxLE/WMiIEl6PzK6G5vJJXXZA=;
+        b=qxGECOqrknN94QbopnZh7T9bMYe+By/pXNKwTVKAqO3bofBwpRpaz/JN5zQsEZPHsJ
+         wMOvXDzvJpFTFqhkrATDWOJcQyRiEftX85yERmHdq7L04OF7o59xRm9o95QotmxNRWF+
+         IoL3QudZhPxTZw5mRWseZz6mPO+XfUKI2IyCFrseeLvqhmOXBopulqIFdrYQZRBiyoPp
+         sjfWAeC5pNdNTvbJeMypswVTn+nZm1V6yFuYOIKDndVcgFKWL9c97uwIlXbEEq0cgfcD
+         rWj+AmeGJT9BbVRrraCUX0pta9xdtFg7b5pYTkPrGcNJEiFO1hZwThYfhpDqadk/zOL+
+         WWDw==
+X-Gm-Message-State: AOJu0YxbNZQpGUMHM//f//atHHfzodJQTKainZ/NhGGtCjgDoAAKhmBS
+	Sk6jaO1HYeq9IRHRN6+FS2vljTb1XmHF2YShmeAjTo6Z2DGLr2PDKhqq
+X-Gm-Gg: ATEYQzxxqbMM8VG7aXLGzHRmd09Dj8rjEImxLTHuqx2byxZ/yzdYq4dXW1s2svU5cKB
+	sst3OTs05mzvqMH0Gc/Trrhe3B32g9UyYbXD1Oug9ygwWzWeAOvfCRchEXEeAWjfo1Q7DBg5ZXR
+	RN06mIMUllTqNwwa+BdCS8PqABZ7u743ko3ftoSbMg/gSpiTSEN7/SKIRSt/SK7UkYLyj3BqqC0
+	/4ikSY8Eao95sL1SJ9LGndZ0tUg9aK98ZT2nM6QjtVaGu9Uab+Nz6wIO64W6lFUn2mLKRuzq8jj
+	6qLz0GddWT/cyaqIxgyVfoQ7QMUEBpyylGVD0aZK2ARQhdccJ0dIAMAZ5c4d32J49FXPWqdEUoT
+	MHXYCZ6HK+jyWSNxS1Ic9XxESQ10kP5VKnZTf7hyECcjgWuy6kgHTjHuaZR5WNN+4MPqksa9iEg
+	fcIyjv/vaeNyU+Mo7FuYTnbMToaGzdc1K/
+X-Received: by 2002:a17:903:94b:b0:2ae:5a38:96bb with SMTP id d9443c01a7336-2b06357efd3mr61873795ad.2.1773816536783;
+        Tue, 17 Mar 2026 23:48:56 -0700 (PDT)
+Received: from localhost.localdomain ([101.5.20.107])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b06e6315dcsm19262845ad.80.2026.03.17.23.48.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Mar 2026 23:37:41 -0700 (PDT)
-From: Kevin Hao <haokexin@gmail.com>
-Date: Wed, 18 Mar 2026 14:36:59 +0800
-Subject: [PATCH net v2 2/2] net: macb: Protect access to net_device::ip_ptr
- with RCU lock
+        Tue, 17 Mar 2026 23:48:55 -0700 (PDT)
+From: Qi Tang <tpluszz77@gmail.com>
+To: alibuda@linux.alibaba.com,
+	dust.li@linux.alibaba.com,
+	sidraya@linux.ibm.com,
+	wenjia@linux.ibm.com
+Cc: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Qi Tang <tpluszz77@gmail.com>
+Subject: [PATCH net] net/smc: fix double-free of smc_spd_priv when tee() duplicates splice pipe buffer
+Date: Wed, 18 Mar 2026 14:48:47 +0800
+Message-ID: <20260318064847.23341-1-tpluszz77@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260318-macb-irq-v2-2-f1179768ab24@gmail.com>
-References: <20260318-macb-irq-v2-0-f1179768ab24@gmail.com>
-In-Reply-To: <20260318-macb-irq-v2-0-f1179768ab24@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Vineeth Karumanchi <vineeth.karumanchi@amd.com>, 
- Harini Katakam <harini.katakam@amd.com>, 
- =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
- Kevin Hao <haokexin@gmail.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
 
-Access to net_device::ip_ptr and its associated members must be
-protected by an RCU lock. Since we are modifying this piece of code,
-let's also move it to execute only when WAKE_ARP is enabled.
+smc_rx_splice() allocates one smc_spd_priv per pipe_buffer and stores
+the pointer in pipe_buffer.private.  The pipe_buf_operations for these
+buffers used .get = generic_pipe_buf_get, which only increments the page
+reference count when tee(2) duplicates a pipe buffer.  The smc_spd_priv
+pointer itself was not handled, so after tee() both the original and the
+cloned pipe_buffer share the same smc_spd_priv *.
 
-To minimize the duration of the RCU lock, a local variable is used to
-temporarily store the IP address. This change resolves the following
-RCU check warning:
-  WARNING: suspicious RCU usage
-  7.0.0-rc3-next-20260310-yocto-standard+ #122 Not tainted
-  -----------------------------
-  drivers/net/ethernet/cadence/macb_main.c:5944 suspicious rcu_dereference_check() usage!
+When both pipes are subsequently released, smc_rx_pipe_buf_release() is
+called twice against the same object:
 
-  other info that might help us debug this:
+  1st call: kfree(priv)  sock_put(sk)  smc_rx_update_cons()  [correct]
+  2nd call: kfree(priv)  sock_put(sk)  smc_rx_update_cons()  [UAF]
 
-  rcu_scheduler_active = 2, debug_locks = 1
-  5 locks held by rtcwake/518:
-   #0: ffff000803ab1408 (sb_writers#5){.+.+}-{0:0}, at: vfs_write+0xf8/0x368
-   #1: ffff0008090bf088 (&of->mutex#2){+.+.}-{4:4}, at: kernfs_fop_write_iter+0xbc/0x1c8
-   #2: ffff00080098d588 (kn->active#70){.+.+}-{0:0}, at: kernfs_fop_write_iter+0xcc/0x1c8
-   #3: ffff800081c84888 (system_transition_mutex){+.+.}-{4:4}, at: pm_suspend+0x1ec/0x290
-   #4: ffff0008009ba0f8 (&dev->mutex){....}-{4:4}, at: device_suspend+0x118/0x4f0
+KASAN reports a slab-use-after-free in smc_rx_pipe_buf_release(), which
+then escalates to a NULL-pointer dereference and kernel panic via
+smc_rx_update_consumer() when it chases the freed priv->smc pointer:
 
-  stack backtrace:
-  CPU: 3 UID: 0 PID: 518 Comm: rtcwake Not tainted 7.0.0-rc3-next-20260310-yocto-standard+ #122 PREEMPT
-  Hardware name: ZynqMP ZCU102 Rev1.1 (DT)
-  Call trace:
-   show_stack+0x24/0x38 (C)
-   __dump_stack+0x28/0x38
-   dump_stack_lvl+0x64/0x88
-   dump_stack+0x18/0x24
-   lockdep_rcu_suspicious+0x134/0x1d8
-   macb_suspend+0xd8/0x4c0
-   device_suspend+0x218/0x4f0
-   dpm_suspend+0x244/0x3a0
-   dpm_suspend_start+0x50/0x78
-   suspend_devices_and_enter+0xec/0x560
-   pm_suspend+0x194/0x290
-   state_store+0x110/0x158
-   kobj_attr_store+0x1c/0x30
-   sysfs_kf_write+0xa8/0xd0
-   kernfs_fop_write_iter+0x11c/0x1c8
-   vfs_write+0x248/0x368
-   ksys_write+0x7c/0xf8
-   __arm64_sys_write+0x28/0x40
-   invoke_syscall+0x4c/0xe8
-   el0_svc_common+0x98/0xf0
-   do_el0_svc+0x28/0x40
-   el0_svc+0x54/0x1e0
-   el0t_64_sync_handler+0x84/0x130
-   el0t_64_sync+0x198/0x1a0
+  BUG: KASAN: slab-use-after-free in smc_rx_pipe_buf_release+0x78/0x2a0
+  Read of size 8 at addr ffff888004a45740 by task smc_splice_tee_/74
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x53/0x70
+   print_report+0xce/0x650
+   kasan_report+0xc6/0x100
+   smc_rx_pipe_buf_release+0x78/0x2a0
+   free_pipe_info+0xd4/0x130
+   pipe_release+0x142/0x160
+   __fput+0x1c6/0x490
+   __x64_sys_close+0x4f/0x90
+   do_syscall_64+0xa6/0x1a0
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+   </TASK>
 
-Fixes: 0cb8de39a776 ("net: macb: Add ARP support to WOL")
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
-Cc: stable@vger.kernel.org
+  BUG: kernel NULL pointer dereference, address: 0000000000000020
+  RIP: 0010:smc_rx_update_consumer+0x8d/0x350
+  Call Trace:
+   <TASK>
+   smc_rx_pipe_buf_release+0x121/0x2a0
+   free_pipe_info+0xd4/0x130
+   pipe_release+0x142/0x160
+   __fput+0x1c6/0x490
+   __x64_sys_close+0x4f/0x90
+   do_syscall_64+0xa6/0x1a0
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+   </TASK>
+  Kernel panic - not syncing: Fatal exception
+
+Beyond the memory-safety problem, duplicating an SMC splice buffer is
+semantically questionable: smc_rx_update_cons() would advance the
+consumer cursor twice for the same data, corrupting receive-window
+accounting.  A refcount on smc_spd_priv could fix the double-free, but
+the cursor-accounting issue would still need to be addressed separately.
+
+The .get callback is invoked by both tee(2) and splice_pipe_to_pipe()
+for partial transfers; both will now return -EFAULT.  Users who need
+to duplicate SMC socket data must use a copy-based read path.
+
+Fixes: 9014db202cb7 ("smc: add support for splice()")
+Signed-off-by: Qi Tang <tpluszz77@gmail.com>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ net/smc/smc_rx.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 2d4304331e297accd91ab48813a9bd4722ce72dc..9856764402b17397928d0a61da61865a3b10484f 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -5909,9 +5909,9 @@ static int __maybe_unused macb_suspend(struct device *dev)
- 	struct macb_queue *queue;
- 	struct in_device *idev;
- 	unsigned long flags;
-+	u32 tmp, ifa_local;
- 	unsigned int q;
- 	int err;
--	u32 tmp;
+diff --git a/net/smc/smc_rx.c b/net/smc/smc_rx.c
+index d833e36f7fd4..c1d9b923938d 100644
+--- a/net/smc/smc_rx.c
++++ b/net/smc/smc_rx.c
+@@ -135,9 +135,16 @@ static void smc_rx_pipe_buf_release(struct pipe_inode_info *pipe,
+ 	sock_put(sk);
+ }
  
- 	if (!device_may_wakeup(&bp->dev->dev))
- 		phy_exit(bp->phy);
-@@ -5920,14 +5920,21 @@ static int __maybe_unused macb_suspend(struct device *dev)
- 		return 0;
- 
- 	if (bp->wol & MACB_WOL_ENABLED) {
--		/* Check for IP address in WOL ARP mode */
--		idev = __in_dev_get_rcu(bp->dev);
--		if (idev)
--			ifa = rcu_dereference(idev->ifa_list);
--		if ((bp->wolopts & WAKE_ARP) && !ifa) {
--			netdev_err(netdev, "IP address not assigned as required by WoL walk ARP\n");
--			return -EOPNOTSUPP;
-+		if (bp->wolopts & WAKE_ARP) {
-+			/* Check for IP address in WOL ARP mode */
-+			rcu_read_lock();
-+			idev = __in_dev_get_rcu(bp->dev);
-+			if (idev)
-+				ifa = rcu_dereference(idev->ifa_list);
-+			if (!ifa) {
-+				rcu_read_unlock();
-+				netdev_err(netdev, "IP address not assigned as required by WoL walk ARP\n");
-+				return -EOPNOTSUPP;
-+			}
-+			ifa_local = be32_to_cpu(ifa->ifa_local);
-+			rcu_read_unlock();
- 		}
++static bool smc_rx_pipe_buf_get(struct pipe_inode_info *pipe,
++				struct pipe_buffer *buf)
++{
++	/* smc_spd_priv in buf->private is not shareable; disallow cloning. */
++	return false;
++}
 +
- 		spin_lock_irqsave(&bp->lock, flags);
+ static const struct pipe_buf_operations smc_pipe_ops = {
+ 	.release = smc_rx_pipe_buf_release,
+-	.get = generic_pipe_buf_get
++	.get	 = smc_rx_pipe_buf_get,
+ };
  
- 		/* Disable Tx and Rx engines before  disabling the queues,
-@@ -5966,7 +5973,7 @@ static int __maybe_unused macb_suspend(struct device *dev)
- 		if (bp->wolopts & WAKE_ARP) {
- 			tmp |= MACB_BIT(ARP);
- 			/* write IP address into register */
--			tmp |= MACB_BFEXT(IP, be32_to_cpu(ifa->ifa_local));
-+			tmp |= MACB_BFEXT(IP, ifa_local);
- 		}
- 		spin_unlock_irqrestore(&bp->lock, flags);
- 
-
+ static void smc_rx_spd_release(struct splice_pipe_desc *spd,
 -- 
-2.53.0
+2.43.0
 
