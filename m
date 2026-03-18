@@ -1,78 +1,83 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FDFF33343B;
-	Wed, 18 Mar 2026 03:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382A7221264;
+	Wed, 18 Mar 2026 03:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773804022; cv=none; b=H4N6v2AEE/bOfDsiwuZwIwmP77cvTCAJssGlN20y6tBizwRtlyeOGnVftaAXs6p++YbttlnBdXwuKiEC23lnJVmdZDiqSbAXBjSo7Qeik2yUa3uxXSxjj6nJ8kusD4nGI6MFMeWwRt2w6mKzLvU/TOyfWiREeVQbKoCcdehhfaM=
+	t=1773804440; cv=none; b=msjUQ8/8P1D5NDnq0jP9kuNvk3xJ0ViDnUadivwT0AFfrNEXjrruISk3KJhUDCDtqOeXNgk6iM5drUYQKf5pamcG+l6QrS7mqr6NF3a00gwl0YqD3Gc3lNNBS6Giyhn0W+ZV+1Nq9THhRhs0+FclenKJ6kDXByeA/DFxPlVP22M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773804022; c=relaxed/simple;
-	bh=KdIR50igbptkAD6q8WTViMPPAuJJluLl0TZGJGizjxg=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ipNICaTVyLiqu2lksXhUnN+ya86/8CNHMwrXUsYO/rWP2O26fv0/Nxtj6y0w4HTnHuyvLKGFWB48ifIXLliGCx8QUkMLW5gw5wqDOd7JWTlxSFL0aiuViDS/XzySzQVuB8rn+Rsg3NALy6w6qPz5MyJ4qnhcYzEnS09MYbfy/gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZErRmz9o; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773804440; c=relaxed/simple;
+	bh=ROD3NFSVkWqgoO/ybbGGf/RRmJURirlhbsgU8LFOnbo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nawOmHakpt1yeqG6bwUFicddYbS8UlxK3pn5UxxP6iu4sTz97YwTFiz75s7lTGCjNNujLEIBziGNTjU5kKdrORMsTtlqx9fEusu7APdlrIuGfxgmEsVW+jtDbuoMPCvkvRNyXyAzVD0WQv14yaIijy2V6fAomtDOlFrdTI3HYNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DXSflJNs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZErRmz9o"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B838C2BC86;
-	Wed, 18 Mar 2026 03:20:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DXSflJNs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3818FC4CEF7;
+	Wed, 18 Mar 2026 03:27:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773804022;
-	bh=KdIR50igbptkAD6q8WTViMPPAuJJluLl0TZGJGizjxg=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=ZErRmz9oP7cNXXN/1YyrG9+pUfe+JSTptjhXP1qKvEL7qD3AGNpt45c3SXlVG/Rv/
-	 vAKTT4hDejJdKWLzCPtThmst6dXs/FcVtc5iXXTrqrypUOOYXr7m5sr50d2oTH08Aq
-	 s2u4/M++Dd9Pkik4PGEfhOHGyZif41ZkRl2o59tT8BLBrOQrnyrbG0LEo13vm+0Im1
-	 bUTr93SS+0DMeQUa8pXP0nIIA/0cXJR+7W9qpHxuDFQlPM+0uEGwexBc1QlTCtITgn
-	 kSw9VvAg42CjpZeQwiXvqoKwdW0pe03kViPKsxcB8rVsA97im8IYSQyxrO/2clEXfX
-	 otHYlQdEcjfUQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7D0A03808200;
-	Wed, 18 Mar 2026 03:20:15 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1773804439;
+	bh=ROD3NFSVkWqgoO/ybbGGf/RRmJURirlhbsgU8LFOnbo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=DXSflJNssMfvZKI0jNYIlF3G3Pi9Dld3v2U2jefE1t9afHcvl232I/eDDhWvwwIvU
+	 A0bIKkEZhzVpip0sm9h1v/OpNI7R+sGkqOCBk3+lW8ghiFZcWA89ZL4qe2yhVM+/Mn
+	 kvb/WarTxUsyA1661m6ekZQJnrkeR8LOslV/v8odHnjXqUO1syVLPKeDNijah/u8A2
+	 R+eFT0IG19ckHA412urRZken25zSb8oKf8ayFTaQKgWnr+Bw8CtdJ7P0E8xiArKaMF
+	 Lb9duwp2YahU8YfFdaUYW3JjTDcNC3I1pwaj3WwNHC4uCZeGxuRpCfPzBWDNGfI+56
+	 4A1ff88u9AQNw==
+Date: Tue, 17 Mar 2026 20:27:18 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Sam Edwards <cfsworks@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Russell King <rmk+kernel@armlinux.org.uk>, Maxime
+ Chevallier <maxime.chevallier@bootlin.com>, Ovidiu Panait
+ <ovidiu.panait.rb@renesas.com>, Vladimir Oltean <vladimir.oltean@nxp.com>,
+ Baruch Siach <baruch@tkos.co.il>, Serge Semin <fancer.lancer@gmail.com>,
+ netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/3] stmmac crash/stall fixes when under memory pressure
+Message-ID: <20260317202718.3a5433c4@kernel.org>
+In-Reply-To: <20260316021009.262358-1-CFSworks@gmail.com>
+References: <20260316021009.262358-1-CFSworks@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v1] ptp: vmw: Convert to a platform driver
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177380401428.109214.13001276771153710383.git-patchwork-notify@kernel.org>
-Date: Wed, 18 Mar 2026 03:20:14 +0000
-References: <12883468.O9o76ZdvQC@rafael.j.wysocki>
-In-Reply-To: <12883468.O9o76ZdvQC@rafael.j.wysocki>
-To: Rafael J. Wysocki <rafael@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-acpi@vger.kernel.org, richardcochran@gmail.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Sat, 14 Mar 2026 12:43:33 +0100 you wrote:
-> From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+On Sun, 15 Mar 2026 19:10:06 -0700 Sam Edwards wrote:
+> This is a pair of bugfixes for the stmmac driver's receive pipeline. These
+> issues occur when stmmac_rx_refill() does not (fully) succeed, which happens
+> more frequently when free memory is low.
 > 
-> In all cases in which a struct acpi_driver is used for binding a driver
-> to an ACPI device object, a corresponding platform device is created by
-> the ACPI core and that device is regarded as a proper representation of
-> underlying hardware.  Accordingly, a struct platform_driver should be
-> used by driver code to bind to that device.  There are multiple reasons
-> why drivers should not bind directly to ACPI device objects [1].
+> The first patch closes Bugzilla bug #221010, where stmmac_rx() can circle
+> around to a still-dirty descriptor (with a NULL buffer pointer), mistake it for
+> a filled descriptor (due to OWN=0), and attempt to dereference the buffer.
 > 
-> [...]
+> In testing that patch, I discovered a second issue: starvation of available RX
+> buffers causes the NIC to stop sending interrupts; if the driver stops polling,
+> it will wait indefinitely for an interrupt that will never come. (Note: the
+> first patch makes this issue more prominent -- mostly because it lets the
+> system survive long enough to exhibit it -- but doesn't *cause* it.) The second
+> patch addresses that problem as well.
+> 
+> The first two patches are minimal and intended for stable. The third is a
+> general cleanup that removes the `limit` clamp and *solves* the issue of the
+> loop mistaking dirty entries for filled ones, rather than *avoiding* it.
+> Because this final patch changes the range of stmmac_rx_dirty()'s possible
+> return values, it's intended for -next, not stable.
 
-Here is the summary with links:
-  - [v1] ptp: vmw: Convert to a platform driver
-    https://git.kernel.org/netdev/net-next/c/6829f90906aa
+Please (ask your LLM to) read
+https://www.kernel.org/doc/html/next/process/maintainer-netdev.html
 
-You are awesome, thank you!
+You can't submit fixes and next changes in one go.
+
+Please have a critical look at the commit messages.
+They are very bloviated and not slop looking.
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
