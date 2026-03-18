@@ -1,235 +1,154 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A569C3DEACF;
-	Wed, 18 Mar 2026 14:53:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F57337EFFF
+	for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 14:54:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773845599; cv=none; b=KeZtGzjNJcVsYeS5Zv/hhlRwLmb/R9S5rn9ibkFEvxJSfMVFwKZfBpn5VgFzj36h1Lq97a0bxLlJ1BSH/4K+UTs7OS+DAOL+AMN5L8MklbDC7p1zhbUbhzHTGYSYt17XFDNycgK/muPUKt+45Lt2jJxvAZl+iY4UGrGn+COrDOQ=
+	t=1773845650; cv=none; b=smAwQqrssHhU3BFR6/9+aAhFREde2xsn5HrFP5RWdTqW6UG5NhRQeNBBInkYxyoWkSXkwDWVOGqKHawZjBuwjJF2t64fb9LOJoi1BqpopjmQQsnQpAM3FyU9oHjJv8c57dCBxRT8qfsYTkIJJizCBg7fi8o/qHsUMEZRy7ILDlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773845599; c=relaxed/simple;
-	bh=felRz9HjKIpiMojzCYck9P/yFifvYQCbmR4et9IJMCE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iBYimGBsam8lvF67je/JcTUbZvnapqfcrMbp+tZtUAx9qTZS+ygzWjfzAnrg22awR0wbC7Yt0We5prFYWlEB2MKzhycwzU3s4C5XrXyELMRwwXhyV5vhmSRnhUzcD325xhgkRUZQwzAoGZgttCZNWzz1itXzS8Zg+yPKFT7+Ekk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fAtjlSky; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773845650; c=relaxed/simple;
+	bh=phrZMY/iUGqX9FbeAjQ9S4m4uoKH9/LsPe1PYJCUU9c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mGU0aYbqQC6dMvtBOesnzE5UU8N/YUyWWYCVrAXvoNdMqglkO7sodIi1bcYqreYLC4q7DQ9bKVdnuvHe0dols4gzGXvCKOofFFUnFr7VHeuGLy5/O2gq3T1g+lE//3bmCnMJTiQdMJR0W8K53AzDcqXxpbCeLUAtQ/mWTOfuwYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linbit.com; spf=pass smtp.mailfrom=linbit.com; dkim=pass (2048-bit key) header.d=linbit-com.20230601.gappssmtp.com header.i=@linbit-com.20230601.gappssmtp.com header.b=Uph/m+Jb; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linbit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fAtjlSky"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC5C1C19421;
-	Wed, 18 Mar 2026 14:53:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773845599;
-	bh=felRz9HjKIpiMojzCYck9P/yFifvYQCbmR4et9IJMCE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fAtjlSkyrrMyzIBZ7N2NlRzPZBtw8remOkjH7r+8O59bkBW9qIQf+rzgbHGyeJBZK
-	 0+T4qwG8pBLnqm5DlGljHViPzqML4ExtKFxOgILq0kFmbQ4uvSAukqpPijCffZKz5k
-	 Y7SBwklP6pAK+QeUH6IaeFjQHqZO+bN3SRjdRExWC97ff3txc5AZ03kJMwY0a8UlDW
-	 Od9QgSz11fcD99EJ8ap1pH+Sv8ZBKcHDb5mms12ptgEjzCziEJPXor9Pn/4l4lV15A
-	 92QuVOu/VnAHsV+FpmWB25zl5ivwjGt0EdgLwJPp1oONsKUcmW0Oon4456rAUBshvk
-	 SdVMgMdIqIi2w==
-From: Simon Horman <horms@kernel.org>
-To: wei.fang@nxp.com
-Cc: Simon Horman <horms@kernel.org>,
-	robh@kernel.org,
-	pabeni@redhat.com,
-	claudiu.manoil@nxp.com,
-	devicetree@vger.kernel.org,
-	f.fainelli@gmail.com,
-	frank.li@nxp.com,
-	imx@lists.linux.dev,
-	krzk+dt@kernel.org,
-	linux-kernel@vger.kernel.org,
-	edumazet@google.com,
-	xiaoning.wang@nxp.com,
-	davem@davemloft.net,
-	linux@armlinux.org.uk,
-	kuba@kernel.org,
-	chleroy@kernel.org,
-	conor+dt@kernel.org,
-	andrew+netdev@lunn.ch,
-	linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org,
-	vladimir.oltean@nxp.com,
-	netdev@vger.kernel.org
-Subject: Re: [net-next,12/14] net: dsa: netc: add more basic functions support
-Date: Wed, 18 Mar 2026 14:49:56 +0000
-Message-ID: <20260318144954.1893193-3-horms@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260316094152.1558671-13-wei.fang@nxp.com>
-References: <20260316094152.1558671-13-wei.fang@nxp.com>
+	dkim=pass (2048-bit key) header.d=linbit-com.20230601.gappssmtp.com header.i=@linbit-com.20230601.gappssmtp.com header.b="Uph/m+Jb"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-48628ce9ab5so27677975e9.2
+        for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 07:54:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linbit-com.20230601.gappssmtp.com; s=20230601; t=1773845647; x=1774450447; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yzi5TLVbzrwenc6vxPwdtQ+F2R3dH5U7IECzTFPhoOY=;
+        b=Uph/m+Jb3NH0S4u2hSfy09FB4lDmRb3NDhHMiZnTIRk8KthWlVXRS18o/OS2AnzmaB
+         UAAh8u1k8xdUYYtVOlPs6MBXesSG3buI9WgbQ3BDpEERrizme0r9R8YVmnv+HX1OgAcC
+         cH+H1BGPPYXeJZkZPAhC6Tine66EOPdwrJtgoPeK0Gg4ZTzCgc8XNlMGo+gV4+pZUtdj
+         R8M3sViUu8OyAAAMrZgbm6XWWuW/OYkKo3LQSTEbUaWVYp4z58QxHrVZsDp2m/M7igBQ
+         /3DEc1puubz04uGDE7UzzacKOc0imF8dERizigc3OfXgHDZyh13kpEtsXwRWM+sN3ezv
+         xrcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773845647; x=1774450447;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yzi5TLVbzrwenc6vxPwdtQ+F2R3dH5U7IECzTFPhoOY=;
+        b=MCOFlaakZxelWoBcrY/Tol7CGdvXFSugAnVyt+a86ft1mCPz1i0G0rQ6E1myHGwaZu
+         6Regn7k+Sc2cJwSPZe06TaP/7h5rufm7zmurkzHWnBHEAzM4ClV9FbyifRSlruLOy2oM
+         +BHOlB6ZnJ5tyIHTj2HOtPNic3nNpROLmD/kqVb+FQUA7Gcs1rfjG+7znFTTfvYYVBbC
+         TKk5Ybcax9WwYGKLfSwjS5L9PNg6Tro7iOJ61WSBgAes1Wu64KaMIFDbr1CR+5OkY8KT
+         vn2v3K4mZHxNuHvsArAYQL7Qcgv1EVHayN4XsUvpXRsq33MX1qmByd1FiHJO3suqOgcY
+         dQCA==
+X-Forwarded-Encrypted: i=1; AJvYcCUPi7s8DIouG8bWCQqGFTq+DeKw8qQVOe+h/HpCqVdy4tFe4b36UKrDimSk75vN8CBU/QI5eiw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyB9GhpmduqH1QOPcfJ0FJCGI9QbOy4IpUw7GfsrCrotJsHMVlk
+	JHQG+pcuTGgV4NieS5wKZeFRxEoNnE17/tqRaaxGW7Z6OICkiGFBW591xkgsd0galX0=
+X-Gm-Gg: ATEYQzwn54aWobSRTamwVW10q2o5hmwRJpY4AORhf1C2iG0YxiFmAlQXpDdwo9aBkys
+	YFYzlc/149DYF/YJ6d03QygPoT788q/2T4Io/1KfM9T3ZzMzKpLlAWu7/Glxxd9rRfajo7p8Hzh
+	wpuuLbB0uw7wpYDYaoQBjy97nFwsnjDQ7a/WYH7GEsDgCBP3yPVb5GVgVc+Ny+g9qnipC/qaxov
+	DfJ6DiHcBzQz0HoolxXpDB24xxvrZ+fo0gjtxidn+9+GiBNmLdnOrvPqyHLdIXToZJg9jJT9qpj
+	CtySX6Jbfu/1E24yHin9+6ze2gKX00B6CiVaCelxN8HAB+DTpcxRC+RxFVPiSsYRb7kC801kO49
+	B9blNOD8MGuUqpbf1yrmU70MtbcfT7pkNlBLdBuxpsEriHa98gs1y7EhVR5VyVP3ufBr2I/XX8T
+	uNKLqYQhwnT97CCtz6ZNfJ4KyjjjBaxco2wap6kYVgo8B7jrHVcrOGZENY44IlUbRtYPnKl5fPf
+	B0NO1WgUBM0x0M=
+X-Received: by 2002:adf:ec4d:0:b0:43b:54c9:7d25 with SMTP id ffacd0b85a97d-43b54c986e9mr2949187f8f.38.1773845646415;
+        Wed, 18 Mar 2026 07:54:06 -0700 (PDT)
+Received: from [192.168.178.55] (h082218028181.host.wavenet.at. [82.218.28.181])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b51852ab3sm8733045f8f.12.2026.03.18.07.54.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 Mar 2026 07:54:05 -0700 (PDT)
+Message-ID: <b17134a2-c95e-4019-800e-ab6ec6982ea3@linbit.com>
+Date: Wed, 18 Mar 2026 15:54:04 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] genetlink: add multi-version family support for
+ protocol negotiation
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Philipp Reisner <philipp.reisner@linbit.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Alok Tiwari <alok.a.tiwari@oracle.com>, Kees Cook <kees@kernel.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260316151507.3958299-2-christoph.boehmwalder@linbit.com>
+ <20260316113736.1085a124@kernel.org>
+ <085c9532-5440-4879-bcde-4d70c980c839@linbit.com>
+ <20260317151745.4562eefc@kernel.org>
+From: =?UTF-8?Q?Christoph_B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
+Content-Language: en-US
+In-Reply-To: <20260317151745.4562eefc@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
----
-net: dsa: netc: add more basic functions support
 
-This patch expands the NETC switch driver with several foundational
-features, including FDB and MDB management, STP state handling, MTU
-configuration, port setup/teardown, and host flooding support.
-At this stage, the driver operates only in standalone port mode.
+Am 17.03.26 um 23:17 schrieb Jakub Kicinski:
+> On Tue, 17 Mar 2026 16:47:44 +0100 Christoph Böhmwalder wrote:
+>> Am 16.03.26 um 19:37 schrieb Jakub Kicinski:
+>>> What's the delta between the families? Do you have any examples of 
+>>> the the version ends up being used?  
+>>
+>> The main difference between DRBD 8 and 9 in general is that 8 only
+>> replicates to a single peer, while 9 has support for multiple peers.
+>> This also introduces major changes in the genl family. For example, the
+>> "connect" command works completely differently between the v1 and v2
+>> families.
+>> In v1, it takes all the net_conf parameters and immediately sets up the
+>> connection.
+>> In v2, you need a new_peer / new_path command first; the net_conf is
+>> passed to new_peer in this case. The connect command then only
+>> "activates" the connection.
+>> So the semantics are completely different.
+>>
+>> Other commands (like "state_info") were removed entirely and split up
+>> into different commands.
+>>
+>> The specific exact diff is available as part of our prototype DRBD 9
+>> branch (included in linux-next):
+>> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/diff/include/linux/drbd_genl.h?id=11b8887a3efae2868037f2bd8dbbc68a8591f66c
+> 
+> This uAPI header wrapped in DRDB magic tells me nothing.
+> 
+> The macro wrapping that DRBD does never gained broader adoption and
+> should be considered deprecated. Please take a look at YNL and the YAML
+> specs. (I mean this as a nack).
 
-> diff --git a/drivers/net/dsa/netc/netc_main.c b/drivers/net/dsa/netc/netc_main.c
-> index 884ee899fc89..fd952b507cbd 100644
-> --- a/drivers/net/dsa/netc/netc_main.c
-> +++ b/drivers/net/dsa/netc/netc_main.c
+We are actually working on exactly that as part of our upstreaming
+efforts (implementing YNL-based generation of the genl headers for
+DRBD). So the macro magic will be removed soon.
 
-[ ... ]
+>> As for the usage: the plan is for drbd to register its family with
+>> min_version=1, max_version=2. Then we would dispatch the v2 commands
+>> normally, and the v1 commands through a thin compat layer.
+>> In the in-tree DRBD, the version is currently unused. In the (still
+>> out-of-tree) DRBD 9 though, we do check that the version is what we expect:
+>> https://github.com/LINBIT/drbd/blob/master/drbd/drbd_nl.c#L426
+>>
+>> This would be replaced by the mentioned compat dispatch logic once we
+>> have in-kernel infrastructure for supporting multiple versions.
+> 
+> I still feel a little bit in the dark as to what you're doing but the
+> normal path for Netlink is to add new attributes and commands in a
+> backward-compat manner. In case of DRBD given how "special" the
+> existing code is we could probably start a new family using modern
+> constructs.
 
-> @@ -427,24 +658,57 @@ static int netc_setup(struct dsa_switch *ds)
->  	if (err)
->  		goto free_mdio_bus;
->
-> +	INIT_HLIST_HEAD(&priv->fdb_list);
-> +	mutex_init(&priv->fdbt_lock);
-> +
->  	netc_switch_fixed_config(priv);
->
->  	/* default setting for ports */
->  	dsa_switch_for_each_available_port(dp, ds)
->  		netc_port_default_config(priv->ports[dp->index]);
->
-> +	err = netc_add_standalone_vlan_entry(priv);
-> +	if (err)
-> +		goto free_ntmp_user;
-> +
-> +	err = netc_add_standalone_fdb_bcast_entry(priv);
-> +	if (err)
-> +		goto free_ntmp_user;
-> +
->  	return 0;
->
-> +free_ntmp_user:
-> +	netc_free_ntmp_user(priv);
->  free_mdio_bus:
->  	netc_free_mdio_bus(priv);
->
->  	return err;
->  }
+The new family indeed sounds like a way out. So we would register two
+families: the old "drbd" for the compat case, and a new "drbd2" with the
+new command set. Would that be more in line with the "standard approach"?
 
-Does the error path handle the mutex properly?
+Thanks,
+Christoph
 
-In netc_setup(), the mutex is initialized with mutex_init(&priv->fdbt_lock).
-If netc_add_standalone_vlan_entry() or netc_add_standalone_fdb_bcast_entry()
-fails, the error path jumps to free_ntmp_user:
+-- 
+Christoph Böhmwalder
+LINBIT | Keeping the Digital World Running
+DRBD HA —  Disaster Recovery — Software defined Storage
 
-drivers/net/dsa/netc/netc_main.c:netc_setup() {
-	...
-	INIT_HLIST_HEAD(&priv->fdb_list);
-	mutex_init(&priv->fdbt_lock);
-	...
-	err = netc_add_standalone_vlan_entry(priv);
-	if (err)
-		goto free_ntmp_user;
-
-	err = netc_add_standalone_fdb_bcast_entry(priv);
-	if (err)
-		goto free_ntmp_user;
-
-	return 0;
-
-free_ntmp_user:
-	netc_free_ntmp_user(priv);
-free_mdio_bus:
-	netc_free_mdio_bus(priv);
-
-	return err;
-}
-
-But netc_free_ntmp_user() and netc_free_mdio_bus() don't call
-mutex_destroy(&priv->fdbt_lock) to clean up the mutex.
-
-Looking at the normal teardown path in netc_teardown(), it calls
-netc_destroy_all_lists() which properly handles both the FDB list and
-mutex cleanup:
-
-drivers/net/dsa/netc/netc_main.c:netc_destroy_all_lists() {
-	netc_destroy_fdb_list(priv);
-	mutex_destroy(&priv->fdbt_lock);
-}
-
-drivers/net/dsa/netc/netc_main.c:netc_teardown() {
-	struct netc_switch *priv = ds->priv;
-
-	netc_destroy_all_lists(priv);
-	netc_free_host_flood_rules(priv);
-	netc_free_ntmp_user(priv);
-	netc_free_mdio_bus(priv);
-}
-
-Should the error path in netc_setup() call netc_destroy_all_lists() before
-calling netc_free_ntmp_user()?
-
-> @@ -595,6 +859,261 @@ static void netc_switch_get_ip_revision(struct netc_switch *priv)
->  	priv->revision = val & IPBRR0_IP_REV;
->  }
->
-> +static void netc_destroy_all_lists(struct netc_switch *priv)
-> +{
-> +	netc_destroy_fdb_list(priv);
-> +	mutex_destroy(&priv->fdbt_lock);
-> +}
-> +
-> +static void netc_free_host_flood_rules(struct netc_switch *priv)
-> +{
-> +	struct dsa_port *dp;
-> +
-> +	dsa_switch_for_each_user_port(dp, priv->ds) {
-> +		struct netc_port *np = priv->ports[dp->index];
-> +
-> +		kfree(np->host_flood);
-> +		np->host_flood = NULL;
-> +	}
-> +}
-
-[Simon says: I think this is a false positive and the clean-up
- suggestion is not needed in tear down]
-
-Does this properly clean up the hardware state?
-
-netc_free_host_flood_rules() just frees the host_flood memory and sets
-the pointer to NULL:
-
-drivers/net/dsa/netc/netc_main.c:netc_free_host_flood_rules() {
-	struct dsa_port *dp;
-
-	dsa_switch_for_each_user_port(dp, priv->ds) {
-		struct netc_port *np = priv->ports[dp->index];
-
-		kfree(np->host_flood);
-		np->host_flood = NULL;
-	}
-}
-
-But it doesn't delete the hardware IPFT entry or disable the PIPFCR register.
-
-Compare with netc_port_remove_host_flood() which performs complete cleanup:
-
-drivers/net/dsa/netc/netc_main.c:netc_port_remove_host_flood() {
-	struct netc_switch *priv = np->switch_priv;
-
-	if (!np->host_flood)
-		return;
-
-	ntmp_ipft_delete_entry(&priv->ntmp, np->host_flood->entry_id);
-	kfree(np->host_flood);
-	np->host_flood = NULL;
-	np->uc = false;
-	np->mc = false;
-	/* Disable ingress port filter table lookup */
-	netc_port_wr(np, NETC_PIPFCR, 0);
-}
-
-In netc_teardown(), netc_free_host_flood_rules() is called before
-netc_free_ntmp_user(), so the NTMP command infrastructure is still
-operational at that point.
-
-Should netc_free_host_flood_rules() call netc_port_remove_host_flood(np)
-for each user port instead of directly calling kfree()?
