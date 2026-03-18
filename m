@@ -1,43 +1,44 @@
 Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10AD03D9DDE;
-	Wed, 18 Mar 2026 14:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8F33DA5C4;
+	Wed, 18 Mar 2026 14:06:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773842820; cv=none; b=f+0ThNez6dsr43/zYJOd6YERRFmNWKjERZomQZWtnndCrSVVFXGfmPTOUMt0ztoOskszMwkNYE4DmfGaeyaqRTJRckZnMadHrMlqKphEDJmgAn/yYkUkisxfjj94IdvI+LSnHB83Nnc5Xok/vD3DdAloTiFNiUTnFXTdKb1mXJI=
+	t=1773842820; cv=none; b=enfORaqUN2sR4cgU4V38zMR2raQppQ1oFSLk1m2Mq1eDfyK4HphsiAnrB3sjC7LSkmVWMHtdFIsc2iOM87+5MeNCW3QTsl7GG5zI8g2nNwvW+WeXgoPzhGY27Oz721mofXBzljEPW64SszkXGh2r2hP2escgOZFIve05FcSixfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773842820; c=relaxed/simple;
-	bh=gliH2u6PUd4HPQcSEggmPnW0d8g+GgTPYXptlk/xxXU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=iscSjiwBCD/Sc11xznXDn+ISq605yX1hEvLurSq+iwiHi9aiMOR32mE9IILQw3Z2h4zUzvH8vsR/ZDI0gaOV/y9YQyCd7z1pyNUEwTM+VIqyLyNodlpPzKK5KTPYdqitIBoy49KBStXH8cIBEqNEajbO0Z4CimP1TZ6GR7JfBv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=nmrnwH9p; arc=none smtp.client-ip=188.40.3.216
+	bh=C8D1uRsSlI508orJg/bxRIK1LmSa73RwJK3VkfzFKvk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KPIheK2Rd443vuZke+AV6LVcol9baMevkgF33UCeqqt3/m2GLsKt1/vK4CRa25V8Xm2AIiUOjeEjQRBrxeZ4U3+BnArNiJkJC7/Nx3F2gHTDU8t0C+uKKqGt4h5bkNR3Ka3pL5peCL7JRHVhI+9AEZfg4ookLp+EpYbB7Erc2Aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=MSZe5WF6; arc=none smtp.client-ip=188.40.3.216
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="nmrnwH9p"
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="MSZe5WF6"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=A91VE9zUrSarhv4N3nkmhVVO6faCulKxcborukDvgLY=; b=nmrnwH9pG2mqsKD1lZrM19kaDU
-	/3aLB0+tIO0Vrg8qlynkCu8JEZ3w06Z3JVCUCNpcxuHccWniFaEAjXhiKdToTHTKhF2CaKDLbE/oM
-	qKxusimom65Ks2viu8TFARbsEiJJrrWO3CglRF6uKKictQ/+quEkR4YEM7xbaZH0/bxCvSqAjnEPH
-	E/N+VMjVNkSM9s3Oi54xkY6G/ZegcgfQnh0Kl5TP9hiRQLSKWv5gASuq915BzCX0vXR+hYMz6Ta4t
-	1UySG8addNXDFPx4ZyiLGdqsveKKpUOnKat0muU+tAduH2XTAk1wiDtGqJJYqrqqL60VSuPYRqD/Q
-	XLf5MjnA==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=3YCXKNNM4ThVB3Z8qL4Lkn6GGLYvaGJjMPVWPPsNEG0=; b=MSZe5WF6EFpCxlEteYWktv6jAh
+	aOiaCb7OgpyWjM/gB500qbnf9ksHnJkKFmKjPxp6TN1iQIzXr+P+J3aEAGsO61NFeRWLp031qepQs
+	vECOy/Va4MBaUNU7OpTMj4R6jRAiFg9f4LGQSvHDmj4VEIw1GasLQegn/CxwhYOaOPhDeZzSkhoAw
+	ZczliEOrxzENombrElaVqbcTtZgIAlZTh6R+l8S0lwpO8HGJCDmIBiq20bIqg9fUgU5HhYnNqz8zW
+	1lqE5s6ZKpUJxXLcXdN+XDDDhhcWrTmtm3deXGrO2fc+vYNdz5WQBQCG4x0ZcKg5aQfiNyue75vU4
+	F9YkEx+Q==;
 Received: from sslproxy06.your-server.de ([78.46.172.3])
 	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <nora.schiffer@ew.tq-group.com>)
-	id 1w2rXv-000BpY-2w;
-	Wed, 18 Mar 2026 15:06:52 +0100
+	id 1w2rXx-000Bpi-06;
+	Wed, 18 Mar 2026 15:06:53 +0100
 Received: from localhost ([127.0.0.1])
 	by sslproxy06.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <nora.schiffer@ew.tq-group.com>)
-	id 1w2rXT-000B1s-08;
-	Wed, 18 Mar 2026 15:06:23 +0100
+	id 1w2rXU-000B1s-0c;
+	Wed, 18 Mar 2026 15:06:24 +0100
 From: Nora Schiffer <nora.schiffer@ew.tq-group.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -60,10 +61,12 @@ Cc: Siddharth Vadapalli <s-vadapalli@ti.com>,
 	linux-arm-kernel@lists.infradead.org,
 	linux@ew.tq-group.com,
 	Nora Schiffer <nora.schiffer@ew.tq-group.com>
-Subject: [PATCH 0/7] J722S SGMII support
-Date: Wed, 18 Mar 2026 15:05:22 +0100
-Message-ID: <cover.1773751309.git.nora.schiffer@ew.tq-group.com>
+Subject: [PATCH 2/7] dt-bindings: phy: ti: phy-gmii-sel: Add ti,j722s-phy-gmii-sel compatible
+Date: Wed, 18 Mar 2026 15:05:24 +0100
+Message-ID: <1fe7e84aca488c58eee55ce29569196ad5f7121b.1773751309.git.nora.schiffer@ew.tq-group.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <cover.1773751309.git.nora.schiffer@ew.tq-group.com>
+References: <cover.1773751309.git.nora.schiffer@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,35 +77,26 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: Clear (ClamAV 1.4.3/27944/Wed Mar 18 07:24:13 2026)
 
-The J722S CPSW and SERDES are very similar to the variants found on the
-AM64, but they additionally support SGMII. Introduce new compatible
-strings for the J722S to add this support to the drivers.
+The J722S gmii-sel is mostly identical to the AM64's, but additionally
+supports SGMII.
 
-This is a prerequisite for the Single-Pair Ethernet interface of the
-TQ-Systems MBa67xx baseboard for the TQMa67xx SoM, which will be
-submitted separately.
+Signed-off-by: Nora Schiffer <nora.schiffer@ew.tq-group.com>
+---
+ Documentation/devicetree/bindings/phy/ti,phy-gmii-sel.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-Nora Schiffer (7):
-  dt-bindings: phy: ti: phy-j721e-wiz: Add ti,j722s-wiz-10g compatible
-  dt-bindings: phy: ti: phy-gmii-sel: Add ti,j722s-phy-gmii-sel
-    compatible
-  dt-bindings: net: ti: k3-am654-cpsw-nuss: Add ti,j722s-cpsw-nuss
-    compatible
-  phy: ti: phy-j721e-wiz: add support for J722S SoC family
-  phy: ti: gmii-sel: add support for J722S SoC family
-  net: ethernet: ti: am65-cpsw: add support for J722S SoC family
-  arm64: dts: ti: k3-j722s-main: use J722S compatible strings for SGMII
-    support
-
- .../bindings/net/ti,k3-am654-cpsw-nuss.yaml   |  1 +
- .../bindings/phy/ti,phy-gmii-sel.yaml         |  1 +
- .../bindings/phy/ti,phy-j721e-wiz.yaml        |  1 +
- arch/arm64/boot/dts/ti/k3-j722s-main.dtsi     | 12 ++++++++--
- drivers/net/ethernet/ti/am65-cpsw-nuss.c      |  8 +++++++
- drivers/phy/ti/phy-gmii-sel.c                 | 11 +++++++++
- drivers/phy/ti/phy-j721e-wiz.c                | 24 +++++++++++++++++++
- 7 files changed, 56 insertions(+), 2 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/phy/ti,phy-gmii-sel.yaml b/Documentation/devicetree/bindings/phy/ti,phy-gmii-sel.yaml
+index be41b4547ec6d..fa3f3ad9fcc3e 100644
+--- a/Documentation/devicetree/bindings/phy/ti,phy-gmii-sel.yaml
++++ b/Documentation/devicetree/bindings/phy/ti,phy-gmii-sel.yaml
+@@ -55,6 +55,7 @@ properties:
+       - ti,am654-phy-gmii-sel
+       - ti,j7200-cpsw5g-phy-gmii-sel
+       - ti,j721e-cpsw9g-phy-gmii-sel
++      - ti,j722s-phy-gmii-sel
+       - ti,j784s4-cpsw9g-phy-gmii-sel
+ 
+   reg:
 -- 
 TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
 Amtsgericht München, HRB 105018
