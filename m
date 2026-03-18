@@ -1,49 +1,49 @@
-Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7383EB810
-	for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 15:03:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5313EC2E0
+	for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 15:03:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773846209; cv=none; b=F/cOzrvxkV662yIsHlB3+RYgqYZg8UFvOAlh7mk0PMGylQvC4icSDDe6RBNwlL3pDnj3imAfuymhv5+sJqzFU9A9q6UaU3VHe4opLZ8INdcES5nHcXgHEpWjixSaqB9WdLCRg6G10glmCyPe0V/QpV6+IfJEiGjOBj2VfV458A4=
+	t=1773846211; cv=none; b=Txmv362Xz30bHWnOvDzRD01MneLU3x6s5doAKPlBBynE+dzScTJqOcdMRjqhl/CvS6SOPBH+ExZAHkitGP8nytl5gUT4ygJUDNSWcQshItPnUqirckXwNTOK2CytVtqZxC2gWhH5N44oGcgXbLD+xY5COy1dKBIso25KjbsTwFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773846209; c=relaxed/simple;
-	bh=5NcsxaHVIQ2NmCj9OLQh+nSLlXz0JVUjSv0mBYVb1MM=;
+	s=arc-20240116; t=1773846211; c=relaxed/simple;
+	bh=sVd8LTVEHoLKFD1aY4N3BnWCDAMnZxFR8UMGpqAS4sw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m+YJosUXXQ2WMnT7UCEE2dWBGKe/AcmaRJtKJG8eybydD5JPJiSxdSO14HgZo/2J3cd12RrYosGJLQv07QN+MVHS/Q0IzPXSxYHpfJ+aKjY72p5gRoyLPx5LORDR/4KoNoDDhQhPHLL4tBHkwUJCvQpXE8/7i8Jbrt15lH/YZHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.82.46
+	 MIME-Version; b=UvpUOchoTzR02vW98C78kw3akPOBNTypNybwMRe5Grx3bhghlrOKZFxYxd0ro/FKuwJg3UGuWpdulKRJuU/iDZCjnXxwmOdx0Rg0V2LXjG5I0gZMF/m6ckGSOF1rU+dWI9L+TNB0rvQ3iucMeSiUWWGpy0RsI3C6gLOSm6w6DQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.82.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-126ea4e9694so2428614c88.1
-        for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 08:03:26 -0700 (PDT)
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-2b4520f6b32so17297eec.0
+        for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 08:03:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773846206; x=1774451006;
+        d=1e100.net; s=20251104; t=1773846207; x=1774451007;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=HbyBRqP1dM0VO6fEJ4blZH7JfwL0DV5fAiX12aFZ5no=;
-        b=l3V0Il8y/xtnIjA1Uefb+SU0CWTgZNLpv2hUuAVK0CFPp5kECaGhH8eAuI9V1M4IQD
-         3jetYk4O2JKGX/IriHBWpCiHhspbfp4QJRTE2vq2sh6QpeZmWFyM5mkvYx0Gn/x9vR/f
-         qt+xycVxgwXyTk/G+sLiIzjPXOgOFMueX2n7g797dNr9BGsLM6qtoWitWUNCekwK8Ofe
-         pkzsppum57KK1wNCY/iSi/Y/ljpRFtwHWjgkkjfzVbi0hwzYD6qMhQEmSm/aiubkJf8k
-         DwOxW1hsaTMKDeKrC0JBSytSucoa4eCUH0m35mv3cKUaAHw/dtGytA3Xm0hmlkOgUqC+
-         IIyg==
-X-Gm-Message-State: AOJu0Yw/snkDo8ulfXXhayA599Zbw/q/6uOCOrvfIuVW2jsCibwtnXni
-	zWYrsbYiDP0k47x9raQmiftMMysg/Ajy+jn6CqnyC8R7Sz+szyNntgnur7aw
-X-Gm-Gg: ATEYQzyzMW8+d1zJtnlr6K5gBi3ZXjfYRQDAwyi5aWF9+ulPRX+9bzXXqm+VbRi2Xfo
-	eSAkSpn9xlV49KzvQnoAUndXasyP+fr8bU8xyhA6ZL97JYYoz3xmYF5P/jgT+TCMIvu5ND28qFk
-	lVduTaof9LRwhgf7ck38VFbX5WJaoIi06h694zdOr5w1cPjoSqVgo9gM9WKVyg5QoeR47naJeuc
-	sP8m0UGgPVS0DRT0TbjzJLckkfdBG1qG5Rh7CAgjrvjRELxRC13ltti2yqy5Ic+5MzJ9mqgK7mX
-	/8NaajnBjatOfJwwDW/1paQbQKvRNYbCP6aZ4EWhEW9yozY16OJ4cpNiRoHwNLJEOv/Fte+AmE2
-	U3EdeRxiqmkHPCIzcx3UNUJhBFFj0ScYy7Fv15dl6gDVqsCjzvQ+YVW60fXjju7pmYxwGPoImwl
-	d/0Xbet6vGHu0gcftN5dn68zOhc2GtTo3ZY6jvO2MKiz4gRvEFne8x2NRjBAciOklm0XgFPPcJY
-	Hwo9Qq0A6bgT+7j6A==
-X-Received: by 2002:a05:7022:b9f:b0:128:d51a:5161 with SMTP id a92af1059eb24-129a715e828mr2027441c88.27.1773846205882;
-        Wed, 18 Mar 2026 08:03:25 -0700 (PDT)
+        bh=S2Eshwmt0Yi5gowTBPApYQhLiCclUhxDbq8BJfNjYyM=;
+        b=B0IchrVEJysLLQPmb/2wRyBRFOMF9WGJ/RPweYNtB9R3/TL3/q8LSLmmZHwJniSJPs
+         XffzRkW7NqqEr38s9BwTHdfCKi0E/J0xWmOYQoP3YEU9aai196CR0XKUAl2LJZZGxWxB
+         fcXVGnlfME6BuSJehzXzZwTWGePSLB8/hpAt7+xeJzO8esYFCL2MRGFI2B6c5gnIK9Gj
+         vp3OnE0CXjvNSJMBvUZt80evBREZVrtqcC8B1q0MlqBzn6g99YL/rZpXWckFbxsgdwzN
+         Ss0/DxwvyCGOZw+HoWLrhADl1cjUt/eTohR2feIv/5LsosRb8bbkOP91+ft987ndcchl
+         FPEQ==
+X-Gm-Message-State: AOJu0YzSS89i6015bAAGZMfZjKU199kodxEacL2Z7cqvQLZIT0Z1OT5e
+	ZrHXgMsv5uqErhDN7tmKGmFTDc0mZCfytB4BrTgZ1TpgFU5tGSF4iUM4ynxy
+X-Gm-Gg: ATEYQzwZ+7yLfdHRMscp3SkOSeh5GwTUtfkuCWMBUixew1nOoYr7ln2J1ycC6WuYsbE
+	tlSB/SN+2V6smQQAUcDdz18GjboYwMmNefW6m96zKi+1Xb0a4sbVmF1hIZabhwexeR6laohKls/
+	qM0b1cUo1i8Qa3QPyUzErkdLgDgKC+NBuL1Rj8Pbq1hykgMnppudj22FHEOztFcWUuRlivGTAzE
+	TaUvy724MmdLWSSQbb74WdMeqqhRrvfTvJcQsuNEyurkBMmOvFoJ7o6RyI4yQzPOvIJflD6eeHH
+	vqyV6yAMYgcVJpuAvjsA/iPdJmjy/c12juzFm6LyI1i7QXq5HT8WaNyhV2me3MoPagwH5iMpE9L
+	HN7i653S+IyyDaZQXXGo+yBViLxDCaaB87YOGfL3CZCkhJp6yUO2rj2rCUtN3DnD3iDiA0eHzfV
+	RVLv5ypSp1SeWJo5eVkFutBh6xEs3ip9Y7ET/4qafqFmy5HfaLZLnndTuJ+q6zo76YIYxYLQ5Lj
+	4Ft3Q6tSqpVXQRnLw==
+X-Received: by 2002:a05:7300:fb97:b0:2ba:a3f2:958c with SMTP id 5a478bee46e88-2c0e4dc3156mr1648308eec.0.1773846207075;
+        Wed, 18 Mar 2026 08:03:27 -0700 (PDT)
 Received: from localhost (c-76-102-12-149.hsd1.ca.comcast.net. [76.102.12.149])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-129b41271aasm3384562c88.11.2026.03.18.08.03.25
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c0e55cd9cfsm3997754eec.26.2026.03.18.08.03.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2026 08:03:25 -0700 (PDT)
+        Wed, 18 Mar 2026 08:03:26 -0700 (PDT)
 From: Stanislav Fomichev <sdf@fomichev.me>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -80,9 +80,9 @@ Cc: davem@davemloft.net,
 	linux-wireless@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	leon@kernel.org
-Subject: [PATCH net-next v2 11/13] dummy: convert to ndo_set_rx_mode_async
-Date: Wed, 18 Mar 2026 08:03:03 -0700
-Message-ID: <20260318150305.123900-12-sdf@fomichev.me>
+Subject: [PATCH net-next v2 12/13] net: warn ops-locked drivers still using ndo_set_rx_mode
+Date: Wed, 18 Mar 2026 08:03:04 -0700
+Message-ID: <20260318150305.123900-13-sdf@fomichev.me>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260318150305.123900-1-sdf@fomichev.me>
 References: <20260318150305.123900-1-sdf@fomichev.me>
@@ -94,39 +94,47 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Convert dummy driver from ndo_set_rx_mode to ndo_set_rx_mode_async.
-The dummy driver's set_multicast_list is a no-op, so the conversion
-is straightforward: update the signature and the ops assignment.
+Now that all in-tree ops-locked drivers have been converted to
+ndo_set_rx_mode_async, add a warning in register_netdevice to catch
+any remaining or newly added drivers that use ndo_set_rx_mode with
+ops locking. This ensures future driver authors are guided toward
+the async path.
+
+Also route ops-locked devices through dev_rx_mode_work even if they
+lack rx_mode NDOs, to ensure netdev_ops_assert_locked() does not fire
+on the legacy path where only RTNL is held.
 
 Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
 ---
- drivers/net/dummy.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/core/dev.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/dummy.c b/drivers/net/dummy.c
-index d6bdad4baadd..f8a4eb365c3d 100644
---- a/drivers/net/dummy.c
-+++ b/drivers/net/dummy.c
-@@ -47,7 +47,9 @@
- static int numdummies = 1;
+diff --git a/net/core/dev.c b/net/core/dev.c
+index d50d6dc6ac1f..187cd7b5074f 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -9778,7 +9778,8 @@ void __dev_set_rx_mode(struct net_device *dev)
+ 	if (!netif_up_and_present(dev))
+ 		return;
  
- /* fake multicast ability */
--static void set_multicast_list(struct net_device *dev)
-+static void set_multicast_list(struct net_device *dev,
-+			       struct netdev_hw_addr_list *uc,
-+			       struct netdev_hw_addr_list *mc)
- {
- }
+-	if (ops->ndo_set_rx_mode_async || ops->ndo_change_rx_flags) {
++	if (ops->ndo_set_rx_mode_async || ops->ndo_change_rx_flags ||
++	    netdev_need_ops_lock(dev)) {
+ 		queue_work(rx_mode_wq, &dev->rx_mode_work);
+ 		return;
+ 	}
+@@ -11470,6 +11471,11 @@ int register_netdevice(struct net_device *dev)
+ 		goto err_uninit;
+ 	}
  
-@@ -87,7 +89,7 @@ static const struct net_device_ops dummy_netdev_ops = {
- 	.ndo_init		= dummy_dev_init,
- 	.ndo_start_xmit		= dummy_xmit,
- 	.ndo_validate_addr	= eth_validate_addr,
--	.ndo_set_rx_mode	= set_multicast_list,
-+	.ndo_set_rx_mode_async	= set_multicast_list,
- 	.ndo_set_mac_address	= eth_mac_addr,
- 	.ndo_get_stats64	= dummy_get_stats64,
- 	.ndo_change_carrier	= dummy_change_carrier,
++	if (netdev_need_ops_lock(dev) &&
++	    dev->netdev_ops->ndo_set_rx_mode &&
++	    !dev->netdev_ops->ndo_set_rx_mode_async)
++		netdev_WARN(dev, "ops-locked drivers should use ndo_set_rx_mode_async\n");
++
+ 	ret = netdev_do_alloc_pcpu_stats(dev);
+ 	if (ret)
+ 		goto err_uninit;
 -- 
 2.53.0
 
