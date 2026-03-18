@@ -1,96 +1,128 @@
-Received: from smtp-1909.mail.infomaniak.ch (smtp-1909.mail.infomaniak.ch [185.125.25.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51AB2D0C92
-	for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 16:58:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.25.9
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773853142; cv=none; b=BkCxV6IyZ4X8vipDPvrXDaSZ1BYIXQRM1Kwc4Us9C3xK6v/Tls0BAdpBc+fK4wqIyI8GWVabUKRcTbs7zsm2pRbnxP1eq1HC8Py+WchEpT/ATmSW2iHu1O6IfnshW2l/2m9z6/1JnG645pIxOyffiwpyUysbJ6n6XJd6uewQi7U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773853142; c=relaxed/simple;
-	bh=LQCFyOUUSplp5eShsmV6I/MKXo2fwwMA86XZnghC+IU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hADKeoPpsSIKRWI2Raph3rX3FIjfbtMWMsKyGhrVeTQmJ9UXQp+yi6CUi7jxuh063okr4jLDOj9mFvhLbF0+GghGXJ+TeYngx1JQ7fkWppcgq+XJVT9xvX+Yy81jGmU23k85C2CW/84ErDOKlNrALxhsw5BiKSM/a6pG12wwc+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=XOSgSpBz; arc=none smtp.client-ip=185.125.25.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56703321BF
+	for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 17:06:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773853568; cv=pass; b=JsLB9fQebxesu5FxuB9ArwTVD/FxXSVigQolqnydngaxTEaQ0Dsh2f05d+nqXD1gv8y2KO5SZJb3hPvlaqbf8cYZVkhsR7GmyU5QudFxRFz64oOy0hzeohdGCw5qoTdSBOGLG5d7a26x/BPd1wXv3R+nNM4SuaimaL9P1DpXW6U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773853568; c=relaxed/simple;
+	bh=Hz8E05LdBGmu2bfAFeryryBDZivcDYI8jWINoREv7ag=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=A6tRMfd30kHBR9q+ePt2n/iffqE4Mut4s6tygGNQs/x1eTaNAVM6sqxDiMU/SAt7Wzn5F/m08DQ47Ioj+jSpD1+JgW88aoNXeb9ymGvee/+U0vry7s7jpn3HkfKqnEX+Xtw7Va+Ux5JZnXidIdY3xAcLPlHj/T+R6A1ReKlssxQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SBogQ2Ow; arc=pass smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="XOSgSpBz"
-Received: from smtp-4-0001.mail.infomaniak.ch (smtp-4-0001.mail.infomaniak.ch [10.7.10.108])
-	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4fbZcD6FnhzdJ7;
-	Wed, 18 Mar 2026 17:51:56 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
-	s=20191114; t=1773852716;
-	bh=Xzcs+HBo55vlCaVgM+QV0cRzIBJGQFhXXf13QjKsaAw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XOSgSpBz/LzVvF1/5nsaK+hbSMU+A21p7bi30+qhTS7h5u322GZ7i3sahZoIEleYj
-	 VW5s0+ERmGELFlgxlxy8X4Z9PHY9al/UriHhWO+8I+VHegPQ97uGhCPXz0aLjC6bVG
-	 tds+P12v+ibSico+I2J9Jp89rRKHtHT2fZqbou1U=
-Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4fbZcC4Hdrz7GX;
-	Wed, 18 Mar 2026 17:51:55 +0100 (CET)
-Date: Wed, 18 Mar 2026 17:51:51 +0100
-From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
-To: =?utf-8?Q?G=C3=BCnther?= Noack <gnoack3000@gmail.com>
-Cc: John Johansen <john.johansen@canonical.com>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E . Hallyn" <serge@hallyn.com>, Tingmao Wang <m@maowtm.org>, 
-	Justin Suess <utilityemal77@gmail.com>, linux-security-module@vger.kernel.org, 
-	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>, Matthieu Buffet <matthieu@buffet.re>, 
-	Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>, konstantin.meskhidze@huawei.com, 
-	Demi Marie Obenour <demiobenour@gmail.com>, Alyssa Ross <hi@alyssa.is>, Jann Horn <jannh@google.com>, 
-	Tahera Fahimi <fahimitahera@gmail.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH v6 1/9] lsm: Add LSM hook security_unix_find
-Message-ID: <20260318.giez0eib8Ovu@digikod.net>
-References: <20260315222150.121952-1-gnoack3000@gmail.com>
- <20260315222150.121952-2-gnoack3000@gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SBogQ2Ow"
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b936331786dso3783966b.3
+        for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 10:06:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773853565; cv=none;
+        d=google.com; s=arc-20240605;
+        b=HxF+wAXGRyKyi2QKt9cP7frik6HJqZlgtSNh3sH/Q1Lq3CrahsYuKjxi/c/uyoVBz3
+         SZ26BOhRkAuk8l9pDmIgNTULgpuSOQzUpqCepQU3l9AvYKrrhKeMObpkoEXNHslu4jvI
+         0RH7f11S1XyK7BtZUy/OSHQFwBsXDznVpvahqSi+AzNv4vbpLMXNu2877RY3RlPFGpJ6
+         JwErxYUutpevWNrMbeAmtJKMG75G5hC0MTMBKOnopoZkVDtiGGtKjgWee50ppBVtoHLA
+         MBL/MKeb8GeAQxIqD5NoGG8PufLjg4g+VfVdhHlwJZ4QZ1UloOOUrx5DKlNPehE6MAgH
+         jHWg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=kATEDVmGF0/O9M3x0zcBp1yfg6DAeXFmwwnXfMoTIKM=;
+        fh=9zSqdaKBQSll1dK5i/GYjrNhfXzu/S7murne7xvzWA8=;
+        b=Ku9VVmQFOFL4MGefc3KP+DzUA6trGhbHdSOagYG8JxsAsyFemQXnrFD5cUNUltBlBl
+         X6KFN2Qx9Y5lo2Gm/Pg0W2HpOXzsYFOopAYwj7NyxFvQF4vJKjDW5hnCyHjfQToAHFOU
+         kO0p3tPM1DSrG3x9QUM4VV4Hs/E9vH+9HVoqbjahqFqhaAqDoxvPMwuLSN6IRMo/sQMp
+         t7h6iNYDjxAkJrBX3d4X5b7eNXj1+bMpNEiF4cO1g7LI6tQVfaNI8B4UgcZIUfyn+5Vv
+         hqWuN+uB/TGhs9UQnDuIxW3MI97X27HwGGVV33TV37Rz528vDb6l1YqfyFsj5FKGbRfY
+         mWeg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1773853565; x=1774458365; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kATEDVmGF0/O9M3x0zcBp1yfg6DAeXFmwwnXfMoTIKM=;
+        b=SBogQ2OwU2DRgi5gY+jzSDEtDWk+k1aN43X3WBa7UW0G8we+O1SRWXBH3FyhQT4P6I
+         V7hVwvSfsjMpbYRKw2MCp9E4/18/JvQ6HHHqOobD3EMQLGE68RAL5kXpKIkwB4bXyjB6
+         UnKg5HLQJgfRNS2n8kPkSqoL/4JwR+/LJIxrjCiyFm58cML43jbKdAS1JEpLstV05RMF
+         XR6bUkBdwYNtj8W++Vor1dCJkKb86teC5+ESF9Lmq+SbFGR0CQ4dXcdGS4sV3XmgIKC5
+         XuhEI/AF8ii7b5PtvxF5HxsSzYGr7KKfTBRYlW5NSpsMXw2P9b8oYqJj2UbI3x/hyB8/
+         2RzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773853565; x=1774458365;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=kATEDVmGF0/O9M3x0zcBp1yfg6DAeXFmwwnXfMoTIKM=;
+        b=Um585Kba1nmhzTmBzjAcdqVSQSGq7biHdmU8bk0cDR3fmvEQV4OQ2PL+N0/ThvJAHf
+         X6YUjcRPl+EDeRx5qDZGJLTHnC4pGqbqM8Zqwc5OzniRb9CAj3cY/pfvs45NwxdIcGAX
+         XaHnlSBwSwlh0coYJhfFLwAqkGEC2FyXdmQov6EsZKo20LMwt/gkJG0Zl4Nvn3qYKIlf
+         nP1C7cj6q1t51hgf0Z4BKZNFxB043Qyohp36WBHvCkktRRzJej/CYiRBjSbiWMHzDC3N
+         ifbi9irY0GT1GqxRkjLUF9t7rvgUC7YEm7kDpcm5LtRH7EY6CZ8yZRZeh3khcva5fExE
+         ELaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVfJ0y0HC+2MJzS5R4q+H9mbmoTK32in2VU8UCdsxWJw/K4q4TtqMzxkqualTP7gtOkJDHbqSI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxatPk31zG3Ch8ccMfK7FuB8UN4wlKf4TfsZAYpSegzIgllY8pK
+	0AX25oW6P27kHugL1Uzi39WfocmaCl0Ok05GURKNt5TZA99HvbONJPyh2+g3k+50iSTpHZQP6Zn
+	xzpoKZ+7U+5FOvwv7rsxLXFg7cAncR1QJpySJQoE=
+X-Gm-Gg: ATEYQzwzR4viwXb3Ycz9a6aON09Qrtwa2Nd9CYiC9OsAJik5K4MgYf0rhL4yUqRJ0R/
+	XWKH7dF2ZWCIrV7/1cnEWn16fUGr7cMn8pChOkzEckUbbjz7n/xKqEwDGhj+euihsECVmvxG7wO
+	n7eqCLm2DithpqeV9ADjDR7g8gDKMR9lTfIQB1k9Pm19VDgAauAMMohbM1CKTkFPdEHBYeg06NH
+	KOdgFj0vsJHwolTPN68xBjZOjS7Gfzr5CRO1jV3wXtvvmV70rjYtMpdAZJtibSea4EPJiAHg2+5
+	PaqpSDyahvJMEMW7ca9zjf/oP8BJF7UBvFw=
+X-Received: by 2002:a17:907:9946:b0:b73:4d06:bc8 with SMTP id
+ a640c23a62f3a-b97f4b60eefmr194003266b.53.1773853564611; Wed, 18 Mar 2026
+ 10:06:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260315222150.121952-2-gnoack3000@gmail.com>
-X-Infomaniak-Routing: alpha
+References: <20260318073330.115808-1-guwen@linux.alibaba.com>
+In-Reply-To: <20260318073330.115808-1-guwen@linux.alibaba.com>
+From: John Stultz <jstultz@google.com>
+Date: Wed, 18 Mar 2026 10:05:52 -0700
+X-Gm-Features: AaiRm51pAIUhiIslZYeLgnI5zv3XevZ8aLuUPYbmBN9fBas0fAu2t7Z9AQkAyFw
+Message-ID: <CANDhNCoFxsXdP7d6nbLTFLOrB_4GnDvhF4O6ZGyvGEVoqV4U2g@mail.gmail.com>
+Subject: Re: [PATCH 0/2] ptp: split non-NIC PHC drivers into the
+ clock/timekeeping maintenance domain
+To: Wen Gu <guwen@linux.alibaba.com>
+Cc: tglx@kernel.org, tglx@linutronix.de, richardcochran@gmail.com, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, anna-maria@linutronix.de, frederic@kernel.org, 
+	daniel.lezcano@kernel.org, sboyd@kernel.org, vladimir.oltean@nxp.com, 
+	wei.fang@nxp.com, xiaoning.wang@nxp.com, jonathan.lemon@gmail.com, 
+	vadim.fedorenko@linux.dev, yangbo.lu@nxp.com, svens@linux.ibm.com, 
+	dwmw2@infradead.org, nick.shi@broadcom.com, ajay.kaher@broadcom.com, 
+	alexey.makhalov@broadcom.com, bcm-kernel-feedback-list@broadcom.com, 
+	linux-fpga@vger.kernel.org, imx@lists.linux.dev, linux-s390@vger.kernel.org, 
+	dust.li@linux.alibaba.com, xuanzhuo@linux.alibaba.com, mani@kernel.org, 
+	imran.shaik@oss.qualcomm.com, taniya.das@oss.qualcomm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Mar 15, 2026 at 11:21:42PM +0100, Günther Noack wrote:
-> From: Justin Suess <utilityemal77@gmail.com>
-> 
-> Add a LSM hook security_unix_find.
+On Wed, Mar 18, 2026 at 12:33=E2=80=AFAM Wen Gu <guwen@linux.alibaba.com> w=
+rote:
+> - Following the model used by NTP related code, this series lists tip.git
+>   (timers/core) as the integration tree for emulated PTP clocks in the
+>   MAINTAINERS entry. Guidance from clock/timekeeping maintainers
+>   (Thomas Gleixner, John Stultz, Anna-Maria Behnsen, Frederic Weisbecker,
+>   Daniel Lezcano, Stephen Boyd) on whether this is the appropriate workfl=
+ow
+>   for this class of drivers would be appreciated.
 
-Add an LSM hook...
+While I'm sure it would be good to continue to CC folks, I'm not sure
+if the timekeeping maintainers would be the right folks for these
+driver/ptp/ changes to flow through.
+Thomas has been doing the heavy lifting for a long while and I'd not
+want to put more on his shoulders.
 
-> 
-> This hook is called to check the path of a named unix socket before a
+Richard is listed as the maintainer for drivers/ptp/, is there any
+reason for it not to go through him?
 
-UNIX socket
-
-> connection is initiated. The peer socket may be inspected as well.
-> 
-> Why existing hooks are unsuitable:
-> 
-> Existing socket hooks, security_unix_stream_connect(),
-> security_unix_may_send(), and security_socket_connect() don't provide
-> TOCTOU-free / namespace independent access to the paths of sockets.
-> 
-> (1) We cannot resolve the path from the struct sockaddr in existing hooks.
-> This requires another path lookup. A change in the path between the
-> two lookups will cause a TOCTOU bug.
-> 
-> (2) We cannot use the struct path from the listening socket, because it
-> may be bound to a path in a different namespace than the caller,
-> resulting in a path that cannot be referenced at policy creation time.
-> 
-> Cc: Günther Noack <gnoack3000@gmail.com>
-> Cc: Tingmao Wang <m@maowtm.org>
-> Signed-off-by: Justin Suess <utilityemal77@gmail.com>
-> ---
->  include/linux/lsm_hook_defs.h |  5 +++++
->  include/linux/security.h      | 11 +++++++++++
->  net/unix/af_unix.c            | 13 ++++++++++---
->  security/security.c           | 20 ++++++++++++++++++++
->  4 files changed, 46 insertions(+), 3 deletions(-)
+thanks
+-john
