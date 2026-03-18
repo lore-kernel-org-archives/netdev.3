@@ -1,95 +1,88 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8140129D288
-	for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 03:12:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B09324A07C;
+	Wed, 18 Mar 2026 03:20:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773803541; cv=none; b=u4a/tcNp2Ii15pgPnSilN17XFPFJyblqcr1vZ5y4RPYryp5BFjh/FrSEwsV8sW5VMYNBDGl8dEaellQKruRbkvdK3GTC55umdgt4WtozuUmdG9x8nK6NFl9asLqhMyVOG1Yp2lqzNDjMj13qQcQEG3lOVdFJ5v0D4Ejg3SyWeo0=
+	t=1773804021; cv=none; b=uX7SV+JdpkaG+RUSHMXqin+71SRscmJPbshemEy/6b92S1FvB76bus77yhq8onsPP4EWBhwYlamgw0BpIpzYRXZLO87c6TH/2tlufwF/wty4lZhvE+bFkspVVIlTmh3F7B1OlQwjpxZe7z4cZ/hd9ZySDT7xADPNpQ5MgzVIn7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773803541; c=relaxed/simple;
-	bh=3pUDkXCIbbQSzBElrtyiHqwHZfJM/t5oVW8R2mOuWGU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TGIqc5Ljf6+AtXcTx+n/dUZXpeKkOUKQ3/39uvgsFxA7eJLPyLzECgcsVFtpUpGvXiangitmI+TMfwWsT5im7T0a6Az4SvTSqcLMQdJZiFVmuuWh550JsFCSKJUtEJWhAP4+Ku6u5OYacZFb2Ljs4vogBHn6h4CBSsn2y+4rPEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=BvNRRQAt; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	s=arc-20240116; t=1773804021; c=relaxed/simple;
+	bh=TQCXS6vRLEUGRnELuJH4GVYhtF+w+rrDYROmlhU+bHE=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=OgRSWKs99vmtlhxwxYNPKGTfKbOkUGRa68c+zC7ltv66WkTZbTVFFswACCgZdPQEMqM07iE/ftRS6gzfZwJiRDPAcln4XE4OPQw0MSk7psPH/MAgSIJOxk/FCAv8PYj/lQmZyJ93MAGsgj0WF9rNqMImi4MJFcR2b8VI8vFRENw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VR8CwocQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="BvNRRQAt"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2a9296b3926so52292865ad.1
-        for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 20:12:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1773803540; x=1774408340; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nmt9Nb6iGmPmgCfMpxJvJLPWltN9srw4zOG8bLYlkhs=;
-        b=BvNRRQAt3QXoRw3bnVNLwnhaGq3yRtgIMpi6CdToEADtOpyTfq/NpfFY6xKQE5TVO+
-         S44C5aq/TXR/QTrnvVTrgxwdmIkoqxiyncN0dII4wOrNDNyjlZD3Z528ksXmzmjoEpzc
-         5kpDtnZ3oIP9fpEdY0bIpUm+9UxUeblxOhwymKOQ+clyQ6w4hbTamIF4LF5fKtdQmq8P
-         zWt4VJ6InV3kfTjZlrk+ZAq6yhCN4Ydcjnrl7QKPC8lkr7vEogMgxBXbU4a4H/mZxR92
-         Z5aCBNo7HP6iCBI0DDeNlRc4YFTBXVlmit3XnicbR+vB+vVh66pBJNp8sAVsUW9xdkzV
-         h+2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773803540; x=1774408340;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=nmt9Nb6iGmPmgCfMpxJvJLPWltN9srw4zOG8bLYlkhs=;
-        b=HQ/KzfG3bwAGurMRlMwzVWQAFN6DKEV6JbovdXBvwystHReFcvuH47J1is1erQNbRi
-         DWe4WGux7clzMcVQ5zAV4jNratQ6sNakrNNePYnm8PCWk6v0yc/5xwqQ52w8IvW3DMDN
-         5RxX9RMiH7xl86r/5wdaPOQMi9U4arKKfooJRCzI7FvdT3VGJykkDYp0ZtY4GlFE268P
-         Qec4pSlTwf/03YKCvxgYrQNvht7/aQvDjHq8WhnmSIU0IZ0fMSEOODkozJuwQNfMUg1/
-         u8Mhjywsa0UCxlhUKY4aBDZCXbcTdWFp2o8U/2FwmypBLbsyW0d9poXJ08TLLqUlRHy8
-         Q4Ag==
-X-Gm-Message-State: AOJu0YzLQeO1QgrJu1eZ8FNMm1XFdmC9XLMU1dWh/rpalUpxqWWhkTth
-	9qW7TXC0rUXHWsDMQEOGJ09h3/rN0SzF8XHzHnCnM0Nqx9faVhGyDF0eniREAzbaDqg=
-X-Gm-Gg: ATEYQzwbUWZlQsv0GCMo9MPf9JxkSOxemBVSES8UTpxyIKJVnOPQWbHaFx8TWXOn72R
-	8vDXqF+TIuQdog6fQaOqfxQXb16X0R7iXxMDonCVrVN6xtiEAg5awgm4J5DBT/KjZBKQ9DpBPsz
-	GfF2hHHAMv0G4qXtKmpkjWq5QWkr+G+egFOK17mvYod5k1TWVXnaJN8Cg2kRQ1G2z1X7rpDW2/b
-	tUxK/NPLVf/d7m0kkR/h6eQCJSQJN0mytvsAYKsI+RrE94qVifKJKznED/LcfGZpA/vvGm3hWyo
-	m4a+/vPzvQQWUxVlh6WlTsYcWGEgf4A/7vjOWtVB7JwDEFS0d/jhy8grQzLBjZG6Qpf7LYQqaXi
-	tmnfTGrI7nFf5s3J1mttCcQYJ7gcRo58qpCRPhpKbGEBgRld26iHh6AJkfZkE80bsbre7MS9CRK
-	4soF72J7Ftd7h7x9lnIEBUZpurN+ckvW0x3qJlxpe1y+UG/q2pByxE4+zOjw2OWnBZugbRq+/b5
-	BP3T60GxPHZnmpLq7L+sQ==
-X-Received: by 2002:a17:903:3bac:b0:2b0:4b3a:9b4b with SMTP id d9443c01a7336-2b06e34dfd3mr18296765ad.16.1773803539771;
-        Tue, 17 Mar 2026 20:12:19 -0700 (PDT)
-Received: from stephen-xps.local (h216-87-238-89.thvror.broadband.dynamic.tds.net. [216.87.238.89])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0704ccc67sm3889565ad.15.2026.03.17.20.12.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Mar 2026 20:12:19 -0700 (PDT)
-Date: Mon, 16 Mar 2026 17:58:13 -0700
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, jiri@resnulli.us,
- victor@mojatatu.com, will@willsroot.io, xmei5@asu.edu,
- pctammela@mojatatu.com, savy@syst3mfailure.io, kuniyu@google.com,
- toke@toke.dk, willemdebruijnkernel@gmail.com
-Subject: Re: [PATCH net v2 6/6] selftests/tc-testing: Add netem/mirred test
- cases exercising loops
-Message-ID: <20260316175801.3a1546b7@stephen-xps.local>
-In-Reply-To: <20260316211052.332383-7-jhs@mojatatu.com>
-References: <20260316211052.332383-1-jhs@mojatatu.com>
-	<20260316211052.332383-7-jhs@mojatatu.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VR8CwocQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19DB2C4CEF7;
+	Wed, 18 Mar 2026 03:20:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773804021;
+	bh=TQCXS6vRLEUGRnELuJH4GVYhtF+w+rrDYROmlhU+bHE=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=VR8CwocQ5DWlBG5sAldNQyyWynhZ5IgGSyAXeSqMJEDZpFxFKevjcnj4xS7GWRict
+	 wQHh514FPAdH4XQFePO/wlamNJHiiWDz1oCF4Bq+5Ph8JmTTYfC+4+GUIQJNaDjGbq
+	 EonZfe/FuIP/labhMBMhxKr0AUDSaHRUhymqi8V1M6EtkLrNcNI3934iOwMMSydZ4C
+	 Fqia9ycyCmtXDBiCKXDXifBgge0nDPluJ6kIaT0HubnFRJENoopxCFOmOQp243pY+y
+	 YLVlgqWcG/JMtIl+ekCKm7zQ+T7AlSpSxmJa8dt2waYGW9wf3VthJ5NWFKrIYRXnRy
+	 f5Dn2ts7T6d0g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 401933808200;
+	Wed, 18 Mar 2026 03:20:14 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v2 0/6] dpll: zl3073x: refactor state management
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177380401316.109214.6390588576885603605.git-patchwork-notify@kernel.org>
+Date: Wed, 18 Mar 2026 03:20:13 +0000
+References: <20260315174224.399074-1-ivecera@redhat.com>
+In-Reply-To: <20260315174224.399074-1-ivecera@redhat.com>
+To: Ivan Vecera <ivecera@redhat.com>
+Cc: netdev@vger.kernel.org, Prathosh.Satish@microchip.com,
+ vadim.fedorenko@linux.dev, arkadiusz.kubalewski@intel.com, jiri@resnulli.us,
+ poros@redhat.com, mschmidt@redhat.com, horms@kernel.org,
+ linux-kernel@vger.kernel.org
 
-On Mon, 16 Mar 2026 17:10:52 -0400
-Jamal Hadi Salim <jhs@mojatatu.com> wrote:
+Hello:
 
-> - Test netem's recursive duplicate
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Sun, 15 Mar 2026 18:42:18 +0100 you wrote:
+> This series refactors the zl3073x DPLL driver to centralize hardware
+> state management behind dedicated per-module state interfaces, replacing
+> scattered direct register accesses in dpll.c with cached state and
+> proper accessor functions.
 > 
-> Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-> Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-> ---
->  .../tc-testing/tc-tests/actions/mirred.json   | 616 +++++++++++++++++-
->  .../tc-testing/tc-tests/qdiscs/netem.json     |  33 +-
+> The driver already uses a fetch/get/set pattern for ref, out, and synth
+> modules. This series extends and refines that pattern:
+> 
+> [...]
 
-Please split mirred and netem into separate commits.
+Here is the summary with links:
+  - [net-next,v2,1/6] dpll: zl3073x: use struct_group to partition states
+    https://git.kernel.org/netdev/net-next/c/f327f5a8115e
+  - [net-next,v2,2/6] dpll: zl3073x: add zl3073x_ref_state_update helper
+    https://git.kernel.org/netdev/net-next/c/05ea2ab3b100
+  - [net-next,v2,3/6] dpll: zl3073x: introduce zl3073x_chan for DPLL channel state
+    https://git.kernel.org/netdev/net-next/c/3032e95987fa
+  - [net-next,v2,4/6] dpll: zl3073x: add DPLL channel status fields to zl3073x_chan
+    https://git.kernel.org/netdev/net-next/c/41bab554d7e9
+  - [net-next,v2,5/6] dpll: zl3073x: add reference priority to zl3073x_chan
+    https://git.kernel.org/netdev/net-next/c/f6b075bc3ad5
+  - [net-next,v2,6/6] dpll: zl3073x: drop selected and simplify connected ref getter
+    https://git.kernel.org/netdev/net-next/c/acee049a6af2
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
