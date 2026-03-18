@@ -1,49 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46CB122173D;
-	Wed, 18 Mar 2026 01:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C824919CC28;
+	Wed, 18 Mar 2026 01:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773797362; cv=none; b=l9I0K32tjhhBK0+jBeuqWtxZJrm66r/wBW/gjTAwG6wWT8lBWnfUTpVleQ/ncuo+1Cs9o2SerePG/8op/rQtG2EuGQ7RE63bN19sbuDxtKp0Kk10n9MGuu6I6WtjzOANZudBJDugM/k33T7OKa3m883bFHvFHA5EXEznE4MJIKo=
+	t=1773797877; cv=none; b=WiaqeZSDq7pch7EeTLP2Gx+3Jggd2MvejtxufDI7bpWEcwXPVnktMI27sie4glOIY2l7gD3w5s5mv2Qb4y/5Zqjcwmf5OavkDZFUx5KAjZfv1Xuk8LttfwGEBQ7EhWw4sLmAGd4MIzlqmunMidnDaf1RV+qcmIdq5efy/U1cT8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773797362; c=relaxed/simple;
-	bh=Dv+JEpBFgrAy98wW9koJXIR6zjsFbdTYTx/tYC2Gty8=;
+	s=arc-20240116; t=1773797877; c=relaxed/simple;
+	bh=8OACo2zU2/Bwj39w1bVR7n+Z35I8eMA8qJPBBV2F4rE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J3Rlqh5E3ckxdXIiELCfrys5iC+44wx+EZONGx0Og4yqN1ViWOmmuidiTf16evgyBVqdx8FuQoizKsOFrzv+UnS3N34f449KPCSNl+2aDwnWOo6Bk47w6eeLviK8DFmHAdXYI8rsyJqCjPEk6zOrtdFeyCV+qOAshWu4VOcGoNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W+GYD79H; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=G3ICy4hKZN0kSyU4OLfKc+6WtvFQblfxT2tkYRbO2MrX7UhHeFjwqWKpFqhVxk2MsaaV08UFNwy89rcXn3YCx8hFZWGtc7zJh2pKMLH0zWksrHLYOabafAyeN4bgQ4FwQgSotb8prXP4Kqrsmre5x88GZNX/GmiqLUzJZ4nSDEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fIH7LB+H; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W+GYD79H"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A7EC4CEF7;
-	Wed, 18 Mar 2026 01:29:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fIH7LB+H"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17280C4CEF7;
+	Wed, 18 Mar 2026 01:37:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773797361;
-	bh=Dv+JEpBFgrAy98wW9koJXIR6zjsFbdTYTx/tYC2Gty8=;
+	s=k20201202; t=1773797877;
+	bh=8OACo2zU2/Bwj39w1bVR7n+Z35I8eMA8qJPBBV2F4rE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=W+GYD79HnC/miwLDEG/EdHqCOG8EkZo4TE43F8DvWswodRwDJ17OxFkoe+qA0l9Bg
-	 Z5Q605f4vtIL7R/VXiIpCgkyTH6LRG0BHFsJ1uwWPjqs7kXECHJXYQRiV+ctAtMSac
-	 IWua7LDNZjH7bGQA7RfeVvcbSVntUrjnt3lrwo/vjovrIOXabamWRrU3/3zdFg9Pc+
-	 Q5xD5j5YiXk9NG3Q/YSnBNXQzSKuCUh/+IkaK/8R0vwjiBht1IZUmb97KhT8SGWInv
-	 ESiZkH62C8kvqUSRebfqcIDZE9IoK4mob22jbjGlpfI4GsGrPNA+D2i2NJ0XppJyNy
-	 qLGAesRMmmbqA==
-Date: Tue, 17 Mar 2026 18:29:20 -0700
+	b=fIH7LB+HGwfHzRBOUSh0yQNEb+BJAtXcRA+jJU6u0FMryEYe4LJ4c9oH3kE7vaAKe
+	 1cgmHkrkIYe0jcomna4SowGENOLQmnhCkc2nPvC/qv6NBsaETvu677vSmIu3EBl+8O
+	 yHK6IATc6qJH0sJWIvXMFhZ+J4gK0IFANjwavlhEmXREDlDi9R7zULMpcGo9MdRBQ7
+	 9JBz80ZLBH37mhE3KlT8HiwX6JfQwdwFrsRfLa7AjFfUNNyDpxG+AWqTPgsFYUNZ8s
+	 4T0n2fdrKqBzGkbRTC4MpxfeV7CD8+jMpYuUx1Ss1y+w1n/oIo/AAcBspJxOeD1IsM
+	 zMaKGlbifdaLA==
+Date: Tue, 17 Mar 2026 18:37:56 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Martin KaFai Lau <martin.lau@linux.dev>, Maciej Fijalkowski
- <maciej.fijalkowski@intel.com>, bpf <bpf@vger.kernel.org>, Network
- Development <netdev@vger.kernel.org>, "Karlsson, Magnus"
- <magnus.karlsson@intel.com>, Stanislav Fomichev <stfomichev@gmail.com>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Alexei
- Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>
-Subject: Re: [PATCH v2 bpf-next] xsk: use __xsk_rcv_zc_safe for ZC
- multi-buffer Rx processing
-Message-ID: <20260317182920.3f4fd8eb@kernel.org>
-In-Reply-To: <CAADnVQLZOUMGxNDwxhRzfx4finsF3aua31cggKpgTA6h0pjgAA@mail.gmail.com>
-References: <20260316140557.461288-1-maciej.fijalkowski@intel.com>
-	<20260316171200.4b8a96a0@kernel.org>
-	<CAADnVQJ=nryHHb5A3r77H6dzg=vzC97eHe8mCeBA=BMxa=+P5Q@mail.gmail.com>
-	<20260317152045.58c719a7@kernel.org>
-	<CAADnVQLZOUMGxNDwxhRzfx4finsF3aua31cggKpgTA6h0pjgAA@mail.gmail.com>
+To: Breno Leitao <leitao@debian.org>
+Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH net-next] bonding: move utsrelease.h include out of
+ bonding_priv.h
+Message-ID: <20260317183756.33d67d60@kernel.org>
+In-Reply-To: <20260316-bond_uts-v1-1-428696ea79d5@debian.org>
+References: <20260316-bond_uts-v1-1-428696ea79d5@debian.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,19 +47,40 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 17 Mar 2026 17:57:32 -0700 Alexei Starovoitov wrote:
-> > > Do you guys need it in net-next in this merge window ?
-> > >
-> > > We have nothing in bpf-next/net so far, so should be fine
-> > > to take this patch into net-next directly?  
-> >
-> > Somehow __xsk_rcv_zc_safe() landed in bpf-next/master f620af11c27b8ec9
-> > So I think we have limited number of possible moves now :)  
-> 
-> I wasn't paying attention. We can revert it in bpf-next and reapply
-> in net-next and probably route all future xsk patches to net/net-next ?
-> since it doesn't have much to do with bpf anymore.
+On Mon, 16 Mar 2026 05:17:45 -0700 Breno Leitao wrote:
+> +++ b/drivers/net/bonding/bond_procfs.c
+> @@ -6,8 +6,11 @@
+>  #include <net/netns/generic.h>
+>  #include <net/bonding.h>
+>  
+> +#include <generated/utsrelease.h>
+>  #include "bonding_priv.h"
 
-Maybe we should defer until the merge window and let it sit in Maciej's
-local tree for now. It's a tiny optimization, Maciej can resend in the
-next cycle.
+Somewhat unfortunate placement, shouldnt it be the first include above
+the linux/ ones? If we were going best-effort-alphabetically?
+
+> +#define bond_version DRV_DESCRIPTION ": v" UTS_RELEASE "\n"
+> +
+>  static void *bond_info_seq_start(struct seq_file *seq, loff_t *pos)
+>  	__acquires(RCU)
+>  {
+> diff --git a/drivers/net/bonding/bonding_priv.h b/drivers/net/bonding/bonding_priv.h
+> index fef6288c6944f..f9b327b6a494a 100644
+> --- a/drivers/net/bonding/bonding_priv.h
+> +++ b/drivers/net/bonding/bonding_priv.h
+> @@ -12,11 +12,7 @@
+>  
+>  #ifndef _BONDING_PRIV_H
+>  #define _BONDING_PRIV_H
+> -#include <generated/utsrelease.h>
+> -
+>  #define DRV_NAME	"bonding"
+>  #define DRV_DESCRIPTION	"Ethernet Channel Bonding Driver"
+
+I think this entire header can go, TBH?
+DESCRIPTION is used only in main
+And DRV_NAME can be replaced by KBUILD_MODNAME where it's used.
+
+> -#define bond_version DRV_DESCRIPTION ": v" UTS_RELEASE "\n"
+> -
+>  #endif
