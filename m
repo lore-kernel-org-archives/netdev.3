@@ -1,44 +1,44 @@
 Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA1F3DA5B1;
-	Wed, 18 Mar 2026 14:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10A3A3D9DD9;
+	Wed, 18 Mar 2026 14:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773842820; cv=none; b=QzYwmGSWIwxqROZqFyK++LkAduIcVshYMmKYdO0aPBmJjbsAw1tX6w53op/pgEwM4NrsT2Zcw9+s+GYlZxr3B2KgYpMW4nz9vD0dquKYw5ix0RDTBGDaC1sCCERiShGD2tMVqfHUXoNnvT5zWC7x/wn9bJoWagZGKv1hWhdBaIw=
+	t=1773842820; cv=none; b=BhG99OMy+UPqqMajXQu3G7eviBzjSfLGTtmXWujf1rotfNPoTqaqOAprBKqoiPDhpn/2kqGYbXAcIWzrdlULw/bXp3Gso0+nse6F6AAEVylgZZYc6s3H6u71UInDji2iG6wemua1vJ8AnTlFLz9aceP7pG8CokLlsS93kb1DWjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773842820; c=relaxed/simple;
-	bh=rPaHJSJWHz1IRwNcwTh2bXaGdZ4ciDGrrkXkOVFIuZg=;
+	bh=jcplQi3Mocc1VLQA6H9ineVeTMeOKfBlXqPAmboXcHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XSVbtDk8AeS4qrth+cLEs2Y3RjuqPYj1y3UCFsi1lV78+YtnqwQ4wByFwcc/6RiZ5Vt5IEsw2fXJECTWbU11XO836wzK02HlHksd1hIh2raiGnxJ0Crp/jIWz+XqkcyISoub8XfHBXtQvqLAwF5LcVgWM3JmhlXEQr11o2iH9F8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Duk6H2xg; arc=none smtp.client-ip=188.40.3.216
+	 MIME-Version:Content-Type; b=KCJonm4l8N8cA+DbYCG27BLImo313gPIm511li9Ot1QsMjwrLSLgAtak1mt8qx8WiPctlbjkcE4FyMq9OBnQPIiWso2gOihhkAXFDn4SYd/4QkHtCzT3AQlnvvfWi5jDbYphVwZa+9lDwFBz8qiEqJdtKn+ZB54M5lVTBcMJTHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=ZSXVBFNI; arc=none smtp.client-ip=188.40.3.216
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Duk6H2xg"
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="ZSXVBFNI"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:Content-Type:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=lN1yDT3RAJCOoSQ4DvWodIFR/io63EZopfQK3kE+hGw=; b=Duk6H2xgDIwydvTkRMTZd0R0a8
-	yT+ZChQznQuzYZkvGDnbgfi6EYW6tu2q4y71y6TZZSA7HJxbtMkU0UDTLesQXteg++FMl5/2qmLKs
-	zHXrzHqV28FQbIphIYczXWLBokA4EntlZPa1sFvMKYgrMQ8Jf+Philm7SH4dyanA99o+jGPP3qEHF
-	oXYISkZbjV9najaQte/lrptvFiKpqxZwmUmTW9rKC0UZxxTAxyhy6Kr98jLzBxa48MwelljJK3P0g
-	re8r0x68lh9Y81ii+qNe5KCDk++wKWgZXHBZwPPgyMlYVpwc91wiHcB7e38jbMTW55XkBQloDHYsE
-	SSAvqj3Q==;
+	bh=KqcLRKudHgKSmtkMDFCAvoKWKKoLB9Rc1nid7QyUgsk=; b=ZSXVBFNIwWI5w2rwXT0bB5Gz7A
+	wHFXWHuImaaClzdqAQrecs5K9EHXOs3JHw/DYIbUT9OWaaRrQrCYH6cIT4cs1kC8lHRLVBwfaBG0/
+	37qaMx0idpQ+spE+jS9p/o9qkavs9Gcfe2ElHlJe4f+eR58IeS+TeU10nxyMYPyg9cYWK1ek+ltDw
+	KgppeZfTk+JVZRq2TjQqbg+JdlYf6Wv1fclUrpWc3NFpuXZR00727Awuot9b8kSRRR9hLYJe9u9Cg
+	JmnQAD9X+CRn4qwNC+a8FvfWrtNGc7v7qVF0QuWtFDtHGcZ6ZjKGNuLyu+eXsJ+1QysVHFsob33eS
+	eiXl06Fg==;
 Received: from sslproxy06.your-server.de ([78.46.172.3])
 	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <nora.schiffer@ew.tq-group.com>)
-	id 1w2rXz-000BqS-0h;
-	Wed, 18 Mar 2026 15:06:55 +0100
+	id 1w2rXy-000BqG-0Q;
+	Wed, 18 Mar 2026 15:06:54 +0100
 Received: from localhost ([127.0.0.1])
 	by sslproxy06.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <nora.schiffer@ew.tq-group.com>)
-	id 1w2rXW-000B1s-1E;
-	Wed, 18 Mar 2026 15:06:26 +0100
+	id 1w2rXV-000B1s-0z;
+	Wed, 18 Mar 2026 15:06:25 +0100
 From: Nora Schiffer <nora.schiffer@ew.tq-group.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -61,9 +61,9 @@ Cc: Siddharth Vadapalli <s-vadapalli@ti.com>,
 	linux-arm-kernel@lists.infradead.org,
 	linux@ew.tq-group.com,
 	Nora Schiffer <nora.schiffer@ew.tq-group.com>
-Subject: [PATCH 6/7] net: ethernet: ti: am65-cpsw: add support for J722S SoC family
-Date: Wed, 18 Mar 2026 15:05:28 +0100
-Message-ID: <4cc3dd9fab460d35215c8f97496b9ae16c5bcb22.1773751309.git.nora.schiffer@ew.tq-group.com>
+Subject: [PATCH 4/7] phy: ti: phy-j721e-wiz: add support for J722S SoC family
+Date: Wed, 18 Mar 2026 15:05:26 +0100
+Message-ID: <7834b551a09b9e5d83ba012163f9c53ece81b09a.1773751309.git.nora.schiffer@ew.tq-group.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1773751309.git.nora.schiffer@ew.tq-group.com>
 References: <cover.1773751309.git.nora.schiffer@ew.tq-group.com>
@@ -77,40 +77,91 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: Clear (ClamAV 1.4.3/27944/Wed Mar 18 07:24:13 2026)
 
-The J722S CPSW3G is mostly identical to the AM64's, but additionally
-supports SGMII.
+The J722S WIZ is mostly identical to the AM64's, but additionally supports
+SGMII.
 
 Signed-off-by: Nora Schiffer <nora.schiffer@ew.tq-group.com>
 ---
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/phy/ti/phy-j721e-wiz.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index d9400599e80a4..fc57d5e6edf4c 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -3468,6 +3468,13 @@ static const struct am65_cpsw_pdata am64x_cpswxg_pdata = {
- 	.fdqring_mode = K3_RINGACC_RING_MODE_RING,
+diff --git a/drivers/phy/ti/phy-j721e-wiz.c b/drivers/phy/ti/phy-j721e-wiz.c
+index 6b584706b913a..7531a8a049123 100644
+--- a/drivers/phy/ti/phy-j721e-wiz.c
++++ b/drivers/phy/ti/phy-j721e-wiz.c
+@@ -331,6 +331,7 @@ enum wiz_type {
+ 	J721E_WIZ_16G,
+ 	J721E_WIZ_10G,	/* Also for J7200 SR1.0 */
+ 	AM64_WIZ_10G,
++	J722S_WIZ_10G,
+ 	J7200_WIZ_10G,  /* J7200 SR2.0 */
+ 	J784S4_WIZ_10G,
+ 	J721S2_WIZ_10G,
+@@ -1020,6 +1021,7 @@ static void wiz_clock_cleanup(struct wiz *wiz, struct device_node *node)
+ 
+ 	switch (wiz->type) {
+ 	case AM64_WIZ_10G:
++	case J722S_WIZ_10G:
+ 	case J7200_WIZ_10G:
+ 	case J784S4_WIZ_10G:
+ 	case J721S2_WIZ_10G:
+@@ -1089,6 +1091,7 @@ static void wiz_clock_init(struct wiz *wiz)
+ 
+ 	switch (wiz->type) {
+ 	case AM64_WIZ_10G:
++	case J722S_WIZ_10G:
+ 	case J7200_WIZ_10G:
+ 		switch (rate) {
+ 		case REF_CLK_100MHZ:
+@@ -1158,6 +1161,7 @@ static int wiz_clock_probe(struct wiz *wiz, struct device_node *node)
+ 
+ 	switch (wiz->type) {
+ 	case AM64_WIZ_10G:
++	case J722S_WIZ_10G:
+ 	case J7200_WIZ_10G:
+ 	case J784S4_WIZ_10G:
+ 	case J721S2_WIZ_10G:
+@@ -1246,6 +1250,14 @@ static int wiz_phy_fullrt_div(struct wiz *wiz, int lane)
+ 		if (wiz->lane_phy_type[lane] == PHY_TYPE_SGMII)
+ 			return regmap_field_write(wiz->p0_fullrt_div[lane], 0x2);
+ 		break;
++
++	case J722S_WIZ_10G:
++		if (wiz->lane_phy_type[lane] == PHY_TYPE_PCIE)
++			return regmap_field_write(wiz->p0_fullrt_div[lane], 0x1);
++		if (wiz->lane_phy_type[lane] == PHY_TYPE_SGMII)
++			return regmap_field_write(wiz->p0_fullrt_div[lane], 0x2);
++		break;
++
+ 	default:
+ 		return 0;
+ 	}
+@@ -1350,6 +1362,15 @@ static struct wiz_data am64_10g_data = {
+ 	.clk_div_sel_num = WIZ_DIV_NUM_CLOCKS_10G,
  };
  
-+static const struct am65_cpsw_pdata j722s_cpswxg_pdata = {
-+	.quirks = AM64_CPSW_QUIRK_DMA_RX_TDOWN_IRQ | AM64_CPSW_QUIRK_CUT_THRU,
-+	.ale_dev_id = "am64-cpswxg",
-+	.fdqring_mode = K3_RINGACC_RING_MODE_RING,
-+	.extra_modes = BIT(PHY_INTERFACE_MODE_SGMII),
++static struct wiz_data j722s_10g_data = {
++	.type = J722S_WIZ_10G,
++	.pll0_refclk_mux_sel = &pll0_refclk_mux_sel,
++	.pll1_refclk_mux_sel = &pll1_refclk_mux_sel,
++	.refclk_dig_sel = &refclk_dig_sel_10g,
++	.clk_mux_sel = clk_mux_sel_10g,
++	.clk_div_sel_num = WIZ_DIV_NUM_CLOCKS_10G,
 +};
 +
- static const struct am65_cpsw_pdata j7200_cpswxg_pdata = {
- 	.quirks = 0,
- 	.ale_dev_id = "am64-cpswxg",
-@@ -3495,6 +3502,7 @@ static const struct of_device_id am65_cpsw_nuss_of_mtable[] = {
- 	{ .compatible = "ti,am654-cpsw-nuss", .data = &am65x_sr1_0},
- 	{ .compatible = "ti,j721e-cpsw-nuss", .data = &j721e_pdata},
- 	{ .compatible = "ti,am642-cpsw-nuss", .data = &am64x_cpswxg_pdata},
-+	{ .compatible = "ti,j722s-cpsw-nuss", .data = &j722s_cpswxg_pdata},
- 	{ .compatible = "ti,j7200-cpswxg-nuss", .data = &j7200_cpswxg_pdata},
- 	{ .compatible = "ti,j721e-cpswxg-nuss", .data = &j721e_cpswxg_pdata},
- 	{ .compatible = "ti,j784s4-cpswxg-nuss", .data = &j784s4_cpswxg_pdata},
+ static struct wiz_data j7200_pg2_10g_data = {
+ 	.type = J7200_WIZ_10G,
+ 	.pll0_refclk_mux_sel = &sup_pll0_refclk_mux_sel,
+@@ -1389,6 +1410,9 @@ static const struct of_device_id wiz_id_table[] = {
+ 	{
+ 		.compatible = "ti,am64-wiz-10g", .data = &am64_10g_data,
+ 	},
++	{
++		.compatible = "ti,j722s-wiz-10g", .data = &j722s_10g_data,
++	},
+ 	{
+ 		.compatible = "ti,j7200-wiz-10g", .data = &j7200_pg2_10g_data,
+ 	},
 -- 
 TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
 Amtsgericht München, HRB 105018
