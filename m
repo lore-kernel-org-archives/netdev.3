@@ -1,127 +1,145 @@
-Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D2F279DC9;
-	Wed, 18 Mar 2026 21:21:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092FB293B75;
+	Wed, 18 Mar 2026 21:23:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773868873; cv=none; b=jgzoY+KnnCdRRc+Vg5upG2ZaniO8UlI7q0PpnrLdcm5RRgDF3/5MMz7q0ahMPHFYPa3EjCLhc0LNiyoylnEJBRPfOH8IcH/InFhIOzeWztH1kLe3BgD593zXKDF4SiXq76j237dxo73FMhdsWLsKIvd+Bk299y7tCj1MFH2dF40=
+	t=1773869035; cv=none; b=soSQzeoh3vQRFRfiH2+ZQ2fUnh+BXeO2oqT55vDfMv+psSblvihNK3EJhHswnI8AY4IOR3qxIkotsuPoxD3bxlyl+2ELuOyMz0bgEOvs1LDD5I/VzrHi7R1ucAOhTd1GGvXwrJgd9JWX2oyoizKRs3K97VUtWdlladLxbiOO5EI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773868873; c=relaxed/simple;
-	bh=uq6G0ZpM5sYvhp21VeatqbQocEipeAhbF53idP6HvbA=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=IBbCibsKug921VGY5Vho6chvdr3L123n4jhpNHMZNp8ouIarLyl9rml0nOgrUgpBfOunUcHltm1awuCWS7wCVJQbaK0R9C7aTVs3iiuyzH1oF82XM/ZBKcJn+NzBfh9F2EZqV22ZvTzVC7UStJUmRcloZAQhcBZCbm0KxmaDSoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=WGhmxX7R; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=WtmIJHtV; arc=none smtp.client-ip=202.12.124.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1773869035; c=relaxed/simple;
+	bh=diJ9QPPY6KW09PwuO6V9voRGxd18I3VD+Tg2MitGWWU=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Vc++L/GMen1W64az9mb0LO0LKUeGvpZk9cva5A0sFZj6p3/iT7pskwjQeZ5zdNkOQyN5I1Sg77+0ynBnXiMS7DKZdiRDCrzxhqoJDLv5ZVvGRWQZgg+GI1a+FyARpCJE6eGUtwXQtj3+D/GcAUK/vQ4pwkBHWVhe0Z0Rp9oxmmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=wf3x76I2; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="WGhmxX7R";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="WtmIJHtV"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 17EEA7A0064;
-	Wed, 18 Mar 2026 17:21:10 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-04.internal (MEProxy); Wed, 18 Mar 2026 17:21:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1773868869;
-	 x=1773955269; bh=ODM0+NlCmd227tQSIaLYBvFz9hHEuOY9El1401vnkJ4=; b=
-	WGhmxX7RD9FvaVIKlEIcx3YUmzxqDTrdQ2HCPiHMsGakOgyv4+iovpx2VB6NJkTZ
-	gFaMGYC9YofPst+CDXROqZV3ulKj6neOr+5TU1JAWJI6ejYSIiqdDgqGa9dCBbc1
-	GOwyiWjQYbjC6F9NyUVwsuYEUUZfEx8ACAQQrNY+oxZ6IGMVJUZUtkVX/Y4HvaSg
-	c1qOcaioOVU6GAY+kWAojzWQIwqrEN2Vor5Bel0J0rqoKv8kBVjwFsUC13EGGr6S
-	aFJipFVambqyAi+pFslaS7u2qU3Ef1yPpAvs5xhu64C7EFwm7wEjsHj9JNpoJ+QY
-	omvcTqZvZx1VjBLnYWTIrA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773868869; x=
-	1773955269; bh=ODM0+NlCmd227tQSIaLYBvFz9hHEuOY9El1401vnkJ4=; b=W
-	tmIJHtVmfHplGg22RKeDjLKm+dZ18u/XvAMV2msJk6WBGmgODgGkQYDRUJAdOsCM
-	iOlEpkfRPCFukB7lbyFqKFGDuPWvpUiZnIcKLElO/qBHVZUVK7dojqORVr1niigL
-	A3ktAhFwhkCxCjFwKqcrFkCK0uolaeUDJREOhYAESXt4nTMv4nrtZKBcfwnktxsO
-	HpA8pgPK7Ef6c6zsdsZQpBZNRoSpnTzrRc3+Wl3A5pJ8UY0JY3HqhzprMKIzF7yv
-	WIEDjhrE9SkBZrvRh/n7Q9M0nArQxccavlj5UuQMV+mZuvxd3yQXoUoymVZ+vj90
-	cIHOE2H0ghhF+ACZsxOKQ==
-X-ME-Sender: <xms:RRe7abEG--WR-k1gpJhHjLg4ncccfRaj_Ct_TKMq4fQJLuv3I-FDSw>
-    <xme:RRe7aTKzn_iEHPhy1_1vC1fXpxElqYkHbpTmlVb18JekV0PRX3HjpCggRBVqaTRaZ
-    onnbeCSl3GJZcAFLswuaTyuzykLkONHgdDUcU7m8opSimIZGEUr453W>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdehvddtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdejnecuhfhrohhmpedftehrnhgu
-    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
-    hrnhepvdfhvdekueduveffffetgfdvveefvdelhedvvdegjedvfeehtdeggeevheefleej
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
-    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepudehpdhmohguvgepshhmthhpohhu
-    thdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtoh
-    epvggsihhgghgvrhhssehgohhoghhlvgdrtghomhdprhgtphhtthhopegvughumhgriigv
-    thesghhoohhglhgvrdgtohhmpdhrtghpthhtoheprgigsghovgeskhgvrhhnvghlrdgukh
-    dprhgtphhtthhopegrrhhnugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohephhhorhhm
-    sheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrgh
-    dprhgtphhtthhopegthhhrihhsthhophhhrdgsohgvhhhmfigrlhguvghrsehlihhnsghi
-    thdrtghomhdprhgtphhtthhopehlrghrshdrvghllhgvnhgsvghrgheslhhinhgsihhtrd
-    gtohhm
-X-ME-Proxy: <xmx:RRe7aX9dkAzfKFipLbIteNXrKPA6e6DDby9VWTh3epMv6QF5bWT2fw>
-    <xmx:RRe7abS4Hbfk36L9FAskc9gAo1Ir7-gteJ4TdJfxuacdyTarnW9C9g>
-    <xmx:RRe7aUpnNCRn1YGPSc5g6Lyq726c2Tb8PpPrWpquFgUksYUZTJ_hgg>
-    <xmx:RRe7aQPWB5cOYDOZY0IKbkGeg76ABvxrb2r07FZ2kfQ5nnjJ8LMu4w>
-    <xmx:RRe7aTM60KNALgXhuGbXnBvuNKqtnkW__RaGaPuGkV5W0NxYIVnSHVSl>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 62429700069; Wed, 18 Mar 2026 17:21:09 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="wf3x76I2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1773869034; x=1805405034;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=diJ9QPPY6KW09PwuO6V9voRGxd18I3VD+Tg2MitGWWU=;
+  b=wf3x76I2cZ5jkqsHA221WKYqlZD55zInLdt1ONPAVqVKqlZwufEFpLBZ
+   hO7N/UznKRkXZZV1Uh+nCXSQaq87nTjheqB1CqgvDtO86uaeUKQOEr3AL
+   hMYm1dCqp8L7Oo5V0m1tHfYp11+teCEacOznmFa2bR1Iuwjp7tNAj88v1
+   RTjF7s5hcQ7BvfofVQrQEXAYChT4xvGQGkLO2kAFtN0nt6p3bu5MLv3O7
+   nBdD94EQMS1ZOgO+Lf01XmKNGwunNHNL7mmfpdX714B1k81mL3BPKtXSH
+   I6pUfj7tT/jZowigaO0WBNfqjo1JRiMnnOr18emXnSsVejSDLIMBb30bX
+   Q==;
+X-CSE-ConnectionGUID: fmMH9kipSzyI1CxnMFzQBQ==
+X-CSE-MsgGUID: pae+xRSJQsmKA7b9gwOPtQ==
+X-IronPort-AV: E=Sophos;i="6.23,128,1770620400"; 
+   d="scan'208";a="54865784"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 18 Mar 2026 14:23:53 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Wed, 18 Mar 2026 14:23:27 -0700
+Received: from bby-cbu-swbuild03.eng.microchip.com (10.10.85.11) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58 via Frontend Transport; Wed, 18 Mar 2026 14:23:24 -0700
+Date: Wed, 18 Mar 2026 14:23:23 -0700
+From: Charles Perry <charles.perry@microchip.com>
+To: Conor Dooley <conor@kernel.org>
+CC: Charles Perry <charles.perry@microchip.com>, <netdev@vger.kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Heiner
+ Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next 1/2] dt-bindings: net: document Microchip
+ PIC64-HPSC/HX MDIO controller
+Message-ID: <absXy5Qmd/iHWofD@bby-cbu-swbuild03.eng.microchip.com>
+References: <20260317184610.315852-1-charles.perry@microchip.com>
+ <20260317184610.315852-2-charles.perry@microchip.com>
+ <20260318-suspense-arming-fe118c3f15c6@spud>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AaEtqGFuZtnN
-Date: Wed, 18 Mar 2026 22:20:49 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: =?UTF-8?Q?Christoph_B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>,
- "Arnd Bergmann" <arnd@kernel.org>,
- "Philipp Reisner" <philipp.reisner@linbit.com>,
- "Lars Ellenberg" <lars.ellenberg@linbit.com>, "Jens Axboe" <axboe@kernel.dk>,
- "David S . Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>
-Cc: "Simon Horman" <horms@kernel.org>, "Eric Biggers" <ebiggers@google.com>,
- drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
- linux-kernel@vger.kernel.org, Netdev <netdev@vger.kernel.org>
-Message-Id: <74946481-4eb7-4d8d-b10a-881ebd84ee33@app.fastmail.com>
-In-Reply-To: <6b696861-ac39-4a87-a2fa-ad47a75031c6@linbit.com>
-References: <20260318104858.1868731-1-arnd@kernel.org>
- <20260318104858.1868731-2-arnd@kernel.org>
- <6b696861-ac39-4a87-a2fa-ad47a75031c6@linbit.com>
-Subject: Re: [PATCH 2/2] drbd: select CONFIG_NET_HANDSHAKE
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260318-suspense-arming-fe118c3f15c6@spud>
 
-On Wed, Mar 18, 2026, at 22:16, Christoph B=C3=B6hmwalder wrote:
-> Am 18.03.26 um 11:48 schrieb Arnd Bergmann:
+On Wed, Mar 18, 2026 at 05:48:08PM +0000, Conor Dooley wrote:
+> On Tue, Mar 17, 2026 at 11:46:09AM -0700, Charles Perry wrote:
+> > This MDIO hardware is based on a Microsemi design supported in Linux by
+> > mdio-mscc-miim.c. However, The register interface is completely different
+> > with pic64hpsc, hence the need for separate documentation.
+> > 
+> > The hardware supports C22 and C45.
+> > 
+> > The documentation recommends an input clock of 156.25MHz and a prescaler
+> > of 39, which yields an MDIO clock of 1.95MHz.
+> > 
+> > The hardware supports an interrupt pin to signal transaction completion
+> > which is not strictly needed as the software can also poll a "TRIGGER"
+> > bit for this.
+> > 
+> > Signed-off-by: Charles Perry <charles.perry@microchip.com>
+> > ---
+> >  .../net/microchip,pic64hpsc-mdio.yaml         | 61 +++++++++++++++++++
+> >  1 file changed, 61 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/net/microchip,pic64hpsc-mdio.yaml
+> > 
+> > diff --git a/Documentation/devicetree/bindings/net/microchip,pic64hpsc-mdio.yaml b/Documentation/devicetree/bindings/net/microchip,pic64hpsc-mdio.yaml
+> > new file mode 100644
+> > index 000000000000..21c76199c11b
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/net/microchip,pic64hpsc-mdio.yaml
+> > @@ -0,0 +1,61 @@
+> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/net/microchip,pic64hpsc-mdio.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Microchip PIC64-HPSC/HX MDIO controller
+> > +
+> > +maintainers:
+> > +  - Charles Perry <charles.perry@microchip.com>
+> > +
+> > +description: |
+> > +  Microchip PIC64-HPSC/HX SoCs have two MDIO bus controller. This MDIO bus
+> > +  controller supports C22 and C45 register access. It is named "MDIO Initiator"
+> > +  in the documentation.
+> > +
+> > +allOf:
+> > +  - $ref: mdio.yaml#
+> > +
+> > +properties:
+> > +  compatible:
+> > +    oneOf:
+> > +      - const: microchip,pic64hpsc-mdio
+> > +      - items:
+> > +          - const: microchip,pic64hx-mdio
+> > +          - const: microchip,pic64hpsc-mdio
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  clocks:
+> > +    maxItems: 1
+> > +
+> > +  clock-frequency: true
+> 
+> Does this genuinely have no constraints?
 
->>  config NET_HANDSHAKE_KUNIT_TEST
->>  	tristate "KUnit tests for the handshake upcall mechanism" if !KUNIT=
-_ALL_TESTS
->
-> Thanks for the fix, I applied it to our drbd-next tree (which should e=
-nd
-> up in linux-next).
->
-> I would prefer to squash these kinds of fixups to keep the history in
-> our patch series clean.
-> Arnd, does that work for you? How do you prefer we handle attribution?
->
-> Unfortunately I couldn't really find a clear precedence pattern for
-> this, how is this usually handled?
+It's going to divide the input frequency by 2 to 512 (the prescaler is 8
+bit long), so assuming an input clock of 156.25 MHz, the bounds are 305KHz
+to 78MHz. The standard is 2.5MHz.
 
-Whichever way works best for you. Some people care a lot about=20
-attribution for bugfixes, but I generally prefer a clean history
-myself.
+I can add a maximum and minimum here since I do have some validation on
+this in the driver which will bail out if this is out of bound.
 
-     Arnd
+Thanks,
+Charles
