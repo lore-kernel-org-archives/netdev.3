@@ -1,119 +1,133 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C622F354AC0
-	for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 11:26:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773833175; cv=none; b=rJcjidCvFwKiLfArYCoDF0xlhoPY3bGBAsPXGNmatoTWA5FhPVyqB393875vQD1MhOpcDA2sT2BQ+gvYkBBesfy0hkfWV4+b5SuKNcdxf/h9DkJz3Am0t5BCId0TsjslxrnbfC4KHWOQjlRfOHk7m+iUGhhHQv3h94ga2qxapW8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773833175; c=relaxed/simple;
-	bh=H1GaUTZ7PoAPJxbjHZ3pQ3WngVkqVjTyPMUKNKCKUqY=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=Gqs4/fPcSkvTQ5DygWycFC1XMRP4j6y7T/0/3wJs8u5XNDa0gHdVZGWH7BJkLar8LGiIoOSd3GiJNJpI9O+xU0DTTczcI5AeMl+kvI8GPzM3UPVa5AslIzMA5nDYmTg6zxZCLK9Nl+/kgyZU1YgZuraY9SirtuXjlL6ICCM+KYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=K9kxYkS1; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7A63B9607
+	for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 12:07:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773835664; cv=pass; b=Bovgp8cS3s7eNL1qKV2KorvZpaJ+M5jAjyJL4YaKCQ9SoIbVq9NTT/xIlJrKwmXkBaw+vEiO7V4+Z7uReAGiKoQssBLoUW0xxK1uppDWczeh4o39iZGou7FsxiFf3fV7kpWf8xvMHrL4fZhxGEVGTL/e4BtYXRMWSCW/x6cZo9Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773835664; c=relaxed/simple;
+	bh=0MWtM+Q3fOjQ3gTtcI9PBHPid9Cr2JUowGSTtmTprAs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PuGHHNSoTQ9G0zyhx9IG1HVqPwa/7HMk1X2jgF3A0Soj01T9RLTxN9tWXXNOmgYBBRwQp3g4GvKdaRuspilX2Dj0XAVRDBRfvLgrqBn+7+Z0+z2d6WTr1uUj57ZKyFqTbkUL5giQe9AgPwI5v0v6KYBzZvuraBiYHIWoK3s7Y34=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=FNUPR+6U; arc=pass smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="K9kxYkS1"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AA04DA47AF;
-	Wed, 18 Mar 2026 12:25:58 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1773833163; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=uiXZLI/r51Z0R/qzZ22LeeOwsCar/krz4M7OipyTRIQ=;
-	b=K9kxYkS1HmdnADGjlL29XB1iBlb3RsTD9KMdEymVvtNgScptONJ4eHPGvtV6VwXdddUa4H
-	L7ex4mmyZD3RB7FHKhQCh3hoFs8AJRyF5/UG2R6qT/O7jO0/azKX9yAzgkXUWgvnHJUnKq
-	2RsNkzOTwVK1LUAsObXngdb85qZR/5hXG7Q8o0m6JEtmwVgXd3rAdagmvDe4FkXruW7/VD
-	Oh0dqIwSnerq6TeRDpV1Qn98fSZCH7ntgcXokaXsU2HFD6MkeVw5wr1uH3vqovimN3Owz4
-	0AZXIWHT4XURjX+h1NSkSkJE0ezL4ysjTHKCvlFcK5UotQdqcCLj8sUnHnS2Hw==
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="FNUPR+6U"
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-667952fd262so1924407a12.2
+        for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 05:07:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773835660; cv=none;
+        d=google.com; s=arc-20240605;
+        b=QDz2pRzhlCw0S20zjQYA1egf1lgQmg4HCd4nODCSOXao3smUDyGkP6mBb2YtLB3LQ5
+         K2ClgVQ+47TSUIJybjjpIgymuOsiB/83AommEbMmxjRKQymyTfUP7iVt9RJ0JHq3AqKm
+         q1n/Q2FwVYEuKG8/+AhuoQK2PPn4SyRvtwqebUiErkvc0YaL1ZpW7iE21RK+kpIwcaXG
+         zr1dLea56DnFZWs42tvDunP1b/t2bmnPIOLnL79AnEFlko7UfTFiRGMn4W+ROzuAqbWw
+         DEjQUBlTOD3w3DN08GG21o7tUS/1TfbGUHXl+bKtpEn1JX02mOVcYRWoXmEyw3lCD2BA
+         xACg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=NsCJ3acJ4VXgmE/y7c6nUeV4zYXKY1pEx9fFAhUIDJ0=;
+        fh=JikLCICB2iKyrA4x1+dqfAzll3CViO1X38fnneb3PN8=;
+        b=LMR8f4EX6ERzO7OIhsc/v7Y329LrxATzw18sZ+lC3GZF1k8DPELsuCkZEf0/fmRNID
+         Y+DuUnomXco3KYBWGfqF9CV6ZAjiN/nx1Tpka5pgYiSZmywLCx2GJcJrFtIarB47sD/w
+         TB4UBf/fLDEcrlx89KkeMrAbsj8wg0ZByFbR87jz3ALIVHPqle3NXPzqOQM9qNzA3zVJ
+         Na4fwtI0gSi9l12L3BUZWSbVpHpA2M0EMmB+027JYJCI8rqQKKMmVd9wVSY3xnca+lnd
+         MKcazBlWtIHWMtXTI7UHo6vVgz1sr1i1i0fyRtMqmkL+2/V8JWcPbmaxntHHX+XH8j/e
+         XxwQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=6wind.com; s=google; t=1773835660; x=1774440460; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NsCJ3acJ4VXgmE/y7c6nUeV4zYXKY1pEx9fFAhUIDJ0=;
+        b=FNUPR+6UebALLBZWh0AAnNIoKVRvFaSYMKeNz5PjacYzO7D22ZRMSYUHloYI9g2nHm
+         tVPh00i0W0o/U98xmReucwmeUY90Bpl6koJwaEZQb7zK+JNY2yq9ZfLzSdH/PDx3IA5Z
+         iOaWHf/e+SptMM7A0wwOuwvYtWHBj7mDcWuzjjxXhEbncL/vBselGhNmMwiCnqgeKwKT
+         oPjJ/97ZKbXH5KIyG3fsFfFfmQYdaARQ37NFNDcsvTlTMkcU4NuNp+tvrTK+lwZWATuw
+         poJE14o3goSFDVgkj1eNsWFflflbnRsBjAP5EkLz9adu38GbFFEWbJa620t831ndlwzv
+         6iZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773835660; x=1774440460;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=NsCJ3acJ4VXgmE/y7c6nUeV4zYXKY1pEx9fFAhUIDJ0=;
+        b=QrZv9XwCua4glzbuBCwPPqNCWrzpbU4Hj9y/S8ZrBC8nD+/2WSkPg+giyhczxJY3w6
+         lWq+733cbqtdCeUNkSLM3mfvnd4+PPqI6SXcTKK5DkPBSa0SSJMxg6uDbZUwWFo23k69
+         1iKHvmaB3yUPWNo7mxeMJvmuZvKdaZ8IO8bxorcd3SmV0RLc/ZXtZOPq38o45HhY9wF5
+         tY5wr0Q8M47stHkNCU5iYVGLmMZFLDFsFjrfOm36/qFPX2YOn5XysCRT+JMWz+NQ4S+8
+         8tkKx+KXmZ9CH1Q8zo8unFXw7d7fKKwPZl/qcBQAah5gXpe7c7wC9HLDX1/+sPu1/CPf
+         PP1A==
+X-Gm-Message-State: AOJu0YzRobSL2S23h32abxBIfRDdsYqaAJlMTppxI34u+x7Jg8KQn2CW
+	sG6LfZibE6oWofZu6gDEvMBQnVPiyOs0QeFeIB4o1PwV6HmjrDxxiq4OL/QaoBs8H9HfPq/0OgR
+	V0Fb7CclukpN/nnZLVn+XTHlA27XUY7A+Fy21WqbsXA==
+X-Gm-Gg: ATEYQzwYltujPgbPQsH4bGMLFnxQs26gJ3yvMuNYAxX2oXNc2jRdQulN2HekOT9wURM
+	sHEiKV9NfUydedRO2CHEFpwSVtYOGDWXQk1iRqrz64Ze6T/ImGGw8+7xT6Wpa4PPva6c4dQfta1
+	SbRmLCBjDZupcAKGr8Mk+6qARjv5XYtq/LhXdUPbP6pAWWMegyQ8YpcU4f0TRvBZNIpRgypvA05
+	9fuQab6Ozhff1nCT1nO2SuBJSivBLdk68ZOOssnwqWhGNkAYuPJhZWE4O4xiHk3pDu0l2hLq7BX
+	AuUVow==
+X-Received: by 2002:a17:906:2099:b0:b96:ff4f:11ea with SMTP id
+ a640c23a62f3a-b97f49bdb32mr122996866b.41.1773835660334; Wed, 18 Mar 2026
+ 05:07:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 18 Mar 2026 12:25:58 +0100
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, nicolas.ferre@microchip.com,
- claudiu.beznea@tuxon.dev, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next] net: macb: allow MTU changes while the interface
- is running
-In-Reply-To: <DH5TETVK34CG.V7P9P9Z1AAKL@bootlin.com>
-References: <20260316092720.39198-1-nb@tipi-net.de>
- <DH57URLYG3TU.B4HGNJATLFMU@bootlin.com> <20260317152330.32998fdd@kernel.org>
- <1aae7cf5906c753c0ff5356b8e1f53e2@tipi-net.de>
- <20260317162303.4065e307@kernel.org> <DH5TETVK34CG.V7P9P9Z1AAKL@bootlin.com>
-Message-ID: <46380e79a62bfca31a551cfd872e34ab@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20260316164907.1255510-1-justin.iurman@6wind.com>
+ <20260316164907.1255510-2-justin.iurman@6wind.com> <20260317121023.5f3035b3b8a51e10c4e0408e@uniroma2.it>
+In-Reply-To: <20260317121023.5f3035b3b8a51e10c4e0408e@uniroma2.it>
+From: Justin Iurman <justin.iurman@6wind.com>
+Date: Wed, 18 Mar 2026 13:07:29 +0100
+X-Gm-Features: AaiRm50TZe8Drge4tD3BkuV-LevFMUaKJqVDgH_Q2Lo2bQ-et-S9vA0Qt1YghXo
+Message-ID: <CAOY2BqzY75q7RV0GqbjKzg3AWb5iiVH3D21CwYjiO2d0Z1YDKA@mail.gmail.com>
+Subject: Re: [PATCH iproute2-next 1/2] seg6: add tunsrc support in iproute_lwtunnel
+To: Andrea Mayer <andrea.mayer@uniroma2.it>
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, stephen@networkplumber.org, 
+	justin.iurman@gmail.com, nicolas.dichtel@6wind.com, 
+	stefano.salsano@uniroma2.it, paolo.lungaroni@uniroma2.it, ahabdels@cisco.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 18.3.2026 10:53, Théo Lebrun wrote:
-> [...]
+On Tue, Mar 17, 2026 at 12:10=E2=80=AFPM Andrea Mayer <andrea.mayer@uniroma=
+2.it> wrote:
+>
+> On Mon, 16 Mar 2026 17:49:06 +0100
+> Justin Iurman <justin.iurman@6wind.com> wrote:
+>
+> > Add support for the new optional "tunsrc" parameter. Now, a tunnel
+> > source address can be configured per route and has priority over the
+> > configured per-netns source address (if any).
+> >
+> > Example:
+> > ip -6 r a 2001:db8:1::/64 encap seg6 mode encap tunsrc 2001:db8:ab::
+> >     segs 2001:db8:42::1,2001:db8:ffff::2 dev eth0
+> >
+> > Signed-off-by: Justin Iurman <justin.iurman@6wind.com>
+> > ---
+> >  ip/iproute_lwtunnel.c | 31 +++++++++++++++++++++++++++++++
+> >  1 file changed, 31 insertions(+)
 
->> 
->> Hm, not really. Take a look at fbnic_set_ringparam()
->> You need some struct that's config + pointers to all the resources.
->> And make all allocation helpers operate on that without touching the 
->> HW.
->> Then you can just allocate a new struct, give it whatever config you
->> need, call all the alloc helpers with it. Now you have a fully
->> populated struct and haven't touched the HW yet at all. Stop HW,
->> swap the resources, start HW.
->> 
->> I did something similar for the nfp driver but that code has been
->> slightly adulterated since I left Netronome so fbnic is clearer :)
-> 
-> Do you feel we should (1) clone the full `struct macb` as done by fbnic
-> or, (2) just partially, with the few interesting fields. Something like
-> `struct stmmac_dma_conf`.
-> 
-> stmmac is not the greatest example. They have this struct that carries
-> their buffers but they still "close -> update -> open" on operations
-> versus the optimal "alloc -> reconfigure_hw -> free".
-> 
-> With #2 we could use an unnamed structure field.
-> https://gcc.gnu.org/onlinedocs/gcc/Unnamed-Fields.html
-> See commit c4781dc3d1cf ("Kbuild: enable -fms-extensions").
-> 
-> struct macb_buffers {
-> 	struct macb_queue queues[N];
-> 	...
-> };
-> 
-> struct macb {
-> 	struct macb_buffers;
-> 	...
-> };
-> 
-> Goal is to keep `bp->queues` & co as before, to minimise the diff.
+[snip]
 
-The unnamed struct idea is nice for keeping the diff small, but I'm not
-sure it works cleanly for the per-queue case. The macb_queue_ring fields
-would be embedded anonymously in macb_queue, but the alloc helpers need
-to write into a separate clone. The swap then becomes memcpy/cast tricks
-between the anonymous portion of each queue and the clone's qring[q].
+> Hi Justin,
+>
+> This doesn't build: SEG6_IPTUNNEL_SRC is used in iproute_lwtunnel.c
+> but the UAPI header sync for include/uapi/linux/seg6_iptunnel.h is
+> missing from this patch. Please include it.
 
-Embedding the full queues[] array in the swappable struct would be
-simpler for the swap, but then NAPI, IRQs, spinlocks etc. travel
-along, which we don't want.
+Hi Andrea,
 
-For struct macb itself (rx_buffer_size, ring sizes, tieoff) the unnamed
-struct works fine and saves a lot of churn. It's really the per-queue
-ring fields where it gets awkward.
+I usually don't include uapi changes in iproute2-next patches: instead
+I add a note that it needs a uapi rebase, which I forgot btw (i.e.,
+David would drop it and rebase uapi from net-next anyway). Right, I'll
+send v2 and include it to simplify testing.
 
-> 
-> Thanks,
-> 
-> --
-> Théo Lebrun, Bootlin
-> Embedded Linux and Kernel engineering
-> https://bootlin.com
-
-Cheers
-Nicolai
+Cheers,
+Justin
