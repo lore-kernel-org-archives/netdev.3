@@ -1,125 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABFB125C80E;
-	Wed, 18 Mar 2026 06:37:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C68C25C80E
+	for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 06:37:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773815851; cv=none; b=AyYDZ7C/69Bdbb7tsyVCa5r/OQ5mrNGpAxewJ0jb8HA37pNUV8hPf6RQqMXn5W1Vn81YmMYxk9PkX/f7akehksJuv4trn5LVEFTfR1VVBodccvDcd2e2RQoJoT53o3pBEeIkRCJlKTxQSfgvjBVkPgP6NsrEw1KSgVNteevUjwo=
+	t=1773815855; cv=none; b=SbfoISM7G2/ihEs9iVCVQCpPhK6hHjOKDjD30v7za7AU62PP6ec4ovWEZYfJEsNjaG1Yr2j1gucc445Q8qevGm3CLw3U+kmxeZfvo0v40xU9NKUBsz7PEPxqxFng9GwYHLaPxFWn8qG86bVfEdAm+DosteE0P4O+VHAq8birO2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773815851; c=relaxed/simple;
-	bh=MmY12uRNDdhfGh7T/XYLMYSoZmpnUMejZkZjvuvpHRE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bmuq8w/FCI18FaWCS8/gopnMnikdTJ11bPpV1Z3O36lAwJz9RYGdIJ8G3e6uA0sEuR9vbzy5oYoBoB9pDhl9R6uEwSH3JO/rjHjHDaRQmJqciljPE1LloEEj8ZJcZ+ALaEMzTrJi4ytf0qvAlmIvNVjjIoAYUiHR2n9qjbsewrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yDKhSlRR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773815855; c=relaxed/simple;
+	bh=4O3QCGLvuxp8TyNV8Xtul/S4j8KUMp0uGU1+uJd2FNc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=qEbIOck+suFYvMruTjZAwh2v/iKDImvGxBtL2qqHPXML/vuaXNux2mza7sd4zY2OEkKNqw1u5aOISh1r9k1YB1PghA3xb7pTLvvhSWaxSmH1Sp7lmXMOgHsRw38mQeLK/g5MfgcjRLsiXpaUvFuHBzZVfZmcDaOt00fQDWN8S40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dy4a4+qh; arc=none smtp.client-ip=209.85.160.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yDKhSlRR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6937C19421;
-	Wed, 18 Mar 2026 06:37:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773815851;
-	bh=MmY12uRNDdhfGh7T/XYLMYSoZmpnUMejZkZjvuvpHRE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=yDKhSlRRPuRXcV2Imh7yPJa4eoRUif2NWvEvAr89riGfEopv7LrWSiSdg6kKGHYeS
-	 O9MxU+45mwTKBoSFz/D+Cb9YorEH+XmCoygXU8bq27scrEclBOk+//aEUYZKdSi3Od
-	 MEhu3AD96RBuEzd9MADNNXn/I8iLwbVoxLyoXFCo=
-Date: Wed, 18 Mar 2026 07:37:12 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Omer Zalman <omerzalman42@gmail.com>
-Cc: oliver@neukum.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	linux-usb@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 2/2] net: usb: cdc_ncm: prevent silent u16 truncation in
- min_tx_pkt_store()
-Message-ID: <2026031801-skiing-decade-eccd@gregkh>
-References: <20260318040632.69531-1-omerzalman42@gmail.com>
- <20260318040632.69531-2-omerzalman42@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dy4a4+qh"
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-50917e02532so78399881cf.3
+        for <netdev@vger.kernel.org>; Tue, 17 Mar 2026 23:37:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773815853; x=1774420653; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TJIZ4oOL9g078MWbi96VubW95O3IIVBMwuixA0Lt16A=;
+        b=Dy4a4+qhPSLMXf5HJ/18hZxtqo+cXxTnxOs/lnFJTAZWLsozkxhHSDvzP2ig6OjvOs
+         tgWEGI8IBY2WSkvVV0bNe88oZhFTxOtwd4GkMGvwC9QmWUSahyN6UKO39BVKOnugcQjT
+         NgBqgX+2fnAZIoDOsIrk66iZVFdOXNcM6YpZo/FKMqXFXCA0U30zrexZTQykVLuXt02t
+         E+H0reQqlVxE5Iw8LZ1ruN4OGVB/cneNdAEGitfVLQjPHsyK/u2PhApOzDk63S8Nd4Vs
+         jIJ5yGdUZV0v5pdC4i/94K3I3ODi0mm3WfF/u2MxUUTi0s1S+chy5hjk9ejFvxR3eYny
+         PtZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773815853; x=1774420653;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TJIZ4oOL9g078MWbi96VubW95O3IIVBMwuixA0Lt16A=;
+        b=cgoaEFeT+SBhZSaLaRxbY3+4FRfj6iE61IpKSM3So51SZhrEHxcBrNnyQlbTXY0EYv
+         gieZN29d084gjk2K1vqTLWCs8f5e8KddBST+DOkw2tkgNFdIDJ7fk5YMj1mlQ8jHNjL4
+         ShTkrvQ8xFiKTvnmUFXAxLoFsdO157Rn4vUCMhlPYuLDhY+j7UxDKXtZyJzwNhtQSbnc
+         oqY25LG15oolJD9k1gniUBNMe3ZP1b4EqeYchdneVb6yqFEpFEFbuNmY4YM98glawJmy
+         CeIW8/GxvQEJtRWs6PSBs2WVwMgNL0ttkn3AFrrXVuqIFtzyvmeNSwcEncXZc8+jCxKA
+         MkTg==
+X-Gm-Message-State: AOJu0Yy9lHtO1yhfKNcLbv7tDXHj36jCop5LrwOS89d8Y5XmuhBoLtFp
+	L9hEbQ5jtmOGsT8WDyoFHUpxvR19MGm5Vjo37/RujKhv+Fai1a4Q2fjp
+X-Gm-Gg: ATEYQzx3FDtb2HlD8WjgXqrJ78b8Y+iy+dcF3NN/BqNMtR652mJG5TaFBmYx8SyUJb4
+	ysgS7PfRUdF6qnIrUPUAH8WAtSMclIbfuXuYzu3a2Emb4i2feMy1NQE+AYtmw79gbA48kFwhZ/W
+	kf8JbenYeG+NGQJtSSkUjbbAKweJgowB4SmtoFoV5ydJibes+NgbBQyUaKN+/VIm7ebG79RAbDQ
+	HLqtYPka7HIrv42rZMuWNjrbEE6O0Nqbf1E4HnN8EzEXN70TDUuPbeuXtfpXPx75BFS/u9LIpZv
+	5nRItad5irf+vqULoDWHTKVAEhuBirkNSu7mRznqsqyd8UqnhbbqdZtUhIkIIoiGJ6McU0nOxF2
+	xYCtIYEFl3kbL6kOMfVswWd+y6mhZBX1s8a2kqJkG6Z3Ag5emVB1KHIG67d/ywTDbPsWgyZXJNM
+	P20cmYnNc/mo3kO36eiVBx9Jx9aOWHVYxd
+X-Received: by 2002:ac8:57c3:0:b0:506:9bea:3229 with SMTP id d75a77b69052e-50b148bc32amr26455801cf.69.1773815853203;
+        Tue, 17 Mar 2026 23:37:33 -0700 (PDT)
+Received: from localhost.localdomain ([128.224.253.2])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50b135b875esm15235351cf.25.2026.03.17.23.37.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Mar 2026 23:37:32 -0700 (PDT)
+From: Kevin Hao <haokexin@gmail.com>
+Subject: [PATCH net v2 0/2] net: macb: Fix two lock warnings when WOL is
+ used
+Date: Wed, 18 Mar 2026 14:36:57 +0800
+Message-Id: <20260318-macb-irq-v2-0-f1179768ab24@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260318040632.69531-2-omerzalman42@gmail.com>
-
-On Tue, Mar 17, 2026 at 11:06:32PM -0500, Omer Zalman wrote:
-> min_tx_pkt is a u16 field but the sysfs store handler accepted any
-> unsigned long and assigned it directly. Values that do not fit in 16
-> bits silently truncate: writing 65537 wraps to 1, turning a
-> "never pad" intent into "always pad".
-> 
-> ctx->tx_max can itself reach 65537 because cdc_ncm_update_rxtx_max()
-> increments the negotiated NTB size by one pad byte when it is an exact
-> multiple of the USB maxpacket size.
-> 
-> Clamp the stored value to min(tx_max, U16_MAX). Any value above tx_max
-> is already semantically equivalent to tx_max since frame lengths never
-> exceed it; the U16_MAX cap ensures the result is always representable
-> in the u16 field without wrapping.
-> 
-> Fixes: 39eb7e0e8c88 ("net: cdc_ncm: allow tuning min_tx_pkt")
-> Signed-off-by: Omer Zalman <omerzalman42@gmail.com>
-> ---
->  drivers/net/usb/cdc_ncm.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
-> index 6fcb4d711a64..edd69f4e1596 100644
-> --- a/drivers/net/usb/cdc_ncm.c
-> +++ b/drivers/net/usb/cdc_ncm.c
-> @@ -242,11 +242,17 @@ static ssize_t min_tx_pkt_store(struct device *d,
->  	struct cdc_ncm_ctx *ctx = (struct cdc_ncm_ctx *)dev->data[0];
->  	unsigned long val;
->  
-> -	/* no need to restrict values - anything from 0 to infinity is OK */
->  	if (kstrtoul(buf, 0, &val))
->  		return -EINVAL;
->  
-> -	ctx->min_tx_pkt = val;
-> +	/* Clamp to tx_max: the frame length can never exceed tx_max,
-> +	 * so any threshold above it has the same effect (padding is
-> +	 * never applied).  Also cap at U16_MAX since min_tx_pkt is
-> +	 * a u16 - without this, values like 65537 silently wrap to 1
-> +	 * and invert the intended behavior.
-> +	 */
-> +	ctx->min_tx_pkt = min_t(unsigned long, val,
-> +				min_t(u32, ctx->tx_max, U16_MAX));
->  	return len;
->  }
->  
-> -- 
-> 2.39.5 (Apple Git-154)
-> 
-> 
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAlIumkC/0WMQQrDIBRErxL+uha/JiHtqvcoWagxyYcaWw3SE
+ rx7RQqd3ZsZ3gHRBrIRrs0BwSaK5LcC4tSAWdW2WEZTYRBc9FwiMqeMZhReTF70oGSJngYo92e
+ wM72r6g6b3WEs5Upx9+FT9Qnr9DN1f1NCxhnHrkXeGj33eFucosfZeAdjzvkLK+TWcaUAAAA=
+X-Change-ID: 20260311-macb-irq-39b8a3333bd8
+To: netdev@vger.kernel.org
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Vineeth Karumanchi <vineeth.karumanchi@amd.com>, 
+ Harini Katakam <harini.katakam@amd.com>, 
+ =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
+ Kevin Hao <haokexin@gmail.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.2
 
 Hi,
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+This patch series addresses two lock warnings that occur when using WOL as a
+wakeup source on my AMD ZynqMP board.
 
-You are receiving this message because of the following common error(s)
-as indicated below:
+---
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
+Cc: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
+Cc: Harini Katakam <harini.katakam@amd.com>
+Cc: Théo Lebrun <theo.lebrun@bootlin.com>
 
-- You have marked a patch with a "Fixes:" tag for a commit that is in an
-  older released kernel, yet you do not have a cc: stable line in the
-  signed-off-by area at all, which means that the patch will not be
-  applied to any older kernel releases.  To properly fix this, please
-  follow the documented rules in the
-  Documentation/process/stable-kernel-rules.rst file for how to resolve
-  this.
+---
+Changes in v2:
 
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
+- Add Reviewed-by from Théo Lebrun for patch 1
 
-thanks,
+- Reduce the scope of the RCU lock by using a local variable, as suggested by Théo Lebrun.
 
-greg k-h's patch email bot
+- Fix minor typos in the patch 2 subject and commit log
+
+- Link to v1: https://lore.kernel.org/r/20260315-macb-irq-v1-0-0154104cbf61@gmail.com
+
+---
+Kevin Hao (2):
+      net: macb: Move devm_{free,request}_irq() out of spin lock area
+      net: macb: Protect access to net_device::ip_ptr with RCU lock
+
+ drivers/net/ethernet/cadence/macb_main.c | 37 ++++++++++++++++++++------------
+ 1 file changed, 23 insertions(+), 14 deletions(-)
+---
+base-commit: 8e5a478b6d6a5bb0a3d52147862b15e4d826af19
+change-id: 20260311-macb-irq-39b8a3333bd8
+
+Best regards,
+-- 
+Kevin Hao <haokexin@gmail.com>
+
