@@ -1,84 +1,53 @@
-Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AA523921E6
-	for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 10:46:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D316D36920E;
+	Wed, 18 Mar 2026 10:49:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773830768; cv=none; b=rfM1Cwyj0ID7w6jT3AWwQjOq30KGYtWu6tpRGte8iBlCW6GMHeB5MOpkRYSZ4HSthl85iLbs8+7IHhZL3T8/FWSOuw78pYa7tvXKz71FXm7QM4f56w8qGjEd5TsUqZzpKFfp6mTuDrHWGLhkarhwKIz9/VfhRXDL63wsJjCe7Ls=
+	t=1773830967; cv=none; b=LGjcToGPl2j4d9wJQUMGH5f6Ohksg//wUcZ7DeIZg8nqHXl0hnwzppM0t3R+YwOwMyewdNV4VgoyhmPQc5EJ6/QTQnlghuV+xeR7vjVPiUEotsRFcqrc+p9/ZkSyZJ8WMmx1ICl06nQm5iDSUJnCSgmIuJkZ1iaarV4IVSy+jT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773830768; c=relaxed/simple;
-	bh=OqFvdn6kszKpfauZAhz1e6kMGNa4Rb93kWbpKZhfO7A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OHxkwb0IOHhTVei1uo8AUL2yYbjKhP0gBQ2toO1NVMsbk3m4XnTWN0d9X8k8/K3/83cLXdxyNKNk8nZ6neGPO36pzkic4A4NDeX1rwZrFYtfhdbCUqv6QC5DOzToaautTLJn363zYZQ5HNex1a35pfvmviPEQ+uyvNUfVh8JMSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=t421XnB6; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=F7hqibrm; arc=none smtp.client-ip=202.12.124.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	s=arc-20240116; t=1773830967; c=relaxed/simple;
+	bh=adVL11Bn9sVPglFjef0NJ/axzG5NgUNfhBPEq00X3JE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=rYHiEQGgU6q0U7Qla++lRbb/8F3PqcAkleYsAl/0zQT3PzBcMcpLSQhyKlvTvrDXWuVqVcrpH1O/kwNwUMSAKnu8J60Q7afXw1UWFYwGahGvcjzkOD2Vh0xyuzzyKWwlulH71ZYmwuCzTKym5Z0Ip1+GdkvrppDCyfuVblU3t2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dxHlKXXy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="t421XnB6";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="F7hqibrm"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.stl.internal (Postfix) with ESMTP id 04FDA1D00136;
-	Wed, 18 Mar 2026 06:46:04 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Wed, 18 Mar 2026 06:46:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1773830764; x=
-	1773917164; bh=GdEjspRaDvVTtf7PkfnLUq8fFsaLcc0PMZBbW/XOL84=; b=t
-	421XnB6SQabVVw2V6gnX6vCAEYf9rR9Pw/QPNfuFw+nVy2dR1rArfoV8DlK3tF+j
-	D/eLAW1TpaHHR6du6FHh1aLxPy7TZEdflvZiS8yXNq5poZ5EMIU7OyuA5xWs1ig3
-	7bxlmiPkDYlIBLjXEP10VaekdYNqz3rmJDR7UyejNT8Co2K16foALj72FVY5d7Ue
-	T2KnaXCrG/7uAw2rHTASsWnR3miIKmuFUMPz4EBFRTXz2ZPvzgDcKeCGrcIHMB7z
-	AelhfS/Fe81x6d/cNmZuMU8Y3Ddn26Y4kMuZdAtTO2gUrd4H8AGxefEXbni55hVk
-	DL5q9b8mIrdMax/ncbmsw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1773830764; x=1773917164; bh=G
-	dEjspRaDvVTtf7PkfnLUq8fFsaLcc0PMZBbW/XOL84=; b=F7hqibrmheSp7jlAN
-	NLSjNz2LxuDCrB4OPG2j3npmOkT7zRHYh/42lxD596nLhINxR+UvOKKq03zYkSmn
-	s3emIWV+Ip/eW2pxXSmaYQlXfv1UDTK8GURU1BUV832Ct73ekQzl0/DAuG4Ifk+8
-	D96nxETros4RjOehG6QwwcWfrThRWA97ibmn/AQYk2zhg47KaQJLP4bVIyuH1yn3
-	WoOLUU1LRBCCEMTgZlQ2jW8RI8/UTfQ1AEoykqO0HJiaqtwHUs0RAOwVOzrm2FuW
-	0rbc7DPOhjod8cbOSWDkK8334N3Ay1l/921nKbPmP/JAeztrL03AgZOWYFz44gUM
-	w0AgA==
-X-ME-Sender: <xms:bIK6aXb751z87DhFLH48Vg2Sg59EtMxMO3XBY_tYgDKZrtgjWOte3w>
-    <xme:bIK6ad0MTNFSe-LU1bWV210Tm5i1LespgpbMrawZkV7me8dothF9KQSyMz6nWCwMi
-    TdCpC-Dcth-z5RkHS0Mj2nbQYaqEfOvJ5cE4xM70Ufv6kRUW2840v8>
-X-ME-Received: <xmr:bIK6aXUQKieNgEi-VxzxuAxYiG4JET9Oh78Ybo6Nwg6nqUGVCPUduOuHzCgP>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdefledvucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepufgrsghrihhn
-    rgcuffhusghrohgtrgcuoehsugesqhhuvggrshihshhnrghilhdrnhgvtheqnecuggftrf
-    grthhtvghrnhepieeiueeiteehtdefheekhffhgeevuefhteevueeljeeijeeiveehgfeh
-    udfghefgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epshgusehquhgvrghshihsnhgrihhlrdhnvghtpdhnsggprhgtphhtthhopeefpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlh
-    drohhrghdprhgtphhtthhopehsugesqhhuvggrshihshhnrghilhdrnhgvthdprhgtphht
-    thhopehjihhrihesrhgvshhnuhhllhhirdhush
-X-ME-Proxy: <xmx:bIK6aXWjWALkTqOpRuqKBk1sRZMEIto1C41ZELKA0pimIz7jPGZcJQ>
-    <xmx:bIK6aWcy1jLE3e0HUaH0wJRg6jBwIYzSe5Biy7GV2ZRjFxY-IZ2Waw>
-    <xmx:bIK6aQWBAer6xB9Xj6N3rhfM01reQpaZBwxzFKCvz3ue1FQvjmciRA>
-    <xmx:bIK6afd2_bBQ3Zke4NtyFbLPwnzH5kgCe-B_NDntr4-lr1ybC9QXJA>
-    <xmx:bIK6aQWUBEBvXMUiDPnU2EaSa6DgDSNQYdMoJI5EiggvOddvbR0i2wwO>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 18 Mar 2026 06:46:04 -0400 (EDT)
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: netdev@vger.kernel.org
-Cc: Sabrina Dubroca <sd@queasysnail.net>,
-	Jiri Pirko <jiri@resnulli.us>
-Subject: [PATCH net 2/2] rtnetlink: count IFLA_INFO_SLAVE_KIND in if_nlmsg_size
-Date: Wed, 18 Mar 2026 11:45:53 +0100
-Message-ID: <52c1bac69cbbe82cfe0da2615d6a7f3f69254bb5.1773829376.git.sd@queasysnail.net>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <cover.1773829376.git.sd@queasysnail.net>
-References: <cover.1773829376.git.sd@queasysnail.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dxHlKXXy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63340C2BC87;
+	Wed, 18 Mar 2026 10:49:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773830967;
+	bh=adVL11Bn9sVPglFjef0NJ/axzG5NgUNfhBPEq00X3JE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=dxHlKXXyXxFnjQUGEkEwFOH5ywPaeJbF/W8uEBmlK6rbVsQjDjY10PBTn7V0+LER2
+	 TOfnQi55aAtR5Eghew+pSC7EBGb/xTlXli0ksEUh+dL7SVDWSr+x0ffa9IUXxDYE65
+	 jzUk5yn5DVTakAARX+IKE1D9PAYl6CuKLbBHPEr4tX1KCma6rfoPQ79ae2fK5shLEw
+	 t6rG10NP6b0PlCpjsHYizh1f5Xj/8l/hWOaw3NVFZz+ueAe2jjZ7XtvsAw6qHVrxDo
+	 QgK3DDoH7dnClJ0JB7gBylZGXNSWVsQmy+FJntIJnqaa+eF4OTQzaBciuO1B2QMgeD
+	 yk958UE6SzY3A==
+From: Arnd Bergmann <arnd@kernel.org>
+To: Philipp Reisner <philipp.reisner@linbit.com>,
+	Lars Ellenberg <lars.ellenberg@linbit.com>,
+	=?UTF-8?q?Christoph=20B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Simon Horman <horms@kernel.org>,
+	Eric Biggers <ebiggers@google.com>,
+	drbd-dev@lists.linbit.com,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH 2/2] drbd: select CONFIG_NET_HANDSHAKE
+Date: Wed, 18 Mar 2026 11:48:50 +0100
+Message-Id: <20260318104858.1868731-2-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20260318104858.1868731-1-arnd@kernel.org>
+References: <20260318104858.1868731-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,38 +56,53 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-rtnl_link_get_slave_info_data_size counts IFLA_INFO_SLAVE_DATA, but
-rtnl_link_slave_info_fill adds both IFLA_INFO_SLAVE_DATA and
-IFLA_INFO_SLAVE_KIND.
+From: Arnd Bergmann <arnd@arndb.de>
 
-Fixes: ba7d49b1f0f8 ("rtnetlink: provide api for getting and setting slave info")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+The TLS handshake code is optional and has to be enabled for DRBD:
+
+ERROR: modpost: "tls_handshake_cancel" [drivers/block/drbd/drbd_transport_tcp.ko] undefined!
+ERROR: modpost: "tls_server_hello_x509" [drivers/block/drbd/drbd_transport_tcp.ko] undefined!
+ERROR: modpost: "tls_client_hello_x509" [drivers/block/drbd/drbd_transport_tcp.ko] undefined!
+ERROR: modpost: "tls_get_record_type" [drivers/block/drbd/drbd_transport_tcp.ko] undefined!
+ERROR: modpost: "tls_alert_recv" [drivers/block/drbd/drbd_transport_tcp.ko] undefined!
+
+Select the option whenever DRBD is eanbled and rework the dependency in
+the symbol so it can be selected more easily.
+
+Fixes: fa8ef6960ebd ("drbd: add TCP transport implementation")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- net/core/rtnetlink.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/block/drbd/Kconfig | 1 +
+ net/Kconfig                | 4 +---
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index a116362f5f32..cebc00d02fbb 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -707,11 +707,14 @@ static size_t rtnl_link_get_slave_info_data_size(const struct net_device *dev)
- 		goto out;
+diff --git a/drivers/block/drbd/Kconfig b/drivers/block/drbd/Kconfig
+index 29ec6ed84251..de9e232d6479 100644
+--- a/drivers/block/drbd/Kconfig
++++ b/drivers/block/drbd/Kconfig
+@@ -11,6 +11,7 @@ config BLK_DEV_DRBD
+ 	depends on PROC_FS && INET
+ 	select LRU_CACHE
+ 	select CRC32
++	select NET_HANDSHAKE
+ 	help
  
- 	ops = master_dev->rtnl_link_ops;
--	if (!ops || !ops->get_slave_size)
-+	if (!ops)
-+		goto out;
-+	size += nla_total_size(strlen(ops->kind) + 1);  /* IFLA_INFO_SLAVE_KIND */
-+	if (!ops->get_slave_size)
- 		goto out;
- 	/* IFLA_INFO_SLAVE_DATA + nested data */
--	size = nla_total_size(sizeof(struct nlattr)) +
--	       ops->get_slave_size(master_dev, dev);
-+	size += nla_total_size(sizeof(struct nlattr)) +
-+		ops->get_slave_size(master_dev, dev);
+ 	  NOTE: In order to authenticate connections you have to select
+diff --git a/net/Kconfig b/net/Kconfig
+index 62266eaf0e95..769880113740 100644
+--- a/net/Kconfig
++++ b/net/Kconfig
+@@ -92,9 +92,7 @@ source "drivers/dibs/Kconfig"
+ source "net/xdp/Kconfig"
  
- out:
- 	rcu_read_unlock();
+ config NET_HANDSHAKE
+-	bool
+-	depends on SUNRPC || NVME_TARGET_TCP || NVME_TCP
+-	default y
++	def_bool SUNRPC || NVME_TARGET_TCP || NVME_TCP
+ 
+ config NET_HANDSHAKE_KUNIT_TEST
+ 	tristate "KUnit tests for the handshake upcall mechanism" if !KUNIT_ALL_TESTS
 -- 
-2.51.2
+2.39.5
 
