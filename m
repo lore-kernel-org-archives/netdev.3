@@ -1,55 +1,60 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026883DFC8E;
-	Wed, 18 Mar 2026 14:49:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0934B3DF008;
+	Wed, 18 Mar 2026 14:51:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773845374; cv=none; b=qwcYlWhJfpRsv5BNW6mA2tEyzupHHhGZJh/nWV3xDDwP13P4bTsmQ/52gJ0yNgJWt+ufnfRC2rw1nSa21RakujGUSDODF8ljOJw5ygFwxgo4hPGtMVCNjjR9s5bp7I1HNr0hhFNW0Ztn2LniMoZ/qUJJ2XoX+EpRghl8eaAjlTU=
+	t=1773845467; cv=none; b=UgkZoRowWlrl3exhQX9rmH3nB+nDcjyLJNs3zF0qh0TeSyeBRSQDTd8coLEPFhLXTFDhpaEz13MQ0SgYvFSELRHYZzHeQghxn4S8wtahANMlmub135bBc6izikreOdvjpUh2igki56lRkihh5aDDpf4Mx9zpc5lUW7hPfR89+08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773845374; c=relaxed/simple;
-	bh=wjL9ciqdCWcL/zpYteBo9jr8z/hJJuF/zC+yQOcCUKc=;
+	s=arc-20240116; t=1773845467; c=relaxed/simple;
+	bh=sjp63ygZLHeR2EJjLkjMV5oZWJ9B525iJ1CqBN8U4HA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jiajy6YKgRbgI14WO4Rfk8jrTlDlvanumngsTgAzCu+FuCQY8OiC9dN7vE0PcdvGRWsVzQT7jkd3rgHyYa3/6m5bpvUQHQEefiXhgUpUw4IpKFy0slNJxWnnBJci3D9OpTyxK1lP7tQZ4GvFMooOLXhTsbQjMOCB1qzXUvr+Mck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Szx6C34I; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=mYCgh8M+AB2jXlaL4K6OOkUWTc7Z55oQxssl9sPleztI/mnM4BrAF2zjMuKZYQtK6xhEVBsgAu0Wz/1Z+xHfLPXFxwknQ6jv1H5QWTmz+GP7g9qWcUMamHLyU9HyIIqNioHw5f2Z0rc1zbpCPJ42a7fKik6VnDOza/IgjTemewA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PeFDKGTa; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vMHl7dfc; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Szx6C34I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1F30C19421;
-	Wed, 18 Mar 2026 14:49:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773845373;
-	bh=wjL9ciqdCWcL/zpYteBo9jr8z/hJJuF/zC+yQOcCUKc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Szx6C34IHWdK/Rh2CQ60ByQ5z1LThBSbM4Ezrejp/Wv5RDkgeYBrUD8j69MulSh12
-	 fSHhxzrDJ0FkIhun/geXzhB5XtsD+SLghVpcwmd8mjfKFOfe2RWBIGtjMI/oopOqt+
-	 uUVOSYMlf2RzcEtFcRCQKGGi1EXP85u7w3u5x8b6BYn2g/DXI+a/ERstzOMHoKx+yP
-	 9++0g1ln9JNLL74gXaqgOGvONXo3IXN6EPCZ2+v1UMGz7NiAIQ4iku7NMEltPnfzI5
-	 /5+5Alykd3qF8LZJMP/rcai6adQ/IIduNv+eaEi62ZiSfdOCzg6CSGDQ99S1PvNlbd
-	 Ad8o1+fyDow+A==
-Date: Wed, 18 Mar 2026 16:49:27 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Long Li <longli@microsoft.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	KY Srinivasan <kys@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <DECUI@microsoft.com>, Simon Horman <horms@kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [EXTERNAL] Re: [PATCH rdma-next 0/8] RDMA/mana_ib: Handle
- service reset for RDMA resources
-Message-ID: <20260318144927.GB352386@unreal>
-References: <20260307014723.556523-1-longli@microsoft.com>
- <20260307173814.GN12611@unreal>
- <20260313165928.GH1704121@ziepe.ca>
- <20260316200843.GK61385@unreal>
- <SA1PR21MB66832D0A369DE7E411ACCDEDCE41A@SA1PR21MB6683.namprd21.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PeFDKGTa";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vMHl7dfc"
+Date: Wed, 18 Mar 2026 15:51:01 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1773845462;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jJK4FTcbfKscaIRry0AE0sxgOMNdmf04w//rPt5ah08=;
+	b=PeFDKGTatHTl6uJeNnQ2K5o8OnnHMS7x/u7yIgNgnRqiwkbCAsDbJfI8B2zhBtDJAn2FFJ
+	b40V5NFQt5fCacoO3upOugFmkkuhl8RsOVHXbAlR32CBT70CtMqQYOlFzIzZFUNu5u5F1A
+	aiYTS0FliIW0eCNbqZFQlwsPHrWeH/20mBp+LIxn0+AljVkY4gsfyuLDulLTf2MiyX86ZI
+	QqVa+QF3QUG0nWMBl7ACHPedcYyW6EfQ5GtdZMMSu2j+PrP5VNZlE2waZkGxmIIVg2RASJ
+	n0gcEl8l5ri1MvSBH6pXhDMsKL4BwrI5te47fUeo67vvJPQbin90xtfyL5xg4Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1773845462;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jJK4FTcbfKscaIRry0AE0sxgOMNdmf04w//rPt5ah08=;
+	b=vMHl7dfcJuzY/NFfC8ge+rKkcVRijjDRHp7mYWGJ6Ffa/uNSYKbWLjZMKRHvgEKdXuiUby
+	I2L8hDKWJJ35fGDQ==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Daniel Vacek <neelx@suse.com>
+Cc: edumazet@google.com, kuba@kernel.org, linux-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev, netdev@vger.kernel.org,
+	spasswolf@web.de, tglx@linutronix.de
+Subject: Re: "Dead loop on virtual device" error without softirq-BKL on
+ PREEMPT_RT
+Message-ID: <20260318145101._iaDDpbE@linutronix.de>
+References: <4fba57892e5bd6a1afc4a36a80b40e3ecc28cac5.camel@web.de>
+ <fd609cfe186ee48e0e9a08e35764175a2516dd14.camel@web.de>
+ <2369ba83d204290dcfe157aed3f943206213b979.camel@web.de>
+ <aa02f39ec4640c9d98963f42121b76e59b58371d.camel@web.de>
+ <20260218073036.AlkNRoAP@linutronix.de>
+ <ae213d2b908e46d34856be9daec891d7210f46f7.camel@web.de>
+ <20260226172927.2Ck9wZMw@linutronix.de>
+ <20260318103009.2120920-1-neelx@suse.com>
+ <20260318111849._MMol8Hr@linutronix.de>
+ <CAPjX3FcRYNkYK2gerbRL4C9wXZPxWSs6=oTjzv5+msm4PQrfqA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,65 +63,43 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <SA1PR21MB66832D0A369DE7E411ACCDEDCE41A@SA1PR21MB6683.namprd21.prod.outlook.com>
+In-Reply-To: <CAPjX3FcRYNkYK2gerbRL4C9wXZPxWSs6=oTjzv5+msm4PQrfqA@mail.gmail.com>
 
-On Tue, Mar 17, 2026 at 11:43:49PM +0000, Long Li wrote:
-> > 
-> > On Fri, Mar 13, 2026 at 01:59:28PM -0300, Jason Gunthorpe wrote:
-> > > On Sat, Mar 07, 2026 at 07:38:14PM +0200, Leon Romanovsky wrote:
-> > > > On Fri, Mar 06, 2026 at 05:47:14PM -0800, Long Li wrote:
-> > > > > When the MANA hardware undergoes a service reset, the ETH
-> > > > > auxiliary device
-> > > > > (mana.eth) used by DPDK persists across the reset cycle — it is
-> > > > > not removed and re-added like RC/UD/GSI QPs. This means userspace
-> > > > > RDMA consumers such as DPDK have no way of knowing that firmware
-> > > > > handles for their PD, CQ, WQ, QP and MR resources have become stale.
-> > > >
-> > > > NAK to any of this.
-> > > >
-> > > > In case of hardware reset, mana_ib AUX device needs to be destroyed
-> > > > and recreated later.
+On 2026-03-18 15:43:52 [+0100], Daniel Vacek wrote:
+> On Wed, 18 Mar 2026 at 12:18, Sebastian Andrzej Siewior
+> <bigeasy@linutronix.de> wrote:
+> >
+> > On 2026-03-18 11:30:09 [+0100], Daniel Vacek wrote:
+> > > > --- a/net/core/dev.c
+> > > > +++ b/net/core/dev.c
+> > > > @@ -4821,7 +4821,7 @@ int __dev_queue_xmit(struct sk_buff *skb, struct net_device *sb_dev)
+> > > >             /* Other cpus might concurrently change txq->xmit_lock_owner
+> > > >              * to -1 or to their cpu id, but not to our id.
+> > > >              */
+> > > > -           if (READ_ONCE(txq->xmit_lock_owner) != cpu) {
+> > > > +           if (rt_mutex_owner(&txq->_xmit_lock.lock) != current) {
 > > >
-> > > Yeah, that is our general model for any serious RAS event where the
-> > > driver's view of resources becomes out of sync with the HW.
-> > >
-> > > You have tear down the ib_device by removing the aux and then bring
-> > > back a new one.
-> > >
-> > > There is an IB_EVENT_DEVICE_FATAL, but the purpose of that event is to
-> > > tell userspace to close and re-open their uverbs FD.
-> > >
-> > > We don't have a model where a uverbs FD in userspace can continue to
-> > > work after the device has a catasrophic RAS event.
-> > >
-> > > There may be room to have a model where the ib device doesn't fully
-> > > unplug/replug so it retains its name and things, but that is core code
-> > > not driver stuff.
-> > 
-> > Good luck with that model. It is going to break RDMA-CM hotplug support.
-> > 
+> > > Ain't this changing the behavior for !RT case? Previously, if it was the same thread
+> > > which has already locked the queue (and hence the same CPU) evaluating this condition,
+> > > the condition was skipped, which is no longer the case with this change.
+> >
+> > The above was me thinking and does not even compile for !RT. Commit
+> > b824c3e16c190 ("net: Provide a PREEMPT_RT specific check for
+> > netdev_queue::_xmit_lock") is what was merged in the end.
 > 
->    I think we can preserve RDMA-CM behavior without requiring ib_device
->    unregister/re-register.
+> Hmm, that means txq->xmit_lock_owner is not used at all for PREEMT_RT.
+> It's pointless to even store it. Shall we care?
+
+For PREEMPT_RT the xmit_lock_owner member is only stored and not used
+otherwise. It could be removed as in ifdef-ed away but I do not care
+enough to sprinkle it and the gain is little (proof me wrong). So I am
+happy as-is.
+
+As for the check itself as we have now, we detect the deadlock before it
+happens and this is nice to have. The alternative (in case of a
+deadlock) would be the deadlock detection in rtmutex code which would
+freeze the thread.
+
+> --nX
 > 
->    On device reset, the driver can dispatch IB_EVENT_DEVICE_FATAL (or a
->    new reset event) through ib_dispatch_event(). RDMA-CM already handles
->    device events — we would add a handler that iterates all rdma_cm_ids
->    on the device and sends RDMA_CM_EVENT_DEVICE_REMOVAL to each, same
->    as cma_process_remove() does today. The difference: cma_device stays
->    alive, so applications can reconnect on the same device after recovery
->    instead of waiting for a new one to appear.
-> 
->    The motivation for keeping ib_device alive is that some RDMA consumers
->    — DPDK and NCCL — don't use RDMA-CM at all. They use raw verbs and
->    manage QP state themselves.
-
-RDMA-CM provides an "external QP" model where the QP is managed by the
-rdma-cm user.
-
-As Jason noted, you should propose the core changes together with the
-corresponding librdmacm updates. The final result must ensure that legacy
-applications continue to function correctly with the new kernel.
-
-Thanks
+Sebastian
