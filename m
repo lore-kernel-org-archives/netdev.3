@@ -1,44 +1,44 @@
 Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F9B3DA5C8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9DD3DA5AB;
 	Wed, 18 Mar 2026 14:06:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773842819; cv=none; b=Jp4e1NpWkECxqYR9tmn7GEkr5p1ghxxE/vDGix2lKkqCQLNRCTuTnk34MruVwaIhdgfZQ4hmaBsRRwbtZgcNAoXr2ZQeLl+ZIBUPLyMGiJkJc1Z5rv+S1l2YZrhAvPH1a8g2hUh7yMxR/Y4/w2dxIJiX6+7WmdxDFgF/ay6wtUY=
+	t=1773842819; cv=none; b=ZRhHTKklY9Aw2ilBvkn+vUywtpcbbDDiATpydtqJde32UV05E3+TCwmvbEdLFsseNsCb+uENRHpYV7GlsZsSvuYGvriIbEQQ1+XffH1UsNpwYqOsv+AJ5yxdIry4OrDqMfG/djckmrlivS/3DHd5AMbSRU0VMBgImV2taBsKFko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773842819; c=relaxed/simple;
-	bh=hltFgPoPAfl8bCmi0bfkga71F3mv5r4Io+ZQCVKM0Vg=;
+	bh=jjdxK4bR0jDbixFGjSsmPYCrVAlSIOnKEIbLYQ3xMAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kiM23aFz0aC7zeITWjhsyOu+83um9fzwX8MMUNePSGV7dL+b3mJqX6RhXAGaJumblnrVA5ggWwF00N2hBVBlX2HjaKCf/bcYDXDOvM5b7vZWWruj1/L6/dPyaul0qtvhsLDH5dMY0oAtUPLGshVTo555UgWNXPH4p/vZXjd7kbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Y4B4utrW; arc=none smtp.client-ip=188.40.3.216
+	 MIME-Version:Content-Type; b=HGbveuB4rFBaiGQTx/sVa088EAR1iNzXVrN/jc2lTgxRqU1ZB80X2nS0ITtZDNZcLneJkTYTVK+0trFo30ppZzoCoVG3qC1iQ8ap6RgTw7CVGkW0aZmnOVuRahL4S7R7f/ETBg6M/zl2JORqgz6izIWTgK1RieXJ5NqfFeQnVXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=A1nKafl+; arc=none smtp.client-ip=188.40.3.216
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Y4B4utrW"
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="A1nKafl+"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:Content-Type:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=H2WUMtFAEKRtI9bWD27HMqkspiGAj4pU2YULfbcVauk=; b=Y4B4utrWAIzgKxrGFr4PENHgsS
-	icrmEjNJNAHayzeba3h+9dRrHlr/cX9ObyDtGPaBbY0cCwkLWXYCCikUDF7CkTfaHVsU8uYCaiCYz
-	B4+J+lgtAXPOTBmtabUE7aYxV1rb/9LqLbKuq7NIFfMxMoKNwza6qPeNC7KVuAhXHQjPiDBGGfi7D
-	8it2tHoO9/m6md7cXguPDpiVu+wLnEXH2bRGw/cHfrprWKeCvMNRG5KD/FyVhV24ZNd6Dh6piCrnX
-	Q+GPTvOCtdsPkl2erT6oSC7HQjfV22AQ+LG27VKikDQMJGnWK+amDaMlCnvBerptqyt3JqRCB0hnT
-	mU7VV3YQ==;
+	bh=49Vbxs1tbT6ZaweIAZX7I1sqeBv6ee8F5dSzIqT9pis=; b=A1nKafl+ImtWdsDaIeswWqCmtI
+	Qh2T82mFYz0kBsBrdVVLyqTn/yu1xV2e6wCxfvrTRwefmBe89iyWjibvY0pvDaOM0KSJ1MSGAICYO
+	YXjIE6dWQaraEpw6T5RA8hxt4R3B8kRZiZp0eaYQX26fXlysO97LCNbpwfD/Z2N7IM3AIeRK4ji9B
+	pgBwf51z3KzYuysGbZgRBw0ORMek5KZ3gYkfOSCeWKoAK5+X6nm+2tyYcZnlAr2wsmxmXwhr1dQha
+	6gjhpbvSALWmnV7n8KSu82pcbVaqBXPSGTjmSdugX6NV3z0LtcrmE69xSiM6llommK37kfTUWxC6P
+	g74f/5KQ==;
 Received: from sslproxy06.your-server.de ([78.46.172.3])
 	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <nora.schiffer@ew.tq-group.com>)
-	id 1w2rXz-000BqW-2X;
-	Wed, 18 Mar 2026 15:06:55 +0100
+	id 1w2rXx-000Bq3-20;
+	Wed, 18 Mar 2026 15:06:53 +0100
 Received: from localhost ([127.0.0.1])
 	by sslproxy06.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <nora.schiffer@ew.tq-group.com>)
-	id 1w2rXW-000B1s-30;
-	Wed, 18 Mar 2026 15:06:26 +0100
+	id 1w2rXU-000B1s-2R;
+	Wed, 18 Mar 2026 15:06:24 +0100
 From: Nora Schiffer <nora.schiffer@ew.tq-group.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -61,9 +61,9 @@ Cc: Siddharth Vadapalli <s-vadapalli@ti.com>,
 	linux-arm-kernel@lists.infradead.org,
 	linux@ew.tq-group.com,
 	Nora Schiffer <nora.schiffer@ew.tq-group.com>
-Subject: [PATCH 7/7] arm64: dts: ti: k3-j722s-main: use J722S compatible strings for SGMII support
-Date: Wed, 18 Mar 2026 15:05:29 +0100
-Message-ID: <5da686c95ad728cf7505424577211f0ce8937ead.1773751309.git.nora.schiffer@ew.tq-group.com>
+Subject: [PATCH 3/7] dt-bindings: net: ti: k3-am654-cpsw-nuss: Add ti,j722s-cpsw-nuss compatible
+Date: Wed, 18 Mar 2026 15:05:25 +0100
+Message-ID: <1382fed198246f1563dea091478757aebc4e4948.1773751309.git.nora.schiffer@ew.tq-group.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1773751309.git.nora.schiffer@ew.tq-group.com>
 References: <cover.1773751309.git.nora.schiffer@ew.tq-group.com>
@@ -77,51 +77,26 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: Clear (ClamAV 1.4.3/27944/Wed Mar 18 07:24:13 2026)
 
-Update WIZ, gmii-sel and CPSW3G to use the J722S-specific compatible
-strings.
+The J722S CPSW3G is mostly identical to the AM64's, but additionally
+supports SGMII.
 
 Signed-off-by: Nora Schiffer <nora.schiffer@ew.tq-group.com>
 ---
- arch/arm64/boot/dts/ti/k3-j722s-main.dtsi | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ Documentation/devicetree/bindings/net/ti,k3-am654-cpsw-nuss.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi b/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi
-index 9ee5d0c8ffd1e..be7e533e6c38a 100644
---- a/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi
-@@ -18,7 +18,7 @@ serdes_refclk: clk-0 {
+diff --git a/Documentation/devicetree/bindings/net/ti,k3-am654-cpsw-nuss.yaml b/Documentation/devicetree/bindings/net/ti,k3-am654-cpsw-nuss.yaml
+index a959c1d7e643a..9ab8237c7f79e 100644
+--- a/Documentation/devicetree/bindings/net/ti,k3-am654-cpsw-nuss.yaml
++++ b/Documentation/devicetree/bindings/net/ti,k3-am654-cpsw-nuss.yaml
+@@ -59,6 +59,7 @@ properties:
+       - ti,j7200-cpswxg-nuss
+       - ti,j721e-cpsw-nuss
+       - ti,j721e-cpswxg-nuss
++      - ti,j722s-cpsw-nuss
+       - ti,j784s4-cpswxg-nuss
  
- &cbass_main {
- 	serdes_wiz0: phy@f000000 {
--		compatible = "ti,am64-wiz-10g";
-+		compatible = "ti,j722s-wiz-10g";
- 		ranges = <0x0f000000 0x0 0x0f000000 0x00010000>;
- 		#address-cells = <1>;
- 		#size-cells = <1>;
-@@ -56,7 +56,7 @@ serdes0: serdes@f000000 {
- 	};
- 
- 	serdes_wiz1: phy@f010000 {
--		compatible = "ti,am64-wiz-10g";
-+		compatible = "ti,j722s-wiz-10g";
- 		ranges = <0x0f010000 0x0 0x0f010000 0x00010000>;
- 		#address-cells = <1>;
- 		#size-cells = <1>;
-@@ -451,6 +451,14 @@ pcie0_ctrl: pcie0-ctrl@4070 {
- 	};
- };
- 
-+&cpsw3g {
-+	compatible = "ti,j722s-cpsw-nuss";
-+};
-+
-+&phy_gmii_sel {
-+	compatible = "ti,j722s-phy-gmii-sel";
-+};
-+
- &oc_sram {
- 	reg = <0x00 0x70000000 0x00 0x40000>;
- 	ranges = <0x00 0x00 0x70000000 0x40000>;
+   reg:
 -- 
 TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
 Amtsgericht München, HRB 105018
