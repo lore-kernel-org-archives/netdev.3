@@ -1,109 +1,165 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4BA3A7F74
-	for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 10:51:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773831102; cv=none; b=e1stu7GyO87vpHJbhDGHqMkVOl8dre1ORco056v6zXT20gE7AhNKmhlw8HmcJvdHKCKjY5Wv8yFwkpY0bQGLIWyf1P8lmUkHDHLf4YcPk9ZsbcLBTO0i/tgNA5IG7cisYO7WhnL4czJWHKMAyRdHkMvjnA8yhOZoG/55iu5BpSg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773831102; c=relaxed/simple;
-	bh=fY7ASz0zWeUR8O66cYDJopAwvXuoXz2od4ZmbubNWsE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YkZ9G2D8CkyvOKykNZHSJM4vuxNOL11wt+o4Ok9P2+2Pp1lXYAB/4SaRnmzsCCmaXwwBGhvoTm1+BICxcxpKzT+Nuuljq5qsWXt91U91CBqabdHg6ZzWYCQAPa/knDQrVrVaQrDiqq0ZypJBNrBkXfoG2f8ktgDy/FCCS9jT7Zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1w2oUn-0001WJ-F0; Wed, 18 Mar 2026 11:51:25 +0100
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1w2oUn-000tSN-00;
-	Wed, 18 Mar 2026 11:51:25 +0100
-Received: from ore by dude04 with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1w2oUm-00000003RII-3uSv;
-	Wed, 18 Mar 2026 11:51:24 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: David Jander <david@protonic.nl>,
-	stable@vger.kernel.org,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH v1 1/7] ARM: dts: stm32: stm32mp15x-mecio1-io: Enable internal ADC reference
-Date: Wed, 18 Mar 2026 11:51:17 +0100
-Message-ID: <20260318105123.819807-2-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260318105123.819807-1-o.rempel@pengutronix.de>
-References: <20260318105123.819807-1-o.rempel@pengutronix.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E833BAD9C
+	for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 10:58:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773831542; cv=pass; b=i01oblNpBz1itgYqY0D2V5xWLHlmiIAxunN4dI63F86qR7DcElDl+5UEx8h4cBbVcQ2ZN0ZCmr57v3q25szWQZncnk2BrtoO6QWiPBWl+3AfLC94sPOJWriKKinjZiWxidGhMhLXL9gJa6h0IJRaxGlbSXfcfZbZRYl4/OPBdJY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773831542; c=relaxed/simple;
+	bh=LVVELEXkmiKTU/p+oy+of4jebFSUmNrxF9w9nex4moo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BdZ0gO+QHRYIH9GdMkC+tSWxZ/OZTaYnzgTHpWBosYgpGF4iDsjueqvsp03B7QD+g6BVJR1qaZa77eEz2Zy21FaimEz1gQNu2ZiOwL4wdc6o04HSqMkRmWt9E/Tj2mDxDN/IqUX2z4LAS5+FdcVW7rwmZSfqJ0hq/tbbcbwbO4M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bitbyteword.org; spf=pass smtp.mailfrom=bitbyteword.org; dkim=pass (2048-bit key) header.d=bitbyteword.org header.i=@bitbyteword.org header.b=Y+F4gIrC; arc=pass smtp.client-ip=209.85.128.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bitbyteword.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bitbyteword.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bitbyteword.org header.i=@bitbyteword.org header.b="Y+F4gIrC"
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-79a62a2bb8cso19898657b3.3
+        for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 03:58:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773831537; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Nlti91vMcF6ckVeyoEY9R4Td+ix0bStO6beeiQ5lgLtaC/mkIMQB3p8NgmuCwrptF2
+         pJfxi7mUSaNdJDvshUBHB8g0Y4OSEBzNo2upKl5QuEIcDeBHZVkvbJyCEYX1Pl0utHn9
+         ZjrAXmPFG/bDBj/4LFGN1CCADjChKegVTj2fTmrNEcM+NDfDuKafauB2LICHRn2yeDDZ
+         oDLfmGcwERQ4QT+udYnxSJTLl27BMb7JinAoMkRkaHAG6uKuklcL8F0dmAQt/VoqJ2IQ
+         3BKhpkUElW5i2hrHW0T+/J8Vq9ZSE6dS8Gxyyq+n9MKJSQ6XSx2fyHpbpwq7yMisBQmY
+         UpJw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=LVVELEXkmiKTU/p+oy+of4jebFSUmNrxF9w9nex4moo=;
+        fh=9j+BuHYejRK8xntvyqGvgj/mcH2e2vWThxx97eSSu1U=;
+        b=fJK48o8x9fLzMCEAUShxd2AxsQR+DNfb6Zh10ZegLacFLVOHSeG8LTt+nzLpEjRpS7
+         itCHItEP/g3Omj8jSZbZIkFlGpl403rq1wZka3WX03BBuoWNwuUQuZm2zwGEGVbug4Uw
+         RfOUQAfX0gVfeWyoG/QCeQnNAtVyqNey5s1XsHcEfdjes4AUjJSZrh26ItO47xRKz3Iz
+         f7gzD4u/G5K51N6T/2NICeKrxULEXk3hrmWXN92h33je2+CETI0cRa2tKxRjOp1buuqN
+         Gmb6cnOktTOXGICNA45dYRM3uYfItcffUyg/hCi4ewdooFX2ukRno1Dn5b9ESFB+3cXY
+         W+/w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bitbyteword.org; s=google; t=1773831537; x=1774436337; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LVVELEXkmiKTU/p+oy+of4jebFSUmNrxF9w9nex4moo=;
+        b=Y+F4gIrCy3AlMDM7CSYzAY8MdpN5nfDAenVYSS8jF8/QGMe0BtbaqtvpoNu4HHsdwI
+         eCHGz033wV+iu7o9yHNzl8ab1W8iVYNVNBYMUrCHRQLI9DZgf1n+KJ5WGJM874ZC8E1f
+         V8AfDwxwo6eY0vCZpRljMsNdbb7jgkZbz3BUBCDiRZdtki+wXyJ231XN2e5CQzBOtHl2
+         RNzehobgF8tA59rhsLrK604RjKLDzwzujNWXDWsClMTvJ5qFhXeMw/pwvPnR1XkeD7qu
+         tmTv/A7/XayQthiGv4k2dz99RPffdzi9GNohb9QPIB0xHVtAoLzYczErYFx/GTFFdjmi
+         QFOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773831537; x=1774436337;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=LVVELEXkmiKTU/p+oy+of4jebFSUmNrxF9w9nex4moo=;
+        b=XE4P6VNviO9MX64FbHybEzDOKlO+ipaIh48L1Ncf/hOraKyGf75TRu41YtXc9B0GRa
+         H6ql+qBbmmyqq/dMpZi0YoGMP+xjX7hwkvLF1DLl5HgqYctD3MkMeScEPpXA22/5ilU4
+         wmAF+H8K/xmKBmkj1rvrLZxKa8tZgfPDJ+NN04vGvqSlpVma4jnpOwEZdb/bOlU4gdmZ
+         mjVGqsR3RVN1puhpR8hDZum9QxCTHymz0M3tJr2F5DKNJ9DHWoJhUixUB0UzI2oMBZ4y
+         vGVVgHxfQU0posOuNHbj4KXKcU2ewea5tVd7f4ZFmQpPygdADnQc4nsAq5W25gyzapkL
+         eggA==
+X-Forwarded-Encrypted: i=1; AJvYcCUIowMUf2dXlKvYJB2fBVC26NSl3piuD1YvYctkRje7Qa3Mt906PnoYyLGEC0ebBQG6funD6+c=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxx5Q91GzTBvN0hcKrnDJKOsoW+75n6cBSSofAYT2gFdd8R0rc+
+	BaGytXGM5RGgAyWWijpgK5sW5jF3LibmZ8nhZ+jUSVjVCjef9iS3JSxYs/6IMmQ8SgxI7geGVVW
+	viAiB4wqi11cxrtgzpXEiGXvFO7BHbX+kvAGq1m9cdw==
+X-Gm-Gg: ATEYQzzCVN8ufKF00yZmggqt1vD0idCE3yucdu04w/zYHGhKQ/GP6BJusp/h9JjAtTl
+	YjvGEvapLrWMlZ0OwGWn4o/FPGSdY8LEBJMiqo8iuj0Ym+c+r13/fM+X1SsiXJnitlJYTA+3uYJ
+	g2g/+r6qtWRLzLK5um5XzR13cxU9SPIklwBbNSDWIfimLgtc+Kc1GEWXpyEwpKHRECj/uZgcLoE
+	ceUXafcDS9e8GYv5piALXhNJWIADSq2qrsDxb0QTwu64ArKIgnqDwBE7/7wH2TYoN44aGOKIvAQ
+	zEqxSLY=
+X-Received: by 2002:a05:690c:c50e:b0:79a:3a33:933 with SMTP id
+ 00721157ae682-79a71ad413dmr29714557b3.31.1773831537485; Wed, 18 Mar 2026
+ 03:58:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+References: <20260312150523.2054552-1-vineeth@bitbyteword.org>
+ <1e3c2830-765e-4271-89f7-0b6784b37597@efficios.com> <20260312112354.3dd99e36@gandalf.local.home>
+ <219d015d-076b-4c80-8f63-88569115fdad@efficios.com> <20260312114041.5193c729@gandalf.local.home>
+ <1becdbce-2c01-468a-bbab-42b5dea9fdf8@efficios.com> <CAO7JXPjnnruhM5oC6xMgnYaQ9efzYFqMCFiJLNM3HCQ+ZeCiJw@mail.gmail.com>
+ <CAEf4BzbnfyhCqp0ne=2gRnVxp-mdGmuZwDeFRyhRYH+eDcz2-w@mail.gmail.com>
+ <20260312130255.6476e560@gandalf.local.home> <CAO7JXPgHYZ9zF1HFahb2447X85YRZCQQBHB6ihOwKSDtiZi8kQ@mail.gmail.com>
+ <20260317120049.6a60fa88@gandalf.local.home> <6ca9f884-9566-4a82-9995-4c802a0bf8a0@efficios.com>
+In-Reply-To: <6ca9f884-9566-4a82-9995-4c802a0bf8a0@efficios.com>
+From: Vineeth Remanan Pillai <vineeth@bitbyteword.org>
+Date: Wed, 18 Mar 2026 06:58:46 -0400
+X-Gm-Features: AaiRm52iP799baA3h48fwfLjW02Pe87nEMlmDoXLIPKYRV2LFYQQkuww_KlSUU0
+Message-ID: <CAO7JXPgbERfc_P+aPFB1+nR5ua3mZGbhdkbxCr0TFR4Cr6Khuw@mail.gmail.com>
+Subject: Re: [PATCH 00/15] tracepoint: Avoid double static_branch evaluation
+ at guarded call sites
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Andrii Nakryiko <andrii.nakryiko@gmail.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Dmitry Ilvokhin <d@ilvokhin.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Ingo Molnar <mingo@redhat.com>, Jens Axboe <axboe@kernel.dk>, 
+	io-uring@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, Xin Long <lucien.xin@gmail.com>, 
+	Jon Maloy <jmaloy@redhat.com>, Aaron Conole <aconole@redhat.com>, 
+	Eelco Chaudron <echaudro@redhat.com>, Ilya Maximets <i.maximets@ovn.org>, netdev@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-sctp@vger.kernel.org, 
+	tipc-discussion@lists.sourceforge.net, dev@openvswitch.org, 
+	Oded Gabbay <ogabbay@kernel.org>, Koby Elbaz <koby.elbaz@intel.com>, 
+	dri-devel@lists.freedesktop.org, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, "Gautham R. Shenoy" <gautham.shenoy@amd.com>, 
+	Huang Rui <ray.huang@amd.com>, Mario Limonciello <mario.limonciello@amd.com>, 
+	Len Brown <lenb@kernel.org>, Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
+	linux-pm@vger.kernel.org, MyungJoo Ham <myungjoo.ham@samsung.com>, 
+	Kyungmin Park <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
+	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, linaro-mm-sig@lists.linaro.org, 
+	Eddie James <eajames@linux.ibm.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
+	Joel Stanley <joel@jms.id.au>, linux-fsi@lists.ozlabs.org, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Alex Deucher <alexander.deucher@amd.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Matthew Brost <matthew.brost@intel.com>, Philipp Stanner <phasta@kernel.org>, 
+	Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>, 
+	amd-gfx@lists.freedesktop.org, Jiri Kosina <jikos@kernel.org>, 
+	Benjamin Tissoires <bentiss@kernel.org>, linux-input@vger.kernel.org, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, linux-i2c@vger.kernel.org, 
+	Mark Brown <broonie@kernel.org>, Michael Hennerich <michael.hennerich@analog.com>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, linux-spi@vger.kernel.org, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	"Martin K. Petersen" <martin.petersen@oracle.com>, linux-scsi@vger.kernel.org, 
+	Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: David Jander <david@protonic.nl>
+On Tue, Mar 17, 2026 at 12:02=E2=80=AFPM Mathieu Desnoyers
+<mathieu.desnoyers@efficios.com> wrote:
+>
+> On 2026-03-17 12:00, Steven Rostedt wrote:
+> > On Fri, 13 Mar 2026 10:02:32 -0400
+> > Vineeth Remanan Pillai <vineeth@bitbyteword.org> wrote:
+> >
+> >>>
+> >>> Perhaps: call_trace_foo() ?
+> >>>
+> >> call_trace_foo has one collision with the tracepoint
+> >> sched_update_nr_running and a function
+> >> call_trace_sched_update_nr_running. I had considered this and later
+> >> moved to trace_invoke_foo() because of the collision. But I can rename
+> >> call_trace_sched_update_nr_running to something else if call_trace_foo
+> >> is the general consensus.
+> >
+> > OK, then lets go with: trace_call__foo()
+> >
+> > The double underscore should prevent any name collisions.
+> >
+> > Does anyone have an objections?
+> I'm OK with it.
+>
+Great thanks! I shall send a v2 with s/trace_invoke_foo/trace_call__foo/ so=
+on.
 
-Switch the ADC reference supply from the general 3.3V rail to the
-internal 2.5V VREFBUF regulator. The ADC circuits on this board are
-designed for the internal 2.5V reference. Without this change, all ADC
-measurement values are incorrect.
-
-Fixes: 8267753c891c ("ARM: dts: stm32: Add MECIO1 and MECT1S board variants")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: David Jander <david@protonic.nl>
-Co-developed-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- arch/arm/boot/dts/st/stm32mp15x-mecio1-io.dtsi | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/arch/arm/boot/dts/st/stm32mp15x-mecio1-io.dtsi b/arch/arm/boot/dts/st/stm32mp15x-mecio1-io.dtsi
-index 915ba2526f45..1ce01bac9814 100644
---- a/arch/arm/boot/dts/st/stm32mp15x-mecio1-io.dtsi
-+++ b/arch/arm/boot/dts/st/stm32mp15x-mecio1-io.dtsi
-@@ -95,7 +95,7 @@ &adc {
- 	pinctrl-names = "default";
- 	vdd-supply = <&v3v3>;
- 	vdda-supply = <&v3v3>;
--	vref-supply = <&v3v3>;
-+	vref-supply = <&vrefbuf>;
- 	status = "okay";
- };
- 
-@@ -412,6 +412,13 @@ &usbphyc_port1 {
- 	phy-supply = <&v3v3>;
- };
- 
-+&vrefbuf {
-+	regulator-min-microvolt = <2500000>;
-+	regulator-max-microvolt = <2500000>;
-+	vdda-supply = <&v3v3>;
-+	status = "okay";
-+};
-+
- &pinctrl {
- 	adc12_pins_mecsbc: adc12-ain-mecsbc-0 {
- 		pins {
--- 
-2.47.3
-
+Thanks,
+Vineeth
