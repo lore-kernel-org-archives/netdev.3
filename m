@@ -1,109 +1,135 @@
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [185.244.194.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 005C321B918;
-	Wed, 18 Mar 2026 08:38:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.244.194.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CE038B7BC
+	for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 08:41:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773823131; cv=none; b=tdXQKgCmbmIrtdl5zxHgchx2fOtNhcmA2uGLiiqPt+3aCuYS62rJULfjU7CZTqVisqacfKcHvqX4z6ItsKqMohzBhAg6qgAtSE+8VJ0hBmVuKbKJpHtaN/K/EpVOxYLs09kG5M3MlnLVvRHRZE9J8TxboPU5o1oCDYjFR+fbvU8=
+	t=1773823323; cv=none; b=lY7AAMNk8MVIRI6Lstw3nyVaxpzPqyEOGzCk1xwYz58JAdgUMnr2I3yLNL/Q8fEIfDn5zQEIqGLhMzQHCnk1EiQ+paeUnY12u2TplGxjdyJaljdFtgabyIsIleSJ8m4FI8+kVHZU2sIZrItLHO91we0ohqFCKf/VG7OZeKkKP7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773823131; c=relaxed/simple;
-	bh=Tul8i66V9Ox8kqaavmP4X0LXSUE8QW6mGiDdQLOB3m8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sTcslk2zYgo1OGtVpLaO/FW3yxgOPFRpSnhwa8pY3+V28Xi7KYvRT6EGaTcC/Lz4c5rLVp38NRI7TVcnByt1fzxaA3vbJiDRGnpMLu4BgbUSY3otlqHOBLS1Cmd7sN5o5IQrRI8oIPgUyX0QNq16Ta4I4Jrx+k5MHR+jn8JfvcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mecomediagroup.de; spf=pass smtp.mailfrom=mecomediagroup.de; dkim=pass (2048-bit key) header.d=mecomediagroup.de header.i=@mecomediagroup.de header.b=kJFcEgLz; arc=none smtp.client-ip=185.244.194.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mecomediagroup.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mecomediagroup.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mecomediagroup.de header.i=@mecomediagroup.de header.b="kJFcEgLz"
-Received: from relay01-mors.netcup.net (localhost [127.0.0.1])
-	by relay01-mors.netcup.net (Postfix) with ESMTPS id 4fbMdp2nCdz8ypn;
-	Wed, 18 Mar 2026 09:37:34 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mecomediagroup.de;
-	s=key2; t=1773823054;
-	bh=Tul8i66V9Ox8kqaavmP4X0LXSUE8QW6mGiDdQLOB3m8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kJFcEgLzQ+Q9IvzDIYBJYLUpczNM4Z9dfOm/JHA1HyjT2gKGIGw6FGU8P4khMkGm0
-	 2L/dPZQcIBpmw88XwqxZ3f2i/U8qt/rGNY2gqeQjzE/bwBaNZ6WbkJJagTNDPs2kbn
-	 3IqEuarh7OQksE+yTH3FRnWPkSBAsbsjtGVlPWAdu5mHI0eaSlrcnqRcoeo+x3/RPW
-	 Gyeq6CsbiJ/6UYFwQ6q3JDyAMKr3EnVHmzUJNPUtB98npm+1FkF2YXYH1TJk+a31UN
-	 PjNQ31X42wphZWGEXW4fS2ttbqevvLAw0+EHQG8iv7BwJ6OzToyThwccf+ggmVfhoM
-	 bmbYtoeEQFnVA==
-Received: from policy01-mors.netcup.net (unknown [46.38.225.35])
-	by relay01-mors.netcup.net (Postfix) with ESMTPS id 4fbMdJ04Mkz7vFY;
-	Wed, 18 Mar 2026 09:37:08 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at policy01-mors.netcup.net
-X-Spam-Flag: NO
-X-Spam-Score: -2.899
-X-Spam-Level: 
-Received: from mxe95c.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy01-mors.netcup.net (Postfix) with ESMTPS id 4fbMdH37kxz8tYX;
-	Wed, 18 Mar 2026 09:37:07 +0100 (CET)
-Received: from debian.fritz.box (ip-178-203-082-069.um48.pools.vodafone-ip.de [178.203.82.69])
-	by mxe95c.netcup.net (Postfix) with ESMTPSA id 4F37E801CA;
-	Wed, 18 Mar 2026 09:37:06 +0100 (CET)
-Authentication-Results: mxe95c;
-	spf=pass (sender IP is 178.203.82.69) smtp.mailfrom=mecid@mecomediagroup.de smtp.helo=debian.fritz.box
-Received-SPF: pass (mxe95c: connection is authenticated)
-From: Mecid Urganci <mecid@mecomediagroup.de>
-To: andersson@kernel.org,
-	konradybcio@kernel.org
-Cc: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	richardcochran@gmail.com,
-	linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Mecid Urganci <mecid@mecomediagroup.de>
-Subject: [PATCH 1/2] dt-bindings: arm: qcom: Add qcs9075-radxa-airbox-q900
-Date: Wed, 18 Mar 2026 09:36:20 +0100
-Message-ID: <20260318083621.470826-2-mecid@mecomediagroup.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260318083621.470826-1-mecid@mecomediagroup.de>
-References: <20260318083621.470826-1-mecid@mecomediagroup.de>
+	s=arc-20240116; t=1773823323; c=relaxed/simple;
+	bh=1Q3Co6bxbshrYxrPl4jn/U2T1xBX3gjFWpDnRI8lYDQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qK50CQIM+n64oBGzihEZKL/QWDYbZxa+EdiG9RP/mdE80Jg4H91TArGJ/o11jigi99tuPUSW9fXO8Z9YF5hQRO/CV/LuDpQVMPiiNDqTaBk5AzwD9OMmrrusb2evwIi+M5ULlBx9gCrRo6V76Mcn6hjCt/UgPe7XNNXb76CxWLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-5fff77ff69bso1508686137.2
+        for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 01:41:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773823317; x=1774428117;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tqPUDw6RZ7tI/8SbuWaBeZ31o+A7cvn/glmx6dclWwI=;
+        b=KwLRFJ6yt0JoUaMP/ZjMh011M2k8zpEnFolu9JgDiMRP49qsu2nuLbWnU5V3ToAEw+
+         f8MFmm6y1s0y6UJ0TgrYM8j13rNFLvG1UaTXBAvahRXeDBJsVjaToGNX18Nwug6R2M2/
+         SfXxrqcS0Z3EAr4CLoQMrobcSCJINC4b7HehekQr9GHM/5wA2lzT0G74P5NBLU7olgW1
+         aI0GqPYjW0hgb4F/uvqUesXsi0Jdg9Wqh1IETSRAwlx4/86Wgg1MHd3e0bfIxwnnth9N
+         vGBc+knmL+ZEyqs7EgNlocsalnCUbU06SPVWIHd8BafXlOtAzjoLJxPOUF2ft0cTicYf
+         xrVw==
+X-Forwarded-Encrypted: i=1; AJvYcCXUemIKX6pV8/2T2lNTBVGyjIWWG1T5XmNBE7+7V68r5v4ueoyiHgutC2mHeOl97PLLSqnzNbY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqaPr5rMcExMuRtDnq70eaYjClxIzKB0NVSFnAqutK5j/tz+//
+	Dr01bChDGFyfdxHCkM/bdN2/kVLBHWDZE0vri0oxNeVJY4iNy6SbppDj5VhU7AqQYVk=
+X-Gm-Gg: ATEYQzwazFb3Ls9pmIvDIabvi7dxvON/DcMGNvqsVSGKiIdnBiikruMViZwAIMdbKU4
+	JsB8WTI0z8C+DRfgH8AMuTNiYhqspT/07JEvvDDDiipmucsPDqh5jPRKhlb2F28guqXe04Gs3dg
+	i/QipTI/psLVSA4LyE9obhBwQc3muUcM3Rzvz+nd9grcyHWdRqWxGNgYY+srGVaiJmNwadzIiji
+	D7DbD6+Ul4JexiI3rWd8EofYaDYDvCgdxzX+KyiDAWcw0aTbisbFFVYsJilu8/egd3k3Z68kxHm
+	YeLEx9Hm3lHRUbiORL8ffDOJg++jxB8cf6Xgui2/nc24lYb59StdjNAKXUxrg9QBuN/KObWgr0B
+	hm7fI+sH5sipSI0eMWUJU1cKPpRvf2Zy46RLpTHXs7EDF69pCMH8xTJGUNiHIQxaPeUm3VBqa9D
+	qkRreRW/qj4Z9bs6CaQHg7dc40owvzKwX9dsKtvV98yOI+Siubf81GZXQXWe2I
+X-Received: by 2002:a05:6102:cca:b0:5ee:9f76:1ab with SMTP id ada2fe7eead31-6027d0bb01dmr1167787137.5.1773823317471;
+        Wed, 18 Mar 2026 01:41:57 -0700 (PDT)
+Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com. [209.85.222.47])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-6027ee4bc21sm1013159137.12.2026.03.18.01.41.55
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 Mar 2026 01:41:56 -0700 (PDT)
+Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-950cc286d86so955559241.0
+        for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 01:41:55 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVlCgRxY+48YPUSo5UZ13trZuwcDywKJWrWt7H8L8G7Xb/KlWSJ5K1RjvD6JQOXmEgLFwx5UZc=@vger.kernel.org
+X-Received: by 2002:a05:6102:5087:b0:5ff:e39d:9f9b with SMTP id
+ ada2fe7eead31-6027d159e7fmr1126209137.16.1773823315107; Wed, 18 Mar 2026
+ 01:41:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-PPP-Message-ID: 
- <177382302702.1405000.12757176945499536815@mxe95c.netcup.net>
-X-Rspamd-Server: rspamd-worker-8404
-X-Rspamd-Queue-Id: 4F37E801CA
-X-NC-CID: mO6rgpQkQxrWdgUm1gl+Y+1xwpEIeC9yFEcCt59w/E62xlHomu8Q
+References: <20260316154159.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
+ <abkCPU3rxHI49N4_@shikoro> <abkD-VLprcbbEbB1@ashevche-desk.local>
+In-Reply-To: <abkD-VLprcbbEbB1@ashevche-desk.local>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 18 Mar 2026 09:41:44 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdVX4tfko8iv-EdwO-bBcwCd+cPkb9aP8qJbcM1F4zdz4g@mail.gmail.com>
+X-Gm-Features: AaiRm52_MgNfiAr79FL-62Ac0xXnTx-AfzVYThIE_IN0tF6AadQcPRzCkdJNUOc
+Message-ID: <CAMuHMdVX4tfko8iv-EdwO-bBcwCd+cPkb9aP8qJbcM1F4zdz4g@mail.gmail.com>
+Subject: Re: [PATCH] device property: Make modifications of fwnode "flags"
+ thread safe
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>, 
+	Douglas Anderson <dianders@chromium.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org, 
+	Andrew Lunn <andrew@lunn.ch>, Daniel Scally <djrscally@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>, Mark Brown <broonie@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
+	Russell King <linux@armlinux.org.uk>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Saravana Kannan <saravanak@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	devicetree@vger.kernel.org, driver-core@lists.linux.dev, imx@lists.linux.dev, 
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-spi@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Add device tree binding for the Radxa AirBox Q900 board based on
-the Qualcomm QCS9075 SoC.
+Hi Andy,
 
-Signed-off-by: Mecid Urganci <mecid@mecomediagroup.de>
----
- Documentation/devicetree/bindings/arm/qcom.yaml | 6 ++++++
- 1 file changed, 6 insertions(+)
+On Tue, 17 Mar 2026 at 08:34, Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+> On Tue, Mar 17, 2026 at 08:26:53AM +0100, Wolfram Sang wrote:
+>
+> ...
+>
+> > Thanks for tackling this issue! I agree it should be fixed, just
+> > wondered about one thing:
+> >
+> > > While flags are often modified while under the "fwnode_link_lock",
+> > > this is not universally true.
+> >
+> > Is it a possibility to use the lock in all code paths instead?
+> > Because...
+> >
+> > >     struct list_head consumers;
+> > > -   u8 flags;
+> > > +   unsigned long flags;
+> >
+> > ... this change costs some memory on every system. Maybe it can be
+> > avoided?
+>
+> How much memory does it cost? On most 64-bit architectures is +4 bytes,
+> rarely +0 bytes, on m68k it might be +2bytes. On 32-bit it most likely
+> +0 bytes. I expect that 64-bit machines will cope with this bump.
 
-diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
-index 8c3df8efaa4d..2c492f4d784a 100644
---- a/Documentation/devicetree/bindings/arm/qcom.yaml
-+++ b/Documentation/devicetree/bindings/arm/qcom.yaml
-@@ -909,6 +909,12 @@ properties:
-               - qcom,sa8775p-ride-r3
-           - const: qcom,sa8775p
- 
-+      - items:
-+          - enum:
-+              - radxa,airbox-q900
-+          - const: qcom,qcs9075
-+          - const: qcom,sa8775p
-+
-       - items:
-           - enum:
-               - qcom,lemans-evk
+On all architectures with natural alignment of pointers and longs,
+it won't cost a thing: struct list_head contains pointers, so the
+struct must be padded to a multiple of 4 or 8 bytes anyway.
+On m68k[*],  it will cost 2 bytes, as the existing padding is just a
+single byte.
+
+[*] Iff m68k ever switches to 32-bit alignment, there won't be an
+    additional cost due to the change of flags here, but of course
+    there would be a cost all over the place.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
 -- 
-2.47.3
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
