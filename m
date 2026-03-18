@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD85C39A070
-	for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 10:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB5B39D6E9
+	for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 10:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773831098; cv=none; b=Vv6dsHC+UMs/1jz4P3ryc0hYDq/4qrKxdXiUTfUlKUidJQIDHmmouYP7r9flm3cVUiuI5ME6RSMmrZoN53sxEE1LsY6O/YiPv+zg8ZOgyrfPohW03La87C+upzzfEYxDpHNloxXlGlXxe2TOdAnOLiS20rw2Ev3qZ2ZqygyNhfU=
+	t=1773831099; cv=none; b=q3gG+LDyCzaiS1WfyCT/2e6LzYyp9/lLRCzDVd8YwrPuxGIBon2cUnFBkmMXneVCJTMlWgvsKumFmT7c2F7boobVSSCkao6XRrZTm6+xfQoZjfrij3WzVUWAAqCkVM7kxyd9CHJjhv291cf9pJ0AWVHn1kOZvHjOcZocMgZp+/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773831098; c=relaxed/simple;
-	bh=UE8DLg0OmVNUS8QhDZnhmGITW1Sio+cYfmRHHPQL4sM=;
+	s=arc-20240116; t=1773831099; c=relaxed/simple;
+	bh=99MoR5B6FN0+kJyUEkYq+JZz0yxs/jel3MjgkwYNru0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k+1vMy3Ws+L1T5lCuof/mJXJoHSDDnubRjxzV3ghiDKijr/kI1SW1m7zC1P7PuCPrDOEXUPKp32knfwcxStcBcN2uJK+JfY5j08ztC6WOUxu6H9TYCAIt5cZ/A0F/NvYAywn9TtyTJpK70VJregDaL7Sc4V/ukhIVz0l78L2kPI=
+	 MIME-Version; b=AIVgkmhRW0oesfB7FQPF+gczpZsCHjN4CrOr0EnuqrjpZVERXgaX64GHN4V9IaVZXgo6T3e73P3ZvjyYLYazXw5kqjK32Sju4Mz3fIZGfCZxWF6W4XFRhYZn7bk6zqW4+BEdY6RFkFFYunuHbjqGEks5iZv7RzWMnXUFEYRhwtQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,17 +18,17 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1w2oUn-0001WP-Ey; Wed, 18 Mar 2026 11:51:25 +0100
+	id 1w2oUn-0001WM-F3; Wed, 18 Mar 2026 11:51:25 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1w2oUn-000tSY-0X;
+	id 1w2oUn-000tSP-0E;
 	Wed, 18 Mar 2026 11:51:25 +0100
 Received: from ore by dude04 with local (Exim 4.98.2)
 	(envelope-from <ore@pengutronix.de>)
-	id 1w2oUn-00000003RJI-0IbV;
-	Wed, 18 Mar 2026 11:51:25 +0100
+	id 1w2oUm-00000003RIc-47vz;
+	Wed, 18 Mar 2026 11:51:24 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -43,9 +43,9 @@ Cc: David Jander <david@protonic.nl>,
 	netdev@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH v1 7/7] ARM: dts: stm32: stm32mp15x-mecio1-io: Move expander gpio-line-names to board files
-Date: Wed, 18 Mar 2026 11:51:23 +0100
-Message-ID: <20260318105123.819807-8-o.rempel@pengutronix.de>
+Subject: [PATCH v1 3/7] ARM: dts: stm32: stm32mp15x-mecio1-io: Move divergent mecio1 ADC channels to board files
+Date: Wed, 18 Mar 2026 11:51:19 +0100
+Message-ID: <20260318105123.819807-4-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260318105123.819807-1-o.rempel@pengutronix.de>
 References: <20260318105123.819807-1-o.rempel@pengutronix.de>
@@ -63,105 +63,248 @@ X-PTX-Original-Recipient: netdev@vger.kernel.org
 
 From: David Jander <david@protonic.nl>
 
-Move the gpio-line-names properties for the I2C GPIO expanders (gpio0
-and gpio1) out of the common mecio1-io.dtsi file and into the specific
-board dts files.
+Move the divergent adc1 channel definitions out of the common
+mecio1-io.dtsi file and into the specific Revision 0 and Revision 1
+board files.
 
-The layout originally defined in the common include file belonged to the
-mecio1r1 (Revision 1) hardware. This layout is moved 1:1 into the
-stm32mp153c-mecio1r1.dts file.
+The original common file contained incorrect schematic labels for the
+Revision 0 hardware (e.g., labeling ana0 as p24v_hpdcm instead of
+ain_aux0) and failed to account for physical signal routing changes
+between the board revisions.
 
-The mecio1r0 (Revision 0) hardware utilizes a completely different
-pinout for these expanders. A new, accurate mapping reflecting the
-Revision 0 schematics is added to stm32mp151c-mecio1r0.dts.
+Retain only the strictly shared channels in the common include file. Map
+the correct channels and schematic labels directly within
+stm32mp151c-mecio1r0.dts and stm32mp153c-mecio1r1.dts.
+
+Crucially, ensure that the required 200us sample time follows the
+phint1_ain signal to its new physical location on channel 3 for the
+Revision 1 hardware.
 
 Fixes: 8267753c891c ("ARM: dts: stm32: Add MECIO1 and MECT1S board variants")
-Cc: stable@vger.kernel.org
+Cc: <stable@vger.kernel.org>
 Signed-off-by: David Jander <david@protonic.nl>
 Co-developed-by: Oleksij Rempel <o.rempel@pengutronix.de>
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- arch/arm/boot/dts/st/stm32mp151c-mecio1r0.dts  | 14 ++++++++++++++
- arch/arm/boot/dts/st/stm32mp153c-mecio1r1.dts  | 14 ++++++++++++++
- arch/arm/boot/dts/st/stm32mp15x-mecio1-io.dtsi |  8 --------
- 3 files changed, 28 insertions(+), 8 deletions(-)
+ arch/arm/boot/dts/st/stm32mp151c-mecio1r0.dts | 50 +++++++++++++++++++
+ arch/arm/boot/dts/st/stm32mp153c-mecio1r1.dts | 50 +++++++++++++++++++
+ .../arm/boot/dts/st/stm32mp15x-mecio1-io.dtsi | 50 +------------------
+ 3 files changed, 101 insertions(+), 49 deletions(-)
 
 diff --git a/arch/arm/boot/dts/st/stm32mp151c-mecio1r0.dts b/arch/arm/boot/dts/st/stm32mp151c-mecio1r0.dts
-index 06ab77465816..862782d20d10 100644
+index a5ea1431c399..4e795ad42928 100644
 --- a/arch/arm/boot/dts/st/stm32mp151c-mecio1r0.dts
 +++ b/arch/arm/boot/dts/st/stm32mp151c-mecio1r0.dts
-@@ -97,6 +97,20 @@ &ethernet0 {
- 	st,eth-clk-sel;
+@@ -36,6 +36,56 @@ led-1 {
+ 	};
  };
  
-+&gpio0 {
-+	gpio-line-names = "HSIN0_BIAS", "HSIN1_BIAS", "HSIN2_BIAS", "HSIN3_BIAS",
-+			  "HSIN4_BIAS", "", "STP_VREF0_LVL", "HSIN_VREF0_LVL",
-+			  "STP0_FB_BIAS", "STP1_FB_BIAS", "STP2_FB_BIAS", "STP3_FB_BIAS",
-+			  "", "", "", "";
++&adc1 {
++	channel@0 {
++		reg = <0>;
++		st,min-sample-time-ns = <20000>;
++		label = "ain_aux0";
++	};
++
++	channel@1 {
++		reg = <1>;
++		st,min-sample-time-ns = <20000>;
++		label = "ain_aux1";
++	};
++
++	channel@3 {
++		reg = <3>;
++		st,min-sample-time-ns = <20000>;
++		label = "hpdcm1_i2";
++	};
++
++	channel@5 {
++		reg = <5>;
++		st,min-sample-time-ns = <20000>;
++		label = "pout1_i";
++	};
++
++	channel@9 {
++		reg = <9>;
++		st,min-sample-time-ns = <20000>;
++		label = "pout0_i";
++	};
++
++	channel@13 {
++		reg = <13>;
++		st,min-sample-time-ns = <200000>;
++		label = "phint1_ain";
++	};
++
++	channel@15 {
++		reg = <15>;
++		st,min-sample-time-ns = <20000>;
++		label = "hpdcm0_i1";
++	};
++
++	channel@18 {
++		reg = <18>;
++		st,min-sample-time-ns = <20000>;
++		label = "hpdcm0_i2";
++	};
 +};
 +
-+&gpio1 {
-+	gpio-line-names = "HSIN5_BIAS", "HSIN6_BIAS", "HSIN7_BIAS", "HSIN8_BIAS",
-+			  "HSIN9_BIAS", "", "STP_VREF1_LVL", "HSIN_VREF1_LVL",
-+			  "STP4_FB_BIAS", "STP5_FB_BIAS", "STP6_FB_BIAS", "",
-+			  "", "", "LSIN8_BIAS", "LSIN9_BIAS";
-+};
-+
- &gpiod {
- 	gpio-line-names = "", "", "", "",
- 			  "", "", "", "",
+ &clk_hse {
+ 	clock-frequency = <25000000>;
+ };
 diff --git a/arch/arm/boot/dts/st/stm32mp153c-mecio1r1.dts b/arch/arm/boot/dts/st/stm32mp153c-mecio1r1.dts
-index 2b3989303cd1..739cc18c3d3a 100644
+index 16b814c19350..d32816093e47 100644
 --- a/arch/arm/boot/dts/st/stm32mp153c-mecio1r1.dts
 +++ b/arch/arm/boot/dts/st/stm32mp153c-mecio1r1.dts
-@@ -90,6 +90,20 @@ &clk_hse {
+@@ -36,6 +36,56 @@ led-1 {
+ 	};
+ };
+ 
++&adc1 {
++	channel@0 {
++		reg = <0>;
++		st,min-sample-time-ns = <20000>;
++		label = "p24v_hpdcm";
++	};
++
++	channel@1 {
++		reg = <1>;
++		st,min-sample-time-ns = <20000>;
++		label = "p24v_stp";
++	};
++
++	channel@3 {
++		reg = <3>;
++		st,min-sample-time-ns = <200000>;
++		label = "phint1_ain";
++	};
++
++	channel@5 {
++		reg = <5>;
++		st,min-sample-time-ns = <20000>;
++		label = "hpout1_i";
++	};
++
++	channel@9 {
++		reg = <9>;
++		st,min-sample-time-ns = <20000>;
++		label = "hpout0_i";
++	};
++
++	channel@13 {
++		reg = <13>;
++		st,min-sample-time-ns = <20000>;
++		label = "hpdcm0_i2";
++	};
++
++	channel@15 {
++		reg = <15>;
++		st,min-sample-time-ns = <20000>;
++		label = "hpdcm1_i2";
++	};
++
++	channel@18 {
++		reg = <18>;
++		st,min-sample-time-ns = <20000>;
++		label = "hpdcm0_i1";
++	};
++};
++
+ &clk_hse {
  	clock-frequency = <24000000>;
  };
- 
-+&gpio0 {
-+	gpio-line-names = "HSIN0_BIAS", "HSIN1_BIAS", "HSIN2_BIAS", "HSIN3_BIAS",
-+			  "", "", "HSIN_VREF0_LVL", "HSIN_VREF1_LVL",
-+			  "HSIN4_BIAS", "HSIN5_BIAS", "HSIN6_BIAS", "HSIN7_BIAS",
-+			  "", "", "", "";
-+};
-+
-+&gpio1 {
-+	gpio-line-names = "HSIN8_BIAS", "HSIN9_BIAS", "HSIN10_BIAS", "HSIN11_BIAS",
-+			  "", "", "HSIN_VREF2_LVL", "HSIN_VREF3_LVL",
-+			  "HSIN12_BIAS", "HSIN13_BIAS", "HSIN14_BIAS", "HSIN15_BIAS",
-+			  "", "", "LSIN8_BIAS", "LSIN9_BIAS";
-+};
-+
- &gpioa {
- 	gpio-line-names = "", "", "", "",
- 			  "", "", "", "",
 diff --git a/arch/arm/boot/dts/st/stm32mp15x-mecio1-io.dtsi b/arch/arm/boot/dts/st/stm32mp15x-mecio1-io.dtsi
-index 1808289f8193..1a4f5a523eb3 100644
+index 1b1299770ca0..f91b3d1f037b 100644
 --- a/arch/arm/boot/dts/st/stm32mp15x-mecio1-io.dtsi
 +++ b/arch/arm/boot/dts/st/stm32mp15x-mecio1-io.dtsi
-@@ -184,10 +184,6 @@ gpio0: gpio@20 {
- 		reg = <0x20>;
- 		gpio-controller;
- 		#gpio-cells = <2>;
--		gpio-line-names = "HSIN0_BIAS", "HSIN1_BIAS", "HSIN2_BIAS", "HSIN3_BIAS",
--				  "", "", "HSIN_VREF0_LVL", "HSIN_VREF1_LVL",
--				  "HSIN4_BIAS", "HSIN5_BIAS", "HSIN6_BIAS", "HSIN7_BIAS",
--				  "", "", "", "";
- 	};
- 
- 	gpio1: gpio@21 {
-@@ -195,10 +191,6 @@ gpio1: gpio@21 {
- 		reg = <0x21>;
- 		gpio-controller;
- 		#gpio-cells = <2>;
--		gpio-line-names = "HSIN8_BIAS", "HSIN9_BIAS", "HSIN10_BIAS", "HSIN11_BIAS",
--				  "", "", "HSIN_VREF2_LVL", "HSIN_VREF3_LVL",
--				  "HSIN12_BIAS", "HSIN13_BIAS", "HSIN14_BIAS", "HSIN15_BIAS",
--				  "", "", "LSIN8_BIAS", "LSIN9_BIAS";
- 	};
+@@ -90,7 +90,7 @@ v5v: regulator-v5v {
  };
  
+ &adc {
+-	/* ANA0, ANA1 are dedicated pins and don't need pinctrl: only in6. */
++	/* ANA0, ANA1 are dedicated pins and don't need pinctrl. */
+ 	pinctrl-0 = <&adc12_pins_mecsbc>;
+ 	pinctrl-names = "default";
+ 	vdd-supply = <&v3v3>;
+@@ -102,78 +102,30 @@ &adc {
+ &adc1 {
+ 	status = "okay";
+ 
+-	channel@0 {
+-		reg = <0>;
+-		st,min-sample-time-ns = <20000>;
+-		label = "p24v_stp";
+-	};
+-
+-	channel@1 {
+-		reg = <1>;
+-		st,min-sample-time-ns = <20000>;
+-		label = "p24v_hpdcm";
+-	};
+-
+ 	channel@2 {
+ 		reg = <2>;
+ 		st,min-sample-time-ns = <20000>;
+ 		label = "ain0";
+ 	};
+ 
+-	channel@3 {
+-		reg = <3>;
+-		st,min-sample-time-ns = <20000>;
+-		label = "hpdcm1_i2";
+-	};
+-
+-	channel@5 {
+-		reg = <5>;
+-		st,min-sample-time-ns = <20000>;
+-		label = "hpout1_i";
+-	};
+-
+ 	channel@6 {
+ 		reg = <6>;
+ 		st,min-sample-time-ns = <20000>;
+ 		label = "ain1";
+ 	};
+ 
+-	channel@9 {
+-		reg = <9>;
+-		st,min-sample-time-ns = <20000>;
+-		label = "hpout0_i";
+-	};
+-
+ 	channel@10 {
+ 		reg = <10>;
+ 		st,min-sample-time-ns = <200000>;
+ 		label = "phint0_ain";
+ 	};
+ 
+-	channel@13 {
+-		reg = <13>;
+-		st,min-sample-time-ns = <200000>;
+-		label = "phint1_ain";
+-	};
+-
+-	channel@15 {
+-		reg = <15>;
+-		st,min-sample-time-ns = <20000>;
+-		label = "hpdcm0_i1";
+-	};
+-
+ 	channel@16 {
+ 		reg = <16>;
+ 		st,min-sample-time-ns = <20000>;
+ 		label = "lsin";
+ 	};
+ 
+-	channel@18 {
+-		reg = <18>;
+-		st,min-sample-time-ns = <20000>;
+-		label = "hpdcm0_i2";
+-	};
+-
+ 	channel@19 {
+ 		reg = <19>;
+ 		st,min-sample-time-ns = <20000>;
 -- 
 2.47.3
 
