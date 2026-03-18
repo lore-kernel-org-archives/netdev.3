@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 412FA39F185
-	for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 10:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82AF3A3E70
+	for <netdev@vger.kernel.org>; Wed, 18 Mar 2026 10:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773831100; cv=none; b=CfHlFIhXjo/6DDLW89j4T4+9XM/5PedJpS2EyeDfkSjpceH1B64HVl43U8yeGUIVlKjwp1EfQegiUNTtygqwoIWn4A8k5CBHbyXGNllQKgbDNXOQFE8WneePpOYy3zD6YquRtXQSO//58GXfiOi40uEv1NBKk00htpmL5/lD+ZM=
+	t=1773831101; cv=none; b=Lq1+d48IjQyKstmpZ/idKoG9bdmCqz9hyytZxS5npOylHZxX4/QI6nwAw4SvBPnatyEm46NtAcMxIZuaC91dpQPgg/Lla4JGjYowNYEpz8EP4kPQ/WzUxJNm0PTtYsv9OqvAJZkUg7XffwRwZXCG0xE5FArdMfuh+siK04cmH/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773831100; c=relaxed/simple;
-	bh=Q3V//YbZg8/h/78beYdtoq1xUvbkhkNfZvyJd033Ag0=;
+	s=arc-20240116; t=1773831101; c=relaxed/simple;
+	bh=sXHeTCFrpD90P88yW7lbek8HGJ62ZnhzE1iwIXxHDi4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PA8gRKP8GRglgViJ8Bsh7RdXyisfiLbmrLfK/y/NvF3BR9mDMoLAuwrB/SDX3R9sy2kM7sbGLSPYDUmwISrtzMbK9w5bDDociEQ3WgINSfPQ7CKu7Ecggl7c0KJn+LJZut0SHCXv1xNqm/rIMBRUikVqiYBzoIODi/V49lXwcr8=
+	 MIME-Version; b=TdjJW86b4GkUJTOVn3p0OIogsHiTJ93yLPxgB+H/KdjaBHr23SU7esG7bUv8XbR8ce1N4r2McyFryBKn/DhuGm5DjpGp0xPjYXchC0IUj3jr1IIe8qqB4s3L5gU22V8HSK9UkjOYmzNMwb2LKLgQ12j5ZiXWhgyUvPfRuH9KW0c=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1w2oUn-0001WL-F3; Wed, 18 Mar 2026 11:51:25 +0100
+	id 1w2oUn-0001WN-F1; Wed, 18 Mar 2026 11:51:25 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1w2oUn-000tSR-0H;
+	id 1w2oUn-000tSU-0P;
 	Wed, 18 Mar 2026 11:51:25 +0100
 Received: from ore by dude04 with local (Exim 4.98.2)
 	(envelope-from <ore@pengutronix.de>)
-	id 1w2oUn-00000003RIm-01bL;
+	id 1w2oUn-00000003RIw-07Gb;
 	Wed, 18 Mar 2026 11:51:25 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: Rob Herring <robh@kernel.org>,
@@ -43,9 +43,9 @@ Cc: David Jander <david@protonic.nl>,
 	netdev@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH v1 4/7] ARM: dts: stm32: stm32mp15x-mecio1-io: Fix GPIO names typo
-Date: Wed, 18 Mar 2026 11:51:20 +0100
-Message-ID: <20260318105123.819807-5-o.rempel@pengutronix.de>
+Subject: [PATCH v1 5/7] ARM: dts: stm32: stm32mp15x-mecio1-io: Move gpio-line-names to board files
+Date: Wed, 18 Mar 2026 11:51:21 +0100
+Message-ID: <20260318105123.819807-6-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260318105123.819807-1-o.rempel@pengutronix.de>
 References: <20260318105123.819807-1-o.rempel@pengutronix.de>
@@ -63,9 +63,16 @@ X-PTX-Original-Recipient: netdev@vger.kernel.org
 
 From: David Jander <david@protonic.nl>
 
-The reset pins for the LPOUT lines were incorrectly prefixed with "GPOUT"
-instead of "LPOUT" in the gpio-line-names array. Fix these typos so the
-pin names consistently match the LPOUT0-4 signals they belong to.
+Move the gpio-line-names properties out of the common mecio1-io.dtsi file
+and into the specific board dts files.
+
+The pinout originally defined in the common include file belonged to the
+mecio1r0 (Revision 0) hardware. This is moved 1:1 into the
+stm32mp151c-mecio1r0.dts file without any modifications.
+
+A large number of GPIO pins are swapped on the mecio1r1 (Revision 1)
+hardware, so a new, board-specific gpio-line-names mapping is added to
+stm32mp153c-mecio1r1.dts to reflect those hardware changes.
 
 Fixes: 8267753c891c ("ARM: dts: stm32: Add MECIO1 and MECT1S board variants")
 Cc: <stable@vger.kernel.org>
@@ -73,33 +80,248 @@ Signed-off-by: David Jander <david@protonic.nl>
 Co-developed-by: Oleksij Rempel <o.rempel@pengutronix.de>
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- arch/arm/boot/dts/st/stm32mp15x-mecio1-io.dtsi | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/arm/boot/dts/st/stm32mp151c-mecio1r0.dts | 64 +++++++++++++++
+ arch/arm/boot/dts/st/stm32mp153c-mecio1r1.dts | 80 +++++++++++++++++++
+ .../arm/boot/dts/st/stm32mp15x-mecio1-io.dtsi | 63 ---------------
+ 3 files changed, 144 insertions(+), 63 deletions(-)
 
-diff --git a/arch/arm/boot/dts/st/stm32mp15x-mecio1-io.dtsi b/arch/arm/boot/dts/st/stm32mp15x-mecio1-io.dtsi
-index f91b3d1f037b..e50e9ae085e8 100644
---- a/arch/arm/boot/dts/st/stm32mp15x-mecio1-io.dtsi
-+++ b/arch/arm/boot/dts/st/stm32mp15x-mecio1-io.dtsi
-@@ -185,14 +185,14 @@ &gpiod {
- &gpioe {
- 	gpio-line-names = "HPOUT0_RESETN", "HPOUT1", "HPOUT1_ALERTN", "",
- 			  "", "", "HPOUT1_RESETN",
--			  "LPOUT0", "LPOUT0_ALERTN", "GPOUT0_RESETN",
--			  "LPOUT1", "LPOUT1_ALERTN", "GPOUT1_RESETN",
--			  "LPOUT2", "LPOUT2_ALERTN", "GPOUT2_RESETN";
+diff --git a/arch/arm/boot/dts/st/stm32mp151c-mecio1r0.dts b/arch/arm/boot/dts/st/stm32mp151c-mecio1r0.dts
+index 4e795ad42928..06ab77465816 100644
+--- a/arch/arm/boot/dts/st/stm32mp151c-mecio1r0.dts
++++ b/arch/arm/boot/dts/st/stm32mp151c-mecio1r0.dts
+@@ -96,3 +96,67 @@ &ethernet0 {
+ 	assigned-clock-rates = <125000000>; /* Clock PLL3 to 625Mhz in tf-a. */
+ 	st,eth-clk-sel;
+ };
++
++&gpiod {
++	gpio-line-names = "", "", "", "",
++			  "", "", "", "",
++			  "", "", "", "",
++			  "STP_RESETN", "STP_ENABLEN", "HPOUT0", "HPOUT0_ALERTN";
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_hog_d_mecsbc>;
++};
++
++&gpioe {
++	gpio-line-names = "HPOUT0_RESETN", "HPOUT1", "HPOUT1_ALERTN", "",
++			  "", "", "HPOUT1_RESETN",
 +			  "LPOUT0", "LPOUT0_ALERTN", "LPOUT0_RESETN",
 +			  "LPOUT1", "LPOUT1_ALERTN", "LPOUT1_RESETN",
 +			  "LPOUT2", "LPOUT2_ALERTN", "LPOUT2_RESETN";
- };
- 
- &gpiof {
--	gpio-line-names = "LPOUT3", "LPOUT3_ALERTN", "GPOUT3_RESETN",
--			  "LPOUT4", "LPOUT4_ALERTN", "GPOUT4_RESETN",
++};
++
++&gpiof {
 +	gpio-line-names = "LPOUT3", "LPOUT3_ALERTN", "LPOUT3_RESETN",
 +			  "LPOUT4", "LPOUT4_ALERTN", "LPOUT4_RESETN",
- 			  "", "",
- 			  "", "", "", "",
- 			  "", "", "", "";
++			  "", "",
++			  "", "", "", "",
++			  "", "", "", "";
++};
++
++&gpiog {
++	gpio-line-names = "LPOUT5", "LPOUT5_ALERTN", "", "LPOUT5_RESETN",
++			  "", "", "", "",
++			  "", "", "", "",
++			  "", "", "", "";
++};
++
++&gpioh {
++	gpio-line-names = "", "", "", "",
++			  "", "", "", "",
++			  "GPIO0_RESETN", "", "", "",
++			  "", "", "", "";
++};
++
++&gpioi {
++	gpio-line-names = "", "", "", "",
++			  "", "", "", "",
++			  "HPDCM0_SLEEPN", "HPDCM1_SLEEPN", "GPIO1_RESETN", "",
++			  "", "", "", "";
++};
++
++&gpioj {
++	gpio-line-names = "HSIN10", "HSIN11", "HSIN12", "HSIN13",
++			  "HSIN14", "HSIN15", "", "",
++			  "", "", "", "",
++			  "", "RTD_RESETN", "", "";
++};
++
++&gpiok {
++	gpio-line-names = "", "", "HSIN0", "HSIN1",
++			  "HSIN2", "HSIN3", "HSIN4", "HSIN5";
++};
++
++&gpioz {
++	gpio-line-names = "", "", "", "HSIN6",
++			  "HSIN7", "HSIN8", "HSIN9", "";
++};
++
+diff --git a/arch/arm/boot/dts/st/stm32mp153c-mecio1r1.dts b/arch/arm/boot/dts/st/stm32mp153c-mecio1r1.dts
+index d32816093e47..2b3989303cd1 100644
+--- a/arch/arm/boot/dts/st/stm32mp153c-mecio1r1.dts
++++ b/arch/arm/boot/dts/st/stm32mp153c-mecio1r1.dts
+@@ -90,6 +90,86 @@ &clk_hse {
+ 	clock-frequency = <24000000>;
+ };
+ 
++&gpioa {
++	gpio-line-names = "", "", "", "",
++			  "", "", "", "",
++			  "", "", "GPIO1_RESETN", "",
++			  "", "", "", "LPOUT5";
++};
++
++&gpiob {
++	gpio-line-names = "", "", "", "",
++			  "LPOUT4_RESETN", "", "", "",
++			  "", "LPOUT4_ALERTN", "", "",
++			  "", "", "", "";
++};
++
++&gpioc {
++	gpio-line-names = "", "", "", "",
++			  "", "", "", "",
++			  "", "LPOUT4", "", "",
++			  "", "", "", "";
++};
++
++&gpiod {
++	gpio-line-names = "LPOUT2", "", "LPOUT3_RESETN", "",
++			  "LPOUT2_ALERTN", "", "MECIO_ADDR0", "",
++			  "HPOUT1_ALERTN", "HPOUT1_RESETN", "", "",
++			  "", "", "HPOUT0", "HPOUT1";
++};
++
++&gpioe {
++	gpio-line-names = "LPOUT0_RESETN", "", "", "",
++			  "", "LPOUT3", "LPOUT5_ALERTN", "",
++			  "", "", "", "",
++			  "", "", "", "HSIN_RESETN";
++};
++
++&gpiof {
++	gpio-line-names = "LPOUT5_RESETN", "", "", "HPOUT0_ALERTN",
++			  "", "LPOUT1", "", "",
++			  "", "", "", "",
++			  "", "", "", "";
++};
++
++&gpiog {
++	gpio-line-names = "", "", "", "HPOUT0_RESETN",
++			  "", "", "LPOUT3_ALERTN", "",
++			  "", "", "GPIO0_RESETN", "",
++			  "", "", "", "LPOUT2_RESETN";
++};
++
++&gpioh {
++	gpio-line-names = "", "", "", "",
++			  "", "", "", "",
++			  "", "LPOUT0", "", "",
++			  "", "LPOUT0_ALERTN", "STP_ENABLEN", "STP_RESETN";
++};
++
++&gpioi {
++	gpio-line-names = "", "", "", "",
++			  "", "", "", "",
++			  "", "", "SPE_RESETN", "",
++			  "HPDCM0_SLEEPN", "", "", "";
++};
++
++&gpioj {
++	gpio-line-names = "", "", "", "",
++			  "", "", "", "MECIO_ADDR1",
++			  "", "", "", "",
++			  "", "", "", "LPOUT1_RESETN";
++};
++
++&gpiok {
++	gpio-line-names = "", "", "RTD_RESETN", "",
++			  "", "LPOUT1_ALERTN", "", "";
++};
++
++&gpioz {
++	gpio-line-names = "", "", "", "",
++			  "HPDCM1_SLEEPN", "", "", "";
++};
++
+ &m_can1 {
+ 	pinctrl-names = "default", "sleep";
+ 	pinctrl-0 = <&m_can1_pins_b>;
+diff --git a/arch/arm/boot/dts/st/stm32mp15x-mecio1-io.dtsi b/arch/arm/boot/dts/st/stm32mp15x-mecio1-io.dtsi
+index e50e9ae085e8..69a502ec36d4 100644
+--- a/arch/arm/boot/dts/st/stm32mp15x-mecio1-io.dtsi
++++ b/arch/arm/boot/dts/st/stm32mp15x-mecio1-io.dtsi
+@@ -173,69 +173,6 @@ phy0: ethernet-phy@8 {
+ 	};
+ };
+ 
+-&gpiod {
+-	gpio-line-names = "", "", "", "",
+-			  "", "", "", "",
+-			  "", "", "", "",
+-			  "STP_RESETN", "STP_ENABLEN", "HPOUT0", "HPOUT0_ALERTN";
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_hog_d_mecsbc>;
+-};
+-
+-&gpioe {
+-	gpio-line-names = "HPOUT0_RESETN", "HPOUT1", "HPOUT1_ALERTN", "",
+-			  "", "", "HPOUT1_RESETN",
+-			  "LPOUT0", "LPOUT0_ALERTN", "LPOUT0_RESETN",
+-			  "LPOUT1", "LPOUT1_ALERTN", "LPOUT1_RESETN",
+-			  "LPOUT2", "LPOUT2_ALERTN", "LPOUT2_RESETN";
+-};
+-
+-&gpiof {
+-	gpio-line-names = "LPOUT3", "LPOUT3_ALERTN", "LPOUT3_RESETN",
+-			  "LPOUT4", "LPOUT4_ALERTN", "LPOUT4_RESETN",
+-			  "", "",
+-			  "", "", "", "",
+-			  "", "", "", "";
+-};
+-
+-&gpiog {
+-	gpio-line-names = "LPOUT5", "LPOUT5_ALERTN", "", "LPOUT5_RESETN",
+-			  "", "", "", "",
+-			  "", "", "", "",
+-			  "", "", "", "";
+-};
+-
+-&gpioh {
+-	gpio-line-names = "", "", "", "",
+-			  "", "", "", "",
+-			  "GPIO0_RESETN", "", "", "",
+-			  "", "", "", "";
+-};
+-
+-&gpioi {
+-	gpio-line-names = "", "", "", "",
+-			  "", "", "", "",
+-			  "HPDCM0_SLEEPN", "HPDCM1_SLEEPN", "GPIO1_RESETN", "",
+-			  "", "", "", "";
+-};
+-
+-&gpioj {
+-	gpio-line-names = "HSIN10", "HSIN11", "HSIN12", "HSIN13",
+-			  "HSIN14", "HSIN15", "", "",
+-			  "", "", "", "",
+-			  "", "RTD_RESETN", "", "";
+-};
+-
+-&gpiok {
+-	gpio-line-names = "", "", "HSIN0", "HSIN1",
+-			  "HSIN2", "HSIN3", "HSIN4", "HSIN5";
+-};
+-
+-&gpioz {
+-	gpio-line-names = "", "", "", "HSIN6",
+-			  "HSIN7", "HSIN8", "HSIN9", "";
+-};
+-
+ &i2c2 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&i2c2_pins_a>;
 -- 
 2.47.3
 
