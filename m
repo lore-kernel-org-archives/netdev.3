@@ -1,51 +1,58 @@
 Received: from mout-b-112.mailbox.org (mout-b-112.mailbox.org [195.10.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149083E1D03;
-	Thu, 19 Mar 2026 15:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E103A2DBF78;
+	Thu, 19 Mar 2026 15:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.10.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773933183; cv=none; b=nyBREf7ENhLrjs7veh1dPLOa+A+WwaYyrF1O9wkZUSYXYQK6pvLSRwdHOakKggU1AiK867JT6cNIHPzxL6O8PTwbcAHYsdtYn+gNMW8LhtagU7PImR8TOZtL+9zH+f/dcmMPwd6vcC0u6rkxdSQ/xf9jdomsOLXRupGyshoBLNA=
+	t=1773933191; cv=none; b=qepQ1+D6xeY7euh89n1pX29RPLRff2VKVgWnjTvSuf8UV7m1VgmCiKm1vlnsZTXIRvyaNz2C+Cmz3hHUubPEeYziZBs9r7Xb4XKuALmQ7gNcHLkGgQsa48myTNvAb/iiv2yWVY6UGKDf7E8pHilHpeGz+egh9WlQ1NyIUzc2NZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773933183; c=relaxed/simple;
-	bh=l3knlpXWig35oAEjhacW8DPpo0HSc2FU1ReBB6WhSqQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SO3eumcRUP5E/lTe2xuT7UhS8MJyOV7nZote5y4bKxFROTeSwbfFWVDHi662dbXwCwwDfTwN/ohGjP5SqsL7KEoz1Hb08sxuO7WezHeAsNSK+lwpWbfx2MaHuUpxs2Ny3y12LxZQuHpm1CLdq8mILM0x1F6oCNerYoZ+kSLpFTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=X27n+2TN; arc=none smtp.client-ip=195.10.208.42
+	s=arc-20240116; t=1773933191; c=relaxed/simple;
+	bh=2NYDwy/gV7dbV10YVs0Lb78B4af4Gw0dgptem2nEozY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=I31K/OkKG4beUf0xzqHY7LHVxCU7Ri7jCTiKl79zTLBd7gXI2Br5e/RgpymwwuCZqYi5+l43qPoREPfUA5d7lOuP0hPY3sqsch1L0v5Zx4vxRqBDwl4k+/K34RFCwSiMIRqKrwIC/MDTvdiuNqRo8qEzhBKPu+c3fSaxSf8/4Lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=p/84I8wn; arc=none smtp.client-ip=195.10.208.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="X27n+2TN"
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="p/84I8wn"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-b-112.mailbox.org (Postfix) with ESMTPS id 4fc8MN2Kj8zDvHQ;
-	Thu, 19 Mar 2026 16:12:48 +0100 (CET)
+	by mout-b-112.mailbox.org (Postfix) with ESMTPS id 4fc8Mg1NJmzDv9S;
+	Thu, 19 Mar 2026 16:13:03 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
-	s=MBO0001; t=1773933168;
+	s=MBO0001; t=1773933183;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=LSYHq0fS9dsvJLw2Y1zqdx1x9YhuaA0toFBYHS+LrHs=;
-	b=X27n+2TNlYpbPCA7V99KlvOsk8M+oDdn4fPK9ogUwlsMm+L47QRDlZpzykTVJAsnqVgwpY
-	x34qX7oKLbqHDsDq1DXoh+77ShsPyv7md/D8uNhpJFpj8QCphRX6UfBX+cMC1CGKGqUJ3Y
-	5UwyIVMCgO8AaTrKZ3j58DPAo774aT4DWtwhBqjekAsSrtrVkOVrsu8V4el6ElLa8qg7Ro
-	wXqV3GFTcvTtS3J3WWP0amxTKNqsRyTzF8C1OBDO8baLgrmNaMVI8HlUw84GBCzFoIr7TW
-	OLauzLdMp9zL0iS4AaVFAPLj1PN02KEaOcvf+jefhyuFuQsM6DoPYoYgzWiJag==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SndRzQCr+0TV28vMI6neq7lH/2aOabTy4OqIGVFvHHA=;
+	b=p/84I8wnabOFnqFtdXpkV2zqcfTMlzwFVjMKv8Nxy5UQEvdcoaNwSDOTNcCX9lfqKIVMoD
+	WIjpckbaij8ZxffwcbSG/gL/fMQOMxIAtCfB8uy/ir0TP6jvJXSlVfC0RYW70Rwvhh8ded
+	ecAMacrvoX3LXpd2bE91C8u7nVGdZmzt9G1H9UoHr6daPDrnOjXgqJiw6Vr/jsxiNYsrsJ
+	XKw3a5fhHS0f/3ekIbVC4UjAQGS1GY3zlRLdpsC6GmODIMepbTFx4PmjeycKnbAtMRSnh+
+	9evkI7lXYJmoxCqg3H7SOPGCP+g+9FeaqNivThMcyG6OT0LaGBAOygiVAKOlbw==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=none;
+	spf=pass (outgoing_mbo_mout: domain of ralf@mandelbit.com designates 2001:67c:2050:b231:465::102 as permitted sender) smtp.mailfrom=ralf@mandelbit.com
 From: Ralf Lici <ralf@mandelbit.com>
 To: netdev@vger.kernel.org
 Cc: =?UTF-8?q?Daniel=20Gr=C3=B6ber?= <dxld@darkboxed.org>,
 	Ralf Lici <ralf@mandelbit.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
 	Antonio Quartulli <antonio@mandelbit.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [RFC net-next 00/15] Introducing ipxlat: a stateless IPv4/IPv6 translation device
-Date: Thu, 19 Mar 2026 16:12:09 +0100
-Message-ID: <20260319151230.655687-1-ralf@mandelbit.com>
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: [RFC net-next 03/15] ipxlat: add packet metadata control block helpers
+Date: Thu, 19 Mar 2026 16:12:12 +0100
+Message-ID: <20260319151230.655687-4-ralf@mandelbit.com>
+In-Reply-To: <20260319151230.655687-1-ralf@mandelbit.com>
+References: <20260319151230.655687-1-ralf@mandelbit.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,222 +61,308 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4fc8Mg1NJmzDv9S
 
-Hi all,
+Add the per-skb control-block layout and shared packet helper routines
+used by translation stages introducing common metadata bookkeeping
+(offset rebasing and invariant checks) plus protocol-fragment helper
+utilities.
 
-this RFC series introduces ipxlat, a virtual netdevice for stateless
-packet translation between IPv6 and IPv4.
-
-This stateless IP/ICMP translation (SIIT, RFC 7915) device is a building
-block ultimately allowing suitably configured Linux systems to cover all
-IPv6<>IPv4 connectivity scenarios outlined in RFC 6144, "Framework for
-IPv4/IPv6 Translation".
-
-While the packet translation function implemented in ipxlat itself is
-stateless, building stateful NAT64 translators is easy in combination
-with a sandwich of simple nft SNAT and MASQUERADE rules. Even SIIT-DC
-(RFC 7755 / 7756) ER/BR functions including EAMT (RFC 7757) are thought
-to be possible with suitable nft/iptables configuration, but this needs
-further testing.
-
-The series contains patches covering driver core, translation paths,
-netlink API, selftests and documentation.
-
-See Documentation/networking/ipxlat.rst for more details.
-
-
-== Architecture ==
-
-ipxlat sits at a boundary between two kernel models. It is exposed as a
-netdevice, so it has device semantics such as MTU and netdev statistics.
-However, most of its processing falls within protocol translation logic.
-The implementation therefore uses netdevice hooks for integration and
-lifecycle, while translation behavior follows RFC rules and reuses
-existing IP stack helpers for routing, fragmentation and checksum
-handling.
-
-Feedback on the netdevice integration model is welcome, yet this series
-intentionally keeps scope limited to a self-contained module to make
-review and validation tractable.
-
-ipxlat devices are created and destroyed via rtnl link operations.
-Per-device translation parameters are configured through a generic
-netlink family named ipxlat.
-
-No generic networking core behavior is changed.
-
-
-== RFCs ==
-
-The ipxlat packet translation code considers:
-
-- RFC 7915 - Stateless IP/ICMP translation (SIIT) behavior
-
-- RFC 6052 - Address mapping for xlat-prefix sizes between /32 and /96
-
-- RFC 6791 - Although we use standard ICMP source-address selection
-
-- RFC 4884 - Translation painstakingly handles ICMP extensions
-
-- RFC 5837 - Interface Information Objects from RFC 6791 are not
-  implemented in this series and are planned as follow-up work
-
-
-== Implementation ==
-
-We enforce a strict processing contract: packet validation is done once,
-then translation runs on that validated layout. When translation cannot
-continue, the packet is either dropped or we switch to the ICMP error
-emission path.
-
-Control-plane updates are serialized, while the data path reads
-configuration locklessly to keep per-packet overhead low.
-
-During live reconfiguration, readers may transiently observe mixed old
-and new values; this may cause a small number of packet drops while
-configuration is being changed.
-
-This tradeoff is intentional to keep the fast path simple and
-lightweight.
-
-
-== Selftests ==
-
-Selftests are added under tools/testing/selftests/net/ipxlat and cover
-ICMP, TCP and UDP translation in both directions, large-packet and
-fragmentation-sensitive paths, ICMP error translation and PMTUD-related
-emission paths.
-
-
-== Points of Discussion ==
-
- - Tighter stack integration?
-
-
-== Work Planned for v1 ==
-
- - icmp: Simplify FRAG_NEEDED / PKT_TOOBIG MTU calculation.
-
- - translation: Prevent skb loops without TTL/HLIM decrement?
-
- - netdevice: Decide on hardcoding MTU = 0xffff - $xlat_overhead
-
- - UDPv4 defrag and csum recalc for NAT64 (RFC 6146 Sec 3.4.) "For
-   incoming IPv4 packets carrying UDP packets with a zero checksum ...
-   MUST calculate the checksum"
-
-
-== Acknowledgements ==
-
-The ipxlat translation code is based on the Jool project in order to
-benefit from years of accumulated experience and its golden-packet
-test-suite.
-
-Thanks to Jool's Principal Author, Alberto Leiva Popper, for developing
-and maintaining Jool since IPv6 translation was last in-vogue and
-writing the initial "joolif" netdevice prototype our work was able to
-start from.
-
-Thanks to NLnet's NGI0 Core Fund for supporting development of the
-ipxlat driver.
-
-
-Thanks for your review,
-
-Ralf Lici
-Mandelbit SRL
-
+Signed-off-by: Ralf Lici <ralf@mandelbit.com>
 ---
-
-Daniel Gröber (1):
-  Documentation: networking: add ipxlat translator guide
-
-Ralf Lici (14):
-  drivers/net: add ipxlat netdevice skeleton and build plumbing
-  ipxlat: add RFC 6052 address conversion helpers
-  ipxlat: add packet metadata control block helpers
-  ipxlat: add IPv4 packet validation path
-  ipxlat: add IPv6 packet validation path
-  ipxlat: add transport checksum and offload helpers
-  ipxlat: add 4to6 and 6to4 TCP/UDP translation helpers
-  ipxlat: add translation engine and dispatch core
-  ipxlat: emit translator-generated ICMP errors on drop
-  ipxlat: add 4to6 pre-fragmentation path
-  ipxlat: add ICMP informational translation paths
-  ipxlat: add ICMP error translation and quoted-inner handling
-  ipxlat: add netlink control plane and uapi
-  selftests: net: add ipxlat coverage
-
- Documentation/netlink/specs/ipxlat.yaml       |  97 +++
- Documentation/networking/ipxlat.rst           | 190 +++++
- drivers/net/Kconfig                           |  13 +
- drivers/net/Makefile                          |   1 +
- drivers/net/ipxlat/Makefile                   |  17 +
- drivers/net/ipxlat/address.c                  | 132 ++++
- drivers/net/ipxlat/address.h                  |  59 ++
- drivers/net/ipxlat/dispatch.c                 | 263 ++++++
- drivers/net/ipxlat/dispatch.h                 |  78 ++
- drivers/net/ipxlat/icmp.h                     |  45 ++
- drivers/net/ipxlat/icmp_46.c                  | 552 +++++++++++++
- drivers/net/ipxlat/icmp_64.c                  | 531 +++++++++++++
- drivers/net/ipxlat/ipxlpriv.h                 |  53 ++
- drivers/net/ipxlat/main.c                     | 148 ++++
- drivers/net/ipxlat/main.h                     |  27 +
- drivers/net/ipxlat/netlink-gen.c              |  71 ++
- drivers/net/ipxlat/netlink-gen.h              |  31 +
- drivers/net/ipxlat/netlink.c                  | 348 ++++++++
- drivers/net/ipxlat/netlink.h                  |  27 +
- drivers/net/ipxlat/packet.c                   | 747 ++++++++++++++++++
- drivers/net/ipxlat/packet.h                   | 166 ++++
- drivers/net/ipxlat/translate_46.c             | 256 ++++++
- drivers/net/ipxlat/translate_46.h             |  84 ++
- drivers/net/ipxlat/translate_64.c             | 206 +++++
- drivers/net/ipxlat/translate_64.h             |  56 ++
- drivers/net/ipxlat/transport.c                | 401 ++++++++++
- drivers/net/ipxlat/transport.h                | 122 +++
- include/uapi/linux/ipxlat.h                   |  48 ++
- tools/testing/selftests/net/ipxlat/.gitignore |   1 +
- tools/testing/selftests/net/ipxlat/Makefile   |  25 +
- .../selftests/net/ipxlat/ipxlat_data.sh       |  70 ++
- .../selftests/net/ipxlat/ipxlat_frag.sh       |  70 ++
- .../selftests/net/ipxlat/ipxlat_icmp_err.sh   |  54 ++
- .../selftests/net/ipxlat/ipxlat_lib.sh        | 273 +++++++
- .../net/ipxlat/ipxlat_udp4_zero_csum_send.c   | 119 +++
- 35 files changed, 5381 insertions(+)
- create mode 100644 Documentation/netlink/specs/ipxlat.yaml
- create mode 100644 Documentation/networking/ipxlat.rst
- create mode 100644 drivers/net/ipxlat/Makefile
- create mode 100644 drivers/net/ipxlat/address.c
- create mode 100644 drivers/net/ipxlat/address.h
- create mode 100644 drivers/net/ipxlat/dispatch.c
- create mode 100644 drivers/net/ipxlat/dispatch.h
- create mode 100644 drivers/net/ipxlat/icmp.h
- create mode 100644 drivers/net/ipxlat/icmp_46.c
- create mode 100644 drivers/net/ipxlat/icmp_64.c
- create mode 100644 drivers/net/ipxlat/ipxlpriv.h
- create mode 100644 drivers/net/ipxlat/main.c
- create mode 100644 drivers/net/ipxlat/main.h
- create mode 100644 drivers/net/ipxlat/netlink-gen.c
- create mode 100644 drivers/net/ipxlat/netlink-gen.h
- create mode 100644 drivers/net/ipxlat/netlink.c
- create mode 100644 drivers/net/ipxlat/netlink.h
+ drivers/net/ipxlat/Makefile |   1 +
+ drivers/net/ipxlat/packet.c |  99 +++++++++++++++++++++
+ drivers/net/ipxlat/packet.h | 166 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 266 insertions(+)
  create mode 100644 drivers/net/ipxlat/packet.c
  create mode 100644 drivers/net/ipxlat/packet.h
- create mode 100644 drivers/net/ipxlat/translate_46.c
- create mode 100644 drivers/net/ipxlat/translate_46.h
- create mode 100644 drivers/net/ipxlat/translate_64.c
- create mode 100644 drivers/net/ipxlat/translate_64.h
- create mode 100644 drivers/net/ipxlat/transport.c
- create mode 100644 drivers/net/ipxlat/transport.h
- create mode 100644 include/uapi/linux/ipxlat.h
- create mode 100644 tools/testing/selftests/net/ipxlat/.gitignore
- create mode 100644 tools/testing/selftests/net/ipxlat/Makefile
- create mode 100755 tools/testing/selftests/net/ipxlat/ipxlat_data.sh
- create mode 100755 tools/testing/selftests/net/ipxlat/ipxlat_frag.sh
- create mode 100755 tools/testing/selftests/net/ipxlat/ipxlat_icmp_err.sh
- create mode 100644 tools/testing/selftests/net/ipxlat/ipxlat_lib.sh
- create mode 100644 tools/testing/selftests/net/ipxlat/ipxlat_udp4_zero_csum_send.c
 
+diff --git a/drivers/net/ipxlat/Makefile b/drivers/net/ipxlat/Makefile
+index b6367dedd78e..90dbc0489fa2 100644
+--- a/drivers/net/ipxlat/Makefile
++++ b/drivers/net/ipxlat/Makefile
+@@ -6,3 +6,4 @@ obj-$(CONFIG_IPXLAT) := ipxlat.o
+ 
+ ipxlat-objs += main.o
+ ipxlat-objs += address.o
++ipxlat-objs += packet.o
+diff --git a/drivers/net/ipxlat/packet.c b/drivers/net/ipxlat/packet.c
+new file mode 100644
+index 000000000000..f82c375255f3
+--- /dev/null
++++ b/drivers/net/ipxlat/packet.c
+@@ -0,0 +1,99 @@
++// SPDX-License-Identifier: GPL-2.0
++/*  IPXLAT - Stateless IP/ICMP Translation (SIIT) virtual device driver
++ *
++ *  Copyright (C) 2024- Alberto Leiva Popper <ydahhrk@gmail.com>
++ *  Copyright (C) 2026- Mandelbit SRL
++ *  Copyright (C) 2026- Daniel Gröber <dxld@darkboxed.org>
++ *
++ *  Author:	Alberto Leiva Popper <ydahhrk@gmail.com>
++ *		Antonio Quartulli <antonio@mandelbit.com>
++ *		Daniel Gröber <dxld@darkboxed.org>
++ *		Ralf Lici <ralf@mandelbit.com>
++ */
++
++#include "packet.h"
++
++/* Shift cached skb cb offsets by the L3 header delta after in-place rewrite.
++ *
++ * Translation may replace only the outer L3 header size (4->6 or 6->4), while
++ * cached offsets were computed before rewrite. Rebasing applies the same delta
++ * to all cached absolute offsets so they still point to the same logical
++ * fields in the modified skb.
++ *
++ * This helper only guards against underflow (< 0). Relative ordering checks
++ * are done by ipxlat_cb_offsets_valid.
++ */
++int ipxlat_cb_rebase_offsets(struct ipxlat_cb *cb, int delta)
++{
++	int off;
++
++	off = cb->l4_off + delta;
++	if (unlikely(off < 0))
++		return -EINVAL;
++	cb->l4_off = off;
++
++	off = cb->payload_off + delta;
++	if (unlikely(off < 0))
++		return -EINVAL;
++	cb->payload_off = off;
++
++	if (unlikely(cb->is_icmp_err)) {
++		off = cb->inner_l3_offset + delta;
++		if (unlikely(off < 0))
++			return -EINVAL;
++		cb->inner_l3_offset = off;
++
++		off = cb->inner_l4_offset + delta;
++		if (unlikely(off < 0))
++			return -EINVAL;
++		cb->inner_l4_offset = off;
++
++		if (cb->inner_fragh_off) {
++			off = cb->inner_fragh_off + delta;
++			if (unlikely(off < 0))
++				return -EINVAL;
++			cb->inner_fragh_off = off;
++		}
++	}
++
++	return 0;
++}
++
++#ifdef CONFIG_DEBUG_NET
++/* Verify ordering/range relations between cached skb cb offsets.
++ *
++ * Unlike ipxlat_cb_rebase_offsets, this checks structural invariants:
++ * l4 <= payload, inner_l3 >= payload, inner_l3 <= inner_l4, and fragment
++ * header (when present) located inside inner L3 area before inner L4.
++ */
++bool ipxlat_cb_offsets_valid(const struct ipxlat_cb *cb)
++{
++	if (unlikely(cb->payload_off < cb->l4_off))
++		return false;
++
++	if (unlikely(cb->is_icmp_err)) {
++		if (unlikely(cb->inner_l3_offset < cb->payload_off))
++			return false;
++		if (unlikely(cb->inner_l4_offset < cb->inner_l3_offset))
++			return false;
++		if (unlikely(cb->inner_fragh_off &&
++			     cb->inner_fragh_off < cb->inner_l3_offset))
++			return false;
++		if (unlikely(cb->inner_fragh_off &&
++			     cb->inner_fragh_off >= cb->inner_l4_offset))
++			return false;
++	}
++
++	return true;
++}
++#endif
++
++int ipxlat_v4_validate_skb(struct ipxlat_priv *ipxl, struct sk_buff *skb)
++{
++	return -EOPNOTSUPP;
++}
++
++int ipxlat_v6_validate_skb(struct sk_buff *skb)
++{
++	return -EOPNOTSUPP;
++}
+diff --git a/drivers/net/ipxlat/packet.h b/drivers/net/ipxlat/packet.h
+new file mode 100644
+index 000000000000..f39c25987940
+--- /dev/null
++++ b/drivers/net/ipxlat/packet.h
+@@ -0,0 +1,166 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*  IPXLAT - Stateless IP/ICMP Translation (SIIT) virtual device driver
++ *
++ *  Copyright (C) 2024- Alberto Leiva Popper <ydahhrk@gmail.com>
++ *  Copyright (C) 2026- Mandelbit SRL
++ *  Copyright (C) 2026- Daniel Gröber <dxld@darkboxed.org>
++ *
++ *  Author:	Alberto Leiva Popper <ydahhrk@gmail.com>
++ *		Antonio Quartulli <antonio@mandelbit.com>
++ *		Daniel Gröber <dxld@darkboxed.org>
++ *		Ralf Lici <ralf@mandelbit.com>
++ */
++
++#ifndef _NET_IPXLAT_PACKET_H_
++#define _NET_IPXLAT_PACKET_H_
++
++#include <net/ip.h>
++
++#include "ipxlpriv.h"
++
++/**
++ * struct ipxlat_cb - per-skb parser and control metadata stored in skb->cb
++ * @l4_off: outer L4 header offset
++ * @payload_off: outer payload offset
++ * @fragh_off: outer IPv6 Fragment Header offset, or 0 if absent
++ * @inner_l3_offset: quoted inner L3 offset for ICMP errors
++ * @inner_l4_offset: quoted inner L4 offset for ICMP errors
++ * @inner_fragh_off: quoted inner IPv6 Fragment Header offset, or 0
++ * @udp_zero_csum_len: outer UDP length used for 4->6 checksum synthesis
++ * @frag_max_size: pre-fragment payload cap for ip_do_fragment
++ * @l4_proto: outer L4 protocol (or nexthdr for IPv6)
++ * @inner_l4_proto: quoted inner L4 protocol
++ * @l3_hdr_len: outer L3 header length including extension headers
++ * @inner_l3_hdr_len: quoted inner L3 header length
++ * @is_icmp_err: packet is ICMP error and carries quoted inner packet
++ * @emit_icmp_err: datapath must emit translator-generated ICMP on drop
++ * @icmp_err: ICMP type/code/info cached for deferred emission
++ * @icmp_err.type: ICMP type to emit
++ * @icmp_err.code: ICMP code to emit
++ * @icmp_err.info: ICMP auxiliary info (e.g. pointer/MTU)
++ */
++struct ipxlat_cb {
++	u16 l4_off;
++	u16 payload_off;
++	u16 fragh_off;
++	u16 inner_l3_offset;
++	u16 inner_l4_offset;
++	u16 inner_fragh_off;
++	/* L4 span length (UDP header + payload) for outer IPv4 UDP packets
++	 * arriving with checksum 0.
++	 */
++	u16 udp_zero_csum_len;
++	u16 frag_max_size;
++	u8 l4_proto;
++	u8 inner_l4_proto;
++	u8 l3_hdr_len;
++	u8 inner_l3_hdr_len;
++	bool is_icmp_err;
++	bool emit_icmp_err;
++	struct {
++		u8 type;
++		u8 code;
++		u32 info;
++	} icmp_err;
++};
++
++/**
++ * ipxlat_skb_cb - return ipxlat private control block in skb->cb
++ * @skb: skb carrying ipxlat metadata
++ *
++ * Return: pointer to &struct ipxlat_cb stored in the control buffer of @skb.
++ */
++static inline struct ipxlat_cb *ipxlat_skb_cb(const struct sk_buff *skb)
++{
++	BUILD_BUG_ON(sizeof(struct ipxlat_cb) > sizeof(skb->cb));
++	return (struct ipxlat_cb *)(skb->cb);
++}
++
++static inline unsigned int ipxlat_skb_datagram_len(const struct sk_buff *skb)
++{
++	return skb->len - skb_transport_offset(skb);
++}
++
++static inline u8 ipxlat_get_ipv6_tclass(const struct ipv6hdr *hdr)
++{
++	return (hdr->priority << 4) | (hdr->flow_lbl[0] >> 4);
++}
++
++static inline u16 ipxlat_get_frag6_offset(const struct frag_hdr *hdr)
++{
++	return be16_to_cpu(hdr->frag_off) & 0xFFF8U;
++}
++
++static inline u16 ipxlat_get_frag4_offset(const struct iphdr *hdr)
++{
++	return (be16_to_cpu(hdr->frag_off) & IP_OFFSET) << 3;
++}
++
++static inline bool ipxlat_is_first_frag6(const struct frag_hdr *hdr)
++{
++	return hdr ? (ipxlat_get_frag6_offset(hdr) == 0) : true;
++}
++
++static inline bool ipxlat_is_first_frag4(const struct iphdr *hdr)
++{
++	return !(hdr->frag_off & htons(IP_OFFSET));
++}
++
++static inline __be16 ipxlat_build_frag6_offset(u16 frag_offset, bool mf)
++{
++	return cpu_to_be16((frag_offset & 0xFFF8U) | mf);
++}
++
++static inline __be16
++ipxlat_build_frag4_offset(bool df, bool mf, u16 frag_offset)
++{
++	return cpu_to_be16((df ? (1U << 14) : 0) | (mf ? (1U << 13) : 0) |
++			   (frag_offset >> 3));
++}
++
++/**
++ * ipxlat_cb_rebase_offsets - shift cached cb offsets after skb relayout
++ * @cb: parsed packet metadata
++ * @delta: signed byte delta applied to cached offsets
++ *
++ * Return: 0 on success, negative errno if rebased offsets would underflow.
++ */
++int ipxlat_cb_rebase_offsets(struct ipxlat_cb *cb, int delta);
++#ifdef CONFIG_DEBUG_NET
++/**
++ * ipxlat_cb_offsets_valid - validate monotonicity and bounds of cb offsets
++ * @cb: parsed packet metadata
++ *
++ * Return: true if cached offsets are internally consistent.
++ */
++bool ipxlat_cb_offsets_valid(const struct ipxlat_cb *cb);
++#else
++static inline bool ipxlat_cb_offsets_valid(const struct ipxlat_cb *cb)
++{
++	return true;
++}
++#endif
++
++/**
++ * ipxlat_v4_validate_skb - validate and summarize IPv4 packet into skb->cb
++ * @ipxlat: translator private context
++ * @skb: packet to validate
++ *
++ * Populates &struct ipxlat_cb and may mark translator-generated ICMP action on
++ * failure paths.
++ *
++ * Return: 0 on success, negative errno on validation failure.
++ */
++int ipxlat_v4_validate_skb(struct ipxlat_priv *ipxlat, struct sk_buff *skb);
++
++/**
++ * ipxlat_v6_validate_skb - validate and summarize IPv6 packet into skb->cb
++ * @skb: packet to validate
++ *
++ * Populates &struct ipxlat_cb for subsequent 6->4 translation.
++ *
++ * Return: 0 on success, negative errno on validation failure.
++ */
++int ipxlat_v6_validate_skb(struct sk_buff *skb);
++
++#endif /* _NET_IPXLAT_PACKET_H_ */
 -- 
 2.53.0
 
