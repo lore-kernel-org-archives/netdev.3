@@ -1,96 +1,71 @@
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374503ECBED;
-	Thu, 19 Mar 2026 15:59:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E343ED5A9;
+	Thu, 19 Mar 2026 16:01:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773935992; cv=none; b=SlLIMfhl4Q1OCazD1NXSiYh3YQlrbFpQTtvhoFYQnsS7Q7AuIoM6qchdfzJQlOHX4jRqNLFOGSKbph2U4mSapYd8jYCpk+1JCoBRvNY3U9/ZS8YIKft0fMwRQmcJvr0UwPkNlo0R8HwfrQisMHbOKUqjrcmLpG0sSQdACAhiTzE=
+	t=1773936067; cv=none; b=p3C4LEK+ibEzStmgHA46lmW2dwx1Fny4uUzFOY8XoSoquhYTqJ75+2xYZmnysFFL1xJ3Krm2kcwDx+MFsdeUC1MX8CeV2mOF5fvadDMUdROPoU5/1p7rOYUHl8U6OnlEtOp0lO+ucJ1+DhB2EIgco2za8ygtLjtLIP6o2LMNW6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773935992; c=relaxed/simple;
-	bh=ZIbL8O3aZl5ul6YYE2WhB6DNFvoF5FLE6NgalzEmeKE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ovBytAcQU81Odz50wXsKZ91SOwi4wC3xT9MlRVU2QUB7ljXS8l4UfH01OfNBgBkjunItegTBATVt7ZlErzcL81ngaylqLIUO6zaTYA9MCkbbr/EsuBVHG+ghjqpPNfFKstJywR2IznmKi4dP3chm1WNp9WYdG0YyCYUCTU7QloQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=gdFgbrAo; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+	s=arc-20240116; t=1773936067; c=relaxed/simple;
+	bh=8jq/yXwyQLcJr1s2GokimrUi6kKgAOf8zIS7eLoBb50=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=j0lDuxrBNgzuqd9apkm1xdh3eNd4XRgA7D8sVEiU9fCJNTdeJDQklGKLy3jUQ9UVQ48R35Eg0VV6JQB7/wFAFiS5W5r95nxlXhb7EzfwWNy8k+yOmxcwoLRuy2+qdcU3WUEzW6KP5Vp9YoJiB0QbCfb6qNsbwdlw+gRrsYJNrD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hm+mXVYv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="gdFgbrAo"
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id AB7ADA1F50;
-	Thu, 19 Mar 2026 16:59:37 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=mail; bh=IIVPZ8hHZTMlGdVC1NhCotK5Ln5lWFWOjoay+zBfjxM=; b=
-	gdFgbrAoXJzIWTJ4zcwXiGK1MpldNHCafm5jGTfYjeOlXgYzrI8GB52esmqjoHG8
-	3ssWuOH1AZosk81LIUAknSneePV1rHZyjJdMGPk4wg8IXLAw+kVwQbE9nAGz20u/
-	CWzQSOrGUwdKQUuV6SJzUB38Zum8HXd/ZfJC52t8KMLQFOiG7Tn23PrCH2ZMCms5
-	7t33nsQe7H4vJixOqaNqoDr1JcavkPanf4Yx2HHkdsFMMkWYloDUGRKORQYJk5DU
-	Zv62pZm/liEbTiOPjuUmCRJunhnN6fgIXtexTqqA8p6zh5Wal9hI+kEi+dRU/EKA
-	nYVUkLsQOPer/fvJB0FKpYTbQoQ82v97dvUyAJFz636+hOe4ms4FY14JS+uFEsos
-	mCJSVMtbIIwXpK1rgXlnP2eotFvGkjHk74KhS/xmoMMhgfxkWcFMMYTHLe42tKJK
-	5DueDv8+N+BVXq8oACd4cqVKJ0L3uG6iYPYlIqBZPlStNsC6KKavmF25ctzv1Hue
-	n7aYsIDGXfwyHoxHG0DX47q/qGMvMp96OWYXsZm96WDMA99iP22HXPagCkUJDJPK
-	aHi/0VFkRvIE05nEnEjiuP1EYuomaYs+1F5c9J61G5La0NylRmoi/x+vf4IVIz01
-	TsduB3US2HBv3JqFpsF++ULb8EYQOseRNGYoLO+38xk=
-From: Buday Csaba <buday.csaba@prolan.hu>
-To: Wei Fang <wei.fang@nxp.com>, Frank Li <frank.li@nxp.com>, Shenwei Wang
-	<shenwei.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Richard Cochran
-	<richardcochran@gmail.com>, =?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?=
-	<bence98@sch.bme.hu>, Francesco Dolcini <francesco.dolcini@toradex.com>,
-	<imx@lists.linux.dev>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: Buday Csaba <buday.csaba@prolan.hu>
-Subject: [PATCH net v2 1/1] net: fec: fix the PTP periodic output sysfs interface
-Date: Thu, 19 Mar 2026 16:59:34 +0100
-Message-ID: <7012fbf90b844083d5fa7d764ed6372fe0288157.1773928309.git.buday.csaba@prolan.hu>
-X-Mailer: git-send-email 2.39.5
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hm+mXVYv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1597FC19424;
+	Thu, 19 Mar 2026 16:01:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773936066;
+	bh=8jq/yXwyQLcJr1s2GokimrUi6kKgAOf8zIS7eLoBb50=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Hm+mXVYvPq/4MoW+Wmvz8DS3mw+oHfIf3GozQsI69H0lje4KoYQM+aVG9xyQx2gi/
+	 oeE8vWcTjFZINYAoz4H8N+iy9cATpi+RaCX1zKnLJLVXqxbIGfokUjsI0lAdS0ANVH
+	 a1/XeK0OYqneZu379DvM/TSblCJ+HQI2vn/fTDCiI9nR15eXLGEy65tKoTPv6roK0Z
+	 xxSPatRf8CYVK8PwzkZPcIzkJH7niB9r0aeQZDHMviIZRSvYqKZ8pKL3LDsQ7VIF1d
+	 i4aiJIrSx4TVCekvDDxVT6XYaXd3y2YDvylBghQmThNZGLoyyKqKRQ03MWr+rbJBQC
+	 UO+/XzPoyP71g==
+Date: Thu, 19 Mar 2026 09:01:05 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Hangbin Liu <liuhangbin@gmail.com>
+Cc: Paolo Abeni <pabeni@redhat.com>, Jay Vosburgh <jv@jvosburgh.net>, Andrew
+ Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jiri Pirko <jiri@resnulli.us>, Nikolay
+ Aleksandrov <razor@blackwall.org>, Ido Schimmel <idosch@nvidia.com>, Simon
+ Horman <horms@kernel.org>, Sabrina Dubroca <sd@queasysnail.net>, Sridhar
+ Samudrala <sridhar.samudrala@intel.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, bridge@lists.linux.dev
+Subject: Re: [PATCH net-next v3 0/5] net: centralize master device offload
+ feature computation
+Message-ID: <20260319090105.3211f6dd@kernel.org>
+In-Reply-To: <337a938c-8a03-43f8-8402-745020185b37@redhat.com>
+References: <20260316-offload_compute-v3-0-a5d4a07d86d3@gmail.com>
+	<337a938c-8a03-43f8-8402-745020185b37@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1773935977;VERSION=8008;MC=505402051;ID=100136;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
-X-ESET-Antispam: OK
-X-EsetResult: clean, is OK
-X-EsetId: 37303A2998FD5150627D6A
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-When the PPS channel configuration was implemented, the number of
-supported periodic outputs (`n_per_out`) was left at 1.
+On Thu, 19 Mar 2026 10:52:34 +0100 Paolo Abeni wrote:
+> On 3/16/26 5:26 AM, Hangbin Liu wrote:
+> > Currently, master devices (bonding, bridge, team) manually call
+> > netdev_compute_master_upper_features() scattered throughout their port
+> > add/remove operations. This approach requires each driver to remember
+> > to update features at the right times and leads to code duplication.
+> > 
+> > The series adds a new ndo_update_offloads callback that is automatically
+> > invoked during feature updates when upper/lower device relationships change.
+> > This centralizes the feature computation flow and removes the burden
+> > from individual drivers.  
+> 
+> I'm sorry for the late feedback, but I think the driver cleanup and
+> simplification is not worthy the core complexity and the new NDO added.
 
-This prohibits using channels 1..3 from the sysfs interface, since
-period_store() rejects channel numbers greater than `n_per_out`.
-
-Fix by increasing `n_per_out` to the number of channels supported
-by the hardware.
-
-Fixes: 566c2d83887f ("net: fec: make PPS channel configurable")
-Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
----
- drivers/net/ethernet/freescale/fec_ptp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index 4b7bad9a485d..1a7aa280e7f6 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -756,7 +756,7 @@ void fec_ptp_init(struct platform_device *pdev, int irq_idx)
- 	fep->ptp_caps.max_adj = 250000000;
- 	fep->ptp_caps.n_alarm = 0;
- 	fep->ptp_caps.n_ext_ts = 0;
--	fep->ptp_caps.n_per_out = 1;
-+	fep->ptp_caps.n_per_out = 4;
- 	fep->ptp_caps.n_pins = 0;
- 	fep->ptp_caps.pps = 1;
- 	fep->ptp_caps.adjfine = fec_ptp_adjfine;
-
-base-commit: 8a63baadf08453f66eb582fdb6dd234f72024723
--- 
-2.39.5
-
-
++1 FWIW, I didn't want to be negative but I felt the same way..
+We are always one step away from an inf loop propagating the features
+it's a delicate space :S
