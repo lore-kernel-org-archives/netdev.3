@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CDF440DFCA;
-	Thu, 19 Mar 2026 03:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0060840DFCA;
+	Thu, 19 Mar 2026 03:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773889820; cv=none; b=ElhqU8sslg7FS5rTCmlKc7NZHg/JySVKkAv+6ZuAwJt8Mdj06U+okkP7yr2tkZYUedcQ031R1dq3fURzZTMHUxvoEmqBiHOMy03K4m5/qkovmXEx7bt09e9/O1q0bU814FgXl5GvhVFZsluLvKdxBsJQKBcK4KryeECeGCZ55RA=
+	t=1773889822; cv=none; b=pzR59ED4NCrPys9+bH3QFZyYzFDCSs6wxm5fA4606NmJ2ivOz3kL8MUeNb9zklxNUA8DU30B9IUmD32iffe8hrqFVPeTkvWmT8D2v10/Mu34+pEwtopBneQb1MNVZw8yJ1kx7fO1LgEhYxjnXZktPkpVVoWxpf2fMhXhSnZIw20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773889820; c=relaxed/simple;
-	bh=zrtGPBlmwv3bHJ0dKnfcrKQ9djenXXqNcDoZSmgUT+s=;
+	s=arc-20240116; t=1773889822; c=relaxed/simple;
+	bh=pbM2WXvmOAdhLGbFMYG5y2e9R+cxexczvKiZWhcVPNg=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=rdyGt0+j0SM8Xbi3jY10yaqCHcrPT4tAhURzJRCpgO5IkSfrRHdNcZrXVd98P46fxtN1S1Wu8Fa0CmuT6ECRhI/WW6mzhtFgVRMLxTV1ECYtGy5liyiMsmk3G2GBYo3vkl9ngI5qeYNUFZscR2BlSBNfrAi9JFxskLdmH3aMmEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GOei5mc5; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=pHJ9SysnZ4QHL7dT0ipfdAs+Ta5oK6Vwl2wMRjTEOhl1YPga4AouAJqdEd25GP9x0rW+xNAJKadCa1u0K3+REbtuVZLAlkZSItkdUmZhXTmepXQGN9k37jDFkN2KJ/ygtyv+QPkG4mlAkqKTEsQq0SkwwAmr8ahoq4tQPa1DRzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oKEH/AbN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GOei5mc5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 408BCC19421;
-	Thu, 19 Mar 2026 03:10:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oKEH/AbN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE73C19421;
+	Thu, 19 Mar 2026 03:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773889820;
-	bh=zrtGPBlmwv3bHJ0dKnfcrKQ9djenXXqNcDoZSmgUT+s=;
+	s=k20201202; t=1773889821;
+	bh=pbM2WXvmOAdhLGbFMYG5y2e9R+cxexczvKiZWhcVPNg=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=GOei5mc5gT2c9BwbaIa8RDhR6gFhY9dA1NaIxaUBJKtjAtvC7k9gryvInaaZdHrnU
-	 6L3osodVwZgaP7iziiEK6GotFJeoBTrZSIyjzaTjwCsBAc1fw66GW4DDF9/uWVFkZK
-	 B3MeJ2K8Ts3S0s+YdPOeL8iIFA7B+0fDpOQ/bDaMxrPhCvj1eA2e8gQq94qeY7V720
-	 0bnwdsU+jmxMN1ShVUCl3qbLWuZOMXWf9CjR8uNBjxokyvHK+1GoqoU+vAHtYqaW+3
-	 tAg5y/uh8rEEGNgLZUKn4fC3LcnecEV0iZi7Cb/aR8PvUOEVn3dtCU7ePMN8SJh5Me
-	 xcd3MQSVuHRpg==
+	b=oKEH/AbNl2h4OnelcKZUr+PEr9tI69lZCcn8IwZran9g/MhS93aCbVYOz4MmHMAWn
+	 Y8LB9Moue/E1/WmY5KGjhLB3taD0Aedp2xsCyek8rX1Bs6X0adO+MIl7hw8i3G7tsj
+	 1o6ooxD8ngeuWaDmwjgqh4JTk8VccO9ABrJkSeqbOA0oBAgxY9IB9iO6VQ6ZLob13q
+	 CVQHDEIsVwkw31wslY5hHhZAetvqYUHXnQfdLJXdAnaZQxpzmqYA3MasGHBQQgNaYL
+	 fN5GX6xCmuNxgx4I3V+N5s1QzAbFtZI19qTWJSsCYY6HouBqDYfnlEZao4U+BZ3o+s
+	 amptlaVABt3Yg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA1503808200;
-	Thu, 19 Mar 2026 03:10:12 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FE573808200;
+	Thu, 19 Mar 2026 03:10:14 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,42 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v6 0/3] add ethtool COALESCE_RX_CQE_FRAMES/NSECS
- and
- use it in MANA driver
+Subject: Re: [PATCH net-next] net/mlx5e: Remove unused field in
+ mlx5e_flow_steering struct
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177388981154.1008325.11236653611617046174.git-patchwork-notify@kernel.org>
-Date: Thu, 19 Mar 2026 03:10:11 +0000
-References: <20260317191826.1346111-1-haiyangz@linux.microsoft.com>
-In-Reply-To: <20260317191826.1346111-1-haiyangz@linux.microsoft.com>
-To: Haiyang Zhang <haiyangz@linux.microsoft.com>
-Cc: linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
- haiyangz@microsoft.com, paulros@microsoft.com
+ <177388981279.1008325.4356129882650210437.git-patchwork-notify@kernel.org>
+Date: Thu, 19 Mar 2026 03:10:12 +0000
+References: <20260317104548.15697-1-tariqt@nvidia.com>
+In-Reply-To: <20260317104548.15697-1-tariqt@nvidia.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, saeedm@nvidia.com,
+ mbloch@nvidia.com, leon@kernel.org, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org, gal@nvidia.com,
+ moshe@nvidia.com
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 17 Mar 2026 12:18:04 -0700 you wrote:
-> From: Haiyang Zhang <haiyangz@microsoft.com>
+On Tue, 17 Mar 2026 12:45:48 +0200 you wrote:
+> From: Saeed Mahameed <saeedm@nvidia.com>
 > 
-> Add two parameters for drivers supporting Rx CQE Coalescing.
+> Not used in mlx5e, clean it up.
 > 
-> ETHTOOL_A_COALESCE_RX_CQE_FRAMES:
-> Maximum number of frames that can be coalesced into a CQE or
-> writeback.
+> Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+> Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v6,1/3] net: ethtool: add ethtool COALESCE_RX_CQE_FRAMES/NSECS
-    https://git.kernel.org/netdev/net-next/c/dc3d720e12f6
-  - [net-next,v6,2/3] net: mana: Add support for RX CQE Coalescing
-    https://git.kernel.org/netdev/net-next/c/c2fe3ff3d66d
-  - [net-next,v6,3/3] net: mana: Add ethtool counters for RX CQEs in coalesced type
-    https://git.kernel.org/netdev/net-next/c/d01440e10a82
+  - [net-next] net/mlx5e: Remove unused field in mlx5e_flow_steering struct
+    https://git.kernel.org/netdev/net-next/c/04cd075557e8
 
 You are awesome, thank you!
 -- 
