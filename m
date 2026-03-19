@@ -1,56 +1,56 @@
-Received: from mout-b-203.mailbox.org (mout-b-203.mailbox.org [195.10.208.52])
+Received: from mout-b-110.mailbox.org (mout-b-110.mailbox.org [195.10.208.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE7B3A7581;
-	Thu, 19 Mar 2026 15:14:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.10.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C095A3DEFEE;
+	Thu, 19 Mar 2026 15:18:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.10.208.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773933257; cv=none; b=jz4uxL0sRo0LSK/SDhhKTilPzdcXjI0vfAMzSZ5DgJze/RQeOksCbY851yIAxaQixgn959L0aU/pbbHtHqJHn2h1VTjb2iZkmtdQL2igEXSfOiunjixmhBoCG5YUp5nWMirmL57uti8HtE3Z6qs8itQhY5Ajzm6YaZ4r8nsxWi0=
+	t=1773933538; cv=none; b=BWA9HOFj914CWY+Ywpb9RjSgb/R5xIvzTr0hKKjqI6aVsvFsCHL4dXWVmtaz95/A9A6YWCuHGDlrpFU0ctPfoZX+38F5f2OhEyoVgU8z3fdwlWIBwSJv718P56nqQqFsUuhhfzFe1+S2JdCpXoDSjJEJO48aP2BLgeV0KkhKck0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773933257; c=relaxed/simple;
-	bh=n8R0lxQXS/WRXKTyJKSYL9wuO+24uiQFtgi6nZnJAK0=;
+	s=arc-20240116; t=1773933538; c=relaxed/simple;
+	bh=p/IricehhSgBDg3JPp7uZ1Tlpjhpc28qmp7zqTB4g9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i4UyGRsm6kyNRxUsKAKKHYj7PcCbaXtWpTnsh+LoEejLIJOwLvNxWyQApDjFC/F57ZKKbJ7coRRMaA5bfEUP9haIfF2zrfoMSPi1XztrDm3bMNlSwe7rK4bFYcuIo3VHraz2VaSN5m39B4IrO81CSA5VcExB3i3hTcb2TIi7ODY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=eXj+SHQW; arc=none smtp.client-ip=195.10.208.52
+	 MIME-Version; b=JldgbUeRmwi8jZGb4o1u9JXatNER3gx5UkrG5Q2fCbtu5D+EMrPMB6f5Za00jsvWTYn5tZUfc0j9O7GruiQrU1e17zkzYIlpAWzurJqdoS1ERE46bkzLX6vLX6awW5P2oVM+7iRcwWVH7RK0PDEPZKaHiW/G5Y8yizUWBDwA84k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=X9fxtJcq; arc=none smtp.client-ip=195.10.208.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="eXj+SHQW"
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="X9fxtJcq"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-b-203.mailbox.org (Postfix) with ESMTPS id 4fc8P035MVz9xDr;
-	Thu, 19 Mar 2026 16:14:12 +0100 (CET)
+	by mout-b-110.mailbox.org (Postfix) with ESMTPS id 4fc8NM4m33zB0t7;
+	Thu, 19 Mar 2026 16:13:39 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
-	s=MBO0001; t=1773933252;
+	s=MBO0001; t=1773933219;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=S7WhGtrDIV2TD9WUU8l0miYi1zOi2sYafJlFAbioGLo=;
-	b=eXj+SHQWkzay4JN2jAsFgEcsoQ6qBvwrc+fMFsOvi57VNcHgsLtzEwkW4S/hlQr/p1E8so
-	b0GYT8qyij5Xyb4/XwU54hkh/SHYay95u+LvQ+z2kUFx5tGX2fS333VM6VSjJ80YEzxITE
-	iYE8No1V8Aplil1Fs80lxtFGa0FL2mNbj8TkRMJqC6/HIo+6Yj9RhjTxzAllFOFLAD+jXe
-	nEegOeRm3LLn7XNtTeDWzSw/CIzl/3/vZ8OHR2h7XgvQowXhe3rxtV5mk40z1QEMCTKBp5
-	j/cuBk8EArFEx7/U5hZTR1qyE3WDCm37rB9mRo2q7Zh/vCTZduCJMjGMSo/nbw==
+	bh=sMX1i4BMieIT4ri4r8wi6e4mrWEXh5MS4f00MKXKxeI=;
+	b=X9fxtJcqIBd3hDAWB5sbebpd1+OTNBnSz9INQRX8nStPA73NSRT36WjOgU8Cp6w/X0WamF
+	g9qy/oZ7EbeqRico7oD8ZDBeWR+9dj+Nfpc1e4iwSNLlIgbfuqARQozuGRtG8Bh1nU9uIv
+	t5qywwn7o/4VQpi91JRIAZvGN5xOjVhT/OdfamaV5OR5qJeu7OGRgQkxIP2pZWD6qpOr38
+	R/stHfntR6eA+Yq+KSgch+qmlIMvJALkKcqc/ER5TZ+d0sGrgxbNIaIQyZ2hPzJTWk2hIn
+	KgmaUs2qae0eaaR9xY7/EV2h/KSso4e5BUjM1ijdFQKkG3GTqdQFwilnB9ZR3g==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=none;
+	spf=pass (outgoing_mbo_mout: domain of ralf@mandelbit.com designates 2001:67c:2050:b231:465::102 as permitted sender) smtp.mailfrom=ralf@mandelbit.com
 From: Ralf Lici <ralf@mandelbit.com>
 To: netdev@vger.kernel.org
 Cc: =?UTF-8?q?Daniel=20Gr=C3=B6ber?= <dxld@darkboxed.org>,
-	Antonio Quartulli <antonio@mandelbit.com>,
 	Ralf Lici <ralf@mandelbit.com>,
+	Antonio Quartulli <antonio@mandelbit.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [RFC net-next 15/15] Documentation: networking: add ipxlat translator guide
-Date: Thu, 19 Mar 2026 16:12:24 +0100
-Message-ID: <20260319151230.655687-16-ralf@mandelbit.com>
+Subject: [RFC net-next 10/15] ipxlat: add 4to6 pre-fragmentation path
+Date: Thu, 19 Mar 2026 16:12:19 +0100
+Message-ID: <20260319151230.655687-11-ralf@mandelbit.com>
 In-Reply-To: <20260319151230.655687-1-ralf@mandelbit.com>
 References: <20260319151230.655687-1-ralf@mandelbit.com>
 Precedence: bulk
@@ -59,223 +59,251 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4fc8NM4m33zB0t7
 
-From: Daniel Gröber <dxld@darkboxed.org>
+RFC 7915 requires handling packets that would exceed the translated IPv6
+size constraints. Add a pre-fragmentation planning/action path that
+invokes kernel fragmentation helpers before translation, carries
+fragment size through skb metadata, and then reinjects fragments into
+the normal translation path.
 
-Add user and reviewer documentation for the ipxlat virtual netdevice in
-Documentation/networking/ipxlat.rst.
-
-The document describes the datapath model, stateless IPv4/IPv6 address
-translation rules, ICMP handling, control-plane configuration, and test
-topology assumptions. It also records the intended runtime configuration
-contract and current behavior limits so deployment expectations are
-clear.
-
-Signed-off-by: Daniel Gröber <dxld@darkboxed.org>
 Signed-off-by: Ralf Lici <ralf@mandelbit.com>
 ---
- Documentation/networking/ipxlat.rst | 190 ++++++++++++++++++++++++++++
- 1 file changed, 190 insertions(+)
- create mode 100644 Documentation/networking/ipxlat.rst
+ drivers/net/ipxlat/dispatch.c     | 99 ++++++++++++++++++++++++++++++-
+ drivers/net/ipxlat/translate_46.c | 59 +++++++++++++++++-
+ drivers/net/ipxlat/translate_46.h | 11 ++++
+ 3 files changed, 166 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/networking/ipxlat.rst b/Documentation/networking/ipxlat.rst
-new file mode 100644
-index 000000000000..5a0ad02c05be
---- /dev/null
-+++ b/Documentation/networking/ipxlat.rst
-@@ -0,0 +1,190 @@
-+.. SPDX-License-Identifier: GPL-2.0+
-+.. Copyright (C) 2026 Daniel Gröber <dxld@debian.org>
+diff --git a/drivers/net/ipxlat/dispatch.c b/drivers/net/ipxlat/dispatch.c
+index b8b9b930b04c..b58191d4b2c9 100644
+--- a/drivers/net/ipxlat/dispatch.c
++++ b/drivers/net/ipxlat/dispatch.c
+@@ -47,6 +47,16 @@ enum ipxlat_action ipxlat_translate(struct ipxlat_priv *ipxlat,
+ 		if (unlikely(ipxlat_v4_validate_skb(ipxlat, skb)))
+ 			return ipxlat_resolve_failed_action(skb);
+ 
++		/* 4->6 prefrag plan stores per-skb frag_max_size
++		 * when the packet must be split before translation
++		 * (DF clear and translated size
++		 * above PMTU/threshold).
++		 */
++		if (unlikely(ipxlat_46_plan_prefrag(ipxlat, skb)))
++			return ipxlat_resolve_failed_action(skb);
++		if (unlikely(ipxlat_skb_cb(skb)->frag_max_size))
++			return IPXLAT_ACT_PRE_FRAG;
 +
-+==============================================
-+IPXLAT - IPv6<>IPv4 IP/ICMP Translation (SIIT)
-+==============================================
+ 		if (unlikely(ipxlat_46_translate(ipxlat, skb)))
+ 			return ipxlat_resolve_failed_action(skb);
+ 
+@@ -120,6 +130,76 @@ void ipxlat_emit_icmp_error(struct ipxlat_priv *ipxlat, struct sk_buff *inner)
+ 	}
+ }
+ 
++static unsigned int ipxlat_frag_dst_get_mtu(const struct dst_entry *dst)
++{
++	return READ_ONCE(dst->dev->mtu);
++}
 +
-+ipxlat (``CONFIG_IPXLAT=y``) provides a virtual netdevice implementing
-+stateless IP packet translation between IP versions 6 and 4. This is a
-+building block for establishing layer 3 connectivity between otherwise
-+uncommunicative IPv6-only and/or IPv4-only networks.
++static struct dst_ops ipxlat_frag_dst_ops = {
++	.family = AF_UNSPEC,
++	.mtu = ipxlat_frag_dst_get_mtu,
++};
 +
++/**
++ * ipxlat_46_frag_output - reinject one fragment produced by ip_do_fragment
++ * @net: network namespace of the transmitter
++ * @sk: originating socket
++ * @skb: fragment to reinject
++ *
++ * This callback mirrors ndo_start_xmit processing but runs with
++ * pre-fragmentation disabled to prevent recursive pre-fragment loops.
++ *
++ * Return: 0 on success, negative errno on processing failure.
++ */
++static int ipxlat_46_frag_output(struct net *net, struct sock *sk,
++				 struct sk_buff *skb)
++{
++	struct ipxlat_priv *ipxlat = netdev_priv(skb->dev);
 +
-+Creation and Configuration Parameters
-+=====================================
++	return ipxlat_process_skb(ipxlat, skb, false);
++}
 +
-+An ipxlat netdevice can be created and configured using YNL like so::
++/**
++ * ipxlat_46_fragment_pkt - fragment oversized 4->6 input before translation
++ * @ipxlat: translator private context
++ * @skb: original packet to fragment
++ * @frag_max_size: per-fragment payload cap for ip_do_fragment
++ *
++ * Installs a temporary synthetic dst so ip_do_fragment can read MTU and then
++ * reinjects each produced fragment back into ipxlat through
++ * ipxlat_46_frag_output.
++ *
++ * Return: 0 on success, negative errno on fragmentation failure.
++ */
++static int ipxlat_46_fragment_pkt(struct ipxlat_priv *ipxlat,
++				  struct sk_buff *skb, u16 frag_max_size)
++{
++	const unsigned long orig_dst = skb->_skb_refdst;
++	struct rtable ipxlat_rt = {};
++	int err;
 +
-+    $ ip link add siit0 type ipxlat
++	/* ip_do_fragment needs a dst object to query mtu */
++	dst_init(&ipxlat_rt.dst, &ipxlat_frag_dst_ops, NULL, DST_OBSOLETE_NONE,
++		 DST_NOCOUNT);
 +
-+    $ IID=$(cat /sys/class/net/siit0/ifindex)
++	/* use translator netdev as mtu source for the temporary dst */
++	ipxlat_rt.dst.dev = ipxlat->dev;
 +
-+    $ ADDR_HEX=$(python3 -c 'import ipaddress,sys; \
-+        print(ipaddress.IPv6Address(sys.argv[1]).packed.hex())' \
-+        64:ff9b:: | tee /dev/stderr)
-+    0064ff9b000000000000000000000000
++	/* setup the skb for fragmentation */
++	skb_dst_set_noref(skb, &ipxlat_rt.dst);
++	memset(IPCB(skb), 0, sizeof(struct inet_skb_parm));
++	IPCB(skb)->frag_max_size = frag_max_size;
 +
-+    $ ./tools/net/ynl/pyynl/cli.py --family ipxlat --json '{"ifindex": $IID, \
-+        "config": {"xlat-prefix6": "'$HEX_ADDR'", "prefix-len": 96} }'
++	/* fragment and reinject each frag in the translator */
++	err = ip_do_fragment(dev_net(ipxlat->dev), skb->sk, skb,
++			     ipxlat_46_frag_output);
 +
-+(TODO: Once implemented) A ipxlat netdevice can be configured using
-+iproute2::
++	/* drop original dst ref replaced by the synthetic NOREF dst */
++	refdst_drop(orig_dst);
 +
-+    $ ip link add siit0 type ipxlat [ OPTIONS ]
++	return err;
++}
 +
-+    # where OPTIONS can include (TODO: iproute2 patch):
-+    #
-+    #   prefix ADDR          (default 64:ff9b::/96)
-+    #
-+    #   lowest-ipv6-mtu MTU  (default 1280)
+ static void ipxlat_forward_pkt(struct ipxlat_priv *ipxlat, struct sk_buff *skb)
+ {
+ 	const unsigned int len = skb->len;
+@@ -141,14 +221,29 @@ int ipxlat_process_skb(struct ipxlat_priv *ipxlat, struct sk_buff *skb,
+ 	enum ipxlat_action action;
+ 	int err = -EINVAL;
+ 
+-	(void)allow_pre_frag;
+-
+ 	action = ipxlat_translate(ipxlat, skb);
+ 	switch (action) {
+ 	case IPXLAT_ACT_FWD:
+ 		dev_dstats_tx_add(ipxlat->dev, skb->len);
+ 		ipxlat_forward_pkt(ipxlat, skb);
+ 		return 0;
++	case IPXLAT_ACT_PRE_FRAG:
++		/* prefrag is allowed only once to avoid unbounded loops */
++		if (unlikely(!allow_pre_frag)) {
++			err = -ELOOP;
++			goto drop_free;
++		}
 +
++		/* fragment first, then reinject each fragment through
++		 * ipxlat_process_skb via ipxlat_46_frag_output
++		 */
++		err = ipxlat_46_fragment_pkt(ipxlat, skb,
++					     ipxlat_skb_cb(skb)->frag_max_size);
++		/* fragment path already consumed/freed skb */
++		skb = NULL;
++		if (unlikely(err))
++			goto drop_free;
++		return 0;
+ 	case IPXLAT_ACT_ICMP_ERR:
+ 		dev_dstats_tx_dropped(ipxlat->dev);
+ 		ipxlat_emit_icmp_error(ipxlat, skb);
+diff --git a/drivers/net/ipxlat/translate_46.c b/drivers/net/ipxlat/translate_46.c
+index aec8500db2c2..0b79ca07c771 100644
+--- a/drivers/net/ipxlat/translate_46.c
++++ b/drivers/net/ipxlat/translate_46.c
+@@ -87,6 +87,63 @@ unsigned int ipxlat_46_lookup_pmtu6(struct ipxlat_priv *ipxlat,
+ 	return mtu6;
+ }
+ 
++/**
++ * ipxlat_46_plan_prefrag - plan pre-translation IPv4 fragmentation for 4->6
++ * @ipxlat: translator private context
++ * @skb: packet being translated
++ *
++ * Decides whether packet exceeds PMTU/LIM thresholds and, when needed, stores
++ * per-skb fragmentation cap in cb->frag_max_size for later ip_do_fragment.
++ *
++ * Return: 0 on success, negative errno on policy/validation failure.
++ */
++int ipxlat_46_plan_prefrag(struct ipxlat_priv *ipxlat, struct sk_buff *skb)
++{
++	unsigned int pkt_len6, pmtu6, threshold6, frag_max_size, pkt_len4,
++		old_l3_len, new_l3_len;
++	struct ipxlat_cb *cb = ipxlat_skb_cb(skb);
++	const struct iphdr *in4 = ip_hdr(skb);
++	int l3_delta, frag_l3_delta;
 +
-+Introduction to Packet-level IPv6<>IPv4 Translation
-+===================================================
++	if (unlikely(cb->frag_max_size)) {
++		DEBUG_NET_WARN_ON_ONCE(1);
++		cb->frag_max_size = 0;
++	}
 +
-+Translatable packets delivered into an ipxlat device as either of the IP
-+protocol versions loop-back as the other. Untranslatable packets are
-+rejected with ICMP errors of the same IP version as appropriate or dropped
-+silently if required by RFC-SIIT_.
++	pkt_len4 = iph_totlen(skb, in4);
++	old_l3_len = cb->l3_hdr_len;
++	new_l3_len = sizeof(struct ipv6hdr) +
++		     (ip_is_fragment(in4) ? sizeof(struct frag_hdr) : 0);
++	l3_delta = (int)new_l3_len - (int)old_l3_len;
++	pkt_len6 = pkt_len4 + l3_delta;
 +
-+.. _RFC-SIIT: https://datatracker.ietf.org/doc/html/rfc7915
++	pmtu6 = ipxlat_46_lookup_pmtu6(ipxlat, skb, in4);
++	threshold6 = min(pmtu6, READ_ONCE(ipxlat->lowest_ipv6_mtu));
 +
-+Supported upper layer protocols (TCP/UDP/ICMP) have their checksums
-+recomputed as-needed as part of translation. Unsupported IP protocols
-+(IPPROTO\_*) are passed through unmodified. This will make them fail at the
-+receiver except in special cases.
++	if (likely(pkt_len6 <= threshold6))
++		return 0;
 +
-+Differences in IP layer semantic concerns are handled using several
-+different strategies, here we'll only give a high-level summary in the
-+areas of most friction:
-+  Fragmentation approach, Path MTU Discovery (PMTUD), IP Options and Extension
-+  Headers.
++	/* df packets are never locally pre-fragmented */
++	if (likely(be16_to_cpu(in4->frag_off) & IP_DF)) {
++		/* Let the IPv6 forwarding path raise PTB when needed and rely
++		 * on the reverse 6->4 ICMP translation path for feedback.
++		 */
++		return 0;
++	}
 +
-+**Fragmentation Approach** (v4: on-path vs v6: end-to-end) is smoothed over by:
-+ | 4->6: Fragmenting (DF=0) IPv4 packets when needed. See "lowest-ipv6-mtu".
-+ | 6->4: Using on-path frag. down the line for v4 pkts smaller than 1260.
-+ Details are tedious, check RFC-SIIT_.
++	/* df not set: we can fragment */
 +
-+**PMTUD** is maintained by recalculating advised MTU values in ICMP
-+PKT_TOO_BIG and FRAG_NEEDED messages as they're being translated. Taking
-+into account the necessary header re-sizing and post-translation nexthop
-+MTU in the main routing table.
++	frag_l3_delta =
++		(int)(sizeof(struct ipv6hdr) + sizeof(struct frag_hdr)) -
++		(int)old_l3_len;
++	frag_max_size = threshold6 - frag_l3_delta;
++	/* store per-skb prefrag cap: ipxlat_46_fragment_pkt will copy it into
++	 * IPCB(skb)->frag_max_size before calling ip_do_fragment
++	 */
++	cb->frag_max_size = min_t(unsigned int, frag_max_size, IP_MAX_MTU);
++	return 0;
++}
 +
-+**IP Options and IPv6 Extension Headers** except the Fragment Header are
-+dropped or ignored expept where more specific behaviour is specified in
-+RFC-SIIT_.
+ /**
+  * ipxlat_46_translate - translate one validated packet from IPv4 to IPv6
+  * @ipxlat: translator private context
+@@ -182,7 +239,7 @@ int ipxlat_46_translate(struct ipxlat_priv *ipxlat, struct sk_buff *skb)
+ 		err = ipxlat_46_outer_udp(skb, &outer4);
+ 		break;
+ 	case IPPROTO_ICMP:
+-		err = ipxlat_46_icmp(ipxlat, skb);
++		err = -EPROTONOSUPPORT;
+ 		break;
+ 	default:
+ 		err = 0;
+diff --git a/drivers/net/ipxlat/translate_46.h b/drivers/net/ipxlat/translate_46.h
+index 75def10d0cad..6ba409c94185 100644
+--- a/drivers/net/ipxlat/translate_46.h
++++ b/drivers/net/ipxlat/translate_46.h
+@@ -61,6 +61,17 @@ unsigned int ipxlat_46_lookup_pmtu6(struct ipxlat_priv *ipxlat,
+ 				    const struct sk_buff *skb,
+ 				    const struct iphdr *in4);
+ 
++/**
++ * ipxlat_46_plan_prefrag - decide whether IPv4 packet must be pre-fragmented
++ * @ipxlat: translator private context
++ * @skb: packet being translated
++ *
++ * Sets cb->frag_max_size when pre-fragmentation is required.
++ *
++ * Return: 0 on success, negative errno on policy/validation failure.
++ */
++int ipxlat_46_plan_prefrag(struct ipxlat_priv *ipxlat, struct sk_buff *skb);
 +
-+
-+Address Translation
-+-------------------
-+
-+The ipxlat address translation algorithm is stateless, per RFC-ADDR_, all
-+possible IPv4 addressess are mapped one-to-one into the translation prefix,
-+optionally including a non-standard "suffix". See `RFC-ADDR Section 2.2
-+<https://datatracker.ietf.org/doc/html/rfc6052#section-2.2>`_.
-+
-+.. _RFC-ADDR: https://datatracker.ietf.org/doc/html/rfc6052
-+
-+IPv6 addressess outside this prefix are rejected with ICMPv6 errors with
-+the notable exception of ICMPv6 errors originating from untranslatable
-+source addressess. These are translated to be sourced from the IPv4 Dummy
-+Address ``192.0.0.8`` (per I-D-dummy_) instead to maintain IPv4 traceroute
-+visibility.
-+
-+.. _I-D-dummy:
-+   https://datatracker.ietf.org/doc/draft-ietf-v6ops-icmpext-xlat-v6only-source/
-+
-+In a basic bidirectional 6<>4 connectivity scenario this means IPv6 hosts
-+must be addressed wholly from inside the translation prefix and per
-+RFC-ADDR_. Plain vanilla SLAAC doesn't cut it here, static addressing or
-+DHCPv6 is needed, unless that is we introduce statefulnes (RFC-NAT64_) into
-+the mix. See below on that.
-+
-+.. _RFC-NAT64: https://datatracker.ietf.org/doc/html/rfc6146
-+
-+
-+Stateful Translation (NAT64)
-+----------------------------
-+
-+Using NAT64 has several drawbacks, it's necessary only when your control
-+over IPv4 or IPv6 addressing of hosts is limited.
-+
-+Using nftables we can turn a system into a stateful translator. For example
-+to make the IPv4 internet reachable to a IPv6-only LAN having this system
-+as it's default route, further assuming we have an IPv4 default route and
-+``192.0.2.1/32`` is routed to this system::
-+
-+ $ ip link add siit0 type ipxlat
-+ $ ip link set dev siit0 up
-+ $ ip route 192.0.2.1/32 dev siit0
-+ $ ip route 64:ff9b::/96 dev siit0
-+ $ sysctl -w net.ipv4.conf.all.forwarding=1
-+ $ sysctl -w net.ipv6.conf.all.forwarding=1
-+ $ nft -f- <<EOF
-+ table ip6 nat {
-+         chain postrouting {
-+                 type nat hook postrouting priority filter; policy accept;
-+                 oifname "siit0" snat to 64:ff9b::c002:1 comment "::192.0.2.1"
-+         }
-+ }
-+ table ip nat {
-+         chain postrouting {
-+                 type nat hook postrouting priority filter; policy accept;
-+                 iifname "siit0" masquerade
-+         }
-+ }
-+ EOF
-+
-+Note: Keep reading when replacing the 192.0.2.0/24 documentation
-+placeholder with RFC 1918 "private IPv4" space.
-+
-+
-+Translation Prefix Choice and Complications
-+-------------------------------------------
-+
-+Several prefix sizes between /32 and /96 are supported by ipxlat. Using
-+a /96 prefix is often convenient as it allows using the dotted quad IPv6
-+notation, eg.: "64:ff9b::192.0.2.1". RFC-ADDR_ "3.3. Choice of Prefix for
-+Stateless Translation Deployments" has more detailed recommendations.
-+
-+The "Well-Known Prefix" (WKP) 64:ff9b::/96, while a convenient and short
-+choice for LANs, comes with some IETF baggage. As specified (at time of
-+writing) addressess drawn from RFC 1918 "private IPv4" space "MUST NOT" be
-+used with the WKP. While ipxlat does not enforce this other network
-+elements may.
-+
-+If I-D-WKP-1918_ makes it through the IETF process this complication for
-+the cautious network engineer may dissapear in the future.
-+
-+.. _I-D-WKP-1918:
-+   https://datatracker.ietf.org/doc/draft-ietf-v6ops-nat64-wkp-1918/
-+
-+In the meantime the newer and more lax prefix allocated by RFC-LWKP_ or an
-+entirely Network-Specific Prefix may be a better fit. We'd recommend using
-+the checksum-neutral ``64:ff9b:1:fffe::/96`` prefix from the larger /48
-+allocation.
-+
-+.. _RFC-LWKP: https://datatracker.ietf.org/doc/html/rfc8215
-+
-+
-+RFC Considerations for Userspace
-+--------------------------------
-+
-+- Per `RFC 7915
-+  <https://datatracker.ietf.org/doc/html/rfc7915#section-4.5>`_,
-+  ipxlat SHOULD drop UDPv4 zero checksum packets, yet we chose to always
-+  recalculate checksums for unfragmented packets.
-+
-+  If you want your translator to follow the SHOULD add a netfilter rule
-+  dropping such packets. For example using ``nft(8)`` syntax::
-+
-+    nft add rule filter ip postrouting -- oifkind ipxlat udp checksum 0 log drop
-+
-+- Per `RFC 6146
-+  <https://datatracker.ietf.org/doc/html/rfc6146#section-3.4>`_,
-+  Fragmented UDPv4 zero checksum recalculation by reassembly is not
-+  supported.
-+
-+- I-D-dummy_: Adding a Node Identity Object to for IPv4-side traceroute
-+  disambiguation is not yet supported.
+ /**
+  * ipxlat_46_translate - translate outer packet from IPv4 to IPv6 in place
+  * @ipxlat: translator private context
 -- 
 2.53.0
 
