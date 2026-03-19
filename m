@@ -1,105 +1,164 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D21346A11;
-	Thu, 19 Mar 2026 19:24:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA38F34D903;
+	Thu, 19 Mar 2026 19:27:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773948278; cv=none; b=ar+wDsC4V3Dq7oczUzvVLs6mWm/cIAFX7q0AeUlBtpO9ctKNaHk1TTpuU3kdPzn8G3n0pRlwbE820Ddnaeu6OIK7wkN/eXdH1bdGVl+hVUfZ8PXHOG1dO8AJctUcNAkbMwGcy7u02gqFXctw3/lsmZkrlpYFOoVmSdkAjjgLMpE=
+	t=1773948451; cv=none; b=IU89Y7DCowBIrQ6D55p0fb7ALYEhHvsoSds/oJpzapCiPOGUoIxrTioFPwlT8j9sAZidiW+iDam9xhowgQo/lDbW5AAujkYuEzYY5lVdUQIDF/5eTB40G11RsA73UMtZ7I0VxK3gNzyLjW0o+HBI1QlJypdgxm920eUyXXlxzm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773948278; c=relaxed/simple;
-	bh=u1xu7qpyWsYDX0L3tUDoGRj59kCYadpSZzq6Eu5V1lk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cZV95NBzd69gAHM6pd64cZuieluN/PRzHacYIUnssOpQLPRUpgyMAndS6UmWWhGeMCe2K7s3KiFIfav7css48S67jIHPgi+yPpPfULrjreWtxANeYZLHY5MbJVsarZs6VQW6AmkOtZKcJqmGrMQZm+B0uzT+4OOiyLllguedaOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I2jVmdwv; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1773948451; c=relaxed/simple;
+	bh=xdg2iqRt5WEdUmwnrBOzj1R5STCTuy6eemGNuetZTdo=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FUZwxkpeniHY8EnTqly3LOd4BrZWiXbKdOJIk8zG6KmIax9u7ZfNgKOwdCQ/NZAqvgNrNV0397zgKJrsPnXmAXGsYaot9ilT5DFsvHoIKC76q9mAVu2ODpBEkopID9WYlSIhkCjvXLy5hRUYwVQkEVOLIXTXq1yyFEshG6ynm1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=gbqu2rgu; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I2jVmdwv"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="gbqu2rgu"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773948275; x=1805484275;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1773948449; x=1805484449;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=u1xu7qpyWsYDX0L3tUDoGRj59kCYadpSZzq6Eu5V1lk=;
-  b=I2jVmdwvLoGorPW/AFeEXEFGZGnrkqvFsV5jxwW2vlkc9rMmlAqwNaQS
-   ej3a8jVH/WF9RyCDaWoBs0cqcQegnDK0LU5c2uQmAV7nkduOc+58DYaay
-   Xy29yB3vtcZTkNZ2262AHaE8Y9/z2s6Gs6luiraigZxDfqKbdYsX4NJqY
-   PCwnIuPk80vOBbHr/7g5iOzSG6J1H3nBZNhGxfLD52zgRdVhAtohg07M0
-   5PE52COGQZ9d7UGkCBKsKAug4R12n+XOYB/YFVzv9ZsDx5znnQX/b0OA1
-   VeoUCQNQk1jqRQL+eEVy/rjqK3W0XHEw6Wo64MZGjTrFmBi5cfDuc+JJc
+  bh=xdg2iqRt5WEdUmwnrBOzj1R5STCTuy6eemGNuetZTdo=;
+  b=gbqu2rguqGYJKpTLuez43NSJxvxP+J4y50pCauTenmkf0O1oj6dp2ROd
+   TgO6Iw3I8mnpaRre+lEkIFyL/SiXe5ktWGDBY/IA51TUgpQ0WEFUtFK9p
+   1n14hQwMWTxQSBqqq6koj94B9FaeHMVL04QT5MRe8TEFtvqoi3f9TM1qu
+   iv/gFZ9/cQyAYgvjagpHOhwclXrJk0t8gg9ZzLF3pXi181M3tPQOxZmo3
+   GCkkG5l0pAiiWRkrmh9/EuLtR1urua1Wn7lkCWg3jmHXJswPl06sKftSH
+   /hlch+SkrfY3oKcYy9iotTv9l+Ms/fQE5ZU04vyo2VR+y/83xam96tawl
    A==;
-X-CSE-ConnectionGUID: cT5pX5AGRaiDm/+DDN5ebA==
-X-CSE-MsgGUID: LYgyL2HGQT65zqcQZrD+cA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="75151338"
-X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; 
-   d="scan'208";a="75151338"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 12:24:34 -0700
-X-CSE-ConnectionGUID: flfI1DlhQdarwslc5bpUfQ==
-X-CSE-MsgGUID: gOtQL+EaQuC1IqfmCcQswQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; 
-   d="scan'208";a="220456254"
-Received: from lkp-server02.sh.intel.com (HELO a51c2a36b9df) ([10.239.97.151])
-  by fmviesa008.fm.intel.com with ESMTP; 19 Mar 2026 12:24:27 -0700
-Received: from kbuild by a51c2a36b9df with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w3Iym-000000001ZD-12mM;
-	Thu, 19 Mar 2026 19:24:24 +0000
-Date: Fri, 20 Mar 2026 03:22:12 +0800
-From: kernel test robot <lkp@intel.com>
-To: Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org, corbet@lwn.net,
-	skhan@linuxfoundation.org, andrew+netdev@lunn.ch,
-	michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
-	anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
-	saeedm@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com,
-	alexanderduyck@fb.com, kernel-team@meta.com,
-	johannes@sipsolutions.net, sd@queasysnail.net, jianbol@nvidia.com,
-	dtatulea@nvidia.com, sdf@fomichev.me, mohsin.bashr@gmail.com,
-	jacob.e.keller@intel.com, willemb@google.com, skhawaja@google.com,
-	bestswngs@gmail.com, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [Intel-wired-lan] [PATCH net-next v2 02/13] wifi: cfg80211: use
- __rtnl_unlock in nl80211_pre_doit
-Message-ID: <202603200304.JZwA4SBN-lkp@intel.com>
-References: <20260318150305.123900-3-sdf@fomichev.me>
+X-CSE-ConnectionGUID: 7Aa//kVqQl2cbDDWrAgImQ==
+X-CSE-MsgGUID: YlUjN0kJR9KYtv+p1TqYbw==
+X-IronPort-AV: E=Sophos;i="6.23,129,1770620400"; 
+   d="scan'208";a="222192366"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 12:27:28 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.87.151) by
+ chn-vm-ex1.mchp-main.com (10.10.87.30) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.35; Thu, 19 Mar 2026 12:26:48 -0700
+Received: from bby-cbu-swbuild03.eng.microchip.com (10.10.85.11) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58 via Frontend Transport; Thu, 19 Mar 2026 12:26:47 -0700
+Date: Thu, 19 Mar 2026 12:26:45 -0700
+From: Charles Perry <charles.perry@microchip.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: Charles Perry <charles.perry@microchip.com>, <netdev@vger.kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Heiner
+ Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next 2/2] net: mdio: add a driver for PIC64-HPSC/HX
+ MDIO controller
+Message-ID: <abxN9aGnCYA6s13u@bby-cbu-swbuild03.eng.microchip.com>
+References: <20260317184610.315852-1-charles.perry@microchip.com>
+ <20260317184610.315852-3-charles.perry@microchip.com>
+ <6dc9a358-4140-457f-bdfb-b4fb22aaf88e@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20260318150305.123900-3-sdf@fomichev.me>
+In-Reply-To: <6dc9a358-4140-457f-bdfb-b4fb22aaf88e@lunn.ch>
 
-Hi Stanislav,
+On Thu, Mar 19, 2026 at 05:55:44PM +0100, Andrew Lunn wrote:
+> > +static int pic64hpsc_mdio_probe(struct platform_device *pdev)
+> > +{
+> > +	struct device_node *np = pdev->dev.of_node;
+> > +	struct device *dev = &pdev->dev;
+> > +	struct pic64hpsc_mdio_dev *priv;
+> > +	struct mii_bus *bus;
+> > +	unsigned long rate;
+> > +	struct clk *clk;
+> > +	u32 bus_freq;
+> > +	u32 div;
+> > +	int ret;
+> > +
+> > +	bus = devm_mdiobus_alloc_size(dev, sizeof(*priv));
+> > +	if (!bus)
+> > +		return -ENOMEM;
+> > +
+> > +	priv = bus->priv;
+> > +
+> > +	priv->regs = devm_platform_ioremap_resource(pdev, 0);
+> > +	if (IS_ERR(priv->regs))
+> > +		return PTR_ERR(priv->regs);
+> > +
+> > +	bus->name = KBUILD_MODNAME;
+> > +	bus->read = pic64hpsc_mdio_read;
+> > +	bus->write = pic64hpsc_mdio_write;
+> > +	snprintf(bus->id, MII_BUS_ID_SIZE, "%s", dev_name(dev));
+> > +	bus->parent = dev;
+> > +
+> > +	clk = devm_clk_get_optional_enabled(dev, NULL);
+> > +	if (IS_ERR(clk))
+> > +		return PTR_ERR(clk);
+> 
+> What is the use case for not listing the clock? Optional clocks are
+> generally because it was forgotten about in the initial driver, and
+> added later. In order to not break backwards compatibility, the clock
+> needs to be optional.
+> 
+> But this is a new driver. Why not make it required?
+> 
 
-kernel test robot noticed the following build errors:
+My idea is that if someone wants to use whatever is the hardware default
+or what was set by the bootloader, they have an option to do so. For that
+reason, I made the clock and the clock-frequency optional. This is
+something I can do without if you think it will homogenize better with new
+drivers.
 
-[auto build test ERROR on net-next/main]
+Now I just realized that I can achieve this by just making the
+clock-frequency optional and not the clock.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Stanislav-Fomichev/net-add-address-list-snapshot-and-reconciliation-infrastructure/20260319-122535
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20260318150305.123900-3-sdf%40fomichev.me
-patch subject: [Intel-wired-lan] [PATCH net-next v2 02/13] wifi: cfg80211: use __rtnl_unlock in nl80211_pre_doit
-config: x86_64-kexec (https://download.01.org/0day-ci/archive/20260320/202603200304.JZwA4SBN-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260320/202603200304.JZwA4SBN-lkp@intel.com/reproduce)
+Looking at some other MDIO drivers, I can see that there's different
+policies on the "clock-frequency" not specified case:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603200304.JZwA4SBN-lkp@intel.com/
+ - mdio-airoha.c: use 2.5MHz if not specified
+ - mdio-ipq4019.c: detect if the prescaler is the out of reset value,
+                   choose 2.5MHz if that's the case.
+ - mdio-mscc-miim.c and mdio-bcm-unimac.c: keep the current settings
 
-All errors (new ones prefixed by >>, old ones prefixed by <<):
+I can implement any of the three policy above and don't have strong
+opinions about this.
 
->> ERROR: modpost: "__rtnl_unlock" [net/wireless/cfg80211.ko] undefined!
+> > +
+> > +	of_property_read_u32(np, "clock-frequency", &bus_freq);
+> > +
+> > +	if (bus_freq) {
+> > +		if (!clk) {
+> > +			dev_err(dev,
+> > +				"cannot use clock-frequency without a clock\n");
+> > +			return -EINVAL;
+> > +		}
+> 
+> And this then gets simpler.
+> 
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Ok, I'll make the clock mandatory.
+
+> > +
+> > +		rate = clk_get_rate(clk);
+> > +
+> > +		div = DIV_ROUND_UP(rate, 2 * bus_freq) - 1;
+> > +		if (div == 0 || div & ~MDIO_CFG_PRESCALE_MASK) {
+> > +			dev_err(dev, "Incorrect MDIO clock frequency\n");
+> 
+> I think "Out of range" is more correct.
+
+Ack.
+
+Thank you,
+Charles
+
+> 
+> 	Andrew
