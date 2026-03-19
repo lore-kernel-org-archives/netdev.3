@@ -1,95 +1,154 @@
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f68.google.com (mail-wr1-f68.google.com [209.85.221.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35DEF3A9616;
-	Thu, 19 Mar 2026 10:58:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F5CC36895E
+	for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 11:03:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773917899; cv=none; b=GivTI6Ihj7WImy2ay6SHqWNlG6VRXkKdC9IzcSmgCIcWIz7Y5hNmZtWzIKjuxQYLTDUwEJ8OsDP5eSwBhHwgqD+C7ykc1bbreZfgstGPjUsJSRYxPZEV/e8V5nbReF9P4H+BE2jK9unnmlnG8+FadKMrDk2pxe+Apwya6zWt3NE=
+	t=1773918196; cv=none; b=C2OmB5OELuhTCnQKnv+6SF234zU6cg3H26PL12vxIij52vJJuRGPoNzJ5vP46crCQgZNOktTE+QmROj5jPCzqtHW/MlDHRFBl15+KH6/qy4Iab4BtYdU7hSkcIUgEgt/w+B+27nbrxjntkw2KADzOT4QhmCgoIWnMmC3nwFSF4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773917899; c=relaxed/simple;
-	bh=BWZlB5ieElyQI8GNk8aRWuD6EskIKpAd7O0l6vbF1mE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dnqHlxGMwQN+FMueKFLl3dlNGj6vKVjtc3AzGHjt2IVjVmk0C8dXr2ACXIvFUPs6dgJU9HwbBjFp48t4Io22BMnaNpLGSkNOC5dVYXAV9wn2zlJ8zKqr/pknwrPWnNjxUI6nYaj/TBFPaVTXiWHHzyGnHLjg5X6/NIHiRyYs7Vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=TnzHBWPW; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=TnzHBWPW; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="TnzHBWPW";
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="TnzHBWPW"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=kyEMUQBF2YL05LT+fM2EoA0A+YLnbqzjV4JFMXehIJw=;
-	b=TnzHBWPWddCUqhflGb0WRJZADh34kg0JarGUMDH10Kk2rFedQH/xjY9Qn8ZxZiuceN3DqNDIu
-	YM0nn3OJ6nNug8RoIr1orLcR2zq46MIqaRWUZX0za3dfYnb3FyQ6l/ZzIyRoKnPthXs7sFgqyhk
-	7WQJkth5sFJn3Q1gLk4IfRk=
-Received: from canpmsgout03.his.huawei.com (unknown [172.19.92.159])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTPS id 4fc2hW6G1sz1BFRg;
-	Thu, 19 Mar 2026 18:57:15 +0800 (CST)
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=kyEMUQBF2YL05LT+fM2EoA0A+YLnbqzjV4JFMXehIJw=;
-	b=TnzHBWPWddCUqhflGb0WRJZADh34kg0JarGUMDH10Kk2rFedQH/xjY9Qn8ZxZiuceN3DqNDIu
-	YM0nn3OJ6nNug8RoIr1orLcR2zq46MIqaRWUZX0za3dfYnb3FyQ6l/ZzIyRoKnPthXs7sFgqyhk
-	7WQJkth5sFJn3Q1gLk4IfRk=
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4fc2b90vT3zpSvC;
-	Thu, 19 Mar 2026 18:52:37 +0800 (CST)
-Received: from kwepemj500018.china.huawei.com (unknown [7.202.194.48])
-	by mail.maildlp.com (Postfix) with ESMTPS id A0E4840569;
-	Thu, 19 Mar 2026 18:58:02 +0800 (CST)
-Received: from huawei.com (10.50.85.128) by kwepemj500018.china.huawei.com
- (7.202.194.48) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 19 Mar
- 2026 18:58:01 +0800
-From: Li Xiasong <lixiasong1@huawei.com>
-To: Matthieu Baerts <matttbe@kernel.org>, Mat Martineau
-	<martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>
-CC: <netdev@vger.kernel.org>, <mptcp@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <yuehaibing@huawei.com>,
-	<zhangchangzhong@huawei.com>, <weiyongjun1@huawei.com>
-Subject: [PATCH net] MPTCP: fix lock class name family in pm_nl_create_listen_socket
-Date: Thu, 19 Mar 2026 19:21:59 +0800
-Message-ID: <20260319112159.3118874-1-lixiasong1@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1773918196; c=relaxed/simple;
+	bh=PawUjAff15+oRA7Q1xArUU/n6HG5b2GHGK00XVwvUqs=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=CYTCHdSe5O2uRoi2iWx4a4OSpndB9EyOiEAwmismMbXJLOANbmJU3JxmRgYvwKSycgD6Nf4tWSZYjIgWItwMH28tK8Pfyt5YSNy9QyDIg2ux7/yDCmEJ0MWh082h70lW61JSVO8skKGud7dWniwcqfapCOlNeHRV42nG37rQH28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f68.google.com with SMTP id ffacd0b85a97d-43b3d9d0695so615836f8f.0
+        for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 04:03:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773918192; x=1774522992;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:to:subject:cc:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UoKglMvUMd6qCbtIePCE65BAuCUK+BeoobLWHIfF0VM=;
+        b=nmuQLf4xf22BkAUkG4kAWRLFkX4UTHAPPv4gWiOXUZGSuxPCjEM1VTlMm0oC5YQH3O
+         u8HykwkVuHMfpqU4Gb3no8MiM7CERratW1EEtEOVceso2CZ8ha6Rd+IouA8kn6LoYVgJ
+         lm56FCDXQw51I7jpN4gzLNZKAtVXLK/8VsBvVJZ+iDPm4dPYUKzwlJetiDmP4Y8iywJm
+         vCpu3syYuS7fI+a70FxquWOOQZR5WZoZcOr4BWhHrXv1yslaAw+nJ7cQ6ban87eBSUIE
+         uHSj2qBRucxYWhzx41MythHkykDx18dRcfrmO6uePwBYLNPEMUm1e3iUtrFx0uPZ2uv8
+         92aw==
+X-Forwarded-Encrypted: i=1; AJvYcCVOUg68XYdau32qJrxxY0WfSyWCwomtDCwwK/T0xMkQVMvMVKOVR8yZHfMyGgBDJCm7Bcni7EU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7TbFK6WWyL1nTRG9uVdNgESOoxLkAHKSCNuNuqNcC57zsf+Ly
+	WduG9g83oX/roKd/UMveVGOn8SuxIkY4Kvh2PvWNW/tZSlMU2OXIipEM9V+QQM14LZcsBQ==
+X-Gm-Gg: ATEYQzzNZSQDr28lcrCwLHBvUCpKnWYjByKL83GkMhYL93d9cOgD4MNljpyiymWqfnM
+	fY14gu2ANED8uBW/uMCsCUY6nIbStnYl2n8f9DyaZ6SUth7r/EZXJyOs4vrW4OvQI3jrLe2ph4b
+	nVr1k1fPbaMZbvqL6vTkh2S9pmGCQGQ+AWmGsQ1tuO/JsNQNzg8vcYDhra5IEoJW126K+xLaKYH
+	KkZQomwTHSCbrCpeokYr2GudH+L6EP90CY0IX8M8tB7+/bS4zsO1+xeDkIy7wcf1EDlnZtFO95l
+	wX+qWkdDDHLKflKej3WTd/4GBv3ssdOkHbfK3KMnL0Vfcs1VlebqBBOloimIkVnAmqFs4B1vHYM
+	oAtBKrNVQ5sFzS/dYUTl7FlS6OPAqHKgnPk6MXqQQdpD1ojIs8gLoEFxeeOQWQicEYg9vI3B35F
+	WcXzXFaaCga1QwRoUnoEi9oC83KpVdFMYeKkX4/QY1lEsCOm4dtsjNyms=
+X-Received: by 2002:a05:6000:2509:b0:43b:3dcc:8b02 with SMTP id ffacd0b85a97d-43b576f09f0mr6087670f8f.1.1773918191220;
+        Thu, 19 Mar 2026 04:03:11 -0700 (PDT)
+Received: from [192.168.88.241] (89-24-32-126.nat.epc.tmcz.cz. [89.24.32.126])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b51852ab3sm15164849f8f.12.2026.03.19.04.03.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Mar 2026 04:03:10 -0700 (PDT)
+Message-ID: <130badaf-cf19-493d-8221-09d439323af8@ovn.org>
+Date: Thu, 19 Mar 2026 12:03:08 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemj500018.china.huawei.com (7.202.194.48)
+User-Agent: Mozilla Thunderbird
+Cc: i.maximets@ovn.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, tgraf@suug.ch,
+ netdev@vger.kernel.org, dev@openvswitch.org, linux-kernel@vger.kernel.org,
+ yifanwucs@gmail.com, tomapufckgml@gmail.com, tanyuan98@outlook.com,
+ bird@lzu.edu.cn
+Subject: Re: [PATCH net] openvswitch: defer tunnel netdev_put to RCU release
+To: Yang Yang <n05ec@lzu.edu.cn>, aconole@redhat.com, echaudro@redhat.com
+References: <20260319074241.3405262-1-n05ec@lzu.edu.cn>
+Content-Language: en-US
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <20260319074241.3405262-1-n05ec@lzu.edu.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-In mptcp_pm_nl_create_listen_socket(), use entry->addr.family
-instead of sk->sk_family for lock class setup. The 'sk' parameter
-is a netlink socket, not the MPTCP subflow socket being created.
+On 3/19/26 8:42 AM, Yang Yang wrote:
+> ovs_netdev_tunnel_destroy() may run after NETDEV_UNREGISTER already
+> detached the device. Dropping the netdev reference in destroy can race
+> with concurrent readers that still observe vport->dev.
+> 
+> Do not release vport->dev in ovs_netdev_tunnel_destroy(). Instead, let
+> vport_netdev_free() drop the reference from the RCU callback, matching
+> the non-tunnel destroy path and avoiding additional synchronization
+> under RTNL.
+> 
+> Fixes: a9020fde67a6 ("openvswitch: Move tunnel destroy function to oppenvswitch module.")
+> Reported-by: Yifan Wu <yifanwucs@gmail.com>
+> Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+> Tested-by: Ao Zhou <n05ec@lzu.edu.cn>
+> Co-developed-by: Yuan Tan <tanyuan98@outlook.com>
+> Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
+> Suggested-by: Xin Liu <bird@lzu.edu.cn>
+> Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
+> ---
+> 
+>  net/openvswitch/vport-netdev.c | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/net/openvswitch/vport-netdev.c b/net/openvswitch/vport-netdev.c
+> index 6574f9bcdc026..44dbe8a9b0778 100644
+> --- a/net/openvswitch/vport-netdev.c
+> +++ b/net/openvswitch/vport-netdev.c
+> @@ -189,8 +189,6 @@ void ovs_netdev_tunnel_destroy(struct vport *vport)
+>  	 */
+>  	if (vport->dev->reg_state == NETREG_REGISTERED)
+>  		rtnl_delete_link(vport->dev, 0, NULL);
+> -	netdev_put(vport->dev, &vport->dev_tracker);
+> -	vport->dev = NULL;
+>  	rtnl_unlock();
+>  
+>  	call_rcu(&vport->rcu, vport_netdev_free);
 
-Fixes: cee4034a3db1 ("mptcp: fix lockdep false positive in mptcp_pm_nl_create_listen_socket()")
-Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
----
- net/mptcp/pm_kernel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This should solve the issue indeed.  I ran OVS testsuite with
+this as well, and it works fine.  Thanks!
 
-diff --git a/net/mptcp/pm_kernel.c b/net/mptcp/pm_kernel.c
-index b2b9df43960e..82e59f9c6dd9 100644
---- a/net/mptcp/pm_kernel.c
-+++ b/net/mptcp/pm_kernel.c
-@@ -838,7 +838,7 @@ static struct lock_class_key mptcp_keys[2];
- static int mptcp_pm_nl_create_listen_socket(struct sock *sk,
- 					    struct mptcp_pm_addr_entry *entry)
- {
--	bool is_ipv6 = sk->sk_family == AF_INET6;
-+	bool is_ipv6 = entry->addr.family == AF_INET6;
- 	int addrlen = sizeof(struct sockaddr_in);
- 	struct sockaddr_storage addr;
- 	struct sock *newsk, *ssk;
--- 
-2.34.1
-
+Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
