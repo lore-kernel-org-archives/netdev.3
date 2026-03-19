@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ACAB23B62C;
-	Thu, 19 Mar 2026 00:44:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D98B262FFC;
+	Thu, 19 Mar 2026 00:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773881069; cv=none; b=jaTVm+nuEup64C8NVUNQMprYTKyb0pnZsFaLp537eI8So/xLfZjC/uB9SNdXxIAwk+HLwwjOuYXe56+4CcRhPa/Vt/74nU7neybBupNVYEBKNdcabxM0HdF0KGB7yY5otsjTXaXN9WTkxO8Oj41nh66V89RQjxPbiykXY3JsOo4=
+	t=1773881070; cv=none; b=OczTlThlDAMCTt9/pOCWMToEUke3Hy7Lujs8M53ldNUvCVgLHxmvT1dN24bk8ZJDPktrXcYpk3U3aA2GHWHq/KPCn1060GKNDsgcIKiLVsfUESHsLkMTHjx0znGNn/DlSxjcd69kBY0IADBkyBy38FQwmALyxbviRNXVcWituO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773881069; c=relaxed/simple;
-	bh=QyvoHK+CRCQGQDwhy9eOgNgbqaj1UunQNZKLcT6IG8M=;
+	s=arc-20240116; t=1773881070; c=relaxed/simple;
+	bh=7u41qZGQim4zB30AtNqB+cKkni7rNTi2DSiUbqCR8wU=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=XyKPJPo2rbIIi5JDz2LlIDK0dl6HxvNZEs0s1INX8UGMKhM8vXBvS3dg5+tsPSLyPR1QC4HptcQ5MZQLFnudUYAhEICRmUaDXuYXb4/J5V/RoXsOMZoDGv3I43BzYR9inubGPL2kKYXiZcSBpmZewlcigmLLWOu28aNGimk+fIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aUmhpZHR; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=HTxlhXhAZv5zRzP/GuFBvyC066rQlCKLo0Ri77+/gHwIRdaqaJ2BppWQeIP4FFif8W/a/S5+iu7SmIZTyPbldeJC0Sl2ooTMfnEPyVhLVgBLnqBPoY28gpCHDvpc8bJcNr0JJdLFEYxWlCE8bejAIPxZMQfmCg+DSw68b175Tts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pXYP8pO1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aUmhpZHR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DBA0C2BC9E;
-	Thu, 19 Mar 2026 00:44:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pXYP8pO1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21786C19421;
+	Thu, 19 Mar 2026 00:44:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773881068;
-	bh=QyvoHK+CRCQGQDwhy9eOgNgbqaj1UunQNZKLcT6IG8M=;
+	s=k20201202; t=1773881070;
+	bh=7u41qZGQim4zB30AtNqB+cKkni7rNTi2DSiUbqCR8wU=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=aUmhpZHRJSvHj8WSnAk/Br2aUTpPfT79YV7JP3DnJ5OPMTG28qpLecyO5UkZGnNM+
-	 8K2RSjPZO6b7seTpxJvwE6ymyi1FoD21yOMnCBG7VlZ1MnCPtotMH111XDVtV9Q4Ek
-	 W93NTL520RJzYS3QsLlukDknYTyKJl/G3ontBcPNtWY6pyhNPRLmAkloyHrn7v2hkA
-	 l0os/ImVPN+Y7kGK9qeDCf4BpFt2+b2JNtvn1+8ReOXYifMv/KY3POwYy5Vf0L8CDH
-	 Ny6UR3SU4KTy9ic5tjOQLW/TG+vmK5HMpZ/TIZ25jksrAsNpUZpcnmPdnmq9cWscfM
-	 sz1wjciArmiig==
+	b=pXYP8pO1JEZF4gStpYhdJfGYXkIIo48lfr6jt0TcMsi3xoLixAEHqlOz+C77If9vm
+	 hCKPTYQP4D+4lDP9G/d3WOZOZfjxf3HgfHaGfGtDOn9q3T7osKOrowm5+VjgdRADE8
+	 Rnet/kiKk71a2zaJ9nAgzxFMVy83KjeUHgpDkELQl9Ds8IxBzh6lZntFqcQmC5IIHZ
+	 47m+A+g42h84zaK/gadHOwubjCNW5F2GUt0N4joSOXZd7zkM75/mi2RSMjrca9VoYu
+	 9TBmI4/pw/WaNJttuoeBKN5SFDP/gHhaMQjKINN46GVOiXTJB9dHSsCBGYmYU88UIC
+	 GEfOpYJ6PQmTQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FE833808200;
-	Thu, 19 Mar 2026 00:44:21 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9F873808200;
+	Thu, 19 Mar 2026 00:44:22 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,38 +37,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] netdevsim: drop PSP ext ref on forward failure
+Subject: Re: [PATCH V3] NFC: nxp-nci: allow GPIOs to sleep
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177388105978.935482.17109055611230059426.git-patchwork-notify@kernel.org>
-Date: Thu, 19 Mar 2026 00:44:19 +0000
-References: <20260317061431.1482716-1-atwellwea@gmail.com>
-In-Reply-To: <20260317061431.1482716-1-atwellwea@gmail.com>
-To: Wesley Atwell <atwellwea@gmail.com>
-Cc: kuba@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, willemb@google.com,
- daniel.zahka@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+ <177388106128.935482.9205617518937957492.git-patchwork-notify@kernel.org>
+Date: Thu, 19 Mar 2026 00:44:21 +0000
+References: <20260317085337.146545-1-ian.ray@gehealthcare.com>
+In-Reply-To: <20260317085337.146545-1-ian.ray@gehealthcare.com>
+To: Ian Ray <ian.ray@gehealthcare.com>
+Cc: davem@davemloft.net, andriy.shevchenko@linux.intel.com,
+ stable@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 17 Mar 2026 00:14:31 -0600 you wrote:
-> nsim_do_psp() takes an extra reference to the PSP skb extension so the
-> extension survives __dev_forward_skb(). That forward path scrubs the skb
-> and drops attached skb extensions before nsim_psp_handle_ext() can
-> reattach the PSP metadata.
+On Tue, 17 Mar 2026 10:53:36 +0200 you wrote:
+> Allow the firmware and enable GPIOs to sleep.
 > 
-> If __dev_forward_skb() fails in nsim_forward_skb(), the function returns
-> before nsim_psp_handle_ext() can attach that extension to the skb, leaving
-> the extra reference leaked.
+> This fixes a `WARN_ON' and allows the driver to operate GPIOs which are
+> connected to I2C GPIO expanders.
+> 
+> -- >8 --
+> kernel: WARNING: CPU: 3 PID: 2636 at drivers/gpio/gpiolib.c:3880 gpiod_set_value+0x88/0x98
+> -- >8 --
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] netdevsim: drop PSP ext ref on forward failure
-    https://git.kernel.org/netdev/net/c/7d9351435ebb
+  - [V3] NFC: nxp-nci: allow GPIOs to sleep
+    https://git.kernel.org/netdev/net/c/55dc632ab2ac
 
 You are awesome, thank you!
 -- 
