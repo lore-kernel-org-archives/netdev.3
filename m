@@ -1,140 +1,96 @@
-Received: from lounge.grep.be (lounge.grep.be [144.76.219.42])
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8AE3ED5CF;
-	Thu, 19 Mar 2026 15:58:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.219.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374503ECBED;
+	Thu, 19 Mar 2026 15:59:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773935904; cv=none; b=fQEy4dJ9LQYS75BkLE4leNch5IO1DsSZlqzNolwONjVqPIR4B9lxsApJ1Y3Vk9hlN9LCiM8/v0x192Sn9rNCZKTGEqnhD6ZKGGylFgLYRPjNIhI7mUkZWMtniTc/xDWx23tyQ51jkyAb3uiogf2zgCH59TtEAbIUTxIwrR3sVps=
+	t=1773935992; cv=none; b=SlLIMfhl4Q1OCazD1NXSiYh3YQlrbFpQTtvhoFYQnsS7Q7AuIoM6qchdfzJQlOHX4jRqNLFOGSKbph2U4mSapYd8jYCpk+1JCoBRvNY3U9/ZS8YIKft0fMwRQmcJvr0UwPkNlo0R8HwfrQisMHbOKUqjrcmLpG0sSQdACAhiTzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773935904; c=relaxed/simple;
-	bh=xNnIo29Se1LOjCOI2hcPmuLnAtSQe+Jknl1lipLUbtQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=emhHnTcs2q2lA87ioZdbftgBzkw1BfkoumqBBh5x1V/NP3Lo5PO5wxzsjz6dOI0bXQEC51KoLz6BbBlsUJKHshd6PsVPTUK97PXHR1E7+q/hKJU/aJKEDk3r7W0VoBGCWGFSoVNByfaUs8/FwezF2yX/qSsWItUhhmwjESqgSlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uter.be; spf=pass smtp.mailfrom=uter.be; dkim=pass (2048-bit key) header.d=uter.be header.i=@uter.be header.b=RMgKjw9M; arc=none smtp.client-ip=144.76.219.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uter.be
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uter.be
+	s=arc-20240116; t=1773935992; c=relaxed/simple;
+	bh=ZIbL8O3aZl5ul6YYE2WhB6DNFvoF5FLE6NgalzEmeKE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ovBytAcQU81Odz50wXsKZ91SOwi4wC3xT9MlRVU2QUB7ljXS8l4UfH01OfNBgBkjunItegTBATVt7ZlErzcL81ngaylqLIUO6zaTYA9MCkbbr/EsuBVHG+ghjqpPNfFKstJywR2IznmKi4dP3chm1WNp9WYdG0YyCYUCTU7QloQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=gdFgbrAo; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=uter.be header.i=@uter.be header.b="RMgKjw9M"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=uter.be;
-	s=2021.lounge; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=RcL5hH4kRhNyZk6URSoBhDYNdPVwqeccVzc8vDaQTdc=; b=RMgKjw9M8CSxvaccb9EcQsayZz
-	Codbu27HeXSSOe+jjme87Bvl5WILQlLSFV0lYUzONtxZq8T+xtOGHjX1Xtwn6OLA7RCWBjur7jJRZ
-	vnz7NEiZwyUWkgRf9ReJC7V6bmmwNwKztIoopm6B+LGqDRBujejTaBYeRRe58LlXZ8Sqr2jiNzLhi
-	lWqHFXm9qND8tSZ7rBWYeKs+fqJyZFWfSgTAfwyMOOOUTw8/6Po/Eic9Urf9EyOATmXS6eHeOlyzC
-	qOetraRC7Iy1I2QpRFRj5zdw9iObJNFpMG28dYESs8+el/FLApdjqKQZOSHZIG7YJmoymakGWp5w4
-	b4Y92XYw==;
-Received: from [41.193.88.87] (helo=pc220518)
-	by lounge.grep.be with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <w@uter.be>)
-	id 1w3FPw-0000000Five-3FlL;
-	Thu, 19 Mar 2026 16:36:12 +0100
-Received: from wouter by pc220518 with local (Exim 4.99.1)
-	(envelope-from <w@uter.be>)
-	id 1w3FPo-00000004Ocj-2JGl;
-	Thu, 19 Mar 2026 17:36:04 +0200
-Date: Thu, 19 Mar 2026 17:36:04 +0200
-From: Wouter Verhelst <w@uter.be>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Josef Bacik <josef@toxicpanda.com>, netdev@vger.kernel.org,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	syzbot+afbcf622635e98bf40d2@syzkaller.appspotmail.com,
-	"David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
-	Taehee Yoo <ap420073@gmail.com>, linux-kernel@vger.kernel.org,
-	nbd@other.debian.org
-Subject: Re: [PATCH net v1] net/ipv6: mcast: fix circular locking dependency
- in __ipv6_dev_mc_inc()
-Message-ID: <abwX5Ii0QtFG4EBh@pc220518.home.grep.be>
-References: <20260317111208.62667-1-jiayuan.chen@linux.dev>
- <20260318181536.47ed9fd1@kernel.org>
- <f877e139-2da9-49d9-93bf-9b4155d687a7@linux.dev>
- <20260318202649.004d33fd@kernel.org>
- <258f99ac-bd34-4d14-8271-1266b9aba6f8@redhat.com>
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="gdFgbrAo"
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id AB7ADA1F50;
+	Thu, 19 Mar 2026 16:59:37 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=mail; bh=IIVPZ8hHZTMlGdVC1NhCotK5Ln5lWFWOjoay+zBfjxM=; b=
+	gdFgbrAoXJzIWTJ4zcwXiGK1MpldNHCafm5jGTfYjeOlXgYzrI8GB52esmqjoHG8
+	3ssWuOH1AZosk81LIUAknSneePV1rHZyjJdMGPk4wg8IXLAw+kVwQbE9nAGz20u/
+	CWzQSOrGUwdKQUuV6SJzUB38Zum8HXd/ZfJC52t8KMLQFOiG7Tn23PrCH2ZMCms5
+	7t33nsQe7H4vJixOqaNqoDr1JcavkPanf4Yx2HHkdsFMMkWYloDUGRKORQYJk5DU
+	Zv62pZm/liEbTiOPjuUmCRJunhnN6fgIXtexTqqA8p6zh5Wal9hI+kEi+dRU/EKA
+	nYVUkLsQOPer/fvJB0FKpYTbQoQ82v97dvUyAJFz636+hOe4ms4FY14JS+uFEsos
+	mCJSVMtbIIwXpK1rgXlnP2eotFvGkjHk74KhS/xmoMMhgfxkWcFMMYTHLe42tKJK
+	5DueDv8+N+BVXq8oACd4cqVKJ0L3uG6iYPYlIqBZPlStNsC6KKavmF25ctzv1Hue
+	n7aYsIDGXfwyHoxHG0DX47q/qGMvMp96OWYXsZm96WDMA99iP22HXPagCkUJDJPK
+	aHi/0VFkRvIE05nEnEjiuP1EYuomaYs+1F5c9J61G5La0NylRmoi/x+vf4IVIz01
+	TsduB3US2HBv3JqFpsF++ULb8EYQOseRNGYoLO+38xk=
+From: Buday Csaba <buday.csaba@prolan.hu>
+To: Wei Fang <wei.fang@nxp.com>, Frank Li <frank.li@nxp.com>, Shenwei Wang
+	<shenwei.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Richard Cochran
+	<richardcochran@gmail.com>, =?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?=
+	<bence98@sch.bme.hu>, Francesco Dolcini <francesco.dolcini@toradex.com>,
+	<imx@lists.linux.dev>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: Buday Csaba <buday.csaba@prolan.hu>
+Subject: [PATCH net v2 1/1] net: fec: fix the PTP periodic output sysfs interface
+Date: Thu, 19 Mar 2026 16:59:34 +0100
+Message-ID: <7012fbf90b844083d5fa7d764ed6372fe0288157.1773928309.git.buday.csaba@prolan.hu>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <258f99ac-bd34-4d14-8271-1266b9aba6f8@redhat.com>
-X-Speed: Gates' Law: Every 18 months, the speed of software halves.
-Organization: none
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1773935977;VERSION=8008;MC=505402051;ID=100136;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
+X-ESET-Antispam: OK
+X-EsetResult: clean, is OK
+X-EsetId: 37303A2998FD5150627D6A
 
-Hi Paolo,
+When the PPS channel configuration was implemented, the number of
+supported periodic outputs (`n_per_out`) was left at 1.
 
-On Thu, Mar 19, 2026 at 01:44:00PM +0100, Paolo Abeni wrote:
-> Adding Josef.
-> 
-> On 3/19/26 4:26 AM, Jakub Kicinski wrote:
-> > On Thu, 19 Mar 2026 11:04:24 +0800 Jiayuan Chen wrote:
-> >>>> Split mca_alloc() into mca_alloc() + mca_init(): mca_alloc() does the
-> >>>> GFP_KERNEL allocation before mc_lock, mca_init() initializes under
-> >>>> mc_lock. If the address already exists, the pre-allocated memory is
-> >>>> simply freed. Also move inet6_ifmcaddr_notify() outside mc_lock since
-> >>>> it also does GFP_KERNEL allocation.  
-> >>> Moving the allocation seems fine, but also having to move the
-> >>> notification, potentially letting the notification go out of order
-> >>> makes me wonder if we aren't better off adding helpers for taking this
-> >>> lock which also call memalloc_noio_{save,restore} ?  
-> >> Yeah, using memalloc_noio helpers is simpler. I checked and there
-> >> are about 18 places taking mc_lock, so having a common mc_lock()/mc_unlock()
-> >> wrapper that does the noio save/restore covers them all (if necessary).
-> >>
-> >> The only thing that feels a bit odd is using memalloc_noio in the networking
-> >> subsystem. It makes sense in block/fs to protect itself from recursion.
-> > 
-> > Totally agree that it feels a bit odd that we have to worry about IO,
-> > but unless we can figure out a way to prevent nbd sockets from getting
-> > here all our solutions are dealing with noio in networking code :(
-> > IMHO it's better to acknowledge this with the explicit memalloc_noio 
-> > so future developers don't break things again with a mis-placed
-> > allocation.
-> 
-> I think a problem here is that the nbd socket is still exposed to
-> user-space, while in use by the block device. I fear that the more
-> syzkaller will learn new tricks, the more we will have to had strange
-> noio all around the networking code.
-> 
-> I *think* we could prevent this kind of races with something alike the
-> following:
-> - nbd sets a DOIO sk flag on the sockets it uses.
-> - the socket layer prevents socketopts()/ioctl() entirely on DOIO sk
-> 
-> I'm not sure if that could break nbd users, but allowing the user-space
-> to mess with the socket used for backing a block device looks very
-> dangerous.
+This prohibits using channels 1..3 from the sysfs interface, since
+period_store() rejects channel numbers greater than `n_per_out`.
 
-I didn't see the rest of the thread, but.
+Fix by increasing `n_per_out` to the number of channels supported
+by the hardware.
 
-There are two ways of configuring the nbd device, through nbd-client:
+Fixes: 566c2d83887f ("net: fec: make PPS channel configurable")
+Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
+---
+ drivers/net/ethernet/freescale/fec_ptp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-- The "old" way has userspace do the initial negotiation, then calls
-  NBD_DO_IT on the NBD device with the socket to tell the kernel to go
-  ahead and use the socket
-- The "new" way has userspace do the initial negotiation, then sends a
-  netlink message with the socket to tell the kernel to go ahead and use
-  the socket.
+diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
+index 4b7bad9a485d..1a7aa280e7f6 100644
+--- a/drivers/net/ethernet/freescale/fec_ptp.c
++++ b/drivers/net/ethernet/freescale/fec_ptp.c
+@@ -756,7 +756,7 @@ void fec_ptp_init(struct platform_device *pdev, int irq_idx)
+ 	fep->ptp_caps.max_adj = 250000000;
+ 	fep->ptp_caps.n_alarm = 0;
+ 	fep->ptp_caps.n_ext_ts = 0;
+-	fep->ptp_caps.n_per_out = 1;
++	fep->ptp_caps.n_per_out = 4;
+ 	fep->ptp_caps.n_pins = 0;
+ 	fep->ptp_caps.pps = 1;
+ 	fep->ptp_caps.adjfine = fec_ptp_adjfine;
 
-So, really, it's the other way around: userspace isn't playing with the
-socket, the kernel is playing with a socket that originated in
-userspace.
-
-If userspace can be trusted to configure a socket for the kernel, then
-surely that shouldn't be a problem? ;-)
-
-(apologies if I didn't understand the problem correctly)
-
+base-commit: 8a63baadf08453f66eb582fdb6dd234f72024723
 -- 
-"I never had a C in history!"
-"Yeah, but there was so much less of it when you were my age!"
- -- Joe Brockmeier recounting a conversation with his father, cfgmgmtcamp 2026, Ghent
+2.39.5
+
+
