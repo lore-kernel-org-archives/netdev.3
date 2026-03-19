@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91BC277C9E;
-	Thu, 19 Mar 2026 02:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C50277C9E;
+	Thu, 19 Mar 2026 02:30:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773887418; cv=none; b=hpOLepy6hIbFmvtPriZPIzBTe1mbS3zA8qjqCMoacdykYYmosVS9UAdaiMrQ/kVsVTDmdv9Vd8d4Auw8tU4WaxmT0o2UnHPaf50grJEkpKr0btm4Z4GJsdZ0Va+VdodF6lBa6gz1vwSvq8Gpi7NlL7TlQAvedDF0uEt5XJ+WMjQ=
+	t=1773887439; cv=none; b=I5InBU20DuEHr8t5am/xrO+vZKrE3M1djsfCezXgx8nflqjplPMqCEUMmtBwhh62oueOlQPpXODMSByEVjTRIpMzxz4R1RECi95A/x5/uV8q5EjLX/+4Obrt2Sbe7XGWOMGn7bQsZA0BwipvfoSztNYlXsZnpqWphiD9XH/XihA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773887418; c=relaxed/simple;
-	bh=3LlOkU2NQ+zxCPAFgs6MqMzjKMu/bPeJ3o20uox+nVU=;
+	s=arc-20240116; t=1773887439; c=relaxed/simple;
+	bh=xWn35S5eSYIJwCS1K9AG5kbF7ITUrwAriCif/gWPJGw=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=JS1TeHdzBGPk75EFCP3Kbnef7Qmo4P4c4iV4cuXKCALkwo0X6ZW59VeOuA3k8M7F/ZhbyBE0XnkHwnsSP0S8AxALwsSNgXcEwvkLG+Nmyf8V3hF11J988sIsjgoeFerYYh9YSfOXskceyp53yDvSFnoG7ZukuJ29qqoQyeFoCY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UbctZx26; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=H0CXrBjo+AyzkpDi+9BLb4hRmtEwxRkN5PY9IxhaDmCceon8T003zDGzB/C6yztxW1qJyn4idPm5ANwqscJd9bz6SQkJukwqoBX+Br4Ufb9st+DGjeeq+D4xqDwxvc2QFK7JLzQHq3KW3XLyrAhnfXFYd64XLAQqxi1vPyPPqpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WWhdTGBo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UbctZx26"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70AF5C19421;
-	Thu, 19 Mar 2026 02:30:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WWhdTGBo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E29A4C2BC87;
+	Thu, 19 Mar 2026 02:30:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773887418;
-	bh=3LlOkU2NQ+zxCPAFgs6MqMzjKMu/bPeJ3o20uox+nVU=;
+	s=k20201202; t=1773887438;
+	bh=xWn35S5eSYIJwCS1K9AG5kbF7ITUrwAriCif/gWPJGw=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=UbctZx26OLNVLUpvedn0yVdloqu0JiIoTi4BknjNSZ0kP6L5IwLB0w44h+oDiKHBD
-	 FfjjDJeohvj7vJp4K7kl4BfRmoZyDSpgZJpACZt/Kme1fOu1Q9SiRX/8kPjOw+OacE
-	 LsXQFS4N0cHlt3nr6lFVxuQH2PWM2/gJe50QVwoMDY0fYhYudzLwR7F1eYG7ZZe2MZ
-	 ZQbwXOJvUNFCsbDopmxV2nqOpqtwLrsQ7oMu77vIYo4DNEbdlSOkpiCKHHoU4L5Vqn
-	 b+OldFZxrTiKV+CUYvKYTiokiAxbug71Dq6Sl+qtPDvVYyC5l9nB5qnitkEJekWYRg
-	 GQBPYg+fAbTqw==
+	b=WWhdTGBo5FHYYBuV8wVQN5OqnLnQArXEeprqupATlR0A3EWl9K0YZxa6JCgcPv1i3
+	 /Ng2SR1Ptz7YPDw/h0/9lkrf7Cix3NQgq+LQUd/PvDfGQYpwwgfkPSv8XRFHiLlWWo
+	 mqfOAS+6UdAfywoJCpfRnSxhg+vhVUdYK/4qBXWsoauyTzqu7qO8K+bwI8wYfAiZwL
+	 UCNyHxL7NDgoP86N+N6oIY9cG7Q+4VC04TjpKNFH1zuSomAO7hudl4nt1R7Wb/U3Js
+	 6npY6qG6ZYFW17549uaUb14Hjab7W0OU4NR95cTfhVYTs+UC7VeKqE3sBbE/I5HNFQ
+	 Svc53JL8FPKKA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02FA33808200;
-	Thu, 19 Mar 2026 02:30:11 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7D0713808200;
+	Thu, 19 Mar 2026 02:30:31 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,34 +37,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [GIT PULL] wireless-2026-03-18
+Subject: Re: [PATCH net-next] qed: Reimplement qed_mcast_bin_from_mac() using
+ library functions
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177388740979.997016.8859554824549272429.git-patchwork-notify@kernel.org>
-Date: Thu, 19 Mar 2026 02:30:09 +0000
-References: <20260318172515.381148-3-johannes@sipsolutions.net>
-In-Reply-To: <20260318172515.381148-3-johannes@sipsolutions.net>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+ <177388743003.997016.11328368912909508799.git-patchwork-notify@kernel.org>
+Date: Thu, 19 Mar 2026 02:30:30 +0000
+References: <20260316221453.66078-1-ebiggers@kernel.org>
+In-Reply-To: <20260316221453.66078-1-ebiggers@kernel.org>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
-This pull request was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 18 Mar 2026 18:20:49 +0100 you wrote:
-> Hi,
+On Mon, 16 Mar 2026 15:14:53 -0700 you wrote:
+> The calculation done by qed_calc_crc32c() is the standard
+> least-significant-bit-first CRC-32C except it uses
+> most-significant-bit-first order for the actual CRC variable.  That is
+> equivalent to bit-reflecting the input and output CRC.  Replace it with
+> equivalent calls to the corresponding library functions.
 > 
-> So maybe a couple more fixes than I'd like, but here we
-> are, and it's small. I also failed to notice the missing
-> "wifi:" subject for one of the commits, but didn't rebase
-> just because of that now.
+> Tested with a simple userspace program which tested that the old and new
+> implementations of qed_mcast_bin_from_mac() produce the same outputs.
 > 
 > [...]
 
 Here is the summary with links:
-  - [GIT,PULL] wireless-2026-03-18
-    https://git.kernel.org/netdev/net/c/7c46bd845d89
+  - [net-next] qed: Reimplement qed_mcast_bin_from_mac() using library functions
+    https://git.kernel.org/netdev/net-next/c/d5516452a362
 
 You are awesome, thank you!
 -- 
