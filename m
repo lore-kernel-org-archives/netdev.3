@@ -1,44 +1,45 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20D740243D
-	for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 21:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D05C402448;
+	Thu, 19 Mar 2026 21:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773954846; cv=none; b=lnbXCHDY+eyjrhbazWc9CcB6+bXwXMcCft6aJvqjk7icFNFsyl6hHw8vOFHi7Q2UUfljPCn9yq7JVBU61zO1yQt6irIpx7EQTe4+zJeNBDl4sfHD+4iNtRY/EqC6QL3gOlE4Vjm3sRBkNugwG2On6Wk/jIU14LBRd+I7KENVbMo=
+	t=1773954850; cv=none; b=kR1PjXL0BGCFjaAOY/goEpMY95vBbtw1q4md8gSql1YoFvcCCZoYVxkobSnu4k5T4hCQB6IrmDcLDX8u/uwj7kqLYNulDoaJgaDbDdsv63LYsWlVuOCpiuqI0TtC0r7U22El4vIVK0hZ46seVzt1wq0P4nWf+joLoZ7YhwShV1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773954846; c=relaxed/simple;
-	bh=g6w+7/HUstfdDlcFG0XXPxnCcV+gCuI/3fPis9u3Wso=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=WsjJun6MKoxNMMWn3WQReab3w1L3tWwZG383AZXfD/ifvsiG6WkFAv1XQIbalo7g4gl1I9hi1uZg4VVTItdK8jaN04rXhzZKv9/hAgSwkuQB9Js+6XRD4Y0TfIO1W/HKyhHj+XSDF3fZNDdFLHEant4UDiZVXF8DhTe2X8VYNZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OQTVhlvc; arc=none smtp.client-ip=198.175.65.13
+	s=arc-20240116; t=1773954850; c=relaxed/simple;
+	bh=oRpzbw8xGxDnBQtkUrD1pw82znTvjifsBtJ+zx1wwAI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=B4PVpMVtaVZ+tOSusoyF+eUOsMPVLJ+xSaWLtrN1nes36QdHPV6U7noIQavgNLVDxxWyxRxjNtSZq3UvoS0bK3NzSQSrMeLcTkRz3H2PCrraPJD+8G/wTQqnDTGj06+mxxTmVaJ/iUANtPe+IwitaOfaORfkWybN2ovMYLaQy18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CdY4y6oo; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OQTVhlvc"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CdY4y6oo"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773954843; x=1805490843;
-  h=from:to:cc:subject:date:message-id;
-  bh=g6w+7/HUstfdDlcFG0XXPxnCcV+gCuI/3fPis9u3Wso=;
-  b=OQTVhlvcvMM/cwQFSGAU1mBmpXoVFaAQDoloAvbTyY6MWoWjBdXGtiDA
-   wp8VGOYx8oz2E8ICE33Wxo1MUvIUQt9pyetGsFy8x9ck11lgNHVtSQDG+
-   6hFsNoh3msp5k9nBgh2Q0rceWhdTb5kWKNrX6dkFXLd4wArlN02Fmc2sv
-   1lii5IWK96UAwk0bgUEHsgxYak1AQ1DdVq2d1yXFxuy15T0xePBsQ81wG
-   7AfhqZQmR66CC3+fXV/B1aNQDRqDNoCZ1yI01CNADWRbiLv9rn2HLuUf4
-   bnNMQviqu+2WQbzUVyQeND1XOsf/yXL8o75hHhWyZ1JtN9db9lESMLfTd
-   w==;
-X-CSE-ConnectionGUID: xR7Q8hiYT1Odg/PGikYqaQ==
-X-CSE-MsgGUID: 4858lgIpSqCVdfHXWKdmTQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="86116354"
+  t=1773954847; x=1805490847;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references;
+  bh=oRpzbw8xGxDnBQtkUrD1pw82znTvjifsBtJ+zx1wwAI=;
+  b=CdY4y6oov8Sw94G8H+xPb0j25wMdf6T38/B8JtqKMlKflOGxwZMHRAMc
+   JwW16p8QSzTRcedALGx819Hbm7SbU8BhWWhtmWpHt30L4NrSyGSN3ffmZ
+   OnWhzi/3okrpuUYkoW5ptdqN9nbwfrLFhMY8JyLBAOwCQjoqRebDDVM2B
+   nQHEVKypLg4GauByZdu5eD7/38YGa9KzUUwuTAS1t+bn041abKkr+1Fo5
+   tgGIJgpMkSDFWkt98vWnZ2ZuC2Y518jqjGu7gZDBsKp6voH86V5PIckTI
+   y9m9mJfhby94iwHM1IehUpsTClQcVOGRucb9K2a7wFv/h11bmlIULQzQJ
+   Q==;
+X-CSE-ConnectionGUID: WIHfQe+tTCCtcL7Y8j0oww==
+X-CSE-MsgGUID: jMTHGaBERqKr8hxFt3hMdw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="86116382"
 X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="86116354"
+   d="scan'208";a="86116382"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 14:14:02 -0700
-X-CSE-ConnectionGUID: WXM2WaaIS4qrYTicVnNMyQ==
-X-CSE-MsgGUID: YOQskBR4Ryqvkx9OeGomAg==
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 14:14:03 -0700
+X-CSE-ConnectionGUID: REe93wI8QfGVVyM1f/5zkA==
+X-CSE-MsgGUID: JCzPACKwTgKixmtbe025Jw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="227221170"
+   d="scan'208";a="227221175"
 Received: from estantil-desk.jf.intel.com ([10.166.241.24])
   by orviesa003.jf.intel.com with ESMTP; 19 Mar 2026 14:14:02 -0700
 From: Emil Tantilov <emil.s.tantilov@intel.com>
@@ -58,45 +59,46 @@ Cc: netdev@vger.kernel.org,
 	linux-rt-devel@lists.linux.dev,
 	sgzhang@google.com,
 	boolli@google.com,
-	Emil Tantilov <emil.s.tantilov@intel.com>
-Subject: [PATCH iwl-net v2 0/3] idpf: virtchnl locking and async fixes
-Date: Thu, 19 Mar 2026 14:13:32 -0700
-Message-Id: <20260319211335.23236-1-emil.s.tantilov@intel.com>
+	Emil Tantilov <emil.s.tantilov@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH iwl-net v2 2/3] idpf: improve locking around idpf_vc_xn_push_free()
+Date: Thu, 19 Mar 2026 14:13:34 -0700
+Message-Id: <20260319211335.23236-3-emil.s.tantilov@intel.com>
 X-Mailer: git-send-email 2.17.2
+In-Reply-To: <20260319211335.23236-1-emil.s.tantilov@intel.com>
+References: <20260319211335.23236-1-emil.s.tantilov@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 
-The main change in this series is the introduction of local spinlock_t
-which replaces the previous use of completion's raw spinlock. This allows
-us to make consistent use of the xn_bm_lock when accessing the free_xn_bm
-bitmap, while also avoiding nested raw/bh spinlock issue on PREEMPT_RT
-kernels. Additionally, we ensure that the payload size is set before
-invoking the async handler, to make sure it doesn't error out prematurely
-due to invalid size check.
+Protect the set_bit() operation for the free_xn bitmask in
+idpf_vc_xn_push_free(), to make the locking consistent with rest of the
+code and avoid potential races in that logic.
 
-Changelog:
-v1->v2:
-- Avoid the nested raw/bh spinlocks by not using the raw spinlock from
-the completion API. As suggested by Sebastian Andrzej Siewior.
-- With the above change, the ordering of the patches is changed to first
-introduce the local spinlock, then fix the locking around the bitmap and
-finally make sure the payload size is set for the async handler.
+Fixes: 34c21fa894a1 ("idpf: implement virtchnl transaction manager")
+Cc: stable@vger.kernel.org
+Reported-by: Ray Zhang <sgzhang@google.com>
+Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
+---
+ drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-v1:
-https://lore.kernel.org/netdev/20260316232819.6872-1-emil.s.tantilov@intel.com/
-
-Emil Tantilov (3):
-  idpf: fix PREEMPT_RT raw/bh spinlock nesting for async VC handling
-  idpf: idpf: improve locking around idpf_vc_xn_push_free()
-  idpf: set the payload size before calling the async handler
-
- .../net/ethernet/intel/idpf/idpf_virtchnl.c   | 20 ++++++++++---------
- .../net/ethernet/intel/idpf/idpf_virtchnl.h   |  5 +++--
- 2 files changed, 14 insertions(+), 11 deletions(-)
-
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+index 582e0c8e9dc0..fbd5a15b015c 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -402,7 +402,9 @@ static void idpf_vc_xn_push_free(struct idpf_vc_xn_manager *vcxn_mngr,
+ 				 struct idpf_vc_xn *xn)
+ {
+ 	idpf_vc_xn_release_bufs(xn);
++	spin_lock_bh(&vcxn_mngr->xn_bm_lock);
+ 	set_bit(xn->idx, vcxn_mngr->free_xn_bm);
++	spin_unlock_bh(&vcxn_mngr->xn_bm_lock);
+ }
+ 
+ /**
 -- 
 2.37.3
 
