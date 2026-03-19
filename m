@@ -1,47 +1,42 @@
-Received: from forwardcorp1d.mail.yandex.net (forwardcorp1d.mail.yandex.net [178.154.239.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1ACC3264CD;
-	Thu, 19 Mar 2026 08:01:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.200
+Received: from zg8tmtyylji0my4xnjeumjiw.icoremail.net (zg8tmtyylji0my4xnjeumjiw.icoremail.net [162.243.161.220])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669C139FCB6;
+	Thu, 19 Mar 2026 08:02:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.161.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773907290; cv=none; b=W+yMR3fZV9tBOGsI4iI0xP65CXNmsB28oJiuwsV7mj8hIiFp1NjFt6TAEoRgVlr/IJFqcTLU9rV7Op5bp7mA+zbOoA3jBK9BJqrk6t4JMAh9myMXHKJh5IkeSDu6lwzEGdBuD7ZkpxXruRWzbTVA9TYnaB9yrIWiW9veikmXoMs=
+	t=1773907384; cv=none; b=rNM1c5NT8hmQ5UkIO/7sg1QcZiZn1q1UQXKnJIrQoY6e6SdUBdh0ZGkNZSKHBnN6USme1EGsW7+vhrzQSUF/Rt+gfvzxpu4Jy7dPD53EsJxjvTO9RHmMIPD//tZb2bRscmUi3KobqS/aWULPNvy86jsnIVTogAIAWnIaVPGTDuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773907290; c=relaxed/simple;
-	bh=Z5XzVzZjSM8KYAVqS2gks8t042AVRybgtkb6BUkQIk0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fXiME4nHfINkUiSpqU47orMBDk7VG5P+dWpKfIx0BrLx2HmpRLzyPO372xyQT9YYn6M7zqNhCeOR1jIUebCiVoZDVzGrUTXQL9SfORkm4E333L0ZRvFUrHP9JzX1SbOLzc6VBmsWsVnYxuHxoOJ7xynckz1WDQ+7DMR6YwdmubA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=xCr85/J2; arc=none smtp.client-ip=178.154.239.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="xCr85/J2"
-Received: from mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:65a0:0:640:e1de:0])
-	by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 5C84F808CB;
-	Thu, 19 Mar 2026 11:01:23 +0300 (MSK)
-Received: from kniv-nix.yandex-team.ru (unknown [2a02:6bf:8080:4b::1:26])
-	by mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id q0JiSw1AZqM0-jT7pE6cZ;
-	Thu, 19 Mar 2026 11:01:22 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
-	s=default; t=1773907282;
-	bh=fCQ+qU35pEQq1W3N0/JCh6dWJijS1YVgrLWBHzC2aag=;
-	h=Message-Id:Date:Cc:Subject:To:From;
-	b=xCr85/J2LC2iaAF5kmuY9eN3SEbZpC4hz6VPWg/H1bXTqlNY50uauhwSFPtoOzuOG
-	 qIpGSYKZKMAzVyRYybtM/BRR64ASk4ZrWbeH5PF1T4JjuYBHvfIG8aIgk30HCuzMvD
-	 Am8lkbESG2fhvnxsNeWcSmmw8H1Cp5kw5BzYPrdQ=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
-From: Nikolay Kuratov <kniv@yandex-team.ru>
-To: linux-kernel@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
-Subject: [PATCH] vhost: Bump max_mem_regions default to 256
-Date: Thu, 19 Mar 2026 11:00:52 +0300
-Message-Id: <20260319080052.1942514-1-kniv@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1773907384; c=relaxed/simple;
+	bh=Vswjcnpvn4iFua0DERMLys0sUVckqLaR59H5FUHpf98=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Md6lV2sY96Q3clXlLuaktwnD6jztDZMxrHqh0zsMBdL22JqlqI/FlKwrJfrBMtwCLrQbUtMY+FxBa8MCzRkI+n7IZ+2Wten4lSo85/xasGIhtURpaKc5me0hww1qBDnTjCkFwh+vxskriVkmU9xL77pro4VVABLbP3vN6YZZfQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=162.243.161.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
+Received: from a800-server-1.tail7779b.ts.net (unknown [172.30.111.252])
+	by app2 (Coremail) with SMTP id zQmowACHHoWUrbtpLTsjAA--.18246S2;
+	Thu, 19 Mar 2026 16:02:28 +0800 (CST)
+From: Yang Yang <n05ec@lzu.edu.cn>
+To: aconole@redhat.com,
+	echaudro@redhat.com,
+	i.maximets@ovn.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	pshelar@ovn.org,
+	martin.varghese@nokia.com,
+	netdev@vger.kernel.org,
+	dev@openvswitch.org,
+	linux-kernel@vger.kernel.org,
+	yifanwucs@gmail.com,
+	tomapufckgml@gmail.com,
+	tanyuan98@outlook.com,
+	bird@lzu.edu.cn,
+	n05ec@lzu.edu.cn
+Subject: [PATCH net] openvswitch: validate MPLS set/set_masked payload length
+Date: Thu, 19 Mar 2026 08:02:27 +0000
+Message-ID: <20260319080228.3423307-1-n05ec@lzu.edu.cn>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,34 +44,60 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQmowACHHoWUrbtpLTsjAA--.18246S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7AFyrGrykCr1UXF17ZF48Crg_yoW8Gr43pF
+	y2kr17trW5Ary2gw4kAF1xuay7KF1kXrsrGF90ka18A3Z0gF95trWrKFZIvwnrCrWqkFWf
+	XrZFqFsxAasxZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBF1xkIjI8I6I8E6xAIw20EY4v20xvaj40_JrC_JFWl1IIY67AE
+	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
+	IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2
+	z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcV
+	Aq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j
+	6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
+	vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0E
+	n4kS14v26r4a6rW5MxkIecxEwVCm-wCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6c
+	x26r48MxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
+	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6x
+	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
+	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
+	0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0pRpOJnUUUUU=
+X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQILCWm6ynkMRAACsr
 
-Today, vfio mappings for a single GPU (BAR 0) may consume more than 30
-umem entries (e.g. configured by qemu with vhost-net), so bump default to
-allow running with a few GPUs without module parameter adjustment - it
-is harmless, since umem rarely used and iotlb already have larger limit.
+validate_set() accepted OVS_KEY_ATTR_MPLS as variable-sized payload for
+SET/SET_MASKED actions. In action handling, OVS expects fixed-size
+MPLS key data (struct ovs_key_mpls).
 
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Use the already normalized key_len (masked case included) and reject
+non-matching MPLS action key sizes.
+
+Reject invalid MPLS action payload lengths early.
+
+Fixes: fbdcdd78da7c ("Change in Openvswitch to support MPLS label depth of 3 in ingress direction")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Tested-by: Ao Zhou <n05ec@lzu.edu.cn>
+Co-developed-by: Yuan Tan <tanyuan98@outlook.com>
+Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
 ---
- drivers/vhost/vhost.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-index 2f2c45d20883..3ac2ba272716 100644
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -34,10 +34,10 @@
+ net/openvswitch/flow_netlink.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
+index 67fbf6e48a301..45444b81e9b97 100644
+--- a/net/openvswitch/flow_netlink.c
++++ b/net/openvswitch/flow_netlink.c
+@@ -2953,6 +2953,8 @@ static int validate_set(const struct nlattr *a,
+ 	case OVS_KEY_ATTR_MPLS:
+ 		if (!eth_p_mpls(eth_type))
+ 			return -EINVAL;
++		if (key_len != sizeof(struct ovs_key_mpls))
++			return -EINVAL;
+ 		break;
  
- #include "vhost.h"
- 
--static ushort max_mem_regions = 64;
-+static ushort max_mem_regions = 256;
- module_param(max_mem_regions, ushort, 0444);
- MODULE_PARM_DESC(max_mem_regions,
--	"Maximum number of memory regions in memory map. (default: 64)");
-+	"Maximum number of memory regions in memory map. (default: 256)");
- static int max_iotlb_entries = 2048;
- module_param(max_iotlb_entries, int, 0444);
- MODULE_PARM_DESC(max_iotlb_entries,
+ 	case OVS_KEY_ATTR_SCTP:
 -- 
-2.34.1
+2.43.0
 
