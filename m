@@ -1,40 +1,38 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from out-13.smtp.spacemail.com (out-13.smtp.spacemail.com [63.250.43.96])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED185343D60
-	for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 17:52:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685B639447C
+	for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 17:55:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.250.43.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773942759; cv=none; b=r1l0TMQ9EyUM+eoVmSRcvxzpQ9rVEUzElu9c0TfEUkST1vccfjseJRtUYPO0k9e67CAVCUAd6sLCm4jOZ8rBbtzmc6n0PdcY1hBTRzN7mp2Y/3wleKbksAVsqz/p38W01KGsrPxexzF7SK3kISNMMTHiS7NsRYKmOpOmWxuoUo4=
+	t=1773942904; cv=none; b=jPLhbuGqPh2XnxHkyByuCbACiMlhruAOetmGd/ZGMDm3lDm8rnZMJ1U/qX61SQsamUrCkNA4l38eT//9pjc/gAG+rbXgbkRvFbe6rnDzPGwEUiT+zkND2de3vVxPCQ0qNSCFrktersPILvf1y+Uxm97JX9lfK8w0Xv1bXQy45G8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773942759; c=relaxed/simple;
-	bh=c7KdzH6EkQEnIu60qLdJacRQT5STh1ryZYSTEgsyFuw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TOu3xxSjt7F40kLBOmmdMeuLLLjHXhESa2yEdmdaArlAgTvjzFaHEm6BGEW6UUTOwQVL2zINu7cKLV+TpNYAaXqHIMaFgWFlSCMPuEu/GY6BsGdFVw6glBZR1TQhJ2RpdZrDEUbKBkv5ZSyou786YqnkFyAeRl2SlV+2LocVzw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=EIFN+mnd; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1773942904; c=relaxed/simple;
+	bh=cfVoYIitZHte75pCalAJPyi3bNyNpJXZTP7NUsP18jI=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=IwS33jzxOCih+49CZlvT9reHSKT1dJ9TIbo2KF1vsx4rmn/vHazQGXy82Aozxqkn2UmowNPBVIoJstv3X1d6jrAlho8yV5El9nc+C1BzvWePpVrjaKGty3EL8Z664yBcL3D22/GiXrAlyryFUtfk0xi94gI/EjYBPEk4RYKG1PY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=i2labs.ca; spf=pass smtp.mailfrom=i2labs.ca; dkim=pass (2048-bit key) header.d=i2labs.ca header.i=@i2labs.ca header.b=mHEZt6EG; arc=none smtp.client-ip=63.250.43.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=i2labs.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=i2labs.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="EIFN+mnd"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 31FAE4E4271F;
-	Thu, 19 Mar 2026 17:52:28 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 039B460050;
-	Thu, 19 Mar 2026 17:52:28 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4730410450941;
-	Thu, 19 Mar 2026 18:52:18 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1773942746; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=8h+kJtiQNyxdX0LIfkr+wSpHBs0qYPkOOQXebt6tRfc=;
-	b=EIFN+mnd/aoBLMU4JLMfZCIFtWSfuBBGKwM3h7Ys814nOH0MXqOfw/qcEkjHeOBNFs/qfK
-	buUvvHfo1Ticbqg73nPzR9xZmHLfSdLEL0WRryiz6D6v0VFOnxlkwPIeCdxFNDWIt4RMHw
-	NSMfgjxnCXkV1hpJm53YpkASDB+QFeSggtV45rEblLi7lS3Esgr90KlWfhYoSDj83i5x/7
-	68WfkrCmQWMKN5368nQ62cFRcajj9g99HFbKMgssCzAdfVhhHJLXkdR1UHroM6xYzg0iy7
-	s9Rjla2oXAhtfpp0/hsJ1olPzWo/eoVTp/M6xULHJkhEUYJRv9IA09tho3NsQA==
-Message-ID: <e35c5cde-c631-46f4-850f-4737b1f591d9@bootlin.com>
-Date: Thu, 19 Mar 2026 18:52:17 +0100
+	dkim=pass (2048-bit key) header.d=i2labs.ca header.i=@i2labs.ca header.b="mHEZt6EG"
+Received: from [10.0.0.136] (unknown [14.179.148.118])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4fcCn85HVSz8sWQ
+	for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 17:46:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=i2labs.ca;
+	s=spacemail; t=1773942413;
+	bh=CNne2cEWWRt2To1i/YA4zmoi4I8eb4+3j9s+sDdf0iM=;
+	h=Date:To:From:Subject:From;
+	b=mHEZt6EGMRHkFs4WO8nYQJIdpkTEN1FIkayxL77O7+G5Ieb3AOrbmYYhsQTUvUffI
+	 JHr2wGnW2buolhibzYsdUsTgB/bPyI9Uh6YmfRBaCa5olWDdJTu5RZHfwaWCSppxUS
+	 k/pBg6tIZimrg2UqxBNuLbMbd11eIvvuttrLU00E6Mk3IoDZIC9hFd2S/vzFpLbJYZ
+	 Zcm18PdXEcfC31PQwdkqpgDULlDpxdL/Ze9NrP1gbQAsKE8YVQve7eECu+XHPdc6Tc
+	 uTENP5BCLt3HvycXBg9LmijDTyo/SEgEqYuwDP9KOysi/OzQa5RpyoxW6+LDPypWq0
+	 c5kHcU5+bdM0g==
+Message-ID: <350cea13-9bf1-4605-82c9-b85114fc88fd@i2labs.ca>
+Date: Fri, 20 Mar 2026 00:46:47 +0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,68 +40,36 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v7 10/10] net: ethtool: Introduce ethtool command
- to list ports
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, Andrew Lunn <andrew@lunn.ch>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Russell King <linux@armlinux.org.uk>, Heiner Kallweit
- <hkallweit1@gmail.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Herve Codina <herve.codina@bootlin.com>,
- Florian Fainelli <f.fainelli@gmail.com>,
- Vladimir Oltean <vladimir.oltean@nxp.com>,
- =?UTF-8?Q?K=C3=B6ry_Maincent?= <kory.maincent@bootlin.com>,
- =?UTF-8?Q?Marek_Beh=C3=BAn?= <kabel@kernel.org>,
- Oleksij Rempel <o.rempel@pengutronix.de>,
- =?UTF-8?Q?Nicol=C3=B2_Veronese?= <nicveronese@gmail.com>,
- Simon Horman <horms@kernel.org>, mwojtas@chromium.org,
- Romain Gantois <romain.gantois@bootlin.com>,
- Daniel Golle <daniel@makrotopia.org>,
- Dimitri Fedrau <dimitri.fedrau@liebherr.com>, =?UTF-8?B?QmrDtnJuIFTDtnBl?=
- =?UTF-8?Q?l?= <bjorn@kernel.org>
-References: <20260309152747.702373-1-maxime.chevallier@bootlin.com>
- <20260309152747.702373-11-maxime.chevallier@bootlin.com>
- <20260312190705.0b3a3f78@kernel.org>
- <97bd2ab1-a8ff-4c0b-a328-952139f18fc8@bootlin.com>
- <20260319075343.0aa9fac8@kernel.org>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 Content-Language: en-US
-In-Reply-To: <20260319075343.0aa9fac8@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+To: netdev@vger.kernel.org
+From: Nolan Woods <nolan@i2labs.ca>
+Subject: net: disable default loopback
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Envelope-From: nolan@i2labs.ca
 
+Hello,
+I am building a highly constrained Linux environment where I want to 
+remove any possibility of a process communicating with other local 
+processes via the network stack. It appears that the kernel 
+automatically creates the loopback device and I can't locate any 
+configuration that might disable it. I need to be able to create 
+loopbacks in namespaces, disabling the network stack entirely isn't an 
+option. I also do not want to depend on NetFilter or any sort of packet 
+rules. I can disable the link after it is created, but that approach 
+still has the potential of the link being brought back up. SELinux might 
+be an option but is just another form of filtering rules. Ideally the 
+process wouldn't even have the option to bind to the interface.
 
+I found this comment that implies that there might be some sort of 
+unbreakable implicit network stack dependency on the loopback: 
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/net/core/dev.c#n13266
 
-On 19/03/2026 15:53, Jakub Kicinski wrote:
-> On Thu, 19 Mar 2026 10:27:11 +0100 Maxime Chevallier wrote:
->>> GENL_REQ_ATTR_CHECK ?
->>> I guess you'll have to move it to prepare cause we don't get info 
->>> here :(  
->>
->> Sorry for my comments coming apart on your review, I'm getting this new
->> iteration done in-between other tasks  :(
->>
->> I can't move that check to the prepare_data() step, as we need the
->> request->port_id field to be populated at that stage for the DUMP
->> op (for each port, we set request->port_id, then we call prepare_data
->> and so on).
-> 
-> Not sure I get what you're saying - that it doesn't work or that it
-> leads to "duplicated" work?
+Can anyone elaborate on this?
 
-What I mean is that it doesn't work yeah.
+I would greatly appreciate the input anyone could provide.
 
-> Alternative is to add info to parse_request
-> args which I suspect is useful long term anyway.
-
-good point, I like the idea a lot :) OK let me give this a try, I need
-to see how that looks like.
-
-Thanks for the suggestion,
-
-Maxime
+Thank you for your time,
+Nolan Woods
 
 
