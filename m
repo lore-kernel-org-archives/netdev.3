@@ -1,39 +1,39 @@
-Received: from mout-b-210.mailbox.org (mout-b-210.mailbox.org [195.10.208.40])
+Received: from mout-b-112.mailbox.org (mout-b-112.mailbox.org [195.10.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987CE3D3481;
-	Thu, 19 Mar 2026 15:13:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.10.208.40
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682B272622;
+	Thu, 19 Mar 2026 15:13:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.10.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773933208; cv=none; b=a7C4MA6bbMTi2PJ5T5HIVbGwnFSbraAlx3XZMZ5T/9bztWsfJQAK5cqsWB8CFuyIxDd42w6u/a5US457ZTxxgZkH++DzucXmQV0xdmKS2pRo17rqHQRBWqK4LCZ8baTMUMIIzLCTg+Y9hADZzEb7fB8BF2ksItuSKjhvfK3b9+Y=
+	t=1773933231; cv=none; b=P2jZOjVYw3uS8JpwMVsn0Hk7caLGb3p0nMRAqBacojDQYSyVkpQPGcx83yTQFvm2oU900I0zshhCnPTLmXNYnoqiOt8hJuFz5f8L+//tOzPWICPRaAoibvdVl9ryuHSWXqiN9WTnBTvbgLjAlRBA7qHB6blP3y7yYWlVJZYIvWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773933208; c=relaxed/simple;
-	bh=AdceW1FN4eDUaFa0FYDNgm9vSomij039gshdCZPh0EI=;
+	s=arc-20240116; t=1773933231; c=relaxed/simple;
+	bh=YdGU6iQSB6J1VJnMwbYn+xQQAwK+qB4z+3mEGB8ehFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ov8mGX2UApPSCYIyQmUBh4z9/4MX/EsLspr7XyXx6z6kJeJPq+nlGRvyDp8iLb7kljdNJvZB9ttQ71tw5eSacDScktGRUMpKnw7KVnVh87i9D827sVLEzMV8yueX43NH36y++/P1WatBagw5n1DNUet99QaNmzdiDaqy0hLRWkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=joSMu+tX; arc=none smtp.client-ip=195.10.208.40
+	 MIME-Version:Content-Type; b=oWRiuTgk7OFT5iA6dxlPa9q4VOqt7QBVlYbLlsuvFMWJ/d1gM3Gw7EjAKujJgRoRIi17AEPwOlgXCHBQ9zNtqtBEuBbsTPorMQGxH5xXXAFzocqZV0f0LbvqRW0kr+SIDUKKzt/V6+2zHkCAV0Qv+uHldk1+kliOdY53ACZKot0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=CcIZynlt; arc=none smtp.client-ip=195.10.208.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="joSMu+tX"
+	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="CcIZynlt"
 Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-b-210.mailbox.org (Postfix) with ESMTPS id 4fc8N34JYkzDx5w;
-	Thu, 19 Mar 2026 16:13:23 +0100 (CET)
+	by mout-b-112.mailbox.org (Postfix) with ESMTPS id 4fc8NT3JspzDvP8;
+	Thu, 19 Mar 2026 16:13:45 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
-	s=MBO0001; t=1773933203;
+	s=MBO0001; t=1773933225;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=XZR5uoZ2ZSYxknGF6muIkL03VVRbFhAx1x3IXKaFjIM=;
-	b=joSMu+tX1NoUzw/SJBK1PfA8vYLdRUN54+uWHZJwchWVl8xedbKgqywpjvCuixhrJPB137
-	OGjVV/6v5lwRQM8ttZcZ++vAFFNw1Uqp8nV5ugU/w0WzInbsybEK9zyHhB4NjyEOeN1Prn
-	eR65FTxDhy7UGoJTH+fkeBFpBKgYqsjY/djP8fHb5etKuXVqYfMEHDqgT9kfikgyvtWfbK
-	WasWHJW2SsB5Eq7Ny5f1Cq8yaDG1YhBSh9yuoxJMMY3w82Rx9Wj8GlvTYxQX48/SAagrJG
-	p2kLAGWhBxAiEdhifJpMfz/fmAMpKHG4x3eLOXstXk+Ifiazidne3ps6AShDFw==
+	bh=j3X36v8Qu47aU8G+k1e+nD4qx4C1jckCtR5SYpVmAAM=;
+	b=CcIZynlt99MXoP0o+PubWaZlzVOHM49Z4XxdmiYG/BI1AbRk28ZGfNZU+l0itBkqEJFGHN
+	6Qld/EIR3gIlXe56Ad7BU7RrQxEyh93Yur1wtvFEhzaXKb5R9m3V9Y02Yk120ft2AAsgd9
+	4CpYpoasUO9T2VUMLwFL1CfrUT3pwBGn/kHckAzvUXQ664Wf6z8mXDZECJzv7Vvhqd1Dxb
+	/c8SUO98THmUzvLoZfUAIEasFswv0L1jC3OQKJzIIGYxvPzaWljCxJuAb5/cnBTeuJPNSc
+	D8tcUjjxON5/TpFFut/v98UVcEuzdF+i0Kg3qA7yzx1wbDnPpKxUCdE2ygIovQ==
 Authentication-Results: outgoing_mbo_mout;
 	dkim=none;
 	spf=pass (outgoing_mbo_mout: domain of ralf@mandelbit.com designates 2001:67c:2050:b231:465::102 as permitted sender) smtp.mailfrom=ralf@mandelbit.com
@@ -48,9 +48,9 @@ Cc: =?UTF-8?q?Daniel=20Gr=C3=B6ber?= <dxld@darkboxed.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	linux-kernel@vger.kernel.org
-Subject: [RFC net-next 07/15] ipxlat: add 4to6 and 6to4 TCP/UDP translation helpers
-Date: Thu, 19 Mar 2026 16:12:16 +0100
-Message-ID: <20260319151230.655687-8-ralf@mandelbit.com>
+Subject: [RFC net-next 11/15] ipxlat: add ICMP informational translation paths
+Date: Thu, 19 Mar 2026 16:12:20 +0100
+Message-ID: <20260319151230.655687-12-ralf@mandelbit.com>
 In-Reply-To: <20260319151230.655687-1-ralf@mandelbit.com>
 References: <20260319151230.655687-1-ralf@mandelbit.com>
 Precedence: bulk
@@ -59,252 +59,333 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4fc8N34JYkzDx5w
+X-Rspamd-Queue-Id: 4fc8NT3JspzDvP8
 
-Add protocol-specific transport translation entry points for both
-address-family directions.
+Add ICMP informational message translation for both 4->6 and 6->4 paths
+and wire the new ICMP translation units into the engine.
 
-This wires checksum adjustment for outer and quoted-inner TCP/UDP
-headers and provides the transport routines consumed by the translation
-engine.
+This introduces the protocol mapping and checksum update logic for echo
+request/reply traffic, while ICMP error quoted-inner translation is
+added in a follow-up commit.
 
 Signed-off-by: Ralf Lici <ralf@mandelbit.com>
 ---
- drivers/net/ipxlat/transport.c | 194 +++++++++++++++++++++++++++++++++
- drivers/net/ipxlat/transport.h |  20 ++++
- 2 files changed, 214 insertions(+)
+ drivers/net/ipxlat/Makefile       |  2 +
+ drivers/net/ipxlat/icmp.h         | 43 ++++++++++++++
+ drivers/net/ipxlat/icmp_46.c      | 95 +++++++++++++++++++++++++++++++
+ drivers/net/ipxlat/icmp_64.c      | 92 ++++++++++++++++++++++++++++++
+ drivers/net/ipxlat/translate_64.c |  1 +
+ drivers/net/ipxlat/transport.c    | 11 ----
+ drivers/net/ipxlat/transport.h    |  5 --
+ 7 files changed, 233 insertions(+), 16 deletions(-)
+ create mode 100644 drivers/net/ipxlat/icmp.h
+ create mode 100644 drivers/net/ipxlat/icmp_46.c
+ create mode 100644 drivers/net/ipxlat/icmp_64.c
 
+diff --git a/drivers/net/ipxlat/Makefile b/drivers/net/ipxlat/Makefile
+index d7b7097aee5f..2ded504902e3 100644
+--- a/drivers/net/ipxlat/Makefile
++++ b/drivers/net/ipxlat/Makefile
+@@ -11,3 +11,5 @@ ipxlat-objs += transport.o
+ ipxlat-objs += dispatch.o
+ ipxlat-objs += translate_46.o
+ ipxlat-objs += translate_64.o
++ipxlat-objs += icmp_46.o
++ipxlat-objs += icmp_64.o
+diff --git a/drivers/net/ipxlat/icmp.h b/drivers/net/ipxlat/icmp.h
+new file mode 100644
+index 000000000000..52d681787d6a
+--- /dev/null
++++ b/drivers/net/ipxlat/icmp.h
+@@ -0,0 +1,43 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*  IPXLAT - Stateless IP/ICMP Translation (SIIT) virtual device driver
++ *
++ *  Copyright (C) 2024- Alberto Leiva Popper <ydahhrk@gmail.com>
++ *  Copyright (C) 2026- Mandelbit SRL
++ *  Copyright (C) 2026- Daniel Gröber <dxld@darkboxed.org>
++ *
++ *  Author:	Alberto Leiva Popper <ydahhrk@gmail.com>
++ *		Antonio Quartulli <antonio@mandelbit.com>
++ *		Daniel Gröber <dxld@darkboxed.org>
++ *		Ralf Lici <ralf@mandelbit.com>
++ */
++
++#ifndef _NET_IPXLAT_ICMP_H_
++#define _NET_IPXLAT_ICMP_H_
++
++#include <linux/ipv6.h>
++
++#include "ipxlpriv.h"
++
++/**
++ * ipxlat_46_icmp - translate ICMP informational payload
++ *		    after outer 4->6 rewrite
++ * @ipxl: translator private context
++ * @skb: packet carrying ICMPv4 transport payload
++ *
++ * Return: 0 on success, negative errno on translation failure.
++ */
++int ipxlat_46_icmp(struct ipxlat_priv *ipxl, struct sk_buff *skb);
++
++/**
++ * ipxlat_64_icmp - translate ICMP informational payload
++ *		    after outer 6->4 rewrite
++ * @ipxlat: translator private context
++ * @skb: packet carrying ICMPv6 transport payload
++ * @in6: snapshot of original outer IPv6 header
++ *
++ * Return: 0 on success, negative errno on translation failure.
++ */
++int ipxlat_64_icmp(struct ipxlat_priv *ipxlat, struct sk_buff *skb,
++		   const struct ipv6hdr *in6);
++
++#endif /* _NET_IPXLAT_ICMP_H_ */
+diff --git a/drivers/net/ipxlat/icmp_46.c b/drivers/net/ipxlat/icmp_46.c
+new file mode 100644
+index 000000000000..ad907f60416c
+--- /dev/null
++++ b/drivers/net/ipxlat/icmp_46.c
+@@ -0,0 +1,95 @@
++// SPDX-License-Identifier: GPL-2.0
++/*  IPXLAT - Stateless IP/ICMP Translation (SIIT) virtual device driver
++ *
++ *  Copyright (C) 2024- Alberto Leiva Popper <ydahhrk@gmail.com>
++ *  Copyright (C) 2026- Mandelbit SRL
++ *  Copyright (C) 2026- Daniel Gröber <dxld@darkboxed.org>
++ *
++ *  Author:	Alberto Leiva Popper <ydahhrk@gmail.com>
++ *		Antonio Quartulli <antonio@mandelbit.com>
++ *		Daniel Gröber <dxld@darkboxed.org>
++ *		Ralf Lici <ralf@mandelbit.com>
++ */
++
++#include <linux/icmp.h>
++#include <linux/icmpv6.h>
++
++#include "icmp.h"
++#include "packet.h"
++#include "transport.h"
++
++static int ipxlat_46_map_icmp_info_type_code(const struct icmphdr *in,
++					     struct icmp6hdr *out)
++{
++	switch (in->type) {
++	case ICMP_ECHO:
++		out->icmp6_type = ICMPV6_ECHO_REQUEST;
++		out->icmp6_code = 0;
++		out->icmp6_identifier = in->un.echo.id;
++		out->icmp6_sequence = in->un.echo.sequence;
++		return 0;
++	case ICMP_ECHOREPLY:
++		out->icmp6_type = ICMPV6_ECHO_REPLY;
++		out->icmp6_code = 0;
++		out->icmp6_identifier = in->un.echo.id;
++		out->icmp6_sequence = in->un.echo.sequence;
++		return 0;
++	}
++
++	return -EPROTONOSUPPORT;
++}
++
++static void ipxlat_46_icmp_info_update_csum(const struct icmphdr *icmp4,
++					    struct icmp6hdr *icmp6,
++					    const struct ipv6hdr *ip6,
++					    const struct sk_buff *skb,
++					    unsigned int l4_off)
++{
++	struct icmp6hdr icmp6_zero;
++	struct icmphdr icmp4_zero;
++	__wsum csum;
++
++	icmp4_zero = *icmp4;
++	icmp4_zero.checksum = 0;
++	icmp6_zero = *icmp6;
++	icmp6_zero.icmp6_cksum = 0;
++	csum = ~csum_unfold(icmp4->checksum);
++	csum = csum_sub(csum, csum_partial(&icmp4_zero, sizeof(icmp4_zero), 0));
++	csum = csum_add(csum, csum_partial(&icmp6_zero, sizeof(icmp6_zero), 0));
++	icmp6->icmp6_cksum = csum_ipv6_magic(&ip6->saddr, &ip6->daddr,
++					     skb->len - l4_off,
++					     IPPROTO_ICMPV6, csum);
++}
++
++static int ipxlat_46_icmp_info_outer(struct sk_buff *skb)
++{
++	const unsigned int l4_off = skb_transport_offset(skb);
++	const struct icmphdr icmp4 = *icmp_hdr(skb);
++	const struct ipv6hdr *ip6 = ipv6_hdr(skb);
++	struct icmp6hdr *icmp6 = icmp6_hdr(skb);
++	int err;
++
++	err = ipxlat_46_map_icmp_info_type_code(&icmp4, icmp6);
++	if (unlikely(err))
++		return -EINVAL;
++
++	if (skb->ip_summed == CHECKSUM_PARTIAL) {
++		icmp6->icmp6_cksum = ~csum_ipv6_magic(&ip6->saddr, &ip6->daddr,
++						      skb->len - l4_off,
++						      IPPROTO_ICMPV6, 0);
++		return ipxlat_set_partial_csum(skb, offsetof(struct icmp6hdr,
++							   icmp6_cksum));
++	}
++
++	ipxlat_46_icmp_info_update_csum(&icmp4, icmp6, ip6, skb, l4_off);
++	skb->ip_summed = CHECKSUM_NONE;
++	return 0;
++}
++
++int ipxlat_46_icmp(struct ipxlat_priv *ipxl, struct sk_buff *skb)
++{
++	if (unlikely(ipxlat_skb_cb(skb)->is_icmp_err))
++		return -EPROTONOSUPPORT;
++
++	return ipxlat_46_icmp_info_outer(skb);
++}
+diff --git a/drivers/net/ipxlat/icmp_64.c b/drivers/net/ipxlat/icmp_64.c
+new file mode 100644
+index 000000000000..6b11aa638068
+--- /dev/null
++++ b/drivers/net/ipxlat/icmp_64.c
+@@ -0,0 +1,92 @@
++// SPDX-License-Identifier: GPL-2.0
++/*  IPXLAT - Stateless IP/ICMP Translation (SIIT) virtual device driver
++ *
++ *  Copyright (C) 2024- Alberto Leiva Popper <ydahhrk@gmail.com>
++ *  Copyright (C) 2026- Mandelbit SRL
++ *  Copyright (C) 2026- Daniel Gröber <dxld@darkboxed.org>
++ *
++ *  Author:	Alberto Leiva Popper <ydahhrk@gmail.com>
++ *		Antonio Quartulli <antonio@mandelbit.com>
++ *		Daniel Gröber <dxld@darkboxed.org>
++ *		Ralf Lici <ralf@mandelbit.com>
++ */
++
++#include <linux/icmpv6.h>
++
++#include "icmp.h"
++#include "packet.h"
++#include "transport.h"
++
++static int ipxlat_64_map_icmp_info_type_code(const struct icmp6hdr *in,
++					     struct icmphdr *out)
++{
++	switch (in->icmp6_type) {
++	case ICMPV6_ECHO_REQUEST:
++		out->type = ICMP_ECHO;
++		out->code = 0;
++		out->un.echo.id = in->icmp6_identifier;
++		out->un.echo.sequence = in->icmp6_sequence;
++		return 0;
++	case ICMPV6_ECHO_REPLY:
++		out->type = ICMP_ECHOREPLY;
++		out->code = 0;
++		out->un.echo.id = in->icmp6_identifier;
++		out->un.echo.sequence = in->icmp6_sequence;
++		return 0;
++	default:
++		return -EINVAL;
++	}
++}
++
++static __sum16 ipxlat_64_compute_icmp_info_csum(const struct ipv6hdr *in6,
++						const struct icmp6hdr *in_icmp6,
++						const struct icmphdr *out_icmp4,
++						unsigned int l4_len)
++{
++	struct icmp6hdr icmp6_zero;
++	struct icmphdr icmp4_zero;
++	__wsum csum, tmp;
++
++	icmp6_zero = *in_icmp6;
++	icmp6_zero.icmp6_cksum = 0;
++	icmp4_zero = *out_icmp4;
++	icmp4_zero.checksum = 0;
++
++	csum = ~csum_unfold(in_icmp6->icmp6_cksum);
++	tmp = ~csum_unfold(csum_ipv6_magic(&in6->saddr, &in6->daddr, l4_len,
++					   NEXTHDR_ICMP, 0));
++	csum = csum_sub(csum, tmp);
++	csum = csum_sub(csum, csum_partial(&icmp6_zero, sizeof(icmp6_zero), 0));
++	csum = csum_add(csum, csum_partial(&icmp4_zero, sizeof(icmp4_zero), 0));
++	return csum_fold(csum);
++}
++
++static int ipxlat_64_icmp_info(struct sk_buff *skb, const struct ipv6hdr *in6)
++{
++	struct icmp6hdr ic6_copy, *ic6;
++	struct icmphdr *ic4;
++	int err;
++
++	ic6 = icmp6_hdr(skb);
++	ic6_copy = *ic6;
++
++	ic4 = (struct icmphdr *)(skb->data + skb_transport_offset(skb));
++	err = ipxlat_64_map_icmp_info_type_code(&ic6_copy, ic4);
++	if (unlikely(err))
++		return err;
++
++	ic4->checksum =
++		ipxlat_64_compute_icmp_info_csum(in6, &ic6_copy, ic4,
++						 ipxlat_skb_datagram_len(skb));
++	skb->ip_summed = CHECKSUM_NONE;
++	return 0;
++}
++
++int ipxlat_64_icmp(struct ipxlat_priv *ipxl, struct sk_buff *skb,
++		   const struct ipv6hdr *in6)
++{
++	if (unlikely(ipxlat_skb_cb(skb)->is_icmp_err))
++		return -EPROTONOSUPPORT;
++
++	return ipxlat_64_icmp_info(skb, in6);
++}
+diff --git a/drivers/net/ipxlat/translate_64.c b/drivers/net/ipxlat/translate_64.c
+index 50a95fb75f9d..412d29214a43 100644
+--- a/drivers/net/ipxlat/translate_64.c
++++ b/drivers/net/ipxlat/translate_64.c
+@@ -16,6 +16,7 @@
+ 
+ #include "translate_64.h"
+ #include "address.h"
++#include "icmp.h"
+ #include "packet.h"
+ #include "transport.h"
+ 
 diff --git a/drivers/net/ipxlat/transport.c b/drivers/net/ipxlat/transport.c
-index cd786ce84adc..3aa00c635916 100644
+index 78548d0b8c22..3aa00c635916 100644
 --- a/drivers/net/ipxlat/transport.c
 +++ b/drivers/net/ipxlat/transport.c
-@@ -144,3 +144,197 @@ int ipxlat_finalize_offload(struct sk_buff *skb, u8 l4_proto, bool is_fragment,
- 		skb_clear_hash_if_not_l4(skb);
+@@ -338,14 +338,3 @@ int ipxlat_64_inner_udp(struct sk_buff *skb, const struct ipv6hdr *in6,
+ 		udp_new->check = CSUM_MANGLED_0;
  	return 0;
  }
-+
-+int ipxlat_46_outer_tcp(struct sk_buff *skb, const struct iphdr *in4)
-+{
-+	const struct ipv6hdr *iph6 = ipv6_hdr(skb);
-+	struct tcphdr *tcp_new = tcp_hdr(skb);
-+	struct tcphdr tcp_old;
-+	__sum16 csum16;
-+
-+	/* CHECKSUM_PARTIAL keeps a pseudohdr seed in check, not a final
-+	 * transport checksum. For 4->6, we only re-seed it with IPv6 pseudohdr
-+	 * data and keep completion deferred to offload.
-+	 */
-+	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-+		tcp_new->check = ~tcp_v6_check(ipxlat_skb_datagram_len(skb),
-+					       &iph6->saddr, &iph6->daddr, 0);
-+		return ipxlat_set_partial_csum(skb,
-+					       offsetof(struct tcphdr, check));
-+	}
-+
-+	/* zeroing check in old/new headers avoids double-accounting it */
-+	csum16 = tcp_new->check;
-+	tcp_old = *tcp_new;
-+	tcp_old.check = 0;
-+	tcp_new->check = 0;
-+	tcp_new->check = ipxlat_46_update_csum(csum16, in4,
-+					       &tcp_old, iph6, tcp_new,
-+					       sizeof(*tcp_new));
-+	skb->ip_summed = CHECKSUM_NONE;
-+	return 0;
-+}
-+
-+int ipxlat_46_outer_udp(struct sk_buff *skb, const struct iphdr *in4)
-+{
-+	const struct ipxlat_cb *cb = ipxlat_skb_cb(skb);
-+	const struct ipv6hdr *iph6 = ipv6_hdr(skb);
-+	struct udphdr *udp_new = udp_hdr(skb);
-+	struct udphdr udp_old;
-+	__sum16 csum16;
-+
-+	/* outer path enforces UDP zero-checksum policy in validation */
-+	if (skb->ip_summed == CHECKSUM_PARTIAL && likely(udp_new->check != 0)) {
-+		udp_new->check = ~udp_v6_check(ipxlat_skb_datagram_len(skb),
-+					       &iph6->saddr, &iph6->daddr, 0);
-+		return ipxlat_set_partial_csum(skb,
-+					       offsetof(struct udphdr, check));
-+	}
-+
-+	/* incoming UDP IPv4 has no checksum (legal in IPv4, not in IPv6) */
-+	if (unlikely(udp_new->check == 0)) {
-+		if (unlikely(!cb->udp_zero_csum_len))
-+			return -EINVAL;
-+
-+		udp_new->check =
-+			ipxlat_l4_csum_ipv6(&iph6->saddr, &iph6->daddr, skb,
-+					    skb_transport_offset(skb),
-+					    cb->udp_zero_csum_len, IPPROTO_UDP);
-+		/* 0x0000 on wire means "no checksum"; preserve computed zero */
-+		if (udp_new->check == 0)
-+			udp_new->check = CSUM_MANGLED_0;
-+		skb->ip_summed = CHECKSUM_NONE;
-+		return 0;
-+	}
-+
-+	csum16 = udp_new->check;
-+	udp_old = *udp_new;
-+	udp_old.check = 0;
-+	udp_new->check = 0;
-+	udp_new->check = ipxlat_46_update_csum(csum16, in4,
-+					       &udp_old, iph6, udp_new,
-+					       sizeof(*udp_new));
-+	skb->ip_summed = CHECKSUM_NONE;
-+	return 0;
-+}
-+
-+int ipxlat_46_inner_tcp(struct sk_buff *skb, const struct iphdr *in4,
-+			const struct ipv6hdr *iph6, struct tcphdr *tcp_new)
-+{
-+	struct tcphdr tcp_old;
-+	__sum16 csum16;
-+
-+	csum16 = tcp_new->check;
-+	tcp_old = *tcp_new;
-+	tcp_old.check = 0;
-+	tcp_new->check = 0;
-+	tcp_new->check = ipxlat_46_update_csum(csum16, in4, &tcp_old, iph6,
-+					       tcp_new, sizeof(*tcp_new));
-+	return 0;
-+}
-+
-+int ipxlat_46_inner_udp(struct sk_buff *skb, const struct iphdr *in4,
-+			const struct ipv6hdr *iph6, struct udphdr *udp_new)
-+{
-+	struct udphdr udp_old;
-+	__sum16 csum16;
-+
-+	if (unlikely(udp_new->check == 0))
-+		return 0;
-+
-+	csum16 = udp_new->check;
-+	udp_old = *udp_new;
-+	udp_old.check = 0;
-+	udp_new->check = 0;
-+	udp_new->check = ipxlat_46_update_csum(csum16, in4, &udp_old, iph6,
-+					       udp_new, sizeof(*udp_new));
-+	return 0;
-+}
-+
-+int ipxlat_64_outer_tcp(struct sk_buff *skb, const struct ipv6hdr *in6)
-+{
-+	struct tcphdr tcp_old, *tcp_new;
-+	__sum16 csum16;
-+
-+	tcp_new = tcp_hdr(skb);
-+
-+	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-+		tcp_new->check = ~tcp_v4_check(ipxlat_skb_datagram_len(skb),
-+					       ip_hdr(skb)->saddr,
-+					       ip_hdr(skb)->daddr, 0);
-+		return ipxlat_set_partial_csum(skb,
-+					       offsetof(struct tcphdr, check));
-+	}
-+
-+	csum16 = tcp_new->check;
-+	tcp_old = *tcp_new;
-+	tcp_old.check = 0;
-+	tcp_new->check = 0;
-+	tcp_new->check = ipxlat_64_update_csum(csum16, in6, &tcp_old,
-+					       sizeof(tcp_old), ip_hdr(skb),
-+					       tcp_new, sizeof(*tcp_new));
-+	skb->ip_summed = CHECKSUM_NONE;
-+	return 0;
-+}
-+
-+int ipxlat_64_outer_udp(struct sk_buff *skb, const struct ipv6hdr *in6)
-+{
-+	struct udphdr udp_old, *udp_new;
-+	__sum16 csum16;
-+
-+	udp_new = udp_hdr(skb);
-+
-+	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-+		udp_new->check = ~udp_v4_check(ipxlat_skb_datagram_len(skb),
-+					       ip_hdr(skb)->saddr,
-+					       ip_hdr(skb)->daddr, 0);
-+		return ipxlat_set_partial_csum(skb,
-+					       offsetof(struct udphdr, check));
-+	}
-+
-+	csum16 = udp_new->check;
-+	udp_old = *udp_new;
-+	udp_old.check = 0;
-+	udp_new->check = 0;
-+	udp_new->check = ipxlat_64_update_csum(csum16, in6, &udp_old,
-+					       sizeof(udp_old), ip_hdr(skb),
-+					       udp_new, sizeof(*udp_new));
-+	if (udp_new->check == 0)
-+		udp_new->check = CSUM_MANGLED_0;
-+	skb->ip_summed = CHECKSUM_NONE;
-+	return 0;
-+}
-+
-+int ipxlat_64_inner_tcp(struct sk_buff *skb, const struct ipv6hdr *in6,
-+			const struct iphdr *out4, struct tcphdr *tcp_new)
-+{
-+	struct tcphdr tcp_old;
-+	__sum16 csum16;
-+
-+	csum16 = tcp_new->check;
-+	tcp_old = *tcp_new;
-+	tcp_old.check = 0;
-+	tcp_new->check = 0;
-+	tcp_new->check = ipxlat_64_update_csum(csum16, in6, &tcp_old,
-+					       sizeof(tcp_old), out4, tcp_new,
-+					       sizeof(*tcp_new));
-+	return 0;
-+}
-+
-+int ipxlat_64_inner_udp(struct sk_buff *skb, const struct ipv6hdr *in6,
-+			const struct iphdr *out4, struct udphdr *udp_new)
-+{
-+	struct udphdr udp_old;
-+	__sum16 csum16;
-+
-+	csum16 = udp_new->check;
-+	udp_old = *udp_new;
-+	udp_old.check = 0;
-+	udp_new->check = 0;
-+	udp_new->check = ipxlat_64_update_csum(csum16, in6, &udp_old,
-+					       sizeof(udp_old), out4, udp_new,
-+					       sizeof(*udp_new));
-+	if (udp_new->check == 0)
-+		udp_new->check = CSUM_MANGLED_0;
-+	return 0;
-+}
+-
+-int ipxlat_46_icmp(struct ipxlat_priv *ipxlat, struct sk_buff *skb)
+-{
+-	return -EPROTONOSUPPORT;
+-}
+-
+-int ipxlat_64_icmp(struct ipxlat_priv *ipxlat, struct sk_buff *skb,
+-		   const struct ipv6hdr *outer6)
+-{
+-	return -EPROTONOSUPPORT;
+-}
 diff --git a/drivers/net/ipxlat/transport.h b/drivers/net/ipxlat/transport.h
-index bd228aecfb3b..9b6fe422b01f 100644
+index 0e69b98eafd0..9b6fe422b01f 100644
 --- a/drivers/net/ipxlat/transport.h
 +++ b/drivers/net/ipxlat/transport.h
-@@ -80,4 +80,24 @@ __sum16 ipxlat_l4_csum_ipv6(const struct in6_addr *saddr,
- int ipxlat_finalize_offload(struct sk_buff *skb, u8 l4_proto, bool is_fragment,
- 			    u32 gso_from, u32 gso_to);
+@@ -100,9 +100,4 @@ int ipxlat_64_inner_tcp(struct sk_buff *skb, const struct ipv6hdr *in6,
+ int ipxlat_64_inner_udp(struct sk_buff *skb, const struct ipv6hdr *in6,
+ 			const struct iphdr *out4, struct udphdr *udp_new);
  
-+/* outer transport translation helpers (packet L3 already translated) */
-+int ipxlat_46_outer_tcp(struct sk_buff *skb, const struct iphdr *in4);
-+int ipxlat_46_outer_udp(struct sk_buff *skb, const struct iphdr *in4);
-+
-+/* quoted-inner transport translation helpers for ICMP error payloads */
-+int ipxlat_46_inner_tcp(struct sk_buff *skb, const struct iphdr *in4,
-+			const struct ipv6hdr *iph6, struct tcphdr *tcp_new);
-+int ipxlat_46_inner_udp(struct sk_buff *skb, const struct iphdr *in4,
-+			const struct ipv6hdr *iph6, struct udphdr *udp_new);
-+
-+/* outer transport translation helpers (packet L3 already translated) */
-+int ipxlat_64_outer_tcp(struct sk_buff *skb, const struct ipv6hdr *in6);
-+int ipxlat_64_outer_udp(struct sk_buff *skb, const struct ipv6hdr *in6);
-+
-+/* quoted-inner transport translation helpers for ICMP error payloads */
-+int ipxlat_64_inner_tcp(struct sk_buff *skb, const struct ipv6hdr *in6,
-+			const struct iphdr *out4, struct tcphdr *tcp_new);
-+int ipxlat_64_inner_udp(struct sk_buff *skb, const struct ipv6hdr *in6,
-+			const struct iphdr *out4, struct udphdr *udp_new);
-+
+-/* temporary ICMP stubs until ICMP translation support is introduced */
+-int ipxlat_46_icmp(struct ipxlat_priv *ipxlat, struct sk_buff *skb);
+-int ipxlat_64_icmp(struct ipxlat_priv *ipxlat, struct sk_buff *skb,
+-		   const struct ipv6hdr *outer6);
+-
  #endif /* _NET_IPXLAT_TRANSPORT_H_ */
 -- 
 2.53.0
