@@ -1,211 +1,217 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012020.outbound.protection.outlook.com [52.101.43.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6893815E9;
-	Thu, 19 Mar 2026 17:58:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.20
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773943105; cv=fail; b=eV5/FoPRfH3WMYeUJafGX4/vx6MNDtyQLK6stCXsIS9YzW4Ckn/mhsayhaTzA3EeHHXySrH77kfmkdgqFnltCYKfPtGEYstm92nQRWnG3HozaADFewaxefKCoK9N2IDf5h8lqwUJ7mGX8168nPaHuh45ETqjzjSc2exzwYnazj8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773943105; c=relaxed/simple;
-	bh=VLsenZxLnVcdRmK4s1PB/cpHtZ3PUjVtjL/9WhxKudM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=EvN8QxfAfaxVhJZ8IfqYSHz0iW6gb0ewXl/i7poM7dvfU+PTLeMUi+WIdP4+V0YPSCmP/+2YjQAV4OkTuvolVoc1sbCR4lC/9Oy52OHVoqIokfELz5SKIIZwVzN7jpbdGCBGyjHCsmr+E93TH6zeOfdnh4NHR85cblg+n4HhbVg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Q3m9VfYY; arc=fail smtp.client-ip=52.101.43.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3E03947B1
+	for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 17:59:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773943196; cv=none; b=rKQBoXUfMRwE0SYi4rE3Ypqb7gEuFAhZlczAfFAUh70cJjoQ45uPiQJ2aVIaxyRbwdBxkNeKiswyf8hPlZUoMCtOW+5C8LIPneN2Denr07X1JRUUf5gX4KI60sgtkt4bOtY0mxJDWVQhyInFKQGPNvL8SibaPj3e0RSyXhkDRTQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773943196; c=relaxed/simple;
+	bh=1qiYzC4e4C5Osb7cyOfG+hx3gfnhgiG4CgnJdnnYqWk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IGeNv51qU0g5UjR+HbsJxC5B4R2j7H2m+howMgqjTho0P8VUWAB3r1ytZLeEK/ZJtO62x8ncvgDUjGbcB2z6GeD8mlv9W4Fs8CxPNxRQaTkZJm5I6peCC0V5LBE2TEXq64AXAx7CF8SyTaIFs71wFZx2G3lHZ0muMl6kRLTJRNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=e/rBcJMW; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Q3m9VfYY"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DPce9mTtG4CnNzYFdJVZPps9pay9j4D2mzZ5IX3y34Fq2Qi7xqcifdpMlluGch07UkHbBUAbrL+krVAbyy/JlavISVJN2PrcbqMbDM9Ec7ydUBGpMhSCJCUSvLxPEaEjKVzcbMd+IeQ+UmDl6jfONCQCw5zAAwmxKdz13jsGoVnWeCznFkW14m3A5rpi+nyr+y1/DHwpO3DMpSoYVCr11I1n7t5YvR4IO9miIeKR4mtsRyWTqUqHLafRxEzfZYPpLJD79pG7QWeeYrHaqp2M4lAR4dUZHmDH3KwlAj983QMrhyQ2inXDCbcLvCu7fS2O48LR1NhAJ8n1Uw3J1hqdYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Mqf7YkB52zMt2nbDstugVZMbpccqIvvjsISXO24hPqU=;
- b=O6B/9ak6ieDA6RaM4CJPht3TmkBBUSxYw4eiiiiDx5VecB/AALcnhuLBVhbvkQfT7Muey+YrQp8lHHnL402IRTDMGZ848zqT90ZrIEjFc/VHA+98YjjK4/kIVka4GY/PFIjb8JESaeZEZ1R+wcrkSsy9jCsGjSjB1aP5FgXlw/snVPsmllaCnojFUypXhUWLT3EZLu3KQOfSFfOK7OneXrJg+mJzxo/noZ9Pe2azFvrk4jB6/aPTBRWR6E5ztRZkkA2427M/o0soSu+VKFZiHg0n9XujkDcITbMeGY0260glcPTZ5c4Mkdn1A8G2VM/UeeGMX2+Eeik/lfQlqvN3Ag==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 198.47.23.194) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=ti.com;
- dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Mqf7YkB52zMt2nbDstugVZMbpccqIvvjsISXO24hPqU=;
- b=Q3m9VfYYdB/fL/1nhoBaqKVIx2ertuqQbwjxoNLaS3fj7A+CWsY09F5YvkmrIe/ohyEo7ewq8E3iH2q04eR7CCI36Nvhn5D0YO2Hb5DPnzq1knkjE6cYYJrmbjHJDp5ZHhrAMm48kEe2yof15kRvDGLoMoqy5R8HQu07j6Ttslc=
-Received: from SJ0PR13CA0182.namprd13.prod.outlook.com (2603:10b6:a03:2c3::7)
- by SAWPR10MB997813.namprd10.prod.outlook.com (2603:10b6:806:4e4::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Thu, 19 Mar
- 2026 17:58:21 +0000
-Received: from CO1PEPF00012E64.namprd05.prod.outlook.com
- (2603:10b6:a03:2c3:cafe::d) by SJ0PR13CA0182.outlook.office365.com
- (2603:10b6:a03:2c3::7) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9723.20 via Frontend Transport; Thu,
- 19 Mar 2026 17:58:20 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.194)
- smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
- action=none header.from=ti.com;
-Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
- 198.47.23.194 as permitted sender) receiver=protection.outlook.com;
- client-ip=198.47.23.194; helo=lewvzet200.ext.ti.com; pr=C
-Received: from lewvzet200.ext.ti.com (198.47.23.194) by
- CO1PEPF00012E64.mail.protection.outlook.com (10.167.249.73) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9723.19 via Frontend Transport; Thu, 19 Mar 2026 17:58:20 +0000
-Received: from DLEE206.ent.ti.com (157.170.170.90) by lewvzet200.ext.ti.com
- (10.4.14.103) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 19 Mar
- 2026 12:58:20 -0500
-Received: from DLEE204.ent.ti.com (157.170.170.84) by DLEE206.ent.ti.com
- (157.170.170.90) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 19 Mar
- 2026 12:58:19 -0500
-Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE204.ent.ti.com
- (157.170.170.84) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Thu, 19 Mar 2026 12:58:19 -0500
-Received: from [10.249.132.48] ([10.249.132.48])
-	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 62JHwEHd2956565;
-	Thu, 19 Mar 2026 12:58:15 -0500
-Message-ID: <517d5c73-5e84-47e9-9d1e-4991bd550a42@ti.com>
-Date: Thu, 19 Mar 2026 23:28:14 +0530
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="e/rBcJMW"
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5a27bfadca9so1335724e87.3
+        for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 10:59:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1773943192; x=1774547992; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IwNvoAxpSBA3F4YxfMu4dubOKf0cPSpjGd1s0V+Fdds=;
+        b=e/rBcJMWUNEumGhD1/YaPe6kkWaDw4uKnPvxlquGNZL0XExY3gO7GDENbC1QycXKV1
+         jTCi/HKcM8eI0AemEJ8Eg7svtwzcWx7JrISqAR53Vg6dyJtKZWXMwJPKngm3GjeAxka+
+         Z0sZP6VRE7A7wXDqII3Sbz/QupuOdajbsh9Fc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773943192; x=1774547992;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=IwNvoAxpSBA3F4YxfMu4dubOKf0cPSpjGd1s0V+Fdds=;
+        b=dOERDF/aJ0hd6lqlMwDbtVHsXyHfl4OFg3+JsyNTUQbcUwLWvCjbnnal9n4l7L9TIa
+         O4CBcWLBV5EdinHvdjCwi28i+02v9qDGm40C58xH32w8yqC0dQ9j1pnEbAFgb75Ns+tH
+         UZKKeRCzTNSB8KjJcgUVzfkBo0UJZjeMtkLMaztuDuEuH5yAIu8tkRTWGAOjExbEOHuF
+         +N1G82YkffpBzuND+eTWKeml7joAue2DCSWaoVYptOOpSA/LTpqhpsmbU4jX7v6fZ/1V
+         TqwMH2tEnX09OFKO9FJ0sRVL7exkseSp6sYFxeeUpHJOOFPZoffBpQwDN5kRglxqPh0f
+         K9cg==
+X-Forwarded-Encrypted: i=1; AJvYcCUh31xXG/mZnFINMdz9sMk5LiUmS5xkQN/THTHoF8qIX2xvc55eWqTUsiX0E+fY8K0blm9/Kz0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4F9/MLsh+YExxck5roCQdlOUxOK6hqFih4Yn6ijSDfJC26ZM8
+	K6ZbSE4tQ5Cxk9Sw/ih9r6/NkrwytppbocVb4pM/zhOMOkr7uZOv8k3GX16fkwPMaapiBYLXr+t
+	jcq4FTsfi
+X-Gm-Gg: ATEYQzyXirWs/8X6a80tQsM7ssvWcRMjj80/zG7vM62Z0+QZJXu/wIlLvOXMjuMhcfn
+	nI0wI7ypYEXyLqWTL42iycFJoBdmEXtrPEO5ma9fXMfbuNpPMmhYV3DEKJz48BwhJfgAQ9J2wtc
+	Ouj8QdCG03egbOeub5vOeTPEkBKJj1VRTWdqJkkQfJsDpIdypDqNK3zfgXiUIY6lxnZjjCKTju/
+	5L9db6qrxom8drBdERx5O0jlCQOP2krXrPhm3IwcCE/S4JOQtSYFkcDRRITMA/P++EyUfRMYbIO
+	EoBjHW/dVSL23VRR17AWDxP+y6k+uA+fZTcXwVKMyT0O9i35B6/t5IsRxR4MxiIlA050msc5a3n
+	FutvR0QgTkLxuZ/xaIG+JAWhSBUMvUEl7fFzcKRRB265+QAYmEram1qtA79P6MC9WMe44z/Wt/t
+	+gqHyKQmUbioNHqSY1bDWwYVOiLXBFQ2cexdAbE1BJsp7qPGsV5HaFRg0bqXy9zA==
+X-Received: by 2002:a05:6512:33ca:b0:5a1:8b9:6d12 with SMTP id 2adb3069b0e04-5a285b44617mr1501e87.24.1773943192399;
+        Thu, 19 Mar 2026 10:59:52 -0700 (PDT)
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com. [209.85.167.54])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2851adeeasm51773e87.35.2026.03.19.10.59.52
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Mar 2026 10:59:52 -0700 (PDT)
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5a0fc5e2c59so1089311e87.1
+        for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 10:59:52 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCX+c/bEFpR9+ngV1k2HwKXzUfdW7SAw0yAseUMdvFNl6uPumgaVRJ8Pn6lWB+yX3hMIihq02H8=@vger.kernel.org
+X-Received: by 2002:a05:6000:18a6:b0:439:beee:43b5 with SMTP id
+ ffacd0b85a97d-43b6423d90bmr470716f8f.3.1773942745211; Thu, 19 Mar 2026
+ 10:52:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] arm64: dts: ti: k3-am642-evm: Add ICSSG0 overlay
- for dual EMAC support
-To: Vignesh Raghavendra <vigneshr@ti.com>, Nishanth Menon <nm@ti.com>
-CC: Tero Kristo <kristo@kernel.org>, Rob Herring <robh@kernel.org>, "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>, <srk@ti.com>,
-	<danishanwar@ti.com>
-References: <20260311053852.1034244-1-m-malladi@ti.com>
- <20260311053852.1034244-2-m-malladi@ti.com>
- <8598edfa-4201-47b4-8929-be80dcca4617@ti.com>
-Content-Language: en-US
-From: "Malladi, Meghana" <m-malladi@ti.com>
-In-Reply-To: <8598edfa-4201-47b4-8929-be80dcca4617@ti.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF00012E64:EE_|SAWPR10MB997813:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8e259962-6afd-4a77-2112-08de85e11b84
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|376014|1800799024|82310400026|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	mtairyA/iKqEnquioRmRYxJhtCUm1NLV+hSOxmbljWC0Liro2vZSC7AyfTCwH2e0RrSbUN5QDTBHhMknr7LWq+jZ03FSOQMclEOZPKB7wHUOaAa9gERN2Za8olCRGoFXrUnj1cSEB8ZK2zZFwy5k2ZbWh7uzk4w4e1baG4zQL3E30+BLXczEa3tZ6i1196PAkR8OODzDXe3VBQg+fGgdPZoTIihqgvfaqkerXOlOY1n1ZBgvG9z/MB4UqguGMfh3WvqftxkhgvnUErLr/QM6P3Gqk/tS45nd8jvAtLRPrH912WiRMDgToXpaEPojtLcZqRBv9SGod1ABLeSFDqNLo4zntQkuNsYsk17yuxy4wwz+oyDGEPdB20cUk+eTookNgbBVYWcxTeB1+GFVVDoDonVUXHR0wbDRZmnl49+33pD7nIEbTtnYxeMlfZwBBOf9Mmkfawj1HxYtdoy8bkPAfWMdMJaKgIHpZ9+qtuD1aDauuCXTVQyhSVVIQCt5dwQWiHqtzeneW+atLaKX+mYhotNKbVkKYtU+QS2x0BXkD2sGkgql6sx45bHG8g0SmX8h8GeHgzqqdXa9ESzClXxtlHuIFcxRBBZ9plAWYceclwqTYItgDmXo6L8FQv43qkZq6qpt6MhYdrHTN81MrSbTmeyB06JQcso3Bsu04CoLY6oAbJTwz7BeZ+LVTdcWuX2K6rhorXCgL2iBsAm/3eFZdA62osbcGjyC+vrCR2lUpsI=
-X-Forefront-Antispam-Report:
-	CIP:198.47.23.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet200.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(376014)(1800799024)(82310400026)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	KEsgc8IcACByod9gRcXyeqfwCKgaTfLJ5nJ554OkNos97MMXGKY0StJxZ88YTZb9ic6egHEBOiTNy9FmoxXylI6945C9b0j06+mqFB8Z8ZnVFRBkSCy9HjAafe9GvT5x9QWBW7O5s9Jj6zlN2UT3El/ipmzRX+8RnJmY9755B9hoLpA5hnQUUQeJzqY5oo9JVAwgMdvrLO/93JEAmf3XLmHhyiUAG9pmedSUZ4ZtoizQnepqE1CFJvPzz9d/VleUsGepdWTPZ7UOr39OVyOYZ+gS9+RN35rd/FJ8F+AOUoEuvO+f0sypUFNWZSikjRqL7zGL0GWqRUJSS5yulCPNNgkrD8ZhENs8t2ITAYDiQDtapFZQu7h2rCp18bVErj3NRluIXyWEgj49Ie5Ch1s/z2k3uzKIQYsrvxjQvJlWkQBcG44NAwFwiBDSdYKEyCcq
-X-OriginatorOrg: ti.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2026 17:58:20.7711
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8e259962-6afd-4a77-2112-08de85e11b84
-X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.194];Helo=[lewvzet200.ext.ti.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF00012E64.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SAWPR10MB997813
+References: <20260317090112.v2.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
+ <CACRMN=euZzwDpCQupzth-J1z9qWXPenmy_bu727+R-kt97zexw@mail.gmail.com>
+In-Reply-To: <CACRMN=euZzwDpCQupzth-J1z9qWXPenmy_bu727+R-kt97zexw@mail.gmail.com>
+From: Doug Anderson <dianders@chromium.org>
+Date: Thu, 19 Mar 2026 10:52:13 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=WEWMdh+SuSE-5P81g7NhV8KH_4u_FxcRdBFRTAaASqhQ@mail.gmail.com>
+X-Gm-Features: AaiRm51jE-pJGKyYKekSNJEdkSVtbmzl88hjmcc-VHWIT0EUhGVU2WYljuGhtW4
+Message-ID: <CAD=FV=WEWMdh+SuSE-5P81g7NhV8KH_4u_FxcRdBFRTAaASqhQ@mail.gmail.com>
+Subject: Re: [PATCH v2] device property: Make modifications of fwnode "flags"
+ thread safe
+To: Saravana Kannan <saravanak@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Mark Brown <broonie@kernel.org>, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, Andrew Lunn <andrew@lunn.ch>, 
+	Daniel Scally <djrscally@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
+	Russell King <linux@armlinux.org.uk>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org, 
+	driver-core@lists.linux.dev, imx@lists.linux.dev, linux-acpi@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Vignesh,
+Hi,
 
-On 3/14/2026 6:01 PM, Vignesh Raghavendra wrote:
-> Hi
-> 
-> [...]
-> 
-> On 11/03/26 11:08, Meghana Malladi wrote
->> diff --git a/arch/arm64/boot/dts/ti/k3-am642-evm-icssg0.dtso b/arch/arm64/boot/dts/ti/k3-am642-evm-icssg0.dtso
->> new file mode 100644
->> index 000000000000..f19acf1896c3
->> --- /dev/null
->> +++ b/arch/arm64/boot/dts/ti/k3-am642-evm-icssg0.dtso
->> @@ -0,0 +1,168 @@
->> +// SPDX-License-Identifier: GPL-2.0-only OR MIT
->> +/**
->> + * DT overlay for enabling ICSSG0 dual EMAC on AM642 EVM
->> + *
->> + * AM642 EVM Product link: https://www.ti.com/tool/TMDS64EVM
->> + * DP83TG720 daughter card link: https://www.ti.com/tool/DP83TG720-IND-SPE-EVM
->> + *
->> + * Copyright (C) 2020-2026 Texas Instruments Incorporated - https://www.ti.com/
->> + */
->> +
->> +/dts-v1/;
->> +/plugin/;
->> +
->> +#include <dt-bindings/gpio/gpio.h>
->> +#include "k3-pinctrl.h"
->> +
->> +&{/} {
->> +	icssg0_eth: icssg0-eth {
->> +		compatible = "ti,am642-icssg-prueth";
->> +		pinctrl-names = "default";
->> +		pinctrl-0 = <&pru_icssg0_rgmii1_pins_default>, <&pru_icssg0_rgmii2_pins_default>;
->> +		sram = <&oc_sram>;
->> +
->> +		dmas = <&main_pktdma 0xc100 0>, /* egress slice 0 */
->> +		       <&main_pktdma 0xc101 0>, /* egress slice 0 */
->> +		       <&main_pktdma 0xc102 0>, /* egress slice 0 */
->> +		       <&main_pktdma 0xc103 0>, /* egress slice 0 */
->> +		       <&main_pktdma 0xc104 0>, /* egress slice 1 */
->> +		       <&main_pktdma 0xc105 0>, /* egress slice 1 */
->> +		       <&main_pktdma 0xc106 0>, /* egress slice 1 */
->> +		       <&main_pktdma 0xc107 0>, /* egress slice 1 */
->> +		       <&main_pktdma 0x4100 0>, /* ingress slice 0 */
->> +		       <&main_pktdma 0x4101 0>; /* ingress slice 1 */
-> 
-> 
-> Any particular reason to use ASEL = 0 unlike every other definition of
-> main_pktdma that uses ASEL=15?
+On Thu, Mar 19, 2026 at 10:25=E2=80=AFAM Saravana Kannan <saravanak@kernel.=
+org> wrote:
+>
+> On Tue, Mar 17, 2026 at 9:04=E2=80=AFAM Douglas Anderson <dianders@chromi=
+um.org> wrote:
+> >
+> > In various places in the kernel, we modify the fwnode "flags" member
+> > by doing either:
+> >   fwnode->flags |=3D SOME_FLAG;
+> >   fwnode->flags &=3D ~SOME_FLAG;
+> >
+> > This type of modification is not thread-safe. If two threads are both
+> > mucking with the flags at the same time then one can clobber the
+> > other.
+> >
+> > While flags are often modified while under the "fwnode_link_lock",
+> > this is not universally true.
+> >
+> > Create some accessor functions for setting, clearing, and testing the
+> > FWNODE flags and move all users to these accessor functions. New
+> > accessor functions use set_bit() and clear_bit(), which are
+> > thread-safe.
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: c2c724c868c4 ("driver core: Add fw_devlink_parse_fwtree()")
+> > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > Acked-by: Mark Brown <broonie@kernel.org>
+> > Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> > Signed-off-by: Douglas Anderson <dianders@chromium.org>
+> > ---
+> > While this patch is not known for sure to fix any specific issues, it
+> > seems possible that it could fix some rare problems. I'm currently
+> > trying to track down a hard-to-reproduce heisenbug and one (currently
+> > unproven) theory I had was that the fwnode flags could be getting
+> > messed up like this. Even if turns out not to fix my heisenbug,
+> > though, this seems like a worthwhile change to take.
+>
+> Reviewed-by: Saravana Kannan <saravanak@kernel.org>
 
-This wasn't intentional change. I used claude for making these changes, 
-so missed this. Thanks for catching it, will fix it in next version.
+Thanks for the review!
 
-> 
->> +		dma-names = "tx0-0", "tx0-1", "tx0-2", "tx0-3",
->> +			    "tx1-0", "tx1-1", "tx1-2", "tx1-3",
->> +			    "rx0", "rx1";
->> +
->> +		interrupt-parent = <&icssg0_intc>;
->> +		interrupts = <24 0 2>, <25 1 3>;
->> +		interrupt-names = "tx_ts0", "tx_ts1";
->> +
->> +		ti,prus = <&pru0_0>, <&rtu0_0>, <&tx_pru0_0>, <&pru0_1>, <&rtu0_1>, <&tx_pru0_1>;
->> +		firmware-name = "ti-pruss/am64x-sr2-pru0-prueth-fw.elf",
->> +				"ti-pruss/am64x-sr2-rtu0-prueth-fw.elf",
->> +				"ti-pruss/am64x-sr2-txpru0-prueth-fw.elf",
->> +				"ti-pruss/am64x-sr2-pru1-prueth-fw.elf",
->> +				"ti-pruss/am64x-sr2-rtu1-prueth-fw.elf",
->> +				"ti-pruss/am64x-sr2-txpru1-prueth-fw.elf";
->> +
->> +		ti,pruss-gp-mux-sel = <2>,	/* MII mode */
->> +				      <2>,
->> +				      <2>,
->> +				      <2>,	/* MII mode */
->> +				      <2>,
->> +				      <2>;
->> +
->> +		ti,mii-g-rt = <&icssg0_mii_g_rt>;
->> +		ti,mii-rt = <&icssg0_mii_rt>;
->> +		ti,iep = <&icssg0_iep0>,  <&icssg0_iep1>;
->> +		ti,pa-stats = <&icssg0_pa_stats>;
->> +
-> 
 
--- 
-Thanks,
-Meghana Malladi
+> Thanks Doug. Hope this isn't the cause of the hisenbug. If you report
+> it here, I might be able to take a look at it too (no promises).
 
+I don't _think_ it fixes my bug, but I'm still not 100% sure because
+the bug can take a day or so to reproduce and it appears to only
+reproduce on official kernels built by the builder. :( This makes it
+hard to say anything for certain and also hard for me to inject extra
+debug logic.
+
+I did finally capture a ramdump of a device in the bad state and
+managed to inspect the state of all the fwnode and fwnode_link
+objects.
+
+The problem (simplified) is that I have a pinctrl device:
+
+  max77779_pinctrl {
+    pin1: pin1 {
+      ...;
+    };
+    pin2: pin2 {
+      ...;
+    };
+  };
+
+...and then a client of the pinctrl device:
+
+  client1 {
+    pinctrl-0 =3D <&pin1>;
+    ...
+  };
+
+  client2 {
+    pinctrl-0 =3D <&pin2>;
+    ...
+  };
+
+At parse time, we get a link between the "client1" node and the "pin1"
+node (and "client2" and "pin2").
+
+In a normal boot (where the bug doesn't reproduce), when
+max77779_pinctrl finishes probing, all of the links to its children
+(which don't have a "dev" associated with them) get moved to point to
+"max77779_pinctrl" (__fw_devlink_pickup_dangling_consumers).
+
+When I detect the bug, the max77779_pinctrl device clearly has
+finished probing, but the client devices still point to the child
+nodes.
+
+In the debugger, I can inspect things. I can see:
+* The fwnodes for "pin1" and "pin2" clearly don't have a "dev" node.
+They also don't have "FWNODE_FLAG_NOT_DEVICE" set.
+* The fwnode for "max77779_pinctrl" clearly has a dev node (and a bus).
+* The fwnodes for "pin1" and "pin2" show zero consumers.
+* The fwnodes for "client1" and "client2" _do_ still show suppliers.
+* When I look at the fwnode_link between the clients and the pins, the
+"supplier" points to the node for the pin.
+* When I look at the fwnode_link between the clients and the pins, the
+"c_hook" is non-empty.
+* When I look at the fwnode_link between the clients and the pins, the
+"consumer" points to the node for the client.
+* When I look at the fwnode_link between the clients and the pins, the
+"s_hook" is an empty list (next =3D=3D prev).
+
+It's a bit baffling because everything looks nice and consistent with
+half the link being severed, which doesn't seem possible when looking
+at the code. The code seems to always add to a consumer list and
+supplier list at the same time and remove at the same time.
+
+I've started to run out of ideas on how it could possibly get into
+this state. If you have any, or want me to look at any other data
+structures in the ramdump let me know.
+
+-Doug
