@@ -1,46 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 761AF2F84F
-	for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 03:21:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2107136895C;
+	Thu, 19 Mar 2026 03:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773890510; cv=none; b=E1HSaNU0G4hhVFQLvPnEMv8ew6vg/zskAWHQkwnWaZCj27rwgBKwK26JNQo3Yt2ln9ncNN7sBUhKGPkKBcS4PD52fhv+CiHl7Y8KjTs4aGEFiVwNRLZgiFfnWB1toE2b7dCOoezaQXe7xomIuqehDeZRmZoHvIZMsZ5+Q9JQ1gk=
+	t=1773890811; cv=none; b=HspWslGhj8+6pTBOkjXcix/20SjbESJP0zl5M46A69qY52/cCZE+CrgMqPlFQdYhoSmhV2nwkZES2lfqEljUQlIGxsX2oR7UXCggz8HtnOiHk0+i26jDFM08r1jxIadVrJ5KwwqvGzIf1zvJc2i28omnVvixCBkDpB6pdPsxisc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773890510; c=relaxed/simple;
-	bh=tSD9vDHRdGsanzDFLEmkRB4m9SPozlQI+SHdWshiGpc=;
+	s=arc-20240116; t=1773890811; c=relaxed/simple;
+	bh=Rtlq0JUZpyBPhjiv3ICVwtSl7cpISD31cuAaRsBhrBE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rMBRD/WNQlQl6+9Ap60ufYKhEedNqmx4ASw99wFadakIbeWC1BT72qXwX0KudmSDrbQDW3Z0E3CaZPE7BVc7NcukYWMM3Unc3tLBfQoj+sRqYLdwB8WCWP/yW+dLtNumjetoVsohqXqZjJSyRDzebZOgIOW4DR6n50Cc0O+z6Zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cQ4DO/Ek; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=ktmcA5TW2Czj7vCbj48QzGBGq4AidfAh2lulbHnfpwFIcjIapjEhDEGrW/kzW17zW1veR82GqQXr6BuqrGyRfLb91+JDK2k2DPilZmPZRSs55YA9UBfB82f0KlebC6eUMybs6Tw/lWEkCQyTGZe1uwrWRDoWgTkJTqDAaRXtq4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LDhxGOaC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cQ4DO/Ek"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83BA2C2BCAF;
-	Thu, 19 Mar 2026 03:21:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LDhxGOaC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B2BC19421;
+	Thu, 19 Mar 2026 03:26:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773890510;
-	bh=tSD9vDHRdGsanzDFLEmkRB4m9SPozlQI+SHdWshiGpc=;
+	s=k20201202; t=1773890810;
+	bh=Rtlq0JUZpyBPhjiv3ICVwtSl7cpISD31cuAaRsBhrBE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=cQ4DO/Ekjh46P97NsavC26Y3TlaBrFzSG6my+aEeRPqYcUesJSERomtUuTvd5qlKl
-	 CQZZyvuRiS1cS9NHSpog79tiagkXcHzneynhz12fORyTS+h/CZDvsPJnCO0neltH/j
-	 7fDphjaRBy4jjlc0WjTvna0PZTjHyKRD3gdAVsmDhI4dsX59/fVqMD6fLCMu4jCnPb
-	 2oVcjwJcUpZ9+37QqjVnzm5C2KWaImgF6HdYRK1MAUa5qQCByCavFKZ1RxmacruUvU
-	 n3NoDLWO7c3kLi+hMX5s86tKWH5EkREtqUyq48sXMx39caZ09Jp21oKdXunIC+Nnu6
-	 yCB1ZguRGjijg==
-Date: Wed, 18 Mar 2026 20:21:48 -0700
+	b=LDhxGOaCZGaL2Y59/Lzuv/FJ3JjSsKJ4ioxyP905byxA2H62pFxNrxlnWtnqPiEgd
+	 NY5cOViSrcQLRJsqmKuD7pQhGidubOth4Knxy2Jfzr3iJReAL0gJmeacKHe5dCNqq0
+	 lP3kOvH3Z3BkuWdqNQLYKeBMUOECj2atDalYcPsN4OAA54z0vVxt/3a0sKIuiFTZlj
+	 rIOQVzC8ElzqO0lUa6NGeVo9N3kAKx45XGaEGuQQUPj3Y5lvgIS1YCfji3c24kX2lt
+	 rSXmRr5rFfkqcmtB5ZS+E+PxkeGxrx4tFQziqPaHhEqzKfhy25d8SbDUzqDWvvgB8M
+	 q0oPgEj+KTbfg==
+Date: Wed, 18 Mar 2026 20:26:49 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Wen Gu <guwen@linux.alibaba.com>, Philo Lu
- <lulie@linux.alibaba.com>, Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Dong Yibo <dong100@mucse.com>, Heiner Kallweit <hkallweit1@gmail.com>, Dust
- Li <dust.li@linux.alibaba.com>
-Subject: Re: [PATCH net-next v33 3/8] eea: probe the netdevice and create
- adminq
-Message-ID: <20260318202148.230d0424@kernel.org>
-In-Reply-To: <20260317015257.79494-4-xuanzhuo@linux.alibaba.com>
-References: <20260317015257.79494-1-xuanzhuo@linux.alibaba.com>
-	<20260317015257.79494-4-xuanzhuo@linux.alibaba.com>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: netdev@vger.kernel.org, Jiayuan Chen <jiayuan.chen@shopee.com>,
+ syzbot+afbcf622635e98bf40d2@syzkaller.appspotmail.com, "David S. Miller"
+ <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Taehee Yoo <ap420073@gmail.com>,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v1] net/ipv6: mcast: fix circular locking dependency
+ in __ipv6_dev_mc_inc()
+Message-ID: <20260318202649.004d33fd@kernel.org>
+In-Reply-To: <f877e139-2da9-49d9-93bf-9b4155d687a7@linux.dev>
+References: <20260317111208.62667-1-jiayuan.chen@linux.dev>
+	<20260318181536.47ed9fd1@kernel.org>
+	<f877e139-2da9-49d9-93bf-9b4155d687a7@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,14 +51,26 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 17 Mar 2026 09:52:52 +0800 Xuan Zhuo wrote:
-> Add basic driver framework for the Alibaba Elastic Ethernet Adapter(EEA).
+On Thu, 19 Mar 2026 11:04:24 +0800 Jiayuan Chen wrote:
+> >> Split mca_alloc() into mca_alloc() + mca_init(): mca_alloc() does the
+> >> GFP_KERNEL allocation before mc_lock, mca_init() initializes under
+> >> mc_lock. If the address already exists, the pre-allocated memory is
+> >> simply freed. Also move inet6_ifmcaddr_notify() outside mc_lock since
+> >> it also does GFP_KERNEL allocation.  
+> > Moving the allocation seems fine, but also having to move the
+> > notification, potentially letting the notification go out of order
+> > makes me wonder if we aren't better off adding helpers for taking this
+> > lock which also call memalloc_noio_{save,restore} ?  
+> Yeah, using memalloc_noio helpers is simpler. I checked and there
+> are about 18 places taking mc_lock, so having a common mc_lock()/mc_unlock()
+> wrapper that does the noio save/restore covers them all (if necessary).
 > 
-> This commit creates and registers the netdevice after PCI probe,
-> and initializes the admin queue to send commands to the device.
+> The only thing that feels a bit odd is using memalloc_noio in the networking
+> subsystem. It makes sense in block/fs to protect itself from recursion.
 
-Looks like the Google AI review bot found some more legit issues here:
-
-https://sashiko.dev/#/patchset/20260317015257.79494-1-xuanzhuo%40linux.alibaba.com
--- 
-pw-bot: cr
+Totally agree that it feels a bit odd that we have to worry about IO,
+but unless we can figure out a way to prevent nbd sockets from getting
+here all our solutions are dealing with noio in networking code :(
+IMHO it's better to acknowledge this with the explicit memalloc_noio 
+so future developers don't break things again with a mis-placed
+allocation.
