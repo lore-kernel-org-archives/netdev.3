@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1BF22AE65
-	for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 00:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C7922AE65;
+	Thu, 19 Mar 2026 00:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773881064; cv=none; b=ThdLmc8Oycd1OfW9/OL0mTEA0X+5ByS8bHDCjABFrqZ9OgclATZAwknI5Zit7z7LWN6NCEaHrB1G2xzPD/+q1JU1a7FwzHe2vpb/nKDYcHmu7nH2y/cumIvtcqUg2WVYzCLvqw7QtJhEDkOoO27q5Qm5KVpC1QlXoL0maz9DjtA=
+	t=1773881066; cv=none; b=qY5HrJ/aAOAFZeUmtFelrNUaJBVNyhHPlOiMysGr9Sl98LkA9ktDuoEAfK8wcKKKEi5Qjcj4ixe/53v23bBTJk86L5llry+XNo9tj+OodfBbiENpn8GWUYqJlvkBWu7dcw46GYh/5lD1e3MxalZSFh5sQU62LS3VCplMFNwBs9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773881064; c=relaxed/simple;
-	bh=I2uG6lTR0u92FbBHtGwDQvq3CTjq2WTWyg2Br2qQTWY=;
+	s=arc-20240116; t=1773881066; c=relaxed/simple;
+	bh=aCZdEo1KP2twXzLQmcGuFv5gVDmLw9VFA7BFLI9HnkQ=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=KxUEi0e8ULdHPvjUBLgFFubxAsScTCz0Gjp3GDqUVzIP7+UYWd4rVQof5mvxP50Dzw+9DLi65w/HG8HIQNUtsEY/vyVSgWmD2HgnD+QmwCoweaFgG1J2fJMAE82R2RdookHAHWn+qLbSUXSBjPuMjErkOCYBwKI6LzX/0hfqkQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=av43R+sX; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=PGT0vRc2HvOAljg/JQd8QOCuEFK7ZL1PikBuCEli9w/N9ZFrgHn7fNTKjcn5Rtjl57LDXQjfaYq4Q3STIyzRYzCCA9SIn0aInOpnB6q8xnSwD7vN7+mAzEkeSthz71BR7J/qhBsfU/SGAsLH5PEdrj1QZY/i7zJMpVMaL8KbK4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B+Lx4o89; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="av43R+sX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E3A9C19421;
-	Thu, 19 Mar 2026 00:44:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B+Lx4o89"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8071C19421;
+	Thu, 19 Mar 2026 00:44:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773881064;
-	bh=I2uG6lTR0u92FbBHtGwDQvq3CTjq2WTWyg2Br2qQTWY=;
+	s=k20201202; t=1773881065;
+	bh=aCZdEo1KP2twXzLQmcGuFv5gVDmLw9VFA7BFLI9HnkQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=av43R+sXBR1le4fWLgxLBRCiotn8FzH5Yfd0uFnZ76C9CVCbSIofJJBrPLs7bfqFF
-	 1CJfes1H55lSO0xEYCnu/yRLowuF06MwSZze5cflwUHcvs8vqkS6wEFqRkDKT8mUCS
-	 O43ZV1iqbIzrpE0Ds+sdxvMq7TJeyqf0uyxLH37ywKo0kAmIxSjkCdi+jLgb9Z4jEx
-	 Y0eOz/8HO2h3ZXjGk0Ay9StMIOunnn32PVNI1nZTk8gjZ/GyV/v3Fk1AxLPeij6HDZ
-	 kMyHLn/iZ17Eouf76jI9sANDGuyeZ5Rzs0+0+EB/6zoXqwov0h/0Nyp77Jt7tufPG2
-	 O21Y7it4lFjpA==
+	b=B+Lx4o89GO0OCRRp6zoH7KfspyzyoBneD9gW50Pb0Aa8j6py6gKWUkI5hsXIiRB4f
+	 wcd0f9R8FcORieji7oTinoMIB8+lIsBPaQeNjVKoUlxVU5q2RmQlFhd01n33nprV0X
+	 apZmMgPHSTiXkKoCUpmOcsf1si2DaBo1PquXfzxFqwLHQTEqPT9YIqoLYwnI4l+daI
+	 j8O8tu6Of3jc5ChmCvXLuCbNv+kHXTskAyIYH/10jSxbl/9AdLNwdeGCuUI9XxhcT8
+	 u1Rc8+W70ic9Gs5YfDcVvDgNTgdXuvuL2lQPmOwmTfh7w/WvDk/2JQCaISFFG/HPYH
+	 gtl+IBJuRHh+w==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FF253808200;
-	Thu, 19 Mar 2026 00:44:17 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7D0163808200;
+	Thu, 19 Mar 2026 00:44:18 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,45 +37,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/4][pull request] Intel Wired LAN Driver Updates
- 2026-03-17 (igc, iavf, libie)
+Subject: Re: [PATCH net v3] ipv6: add NULL checks for idev in SRv6 paths
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177388105578.935482.379989549950382241.git-patchwork-notify@kernel.org>
-Date: Thu, 19 Mar 2026 00:44:15 +0000
-References: <20260317211906.115505-1-anthony.l.nguyen@intel.com>
-In-Reply-To: <20260317211906.115505-1-anthony.l.nguyen@intel.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org
+ <177388105728.935482.13380611320476992951.git-patchwork-notify@kernel.org>
+Date: Thu, 19 Mar 2026 00:44:17 +0000
+References: <20260316073301.106643-1-heminhong@kylinos.cn>
+In-Reply-To: <20260316073301.106643-1-heminhong@kylinos.cn>
+To: Minhong He <heminhong@kylinos.cn>
+Cc: horms@kernel.org, andrea.mayer@uniroma2.it, davem@davemloft.net,
+ david.lebrun@uclouvain.be, dsahern@kernel.org, edumazet@google.com,
+ kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ pabeni@redhat.com
 
 Hello:
 
-This series was applied to netdev/net.git (main)
-by Tony Nguyen <anthony.l.nguyen@intel.com>:
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 17 Mar 2026 14:19:01 -0700 you wrote:
-> Kohei Enju adds use of helper function to add missing update of
-> skb->tail when padding is needed for igc.
+On Mon, 16 Mar 2026 15:33:01 +0800 you wrote:
+> __in6_dev_get() can return NULL when the device has no IPv6 configuration
+> (e.g. MTU < IPV6_MIN_MTU or after NETDEV_UNREGISTER).
 > 
-> Zdenek Bouska clears stale XSK timestamps when taking down Tx rings on
-> igc.
-> 
-> Petr Oros changes handling of iavf VLAN filter handling when an added
-> VLAN is also on the delete list to which can race and cause the VLAN
-> filter to not be added.
+> Add NULL checks for idev returned by __in6_dev_get() in both
+> seg6_hmac_validate_skb() and ipv6_srh_rcv() to prevent potential NULL
+> pointer dereferences.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/4] igc: fix missing update of skb->tail in igc_xmit_frame()
-    https://git.kernel.org/netdev/net/c/0ffba246652f
-  - [net,2/4] igc: fix page fault in XDP TX timestamps handling
-    https://git.kernel.org/netdev/net/c/45b33e805bd3
-  - [net,3/4] iavf: fix VLAN filter lost on add/delete race
-    https://git.kernel.org/netdev/net/c/fc9c69be5947
-  - [net,4/4] libie: prevent memleak in fwlog code
-    https://git.kernel.org/netdev/net/c/6850deb61118
+  - [net,v3] ipv6: add NULL checks for idev in SRv6 paths
+    https://git.kernel.org/netdev/net/c/064137935262
 
 You are awesome, thank you!
 -- 
