@@ -1,113 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D063032571D;
-	Thu, 19 Mar 2026 19:55:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782FF338906
+	for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 19:56:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773950114; cv=none; b=F/IYUy7ldlx4oJ9OHVDoOvpY0QmgRM0EMB68oH+tIp4naKtQ01DaUBJbSkBpXpNXcRRlJGIsKp6esLLlMhhKg51oCaf1R8U/avwrsAo7NIxs0SqeEBiF6v+bfrxCqyQdM9C0GZjaN8xa6nEsjbMmpGviV9j+Dl1GEBRDKTn1HHw=
+	t=1773950219; cv=none; b=dVg+xR7V5gmblzZM1RRhXpr9tt3ho+l+UfM/wBNtK9DnLJnsp4P7OgBIMTJp13DGE2aErfpdl0TnftoBrnH6i3nJPVQy2cNBMqbNui+u52HoF+ANnKqzvC6ySFEW60wdRwKxQUkTD4i1MWe2x0tiMPed7KMziMRRQZLUoD56mzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773950114; c=relaxed/simple;
-	bh=BKVZIah/27SLYSlA2gUiVUQcfkViEh1zQPpjbR2l7E8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AVVyEfUAVqfHGDlTnlnSHKHX6j5/AueU5SkB+AKzeOleVgSIkjGEX1qEa1kAtcZ4Ju+hXPExgkrIfZAxEMy2j/eAPffacFpiWXaahPQSzT6DJPOL4Ju5FzuBR0om8mmB1s2vd7ypPCcGltjwhRX2uo3ajcoYsAbFFWZtKjZ1ht4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f3RZ7ji8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773950219; c=relaxed/simple;
+	bh=A5ZzQf31sXGiyMkHY7CP5QbAbk7vbbn517yUbBfo44s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hzKZrt2WHQvmGHLWezRHhUG6tNW2dS6lg1kjCCWDO6JWC8nM2Hot92sDAQLUtmSxaymvy5JwEiwZeYYfZKk8+OsHLXAPfPRU9hFqC58AmzatwclJw7oHrkUiOX2Cyc8JiIOPyWgGkKNVfAg7DONAv+B7CtsXMZHMaEETaiS3Qgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=XxvOS7+M; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f3RZ7ji8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D42EC19424;
-	Thu, 19 Mar 2026 19:55:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773950114;
-	bh=BKVZIah/27SLYSlA2gUiVUQcfkViEh1zQPpjbR2l7E8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=f3RZ7ji8vqCdCclzDcS8bxpmooQGTTnlKkdFQgEXQg1eZhvBRCr9f4qrNJ620yjUg
-	 YXtywyDtB3wVVShkAOr430yMfXJiqfY3rfQ1InBq05TObVmEqtHm54N2IyAgiJtvOW
-	 iKPvf3mUn/pmOYLr3WRNE9a2eJQ/ySMghE5TG76mi4z5rJtyWPdlt7Egf5zN+IxS6Z
-	 xfQ7LaxJFhQw4Il7ujQAJneS9zlanA5TqyXxq2dxbOTEGDdKtnTe1CrvJgY3S/N2zu
-	 wrBmDbvn+/z5e9BiWqOALDtaQKasCXlGI8VZEuZybeyU/2gPSvL0WXjLUzh5ckvJ4r
-	 Ie4Y49eFc4y2A==
-Date: Thu, 19 Mar 2026 19:52:38 +0000
-From: Simon Horman <horms@kernel.org>
-To: Conor Dooley <conor@kernel.org>
-Cc: netdev@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>,
-	Valentina.FernandezAlanis@microchip.com,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Vineeth Karumanchi <vineeth.karumanchi@amd.com>,
-	Abin Joseph <abin.joseph@amd.com>,
-	=?utf-8?B?VGjDqW8=?= Lebrun <theo.lebrun@bootlin.com>,
-	Ryan.Wanner@microchip.com
-Subject: Re: [PATCH net-next v4 00/13] macb usrio/tsu patches
-Message-ID: <20260319195238.GT1753385@horms.kernel.org>
-References: <20260318-surpass-puzzle-f94b46aa8808@spud>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="XxvOS7+M"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id A15CC1A2EE9;
+	Thu, 19 Mar 2026 19:56:53 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6904460050;
+	Thu, 19 Mar 2026 19:56:53 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 507AB10450A9C;
+	Thu, 19 Mar 2026 20:56:47 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1773950212; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=cm39P2d/41DdSfdDZCfUJLAJ/BGyonppmELDf76R9UI=;
+	b=XxvOS7+Mr7dkDyD+4Xtt6WqyG1iBNRgP8jj9BFlmVqB91FM5yVSIyhwAlfC5kl04J/r4Gv
+	wwCGP/Iw8BUpDmvdgZkmpGZQQQsZmTVkmM+fI+hYdUlK8Vsxg/epPiLaAPct53XF7h6Eg5
+	pQ7t9JP+H2hhL+W7NuPQGbKbY58U5FIY0bgwAj43f8MK48vYmMw7I7j9P5OvI1tzG7ofa7
+	OXa3RZYyEwEGS5vCQ/ES3WpX0eT+xEl32oiWJeQllbIFgDd6P0suFjfT/Dul/S0VmATgtR
+	GDma6ce4742Ti2GK9Dxk9MMUm6Luv7YV7bzbWa+QDEnzVJkYWQw0PWL0WbS29g==
+Message-ID: <2e4a7b45-8029-425e-8b86-9f3031bd081e@bootlin.com>
+Date: Thu, 19 Mar 2026 20:56:46 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260318-surpass-puzzle-f94b46aa8808@spud>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 1/2] net: page_pool: support dumping pps of a
+ specific ifindex via Netlink
+To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
+Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, horms@kernel.org, donald.hunter@gmail.com,
+ shuah@kernel.org, matttbe@kernel.org, chuck.lever@oracle.com,
+ hawk@kernel.org, linux-kselftest@vger.kernel.org
+References: <20260319035649.2396137-1-kuba@kernel.org>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260319035649.2396137-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, Mar 18, 2026 at 04:37:31PM +0000, Conor Dooley wrote:
-> From: Conor Dooley <conor.dooley@microchip.com>
-> 
-> Hey folks,
-> 
-> At the very least, it'd be good of the soc vendor folks could check
-> their platforms and see if their usrio stuff actually lines up with what
-> the driver currently calls "macb_default_usrio". Ours didn't and it was
-> a nasty surprise.
-> 
-> Ryan and I figured out that the sama7g5 stuff is not actually using the
-> same usrio bits as earlier devices, so there's now more patches in this
-> series to split them apart. I've not tested the split or the new
-> property due to lack of hardware, but Ryan has.
-> 
-> Marking this stuff net-next, because although they're fixes I don't see
-> any particular urgency, and it avoids creating some dependencies between
-> cleanup items and the fixes.
-> 
-> Cheers,
-> Conor.
-> 
-> v4:
-> - deprecate instead of remove existing devicetree property
-> - pick up Theo's patches
-> 
-> v3:
-> - reorder patches
-> - fix smatch issue reported by Simon
-> - add patches reworking usrio handling of clken/refclk (and remove the
->   issue the llm reported in the process)
-> - add a new devicetree property for refclk selection, replacing the
->   existing one.
-> - drop the dts patch
+Hi Jakub,
 
-Hi Conor,
+On 19/03/2026 04:56, Jakub Kicinski wrote:
+> NIPA tries to make sure that HW tests don't modify system state.
+> It saves the state of page pools, too. Now that I write this commit
+> message I realize that this is impractical since page pool IDs and
+> state will get legitimately changed by the tests. But I already
+> spent a couple of hours implementing the filtering, so..
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-Unfortunately this does not apply cleanly to net-next, which breaks our CI.
+[...]
 
-Please rebase and repost.
+> diff --git a/net/core/page_pool_user.c b/net/core/page_pool_user.c
+> index ee5060d8eec0..01509d1b3cba 100644
+> --- a/net/core/page_pool_user.c
+> +++ b/net/core/page_pool_user.c
+> @@ -79,7 +79,7 @@ struct page_pool_dump_cb {
+>  
+>  static int
+>  netdev_nl_page_pool_get_dump(struct sk_buff *skb, struct netlink_callback *cb,
+> -			     pp_nl_fill_cb fill)
+> +			     pp_nl_fill_cb fill, struct nlattr *ifindex_attr)
+>  {
+>  	struct page_pool_dump_cb *state = (void *)cb->ctx;
+>  	const struct genl_info *info = genl_info_dump(cb);
+> @@ -88,9 +88,17 @@ netdev_nl_page_pool_get_dump(struct sk_buff *skb, struct netlink_callback *cb,
+>  	struct page_pool *pool;
+>  	int err = 0;
+>  
+> +	if (ifindex_attr)
+> +		state->ifindex = nla_get_u32(ifindex_attr);
+> +
+>  	rtnl_lock();
+>  	mutex_lock(&page_pools_lock);
+>  	for_each_netdev_dump(net, netdev, state->ifindex) {
+> +		/* Either the provided ifindex doesn't exist or done dumping */
+> +		if (ifindex_attr &&
+> +		    netdev->ifindex != nla_get_u32(ifindex_attr))
+> +			break;
 
-Thanks!
+If the passed ifindex doesn't exist, isn't netdev NULL here ?
 
--- 
-pw-bot: changes-requested
+Maxime
