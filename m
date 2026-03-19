@@ -1,73 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD152FFF88
-	for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 19:44:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9DDB32571D;
+	Thu, 19 Mar 2026 19:53:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773949473; cv=none; b=KvCOZTEDJBtkQVWw8g8LRGN6xdR5th0MYlFp84pf/0t55D7UznL5MwiuC/+/CgLyA70ws1cF03wTyEFWVpmN2Kti/z4HZOOS2FAZ2UeoxnraV7RHR+dK6TH4WZgT1jToNqfoWebxmBDTvt0OflJIiHB5Upu/CYd4kdDQ5bCtL0c=
+	t=1773949997; cv=none; b=cpSGsuHqs29YQw6kwp5I5SKO1J6HJtaOWI62L3rLaJ+WHZIWVC/PqX8aUDxvlxB9VnxH2Eyma/Qo10NbZbftrwEAsYixpHLdlufMccOjEWpOkWwe8D8h0HLj/v8kuLvQBrWui/KtpropW0J3vULdVnODGaPabSw+FqIWqj8HCnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773949473; c=relaxed/simple;
-	bh=3ozfv6FU517Jb4qTTKM2z/pb6DduV9qQ83/ayPIuF3c=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OiGisrAc3ROMfUCCG+9KMLqO/6g5eS3bSXhQLJkiS9AklFeLLvdYNM84SXjW+NjvSprmc1OcxCGVQ52NnKdhlUdlUmmbPXUbNGqcIg3x8zMOx6ExYQcpe9zayCaMvSzKNAiI21+Q97tJL0S4EOyBr9QcGGwnGxvB3qfFNxOVp5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uCZSmlkJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773949997; c=relaxed/simple;
+	bh=LvUjnJyYsDx/TG591wwIYhQQJQmtFBbv0OLb4l6ZHBQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RKpBwAsmXS1JOWKFZ86ncOUDgusonEL3oacBbsdYwnYdKAGFQqbNBQ2MQG/9pSrFEnNwu5cK2JuQIklnlxhx4eK/IwbWxmkMw9Pv2Mino4cXMVURE+mv8Vz+xdkRpegaXIdNd2MGC9a+RQnBrADphBIdLuwmcnW2XHmzNX1/PkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=wl7g+DrZ; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uCZSmlkJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 581ECC19424;
-	Thu, 19 Mar 2026 19:44:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773949473;
-	bh=3ozfv6FU517Jb4qTTKM2z/pb6DduV9qQ83/ayPIuF3c=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=uCZSmlkJ/8kY2P6jU+SrZO6stP1g6BHlNpCA5rvCsg/r25XgGVzawMtP/4t9w6hlF
-	 db0Cw2OrmtNKEfIWIf6wZoLzuINfF4aDU7X0kJ/AG885AwlPdAI7iJnl9MB72kGpHH
-	 RznS1OXLGx44kGSgrBb88k5Sj8CV19KeQFezVIJ47MN3CgMrYxp8c/VsyWwwj3vOtq
-	 T/1rDbbS7fsOKRfGrqlDx/Sm78myjXVB6VYOXwBeFvZtU6SqUIjewxuKcXQMNeAr39
-	 efywan9M5HW2+abh/8Ou5vbDO89WES/SzkRoVeXtF3NmH9LASUClpt65QS1IN7+kmD
-	 XXKNDmE/PgmHg==
-Date: Thu, 19 Mar 2026 12:44:32 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Antonio Quartulli <antonio@openvpn.net>
-Cc: netdev@vger.kernel.org, ralf@mandelbit.com, Sabrina Dubroca
- <sd@queasysnail.net>, Paolo Abeni <pabeni@redhat.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>
-Subject: Re: [PATCH net-next 0/9] pull request: ovpn 2026-03-17
-Message-ID: <20260319124432.2fda076a@kernel.org>
-In-Reply-To: <20260317104023.192548-1-antonio@openvpn.net>
-References: <20260317104023.192548-1-antonio@openvpn.net>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="wl7g+DrZ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=ZpXwRW01ZNFzDB9NgODHrS2uUX86e3mO4LWP42BM1Pk=; b=wl7g+DrZ0NtI3arXFXd+yqe67x
+	NgLyezRd65oMlLPis+qa60sN6GzQFE12lzghKxq2hWcT+ufiHjz3B7MbtmabSQavT7B+EY4IWB7VB
+	R0SQS+R3WbUImZ/+0WWJo1ANlx4RkomcSS5YuUGtmxfoDuvDr/+g0diEErmyuA8FM3pY=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1w3JQT-00CRS0-Sl; Thu, 19 Mar 2026 20:53:01 +0100
+Date: Thu, 19 Mar 2026 20:53:01 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Charles Perry <charles.perry@microchip.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 2/2] net: mdio: add a driver for PIC64-HPSC/HX
+ MDIO controller
+Message-ID: <10f97968-ddb7-4a96-b08e-d4355cf82a79@lunn.ch>
+References: <20260317184610.315852-1-charles.perry@microchip.com>
+ <20260317184610.315852-3-charles.perry@microchip.com>
+ <6dc9a358-4140-457f-bdfb-b4fb22aaf88e@lunn.ch>
+ <abxN9aGnCYA6s13u@bby-cbu-swbuild03.eng.microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <abxN9aGnCYA6s13u@bby-cbu-swbuild03.eng.microchip.com>
 
-On Tue, 17 Mar 2026 11:40:14 +0100 Antonio Quartulli wrote:
-> This is (yet..yet..yet) another resend of the original PR meant for
-> net-next.
-> We have fixed the hitchups in the commit messages, as pointed out by the
-> AI.
+> My idea is that if someone wants to use whatever is the hardware default
+> or what was set by the bootloader, they have an option to do so. For that
+> reason, I made the clock and the clock-frequency optional. This is
+> something I can do without if you think it will homogenize better with new
+> drivers.
 > 
-> 
-> This batch includes the following changes:
-> * use correct constant when declaring nlattr array in ovpn_nl_key_swap_doit
-> * use bitops.h API when possible
-> * send netlink notification in case of client float event
-> * implement support for asymmetric peer IDs
-> * consolidate memory allocations during crypto operations
-> * add netlink notification check in selftests
-> * add asymmetric peer IDs check in selftest
-> * add FW mark check in selftest
+> Now I just realized that I can achieve this by just making the
+> clock-frequency optional and not the clock.
 
-In addition to the mark test failing always three more tests hang
-around 30% of the time on debug kernels:
+It gets complicated pretty quickly, if you leave things open.
 
-https://netdev.bots.linux.dev/flakes.html?tn-needle=net-ovpn&min-flip=12
+802.3 sets a maximum of 2.5Mhz. When this driver takes over the
+hardware, and there is no hint from device tree what frequency to use,
+but the hardware is configured to 50Mhz, what should it do? Trust the
+bootloader? Or assume the bootloader or something else has messed it
+up? Same goes for 1KHz?
 
-Please follow up with the fixes? More info how our CI builds the
-kernels etc:
-https://github.com/linux-netdev/nipa/wiki/How-to-run-netdev-selftests-CI-style
+Is the hardware default documented in the datasheet? Does it default
+to 2.5Mhz?
+
+>  - mdio-airoha.c: use 2.5MHz if not specified
+
+I personally would do this. This keeps you in line with 802.3. Anybody
+wanting to do anything else then uses clock-frequency, so the
+intention is clearly documented.
+
+	Andrew
