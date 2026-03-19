@@ -1,36 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A823DEADC;
-	Thu, 19 Mar 2026 14:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3EB3D646B;
+	Thu, 19 Mar 2026 15:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773932373; cv=none; b=MWcRPM1X3tp2pQi55A389MgwQvl/2UcuU7H/oQqR6oJsscWE6HgoLRxg31t8AfhU2uz9MjyQXxEW4qRejfFevAFC3iT0A7bMFm+SbZucVIhOnDk7ZpGF5ZqspdXs5d44RFWo8lnpdymjZTHF38+5kAM1h6207hVuNRxBkg+aWJo=
+	t=1773932418; cv=none; b=ng/+l6FlUITF/S+8idQwvGS6w57UI3cNrfV5obgwS9rZL2DOPCfxww5LvUzo1bHKQKGe9cc6KAUqXbQ+j3tOdJJIfVwGazH2yr5tjFWI83jOHl5Ry+ysJQw6U5n3hGxmcrvPEP/Mxg5Kzt5gINphQCvvzJFsroOgkhX9NAXsFPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773932373; c=relaxed/simple;
-	bh=wRKFuj1RBd5OZOCmeqHIDv8olqwZDaGYrjqF4N72VFY=;
+	s=arc-20240116; t=1773932418; c=relaxed/simple;
+	bh=CsP+MUt4iPBk3K+rHr/Zku37K/FzDX5EqoYMT/6dn4I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RHlJ8dRZlQMbtveTVnNUfA2nqWwB5Z2gFpisORQWjILR4yQHFNG46SZfesnLqbu4Pn/XPv/1TyZZDg0IuxeLs1yvDh+rz+8GNGId+0tUOPvT9jzynvwCf1QWsoNeR+ev0A89r0MXgUfN3UDB8ZixlBWFSpl66I16PPygNa+J4h0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jW7rO0Qy; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=QQYL1m3TTXnnXr8kRUo/7kOKeKt9KSuG8Pp/kdrRAn9nGqDB2F9jBAxSP0OKwxsvq/tGrs8s08avNjEkojtIB1jwZbngeeT9Ksc6x4WNkvH5SH85ca/gk/RPYvlJm3pgtWjq4BtbUrnYnyfMYYb7fSKF6tKocpFo8Ct8ZPcSaa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RvfmUv0f; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jW7rO0Qy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53334C19424;
-	Thu, 19 Mar 2026 14:59:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RvfmUv0f"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55284C19424;
+	Thu, 19 Mar 2026 15:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773932372;
-	bh=wRKFuj1RBd5OZOCmeqHIDv8olqwZDaGYrjqF4N72VFY=;
+	s=k20201202; t=1773932417;
+	bh=CsP+MUt4iPBk3K+rHr/Zku37K/FzDX5EqoYMT/6dn4I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jW7rO0Qydnm24fZKKcNCk97+5Di3gMM+w16JSsYYW7tDtJp8J3pvi9WBBBzht7Zxh
-	 dNFCYlDNcdV+fZwaxhrxXOFxyAJhHxe+vHCiZdVszjUQ5eoOuoP9OmqFA0zGMVzliZ
-	 h3HPi7AKag3uiE8aF1QXJXkXLsNp0vgEZ+WH7Qmfw4+ljSIfnVFtuMu0/REh97DcxT
-	 7iR6kJkVmbQgIKxp3tA04eOS4QpiNxsJ9oUo+gVw6J6QA+5Mg3ZILbvmV+swM1MKj/
-	 XjUC87ffsuXDpc8EQPT37CLR67gh92yBtV1tpDAr22vxx6BSKO/Joi/klO/asPmBES
-	 zjxeZO8y0oMVw==
-Date: Thu, 19 Mar 2026 14:59:18 +0000
+	b=RvfmUv0fP1ZP2Re77fPUb/GXQjzo8D7jWEIc38AyaSZdJpxJQHg8kogIFo4y9Qr2F
+	 ry2VLD6lNedLrUc15JjWWxxxAB+/LHfy5ZJay3lhJZ3QWnUREpd+5SFtJYK01SW6hQ
+	 QkVpClLQdGbXoxFp7NEwtLfQh+xwDYxa79wazz1OAfI4vExg/DhOz9fESUEANouNyS
+	 xwnKg7PMBjSkN9ZxuHFg6FgnA8stOY8ah2fUZlLKpPHmW8OkqaYqjWCQzP5nBkSMRv
+	 yf+2DjIY8brPjHQMUaryO/pwKjpC5/GfFz8qE67Kqm7afes+i1Rb/SIMjWukmRY3bx
+	 afXeZjFrQMFMg==
+Date: Thu, 19 Mar 2026 15:00:10 +0000
 From: Simon Horman <horms@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: wei.fang@nxp.com, netdev@vger.kernel.org, xiaoning.wang@nxp.com,
-	vladimir.oltean@nxp.com, kuba@kernel.org, davem@davemloft.net,
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, wei.fang@nxp.com,
+	netdev@vger.kernel.org, xiaoning.wang@nxp.com,
+	vladimir.oltean@nxp.com, davem@davemloft.net,
 	linuxppc-dev@lists.ozlabs.org, krzk+dt@kernel.org, frank.li@nxp.com,
 	claudiu.manoil@nxp.com, chleroy@kernel.org,
 	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
@@ -40,10 +41,11 @@ Cc: wei.fang@nxp.com, netdev@vger.kernel.org, xiaoning.wang@nxp.com,
 	linux-arm-kernel@lists.infradead.org
 Subject: Re: [net-next,13/14] net: dsa: netc: initialize buffer bool table
  and implement flow-control
-Message-ID: <20260319145918.GF1753385@horms.kernel.org>
+Message-ID: <20260319150010.GG1753385@horms.kernel.org>
 References: <20260316094152.1558671-14-wei.fang@nxp.com>
  <20260318145452.1898637-2-horms@kernel.org>
  <3dab3f5b-fb94-4c63-bcfd-aad4268e2ac3@kernel.org>
+ <20260318152408.002d1bd6@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,20 +54,23 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3dab3f5b-fb94-4c63-bcfd-aad4268e2ac3@kernel.org>
+In-Reply-To: <20260318152408.002d1bd6@kernel.org>
 
-On Wed, Mar 18, 2026 at 03:56:39PM +0100, Krzysztof Kozlowski wrote:
-> On 18/03/2026 15:54, Simon Horman wrote:
-> > This is an AI-generated review of your patch. The human sending this
-> > email has considered the AI review valid, or at least plausible.
+On Wed, Mar 18, 2026 at 03:24:08PM -0700, Jakub Kicinski wrote:
+> On Wed, 18 Mar 2026 15:56:39 +0100 Krzysztof Kozlowski wrote:
+> > On 18/03/2026 15:54, Simon Horman wrote:
+> > > This is an AI-generated review of your patch. The human sending this
+> > > email has considered the AI review valid, or at least plausible.
 > > 
+> > Why are you removing the "PATCH" part in the email subject?
+> > 
+> > This completely messes up with the filters and causes this email to pop
+> > up in places it should not.
 > 
-> Why are you removing the "PATCH" part in the email subject?
+> Sorry about that :/ We pull patch info form patchwork and for some
+> reason patchwork uses this notation for the "name" of the patch
+> when showing the list of patches in series info.
 > 
-> This completely messes up with the filters and causes this email to pop
-> up in places it should not.
+> I'll hack up the scripts to fetch real thing from lore.
 
-Thanks for pointing this out.
-
-I sent this patch using some tooling.
-I'll look into why this happened.
+Thanks!
