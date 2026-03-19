@@ -1,143 +1,82 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f69.google.com (mail-oa1-f69.google.com [209.85.160.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0319B221FBD;
-	Thu, 19 Mar 2026 21:34:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7E8221FBD
+	for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 21:35:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773956073; cv=none; b=aSQQ9JW+9NNSKMeSzs1H5GW3AIRyqMGtX0bUVxUV5xjG+dK62/1Of5+CATo4hZjxzLAxeKKLtj0q9UgmATgngoEm4tgHVWsbnfsIN35kCFm00LpdK9T0XE4uI/aZ2Wum0qJFoENqhVoD82VYBMAaR64xns37l6mD7kXm2VG+hH8=
+	t=1773956123; cv=none; b=l8Ah1N2CxOOUSce672gd0aK+kMqoAFj8kDlTACK89BLXekpn7Xo5so65xLzSVAjZ0Ht6AQjWqh1LxurvEnU5495Hh7m0Rja9cE7O1xIOQjBNv6pdQIt1LKhX1aeDlWHN+3pgu2pTkjR1irjmZAwMhhC3K0bp6TmjB3/6QRc72iQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773956073; c=relaxed/simple;
-	bh=g+LqMrEXTH3sjaWpUEO2v9ZD3LohQOUKXpc2vxB0m0k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JGijl1i/sc+19JSrODRlMP+ieHw86kxmYMht0sFDWYNh4LuFwyTmNBKrtRP877SMj+lXOeWPljBYMhDJxzVhm60RqsJ2drhMhr1QqTU/LK1WTRUknMT9nMEOixRqOB99o1rThPaMNKRasSk6toHU4MBatwLrkz+s2wUnRjJ22xU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GK0j+6NK; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GK0j+6NK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773956071; x=1805492071;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=g+LqMrEXTH3sjaWpUEO2v9ZD3LohQOUKXpc2vxB0m0k=;
-  b=GK0j+6NKaO7GEKnbKQ5a3eVRIhnMh0jUZRDs4WLjeyjZWofLMSV4Zv+u
-   bJCjbv5vF2WWqrQziMfnFWhQhQwfmPUjoUn2i5BofvfUHkCzoSsPQquwf
-   I/4E/2gRxKpPHa7D+quEmnfE6jvrZo083PmS6aqQ/0J8Fz/J8J+CY2jLx
-   dYxCnNcGDi4o0xl2KwTA0ZexBZAEM/Nk978yXoYSga4f+8gEjx3fkvcOM
-   Vrfa7+vQtyi73ux3lp8JIaCe5yQLPYmR7siPVGlR2wlBaiuKvOaDTdpLb
-   5ItjuQGd+gVeSNGD16kYHdPdWBvWh3TKxmr6mz35HsZiRjXFSlBiJKTj8
-   w==;
-X-CSE-ConnectionGUID: tNZnTl2iTsKAijnV6WehmA==
-X-CSE-MsgGUID: gki98L1gSFSbo4QHcxYsTA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="75009559"
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="75009559"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 14:34:30 -0700
-X-CSE-ConnectionGUID: MHeiFwZpRga1OZ3bv96RyQ==
-X-CSE-MsgGUID: cbMLbtEgQBWLZbGHGKjnYQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="227799513"
-Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 14:34:28 -0700
-Date: Thu, 19 Mar 2026 14:34:21 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: x86@kernel.org, Nikolay Borisov <nik.borisov@suse.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	David Kaplan <david.kaplan@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Laight <david.laight.linux@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Asit Mallick <asit.k.mallick@intel.com>,
-	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v7 07/10] x86/vmscape: Use static_call() for predictor
- flush
-Message-ID: <20260319213421.br6na4dulrjm6eke@desk>
-References: <20260319-vmscape-bhb-v7-0-b76a777a98af@linux.intel.com>
- <20260319-vmscape-bhb-v7-7-b76a777a98af@linux.intel.com>
- <20260319205802.GJ3738786@noisy.programming.kicks-ass.net>
+	s=arc-20240116; t=1773956123; c=relaxed/simple;
+	bh=tWqVrtM0+4Vs70ubYKL4zkcuMvCEW1rftX5RnkS5hjA=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=WjtlZh2jy3ZrH1aYfTQHGxaiqTCEaDNEbRpY6hZldIHmcdsu3tQ2PWJFjuHYLHWBnbLODWDq2q6mpek1K97phti01Y7URWwTwq15fGqAxjTxHjX7w5ah6/+Tg79iJ1c05sW2RwALEomzXjcma27aQLyfhKW5Pmh1F25ob6K4vDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oa1-f69.google.com with SMTP id 586e51a60fabf-41c02dec5c1so7885333fac.2
+        for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 14:35:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773956121; x=1774560921;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3kW5Cqd4AXaqbTURFAM4xTX11VPZxMsl0NOSLCzZeb8=;
+        b=B+YQklS7k/Q617wVhgtQ9SpspagQ/OiwajtnvwhxlFDXauG50zka+GWZ+tssXNCWn6
+         4+neoqdfVTewceH5woBTtzLQNMk/Dirtk5PsKIZkPHB3ql8fNnnw7Pf9kB/V+qg08hgg
+         595cOWWVOQN6cKX1EW352mtFH86BRXESECFJ+DNLuDVaz5TXhdYpvoM5drZrd8IytkTY
+         QsGPSp6PNEVUgu22n0sJYonP/A1MgtDaGtHz585lA9aKKA202YTltb1fIOoCdlYsJs8J
+         A8S6bKrxIeGXcZ7a0pRFqhnH8xgzfIDnI7DCjMCA9M3rH9/s94peKB+Fc1bIALcF9yfj
+         zQcA==
+X-Forwarded-Encrypted: i=1; AJvYcCUaZU/iAH8BXqnW9nhrUWJDgQ9jl6XzGic0VCy+LP2etGrMnm2wanua4SfdBYdALaXOXaz7ccA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8O+fKp6ZqN1JozK2slmnYRWzB3moRuu5MnM/24q3NCHeCfq6d
+	tdrrq/SzeTYoxeFRXS9aO45Qq9V/UEx21F5zoM4T8+QPTHMGHHnIpbbL5GN/a+vpT60s2qTKNr8
+	sw4up7DPUvIH3ylzoRiSYqJo2A7LlEP+mUNsOWeuUfs4Oh8MDsJIyl69e+Gw=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260319205802.GJ3738786@noisy.programming.kicks-ass.net>
+X-Received: by 2002:a05:6820:2f12:b0:67c:25b9:d366 with SMTP id
+ 006d021491bc7-67c25b9db1emr31379eaf.42.1773956121616; Thu, 19 Mar 2026
+ 14:35:21 -0700 (PDT)
+Date: Thu, 19 Mar 2026 14:35:21 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69bc6c19.050a0220.3bf4de.0000.GAE@google.com>
+Subject: [syzbot] Monthly wireguard report (Mar 2026)
+From: syzbot <syzbot+listb2717bb6410baba389f7@syzkaller.appspotmail.com>
+To: Jason@zx2c4.com, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com, wireguard@lists.zx2c4.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Mar 19, 2026 at 09:58:02PM +0100, Peter Zijlstra wrote:
-> On Thu, Mar 19, 2026 at 08:41:54AM -0700, Pawan Gupta wrote:
-> > diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-> > index 68e2df3e3bf5..b75eda114503 100644
-> > --- a/arch/x86/kernel/cpu/bugs.c
-> > +++ b/arch/x86/kernel/cpu/bugs.c
-> > @@ -144,6 +144,17 @@ EXPORT_SYMBOL_GPL(cpu_buf_idle_clear);
-> >   */
-> >  DEFINE_STATIC_KEY_FALSE(switch_mm_cond_l1d_flush);
-> >  
-> > +/*
-> > + * Controls CPU Fill buffer clear before VMenter. This is a subset of
-> > + * X86_FEATURE_CLEAR_CPU_BUF, and should only be enabled when KVM-only
-> > + * mitigation is required.
-> > + */
-> > +DEFINE_STATIC_KEY_FALSE(cpu_buf_vm_clear);
-> > +EXPORT_SYMBOL_GPL(cpu_buf_vm_clear);
-> > +
-> > +DEFINE_STATIC_CALL_NULL(vmscape_predictor_flush, write_ibpb);
-> > +EXPORT_STATIC_CALL_GPL(vmscape_predictor_flush);
-> 
-> Does that want to be:
-> 
-> EXPORT_STATIC_CALL_TRAMP_GPL(vmscape_predictor_flush);
-> 
-> The distinction being that if you only export the trampoline, modules
-> can do the static_call() thing, but cannot do static_call_update().
+Hello wireguard maintainers/developers,
 
-Right, modules shouldn't be updating this static_call().
+This is a 31-day syzbot report for the wireguard subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/wireguard
 
-One caveat of not exporting the static key is that KVM uses the key to
-determine whether the mitigation is deployed or not:
+During the period, 1 new issues were detected and 0 were fixed.
+In total, 3 issues are still open and 20 have already been fixed.
 
-  vcpu_enter_guest()
-  {
-      ...
+Some of the still happening issues:
 
-     /*
-      * Mark this CPU as needing a branch predictor flush before running
-      * userspace. Must be done before enabling preemption to ensure it gets
-      * set for the CPU that actually ran the guest, and not the CPU that it
-      * may migrate to.
-      */
-     if (static_call_query(vmscape_predictor_flush))
-                   this_cpu_write(x86_predictor_flush_exit_to_user, true);
+Ref Crashes Repro Title
+<1> 787     No    INFO: task hung in netdev_run_todo (4)
+                  https://syzkaller.appspot.com/bug?extid=894cca71fa925aabfdb2
+<2> 391     Yes   INFO: task hung in wg_netns_pre_exit (5)
+                  https://syzkaller.appspot.com/bug?extid=f2fbf7478a35a94c8b7c
+<3> 1       No    KCSAN: data-race in wg_expired_retransmit_handshake / wg_packet_send_queued_handshake_initiation (4)
+                  https://syzkaller.appspot.com/bug?extid=4ca9a7b9d61b76d0177c
 
-With _TRAMP, KVM complains:
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
- ERROR: modpost: "__SCK__vmscape_predictor_flush" [arch/x86/kvm/kvm.ko] undefined!
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
-Probably one option is to somehow make sure that the key can be set to
-__ro_after_init? I don't see a use case for modifying the static_call() after
-boot.
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
