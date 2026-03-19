@@ -1,160 +1,98 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0E331AABF;
-	Thu, 19 Mar 2026 01:35:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E86633263B;
+	Thu, 19 Mar 2026 01:35:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773884115; cv=none; b=sh2c6EFmP5Unudvahsk3vNLWtnlqgAMYcvBSseB4ex/sgMocqja+dMRZgNr0nMarlm0qKTaYYmgIOJwHiRDpBLh3VAqb7kDj09moOYYtXTuayKxPJyXXnkhR/eNljQg6KTyJeZz80ve3RwECuUG6l7M01GhgulfH8ENm+g8VdVo=
+	t=1773884158; cv=none; b=LqxtIPrKWi51h+owyD/D6PC0GGIzRZQexHfO/erp1p5/sv9FJx9OypamgVXopA+AUgr3FFlWmK5Ni0xxBljFwO+MeC9lN5skeQj312/zlRUFjo17E0eknLD3XRwoFlCnpaQA7Of5BdYD2jfVyr1TcOTuw/Y9Cix8+MjkDURKDQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773884115; c=relaxed/simple;
-	bh=o2JIB0ulYpFLO2G8cREBI30pejf2WQk+5r824J/EsHk=;
+	s=arc-20240116; t=1773884158; c=relaxed/simple;
+	bh=4w28ebdGYqA8tTr4BHfNuPsWGEG6U/lm63Wl2wf0TBA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K8JHewvRSivKW3yJASww8VUu6z+ZqWOyrxgDbtE2G90zXfEG1AML3zKlRVtffwEY+p3K3PiY2Ed4hSGTiH6WtZoo1e3OFSIzLtg6C8NxdbJNvcJcS6ZNuhEuEnjoXYpBqLbwkssx1Cz2o8etnalWq8H5Wdks0b+XfLuw44TzAKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GMYN3DIp; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=RVTH6aAOQVzVOdf64LzDntZtlsjRuTMV6Vm3Bwib0vUQAMP3z5A0P393jcKmV2wrzkV5ezWV9iz579yQysyKoAawoQWzhQvnZ2tHCTA1yor7Yaio2RRzeIEWF/0TXYenVGMEQ3QAy6W4Y5YQCFfxhOn6okWrfwoo2XGq0pOLccE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fwUaiouL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GMYN3DIp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773884108; x=1805420108;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=o2JIB0ulYpFLO2G8cREBI30pejf2WQk+5r824J/EsHk=;
-  b=GMYN3DIpoXA/BJQXK6+AvFJyNYwA+v2+ug1QMD1BRBd2Kt4Si5TeUVou
-   wJfrsHOVDiO8J4tTpyHh3VQOkWfr9McZYR3Lc5w+ikLD6QRuCZ7BPN+XE
-   n/q/ULB//mNzTRCFM9oSnfB+DzBXyQYFgrQjymK9Qrrclhgr5e7uSM/P3
-   L6T/oESdbKcGRfW0rGiQl5FVMHLqJYxLP+4XOySNK7pzg5jY6tZoUShru
-   WyzVegnNqyg356KqsWt5jKEsKcdDwqiZSKg0NWj8lVXBDFFm2UiQZtG9n
-   1mrmTjaHrjVYz92HYrbBiq8yNzqJ4K2snjiVzDnWX9mO6WRmgJrPPiJUX
-   w==;
-X-CSE-ConnectionGUID: VjVRThggSi2JKRh2ryxKJA==
-X-CSE-MsgGUID: 4YBh9j4LToubUijP5ht0Gw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11733"; a="85654856"
-X-IronPort-AV: E=Sophos;i="6.23,128,1770624000"; 
-   d="scan'208";a="85654856"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 18:35:07 -0700
-X-CSE-ConnectionGUID: GJ3uzMY6RiOAvlWDLhrMfA==
-X-CSE-MsgGUID: BeRjQjWMTnWCv8JRw8FEdw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,128,1770624000"; 
-   d="scan'208";a="218322706"
-Received: from lkp-server02.sh.intel.com (HELO a51c2a36b9df) ([10.239.97.151])
-  by fmviesa006.fm.intel.com with ESMTP; 18 Mar 2026 18:35:04 -0700
-Received: from kbuild by a51c2a36b9df with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w32Ht-000000000B3-28tK;
-	Thu, 19 Mar 2026 01:35:01 +0000
-Date: Thu, 19 Mar 2026 09:29:25 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Dege <michael.dege@renesas.com>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fwUaiouL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3316EC2BC9E;
+	Thu, 19 Mar 2026 01:35:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773884157;
+	bh=4w28ebdGYqA8tTr4BHfNuPsWGEG6U/lm63Wl2wf0TBA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fwUaiouLeCVh83DZNEfaWAqt57nbm27xrV8R81wqL+pE/3ivZvZFzoISi2L3Hq8zg
+	 483CimfC2jMjhN7hbk/54ipCETlqhSX33z7TxUvNEyWHdJ85O5BjK9QBKVx1qrT0XY
+	 4j0YQPQgNhDeqV1CkMQdB+jv+lvK23SF2QNH10LPzkig4NhJ6Y9nD31eteqhkkxAXU
+	 vXZXErlT2YAY8q0C3JhlhEtT7HcoBbQS/UgOp6WvBJKDeuvdUtVyCeoI60dKi11Ozp
+	 ZBG0HMpHCYdIRFrZeChc46p7DE55v7npzyzWF30PaRfdgeUyQvKfVt4OYSGGEWXmaG
+	 u5uJ0UG0qH42Q==
+Date: Thu, 19 Mar 2026 01:35:52 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Charles Perry <charles.perry@microchip.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Michael Dege <michael.dege@renesas.com>
-Subject: Re: [PATCH net-next 13/13] net: renesas: rswitch: add vlan aware
- switching
-Message-ID: <202603190927.5oLw58VC-lkp@intel.com>
-References: <20260317-rswitch_add_vlans-v1-13-3a57bfa0f2d1@renesas.com>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 1/2] dt-bindings: net: document Microchip
+ PIC64-HPSC/HX MDIO controller
+Message-ID: <20260319-spearfish-styling-9918d2d2e537@spud>
+References: <20260317184610.315852-1-charles.perry@microchip.com>
+ <20260317184610.315852-2-charles.perry@microchip.com>
+ <20260318-suspense-arming-fe118c3f15c6@spud>
+ <absXy5Qmd/iHWofD@bby-cbu-swbuild03.eng.microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="TRfkxA2u8xk+P4Fr"
+Content-Disposition: inline
+In-Reply-To: <absXy5Qmd/iHWofD@bby-cbu-swbuild03.eng.microchip.com>
+
+
+--TRfkxA2u8xk+P4Fr
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260317-rswitch_add_vlans-v1-13-3a57bfa0f2d1@renesas.com>
+Content-Transfer-Encoding: quoted-printable
 
-Hi Michael,
-
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on 1f318b96cc84d7c2ab792fcc0bfd42a7ca890681]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Michael-Dege/net-renesas-rswitch-improve-port-change-mode-functions/20260318-221709
-base:   1f318b96cc84d7c2ab792fcc0bfd42a7ca890681
-patch link:    https://lore.kernel.org/r/20260317-rswitch_add_vlans-v1-13-3a57bfa0f2d1%40renesas.com
-patch subject: [PATCH net-next 13/13] net: renesas: rswitch: add vlan aware switching
-config: sparc64-allmodconfig (https://download.01.org/0day-ci/archive/20260319/202603190927.5oLw58VC-lkp@intel.com/config)
-compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 4abb927bacf37f18f6359a41639a6d1b3bffffb5)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260319/202603190927.5oLw58VC-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603190927.5oLw58VC-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/net/ethernet/renesas/rswitch_l2.c:268:7: warning: variable 'err' is used uninitialized whenever switch case is taken [-Wsometimes-uninitialized]
-     268 |         case SWITCHDEV_ATTR_ID_BRIDGE_MC_DISABLED:
-         |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/net/ethernet/renesas/rswitch_l2.c:275:6: note: uninitialized use occurs here
-     275 |         if (err < 0)
-         |             ^~~
-   drivers/net/ethernet/renesas/rswitch_l2.c:264:7: warning: variable 'err' is used uninitialized whenever switch case is taken [-Wsometimes-uninitialized]
-     264 |         case SWITCHDEV_ATTR_ID_BRIDGE_VLAN_FILTERING:
-         |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/net/ethernet/renesas/rswitch_l2.c:275:6: note: uninitialized use occurs here
-     275 |         if (err < 0)
-         |             ^~~
-   drivers/net/ethernet/renesas/rswitch_l2.c:251:9: note: initialize the variable 'err' to silence this warning
-     251 |         int err;
-         |                ^
-         |                 = 0
-   2 warnings generated.
+On Wed, Mar 18, 2026 at 02:23:23PM -0700, Charles Perry wrote:
+> > > +
+> > > +  clock-frequency: true
+> >=20
+> > Does this genuinely have no constraints?
+>=20
+> It's going to divide the input frequency by 2 to 512 (the prescaler is 8
+> bit long), so assuming an input clock of 156.25 MHz, the bounds are 305KHz
+> to 78MHz. The standard is 2.5MHz.
+>=20
+> I can add a maximum and minimum here since I do have some validation on
+> this in the driver which will bail out if this is out of bound.
 
 
-vim +/err +268 drivers/net/ethernet/renesas/rswitch_l2.c
+That sounds like a good idea, thanks.
 
-   244	
-   245	static int rswitch_handle_port_attr_set(struct net_device *ndev,
-   246						struct notifier_block *nb,
-   247						struct switchdev_notifier_port_attr_info *info)
-   248	{
-   249		const struct switchdev_attr *attr = info->attr;
-   250		struct rswitch_private *priv;
-   251		int err;
-   252	
-   253		priv = container_of(nb, struct rswitch_private, rswitch_switchdev_blocking_nb);
-   254	
-   255		switch (attr->id) {
-   256		case SWITCHDEV_ATTR_ID_PORT_STP_STATE:
-   257			err = rswitch_port_update_stp_state(ndev, attr->u.stp_state);
-   258	
-   259			break;
-   260		case SWITCHDEV_ATTR_ID_BRIDGE_AGEING_TIME:
-   261			err = rswitch_update_ageing_time(priv, attr->u.ageing_time);
-   262	
-   263			break;
-   264		case SWITCHDEV_ATTR_ID_BRIDGE_VLAN_FILTERING:
-   265			rswitch_update_vlan_filtering(priv, attr->u.vlan_filtering);
-   266	
-   267			break;
- > 268		case SWITCHDEV_ATTR_ID_BRIDGE_MC_DISABLED:
-   269	
-   270			break;
-   271		default:
-   272			return -EOPNOTSUPP;
-   273		}
-   274	
-   275		if (err < 0)
-   276			return err;
-   277	
-   278		info->handled = true;
-   279	
-   280		return NOTIFY_DONE;
-   281	}
-   282	
+pw-bot: changes-requested
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Cheers,
+Conor.
+
+--TRfkxA2u8xk+P4Fr
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCabtS+AAKCRB4tDGHoIJi
+0iNNAP0fc5r0AJMWLrL1gpNT0MsvtIM8VnoN4U/3nEFwXGk4UgEAnchwFcZj0O8e
+/nYvTkQPoEHppZ0bMSqdtbTgR0R49gs=
+=+b5O
+-----END PGP SIGNATURE-----
+
+--TRfkxA2u8xk+P4Fr--
