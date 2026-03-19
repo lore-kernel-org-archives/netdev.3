@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0060840DFCA;
-	Thu, 19 Mar 2026 03:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 706C23876A9;
+	Thu, 19 Mar 2026 03:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773889822; cv=none; b=pzR59ED4NCrPys9+bH3QFZyYzFDCSs6wxm5fA4606NmJ2ivOz3kL8MUeNb9zklxNUA8DU30B9IUmD32iffe8hrqFVPeTkvWmT8D2v10/Mu34+pEwtopBneQb1MNVZw8yJ1kx7fO1LgEhYxjnXZktPkpVVoWxpf2fMhXhSnZIw20=
+	t=1773889823; cv=none; b=DJ/fIdw5Y0wbS0/itXfi7WyOllvG5Pu+Lw6P/wT79kUIPgn12XRoUJK1Gm1/U3P7njeU7nJr2HAnRe9VBHMe8+GvEPR5ugj542YMxiO5O86MZe5MOcb8WZ9h0EYVO61yMhee+7sYIfY/38YX5ZvPfX3TU1pzFQCvj7iXwtqd6+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773889822; c=relaxed/simple;
-	bh=pbM2WXvmOAdhLGbFMYG5y2e9R+cxexczvKiZWhcVPNg=;
+	s=arc-20240116; t=1773889823; c=relaxed/simple;
+	bh=uuPFUGmJLa6ZmtGZh44sRVLRMdtLRmTdH3xVrTkZI1w=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=pHJ9SysnZ4QHL7dT0ipfdAs+Ta5oK6Vwl2wMRjTEOhl1YPga4AouAJqdEd25GP9x0rW+xNAJKadCa1u0K3+REbtuVZLAlkZSItkdUmZhXTmepXQGN9k37jDFkN2KJ/ygtyv+QPkG4mlAkqKTEsQq0SkwwAmr8ahoq4tQPa1DRzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oKEH/AbN; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=ipokHxQNeL6Ly61FuPuywXwbVvCP2dsry8dgOIityH+sI1JYLFtTb6y80otVpzw/oTLyRsz5wK9Mxl4brt8Lo9Vylcc9ZTYZh6GK8c4YY/zJ0s16uZ9OTX0u6ARtV+HOOalMLGeYVpk4RuHKsFqWwXINZ4MJWd2ciPofjD6e6B8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LyAow0al; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oKEH/AbN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE73C19421;
-	Thu, 19 Mar 2026 03:10:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LyAow0al"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E838EC19421;
+	Thu, 19 Mar 2026 03:10:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773889821;
-	bh=pbM2WXvmOAdhLGbFMYG5y2e9R+cxexczvKiZWhcVPNg=;
+	s=k20201202; t=1773889823;
+	bh=uuPFUGmJLa6ZmtGZh44sRVLRMdtLRmTdH3xVrTkZI1w=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=oKEH/AbNl2h4OnelcKZUr+PEr9tI69lZCcn8IwZran9g/MhS93aCbVYOz4MmHMAWn
-	 Y8LB9Moue/E1/WmY5KGjhLB3taD0Aedp2xsCyek8rX1Bs6X0adO+MIl7hw8i3G7tsj
-	 1o6ooxD8ngeuWaDmwjgqh4JTk8VccO9ABrJkSeqbOA0oBAgxY9IB9iO6VQ6ZLob13q
-	 CVQHDEIsVwkw31wslY5hHhZAetvqYUHXnQfdLJXdAnaZQxpzmqYA3MasGHBQQgNaYL
-	 fN5GX6xCmuNxgx4I3V+N5s1QzAbFtZI19qTWJSsCYY6HouBqDYfnlEZao4U+BZ3o+s
-	 amptlaVABt3Yg==
+	b=LyAow0algRLBdBjTJQljI+gJheTwYE5jNoYxmPWEOTVFzpz44AR5tskoiAu/nQ1xa
+	 FiLiwVFEj20+CotM5D80F401NKNuayw+C3lCHf5w6d/mjcqQFgsAtdEZ/3i4YLPxOX
+	 dsY/MeC0tV5/JUt56Es9bb7+c8Fn+2F9244hMznw5zcHS/jYCMH3qRJGhIXDWB5gT+
+	 2xdqCfjr+sIDD1o/9pZpZTeaudNH+3cV0qJiqRhsq/wepqemgHs0JazUUb+XbDUfGk
+	 oVC21ey/C2pVt5/k1Nbv56lJC93HBIcToDwjPZyckNTp09N/wqPBrhqFQNrEskZVNK
+	 9Jry52qV11p1Q==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FE573808200;
-	Thu, 19 Mar 2026 03:10:14 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CED43808200;
+	Thu, 19 Mar 2026 03:10:15 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,40 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net/mlx5e: Remove unused field in
- mlx5e_flow_steering struct
+Subject: Re: [PATCH net-next v2] selftests/vsock: auto-detect kernel for guest
+ VMs
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177388981279.1008325.4356129882650210437.git-patchwork-notify@kernel.org>
-Date: Thu, 19 Mar 2026 03:10:12 +0000
-References: <20260317104548.15697-1-tariqt@nvidia.com>
-In-Reply-To: <20260317104548.15697-1-tariqt@nvidia.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, saeedm@nvidia.com,
- mbloch@nvidia.com, leon@kernel.org, netdev@vger.kernel.org,
- linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org, gal@nvidia.com,
- moshe@nvidia.com
+ <177388981428.1008325.4813735802050665740.git-patchwork-notify@kernel.org>
+Date: Thu, 19 Mar 2026 03:10:14 +0000
+References: 
+ <20260316-vsock-vmtest-autodetect-kernel-v2-1-5eec7b4831f8@meta.com>
+In-Reply-To: 
+ <20260316-vsock-vmtest-autodetect-kernel-v2-1-5eec7b4831f8@meta.com>
+To: Bobby Eshleman <bobbyeshleman@gmail.com>
+Cc: sgarzare@redhat.com, shuah@kernel.org, virtualization@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kuba@kernel.org, bobbyeshleman@meta.com
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 17 Mar 2026 12:45:48 +0200 you wrote:
-> From: Saeed Mahameed <saeedm@nvidia.com>
+On Mon, 16 Mar 2026 17:56:15 -0700 you wrote:
+> From: Bobby Eshleman <bobbyeshleman@meta.com>
 > 
-> Not used in mlx5e, clean it up.
+> When running vmtest.sh inside a nested VM the running kernel may not be
+> installed on the filesystem at the standard /boot/ or /usr/lib/modules/
+> paths.
 > 
-> Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-> Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+> Previously, this would cause vng to fail with "does not exist" since it
+> could not find the kernel image. Instead, this patch uses --dry-run to
+> detect if the kernel is available. If not, then we fall back to the
+> kernel in the kernel source tree. If that fails, then we die.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next] net/mlx5e: Remove unused field in mlx5e_flow_steering struct
-    https://git.kernel.org/netdev/net-next/c/04cd075557e8
+  - [net-next,v2] selftests/vsock: auto-detect kernel for guest VMs
+    https://git.kernel.org/netdev/net-next/c/3883c2b50910
 
 You are awesome, thank you!
 -- 
