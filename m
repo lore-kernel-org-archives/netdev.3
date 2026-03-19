@@ -1,35 +1,77 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348AD36BCC2
-	for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 22:50:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A0A42EC553
+	for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 23:03:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773960615; cv=none; b=UzooDovHKzUwP0c0axBew/GcJFSC8VgYbncBDRfuWmLrAiLI8vZxoI3hAyXvu8T4dkEIgx/LIj6LDA6EiCZU/2+DqKU+frme6eMOpqilqMEkmwn7zlzQfHInfQqJvdZsq2WeSvtAy7AVODZwujiYOikDW+LuoughddM2GF0URk0=
+	t=1773961385; cv=none; b=fs3pu3I5KsrPbYQFzJ49ksKShQriawKo3cCzm8aFkRKBq7O+SIBNZDPB3IFhnWks0CFS2e2dxfLEV3PHX+/0XneiXWApviDvgmLW1NCIlNOoarnJXQKXMtYriBtdHhjphSIyYiXJ+k9qrNly3RZZHYzeea9oW3gKsMTow3ULUEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773960615; c=relaxed/simple;
-	bh=pbGu83igKhIFm6HKPrOhoTws5QZavAF4F+5XsTGi16E=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=AtnSs9fP5AkgGf5dRfbCQm8AuJ259DX1Uur8t3yjqOUYbOZvyFFUPAznqZ364X/xzUFuqiU8NNg+X0zwZId3BlevLWBRLUMfEJ6+79908Y/SayLlEAE59hknZaLhQCVlFzygEIGrLVs2xYKTkzTQ/j4eLwwKsizPeZnJtZh/4zw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uf5CAMcv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773961385; c=relaxed/simple;
+	bh=HvUr1tEAKxfsNugwk/axYD9sKmZlnmuG1s6YL9uGnRE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lM4cthhMGJRjGfV87a5sKVGCsdmCvRy9Oq3A+r3MjprvyrJ1GOu74rv/X7G7swto1UsxK2kP4KCtXw0EHrb9QNs/G1R0KdvY3by2vZvnjUXpvTVO5xmzCNV7vyy3fyKc1f7WynIl8P3ZyJ1Wx4qBiWjqSHIzPMJkyl8j46KB1Uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=R5kKmSS6; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=NF02OCTW; arc=none smtp.client-ip=202.12.124.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uf5CAMcv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7040C19424;
-	Thu, 19 Mar 2026 22:50:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773960614;
-	bh=pbGu83igKhIFm6HKPrOhoTws5QZavAF4F+5XsTGi16E=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=uf5CAMcvKkQHwwNBCt8UXfXNBRbWgwbyypnxWbtuHHtOjen1dHPS1ghe3iIimBWz2
-	 IGCU436tj85/hig2W0vwHHZzwi3f0GvNl+2Zmk4844y72joSpX5stTZuVOtgDL/8w6
-	 WUUieYhdgngwv/OuHIGhdXFeGxGQx7IFt5LqqgUXj8M4974XYUQEKVy/fZE/yY97NQ
-	 Qg7/6IUDwoJVRoiHbb1Ekm61OrbApgxvYg7Hvw+drVwMWj6y5Fzw2AJJbqY7q6gAB6
-	 rGF2x/K0m/kct9v9c8VoWWlFZqXycTvAyqDLeQ32fuObF3f/0O1Q95SzD7tsrw+GW8
-	 oqP3E/yx4JLAA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9F6739302F6;
-	Thu, 19 Mar 2026 22:50:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="R5kKmSS6";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="NF02OCTW"
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfout.stl.internal (Postfix) with ESMTP id 2988D1D001E2;
+	Thu, 19 Mar 2026 19:03:01 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Thu, 19 Mar 2026 19:03:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
+	:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to; s=fm2; t=1773961380; x=1774047780; bh=+3T1h16DTY
+	woHHDcCE//hKSHR/rCTCidswBtlXbsSyw=; b=R5kKmSS6VYSo+3EyglSVNcHPl7
+	m26T2kkPCnGsLzivlWq7+F4pfcLLeLaeZkx7BJqVzta7wlReDoiExvt5/R+hvCKU
+	6k38aS5Q0MaVl12l0CNLmwgbXBnZckg9550HDj0/0Tkr/kkCEVKlr8r3SHQu6XX9
+	vUoTgrDEmx9xuVJ16DIpsXApTyzp+3HQbm3c8p8jtt8/OhucykT063nmFuYJLyla
+	Hb34Fxj7XYr6nsozu70Loqgh0WCWJplZWYagM3yDmsXU2g2iH5mheJ+2yL0doijR
+	rDmYDFT9zGjH6d0I0IkyE2Fm+wUXD5yQFwqLCgCKJQjlLtTnxb0x5ou6bfew==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1773961380; x=1774047780; bh=+3T1h16DTYwoHHDcCE//hKSHR/rCTCidswB
+	tlXbsSyw=; b=NF02OCTWCmaCuLV/QWvB7+w+W76T3ZpmPkCC7uaB75i2m/gN60x
+	tmqaKcj22NaZS0R+jx0xNG5dWiYu9YbZzTsyKCTJIptCNXTvdK5564w87Yb4LE+g
+	f57qMCbnzbnT37TAAz1EEN4ypOsb56HqnD0Er3/iF9MDPV3BS9IzPHK+lfs+ecIo
+	ujgilVgJlx42ej0MqCM+xSHJhvLcM2WQVxkUfk5TKA+J7CaTWj1kL7xMnwxKCneK
+	tjjTKXCzIBnekzJLuFuX4/5mhI4Bp+TNgcOUO0vLohw+Lu9hNd3il6cUG5DcEYZo
+	bSDH1eJSLpsN/h3nrWtUZ6kqhlBnGF5f4EA==
+X-ME-Sender: <xms:pIC8acSB03FQ684lbGVgSAkx6vsePFR_UcHrJqE7gK6eM_alshovUA>
+    <xme:pIC8afz35-68BKdUJDnt5pV8nxozQLv_0wMh5Kbpj1gQbfkvc5XwRvXRV_miO3S6q
+    6i_yim2hC7V38nOCk294cI6a93Z4-mau2loBlGaezyV8pkhQpE70Q>
+X-ME-Received: <xmr:pIC8aXf0KXqUyf0iT-aYCDi6ZY4NFpJywYdnxOb6pkefNON8qbipcLsPY2Mh>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdekvdekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucenucfjughrpefhvfevufffkffoggfgsedtkeertdertd
+    dtnecuhfhrohhmpefurggsrhhinhgrucffuhgsrhhotggruceoshgusehquhgvrghshihs
+    nhgrihhlrdhnvghtqeenucggtffrrghtthgvrhhnpeejtdeugfffkeejfeehkeeiiedvje
+    ehvdduffevfeetueffheegteetvdfhffevffenucevlhhushhtvghrufhiiigvpedtnecu
+    rfgrrhgrmhepmhgrihhlfhhrohhmpehsugesqhhuvggrshihshhnrghilhdrnhgvthdpnh
+    gspghrtghpthhtohepvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepnhgvthgu
+    vghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshgusehquhgvrghshi
+    hsnhgrihhlrdhnvght
+X-ME-Proxy: <xmx:pIC8abJJDm0Wi6IQs327exzZQhrAVUvva5RBwpY-17F19XYoTbxFwQ>
+    <xmx:pIC8aYHKKXsa0rFujSxLl2gY639c8z7Pcs5B3j1dYYbfb2sJpeSwlA>
+    <xmx:pIC8aVoKPyfZyOYdTYz_ljMYQxjzN2YTBpfY4auWAB01CaTdf4Fygg>
+    <xmx:pIC8aRT3sMv0kaRB_u4nW-f71gr0Tuj1-dJQKHOtPeFSP--Tc7ILPw>
+    <xmx:pIC8afrBgFJkI-FYWNE-3-1z2XXUbCalWXHi7McdLr3O-I5fJCPnFRBr>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 19 Mar 2026 19:02:59 -0400 (EDT)
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: netdev@vger.kernel.org
+Cc: Sabrina Dubroca <sd@queasysnail.net>
+Subject: [PATCH net v2 0/2] rtnetlink: add missing attributes in if_nlmsg_size
+Date: Fri, 20 Mar 2026 00:02:51 +0100
+Message-ID: <cover.1773919462.git.sd@queasysnail.net>
+X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,40 +79,20 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] ionic: fix persistent MAC address override on PF
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177396060554.1838217.6467445863157712340.git-patchwork-notify@kernel.org>
-Date: Thu, 19 Mar 2026 22:50:05 +0000
-References: <20260317170806.35390-1-mheib@redhat.com>
-In-Reply-To: <20260317170806.35390-1-mheib@redhat.com>
-To: mohammad heib <mheib@redhat.com>
-Cc: netdev@vger.kernel.org, mohamed@pensando.io, brett.creeley@amd.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, sln@onemain.com
 
-Hello:
+Once again we have some attributes added by rtnl_fill_ifinfo() that
+aren't counted in if_nlmsg_size().
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+v2: add missing nla_total_size in patch 1, spotted by Sergey Ryazanov
+    patch 2 unchanged, keep Jiri Pirko's Reviewed-by
 
-On Tue, 17 Mar 2026 19:08:06 +0200 you wrote:
-> From: Mohammad Heib <mheib@redhat.com>
-> 
-> The use of IONIC_CMD_LIF_SETATTR in the MAC address update path causes
-> the ionic firmware to update the LIF's identity in its persistent state.
-> Since the firmware state is maintained across host warm boots and driver
-> reloads, any MAC change on the Physical Function (PF) becomes "sticky.
-> 
-> [...]
+Sabrina Dubroca (2):
+  rtnetlink: count IFLA_PARENT_DEV_{NAME,BUS_NAME} in if_nlmsg_size
+  rtnetlink: count IFLA_INFO_SLAVE_KIND in if_nlmsg_size
 
-Here is the summary with links:
-  - [net] ionic: fix persistent MAC address override on PF
-    https://git.kernel.org/netdev/net/c/cbcb3cfcdc43
+ net/core/rtnetlink.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
-You are awesome, thank you!
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.51.2
 
