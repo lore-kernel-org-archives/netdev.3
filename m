@@ -1,55 +1,53 @@
-Received: from mout-b-105.mailbox.org (mout-b-105.mailbox.org [195.10.208.50])
+Received: from mout-b-210.mailbox.org (mout-b-210.mailbox.org [195.10.208.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA253D7D63;
-	Thu, 19 Mar 2026 15:22:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.10.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F413D3481;
+	Thu, 19 Mar 2026 15:22:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.10.208.40
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773933741; cv=none; b=JmduGHeiTFpPA89YbUVa4Pk1IesVR2jrGPoHy9JDVR0Zo4mmzG6LJv/gQKk3w/s492YISPH2MhUHPZR189s04CO6Tp+EYCcJ1M1flBph/gHxcBk5yx+CmI9ADeDv809fHbx0+1hR/dwAzJrHV0OjRaYK65GnwCuVyFS7GGj/HWo=
+	t=1773933750; cv=none; b=BXLSkawsdvPHXOQrzo5qe+FzwNLi/7081ptoWxe4+k5JerefiURxa5xIy8w1hUuiNhAIrAD0OCrIEFDw//eZLZ90rgkBRmZutcNeOniTgbLYh33gxO9xpJJdE9w+/xjGZrNgB7c2RplBOiHwQVoJ5FkExuKV7viUL+IakV2Ujcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773933741; c=relaxed/simple;
-	bh=9HLDIX0VSw1Ao+Fg4hTNFPg2WBSxWi+frzX+4O/YuDE=;
+	s=arc-20240116; t=1773933750; c=relaxed/simple;
+	bh=iTO4e6EY6LzuRBmdnlWNtywEwzjsLcLwOY1vsh6w6X8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aAzCXrunwX18ZCtjkt7pY25MUsTn+jqIWrK3apsyN3nLTc0TKoVk2EN3teGq9JOoj/AzqxkKcEHiimsKpVKiBZpaRK/Ri79YFgylnDCSFQuvkfazemdUYb0tEOQi9KUtoaGU52lKAuayHCtTjnfgxITiYoJK3KBiPUjXPo1WgEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=L7/br4Fw; arc=none smtp.client-ip=195.10.208.50
+	 MIME-Version:Content-Type; b=ndRFJARN/7DgjyNpCFvW5ou4Pcy1vcpYxBmX/5BH04qtgTx3KUrkh+vLUXjJwfAgLZds7dtoo6RB6CS7Y8h+SnRVsOgFGMK80rkUnpDeMYDH3I08IIJE++wiH6kE2jp6/LIe5KAyVWbv/tdeANQditzuUUonfnEt+iDeNrsa5lA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=Afz5ifqR; arc=none smtp.client-ip=195.10.208.40
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="L7/br4Fw"
+	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="Afz5ifqR"
 Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-b-105.mailbox.org (Postfix) with ESMTPS id 4fc8Nj1k4Jz9xYW;
-	Thu, 19 Mar 2026 16:13:57 +0100 (CET)
+	by mout-b-210.mailbox.org (Postfix) with ESMTPS id 4fc8MY5hxkzDqrQ;
+	Thu, 19 Mar 2026 16:12:57 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
-	s=MBO0001; t=1773933237;
+	s=MBO0001; t=1773933177;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/+bYIX13NZJ/o8DNHJSrFIiE8CbJVAhtyWJSmMPu6Qg=;
-	b=L7/br4FwZd3Cu5XNBjMVoa1Dt/xm7fIGEr5KJtww3IwXLT0O+DAxrHtaQOh46VuCHPxt2M
-	JCOSwEfIa3JdSHnbVCDmexF+ERuNptvEf0kqjlO4P2Z3OCqJ/d34uVdx4lYJX+tlZMoV2x
-	xvGZPFW6YWTHoniKx37gj9GHLh6njYn6MvgEFMe/ca00kqzJ7qz0DrUcosldrVX9bEsPAn
-	e82dDakTW6i8XZw/y1wyeGPyRIr7Zxd80Rba39G+7ldThKpx8anw4qmfQReIWFyVBGLPzM
-	ofTEALhNZzoUSjvg+P/xiXiLQu9+4LXuJRGh1SHhj6FyibmZ3DBknRBD81kQZw==
+	bh=0icos2ZBtUrsLwF58QCrTkTKUVqnIISU3RcxMFUjpAk=;
+	b=Afz5ifqR/m3cvYhcAV+HV4VQFRBdnEgoxSlYhlEr/XS8DszzK3uqn6OeG3FT1rsJgWFDvJ
+	PvlHyxjyrZmf5kate0iMR0mTVI8cZOZSFjY1K3+y7pOWW+bOEBSlJ/SeJfV2f/RNNvlpGj
+	fHelUymu7cCSQ41qd2KR37p8hKj5BwTGkDRzLllSXuSTjaOcYVYPl+sQohM2dQWuROrK0f
+	HpIUAAJ+MiXtii4JI9rH08xHqbKHgDwjLeP74tnP5COxxZj8gpMMG6fP1OpmQGuIwCXZ6M
+	hh5uTD85JKWDOKOpZhgcDNA4niIreOLkdfnhH9U7YPD3i9fzTk3K978ucpxCrQ==
 From: Ralf Lici <ralf@mandelbit.com>
 To: netdev@vger.kernel.org
 Cc: =?UTF-8?q?Daniel=20Gr=C3=B6ber?= <dxld@darkboxed.org>,
 	Ralf Lici <ralf@mandelbit.com>,
 	Antonio Quartulli <antonio@mandelbit.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
 	linux-kernel@vger.kernel.org
-Subject: [RFC net-next 13/15] ipxlat: add netlink control plane and uapi
-Date: Thu, 19 Mar 2026 16:12:22 +0100
-Message-ID: <20260319151230.655687-14-ralf@mandelbit.com>
+Subject: [RFC net-next 02/15] ipxlat: add RFC 6052 address conversion helpers
+Date: Thu, 19 Mar 2026 16:12:11 +0100
+Message-ID: <20260319151230.655687-3-ralf@mandelbit.com>
 In-Reply-To: <20260319151230.655687-1-ralf@mandelbit.com>
 References: <20260319151230.655687-1-ralf@mandelbit.com>
 Precedence: bulk
@@ -61,751 +59,232 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Expose runtime configuration through netlink with validated set/get/dump
-operations and generated policy glue from the YAML spec. The API
-configures the translator prefix and MTU threshold used by the data
-path.
+Introduce IPv4/IPv6 stateless address mapping helpers used by the
+translation pipeline. Add the core 4<->6 conversion routines, including
+RFC 6052 prefix embedding/extraction and the RFC 6791 fallback source
+selection logic used by ICMP translation paths.
 
 Signed-off-by: Ralf Lici <ralf@mandelbit.com>
 ---
- Documentation/netlink/specs/ipxlat.yaml |  97 +++++++
- drivers/net/ipxlat/Makefile             |   2 +
- drivers/net/ipxlat/main.c               |   9 +
- drivers/net/ipxlat/netlink-gen.c        |  71 +++++
- drivers/net/ipxlat/netlink-gen.h        |  31 +++
- drivers/net/ipxlat/netlink.c            | 348 ++++++++++++++++++++++++
- drivers/net/ipxlat/netlink.h            |  27 ++
- drivers/net/ipxlat/translate_46.c       |   3 +-
- include/uapi/linux/ipxlat.h             |  48 ++++
- 9 files changed, 635 insertions(+), 1 deletion(-)
- create mode 100644 Documentation/netlink/specs/ipxlat.yaml
- create mode 100644 drivers/net/ipxlat/netlink-gen.c
- create mode 100644 drivers/net/ipxlat/netlink-gen.h
- create mode 100644 drivers/net/ipxlat/netlink.c
- create mode 100644 drivers/net/ipxlat/netlink.h
- create mode 100644 include/uapi/linux/ipxlat.h
+ drivers/net/ipxlat/Makefile  |   1 +
+ drivers/net/ipxlat/address.c | 132 +++++++++++++++++++++++++++++++++++
+ drivers/net/ipxlat/address.h |  59 ++++++++++++++++
+ 3 files changed, 192 insertions(+)
+ create mode 100644 drivers/net/ipxlat/address.c
+ create mode 100644 drivers/net/ipxlat/address.h
 
-diff --git a/Documentation/netlink/specs/ipxlat.yaml b/Documentation/netlink/specs/ipxlat.yaml
-new file mode 100644
-index 000000000000..d0df5ef16e04
---- /dev/null
-+++ b/Documentation/netlink/specs/ipxlat.yaml
-@@ -0,0 +1,97 @@
-+# SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
-+#
-+# Copyright (C) 2026- Mandelbit SRL
-+#
-+# Author: Antonio Quartulli <antonio@mandelbit.com>
-+#         Ralf Lici <ralf@mandelbit.com>
-+#
-+---
-+name: ipxlat
-+protocol: genetlink
-+doc: Netlink protocol to control IPXLAT (SIIT) network devices.
-+
-+definitions:
-+  -
-+    type: const
-+    name: xlat-prefix6-max-prefix-len
-+    value: 96
-+    doc: Maximum prefix length accepted for xlat-prefix6.
-+
-+attribute-sets:
-+  -
-+    name: pool
-+    attributes:
-+      -
-+        name: prefix
-+        type: binary
-+        checks:
-+          exact-len: 16
-+      -
-+        name: prefix-len
-+        type: u8
-+        checks:
-+          max: xlat-prefix6-max-prefix-len
-+  -
-+    name: cfg
-+    attributes:
-+      -
-+        name: xlat-prefix6
-+        type: nest
-+        doc: IPv6 translation prefix.
-+        nested-attributes: pool
-+      -
-+        name: lowest-ipv6-mtu
-+        type: u32
-+        checks:
-+          min: 1280
-+  -
-+    name: dev
-+    attributes:
-+      -
-+        name: ifindex
-+        type: u32
-+        doc: Index of the ipxlat interface to operate on.
-+      -
-+        name: netnsid
-+        type: s32
-+        doc: ID of the netns the device lives in.
-+      -
-+        name: config
-+        type: nest
-+        doc: Ipxlat device configuration.
-+        nested-attributes: cfg
-+
-+operations:
-+  list:
-+    -
-+      name: dev-get
-+      attribute-set: dev
-+      doc: Get / dump configuration of ipxlat devices.
-+      do:
-+        pre: ipxlat-nl-pre-doit
-+        post: ipxlat-nl-post-doit
-+        request:
-+          attributes:
-+            - ifindex
-+        reply: &dev-all
-+          attributes:
-+            - ifindex
-+            - netnsid
-+            - config
-+      dump:
-+        reply: *dev-all
-+
-+    -
-+      name: dev-set
-+      doc: Set configuration of an ipxlat device.
-+      attribute-set: dev
-+      flags: [admin-perm]
-+      do:
-+        request:
-+          attributes:
-+            - ifindex
-+            - config
-+        reply:
-+          attributes: []
-+        pre: ipxlat-nl-pre-doit
-+        post: ipxlat-nl-post-doit
 diff --git a/drivers/net/ipxlat/Makefile b/drivers/net/ipxlat/Makefile
-index 2ded504902e3..b906d5698351 100644
+index bd48c2700bf5..b6367dedd78e 100644
 --- a/drivers/net/ipxlat/Makefile
 +++ b/drivers/net/ipxlat/Makefile
-@@ -13,3 +13,5 @@ ipxlat-objs += translate_46.o
- ipxlat-objs += translate_64.o
- ipxlat-objs += icmp_46.o
- ipxlat-objs += icmp_64.o
-+ipxlat-objs += netlink.o
-+ipxlat-objs += netlink-gen.o
-diff --git a/drivers/net/ipxlat/main.c b/drivers/net/ipxlat/main.c
-index a1b4bcd39478..bef67ed634b6 100644
---- a/drivers/net/ipxlat/main.c
-+++ b/drivers/net/ipxlat/main.c
-@@ -18,6 +18,7 @@
- #include "dispatch.h"
- #include "ipxlpriv.h"
- #include "main.h"
-+#include "netlink.h"
+@@ -5,3 +5,4 @@
+ obj-$(CONFIG_IPXLAT) := ipxlat.o
  
- MODULE_AUTHOR("Alberto Leiva Popper <ydahhrk@gmail.com>");
- MODULE_AUTHOR("Antonio Quartulli <antonio@mandelbit.com>");
-@@ -127,11 +128,19 @@ static int __init ipxlat_init(void)
- 		return err;
- 	}
- 
-+	err = ipxlat_nl_register();
-+	if (err) {
-+		pr_err("ipxlat: failed to register netlink family: %d\n", err);
-+		rtnl_link_unregister(&ipxlat_link_ops);
-+		return err;
-+	}
-+
- 	return 0;
- }
- 
- static void __exit ipxlat_exit(void)
- {
-+	ipxlat_nl_unregister();
- 	rtnl_link_unregister(&ipxlat_link_ops);
- }
- 
-diff --git a/drivers/net/ipxlat/netlink-gen.c b/drivers/net/ipxlat/netlink-gen.c
+ ipxlat-objs += main.o
++ipxlat-objs += address.o
+diff --git a/drivers/net/ipxlat/address.c b/drivers/net/ipxlat/address.c
 new file mode 100644
-index 000000000000..e2cfaa6bb4dc
+index 000000000000..d1a2b7d1768f
 --- /dev/null
-+++ b/drivers/net/ipxlat/netlink-gen.c
-@@ -0,0 +1,71 @@
-+// SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
-+/* Do not edit directly, auto-generated from: */
-+/*	Documentation/netlink/specs/ipxlat.yaml */
-+/* YNL-GEN kernel source */
-+/* To regenerate run: tools/net/ynl/ynl-regen.sh */
-+
-+#include <net/netlink.h>
-+#include <net/genetlink.h>
-+
-+#include "netlink-gen.h"
-+
-+#include <uapi/linux/ipxlat.h>
-+
-+/* Common nested types */
-+const struct nla_policy ipxlat_cfg_nl_policy[IPXLAT_A_CFG_LOWEST_IPV6_MTU + 1] = {
-+	[IPXLAT_A_CFG_XLAT_PREFIX6] = NLA_POLICY_NESTED(ipxlat_pool_nl_policy),
-+	[IPXLAT_A_CFG_LOWEST_IPV6_MTU] = NLA_POLICY_MIN(NLA_U32, 1280),
-+};
-+
-+const struct nla_policy ipxlat_pool_nl_policy[IPXLAT_A_POOL_PREFIX_LEN + 1] = {
-+	[IPXLAT_A_POOL_PREFIX] = NLA_POLICY_EXACT_LEN(16),
-+	[IPXLAT_A_POOL_PREFIX_LEN] = NLA_POLICY_MAX(NLA_U8, IPXLAT_XLAT_PREFIX6_MAX_PREFIX_LEN),
-+};
-+
-+/* IPXLAT_CMD_DEV_GET - do */
-+static const struct nla_policy ipxlat_dev_get_nl_policy[IPXLAT_A_DEV_IFINDEX + 1] = {
-+	[IPXLAT_A_DEV_IFINDEX] = { .type = NLA_U32, },
-+};
-+
-+/* IPXLAT_CMD_DEV_SET - do */
-+static const struct nla_policy ipxlat_dev_set_nl_policy[IPXLAT_A_DEV_CONFIG + 1] = {
-+	[IPXLAT_A_DEV_IFINDEX] = { .type = NLA_U32, },
-+	[IPXLAT_A_DEV_CONFIG] = NLA_POLICY_NESTED(ipxlat_cfg_nl_policy),
-+};
-+
-+/* Ops table for ipxlat */
-+static const struct genl_split_ops ipxlat_nl_ops[] = {
-+	{
-+		.cmd		= IPXLAT_CMD_DEV_GET,
-+		.pre_doit	= ipxlat_nl_pre_doit,
-+		.doit		= ipxlat_nl_dev_get_doit,
-+		.post_doit	= ipxlat_nl_post_doit,
-+		.policy		= ipxlat_dev_get_nl_policy,
-+		.maxattr	= IPXLAT_A_DEV_IFINDEX,
-+		.flags		= GENL_CMD_CAP_DO,
-+	},
-+	{
-+		.cmd	= IPXLAT_CMD_DEV_GET,
-+		.dumpit	= ipxlat_nl_dev_get_dumpit,
-+		.flags	= GENL_CMD_CAP_DUMP,
-+	},
-+	{
-+		.cmd		= IPXLAT_CMD_DEV_SET,
-+		.pre_doit	= ipxlat_nl_pre_doit,
-+		.doit		= ipxlat_nl_dev_set_doit,
-+		.post_doit	= ipxlat_nl_post_doit,
-+		.policy		= ipxlat_dev_set_nl_policy,
-+		.maxattr	= IPXLAT_A_DEV_CONFIG,
-+		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
-+	},
-+};
-+
-+struct genl_family ipxlat_nl_family __ro_after_init = {
-+	.name		= IPXLAT_FAMILY_NAME,
-+	.version	= IPXLAT_FAMILY_VERSION,
-+	.netnsok	= true,
-+	.parallel_ops	= true,
-+	.module		= THIS_MODULE,
-+	.split_ops	= ipxlat_nl_ops,
-+	.n_split_ops	= ARRAY_SIZE(ipxlat_nl_ops),
-+};
-diff --git a/drivers/net/ipxlat/netlink-gen.h b/drivers/net/ipxlat/netlink-gen.h
-new file mode 100644
-index 000000000000..2a766d05e0b4
---- /dev/null
-+++ b/drivers/net/ipxlat/netlink-gen.h
-@@ -0,0 +1,31 @@
-+/* SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause) */
-+/* Do not edit directly, auto-generated from: */
-+/*	Documentation/netlink/specs/ipxlat.yaml */
-+/* YNL-GEN kernel header */
-+/* To regenerate run: tools/net/ynl/ynl-regen.sh */
-+
-+#ifndef _LINUX_IPXLAT_GEN_H
-+#define _LINUX_IPXLAT_GEN_H
-+
-+#include <net/netlink.h>
-+#include <net/genetlink.h>
-+
-+#include <uapi/linux/ipxlat.h>
-+
-+/* Common nested types */
-+extern const struct nla_policy ipxlat_cfg_nl_policy[IPXLAT_A_CFG_LOWEST_IPV6_MTU + 1];
-+extern const struct nla_policy ipxlat_pool_nl_policy[IPXLAT_A_POOL_PREFIX_LEN + 1];
-+
-+int ipxlat_nl_pre_doit(const struct genl_split_ops *ops, struct sk_buff *skb,
-+		       struct genl_info *info);
-+void
-+ipxlat_nl_post_doit(const struct genl_split_ops *ops, struct sk_buff *skb,
-+		    struct genl_info *info);
-+
-+int ipxlat_nl_dev_get_doit(struct sk_buff *skb, struct genl_info *info);
-+int ipxlat_nl_dev_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb);
-+int ipxlat_nl_dev_set_doit(struct sk_buff *skb, struct genl_info *info);
-+
-+extern struct genl_family ipxlat_nl_family;
-+
-+#endif /* _LINUX_IPXLAT_GEN_H */
-diff --git a/drivers/net/ipxlat/netlink.c b/drivers/net/ipxlat/netlink.c
-new file mode 100644
-index 000000000000..02d097726f22
---- /dev/null
-+++ b/drivers/net/ipxlat/netlink.c
-@@ -0,0 +1,348 @@
++++ b/drivers/net/ipxlat/address.c
+@@ -0,0 +1,132 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*  IPXLAT - Stateless IP/ICMP Translation (SIIT) virtual device driver
 + *
++ *  Copyright (C) 2024- Alberto Leiva Popper <ydahhrk@gmail.com>
 + *  Copyright (C) 2026- Mandelbit SRL
 + *  Copyright (C) 2026- Daniel Gröber <dxld@darkboxed.org>
 + *
-+ *  Author:	Antonio Quartulli <antonio@mandelbit.com>
++ *  Author:	Alberto Leiva Popper <ydahhrk@gmail.com>
++ *		Antonio Quartulli <antonio@mandelbit.com>
 + *		Daniel Gröber <dxld@darkboxed.org>
 + *		Ralf Lici <ralf@mandelbit.com>
 + */
 +
-+#include <net/genetlink.h>
-+#include <net/ipv6.h>
++#include "address.h"
 +
-+#include <uapi/linux/ipxlat.h>
-+
-+#include "netlink.h"
-+#include "main.h"
-+#include "netlink-gen.h"
-+#include "ipxlpriv.h"
-+
-+MODULE_ALIAS_GENL_FAMILY(IPXLAT_FAMILY_NAME);
-+
-+struct ipxlat_nl_info_ctx {
-+	struct ipxlat_priv *ipxlat;
-+	netdevice_tracker tracker;
-+};
-+
-+struct ipxlat_nl_dump_ctx {
-+	unsigned long last_ifindex;
-+};
-+
-+/**
-+ * ipxlat_get_from_attrs - retrieve ipxlat private data for target netdev
-+ * @net: network namespace where to look for the interface
-+ * @info: generic netlink info from the user request
-+ * @tracker: tracker object to be used for the netdev reference acquisition
-+ *
-+ * Return: the ipxlat private data, if found, or an error otherwise
-+ */
-+static struct ipxlat_priv *ipxlat_get_from_attrs(struct net *net,
-+						 struct genl_info *info,
-+						 netdevice_tracker *tracker)
++static bool ipxlat_prefix6_contains(const struct ipv6_prefix *prefix,
++				    const struct in6_addr *addr)
 +{
-+	struct ipxlat_priv *ipxlat;
-+	struct net_device *dev;
-+	int ifindex;
++	return ipv6_prefix_equal(&prefix->addr, addr, prefix->len);
++}
 +
-+	if (GENL_REQ_ATTR_CHECK(info, IPXLAT_A_DEV_IFINDEX))
-+		return ERR_PTR(-EINVAL);
-+	ifindex = nla_get_u32(info->attrs[IPXLAT_A_DEV_IFINDEX]);
++static __be32 ipxlat_64_extract_addr(const struct in6_addr *src,
++				     unsigned int q1, unsigned int q2,
++				     unsigned int q3, unsigned int q4)
++{
++	q1 = src->s6_addr[q1];
++	q2 = src->s6_addr[q2];
++	q3 = src->s6_addr[q3];
++	q4 = src->s6_addr[q4];
++	return htonl((q1 << 24) | (q2 << 16) | (q3 << 8) | q4);
++}
 +
-+	rcu_read_lock();
-+	dev = dev_get_by_index_rcu(net, ifindex);
-+	if (!dev) {
-+		rcu_read_unlock();
-+		NL_SET_ERR_MSG_MOD(info->extack,
-+				   "ifindex does not match any interface");
-+		return ERR_PTR(-ENODEV);
++static void ipxlat_46_embed_addr(__be32 __src, struct in6_addr *dst,
++				 unsigned int q1, unsigned int q2,
++				 unsigned int q3, unsigned int q4)
++{
++	u32 src = ntohl(__src);
++
++	dst->s6_addr[q1] = ((src >> 24) & 0xFF);
++	dst->s6_addr[q2] = ((src >> 16) & 0xFF);
++	dst->s6_addr[q3] = ((src >> 8) & 0xFF);
++	dst->s6_addr[q4] = ((src) & 0xFF);
++}
++
++void ipxlat_46_convert_addr(const struct ipv6_prefix *xlat_prefix6,
++			    __be32 addr4, struct in6_addr *addr6)
++{
++	*addr6 = xlat_prefix6->addr;
++
++	switch (xlat_prefix6->len) {
++	case 96:
++		addr6->s6_addr32[3] = addr4;
++		return;
++	case 64:
++		ipxlat_46_embed_addr(addr4, addr6, 9, 10, 11, 12);
++		return;
++	case 56:
++		ipxlat_46_embed_addr(addr4, addr6, 7, 9, 10, 11);
++		return;
++	case 48:
++		ipxlat_46_embed_addr(addr4, addr6, 6, 7, 9, 10);
++		return;
++	case 40:
++		ipxlat_46_embed_addr(addr4, addr6, 5, 6, 7, 9);
++		return;
++	case 32:
++		addr6->s6_addr32[1] = addr4;
++		return;
 +	}
 +
-+	if (!ipxlat_dev_is_valid(dev)) {
-+		rcu_read_unlock();
-+		NL_SET_ERR_MSG_MOD(info->extack,
-+				   "specified interface is not ipxlat");
-+		NL_SET_BAD_ATTR(info->extack,
-+				info->attrs[IPXLAT_A_DEV_IFINDEX]);
-+		return ERR_PTR(-EINVAL);
-+	}
-+
-+	ipxlat = netdev_priv(dev);
-+	netdev_hold(dev, tracker, GFP_ATOMIC);
-+	rcu_read_unlock();
-+
-+	return ipxlat;
++	DEBUG_NET_WARN_ON_ONCE(1);
 +}
 +
-+int ipxlat_nl_pre_doit(const struct genl_split_ops *ops, struct sk_buff *skb,
-+		       struct genl_info *info)
++int ipxlat_64_convert_addrs(const struct ipv6_prefix *xlat_prefix6,
++			    const struct ipv6hdr *hdr6, bool icmp_err,
++			    __be32 *src, __be32 *dst)
 +{
-+	struct ipxlat_nl_info_ctx *ctx = (struct ipxlat_nl_info_ctx *)info->ctx;
-+	struct ipxlat_priv *ipxlat;
++	bool src_ok;
 +
-+	BUILD_BUG_ON(sizeof(*ctx) > sizeof(info->ctx));
-+
-+	ipxlat = ipxlat_get_from_attrs(genl_info_net(info), info,
-+				       &ctx->tracker);
-+	if (IS_ERR(ipxlat))
-+		return PTR_ERR(ipxlat);
-+
-+	ctx->ipxlat = ipxlat;
-+	return 0;
-+}
-+
-+void ipxlat_nl_post_doit(const struct genl_split_ops *ops, struct sk_buff *skb,
-+			 struct genl_info *info)
-+{
-+	struct ipxlat_nl_info_ctx *ctx = (struct ipxlat_nl_info_ctx *)info->ctx;
-+
-+	if (ctx->ipxlat)
-+		netdev_put(ctx->ipxlat->dev, &ctx->tracker);
-+}
-+
-+static int ipxlat_nl_send_dev(struct sk_buff *skb, struct ipxlat_priv *ipxlat,
-+			      struct net *src_net, const u32 portid,
-+			      const u32 seq, int flags)
-+{
-+	struct nlattr *attr_cfg, *attr_pool;
-+	struct ipv6_prefix xlat_prefix6;
-+	int id, ret = -EMSGSIZE;
-+	u32 lowest_ipv6_mtu;
-+	void *hdr;
-+
-+	/* snapshot settings under lock so userspace sees a coherent state */
-+	mutex_lock(&ipxlat->cfg_lock);
-+	xlat_prefix6 = ipxlat->xlat_prefix6;
-+	lowest_ipv6_mtu = ipxlat->lowest_ipv6_mtu;
-+	mutex_unlock(&ipxlat->cfg_lock);
-+
-+	hdr = genlmsg_put(skb, portid, seq, &ipxlat_nl_family, flags,
-+			  IPXLAT_CMD_DEV_GET);
-+	if (!hdr)
-+		return -ENOBUFS;
-+
-+	if (nla_put_u32(skb, IPXLAT_A_DEV_IFINDEX, ipxlat->dev->ifindex))
-+		goto err;
-+
-+	if (!net_eq(src_net, dev_net(ipxlat->dev))) {
-+		id = peernet2id_alloc(src_net, dev_net(ipxlat->dev),
-+				      GFP_ATOMIC);
-+		if (id < 0) {
-+			ret = id;
-+			goto err;
-+		}
-+		if (nla_put_s32(skb, IPXLAT_A_DEV_NETNSID, id))
-+			goto err;
-+	}
-+
-+	attr_cfg = nla_nest_start(skb, IPXLAT_A_DEV_CONFIG);
-+	if (!attr_cfg)
-+		goto err;
-+
-+	attr_pool = nla_nest_start(skb, IPXLAT_A_CFG_XLAT_PREFIX6);
-+	if (!attr_pool)
-+		goto err;
-+
-+	if (nla_put_in6_addr(skb, IPXLAT_A_POOL_PREFIX, &xlat_prefix6.addr) ||
-+	    nla_put_u8(skb, IPXLAT_A_POOL_PREFIX_LEN, xlat_prefix6.len))
-+		goto err;
-+
-+	nla_nest_end(skb, attr_pool);
-+
-+	if (nla_put_u32(skb, IPXLAT_A_CFG_LOWEST_IPV6_MTU, lowest_ipv6_mtu))
-+		goto err;
-+
-+	nla_nest_end(skb, attr_cfg);
-+	genlmsg_end(skb, hdr);
-+
-+	return 0;
-+err:
-+	genlmsg_cancel(skb, hdr);
-+	return ret;
-+}
-+
-+int ipxlat_nl_dev_get_doit(struct sk_buff *skb, struct genl_info *info)
-+{
-+	struct ipxlat_nl_info_ctx *ctx = (struct ipxlat_nl_info_ctx *)info->ctx;
-+	struct sk_buff *reply;
-+	int ret;
-+
-+	if (GENL_REQ_ATTR_CHECK(info, IPXLAT_A_DEV_IFINDEX))
++	src_ok = ipxlat_prefix6_contains(xlat_prefix6, &hdr6->saddr);
++	if (unlikely(!src_ok && !icmp_err))
++		return -EINVAL;
++	if (unlikely(!ipxlat_prefix6_contains(xlat_prefix6, &hdr6->daddr)))
 +		return -EINVAL;
 +
-+	reply = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
-+	if (!reply)
-+		return -ENOMEM;
-+
-+	ret = ipxlat_nl_send_dev(reply, ctx->ipxlat, genl_info_net(info),
-+				 info->snd_portid, info->snd_seq, 0);
-+	if (ret < 0) {
-+		nlmsg_free(reply);
-+		return ret;
-+	}
-+
-+	return genlmsg_reply(reply, info);
-+}
-+
-+int ipxlat_nl_dev_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
-+{
-+	struct ipxlat_nl_dump_ctx *state = (struct ipxlat_nl_dump_ctx *)cb->ctx;
-+	struct net *net = sock_net(cb->skb->sk);
-+	netdevice_tracker tracker;
-+	struct net_device *dev;
-+	int ret;
-+
-+	rcu_read_lock();
-+	for_each_netdev_dump(net, dev, state->last_ifindex) {
-+		if (!ipxlat_dev_is_valid(dev))
-+			continue;
-+
-+		netdev_hold(dev, &tracker, GFP_ATOMIC);
-+		rcu_read_unlock();
-+
-+		ret = ipxlat_nl_send_dev(skb, netdev_priv(dev), net,
-+					 NETLINK_CB(cb->skb).portid,
-+				       cb->nlh->nlmsg_seq, NLM_F_MULTI);
-+
-+		rcu_read_lock();
-+		netdev_put(dev, &tracker);
-+
-+		if (ret < 0) {
-+			if (skb->len > 0)
-+				break;
-+			rcu_read_unlock();
-+			return ret;
-+		}
-+	}
-+	rcu_read_unlock();
-+	return skb->len;
-+}
-+
-+static int ipxlat_nl_validate_xlat_prefix6(const struct ipv6_prefix *prefix,
-+					   struct netlink_ext_ack *extack)
-+{
-+	if (prefix->len != 32 && prefix->len != 40 && prefix->len != 48 &&
-+	    prefix->len != 56 && prefix->len != 64 && prefix->len != 96) {
-+		NL_SET_ERR_MSG_FMT_MOD(extack,
-+				       "unsupported RFC 6052 prefix length: %u",
-+				       prefix->len);
++	switch (xlat_prefix6->len) {
++	case 96:
++		if (likely(src_ok))
++			*src = hdr6->saddr.s6_addr32[3];
++		*dst = hdr6->daddr.s6_addr32[3];
++		break;
++	case 64:
++		if (likely(src_ok))
++			*src = ipxlat_64_extract_addr(&hdr6->saddr, 9, 10, 11,
++						      12);
++		*dst = ipxlat_64_extract_addr(&hdr6->daddr, 9, 10, 11, 12);
++		break;
++	case 56:
++		if (likely(src_ok))
++			*src = ipxlat_64_extract_addr(&hdr6->saddr, 7,
++						      9, 10, 11);
++		*dst = ipxlat_64_extract_addr(&hdr6->daddr, 7, 9, 10, 11);
++		break;
++	case 48:
++		if (likely(src_ok))
++			*src = ipxlat_64_extract_addr(&hdr6->saddr, 6,
++						      7, 9, 10);
++		*dst = ipxlat_64_extract_addr(&hdr6->daddr, 6, 7, 9, 10);
++		break;
++	case 40:
++		if (likely(src_ok))
++			*src = ipxlat_64_extract_addr(&hdr6->saddr, 5, 6, 7, 9);
++		*dst = ipxlat_64_extract_addr(&hdr6->daddr, 5, 6, 7, 9);
++		break;
++	case 32:
++		if (likely(src_ok))
++			*src = hdr6->saddr.s6_addr32[1];
++		*dst = hdr6->daddr.s6_addr32[1];
++		break;
++	default:
++		DEBUG_NET_WARN_ON_ONCE(1);
 +		return -EINVAL;
 +	}
 +
-+	return 0;
-+}
-+
-+static int ipxlat_nl_parse_xlat_prefix6(struct nlattr *attr,
-+					struct ipv6_prefix *xlat_prefix6,
-+					struct netlink_ext_ack *extack)
-+{
-+	struct nlattr *attrs_pool[IPXLAT_A_POOL_MAX + 1];
-+	struct ipv6_prefix new_xlat_prefix6;
-+	int ret;
-+
-+	new_xlat_prefix6 = *xlat_prefix6;
-+
-+	ret = nla_parse_nested(attrs_pool, IPXLAT_A_POOL_MAX, attr,
-+			       ipxlat_pool_nl_policy, extack);
-+	if (ret)
-+		return ret;
-+
-+	if (!attrs_pool[IPXLAT_A_POOL_PREFIX] &&
-+	    !attrs_pool[IPXLAT_A_POOL_PREFIX_LEN]) {
-+		NL_SET_ERR_MSG_MOD(extack, "xlat-prefix6 update is empty");
-+		return -EINVAL;
-+	}
-+
-+	if (attrs_pool[IPXLAT_A_POOL_PREFIX])
-+		new_xlat_prefix6.addr =
-+			nla_get_in6_addr(attrs_pool[IPXLAT_A_POOL_PREFIX]);
-+	if (attrs_pool[IPXLAT_A_POOL_PREFIX_LEN])
-+		new_xlat_prefix6.len =
-+			nla_get_u8(attrs_pool[IPXLAT_A_POOL_PREFIX_LEN]);
-+
-+	ret = ipxlat_nl_validate_xlat_prefix6(&new_xlat_prefix6, extack);
-+	if (ret) {
-+		if (attrs_pool[IPXLAT_A_POOL_PREFIX_LEN])
-+			NL_SET_BAD_ATTR(extack,
-+					attrs_pool[IPXLAT_A_POOL_PREFIX_LEN]);
-+		else
-+			NL_SET_BAD_ATTR(extack,
-+					attrs_pool[IPXLAT_A_POOL_PREFIX]);
-+		return ret;
-+	}
-+
-+	*xlat_prefix6 = new_xlat_prefix6;
-+	return 0;
-+}
-+
-+int ipxlat_nl_dev_set_doit(struct sk_buff *skb, struct genl_info *info)
-+{
-+	struct ipxlat_nl_info_ctx *ctx = (struct ipxlat_nl_info_ctx *)info->ctx;
-+	struct nlattr *attrs[IPXLAT_A_CFG_MAX + 1];
-+	struct nlattr *xlat_prefix6_attr;
-+	struct ipv6_prefix xlat_prefix6;
-+	u32 lowest_ipv6_mtu;
-+	int ret = 0;
-+
-+	if (GENL_REQ_ATTR_CHECK(info, IPXLAT_A_DEV_CONFIG))
-+		return -EINVAL;
-+
-+	ret = nla_parse_nested(attrs, IPXLAT_A_CFG_MAX,
-+			       info->attrs[IPXLAT_A_DEV_CONFIG],
-+			       ipxlat_cfg_nl_policy, info->extack);
-+	if (ret)
-+		return ret;
-+
-+	if (!attrs[IPXLAT_A_CFG_XLAT_PREFIX6] &&
-+	    !attrs[IPXLAT_A_CFG_LOWEST_IPV6_MTU]) {
-+		NL_SET_ERR_MSG_MOD(info->extack, "config update is empty");
-+		return -EINVAL;
-+	}
-+	xlat_prefix6_attr = attrs[IPXLAT_A_CFG_XLAT_PREFIX6];
-+
-+	mutex_lock(&ctx->ipxlat->cfg_lock);
-+
-+	/* Stage updates that can fail before writing device state.
-+	 * This keeps dev-set all-or-nothing and avoids partial commits when
-+	 * xlat-prefix parsing/validation fails.
++	/* keep 6->4 ICMP error translation functional even when the ICMPv6
++	 * source is not xlat_prefix6-mapped (for example, stack-generated PTB)
 +	 */
-+	if (xlat_prefix6_attr) {
-+		xlat_prefix6 = ctx->ipxlat->xlat_prefix6;
-+		ret = ipxlat_nl_parse_xlat_prefix6(xlat_prefix6_attr,
-+						   &xlat_prefix6,
-+						   info->extack);
-+		if (ret)
-+			goto out_unlock;
-+	}
++	if (unlikely(!src_ok))
++		*src = htonl(INADDR_DUMMY);
 +
-+	if (xlat_prefix6_attr)
-+		ctx->ipxlat->xlat_prefix6 = xlat_prefix6;
-+	if (attrs[IPXLAT_A_CFG_LOWEST_IPV6_MTU]) {
-+		lowest_ipv6_mtu =
-+			nla_get_u32(attrs[IPXLAT_A_CFG_LOWEST_IPV6_MTU]);
-+		WRITE_ONCE(ctx->ipxlat->lowest_ipv6_mtu, lowest_ipv6_mtu);
-+	}
-+
-+out_unlock:
-+	mutex_unlock(&ctx->ipxlat->cfg_lock);
-+	return ret;
++	return 0;
 +}
-+
-+/**
-+ * ipxlat_nl_register - perform any needed registration in the netlink subsystem
-+ *
-+ * Return: 0 on success, a negative error code otherwise
-+ */
-+int __init ipxlat_nl_register(void)
-+{
-+	return genl_register_family(&ipxlat_nl_family);
-+}
-+
-+/**
-+ * ipxlat_nl_unregister - undo any module wide netlink registration
-+ */
-+void ipxlat_nl_unregister(void)
-+{
-+	genl_unregister_family(&ipxlat_nl_family);
-+}
-diff --git a/drivers/net/ipxlat/netlink.h b/drivers/net/ipxlat/netlink.h
+diff --git a/drivers/net/ipxlat/address.h b/drivers/net/ipxlat/address.h
 new file mode 100644
-index 000000000000..1ea292ad9964
+index 000000000000..4283fdddac56
 --- /dev/null
-+++ b/drivers/net/ipxlat/netlink.h
-@@ -0,0 +1,27 @@
++++ b/drivers/net/ipxlat/address.h
+@@ -0,0 +1,59 @@
 +/* SPDX-License-Identifier: GPL-2.0 */
 +/*  IPXLAT - Stateless IP/ICMP Translation (SIIT) virtual device driver
 + *
++ *  Copyright (C) 2024- Alberto Leiva Popper <ydahhrk@gmail.com>
 + *  Copyright (C) 2026- Mandelbit SRL
 + *  Copyright (C) 2026- Daniel Gröber <dxld@darkboxed.org>
 + *
-+ *  Author:	Antonio Quartulli <antonio@mandelbit.com>
++ *  Author:	Alberto Leiva Popper <ydahhrk@gmail.com>
++ *		Antonio Quartulli <antonio@mandelbit.com>
 + *		Daniel Gröber <dxld@darkboxed.org>
 + *		Ralf Lici <ralf@mandelbit.com>
 + */
 +
-+#ifndef _NET_IPXLAT_NETLINK_H_
-+#define _NET_IPXLAT_NETLINK_H_
++#ifndef _NET_IPXLAT_ADDRESS_H_
++#define _NET_IPXLAT_ADDRESS_H_
++
++#include <linux/ip.h>
++#include <net/ipv6.h>
++
++#include "ipxlpriv.h"
 +
 +/**
-+ * ipxlat_nl_register - register ipxlat generic-netlink family
++ * ipxlat_46_convert_addr - translate one IPv4 address into RFC 6052 IPv6 form
++ * @xlat_prefix6: configured RFC 6052 prefix
++ * @addr4: IPv4 address to convert
++ * @addr6: output IPv6 address
++ */
++void ipxlat_46_convert_addr(const struct ipv6_prefix *xlat_prefix6,
++			    __be32 addr4, struct in6_addr *addr6);
++
++/**
++ * ipxlat_64_convert_addrs - translate outer IPv6 endpoints into IPv4 pair
++ * @xlat_prefix6: configured RFC 6052 prefix
++ * @hdr6: source IPv6 header
++ * @icmp_err: source packet is ICMPv6 error
++ * @src: output IPv4 source address
++ * @dst: output IPv4 destination address
 + *
-+ * Return: 0 on success, negative errno on registration failure.
++ * Return: 0 on success, negative errno on non-translatable addresses.
 + */
-+int ipxlat_nl_register(void);
++int ipxlat_64_convert_addrs(const struct ipv6_prefix *xlat_prefix6,
++			    const struct ipv6hdr *hdr6, bool icmp_err,
++			    __be32 *src, __be32 *dst);
 +
 +/**
-+ * ipxlat_nl_unregister - unregister ipxlat generic-netlink family
++ * ipxlat_46_convert_addrs - translate outer IPv4 endpoints into IPv6 pair
++ * @xlat_prefix6: configured RFC 6052 prefix
++ * @iph4: source IPv4 header
++ * @iph6: output IPv6 header (only saddr/daddr are updated)
 + */
-+void ipxlat_nl_unregister(void);
++static inline void
++ipxlat_46_convert_addrs(const struct ipv6_prefix *xlat_prefix6,
++			const struct iphdr *iph4, struct ipv6hdr *iph6)
++{
++	ipxlat_46_convert_addr(xlat_prefix6, iph4->saddr, &iph6->saddr);
++	ipxlat_46_convert_addr(xlat_prefix6, iph4->daddr, &iph6->daddr);
++}
 +
-+#endif /* _NET_IPXLAT_NETLINK_H_ */
-diff --git a/drivers/net/ipxlat/translate_46.c b/drivers/net/ipxlat/translate_46.c
-index 0b79ca07c771..d625dc85576b 100644
---- a/drivers/net/ipxlat/translate_46.c
-+++ b/drivers/net/ipxlat/translate_46.c
-@@ -14,6 +14,7 @@
- #include <net/ip6_route.h>
- 
- #include "address.h"
-+#include "icmp.h"
- #include "packet.h"
- #include "transport.h"
- #include "translate_46.h"
-@@ -239,7 +240,7 @@ int ipxlat_46_translate(struct ipxlat_priv *ipxlat, struct sk_buff *skb)
- 		err = ipxlat_46_outer_udp(skb, &outer4);
- 		break;
- 	case IPPROTO_ICMP:
--		err = -EPROTONOSUPPORT;
-+		err = ipxlat_46_icmp(ipxlat, skb);
- 		break;
- 	default:
- 		err = 0;
-diff --git a/include/uapi/linux/ipxlat.h b/include/uapi/linux/ipxlat.h
-new file mode 100644
-index 000000000000..f8db3df3f9e8
---- /dev/null
-+++ b/include/uapi/linux/ipxlat.h
-@@ -0,0 +1,48 @@
-+/* SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause) */
-+/* Do not edit directly, auto-generated from: */
-+/*	Documentation/netlink/specs/ipxlat.yaml */
-+/* YNL-GEN uapi header */
-+/* To regenerate run: tools/net/ynl/ynl-regen.sh */
-+
-+#ifndef _UAPI_LINUX_IPXLAT_H
-+#define _UAPI_LINUX_IPXLAT_H
-+
-+#define IPXLAT_FAMILY_NAME	"ipxlat"
-+#define IPXLAT_FAMILY_VERSION	1
-+
-+#define IPXLAT_XLAT_PREFIX6_MAX_PREFIX_LEN	96
-+
-+enum {
-+	IPXLAT_A_POOL_PREFIX = 1,
-+	IPXLAT_A_POOL_PREFIX_LEN,
-+
-+	__IPXLAT_A_POOL_MAX,
-+	IPXLAT_A_POOL_MAX = (__IPXLAT_A_POOL_MAX - 1)
-+};
-+
-+enum {
-+	IPXLAT_A_CFG_XLAT_PREFIX6 = 1,
-+	IPXLAT_A_CFG_LOWEST_IPV6_MTU,
-+
-+	__IPXLAT_A_CFG_MAX,
-+	IPXLAT_A_CFG_MAX = (__IPXLAT_A_CFG_MAX - 1)
-+};
-+
-+enum {
-+	IPXLAT_A_DEV_IFINDEX = 1,
-+	IPXLAT_A_DEV_NETNSID,
-+	IPXLAT_A_DEV_CONFIG,
-+
-+	__IPXLAT_A_DEV_MAX,
-+	IPXLAT_A_DEV_MAX = (__IPXLAT_A_DEV_MAX - 1)
-+};
-+
-+enum {
-+	IPXLAT_CMD_DEV_GET = 1,
-+	IPXLAT_CMD_DEV_SET,
-+
-+	__IPXLAT_CMD_MAX,
-+	IPXLAT_CMD_MAX = (__IPXLAT_CMD_MAX - 1)
-+};
-+
-+#endif /* _UAPI_LINUX_IPXLAT_H */
++#endif /* _NET_IPXLAT_ADDRESS_H_ */
 -- 
 2.53.0
 
