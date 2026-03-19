@@ -1,217 +1,109 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3E03947B1
-	for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 17:59:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DFE32FE04E;
+	Thu, 19 Mar 2026 18:05:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773943196; cv=none; b=rKQBoXUfMRwE0SYi4rE3Ypqb7gEuFAhZlczAfFAUh70cJjoQ45uPiQJ2aVIaxyRbwdBxkNeKiswyf8hPlZUoMCtOW+5C8LIPneN2Denr07X1JRUUf5gX4KI60sgtkt4bOtY0mxJDWVQhyInFKQGPNvL8SibaPj3e0RSyXhkDRTQ=
+	t=1773943523; cv=none; b=M/ZL7/UVW2lqWtlD+OAxRGw0LVw2PX0qekiuor5a2lzh0eOLVSIWsxy4uodeXuhaA44NHYsvkQGrQPy/c0QePXN2wNzs2fp3j0efqgLrMuy85MDoTA2PeodnVNer+Y6TgkzY4UoJGEx8eya1fuF1jcO3HX9LZy9M23gdRBmM54g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773943196; c=relaxed/simple;
-	bh=1qiYzC4e4C5Osb7cyOfG+hx3gfnhgiG4CgnJdnnYqWk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IGeNv51qU0g5UjR+HbsJxC5B4R2j7H2m+howMgqjTho0P8VUWAB3r1ytZLeEK/ZJtO62x8ncvgDUjGbcB2z6GeD8mlv9W4Fs8CxPNxRQaTkZJm5I6peCC0V5LBE2TEXq64AXAx7CF8SyTaIFs71wFZx2G3lHZ0muMl6kRLTJRNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=e/rBcJMW; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	s=arc-20240116; t=1773943523; c=relaxed/simple;
+	bh=A7v99qTn7n6Y+7D4/+hynEK3V5D/D2HZPsLo4XAffAw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QksGXEH+/EeU6J/H4L57wDWsKIbLLBQ4VYH3VktOa1N5/eYJ8yz0phWEyw6so9tt2wYmCbW7r/1L28eS1zedYSBantvSHkcKb053dpZf95kg0Fz0oyVToVMfbtcQgWhoBZlx/tpw2tUHt+1pCHxFpAH4RjFRXf9F5tCeBo0L7CI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X4RQnt2N; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="e/rBcJMW"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5a27bfadca9so1335724e87.3
-        for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 10:59:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1773943192; x=1774547992; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IwNvoAxpSBA3F4YxfMu4dubOKf0cPSpjGd1s0V+Fdds=;
-        b=e/rBcJMWUNEumGhD1/YaPe6kkWaDw4uKnPvxlquGNZL0XExY3gO7GDENbC1QycXKV1
-         jTCi/HKcM8eI0AemEJ8Eg7svtwzcWx7JrISqAR53Vg6dyJtKZWXMwJPKngm3GjeAxka+
-         Z0sZP6VRE7A7wXDqII3Sbz/QupuOdajbsh9Fc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773943192; x=1774547992;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=IwNvoAxpSBA3F4YxfMu4dubOKf0cPSpjGd1s0V+Fdds=;
-        b=dOERDF/aJ0hd6lqlMwDbtVHsXyHfl4OFg3+JsyNTUQbcUwLWvCjbnnal9n4l7L9TIa
-         O4CBcWLBV5EdinHvdjCwi28i+02v9qDGm40C58xH32w8yqC0dQ9j1pnEbAFgb75Ns+tH
-         UZKKeRCzTNSB8KjJcgUVzfkBo0UJZjeMtkLMaztuDuEuH5yAIu8tkRTWGAOjExbEOHuF
-         +N1G82YkffpBzuND+eTWKeml7joAue2DCSWaoVYptOOpSA/LTpqhpsmbU4jX7v6fZ/1V
-         TqwMH2tEnX09OFKO9FJ0sRVL7exkseSp6sYFxeeUpHJOOFPZoffBpQwDN5kRglxqPh0f
-         K9cg==
-X-Forwarded-Encrypted: i=1; AJvYcCUh31xXG/mZnFINMdz9sMk5LiUmS5xkQN/THTHoF8qIX2xvc55eWqTUsiX0E+fY8K0blm9/Kz0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4F9/MLsh+YExxck5roCQdlOUxOK6hqFih4Yn6ijSDfJC26ZM8
-	K6ZbSE4tQ5Cxk9Sw/ih9r6/NkrwytppbocVb4pM/zhOMOkr7uZOv8k3GX16fkwPMaapiBYLXr+t
-	jcq4FTsfi
-X-Gm-Gg: ATEYQzyXirWs/8X6a80tQsM7ssvWcRMjj80/zG7vM62Z0+QZJXu/wIlLvOXMjuMhcfn
-	nI0wI7ypYEXyLqWTL42iycFJoBdmEXtrPEO5ma9fXMfbuNpPMmhYV3DEKJz48BwhJfgAQ9J2wtc
-	Ouj8QdCG03egbOeub5vOeTPEkBKJj1VRTWdqJkkQfJsDpIdypDqNK3zfgXiUIY6lxnZjjCKTju/
-	5L9db6qrxom8drBdERx5O0jlCQOP2krXrPhm3IwcCE/S4JOQtSYFkcDRRITMA/P++EyUfRMYbIO
-	EoBjHW/dVSL23VRR17AWDxP+y6k+uA+fZTcXwVKMyT0O9i35B6/t5IsRxR4MxiIlA050msc5a3n
-	FutvR0QgTkLxuZ/xaIG+JAWhSBUMvUEl7fFzcKRRB265+QAYmEram1qtA79P6MC9WMe44z/Wt/t
-	+gqHyKQmUbioNHqSY1bDWwYVOiLXBFQ2cexdAbE1BJsp7qPGsV5HaFRg0bqXy9zA==
-X-Received: by 2002:a05:6512:33ca:b0:5a1:8b9:6d12 with SMTP id 2adb3069b0e04-5a285b44617mr1501e87.24.1773943192399;
-        Thu, 19 Mar 2026 10:59:52 -0700 (PDT)
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com. [209.85.167.54])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2851adeeasm51773e87.35.2026.03.19.10.59.52
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Mar 2026 10:59:52 -0700 (PDT)
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5a0fc5e2c59so1089311e87.1
-        for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 10:59:52 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCX+c/bEFpR9+ngV1k2HwKXzUfdW7SAw0yAseUMdvFNl6uPumgaVRJ8Pn6lWB+yX3hMIihq02H8=@vger.kernel.org
-X-Received: by 2002:a05:6000:18a6:b0:439:beee:43b5 with SMTP id
- ffacd0b85a97d-43b6423d90bmr470716f8f.3.1773942745211; Thu, 19 Mar 2026
- 10:52:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X4RQnt2N"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773943522; x=1805479522;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=A7v99qTn7n6Y+7D4/+hynEK3V5D/D2HZPsLo4XAffAw=;
+  b=X4RQnt2NjA7suOUepMPdqN1LKZc+gSJ81Z1I9UqP/BtcXCOXOKBpNf4i
+   V/XT+aoH4RLEg0TchKrcA/yqV29Udpht2A7si83z3Dhebtl92VdmrNQeR
+   2VFq+vHRF8UytF3iKkJVDioRSDPvrvIsSXDF5PgyoTSW4RIfzXLtrgFb+
+   r9oQbW3ObFEJF4vOAvy/JSfkA6C+sCNHX7uvgCEvqQH5iLzJsYRnBrY3i
+   fkAzaAfiUnn+2JDWJApXuyYO2wkib61Oewy9B0hd2CWc6IxKRY1U4mFz/
+   rZoLZvRF5t49ClJDG2K7JEoH1OZiA1EF9l6pRyD1DCU/aRYZBORYlvA3m
+   g==;
+X-CSE-ConnectionGUID: /qIP/sxRSb6LEENN/VBWCw==
+X-CSE-MsgGUID: ViZWq+A7SA6WWS1zerUwAw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="77630713"
+X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; 
+   d="scan'208";a="77630713"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 11:05:20 -0700
+X-CSE-ConnectionGUID: MVNrfnRkSEKpbU0POLjG2Q==
+X-CSE-MsgGUID: 2DFpyhNsRCKdPC9TBD/Tug==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; 
+   d="scan'208";a="253517197"
+Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 11:05:20 -0700
+Date: Thu, 19 Mar 2026 11:05:14 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: bot+bpf-ci@kernel.org
+Cc: x86@kernel.org, nik.borisov@suse.com, hpa@zytor.com,
+	jpoimboe@kernel.org, david.kaplan@amd.com, seanjc@google.com,
+	bp@alien8.de, dave.hansen@linux.intel.com, peterz@infradead.org,
+	ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+	kpsingh@kernel.org, jolsa@kernel.org, davem@davemloft.net,
+	david.laight.linux@gmail.com, luto@kernel.org, tglx@kernel.org,
+	mingo@redhat.com, dsahern@kernel.org, martin.lau@linux.dev,
+	eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev,
+	john.fastabend@gmail.com, sdf@fomichev.me, haoluo@google.com,
+	pbonzini@redhat.com, corbet@lwn.net, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, asit.k.mallick@intel.com, tao1.zhang@intel.com,
+	bpf@vger.kernel.org, netdev@vger.kernel.org,
+	linux-doc@vger.kernel.org, martin.lau@kernel.org, clm@meta.com,
+	ihor.solodrai@linux.dev
+Subject: Re: [PATCH v7 07/10] x86/vmscape: Use static_call() for predictor
+ flush
+Message-ID: <20260319180514.63l74goaku3nx6dg@desk>
+References: <20260319-vmscape-bhb-v7-7-b76a777a98af@linux.intel.com>
+ <dfba37ee6cd5de8954bbc57d18af3e4865e35cdda8535d890ae6380e4a1cc0af@mail.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260317090112.v2.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
- <CACRMN=euZzwDpCQupzth-J1z9qWXPenmy_bu727+R-kt97zexw@mail.gmail.com>
-In-Reply-To: <CACRMN=euZzwDpCQupzth-J1z9qWXPenmy_bu727+R-kt97zexw@mail.gmail.com>
-From: Doug Anderson <dianders@chromium.org>
-Date: Thu, 19 Mar 2026 10:52:13 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=WEWMdh+SuSE-5P81g7NhV8KH_4u_FxcRdBFRTAaASqhQ@mail.gmail.com>
-X-Gm-Features: AaiRm51jE-pJGKyYKekSNJEdkSVtbmzl88hjmcc-VHWIT0EUhGVU2WYljuGhtW4
-Message-ID: <CAD=FV=WEWMdh+SuSE-5P81g7NhV8KH_4u_FxcRdBFRTAaASqhQ@mail.gmail.com>
-Subject: Re: [PATCH v2] device property: Make modifications of fwnode "flags"
- thread safe
-To: Saravana Kannan <saravanak@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Mark Brown <broonie@kernel.org>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Daniel Scally <djrscally@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
-	Russell King <linux@armlinux.org.uk>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org, 
-	driver-core@lists.linux.dev, imx@lists.linux.dev, linux-acpi@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dfba37ee6cd5de8954bbc57d18af3e4865e35cdda8535d890ae6380e4a1cc0af@mail.kernel.org>
 
-Hi,
-
-On Thu, Mar 19, 2026 at 10:25=E2=80=AFAM Saravana Kannan <saravanak@kernel.=
-org> wrote:
->
-> On Tue, Mar 17, 2026 at 9:04=E2=80=AFAM Douglas Anderson <dianders@chromi=
-um.org> wrote:
+On Thu, Mar 19, 2026 at 04:56:52PM +0000, bot+bpf-ci@kernel.org wrote:
+> > diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+> > index 68e2df3e3bf58..b75eda114503a 100644
+> > --- a/arch/x86/kernel/cpu/bugs.c
+> > +++ b/arch/x86/kernel/cpu/bugs.c
+> > @@ -144,6 +144,17 @@ EXPORT_SYMBOL_GPL(cpu_buf_idle_clear);
+> >   */
+> >  DEFINE_STATIC_KEY_FALSE(switch_mm_cond_l1d_flush);
 > >
-> > In various places in the kernel, we modify the fwnode "flags" member
-> > by doing either:
-> >   fwnode->flags |=3D SOME_FLAG;
-> >   fwnode->flags &=3D ~SOME_FLAG;
-> >
-> > This type of modification is not thread-safe. If two threads are both
-> > mucking with the flags at the same time then one can clobber the
-> > other.
-> >
-> > While flags are often modified while under the "fwnode_link_lock",
-> > this is not universally true.
-> >
-> > Create some accessor functions for setting, clearing, and testing the
-> > FWNODE flags and move all users to these accessor functions. New
-> > accessor functions use set_bit() and clear_bit(), which are
-> > thread-safe.
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: c2c724c868c4 ("driver core: Add fw_devlink_parse_fwtree()")
-> > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > Acked-by: Mark Brown <broonie@kernel.org>
-> > Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> > Signed-off-by: Douglas Anderson <dianders@chromium.org>
-> > ---
-> > While this patch is not known for sure to fix any specific issues, it
-> > seems possible that it could fix some rare problems. I'm currently
-> > trying to track down a hard-to-reproduce heisenbug and one (currently
-> > unproven) theory I had was that the fwnode flags could be getting
-> > messed up like this. Even if turns out not to fix my heisenbug,
-> > though, this seems like a worthwhile change to take.
->
-> Reviewed-by: Saravana Kannan <saravanak@kernel.org>
+> > +/*
+> > + * Controls CPU Fill buffer clear before VMenter. This is a subset of
+> > + * X86_FEATURE_CLEAR_CPU_BUF, and should only be enabled when KVM-only
+> > + * mitigation is required.
+> > + */
+> > +DEFINE_STATIC_KEY_FALSE(cpu_buf_vm_clear);
+> > +EXPORT_SYMBOL_GPL(cpu_buf_vm_clear);
+> 
+> cpu_buf_vm_clear is defined and exported here but appears to have no
+> users. There is no declaration in any header, and nothing in this
+> patch series references it.
+> 
+> The comment describes CPU fill buffer clearing before VMenter, which
+> seems unrelated to the predictor flush static_call conversion that
+> this patch is doing. Was this included by mistake, or is it intended
+> for a follow-up series?
 
-Thanks for the review!
+Agh, that is introduced by a wrong conflict resolution during rebase,
+removed now.
 
-
-> Thanks Doug. Hope this isn't the cause of the hisenbug. If you report
-> it here, I might be able to take a look at it too (no promises).
-
-I don't _think_ it fixes my bug, but I'm still not 100% sure because
-the bug can take a day or so to reproduce and it appears to only
-reproduce on official kernels built by the builder. :( This makes it
-hard to say anything for certain and also hard for me to inject extra
-debug logic.
-
-I did finally capture a ramdump of a device in the bad state and
-managed to inspect the state of all the fwnode and fwnode_link
-objects.
-
-The problem (simplified) is that I have a pinctrl device:
-
-  max77779_pinctrl {
-    pin1: pin1 {
-      ...;
-    };
-    pin2: pin2 {
-      ...;
-    };
-  };
-
-...and then a client of the pinctrl device:
-
-  client1 {
-    pinctrl-0 =3D <&pin1>;
-    ...
-  };
-
-  client2 {
-    pinctrl-0 =3D <&pin2>;
-    ...
-  };
-
-At parse time, we get a link between the "client1" node and the "pin1"
-node (and "client2" and "pin2").
-
-In a normal boot (where the bug doesn't reproduce), when
-max77779_pinctrl finishes probing, all of the links to its children
-(which don't have a "dev" associated with them) get moved to point to
-"max77779_pinctrl" (__fw_devlink_pickup_dangling_consumers).
-
-When I detect the bug, the max77779_pinctrl device clearly has
-finished probing, but the client devices still point to the child
-nodes.
-
-In the debugger, I can inspect things. I can see:
-* The fwnodes for "pin1" and "pin2" clearly don't have a "dev" node.
-They also don't have "FWNODE_FLAG_NOT_DEVICE" set.
-* The fwnode for "max77779_pinctrl" clearly has a dev node (and a bus).
-* The fwnodes for "pin1" and "pin2" show zero consumers.
-* The fwnodes for "client1" and "client2" _do_ still show suppliers.
-* When I look at the fwnode_link between the clients and the pins, the
-"supplier" points to the node for the pin.
-* When I look at the fwnode_link between the clients and the pins, the
-"c_hook" is non-empty.
-* When I look at the fwnode_link between the clients and the pins, the
-"consumer" points to the node for the client.
-* When I look at the fwnode_link between the clients and the pins, the
-"s_hook" is an empty list (next =3D=3D prev).
-
-It's a bit baffling because everything looks nice and consistent with
-half the link being severed, which doesn't seem possible when looking
-at the code. The code seems to always add to a consumer list and
-supplier list at the same time and remove at the same time.
-
-I've started to run out of ideas on how it could possibly get into
-this state. If you have any, or want me to look at any other data
-structures in the ramdump let me know.
-
--Doug
+> > +
+> > +DEFINE_STATIC_CALL_NULL(vmscape_predictor_flush, write_ibpb);
+> > +EXPORT_STATIC_CALL_GPL(vmscape_predictor_flush);
