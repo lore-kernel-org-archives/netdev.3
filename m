@@ -1,39 +1,42 @@
-Received: from mout-b-203.mailbox.org (mout-b-203.mailbox.org [195.10.208.52])
+Received: from mout-b-201.mailbox.org (mout-b-201.mailbox.org [195.10.208.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573FC3DD52A;
-	Thu, 19 Mar 2026 15:20:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.10.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 858113E556B;
+	Thu, 19 Mar 2026 15:20:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.10.208.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773933613; cv=none; b=f/8muDkM1COxmVmRmDgApT/vXbSzv+Pk440VMm9BUFbjKxubRs3w55oS7gwsvapE8E3YKS7BqdAdXth4DPJOzlaCcKOo1wBD66rMxEnZveP3jbp72f5VFdWpCYMfhAMidnWsUxa7cCYWjwu1rkf+sMs67VwMAeX59YE9+iw0NcE=
+	t=1773933631; cv=none; b=muisLNLfLkgGSC1/yfE13o7sWxUWImFkbzjqLifRQBVwMZj6ukpLLGQx0Yf/NDDVMjEVaGfsjlQ2bFpFAUylfWhfpWna8vG0Y/as4QXRQp47S7ofiES2le5gbwOwh7woaravIwnJAAt2e4JdBjPH+qC1jPczxu2Gngdpug6nj8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773933613; c=relaxed/simple;
-	bh=cWaW2hJHEcFomAfoes8Q2TkBrG47FpwnOq1LEspkmBU=;
+	s=arc-20240116; t=1773933631; c=relaxed/simple;
+	bh=HFsB2eky2Tk0cvZa+RJn225M3EBHBhiR9X02au8fvgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cJfm8VPsBZqbTRNuTC0eJbuX2m4hspxRmEOreKnsWpq7I6HruR/7X6s2NfZ54jbnitt3HR54YF8M5ZX/MkXo0Hcp0zAn1NaCkCCV3U9Qynnx9qSuHppSwBNvGJnfiUFO/cUi36Ci+BPF5og9qQO1iiHDz3SW2/mb7d2cfpMf1Ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=S9ZWqsKa; arc=none smtp.client-ip=195.10.208.52
+	 MIME-Version; b=eN/CTLTSkDNl+SL1XaL31lUnSJkBJWZB5wuKerA67rKrOjrJSsEozRVc7/v9PZZT3YZVJZQ4JlXwfTr66iecn1n6yzEsCb7h6q5yeZ31hlJbW7SEsQ+MQout+Fl7Emx+Yt1r5xXlihWZ+c6h9EV290GuMl/fBgLmARmQQdgm/Kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=hJFg6k/E; arc=none smtp.client-ip=195.10.208.61
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="S9ZWqsKa"
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="hJFg6k/E"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-b-203.mailbox.org (Postfix) with ESMTPS id 4fc8My6FJVz9xB0;
-	Thu, 19 Mar 2026 16:13:18 +0100 (CET)
+	by mout-b-201.mailbox.org (Postfix) with ESMTPS id 4fc8NG0dZrzDs2P;
+	Thu, 19 Mar 2026 16:13:34 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
-	s=MBO0001; t=1773933198;
+	s=MBO0001; t=1773933214;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0mkPPwP2E8HVu98S0M2DSu5QibU7KhMmUvb3wWQT4RE=;
-	b=S9ZWqsKahzaZ8gYBVvFBcoh4GNrqfpB5K63u6XVJr3gFZZ8+a9HHZmsfmHsolnmDqQH9Eu
-	6YDTHbPQpQSpvIyDvngp2LqdtdO0OY5qKiweHciyKUwiGa64q2YzUKuylYd6c0PiKfEnjH
-	by8BdewRcZh0BffHBOKlTtDWDcmj4abep46C5F4A408oouiMSNMewoIm5N5BSrrYNMavEw
-	Uy99of3scZMPwPnmtfE3GutqlBoMnd6yigYjgOtEEepwhCLEyj3hPZhWFC/EovV4Nhgc1N
-	dizS/Rq1NTig145YpjDmKAwQPn8n/DBQkNIm4XYROBBQMqsd+2wD9hT5LakQSg==
+	bh=lZmf3XMXGG3SmE3J2wOJSJ7B3hQ2E0d5WPu7AoMMTbo=;
+	b=hJFg6k/EGLrXPGrEpxuSoGOJxC3USyR+lkRouQbilasWQzkvxxIVqHc0m8Xhf+LGDo+nrJ
+	Cno4OLiZL/z47DJ5WDSAXAmmvdgy0+94kQZUOoNUgr+9EjdAx/NEMexUPiDwqIWi8SvtCS
+	vBvVxg2O9PLnOzZ+2nc8/bnNs4r23RUsaenZKJGiCT8YS1YUrb2TF9IdH/pyVjRCKiJOPX
+	UKdd342kqV8nK9tG/UAj9xPjxSYIcElK3HCLW4v07IPjLopAaONxiV0JVew+B9k7DAyFWC
+	xBxwycdt8WcmGKWS59GGtAU3aZ/WEzyvF53hZZpyqA+zqYfOC04buZjA0mSIyA==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=none;
+	spf=pass (outgoing_mbo_mout: domain of ralf@mandelbit.com designates 2001:67c:2050:b231:465::102 as permitted sender) smtp.mailfrom=ralf@mandelbit.com
 From: Ralf Lici <ralf@mandelbit.com>
 To: netdev@vger.kernel.org
 Cc: =?UTF-8?q?Daniel=20Gr=C3=B6ber?= <dxld@darkboxed.org>,
@@ -45,9 +48,9 @@ Cc: =?UTF-8?q?Daniel=20Gr=C3=B6ber?= <dxld@darkboxed.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	linux-kernel@vger.kernel.org
-Subject: [RFC net-next 06/15] ipxlat: add transport checksum and offload helpers
-Date: Thu, 19 Mar 2026 16:12:15 +0100
-Message-ID: <20260319151230.655687-7-ralf@mandelbit.com>
+Subject: [RFC net-next 09/15] ipxlat: emit translator-generated ICMP errors on drop
+Date: Thu, 19 Mar 2026 16:12:18 +0100
+Message-ID: <20260319151230.655687-10-ralf@mandelbit.com>
 In-Reply-To: <20260319151230.655687-1-ralf@mandelbit.com>
 References: <20260319151230.655687-1-ralf@mandelbit.com>
 Precedence: bulk
@@ -56,265 +59,222 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4fc8NG0dZrzDs2P
 
-Add shared transport-layer helpers for checksum manipulation and offload
-metadata normalization across family translation.
-
-This introduces incremental and full checksum utilities plus generic
-ICMP relayout/offload finalization routines reused by later 4->6 and
-6->4 transport translation paths.
+When validation or policy requires dropping a packet and generating an
+ICMP error, route that failure through explicit ICMP emission paths so
+the sender can be notified where appropriate. This commit adds
+translator-originated error generation for both directions and
+integrates it into dispatch action handling without changing normal
+forwarding behavior.
 
 Signed-off-by: Ralf Lici <ralf@mandelbit.com>
 ---
- drivers/net/ipxlat/transport.c | 146 +++++++++++++++++++++++++++++++++
- drivers/net/ipxlat/transport.h |  83 +++++++++++++++++++
- 2 files changed, 229 insertions(+)
- create mode 100644 drivers/net/ipxlat/transport.c
- create mode 100644 drivers/net/ipxlat/transport.h
+ drivers/net/ipxlat/dispatch.c | 66 ++++++++++++++++++++++++++++++++++-
+ drivers/net/ipxlat/dispatch.h |  7 ++++
+ drivers/net/ipxlat/packet.c   | 25 ++++++++++---
+ 3 files changed, 92 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ipxlat/transport.c b/drivers/net/ipxlat/transport.c
-new file mode 100644
-index 000000000000..cd786ce84adc
---- /dev/null
-+++ b/drivers/net/ipxlat/transport.c
-@@ -0,0 +1,146 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*  IPXLAT - Stateless IP/ICMP Translation (SIIT) virtual device driver
-+ *
-+ *  Copyright (C) 2024- Alberto Leiva Popper <ydahhrk@gmail.com>
-+ *  Copyright (C) 2026- Mandelbit SRL
-+ *  Copyright (C) 2026- Daniel Gröber <dxld@darkboxed.org>
-+ *
-+ *  Author:	Alberto Leiva Popper <ydahhrk@gmail.com>
-+ *		Antonio Quartulli <antonio@mandelbit.com>
-+ *		Daniel Gröber <dxld@darkboxed.org>
-+ *		Ralf Lici <ralf@mandelbit.com>
-+ */
-+
-+#include <net/ip.h>
-+#include <net/ip6_checksum.h>
-+#include <net/tcp.h>
-+#include <net/udp.h>
-+
-+#include "packet.h"
-+#include "transport.h"
-+
-+/* set CHECKSUM_PARTIAL metadata for transport checksum completion */
-+int ipxlat_set_partial_csum(struct sk_buff *skb, u16 csum_offset)
-+{
-+	if (likely(skb_partial_csum_set(skb, skb_transport_offset(skb),
-+					csum_offset)))
-+		return 0;
-+	return -EINVAL;
-+}
-+
-+static __wsum ipxlat_pseudohdr6_csum(const struct ipv6hdr *hdr)
-+{
-+	return ~csum_unfold(csum_ipv6_magic(&hdr->saddr, &hdr->daddr, 0, 0, 0));
-+}
-+
-+static __wsum ipxlat_pseudohdr4_csum(const struct iphdr *hdr)
-+{
-+	return csum_tcpudp_nofold(hdr->saddr, hdr->daddr, 0, 0, 0);
-+}
-+
-+static __sum16 ipxlat_46_update_csum(__sum16 csum16,
-+				     const struct iphdr *in_ip4,
-+				     const void *in_l4_hdr,
-+				     const struct ipv6hdr *out_ip6,
-+				     const void *out_l4_hdr, size_t l4_hdr_len)
-+{
-+	__wsum csum;
-+
-+	csum = ~csum_unfold(csum16);
-+
-+	/* replace pseudohdr and L4 header contributions, payload unchanged */
-+	csum = csum_sub(csum, ipxlat_pseudohdr4_csum(in_ip4));
-+	csum = csum_sub(csum, csum_partial(in_l4_hdr, l4_hdr_len, 0));
-+	csum = csum_add(csum, ipxlat_pseudohdr6_csum(out_ip6));
-+	csum = csum_add(csum, csum_partial(out_l4_hdr, l4_hdr_len, 0));
-+	return csum_fold(csum);
-+}
-+
-+static __sum16 ipxlat_64_update_csum(__sum16 csum16,
-+				     const struct ipv6hdr *in_ip6,
-+				     const void *in_l4_hdr,
-+				     size_t in_l4_hdr_len,
-+				     const struct iphdr *out_ip4,
-+				     const void *out_l4_hdr,
-+				     size_t out_l4_hdr_len)
-+{
-+	__wsum csum;
-+
-+	csum = ~csum_unfold(csum16);
-+
-+	/* only address terms matter because L4 length/proto are unchanged */
-+	csum = csum_sub(csum, ipxlat_pseudohdr6_csum(in_ip6));
-+	csum = csum_sub(csum, csum_partial(in_l4_hdr, in_l4_hdr_len, 0));
-+
-+	csum = csum_add(csum, ipxlat_pseudohdr4_csum(out_ip4));
-+	csum = csum_add(csum, csum_partial(out_l4_hdr, out_l4_hdr_len, 0));
-+
-+	return csum_fold(csum);
-+}
-+
-+__sum16 ipxlat_l4_csum_ipv6(const struct in6_addr *saddr,
-+			    const struct in6_addr *daddr,
-+			    const struct sk_buff *skb, unsigned int l4_off,
-+			    unsigned int l4_len, u8 proto)
-+{
-+	return csum_ipv6_magic(saddr, daddr, l4_len, proto,
-+			       skb_checksum(skb, l4_off, l4_len, 0));
-+}
-+
-+/* Normalize checksum/offload metadata after address-family translation.
-+ *
-+ * Translation changes protocol family but keeps transport payload semantics
-+ * intact, so TCP GSO only needs type remap (gso_from -> gso_to), while ICMP
-+ * must clear stale GSO state because there is no ICMP GSO transform here.
-+ *
-+ * This mirrors forwarding expectations: reject LRO on xmit and clear hash
-+ * when tuple semantics may have changed (fragments and non-TCP/UDP).
-+ */
-+int ipxlat_finalize_offload(struct sk_buff *skb, u8 l4_proto, bool is_fragment,
-+			    u32 gso_from, u32 gso_to)
-+{
-+	struct skb_shared_info *shinfo;
-+
-+	if (unlikely(skb->ip_summed == CHECKSUM_COMPLETE))
-+		skb->ip_summed = CHECKSUM_NONE;
-+
-+	if (!skb_is_gso(skb))
-+		goto out_hash;
-+
-+	/* align with forwarding paths that reject LRO skbs before xmit */
-+	if (unlikely(skb_warn_if_lro(skb)))
-+		return -EINVAL;
-+
-+	shinfo = skb_shinfo(skb);
-+	switch (l4_proto) {
-+	case IPPROTO_TCP:
-+		/* segment payload size is unchanged by address-family
-+		 * translation so there's no need to touch gso_size
-+		 */
-+		if (shinfo->gso_type & gso_from) {
-+			shinfo->gso_type &= ~gso_from;
-+			shinfo->gso_type |= gso_to;
-+		} else if (unlikely(!(shinfo->gso_type & gso_to))) {
-+			return -EOPNOTSUPP;
-+		}
-+		break;
-+	case IPPROTO_UDP:
-+		break;
-+	case IPPROTO_ICMP:
-+		/* for ICMP there is no GSO transform; clear stale offload
-+		 * metadata so the stack treats it as a normal frame
-+		 */
-+		skb_gso_reset(skb);
-+		break;
-+	default:
-+		return -EPROTONOSUPPORT;
-+	}
-+
-+out_hash:
-+	if (unlikely(is_fragment ||
-+		     (l4_proto != IPPROTO_TCP && l4_proto != IPPROTO_UDP)))
-+		skb_clear_hash(skb);
-+	else
-+		skb_clear_hash_if_not_l4(skb);
-+	return 0;
-+}
-diff --git a/drivers/net/ipxlat/transport.h b/drivers/net/ipxlat/transport.h
-new file mode 100644
-index 000000000000..bd228aecfb3b
---- /dev/null
-+++ b/drivers/net/ipxlat/transport.h
-@@ -0,0 +1,83 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*  IPXLAT - Stateless IP/ICMP Translation (SIIT) virtual device driver
-+ *
-+ *  Copyright (C) 2024- Alberto Leiva Popper <ydahhrk@gmail.com>
-+ *  Copyright (C) 2026- Mandelbit SRL
-+ *  Copyright (C) 2026- Daniel Gröber <dxld@darkboxed.org>
-+ *
-+ *  Author:	Alberto Leiva Popper <ydahhrk@gmail.com>
-+ *		Antonio Quartulli <antonio@mandelbit.com>
-+ *		Daniel Gröber <dxld@darkboxed.org>
-+ *		Ralf Lici <ralf@mandelbit.com>
-+ */
-+
-+#ifndef _NET_IPXLAT_TRANSPORT_H_
-+#define _NET_IPXLAT_TRANSPORT_H_
-+
+diff --git a/drivers/net/ipxlat/dispatch.c b/drivers/net/ipxlat/dispatch.c
+index 133d30859f49..b8b9b930b04c 100644
+--- a/drivers/net/ipxlat/dispatch.c
++++ b/drivers/net/ipxlat/dispatch.c
+@@ -11,7 +11,12 @@
+  *		Ralf Lici <ralf@mandelbit.com>
+  */
+ 
 +#include <linux/icmp.h>
-+#include <linux/ip.h>
-+#include <linux/ipv6.h>
-+
-+/**
-+ * ipxlat_l4_min_len - minimum transport header size for protocol
-+ * @protocol: transport protocol identifier
-+ *
-+ * Return: minimum header length for @protocol, or 0 when unsupported.
-+ */
-+static inline unsigned int ipxlat_l4_min_len(u8 protocol)
++#include <linux/icmpv6.h>
++#include <net/icmp.h>
+ #include <net/ip.h>
++#include <net/route.h>
++#include <net/ipv6.h>
+ 
+ #include "dispatch.h"
+ #include "packet.h"
+@@ -21,7 +26,8 @@
+ static enum ipxlat_action
+ ipxlat_resolve_failed_action(const struct sk_buff *skb)
+ {
+-	return IPXLAT_ACT_DROP;
++	return ipxlat_skb_cb(skb)->emit_icmp_err ? IPXLAT_ACT_ICMP_ERR :
++						 IPXLAT_ACT_DROP;
+ }
+ 
+ enum ipxlat_action ipxlat_translate(struct ipxlat_priv *ipxlat,
+@@ -61,6 +67,59 @@ void ipxlat_mark_icmp_drop(struct sk_buff *skb, u8 type, u8 code, u32 info)
+ 	cb->icmp_err.info = info;
+ }
+ 
++static void ipxlat_46_emit_icmp_err(struct ipxlat_priv *ipxlat,
++				    struct sk_buff *inner)
 +{
-+	switch (protocol) {
-+	case IPPROTO_TCP:
-+		return sizeof(struct tcphdr);
-+	case IPPROTO_UDP:
-+		return sizeof(struct udphdr);
-+	case IPPROTO_ICMP:
-+		return sizeof(struct icmphdr);
++	struct ipxlat_cb *cb = ipxlat_skb_cb(inner);
++	const struct iphdr *iph = ip_hdr(inner);
++	struct inet_skb_parm param = {};
++
++	/* build route metadata on demand when the packet has no dst */
++	if (unlikely(!skb_dst(inner))) {
++		const int reason = ip_route_input_noref(inner, iph->daddr,
++							iph->saddr,
++							ip4h_dscp(iph),
++							inner->dev);
++
++		if (unlikely(reason)) {
++			netdev_dbg(ipxlat->dev,
++				   "icmp4 emit: route build failed reason=%d\n",
++				   reason);
++			return;
++		}
++	}
++
++	/* emit the ICMPv4 error */
++	__icmp_send(inner, cb->icmp_err.type, cb->icmp_err.code,
++		    htonl(cb->icmp_err.info), &param);
++}
++
++static void ipxlat_64_emit_icmp_err(struct sk_buff *inner)
++{
++	struct ipxlat_cb *cb = ipxlat_skb_cb(inner);
++	struct inet6_skb_parm param = {};
++
++	/* emit the ICMPv6 error */
++	icmp6_send(inner, cb->icmp_err.type, cb->icmp_err.code,
++		   cb->icmp_err.info, NULL, &param);
++}
++
++/* emit translator-generated ICMP errors for packets rejected by RFC rules */
++void ipxlat_emit_icmp_error(struct ipxlat_priv *ipxlat, struct sk_buff *inner)
++{
++	switch (ntohs(inner->protocol)) {
++	case ETH_P_IPV6:
++		ipxlat_64_emit_icmp_err(inner);
++		return;
++	case ETH_P_IP:
++		ipxlat_46_emit_icmp_err(ipxlat, inner);
++		return;
 +	default:
-+		return 0;
++		DEBUG_NET_WARN_ON_ONCE(1);
++		return;
 +	}
 +}
 +
+ static void ipxlat_forward_pkt(struct ipxlat_priv *ipxlat, struct sk_buff *skb)
+ {
+ 	const unsigned int len = skb->len;
+@@ -90,6 +149,11 @@ int ipxlat_process_skb(struct ipxlat_priv *ipxlat, struct sk_buff *skb,
+ 		dev_dstats_tx_add(ipxlat->dev, skb->len);
+ 		ipxlat_forward_pkt(ipxlat, skb);
+ 		return 0;
++	case IPXLAT_ACT_ICMP_ERR:
++		dev_dstats_tx_dropped(ipxlat->dev);
++		ipxlat_emit_icmp_error(ipxlat, skb);
++		consume_skb(skb);
++		return 0;
+ 	case IPXLAT_ACT_DROP:
+ 		goto drop_free;
+ 	default:
+diff --git a/drivers/net/ipxlat/dispatch.h b/drivers/net/ipxlat/dispatch.h
+index fa6fafea656b..73acd831b6cf 100644
+--- a/drivers/net/ipxlat/dispatch.h
++++ b/drivers/net/ipxlat/dispatch.h
+@@ -44,6 +44,13 @@ enum ipxlat_action {
+  */
+ void ipxlat_mark_icmp_drop(struct sk_buff *skb, u8 type, u8 code, u32 info);
+ 
 +/**
-+ * ipxlat_set_partial_csum - program CHECKSUM_PARTIAL metadata on skb
-+ * @skb: packet with transport checksum field
-+ * @csum_offset: offset of checksum field within transport header
-+ *
-+ * Return: 0 on success, negative errno on invalid skb state.
++ * ipxlat_emit_icmp_error - emit cached translator-generated ICMP error
++ * @ipxlat: translator private context
++ * @inner: offending packet used as quoted payload
 + */
-+int ipxlat_set_partial_csum(struct sk_buff *skb, u16 csum_offset);
++void ipxlat_emit_icmp_error(struct ipxlat_priv *ipxlat, struct sk_buff *inner);
 +
-+/**
-+ * ipxlat_l4_csum_ipv6 - compute full L4 checksum with IPv6 pseudo-header
-+ * @saddr: IPv6 source address
-+ * @daddr: IPv6 destination address
-+ * @skb: packet buffer
-+ * @l4_off: transport header offset
-+ * @l4_len: transport span (header + payload)
-+ * @proto: transport protocol
-+ *
-+ * Return: folded checksum value covering pseudo-header and transport payload.
-+ */
-+__sum16 ipxlat_l4_csum_ipv6(const struct in6_addr *saddr,
-+			    const struct in6_addr *daddr,
-+			    const struct sk_buff *skb, unsigned int l4_off,
-+			    unsigned int l4_len, u8 proto);
-+
-+/**
-+ * ipxlat_finalize_offload - normalize checksum/GSO metadata after translation
-+ * @skb: translated packet
-+ * @l4_proto: resulting transport protocol
-+ * @is_fragment: resulting packet is fragmented
-+ * @gso_from: input TCP GSO type bit
-+ * @gso_to: output TCP GSO type bit
-+ *
-+ * Converts TCP GSO family bits and clears stale checksum/hash state when
-+ * offload metadata cannot be preserved across address-family translation.
-+ *
-+ * Return: 0 on success, negative errno on unsupported/offload-incompatible
-+ * input.
-+ */
-+int ipxlat_finalize_offload(struct sk_buff *skb, u8 l4_proto, bool is_fragment,
-+			    u32 gso_from, u32 gso_to);
-+
-+#endif /* _NET_IPXLAT_TRANSPORT_H_ */
+ /**
+  * ipxlat_translate - validate/translate one packet and return next action
+  * @ipxlat: translator private context
+diff --git a/drivers/net/ipxlat/packet.c b/drivers/net/ipxlat/packet.c
+index b37a3e55aff8..758b72bdc6f1 100644
+--- a/drivers/net/ipxlat/packet.c
++++ b/drivers/net/ipxlat/packet.c
+@@ -142,6 +142,8 @@ static int ipxlat_v4_srr_check(struct sk_buff *skb, const struct iphdr *hdr)
+ 			if (unlikely(ptr > len - 3))
+ 				return -EINVAL;
+ 
++			ipxlat_mark_icmp_drop(skb, ICMP_DEST_UNREACH,
++					      ICMP_SR_FAILED, 0);
+ 			return -EINVAL;
+ 		}
+ 
+@@ -272,8 +274,10 @@ static int ipxlat_v4_pull_hdrs(struct sk_buff *skb)
+ 	/* RFC 7915 Section 4.1 */
+ 	if (unlikely(ipxlat_v4_srr_check(skb, l3_hdr)))
+ 		return -EINVAL;
+-	if (unlikely(l3_hdr->ttl <= 1))
++	if (unlikely(l3_hdr->ttl <= 1)) {
++		ipxlat_mark_icmp_drop(skb, ICMP_TIME_EXCEEDED, ICMP_EXC_TTL, 0);
+ 		return -EINVAL;
++	}
+ 
+ 	/* RFC 7915 Section 1.2:
+ 	 * Fragmented ICMP/ICMPv6 packets will not be translated by IP/ICMP
+@@ -390,8 +394,11 @@ int ipxlat_v4_validate_skb(struct ipxlat_priv *ipxlat, struct sk_buff *skb)
+ 	 * Fragmented checksum-less IPv4 UDP is rejected because 4->6 cannot
+ 	 * reliably translate it.
+ 	 */
+-	if (unlikely(ip_is_fragment(l3_hdr)))
++	if (unlikely(ip_is_fragment(l3_hdr))) {
++		ipxlat_mark_icmp_drop(skb, ICMP_DEST_UNREACH, ICMP_PKT_FILTERED,
++				      0);
+ 		return -EINVAL;
++	}
+ 
+ 	/* udph->len bounds the span used to compute replacement checksum */
+ 	if (unlikely(ntohs(udph->len) > skb->len - cb->l4_off))
+@@ -520,7 +527,7 @@ static int ipxlat_v6_walk_hdrs(struct sk_buff *skb, unsigned int l3_offset,
+  */
+ static int ipxlat_v6_check_rh(struct sk_buff *skb)
+ {
+-	unsigned int rh_off;
++	unsigned int rh_off, pointer;
+ 	int flags, nexthdr;
+ 
+ 	rh_off = 0;
+@@ -531,6 +538,8 @@ static int ipxlat_v6_check_rh(struct sk_buff *skb)
+ 	if (likely(nexthdr != NEXTHDR_ROUTING))
+ 		return 0;
+ 
++	pointer = rh_off + offsetof(struct ipv6_rt_hdr, segments_left);
++	ipxlat_mark_icmp_drop(skb, ICMPV6_PARAMPROB, ICMPV6_HDR_FIELD, pointer);
+ 	return -EINVAL;
+ }
+ 
+@@ -550,8 +559,11 @@ static int ipxlat_v6_pull_outer_l3(struct sk_buff *skb)
+ 		     !ipxlat_v6_validate_saddr(&l3_hdr->saddr)))
+ 		return -EINVAL;
+ 
+-	if (unlikely(l3_hdr->hop_limit <= 1))
++	if (unlikely(l3_hdr->hop_limit <= 1)) {
++		ipxlat_mark_icmp_drop(skb, ICMPV6_TIME_EXCEED,
++				      ICMPV6_EXC_HOPLIMIT, 0);
+ 		return -EINVAL;
++	}
+ 
+ 	return 0;
+ }
+@@ -617,8 +629,11 @@ static int ipxlat_v6_pull_hdrs(struct sk_buff *skb)
+ 	/* -EPROTONOSUPPORT means packet layout is syntactically valid but
+ 	 * unsupported by our RFC 7915 path
+ 	 */
+-	if (unlikely(err == -EPROTONOSUPPORT))
++	if (unlikely(err == -EPROTONOSUPPORT)) {
++		ipxlat_mark_icmp_drop(skb, ICMPV6_DEST_UNREACH,
++				      ICMPV6_ADM_PROHIBITED, 0);
+ 		return -EINVAL;
++	}
+ 	if (unlikely(err))
+ 		return err;
+ 
 -- 
 2.53.0
 
