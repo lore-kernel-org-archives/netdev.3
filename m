@@ -1,82 +1,150 @@
-Received: from mail-oa1-f69.google.com (mail-oa1-f69.google.com [209.85.160.69])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7E8221FBD
-	for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 21:35:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99DE3F0764
+	for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 21:36:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773956123; cv=none; b=l8Ah1N2CxOOUSce672gd0aK+kMqoAFj8kDlTACK89BLXekpn7Xo5so65xLzSVAjZ0Ht6AQjWqh1LxurvEnU5495Hh7m0Rja9cE7O1xIOQjBNv6pdQIt1LKhX1aeDlWHN+3pgu2pTkjR1irjmZAwMhhC3K0bp6TmjB3/6QRc72iQ=
+	t=1773956183; cv=none; b=ao6b2Bmao542vj26P7Kfpx6z27VPejiggRQUwNB0jXKpM4fPZlnhY+nGeZDviIhenXzp0Z1LbRDB9gf5wQtp8a44x3Gd0RTI3o+9er9aYQWuRDtWc6H9dZIgCzSxc7eT4IAI/wyS5YTQ/aTvIiRjf+63mwxolUmX0bgSieJici8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773956123; c=relaxed/simple;
-	bh=tWqVrtM0+4Vs70ubYKL4zkcuMvCEW1rftX5RnkS5hjA=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=WjtlZh2jy3ZrH1aYfTQHGxaiqTCEaDNEbRpY6hZldIHmcdsu3tQ2PWJFjuHYLHWBnbLODWDq2q6mpek1K97phti01Y7URWwTwq15fGqAxjTxHjX7w5ah6/+Tg79iJ1c05sW2RwALEomzXjcma27aQLyfhKW5Pmh1F25ob6K4vDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oa1-f69.google.com with SMTP id 586e51a60fabf-41c02dec5c1so7885333fac.2
-        for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 14:35:22 -0700 (PDT)
+	s=arc-20240116; t=1773956183; c=relaxed/simple;
+	bh=Jl+d6d1dXv2psrBcTnxjpcS42ccYigHmNQp+BIqvLMQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kO49zf4dkae+UYZnt5FGyifd6dALCLlyWj/tktQskj15qeq3mxHcxu3A/kIdL7Jg36R/bQJs1F3idlLXb7gNvaRLbewwd/RtngPKM2jSvMbygVUdy3AquX0xM/QNyv6uVLUtdfb2sd+MKrOWoVrOkNvVlF9rHWFFqZhqgV3Vh4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=IWN4N0eA; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=purestorage.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="IWN4N0eA"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4852e9ca034so12694465e9.2
+        for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 14:36:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=purestorage.com; s=google2022; t=1773956180; x=1774560980; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lbL1C4uFwb1NFR/CFLYetbDPdIVpKz3VXQyvBB+DIL8=;
+        b=IWN4N0eAuRplPLmNMAL3ENzEIDwNdK/Q2t3/0R4LUdh2FUOEqNgseYE/mU4fyzZCWk
+         QTe1t9MyvEYYMbF0NESdGe1El6SdBi2c5KUKZ7J5fiZ3hskZnzGCCFAGSat22lwvMDVh
+         53IY1LIlVt8rIDzTRp/J8gfW0e6zB753t0Nk3OuUaB2dmYGRrYtRjj+IL3wa2T4RpSa3
+         UtqB8fz2B+KENkTavJuAuhS+E4rIfeyekaD/jSQeYWtaehhkIkEWzrEWuaXr87WdO9KZ
+         huzkvmMbHTUKF2YLGeT9z+JhC4r35Rskt/PqlI+220xWyS1CznXTqL+a/pD+pADDR6WC
+         igag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773956121; x=1774560921;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3kW5Cqd4AXaqbTURFAM4xTX11VPZxMsl0NOSLCzZeb8=;
-        b=B+YQklS7k/Q617wVhgtQ9SpspagQ/OiwajtnvwhxlFDXauG50zka+GWZ+tssXNCWn6
-         4+neoqdfVTewceH5woBTtzLQNMk/Dirtk5PsKIZkPHB3ql8fNnnw7Pf9kB/V+qg08hgg
-         595cOWWVOQN6cKX1EW352mtFH86BRXESECFJ+DNLuDVaz5TXhdYpvoM5drZrd8IytkTY
-         QsGPSp6PNEVUgu22n0sJYonP/A1MgtDaGtHz585lA9aKKA202YTltb1fIOoCdlYsJs8J
-         A8S6bKrxIeGXcZ7a0pRFqhnH8xgzfIDnI7DCjMCA9M3rH9/s94peKB+Fc1bIALcF9yfj
-         zQcA==
-X-Forwarded-Encrypted: i=1; AJvYcCUaZU/iAH8BXqnW9nhrUWJDgQ9jl6XzGic0VCy+LP2etGrMnm2wanua4SfdBYdALaXOXaz7ccA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8O+fKp6ZqN1JozK2slmnYRWzB3moRuu5MnM/24q3NCHeCfq6d
-	tdrrq/SzeTYoxeFRXS9aO45Qq9V/UEx21F5zoM4T8+QPTHMGHHnIpbbL5GN/a+vpT60s2qTKNr8
-	sw4up7DPUvIH3ylzoRiSYqJo2A7LlEP+mUNsOWeuUfs4Oh8MDsJIyl69e+Gw=
+        d=1e100.net; s=20251104; t=1773956180; x=1774560980;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lbL1C4uFwb1NFR/CFLYetbDPdIVpKz3VXQyvBB+DIL8=;
+        b=j10GSBtD1b0EzqK8p7SFLuSSKqKt3DCUmuTVb8s0pSWtkAZRVhrg5t+kFWmd/qo2Cw
+         R8Wt2akv/pMlpDpR+ZjPPi+unkIN3J9wzgiueV83tGKDDyjdO4Q2LkBmUCHFQ2cXSaBp
+         vIz99ntw1mJIgrC5zj8IUsGvi4VtRf5TmWSh/CsR93IxGcsfDykoo5byc7PIlhUkSznP
+         qzYEAWtKop7bnuGAJ93PyCCQnlmim0YRlfy/7Dis9xkpGCBTrv4arX2vXJ5D69626v+j
+         15zuOoYuxsPB7RQ0Nlg314oXuOAa6/3f73K25Kp1GVU0C1wAwFm+LeoB1kF/3BZHOX3f
+         P8pQ==
+X-Gm-Message-State: AOJu0YymZHTq/He/OfWLLEalDftcvHUp7/+2nA9PXZAbmvpNoBBebKuW
+	oX5gaB8G9KIaODWEwUCzcRCgC2uAGHwYMUtTFicOXTjUfVB7+egMHYFKUrs8dXArc6GFVcrLEIn
+	boTYFF+rhHwAAdTCbjmqwJclpVzwntaIFVImmoWZ+bk7Qlez5Ch+ad9cNgxOwsqj93skJ1P2aom
+	ziBJ+4rzHVm0O7uybSWZ6av5qfCkH49BivUdnZ7xXWAzzNPjY=
+X-Gm-Gg: ATEYQzzDmaunNbImMtgP2++JpeP3GZnjce+rb0CxOALBVGLxpRgjrz8O9vum/VsXJzj
+	TZU/sN0Kfv2cRhefpKB1KW7Jv/ysyrS2NRlPcbTVrIBuj69FtZSHXe8j4/kVcgPPk3KfYYz1m9F
+	vSWMjOIJVU/JfN2SXU/yImTSyJ/CPwzzOMy3MzqO7QCrHTCCud5o92GJMPUfwcxqA77gAIJLJIf
+	0udZgmDreZ9vq3nlVxepySBqVQDnHEHNAm/IyWxFcgFNWtS/IMx+OPqoDYy26JbcA0q+KVvxySk
+	Rc3q0C3FyI1yVMTpi/C49prFSwwxNfM7LZsaDejgCyTbc6H0BaMDVvl60DDupAwCjT5bpMJEAlO
+	MQPKm42C8qTrZz1bDdLl8RMo8GNpCcU2tJ7FVOk5dSAhDsVmGdMOBttab4p8bXssRvPPhnrwJTK
+	221+XxstRM8vvCzGRsneMM6+7DDmWeOclR+x/6yU/y4yldyQxoyFY/70s4JQWJCVTxY//15TGyp
+	Wg=
+X-Received: by 2002:a05:6000:2912:b0:43b:45d1:f448 with SMTP id ffacd0b85a97d-43b64244c54mr1477796f8f.14.1773956179719;
+        Thu, 19 Mar 2026 14:36:19 -0700 (PDT)
+Received: from dev-rjethwani.tier4-kif-devvm.svc.slc-eng-prd2 ([208.88.159.129])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-43b644ae016sm1190659f8f.4.2026.03.19.14.36.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Mar 2026 14:36:19 -0700 (PDT)
+From: Rishikesh Jethwani <rjethwani@purestorage.com>
+To: netdev@vger.kernel.org
+Cc: saeedm@nvidia.com,
+	tariqt@nvidia.com,
+	mbloch@nvidia.com,
+	borisp@nvidia.com,
+	john.fastabend@gmail.com,
+	kuba@kernel.org,
+	sd@queasysnail.net,
+	davem@davemloft.net,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	leon@kernel.org,
+	Rishikesh Jethwani <rjethwani@purestorage.com>
+Subject: [PATCH net-next v8 0/6] tls: Add TLS 1.3 hardware offload support
+Date: Thu, 19 Mar 2026 15:33:17 -0600
+Message-Id: <20260319213323.235559-1-rjethwani@purestorage.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:2f12:b0:67c:25b9:d366 with SMTP id
- 006d021491bc7-67c25b9db1emr31379eaf.42.1773956121616; Thu, 19 Mar 2026
- 14:35:21 -0700 (PDT)
-Date: Thu, 19 Mar 2026 14:35:21 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69bc6c19.050a0220.3bf4de.0000.GAE@google.com>
-Subject: [syzbot] Monthly wireguard report (Mar 2026)
-From: syzbot <syzbot+listb2717bb6410baba389f7@syzkaller.appspotmail.com>
-To: Jason@zx2c4.com, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com, wireguard@lists.zx2c4.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello wireguard maintainers/developers,
+Hi all,
 
-This is a 31-day syzbot report for the wireguard subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/wireguard
+This series adds TLS 1.3 hardware offload support including KeyUpdate
+(rekey) and a selftest for validation.
 
-During the period, 1 new issues were detected and 0 were fixed.
-In total, 3 issues are still open and 20 have already been fixed.
+Patch 1: Reject TLS 1.3 offload in chcr_ktls and nfp drivers
+  These drivers only support TLS 1.2; add explicit version check.
 
-Some of the still happening issues:
+Patch 2: mlx5e TLS 1.3 hardware offload
+  Add TLS 1.3 TX/RX offload on ConnectX-6 Dx and newer.
+  Handle 12-byte IV format and TLS_1_3 context type.
 
-Ref Crashes Repro Title
-<1> 787     No    INFO: task hung in netdev_run_todo (4)
-                  https://syzkaller.appspot.com/bug?extid=894cca71fa925aabfdb2
-<2> 391     Yes   INFO: task hung in wg_netns_pre_exit (5)
-                  https://syzkaller.appspot.com/bug?extid=f2fbf7478a35a94c8b7c
-<3> 1       No    KCSAN: data-race in wg_expired_retransmit_handshake / wg_packet_send_queued_handshake_initiation (4)
-                  https://syzkaller.appspot.com/bug?extid=4ca9a7b9d61b76d0177c
+Patch 3: Core TLS 1.3 hardware offload support
+  Extend tls_device.c for TLS 1.3 record format (content type
+  appended before tag). Handle TLS 1.3 IV construction in fallback.
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+Patch 4: Split tls_set_sw_offload into init/finalize
+  Allows HW RX path to init SW context, attempt HW setup, then
+  finalize. Required for proper rekey error handling.
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+Patch 5: Hardware offload key update (rekey) support
+  Delete old HW context and add new one with updated key.
+  Graceful SW fallback if HW rekey fails.
+  Track ACKs to ensure old-key data is flushed before HW switch.
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
+Patch 6: Selftest for hardware offload
+  Python wrapper + C binary using NetDrvEpEnv framework.
+  Tests TLS 1.2/1.3, AES-GCM-128/256, rekey, various buffer sizes.
 
-You may send multiple commands in a single email message.
+Tested on Mellanox ConnectX-6 Dx (Crypto Enabled) with TLS 1.3 AES-GCM-128/256
+and multiple rekey cycles.
+
+Rishikesh
+
+Rishikesh Jethwani (6):
+  net: tls: reject TLS 1.3 offload in chcr_ktls and nfp drivers
+  net/mlx5e: add TLS 1.3 hardware offload support
+  tls: add TLS 1.3 hardware offload support
+  tls: split tls_set_sw_offload into init and finalize stages
+  tls: add hardware offload key update support
+  selftests: net: add TLS hardware offload test
+
+ .../chelsio/inline_crypto/ch_ktls/chcr_ktls.c |   3 +
+ .../mellanox/mlx5/core/en_accel/ktls.h        |   8 +-
+ .../mellanox/mlx5/core/en_accel/ktls_txrx.c   |  14 +-
+ .../net/ethernet/netronome/nfp/crypto/tls.c   |   3 +
+ include/net/tls.h                             |  79 +-
+ include/uapi/linux/snmp.h                     |   2 +
+ net/tls/tls.h                                 |  18 +-
+ net/tls/tls_device.c                          | 540 +++++++++--
+ net/tls/tls_device_fallback.c                 |  82 +-
+ net/tls/tls_main.c                            |  33 +-
+ net/tls/tls_proc.c                            |   2 +
+ net/tls/tls_sw.c                              | 105 +-
+ .../testing/selftests/drivers/net/hw/Makefile |   2 +
+ .../selftests/drivers/net/hw/tls_hw_offload.c | 902 ++++++++++++++++++
+ .../drivers/net/hw/tls_hw_offload.py          | 281 ++++++
+ 15 files changed, 1909 insertions(+), 165 deletions(-)
+ create mode 100644 tools/testing/selftests/drivers/net/hw/tls_hw_offload.c
+ create mode 100755 tools/testing/selftests/drivers/net/hw/tls_hw_offload.py
+
+-- 
+2.25.1
+
