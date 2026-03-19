@@ -1,75 +1,123 @@
-Received: from out-13.smtp.spacemail.com (out-13.smtp.spacemail.com [63.250.43.96])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685B639447C
-	for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 17:55:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.250.43.96
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1A22C0F81;
+	Thu, 19 Mar 2026 17:55:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773942904; cv=none; b=jPLhbuGqPh2XnxHkyByuCbACiMlhruAOetmGd/ZGMDm3lDm8rnZMJ1U/qX61SQsamUrCkNA4l38eT//9pjc/gAG+rbXgbkRvFbe6rnDzPGwEUiT+zkND2de3vVxPCQ0qNSCFrktersPILvf1y+Uxm97JX9lfK8w0Xv1bXQy45G8=
+	t=1773942948; cv=none; b=QENJszGkiREMzym/Or7GVa7FiNOxSSpubWC+QtXYZFWaMIl+9m4ax1cSEnAggA55N8g0hAW3boS+oBetukrgLT2/t7V3tNOjs/24YFHeIFkmyOyhcOH98V8tqazDeUfyHkebZCFe8Mb6CQW7TtshwT+zfREWQo+qNEnC6PiF6Po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773942904; c=relaxed/simple;
-	bh=cfVoYIitZHte75pCalAJPyi3bNyNpJXZTP7NUsP18jI=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=IwS33jzxOCih+49CZlvT9reHSKT1dJ9TIbo2KF1vsx4rmn/vHazQGXy82Aozxqkn2UmowNPBVIoJstv3X1d6jrAlho8yV5El9nc+C1BzvWePpVrjaKGty3EL8Z664yBcL3D22/GiXrAlyryFUtfk0xi94gI/EjYBPEk4RYKG1PY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=i2labs.ca; spf=pass smtp.mailfrom=i2labs.ca; dkim=pass (2048-bit key) header.d=i2labs.ca header.i=@i2labs.ca header.b=mHEZt6EG; arc=none smtp.client-ip=63.250.43.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=i2labs.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=i2labs.ca
+	s=arc-20240116; t=1773942948; c=relaxed/simple;
+	bh=DDxAOZ70XScEu44FhyuhK40fHpzL1B8BbtDWULsAoYA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HXLYDMferWlHRcA/Fg1Vc39Ls/VquS4449XpQ2jNROenEBi8KhXwEsHR5rkWzAZQ4paQB0YjnMdteRvW1i+7bgUUeaUa3oluLQqVKkApm4tCElfPbC+NyrFjzMTuhKl7HZzieeVg2rkGCGfynU/gWD4QeW/Ql1u7MCytf5WFvS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nrMgkGaR; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=i2labs.ca header.i=@i2labs.ca header.b="mHEZt6EG"
-Received: from [10.0.0.136] (unknown [14.179.148.118])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.spacemail.com (Postfix) with ESMTPSA id 4fcCn85HVSz8sWQ
-	for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 17:46:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=i2labs.ca;
-	s=spacemail; t=1773942413;
-	bh=CNne2cEWWRt2To1i/YA4zmoi4I8eb4+3j9s+sDdf0iM=;
-	h=Date:To:From:Subject:From;
-	b=mHEZt6EGMRHkFs4WO8nYQJIdpkTEN1FIkayxL77O7+G5Ieb3AOrbmYYhsQTUvUffI
-	 JHr2wGnW2buolhibzYsdUsTgB/bPyI9Uh6YmfRBaCa5olWDdJTu5RZHfwaWCSppxUS
-	 k/pBg6tIZimrg2UqxBNuLbMbd11eIvvuttrLU00E6Mk3IoDZIC9hFd2S/vzFpLbJYZ
-	 Zcm18PdXEcfC31PQwdkqpgDULlDpxdL/Ze9NrP1gbQAsKE8YVQve7eECu+XHPdc6Tc
-	 uTENP5BCLt3HvycXBg9LmijDTyo/SEgEqYuwDP9KOysi/OzQa5RpyoxW6+LDPypWq0
-	 c5kHcU5+bdM0g==
-Message-ID: <350cea13-9bf1-4605-82c9-b85114fc88fd@i2labs.ca>
-Date: Fri, 20 Mar 2026 00:46:47 +0700
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nrMgkGaR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773942945; x=1805478945;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=DDxAOZ70XScEu44FhyuhK40fHpzL1B8BbtDWULsAoYA=;
+  b=nrMgkGaR6i0I5Z5CDkUZsJpLI/c6Z+nOEp9KcA6RXktBQQLIQ7GG0gHS
+   4XktJRDkb3xWlAC4pQmZuv2DpPxr5Bw8d12j9oVKHjsL3WN98qifooLqy
+   KR5GSvA75g8JjrJwm1GKti60VmeMS5V4xmhezi1sP8ug7hoLKoZzYEIT3
+   2bB9ba2MErNSgZShbwTxTXStd8ZHf/6IFxKapkBouTRkRFP8OKFEX32Yf
+   MlQQDR8S1NqmbhyK5tWR4BbNMNiFLVHwPu2kjjhu+JLb3MbAVNwKRXn1V
+   dLArObpiVIjj70RWYqmkn3GPqVrYw2YuXDjs4Iu9AmxtfUpjh1OKetxg6
+   w==;
+X-CSE-ConnectionGUID: zGJy64xxSYuYgcj8viQeUw==
+X-CSE-MsgGUID: vjYgfP3NQqm34PaQY3sfoA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="74038576"
+X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; 
+   d="scan'208";a="74038576"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 10:55:44 -0700
+X-CSE-ConnectionGUID: IinG5dz/S7GCuN4a1t/UDw==
+X-CSE-MsgGUID: 67/fu9D4TdGVXl49iU26PQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; 
+   d="scan'208";a="246058545"
+Received: from boxer.igk.intel.com ([10.102.20.173])
+  by fmviesa002.fm.intel.com with ESMTP; 19 Mar 2026 10:55:41 -0700
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+To: netdev@vger.kernel.org
+Cc: bpf@vger.kernel.org,
+	magnus.karlsson@intel.com,
+	stfomichev@gmail.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	larysa.zaremba@intel.com,
+	aleksander.lobakin@intel.com,
+	bjorn@kernel.org,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Subject: [PATCH v2 net 0/8] xsk: tailroom reservation and MTU validation
+Date: Thu, 19 Mar 2026 18:55:30 +0100
+Message-Id: <20260319175538.479139-1-maciej.fijalkowski@intel.com>
+X-Mailer: git-send-email 2.38.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: netdev@vger.kernel.org
-From: Nolan Woods <nolan@i2labs.ca>
-Subject: net: disable default loopback
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Envelope-From: nolan@i2labs.ca
 
-Hello,
-I am building a highly constrained Linux environment where I want to 
-remove any possibility of a process communicating with other local 
-processes via the network stack. It appears that the kernel 
-automatically creates the loopback device and I can't locate any 
-configuration that might disable it. I need to be able to create 
-loopbacks in namespaces, disabling the network stack entirely isn't an 
-option. I also do not want to depend on NetFilter or any sort of packet 
-rules. I can disable the link after it is created, but that approach 
-still has the potential of the link being brought back up. SELinux might 
-be an option but is just another form of filtering rules. Ideally the 
-process wouldn't even have the option to bind to the interface.
+v1->v2:
+- remove xsk_pool_get_tailroom() definition for !CONFIG_XDP_SOCKETS
+  (Stan)
+- do not rely on pool->umem->zc when configuring tailroom (Stan, Bjorn)
+- simplify dbuff setting in ZC drivers (Bjorn)
+- use defines for {head,tail}room in tests (Bjorn)
+- return EINVAL instead of EOPNOTSUPP when mtu setting is wrong (Bjorn)
+- include vlan headers and fcs length when validating mtu (Olek)
+- tighten umem headroom validation when registering umem (Sashiko AI)
+- set XDP_USE_SG in xp_assign_dev_shared() (Sashiko AI)
+- adjust rx dropped xskxceiver test
 
-I found this comment that implies that there might be some sort of 
-unbreakable implicit network stack dependency on the loopback: 
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/net/core/dev.c#n13266
+Hi,
 
-Can anyone elaborate on this?
+here we fix a long-standing issue regarding multi-buffer scenario in ZC
+mode - we have not been providing space at the end of the buffer where
+multi-buffer XDP works on skb_shared_info. This has been brought to our
+attention via [0].
 
-I would greatly appreciate the input anyone could provide.
+Unaligned mode does not get any specific treatment, it is user's
+responsibility to properly handle XSK addresses in queues.
 
-Thank you for your time,
-Nolan Woods
+With two adjustments included here in this set against xskxceiver I have
+been able to pass the full test suite on ice.
 
+Thanks,
+Maciej
+
+[0]: https://community.intel.com/t5/Ethernet-Products/X710-XDP-Packet-Corruption-Issue-DRV-MODE-Zero-Copy-Multi-Buffer/m-p/1724208
+
+
+Maciej Fijalkowski (8):
+  xsk: tighten UMEM headroom validation to account for tailroom and min
+    frame
+  xsk: respect tailroom for ZC setups
+  ice: do not round up result of dbuf calculation for xsk pool
+  i40e: do not round up result of dbuff calculation for xsk pool
+  xsk: validate MTU against usable frame size on bind
+  selftests: bpf: fix pkt grow tests
+  selftests: bpf: have a separate variable for drop test
+  selftests: bpf: adjust rx_dropped xskxceiver's test to respect
+    tailroom
+
+ drivers/net/ethernet/intel/i40e/i40e_main.c   |  2 ++
+ drivers/net/ethernet/intel/ice/ice_base.c     |  5 ++++
+ include/net/xdp_sock_drv.h                    | 16 +++++++++-
+ net/xdp/xdp_umem.c                            |  3 +-
+ net/xdp/xsk_buff_pool.c                       | 16 ++++++++--
+ .../selftests/bpf/prog_tests/test_xsk.c       | 29 +++++++++++++++----
+ .../selftests/bpf/progs/xsk_xdp_progs.c       |  3 +-
+ 7 files changed, 64 insertions(+), 10 deletions(-)
+
+-- 
+2.43.0
 
