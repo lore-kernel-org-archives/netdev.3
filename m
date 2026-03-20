@@ -1,388 +1,160 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013049.outbound.protection.outlook.com [40.93.196.49])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC0C39A812;
-	Fri, 20 Mar 2026 11:26:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774006016; cv=fail; b=ADZsuZnyoq4DRVNAiookEC0KC6Ozy7MUBxkAqrTftyRWfNxY+Bxm/L45yenW57Ltd6sIqSkc36edQzjpQvtl97sO03MBSY05VcC2xPnyhZuOAlJJDuFSOvvg9oDfnWN7QMZ5UU9TggAb7wc0wwBAWZkfKGvR8kJ8PtJQTzcdlNw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774006016; c=relaxed/simple;
-	bh=oALv7owQDwvB5pDdpSxeShMBkota3d1dYrJJI75NL/c=;
-	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=ABG975XQ25iNfpFWbD7badOYVvos55E7/sYpl8JvBUDn4hX+zRuoNj5yHb2C4IuMr07SS5WjIsk8XnN8gUcflBTuu1w6ODfUBMwuh4igY0+e/54VXilCSI2Gv1xe26ie4gPVqFkZpaUhksVdSVAWTlnkt6dFFS3HmnGOhsDD6b8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ioYMj7xQ; arc=fail smtp.client-ip=40.93.196.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C9A3A7F59;
+	Fri, 20 Mar 2026 11:26:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774006017; cv=none; b=QeEy1ytu+5a6UP6xgBzfPK/7smgTp53edPqK/ENg0lVuurrw5wrsw0o1vHS2KfdKnnorn18S2CMTCuY7mqp/QqjvfCeNr7AgV/8U2LXqYlD45l1BYQRvex0V0Vv7rl/Pf1n9EOksMAEzOWjDZ26TJACSnKeOiTE5sVFwoxgN/3s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774006017; c=relaxed/simple;
+	bh=dKHuThexIZh2EfJn752S8JnW9cnPIlvA2UWYcKs78OY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=aqZPeuAGUU8frnPBEMxcAXKYMRd3ZpgnvGKyEl6elyeUgGEcfT4DTqU2dzvf681HJ6Lu5vfMNwKsKOvIQz+/2bdFgHGkJfYvOPTld9bqJppfoRRSMn7nkyP5j2Sbo6fZCG1UuTlImRhZ9Xh1g3mznFRk8l6PKZO2AXvXcNlgFDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hldu/2t6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ioYMj7xQ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VJAJxFLmxdiqJeOyZ1fTv80Imz9pLZ3ApC5TNidN1ij1S0GNObRuaX0xCGIxx0TQEFdx7TBx7NLqq88T/C2QJMX1ZU/c8t+s4ogeo4xXgGz1UIV+Mm9thBPps9iKfnDjXeeNM+gxXHnzmh5BQtyofpBtDJvpPdRitx1ePRN6CwbC5Rb9um8O09hTH6Yha8y30z2gPk4a2Bq5+FxTvKdUzFH4ntpzso7FGY95Eu2xJ12r1gWZTarUS/JnwW/PfA1vmoq4NRm5SfpVQgZZP06y1PHLg/o28BURS5UzpZCTSKqTkmJed5IpD4cL0HvhH0uk8oflYBtLttPvyijRyaNU2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3E8sx0nSGdsyv21of26RhrMRF5prWrUWNT0iSLcf7LE=;
- b=W7UEwrCED3qQBITpkntg0NmJIyW5LJ8ZqksNSRADuAatqNHwcYLVx6U1BI8CGMYG7xxRG8fCLUTX36tzw2/s0aQCvSb3LgZ0uBvLQKCyWVe3JX867lda0uN32/gAx9SAYNGVXlzdXzWd1kK+ROYn27ZBXtYLx0FryGXN3BumPSgyZIhkbui2GV6PbTmAqRUNKejxnrBwhpapeg/hT1G72n7hyKBX1tj038jOV60xwEtFJQmmnjSpESGig1GLdfqVln4rwyeHZ4ENoMqPxB0xO2njHJt9/scX8cor2RSmwKPJgn3gIi01LMBjgNCqzzPZVUxYv67u4OnVrlVQRErVIQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3E8sx0nSGdsyv21of26RhrMRF5prWrUWNT0iSLcf7LE=;
- b=ioYMj7xQN6V1UwniymSMBdfg+46rzeBtakxwqYomt5KbY9U7W0u4AJdauk7/p2QhqQLskuByOUglHoT2UpuYfv+ToJYTIUBDbACizbPRc2ZkjaxzBFJajNV3Aph7zRc5zENCyy7A0ddNKYr9A11KLfOwDWvmqIWwm69c1W2zg9wC/0vmY/rmZK6gxj0WyVdSSA5CF53bWuDRA3xWnir6+dUrzQTJ/kjrrCfklqqzSTE71znZQQlcUz7t9CWN6350IUn3Bn5HEophupIHL6GXgjf8pnVA0Ga3vFYXwoS1eXwA0oQjy/WKbp41eiCGCkhw1H9+GKA7mvkyXVCDrl3jFw==
-Received: from SJ0PR05CA0106.namprd05.prod.outlook.com (2603:10b6:a03:334::21)
- by LV2PR12MB999098.namprd12.prod.outlook.com (2603:10b6:408:353::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.15; Fri, 20 Mar
- 2026 11:26:45 +0000
-Received: from SJ1PEPF00001CDF.namprd05.prod.outlook.com
- (2603:10b6:a03:334:cafe::9b) by SJ0PR05CA0106.outlook.office365.com
- (2603:10b6:a03:334::21) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9700.24 via Frontend Transport; Fri,
- 20 Mar 2026 11:26:45 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SJ1PEPF00001CDF.mail.protection.outlook.com (10.167.242.7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9723.19 via Frontend Transport; Fri, 20 Mar 2026 11:26:44 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 20 Mar
- 2026 04:26:36 -0700
-Received: from fedora (10.126.231.35) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 20 Mar
- 2026 04:26:31 -0700
-References: <20260319160410.2515105-1-ioana.ciornei@nxp.com>
- <20260319160410.2515105-4-ioana.ciornei@nxp.com>
-User-agent: mu4e 1.8.14; emacs 30.2
-From: Petr Machata <petrm@nvidia.com>
-To: Ioana Ciornei <ioana.ciornei@nxp.com>
-CC: <netdev@vger.kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, <linux-kernel@vger.kernel.org>, <petrm@nvidia.com>,
-	<willemb@google.com>
-Subject: Re: [PATCH net-next v3 3/9] selftests: net: extend lib.sh to parse
- drivers/net/net.config
-Date: Fri, 20 Mar 2026 11:19:18 +0100
-In-Reply-To: <20260319160410.2515105-4-ioana.ciornei@nxp.com>
-Message-ID: <87ldfm91y5.fsf@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hldu/2t6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A305C2BCB2;
+	Fri, 20 Mar 2026 11:26:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774006017;
+	bh=dKHuThexIZh2EfJn752S8JnW9cnPIlvA2UWYcKs78OY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Hldu/2t6MG8S8vuTAfp8ByIxdeZxoRw1n7OSeLZMxAx1jXj2X0iIwydt8bFrusLzU
+	 qGHsiugeJMBAiHFZav0LBJRLoggddtAZfOUX97zCeY/ra98teDmj1bVEYm+fl0P20R
+	 KwWT2cWbWcL/ws3cMvXIdMqCZrefxRDKjHIW1CBj6hqJXobmD4Y/4j8pJwiDlBN9gG
+	 tMoFNktkQxTT25xqlcIOTsSiRbPsnBVT9cCr9GSm3nefT6LBZWMIBc564H3Ckw99Jv
+	 9/jV6B98TmOI2yuN4OY930+9PauJOU6iPGyBkXKEbV+LzeLIR/ho0Anz/Oau3yWlEa
+	 DzwhwN95q18Aw==
+From: Simon Horman <horms@kernel.org>
+To: vikas.gupta@broadcom.com
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	pavan.chebbi@broadcom.com,
+	andrew+netdev@lunn.ch,
+	michael.chan@broadcom.com,
+	vsrama-krishna.nemani@broadcom.com,
+	bhargava.marreddy@broadcom.com,
+	ajit.khaparde@broadcom.com,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	kuba@kernel.org,
+	davem@davemloft.net,
+	rajashekar.hudumula@broadcom.com
+Subject: Re: [PATCH net-next v8 03/10] bng_en: add ethtool link settings, get_link, and nway_reset
+Date: Fri, 20 Mar 2026 11:26:30 +0000
+Message-ID: <20260320112630.2065132-1-horms@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260319055124.1350670-4-vikas.gupta@broadcom.com>
+References: <20260319055124.1350670-4-vikas.gupta@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CDF:EE_|LV2PR12MB999098:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2c07b846-f955-4f69-d776-08de86739147
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|36860700016|376014|7416014|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	4JuvHLjMUd8LtpWmt4RQ27JVTp43OmuvVdPXvSAwR3bdNJ2IlMfR5oyJQJ7XRb4Kk7rxshXGrLZSr/zxWE+egVuXeD8VDTGQRq7txf3cxGl0XGurggWcUMinx6iK4yYRy6eQpUp/oF+2HvTLQ3oQpyCf/me4Tb/p3Hu4w5YONE/h0vskan6CbkuHr6SIuyakCsHOsQJTahe5Y0c28OsNVwxUW2rPsNTpI+N4OpsJno+h12B2yN9LQkLRzVS/5lZYuatW8vSKQ049bbOU54STslStoalS7Ds2tkSt7BJuJ6ok+xcAjjtmXFQsFZEa723wgjqoicXH1KHjmQajpp1qqB5+hzvuJ0NV5F5ygR+kHbJtTSqvnyCM2NDKbJi8SClPrthooksk+UlcibG0RVUv+2ZzUOpzZ8jcrPW+4DLyqAMEdM43q4K4XcADbUpU7hLSQe5cBs7DYZciDsRSWxRZEbI8qIaba3TnvWlhNdiUMgkV+WoFd/NnPHCNxZ4jiWW4xkoTKCVOZWffJ3yOFWbe31iTARGHRdCMTgs3F4Uchr5E9ns/gVqXxcsBn0p16/qEpLtA8rbx3OqlYgfUqyi5h2nlN2kqAAYkSYoO4Zp3BlVKxFOXQgtykCdICjAiYYg62w93+Biop40ZCqO3bRnh6ecMz0LDNpaFoQLP3MrAi1BOXhFJwOJds0hpA0zU3BkmnvAgh8FTn7nQ2GVeh7wxLzgLgq//VPFqO7ennM8PQS885nhrc3v0pSJyc6ipBWDjGgXb3oYXE7viU9KFyu4QjA==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700016)(376014)(7416014)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	HBorQBwVqnK5U+f7dk6WBAXdH1t4NyyYVCRu9ruR7QyHDdX9MRU9+hdlFtlHgASA01ryaClTXq4I2iy2ANZJ4uGh+BWdU7V9ICbgqBKhawEv04wqZ9C7DNrakSFjeqLFK6oCvhOxXCcZ0tC4aqHqFrNQmC8SXc/a9PEtBw5OYanEFMVXJW7+pd+ww0PRK49IW/qrDCe2s8tnHz1PgOeUEfWpCqQAK6amwA+fAngMNzPtu2KiZ44ysXhGng5fCIJa/bxsNnzUxm3ikEEkz32xbV6xAktzn7H/BFK2YBN+DQZbnjlXH2feY/1nzPvalqz/kBlAJQS1FvlN0Yzl1ZsHZrJbC4B8MLWlTNl4B/wsYJ4g9YfLyd2eYL6F2EmMR2aq4/xJ5uFXxK/woQBZdemZrFdyeomsft3rG/rJFX2CzX+GKT3nw7dsee0VdglwOPL2
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2026 11:26:44.9632
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2c07b846-f955-4f69-d776-08de86739147
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00001CDF.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB999098
+Content-Transfer-Encoding: 8bit
 
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 
-Ioana Ciornei <ioana.ciornei@nxp.com> writes:
+For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+---
+bng_en: add ethtool link settings, get_link, and nway_reset
 
-> Extend lib.sh so that it's able to parse driver/net/net.config and
-> environment variables such as NETIF, REMOTE_TYPE, LOCAL_V4 etc described
-> in drivers/net/README.rst.
->
-> In order to make the transition towards running with a single local
-> interface smoother for the bash networking driver tests, beside sourcing
-> the net.config file also translate the new env variables into the old
-> style based on the NETIFS array. Since the NETIFS array only holds the
-> network interface names, also add a new array - TARGETS - which keeps
-> track of the target on which a specific interfaces resides - local,
-> netns or accesible through an ssh command.
->
-> For example, a net.config which looks like below:
->
-> 	NETIF=eth0
-> 	LOCAL_V4=192.168.1.1
-> 	REMOTE_V4=192.168.1.2
-> 	REMOTE_TYPE=ssh
-> 	REMOTE_ARGS=root@192.168.1.2
->
-> will generate the NETIFS and TARGETS arrays with the following data.
->
-> 	NETIFS[p1]="eth0"
-> 	NETIFS[p2]="eth2"
->
-> 	TARGETS[eth0]="local:"
-> 	TARGETS[eth2]="ssh:root@192.168.1.2"
->
-> The above will be true if on the remote target, the interface which has
-> the 192.168.1.2 address is named eth2.
->
-> Since the TARGETS array is indexed by the network interface name,
-> document a new restriction README.rst which states that the remote
-> interface cannot have the same name as the local one.
+Add get/set_link_ksettings, get_link, and nway_reset support. Report
+supported, advertised, and link-partner speeds across NRZ, PAM4, and
+PAM4-112 signaling modes. Enable lane count reporting.
 
-Isn't this going to be a somewhat common scenario though?
+> diff --git a/drivers/net/ethernet/broadcom/bnge/bnge.h b/drivers/net/ethernet/broadcom/bnge/bnge.h
+> index 83ee4749cc70..e9b83c0c64b6 100644
+> --- a/drivers/net/ethernet/broadcom/bnge/bnge.h
+> +++ b/drivers/net/ethernet/broadcom/bnge/bnge.h
 
-> Also keep the old way of populating the NETIFS variable based on the
-> command line arguments. This will be invoked in case NETIF is not
-> defined.
->
-> Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-> ---
-> Changes in v3:
-> - s/TARGET/CUR_TARGET
-> - this used to be patch #2/9 in v2. Swapped the two patches so that the
->   run_cmd used in this patch is defined earlier, not later.
-> Changes in v2:
-> - patch is new
->
->  .../testing/selftests/drivers/net/README.rst  |   3 +
->  tools/testing/selftests/net/forwarding/lib.sh | 130 ++++++++++++++++--
->  2 files changed, 124 insertions(+), 9 deletions(-)
->
-> diff --git a/tools/testing/selftests/drivers/net/README.rst b/tools/testing/selftests/drivers/net/README.rst
-> index c94992acf10b..8d8d9d62e763 100644
-> --- a/tools/testing/selftests/drivers/net/README.rst
-> +++ b/tools/testing/selftests/drivers/net/README.rst
-> @@ -26,6 +26,9 @@ The netdevice against which tests will be run must exist, be running
->  Refer to list of :ref:`Variables` later in this file to set up running
->  the tests against a real device.
->  
-> +Also, make sure that if you are using a remote machine for traffic injection,
-> +the local and remote interfaces have different names.
-> +
->  Both modes required
->  ~~~~~~~~~~~~~~~~~~~
->  
-> diff --git a/tools/testing/selftests/net/forwarding/lib.sh b/tools/testing/selftests/net/forwarding/lib.sh
-> index cf40cb766c68..fb5aa56343e1 100644
-> --- a/tools/testing/selftests/net/forwarding/lib.sh
-> +++ b/tools/testing/selftests/net/forwarding/lib.sh
-> @@ -3,6 +3,7 @@
->  
->  ##############################################################################
->  # Topology description. p1 looped back to p2, p3 to p4 and so on.
-> +#shellcheck disable=SC2034 # SC doesn't see our uses of global variables
->  
->  declare -A NETIFS=(
->      [p1]=veth0
-> @@ -17,6 +18,26 @@ declare -A NETIFS=(
->      [p10]=veth9
->  )
->  
-> +# Array indexed by the network interface name keeping track of the target on
-> +# which the interface resides. Values will be strings of the following format -
-> +# <type>:<args>.
-> +# TARGETS[eth0]="local:" - meaning that the eth0 interface is accessible locally
-> +# TARGETS[eth1]="netns:foo" - eth1 is in the foo netns
-> +# TARGETS[eth2]="ssh:root@10.0.0.2" - eth2 is accessible through running the
-> +# 'ssh root@10.0.0.2' command.
-> +declare -A TARGETS=(
+[ ... ]
 
-This is a helper array for internal use only, not a user interface. It
-should just be declared suitably close to where it's actually
-initialized. It doesn't even need its own initialization, there's code
-down there to initialize it accordingly.
+> diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_link.c b/drivers/net/ethernet/broadcom/bnge/bnge_link.c
+> index e5a7b48f6a3f..03beb5593069 100644
+> --- a/drivers/net/ethernet/broadcom/bnge/bnge_link.c
+> +++ b/drivers/net/ethernet/broadcom/bnge/bnge_link.c
 
-> +    [veth0]="local:"
-> +    [veth1]="local:"
-> +    [veth2]="local:"
-> +    [veth3]="local:"
-> +    [veth4]="local:"
-> +    [veth5]="local:"
-> +    [veth6]="local:"
-> +    [veth7]="local:"
-> +    [veth8]="local:"
-> +    [veth9]="local:"
-> +)
-> +
->  # Port that does not have a cable connected.
->  : "${NETIF_NO_CABLE:=eth8}"
->  
-> @@ -340,17 +361,108 @@ fi
->  ##############################################################################
->  # Command line options handling
->  
-> -count=0
-> +check_env() {
-> +	local vars_needed=("LOCAL_V4,LOCAL_V6"
-> +			   "REMOTE_V4,REMOTE_V6"
-> +			   "REMOTE_TYPE"
-> +			   "REMOTE_ARGS")
+[ ... ]
 
-Given how much hand-rolled code is needed for cross-checking local x
-remote config symmetry anyway, I wonder if this whole thing should just
-be very simply:
-
-	if [[ ! (( -n "$LOCAL_V4" && -n "$REMOTE_V4") ||
-		 ( -n "$LOCAL_V6" && -n "$REMOTE_V6" )) ]]; then
-		echo "SKIP: Invalid environment, missing or inconsistent LOCAL_V4/REMOTE_V4/LOCAL_V6/REMOTE_V6"
-                exit "$ksft_skip"
-        fi
-
-Then you still need a manual check for REMOTE_TYPE and REMOTE_ARGS, but
-that's still just three checks all told like the current code, and we
-get rid of the double nested loop that's kinda tricky to understand. It
-doesn't look like the generalization really pays off here.
-
-> +	local missing=()
-> +	local choice
-> +
-> +	# If a choice has multiple comma separated options, at least one must
-> +	# exist
-> +	for choice in "${vars_needed[@]}"; do
-> +		IFS=',' read -ra entries <<< "$choice"
-
-Entries should be declared as local.
-
-> +
-> +		local found=0
-> +		for entry in "${entries[@]}"; do
-> +			if [[ -n "${!entry}" ]]; then
-> +				found=1
-> +				break
-> +			fi
-> +		done
->  
-> -while [[ $# -gt 0 ]]; do
-> -	if [[ "$count" -eq "0" ]]; then
-> -		unset NETIFS
-> -		declare -A NETIFS
-> +		if [[ $found -eq 0 ]]; then
-> +			missing+=("$choice")
-> +		fi
-> +	done
-> +
-> +	# Make sure v4 / v6 configs are symmetric
-> +	if [[ (-n "${LOCAL_V6}" && -z "${REMOTE_V6}") || \
-> +	      (-z "${LOCAL_V6}" && -n "${REMOTE_V6}") ]]; then
-> +		missing+=("LOCAL_V6,REMOTE_V6")
->  	fi
-> -	count=$((count + 1))
-> -	NETIFS[p$count]="$1"
-> -	shift
-> -done
-> +
-> +	if [[ (-n "${LOCAL_V4}" && -z "${REMOTE_V4}") || \
-> +	      (-z "${LOCAL_V4}" && -n "${REMOTE_V4}") ]]; then
-> +		missing+=("LOCAL_V4,REMOTE_V4")
-> +	fi
-> +
-> +	if [[ ${#missing[@]} -gt 0 ]]; then
-> +		echo "SKIP: Invalid environment, missing configuration: ${missing[*]}"
-> +		echo "Please see tools/testing/selftests/drivers/net/README.rst"
-> +		exit "$ksft_skip"
-> +	fi
-> +}
-> +
-> +get_ifname_by_ip()
+> +int bnge_set_link_ksettings(struct net_device *dev,
+> +			    const struct ethtool_link_ksettings *lk_ksettings)
 > +{
-> +	local ip_addr=$1; shift
+> +	const struct ethtool_link_settings *base = &lk_ksettings->base;
+> +	struct bnge_ethtool_link_info *elink_info;
+> +	struct bnge_net *bn = netdev_priv(dev);
+> +	struct bnge_link_info *link_info;
+> +	struct bnge_dev *bd = bn->bd;
+> +	bool set_pause = false;
+> +	int rc = 0;
 > +
-> +	run_cmd ip -j addr show to "$ip_addr" | jq -r '.[].ifname'
-> +}
+> +	elink_info = &bn->eth_link_info;
+> +	link_info = &bd->link_info;
 > +
-> +# If there is a configuration file, source it
-> +if [[ -f $net_forwarding_dir/../../drivers/net/net.config ]]; then
-> +	source "$net_forwarding_dir/../../drivers/net/net.config"
-> +fi
-
-This is going to impact all tests though, not just those that are meant
-to work with this. If I have this file, it sets NETIF, and all my
-forwarding tests (presumably) break, because NETIFS doesn't get
-configured correctly.
-
-The requirements for driver tests are different from forwarding tests.
-In particular, interfaces do not belong to driver tests, the test can't
-bring them up or down, reassign addresses etc., merely to use them for
-traffic. (Which you know, I'm just stating it for context.) So I think
-there needs to be an opt-in variable for this stuff. Like setting
-DRIVER_TEST_CONFORMANT=yes before sourcing the library or whatever.
-
-Then NETIF ceases to be a tell and becomes an environment requirement
-for check_env to validate like the others.
-
-(Another alternative is to extract a common core from lib.sh and have
-both lib.sh and net/driver/lib.sh use that. But that's more of a change
-and I'm not even sure it's the right way to slice it.)
-
-> +# In case NETIF is specified, then the test expects to pass the arguments
-> +# through the variables specified in drivers/net/README.rst file. If not,
-> +# fallback on parsing the script arguments for interface names.
-> +if [[ -v NETIF ]]; then
-> +	if (( NUM_NETIFS > 2)); then
-> +		echo "SKIP: NETIF defined and NUM_NETIFS is bigger than 2"
-> +		exit "$ksft_skip"
-> +	fi
+> +	if (!BNGE_PHY_CFG_ABLE(bd))
+> +		return -EOPNOTSUPP;
 > +
-> +	check_env
-> +
-> +	# Populate the NETIF and TARGETS arrays automatically based on the
-> +	# environment variables
-> +	unset NETIFS
-> +	declare -A NETIFS
-> +
-> +	NETIFS[p1]="$NETIF"
-> +	TARGETS[$NETIF]="local:"
-> +
-> +	# Locate the name of the remote interface
-> +	if [[ -v REMOTE_V4 ]]; then
-> +		remote_netif=$(CUR_TARGET="$REMOTE_TYPE:$REMOTE_ARGS" get_ifname_by_ip "$REMOTE_V4")
-> +	else
-> +		remote_netif=$(CUR_TARGET="$REMOTE_TYPE:$REMOTE_ARGS" get_ifname_by_ip "$REMOTE_V6")
-> +	fi
-> +	if [[ ! -n "$remote_netif" ]]; then
-> +		echo "SKIP: cannot find remote interface"
-> +		exit "$ksft_skip"
-> +	fi
+> +	if (base->autoneg == AUTONEG_ENABLE) {
+> +		bnge_set_ethtool_speeds(bn,
+> +					lk_ksettings->link_modes.advertising);
+> +		elink_info->autoneg |= BNGE_AUTONEG_SPEED;
+> +		if (!elink_info->advertising && !elink_info->advertising_pam4) {
+> +			elink_info->advertising =
+> +				link_info->support_auto_speeds;
+> +			elink_info->advertising_pam4 =
+> +				link_info->support_pam4_auto_speeds;
+> +		}
 
-This should check that $NETIF != $remote_netif.
+When autoneg is enabled but no speeds are advertised, does this code
+correctly handle SPEEDS2 devices?
 
-> +	NETIFS[p2]="$remote_netif"
-> +	TARGETS[$remote_netif]="$REMOTE_TYPE:$REMOTE_ARGS"
-> +else
-> +	count=0
-> +
-> +	while [[ $# -gt 0 ]]; do
-> +		if [[ "$count" -eq "0" ]]; then
-> +			unset NETIFS
-> +			declare -A NETIFS
-> +		fi
-> +		count=$((count + 1))
-> +		NETIFS[p$count]="$1"
-> +		TARGETS[$1]="local:"
-> +		shift
-> +	done
-> +fi
->  
->  ##############################################################################
->  # Network interfaces configuration
+On a SPEEDS2 device (bd->phy_flags & BNGE_PHY_FL_SPEEDS2), the fallback
+populates elink_info->advertising with support_auto_speeds and
+elink_info->advertising_pam4 with support_pam4_auto_speeds.
 
+However, for SPEEDS2 devices, the firmware expects speed masks encoded in
+the SPEEDS2 format (using support_auto_speeds2), not the legacy format
+(using support_auto_speeds or support_pam4_auto_speeds).
+
+Looking at how this value is used in bnge_hwrm_set_link_common() in patch v2
+(c367afb6b104):
+
+    if (bd->phy_flags & BNGE_PHY_FL_SPEEDS2) {
+        req->auto_link_speeds2_mask = elink_info->advertising;
+        ...
+    } else {
+        req->auto_link_speed_mask = elink_info->advertising;
+        req->auto_pam4_link_speed_mask = elink_info->advertising_pam4;
+    }
+
+The firmware will receive legacy NRZ speed bits in auto_link_speeds2_mask,
+which it will interpret as SPEEDS2-encoded bits, potentially negotiating the
+wrong link speed.
+
+Compare with bnge_support_speed_dropped() in the same patch series
+(c367afb6b104), which handles this case differently when support speeds
+change:
+
+    if (bd->phy_flags & BNGE_PHY_FL_SPEEDS2) {
+        link_info->advertising = link_info->support_auto_speeds2;
+        ...
+    } else {
+        link_info->advertising = link_info->support_auto_speeds;
+        link_info->advertising_pam4 = link_info->support_pam4_auto_speeds;
+    }
+
+Should bnge_set_link_ksettings() check bd->phy_flags & BNGE_PHY_FL_SPEEDS2 and
+use support_auto_speeds2 for the fallback on SPEEDS2 devices?
+
+> +		/* any change to autoneg will cause link change, therefore the
+> +		 * driver should put back the original pause setting in autoneg
+> +		 */
+> +		if (!(bd->phy_flags & BNGE_PHY_FL_NO_PAUSE))
+> +			set_pause = true;
+> +	} else {
+
+[ ... ]
