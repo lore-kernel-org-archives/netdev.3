@@ -1,106 +1,137 @@
-Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C5A346AF0
-	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 07:23:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2198B2DC782
+	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 07:26:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773991428; cv=none; b=dSQfm34U0zN+c99EK8kTJM6dUAJK6rcDjsa0w1V43ozFd//IJtFGfJspeHjDG71lt9zDDSwUpD7fufh9oW4pOEL6ksGRiuFz1DSa2rj/fnnoyrH6iiE1IyMTOl89HVnxfFjtlzgRUUn7ZlfUvp0G8eEDBU7H6qaqr2WrShTASLA=
+	t=1773991611; cv=none; b=ZHP/Tm33+SUZe+VsopWfFYGcUM3ycfwROqYvuEagAb464HxRAaphzqOH6esr7/X/4GZg9r/nDQbPuEUOCrlWcBYzSz2xt9KpbndfAEgmXPsLbV28X1QnLNooPmosj1itBM6rOY6UwvB2bWqaUKJ2iGV5zgfPscii1JZLLBY0yoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773991428; c=relaxed/simple;
-	bh=Y9OVeBeeN5Q3PsVNqTcmhtkG6LF1hCye0tFHmCw/Svo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S3pZqKdbxqaW+Ccq4BxXDUOCfODe5Ib0CYVRNEOJONTQCxjOYM6uFSg0p1QVCMRy/7iUk9fMhnuBOQHVgknrBk4mYxpVfQbuClurAQ/vNU1mfAPJXpVZxgaUJDXf+TJXsaNlljTqXjikrf2PmrxlhnJP5aW0kSefeNCFVY3gMUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=oxkG1np1; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=5l9i2T7z; arc=none smtp.client-ip=202.12.124.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	s=arc-20240116; t=1773991611; c=relaxed/simple;
+	bh=vMQdNvrRme6yVeAJXlE2gsl4gWcmXQsoRwYJ3tDkr/8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JSuWMBCW5/0238sUonhc88lHTjecHoJ4Cogc6NtxMoLNDrgbMEka1bNbo/fJfdJJVlmkG+5ewZDMBxRDzOJdN9jG5CEJ4J0palAr9uOWReE/EASy5whZLhV3g6swe6D6yqwpNqOFzLUOuXPEZ9AQJ9wkQf33PStAvXLeWI2jLe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lo8JvIkh; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="oxkG1np1";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="5l9i2T7z"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfout.stl.internal (Postfix) with ESMTP id 3C14C1D00192;
-	Fri, 20 Mar 2026 03:23:45 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Fri, 20 Mar 2026 03:23:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1773991425; x=
-	1774077825; bh=m4jyU1+JxgeUKMr0Gw6YvLM9rurXxcaOQ2rHtLirRZw=; b=o
-	xkG1np1xk5BXK3AchAPsC5AkHs9M08UyPNnhhhbTKPf/xs8F3iyMlE27/4fygMHD
-	7QWVa3mWHli6/EX03ufzYxVGrqLF0iwiXrGbCD2TOKRedzabcJnhHoqOOZppMc5W
-	3a4FubcoBheXC8LDa+lTsdR2xhTi4/w69QuPIlz5kcON3daa8W9BvwYsG+RGxcT+
-	j1nrRx+k2n9zrLQJw3HXyE75xji+Vq0xC8Y4InMemg8lJZ1unR1wGkdvx1vCtapY
-	bjSwj733N/xmzCcHKnM4KAtMaXrgM+mgFdSlp3ugOoXsrOWhpplSHUMvVIuIzNv7
-	p2zvjgxM6TPSJiw295rLQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1773991425; x=1774077825; bh=m4jyU1+JxgeUKMr0Gw6YvLM9rurXxcaOQ2r
-	HtLirRZw=; b=5l9i2T7zEXtzetBppWF4x+99eJv1OAK9Fgttvr7EyG9ykwGAwSz
-	KADh7nf/W24D6W+SlipUB4i2RyxbtODuYoWWSD2nbfmScBrL5TR7SUkU5nRBF2XG
-	zwNuJlc72T5FLIUJTPd5opWvP5UYdhOO+wLLp/FEHQwgLUVqLz8oJySJYGB5XSj2
-	rrS1iwFhPQoscZSEKGOYFNPsyC1PKA2F+QtgEGTMgXqCcuhOkzvvK2NSdY7cR+kb
-	Dhk73VcZzGKD/yRfZuQBeCEoeAgjNTxsUgb3LEXdnmV33b69fkEYtFr+nPVRneCA
-	t1isE5P/CAR3biIA0PRBrq8ieTDYybJ7KUA==
-X-ME-Sender: <xms:APa8afPAXKee7LoqIofWzutHkYyOEUGkmY3-yzz8k7MBBmdFIRhVGA>
-    <xme:APa8aRZxruPNMrcY6JRc6tz6o2AScWE3PvZby7GtgD1duO5MugDFvcnzmEjhE96dc
-    51ZzJv3lHdJeseb3fDsmXPIlnvCS_T49VEMLu4r0RGuX5fWNX3Q4w>
-X-ME-Received: <xmr:APa8abrypTN9UiBaiNte_IRETAtcHpjj3je5GkGPoprz7p1OGYKU77LZRR98>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdelvdekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtjeenucfhrhhomhepufgrsghrihhn
-    rgcuffhusghrohgtrgcuoehsugesqhhuvggrshihshhnrghilhdrnhgvtheqnecuggftrf
-    grthhtvghrnhepuefhhfffgfffhfefueeiudegtdefhfekgeetheegheeifffguedvueff
-    fefgudffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epshgusehquhgvrghshihsnhgrihhlrdhnvghtpdhnsggprhgtphhtthhopeefpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
-    khhunhhihihusehgohhoghhlvgdrtghomh
-X-ME-Proxy: <xmx:APa8adb4_Q288KlXBu5_7WK5nO9b1IJqKIF2NBOhLGC5Ty1LBpwJog>
-    <xmx:APa8abSyXIaqRtClbPWSttS_MRBeGDc4R36_VbXO7oUIYPhmLilR-Q>
-    <xmx:APa8ac5Ph15ek6yGEfRvrd5YUAQZYPtPeVIpt0muwRs-Cial6mf46A>
-    <xmx:APa8aYwYC3XwoErVUn6r1z5A0Ug1La-0ZqMQjMs_vloMfAjNEOQctw>
-    <xmx:Afa8aRC-S-JoJ6XA-fXAB9I5jD4X4QDTgPdxaZruf2cqDUO9AArSL6rq>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 20 Mar 2026 03:23:44 -0400 (EDT)
-Date: Fri, 20 Mar 2026 08:23:42 +0100
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, Kuniyuki Iwashima <kuniyu@google.com>
-Subject: Re: [PATCH net] rtnetlink: fix leak of SRCU struct in
- rtnl_link_register
-Message-ID: <abz1_nbd2ep-RL6Q@krikkit>
-References: <5ed5489ecdd05c43bd551804f3bd020ae349f3ca.1773849195.git.sd@queasysnail.net>
- <20260319170541.27c75eac@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lo8JvIkh"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-486fb439299so11621855e9.0
+        for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 00:26:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773991608; x=1774596408; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=n3KJVSi9z2Jj/Hmyk1wzxgMI7Rqoa0UBGy/TFgOK0dk=;
+        b=lo8JvIkh99/vtEmaRv0YbTHuIgkZXzP2yjuZfYhhyA8bQjWfIObyvcVgyOWT3e2BqS
+         iFwoPn89scvSGd8fW3/1C6xb9i5XdwvraO40t3xYawzlrmm4aApfyoG4Jl+cJrJWgH08
+         nFwp1JbvdLiGn8KZVQ6VSYH+tuQTHZGXyEaj+eQCbStSKkuMDS/ZFIUErKLOLkWM9St1
+         2WwPjA4RzzlrTzJ1dnNLU6Zjdb4QuMF7crm3IwF1xY0UrOYfqRWuW7LsPhOtlkN/N5ry
+         zNTLTM3nMNGojr5044DICXF0xu+yMAkHU3sjoJ0ib24j1MoYK/tYbR10JJP2GSu0vWiG
+         PPBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773991608; x=1774596408;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=n3KJVSi9z2Jj/Hmyk1wzxgMI7Rqoa0UBGy/TFgOK0dk=;
+        b=q7LqXmzQ8piLumPuJSYz2FB/bSHCGm+G9qSNlc7Itv51+bJb4XHhXNwkVye8yBR7xA
+         VKCzFRZZJv+2X9GM0yPjXTmkY6CkVokyVhL7gTYlGkf4282JfFPCEHnMl6EPkm+94Ezg
+         eomhF3h0xUr/fVecNYlTd7S78OtVJxPsYFERzpJHQzMdbLGarKuaARVUv88RTl9uazHI
+         nglqc9uY+AoXP1NeJ9CwPQsSjYXTRJNpN+fAGQCWo40Fc9Rly9zMRVB7NFQp1WLgst8H
+         FifaF/u64bc2BANhMb9OPrLm2GVCI2iPuwQBITOqYAuaigX4zlYR4hWB4lr06Na4sl4v
+         VzTQ==
+X-Gm-Message-State: AOJu0YyBrKOTApmyLcOjN7nH1MA12PHLgW4XsuHU86xNx2Wrp7DLjr3e
+	jX+yXn9JTO1v5pfgn//MCJL7iwkyh9ST3ZHGWUqCNm+urX+++yWR2Tu4
+X-Gm-Gg: ATEYQzyhSPNLNU7Y6TmldN8BkOFwCIK/smG6fjBF1QDCmJKxJk1xDTkAS5koZ6MsMjl
+	SsD3uL3MEGAXXkOf8Cy3uZl4bANyTNI3vmUn+qSeaSNLZUaIKkatDHmjz1YjuN8w7bM0dwPllaW
+	+3QT1aKKZV4B4+3y+d+/oJfbcFSZxZF2eHv+rN7zx7F55GHQ7ymjplO9JkXKIE37ED+BXpbotne
+	BsqKFSEwg1ImoXL2+GDZMIO/h1z4ZMc1hmJHRy8YEakiMBfua7V1UUNbs4aD7AVkqdh0Ybzoi/3
+	nUdeKGxyP3MRuwZPBAEXPkdEHtUa67ig7S5OvfT15bsatIanrh5sKHwfo6WYXPd9ihGLAlxeuh2
+	tYxghzqHnX63JMYEAuygH+MG1VEQN25m8eGtNtPpmA5tSRkUKVmNJGGjLvpkgh5fBa0OvKN/Iz+
+	0qQnncld9QlZvRkc/tqEqba0c38e67OfDh3Aqt0PV/d+GUD0UmOHBAF8MHH9wmYWfi7fbWiTq0W
+	1mpLfNkMs9x
+X-Received: by 2002:a05:600c:698e:b0:480:3ad0:93bf with SMTP id 5b1f17b1804b1-486fee1af00mr24751375e9.24.1773991608143;
+        Fri, 20 Mar 2026 00:26:48 -0700 (PDT)
+Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486fe879d37sm14871185e9.1.2026.03.20.00.26.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Mar 2026 00:26:47 -0700 (PDT)
+From: David Carlier <devnexen@gmail.com>
+To: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	davem@davemloft.net,
+	Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org,
+	bpf <bpf@vger.kernel.org>,
+	David Carlier <devnexen@gmail.com>
+Subject: [PATCH bpf-next] bpf: use RCU-safe iteration in dev_map_redirect_multi() SKB path
+Date: Fri, 20 Mar 2026 07:26:45 +0000
+Message-ID: <20260320072645.16731-1-devnexen@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260319170541.27c75eac@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-2026-03-19, 17:05:41 -0700, Jakub Kicinski wrote:
-> On Wed, 18 Mar 2026 17:15:15 +0100 Sabrina Dubroca wrote:
-> >  	list_add_tail_rcu(&ops->list, &link_ops);
-> >  unlock:
-> > +	if (err)
-> > +		cleanup_srcu_struct(&ops->srcu);
-> > +
-> >  	mutex_unlock(&link_ops_mutex);
-> 
-> Does the cleanup have to be under the lock?
+The DEVMAP_HASH branch in dev_map_redirect_multi() uses
+hlist_for_each_entry_safe() to iterate hash buckets, but this function
+runs under RCU protection (called from xdp_do_generic_redirect_map()
+in softirq context). Concurrent writers (__dev_map_hash_update_elem,
+dev_map_hash_delete_elem) modify the list using RCU primitives
+(hlist_add_head_rcu, hlist_del_rcu).
 
-Right. I'll send a v2.
-(OTOH I don't think we'll ever have to worry about contention on this
-lock, but we've probably said that about many locks in the past)
+hlist_for_each_entry_safe() performs plain pointer dereferences without
+rcu_dereference(), missing the acquire barrier needed to pair with
+writers' rcu_assign_pointer(). On weakly-ordered architectures (ARM64,
+POWER), a reader can observe a partially-constructed node. It also
+defeats CONFIG_PROVE_RCU lockdep validation and KCSAN data-race
+detection.
 
+Replace with hlist_for_each_entry_rcu() using rcu_read_lock_bh_held()
+as the lockdep condition, consistent with the rcu_dereference_check()
+used in the DEVMAP (non-hash) branch of the same functions. Also fix
+the same incorrect lockdep_is_held(&dtab->index_lock) condition in
+dev_map_enqueue_multi(), where the lock is not held either.
+
+Fixes: e624d4ed4aa8 ("xdp: Extend xdp_redirect_map with broadcast support")
+Signed-off-by: David Carlier <devnexen@gmail.com>
+---
+ kernel/bpf/devmap.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/kernel/bpf/devmap.c b/kernel/bpf/devmap.c
+index 3d619d01088e..cc0a43ebab6b 100644
+--- a/kernel/bpf/devmap.c
++++ b/kernel/bpf/devmap.c
+@@ -665,7 +665,7 @@ int dev_map_enqueue_multi(struct xdp_frame *xdpf, struct net_device *dev_rx,
+ 		for (i = 0; i < dtab->n_buckets; i++) {
+ 			head = dev_map_index_hash(dtab, i);
+ 			hlist_for_each_entry_rcu(dst, head, index_hlist,
+-						 lockdep_is_held(&dtab->index_lock)) {
++						rcu_read_lock_bh_held()) {
+ 				if (!is_valid_dst(dst, xdpf))
+ 					continue;
+ 
+@@ -747,7 +747,6 @@ int dev_map_redirect_multi(struct net_device *dev, struct sk_buff *skb,
+ 	struct bpf_dtab_netdev *dst, *last_dst = NULL;
+ 	int excluded_devices[1+MAX_NEST_DEV];
+ 	struct hlist_head *head;
+-	struct hlist_node *next;
+ 	int num_excluded = 0;
+ 	unsigned int i;
+ 	int err;
+@@ -787,7 +786,7 @@ int dev_map_redirect_multi(struct net_device *dev, struct sk_buff *skb,
+ 	} else { /* BPF_MAP_TYPE_DEVMAP_HASH */
+ 		for (i = 0; i < dtab->n_buckets; i++) {
+ 			head = dev_map_index_hash(dtab, i);
+-			hlist_for_each_entry_safe(dst, next, head, index_hlist) {
++			hlist_for_each_entry_rcu(dst, head, index_hlist, rcu_read_lock_bh_held()) {
+ 				if (is_ifindex_excluded(excluded_devices, num_excluded,
+ 							dst->dev->ifindex))
+ 					continue;
 -- 
-Sabrina
+2.53.0
+
