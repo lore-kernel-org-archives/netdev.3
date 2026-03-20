@@ -1,48 +1,61 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C561136EA99;
-	Fri, 20 Mar 2026 11:56:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709BF39A06B;
+	Fri, 20 Mar 2026 12:08:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774007810; cv=none; b=rEX+ipcutgqR2t2qaXGLB3FiK1pkCwecTwXr08x4TO7304NccyXo2wTQcgQmpTkXlW/mH9myLXr2qCWenEbOdt5+EmiNlC49xiriXnNMtd4ayrPDnjRDI35JW4UJGRU1ZQ7xzZXzCgBb02RejjBOUfictLKnmgbFYic3qsf7GXs=
+	t=1774008519; cv=none; b=glExonf8n06qLpNcqqeKUtwEvbVlcORUtXvpl2dPHoopem9A6AIvqmwPQzRCZOjw1pb5NXMleBx3qHE2VCuVU/MQRHlltS/TYygMoVXxCIWIUal3XbCagcymwhP1cHFaBDR/PK5RCDdEfBGWYoezWZquZJJXp/JnmfNn061cP10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774007810; c=relaxed/simple;
-	bh=NByveJIMTOGWR8SYIDSI/wNbl0U2fDVDmDT1nEIR88g=;
+	s=arc-20240116; t=1774008519; c=relaxed/simple;
+	bh=rt5mAqVgT2DpnDuBJS+RgFzkBgiqbY7caCPN2LAI86M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DAYjF7yz8rENDr3UGJNbd/+8Os1DNPYfUAkjA+2LVAoT80q22FSD/qttRUEg657nAQ2Pdl2651gILZo0cV3G4XdVSFfqex3TnkFCQ9XE5dy0+l2MyVbfuO5gPJJmNN8eH87btVme6CdPnsrZ/F8K2VkUrFNVO//z9UDI6yI77K0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fdox1X3X; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=i+HrDL5QomWq82MkMhuMqIbFi3nD0zYnimSbA1kZRO2mBN4dytOs5n9E9v6qls5C+6dFjojUHtKul+flGU/Z+LbcXS//gBQd482C6Vk4tQ9AswvWPSiZ94LQMOPfkhLYwS8YSboD9kbyMc/f6v2eDkBet03DJdiz/1XoeLRnisE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ND1ESRaH; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fdox1X3X"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCAFEC4CEF7;
-	Fri, 20 Mar 2026 11:56:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774007810;
-	bh=NByveJIMTOGWR8SYIDSI/wNbl0U2fDVDmDT1nEIR88g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fdox1X3XI/XTc2+HitONJ4zG2JCCCbqZXGC0cZxx2Q465B9MBqpXw/f3y1RxXBA11
-	 nLKdHmCDjbRYZ9+kT/Ffrs29erK9QYrtY8x8bss422Q2sPEhkpxV+eVtgNGcZXn+0Y
-	 vpiOyIVRr2thikRXFC8pyF00sGxmpwMJ6p6DuXAJC7y3eyO1uGeKerj8Xp6VMoTcJ9
-	 LFfqfKUydZLxUGNjJzMtL/gPPuaqmjR75oklK+g8iQq8aY0yRn5OX1O1PGwTPQ/6Na
-	 HjKwO6MbctSzdctXjspGwZ3AhFcfuS14UiILubXxXwNl96nJgWGp/V82mIUdhmc0ta
-	 U43yNevnG9Rjw==
-Date: Fri, 20 Mar 2026 11:56:45 +0000
-From: Simon Horman <horms@kernel.org>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>, Mark Bloch <mbloch@nvidia.com>,
-	netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Gal Pressman <gal@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>
-Subject: Re: [PATCH net-next 0/3] net/mlx5e: Improve channel creation time
- via fast-path MKEY initialization
-Message-ID: <20260320115645.GE1753385@horms.kernel.org>
-References: <20260319074338.24265-1-tariqt@nvidia.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ND1ESRaH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774008519; x=1805544519;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=rt5mAqVgT2DpnDuBJS+RgFzkBgiqbY7caCPN2LAI86M=;
+  b=ND1ESRaHpxHvYdrBOzW/ecdMwpwPCLCMFdhYshpqGfigO0XzPmgAwJwN
+   jq+g7kZztdO0gVExJAXEXz1JI5x3Z/ijPE7TxxMIaTYQ1rw+8TmOe101e
+   JEosQ4MASLJNWqUdZ513ZQa6+6/tbPGsbF8cufL9+OSNQSV72lmbtCbiE
+   QGacXZ22O5HGKNEodpU3oUCrtcG/C1h7phWr4pgVB1sNkVImSguI9ibsj
+   EOUhkcfUB4ZF46qaAas5avCTXqjWSPjfrZhgb83FYZrBiCJOmnMycCI5V
+   ayedkqYdh5i5g5UrD0/uO61tFH+RI3ghxPdeNmzC4oMyVNMn2qU4pnxOM
+   Q==;
+X-CSE-ConnectionGUID: fxGVwqtCTGuECCT/egMyrw==
+X-CSE-MsgGUID: rESNOd8SRWOhux3XRuOaWw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11735"; a="74981525"
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
+   d="scan'208";a="74981525"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 05:08:38 -0700
+X-CSE-ConnectionGUID: QnkFAKxkSRyO93ncc+2hmg==
+X-CSE-MsgGUID: aCVnXZOuT4KHWhsptBu7bg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
+   d="scan'208";a="219080561"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by fmviesa010.fm.intel.com with ESMTP; 20 Mar 2026 05:08:36 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1003)
+	id E488295; Fri, 20 Mar 2026 13:08:34 +0100 (CET)
+Date: Fri, 20 Mar 2026 13:08:34 +0100
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Sean Chang <seanwascoding@gmail.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Chuck Lever <chuck.lever@oracle.com>,
+	David Laight <david.laight.linux@gmail.com>,
+	Anna Schumaker <anna@kernel.org>, netdev@vger.kernel.org,
+	linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 0/3] sunrpc/nfs: cleanup redundant debug checks and
+ refactor macros
+Message-ID: <ab04wi3x3JNVbvPm@black.igk.intel.com>
+References: <20260319141846.78222-1-seanwascoding@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,38 +64,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260319074338.24265-1-tariqt@nvidia.com>
+In-Reply-To: <20260319141846.78222-1-seanwascoding@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Thu, Mar 19, 2026 at 09:43:35AM +0200, Tariq Toukan wrote:
-> Hi,
+On Thu, Mar 19, 2026 at 10:18:43PM +0800, Sean Chang wrote:
+> This series cleans up redundant IS_ENABLED(CONFIG_SUNRPC_DEBUG) guards 
+> across sunrpc, nfsd, and lockd, as these checks are already handled 
+> within the dprintk macros.
 > 
-> This series improves channel creation time by moving per-channel MKEY
-> initialization from a slow-path FW command to a fast-path UMR WQE.
-> 
-> The benefit becomes more significant with larger MKEYs and a higher
-> number of channels.
-> 
-> On my setup with the maximum configuration (248 channels, MTU 9000,
-> RX/TX ring size 8K), the "interface up" operation is 2.081 seconds
-> faster:
-> 
-> Before: 5.618 seconds
-> After:  3.537 seconds
-> 
-> This corresponds to ~8.4 msec saved per channel.
-> 
-> Regards,
-> Tariq
-> 
-> Tariq Toukan (3):
->   net/mlx5e: Move RX MPWQE slowpath fields into a separate struct
->   net/mlx5e: RX, Pre-calculate pad value in MPWQE
->   net/mlx5e: Speed up channel creation by initializing MKEY entries via
->     UMR WQE
+> Additionally, it refactors the nfs_errorf() macros into a safer 
+> do-while(0) pattern and removes unused nfs_warnf() macros to improve 
+> code maintainability.
 
-Thanks,
+Shall we also revert the commit ebae102897e7 ("nfsd: Mark variable
+__maybe_unused to avoid W=1 build break") as it seems related to
+dprintk() issues?
 
-For the series:
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
