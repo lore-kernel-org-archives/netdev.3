@@ -1,327 +1,281 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65AA3C9420;
-	Fri, 20 Mar 2026 15:19:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79163CD8B0
+	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 15:41:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774019972; cv=none; b=pukNo1sz2jmjt77PNs/t/ISeLUBruVufXkFmgIARbRwtnWk/klVp0wmax5tpuJfk1xgP1K55HBy3u3+/PmO8BXYSgRqHqkWl/voMcgj1fAIAjAmGXzrknz6NI3vLK2dfEvDKVFNS7FelVMQ7u7RWt6vdUcsVdk0r0fDobM9DIOQ=
+	t=1774021279; cv=none; b=Aw+C4oh7iuJYv8eSWOdSxt00iXE8Bt4ClQVPklmVSMFgogLlDHSwRFFFEiQtp4B+hWF1oJe45erFO6mFxqjupFoA0lEOc3F9wnsCViSmgTkiGnf1NWrgN3jynlDbFnq2/d4++YgDMKOh6c65FNpniHshOaQHWcoqNU8VNLSqhLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774019972; c=relaxed/simple;
-	bh=fyuhCJJPgeb6CHmwWja8Nn05xaTwR576oJsamjQY8No=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QPd1CdohgsZh0yY8+aOs3yC20BPld7nkOWmgzaYrtgoDmiblA6ghpB17dNVOsvQDBmVoM8vYWcSy/nLIocaxtg5IaGmtwhsV7kHoOlJPiv4tgmeMqvsCYpYvqbZZuZAupr3uZMd7Mw5kP2dv8YpUfQ4emjpIt5Ra4DtFgobOUA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cwTa+tSg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774021279; c=relaxed/simple;
+	bh=7W8Zh+eJcNEP6cSAx/szdWUQ7Euc/dI9gMu3jX8uY4k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hcw/x1v76TGdE2mxB8Y+1SW80DYsdS3+D55nZdPKJfsMMC1HFh+xOO2wkQpwIZH8fOuz72IOD488U30GtN2951hKRSTuXOgX+IfEYD3KZaUA5M/Lt7OEYsjauOtDpq6u4B/ErendbIefNFrJ6Ee0RUerZK3hNicD2gFF7OkWe0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QEVWGRrS; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cwTa+tSg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 737A1C19425;
-	Fri, 20 Mar 2026 15:19:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774019971;
-	bh=fyuhCJJPgeb6CHmwWja8Nn05xaTwR576oJsamjQY8No=;
-	h=From:To:Cc:Subject:Date:From;
-	b=cwTa+tSgMimQq6HMXMam0ZUF3aIC3Lrfl1NbqShr1IrQg29Mgcn3kUbsBY35VBZHS
-	 XaVfR+ua8X3hSa8cWuMxgmSAbi/BCYcJ74veJ452vsA/4xTFnkN1ZtBg7CGwLhjyiy
-	 I8rbo1fpAnbBLy6vpoPqEkQf4khHVquzlopTGWGozGKua0sCHgCgywtBF8sRaKjtbd
-	 Sfd6NU4ZtBAcId5Omz68Iwtt8uOJxqGIKbRKuloQ5DaD4yO7SzrxUc6CDhJsz91tFS
-	 iBmSRaMXjD0dRQf7aOlAm79eIqi713WwF/br3Dc7MVm0SeiVznjx8to723nj5LaRrm
-	 Q9fQpvZ1HBXOw==
-From: Arnd Bergmann <arnd@kernel.org>
-To: Edward Cree <ecree.xilinx@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Jeff Garzik <jgarzik@redhat.com>,
-	Ben Hutchings <bhutchings@solarflare.com>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Breno Leitao <leitao@debian.org>,
-	Kees Cook <kees@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-net-drivers@amd.com,
-	linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH] net: sfc: avoid format string warning
-Date: Fri, 20 Mar 2026 16:19:16 +0100
-Message-Id: <20260320151924.3474821-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.5
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QEVWGRrS"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2adff872068so3646805ad.1
+        for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 08:41:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774021272; x=1774626072; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zNUDTw6UmasFeJqzydufaazuaNtX8ofv0HS08KI6BZg=;
+        b=QEVWGRrSmxHnKPGQYHSTm35KrVIkNuhUhtVZqtFWsblmKA7DHQKR2rIT2cnJuBmZOG
+         YO+zMiPVsPKIBu8sCHK8QHu4gA3Z2uQD1Joiuah3re1W9fzTkbI0sP/vmhTOABCwfXrc
+         j57B59ZbeaMcOsHpdQ3Yi9z6ovLhQaRZoS+2YyRd5LfJKFXPobwUkRXoRxpwYNFJSuYc
+         iuvXchq3Zl+QqRbQJ7vDLWQbZ5SGVxCnYcpua6E+sa1P78S83QRFjbOWJ+WepF6HmYD6
+         9DE0jI1Y/JRlhlqdhguZhOkSn64nL6NkhfjyOxAr2KPnnlWBebT+jg24b42YsoY2eNbu
+         qdgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774021272; x=1774626072;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zNUDTw6UmasFeJqzydufaazuaNtX8ofv0HS08KI6BZg=;
+        b=HrFasoj64VBq5pgCBrdzNIRgOUMPMnzW0vAn5tCH9RwcD0EQC5ZtL2l3qCfhJGYfRP
+         XHzkh/LGNA0rtR49sx6MPAYgaXL8iKKM9vsY0oQPHRyNKfL8mw/Zj23VLXr+NwgQ3KmR
+         fnBPFwB553c6XYXWdfywvWmXkUPzhWVHu6NQilA1tqjpKVKJnCOMPm2/X65JWOqgfhjJ
+         lYWZs20rS7qFKdFUNeEudF5PnZPVWfknPT5bxQqHvX5SiZ2G/oQe9S5TXNQI2RlhZe8/
+         O6tdC7KJU05EVUC6NtfwB7ktaxxjEThVmSciPbhiXDZX+3LvY3/iBtKvl9wehAjH8rQY
+         SyjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUi1o1sVLT4YiCJnvvu6BD7n3DJ/9LpMaTbWr06KA0qZpucQ6fpfhfBTf7dMDhI0TVnL53f4Kk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpsaenVHuxzySBtN+XGOt8aBJ4Cwb54Cz2VNT36vbe18NUIT/8
+	YUMXjAELxGAV+/dVHV96dpHzyvRKjX8CM15J1siksyZmeXV5XCAoEjU=
+X-Gm-Gg: ATEYQzyaIDMZHRtc38y9NUPiIeuqd/iJFlrUiIJ68m+1H58A0zNvuxNZhSWMPom1BnG
+	k0zx1hJES1Ixe8C4+VjtmmWENCmQnjZUMoJC+hnJgGYurpKNNyPDph/xQ56br0Go8fztutDYK8O
+	5w4IusxOybTNimKKP4yvPtl02GdJG04IixpfxYbP/H91xRTv+5W1OvMd8nzOhSNvzulZYbFy36l
+	QWSVM3YXzOMWIXNyt8d7xjDMCNJp9MBEf8QIJ3FZoVmsQ4XStghM1mDKH8jUhyQWMRhF8+YMUWK
+	aBMMb61o/CqIQ+hUVEY9nzh3HRLSe+OExe07bgrzsG9awM/YuQbCwd9jHcdqfB2k/Vjx0oLE7gb
+	z1CAIF2k2QgpAxCNQv+tM60BJV3wp8NML5FqQihiDavgy0Dy+yg8b3EFGBcLg0z6uG5qnrOM2bz
+	Bjr1v/lb7HLIlotOUG44p7nKHEf8cz1tlVydZZ4GEQC9OcIiOIYLtT3jqFdkVECMp1vwi4je0Pi
+	Xnh50zMig5WnIPyeg==
+X-Received: by 2002:a17:903:38cf:b0:2ae:47c9:68c4 with SMTP id d9443c01a7336-2b0827f7629mr35987865ad.50.1774021271829;
+        Fri, 20 Mar 2026 08:41:11 -0700 (PDT)
+Received: from localhost (c-76-102-12-149.hsd1.ca.comcast.net. [76.102.12.149])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0835429afsm26089295ad.26.2026.03.20.08.41.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Mar 2026 08:41:11 -0700 (PDT)
+Date: Fri, 20 Mar 2026 08:41:10 -0700
+From: Stanislav Fomichev <stfomichev@gmail.com>
+To: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
+Cc: Stanislav Fomichev <sdf@fomichev.me>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"horms@kernel.org" <horms@kernel.org>,
+	"corbet@lwn.net" <corbet@lwn.net>,
+	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"michael.chan@broadcom.com" <michael.chan@broadcom.com>,
+	"pavan.chebbi@broadcom.com" <pavan.chebbi@broadcom.com>,
+	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>,
+	"Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>,
+	"saeedm@nvidia.com" <saeedm@nvidia.com>,
+	"tariqt@nvidia.com" <tariqt@nvidia.com>,
+	"mbloch@nvidia.com" <mbloch@nvidia.com>,
+	"alexanderduyck@fb.com" <alexanderduyck@fb.com>,
+	"kernel-team@meta.com" <kernel-team@meta.com>,
+	"johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+	"sd@queasysnail.net" <sd@queasysnail.net>,
+	"jianbol@nvidia.com" <jianbol@nvidia.com>,
+	"dtatulea@nvidia.com" <dtatulea@nvidia.com>,
+	"mohsin.bashr@gmail.com" <mohsin.bashr@gmail.com>,
+	"Keller, Jacob E" <jacob.e.keller@intel.com>,
+	"willemb@google.com" <willemb@google.com>,
+	"skhawaja@google.com" <skhawaja@google.com>,
+	"bestswngs@gmail.com" <bestswngs@gmail.com>,
+	"kees@kernel.org" <kees@kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+	"leon@kernel.org" <leon@kernel.org>
+Subject: Re: [PATCH net-next v3 04/13] net: move promiscuity handling into
+ dev_rx_mode_work
+Message-ID: <ab1qllbwt2zCnQhI@mini-arch>
+Mail-Followup-To: Stanislav Fomichev <stfomichev@gmail.com>,
+	"Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"horms@kernel.org" <horms@kernel.org>,
+	"corbet@lwn.net" <corbet@lwn.net>,
+	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"michael.chan@broadcom.com" <michael.chan@broadcom.com>,
+	"pavan.chebbi@broadcom.com" <pavan.chebbi@broadcom.com>,
+	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>,
+	"Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>,
+	"saeedm@nvidia.com" <saeedm@nvidia.com>,
+	"tariqt@nvidia.com" <tariqt@nvidia.com>,
+	"mbloch@nvidia.com" <mbloch@nvidia.com>,
+	"alexanderduyck@fb.com" <alexanderduyck@fb.com>,
+	"kernel-team@meta.com" <kernel-team@meta.com>,
+	"johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+	"sd@queasysnail.net" <sd@queasysnail.net>,
+	"jianbol@nvidia.com" <jianbol@nvidia.com>,
+	"dtatulea@nvidia.com" <dtatulea@nvidia.com>,
+	"mohsin.bashr@gmail.com" <mohsin.bashr@gmail.com>,
+	"Keller, Jacob E" <jacob.e.keller@intel.com>,
+	"willemb@google.com" <willemb@google.com>,
+	"skhawaja@google.com" <skhawaja@google.com>,
+	"bestswngs@gmail.com" <bestswngs@gmail.com>,
+	"kees@kernel.org" <kees@kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+	"leon@kernel.org" <leon@kernel.org>
+References: <20260320012501.2033548-1-sdf@fomichev.me>
+ <20260320012501.2033548-5-sdf@fomichev.me>
+ <IA3PR11MB89866C27B28AE7D7D807F37EE54CA@IA3PR11MB8986.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <IA3PR11MB89866C27B28AE7D7D807F37EE54CA@IA3PR11MB8986.namprd11.prod.outlook.com>
 
-From: Arnd Bergmann <arnd@arndb.de>
+On 03/20, Loktionov, Aleksandr wrote:
+> 
+> 
+> > -----Original Message-----
+> > From: Stanislav Fomichev <sdf@fomichev.me>
+> > Sent: Friday, March 20, 2026 2:25 AM
+> > To: netdev@vger.kernel.org
+> > Cc: davem@davemloft.net; edumazet@google.com; kuba@kernel.org;
+> > pabeni@redhat.com; horms@kernel.org; corbet@lwn.net;
+> > skhan@linuxfoundation.org; andrew+netdev@lunn.ch;
+> > michael.chan@broadcom.com; pavan.chebbi@broadcom.com; Nguyen, Anthony
+> > L <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw
+> > <przemyslaw.kitszel@intel.com>; saeedm@nvidia.com; tariqt@nvidia.com;
+> > mbloch@nvidia.com; alexanderduyck@fb.com; kernel-team@meta.com;
+> > johannes@sipsolutions.net; sd@queasysnail.net; jianbol@nvidia.com;
+> > dtatulea@nvidia.com; sdf@fomichev.me; mohsin.bashr@gmail.com; Keller,
+> > Jacob E <jacob.e.keller@intel.com>; willemb@google.com;
+> > skhawaja@google.com; bestswngs@gmail.com; Loktionov, Aleksandr
+> > <aleksandr.loktionov@intel.com>; kees@kernel.org; linux-
+> > doc@vger.kernel.org; linux-kernel@vger.kernel.org; intel-wired-
+> > lan@lists.osuosl.org; linux-rdma@vger.kernel.org; linux-
+> > wireless@vger.kernel.org; linux-kselftest@vger.kernel.org;
+> > leon@kernel.org
+> > Subject: [PATCH net-next v3 04/13] net: move promiscuity handling into
+> > dev_rx_mode_work
+> > 
+> > Move unicast promiscuity tracking into dev_rx_mode_work so it runs
+> > under netdev_ops_lock instead of under the addr_lock spinlock. This is
+> > required because __dev_set_promiscuity calls dev_change_rx_flags and
+> > __dev_notify_flags, both of which may need to sleep.
+> > 
+> > Change ASSERT_RTNL() to netdev_ops_assert_locked() in
+> > __dev_set_promiscuity, netif_set_allmulti and __dev_change_flags since
+> > these are now called from the work queue under the ops lock.
+> > 
+> > Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> > Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+> > ---
+> >  Documentation/networking/netdevices.rst |  4 ++
+> >  net/core/dev.c                          | 79 +++++++++++++++++-------
+> > -
+> >  2 files changed, 57 insertions(+), 26 deletions(-)
+> > 
+> > diff --git a/Documentation/networking/netdevices.rst
+> > b/Documentation/networking/netdevices.rst
+> > index dc83d78d3b27..5cdaa1a3dcc8 100644
+> > --- a/Documentation/networking/netdevices.rst
+> > +++ b/Documentation/networking/netdevices.rst
+> > @@ -298,6 +298,10 @@ struct net_device synchronization rules
+> >  	Notes: Sleepable version of ndo_set_rx_mode. Receives snapshots
+> >  	of the unicast and multicast address lists.
+> > 
+> > +ndo_change_rx_flags:
+> > +	Synchronization: rtnl_lock() semaphore. In addition, netdev
+> > instance
+> > +	lock if the driver implements queue management or shaper API.
+> > +
+> >  ndo_setup_tc:
+> >  	``TC_SETUP_BLOCK`` and ``TC_SETUP_FT`` are running under NFT
+> > locks
+> >  	(i.e. no ``rtnl_lock`` and no device instance lock). The rest
+> > of diff --git a/net/core/dev.c b/net/core/dev.c index
+> > fedc423306fc..fc5c9b14faa0 100644
+> > --- a/net/core/dev.c
+> > +++ b/net/core/dev.c
+> > @@ -9574,7 +9574,7 @@ static int __dev_set_promiscuity(struct
+> > net_device *dev, int inc, bool notify)
+> >  	kuid_t uid;
+> >  	kgid_t gid;
+> > 
+> > -	ASSERT_RTNL();
+> > +	netdev_ops_assert_locked(dev);
+> Can you explain why do you add new hard precondition of ops lock must be held?
 
-Three sfc drivers contain the same *_fill_test() function that takes
-a format string argument that gets passed down to snprintf(), producing
-a warning with clang-22:
+The context is that in f792709e0baa ("selftests: net: validate team flags
+propagation") I had to add locking around NETDEV_CHANGE notifiers and
+add that ugly `if (notify) netdev_ops_assert_locked` check. After this
+patch I believe we are consistently calling __dev_set_promiscuity
+with the ops lock (for ops locked netdev), so we can cleanup this enforcement
+part. 
 
-drivers/net/ethernet/sfc/falcon/ethtool.c:227:60: error: diagnostic behavior may be improved by adding
-      the 'format(printf, 7, 8)' attribute to the declaration of 'ef4_fill_test' [-Werror,-Wmissing-format-attribute]
-  210 |                 snprintf(test_str, sizeof(test_str), test_format, test_id);
-      |                                                                          ^
-drivers/net/ethernet/sfc/falcon/ethtool.c:210:13: note: 'ef4_fill_test' declared here
+> >  	promiscuity = dev->promiscuity + inc;
+> >  	if (promiscuity == 0) {
+> > @@ -9610,16 +9610,8 @@ static int __dev_set_promiscuity(struct
+> > net_device *dev, int inc, bool notify)
+> > 
+> >  		dev_change_rx_flags(dev, IFF_PROMISC);
+> >  	}
+> 
+> ...
+> 
+> >  	__hw_addr_init(&uc_snap);
+> > @@ -9704,16 +9720,29 @@ static void dev_rx_mode_work(struct
+> > work_struct *work)
+> >  		if (!err)
+> >  			err = __hw_addr_list_snapshot(&mc_ref, &dev->mc,
+> >  						      dev->addr_len);
+> > -		netif_addr_unlock_bh(dev);
+> > 
+> >  		if (err) {
+> >  			netdev_WARN(dev, "failed to sync uc/mc
+> > addresses\n");
+> >  			__hw_addr_flush(&uc_snap);
+> >  			__hw_addr_flush(&uc_ref);
+> >  			__hw_addr_flush(&mc_snap);
+> > +			netif_addr_unlock_bh(dev);
+> >  			goto out;
+> >  		}
+> > 
+> > +		promisc_inc = dev_uc_promisc_update(dev);
+> > +
+> > +		netif_addr_unlock_bh(dev);
+> > +	} else {
+> > +		netif_addr_lock_bh(dev);
+> > +		promisc_inc = dev_uc_promisc_update(dev);
+> > +		netif_addr_unlock_bh(dev);
+> > +	}
+> > +
+> > +	if (promisc_inc)
+> > +		__dev_set_promiscuity(dev, promisc_inc, false);
+> But it's being called here without any netdev_lock_ops(dev) ?
 
-Rework these to take a varargs based test_format that allows better
-type checking and avoids this warning.
+We have the following at the start of dev_rx_mode_work:
+  rtnl_lock();
+  netdev_lock_ops(dev);
 
-Fixes: 3273c2e8c66a ("[netdrvr] sfc: sfc: Add self-test support")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- drivers/net/ethernet/sfc/ethtool_common.c     | 28 ++++++++++--------
- drivers/net/ethernet/sfc/falcon/ethtool.c     | 27 ++++++++++-------
- .../net/ethernet/sfc/siena/ethtool_common.c   | 29 +++++++++++--------
- 3 files changed, 49 insertions(+), 35 deletions(-)
-
-diff --git a/drivers/net/ethernet/sfc/ethtool_common.c b/drivers/net/ethernet/sfc/ethtool_common.c
-index 54f8e4626568..162be23edbe5 100644
---- a/drivers/net/ethernet/sfc/ethtool_common.c
-+++ b/drivers/net/ethernet/sfc/ethtool_common.c
-@@ -254,9 +254,10 @@ int efx_ethtool_set_pauseparam(struct net_device *net_dev,
-  *
-  * Fill in an individual self-test entry.
-  */
--static void efx_fill_test(unsigned int test_index, u8 *strings, u64 *data,
--			  int *test, const char *unit_format, int unit_id,
--			  const char *test_format, const char *test_id)
-+static void __printf(7, 8)
-+efx_fill_test(unsigned int test_index, u8 *strings, u64 *data,
-+	      int *test, const char *unit_format, int unit_id,
-+	      const char *test_format, ...)
- {
- 	char unit_str[ETH_GSTRING_LEN], test_str[ETH_GSTRING_LEN];
- 
-@@ -266,12 +267,15 @@ static void efx_fill_test(unsigned int test_index, u8 *strings, u64 *data,
- 
- 	/* Fill string, if applicable */
- 	if (strings) {
-+		va_list args;
- 		if (strchr(unit_format, '%'))
- 			snprintf(unit_str, sizeof(unit_str),
- 				 unit_format, unit_id);
- 		else
- 			strcpy(unit_str, unit_format);
--		snprintf(test_str, sizeof(test_str), test_format, test_id);
-+		va_start(args, test_format);
-+		vsnprintf(test_str, sizeof(test_str), test_format, args);
-+		va_end(args);
- 		snprintf(strings + test_index * ETH_GSTRING_LEN,
- 			 ETH_GSTRING_LEN,
- 			 "%-6s %-24s", unit_str, test_str);
-@@ -349,28 +353,28 @@ int efx_ethtool_fill_self_tests(struct efx_nic *efx,
- 	enum efx_loopback_mode mode;
- 
- 	efx_fill_test(n++, strings, data, &tests->phy_alive,
--		      "phy", 0, "alive", NULL);
-+		      "phy", 0, "alive");
- 	efx_fill_test(n++, strings, data, &tests->nvram,
--		      "core", 0, "nvram", NULL);
-+		      "core", 0, "nvram");
- 	efx_fill_test(n++, strings, data, &tests->interrupt,
--		      "core", 0, "interrupt", NULL);
-+		      "core", 0, "interrupt");
- 
- 	/* Event queues */
- 	efx_for_each_channel(channel, efx) {
- 		efx_fill_test(n++, strings, data,
- 			      &tests->eventq_dma[channel->channel],
- 			      EFX_CHANNEL_NAME(channel),
--			      "eventq.dma", NULL);
-+			      "eventq.dma");
- 		efx_fill_test(n++, strings, data,
- 			      &tests->eventq_int[channel->channel],
- 			      EFX_CHANNEL_NAME(channel),
--			      "eventq.int", NULL);
-+			      "eventq.int");
- 	}
- 
- 	efx_fill_test(n++, strings, data, &tests->memory,
--		      "core", 0, "memory", NULL);
-+		      "core", 0, "memory");
- 	efx_fill_test(n++, strings, data, &tests->registers,
--		      "core", 0, "registers", NULL);
-+		      "core", 0, "registers");
- 
- 	for (i = 0; true; ++i) {
- 		const char *name;
-@@ -380,7 +384,7 @@ int efx_ethtool_fill_self_tests(struct efx_nic *efx,
- 		if (name == NULL)
- 			break;
- 
--		efx_fill_test(n++, strings, data, &tests->phy_ext[i], "phy", 0, name, NULL);
-+		efx_fill_test(n++, strings, data, &tests->phy_ext[i], "phy", 0, "%s", name);
- 	}
- 
- 	/* Loopback tests */
-diff --git a/drivers/net/ethernet/sfc/falcon/ethtool.c b/drivers/net/ethernet/sfc/falcon/ethtool.c
-index 807c587eba3b..1ae8acb8fdc8 100644
---- a/drivers/net/ethernet/sfc/falcon/ethtool.c
-+++ b/drivers/net/ethernet/sfc/falcon/ethtool.c
-@@ -207,9 +207,10 @@ static void ef4_ethtool_set_msglevel(struct net_device *net_dev, u32 msg_enable)
-  *
-  * Fill in an individual self-test entry.
-  */
--static void ef4_fill_test(unsigned int test_index, u8 *strings, u64 *data,
-+static void __printf(7, 8)
-+ ef4_fill_test(unsigned int test_index, u8 *strings, u64 *data,
- 			  int *test, const char *unit_format, int unit_id,
--			  const char *test_format, const char *test_id)
-+			  const char *test_format, ...)
- {
- 	char unit_str[ETH_GSTRING_LEN], test_str[ETH_GSTRING_LEN];
- 
-@@ -219,12 +220,16 @@ static void ef4_fill_test(unsigned int test_index, u8 *strings, u64 *data,
- 
- 	/* Fill string, if applicable */
- 	if (strings) {
-+		va_list arg;
-+
- 		if (strchr(unit_format, '%'))
- 			snprintf(unit_str, sizeof(unit_str),
- 				 unit_format, unit_id);
- 		else
- 			strcpy(unit_str, unit_format);
--		snprintf(test_str, sizeof(test_str), test_format, test_id);
-+		va_start(arg, test_format);
-+		vsnprintf(test_str, sizeof(test_str), test_format, arg);
-+		va_end(arg);
- 		snprintf(strings + test_index * ETH_GSTRING_LEN,
- 			 ETH_GSTRING_LEN,
- 			 "%-6s %-24s", unit_str, test_str);
-@@ -303,28 +308,28 @@ static int ef4_ethtool_fill_self_tests(struct ef4_nic *efx,
- 	enum ef4_loopback_mode mode;
- 
- 	ef4_fill_test(n++, strings, data, &tests->phy_alive,
--		      "phy", 0, "alive", NULL);
-+		      "phy", 0, "alive");
- 	ef4_fill_test(n++, strings, data, &tests->nvram,
--		      "core", 0, "nvram", NULL);
-+		      "core", 0, "nvram");
- 	ef4_fill_test(n++, strings, data, &tests->interrupt,
--		      "core", 0, "interrupt", NULL);
-+		      "core", 0, "interrupt");
- 
- 	/* Event queues */
- 	ef4_for_each_channel(channel, efx) {
- 		ef4_fill_test(n++, strings, data,
- 			      &tests->eventq_dma[channel->channel],
- 			      EF4_CHANNEL_NAME(channel),
--			      "eventq.dma", NULL);
-+			      "eventq.dma");
- 		ef4_fill_test(n++, strings, data,
- 			      &tests->eventq_int[channel->channel],
- 			      EF4_CHANNEL_NAME(channel),
--			      "eventq.int", NULL);
-+			      "eventq.int");
- 	}
- 
- 	ef4_fill_test(n++, strings, data, &tests->memory,
--		      "core", 0, "memory", NULL);
-+		      "core", 0, "memory");
- 	ef4_fill_test(n++, strings, data, &tests->registers,
--		      "core", 0, "registers", NULL);
-+		      "core", 0, "registers");
- 
- 	if (efx->phy_op->run_tests != NULL) {
- 		EF4_BUG_ON_PARANOID(efx->phy_op->test_name == NULL);
-@@ -338,7 +343,7 @@ static int ef4_ethtool_fill_self_tests(struct ef4_nic *efx,
- 				break;
- 
- 			ef4_fill_test(n++, strings, data, &tests->phy_ext[i],
--				      "phy", 0, name, NULL);
-+				      "phy", 0, "%s", name);
- 		}
- 	}
- 
-diff --git a/drivers/net/ethernet/sfc/siena/ethtool_common.c b/drivers/net/ethernet/sfc/siena/ethtool_common.c
-index 76cbce2b9592..9a8e39c5a113 100644
---- a/drivers/net/ethernet/sfc/siena/ethtool_common.c
-+++ b/drivers/net/ethernet/sfc/siena/ethtool_common.c
-@@ -206,9 +206,9 @@ int efx_siena_ethtool_set_pauseparam(struct net_device *net_dev,
-  *
-  * Fill in an individual self-test entry.
-  */
--static void efx_fill_test(unsigned int test_index, u8 *strings, u64 *data,
--			  int *test, const char *unit_format, int unit_id,
--			  const char *test_format, const char *test_id)
-+static void __printf(7, 8)
-+efx_fill_test(unsigned int test_index, u8 *strings, u64 *data, int *test,
-+	      const char *unit_format, int unit_id, const char *test_format, ...)
- {
- 	char unit_str[ETH_GSTRING_LEN], test_str[ETH_GSTRING_LEN];
- 
-@@ -218,12 +218,16 @@ static void efx_fill_test(unsigned int test_index, u8 *strings, u64 *data,
- 
- 	/* Fill string, if applicable */
- 	if (strings) {
-+		va_list args;
-+
- 		if (strchr(unit_format, '%'))
- 			snprintf(unit_str, sizeof(unit_str),
- 				 unit_format, unit_id);
- 		else
- 			strcpy(unit_str, unit_format);
--		snprintf(test_str, sizeof(test_str), test_format, test_id);
-+		va_start(args, test_format);
-+		vsnprintf(test_str, sizeof(test_str), test_format, args);
-+		va_end(args);
- 		snprintf(strings + test_index * ETH_GSTRING_LEN,
- 			 ETH_GSTRING_LEN,
- 			 "%-6s %-24s", unit_str, test_str);
-@@ -301,28 +305,28 @@ static int efx_ethtool_fill_self_tests(struct efx_nic *efx,
- 	enum efx_loopback_mode mode;
- 
- 	efx_fill_test(n++, strings, data, &tests->phy_alive,
--		      "phy", 0, "alive", NULL);
-+		      "phy", 0, "alive");
- 	efx_fill_test(n++, strings, data, &tests->nvram,
--		      "core", 0, "nvram", NULL);
-+		      "core", 0, "nvram");
- 	efx_fill_test(n++, strings, data, &tests->interrupt,
--		      "core", 0, "interrupt", NULL);
-+		      "core", 0, "interrupt");
- 
- 	/* Event queues */
- 	efx_for_each_channel(channel, efx) {
- 		efx_fill_test(n++, strings, data,
- 			      &tests->eventq_dma[channel->channel],
- 			      EFX_CHANNEL_NAME(channel),
--			      "eventq.dma", NULL);
-+			      "eventq.dma");
- 		efx_fill_test(n++, strings, data,
- 			      &tests->eventq_int[channel->channel],
- 			      EFX_CHANNEL_NAME(channel),
--			      "eventq.int", NULL);
-+			      "eventq.int");
- 	}
- 
- 	efx_fill_test(n++, strings, data, &tests->memory,
--		      "core", 0, "memory", NULL);
-+		      "core", 0, "memory");
- 	efx_fill_test(n++, strings, data, &tests->registers,
--		      "core", 0, "registers", NULL);
-+		      "core", 0, "registers");
- 
- 	for (i = 0; true; ++i) {
- 		const char *name;
-@@ -332,7 +336,8 @@ static int efx_ethtool_fill_self_tests(struct efx_nic *efx,
- 		if (name == NULL)
- 			break;
- 
--		efx_fill_test(n++, strings, data, &tests->phy_ext[i], "phy", 0, name, NULL);
-+		efx_fill_test(n++, strings, data, &tests->phy_ext[i], "phy",
-+			      0, "%s", name);
- 	}
- 
- 	/* Loopback tests */
--- 
-2.39.5
-
+Or am I looking at something else?
