@@ -1,117 +1,109 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3F628003A
-	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 13:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37FED3BA23B
+	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 13:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774014497; cv=none; b=cK3gQDYk3nAm+9J3/Z6I8bGRF803jFkuC6KSQql50lBUoSr2ZJ6bPov627+LsM9J70m8haqgammrxo7pexHjm6qQAnylO9pv0hLaZtY+2xLiNlYKF6FjVS5YTou+lC90R8g/LTClZ7y4L4zdrgPaVifc5TXZVl4VbsnR2Gq7YI4=
+	t=1774014826; cv=none; b=frk0t6LyssY576XwV8k/PzZsCIIEbNvcp09SaOx6LXtigWRU31YrbjxlU8qjAaGQ/JPuu9UJAR+LtQEaDcRt+OmWc5clY9h26rytjTp9SLqZi36jnzdpuz/QQcyl3j41iWZOFHh9N9dkbtWwhK46e0Tv2q5m7/fbaXpd9VCmkmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774014497; c=relaxed/simple;
-	bh=Y+OW8BqNNnK+Q/r4MYs96W4Y+zUCtX/kEEnNFoydBrw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ni3gV7kpkG3nvmN0aJV5R9e4uKrMjuGY2cTVKg4PKsGCsOXBEgXPGtA8TUCmIvdm1N9hLBwYeN28q8hju7rHXps1ail0paNhkC779d7Ih/iPT9DYzCr6+qhuPk6mewt9ZX6LqtJqkRBOir6yP4q0HwfEwxGY/O1ZNoPU3bZR10U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LPErfDfk; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1774014826; c=relaxed/simple;
+	bh=nsansbrA9exd4wl5vfPa+yMLVXrtAYJN0VW+tgOTLXo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IdZTDkJimKR4VNl7NHsgVNO1YYrm3yuPO2Ekv1H3h6kl3oK92rQdHltio59MTyodiA3YesA8bsE9gKZs3DylQwoBFOVWlO97soaZuiNXKgCpk306IQa06O5dllL1ic8K7VsGMf6lSK8kFChLLNRhDVDUaChdPLfOQyC/TPsT350=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZgY+YEi7; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LPErfDfk"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZgY+YEi7"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774014494;
+	s=mimecast20190719; t=1774014818;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gO6QpMrOamrnkGecVbcYEcearzCJhtrpfGqA4fBYchI=;
-	b=LPErfDfkW80ZAm07IRn0EEhF5tUtRTIKypwDL3AcUKe/U0ItkTqHfEmnYaJOE7YuMq7Hkk
-	StR6i3REk+YZSos+141exaLYfBspAuLmDYVAygRr+mlqna2G4UFxv5BcWwrGp510Qf57fu
-	F0dQe4hhqktFMrNn1D/EWWke0ocySkE=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=/EP253Ita56izT2rWbDKalNcQ8a/uClSIqHZjfuXQU0=;
+	b=ZgY+YEi7OgC/SZES2EYaMaD/w/GnE2anP4eQ5MlRf/LdiyWJdaPk/0cjwi3riLJHKt35M1
+	YKh3L2aekv2tB3UGWUuXYpeYyeaxyhh/5m02czVb8TyFluY7X5UbxiWl8kzzdaDv7gUJpi
+	xwt/WknU0YpiTkm9id8Fpa5EQEcGhNE=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-388-eiFmF5t8NHuTtDRH4C7lVA-1; Fri,
- 20 Mar 2026 09:48:10 -0400
-X-MC-Unique: eiFmF5t8NHuTtDRH4C7lVA-1
-X-Mimecast-MFC-AGG-ID: eiFmF5t8NHuTtDRH4C7lVA_1774014489
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-680-QFNSuCzfONOXi7UmaxPa2g-1; Fri,
+ 20 Mar 2026 09:53:35 -0400
+X-MC-Unique: QFNSuCzfONOXi7UmaxPa2g-1
+X-Mimecast-MFC-AGG-ID: QFNSuCzfONOXi7UmaxPa2g_1774014814
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1468118005B7;
-	Fri, 20 Mar 2026 13:48:06 +0000 (UTC)
-Received: from [10.45.226.118] (unknown [10.45.226.118])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5F6B9180075B;
-	Fri, 20 Mar 2026 13:48:03 +0000 (UTC)
-Message-ID: <7dbb5130-72cf-49d2-bfac-3439deb1b2e3@redhat.com>
-Date: Fri, 20 Mar 2026 14:48:01 +0100
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B980719560AF;
+	Fri, 20 Mar 2026 13:53:33 +0000 (UTC)
+Received: from ShadowPeak.redhat.com (unknown [10.45.224.50])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2335B195394A;
+	Fri, 20 Mar 2026 13:53:29 +0000 (UTC)
+From: Petr Oros <poros@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Petr Oros <poros@redhat.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	intel-wired-lan@lists.osuosl.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH iwl-net] iavf: fix wrong VLAN mask for legacy Rx descriptors L2TAG2
+Date: Fri, 20 Mar 2026 14:53:26 +0100
+Message-ID: <20260320135326.1171433-1-poros@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 3/3] dpll: zl3073x: add hwmon support for input
- reference frequencies
-To: Guenter Roeck <linux@roeck-us.net>, netdev@vger.kernel.org
-Cc: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- Jiri Pirko <jiri@resnulli.us>,
- Prathosh Satish <Prathosh.Satish@microchip.com>,
- Vadim Fedorenko <vadim.fedorenko@linux.dev>, linux-kernel@vger.kernel.org,
- linux-hwmon@vger.kernel.org, Michal Schmidt <mschmidt@redhat.com>,
- Petr Oros <poros@redhat.com>, Simon Horman <horms@kernel.org>
-References: <20260320105915.149068-1-ivecera@redhat.com>
- <20260320105915.149068-4-ivecera@redhat.com>
- <964752ec-8e6d-444a-aad0-80da3acb2dab@roeck-us.net>
-Content-Language: en-US
-From: Ivan Vecera <ivecera@redhat.com>
-In-Reply-To: <964752ec-8e6d-444a-aad0-80da3acb2dab@roeck-us.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On 3/20/26 1:21 PM, Guenter Roeck wrote:
-> On 3/20/26 03:59, Ivan Vecera wrote:
->> Expose measured input reference frequencies via the hwmon interface
->> using custom sysfs attributes (freqN_input and freqN_label) since
->> hwmon has no native frequency sensor type. The frequency values are
->> read from the cached measurements updated by the periodic work thread.
->>
->> Cache the device ready state in struct zl3073x_dev so that
->> freq_input_show() can return -ENODATA without an I2C access when
->> the device firmware is not configured.
->>
->> Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-> 
-> "frequency" is not a hardware monitoring attribute. I understand that it is
-> convenient to report it as one, and that other drivers implement it as 
-> well,
-> but that doesn't change that.
-> 
-> I understand that the code lives outside the hardware monitoring 
-> subsystem and is
-> thus not in control of its maintainers, so you can essentially do 
-> whatever you want,
-> even if it is wrong. That doesn't change the fact that it is wrong.
-> 
-> However, do _not_ try to add it into the official list of hardware 
-> monitoring
-> attributes. I would NACK that.
-> 
-> Guenter
+The IAVF_RXD_LEGACY_L2TAG2_M mask was incorrectly defined as
+GENMASK_ULL(63, 32), extracting 32 bits from qw2 instead of the
+16-bit VLAN tag. In the legacy Rx descriptor layout, the 2nd L2TAG2
+(VLAN tag) occupies bits 63:48 of qw2, not 63:32.
 
-Hi Guenter,
+The oversized mask causes FIELD_GET to return a 32-bit value where the
+actual VLAN tag sits in bits 31:16. When this value is passed to
+iavf_receive_skb() as a u16 parameter, it gets truncated to the lower
+16 bits (which contain the 1st L2TAG2, typically zero). As a result,
+__vlan_hwaccel_put_tag() is never called and software VLAN interfaces
+on VFs receive no traffic.
 
-Understood. I recognize that frequency falls outside the strict scope of
-hardware monitoring and does not belong in the official hwmon ABI.
+This affects VFs behind ice PF (VIRTCHNL VLAN v2) when the PF
+advertises VLAN stripping into L2TAG2_2 and legacy descriptors are
+used.
 
-I'm using it here as a convenient way to expose these specific driver
-metrics, but I hear you loud and clear. I will absolutely not propose
-adding frequency to the official list of hwmon attributes or
-documentation.
+The flex descriptor path already uses the correct mask
+(IAVF_RXD_FLEX_L2TAG2_2_M = GENMASK_ULL(63, 48)).
 
-Thank you for your time and for reviewing the patch.
+Fixes: 2dc8e7c36d80 ("iavf: refactor iavf_clean_rx_irq to support legacy and flex descriptors")
+Signed-off-by: Petr Oros <poros@redhat.com>
+---
+ drivers/net/ethernet/intel/iavf/iavf_type.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Regards,
-Ivan
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_type.h b/drivers/net/ethernet/intel/iavf/iavf_type.h
+index 1d8cf29cb65ac5..5bb1de1cfd33b1 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_type.h
++++ b/drivers/net/ethernet/intel/iavf/iavf_type.h
+@@ -277,7 +277,7 @@ struct iavf_rx_desc {
+ /* L2 Tag 2 Presence */
+ #define IAVF_RXD_LEGACY_L2TAG2P_M		BIT(0)
+ /* Stripped S-TAG VLAN from the receive packet */
+-#define IAVF_RXD_LEGACY_L2TAG2_M		GENMASK_ULL(63, 32)
++#define IAVF_RXD_LEGACY_L2TAG2_M		GENMASK_ULL(63, 48)
+ /* Stripped S-TAG VLAN from the receive packet */
+ #define IAVF_RXD_FLEX_L2TAG2_2_M		GENMASK_ULL(63, 48)
+ /* The packet is a UDP tunneled packet */
+-- 
+2.52.0
 
