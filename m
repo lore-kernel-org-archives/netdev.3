@@ -1,139 +1,275 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C863016EE
-	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 19:04:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F34B3016EE
+	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 19:07:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774033478; cv=none; b=LaoHaXPtW+13tKQKdxRxOgGUcBEMvqitnqKL3RgUrEjuOeQgjHqT/WQm7RKFJNnX4OyvKyNUtcHQnHlLqxcrOiUwgi3dgJhmu9w1eCWsXBkYM3+LrbK5bvrt8qpvChaI3CLIZMcy5w0p9Wf6WK0uYBoonZpJW6QAo+xa9et1y2Y=
+	t=1774033674; cv=none; b=IrFtKbJRSSdM54OSncOT+4c2ROLwbs9Nxq94OSp++mqj7i4Z8E0Ybde4cyKChTMr55Dfmvgt+qm+Hge209LSRgqwaYagmttKemNt8Q5nI53V3Kp2Al8XdxM3fsm6RnBUcDjBq7INNvxSkESQPIq4mBC7I/qQshkJiy168/4Wcpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774033478; c=relaxed/simple;
-	bh=y4xjiVBHeQF5JqZbrncshkWLcltuy9g0ZxsUn3RToTc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dSNKnM4fWTmHsr481yG3i/2BFBJ8F5AP7rhei2hwut5FCFBgQzU70Vhiqn3RxdD/zFJaXQm+EmcI6dsbqf5QzXX8W16ItlE+LCTlK9AJCtRnXxfcpiRaCLHS1ibxeQVz34GpWu3I2h+oA/2Mxp1ab865Lr1/nnS/BgJk6kuRBuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f12mF43N; arc=none smtp.client-ip=209.85.221.53
+	s=arc-20240116; t=1774033674; c=relaxed/simple;
+	bh=fqPZ1DoPKEE+S1xQxtkJ230d6THkL7sJkITNUNtTYCE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u15lwG8+Of1lBHdMeevCqA75x1HbyQovCbvcc7w3GUEw+40pRjubYsTapqE2Cpexvoft5n155d21u3VHFsOJwnAvdPGrJPDnX3O2/wQLpQg9P5/kbJ+sriS5DJt+jMBPlF+zEnD33eMPZbs8EBq2igIqxO/RnRsdB/5U6VrqibY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IB2/pvJa; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f12mF43N"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-43a03cb1df9so2256116f8f.1
-        for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 12:04:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IB2/pvJa"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2ab232cc803so4117735ad.3
+        for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 12:07:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774033476; x=1774638276; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rU8hROsash8pjNenSuRQmTzxfx2+/q618jsTqv5sedE=;
-        b=f12mF43NfOplMF26NlyDg4yYTjXoTv3VrPZ6xJYEXxrg7SENZXSyRQ7bU1Q3PjjAAe
-         gxYKlkUJoWoAKvKMU6iHeLIQzV/SsPFlFWw2iKzfyM/QY6haPg+HMnC8ZGqDH81fkbMX
-         sdxVPwt/QkL5IMbDLdMJP+bbL0EQa0oZFE43Uw727N5cJqPGV6XZG6TkEJ33TI8jIgO/
-         ovJ42EEzjdI75D/ugCeMxu4g66KyaX3fhvxi7anAhN4q2u4r37xDhCd16BSIQgVWxzP9
-         IJZioZD7BJfVOn9LdPt+m6Sz+LnQgU4nfAS2FEVeIvkxEZPke2cd3j4wFdNOmdtIEmfT
-         7hhQ==
+        d=gmail.com; s=20230601; t=1774033672; x=1774638472; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZMUniGDw728Tp8arnr33yr6amzfh9K+uQrZYNbZSoCs=;
+        b=IB2/pvJa5Bbe4Ht/dWKmLLPB4L96OlEqYMWGB/Hcz5LkRaRDVyyiye9/MxtUEhqNCc
+         Mff5I8iE9CoQduoigWwCiYQW7Z/HWBn4+iGFe3grg5yfM9tdzwUQzz9S0TCr5R4XBUOV
+         cX6znAzB2WT4Bbja4cX21zAsn7oWYgkfj0GbTVobZoY+vgGc2ni2cjoT58SnoTfgneLT
+         vdZV0+CCB6sSfxyK4Bsjfxa19R56/4s5TwRa96csns2sP2FdAK0/ncAenTrqKG9DfN18
+         gh1UVguMIsEuhjHX6LXCHNc2Lh2bE3+KIpKX1ZbTk5UYGsXFX8supJljKumfSGCjci5M
+         hB+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774033476; x=1774638276;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rU8hROsash8pjNenSuRQmTzxfx2+/q618jsTqv5sedE=;
-        b=jF3HoTkUtPnZKhXX7EeW3PvKvCaejq6uocNqSgNZ/CSqPWOqc1AN032suvFJuykl0g
-         LVucmgwJvV3a/c/9H8VLZteTDh8f9uvxnwV2B9iSQQeOnupLI4XlIaDYaXW28pvRLzOT
-         ti87wll40MIprelNlxNH4kYjzGOowBIBqdM9ssi9JltqnZH92yTK28Y6OBJaxXSPqoaa
-         a4TO/Vk/KvNH3VkgK3buKGhhkHrI99xP21tgR+gc4Of6QQts9XX3ChFvaJ0OmrzP8v1g
-         8ALUQBQCjnd0ylUcWOmNhz5nTaFdHbz6IXR+bu35O4c2SUWJBtvM++i+EVjZpy3Kk89e
-         ZZtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVfTDYSDa6RAio7GM4kYt4H6q7a9jVbvCuGR7Wx58y/R2v/yf4vMPy7gomYuNS1VjRgaZ6bbgs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYlspwONqvNVAERY44RnW1CrQDYzbGKZ/2BhbXdzMEG89uF5d5
-	6hs6EgXhvW3Z/cdtwGrhKRcQN5nP+hCCB/fi0frMlnvLcPqQfeY0Hk5v
-X-Gm-Gg: ATEYQzyOp2V3Ae290ESBZNXyxtwLzMoeZWXqmuXHwPxe1ib/YvmQnH8FtOaeB8UPG9S
-	uP7CGJ716IAYKAP2QQxxjuAVqHkAk+dpinaMfMzKZbdSPjJ1LxgPYRcJdVYfutz0VJPZKwPCG4G
-	bgME+Y1seQsCtESXldzYwvIJvdpAdPscrbOFLvL3I5QyQrZRORXPkyv7hV3pd3YOdmD9cXPtdwt
-	K9/sfP8f4vxreV+1z6I5YCOgDPDkXuCWq3a2isA0OQIi2YnufyQhITx90fl/bTdW0CHEMta9h3r
-	trFTm5x2RxhFA03LVw2eFL4WYEsqBE17mDjfknLBkeEoFBhDBvRGgiITs36RSXj5MJwXVeJqYkj
-	PTXezNUZQ7Xu5sJNKpK+ffnZrWzAHBsus06QNm65i+cpavtzthimxNQgRVlHJJRl/rprO2Lxe3c
-	kle/spXNiKAleiZ14ijpgFRAOW5X8pqwfXU3Ne31eytSExPOc3qe7AfkjmHm8ELMkssf+QU7QTv
-	SydGjjeQ5eTWE6z4zdrTF00
-X-Received: by 2002:a05:6000:2407:b0:439:b3d2:3766 with SMTP id ffacd0b85a97d-43b6423fc13mr8053476f8f.19.1774033475555;
-        Fri, 20 Mar 2026 12:04:35 -0700 (PDT)
-Received: from [192.168.1.122] (cpc159313-cmbg20-2-0-cust161.5-4.cable.virginm.net. [82.0.78.162])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b644bd923sm9802710f8f.12.2026.03.20.12.04.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Mar 2026 12:04:35 -0700 (PDT)
-Message-ID: <90a03d3c-def3-4e34-89a0-6e952d3b0d7a@gmail.com>
-Date: Fri, 20 Mar 2026 19:04:33 +0000
+        d=1e100.net; s=20251104; t=1774033672; x=1774638472;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZMUniGDw728Tp8arnr33yr6amzfh9K+uQrZYNbZSoCs=;
+        b=alMsCq1OzHSGeWV0lTbLfMRS9zoFXQb8ymxsJdg9NeBwM+KCDHXUVo8GhjU4i1wDv2
+         u11BojcGBLK29KXgIaBVFeVWtkkRXrmqYY8s0cXQSYkWOfsnN3nCJZPlpbHoldo6XR2E
+         Ye2rGpD+AqKvqSqXXyve63XF9t7WAQdzyRbedfyfwul4SDz1fYBnn39y4rDm4qL7giWt
+         gc9gfpSWX0Rs/4IZEMrY851RhgdZNLIHH2DWkiKSTknpf8K90nmUKQnsDF8uxC9dIiqx
+         WQk8Hm47zGfRzbFKDwfakX9A2fmBuna3/ImUuRHSyqajIYOkEO/WGkEdUFCwiJ4T4bco
+         11pw==
+X-Forwarded-Encrypted: i=1; AJvYcCWj8QAIETFCSTYHE2/bKRw1842nwA/wei5FEhMVugqKt6f3RZryE3PHEW7/XAk8R3jrsXEF44Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+/UYZ+yurHG1Rr1l5LQsSvkK0XejY3lbfOJD4TsH2teoAGHI5
+	RK/7iIVqxotSS7r9rpPkWiHYtl9NKAqK1klEpked9xjGe77oSS9xHhK4
+X-Gm-Gg: ATEYQzxraM1aCFhfFDm8b3DFM1i9hx9da3SUk/+xFe+wqXtBZwUvUP55sScMt3yaRo4
+	tZECbMdIuzhc5gaNUO7pP8nm7G6cXOLXdYlBo/g1w0U7iTF7anhhj4RPSMujjglUy1bfPFJE2/M
+	5Y8LsHPteQvSqgbDH/MorRZYERUuuI6G6T8yT53fyT2qPRkOUWx8iWPcKJbqn1l2HnVu5uRcZg4
+	nVkuLuBDo8VbE3VadhPcWlZ/vdTxtfgzacyW45qp/7uWnWb0Ow1u+YJhofH7o7P9sS0eCLrw9+Z
+	4MT806yfscjUPmIhp2XDnotTFPVUb6Utn7WyUpx9CkL9cYtwq3mQkDrRatLos2LOzF3IcAL8NUQ
+	e5EPCCHERbDSolG4+zgC3pJW6Sg5thGPv4oi3IU+EUIs8e00o56gUdOq5eOoQO01m/sB+rgE+og
+	xxN3Z9ygGQXXTbz6HcTk3UU99fNDmZt7TScvmsALt5hQ==
+X-Received: by 2002:a17:903:2984:b0:2ae:c981:2a29 with SMTP id d9443c01a7336-2b0826d826emr36557095ad.2.1774033672390;
+        Fri, 20 Mar 2026 12:07:52 -0700 (PDT)
+Received: from v4bel ([58.123.110.97])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b08366c56bsm46446475ad.57.2026.03.20.12.07.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Mar 2026 12:07:51 -0700 (PDT)
+Date: Sat, 21 Mar 2026 04:07:47 +0900
+From: Hyunwoo Kim <imv4bel@gmail.com>
+To: Sabrina Dubroca <sd@queasysnail.net>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, Julia.Lawall@inria.fr,
+	linux@treblig.org, nate.karstens@garmin.com, netdev@vger.kernel.org,
+	imv4bel@gmail.com
+Subject: Re: [PATCH net v2] strparser: Fix race condition in strp_done()
+Message-ID: <ab2bA-g2qnwhdWbq@v4bel>
+References: <aZgpkyTDU3aXe_V0@v4bel>
+ <aZyMejqTbkI7o_VM@krikkit>
+ <aaDATohaW62X_pxk@v4bel>
+ <aaYY6UiXSppOig9Q@krikkit>
+ <aaY-TbPsNxo6toSr@v4bel>
+ <aaoTVMhnY5FKMrem@krikkit>
+ <aaobmK6d_xd9ZXGj@v4bel>
+ <aaqovyrmd5pJtZKq@krikkit>
+ <aaq9TgFpsjn9XWAC@v4bel>
+ <abDr-fSP9EtP7uEQ@v4bel>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: sfc: avoid format string warning
-To: Arnd Bergmann <arnd@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Nathan Chancellor <nathan@kernel.org>, Jeff Garzik <jgarzik@redhat.com>,
- Ben Hutchings <bhutchings@solarflare.com>
-Cc: Arnd Bergmann <arnd@arndb.de>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Brett Creeley <brett.creeley@amd.com>, Breno Leitao <leitao@debian.org>,
- Kees Cook <kees@kernel.org>, netdev@vger.kernel.org,
- linux-net-drivers@amd.com, linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-References: <20260320151924.3474821-1-arnd@kernel.org>
-Content-Language: en-GB
-From: Edward Cree <ecree.xilinx@gmail.com>
-In-Reply-To: <20260320151924.3474821-1-arnd@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <abDr-fSP9EtP7uEQ@v4bel>
 
-On 20/03/2026 15:19, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
+On Wed, Mar 11, 2026 at 01:13:45PM +0900, Hyunwoo Kim wrote:
+> On Fri, Mar 06, 2026 at 08:41:02PM +0900, Hyunwoo Kim wrote:
+> > On Fri, Mar 06, 2026 at 11:13:19AM +0100, Sabrina Dubroca wrote:
+> > > 2026-03-06, 09:11:04 +0900, Hyunwoo Kim wrote:
+> > > > On Fri, Mar 06, 2026 at 12:35:48AM +0100, Sabrina Dubroca wrote:
+> > > > > Sorry for the delay, I wanted to think about the race condition a bit
+> > > > > more.
+> > > > > 
+> > > > > 2026-03-03, 10:50:05 +0900, Hyunwoo Kim wrote:
+> > > > > > On Tue, Mar 03, 2026 at 12:10:33AM +0100, Sabrina Dubroca wrote:
+> > > > > > > 2026-02-27, 06:51:10 +0900, Hyunwoo Kim wrote:
+> > > > > > > > On Mon, Feb 23, 2026 at 06:20:58PM +0100, Sabrina Dubroca wrote:
+> > > > > > > > > 2026-02-20, 18:29:55 +0900, Hyunwoo Kim wrote:
+> > > > > > > > > "strp stopped" is not really enough, I think we'd also need to reset
+> > > > > > > > > the CBs, and then grab bh_lock_sock to make sure a previously-running
+> > > > > > > > > ->sk_data_ready has completed. This is what kcm does, at least.
+> > > > > > > > 
+> > > > > > > > It seems that this is not something that should be handled inside strp itself, 
+> > > > > > > > but rather something that each caller of strp_stop() is expected to take care 
+> > > > > > > > of individually. Would that be the right direction?
+> > > > > > > 
+> > > > > > > Agree.
+> > > > > > > 
+> > > > > > > > It also appears that ovpn and kcm handle this by implementing their own callback 
+> > > > > > > > restoration logic.
+> > > > > > > 
+> > > > > > > Right. I tried to look at skmsg/psock (the other user of strp), but
+> > > > > > > didn't get far enough to verify if it's handling this correctly.
+> > > > > > > 
+> > > > > > > > > Without that, if strp_recv runs in parallel (not from strp->work) with
+> > > > > > > > > strp_done, cleaning up skb_head in strp_done seems problematic.
+> > > > > > > > 
+> > > > > > > > From the espintcp perspective, how about applying a patch along the following lines?
+> > > > > > > 
+> > > > > > > This is what I was thinking about, yes.
+> > > > > > 
+> > > > > > In my opinion, it might be cleaner to split the espintcp callback restoration work into 
+> > > > > > a separate patch, rather than merging it into the strparser v3 patch. What do you think?
+> > > > > 
+> > > > > Sure. But once espintcp is fixed in that way, can the original race
+> > > > > condition with strparser still occur? release_sock() will wait for any
+> > > > 
+> > > > If the espintcp callback restoration patch is applied, the strparser
+> > > > race should no longer occur in espintcp.
+> > > > 
+> > > > > espintcp_data_ready()/strp_data_ready() that's already running, and a
+> > > > > sk_data_ready that starts after we've changed the callbacks will not
+> > > > > end up in strp_data_ready() at all so it won't restart the works that
+> > > > > are being stopped by strp_done()?
+> > > > > 
+> > > > > It's quite reasonable to use disable*_work_sync in strp_done, but I'm
+> > > > > not sure there's a bug other than espintcp not terminating itself
+> > > > > correctly on the socket.
+> > > > 
+> > > > That said, the _cancel APIs in strparser still appear to carry some
+> > > > structural risk, so it might still make sense to switch to the _disable
+> > > > APIs for the benefit of other strp users or potential future callers.
+> > > 
+> > > Not really. Every user of strp that is open to the strp_recv vs
+> > > cancel_* race is also open to the strp_recv vs free race, so switching
+> > > from cancel_* to disable_* is only a partial fix.
+> > > 
+> > > But if we took and released the socket lock in strp_done, we would
+> > > solve the issue for all users even without resetting the callbacks?
+> > 
+> > Looks good to me. With this change, it seems the issue can be resolved
+> > not only for espintcp but for all strp users.
+> > 
+> > When strp_stop() runs first:
+> > ```
+> >                  cpu0                                cpu1
+> > 
+> > espintcp_close()
+> >   strp_stop()
+> >     strp->stopped = 1;
+> >                                          espintcp_data_ready()
+> >                                            strp_data_ready()
+> >                                              if (unlikely(strp->stopped)) return;
+> >   strp_done()
+> >     lock_sock();
+> >     release_sock();
+> >     cancel_delayed_work_sync(&strp->msg_timer_work);
+> >     kfree_skb(strp->skb_head);
+> > ```
+> > 
+> > When strp_data_ready() runs first:
+> > ```
+> >                  cpu0                                cpu1
+> > 
+> >                                          espintcp_data_ready()
+> >                                            strp_data_ready()
+> >                                              if (unlikely(strp->stopped)) return;
+> > espintcp_close()
+> >   strp_stop()
+> >     strp->stopped = 1;
+> >   strp_done()
+> >     lock_sock();
+> >                                              strp_read_sock()
+> >                                                tcp_read_sock()
+> >                                                  __tcp_read_sock()
+> >                                                    strp_recv()
+> >                                                      __strp_recv()
+> >                                                        head = strp->skb_head;
+> >                                                        strp_start_timer()
+> >                                                          mod_delayed_work(&strp->msg_timer_work);
+> >                                                        ...
+> >     release_sock();
+> >     cancel_delayed_work_sync(&strp->msg_timer_work);
+> >     kfree_skb(strp->skb_head);
+> > ```
+> > In both cases, the race does not appear to cause any problem.
+> > 
+> > > 
+> > > @@ -503,6 +503,10 @@ void strp_done(struct strparser *strp)
+> > >  {
+> > >  	WARN_ON(!strp->stopped);
+> > >  
+> > > +	lock_sock(strp->sk);
+> > > +	/* sync with other code */
+> > > +	release_sock(strp->sk);
+> > > +
+> > >  	cancel_delayed_work_sync(&strp->msg_timer_work);
+> > >  	cancel_work_sync(&strp->work);
+> > >  
+> > > 
+> > > 
+> > >  - strp->stopped so any new call into strp_data_ready will not do anything
+> > > 
+> > >  - lock/release need to take bh_lock_sock so any existing call to
+> > >    strp_data_ready will have to complete before we move on to cancel*_work
+> > > 
+> > > 
+> > > 
+> > > Or maybe the requirement should be that strp_stop has to be called
+> > 
+> > From my perspective, adding lock_sock() inside strp_done(), as in the
+> > patch above, looks cleaner.
+> > 
+> > > under lock_sock() (or even just bh_lock_sock), but again I can't
+> > > figure out if that's ok for sockmap.
+> > 
+> > sockmap/psock has a more complex call stack compared to other strp
+> > users, so I'm also not entirely certain about that part.
 > 
-> Three sfc drivers contain the same *_fill_test() function that takes
-> a format string argument that gets passed down to snprintf(), producing
-> a warning with clang-22:
+> I looked into the sockmap/psock side. sk_psock_strp_data_ready() is protected 
+> by read_lock_bh(&sk->sk_callback_lock), and during teardown sk_psock_drop() 
+> performs callback restoration and strp_stop() under 
+> write_lock_bh(&sk->sk_callback_lock), so sockmap/psock doesn't have this race 
+> to begin with.
 > 
-> drivers/net/ethernet/sfc/falcon/ethtool.c:227:60: error: diagnostic behavior may be improved by adding
->       the 'format(printf, 7, 8)' attribute to the declaration of 'ef4_fill_test' [-Werror,-Wmissing-format-attribute]
->   210 |                 snprintf(test_str, sizeof(test_str), test_format, test_id);
->       |                                                                          ^
-> drivers/net/ethernet/sfc/falcon/ethtool.c:210:13: note: 'ef4_fill_test' declared here
+> As for introducing this patch, in sockmap/psock strp_done() is only called 
+> from sk_psock_destroy(), which is scheduled via queue_rcu_work() and runs 
+> on system_percpu_wq after an RCU GP, so no locks including lock_sock are held 
+> at that point. And since lock_sock is released before cancel_work_sync, 
+> there's no circular dependency with do_strp_work/strp_msg_timeout either. 
+> So this patch shouldn't introduce any new issues for sockmap/psock.
+
+Hi Sabrina,
+
+Could you please provide an update on the status of this patch?
+
+
+Best regards,
+Hyunwoo Kim
+
 > 
-> Rework these to take a varargs based test_format that allows better
-> type checking and avoids this warning.
-> 
-> Fixes: 3273c2e8c66a ("[netdrvr] sfc: sfc: Add self-test support")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-
-I'm not convinced this is an improvement.  The function takes *two* printf
- format strings (unit_format and test_format), and this only annotates and
- varargs-ifies one of them (and doesn't harden the unit_format, which has
- the considerably more worrying-looking "if it has a % in, assume it takes
- precisely one int argument").
-So it may make things 'look' hardened enough to satisfy the compiler
- warning, but that just hides the unsafety and might sucker future
- developers into thinking "oh, the compiler knows about the format strings
- so I don't need to check it by hand".
-I'm not sure what a proper fix would look like — possibly a rewrite adding
- a separate efx_fill_test_perq() function for the cases with a nontrivial
- unit_format, baking in the knowledge that the format is always "foo%d"
- for some constant string foo and thus we don't actually need to pass in
- an arbitrary format string.
-
-> -static void efx_fill_test(unsigned int test_index, u8 *strings, u64 *data,
-> -			  int *test, const char *unit_format, int unit_id,
-> -			  const char *test_format, const char *test_id)
-> +static void __printf(7, 8)
-> +efx_fill_test(unsigned int test_index, u8 *strings, u64 *data,
-
-I don't like splitting the specifiers/return type from the function name
- like this.  It's not Linux style[1].
-(From a quick poke around the tree, there seems to be less consensus on
- where the __printf attribute goes — some put it on its own line before
- `static`, some would put it between `static` and `void`… sigh.)
-
--Ed
-
-[1]: https://lore.kernel.org/all/1054519757.161606@palladium.transmeta.com/T/#u
+> > 
+> > > 
+> > > 
+> > > > With that in mind, perhaps the direct fix for this race could be handled
+> > > > in the espintcp callback restoration patch. For the strparser patch, I
+> > > > could instead adjust the commit message to reflect that it removes a
+> > > > potential hazard by replacing the _cancel APIs with the _disable
+> > > > variants, and resubmit it in that form.
+> > > 
+> > > I'm not going to nack a patch doing s/cancel_/disable_/ in strp_done,
+> > > but it doesn't fully solve the race condition if the caller isn't
+> > > doing the right thing, and it doesn't do anything if the strp user is
+> > > handling the teardown correctly.
+> > 
+> > I agree with your point there. Still, after the core patches addressing
+> > this race are applied, I plan to resubmit the _disable patch with an
+> > updated commit message. I think applying that change is still beneficial.
+> > 
+> > 
+> > Best regards,
+> > Hyunwoo Kim
