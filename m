@@ -1,134 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D853C73C1
-	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 14:50:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC332DAFBD
+	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 15:01:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774018226; cv=none; b=kKprQoSEyz7C3T/P3/k19AGOkNmwMoDwyrBCl6WhHVojbCD4gJkt+YEPR24SNbX1B7TgZnk795YkstuZm9pYJBLMK6BxK5VzgoGHt+VU+pc1WdLdztScpE0eW7Z/NxzJKs5Ecsou1wk4ggFSPrXBDK9HInA8fJMcLbLnWV/n1+o=
+	t=1774018888; cv=none; b=ZVmfIpJ0Rlr0+jqldgft30NJ7myMQSvjknPOvdcxpbnWhKSAqGnPlmkijugxez15pP75kH4jbvsyKFAdLC/eY8R9BHHbBGpTeHfZyy8+iHs0JPzivy2BAkjy/eAgxECeSKtv78Iz/HVyN3YjYW6qZLNfnPNpN/6k8zX+XMVwM1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774018226; c=relaxed/simple;
-	bh=9r15zkBRZgwHE45GRs5lXdJzPqzlupyf2mT5NujU6Xc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tJghCFfNyH9aSTNWnPu+lV5NYU8pEJLCHM+a8hma1EJeICNvsiNqsB1oyXkw+GontJBn+mT1mUmznEduDpzmwY60GiuiqOMet7JpRNqh/Ca9UF6ET1NVbY+hI7BQB2TZNe5QyfM1pF7jB2UvR5aqGUwi2zmzBL0Rx0CYWbKkSm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=StaLU4K7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774018888; c=relaxed/simple;
+	bh=81fgBQ2PoBDRpMrjDmaoSF9fxh4ImUjoFWIayUMvmSc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fDRQvvenUdLn0upMBErne2rCEtaIBqn6cUbOmcjg+V/D/xpEIcv3FMsraDkpUt8B0vCQLyMKvcSsqzE6D1kUOh4RmjxLw2kHpEE6Lt7FFvY8G/3jsb+mbeCREcL5+xGGqx7bEJEb98MSMqh60uGaVmRHn4rRk9mKxJJOp0TKZMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GyNNB64P; arc=none smtp.client-ip=209.85.210.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="StaLU4K7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA71CC19425;
-	Fri, 20 Mar 2026 14:50:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774018226;
-	bh=9r15zkBRZgwHE45GRs5lXdJzPqzlupyf2mT5NujU6Xc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=StaLU4K7CFQC4Fqr7Kx65Rk1h+jxfT+1iiTzNHdiSrtNUtd9YQafIUrgG5/PnbpoT
-	 3SzeU9b2seBxjoSTT26dq0ewhF4Hh2kCBF5bE1EwunC6SoeHpdrPksFyNphiR80Ibe
-	 jVpFbYuP6zWB6IH109kgz7CywLVSJFzm60f7IHem58QOBdM7WPQrSHi+IDhN77k9Mg
-	 KMJD1m+h0QyO+UFv39M1GITMDDFIV7TmPRylS6v+YyBKwa3YshR2FdDOuIyd/Q3COz
-	 44RxL1qcXV80wG3MiHlkMCbAjh2d1Z5jN02qv2NP0mjvZuDGeqcR1Dyn+iMnXrank9
-	 LzCP6ymn6Ny4g==
-Message-ID: <6d1b8a33-b645-4ab4-b459-36e826052e48@kernel.org>
-Date: Fri, 20 Mar 2026 15:50:21 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GyNNB64P"
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7d7c77fd31cso1810001a34.3
+        for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 08:01:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774018885; x=1774623685; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+O+9zRpBumJjQs1Qrw2RwnISTo4eF51n2sz3tSLML3s=;
+        b=GyNNB64PuGEBOqrvvoQG3v8Ini/H+i7p2Mtl1wv3kgLDxh0+KhJheSYhv8VQc5rEAG
+         eBbYb15Zf2ekTiH9Xb6cR7Gg4RhpJhNf3OgaWtM5SRKYAODcT5toaAOM86RdD85dUDrJ
+         1F83oTFTy2uCQFgtJNkE2Cnl+JA3gqC4Cp1YAeSdclMqpQE55XBMFNJotNuPOWKKNY+c
+         5r4nndlK55DG9TfMf1K9h5INhdVa55o46eahwRCKu5DBi29c64tIt8pcs342s/pcNmoA
+         eDWac1w7lk/Uj4y78M+iUwbm3O2yFcRvpVnrvLd7GKFNTtU+xnamryhB2PuNK7XaFWCZ
+         5gFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774018885; x=1774623685;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+O+9zRpBumJjQs1Qrw2RwnISTo4eF51n2sz3tSLML3s=;
+        b=Zt7Bs6m0CHfsw4kY3VN1bsvOg8TEm0muU3HOOjkHdQuoMO9BKTObmvYi6/44+F9NG1
+         t5WEwDht1BMsZnXIiLzOEAK4sx28KXKidY0itPnRL5tLI77337zn/H9Zz13sgyZW72KJ
+         qn/4ZhS/jbQmlrFdeRmXRebe2p/NkhREBYll6aV3slIh5M4tXAW6S0vNaxz8tmJBZ+t3
+         GGAkv+DUVWYoo+d9u8sOwtM2ZGLCT0iQc8bG4FaaraA3G8aAvH7Wr04yRjyeMS892nuj
+         wec7+RlJ5nPCZeddOn0erb+6jfXjGJmQHEehrV8i/Q0XHDtL67kfJeAmIyLpOnn8U3Rs
+         s8hQ==
+X-Gm-Message-State: AOJu0YxMDS/C4DXSxqrD/neo5WWBUMEKDo+VuKBNLau9bcOS+PRQKuQ0
+	tjaT9BHVIxN+txL7exKKI5q2OL6SpTpJKAjVlR/SJ229/tmmySK0Tz8=
+X-Gm-Gg: ATEYQzwvEKwvGjd+x2FSnuBzLCyx6qrmUOXmluciXCxVhc8G7kkqzYJOe/rgERpiVSL
+	oYNkbZ+Ne9NpVQ1d2htKSNvjaDVcn0kYRqvdS+DWuduHJDjqjBgM8yD+/tFeYhZaXchWfeKVYan
+	c9sRL9bDUOlAJ5FfuKmp+5sMOW5lYPW9ZPkIdoz5wDTPlB1t0U/VDLKWOrrMc/KI9CVP7D43bge
+	7gysXwnsKr5t2GwZEieS16+q84j0ibSwJUNNVwrmfeLORiUbGNGjvyxtpY5tiLFfOXYrLbe4w5l
+	7iOxXDuF16e23a36DtI0O8etwi5+jfPIyaMst3VPaHdsN++9lAaU4UWiJ7n/zlA6qxCl9cro4cl
+	4sFa9/GhwpC+yppxnSpnYasqxq8lWD9F/zkrXXrmDyTkikF90tTRUwvLcfXVFREE3U6HJf3uKJV
+	PAERpEmy3xtg5ti44KGQBK1W+TozBp9p9R4VaO7fgp/RKW9bi4EG/+g+1hzvoxEY9mIQI4CU8zj
+	QPBWl/5GDjSvz35pw==
+X-Received: by 2002:a05:6830:67d9:b0:7cf:da97:57d6 with SMTP id 46e09a7af769-7d7eae42d5amr2059854a34.6.1774018884112;
+        Fri, 20 Mar 2026 08:01:24 -0700 (PDT)
+Received: from localhost (c-76-102-12-149.hsd1.ca.comcast.net. [76.102.12.149])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d7eadfcf3fsm2296061a34.20.2026.03.20.08.01.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Mar 2026 08:01:23 -0700 (PDT)
+Date: Fri, 20 Mar 2026 08:01:22 -0700
+From: Stanislav Fomichev <stfomichev@gmail.com>
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, magnus.karlsson@intel.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	larysa.zaremba@intel.com, aleksander.lobakin@intel.com,
+	bjorn@kernel.org
+Subject: Re: [PATCH v2 net 1/8] xsk: tighten UMEM headroom validation to
+ account for tailroom and min frame
+Message-ID: <ab1hQjHMj-LJJz0I@mini-arch>
+References: <20260319175538.479139-1-maciej.fijalkowski@intel.com>
+ <20260319175538.479139-2-maciej.fijalkowski@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH net-next 2/6] veth: implement Byte Queue Limits (BQL)
- for latency reduction
-To: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
- netdev@vger.kernel.org
-Cc: edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- davem@davemloft.net, andrew+netdev@lunn.ch, horms@kernel.org,
- jhs@mojatatu.com, jiri@resnulli.us, sdf@fomichev.me,
- j.koeppeler@tu-berlin.de, mfreemon@cloudflare.com, carges@cloudflare.com,
- kernel-team <kernel-team@cloudflare.com>
-References: <20260318134826.1281205-1-hawk@kernel.org>
- <20260318134826.1281205-3-hawk@kernel.org> <87ms05nrdw.fsf@toke.dk>
- <cbfc927d-0b96-4788-8bf6-8a2ffa4dd9f4@kernel.org> <87h5qcnnjh.fsf@toke.dk>
-Content-Language: en-US
-From: Jesper Dangaard Brouer <hawk@kernel.org>
-In-Reply-To: <87h5qcnnjh.fsf@toke.dk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260319175538.479139-2-maciej.fijalkowski@intel.com>
 
-
-
-On 19/03/2026 11.04, Toke Høiland-Jørgensen wrote:
-> Jesper Dangaard Brouer <hawk@kernel.org> writes:
+On 03/19, Maciej Fijalkowski wrote:
+> The current headroom validation in xdp_umem_reg() could leave us with
+> insufficient space dedicated to even receive minimum-sized ethernet
+> frame. Furthermore if multi-buffer would come to play then
+> skb_shared_info stored at the end of XSK frame would be corrupted.
 > 
->> On 18/03/2026 15.28, Toke Høiland-Jørgensen wrote:
->>> hawk@kernel.org writes:
->>>
->>>> From: Jesper Dangaard Brouer <hawk@kernel.org>
->>>>
->>>> Add BQL support to the veth driver to dynamically limit the number of
->>>> bytes queued in the ptr_ring, giving the qdisc earlier feedback to shape
->>>> traffic and reduce latency.
->>>>
->>>> The BQL charge (netdev_tx_sent_queue) is placed in veth_xmit() BEFORE
->>>> veth_forward_skb() produces the SKB into the ptr_ring. This ordering is
->>>> critical: with threaded NAPI the consumer runs on a separate CPU and can
->>>> complete the SKB (calling dql_completed) before veth_xmit() returns. If
->>>> the charge happened after the produce, the completion could race ahead
->>>> of the charge, violating dql_completed()'s invariant that completed
->>>> bytes never exceed queued bytes (BUG_ON).
->>>>
->>>> Whether an SKB was BQL-charged is tracked per-SKB using a VETH_BQL_FLAG
->>>> bit in the ptr_ring pointer (BIT(1), alongside the existing VETH_XDP_FLAG
->>>> BIT(0)). The do_bql flag from veth_xmit() propagates through
->>>> veth_forward_skb() and veth_xdp_rx() into the ptr_ring entry. On the
->>>> completion side in veth_xdp_rcv(), veth_ptr_is_bql() reads the flag to
->>>> decide whether to call netdev_tx_completed_queue(). Per-SKB tracking is
->>>> necessary because the qdisc can be replaced live (e.g. noqueue->sfq or
->>>> vice versa via 'tc qdisc replace') while SKBs are already in-flight in
->>>> the ptr_ring. SKBs charged under the old qdisc must complete correctly
->>>> regardless of what qdisc is attached when the consumer runs, so each
->>>> SKB carries its own BQL-charged state rather than re-checking the peer's
->>>> qdisc at completion time.
->>>
->>> It's not completely obvious to me why BQL can't be active regardless of
->>> whether there's a qdisc installed or not? If there's no qdisc, shouldn't
->>> BQL auto-tune to a higher value because the queue runs empty more?
->>>
->>
->> When net_device don't have qdisc we hit this code path:
->>    - [0]
->> https://elixir.bootlin.com/linux/v7.0-rc4/source/net/core/dev.c#L4806-L4852
->>    - Notice the check if(!netif_xmit_stopped(txq))
->>    - resulting in "Virtual device %s asks to queue packet!"
->>
->> We cannot unconditionally track BQL as calling netdev_tx_sent_queue()
->> can result in setting STACK_XOFF.  Resulting in above code dropping
->> packets and complaining.  (It have no qdisc to requeue store back-
->> pressured packet).
+> Multi-buffer setting is known later in the configuration process so
+> besides accounting for ETH_ZLEN, let us also take care of tailroom space
+> upfront.
 > 
-> Ah, right. I realised the packet would be dropped, of course, but I did
-> not realise the stack would complain. That seems... odd? Why not just
-> get rid of the complaint instead of having this kludge to work around
-> it?
-> 
+> Fixes: 99e3a236dd43 ("xsk: Add missing check on user supplied headroom size")
+> Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-The BQL code manipulates txq (struct dql) and this requires correct
-locking. Using noqueue on veth doesn't do the correct locking.
-
-In the linked[0] code you were likely fooled by this code line[1]:
-  HARD_TX_LOCK(dev, txq, cpu);
-It is actually not taking the lock, because veth is a lltx device.
-(Don't be fooled by the annotation it is for WARN_CONTEXT_ANALYSIS)
-
-For fun I actually implemented it to see what happened. And I did manage
-to crash the kernel on the DQL internal BUG_ON.  Analyzing the BUG_ON I
-realized that my scheme of charging BQL and then undo the charge (if
-ptr_ring were full) isn't correct, there is a race.  The BQL call
-netdev_tx_completed_queue() is strictly to be used by the consumer, not
-by the producer (like I did).
-
-I'm now working on different approaches for the undo...
-
---Jesper
-
-[1] https://elixir.bootlin.com/linux/v7.0-rc4/source/net/core/dev.c#L4831
-[2] 
-https://elixir.bootlin.com/linux/v7.0-rc4/source/include/linux/compiler-context-analysis.h#L166
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
