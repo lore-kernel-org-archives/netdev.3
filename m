@@ -1,45 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155AE371053;
-	Fri, 20 Mar 2026 08:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4786736EA89;
+	Fri, 20 Mar 2026 08:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773995098; cv=none; b=PJZgeIgq56kMygFRNLdJZOLzG/ufaPN7XShRALQtw7oW1iXGp7t1zGhkyNqbQfXgYTb9NGETWGo4X+GhKYctaimIhnNuArmuL8tDLv8onN7UlZ7Rn1TXW6YPlBRVsgz9Z3eFooK5BrhU3NKbQBFt8Fbtkduhm3ewK1McRKEVItk=
+	t=1773995173; cv=none; b=OE/z0u++wgccTm+jPGpQjNWmUCXRTcKoJ+w+AGqi7YqDikyppxWziJOe/nCmfKK3lLduZTxqDEYnxzIc/Da6UtEYl+bJruJVAaChjT0+NgozEwhRZ1V43bR38uDWcruAsA3XOBzSWXH7dto2T7CB+fzmXwmrx+ubkslZ7FgWAvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773995098; c=relaxed/simple;
-	bh=BOiFP4GTwK9KfyYOLBsLbrcHmaO46GyQ68oBX/hGBJQ=;
+	s=arc-20240116; t=1773995173; c=relaxed/simple;
+	bh=8ornaCijKEKO4JdKdaXYK/dfmy8Tw3eR3/L5gzBWdYA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A5WiyNl+Fe/DAK813FDVTlIPKzV/xSCYAPPbzfKvTIUKzQRL/CBeLgfGTdrVlzGsLYYlcbmH6rCuNd6kHGGrbBBxIxUWB8gl6QqVzzy6VezMBD0r/u2mX7D6+DRk773PrpH867F34rMiebQE1Uzx6aG7KdK5xkfQTQcAM7MohbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lRbuGfGL; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=lGNTgpRgsrt/mCV7sKmDDhaK8VWLqhaOR/h4MqqICG9bNEIyZjgrv0FxhF27Gza32lT5LSR3Rye0IuP+xPIyNnInOu5sqAcJPI58W4lufTao8whcCaApW9Re9Zi/hEBuRK1pkckADNbj9aXMbb/e4jPFepEsqNTE9odAKGTBiT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=egw1jvQl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lRbuGfGL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCFF9C4CEF7;
-	Fri, 20 Mar 2026 08:24:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="egw1jvQl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10249C4CEF7;
+	Fri, 20 Mar 2026 08:26:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773995097;
-	bh=BOiFP4GTwK9KfyYOLBsLbrcHmaO46GyQ68oBX/hGBJQ=;
+	s=k20201202; t=1773995172;
+	bh=8ornaCijKEKO4JdKdaXYK/dfmy8Tw3eR3/L5gzBWdYA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lRbuGfGLO9xOx3+Il1Qx7u4d32oe3BWur6zeJY4BJ6LTNMqn/wgWYXjSNfcRLQilg
-	 oFHAOacmsbggrS3O5B6lGD24ssZrmu3OpxyZ/q83iPGdB2eW//oVH5L0IvR0kBceoq
-	 A7CSbmr/4Mh/xpAQS/VqcB/j7fpzexZ628P8eZdwvgmfRdwqUqagnUKHZt6xPnMFol
-	 RI/WY1JfoibBZltHsHQwIX6xeOLwiTq/lOjGzPXCslAQUawWp7xcU3qcPKdw1wyDxb
-	 rz+qFkrCnHZ2jFfDI4C2pNp4h4R3UYxiAh+qfPTRu1AQkROr6AXyyzmUEmm7Ra/i61
-	 M0dbbrzBcUMAw==
-Date: Fri, 20 Mar 2026 08:24:53 +0000
+	b=egw1jvQlOItmykIok0j9An448qzsB1EgHVbv2c+dreDfliXMBNWOyQvtnl3YNO7hM
+	 HshDSsjdNzpkq/zKUY4XjoG4e65WmF4hBWyKnYNCwpEEKdN0qgk9jhu3qnvzH4OFnF
+	 8dLXyAk0SS0Vdyp7PcT0X5Nj/jg6cylfXa6BnKP+92hr2sFQB5wc8reocfWCmmaTyI
+	 GvPu+R3N4PKPWV3Cs4xl3IdIlquApIp2ttnceVmBaAzldojedbxdVuOgXcqVxPR/FP
+	 9zhnDadJA8kSDr8v5+QvjmRrVvlzWZTDffxBJAlJA4bgqV91TPN9WBKua1niRD20g3
+	 5ZHdYYy/3NCdw==
+Date: Fri, 20 Mar 2026 08:26:08 +0000
 From: Simon Horman <horms@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Anderson Nascimento <anderson@allelesecurity.com>,
-	marc.dionne@auristor.com, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, linux-afs@lists.infradead.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] rxrpc: Fix keyring reference count leak in
- rxrpc_setsockopt()
-Message-ID: <20260320082453.GY1753385@horms.kernel.org>
-References: <20260319161004.GH1753385@horms.kernel.org>
- <20260313132327.409785-1-anderson@allelesecurity.com>
- <20260313132327.409785-2-anderson@allelesecurity.com>
- <172885.1773939353@warthog.procyon.org.uk>
+To: Allison Henderson <allison.henderson@oracle.com>
+Cc: "achender@kernel.org" <achender@kernel.org>,
+	"rds-devel@oss.oracle.com" <rds-devel@oss.oracle.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>
+Subject: Re: [net-next,v2,2/2] selftests: rds: Add -c config option to
+ rds/config.sh
+Message-ID: <20260320082608.GZ1753385@horms.kernel.org>
+References: <20260319004618.2577324-3-achender@kernel.org>
+ <20260319201329.1059998-1-horms@kernel.org>
+ <f0cf57ea9a139ea9af7556442304f8b70d416c16.camel@oracle.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,18 +51,17 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <172885.1773939353@warthog.procyon.org.uk>
+In-Reply-To: <f0cf57ea9a139ea9af7556442304f8b70d416c16.camel@oracle.com>
 
-On Thu, Mar 19, 2026 at 04:55:53PM +0000, David Howells wrote:
-> Simon Horman <horms@kernel.org> wrote:
-> 
-> > > Fixes: 17926a7 ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
-> > 
-> > nit: Please use 12 (or more if needed to avoid a collision) bytes
-> >      for the hash in Fixes tags.
-> 
-> I fixed this when I posted my collection of rxrpc patches, including this one.
+On Fri, Mar 20, 2026 at 03:05:22AM +0000, Allison Henderson wrote:
+> On Thu, 2026-03-19 at 20:13 +0000, Simon Horman wrote:
+> > This is an AI-generated review of your patch. The human sending this
+> > email has considered the AI review valid, or at least plausible.
+> Alrighty, I will update the README.  Thank you!
 
-Thanks David,
+Thanks.
 
-Sorry for not noticing that.
+FWIIW, I do agree the code changes here in v2 are in line with the
+discussion around v1.
+
+...
