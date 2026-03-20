@@ -1,207 +1,307 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010046.outbound.protection.outlook.com [52.101.56.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB31E3C3447;
-	Fri, 20 Mar 2026 15:57:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61894275B03;
+	Fri, 20 Mar 2026 16:03:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.46
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774022264; cv=fail; b=MYFZeF0Z0j6h58DzfPwWj7AgBMe9fZNgYP+jEXxLrIv/buwlVwzaoJT+eJCE/+JxnL1lBi/z608JbENhPx1/Dlgs/Zmp66Gdzu5TB23eru4q3ruWv2XHv3M/mQKC63fDCZqU2ciDG53GQbwvTpDS9DoeQPV1xtQnJ/9sc7921og=
+	t=1774022622; cv=fail; b=Vcrj3YNoYWC7itxi9KZ47vaO/mifPSaAZlSinu7E7LMzwrlMBpL0mbZWUdC7pKALlGV1qVUlUoLLZ00aPgnNAE4k20YWkN298egF09R3IGAGhwzs/hUKioo0J2DJHqDoeq6u1t8vv/yglZAmfDh39Pu8cMIcNiO5qWwO2/LZAhU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774022264; c=relaxed/simple;
-	bh=VxsDSwobM1P2hkPNe409EUTi3EtM5ImGN8bPIBlKWBE=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=lIv1l9ZHkCwksbucSJi8trX9wlBUotINJpHNcllmMl/bO0z4auDZpl9mGYVql1i8SWJ9Th+4EqE6ylXO3Lze6nLF+iGkssTIew1pHlxpuQkIPzZb6thrwtlQF3kEmdFGzED/zmEE+wMpHduhzTf0/3ygwRwdgjlsGoEZGRB567Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S1pOgfGH; arc=fail smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1774022622; c=relaxed/simple;
+	bh=Qszw9Hu/qCWCAjFVBv4oMcrctzYuhIwOmQ1ZAkP9AG8=;
+	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=Wqeho7mbWqvTwqlMqKTHciGqKFiue0zIpUbhEXwl0VO8jnzrUMJSmYbJ7qX/lpt2Y+qRfXGjdV2Vhlr4hJqv9NaU05Hx/PLiaWI5sIfrJV6JwgzhK5OlbnTD64sR5e/bwkXsRXXkd6iVEbp79cuInFF/MZYqVzLFyu2lnvade3s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=CmYnN1It; arc=fail smtp.client-ip=52.101.56.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S1pOgfGH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774022263; x=1805558263;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=VxsDSwobM1P2hkPNe409EUTi3EtM5ImGN8bPIBlKWBE=;
-  b=S1pOgfGHPK7Ls0gG34NpChQsfJeUyDk/rav19IVPusnJRJiFtnTJgu9B
-   SMbNqveDXr6E3AUJ0UBVavITHttMzqnn1JhZT66n2eTCgcdIJDam8paWy
-   fII4felVWENS+flgZbOkqqHpD9epmeXrYe6ceUI5skORMBo25Qun7BeDG
-   ZbC4dGMwPF0UCfV/Jj+wzv9lzOxc9BnEccTljbqpRtehabji4/8ChY0O5
-   0/QX06gwmY1AC8ywGywUqjQ8RgOOYSa8s3mXnJFnErkoZQupP2/gOIM+I
-   KFtyApE5cn8VldbM22DFKcm3nhIzgPw2b5vvGl2znSHi7EbtcPAUiC6xF
-   w==;
-X-CSE-ConnectionGUID: qAOhyUA1Q2+cUOSrQVjh/A==
-X-CSE-MsgGUID: BAC25lZhSCaalUKPUM4+0w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11735"; a="92494876"
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="92494876"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 08:57:42 -0700
-X-CSE-ConnectionGUID: E/sdFPzHRXy4TeIpYgX4ww==
-X-CSE-MsgGUID: HT4umgjiTo6BFes8xyw+LQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="261227795"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 08:57:41 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 20 Mar 2026 08:57:41 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Fri, 20 Mar 2026 08:57:41 -0700
-Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.30) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 20 Mar 2026 08:57:39 -0700
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="CmYnN1It"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cOd5RsErrU/BEyPC6hNedjqZdZaFNdE1G43IBv5rLfoG18UX5z9tVy9euKpS0jgINfkufjApNOQT5/Od2lOBVBNUEk75PYi+Ndi6BNa/CD+yHj9gByr9z/3XKXjnWxedMUxRbnpyz5OKldrv5yGxDTsQ0veT/hosg0hQCMpJTUCebe4FyBKqF4p5LTLKhN0uaHkd1yNtLEGhoAeP1uXj97Zo7IeVNTunUnVvV1W62lidx8UqsR3DUw+GL24nFaxmMdpOh0/yT/mKy086zB4D/3dF7gTW17cDJD9gP0G3WhdvI3GmzeuSHvNpxhbDgfR6vancWABAS1OdD5rBW7jJag==
+ b=eVYnFX1hSwMy3uMLlcRVijL+CJFlCWK1Kv3qfz/rIlA4Tvm7aNF42zlAZ8YffcyWwxU6i2q/UB4FvVrGT1ux227pg1gLSD+IixWowZc1JYydWOFinYjvE1ENobwyjCRUf/u2s0AB3iKhE0vdGiirb+ynDHrakKxfTGvs+i04Gwn9NBkV9n3umuMs44Itx3pp6yjCQ2THCuIOpj3EIif82/VgoHWWofLozUmaV9seCRiTkGFFKIf8awLr4OC2nmb9u9AKsyM9i1mcawzpHjBkiXPNRIkONUsf9PaoNFWAXiRWQGrsKLVlWRt4P57HeEVR2yaVbffgeTmm1yhPUC/Lrw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SzztiCRvD29Ea4TtKFGMx5LLb9UR1fyoMcP5fKUvr3E=;
- b=Ab+bi63v07CD4gY8nI/AX28vSkhWgAc1KBGDUiflaqS6qe/4AEljOaOFjSUP28gdHcQkTj+tnNfojLvB2pffdRZYLtH6cnyxxEAYJrVUdNB3Ax5th/Hj9H2PW/f4itZlz/Hm3IIP4KCCWlgR3ujPGQujwG/MCPjv199eyZhK1+GqQ2/8t9yhzMCt+1O0VnpxuD/9djQ7Q8L10G8O8140Yh9Fb6QZspZfRxOgn4sIa+Wa3N+3w1Tz9x22XAynpFlhThxvVwSAxOMdpXd1U+ZMs6hkdYT5QXs3m7JpYUDSOmA+UkXpC1lpXFJqjrHPmQkXiIEWRJO/dx7uK0H0h6rpng==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM4PR11MB6117.namprd11.prod.outlook.com (2603:10b6:8:b3::19) by
- SA0PR11MB4672.namprd11.prod.outlook.com (2603:10b6:806:96::24) with Microsoft
+ bh=lnVLym6mm9Dm7mv2Bvr6M2L6tJ2g70g71usEfO4EXNE=;
+ b=Ry3cTVms8vTufjrvdLWa51lNlPiozWi8QEO99a9ksOR0yadoQHY8ptrV9Vu/66T3RdgnPhxO9TB3udff/+ZPKx5+lTA/RQUNfkmQFcRCztIv9xq0HpPy6rivdt0StjNJuGRRLQkMrpsuX/P0lXJXNGvznsNMR1IteFGZ4SlG213a7mVbf2QnDqOaWPvBIlIlX00ZFPl6SPFaerGf/WdhERHLIIMWRDDP+ty+chLiz9ml8HQXbuspDavWHYnmPgpw2l+KM/3EnRM8AXgfNHUAWJRl5s6ufTKstDOovWhTINywzfs3X2D9giOtQ9JrvUGfZaTULyD/snmKTgYuBEfqPw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lnVLym6mm9Dm7mv2Bvr6M2L6tJ2g70g71usEfO4EXNE=;
+ b=CmYnN1Itwx5wFeHuR+rE9a9mwzClvDLlQ2ocGWRNFGvLq3xB/7Efu+CvdxcNbLhg5QLJFbXLtHFH3cQ3I0R507EiEoiT6SJIAfkX2ZMv8L4ZNnorIbgUWo18a2UaRWGj9FORG6ekmIQIMoUXd34Zlj3rakBFexG0hHROo0ouglGDGVC5aLMYTekNPM3dPWCdrgWXlADBu7OngB8J6+rHFUxlfwfAY0gVOqB7imoj8yp9EeMiaKm5jlv1Xlnpc6+5bZAzP99bgm4BBp7yLYK7/zr/7opbD22xHSCrrgPU4Bxt5qZuJLsF6MJroE50H/MxReppumNIPSIlvEmONoj62A==
+Received: from SJ0PR13CA0146.namprd13.prod.outlook.com (2603:10b6:a03:2c6::31)
+ by DS0PR12MB7607.namprd12.prod.outlook.com (2603:10b6:8:13f::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.9; Fri, 20 Mar
+ 2026 16:03:34 +0000
+Received: from CO1PEPF00012E66.namprd05.prod.outlook.com
+ (2603:10b6:a03:2c6:cafe::b) by SJ0PR13CA0146.outlook.office365.com
+ (2603:10b6:a03:2c6::31) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9723.23 via Frontend Transport; Fri,
+ 20 Mar 2026 16:03:31 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ CO1PEPF00012E66.mail.protection.outlook.com (10.167.249.75) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9745.13; Fri, 20 Mar 2026 15:57:37 +0000
-Received: from DM4PR11MB6117.namprd11.prod.outlook.com
- ([fe80::d9b3:e942:2686:3cdd]) by DM4PR11MB6117.namprd11.prod.outlook.com
- ([fe80::d9b3:e942:2686:3cdd%6]) with mapi id 15.20.9745.012; Fri, 20 Mar 2026
- 15:57:36 +0000
-Date: Fri, 20 Mar 2026 16:57:29 +0100
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-To: =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>
-CC: <netdev@vger.kernel.org>, <bpf@vger.kernel.org>,
-	<magnus.karlsson@intel.com>, <stfomichev@gmail.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>, <larysa.zaremba@intel.com>,
-	<aleksander.lobakin@intel.com>
-Subject: Re: [PATCH v2 net 3/8] ice: do not round up result of dbuf
- calculation for xsk pool
-Message-ID: <ab1uaeVELU9FLPXJ@boxer>
-References: <20260319175538.479139-1-maciej.fijalkowski@intel.com>
- <20260319175538.479139-4-maciej.fijalkowski@intel.com>
- <87y0jmoqwk.fsf@all.your.base.are.belong.to.us>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87y0jmoqwk.fsf@all.your.base.are.belong.to.us>
-X-ClientProxiedBy: VI1PR10CA0110.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:803:28::39) To DM4PR11MB6117.namprd11.prod.outlook.com
- (2603:10b6:8:b3::19)
+ 15.20.9723.19 via Frontend Transport; Fri, 20 Mar 2026 16:03:33 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 20 Mar
+ 2026 09:03:13 -0700
+Received: from fedora (10.126.230.35) by rnnvmail201.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 20 Mar
+ 2026 09:03:06 -0700
+References: <20260319160410.2515105-1-ioana.ciornei@nxp.com>
+ <20260319160410.2515105-4-ioana.ciornei@nxp.com>
+ <87ldfm91y5.fsf@nvidia.com>
+ <7qkagj353ljtnn57ym24lqwma4uahu37zs435kevfqzhf4fijt@gpoc3wygxv7l>
+User-agent: mu4e 1.8.14; emacs 30.2
+From: Petr Machata <petrm@nvidia.com>
+To: Ioana Ciornei <ioana.ciornei@nxp.com>
+CC: Petr Machata <petrm@nvidia.com>, <netdev@vger.kernel.org>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S.  Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <willemb@google.com>
+Subject: Re: [PATCH net-next v3 3/9] selftests: net: extend lib.sh to parse
+ drivers/net/net.config
+Date: Fri, 20 Mar 2026 16:35:18 +0100
+In-Reply-To: <7qkagj353ljtnn57ym24lqwma4uahu37zs435kevfqzhf4fijt@gpoc3wygxv7l>
+Message-ID: <87pl4y7akr.fsf@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR11MB6117:EE_|SA0PR11MB4672:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4f6074f4-a59c-43ab-3dc6-08de869967af
+X-MS-TrafficTypeDiagnostic: CO1PEPF00012E66:EE_|DS0PR12MB7607:EE_
+X-MS-Office365-Filtering-Correlation-Id: 15f3201c-bb2d-420f-a77d-08de869a3d21
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: /L+9krLAgXkhjR7qBr1bAFUY70DTxoRq/01gY0V0Q6HLxWTNbC8ReCa5NXjeuZtkeCX772pfXOGAA+j/SdFpB9ZhuBhmw+sBQG62a+PDj3zpxPllDACIzJzvhg4gjCaxkBNg01diEtxhlmU1NQ16T6KuhgaXIiWR4D7ZODM4H+Txfsp/gfyYkwjhoU6a3+3jF6xiAYrW8vs/NX0F/NQgzRLnn3/oKqIwi1oM6A30AMo4gvesBhFBl549+k0/0GxM2uAJ7o3f77TRVTLRyOelR3MpGnIJ9Lp/3e1oH1vjswhKZROfzKwUGP8FNWyOovP5AylRXKPZCNnZkwKIHOATYllfPonYpcLYtNCFqRHZwdX5euq+nwtqNum9p+gf0lYHxp3qTDzeKY5DVD3LhlYwPWRoZrRCyPhKOcuvgVeQfMQbuWVS6YLZKUxZqq4xIZiTUFm2HMpltz+hXh+/4PUwXxroL+MSw0Q1jkSRbU1+LCGIj+pGIbox7/QfvozDD4fVjs4QO0OLj6dBictmWer/ZsFpNUK6QlRQUpevG20UXb00iqALwYV72P8UrxgDTiXUy+Gdp7WqA94GvuKMzLZt1XsJYpSYGmcTqi2UJHjKLgMkSw+rjaSiP9jN682PGTRYfauHkJepetbpbpU++BAutqWcYUqExLEkk8q/BeVb4gty3l9hoqpqhlUezY+UEZS5fcZsxCisqlR3wr0ZTYU21uGFiD2a8jI8MiZXmT32FSI=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB6117.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|7416014|376014|1800799024|82310400026|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	kf77tnyhh/sA8LzWSS5oD+bELyYKFrHuyd6RKEaChazngTFHTNjZOSA5YgaUAwSzEes8ghODhG84dqiquno6Tz/kKPKp/sjawMOgYLVsOHZ259xGK3vj9PLQeVwjSZAIC65/CTLBv78z9KVQuIP04O6WgSPgKwT2JXCA3lGqKQ7HF0RmZgeD0cDRuxtuQWlh3eK8P+bCJbNNjLj5wCbzoqy7tp7XDn0DAsDxsPnj5bVBlByQXXCobt4uEaEzc8YVZQtNpnCQxnovYslwcDJtxoBkdachNpZAupK61+KtT6MIi8b9nsG5Bjh9Zwe+lLIYDFb704l0zvsAT0wyQIyRJb+Xmzxhy/EI4Yt7qm1rGsH1aP+rK+pjvx6P3NxW/lwCWcZjNshmfQsWk/bn1nDEhP8/JFbqxVAl1mY/R8PXOXGdw8Y74Vdkcte/Bi9HlvyTvGBn1TwQCID2Fiq7LJTBlJNV7CuJrUxlrw5On47NwLvSw8wd1as7Ofskq1wgNMQZtiniCmmXuYScXOwq0e2ct+kXjMxPCZYUxJeIbafrpkxY6ytvRNjbS6T8va9nnm/hDeqJYIJacjDbXS0w0guNp0qcLg4F3fPPwmeZuA4uVXuQRgsxb9d5j8e6HzEriOLXXHqqpLDgwj2fhi2gCeJw2U78RepvY9Q7Ouox2sAkeJKNuWtn4OuTa+UYXTuHAyjz0eLEcZ+4EVF23QkewajsAUdJtxLj7NORXE+ZArpaR37TiIWr4YN9NRoIFZXLSDh1e28lwayagpc4gd/DhtdVmg==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(7416014)(376014)(1800799024)(82310400026)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?MV9YYKVpY6CmMpWVeA8YKfdTKZV9ykAVsy0OhSHvyddOQAwF2WgDw35Vnz?=
- =?iso-8859-1?Q?DqI763w+hWyKcM2W1NrDTSV5YUmeMbkVZvwJA/Q7MFEgd2o3lgY/ze5iwc?=
- =?iso-8859-1?Q?GTxgP1j4HUnU3iphcQWQQSHIvbNEQverODJ5N4Vo0TMEqrZDBpIZBYYb1I?=
- =?iso-8859-1?Q?mDXNmpC/+EJxb8p/PNSwTc79SAIoDl6yYGhz9c44QhwUDSpx5aiOnyE7Ol?=
- =?iso-8859-1?Q?kbYwMU6LtZmD87qFfyDk4GPh0me/ez/eC38vtJXgE/Gfb4KdP9jcwpKcrO?=
- =?iso-8859-1?Q?iLVMPcARQ34k+rHSGZK/37VxDxKhogwock0Yp3cfFkwN7Z6uPkfsvqtM4Q?=
- =?iso-8859-1?Q?4cakvFpyAcQMvYqYFbeUCIk76MwQhX+NcBfH8pbj9echGlPOfFJ7SjG6m0?=
- =?iso-8859-1?Q?HDotwiqpnAiotohswbyKD7kLacqT3UPtVJ0jUb9lqxtrJkZWaDcZP/77nL?=
- =?iso-8859-1?Q?+Uwez439Xb3mKdA6Xk+hiufuJgnMouHI0EFFusNcDb4OcdXPHCLoHIuWkv?=
- =?iso-8859-1?Q?gXDQSs/Z7ywVHQpfYGRWShhSEU8uS1awa8Ad6412l90/Uh98WvLH8Sh4Qk?=
- =?iso-8859-1?Q?k6Ap/I2fD6gl11AFQPRFMbZ5ibgArueVlx75oZCHuZ6iv0FaUm4gB50SOh?=
- =?iso-8859-1?Q?EMkcKZ8HuUNwjGQ4O2kkq3dNSkr0HeRNHkgLsUndA3MhGLdMYT5uLt6Tf5?=
- =?iso-8859-1?Q?KYwjgRxFKIi9ssDdDooviKTPu09P8Bgcr+AYQnPBAxCFV8/gn/Jx5oKHXv?=
- =?iso-8859-1?Q?AO37wW3tWZEOqjuNrURNFrHdsdHAp3F3SXaxreTwIB6ZHwL+K11PrBHnLC?=
- =?iso-8859-1?Q?quKd+uhyFAAcBCONI9Au1m1YxH103/rpyin9U7f1OsR3G7VxNVImqoXMmE?=
- =?iso-8859-1?Q?HOEyzqXYI6abRcRkCu+bDzBMqAESCdQkdIQIhzBHh8vLzVSu/dF29STqZp?=
- =?iso-8859-1?Q?OOK2xJimZKcLWmAUEHQb03RDRQr8pC7Fn8Wx0TMZa7nhvKZZLyql8HwFVN?=
- =?iso-8859-1?Q?U4zd6njKTZq6xc19ZrOXOZ0of82o4vEu1878hAZuDJZM1iY8R2S2vyeHgA?=
- =?iso-8859-1?Q?/JkSTz+08Gpz72w1ni/Oca6wEEbD79FDQVtI1puQXCRz3/8dEJ/Q7DUzDi?=
- =?iso-8859-1?Q?GUcEYJz1uLItrV81CrFQdNcK1ZbSCTgyDAhVtKYb5+RNELfv5pqVmgFXu3?=
- =?iso-8859-1?Q?IR34VePFoofNfxxvRWo1y1KlemPjW4hg8n4/uhEUNpAu51m42jv6fN14q5?=
- =?iso-8859-1?Q?awYNjBSKPFZUjV0mj4+dgPCfNXAvtEbNeZ8gJMMP7igMFPPrgSPsCl/nOA?=
- =?iso-8859-1?Q?SJZwzu2fJLEbSIWmX7lkl4tqK5manNOoESrePVs81KvVY8vLkGK0VVDgKV?=
- =?iso-8859-1?Q?8KMxQo1ue1BbIwpF6MNBLTLhU26amOdYbmihyPXbjIlCNE/gydbK7/NkCG?=
- =?iso-8859-1?Q?Wmloy+yl2K/acCylmyzAwi4jVR/dFmKmGiCyZkiBRxqj6sVDOQbRuLbGOA?=
- =?iso-8859-1?Q?G0dZNTV4wq3SrCCl8omn2BSoYpO1/dCR1Aw1EiatOwydNhL+KbJcN1YYTN?=
- =?iso-8859-1?Q?dqJMDR05LlPpYzBCP4iefl2/diau19cseAvkxqVTYKMYfh2KNwK2t7i6cC?=
- =?iso-8859-1?Q?vz2Wbk95zwkinj0NZr1tFVzKT+fADuc4A5p/t7HEoUKBQ3J4Q/1PiYm6Yc?=
- =?iso-8859-1?Q?4ROezeqOqkAN0jVV/tGW+hxeb/ISbNzpLBB07EldUBa7CgU9mWTPq+7MRM?=
- =?iso-8859-1?Q?JtlPA7pYfBhMzEujp6Qy8ltsRfMOGiQAAb3XJOytVREi/IJma2Ut7JSm+g?=
- =?iso-8859-1?Q?EeADdQiT0THrtnbPLUpoB5XED9185g0=3D?=
-X-Exchange-RoutingPolicyChecked: oyiYOrnVJVtKiGm2gMXwwXoo4zNn8n3PKf1ByeV07kv6I9ScDaoN9i6BSW9clNytewaIRKYbOd7i7M2Pu+/HHwhflJez/MdqQ6AkEHlPzklFKx7+XJPLA13Ipbgi/laizrjxuEBTLmF0AwtsZZ/HrpdTyOlObt/Y+ZEkS0+GlDIGUkwiN9MIxTLqU+K7quDls6VKMws6JHwcyo86DZVtOhnQisFOd1iovMdXP9murRnbIMmtMes06/XBZJR4cs5lpvk5uAiWA3+C4k1PXy6E61tQcYdXREXnoGDJS/KAj4R+oTOocCFkpzSy66mNo6tP20tjzt+EycygcXZ031IvaQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4f6074f4-a59c-43ab-3dc6-08de869967af
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6117.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2026 15:57:36.6523
+X-MS-Exchange-AntiSpam-MessageData-0:
+	1s9UYGIy6XdkSlw7ZmTWI3BwhptI89EGEd9NnYdIlOBSlaXFsFnhwy7ppeiHAgwKNxOxjJSnVtPZGlw7d0j0P52d6fKIAkopsyY+83VWKwhbpbm+XDLqsyrgv4qc47/c9simIPOxRvTfdeUQFjBi+4OXANdICuyo/Ev7P4GkMqBFEjRjKPnEutf9wEu9vs5wE9V08W2+PeUFXWre5226DPiPvdu63kYVB3Xgf8oEXJ3UGHbXzvXy0wtWKOWMm+EVcqU6+xTQ3jllDow5wCZFr97C9DvUnw1WxZgUyZUvA+W1Ht6GaKyu2gAfs6CxLX7RWJ9js5aQCOmYgUVNXUo6bcl1Uf5PXE5cRJz5PyGqpugUDIzeJ7Ld6ZW+Nicpc4LXi21XHk08q5+MxoinjPAg4fJPUq3/hvfosi5hUqO1AOk04LfOZ5yXM8OROGgn4uKb
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2026 16:03:33.8777
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0R7gSwuRjcOi8QXZQfACaNGDvxH6ct8SoRSUdDC+WP1E5cd/vxZLJmLquwYblIkK580HsZGf+jDpDWITZdn8HqUPKrvYSU7+5PK8ZTJOCm4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4672
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 15f3201c-bb2d-420f-a77d-08de869a3d21
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF00012E66.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7607
 
-On Fri, Mar 20, 2026 at 09:18:19AM +0100, Björn Töpel wrote:
-> Maciej Fijalkowski <maciej.fijalkowski@intel.com> writes:
-> 
-> > When programming dbuf on rx queue context, avoid division round up as
-> > it causes to actually corrupt the tailroom for AF_XDP ZC. Below is an
-> > example based on 4k chunk size when xsk pool pointer is valid on given
-> > rx ring:
-> >
-> > chunk_size = 4096
-> > headroom = 256
-> > tailroom = 320
-> >
-> > ring->rx_buf_len = 4096 - 256 - 320 = 3520
-> >
-> > rx_ctx.dbuf = DIV_ROUND_UP(3520, 128) ->
-> > 3520 / 128 = 27.5 -> round up results in 28
-> >
-> > dbuf programming unit is 128. If we give 128 * 28 = 3584. So HW will
-> > corrupt 64 bytes from tailroom. Decrement dbuf by 1 when xsk_pool is
-> > present on given ice_rx_ring.
-> >
-> > Also, restore ::rx_buf_len setting via xsk_pool_get_rx_frame_size() as
-> > of now it respects the tailroom.
-> >
-> > Fixes: 1bbc04de607b ("ice: xsk: add RX multi-buffer support")
-> > Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-> > ---
-> >  drivers/net/ethernet/intel/ice/ice_base.c | 5 +++++
-> >  1 file changed, 5 insertions(+)
-> >
-> > diff --git a/drivers/net/ethernet/intel/ice/ice_base.c b/drivers/net/ethernet/intel/ice/ice_base.c
-> > index 1667f686ff75..f9514d7bb83c 100644
-> > --- a/drivers/net/ethernet/intel/ice/ice_base.c
-> > +++ b/drivers/net/ethernet/intel/ice/ice_base.c
-> > @@ -500,6 +500,8 @@ static int ice_setup_rx_ctx(struct ice_rx_ring *ring)
-> >  	 */
-> >  	rlan_ctx.dbuf = DIV_ROUND_UP(ring->rx_buf_len,
-> >  				     BIT_ULL(ICE_RLAN_CTX_DBUF_S));
-> > +	if (ring->xsk_pool)
-> > +		rlan_ctx.dbuf--;
-> 
-> Hmm, wont this be overly pessimistic? Smth like
-> 
->   if (ring->xsk_pool)
->     rlan_ctx.dbuf = ring->rx_buf_len >> ICE_RLAN_CTX_DBUF_S;
->   // else round up?
 
-Ok!
+Ioana Ciornei <ioana.ciornei@nxp.com> writes:
 
-> 
-> 
+> On Fri, Mar 20, 2026 at 11:19:18AM +0100, Petr Machata wrote:
+>> 
+>> Ioana Ciornei <ioana.ciornei@nxp.com> writes:
+>> 
+>> > Extend lib.sh so that it's able to parse driver/net/net.config and
+>> > environment variables such as NETIF, REMOTE_TYPE, LOCAL_V4 etc described
+>> > in drivers/net/README.rst.
+>> >
+>> > In order to make the transition towards running with a single local
+>> > interface smoother for the bash networking driver tests, beside sourcing
+>> > the net.config file also translate the new env variables into the old
+>> > style based on the NETIFS array. Since the NETIFS array only holds the
+>> > network interface names, also add a new array - TARGETS - which keeps
+>> > track of the target on which a specific interfaces resides - local,
+>> > netns or accesible through an ssh command.
+>> >
+>> > For example, a net.config which looks like below:
+>> >
+>> > 	NETIF=eth0
+>> > 	LOCAL_V4=192.168.1.1
+>> > 	REMOTE_V4=192.168.1.2
+>> > 	REMOTE_TYPE=ssh
+>> > 	REMOTE_ARGS=root@192.168.1.2
+>> >
+>> > will generate the NETIFS and TARGETS arrays with the following data.
+>> >
+>> > 	NETIFS[p1]="eth0"
+>> > 	NETIFS[p2]="eth2"
+>> >
+>> > 	TARGETS[eth0]="local:"
+>> > 	TARGETS[eth2]="ssh:root@192.168.1.2"
+>> >
+>> > The above will be true if on the remote target, the interface which has
+>> > the 192.168.1.2 address is named eth2.
+>> >
+>> > Since the TARGETS array is indexed by the network interface name,
+>> > document a new restriction README.rst which states that the remote
+>> > interface cannot have the same name as the local one.
+>> 
+>> Isn't this going to be a somewhat common scenario though?
+>
+> It could be if you the remote target is another system just like the
+> DUT. But I couldn't find an easy representation for the relationship
+> between interfaces and their targets that also removes this restriction.
+
+So after the review of I think v1, I sat down and hacked up a PoC of a
+way to specify location of remote interfaces. I didn't really have time
+to work it all out, it was largely an experiment, but it seemed to work
+even in some unmodified tests. But I hit the same issue: for backward
+compatibility the interface names themselves serve as identifiers, and
+sometimes that's the only thing you have to look up the access method,
+so they have to be unique. So I understand how this comes up.
+
+I don't think it is OK to state this as a general requirement though,
+because the Python tests do not have this problem. And with a proper
+library support that is not purely a backward compatible tweak, used by
+a green-field test, the support could work in Bash as well.
+
+So -- maybe the documentation should just be different? That Bash tests
+have this limitation, and bail out in lib.sh giving a reason that using
+the same name here and there is currently not supported.
+
+>> > Also keep the old way of populating the NETIFS variable based on the
+>> > command line arguments. This will be invoked in case NETIF is not
+>> > defined.
+>> >
+>> > Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+>> > ---
+>> > Changes in v3:
+>> > - s/TARGET/CUR_TARGET
+>> > - this used to be patch #2/9 in v2. Swapped the two patches so that the
+>> >   run_cmd used in this patch is defined earlier, not later.
+>> > Changes in v2:
+>> > - patch is new
+>> >
+>> >  .../testing/selftests/drivers/net/README.rst  |   3 +
+>> >  tools/testing/selftests/net/forwarding/lib.sh | 130 ++++++++++++++++--
+>> >  2 files changed, 124 insertions(+), 9 deletions(-)
+>> >
+>> > diff --git a/tools/testing/selftests/drivers/net/README.rst b/tools/testing/selftests/drivers/net/README.rst
+>> > index c94992acf10b..8d8d9d62e763 100644
+>> > --- a/tools/testing/selftests/drivers/net/README.rst
+>> > +++ b/tools/testing/selftests/drivers/net/README.rst
+>> > @@ -26,6 +26,9 @@ The netdevice against which tests will be run must exist, be running
+>> >  Refer to list of :ref:`Variables` later in this file to set up running
+>> >  the tests against a real device.
+>> >  
+>> > +Also, make sure that if you are using a remote machine for traffic injection,
+>> > +the local and remote interfaces have different names.
+>> > +
+>> >  Both modes required
+>> >  ~~~~~~~~~~~~~~~~~~~
+>> >  
+>> > diff --git a/tools/testing/selftests/net/forwarding/lib.sh b/tools/testing/selftests/net/forwarding/lib.sh
+>> > index cf40cb766c68..fb5aa56343e1 100644
+>> > --- a/tools/testing/selftests/net/forwarding/lib.sh
+>> > +++ b/tools/testing/selftests/net/forwarding/lib.sh
+>> > @@ -3,6 +3,7 @@
+>> >  
+>> >  ##############################################################################
+>> >  # Topology description. p1 looped back to p2, p3 to p4 and so on.
+>> > +#shellcheck disable=SC2034 # SC doesn't see our uses of global variables
+>> >  
+>> >  declare -A NETIFS=(
+>> >      [p1]=veth0
+>> > @@ -17,6 +18,26 @@ declare -A NETIFS=(
+>> >      [p10]=veth9
+>> >  )
+>> >  
+>> > +# Array indexed by the network interface name keeping track of the target on
+>> > +# which the interface resides. Values will be strings of the following format -
+>> > +# <type>:<args>.
+>> > +# TARGETS[eth0]="local:" - meaning that the eth0 interface is accessible locally
+>> > +# TARGETS[eth1]="netns:foo" - eth1 is in the foo netns
+>> > +# TARGETS[eth2]="ssh:root@10.0.0.2" - eth2 is accessible through running the
+>> > +# 'ssh root@10.0.0.2' command.
+>> > +declare -A TARGETS=(
+>> 
+>> This is a helper array for internal use only, not a user interface. It
+>> should just be declared suitably close to where it's actually
+>> initialized. It doesn't even need its own initialization, there's code
+>> down there to initialize it accordingly.
+>
+> Ok. In v3 I added the fallback to run on the local system in case either
+> TARGETS is not declared or the entry is not valid so I can safely remove
+> this now. Thanks!
+
+It's fine for what it is, I just don't want it to be an API.
+
+>> > +    [veth0]="local:"
+>> > +    [veth1]="local:"
+>> > +    [veth2]="local:"
+>> > +    [veth3]="local:"
+>> > +    [veth4]="local:"
+>> > +    [veth5]="local:"
+>> > +    [veth6]="local:"
+>> > +    [veth7]="local:"
+>> > +    [veth8]="local:"
+>> > +    [veth9]="local:"
+>> > +)
+
+>> > +	if [[ (-n "${LOCAL_V4}" && -z "${REMOTE_V4}") || \
+>> > +	      (-z "${LOCAL_V4}" && -n "${REMOTE_V4}") ]]; then
+>> > +		missing+=("LOCAL_V4,REMOTE_V4")
+>> > +	fi
+>> > +
+>> > +	if [[ ${#missing[@]} -gt 0 ]]; then
+>> > +		echo "SKIP: Invalid environment, missing configuration: ${missing[*]}"
+>> > +		echo "Please see tools/testing/selftests/drivers/net/README.rst"
+>> > +		exit "$ksft_skip"
+>> > +	fi
+>> > +}
+>> > +
+>> > +get_ifname_by_ip()
+>> > +{
+>> > +	local ip_addr=$1; shift
+>> > +
+>> > +	run_cmd ip -j addr show to "$ip_addr" | jq -r '.[].ifname'
+>> > +}
+>> > +
+>> > +# If there is a configuration file, source it
+>> > +if [[ -f $net_forwarding_dir/../../drivers/net/net.config ]]; then
+>> > +	source "$net_forwarding_dir/../../drivers/net/net.config"
+>> > +fi
+>> 
+>> This is going to impact all tests though, not just those that are meant
+>> to work with this. If I have this file, it sets NETIF, and all my
+>> forwarding tests (presumably) break, because NETIFS doesn't get
+>> configured correctly.
+>> 
+>> The requirements for driver tests are different from forwarding tests.
+>> In particular, interfaces do not belong to driver tests, the test can't
+>> bring them up or down, reassign addresses etc., merely to use them for
+>> traffic. (Which you know, I'm just stating it for context.) So I think
+>> there needs to be an opt-in variable for this stuff. Like setting
+>> DRIVER_TEST_CONFORMANT=yes before sourcing the library or whatever.
+>
+> I had this kind of approach initially but thought that it might be
+> desirable to also maintain the possibility to run the driver tests as
+> ./test.sh eth0 eth1 as before, so I changed it.
+> I can move back to that approach.
+
+Hmm, interesting. Maybe this could work then?
+
+: "${DRIVER_TEST_CONFORMANT:=yes}"
+
+Then the user can override it on the command line:
+
+DRIVER_TEST_CONFORMANT=no ./whatever.sh swp1 swp2
