@@ -1,186 +1,122 @@
-Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C1F378D63
-	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 23:07:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774048043; cv=pass; b=CkoBjgVxWsVruViYZ9l67ZNoKzhLJBNCkyUQYbWSB5K4Zbr8iyQyQlteAXESLA1BSCn/HsQA36bc6/Kax9xSyeKixoyixBV0Zeh8t6ncZapIrZcSekVNtXgwx8laorjwuQhmbfiYpyiaoDB6zuP1nePKBzyQ/hVxTisc76xcTxg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774048043; c=relaxed/simple;
-	bh=M7a9HCv6xXQ/DntGRCwO7vfJIPELucv5vPfhF3R/d0o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r+9i+dDVgI6A6wy1DeWPWpLfzjS+KUOLU5MX2NO0B2f35yxNxjVyPWYNZIfJ8GoiHOxGHMFp1BW0VgbTkFf/ueKOFKS9mlp3eLJGzkXXUVcP1Sjvi2+0SL+ESpR8cKS/L3CHxe31nwBn8j2xwCqxR7cS60t2YliPoWsOutlPT2k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tQRWy1i/; arc=pass smtp.client-ip=74.125.82.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F288278161
+	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 23:09:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774048185; cv=none; b=l/jCkhIubBJ+XN52nose4pFng4JUS2emMxweEkBT437pvFeIJikyYrwYyXATuZLJnUEgonI0/iE2GxpGLzx0M7X2LyjCjGA/xqXwZ/fm89Tmx7KvpPbrjr10A8fz7sl4IcFKkdtN7/uxnwren8oHacfU0Pp/RE657F0jiKVmIcg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774048185; c=relaxed/simple;
+	bh=i8xmsS7OGbYPnvSvd73gxWfNZ8allV/8wYvg3WLHCX4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SuFmo5PLlcLHjbqhLof1+mErz4VOjE/bzhgYb51C2zyxWm9jL3UxgxHBkIm9VEMx/p2aBYa7bm5TCt5gjNxEum2s0sVCeYouqaPpBYT+NFlN1WS/p88VI5nahW8UOLRiC3PlFNeQg0tlEQwyFyzTySIuOV870Y3XOcWYiiqpaNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b=IeCVo0Qi; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tQRWy1i/"
-Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-1271257ae53so3123130c88.1
-        for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 16:07:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774048042; cv=none;
-        d=google.com; s=arc-20240605;
-        b=eDo3QhR164uiVL/tk76s+VCkIYKzoVGJ7zvuq5lSNVDYgoVLYcEKozqClbPJIgkhqd
-         rJwPtpk/9gXkRC9jmk29HQwtz7DJZ3fuEMIqQ6xahwObaM/I9KvYbLmpZI/0hZ7iQRNZ
-         Ef/nj7PIl6rDjj/8jkZ7UMbXv/BO0qyt2HaogdOOXJ7nb5cPz18t8OjFWeMNQAc7w+5I
-         dy/pInVN2Ur6uTTFN45aJsE6i+rLTWd+ey/XhyJFhZgVAixdtBd6+uYtLt+gUpt8t46P
-         y1EwGotMoUCliyL8ubMN2FjYLsidE6DSonBg8xW1TRu91dC4B7aU2zShgT6vqrhx2gtg
-         GeMA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=pZo3sMU6awb3wUgXn4zUrNq93WUztpgAarKG4X4Himw=;
-        fh=nJP9VWOWTFbo/UfdmBZ92M/JphMXytqpI8mQgsJdQPw=;
-        b=aIqm8hUTt3P/6bHOFYBLwSMSMObdDe38W6hKjvH1wsUTBC2t+jHqjTRBGScBJVi9T1
-         U74G/2vE0VKuY/1qKqos0eSTyRoVLNSP3k4EdLjytuzNGvRZptFSUKjlldyT4E1Kri/x
-         bVDiz1TvYS1ZdcqBCwhR7G4v4rOAYfI6myS89IUVRXSGacqvC6XhPz+7DyF3vEmUmySn
-         T6RDfW+YQo9hZESg6PK7muXcyyjxp7vwYlS33KyEynZ69Jed6uKRZQ6V9OlA0zhinz0i
-         m6ngkl2W3//sPAeUFwup5WgDYon6MMrjqUEXnLoLpPjwOedGSL7ZoecSWtE9hY+pBhI/
-         jQOg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b="IeCVo0Qi"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-35a1d4a095bso1455646a91.0
+        for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 16:09:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774048042; x=1774652842; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pZo3sMU6awb3wUgXn4zUrNq93WUztpgAarKG4X4Himw=;
-        b=tQRWy1i/7dswyLf6cytNu+KpQe4mAPHTNao83COZGfuGAz8UW9u78OhYo2CXaM1dwW
-         us9MRHLvb6ID2dHhTOm3hir/7SeenCc55tt3dbhoWlDEjwGVy/+KyRexE1JpNYaPW3Xx
-         +1u09bc2kSuMOfCFUwhjIQl51UzUUsQstUsQ3yUsKXrXP2kHAF3H+QTrK7wp4cGM6Xjc
-         6s5T9fs6z/6CIaQ2syDXlM4y5JCDlAH698AR8JRj4GcUy9fN58rIepHsCcn8AVYsG6eX
-         9Vm0pyFa7RvoABhvqq89OkZ8GK83tFSLvZ28Y35s8CtPgMblb8X0lv985uYpWfyQzSUD
-         Qfvw==
+        d=dama-to.20230601.gappssmtp.com; s=20230601; t=1774048183; x=1774652983; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MUUqCiT6aXukS9SwL9hysllV86yLA5FmYEzwznGMHeY=;
+        b=IeCVo0Qi+36moD8fhY8m4uHMxNz+AtdU17fgrx/5Fnhh7KChhb4M81lBtsrflFPnYj
+         +GnyQc4GkBrF3v4ik2Zhfemb2z8AAFTqMk4NH5OOy+JVai6IwXZTk9o5B7czQiap0jaB
+         coY3ROV5K4ehG8Yr1atxfmAN/aQ2E5v0aNkHWRzaGsvZqMiiUhLUvni7Wf+G6OeF68yL
+         Bj0aC1a6fEcwNdOWPKKRs4RhMNE8fCak2h4T3YNPyrt0TgRJlj0oHMLGy5L3wkZB/Z9f
+         eQJCWZ9cCYuafqQvzXcAj908JYfx5+Pp76iTMK5YnwG8zNV5Jlnf5zGiH8qAYqqeX6gy
+         KMtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774048042; x=1774652842;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=pZo3sMU6awb3wUgXn4zUrNq93WUztpgAarKG4X4Himw=;
-        b=pXh2Uvm/3A6J4P9fAY6tzYO7IqHYbilwMVGuvpPI3XczSxAo09OeOylSJJC9nly8IU
-         GD8I9eAoKtMKrSPtHwQS3iquUcHHofxKfvej9sInncIEz3igXcD8Rg2Y5ZA3AMD6jw0X
-         xTX3mY9Z974GrGdu2n+J0CgCjbmiqYqUTynnLZWoduq40/D7yyHd2f0Q8+CEvbf02rvy
-         me4gxnJUj/lba8h6fFtFks+Tny19xhz6rl/wpW3aPnwUDK36VR/25m60b7Zibug8KZHu
-         HEIsd5kO3hH3nANzIgR5J5CKdBGWXGJ4MM2n4aATKiIbDRpwY/rGBm1O21wXaaqjwYYk
-         I5Sw==
-X-Gm-Message-State: AOJu0YxeluMm1VZx1sJdMB5mWhMei9s1EXf5/1tqydwy2JZDCgBovz7z
-	fHQmar98oPmxQ6PGZxm1zSI8Eekb4GNrLwaGF9yUZwAzbdXXIXPFOKVkRkJKmt2eSmACdXugQmJ
-	4JI21K17wm8bvvM6M/OJJkeU9t8xiQ+fhs1YuxCQM
-X-Gm-Gg: ATEYQzwFUHrGf5fUI9mJEQPSxvXPgrKpTx4urK1jCqqXE5j46EeKQNy03fWMh4qegTJ
-	9lgSUeV4bqjPtCV9oE3EcoI1PYELihnaxdrhQLZQ+pYJ9vSAmtJnQybsOrOI51zCrN8Bh/JmYOz
-	PEnJrtUehY46HWIuw9h8wgQ0xyb9giSCyoFp2e7MRMfbsv/mfXQfPeyx2JaeV3J6vRw4C+TJktt
-	db4VSakF86QxShJSLkyFv1Zaj4yINPY7EKuUuWlqCfPoydkuXr3w6MLaOFALDQh7NyiYyzDZNGh
-	dy3RiIdxAfMMkB8dzczvnfP6FfTjU/s150PCaro=
-X-Received: by 2002:a05:7022:439a:b0:127:35af:1446 with SMTP id
- a92af1059eb24-12a726f0f65mr2097489c88.36.1774048041125; Fri, 20 Mar 2026
- 16:07:21 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1774048183; x=1774652983;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MUUqCiT6aXukS9SwL9hysllV86yLA5FmYEzwznGMHeY=;
+        b=Z+IPujJRvWL6DxhqistQKRhLP+6QPpr9sIWE1exexKm8xcqKTunKiGUUqqHK4CTkYE
+         c25CbDV8H2vSrDBIx9fM29ZHMIxG3nRZxA92AB4XuURDGSEamDbIzHHRjvLhDKWniUHO
+         tT0KvYGQ284nI2lOR+k9Ewgrb6H2gP+l2Vn6/n6k6n6Lw4cNuA0BqSmpidrNWNNHksV8
+         QC5BGDuPBoaJAAo08P0UA2dt5T9PyFluTckfqviPDZdPO0tzK61pKWVSB1WDJNAW0xhg
+         mHbH75gZNqMOmu/qcGFIsusoi+0MQgV6bgrmDxdQJn6hZdWccAge68UHfZN3dSO2cKe3
+         s+jg==
+X-Forwarded-Encrypted: i=1; AJvYcCVLkvj+FwAGbtuSCMDscWyuMjeG3Cu0L9bvil4trB2PgZ5dx1FMQgNXFxMOtmwUZ139NuxOrcM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVGnv701jgy8+7a6wfrIHhgxCIwmszWqzrmWA8tqKOt7Mr2b4l
+	gvCkrICHlT33Ct1+PkwnA0Z4BYlQRxQbO8xbY/ugN8UiKU4goeofI2ERzYjPkLlMcuY=
+X-Gm-Gg: ATEYQzxh8WeVhwq6YHwh4KFK+naUPWjXqooEiUh5yCnKuyvJjlj1XzO/AyjLMkbJBJw
+	m3A9yQgLlo1ZjJdx0dd7ejB0IYZi60T5RpmCXaEDzfgER8vrAymwDd0E7YiILgVntWC/UxqGzw+
+	4Ru+iI5SEiCROsYCfeZHIXw/ipA8L9W22F3c7skWbtoRhv2Z8OJ1G/zGhNBw09Y3b4hhLPun+3E
+	5T5J+DAupicb52pEYEf9xsYg9ZOzMU9dH9+p+Lv1DWBWvw/TknPs+8izpXJjIywT0aLFlE/lbq9
+	27qsUAu6j8eEXuZp6VLQVu1zdgWHqVLMxlnPctxSUZrudpIMYdHDIhNMGifO96bUSy9/yRfQ7hg
+	mpqxCJ2bkJs6AlDsBjROjJCPKXvN/CzaIgT+FW2oBY2ZzKCX3Om0O0nl3FaCD69oRvBkjP/+MU8
+	bEUqqApPqeNNGODw==
+X-Received: by 2002:a17:90b:510f:b0:35b:8d89:719d with SMTP id 98e67ed59e1d1-35bd2749cb6mr3212601a91.6.1774048183415;
+        Fri, 20 Mar 2026 16:09:43 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:7::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35bd262cb35sm1574549a91.1.2026.03.20.16.09.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Mar 2026 16:09:43 -0700 (PDT)
+Date: Fri, 20 Mar 2026 16:09:42 -0700
+From: Joe Damato <joe@dama.to>
+To: Kohei Enju <kohei@enjuk.jp>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	kohei.enju@gmail.com
+Subject: Re: [PATCH iwl-next v1 0/3] i40e: support XDP metadata ops (RX
+Message-ID: <ab3TtpEKY5Pg+uQt@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>, Kohei Enju <kohei@enjuk.jp>,
+	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	kohei.enju@gmail.com
+References: <20260319171650.5815-1-kohei@enjuk.jp>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260319181817.1901357-1-martin.lau@linux.dev>
-In-Reply-To: <20260319181817.1901357-1-martin.lau@linux.dev>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Fri, 20 Mar 2026 16:07:10 -0700
-X-Gm-Features: AaiRm52I251yAXEX3iacePh1OECgxBmRkjQFS7og6W0jWiC-RiQFSGKpEWd19ug
-Message-ID: <CAAVpQUA2JhaewkprZHccQQu20XgnHmMgZ_q6AZWCP-V+e_YS4A@mail.gmail.com>
-Subject: Re: [PATCH net] udp: Fix wildcard bind conflict check when using hash2
-To: Martin KaFai Lau <martin.lau@linux.dev>
-Cc: netdev@vger.kernel.org, David Miller <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Andrew Onyshchuk <oandrew@meta.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260319171650.5815-1-kohei@enjuk.jp>
 
-On Thu, Mar 19, 2026 at 11:18=E2=80=AFAM Martin KaFai Lau <martin.lau@linux=
-.dev> wrote:
->
-> From: Martin KaFai Lau <martin.lau@kernel.org>
->
-> When binding a udp_sock to a local address and port, UDP uses
-> two hashes (udptable->hash and udptable->hash2) for collision
-> detection. The current code switches to "hash2" when
-> hslot->count > 10.
->
-> "hash2" is keyed by local address and local port.
-> "hash" is keyed by local port only.
->
-> The issue can be shown in the following bind sequence (pseudo code):
->
-> bind(fd1,  "[fd00::1]:8888")
-> bind(fd2,  "[fd00::2]:8888")
-> bind(fd3,  "[fd00::3]:8888")
-> bind(fd4,  "[fd00::4]:8888")
-> bind(fd5,  "[fd00::5]:8888")
-> bind(fd6,  "[fd00::6]:8888")
-> bind(fd7,  "[fd00::7]:8888")
-> bind(fd8,  "[fd00::8]:8888")
-> bind(fd9,  "[fd00::9]:8888")
-> bind(fd10, "[fd00::10]:8888")
->
-> /* Correctly return -EADDRINUSE because "hash" is used
->  * instead of "hash2". udp_lib_lport_inuse() detects the
->  * conflict.
->  */
-> bind(fail_fd, "[::]:8888")
->
-> /* After one more socket is bound to "[fd00::11]:8888",
->  * hslot->count exceeds 10 and "hash2" is used instead.
->  */
-> bind(fd11, "[fd00::11]:8888")
-> bind(fail_fd, "[::]:8888")      /* succeeds unexpectedly */
->
-> The same issue applies to the IPv4 wildcard address "0.0.0.0"
-> and the IPv4-mapped wildcard address "::ffff:0.0.0.0". For
-> example, if there are existing sockets bound to
-> "192.168.1.[1-11]:8888", then binding "0.0.0.0:8888" or
-> "[::ffff:0.0.0.0]:8888" can also miss the conflict when
-> hslot->count > 10.
->
-> TCP inet_csk_get_port() already has the correct check in
-> inet_use_bhash2_on_bind(). Rename it to
-> inet_use_hash2_on_bind() and move it to inet_hashtables.h
-> so udp.c can reuse it in this fix.
->
-> Fixes: 30fff9231fad ("udp: bind() optimisation")
-> Reported-by: Andrew Onyshchuk <oandrew@meta.com>
-> Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+On Thu, Mar 19, 2026 at 05:16:41PM +0000, Kohei Enju wrote:
+> This series adds support for XDP metadata ops. Since the i40e RX
+> timestamps are not available from the RX descriptor in the XDP path,
+> this series doesn't implement bpf_xdp_metadata_rx_timestamp().
+> 
+> Patch 1/3 prepares i40e_xdp_buff for subsequent patches.
+> Patch 2/3 and 3/3 introduce bpf_xdp_metadata_rx_hash() and
+> bpf_xdp_metadata_rx_vlan_tag() respectively.
+> 
+> Tested on Intel Corporation Ethernet Controller X710 for 10GbE SFP+ with
+> ./tools/testing/selftests/bpf/xdp_hw_metadata.
+> Since i40e doesn't support HWTSTAMP_FILTER_ALL as an rx_filter, I
+> locally changed the selftest to use HWTSTAMP_FILTER_NONE instead.
+> 
+> Kohei Enju (3):
+>   i40e: prepare for XDP metadata ops support
+>   i40e: add support for bpf_xdp_metadata_rx_hash()
+>   i40e: add support for bpf_xdp_metadata_rx_vlan_tag()
+> 
+>  drivers/net/ethernet/intel/i40e/i40e_main.c | 51 ++++++++++++++++++++-
+>  drivers/net/ethernet/intel/i40e/i40e_txrx.c |  5 +-
+>  drivers/net/ethernet/intel/i40e/i40e_txrx.h |  7 ++-
+>  drivers/net/ethernet/intel/i40e/i40e_type.h |  5 ++
+>  drivers/net/ethernet/intel/i40e/i40e_xsk.c  | 12 +++++
+>  5 files changed, 77 insertions(+), 3 deletions(-)
 
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+For the series:
 
-Confirmed this fixes the buggy scenario, thanks !
-
----8<---
->>> from socket import *
->>>
->>> sk =3D []
->>> for i in range(10):
-...     s =3D socket(AF_INET, SOCK_DGRAM)
-...     s.bind((f'127.0.0.{i + 1}', 8000))
-...     sk.append(s)
-...
->>>
->>> s =3D socket(AF_INET, SOCK_DGRAM)
->>> s.bind((f'0.0.0.0', 8000))
-Traceback (most recent call last):
-  File "<python-input-6>", line 1, in <module>
-    s.bind((f'0.0.0.0', 8000))
-    ~~~~~~^^^^^^^^^^^^^^^^^^^^
-OSError: [Errno 98] Address already in use
->>> s.bind((f'127.0.0.11', 8000))
->>>
->>> s1 =3D socket(AF_INET, SOCK_DGRAM)
->>> s1.bind((f'0.0.0.0', 8000))
->>>
-
-After:
-...
->>> s1.bind((f'0.0.0.0', 8000))
-Traceback (most recent call last):
-  File "<python-input-9>", line 1, in <module>
-    s1.bind((f'0.0.0.0', 8000))
-    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
-OSError: [Errno 98] Address already in use
----8<---
+Reviewed-by: Joe Damato <joe@dama.to>
