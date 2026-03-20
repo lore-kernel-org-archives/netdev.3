@@ -1,176 +1,100 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A93B31A6800;
-	Fri, 20 Mar 2026 11:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE83337188D;
+	Fri, 20 Mar 2026 11:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774006182; cv=none; b=WGxaoYJ3SQppbzh4SFbhr1q+esvpMaNTrU0lpUjqLYpaa8Gczmc+wfLVsir+pZV7LEb7tD4uANUH/OE5jczoISZBuCQJe3NC/kQaLCgUJKjmPXw0WWRpMFy5pQYSpQYJAtMyKi1d5TFQDYJivQxlM4C1M/0WfpFpaeib/HPyJMY=
+	t=1774006208; cv=none; b=fg1mA1j9vlUtse6rQ9ybaAugC7vMyC9031yoxxwqH810n7qw/9Cn/gGv1ShZaspLemGtEADkNCWdiHG156acPpFi3q155voSN+NpP89QibgeiLetixiPM5VkBKlcS3zuR7ZgGIRlvVbaFHCY+jLNekj5bnXnEdrAUWWkxu+M0Kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774006182; c=relaxed/simple;
-	bh=a/Kg539vue2ngY+OY8ZDZa5onMTW99kiRa7ZsGcZb18=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dEbjsobGmMhZ6ooKZYlwgQJyZ68aH3q08KH6zfjb4oPo7ppho5V4WwkGTQqyeIEjQ1bHCj8lvn/zWfanEinJNV2EaKeEUgY3e9kcqSDMShcd2AwHeKr98Txtk15HeiyfIkM0eqzbFtZFf5yvvKNpkNU6oP4/0kMh8LjDWxtuLx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yvug7t3p; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774006208; c=relaxed/simple;
+	bh=uefXC7O5QyHCc1dmEJ0Ci/CRYvinsKqWLMxd9Spuvww=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=NojrB7LnUFBJZQSMPr2itqgGcUVZ1QHlas0xmnEfAJK2qOnBwV8tst4JyihiozZqRltYZqo8XwykAeTvQNYWtq5DGumVuvTZUT8XVN8/nfLdNiADw0euxc12dXNO8QzRKEfO2sgMgUIjQPLp8XksTf5PAbeL0eV3H9HOCJZJiNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AXGqWT9u; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yvug7t3p"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF6EC4CEF7;
-	Fri, 20 Mar 2026 11:29:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AXGqWT9u"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 380ECC4CEF7;
+	Fri, 20 Mar 2026 11:30:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774006182;
-	bh=a/Kg539vue2ngY+OY8ZDZa5onMTW99kiRa7ZsGcZb18=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yvug7t3p3Bt8+9Geiy0PuQm4AnN14FNfEoRpFirz4heoGNuimSPrY1hDvOo/m2IDj
-	 8p2yjeQpv2hgrwHzA9+qC0ljMw18niMRBfCFkORPKuLbUGF01FHhwubSkDKDmasoQM
-	 VB22LNnCrYJWoqlqkhG8aFWIyCcZysz2+O7zriBE78XX7eFVAAB5L9Z01ULUCV/H9U
-	 mLhFvEmRtu9WAEZjie03bNrn8sxqZHHX4b8qtEIJGhNxPQClTuQ9qdzJdiZKVcWqPS
-	 YiIvShkqwujditHWSGJ9kUZQZSK/HRpZPmFH6jDvWOtPIJ0a//p/TN7WajwDqWGmpx
-	 JzYx00xJHbj4Q==
-From: Simon Horman <horms@kernel.org>
-To: vikas.gupta@broadcom.com
-Cc: Simon Horman <horms@kernel.org>,
-	vsrama-krishna.nemani@broadcom.com,
-	edumazet@google.com,
-	ajit.khaparde@broadcom.com,
-	kuba@kernel.org,
-	netdev@vger.kernel.org,
-	pavan.chebbi@broadcom.com,
-	rajashekar.hudumula@broadcom.com,
-	pabeni@redhat.com,
-	davem@davemloft.net,
-	michael.chan@broadcom.com,
-	bhargava.marreddy@broadcom.com,
-	andrew+netdev@lunn.ch,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v8 10/10] bng_en: add support for ethtool -S stats display
-Date: Fri, 20 Mar 2026 11:27:19 +0000
-Message-ID: <20260320112717.2065386-3-horms@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260319055124.1350670-11-vikas.gupta@broadcom.com>
-References: <20260319055124.1350670-11-vikas.gupta@broadcom.com>
+	s=k20201202; t=1774006208;
+	bh=uefXC7O5QyHCc1dmEJ0Ci/CRYvinsKqWLMxd9Spuvww=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=AXGqWT9ulE0HL83dnktYmika+XCmbu00SWfq6RMd5tMwLhErvmXUjR5gz7/MbCpBR
+	 CA/z5vBD8s38lUJ7awwzFpN7bqXN8gWcsr+MiZX/aw0EZ4mVd7dd+Faw9WQBwKCafG
+	 tsb4ddyHobcuD4glhK+3NTBjEk04Saijwe4jImALj/2yqqgs7og72H1NQeYWGiX9Lz
+	 5/5kmNtWbk0M3721D7Yqus4dSB0k78k8CdjHsNNxrPLNRI6QpfJ0DOoT4yHVvC/7AO
+	 mRdpOFFpYGYjlsVjKk1aQAQfUcBxZG4MRimY6reA1eY6dRL7priXS53/0082hBgz9T
+	 p1uH5RQxoWrgg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Matthew Wood <thepacketgeek@gmail.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
+ hch@infradead.org, jlbec@evilplan.org, linux-fsdevel@vger.kernel.org,
+ netdev@vger.kernel.org, gustavold@gmail.com, asantostc@gmail.com,
+ calvin@wbinvd.org, kernel-team@meta.com
+Subject: Re: [PATCH RFC 0/2] configfs: enable kernel-space item registration
+In-Reply-To: <aYxL7d4MxbepGnKb@gmail.com>
+References: <20251202-configfs_netcon-v1-0-b4738ead8ee8@debian.org>
+ <878qfgx25r.fsf@t14s.mail-host-address-is-not-set>
+ <-6hh70JX5nq4ruTMbNQPMoUi6wz8vmM2MQxqB3VNK3Zt97c-oxWOo3y0cQ7_h6BSfcp78fR9GmzxcTQb_WB-XA==@protonmail.internalid>
+ <ineirxyguevlbqe7j4qpkcooqstpl5ogvzhg2bqutkic4lxwu5@vgtygbngs242>
+ <875xakwwvz.fsf@t14s.mail-host-address-is-not-set>
+ <C6V44SxiJH8NxRosmbshR-sfcBisrA5yWQpDmfQXe5vOX3uI6SM-r7wwUr7WxfPMS5ETUQ9GYDlptRs911A_Qg==@protonmail.internalid>
+ <aYTWbElo_U_neJZi@deathstar>
+ <87qzquuqsx.fsf@t14s.mail-host-address-is-not-set>
+ <aYnnHJ2TQEcD_xMS@gmail.com>
+ <877bsjvhqv.fsf@t14s.mail-host-address-is-not-set>
+ <aYxL7d4MxbepGnKb@gmail.com>
+Date: Fri, 20 Mar 2026 12:29:58 +0100
+Message-ID: <87o6kirb61.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+Hi Breno,
 
-Simon says: This is somewhat more subjective than the other two AI
-generated reviews I released for this patch-set. But I think it does
-at least warrant discussion.
+Breno Leitao <leitao@debian.org> writes:
 
----
-bng_en: add support for ethtool -S stats display
-
-This patch implements the legacy ethtool statistics interface to expose
-hardware counters through ethtool -S, including per-queue ring stats,
-TPA stats, port level stats, and per-priority stats.
-
-> diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_ethtool.c b/drivers/net/ethernet/broadcom/bnge/bnge_ethtool.c
-> index 2ae13f18e2d7..1a0eb987ef6f 100644
-> --- a/drivers/net/ethernet/broadcom/bnge/bnge_ethtool.c
-> +++ b/drivers/net/ethernet/broadcom/bnge/bnge_ethtool.c
-
-[ ... ]
-
-> @@ -42,6 +307,219 @@ static void bnge_get_drvinfo(struct net_device *dev,
->  	strscpy(info->bus_info, pci_name(bd->pdev), sizeof(info->bus_info));
->  }
+> On Wed, Feb 11, 2026 at 08:53:12AM +0100, Andreas Hindborg wrote:
+>> Breno Leitao <leitao@debian.org> writes:
+>>=20
+>> > On Mon, Feb 09, 2026 at 11:58:22AM +0100, Andreas Hindborg wrote:
+>> >> Perhaps we should discuss this at a venue where we can get some more
+>> >> people together? LPC or LSF maybe?
+>> >
+>> > Certainly, I agree. I=E2=80=99ve submitted my subscription to LSFMMBPF=
+ with the main
+>> > goal to discuss this topic. I wasn=E2=80=99t planning to present it th=
+is, given it was
+>> > a "overkill"?, but I=E2=80=99m happy to do so if that is the right dir=
+ection.
+>>=20
+>> I'd appreciate if we can get some people in a room and force them to
+>> think about this. I think it is a good idea if you submit a topic. If we
+>> don't get a slot, we can see what we can do in the hallway, and if that
+>> does not work out we are forced to make a decision between the 4 of us
+>> participating on list. At least nobody can say we did not try to collect
+>> input and opinions then.
 >
-> +static int bnge_get_sset_count(struct net_device *dev, int sset)
-> +{
-> +	struct bnge_net *bn = netdev_priv(dev);
-> +
-> +	switch (sset) {
-> +	case ETH_SS_STATS:
-> +		return bnge_get_num_stats(bn);
-> +	default:
-> +		return -EOPNOTSUPP;
-> +	}
-> +}
+> That is an excellent follow-up and direction, let me submit a topic in th=
+ere.
 
-[ ... ]
+I did not see a topic on list, did you submit?
 
-> +static void bnge_get_ethtool_stats(struct net_device *dev,
-> +				   struct ethtool_stats *stats, u64 *buf)
-> +{
-> +	struct bnge_net *bn = netdev_priv(dev);
-> +	struct bnge_dev *bd = bn->bd;
-> +	u32 tpa_stats;
-> +	u32 i, j = 0;
-> +
-> +	if (!bn->bnapi) {
-> +		j += bnge_get_num_ring_stats(bd);
-> +		goto skip_ring_stats;
-> +	}
-> +
-> +	tpa_stats = bnge_get_num_tpa_ring_stats(bd);
-> +	for (i = 0; i < bd->nq_nr_rings; i++) {
-> +		struct bnge_napi *bnapi = bn->bnapi[i];
-> +		struct bnge_nq_ring_info *nqr;
-> +		u64 *sw_stats;
-> +		int k;
-> +
-> +		nqr = &bnapi->nq_ring;
-> +		sw_stats = nqr->stats.sw_stats;
-> +
-> +		if (is_rx_ring(bd, i)) {
-> +			buf[j++] = BNGE_GET_RING_STATS64(sw_stats, rx_ucast_pkts);
-> +			buf[j++] = BNGE_GET_RING_STATS64(sw_stats, rx_mcast_pkts);
-> +			buf[j++] = BNGE_GET_RING_STATS64(sw_stats, rx_bcast_pkts);
-> +			buf[j++] = BNGE_GET_RING_STATS64(sw_stats, rx_ucast_bytes);
-> +			buf[j++] = BNGE_GET_RING_STATS64(sw_stats, rx_mcast_bytes);
-> +			buf[j++] = BNGE_GET_RING_STATS64(sw_stats, rx_bcast_bytes);
-> +		}
-> +		if (is_tx_ring(bd, i)) {
-> +			buf[j++] = BNGE_GET_RING_STATS64(sw_stats, tx_ucast_pkts);
-> +			buf[j++] = BNGE_GET_RING_STATS64(sw_stats, tx_mcast_pkts);
-> +			buf[j++] = BNGE_GET_RING_STATS64(sw_stats, tx_bcast_pkts);
-> +			buf[j++] = BNGE_GET_RING_STATS64(sw_stats, tx_ucast_bytes);
-> +			buf[j++] = BNGE_GET_RING_STATS64(sw_stats, tx_mcast_bytes);
-> +			buf[j++] = BNGE_GET_RING_STATS64(sw_stats, tx_bcast_bytes);
-> +		}
+At any rate, I did not receive an invitation for LSF this year, so I
+will not be able to meet up in that venue.
 
-This isn't a bug, but Documentation/networking/statistics.rst flags a
-potential concern about interface duplication. The patch adds per-queue
-ring statistics (rxqN_ucast_packets, rxqN_mcast_packets,
-rxqN_bcast_packets, rxqN_ucast_bytes, rxqN_mcast_bytes, rxqN_bcast_bytes,
-and tx equivalents) to the ethtool -S interface.
 
-However, this driver already implements the standard per-queue statistics
-API via netdev_stat_ops (bnge_get_queue_stats_rx and
-bnge_get_queue_stats_tx in bnge_netdev.c). That interface exposes
-per-queue packets and bytes through netlink, which is the designated
-mechanism for per-queue counters.
+Best regards,
+Andreas Hindborg
 
-According to Documentation/networking/statistics.rst, per-queue stats
-should use the standard netdev_stat_ops interface rather than ethtool -S.
-The documentation states that drivers should avoid adding new counters to
-ethtool -S for values that have a standard uAPI.
 
-While the ethtool -S stats provide a ucast/mcast/bcast breakdown not
-directly available from the standard per-queue API (which aggregates to
-total packets and bytes), this still represents duplication of the
-fundamental per-queue packet and byte counters. Could these per-queue
-stats be omitted from ethtool -S, keeping only the truly hardware-specific
-stats like TPA, port-level, and priority stats that don't have a standard
-interface?
-
-[ ... ]
-
-> @@ -262,6 +740,9 @@ static const struct ethtool_ops bnge_ethtool_ops = {
->  	.nway_reset		= bnge_nway_reset,
->  	.get_pauseparam		= bnge_get_pauseparam,
->  	.set_pauseparam		= bnge_set_pauseparam,
-> +	.get_sset_count		= bnge_get_sset_count,
-> +	.get_strings		= bnge_get_strings,
-> +	.get_ethtool_stats	= bnge_get_ethtool_stats,
->  	.get_eth_phy_stats	= bnge_get_eth_phy_stats,
->  	.get_eth_mac_stats	= bnge_get_eth_mac_stats,
->  	.get_eth_ctrl_stats	= bnge_get_eth_ctrl_stats,
