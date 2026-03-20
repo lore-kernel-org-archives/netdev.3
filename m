@@ -1,129 +1,109 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 638BC2DA742
-	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 03:06:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773976020; cv=pass; b=V8JhFKvCiDw8jOnCnrRPFx2jlXnphasA4O/kADIPW25wHMI5Ae9Q5Em0nnzJ64m+NJOfLQgvZkw982AzRGpYX57fWSetj01JI1CWcLiSVHFyqF/PcbutuXJx0pbBdXfp9RTCZ1w4JOPdahA7xZed0PZv9LGEp0ZGKnXFAp0OKY0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773976020; c=relaxed/simple;
-	bh=RM61q1uWCHCZRwTddCQGqRStiqTB47nu5R9QT11eXPY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kzA8He6d9u2VfRGpao4J4P+drWAtAlrOd/0osECbhfMALa2Q/ybmu8IRfe475fLWbAe/fGLMokJrnxfr3ZzuEQM5DfTACSrA979gPqp1zBVx1BK6+X1toex+aSbc7EPazAm+JhmV0r8HaBWZ5ztnZ/BRP7nhKm+N9FGrqX3FNjo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P38GAKiS; arc=pass smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7DD233134
+	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 03:23:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773977010; cv=none; b=TnPy642GIrR6FdCvXFeF0/AsDY6SaK0hGjWPlR4ysgdKeFDfFtgYFihn872K63+h59+3R3kt67MupVg2IW7hFBA4kWO5A3VK7x0KgrkQfYSQJZif2QWlaCiNn2NIEwl1Nt582bZe60Xf+cIvr0WmTlJN3f6xRI/NGiF4aV3CMF4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773977010; c=relaxed/simple;
+	bh=U43YQCKyx3qzYXh+/asv44d6JAJ+q7AfA96CcJyGrpM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=rWw4QVpSUkdWI5lkcTeYsalXHtpkK6bxsCYTMaNQEkthZJR85/CHfQikLSOCO54f8RVoPWf/5+7c5O/WvFvKhGH0T81DzW9oEbYBtcwjNYiCfcqMgEsXzznDIL+ktjceoqQ/oqkEUM92GmlLW9tXcy8XVsrvEqTy7knu72bp1Cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=LTLRhfIV; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P38GAKiS"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-661cfb9f3aaso1694379a12.2
-        for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 20:06:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773976017; cv=none;
-        d=google.com; s=arc-20240605;
-        b=SvTm7oEN/pbRcEWVRvfzGe3db9Vp+zeeuqUhC91x9yeqYrqejPSFn0sSqMpNcSbhbp
-         ZQja1i/gEqEysJ+e5dpHjFrjkXXhfUaTqJ13AAeJVKsJSz0XaRKJzzDOlP6RY1j8LVok
-         EnArOAJYPeIJ9e/lNfFG7GNvdnwUFTeWwJsbbS3lu0xoipi0tIJ0IHLdUT0CJTe9u0IY
-         ZhkLrkJl3DaWxRqTQXPTkSDZ6fm/L1TmesjHyjqlKWRFKR/HCtyDrDe69/uuHa/TLICq
-         +UOhnwlC31kW4kTK91hfzWiHUuYavn6+EIZeaOGWykwD560Z+O1LPe2gRQdjpe8DnHA1
-         8FMQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=Uh2XnjWm7w7sL+W4dFrZCyFtW9ll5NN+pKsvTMlZQ8Y=;
-        fh=yIBDEQs+S1VPc36Cl3E7HC+G72fwEWOKf0PwS6UlxLg=;
-        b=KUBW85YBhQY0rlduAS9vDeRlHDWd+BMwmk/WbNJYWUeyEcXYx3TMSlDaG2tYkWDOti
-         lCVo6+T9cQzOo6+TMGsNGzjiJ9pufWuCSpibwtc64kZxvxyytAq+zrFIlXvm3H4fwDGu
-         IcV7UJHJG9uP9u7qPPfyP8fz4dCqYU8HOnw1ZcHu23GKRSjl3YGw6SHI0oDXZO7Zh0AJ
-         M8VcMAVIWWDOD43KcmtVAv1MIzD3ehj5cSMHjmMZiqoco+gM0L6HBtSY04CnNu3uIriK
-         qrLtEFN8Wvef4MTUq89pfl5xSfAOMVDof9a8zPrzJqN4eLPiNlN7qunN8EC2OgzexK5H
-         GKCQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773976017; x=1774580817; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Uh2XnjWm7w7sL+W4dFrZCyFtW9ll5NN+pKsvTMlZQ8Y=;
-        b=P38GAKiSckd6RQ8mw1MTp1jSkRxdKQDOrw30O2mz70ISZusHIgL3fz54rem2bxe/so
-         1fRwPur6hGB6B9gWAWxuU/ajnBQsFO9kdqJ4cK2k+ue5aZd6okSeM7OhMZiVicBdoYTp
-         AgIJoaX1oEaUKiQx8GLQdeuC2YeAJPDn2zOUe4VouDr7GJ9mdu4S5rCMIkewvb3vLAPb
-         rvJvoEjNvWjLBAc8qpYygJGjCjMtgV5Hv2qalsImM18k7cB6jNVfzy2C8P3nNygxsCY2
-         3Wi1o1TlJxEaE/9lAoRcwrox6ZyYb+tfh0P+azOSYjFMwZMK21c7UjJeMOfHM6WPs1DK
-         WZlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773976017; x=1774580817;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Uh2XnjWm7w7sL+W4dFrZCyFtW9ll5NN+pKsvTMlZQ8Y=;
-        b=nttNCxM4+FUJYeGKkBhQkNzDYHZtpVOFYO8kl/MLf2k3uCDqrgw56D/yzI0lHrB7rE
-         N5leTrqSfDC0l4iBcrXx/97qLhicPNldW/pzkT0b3eLe8d84ApnYryKwvJtnpuBm3WQw
-         EhS8/u4cNcrSF/5aND6WfP/kmygs1xj3olFK4lnD0OI+iBLbYHXDrrw8HUMS4SpZhO9k
-         Z5iEanbUdkMRT6gtRm4/2TXKx25PRchvzsSm53aQpjnh+uO93DlHrtbI17n8h5ehQ+hm
-         gZz3zjY6M2cNyo+JZEOXFfIXCNn48MQwK6sSlXC1W8Lqawe/42KNIhHdrA9B1MDr11Jg
-         C6Dw==
-X-Forwarded-Encrypted: i=1; AJvYcCWxPGpCIItHwpw7KV+muRC/Qka1hLbd1Thp+mKqd0EH/6s5p8TWnwKfM2B2XKAHagFuRseHl4w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywg3RlZzi+MGxn2D5bdFh5RcIQdPDaiqQlYIe5TSmft8lB8d2hy
-	l5qxJC8bipgn5CKBRPm3kWihnXaLV0KWf96jkQsQasMdzQYsUpzHADpu4lkNxoxv9i3aAD1B6mi
-	atBDDVWn0vcl428irjf9JW/dCbs4VY9g=
-X-Gm-Gg: ATEYQzyupSo5O1GK3gJBSDYcANcaaIWN2sXu4uIdqQ/Hy51l5AVd6cZX2hZqAQL7YDF
-	h0ri5lZYA/RVuZemxGzGIkkbl1LbRegofmdMNvSHbS8luyCGqmEdzG9KtwcrYy1y7ynyyfZY6XF
-	eQ82s/8ENM3t54eg4GI5XF2Pb/rNuELU3yF+MrJkRgz66CNJ/WdWuxWUFxO6TbnTQX2wHAVEps+
-	WkwzCWhqTTZQC87ZT28vufBEsBu7NA3hG3BCHEZRcqEdeyws5eCYA1kiq6CmSkbiKfB/+QczJ1g
-	hcM+eA==
-X-Received: by 2002:a17:906:240e:b0:b97:f12a:3f8c with SMTP id
- a640c23a62f3a-b982f1ffa96mr69781266b.20.1773976016363; Thu, 19 Mar 2026
- 20:06:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="LTLRhfIV"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62K3Mqs06739091, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
+	s=dkim; t=1773976972;
+	bh=U43YQCKyx3qzYXh+/asv44d6JAJ+q7AfA96CcJyGrpM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=LTLRhfIVO3HIgSuiB2FK9IfdPBLHCEyuBK5eO4rHfeaSRtcC+DzMLXAZZXbHo5T9a
+	 CLRmUauzc1/ZRNYX8ju7PE/gMIoToV5b/9T8o5ScsQBK4Lz1WkcgeNbEJNnEInfRGN
+	 Si8xajEdw/fAnrooxUaEBjUf8lWYPeS4qbt+zdYqwH3/RDXdpgjouP3IM5vBSFXBo1
+	 MN7bMwWvEYcF4oMOJYdFdjrXiU+69ISLS+wYiZ1CT8vh7YRWZ9IbFitA0oMWjoQXM6
+	 ix7zWMUTO+99XFQLFsH0NpL3zaQnfdBlcv/kj6p7tmil7VPYNYHeSOxibNi03dK5a1
+	 i4g8uznClWKcg==
+Received: from RS-EX-MBS1.realsil.com.cn ([172.29.17.101])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 62K3Mqs06739091
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 20 Mar 2026 11:22:52 +0800
+Received: from RS-EX-MBS3.realsil.com.cn (172.29.17.103) by
+ RS-EX-MBS1.realsil.com.cn (172.29.17.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.39; Fri, 20 Mar 2026 11:22:52 +0800
+Received: from RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) by
+ RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) with mapi id 15.02.2562.017; Fri,
+ 20 Mar 2026 11:22:52 +0800
+From: Javen <javen_xu@realsil.com.cn>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+        "davem@davemloft.net"
+	<davem@davemloft.net>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        "horms@kernel.org" <horms@kernel.org>,
+        "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>
+Subject: RE: r8169: Discussion on implementing RSS support for r8169
+Thread-Topic: r8169: Discussion on implementing RSS support for r8169
+Thread-Index: Ady3flT6SLXoIWu3RPmeYPmtdnYmcQAGZGOAAB+EdyA=
+Date: Fri, 20 Mar 2026 03:22:52 +0000
+Message-ID: <86784e19c4504c3ba49a9299701a2c1f@realsil.com.cn>
+References: <1ce3478d571f4d26a45e792c4c84c429@realsil.com.cn>
+ <e063ce5f-1789-49d0-880c-e4b6a40da9e1@gmail.com>
+In-Reply-To: <e063ce5f-1789-49d0-880c-e4b6a40da9e1@gmail.com>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260317061700.7734-1-linux.amoon@gmail.com> <202603200758.vueafhDW-lkp@intel.com>
-In-Reply-To: <202603200758.vueafhDW-lkp@intel.com>
-From: Anand Moon <linux.amoon@gmail.com>
-Date: Fri, 20 Mar 2026 08:36:40 +0530
-X-Gm-Features: AaiRm5341vISAh2YMw8-vBK1a-KteoqiImPAmam6qIBBOzrX-3-bGM_THq4e-Z8
-Message-ID: <CANAwSgS=TzC=QVs2Mw1qJxDffj5H6gU7Ak=Kdd_pCf_1sgY74Q@mail.gmail.com>
-Subject: Re: [PATCH next v1] r8169: Fix PHY lookup for mdiobus_get_phy() and
- improve error reporting during probe
-To: kernel test robot <lkp@intel.com>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Manivannan Sadhasivam <mani@kernel.org>, Shawn Lin <shawn.lin@rock-chips.com>, 
-	Hans Zhang <18255117159@163.com>, Niklas Cassel <cassel@kernel.org>, linux-kernel@vger.kernel.org, 
-	llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org, 
-	Robin Murphy <robin.murphy@arm.com>, Danilo Krummrich <dakr@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 
-Hi Kernel test robot,
-
-On Fri, 20 Mar 2026 at 05:25, kernel test robot <lkp@intel.com> wrote:
->
-> Hi Anand,
->
-> kernel test robot noticed the following build warnings:
->
-> [auto build test WARNING on 95c541ddfb0815a0ea8477af778bb13bb075079a]
->
-> url:    https://github.com/intel-lab-lkp/linux/commits/Anand-Moon/r8169-Fix-PHY-lookup-for-mdiobus_get_phy-and-improve-error-reporting-during-probe/20260317-183327
-> base:   95c541ddfb0815a0ea8477af778bb13bb075079a
-> patch link:    https://lore.kernel.org/r/20260317061700.7734-1-linux.amoon%40gmail.com
-> patch subject: [PATCH next v1] r8169: Fix PHY lookup for mdiobus_get_phy() and improve error reporting during probe
-> config: s390-allmodconfig (https://download.01.org/0day-ci/archive/20260320/202603200758.vueafhDW-lkp@intel.com/config)
-> compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260320/202603200758.vueafhDW-lkp@intel.com/reproduce)
->
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202603200758.vueafhDW-lkp@intel.com/
->
-> All warnings (new ones prefixed by >>):
-
-Please discard this patch.
-
-Thanks
--Anand
+Pk9uIDE5LjAzLjIwMjYgMDk6NTYsIEphdmVuIHdyb3RlOg0KPj4gSGksIEhlaW5lcg0KPj4NCj4+
+IFdlIGFyZSBub3cgcGxhbm5pbmcgdG8gaW1wbGVtZW50IFJTUyBzdXBwb3J0IG9uIHI4MTY5IGRy
+aXZlci4gVGhpcyB3aWxsDQo+cmVxdWlyZSBzaWduaWZpY2FudCBjaGFuZ2VzIHRvIHRoZSBleGlz
+dGluZyBkcml2ZXIgYXJjaGl0ZWN0dXJlLCBzbyB3ZSB3YW50IHRvDQo+ZGlzY3VzcyBpdCB3aXRo
+IHlvdS4NCj4+DQo+VGhhbmtzIGZvciB0aGUgcXVlc3Rpb24uDQo+SSBhbHNvIG9uY2UgY29uc2lk
+ZXJlZCB0aGlzLCBidXQgZGVjaWRlZCBhZ2FpbnN0IGl0LCBhcyBJIGRpZG4ndCBzZWUgZW5vdWdo
+DQo+YmVuZWZpdCBqdXN0aWZ5aW5nIHRoZSBzaWduaWZpY2FudGx5IGluY3JlYXNlZCBjb21wbGV4
+aXR5IG9mIHRoZSBkcml2ZXIuIEV2ZW4NCj53aXRoIGEgTjEwMC1iYXNlZCBtaW5pLXBjIEkgY2Fu
+IGVhc2lseSBzYXR1cmF0ZSBhIDIuNUdicHMgbGluayB3aXRoIHRoZSBkcml2ZXINCj5hcy1pcy4N
+Cj5Bbnkgc3BlY2lmaWMgcmVhc29uIHdoeSB5b3UgY29uc2lkZXIgYWRkaW5nIFJTUyBzdXBwb3J0
+PyBXb3VsZCBiZSBnb29kIHRvDQo+c2VlIGEgcGVyZm9ybWFuY2UgY29tcGFyaXNvbiBhcyBiYXNp
+cyBmb3IgYSBkZWNpc2lvbiBvbiBmb3Igd2hpY2ggY2hpcA0KPnZlcnNpb25zIFJTUyBtYXkgcHJv
+dmlkZSBhIHNpZ25pZmljYW50IGJlbmVmaXQuDQo+DQoNClRoZSBwcmltYXJ5IGJlbmVmdCBvZiBh
+ZGRpbmcgcnNzIGhlcmUgaXMgdG8gcmVkdWNlIGNwdSBsb2FkIHBlciBjb3JlLg0KDQpTaW5jZSBJ
+IGN1cnJlbnRseSBvbmx5IGhhdmUgb25lIFJUTDgxMTFlcCBhbmQgb25lIFJUTDgxMjcsIEknbSBn
+b2luZyB0byBkbyBhIHNpbXBsZSB0ZXN0Lg0KDQpCYXNlZCBvbiBteSBpcGVyZiB0ZXN0IGZyb20g
+UlRMODExMWVwIHRvIFJUTDgxMjc6DQoJMS4gV2l0aCByc3M6IGNwdSBsb2FkIGlzIGRpc3RyaWJ1
+dGVkIGFjcm9zcyA0IGNvcmVzKDElIH4gMiUgZWFjaCkNCgkyLiBXaXRob3V0IHJzczogY3B1IGxv
+YWQgaXMgY29uY2VudHJhdGVkIG9uIGEgc2luZ2xlIGNvcmUoNyUgfiA4JSkNCg0KSWYgdGVzdCBm
+cm9tIFJUTDgxMjcgdG8gUlRMODEyNywgZXNwZWNpYWxseSBvbiBwbGF0Zm9ybXMgd2l0aCB3ZWFr
+ZXIgY3B1LCBkaXNhYmxpbmcgcnNzIHdpbGwgZWFzaWx5IGxlYWQgdG8gY3B1IG92ZXJsb2FkLiAN
+ClRoYXQncyB0aGUgbWFpbiByZWFzb24gd2UgY29uc2lkZXIgYWRkaW5nIHJzcyBzdXBwb3J0IGZv
+ciBSVEw4MTI3Lg0KDQpJIHdpbGwgc2hvdyB0aGUgcmVzdWx0IGZyb20gUlRMODEyNyB0byBSVEw4
+MTI3IHdoZW4gSSBzdWJtaXQgcnNzIHBhdGNoLg0KDQpUaGFua3MsDQpKYXZlbiBYdQ0KDQo+PiBC
+YXNlZCBvbiBvdXIgdmVuZG9yIGRyaXZlciB3aGljaCBjYW4gYmUgZmV0Y2hlZCBmcm9tIFJlYWx0
+ZWssIHRoZSBrZXkNCj5tb2RpZmljYXRpb25zIHdpbGwgaW5jbHVkZToNCj4+DQo+PiAgICAgICAx
+LiBFbmFibGUgbXNpeCBhbmQgdXBkYXRpbmcgdGhlIGlycSBhbGxvY2F0aW9uIG1lY2hhbmlzbQ0K
+Pj4gICAgICAgMi4gU3VwcG9ydCBtdWx0aXBsZSByeC90eCBxdWV1ZXMNCj4+ICAgICAgIDMuIFJl
+Z2lzdGVyIG11bHRpcGxlIG5hcGkgYW5kIHVwZGF0ZSBuZXcgaW50ZXJydXB0IG1hcHBpbmcoaXNy
+L2ltcikgZm9yDQo+bXVsdGktcXVldWUNCj4+ICAgICAgIDQuIEltcGxlbWVudCByeCBtc2l4IHBv
+bGwgYW5kIHJ4IGludGVycnVwdCBmdW5jdGlvbg0KPj4gICAgICAgNS4gSW1wbGVtZW50IGV0aHRv
+b2wgY2FsbGJhY2tzIGZvciByc3MgY29uZmlndXJhdGlvbg0KPj4NCj4+IFNob3VsZCB3ZSBzdWJt
+aXQgdGhlIGNoYW5nZXMgYWJvdmUgc2VwYXJhdGVseSBvciBzdWJtaXQgdGhlbSBhbGwgYXQgb25j
+ZT8NCj5PciBkbyB5b3UgaGF2ZSBhbnkgb3RoZXIgc3VnZ2VzdGlvbnM/DQo+Pg0KPkFzIEFuZHJl
+dyBhbHJlYWR5IHNhaWQsIHBsZWFzZSBzdWJtaXQgdGhlIHBhdGNoZXMgaW4gc21hbGxlciwgcmV2
+aWV3YWJsZSwNCj5jaHVua3MuDQo+QmVzdCB0YWdnZWQgYXMgUkZDLg0KPg0KPj4gV2Ugd2FudCB0
+byBhbGlnbiB3aXRoIHlvdSBvbiB0aGUgZGV2ZWxvcG1lbnQgYW5kIHN1Ym1pc3Npb24gYXBwcm9h
+Y2guDQo+Pg0KPj4gQmVzdCByZWdhcmRzLA0KPj4NCj4+IEphdmVuIFh1DQo+DQo+SGVpbmVyDQo=
