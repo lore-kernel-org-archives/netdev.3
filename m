@@ -1,28 +1,28 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011011.outbound.protection.outlook.com [40.107.208.11])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013019.outbound.protection.outlook.com [40.93.196.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11513A1696;
-	Fri, 20 Mar 2026 11:16:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0FF3A544E;
+	Fri, 20 Mar 2026 11:16:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.19
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774005365; cv=fail; b=KNo12w5/2UNUJmeUbAXOCgN9YKYvv5tZE8B8ySjbIU39g5U0ZjM8pwnYs0dRLtA0NfaXwU04A4wk1LXe5sh3XYm0/987nLwOk9kcM/ordo1nu40kS4exjW/L2Ic8IEskDnIs1CYEsG9sdFMs2k59FxibVKL3hI0Mf3IPJ1Ks2XE=
+	t=1774005377; cv=fail; b=h/JdzINM/7YcnOjgOsjjiI5wvDitzfChZ3++9dB6wQZszcgeDMHTU+FbPmQNY0NAyMwaidaccfCKmdGzhhq6mHgiMMKt98xgXwQqZCyP7LHPTOsPOHY1iL0JB5jKcl1RrXTJODpgBtB0Io6MYltaUe09wHlQtXLF/sFjyUg08VA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774005365; c=relaxed/simple;
-	bh=rUnEOea/zuLK6fs/3YzrUWoDG3Vvgzpj64QwPmt/WKE=;
+	s=arc-20240116; t=1774005377; c=relaxed/simple;
+	bh=NK/eKxa6hid9H8nbjeFvx6QTx0jrgWWVw0h7Y6v5t9Y=;
 	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=rdj8ytHgXqhhWk12nhxD1vQqZO/cpAApLAOW47nvzeQFvNCq3NboaA1d/vxF1uiac98B7uIXdufeJURqXHpbLXIK449dIoCvpRXVJSfnKjYkAe1wf07ba5j886rkpmOgg1nn2hmzzOdTu/ztpcMbe6CCnB8W6WM53QSkYzsrmY0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=MfPRNA7a; arc=fail smtp.client-ip=40.107.208.11
+	 MIME-Version:Content-Type; b=P+u6Cn6RLpds6+urQ4TdPFXXyUPmAkz2hVeFvBAO2S6YMV0DDelvdDqW0Ln3RJUCdXVPSrQwbGhKighF2MYiXdJs5qUgt+GnpRQHTMCHUeODRkegxdITB6a3/tze3cmYjDQGyu8ZeL5CwRme0rvQGv0ihMI/xoyB4qKcoa5gaS4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=SvFwCAJ6; arc=fail smtp.client-ip=40.93.196.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="MfPRNA7a"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="SvFwCAJ6"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tg9Iz7raRjlksenemIEJdoYxHYdQzM85ILQIdooe+ZMB57nyChtqvNnLtcX5Z6r+VfJLV5zjVVlTmGATPWEAXhBgZgVIBW9K2zR8DtkxbZXKtKBZUId0FZ+6OLHvMheacVLP8pF1tYWfgOBz3ltrEDxc/20Zpcixvy4rVz71uHyLzg8DgatuS5hygTo8UcTFdExozIFmwX7cqX/a5DN5hCDZ8ypKZBkcb6C/uvXqY1juitT6oKjumcjuTq/pt81Zyod48HxabyFyV+qsAv1a03YqSLVmaPm7mtv0PiuX7r2LBeZhYPNmo8qHt5st9OHPUy+6hOLNGB3prmEydsSVQg==
+ b=U6ORYsZlaYUJjNtVLPvlcOmD2bl+IMlNXiSGo/p2KLgUOpABRV1N92BG6nk31VzHf5j6vlCAY1BS4QRI+653rqde6K1fy4ks64J7qCbtq918+8Wo1vEgFBU3+oJbxKuke+pNTI++Tatk++KFMXxm/xt8KfgI1Be9Lno8jb82iVHRgBUn0Ad1+q1vZhjvZ0MF30Mt/4TT6wu1DQu/rtZEEER20daSBYjYzLA4sxI87y1LXAPIhq30vrcadAPHHFA/+Ml+oC2cIAFoTY6JMnI/H7HOUyG6sd35EpsBKLntLxE69enQwHv65WrP0SRBGuulIJ0daTQoty7N+WNCzVB/Xg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rUnEOea/zuLK6fs/3YzrUWoDG3Vvgzpj64QwPmt/WKE=;
- b=jab13eoTISpBIbIdpzGaxJyvXXK7Sj0AqigCujeZQATODZJ0KUQC58xgPLLkWcrtcxXfnN4NAFOA4NJlZbd6+PMulwxkwHDEWvxOYO/yOzzgBg8oWhYY5ruxWXRfVyXGoKWpLO095yx4VJvoiubH1JYM6w3FG+VOlbIW1+J4bmqkFVaWqgB9PwwsbRyh8XFAjUjdLgYfI2g6rnVLBK9/6R1rzAW7dJVH3ENQtfao/qazqLrzVkHtTD/QofRN9fFxxfVJgmFo0Z7M/h3TPbRp8p8CHhgE0ZYU3apRxxLfG4FQz1McEZy6CZf8JRhJN0KCg9Jo/l7hKjhyYg0TGUTpTQ==
+ bh=8akeM5JdSLKM5Rn6ZEDhPEYmQoIk/LPx07EloVYbIm8=;
+ b=e98OYXRgk0sW4jmWYFYDSHg5kMWbeehzgggv1wKPLdWmN5WlXePP3CTEfg08C0uQaEGa1lOlGnOX92ghWgVCYt093JWmWiOCrPRxrgUcgESGLnUwu3qjKR8AFkOhBm3tlo2unPjloB2uS5wfYBTA6o4fI+LrRSZHrmxqCOxq76A4ao3HIaO1EHcR7aq3XgDUz47rxIV17KgSoDi8c0PJxbHstKlCgmgJC1p5YxptppgA7y9aVfTkhnjH0mtpOBA4XkMHN2qsAKyxb1V5pPK9SCGFouToD/+qlfjmGr5REIjARP6gdFAlr/wIhQVs58mNxt489gUo4G/RKzrDnvLt1w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.117.161) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -30,18 +30,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rUnEOea/zuLK6fs/3YzrUWoDG3Vvgzpj64QwPmt/WKE=;
- b=MfPRNA7aW399S46+sSmFHm9F6R/Ze9gAxU+tRqp3zDH3QNcRZNMIlivWLqDoVnjGkrtQ9UEBPbNqoGd/QMN8zupSkziZdvxwqbvT/dGhNJRtgvYW9TZfTQCKhqHVyHCwGZfuMdvh3klbtkMIQFEIbt+tppr/m2TB+QnRyTwHywe7dz3mI3p3x0rjz60swI9Kn5QGMgfk50KzUn8lK4cn26IKatGwecNAPvlQUX8c3KcKglIQd8/EXo0RXuKRET8jVZtnfdleDNX1xqR44kv+YeCElxbO23UKKMUV63g3K9kBExuM/X5+x+H+KWbyN4wmbM1c67t9ThatUdRoYYbJ3w==
-Received: from PH7PR13CA0023.namprd13.prod.outlook.com (2603:10b6:510:174::23)
- by CH1PPF4CBE7339A.namprd12.prod.outlook.com (2603:10b6:61f:fc00::60e) with
+ bh=8akeM5JdSLKM5Rn6ZEDhPEYmQoIk/LPx07EloVYbIm8=;
+ b=SvFwCAJ6OHEaJVXC3PfBHMwbCGDBLl6+XY4GLwF4qJJTf4TQzcGRLX7E+RTAup08xabHRr1NAVVU3GnEWR2cf0X1uQwMYvZCHI6Y/FQroyN09bwDTwN7Aw3e7ya1Vh0c7qkNvcJbQUwEirRdznnqtt5HLs2AxmhQbI4vru8exfh+85lWrqI4+Z4/+cYwo/R1E7B/MGN2MPvk9l/BsMukPyZTrNpes9IJlNuo3ADBQJg5Sd51hJQERI6lfpkDZ7T5G/BHML05E/1nNgM0CnkEcaZstIzgJw/iSOx19iAS6pPQJaMgj840Ud3K/oEMKcAC5ow2oezMfJ5tUfBemAyPWg==
+Received: from PH1PEPF00013302.namprd07.prod.outlook.com (2603:10b6:518:1::11)
+ by MN2PR12MB4287.namprd12.prod.outlook.com (2603:10b6:208:1dd::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.8; Fri, 20 Mar
- 2026 11:15:58 +0000
-Received: from CY4PEPF0000E9D5.namprd05.prod.outlook.com
- (2603:10b6:510:174:cafe::12) by PH7PR13CA0023.outlook.office365.com
- (2603:10b6:510:174::23) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9723.23 via Frontend Transport; Fri,
- 20 Mar 2026 11:15:54 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.13; Fri, 20 Mar
+ 2026 11:16:08 +0000
+Received: from CY4PEPF0000E9D9.namprd05.prod.outlook.com
+ (2a01:111:f403:c936::) by PH1PEPF00013302.outlook.office365.com
+ (2603:1036:903:47::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9723.19 via Frontend Transport; Fri,
+ 20 Mar 2026 11:16:08 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
@@ -49,19 +49,19 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
  216.228.117.161 as permitted sender) receiver=protection.outlook.com;
  client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
 Received: from mail.nvidia.com (216.228.117.161) by
- CY4PEPF0000E9D5.mail.protection.outlook.com (10.167.241.68) with Microsoft
+ CY4PEPF0000E9D9.mail.protection.outlook.com (10.167.241.72) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9723.19 via Frontend Transport; Fri, 20 Mar 2026 11:15:56 +0000
+ 15.20.9723.19 via Frontend Transport; Fri, 20 Mar 2026 11:16:08 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
  (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 20 Mar
- 2026 04:15:42 -0700
+ 2026 04:15:52 -0700
 Received: from fedora (10.126.230.35) by rnnvmail201.nvidia.com (10.129.68.8)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 20 Mar
- 2026 04:15:38 -0700
+ 2026 04:15:48 -0700
 References: <20260319160410.2515105-1-ioana.ciornei@nxp.com>
- <20260319160410.2515105-2-ioana.ciornei@nxp.com>
+ <20260319160410.2515105-3-ioana.ciornei@nxp.com>
 User-agent: mu4e 1.8.14; emacs 30.2
 From: Petr Machata <petrm@nvidia.com>
 To: Ioana Ciornei <ioana.ciornei@nxp.com>
@@ -70,11 +70,11 @@ CC: <netdev@vger.kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
  Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
 	<horms@kernel.org>, <linux-kernel@vger.kernel.org>, <petrm@nvidia.com>,
 	<willemb@google.com>
-Subject: Re: [PATCH net-next v3 1/9] selftests: forwarding: extend
- ethtool_std_stats_get with pause statistics
-Date: Fri, 20 Mar 2026 12:15:21 +0100
-In-Reply-To: <20260319160410.2515105-2-ioana.ciornei@nxp.com>
-Message-ID: <87341uah0q.fsf@nvidia.com>
+Subject: Re: [PATCH net-next v3 2/9] selftests: net: add helpers for running
+ a command on other targets
+Date: Fri, 20 Mar 2026 11:58:42 +0100
+In-Reply-To: <20260319160410.2515105-3-ioana.ciornei@nxp.com>
+Message-ID: <87y0jm92fz.fsf@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,42 +86,118 @@ X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D5:EE_|CH1PPF4CBE7339A:EE_
-X-MS-Office365-Filtering-Correlation-Id: 137a9f4f-4ea9-4d3c-9c9e-08de86720ef6
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D9:EE_|MN2PR12MB4287:EE_
+X-MS-Office365-Filtering-Correlation-Id: f8ed8754-a366-49da-1a72-08de867215f3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|7416014|376014|1800799024|82310400026|18002099003|56012099003|22082099003;
+	BCL:0;ARA:13230040|82310400026|1800799024|36860700016|376014|7416014|22082099003|56012099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	266XyrKxXYYaK+QtfVu+p+1iE9CbiD0XedbIX9lZkWihdAZb3S3X+Tiph4H/NdjXOvJElzvf6kRXtRJD5n5B6TplAxJP4j7DJecTb+/YWI6xhxIzxmUmFlTc/PMPELFrld1NPXN6TmBjQycJHjUhbsB6deCDKog6vDaL+nOsk4EUxjZGduyTpiGLWadwVWNxtkWOFxvH2eLfWv/LaTLr4JqnIgSxGcIcD8rnruWKPwohuiJNtilRHZcZQbX5kKxybKHPR2cefDaruqvTDk7t4MWX6dWb4hO+ARMyDU8ijQfs8rJ8vZZ58ebZHqNYaZPO/WVnUI3TInngijW6cLRaM4zuDyuvn+6zrYiqVAa/XNZclPYWh6XOvB2BKHnrz+0UcsvhRv/DkN96CWuY8PaeBFqFKKTL+1I77Bpl24SO1HNCd+hIxXv6yHaLdn2awKc8SyfTCINFwNShvXk1djingQdYaf6Ig3yOmfZb6VAhw3wP/ahHx3zxEzQt6+6TIVA3WYf9+hp8S6gUatNg1VNDsd7zBOYRd6VQHK8IAlbY7f+g6Pwt2t7LRiZUik6jDWspIk+6EZqY+K8kGLlmgSZBcjtw/4EpW5VHe3HzAQy93PCTRkhRa3yg/Cq08MNYlLI0QMpIQ0tkpm540kBo4HnI7wN/eiHDto4vRY2d+q34yxqifFi4mTFyQ8sLCGeFCsZpILP4wbuy1Ltll8VTJnc0pOJDVDwvcO/ocI7egWMOHj6EaIJTSUeyFlinH7Vy2D6pqeR/2+Rjo3jta3uZzguCuQ==
+	1XHEAwtwA/4PsPX5FMiDihH51U1X/xmiS8AUI25p60xwQfQ7bB2H6K3RTAPOnXoUZ2CZXI4arGFA2YHpalxWsGqY8ETsSKn78O7ALOPqXNbEogZKhu3aS2wrqiEYVCxaLSet180atXfAkq8KGOeLkLyNGm21mLyA7Qf9wS6o2emeIk34c38cdVCPphxM8WJXdAMhrhKJ04AfbvZ9lLGEiem++QSko27zxn9a9obckC/xPZ9dzSmAh03nTmDwGnJdglWAOiF/C3Dn8HOcLUEdoPFCPEJtqvEhsRBGGIYUu+2mglSTZzsHVwhgaG2AG3GOm/zjWzrgQZGX7OHfu+SQtZfcUKSc1RNiotFqGtBF3s7JOUd1sipx7O2N07siLx/YRXgDJ3xsKJzZLITn23zRdDfvcPSzn0GzI43t9L7sK85lpkGZWd6dVyge7+Mns0VkDdU2jALjNZHcB2z0W3Gi69ezDO1v2cyLp0nS/llaxKZ/DbylVjyJaE/jtzHSiC32i7OOHFT1VLyPJNcif5HSlPQ/an+vWzwreE/aconXZxNPjfiO0Jt8X+broPG3SdLYXSwjKpmiAiveIbc8X5puRFZyvhVxF1L+caVvNX81BgKusA3/JwRQuPtPeYdd24wpDT0XTWRl2XnLu4rTkjwZ1xi1/FAtNmKU63D1rDsqayqDSZKtw/MJOuTDMM1VaHEFlhkzMmiXbBwkLJVmHl1pA37BHYTdYFY6QAr/OlL/RwxxXbK9xi1Z3Nuy2oUPfMrxZ48krXfRPDaW2VyohIpLiw==
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(7416014)(376014)(1800799024)(82310400026)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700016)(376014)(7416014)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	Y6DhWnsltcICdwVGrCPJ/vVqPMM+zm9JsO9EFJi1Ywf4ecOBFFTSKIS+MgQVrzp3d9VmcuVzY2ZsLdlAxvPkNG1/srm/7gdDrTNiq8S/bddMKe5ge9eMHp5jbKXcRDir20nubVxT8WBQgrMCRlQzhc8+9NmETrLcAxI8uuD2maGKwWMrOpC1B5AXpjtW5EeJt5poSYYssTgxNSHx23zbayIMuBzyBb/cuOQf1Jdtc8w86zrsXPDI/TvOYtHbxkYKiTMI8lGioGgWu+02G/JZQ0wquhBieAbfhs/ZopZl0kMI2UOj5LaqEUeGRE3EM4+g096bjejqvQ3TWpvE+rk39HLGzukXicSGtAlanGQjUfoWyGoEHQ6Nr8vFVhQLtr2Ghp2QQVQhOn5Ji+10y6H22voDTrq+46ldHeuC5M/jzVNu1ioeFYU25RvYwRtmXzvd
+	bwnWwhUgyNXz8Izw/i3Apu7gcqD+IT72X75L56ll/EiPizf4d1Zm/Ri2ZLnr+tiIyZaFPlaudAiEHRRBVGzRej8t7q5LhdA3/SEyiK5wNNrrdWEDPpR6xTjvUuWNp+2zU/6mRMyIJY4oR3bbjrRB7BveWkfZkSHJbvwzYEF2lr8xJebVhnkoLG3pTm1+V0sy1x2vewWFaC9Sgsgpgo3gEl7JOkAwd+kRAJ1m83SLUEbmm6fWUDVN5SAaY0RLbgoeyOwqL9ikXmAWqEN++gncFkvkf5RZYL1Ut1SI5YKgQrItEv/njlnUL6tHNmL2qWPLQxKuwDjEWoZpr2iX+n+lip3rM9gBoxJnaVuPxUEDV+sUxb/jaAzhx0Ycy8h+FEqiqNjjWv8qA4J3t2r3EidEYHMPgqwB4UE+3rmlYOUjrqGYZmlA8E+c7K/TqE/AS/EE
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2026 11:15:56.7246
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2026 11:16:08.4723
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 137a9f4f-4ea9-4d3c-9c9e-08de86720ef6
+X-MS-Exchange-CrossTenant-Network-Message-Id: f8ed8754-a366-49da-1a72-08de867215f3
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000E9D5.namprd05.prod.outlook.com
+	CY4PEPF0000E9D9.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PPF4CBE7339A
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4287
 
 
 Ioana Ciornei <ioana.ciornei@nxp.com> writes:
 
-> Even though pause frame statistics are not exported through the same
-> ethtool command, there is no point in adding another helper just for
-> them. Extent the ethtool_std_stats_get() function so that we are able to
-> interrogate using the same helper all the standard statistics.
+> Add a couple of helpers which can be used by tests which need to run a
+> specific bash command on a different target than the local system, be it
+> either another netns or a remote system accessible through ssh.
 >
-> And since we are touching the else case, convert that as well to the jq
-> --arg form in order to be easier to read.
+> The run_cmd() function decides where to execute the command passed
+> through $@ based on the env variable TARGET value while run_on() will
+> receive the target through its first argument.
 >
 > Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+> ---
+> Changes in v3:
+> - s/TARGET/CUR_TARGET
+> - always fallback on running a command locally when either TARGETS is
+>   not declared or there is no entry for a specific interface
+> Changes in v2:
+> - patch is new
+>
+>  tools/testing/selftests/net/lib.sh | 39 ++++++++++++++++++++++++++++++
+>  1 file changed, 39 insertions(+)
+>
+> diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
+> index b40694573f4c..f7c54d05758e 100644
+> --- a/tools/testing/selftests/net/lib.sh
+> +++ b/tools/testing/selftests/net/lib.sh
+> @@ -28,6 +28,10 @@ EXIT_STATUS=0
+>  # Per-test return value. Clear at the beginning of each test.
+>  RET=0
+>  
+> +# If a specific command needs to be executed on another target than local, set
+> +# this appropriately before calling run_cmd
+> +CUR_TARGET="local:"
+> +
 
-Reviewed-by: Petr Machata <petrm@nvidia.com>
+These are new functions, they should just expose these parameters as
+actual function parameters, not as hidden environment. If it is
+desirable that run_cmd() can run local commands, maybe it makes sense to
+make the current run_cmd() a helper like __run_cmd(), which takes the
+remote-config parameter, and have run_cmd() be a wrapper:
+
+run_cmd()
+{
+	__run_cmd local: "$@"
+}
+
+>  ##############################################################################
+>  # Helpers
+>  
+> @@ -670,3 +674,38 @@ cmd_jq()
+>  	# return success only in case of non-empty output
+>  	[ ! -z "$output" ]
+>  }
+> +
+> +run_cmd()
+> +{
+> +	IFS=':' read -r type args <<< "$CUR_TARGET"
+> +
+> +	case "$type" in
+> +		netns)
+> +			# Execute command in network namespace
+> +			# args contains the namespace name
+> +			ip netns exec "$args" "$@"
+> +			;;
+> +		ssh)
+> +			# Execute command via SSH args contains user@host
+> +			ssh -n "$args" "$@"
+> +			;;
+> +		local|*)
+> +			# Execute command locally. This is also the fallback
+> +			# case in case the CUR_TARGET is not set.
+> +			"$@"
+> +			;;
+> +	esac
+> +}
+> +
+> +run_on()
+> +{
+> +	local iface=$1; shift
+> +
+> +	if declare -p TARGETS &>/dev/null; then
+> +		CUR_TARGET="${TARGETS[$iface]}"
+> +	else
+> +		CUR_TARGET="local:"
+> +	fi
+> +
+> +	run_cmd "$@"
+> +}
+
