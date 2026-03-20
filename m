@@ -1,213 +1,171 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D62B82D3A93
-	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 10:14:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774001663; cv=fail; b=E5OcYb+kOOPnDvM09xK/MK4rly+uuir4ZGsuMRIbTN/0yR3aTsFq6yn25DvI+9l2/er7C+sqUdkGjO1yDRdaU0La5r2uQlbbAAZumv8kEreLDn+YvBloUAyxyeojhUsTXvCa5/IjSQFs2tS3sMFzIZqdSCxUN0jvMf0Y6jtcxS8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774001663; c=relaxed/simple;
-	bh=z7qbI8Jj/fDVaIv/pG/9PHYU1CjA0Wr93qW/C1reZIk=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=YHDGZ19FX6T8UtXua5eYi7hYh9x7BqbIc3ozQA34gsl/GmVdXFLLLC5gWjxg3hJTf9Rll8TZAoNDNOjGnA/Z0/UvJDGgj8NKgp8lWRRgNKnn2CEHV+L9uU8a5lSHlRtiaTmHs2kPC13hC+6olp+WhKpbU//sIOC5yTBM303+lz8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d6qnrD9r; arc=fail smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D8CE283FE3
+	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 10:28:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774002512; cv=none; b=nnQZxPVB/G3sJ95pBUizpQWyWjYaZTmzVJEzHPZUmhLzOuEXW/k+I2KHOnbYD/hyyzZAuSq6lMBajBn7VKkfmtuEC04Tmb58X/9aoymxkZxTWMxnCxCr6XUD7D58ta3ulY3Wmi5vRpeUggYH5KWiI0vRTcAi3mruWeyQ+3J6bH8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774002512; c=relaxed/simple;
+	bh=KyJKK5isZ64xOnxxGEaZ5VV7iYtLlVlKAJxcAORDKgs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kC4e/wAsAqnPXkrf6NOsdASHPy2aMy5zkWb9Q11553O/kRA+1u8SKPynB9+sht9GON4F1uDfKl2eoIpuXhTmdbGcIgZIBs+B+4iIe06mS89kT9hSPfAoaN/T9+TJ/rFJBPNmLlGcKeAj5V212FvffwTZ8vlQk1KPp5hdOaGzOzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YuXUAk7Q; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=oy938Etm; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d6qnrD9r"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774001661; x=1805537661;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=z7qbI8Jj/fDVaIv/pG/9PHYU1CjA0Wr93qW/C1reZIk=;
-  b=d6qnrD9rNfQfgVRDn2rTunac5l/6JHnf8oe+K+MDpJaQUZ8cogOaFdDH
-   ZVBByvmjX5Cv5QNW5upUiCrCQGnQ36mu07thQhtiSlLMVGGw0qPmW4vLF
-   Www7MwE9+0qb9Z20eY5WQkRnrjXA58kWfZpKBwU8q/5AYFmV/GfxP7vA8
-   29AXhaafjplZcxAp/r+HVP+ool+3B7W40t1exV/S5LXKn0PqaPNJ/bY0O
-   QjLpYSfI3k8h7vRZ22hIlnYTuze0asrTE2nDKcb5e14aHZUiiXSEgfih0
-   dgzcZgFi/a0WDNKxNXk/Ym/xbAR+U9lxHP/9TfEu8piyNctLtK/hN/7XN
-   g==;
-X-CSE-ConnectionGUID: FsUakh2MTdOLCgOfpcP67w==
-X-CSE-MsgGUID: uQFfO/UGSb+l8xoLILw6lg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="78988509"
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="78988509"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 03:14:20 -0700
-X-CSE-ConnectionGUID: hi85SgU4Sg+F3FBb2EZIZQ==
-X-CSE-MsgGUID: 4K9ZY9F4RU6gWHhuAJ9jdQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="222336629"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 03:14:20 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 20 Mar 2026 03:14:19 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Fri, 20 Mar 2026 03:14:19 -0700
-Received: from PH8PR06CU001.outbound.protection.outlook.com (40.107.209.10) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 20 Mar 2026 03:14:19 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=C+HiRtRTmEkpYeU+VikADszb+eC1GkeA4H5JO3ULyIbt0+VGAjv2+0V7ARjJq6GGWZGjRapia+gH9cCMCPe9qHHet3GTB84wloE8IcH8uDJXDbS1tqKCsPvj3IkbE6ssLxPitC6vGgF6tmdWUQvdSsvoDD22zUbYxtX7VCGZZHmun5oE62fn9C9jFr+xSpz010a1cps/Lt83Vn/YVikYeq4Bgw5Iq/yoDqaATkpMCI+381Lzucj3P9cEq1N6y0sQ0M7K7+wxLPk43jpKjyaqsV3VUr73MyFK3XFIIj99dZtT3p2mgQ0XQqaBJ+rLJw99xhnyilZ1ZKnAtsJKemXHNw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CWyPiZQqKmTLUAQXyBgA6T4B8tWMS9okRm6ekuLeA/k=;
- b=Fi9yReDg4DD4KHLEvrHWtPjEIUX5F3N5xt5/YKWRnu4TDqVskjwlAd/w+yknm8yf6rGrcVgsjpzrArSVmI6Ay6QNRgktmhgUsJGeh/sNOw+ThE8xTPh9kiJ+x0vRa/U3qp0IfmiEE5x6v4EXrvnBDmfSNKJchA59Q5DnM7dkZ06VEcG6eTNmUXM9Vd8+XThDCbZqwqKGv4c3IokIRQkaaHpG+3L8MHwFn6MErXoP/zzxefCKYJN95NonD2rFae22J3QHIJWQZ4b8YcUE+LQQiU/qzZAKle269C1gSWLRkXeGzbRHSIFMoozG8Jswk7yU+Yrvfrk8RqbY8eAnJeHIWg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH0PR11MB8086.namprd11.prod.outlook.com (2603:10b6:610:190::8)
- by IA1PR11MB6348.namprd11.prod.outlook.com (2603:10b6:208:3af::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.9; Fri, 20 Mar
- 2026 10:14:11 +0000
-Received: from CH0PR11MB8086.namprd11.prod.outlook.com
- ([fe80::2769:b184:69c6:6eb0]) by CH0PR11MB8086.namprd11.prod.outlook.com
- ([fe80::2769:b184:69c6:6eb0%5]) with mapi id 15.20.9745.007; Fri, 20 Mar 2026
- 10:14:11 +0000
-Message-ID: <4b1927b5-2a3c-4465-9181-2e8885afd122@intel.com>
-Date: Fri, 20 Mar 2026 11:13:15 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH iwl-next] ice: call mutex_lock() before
- mutex_unlock() in ice_dcb_rebuild()
-To: Aleksandr Loktionov <aleksandr.loktionov@intel.com>, Bart Van Assche
-	<bvanassche@acm.org>
-CC: <netdev@vger.kernel.org>, <intel-wired-lan@lists.osuosl.org>, "Katarzyna
- Wieczerzycka" <katarzyna.wieczerzycka@intel.com>,
-	<anthony.l.nguyen@intel.com>
-References: <20260320050522.422355-1-aleksandr.loktionov@intel.com>
-Content-Language: en-US
-From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-In-Reply-To: <20260320050522.422355-1-aleksandr.loktionov@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DU7P195CA0030.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:10:54d::17) To MN6PR11MB8102.namprd11.prod.outlook.com
- (2603:10b6:208:46d::9)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YuXUAk7Q";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="oy938Etm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774002509;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ETcinoc+Iu6TM4nD/QE43KJ6uJXP6/02M2IBKPvEmHw=;
+	b=YuXUAk7Q3Jg0i4Jmyf4QML7ae2gisjMgjocC/GDtjIwbYFN7lg6u70k3bjcJl7R0eLuNqx
+	aQiaCBjvAUhOUtyl/q9Obrxcjff5MgVnCidrOMGQLSEuPF9Lk4sRyN8V+t5NgmnEccQLk5
+	9cOPEfzzfMPRo4KjArRmnY/q3HDdobY=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-637-mwb34NciOYWZV9qKYI2sqw-1; Fri, 20 Mar 2026 06:28:28 -0400
+X-MC-Unique: mwb34NciOYWZV9qKYI2sqw-1
+X-Mimecast-MFC-AGG-ID: mwb34NciOYWZV9qKYI2sqw_1774002507
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-487018c8244so1565775e9.3
+        for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 03:28:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1774002507; x=1774607307; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ETcinoc+Iu6TM4nD/QE43KJ6uJXP6/02M2IBKPvEmHw=;
+        b=oy938EtmFaMScZigzcKCBAZH+hLHJaQ9b2y98L36t3zE+Vs1GtNNnXKPI17lBSPHKD
+         6DXTn2rpAW2oO0ou7oq+gS0kUDwoW2Qt/V2Sed7Rc2FVWiZWlUbfHmadbZad0EpRhEEL
+         xSYJgfXkFyyftPK44NyvDtqK7c6Lct/YRZFQOO8g358QxOtoLnAPR/860KzgZBpVIs3r
+         M+l7ZcKiAagOyNbObF6FKfVn0RNsk/2ABrD5aH7y3Gyf6XfMITjOAk4YqiAMNOhUANtE
+         7jNeA/Ol3U2T3VxbfL2vCS7jEJgLipu06IWbCp9X9wUIT0MwGWKToWLJQWhXz+mGa9QG
+         NfYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774002507; x=1774607307;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ETcinoc+Iu6TM4nD/QE43KJ6uJXP6/02M2IBKPvEmHw=;
+        b=s3dI2wVokak0rDDl86EnpOHHmRaESPlHy3jUBYofN8Coh6y+oZseIcWGq2uIHVUUVv
+         DYmIDcTL4dSAbWYKdq+jmkbdd9mvps1cYaLOSf0gKGqoQryNluKTJQX+bsO2K/t588hc
+         psMc/5HOyuOTPznoZHeRnS0Zf2gDjQDbq2agAL+anQt8xm+kcp3k01bOM+ImIbbt3nnj
+         27p1G4kroah1sw1GTN44UkhE/PBHqdWe8Kor2qFkgj/Vl4L1JVyo5f29MaIWQqReXOI0
+         JibO/qi6hvXVJpCAt/tEBxx8Xr0kXXQoINwe/fo0z4yGBWeDZhUoeZsfgLzqcGuyz+Qg
+         U1Cw==
+X-Gm-Message-State: AOJu0YxI6z6QYP7VHjBDTA1H/U0nO26w0Bi87XD+oycVHR5ect/UigxB
+	2OF1LdrUV+RFVeBmIObM8rpvP5DcA+ayOjXcPNVTACXOi+lWdros3rYfkS7ji6EotueOqWQUObz
+	tLej5R0+gWzM48UP0Nl0ho5xNsb/T5/n3I+zdyEhoZND2A3qpBvEN6doGyg==
+X-Gm-Gg: ATEYQzxx32UiiI5I+yefvsSMxOETeR2/5LQmh1jSop/zVDM72CP/2HNzQREFlfzCdpZ
+	N4BEoQeLVXvqUvKC1KelMD69A0uOKWbsPVszRSARtv+3X9nlbTWBOnufqHG5JWvBggeDpthJ+ws
+	gK4J5gHjYLFrijTN5+A9xzEaaU4HKxZ+203m7h1xPNoFeeX6oRcUlFuA4EP3216R1qWlMNV28Pb
+	Lsi1gWfdOfnLKNUluUuT1GqRrdhVDZ3IMJx4sqbqWX3xvA3xxEmDjYl4oxoogCXMMw75YrJNB+f
+	mxukotw1XwsRN2+EYlc0yNJEGhI0yKLiAb8ZbjV/mJzT57/mzdgfHonAk5SoeeMQ2EoqNzFekDt
+	EfaOLshPC8zhKmFQ5
+X-Received: by 2002:a05:600c:c84:b0:485:3812:36f6 with SMTP id 5b1f17b1804b1-486fee0bcc1mr34021615e9.21.1774002507007;
+        Fri, 20 Mar 2026 03:28:27 -0700 (PDT)
+X-Received: by 2002:a05:600c:c84:b0:485:3812:36f6 with SMTP id 5b1f17b1804b1-486fee0bcc1mr34021275e9.21.1774002506531;
+        Fri, 20 Mar 2026 03:28:26 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1525:da00:3ac2:1a22:72ff:4256])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486fe7e3a94sm59954255e9.7.2026.03.20.03.28.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Mar 2026 03:28:25 -0700 (PDT)
+Date: Fri, 20 Mar 2026 06:28:21 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Cc: netdev@vger.kernel.org,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Alvaro Karsz <alvaro.karsz@solid-run.com>,
+	virtualization@lists.linux.dev
+Subject: Re: [PATCH net v11 0/2] virtio-net: fix for VIRTIO_NET_F_GUEST_HDRLEN
+Message-ID: <20260320062811-mutt-send-email-mst@kernel.org>
+References: <20260320021818.111741-1-xuanzhuo@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH0PR11MB8086:EE_|IA1PR11MB6348:EE_
-X-MS-Office365-Filtering-Correlation-Id: b5eed3a6-6bf4-445f-e556-08de86695326
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info: 21tyKi3nqRoiTatfOt0jqg2MZoKqvxzB64AiggVklAklj0vMqaMISaSZbdCgJiQZE6BdFbDQfQVCTNUl2OUcTxVK5OqVxmo18JRGIYYdcWUpgJDKvOtUYmvbkTPhFgg5Jw2rd2edE6Ew23nchCMhnADfIKlelo8+klLTVshW2ImDZnFvxueZ83HM1O2U/w0+BtKgCB79PlOscYe5Gd2rec2M30P94peJuZ8TvEtrzTLO4t6PMmia0Q3pEFLb/IIFg9s13tJOgeuV3cxyQuhy3xvq9PZN+qiZJrFEf3eMrtQCkGOZnHT0ZbtGe/sUkpCApBiHwo3OlgNRVXLU2EXnsL90thB7D5WOkt9x4KPVxhJeXfMVraeLINpNh818k/DCcRzUWcawkyX5o/8kOd9D4TqGPkcKipTr8NbyCreAe8W2B+NRSbgQcW+Jx4XqFlxqZrrZNrhIZgbISabTiDEhZTd+4ytNP6+yI5/rpHLBn5FG0oeaXXcJ7sHMNSgsFPdPwg2vJ7ODv6bMyDibOTONEeylBXPIhzs7TQEc+P0x+//Ho9HWS5upyuSpWSVOZ08hMRVDhZQ8rnBlfajclKcpl2g1iAUXmb5tIF1acLuDado1cmiC25KrqTifLC5Dx2P2V93SpXgOiBn5mPP6gkpLKrDbjis+uRRDrOPdQ6D7eznkHzPytEdQCDVYVBjlcyS3
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR11MB8086.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eVZpVmZOdDRNUVN0bXpUU3hEMkRRWFJyUTZpUGpjRU5VU1ZXcmx1YTFuWldE?=
- =?utf-8?B?RFNUTzdUbE8vTmVxOWFMSzJrZHdLd2wrd3dlYlQzV3E5SGNyZzhNcGtjVTRH?=
- =?utf-8?B?ZVI2MnFpN2FsSTVvbEtCUlNKd3pIdzBSMVVrKzFSL2VRNkJON0t3YUxLYVIw?=
- =?utf-8?B?Q1p3Z2VhWmZxZDJZNmU0ZUx5UTdHd3l4ZEpIMDNOTFE4NGZCZkFIWEJDWjF0?=
- =?utf-8?B?ODdET2lxaE1JUlN5Ty9IQmJrVWhIeDBmbGtoM3ZpckwycWU2QXoybDk1WXhi?=
- =?utf-8?B?aGRTSDFMYjBxcGI2Y21GUGJEbVkvZXBjeVNVeTI0VUU0dTZoeGp0YjE0cTA5?=
- =?utf-8?B?TklRTm5NWHVDcjVnVlNNLzJCY1crdXdGUy9XL2VHc3MzWVpXSDhUOWE3NVdJ?=
- =?utf-8?B?bE5xSjNQYk80UlNmUytxcFN0TVdYaVNieWViOGhWNzBXbXNseWdtNHFGamox?=
- =?utf-8?B?Q0szOWpLaGZCRnFBcVV3QmVjVzliY1N4b2ovUlNIQ0EvVUlIaTR0eWRvcnVp?=
- =?utf-8?B?WHlnZGtIM0dTOVlNRWZzR3RqWXZyWWNZNmttajZCMkxDQnJic2plRzdUTU1W?=
- =?utf-8?B?dFFJV1d2K1Z4K1A0SWJQZGw4VHB2R3VQaVpNUEdwSFllZEI0M0Q5WHFrdVdY?=
- =?utf-8?B?SjdhTXUrbnM1QnFEN3BoODFOOVRZSkZEazJhZ3RvSThCMndqMW9tN3pqNnVo?=
- =?utf-8?B?WklkU3BScVV3T211dC9NUlpsZE9BTFpwcDBhU2hFYVhoV2hmZElOcG9xZXEy?=
- =?utf-8?B?ckxLOEo1S1J0bmQrTE4vWTdYQjdmb2o4UVQxbEVadmp1YkphNlpJWDNGZWdl?=
- =?utf-8?B?T3FVZUxrN25Uc0NrRG9oVHc3czBudVVwcFlXTjFaQVRYZm91NXBBM0JRL1Nk?=
- =?utf-8?B?UU5mTm12c1Z3ZXNONTdMMlpSQ25TczBueUxlZWlXRFBMZWJ4OU16VWFYUjlm?=
- =?utf-8?B?ZnFFbS94RkhORmNEdlh0bEcvejh0SG1IUXQ5RnAyQnVsWDBjWmJMakozY1lM?=
- =?utf-8?B?Wm9FTW1vUjVWUmtlRG1FbS9zcHA1dHB3UTZrN0Job3JvZ2pHUysrN2lFV2dT?=
- =?utf-8?B?c3kzcEpINTFGTXBOeTRBUlZrZ1M2bEpGVEFnTHVoaENSZFExMDUwelVDQUVP?=
- =?utf-8?B?TjRBVGdoZUxSSDFzMTNMd2ZPMTZGUEh1emZJcm94T3dSUnBRUVJoS1Y2Q2JQ?=
- =?utf-8?B?OW1Yd0x2djh5endRR09XREpmWXZlRWpVOWgwNmVsSWRLNUI1M3dGRHZweUpj?=
- =?utf-8?B?QzNCTGhlWCtQek9yU0M5VUZOQkRUUy85dktyeHFiVHBTd2RrUDM0RVdaamgw?=
- =?utf-8?B?WExFejNUcklPSFdYYW5UbVc1OGxoTU9DZ0pEV2h6QTI5OVJLdENhZXAwYTFQ?=
- =?utf-8?B?NUQyQ0pmdE9aRmFCYWZtemVTb0FibDA3SGhWUFhYU3FoRnBpdDFXbnN0WVpX?=
- =?utf-8?B?L0x5RW5jNmMrRVdtVGYxWnVrSGF5K2VnUUVzcStPTkJaREE1cjJ4ZG5mZ0Ro?=
- =?utf-8?B?aUJ4Q3ZZRlRmay8vQzAxeVdJSnljWTFGdGlyZ1EvRTc1YTNnZEhyMkM2T3dp?=
- =?utf-8?B?YURwc0lrNTAyTGRUU0RQWGFveXJuYUN1cmJKSnVteWF6RkYvOWRSRlQ5TjBt?=
- =?utf-8?B?MDdGR0xVTjZLWHVDM1dBdFNDLzEvV25yUEYxeGJLTjZqMkcrcjZjMlNUa2tY?=
- =?utf-8?B?UW02NEpya04yQU1yZGUxU3Rlb0VGajFhWVRDSXFHYWZoalNJODh2WUJlUUFD?=
- =?utf-8?B?Z2t5VnhNQjFHd0lHMzFGaTNlL0JKVGwrci95S1JJMGtwTDdzRW91c0JCYkNa?=
- =?utf-8?B?dVBtNHVtQ2o2MGNEQlJ6dmhBT21SNEQ1L1ZnZStNZVRPRlkxeVltUGo0ZElK?=
- =?utf-8?B?NTlXaHdGUWJGTjJLa2QvNFI5czBvZGxPaHQrOU1hZlJodFRPMEpZSzRDWDlY?=
- =?utf-8?B?WWNoSUpDOTVBNk5HZTRFdEszYmtzb29kdUxubEZOTGQ1MGs5dWFFQTdFZ3lI?=
- =?utf-8?B?R1U4S0dtck1VMHI3cUsrNzZFejRPYzZNMkRjU2V2bmZCTThyR290UEd5RWZP?=
- =?utf-8?B?SkEySm5sekNsaE1CanNSenBMU01HQ0ZHMTRhOEx1QnpwajdNbWZWeHRzYWdH?=
- =?utf-8?B?UWxvUk1RdGw3bUVLcjJ0cmNEZ3V1V0NlY0RmbUNMRTJXYkpWczFoZU9ibXlL?=
- =?utf-8?B?MGlmQUkveWxsdUw2RWdsS3MvUmlLbEh6S0d6bnllWEhodFQzb3ZVamUza0lR?=
- =?utf-8?B?R05wRjNMRk1oU1FYQm9MZDZhdStQQ0wwOVBkcFVLb1Jzei9NcTIrYi9oVUxC?=
- =?utf-8?B?eGY0dTBmbEh6c2J5N0REZEwvZ2Z0NnBFVHNqa1ZhSGRSYVFTRVNsamF5cVN2?=
- =?utf-8?Q?D3xoU00DtJ/2ygWw=3D?=
-X-Exchange-RoutingPolicyChecked: mMxOikmQ0Q57ggDID1JiuPJQSi3Cxi1Vd21UVYqSB2UOfK8nnMAPrmxLEILLoKWZ7xlSQXr9pijKjOChTrBdgiCjHvh0vuuwZHtZDoZpXTz1ZA42Ox1SCU4rOPEeqlNzxHFyDu5mIOVLcdQjkSZX4nnW6xVWIk5nj32Dwg88W5S17RkQfPOEW+aSsVWBOh0D3fYfE3wk/FcohmMKrCztwlQfkg573J8NHAP/X8bT3fz9Jf9lwZ177JiM4JLJVEwhEaf+Mg2z+WcaN8aMECcWrZASsaem7oedaYeevvMMRJltyNF/29VtY3jmSvP4j0gj2pVlBnJAb/9oKF/WWuoV8Q==
-X-MS-Exchange-CrossTenant-Network-Message-Id: b5eed3a6-6bf4-445f-e556-08de86695326
-X-MS-Exchange-CrossTenant-AuthSource: MN6PR11MB8102.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2026 10:14:11.0422
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VHBybLSQsrMf6epGD5Zd0XeKBdxEno8eW+YGjsQ8faLsH8NySzCnJIa0rw3JZbCug+GgrHSFMapqBmfY/EHVTTs7NEKETJ2muKn/8ljz68w=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6348
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260320021818.111741-1-xuanzhuo@linux.alibaba.com>
 
-On 3/20/26 06:05, Aleksandr Loktionov wrote:
-> From: Katarzyna Wieczerzycka <katarzyna.wieczerzycka@intel.com>
+On Fri, Mar 20, 2026 at 10:18:16AM +0800, Xuan Zhuo wrote:
+> v11:
+>   1. rename virtio_net_set_hdrlen() to __virtio_net_set_hdrlen(),
+>   virtio_net_set_tnl_hdrlen() to __virtio_net_set_tnl_hdrlen(), and add
+>   explicitly mention in a comment that such functions must be invoked only after
+>   virtio_net_hdr_from_skb()
 > 
-> In ice_dcb_rebuild(), the first call to ice_query_port_ets() is checked
-> for error, and on failure jumps to the 'dcb_error' label. The error path
-> always calls mutex_unlock(&pf->tc_mutex), but at this point in the code
-> the mutex has never been locked -- mutex_lock() came after the check.
+> v10:
+>   1. fix http://lore.kernel.org/all/202603122214.8Anoxrmq-lkp@intel.com
 > 
-> Releasing a mutex that was not locked is undefined behaviour and can
-> cause a deadlock or crash. Fix this by moving mutex_lock() to before
-> the error check, so that 'dcb_error' always pairs with a prior lock.
+> v9:
+>   1. Introduce new helpers to set hdr len, and virtio_net_hdr_tnl_from_skb
+>   calls them directly.
 > 
-> Fixes: 242b5e068b25 ("ice: Fix DCB rebuild after reset")
-> Signed-off-by: Katarzyna Wieczerzycka <katarzyna.wieczerzycka@intel.com>
-> Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-
-NACK
-
-there is a better fix proposed by community, we are awaiting v2
-https://patchew.org/linux/20260223220102.2158611-1-bart.vanassche@linux.dev/20260223220102.2158611-20-bart.vanassche@linux.dev/
-
-> ---
->   drivers/net/ethernet/intel/ice/ice_dcb_lib.c | 3 +--
->   1 file changed, 1 insertion(+), 2 deletions(-)
+> v8:
+>   1. move changes of virtio_net_hdr_from_skb for udp tunnel to #2
+>   2. remove change for num_sg
 > 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_dcb_lib.c b/drivers/net/ethernet/intel/ice/ice_dcb_lib.c
-> index bd77f1c..d516734 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_dcb_lib.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_dcb_lib.c
-> @@ -538,12 +538,11 @@ void ice_dcb_rebuild(struct ice_pf *pf)
->   	int ret;
->   
->   	ret = ice_query_port_ets(pf->hw.port_info, &buf, sizeof(buf), NULL);
+> v7:
+>   1. fix bug reported by robot
+>   2. Still splitting into two commits, as the issues fixed originate from
+>      different commits. This separation makes it easier to selectively revert to
+>      previous versions.
+> 
+> v6:
+>   1. rename to guest_hdrlen
+>   2. introduce a function virtio_net_set_hdrlen to set the hdrlen
+> 
+> The commit be50da3e9d4a ("net: virtio_net: implement exact header length
+> guest feature") introduces support for the VIRTIO_NET_F_GUEST_HDRLEN
+> feature in virtio-net.
+> 
+> This feature requires virtio-net to set hdr_len to the actual header
+> length of the packet when transmitting, the number of
+> bytes from the start of the packet to the beginning of the
+> transport-layer payload.
+> 
+> However, in practice, hdr_len was being set using skb_headlen(skb),
+> which is clearly incorrect. This path set fixes that issue.
+> 
+> As discussed in [0], this version checks the VIRTIO_NET_F_GUEST_HDRLEN is
+> negotiated.
+> 
+> 
+> [0]: http://lore.kernel.org/all/20251029030913.20423-1-xuanzhuo@linux.alibaba.com
+> 
 
-the difference is to move mutex_lock() over ice_query_port_ets()
 
-> +	mutex_lock(&pf->tc_mutex);
->   	if (ret) {
->   		dev_err(dev, "Query Port ETS failed\n");
->   		goto dcb_error;
->   	}
->   
-> -	mutex_lock(&pf->tc_mutex);
-> -
->   	if (!pf->hw.port_info->qos_cfg.is_sw_lldp)
->   		ice_cfg_etsrec_defaults(pf->hw.port_info);
->   
+
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+
+> 
+> 
+> 
+> 
+> 
+> Xuan Zhuo (2):
+>   virtio-net: correct hdr_len handling for VIRTIO_NET_F_GUEST_HDRLEN
+>   virtio-net: correct hdr_len handling for tunnel gso
+> 
+>  drivers/net/tun_vnet.h     |  2 +-
+>  drivers/net/virtio_net.c   |  6 ++++-
+>  include/linux/virtio_net.h | 53 +++++++++++++++++++++++++++++++++++---
+>  3 files changed, 55 insertions(+), 6 deletions(-)
+> 
+> --
+> 2.32.0.3.g01195cf9f
 
