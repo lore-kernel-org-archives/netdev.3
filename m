@@ -1,89 +1,235 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FDE35773F;
-	Fri, 20 Mar 2026 08:42:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBE9375ACB
+	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 08:42:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773996127; cv=none; b=SBMuOythNeSgk2gqMOGnYN+ge+fUgpc4AU8wsK5FXHwXR08556PWC2z/vpE78xtstXZWkKOF/r+YuvjBC9Ml82Uw2cGE+Ry/zL035fWesg4QLyCvuzOB57B+V2GH4UUwGmNzVqfyOAvhp+zfZzw5VeFsEklIUBEz34/ntRtxT9E=
+	t=1773996173; cv=none; b=Xnp9fl0RpM9GXpQmWmhz4hdwCs/oEfocxwqRpU8/8orCv0wLi3I7hz+6lM3hKrR+MV0wAIHWx71DpM6IpMbDFk0DYB/EJmM7xPyR1CDmii5y16H2KHadWSyMdEO8Xz5SHxkdsBS7E1+yuUXWd75TCpAGh5XA62Si2ppROWWi15U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773996127; c=relaxed/simple;
-	bh=2goOUVs+18OkdbIgm+nvew2eiVT6u5QWWwYJVbfCgLs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Va7/MY6kMQn0NK427iRYlAZZhUJOKPLVl0KnQPq0h53bmwRCyh8lCM1cm2CluoK9H7VDhEFPYflf+3pVrcUpy5VLZEO1kvGf5hCNGToxIUR+uOq6jFN9T1gwxCMOYkL+W1WFlmh6BFxVsL3Mvu5Q9pF9y9mpM2TPDvEC3U4we9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=rcfOk2m5; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1773996173; c=relaxed/simple;
+	bh=IftfdfYj6xOLoTQ320B8JN0lhYVBzgNKhPmRTvF/cps=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=oGaDKFvk6g6Jijuf2F2xjoim1R4YOYQS1h9c0+toTNxlmZGjzz71i9TKdZOy/tEOGnDsnL0OOGBDvDnRN5YSvy0xxEwl2OKpysc2EVmuQVqctF7zhBhdOxjTX3W5eJ/69b5xeXyR0ErlF9JAzvSx5/K2JCSkpr4tAOFM6rBtCRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VmYBuxEV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="rcfOk2m5"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=5S1jC4GzKRWZlRIWjIEJX66RpWiCwNLjwF++K0MsrPk=; b=rcfOk2m5zGtNf8qVGdqfySzpmh
-	Ina0KbLvEhcXQPtstjplYuTxsXVdHbqCsRSyubjPUS1Ddpm34CqTc8cZoxGP+p33qj99Dmle+geRd
-	LW7XzrgNRUt+KiXrnqOxxIMV33ILQge2m5H6PRLQ26XZcezJcnWdJDQkQvi3wRtDpBtcAmnn9GK5t
-	qz415YBYHroEA5F2pZDJSsolrhEEJdV35kCoxEBFdPy6dp1r84wOBo/3YQ5TGnfg/Z2Gf1elhec3z
-	jsYQnP2jum3LO8ahIutsRiskvUUyW+QmWtvFPvBRn28Yb/2pjayq0MBsda32tXOEtoj5cHn6eeOYR
-	4bIH61Xw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:55662)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1w3VQa-000000005nM-236X;
-	Fri, 20 Mar 2026 08:41:56 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1w3VQT-000000000ft-2FXE;
-	Fri, 20 Mar 2026 08:41:49 +0000
-Date: Fri, 20 Mar 2026 08:41:49 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: yangg9 <cohenyang511@gmail.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	kuba@kernel.org, yangg9@xiaopeng.com, edumazet@google.com,
-	pabeni@redhat.com, mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com, maxime.chevallier@bootlin.com,
-	vladimir.oltean@nxp.com, linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: stmmac: close reset IRQ window and avoid double free
-Message-ID: <ab0ITVGxiX5w7-0k@shell.armlinux.org.uk>
-References: <20260320061955.833785-1-cohenyang511@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VmYBuxEV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B84BC4CEF7;
+	Fri, 20 Mar 2026 08:42:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773996172;
+	bh=IftfdfYj6xOLoTQ320B8JN0lhYVBzgNKhPmRTvF/cps=;
+	h=From:Date:Subject:To:Cc:From;
+	b=VmYBuxEVM321VPfsqQgzg+EuF/RDtIogR8Wq0NpFLv830DJfohD+hZsPmuad3k5Zn
+	 0ooCUo9KgCtYx7XkhxqqRCO93Z4h1MJgKEtun4rZyucYuaHSz6ZQ0k7fzhLdyUYHlZ
+	 0xnApmSWGawPyxuOotC/u9aU032yoS9zPHPdaSc0ZYzltEUxymHDZ6CpTZrBE7Embe
+	 MCtZp8bt2qHTVULBwTIShUyx4WuHBsjLaXSutR5WcwwfezJxRcGvI2E0Zw+qLQ/193
+	 4NRgRGVijIVFKepBMslRPirZr/aZkwmVU5nS9BKoxatffk972UJCJa/Ri8bmahsfR4
+	 pYWqmAmE2AhIw==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Date: Fri, 20 Mar 2026 09:42:28 +0100
+Subject: [PATCH net-next] net: airoha: Rework the code flow in
+ airoha_remove() and in airoha_probe() error path
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260320061955.833785-1-cohenyang511@gmail.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260320-airoha-remove-rework-v1-1-adeef7e3c01f@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MwQqDMBAFf0X23IU0URv8ldJDMK+6lCayESuI/
+ 27oaZjDzEEFKig0NAcpNimSU5X7raFxDmkCS6xO1tjeOGs4iOY5sOKbN1T8sn7YO++6to2Pzke
+ q6aJ4y/7fPilh5YR9pdd5Xn86C/hwAAAA
+X-Change-ID: 20260320-airoha-remove-rework-8383544d758d
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Simon Horman <horms@kernel.org>, linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+X-Mailer: b4 0.14.2
 
-On Fri, Mar 20, 2026 at 02:19:55PM +0800, yangg9 wrote:
-> From: yangg9 <yangg9@xiaopeng.com>
-> 
-> During reset, stmmac_reset_subtask() used to set STMMAC_DOWN before IRQs
-> were freed in __stmmac_release(). That leaves a window where interrupts can
-> still fire after the device is marked down, which may lead to interrupt
-> storms while the interface is transitioning.
-> 
-> Move stmmac_free_irq() earlier in the reset flow, before setting
-> STMMAC_DOWN, so the reset path no longer has that interrupt window.
-> 
-> Since IRQs are now released in stmmac_reset_subtask(), guard IRQ release in
-> __stmmac_release() with STMMAC_DOWN to avoid a second free_irq() during the
-> same reset sequence.
-> 
-> This removes the interrupt-storm window in reset and prevents double IRQ
-> release.
-> 
-> Signed-off-by: yangg9 <yangg9@xiaopeng.com>
+As suggested by Simon in [0], rework the code flow in airoha_remove()
+and in the airoha_probe() error path in order to rely on a more common
+approach un-registering configured net-devices first and destroying the
+hw resources at the end of the code.
+Introduce airoha_qdma_cleanup routine to release QDMA resources.
 
-I want to review this, but from this afternoon I may be out of range of
-LTE signal for about 24h, and thus have no Internet access.
+[0] https://lore.kernel.org/netdev/20251214-airoha-fix-dev-registration-v1-1-860e027ad4c6@kernel.org/
 
+Suggested-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/ethernet/airoha/airoha_eth.c | 82 ++++++++++++++++++--------------
+ 1 file changed, 47 insertions(+), 35 deletions(-)
+
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index db9d9531711e3afc02095bb5fba983880c63ebf4..2caef0f74a3ee6c907ec000357d96422cbfee28b 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -1368,6 +1368,33 @@ static int airoha_qdma_init(struct platform_device *pdev,
+ 	return airoha_qdma_hw_init(qdma);
+ }
+ 
++static void airoha_qdma_cleanup(struct airoha_qdma *qdma)
++{
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(qdma->q_rx); i++) {
++		if (!qdma->q_rx[i].ndesc)
++			continue;
++
++		netif_napi_del(&qdma->q_rx[i].napi);
++		airoha_qdma_cleanup_rx_queue(&qdma->q_rx[i]);
++		if (qdma->q_rx[i].page_pool) {
++			page_pool_destroy(qdma->q_rx[i].page_pool);
++			qdma->q_rx[i].page_pool = NULL;
++		}
++	}
++
++	for (i = 0; i < ARRAY_SIZE(qdma->q_tx_irq); i++)
++		netif_napi_del(&qdma->q_tx_irq[i].napi);
++
++	for (i = 0; i < ARRAY_SIZE(qdma->q_tx); i++) {
++		if (!qdma->q_tx[i].ndesc)
++			continue;
++
++		airoha_qdma_cleanup_tx_queue(&qdma->q_tx[i]);
++	}
++}
++
+ static int airoha_hw_init(struct platform_device *pdev,
+ 			  struct airoha_eth *eth)
+ {
+@@ -1395,41 +1422,30 @@ static int airoha_hw_init(struct platform_device *pdev,
+ 	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++) {
+ 		err = airoha_qdma_init(pdev, eth, &eth->qdma[i]);
+ 		if (err)
+-			return err;
++			goto error;
+ 	}
+ 
+ 	err = airoha_ppe_init(eth);
+ 	if (err)
+-		return err;
++		goto error;
+ 
+ 	set_bit(DEV_STATE_INITIALIZED, &eth->state);
+ 
+ 	return 0;
++error:
++	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
++		airoha_qdma_cleanup(&eth->qdma[i]);
++
++	return err;
+ }
+ 
+-static void airoha_hw_cleanup(struct airoha_qdma *qdma)
++static void airoha_hw_cleanup(struct airoha_eth *eth)
+ {
+ 	int i;
+ 
+-	for (i = 0; i < ARRAY_SIZE(qdma->q_rx); i++) {
+-		if (!qdma->q_rx[i].ndesc)
+-			continue;
+-
+-		netif_napi_del(&qdma->q_rx[i].napi);
+-		airoha_qdma_cleanup_rx_queue(&qdma->q_rx[i]);
+-		if (qdma->q_rx[i].page_pool)
+-			page_pool_destroy(qdma->q_rx[i].page_pool);
+-	}
+-
+-	for (i = 0; i < ARRAY_SIZE(qdma->q_tx_irq); i++)
+-		netif_napi_del(&qdma->q_tx_irq[i].napi);
+-
+-	for (i = 0; i < ARRAY_SIZE(qdma->q_tx); i++) {
+-		if (!qdma->q_tx[i].ndesc)
+-			continue;
+-
+-		airoha_qdma_cleanup_tx_queue(&qdma->q_tx[i]);
+-	}
++	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
++		airoha_qdma_cleanup(&eth->qdma[i]);
++	airoha_ppe_deinit(eth);
+ }
+ 
+ static void airoha_qdma_start_napi(struct airoha_qdma *qdma)
+@@ -3028,7 +3044,7 @@ static int airoha_probe(struct platform_device *pdev)
+ 
+ 	err = airoha_hw_init(pdev, eth);
+ 	if (err)
+-		goto error_hw_cleanup;
++		return err;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
+ 		airoha_qdma_start_napi(&eth->qdma[i]);
+@@ -3043,23 +3059,19 @@ static int airoha_probe(struct platform_device *pdev)
+ 		err = airoha_alloc_gdm_port(eth, np);
+ 		if (err) {
+ 			of_node_put(np);
+-			goto error_napi_stop;
++			goto error;
+ 		}
+ 	}
+ 
+ 	err = airoha_register_gdm_devices(eth);
+ 	if (err)
+-		goto error_napi_stop;
++		goto error;
+ 
+ 	return 0;
+ 
+-error_napi_stop:
++error:
+ 	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
+ 		airoha_qdma_stop_napi(&eth->qdma[i]);
+-	airoha_ppe_deinit(eth);
+-error_hw_cleanup:
+-	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
+-		airoha_hw_cleanup(&eth->qdma[i]);
+ 
+ 	for (i = 0; i < ARRAY_SIZE(eth->ports); i++) {
+ 		struct airoha_gdm_port *port = eth->ports[i];
+@@ -3071,6 +3083,8 @@ static int airoha_probe(struct platform_device *pdev)
+ 			unregister_netdev(port->dev);
+ 		airoha_metadata_dst_free(port);
+ 	}
++	airoha_hw_cleanup(eth);
++
+ 	free_netdev(eth->napi_dev);
+ 	platform_set_drvdata(pdev, NULL);
+ 
+@@ -3082,10 +3096,8 @@ static void airoha_remove(struct platform_device *pdev)
+ 	struct airoha_eth *eth = platform_get_drvdata(pdev);
+ 	int i;
+ 
+-	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++) {
++	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
+ 		airoha_qdma_stop_napi(&eth->qdma[i]);
+-		airoha_hw_cleanup(&eth->qdma[i]);
+-	}
+ 
+ 	for (i = 0; i < ARRAY_SIZE(eth->ports); i++) {
+ 		struct airoha_gdm_port *port = eth->ports[i];
+@@ -3096,9 +3108,9 @@ static void airoha_remove(struct platform_device *pdev)
+ 		unregister_netdev(port->dev);
+ 		airoha_metadata_dst_free(port);
+ 	}
+-	free_netdev(eth->napi_dev);
++	airoha_hw_cleanup(eth);
+ 
+-	airoha_ppe_deinit(eth);
++	free_netdev(eth->napi_dev);
+ 	platform_set_drvdata(pdev, NULL);
+ }
+ 
+
+---
+base-commit: ca7e99335aea7c5977683624ba319157a4603f96
+change-id: 20260320-airoha-remove-rework-8383544d758d
+
+Best regards,
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Lorenzo Bianconi <lorenzo@kernel.org>
+
