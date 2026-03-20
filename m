@@ -1,62 +1,62 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE0A3E3C63
-	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 18:10:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211173E557A
+	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 18:10:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774030252; cv=none; b=h6jMbkEHV+ax8jNLByK2UfrZTGTwAJvJGVWPvlaAuBvgHh4D3T6yAqL+5HkjIxbUZYF74+XQluxxjvbxFoZkIw/7w0xnFBfa760d6sYWce2WLUm2/0ZYupGY15LN0tWuCsIzpWQxSbkiYPDHfBShehW4bU/RVFC/0LjRIsMKZcs=
+	t=1774030254; cv=none; b=ZCk/a1QqVu4vSXnAjMGCQ+8n2lvdFiHJIqup9aHxXZM6eHW/W6frjLAQnVJNFUiFT7aHNj2BxmzobQJ4VMRBmkYQD9AsPoumHbOcE5m7oS0F06Au6mvwR5V8DrGh8DVDfvla5pqR0PMA/oxYYT0KI6gRxe1jtIce2KmBu+tXziU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774030252; c=relaxed/simple;
-	bh=CZYrSzJxOTHz3y2+Yn1YrwZjKF3A8fsmk9txEkZG5Eg=;
+	s=arc-20240116; t=1774030254; c=relaxed/simple;
+	bh=Bj04iTXB7MhKSrOnlUvWs1/LZRy/U40aj1lrebnr4kE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=o+xyLZhQYQMLE7pJR7HcYr1hkcGL9bixESyDdTx+QJHkXhZxMJMzyAwUlvsu25S5d+879FU8cABGIXcxT/Q01yS0dR0o2eiyFLRucJAQAdnv9/K+uNZDo/yFJxTClQQW5nJ7O4ycTUqye8Vz3SFG8O8vcRY28jwfZKQq81r0/T4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ni3iMJzu; arc=none smtp.client-ip=209.85.216.52
+	 MIME-Version; b=NqfPGU1+oyW3yN30ELg0TM0R0D6b3dPawfhThAEC9Ot1eLAX4AtX0YaKTqi7jDvR/Y3DQtz1670/OJi6drMh9aH86ipUid+mT1BISKVm2DWPXrcLNIdrAnTmKq09zbHWgbohcOaFDXuDmd61Yuj7ZQ+O+LFdugU82pjHvLlUQuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G+U8BTzn; arc=none smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ni3iMJzu"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-35ba2ae4df3so648380a91.2
-        for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 11:10:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G+U8BTzn"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-35bb863824fso1175678a91.1
+        for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 11:10:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774030247; x=1774635047; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1774030249; x=1774635049; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=capsefnRJybIkJWvu7BICDZ5yODeSG4sK/v0sJ/qwmE=;
-        b=Ni3iMJzuv0zm9JIPpIqMAullCODUQPmcGAII9eD/pBg2BXI9he9MfyDLut/faWLMSh
-         iO9w2tQHrORgyVCVkMvtulxwAJR29BAox7alDfH4vxpdyu+wv5tx5jFBHnTLRwy3jJK/
-         Fw/lKwkWd6kQj4kyxaiINcsQ+L4cZXWw3BWIR4dilJVsQX3AdQd0WbINLU3MGALY6VIH
-         DgdUxhfntXlvvNWI107p3qQklMogB4h2VEc45yIigU3oMnIus/IaFhhbLUVwrs//4FnS
-         HFbxfpeyaRjgXJsVXjyPbZL00GlsOXjFfyxfMNUmf6aLbMIP+3O7aY+D+FU7k5tM3i3f
-         lQwQ==
+        bh=TOf9LcnO5IRemgfOLwtBwbNVtgVrreL+MONpjgDCJOc=;
+        b=G+U8BTznQj2zP7rwDb2gB9WqQIms2m7rgquampiYFjtqLH3W5k+3dIZOj/7NAFixB3
+         mEeemIzxNHekLWvUShp+d43c9WaeJ9LxqkNvJ9F+HNNcRuivU5FuOsycKxcOw7nqWvNn
+         9ZPnysO0LZVXLHs9mJfShvuy/2d7SsOqN7TyDykgJ2Kl5PtwXN6IHdiQM0irHqtn0wKV
+         DkIMZG+/u55QESIEKw6pcaWGhRDLov9ja5fA9anE7kpRfEJIaATFQdIhgabSlvBYZ6ji
+         LIcoZ1KYNY8w6g+eWs93StY7UOaP6z/R/h3/7XCclD949fQLplfQz5Jge/3ei8WzNcb0
+         /0Xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774030247; x=1774635047;
+        d=1e100.net; s=20251104; t=1774030249; x=1774635049;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=capsefnRJybIkJWvu7BICDZ5yODeSG4sK/v0sJ/qwmE=;
-        b=eMdEDRy0NRj3pJcNcjOnOSvInp5L8pGL1Z1xIBKtFmCRkfbkmIZ1dm+V7hdo/beBnI
-         OtZeF3NFMorTSR87wEDLRMrkEyR9PmOGhYmllfjEddmvfwc8fgT55BbkjEpxlWxwMsEP
-         +CgwYllybd0y1LVeFjuzNElsFYWghFimkLuGtNNEEGECPW0GJ2CuJ7Xmd+akWpT0QX37
-         m3bQs4v28Iul1wZB8LOwtKeHqNj8jPNsO7N0CiMzgp7SEjZyEbKkAIlCnyVZSz1lNmjl
-         nw+N9Quon2xXhIbCFTTy7LD3iiv2xepxv5GGQwjvm/YprQbZlkPRyr2AA67xHbkvo71h
-         w3uA==
-X-Gm-Message-State: AOJu0YwadIUakmcDdPp+wWhc8R5DdsMBtmOi+oLeOyOvp3pK+rkUMtNT
-	PXOlTo/BbVu8o2DTvuTvrWMLA6yszhFEu2uYF4uMNDXZDfRzjLfiUR5A
-X-Gm-Gg: ATEYQzz4acrpU7pwdMiCNxhfzyhWtW26IMf3Zsd0qvTC5YyhX/zZk1Qb0ZSB+A9gzQa
-	sfBet7S77wvtEHND8GqX4flazVjU93xsFvdVD0fN6qUpXCUf+9WG4kDU7xeyIWppThTrvnYGPRU
-	UrR/l1QVWD1wfB5vaR4KJogRkzC1XVp9gptsOZPTPaOp0CDQAnv32wiK2hNGIaA9u3EY1ndPWuP
-	YUG4UBJK+7Idz4v8YwOlD71xlzW/JzGGGXHzSHOm0AaO0HcdUO9ZF/tzlW4EkO+x+nlN0p7GBgm
-	VBjYIsNDMR4haNyxQbTCrKpA47Gs8lUX900YRd6K8C2gugtiUnWyPu6BN68K2mKgoMmduAwNJEb
-	rNFngf6fUHzm+gv+MxXVKAdHE9ES7UHnrqLxOpn7cw4B0qyVdpvSP+84FCJFQ6kXgxGf1TBAzOp
-	eMhmVgI8CzU38190FKrrb7ZRNU6ABDND0dc4uynZmuMtDLZqOwNWo+/IZjy6CnAI+rv7y94zU=
-X-Received: by 2002:a17:90b:3e45:b0:35b:a1b6:5bf5 with SMTP id 98e67ed59e1d1-35bd2d79c38mr3132080a91.31.1774030246724;
-        Fri, 20 Mar 2026 11:10:46 -0700 (PDT)
+        bh=TOf9LcnO5IRemgfOLwtBwbNVtgVrreL+MONpjgDCJOc=;
+        b=UZ9GTqM51+dhWIraPBDpvSCyVSgkriSxcb5ejYHMFSrszh/VARuJsCt1/VQxaPn3Q5
+         ClE2PDwUH1KqVhdnAJ/eI6Yqr2qgCOMNYFo06DC5kqq8crC86ouC8ctnbNQxvaTIuOIK
+         rro8QKV724uXxmY7N4HLdkXplTKc601YHJmsxde7Mjf9HC2NtuiljoiEGKrJd52n+dmy
+         hHCf3q6DvU2W2/ii7OPAeqMMnGwV/hQQ+wadOTNyuKEJRIY/Mo3laCDFPUIUaKzgFa44
+         2rE9Ciy85HdJyjWGMN0MKa6L8cWB6nECuopXXg652P3GZ6NUsjjea+jR3wBAq/XHrAOR
+         D5sw==
+X-Gm-Message-State: AOJu0Yyk/cI1DThvaUWAwNoGvkQ8WmheAX8ElZIih3hyn7jSuyq7VYRm
+	uim6Tyzx5+V1uBCJPiM3dzkGvzkKvR2uUcVSuC+TAo3+Fr85hkD39uJs
+X-Gm-Gg: ATEYQzzbHsGaGwinnWngVC2L0pa7IbNjlKOi+L3BGJ5e3A72/bmIYDY/EBBnt9CniAG
+	pWzQz8C9NDxwVS+68BnDiJP5hT3DYV2G/nrWwcHTsOdV3yYxKCcyhRNtirZnK3f0GLtXr6RdDwN
+	DDn1Hgu90vTF9FeIX/GaW0Jnsw0Sr2KbqgKCl0z8hfTCeYiztrYanVTwHloPScEK4Inl9EMpppx
+	gu+eDE0Q5eITFYFfG/5saJZp6fsVCJ1Tqq0a/wlmNYmmOUWb0PEvfN6HbRJJz3KR2EviX0ezQB5
+	mlDrI+gQRahRcH1N6W9dLTfjhG+I0hgGIX3Tm6ki1H9rJeLrpm9ZsoYRlkSGuZSbZeQ0evHU/3t
+	naaE7niKurFG5o41L1N0hs/YqvOrhgThCIicjIYFEk4NXaqTsocOWYdTNm4OwFRTz1k53WUIbgE
+	kGtdEdM4EggHD534lubNMqtHOYPFImZNLA7MgfU0knxYdJ7J6C/5AE5JF0Wb2DGMLexGEAdRI=
+X-Received: by 2002:a17:90b:3f88:b0:35b:a44f:b8a with SMTP id 98e67ed59e1d1-35bd2ba3293mr3032450a91.6.1774030249148;
+        Fri, 20 Mar 2026 11:10:49 -0700 (PDT)
 Received: from sean-All-Series.. (1-160-226-215.dynamic-ip.hinet.net. [1.160.226.215])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35bd368837bsm959352a91.11.2026.03.20.11.10.44
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35bd368837bsm959352a91.11.2026.03.20.11.10.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Mar 2026 11:10:46 -0700 (PDT)
+        Fri, 20 Mar 2026 11:10:48 -0700 (PDT)
 From: Sean Chang <seanwascoding@gmail.com>
 To: Andrew Lunn <andrew@lunn.ch>,
 	Chuck Lever <chuck.lever@oracle.com>,
@@ -67,9 +67,9 @@ Cc: netdev@vger.kernel.org,
 	linux-nfs@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Sean Chang <seanwascoding@gmail.com>
-Subject: [PATCH v4 2/5] nfsd/lockd: Remove redundant debug checks
-Date: Sat, 21 Mar 2026 02:09:52 +0800
-Message-Id: <20260320180955.150696-3-seanwascoding@gmail.com>
+Subject: [PATCH v4 3/5] svcrdma: remove redundant IS_ENABLED(CONFIG_SUNRPC_DEBUG) guards
+Date: Sat, 21 Mar 2026 02:09:53 +0800
+Message-Id: <20260320180955.150696-4-seanwascoding@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260320180955.150696-1-seanwascoding@gmail.com>
 References: <20260320180955.150696-1-seanwascoding@gmail.com>
@@ -81,67 +81,64 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Remove unnecessary IS_ENABLED(CONFIG_SUNRPC_DEBUG) guards and #ifdefs
-in nfsfh.c and svclock.c.
+Remove redundant IS_ENABLED(CONFIG_SUNRPC_DEBUG) guards in
+svc_rdma_accept(). Since dprintk() already evaluates to a no-op
+(via no_printk) when debugging is disabled, these explicit guards
+are unnecessary.
 
 Verification with .lst files under -O2 confirms that the compiler
 successfully performs "dead code elimination". Even when variables
-(like char buf[] in nfsfh.c) or static helper functions (like
-nlmdbg_cookie2a() in svclock.c) are declared without #ifdef, they are
-completely optimized out (no stack allocation, no symbol references in
-the final executable) as they are only referenced within no_printk().
+(like 'sap' in this case) are declared outside of #ifdef, they are
+completely optimized out (no stack allocation, no symbol references
+in the final executable) as they are only referenced within dprintk().
 
-Suggested-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Sean Chang <seanwascoding@gmail.com>
 ---
- fs/lockd/svclock.c | 7 -------
- fs/nfsd/nfsfh.c    | 8 +++-----
- 2 files changed, 3 insertions(+), 12 deletions(-)
+ net/sunrpc/xprtrdma/svc_rdma_transport.c | 25 +++++++++++-------------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
 
-diff --git a/fs/lockd/svclock.c b/fs/lockd/svclock.c
-index ee23f5802af1..9b978a087b3c 100644
---- a/fs/lockd/svclock.c
-+++ b/fs/lockd/svclock.c
-@@ -47,7 +47,6 @@ static const struct rpc_call_ops nlmsvc_grant_ops;
- static LIST_HEAD(nlm_blocked);
- static DEFINE_SPINLOCK(nlm_blocked_lock);
+diff --git a/net/sunrpc/xprtrdma/svc_rdma_transport.c b/net/sunrpc/xprtrdma/svc_rdma_transport.c
+index f2d72181a6fe..0759444bda50 100644
+--- a/net/sunrpc/xprtrdma/svc_rdma_transport.c
++++ b/net/sunrpc/xprtrdma/svc_rdma_transport.c
+@@ -413,6 +413,7 @@ static struct svc_xprt *svc_rdma_accept(struct svc_xprt *xprt)
+ 	struct rpcrdma_connect_private pmsg;
+ 	struct ib_qp_init_attr qp_attr;
+ 	struct ib_device *dev;
++	struct sockaddr *sap;
+ 	int ret = 0;
  
--#if IS_ENABLED(CONFIG_SUNRPC_DEBUG)
- static const char *nlmdbg_cookie2a(const struct nlm_cookie *cookie)
- {
- 	/*
-@@ -74,12 +73,6 @@ static const char *nlmdbg_cookie2a(const struct nlm_cookie *cookie)
- 
- 	return buf;
- }
--#else
--static inline const char *nlmdbg_cookie2a(const struct nlm_cookie *cookie)
--{
--	return "???";
--}
--#endif
- 
- /*
-  * Insert a blocked lock into the global list
-diff --git a/fs/nfsd/nfsfh.c b/fs/nfsd/nfsfh.c
-index 68b629fbaaeb..91514326d1b4 100644
---- a/fs/nfsd/nfsfh.c
-+++ b/fs/nfsd/nfsfh.c
-@@ -105,12 +105,10 @@ static __be32 nfsd_setuser_and_check_port(struct svc_rqst *rqstp,
- {
- 	/* Check if the request originated from a secure port. */
- 	if (rqstp && !nfsd_originating_port_ok(rqstp, cred, exp)) {
--		if (IS_ENABLED(CONFIG_SUNRPC_DEBUG)) {
--			char buf[RPC_MAX_ADDRBUFLEN];
-+		char buf[RPC_MAX_ADDRBUFLEN];
- 
--			dprintk("nfsd: request from insecure port %s!\n",
--			        svc_print_addr(rqstp, buf, sizeof(buf)));
--		}
-+		dprintk("nfsd: request from insecure port %s!\n",
-+			svc_print_addr(rqstp, buf, sizeof(buf)));
- 		return nfserr_perm;
+ 	listen_rdma = container_of(xprt, struct svcxprt_rdma, sc_xprt);
+@@ -559,20 +560,16 @@ static struct svc_xprt *svc_rdma_accept(struct svc_xprt *xprt)
+ 		goto errout;
  	}
+ 
+-	if (IS_ENABLED(CONFIG_SUNRPC_DEBUG)) {
+-		struct sockaddr *sap;
+-
+-		dprintk("svcrdma: new connection accepted on device %s:\n", dev->name);
+-		sap = (struct sockaddr *)&newxprt->sc_cm_id->route.addr.src_addr;
+-		dprintk("    local address   : %pIS:%u\n", sap, rpc_get_port(sap));
+-		sap = (struct sockaddr *)&newxprt->sc_cm_id->route.addr.dst_addr;
+-		dprintk("    remote address  : %pIS:%u\n", sap, rpc_get_port(sap));
+-		dprintk("    max_sge         : %d\n", newxprt->sc_max_send_sges);
+-		dprintk("    sq_depth        : %d\n", newxprt->sc_sq_depth);
+-		dprintk("    rdma_rw_ctxs    : %d\n", ctxts);
+-		dprintk("    max_requests    : %d\n", newxprt->sc_max_requests);
+-		dprintk("    ord             : %d\n", conn_param.initiator_depth);
+-	}
++	dprintk("svcrdma: new connection accepted on device %s:\n", dev->name);
++	sap = (struct sockaddr *)&newxprt->sc_cm_id->route.addr.src_addr;
++	dprintk("    local address   : %pIS:%u\n", sap, rpc_get_port(sap));
++	sap = (struct sockaddr *)&newxprt->sc_cm_id->route.addr.dst_addr;
++	dprintk("    remote address  : %pIS:%u\n", sap, rpc_get_port(sap));
++	dprintk("    max_sge         : %d\n", newxprt->sc_max_send_sges);
++	dprintk("    sq_depth        : %d\n", newxprt->sc_sq_depth);
++	dprintk("    rdma_rw_ctxs    : %d\n", ctxts);
++	dprintk("    max_requests    : %d\n", newxprt->sc_max_requests);
++	dprintk("    ord             : %d\n", conn_param.initiator_depth);
+ 
+ 	return &newxprt->sc_xprt;
  
 -- 
 2.34.1
