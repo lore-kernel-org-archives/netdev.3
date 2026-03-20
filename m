@@ -1,48 +1,49 @@
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D05B82BE7A7
-	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 01:25:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0932D0C89
+	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 01:25:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773969904; cv=none; b=VWwm3AlNclyC1QC9wsom98PvFuf7Z8bJwEFLS5WL1anXJ+S7r7wYIZDpLAYW52QzXVdlJYqRvYa/gvYJ/Kwh5ozvYMfs9CeWDkQ4D8Q0zWBu2p3UPNtQSnuEEXkexniVfX7tLkbFo5KaffvbFi64w+z+zAxCmcIgwnDWU1iYMAE=
+	t=1773969907; cv=none; b=un2S/fJfoz3m3qf5Q9cybwbZDh+KmXk7kTDvE0a46kHckmMLSoxVbLfIltClxbQnnj0cxvGsQ8TBLw/EIw65LKA93cEOJj1xWWRN1PSb+sxfJEf1X3gcufpmEkJSoEaLqa9MHx2xAqQ6/tvbgBiqGsH5Egm6k8kikVh7hA+uV5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773969904; c=relaxed/simple;
-	bh=k/3MiZh6ObBA2Gh0WgqU7rsQmjvA6q6JXhNX15TphY0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B7RkQdoQo/XlH2csnYn+XGAxS40o3CYFoMr57tY+BUEp3AfI3DJ1ueI9Fvsc8F7zDYfq1YR5ur6KxAy9aMxdu/+fQmPiRi3G7MZa6SZhuE22m2m3NTxWC7r7J6se4h1s+0cduh/BGpDJb5sLF1b5aTIsRNlp9J4MiEXkU5pRxos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.82.170
+	s=arc-20240116; t=1773969907; c=relaxed/simple;
+	bh=fiWuZ9fcbL8sdigaSwTTvp8tHDm8kXTBMV+vvmAza+E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GUkddBNB1WPPTjBfP94PKjVKdSm4ka133OM2O5CSlcQ97sI+nPhC7b8U93843jdEBVORqYUtm+Qg0hwrup/z3n9CaEYr18PC9aJk7USY+ETsPMaMbR6Xa2B4UDxl8T4PkQOaCRtHYRbQVzksra04THJgfkgK8P8HjYLbH5kobTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.82.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2c0bb213b16so2614157eec.0
-        for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 18:25:03 -0700 (PDT)
+Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-128e4d0cc48so153583c88.1
+        for <netdev@vger.kernel.org>; Thu, 19 Mar 2026 18:25:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773969903; x=1774574703;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6rpuLOskCPApojyOfZj7pXXkMzfKSIlGWmqpeqvyGp0=;
-        b=MeHLY19XAKN8d4zHIvp9M965+fMfq5SO1xA+Why2WXJyMnSfhGfe+ucXUlGS6+gApC
-         XKBnJ+4828Xs0qF71SBWFrafMOtPLN9lJT8o208pgtFHAJ2OcY8uPECMB3wpV3LADFUB
-         R/QW5t/iTtn0CWu734QH8mc44DrwHKlUX/wi4UePQeLtIaAV0/7TC6n8PDzig0I6h5LK
-         M3D3GOUHV8ajrDkOqJU+P5P73Sa6gfMVADJJmbkxdI6K4NXyVZdtrMYP44stnjQOhZSL
-         tQS3z62ObvczwfqDIrPvEEO0jA+xdKp9nwhOT2j8xD8oo2efXTBZNnnYKcVzsdcL4Yey
-         06kQ==
-X-Gm-Message-State: AOJu0YyTyyuJlm6tR5ThDaqEiQSBE3saxbBTIenQ61rW1m75k5QgqqAs
-	RwGOxWNkYd6A7GfwIGOC8mETfISZgbZxwEQ6T8FJrDdpKJCmCj+gImjR5thy
-X-Gm-Gg: ATEYQzyaDFEIqe01SGP0JHWlvNpbhlBpTD9+rYiuGITR5Xiqsv8NVS9h1bEp+06fqsr
-	B3/vJeEr/5QSbDUxxy0TlXh6d8rmAWKraxI5vyfl/KzHaEKhyO+BseVUEiR1h+r6KjncMsdzth8
-	GUX7SACoYYIUDRbs92Z4TzK/ErtppJwp8LMf6iCCcYK5HDrk/2Zi2eokjRspKDH89ByfYpxafyu
-	zyEpjnzieWnssWSVYtK+CHnOITQQT4solWi+cshdPQ+2BOOMQvqohSfLs1XKdOxf00LC6oV+GO5
-	Tf034wX1ijVp/MMdRbLjqHJWYAQuEND30MeU1aSpClL2pLrPouQBvKvoiL7bM7q/Smucwi4284C
-	Ao8rh79Nu6EECGcjUD81T9vKsJmj8h9e3+UMgcvYkIUJ+epIDEdQ3JQ/ylD2PmqPFu8Li4+mTM4
-	XG/6UWtXk88hEA5+vlXxwnsDXvnayzLSDwx4xHNHxV3VKApLWSKrvm+fFwvU1v65gJmA3h5S19R
-	Msw276EyejhQfWsDA==
-X-Received: by 2002:a05:7301:9f0c:b0:2b8:4c95:365d with SMTP id 5a478bee46e88-2c1095f54afmr757541eec.10.1773969902833;
-        Thu, 19 Mar 2026 18:25:02 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1773969906; x=1774574706;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7EJnW3kdUcA/mWdICiYp+Buoz7NoSHqg/f92gpxvDwE=;
+        b=jxDWaMguVlRx1ncteBerO0UfekaN/yHGn+maTiI7EZ1Wj4ibUeCPWFo+JjmexaeG9+
+         cJux4+BjuOw7AFsTCujvhA1rxrk1jjMyZ30evxGAYhltnc3E/kFgtui0xvK1dcdT71YV
+         jtZatowgHd0yujwU26AYJKvs0THhnzfjIh0GLhICXO9iCsGSU6HF08dGrVzdGri7qNFF
+         MEGAa0ASsyzUlH9kQlF6k1GBoLzFSheBz+zGR4zBfaIS1UDGQJyDGPdAuLDlTkCZdhWt
+         Vef+vKmnViu+Gr2hbF9Xe2IYM9YHP4ElXsn4D38pXnu5LNnGC+eJ+iyiKeFODFt4Lo36
+         QjtA==
+X-Gm-Message-State: AOJu0YzOMjqt8t/mcPpdXq9zAW/nOLu15bLmclqPJ8Eok8SOXDsCepVz
+	tZuWgWPPr8L5X4TTuSpxtNQMfXBFJZAgWWG2FlFvUfjNPTPOjeLd2Vc4gmNq
+X-Gm-Gg: ATEYQzyRIdxsNu8ac+dJr4dVaUgD5zJZWUFVQN5/5wpWqBr4Ogmn6l1NSl2ISx8GzR4
+	fnKnJYVK0cRTYsogWZ1Q5uRzr6XRp9+ySteoG0IRJLXKl6DD/vMgVRHw+F69gOvD/7Y967qzIJk
+	HPQ/8XkCqbblkqMx9z60slPltbebvvVrFLzMSn1Eqa+J/fuYaicIUsoRk3UoglXwzG0w4T2/lnH
+	aY/8lTCqFNfzuKW/EbHEsNLweXXLMA/ws1eZNNqFLZZSRwoPqrKyJh2CRvIhI/TBAjxVUE1Jrz7
+	8IDs4RhSwOmxWhxmkH+zPT8zkSOSmrFTAxfxjNkC9p5O/TgLeimhFigdfc0yGro4TK9jgqgjMX4
+	xpA3jc57I6xEzU9gNZYKqurfiBKSZTATU2B2BuuKR/jbihpcVk9oEhA6JAdCgXWmNxQmuANIYmM
+	BCy+VMabK0Xp1XT9jZg+UzKQ4XPMb/uLFZhCmuG0RzQ/ksG2JOmMKz7kPskb0iMFg1ZQwniiiho
+	QQpuELm/eruSZdKqw==
+X-Received: by 2002:a05:7022:ec18:b0:128:d17b:e7ab with SMTP id a92af1059eb24-12a726f6573mr546108c88.36.1773969905386;
+        Thu, 19 Mar 2026 18:25:05 -0700 (PDT)
 Received: from localhost (c-76-102-12-149.hsd1.ca.comcast.net. [76.102.12.149])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c10b35116bsm1575407eec.30.2026.03.19.18.25.01
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12a736b952asm749391c88.12.2026.03.19.18.25.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Mar 2026 18:25:02 -0700 (PDT)
+        Thu, 19 Mar 2026 18:25:05 -0700 (PDT)
 From: Stanislav Fomichev <sdf@fomichev.me>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -81,10 +82,12 @@ Cc: davem@davemloft.net,
 	linux-wireless@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	leon@kernel.org
-Subject: [PATCH net-next v3 00/13] net: sleepable ndo_set_rx_mode
-Date: Thu, 19 Mar 2026 18:24:48 -0700
-Message-ID: <20260320012501.2033548-1-sdf@fomichev.me>
+Subject: [PATCH net-next v3 02/13] wifi: cfg80211: use __rtnl_unlock in nl80211_pre_doit
+Date: Thu, 19 Mar 2026 18:24:50 -0700
+Message-ID: <20260320012501.2033548-3-sdf@fomichev.me>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260320012501.2033548-1-sdf@fomichev.me>
+References: <20260320012501.2033548-1-sdf@fomichev.me>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -93,71 +96,71 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series adds a new ndo_set_rx_mode_async callback that enables
-drivers to handle address list updates in a sleepable context. The
-current ndo_set_rx_mode is called under the netif_addr_lock spinlock
-with BHs disabled, which prevents drivers from sleeping. This is
-problematic for ops-locked drivers that need to sleep.
+nl80211_pre_doit acquires rtnl_lock and then wiphy_lock, releasing
+rtnl while keeping wiphy_lock held until post_doit. With the
+introduction of rx_mode_wq and its flush in netdev_run_todo, calling
+rtnl_unlock here creates a circular lock dependency:
 
-The approach:
-1. Add snapshot/reconcile infrastructure for address lists
-2. Introduce dev_rx_mode_work that takes snapshots under the lock,
-   drops the lock, calls the driver, then reconciles changes back
-3. Move promiscuity handling into the scheduled work as well
-4. Convert existing ops-locked drivers to ndo_set_rx_mode_async
-5. Add a warning for ops-locked drivers still using ndo_set_rx_mode
-6. Add a selftest exercising the team+bridge+macvlan topology that
-   triggers the addr_lock -> ops_lock ordering issue
+  Chain exists of:
+    (wq_completion)rx_mode_wq --> rtnl_mutex --> &rdev->wiphy.mtx
 
-v3:
-- module_export(__rtnl_unlock) (nipa)
-- s/netdev_uc_count/netdev_hw_addr_list_count/ in bnxt (Aleksandr)
+   Possible unsafe locking scenario:
 
-v2:
-- wifi: cfg80211: use __rtnl_unlock in nl80211_pre_doit (syzbot)
-- simplify mlx5e_sync_netdev_addr for !uc (Cosmin)
-- switch to snapshot in bnxt_cfg_rx_mode (Michael)
-- add team to net/config (Jakub)
+         CPU0                    CPU1
+         ----                    ----
+    lock(&rdev->wiphy.mtx);
+                                 lock(rtnl_mutex);
+                                 lock(&rdev->wiphy.mtx);
+    lock((wq_completion)rx_mode_wq);
 
-Stanislav Fomichev (13):
-  net: add address list snapshot and reconciliation infrastructure
-  wifi: cfg80211: use __rtnl_unlock in nl80211_pre_doit
-  net: introduce ndo_set_rx_mode_async and dev_rx_mode_work
-  net: move promiscuity handling into dev_rx_mode_work
-  fbnic: convert to ndo_set_rx_mode_async
-  mlx5: convert to ndo_set_rx_mode_async
-  bnxt: convert to ndo_set_rx_mode_async
-  bnxt: use snapshot in bnxt_cfg_rx_mode
-  iavf: convert to ndo_set_rx_mode_async
-  netdevsim: convert to ndo_set_rx_mode_async
-  dummy: convert to ndo_set_rx_mode_async
-  net: warn ops-locked drivers still using ndo_set_rx_mode
-  selftests: net: add team_bridge_macvlan rx_mode test
+Switch to __rtnl_unlock to skip netdev_run_todo in nl80211_pre_doit.
+This seems safe because we run before the op.
 
- Documentation/networking/netdevices.rst       |  12 +
- drivers/net/dummy.c                           |   6 +-
- drivers/net/ethernet/broadcom/bnxt/bnxt.c     |  55 +--
- drivers/net/ethernet/intel/iavf/iavf_main.c   |  14 +-
- .../net/ethernet/mellanox/mlx5/core/en/fs.h   |   5 +-
- .../net/ethernet/mellanox/mlx5/core/en_fs.c   |  30 +-
- .../net/ethernet/mellanox/mlx5/core/en_main.c |  16 +-
- .../net/ethernet/meta/fbnic/fbnic_netdev.c    |  20 +-
- .../net/ethernet/meta/fbnic/fbnic_netdev.h    |   4 +-
- drivers/net/ethernet/meta/fbnic/fbnic_pci.c   |   4 +-
- drivers/net/ethernet/meta/fbnic/fbnic_rpc.c   |   2 +-
- drivers/net/netdevsim/netdev.c                |   8 +-
- include/linux/netdevice.h                     |  26 ++
- net/core/dev.c                                | 176 ++++++++--
- net/core/dev.h                                |   1 +
- net/core/dev_addr_lists.c                     | 110 +++++-
- net/core/dev_addr_lists_test.c                | 321 +++++++++++++++++-
- net/core/rtnetlink.c                          |   1 +
- net/wireless/core.c                           |   1 +
- net/wireless/nl80211.c                        |   2 +-
- tools/testing/selftests/net/config            |   1 +
- tools/testing/selftests/net/rtnetlink.sh      |  44 +++
- 22 files changed, 765 insertions(+), 94 deletions(-)
+Link: http://lore.kernel.org/netdev/69b5ad67.a00a0220.3b25d1.001a.GAE@google.com
+Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+---
+ net/core/rtnetlink.c   | 1 +
+ net/wireless/core.c    | 1 +
+ net/wireless/nl80211.c | 2 +-
+ 3 files changed, 3 insertions(+), 1 deletion(-)
 
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index dad4b1054955..b1bfb4a4aedd 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -150,6 +150,7 @@ void __rtnl_unlock(void)
+ 		head = next;
+ 	}
+ }
++EXPORT_SYMBOL_NS_GPL(__rtnl_unlock, "NETDEV_INTERNAL");
+ 
+ void rtnl_unlock(void)
+ {
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 23afc250bc10..a78a9b613c94 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -41,6 +41,7 @@ MODULE_AUTHOR("Johannes Berg");
+ MODULE_LICENSE("GPL");
+ MODULE_DESCRIPTION("wireless configuration support");
+ MODULE_ALIAS_GENL_FAMILY(NL80211_GENL_NAME);
++MODULE_IMPORT_NS("NETDEV_INTERNAL");
+ 
+ /* RCU-protected (and RTNL for writers) */
+ LIST_HEAD(cfg80211_rdev_list);
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index e15cd26f3a79..f8ed8730cf1c 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -18203,7 +18203,7 @@ static int nl80211_pre_doit(const struct genl_split_ops *ops,
+ 		__release(&rdev->wiphy.mtx);
+ 	}
+ 	if (!(internal_flags & NL80211_FLAG_NEED_RTNL))
+-		rtnl_unlock();
++		__rtnl_unlock();
+ 
+ 	return 0;
+ out_unlock:
 -- 
 2.53.0
 
