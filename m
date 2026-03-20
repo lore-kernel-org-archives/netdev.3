@@ -1,235 +1,76 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fs1-de.slnx.de (fs1-de.slnx.de [116.202.84.118])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBE9375ACB
-	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 08:42:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C37364933;
+	Fri, 20 Mar 2026 08:43:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.202.84.118
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773996173; cv=none; b=Xnp9fl0RpM9GXpQmWmhz4hdwCs/oEfocxwqRpU8/8orCv0wLi3I7hz+6lM3hKrR+MV0wAIHWx71DpM6IpMbDFk0DYB/EJmM7xPyR1CDmii5y16H2KHadWSyMdEO8Xz5SHxkdsBS7E1+yuUXWd75TCpAGh5XA62Si2ppROWWi15U=
+	t=1773996192; cv=none; b=elAOc7EwXoxz7eYGl4ET0CzkpGC7ULiWPk4QAOEo2TV991iD0aEcPuhotLPQgghBEMe38HBJt9maBd4KXWpSiSgJJCj92FLmXSoE6Kr1r+IQrRxnQDhwbxnvGzmwx42EPgwmboWN9U8AfvAhvgYvQsrgm+odEioIYjSjc95jRho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773996173; c=relaxed/simple;
-	bh=IftfdfYj6xOLoTQ320B8JN0lhYVBzgNKhPmRTvF/cps=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=oGaDKFvk6g6Jijuf2F2xjoim1R4YOYQS1h9c0+toTNxlmZGjzz71i9TKdZOy/tEOGnDsnL0OOGBDvDnRN5YSvy0xxEwl2OKpysc2EVmuQVqctF7zhBhdOxjTX3W5eJ/69b5xeXyR0ErlF9JAzvSx5/K2JCSkpr4tAOFM6rBtCRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VmYBuxEV; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773996192; c=relaxed/simple;
+	bh=vtFVL9zMHQPk9UCOHXE78wRqptwzKdlhUB9DYYixB60=;
+	h=MIME-Version:From:To:Subject:Cc:Content-Type:Message-ID:Date:
+	 Content-Type; b=RhqSkDMkRq0Mu35fVD05G24dwM4tH5Z86hJcLfovA/m3cnMb6FVb3cMH35Ixll85etlE+r6vXZH6XC05VaQJMV/GlVoQshRiHD0i4tYQg3xcryLBpQZqnRDeg/LlgS+g/CB2wAxp0Hqxo8tLugbxXfPYib0OOeCNeeayd6PrHu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=klassert.de; spf=pass smtp.mailfrom=klassert.de; dkim=pass (2048-bit key) header.d=klassert.de header.i=@klassert.de header.b=yX0mvro0; arc=none smtp.client-ip=116.202.84.118
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=klassert.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=klassert.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VmYBuxEV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B84BC4CEF7;
-	Fri, 20 Mar 2026 08:42:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773996172;
-	bh=IftfdfYj6xOLoTQ320B8JN0lhYVBzgNKhPmRTvF/cps=;
-	h=From:Date:Subject:To:Cc:From;
-	b=VmYBuxEVM321VPfsqQgzg+EuF/RDtIogR8Wq0NpFLv830DJfohD+hZsPmuad3k5Zn
-	 0ooCUo9KgCtYx7XkhxqqRCO93Z4h1MJgKEtun4rZyucYuaHSz6ZQ0k7fzhLdyUYHlZ
-	 0xnApmSWGawPyxuOotC/u9aU032yoS9zPHPdaSc0ZYzltEUxymHDZ6CpTZrBE7Embe
-	 MCtZp8bt2qHTVULBwTIShUyx4WuHBsjLaXSutR5WcwwfezJxRcGvI2E0Zw+qLQ/193
-	 4NRgRGVijIVFKepBMslRPirZr/aZkwmVU5nS9BKoxatffk972UJCJa/Ri8bmahsfR4
-	 pYWqmAmE2AhIw==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Fri, 20 Mar 2026 09:42:28 +0100
-Subject: [PATCH net-next] net: airoha: Rework the code flow in
- airoha_remove() and in airoha_probe() error path
+	dkim=pass (2048-bit key) header.d=klassert.de header.i=@klassert.de header.b="yX0mvro0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=klassert.de; s=mx-de;
+	t=1773995533; bh=vtFVL9zMHQPk9UCOHXE78wRqptwzKdlhUB9DYYixB60=;
+	h=From:To:Subject:Cc:Date:From;
+	b=yX0mvro0iEjb4MfK6s325rbCzq7H8RtRJb2Bxrlr6hQSMKfMpNSiu4PQyYC3n5Ez7
+	 /uUp2Vc+X17M9RbPujtoDEXGb7c+SFt6Ujchk7uFCsKYgwDP2cqVOtazztbQEbyP1J
+	 Kh4xsbh45wSrY6/pASuop8QNpxAtUns3IXNMPP22q1ZI4JBt4ff/C7TZbsmy5BDMM7
+	 sVlRsVmbOEXicE0+o10X0jhk313ELbtAAjsAFX+qlptZVxOmdeBMfIFrMe0sR6JdUK
+	 AFFELi8+jldrKVGL51wWRInkledFEidIIcv/ZeydZsRT1QSwl1/2lwU2yYIOgoSw7L
+	 L+jhOo46KCiuA==
+Received: from nbg3-de (nbg3-de.slnx.de [IPv6:2a01:4f8:1c1a:f020::1])
+	by fs1-de.slnx.de (Postfix) with ESMTPSA id 9108314604BC;
+	Fri, 20 Mar 2026 08:32:12 +0000 (UTC)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+From: <steffen-ai@klassert.de>
+To: "Qi Tang" <tpluszz77@gmail.com>
+Subject: Re: [PATCH net] xfrm: hold skb->dev across async IPv6 transport reinject
+Cc: <steffen.klassert@secunet.com>, <netdev@vger.kernel.org>, 
+	<herbert@gondor.apana.org.au>, <davem@davemloft.net>, 
+	<edumazet@google.com>, <kuba@kernel.org>, 
+	<pabeni@redhat.com>, <horms@kernel.org>, 
+	<stable@vger.kernel.org>, <steffen@klassert.de>
+Content-Type: text; charset="UTF-8"
+Message-ID: <189e7f89b082031f.2492293c508f2522.8ac0d063cc181f1a@nbg3-de>
+Date: Fri, 20 Mar 2026 08:32:12 +0000
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260320-airoha-remove-rework-v1-1-adeef7e3c01f@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MwQqDMBAFf0X23IU0URv8ldJDMK+6lCayESuI/
- 27oaZjDzEEFKig0NAcpNimSU5X7raFxDmkCS6xO1tjeOGs4iOY5sOKbN1T8sn7YO++6to2Pzke
- q6aJ4y/7fPilh5YR9pdd5Xn86C/hwAAAA
-X-Change-ID: 20260320-airoha-remove-rework-8383544d758d
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Simon Horman <horms@kernel.org>, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
-X-Mailer: b4 0.14.2
 
-As suggested by Simon in [0], rework the code flow in airoha_remove()
-and in the airoha_probe() error path in order to rely on a more common
-approach un-registering configured net-devices first and destroying the
-hw resources at the end of the code.
-Introduce airoha_qdma_cleanup routine to release QDMA resources.
+Subject: Re: [PATCH net] xfrm: hold skb->dev across async IPv6 transport reinject
+In-Reply-To: <20260320073023.21873-1-tpluszz77@gmail.com>
+To: Qi Tang <tpluszz77@gmail.com>
+Cc: netdev@vger.kernel.org, steffen.klassert@secunet.com, herbert@gondor.apana.org.au, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, stable@vger.kernel.org
 
-[0] https://lore.kernel.org/netdev/20251214-airoha-fix-dev-registration-v1-1-860e027ad4c6@kernel.org/
+The fix looks correct. A few comments:
 
-Suggested-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/ethernet/airoha/airoha_eth.c | 82 ++++++++++++++++++--------------
- 1 file changed, 47 insertions(+), 35 deletions(-)
+1. The approach of holding a netdev reference at enqueue time and
+   releasing it after async reinject properly addresses the UAF window.
+   The ordering in xfrm_trans_reinject() is key - caching the dev
+   pointer before calling finish() avoids touching skb->cb after a
+   callback that may consume/free the skb.
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index db9d9531711e3afc02095bb5fba983880c63ebf4..2caef0f74a3ee6c907ec000357d96422cbfee28b 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -1368,6 +1368,33 @@ static int airoha_qdma_init(struct platform_device *pdev,
- 	return airoha_qdma_hw_init(qdma);
- }
- 
-+static void airoha_qdma_cleanup(struct airoha_qdma *qdma)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(qdma->q_rx); i++) {
-+		if (!qdma->q_rx[i].ndesc)
-+			continue;
-+
-+		netif_napi_del(&qdma->q_rx[i].napi);
-+		airoha_qdma_cleanup_rx_queue(&qdma->q_rx[i]);
-+		if (qdma->q_rx[i].page_pool) {
-+			page_pool_destroy(qdma->q_rx[i].page_pool);
-+			qdma->q_rx[i].page_pool = NULL;
-+		}
-+	}
-+
-+	for (i = 0; i < ARRAY_SIZE(qdma->q_tx_irq); i++)
-+		netif_napi_del(&qdma->q_tx_irq[i].napi);
-+
-+	for (i = 0; i < ARRAY_SIZE(qdma->q_tx); i++) {
-+		if (!qdma->q_tx[i].ndesc)
-+			continue;
-+
-+		airoha_qdma_cleanup_tx_queue(&qdma->q_tx[i]);
-+	}
-+}
-+
- static int airoha_hw_init(struct platform_device *pdev,
- 			  struct airoha_eth *eth)
- {
-@@ -1395,41 +1422,30 @@ static int airoha_hw_init(struct platform_device *pdev,
- 	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++) {
- 		err = airoha_qdma_init(pdev, eth, &eth->qdma[i]);
- 		if (err)
--			return err;
-+			goto error;
- 	}
- 
- 	err = airoha_ppe_init(eth);
- 	if (err)
--		return err;
-+		goto error;
- 
- 	set_bit(DEV_STATE_INITIALIZED, &eth->state);
- 
- 	return 0;
-+error:
-+	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
-+		airoha_qdma_cleanup(&eth->qdma[i]);
-+
-+	return err;
- }
- 
--static void airoha_hw_cleanup(struct airoha_qdma *qdma)
-+static void airoha_hw_cleanup(struct airoha_eth *eth)
- {
- 	int i;
- 
--	for (i = 0; i < ARRAY_SIZE(qdma->q_rx); i++) {
--		if (!qdma->q_rx[i].ndesc)
--			continue;
--
--		netif_napi_del(&qdma->q_rx[i].napi);
--		airoha_qdma_cleanup_rx_queue(&qdma->q_rx[i]);
--		if (qdma->q_rx[i].page_pool)
--			page_pool_destroy(qdma->q_rx[i].page_pool);
--	}
--
--	for (i = 0; i < ARRAY_SIZE(qdma->q_tx_irq); i++)
--		netif_napi_del(&qdma->q_tx_irq[i].napi);
--
--	for (i = 0; i < ARRAY_SIZE(qdma->q_tx); i++) {
--		if (!qdma->q_tx[i].ndesc)
--			continue;
--
--		airoha_qdma_cleanup_tx_queue(&qdma->q_tx[i]);
--	}
-+	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
-+		airoha_qdma_cleanup(&eth->qdma[i]);
-+	airoha_ppe_deinit(eth);
- }
- 
- static void airoha_qdma_start_napi(struct airoha_qdma *qdma)
-@@ -3028,7 +3044,7 @@ static int airoha_probe(struct platform_device *pdev)
- 
- 	err = airoha_hw_init(pdev, eth);
- 	if (err)
--		goto error_hw_cleanup;
-+		return err;
- 
- 	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
- 		airoha_qdma_start_napi(&eth->qdma[i]);
-@@ -3043,23 +3059,19 @@ static int airoha_probe(struct platform_device *pdev)
- 		err = airoha_alloc_gdm_port(eth, np);
- 		if (err) {
- 			of_node_put(np);
--			goto error_napi_stop;
-+			goto error;
- 		}
- 	}
- 
- 	err = airoha_register_gdm_devices(eth);
- 	if (err)
--		goto error_napi_stop;
-+		goto error;
- 
- 	return 0;
- 
--error_napi_stop:
-+error:
- 	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
- 		airoha_qdma_stop_napi(&eth->qdma[i]);
--	airoha_ppe_deinit(eth);
--error_hw_cleanup:
--	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
--		airoha_hw_cleanup(&eth->qdma[i]);
- 
- 	for (i = 0; i < ARRAY_SIZE(eth->ports); i++) {
- 		struct airoha_gdm_port *port = eth->ports[i];
-@@ -3071,6 +3083,8 @@ static int airoha_probe(struct platform_device *pdev)
- 			unregister_netdev(port->dev);
- 		airoha_metadata_dst_free(port);
- 	}
-+	airoha_hw_cleanup(eth);
-+
- 	free_netdev(eth->napi_dev);
- 	platform_set_drvdata(pdev, NULL);
- 
-@@ -3082,10 +3096,8 @@ static void airoha_remove(struct platform_device *pdev)
- 	struct airoha_eth *eth = platform_get_drvdata(pdev);
- 	int i;
- 
--	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++) {
-+	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
- 		airoha_qdma_stop_napi(&eth->qdma[i]);
--		airoha_hw_cleanup(&eth->qdma[i]);
--	}
- 
- 	for (i = 0; i < ARRAY_SIZE(eth->ports); i++) {
- 		struct airoha_gdm_port *port = eth->ports[i];
-@@ -3096,9 +3108,9 @@ static void airoha_remove(struct platform_device *pdev)
- 		unregister_netdev(port->dev);
- 		airoha_metadata_dst_free(port);
- 	}
--	free_netdev(eth->napi_dev);
-+	airoha_hw_cleanup(eth);
- 
--	airoha_ppe_deinit(eth);
-+	free_netdev(eth->napi_dev);
- 	platform_set_drvdata(pdev, NULL);
- }
- 
+2. One minor note: the net tree generally prefers netdev_hold() /
+   netdev_put() for reference tracking, but dev_hold() / dev_put()
+   is functionally equivalent here.
 
----
-base-commit: ca7e99335aea7c5977683624ba319157a4603f96
-change-id: 20260320-airoha-remove-rework-8383544d758d
+3. The BUILD_BUG_ON() in xfrm_trans_queue_net() will catch any cb
+   size overflow, so that's covered.
 
-Best regards,
--- 
-Lorenzo Bianconi <lorenzo@kernel.org>
+No functional issues observed.
+
+Reviewed-by: Steffen Klassert <steffen.klassert@secunet.com>
+
+Model: openai-codex/gpt-5.3-codex
 
