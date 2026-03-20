@@ -1,76 +1,51 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723E4279903
-	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 07:18:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5832E35A3BA
+	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 07:22:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773991088; cv=none; b=p0D9ZcSXtiMetpj0LnnBqmMU1idn9F1SkToH4oe4y3aTP1E94FBlKL5gB5nQ24cDp2bsINDIWDL/HvBf2GQYngZm0LN9v2mgsBZCXcTmTMuvYzWkVv/wou+fbl9qc6hrXL+uNadcLGAmk3jHy8+2V7eM9qqMFIhHfEr5Fx5blcs=
+	t=1773991331; cv=none; b=so0ADeYtCWtWRMdmQ3SpvbolqBDSAqh45mJvbYV9rZFNLV9qpsCqOIo7+v3rcl29YS3kPHMwRsCY89Zf8dldn77h3NKLZEoWQe28GTRAmEQB4GML1tFguH30Uh6Ed+fZq+F7PM0+8jLlrcXXKT2YJqHLrnnxji5cmHAbboSkzq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773991088; c=relaxed/simple;
-	bh=ErVOA8JE+DS4aIaxQjhbKTrzl+8zQ8UKzp3fd+qXOIw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MLhzY+qjRj8Oun4LyY2T0oW/DStxlIgeQm9QCwWkc8p5WsmPxYUZbsAEir+MqNeRCBzuYp6SbAOMbI6TJMWyoN86VMrthXzXaSl19D69x9Dr6mpXqswxKTcKTUMVHMRlMPRI9HKDdoIgVVL2MseMaygn9CCRRbvQvcSn5AO/JzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bvhgSUne; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1773991331; c=relaxed/simple;
+	bh=op1U+8oaLZcGpqorYgyhLc3fDXMBFyQ1j0nGQcxTwRA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MAL1+qPpFiYRas3ZYsUxvbE9pMCuF96k9xfQ8numAumIVdDe7apQtufZljWX0RxH/Sdr1bki6jFQWBbpoMlY2ub1jYVkAh29lyf3mhZpyOJ9SuVJeD28ig6QzNujTW18qz4zuz3gh6gHNTE5y27XAMIyI93torJIqaWjXB0lhPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=pJ4iL3Q3; arc=none smtp.client-ip=91.218.175.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bvhgSUne"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6686fbdbe2eso1761297a12.1
-        for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 00:18:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773991085; x=1774595885; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=iEDyL2ovMbppv+kKspNCEoyFDlT/jpSI/u8aCoC/3/I=;
-        b=bvhgSUneRO1bYN9naWlouFpcxv+BX5evcTg1a87i+7bISEnnJ9zUv+oPBC+MupJUUH
-         Jol/jgsD0gFBrfVd0ncwlKkv9jeW7Ef6Pb3uYBnq+ccvyJKNl+JPIUa6PRN0vWGpZLnI
-         kCA4NhSiVJ+rMqmoaPVQbXppkMoSTsTT4QjHnonVMGjuf4gzrJg0zQgf3em3VORV6EME
-         dZKgmuFMaAlh53Jeej1AYJ4BRZqQiSTJQ1IQh8eFGaBMaGat0HDMiw5N/R5y5CyQ65zn
-         cXjNVCjqP3mTqQOsVD4r5tLlSkjQTaBKMIK2U1Pkj5NV/b2uEXEfpNeBRUqlgcCvLbUM
-         140w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773991085; x=1774595885;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iEDyL2ovMbppv+kKspNCEoyFDlT/jpSI/u8aCoC/3/I=;
-        b=FMn2v8aqxQ91OzAM6Ra9GRS9EMro7hYYLbup0gbfcmhjKzPVHbjgxKnaPUKuuxlC0/
-         TS1WJTRJlW8ZbAq2zk7FOkg6F8uv6rjDYsmFXQhzZGoXqsf5UNNtJzS02MOSP/YrQ3yW
-         G12HjSHCRw7vTJvWkkWIMEovGN5JTIZVrM4Z0K5SzjpFatT7zYN7hxU1Mz7nNVoyZTWe
-         jM3B7l0UynAkZYIf6UcvBsf8S3FiPff0pnhz2EAY1rqI0IJZWkUE3icoaLG/iFkv+Aj+
-         7HmyHduv03FNTMRFodQGajt9ZiCuvEXjP2mrpQovX4UCxXa60w1qL3kt9wvVuJhk7ylt
-         ft8A==
-X-Forwarded-Encrypted: i=1; AJvYcCU/k2Cw3wpy0zbh81JIUcc5J9hbohScZ5QSFLACO+4oPrF8yHesUpfkB0UAGY+sWbpfMHFO/so=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhLdudugpqqgscPOuu+RbJJnfpWUtmw580nypo5x86b4OZH5Zh
-	ItCAh6/bF9WFiPER6XXtzOe4wtsEXamoLrb1BSmwtq0LEbE1GExzR1UrP9ok71y2fpI=
-X-Gm-Gg: ATEYQzxQLXYgOUn0G7G4A/USLk0s2iKh9WGBe4bR6pTg6rCZ70e9+gf9VGnr9W7ugyM
-	Y6OCcurFSNQOxGaGqHYsygSeCto9t/h38Sb/DJaAL3IyISk4XcLDJdPRrln7oXPWQ7AUjaSP78h
-	1eC7QkonGUi8V7S6mf+mtAkJNAhsgSDQDXxlNmlInqqv5/+3DtNDYKg4W2d8u2DiC2Og86RKdm8
-	iT46QGYC1KZR6KI4kbEdkuf1N8F2TvjqWOC9Gw9fRC9EKBGmPGdUcJVeE8TwM45lFvSt+epF4bM
-	JWsWhsAS/oqbjbS2aLKe7SGz7DOcnEdU974ZWdZOk59JFIyC7zJb8uAd7QB4OyyQtit53kgQdNp
-	c+8pTefLuBQKL8Au2YHXbeUIb/IliVtYfYageXpYO9VkNAseXFD8pJhEYYO0xjhXThkg+5f3f
-X-Received: by 2002:a05:6402:46c9:b0:667:f3dd:6065 with SMTP id 4fb4d7f45d1cf-668cc2b8c3emr978060a12.1.1773991084451;
-        Fri, 20 Mar 2026 00:18:04 -0700 (PDT)
-Received: from gmail.com ([2a09:bac1:5540::49b:47])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-668d1cc5d16sm1087043a12.16.2026.03.20.00.18.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Mar 2026 00:18:03 -0700 (PDT)
-From: Qingfang Deng <dqfext@gmail.com>
-To: Shuah Khan <shuah@kernel.org>,
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="pJ4iL3Q3"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773991328;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=318XycAY/8MetVf9Vep0JgmwH0MnIW7tIrc2+DU+KN0=;
+	b=pJ4iL3Q3TrWWn1nEPunvEiidJBZxCeCLm3M3rWIth6GNFpj6px6tEBwwotH1iZOKgx8SsZ
+	Ve9kl+byjeopuqK3vs/JdVXkac9WTvllsifNOL9Uil0NE7h7Vmiozg7Lms6u8/EISRjY1k
+	GpY3fQ+VRdp+LLa2Dhf5p5rGH7vgpow=
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: netdev@vger.kernel.org
+Cc: Jiayuan Chen <jiayuan.chen@shopee.com>,
+	syzbot+3d8bc31c45e11450f24c@syzkaller.appspotmail.com,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-ppp@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: Paul Mackerras <paulus@ozlabs.org>
-Subject: [PATCH net-next] selftests: net: add tests for PPP
-Date: Fri, 20 Mar 2026 15:17:54 +0800
-Message-ID: <20260320071755.483733-1-dqfext@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH net v3 1/2] team: fix header_ops type confusion with non-Ethernet ports
+Date: Fri, 20 Mar 2026 15:21:26 +0800
+Message-ID: <20260320072139.134249-2-jiayuan.chen@linux.dev>
+In-Reply-To: <20260320072139.134249-1-jiayuan.chen@linux.dev>
+References: <20260320072139.134249-1-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,225 +53,127 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-Add ping and iperf3 tests for ppp_async.c and pppoe.c.
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-Signed-off-by: Qingfang Deng <dqfext@gmail.com>
+Similar to commit 950803f72547 ("bonding: fix type confusion in
+bond_setup_by_slave()") team has the same class of header_ops type
+confusion.
+
+For non-Ethernet ports, team_setup_by_port() copies port_dev->header_ops
+directly. When the team device later calls dev_hard_header() or
+dev_parse_header(), these callbacks can run with the team net_device
+instead of the real lower device, so netdev_priv(dev) is interpreted as
+the wrong private type and can crash.
+
+The syzbot report shows a crash in bond_header_create(), but the root
+cause is in team: the topology is gre -> bond -> team, and team calls
+the inherited header_ops with its own net_device instead of the lower
+device, so bond_header_create() receives a team device and interprets
+netdev_priv() as bonding private data, causing a type confusion crash.
+
+Fix this by introducing team header_ops wrappers for create/parse,
+selecting a team port under RCU, and calling the lower device callbacks
+with port->dev, so each callback always sees the correct net_device
+context.
+
+Also pass the selected lower device to the lower parse callback, so
+recursion is bounded in stacked non-Ethernet topologies and parse
+callbacks always run with the correct device context.
+
+Fixes: 1d76efe1577b ("team: add support for non-ethernet devices")
+Reported-by: syzbot+3d8bc31c45e11450f24c@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69b46af7.050a0220.36eb34.000e.GAE@google.com/T/
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
 ---
- MAINTAINERS                                   |  1 +
- tools/testing/selftests/Makefile              |  1 +
- tools/testing/selftests/net/ppp/Makefile      | 15 +++++++
- tools/testing/selftests/net/ppp/config        |  8 ++++
- tools/testing/selftests/net/ppp/ppp_async.sh  | 37 +++++++++++++++++
- tools/testing/selftests/net/ppp/ppp_common.sh | 40 +++++++++++++++++++
- .../selftests/net/ppp/pppoe-server-options    |  2 +
- tools/testing/selftests/net/ppp/pppoe.sh      | 36 +++++++++++++++++
- 8 files changed, 140 insertions(+)
- create mode 100644 tools/testing/selftests/net/ppp/Makefile
- create mode 100644 tools/testing/selftests/net/ppp/config
- create mode 100755 tools/testing/selftests/net/ppp/ppp_async.sh
- create mode 100644 tools/testing/selftests/net/ppp/ppp_common.sh
- create mode 100644 tools/testing/selftests/net/ppp/pppoe-server-options
- create mode 100755 tools/testing/selftests/net/ppp/pppoe.sh
+ drivers/net/team/team_core.c | 65 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 64 insertions(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a09bf30a057d..d553437d5ac1 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -21078,6 +21078,7 @@ PPP PROTOCOL DRIVERS AND COMPRESSORS
- L:	linux-ppp@vger.kernel.org
- S:	Orphan
- F:	drivers/net/ppp/ppp_*
-+F:	tools/testing/selftests/net/ppp/
+diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
+index b7282f5c9632..120aeb539d9f 100644
+--- a/drivers/net/team/team_core.c
++++ b/drivers/net/team/team_core.c
+@@ -2058,6 +2058,68 @@ static const struct ethtool_ops team_ethtool_ops = {
+  * rt netlink interface
+  ***********************/
  
- PPS SUPPORT
- M:	Rodolfo Giometti <giometti@enneenne.com>
-diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
-index 450f13ba4cca..65f84e8a0cf0 100644
---- a/tools/testing/selftests/Makefile
-+++ b/tools/testing/selftests/Makefile
-@@ -78,6 +78,7 @@ TARGETS += net/netfilter
- TARGETS += net/openvswitch
- TARGETS += net/ovpn
- TARGETS += net/packetdrill
-+TARGETS += net/ppp
- TARGETS += net/rds
- TARGETS += net/tcp_ao
- TARGETS += nolibc
-diff --git a/tools/testing/selftests/net/ppp/Makefile b/tools/testing/selftests/net/ppp/Makefile
-new file mode 100644
-index 000000000000..d2cbd6099255
---- /dev/null
-+++ b/tools/testing/selftests/net/ppp/Makefile
-@@ -0,0 +1,15 @@
-+# SPDX-License-Identifier: GPL-2.0
++/* For tx path we need a linkup && enabled port and for parse any port
++ * suffices.
++ */
++static struct team_port *team_header_port_get_rcu(struct team *team,
++						  bool txable)
++{
++	struct team_port *port;
 +
-+top_srcdir = ../../../../..
++	list_for_each_entry_rcu(port, &team->port_list, list) {
++		if (!txable || team_port_txable(port))
++			return port;
++	}
 +
-+TEST_PROGS := \
-+	ppp_async.sh \
-+	pppoe.sh
-+# end of TEST_PROGS
-+
-+TEST_FILES := \
-+	ppp_common.sh \
-+	pppoe-server-options
-+# end of TEST_FILES
-+
-+include ../../lib.mk
-diff --git a/tools/testing/selftests/net/ppp/config b/tools/testing/selftests/net/ppp/config
-new file mode 100644
-index 000000000000..7053aa9d8d74
---- /dev/null
-+++ b/tools/testing/selftests/net/ppp/config
-@@ -0,0 +1,8 @@
-+CONFIG_PACKET=y
-+CONFIG_PPP=m
-+CONFIG_PPP_ASYNC=m
-+CONFIG_PPP_BSDCOMP=m
-+CONFIG_PPP_DEFLATE=m
-+CONFIG_PPPOE=m
-+CONFIG_PPPOE_HASH_BITS_4=y
-+CONFIG_TTY=y
-diff --git a/tools/testing/selftests/net/ppp/ppp_async.sh b/tools/testing/selftests/net/ppp/ppp_async.sh
-new file mode 100755
-index 000000000000..5c0eb84945e8
---- /dev/null
-+++ b/tools/testing/selftests/net/ppp/ppp_async.sh
-@@ -0,0 +1,37 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+set -e
-+source ppp_common.sh
-+
-+# Temporary files for PTY symlinks
-+TTY_SERVER=$(mktemp -u /tmp/ppp_async_server.XXXXXX)
-+TTY_CLIENT=$(mktemp -u /tmp/ppp_async_client.XXXXXX)
-+
-+cleanup() {
-+	cleanup_all_ns
-+	[ -n "$SOCAT_PID" ] && kill "$SOCAT_PID" 2>/dev/null || true
++	return NULL;
 +}
 +
-+trap cleanup EXIT
++static int team_header_create(struct sk_buff *skb, struct net_device *team_dev,
++			      unsigned short type, const void *daddr,
++			      const void *saddr, unsigned int len)
++{
++	struct team *team = netdev_priv(team_dev);
++	const struct header_ops *port_ops;
++	struct team_port *port;
++	int ret = 0;
 +
-+require_command socat
-+ppp_common_init
-+
-+# Create the virtual serial device
-+socat -d PTY,link="$TTY_SERVER",rawer PTY,link="$TTY_CLIENT",rawer &
-+SOCAT_PID=$!
-+
-+# Wait for symlinks to be created
-+slowwait 5 [ -L "$TTY_SERVER" ]
-+
-+# Start the PPP Server
-+ip netns exec "$NS_SERVER" pppd "$TTY_SERVER" 115200 \
-+	"$IP_SERVER":"$IP_CLIENT" \
-+	local noauth nodefaultroute debug
-+
-+# Start the PPP Client
-+ip netns exec "$NS_CLIENT" pppd "$TTY_CLIENT" 115200 \
-+	local noauth updetach nodefaultroute debug
-+
-+ppp_test_connectivity
-diff --git a/tools/testing/selftests/net/ppp/ppp_common.sh b/tools/testing/selftests/net/ppp/ppp_common.sh
-new file mode 100644
-index 000000000000..b34d4ab0effe
---- /dev/null
-+++ b/tools/testing/selftests/net/ppp/ppp_common.sh
-@@ -0,0 +1,40 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+source ../lib.sh
-+
-+IP_SERVER="192.168.200.1"
-+IP_CLIENT="192.168.200.2"
-+
-+ppp_common_init() {
-+	# Package requirements
-+	require_command pppd
-+	require_command iperf3
-+
-+	# Check for root privileges
-+	if [ "$(id -u)" -ne 0 ];then
-+		echo "SKIP: Need root privileges"
-+		exit $ksft_skip
-+	fi
-+
-+	# Namespaces
-+	setup_ns NS_SERVER NS_CLIENT
++	rcu_read_lock();
++	port = team_header_port_get_rcu(team, true);
++	if (port) {
++		port_ops = READ_ONCE(port->dev->header_ops);
++		if (port_ops && port_ops->create)
++			ret = port_ops->create(skb, port->dev,
++					       type, daddr, saddr, len);
++	}
++	rcu_read_unlock();
++	return ret;
 +}
 +
-+ppp_check_addr() {
-+	dev=$1
-+	addr=$2
-+	ns=$3
-+	ip -netns "$ns" -4 addr show dev "$dev" 2>/dev/null | grep -q "$addr"
-+	return $?
++static int team_header_parse(const struct sk_buff *skb,
++			     const struct net_device *team_dev,
++			     unsigned char *haddr)
++{
++	struct team *team = netdev_priv(team_dev);
++	const struct header_ops *port_ops;
++	struct team_port *port;
++	int ret = 0;
++
++	rcu_read_lock();
++	port = team_header_port_get_rcu(team, false);
++	if (port) {
++		port_ops = READ_ONCE(port->dev->header_ops);
++		if (port_ops && port_ops->parse)
++			ret = port_ops->parse(skb, port->dev, haddr);
++	}
++	rcu_read_unlock();
++	return ret;
 +}
 +
-+ppp_test_connectivity() {
-+	slowwait 10 ppp_check_addr "ppp0" "$IP_CLIENT" "$NS_CLIENT"
++static const struct header_ops team_header_ops = {
++	.create		= team_header_create,
++	.parse		= team_header_parse,
++};
 +
-+	ip netns exec "$NS_CLIENT" ping -c 3 "$IP_SERVER"
-+
-+	ip netns exec "$NS_SERVER" iperf3 -s -1 -D
-+	wait_local_port_listen "$NS_SERVER" 5201 tcp
-+
-+	ip netns exec "$NS_CLIENT" iperf3 -c "$IP_SERVER" -Z -t 2
-+}
-diff --git a/tools/testing/selftests/net/ppp/pppoe-server-options b/tools/testing/selftests/net/ppp/pppoe-server-options
-new file mode 100644
-index 000000000000..66c8c9d319e9
---- /dev/null
-+++ b/tools/testing/selftests/net/ppp/pppoe-server-options
-@@ -0,0 +1,2 @@
-+noauth
-+noipdefault
-diff --git a/tools/testing/selftests/net/ppp/pppoe.sh b/tools/testing/selftests/net/ppp/pppoe.sh
-new file mode 100755
-index 000000000000..0ebedfe3eabe
---- /dev/null
-+++ b/tools/testing/selftests/net/ppp/pppoe.sh
-@@ -0,0 +1,36 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+set -e
-+source ppp_common.sh
-+
-+VETH_SERVER="veth-server"
-+VETH_CLIENT="veth-client"
-+
-+cleanup() {
-+	cleanup_all_ns
-+}
-+
-+trap cleanup EXIT
-+
-+require_command pppoe-server
-+ppp_common_init
-+
-+# Create the veth pair
-+ip link add "$VETH_SERVER" type veth peer name "$VETH_CLIENT"
-+ip link set "$VETH_SERVER" netns "$NS_SERVER"
-+ip link set "$VETH_CLIENT" netns "$NS_CLIENT"
-+ip -netns "$NS_SERVER" link set "$VETH_SERVER" up
-+ip -netns "$NS_CLIENT" link set "$VETH_CLIENT" up
-+
-+# Start the PPP Server
-+ip netns exec "$NS_SERVER" pppoe-server -I "$VETH_SERVER" \
-+	-L "$IP_SERVER" -R "$IP_CLIENT" -N 1 -q "$(command -v pppd)" \
-+	-k -O "$(pwd)/pppoe-server-options"
-+
-+# Start the PPP Client
-+ip netns exec "$NS_CLIENT" pppd \
-+	local debug updetach noipdefault noauth nodefaultroute \
-+	plugin pppoe.so nic-"$VETH_CLIENT"
-+
-+ppp_test_connectivity
+ static void team_setup_by_port(struct net_device *dev,
+ 			       struct net_device *port_dev)
+ {
+@@ -2066,7 +2128,8 @@ static void team_setup_by_port(struct net_device *dev,
+ 	if (port_dev->type == ARPHRD_ETHER)
+ 		dev->header_ops	= team->header_ops_cache;
+ 	else
+-		dev->header_ops	= port_dev->header_ops;
++		dev->header_ops	= port_dev->header_ops ?
++				  &team_header_ops : NULL;
+ 	dev->type = port_dev->type;
+ 	dev->hard_header_len = port_dev->hard_header_len;
+ 	dev->needed_headroom = port_dev->needed_headroom;
 -- 
 2.43.0
 
