@@ -1,78 +1,68 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E73B40DFD4
-	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 00:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 191F164
+	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 00:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773964821; cv=none; b=PIIP1K6xthZAbV/QqyfKBK8F7JVEaOLlcXsxQBWqjQHlUuTYOYgrA/AGheoZ0QHfiQGlnddex1Z86ZPZJc9Fsf8ZN5hu+wyGslXaRyZdQWDX081GbVNVB/JdCY1YxfF/VM1CkG9bJHrrmDgsPy4YFU7wzvtYZfYxcw7qQkrKDvM=
+	t=1773965051; cv=none; b=JtarmHRipBM2xZJbI2EZaV+ap0Yucz+vN8b4SQSERLsvKYK04kE8WKnnBJ6KVzMS2WYeDmizdNcvw3iWU/Vf/nkmmbUMMtn6cfp2bKfusW3V7lKsFHz2uVtcrZ5JVgTEcXa+0E7kajtIvs5W+ObZAgksFFqLCZE8J4r9a3wRG3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773964821; c=relaxed/simple;
-	bh=uOhgITQKlY5lefJDu438KIPH6Hq306EvwjoFminv3X4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ZkoSDMjBNWhvkWU1H+vhBEfZFVSMXY+ncYJL0t0cZE5nOffsyOelP51Fc2ssf/thb3BwgFoEi0k3G9yk+L4CITswjgNcbPZA8nYfe07tdGRi8BlzLX/evlYYzRCP2b+VOgwAoxxMTib5X16xKxsiwsCMAjk929ggccgo2zh+T8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CK3hB3CE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773965051; c=relaxed/simple;
+	bh=Jdp2j7MB0SSMpazP9i5RC4XfnOXBueGrcY9VyOGsH8A=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=L/ER0wHukGLOeA9n9racDY6D0a3SS4GadKyOIRDPUrgvrm9AGLrob1hxWev2k+v6m6zgWgJi9f07eEu8W+/sKaTFikTrb794PXyKPAY39E6W4KJSqd1DR0+iqa8g1KbHuRE8zailZ+Wx/ooquNKBhQJwhi5nALHsauURimmjytk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u7NCmb2w; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CK3hB3CE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3EADC19424;
-	Fri, 20 Mar 2026 00:00:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u7NCmb2w"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C3E7C19424;
+	Fri, 20 Mar 2026 00:04:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773964820;
-	bh=uOhgITQKlY5lefJDu438KIPH6Hq306EvwjoFminv3X4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=CK3hB3CEWbBw8QnWXM20XMGARe9ZhQ3kkyohE7hRkgyUiLUasSWgvVKHfQvHRzfoF
-	 PTfrThGqNy/YyhtjgwjVr3D2AXL2c0YlGkH1nfVuFF0e+x9EU2stmtwXq+n2A8FA35
-	 gRRW0N8a9hkgEc4DTZrLhtQT1l8G0tyck4ElQl1hykQNL+Mbd1Rmh2OOS6ihAxjlWr
-	 qzT2jmCJym5hLJF3ijw7VVRnU62JEwCtsGEI+bo8wNDMVcBx/BdCdx+FCs0121c59J
-	 CYX6B2E1vt7DrCXSqseJs8qTWT4QS+VGu+IOkwotwK/hcGqSuimX0RovYA9P+AlTOV
-	 TupJseKCPZUcA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FE7A39302F6;
-	Fri, 20 Mar 2026 00:00:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1773965050;
+	bh=Jdp2j7MB0SSMpazP9i5RC4XfnOXBueGrcY9VyOGsH8A=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=u7NCmb2waPmFEegmhJod0pO+jNp3c1Kaq/Pfs4SqXHpIc+mqAL17mktKwO5Ey8H4p
+	 J+AR55xufDTliruKfu1s6gPDjKwwEHLDa49ExUgL4i0jLWuijnJlhf9cCnMCrlxvyP
+	 MtJcfnLd2nIM7nD4Rc0ZjPV1wBvaD0tMcQ0THmQq2gGi0FfxBfDGbW1oz2AOeC0euo
+	 h72mNbvlns5b+/RytJfDRulGOIduOeB613WbAcxP6oN9EXfEbg6iii9NTOSFGZ6IWR
+	 0nMJvPj+KihTrfn32TY5qyM43JirQXu+m2aj31wo8mMqDBUTAL9YAC9kXrMruIu4fg
+	 lzIWj0rnunRsg==
+Date: Thu, 19 Mar 2026 17:04:09 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Sabrina Dubroca <sd@queasysnail.net>
+Cc: netdev@vger.kernel.org, Kuniyuki Iwashima <kuniyu@google.com>
+Subject: Re: [PATCH net] rtnetlink: fix leak of SRCU struct in
+ rtnl_link_register
+Message-ID: <20260319170409.3b8176d2@kernel.org>
+In-Reply-To: <5ed5489ecdd05c43bd551804f3bd020ae349f3ca.1773849195.git.sd@queasysnail.net>
+References: <5ed5489ecdd05c43bd551804f3bd020ae349f3ca.1773849195.git.sd@queasysnail.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] nfc: nci: fix circular locking dependency in
- nci_close_device
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177396481004.1855248.7295559798392102074.git-patchwork-notify@kernel.org>
-Date: Fri, 20 Mar 2026 00:00:10 +0000
-References: <20260317193334.988609-1-kuba@kernel.org>
-In-Reply-To: <20260317193334.988609-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- ian.ray@gehealthcare.com, ilane@ti.com, linville@tuxdriver.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Wed, 18 Mar 2026 17:15:15 +0100 Sabrina Dubroca wrote:
+> Commit 6b57ff21a310 ("rtnetlink: Protect link_ops by mutex.") swapped
+> the EEXIST check with the init_srcu_struct, but didn't add cleanup of
+> the SRCU struct we just allocated in case of error.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+FWIW AI has spotted a different bug while reviewing this:
 
-On Tue, 17 Mar 2026 12:33:34 -0700 you wrote:
-> nci_close_device() flushes rx_wq and tx_wq while holding req_lock.
-> This causes a circular locking dependency because nci_rx_work()
-> running on rx_wq can end up taking req_lock too:
-> 
->   nci_rx_work -> nci_rx_data_packet -> nci_data_exchange_complete
->     -> __sk_destruct -> rawsock_destruct -> nfc_deactivate_target
->     -> nci_deactivate_target -> nci_request -> mutex_lock(&ndev->req_lock)
-> 
-> [...]
-
-Here is the summary with links:
-  - [net] nfc: nci: fix circular locking dependency in nci_close_device
-    https://git.kernel.org/netdev/net/c/4527025d440c
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+As a related question about the srcu lifecycle for these ops structures,
+is there a missing synchronize_rcu() in rtnl_link_unregister() that could
+cause a use-after-free?
+If rtnl_link_ops_get() traverses the link_ops list under rcu_read_lock(),
+and rtnl_link_unregister() removes the ops via list_del_rcu() followed
+immediately by synchronize_srcu(&ops->srcu) and cleanup_srcu_struct(),
+what happens if an rcu reader finds the ops pointer but is preempted
+before calling srcu_read_lock()?
+Since no srcu readers are technically active yet, synchronize_srcu()
+would return immediately, and cleanup_srcu_struct() would free the
+per-CPU data. When the preempted reader resumes, wouldn't it execute
+srcu_read_lock() on freed data?
+Does rtnl_link_unregister() need a synchronize_rcu() after list_del_rcu()
+and before destroying the srcu struct to ensure all rcu-side list
+traversals have completed?
