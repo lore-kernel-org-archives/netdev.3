@@ -1,30 +1,30 @@
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 233DF2C15BB
-	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 03:03:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6804B2DBF40
+	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 03:03:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773975809; cv=none; b=GUKXYJGscKvLDp9VwYuET6IQr5jTalHcZB04X1tPgKb4OFLUEqcsZ+yWwOtAI9lTPxWTg5GCDZ5stmW5ggSLP4TRJ+Vw1cNrsD7HY33Y2FBih1szIC3BCZ5zSrYCmUG0Gk3ZDLVsrGgovjkH6RgDui9GFkd0kxZUQ29qmaCQaqg=
+	t=1773975810; cv=none; b=MJTEGBaOgiHcdBq6HXqnT1ew0LVXmTS95wBjakGvlnfNQO5wRJ+WTsIbUQ24ra9TejQHXkRm1ei7DqhXhr/qC2+fNriSe59UX2KuVvdWPRBu/J12ciO/dcmgZHCRLzUDhFV/SqVtwzOe3XNHs/7QIY62iwc2BkvpqYGjYnR72cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773975809; c=relaxed/simple;
-	bh=kdxmqoUvaQ9KnFXJuOcqfVoA7VD+nEM7ltsvSh3qg94=;
+	s=arc-20240116; t=1773975810; c=relaxed/simple;
+	bh=ycaZHWcKWBRVuTr2HIN0IWNp391ebneWcdClDQ5fKjQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Ofzl3eU++tH5pszVIPCq5aaz0yW2sYRiQf/MaM6txy1h+1t2dpJ1mKhRfEiwVKbphs7h2L6CpEkIoBstjOOThN/4mNoHJJGmmfk7K+/cPKnaZPOtXU7cLuAjKYElzC492/bN13/dzrxC57abf4aoYpJxHnRLnSeFWduNImxU5BA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=ggt/S2mt; arc=none smtp.client-ip=115.124.30.99
+	 MIME-Version; b=aevzZb4p+g/yqIfHyuKedc0O8iqsqhYrYNTSpugHLVrnGUCsi5lCnHjJh/mWZdlcg753cC/vWKWSyQQUI9oz9UVcdrRkq5+yCm1fHMA6EEckkKhj+0ZVb21WuTkDLaj1MTS0zFefLQ0NpHuZbLQzbjjiE3Kg3rOjIqY2QKGbuO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=BytBhN4J; arc=none smtp.client-ip=115.124.30.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="ggt/S2mt"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="BytBhN4J"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1773975805; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=KzrHO/AF1UwWeHhv7IH5wjZyBNnbAd9VosAB60PAtro=;
-	b=ggt/S2mtn2MxhuyormioQqN/+l9UnUqpZ90IrHzxyV8iTGwvkvJs2fW1HpV/HsmQLNIxrKtzbTuoPhGp1AgK//UEvGmrBQbpSRrIDQuK34ktNGhiyGlEcr5HSbZ2o1r8OzAWLQNsmMAIrNoqtv0bC4DM27gAikhCuk4tuRL9WMg=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=xuanzhuo@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0X.KDFrJ_1773975803;
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0X.KDFrJ_1773975803 cluster:ay36)
+	t=1773975799; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=7orFCzqsmKJiPhgAF+qcOUlXIQrYl4fwD94rW0bXYCs=;
+	b=BytBhN4JM8GU3DoJ+PkFdL1Ikc6LDzew/WoyjQjUgkgpAwFSmOh3wP0k86xHszV3r1pdJ4KGg7QFFa9KET0ZPth2yVfwXLZKs+jM//qS0Fx8lUv6M242lDxwSAULex0OOqJ1SDbgeeKcLLX1p6GriOeuF03K38ZLzYKq/xLC9SY=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R221e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=xuanzhuo@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0X.KDFpJ_1773975798;
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0X.KDFpJ_1773975798 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Fri, 20 Mar 2026 11:03:23 +0800
+          Fri, 20 Mar 2026 11:03:19 +0800
 From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 To: netdev@vger.kernel.org
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -38,11 +38,10 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
 	Dong Yibo <dong100@mucse.com>,
 	Heiner Kallweit <hkallweit1@gmail.com>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Andrew Lunn <andrew@lunn.ch>
-Subject: [PATCH net-next v34 7/8] eea: introduce ethtool support
-Date: Fri, 20 Mar 2026 11:03:16 +0800
-Message-Id: <20260320030317.84445-8-xuanzhuo@linux.alibaba.com>
+	Dust Li <dust.li@linux.alibaba.com>
+Subject: [PATCH net-next v34 1/8] eea: introduce PCI framework
+Date: Fri, 20 Mar 2026 11:03:10 +0800
+Message-Id: <20260320030317.84445-2-xuanzhuo@linux.alibaba.com>
 X-Mailer: git-send-email 2.32.0.3.g01195cf9f
 In-Reply-To: <20260320030317.84445-1-xuanzhuo@linux.alibaba.com>
 References: <20260320030317.84445-1-xuanzhuo@linux.alibaba.com>
@@ -57,42 +56,131 @@ Content-Transfer-Encoding: 8bit
 
 Add basic driver framework for the Alibaba Elastic Ethernet Adapter(EEA).
 
-This commit introduces ethtool support.
+This commit implements the EEA PCI probe functionality.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
 Reviewed-by: Philo Lu <lulie@linux.alibaba.com>
 Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
 Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 ---
- drivers/net/ethernet/alibaba/eea/Makefile     |   1 +
- .../net/ethernet/alibaba/eea/eea_ethtool.c    | 245 ++++++++++++++++++
- .../net/ethernet/alibaba/eea/eea_ethtool.h    |  49 ++++
- drivers/net/ethernet/alibaba/eea/eea_net.c    |   1 +
- drivers/net/ethernet/alibaba/eea/eea_net.h    |   5 +
- drivers/net/ethernet/alibaba/eea/eea_rx.c     |  31 ++-
- drivers/net/ethernet/alibaba/eea/eea_tx.c     |  24 +-
- 7 files changed, 352 insertions(+), 4 deletions(-)
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ethtool.c
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ethtool.h
+ MAINTAINERS                                |   8 +
+ drivers/net/ethernet/Kconfig               |   1 +
+ drivers/net/ethernet/Makefile              |   1 +
+ drivers/net/ethernet/alibaba/Kconfig       |  28 ++
+ drivers/net/ethernet/alibaba/Makefile      |   5 +
+ drivers/net/ethernet/alibaba/eea/Makefile  |   3 +
+ drivers/net/ethernet/alibaba/eea/eea_pci.c | 393 +++++++++++++++++++++
+ drivers/net/ethernet/alibaba/eea/eea_pci.h |  50 +++
+ 8 files changed, 489 insertions(+)
+ create mode 100644 drivers/net/ethernet/alibaba/Kconfig
+ create mode 100644 drivers/net/ethernet/alibaba/Makefile
+ create mode 100644 drivers/net/ethernet/alibaba/eea/Makefile
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_pci.c
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_pci.h
 
-diff --git a/drivers/net/ethernet/alibaba/eea/Makefile b/drivers/net/ethernet/alibaba/eea/Makefile
-index fa34a005fa01..8f8fbb8d2d9a 100644
---- a/drivers/net/ethernet/alibaba/eea/Makefile
-+++ b/drivers/net/ethernet/alibaba/eea/Makefile
-@@ -4,5 +4,6 @@ eea-y := eea_ring.o \
- 	eea_net.o \
- 	eea_pci.o \
- 	eea_adminq.o \
-+	eea_ethtool.o \
- 	eea_tx.o \
- 	eea_rx.o
-diff --git a/drivers/net/ethernet/alibaba/eea/eea_ethtool.c b/drivers/net/ethernet/alibaba/eea/eea_ethtool.c
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 7d65f9435950..357b8c522b3f 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -810,6 +810,14 @@ S:	Maintained
+ F:	Documentation/i2c/busses/i2c-ali1563.rst
+ F:	drivers/i2c/busses/i2c-ali1563.c
+ 
++ALIBABA ELASTIC ETHERNET ADAPTER DRIVER
++M:	Xuan Zhuo <xuanzhuo@linux.alibaba.com>
++M:	Wen Gu <guwen@linux.alibaba.com>
++R:	Philo Lu <lulie@linux.alibaba.com>
++L:	netdev@vger.kernel.org
++S:	Maintained
++F:	drivers/net/ethernet/alibaba/eea
++
+ ALIBABA ELASTIC RDMA DRIVER
+ M:	Cheng Xu <chengyou@linux.alibaba.com>
+ M:	Kai Shen <kaishen@linux.alibaba.com>
+diff --git a/drivers/net/ethernet/Kconfig b/drivers/net/ethernet/Kconfig
+index aa7103e7f47f..9ead9c49e6c6 100644
+--- a/drivers/net/ethernet/Kconfig
++++ b/drivers/net/ethernet/Kconfig
+@@ -22,6 +22,7 @@ source "drivers/net/ethernet/aeroflex/Kconfig"
+ source "drivers/net/ethernet/agere/Kconfig"
+ source "drivers/net/ethernet/airoha/Kconfig"
+ source "drivers/net/ethernet/alacritech/Kconfig"
++source "drivers/net/ethernet/alibaba/Kconfig"
+ source "drivers/net/ethernet/allwinner/Kconfig"
+ source "drivers/net/ethernet/alteon/Kconfig"
+ source "drivers/net/ethernet/altera/Kconfig"
+diff --git a/drivers/net/ethernet/Makefile b/drivers/net/ethernet/Makefile
+index 6615a67a63d5..9e6d740f4cf7 100644
+--- a/drivers/net/ethernet/Makefile
++++ b/drivers/net/ethernet/Makefile
+@@ -12,6 +12,7 @@ obj-$(CONFIG_NET_VENDOR_ADI) += adi/
+ obj-$(CONFIG_NET_VENDOR_AGERE) += agere/
+ obj-$(CONFIG_NET_VENDOR_AIROHA) += airoha/
+ obj-$(CONFIG_NET_VENDOR_ALACRITECH) += alacritech/
++obj-$(CONFIG_NET_VENDOR_ALIBABA) += alibaba/
+ obj-$(CONFIG_NET_VENDOR_ALLWINNER) += allwinner/
+ obj-$(CONFIG_NET_VENDOR_ALTEON) += alteon/
+ obj-$(CONFIG_ALTERA_TSE) += altera/
+diff --git a/drivers/net/ethernet/alibaba/Kconfig b/drivers/net/ethernet/alibaba/Kconfig
 new file mode 100644
-index 000000000000..03e8d08735f2
+index 000000000000..9bd8cc9fd203
 --- /dev/null
-+++ b/drivers/net/ethernet/alibaba/eea/eea_ethtool.c
-@@ -0,0 +1,245 @@
++++ b/drivers/net/ethernet/alibaba/Kconfig
+@@ -0,0 +1,28 @@
++#
++# Alibaba network device configuration
++#
++
++config NET_VENDOR_ALIBABA
++	bool "Alibaba Devices"
++	default y
++	help
++	  If you have a network (Ethernet) device belonging to this class, say Y.
++
++	  Note that the answer to this question doesn't directly affect the
++	  kernel: saying N will just cause the configurator to skip all
++	  the questions about Alibaba devices. If you say Y, you will be asked
++	  for your specific device in the following questions.
++
++if NET_VENDOR_ALIBABA
++
++config EEA
++	tristate "Alibaba Elastic Ethernet Adapter support"
++	depends on PCI_MSI
++	depends on 64BIT
++	select PAGE_POOL
++	help
++	  This driver supports Alibaba Elastic Ethernet Adapter.
++
++	  To compile this driver as a module, choose M here.
++
++endif #NET_VENDOR_ALIBABA
+diff --git a/drivers/net/ethernet/alibaba/Makefile b/drivers/net/ethernet/alibaba/Makefile
+new file mode 100644
+index 000000000000..7980525cb086
+--- /dev/null
++++ b/drivers/net/ethernet/alibaba/Makefile
+@@ -0,0 +1,5 @@
++#
++# Makefile for the Alibaba network device drivers.
++#
++
++obj-$(CONFIG_EEA) += eea/
+diff --git a/drivers/net/ethernet/alibaba/eea/Makefile b/drivers/net/ethernet/alibaba/eea/Makefile
+new file mode 100644
+index 000000000000..cf2acf1733fd
+--- /dev/null
++++ b/drivers/net/ethernet/alibaba/eea/Makefile
+@@ -0,0 +1,3 @@
++
++obj-$(CONFIG_EEA) += eea.o
++eea-y := eea_pci.o
+diff --git a/drivers/net/ethernet/alibaba/eea/eea_pci.c b/drivers/net/ethernet/alibaba/eea/eea_pci.c
+new file mode 100644
+index 000000000000..06cb4bffb6fb
+--- /dev/null
++++ b/drivers/net/ethernet/alibaba/eea/eea_pci.c
+@@ -0,0 +1,393 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later
 +/*
 + * Driver for Alibaba Elastic Ethernet Adapter.
@@ -100,250 +188,398 @@ index 000000000000..03e8d08735f2
 + * Copyright (C) 2025 Alibaba Inc.
 + */
 +
-+#include <linux/ethtool.h>
-+#include <linux/ethtool_netlink.h>
-+#include <linux/rtnetlink.h>
++#include <linux/io-64-nonatomic-lo-hi.h>
++#include <linux/iopoll.h>
 +
-+#include "eea_adminq.h"
-+#include "eea_net.h"
 +#include "eea_pci.h"
 +
-+struct eea_stat_desc {
-+	char desc[ETH_GSTRING_LEN];
-+	size_t offset;
++#define EEA_PCI_DB_OFFSET 4096
++#define EEA_PCI_DB_MIN_SIZE 512
++
++struct eea_pci_cfg {
++	__le32 reserve0;
++	__le32 reserve1;
++	__le32 drv_f_idx;
++	__le32 drv_f;
++
++#define EEA_S_OK           BIT(2)
++#define EEA_S_FEATURE_DONE BIT(3)
++#define EEA_S_FAILED       BIT(7)
++	u8   device_status;
++	u8   reserved[7];
++
++	__le32 rx_num_max;
++	__le32 tx_num_max;
++	__le32 db_blk_size;
++
++	/* admin queue cfg */
++	__le16 aq_size;
++	__le16 aq_msix_vector;
++	__le32 aq_db_off;
++
++	__le32 aq_sq_addr;
++	__le32 aq_sq_addr_hi;
++	__le32 aq_cq_addr;
++	__le32 aq_cq_addr_hi;
++
++	__le64 hw_ts;
 +};
 +
-+#define EEA_TX_STAT(m)	{#m, offsetof(struct eea_tx_stats, m)}
-+#define EEA_RX_STAT(m)	{#m, offsetof(struct eea_rx_stats, m)}
++struct eea_pci_device {
++	struct eea_device edev;
++	struct pci_dev *pci_dev;
 +
-+static const struct eea_stat_desc eea_rx_stats_desc[] = {
-+	EEA_RX_STAT(descs),
-+	EEA_RX_STAT(kicks),
++	u32 msix_vec_n;
++
++	void __iomem *reg;
++	void __iomem *db_base;
++
++	char ha_irq_name[32];
++	u8 reset_pos;
 +};
 +
-+static const struct eea_stat_desc eea_tx_stats_desc[] = {
-+	EEA_TX_STAT(descs),
-+	EEA_TX_STAT(kicks),
-+};
++#define cfg_pointer(reg, item) \
++	((void __iomem *)((reg) + offsetof(struct eea_pci_cfg, item)))
 +
-+#define EEA_TX_STATS_LEN	ARRAY_SIZE(eea_tx_stats_desc)
-+#define EEA_RX_STATS_LEN	ARRAY_SIZE(eea_rx_stats_desc)
++#define cfg_write8(reg, item, val) iowrite8(val, cfg_pointer(reg, item))
++#define cfg_write32(reg, item, val) iowrite32(val, cfg_pointer(reg, item))
 +
-+static void eea_get_drvinfo(struct net_device *netdev,
-+			    struct ethtool_drvinfo *info)
++#define cfg_read8(reg, item) ioread8(cfg_pointer(reg, item))
++#define cfg_read32(reg, item) ioread32(cfg_pointer(reg, item))
++#define cfg_readq(reg, item) readq(cfg_pointer(reg, item))
++
++const char *eea_pci_name(struct eea_device *edev)
 +{
-+	struct eea_net *enet = netdev_priv(netdev);
-+	struct eea_device *edev = enet->edev;
-+
-+	strscpy(info->driver,   KBUILD_MODNAME,     sizeof(info->driver));
-+	strscpy(info->bus_info, eea_pci_name(edev), sizeof(info->bus_info));
++	return pci_name(edev->ep_dev->pci_dev);
 +}
 +
-+static void eea_get_ringparam(struct net_device *netdev,
-+			      struct ethtool_ringparam *ring,
-+			      struct kernel_ethtool_ringparam *kernel_ring,
-+			      struct netlink_ext_ack *extack)
++int eea_pci_domain_nr(struct eea_device *edev)
 +{
-+	struct eea_net *enet = netdev_priv(netdev);
-+
-+	ring->rx_max_pending = enet->cfg_hw.rx_ring_depth;
-+	ring->tx_max_pending = enet->cfg_hw.tx_ring_depth;
-+	ring->rx_pending = enet->cfg.rx_ring_depth;
-+	ring->tx_pending = enet->cfg.tx_ring_depth;
-+
-+	kernel_ring->tcp_data_split = enet->cfg.split_hdr ?
-+				      ETHTOOL_TCP_DATA_SPLIT_ENABLED :
-+				      ETHTOOL_TCP_DATA_SPLIT_DISABLED;
++	return pci_domain_nr(edev->ep_dev->pci_dev->bus);
 +}
 +
-+static int eea_set_ringparam(struct net_device *netdev,
-+			     struct ethtool_ringparam *ring,
-+			     struct kernel_ethtool_ringparam *kernel_ring,
-+			     struct netlink_ext_ack *extack)
++u16 eea_pci_dev_id(struct eea_device *edev)
 +{
-+	struct eea_net *enet = netdev_priv(netdev);
-+	struct eea_net_init_ctx ctx;
-+	bool need_update = false;
-+	struct eea_net_cfg *cfg;
-+	bool sh;
-+
-+	eea_init_ctx(enet, &ctx);
-+
-+	cfg = &ctx.cfg;
-+
-+	if (ring->rx_pending != cfg->rx_ring_depth)
-+		need_update = true;
-+
-+	if (ring->tx_pending != cfg->tx_ring_depth)
-+		need_update = true;
-+
-+	sh = kernel_ring->tcp_data_split == ETHTOOL_TCP_DATA_SPLIT_ENABLED;
-+	if (sh != !!(cfg->split_hdr))
-+		need_update = true;
-+
-+	if (!need_update)
-+		return 0;
-+
-+	cfg->rx_ring_depth = ring->rx_pending;
-+	cfg->tx_ring_depth = ring->tx_pending;
-+
-+	cfg->split_hdr = sh ? enet->cfg_hw.split_hdr : 0;
-+
-+	return eea_reset_hw_resources(enet, &ctx);
++	return pci_dev_id(edev->ep_dev->pci_dev);
 +}
 +
-+static int eea_set_channels(struct net_device *netdev,
-+			    struct ethtool_channels *channels)
++static void eea_pci_io_set_status(struct eea_device *edev, u8 status)
 +{
-+	struct eea_net *enet = netdev_priv(netdev);
-+	u16 queue_pairs = channels->combined_count;
-+	struct eea_net_init_ctx ctx;
-+	struct eea_net_cfg *cfg;
++	struct eea_pci_device *ep_dev = edev->ep_dev;
 +
-+	eea_init_ctx(enet, &ctx);
-+
-+	cfg = &ctx.cfg;
-+
-+	cfg->rx_ring_num = queue_pairs;
-+	cfg->tx_ring_num = queue_pairs;
-+
-+	return eea_reset_hw_resources(enet, &ctx);
++	cfg_write8(ep_dev->reg, device_status, status);
 +}
 +
-+static void eea_get_channels(struct net_device *netdev,
-+			     struct ethtool_channels *channels)
++static u8 eea_pci_io_get_status(struct eea_device *edev)
 +{
-+	struct eea_net *enet = netdev_priv(netdev);
++	struct eea_pci_device *ep_dev = edev->ep_dev;
 +
-+	channels->combined_count = enet->cfg.rx_ring_num;
-+	channels->max_combined   = enet->cfg_hw.rx_ring_num;
++	return cfg_read8(ep_dev->reg, device_status);
 +}
 +
-+static void eea_get_strings(struct net_device *netdev, u32 stringset, u8 *data)
++static void eea_add_status(struct eea_device *dev, u32 status)
 +{
-+	struct eea_net *enet = netdev_priv(netdev);
-+	u8 *p = data;
-+	u32 i, j;
-+
-+	if (stringset != ETH_SS_STATS)
-+		return;
-+
-+	for (i = 0; i < enet->cfg.rx_ring_num; i++) {
-+		for (j = 0; j < EEA_RX_STATS_LEN; j++)
-+			ethtool_sprintf(&p, "rx%u_%s", i,
-+					eea_rx_stats_desc[j].desc);
-+	}
-+
-+	for (i = 0; i < enet->cfg.tx_ring_num; i++) {
-+		for (j = 0; j < EEA_TX_STATS_LEN; j++)
-+			ethtool_sprintf(&p, "tx%u_%s", i,
-+					eea_tx_stats_desc[j].desc);
-+	}
++	eea_pci_io_set_status(dev, eea_pci_io_get_status(dev) | status);
 +}
 +
-+static int eea_get_sset_count(struct net_device *netdev, int sset)
++#define EEA_RESET_TIMEOUT_US (1000 * 1000 * 1000)
++
++int eea_device_reset(struct eea_device *edev)
 +{
-+	struct eea_net *enet = netdev_priv(netdev);
++	struct eea_pci_device *ep_dev = edev->ep_dev;
++	u8 val;
 +
-+	if (sset != ETH_SS_STATS)
-+		return -EOPNOTSUPP;
++	eea_pci_io_set_status(edev, 0);
 +
-+	return enet->cfg.rx_ring_num * EEA_RX_STATS_LEN +
-+		enet->cfg.tx_ring_num * EEA_TX_STATS_LEN;
++	return read_poll_timeout(cfg_read8, val, !val, 20, EEA_RESET_TIMEOUT_US,
++				false, ep_dev->reg, device_status);
 +}
 +
-+static void eea_stats_fill_for_q(struct u64_stats_sync *syncp, u32 num,
-+				 const struct eea_stat_desc *desc,
-+				 u64 *data, u32 idx)
++int eea_pci_set_aq_up(struct eea_device *edev)
 +{
-+	void *stats_base = syncp;
-+	u32 start, i;
++	struct eea_pci_device *ep_dev = edev->ep_dev;
++	u8 status = eea_pci_io_get_status(edev);
++	u8 val;
 +
-+	do {
-+		start = u64_stats_fetch_begin(syncp);
-+		for (i = 0; i < num; i++)
-+			data[idx + i] =
-+				u64_stats_read(stats_base + desc[i].offset);
++	WARN_ON(status & EEA_S_OK);
 +
-+	} while (u64_stats_fetch_retry(syncp, start));
++	eea_pci_io_set_status(edev, status | EEA_S_OK);
++
++	return read_poll_timeout(cfg_read8, val, val & EEA_S_OK, 20,
++				 EEA_RESET_TIMEOUT_US,
++				 false, ep_dev->reg, device_status);
 +}
 +
-+static void eea_get_ethtool_stats(struct net_device *netdev,
-+				  struct ethtool_stats *stats, u64 *data)
++static int eea_negotiate(struct eea_device *edev)
 +{
-+	struct eea_net *enet = netdev_priv(netdev);
-+	u32 i, idx = 0;
++	struct eea_pci_device *ep_dev;
++	u32 status;
 +
-+	ASSERT_RTNL();
++	ep_dev = edev->ep_dev;
 +
-+	if (enet->rx) {
-+		for (i = 0; i < enet->cfg.rx_ring_num; i++) {
-+			struct eea_net_rx *rx = enet->rx[i];
++	edev->features = 0;
 +
-+			eea_stats_fill_for_q(&rx->stats.syncp, EEA_RX_STATS_LEN,
-+					     eea_rx_stats_desc, data, idx);
++	cfg_write32(ep_dev->reg, drv_f_idx, 0);
++	cfg_write32(ep_dev->reg, drv_f, lower_32_bits(edev->features));
++	cfg_write32(ep_dev->reg, drv_f_idx, 1);
++	cfg_write32(ep_dev->reg, drv_f, upper_32_bits(edev->features));
 +
-+			idx += EEA_RX_STATS_LEN;
-+		}
-+	}
-+
-+	if (enet->tx) {
-+		for (i = 0; i < enet->cfg.tx_ring_num; i++) {
-+			struct eea_net_tx *tx = &enet->tx[i];
-+
-+			eea_stats_fill_for_q(&tx->stats.syncp, EEA_TX_STATS_LEN,
-+					     eea_tx_stats_desc, data, idx);
-+
-+			idx += EEA_TX_STATS_LEN;
-+		}
-+	}
-+}
-+
-+void eea_update_rx_stats(struct eea_rx_stats *rx_stats,
-+			 struct eea_rx_ctx_stats *stats)
-+{
-+	u64_stats_update_begin(&rx_stats->syncp);
-+	u64_stats_add(&rx_stats->descs,             stats->descs);
-+	u64_stats_add(&rx_stats->packets,           stats->packets);
-+	u64_stats_add(&rx_stats->bytes,             stats->bytes);
-+	u64_stats_add(&rx_stats->drops,             stats->drops);
-+	u64_stats_add(&rx_stats->split_hdr_bytes,   stats->split_hdr_bytes);
-+	u64_stats_add(&rx_stats->split_hdr_packets, stats->split_hdr_packets);
-+	u64_stats_add(&rx_stats->length_errors,     stats->length_errors);
-+	u64_stats_update_end(&rx_stats->syncp);
-+}
-+
-+static int eea_get_link_ksettings(struct net_device *netdev,
-+				  struct ethtool_link_ksettings *cmd)
-+{
-+	struct eea_net *enet = netdev_priv(netdev);
-+
-+	cmd->base.speed  = enet->speed;
-+	cmd->base.duplex = enet->duplex;
-+	cmd->base.port   = PORT_OTHER;
++	eea_add_status(edev, EEA_S_FEATURE_DONE);
++	status = eea_pci_io_get_status(edev);
++	if (!(status & EEA_S_FEATURE_DONE))
++		return -ENODEV;
 +
 +	return 0;
 +}
 +
-+const struct ethtool_ops eea_ethtool_ops = {
-+	.supported_ring_params = ETHTOOL_RING_USE_TCP_DATA_SPLIT,
-+	.get_drvinfo        = eea_get_drvinfo,
-+	.get_link           = ethtool_op_get_link,
-+	.get_ringparam      = eea_get_ringparam,
-+	.set_ringparam      = eea_set_ringparam,
-+	.set_channels       = eea_set_channels,
-+	.get_channels       = eea_get_channels,
-+	.get_strings        = eea_get_strings,
-+	.get_sset_count     = eea_get_sset_count,
-+	.get_ethtool_stats  = eea_get_ethtool_stats,
-+	.get_link_ksettings = eea_get_link_ksettings,
++static void eea_pci_release_resource(struct eea_pci_device *ep_dev)
++{
++	struct pci_dev *pci_dev = ep_dev->pci_dev;
++
++	if (ep_dev->reg) {
++		pci_iounmap(pci_dev, ep_dev->reg);
++		ep_dev->reg = NULL;
++	}
++
++	if (ep_dev->msix_vec_n) {
++		ep_dev->msix_vec_n = 0;
++		pci_free_irq_vectors(ep_dev->pci_dev);
++	}
++
++	pci_release_regions(pci_dev);
++	pci_disable_device(pci_dev);
++}
++
++static int eea_pci_setup(struct pci_dev *pci_dev, struct eea_pci_device *ep_dev)
++{
++	int err, n, ret;
++
++	ep_dev->pci_dev = pci_dev;
++
++	err = pci_enable_device(pci_dev);
++	if (err)
++		return err;
++
++	err = pci_request_regions(pci_dev, "EEA");
++	if (err)
++		goto err_disable_dev;
++
++	pci_set_master(pci_dev);
++
++	err = dma_set_mask_and_coherent(&pci_dev->dev, DMA_BIT_MASK(64));
++	if (err) {
++		dev_warn(&pci_dev->dev, "Failed to enable 64-bit DMA.\n");
++		goto err_release_regions;
++	}
++
++	ep_dev->reg = pci_iomap(pci_dev, 0, 0);
++	if (!ep_dev->reg) {
++		dev_err(&pci_dev->dev, "Failed to map pci bar!\n");
++		err = -ENOMEM;
++		goto err_release_regions;
++	}
++
++	ep_dev->edev.rx_num = cfg_read32(ep_dev->reg, rx_num_max);
++	ep_dev->edev.tx_num = cfg_read32(ep_dev->reg, tx_num_max);
++
++	/* 2: adminq, error handle*/
++	n = ep_dev->edev.rx_num + ep_dev->edev.tx_num + 2;
++	ret = pci_alloc_irq_vectors(ep_dev->pci_dev, n, n, PCI_IRQ_MSIX);
++	if (ret != n) {
++		err = ret;
++		goto err_unmap_reg;
++	}
++
++	ep_dev->msix_vec_n = ret;
++
++	ep_dev->db_base = ep_dev->reg + EEA_PCI_DB_OFFSET;
++	ep_dev->edev.db_blk_size = cfg_read32(ep_dev->reg, db_blk_size);
++
++	return 0;
++
++err_unmap_reg:
++	pci_iounmap(pci_dev, ep_dev->reg);
++	ep_dev->reg = NULL;
++
++err_release_regions:
++	pci_release_regions(pci_dev);
++
++err_disable_dev:
++	pci_disable_device(pci_dev);
++
++	return err;
++}
++
++void __iomem *eea_pci_db_addr(struct eea_device *edev, u32 off)
++{
++	u32 end, db_size;
++
++	db_size = max(edev->db_blk_size, EEA_PCI_DB_MIN_SIZE);
++
++	end = db_size * (edev->rx_num + edev->tx_num + 1);
++
++	if ((off + db_size) > end)
++		return NULL;
++
++	return edev->ep_dev->db_base + off;
++}
++
++u64 eea_pci_device_ts(struct eea_device *edev)
++{
++	struct eea_pci_device *ep_dev = edev->ep_dev;
++
++	return cfg_readq(ep_dev->reg, hw_ts);
++}
++
++static int eea_init_device(struct eea_device *edev)
++{
++	int err;
++
++	err = eea_device_reset(edev);
++	if (err)
++		return err;
++
++	eea_pci_io_set_status(edev, BIT(0) | BIT(1));
++
++	err = eea_negotiate(edev);
++	if (err)
++		goto err;
++
++	/* do net device probe ... */
++
++	return 0;
++err:
++	eea_add_status(edev, EEA_S_FAILED);
++	return err;
++}
++
++static int __eea_pci_probe(struct pci_dev *pci_dev,
++			   struct eea_pci_device *ep_dev)
++{
++	int err;
++
++	pci_set_drvdata(pci_dev, ep_dev);
++
++	err = eea_pci_setup(pci_dev, ep_dev);
++	if (err)
++		return err;
++
++	err = eea_init_device(&ep_dev->edev);
++	if (err)
++		goto err_pci_rel;
++
++	return 0;
++
++err_pci_rel:
++	eea_pci_release_resource(ep_dev);
++	return err;
++}
++
++static void __eea_pci_remove(struct pci_dev *pci_dev)
++{
++	struct eea_pci_device *ep_dev = pci_get_drvdata(pci_dev);
++	struct device *dev = get_device(&ep_dev->pci_dev->dev);
++
++	pci_disable_sriov(pci_dev);
++
++	eea_pci_release_resource(ep_dev);
++
++	put_device(dev);
++}
++
++static int eea_pci_probe(struct pci_dev *pci_dev,
++			 const struct pci_device_id *id)
++{
++	struct eea_pci_device *ep_dev;
++	struct eea_device *edev;
++	int err;
++
++	ep_dev = kzalloc(sizeof(*ep_dev), GFP_KERNEL);
++	if (!ep_dev)
++		return -ENOMEM;
++
++	edev = &ep_dev->edev;
++
++	edev->ep_dev = ep_dev;
++	edev->dma_dev = &pci_dev->dev;
++
++	ep_dev->pci_dev = pci_dev;
++
++	err = __eea_pci_probe(pci_dev, ep_dev);
++	if (err) {
++		pci_set_drvdata(pci_dev, NULL);
++		kfree(ep_dev);
++	}
++
++	return err;
++}
++
++static void eea_pci_remove(struct pci_dev *pci_dev)
++{
++	struct eea_pci_device *ep_dev = pci_get_drvdata(pci_dev);
++
++	__eea_pci_remove(pci_dev);
++
++	pci_set_drvdata(pci_dev, NULL);
++	kfree(ep_dev);
++}
++
++static int eea_pci_sriov_configure(struct pci_dev *pci_dev, int num_vfs)
++{
++	int ret;
++
++	if (pci_vfs_assigned(pci_dev))
++		return -EPERM;
++
++	if (num_vfs == 0) {
++		pci_disable_sriov(pci_dev);
++		return 0;
++	}
++
++	ret = pci_enable_sriov(pci_dev, num_vfs);
++	if (ret < 0)
++		return ret;
++
++	return num_vfs;
++}
++
++static const struct pci_device_id eea_pci_id_table[] = {
++	{ PCI_DEVICE(PCI_VENDOR_ID_ALIBABA, 0x500B) },
++	{ 0 }
 +};
-diff --git a/drivers/net/ethernet/alibaba/eea/eea_ethtool.h b/drivers/net/ethernet/alibaba/eea/eea_ethtool.h
++
++MODULE_DEVICE_TABLE(pci, eea_pci_id_table);
++
++static struct pci_driver eea_pci_driver = {
++	.name            = "eea",
++	.id_table        = eea_pci_id_table,
++	.probe           = eea_pci_probe,
++	.remove          = eea_pci_remove,
++	.sriov_configure = eea_pci_sriov_configure,
++};
++
++static __init int eea_pci_init(void)
++{
++	return pci_register_driver(&eea_pci_driver);
++}
++
++static __exit void eea_pci_exit(void)
++{
++	pci_unregister_driver(&eea_pci_driver);
++}
++
++module_init(eea_pci_init);
++module_exit(eea_pci_exit);
++
++MODULE_DESCRIPTION("Driver for Alibaba Elastic Ethernet Adapter");
++MODULE_AUTHOR("Xuan Zhuo <xuanzhuo@linux.alibaba.com>");
++MODULE_LICENSE("GPL");
+diff --git a/drivers/net/ethernet/alibaba/eea/eea_pci.h b/drivers/net/ethernet/alibaba/eea/eea_pci.h
 new file mode 100644
-index 000000000000..a437065d1cab
+index 000000000000..be4e75b4ed2f
 --- /dev/null
-+++ b/drivers/net/ethernet/alibaba/eea/eea_ethtool.h
-@@ -0,0 +1,49 @@
++++ b/drivers/net/ethernet/alibaba/eea/eea_pci.h
+@@ -0,0 +1,50 @@
 +/* SPDX-License-Identifier: GPL-2.0-or-later */
 +/*
 + * Driver for Alibaba Elastic Ethernet Adapter.
@@ -351,300 +587,49 @@ index 000000000000..a437065d1cab
 + * Copyright (C) 2025 Alibaba Inc.
 + */
 +
-+#ifndef __EEA_ETHTOOL_H__
-+#define __EEA_ETHTOOL_H__
++#ifndef __EEA_PCI_H__
++#define __EEA_PCI_H__
 +
-+struct eea_tx_stats {
-+	struct u64_stats_sync syncp;
-+	u64_stats_t descs;
-+	u64_stats_t packets;
-+	u64_stats_t bytes;
-+	u64_stats_t drops;
-+	u64_stats_t kicks;
++#include <linux/pci.h>
++
++struct eea_pci_cap {
++	__u8 cap_vndr;
++	__u8 cap_next;
++	__u8 cap_len;
++	__u8 cfg_type;
 +};
 +
-+struct eea_rx_ctx_stats {
-+	u64 descs;
-+	u64 packets;
-+	u64 bytes;
-+	u64 drops;
-+	u64 split_hdr_bytes;
-+	u64 split_hdr_packets;
-+
-+	u64 length_errors;
++struct eea_pci_reset_reg {
++	struct eea_pci_cap cap;
++	__le16 driver;
++	__le16 device;
 +};
 +
-+struct eea_rx_stats {
-+	struct u64_stats_sync syncp;
-+	u64_stats_t descs;
-+	u64_stats_t packets;
-+	u64_stats_t bytes;
-+	u64_stats_t drops;
-+	u64_stats_t kicks;
-+	u64_stats_t split_hdr_bytes;
-+	u64_stats_t split_hdr_packets;
++struct eea_pci_device;
 +
-+	u64_stats_t length_errors;
++struct eea_device {
++	struct eea_pci_device *ep_dev;
++	struct device         *dma_dev;
++	struct eea_net        *enet;
++
++	u64 features;
++
++	u32 rx_num;
++	u32 tx_num;
++	u32 db_blk_size;
 +};
 +
-+void eea_update_rx_stats(struct eea_rx_stats *rx_stats,
-+			 struct eea_rx_ctx_stats *stats);
++const char *eea_pci_name(struct eea_device *edev);
++int eea_pci_domain_nr(struct eea_device *edev);
++u16 eea_pci_dev_id(struct eea_device *edev);
 +
-+extern const struct ethtool_ops eea_ethtool_ops;
++int eea_device_reset(struct eea_device *dev);
++int eea_pci_set_aq_up(struct eea_device *dev);
 +
++u64 eea_pci_device_ts(struct eea_device *edev);
++
++void __iomem *eea_pci_db_addr(struct eea_device *edev, u32 off);
 +#endif
-diff --git a/drivers/net/ethernet/alibaba/eea/eea_net.c b/drivers/net/ethernet/alibaba/eea/eea_net.c
-index 3db2196e1706..4bf2fb7db955 100644
---- a/drivers/net/ethernet/alibaba/eea/eea_net.c
-+++ b/drivers/net/ethernet/alibaba/eea/eea_net.c
-@@ -586,6 +586,7 @@ static struct eea_net *eea_netdev_alloc(struct eea_device *edev, u32 pairs)
- 	}
- 
- 	netdev->netdev_ops = &eea_netdev;
-+	netdev->ethtool_ops = &eea_ethtool_ops;
- 	SET_NETDEV_DEV(netdev, edev->dma_dev);
- 
- 	enet = netdev_priv(netdev);
-diff --git a/drivers/net/ethernet/alibaba/eea/eea_net.h b/drivers/net/ethernet/alibaba/eea/eea_net.h
-index 98b333871eda..a16d662c7fb3 100644
---- a/drivers/net/ethernet/alibaba/eea/eea_net.h
-+++ b/drivers/net/ethernet/alibaba/eea/eea_net.h
-@@ -12,6 +12,7 @@
- #include <linux/netdevice.h>
- 
- #include "eea_adminq.h"
-+#include "eea_ethtool.h"
- #include "eea_ring.h"
- 
- #define EEA_VER_MAJOR		1
-@@ -33,6 +34,8 @@ struct eea_net_tx {
- 	u32 index;
- 
- 	char name[16];
-+
-+	struct eea_tx_stats stats;
- };
- 
- struct eea_rx_meta {
-@@ -85,6 +88,8 @@ struct eea_net_rx {
- 
- 	struct napi_struct *napi;
- 
-+	struct eea_rx_stats stats;
-+
- 	char name[16];
- 
- 	struct eea_net_rx_pkt_ctx pkt;
-diff --git a/drivers/net/ethernet/alibaba/eea/eea_rx.c b/drivers/net/ethernet/alibaba/eea/eea_rx.c
-index 0cee786fedb8..c62f0e532367 100644
---- a/drivers/net/ethernet/alibaba/eea/eea_rx.c
-+++ b/drivers/net/ethernet/alibaba/eea/eea_rx.c
-@@ -29,6 +29,8 @@ struct eea_rx_ctx {
- 	u32 frame_sz;
- 
- 	struct eea_rx_meta *meta;
-+
-+	struct eea_rx_ctx_stats stats;
- };
- 
- static struct eea_rx_meta *eea_rx_meta_get(struct eea_net_rx *rx)
-@@ -203,6 +205,7 @@ static int eea_harden_check_overflow(struct eea_rx_ctx *ctx,
- 	if (unlikely(ctx->len > max_len)) {
- 		pr_debug("%s: rx error: len %u exceeds truesize %u\n",
- 			 enet->netdev->name, ctx->len, max_len);
-+		++ctx->stats.length_errors;
- 		return -EINVAL;
- 	}
- 
-@@ -221,6 +224,7 @@ static int eea_harden_check_size(struct eea_rx_ctx *ctx, struct eea_net *enet)
- 		if (unlikely(ctx->hdr_len < ETH_HLEN)) {
- 			pr_debug("%s: short hdr %u\n", enet->netdev->name,
- 				 ctx->hdr_len);
-+			++ctx->stats.length_errors;
- 			return -EINVAL;
- 		}
- 
-@@ -228,6 +232,7 @@ static int eea_harden_check_size(struct eea_rx_ctx *ctx, struct eea_net *enet)
- 			pr_debug("%s: rx error: hdr len %u exceeds hdr buffer size %u\n",
- 				 enet->netdev->name, ctx->hdr_len,
- 				 enet->cfg.split_hdr);
-+			++ctx->stats.length_errors;
- 			return -EINVAL;
- 		}
- 
-@@ -236,6 +241,7 @@ static int eea_harden_check_size(struct eea_rx_ctx *ctx, struct eea_net *enet)
- 
- 	if (unlikely(ctx->len < ETH_HLEN)) {
- 		pr_debug("%s: short packet %u\n", enet->netdev->name, ctx->len);
-+		++ctx->stats.length_errors;
- 		return -EINVAL;
- 	}
- 
-@@ -379,6 +385,7 @@ static int process_remain_buf(struct eea_net_rx *rx, struct eea_rx_ctx *ctx)
- 
- err:
- 	dev_kfree_skb(rx->pkt.head_skb);
-+	++ctx->stats.drops;
- 	rx->pkt.do_drop = true;
- 	rx->pkt.head_skb = NULL;
- 	return 0;
-@@ -407,6 +414,7 @@ static int process_first_buf(struct eea_net_rx *rx, struct eea_rx_ctx *ctx)
- 	return 0;
- 
- err:
-+	++ctx->stats.drops;
- 	rx->pkt.do_drop = true;
- 	return 0;
- }
-@@ -457,6 +465,8 @@ static int eea_rx_desc_to_ctx(struct eea_net_rx *rx,
- 	if (ctx->flags & EEA_DESC_F_SPLIT_HDR) {
- 		ctx->hdr_len = le16_to_cpu(desc->len_ex) &
- 			EEA_RX_CDESC_HDR_LEN_MASK;
-+		ctx->stats.split_hdr_bytes += ctx->hdr_len;
-+		++ctx->stats.split_hdr_packets;
- 	}
- 
- 	ctx->more = ctx->flags & EEA_RING_DESC_F_MORE;
-@@ -481,8 +491,10 @@ static int eea_cleanrx(struct eea_net_rx *rx, int budget,
- 			if (ctx->meta)
- 				eea_rx_meta_put(rx, ctx->meta);
- 
--			if (rx->pkt.idx)
-+			if (rx->pkt.head_skb) {
- 				dev_kfree_skb(rx->pkt.head_skb);
-+				++ctx->stats.drops;
-+			}
- 
- 			ctx->more = false;
- 			goto ack;
-@@ -507,6 +519,7 @@ static int eea_cleanrx(struct eea_net_rx *rx, int budget,
- 
- 		if (!ctx->more && rx->pkt.head_skb) {
- 			eea_submit_skb(rx, rx->pkt.head_skb, desc);
-+			ctx->stats.bytes += rx->pkt.recv_len;
- 			++packets;
- 		}
- 
-@@ -514,17 +527,20 @@ static int eea_cleanrx(struct eea_net_rx *rx, int budget,
- 		eea_rx_meta_put(rx, meta);
- ack:
- 		ering_cq_ack_desc(rx->ering, 1);
-+		++ctx->stats.descs;
- 
- 		if (!ctx->more)
- 			memset(&rx->pkt, 0, sizeof(rx->pkt));
- 	}
- 
-+	ctx->stats.packets = packets;
-+
- 	return packets;
- }
- 
- static bool eea_rx_post(struct eea_net_rx *rx)
- {
--	u32 tailroom, headroom, room, len;
-+	u32 tailroom, headroom, room, flags, len;
- 	struct eea_rx_meta *meta;
- 	struct eea_rx_desc *desc;
- 	int err = 0, num = 0;
-@@ -564,9 +580,14 @@ static bool eea_rx_post(struct eea_net_rx *rx)
- 		++num;
- 	}
- 
--	if (num)
-+	if (num) {
- 		ering_kick(rx->ering);
- 
-+		flags = u64_stats_update_begin_irqsave(&rx->stats.syncp);
-+		u64_stats_inc(&rx->stats.kicks);
-+		u64_stats_update_end_irqrestore(&rx->stats.syncp, flags);
-+	}
-+
- 	/* true means busy, napi should be called again. */
- 	return !!err;
- }
-@@ -587,6 +608,8 @@ static int eea_poll(struct napi_struct *napi, int budget)
- 	if (rx->ering->num_free > budget)
- 		busy |= eea_rx_post(rx);
- 
-+	eea_update_rx_stats(&rx->stats, &ctx.stats);
-+
- 	busy |= received >= budget;
- 
- 	if (busy)
-@@ -719,6 +742,8 @@ struct eea_net_rx *eea_alloc_rx(struct eea_net_init_ctx *ctx, u32 idx)
- 	rx->index = idx;
- 	snprintf(rx->name, sizeof(rx->name), "rx.%u", idx);
- 
-+	u64_stats_init(&rx->stats.syncp);
-+
- 	/* ering */
- 	ering = ering_alloc(idx * 2, ctx->cfg.rx_ring_depth, ctx->edev,
- 			    ctx->cfg.rx_sq_desc_size,
-diff --git a/drivers/net/ethernet/alibaba/eea/eea_tx.c b/drivers/net/ethernet/alibaba/eea/eea_tx.c
-index be25a43d6481..abb468911dfe 100644
---- a/drivers/net/ethernet/alibaba/eea/eea_tx.c
-+++ b/drivers/net/ethernet/alibaba/eea/eea_tx.c
-@@ -127,6 +127,13 @@ static u32 eea_clean_tx(struct eea_net_tx *tx, int budget)
- 		ering_cq_ack_desc(tx->ering, desc_n);
- 	}
- 
-+	if (stats.packets) {
-+		u64_stats_update_begin(&tx->stats.syncp);
-+		u64_stats_add(&tx->stats.bytes, stats.bytes);
-+		u64_stats_add(&tx->stats.packets, stats.packets);
-+		u64_stats_update_end(&tx->stats.syncp);
-+	}
-+
- 	return stats.packets;
- }
- 
-@@ -260,6 +267,10 @@ static int eea_tx_post_skb(struct eea_net_tx *tx, struct sk_buff *skb)
- 	meta->num = shinfo->nr_frags + 1;
- 	ering_sq_commit_desc(tx->ering);
- 
-+	u64_stats_update_begin(&tx->stats.syncp);
-+	u64_stats_add(&tx->stats.descs, meta->num);
-+	u64_stats_update_end(&tx->stats.syncp);
-+
- 	return 0;
- 
- err_cancel:
-@@ -272,6 +283,10 @@ static int eea_tx_post_skb(struct eea_net_tx *tx, struct sk_buff *skb)
- static void eea_tx_kick(struct eea_net_tx *tx)
- {
- 	ering_kick(tx->ering);
-+
-+	u64_stats_update_begin(&tx->stats.syncp);
-+	u64_stats_inc(&tx->stats.kicks);
-+	u64_stats_update_end(&tx->stats.syncp);
- }
- 
- netdev_tx_t eea_tx_xmit(struct sk_buff *skb, struct net_device *netdev)
-@@ -287,8 +302,13 @@ netdev_tx_t eea_tx_xmit(struct sk_buff *skb, struct net_device *netdev)
- 	skb_tx_timestamp(skb);
- 
- 	err = eea_tx_post_skb(tx, skb);
--	if (unlikely(err))
-+	if (unlikely(err)) {
-+		u64_stats_update_begin(&tx->stats.syncp);
-+		u64_stats_inc(&tx->stats.drops);
-+		u64_stats_update_end(&tx->stats.syncp);
-+
- 		dev_kfree_skb_any(skb);
-+	}
- 
- 	/* NETDEV_TX_BUSY is expensive. So stop advancing the TX queue. */
- 	n = MAX_SKB_FRAGS + 1;
-@@ -345,6 +365,8 @@ int eea_alloc_tx(struct eea_net_init_ctx *ctx, struct eea_net_tx *tx, u32 idx)
- 	struct eea_ring *ering;
- 	u32 i;
- 
-+	u64_stats_init(&tx->stats.syncp);
-+
- 	snprintf(tx->name, sizeof(tx->name), "tx.%u", idx);
- 
- 	ering = ering_alloc(idx * 2 + 1, ctx->cfg.tx_ring_depth, ctx->edev,
 -- 
 2.32.0.3.g01195cf9f
 
