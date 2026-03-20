@@ -1,88 +1,115 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709BF39A06B;
-	Fri, 20 Mar 2026 12:08:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66D73ACA6F;
+	Fri, 20 Mar 2026 12:21:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774008519; cv=none; b=glExonf8n06qLpNcqqeKUtwEvbVlcORUtXvpl2dPHoopem9A6AIvqmwPQzRCZOjw1pb5NXMleBx3qHE2VCuVU/MQRHlltS/TYygMoVXxCIWIUal3XbCagcymwhP1cHFaBDR/PK5RCDdEfBGWYoezWZquZJJXp/JnmfNn061cP10=
+	t=1774009279; cv=none; b=gIKCheWJ/1qtmBEtfEbp7MRnTU10GSA6iIdRJujTEZngIDNCKL4Rx250ZPDnS/FzKYB6fgg8L8VOy+d86ktcUCwIYeww+DCXfOrNltegR9mfKr3095AMwJCswKItE2Y/yOvrYmfj76vNnMSjNmUNkVqTULVm1lMAdW1/l6z4ZJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774008519; c=relaxed/simple;
-	bh=rt5mAqVgT2DpnDuBJS+RgFzkBgiqbY7caCPN2LAI86M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i+HrDL5QomWq82MkMhuMqIbFi3nD0zYnimSbA1kZRO2mBN4dytOs5n9E9v6qls5C+6dFjojUHtKul+flGU/Z+LbcXS//gBQd482C6Vk4tQ9AswvWPSiZ94LQMOPfkhLYwS8YSboD9kbyMc/f6v2eDkBet03DJdiz/1XoeLRnisE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ND1ESRaH; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1774009279; c=relaxed/simple;
+	bh=4j5D3JUKWrkjypiioycjRrgazfW4eGjtyd7+18VftzU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gz23nRrpT93ieG7JBioENiY1SxYxrj9K5nDPiipp5Xw0xiAbIhDABnuyGfX5R2d31Dr78Rzaklc+vjVvyExuaCQHhNh82rn4qguE3d5HeUewlLVtZWfF3rYAjSQ+XypNwXNCNUryHr/F40X2a+LmUsaM9SsJK9RVJMgQP21dZfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=KOXWIuGk; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ND1ESRaH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774008519; x=1805544519;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=rt5mAqVgT2DpnDuBJS+RgFzkBgiqbY7caCPN2LAI86M=;
-  b=ND1ESRaHpxHvYdrBOzW/ecdMwpwPCLCMFdhYshpqGfigO0XzPmgAwJwN
-   jq+g7kZztdO0gVExJAXEXz1JI5x3Z/ijPE7TxxMIaTYQ1rw+8TmOe101e
-   JEosQ4MASLJNWqUdZ513ZQa6+6/tbPGsbF8cufL9+OSNQSV72lmbtCbiE
-   QGacXZ22O5HGKNEodpU3oUCrtcG/C1h7phWr4pgVB1sNkVImSguI9ibsj
-   EOUhkcfUB4ZF46qaAas5avCTXqjWSPjfrZhgb83FYZrBiCJOmnMycCI5V
-   ayedkqYdh5i5g5UrD0/uO61tFH+RI3ghxPdeNmzC4oMyVNMn2qU4pnxOM
-   Q==;
-X-CSE-ConnectionGUID: fxGVwqtCTGuECCT/egMyrw==
-X-CSE-MsgGUID: rESNOd8SRWOhux3XRuOaWw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11735"; a="74981525"
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="74981525"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 05:08:38 -0700
-X-CSE-ConnectionGUID: QnkFAKxkSRyO93ncc+2hmg==
-X-CSE-MsgGUID: aCVnXZOuT4KHWhsptBu7bg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="219080561"
-Received: from black.igk.intel.com ([10.91.253.5])
-  by fmviesa010.fm.intel.com with ESMTP; 20 Mar 2026 05:08:36 -0700
-Received: by black.igk.intel.com (Postfix, from userid 1003)
-	id E488295; Fri, 20 Mar 2026 13:08:34 +0100 (CET)
-Date: Fri, 20 Mar 2026 13:08:34 +0100
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Sean Chang <seanwascoding@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Chuck Lever <chuck.lever@oracle.com>,
-	David Laight <david.laight.linux@gmail.com>,
-	Anna Schumaker <anna@kernel.org>, netdev@vger.kernel.org,
-	linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/3] sunrpc/nfs: cleanup redundant debug checks and
- refactor macros
-Message-ID: <ab04wi3x3JNVbvPm@black.igk.intel.com>
-References: <20260319141846.78222-1-seanwascoding@gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="KOXWIuGk"
+Received: by linux.microsoft.com (Postfix, from userid 1173)
+	id 954FD20B710C; Fri, 20 Mar 2026 05:21:17 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 954FD20B710C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1774009277;
+	bh=HHWlJ0UaeVgkTh4f4inG7ulP8ZOO5aEjTyrrRmJDfqM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=KOXWIuGkDQIW+S4tuTvWIqkQsytmkIefTt3Jl7ARcF9DD5sg2doPfrfPAwyPG7wZS
+	 u1aAslAJJqjbGV/IhxnYRNt1VDedyonmepnlb5Ye/n4QadbjWo8ByMLZNn3jlxNz0Y
+	 w99rETnkLtMjMqoGnvvPfaneUuQ58KMh+cPgYOMo=
+From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+To: kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	longli@microsoft.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	shradhagupta@linux.microsoft.com,
+	dipayanroy@linux.microsoft.com,
+	shirazsaleem@microsoft.com,
+	kotaranov@microsoft.com,
+	yury.norov@gmail.com,
+	kees@kernel.org,
+	linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+Subject: [PATCH net-next] net: mana: Use at least SZ_4K in doorbell ID range check
+Date: Fri, 20 Mar 2026 05:21:01 -0700
+Message-ID: <20260320122107.1560839-1-ernis@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260319141846.78222-1-seanwascoding@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Thu, Mar 19, 2026 at 10:18:43PM +0800, Sean Chang wrote:
-> This series cleans up redundant IS_ENABLED(CONFIG_SUNRPC_DEBUG) guards 
-> across sunrpc, nfsd, and lockd, as these checks are already handled 
-> within the dprintk macros.
-> 
-> Additionally, it refactors the nfs_errorf() macros into a safer 
-> do-while(0) pattern and removes unused nfs_warnf() macros to improve 
-> code maintainability.
+mana_gd_ring_doorbell() accesses doorbell offsets up to 0xFF8 + 8 = 4KB
+within a doorbell page. When db_page_size is zero, the validation check
+in mana_gd_register_device() reduces to:
+  db_page_off + 0 > bar0_size
+which passes, even though mana_gd_ring_doorbell() will access
+[db_page_off, db_page_off + 4KB) and may go beyond BAR0.
 
-Shall we also revert the commit ebae102897e7 ("nfsd: Mark variable
-__maybe_unused to avoid W=1 build break") as it seems related to
-dprintk() issues?
+Use max(SZ_4K, db_page_size) in the range check so that a zero or
+unexpectedly small db_page_size still results in a rejection when the
+doorbell page would fall outside BAR0.
 
+Fixes: 89fe91c65992 ("net: mana: hardening: Validate doorbell ID from GDMA_REGISTER_DEVICE response")
+Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+---
+ drivers/net/ethernet/microsoft/mana/gdma_main.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+index 2ba1fa3336f9..49ea3dcbf74a 100644
+--- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
++++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+@@ -4,6 +4,7 @@
+ #include <linux/debugfs.h>
+ #include <linux/module.h>
+ #include <linux/pci.h>
++#include <linux/sizes.h>
+ #include <linux/utsname.h>
+ #include <linux/version.h>
+ #include <linux/msi.h>
+@@ -1255,6 +1256,7 @@ int mana_gd_register_device(struct gdma_dev *gd)
+ 	struct gdma_context *gc = gd->gdma_context;
+ 	struct gdma_register_device_resp resp = {};
+ 	struct gdma_general_req req = {};
++	u64 db_page_sz;
+ 	int err;
+ 
+ 	gd->pdid = INVALID_PDID;
+@@ -1278,8 +1280,14 @@ int mana_gd_register_device(struct gdma_dev *gd)
+ 	 *   addr = db_page_base + db_page_size * db_id
+ 	 *        = (bar0_va + db_page_off) + (db_page_size * db_id)
+ 	 * So we need: db_page_off + db_page_size * (db_id + 1) <= bar0_size
++	 *
++	 * mana_gd_ring_doorbell() always accesses [offset, offset + 4KB),
++	 * so use at least SZ_4K to catch a zero or small db_page_size.
+ 	 */
+-	if (gc->db_page_off + gc->db_page_size * ((u64)resp.db_id + 1) > gc->bar0_size) {
++	db_page_sz = max_t(u64, SZ_4K, gc->db_page_size);
++
++	if (gc->db_page_off + db_page_sz * ((u64)resp.db_id + 1) >
++	    gc->bar0_size) {
+ 		dev_err(gc->dev, "Doorbell ID %u out of range\n", resp.db_id);
+ 		return -EPROTO;
+ 	}
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.34.1
 
