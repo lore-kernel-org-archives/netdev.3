@@ -1,40 +1,56 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450503D3329
-	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 16:44:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F4A382379
+	for <netdev@vger.kernel.org>; Fri, 20 Mar 2026 16:47:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774025099; cv=none; b=SpECitPFxY+PDcdyC8PpWW/USzUIdH5w3F9RRuQn/d1If/JwoWkcl+Xt0l0GgAvVwpgWEHb2V4lTAOU26G35y2UPRQ7irMxxshCEoOIRvMRv6jRT1PV7wwoH3bMBymFHDrZOT2nxqwcP3Bp992lo8v3N6drBBgmS7BQWU0PPCP0=
+	t=1774025225; cv=none; b=An5kQbjrWqUcAq3SLaHHfPFgYjmeGWBCPkmnbbvFYdswycxtNE9YZdMvDVOC/Y5CqBCCyRBNaL3HurPoT4a9qd5ujps1CRbfOU+/8qTI3YFyoJYTXKkJ16X7kXtarG4/AdTbz+qI/sve50/uxbEkgpmgq1A6mfEdE1ISmxsJdoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774025099; c=relaxed/simple;
-	bh=XvtyeRdyTe4yJx38Xxj/5vma5vmFAWY0GDfAooXKx4Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Slj9jqE1XTXV7eZJKVNennShxdTTJGx9gRVWv6Qn6DqpAQyT/Hxztybv+4j7Jy5hg2X4Kiaqu42u/XsYYwUV0BZ9gTYacNx5QaA10j1fKavAnXfdPNZQ1oDb6Q1exhDgbcFZjuwj2ymQwgcO6Q8imDrybry96vfL7Ng6yuQU50Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R4WdYjnc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774025225; c=relaxed/simple;
+	bh=TeFAKdm8teZdbhfLVWdLmhbrkyDsZKVXFNEFYJNtw9Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=iIWoAkZ4LuYN7Q/vMYHVn79X2YwZFjbNgSQfkV70NVbhinAbqDRm3BksyyXw8W1sKfmdtTtjRJ1ZkE4J+V0GtmFufzGZXRzC4aV4EUHrNZVe8JU3ABV9QhF1+Vf0KTkdtZVIeQAPGWZ0TMxB+a3WbeloE6waV7EMAt+w+CdVFTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=FjUYwxKJ; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R4WdYjnc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA532C4CEF7;
-	Fri, 20 Mar 2026 16:44:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774025098;
-	bh=XvtyeRdyTe4yJx38Xxj/5vma5vmFAWY0GDfAooXKx4Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=R4WdYjnc+0tljIDD4t50zjsaVKOrzd4XoUrF8CblSR2EWpROoj37yMu05o8x0RTOq
-	 PmRlptITKk9rU7AY0QHKFnMrsivf+WeI0OKEsX0V5j2zlewfFzmTbsrTTOYMRDH+I9
-	 /OA6gdbno1/+uvX5v5ABx8aDH1pgWazTth/k9TXFeAPxHEbY6go4JgziPRQQb8KGDr
-	 lb4QS5Iv+R6CAf+3EuFhhW98U1nWzvSvWr8QTvmmYbXHUYioH+r+Ju0S2OrVMgd4az
-	 hc9RbqXhfJ4GgkpSapyISIrJRSeY3xPXMnqET49chgXFnpvpfYPsmZruU809nVMK0h
-	 HCGKaEJ9NR9bw==
-Date: Fri, 20 Mar 2026 16:44:54 +0000
-From: Simon Horman <horms@kernel.org>
-To: Przemyslaw Korba <przemyslaw.korba@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com
-Subject: Re: [PATCH iwl-net v2] ice: fix posted write support for sideband
- queue operations
-Message-ID: <20260320164454.GB74886@horms.kernel.org>
-References: <20260319111659.551039-1-przemyslaw.korba@intel.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="FjUYwxKJ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=JLXg8A2dB6C/6B3r2jVXzkuVuzKHB/KU8OzuEFwRTtg=; b=FjUYwxKJ/I5gBvDEJi2ksZy4LW
+	8N0+cGay7O2i2LKYMFL8RZNNTNqNn4SK65jEwfyHLBwxhf3PPkPXFMhGa+vRu0umK56hp4hrGf4oa
+	HmOd5znMCf2L15mFo/WOUZZBylMSf8cLw5d3jyDYgYIASG7CX81m3aSCFgqauExrrJY3FGKLdZ5G+
+	UujfMnDbY1UDfwB/1TJEFoGiPOJ42OVvxxupUGh+MePmb5SqGGXa4ZVY3845U/Nf7f/W9uHZc6RlZ
+	sWUJyo7rscXslLY/LSsTZ4Ad7VEdir/vFts8Nv0s1v4vwCoDYXN8N3k2cUnJuT1UsUYQqspcHDPob
+	8GWe9jwA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:46752)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1w3czv-000000006Kx-2eGQ;
+	Fri, 20 Mar 2026 16:46:55 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1w3czs-000000000yz-3eck;
+	Fri, 20 Mar 2026 16:46:52 +0000
+Date: Fri, 20 Mar 2026 16:46:52 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH net-next 0/6] net: stmmac: cleanup stmmac_xmit()
+Message-ID: <ab15_JvLGFtUH_3x@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,25 +59,14 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260319111659.551039-1-przemyslaw.korba@intel.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Thu, Mar 19, 2026 at 12:13:27PM +0100, Przemyslaw Korba wrote:
-> On E830, PTP time adjustment commands sent via
-> SBQ don't generate completion responses, causing the driver to
-> timeout waiting and return -EIO, when trying:
-> 
-> phc_ctl eth8 get adj 2 get
-> dmesg: ice 0000:1a:00.0: PTP failed to adjust time, err -5
-> 
-> Add support for posted mode not to wait for completion response.
-> 
-> Fixes: 8f5ee3c477a8 ("ice: add support for sideband messages")
-> Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
-> ---
-> v2:
-> - change "postpone" to "posted"
-> - init struct with {} instead of {0}
-> v1:
-> https://lore.kernel.org/intel-wired-lan/20260310110700.345904-1-przemyslaw.korba@intel.com/
+This series continues on from part 2 of the descriptor cleanups, making
+stmmac_xmit() more readable.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 103 +++++++++++-----------
+ 1 file changed, 52 insertions(+), 51 deletions(-)
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
