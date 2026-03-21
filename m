@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43FA9175A8A;
-	Sat, 21 Mar 2026 02:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE6B2561A7
+	for <netdev@vger.kernel.org>; Sat, 21 Mar 2026 02:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774058415; cv=none; b=f/c/U/FAOIPsoaqxbIyd6hbqwEiXvVYPRDcigtQJPM39TfV/WlSJuk0j8wpa3Rp07I0kFBm4eX/iA7nhfszqFYW/BY/lwJnjHzNwWkO6p0gsI+solQk0Ndbexp5NVPf+DD37u3OPflhWJgtZiCic1HMD6Mgqx4R5otTW4RpSxk0=
+	t=1774059019; cv=none; b=p5LlRtYN4RMnrT29YT5zyb0oQlnHm6HuqUr9i26a4HqiKt/NmcD0cR9V+m8w7CmQfdrAREOEIl+v1OzCTv+VEKCUd7de6U2hYrU0EaSQB0KI9mtL2SPTDN5bvnNAm07S6EX6vCXcy7DATIQKz21Sq/DIRiuxN5uLkFRgbOy3LBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774058415; c=relaxed/simple;
-	bh=jSFJx1GaeQHqMMDYFYx6cOZmFp8yAW8+gY0ttTRYwLQ=;
+	s=arc-20240116; t=1774059019; c=relaxed/simple;
+	bh=P1a69Opz2QEUXdUbziprfsdTi6le2vVUfkTYFxwnplE=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=qpk1WQIK+xoW3JDjQaE3Vy5oICz3Gv7i7aptN1UiNmCxIHl0gGTX5lAZGhdfCIfcxbekSSmt+89m5jTM5vGcH6bFwsesZYpLUGKLG5Jn9x9De4RHpZCI/cYcGPH5Y8pTe4TYGMMfZNDszAqfcyN+9IvIHwoNdqn06LZSJFf1kng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sHQUmo5A; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=vFs0vn59znPdcJ5g/Il9oTLtQTzxR/s/WHcofbF2qCR6+3zS62gft9Zt0m5WwYrW0KR1+DZyJRePsFQTtcHJyWlpk54hgGze7COO3eTZDparKYFXh9GwzAlMyhsM1x3u9DisETl8p7U12ssTEAbVKlS6IhnWoCcmi9oqnYKH8jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=csmi0Y0k; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sHQUmo5A"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D5DC4CEF7;
-	Sat, 21 Mar 2026 02:00:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="csmi0Y0k"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4111C4CEF7;
+	Sat, 21 Mar 2026 02:10:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774058414;
-	bh=jSFJx1GaeQHqMMDYFYx6cOZmFp8yAW8+gY0ttTRYwLQ=;
+	s=k20201202; t=1774059019;
+	bh=P1a69Opz2QEUXdUbziprfsdTi6le2vVUfkTYFxwnplE=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=sHQUmo5AhhLqdA8+1mxhxKqXm2ydnxeuspDh1aGsXylSg4tSibmPulrw3JEH0yKGp
-	 L0ZVDL7jyv5yOQH+GSOVxkdPBKGXSrPmIw/44ZAGLwpLWOiZuxYsFrcYm7GBLjYSqm
-	 ooXqE/H0TG7Bb/WvHDCHAKXAsAJ/MAixvEaqzWrYmuBgrUgtsmMZcnijmkypmzISFF
-	 PssoBF+xnhOz8LnW6DMu5qoSPqEN/E1Kq5JPqasJtUuWm7j/8IHxo93hesdwCNOYUy
-	 EnDZ1Diu4QzmUJi4m3iaj8lbycJj4B/Q1vFOXTM52U9vsdtJA1MJ+c7ec4vLzSluyE
-	 luX6Ne4bMHD8w==
+	b=csmi0Y0kTwwR5KzODVsMjn2n60aAsuVrVNOIpoDrDgDw6iGz3sROVvoYUmFsChD/x
+	 ybMHkk7D7DMsOjnDVSlOOP1irtKIaRfmbkVhrNwq/71AJVBh+cxZs870N3XM5DfLtG
+	 zJh1sKWBBXa/XQ/wacsovAu5al7AVU7lTNsbj1nZvh1CotngJJ1wSC+kJoxWUQtY2e
+	 LQ0cu79+59fkD3ksP5NyBKcJCyxUz87+F0f1vtuMnaL9/h8W3Xi54D0AEhLxxZtEm5
+	 rtGZ5kVLyMvOIL47KHjplVygN3X3B6isRSUpH1hPvecHNW/3Vem3kL5HaIA1zZ2yH3
+	 r+TOQ3ty3pQJQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9EBC3808200;
-	Sat, 21 Mar 2026 02:00:05 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FE383808200;
+	Sat, 21 Mar 2026 02:10:10 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v1 net-next] net: lan743x: fix SGMII detection on PCI1xxxx
- B0+
- during warm reset
+Subject: Re: [PATCH net v2 0/2] rtnetlink: add missing attributes in
+ if_nlmsg_size
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177405840454.2721591.5803348695168085577.git-patchwork-notify@kernel.org>
-Date: Sat, 21 Mar 2026 02:00:04 +0000
-References: <20260318063228.17110-1-thangaraj.s@microchip.com>
-In-Reply-To: <20260318063228.17110-1-thangaraj.s@microchip.com>
-To: Thangaraj Samynathan <thangaraj.s@microchip.com>
-Cc: bryan.whitehead@microchip.com, UNGLinuxDriver@microchip.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ <177405900904.2723214.12630168952954708160.git-patchwork-notify@kernel.org>
+Date: Sat, 21 Mar 2026 02:10:09 +0000
+References: <cover.1773919462.git.sd@queasysnail.net>
+In-Reply-To: <cover.1773919462.git.sd@queasysnail.net>
+To: Sabrina Dubroca <sd@queasysnail.net>
+Cc: netdev@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
+This series was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 18 Mar 2026 12:02:28 +0530 you wrote:
-> A warm reset on boards using an EEPROM-only strap configuration (where
-> no MAC address is set in the image) can cause the driver to incorrectly
-> revert to RGMII mode. This occurs because the ENET_CONFIG_LOAD_STARTED
-> bit may not persist or behave as expected.
+On Fri, 20 Mar 2026 00:02:51 +0100 you wrote:
+> Once again we have some attributes added by rtnl_fill_ifinfo() that
+> aren't counted in if_nlmsg_size().
 > 
-> Update pci11x1x_strap_get_status() to use revision-specific validation:
+> v2: add missing nla_total_size in patch 1, spotted by Sergey Ryazanov
+>     patch 2 unchanged, keep Jiri Pirko's Reviewed-by
+> 
+> Sabrina Dubroca (2):
+>   rtnetlink: count IFLA_PARENT_DEV_{NAME,BUS_NAME} in if_nlmsg_size
+>   rtnetlink: count IFLA_INFO_SLAVE_KIND in if_nlmsg_size
 > 
 > [...]
 
 Here is the summary with links:
-  - [v1,net-next] net: lan743x: fix SGMII detection on PCI1xxxx B0+ during warm reset
-    https://git.kernel.org/netdev/net-next/c/e783e40fb689
+  - [net,v2,1/2] rtnetlink: count IFLA_PARENT_DEV_{NAME,BUS_NAME} in if_nlmsg_size
+    https://git.kernel.org/netdev/net/c/52501989c762
+  - [net,v2,2/2] rtnetlink: count IFLA_INFO_SLAVE_KIND in if_nlmsg_size
+    https://git.kernel.org/netdev/net/c/ee00a12593ff
 
 You are awesome, thank you!
 -- 
