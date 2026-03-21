@@ -1,62 +1,62 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0892F6900
-	for <netdev@vger.kernel.org>; Sat, 21 Mar 2026 14:15:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61A5738C402
+	for <netdev@vger.kernel.org>; Sat, 21 Mar 2026 14:15:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774102539; cv=none; b=ADnLXj+t4rvAmlNAIRhmfj7P1iZiiEjfud0rVMvhr23jx4D58VzgiuPIPxzEK1sRz+1qFF+RUYSRMYON6+8YFQXlv8NZVZ1XzjjlP1T9zB8ki1jeJZ53sctHABssAhC/3xztA/IQt7nlRADZFBKlH1xe6tqCoe9ntanZS+Oqwdk=
+	t=1774102541; cv=none; b=iEM63vv7EP4Wml9dPlfe5t+nY0lxsebmSXfhzTQ+OboyxExJiiPhrFn5/iLxwDbSvdrFeRkFrEizh33wp1aeEngiYyhOy+yrAlyCWSYdoNaE+ZE6HFsy8vZktA5IxBb3Y/0tHoy3PNQSk1jAjwEpC5a3ehWCobQkjlpONjFomIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774102539; c=relaxed/simple;
-	bh=Bj04iTXB7MhKSrOnlUvWs1/LZRy/U40aj1lrebnr4kE=;
+	s=arc-20240116; t=1774102541; c=relaxed/simple;
+	bh=jzPZdf7Og6HeFXO/l7pOiaD9NwH4pg2nD16c3hH6gys=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LPhU+MYVQsmMkHur93PFHBIOx631pmLp6YeGru9KDCaCd+2iBO5vTVsy0nbkC7R4/Aju9WAF+ycFKJTQo1dmngxAiBLvdOMsDtrsRClIoWX21M5rSiFN1Z1DqGMGvCHajGO9rpdZeO4JETK6X68NKBuXu83kVRQH5oK9D8s3ONY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wvae4peJ; arc=none smtp.client-ip=209.85.214.170
+	 MIME-Version; b=euAPwa18AnpTXLWKMQpg/iVPOoXeFUSsdaI1lLQ9fk0kO+fOTA+cYRE+gNg4xNZ9pyaj1VlPoFErwYBQYg9ak/782yOORKjR1puIqdZsuPBTtEb2fXaXLFux8TvTG7dLeWqus0OKWUwWp4q3LADFDVl/785gO/5NfefYDFD3k5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NYd7EU0c; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wvae4peJ"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2aae146b604so17765385ad.3
-        for <netdev@vger.kernel.org>; Sat, 21 Mar 2026 07:15:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NYd7EU0c"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2b06d33e84cso18081525ad.3
+        for <netdev@vger.kernel.org>; Sat, 21 Mar 2026 07:15:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774102535; x=1774707335; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1774102540; x=1774707340; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TOf9LcnO5IRemgfOLwtBwbNVtgVrreL+MONpjgDCJOc=;
-        b=Wvae4peJeASYU18/ry3ujxdjcrZ9U58sJiuK5vPyIkxaX9ITB5Ia5vJdjJZS/rB+db
-         Ai4CMWn18nGIKR8ZLKS2DqaHc+Mss0vwO6/MQyeinLwHZQJqcRxJ/nmGN4Vmz3NrwaTp
-         /uJfcVT8dn0wD/PvYqFqVZ3iJQG2u63STFpvvTfIlhThPHShAfFRkIYONbAJP73ikTqr
-         rdFnb9lXjUHwXO6EvmsQuYNuVBIXUP+tYYwd66YiRtt1T5VS/GixvlBIC+UZpHJzndpS
-         gBB3ER7fVmCKkbNQH5fEJ4bEB8dzbVGB3W4YHrvFJv9jJcN/f8v8gqF1xm8Yg5LQnREq
-         61LA==
+        bh=uAJIY1DIMzupbpUoUnEua+5LFL/m08GzQPtpfspcCIA=;
+        b=NYd7EU0cfP1gufCqrBWKH/v4MgXV1XbX+CRwp1a2WHdh+LjcQrZ94YP1y4JBVVlFGh
+         Mf6JidkQekGIFXYITEZcj2H/q0BVHJKs7ysTtL102OfQLP54EGH2l8iJIn7yxnJQZTB2
+         dj9RPGmAP02c4ctaZfJUeGIIjuicHHA0NAxwly8bsJniA8ghDz6upbvPhhBJRq2q/Qg6
+         CJ5ndGdvpvt7n7UwH9qhXXfgpa53eTivUyWC2XXKcfwvEVAokmpydT+u5PzCKA1UluHZ
+         FAPkUNjyniz/YWogBvZgEjgTzZdvfhiMPyjQ2tafxGykxHWBWD+piLMsAKPi8TLme0Ze
+         FQdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774102535; x=1774707335;
+        d=1e100.net; s=20251104; t=1774102540; x=1774707340;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=TOf9LcnO5IRemgfOLwtBwbNVtgVrreL+MONpjgDCJOc=;
-        b=Ix5XSmHFsi76yw/lNowHbCMCuPnCetSlPvm/Yql5cEeJLdXJkEDfRqPlEahcccUtd7
-         HeIBxVpgFzsxfg3zN8xKNpalid2ayXe87Lir5zcwMBCkT9LrdkuiZh4IlIq3JuQbZ902
-         r1OewrWrDY4b8IYTUA1Ivh0vEBizhfLZ7AXUWV5j9m3mbvckntbHWuwQbnFth3XY7UtD
-         9yNRM97BWwQSSZKL/o4fjpfLDQ1riFHVEcBG7siOIKOLjtlzQo08ThDmRwd5v99B8uxV
-         nDFcU8bCy8cUqIqaYIVumS/kfy7bdGl9Lp4q9WbySQ//bjtLbOKfEXDieOPGv1JreOtY
-         eJtA==
-X-Gm-Message-State: AOJu0YyOkRo03PQ1yRBBBiIKakzyjjg5iQOY4XydltUpoqUeqyCInZN2
-	528ce+t9Ya8UppyLBHmPMqDf6gTFkHmiTZIxKh83a0VVjDFAMLFhwHP+
-X-Gm-Gg: ATEYQzwKD9rNW2VpVrqUdzK23HMXR11WGI9B+7fhWZTMDrpRu7erKXztFQ2O2II3nQJ
-	kBZk0BQ1qVZiNIfpx1+cpEff3dL99KX/myvCEEikZZGuONc5/YaA0Oco3zkHJBld6ii117zrbYL
-	QTzRjlNz0JYQa0kcUCAENMWLjad76jo31B2BJsKa0LHsDNB4RFY8BZvoUN1pnSM66UjpPwjE8S1
-	hakv/rGFmhmyiirB6mDzFqoTXC79+7kX8xYoYjIqWUuRr8PA0m4tPKcr4KlXuSjzFuZs4aqHvCm
-	NnvbbKwWV6wZHESHBJMv+E3fi3H/d1Sa8mRk3L7z8XMcA5F36+f0in7yYWjcfIwDVp70CUiHvGj
-	Y2gww7cE/tDgUGAokNf+fYDriGbUQv9w+yegKBGlyy6vH65E4Kt3NdW6umGVQaIgCu58nx/jlth
-	QotP7jPDcwuHbge+okR191Nzhdz6mx7MU/s1M3KI5LkbSZ4v6LYpYTNrlbrJZvI3shHErd3f4=
-X-Received: by 2002:a17:903:1211:b0:2b0:4f9a:b794 with SMTP id d9443c01a7336-2b0827bb54dmr63715295ad.37.1774102535362;
-        Sat, 21 Mar 2026 07:15:35 -0700 (PDT)
+        bh=uAJIY1DIMzupbpUoUnEua+5LFL/m08GzQPtpfspcCIA=;
+        b=R6d5W3dmiwoLEBBAtvwDS3hWb7wbQb0sTZ0aS0W991ekt3+R/IqPl6e8rcVQqWpAQp
+         iH/xWqJ+4GPC/ZcyPm45PP7GLcz6vimh6goovWLs/t9LFwrgM1dndYMfY7dkI+fbdjyA
+         EyRjmOEqdt8pYrp3fRCHrOGK7jgDQBqM2S9lkzEiXnzu2XU3Yc7+qJHmuxMe+58yKoR4
+         Oi8U2KfUXTgRSix7x/avJZT0rQ9FOs13Xl4KvLU9jIqZj41faKj0WfTMG+unH9K3sLWS
+         yUkdvu8TiMQtQ8awAso5AXFkAnNIjjKX+11/FHt5DgBcGg7uZ9b8RUnxZkccVGAofBI1
+         XgUA==
+X-Gm-Message-State: AOJu0YwCuM983ebiTV8tH+2P6sdHUEXerjOQw9lTnV0HwY5SukLI4rzA
+	42Lzy1LIEL8/XyO7ca0HFfRiSVLzPUCPIMbhwDkq0SCCer3HqSfQq3f7
+X-Gm-Gg: ATEYQzyit5vdGUQeRqI6bTYKiSI8okboqfUZ+a12tzhWTWcCd+vfjSzm9BU4+qav17y
+	UIZOwtgUofveisM0ZSPZoO0PRYQG/OcHzP8xz5+mWjSv33jNQ8N9QhBTjvzVE1JLuYnfKvrajAd
+	jH6l8iy3oLroPjkhHM1wI4m7gPZM2DZMtc199H+6Tof9XvGNYmqw1tcTOejf9YZrkvL3u8us9Sg
+	TUwe9EGHKcpSSMuQ3hjYkbtdjQTBd2HF5lfQNoxIJgKQexaZPvpxbcj+hg1XBVYQ/NydosUvt8V
+	vXlHW6DTEoiupmUDT7PKVSFwpY6Gktrvg+JNsj1/o+LhF0w/SZo1KC1qlY2LCO8yIx1OcgenH4l
+	2MuMqkLvf1WAYVQ7n/kPVyvMjf7hqhm/PQH/NedCXBQHtFxTjCUtLKdlHIanzDcs82bMYnBm0x+
+	gt9BZ+ypekFm7UUskjmaHsI3AwfRZtyZy3uqQS5nkAiqTfGBPG5H5z/GZrZwVzXXuRx5VjRdA=
+X-Received: by 2002:a17:902:db03:b0:2b0:669d:3a68 with SMTP id d9443c01a7336-2b0826f36a2mr64480885ad.19.1774102539735;
+        Sat, 21 Mar 2026 07:15:39 -0700 (PDT)
 Received: from sean-All-Series.. (1-160-226-215.dynamic-ip.hinet.net. [1.160.226.215])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b08353e94asm52680715ad.25.2026.03.21.07.15.32
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b08353e94asm52680715ad.25.2026.03.21.07.15.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Mar 2026 07:15:35 -0700 (PDT)
+        Sat, 21 Mar 2026 07:15:39 -0700 (PDT)
 From: Sean Chang <seanwascoding@gmail.com>
 To: Andrew Lunn <andrew@lunn.ch>,
 	Chuck Lever <chuck.lever@oracle.com>,
@@ -67,9 +67,9 @@ Cc: netdev@vger.kernel.org,
 	linux-nfs@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Sean Chang <seanwascoding@gmail.com>
-Subject: [PATCH v5 3/5] svcrdma: Remove redundant IS_ENABLED(CONFIG_SUNRPC_DEBUG) guards
-Date: Sat, 21 Mar 2026 22:15:08 +0800
-Message-Id: <20260321141510.68214-4-seanwascoding@gmail.com>
+Subject: [PATCH v5 5/5] Revert "nfsd: Mark variable __maybe_unused to avoid W=1 build break"
+Date: Sat, 21 Mar 2026 22:15:10 +0800
+Message-Id: <20260321141510.68214-6-seanwascoding@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260321141510.68214-1-seanwascoding@gmail.com>
 References: <20260321141510.68214-1-seanwascoding@gmail.com>
@@ -81,65 +81,30 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Remove redundant IS_ENABLED(CONFIG_SUNRPC_DEBUG) guards in
-svc_rdma_accept(). Since dprintk() already evaluates to a no-op
-(via no_printk) when debugging is disabled, these explicit guards
-are unnecessary.
+This reverts commit ebae102897e760e9e6bc625f701dd666b2163bd1.
 
-Verification with .lst files under -O2 confirms that the compiler
-successfully performs "dead code elimination". Even when variables
-(like 'sap' in this case) are declared outside of #ifdef, they are
-completely optimized out (no stack allocation, no symbol references
-in the final executable) as they are only referenced within dprintk().
+The __maybe_unused attributes are no longer needed because dprintk()
+now uses no_printk(), which ensures variables are referenced by the
+compiler even when debugging is disabled.
 
 Signed-off-by: Sean Chang <seanwascoding@gmail.com>
 ---
- net/sunrpc/xprtrdma/svc_rdma_transport.c | 25 +++++++++++-------------
- 1 file changed, 11 insertions(+), 14 deletions(-)
+ fs/nfsd/export.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sunrpc/xprtrdma/svc_rdma_transport.c b/net/sunrpc/xprtrdma/svc_rdma_transport.c
-index f2d72181a6fe..0759444bda50 100644
---- a/net/sunrpc/xprtrdma/svc_rdma_transport.c
-+++ b/net/sunrpc/xprtrdma/svc_rdma_transport.c
-@@ -413,6 +413,7 @@ static struct svc_xprt *svc_rdma_accept(struct svc_xprt *xprt)
- 	struct rpcrdma_connect_private pmsg;
- 	struct ib_qp_init_attr qp_attr;
- 	struct ib_device *dev;
-+	struct sockaddr *sap;
- 	int ret = 0;
- 
- 	listen_rdma = container_of(xprt, struct svcxprt_rdma, sc_xprt);
-@@ -559,20 +560,16 @@ static struct svc_xprt *svc_rdma_accept(struct svc_xprt *xprt)
- 		goto errout;
- 	}
- 
--	if (IS_ENABLED(CONFIG_SUNRPC_DEBUG)) {
--		struct sockaddr *sap;
--
--		dprintk("svcrdma: new connection accepted on device %s:\n", dev->name);
--		sap = (struct sockaddr *)&newxprt->sc_cm_id->route.addr.src_addr;
--		dprintk("    local address   : %pIS:%u\n", sap, rpc_get_port(sap));
--		sap = (struct sockaddr *)&newxprt->sc_cm_id->route.addr.dst_addr;
--		dprintk("    remote address  : %pIS:%u\n", sap, rpc_get_port(sap));
--		dprintk("    max_sge         : %d\n", newxprt->sc_max_send_sges);
--		dprintk("    sq_depth        : %d\n", newxprt->sc_sq_depth);
--		dprintk("    rdma_rw_ctxs    : %d\n", ctxts);
--		dprintk("    max_requests    : %d\n", newxprt->sc_max_requests);
--		dprintk("    ord             : %d\n", conn_param.initiator_depth);
--	}
-+	dprintk("svcrdma: new connection accepted on device %s:\n", dev->name);
-+	sap = (struct sockaddr *)&newxprt->sc_cm_id->route.addr.src_addr;
-+	dprintk("    local address   : %pIS:%u\n", sap, rpc_get_port(sap));
-+	sap = (struct sockaddr *)&newxprt->sc_cm_id->route.addr.dst_addr;
-+	dprintk("    remote address  : %pIS:%u\n", sap, rpc_get_port(sap));
-+	dprintk("    max_sge         : %d\n", newxprt->sc_max_send_sges);
-+	dprintk("    sq_depth        : %d\n", newxprt->sc_sq_depth);
-+	dprintk("    rdma_rw_ctxs    : %d\n", ctxts);
-+	dprintk("    max_requests    : %d\n", newxprt->sc_max_requests);
-+	dprintk("    ord             : %d\n", conn_param.initiator_depth);
- 
- 	return &newxprt->sc_xprt;
- 
+diff --git a/fs/nfsd/export.c b/fs/nfsd/export.c
+index 8fdbba7cad96..8116e5bcbe00 100644
+--- a/fs/nfsd/export.c
++++ b/fs/nfsd/export.c
+@@ -1025,7 +1025,7 @@ exp_rootfh(struct net *net, struct auth_domain *clp, char *name,
+ {
+ 	struct svc_export	*exp;
+ 	struct path		path;
+-	struct inode		*inode __maybe_unused;
++	struct inode		*inode;
+ 	struct svc_fh		fh;
+ 	int			err;
+ 	struct nfsd_net		*nn = net_generic(net, nfsd_net_id);
 -- 
 2.34.1
 
