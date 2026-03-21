@@ -1,45 +1,50 @@
-Received: from smtpbg154.qq.com (smtpbg154.qq.com [15.184.224.54])
+Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD1136A023;
-	Sat, 21 Mar 2026 11:00:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=15.184.224.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC31285072;
+	Sat, 21 Mar 2026 11:00:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774090814; cv=none; b=rs8stPWx3PZKVxWC+lZkH1o1SjW3ywZz8qrcJIeLRQGiW8ZxMbm2jRswYh7jerFEQxBtgH6kDBXEaO1ykE+8W66K9uc2H0inixIithCRmeXUN/65Zb5w6A267KwwM8qffkfUQ3Dhpqk52nhVKCv+ERGLDXXb3VZ29O4/UiN9ho0=
+	t=1774090814; cv=none; b=ZzTArVqivjwWGq5rt/+HYRMH/OwOX5jtp+fGKuyoRd8Vh89gfq6ENEWUGcFgUJTQlXXQpYYgUbFGh4ZKF64CiHNeaXeFGkoVWGKjLmpWdScplwdmQFZluZSACjR9vOdK+Wp5fp6CwKKsjUGt0tXMQ+zdfuuygIZ8KiL2vDemXVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774090814; c=relaxed/simple;
-	bh=Her4TVnRRRZLPOu6Y6Iy0P2Rc4rIDQ9BEj8k18u6ei8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cQlC54SrX5yss7WrkMlOtQ5Bd2E/dlzzedXmfoHlaN/wGtHjrCISRawTb2tFKbzxeDJmd8zSC/M0nkwbbz4Fx/5uvd2CURG54zlQCwHfZkxDJBysb35fcTSjqhLKC8fkgdgikmUxbUkDxdWuTEkV4FlRjTmkXxkoC/bkaTZBI3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smail.nju.edu.cn; spf=pass smtp.mailfrom=smail.nju.edu.cn; dkim=pass (1024-bit key) header.d=smail.nju.edu.cn header.i=@smail.nju.edu.cn header.b=Td8Ljgcm; arc=none smtp.client-ip=15.184.224.54
+	bh=xon1nQweq732r5eVjdzZPB8zk5bI5qxbeUMD6cnUjpI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Dra199Ff6wstrap9LM7iJPI5jdppV2123KOomGrnLvfxxi/EO5u5DOah9QHgucHnn3pgI9LtGs7G6vkJVhfH6h9clTjCJT6nX9qHJAZadumy8Qrabn71t94jTFp2/ad1n+aXt+UDG9Dh7AQrJGhmwnV8n/1V9XDW/d9SnaqDzfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smail.nju.edu.cn; spf=pass smtp.mailfrom=smail.nju.edu.cn; dkim=pass (1024-bit key) header.d=smail.nju.edu.cn header.i=@smail.nju.edu.cn header.b=nj4nMsJS; arc=none smtp.client-ip=54.92.39.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smail.nju.edu.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smail.nju.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=smail.nju.edu.cn header.i=@smail.nju.edu.cn header.b="Td8Ljgcm"
+	dkim=pass (1024-bit key) header.d=smail.nju.edu.cn header.i=@smail.nju.edu.cn header.b="nj4nMsJS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smail.nju.edu.cn;
-	s=iohv2404; t=1774090799;
-	bh=NbjlXZpAUcDFtGW25N3WcRXrSh4ePg4PtCg+sb2ksls=;
+	s=iohv2404; t=1774090685;
+	bh=EBO7V58A7ssXU+gGEAK7HArbYDe3Nmo4Y/R/Js/t75A=;
 	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=Td8LjgcmIKDwXsxfFbdIiMkaKROJqOUsaVunoCzycZNxyf27EGhUS0sh32UaJqmXe
-	 DBcoMItlpd54/A7C3Xh79h0oobBxL5Fu6GOmpmWsyxxveVYqpCP7oRegcdl8lcN8co
-	 CtiWDpdJL9ugnhG+bdKazsUWK+6RlAClCWtnFFNE=
-X-QQ-mid: esmtpsz17t1774090794t57ab8ffa
-X-QQ-Originating-IP: HTnEHFDoW4tXjXu4ijfOUF09MjzUkto/l3UcDzs3fXw=
+	b=nj4nMsJSZXdqOerzyCOm3L7nAoJkeTSas4XWThfr6tv4h6pXw2lN+HV+Cp5to6cy9
+	 0OYaPGomTg8PLfqySDZVAvtDPDB9k6RelebjPZ+SjyOufLJsO2i60T1aE0GPK4X89x
+	 Oiob0aQjnNckqLkqHgss378pT3riyzyZFAPUJXV0=
+X-QQ-mid: zesmtpgz8t1774090677t17b96e5e
+X-QQ-Originating-IP: Xon+mhcmBEE+Lcwhvqo98f/FbKlKhm3fP0ir12d4KSI=
 Received: from localhost.localdomain ( [116.172.93.199])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Sat, 21 Mar 2026 18:59:51 +0800 (CST)
+	id ; Sat, 21 Mar 2026 18:57:53 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 18300758741007282704
-EX-QQ-RecipientCnt: 15
+X-BIZMAIL-ID: 101290449306167147
+EX-QQ-RecipientCnt: 20
 From: Kexin Sun <kexinsun@smail.nju.edu.cn>
-To: edumazet@google.com,
-	ncardwell@google.com,
-	kuniyu@google.com,
+To: kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	longli@microsoft.com,
+	sgarzare@redhat.com,
 	davem@davemloft.net,
-	dsahern@kernel.org,
+	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
 	horms@kernel.org,
+	linux-hyperv@vger.kernel.org,
+	virtualization@lists.linux.dev,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: julia.lawall@inria.fr,
@@ -47,9 +52,9 @@ Cc: julia.lawall@inria.fr,
 	kexinsun@smail.nju.edu.cn,
 	yunbolyu@smu.edu.sg,
 	ratnadiraw@smu.edu.sg
-Subject: [PATCH] tcp: update outdated comment for removed _decode_session6()
-Date: Sat, 21 Mar 2026 18:59:51 +0800
-Message-Id: <20260321105951.8314-1-kexinsun@smail.nju.edu.cn>
+Subject: [PATCH] hv_sock: update outdated comment for renamed vsock_stream_recvmsg()
+Date: Sat, 21 Mar 2026 18:57:53 +0800
+Message-Id: <20260321105753.6751-1-kexinsun@smail.nju.edu.cn>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -59,56 +64,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:smail.nju.edu.cn:qybglogicsvrgz:qybglogicsvrgz5b-0
-X-QQ-XMAILINFO: M6Wwv1ws7JqNkwrFAxde172zQgyn9Dwi6RB29OlljzUdLdh2Fa4pRJKe
-	Zaq1ABiiEDs2i50A2BVoTHgG29i6849smuGVnlw035hcsDatcCC/AemW/tq4Up33gWAR2Ke
-	iDWwVk1BJJuTqDMBGJnFpdKj9K5s5ZRpKXDbAUHYKlMOFI0R0A4gYLQdvZ8l5sTCqBC4DiO
-	jTJurxczosFn7wVmrjiCqroMH5myy9s6nPQuIbnceMhfJCdOtjR89wgVcMEeKrVVX/rUuKL
-	PijOiG0RtYq7D5Hgcxhe8cY0bv14N6FrsKECb+rQCW55hCrO5FdylY6eHwKIDF4x+eEIEy/
-	mBMlP6p8liI0KsafrW91SgUGQivG1vBWy41obneqhoQ16nl0CVpqXGqRZ/8exRMAdhl4srB
-	tgVM/5IuTSz/9SX9LMplNHrtF0gEWdE/r2J6zfifLTIhmkqrUgpZbmMONsWS2TMZcfuR0n9
-	2gc+j3AjWYcP+mloHMs02Hy4dhuEVAxungO/zGGP1zqxbKF67jUJbAg8ddew+ISsjkYvKxZ
-	6dBVNflInDFhpChSyLgbcJvAwxA+205d+jEzqyBLa42MQufQvlzTUmt+QCGFoZW567aZSD9
-	sONZH1QFKbsrIoJwEgMlJCyS44G/EspAUuxhKafS4WqlbuYp84PpikNOYaOwh0b9t1ktC6w
-	0xrWYRtZ6jKjijJ40qA8JdtyrrADPyoTUlD1yAV3AREHwxMQxSTKri8/kYci6pKtnuFJTK9
-	cc1Xa2d2Rcmng9R6y1/CRimpSqapvgRTwy1DtMOZLkN2UUnlGOeK2ooZRE0/MaNqMWc4azo
-	K/hMs0JrqiYx1U7r0bTcw+po4vkXT/1NZUgy/WzExY/Gruz7gTfvVllyMffXnf7WRHQfyTI
-	HQTzfqh66LSKs9JAsakZuEczHknJ0b8uP/JXpU2+I+svFwB81QtN3gNnucvjAWjzBnjUA4G
-	RniJud3vwQzuijB95dSC0gG0PonXoTxHgWt9RhrYrzByIWSzr54+hEd0TF11OlQaHEqtM2f
-	cCxm0n03d/KnkgODVc2wkl58hoMv7tAmc5bDP3RuuACOwLNnRcEO9QIVJZ1dNgwzFCv+ruc
-	CM8X23hMfOF7Rh3tXOrxyMDa9xZULVmkQ==
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
+Feedback-ID: zesmtpgz:smail.nju.edu.cn:qybglogicsvrgz:qybglogicsvrgz5b-0
+X-QQ-XMAILINFO: NBkE/PP8DpFY9NRetunQVCP6iiO9/Ub4XwlB/WqgpQceHWRlJBZYHw96
+	8d5uhMllzOKAbRKGxUqm9XfA1EoEaN3AlvIR/Tk7FmwiY2g4ZBvD00QPRDHfNBYzokcs/hh
+	7Ja03GJkjoTD/DzW8nmZbfdXurR+ZtYdhvsYqsTCOOZSWCeydYjoLKngKb8VsCzLBWfyYE/
+	2vvBVN+Cwgn/AkGuvHleYj8CZpsrWttnM/I4EYv161IEj531RKxZS5LBm0xOLQiviM1C1mb
+	Q/wL4tG5u4tvX4at61lAp/ckkHfLNUB7LnvB1HF2Du9BjvcelX/t61ioUp/uV0O50CLwD4f
+	MgOwjmCi5Uoo+oTisB/SWwry9MNlNi3yo3rPGv4YbTgmtU+6EJLt3/s8iWB8+jbk0RnOjML
+	sdiOibDX6ROmVeSnllX6HAxv/lHmKAyPIbE4ADBrAbxbblLX5v5cBC+8ssyoiRe+vS3ad1S
+	frwqZkJILwt8jnYWMsJ2FulFNmj8Sk0VcfYDt2j9FGOR6UQOeHuHGt1Qw2e8zzKn7CALzEh
+	/3RyQ9si+y8UZWtR6bVuQ2VfzT6dkW0UwFvz+b1Hd88TpvINeUJh9Jn57QVSwvTYNH7vUTf
+	utuQDv/UlmqTi5mTs44DwazieuIR7fWnM+rQkJNey9COrjgQD/yhqticQbng53rZJwm5kCT
+	KWqShksqCVy/kF0Gfwi516HpZWoxtbWQDfIb9ld1OSEsxtgQfMl6gA5QmvuSQdMXx8zSzom
+	5a+Oq1bYASyCoEQFX65709thLIPTC7Hqh0eHgzRnmGPS3f5BE5dAdCPayKtJ6fMBDoyPQzN
+	gxuHGOm0l7yvaxhkFwInllLMC9b3B+obOkJqbq2As1PZlAEd2QKou3D3+2GhtrnosSeqJC9
+	sYRmmmOToSfq78S52WiVag+r+pul8b5QU23UzHPUCbjEvR3SFgRi7P9a7lhvtec3RIuEVbB
+	6Y5zkrx48F5JcN7ZtDJlNiZK5+bhySldBzc+Vh5SnoTQXz3+ZO4ek9e8wLMkS7PasZ1415P
+	t2p0jhtCLlFcrLNxT711OPaXQeucSen742QankR/VW7q/VlOTt75i9sCW3PuiI1rYR7r7N4
+	McKBCrZVcQ0803c1rEN2NI=
+X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
 X-QQ-RECHKSPAM: 0
 
-The function _decode_session6() was moved to
-net/xfrm/xfrm_policy.c and renamed to decode_session6() by commit
-c53ac41e3720 ("xfrm: remove decode_session indirection from
-afinfo_policy"), and was later refactored to use flow dissector
-instead of accessing IP6CB() directly by commit 7a0207094f1b
-("xfrm: policy: replace session decode with flow dissector").
-
-Replace the stale function reference with a general description of
-the ordering constraint.
+The function vsock_stream_recvmsg() was renamed to
+vsock_connectible_recvmsg() by commit a9e29e5511b9 ("af_vsock:
+update functions for connectible socket").  Update the comment
+accordingly.
 
 Assisted-by: unnamed:deepseek-v3.2 coccinelle
 Signed-off-by: Kexin Sun <kexinsun@smail.nju.edu.cn>
 ---
- net/ipv6/tcp_ipv6.c | 2 +-
+ net/vmw_vsock/hyperv_transport.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index d10487b4e5bf..84d95e76085a 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -1690,7 +1690,7 @@ static void tcp_v6_fill_cb(struct sk_buff *skb, const struct ipv6hdr *hdr,
- {
- 	/* This is tricky: we move IP6CB at its correct location into
- 	 * TCP_SKB_CB(). It must be done after xfrm6_policy_check(), because
--	 * _decode_session6() uses IP6CB().
-+	 * the flow decoding during XFRM policy check uses IP6CB().
- 	 * barrier() makes sure compiler won't play aliasing games.
- 	 */
- 	memmove(&TCP_SKB_CB(skb)->header.h6, IP6CB(skb),
+diff --git a/net/vmw_vsock/hyperv_transport.c b/net/vmw_vsock/hyperv_transport.c
+index 069386a74557..2b7c0b5896ed 100644
+--- a/net/vmw_vsock/hyperv_transport.c
++++ b/net/vmw_vsock/hyperv_transport.c
+@@ -196,7 +196,7 @@ static int hvs_channel_readable_payload(struct vmbus_channel *chan)
+ 
+ 	if (readable > HVS_PKT_LEN(0)) {
+ 		/* At least we have 1 byte to read. We don't need to return
+-		 * the exact readable bytes: see vsock_stream_recvmsg() ->
++		 * the exact readable bytes: see vsock_connectible_recvmsg() ->
+ 		 * vsock_stream_has_data().
+ 		 */
+ 		return 1;
 -- 
 2.25.1
 
