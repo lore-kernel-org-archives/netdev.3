@@ -1,224 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9FD38D680
-	for <netdev@vger.kernel.org>; Sat, 21 Mar 2026 14:41:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE8A38F25F;
+	Sat, 21 Mar 2026 15:24:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774104119; cv=none; b=UFYSLbHKw2VyB8TBNsIONkBDF76aHWZ+GAeoXiWVvRPQ0ZIhayZBHLFGbitIMhat4LJWclSXiuiE2TFd4uXh5XpkKq/DAkDK4eViV3G8+etAFKZwatfE0KQKP38N7pCLPu6w/+a7WAfrnxwo0SC10i7i69F+1h8BMfZS3udLEBA=
+	t=1774106666; cv=none; b=BBvOAP9SCOEDioLcwVUGqeZfq5wvq27avpIE+tlFuvCsCWkF0sgknqQuAjb/g7Ezqo3CxcMQaZrtq4K/Aq9Pp5WHgypFjdBe7fhNQwgOKzXCmOie/x4BadTLO5NR39Dgt1ocaPouQVxf8MVnvGywZCXti1o09BKBMIwOmnZHr/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774104119; c=relaxed/simple;
-	bh=ObYld9zxOf6gTfGXzgKx7yFASQiWGAHw3Ikee/ABTwE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=SMPsksIAHcfJGUuEwQZuXRB0FwPzEYplaelXP7P2RZAlGMGDtF27+kqTe9FY4FC00LavXWaHOtwvIPClPTf91ooTU/FyHgxfDszniyQZ1tD4U1CmbHATvQL5R9mQaGHMK7YX/lIO2S4EAf2vjYf8Eeiw1dFzIkTzCUQxTaFwDZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ILV3TUUI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774106666; c=relaxed/simple;
+	bh=u0wcA0tPR8q/+IKF3H8Puc2o7lli+o7vG3hVYnqd9sI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RVD2gk4PA8qj1XgZkwDQ2LaXrutsu5fh8eaSwf+5MXqq7Hua0sh5f+Nhqc4FQ5aqtOG74oFpH6LJf28+Q69Pc96xrFbuzbJ1xwNT5St6yEHDxzAkRylcuxM2sm9JRCaAHfSzTbSvNibLunlpjTJeyjMuL9vwREuPe1XcQJMILDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=rDr5L8K2; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ILV3TUUI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D19BBC19421;
-	Sat, 21 Mar 2026 14:41:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774104119;
-	bh=ObYld9zxOf6gTfGXzgKx7yFASQiWGAHw3Ikee/ABTwE=;
-	h=From:Date:Subject:To:Cc:From;
-	b=ILV3TUUIr7ndjs9F0yQRz4drfu7tdZJuJwE6Z0Si0AUcUO9TEizrQcWeREYKsD5h1
-	 tJwlaSSSoUAfoF3mQJByQwESStrnna+vHCRaT13NAWx9zJYWLguuHcvz1Mj3Z7sDz5
-	 2BYqHs4r8N0TcWzCju46/0z/vuNENF4zevW+2uGdlXPXl0VX5lgoMvaKUEhjbadJ0B
-	 k9fZK4KGKt2oQB7X8Jf3/IxdP2B1Mjbz7R1pdauk3VQEC3VDqhdUeEkweFfKEYi5lG
-	 F8Vvxu+jJJNpqQSiCaICtou6otCNZLPGd6C5X2pcEiyCbqru3lHRSJomn2x2s6y298
-	 NR3ZIg5+GkR9g==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Sat, 21 Mar 2026 15:41:44 +0100
-Subject: [PATCH net-next v2] net: airoha: Rework the code flow in
- airoha_remove() and in airoha_probe() error path
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="rDr5L8K2"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=1xQXnxuKnh/cYEUl1dyTeGXPR8XNOB8KEAwiWHUWmTA=; b=rDr5L8K2KLnAm6jSe+Qd2VdA1v
+	LcYT6iEfQoEn/DKdYkz0OintU+ZKi/qKmRXpFfjNaBr8K+S67q5YXJJg4C4m9Ua6S/Mpq37JNx/Cf
+	DVS3oK0edE1WMocSFhfVEf0PujNeLhlwgXhziAmTv0CdtNIo0F5XMSsrZEwwlaXmbyCQ=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1w3yBK-00CiyE-Jk; Sat, 21 Mar 2026 16:24:06 +0100
+Date: Sat, 21 Mar 2026 16:24:06 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Daniel Golle <daniel@makrotopia.org>
+Cc: Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Frank Wunderlich <frankwu@gmx.de>, Chad Monroe <chad@monroe.io>,
+	Cezary Wilmanski <cezary.wilmanski@adtran.com>,
+	Liang Xu <lxu@maxlinear.com>,
+	"Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>,
+	Jose Maria Verdu Munoz <jverdu@maxlinear.com>,
+	Avinash Jayaraman <ajayaraman@maxlinear.com>,
+	John Crispin <john@phrozen.org>
+Subject: Re: [PATCH net-next 1/2] net: dsa: mxl862xx: add CRC for MDIO
+ communication
+Message-ID: <c5f29b9b-9447-488e-b8cc-e2f7e7cbf1a8@lunn.ch>
+References: <cover.1774070039.git.daniel@makrotopia.org>
+ <af6911188ee6becb9100d4bf13d0820e5bf9eaca.1774070039.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260321-airoha-remove-rework-v2-1-16c7bade5fe5@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32NTQ6CMBCFr2Jm7Zj+gBBX3sOwaOgAE7Q1U1Ixh
- LvbcABXL19e3vc2SCRMCW6nDYQyJ46hgDmfoJ9cGAnZFwajzFVZo9CxxMmh0CtmKvGJMmNrW1t
- XlW/q1kOZvoUGXg/tAwItGGhdoCvNxGmJ8j3+sj76/+qsUaPzRENDtld6uM8kgZ6XKCN0+77/A
- LfZdOLDAAAA
-X-Change-ID: 20260320-airoha-remove-rework-8383544d758d
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Simon Horman <horms@kernel.org>, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <af6911188ee6becb9100d4bf13d0820e5bf9eaca.1774070039.git.daniel@makrotopia.org>
 
-As suggested by Simon in [0], rework the code flow in airoha_remove()
-and in the airoha_probe() error path in order to rely on a more common
-approach un-registering configured net-devices first and destroying the
-hw resources at the end of the code.
-Introduce airoha_qdma_cleanup routine to release QDMA resources.
+> +/* Firmware CRC error codes (outside normal Zephyr errno range). */
+> +#define MXL862XX_FW_CRC6_ERR		(-1024)
+> +#define MXL862XX_FW_CRC16_ERR		(-1023)
+> +
+> +/* 3GPP CRC-6 lookup table (polynomial 0x6F).
+> + * Matches the firmware's default CRC-6 implementation.
+> + */
+> +static const u8 mxl862xx_crc6_table[256] = {
+> +	0x00, 0x2f, 0x31, 0x1e, 0x0d, 0x22, 0x3c, 0x13,
+> +	0x1a, 0x35, 0x2b, 0x04, 0x17, 0x38, 0x26, 0x09,
 
-[0] https://lore.kernel.org/netdev/20251214-airoha-fix-dev-registration-v1-1-860e027ad4c6@kernel.org/
+I had a quick look around and count not find this table anywhere
+else. Mellanox has a different CRC-6 polynomial. Until somebody else
+needs this, i think it is O.K. here. But sometime in the future it
+might be moved into lib/crc.
 
-Suggested-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
-Changes in v2:
-- Fix eth->napi_dev leak if airoha_hw_init() fails in airoha_probe()
-- Link to v1: https://lore.kernel.org/r/20260320-airoha-remove-rework-v1-1-adeef7e3c01f@kernel.org
----
- drivers/net/ethernet/airoha/airoha_eth.c | 76 ++++++++++++++++++--------------
- 1 file changed, 44 insertions(+), 32 deletions(-)
+> +	ret = mxl862xx_crc6_verify(ctrl_enc, len_enc, &fw_result);
+> +	if (ret < 0) {
+> +		dev_err(&priv->mdiodev->dev,
+> +			"CRC-6 error on response to CMD %04x\n", cmd);
+> +		return -EIO;
+> +	}
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index 961325da833b27eee31dfa03be26dfc82071097e..82e53c60f561f6314fbf201ba8bc8711e40edc68 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -1368,6 +1368,33 @@ static int airoha_qdma_init(struct platform_device *pdev,
- 	return airoha_qdma_hw_init(qdma);
- }
- 
-+static void airoha_qdma_cleanup(struct airoha_qdma *qdma)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(qdma->q_rx); i++) {
-+		if (!qdma->q_rx[i].ndesc)
-+			continue;
-+
-+		netif_napi_del(&qdma->q_rx[i].napi);
-+		airoha_qdma_cleanup_rx_queue(&qdma->q_rx[i]);
-+		if (qdma->q_rx[i].page_pool) {
-+			page_pool_destroy(qdma->q_rx[i].page_pool);
-+			qdma->q_rx[i].page_pool = NULL;
-+		}
-+	}
-+
-+	for (i = 0; i < ARRAY_SIZE(qdma->q_tx_irq); i++)
-+		netif_napi_del(&qdma->q_tx_irq[i].napi);
-+
-+	for (i = 0; i < ARRAY_SIZE(qdma->q_tx); i++) {
-+		if (!qdma->q_tx[i].ndesc)
-+			continue;
-+
-+		airoha_qdma_cleanup_tx_queue(&qdma->q_tx[i]);
-+	}
-+}
-+
- static int airoha_hw_init(struct platform_device *pdev,
- 			  struct airoha_eth *eth)
- {
-@@ -1395,41 +1422,30 @@ static int airoha_hw_init(struct platform_device *pdev,
- 	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++) {
- 		err = airoha_qdma_init(pdev, eth, &eth->qdma[i]);
- 		if (err)
--			return err;
-+			goto error;
- 	}
- 
- 	err = airoha_ppe_init(eth);
- 	if (err)
--		return err;
-+		goto error;
- 
- 	set_bit(DEV_STATE_INITIALIZED, &eth->state);
- 
- 	return 0;
-+error:
-+	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
-+		airoha_qdma_cleanup(&eth->qdma[i]);
-+
-+	return err;
- }
- 
--static void airoha_hw_cleanup(struct airoha_qdma *qdma)
-+static void airoha_hw_cleanup(struct airoha_eth *eth)
- {
- 	int i;
- 
--	for (i = 0; i < ARRAY_SIZE(qdma->q_rx); i++) {
--		if (!qdma->q_rx[i].ndesc)
--			continue;
--
--		netif_napi_del(&qdma->q_rx[i].napi);
--		airoha_qdma_cleanup_rx_queue(&qdma->q_rx[i]);
--		if (qdma->q_rx[i].page_pool)
--			page_pool_destroy(qdma->q_rx[i].page_pool);
--	}
--
--	for (i = 0; i < ARRAY_SIZE(qdma->q_tx_irq); i++)
--		netif_napi_del(&qdma->q_tx_irq[i].napi);
--
--	for (i = 0; i < ARRAY_SIZE(qdma->q_tx); i++) {
--		if (!qdma->q_tx[i].ndesc)
--			continue;
--
--		airoha_qdma_cleanup_tx_queue(&qdma->q_tx[i]);
--	}
-+	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
-+		airoha_qdma_cleanup(&eth->qdma[i]);
-+	airoha_ppe_deinit(eth);
- }
- 
- static void airoha_qdma_start_napi(struct airoha_qdma *qdma)
-@@ -3012,7 +3028,7 @@ static int airoha_probe(struct platform_device *pdev)
- 
- 	err = airoha_hw_init(pdev, eth);
- 	if (err)
--		goto error_hw_cleanup;
-+		goto error_netdev_free;
- 
- 	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
- 		airoha_qdma_start_napi(&eth->qdma[i]);
-@@ -3040,10 +3056,6 @@ static int airoha_probe(struct platform_device *pdev)
- error_napi_stop:
- 	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
- 		airoha_qdma_stop_napi(&eth->qdma[i]);
--	airoha_ppe_deinit(eth);
--error_hw_cleanup:
--	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
--		airoha_hw_cleanup(&eth->qdma[i]);
- 
- 	for (i = 0; i < ARRAY_SIZE(eth->ports); i++) {
- 		struct airoha_gdm_port *port = eth->ports[i];
-@@ -3055,6 +3067,8 @@ static int airoha_probe(struct platform_device *pdev)
- 			unregister_netdev(port->dev);
- 		airoha_metadata_dst_free(port);
- 	}
-+	airoha_hw_cleanup(eth);
-+error_netdev_free:
- 	free_netdev(eth->napi_dev);
- 	platform_set_drvdata(pdev, NULL);
- 
-@@ -3066,10 +3080,8 @@ static void airoha_remove(struct platform_device *pdev)
- 	struct airoha_eth *eth = platform_get_drvdata(pdev);
- 	int i;
- 
--	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++) {
-+	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
- 		airoha_qdma_stop_napi(&eth->qdma[i]);
--		airoha_hw_cleanup(&eth->qdma[i]);
--	}
- 
- 	for (i = 0; i < ARRAY_SIZE(eth->ports); i++) {
- 		struct airoha_gdm_port *port = eth->ports[i];
-@@ -3080,9 +3092,9 @@ static void airoha_remove(struct platform_device *pdev)
- 		unregister_netdev(port->dev);
- 		airoha_metadata_dst_free(port);
- 	}
--	free_netdev(eth->napi_dev);
-+	airoha_hw_cleanup(eth);
- 
--	airoha_ppe_deinit(eth);
-+	free_netdev(eth->napi_dev);
- 	platform_set_drvdata(pdev, NULL);
- }
- 
+This is the question, what to do when you see a checksum failure? The
+basic assumption is MDIO is reliable. PHYs don't do any sort of
+checksums, nor any other switches using MDIO. Why would you want
+checksums?
 
----
-base-commit: fb78a629b4f0eb399b413f6c093a3da177b3a4eb
-change-id: 20260320-airoha-remove-rework-8383544d758d
+To detect the hardware is broken? If so, is returning EIO sufficient?
+Would it not be better to admin down all the interfaces?
 
-Best regards,
--- 
-Lorenzo Bianconi <lorenzo@kernel.org>
+To allow the MDIO clock to run at a higher frequency, at the limit of
+the bus, so you get occasionally failures? If so, should you not
+retry? But are the commands idempotent? Can you safely retry?
 
+	Andrew
