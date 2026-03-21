@@ -1,138 +1,135 @@
-Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778762DCF46
-	for <netdev@vger.kernel.org>; Sat, 21 Mar 2026 18:50:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774119041; cv=pass; b=eJHi0dRLjwkFYhsH4Gaf0u4WTIe3HutbbA/4GVU79wdLgCYpZg4F1nI0YFNOh7/d+o76lIHIOFnoRo+TK350pN/9aWi0rrBfId/1qvXQelQSwS4eqvODRlBXy4qVf2oWeTX5tbR+qQcBIx2+KM7U9OItHr9HDSF9Za6ankprG+A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774119041; c=relaxed/simple;
-	bh=+0No1nOe3K8acpsovC+eRn2fpHxV0wIVdlMJvNTeFzk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mcrzaR3/QqIKX/JJ6yRkEJwdhYhimyvpviImnlC9jt/u9tvH5QJq7GGoFGVi/KR2V4GClajCJN53iKCvHBewkVMTb0qhj86g1cnGUERgvPV5AzvNAtI8DHTTRtTPzK87jU36kwuqlZn/V4qDZpF6tfg+cqJQ6H8eTup7ncqLu48=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gwOAGa6f; arc=pass smtp.client-ip=74.125.224.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120543016FB;
+	Sat, 21 Mar 2026 18:54:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774119297; cv=none; b=Bdthe+iYiq2UUWrIldpwOHGjp/Us/Vi/xauM2zVRkz9S4B0MAh9CLCso8Pfo4z587zljT5GF4PL2XPWeuY6LDDlHKrbFi1oWQxbwxX9oyb13ZNfh1UALHeEH5eySW6iIMfi3wNkggMWrQaBdloe6xau4DydJYyQfC6Cw6y4T+Ng=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774119297; c=relaxed/simple;
+	bh=lcUjA2tOXH6xrPM+MteHiFBZw46mc+U013QORqy5ogs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ef8ph9vzLbBHdx2Vxl1gwrsodPxlFtzNSDiAutDUpWcecvx4JGhsRQPYmxkFZGdGpgqdpqGQbgce41OAts9pG+MPsOC9I3zoePFylPblA2qn7XARqt0Er58FcrKyPhrXl/7bAK4Zz6BHDHXt06Lk/QONBozlIIJAT0kD+yht4Fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=B9ySxL+x; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=TEzKBDnw; arc=none smtp.client-ip=80.241.56.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gwOAGa6f"
-Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-64ae222d978so3183524d50.1
-        for <netdev@vger.kernel.org>; Sat, 21 Mar 2026 11:50:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774119039; cv=none;
-        d=google.com; s=arc-20240605;
-        b=UzeUP2iTuWoTqwwLc3vUEGWgDdlSPDbWvNL9Cnlm2njWZe+bAQPioz9//WgEoTiTkE
-         NerEObdJPkMFNSScIAs5VS2fHuXeb/yHWemqJ9v4e4aQUfbAiUBUyAYDqoBgxy/UGaOB
-         COMZLc7OQ00NIJfg+1QXrm06jvyUcDnSF51V3h5j0BfU6FENYNf+z4LUsMzADXMwY0Hl
-         lcLhwn6+SW9m22XWBsRT8+M1EXV2hHIF6pcNwMKyXBIMBzpklyGwDLDJ+wOzlRhGsyoX
-         tZhynaS3B9xuiPvPhUFyV5SZmtBRV07jrkdc+NsqpOXjpn+nVyQs7Gg5AutFq4bCG7ji
-         Wq9w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9kUzADYXy/NGXQSWeaYXgTqQSK+6xS5PfeQEuXgpkVs=;
-        fh=Xc+i9978KFyI8pb9aA8ka7z6AF2drxGCAZW5UmHsnTc=;
-        b=Uk7V88QcF0dkflgcJAIwJaEbGNoCOJYuW5Dvv7S+7EQN+u7lWd8OF5ye/zKYPE7PlP
-         MnkbfJZVeZfquB/le5TkzFkVCAiSRvh2cV0ytpkiFZ8KddEQhrgx/ugIIR+m5NhutV8v
-         83SeCLRwt/Q2g+kkw3NhNf+1gPTh5ksDC51QUY3LaFPn+kIOp7oYZSz1CcZJKlFvjswZ
-         qC4fLCAm6JStIMVXS12r6kP67+QK4fWsu5kSJw2vVo4zO9/8s93hOH4yemWCLUtTN1rz
-         4uqyrulysU/RRf3Vur1NZO9vlTsHvkWa1ug2ksrvc7iK4DxxO1+3zdaC5vGZFt6fo1Zl
-         m37A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774119039; x=1774723839; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9kUzADYXy/NGXQSWeaYXgTqQSK+6xS5PfeQEuXgpkVs=;
-        b=gwOAGa6frfrfo1I1NCI2qE5kPq1Tlv+5/gAp6XUSPW315zVK6bWYjg7y6IM2aLQMgW
-         gtOEggGT/G7sZXCQaNb93t1SFxZGsqGMS2b0SDyfvhvxAtJs4kKPnO6BeFBYxUJuU+3n
-         l5iLkayGUDJrNFPLTIWxA2FIdqgkdC+a6bXyN33QhzwM/sp3xiEg8ASO5rpZqQx6mnIt
-         vhRRnyEpM5OWPES80pg9GqrAt1OzqTAhZ9vu3+0oksOj/0KczXl+S6YAw6aI3PIVwK9C
-         GL1OfhunjkP2ODJnZOBxf23o9BCRLvJagtMjj7QfFL6kardj84Fdck0hXp2ARP3+eHba
-         ahIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774119039; x=1774723839;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9kUzADYXy/NGXQSWeaYXgTqQSK+6xS5PfeQEuXgpkVs=;
-        b=HGGWQxSLIw4aILhYQoLon3W8QGodiyiIyhhq3NgE5/f4/W2TW8f+vEyymEtMRFV9kK
-         Wp5oZHt40dSf/y1mvdJGkIKmwHzPObIAmrSXIkeQLWNJ6030JAdSKJ0v8IpCveH017Uu
-         DOBsnRsr7MjrCYXSHBlUfgYOGstXuX8h3/6qNhsGzBONNldvk8GJdWv9MBWG7LzIjEmM
-         V/1yGyaE0OQzWu7cZ4OkVBTB8F8WTgx+4N0Lz/bkI9j3T3biUPKCcXfcr4/ufvyLvnnK
-         rTS0Cbp/fARofEJEQ+zH4jPcJOX8M0flrZ4b1VU/h+OoXVYdltEKCoDRCOe6CjNoiKir
-         4lVg==
-X-Forwarded-Encrypted: i=1; AJvYcCXS2qw79tdEn85VqaF8terD1dbPE4M8K+AuitzFlfawe+KWSuWvLSnGmgNrNTx/kVeaeDQQVz0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyjigqAAwAcPTOsO81zGOeZrbT1nZBTFv5+rh81ZcfqrghMjhlS
-	XYY0T+2oSQoiQsmKsCfsSabJF9Crmz/KXK3/+yAnbChmv25JKQ69MJgEB+/UJR4SYPhJ4e6C76z
-	/LsnR1f0mCII4yjpbFZ3AhSWxgRerqg8=
-X-Gm-Gg: ATEYQzxBJA5IAXtPDbdtbSaNCIKclQgfEF8y/fuQtaANSNWwv0CDdJ+GZd3pqzNwKHb
-	v7b3VKhbrwjf3EKRTocadiHbkEk27Mq1XB8IGAWXn+ZyEmGjxumr6aZyQLm0CZRyCoNLssnVV1H
-	28IqCVqeReiwZA/XPeAlzKILZ+SnRdZ47r17KTmQzb5FXRbGZnPjIEEfFDM/GOZgqQEmsGVfrZd
-	TEPVdmDY+3yeQRLE4WhvRMrzpMtV+LGY7GYOXZ8EllQb39fKEDeQHD0uRpqFDiUMpuM4pP4axGC
-	MmP5i4lGi6gUNGOaKrWFrR0ZVQZlC3B7/bBJlQgmsEBqsL+S+fJ4EHq7l5n2L9dyKg6k+A==
-X-Received: by 2002:a05:690e:3cf:b0:64a:f138:3172 with SMTP id
- 956f58d0204a3-64eaa7f1428mr5525702d50.59.1774119039521; Sat, 21 Mar 2026
- 11:50:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="B9ySxL+x";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="TEzKBDnw"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4fdT3F3BY4z9vDH;
+	Sat, 21 Mar 2026 19:48:25 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1774118905;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=xaB175QEGmnw0RID6ZBF0oUHABZ4Kfsd8JaellT99Zs=;
+	b=B9ySxL+xQrypQhLjspzbMqPpdiixyaMfXFKFobJgPQGridPkTkdhk2j6d6u8DU2SvT0H1n
+	UpXbcEML83x2kiskGdJK0qHKdKxanaqU99rQYfZU19uMymIgErxBCKvMGDJDyDj9dKsbpL
+	h2TWwCbi7OixULibBmxUVXhHdzyq2dTtyvdHFv1WOJiCAgqQADbcr877IDBQqgh1btyxAZ
+	DHHlpIp6NzuuJOXeiChfaF2/0kb8KDwnlyxHHgNyTaAwk+tYNuydfM2jMWkljkigtH8a/m
+	QkM1yzqCeLy3fjtw+0s4CKdgyHzLZ71m+msHnNjVLdoB7ZbDes+aVNpnSpTmDg==
+From: Marek Vasut <marek.vasut@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1774118903;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=xaB175QEGmnw0RID6ZBF0oUHABZ4Kfsd8JaellT99Zs=;
+	b=TEzKBDnwxJmsWvVaMwHRu9vKmPkUXgBmRnWuBbnGGWhiQsA0RbNKVB7Y5Grs37+4SYQNn4
+	2BTPtVzE+SA8RbzCf2re3TCCzwvypzOvy9bT0gyk3lDTE5WNukdY/YYR+Zv0zCcbo9UwXM
+	HlELhgNBHVSeemzOYgf1p7RuTgq4zXYa/wG/39MGVpPPXijyGxirXfKgcgrwZhNU8A+ptx
+	ADdEVeOMnBTCv00vbQwmbziiMXeThxrq3Q08IQq0OmshSW5Ru6n8++AF9ULrIiVnfvH0Wd
+	BGBHTOLnlxiIV0blgQ8+z1s3vwKU49mGMlhZfk05+PfhoEl5DDpOLggt9q2H/w==
+To: netdev@vger.kernel.org
+Cc: Marek Vasut <marek.vasut@mailbox.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Ivan Galkin <ivan.galkin@axis.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Michael Klein <michael@fossekall.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	devicetree@vger.kernel.org
+Subject: [net-next,PATCH v4 1/3] dt-bindings: net: realtek,rtl82xx: Keep property list sorted
+Date: Sat, 21 Mar 2026 19:47:41 +0100
+Message-ID: <20260321184815.148485-1-marek.vasut@mailbox.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260319190455.135302-1-luiz.dentz@gmail.com> <177396481128.1855248.1024090053580545012.git-patchwork-notify@kernel.org>
- <6411a735-d187-4848-b199-a0e2c2e0e52c@leemhuis.info> <CABBYNZJfLf6PzKUkGjiCvqEm3h0+3SUcxY5RNbUHv6LBdPT_zQ@mail.gmail.com>
- <CAHk-=wh8dnp1qT_CHG-Zz9H2=G1Q=0rF5SYv+YsEaPnVhznxWA@mail.gmail.com> <CAHk-=wgryF_COh9xzhGaJ-FAm471pn5uvqt-Z94+3ENPVu4w-Q@mail.gmail.com>
-In-Reply-To: <CAHk-=wgryF_COh9xzhGaJ-FAm471pn5uvqt-Z94+3ENPVu4w-Q@mail.gmail.com>
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Date: Sat, 21 Mar 2026 14:50:28 -0400
-X-Gm-Features: AaiRm51cGXYHCRKZ4R7legIePMrTOfuHm9IjRv6oMxOWqE8F-4Vc5HcbG73sqko
-Message-ID: <CABBYNZ+YC43qvRQb7-KXv-EJ=s1Bhdf-Xu1xeEZVuzq96R7NTA@mail.gmail.com>
-Subject: Re: bluetooth regression fix likely to miss -rc5 (was: Re: [GIT PULL]
- bluetooth 2026-03-19)
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Thorsten Leemhuis <regressions@leemhuis.info>, kuba@kernel.org, 
-	linux-bluetooth@vger.kernel.org, davem@davemloft.net, netdev@vger.kernel.org, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-META: 4tcst1quwihjhkgp4krxphrq9r4jokzq
+X-MBO-RS-ID: f76902603a2f2e71159
 
-Hi Linus,
+Sort the documented properties alphabetically, no functional change.
 
-On Fri, Mar 20, 2026 at 5:19=E2=80=AFPM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> On Fri, 20 Mar 2026 at 14:03, Linus Torvalds
-> <torvalds@linux-foundation.org> wrote:
-> >
-> > That hardware may admittedly often not be great, and we may all wish
-> > that it didn't exist, but hey, that's the thing about reality: it's
-> > often messy.
->
-> Of course, the thing about "reality is often messy" is that then you
-> end up with the truly conflicting situations where there are other
-> complications: security issues can sometimes mean that you *really*
-> can't just revert a regression fix, because while paper standards and
-> artificial tests are relatively worthless (compared to a user
-> regression report), a severe security problem obviously isn't...
->
-> Also, if the regression reports then come in late, people may have
-> started relying on the new behavior, and reverting things then causes
-> its own set of regressions.
->
-> But when you get a regression report quickly during the early -rc
-> period, that tends to mean that it's either a really bad fix, or it's
-> just a very common piece of bad hardware (or a shared bug across many
-> different hw implementations - which obviously is often then due to
-> some common chip or firmware implementation or whatever)
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
+---
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Aleksander Jan Bajkowski <olek2@wp.pl>
+Cc: Andrew Lunn <andrew@lunn.ch>
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Ivan Galkin <ivan.galkin@axis.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: Michael Klein <michael@fossekall.de>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: devicetree@vger.kernel.org
+Cc: netdev@vger.kernel.org
+---
+V2: No change
+V3: No change
+V4: Add AB from Rob
+---
+ .../devicetree/bindings/net/realtek,rtl82xx.yaml          | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-While I agree specs sometimes tend to be worthless they sort of guide
-future implementations, so in the end it is not always black or white.
-Anyway, since this escalated rather quickly I think next time I'll
-just revert and work out the situation on bluetooth-next, rather than
-trying to access with the reporter and risk  delaying a fix.
+diff --git a/Documentation/devicetree/bindings/net/realtek,rtl82xx.yaml b/Documentation/devicetree/bindings/net/realtek,rtl82xx.yaml
+index 2b5697bd7c5df..eafcc2f3e3d66 100644
+--- a/Documentation/devicetree/bindings/net/realtek,rtl82xx.yaml
++++ b/Documentation/devicetree/bindings/net/realtek,rtl82xx.yaml
+@@ -40,15 +40,15 @@ properties:
+ 
+   leds: true
+ 
+-  realtek,clkout-disable:
++  realtek,aldps-enable:
+     type: boolean
+     description:
+-      Disable CLKOUT clock, CLKOUT clock default is enabled after hardware reset.
++      Enable ALDPS mode, ALDPS mode default is disabled after hardware reset.
+ 
+-  realtek,aldps-enable:
++  realtek,clkout-disable:
+     type: boolean
+     description:
+-      Enable ALDPS mode, ALDPS mode default is disabled after hardware reset.
++      Disable CLKOUT clock, CLKOUT clock default is enabled after hardware reset.
+ 
+   wakeup-source:
+     type: boolean
+-- 
+2.53.0
 
-
---=20
-Luiz Augusto von Dentz
