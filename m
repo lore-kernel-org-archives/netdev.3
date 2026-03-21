@@ -1,99 +1,135 @@
-Received: from secundus.vsp.im (secundus.vsp.im [37.120.170.112])
+Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A262773D8;
-	Sat, 21 Mar 2026 19:30:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.120.170.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6048E3314C2
+	for <netdev@vger.kernel.org>; Sat, 21 Mar 2026 19:44:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.202.193.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774121422; cv=none; b=JEswKe9x9Nuns2LRKgmmHbB4dPCZV3M2ReviZcTfle6ehdT9jmLIMkrUXQdcHBclht9lZ9DWuGTtle/MRUYzXs5H9sk/AQWDlThY59f38Asvt50HO2tNZdWXttD0yn8tsyVDf6OsT8DTfQuj3IP3fJnkG4x4JiMKHfoj+uoVuSk=
+	t=1774122251; cv=none; b=OHlkGzJaQZ9vfQ/Ix1Ix8Ibq+p8u9A3yMPCJF//TGDUNYUiGoW6LVZZLUchp+zVwwX/bCEpqz19g3vL5IABcGSb0QhNPfqOth+RAd+6pYeQ8hhp5fznTMAj4ZaNGoa/Zn4SjRWKAzZ/KlnEg7mModZBztx6TTGtQJnjsq8p24WY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774121422; c=relaxed/simple;
-	bh=zFkWy8J377R/4AcVMLoKJMS8w6SguvdsB0mx8OERXuY=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=FwzTeHwmlcRIqWJle1xhHIHNR1kyHGJlKJ3TbTq6BHgwlFAKeBG69JqBMMXPzqXzfHXVyk01v4is+Frudsk2zz4Kjlfe+Ak2pm2BSVtLQyNoXpYeMy7JOgxrHhrcp26lBcF6g9kDXl24xI/IXH6Tr1n/Ov8ZIh+UvLe4hJPrAME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=spreckels.dev; spf=fail smtp.mailfrom=spreckels.dev; dkim=permerror (0-bit key) header.d=spreckels.dev header.i=@spreckels.dev header.b=98h88JpP; dkim=pass (2048-bit key) header.d=spreckels.dev header.i=@spreckels.dev header.b=ORptu2oo; arc=none smtp.client-ip=37.120.170.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=spreckels.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=spreckels.dev
+	s=arc-20240116; t=1774122251; c=relaxed/simple;
+	bh=RhlUd5nJZtyzPTrb6142vd7/kHj3AnKxbcivtAnbRiU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RMxOnuBANmLlFRSGs/EirxN5hBuHKbiMcF1bgTEIAV4g4g7OATyWcovKz8SR+cqH116YaFE3ywR/x7Tpob+8yTomwG6h8sllH0ywN17SLoJkLPniDUZeC7KUebwds4qR3Ec/ENQubRHStEXlU1zbd1lcQ0/qj6WYVMx7Zb+a+rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tinyisr.com; spf=pass smtp.mailfrom=tinyisr.com; dkim=pass (2048-bit key) header.d=tinyisr.com header.i=@tinyisr.com header.b=GKUGiyLa; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=WGZXpLYR; arc=none smtp.client-ip=34.202.193.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tinyisr.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tinyisr.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=spreckels.dev header.i=@spreckels.dev header.b="98h88JpP";
-	dkim=pass (2048-bit key) header.d=spreckels.dev header.i=@spreckels.dev header.b="ORptu2oo"
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/simple; d=spreckels.dev;
- i=@spreckels.dev; q=dns/txt; s=s20260208e; t=1774120853; h=message-id
- : date : mime-version : from : subject : to : cc : references :
- in-reply-to : content-type : content-transfer-encoding : from;
- bh=zFkWy8J377R/4AcVMLoKJMS8w6SguvdsB0mx8OERXuY=;
- b=98h88JpPkfnmgT0843H5R+353PZyIE+mgK2sD9ysb6GFT0RlZHhhBCPlJBpvBrHOcnQNG
- YYu2p4XkPm7GsxMBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=spreckels.dev;
- i=@spreckels.dev; q=dns/txt; s=s20260208r; t=1774120853; h=message-id
- : date : mime-version : from : subject : to : cc : references :
- in-reply-to : content-type : content-transfer-encoding : from;
- bh=zFkWy8J377R/4AcVMLoKJMS8w6SguvdsB0mx8OERXuY=;
- b=ORptu2oomriETGtc8uO2mbetSXWU+FNjm/6cOJjPNJATdKs04Y1xIhTg0IOKli5I5Lvm0
- YA2bYjylVuYPplqD+j87E8RjuGNpOQGqs0o72mHNk4+ik3A7yAMB2HewYe26Q/iWvmL7m+W
- 8S23mTbK/spkiUZcDNK77FPor9JjvlBm5EvRDDFuucMmIzCbL8Tb193WSqwbfSTtCMuI6/3
- VnsO7lgxyhCDinUTJRLZPix2rvsvQUGrun1+xTbJCMV5gzj98lz0jTdo14DAi8yn+KrAsYU
- QTWxmBlMuE1gaUPljGTt/128uIcgvt3XUk6ESKO41ThCTaPGELPklwjXHn0w==
-Received: from [IPV6:2001:9e8:fb2a:e501:845:1723:955a:996f] (unknown [IPv6:2001:9e8:fb2a:e501:845:1723:955a:996f])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by secundus.vsp.im (Postfix) with ESMTPSA id 9D9C7FF9EE;
-	Sat, 21 Mar 2026 20:20:53 +0100 (CET)
-Message-ID: <c486b63c-521f-4972-80bf-ebb2bfe04724@spreckels.dev>
-Date: Sat, 21 Mar 2026 20:20:53 +0100
+	dkim=pass (2048-bit key) header.d=tinyisr.com header.i=@tinyisr.com header.b="GKUGiyLa";
+	dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b="WGZXpLYR"
+Authentication-Results: purelymail.com; auth=pass
+DKIM-Signature: a=rsa-sha256; b=GKUGiyLaA+adTt3TkBqU6pyUp2FYdTmpg88T+qNgrFdyC2R9JhMfyHh4SPC6gH8/qwNfqZpOA04zfSVgPLrgprNpp++LiL6IXe/Nsa6lxI9HrO88TDCBOXwaHwB4HTeJ4ZDdUeDtFXqwr2f74OENHoCnhM4a9AAWennsKU61noV0FutkcCAB2xYDWEBEOmSE/ZupzfgJv2LblcgMviICFd1+l59E9oefQ8ZGHESipdUf1DHItGZBowhRwmwDj53v2UGlfOSGaOViH+73YNaD7X+w4wZlKuZSx6z7gQj3wLhGofAgk0RCOkEPSvkZjL9NBkz7/Y1d0Itv+G9qNBiWfw==; s=purelymail3; d=tinyisr.com; v=1; bh=RhlUd5nJZtyzPTrb6142vd7/kHj3AnKxbcivtAnbRiU=; h=Received:From:To:Subject:Date;
+DKIM-Signature: a=rsa-sha256; b=WGZXpLYRXdWLBU6iq+/kKo/3qG65qO7DrBgWdpNo9Zos2/V+Oo/uelwi1GKTE9qp+CMSTFkm5j5mDrjmEDrh1/q71nd/7VLi1Kv70/Ycqgqc6JJse/9PXmdte/Nc4RUtknXwaA0FwJX4Kvc/WjWJRlLVFb5YLUZnKHnTzn9O1RvchhD7xVQJz2LMF6QOAStM+NLcSsU5ynkaBKzB3ZV1s6nnWBTJZXuAHbQgPyWgz6Mknlr4gdM7gLH09T/1JVisp2DH0b8RoBuX4beBNyqN/9Lw/aW9lkLgICU2GAMiVunUs//b0sHRpMVubyAiUCBxa7DdpAY1gACzA1Lihy6eUA==; s=purelymail3; d=purelymail.com; v=1; bh=RhlUd5nJZtyzPTrb6142vd7/kHj3AnKxbcivtAnbRiU=; h=Feedback-ID:Received:From:To:Subject:Date;
+Feedback-ID: 99681:12517:null:purelymail
+X-Pm-Original-To: netdev@vger.kernel.org
+Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id 958892867;
+          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+          Sat, 21 Mar 2026 19:44:07 +0000 (UTC)
+From: Joris Vaisvila <joey@tinyisr.com>
+To: netdev@vger.kernel.org
+Cc: horms@kernel.org,
+	pabeni@redhat.com,
+	kuba@kernel.org,
+	edumazet@google.com,
+	davem@davemloft.net,
+	olteanv@gmail.com,
+	Andrew Lunn <andrew@lunn.ch>,
+	devicetree@vger.kernel.org,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Joris Vaisvila <joey@tinyisr.com>
+Subject: [RFC v3 0/4] net: dsa: MT7628 embedded switch initial support
+Date: Sat, 21 Mar 2026 21:43:36 +0200
+Message-ID: <20260321194340.2140783-1-joey@tinyisr.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Valentin Spreckels <valentin@spreckels.dev>
-Subject: Re: [PATCH wireguard] wireguard: prevent ipv6 addrconf via
- IFF_NO_ADDRCONF flag
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- wireguard@lists.zx2c4.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260208170545.31942-1-valentin@spreckels.dev>
- <abHz3xcsLhIPc_Jn@zx2c4.com>
-Content-Language: de-DE, en-GB
-In-Reply-To: <abHz3xcsLhIPc_Jn@zx2c4.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-MIME-Autoconverted: from 8bit to quoted-printable by Purelymail
+Content-Type: text/plain; charset=UTF-8
 
-Hi Jason,
+Hi all,
 
-On 11/03/2026 23:59, Jason A. Donenfeld wrote:
-> Hi Valentin,
-> 
-> On Sun, Feb 08, 2026 at 06:05:45PM +0100, Valentin Spreckels wrote:
->> Use the flag introduced in commit 8a321cf7becc6 ("net: add
->> IFF_NO_ADDRCONF and use it in bonding to prevent ipv6 addrconf")
->> instead of mangling the addr_gen_mode to prevent ipv6 addrconf.
-> 
-> Can you give some more context here? Why was IFF_NO_ADDRCONF added when
-> the IN6_ADDR_GEN_MODE_NONE method has been working fine? What's the
-> difference between these approaches? I don't doubt that your patch is
-> correct, but I would like to better understand this.
+This RFC series adds initial support for the MT7628 Embedded Switch.
 
-Only wireguard configures addr_gen_mode inside the kernel, otherwise it 
-is only set by userspace; userspace is also able to overwrite the 
-IFF_NO_ADDRCONF set by wireguard.
+The implementation provides basic functionality required to operate the
+switch using DSA. The hardware exposes 5 internal Fast Ethernet ports
+and a Gigabit port which is internally connected to the CPU MAC.
 
-Commit 8a321cf7becc ("net: add IFF_NO_ADDRCONF and use it in bonding to 
-prevent ipv6 addrconf") introduces the private interface flag 
-IFF_NO_ADDRCONF, which isn't accessible by userspace.
+This version aims to be functionally complete and attempts to address
+all feedback received on the previous versions.=20
 
-Thus use the IFF_NO_ADDRCONF flag in wireguard.
+Tested on a MT7628NN based board.
 
+RFC:
 
-Does that answer your questions? If yes, I will submit a v2 with this as 
-commit message.
+I would like to transition this series toward a proper PATCH submission
+as it seems that the feedback on the last RFC did not point out major
+issues. As this is my first driver submission, I would greatly appreciate
+any guidance on what should be addressed before it is appropriate to
+send this in as a PATCH.
 
-Best regards
+Thank you for your time and review.
 
-Valentin
+---
+
+v3:
+=09- add DTS bindings for mediatek,mt7628-esw
+=09- update tagging driver to use htons instead of manual byte swapping
+=09- remove port 5 from config as it doesn't exist in the hardware
+=09- fix code formatting
+=09- add helper macros for configuring packed VLAN table registers
+=09- fix mac_capabilities for cpu port, replace supported_interfaces
+=09  with PHY_INTERFACE_INTERNAL to accurately reflect the hardware
+=09- update MEDIATEK_GE_SOC_PHY tristate name, fix sorting
+=09- remove unneeded PHY_PACKAGE from MEDIATEK_FE_SOC_PHY Kconfig
+=09- remove untested features from mtk-fe-soc.c phy driver
+
+v2: https://lore.kernel.org/netdev/20260314150845.653866-1-joey@tinyisr.com
+=09- Update commit messages with more relevant information
+=09- Change all references of "special" tag to "MT7628" tag
+=09- Fix coding style errors
+=09- Use dsa_xmit_port_mask instead of BIT(dp->index)
+=09- Replace phy_read/phy_write with an MDIO bus definition
+=09- Remove PHY init from switch driver
+=09- Fix undocumented writes to SGC2 and FCT0
+=09- Fix missing double-tag enable required for VLAN unaware
+=09  functionality
+=09- Fix VLAN remove logic
+=09- Update VLAN add logic to use the first unused slot
+=09- Add a dedicated phy driver for MT7628 FE PHYs
+
+v1: https://lore.kernel.org/netdev/20260228185242.800836-1-joey@tinyisr.com
+
+Joris Vaisvila (4):
+  dt-bindings: net: dsa: add MT7628 ESW
+  net: phy: mediatek: add phy driver for MT7628 built-in Fast Ethernet
+    PHYs
+  net: dsa: initial MT7628 tagging driver
+  net: dsa: initial support for MT7628 embedded switch
+
+ .../bindings/net/dsa/mediatek,mt7628-esw.yaml | 136 ++++
+ drivers/net/dsa/Kconfig                       |   7 +
+ drivers/net/dsa/Makefile                      |   1 +
+ drivers/net/dsa/mt7628.c                      | 634 ++++++++++++++++++
+ drivers/net/phy/mediatek/Kconfig              |  10 +-
+ drivers/net/phy/mediatek/Makefile             |   1 +
+ drivers/net/phy/mediatek/mtk-fe-soc.c         |  50 ++
+ include/net/dsa.h                             |   2 +
+ net/dsa/Kconfig                               |   6 +
+ net/dsa/Makefile                              |   1 +
+ net/dsa/tag_mt7628.c                          |  92 +++
+ 11 files changed, 939 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/devicetree/bindings/net/dsa/mediatek,mt76=
+28-esw.yaml
+ create mode 100644 drivers/net/dsa/mt7628.c
+ create mode 100644 drivers/net/phy/mediatek/mtk-fe-soc.c
+ create mode 100644 net/dsa/tag_mt7628.c
+
+--=20
+2.53.0
+
