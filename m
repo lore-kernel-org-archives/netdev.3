@@ -1,84 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.154.197.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7402BD11;
-	Sat, 21 Mar 2026 10:36:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71562E36F8;
+	Sat, 21 Mar 2026 10:59:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.154.197.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774089372; cv=none; b=J6mX7wy69t5sZyTXWd08qeG9qGKddMAcpTzyO0e6lPOGeNjLTuGTFERag+La8yjog9KcrMWn1+x0TjPdpSoVwOKmOjeqOrkHxkq6mHvyNkut9hbpmhqwTIF4GVmP4EMe7FhW0N3KRRwJw4MUN2z/XDNBvxXWJpaGMB6WzJbhKwI=
+	t=1774090743; cv=none; b=h8rKBh0O4KMzmuttTYNh3BpBd+IuAc6WKn7h8GdTH3McsbC/TBA8zkqZmgYmxKzN9djVkqQ/SQBe4ki3RtCOtQabkmGQVR1/Ev/VT625S/FxPYf5+KfccODK6dlWvkOKERK1et3cS3aJpyxLgYpVtZNV770pDKcAnO4s7rwc6As=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774089372; c=relaxed/simple;
-	bh=/6eOLTSivq+etcgwBsYg5Tg2Jeg74Hgv+HHyl+MfzjA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V6OBKwRWfcAShTESWFyuEJ5Y2EzYWjTwhYSMQGG/04KuHMZ2FQY3mJTOdaCf3A0xBvKGW6p9RInvArNPuC/JeQgd2BP4GVi26+mIGhxz7ugD0y4DL7QBV+lWledomxrkGtIhCcjwv9XFZXRxYNDt3bvC7McbTv+95LuGfoAjigg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k+CHKcvc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774090743; c=relaxed/simple;
+	bh=KsdXqX1kOxxmB5a/Cg+3C/JOFCSKlf+J6VeRfyzA0Vk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GYcrO4aXw71eHqkW0Qcfde4FT01M+TOIx1YFC/VMvP8MwlZmbxZQP9sUE41Z1Z6gFIuex2cel1o98CcsKtOB91A97g8cySVVEOeZ6UTCaoSSJ+NEvhR3B6aSbQNczj3zduaJAnnpiDkcj8prvPjDE1y/dmVfYQSYOQtPPc/4ubQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smail.nju.edu.cn; spf=pass smtp.mailfrom=smail.nju.edu.cn; dkim=pass (1024-bit key) header.d=smail.nju.edu.cn header.i=@smail.nju.edu.cn header.b=uiuj5gJn; arc=none smtp.client-ip=43.154.197.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smail.nju.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smail.nju.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k+CHKcvc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F4DDC19421;
-	Sat, 21 Mar 2026 10:36:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774089371;
-	bh=/6eOLTSivq+etcgwBsYg5Tg2Jeg74Hgv+HHyl+MfzjA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=k+CHKcvcxzfZXTvWuk0btSostGs112cEL/nkkDN4RiAwIvySyaTSS7YRsryeBytZp
-	 10g2tQXRu0OXpBta3VDu6MBlQ8Ew22DDIC3NfZ7CTERkyAQRo7HXHDFps4/JeXaJEv
-	 2sq/uoqovyZxLwpJ+R91aa/yZSMj1hieIS0/y/LTHuyDR+WhFP4OelAwex0A9Oblxc
-	 d56sQMILsSzD63KAApDx90MN9HblHBgkmlSw7Zwgc/QmwD1ljixQkTfxzqyO/VAw3H
-	 KLZEzYyO0Q/xtvjImgUVxY1MDJqVJRTQahkUm5ZF2HRhdjUHSuBqD5anUwKGk3Ob3G
-	 M5MZu5Wf6P5zg==
-Date: Sat, 21 Mar 2026 10:36:07 +0000
-From: Simon Horman <horms@kernel.org>
-To: Bobby Eshleman <bobbyeshleman@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>, David Wei <dw@davidwei.uk>,
-	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net] selftests: drv-net: add missing tc config options
- for netkit tests
-Message-ID: <20260321103607.GA74886@horms.kernel.org>
-References: <20260320-config-fixes-for-nk-tests-v1-1-1e20ec6ddc7e@meta.com>
+	dkim=pass (1024-bit key) header.d=smail.nju.edu.cn header.i=@smail.nju.edu.cn header.b="uiuj5gJn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smail.nju.edu.cn;
+	s=iohv2404; t=1774090712;
+	bh=eqAyqeTqI9tW77At+0KENVsKp4K4ZhJUfHlWcQDIO8I=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=uiuj5gJnPtvAn7RJf5H5L57EnW6uep99kOlzMnKssVRg8wSSInxaNBEDd40YXWBkN
+	 ciDBatpKzk9bmZc6Z9FJl0QEWz4lTIE9IgJY1+c1bI5+uLGeFe8DjTdEznwU1g9/bJ
+	 2awd+rGLdBipbOD4GjARfqGscoq0U+7ce41c3e4M=
+X-QQ-mid: esmtpsz20t1774090709tf548b294
+X-QQ-Originating-IP: VIScFZS5PHi90zs142j97mvmaooRkR5YzU+3umxrAHU=
+Received: from localhost.localdomain ( [116.172.93.199])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Sat, 21 Mar 2026 18:58:26 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 8588313914025312170
+EX-QQ-RecipientCnt: 14
+From: Kexin Sun <kexinsun@smail.nju.edu.cn>
+To: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: julia.lawall@inria.fr,
+	xutong.ma@inria.fr,
+	kexinsun@smail.nju.edu.cn,
+	yunbolyu@smu.edu.sg,
+	ratnadiraw@smu.edu.sg
+Subject: [PATCH] net: phy: update outdated comment for removed phy_package_read/write()
+Date: Sat, 21 Mar 2026 18:58:25 +0800
+Message-Id: <20260321105825.7221-1-kexinsun@smail.nju.edu.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260320-config-fixes-for-nk-tests-v1-1-1e20ec6ddc7e@meta.com>
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:smail.nju.edu.cn:qybglogicsvrgz:qybglogicsvrgz5b-0
+X-QQ-XMAILINFO: OeDJTi1d75hd2JBeI8ymIo58/omwOrMZZidPZo5NAdndH90BY1pCdcCX
+	ysQbQhUUNbjlSbMEs30h67Hng+sbjyGYuuI6A4x/NS3IWSWpYtbApn366L++9J9ws4dpE/f
+	yWtjPMEBgseMjvOn0vDBqgUhz6pcr7y8I5W27cb8jbc0UoDFKXI2yh0m1o52bMlHUHTLLUm
+	XCbd338SKSwvFTMgS/lQ7M834Cid3wHxSKv864w8EGoS92OV/3EAesbcwJ0HIYf6iBOZccH
+	LIcnUAXKtllN4LG5JxpbYmAfPbcR7clEkeLApCbX9UlqLbCp9BbVHWPiMafvf1lVQTkDLAM
+	+mIQEkbVUVuSWMuXzk8rzsSm5fgnqEiOp7RA8hiAG3ijc7geSSWCgpaoLiFOKSuykrBlEs4
+	hFeMZI5TN4zP87tywkFbgEGpJgq/7W+QigYy0z5BdPEgFT1AWVNW2yQOTWbTsRNORqW2Ksq
+	3WOInh5uA5q7US93LRbzZ2wHFpQImXCXzVG0P7EXXnwDDi1NP9WNd2MZc30RPGPp9SFIUMa
+	bQs+Ls72q8t46JYh6dAwJnkhZHKPQm1iZiZsFY8Tx97bM+7WNH3F137LJ8U63KHFsjGLUZf
+	UHYpVPaPVM2XnPDHpjxuC7dCBJ8UGUeJj5ebLVF2YdTcUhL24ondJfK/CGmxQBNzEhaVHU1
+	ktqtuRE32JZmfUA/gTrnDBalYT91arrD0ovJub6pfjRhcXCAHMwXP4S5TaMQqNo0bqtnTmE
+	4J7snepKeZAoy3s7UQcJ+AZcpNgh0OPXisvysYQfM4xD+nZ0uTd/FCSxqRIs8p3sEMnh06k
+	2PWvfq7TTY+g7rgddnfkNzVBRvqwMU9azox8fUxstXOSJ0nPx8fw1y7ziPv+q87qjkTcU+G
+	ADbfAJlV+Dw5DjU9PL+hXDugIdAReD0kte4GIKZUa3+NxlIbzHYwZH+oNnAo2eULHe2bzd/
+	U+NaUcF8d8dX2xfw7wMTQzs+qb3JjkDC/f7TOO7Jfx2Xl+0zopUs579cgnSnK0BBJmDInyG
+	fjWw02a94VRxHqc6nZKAtl+nIoz9a+VIAdb7nX0tnQUecucGjt++7Hpuax/UKDlKd8Uldfc
+	fCw1+6xtEBAU9CwcYacbD4=
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+X-QQ-RECHKSPAM: 0
 
-On Fri, Mar 20, 2026 at 11:08:35AM -0700, Bobby Eshleman wrote:
-> From: Bobby Eshleman <bobbyeshleman@meta.com>
-> 
-> The NetDrvContEnv env context uses tc clsact qdiscs and BPF tc filters
-> for traffic redirection, but the kernel config options are missing from
-> the selftests config.
-> 
-> Without them, the tc qdisc installation trips on:
-> 
->   CMD: tc qdisc add dev enp1s0 clsact
->     EXIT: 2
->     STDERR: Error: Specified qdisc kind is unknown.
-> 
->   net.lib.py.utils.CmdExitFailure: Command failed
-> 
-> Add CONFIG_NET_CLS_ACT and CONFIG_NET_SCH_INGRESS to enable these tc
-> options.
-> 
-> Fixes: 3f74d5bb807e ("selftests/net: Add env for container based tests")
-> Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+The locked convenience functions phy_package_read() and
+phy_package_write() were removed (as they had no users) by commit
+e7f984e925d2 ("net: phy: move PHY package related code from phy.h
+to phy_package.c").  Update the comment to reference the existing
+unlocked counterparts __phy_package_read() and __phy_package_write().
 
-Hi Bobby,
+Assisted-by: unnamed:deepseek-v3.2 coccinelle
+Signed-off-by: Kexin Sun <kexinsun@smail.nju.edu.cn>
+---
+ drivers/net/phy/phy_package.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Unfortunately this does not apply cleanly to net.
-Which breaks CI.
-
-Please rebase and repost.
-
+diff --git a/drivers/net/phy/phy_package.c b/drivers/net/phy/phy_package.c
+index 63e4f862f731..16ae8d1c1f89 100644
+--- a/drivers/net/phy/phy_package.c
++++ b/drivers/net/phy/phy_package.c
+@@ -194,8 +194,8 @@ EXPORT_SYMBOL_GPL(phy_package_probe_once);
+  * for offset calculation to access generic registers of a PHY package.
+  * Usually, one of the PHY addresses of the different PHYs in the package
+  * provides access to these global registers.
+- * The address which is given here, will be used in the phy_package_read()
+- * and phy_package_write() convenience functions as base and added to the
++ * The address which is given here, will be used in the __phy_package_read()
++ * and __phy_package_write() convenience functions as base and added to the
+  * passed offset in those functions.
+  *
+  * This will set the shared pointer of the phydev to the shared storage.
 -- 
-pw-bot: cr
+2.25.1
+
