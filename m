@@ -1,127 +1,99 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from secundus.vsp.im (secundus.vsp.im [37.120.170.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 887C4313283;
-	Sat, 21 Mar 2026 19:29:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A262773D8;
+	Sat, 21 Mar 2026 19:30:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.120.170.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774121377; cv=none; b=PwNqyoXS9i7UCZoBM5s804t1QaobiKEfuSkhcvKUL8ZGQcWylgRML/muU+5K7utAcfBXNk/ilLQdRGoxpjX+BJCANvIWFvIVUNv23dg+FIhJc+oulncevi00MI+A0lJQ+e26WU4olOBcNimkDcMDsjTMSFVRLoxKST5ns14r0ag=
+	t=1774121422; cv=none; b=JEswKe9x9Nuns2LRKgmmHbB4dPCZV3M2ReviZcTfle6ehdT9jmLIMkrUXQdcHBclht9lZ9DWuGTtle/MRUYzXs5H9sk/AQWDlThY59f38Asvt50HO2tNZdWXttD0yn8tsyVDf6OsT8DTfQuj3IP3fJnkG4x4JiMKHfoj+uoVuSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774121377; c=relaxed/simple;
-	bh=YLxMFG/uAi8d2pEsX0+IRHpIk2S7mC4GreH4DXFFWHM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EIZ2QsqL2pe5UWHQNzaIzWd9nC0S3VCEWXzjz1u9SSpN2XYKfiOv6SpEo7KV4vHFqfBlYKiYhPpv4vETgQ0nxIzV25fETVrmWt2QqrwkiOVmRxgWYLHpwJ1/dY4TECpFEfnp4kHZNsvsqvdgFtwMSAGzEAr1IqHz3tm7pt2FtfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=a4uITRpy; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1774121422; c=relaxed/simple;
+	bh=zFkWy8J377R/4AcVMLoKJMS8w6SguvdsB0mx8OERXuY=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=FwzTeHwmlcRIqWJle1xhHIHNR1kyHGJlKJ3TbTq6BHgwlFAKeBG69JqBMMXPzqXzfHXVyk01v4is+Frudsk2zz4Kjlfe+Ak2pm2BSVtLQyNoXpYeMy7JOgxrHhrcp26lBcF6g9kDXl24xI/IXH6Tr1n/Ov8ZIh+UvLe4hJPrAME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=spreckels.dev; spf=fail smtp.mailfrom=spreckels.dev; dkim=permerror (0-bit key) header.d=spreckels.dev header.i=@spreckels.dev header.b=98h88JpP; dkim=pass (2048-bit key) header.d=spreckels.dev header.i=@spreckels.dev header.b=ORptu2oo; arc=none smtp.client-ip=37.120.170.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=spreckels.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=spreckels.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="a4uITRpy"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=lSId2R4n5h5Caa3HQVy1kp5ItdOtiP98FOe14fx9xe0=; b=a4uITRpygSPp6wm/im4nXDeUqd
-	Luj+KRHqcrffrMPpvzE3FyD5daP06CupTPUNV/sVUPluTStanSar/zA4oMH4/GJ905Ftee7rn5bxP
-	UwN5RLF8Doepz/gov3VAdDdS1FTp1T+duBq1PH1J5TqK5TT+ZjC8R+8BX2cq+5NKOp4A=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1w420e-00CkBU-Bh; Sat, 21 Mar 2026 20:29:20 +0100
-Date: Sat, 21 Mar 2026 20:29:20 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Daniel Golle <daniel@makrotopia.org>
-Cc: Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Frank Wunderlich <frankwu@gmx.de>, Chad Monroe <chad@monroe.io>,
-	Cezary Wilmanski <cezary.wilmanski@adtran.com>,
-	Liang Xu <lxu@maxlinear.com>,
-	"Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>,
-	Jose Maria Verdu Munoz <jverdu@maxlinear.com>,
-	Avinash Jayaraman <ajayaraman@maxlinear.com>,
-	John Crispin <john@phrozen.org>
-Subject: Re: [PATCH net-next 1/2] net: dsa: mxl862xx: add CRC for MDIO
- communication
-Message-ID: <fa518f5d-8b68-459e-9d69-b8702a0b6b57@lunn.ch>
-References: <cover.1774070039.git.daniel@makrotopia.org>
- <af6911188ee6becb9100d4bf13d0820e5bf9eaca.1774070039.git.daniel@makrotopia.org>
- <c5f29b9b-9447-488e-b8cc-e2f7e7cbf1a8@lunn.ch>
- <ab6-5XnC6Z3TdytJ@makrotopia.org>
+	dkim=permerror (0-bit key) header.d=spreckels.dev header.i=@spreckels.dev header.b="98h88JpP";
+	dkim=pass (2048-bit key) header.d=spreckels.dev header.i=@spreckels.dev header.b="ORptu2oo"
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/simple; d=spreckels.dev;
+ i=@spreckels.dev; q=dns/txt; s=s20260208e; t=1774120853; h=message-id
+ : date : mime-version : from : subject : to : cc : references :
+ in-reply-to : content-type : content-transfer-encoding : from;
+ bh=zFkWy8J377R/4AcVMLoKJMS8w6SguvdsB0mx8OERXuY=;
+ b=98h88JpPkfnmgT0843H5R+353PZyIE+mgK2sD9ysb6GFT0RlZHhhBCPlJBpvBrHOcnQNG
+ YYu2p4XkPm7GsxMBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=spreckels.dev;
+ i=@spreckels.dev; q=dns/txt; s=s20260208r; t=1774120853; h=message-id
+ : date : mime-version : from : subject : to : cc : references :
+ in-reply-to : content-type : content-transfer-encoding : from;
+ bh=zFkWy8J377R/4AcVMLoKJMS8w6SguvdsB0mx8OERXuY=;
+ b=ORptu2oomriETGtc8uO2mbetSXWU+FNjm/6cOJjPNJATdKs04Y1xIhTg0IOKli5I5Lvm0
+ YA2bYjylVuYPplqD+j87E8RjuGNpOQGqs0o72mHNk4+ik3A7yAMB2HewYe26Q/iWvmL7m+W
+ 8S23mTbK/spkiUZcDNK77FPor9JjvlBm5EvRDDFuucMmIzCbL8Tb193WSqwbfSTtCMuI6/3
+ VnsO7lgxyhCDinUTJRLZPix2rvsvQUGrun1+xTbJCMV5gzj98lz0jTdo14DAi8yn+KrAsYU
+ QTWxmBlMuE1gaUPljGTt/128uIcgvt3XUk6ESKO41ThCTaPGELPklwjXHn0w==
+Received: from [IPV6:2001:9e8:fb2a:e501:845:1723:955a:996f] (unknown [IPv6:2001:9e8:fb2a:e501:845:1723:955a:996f])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by secundus.vsp.im (Postfix) with ESMTPSA id 9D9C7FF9EE;
+	Sat, 21 Mar 2026 20:20:53 +0100 (CET)
+Message-ID: <c486b63c-521f-4972-80bf-ebb2bfe04724@spreckels.dev>
+Date: Sat, 21 Mar 2026 20:20:53 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ab6-5XnC6Z3TdytJ@makrotopia.org>
+User-Agent: Mozilla Thunderbird
+From: Valentin Spreckels <valentin@spreckels.dev>
+Subject: Re: [PATCH wireguard] wireguard: prevent ipv6 addrconf via
+ IFF_NO_ADDRCONF flag
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ wireguard@lists.zx2c4.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260208170545.31942-1-valentin@spreckels.dev>
+ <abHz3xcsLhIPc_Jn@zx2c4.com>
+Content-Language: de-DE, en-GB
+In-Reply-To: <abHz3xcsLhIPc_Jn@zx2c4.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> > This is the question, what to do when you see a checksum failure? The
-> > basic assumption is MDIO is reliable. PHYs don't do any sort of
-> > checksums, nor any other switches using MDIO. Why would you want
-> > checksums?
-> > 
-> > To detect the hardware is broken? If so, is returning EIO sufficient?
-> > Would it not be better to admin down all the interfaces?
-> > 
-> > To allow the MDIO clock to run at a higher frequency, at the limit of
-> > the bus, so you get occasionally failures? If so, should you not
-> > retry? But are the commands idempotent? Can you safely retry?
-> > 
+Hi Jason,
+
+On 11/03/2026 23:59, Jason A. Donenfeld wrote:
+> Hi Valentin,
 > 
-> Your guesses are all correct, and your concerns are justified.
+> On Sun, Feb 08, 2026 at 06:05:45PM +0100, Valentin Spreckels wrote:
+>> Use the flag introduced in commit 8a321cf7becc6 ("net: add
+>> IFF_NO_ADDRCONF and use it in bonding to prevent ipv6 addrconf")
+>> instead of mangling the addr_gen_mode to prevent ipv6 addrconf.
 > 
-> Let me explain the whole picture:
-> The switch driver transfers many rather large data structures over
-> MDIO, and lacking support for interrupts (firmware doesn't support),
-> this is often even interleaved with polling 8 PHYs and at least one
-> PCS. To not have things get very slow (and then even sometimes see
-> -ETIMEDOUT breaking the PHY state machine if timing is unlucky), it
-> is common to overclock the MDIO bus to 20 MHz instead of the 2.5 MHz
-> default (the switch claims to support up to 25 MHz, but 20 Mhz is
-> sufficient and conservative enough).
-> 
-> That, combined with higher temperature of the switch IC (but still
-> within the spec'ed range), can lead to bit-errors -- which, in case
-> they remain unnoticed can introduce subtle (security relevant) issues
-> such as bridging ports which should not be bridged or flooding to a
-> port on which flooding should be disabled.
+> Can you give some more context here? Why was IFF_NO_ADDRCONF added when
+> the IN6_ADDR_GEN_MODE_NONE method has been working fine? What's the
+> difference between these approaches? I don't doubt that your patch is
+> correct, but I would like to better understand this.
 
-O.K. "Interesting" design.
+Only wireguard configures addr_gen_mode inside the kernel, otherwise it 
+is only set by userspace; userspace is also able to overwrite the 
+IFF_NO_ADDRCONF set by wireguard.
 
-You could solve the PHY timeout issue by claiming to support PHY
-interrupts, doing the polling in the DSA driver, and raise an
-interrupt if the conditions are met. The mv88e6xxx driver does
-something like this. It has an interrupt controller which the PHYs are
-connect to. Some designs have the switch interrupt output connected to
-a GPIO and so can do real interrupts. Some don't. Rather than have all
-the internal PHYs polled one per second by phylib, the mv88e6xxx polls
-the interrupt status register every 1/5 of a second and raises the
-interrupts instead. Bot faster, and less MDIO transfers.
+Commit 8a321cf7becc ("net: add IFF_NO_ADDRCONF and use it in bonding to 
+prevent ipv6 addrconf") introduces the private interface flag 
+IFF_NO_ADDRCONF, which isn't accessible by userspace.
 
-> In case of the switch reporting back a CRC error for data received,
-> a limited number of retries would be ok in every case.
-> However, the same is not true for the opposite direction, ie. an
-> error detected by the Linux host for data received from the switch:
-> In case one of the *_ALLOC API calls we cannot simply repeat the
-> call, and as the data was corrupted, we wouldn't even know how to
-> undo the failed call.
+Thus use the IFF_NO_ADDRCONF flag in wireguard.
 
-Seems like somebody did not think through the design. I assume the
-vendor driver does not attempt a retry?
 
-> Setting all interfaces to admin-down is probably the best compromise
-> in a case like this, as it would also reduce the energy consumption
-> and hence heat emission of the IC (as all built-in PHYs are then down;
-> that's where most of the heat comes from) and prevent damage -- I've
-> only observed CRC errors with the heatsink removed and artifically
-> overheating the IC...
+Does that answer your questions? If yes, I will submit a v2 with this as 
+commit message.
 
-So in the normal use cases you don't expect CRC errors. That seems
-like it should driver the design. Consider any CRCs as fatal and
-shutdown.
+Best regards
 
-	Andrew
+Valentin
