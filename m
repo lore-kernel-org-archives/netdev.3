@@ -1,96 +1,127 @@
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD73230D0F;
-	Sat, 21 Mar 2026 18:59:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 887C4313283;
+	Sat, 21 Mar 2026 19:29:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774119575; cv=none; b=O8cQTkVfehCmFyWZ3kE7sGQWJnn3pal9VD7MPFYXtclHLvawoEJBjwysumYbb342wkj1eNVygwq6lEw5bv6Pf+J3H4iwRN6T9zPXE+2HH347irh/KYBYa8O9lU17RZjfasLUWgbM7x18cposagKMAa3q9MeBccKs54PW7Jc0hKc=
+	t=1774121377; cv=none; b=PwNqyoXS9i7UCZoBM5s804t1QaobiKEfuSkhcvKUL8ZGQcWylgRML/muU+5K7utAcfBXNk/ilLQdRGoxpjX+BJCANvIWFvIVUNv23dg+FIhJc+oulncevi00MI+A0lJQ+e26WU4olOBcNimkDcMDsjTMSFVRLoxKST5ns14r0ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774119575; c=relaxed/simple;
-	bh=EM6B7KnMN6pN6Wls9p1SUSWPPyrTsIdsGAx/ocLn7HQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Jbv/1RJWHEj9k8WqB9+LUZoxALNkqZmBVTGmngjsvc/E1wgfl2FhcT9j3AgxdeUKIohqTFVFcR6IPkIFvEukEh6jh4LvU+9Zl6CIq+YL3kYZT/RowPuA2pn4I48+41LPtWpu3N0TYKWAwzAjPSTmCsIKHnQmVEOLxFcjiDlFbQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=meaJgqlb; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1774121377; c=relaxed/simple;
+	bh=YLxMFG/uAi8d2pEsX0+IRHpIk2S7mC4GreH4DXFFWHM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EIZ2QsqL2pe5UWHQNzaIzWd9nC0S3VCEWXzjz1u9SSpN2XYKfiOv6SpEo7KV4vHFqfBlYKiYhPpv4vETgQ0nxIzV25fETVrmWt2QqrwkiOVmRxgWYLHpwJ1/dY4TECpFEfnp4kHZNsvsqvdgFtwMSAGzEAr1IqHz3tm7pt2FtfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=a4uITRpy; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="meaJgqlb"
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4fdTJ145HPz9tGC;
-	Sat, 21 Mar 2026 19:59:29 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1774119569;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0xwK9Zdkdfh44gOBfUOaVfMU+aaMqtJrGLBYJa23K74=;
-	b=meaJgqlbolEuvmHGIHra8HUWlrSHpaxTFAEadGnZoxHDBoApLWSanP2pVNXhlqSotsmjL9
-	a3o2Xi/sdGP4ZNIM9NSYYY75NMvAj/uIdbsr3gPWqPvWoqo+ddNz6sP86qR67guQAMo7R6
-	Znk8tEVfyl07N9Fv2YSlwOZwmRlCZySlYNjHLnD91q1bl8T/tktq+xSf0Iz/mIHLadBMNr
-	4OifFDilDDEfzN30Uh1gJmBQsqsbWx7cTZtv5JipXl3P8BH3kvuWWqGn6Vb+9vcNdWy3W9
-	qNd7x+0waoi5vCsukAy668kuG4WxLwBzyH64PCdBZHYj6ZPIbwZVXfAaPHOLng==
-Message-ID: <b47b7fb0-4859-41f7-810d-b9ad59934db2@mailbox.org>
-Date: Sat, 21 Mar 2026 19:59:25 +0100
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="a4uITRpy"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=lSId2R4n5h5Caa3HQVy1kp5ItdOtiP98FOe14fx9xe0=; b=a4uITRpygSPp6wm/im4nXDeUqd
+	Luj+KRHqcrffrMPpvzE3FyD5daP06CupTPUNV/sVUPluTStanSar/zA4oMH4/GJ905Ftee7rn5bxP
+	UwN5RLF8Doepz/gov3VAdDdS1FTp1T+duBq1PH1J5TqK5TT+ZjC8R+8BX2cq+5NKOp4A=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1w420e-00CkBU-Bh; Sat, 21 Mar 2026 20:29:20 +0100
+Date: Sat, 21 Mar 2026 20:29:20 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Daniel Golle <daniel@makrotopia.org>
+Cc: Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Frank Wunderlich <frankwu@gmx.de>, Chad Monroe <chad@monroe.io>,
+	Cezary Wilmanski <cezary.wilmanski@adtran.com>,
+	Liang Xu <lxu@maxlinear.com>,
+	"Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>,
+	Jose Maria Verdu Munoz <jverdu@maxlinear.com>,
+	Avinash Jayaraman <ajayaraman@maxlinear.com>,
+	John Crispin <john@phrozen.org>
+Subject: Re: [PATCH net-next 1/2] net: dsa: mxl862xx: add CRC for MDIO
+ communication
+Message-ID: <fa518f5d-8b68-459e-9d69-b8702a0b6b57@lunn.ch>
+References: <cover.1774070039.git.daniel@makrotopia.org>
+ <af6911188ee6becb9100d4bf13d0820e5bf9eaca.1774070039.git.daniel@makrotopia.org>
+ <c5f29b9b-9447-488e-b8cc-e2f7e7cbf1a8@lunn.ch>
+ <ab6-5XnC6Z3TdytJ@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [net-next,PATCH v3 3/3] net: phy: realtek: Add property to enable
- SSC
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
- Aleksander Jan Bajkowski <olek2@wp.pl>, Andrew Lunn <andrew@lunn.ch>,
- Conor Dooley <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
- Florian Fainelli <f.fainelli@gmail.com>,
- Heiner Kallweit <hkallweit1@gmail.com>, Ivan Galkin <ivan.galkin@axis.com>,
- Jakub Kicinski <kuba@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Michael Klein <michael@fossekall.de>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
- devicetree@vger.kernel.org
-References: <20251218173718.12878-1-marek.vasut@mailbox.org>
- <20251218173718.12878-3-marek.vasut@mailbox.org>
- <a37be87a-e1aa-443a-9005-da62e4f51d63@mailbox.org>
- <d6c83860-85ba-4a99-b2ab-486ad040ea55@mailbox.org>
- <20260228110257.bowskqkl3ujv3ri6@skbuf>
-Content-Language: en-US
-From: Marek Vasut <marek.vasut@mailbox.org>
-In-Reply-To: <20260228110257.bowskqkl3ujv3ri6@skbuf>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MBO-RS-ID: 4474442b20a2512b3a0
-X-MBO-RS-META: hhy8us7hhfn4jt5yn413w67cefm4p7jz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ab6-5XnC6Z3TdytJ@makrotopia.org>
 
-On 2/28/26 12:02 PM, Vladimir Oltean wrote:
-> On Sat, Feb 28, 2026 at 04:57:25AM +0100, Marek Vasut wrote:
->> On 2/4/26 3:25 PM, Marek Vasut wrote:
->>> On 12/18/25 6:36 PM, Marek Vasut wrote:
->>>> Add support for spread spectrum clocking (SSC) on RTL8211F(D)(I)-CG,
->>>> RTL8211FS(I)(-VS)-CG, RTL8211FG(I)(-VS)-CG PHYs. The implementation
->>>> follows EMI improvement application note Rev. 1.2 for these PHYs.
->>>>
->>>> The current implementation enables SSC for both RXC and SYSCLK clock
->>>> signals. Introduce DT properties 'realtek,clkout-ssc-enable',
->>>> 'realtek,rxc-ssc-enable' and 'realtek,sysclk-ssc-enable' which control
->>>> CLKOUT, RXC and SYSCLK SSC spread spectrum clocking enablement on these
->>>> signals.
->>>>
->>>> Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
->>> Is there anything that should be adjusted in these patches ?
->>
->> How can we proceed here ?
+> > This is the question, what to do when you see a checksum failure? The
+> > basic assumption is MDIO is reliable. PHYs don't do any sort of
+> > checksums, nor any other switches using MDIO. Why would you want
+> > checksums?
+> > 
+> > To detect the hardware is broken? If so, is returning EIO sufficient?
+> > Would it not be better to admin down all the interfaces?
+> > 
+> > To allow the MDIO clock to run at a higher frequency, at the limit of
+> > the bus, so you get occasionally failures? If so, should you not
+> > retry? But are the commands idempotent? Can you safely retry?
+> > 
 > 
-> The state in Patchwork is Deferred. You were told that you submitted the
-> series in the merge window.
-> https://patchwork.kernel.org/project/netdevbpf/patch/20251218173718.12878-1-marek.vasut@mailbox.org/
+> Your guesses are all correct, and your concerns are justified.
 > 
-> It won't be applied as is (needs to be build-tested again on v7.0-rc...),
-> so please resend.
+> Let me explain the whole picture:
+> The switch driver transfers many rather large data structures over
+> MDIO, and lacking support for interrupts (firmware doesn't support),
+> this is often even interleaved with polling 8 PHYs and at least one
+> PCS. To not have things get very slow (and then even sometimes see
+> -ETIMEDOUT breaking the PHY state machine if timing is unlucky), it
+> is common to overclock the MDIO bus to 20 MHz instead of the 2.5 MHz
+> default (the switch claims to support up to 25 MHz, but 20 Mhz is
+> sufficient and conservative enough).
+> 
+> That, combined with higher temperature of the switch IC (but still
+> within the spec'ed range), can lead to bit-errors -- which, in case
+> they remain unnoticed can introduce subtle (security relevant) issues
+> such as bridging ports which should not be bridged or flooding to a
+> port on which flooding should be disabled.
 
-I now sent V4.
+O.K. "Interesting" design.
+
+You could solve the PHY timeout issue by claiming to support PHY
+interrupts, doing the polling in the DSA driver, and raise an
+interrupt if the conditions are met. The mv88e6xxx driver does
+something like this. It has an interrupt controller which the PHYs are
+connect to. Some designs have the switch interrupt output connected to
+a GPIO and so can do real interrupts. Some don't. Rather than have all
+the internal PHYs polled one per second by phylib, the mv88e6xxx polls
+the interrupt status register every 1/5 of a second and raises the
+interrupts instead. Bot faster, and less MDIO transfers.
+
+> In case of the switch reporting back a CRC error for data received,
+> a limited number of retries would be ok in every case.
+> However, the same is not true for the opposite direction, ie. an
+> error detected by the Linux host for data received from the switch:
+> In case one of the *_ALLOC API calls we cannot simply repeat the
+> call, and as the data was corrupted, we wouldn't even know how to
+> undo the failed call.
+
+Seems like somebody did not think through the design. I assume the
+vendor driver does not attempt a retry?
+
+> Setting all interfaces to admin-down is probably the best compromise
+> in a case like this, as it would also reduce the energy consumption
+> and hence heat emission of the IC (as all built-in PHYs are then down;
+> that's where most of the heat comes from) and prevent damage -- I've
+> only observed CRC errors with the heatsink removed and artifically
+> overheating the IC...
+
+So in the normal use cases you don't expect CRC errors. That seems
+like it should driver the design. Consider any CRCs as fatal and
+shutdown.
+
+	Andrew
