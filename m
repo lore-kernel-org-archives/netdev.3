@@ -1,173 +1,145 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E6F36E465;
-	Sun, 22 Mar 2026 18:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801011A6815;
+	Sun, 22 Mar 2026 19:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774205336; cv=none; b=DLSMnQ15ZJo5SPzIwhb0/Yphr0kfmSdDu/YZ/pWrYfWPkmZElJVa41ZxnUZ7A+LwDUGaU692z6x7IOZflY8ZNNGkmVq0Ztvc7MJBCZ97RwMFk72IAH4Jy1RwT/DLahRaMu9vpWpR538Is4HII1vx4lmU0K7tWf2Zcfw3ScFI+g4=
+	t=1774208905; cv=none; b=Ee+q1JzziceDlP/gpB7e6pJ0fvDfGYuljdv94Fnze4hqSSkzdZrcTKLaVdZpPICEFBAG/e6jY4jYXr2An2YQbf5u7ac32N2tQCSnfUCl9vlhPPrDXlaDlJcTfElBi1m1aK9b2vtp9DBbF9KXdsihpPzT3/tt+ofiOoyLl9MS6So=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774205336; c=relaxed/simple;
-	bh=3wRlSaja4dFFdIlJqdkm0iC9QbRkFhHiOXjrVmCrmVU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=At0/oCAsKrbhYyDNHKdnJe49IFDPLct+lcg9Qim+mhSQqZ3lNyrA0NXOfncbu9tKHVp3CmF65R0rvg9ONKDjmcAn6bzKcodqcaVw0qI7C13PgWAogMD2qH0DyEcUlbBRH2XLDFKneOpej0YiJrV4ATml0YZLtsSmFbJ1fmMVi/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W6BjiTr8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774208905; c=relaxed/simple;
+	bh=hsLkvAUgRxRQJzXQcQZokLRvOtZGiaYVCTbdJvhfGkM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YLXZHPC/r4ckggNcfL50oLQ+Ea0SiEXbiRWFL8DDhD/7Io3OC3pJ2q2/+Pq5GSoRB6GuL9UHlKx5GzakU0egEGMDhemPFL0ENbE6WHKMpcUNET6U1bK5AmUrkxxL9JpWxRYHHCRPmeoYjU3tXTkxTrw/0/j2uVtUT+ROWCrbCcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IJynRHho; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W6BjiTr8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21850C19424;
-	Sun, 22 Mar 2026 18:48:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IJynRHho"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4414DC19424;
+	Sun, 22 Mar 2026 19:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774205335;
-	bh=3wRlSaja4dFFdIlJqdkm0iC9QbRkFhHiOXjrVmCrmVU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=W6BjiTr8psw7SP7NU1Ga1kTmbUM3oFks3OrLuUZFQB/E9SAIAVEJ91gQZ296ozwBY
-	 BeTKd6aFNyzCA+MawWHnAS2U4kNDFcTlW5tjblzNFBb783Bw/zOqDnHnjDuSSxxWG9
-	 Qpgyigc0yg+qnSp0I83xoNovR0EpJR8aBsecF4kWi2LlCTshcxeqgGPomhBteByG2Z
-	 X2kBzvohLu53VE1SNV6yTMr599KUcNSWJNQhlYexD0wffUXOhOqNLVLnpZqgKEVl8N
-	 +C1vUJxSfsO0zPSsu9KEjaOsn+6AQYGCsNS5TNXy8HJno1N5Wq40eCDW03XAHcn0Xx
-	 9PLjFbNmKBHCw==
-Date: Sun, 22 Mar 2026 20:48:48 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Long Li <longli@microsoft.com>
-Cc: Konstantin Taranov <kotaranov@microsoft.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH rdma] RDMA/mana_ib: Disable RX steering on RSS QP destroy
-Message-ID: <20260322184848.GC814676@unreal>
-References: <20260321002842.1607179-1-longli@microsoft.com>
+	s=k20201202; t=1774208905;
+	bh=hsLkvAUgRxRQJzXQcQZokLRvOtZGiaYVCTbdJvhfGkM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=IJynRHho/9IV0v/RSzh7fxYdgT/lyOvO3O8QsZQmVmjayvPkC4t+NWUbhTJMHWtVm
+	 IfV613+T/NebAdRZJ09PoBNevgB5muW+4n96gDcNPz9QnFtBJW8i5nGS+bKE6tmGBl
+	 iCBHEdU+88gW5SaIbvekm+ZEASVCxpyJvdr8cyxwbPx2oPmTJgu424vC6vjj/h9hDh
+	 n+su0sSp8AaHG2PU1Jw7kNOACjH8uxm0DVJpoNZG4o6eHL+CFxLoIDIWAdlASD2bMv
+	 XlSsTiPqojypo+A/U+37yGwkDfeY2yuW8pG+5IMLL/p7WLhFAs0UFU/tzig2wFY/XP
+	 U0Kt/yn9WVFFA==
+Message-ID: <eb316800-0be6-4aa7-b9f6-e2b17646d1a0@kernel.org>
+Date: Sun, 22 Mar 2026 20:48:20 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260321002842.1607179-1-longli@microsoft.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH QUESTION 0/2] NFC support in Linux (and support for
+ Qualcomm SDM845 devices)
+To: david@ixit.cz, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: Petr Hodina <petr.hodina@protonmail.com>,
+ biemster <l.j.beemster@gmail.com>, netdev@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, oe-linux-nfc@lists.linux.dev,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org
+References: <20260322-oneplus-nfc-v1-0-5f22f544f0e2@ixit.cz>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20260322-oneplus-nfc-v1-0-5f22f544f0e2@ixit.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Mar 20, 2026 at 05:28:42PM -0700, Long Li wrote:
-> When an RSS QP is destroyed (e.g. DPDK exit), mana_ib_destroy_qp_rss()
-> destroys the RX WQ objects but does not disable vPort RX steering in
-> firmware. This leaves stale steering configuration that still points to
-> the destroyed RX objects.
+On 22/03/2026 15:24, David Heidelberg via B4 Relay wrote:
+> There isn't upstream driver.
 > 
-> If traffic continues to arrive (e.g. peer VM is still transmitting) and
-> the VF interface is subsequently brought up (mana_open), the firmware
-> may deliver completions using stale CQ IDs from the old RX objects.
-> These CQ IDs can be reused by the ethernet driver for new TX CQs,
-> causing RX completions to land on TX CQs:
+> I'm openining this as a starter. We need a NFC drivers I assume. I tried
+> quick check, but both of NFC drivers register
 > 
->   WARNING: mana_poll_tx_cq+0x1b8/0x220 [mana]  (is_sq == false)
->   WARNING: mana_gd_process_eq_events+0x209/0x290 (cq_table lookup fails)
+> nfc: nfc_init: NFC Core ver 0.1
+> NET: Registered PF_NFC protocol family
 > 
-> Fix this by disabling vPort RX steering before destroying RX WQ objects.
-> Note that mana_fence_rqs() cannot be used here because the fence
-> completion is delivered on the CQ, which is polled by user-mode (e.g.
-> DPDK) and not visible to the kernel driver.
+> but efficiently does nothing. In the See section, there are some ways
+> how to make NFC work, but rely on patched vendor libs, missing updates
+> etc.
 > 
-> Refactor the disable logic into a shared mana_disable_vport_rx() in
-> mana_en, exported for use by mana_ib, replacing the duplicate code.
-> The ethernet driver's mana_dealloc_queues() is also updated to call
-> this common function.
+> 1. What hardware is present on Snapdragon 845, is there some
+>    documentation? It seems that both sdm845 devices has almost identical
+>    setup, thus it's NFC solution integrated? @Qualcomm
 > 
-> Fixes: 0266a177631d ("RDMA/mana_ib: Add a driver for Microsoft Azure Network Adapter")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Long Li <longli@microsoft.com>
-> ---
->  drivers/infiniband/hw/mana/qp.c               | 17 ++++++++++++++++-
->  drivers/net/ethernet/microsoft/mana/mana_en.c | 11 ++++++++++-
->  include/net/mana/mana.h                       |  1 +
->  3 files changed, 27 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/infiniband/hw/mana/qp.c b/drivers/infiniband/hw/mana/qp.c
-> index 80cf4ade4b75..b27084c53a14 100644
-> --- a/drivers/infiniband/hw/mana/qp.c
-> +++ b/drivers/infiniband/hw/mana/qp.c
-> @@ -829,11 +829,26 @@ static int mana_ib_destroy_qp_rss(struct mana_ib_qp *qp,
->  	struct net_device *ndev;
->  	struct mana_ib_wq *wq;
->  	struct ib_wq *ibwq;
-> -	int i;
-> +	int i, err;
->  
->  	ndev = mana_ib_get_netdev(qp->ibqp.device, qp->port);
->  	mpc = netdev_priv(ndev);
->  
-> +	/* Disable vPort RX steering before destroying RX WQ objects.
-> +	 * Otherwise firmware still routes traffic to the destroyed queues,
-> +	 * which can cause bogus completions on reused CQ IDs when the
-> +	 * ethernet driver later creates new queues on mana_open().
-> +	 *
-> +	 * Unlike the ethernet teardown path, mana_fence_rqs() cannot be
-> +	 * used here because the fence completion CQE is delivered on the
-> +	 * CQ which is polled by userspace (e.g. DPDK), so there is no way
-> +	 * for the kernel to wait for fence completion.
-> +	 */
-> +	err = mana_disable_vport_rx(mpc);
-> +	if (err)
-> +		ibdev_err(&mdev->ib_dev,
-> +			  "Failed to disable vPort RX: %d\n", err);
+> 2. What's the right approach to continue? Should we upstream these
+>    definitions and then start developing user-space stack? @netdev (I
+>    see orphaned)
 
-mana_cfg_vport_steering() is already prints in all failure scenarios.
+User space stack is there already.
 
-Thanks
-
-> +
->  	for (i = 0; i < (1 << ind_tbl->log_ind_tbl_size); i++) {
->  		ibwq = ind_tbl->ind_tbl[i];
->  		wq = container_of(ibwq, struct mana_ib_wq, ibwq);
-> diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> index 22444c7530a5..51719ef1c09b 100644
-> --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-> +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> @@ -2934,6 +2934,13 @@ static void mana_rss_table_init(struct mana_port_context *apc)
->  			ethtool_rxfh_indir_default(i, apc->num_queues);
->  }
->  
-> +int mana_disable_vport_rx(struct mana_port_context *apc)
-> +{
-> +	return mana_cfg_vport_steering(apc, TRI_STATE_FALSE, false, false,
-> +				       false);
-> +}
-> +EXPORT_SYMBOL_NS(mana_disable_vport_rx, "NET_MANA");
-> +
->  int mana_config_rss(struct mana_port_context *apc, enum TRI_STATE rx,
->  		    bool update_hash, bool update_tab)
->  {
-> @@ -3339,10 +3346,12 @@ static int mana_dealloc_queues(struct net_device *ndev)
->  	 */
->  
->  	apc->rss_state = TRI_STATE_FALSE;
-> -	err = mana_config_rss(apc, TRI_STATE_FALSE, false, false);
-> +	err = mana_disable_vport_rx(apc);
->  	if (err && mana_en_need_log(apc, err))
->  		netdev_err(ndev, "Failed to disable vPort: %d\n", err);
->  
-> +	mana_fence_rqs(apc);
-> +
->  	/* Even in err case, still need to cleanup the vPort */
->  	mana_destroy_rxqs(apc);
->  	mana_destroy_txq(apc);
-> diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
-> index 204c2b612a62..2634e9135eed 100644
-> --- a/include/net/mana/mana.h
-> +++ b/include/net/mana/mana.h
-> @@ -574,6 +574,7 @@ struct mana_port_context {
->  netdev_tx_t mana_start_xmit(struct sk_buff *skb, struct net_device *ndev);
->  int mana_config_rss(struct mana_port_context *ac, enum TRI_STATE rx,
->  		    bool update_hash, bool update_tab);
-> +int mana_disable_vport_rx(struct mana_port_context *apc);
->  
->  int mana_alloc_queues(struct net_device *ndev);
->  int mana_attach(struct net_device *ndev);
-> -- 
-> 2.43.0
 > 
+> Since looking at NFC mailing list (oe-linux-nfc) and seeing it's pretty
+> much dead, would be cool to revive it.
+> 
+> Also there is some effort from Arch people [1], but likely without clean
+> path to mainline.
+> 
+> Can we revieve the NFC effort? I'm offering limited maintanance (in case
+> people would send patches).
+> 
+> See:
+>  - https://gitlab.com/sdm845-mainline/linux/-/merge_requests/62
+>  - https://github.com/NXPNFCLinux/linux_libnfc-nci/
+
+I don't know which interface libnfc-nci is using. There are multiple NFC
+stack implementations in general, but the one using kernel interface is
+neard.
+
+You will not get another stack, but taking care of Linux nfc and neard
+would be appreciated.
+
+Let me release a new version for it.
+
+Best regards,
+Krzysztof
