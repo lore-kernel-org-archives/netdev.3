@@ -1,21 +1,21 @@
 Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403BD7478;
-	Sun, 22 Mar 2026 00:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B865140DFD8;
+	Sun, 22 Mar 2026 00:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774138025; cv=none; b=rNf474MmacBXT0Vtz4atlVH1GlEhxW4yogOzr2flrFTP7AVcR72ct1W5WEpD2s6octoBpzm1jyn0eL+gOvScBP/cpij4OJLi1kY+hJxXuqUIzHrVptLFjGONOlbO0xoNHOrSTLkU2A8eKVC3ujTFkfCfjl/5e3yuqTkT/ajUkfE=
+	t=1774138026; cv=none; b=QjeJgXyzlLHXKnOnIhNZAmyBzRymfuPXExwoQuRGhMyBnpJvaRZUdTRSm6OKZTdJ7MaFCRqlfk8DojtWK8mzcluuru/11uOqzVwr7PjJfKQ6tIIIvcT8kdC4YxjAjq5ODRy3J30k/eu2utgdJaWF0Xee0rapS5RCXMLnRiXb4MM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774138025; c=relaxed/simple;
-	bh=ln/naS4oASngnzJ5yMkbK6O44l2fukyL8IAzeiWnKcc=;
+	s=arc-20240116; t=1774138026; c=relaxed/simple;
+	bh=ydZr5tIQVHkCWq3/6Au930Fb1e1Dj1nhBQ13K5iuYlA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pvQNs8FmllwIJlM+JJLMumMLvRCQZvW7JTuRezmr9lLs/nR4WvBv1rUSr8cjpPRnhK5FrgBj5MkkbJpAzqW+5ejQT38LB1DJz5GqHN+RSxdkuvswSsIDMOCLwnKkk5r5mKrBdF5QH2CqhZbCA/qlLZLQ5/5cOQgDa/f+8QBikes=
+	 MIME-Version; b=s6maN+AVVoG1qIASf7DR/sxK2pFImiP5Gy/fTrPUuQRcTghpDXMXXkaEksy4l7r4rpvvbl0MKpM9WwkmQWfElJ6xJzLFC8elKSvP1Y/s4+nHlMkQ1ByTK0bNkTPatGxb6vF04cBnH63QzwFfrbdOcPyOU6JxUrBfO7mZGNHszGo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; arc=none smtp.client-ip=160.80.4.37
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
 Received: from localhost.localdomain ([160.80.103.126])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 62M06J55021482;
+	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 62M06J54021482;
 	Sun, 22 Mar 2026 01:06:25 +0100
 From: Andrea Mayer <andrea.mayer@uniroma2.it>
 To: netdev@vger.kernel.org
@@ -27,9 +27,9 @@ Cc: "David S . Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
         Ahmed Abdelsalam <ahabdels@cisco.com>,
         Justin Iurman <justin.iurman@6wind.com>, linux-kernel@vger.kernel.org,
         Andrea Mayer <andrea.mayer@uniroma2.it>
-Subject: [RFC PATCH net-next 2/3] seg6: add SRv6 L2 tunnel device (srl2)
-Date: Sun, 22 Mar 2026 01:05:56 +0100
-Message-Id: <20260322000557.12559-3-andrea.mayer@uniroma2.it>
+Subject: [RFC PATCH net-next 1/3] seg6: add support for the SRv6 End.DT2U behavior
+Date: Sun, 22 Mar 2026 01:05:55 +0100
+Message-Id: <20260322000557.12559-2-andrea.mayer@uniroma2.it>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20260322000557.12559-1-andrea.mayer@uniroma2.it>
 References: <20260322000557.12559-1-andrea.mayer@uniroma2.it>
@@ -43,401 +43,273 @@ Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
 X-Virus-Status: Clean
 
-Introduce srl2, an Ethernet pseudowire device over SRv6. It
-encapsulates L2 frames in IPv6 with a Segment Routing Header for
-transmission across an SRv6 network.
+Implement the SRv6 End.DT2U (Endpoint with decapsulation and unicast
+MAC L2 table lookup) behavior as defined in RFC 8986, Section 4.11.
 
-The encapsulation logic reuses seg6_do_srh_encap() with
-IPPROTO_ETHERNET. The transmit path uses the standard IPv6 tunnel
-infrastructure (dst_cache, ip6_route_output, ip6tunnel_xmit).
+End.DT2U decapsulates an SRv6 packet carrying an inner Ethernet frame
+and delivers it on a user-specified device (l2dev). The l2dev is
+expected to be a bridge port, where the Linux bridge provides MAC
+learning and L2 forwarding as required by the RFC, or a srl2
+Ethernet pseudowire device.
 
-The device is configured with a segment list for point-to-point
-L2 encapsulation.
+A new netlink attribute SEG6_LOCAL_L2DEV identifies the target device.
 
 Usage:
 
-  ip link add srl2-0 type srl2 segs fc00::a,fc00::b
+  ip -6 route add fc00::100/128 encap seg6local action End.DT2U \
+      l2dev veth0 dev dum0
+
+  where veth0 is a bridge port.
 
 Co-developed-by: Stefano Salsano <stefano.salsano@uniroma2.it>
 Signed-off-by: Stefano Salsano <stefano.salsano@uniroma2.it>
 Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
 ---
- include/linux/srl2.h      |   7 +
- include/uapi/linux/srl2.h |  20 +++
- net/ipv6/Kconfig          |  16 +++
- net/ipv6/Makefile         |   1 +
- net/ipv6/seg6.c           |   1 +
- net/ipv6/srl2.c           | 269 ++++++++++++++++++++++++++++++++++++++
- 6 files changed, 314 insertions(+)
- create mode 100644 include/linux/srl2.h
- create mode 100644 include/uapi/linux/srl2.h
- create mode 100644 net/ipv6/srl2.c
+ include/uapi/linux/seg6_local.h |   3 +
+ net/ipv6/seg6_local.c           | 160 ++++++++++++++++++++++++++++++--
+ 2 files changed, 157 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/srl2.h b/include/linux/srl2.h
-new file mode 100644
-index 000000000000..c1342b979402
---- /dev/null
-+++ b/include/linux/srl2.h
-@@ -0,0 +1,7 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+#ifndef _LINUX_SRL2_H
-+#define _LINUX_SRL2_H
-+
-+#include <uapi/linux/srl2.h>
-+
-+#endif
-diff --git a/include/uapi/linux/srl2.h b/include/uapi/linux/srl2.h
-new file mode 100644
-index 000000000000..e7c8f6fc0791
---- /dev/null
-+++ b/include/uapi/linux/srl2.h
-@@ -0,0 +1,20 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later WITH Linux-syscall-note */
-+/*
-+ *  SRv6 L2 tunnel device
-+ *
-+ *  Author:
-+ *  Andrea Mayer <andrea.mayer@uniroma2.it>
-+ */
-+
-+#ifndef _UAPI_LINUX_SRL2_H
-+#define _UAPI_LINUX_SRL2_H
-+
-+enum {
-+	IFLA_SRL2_UNSPEC,
-+	IFLA_SRL2_SRH,	/* binary: struct ipv6_sr_hdr + segments */
-+	__IFLA_SRL2_MAX,
-+};
-+
-+#define IFLA_SRL2_MAX (__IFLA_SRL2_MAX - 1)
-+
-+#endif
-diff --git a/net/ipv6/Kconfig b/net/ipv6/Kconfig
-index b8f9a8c0302e..9c8f7e254435 100644
---- a/net/ipv6/Kconfig
-+++ b/net/ipv6/Kconfig
-@@ -318,6 +318,22 @@ config IPV6_SEG6_BPF
- 	depends on IPV6_SEG6_LWTUNNEL
- 	depends on IPV6 = y
+diff --git a/include/uapi/linux/seg6_local.h b/include/uapi/linux/seg6_local.h
+index 4fdc424c9cb3..f9aa627be1fd 100644
+--- a/include/uapi/linux/seg6_local.h
++++ b/include/uapi/linux/seg6_local.h
+@@ -29,6 +29,7 @@ enum {
+ 	SEG6_LOCAL_VRFTABLE,
+ 	SEG6_LOCAL_COUNTERS,
+ 	SEG6_LOCAL_FLAVORS,
++	SEG6_LOCAL_L2DEV,
+ 	__SEG6_LOCAL_MAX,
+ };
+ #define SEG6_LOCAL_MAX (__SEG6_LOCAL_MAX - 1)
+@@ -67,6 +68,8 @@ enum {
+ 	SEG6_LOCAL_ACTION_END_BPF	= 15,
+ 	/* decap and lookup of DA in v4 or v6 table */
+ 	SEG6_LOCAL_ACTION_END_DT46	= 16,
++	/* decap and unicast MAC L2 table lookup */
++	SEG6_LOCAL_ACTION_END_DT2U	= 17,
  
-+config IPV6_SRL2
-+	tristate "IPv6: SRv6 L2 tunnel device"
-+	depends on IPV6_SEG6_LWTUNNEL
-+	select DST_CACHE
-+	help
-+	  SRv6 virtual Ethernet device that encapsulates L2 frames in
-+	  IPv6 with a Segment Routing Header (SRH) for transmission
-+	  over an SRv6 network.
-+	  Intended for use with a remote seg6local L2 decapsulation
-+	  behavior, such as End.DT2U or End.DX2.
-+
-+	  To compile this as a module, choose M here: the module will
-+	  be called srl2.
-+
-+	  If unsure, say N.
-+
- config IPV6_RPL_LWTUNNEL
- 	bool "IPv6: RPL Source Routing Header support"
- 	depends on IPV6
-diff --git a/net/ipv6/Makefile b/net/ipv6/Makefile
-index 2c9ce2ccbde1..a7e81d0293ca 100644
---- a/net/ipv6/Makefile
-+++ b/net/ipv6/Makefile
-@@ -24,6 +24,7 @@ ipv6-$(CONFIG_SYN_COOKIES) += syncookies.o
- ipv6-$(CONFIG_NETLABEL) += calipso.o
- ipv6-$(CONFIG_IPV6_SEG6_LWTUNNEL) += seg6_iptunnel.o seg6_local.o
- ipv6-$(CONFIG_IPV6_SEG6_HMAC) += seg6_hmac.o
-+obj-$(CONFIG_IPV6_SRL2) += srl2.o
- ipv6-$(CONFIG_IPV6_RPL_LWTUNNEL) += rpl_iptunnel.o
- ipv6-$(CONFIG_IPV6_IOAM6_LWTUNNEL) += ioam6_iptunnel.o
- 
-diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
-index 1c3ad25700c4..23213ab4fefd 100644
---- a/net/ipv6/seg6.c
-+++ b/net/ipv6/seg6.c
-@@ -72,6 +72,7 @@ bool seg6_validate_srh(struct ipv6_sr_hdr *srh, int len, bool reduced)
- 
- 	return true;
+ 	__SEG6_LOCAL_ACTION_MAX,
+ };
+diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+index 2b41e4c0dddd..a766f235c532 100644
+--- a/net/ipv6/seg6_local.c
++++ b/net/ipv6/seg6_local.c
+@@ -192,6 +192,7 @@ struct seg6_local_lwt {
+ 	struct in6_addr nh6;
+ 	int iif;
+ 	int oif;
++	int l2dev;
+ 	struct bpf_lwt_prog bpf;
+ #ifdef CONFIG_NET_L3_MASTER_DEV
+ 	struct seg6_end_dt_info dt_info;
+@@ -902,6 +903,118 @@ static int input_action_end_dx2(struct sk_buff *skb,
+ 	return -EINVAL;
  }
-+EXPORT_SYMBOL_GPL(seg6_validate_srh);
  
- struct ipv6_sr_hdr *seg6_get_srh(struct sk_buff *skb, int flags)
- {
-diff --git a/net/ipv6/srl2.c b/net/ipv6/srl2.c
-new file mode 100644
-index 000000000000..66aa5375d218
---- /dev/null
-+++ b/net/ipv6/srl2.c
-@@ -0,0 +1,269 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ *  SRv6 L2 tunnel device (srl2)
-+ *
-+ *  A virtual Ethernet device that encapsulates L2 frames in IPv6 with a
-+ *  Segment Routing Header (SRH) for transmission over an SRv6 network.
-+ *  On the remote side, a seg6_local behavior such as End.DT2U or End.DX2
-+ *  decapsulates the inner Ethernet frame for L2 delivery.
-+ *
-+ *  The encapsulation logic reuses seg6_do_srh_encap() from seg6_iptunnel.c
-+ *  with IPPROTO_ETHERNET (143). The transmit path uses the standard IPv6
-+ *  tunnel infrastructure (dst_cache, ip6_route_output, ip6tunnel_xmit).
-+ *
-+ *  Authors:
-+ *	Andrea Mayer <andrea.mayer@uniroma2.it>
-+ *	Stefano Salsano <stefano.salsano@uniroma2.it>
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/netdevice.h>
-+#include <linux/etherdevice.h>
-+#include <net/dst_cache.h>
-+#include <net/ip6_route.h>
-+#include <net/ip_tunnels.h>
-+#include <net/ip6_tunnel.h>
-+#include <net/seg6.h>
-+#include <linux/seg6.h>
-+#include <linux/srl2.h>
-+
-+/* Conservative initial estimate for SRH size before newlink provides
-+ * the actual value. 256 bytes accommodates up to 15 SIDs.
-+ */
-+#define SRL2_SRH_HEADROOM_EST	256
-+
-+struct srl2_priv {
-+	struct ipv6_sr_hdr	*srh;
-+	struct dst_cache	dst_cache;
-+};
-+
-+/*
-+ * srl2_xmit - encapsulate an L2 frame in IPv6+SRH and transmit
-+ *
-+ * When the bridge (or local stack) sends a frame through this device,
-+ * skb->data points to the inner Ethernet header.  We look up a route
-+ * towards the first SID, prepend the outer IPv6+SRH via
-+ * seg6_do_srh_encap(), and transmit via ip6tunnel_xmit().
-+ *
-+ * The route lookup result is cached per-cpu in dst_cache. Since the
-+ * first SID is constant for the lifetime of the device, the cache
-+ * avoids repeated route lookups in the common case.
-+ */
-+static netdev_tx_t srl2_xmit(struct sk_buff *skb, struct net_device *dev)
++static inline bool seg6_is_valid_l2dev(const struct net_device *dev)
 +{
-+	struct srl2_priv *priv = netdev_priv(dev);
-+	struct net *net = dev_net(dev);
-+	struct dst_entry *dst;
-+	struct flowi6 fl6;
-+	int err;
++	if (netif_is_bridge_port(dev))
++		return true;
 +
-+	local_bh_disable();
-+	dst = dst_cache_get(&priv->dst_cache);
-+	local_bh_enable();
++	/* A netif_is_srl2() helper, similar to netif_is_vxlan(), could wrap
++	 * this check.
++	 */
++	if (dev->rtnl_link_ops &&
++	    !strcmp(dev->rtnl_link_ops->kind, "srl2"))
++		return true;
 +
-+	if (unlikely(!dst)) {
-+		memset(&fl6, 0, sizeof(fl6));
-+		fl6.daddr = priv->srh->segments[priv->srh->first_segment];
++	return false;
++}
 +
-+		dst = ip6_route_output(net, NULL, &fl6);
-+		if (dst->error) {
-+			dst_release(dst);
-+			DEV_STATS_INC(dev, tx_carrier_errors);
-+			goto drop;
-+		}
++/* decapsulate and deliver inner L2 frame locally on specified device.
++ * Implements End.DT2U (RFC 8986, Section 4.11) by delivering the
++ * decapsulated Ethernet frame on a device that provides L2 table
++ * semantics (bridge port) or L2 delivery semantics (srl2 device).
++ */
++static int input_action_end_dt2u(struct sk_buff *skb,
++				 struct seg6_local_lwt *slwt)
++{
++	struct net *net = dev_net(skb->dev);
++	struct net_device *l2dev;
 +
-+		if (dst_dev(dst) == dev) {
-+			dst_release(dst);
-+			DEV_STATS_INC(dev, collisions);
-+			goto drop;
-+		}
++	if (!decap_and_validate(skb, IPPROTO_ETHERNET))
++		goto drop;
 +
-+		local_bh_disable();
-+		/* saddr is unused */
-+		dst_cache_set_ip6(&priv->dst_cache, dst, &fl6.saddr);
-+		local_bh_enable();
-+	}
++	if (!pskb_may_pull(skb, ETH_HLEN))
++		goto drop;
 +
-+	skb_scrub_packet(skb, false);
++	l2dev = dev_get_by_index_rcu(net, slwt->l2dev);
++	if (!l2dev)
++		goto drop;
 +
-+	skb_dst_set(skb, dst);
++	if (l2dev->type != ARPHRD_ETHER)
++		goto drop;
 +
-+	err = seg6_do_srh_encap(skb, priv->srh, IPPROTO_ETHERNET);
-+	if (unlikely(err)) {
-+		DEV_STATS_INC(dev, tx_errors);
-+		kfree_skb(skb);
-+		return NETDEV_TX_OK;
-+	}
++	/* Consistent with the carrier check in input_action_end_dx2(). */
++	if (!(l2dev->flags & IFF_UP) || !netif_carrier_ok(l2dev))
++		goto drop;
 +
-+	skb->protocol = htons(ETH_P_IPV6);
++	/* RFC 8986 requires L2 forwarding semantics. Only bridge ports
++	 * and srl2 devices satisfy this requirement.
++	 */
++	if (!seg6_is_valid_l2dev(l2dev))
++		goto drop;
 +
-+	ip6tunnel_xmit(NULL, skb, dev, 0);
++	skb_orphan(skb);
 +
-+	return NETDEV_TX_OK;
++	if (skb_warn_if_lro(skb))
++		goto drop;
++
++	/* eth_type_trans() sets skb->dev, skb->pkt_type, pulls ETH_HLEN,
++	 * and returns the protocol. This is required for proper L2
++	 * processing when the device is a bridge port.
++	 */
++	skb->protocol = eth_type_trans(skb, l2dev);
++
++	/* Reset network_header to point to the L3 header (past ethernet).
++	 * eth_type_trans pulled ETH_HLEN, so skb->data is at the L3 header
++	 * now. Without this, network_header still points to the ethernet
++	 * header (set by decap_and_validate), and ip_rcv would read garbage
++	 * when the bridge delivers the frame to the local stack.
++	 */
++	skb_reset_network_header(skb);
++
++	/* Drop the dst inherited from the outer SRv6 packet. Without
++	 * this, when the bridge delivers locally (e.g. to a bridge IP),
++	 * ip_rcv would skip route lookup and use the stale IPv6 lwtunnel
++	 * dst for an IPv4 packet, causing a silent drop.
++	 */
++	skb_dst_drop(skb);
++
++	netif_rx(skb);
++
++	return 0;
 +
 +drop:
-+	DEV_STATS_INC(dev, tx_dropped);
 +	kfree_skb(skb);
-+	return NETDEV_TX_OK;
++	return -EINVAL;
 +}
 +
-+static int srl2_dev_init(struct net_device *dev)
++static struct net *fib6_config_get_net(const struct fib6_config *fib6_cfg)
 +{
-+	struct srl2_priv *priv = netdev_priv(dev);
++	const struct nl_info *nli = &fib6_cfg->fc_nlinfo;
 +
-+	return dst_cache_init(&priv->dst_cache, GFP_KERNEL);
++	return nli->nl_net;
 +}
 +
-+static void srl2_dev_uninit(struct net_device *dev)
++static int seg6_end_dt2u_build(struct seg6_local_lwt *slwt, const void *cfg,
++			       struct netlink_ext_ack *extack)
 +{
-+	struct srl2_priv *priv = netdev_priv(dev);
++	struct net *net = fib6_config_get_net(cfg);
++	struct net_device *dev;
 +
-+	dst_cache_destroy(&priv->dst_cache);
-+}
++	dev = __dev_get_by_index(net, slwt->l2dev);
++	if (!dev) {
++		NL_SET_ERR_MSG(extack, "l2dev device not found");
++		return -ENODEV;
++	}
 +
-+static void srl2_dev_free(struct net_device *dev)
-+{
-+	struct srl2_priv *priv = netdev_priv(dev);
-+
-+	kfree(priv->srh);
-+}
-+
-+static const struct net_device_ops srl2_netdev_ops = {
-+	.ndo_init		= srl2_dev_init,
-+	.ndo_uninit		= srl2_dev_uninit,
-+	.ndo_start_xmit		= srl2_xmit,
-+	.ndo_set_mac_address	= eth_mac_addr,
-+	.ndo_validate_addr	= eth_validate_addr,
-+};
-+
-+static void srl2_setup(struct net_device *dev)
-+{
-+	ether_setup(dev);
-+
-+	dev->netdev_ops = &srl2_netdev_ops;
-+	dev->needs_free_netdev = true;
-+	dev->pcpu_stat_type = NETDEV_PCPU_STAT_DSTATS;
-+	dev->needed_headroom = LL_MAX_HEADER + sizeof(struct ipv6hdr) +
-+			       SRL2_SRH_HEADROOM_EST;
-+
-+	dev->priv_flags &= ~IFF_TX_SKB_SHARING;
-+	dev->priv_flags |= IFF_LIVE_ADDR_CHANGE | IFF_NO_QUEUE;
-+	dev->lltx = true;
-+
-+	eth_hw_addr_random(dev);
-+}
-+
-+static const struct nla_policy srl2_policy[IFLA_SRL2_MAX + 1] = {
-+	[IFLA_SRL2_SRH]	= { .type = NLA_BINARY },
-+};
-+
-+static int srl2_validate(struct nlattr *tb[], struct nlattr *data[],
-+			 struct netlink_ext_ack *extack)
-+{
-+	if (!data || !data[IFLA_SRL2_SRH]) {
-+		NL_SET_ERR_MSG(extack, "SRH with segment list is required");
++	if (!seg6_is_valid_l2dev(dev)) {
++		NL_SET_ERR_MSG(extack,
++			       "l2dev must be a bridge port or srl2 device");
 +		return -EINVAL;
 +	}
 +
 +	return 0;
 +}
 +
-+static int srl2_newlink(struct net_device *dev,
-+			struct rtnl_newlink_params *params,
-+			struct netlink_ext_ack *extack)
+ static int input_action_end_dx6_finish(struct net *net, struct sock *sk,
+ 				       struct sk_buff *skb)
+ {
+@@ -1004,12 +1117,6 @@ static int input_action_end_dx4(struct sk_buff *skb,
+ }
+ 
+ #ifdef CONFIG_NET_L3_MASTER_DEV
+-static struct net *fib6_config_get_net(const struct fib6_config *fib6_cfg)
+-{
+-	const struct nl_info *nli = &fib6_cfg->fc_nlinfo;
+-
+-	return nli->nl_net;
+-}
+ 
+ static int __seg6_end_dt_vrf_build(struct seg6_local_lwt *slwt, const void *cfg,
+ 				   u16 family, struct netlink_ext_ack *extack)
+@@ -1565,6 +1672,15 @@ static struct seg6_action_desc seg6_action_table[] = {
+ 		.optattrs	= SEG6_F_LOCAL_COUNTERS,
+ 		.input		= input_action_end_bpf,
+ 	},
++	{
++		.action		= SEG6_LOCAL_ACTION_END_DT2U,
++		.attrs		= SEG6_F_ATTR(SEG6_LOCAL_L2DEV),
++		.optattrs	= SEG6_F_LOCAL_COUNTERS,
++		.input		= input_action_end_dt2u,
++		.slwt_ops	= {
++					.build_state = seg6_end_dt2u_build,
++				  },
++	},
+ 
+ };
+ 
+@@ -1655,6 +1771,7 @@ static const struct nla_policy seg6_local_policy[SEG6_LOCAL_MAX + 1] = {
+ 	[SEG6_LOCAL_BPF]	= { .type = NLA_NESTED },
+ 	[SEG6_LOCAL_COUNTERS]	= { .type = NLA_NESTED },
+ 	[SEG6_LOCAL_FLAVORS]	= { .type = NLA_NESTED },
++	[SEG6_LOCAL_L2DEV]	= { .type = NLA_U32 },
+ };
+ 
+ static int parse_nla_srh(struct nlattr **attrs, struct seg6_local_lwt *slwt,
+@@ -1889,6 +2006,30 @@ static int cmp_nla_oif(struct seg6_local_lwt *a, struct seg6_local_lwt *b)
+ 	return 0;
+ }
+ 
++static int parse_nla_l2dev(struct nlattr **attrs, struct seg6_local_lwt *slwt,
++			   struct netlink_ext_ack *extack)
 +{
-+	struct srl2_priv *priv = netdev_priv(dev);
-+	struct nlattr **data = params->data;
-+	struct ipv6_sr_hdr *srh;
-+	int srhlen;
-+	int len;
++	slwt->l2dev = nla_get_u32(attrs[SEG6_LOCAL_L2DEV]);
 +
-+	srh = nla_data(data[IFLA_SRL2_SRH]);
-+	len = nla_len(data[IFLA_SRL2_SRH]);
-+
-+	if (len < sizeof(*srh) + sizeof(struct in6_addr)) {
-+		NL_SET_ERR_MSG(extack, "SRH too short");
-+		return -EINVAL;
-+	}
-+
-+	if (!seg6_validate_srh(srh, len, false)) {
-+		NL_SET_ERR_MSG(extack, "Invalid SRH");
-+		return -EINVAL;
-+	}
-+
-+	priv->srh = kmemdup(srh, len, GFP_KERNEL);
-+	if (!priv->srh)
-+		return -ENOMEM;
-+
-+	srhlen = ipv6_optlen(srh);
-+
-+	dev->needed_headroom = LL_MAX_HEADER + sizeof(struct ipv6hdr) + srhlen;
-+
-+	/* dev->mtu is the inner L3 payload size. Since SRv6 encapsulation
-+	 * carries the full inner Ethernet frame, subtract both the outer
-+	 * IPv6+SRH overhead and ETH_HLEN from ETH_DATA_LEN.
-+	 */
-+	dev->mtu = ETH_DATA_LEN - sizeof(struct ipv6hdr) - srhlen - ETH_HLEN;
-+	dev->min_mtu = ETH_MIN_MTU;
-+	dev->max_mtu = IP_MAX_MTU - sizeof(struct ipv6hdr) - srhlen - ETH_HLEN;
-+
-+	dev->priv_destructor = srl2_dev_free;
-+
-+	return register_netdevice(dev);
++	return 0;
 +}
 +
-+static void srl2_dellink(struct net_device *dev, struct list_head *head)
++static int put_nla_l2dev(struct sk_buff *skb, struct seg6_local_lwt *slwt)
 +{
-+	unregister_netdevice_queue(dev, head);
-+}
-+
-+static size_t srl2_get_size(const struct net_device *dev)
-+{
-+	const struct srl2_priv *priv = netdev_priv(dev);
-+	int srhlen = ipv6_optlen(priv->srh);
-+
-+	return nla_total_size(srhlen);
-+}
-+
-+static int srl2_fill_info(struct sk_buff *skb, const struct net_device *dev)
-+{
-+	const struct srl2_priv *priv = netdev_priv(dev);
-+	int srhlen = ipv6_optlen(priv->srh);
-+
-+	if (nla_put(skb, IFLA_SRL2_SRH, srhlen, priv->srh))
++	if (nla_put_u32(skb, SEG6_LOCAL_L2DEV, slwt->l2dev))
 +		return -EMSGSIZE;
 +
 +	return 0;
 +}
 +
-+static struct rtnl_link_ops srl2_link_ops __read_mostly = {
-+	.kind		= "srl2",
-+	.maxtype	= IFLA_SRL2_MAX,
-+	.policy		= srl2_policy,
-+	.priv_size	= sizeof(struct srl2_priv),
-+	.setup		= srl2_setup,
-+	.validate	= srl2_validate,
-+	.newlink	= srl2_newlink,
-+	.dellink	= srl2_dellink,
-+	.get_size	= srl2_get_size,
-+	.fill_info	= srl2_fill_info,
-+};
-+
-+static int __init srl2_init(void)
++static int cmp_nla_l2dev(struct seg6_local_lwt *a, struct seg6_local_lwt *b)
 +{
-+	return rtnl_link_register(&srl2_link_ops);
++	if (a->l2dev != b->l2dev)
++		return 1;
++
++	return 0;
 +}
 +
-+static void __exit srl2_exit(void)
-+{
-+	rtnl_link_unregister(&srl2_link_ops);
-+}
+ #define MAX_PROG_NAME 256
+ static const struct nla_policy bpf_prog_policy[SEG6_LOCAL_BPF_PROG_MAX + 1] = {
+ 	[SEG6_LOCAL_BPF_PROG]	   = { .type = NLA_U32, },
+@@ -2318,6 +2459,10 @@ static struct seg6_action_param seg6_action_params[SEG6_LOCAL_MAX + 1] = {
+ 	[SEG6_LOCAL_FLAVORS]	= { .parse = parse_nla_flavors,
+ 				    .put = put_nla_flavors,
+ 				    .cmp = cmp_nla_flavors },
 +
-+module_init(srl2_init);
-+module_exit(srl2_exit);
++	[SEG6_LOCAL_L2DEV]	= { .parse = parse_nla_l2dev,
++				    .put = put_nla_l2dev,
++				    .cmp = cmp_nla_l2dev },
+ };
+ 
+ /* call the destroy() callback (if available) for each set attribute in
+@@ -2634,6 +2779,9 @@ static int seg6_local_get_encap_size(struct lwtunnel_state *lwt)
+ 	if (attrs & SEG6_F_ATTR(SEG6_LOCAL_FLAVORS))
+ 		nlsize += encap_size_flavors(slwt);
+ 
++	if (attrs & SEG6_F_ATTR(SEG6_LOCAL_L2DEV))
++		nlsize += nla_total_size(4);
 +
-+MODULE_AUTHOR("Andrea Mayer <andrea.mayer@uniroma2.it>");
-+MODULE_AUTHOR("Stefano Salsano <stefano.salsano@uniroma2.it>");
-+MODULE_DESCRIPTION("SRv6 L2 tunnel device");
-+MODULE_LICENSE("GPL");
-+MODULE_ALIAS_RTNL_LINK("srl2");
+ 	return nlsize;
+ }
+ 
 -- 
 2.20.1
 
