@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD132DF3FD;
-	Sun, 22 Mar 2026 14:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22510363C49;
+	Sun, 22 Mar 2026 14:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774189462; cv=none; b=sXK8hePdwri6tEy3GilagELpqMeZTewBC20vDdW4Dx7dYoA9NDd4PyhmPAFwUDZufY3LZ7B6Z/DGHTEkLejSTspK/DKUgssiVapLDOvDc4BYjjB74Iwm/Hui3xBunxr1GUFlLWAM30ZynU+jbVKGPwHVQKW2jMq6qyCt3+G3d4c=
+	t=1774189462; cv=none; b=gxQf+hjGpwEs7Csn79ljM76GgoVvUkJBNLpA3tfweZdOFeARphqfC35f0FEMQ3kQvLbtrGTaEsEZQlr1nh4YuYtQva12wWb8b7IU2fqsIcesnpckxcxBl6gepNvfC/rDu7e41/wS8QfRaP4Shlg9mBiQGJ2ySIou+afjJZjRw6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774189462; c=relaxed/simple;
-	bh=0y+vz9QItdufZS4Gg1aj8uk09vnC7uOD1Z32a7tIeRg=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=cQoYQ3XvpejmSw75Mirln3s8VIzxCABX19NzeR/1X9bcsvXtzruq1cy5jrdhCRG8Fhv65jA7ZNqtt6EctGldqlKpAMe9FnsmowG44INZiEgHkJmTNmH9lBpnUltQNm2QBzjIE7F2YDGxGYRaC3c4J7YHrhV3PBBA9Oid/DE3fRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ei1+DEwY; arc=none smtp.client-ip=10.30.226.201
+	bh=XbUqrT7qss2bjTqlhu4hDVM7HCLgTM5ifxyigq2ux68=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=VvNybMn1L31zfbw0xaveFkeDF6Czgz3t21+jFDTGZSzffOYFoLoafBsLlNNuPaODverq8nc2La8Z1cX6WIlcqwtYkBpCXpZXRBY85cKXMgYEuR+p4B+Q0E5Ev6CEBtdNmjcDqVQeAPJojsri9y2RTUMbduj+gbfiXrI3TH3cRvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hcXcmrpP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ei1+DEwY"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A63D7C19424;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hcXcmrpP"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id CD126C2BCB5;
 	Sun, 22 Mar 2026 14:24:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1774189461;
-	bh=0y+vz9QItdufZS4Gg1aj8uk09vnC7uOD1Z32a7tIeRg=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=Ei1+DEwY7ZM+wqpz2Zgm+3/3DVfJB7cGCQeTzHKzfH/5dEJ6VVfh/rz3dSL/BffuO
-	 fxemgNDV2E6xps7ZAMrOG2f0udBFQ9dRskehTyv5xtlsCfkb/85N1+xE7T1SKjpwl3
-	 78R7OEnisCV16N8e3Gm4cZTBRm/X+BFc5xD3v/E70Of3nhc+ojQViP4SaiTRNr6j/y
-	 ihN52SVHy+awrPcVKweLuaGc7uHoGv6iZM2+bpNuUsIkd5lKVhmlg8i/ae1FB328zz
-	 Ah4ybp5+MhzyWMfIP/5pjJyb5de7/jL1ZPjFA/TnVebx1c70wjbCZ6xh246YJwNXpQ
-	 qs/4ndDr1lrZQ==
+	bh=XbUqrT7qss2bjTqlhu4hDVM7HCLgTM5ifxyigq2ux68=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=hcXcmrpP05MSLZE7pWiVF4+knrfygILa5n2u4r+giuWYP9GnhYAtnMdarlYABw6a7
+	 lgOrj8l+01w8Vlsuyn7ZtMqm8lNRVUM1MAX0OoCJt2DNvZvT+bRNMgj2P0YQq/ssQ5
+	 mw76pdDch9ur6uHXCPhndFgxZjxgKeABhsFxH4pv/K2tiZW+Plt9x/jlpp1otU+Q2m
+	 c1xCc+E++H86dDPBHiAVKuZqtUcoONDLb4gd6UtIP6KX191cqURPCTKd/k4uwTLWgd
+	 PwdCb58sgAf+km4Etrtpu162oHBExOTiX5Hef+AZomyyydbN3GUNfMARqDfwnT2Pr8
+	 Dr+bphBKXmYIg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D6CBFC72C6;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C5606FC72C8;
 	Sun, 22 Mar 2026 14:24:21 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Subject: [PATCH QUESTION 0/2] NFC support in Linux (and support for
- Qualcomm SDM845 devices)
-Date: Sun, 22 Mar 2026 15:24:18 +0100
-Message-Id: <20260322-oneplus-nfc-v1-0-5f22f544f0e2@ixit.cz>
+Date: Sun, 22 Mar 2026 15:24:20 +0100
+Subject: [PATCH QUESTION 2/2] arm64: dts: qcom: sdm845-shift-axolotl:
+ Enable NFC
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,10 +41,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJL7v2kC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1NDQ0ML3fy81IKc0mLdvLRk3WQDg9Q0w+SUtETLJCWgjoKi1LTMCrBp0Uq
- Boa7BIZ7+fkqxtbUAFlwnv2cAAAA=
-X-Change-ID: 20251118-oneplus-nfc-c00ef1cdfa9b
+Message-Id: <20260322-oneplus-nfc-v1-2-5f22f544f0e2@ixit.cz>
+References: <20260322-oneplus-nfc-v1-0-5f22f544f0e2@ixit.cz>
+In-Reply-To: <20260322-oneplus-nfc-v1-0-5f22f544f0e2@ixit.cz>
 To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -55,83 +54,89 @@ Cc: Petr Hodina <petr.hodina@protonmail.com>,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1991; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1522; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=0y+vz9QItdufZS4Gg1aj8uk09vnC7uOD1Z32a7tIeRg=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpv/uUtZf7rj034FIS1wsfZrfec7TNLugbDYF7R
- C+mgBKhrreJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCab/7lAAKCRBgAj/E00kg
- cuV9EADQlJ4AcLuzCdke6vz8uKtFi3LaQOIqic0KyvwHlDp+iSQqpo+q4muU3H4juTjatvmVK5G
- XMHc4TL31G5HNqmJhWqmmySxXnHDOiYu5Ql7oJ1WonCv1bmHUaJWMXwIWDxM0cHpPZdx6CvqbWJ
- aMlqrxyWAHv6L/bFwtzWemA6ksOrWhxf4Ni+kR6PGHlx6VxbeSzK1g2SM5L4S8MrBFFpmcRpwV5
- TYQobX1Yc4i6i+4R9QBkfQ12stVgfzmDahkAYg+zLOlR1n15tyjiIYqcDrtcVhM00s4i29vlwUT
- ftQLSQfDTkO79tZxrwEjQEpJSSRfXd2Zm8F/junJvqicQe620B7/kuuC18rRWAMOnkgMfKk/g35
- HAS9Ix2yNCR33d6LPWnP6/ZUSuoV0FtW9LlynGRngPw6Gj3xg6Jlgew6V+f78niy+ea/V9TOt/Q
- YFaO3F2u8vliJgkXY2W+xCbC7j58OVHU9v21SN9soCjkVnQrv7QKryuM5Wjmg7mzKwFmKwJ80mK
- YXD9TA6CGwdYTQgXRqBCdUwTBomwtpEpnj6ytQPxKEviwR/kYO9uk/K8BrUBbXFQQbLqKkd0zK2
- oFxytPIG7qMZ/Y7WvQYg8CpqQtMlCllYog9Lg9Es7ScX/LRKgoNRQm9EjfppdniQJRlmPUj6QfI
- aMOYx1GrDk8NzXw==
+ bh=bg/8Mn64amhNeliB/CDjN88OEUAaoSKykTAgAGciekI=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpv/uUH1GaubGxzAbpeIoZHLVihTMq2aub8E8R/
+ HEKSiFPJvCJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCab/7lAAKCRBgAj/E00kg
+ ciRmD/4ocnaCQSjo5z+kVKbzx56vvvy5UY4RX218IPBYHq7G+VUq2b5ofKiz3WvOb5kGXEbsJoi
+ AJF7U8/PLvcEvOaylm8BOlLjBM5BQ0XsTRzIRKg9emYKmTpXgDjnfGijCzAhL6FdsEVbcwjp0bL
+ NUDyy9p7ZN2cjA1HZJ0T0d6TuIrgDb5vTILZQ0lgL/f57A0lfudJkVoFF0dpDbLrjdpZgRfDqF1
+ FWzKNN2SkFCDKj2J8tv4lGgu4XUnLPIGVHrhtx4Z/GtazO7owFj1j+fKC5CiNifsQFcbj0eV/Np
+ BZ6HLiTrr/tQ2cKt+YN6MRIhMt8YGX7kJT3wzbkeVPf57QEznZK3RRRhB1nAQw4fX1s1l+zISgQ
+ CASZl+kmtMO/1k89mVvgQVBr505ApP1ildlMeOJzmUlVI1ikWviKvogH2Nck81X6RTnBFRkUG+P
+ PvNwfj00GgXktjexXgH41LTlijfDc7+AZFzeOYuHpJblsicWanHo0cUp2vEq3lK6LgBlj7m9pvT
+ NdSryJeqI5B0gSd7Z4ziZAotDvKaGZXcOVx7Ngrhe4sW/UAtvqOAo2+R7/BaHBYTXYzUQHe05sG
+ Rsf/6jVVUs8PeQq6NILxAEFVWhouE6xRjZUlib+y4+nyaTkoKbl5Sopp7GmTrgSPpC6WqJLlJDe
+ 2g7ekbKaDy4+wtw==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
 
-There isn't upstream driver.
+From: David Heidelberg <david@ixit.cz>
 
-I'm openining this as a starter. We need a NFC drivers I assume. I tried
-quick check, but both of NFC drivers register
-
-nfc: nfc_init: NFC Core ver 0.1
-NET: Registered PF_NFC protocol family
-
-but efficiently does nothing. In the See section, there are some ways
-how to make NFC work, but rely on patched vendor libs, missing updates
-etc.
-
-1. What hardware is present on Snapdragon 845, is there some
-   documentation? It seems that both sdm845 devices has almost identical
-   setup, thus it's NFC solution integrated? @Qualcomm
-
-2. What's the right approach to continue? Should we upstream these
-   definitions and then start developing user-space stack? @netdev (I
-   see orphaned)
-
-Since looking at NFC mailing list (oe-linux-nfc) and seeing it's pretty
-much dead, would be cool to revive it.
-
-Also there is some effort from Arch people [1], but likely without clean
-path to mainline.
-
-Can we revieve the NFC effort? I'm offering limited maintanance (in case
-people would send patches).
-
-See:
- - https://gitlab.com/sdm845-mainline/linux/-/merge_requests/62
- - https://github.com/NXPNFCLinux/linux_libnfc-nci/
-   - https://github.com/biemster/pmos-openbox-conky/blob/main/libnfc-nci.patch
-   - https://github.com/biemster/pmos-openbox-conky/blob/main/nfctest.patch
-   - pull request
-   - full of hacks
-
- - [1] https://github.com/zmr-233/linux-nxp-nfc-fix
+Definition of the NFC.
 
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
-David Heidelberg (1):
-      arm64: dts: qcom: sdm845-shift-axolotl: Enable NFC
+ arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts | 33 +++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-biemster (1):
-      arm64: dts: qcom: sdm845-oneplus: Enable NFC
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
+index 51b041f91d3e2..bc336584c9fb9 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
+@@ -431,6 +431,25 @@ &gpu_zap_shader {
+ 	firmware-name = "qcom/sdm845/SHIFT/axolotl/a630_zap.mbn";
+ };
+ 
++&i2c3 {
++	clock-frequency = <400000>;
++
++	status = "okay";
++
++	nfc@28 {
++		compatible = "nxp,nq310", "nxp,nxp-nci-i2c";
++		reg = <0x28>;
++
++		interrupts-extended = <&tlmm 63 IRQ_TYPE_EDGE_RISING>;
++
++		enable-gpios = <&tlmm 12 GPIO_ACTIVE_HIGH>;
++		firmware-gpios = <&tlmm 62 GPIO_ACTIVE_HIGH>;
++
++		pinctrl-0 = <&nfc_int_default &nfc_enable_default>;
++		pinctrl-names = "default";
++	};
++};
++
+ &i2c5 {
+ 	status = "okay";
+ 
+@@ -609,6 +628,20 @@ &slpi_pas {
+ &tlmm {
+ 	gpio-reserved-ranges = <0 4>, <81 4>;
+ 
++	nfc_int_default: nfc-int-default-state {
++		pins = "gpio63";
++		function = "gpio";
++		drive-strength = <2>;
++		bias-pull-up;
++	};
++
++	nfc_enable_default: nfc-enable-default-state {
++		pins = "gpio12", "gpio62";
++		function = "gpio";
++		drive-strength = <2>;
++		bias-pull-up;
++	};
++
+ 	sde_dsi_active: sde-dsi-active-state {
+ 		pins = "gpio6", "gpio11";
+ 		function = "gpio";
 
- .../arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 32 +++++++++++++++++++++
- arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts  | 33 ++++++++++++++++++++++
- 2 files changed, 65 insertions(+)
----
-base-commit: 785f0eb2f85decbe7c1ef9ae922931f0194ffc2e
-change-id: 20251118-oneplus-nfc-c00ef1cdfa9b
-
-Best regards,
 -- 
-David Heidelberg <david@ixit.cz>
+2.53.0
 
 
