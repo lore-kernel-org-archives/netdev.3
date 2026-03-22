@@ -1,315 +1,156 @@
-Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B865140DFD8;
-	Sun, 22 Mar 2026 00:07:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6DC13957E;
+	Sun, 22 Mar 2026 00:19:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774138026; cv=none; b=QjeJgXyzlLHXKnOnIhNZAmyBzRymfuPXExwoQuRGhMyBnpJvaRZUdTRSm6OKZTdJ7MaFCRqlfk8DojtWK8mzcluuru/11uOqzVwr7PjJfKQ6tIIIvcT8kdC4YxjAjq5ODRy3J30k/eu2utgdJaWF0Xee0rapS5RCXMLnRiXb4MM=
+	t=1774138746; cv=none; b=pYB70kOl9Zup7ws5zXe7RJk+n7jcO1PfCoslkvAOiLsF7HCIU+1K74/dcsx7j+7k4Pj85C88qk6936TAm3eWExrDdtDjHg74ccGtIZXe+b2HFPfIDyNSp6ywU8Qf9XZ/5B00OWjNSLlU2kDaS+0NU60scjYcdj+m33gmqETg8jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774138026; c=relaxed/simple;
-	bh=ydZr5tIQVHkCWq3/6Au930Fb1e1Dj1nhBQ13K5iuYlA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=s6maN+AVVoG1qIASf7DR/sxK2pFImiP5Gy/fTrPUuQRcTghpDXMXXkaEksy4l7r4rpvvbl0MKpM9WwkmQWfElJ6xJzLFC8elKSvP1Y/s4+nHlMkQ1ByTK0bNkTPatGxb6vF04cBnH63QzwFfrbdOcPyOU6JxUrBfO7mZGNHszGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; arc=none smtp.client-ip=160.80.4.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
-Received: from localhost.localdomain ([160.80.103.126])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 62M06J54021482;
-	Sun, 22 Mar 2026 01:06:25 +0100
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: netdev@vger.kernel.org
-Cc: "David S . Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Stefano Salsano <stefano.salsano@uniroma2.it>,
-        Paolo Lungaroni <paolo.lungaroni@uniroma2.it>,
-        Ahmed Abdelsalam <ahabdels@cisco.com>,
-        Justin Iurman <justin.iurman@6wind.com>, linux-kernel@vger.kernel.org,
-        Andrea Mayer <andrea.mayer@uniroma2.it>
-Subject: [RFC PATCH net-next 1/3] seg6: add support for the SRv6 End.DT2U behavior
-Date: Sun, 22 Mar 2026 01:05:55 +0100
-Message-Id: <20260322000557.12559-2-andrea.mayer@uniroma2.it>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20260322000557.12559-1-andrea.mayer@uniroma2.it>
-References: <20260322000557.12559-1-andrea.mayer@uniroma2.it>
+	s=arc-20240116; t=1774138746; c=relaxed/simple;
+	bh=VTLLIyKUcQXNiLMurAo/jCC3zvJkZrrwnjiKl93JbkM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=Vw+IuE64+84c6k8FJ/xY58xCkJ3b8epRVsUiHCZ2FJu2Ust/P+lsN541OjT85oIIcTn/qzXsLsUB0fuBB58eZUV4wG7HheP0u8thMsxCT2XsWoSgzEqv+SPhsjBJ0FlLr1EeD6tpgLARJzA5i5JKw9Gd6U8Tl+1TyxApju4Q6pM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.99)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1w46Wr-000000001MC-27Pe;
+	Sun, 22 Mar 2026 00:18:53 +0000
+Date: Sun, 22 Mar 2026 00:18:49 +0000
+From: Daniel Golle <daniel@makrotopia.org>
+To: Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Frank Wunderlich <frankwu@gmx.de>, Chad Monroe <chad@monroe.io>,
+	Cezary Wilmanski <cezary.wilmanski@adtran.com>,
+	Liang Xu <lxu@maxlinear.com>,
+	"Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>,
+	Jose Maria Verdu Munoz <jverdu@maxlinear.com>,
+	Avinash Jayaraman <ajayaraman@maxlinear.com>,
+	John Crispin <john@phrozen.org>
+Subject: [PATCH net-next v6 0/4] net: dsa: mxl862xx: add support for bridge
+ offloading
+Message-ID: <cover.1774136876.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Implement the SRv6 End.DT2U (Endpoint with decapsulation and unicast
-MAC L2 table lookup) behavior as defined in RFC 8986, Section 4.11.
+As a next step to complete the mxl862xx DSA driver, add support for
+offloading forwarding between bridged ports to the switch hardware.
 
-End.DT2U decapsulates an SRv6 packet carrying an inner Ethernet frame
-and delivers it on a user-specified device (l2dev). The l2dev is
-expected to be a bridge port, where the Linux bridge provides MAC
-learning and L2 forwarding as required by the RFC, or a srl2
-Ethernet pseudowire device.
+This works pretty much without any big surprises, apart from two
+subtleties:
+ * per-port control over flooding behavior has to be implemented by
+   (ab)using a 0-rate QoS meters as stopper in lack of any better
+   option.
+ * STP state transition unconditionally enables learning on a port
+   even if it was previously explicitely disabled (a firmware bug)
 
-A new netlink attribute SEG6_LOCAL_L2DEV identifies the target device.
+Note that as the driver is still lacking all VLAN features (which
+are going to be added next), at this point some of the
+bridge_vlan_aware.sh tests are failing after applying this series.
 
-Usage:
+This is expected and cannot be avoided without implementing
+port_vlan_filtering + port_vlan_add/del. And adding both bridge and
+VLAN offloading at the same time would be too much for anyone to
+review, so VLAN support is going to be submitted in a follow-up
+series immediately after this series has been accepted.
 
-  ip -6 route add fc00::100/128 encap seg6local action End.DT2U \
-      l2dev veth0 dev dum0
+All other relevant selftests (including bridge_vlan_unaware.sh) are
+still passing.
 
-  where veth0 is a bridge port.
+Inspired by the comments received from Paolo Abeni as reply to v5
+the driver now no longer caches bridge port membership in the
+driver, but instead two small changes to DSA now allow it to
+easily iterate over bridge members, and store the firmware bridge ID
+in the driver-private void *priv added to struct dsa_bridge.
 
-Co-developed-by: Stefano Salsano <stefano.salsano@uniroma2.it>
-Signed-off-by: Stefano Salsano <stefano.salsano@uniroma2.it>
-Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
----
- include/uapi/linux/seg6_local.h |   3 +
- net/ipv6/seg6_local.c           | 160 ++++++++++++++++++++++++++++++--
- 2 files changed, 157 insertions(+), 6 deletions(-)
+Changes since v5:
+ * add new DSA helpers to interate over bridge members
+ * add driver-private pointer to struct dsa_bridge
+ * eliminate struct mxl862xx_bridge and driver-private bridge list,
+   store firmware bridge FID in new dsa_bridge->priv instead
+ * rework sync_bridge_members() to use dsa_bridge_for_each_member()
+   instead of for_each_set_bit() on driver-private portmap
+ * rework port_bridge_join/leave to use dsa_bridge.priv for first-
+   member detection and dsa_bridge_ports() for empty-bridge check
+ * derive active FID from dp->bridge->priv in set_bridge_port()
+ * simplify allocate_bridge()/free_bridge() to take struct dsa_bridge
+   pointer directly, drop kzalloc/kfree/list management
+ * simplify get_fid() to read db.bridge.priv directly
+ * remove mxl862xx_find_bridge()
+ * remove unnecessary default bridge config call in setup()
 
-diff --git a/include/uapi/linux/seg6_local.h b/include/uapi/linux/seg6_local.h
-index 4fdc424c9cb3..f9aa627be1fd 100644
---- a/include/uapi/linux/seg6_local.h
-+++ b/include/uapi/linux/seg6_local.h
-@@ -29,6 +29,7 @@ enum {
- 	SEG6_LOCAL_VRFTABLE,
- 	SEG6_LOCAL_COUNTERS,
- 	SEG6_LOCAL_FLAVORS,
-+	SEG6_LOCAL_L2DEV,
- 	__SEG6_LOCAL_MAX,
- };
- #define SEG6_LOCAL_MAX (__SEG6_LOCAL_MAX - 1)
-@@ -67,6 +68,8 @@ enum {
- 	SEG6_LOCAL_ACTION_END_BPF	= 15,
- 	/* decap and lookup of DA in v4 or v6 table */
- 	SEG6_LOCAL_ACTION_END_DT46	= 16,
-+	/* decap and unicast MAC L2 table lookup */
-+	SEG6_LOCAL_ACTION_END_DT2U	= 17,
- 
- 	__SEG6_LOCAL_ACTION_MAX,
- };
-diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
-index 2b41e4c0dddd..a766f235c532 100644
---- a/net/ipv6/seg6_local.c
-+++ b/net/ipv6/seg6_local.c
-@@ -192,6 +192,7 @@ struct seg6_local_lwt {
- 	struct in6_addr nh6;
- 	int iif;
- 	int oif;
-+	int l2dev;
- 	struct bpf_lwt_prog bpf;
- #ifdef CONFIG_NET_L3_MASTER_DEV
- 	struct seg6_end_dt_info dt_info;
-@@ -902,6 +903,118 @@ static int input_action_end_dx2(struct sk_buff *skb,
- 	return -EINVAL;
- }
- 
-+static inline bool seg6_is_valid_l2dev(const struct net_device *dev)
-+{
-+	if (netif_is_bridge_port(dev))
-+		return true;
-+
-+	/* A netif_is_srl2() helper, similar to netif_is_vxlan(), could wrap
-+	 * this check.
-+	 */
-+	if (dev->rtnl_link_ops &&
-+	    !strcmp(dev->rtnl_link_ops->kind, "srl2"))
-+		return true;
-+
-+	return false;
-+}
-+
-+/* decapsulate and deliver inner L2 frame locally on specified device.
-+ * Implements End.DT2U (RFC 8986, Section 4.11) by delivering the
-+ * decapsulated Ethernet frame on a device that provides L2 table
-+ * semantics (bridge port) or L2 delivery semantics (srl2 device).
-+ */
-+static int input_action_end_dt2u(struct sk_buff *skb,
-+				 struct seg6_local_lwt *slwt)
-+{
-+	struct net *net = dev_net(skb->dev);
-+	struct net_device *l2dev;
-+
-+	if (!decap_and_validate(skb, IPPROTO_ETHERNET))
-+		goto drop;
-+
-+	if (!pskb_may_pull(skb, ETH_HLEN))
-+		goto drop;
-+
-+	l2dev = dev_get_by_index_rcu(net, slwt->l2dev);
-+	if (!l2dev)
-+		goto drop;
-+
-+	if (l2dev->type != ARPHRD_ETHER)
-+		goto drop;
-+
-+	/* Consistent with the carrier check in input_action_end_dx2(). */
-+	if (!(l2dev->flags & IFF_UP) || !netif_carrier_ok(l2dev))
-+		goto drop;
-+
-+	/* RFC 8986 requires L2 forwarding semantics. Only bridge ports
-+	 * and srl2 devices satisfy this requirement.
-+	 */
-+	if (!seg6_is_valid_l2dev(l2dev))
-+		goto drop;
-+
-+	skb_orphan(skb);
-+
-+	if (skb_warn_if_lro(skb))
-+		goto drop;
-+
-+	/* eth_type_trans() sets skb->dev, skb->pkt_type, pulls ETH_HLEN,
-+	 * and returns the protocol. This is required for proper L2
-+	 * processing when the device is a bridge port.
-+	 */
-+	skb->protocol = eth_type_trans(skb, l2dev);
-+
-+	/* Reset network_header to point to the L3 header (past ethernet).
-+	 * eth_type_trans pulled ETH_HLEN, so skb->data is at the L3 header
-+	 * now. Without this, network_header still points to the ethernet
-+	 * header (set by decap_and_validate), and ip_rcv would read garbage
-+	 * when the bridge delivers the frame to the local stack.
-+	 */
-+	skb_reset_network_header(skb);
-+
-+	/* Drop the dst inherited from the outer SRv6 packet. Without
-+	 * this, when the bridge delivers locally (e.g. to a bridge IP),
-+	 * ip_rcv would skip route lookup and use the stale IPv6 lwtunnel
-+	 * dst for an IPv4 packet, causing a silent drop.
-+	 */
-+	skb_dst_drop(skb);
-+
-+	netif_rx(skb);
-+
-+	return 0;
-+
-+drop:
-+	kfree_skb(skb);
-+	return -EINVAL;
-+}
-+
-+static struct net *fib6_config_get_net(const struct fib6_config *fib6_cfg)
-+{
-+	const struct nl_info *nli = &fib6_cfg->fc_nlinfo;
-+
-+	return nli->nl_net;
-+}
-+
-+static int seg6_end_dt2u_build(struct seg6_local_lwt *slwt, const void *cfg,
-+			       struct netlink_ext_ack *extack)
-+{
-+	struct net *net = fib6_config_get_net(cfg);
-+	struct net_device *dev;
-+
-+	dev = __dev_get_by_index(net, slwt->l2dev);
-+	if (!dev) {
-+		NL_SET_ERR_MSG(extack, "l2dev device not found");
-+		return -ENODEV;
-+	}
-+
-+	if (!seg6_is_valid_l2dev(dev)) {
-+		NL_SET_ERR_MSG(extack,
-+			       "l2dev must be a bridge port or srl2 device");
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
- static int input_action_end_dx6_finish(struct net *net, struct sock *sk,
- 				       struct sk_buff *skb)
- {
-@@ -1004,12 +1117,6 @@ static int input_action_end_dx4(struct sk_buff *skb,
- }
- 
- #ifdef CONFIG_NET_L3_MASTER_DEV
--static struct net *fib6_config_get_net(const struct fib6_config *fib6_cfg)
--{
--	const struct nl_info *nli = &fib6_cfg->fc_nlinfo;
--
--	return nli->nl_net;
--}
- 
- static int __seg6_end_dt_vrf_build(struct seg6_local_lwt *slwt, const void *cfg,
- 				   u16 family, struct netlink_ext_ack *extack)
-@@ -1565,6 +1672,15 @@ static struct seg6_action_desc seg6_action_table[] = {
- 		.optattrs	= SEG6_F_LOCAL_COUNTERS,
- 		.input		= input_action_end_bpf,
- 	},
-+	{
-+		.action		= SEG6_LOCAL_ACTION_END_DT2U,
-+		.attrs		= SEG6_F_ATTR(SEG6_LOCAL_L2DEV),
-+		.optattrs	= SEG6_F_LOCAL_COUNTERS,
-+		.input		= input_action_end_dt2u,
-+		.slwt_ops	= {
-+					.build_state = seg6_end_dt2u_build,
-+				  },
-+	},
- 
- };
- 
-@@ -1655,6 +1771,7 @@ static const struct nla_policy seg6_local_policy[SEG6_LOCAL_MAX + 1] = {
- 	[SEG6_LOCAL_BPF]	= { .type = NLA_NESTED },
- 	[SEG6_LOCAL_COUNTERS]	= { .type = NLA_NESTED },
- 	[SEG6_LOCAL_FLAVORS]	= { .type = NLA_NESTED },
-+	[SEG6_LOCAL_L2DEV]	= { .type = NLA_U32 },
- };
- 
- static int parse_nla_srh(struct nlattr **attrs, struct seg6_local_lwt *slwt,
-@@ -1889,6 +2006,30 @@ static int cmp_nla_oif(struct seg6_local_lwt *a, struct seg6_local_lwt *b)
- 	return 0;
- }
- 
-+static int parse_nla_l2dev(struct nlattr **attrs, struct seg6_local_lwt *slwt,
-+			   struct netlink_ext_ack *extack)
-+{
-+	slwt->l2dev = nla_get_u32(attrs[SEG6_LOCAL_L2DEV]);
-+
-+	return 0;
-+}
-+
-+static int put_nla_l2dev(struct sk_buff *skb, struct seg6_local_lwt *slwt)
-+{
-+	if (nla_put_u32(skb, SEG6_LOCAL_L2DEV, slwt->l2dev))
-+		return -EMSGSIZE;
-+
-+	return 0;
-+}
-+
-+static int cmp_nla_l2dev(struct seg6_local_lwt *a, struct seg6_local_lwt *b)
-+{
-+	if (a->l2dev != b->l2dev)
-+		return 1;
-+
-+	return 0;
-+}
-+
- #define MAX_PROG_NAME 256
- static const struct nla_policy bpf_prog_policy[SEG6_LOCAL_BPF_PROG_MAX + 1] = {
- 	[SEG6_LOCAL_BPF_PROG]	   = { .type = NLA_U32, },
-@@ -2318,6 +2459,10 @@ static struct seg6_action_param seg6_action_params[SEG6_LOCAL_MAX + 1] = {
- 	[SEG6_LOCAL_FLAVORS]	= { .parse = parse_nla_flavors,
- 				    .put = put_nla_flavors,
- 				    .cmp = cmp_nla_flavors },
-+
-+	[SEG6_LOCAL_L2DEV]	= { .parse = parse_nla_l2dev,
-+				    .put = put_nla_l2dev,
-+				    .cmp = cmp_nla_l2dev },
- };
- 
- /* call the destroy() callback (if available) for each set attribute in
-@@ -2634,6 +2779,9 @@ static int seg6_local_get_encap_size(struct lwtunnel_state *lwt)
- 	if (attrs & SEG6_F_ATTR(SEG6_LOCAL_FLAVORS))
- 		nlsize += encap_size_flavors(slwt);
- 
-+	if (attrs & SEG6_F_ATTR(SEG6_LOCAL_L2DEV))
-+		nlsize += nla_total_size(4);
-+
- 	return nlsize;
- }
- 
+Changes since v4:
+ * move link-local check before dsa_strip_etype_header()
+ * introduce port_map helpers
+ * properly implement port_mdb_{add,del} operations
+
+Changes since v3:
+ * add missing cpu_to_le32 in mxl862xx_bridge_config_fwd()
+ * use little-endian 32-bit type for (unused) age_timer API field
+ * better comment in port_set_host_flood() documenting architectural
+   limitation
+ * fix typo in comment "matche" should be "matches"
+ * few whitespace fixes
+
+Changes since v2:
+ * refactor .port_bridge_join and .port_bridge_leave as requested
+   by Vladimir Oltean
+ * include linux/etherdevice.h which was missing and causing build
+   to fail (it accidentally slipped into a follow-up patch)
+ * remove left-over manual reset of learning state for port leaving
+   bridge
+ * remove unnecessary call to mxl862xx_port_fast_age() for port
+   leaving bridge
+ * add kernel-doc comments in mxl862xx.h instead of sporadic inline
+   comments covering only some of the struct members
+ * some other minor cosmetics (linebreaks, whitespace) here and there
+
+Changes since v1:
+ * don't set dsa_default_offload_fwd_mark() on link-local frames
+ * fix kernel-doc comments in API header
+ * use bitfield helpers for compound tci field in fdb API
+ * add missing endian conversion for mxl862xx_stp_port_cfg.port_state
+   as well as mxl862xx_mac_table_read.tci (spotted by AI review)
+ * drop manually resetting port learning state on bridge<->standalone
+   transitions, DSA framework takes care of that
+ * don't abort updating bridge ports on error, return error at the end
+ * report error in mxl862xx_port_bridge_leave()
+ * create mxl862xx_get_fid() helper and use it in
+   mxl862xx_port_fdb_add() and mxl862xx_port_fdb_del()
+ * propagete error of callback function in mxl862xx_port_fdb_dump()
+ * manually mxl862xx_port_fast_age() in mxl862xx_port_stp_state_set()
+   to avoid FDB poisoning due to race condition
+
+
+Daniel Golle (4):
+  net: dsa: add driver-private pointer to struct dsa_bridge
+  net: dsa: add bridge member iteration macro and port mask helper
+  dsa: tag_mxl862xx: set dsa_default_offload_fwd_mark()
+  net: dsa: mxl862xx: implement bridge offloading
+
+ drivers/net/dsa/mxl862xx/mxl862xx-api.h | 225 ++++++++-
+ drivers/net/dsa/mxl862xx/mxl862xx-cmd.h |  20 +-
+ drivers/net/dsa/mxl862xx/mxl862xx.c     | 617 ++++++++++++++++++++++--
+ drivers/net/dsa/mxl862xx/mxl862xx.h     | 103 ++++
+ include/net/dsa.h                       |  17 +
+ net/dsa/tag_mxl862xx.c                  |   3 +
+ 6 files changed, 951 insertions(+), 34 deletions(-)
+
 -- 
-2.20.1
-
+2.53.0
