@@ -1,22 +1,22 @@
 Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3EC2C15A9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B4B62D8370
 	for <netdev@vger.kernel.org>; Sun, 22 Mar 2026 00:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774140666; cv=none; b=s6KQadxMHRl+nEyWQPXd+5LqzJuLJeo6406kchl9+pr4dii4yb5vauC4vLDZZrwmnUjCwrUaSiwyPHbshwZnfDJtZUBSqY+0PscNe9uNjD/aPaIEwK0mvW6wQgBJrUwU7du/ZmtZIabN9ftqsvQ+zNOd0oFqhiYu8C/PloGROcU=
+	t=1774140666; cv=none; b=MDmfPrHV2FZpxbqAGbaqCLaZbedHEOAOUTAgnAfDnD8qyMxdh0wwZ2rb5i7sZk6iHvRrAvmwzPPuSHNAfeeBDPOkgtQy22327hDXfTtCgfwFvDjw05A1KQ7b2OFj8te+eZvSxCXjKAx3PviOjc0YBnVdorGEl1BRnzWDud+u0mE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774140666; c=relaxed/simple;
-	bh=zo7nQlbQC2AOymAPgrMA4IrdEz9jHyYJKbNFIq28Hac=;
+	bh=dDDdFvxXLDxIxyIQdWXy+RDdJlwywhwGDqa5HicMWRo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ri8eRHSIhTtruvroeAy0QqhY+W1pa8PAeaqyPtXq2Rs6bKAs1QYGhXLdjZ5GQhwT2cfFapw7ilOO7OGNB4lFLuHYD12ZIH+Bs+ffZNf3y6HixEBub+HWusCpspGeEvwVuL4br7y/6o+CVwF7koCSl1cmbMxJt2IQdmiN/V5UC5E=
+	 MIME-Version; b=qMRvzoa9LbjERUQZkG+exgVNgqkNq3t1RqxW9ksx1qBAeosWrWXBUW8leU0iSffmsQeUjvhUFhji3GOI5xA4uBtSTg18Y5NrByEkTfLkkV12rnxJKKA4a70QSZ/eBu4/vIKy0nzhoKi6DRvAKKZQD7Sep7RQSeKG0no1Sjf9I+Y=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; arc=none smtp.client-ip=160.80.4.37
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
 Received: from localhost.localdomain ([160.80.103.126])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 62M0oi8E021661;
-	Sun, 22 Mar 2026 01:50:51 +0100
+	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 62M0oi8C021661;
+	Sun, 22 Mar 2026 01:50:50 +0100
 From: Andrea Mayer <andrea.mayer@uniroma2.it>
 To: netdev@vger.kernel.org
 Cc: David Ahern <dsahern@kernel.org>,
@@ -27,9 +27,9 @@ Cc: David Ahern <dsahern@kernel.org>,
         Ahmed Abdelsalam <ahabdels@cisco.com>,
         Justin Iurman <justin.iurman@6wind.com>,
         Andrea Mayer <andrea.mayer@uniroma2.it>
-Subject: [RFC PATCH iproute2-next 3/4] seg6: man: document End.DT2U behavior in ip-route man page
-Date: Sun, 22 Mar 2026 01:50:20 +0100
-Message-Id: <20260322005021.12770-4-andrea.mayer@uniroma2.it>
+Subject: [RFC PATCH iproute2-next 1/4] seg6: add support for SRv6 End.DT2U behavior
+Date: Sun, 22 Mar 2026 01:50:18 +0100
+Message-Id: <20260322005021.12770-2-andrea.mayer@uniroma2.it>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20260322005021.12770-1-andrea.mayer@uniroma2.it>
 References: <20260322005021.12770-1-andrea.mayer@uniroma2.it>
@@ -43,54 +43,121 @@ Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
 X-Virus-Status: Clean
 
-Document the End.DT2U seg6local action in the ip-route(8) man page.
-Add the End.DT2U syntax, describe the l2dev parameter, and provide
-a usage example in the SRv6 examples section.
+Add parsing and printing for the End.DT2U seg6local action with
+its l2dev attribute, and update the usage help text.
+
+Usage:
+
+  ip -6 route add fc00::100/128 encap seg6local action End.DT2U \
+      l2dev veth0 dev dum0
+
+  where veth0 is a bridge port.
 
 Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
 ---
- man/man8/ip-route.8.in | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ include/uapi/linux/seg6_local.h |  3 +++
+ ip/iproute.c                    |  7 ++++---
+ ip/iproute_lwtunnel.c           | 20 +++++++++++++++++++-
+ 3 files changed, 26 insertions(+), 4 deletions(-)
 
-diff --git a/man/man8/ip-route.8.in b/man/man8/ip-route.8.in
-index aafa6d98..bba7a4fd 100644
---- a/man/man8/ip-route.8.in
-+++ b/man/man8/ip-route.8.in
-@@ -993,6 +993,21 @@ only accepts packets with either a zero Segments Left value or no SRH
- at all, and an inner IPv4 or IPv6 packet. Other matching packets are
- dropped.
+diff --git a/include/uapi/linux/seg6_local.h b/include/uapi/linux/seg6_local.h
+index 6e71d97f..c0717510 100644
+--- a/include/uapi/linux/seg6_local.h
++++ b/include/uapi/linux/seg6_local.h
+@@ -29,6 +29,7 @@ enum {
+ 	SEG6_LOCAL_VRFTABLE,
+ 	SEG6_LOCAL_COUNTERS,
+ 	SEG6_LOCAL_FLAVORS,
++	SEG6_LOCAL_L2DEV,
+ 	__SEG6_LOCAL_MAX,
+ };
+ #define SEG6_LOCAL_MAX (__SEG6_LOCAL_MAX - 1)
+@@ -67,6 +68,8 @@ enum {
+ 	SEG6_LOCAL_ACTION_END_BPF	= 15,
+ 	/* decap and lookup of DA in v4 or v6 table */
+ 	SEG6_LOCAL_ACTION_END_DT46	= 16,
++	/* decap and unicast MAC L2 table lookup */
++	SEG6_LOCAL_ACTION_END_DT2U	= 17,
  
-+.B End.DT2U l2dev
-+.I DEVICE
-+- Decapsulate the inner Ethernet frame and deliver it locally on the
-+specified L2 device.
-+.I DEVICE
-+must be either a bridge port or a
-+.B srl2
-+device. When
-+.I DEVICE
-+is a bridge port, the Linux bridge performs MAC source address learning,
-+destination MAC lookup, and L2 forwarding within the local bridge
-+domain. This action only accepts packets with either a zero Segments
-+Left value or no SRH at all, and an inner Ethernet frame (protocol 143).
-+Other matching packets are dropped.
+ 	__SEG6_LOCAL_ACTION_MAX,
+ };
+diff --git a/ip/iproute.c b/ip/iproute.c
+index c2538894..89d8ec1e 100644
+--- a/ip/iproute.c
++++ b/ip/iproute.c
+@@ -104,11 +104,12 @@ static void usage(void)
+ 		"SEGMODE := [ encap | encap.red | inline | l2encap | l2encap.red ]\n"
+ 		"SEG6LOCAL := action ACTION [ OPTIONS ] [ count ]\n"
+ 		"ACTION := { End | End.X | End.T | End.DX2 | End.DX6 | End.DX4 |\n"
+-		"            End.DT6 | End.DT4 | End.DT46 | End.B6 | End.B6.Encaps |\n"
++		"            End.DT6 | End.DT4 | End.DT46 | End.DT2U | End.B6 | End.B6.Encaps |\n"
+ 		"            End.BM | End.S | End.AS | End.AM | End.BPF }\n"
+ 		"OPTIONS := OPTION [ OPTIONS ]\n"
+-		"OPTION := { flavors FLAVORS | srh SEG6HDR | nh4 ADDR | nh6 ADDR | iif DEV | oif DEV |\n"
+-		"            table TABLEID | vrftable TABLEID | endpoint PROGNAME }\n"
++		"OPTION := { flavors FLAVORS | srh SEG6HDR | nh4 ADDR | nh6 ADDR |\n"
++		"            iif DEV | oif DEV | l2dev DEV | table TABLEID |\n"
++		"            vrftable TABLEID | endpoint PROGNAME }\n"
+ 		"FLAVORS := { FLAVOR[,FLAVOR] }\n"
+ 		"FLAVOR := { psp | usp | usd | next-csid }\n"
+ 		"IOAM6HDR := trace prealloc type IOAM6_TRACE_TYPE ns IOAM6_NAMESPACE size IOAM6_TRACE_SIZE\n"
+diff --git a/ip/iproute_lwtunnel.c b/ip/iproute_lwtunnel.c
+index a7885dba..40e9bbd2 100644
+--- a/ip/iproute_lwtunnel.c
++++ b/ip/iproute_lwtunnel.c
+@@ -398,6 +398,7 @@ static const char *seg6_action_names[SEG6_LOCAL_ACTION_MAX + 1] = {
+ 	[SEG6_LOCAL_ACTION_END_AM]		= "End.AM",
+ 	[SEG6_LOCAL_ACTION_END_BPF]		= "End.BPF",
+ 	[SEG6_LOCAL_ACTION_END_DT46]		= "End.DT46",
++	[SEG6_LOCAL_ACTION_END_DT2U]		= "End.DT2U",
+ };
+ 
+ static const char *format_action_type(int action)
+@@ -561,6 +562,13 @@ static void print_encap_seg6local(FILE *fp, struct rtattr *encap)
+ 			     "oif %s ", ll_index_to_name(oif));
+ 	}
+ 
++	if (tb[SEG6_LOCAL_L2DEV]) {
++		int l2dev = rta_getattr_u32(tb[SEG6_LOCAL_L2DEV]);
 +
- .B End.B6 srh segs
- .IR SEGMENTS " [ "
- .B hmac
-@@ -1450,6 +1465,12 @@ ip -6 route add 2001:db8:1::/64 encap seg6local action End.DT46 vrftable 100 dev
- Adds an IPv6 route with SRv6 decapsulation and forward with lookup in VRF table.
- .RE
- .PP
-+ip -6 route add fc00::100/128 encap seg6local action End.DT2U l2dev srl2-0 dev eth0
-+.RS 4
-+Adds an IPv6 route with SRv6 L2 decapsulation and local delivery of the
-+inner Ethernet frame on srl2-0.
-+.RE
-+.PP
- ip -6 route add 2001:db8:1::/64 encap seg6local action End flavors psp dev eth0
- .RS 4
- Adds an IPv6 route with SRv6 End behavior with psp flavor enabled.
++		print_string(PRINT_ANY, "l2dev",
++			     "l2dev %s ", ll_index_to_name(l2dev));
++	}
++
+ 	if (tb[SEG6_LOCAL_BPF])
+ 		print_encap_bpf_prog(fp, tb[SEG6_LOCAL_BPF], "endpoint");
+ 
+@@ -1419,12 +1427,13 @@ static int parse_encap_seg6local(struct rtattr *rta, size_t len, int *argcp,
+ 	int nh4_ok = 0, nh6_ok = 0, iif_ok = 0, oif_ok = 0, flavors_ok = 0;
+ 	int segs_ok = 0, hmac_ok = 0, table_ok = 0, vrftable_ok = 0;
+ 	int action_ok = 0, srh_ok = 0, bpf_ok = 0, counters_ok = 0;
+-	__u32 action = 0, table, vrftable, iif, oif;
++	__u32 action = 0, table, vrftable, iif, oif, l2dev;
+ 	struct ipv6_sr_hdr *srh;
+ 	char **argv = *argvp;
+ 	int argc = *argcp;
+ 	char segbuf[1024];
+ 	inet_prefix addr;
++	int l2dev_ok = 0;
+ 	__u32 hmac = 0;
+ 	int ret = 0;
+ 
+@@ -1483,6 +1492,15 @@ static int parse_encap_seg6local(struct rtattr *rta, size_t len, int *argcp,
+ 			if (!oif)
+ 				exit(nodev(*argv));
+ 			ret = rta_addattr32(rta, len, SEG6_LOCAL_OIF, oif);
++		} else if (strcmp(*argv, "l2dev") == 0) {
++			NEXT_ARG();
++			if (l2dev_ok++)
++				duparg2("l2dev", *argv);
++			l2dev = ll_name_to_index(*argv);
++			if (!l2dev)
++				exit(nodev(*argv));
++			ret = rta_addattr32(rta, len, SEG6_LOCAL_L2DEV,
++					    l2dev);
+ 		} else if (strcmp(*argv, "count") == 0) {
+ 			if (counters_ok++)
+ 				duparg2("count", *argv);
 -- 
 2.20.1
 
