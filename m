@@ -1,148 +1,74 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE0D363C45;
-	Sun, 22 Mar 2026 14:24:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039521F03D2;
+	Sun, 22 Mar 2026 14:40:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774189462; cv=none; b=q4fcvLmuYzeb+oDPlMrGK+YgZOtPE6qchuii1mu/CsgldbXpqQkO7Gz0Z3G0Zo1Qotn7yqGed4FYxj0LsmHhNvODeTznmDuZU1TB3emFly79IN9gKu6ljSFruIP9iA/P7byEczxeiQHq7qf7UMKvi39xDUbLoWQVoAHegSS3Q6U=
+	t=1774190428; cv=none; b=IKm66SWVoY25yV0uiZfjT8NmJllBsTsaJbFMVkBsHvvIgZNmY+ZmYC0iIsAoxVo7/ZSNrX8T5n1IpxFczPhryWyhSL0bRJGqwg5A9Z0mofs+scAvS3438EdvWdOPJBz8d9gpDhQUJ8nVq2gGXUXqIlbYsxnCHx0vCiCjtGvtOsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774189462; c=relaxed/simple;
-	bh=axxplOC87DoUDLEOGdxNehpQoMQRTWK9ZAGaD7Q1mDw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pItceo5lZSpCQY1moaoLGPjYVPBdZx7W8aalxDnKgsxulxbG+bMGywmaR6JpyGpMWG9DWTNg93rJU2tyezWLhhwFn79Qg/EIWrc9TbtI1B/fR6ulqNUF2tMbBdfzTQHpeCYazGxwtxXtfRNzZwQgLUFj/SLYVAGGdjlEb/w7ZIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HYesviKm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774190428; c=relaxed/simple;
+	bh=pG1GaXqXdRepwp8m5rgZzHiIIXYsp832iVl9ZhQ5OsM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jgIACPX4rVBjVUK0st1zxUrsVRvFWh0gQt3G7gVCOUxUouVcZ8pcfaZCqI8g4UFn7szRLYB3Xp74WkiPkCbJpR05AFih3thHbKAo5C7vFeBtsfvJRRHusGGEfhL+Xjnc7KZg4gfAkIDlbsgZD0JM/ofmKH5J4FiJqbn1FQ/GbOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=yQjf+4KH; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HYesviKm"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id BA63FC2BCB2;
-	Sun, 22 Mar 2026 14:24:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774189461;
-	bh=axxplOC87DoUDLEOGdxNehpQoMQRTWK9ZAGaD7Q1mDw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=HYesviKmTrLke/T7zWs2yD3iQz0zmlm4K1QgJzhv5Fm0+bIiWcsB1GFIMEH7H31a7
-	 UZ7WMwP8DUsXS5hazSjgAZUGQmNlzOp7JgIunxoPrCzGa+cowUm7n0i45gQhH18EjD
-	 t3uSC7Jz2jdPx/1CGaP4YFUfjcHjkrKgKciK8rAmKt9oeA5eiCpZSmynXJ0gOANnzk
-	 SyHNRukOYoqqjUKSEH/9XQSYczkJBRLJte9MfyHPk/+VWhcsA8IL2NqUIkrcrUPzJn
-	 s/a5ygzSfo7paZR+t+NEduDIRVnvmFeN3Z+1ZaSJM/dCOYxtQA+BdQtowNWwnosky2
-	 2Miv4AReB97Ug==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B35AFFC72AD;
-	Sun, 22 Mar 2026 14:24:21 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Sun, 22 Mar 2026 15:24:19 +0100
-Subject: [PATCH QUESTION 1/2] arm64: dts: qcom: sdm845-oneplus: Enable NFC
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="yQjf+4KH"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=9+efNICYa6Qt0cdjCzn/QXdb/0qRox6mNmwXvwb5OQk=; b=yQjf+4KHEA0wt1g7TRX5mfVL77
+	GCVvnZFYKvbFiqc2z3ViNX8K6HIMv6wIp7K98OGSNksuImFqgzrOEhTXcH0eUI/t6gngXXRhJ7+hK
+	gMuxFCnYabb3HDy+vdy/HJvqvkio3zU/XKpqh5Yp5SwKM3YQUUZK0+d15PkAZdaM1Xck=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1w4JyB-00CovP-NJ; Sun, 22 Mar 2026 15:39:59 +0100
+Date: Sun, 22 Mar 2026 15:39:59 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Alexander Popov <alex.popov@linux.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, David Miller <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Michal Kubecek <mkubecek@suse.cz>, Gal Pressman <gal@nvidia.com>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Greg KH <gregkh@linuxfoundation.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, security@kernel.org,
+	notify@kernel.org
+Subject: Re: [PATCH] ethtool: don't touch the parent device of a net device
+ being unregistered
+Message-ID: <3c07c51a-421b-456f-9819-9021ddd7b22e@lunn.ch>
+References: <20260322075917.254874-1-alex.popov@linux.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260322-oneplus-nfc-v1-1-5f22f544f0e2@ixit.cz>
-References: <20260322-oneplus-nfc-v1-0-5f22f544f0e2@ixit.cz>
-In-Reply-To: <20260322-oneplus-nfc-v1-0-5f22f544f0e2@ixit.cz>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: Petr Hodina <petr.hodina@protonmail.com>, 
- biemster <l.j.beemster@gmail.com>, netdev@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, oe-linux-nfc@lists.linux.dev, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1590; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=B1C0GWCfqNHFWEdIAzeVJqcuVPnC+PV2R/DBk8wqZEA=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpv/uUrj18m0kn1GKpoXoftxMYSLKQDCiSUyZY+
- HsoiCa3+16JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCab/7lAAKCRBgAj/E00kg
- chU0D/0S4ZkvpDlFswm/YVkPovbK0CMXvwEphCN1YnahYdU0y72Hjqf/YZRgK5RPET+22p7rzSE
- BWolE7URerc38MO7O9uxJso0yekaNLdr2TvN18V5tX4JmrMah7HdINoVzIcyqK0xWMa4Cg09Ywu
- 6+WFqtEOj9l26Lj7Xc3pJqRUCGdGyqHdj7Ny5mogStApQmP72/z3SisOYHyTncx5DpvodRHkvX2
- WKIhsatNN73X/giocFL277Z+nMqa6YKZRyuEy24manxshZQNnOiMfbMqkQ/FoDFVljU6jv++sjP
- XLRuFE1nhxKGNczYVkkweA9eK4zMJHMmEHhIsJeGq0gUTx/UxVXtExstEdtjdLGJfWDJ84l5vEi
- LYNdltdZkXNzmG9LIgUufxBCjsKbH6/OAjM5kmrpJRLb2xcOe4hWbf5rwVPYWY8fcneCjujD5jl
- 05tiAY8m3Up/Qy+4VyUSBlPQFPqR3wpfViywNxvyY80rFVzkLBBjTZX3HxHmFwFCYz0hCTak5h+
- G1eXk525aegw/PJ5rE15hVlpxVCIGEGIH6iyoTtCIMYHK9yBnqgZFm8qUJ+HP62Ofh+GghqKIOs
- 2jbqCc2drFi88cRBooZx89gkjKL2zY1rMggDDerGkE0+e83CXavKHcGP1WdJhHP1w2gQRhDEpaw
- iGlXUjR4C5RCKlg==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260322075917.254874-1-alex.popov@linux.com>
 
-From: biemster <l.j.beemster@gmail.com>
+On Sun, Mar 22, 2026 at 10:59:15AM +0300, Alexander Popov wrote:
+> The ethtool operations may be performed on a net device that is currently
+> being unregistered. This is also described in the commit dde91ccfa25fd58f
+> ("ethtool: do not perform operations on net devices being unregistered").
+> Moreover, such a device may have a parent that has already been freed.
 
-Definition of the NFC.
+I don't know the device core too well, but can you explain in the
+example stack trace you gave how the parent can already be free? I
+would of expected devices are arranged in a tree, and free happens
+from the leaves towards the root? In order to do a clean shutdown, you
+might need to perform operations on the parent.
 
-Co-developed-by: David Heidelberg <david@ixit.cz>
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
- .../arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 32 ++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+I just want to make sure this is not a broken parent device which
+should be fixed...
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-index 5b121ea5520f5..34f476299b114 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-@@ -392,6 +392,26 @@ &gpu_zap_shader {
- 	firmware-name = "qcom/sdm845/OnePlus/enchilada/a630_zap.mbn";
- };
- 
-+&i2c3 {
-+	clock-frequency = <400000>;
-+
-+	status = "okay";
-+
-+	nfc@28 {
-+		compatible = "nxp,nxp-nci-i2c";
-+		reg = <0x28>;
-+
-+		interrupt-parent = <&tlmm>;
-+		interrupts = <63 IRQ_TYPE_EDGE_RISING>;
-+
-+		enable-gpios = <&tlmm 12 GPIO_ACTIVE_HIGH>;
-+		firmware-gpios = <&tlmm 62 GPIO_ACTIVE_HIGH>;
-+
-+		pinctrl-0 = <&nfc_default>;
-+		pinctrl-names = "default";
-+	};
-+};
-+
- &i2c10 {
- 	status = "okay";
- 	clock-frequency = <100000>;
-@@ -594,6 +614,11 @@ &qupv3_id_0 {
- 	status = "okay";
- };
- 
-+&qup_i2c3_default {
-+	drive-strength = <2>;
-+	bias-disable;
-+};
-+
- &qup_i2c10_default {
- 	drive-strength = <2>;
- 	bias-disable;
-@@ -926,6 +951,13 @@ speaker_default: speaker-default-state {
- 		bias-pull-up;
- 		output-high;
- 	};
-+
-+	nfc_default: nfc-default-state {
-+		pins = "gpio12", "gpio62", "gpio63";
-+		function = "gpio";
-+		drive-strength = <6>;
-+		bias-pull-up;
-+	};
- };
- 
- &venus {
-
--- 
-2.53.0
-
-
+       Andrew
