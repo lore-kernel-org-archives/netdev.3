@@ -1,121 +1,219 @@
-Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 265D8365A10
-	for <netdev@vger.kernel.org>; Sun, 22 Mar 2026 00:51:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774140667; cv=none; b=HXZZDuQrLZR7CTUgImAGUYPy/ojsMIhJsEZwLMvMINLmBLbMJzvrdEdvNXU6kIBsFctogEQ8uMyrGG5Y8MmqbfrIr/8ko5sIkmPmvJCzj82SIWS9hCqaFOKdi6KlyTF5Za5O0Fkoobbh0gWRWCZX1pf1WGdEp+UmkkP8k3oxHZQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774140667; c=relaxed/simple;
-	bh=rKswbqZiaB34+mPSs6FIFDqforhntNswebmMjm54ZTY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=my9xsQy12iNwIZfsMgAke6/rRv6CiV4JKlhiAk0/iBXc60qac52eMjs0518FrS1gkEDYBITPsmnLhgFfZvdqjU/71FEMhXRnOPZ2y4o/4RSXnZLMxCv8RdK1p574l1FxCb2pZmeGwLlX4FDxY89Eh12O2Mra7AEtvliRfRW2t4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; arc=none smtp.client-ip=160.80.4.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
-Received: from localhost.localdomain ([160.80.103.126])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 62M0oi8B021661;
-	Sun, 22 Mar 2026 01:50:50 +0100
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: netdev@vger.kernel.org
-Cc: David Ahern <dsahern@kernel.org>,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Stefano Salsano <stefano.salsano@uniroma2.it>,
-        Paolo Lungaroni <paolo.lungaroni@uniroma2.it>,
-        Ahmed Abdelsalam <ahabdels@cisco.com>,
-        Justin Iurman <justin.iurman@6wind.com>,
-        Andrea Mayer <andrea.mayer@uniroma2.it>
-Subject: [RFC PATCH iproute2-next 0/4] seg6: add SRv6 End.DT2U and srl2 support
-Date: Sun, 22 Mar 2026 01:50:17 +0100
-Message-Id: <20260322005021.12770-1-andrea.mayer@uniroma2.it>
-X-Mailer: git-send-email 2.20.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65994311973
+	for <netdev@vger.kernel.org>; Sun, 22 Mar 2026 02:12:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774145556; cv=pass; b=dchyyw1sTCbqdEKP+wG3hxho0+lYo0CK2DeerCHyicQxm0bGHfCuC2+IpUKitWBUWx9Qd1v6H2pJ4MAfc2zwSv8lP3iLpBHbnPjJeSbdrZdjzunqlcWOI1Z1V56bXnw3gefokzlWJVPml0dUukWRIWl6p2EHgAulbXSKat9Bjhc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774145556; c=relaxed/simple;
+	bh=6fD/q1Qsxzb/jb2kkxpS1VnijIUcf8B0ptymLmzk210=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pR1wEcJYM07kHSJ0EOzsNRiP32hwNBwA9Xu11Jpbfx0DGLsvn5OE+TdlAw7ubx53s1CKNSutXUUBmHGJnh8EylmXExomqYJdNqfTc0X34+x8OUblszPBkcEAyhQ2NooK1zT2E0ts/LZvB8eZIoG3r3ECmzAIxmpS+fUgcEkAtw4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ErhrGH4X; arc=pass smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ErhrGH4X"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-66966a394ceso991238a12.0
+        for <netdev@vger.kernel.org>; Sat, 21 Mar 2026 19:12:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774145554; cv=none;
+        d=google.com; s=arc-20240605;
+        b=bmAClcjVDSEUOx0U1TyTiR+BZkUgyjv3sNgUTqPTl0O1g17TInY+riJatdHGu3eqWc
+         besO44YLkGSpKjEFC0jpEm8iSWN2lhowB2kMxpAhfHdXle3LCRQlm0/kDSSI5OhDFuOZ
+         Nb01bahYI/Ny4IzpvlYSOmzJ6MKoC6JqJNY9btDsasI3Nr/LsU7z52brll4d/LANLC80
+         i73g7qDTLAhZxaXil0wWJln2LdC3zU+VGifm2IGPW+cX1BK4WurUvAxWeBTQ/vYX2Uw7
+         LvonoBcllphEY6RaC7OIKqjHOmV5ILrzXpvtAneP5oIHv90/BfwjB+GQ0fCcJVJsQ//9
+         xI7g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=dG3xkxQxc2r4hrUA4bCorikr9wEg+eMEMtsgK/HEPog=;
+        fh=5Wc7PWoz5xUe41ZTORwiV8gRRPSenlzg7ww3M4qZcPs=;
+        b=Xy/4gogTt4CJWbp7JTlA88MHyXt54pD7yM24y8Pc/LC716c8rU84uZ73aUVTHhRRuc
+         OuWO1O05Qb9iayiXx4Ne+gob8mkcVq6CL37IfKJl6GS08vb+nAtQLhUPqjt1J1QCldMr
+         vVamqoxgz1SUcW+qD+F+wbJEg9f6DQlV8VgFOuiqLtwnee/xRXZhOlo+s/gLNDb/PSig
+         rc3QHPz9tUoU4pT1f3vcYDGjM1xFhQL3djuPRqNI8BR45GWnTdJftYSQxRCb2DY3I9Tt
+         p8mLidBAfYKqrwvIqfO+gPN9e8L6DFJt3/sKbFbbqmHiycFhJCZS//v07Y2ZJJGbSXO9
+         rklw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774145554; x=1774750354; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=dG3xkxQxc2r4hrUA4bCorikr9wEg+eMEMtsgK/HEPog=;
+        b=ErhrGH4XH1FnoWq5mmvdifLLo3D1A/BTfhuk2skh3aXpqAaPsBvH1hgIFpUhIv6YKp
+         HFFypYkEc0m4Tz2BTyLB2csQtsbpwzZTjuuI5C9s5nj6UukfhFhq5q6w3+1iA7vnl+L5
+         IH0TLdrskZF3jGQMsKDZGIuzqTFuQowMF6q3uVJX0i/khpDLRiuYHI8ABxrV4ppJ2Oh/
+         SkxznBiA5XXSyun8Fcr4WNYA1XiW6BwbfL2ZKW5p4g/2ovut3O3cWDIyfh8j38pJXcOP
+         lqp2kQCAkYdrrzhxMiShNcrLRqG1Grebpva4TwsuGYC/pjyFHfHMgqO+O0LlmiCWLYCJ
+         upLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774145554; x=1774750354;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dG3xkxQxc2r4hrUA4bCorikr9wEg+eMEMtsgK/HEPog=;
+        b=CpOeA5FIkoPnES0AfGmvlpkAbG96jnrv8RRegWnN+DPtmjHpkg3cMov3npwRyw8iO9
+         c0ETI0sf31olnfxL4vElNpUT2HT77B90c6fXsuH8Rod2ZjZGK/tPpuponRe6MJxBwowa
+         YsGJUOeq/bjtPhwF2wh5zPFe2vHyq7cLcJE+0bc/ip1qq7K1mIWII0DH7d6UiNTVWEFM
+         7pLGK7XkgF7KtkqU5qmB39el36M5q/+GS/hEUWifUjFPMSs0ddpc91EjxL3gp4HkNkDN
+         W9zFv61ZHJ8kAa3crgTYtZYpD9omkxb95HqNxdkmz+6UrcREOuS4jNmT9AEKsDjMEB91
+         mRHw==
+X-Forwarded-Encrypted: i=1; AJvYcCU69chvlffKoyLpRb8btSHeVkTt4UbkXqBypi1Kq17x8x+fwseFx9mYS/TB6GzwaO4ROdjI1MY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmnWRIIVef7jEPbzuRnK8TgovBQPILkOuoqcxhRek5eEQ3kyHx
+	MJEgW34DYz0/VqwZ67p/ITrytv+HZG8VpyhglOvacR2BxcnY1/MhaKkb1hyOs2zaYXevGT29vWx
+	qPw7Sdakks85Yn555KSdTKDf2ttFdgOM=
+X-Gm-Gg: ATEYQzwnnefk8/7gV4cSws7GS2Tg0Rujrezn1DCGUwSQ+jfp88zf0riH1ZPWLMoSxRO
+	ZEyQI9btdBxA1/NYc67ac4HSTbqzeknRmsldwDgLi6Dvkh62jLkRkbKfIHSEw/hbjkn7vVr7RqM
+	G+KsMVLgYtUhLveTtkoFXU/6MSiyUtFDaO9Zlp4H1Y1BBMtVCMcUaKrR/DS6qyuGSV7XHGOcHbx
+	AtAG5oYRE5TnAwhT0dFD4JttI0uk4QyfVuL/wE1GO54LzVCSDag4RgUK45yaQ2icCVTWLRKZoMZ
+	7Swl/fo=
+X-Received: by 2002:a17:907:982:b0:b97:f8d4:2fe7 with SMTP id
+ a640c23a62f3a-b980fb05f2dmr787025166b.32.1774145553392; Sat, 21 Mar 2026
+ 19:12:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
+References: <20260320132356.63194-1-teknoraver@meta.com> <20260320132356.63194-2-teknoraver@meta.com>
+ <1d708196-7b89-431f-bb17-177564196894@gmail.com>
+In-Reply-To: <1d708196-7b89-431f-bb17-177564196894@gmail.com>
+From: Matteo Croce <technoboy85@gmail.com>
+Date: Sun, 22 Mar 2026 03:11:56 +0100
+X-Gm-Features: AaiRm53ww1-ptJbyTPXmgTKJ3HBDK88IzK0UHxVqUtqlnjypi32Zi5Q0XiIBTGw
+Message-ID: <CAFnufp0LRVxwh50cLrg=hUe6itshTqrNy53HkvBWk6MQ7uL0KA@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 1/2] e1000e: add basic XDP support
+To: Mohsin Bashir <mohsin.bashr@gmail.com>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, 
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, netdev@vger.kernel.org, bpf@vger.kernel.org, 
+	intel-wired-lan@lists.osuosl.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi all,
+Il giorno ven 20 mar 2026 alle ore 22:23 Mohsin Bashir
+<mohsin.bashr@gmail.com> ha scritto:
+>
+>
+> > + * e1000_xdp_xmit_ring - transmit an XDP frame on the TX ring
+> > + * @adapter: board private structure
+> > + * @tx_ring: Tx descriptor ring
+> > + * @xdpf: XDP frame to transmit
+> > + *
+> > + * Returns E1000_XDP_TX on success, E1000_XDP_CONSUMED on failure
+> > + **/
+> > +static int e1000_xdp_xmit_ring(struct e1000_adapter *adapter,
+> > +                            struct e1000_ring *tx_ring,
+> minor nit: alignment issue
+>
 
-this series adds iproute2 support for SRv6 L2 VPN functionality based
-on the End.DT2U behavior and the srl2 link type.
+Uh funny that checkpatch.pl doesn't notice it.
 
-The goal is to expose in userspace the pieces needed to support SRv6
-L2 service delivery through an internal SRv6 L2 endpoint, similarly
-to the model already used by VXLAN.
+> > +             if (unlikely((staterr & E1000_RXDEXT_ERR_FRAME_ERR_MASK) &&
+> > +                          !(netdev->features & NETIF_F_RXALL))) {
+> > +                     page_pool_put_full_page(adapter->page_pool,
+> > +                                             buffer_info->page, true);
+> > +                     buffer_info->page = NULL;
+> > +                     goto next_desc;
+> > +             }
+> > +
+> > +             /* adjust length to remove Ethernet CRC */
+> > +             if (!(adapter->flags2 & FLAG2_CRC_STRIPPING)) {
+> > +                     if (netdev->features & NETIF_F_RXFCS)
+> > +                             total_rx_bytes -= 4;
+>
+> Looks like, total_rx_bytes can go negative here since it is not updated
+> after being initialized to 0. Is this expected?
+>
 
-Today, Linux supports SRv6 L2 decapsulation only through the End.DX2
-behavior, i.e., by forwarding the exposed Ethernet frame to a
-configured egress netdevice. This supports L2 decapsulation toward an
-output interface, but does not provide a native internal netdevice
-representing the SRv6 L2 service endpoint. On the encapsulation side,
-the existing H.L2.Encaps lwtunnel mode cannot encapsulate non-IP
-protocols such as ARP, since they never enter the routing path.
+No, that's a bug. I'll count the crc size separately and take care of it.
 
-The companion kernel series addresses that limitation by adding the
-End.DT2U seg6local behavior and introducing the srl2 device. This
-iproute2 series provides the corresponding userspace support: parsing
-and printing of End.DT2U with the l2dev attribute, creation and
-configuration of srl2 links, and man page documentation for both.
+>
+> > -static inline void e1000_rx_hash(struct net_device *netdev, __le32 rss,
+> > -                              struct sk_buff *skb)
+> > -{
+> > -     if (netdev->features & NETIF_F_RXHASH)
+> > -             skb_set_hash(skb, le32_to_cpu(rss), PKT_HASH_TYPE_L3);
+> > -}
+> > -
+>
+> The function was just moved. Looks like an unrelated change?
+>
+> > +/**
+> > + * e1000_xdp_setup - add/remove an XDP program
+> > + * @netdev: network interface device structure
+> > + * @bpf: XDP program setup structure
+> > + **/
+> > +static int e1000_xdp_setup(struct net_device *netdev, struct netdev_bpf *bpf)
+> > +{
+> > +     struct e1000_adapter *adapter = netdev_priv(netdev);
+> > +     struct bpf_prog *prog = bpf->prog, *old_prog;
+> > +     bool running = netif_running(netdev);
+> > +     bool need_reset;
+> > +
+> > +     /* XDP is incompatible with jumbo frames */
+> > +     if (prog && netdev->mtu > ETH_DATA_LEN) {
+> > +             NL_SET_ERR_MSG_MOD(bpf->extack,
+> > +                                "XDP is not supported with jumbo frames");
+> > +             return -EINVAL;
+> > +     }
+> > +
+> > +     /* Validate frame fits in a single page with XDP headroom */
+> > +     if (prog && netdev->mtu + VLAN_ETH_HLEN + ETH_FCS_LEN +
+> > +         XDP_PACKET_HEADROOM > PAGE_SIZE) {
+> > +             NL_SET_ERR_MSG_MOD(bpf->extack,
+> > +                                "Frame size too large for XDP");
+> > +             return -EINVAL;
+> > +     }
+> > +
+> > +     old_prog = xchg(&adapter->xdp_prog, prog);
+> > +     need_reset = (!!prog != !!old_prog);
+> > +
+> > +     /* Transition between XDP and non-XDP requires ring reconfiguration */
+> > +     if (need_reset && running)
+> > +             e1000e_close(netdev);
+> > +
+> > +     if (old_prog)
+> > +             bpf_prog_put(old_prog);
+> > +
+> > +     if (!need_reset)
+> > +             return 0;
+> > +
+> > +     if (running)
+> > +             e1000e_open(netdev);
+> > +
+> > +     return 0;
+> > +}
+> > +
+>
+> If I am reading it correctly, this can be problematic (maybe with very
+> small likelihood). If e1000e_open() fails here, we will still return
+> success. How about the following?
+>
+> if (running) {
+>      int err = e1000e_open(netdev);
+>
+>      if (err) {
+>           /* Remove the XDP program since interface is down */
+>           xchg(&adapter->xdp_prog, NULL);
+>
+>           return err;
+>      }
+> }
+>
 
-The series is structured as follows:
+Makes sense.
 
- Patch: 1/4 adds iproute2 support for the SRv6 End.DT2U behavior,
-        including parsing and printing of the l2dev attribute;
-
- Patch: 2/4 adds support for the srl2 link type and its segs parameter,
-        used to configure the SRv6 segment list for L2 encapsulation;
-
- Patch: 3/4 documents End.DT2U in the ip-route man page;
-
- Patch: 4/4 documents the srl2 link type in the ip-link man page.
-
-
-Example usage:
-
-  ip link add srl2-0 type srl2 segs fc00::a,fc00::b
-  ip link set srl2-0 master br0
-
-  ip -6 route add fc00::100/128 encap seg6local action End.DT2U \
-      l2dev srl2-0 dev dum0
-
-  # encapsulating traffic from veth-hs into srl2-0
-  ip link set veth-hs master br0
-
-
-This series depends on the companion kernel RFC:
-
-  [RFC PATCH net-next 0/3] seg6: SRv6 L2 VPN with End.DT2U and srl2 device
-
-Comments are welcome!
-
-Thanks,
-Andrea and Stefano
-
-
-Andrea Mayer (4):
-  seg6: add support for SRv6 End.DT2U behavior
-  seg6: add srl2 link type support
-  seg6: man: document End.DT2U behavior in ip-route man page
-  seg6: man: document srl2 link type in ip-link man page
-
- include/uapi/linux/seg6_local.h |   3 +
- include/uapi/linux/srl2.h       |  20 ++++
- ip/Makefile                     |   2 +-
- ip/iplink_srl2.c                | 176 ++++++++++++++++++++++++++++++++
- ip/iproute.c                    |   7 +-
- ip/iproute_lwtunnel.c           |  20 +++-
- man/man8/ip-link.8.in           |  23 +++++
- man/man8/ip-route.8.in          |  21 ++++
- 8 files changed, 267 insertions(+), 5 deletions(-)
- create mode 100644 include/uapi/linux/srl2.h
- create mode 100644 ip/iplink_srl2.c
+I addressed all the comments and I'll send a v4 soon, thanks!
 
 -- 
-2.20.1
+Matteo Croce
 
+perl -e 'for($t=0;;$t++){print chr($t*($t>>8|$t>>13)&255)}' |aplay
