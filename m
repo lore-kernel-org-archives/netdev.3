@@ -1,57 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 250AB379991
-	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 08:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B0237F8D0
+	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 08:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774254902; cv=none; b=D2ivEkvAYajlCJuKzMtWGb9caP/hj2LYVJC0nvNYBaPLpBcHfkF9KoFYLowWaEab73SjQHb4RSYhJotkZsGCEsfbfMe2PAU3lqiX5cAKxAOH/oUgC47Ozr8y7mA02cME0esO6UWwbK1TiUHfSuEZrhyagsrUvFwobkzLC9fQPXY=
+	t=1774254902; cv=none; b=ID6HIB6UnSdx+htR2VUbb0wTCx1+NHpI6FIfjaATcJKnPaLWhoSk5ByOUKonSbPaE7r3Y0XWg/OBmSmWUwFOqCbUbTeBk8AobvO9Tok58hLprcRd9FbBzihf7nVTwaKXEPaih7gFn6bjebcoJKzL5hBrSINFyg+k/nek62/Kp28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774254902; c=relaxed/simple;
-	bh=3j+XZrCFIPBDHW6Yu2JsEsxSSdjtvt3Jjns1Q1JxkYQ=;
+	bh=+iSMUXyvhfDgah4J6pL3Vs5YSafNuIDIgdgS1Izidik=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gQrrw0mV8gQ6B5tcYcfXcaLHG4EyGXmyG8DP5uq2/qth3B6wG/Dt4ozuVJ9HHgyBl0OF3hQP2WeXihVAsT8edY9ZQqcbMcTuzUyUGxsgqU+RDVF23flXXpKepr57wLrViy1McZBQe3upJr/aHwUDzRrQu2FpOxUXPM1axOsiAzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=HAJ5Lmc8; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=WzBGd6ebMt9q1dTMWZOH3pYBhYihUi71lOqbArxLWmFoIuGRZmSzVlsovoLlMfyzbuS54p+gMCwNd4oUAwRmhzGsJXOtH+687Z+SLNakHy6QnO8aj27or7fYee7Cxd7PPNpDxPjNTaUOLxrr7xfKDva4fbb6sQCmhIL2PCwJ1IU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=MDTEdH2+; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="HAJ5Lmc8"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="MDTEdH2+"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 40B81207BE;
-	Mon, 23 Mar 2026 09:34:57 +0100 (CET)
+	by mx1.secunet.com (Postfix) with ESMTP id D448720728;
+	Mon, 23 Mar 2026 09:34:53 +0100 (CET)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id YcNHnYt_YkeB; Mon, 23 Mar 2026 09:34:56 +0100 (CET)
+ with ESMTP id rAkRSgyBGDkR; Mon, 23 Mar 2026 09:34:53 +0100 (CET)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 9C566207AC;
-	Mon, 23 Mar 2026 09:34:56 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 9C566207AC
+	by mx1.secunet.com (Postfix) with ESMTPS id 42AE6205ED;
+	Mon, 23 Mar 2026 09:34:53 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 42AE6205ED
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1774254896;
-	bh=N40GMO+OpI+C4m6aX++wL5AB3kryyXyFA1RbY2LB0ag=;
+	s=202301; t=1774254893;
+	bh=rItz8FQfx37ANB9Hi8uWshNm2jZ1MLGDEtA0MTf0aRU=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=HAJ5Lmc8G6cyq0uoEEpxpxhJCm9OmGWHx/Ngf6Cy00v5HOzjC0V/6V4/1VWEzbwPD
-	 3RdyqRGmIkH37lz+XgX6QODqk/X9vw5Uar3RTztPGNN9lgXPZy2OVUr9md2kjoQZeT
-	 evFnEyCAKh7KsV7w4P38bpCVRVzNVcfrdXM1e8OFrToLSp0GNxH/tVuZ+Sd3tGQ9y6
-	 UTHrauyLk/tNrj2PkHefQ/hxgaYIC6svUiesUrMVdpA4oMTyNTtTc8CKZ5k/w/Hy+c
-	 jaLpCpuJR+62aC7JgvUYQHf/G+srsQQ21cIu0V/kWFGF0vresBzBcFRaZvbxBQyFdC
-	 rn9znHNaPsz1g==
+	b=MDTEdH2+mCAL1HsY1MC4Wu7Gu1pImo4YRmmd3IH74Wc2KcmBcmRbgzpgTx+1yxP3f
+	 vU/P9fCZRQrtEWXl74yEUcR85dRPFYVo8Pk+CUMt0QQ3LgvQiIDZKHCIzLQevJ8NYH
+	 b4v9hbnJwmPDXWvL2w+BRvTKgxRvyxtBenu32875gDSLr8SRj6EVcktfDt8DUbG0Ea
+	 5o/XoFJQfgQuQcZunR+3+s/BrgdtnJW4Wdc8ayC9hLe0xSJMfrTTKYpkObJdMOHrH8
+	 osdeRarQZCpNkfTHJtSDQVmTlv39faUJNX6thRRj/K0qon6w2h3XC1pwVd+1D/1AJa
+	 0XGCIctX7bFfQ==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 23 Mar
- 2026 09:34:56 +0100
-Received: (nullmailer pid 2741857 invoked by uid 1000);
+ 2026 09:34:52 +0100
+Received: (nullmailer pid 2741821 invoked by uid 1000);
 	Mon, 23 Mar 2026 08:34:49 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 20/20] xfrm: iptfs: only publish mode_data after clone setup
-Date: Mon, 23 Mar 2026 09:34:01 +0100
-Message-ID: <20260323083440.2741292-21-steffen.klassert@secunet.com>
+Subject: [PATCH 08/20] xfrm: state: fix sparse warnings in xfrm_state_init
+Date: Mon, 23 Mar 2026 09:33:49 +0100
+Message-ID: <20260323083440.2741292-9-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260323083440.2741292-1-steffen.klassert@secunet.com>
 References: <20260323083440.2741292-1-steffen.klassert@secunet.com>
@@ -66,52 +66,82 @@ Content-Type: text/plain
 X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
  (10.32.0.171)
 
-From: Paul Moses <p@1g4.org>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-iptfs_clone_state() stores x->mode_data before allocating the reorder
-window. If that allocation fails, the code frees the cloned state and
-returns -ENOMEM, leaving x->mode_data pointing at freed memory.
+Use rcu_assign_pointer, and tmp variables for freeing on the error
+path without accessing net->xfrm.state_by*.
 
-The xfrm clone unwind later runs destroy_state() through x->mode_data,
-so the failed clone path tears down IPTFS state that clone_state()
-already freed.
-
-Keep the cloned IPTFS state private until all allocations succeed so
-failed clones leave x->mode_data unset. The destroy path already
-handles a NULL mode_data pointer.
-
-Fixes: 6be02e3e4f37 ("xfrm: iptfs: handle reordering of received packets")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paul Moses <p@1g4.org>
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- net/xfrm/xfrm_iptfs.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/xfrm/xfrm_state.c | 32 ++++++++++++++++++++------------
+ 1 file changed, 20 insertions(+), 12 deletions(-)
 
-diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-index 2c87290fe06c..7cd97c1dcd11 100644
---- a/net/xfrm/xfrm_iptfs.c
-+++ b/net/xfrm/xfrm_iptfs.c
-@@ -2664,9 +2664,6 @@ static int iptfs_clone_state(struct xfrm_state *x, struct xfrm_state *orig)
- 	if (!xtfs)
- 		return -ENOMEM;
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index ad32085267a5..b81303cccc5e 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -3259,6 +3259,7 @@ EXPORT_SYMBOL(xfrm_init_state);
  
--	x->mode_data = xtfs;
--	xtfs->x = x;
--
- 	xtfs->ra_newskb = NULL;
- 	if (xtfs->cfg.reorder_win_size) {
- 		xtfs->w_saved = kcalloc(xtfs->cfg.reorder_win_size,
-@@ -2677,6 +2674,9 @@ static int iptfs_clone_state(struct xfrm_state *x, struct xfrm_state *orig)
- 		}
- 	}
+ int __net_init xfrm_state_init(struct net *net)
+ {
++	struct hlist_head *ndst, *nsrc, *nspi, *nseq;
+ 	unsigned int sz;
  
-+	x->mode_data = xtfs;
-+	xtfs->x = x;
+ 	if (net_eq(net, &init_net))
+@@ -3269,18 +3270,25 @@ int __net_init xfrm_state_init(struct net *net)
+ 
+ 	sz = sizeof(struct hlist_head) * 8;
+ 
+-	net->xfrm.state_bydst = xfrm_hash_alloc(sz);
+-	if (!net->xfrm.state_bydst)
++	ndst = xfrm_hash_alloc(sz);
++	if (!ndst)
+ 		goto out_bydst;
+-	net->xfrm.state_bysrc = xfrm_hash_alloc(sz);
+-	if (!net->xfrm.state_bysrc)
++	rcu_assign_pointer(net->xfrm.state_bydst, ndst);
 +
- 	return 0;
- }
++	nsrc = xfrm_hash_alloc(sz);
++	if (!nsrc)
+ 		goto out_bysrc;
+-	net->xfrm.state_byspi = xfrm_hash_alloc(sz);
+-	if (!net->xfrm.state_byspi)
++	rcu_assign_pointer(net->xfrm.state_bysrc, nsrc);
++
++	nspi = xfrm_hash_alloc(sz);
++	if (!nspi)
+ 		goto out_byspi;
+-	net->xfrm.state_byseq = xfrm_hash_alloc(sz);
+-	if (!net->xfrm.state_byseq)
++	rcu_assign_pointer(net->xfrm.state_byspi, nspi);
++
++	nseq = xfrm_hash_alloc(sz);
++	if (!nseq)
+ 		goto out_byseq;
++	rcu_assign_pointer(net->xfrm.state_byseq, nseq);
  
+ 	net->xfrm.state_cache_input = alloc_percpu(struct hlist_head);
+ 	if (!net->xfrm.state_cache_input)
+@@ -3296,13 +3304,13 @@ int __net_init xfrm_state_init(struct net *net)
+ 	return 0;
+ 
+ out_state_cache_input:
+-	xfrm_hash_free(net->xfrm.state_byseq, sz);
++	xfrm_hash_free(nseq, sz);
+ out_byseq:
+-	xfrm_hash_free(net->xfrm.state_byspi, sz);
++	xfrm_hash_free(nspi, sz);
+ out_byspi:
+-	xfrm_hash_free(net->xfrm.state_bysrc, sz);
++	xfrm_hash_free(nsrc, sz);
+ out_bysrc:
+-	xfrm_hash_free(net->xfrm.state_bydst, sz);
++	xfrm_hash_free(ndst, sz);
+ out_bydst:
+ 	return -ENOMEM;
+ }
 -- 
 2.43.0
 
