@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3465538C2D6
-	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 10:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325D53876AE
+	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 10:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774261956; cv=none; b=Upyp+eaxbXpeePbKvX7raYiwp1eI/fDLV4/Q7al1dn8U3XcSLtqLZHaOAo3eUMOJ6NVkYwMdNZVoXhMcNn9JrLeD4RlWiVRRYbivyzJtHpnkZfUWA4bRq14GzjUDIPQHCl0k9Yd+ofAk3Ca/Z0C/8Gsv5Y6eJ5PC5SwkJtR26hw=
+	t=1774261957; cv=none; b=A+Zw0i4oLCABoNNSirR9AEJsys1IIaSl/HYnDJxbBy6tHTQ8PKvHovRUH1QIvtsLcBnFOeGmLjY3yEuK5wEIC501DzJ97t3JBYv2gW80GlQ+Cg0XtjNwoqlVLGIDZKeDjXllpschrmvwA1AiTYcqdQh/r6LBSPUteOWI6YiKviM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774261956; c=relaxed/simple;
-	bh=gPxzCeo2/B2fU2no1tVGO+QJMcaBAKKT+D4gNkX0cR0=;
+	s=arc-20240116; t=1774261957; c=relaxed/simple;
+	bh=fDHrWXDpkRPsmJEbJNpTDh7CHwdncGu6UJRNbda6ZGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GrIV+Sp3/S7mOiyGLG0NxduF8X6lm1CtB/wupfm7eImW7x3WvicFwcvzEo7wEvgMEXRuiu7TT2Lj80iB+I48wDkPRfa8ame1OSAEjswgW7XNzSBHIdNZhzl2cRIv82ApiwcwdAVlWGoQ1RIVvK0EDp3BJYho0tM9eCoWnn/j3VI=
+	 MIME-Version; b=eu2nSbsiUBizCHM2tlXwDFVrBtw+BfKTFN95SggPhA2wHXQ99Q9OEVMWOgl/km0ODDlXo7YEv2+hPfkqx3A66XobAPQVXo3LkIdvQFVF7+gkMxWgNRf+SZIQKOXdh7aDzeefk6SsN7J/GU9CIR/vNKjSyYAi/la5pnEisNUFoRg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,19 +18,19 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1w4caB-0008FS-ML; Mon, 23 Mar 2026 11:32:27 +0100
+	id 1w4caC-0008FU-6m; Mon, 23 Mar 2026 11:32:28 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1w4caB-001i5i-18;
+	id 1w4caB-001i5m-1P;
 	Mon, 23 Mar 2026 11:32:27 +0100
 Received: from blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 0221550A7BF;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 203BB50A7C1;
 	Mon, 23 Mar 2026 10:32:27 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -39,10 +39,12 @@ Cc: davem@davemloft.net,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
 	Oliver Hartkopp <socketcan@hartkopp.net>,
+	stable@vger.kernel.org,
+	Ali Norouzi <ali.norouzi@keysight.com>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 3/5] can: statistics: add missing atomic access in hot path
-Date: Mon, 23 Mar 2026 11:27:59 +0100
-Message-ID: <20260323103224.218099-4-mkl@pengutronix.de>
+Subject: [PATCH net 5/5] can: isotp: fix tx.buf use-after-free in isotp_sendmsg()
+Date: Mon, 23 Mar 2026 11:28:01 +0100
+Message-ID: <20260323103224.218099-6-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323103224.218099-1-mkl@pengutronix.de>
 References: <20260323103224.218099-1-mkl@pengutronix.de>
@@ -60,67 +62,79 @@ X-PTX-Original-Recipient: netdev@vger.kernel.org
 
 From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-Commit 80b5f90158d1 ("can: statistics: use atomic access in hot path")
-fixed a KCSAN issue in can_receive() but missed to convert the 'matches'
-variable used in can_rcv_filter().
+isotp_sendmsg() uses only cmpxchg() on so->tx.state to serialize access
+to so->tx.buf. isotp_release() waits for ISOTP_IDLE via
+wait_event_interruptible() and then calls kfree(so->tx.buf).
 
-Fixes: 80b5f90158d1 ("can: statistics: use atomic access in hot path")
+If a signal interrupts the wait_event_interruptible() inside close()
+while tx.state is ISOTP_SENDING, the loop exits early and release
+proceeds to force ISOTP_SHUTDOWN and continues to kfree(so->tx.buf)
+while sendmsg may still be reading so->tx.buf for the final CAN frame
+in isotp_fill_dataframe().
+
+The so->tx.buf can be allocated once when the standard tx.buf length needs
+to be extended. Move the kfree() of this potentially extended tx.buf to
+sk_destruct time when either isotp_sendmsg() and isotp_release() are done.
+
+Fixes: 96d1c81e6a04 ("can: isotp: add module parameter for maximum pdu size")
+Cc: stable@vger.kernel.org
+Reported-by: Ali Norouzi <ali.norouzi@keysight.com>
+Co-developed-by: Ali Norouzi <ali.norouzi@keysight.com>
+Signed-off-by: Ali Norouzi <ali.norouzi@keysight.com>
 Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://patch.msgid.link/20260318173413.28235-1-socketcan@hartkopp.net
+Link: https://patch.msgid.link/20260319-fix-can-gw-and-can-isotp-v2-2-c45d52c6d2d8@pengutronix.de
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- net/can/af_can.c | 4 ++--
- net/can/af_can.h | 2 +-
- net/can/proc.c   | 3 ++-
- 3 files changed, 5 insertions(+), 4 deletions(-)
+ net/can/isotp.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/net/can/af_can.c b/net/can/af_can.c
-index f70e2ba0aadc..7bc86b176b4d 100644
---- a/net/can/af_can.c
-+++ b/net/can/af_can.c
-@@ -469,7 +469,7 @@ int can_rx_register(struct net *net, struct net_device *dev, canid_t can_id,
+diff --git a/net/can/isotp.c b/net/can/isotp.c
+index da3b72e7afcc..2770f43f4951 100644
+--- a/net/can/isotp.c
++++ b/net/can/isotp.c
+@@ -1248,12 +1248,6 @@ static int isotp_release(struct socket *sock)
+ 	so->ifindex = 0;
+ 	so->bound = 0;
  
- 	rcv->can_id = can_id;
- 	rcv->mask = mask;
--	rcv->matches = 0;
-+	atomic_long_set(&rcv->matches, 0);
- 	rcv->func = func;
- 	rcv->data = data;
- 	rcv->ident = ident;
-@@ -573,7 +573,7 @@ EXPORT_SYMBOL(can_rx_unregister);
- static inline void deliver(struct sk_buff *skb, struct receiver *rcv)
- {
- 	rcv->func(skb, rcv->data);
--	rcv->matches++;
-+	atomic_long_inc(&rcv->matches);
+-	if (so->rx.buf != so->rx.sbuf)
+-		kfree(so->rx.buf);
+-
+-	if (so->tx.buf != so->tx.sbuf)
+-		kfree(so->tx.buf);
+-
+ 	sock_orphan(sk);
+ 	sock->sk = NULL;
+ 
+@@ -1622,6 +1616,21 @@ static int isotp_notifier(struct notifier_block *nb, unsigned long msg,
+ 	return NOTIFY_DONE;
  }
  
- static int can_rcv_filter(struct can_dev_rcv_lists *dev_rcv_lists, struct sk_buff *skb)
-diff --git a/net/can/af_can.h b/net/can/af_can.h
-index 22f3352c77fe..87887014f562 100644
---- a/net/can/af_can.h
-+++ b/net/can/af_can.h
-@@ -52,7 +52,7 @@ struct receiver {
- 	struct hlist_node list;
- 	canid_t can_id;
- 	canid_t mask;
--	unsigned long matches;
-+	atomic_long_t matches;
- 	void (*func)(struct sk_buff *skb, void *data);
- 	void *data;
- 	char *ident;
-diff --git a/net/can/proc.c b/net/can/proc.c
-index 0938bf7dd646..de4d05ae3459 100644
---- a/net/can/proc.c
-+++ b/net/can/proc.c
-@@ -196,7 +196,8 @@ static void can_print_rcvlist(struct seq_file *m, struct hlist_head *rx_list,
- 			"   %-5s     %03x    %08x  %pK  %pK  %8ld  %s\n";
++static void isotp_sock_destruct(struct sock *sk)
++{
++	struct isotp_sock *so = isotp_sk(sk);
++
++	/* do the standard CAN sock destruct work */
++	can_sock_destruct(sk);
++
++	/* free potential extended PDU buffers */
++	if (so->rx.buf != so->rx.sbuf)
++		kfree(so->rx.buf);
++
++	if (so->tx.buf != so->tx.sbuf)
++		kfree(so->tx.buf);
++}
++
+ static int isotp_init(struct sock *sk)
+ {
+ 	struct isotp_sock *so = isotp_sk(sk);
+@@ -1666,6 +1675,9 @@ static int isotp_init(struct sock *sk)
+ 	list_add_tail(&so->notifier, &isotp_notifier_list);
+ 	spin_unlock(&isotp_notifier_lock);
  
- 		seq_printf(m, fmt, DNAME(dev), r->can_id, r->mask,
--				r->func, r->data, r->matches, r->ident);
-+			   r->func, r->data, atomic_long_read(&r->matches),
-+			   r->ident);
- 	}
++	/* re-assign default can_sock_destruct() reference */
++	sk->sk_destruct = isotp_sock_destruct;
++
+ 	return 0;
  }
  
 -- 
