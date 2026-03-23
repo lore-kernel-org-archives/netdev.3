@@ -1,41 +1,81 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56491240611;
-	Mon, 23 Mar 2026 08:03:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF0136D500
+	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 08:08:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774253031; cv=none; b=kTqvsfRIrgwkOPY88dKRsM4dCTbgBTZTbMRDyuDPbynDxgUOe25oMZ2sOKSuGiR+r5pQ0bknJvYBj6vEuYsWNpMNopP8c7j+TGHfk5lSVdpRPgCgeYHEF+BjrIqBIb6V1s5U14U0IwVZ2kE1Po8wsZ/3mZhc+EABqjYWum2wldA=
+	t=1774253297; cv=none; b=H0HBEBCumeSUwNwN0ltQe/tnBgxMmmH7RwdYqwZywy9bA34VuLIAUXGL79BqW9RadLyXb/tPsgHdvbhMvqo+Glb1OTV9j3oFl+gWvZBmXO39M/ofGAFgZXQaCQo0eC7IWX/7iDkjulrjcX8FqyBsI2Zu+MS3PRKme8y10XQF4uQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774253031; c=relaxed/simple;
-	bh=45Acm3jZNtBoCVKP1X/Aj5SoP/riK+hHkRXESoea040=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DmRtzDvF3xZrIBQM/ebe4whyzYjrTtO27rw97SXsIDhq+UjvQ+mfMfTt/kZU9QCawcPJ02+uxKDOQ8v/XhubTO+Q/U3TT2F22DIOLpnTtY0KreNZ76nwkQ/k7oBC7zq8Mzo+4RaoRrqRUlHU7M1SC1f4HD8hwjJu9aOpHMiEH1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=BjslTPg1; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1774253297; c=relaxed/simple;
+	bh=5Zy0XUwX6iIi5GwhjGoPNY3Vg2jY5I/S4eF+tYiFOFE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=s+0SqDKiMPGc3czuqcJLzpz1hnYn455c5oQuH/uTCkkUTn9W4aqh1ugypipLoN5lmipwT4GGU+E41u1TeJiAo7mMFC3Gcsi7o6cSHOYLV24qg8edrk9yuJB5JERwIAq6Ml8uQ+6JCGUQ1C/361UFfYr7ULdAze/fTIo+DLIKq58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XWFwbUKZ; arc=none smtp.client-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="BjslTPg1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=3b
-	W6lEjTTF+QWR7bh90rR8QkO0XvhhElmtSJMTk6weM=; b=BjslTPg19P1zkT1PzQ
-	lPoV/RY6nd8Xasecn1cN6GOeDF0mdYYM7NL+hRHrysUOmQplxh/w5mUdiqrbLjx6
-	lhnOpLFOYdW8WJoY1jR1qgkS+x1Ntp7ZgBr8y/Bv1R3kh1kOrr6fCb/swqjJcOBK
-	TinqWskcSdo425uxGtF5JDKVg=
-Received: from Ubuntu24 (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id PSgvCgCXdNsn88Bp2Ar8Ww--.58300S2;
-	Mon, 23 Mar 2026 16:00:56 +0800 (CST)
-From: Wenshan Lan <jetlan9@163.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	John Efstathiades <john.efstathiades@pebblebay.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XWFwbUKZ"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c73ba417c6eso1500705a12.3
+        for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 01:08:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774253295; x=1774858095; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/oxuEK0aKiR5BZiJwQM9QbFzk9FiV34b8im9vtCPOQo=;
+        b=XWFwbUKZWo7I3MG3tqXs8n0H4sRxFopjfXPGPFNcbMZKUu9ob+LOAD7gOq5j2nuA/X
+         SZqmeBdfuZgAcfVUtUUx3/m+RIZ3mAtmrgx4crJLSj1uCP4QmtmMbXOp4hyckRkY2XyF
+         rsYS8KX8Vv6mtlMvf90hGC1PDsmJurpXe7iSnSKf1+aGPo2vrX3JEO+v/zolES91AWm6
+         +jMGK3AbIFCydspdkPFlCWUMwEXuKqLvdQOYRewVHX91HbrGDrGEiuj4W+dPuQHr6wPv
+         z9poGwhtAdUGB/ACXoZV3A3EgwtvM+TsqS04Ia+US+OepwuSqWQ+W9WIUilDuKk5ARUY
+         XoZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774253295; x=1774858095;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/oxuEK0aKiR5BZiJwQM9QbFzk9FiV34b8im9vtCPOQo=;
+        b=qaup2yLVLB2clxJ2Bh4zimX44nhElLv48vFedegb+m4eH45vPopnxUD8YaiECNTx1V
+         LPXhOKkRdVA/4xbgWKqJpOJD7bL/SgEGUj3GO0yDku00cwV7ICqBOjmJMOlU5lUJa5oQ
+         oo8Ho7ANkmRXAjDeaXDHeIgC6+PT5M07yydAMvmxpzJiDXA7d/uzWTPEMXa7YYAGKzel
+         eyYwBYGTumvv3/AemonUcuqCLtGq/xbHQ1oyRvKTFMyJBk6W22x7Ef7SRsqBmKgpTJuJ
+         jFRh5y3TFGfX3/yCCbVmf52yKl3LcOiVGRtf2cx/3mKKVCY7ZxxPjO58g+loDVB4jVxr
+         cSuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXq7RZ/wOdZeF1ZRFlWhkoFoG+gTsJrqCrR8HPZUx1+0HOXK2QMZWhT4nn8lPZNNB4x15q9uWk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTZPQUfmEu03qU8gIcQ0mBZBSIiNHpAwvomWKOCWq1wad3ouS2
+	sGazr/t4V6n6uYhT/ornnGEumDIEmMkfuGCr2ABEpK7wgtvvIuTowr+/
+X-Gm-Gg: ATEYQzz+TTlGMuiDVr7eP0us+PHM++I6sDZtlcJflsvp6cH5vyQ3o/dYLZEUQ0Ol9fq
+	1m5E5GjOEyTvCtcsYXp2Ps5fTg71H61YbL73yZZHx+gOyhRl3LUi9aNpCUkJt0TA52Fv7SYwm+2
+	TmRKM/bh0+gvJChckSdTpCRU6bK6Cn0wyGb+fz42TQa/dUW34134O0t05WNAku3AL+WrmjJSmhM
+	Zy65pYjDKP5+s2bN7ee5hd5ishSzYJCideOKrdkWVimJGvjX+jMKzpp+w+uMkNz1kTc52yy44Qw
+	9VZzYCDuEGBhtXU/HEr7AD+ADKkrDd8+OvyYgVCR66eQuSI+uGXH+JTI/vCIQaGKEGvuTJjjGpP
+	S4MSO23Fx4RhoHFLH5vMYPKAPCfXL6bQBnXNIQh0LXPJmV0mBzAE9YPDLYlkIhwo6Cs+hr1lclp
+	aRDRZd9NrYcYp6xSLzrl1CFV8E/QnSDG4kGl1wteoO1SUkBqK0siQJszBLnEZHb5jeZNjhxPRQ9
+	kVDwQwk9ug=
+X-Received: by 2002:a17:903:1a0f:b0:2b0:4f82:74b1 with SMTP id d9443c01a7336-2b0827c165emr102975785ad.44.1774253294945;
+        Mon, 23 Mar 2026 01:08:14 -0700 (PDT)
+Received: from SLSGDTSWING002.tail0ac356.ts.net ([129.126.109.177])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b083549f63sm99706195ad.30.2026.03.23.01.08.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Mar 2026 01:08:14 -0700 (PDT)
+From: Weiming Shi <bestswngs@gmail.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Wenshan Lan <jetlan9@163.com>
-Subject: [PATCH 5.15.y] net: usb: lan78xx: Fix double free issue with interrupt buffer allocation
-Date: Mon, 23 Mar 2026 16:00:21 +0800
-Message-Id: <20260323080021.1172236-1-jetlan9@163.com>
-X-Mailer: git-send-email 2.34.1
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Phil Sutter <phil@nwl.cc>,
+	Simon Horman <horms@kernel.org>,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>
+Subject: [PATCH nf] netfilter: nf_conntrack_sip: fix use of uninitialized rtp_addr in process_sdp
+Date: Mon, 23 Mar 2026 16:07:29 +0800
+Message-ID: <20260323080727.2932866-3-bestswngs@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,107 +83,84 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PSgvCgCXdNsn88Bp2Ar8Ww--.58300S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxXw1fCryrWryUCw1DWw15urg_yoW5AFWfpa
-	yfJFnxKF1DJr47W3yDAF4kZ3yY9a18KFyUCFWS9w40va4fA34aq34ftrWSqFyUCrZ8AFsa
-	qF1Ut3yjgr4Y9aUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zE4E_NUUUUU=
-X-CM-SenderInfo: xmhwztjqz6il2tof0z/xtbC7BmVXmnA8znmwQAA36
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+process_sdp() declares union nf_inet_addr rtp_addr on the stack and
+passes it to the nf_nat_sip sdp_session hook after walking the SDP
+media descriptions. However rtp_addr is only initialized inside the
+media loop when a recognized media type with a non-zero port is found.
 
-[ Upstream commit 03819abbeb11117dcbba40bfe322b88c0c88a6b6 ]
+If the SDP body contains no m= lines, only inactive media sections
+(m=audio 0 ...) or only unrecognized media types, rtp_addr is never
+assigned. Despite that, the function still calls hooks->sdp_session()
+with &rtp_addr, causing nf_nat_sdp_session() to format the stale stack
+value as an IP address and rewrite the SDP session owner and connection
+lines with it.
 
-In lan78xx_probe(), the buffer `buf` was being freed twice: once
-implicitly through `usb_free_urb(dev->urb_intr)` with the
-`URB_FREE_BUFFER` flag and again explicitly by `kfree(buf)`. This caused
-a double free issue.
+With CONFIG_INIT_STACK_ALL_ZERO (default on most distributions) this
+results in the session-level o= and c= addresses being rewritten to
+0.0.0.0 for inactive SDP sessions. Without stack auto-init the
+rewritten address is whatever happened to be on the stack.
 
-To resolve this, reordered `kmalloc()` and `usb_alloc_urb()` calls to
-simplify the initialization sequence and removed the redundant
-`kfree(buf)`.  Now, `buf` is allocated after `usb_alloc_urb()`, ensuring
-it is correctly managed by  `usb_fill_int_urb()` and freed by
-`usb_free_urb()` as intended.
+Fix this by pre-initializing rtp_addr from the session-level connection
+address (caddr) when available, and tracking via a have_rtp_addr flag
+whether any valid address was established. Skip the sdp_session hook
+entirely when no valid address exists.
 
-Fixes: a6df95cae40b ("lan78xx: Fix memory allocation bug")
-Cc: John Efstathiades <john.efstathiades@pebblebay.com>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20241116130558.1352230-1-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Adjust context. Make the function usb_alloc_urb() call before
-kmalloc(). ]
-Signed-off-by: Wenshan Lan <jetlan9@163.com>
+Fixes: 4ab9e64e5e3c ("[NETFILTER]: nf_nat_sip: split up SDP mangling")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
 ---
- drivers/net/usb/lan78xx.c | 29 ++++++++++++++---------------
- 1 file changed, 14 insertions(+), 15 deletions(-)
+ net/netfilter/nf_conntrack_sip.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index dbd9bd23e60c..b160d7a94f32 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -4105,29 +4105,30 @@ static int lan78xx_probe(struct usb_interface *intf,
+diff --git a/net/netfilter/nf_conntrack_sip.c b/net/netfilter/nf_conntrack_sip.c
+index 4ab5ef71d96db..17af0ff4ea7ab 100644
+--- a/net/netfilter/nf_conntrack_sip.c
++++ b/net/netfilter/nf_conntrack_sip.c
+@@ -1040,6 +1040,7 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
+ 	unsigned int port;
+ 	const struct sdp_media_type *t;
+ 	int ret = NF_ACCEPT;
++	bool have_rtp_addr = false;
  
- 	period = ep_intr->desc.bInterval;
- 	maxp = usb_maxpacket(dev->udev, dev->pipe_intr, 0);
--	buf = kmalloc(maxp, GFP_KERNEL);
--	if (!buf) {
-+
-+	dev->urb_intr = usb_alloc_urb(0, GFP_KERNEL);
-+	if (!dev->urb_intr) {
- 		ret = -ENOMEM;
- 		goto out3;
- 	}
+ 	hooks = rcu_dereference(nf_nat_sip_hooks);
  
--	dev->urb_intr = usb_alloc_urb(0, GFP_KERNEL);
--	if (!dev->urb_intr) {
-+	buf = kmalloc(maxp, GFP_KERNEL);
-+	if (!buf) {
- 		ret = -ENOMEM;
--		goto out4;
--	} else {
--		usb_fill_int_urb(dev->urb_intr, dev->udev,
--				 dev->pipe_intr, buf, maxp,
--				 intr_complete, dev, period);
--		dev->urb_intr->transfer_flags |= URB_FREE_BUFFER;
-+		goto free_urbs;
- 	}
+@@ -1056,8 +1057,11 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
+ 	caddr_len = 0;
+ 	if (ct_sip_parse_sdp_addr(ct, *dptr, sdpoff, *datalen,
+ 				  SDP_HDR_CONNECTION, SDP_HDR_MEDIA,
+-				  &matchoff, &matchlen, &caddr) > 0)
++				  &matchoff, &matchlen, &caddr) > 0) {
+ 		caddr_len = matchlen;
++		memcpy(&rtp_addr, &caddr, sizeof(rtp_addr));
++		have_rtp_addr = true;
++	}
  
-+	usb_fill_int_urb(dev->urb_intr, dev->udev,
-+			 dev->pipe_intr, buf, maxp,
-+			 intr_complete, dev, period);
-+	dev->urb_intr->transfer_flags |= URB_FREE_BUFFER;
-+
- 	dev->maxpacket = usb_maxpacket(dev->udev, dev->pipe_out, 1);
+ 	mediaoff = sdpoff;
+ 	for (i = 0; i < ARRAY_SIZE(sdp_media_types); ) {
+@@ -1091,9 +1095,11 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
+ 					  &matchoff, &matchlen, &maddr) > 0) {
+ 			maddr_len = matchlen;
+ 			memcpy(&rtp_addr, &maddr, sizeof(rtp_addr));
+-		} else if (caddr_len)
++			have_rtp_addr = true;
++		} else if (caddr_len) {
+ 			memcpy(&rtp_addr, &caddr, sizeof(rtp_addr));
+-		else {
++			have_rtp_addr = true;
++		} else {
+ 			nf_ct_helper_log(skb, ct, "cannot parse SDP message");
+ 			return NF_DROP;
+ 		}
+@@ -1125,7 +1131,7 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
  
- 	/* Reject broken descriptors. */
- 	if (dev->maxpacket == 0) {
- 		ret = -ENODEV;
--		goto out5;
-+		goto free_urbs;
- 	}
- 
- 	/* driver requires remote-wakeup capability during autosuspend. */
-@@ -4135,7 +4136,7 @@ static int lan78xx_probe(struct usb_interface *intf,
- 
- 	ret = lan78xx_phy_init(dev);
- 	if (ret < 0)
--		goto out5;
-+		goto free_urbs;
- 
- 	ret = register_netdev(netdev);
- 	if (ret != 0) {
-@@ -4157,10 +4158,8 @@ static int lan78xx_probe(struct usb_interface *intf,
- 
- out6:
- 	phy_disconnect(netdev->phydev);
--out5:
-+free_urbs:
- 	usb_free_urb(dev->urb_intr);
--out4:
--	kfree(buf);
- out3:
- 	lan78xx_unbind(dev, intf);
- out2:
+ 	/* Update session connection and owner addresses */
+ 	hooks = rcu_dereference(nf_nat_sip_hooks);
+-	if (hooks && ct->status & IPS_NAT_MASK)
++	if (hooks && ct->status & IPS_NAT_MASK && have_rtp_addr)
+ 		ret = hooks->sdp_session(skb, protoff, dataoff,
+ 					 dptr, datalen, sdpoff,
+ 					 &rtp_addr);
 -- 
 2.43.0
 
