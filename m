@@ -1,57 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6178C368263
-	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 08:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF8337FF64
+	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 08:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774254978; cv=none; b=O8R5ITLAnCPfjcqmxDy4EycYz4GZUVudekH7PiYXUVQCYs4Jsrp0yjeTBdW/30DfV9peNeseChI7j4M/WlGPmOEZbDZvUP8gkWIqGmUj4SAAWh2xizDiqeVSPgRNwEOEuqEMkLcfJw16rRHEEGbcpUP0H9vC5WRvG4G+MU1q/w8=
+	t=1774254980; cv=none; b=sceGQJ+tR4wFQSritmkO4+U1i7zeI02hLsRZpzGcRNzHLZh9/vOKJw1uMV3mvCBO1uVnNVbOZs8B1/UCft1dArwk8cQyLVdIKekgzcD09Mi+fiHpClJElzoVjcLLCAMJMe8ZYFLFcKE3C5yMYT0Xogcb4eiNk7cNyUNccVDH/ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774254978; c=relaxed/simple;
-	bh=flp1DmKjXi1G1sX8otmhns+s+Jeav5aZn+vZb3pm3Yk=;
+	s=arc-20240116; t=1774254980; c=relaxed/simple;
+	bh=GfGjYkgb6m8DDXWaKMUkLIzj3ccmtvs/XcO9m3MCGiY=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dcRjSdjSNLa6dYQPgFUOSqSy1jExEQkuPPss8Bk9KqOyghst2/4UcYsDyV4/ty3sVpKKuE1Pzm0vsPd4PYQEkbDR4AFMiXF8VVGApgmMivSEGfeZNeLmtUJSwDtBD8P74QsdPVVB0O67CwpNfXBJu0TKwd62Bf+HmuMjEqaw02o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=Tz1Q3rfH; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=VNgEN0OZ1M/SKvSWw9M1hKNBXv4VUCMRoyEWpGzcD8exjM+WB30yD4+vXvLchuKRlyrTfXKJVQXSFX1vDlhEJwL5FyV17nvLHTyDmgNRClhXUpvxRLNiuKjawxOn5jYDb1S1EzcEvcp1UsSTTH0VYAbYVJn8UvgKXrASqodUuP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=TkTRp38G; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="Tz1Q3rfH"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="TkTRp38G"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 180B0207BE;
+	by mx1.secunet.com (Postfix) with ESMTP id DE104207D1;
 	Mon, 23 Mar 2026 09:36:16 +0100 (CET)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id OlUxa07AT_LY; Mon, 23 Mar 2026 09:36:15 +0100 (CET)
+ with ESMTP id esyrBEOEiET3; Mon, 23 Mar 2026 09:36:16 +0100 (CET)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 1BE80205DD;
-	Mon, 23 Mar 2026 09:36:15 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 1BE80205DD
+	by mx1.secunet.com (Postfix) with ESMTPS id 1D029205DD;
+	Mon, 23 Mar 2026 09:36:16 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 1D029205DD
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1774254975;
-	bh=C1dy2ddeiMpDaUmUMN5y4JjeuZk/ahIsErTNR+VX4J0=;
+	s=202301; t=1774254976;
+	bh=Vgu9N431++2MOcanNMODUJjIe+OAeO7nwN3mC2ZX7/g=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=Tz1Q3rfHGaUn3vQf36msgeA5V+RxKaF42jaomtsC9rLclPCPJkgXnAfMIjxwT9s3w
-	 41KZ7lR4HVvT8rRfIc/DgeNsatqedOpWkDTu6Fx5Rgzyjs0/A2az7CMpYPv+I4iAlc
-	 mWpUyXSiObk4pfyH2i2gAHNA8UGrxsrqM8Dpl3BTCoyQMUsM0Edk2m9CjYVtySHbdJ
-	 iAuoUU4br4LoLY/cO0AQploU2vRllqVwm5pgC1t8u5Ia4dP6sJZGl6ZNTUCnjQPsAY
-	 9G58z3r+OXpMiM/LGphUOgrGjAIRtVh6ai6u60SavkQogKReDd4C1kjZapjo2TgNLt
-	 PZlvyR1VwYFeQ==
+	b=TkTRp38GD9xwxI5tH1MaO+1vPSGE5ZWkAmbdCNLdydFAITD9PPMAsJDkyFsPq2Rda
+	 tOUq730Dhg6th7arPx8epzzZ0rVO5L2ljPtI2wx+oNrFPAotsS700PshCW5M0xjGZD
+	 xAih2b2nFGh9VY5fis1UGj4h91HP9FigHGx7avnWI0PwD7QiMS3Di84MSQT4wQWv74
+	 Qp4gKBAlZ1jio+PiIwVTRy3jbKL4iTI0WmEl9A91f/UBQmehTODPRsRJKghdPAvrRP
+	 yydx7yZGzTXhF6uzRuEzOuCdP/EFFaqC9y+eEQDBJAUmfUA3Qbmz+Zr4SQ+CQ4Vaib
+	 WZmh27wPXxuUw==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 23 Mar
- 2026 09:36:14 +0100
-Received: (nullmailer pid 2741815 invoked by uid 1000);
+ 2026 09:36:15 +0100
+Received: (nullmailer pid 2741845 invoked by uid 1000);
 	Mon, 23 Mar 2026 08:34:49 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 06/20] xfrm: iptfs: fix skb_put() panic on non-linear skb during reassembly
-Date: Mon, 23 Mar 2026 09:33:47 +0100
-Message-ID: <20260323083440.2741292-7-steffen.klassert@secunet.com>
+Subject: [PATCH 16/20] xfrm: avoid RCU warnings around the per-netns netlink socket
+Date: Mon, 23 Mar 2026 09:33:57 +0100
+Message-ID: <20260323083440.2741292-17-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260323083440.2741292-1-steffen.klassert@secunet.com>
 References: <20260323083440.2741292-1-steffen.klassert@secunet.com>
@@ -66,75 +66,133 @@ Content-Type: text/plain
 X-ClientProxiedBy: EXCH-02.secunet.de (10.32.0.172) To EXCH-01.secunet.de
  (10.32.0.171)
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-In iptfs_reassem_cont(), IP-TFS attempts to append data to the new inner
-packet 'newskb' that is being reassembled. First a zero-copy approach is
-tried if it succeeds then newskb becomes non-linear.
+net->xfrm.nlsk is used in 2 types of contexts:
+ - fully under RCU, with rcu_read_lock + rcu_dereference and a NULL check
+ - in the netlink handlers, with requests coming from a userspace socket
 
-When a subsequent fragment in the same datagram does not meet the
-fast-path conditions, a memory copy is performed. It calls skb_put() to
-append the data and as newskb is non-linear it triggers
-SKB_LINEAR_ASSERT check.
+In the 2nd case, net->xfrm.nlsk is guaranteed to stay non-NULL and the
+object is alive, since we can't enter the netns destruction path while
+the user socket holds a reference on the netns.
 
- Oops: invalid opcode: 0000 [#1] SMP NOPTI
- [...]
- RIP: 0010:skb_put+0x3c/0x40
- [...]
- Call Trace:
-  <IRQ>
-  iptfs_reassem_cont+0x1ab/0x5e0 [xfrm_iptfs]
-  iptfs_input_ordered+0x2af/0x380 [xfrm_iptfs]
-  iptfs_input+0x122/0x3e0 [xfrm_iptfs]
-  xfrm_input+0x91e/0x1a50
-  xfrm4_esp_rcv+0x3a/0x110
-  ip_protocol_deliver_rcu+0x1d7/0x1f0
-  ip_local_deliver_finish+0xbe/0x1e0
-  __netif_receive_skb_core.constprop.0+0xb56/0x1120
-  __netif_receive_skb_list_core+0x133/0x2b0
-  netif_receive_skb_list_internal+0x1ff/0x3f0
-  napi_complete_done+0x81/0x220
-  virtnet_poll+0x9d6/0x116e [virtio_net]
-  __napi_poll.constprop.0+0x2b/0x270
-  net_rx_action+0x162/0x360
-  handle_softirqs+0xdc/0x510
-  __irq_exit_rcu+0xe7/0x110
-  irq_exit_rcu+0xe/0x20
-  common_interrupt+0x85/0xa0
-  </IRQ>
-  <TASK>
+After adding the __rcu annotation to netns_xfrm.nlsk (which silences
+sparse warnings in the RCU users and __net_init code), we need to tell
+sparse that the 2nd case is safe. Add a helper for that.
 
-Fix this by checking if the skb is non-linear. If it is, linearize it by
-calling skb_linearize(). As the initial allocation of newskb originally
-reserved enough tailroom for the entire reassembled packet we do not
-need to check if we have enough tailroom or extend it.
-
-Fixes: 5f2b6a909574 ("xfrm: iptfs: add skb-fragment sharing code")
-Reported-by: Hao Long <me@imlonghao.com>
-Closes: https://lore.kernel.org/netdev/DGRCO9SL0T5U.JTINSHJQ9KPK@imlonghao.com/
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- net/xfrm/xfrm_iptfs.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/net/netns/xfrm.h |  2 +-
+ net/xfrm/xfrm_user.c     | 25 +++++++++++++++++--------
+ 2 files changed, 18 insertions(+), 9 deletions(-)
 
-diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-index 0747d1cfa333..2c87290fe06c 100644
---- a/net/xfrm/xfrm_iptfs.c
-+++ b/net/xfrm/xfrm_iptfs.c
-@@ -901,6 +901,12 @@ static u32 iptfs_reassem_cont(struct xfrm_iptfs_data *xtfs, u64 seq,
- 	    iptfs_skb_can_add_frags(newskb, fragwalk, data, copylen)) {
- 		iptfs_skb_add_frags(newskb, fragwalk, data, copylen);
- 	} else {
-+		if (skb_linearize(newskb)) {
-+			XFRM_INC_STATS(xs_net(xtfs->x),
-+				       LINUX_MIB_XFRMINBUFFERERROR);
-+			goto abandon;
-+		}
+diff --git a/include/net/netns/xfrm.h b/include/net/netns/xfrm.h
+index 23dd647fe024..b73983a17e08 100644
+--- a/include/net/netns/xfrm.h
++++ b/include/net/netns/xfrm.h
+@@ -59,7 +59,7 @@ struct netns_xfrm {
+ 	struct list_head	inexact_bins;
+ 
+ 
+-	struct sock		*nlsk;
++	struct sock		__rcu *nlsk;
+ 	struct sock		*nlsk_stash;
+ 
+ 	u32			sysctl_aevent_etime;
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index 4dd8341225bc..1656b487f833 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -35,6 +35,15 @@
+ #endif
+ #include <linux/unaligned.h>
+ 
++static struct sock *xfrm_net_nlsk(const struct net *net, const struct sk_buff *skb)
++{
++	/* get the source of this request, see netlink_unicast_kernel */
++	const struct sock *sk = NETLINK_CB(skb).sk;
 +
- 		/* copy fragment data into newskb */
- 		if (skb_copy_seq_read(st, data, skb_put(newskb, copylen),
- 				      copylen)) {
++	/* sk is refcounted, the netns stays alive and nlsk with it */
++	return rcu_dereference_protected(net->xfrm.nlsk, sk->sk_net_refcnt);
++}
++
+ static int verify_one_alg(struct nlattr **attrs, enum xfrm_attr_type_t type,
+ 			  struct netlink_ext_ack *extack)
+ {
+@@ -1727,7 +1736,7 @@ static int xfrm_get_spdinfo(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	err = build_spdinfo(r_skb, net, sportid, seq, *flags);
+ 	BUG_ON(err < 0);
+ 
+-	return nlmsg_unicast(net->xfrm.nlsk, r_skb, sportid);
++	return nlmsg_unicast(xfrm_net_nlsk(net, skb), r_skb, sportid);
+ }
+ 
+ static inline unsigned int xfrm_sadinfo_msgsize(void)
+@@ -1787,7 +1796,7 @@ static int xfrm_get_sadinfo(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	err = build_sadinfo(r_skb, net, sportid, seq, *flags);
+ 	BUG_ON(err < 0);
+ 
+-	return nlmsg_unicast(net->xfrm.nlsk, r_skb, sportid);
++	return nlmsg_unicast(xfrm_net_nlsk(net, skb), r_skb, sportid);
+ }
+ 
+ static int xfrm_get_sa(struct sk_buff *skb, struct nlmsghdr *nlh,
+@@ -1807,7 +1816,7 @@ static int xfrm_get_sa(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	if (IS_ERR(resp_skb)) {
+ 		err = PTR_ERR(resp_skb);
+ 	} else {
+-		err = nlmsg_unicast(net->xfrm.nlsk, resp_skb, NETLINK_CB(skb).portid);
++		err = nlmsg_unicast(xfrm_net_nlsk(net, skb), resp_skb, NETLINK_CB(skb).portid);
+ 	}
+ 	xfrm_state_put(x);
+ out_noput:
+@@ -1898,7 +1907,7 @@ static int xfrm_alloc_userspi(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 		}
+ 	}
+ 
+-	err = nlmsg_unicast(net->xfrm.nlsk, resp_skb, NETLINK_CB(skb).portid);
++	err = nlmsg_unicast(xfrm_net_nlsk(net, skb), resp_skb, NETLINK_CB(skb).portid);
+ 
+ out:
+ 	xfrm_state_put(x);
+@@ -2543,7 +2552,7 @@ static int xfrm_get_default(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	r_up->out = net->xfrm.policy_default[XFRM_POLICY_OUT];
+ 	nlmsg_end(r_skb, r_nlh);
+ 
+-	return nlmsg_unicast(net->xfrm.nlsk, r_skb, portid);
++	return nlmsg_unicast(xfrm_net_nlsk(net, skb), r_skb, portid);
+ }
+ 
+ static int xfrm_get_policy(struct sk_buff *skb, struct nlmsghdr *nlh,
+@@ -2609,7 +2618,7 @@ static int xfrm_get_policy(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 		if (IS_ERR(resp_skb)) {
+ 			err = PTR_ERR(resp_skb);
+ 		} else {
+-			err = nlmsg_unicast(net->xfrm.nlsk, resp_skb,
++			err = nlmsg_unicast(xfrm_net_nlsk(net, skb), resp_skb,
+ 					    NETLINK_CB(skb).portid);
+ 		}
+ 	} else {
+@@ -2782,7 +2791,7 @@ static int xfrm_get_ae(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	err = build_aevent(r_skb, x, &c);
+ 	BUG_ON(err < 0);
+ 
+-	err = nlmsg_unicast(net->xfrm.nlsk, r_skb, NETLINK_CB(skb).portid);
++	err = nlmsg_unicast(xfrm_net_nlsk(net, skb), r_skb, NETLINK_CB(skb).portid);
+ 	spin_unlock_bh(&x->lock);
+ 	xfrm_state_put(x);
+ 	return err;
+@@ -3486,7 +3495,7 @@ static int xfrm_user_rcv_msg(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 			goto err;
+ 		}
+ 
+-		err = netlink_dump_start(net->xfrm.nlsk, skb, nlh, &c);
++		err = netlink_dump_start(xfrm_net_nlsk(net, skb), skb, nlh, &c);
+ 		goto err;
+ 	}
+ 
 -- 
 2.43.0
 
