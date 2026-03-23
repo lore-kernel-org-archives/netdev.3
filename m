@@ -1,111 +1,65 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5945C3806C8;
-	Mon, 23 Mar 2026 23:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2993845CF;
+	Mon, 23 Mar 2026 23:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774308044; cv=none; b=KgxDEjfKdx5oaMa0BEThyLr3iCSdi1qBMs1t5nvGhY4Mh5znw9fDw+joVDd3/7cQAlF3Xs3OlNf8jU1yQexL2P/4mz7Lx9eai2acljDD+RH1WwLCH/S1BWm3OpCuH3s2bvYjnrVy/zxQX88mUe1ZFEEB7pnLo1Wbm8t2M0Xyw/s=
+	t=1774308056; cv=none; b=o3Bb8u0b/X3yevYYWURi/i/RBeSql4T9WUwCPAQvaSXRKgB7Yw96ovQmyQH8UeQKRBQcAfi+p3uexUPR71zIZp9Sv1JigyKdUIpdC1ZJnW9BwykQQA2Q0B/MUh5vcp+Ei9qK0bomnzhoYJNtVpGzL5xQL6XxRMYM+54riruD1qE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774308044; c=relaxed/simple;
-	bh=DTkjcea9B8KRecgVExXsvF5s2GkNdZDwc4sp+EiE1ZI=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=RXSlX5MQrH01PnSs59gWHKgm9WVhAJYTB76gZEigVvSsUab1coscsvsOEn6R7/C2qhglvlUmnX/10/n8Zqt1h3IHSrVwItarV9NqfdmauaTiM4AqHKMEJ2ZkY0s6xE7v7wIP6NuySpDt5G9JTG4v0T3GFeF147JZTTe5Ct+iRqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bS3wMMOX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774308056; c=relaxed/simple;
+	bh=CXejRXkyFv8rzwbuR+qRhnfSeAcHAubW4BagLISel5c=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bGkl6vLDavXf8oBX12g63rvz7MHG3YV2IzvggddLP092It8GIr52NqTcFlZAEQALqz7MFjPx489ybQshs2eN87N+u4ffmdhgb39IpU/U25FUEmBdXWS6C9EPZA5BF2rCIZvIZrpDwMQvNC6U62gpCJ3vp9qpawc5nqAnXoNDvf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZdlTOt1M; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bS3wMMOX"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id EB659C4CEF7;
-	Mon, 23 Mar 2026 23:20:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZdlTOt1M"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CADCC4CEF7;
+	Mon, 23 Mar 2026 23:20:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774308044;
-	bh=DTkjcea9B8KRecgVExXsvF5s2GkNdZDwc4sp+EiE1ZI=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=bS3wMMOXzGL6NZcuwp/LEpAFW3kem3EdCtXolIqllVBEB4S0jqQ7QUIX5YvydUGAP
-	 JpS+WcU3+lQUreU6XwqjuVGKD+8AHwp+OcUgLbJPpiGkUe25TJ1CvwdHL7Ph8Wokn0
-	 UmNSVME7N/ZzoN+U5RfJr9U5M9PTvwPlFDaNBu5y9JQKd93iFKsUWzca9d7VXYXT/W
-	 gA5FfN08DjhtgmGmoUc7OW9hxRvfoHjJnCiMU7zTtUpz1IkIBXJdixT1IaHm/di3nT
-	 PwuiKiv/b6hMC8u8Lyvh3+suyIOWw1Z6Lsg13UepykBNh0w6tp+XGumKGfMr2a3Yo1
-	 2se3EWF4uKzxg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D8EE3F483DB;
-	Mon, 23 Mar 2026 23:20:43 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Subject: [PATCH v2 0/2] NFC support for two Qualcomm SDM845 phones
-Date: Tue, 24 Mar 2026 00:20:38 +0100
-Message-Id: <20260324-oneplus-nfc-v2-0-3eef052c9bc6@ixit.cz>
+	s=k20201202; t=1774308056;
+	bh=CXejRXkyFv8rzwbuR+qRhnfSeAcHAubW4BagLISel5c=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ZdlTOt1MVA50vXHQJe1+nFkk5CqbYNEGEHbm1Jh/Zbvbs8K08YUviCmu7EibRkZV6
+	 bb94ryBxk95AElS9QWgt1wWP4P56O+KGnzsw82Xa+o01uMWuZO5JoppSrVCl/Q5HL0
+	 gt/Ey6dGjRO74d3MSJTkpnGBtzNnC/+5id2o7yo5y4zVDEAb20PmUtL3Z49BWLoggk
+	 NgHoF07Tg5iV8d0qblBTT7euugeW2kFY7bWgWqqb/uo/TqF2b9N37m0QwIfpnqi0ac
+	 N8psFvp2TG+lYLONfU0ghuKdwV/PRZc4greILDVF7Hq42eLVp7jZf/ZjtnXodPzF4L
+	 o08Gjtn9Br5Ng==
+Date: Mon, 23 Mar 2026 16:20:53 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Stanislav Fomichev <sdf@fomichev.me>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, horms@kernel.org, corbet@lwn.net,
+ skhan@linuxfoundation.org, andrew+netdev@lunn.ch,
+ michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
+ anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
+ saeedm@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com,
+ alexanderduyck@fb.com, kernel-team@meta.com, johannes@sipsolutions.net,
+ sd@queasysnail.net, jianbol@nvidia.com, dtatulea@nvidia.com,
+ mohsin.bashr@gmail.com, jacob.e.keller@intel.com, willemb@google.com,
+ skhawaja@google.com, bestswngs@gmail.com, aleksandr.loktionov@intel.com,
+ kees@kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ intel-wired-lan@lists.osuosl.org, linux-rdma@vger.kernel.org,
+ linux-wireless@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ leon@kernel.org
+Subject: Re: [PATCH net-next v3 01/13] net: add address list snapshot and
+ reconciliation infrastructure
+Message-ID: <20260323162053.62a148c2@kernel.org>
+In-Reply-To: <20260320012501.2033548-2-sdf@fomichev.me>
+References: <20260320012501.2033548-1-sdf@fomichev.me>
+	<20260320012501.2033548-2-sdf@fomichev.me>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAMbKwWkC/1XMQQ6CMBCF4auQWVvTjtSoK+5hWGCZkUlMIS02K
- OndLexc/i953wqRglCEW7VCoCRRRl8CDxW4ofNPUtKXBtRojTEXNXqaXu+oPDvltCY2rufu+oD
- ymAKxLLt2b0sPEucxfHY8mW3dnLM+If45ySitLCOyrWvWhI0sMh/dF9qc8w8SIr7KpAAAAA==
-X-Change-ID: 20251118-oneplus-nfc-c00ef1cdfa9b
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Alexander Martinz <amartinz@shift.eco>
-Cc: Petr Hodina <petr.hodina@protonmail.com>, 
- biemster <l.j.beemster@gmail.com>, netdev@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, oe-linux-nfc@lists.linux.dev, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=995; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=DTkjcea9B8KRecgVExXsvF5s2GkNdZDwc4sp+EiE1ZI=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpwcrK6HzKCQoxBnDKPKHQiGdLFIHTx8Ukl2wsm
- cptojhQUxeJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCacHKygAKCRBgAj/E00kg
- co5cEADDmglzvpHlEw87TYP9XDKl4ARiyplmy1OtuKf2YBd+eCfa4x85EpaVy75QUU2r9PUbCi6
- M4QcP5RzFvDvtzSQuyWyH+lvu4jxYSkQY6fJCvYWVrXSzfezHpEt2+kSat38qyDB4r50dcne7mF
- B2ESIpclwq8FfiWM/mJ/bDVnYH+MDbNJAANzvoKAIgS6N8L1wjmDwNiQbWkCNYv2IRsUMwnou1J
- UJzPkISOcmycHt27Qo3zYMqt10N/Gl4Tb5d0BdYP330MvnmKUDt7HdW7TSGqF7+9pVffOFRZJkV
- 9DCDIucmfFa6FgAJNQfu2JDaWA52KiEIb515FCjKASk+Mh3mO5Zc8hnqhub95VQIU99dwd/0bHg
- moBEHwH79TQXjG+24D6kt/7Nu+TJmFePVT73no4uzk0dF59sJFPVIK24XIbHHjNYzKeJehcNO3C
- pQWRHcoSqMIC1xvUxKcJ3EoDS/1sqR+7o+bCNPfOpcrNxbDtmpHzdgfjRqkGsxZUGseMKEgx13y
- 0qjLYgnng88wNt0C3T6JQKJfzJZl4P6OIhw4rucMAXmsO0qLeDbl46AzCr7O946UndqY+NeV8Cv
- eXU/+vBHs7oJQFePRXW3/kybg/8v4silyQgx9EsjpGC9c1AQk/JJQEAeBm7MnzqUOJy0vcjYTxf
- AuphiWhykkApbKw==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
 
-Verified with neard and
+On Thu, 19 Mar 2026 18:24:49 -0700 Stanislav Fomichev wrote:
+> +EXPORT_SYMBOL(__hw_addr_list_snapshot);
+> +EXPORT_SYMBOL(__hw_addr_list_reconcile);
 
-nfctool -d nfc0 -p
-
-successfully detecting a tag.
-
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
-Changes in v2:
-- Use interrupts-extended. (Konrad)
-- Dropped QUESTION prefix, as it's verified this settings work.
-- Added compatible for OnePlus 6 based on schematics.
-- Corrected axolotl NFC compatible based on information from Alexander (SHIFT).
-- Link to v1: https://lore.kernel.org/r/20260322-oneplus-nfc-v1-0-5f22f544f0e2@ixit.cz
-
----
-David Heidelberg (1):
-      arm64: dts: qcom: sdm845-shift-axolotl: Enable NFC
-
-biemster (1):
-      arm64: dts: qcom: sdm845-oneplus: Enable NFC
-
- .../arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 31 ++++++++++++++++++++
- arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts  | 33 ++++++++++++++++++++++
- 2 files changed, 64 insertions(+)
----
-base-commit: 09c0f7f1bcdbc3c37a5a760cbec76bf18f278406
-change-id: 20251118-oneplus-nfc-c00ef1cdfa9b
-
-Best regards,
--- 
-David Heidelberg <david@ixit.cz>
-
-
+Why?  For the kunit tests?
