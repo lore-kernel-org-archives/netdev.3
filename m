@@ -1,70 +1,78 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0632B3815C5;
-	Mon, 23 Mar 2026 22:18:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82AD735CB7B
+	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 22:20:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774304325; cv=none; b=JvChuysRX9JFqvzLtFvkoiL3O5vQdXXxDXJ8yBArSMaNJhYdkf1b6/ljjY+YB/xkUxx7de5ZsPBtOY+DHUByoVYaCFTCTo9m1GXtjZwYD5YUoBABjUhHep4SEcq/UOFqSw//aQcVsTBV/7cQ/DX82OuQAw2s65Zw9wN/NHQJSHE=
+	t=1774304417; cv=none; b=q6IgLhAUkXXVt1OnVk1sG/QNbpFC2OlBmWskGMz5KV/yOTIt3PdHMx0tI06SvhNOTkHltFbDnugFoBkq8wKhGeJYM9JyIsv0oPAL0dIL8ap0p7Q81qUVaQcq9vlqO71OSkFNIfNG3H7f9hhmq2+bBGtZ4cd2x7FL4r6Fau8Sy68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774304325; c=relaxed/simple;
-	bh=TXAN6qfhEdDp+ymhStLlsAYy1NChaJbLVrt+YTIiESE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=owI8uo6iuAa3tBmeuyGK3QRveJSr6h6ih9yBwAifvnokROS6A/WCml5zRVR0Tp2RBRaCBRcWFMg2tS7TDZXWu11vrQ9Enf/8Fs6eOzu6uiAI0R+C6JFrGcRt9dJ26WQpMmZ92fnch+Kd6oKaQLgkybPUoQQ7+Qny6ipxAPGPAN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=d67HOB/S; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1774304417; c=relaxed/simple;
+	bh=bYXy3LdMj+0XWlcZO03oYQc6uOT3hzveDRqcIhsWjcg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=KHKi3Wv6DxBzGIka4jVsJVC7Hzf6HgNi3xjC4ZHulfdW41OFAHqJ3l46gDe6+2wyUy5TlTtd2IGkATfklyWlDFpn5y+KL0HiD3nAZ2gqPZjHGp1E3wvWwbnEGiFTwy/Y9Bij83BcdBohzLLo7up38nv2t4EZdeIl2QN9J2XjsgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LsRkOhn9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="d67HOB/S"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=h0qLw3uDMbiv6CTLU/5iNVz59YvSWpc0zZbRwGEV7Go=; b=d67HOB/SxyxpTUYFegtDu3Tg8V
-	wqccElf0pB/Y825QhxFOKUVQDVTr1gB1bPhaEIF7me2OC1XJQ5+l7qg42Sts9MEVk+0FDGSLkAXxI
-	yS4KIf+HpF9OwYKzwJWvcl/Xztx6OiQe2mAs/yasodlOQoxAxnj2+3JQ/5jLPgTutaQU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1w4nbc-00D0FP-BH; Mon, 23 Mar 2026 23:18:40 +0100
-Date: Mon, 23 Mar 2026 23:18:40 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Artem Lytkin <iprintercanon@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	fujita.tomonori@gmail.com, hkallweit1@gmail.com, tmgross@umich.edu,
-	ojeda@kernel.org, dakr@kernel.org
-Subject: Re: [PATCH 1/4] rust: phy: add read-only device field accessors
-Message-ID: <ec1ecea4-2744-4bf2-9003-d13ae7ca8543@lunn.ch>
-References: <20260323201925.8405-1-iprintercanon@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LsRkOhn9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487DEC4CEF7;
+	Mon, 23 Mar 2026 22:20:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774304417;
+	bh=bYXy3LdMj+0XWlcZO03oYQc6uOT3hzveDRqcIhsWjcg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=LsRkOhn935rAVUXAN56mv/yfOFeKXpBNOFK4iU+/i2v8bp07rTM0BMVN6sn4HTdqS
+	 7DDYTJcitjUK2j5ZUiNusRiD6VmkHr1dVk3eMT4rts8b58IFwhMQoRrPQdcsS70Yo/
+	 YB//i7jAxXWTPXuUhf8JLgWPE3WNeGkNOSTx/ROrCYDnEdl27NmaqAGikhVlVvJ/vU
+	 JEPONe4rHQFREY1ECd1qsiZ8W/dbhJ+SqXXc6wRlxTQ3TPUPPyNK6BDXz1ebuI8YXO
+	 LDiEnBgtXLqt3dgjkQAKYkdOrhHNGiaMVZB8TwsGnV+rf1sAHxMHgbJO+iXLwFlX2n
+	 WtiP6dRz20ttQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9F3E3808200;
+	Mon, 23 Mar 2026 22:20:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260323201925.8405-1-iprintercanon@gmail.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2 ethtool] cmis: Fix incorrect LSB field used for
+ wavelength
+ tolerance
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177430440554.345009.8468557542937446046.git-patchwork-notify@kernel.org>
+Date: Mon, 23 Mar 2026 22:20:05 +0000
+References: <20260321153905.644959-1-alok.a.tiwari@oracle.com>
+In-Reply-To: <20260321153905.644959-1-alok.a.tiwari@oracle.com>
+To: ALOK TIWARI <alok.a.tiwari@oracle.com>
+Cc: danieller@nvidia.com, kuba@kernel.org, netdev@vger.kernel.org,
+ mkubecek@suse.cz, alok.a.tiwarilinux@gmail.com
 
-On Mon, Mar 23, 2026 at 11:19:22PM +0300, Artem Lytkin wrote:
-> Add getter methods for commonly needed PHY device fields:
+Hello:
 
-Hi Artem
+This patch was applied to ethtool/ethtool.git (master)
+by Michal Kubecek <mkubecek@suse.cz>:
 
-Please always include a patch [0/X] which explains the big picture of
-the patchset. It will also be used as part of the git merge commit
-message.
+On Sat, 21 Mar 2026 08:39:02 -0700 you wrote:
+> The wavelength tolerance calculation mistakenly uses the nominal
+> wavelength LSB field (CMIS_NOM_WAVELENGTH_LSB) instead of the correct
+> tolerance LSB field (CMIS_WAVELENGTH_TOL_LSB). This causes incorrect
+> values to be reported for the "Laser wavelength tolerance".
+> 
+> Use CMIS_NOM_WAVELENGTH_LSB -> CMIS_WAVELENGTH_TOL_LSB.
+> correct 0.005 nm LSB scaling for the tolerance field (per CMIS)
+> 
+> [...]
 
-Please set the Subject line correctly:
+Here is the summary with links:
+  - [v2,ethtool] cmis: Fix incorrect LSB field used for wavelength tolerance
+    https://git.kernel.org/pub/scm/network/ethtool/ethtool.git/commit/?id=40d272752bb4
 
-https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-These patches are for net-next.
 
-Every new API needs a user. Please submit this code together with a
-PHY driver which actually uses them.
-
-    Andrew
-
----
-pw-bot: cr
