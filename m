@@ -1,85 +1,171 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC0F63815F5;
-	Mon, 23 Mar 2026 22:00:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A3436B076;
+	Mon, 23 Mar 2026 22:03:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774303225; cv=none; b=R4QBbDhwf+mfyZmp+pSpPmMbm161JAP7FzcSBaPpAMR65BMB7xTdBQsuaVRtQb+eI8Dar+7mcTnBBy7K+MkI54wHh3eQu1ke6zglnON/c4yP7Emfqj0tQu4EtDOlshQscdbmVW70bX2g/vgazRT2iD/SnLwjvFMnaurPam5/Szo=
+	t=1774303415; cv=none; b=CvdILwEJY0BNPUPkqODBiFx/9xhn9axEtRVdZYu8JbT09xVyzr7B/L0czVB2clrYn1ax8w7tTymXCY3D5SAz9woIoxC7q4qfNff9qb1sLLpq8tA7inbjDsUHW43JJH0wqYwVK66Hqh0apMqXIGKIaOshhNiS9NCHqpYcBcSQlbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774303225; c=relaxed/simple;
-	bh=nms2UrqNVXB8k/Cgw5IhiJnNnuAaZNVwNieRIfVLocQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SDGgiDjQqZq392WTDIZwrBWRVL7MfqbXD4fGK5tmPYZMQwcpEUYIQVX9ipH9Nwm/oQqyJJX9LX6jj90Zpvxg/sA7cpFs+ADYeXkmEqccgtn4JEtONnNolesI6tShXE61JPYAs8g9US81kKY8tqfp7hTD5Fq0U4q3V1mabCiN75k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=zoFoURr7; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1774303415; c=relaxed/simple;
+	bh=zK70z78hvfYzmL1ZSSd4XVv1IObYxslhdrOlu+be608=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=i0DmIz/XvzCXzgKoO2zL3yzBkJ5pL3jH0/6+k3h32Pu+GxwkO+d33ejeDtPc2RYRzLwyShZLM/1BnQxgOdh3Bqo+gnkTWpWfgKC3qeva1IE02PaZ5DBeebSrNV8mjlLfKjy3d91O7Ng3Or8FClXKPyy2jw0tpd7YjbdTYP4iBIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=UAB2gtuY; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="zoFoURr7"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=tA8Yyp3IK6KA9nD2H/oX2M98oX5IJL2zcqcpcrwKhHo=; b=zoFoURr7USEP19LNqesZHcvPjG
-	gplxLeczw9IJ8cVhFwYR1wOxXPvpc+klhiIR3xBiX4VcfcWwXh4VGxG/MTmcueynV3L4BBMsF9F9z
-	Ucfkmry1oai1diUWXfonwGuOcyPO+EV3YZLll+CiJmHtQ8MHWScurX4uHQEsKDDVlc+0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1w4nJd-00D03N-Qk; Mon, 23 Mar 2026 23:00:05 +0100
-Date: Mon, 23 Mar 2026 23:00:05 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>, Lee Jones <lee@kernel.org>,
-	Pavel Machek <pavel@kernel.org>, Peter Rosin <peda@axentia.se>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Moritz Fischer <mdf@kernel.org>, Xu Yilun <yilun.xu@intel.com>,
-	Tom Rix <trix@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
-	linux-spi@vger.kernel.org, linux-leds@vger.kernel.org,
-	linux-fpga@vger.kernel.org, driver-core@lists.linux.dev
-Subject: Re: [PATCH net-next 07/10] net: phy: switch to using
- class_find_device_by_fwnode()
-Message-ID: <f3c51f5d-e001-4a6d-a219-f2e0698f35f9@lunn.ch>
-References: <20260322-remove-device-find-by-of-node-v1-0-b72eb22a1215@gmail.com>
- <20260322-remove-device-find-by-of-node-v1-7-b72eb22a1215@gmail.com>
- <32679fc0-c388-4cd7-a030-5f5ed5abab78@lunn.ch>
- <acDLzK8vpptTUMf1@google.com>
- <acEBCBgMV3RrGKiU@shell.armlinux.org.uk>
- <acGGWTmSMuc5h3Od@google.com>
- <acGI4PI3MHML9Pce@shell.armlinux.org.uk>
- <f37684ff-57af-425a-bb18-bd5e8de3bba3@lunn.ch>
- <acG1JNGVBJ2Mf7jC@google.com>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="UAB2gtuY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1774303414; x=1805839414;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=zK70z78hvfYzmL1ZSSd4XVv1IObYxslhdrOlu+be608=;
+  b=UAB2gtuYrM05spiMpgrIRzlUnUw7SndSGMUG2O3NXaJ5ZXQA+fu84kg2
+   EysjEvzlfqlTatgCA7p6WjZS5IrbrS7YhBMWn6T8D9lWJuv32SO3BXLs1
+   4dicetnJl2IW7OYiVkqJ6GYU4ZArnZPaZID7Y0UYnUqKgdt/P1UQHQhss
+   0KalXZMDX0PswSDDSHRp/i8ntkpq0x04RBKkSunIoWZMCP7pb3HYP+ilH
+   T5iT9IT9oOodKpFdh+nPKITNnFriAjn8z7+GX3MZ4zlamNQg5Yc0kC0eY
+   +W2i5WHhkBpzzR7uDbM/oI1DYYCaH9FG6lhqUYgwajAynpujPQkCJqa9y
+   A==;
+X-CSE-ConnectionGUID: sn68fJ6gSty0fdZcGeqDMQ==
+X-CSE-MsgGUID: l7F8d5J2RHqC5U0KKtZDLg==
+X-IronPort-AV: E=Sophos;i="6.23,138,1770620400"; 
+   d="scan'208";a="222348044"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 15:03:28 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.87.151) by
+ chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.35; Mon, 23 Mar 2026 15:03:07 -0700
+Received: from bby-cbu-swbuild03.eng.microchip.com (10.10.85.11) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Mon, 23 Mar 2026 15:03:07 -0700
+From: Charles Perry <charles.perry@microchip.com>
+To: <netdev@vger.kernel.org>
+CC: Charles Perry <charles.perry@microchip.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Heiner Kallweit
+	<hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH net-next v2 1/2] dt-bindings: net: document Microchip PIC64-HPSC/HX MDIO controller
+Date: Mon, 23 Mar 2026 15:02:53 -0700
+Message-ID: <20260323220254.3822444-2-charles.perry@microchip.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260323220254.3822444-1-charles.perry@microchip.com>
+References: <20260323220254.3822444-1-charles.perry@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <acG1JNGVBJ2Mf7jC@google.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-> BTW, why would not we want to push for the unified binding? They are the
-> same pieces of hardware...
+This MDIO hardware is based on a Microsemi design supported in Linux by
+mdio-mscc-miim.c. However, The register interface is completely different
+with pic64hpsc, hence the need for separate documentation.
 
-I don't think the ACPI committee would be too happy if i ask them to
-throw away their standard and just use DT.
+The hardware supports C22 and C45.
 
-ACPI and DT are different and we just have to accept it.
+The documentation recommends an input clock of 156.25MHz and a prescaler
+of 39, which yields an MDIO clock of 1.95MHz.
 
-Nobody really cares about describing networking hardware in ACPI, so
-there is no need to support it. KISS and keep everything DT.
+The hardware supports an interrupt pin to signal transaction completion
+which is not strictly needed as the software can also poll a "TRIGGER"
+bit for this.
 
-      Andrew
+Signed-off-by: Charles Perry <charles.perry@microchip.com>
+---
+
+Notes:
+    Changes in v2:
+      - Make "clocks" and "interrupts" required (Andrew)
+      - Add a default value to "clock-frequency" (Andrew)
+
+ .../net/microchip,pic64hpsc-mdio.yaml         | 68 +++++++++++++++++++
+ 1 file changed, 68 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/net/microchip,pic64hpsc-mdio.yaml
+
+diff --git a/Documentation/devicetree/bindings/net/microchip,pic64hpsc-mdio.yaml b/Documentation/devicetree/bindings/net/microchip,pic64hpsc-mdio.yaml
+new file mode 100644
+index 000000000000..d690afe3d3cf
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/microchip,pic64hpsc-mdio.yaml
+@@ -0,0 +1,68 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/microchip,pic64hpsc-mdio.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Microchip PIC64-HPSC/HX MDIO controller
++
++maintainers:
++  - Charles Perry <charles.perry@microchip.com>
++
++description: |
++  Microchip PIC64-HPSC/HX SoCs have two MDIO bus controller. This MDIO bus
++  controller supports C22 and C45 register access. It is named "MDIO Initiator"
++  in the documentation.
++
++allOf:
++  - $ref: mdio.yaml#
++
++properties:
++  compatible:
++    oneOf:
++      - const: microchip,pic64hpsc-mdio
++      - items:
++          - const: microchip,pic64hx-mdio
++          - const: microchip,pic64hpsc-mdio
++
++  reg:
++    maxItems: 1
++
++  clocks:
++    maxItems: 1
++
++  clock-frequency:
++    default: 2500000
++
++  interrupts:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - clocks
++  - interrupts
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    bus {
++        #address-cells = <2>;
++        #size-cells = <2>;
++
++        mdio@4000C21E000 {
++            compatible = "microchip,pic64hpsc-mdio";
++            reg = <0x400 0x0C21E000 0x0 0x1000>;
++            #address-cells = <1>;
++            #size-cells = <0>;
++            clocks = <&svc_clk>;
++            interrupt-parent = <&saplic0>;
++            interrupts = <168 IRQ_TYPE_LEVEL_HIGH>;
++
++            phy0: ethernet-phy@0 {
++                reg = <0>;
++            };
++        };
++    };
+-- 
+2.47.3
+
