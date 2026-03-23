@@ -1,193 +1,113 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6BA5340298
-	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 13:38:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239353ACA4C;
+	Mon, 23 Mar 2026 13:38:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774273099; cv=none; b=HHe8m20SxuBUPa9QxRlvS6oqbFwrpTT1AU+3hgNEbBEHXSnTpDT6vjvb8oqwosQvAQXTCyELREiOkQ7z1rg50oAklUqMZpKBs19VX43AbVR/2V7rkm5j6HffvwrDTEcDVjXStLlQD5MMvlHFexFcvR/S1GPGhwKT87uMbjuhZPc=
+	t=1774273115; cv=none; b=Hh1G1NHbXhS6z3UWoIwlR2oQ8mO5/zEoaD92ivQtdz37VbEXvFAaeoLN7foG7ssYpZw0NnUcfeLthnctLdGHfCOUm2OPrJZHPTJTY9PQxHBfXBYDXPR7lQPE56HS9RSrS8T1NajCQD0PPVyZLDmwQ8y2Aev/DneQMA6t/ft/P40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774273099; c=relaxed/simple;
-	bh=KW53xm4EMUmaDFLpHeXdsNCoOkBX60KScnX9/yJEVTw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=U4aAOvaEDFiDDdHDDwmqF7BqWK5/iGrGhaEPSF5i22U2LQXawhQgVdsmRILdUt1Oxruc2urMTsYyRL+yAfUinvxi91gbQCAtqx34rQlW5YVcY9X1nF1vOZfG9I5+VsJUOpAYw3LKXoFW5qwYTgTXxZNpEMNuIn3mv+E7Z90yZSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=St+L4OCQ; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1774273115; c=relaxed/simple;
+	bh=EE1BARFzWjcO6wyIQt06l7M7MH4JAkFjS4YaQxNjKZI=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HFrgxUHmjKlaALWwdBXTCVXMfOu+dY3loS8mXtfTnbwf5iuZfQJzF9Ygh9Ug5RWZa0gHlx0ckmu227Rp186rI8XJfXkVsutReIxgkD75pFLaA+HSysetI9H1QGNuia22MOgImyu2/Ox4YalKfibLQ1RdfCWy8ghyuqY/rfDTdJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=EKnTD5XC; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="St+L4OCQ"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="EKnTD5XC"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774273098; x=1805809098;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=KW53xm4EMUmaDFLpHeXdsNCoOkBX60KScnX9/yJEVTw=;
-  b=St+L4OCQwGiy/GpHA92eeL9Ry++cBV+Kr1c0RjE6O2fl6zljicupztio
-   /eky8xgnTRaMxs4bLVAUY6BNaen/bGh5a/LYM0gJUfSv6zPqH68CloVP1
-   foValaeFnEL6hhbt11W3CApBB4AJcE3BgOwaJL38sXmb/zghdBjyAYUUE
-   BNoVdP5whjjf7tVRJ9atWcFs+FfZw+5MdM0WHAI9DD/h7km+DL1BYm/Bl
-   TJKFaEDiEvyajZZSyMPbcUn1lw4FOpUnpD4qQ9S8bG716Tfz6uyqFnLWh
-   Wc86p56Te79etFLQ1bbB74ow8/4xMNB1LEEL1gXjuSWEB270KlqXbhRYe
-   w==;
-X-CSE-ConnectionGUID: hwkyMrn6SeuTc7QoLLDEFg==
-X-CSE-MsgGUID: YCIH2hThTz65XX+f5zKifQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11737"; a="75151813"
-X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; 
-   d="scan'208";a="75151813"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 06:38:18 -0700
-X-CSE-ConnectionGUID: yHgcV4CaQt2aO8f9ubyb8w==
-X-CSE-MsgGUID: l5AuL3eaS2CC5X0dXEFqLw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; 
-   d="scan'208";a="228103783"
-Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by orviesa003.jf.intel.com with ESMTP; 23 Mar 2026 06:38:13 -0700
-Received: from vecna.igk.intel.com (vecna.igk.intel.com [10.123.220.17])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id 949452879A;
-	Mon, 23 Mar 2026 13:38:12 +0000 (GMT)
-From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-To: Jiri Pirko <jiri@resnulli.us>,
-	netdev@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	intel-wired-lan@lists.osuosl.org,
-	Simon Horman <horms@kernel.org>,
-	Michal Schmidt <mschmidt@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Subject: [PATCH net-next] devlink: unify devlink_shd_get_priv() into devlink_priv()
-Date: Mon, 23 Mar 2026 14:21:36 +0100
-Message-Id: <20260323132136.13191-1-przemyslaw.kitszel@intel.com>
-X-Mailer: git-send-email 2.39.3
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1774273114; x=1805809114;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=EE1BARFzWjcO6wyIQt06l7M7MH4JAkFjS4YaQxNjKZI=;
+  b=EKnTD5XCZqgI4L7mTmwfO2NqYE5ZCaKG9e5FJQFUd0/f0xHNqRAbuMnX
+   +VV8j8oHjZDIozbG479BExZXOwPgdN4bpkbU+zJpkOBR8y35Lxup+7C8T
+   Io6MhjGvUbo87SSlz3IcdUfovP7BQp7vVN6wrzaTjfuHf3gowbEJ8geqI
+   CiRxTvxb5+oor/f6x+V8eCHOk1apnTfaKg5WuxKjIusLqSCJ6e8xaoK8/
+   Z5IV2rcSkn1MUREG33T18jLDNlivcSFjTt8tpKkwg6soYXo4GuGdDMuKN
+   yTllux6e/2IFeYwuAOCczqk9lSmElEPQW9rO+NeBjfbqOcQOQDEtofkvO
+   Q==;
+X-CSE-ConnectionGUID: NU3MCjPHTT6Ew3YQEdpaLQ==
+X-CSE-MsgGUID: fLRfFT78RGuXM6z3aYurDg==
+X-IronPort-AV: E=Sophos;i="6.23,137,1770620400"; 
+   d="scan'208";a="55474404"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 23 Mar 2026 06:38:33 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Mon, 23 Mar 2026 06:38:08 -0700
+Received: from bby-cbu-swbuild03.eng.microchip.com (10.10.85.11) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58 via Frontend Transport; Mon, 23 Mar 2026 06:38:08 -0700
+Date: Mon, 23 Mar 2026 06:38:06 -0700
+From: Charles Perry <charles.perry@microchip.com>
+To: Conor Dooley <conor@kernel.org>
+CC: Charles Perry <charles.perry@microchip.com>, <netdev@vger.kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Heiner
+ Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next 1/2] dt-bindings: net: document Microchip
+ PIC64-HPSC/HX MDIO controller
+Message-ID: <acFCPnia+riDwvJJ@bby-cbu-swbuild03.eng.microchip.com>
+References: <20260317184610.315852-1-charles.perry@microchip.com>
+ <20260317184610.315852-2-charles.perry@microchip.com>
+ <20260318-suspense-arming-fe118c3f15c6@spud>
+ <absXy5Qmd/iHWofD@bby-cbu-swbuild03.eng.microchip.com>
+ <20260319-spearfish-styling-9918d2d2e537@spud>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260319-spearfish-styling-9918d2d2e537@spud>
 
-Unify access API to shared devlink priv data with normal devlink.
+On Thu, Mar 19, 2026 at 01:35:52AM +0000, Conor Dooley wrote:
+> On Wed, Mar 18, 2026 at 02:23:23PM -0700, Charles Perry wrote:
+> > > > +
+> > > > +  clock-frequency: true
+> > > 
+> > > Does this genuinely have no constraints?
+> > 
+> > It's going to divide the input frequency by 2 to 512 (the prescaler is 8
+> > bit long), so assuming an input clock of 156.25 MHz, the bounds are 305KHz
+> > to 78MHz. The standard is 2.5MHz.
+> > 
+> > I can add a maximum and minimum here since I do have some validation on
+> > this in the driver which will bail out if this is out of bound.
 
-Thanks to Jiri Piro, we now have ability to create shared devlink
-instances [1]. Introduction series have added usege of those for mlx, but
-without priv data attached to the shared devlink.
+Hello Conor,
 
-Current API makes it possible to access shared devlink instance's priv
-data:
+I have second doubt about this. The minimum and maximum depend on the input
+clock frequency which might change if someone uses a different crystal or
+clock config. So for that reason, I thinks it's better to not specify the
+bounds, because there's no way to know for sure what they when building the
+device tree.
 
-	void *devlink_shd_get_priv(struct devlink *devlink);
+I will however add a "default: 2500000" following some discussions with
+Andrew Lunn.
 
-but it is easy to to forget (especially during rebase from "before shared
-devlinks" era) and call:
 
-	void *devlink_priv(struct devlink *devlink);
+Thanks,
+Charles
 
-which even has the same signature, so it's hard to catch the error.
+> 
+> 
+> That sounds like a good idea, thanks.
+> 
+> pw-bot: changes-requested
+> 
+> Cheers,
+> Conor.
 
-New proposed API unifies both calls into one, without any increase in the
-observerd struct size. (Alternative could be to store additional pointer,
-set during devlink_alloc).
-
-Unexport the less convenient API call.
-
-[1] commit 411ad0605875 ("Merge branch 'devlink-introduce-shared-devlink-instance-for-pfs-on-same-chip'")
-[1] https://lore.kernel.org/all/20260312100407.551173-1-jiri@resnulli.us
-
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
----
-sorry that I have not mentioned it during [1] review, it got obvious
-for me only after working with the code
----
- net/devlink/devl_internal.h |  4 ++++
- net/devlink/core.c          |  3 +++
- net/devlink/sh_dev.c        | 11 ++++++++---
- 3 files changed, 15 insertions(+), 3 deletions(-)
-
-diff --git a/net/devlink/devl_internal.h b/net/devlink/devl_internal.h
-index 7dfb7cdd2d23..abbe308ee9bd 100644
---- a/net/devlink/devl_internal.h
-+++ b/net/devlink/devl_internal.h
-@@ -58,6 +58,7 @@ struct devlink {
- 	struct mutex lock;
- 	struct lock_class_key lock_key;
- 	u8 reload_failed:1;
-+	u8 is_shd:1;
- 	refcount_t refcount;
- 	struct rcu_work rwork;
- 	struct devlink_rel *rel;
-@@ -72,6 +73,9 @@ struct devlink *__devlink_alloc(const struct devlink_ops *ops, size_t priv_size,
- 				struct net *net, struct device *dev,
- 				const struct device_driver *dev_driver);
- 
-+/* Get private data from shared devlink instance */
-+void *devlink_shd_get_priv(struct devlink *devlink);
-+
- #define devl_warn(devlink, format, args...)				\
- 	do {								\
- 		if ((devlink)->dev)					\
-diff --git a/net/devlink/core.c b/net/devlink/core.c
-index eeb6a71f5f56..4c97e2e2c073 100644
---- a/net/devlink/core.c
-+++ b/net/devlink/core.c
-@@ -232,6 +232,9 @@ int devlink_rel_devlink_handle_put(struct sk_buff *msg, struct devlink *devlink,
- 
- void *devlink_priv(struct devlink *devlink)
- {
-+	if (devlink->is_shd)
-+		return devlink_shd_get_priv(devlink);
-+
- 	return &devlink->priv;
- }
- EXPORT_SYMBOL_GPL(devlink_priv);
-diff --git a/net/devlink/sh_dev.c b/net/devlink/sh_dev.c
-index 9b7456d64b57..450e3218759e 100644
---- a/net/devlink/sh_dev.c
-+++ b/net/devlink/sh_dev.c
-@@ -31,6 +31,11 @@ static struct devlink_shd *devlink_shd_lookup(const char *id)
- 	return NULL;
- }
- 
-+static struct devlink_shd *devlink_to_shd(struct devlink *devlink)
-+{
-+	return &devlink->priv;
-+}
-+
- static struct devlink_shd *devlink_shd_create(const char *id,
- 					      const struct devlink_ops *ops,
- 					      size_t priv_size,
-@@ -43,13 +48,14 @@ static struct devlink_shd *devlink_shd_create(const char *id,
- 				  &init_net, NULL, driver);
- 	if (!devlink)
- 		return NULL;
--	shd = devlink_priv(devlink);
-+	shd = devlink_to_shd(devlink);
- 
- 	shd->id = kstrdup(id, GFP_KERNEL);
- 	if (!shd->id)
- 		goto err_devlink_free;
- 	shd->priv_size = priv_size;
- 	refcount_set(&shd->refcount, 1);
-+	devlink->is_shd = 1;
- 
- 	devl_lock(devlink);
- 	devl_register(devlink);
-@@ -137,7 +143,7 @@ void devlink_shd_put(struct devlink *devlink)
- 	struct devlink_shd *shd;
- 
- 	mutex_lock(&shd_mutex);
--	shd = devlink_priv(devlink);
-+	shd = devlink_to_shd(devlink);
- 	if (refcount_dec_and_test(&shd->refcount))
- 		devlink_shd_destroy(shd);
- 	mutex_unlock(&shd_mutex);
-@@ -159,4 +165,3 @@ void *devlink_shd_get_priv(struct devlink *devlink)
- 
- 	return shd->priv;
- }
--EXPORT_SYMBOL_GPL(devlink_shd_get_priv);
--- 
-2.39.3
 
