@@ -1,73 +1,112 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2683E3C5523
-	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 17:11:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51643C5DB4;
+	Mon, 23 Mar 2026 17:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774285914; cv=none; b=j9YO9wzWynb1VX/tkSEvfL6n9iPSFZ9Slab5pru0PctxhhV69c9kYux4y0Uhlk2AWSsdBasUlWEnxZD/Ds5zPysPE/vOxfgx/wrbeABE4bCBFDgOEZ0M/6u8OmxqrHqWX2SfVcXAwGAlzOLfRoiOctA05Xq/mgquaLZALglhj18=
+	t=1774286174; cv=none; b=bbHoEiAE1uvW0K16qJXqr5LsxKNjRs22Ld1yUIc8i6c847fNWfbLBhY8JHGCqtgBFaOTRy+fy6dbU2Zv3KdbD01O5gM/UdKVdUuQ8GK7FHd3FAutow/LobHzyWceWCYz/6EkBei5NRHOndM2Cr/6oRONdR/Upz0REfQtnEY6nJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774285914; c=relaxed/simple;
-	bh=W0XAkUwSM4VxOYH/R67L3H5rwcd0A/5oL6ZOO+VED7s=;
+	s=arc-20240116; t=1774286174; c=relaxed/simple;
+	bh=GPZRjw9420otJR954wv9jlY5KaF4RQTzb5PccDoBlqA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z2f/d7f2hCIfsUC1cTqeupRbgKdxx2CjiwLPMbUsiLI16KDUziGxlFK1A/3qH/eiCntBwdilVgXIOPefPY3iBivxOmSj4gAktz8nAQcpCDk6oDEKwxzFrR4bNz39gTnCenEL4ftJ9LxcyRy5ao3d8b9Vv3AKYs+nRHz9jUBF7pE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RxMqQpA3; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=GP5FyKE415K+/0PxH3Y3yBJiHA63ACGwPRRQ7Jb9mCht3mvAyJFhZ2M+CWc8yf5dJYq6FYc49VHnmbdoymufpTnZBM7JgQit1ymfjY1y8jTWazKG02enCUZbtrHhrpokJrsdiz1AyxpPF9tY90rK2CBnuS+4Y2xsxbiC4v36vFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oEPcAVYx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RxMqQpA3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DFA8C2BC9E;
-	Mon, 23 Mar 2026 17:11:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oEPcAVYx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8213C4CEF7;
+	Mon, 23 Mar 2026 17:16:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774285913;
-	bh=W0XAkUwSM4VxOYH/R67L3H5rwcd0A/5oL6ZOO+VED7s=;
+	s=k20201202; t=1774286173;
+	bh=GPZRjw9420otJR954wv9jlY5KaF4RQTzb5PccDoBlqA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RxMqQpA39T2wuiZWCZbjm4dSkGLtP9zEyclMbUfH6fZ46Ks4cEyov7ScfHNBTwFUx
-	 qolWJIT8RZZWof6gVB+/yoNMQ2qO5moFI2Jnwm10kJgEY+lmVzHZ/yBwyq21e5l8SM
-	 eGic/1NkGi/VrURgiwmd1LBcoeEsiHd2991EZU2eq/QsbQaUee8ymped+fk+HTEed+
-	 nYQOr/hGpULmAPPQpsrMhwICKjHqC6E+PqSBFg9V/Gv8RScGL6BWfKR++KWqLLUsWw
-	 A7bCd8FpNGiufEH5m9T6c+JbdmO9NSihvc42GkXqwhwoXdbvKPvccPL8iMhkc9ofx/
-	 7sv+ELtjF/7Fw==
-Date: Mon, 23 Mar 2026 17:11:49 +0000
-From: Simon Horman <horms@kernel.org>
-To: Alok Tiwari <alok.a.tiwari@oracle.com>
-Cc: gongfan1@huawei.com, cai.huoqing@linux.dev, andrew+netdev@lunn.ch,
-	kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
-	pabeni@redhat.com, netdev@vger.kernel.org,
-	alok.a.tiwarilinux@gmail.com
-Subject: Re: [PATCH net-next 1/2] net: huawei: hinic: correct IPv6 version
- check in TX checksum path
-Message-ID: <20260323171149.GA111839@horms.kernel.org>
-References: <20260321165238.647948-1-alok.a.tiwari@oracle.com>
+	b=oEPcAVYx8EfysVPLpGplRNI3M4k/Ct3YJWskSAod8cjNc1kdUYhIGoTf63okXWz2q
+	 0hEGs2DfACbPoNyzgdtj87k/P+cEFXjqR4zVObWBaUkYJisObzaPTFF88rBaqW7kDE
+	 u44XlLVOUONXIUPzTC9AC634kEAVIofUv5uLsWXnrnV6jadm4XyQlj4vWrFFiFKajE
+	 To4Ze8LqNXjukWlYqjZq7F8XbbETwBxXQK5qIyqZx2UXnkN7Gp69ERU2MgblYsng5A
+	 A/wZC66xfEiHhhCI5f/gGI3mYjB7rlZ7Sw+E+px2pkPKpvS8rJRJTMHzbqXvw/P49f
+	 S+GsHsIhgxKOA==
+Date: Mon, 23 Mar 2026 17:16:04 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Liam Girdwood <lgirdwood@gmail.com>, Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>, Peter Rosin <peda@axentia.se>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Moritz Fischer <mdf@kernel.org>, Xu Yilun <yilun.xu@intel.com>,
+	Tom Rix <trix@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+	linux-spi@vger.kernel.org, linux-leds@vger.kernel.org,
+	linux-fpga@vger.kernel.org, driver-core@lists.linux.dev
+Subject: Re: [PATCH 03/10] spi: switch to using class_find_device_by_fwnode()
+Message-ID: <098e1856-feee-4f4b-8059-85a53967f6b3@sirena.org.uk>
+References: <20260322-remove-device-find-by-of-node-v1-0-b72eb22a1215@gmail.com>
+ <20260322-remove-device-find-by-of-node-v1-3-b72eb22a1215@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="5CiJK9+3S3OZYzXr"
+Content-Disposition: inline
+In-Reply-To: <20260322-remove-device-find-by-of-node-v1-3-b72eb22a1215@gmail.com>
+X-Cookie: Avoid gunfire in the bathroom tonight.
+
+
+--5CiJK9+3S3OZYzXr
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260321165238.647948-1-alok.a.tiwari@oracle.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Mar 21, 2026 at 09:52:33AM -0700, Alok Tiwari wrote:
-> The TX checksum/offload code determines whether the network header is
-> IPv4 or IPv6 by checking the version field. The IPv6 case incorrectly
-> checked ip->v4->version for a value of 6. Use ip->v6->version instead to
-> match the header type being parsed.
-> 
-> Use ip->v6->version in the IPv6 case to match intent and improve
-> readability.
-> 
-> Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+On Sun, Mar 22, 2026 at 06:54:21PM -0700, Dmitry Torokhov wrote:
+> In preparation to class_find_device_by_of_node() going away switch to
+> using class_find_device_by_fwnode().
 
-Hi,
+>  struct spi_controller *of_find_spi_controller_by_node(struct device_node=
+ *node)
+>  {
+> +	struct fwnode_handle *fwnode =3D of_fwnode_handle(node);
+>  	struct device *dev;
+> =20
+> -	dev =3D class_find_device_by_of_node(&spi_controller_class, node);
+> +	dev =3D class_find_device_by_fwnode(&spi_controller_class, fwnode);
+>  	if (!dev && IS_ENABLED(CONFIG_SPI_SLAVE))
+> -		dev =3D class_find_device_by_of_node(&spi_target_class, node);
+> +		dev =3D class_find_device_by_fwnode(&spi_target_class, fwnode);
+>  	if (!dev)
+>  		return NULL;
 
-I see where you are going with this.
+Actually, no - this just looks weird.  We're in the middle of an OF
+specific function but we're having to jump up to fwnode for no apparent
+reason.  If we actually decide to get rid of the OF specific function
+then I guess but I'm really not convinced this is an improvement in
+isolation.
 
-But I discovered sashiko.dev a bit earlier today and it's AI generated
-review of this patch-set points out that the same pattern also exists in
-offload_tso and offload_csum in this file.
+--5CiJK9+3S3OZYzXr
+Content-Type: application/pgp-signature; name="signature.asc"
 
-And likewise, for patch 2/2, the pattern exists in get_inner_l3_l4_type()
-as well as where you updated it in hinic3_tx_csum().
+-----BEGIN PGP SIGNATURE-----
 
--- 
-pw-bot: changes-requested
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnBdVMACgkQJNaLcl1U
+h9AZpwf+IYUP90323AiTlXT8gw1Dypm0TDgs0IOfZCsY6eI2ifZgGPN9bmjL/nqn
+qOCQnievL6WWoQiEOvgXsLRJl9rBwFIoqSVqZ5KSwziQt3eVC1C8h2BBG1RRNUTs
+iAN2o35mqWmLWMjutA6YleGKMYmsZYLPhv47Bn89wSF5X2/KO2oAUR3pc4t1UZwV
+iB4S4xXHm268iBSZduYC+IqDTV8Dd6HABhODhHHz96h17qZlzPM64vxVlOU30dlc
+QEHhAL5tfwE+km7QmFrPh176jDVmndTGdXRJbtRICsUHDLuIPIjeuCFwom9RyzhN
+v8Jk4nJOfxCXEkLHHAlP8AtJaBLsrw==
+=ncpO
+-----END PGP SIGNATURE-----
+
+--5CiJK9+3S3OZYzXr--
