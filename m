@@ -1,93 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9C2324B16;
-	Mon, 23 Mar 2026 14:27:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF9E37F75A;
+	Mon, 23 Mar 2026 14:28:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774276022; cv=none; b=cWlmA5E39594Wfz9q9v8tg3oImPWWpdTFUIfxVHezfWkERNfEEeV0mJNb75DF22FWjSWsMl/5ih9rQA0ZlzxzSa5506CZu094WaV0akWJUI31B7bwQY5nEyDM8WXiE0uJ9+5BlqcN7C5uTQ+e2Gdrv031nAcHzmLA4Ul0PT5paI=
+	t=1774276115; cv=none; b=X3tBQRuf5pPsJWZBiWQAGqvK+qAU1SLzxbdyAxvrfNXXOwu6POJ5ri1F4wGxvC+7eRSrWbw22TfBL4+Q4fSvZxDZBqtz1gXHnFIL9sSEmKYoJluuTR6e5JK35Obt2EKkz1j/+ou37wQACxriUpzc6dr55Q7MHix8vjiHyRshs7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774276022; c=relaxed/simple;
-	bh=8KRLhH33i2FNLApu94OPmDw6j0N213zWBF9kRptSPlk=;
+	s=arc-20240116; t=1774276115; c=relaxed/simple;
+	bh=0vS3co51JvhHMZBfEHnnG7z168k2+9rr9N0ZDGNA9vM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r1+hztIhT4htDyyN7+HVFyaCaO+o1+qAxupuhJmBkf6VQwtRY+PSQ9+zojhKuotCrXlyh3ltcxSh2sY7BFC3CGer4VwORy+W1DsPr+Cp8n8a1lK4U8A89UP1Pc8axY0WRkeDWS/uUS199KhAUzGhm3z2YbmOYlpsrluMZGp/LDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OWNs/yi7; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=uCGhUE3Fb5pKFoeQC6+UGN0c//rBEkRC0fpT2PrBKHxRCqbfUsRycfLFYNG1w5NzI4OL1CFzHpPi+dr95uPESjiCjxLhHOywgt2XI+hK3cJRdMQcWK1om0d6Z/mciTegxnd7bvYibkMdMcRglxCuWzV2dIOxVMZujed/v0MC3Ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=pv2KIZWa; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=f4HVXWGo; arc=none smtp.client-ip=202.12.124.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OWNs/yi7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DDDCC4CEF7;
-	Mon, 23 Mar 2026 14:26:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774276022;
-	bh=8KRLhH33i2FNLApu94OPmDw6j0N213zWBF9kRptSPlk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OWNs/yi7fQcGCIlhgUN5CL2LsU+TSRm7mvw2/H1hy6QIU5I/a18pSN+Bcj7UvGDab
-	 Lt/j72orxmdQOzoiv911AZXrYCDzQLuYYwOWA60UKDFWiJeR/b1iSjtErtRFwYsmX7
-	 GubbSzwrngbKJYKrfHaz/dn6s9cENPdO6N8ej15gojnXeymkkfgc6zMFySVtx4hyo0
-	 /s4IKXZ4m89h3CUoGo0OZnC71PVuNC9eKQctdKiHF7frYK5KMqAE6/G7NOAzPRJGNO
-	 Zbqd3m9dz1PTWNeyOebbJMUEJl4ui2nCqzQj8bFHeAqCA62+OLXO++jU1Jqqor8mcl
-	 Hl/YpXRiYZFoQ==
-Date: Mon, 23 Mar 2026 14:26:55 +0000
-From: Simon Horman <horms@kernel.org>
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: "K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="pv2KIZWa";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="f4HVXWGo"
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id AED0A7A0196;
+	Mon, 23 Mar 2026 10:28:32 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Mon, 23 Mar 2026 10:28:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1774276112; x=
+	1774362512; bh=SUMCS0C+SXCsiLX4wy4a/yPyeK+2xR3NytQxbpD70iI=; b=p
+	v2KIZWatDbmN6fZOOJ2/4FXFEFvQk/afU1zxBPDuObqtQK4gdzNHmaDwnbu8dYqj
+	e9noAYJ+aKKNMiLGFWJoCmQH5z4nqDnPIc6NUgA2Nnc6s1xtBXYVlNMCRZRDxQAH
+	f5Fs3WyANPfALv3JbQa0ypsXJfEeLYSKaeNVWr1ZwvMl6SzlF1XcvyJn89tUUUNT
+	xqW1xkyj/i1c5ttKqd30ytqvfWStBwqPWcBx7BiwbU91G3GZiTLvwAUG1lzeyeho
+	QO2HkFWsuAISAcyoO6OYk0a+EOKZNpymw4dPUO4hQG5AVFDeu814R3VAGoAbTZ+L
+	ua5AD+vo0feOhzlxo0pUA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1774276112; x=1774362512; bh=SUMCS0C+SXCsiLX4wy4a/yPyeK+2xR3NytQ
+	xbpD70iI=; b=f4HVXWGoNvbPbX+AV4tPy7uJx8gH1yIY3i1lsynDxM0XOZuZRdx
+	XZljkv1/JOnl/8oHTfKXOMYDYpw0avENPo/Bc07uGEEUqnWkI/1HdWzrIUsveB/m
+	eJ/02wdVvw1Oi5KknLfThevSoSIxhqukBa2jNu/NxlJJ5nOPISdjfDlV6JiTL7qb
+	gSdszMqx+xcIEqd6uCW2jkQ+lMtNAAmAsjnG5DDcYrQRJm/gOBOpzR8U2MXKHf+a
+	8MPSOIXv6/H2cDO1HVAlGj4gjKXStARSivCzwCF/dEQxG6OTI2wti42Tya16bqgw
+	8UI2kAenRpN7IzGz1/oHGT123OLYa0DbSuA==
+X-ME-Sender: <xms:D07BaaLDxK2ISgWZ6Qs5fMnLLS8W__5I9iFUJD1h6OZuQMgF0vMk2Q>
+    <xme:D07BaVPZV8quSxAvr8roy8fXXRPVSPLkKETyDynNH4I6f-AsUGudkje0Uqi7a3wS9
+    4JZIbdKpaeoLhD0-QfpJcptsISycXiZncIQUL2h3cyRxLIoNcl2HY4>
+X-ME-Received: <xmr:D07BaVXyScNBZcMuZQAdiZ9imSnt65F7h_IoyqZ52-u2yCFOYwP31XLPtYoV>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefudekleehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtjeenucfhrhhomhepufgrsghrihhn
+    rgcuffhusghrohgtrgcuoehsugesqhhuvggrshihshhnrghilhdrnhgvtheqnecuggftrf
+    grthhtvghrnhepuefhhfffgfffhfefueeiudegtdefhfekgeetheegheeifffguedvueff
+    fefgudffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epshgusehquhgvrghshihsnhgrihhlrdhnvghtpdhnsggprhgtphhtthhopedutddpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtoheptghrrghtihhusehnvhhiughirgdrtghomh
+    dprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphht
+    thhopegrnhgurhgvfidonhgvthguvghvsehluhhnnhdrtghhpdhrtghpthhtohepuggrvh
+    gvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegvughumhgriigvthesghho
+    ohhglhgvrdgtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtph
+    htthhopehprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohepshhhuhgrhhes
+    khgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhhsvghlfhhtvghsthesvh
+    hgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:D07BabkDk4vOTAlwfzN-Ta5lhqcoOd1Cdz8qr6UGBiZ0hTH5D9_sOg>
+    <xmx:EE7BacM0PfMHo8ZpYEaSPjq2yRprZp6ahrMfSkdMpHDx2OaobxFW5w>
+    <xmx:EE7BabK5rA4vHcOBBK8t4sV77bTKTnaIH2uMIEEUut3KEiN2vACNqw>
+    <xmx:EE7Bae2-84N-EpFLX001NSS09D3Pl88I1rd10Aylrf6xpo_WqFbItw>
+    <xmx:EE7BaZzoitutENQfUPR264SnrCPVJF1t7Ad33PnDaryzYQYVKXWvNAHm>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 23 Mar 2026 10:28:31 -0400 (EDT)
+Date: Mon, 23 Mar 2026 15:28:30 +0100
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Cosmin Ratiu <cratiu@nvidia.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Shradha Gupta <shradhagupta@linux.microsoft.com>,
-	Aditya Garg <gargaditya@linux.microsoft.com>,
-	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
-	Shiraz Saleem <shirazsaleem@microsoft.com>,
-	Leon Romanovsky <leon@kernel.org>, linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v2] net: mana: fix use-after-free in add_adev() error
- path
-Message-ID: <20260323142655.GA85922@horms.kernel.org>
-References: <20260321053918.791068-1-lgs201920130244@gmail.com>
+	Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
+	Dragos Tatulea <dtatulea@nvidia.com>
+Subject: Re: [PATCH net v5 0/3] macsec: Add support for VLAN filtering in
+ offload mode
+Message-ID: <acFODtfaa8LCKX4r@krikkit>
+References: <20260323123633.756163-1-cratiu@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260321053918.791068-1-lgs201920130244@gmail.com>
+In-Reply-To: <20260323123633.756163-1-cratiu@nvidia.com>
 
-On Sat, Mar 21, 2026 at 01:39:18PM +0800, Guangshuo Li wrote:
-> If auxiliary_device_add() fails, add_adev() jumps to add_fail and calls
-> auxiliary_device_uninit(adev).
-> 
-> The auxiliary device has its release callback set to adev_release(),
-> which frees the containing struct mana_adev. Since adev is embedded in
-> struct mana_adev, the subsequent fall-through to init_fail and access
-> to adev->id may result in a use-after-free.
-> 
-> Fix this by saving the allocated auxiliary device id in a local
-> variable before calling auxiliary_device_add(), and use that saved id
-> in the cleanup path after auxiliary_device_uninit().
-> 
-> Fixes: a69839d4327d ("net: mana: Add support for auxiliary device")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Long Li <longli@microsoft.com>
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> ---
-> v2:
->   - explain the UAF in more detail
->   - retarget to net
->   - preserve reverse xmas tree order for local variables
+2026-03-23, 14:36:30 +0200, Cosmin Ratiu wrote:
+> V4:
+> - Migrated nsim-only macsec tests to Python, usable against real hw.
+> - Ran these tests against both nsim and mlx5.
+> - Gave up on nsim patches since the tests no longer use them.
 
-Thanks for the update.
-
-Unfortunately the patch doesn't apply cleanly against net,
-which breaks our CI.
-
-Please rebase and repost.
+Why not? Being able to test without accessing real HW is still useful.
 
 -- 
-pw-bot: changes-requested
+Sabrina
