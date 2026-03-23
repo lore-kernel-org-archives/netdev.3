@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8CD38C41B
-	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 10:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CDB238C431
+	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 10:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774261958; cv=none; b=N8JoiftKWSTPM/ARz/OGJ9jgCBhxs85zO3QbzXUCSz819TDOo3+ZgMiFKDFoQQBf1ST+pTJ6hKQCag/nqjxfAc8NgNvabroPxM//VYEUrTrxUFRR0loKMWp7JiuXDaDTuFMukunapkXfRk58VWvlDG6xODYLA4dwKfBVyZQOcIw=
+	t=1774261965; cv=none; b=nKbnK2vp5/NhIfz4G9YPqrxx6s1M3FlPnetpGRCNwlU2rd6CVAFcJ3x6sK9D/EcNG7fB37O03zmVekgoXdOuUIS+cLX2a/yD/ShZF0hONhNlSxS//oCmmKnsoXJPJSPEfxKSeqyc3EUGC9M7lTWpkPQZBPNElTRfN6nqIG4qU+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774261958; c=relaxed/simple;
-	bh=j/10nP+8tgQLub4J36KDWeaI4QNXgGTg3m4z0ETE4Kc=;
+	s=arc-20240116; t=1774261965; c=relaxed/simple;
+	bh=f4uYiZRS5rJBSnw0n4vO5vyskR/+XefydiJ9iEHYU3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oBoOg6wtLL4HFl4C2uicZFu86UTE19Wjrjn0YZXgYtRWAmRixWtY3yWHO7yjRi5nFeiynJRWMewe2SgIEMH6nm+I+0YT1zr0YLByPdtnqdvpbzcrVmvofbnHR7Wxff/eBkY8uE3Z+gL8p5OBC3RPwPSAmUMmuyMEN4MeENIdq2o=
+	 MIME-Version; b=WS82z2zLsTjwzTosLKffTVYRNBFkFIzNBFvuyRAsp9P9TCS4g2x/hPRqfw2WMdbfCX6opfG2oJdTLe89LU2/F+BaYn7z2hTvKpD2KsDWdP0q+fMViNtx+FuGXQqw8LR1e6ukktE+dNRPAgaHW06RAD14sk6yDrdFkZbvtQHY8HU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,33 +18,31 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1w4caC-0008FT-6m; Mon, 23 Mar 2026 11:32:28 +0100
+	id 1w4caE-0008FM-4N; Mon, 23 Mar 2026 11:32:30 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1w4caB-001i5j-19;
+	id 1w4caB-001i5f-0t;
 	Mon, 23 Mar 2026 11:32:27 +0100
 Received: from blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 0FB5B50A7C0;
-	Mon, 23 Mar 2026 10:32:27 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id DEE1E50A7BE;
+	Mon, 23 Mar 2026 10:32:26 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Ali Norouzi <ali.norouzi@keysight.com>,
-	stable@vger.kernel.org,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Wenyuan Li <2063309626@qq.com>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 4/5] can: gw: fix OOB heap access in cgw_csum_crc8_rel()
-Date: Mon, 23 Mar 2026 11:28:00 +0100
-Message-ID: <20260323103224.218099-5-mkl@pengutronix.de>
+Subject: [PATCH net 2/5] can: mcp251x: add error handling for power enable in open and resume
+Date: Mon, 23 Mar 2026 11:27:58 +0100
+Message-ID: <20260323103224.218099-3-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323103224.218099-1-mkl@pengutronix.de>
 References: <20260323103224.218099-1-mkl@pengutronix.de>
@@ -60,77 +58,85 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Ali Norouzi <ali.norouzi@keysight.com>
+From: Wenyuan Li <2063309626@qq.com>
 
-cgw_csum_crc8_rel() correctly computes bounds-safe indices via calc_idx():
+Add missing error handling for mcp251x_power_enable() calls in both
+mcp251x_open() and mcp251x_can_resume() functions.
 
-    int from = calc_idx(crc8->from_idx, cf->len);
-    int to   = calc_idx(crc8->to_idx,   cf->len);
-    int res  = calc_idx(crc8->result_idx, cf->len);
+In mcp251x_open(), if power enable fails, jump to error path to close
+candev without attempting to disable power again.
 
-    if (from < 0 || to < 0 || res < 0)
-        return;
+In mcp251x_can_resume(), properly check return values of power enable calls
+for both power and transceiver regulators. If any fails, return the error
+code to the PM framework and log the failure.
 
-However, the loop and the result write then use the raw s8 fields directly
-instead of the computed variables:
+This ensures the driver properly handles power control failures and
+maintains correct device state.
 
-    for (i = crc8->from_idx; ...)        /* BUG: raw negative index */
-    cf->data[crc8->result_idx] = ...;    /* BUG: raw negative index */
-
-With from_idx = to_idx = result_idx = -64 on a 64-byte CAN FD frame,
-calc_idx(-64, 64) = 0 so the guard passes, but the loop iterates with
-i = -64, reading cf->data[-64], and the write goes to cf->data[-64].
-This write might end up to 56 (7.0-rc) or 40 (<= 6.19) bytes before the
-start of the canfd_frame on the heap.
-
-The companion function cgw_csum_xor_rel() uses `from`/`to`/`res`
-correctly throughout; fix cgw_csum_crc8_rel() to match.
-
-Confirmed with KASAN on linux-7.0-rc2:
-  BUG: KASAN: slab-out-of-bounds in cgw_csum_crc8_rel+0x515/0x5b0
-  Read of size 1 at addr ffff8880076619c8 by task poc_cgw_oob/62
-
-To configure the can-gw crc8 checksums CAP_NET_ADMIN is needed.
-
-Fixes: 456a8a646b25 ("can: gw: add support for CAN FD frames")
-Cc: stable@vger.kernel.org
-Reported-by: Ali Norouzi <ali.norouzi@keysight.com>
-Reviewed-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Signed-off-by: Ali Norouzi <ali.norouzi@keysight.com>
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://patch.msgid.link/20260319-fix-can-gw-and-can-isotp-v2-1-c45d52c6d2d8@pengutronix.de
+Signed-off-by: Wenyuan Li <2063309626@qq.com>
+Link: https://patch.msgid.link/tencent_F3EFC5D7738AC548857B91657715E2D3AA06@qq.com
+[mkl: fix patch description]
+[mkl: mcp251x_can_resume(): replace goto by return]
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- net/can/gw.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/can/spi/mcp251x.c | 29 ++++++++++++++++++++++++-----
+ 1 file changed, 24 insertions(+), 5 deletions(-)
 
-diff --git a/net/can/gw.c b/net/can/gw.c
-index 8ee4d67a07d3..0ec99f68aa45 100644
---- a/net/can/gw.c
-+++ b/net/can/gw.c
-@@ -375,10 +375,10 @@ static void cgw_csum_crc8_rel(struct canfd_frame *cf,
- 		return;
- 
- 	if (from <= to) {
--		for (i = crc8->from_idx; i <= crc8->to_idx; i++)
-+		for (i = from; i <= to; i++)
- 			crc = crc8->crctab[crc ^ cf->data[i]];
- 	} else {
--		for (i = crc8->from_idx; i >= crc8->to_idx; i--)
-+		for (i = from; i >= to; i--)
- 			crc = crc8->crctab[crc ^ cf->data[i]];
+diff --git a/drivers/net/can/spi/mcp251x.c b/drivers/net/can/spi/mcp251x.c
+index bb7782582f40..0d0190ae094a 100644
+--- a/drivers/net/can/spi/mcp251x.c
++++ b/drivers/net/can/spi/mcp251x.c
+@@ -1225,7 +1225,11 @@ static int mcp251x_open(struct net_device *net)
  	}
  
-@@ -397,7 +397,7 @@ static void cgw_csum_crc8_rel(struct canfd_frame *cf,
- 		break;
- 	}
+ 	mutex_lock(&priv->mcp_lock);
+-	mcp251x_power_enable(priv->transceiver, 1);
++	ret = mcp251x_power_enable(priv->transceiver, 1);
++	if (ret) {
++		dev_err(&spi->dev, "failed to enable transceiver power: %pe\n", ERR_PTR(ret));
++		goto out_close_candev;
++	}
  
--	cf->data[crc8->result_idx] = crc ^ crc8->final_xor_val;
-+	cf->data[res] = crc ^ crc8->final_xor_val;
- }
+ 	priv->force_quit = 0;
+ 	priv->tx_skb = NULL;
+@@ -1272,6 +1276,7 @@ static int mcp251x_open(struct net_device *net)
+ 	mcp251x_hw_sleep(spi);
+ out_close:
+ 	mcp251x_power_enable(priv->transceiver, 0);
++out_close_candev:
+ 	close_candev(net);
+ 	mutex_unlock(&priv->mcp_lock);
+ 	if (release_irq)
+@@ -1516,11 +1521,25 @@ static int __maybe_unused mcp251x_can_resume(struct device *dev)
+ {
+ 	struct spi_device *spi = to_spi_device(dev);
+ 	struct mcp251x_priv *priv = spi_get_drvdata(spi);
++	int ret = 0;
  
- static void cgw_csum_crc8_pos(struct canfd_frame *cf,
+-	if (priv->after_suspend & AFTER_SUSPEND_POWER)
+-		mcp251x_power_enable(priv->power, 1);
+-	if (priv->after_suspend & AFTER_SUSPEND_UP)
+-		mcp251x_power_enable(priv->transceiver, 1);
++	if (priv->after_suspend & AFTER_SUSPEND_POWER) {
++		ret = mcp251x_power_enable(priv->power, 1);
++		if (ret) {
++			dev_err(dev, "failed to restore power: %pe\n", ERR_PTR(ret));
++			return ret;
++		}
++	}
++
++	if (priv->after_suspend & AFTER_SUSPEND_UP) {
++		ret = mcp251x_power_enable(priv->transceiver, 1);
++		if (ret) {
++			dev_err(dev, "failed to restore transceiver power: %pe\n", ERR_PTR(ret));
++			if (priv->after_suspend & AFTER_SUSPEND_POWER)
++				mcp251x_power_enable(priv->power, 0);
++			return ret;
++		}
++	}
+ 
+ 	if (priv->after_suspend & (AFTER_SUSPEND_POWER | AFTER_SUSPEND_UP))
+ 		queue_work(priv->wq, &priv->restart_work);
 -- 
 2.53.0
 
