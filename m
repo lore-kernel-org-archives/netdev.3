@@ -1,57 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6469D37FF68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B984B37F005
 	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 08:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774254903; cv=none; b=l4DbresFwiPBUZ53lRlZSqKWfeXFUF7QzhkKJYUyfvylxn8AnII8LEreUXdVSAku+wQ9352p3UD1Kisay8PB4/7+0HArTse+xcloXR5m8UPaR3aKaXU4daAR6skOzHOJb5fVxQZ+BMk3WYoxAp6JVWU1+DbfUyuWYuch2m1w5Ck=
+	t=1774254904; cv=none; b=gWbTbMcbgio4A8N+3qb/etk5YZAX5XgCk2Ac1gSVuxs6uVriRVbPpBdF09A8as1SGyQxxbccyEIIGh5xegDjXOUI2pCRJzA/r7w6loMAhV7qkF0QhLMo14W/QheMnxYVQ9lk3pxfe0TQCHL13HiiKCKm8kVIK+av7tMdCMVdsWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774254903; c=relaxed/simple;
-	bh=W9cYPlOuRs6AeX3L0EiYVoSNlFfUj6H4dQpRw+2QI8E=;
+	s=arc-20240116; t=1774254904; c=relaxed/simple;
+	bh=NYZTM23gGrO7WxWhZuLeBfF2ioBjvBVxeEH/J5k3i4Y=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UB1Dn1DdV1lJLyNyBn+APVQg8IIaVl0COd0abFmpDAXGDJh1Tf5xkk27tcAOGgm8P6QEyDom9tIj2VjUuobvE1xyqNysAEX0Jtf3MepmK/HImkq9zoPktXLMhTKTYZ6A5RbvVQz6+RzSMyaN1Knxo73Wl8Qy/DcwNzh9tEG7pC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=kZQBEbrb; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=DF60VLMCt7T0rwJjLrsAkIh9387YgkOdxLirqQxpxiON4HwwSNIZkg9hAlp1IYGqyICYBYzVGtwWpSZgTXk4YMYSAvP9ezSWVc98mCiAmMa5hiMswUwDhS5Jx3Ffy+OtYIilWC7YWfJz0RhgRMwW4v4he7J0J6qJzYITtub5+e8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=FOAxjoYp; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="kZQBEbrb"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="FOAxjoYp"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id B0FBA205ED;
-	Mon, 23 Mar 2026 09:34:55 +0100 (CET)
+	by mx1.secunet.com (Postfix) with ESMTP id 19032207FB;
+	Mon, 23 Mar 2026 09:34:58 +0100 (CET)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id z_ueraUbE0fN; Mon, 23 Mar 2026 09:34:55 +0100 (CET)
+ with ESMTP id 3SBEOzhI68cq; Mon, 23 Mar 2026 09:34:57 +0100 (CET)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 22EDE207B0;
-	Mon, 23 Mar 2026 09:34:55 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 22EDE207B0
+	by mx1.secunet.com (Postfix) with ESMTPS id 82DC9207AC;
+	Mon, 23 Mar 2026 09:34:57 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 82DC9207AC
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1774254895;
-	bh=oGTTS155kk0XOGm6IcbrT5UQynblWP4pLe0iI3GwsYg=;
+	s=202301; t=1774254897;
+	bh=pjHypQnMfJznJsP9RnglA1Vba17RtmQJ3WTcJXHX+8c=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=kZQBEbrbbUjnMyYbwL5q3zMmoO9VamaJ5Iuvt9vwEAQdCefxHfvDUo5aiKVZ1Z9nF
-	 oLxcW61fQml1AhzfPx5Bk8W6N74vrI7xro8lbA7XuPev7RmX+A0ZHGaapfiJ/3cjUU
-	 CkzmXTRsbVTB+RrK2oDzpnteRoWeSLEnKPNt4ZqKNj5uHl3hN5rJZosuCuJVG6ltwG
-	 8eQE3EGtttFUL4AOIkNGVYjEs8DjurxYvV02l2KOtSGcjqDiVtRj+sIUT3Q7GNhdK9
-	 Q+lbc3gIBcxbkB9Cf01egJYTIBhxCREepkv17MU7PCmXwUtIZoyw1wZPXU8Up3MTVv
-	 aJai4vjbwt8NA==
+	b=FOAxjoYp3nOG4Ifas+IQrDajCeQs1ck1weXUpLkatRxgAXcj3SyxaLNG0djGmlCQI
+	 8mpX74a/dT2FbH0gImpPbDxVEIipP7MH6L3Wi9J3cjhdlcab/MyHztxZnmwyJ7tRF6
+	 9JxIK5wz+sGvXXhwNTVMuxvTlkMRQOXq+Swp3silY+YdApg87wPWMEnKt3kUBHUYI1
+	 qMUPp3G6GAicLvlwAfZKWOIj2ZPKwu1XRs0w5woYiGGPywf0S2yHcuYRzf6US9bWLM
+	 YsujJVevfG47P8eFgD7rOm8Pzq0j+kQCuw40jkn/kxe8jkG2n6O0W9p60A/2n3J0kO
+	 FDDMO0Z6F3LEA==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 23 Mar
- 2026 09:34:54 +0100
-Received: (nullmailer pid 2741812 invoked by uid 1000);
+ 2026 09:34:56 +0100
+Received: (nullmailer pid 2741818 invoked by uid 1000);
 	Mon, 23 Mar 2026 08:34:49 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 05/20] xfrm: iptfs: validate inner IPv4 header length in IPTFS payload
-Date: Mon, 23 Mar 2026 09:33:46 +0100
-Message-ID: <20260323083440.2741292-6-steffen.klassert@secunet.com>
+Subject: [PATCH 07/20] xfrm: state: fix sparse warnings on xfrm_state_hold_rcu
+Date: Mon, 23 Mar 2026 09:33:48 +0100
+Message-ID: <20260323083440.2741292-8-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260323083440.2741292-1-steffen.klassert@secunet.com>
 References: <20260323083440.2741292-1-steffen.klassert@secunet.com>
@@ -63,48 +63,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
+X-ClientProxiedBy: EXCH-02.secunet.de (10.32.0.172) To EXCH-01.secunet.de
  (10.32.0.171)
 
-From: Roshan Kumar <roshaen09@gmail.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-Add validation of the inner IPv4 packet tot_len and ihl fields parsed
-from decrypted IPTFS payloads in __input_process_payload(). A crafted
-ESP packet containing an inner IPv4 header with tot_len=0 causes an
-infinite loop: iplen=0 leads to capturelen=min(0, remaining)=0, so the
-data offset never advances and the while(data < tail) loop never
-terminates, spinning forever in softirq context.
+In all callers, x is not an __rcu pointer. We can drop the annotation to
+avoid sparse warnings:
 
-Reject inner IPv4 packets where tot_len < ihl*4 or ihl*4 < sizeof(struct
-iphdr), which catches both the tot_len=0 case and malformed ihl values.
-The normal IP stack performs this validation in ip_rcv_core(), but IPTFS
-extracts and processes inner packets before they reach that layer.
+net/xfrm/xfrm_state.c:58:39: warning: incorrect type in argument 1 (different address spaces)
+net/xfrm/xfrm_state.c:58:39:    expected struct refcount_struct [usertype] *r
+net/xfrm/xfrm_state.c:58:39:    got struct refcount_struct [noderef] __rcu *
+net/xfrm/xfrm_state.c:1166:42: warning: incorrect type in argument 1 (different address spaces)
+net/xfrm/xfrm_state.c:1166:42:    expected struct xfrm_state [noderef] __rcu *x
+net/xfrm/xfrm_state.c:1166:42:    got struct xfrm_state *[assigned] x
+(repeated for each caller)
 
-Reported-by: Roshan Kumar <roshaen09@gmail.com>
-Fixes: 6c82d2433671 ("xfrm: iptfs: add basic receive packet (tunnel egress) handling")
-Cc: stable@vger.kernel.org
-Signed-off-by: Roshan Kumar <roshaen09@gmail.com>
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- net/xfrm/xfrm_iptfs.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/xfrm/xfrm_state.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-index 3b6d7284fc70..0747d1cfa333 100644
---- a/net/xfrm/xfrm_iptfs.c
-+++ b/net/xfrm/xfrm_iptfs.c
-@@ -991,6 +991,11 @@ static bool __input_process_payload(struct xfrm_state *x, u32 data,
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index a00c4fe1ab0c..ad32085267a5 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -53,7 +53,7 @@ static DECLARE_WORK(xfrm_state_gc_work, xfrm_state_gc_task);
+ static HLIST_HEAD(xfrm_state_gc_list);
+ static HLIST_HEAD(xfrm_state_dev_gc_list);
  
- 			iplen = be16_to_cpu(iph->tot_len);
- 			iphlen = iph->ihl << 2;
-+			if (iplen < iphlen || iphlen < sizeof(*iph)) {
-+				XFRM_INC_STATS(net,
-+					       LINUX_MIB_XFRMINHDRERROR);
-+				goto done;
-+			}
- 			protocol = cpu_to_be16(ETH_P_IP);
- 			XFRM_MODE_SKB_CB(skbseq->root_skb)->tos = iph->tos;
- 		} else if (iph->version == 0x6) {
+-static inline bool xfrm_state_hold_rcu(struct xfrm_state __rcu *x)
++static inline bool xfrm_state_hold_rcu(struct xfrm_state *x)
+ {
+ 	return refcount_inc_not_zero(&x->refcnt);
+ }
 -- 
 2.43.0
 
