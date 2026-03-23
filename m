@@ -1,133 +1,71 @@
-Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA57372ECA
-	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 21:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB7830C60D;
+	Mon, 23 Mar 2026 21:41:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774301981; cv=none; b=ITMtRBs5xMl3jz0FmVrKkW6EyGrlHSr4Ufih7JfxKJ9Z8qDlo1gnF3lTdxTABYQ8N0yAu2y3DNyXzncHJr6t8v+TpPbkv2kLTRC5CikjyCoCl2ULfm1KpIUYOo2r9xeEY09zDA5vh69tHMX2rHyaLnwIqhNlYAcc9+HaLSK0SAE=
+	t=1774302066; cv=none; b=PZnds/0vLJVxdCv73ARxetWzGAolH4WJZS98iP0fzAJjPdEnvvhpBoGFGnJJpDft3UXyN5qsFVNKbrS0Y3CmkamiSy6sLA1BY67fufsH38FEH7Xljc994jN379Pf2MhR98FcbnFLLIDLRX2zs5RlBzQun6/iSeH7fWTcekEvpYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774301981; c=relaxed/simple;
-	bh=4+vcXD+1P3FXjL2Owm4YaNBB0CpFOHixgkjfmiDa1M4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P6qNIfPuRVyB8mAr+hy8MCqFU3rjF3SNQZN94IAosHLAy14OH2vB49IEev8uFRYWhONJRa47MN+wjIfeGZl4WzgqQQOrX+Fr9QBUPILoTue9AEycgIgzgXQ4DfodZ12J0txr58+Ygq7t4BIoBbE0fUcCM6YCpjh3wC/nIykEtrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AeNeGaUF; arc=none smtp.client-ip=74.125.82.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1774302066; c=relaxed/simple;
+	bh=h9j5i6CVG1YQYDEdZGesA63aAPkaeHJ8niES9bwYnSY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=B3xOLciICfnFb9ESbNdDJZVzfShIUAirgqqvIjsu5/Gyn7KtQ313YVeGLi5mzpSddHn5bk/qFThl+7xhpFckioVf6uvrC/9qXf4z0Mhue5PIgtC5Hx/lm3A1pzq7dO4ZwwF5aLlnqNaWr4yJhxD4zpYUtXNqEDlfoPtGXHmcbu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sNmhK+pe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AeNeGaUF"
-Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-2c0f754e756so767840eec.1
-        for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 14:39:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774301979; x=1774906779; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yGHdDoGsiDtOdNrXq7SHzA/I1zh7boK5LF3ZF/OlV0U=;
-        b=AeNeGaUFszrAZvUITkXt+7jwmEyvbJP7L5B0IEN/cIaMLG/q2bDeugKMm94lpxWzJU
-         76V4lZmGn/sGj3IzxII/0CasDRfOtuEAhcRUrbWjtT3GoriS2yeejerlXaViFZmvDipR
-         5KLUp5XGEvBEpdiNjU7v59yq9EPgYnByC5/FnpkmSNU3vnuk3iC1g26p/W+U1gLrmsh7
-         hOlTuPsHhb4kW12/ibKRjgusWntF01dxbjmDE6RDAsB2z8K/rlHJdj4wvpM0K+BQtn5W
-         VB9PMmm2b5K8dVBM78T/Lo9er9li/jc37aPPElbxi3KAGtX0dJTDyyM8cKjOoLC3SX9G
-         I7Mw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774301979; x=1774906779;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yGHdDoGsiDtOdNrXq7SHzA/I1zh7boK5LF3ZF/OlV0U=;
-        b=o1YRw0SnqhsEsSql+csGmoaOmphSqct12pyUyXrJsJILS8qOrm3feFxqje3+sdDQ2+
-         WbTb4N+SEUPGPZ8fz/U3z+tBCsc8zb4JnX3ZGjHlJnh3z7deEiILAZwEFyh8CH1Ge5Q/
-         9X1SW1fwEBCY0km14mOJ+C7oGDb2ZFs2+AkXGR5U2cwW51Ba0y63WceQH7+rf9zriTHq
-         7yGGf1qfqcdJMADv+Pe63jTQfwzhfnyIcSWpY/KteWOXfLkzEUxZcoxjHURY1kfOGgUV
-         iY+5pnToZDiSn5AeDIZZ91+dQHR6PjnZiSB9/5MsuRmqfBrDIO4JPFnTcrk4WDhoRbjp
-         ef/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVX929BY2q+N6cmpD/7r74+THeKRRq3SbrHorKkK96htCS0zNxTQzGc/6LAJa9iz9SgrEOZgRk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRSLfVirzd++WAYV6WFzcEymz77Z+48TLT3SHRWSLhVkaPTQEY
-	PsHkG//TFz3U6GamesI5ZTgYSfx1eu1s3m9E+Cdw/YdYjiUtKmdFUKxV
-X-Gm-Gg: ATEYQzzRgqREyhQZAyVpTilRVD4b+guJivif2kA/xNHpXOkwCdyK4yED9JJORGP78mS
-	tHBwUpf1RVC12uz2Dn8aff8ohbnsMjIAYOBFlYOFNOVbJWVDtzE9cshp+Q3gpRz4UNyjSLCXAl+
-	H1mol8hIgVUfBogfp4cnkK8k+7xuoF0Hel2ceylbvDUeK8BBNb/F6vOxbhGJvZU8cHL6CLrEEuB
-	mlU5hZi9U79djOkdqgIwSHxiAFsFV7ovvj7JFTq8O+95Y59u3iyoitfYJ192xYOgNLSGgegnCoC
-	frJoOvRZaktWO2R2d+BDHqY/W6k2Ipr9o8LXis+PTOoNBU56thaKO7oNyy+Zd4JScZO/CLnmkif
-	7TCSYwksik0k3pERnJtzu3UK05lKodiftCjH5QxYnmzi4NbOe+ZmdJqCEGjs1WHxbM9Zf2vlLjh
-	DJZNdhnMjMyVQof1m3+8v+oZpPk/r15pSBx5t7XdyrJ10NU5P7JzfgLfFVXVjloydA
-X-Received: by 2002:a05:7300:dc94:b0:2ba:6819:2e9b with SMTP id 5a478bee46e88-2c1095a5302mr6126697eec.3.1774301979400;
-        Mon, 23 Mar 2026 14:39:39 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2ebe:8:a296:1211:5ab0:bc95])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c10b2d01f7sm13145631eec.23.2026.03.23.14.39.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 14:39:38 -0700 (PDT)
-Date: Mon, 23 Mar 2026 14:39:35 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Liam Girdwood <lgirdwood@gmail.com>, Lee Jones <lee@kernel.org>, 
-	Pavel Machek <pavel@kernel.org>, Peter Rosin <peda@axentia.se>, Andrew Lunn <andrew@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	Moritz Fischer <mdf@kernel.org>, Xu Yilun <yilun.xu@intel.com>, Tom Rix <trix@redhat.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-phy@lists.infradead.org, linux-spi@vger.kernel.org, linux-leds@vger.kernel.org, 
-	linux-fpga@vger.kernel.org, driver-core@lists.linux.dev
-Subject: Re: [PATCH 04/10] regulator: of: switch to using
- class_find_device_by_fwnode()
-Message-ID: <acGxgkWiPLy8XePz@google.com>
-References: <20260322-remove-device-find-by-of-node-v1-0-b72eb22a1215@gmail.com>
- <20260322-remove-device-find-by-of-node-v1-4-b72eb22a1215@gmail.com>
- <360a8b4a-6507-417a-9fc1-c53b14868657@sirena.org.uk>
- <acGFksyx3SA0kJ5b@google.com>
- <7d46803e-b285-4e9c-8856-10100fa0ea85@sirena.org.uk>
- <acGWJf1AGXT1xduM@google.com>
- <55abcc68-747a-468a-abdf-b6340d658c4f@sirena.org.uk>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sNmhK+pe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA480C4CEF7;
+	Mon, 23 Mar 2026 21:41:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774302066;
+	bh=h9j5i6CVG1YQYDEdZGesA63aAPkaeHJ8niES9bwYnSY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=sNmhK+peFplKP0NeiIPzHuF6p50cWb1K0yhGxDKz5AG/dly6iNt1lHdOWkt05k+W/
+	 8vhxqj7vvhSG9PF7AkfOrAohuc7nb57Lr4EiQIrgDxcj3rHevJwK/Bl0f3BnpS6cKs
+	 eTE7t2cHxClcunDGncUYsub8hooz10ABlIROZPSR5TUcd5MaKhIe/lYa4AzQq0Wu9q
+	 PpqQw9r8Uxp9m3ojIbaDJAMLZRxAiJHaT5DNiLh53GCQ/XKn0ZTqCfuOwiTgDejQse
+	 IVjFzELfjxvc791XnFgcGaXXzTHbSKAvCy7HEZPLgNBb2Hk9jl0LMlEvqSb2//I37L
+	 S4uoRH5d7Cl4Q==
+Date: Mon, 23 Mar 2026 14:41:04 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: "Chuck Lever" <cel@kernel.org>
+Cc: john.fastabend@gmail.com, "Sabrina Dubroca" <sd@queasysnail.net>,
+ netdev@vger.kernel.org, kernel-tls-handshake@lists.linux.dev, "Chuck Lever"
+ <chuck.lever@oracle.com>, "Hannes Reinecke" <hare@suse.de>
+Subject: Re: [PATCH PATCH net-next v4 8/8] tls: Enable batch async
+ decryption in read_sock
+Message-ID: <20260323144104.091779c8@kernel.org>
+In-Reply-To: <0cf288bb-6ab1-4f2b-8a7f-727b3e1fe0d2@app.fastmail.com>
+References: <20260317-tls-read-sock-v4-0-ab1086ec600f@oracle.com>
+	<20260317-tls-read-sock-v4-8-ab1086ec600f@oracle.com>
+	<0cf288bb-6ab1-4f2b-8a7f-727b3e1fe0d2@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <55abcc68-747a-468a-abdf-b6340d658c4f@sirena.org.uk>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Mar 23, 2026 at 07:58:14PM +0000, Mark Brown wrote:
-> On Mon, Mar 23, 2026 at 12:41:59PM -0700, Dmitry Torokhov wrote:
-> > On Mon, Mar 23, 2026 at 07:05:13PM +0000, Mark Brown wrote:
+On Mon, 23 Mar 2026 17:28:27 -0400 Chuck Lever wrote:
+> On Tue, Mar 17, 2026, at 11:04 AM, Chuck Lever wrote:
+> > From: Chuck Lever <chuck.lever@oracle.com>
+> >
+> > tls_sw_read_sock() decrypts one TLS record at a time, blocking until
+> > each AEAD operation completes before proceeding. Hardware async
+> > crypto engines depend on pipelining multiple operations to achieve
+> > full throughput, and the one-at-a-time model prevents that. Kernel
+> > consumers such as NVMe-TCP and NFSD (when using TLS) are therefore
+> > unable to benefit from hardware offload.
+> >
+> > When ctx->async_capable is true, the submit phase now loops up to
+> > TLS_READ_SOCK_BATCH (16) records.  
 > 
-> > > I think this is a worrying idea for core code like this, we have
-> > > specific firmware bindings for specific firmware interfaces with the
-> > > different interfaces having very different ideas of how things should be
-> > > modelled.  The chances that firmware agnostic code is going to do the
-> > > right thing seem low, and encouraging the use of generic APIs that might
-> > > happen to run OK raises the risk that we'll get firmware vendors relying
-> > > on them and leaving us with a conceptual mishmash to sort through.
-> 
-> > Firmware vendors can introduce incompatible DT bindings and have them in
-> > their devices too and we have to deal with that... 
-> 
-> The case that's worrying me is mixing the ACPI and DT design models in
-> one system, and especially having that happen to actually work without
-> modification purely by luck rather than by design.
-> 
-> > I think if this pushes closer ACPI and OF schemas for at least some
-> > subsystems closer to each other it would not be a bad thing.
-> 
-> I think we shouldn't be encouraging people to just throw random stuff at
-> the wall and see if it happens to run OK with whatever OS they tried
-> booting.  The differences between ACPI and DT in areas like the
-> regulator bindings are fundamental conceptual ones.  There's some areas
-> where things are closer and it winds up being fine actually, especially
-> for leaf devices, but there's others where that's less likely.
+> It appears that async_capable is always false for TLSv1.3. Since
+> TLSv1.3 is a hard requirement for both NVMe/TCP and RPC-with-TLS,
+> patch 8/8 is moot for us. For the moment, I'm going to drop this
+> one from the series. Once Alistair's KeyUpdate work is merged, we
+> can revisit.
 
-Maybe we should just have explicit checks with nice comments at the
-beginning of the schema parsing stating that this schema is
-intentionally restricted to OF (or ACPI) in cases where we ave distinct
-schemas? This way it is explicit that it is a thought out decision and
-not simply a legacy artefact.
-
-I think we want to hanel software nodes because they do not
-form their own schemas, they follow the existing ones (DT usually).
-
--- 
-Dmitry
+Excellent, I was about to ask you for the actual use case..
