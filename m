@@ -1,102 +1,159 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0BF936C9EE;
-	Mon, 23 Mar 2026 20:02:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1857036A027;
+	Mon, 23 Mar 2026 20:11:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774296125; cv=none; b=BSudDtd/9oSTUvyLIACUJS/6pdXqnmjwBykQqIr27OIlXsY1GSfJKrBvt3FF1tm0T839ok3jiYaZ1INsvYgAY5Qv28tXA7z9WSa3dB/KMrnlFqqKwZz6+F6FYFw45zFuF1nm/a3tjq+00llppYJUXoFZRwVLXrc469t32RnvUP4=
+	t=1774296677; cv=none; b=pwSjOqGTigB/WvVwobpVJmTmsbQXg2EQZSaqA3n33TBfZNM6uieDkccf20kreNCBV011UAHbWXiT6X17UUHQ1AS1nYf23Hp93iTq2jns5HZutj1kjnjcjHAOldOsC7QweqYdVDvZyv/dds7rBmJxHzao/AVFVHMM6GSXpDZvILs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774296125; c=relaxed/simple;
-	bh=9OuZsIYBCcoE1Csvxd1QRj1F8s9WgTCeABrtEcPMg+I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TxpIpnOog8h7Sj0LCDgr3II/7ypRT0+tr9FV+Gtgo4nGj7sDYMV0f8ELUar6wubZPgpUf9IdlppM+LDcPVpIeGn0rOg1/5y7xL4wCsvoCflfxkWJStuL8tgn94h3IUM3t+GM/TKD3YiXL2ARwHBisP8HaE2CcAbGE5nWBPYVb00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=4xcWL833; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="4xcWL833"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=xhhrrcIXVAdZgZvrCjN8mX5O+B3R+l308Q4Vj3KbAK0=; b=4xcWL833CUngH3xiCGV+iMeXDh
-	g/1arPn4ajwo2wKPN2HvwR5tdu2/TdHpSNwYA8NN9wSgr8BklYNT02WIi2JCzlsd492f9AyXDxqra
-	kP33A8lJeoanNLMB8UYkPnV3fxKNfaM8tlx37sriWCZ0W6aqC48vkhoAm/EHzJj64PTU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1w4lT9-00CzQo-JA; Mon, 23 Mar 2026 21:01:47 +0100
-Date: Mon, 23 Mar 2026 21:01:47 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Mark Brown <broonie@kernel.org>
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	s=arc-20240116; t=1774296677; c=relaxed/simple;
+	bh=ctZKRS/rP8G/EiO2MyeaogJ0eYgz6kFYMri2GaF1pJA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oGJwid/hqfmLl2qwwMYfz0wZe/l8okxpuOF+z7SwyfTsdq1moDsvi2WUrCxe9LqvyrwM3c/EvBkRNTPXU2Q1bx2xryvWopWussTu0tufOtiOuGbY0+BKfzVg/xlJ4cEEBrPUNTUD1XiPfxbZrPBDi1EpjjyJ1jzp5kXEH1m/RIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1202)
+	id 04D6120B6F01; Mon, 23 Mar 2026 13:11:16 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 04D6120B6F01
+From: Long Li <longli@microsoft.com>
+To: Long Li <longli@microsoft.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Liam Girdwood <lgirdwood@gmail.com>, Lee Jones <lee@kernel.org>,
-	Pavel Machek <pavel@kernel.org>, Peter Rosin <peda@axentia.se>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Moritz Fischer <mdf@kernel.org>, Xu Yilun <yilun.xu@intel.com>,
-	Tom Rix <trix@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
-	linux-spi@vger.kernel.org, linux-leds@vger.kernel.org,
-	linux-fpga@vger.kernel.org, driver-core@lists.linux.dev
-Subject: Re: [PATCH 04/10] regulator: of: switch to using
- class_find_device_by_fwnode()
-Message-ID: <cf92122d-6b15-458a-bf89-189a0a6874f7@lunn.ch>
-References: <20260322-remove-device-find-by-of-node-v1-0-b72eb22a1215@gmail.com>
- <20260322-remove-device-find-by-of-node-v1-4-b72eb22a1215@gmail.com>
- <360a8b4a-6507-417a-9fc1-c53b14868657@sirena.org.uk>
- <acGFksyx3SA0kJ5b@google.com>
- <7d46803e-b285-4e9c-8856-10100fa0ea85@sirena.org.uk>
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K . Y . Srinivasan" <kys@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH rdma v2] RDMA/mana_ib: Disable RX steering on RSS QP destroy
+Date: Mon, 23 Mar 2026 13:10:56 -0700
+Message-ID: <20260323201106.1768705-1-longli@microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7d46803e-b285-4e9c-8856-10100fa0ea85@sirena.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Mar 23, 2026 at 07:05:13PM +0000, Mark Brown wrote:
-> On Mon, Mar 23, 2026 at 11:28:27AM -0700, Dmitry Torokhov wrote:
-> > On Mon, Mar 23, 2026 at 02:00:43PM +0000, Mark Brown wrote:
-> 
-> > > The regulator API is very deliberately specifically using the OF APIs,
-> > > not the ACPI APIs, since ACPI really doesn't want to model regulators.
-> 
-> > For now? We also have software nodes and maybe we come up with something
-> > else in the future...
-> 
-> > I think we should use firmware-agnostic APIs as much as possible, and
-> > only use OF- or ACPI-specific ones when there is no generic equivalent.
-> > This makes the code most flexible.
-> 
-> I think this is a worrying idea for core code like this, we have
-> specific firmware bindings for specific firmware interfaces with the
-> different interfaces having very different ideas of how things should be
-> modelled.  The chances that firmware agnostic code is going to do the
-> right thing seem low, and encouraging the use of generic APIs that might
-> happen to run OK raises the risk that we'll get firmware vendors relying
-> on them and leaving us with a conceptual mishmash to sort through.
+When an RSS QP is destroyed (e.g. DPDK exit), mana_ib_destroy_qp_rss()
+destroys the RX WQ objects but does not disable vPort RX steering in
+firmware. This leaves stale steering configuration that still points to
+the destroyed RX objects.
 
-How do you handle deprecated OF properties? This is a problem i've run
-into before. A developer needs an ACPI binding, so they blindly
-convert from of_ to device_ without engaging brain. As a result, they
-bring all the deprecated OF properties we want to die into the brand
-new ACPI bindings.
+If traffic continues to arrive (e.g. peer VM is still transmitting) and
+the VF interface is subsequently brought up (mana_open), the firmware
+may deliver completions using stale CQ IDs from the old RX objects.
+These CQ IDs can be reused by the ethernet driver for new TX CQs,
+causing RX completions to land on TX CQs:
 
-A agree with Mark here. OF != ACPI, and anything which makes it appear
-they are the same is just going to lead developers down the wrong path
-and increase Maintainers work pointing out all the problems.
+  WARNING: mana_poll_tx_cq+0x1b8/0x220 [mana]  (is_sq == false)
+  WARNING: mana_gd_process_eq_events+0x209/0x290 (cq_table lookup fails)
 
-    Andrew
+Fix this by disabling vPort RX steering before destroying RX WQ objects.
+Note that mana_fence_rqs() cannot be used here because the fence
+completion is delivered on the CQ, which is polled by user-mode (e.g.
+DPDK) and not visible to the kernel driver.
+
+Refactor the disable logic into a shared mana_disable_vport_rx() in
+mana_en, exported for use by mana_ib, replacing the duplicate code.
+The ethernet driver's mana_dealloc_queues() is also updated to call
+this common function.
+
+Fixes: 0266a177631d ("RDMA/mana_ib: Add a driver for Microsoft Azure Network Adapter")
+Cc: stable@vger.kernel.org
+Signed-off-by: Long Li <longli@microsoft.com>
+---
+v2:
+  - Removed redundant ibdev_err on mana_disable_vport_rx() failure as
+    mana_cfg_vport_steering() already logs all failure scenarios.
+  - Added comment clarifying this is best effort.
+ drivers/infiniband/hw/mana/qp.c               | 15 +++++++++++++++
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 11 ++++++++++-
+ include/net/mana/mana.h                       |  1 +
+ 3 files changed, 26 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/infiniband/hw/mana/qp.c b/drivers/infiniband/hw/mana/qp.c
+index 80cf4ade4b75..685e61e8436c 100644
+--- a/drivers/infiniband/hw/mana/qp.c
++++ b/drivers/infiniband/hw/mana/qp.c
+@@ -834,6 +834,21 @@ static int mana_ib_destroy_qp_rss(struct mana_ib_qp *qp,
+ 	ndev = mana_ib_get_netdev(qp->ibqp.device, qp->port);
+ 	mpc = netdev_priv(ndev);
+ 
++	/* Disable vPort RX steering before destroying RX WQ objects.
++	 * Otherwise firmware still routes traffic to the destroyed queues,
++	 * which can cause bogus completions on reused CQ IDs when the
++	 * ethernet driver later creates new queues on mana_open().
++	 *
++	 * Unlike the ethernet teardown path, mana_fence_rqs() cannot be
++	 * used here because the fence completion CQE is delivered on the
++	 * CQ which is polled by userspace (e.g. DPDK), so there is no way
++	 * for the kernel to wait for fence completion.
++	 *
++	 * This is best effort — if it fails there is not much we can do,
++	 * and mana_cfg_vport_steering() already logs the error.
++	 */
++	mana_disable_vport_rx(mpc);
++
+ 	for (i = 0; i < (1 << ind_tbl->log_ind_tbl_size); i++) {
+ 		ibwq = ind_tbl->ind_tbl[i];
+ 		wq = container_of(ibwq, struct mana_ib_wq, ibwq);
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index b3c3a70f733f..0816279f525e 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -2934,6 +2934,13 @@ static void mana_rss_table_init(struct mana_port_context *apc)
+ 			ethtool_rxfh_indir_default(i, apc->num_queues);
+ }
+ 
++int mana_disable_vport_rx(struct mana_port_context *apc)
++{
++	return mana_cfg_vport_steering(apc, TRI_STATE_FALSE, false, false,
++				       false);
++}
++EXPORT_SYMBOL_NS(mana_disable_vport_rx, "NET_MANA");
++
+ int mana_config_rss(struct mana_port_context *apc, enum TRI_STATE rx,
+ 		    bool update_hash, bool update_tab)
+ {
+@@ -3339,10 +3346,12 @@ static int mana_dealloc_queues(struct net_device *ndev)
+ 	 */
+ 
+ 	apc->rss_state = TRI_STATE_FALSE;
+-	err = mana_config_rss(apc, TRI_STATE_FALSE, false, false);
++	err = mana_disable_vport_rx(apc);
+ 	if (err && mana_en_need_log(apc, err))
+ 		netdev_err(ndev, "Failed to disable vPort: %d\n", err);
+ 
++	mana_fence_rqs(apc);
++
+ 	/* Even in err case, still need to cleanup the vPort */
+ 	mana_destroy_rxqs(apc);
+ 	mana_destroy_txq(apc);
+diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
+index 204c2b612a62..2634e9135eed 100644
+--- a/include/net/mana/mana.h
++++ b/include/net/mana/mana.h
+@@ -574,6 +574,7 @@ struct mana_port_context {
+ netdev_tx_t mana_start_xmit(struct sk_buff *skb, struct net_device *ndev);
+ int mana_config_rss(struct mana_port_context *ac, enum TRI_STATE rx,
+ 		    bool update_hash, bool update_tab);
++int mana_disable_vport_rx(struct mana_port_context *apc);
+ 
+ int mana_alloc_queues(struct net_device *ndev);
+ int mana_attach(struct net_device *ndev);
+-- 
+2.43.0
+
