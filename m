@@ -1,91 +1,102 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F8D3AEF44;
-	Mon, 23 Mar 2026 13:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948D23AF660;
+	Mon, 23 Mar 2026 14:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274334; cv=none; b=bHliIB+Jm2f+9VgIZMBpBGFWCoDcJf/3NDH1rgcqqv4YkO2BloFigwzF9O1cAjUg/gsn/ncPZf4Se+3piQ7UEp7VcaeSgopCJnSQjb/zMIlePncJU0jTedcUjClC2CisK4F1KNmbm5ZWno0tv3bwoycEwp2Zj/GcyQMHwKFspQ8=
+	t=1774274451; cv=none; b=hGFgx0gOA81d1grpvhYvnT573pL/rIAg2dz6BAIzXHwwQ36IORgSTNBWO0ngFDxelbgjooSJjV4DeSSH+1AI8GRhsDMoFaY6rW6LhgG8giqUyRMu4XsV1+0r52OTD/eH/0AZqOt/625LjG1uQG1qXQBrELqsZ/ZM2grluGFtjsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274334; c=relaxed/simple;
-	bh=AKIGrahRS6MqycY/IVQEkczZoNB5oHx2vuV+286zxtU=;
+	s=arc-20240116; t=1774274451; c=relaxed/simple;
+	bh=wsIPtE9gLfUlD7CfcHAkLJ1WaXHfJ/+7bt2n8V8whaQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=goxWkrklG8VppiXTUNbZ8Prutby6AZ945qhn4Ng8qIabJE4ZEhpDr4WucxOajB8E6KjqvHyVEZmsGJXTud59GnRxPyaA+HUk1Mtz6vHnzz6kQknFj0UOMxjhNiC/wWol0JlhtGieOdKT+G/KcvBxZxfoZThTf9uW7kRhfiqjwmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rv0Nbj3R; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=oskn+JXnDJOUJBXmM9izdfLFNoDIKshVjc7QjmmgvSmFuArmJ7Hz04Ywhkn50QmlnFnw1fNIREacbsRoli13bPgr1B/fzr3tUS7U+Dkq5nCMIOW8ZqATv+lA9xLfYI0SgT5lFD/LJACAv1QkzVWciHCrXJfJ4ejL/o0ta4DPAiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b054mkjT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rv0Nbj3R"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7643C4CEF7;
-	Mon, 23 Mar 2026 13:58:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b054mkjT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59B55C2BCB3;
+	Mon, 23 Mar 2026 14:00:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774274333;
-	bh=AKIGrahRS6MqycY/IVQEkczZoNB5oHx2vuV+286zxtU=;
+	s=k20201202; t=1774274451;
+	bh=wsIPtE9gLfUlD7CfcHAkLJ1WaXHfJ/+7bt2n8V8whaQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rv0Nbj3RvQ3r6yIk7CDQKc+CBtzkVG91FT7R8KseLJwfwkKYLmF6/3lZvpE3laLDU
-	 vKAlbmlepiou3Ef91Z8QXs5+1se6ZteTaYke/SkqVULJLzUCxg8vvX/9rpe4SWYm9W
-	 Svof0b01MEnsCvUn5VVggSgIsDLGOrcxghOiG+dQZawXRNa7qRUeiDYGZJMYSFyQDS
-	 P3ICritRi51nAR93v0pfCbpTdzblITK6BcOYN0fljR1WYgkFAcKehNbuQhsjjQ96J/
-	 tYAt/xQLytiwhGJ/VEqJy5S2dgxRfQmGK6h+0o6zxpFPUzx+DlLgXbQxWudKEIyn8X
-	 frcv6Cd3F/2PQ==
-Date: Mon, 23 Mar 2026 13:58:48 +0000
-From: Simon Horman <horms@kernel.org>
-To: Long Li <longli@microsoft.com>
-Cc: Konstantin Taranov <kotaranov@microsoft.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
-	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: mana: Set default number of queues to 16
-Message-ID: <20260323135848.GA81558@horms.kernel.org>
-References: <20260320233027.1603495-1-longli@microsoft.com>
+	b=b054mkjTtYEqGgZaf4/JWuUUq+D1cbRn4oz+QgtcGRhBaIsSbcON5Hb+Z9fSLN+87
+	 D3JRT6J6hpQddK+TiwTbVmM/j+IGVTqI6cIYI+1EyX/r8HsrIbB0u22Ites7TsWKQs
+	 81kFH9ISPKCWxz+aNcJGkqt8IDLtiOBBk3N7icL40mZ9fErys8BIcMZEEgSrMMM6R5
+	 Puc/JmGYoAFl4bsGGnSL/8xqG4pZHj1Kf0U2M8T2cj//L+iTpI6bP2/yYtaMlB9wjG
+	 1x3AEiHbs/P9jIeIacaotOzOBa6gYyC9lz0ri8huA4pt9BzDXFJiU7QoftyGNpgYXl
+	 BFzFTDjlQAg/Q==
+Date: Mon, 23 Mar 2026 14:00:43 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Liam Girdwood <lgirdwood@gmail.com>, Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>, Peter Rosin <peda@axentia.se>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Moritz Fischer <mdf@kernel.org>, Xu Yilun <yilun.xu@intel.com>,
+	Tom Rix <trix@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+	linux-spi@vger.kernel.org, linux-leds@vger.kernel.org,
+	linux-fpga@vger.kernel.org, driver-core@lists.linux.dev
+Subject: Re: [PATCH 04/10] regulator: of: switch to using
+ class_find_device_by_fwnode()
+Message-ID: <360a8b4a-6507-417a-9fc1-c53b14868657@sirena.org.uk>
+References: <20260322-remove-device-find-by-of-node-v1-0-b72eb22a1215@gmail.com>
+ <20260322-remove-device-find-by-of-node-v1-4-b72eb22a1215@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="vparQmoOwDu5fr6U"
+Content-Disposition: inline
+In-Reply-To: <20260322-remove-device-find-by-of-node-v1-4-b72eb22a1215@gmail.com>
+X-Cookie: Avoid gunfire in the bathroom tonight.
+
+
+--vparQmoOwDu5fr6U
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260320233027.1603495-1-longli@microsoft.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 20, 2026 at 04:30:27PM -0700, Long Li wrote:
-> Set the default number of queues per vPort to MANA_DEF_NUM_QUEUES (16),
-> as 16 queues can achieve optimal throughput for typical workloads. Users
-> can increase the number of queues up to max_queues via ethtool if needed.
-> 
-> Signed-off-by: Long Li <longli@microsoft.com>
-> ---
->  drivers/net/ethernet/microsoft/mana/mana_en.c | 2 +-
->  include/net/mana/mana.h                       | 1 +
->  2 files changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> index 49c65cc1697c..7cae8a7b9f31 100644
-> --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-> +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> @@ -3357,7 +3357,7 @@ static int mana_probe_port(struct mana_context *ac, int port_idx,
->  	apc->ac = ac;
->  	apc->ndev = ndev;
->  	apc->max_queues = gc->max_num_queues;
-> -	apc->num_queues = gc->max_num_queues;
-> +	apc->num_queues = min(gc->max_num_queues, MANA_DEF_NUM_QUEUES);
+On Sun, Mar 22, 2026 at 06:54:22PM -0700, Dmitry Torokhov wrote:
+> In preparation to class_find_device_by_of_node() going away switch to
+> using class_find_device_by_fwnode().
 
-Hi Long Li,
+>  	struct device *dev;
+> =20
+> -	dev =3D class_find_device_by_of_node(&regulator_class, np);
+> +	dev =3D class_find_device_by_fwnode(&regulator_class, of_fwnode_handle(=
+np));
 
-Maybe I am misunderstanding things.  But it seems to me that this patch
-sets a ceiling on the default number of queues. Which is subtly different
-to setting the default. Even if not in practice if max_num_queues is never
-less than MANA_DEF_NUM_QUEUES.
+The regulator API is very deliberately specifically using the OF APIs,
+not the ACPI APIs, since ACPI really doesn't want to model regulators.
 
-If so I'm wondering if you could tweak the commit message accordingly.
+--vparQmoOwDu5fr6U
+Content-Type: application/pgp-signature; name="signature.asc"
 
->  	apc->tx_queue_size = DEF_TX_BUFFERS_PER_QUEUE;
->  	apc->rx_queue_size = DEF_RX_BUFFERS_PER_QUEUE;
->  	apc->port_handle = INVALID_MANA_HANDLE;
+-----BEGIN PGP SIGNATURE-----
 
-...
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnBR4oACgkQJNaLcl1U
+h9CUPQf9Gr18nCuis7I7DLt40fSEPA95DJmYkmottRjJCAQ2LQSO6j6vqvSDa1Df
+SkKWemoGYfYr0SipGuWaT94X5ReYqWmBIwW/Il1ONQ9TwpnUYHCaps4N7hA8uwV7
+kLDMXftyQVR4qt24ZcpjI298/kWsaY1P28fMcRYfR+WUv1B5ijfMjjyS4jv9gwqZ
+72/JD3NajSRbUpMYwM4nJxUnDlzj1C1YcTJC9TFDFRjMIrGVN1g1AiadGXA7h7pd
+4d9DFlsweMKG1uUpdhPFZ0MDamVJzN+e6OMfXCMqSAYch0H0FyRAnXjhK5RUGRt4
+Os3QT9yimnEfhwuE+VHBI8lUrD1mug==
+=RApe
+-----END PGP SIGNATURE-----
+
+--vparQmoOwDu5fr6U--
