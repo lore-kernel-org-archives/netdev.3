@@ -1,57 +1,60 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2502236E465
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 250AB379991
 	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 08:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774254901; cv=none; b=g8uMMjdVAlQHS2ySHBgg2R+U51hgXRadO3bebTk85ubGXsHVj6V+TqF6pPLJCBgGZfkRO46sUQtX4+TKIhHekY9pFxukZnHsF6tcOG+lDks+rYnW4iISGinrWxHz1Ub8MN1f2ipcLOcY38NKT4UEpFrlETTWA5prmOP33IpwnFk=
+	t=1774254902; cv=none; b=D2ivEkvAYajlCJuKzMtWGb9caP/hj2LYVJC0nvNYBaPLpBcHfkF9KoFYLowWaEab73SjQHb4RSYhJotkZsGCEsfbfMe2PAU3lqiX5cAKxAOH/oUgC47Ozr8y7mA02cME0esO6UWwbK1TiUHfSuEZrhyagsrUvFwobkzLC9fQPXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774254901; c=relaxed/simple;
-	bh=mhROmrTWjmiM2VGHpNJSL5zDOAijqhsMC54pZB8lmbA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=n8Nn+uemPwTBnphUdMvZlAcSq2cp/njAo2ZkcaKQhDJoGwgk4KQpqmr2zWU+PfVZZu7B0VZP3ijJ6Mc5YbDoCs8SDuQpai2XNnGK2wXtwEOG+wT3t7yw2Xk7QnRHViReRJNsBwH/zWBvnirNlARW9Qg+RFaavYReYTxt0iNPL0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=gABfyvCn; arc=none smtp.client-ip=62.96.220.36
+	s=arc-20240116; t=1774254902; c=relaxed/simple;
+	bh=3j+XZrCFIPBDHW6Yu2JsEsxSSdjtvt3Jjns1Q1JxkYQ=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gQrrw0mV8gQ6B5tcYcfXcaLHG4EyGXmyG8DP5uq2/qth3B6wG/Dt4ozuVJ9HHgyBl0OF3hQP2WeXihVAsT8edY9ZQqcbMcTuzUyUGxsgqU+RDVF23flXXpKepr57wLrViy1McZBQe3upJr/aHwUDzRrQu2FpOxUXPM1axOsiAzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=HAJ5Lmc8; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="gABfyvCn"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="HAJ5Lmc8"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id DF5792068C;
-	Mon, 23 Mar 2026 09:34:50 +0100 (CET)
+	by mx1.secunet.com (Postfix) with ESMTP id 40B81207BE;
+	Mon, 23 Mar 2026 09:34:57 +0100 (CET)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 0kMd40-bJ5as; Mon, 23 Mar 2026 09:34:50 +0100 (CET)
+ with ESMTP id YcNHnYt_YkeB; Mon, 23 Mar 2026 09:34:56 +0100 (CET)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 2A6F5205ED;
-	Mon, 23 Mar 2026 09:34:50 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 2A6F5205ED
+	by mx1.secunet.com (Postfix) with ESMTPS id 9C566207AC;
+	Mon, 23 Mar 2026 09:34:56 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 9C566207AC
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1774254890;
-	bh=n3LC1ifBp4PW6vhcowlTAYwrWwVJrxflaoiVxAhJO0A=;
-	h=From:To:CC:Subject:Date:From;
-	b=gABfyvCnFZw1AOVYQ1/lV6llwqcFAUxQrIH5MA2ARFGsGjB30fHeehD6PcSuudcFa
-	 kmu7YsX0blxGsGSRsytj82DSVz0wTJ+a58gRfu+qAwJN3pxvpgHhLS0OvIWWye9ydh
-	 dMyHduELgLaZ8ZHQwjGG2bwOVC40dzQpq+l8r2yE8ZOzMNM9cQYwB4uX6Xi/fwaZjD
-	 ihFouPIYZ7ZQvTUvlkhjo0smAP2vvglaXBgY+ecSUUXp+aaSxxtNsgWT9dbY15L4R8
-	 KggeJ+TmAbUM3LwcD5iX6cwtsvlzKKXNRnctjvAZ1dv0UdgJnQwLM48c8vQguxzYuh
-	 Uzwel7t8WIyKg==
+	s=202301; t=1774254896;
+	bh=N40GMO+OpI+C4m6aX++wL5AB3kryyXyFA1RbY2LB0ag=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
+	b=HAJ5Lmc8G6cyq0uoEEpxpxhJCm9OmGWHx/Ngf6Cy00v5HOzjC0V/6V4/1VWEzbwPD
+	 3RdyqRGmIkH37lz+XgX6QODqk/X9vw5Uar3RTztPGNN9lgXPZy2OVUr9md2kjoQZeT
+	 evFnEyCAKh7KsV7w4P38bpCVRVzNVcfrdXM1e8OFrToLSp0GNxH/tVuZ+Sd3tGQ9y6
+	 UTHrauyLk/tNrj2PkHefQ/hxgaYIC6svUiesUrMVdpA4oMTyNTtTc8CKZ5k/w/Hy+c
+	 jaLpCpuJR+62aC7JgvUYQHf/G+srsQQ21cIu0V/kWFGF0vresBzBcFRaZvbxBQyFdC
+	 rn9znHNaPsz1g==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 23 Mar
- 2026 09:34:49 +0100
-Received: (nullmailer pid 2741796 invoked by uid 1000);
+ 2026 09:34:56 +0100
+Received: (nullmailer pid 2741857 invoked by uid 1000);
 	Mon, 23 Mar 2026 08:34:49 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 0/20] pull request (net): ipsec 2026-03-23
-Date: Mon, 23 Mar 2026 09:33:41 +0100
-Message-ID: <20260323083440.2741292-1-steffen.klassert@secunet.com>
+Subject: [PATCH 20/20] xfrm: iptfs: only publish mode_data after clone setup
+Date: Mon, 23 Mar 2026 09:34:01 +0100
+Message-ID: <20260323083440.2741292-21-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260323083440.2741292-1-steffen.klassert@secunet.com>
+References: <20260323083440.2741292-1-steffen.klassert@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,109 +63,55 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EXCH-02.secunet.de (10.32.0.172) To EXCH-01.secunet.de
+X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
  (10.32.0.171)
 
-1) Add missing extack for XFRMA_SA_PCPU in add_acquire and allocspi.
-   From Sabrina Dubroca.
+From: Paul Moses <p@1g4.org>
 
-2) Fix the condition on x->pcpu_num in xfrm_sa_len by using the
-   proper check. From Sabrina Dubroca.
+iptfs_clone_state() stores x->mode_data before allocating the reorder
+window. If that allocation fails, the code frees the cloned state and
+returns -ENOMEM, leaving x->mode_data pointing at freed memory.
 
-3) Call xdo_dev_state_delete during state update to properly cleanup
-   the xdo device state. From Sabrina Dubroca.
+The xfrm clone unwind later runs destroy_state() through x->mode_data,
+so the failed clone path tears down IPTFS state that clone_state()
+already freed.
 
-4) Fix a potential skb leak in espintcp when async crypto is used.
-   From Sabrina Dubroca.
+Keep the cloned IPTFS state private until all allocations succeed so
+failed clones leave x->mode_data unset. The destroy path already
+handles a NULL mode_data pointer.
 
-5) Validate inner IPv4 header length in IPTFS payload to avoid
-   parsing malformed packets. From Roshan Kumar.
+Fixes: 6be02e3e4f37 ("xfrm: iptfs: handle reordering of received packets")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paul Moses <p@1g4.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+---
+ net/xfrm/xfrm_iptfs.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-6) Fix skb_put() panic on non-linear skb during IPTFS reassembly.
-   From Fernando Fernandez Mancera.
+diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
+index 2c87290fe06c..7cd97c1dcd11 100644
+--- a/net/xfrm/xfrm_iptfs.c
++++ b/net/xfrm/xfrm_iptfs.c
+@@ -2664,9 +2664,6 @@ static int iptfs_clone_state(struct xfrm_state *x, struct xfrm_state *orig)
+ 	if (!xtfs)
+ 		return -ENOMEM;
+ 
+-	x->mode_data = xtfs;
+-	xtfs->x = x;
+-
+ 	xtfs->ra_newskb = NULL;
+ 	if (xtfs->cfg.reorder_win_size) {
+ 		xtfs->w_saved = kcalloc(xtfs->cfg.reorder_win_size,
+@@ -2677,6 +2674,9 @@ static int iptfs_clone_state(struct xfrm_state *x, struct xfrm_state *orig)
+ 		}
+ 	}
+ 
++	x->mode_data = xtfs;
++	xtfs->x = x;
++
+ 	return 0;
+ }
+ 
+-- 
+2.43.0
 
-7) Silence various sparse warnings related to RCU, state, and policy
-   handling. From Sabrina Dubroca.
-
-8) Fix work re-schedule race after cancel in xfrm_nat_keepalive_net_fini().
-   From Hyunwoo Kim.
-
-9) Prevent policy_hthresh.work from racing with netns teardown by using
-   a proper cleanup mechanism. From Minwoo Ra.
-
-10) Validate that the family of the source and destination addresses match
-    in pfkey_send_migrate(). From Eric Dumazet.
-
-11) Only publish mode_data after the clone is setup in the IPTFS receive path.
-    This prevents leaving x->mode_data pointing at freed memory on error.
-    From Paul Moses.
-
-
-Please pull or let me know if there are problems.
-
-Thanks!
-
-The following changes since commit 2f61f38a217462411fed950e843b82bc119884cf:
-
-  net: stmmac: fix timestamping configuration after suspend/resume (2026-02-24 17:46:15 -0800)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec.git tags/ipsec-2026-03-23
-
-for you to fetch changes up to d849a2f7309fc0616e79d13b008b0a47e0458b6e:
-
-  xfrm: iptfs: only publish mode_data after clone setup (2026-03-17 11:43:14 +0100)
-
-----------------------------------------------------------------
-ipsec-2026-03-23
-
-----------------------------------------------------------------
-Eric Dumazet (1):
-      af_key: validate families in pfkey_send_migrate()
-
-Fernando Fernandez Mancera (1):
-      xfrm: iptfs: fix skb_put() panic on non-linear skb during reassembly
-
-Hyunwoo Kim (1):
-      xfrm: Fix work re-schedule after cancel in xfrm_nat_keepalive_net_fini()
-
-Minwoo Ra (1):
-      xfrm: prevent policy_hthresh.work from racing with netns teardown
-
-Paul Moses (1):
-      xfrm: iptfs: only publish mode_data after clone setup
-
-Roshan Kumar (1):
-      xfrm: iptfs: validate inner IPv4 header length in IPTFS payload
-
-Sabrina Dubroca (14):
-      xfrm: add missing extack for XFRMA_SA_PCPU in add_acquire and allocspi
-      xfrm: fix the condition on x->pcpu_num in xfrm_sa_len
-      xfrm: call xdo_dev_state_delete during state update
-      esp: fix skb leak with espintcp and async crypto
-      xfrm: state: fix sparse warnings on xfrm_state_hold_rcu
-      xfrm: state: fix sparse warnings in xfrm_state_init
-      xfrm: state: fix sparse warnings around XFRM_STATE_INSERT
-      xfrm: state: add xfrm_state_deref_prot to state_by* walk under lock
-      xfrm: remove rcu/state_hold from xfrm_state_lookup_spi_proto
-      xfrm: state: silence sparse warnings during netns exit
-      xfrm: policy: fix sparse warnings in xfrm_policy_{init,fini}
-      xfrm: policy: silence sparse warning in xfrm_policy_unregister_afinfo
-      xfrm: add rcu_access_pointer to silence sparse warning for xfrm_input_afinfo
-      xfrm: avoid RCU warnings around the per-netns netlink socket
-
-Steffen Klassert (1):
-      Merge branch 'xfrm-fix-most-sparse-warnings'
-
- include/net/netns/xfrm.h      |   2 +-
- net/ipv4/esp4.c               |   9 ++--
- net/ipv6/esp6.c               |   9 ++--
- net/key/af_key.c              |  19 ++++---
- net/xfrm/xfrm_input.c         |   5 +-
- net/xfrm/xfrm_iptfs.c         |  17 +++++--
- net/xfrm/xfrm_nat_keepalive.c |   2 +-
- net/xfrm/xfrm_policy.c        |  12 +++--
- net/xfrm/xfrm_state.c         | 116 +++++++++++++++++++++++-------------------
- net/xfrm/xfrm_user.c          |  32 ++++++++----
- 10 files changed, 137 insertions(+), 86 deletions(-)
