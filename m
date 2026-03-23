@@ -1,157 +1,160 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013063.outbound.protection.outlook.com [40.107.162.63])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E6F38BF91
-	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 10:20:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774261204; cv=none; b=lS/tHBclBpS6p0zr50gLKtSlacSikfX6M1nbbeUKDrdFZ2/h8XiHgstuMYb61Pq28EjiWS/4wPQLonFUBIJQwzYwY12qVZScrfSeEB9yNKbFaki6xx97LNfrRmdH4nJP091YvsoVNguJmD2Y55kgtetEaeHiGH09czhC4egD/IA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774261204; c=relaxed/simple;
-	bh=rJcgrPWQRRkePOO40KXIXag2fQRkomt6sRhCEibc6tE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kvwkcXwAnnM9t2kqUtWGUdqKQuwnEMhkXyqSULAKKpavItYdPsS5kz4OqazeYaeNkV8AUeQy02SyhdC3b2JKUi2fjvSiUMbuS5bCM3wKl1x/rQIKpJ3wrv01PbAV9yzUzW2pel6j+Shx5INJ7UXpf/sTxE3cUTp0xeOpIgJd16w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KgcNyhNI; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119013090C4;
+	Mon, 23 Mar 2026 10:21:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.63
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774261281; cv=fail; b=o0RRvrglSCkgq4Ra8TscPbKJkF8gVqNHQfUB6bIpV3JOKJrpN7a9VQ7qFbaEi3p8nmZmD3xmjlxMnSi+dRf24jN0Fc9ucUVkqWG3+1ijWz2nS5Xdx8f+um+JdIByucznHJLDQ6JYQ+hn5G8Pg1PK6XHzdkorm8R+drjfkphLAAk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774261281; c=relaxed/simple;
+	bh=R1e3lvCknhVbHpjDp3BMffih1L/aPBdvuA9jeT9Olcc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=PQsUV+RI5nSozrCMYmHsRfHPS6jOot3T6+sPkJhRKSIYEXK2+8IjsaOPTqAjE5GgWu2fYV9Qq3htlrAczzUBagIrWS4DF7DL9ed1hbMckSb6RAP/09mdNufWMG9vjc/hwV7kskkjsVDyPR/IaZtZx+ZRjDurvzM00r+DLPIsvVM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=bTS2dXIl; arc=fail smtp.client-ip=40.107.162.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KgcNyhNI"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-358ed696623so1232222a91.0
-        for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 03:20:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774261202; x=1774866002; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=PPISEH5msRmrdt2HTDD7YCjNoxtWOm3MOnXL7/GvkTE=;
-        b=KgcNyhNIfV05hBU+9CKnt+dPnvzPfF/k6rqaHim4eEXgB+CYnjenl4rnB8QOSlQenl
-         mIKkEpbTaikdWEUOmnz16VAZY7MlvbjZ/aj0I6TZnHdqIC0UKqG0ac57uK3ZSKFP4nqQ
-         vCMWkHrOYhU8dWIx36QEQzsHlMXbpkOnXfA3ATykbgHIeLYQk99p9xLJP5AX9nj9q/J5
-         OHwYh13ULh3PlIE4n8okJFS04KbuKr3R1xYfCkHX6dLUyeEHEbvBAo425nfC/VNBmMY2
-         sDKUTiu+At0/ano7pKEbXb9A9grBqo3SA+RFuE9LbFYybga2n3sNaBfNbtpPem3m9w4p
-         yoow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774261202; x=1774866002;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PPISEH5msRmrdt2HTDD7YCjNoxtWOm3MOnXL7/GvkTE=;
-        b=YzITsAmHufw3CuqlbXUiTNJyW2CPzig3FloOk16ZAkYeoYl18/XY0hksrJlLqJeSgT
-         VuwjotNwFItG1Py1lvBDhMiFygTiwPKRkYER+5JD7VtbIOlTS+B/FEaTYeLdjW+pLePY
-         55XMnkame0U+A/Lx+9XVEcQaKiB8OJ3DfdaXwAJyjILl3pFhZKrR6VyqUeLKllvhJerG
-         YjD+fuFToAtmFfDrJZH4+crju0nbPpTiKw7EWBQrD383g8bGASfF4x44LYufHGWru+1d
-         zAEaU4OhMVZyK3uaX8URhjatbpm5YYDTbLEMx9Bo+ZWr6iZnANCKdKqbRD/U1hYidyei
-         zoqw==
-X-Gm-Message-State: AOJu0YzrVkCenynuay9ZixelrdOBD5hQFVp0r0ob8IqxCei4RIAl/6Iq
-	Kr7/RV7DO7GiEwtQDGWnj/HItMjJ8BWasibTFUdz8/PNUeZKB8dlNyRN
-X-Gm-Gg: ATEYQzwx9iI/CVhngbD9IUD6iCHfpuJYSk9YEANc4podljIYBCvIh94jp+evVe08OfS
-	9jUDqVLIsAt0RPFklovAJnGCDAGwyL8Wbh8anTfPPMk7sdDkBEKPnsk9KuNKnGyjr3wvpHEg/LN
-	oMDG4nfYbQppSJknWGGOqwMqgOhK5YCwwSCBLfhj3vFfI5vcsW/wZvnByVrpE2k1Dy6TLs6tObv
-	/oDxmYnicguvEquOD2Rkdoqu9+pp0LXXU+F38Df0BrRMU/ymrZ7J61sJ3HT75cfoT4e6yqUYL0V
-	j5ntu0/FujhGCjyX2hCT8Fc5OEAeUnqQ4mj6x4g6KzbLxGQDhqbdzTzy3YpQoZJBcPRtwZanijQ
-	/7Vf62Xq5vftA7FLDkmQpucpwh7w5kba65XP+O/39SQBl0AlBEBTF3k1cURBOO60RiqcozvpLDq
-	DQv3z+tC/kyaV4s5Db5fqz8+0NQ7YmuEsJImi0ODVLeuWIK67wgubJRlAW2FRhj9314PiblcDiE
-	mIsyIgs7ig=
-X-Received: by 2002:a17:90b:3d48:b0:359:fecd:1cd3 with SMTP id 98e67ed59e1d1-35bd2d1cf08mr8744522a91.23.1774261202396;
-        Mon, 23 Mar 2026 03:20:02 -0700 (PDT)
-Received: from SLSGDTSWING002.tail0ac356.ts.net ([129.126.109.177])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35bd4130765sm8937856a91.16.2026.03.23.03.19.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 03:20:01 -0700 (PDT)
-From: Weiming Shi <bestswngs@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>
-Subject: [PATCH net v2] vxlan: fix NULL dereference in vxlan_igmp_join() and vxlan_igmp_leave()
-Date: Mon, 23 Mar 2026 17:55:47 +0800
-Message-ID: <20260323095544.3311285-4-bestswngs@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="bTS2dXIl"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VJCpdBVZg9xav4E6pYxSfXypQriOp1M9QKQEpIx19635cwNU5X67g/wN6BDdYT1gW/ukAao5idusk7GJHaZLeWFMgfzTBG/CVvTEXTMNp7UADapWufqxvu4qhbMrJg0F9U8bIce1Oab1ORKfuBPDmYOOPWpO0eBni4y+OOpByFnTgo2mHJkjZGCqqftRRCTzOCH0STrdnPZYuBqW0jsirrUfPWj4OfgQrW7oavaCHRWiSGeXxbOIYH2wpUicy3Is+MC3/wGmnf3gtdEVAtCpHMHW66cFJtWPu2nNMttupLi+Vi1mHK3d5HCciDr/lHPMuxXYVjAyBrltsyzQi/sbpA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Hkeih7pufrw+pq0tKoeFUy3mK/ef0w38zDphdZtKitc=;
+ b=ypRcfI0ipb9nhA+ouEC2xy9ZWidDQkNNvMRWYtFCQVXIt/sUg+81wBW3Vrtejb9oKxYdQjqY+yglBHx/FnSU0TAmkN83E4gyrOtLPYV+niNTYyAii63WikjZSb8YXMbwqXBHRyR//IYbk73W5oqC1HBdfoRQ0Cx4gY9oksj8HaILk2OS3u7uAKxifeRPnbRILsJ877ptkJ8LeuByCmx05QDDMSP64uPLfViusY3yXwNMdpsT7LxFwtJ/deyQssUjDj4Fl7+J4WeR1PCV1kNUZZAjEeKegqkD+5fiCI+ATCefDYx8Qmp/wUPyDwVC5yh8ryvsYzozJ06BUMxiW7QGAQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Hkeih7pufrw+pq0tKoeFUy3mK/ef0w38zDphdZtKitc=;
+ b=bTS2dXIluikYWoaP2O4F7BNcr3L90CvKW2RueQHpwYbdv1KEk57h7PVd1k27K1hLECpDhfqNf2m2hM/6oTza4aihw3TylJEHPVbvVyNWLbrhaOF2sH+jRuF6Uuu8aDgM2bGEQcwD3/5DyH4TbVIgVeaTwMrobFKQM8IZ74GsY7kRMIkuFbULGube8EfhH79qv4vBDof9gT6uY+0C8ZVHzu7W2mHJ1j6hEYiqc35xmSyor/oxq1d3wqrDnVr2qoQF8msJ4og3SeB89sH/AdgZSy4uZTpE01EdIYWqWbn6TNohTSEsGf6ZwD2yrdFFmnk4JtDeNKTSJ4RTFZZbO7pY1w==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by PA2PR04MB10334.eurprd04.prod.outlook.com (2603:10a6:102:417::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.25; Mon, 23 Mar
+ 2026 10:20:55 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694%3]) with mapi id 15.20.9723.030; Mon, 23 Mar 2026
+ 10:20:47 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Russell King <linux@armlinux.org.uk>
+CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
+	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
+	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"f.fainelli@gmail.com" <f.fainelli@gmail.com>, Frank Li <frank.li@nxp.com>,
+	"chleroy@kernel.org" <chleroy@kernel.org>, "horms@kernel.org"
+	<horms@kernel.org>, "andrew@lunn.ch" <andrew@lunn.ch>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>
+Subject: RE: [PATCH v2 net-next 13/14] net: dsa: netc: initialize buffer bool
+ table and implement flow-control
+Thread-Topic: [PATCH v2 net-next 13/14] net: dsa: netc: initialize buffer bool
+ table and implement flow-control
+Thread-Index: AQHcuote84lxYz/saUypBRN66PVRZbW7110AgAARBaA=
+Date: Mon, 23 Mar 2026 10:20:47 +0000
+Message-ID:
+ <PAXPR04MB85104288918BAA15CD739C0E884BA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20260323060752.1157031-1-wei.fang@nxp.com>
+ <20260323060752.1157031-14-wei.fang@nxp.com>
+ <acEFwqmAvWls_9Ef@shell.armlinux.org.uk>
+In-Reply-To: <acEFwqmAvWls_9Ef@shell.armlinux.org.uk>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|PA2PR04MB10334:EE_
+x-ms-office365-filtering-correlation-id: 74755bbe-2e0a-4d92-a67d-08de88c5d97f
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|376014|19092799006|1800799024|366016|38070700021|22082099003|18002099003|56012099003;
+x-microsoft-antispam-message-info:
+ j6ZeeywxksAczU+//iAepxaaPpgES8RpG9m8C8UwX3fm3OP+Q69JNDOGTTF91ZJrhRRV9yZCz+e4PEKjvvxlc5sh8FwHMuVNoo+i7ETA1Om8UnorKps1+Rb1xqfh5w9DkLMFoscsRae2KgC3/rJdzPESK85d3AHAsot55duOEUpj8+vXXahM/huScKBB8LEicfSL2XHmGR5LIJHJfeym/Gle3bajDIu2R3zEVnmN4O6LJVO8F+4/JUm9AQFN9SfY5B9eTnTYdIJREHJ0oIKD+btjk9j/p+KncuxZFsx03utfhpLDOjTDEupN7lJbApIzDzGFepedGc7rwMSjId/fCgFmxNtK83HbHCRv45fYhhi0ODd1RPlUlilm0tm0gav9i9KT/Hi1/A/2Bo+A9pmTkeWpwYiC1bcVccDQ4uL5Nl84kqc111MKpgRUHxQ/pFnpl3yVEAp3neap2wAuuUn7rvxKBdEc3Av2+Smazs3prQ9bZi0GSuzIpnwF2Rk7Rnvzl8obYq4Kk0jaGqFn4mnPvYBeLEAHcOGisP5zYecjq29M81fIbk9h/e+mX0TOyyMR/yTnnMXjPV+8cfadWMU4mTwdqnYjhYGX0qK3co6dE36ASxTc+qSdJkGkytrLminSs8xVNwhgFrXa+pxMhDBw2nd9xDvHUzhUEk9Pl4vmP4ZbPwS8mXA+0+ZFiXWEPOEQ2t7pgaXKOnbieEczNXizFWiDvm+UOCtgYZP3wjleT28OY/z+jakrKByse9EAunGBBnEq7KvB3YntlRGv5c4N8US6xHPOWsRIbnVPyNf0XpE=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(19092799006)(1800799024)(366016)(38070700021)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?GveJNakoJK71/e4fErRtI1jcJ0vdSNEyMKN4iulKcsJcvkr/jIY8rG1Sw76Q?=
+ =?us-ascii?Q?d2394VZYkfngV0SJrpCQcmcHHSuvHtfUSfdU+gRWpcdBoVxfcoECdRhSBW+J?=
+ =?us-ascii?Q?JDOaoFrmKhDJiN5X55LwytNLHNZ6mcru4RdUfJvutx4FOarXlI5f1/kO4D23?=
+ =?us-ascii?Q?ZfsU9S/eZWYWLdnXvL6JylyyM0fbzMwE4S14vxAc6cG5GEQHbsYpMXfhykt/?=
+ =?us-ascii?Q?PaXsxteTcD6YbHjGGgmMjXpin3mAOOTbrW+a+IAKjMslLwsgLabqHUJ3QBK2?=
+ =?us-ascii?Q?XHjfspKttVxeSyYBh/j+zYCFwECukWFQbwvX5iIc8VEPjMNX0XTpn6XaMlOv?=
+ =?us-ascii?Q?ZFufuZkaN5xzMUQ4SrnNTz/0Bzap1nhTkArueJdSJtCARMmEnDE+37G2gGUP?=
+ =?us-ascii?Q?AWpOOcQVBd9iNMsIj6VByVK/7bStpDT7r3g79rtizjY/E1XmvODbhkebaa8V?=
+ =?us-ascii?Q?MY7nB46N6z+15O+a/EXuUsFw0d4Mq6caeOfGis2ZN8IIMbUuRjpYSoGN+s+T?=
+ =?us-ascii?Q?6dSg36z3Q82UABsS3TB0pMqhOvTY20YQlVe+XaCwUl3LKA8DGegJApMfikbj?=
+ =?us-ascii?Q?fhVLY8hAg4Oaw+fgeM9rF4UOCERr0ZMr69VH9Tixlgxmxh3dzLwz7v32rUqU?=
+ =?us-ascii?Q?eiMBEm+Hi7PX45okllE1lTfF5vpC+GhWxN4NPK6xSTHiFB7Wdv+pYi1oswvG?=
+ =?us-ascii?Q?9LRS9zwme6UsfbhzTa0lXWvPHmoD4oyH7jCaZ7REZK5FYjB2JX8J/uSSssui?=
+ =?us-ascii?Q?pXQu3FxA5mJdlWUOpuu8n08ZTREyKi7VOD30G36I4iwegdCnOLcltTJvcw61?=
+ =?us-ascii?Q?cEIIV8vrYqR98VO8tAgQ3YWkjDMWeRWDfzmGgomiXh0Y48nLhIigTLI1zOy1?=
+ =?us-ascii?Q?YyQKIF5xpYflDFZbl1fhalx+HY26gtzSGpHtfulmciIaxCDK+TXB+IGE+Qm5?=
+ =?us-ascii?Q?EAHJ21ZRy/MX48duRZsDKnNyGi4Qjx4LKbCa3JH5eIwp8W8jSYkZPDopeZSz?=
+ =?us-ascii?Q?k8Cgb+R0LmaH5M4vN5oTRqx4D24KPGuYkVTETRv6C5yQSrhptiE1Bk25vAjG?=
+ =?us-ascii?Q?abDKZ0vTNRHCuckeI8PD0J6EgPmYv9prkyYM3nnSK7rPpAf4wHQSQXO1tcTx?=
+ =?us-ascii?Q?DHB8JneaNwpIM8ZCLwKHvVzVjl+JUfubeIaOz81ayUVMdvF1B2NKIYiiapl1?=
+ =?us-ascii?Q?CadYkVmBT2bxNTJfHLf+PBFWdQ6yqhPM/vSuNp+dNVATlObjb0yyiczzucY9?=
+ =?us-ascii?Q?YYituDMXtAamXpffV//JvG4ErX7FXvPZaVrYQS6rlWKPY8k06gZq4uJEOZAG?=
+ =?us-ascii?Q?OCqgeE9hdz0i4umgTVXE9bnjcxdSH0pYw36l/OdHMKv3h5VaTx3usfbu+GKq?=
+ =?us-ascii?Q?hvlhZ242VaimIVu7HIfKVkaekpqAwnNjyvEkspSw8dAFvVuSLh5/w/P98Qmn?=
+ =?us-ascii?Q?W+/mjNcMh+8WfHmj77UhzVJH+mXopbsulNsk0KEx926h8A0HKXBTJUkYqkp3?=
+ =?us-ascii?Q?9LvmmFQqLvqLi11KFHTPGSg5c00HFw1qMttEvdLgRDsJ4ijlwlPIxcnRjySk?=
+ =?us-ascii?Q?iqKPvR8opqnUx8JMb4eULDfL0Jh46Z7OjtRkLNArItUE0Ea0hWegQeL6VdSp?=
+ =?us-ascii?Q?7L5SqD2V8QEO2Y6iqFMZkis2bjWliX01rj5u6Bdz9UZuybe9pGswi1DDoHxH?=
+ =?us-ascii?Q?d/1jkH+lQwqelMWFrpAaHb9RLL7ArjTrotZ5TaCuSc4Lwk0G?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 74755bbe-2e0a-4d92-a67d-08de88c5d97f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Mar 2026 10:20:47.1710
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: YqphzsyvX0W24526C9yyE19rJz5zdnj80ZhTLrca1+ckO5G13ydeLeu29Izg40a0PBBuLqkBBBZGsPKyseMOOA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10334
 
-vxlan_sock_add() tolerates IPv6 socket creation failure with
--EAFNOSUPPORT and brings the VXLAN device up with only an IPv4
-socket, leaving vn6_sock as NULL.
+> On Mon, Mar 23, 2026 at 02:07:51PM +0800, Wei Fang wrote:
+> > @@ -1288,7 +1411,17 @@ static void netc_mac_link_up(struct
+> phylink_config *config,
+> >  		netc_port_set_rmii_mii_mac(np, speed, duplex);
+> >  	}
+> >
+> > +	if (duplex =3D=3D DUPLEX_HALF) {
+> > +		/* As per 802.3 annex 31B, PAUSE frames are only supported
+> > +		 * when the link is configured for full duplex operation.
+> > +		 */
+> > +		tx_pause =3D false;
+> > +		rx_pause =3D false;
+> > +	}
+>=20
+> I keep seeing this totally unnecessary code in reviews of mac_link_up()
+> methods. See phylink_resolve_an_pause().
+>=20
 
-However, vxlan_igmp_join() and vxlan_igmp_leave() unconditionally
-dereference vn6_sock when handling multicast group operations for
-IPv6. When a VNI filter entry with an IPv6 multicast group is
-added via RTM_NEWTUNNEL on a collect-metadata VXLAN device where
-the IPv6 socket was not created, the NULL vn6_sock pointer is
-dereferenced, causing a kernel crash.
+I will remove it, thanks.
 
-This can be triggered by booting with ipv6.disable=1, creating a
-collect-metadata VXLAN device with vnifilter, and adding a VNI
-filter entry with an IPv6 multicast group.
-
- BUG: kernel NULL pointer dereference, address: 0000000000000010
- Oops: Oops: 0000 [#1] SMP NOPTI
- RIP: 0010:vxlan_igmp_join (drivers/net/vxlan/vxlan_multicast.c:40)
- Call Trace:
-  <TASK>
-  vxlan_vni_update_group (drivers/net/vxlan/vxlan_vnifilter.c:573)
-  vxlan_vnifilter_process (drivers/net/vxlan/vxlan_vnifilter.c:976)
-  rtnetlink_rcv_msg (net/core/rtnetlink.c:6986)
-  netlink_rcv_skb (net/netlink/af_netlink.c:2550)
-  rtnetlink_rcv (net/core/rtnetlink.c:7005)
-  netlink_unicast (net/netlink/af_netlink.c:1344)
-  netlink_sendmsg (net/netlink/af_netlink.c:1894)
-  ____sys_sendmsg (net/socket.c:2592)
-  ___sys_sendmsg (net/socket.c:2648)
-  __sys_sendmsg (net/socket.c:2678)
-  do_syscall_64 (arch/x86/entry/syscall_64.c:94)
-  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-  </TASK>
-
-Fix this by adding NULL checks for vn6_sock in both
-vxlan_igmp_join() and vxlan_igmp_leave() before dereferencing.
-Return 0 rather than an error code because all callers treat
-non-zero returns as fatal -- vxlan_vni_update_group() would
-abort a VNI add that already inserted into the hash table,
-and vxlan_multicast_join_vnigrp() would fail vxlan_open().
-Since vxlan_sock_add() already accepts -EAFNOSUPPORT as a
-non-error condition, the multicast helpers should do the same
-by simply skipping the join/leave when the socket is absent.
-
-Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
----
-v2:
- - Drop unnecessary sock4 NULL checksjjj
----
- drivers/net/vxlan/vxlan_multicast.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/net/vxlan/vxlan_multicast.c b/drivers/net/vxlan/vxlan_multicast.c
-index a7f2d67dc61b8..a442c9e6d1a72 100644
---- a/drivers/net/vxlan/vxlan_multicast.c
-+++ b/drivers/net/vxlan/vxlan_multicast.c
-@@ -37,6 +37,8 @@ int vxlan_igmp_join(struct vxlan_dev *vxlan, union vxlan_addr *rip,
- 	} else {
- 		struct vxlan_sock *sock6 = rtnl_dereference(vxlan->vn6_sock);
-
-+		if (!sock6)
-+			return 0;
- 		sk = sock6->sock->sk;
- 		lock_sock(sk);
- 		ret = ipv6_stub->ipv6_sock_mc_join(sk, ifindex,
-@@ -71,6 +73,8 @@ int vxlan_igmp_leave(struct vxlan_dev *vxlan, union vxlan_addr *rip,
- 	} else {
- 		struct vxlan_sock *sock6 = rtnl_dereference(vxlan->vn6_sock);
-
-+		if (!sock6)
-+			return 0;
- 		sk = sock6->sock->sk;
- 		lock_sock(sk);
- 		ret = ipv6_stub->ipv6_sock_mc_drop(sk, ifindex,
---
-2.43.0
