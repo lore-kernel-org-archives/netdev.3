@@ -1,45 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E91C53164DF
-	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 20:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1163E5ED0
+	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 20:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774299531; cv=none; b=g/zm+ysG+jQdvLQyL1uRE9u5unosKHRppDbqfcMaoU/oDzP1SMdOxgEhsAbljzpXgySa84wZ93tGAcRuNoApiPvoH1X8Ycxyf2Subun7UxRHl1dqFWK5/t8BwZmEtBAlRtxil0q2k04jmKoJ3P0I9fECiebW9k8I5Xyl9kfhl2Y=
+	t=1774299533; cv=none; b=HZt9SKVj8sqt40/vY43DFzLQAAD1dMiBOWTfbxR4tuwYdERpH3TtbbnHl1NbMF/lREprVquFokFmnQ75rBphBd2YnBVF3zvOF6TRWYZU2Bf4KcO5ed75vgkom/5dkdI6d1+IhJfQS3hakq5OOX6URn3D34wQNfLEvMobJBD7at0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774299531; c=relaxed/simple;
-	bh=CQXcTut3zOdqhTiLqReZ493j8VAU1xfOepcfCb0NOjk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kXgMEQqlDxv5vI82Ow6jRsgG9ECCrKjoqatpkDS0mAuU3r7XlyF2sJO/nMoYHRsLmSIxQZo1hjvikCjdGKFaS5nHeRd4uwn1i/ksghJdDfALD1Ni2gxsaweYfXr1sryXGknC09antwVFe/uM4uWNSxc117qR4Ypciwy8ghSDslM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WH3aJCBH; arc=none smtp.client-ip=192.198.163.14
+	s=arc-20240116; t=1774299533; c=relaxed/simple;
+	bh=T/rJyk5CwvXIULui1dTc/iwz2vSdYzYNI/NOtAo0ol0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lrv3FgnukYnXsswe4AU5RS604c3xwwRTpfu5y5kYLvvzPjpYyfMyROmtlm47bnfmzmFgExdRtt3JXV2RsQpAtXwOPX8N337QEy77hB7pN5riQi+UKSUNwGb+H7+0bCAILqdO+6BdrF/NeoEi/vqTR7/KOZrKUYCIatVDk7Sn5zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YYHQyS54; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WH3aJCBH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YYHQyS54"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774299530; x=1805835530;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=CQXcTut3zOdqhTiLqReZ493j8VAU1xfOepcfCb0NOjk=;
-  b=WH3aJCBHgxNkJjl/gNSLSviItU0dOb532u/gYxGS0P437uH0v1xQPUdL
-   lv40z+KYNSfOvUWdYZnYWKeshx8HMJAjU/wKs5N5YqTv30csLC5+5kUOv
-   et6rkI+Ts4YscpP+KlJBvtdNuQCcJlexgyxh6LoiskXkrANQSuhPK8QKK
-   cOiesszzl7ZDQ5HF4o0Sd3QAGRusoqVJPnbYXeqkn7E/VzJCxKm7ivhh7
-   xxaSFrDBIijF8XlbyL1+v/Hd8YQ2Haw8SWMtXRF8U/fp1y/+L6yfCE9hd
-   GUJ/IXiufZIvGEHxMFpd3vMBduXuYhu+ow1qgW52PTnzv0b8Te2Hi+JQz
-   g==;
-X-CSE-ConnectionGUID: o3/2EUXsQm2FWzYsm4BSqQ==
-X-CSE-MsgGUID: jftEJmC3QFSHGyTO8In2vA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11738"; a="75375498"
+  t=1774299532; x=1805835532;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=T/rJyk5CwvXIULui1dTc/iwz2vSdYzYNI/NOtAo0ol0=;
+  b=YYHQyS54PHTBKfKYcUjRKiWSfvrwsnshxMYlQyyFTvRB/2P6U4B/Efm1
+   GViXBRHT4lLVIaLYQTnJOu0jKz8974kHSa/UgZ2aJ2dBqzbZYiDMpYsnX
+   Q6PlZdV+XfhUi36jyu4wSEN69SyMJgGHfb9+TlqxuZ3sH38dIELeS4QlY
+   46jABgGv1ATpgETW7RD9hbp7pjrZDu1ibRauigNOJBuW4Tnpwak4+8S3z
+   fpUEapZ2s39jXdnBlhNbTWUqA46UQ2TA/8WgAkNzPVTq08upc9njwjPBE
+   KjY3Rao8QmNH7uragVjlM2t1+EkCQl4vkBzjlVnMSXSWeFnwsAAIIBMTS
+   A==;
+X-CSE-ConnectionGUID: xP1NNgyFQkGCnILy7aDu1g==
+X-CSE-MsgGUID: a/5X1TVKRM2ewEcL+uwhXg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11738"; a="75375505"
 X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; 
-   d="scan'208";a="75375498"
+   d="scan'208";a="75375505"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 13:58:49 -0700
-X-CSE-ConnectionGUID: wiAlRF0/SkekkoRj7FHxFQ==
-X-CSE-MsgGUID: dYSGw0uTQ3+EJtBtCXjL1w==
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 13:58:50 -0700
+X-CSE-ConnectionGUID: ttaUjjZQT12zxvLamDl6+w==
+X-CSE-MsgGUID: oeF2yRLcQta8yQ54Rwaw+A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; 
-   d="scan'208";a="224114410"
+   d="scan'208";a="224114418"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa009.jf.intel.com with ESMTP; 23 Mar 2026 13:58:49 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -49,11 +50,19 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH net 0/6][pull request] Intel Wired LAN Driver Updates 2026-03-23 (ice, iavf, idpf)
-Date: Mon, 23 Mar 2026 13:58:35 -0700
-Message-ID: <20260323205843.624704-1-anthony.l.nguyen@intel.com>
+Cc: Petr Oros <poros@redhat.com>,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	horms@kernel.org,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Patryk Holda <patryk.holda@intel.com>
+Subject: [PATCH net 2/6] ice: fix inverted ready check for VF representors
+Date: Mon, 23 Mar 2026 13:58:37 -0700
+Message-ID: <20260323205843.624704-3-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20260323205843.624704-1-anthony.l.nguyen@intel.com>
+References: <20260323205843.624704-1-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,52 +71,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-For ice:
-Michal corrects call to alloc_etherdev_mqs() to provide maximum number
-of queues supported rather than currently allocated number of queues.
+From: Petr Oros <poros@redhat.com>
 
-Petr Oros fixes issues related to some ethtool operations in switchdev
-mode.
+Commit 0f00a897c9fcbd ("ice: check if SF is ready in ethtool ops")
+refactored the VF readiness check into a generic repr->ops.ready()
+callback but implemented ice_repr_ready_vf() with inverted logic:
 
-For iavf:
-Kohei Enju corrects number of reported queues for ethtool statistics to
-absolute max as using current number could race and cause out-of-bounds
-issues.
+  return !ice_check_vf_ready_for_cfg(repr->vf);
 
-For idpf:
-Josh NULLs cdev_info pointer after freeing to prevent possible subsequent
-improper access. He also defers setting of refillqs value until after
-allocation to prevent possible NULL pointer dereference.
+ice_check_vf_ready_for_cfg() returns 0 on success, so the negation
+makes ready() return non-zero when the VF is ready. All callers treat
+non-zero as "not ready, skip", causing ndo_get_stats64, get_drvinfo,
+get_strings and get_ethtool_stats to always bail out in switchdev mode.
 
-The following are changes since commit bc0151c59e639c1311ee573434af74b4e2c81de4:
-  Merge branch 'net-bcmasp-fix-issues-during-driver-unbind'
-and are available in the git repository at:
-  git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/net-queue 100GbE
+Remove the erroneous negation. The SF variant ice_repr_ready_sf() is
+already correct (returns !active, i.e. non-zero when not active).
 
-Joshua Hay (2):
-  idpf: clear stale cdev_info ptr
-  idpf: only assign num refillqs if allocation was successful
+Fixes: 0f00a897c9fcbd ("ice: check if SF is ready in ethtool ops")
+Signed-off-by: Petr Oros <poros@redhat.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Tested-by: Patryk Holda <patryk.holda@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+---
+ drivers/net/ethernet/intel/ice/ice_repr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Kohei Enju (1):
-  iavf: fix out-of-bounds writes in iavf_get_ethtool_stats()
-
-Michal Swiatkowski (1):
-  ice: set max queues in alloc_etherdev_mqs()
-
-Petr Oros (2):
-  ice: fix inverted ready check for VF representors
-  ice: use ice_update_eth_stats() for representor stats
-
- .../net/ethernet/intel/iavf/iavf_ethtool.c    | 31 +++++++++---------
- drivers/net/ethernet/intel/ice/ice.h          | 22 +++++++++++++
- drivers/net/ethernet/intel/ice/ice_ethtool.c  | 32 +++++++------------
- drivers/net/ethernet/intel/ice/ice_main.c     |  4 +--
- drivers/net/ethernet/intel/ice/ice_repr.c     |  5 +--
- drivers/net/ethernet/intel/idpf/idpf.h        |  2 +-
- drivers/net/ethernet/intel/idpf/idpf_idc.c    |  6 ++--
- drivers/net/ethernet/intel/idpf/idpf_txrx.c   |  2 +-
- .../net/ethernet/intel/idpf/idpf_virtchnl.c   |  2 +-
- 9 files changed, 60 insertions(+), 46 deletions(-)
-
+diff --git a/drivers/net/ethernet/intel/ice/ice_repr.c b/drivers/net/ethernet/intel/ice/ice_repr.c
+index 90f99443a922..68cdd04dd3aa 100644
+--- a/drivers/net/ethernet/intel/ice/ice_repr.c
++++ b/drivers/net/ethernet/intel/ice/ice_repr.c
+@@ -315,7 +315,7 @@ ice_repr_reg_netdev(struct net_device *netdev, const struct net_device_ops *ops)
+ 
+ static int ice_repr_ready_vf(struct ice_repr *repr)
+ {
+-	return !ice_check_vf_ready_for_cfg(repr->vf);
++	return ice_check_vf_ready_for_cfg(repr->vf);
+ }
+ 
+ static int ice_repr_ready_sf(struct ice_repr *repr)
 -- 
 2.47.1
+
