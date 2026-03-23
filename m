@@ -1,97 +1,141 @@
-Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A341258EE0
-	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 15:01:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4379027AC4C;
+	Mon, 23 Mar 2026 15:02:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278096; cv=none; b=c4GaaPj8+6a1TbwnCTa4FvGfixYqQ9gOz0bFcyWWI+SZjM2CGCygNlYW+wsrfFas3wKVqSZaBe+3sdCjWZhtAf1u++kvOBwXlUBv/OCXAaycLaNn62mW9uXyqUciFvQq0zEujVi1+GNJxiHr2OPsZslrvpS9JiZv4N4S2DoMMII=
+	t=1774278147; cv=none; b=fzlZIqokr4ZDL9K5lUknDtt9smArZMAT/T+r27OpCs3Ox3h7c9F6Wk8cE9px98L75f6Kaw/dANzQAzQh37jkeuLmOfjROfhyjKLSEK6ERmnAu+gkRft4eMEir/UUWKIE3aYg+Jv6N50NWitIW20C0zNmelhzrANLZM+d71Gv1rY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278096; c=relaxed/simple;
-	bh=YJAGFGGqTDdOapPqoyMIufJSNynlGJlzEAnVFZvT4oA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OGG3yM/ZznX7eGHbuhKhShyRrCDxJQZomB5HV7s3gpzzBEvLuwYTA+2nf7vUwzEXwxYA/ZCV0SFItwrvUK6p8twIEmcHfU4x24oyFoYyrAHF7bAFd8euh9dbf6w3ix2m+nJ7I3stGsuL/myGbdonYfMTp9G+RiFJtAuKw4p6x6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=ngzzRSRu; arc=none smtp.client-ip=209.85.160.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+	s=arc-20240116; t=1774278147; c=relaxed/simple;
+	bh=V+8n2djQSrAn0/iD48NW+grY2jzX6Ew6bZZOy3qArZo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pTSk1QIgRcR63qktt63IwQ0kvvk/mldHIAD41AAJugZR9sIOKkl4ywc8BskzGUFwKE34V5RI2Xtuej4bJ1U6gJQ4u4PyxA0PUnwuRqGBYdhy0XQK13nF1nqPhmdT+/yBnNE3MrpdE+bhStAhuTnEUfEZQ6cwYmWntYzDRsOHf+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=KKvBgedI; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="ngzzRSRu"
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-40423dbe98bso1103093fac.2
-        for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 08:01:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1774278093; x=1774882893; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uOPOYS/nGpT6q8jY3dWvKs7qQBZ0laozgcfEFZVyZg8=;
-        b=ngzzRSRuyM8B3sEkL1nkBwYw746zNpG1KVfpJREhN15HtNmX0w9trIFjMfkuANx+W/
-         JPP9bMj/Ufz2oNoguTJyfY1zGK4cU+C6Wku4qI3/3ZXsx5G7Ol2nTv8h0CDhW/x7FbcY
-         13j7fXR0WXHqW9IIHz4K9lB4wVGeuaeqvvmayFuL6Xioi3gmoTsGr08QatTiP8c6BkKT
-         I6Dey+RWxOGSPKHFRhxkTOIBuRJHdD9owWxXQMFcD9vIy70RvcChG1k91KWJqCRNEH8g
-         U1VV1ZNnOhEwL2vbXZJAC5Dm19rqmAofOYuoA1Uklkr3oekqDIC+dLWhEXVCN6sBlgaJ
-         zg9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774278093; x=1774882893;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uOPOYS/nGpT6q8jY3dWvKs7qQBZ0laozgcfEFZVyZg8=;
-        b=qiYRCEC0cZ2LOkNO4rs82l34Qa5iLmNX69cChF07nGhRQ+nTi42Pr5YYWvQeLGCXfN
-         8Vvj2/iVBuPMBvJoWkBeohq3wsqj38FwXmG7vspA48dsMQDYmDmFvoHCujEMjmYpGvqC
-         Z3wtwQ6H87D2zXBMeFJMP1emUtGkbC4fZ9JDiaRE+9N8kMkSBWdaR6dh7jNoebdyPvXa
-         +A7dmUJmIED8tAoDX3xMivwCauxwysXOyCHzSMY1NGENvwAnd6TncSLj5iAWwHWRsWrf
-         qsTU6PbjCdjzl/zPpCQzLNaxP7BHtEJzzHIfYduEnaZ9bs0MoGlQcUfPjtLCMgYZX9j0
-         6Sdw==
-X-Gm-Message-State: AOJu0Yw20Bs5gJGvpqtJmtDoiFyMMEKRC7L0tMvUdUORKZRdoFfB1HbI
-	+/VPTZh4oMAlNViJnBfr7whSXFfn5xxYz0Wuv4xCvCAxC0wNACY9tUBWtwTSzz/FDVU=
-X-Gm-Gg: ATEYQzwh9AqaH6cuEl+13U1uR3IOgEQ+vhAruESwNCflfOM0ntYPSxjjH1Ivs9l1jKD
-	YbTmQJzyO913q+HhZgHEPLRMzOqFjwRUV/w2q3scPRE/i2b+nhKYDlIV41z5Jy558xTLDv0FqT6
-	mmiO6hiBqPwymvUhhFZTu57S0tIOzQfMMwu5dBplbqLRw2poAugnaeOPw1kbisGSOEsLuS5kO/B
-	goGOfmkx/3vtzND4FkNbvAVfOc8JtCaL0/D5a7hWPHj3dxVFo2434gXzO+JO71zMv9q98Qcs/Zw
-	z5ryGF/jFoJvco2v0AOVQlnio6XQIW27Y0sV61jbSGyf8pZy5I2h4OaNdTctfBJyKJXPeqcpgHB
-	RE8y7B14TaUmYitZIQGV4pU+h4SU+YrSDZ9Y6mSod7cUkrgJ1m0KyHoO1/EKOanSKxpgx8DGTz4
-	ByqVTK1nQts7quJMe+mwZjSczsj5QtQ/vfybF6vtb2igEhqN+AE2Cy82sTt4CpfEqarv0sEr0Or
-	N8/mIH5pg==
-X-Received: by 2002:a05:6870:28c:b0:417:5828:ed3 with SMTP id 586e51a60fabf-41c111f5247mr7123073fac.38.1774278092544;
-        Mon, 23 Mar 2026 08:01:32 -0700 (PDT)
-Received: from [192.168.1.150] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-41c14ddbca8sm10822185fac.15.2026.03.23.08.01.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Mar 2026 08:01:31 -0700 (PDT)
-Message-ID: <1b3ad321-866a-4cb8-9810-5eae7805647d@kernel.dk>
-Date: Mon, 23 Mar 2026 09:01:30 -0600
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="KKvBgedI"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62MNU57e670670;
+	Mon, 23 Mar 2026 15:01:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=GLL1Ly
+	3OeAkM26lTyfuK59J2i4l+t5B9XXC/Bq7VyJs=; b=KKvBgedIntUMFnLe+in10/
+	ShGLogvTap51JQ+yqi0eVYJzFjLO10C9YUq0WmFwslEdPlllrjtErFvtEFChT0wa
+	ZRcG3JmkJWEbl1d33WjE+EGvvA7JxSOtWikN4Nqj5jQFRQuGkE8TTZNiUnuMXzHw
+	xAL3NeM6zs6ZJNbl9kSr9oAm5XudAk/BToX1ixNU2dE/iQjh0ZfX94+R/zTpLGPz
+	JGOzt43Sd9p6bC1FAml/1/ZlCY8yv22ZJXSiwWsyCwv3hnVmxnIPzdXUE2erWS9q
+	/M5HAjVS99cEVGC0IXcp7OzURinRW/ppiDuOTAQipjb1mbuCV15QMQDla3oeI59Q
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1ktuq3ee-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Mar 2026 15:01:52 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62NCruMC026771;
+	Mon, 23 Mar 2026 15:01:51 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4d275knqtw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Mar 2026 15:01:51 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62NF1RmQ29360808
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 23 Mar 2026 15:01:27 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 42E6658063;
+	Mon, 23 Mar 2026 15:01:51 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 51E1C58059;
+	Mon, 23 Mar 2026 15:01:49 +0000 (GMT)
+Received: from Mac.ibm.com (unknown [9.61.247.188])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 23 Mar 2026 15:01:49 +0000 (GMT)
+From: Omar Elghoul <oelghoul@linux.ibm.com>
+To: vishs@meta.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, dw@davidwei.uk,
+        edumazet@google.com, eperezma@redhat.com, ilias.apalodimas@linaro.org,
+        jasowang@redhat.com, kernel-team@meta.com, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, mst@redhat.com, netdev@vger.kernel.org,
+        pabeni@redhat.com, technoboy85@gmail.com,
+        virtualization@lists.linux.dev, xuanzhuo@linux.alibaba.com,
+        oelghoul@linux.ibm.com
+Subject: Re: [PATCH net-next v11] virtio_net: add page_pool support for buffer allocation
+Date: Mon, 23 Mar 2026 11:01:31 -0400
+Message-ID: <20260323150136.14452-1-oelghoul@linux.ibm.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260310183107.2822016-1-vishs@meta.com>
+References: <20260310183107.2822016-1-vishs@meta.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH io_uring-7.1 01/16] io_uring/zcrx: return back two step
- unregistration
-To: Pavel Begunkov <asml.silence@gmail.com>, io-uring@vger.kernel.org
-Cc: netdev@vger.kernel.org, Youngmin Choi <youngminchoi94@gmail.com>
-References: <cover.1774261953.git.asml.silence@gmail.com>
- <0ce21f0565ab4358668922a28a8a36922dfebf76.1774261953.git.asml.silence@gmail.com>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <0ce21f0565ab4358668922a28a8a36922dfebf76.1774261953.git.asml.silence@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: YNzfoRIt1da90gDrXm5OnayrwaK83DCr
+X-Authority-Analysis: v=2.4 cv=aMr9aL9m c=1 sm=1 tr=0 ts=69c155e0 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=bD6ukYfIgYhu4hH-dYIA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIzMDExNCBTYWx0ZWRfXx63mzxnELWk5
+ Y4ei4W1R77ANzeQcp3sM/IdvojFh1xZob0caVE4n47QoppYM048+qJ2ITChKBSjII++GBT3OduH
+ FgKkCoVxgd/db9ymu20dPIn9V/fyFxZfEySwE7z7hPyZR7l5xim0s4c4dVCS+N4BKVnI0PKq1tu
+ Q3VQWOb3aJI8NTpl0kqw2nVIfI4hH6gS0tAJE+FsJSdcnGj/vEHnHX9NDmGpag2zyjCd9wBIjTE
+ fhXgeZWkW+1b4vyW4wli182xMcnpU+FO4qTWf9OumG1AmNrAySfCqOPfmEyY59nOzJZ2u78X1Gx
+ I6XRcQvrlpEGEqFM3P2lTFIVTn9VhSM4BgUrpwdcKGDc2GQzwp7UwpwdFBViTmSGMeMWni8GmZb
+ /2ruwN8yuID2OV1fr4NADUTfUJFtlWYlHu235M+UQXNnadxH8kilKOKn4kO6vGzuVpUVYQbRz18
+ 7oLM2n8sWdX/X/s4bvg==
+X-Proofpoint-GUID: 9gD9_WOZoQLsJS8lan0dhb2SdmUj0w89
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-23_04,2026-03-23_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 lowpriorityscore=0 adultscore=0 impostorscore=0 malwarescore=0
+ suspectscore=0 phishscore=0 priorityscore=1501 bulkscore=0 clxscore=1011
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603230114
 
-On 3/23/26 6:43 AM, Pavel Begunkov wrote:
-> @@ -898,12 +933,15 @@ void io_unregister_zcrx_ifqs(struct io_ring_ctx *ctx)
->  			unsigned long id = 0;
->  
->  			ifq = xa_find(&ctx->zcrx_ctxs, &id, ULONG_MAX, XA_PRESENT);
-> -			if (ifq)
-> +			if (ifq) {
-> +				if (WARN_ON_ONCE(!is_zcrx_entry_marked(ctx, id)))
-> +					break;
+Hi,
 
-This break is inside the scoped_guard(), does this need an ifq = NULL
-here? I do like scoped locking, but this seems a bit tricky...
+I've been testing linux-next (tags later than 03/17) and hit new issues in
+virtio-net on s390x. I bisected the issue, and I found this patch to be the
+first buggy commit.
 
--- 
-Jens Axboe
+The issue seems to only be reproducible when running in Secure Execution.
+Tested in a KVM guest, the virtio-net performance appears greatly reduced,
+and the dmesg output shows many instances of the following error messages.
+
+Partial relevant logs
+=====================
+[   49.332028] macvtap0: bad gso: type: 0, size: 0, flags 1 tunnel 0 tnl csum 0
+[   74.365668] macvtap0: bad gso: type: 2e, size: 27948, flags 0 tunnel 0 tnl csum 0
+[  403.302168] macvtap0: bad csum: flags: 2, gso_type: 23 rx_tnl_csum 0
+[  403.302271] macvtap0: bad csum: flags: 2, gso_type: e0 rx_tnl_csum 0
+[  403.302279] macvtap0: bad csum: flags: 2, gso_type: e1 rx_tnl_csum 0
+[  403.309492] macvtap0: bad csum: flags: 2, gso_type: 4c rx_tnl_csum 0
+[  403.317029] macvtap0: bad csum: flags: 2, gso_type: e0 rx_tnl_csum 0
+
+Steps to reproduce
+==================
+1. Boot a Linux guest implementing this patch under QEMU/KVM (*) with SE
+   enabled and a virtio-net-ccw device attached.
+2. Run dmesg. The error message is usually already present at boot time,
+   but if not, it can be reproduced by creating any network traffic.
+
+(*) This patch was not tested in a non-KVM hypervisor environment.
+
+I've further confirmed that reverting this patch onto its parent commit
+resolves the issue. Please let me know if you'd like me to test a fix or if
+you would need more information.
+
+Thanks in advance.
+
+Best,
+Omar
