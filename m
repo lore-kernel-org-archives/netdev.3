@@ -1,57 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F071D37FF5D
-	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 08:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90652381AE3
+	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 08:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774254911; cv=none; b=AkBM/lNWqDuUS5hbNcWWngeWrzuD62EeE/kxTIgRAtUlMfgA5Gnl124IhV++E0Tbsr55mZGP0mBngQnjpf6AKUlbKiuPd5gP8o3Ft+zxlhN9/Mn7eVDcEvQN/6bYxQ3Nazu0tl9ofRq5dQ6SPz6KpZcVIIB4grsahxgT+bvCDhQ=
+	t=1774254913; cv=none; b=UkvxDH5qo+/+4bkQV9u29lJGvJRlJDwv2tdeDBmXyUDPWmEfvWbyIffKfDNP9j2cS9zDri6FLMxV/ohmpmgTXzv+U5XE/PGzVC1i0mKCyyxFMqy+hdPm2aI1MJ+HaTugjkUMgE+/VNapo14158wLrRr7wd3y33DYS6wSROzYmcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774254911; c=relaxed/simple;
-	bh=5SLKuzIMqPr7QOUXKK5rgjEluKSyE3It67feRpZHclQ=;
+	s=arc-20240116; t=1774254913; c=relaxed/simple;
+	bh=RcKuRVyp3dUtno6BvOktjKlMB6frsCzSFkWZrig/a6M=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kUFP/LG9SI08R1G3opBtgJS5yETvjlJm6yhv4aTA9GMUkDcvfDqztaAf8cMgK1vsz2IZvzIRR2Oy9Uo8kNlmvWRMQo3AqBT7PyXHfEVRGMgA/pnrMdHvdk0vjbdCkUZS4FAK9V+Tjr98TnMPgE+8kEbHnSfnSTKS34edOh7TxuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=trIWBX/X; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=P4gM8I8rE3sUjOUepQv/ZPIV+hYSghq3FuDB/Zqss8WORQnopFSFcHDzdqLoodQ8qrfbxt69rm0YkoDbPtcJOD6WaRydpxQDvu1TM+ruZsFWhtLYJqq9vf2o/fMsagKDZbbiFro1jEV4h3wcfRQgxizpoVGIV+20G816fyaIa3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=SrpTezx0; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="trIWBX/X"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="SrpTezx0"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id ACBD5207AC;
-	Mon, 23 Mar 2026 09:35:08 +0100 (CET)
+	by mx1.secunet.com (Postfix) with ESMTP id 6F2C8205ED;
+	Mon, 23 Mar 2026 09:35:10 +0100 (CET)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id Iz4W5gtUMzy5; Mon, 23 Mar 2026 09:35:08 +0100 (CET)
+ with ESMTP id XopczZD0q50x; Mon, 23 Mar 2026 09:35:09 +0100 (CET)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id EBDAB20728;
-	Mon, 23 Mar 2026 09:35:07 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com EBDAB20728
+	by mx1.secunet.com (Postfix) with ESMTPS id 7D8982068C;
+	Mon, 23 Mar 2026 09:35:09 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 7D8982068C
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1774254908;
-	bh=Gv9Us7jzRQFWIC7I6vtbT3l0HLQCpnIgUIq+IJB6HGw=;
+	s=202301; t=1774254909;
+	bh=mJTsI8IMj9FroJfRtqXywipM8uM+WciQVPZwEFZLGnw=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=trIWBX/X4wVwOoWsgL9TCRQ+zq3ICJL4ry/SjuFDpHDFI/MGKTxLcAHd3JWNWyYQa
-	 n4+OgEh+VRNKf30bPnoCJCJHhRHYWZRlrJcAWNdbU9ZPJ8EjxwPSml8vxjGs7LsJDN
-	 cROVvsrlMNPxzieisQYii/npFsISaOFwnbdEZyZzVWxSZ/e1ZG7Y0cJ3q1XYiqUCEs
-	 xcbWBtQBF7tsqyG1OGMUDgCcJ7xd0wHKHl0u3rLVkrxV2h7ZpM1p6+gRAMGIr7wzRB
-	 FBJJGKkf9u+IJgfjHnvBROlNUqOg6UVGywjY6ZFcs/emiteOpmGy3+8qdi3+hfV3kq
-	 idUW8Su3VF4rw==
+	b=SrpTezx0QS0tJMIsZpY5q9O42p5qwx+X/FGXlIARZ/aNHCUUDN7t2VIiqH93lLdct
+	 n8Bc+TVpJWcpaZAAXBCwsJkI5l1JffZIKja6AobsiEtmeEncscEEkQgfqmRrXZluOZ
+	 mybrIC96rrIWfEtduU0+e7tKEqSU333VX7tnNwSFai99ims8dW/fYamU7jY+S1NSr5
+	 M07Bs99CPIj4hDxjJQviewmBfAhieCgZzFihdnSLOis2HorSsjnJ8vwOmjNqPID1pG
+	 W9D0oQMrP0cTJwqeTt0THLO5hzes77yxYz0dXyxyZkFM+bNUY1c0CXmny39ehw8D4X
+	 rhzdG8TE+JwZw==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 23 Mar
- 2026 09:35:07 +0100
-Received: (nullmailer pid 2741824 invoked by uid 1000);
+ 2026 09:35:08 +0100
+Received: (nullmailer pid 2741854 invoked by uid 1000);
 	Mon, 23 Mar 2026 08:34:49 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 09/20] xfrm: state: fix sparse warnings around XFRM_STATE_INSERT
-Date: Mon, 23 Mar 2026 09:33:50 +0100
-Message-ID: <20260323083440.2741292-10-steffen.klassert@secunet.com>
+Subject: [PATCH 19/20] af_key: validate families in pfkey_send_migrate()
+Date: Mon, 23 Mar 2026 09:34:00 +0100
+Message-ID: <20260323083440.2741292-20-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260323083440.2741292-1-steffen.klassert@secunet.com>
 References: <20260323083440.2741292-1-steffen.klassert@secunet.com>
@@ -63,118 +63,82 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
+X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
  (10.32.0.171)
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Eric Dumazet <edumazet@google.com>
 
-We're under xfrm_state_lock in all those cases, use
-xfrm_state_deref_prot(state_by*) to avoid sparse warnings:
+syzbot was able to trigger a crash in skb_put() [1]
 
-net/xfrm/xfrm_state.c:2597:25: warning: cast removes address space '__rcu' of expression
-net/xfrm/xfrm_state.c:2597:25: warning: incorrect type in argument 2 (different address spaces)
-net/xfrm/xfrm_state.c:2597:25:    expected struct hlist_head *h
-net/xfrm/xfrm_state.c:2597:25:    got struct hlist_head [noderef] __rcu *
+Issue is that pfkey_send_migrate() does not check old/new families,
+and that set_ipsecrequest() @family argument was truncated,
+thus possibly overfilling the skb.
 
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
+Validate families early, do not wait set_ipsecrequest().
+
+[1]
+
+skbuff: skb_over_panic: text:ffffffff8a752120 len:392 put:16 head:ffff88802a4ad040 data:ffff88802a4ad040 tail:0x188 end:0x180 dev:<NULL>
+ kernel BUG at net/core/skbuff.c:214 !
+Call Trace:
+ <TASK>
+  skb_over_panic net/core/skbuff.c:219 [inline]
+  skb_put+0x159/0x210 net/core/skbuff.c:2655
+  skb_put_zero include/linux/skbuff.h:2788 [inline]
+  set_ipsecrequest net/key/af_key.c:3532 [inline]
+  pfkey_send_migrate+0x1270/0x2e50 net/key/af_key.c:3636
+  km_migrate+0x155/0x260 net/xfrm/xfrm_state.c:2848
+  xfrm_migrate+0x2140/0x2450 net/xfrm/xfrm_policy.c:4705
+  xfrm_do_migrate+0x8ff/0xaa0 net/xfrm/xfrm_user.c:3150
+
+Fixes: 08de61beab8a ("[PFKEYV2]: Extension for dynamic update of endpoint address(es)")
+Reported-by: syzbot+b518dfc8e021988fbd55@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/69b5933c.050a0220.248e02.00f2.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- net/xfrm/xfrm_state.c | 30 +++++++++++++++++++-----------
- 1 file changed, 19 insertions(+), 11 deletions(-)
+ net/key/af_key.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index b81303cccc5e..34cf9f361683 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -1563,23 +1563,23 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
- 			list_add(&x->km.all, &net->xfrm.state_all);
- 			h = xfrm_dst_hash(net, daddr, saddr, tmpl->reqid, encap_family);
- 			XFRM_STATE_INSERT(bydst, &x->bydst,
--					  net->xfrm.state_bydst + h,
-+					  xfrm_state_deref_prot(net->xfrm.state_bydst, net) + h,
- 					  x->xso.type);
- 			h = xfrm_src_hash(net, daddr, saddr, encap_family);
- 			XFRM_STATE_INSERT(bysrc, &x->bysrc,
--					  net->xfrm.state_bysrc + h,
-+					  xfrm_state_deref_prot(net->xfrm.state_bysrc, net) + h,
- 					  x->xso.type);
- 			INIT_HLIST_NODE(&x->state_cache);
- 			if (x->id.spi) {
- 				h = xfrm_spi_hash(net, &x->id.daddr, x->id.spi, x->id.proto, encap_family);
- 				XFRM_STATE_INSERT(byspi, &x->byspi,
--						  net->xfrm.state_byspi + h,
-+						  xfrm_state_deref_prot(net->xfrm.state_byspi, net) + h,
- 						  x->xso.type);
- 			}
- 			if (x->km.seq) {
- 				h = xfrm_seq_hash(net, x->km.seq);
- 				XFRM_STATE_INSERT(byseq, &x->byseq,
--						  net->xfrm.state_byseq + h,
-+						  xfrm_state_deref_prot(net->xfrm.state_byseq, net) + h,
- 						  x->xso.type);
- 			}
- 			x->lft.hard_add_expires_seconds = net->xfrm.sysctl_acq_expires;
-@@ -1730,25 +1730,29 @@ static void __xfrm_state_insert(struct xfrm_state *x)
+diff --git a/net/key/af_key.c b/net/key/af_key.c
+index 571200433aa9..bc91aeeb74bb 100644
+--- a/net/key/af_key.c
++++ b/net/key/af_key.c
+@@ -3518,7 +3518,7 @@ static int set_sadb_kmaddress(struct sk_buff *skb, const struct xfrm_kmaddress *
  
- 	h = xfrm_dst_hash(net, &x->id.daddr, &x->props.saddr,
- 			  x->props.reqid, x->props.family);
--	XFRM_STATE_INSERT(bydst, &x->bydst, net->xfrm.state_bydst + h,
-+	XFRM_STATE_INSERT(bydst, &x->bydst,
-+			  xfrm_state_deref_prot(net->xfrm.state_bydst, net) + h,
- 			  x->xso.type);
+ static int set_ipsecrequest(struct sk_buff *skb,
+ 			    uint8_t proto, uint8_t mode, int level,
+-			    uint32_t reqid, uint8_t family,
++			    uint32_t reqid, sa_family_t family,
+ 			    const xfrm_address_t *src, const xfrm_address_t *dst)
+ {
+ 	struct sadb_x_ipsecrequest *rq;
+@@ -3583,12 +3583,17 @@ static int pfkey_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
  
- 	h = xfrm_src_hash(net, &x->id.daddr, &x->props.saddr, x->props.family);
--	XFRM_STATE_INSERT(bysrc, &x->bysrc, net->xfrm.state_bysrc + h,
-+	XFRM_STATE_INSERT(bysrc, &x->bysrc,
-+			  xfrm_state_deref_prot(net->xfrm.state_bysrc, net) + h,
- 			  x->xso.type);
- 
- 	if (x->id.spi) {
- 		h = xfrm_spi_hash(net, &x->id.daddr, x->id.spi, x->id.proto,
- 				  x->props.family);
- 
--		XFRM_STATE_INSERT(byspi, &x->byspi, net->xfrm.state_byspi + h,
-+		XFRM_STATE_INSERT(byspi, &x->byspi,
-+				  xfrm_state_deref_prot(net->xfrm.state_byspi, net) + h,
- 				  x->xso.type);
+ 	/* ipsecrequests */
+ 	for (i = 0, mp = m; i < num_bundles; i++, mp++) {
+-		/* old locator pair */
+-		size_pol += sizeof(struct sadb_x_ipsecrequest) +
+-			    pfkey_sockaddr_pair_size(mp->old_family);
+-		/* new locator pair */
+-		size_pol += sizeof(struct sadb_x_ipsecrequest) +
+-			    pfkey_sockaddr_pair_size(mp->new_family);
++		int pair_size;
++
++		pair_size = pfkey_sockaddr_pair_size(mp->old_family);
++		if (!pair_size)
++			return -EINVAL;
++		size_pol += sizeof(struct sadb_x_ipsecrequest) + pair_size;
++
++		pair_size = pfkey_sockaddr_pair_size(mp->new_family);
++		if (!pair_size)
++			return -EINVAL;
++		size_pol += sizeof(struct sadb_x_ipsecrequest) + pair_size;
  	}
  
- 	if (x->km.seq) {
- 		h = xfrm_seq_hash(net, x->km.seq);
- 
--		XFRM_STATE_INSERT(byseq, &x->byseq, net->xfrm.state_byseq + h,
-+		XFRM_STATE_INSERT(byseq, &x->byseq,
-+				  xfrm_state_deref_prot(net->xfrm.state_byseq, net) + h,
- 				  x->xso.type);
- 	}
- 
-@@ -1868,10 +1872,12 @@ static struct xfrm_state *__find_acq_core(struct net *net,
- 			      ktime_set(net->xfrm.sysctl_acq_expires, 0),
- 			      HRTIMER_MODE_REL_SOFT);
- 		list_add(&x->km.all, &net->xfrm.state_all);
--		XFRM_STATE_INSERT(bydst, &x->bydst, net->xfrm.state_bydst + h,
-+		XFRM_STATE_INSERT(bydst, &x->bydst,
-+				  xfrm_state_deref_prot(net->xfrm.state_bydst, net) + h,
- 				  x->xso.type);
- 		h = xfrm_src_hash(net, daddr, saddr, family);
--		XFRM_STATE_INSERT(bysrc, &x->bysrc, net->xfrm.state_bysrc + h,
-+		XFRM_STATE_INSERT(bysrc, &x->bysrc,
-+				  xfrm_state_deref_prot(net->xfrm.state_bysrc, net) + h,
- 				  x->xso.type);
- 
- 		net->xfrm.state_num++;
-@@ -2603,7 +2609,9 @@ int xfrm_alloc_spi(struct xfrm_state *x, u32 low, u32 high,
- 		if (!x0) {
- 			x->id.spi = newspi;
- 			h = xfrm_spi_hash(net, &x->id.daddr, newspi, x->id.proto, x->props.family);
--			XFRM_STATE_INSERT(byspi, &x->byspi, net->xfrm.state_byspi + h, x->xso.type);
-+			XFRM_STATE_INSERT(byspi, &x->byspi,
-+					  xfrm_state_deref_prot(net->xfrm.state_byspi, net) + h,
-+					  x->xso.type);
- 			spin_unlock_bh(&net->xfrm.xfrm_state_lock);
- 			err = 0;
- 			goto unlock;
+ 	size += sizeof(struct sadb_msg) + size_pol;
 -- 
 2.43.0
 
