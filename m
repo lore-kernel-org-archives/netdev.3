@@ -1,273 +1,137 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7F03D34BD
-	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 18:28:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 067D12D8795
+	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 18:33:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774290537; cv=none; b=dP3CIezFxJVstD8Re+XZludIZVasGoT4GHSnEFk52dB+wjIq7AvZnqorCf/2rJ0CN106d83/N8zYOnxS9xXjFUyAibp/ajc/taV59Q8EbV5jMR6VXEdIMaDUuOsXjh2aYSeALCWiW10V3lYsvaZWfT+eZUHDrkiCGgg+UuUS6sE=
+	t=1774290823; cv=none; b=nWtvwtjHpJJ118THuwaIY5n/W2l28Fr1Y0jRp2EOGo4NSdsnGvsRFi97KVsSyGNfM0uKzIutOJ7LnRH96OvjlpA5UeLViysqXH16TD9WayQD0frTSbnGDQ3vw+nuqr13RBED80zyE/R5LZSroCKZZZAwubV7uz7fn2my+uAiI1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774290537; c=relaxed/simple;
-	bh=UR0wxAJljmGCXJ+jOK6daMXItb/fhYUqkOWlYcn0dBg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BHR9jc7yXTXrfoF/D3sHD0pIvpisNG73dH0gnIJGi9DIuxQ/pOZzakzkKABQBbz/nBQLg3zT1bijqCjUFHtSIzN0AFG3niRcsZiNBEESVdwnr5eTiBMYbN3f7e5pvxv40CFapmPfCLRLgxM3VXat+5AggplnJAmju2Rq0pSrQHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h4yPnwc6; arc=none smtp.client-ip=209.85.221.54
+	s=arc-20240116; t=1774290823; c=relaxed/simple;
+	bh=6I3TCajsnbPhvopolFVK3KO9pDXc1m1XrVrTJSIDMJQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t0cgJQvf4tHniACjE1NBr12Gan6asOQI4undIAaBhU3393ItA4ErALk9bmOXwBZxKHs1blF7lpVzWeGkxwf0mkHQXWWVH8HfABc9X7re+RIc5EpTYW4Tf6rhShO9x7v0sDeNh30qPyI1j97LqSNq8CTcgnJWmgpZxDSJ332L27s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=tIw+qtLG; arc=none smtp.client-ip=74.125.82.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h4yPnwc6"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-43a03cb1df9so497319f8f.1
-        for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 11:28:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="tIw+qtLG"
+Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-1271257ae53so538757c88.1
+        for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 11:33:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774290532; x=1774895332; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kaHp2/FUvMOtomlFmeSVzxYjb6RSDeBp4ispDMEXgtk=;
-        b=h4yPnwc6oAOg7qIjdmRodCa4OOKjuVrCmao4it7X4RrXzjrYRoe/eXkvwvq6FfvI7V
-         fv3ueLwiBdvzLNmCDhxvlZUw+gzkjibLQNGPjjnfUl/WYErlzM7jFDgGoZm7Fdl2Vd6s
-         XsRqRI60Dz6/q3CHVNlAPiT3cjtZMMo1SX/aLyeDddBcepEvJ6UGNP5wU1b8uvdbt1WB
-         /S6kZfiseZKU7ek4VI4EWz8r+mi+kHl/YVHI1y4bGni6zptV9uArOwYZyfBDYRZGpiiA
-         08ZdW5Ne8E1QdtOmrZhydyDyff99T/14iWT5jJJ+Zfo2gp2QpP7n77SCrHS8axnJ5cUY
-         9VEw==
+        d=gmail.com; s=20251104; t=1774290821; x=1774895621; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=VnYjc2faOHjkbaG+X0+KOSaQNDxXMdAftkLY6+CZb5k=;
+        b=tIw+qtLG94A2vyctJ1nrIkpgQyY6GdyXSxudWeaEhia18nDKP7H2BlmAo+bzO1ezIi
+         SZroA2JPns9tsiLeMtLDEP0iBAiDMhPuwY94Ch9vwu5Nb7kzxQKSjlDb4Uno3JOQoPva
+         3p2OdOAudQkBOZaHWSaWAPNRZn/OsnD3dJKCN14jNHAD4DaXu3hF0f2dE6vn9ewGTpKy
+         D711seWX5f00wu6/sVlnQL1F3p+/WbV/GJbZo+cZEXwy8JMK+t8PCfvRA9LLH51zU9st
+         LzGjDoaxrG7NJQ86D9iUasPVzjiFa5zJR7vWcUGVKZIzLnsmNHxMwJgLz8UkPqUu8jAo
+         9G9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774290532; x=1774895332;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=kaHp2/FUvMOtomlFmeSVzxYjb6RSDeBp4ispDMEXgtk=;
-        b=YvdYv8XhXw+AQuxRPV4FMwMR/qyMjLcIxadbjmqZRK4+RhdVBP+GRDo2ml8t/FrnNf
-         35/28OnMGyo8EUwAFMvtzgh6TXj9r5eQimCREnf5zwLcGRB0dhFw3TIOpnYT2wcVq5Ex
-         +iMo0sN7Q5JV/TrlnAb1+JM04MU0kU9mRIrbbTznKkpYpY5zJaf4bR6CXuq5DRBy+DQA
-         oBcKToDVXCzFeDD4tUbu08SqjmXDGeXCqpVe4FxH0DIWmrP7CW2VGoag1UnFuEgx0NzS
-         2QsJWxApZ+GRme1/3IPPDcPUqqobwiwP/9mHv2UOsulrAF3oOTawXKhTAXqxkFyE6VIR
-         HnPQ==
-X-Gm-Message-State: AOJu0Yy63BYliIRbPuy/8Rn+M0erfFZ143AeUIbmDGM9vCMhZwU0/A+8
-	3621CoDGFXvjaBVVZR8uOIpRVqDeU8aungJ06K3Nl7mxFMDET/Q5VzF+
-X-Gm-Gg: ATEYQzzEfs8wVJ1UBDqyDr24U3oO9RXXdsytXrgvnNZSMLAhHDcR5dOl/gyxU1J+Wqa
-	VaRt2s/1ByMvXuucFvrdE4iCLL/Qc8hpevShEGWy2R+f5rYr7L5qNrm+U0Xif2isvMZ2ciadVXX
-	+3XaUEoCsduWLk7TRUh04a6eslgTM92rQKeY6yhW3aIoCtBOL0EcWA17Zd8sJOXrtTToz5vnu9R
-	slZ4QQ1MFLaPJJvGV1IYL/6mMNcq86MhJV3Wb9FiQlHq+8rFAgGqYj3/6qEfZByxpmiff1PtQDc
-	anGVjEfm0G6ukmc8oDkm9hTNq/12XACQcM0CW/B6vajV+IQnHXeCJT08CoWlYek+Yb5KgmkVjIp
-	dP8B7lsfPniSP0yyrEQLxYuxwkV1NmofLsiGPxt8r8M6ceR6lfxWbPsvYaft3NP/Kv8b099rEXT
-	Vdmgulo58n1iFGsWO8Tjt1bkEd4vSfH3ktcP/aHptPLHmVwX3/Z47PIw6Klohy3NUrLxzhcQSmF
-	24=
-X-Received: by 2002:a05:6000:1883:b0:43b:4440:9c28 with SMTP id ffacd0b85a97d-43b63fe235fmr20398332f8f.0.1774290531496;
-        Mon, 23 Mar 2026 11:28:51 -0700 (PDT)
-Received: from turbo.teknoraver.net (net-37-119-137-97.cust.vodafonedsl.it. [37.119.137.97])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b64714decsm28448751f8f.31.2026.03.23.11.28.50
+        d=1e100.net; s=20251104; t=1774290821; x=1774895621;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VnYjc2faOHjkbaG+X0+KOSaQNDxXMdAftkLY6+CZb5k=;
+        b=GHt6P7O322YQmZ6JfCIRHcndw5aihcKQGsrlSZIX7FRejzw67Mn2TQGs8ncG0u4aKb
+         7GN9TS5FeT19KPrb/jl8TYIn0GeiFFaFcNhguR/h82mNp3WvLC+TqZcsR2VawONTS0Nu
+         QQUzz0VDhO7thLwdNA7ibeAKirSVc3QepgtZdy/LuFdyO0EuGbG74pk7ebZQeZg1pSm2
+         cfSGbD95ckb3RJCJch34Qp8T5V7sj9YuWt/WuBE8iYbXdWj8MNiM7OJ+7c2FbbaXrfyH
+         D1veE9fguviPsoOUKYUULtIFKpGhVptKc10A1fRBdQOUAOQNo/JKOI5wPUuWa6rRXVT4
+         7/6g==
+X-Forwarded-Encrypted: i=1; AJvYcCXWj+Z3YmWRQbTAS5IagiDEO/vpUq0xV/VPbQ0Fxj06MCMQ3zXv6AXwtpAZX8B/WaCUTnLcxRE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGY1qqPiZpySeOcdyXEMpn6VPG/8qrFyT32RV/vHA2rNNzlS3S
+	yrtdogIZq6GGpitSCQGCW7Syv6OghxGUVRXywpCN5vwKV2u6CI2Q7IcI
+X-Gm-Gg: ATEYQzwktC05Qg5DyDbZDK1R4ekpMmJOGikrNPg/inhEK1Lgx5pQmhxmqzVPbXIH+0f
+	Qzffcc/e9xgB6FFVelQIEct0M/Jl7Q/abc4Ncx14UOHf8e3xOSWlbIDWGc2P33q5I7772+sF8Ud
+	cY5XXB/gDQrIuqk2PXRqmfGO+XFd1kiDlo99FfG3vHyS6+2p9i/0mNc2YJTsZ8Q9oCNo+i2v0aB
+	bONN8ecQej1vsvLABTTFhMxvI+BMtZxWe+l/teAb5/r+tdr8OQ6OCWaIex8y3q4eZBn56ZpDZDT
+	xzYZ+7unnq/W6BrSm+3hZVJb29/qBn3LUFKCGSufOc5/5Xrp7gbdpBAartMyVpRk7T7116mGyX4
+	Ym7B+0jbb4zPF1vLtZUlAmaH41mLucbVOeFSO6kSzWyqvrjlvd4XsTd98FwonONBzz3HrVEXAlW
+	7QdqazRAm3y3+WK4yl1Ro34/hSogpNW6gMdR+KpGVyNzoHT/qQr6MXTtJ2k6FFZL8j
+X-Received: by 2002:a05:7022:4199:b0:12a:6c7e:bef2 with SMTP id a92af1059eb24-12a72671ad6mr6133919c88.7.1774290821078;
+        Mon, 23 Mar 2026 11:33:41 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2ebe:8:a296:1211:5ab0:bc95])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12a733d199asm9391030c88.4.2026.03.23.11.33.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 11:28:51 -0700 (PDT)
-From: Matteo Croce <technoboy85@gmail.com>
-X-Google-Original-From: Matteo Croce <teknoraver@meta.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Mohsin Bashir <mohsin.bashr@gmail.com>
-Cc: netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v4 2/2] e1000e: add XDP_REDIRECT support
-Date: Mon, 23 Mar 2026 19:28:23 +0100
-Message-ID: <20260323182823.5813-3-teknoraver@meta.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323182823.5813-1-teknoraver@meta.com>
-References: <20260323182823.5813-1-teknoraver@meta.com>
+        Mon, 23 Mar 2026 11:33:40 -0700 (PDT)
+Date: Mon, 23 Mar 2026 11:33:36 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Mark Brown <broonie@kernel.org>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+	Peter Rosin <peda@axentia.se>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Moritz Fischer <mdf@kernel.org>, Xu Yilun <yilun.xu@intel.com>, Tom Rix <trix@redhat.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-phy@lists.infradead.org, linux-spi@vger.kernel.org, linux-leds@vger.kernel.org, 
+	linux-fpga@vger.kernel.org, driver-core@lists.linux.dev
+Subject: Re: [PATCH net-next 07/10] net: phy: switch to using
+ class_find_device_by_fwnode()
+Message-ID: <acGGWTmSMuc5h3Od@google.com>
+References: <20260322-remove-device-find-by-of-node-v1-0-b72eb22a1215@gmail.com>
+ <20260322-remove-device-find-by-of-node-v1-7-b72eb22a1215@gmail.com>
+ <32679fc0-c388-4cd7-a030-5f5ed5abab78@lunn.ch>
+ <acDLzK8vpptTUMf1@google.com>
+ <acEBCBgMV3RrGKiU@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <acEBCBgMV3RrGKiU@shell.armlinux.org.uk>
 
-Add the ability to redirect packets to other devices via XDP_REDIRECT
-and to receive redirected frames from other devices via ndo_xdp_xmit.
+On Mon, Mar 23, 2026 at 08:59:52AM +0000, Russell King (Oracle) wrote:
+> On Sun, Mar 22, 2026 at 10:17:15PM -0700, Dmitry Torokhov wrote:
+> > On Mon, Mar 23, 2026 at 03:54:09AM +0100, Andrew Lunn wrote:
+> > > > -	d = class_find_device_by_of_node(&mdio_bus_class, mdio_bus_np);
+> > > > +	d = class_find_device_by_fwnode(&mdio_bus_class,
+> > > > +					of_fwnode_handle(mdio_bus_np));
+> > > 
+> > > When you look at this, why is it better?
+> > 
+> > I think we should move as much as possible towards firmware-agnostic
+> > APIs and use fwnode_handle instead of device_node or software_node or
+> > ACPI companion. To discourage this I think we better remove
+> > firmware-specific APIs where we have firmware-agnostic ones and
+> > eventually clean up drivers that use OF- or ACPI-specific APIs.
+> 
+> Basically, no. This is wrong.
+> 
+> It may sound like a good goal, but there's an underlying issue. This
+> goal assumes that the firmware description in OF and ACPI are
+> indentical.
 
-New functionality:
-- XDP_REDIRECT case in e1000_run_xdp() using xdp_do_redirect()
-- e1000_xdp_xmit() as the ndo_xdp_xmit callback for receiving
-  redirected frames from other devices
-- xdp_do_flush() in e1000_finalize_xdp() for REDIR completions
-- xdp_features_set/clear_redirect_target() in e1000_xdp_setup()
-- NETDEV_XDP_ACT_REDIRECT and NETDEV_XDP_ACT_NDO_XMIT advertised
+If they are different then drivers will make allowance for this, like
+I2C core or SPI core does. But most of the modern drivers use
+firmware-agnostic APIs (device_property_*()).
 
-Assisted-by: claude-opus-4-6
-Signed-off-by: Matteo Croce <teknoraver@meta.com>
----
- drivers/net/ethernet/intel/e1000e/netdev.c | 85 +++++++++++++++++++++-
- 1 file changed, 81 insertions(+), 4 deletions(-)
+ACPI has allowance for device tree properties (via PRP0001 HID
+entries), and drivers should work with them.
 
-diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index d77f208f00cc..01661e1a74e5 100644
---- a/drivers/net/ethernet/intel/e1000e/netdev.c
-+++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -41,6 +41,7 @@ char e1000e_driver_name[] = "e1000e";
- #define E1000_XDP_PASS		0
- #define E1000_XDP_CONSUMED	BIT(0)
- #define E1000_XDP_TX		BIT(1)
-+#define E1000_XDP_REDIR		BIT(2)
- 
- static int debug = -1;
- module_param(debug, int, 0);
-@@ -805,6 +806,9 @@ static void e1000_finalize_xdp(struct e1000_adapter *adapter,
- {
- 	struct e1000_ring *tx_ring = adapter->tx_ring;
- 
-+	if (xdp_xmit & E1000_XDP_REDIR)
-+		xdp_do_flush();
-+
- 	if (xdp_xmit & E1000_XDP_TX) {
- 		/* Force memory writes to complete before letting h/w
- 		 * know there are new descriptors to fetch.
-@@ -823,13 +827,14 @@ static void e1000_finalize_xdp(struct e1000_adapter *adapter,
-  * @adapter: board private structure
-  * @xdp: XDP buffer containing packet data
-  *
-- * Returns E1000_XDP_PASS, E1000_XDP_TX, or E1000_XDP_CONSUMED
-+ * Returns E1000_XDP_PASS, E1000_XDP_TX, E1000_XDP_REDIR, or E1000_XDP_CONSUMED
-  **/
- static int e1000_run_xdp(struct e1000_adapter *adapter, struct xdp_buff *xdp)
- {
- 	struct bpf_prog *xdp_prog = READ_ONCE(adapter->xdp_prog);
- 	struct net_device *netdev = adapter->netdev;
- 	int result = E1000_XDP_PASS;
-+	int err;
- 	u32 act;
- 
- 	if (!xdp_prog)
-@@ -846,6 +851,12 @@ static int e1000_run_xdp(struct e1000_adapter *adapter, struct xdp_buff *xdp)
- 		if (result == E1000_XDP_CONSUMED)
- 			goto out_failure;
- 		break;
-+	case XDP_REDIRECT:
-+		err = xdp_do_redirect(netdev, xdp, xdp_prog);
-+		if (err)
-+			goto out_failure;
-+		result = E1000_XDP_REDIR;
-+		break;
- 	default:
- 		bpf_warn_invalid_xdp_action(netdev, xdp_prog, act);
- 		fallthrough;
-@@ -1041,11 +1052,11 @@ static bool e1000_clean_rx_irq_xdp(struct e1000_ring *rx_ring, int *work_done,
- 
- 			/* page consumed by skb */
- 			buffer_info->page = NULL;
--		} else if (xdp_res & E1000_XDP_TX) {
-+		} else if (xdp_res & (E1000_XDP_TX | E1000_XDP_REDIR)) {
- 			xdp_xmit |= xdp_res;
- 			total_rx_bytes += length - crc_len;
- 			total_rx_packets++;
--			/* page consumed by XDP TX */
-+			/* page consumed by XDP TX/redirect */
- 			buffer_info->page = NULL;
- 		} else {
- 			/* XDP_DROP / XDP_ABORTED - recycle page */
-@@ -7812,6 +7823,11 @@ static int e1000_xdp_setup(struct net_device *netdev, struct netdev_bpf *bpf)
- 	if (!need_reset)
- 		return 0;
- 
-+	if (prog)
-+		xdp_features_set_redirect_target(netdev, true);
-+	else
-+		xdp_features_clear_redirect_target(netdev);
-+
- 	if (running) {
- 		int err = e1000e_open(netdev);
- 
-@@ -7837,6 +7853,64 @@ static int e1000_xdp(struct net_device *netdev, struct netdev_bpf *xdp)
- 	}
- }
- 
-+/**
-+ * e1000_xdp_xmit - transmit XDP frames from another device
-+ * @netdev: network interface device structure
-+ * @n: number of frames to transmit
-+ * @frames: array of XDP frame pointers
-+ * @flags: XDP transmit flags
-+ *
-+ * This is the ndo_xdp_xmit callback, called when other devices redirect
-+ * frames to this device.
-+ **/
-+static int e1000_xdp_xmit(struct net_device *netdev, int n,
-+			  struct xdp_frame **frames, u32 flags)
-+{
-+	struct e1000_adapter *adapter = netdev_priv(netdev);
-+	struct e1000_ring *tx_ring = adapter->tx_ring;
-+	struct netdev_queue *nq = netdev_get_tx_queue(netdev, 0);
-+	int cpu = smp_processor_id();
-+	int nxmit = 0;
-+	int i;
-+
-+	if (unlikely(test_bit(__E1000_DOWN, &adapter->state)))
-+		return -ENETDOWN;
-+
-+	if (unlikely(flags & ~XDP_XMIT_FLAGS_MASK))
-+		return -EINVAL;
-+
-+	if (!adapter->xdp_prog)
-+		return -ENXIO;
-+
-+	__netif_tx_lock(nq, cpu);
-+	txq_trans_cond_update(nq);
-+
-+	for (i = 0; i < n; i++) {
-+		int err;
-+
-+		err = e1000_xdp_xmit_ring(adapter, tx_ring, frames[i]);
-+		if (err != E1000_XDP_TX)
-+			break;
-+		nxmit++;
-+	}
-+
-+	if (unlikely(flags & XDP_XMIT_FLUSH)) {
-+		/* Force memory writes to complete before letting h/w
-+		 * know there are new descriptors to fetch.
-+		 */
-+		wmb();
-+		if (adapter->flags2 & FLAG2_PCIM2PCI_ARBITER_WA)
-+			e1000e_update_tdt_wa(tx_ring,
-+					     tx_ring->next_to_use);
-+		else
-+			writel(tx_ring->next_to_use, tx_ring->tail);
-+	}
-+
-+	__netif_tx_unlock(nq);
-+
-+	return nxmit;
-+}
-+
- static const struct net_device_ops e1000e_netdev_ops = {
- 	.ndo_open		= e1000e_open,
- 	.ndo_stop		= e1000e_close,
-@@ -7860,6 +7934,7 @@ static const struct net_device_ops e1000e_netdev_ops = {
- 	.ndo_hwtstamp_get	= e1000e_hwtstamp_get,
- 	.ndo_hwtstamp_set	= e1000e_hwtstamp_set,
- 	.ndo_bpf		= e1000_xdp,
-+	.ndo_xdp_xmit		= e1000_xdp_xmit,
- };
- 
- /**
-@@ -8070,7 +8145,9 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	netdev->max_mtu = adapter->max_hw_frame_size -
- 			  (VLAN_ETH_HLEN + ETH_FCS_LEN);
- 
--	netdev->xdp_features = NETDEV_XDP_ACT_BASIC;
-+	netdev->xdp_features = NETDEV_XDP_ACT_BASIC |
-+			       NETDEV_XDP_ACT_REDIRECT |
-+			       NETDEV_XDP_ACT_NDO_XMIT;
- 
- 	if (e1000e_enable_mng_pass_thru(&adapter->hw))
- 		adapter->flags |= FLAG_MNG_PT_ENABLED;
+> 
+> Sure, looking up devices by fwnode handle makes sense, but looking up
+> anything that is described in firmware is not suitable for this kind
+> of conversion, because in doing so, you effectively "port" the DT
+> bindings to ACPI, and it may not be suitable for ACPI.
+> 
+> So, please don't make wholesale changes that transfer the DT bindings
+> into ACPI.
+> 
+
+I am not "transferring" anything, but I want to make sure the code works
+even if we augment OF with software nodes or if DT properties are used
+in ACPI.
+
+Thanks.
+
 -- 
-2.53.0
-
+Dmitry
