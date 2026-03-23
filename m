@@ -1,168 +1,164 @@
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010038.outbound.protection.outlook.com [52.101.193.38])
+Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB89387598;
-	Mon, 23 Mar 2026 11:31:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.38
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774265490; cv=fail; b=p8+sSBbZcU2Ciq6yVB2+J0Wcl1oVwjsQc8q+MehaTuqEGNbxNjK63DCoHpR+WzRwXuy0PXMXvzKTLRL2UeYtn/AUd09R2exlNM7pxdEUmoTrFDMA82ifr0lu8rtB0PQtuHaK/YYOl6ypWeLsqMB74TtTgaGzVCdEJtUaG8ccssE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774265490; c=relaxed/simple;
-	bh=H3kr3zYZGbNj7LlwDZ6QnvSBKtmRplgaCe5wLsHtvGg=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=szAS63GhhWMuRistHJRs66ZXrrr/QflTb/vrtmRlbNV41ZZtMavHsHcBHeoNwzKC0Io9dMbQjczOhtrjXRmAwTX9+kXEkRcD9Mq4sr9euTipMmcCTefTS1vGndiV7t4xjsQAtPGAtdih7xnpohxDeNM179vPbiKe1bK6WryX/w8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=rZ6YlNi8; arc=fail smtp.client-ip=52.101.193.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F89C37F758
+	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 11:31:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774265488; cv=none; b=Hv6fIn7JObOH9KhTOSDK2eAKUI1iEe6PgnlnYGXGtCZAt8hLSXWNnvbX/CfRjMgCM1EtiO1MAyNdxuJJhceALpSpF8G9ws3kx2dT+o/u5Kx+cJ5ffrQq0onqTXjKMERWtWp0au5PovJdeUJCLmWl9djR7a3voA6fUmgbduStZAQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774265488; c=relaxed/simple;
+	bh=UJcEnc5AWCHo1mHbu9Gr+oY1HftJroueaHxJIUNHybA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MV6opgyMPuHzEjorWaCGvsqpmP9JlF8iBUf4sHbGqP71VPzdABlkWb4gUV7Zovafg1A1lDpJcvjMdtZDjy3fFJowLU9PNtm3VVkLAgFBiKvVJ/PXHJ+hZe4/3eiw5Qb4BvESDmz3efSVW+4tY7vLir9z+yUDOfzs9yuqHwM6MKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=htFl5Xkc; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=1kD77AOa; arc=none smtp.client-ip=103.168.172.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="rZ6YlNi8"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JsLa9toMlLD0WuHNG0muO+qXhuATrBWxD+tZdsjTUCltPt4HKjOVpGDKfm2QZ6MHJA7a6nXDNDj3PvxwsC+UHWQjjuGH0MkN6Y4k0jQtx2gc/NObTp22rVUJ7pkQfdvTBQs9vaAaZwf9tUpV4JFf4ZbIcn2xK5gIFkhKglpY6lf5N2HmdkpolxUF+hsTacvPGWQUWZeOHb7s6DAOAum6nFjgDKmPLniSIgqvHrTF96ba/RxK9EednC+CRtovlnrLRogWPhotMpr6LYq+o2bhLvpI3EHgrOz75EcGgA7dsKxwfWctUIDj0qvP62ESk1DmoNOw5i/VyLLzxCO0V6nKcw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9VNhL4xCMKdNcaT8jVGVciCiK0nq4KMN3YLJLlQiiyc=;
- b=IeFifSAe1g2qoqKKcVR02kBRgkc1l8mszDCrwI+e1S1x81iUPb5An2cmJbw5vskCr3lwm0TXJaAsaN3mTqDkGr4pbOBXw9XrEU2LxbwGzSS6dOPySwsBt7i1Y5TB5C/tMVirlzgAkR61/Vh38UmoKHb+Jl2X64vbvGheY2eb0FaghixLaG8CfnznfydhKQCTUJH3dEJ93+aBNp/BEjC/0hSl8SupSNSFwH55MF1FRJM27iXcW0YthvT/CxzaAWt03vfKVzL46O12ToIm+n8eL/aa0KkPTj2oCp8Bcv4XOErkIKd7+B8XrEn8cdVhQWcjSfDdrW3xT/uE4F/ArjZu3g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9VNhL4xCMKdNcaT8jVGVciCiK0nq4KMN3YLJLlQiiyc=;
- b=rZ6YlNi8f7yVhD3QP7vMuy7X1GwW0FLueKwdlP5ybd67UqkD7HdxArfaWTSHmjEc5yqQVu58boUEo1IoLSOwN+yB1D0HSEI5VszHk6vFkgNt8LhTYQ1OdAdVHPYTF9LLhF709jSL1ar8nb6sMq8xMO9KxtoajOUeTP9Jyq2+0p0=
-Received: from BYAPR07CA0094.namprd07.prod.outlook.com (2603:10b6:a03:12b::35)
- by MN0PR12MB5785.namprd12.prod.outlook.com (2603:10b6:208:374::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.9; Mon, 23 Mar
- 2026 11:31:26 +0000
-Received: from SJ5PEPF000001F0.namprd05.prod.outlook.com
- (2603:10b6:a03:12b:cafe::5f) by BYAPR07CA0094.outlook.office365.com
- (2603:10b6:a03:12b::35) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9723.25 via Frontend Transport; Mon,
- 23 Mar 2026 11:31:24 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ5PEPF000001F0.mail.protection.outlook.com (10.167.242.68) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9723.19 via Frontend Transport; Mon, 23 Mar 2026 11:31:25 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 23 Mar
- 2026 06:31:25 -0500
-Received: from xcbalucerop40x.xilinx.com (10.180.168.240) by
- satlexmb08.amd.com (10.181.42.217) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Mon, 23 Mar 2026 06:31:24 -0500
-From: <alejandro.lucero-palau@amd.com>
-To: <linux-cxl@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<dave.jiang@intel.com>, <dan.j.williams@intel.com>, <edward.cree@amd.com>,
-	<davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<edumazet@google.com>
-CC: Alejandro Lucero <alucerop@amd.com>
-Subject: [PATCH v24 00/11] Type2 device basic support
-Date: Mon, 23 Mar 2026 11:31:06 +0000
-Message-ID: <20260323113117.2352709-1-alejandro.lucero-palau@amd.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="htFl5Xkc";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="1kD77AOa"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 6FD321400082;
+	Mon, 23 Mar 2026 07:31:25 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Mon, 23 Mar 2026 07:31:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1774265485; x=
+	1774351885; bh=vRsmg8gaC0t46C47uqnzqJL9EPThq2kwCz/1WO6apZs=; b=h
+	tFl5XkcYnDjsA0RfCekZL84JZO62jgzanvxAdZV4gb/Y5+Jadcqi0Jyf1atsPpmI
+	L8XUNYu2o5ltjnAQy9oz8eTRPyiXn/1MR9Zo8TQTNylo34a29ClSmmIhEJfplkkH
+	yLZ/+wXkW+6RhDR6pudEEfnPsMGrraJnkvndtASQq//R1ai8Qo4NoCn68Aqb+j93
+	3gMzEBAC3+Jk2xQc0eIDUZjyy7IuL2pdGf1Gl8IgbS5TFsAI/KyxiQQibDb8QA0k
+	bmHA9uJmBecKI34vr7ey8lJobuRbVfgRL2+dBkx3sCTH5zsk9ZEsdJ/hM/+W7WBD
+	h+qSsT1z3/yKDFsIIRt3w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1774265485; x=1774351885; bh=vRsmg8gaC0t46C47uqnzqJL9EPThq2kwCz/
+	1WO6apZs=; b=1kD77AOaOInma6GRlt+l9GZFMovJEu7ppKM5Ad0pPxpFm0yGEw3
+	SJJkaaybW03YL2t2+U1/VMvS1Uect+0bxfvuh482iUTFhizUKHim8sQUzv+dOuw7
+	N8v2MDgbbZdc+uMI2q1TSLutFNar5KYdRI3ON5emkaqkg1MO6719/6tytM/nUUeN
+	hAyd9yXsTn4haroMRMl4Otpi3KlN1atiXjcrxfdzPD9h/cFdso0zvk1eCAzgNKna
+	WOpBYmVB9hVMvJuMZ4xO12PU2mZRxLwh07ovnLNlFuWwDOH11s7nmi/r/UXCcYr2
+	lWkoBMJT4ojmhxIYgtFBxv5T37UA3Pv7Rfw==
+X-ME-Sender: <xms:jCTBade-XD8TcMNkej4lNEyz7zlq82-3CfK_oCbWklxVv6Tn3InI8w>
+    <xme:jCTBab7Z1Tykoke6PQWy3_ar0MAZnqaJ11VO5lbVRI5Q7WQAtTlDnJo3a7dUvmxsp
+    1IOy0ZI9oV4Ovoparmo5qqOUSMbzWUk7JBu15DvzsdoC9i_g6vEOv5R>
+X-ME-Received: <xmr:jCTBaUs-i88ztYURTyEn9sO3whGpR0dz9-lVZ6uPmwbKiHnQp_HFC76LyPJc>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefudekiedtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtjeenucfhrhhomhepufgrsghrihhn
+    rgcuffhusghrohgtrgcuoehsugesqhhuvggrshihshhnrghilhdrnhgvtheqnecuggftrf
+    grthhtvghrnhepuefhhfffgfffhfefueeiudegtdefhfekgeetheegheeifffguedvueff
+    fefgudffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epshgusehquhgvrghshihsnhgrihhlrdhnvghtpdhnsggprhgtphhtthhopeejpdhmohgu
+    vgepshhmthhpohhuthdprhgtphhtthhopegtvghlsehkvghrnhgvlhdrohhrghdprhgtph
+    htthhopehjohhhnhdrfhgrshhtrggsvghnugesghhmrghilhdrtghomhdprhgtphhtthho
+    pehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgvthguvghvsehvghgvrh
+    drkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhgvrhhnvghlqdhtlhhsqdhhrghnughs
+    hhgrkhgvsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheptghhuhgtkhdrlh
+    gvvhgvrhesohhrrggtlhgvrdgtohhmpdhrtghpthhtohephhgrrhgvsehsuhhsvgdruggv
+X-ME-Proxy: <xmx:jSTBabhHskHiqIwCjY8gXx9uHsffUyPXfa7W7wf4p_wQDjkg4D_-kA>
+    <xmx:jSTBafo00kbDqaOXxirBPqe0zmPx8E3qQ_haGGIUEngYN7672bRHgg>
+    <xmx:jSTBaYsl-jP2Wh7RKlo9iOFh8Tbd7Zj4PLPnK1TV7EkhCNjM2sdsNg>
+    <xmx:jSTBaSac7ZjD6-M7_wVaw-go0rkmxWkykUBkF9M0i5nWpPCazH-X0g>
+    <xmx:jSTBaQF86X203klVYStzGXEU7IvGJu3c9OnwMyVpkYX7oj7a3-zUgadP>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 23 Mar 2026 07:31:24 -0400 (EDT)
+Date: Mon, 23 Mar 2026 12:31:22 +0100
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Chuck Lever <cel@kernel.org>
+Cc: john.fastabend@gmail.com, kuba@kernel.org, netdev@vger.kernel.org,
+	kernel-tls-handshake@lists.linux.dev,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Hannes Reinecke <hare@suse.de>
+Subject: Re: [PATCH PATCH net-next v4 7/8] tls: Restructure
+ tls_sw_read_sock() into submit/deliver phases
+Message-ID: <acEkik8Bt_PILxPL@krikkit>
+References: <20260317-tls-read-sock-v4-0-ab1086ec600f@oracle.com>
+ <20260317-tls-read-sock-v4-7-ab1086ec600f@oracle.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001F0:EE_|MN0PR12MB5785:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7a168039-95c5-4943-a082-08de88cfb801
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700016|376014|1800799024|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	5CNBnoigGUmU4tYE1S2hgqv89H0Vs4LvAO++8RL3ykHFV2fonWZOv5ZXtGK2bXjH/8iyjGeRLDPmJ64LNs+1PH/NChm2l9MiY8tTqYh8aED+4FbfaBLUlD0S8nkDVlu395vg9LVyphkrL1Lao/F94CjI0PmkgG9zTyixGXjDXAHIKCHUjXk5gFeBGzAmezYZsXGKTC3xqD019naz7lTBioV/6AkIomLfkq+Wh/iBv3jhQ4f0hzH/ruowibyphYhwvIBkux48IA3eTdJbGy7IpoPTska4pElC+sagx92nJdYeniOErGdYsi1aDtPLWKWREBJvRCIoLoQ8H1UE64ikuPlh/4b5ivCzH4MRJc2/Lv5dlHveG1wXRHpwPm3w2BRRGjtUMdpgBfitV+/I+93ZjJUeSWhGlbfm9WiOVkbFxWVy9XCbe5trN3VPJC53Lf/Sr96jETMMaRoeutfMaJstdlM8UCI+H25YmQoRCnP3WIGrbJ5Am1PlbPEiSHA5v/P5n0eRaAPsJVVAhl/bBVlw4mCPvWio2GvRfXbNQmh7DZeBgxbqWYOy20NUNXBFZU5yQwi6LWZTz5ho4KUQBFmqXP7WON0W4U7HAui8O+fzvaf12FTi1QnuSZtWKuuX+C9rmXlfnpHf8YmeAVibxcw+cSCBrDHaQWqD0m9KRxfHTJ/jD5vCbsOs9Tt/Xoip6pAGOYKNY18qn7DHK3O92AEyLk5u78MieYUt65IRaE3dk58=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(376014)(1800799024)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	sBm2K5RH0jaEMDHv6j/46v4AuBCG67LJOyaOja/R6f2SO0owljzYeIkyWkIKQ0SoCsOnutzqpNj3WyOmK5HNDnyNdD/3abKkICtD+RYcoN+Ironzg/kMWoFa11EXChK9RHK9XhBbKec6VqWQCkOT7AL4wtdyt+j8NZslQkOWpBqq2lVjOGzV4Nx0ZUMTdI9Sfwu8d+fHF+lg7uACCws8gOoTzJDO4Ru7iGXuaxx1AX6/ZexjxFZfr1211GvI1p+1XYOScR/rIWJjexA0pzTaUal5PGZRbl9NDI1IJFe6ZEdnxIeZd4yKuXzJY3fOl8JQKYWhW6iHRjuMrTD0VTzDeKrqWQdC+0SjOhkQxrbCd7ONUtYlSMx3xg+Q5fBB5NASlo6nKmgEIQG+eZTNeY4rO5JEph5xl9itsZ3i/pjkBp7a/vgZTfZBJcJptJ41nz+7
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2026 11:31:25.8741
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7a168039-95c5-4943-a082-08de88cfb801
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001F0.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5785
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260317-tls-read-sock-v4-7-ab1086ec600f@oracle.com>
 
-From: Alejandro Lucero <alucerop@amd.com>
+2026-03-17, 11:04:20 -0400, Chuck Lever wrote:
+> From: Chuck Lever <chuck.lever@oracle.com>
+> 
+> Pipelining multiple AEAD operations requires separating decryption
+> from delivery so that several records can be submitted before any
+> are passed to the read_actor callback. The main loop in
+> tls_sw_read_sock() is split into two explicit phases: a submit
+> phase that decrypts one record onto ctx->rx_list, and a deliver
+> phase that drains rx_list and passes each cleartext skb to the
+> read_actor callback.
+> 
+> With a single record per submit phase, behavior is identical to the
+> previous code. A subsequent patch will extend the submit phase to
+> pipeline multiple AEAD operations.
+> 
+> Reviewed-by: Hannes Reinecke <hare@suse.de>
+> Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+> ---
+>  net/tls/tls_sw.c | 70 +++++++++++++++++++++++++++++---------------------------
+>  1 file changed, 36 insertions(+), 34 deletions(-)
+> 
+> diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+> index 5b154afbd7ac2ddd51b46d8d6bef0a7a41f0a841..5ae7e0c026e4437fe442c3a77b0a6d9623816ce1 100644
+> --- a/net/tls/tls_sw.c
+> +++ b/net/tls/tls_sw.c
+> @@ -2346,8 +2346,8 @@ int tls_sw_read_sock(struct sock *sk, read_descriptor_t *desc,
+>  	struct tls_context *tls_ctx = tls_get_ctx(sk);
+>  	struct tls_sw_context_rx *ctx = tls_sw_ctx_rx(tls_ctx);
+>  	struct tls_prot_info *prot = &tls_ctx->prot_info;
+> -	struct strp_msg *rxm = NULL;
+>  	struct sk_buff *skb = NULL;
+> +	struct strp_msg *rxm;
 
-This patchset should be aplied on the for-7.1/cxl-type2-support branch.
+nit: networking tries to follow the "reverse xmas tree" ordering (a
+bit broken in ktls because of context structs).
 
-For the sake of having the impending Type2 support for known drivers
-needing it (sfc and Jump Trading) this version does only support the
-case of HDM Type2 device committed by the BIOS, keeping the
-decoders untouched when driver is unload, which requires a patch from v6
-Smita's series:
-
-https://lore.kernel.org/linux-cxl/20260210064501.157591-1-Smita.KoralahalliChannabasappa@amd.com/T/#mdad81d3817def8baace77ead9e2e305e775cf51d ?
-
-or a BIOS locking those decoders.
-
-Patches below same than those part of v23 but with only the code dealing
-with the supported case.
+[or just leave this alone because setting it to NULL doesn't hurt?]
 
 
-Alejandro Lucero (11):
-  sfc: add cxl support
-  cxl/sfc: Map cxl regs
-  cxl/sfc: Initialize dpa without a mailbox
-  cxl: Prepare memdev creation for type2
-  sfc: create type2 cxl memdev
-  cxl/hdm: Add support for getting region from committed decoder
-  cxl: Add function for obtaining region range
-  cxl: Export function for unwinding cxl by accelerators
-  sfc: obtain decoder and region if committed by firmware
-  cxl: Avoid dax creation for accelerators
-  sfc: support pio mapping based on cxl
+[...]
+> +		/* Phase 2: Deliver -- drain rx_list to read_actor */
+> +		while ((skb = __skb_dequeue(&ctx->rx_list)) != NULL) {
+>  			rxm = strp_msg(skb);
+>  			tlm = tls_msg(skb);
+> -			decrypted += rxm->full_len;
+>  
+[...]
+> +			copied += used;
+> +			if (used < rxm->full_len) {
+> +				rxm->offset += used;
+> +				rxm->full_len -= used;
+> +				if (!desc->count)
+> +					goto read_sock_requeue;
+> +			} else {
+> +				consume_skb(skb);
+> +				skb = NULL;
+> +			}
+>  		}
+> +		/* Drain all of rx_list before honoring !desc->count */
+> +		if (!desc->count)
+> +			break;
 
- drivers/cxl/core/core.h               |   2 +
- drivers/cxl/core/hdm.c                |  39 +++++++++
- drivers/cxl/core/mbox.c               |  51 +----------
- drivers/cxl/core/memdev.c             |  81 +++++++++++++++++-
- drivers/cxl/core/pci.c                |   1 +
- drivers/cxl/core/port.c               |   1 +
- drivers/cxl/core/region.c             |  47 ++++++++--
- drivers/cxl/core/regs.c               |   1 +
- drivers/cxl/cxlmem.h                  |   6 --
- drivers/cxl/cxlpci.h                  |  12 ---
- drivers/cxl/mem.c                     |  45 +++++++---
- drivers/cxl/pci.c                     |   1 +
- drivers/net/ethernet/sfc/Kconfig      |   9 ++
- drivers/net/ethernet/sfc/Makefile     |   1 +
- drivers/net/ethernet/sfc/ef10.c       |  53 ++++++++++--
- drivers/net/ethernet/sfc/efx.c        |  15 +++-
- drivers/net/ethernet/sfc/efx_cxl.c    | 119 ++++++++++++++++++++++++++
- drivers/net/ethernet/sfc/efx_cxl.h    |  40 +++++++++
- drivers/net/ethernet/sfc/net_driver.h |  12 +++
- drivers/net/ethernet/sfc/nic.h        |   3 +
- include/cxl/cxl.h                     |  14 +++
- include/cxl/pci.h                     |  21 +++++
- 22 files changed, 480 insertions(+), 94 deletions(-)
- create mode 100644 drivers/net/ethernet/sfc/efx_cxl.c
- create mode 100644 drivers/net/ethernet/sfc/efx_cxl.h
- create mode 100644 include/cxl/pci.h
+I'm not really familiar with the read_sock users, why is it ok to
+ignore desc->count reaching 0 while we're in the rx_list loop?
 
+>  	}
 
-base-commit: 64584273dfb8a1e5fc7d78094ba22a93c204b44e
 -- 
-2.34.1
-
+Sabrina
