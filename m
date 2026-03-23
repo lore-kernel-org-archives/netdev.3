@@ -1,165 +1,315 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E356227EFEE
-	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 15:06:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278413; cv=none; b=Gr86qkhZrVSlnzpRP9IxFD7/R5XERBPMyZ5awXr9lEplWDOHPnmDrmYsn0URoTv8ad0uS9jWJ7miQej+fphc/HhASHLCfqBgg1lzEXPtxGa1KBATBhvrst1UzclVJN+XaTrSkHupMgxKlW6vNcs/+CaJibfxYWKmkmbBNZcCQw8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278413; c=relaxed/simple;
-	bh=s3HNE16BHwfZ82yprcqouG789f7AHLkXIQAmavAI+pA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jgq7+HBO7ovD702b17z+IHpGE93PZApZS0Zl0bmtVO1GN4RHXcF98nAtXcS5lyC/hjlp5NR+cPfhLPQ1ynMhs909z/5H4uA/N6yYNMY/c8yAV/7oHYHQ1UDvrQQOXRA4BPa978DYDY+mHc35ehHXbZMh3vAru88q39X5Rcpxl2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=gqLuhK11; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Tud2Xaty; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=gqLuhK11; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Tud2Xaty; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5570B3B27CC
+	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 15:18:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774279097; cv=fail; b=tNpTGt1TylumA8RGY3of3t/Utu9kgtyl+Wox2a59sieZCEM588AsHwTaQvQVpPxLDCIC+J8uygs/NlNiUvGTE1srLBiExd9KJys2nRGBz1CCi4nhUigSyX2Nn6mRRmmtnX8+VVCOIRGkXIYn+OuNf9EVhM4sWQXdYuIZ+h3/S6E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774279097; c=relaxed/simple;
+	bh=z5oDSX2HW4aGW7lEfpssym3+mxzy5rQYRdvkqOoqcLA=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=o0x7PUl3apVahGO822Id9c6mSmTOzuSsVzxXfLDA9OQYT3QJjEN4ZL7OupbOZkfa8IEAx+wK7x8TPq3K6Rjon7PgzJiZBdoxSrM2ezsgn065oiuejnUUorW5VrCUFiE/LEBUGO2DGMm9LG0hDkPLoVbYuMrJQwSjyImqwYRmXkI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FRVNUoqe; arc=fail smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="gqLuhK11";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Tud2Xaty";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="gqLuhK11";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Tud2Xaty"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 36B475BE07;
-	Mon, 23 Mar 2026 15:06:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1774278410; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=47T2XPj13w/pwUTEt2LhKrGRcOq83dmZ219Cyt3IsYo=;
-	b=gqLuhK11tny35NolrBhwl0aTNImPJrUtugBGVS8I0tN3BFCi8HVYKDOTAc6KMOcdFDlqaP
-	kraJVfHzM5q/O3SJ96LwG5qvLz0p5+lywJ/DoNUqbmW05yVA0wXWB1hLzEgNkokQvtup4R
-	ub+Izf6p8wDLLseOTyETCNvYe6Kgxy0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1774278410;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=47T2XPj13w/pwUTEt2LhKrGRcOq83dmZ219Cyt3IsYo=;
-	b=Tud2XatylVVEzZ4+vskAq61LttcRdQ7WGDxMYyCP///nWOKSVnh29itQ2XvYr4lH/TyGmr
-	bSJlroC3olhIOJBA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1774278410; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=47T2XPj13w/pwUTEt2LhKrGRcOq83dmZ219Cyt3IsYo=;
-	b=gqLuhK11tny35NolrBhwl0aTNImPJrUtugBGVS8I0tN3BFCi8HVYKDOTAc6KMOcdFDlqaP
-	kraJVfHzM5q/O3SJ96LwG5qvLz0p5+lywJ/DoNUqbmW05yVA0wXWB1hLzEgNkokQvtup4R
-	ub+Izf6p8wDLLseOTyETCNvYe6Kgxy0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1774278410;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=47T2XPj13w/pwUTEt2LhKrGRcOq83dmZ219Cyt3IsYo=;
-	b=Tud2XatylVVEzZ4+vskAq61LttcRdQ7WGDxMYyCP///nWOKSVnh29itQ2XvYr4lH/TyGmr
-	bSJlroC3olhIOJBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 94DB04392F;
-	Mon, 23 Mar 2026 15:06:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Dt4nIQlXwWk6RwAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Mon, 23 Mar 2026 15:06:49 +0000
-Message-ID: <a0b73cb6-2e57-4c2a-b990-f72000a849b2@suse.de>
-Date: Mon, 23 Mar 2026 16:06:43 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FRVNUoqe"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774279095; x=1805815095;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=z5oDSX2HW4aGW7lEfpssym3+mxzy5rQYRdvkqOoqcLA=;
+  b=FRVNUoqev2+UscJcveov4ctaRGmYybDAzKTV1gwHjhfPce+UM/ButulG
+   9mbTcEDlTybrGRB4a4f9Xr5ROV/rQlwNwltVkoh2fc0Ldork/QN+rDJ7T
+   +2aYF0vjs6jo7XQ1UqoZYYFx4GG/F2M2eol6bH/Fl/gJpRtdn5O+CBhq1
+   FekcKO6i/XDJ4N47BVjHeVKpN0k8cnKkVsBxnlRcuofskNjKcP3Xnffhh
+   LHmXIQw7Gb/BshTe0rXbuZqGYQ0truyJkhzxIyWqOjlt/wAaXQltGJx/H
+   UGcLhxwVl5/vgkdlUo/GptbzMELWrprsxgb5qIM/qG+JZ0BZpV4ntMjtz
+   A==;
+X-CSE-ConnectionGUID: UlkKN3J4TJ+0Tz/y7ksH2g==
+X-CSE-MsgGUID: h/yv1IjkSo63gtij/QnMvw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11738"; a="86646974"
+X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; 
+   d="scan'208";a="86646974"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 08:18:15 -0700
+X-CSE-ConnectionGUID: inXFJxzuR7SwOTrpfnxz5w==
+X-CSE-MsgGUID: vZiEHdNSQiGqN7oD/+h3zg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; 
+   d="scan'208";a="219677678"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 08:18:14 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 23 Mar 2026 08:18:14 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Mon, 23 Mar 2026 08:18:14 -0700
+Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.22) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 23 Mar 2026 08:18:12 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OXKMCO9fDuIHYTbt94AOUw69tbKooJ6qeqKlkNTMcDhtLGHOGvGJwZ4qfvC2nlayHh0hX8oukTe3vDg80XqxJRNLfmUwN5fM1lTHRET8JWDPoQA2kAQi1QsAmnE9x8/LbsnhAmEz5xziNTZoXGqhkepwQdassjAc3nR0YSUhKg4YaGpYYA8IfCKcmZ2fHNyCivbmK70zSuRr5RMatCKaLGYhCkNPx3xtSVSGZcIQjpvIuO9Nc7n2qr6EPuMXpEjPRNZjDVkDXkPgABahCeJaTqFAaLUIt5vqhx09XdCpmXE01+lQ6/8XvyPNyBdZEiYdR55rEzB8G5ullPkmE4b0XA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hioj3wKALlVfRKQ1RyVekM5YjaVyeGr6N+Me5VgvQLY=;
+ b=bfh7QCTRsiRf4t8c7jkAJ0iE4a/SPiGWtY9FLlymxfg9LLRGRlVIJuEfLVEMKW+u8nYerAJ86Rz0qFrTjDeIutyqxSOFfTYM6VPs2bSRIR06dMeuTFZd6pK6wH5oD+OHMUqL5hnAdfN6WiWqrgChCLbaQkovzXojHo2ffwGA+rqWPtAfOAZWRuJZVkBdSI1xuZ/b9KF7KH7HA/MqEnpAfof/Gqzb0bC8Hb5GoGnJ3+W1J4iZ+i7chUFWBqo1dX25wDRdH7UzKeWO6a8FRZC+26jqIbjmUGa8RquPFHyuAZCHYXI+fTGWzPeEGOqP17r44FQz9Tpc1j1qxXeKx10v1Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from MN6PR11MB8102.namprd11.prod.outlook.com (2603:10b6:208:46d::9)
+ by DM3PPF96964A2A1.namprd11.prod.outlook.com (2603:10b6:f:fc00::f3b) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.12; Mon, 23 Mar
+ 2026 15:18:09 +0000
+Received: from MN6PR11MB8102.namprd11.prod.outlook.com
+ ([fe80::8d98:e538:8d7:6311]) by MN6PR11MB8102.namprd11.prod.outlook.com
+ ([fe80::8d98:e538:8d7:6311%5]) with mapi id 15.20.9745.019; Mon, 23 Mar 2026
+ 15:18:09 +0000
+Message-ID: <4bfa0e2b-47be-45b6-ae32-1fad3d184392@intel.com>
+Date: Mon, 23 Mar 2026 16:23:04 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] devlink: unify devlink_shd_get_priv() into
+ devlink_priv()
+To: Jiri Pirko <jiri@resnulli.us>
+CC: <netdev@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>, Tony Nguyen
+	<anthony.l.nguyen@intel.com>, <intel-wired-lan@lists.osuosl.org>, "Simon
+ Horman" <horms@kernel.org>, Michal Schmidt <mschmidt@redhat.com>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Paolo
+ Abeni" <pabeni@redhat.com>
+References: <20260323132136.13191-1-przemyslaw.kitszel@intel.com>
+ <fc7iebxveew5yi2trlpumcmugwzerixdm536kvgp5hlxmm4zw6@vmcbn76n7fvt>
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Content-Language: en-US
+In-Reply-To: <fc7iebxveew5yi2trlpumcmugwzerixdm536kvgp5hlxmm4zw6@vmcbn76n7fvt>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: VI1PR03CA0051.eurprd03.prod.outlook.com
+ (2603:10a6:803:50::22) To MN6PR11MB8102.namprd11.prod.outlook.com
+ (2603:10b6:208:46d::9)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/11 net-next v4] Convert CONFIG_IPV6 to built-in and
- remove stubs
-To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, rbm@suse.com,
- linux-kernel@vger.kernel.org
-References: <20260320185649.5411-1-fmancera@suse.de>
- <20260322172702.GA121169@shredder>
- <8c136575-e23e-4cc2-a455-f1ba1abde2d5@suse.de>
- <2f1d55ee-440c-49a6-97a8-4354c57f9fe9@kernel.org>
-Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <2f1d55ee-440c-49a6-97a8-4354c57f9fe9@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
-X-Spam-Level: 
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN6PR11MB8102:EE_|DM3PPF96964A2A1:EE_
+X-MS-Office365-Filtering-Correlation-Id: e26affc7-e1e4-49f2-078b-08de88ef63d5
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|22082099003|18002099003|56012099003|7053199007;
+X-Microsoft-Antispam-Message-Info: OzZL4Xp7Bs0eCPznIl4cr80f9MpPEN1n3FzREc/xOCcJHuVtqd7Yoo4dLQglZL1xGEvOhJmR9OMNHEBvbhtO8uhijjoOIXctJgvWE1cUoUd5H3fhrOxtySnoW4xFDqqxLr/R5Ve0p395tgDTfyJFeZvm1MkZ6myt/Q7DEYbbDQM0b4gNv72bIEhQwbe5XMZX3eBp4Ta8fAfPVDiuLez6oSaFqoOySYz/AihFOLO/pwxqpljzq/CTXRhJfAxr0RSCalgvJlhdq2Yzy7L2CVw9vB9d6D2TGJGEBwBELPOS/iiuxv2iV1VaTsQNdR9G3+R/gpDYTrt+nTby3R4vsnLQVoQTdUsre3YQzGD26v4dh5ULqe4eAC5DqxxgTbv3hotP1mK6OIaMkf3ccwUEgWd42HBLWg5rk4CRj4ct8tmOByt6AuM0yddq3Jky7vxeZ6Cf9//ws78baV6Vugc4KtqHwgP5GuaptRrFE5/fId3clT8BC+tmgi0HTxXyNt/yJqmvp1M/kaJci6nC/x1XjWm5ZAa+gx5nbU8u4dRkrV2dxseIgBt05IPhNUt/MTTagNhIM0J1uyRtinSzs5hmc/YaN4LPNWbSwxMMcC8OeJ7KhiOUqofN3LvocjtZmiE9cLjMbZvsCrmKBDGBZuJvArnNA+COwSKH3Qq+kbM2+CKHLIIRa1u2Xhr3DwH53To7ecqx5L+n0KzinZ8yFIMJ5OpiWjv8Q6eh7UH7jBtMGCw6bR8=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN6PR11MB8102.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(22082099003)(18002099003)(56012099003)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NThnRHdTK2Q1TGtoeS84QTA0dEI0TVJRWG0vS0kySlExRDlTQkdnalNxQVRn?=
+ =?utf-8?B?ZWFuTnFMM2R4T0tLZThRcFVNN28vb2NteEtGTWd0QnJxd3F5Z0hkY0R4T2li?=
+ =?utf-8?B?OE5JQ2ROc3ZsM0EwRkxIZzRzSzBsQ1hyUEpQU1YweGFicnh1UTdSZ20ra0ow?=
+ =?utf-8?B?b3pyMnVTdzRIKzhtelZ4UkEya3NsQml4SGRmV20yaHVycklYeURlR1VkRWw2?=
+ =?utf-8?B?Q0RCNmp1ZzhlTGpiUDFTREFtdzlwSmh2T1ErWEROdUptdXVLbGRoS1Jwb2tD?=
+ =?utf-8?B?bEFXTGozdVJRTW1LSXFHVndWam1rajNzVFZxSk1YWlMvZFhJRzBMek1tbkFI?=
+ =?utf-8?B?Rk1TM1M4SWJFMHIzbkpIOEQ2YVZlaFJ1OTJPTzRBMUJiK1lWQ3VSdlVXY1pE?=
+ =?utf-8?B?TG5SWmNTYnVQeW5wMEdJR0VEQ2tySThkUHJHYmFZZy9OOU9odkVLdzdpTDU1?=
+ =?utf-8?B?MHlWaEpBZXliZ3ZZL3Z0dUJYODh1M2hDUGxBUitqdTZhZGgvR2RvKzA0bmxj?=
+ =?utf-8?B?N2EyTThHUFdVQ2VtSlVaK0tDSlpmaEhnbUpCR0hiYk9YbXpJeUFwbW1xdzgv?=
+ =?utf-8?B?Y3ZmZG15b0F0L21razJ6bE51VXhsUU1RdzR1YjVSUFNVYW82aHhWM1VNM2dx?=
+ =?utf-8?B?bHBGaFM4Z2VrcnB6cnRsQzk2aWsxd2s1RHBhMTQxUnVEV25rRm1OclgzS1lK?=
+ =?utf-8?B?amJpQW9wWGsrakorR25HM1ZRbnE5TmpvOUxFNXFsOGNkRWREczdoa0ZDTENu?=
+ =?utf-8?B?b24zQ3BwMEVhZmI0cTBFeUdsUnhXWlVYNyttQytFSVI0eENTbEhucTBLQlZz?=
+ =?utf-8?B?SlQ2Nm5FaWE0U1Avbjl2Y2VaejNZbjVSWFZuRXdRcE9oWElYQlBQd2hmYUN4?=
+ =?utf-8?B?OFU1UVZ0akp5VTNtMnhrV3lFQlBXZ3grYTR2enE2ZEJ3d0cvVDdiNkJkR01B?=
+ =?utf-8?B?L2dMZUF3emhLTkVjV3dwbDlYaDhKQjV0LzRBS041MThKRDV0VFNyY1RyZnZu?=
+ =?utf-8?B?K0EycWd6SHpoWE9UNCtFckdhcnc5TDV0TnhUOW5MUkhaZDVsTGFNcEh4K0NQ?=
+ =?utf-8?B?eUhXSFRYcHFIWWVnaG9FUTJqLzZnUEczZUduNWh5S0tISVY2M0JkcE1QaGpP?=
+ =?utf-8?B?N3I0SExzTTZnWnNxam5XVXF1MEVpcUpRR0RnSTFhSFYxODJ1M2xTSTdMSVM2?=
+ =?utf-8?B?cHpMSTFSM2hjQnptZHlBVWhuWHNvdDBjd3VqdnpSZEd1cTI4bVBZREZsWXVL?=
+ =?utf-8?B?Zm15RFlUOUM2V2ppMG9kcVFYcnV0N2FFOUR0WjhiWjQyakhhN3owZmV0YWtP?=
+ =?utf-8?B?RkZDKzd6aE12bTBwOVFZWXMraVF5NW5SS3JST2w1Mmc5SFhGNWxLRnZKK2JW?=
+ =?utf-8?B?Mzk2MGpPMlVLZ2xDaFB3b0ZDRG9rTzZQeVVWYVF6Y0M1eXB3NGgzaExtby9l?=
+ =?utf-8?B?bGF5VjRJd0tONU5oRkt5QWVxb0d1ck80UW1sMTVQNE0xaEtYb25Melg4SUJ1?=
+ =?utf-8?B?dDViY3lWNERoQndzTVBJc0V0WnVLT0Y3ajdOQUcva2hlYXFjTmxhSUhxN2NJ?=
+ =?utf-8?B?aTh4NDlYTGM1WFFEbHVtUEpRSEVEMXRyQWhVVHhBZzZIS2IzNW5QbHBoNDg0?=
+ =?utf-8?B?aUl5QTd5ODB4c1dMUUxzUFZYOThXY0llUDBabkJqcFd0SE5VZ2NUS2J6T1g3?=
+ =?utf-8?B?UEs0YkJseldOVElvdXJVMlo2N0psRytndFYydmF1SW83QUJwRUFFWGtVOU9T?=
+ =?utf-8?B?RlZreDBKeHlOZ2hsWnFmSWdTdFRDaGRvNHF5UFRCS3F2N1R6cnRLUFc0ZXNs?=
+ =?utf-8?B?dEJoNE9wTEJjVkNMZE5ObWxud29SM1RhMjFjaklXTGlXNUoxci84N2tnR2Zj?=
+ =?utf-8?B?c1pFZlVFUXV6ZEw2bHdwbTBZODArTXNiblVFUHZVUGUwdVRrZWE1MXB5YWt2?=
+ =?utf-8?B?cVY5TjdiYTYrTjB1QUdlUko5a3I2cGJpbVNkaXR5UnRWWEg1RU1RWllzZ3dZ?=
+ =?utf-8?B?N1JlZ2JuQmhpR3Q3WUdORGVBVFU3OXlsU25kNnN3b0psTDEyUXpTWWhYZG9w?=
+ =?utf-8?B?SEY3ZkFtS0EweXE3TGtmbjFvT0d3ZDJBMTFJWkxsdGM1c3VlVy9saWoxUXdZ?=
+ =?utf-8?B?OFRnSkhzaHpEOE1PTWx2aWJOb1R5VUlvdk9iZTY4cTlPQTNqY2dWME45eWRN?=
+ =?utf-8?B?Wi9QS1AwbWcramhac200MkhwMm83QVIxU1RYdWZ0akd2K0U1YzlQcGRlVDFS?=
+ =?utf-8?B?TFpaRU9OenZSdVRxSktQdGxJbU5iVzlYczhucGlkV1pXTER2YkU2UlpYR2tZ?=
+ =?utf-8?B?a0VkK0VaY0FTYVd6RHZqZHFYYmkxV2Q0bXBVSGpMN3FiZmZzckwvYkg1MFV5?=
+ =?utf-8?Q?J8pkiqjejnHRtQcI=3D?=
+X-Exchange-RoutingPolicyChecked: C0KRZIro7Xj702VcURKJqO1REZl5WRSJAD6kxUWNDbFK1bEwUIUVsimpw6LKlHeam2PY3CA9s1BHA60Ftt9JWm20ZfbSDT5sRF9f4FDtw2+9sWKugX8uBh/Db1J64UAibZyW3Kj7R01eSpnVathUAvr9Dy/PkhAWj37/tfgtBIkHVThEnR+viChMX/7XO4ye2DAoeiiE0JuHP9luol/xOg3sgyHy5e6i29cnzq6sjk3LFc+EKgAVIndrgNt5MbU4OhTmZkc2qPOy2xjUAHYgdKHGCATxIKISRt8zYiSykh9hNxxebdiifIUua/Gsb0+ZL0gG4QV/DX0DiL0JaTrQ8w==
+X-MS-Exchange-CrossTenant-Network-Message-Id: e26affc7-e1e4-49f2-078b-08de88ef63d5
+X-MS-Exchange-CrossTenant-AuthSource: MN6PR11MB8102.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2026 15:18:08.9758
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: DaK3GZYq2/82pvrzbonBMVxyyBA907fxhdp6iuRRM28CFOyCQJF/kBhBx3u1lAWlNfGYjBu6fHZDK9N2TGWUr4EbAkCQGpiJ3zXDqV28sjY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PPF96964A2A1
+X-OriginatorOrg: intel.com
 
-On 3/23/26 3:38 PM, David Ahern wrote:
-> On 3/23/26 6:19 AM, Fernando Fernandez Mancera wrote:
->> On 3/22/26 6:27 PM, Ido Schimmel wrote:
->>> On Fri, Mar 20, 2026 at 07:55:52PM +0100, Fernando Fernandez Mancera
->>> wrote:
->>>> Changes:
->>>>     v4:
->>>>       Patch 2: new patch introduced on this revision
->>>>       Patch 3: drop some IS_BUILTIN(IPV6) on files compiled only when
->>>> IPV6=y
->>>>       Patch 5: introduce ipv6_mod_enabled() checks on fib6_nh_init(),
->>>> ip6_dst_lookup_flow() and ip6_fragment() to avoid crash when
->>>> ipv6.disable=1 during boot
->>>>       Patch 6: use &nd_tbl on code guarded by IS_ENABLED(CONFIG_IPV6)
->>>
->>> The IPv6 code is still using ipv6_get_nd_tbl() for some reason. If you
->>> remove it from there (it's not needed), then we are only left with
->>> handful of users that can be converted to use '&nd_tbl' when IPv6 is
->>> enabled. Something like the patch below.
->>>
->> Hi Ido, the main reason why ipv6_get_nd_tbl() is used on IPv6 code is
->> due to inlined functions. __ipv6_neigh_lookup_noref() is used in several
->> places not guarded by IS_ENABLED(CONFIG_IPV6) preprocessor directive.
->> That leads to undefined references when compiling with CONFIG_IPV6=n.
+On 3/23/26 16:03, Jiri Pirko wrote:
+> Mon, Mar 23, 2026 at 02:21:36PM +0100, przemyslaw.kitszel@intel.com wrote:
+>> Unify access API to shared devlink priv data with normal devlink.
 >>
->> ld: vmlinux.o: in function `bpf_ipv4_fib_lookup':
->> filter.c:(.text+0x322b9dc): undefined reference to `nd_tbl'
->> ld: filter.c:(.text+0x322b9fb): undefined reference to `nd_tbl'
->> ld: filter.c:(.text+0x322ce1a): undefined reference to `nd_tbl'
->> ld: vmlinux.o: in function `ipv4_confirm_neigh':
->> route.c:(.text+0x345ade7): undefined reference to `nd_tbl'
->> ld: route.c:(.text+0x345ae06): undefined reference to `nd_tbl'
->> ld: vmlinux.o:route.c:(.text+0x345b74f): more undefined references to
->> `nd_tbl' follow
+>> Thanks to Jiri Piro, we now have ability to create shared devlink
+>> instances [1]. Introduction series have added usege of those for mlx, but
+>> without priv data attached to the shared devlink.
+>>
+>> Current API makes it possible to access shared devlink instance's priv
+>> data:
+>>
+>> 	void *devlink_shd_get_priv(struct devlink *devlink);
+>>
+>> but it is easy to to forget (especially during rebase from "before shared
+>> devlinks" era) and call:
+>>
+>> 	void *devlink_priv(struct devlink *devlink);
+>>
+>> which even has the same signature, so it's hard to catch the error.
+>>
+>> New proposed API unifies both calls into one, without any increase in the
+>> observerd struct size. (Alternative could be to store additional pointer,
+>> set during devlink_alloc).
 > 
-> are these errors with Ido's suggested additional change?
+> You should use some AI corrector :) too many typos.
 
-Actually no. I missed the Dead-code elimination optimization. Never mind 
-my reply, it makes sense to follow Ido's suggestion.
+faux pas instead of faux bus, apologies for the most shameful of typos
+("new machine"-kind of issue)
 
-Thanks and sorry for the back-and-forth. *facepalm*
-Fernando.
+and thank you for looking
+
+I have one more trivial related patch, will append to v2 tommorow
+
+> 
+>>
+>> Unexport the less convenient API call.
+>>
+>> [1] commit 411ad0605875 ("Merge branch 'devlink-introduce-shared-devlink-instance-for-pfs-on-same-chip'")
+>> [1] https://lore.kernel.org/all/20260312100407.551173-1-jiri@resnulli.us
+>>
+>> Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+>> ---
+>> sorry that I have not mentioned it during [1] review, it got obvious
+>> for me only after working with the code
+>> ---
+>> net/devlink/devl_internal.h |  4 ++++
+>> net/devlink/core.c          |  3 +++
+>> net/devlink/sh_dev.c        | 11 ++++++++---
+>> 3 files changed, 15 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/net/devlink/devl_internal.h b/net/devlink/devl_internal.h
+>> index 7dfb7cdd2d23..abbe308ee9bd 100644
+>> --- a/net/devlink/devl_internal.h
+>> +++ b/net/devlink/devl_internal.h
+>> @@ -58,6 +58,7 @@ struct devlink {
+>> 	struct mutex lock;
+>> 	struct lock_class_key lock_key;
+>> 	u8 reload_failed:1;
+>> +	u8 is_shd:1;
+>> 	refcount_t refcount;
+>> 	struct rcu_work rwork;
+>> 	struct devlink_rel *rel;
+>> @@ -72,6 +73,9 @@ struct devlink *__devlink_alloc(const struct devlink_ops *ops, size_t priv_size,
+>> 				struct net *net, struct device *dev,
+>> 				const struct device_driver *dev_driver);
+>>
+>> +/* Get private data from shared devlink instance */
+>> +void *devlink_shd_get_priv(struct devlink *devlink);
+>> +
+>> #define devl_warn(devlink, format, args...)				\
+>> 	do {								\
+>> 		if ((devlink)->dev)					\
+>> diff --git a/net/devlink/core.c b/net/devlink/core.c
+>> index eeb6a71f5f56..4c97e2e2c073 100644
+>> --- a/net/devlink/core.c
+>> +++ b/net/devlink/core.c
+>> @@ -232,6 +232,9 @@ int devlink_rel_devlink_handle_put(struct sk_buff *msg, struct devlink *devlink,
+>>
+>> void *devlink_priv(struct devlink *devlink)
+>> {
+>> +	if (devlink->is_shd)
+>> +		return devlink_shd_get_priv(devlink);
+>> +
+>> 	return &devlink->priv;
+>> }
+>> EXPORT_SYMBOL_GPL(devlink_priv);
+>> diff --git a/net/devlink/sh_dev.c b/net/devlink/sh_dev.c
+>> index 9b7456d64b57..450e3218759e 100644
+>> --- a/net/devlink/sh_dev.c
+>> +++ b/net/devlink/sh_dev.c
+>> @@ -31,6 +31,11 @@ static struct devlink_shd *devlink_shd_lookup(const char *id)
+>> 	return NULL;
+>> }
+>>
+>> +static struct devlink_shd *devlink_to_shd(struct devlink *devlink)
+>> +{
+>> +	return &devlink->priv;
+>> +}
+> 
+> Can you rather have unexported __devlink_priv() above existing
+> devlink_priv()?
+
+makes sense, will do
+
+(this will not remove the need of devlink_shd_get_priv() in sh_dev.c,
+as the struct devlink_shd is defined here)
+
+> 
+> 
+>> +
+>> static struct devlink_shd *devlink_shd_create(const char *id,
+>> 					      const struct devlink_ops *ops,
+>> 					      size_t priv_size,
+>> @@ -43,13 +48,14 @@ static struct devlink_shd *devlink_shd_create(const char *id,
+>> 				  &init_net, NULL, driver);
+>> 	if (!devlink)
+>> 		return NULL;
+>> -	shd = devlink_priv(devlink);
+>> +	shd = devlink_to_shd(devlink);
+>>
+>> 	shd->id = kstrdup(id, GFP_KERNEL);
+>> 	if (!shd->id)
+>> 		goto err_devlink_free;
+>> 	shd->priv_size = priv_size;
+>> 	refcount_set(&shd->refcount, 1);
+>> +	devlink->is_shd = 1;
+>>
+>> 	devl_lock(devlink);
+>> 	devl_register(devlink);
+>> @@ -137,7 +143,7 @@ void devlink_shd_put(struct devlink *devlink)
+>> 	struct devlink_shd *shd;
+>>
+>> 	mutex_lock(&shd_mutex);
+>> -	shd = devlink_priv(devlink);
+>> +	shd = devlink_to_shd(devlink);
+>> 	if (refcount_dec_and_test(&shd->refcount))
+>> 		devlink_shd_destroy(shd);
+>> 	mutex_unlock(&shd_mutex);
+>> @@ -159,4 +165,3 @@ void *devlink_shd_get_priv(struct devlink *devlink)
+>>
+>> 	return shd->priv;
+>> }
+>> -EXPORT_SYMBOL_GPL(devlink_shd_get_priv);
+>> -- 
+>> 2.39.3
+>>
+
