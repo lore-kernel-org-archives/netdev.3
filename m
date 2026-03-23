@@ -1,156 +1,144 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011071.outbound.protection.outlook.com [40.107.130.71])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77AE33C07A;
-	Mon, 23 Mar 2026 11:58:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.71
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774267137; cv=fail; b=EHawtDxPSEQ2sCvTUg/CI1rfDX/jTOYplILK8fe/I2PMlVI0B4AMJdcHQywjZbtBIYBZXYaE3+62qPuBADVsjsMnMh9bi/JTVHddpqwVvotK6Pdw9mzSU6POlOKQvYrvH2OPar3ofSQsPVmt7P3Czq88eZ0uBbDdZCzLua0IcNw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774267137; c=relaxed/simple;
-	bh=59X89SUeO3cXarYKV/6BeiJZfI3rebbvlj43WvsMPVI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=ScouwT71ZqgCBhcZCwjIndVAJYvw8kfPzKREmesHZdiidZ4uqUj/qqvYq0ROyqjop3mLb8m94N8icaUQ3rWy3k94o7zrr4ZxAu5r72ZI5xQI4Tb3v2riDQQzn3NG+H0KirIkATOOPzibcq9TThqCh9a1p5LWVA/z6464gF5ibBo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=MJu7oyJi; arc=fail smtp.client-ip=40.107.130.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE7637BE79;
+	Mon, 23 Mar 2026 12:06:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774267616; cv=none; b=SlPf7rN7NGDi2YWAGJBDMygDNuZhut7ji40Xvn+phegLINhMToUt9ap+g6A4C5khQkLd7n9dJ4S/iIrqzblLzRQaAmEH6D/2U7eYCr2mN2OLE5HMWsnlVk6sZYUcLt8p0ItclAuIcM5+WMc7/sEKtZSU1lmGv05r6aCHb7aUu1M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774267616; c=relaxed/simple;
+	bh=AtZ3moN5ceTrzdk9n7Rb62LsXZK7LaYDrg+YYNVYmog=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LE+F6DvgdNpy89nbztjO3UCwKPdTEhbuu4AJN4zBAbFl59Vr55mJ6UkPq88yoWY0pPNJTmxdXQRfrT6jj4rAgaecvWfM+rf1Nh47leQwBR7DomGHdHtqgI5hapsjgr0YGEcFjD+SWhJtOmwLHY0IaqV2ktITzDTyKs0aA33V83k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=X+WY7x2y; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="MJu7oyJi"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aR1RO4HsjQG4+a8vamCRqGf9+rEfgZkVRcmN7xwYmGgK4rJAqgyW1V0jlVbk7RX+Q/PKO7oZ4mBn5KOX2ZTIADI71V/F5WcdzoCnBtka1gQRg7gqvdCuo8T+yNi516f98b0LcrTwUXBy94Z4HY3yez97vibJyBARrYQJOWFZIoMA5VywD8Iif27Vi3QdXTCoI/Ay6upWrxlmuvWjLO/y24UGkhPDkDNyuFXxQ59GREBC2GWL6oC5cVqqr4rFxK4HS9/uTzNh7dQhyeS9sNptx1EFvnFAURKWsCjDU/YzvJWlBh1SOxIx9X7mZVy3z030Ai3u9OnR2HLJ3vGXg5xYKg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZRDqCzBWKZu/pSYAJ+4z/KhySU144gnClSmKTAXyezQ=;
- b=B7yhdigFP/TBGZCtn6KMjcd4f1UG5OWmKVv/8lRG0LERd4ED0enecOLktcQKdyPyoLu/LreRZ63+Dh02mhDeF2d7xj0G5cO2FqKpblslbBihhfz5j4JNQfbwdK1GsJL3Pv5lQW4dGjciH4/gJhZZwB3WHPnj/YISJ//Dgrl03pWn6nUOkK7YLjtMGLNTYG/w8z898SNX91MJlAGA3JOTgM9Sj/jlnRBsdLJQDjyp7Mqe1LvEmwIseIHOL5E+Uhu7YNuSpehwSzaG5lzvt4NJK75IUNWFdg8gljsL8/rgDCTUh19CYmU3Z5HENeoiZaUH/htUxx2imuxwIBSsxNG9EQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZRDqCzBWKZu/pSYAJ+4z/KhySU144gnClSmKTAXyezQ=;
- b=MJu7oyJirtGK5m7SLhE2vk1VD+d8O4VqQKAdkifjoAC+vnkiJ72/FYbmCwjr9QBSlVbMNHTVupZGE4KCzCpX1IfCp0iqEuvMOnwBQx+CDrNHFlex0tQfnT5ZMzQW6avs5GtFnrMpVuhU6+3rfJ813DJ9YrAkL/DW59fVLvZ7SE9MjuUmKmVXyb8cqdp2CnUvFQrfj5ow1je+wIFmiFToEyhSsKL9gR4WgRSrBdWHwjFjlnzu/TGcl/zXkADiO9ucIO5IBFbHXezAACAyGpKyG8rKO71IxBeMsaLVNAdHTlNvbU+OD6eb+PtmgQH4AB7Pnns/PjpJzG9SBbIZjhoEgA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM9PR04MB8585.eurprd04.prod.outlook.com (2603:10a6:20b:438::13)
- by PAXPR04MB8896.eurprd04.prod.outlook.com (2603:10a6:102:20f::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.31; Mon, 23 Mar
- 2026 11:58:47 +0000
-Received: from AM9PR04MB8585.eurprd04.prod.outlook.com
- ([fe80::f010:fca8:7ef:62f4]) by AM9PR04MB8585.eurprd04.prod.outlook.com
- ([fe80::f010:fca8:7ef:62f4%4]) with mapi id 15.20.9723.030; Mon, 23 Mar 2026
- 11:58:30 +0000
-Date: Mon, 23 Mar 2026 13:58:48 +0200
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: linux-phy@lists.infradead.org, Vinod Koul <vkoul@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-can@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org, linux-riscv@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, linux-scsi@vger.kernel.org,
-	linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
-	linux-usb@vger.kernel.org, netdev@vger.kernel.org,
-	spacemit@lists.linux.dev, UNGLinuxDriver@microchip.com,
-	Bart Van Assche <bvanassche@acm.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Chanho Park <chanho61.park@samsung.com>
-Subject: Re: [PATCH v5 phy-next 09/27] scsi: ufs: exynos: stop poking into
- struct phy guts
-Message-ID: <20260323115848.ghdu4sbk75tvggfb@skbuf>
-References: <20260319223241.1351137-1-vladimir.oltean@nxp.com>
- <20260319223241.1351137-10-vladimir.oltean@nxp.com>
- <yq1a4w3l04g.fsf@ca-mkp.ca.oracle.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq1a4w3l04g.fsf@ca-mkp.ca.oracle.com>
-X-ClientProxiedBy: VI1PR0202CA0004.eurprd02.prod.outlook.com
- (2603:10a6:803:14::17) To AM9PR04MB8585.eurprd04.prod.outlook.com
- (2603:10a6:20b:438::13)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="X+WY7x2y"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 752F8A5857;
+	Mon, 23 Mar 2026 13:06:42 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1774267604; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=SLHKU2FK8FdfRAdN14XZV1JwdlFHMY42usYjkOK4Hc4=;
+	b=X+WY7x2y3Te7HT5OojrQ8Wt0hBE0TDonMzODI4ltkAGwd14e4Hz/edE1vVpIUaLYUTubzK
+	PAKsUJgrZHNfdPxPRQcIxsIeW0mx74mLunX/+L8yjb0hkWJ4Ug9TFHqpSTIGCKP85vCj/u
+	+W/DkIGWNshkrg8lb/uEFhPsh/0Vwg3yIDd7l8+pEVl0QLXL81rPTAMs07C2FMZvT+f8Dv
+	jztxDFoUJfV3wNagjNyTSz0A6M/yx1IquEuuhgtAS6C65Yx5tnJi+McWLVauTzrmzp308V
+	4zR2GZicvHwnji4v2CpjRlrua7NWtqA/IzQFEGDL61Cp44b++AVxP4f/F5dcoA==
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: netdev@vger.kernel.org
+Cc: Justin Chen <justin.chen@broadcom.com>,
+	Simon Horman <horms@kernel.org>,
+	Nicolai Buchwitz <nb@tipi-net.de>,
+	Doug Berger <opendmb@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH net-next v4 2/6] net: bcmgenet: register xdp_rxq_info for each RX ring
+Date: Mon, 23 Mar 2026 13:05:31 +0100
+Message-ID: <20260323120539.136029-3-nb@tipi-net.de>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260323120539.136029-1-nb@tipi-net.de>
+References: <20260323120539.136029-1-nb@tipi-net.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8585:EE_|PAXPR04MB8896:EE_
-X-MS-Office365-Filtering-Correlation-Id: f0e00254-ce51-4a51-e32c-08de88d37fd9
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|10070799003|366016|19092799006|1800799024|7416014|376014|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
- ibev+wxV7Lp30CAuNLc6Kwv6sSnq9sX5WJG+fcheJBiWIhplW/we2ZeUa+3INHI4nuXIwLObPkaLEJTr9WhvYkuHCDJl/Q7Tb3u+r5uOnLJAdwnQQGIG5xzwjf6JsBW3+Ipa1YxN+VP8hP89dEMkFdQhsh6Ca8udnsnDrrcbZJaGrvM5Y7umeb4OqmCkbjzloQQGS+eMHj+0kqf15alIGL9TPnpjRfo4xR3c7ZmXBb5vGcIYHAtNPj9UapIFvaSAXpdSHPJLQ7y45Wf/X/Ws3cHKmMdibAt4m8g6q3nytW+rQ5SMxEEZruq9pqVFxojc7cvlpZJCVdFFkmpbSTY7Z/9OjTWZG0LGKaY9JvgiIKzw0GoxkWtpB+GlG8oxG86g1FhJFyyUjYtFEmmrTgIkCO+jyVtIz7HCUF4UcGqy0ov/JATmyVZXe+vkulwHxj9C/sRw4tWBO4Br2H5vYobcMPAnxCyUM4Oee2eHbN5o8b9/i3+MCPWhgkiA0oa/geDNAMsHgIFExFw1XMZVCLPMqFijgrkZkcznV44isd8SDWoNC7Ya18YjbShZRdF590g2jBsWTpEzrPASuV9ALJOMlo08HyW8LQ0w6mU2keVAzOkGVHgh9X+umzmwCR8iWuy1p3QRt21oazZxNiBWkwFe0elgdh2EsA8cdH/tdby13RNOVAR9Io+GYjfy0qnZP6WKFW3UMbD6P3kBjNaovf8FNNr47kRhzhb2tb72ZbNXe18=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8585.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(19092799006)(1800799024)(7416014)(376014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?k+bXGAQMn/+T5BzTPRgo4YbQuMqlAQp0BRgzXcqFJspqNkTtqqZaF7QtKGyb?=
- =?us-ascii?Q?alu13naFb79eKsdgud/EGhasmtHf0ImzoZ0xaFyFVYv5EWs8e4wmsbxDF8YR?=
- =?us-ascii?Q?LMP1sDNGMYhGGlpTS2rmyvf1lRB7nWIUJP2fCfzURPyHHzjqPSWgsMH6A53Y?=
- =?us-ascii?Q?U+sNsE5gClx71LX/EyO8BeSWI61Ho2dVd1L9SgjNMMALeHxax2KlKHk/lHLn?=
- =?us-ascii?Q?7fQjcSlOqSTH/uuMibTj5wnmNlq7qWrTDr8nUr0LobAwgUlupVNgfUfLxlda?=
- =?us-ascii?Q?99rHcoTQvoYG2JgivjzhYHTNCGDFMfN6SVvygQ650Y5XVraQ+aOAumUUttSr?=
- =?us-ascii?Q?h6+8Xxc0Bf3vxzHL79vrSKB/LEQIL8Vli8pdbLPe+RiKtI29ejL9w6xjL+Th?=
- =?us-ascii?Q?dEn1ALw5t7fqRMUkMClarvf3QzpToOPwLHmxYjq4Bvsxxm8mi4eBHwEDYfbh?=
- =?us-ascii?Q?Mph4Bv2zjSqwlaWF9+adbM1lFacnbYBqgAIbGEdrKFj4NMDga9llW5eNCQvX?=
- =?us-ascii?Q?Lp2y8EryStYpbEN4inRcv5JBOoC76IUlI5faAXPdwOmVGXTyL45cpT9CO9Ow?=
- =?us-ascii?Q?GS2aDMGgitzIvPFRaK/ttzQ2wKflBSXHK/bj5V4zt74uDCVLq9S+BlGPw4Bg?=
- =?us-ascii?Q?5yBD0jH1IMSicDjZQiRk9GqcpI2ozwRKI+iP7IGSQgs/hQn4l3fOi+2jd/IW?=
- =?us-ascii?Q?HBIGL3RGxMJeVASofSRMad150veEXGHU7nJcTruFw8eLAA4ZRqfzaww/KvCG?=
- =?us-ascii?Q?EeQK5mSgGvrh90N3dIKCiAOf0URQz6FUQY3RZdTR682CcKI2zMig1Yd7/BGa?=
- =?us-ascii?Q?+Vv5Z6EHE4589J7jeXlRYKJOFZvSy5L2kxXDoVstvbp/XGt5GxIYeATXVDZm?=
- =?us-ascii?Q?0BCiivVuqqJ0jnJoVE96uDxqGsXOYMhuWTsBoD+/wnmy93sxggO1io4IMh5F?=
- =?us-ascii?Q?khGdj7Fyhupitk2laNmRfY3kLBrT+1I7JguCemkDbw4GrDlWOhiEVabcMgY9?=
- =?us-ascii?Q?cHcRU3GmXuSYF8zx3EplI1a8FYrT+lOiHW1TQP9Nkj6xobwD5YSJxpXFJQ4U?=
- =?us-ascii?Q?sKoh0QkdxAjk+ZQIUfHnzn2NOVGZtXlU/utaKqxFLiWhz365rMZzgbacB6wQ?=
- =?us-ascii?Q?1YgAAwwcYbz2abgx79M2FQ27D4BIYGTJ5abT5kn6tnEserjl2S+JUoMatdlE?=
- =?us-ascii?Q?yyYPiphjM0Fn/ekcZG8euRt67J31PKYL+R4m9ZHywarMxyDzKa43LTuZLk+X?=
- =?us-ascii?Q?rzKPgol3M+eheCDM7vngN61bT1p4D+QVwo/0GMrnlxHVJPPXk0ISjtlIApd5?=
- =?us-ascii?Q?iaTkmF3kveH7GZqIeLHhaX3k8eacY7nhLVxpsp7jJH8oX03V2V7BFmA0fbOa?=
- =?us-ascii?Q?U/0yR1V3GsmdL1tjJwYM+aBo9J0a9VFQWYv7ejw+e/E1QYNSuBtELMxjFgjA?=
- =?us-ascii?Q?SIV0cyNkb1PffMKP2Sl1jJhGGvip3SwkbPNX2PwYVFN2O5pT/q4HUW75XUvS?=
- =?us-ascii?Q?enrBLKtb63BjGjzFO7kP3A6uCEj7n2Ojg81I/rgyqEH+nei1id2xpM4pAi2Y?=
- =?us-ascii?Q?irq6ucPw349PPy5KqZ3dz2TzQ1yCUHou0ToH55PdKMMjzfbuXcgcyy8lkOv3?=
- =?us-ascii?Q?1F2zSvYsJtVRntdJq/g/CdrVDbJQjrnx/FScl8m4Irola94ilIKiZmiyegdz?=
- =?us-ascii?Q?teAEFy4GvrAen5y5MOvAn/LwPuMITzZFIH+x1vdOczCcw2DBcsxTLafNRghf?=
- =?us-ascii?Q?ezkxof+WcGLc53vplrQiNuQWe6T7fb4nKMeRp3MgXVs/hye1h8lD/znGT6u6?=
-X-MS-Exchange-AntiSpam-MessageData-1: tg6yYir79KgHW9ol5gpDimY5tP51Db2l5Ms=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f0e00254-ce51-4a51-e32c-08de88d37fd9
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8585.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2026 11:58:30.0929
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: P4YXNktBLb9Z3mPajRXq7dEVs0GmQiiLBVZusQx/pod62mJZQ9fIW7ruTw7lzF+vkJUeFhf5gUzVhJRIVIIt8A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8896
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, Mar 19, 2026 at 10:15:17PM -0400, Martin K. Petersen wrote:
-> Vladimir,
-> 
-> > The Exynos host controller driver is clearly a PHY consumer (gets the
-> > ufs->phy using devm_phy_get()), but pokes into the guts of struct phy
-> > to get the generic_phy->power_count.
-> 
-> Ah, newer version. Would still like an ack from Samsung.
-> 
-> And I hit the wrong key, I did not actually apply this...
+Register an xdp_rxq_info per RX ring and associate it with the ring's
+page_pool via MEM_TYPE_PAGE_POOL. This is required infrastructure for
+XDP program execution: the XDP framework needs to know the memory model
+backing each RX queue for correct page lifecycle management.
 
-I will have to resend v6 because of an armv7 build error I've caused for
-ufs-qcom.c (which doesn't #include <linux/interrupt.h>, and relies on a
-transitive inclusion from <linux/phy/phy.h>). It would be nice to get
-the ack from Samsung, but I'll send the next version in the upcoming
-hours regardless.
+No functional change - XDP programs are not yet attached or executed.
+
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+---
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 18 ++++++++++++++++++
+ drivers/net/ethernet/broadcom/genet/bcmgenet.h |  2 ++
+ 2 files changed, 20 insertions(+)
+
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index f32acacadcf0..9f81192d9e31 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -2780,7 +2780,23 @@ static int bcmgenet_rx_ring_create_pool(struct bcmgenet_priv *priv,
+ 		return err;
+ 	}
+ 
++	err = xdp_rxq_info_reg(&ring->xdp_rxq, priv->dev, ring->index, 0);
++	if (err)
++		goto err_free_pp;
++
++	err = xdp_rxq_info_reg_mem_model(&ring->xdp_rxq, MEM_TYPE_PAGE_POOL,
++					 ring->page_pool);
++	if (err)
++		goto err_unreg_rxq;
++
+ 	return 0;
++
++err_unreg_rxq:
++	xdp_rxq_info_unreg(&ring->xdp_rxq);
++err_free_pp:
++	page_pool_destroy(ring->page_pool);
++	ring->page_pool = NULL;
++	return err;
+ }
+ 
+ /* Initialize a RDMA ring */
+@@ -2809,6 +2825,7 @@ static int bcmgenet_init_rx_ring(struct bcmgenet_priv *priv,
+ 	if (ret) {
+ 		for (i = 0; i < ring->size; i++)
+ 			bcmgenet_free_rx_cb(ring->cbs + i, ring->page_pool);
++		xdp_rxq_info_unreg(&ring->xdp_rxq);
+ 		page_pool_destroy(ring->page_pool);
+ 		ring->page_pool = NULL;
+ 		return ret;
+@@ -3014,6 +3031,7 @@ static void bcmgenet_destroy_rx_page_pools(struct bcmgenet_priv *priv)
+ 	for (i = 0; i <= priv->hw_params->rx_queues; ++i) {
+ 		ring = &priv->rx_rings[i];
+ 		if (ring->page_pool) {
++			xdp_rxq_info_unreg(&ring->xdp_rxq);
+ 			page_pool_destroy(ring->page_pool);
+ 			ring->page_pool = NULL;
+ 		}
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
+index 11a0ec563a89..82a6d29f481d 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
+@@ -16,6 +16,7 @@
+ #include <linux/dim.h>
+ #include <linux/ethtool.h>
+ #include <net/page_pool/helpers.h>
++#include <net/xdp.h>
+ 
+ #include "../unimac.h"
+ 
+@@ -579,6 +580,7 @@ struct bcmgenet_rx_ring {
+ 	u32		rx_max_coalesced_frames;
+ 	u32		rx_coalesce_usecs;
+ 	struct page_pool *page_pool;
++	struct xdp_rxq_info xdp_rxq;
+ 	struct bcmgenet_priv *priv;
+ };
+ 
+-- 
+2.51.0
+
