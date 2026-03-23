@@ -1,83 +1,162 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FECE364927;
-	Mon, 23 Mar 2026 20:15:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0DA3B9600
+	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 20:19:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774296926; cv=none; b=OsZN7MwcVnAj3suIrAE8h5qaRXiuHiYqTDz7e5MS2acftJQk1pJq7C0g3V51sfCatWGKy5tOSI17A0/LbFgieItcLQXYlWwFcDDGb78GLyoY+FsB6UOWmVBtzhoxs8n10NEUGnmuNLKSYXJUQpqVYPpWSTGGm365ACkTS3Ky6s0=
+	t=1774297192; cv=none; b=cZXP1EZW0Jma6ohXCajk8vq4XKvYvxmFBmpsQNlIAoSzRrBPkRmnodh6P8BvigcUNDwqVqo1hoHBOJdbkbGaEQkdY4L3mYN73BMVW0c3sCt48YYpGShz5mfFzQ//Nt/ohlKMkoeBwo7VcAGks1Nz5v6cNeCf6n+abJR0UJTod7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774296926; c=relaxed/simple;
-	bh=6DfexWv/cxHHxxPQav0DIfQte5Y2BNW6omVqLQ+bYBI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q3DXHdmF5EWxIm6pF3kHZ8zt89hQOkhTRABSx4Jy48dM9XWOg8TA+sc19tAA4r3tNASLjm3A6f2Ugg0NpJZIsUrtEhFxHUC+1deUeWnEu8YTJeTPBvxB3UlcgMIahdNLsKhPjWjQLEsmCXDnNGyC+wxxffW6t0JU4U3qh8no7yQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=x1N5Ola6; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1774297192; c=relaxed/simple;
+	bh=B/iMACF8boppVlhKT3EV3WhxAci2tfI24r1XLay4l54=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VLJFoNCW/gRAUsjQayAJiWtXLzOXOBVCtD55MR4rw+A5wNWADm9YXtkXbPGMAjSHAg4O9ZxiNHVLHjONXOgsDNTtiqTUT79wvEpEx44N5oMorJ0oFW81JbSXnQICbo2wkMQtXcrtHnR/W78UL3o5KPJratwkcc0iwc0n9mOSezQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z+eoYf9A; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="x1N5Ola6"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=7ePHsWw0e4n9V+tRt0+Q/o4+IEOoi+0C/do4DWjYT1E=; b=x1N5Ola6Jof75gc89/G7Xep6d0
-	p6P5Aatid5XqtUyYc13gD97/4eho3YjB9qDcXUpnDJPzXG329caP40oOU8Hj3DAuACupgNGyuGwL+
-	nm/Wa4VKbFFF5J8qIwwCdU93uDpsItPP1oYpIIYpHcZxN0m6qxjF9bPFovPHzUYKplGk=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1w4lg7-00CzZA-2y; Mon, 23 Mar 2026 21:15:11 +0100
-Date: Mon, 23 Mar 2026 21:15:11 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>, Lee Jones <lee@kernel.org>,
-	Pavel Machek <pavel@kernel.org>, Peter Rosin <peda@axentia.se>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Moritz Fischer <mdf@kernel.org>, Xu Yilun <yilun.xu@intel.com>,
-	Tom Rix <trix@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
-	linux-spi@vger.kernel.org, linux-leds@vger.kernel.org,
-	linux-fpga@vger.kernel.org, driver-core@lists.linux.dev
-Subject: Re: [PATCH net-next 07/10] net: phy: switch to using
- class_find_device_by_fwnode()
-Message-ID: <f37684ff-57af-425a-bb18-bd5e8de3bba3@lunn.ch>
-References: <20260322-remove-device-find-by-of-node-v1-0-b72eb22a1215@gmail.com>
- <20260322-remove-device-find-by-of-node-v1-7-b72eb22a1215@gmail.com>
- <32679fc0-c388-4cd7-a030-5f5ed5abab78@lunn.ch>
- <acDLzK8vpptTUMf1@google.com>
- <acEBCBgMV3RrGKiU@shell.armlinux.org.uk>
- <acGGWTmSMuc5h3Od@google.com>
- <acGI4PI3MHML9Pce@shell.armlinux.org.uk>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z+eoYf9A"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-59e4a04f059so2842865e87.2
+        for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 13:19:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774297189; x=1774901989; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=y1xlgAKziwDGy7HCoeKtXi6eXYVXotOIcpLXVMuXXLU=;
+        b=Z+eoYf9AyINynE2liAc2JHbHyI5tbF01/6V/3WC7b4juBS/QB42VkYnDasQC5kZsGx
+         TbFizs1+0ckRAGZ2Wg86t9SwFHzkE5FoLS2TIOoy290MyZpQaTgz8bQBhfXff8on3HXq
+         yUQbCAYjRzo0N9bVLwCoCJn0ZHn9gTe4DOlZpUtR9bkJj83YKN/FJ5ZcOdyzb9qr3VoG
+         XJvbiRTcpOXT2XPlzCHepFJF9k9t3gfiqtodtUV5iNCmHm9k0bNtCTj1ZTB7IlUOzcDm
+         XtRbgJcecO9YUKK6eSff7HN1pE4mOxf2j6/sYrhJ8H77+6MCducHRqb1rBU2LuMqwES+
+         R9gA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774297189; x=1774901989;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=y1xlgAKziwDGy7HCoeKtXi6eXYVXotOIcpLXVMuXXLU=;
+        b=rxEz3pYJUpI4UiKjYG6Dc2Y2+upRX/RaY8rzPiedbfMPDYNBEhNyhpJ6xwCWT+gBzC
+         +FJW1dwzU6cdPhsMqlic//WI48JZQ6fVOFY/iIElmJVWDL9l5ZLX3VCNfxA35LwqzIvZ
+         kO6uZ0Oi4LeT34k4Gjgqjj7byGzgyiOviOe90F01TADR1Q1lCHvmtwahkuFK19LJ9P4o
+         zdtdkvY6ptoxlwnpin4ySA6dBpg0ZplHlYzSzxoGb+fqk4aW1n0XDj+zzUcVpCSInz6k
+         0qqFB/FLvsxItm2IqmYxqZ8P/xZN1zvlTOSiKPl8txb7xJ55YSGF5VP2ltb427pP2so8
+         qj7w==
+X-Gm-Message-State: AOJu0YwTrjuAoLASCZeqhpsC4F0/wDi+HwDwJ8OyRk8XKabEGlvP9SO5
+	BE6iFudsbsCVuKqMEYayK9GW1yCKgVOqStY0qiil1zhZjK4XzsNemEz2l9BqO/kz
+X-Gm-Gg: ATEYQzy2D7PLejaXe2iIPGMSjj4C2TDdVEnvNl8Ew4yVkb/ro9NpUf7K7ayXPrTVKuN
+	yG4yFVbGHwIWa0A1mEMDJ/YlH+SGWAb1OQgek04xRZvqOZzp9d/6PERL0fsojzzignEe0VoAr5E
+	LOwCsOS9BEAs+KFhZu9nurEmIXhwidkYmvXHsOLgXHmL1waLTFgjtEPce9TldBEFKeg4TZTdbEc
+	DL73s9X50Mr1PO+wqstRBoK1n+wCXHmjkCv6VFsrFm4pclqOJpxDIsW8TQH7VlEB0g4wfotKCAG
+	hsXLqgDPptMwIQIb9zSHaamMuIpZn7ZF0Ma5bijlHzMLxB+UOq0YPVOgwwQzyfbT7pjyhopx4Eo
+	yof8VgeNH3KvKdV6q/oKyub/IyTidaiH5YUyXlSysdhg69lOBQFz/GE5lrtEQCHjZ3Zify45G0U
+	ZV4Z+l51Ml7LIxkiAlB3vlhfT50B1cOeaSj23ueOWT7Y49aY1MDI5f44SNeYHj/rKcLPncbX29V
+	TbbBYpOlFcAKfpXTw==
+X-Received: by 2002:a05:6512:39d2:b0:5a1:2e0c:86de with SMTP id 2adb3069b0e04-5a285b523d7mr5516711e87.32.1774297189065;
+        Mon, 23 Mar 2026 13:19:49 -0700 (PDT)
+Received: from localhost.localdomain (46-138-191-69.dynamic.spd-mgts.ru. [46.138.191.69])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a285207365sm2720623e87.42.2026.03.23.13.19.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Mar 2026 13:19:48 -0700 (PDT)
+From: Artem Lytkin <iprintercanon@gmail.com>
+To: netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Cc: fujita.tomonori@gmail.com,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	tmgross@umich.edu,
+	ojeda@kernel.org,
+	dakr@kernel.org
+Subject: [PATCH 2/4] rust: phy: add paged register access and bit manipulation helpers
+Date: Mon, 23 Mar 2026 23:19:23 +0300
+Message-ID: <20260323201925.8405-2-iprintercanon@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260323201925.8405-1-iprintercanon@gmail.com>
+References: <20260323201925.8405-1-iprintercanon@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <acGI4PI3MHML9Pce@shell.armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 
-> This is not "foreign territory" - ACPI in general doesn't want to
-> describe e.g. the individual components of a network card, unlike
-> DT.
+Add Device methods for register manipulation beyond simple read/write:
 
-It has also been suggested that the MDIO bus should be added to the
-ACPI specification as a first class bus, similar to I2C, SPI,
-etc. This would make it different to the DT. So we don't want to
-encourage developers to use the networking DT concepts in ACPI, it
-will just cause problems if the ACPI spec every actually covers the
-use cases of networking.
+  - write_paged(): Writes a register on a specific page, completing
+    the paged access surface (read_paged already existed upstream).
+    Wraps phy_write_paged().
 
-     Andrew
+  - modify() / modify_paged(): Atomic read-modify-write operations
+    that clear bits in mask and set bits in set. Wraps phy_modify()
+    and phy_modify_paged(). These return Result (not the old register
+    value) since the C functions return 0 on success.
+
+  - set_bits() / clear_bits(): Convenience wrappers around modify()
+    for the common case of setting or clearing specific bits.
+
+These helpers are heavily used by real-world PHY drivers for
+configuring vendor-specific registers without races.
+
+Signed-off-by: Artem Lytkin <iprintercanon@gmail.com>
+---
+ rust/kernel/net/phy.rs | 43 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
+
+diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+index 646b2a78a2710..43d1ee360268b 100644
+--- a/rust/kernel/net/phy.rs
++++ b/rust/kernel/net/phy.rs
+@@ -241,6 +241,49 @@ pub fn read_paged(&mut self, page: u16, regnum: u16) -> Result<u16> {
+         to_result(ret).map(|()| ret as u16)
+     }
+ 
++    /// Writes a paged register.
++    pub fn write_paged(&mut self, page: u16, regnum: u16, val: u16) -> Result {
++        let phydev = self.0.get();
++        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
++        // So it's just an FFI call.
++        let ret =
++            unsafe { bindings::phy_write_paged(phydev, page.into(), regnum.into(), val) };
++
++        to_result(ret)
++    }
++
++    /// Performs a read-modify-write on a PHY register.
++    ///
++    /// Clears the bits set in `mask` and sets the bits in `set`.
++    pub fn modify(&mut self, regnum: u16, mask: u16, set: u16) -> Result {
++        let phydev = self.0.get();
++        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
++        // So it's just an FFI call.
++        to_result(unsafe { bindings::phy_modify(phydev, regnum.into(), mask, set) })
++    }
++
++    /// Performs a read-modify-write on a paged PHY register.
++    ///
++    /// Selects the page, performs the modify, and restores the original page.
++    pub fn modify_paged(&mut self, page: u16, regnum: u16, mask: u16, set: u16) -> Result {
++        let phydev = self.0.get();
++        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
++        // So it's just an FFI call.
++        to_result(unsafe {
++            bindings::phy_modify_paged(phydev, page.into(), regnum.into(), mask, set)
++        })
++    }
++
++    /// Sets bits in a PHY register.
++    pub fn set_bits(&mut self, regnum: u16, val: u16) -> Result {
++        self.modify(regnum, 0, val)
++    }
++
++    /// Clears bits in a PHY register.
++    pub fn clear_bits(&mut self, regnum: u16, val: u16) -> Result {
++        self.modify(regnum, val, 0)
++    }
++
+     /// Resolves the advertisements into PHY settings.
+     pub fn resolve_aneg_linkmode(&mut self) {
+         let phydev = self.0.get();
+-- 
+2.43.0
+
