@@ -1,145 +1,202 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096451FE44A;
-	Mon, 23 Mar 2026 09:30:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EDED386572
+	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 09:31:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774258258; cv=none; b=SywneGzCxJMMqvncLzjULehF842RIfyQd/rd+y+fWLBnWVID+4GX4qaGSdfHbjii2gmfKqelNBDhJQVLda6FVvbrL1vxLUdFFcaqgeua77cd29hVEdrjMP0N723iRvH+TgEv/9M0IKH1G7Td1lthhXn7WgNrw5JlIn2EqFEi7lY=
+	t=1774258307; cv=none; b=uyzgE7hbeAajs5SZ3nCU1GVA8ok+bVOCidGVOkM3afUBRAsKdXsKp+rwnerI/Pd9tSmm/qwxXrBjoNZS/bAKB3SlMK9uMhIi0DJj8Xs5wBkOqAFe8uifQGS03BtDS8eJh6Li+ebD2WshO8htvf0d+sjM63Bs/B8r414mcIfZVL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774258258; c=relaxed/simple;
-	bh=+sB9HwYJtDPm2Yh5tyrCOddW8M/7xA3pzUn3aUos3JE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZDGDe2YMBQFA4Md/1UeT1Gg1m4HDl8SE7rI2anFYWO77liysRdu4Em+SQ4ywVJtD/zSyq/EUaihQhpAg3x1yYsr/U00v3PxPEkjO8JjY2joYjpuJm3bpFcb2FENUWz46hoRUTcS5RHFr/lLWrwRCEKuMPDlIpUfWAXKH+EOh5nU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=etqlIQfJ; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1774258307; c=relaxed/simple;
+	bh=nCv6JrfTbinl7A/3qK28MS9LHF8fUjNeaeDPjE4EH44=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WdgIM8Bbh1P/9r9kM1WNXRFzOdLc7gD0JJsEwGkj1sQPcFscdxA8TXI4xHpQ+xRmlChF4hGKa6Dany4O3NFhx8KgxW81zYhnV/BQ0w0TNmPmWeX5bWBeHsoKmUHOFRKB25s7t7AmCRaWzC0yVNpKD+Dw4P8C1S6y2ZOTGjCq8UI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=ps7KE2DC; arc=none smtp.client-ip=185.125.188.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="etqlIQfJ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=F3rUhqBT1KeCDZlm1nLAVKvFKDzC8SHFz9yiyugPwjo=; b=etqlIQfJSSDSaWC3g3CkplcGX+
-	Az+ECRx6Cd67IDOLKoApAzDji/xzE74lFrsxHONaOYr/6D8zl1uKVNXf+EdkRlQYLvjekUSCPPgJl
-	B6elVyuHZdADUUDQxvi7dFUr7eCVzXxl8y2zVjFz6YGCEZb/UGk5ApAGJIymWdcY2ByE5R4P2SXkH
-	Ay/gkmTp1OTxO+62vbYDEZ5Od3e1c1wGDJ+xblhu518mcW5l5nCzOv6lbc8gCjnEYU8H1l13kthWV
-	ugySbdVObDVq418ku/v3FG963j2qdsGQbxQthOMQsnw+tUTC+AWi/TwUKK55j1kpSSqv+mCKZgNAf
-	EpjKTHNA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:58958)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1w4bcS-000000000Cw-41vC;
-	Mon, 23 Mar 2026 09:30:45 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1w4bcQ-000000003up-3Y8E;
-	Mon, 23 Mar 2026 09:30:42 +0000
-Date: Mon, 23 Mar 2026 09:30:42 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, f.fainelli@gmail.com,
-	frank.li@nxp.com, chleroy@kernel.org, horms@kernel.org,
-	andrew@lunn.ch, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH v2 net-next 11/14] net: dsa: netc: add phylink MAC
- operations
-Message-ID: <acEIQqI-_oyCym8O@shell.armlinux.org.uk>
-References: <20260323060752.1157031-1-wei.fang@nxp.com>
- <20260323060752.1157031-12-wei.fang@nxp.com>
+	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="ps7KE2DC"
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com [209.85.221.72])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 8C77D3F1CC
+	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 09:31:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20251003; t=1774258297;
+	bh=gEESZKfxvXFSfUUhWLI7fyEjb9Ih3f2o4yX3JzPSuQ4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version;
+	b=ps7KE2DC+O6VtbD1inT8DBlDYgiZ955mbl9HKDsFYGmKr+nbF+Sfhma1kwfP0fRLp
+	 KAUTJijzD0MxC6jlg1kERcRJW+hPW2ADDgnshLQbE2bqWSKJtfV9ZlSQlKG74h34K6
+	 QukAPvfdP28N+qkJ8Yzjd6nebM6DfhPY9hQJvW03wTjsdIyQQMr+Se0IYx6ieHiImQ
+	 tIRlMTOld354HYNCB6axH8Fn5xJ678/4OcVToGp0xjeuY4V7clkNC0OaMB5WIRMQuR
+	 ySLm/UCcFYYxhoZxJZyTtXhbL1l1sdJQjW6mrOHnIqy6ohqHDT8R1YU4V+Rz1fQoa1
+	 zxbs06hLhiR9ivCJpsBJsNX7eMqTLZI7OlmDBDw7UgwqpUmIs6+H8qhkdKtSlf4wP5
+	 3DljFK8WqsTxVMp3ALP+dQgR1PPmOhxZojIY7Ml0nmW0FXcvEE/7bvxnRfOJb5xAoM
+	 Pi+m0/QrWi0asvqutCGRwJ050dJV9LhcOuXHHk6rA5m99ac6nleBFOeynlUy+uYbEj
+	 nKN0Ol0E18v+bFhkd3BcmO6qcdN8nkoN5SyoxnKGDiKlqVYlHxzVoXeHeS7jen8fgk
+	 pGaf5OiQXLf7SzRD6cnoQXtUtwYwbH8UW1h5oMwbDmYNZhPg1tcW/w9z3HzDy5aP1i
+	 hf4ZpSW8h7jfD5Yn+YHsZvZs=
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-439c794edd9so3733032f8f.3
+        for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 02:31:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774258297; x=1774863097;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=gEESZKfxvXFSfUUhWLI7fyEjb9Ih3f2o4yX3JzPSuQ4=;
+        b=PVB1cTzt7wmv/ZnOBo73iAqtspcyBBsNTdEjQo7tdM1cBUvsysTFHtBsaSliFwWsv0
+         Zc5H4lOmW059hw72I7LzUvsG19lH1ocT3Zzca92Ae+knb1TQeevNvqSXLoJ8WgDOo8jN
+         zBcMWJhSRFn9Q561VrbXr4V08bR4Jzk6snmZo4xsGGb2nsO1YOaSeSxSIgIqIMgqMUcI
+         5QawKxSdxfki3zGNUhnDjAbDsxdGKrioaSS5nRO/2jL+cFbeyZFxBEH5MXSO+htAPgZ2
+         FeK7kW+//tEJQkxnrfktLy32zHiUbEotDHM2psBr6jdktsBt39W6o0ut1hE3+PiaTk3E
+         E0Aw==
+X-Gm-Message-State: AOJu0Yxm13c5NPxbWVq+n5Y/9LrW3UhyLPzjC2xc0SJCKH8nv4iV/6G4
+	shEVuWUyMljafrk9y5RXMtKCn07+Ctao5Z10yYh5RY+xYaY7NbxBeNQCB2yIKkwshiXanZlBRWe
+	HcpEkYHL4kQRIBAtS/xawtcRzpwobMlryo6Su2wq+II3sHhEFctZ4crpruPNiV3CCZHt3UESG/k
+	ZzKfiuaw==
+X-Gm-Gg: ATEYQzyNlKK/YATBN2ilacDmAJ5BqU5Yndc62D6y0sEWtSnRfU2KpsMkdFHPA6xUfOo
+	28h4m7QRuv5Q2izAZ6CofnJdM8rETCWatJWfhAaR2OKgtb8LmOGwuVFNaKePoofkeVg07eW4j1M
+	wQL+OmF13vUkj9GQNN/Jnz6ROLjSSo1mNGZgwlnUkosZUSnx58gzbSVWgdshYaZIRVmFye9UgGV
+	qVzbHM3Xa6VcMrCBl6KrtTqea6NY7jW6pqPvpMUj6Fm56JpEctF5jnxJhr+6vcfAykRy2d5FE+D
+	SBojzwIINz2r7QGWNbLaYBmUhVMk80mKYa8Xr28BGDbw+6b5mX2f+pGUiUn1a62o0xtucMlss5C
+	JKssf8U8h3TFEJsIMRNh/AAgbDLvQJpI/
+X-Received: by 2002:a05:6000:2906:b0:43b:509c:4275 with SMTP id ffacd0b85a97d-43b6423bf47mr17477842f8f.16.1774258296634;
+        Mon, 23 Mar 2026 02:31:36 -0700 (PDT)
+X-Received: by 2002:a05:6000:2906:b0:43b:509c:4275 with SMTP id ffacd0b85a97d-43b6423bf47mr17477769f8f.16.1774258296056;
+        Mon, 23 Mar 2026 02:31:36 -0700 (PDT)
+Received: from devstation.. ([194.120.133.116])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b6cdfdfa9sm18901032f8f.9.2026.03.23.02.31.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Mar 2026 02:31:35 -0700 (PDT)
+From: Ioana Lazea <ioana.lazea@canonical.com>
+To: netdev@vger.kernel.org
+Cc: jhs@mojatatu.com,
+	stephen@networkplumber.org,
+	dsahern@gmail.com,
+	jay.vosburgh@canonical.com
+Subject: [PATCH iproute2-next 1/2] tc/tbf: enable use of 64 bit burst 
+Date: Mon, 23 Mar 2026 09:29:12 +0000
+Message-ID: <20260323092918.11010-2-ioana.lazea@canonical.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260323092918.11010-1-ioana.lazea@canonical.com>
+References: <20260323092918.11010-1-ioana.lazea@canonical.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260323060752.1157031-12-wei.fang@nxp.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Mar 23, 2026 at 02:07:49PM +0800, Wei Fang wrote:
-> +static void netc_port_set_mac_mode(struct netc_port *np,
-> +				   unsigned int mode,
-> +				   phy_interface_t phy_mode)
-> +{
-> +	u32 mask = PM_IF_MODE_IFMODE | PM_IF_MODE_REVMII | PM_IF_MODE_ENA;
-> +	u32 val = 0;
-> +
-> +	switch (phy_mode) {
-> +	case PHY_INTERFACE_MODE_RGMII:
-> +	case PHY_INTERFACE_MODE_RGMII_ID:
-> +	case PHY_INTERFACE_MODE_RGMII_RXID:
-> +	case PHY_INTERFACE_MODE_RGMII_TXID:
-> +		val |= IFMODE_RGMII;
-> +		/* Enable auto-negotiation for the MAC if its
-> +		 * RGMII interface supports In-Band status.
-> +		 */
-> +		if (phylink_autoneg_inband(mode))
-> +			val |= PM_IF_MODE_ENA;
+Modify the TBF queueing discipline configuration to allow burst sizes up
+to the limits supported by the kernel API, which may exceed 4 GB at
+higher rates.
 
-I would prefer newer drivers not to use phylink_autoneg_inband()
-anymore. Note that there is no need to support RGMII inband in the
-kernel (nor is there any proper support without a "phylink_pcs"
-being present to provide the inband status.)
+In the current implementation, the burst option is effectively limited
+to 4 GB because it is stored in a 32-bit field. However, the kernel
+internally represents the burst in psched ticks (64 nsec each). At
+sufficiently high rates, this representation can correspond to burst
+sizes larger than 4 GB without requiring kernel changes.
 
-> +static void netc_port_set_hd_flow_control(struct netc_port *np, bool en)
-> +{
-> +	if (!np->caps.half_duplex)
-> +		return;
-> +
-> +	/* The HD_FCEN is used in conjunction with the PM_HD_FLOW_CTRL
-> +	 * register, which has a default value, so currently we do not
-> +	 * set it in the driver. The half duplex flow control works by
-> +	 * the backpressure, and the backpressure is essentially just
-> +	 * a long preamble transmitted on the link intended to create
-> +	 * a collision and get the half duplex link partner to defer.
-> +	 */
-> +	netc_mac_port_rmw(np, NETC_PM_CMD_CFG(0), PM_CMD_CFG_HD_FCEN,
-> +			  en ? PM_CMD_CFG_HD_FCEN : 0);
+Overflows (burst values that exceed UINT_MAX psched ticks) are now
+correctly detected, and flagged as an error, rather than passing
+arbitrary psched tick values to the kernel.
 
-We don't support half duplex backpressure in the kernel. I notice
-you always enable this whenever HD mode is negotiated, which means
-there's no way for the user to disable it. Flow control can cause
-problems. Ethernet relies on packet dropping for congestion
-management.
+The change to increase the burst size to 64-bit introduced an issue with
+TCA_TBF_BURST. The kernel expects this attribute as NLA_U32 (a 32-bit
+unsigned value), but the updated implementation may produce a 64-bit
+value, causing the tbf_policy check in the kernel to fail. However, when
+TCA_TBF_BURST is omitted (which occurs when buffer64 >= UINT_MAX), the
+kernel falls back to using the value assigned to qopt->buffer, which
+correctly supports large burst sizes. Omitting TCA_TBF_BURST for large
+bursts preserves backward compatibility and aligns with existing kernel
+behavior. This change therefore ensures correct handling of large burst
+sizes while remaining compatible with kernel and iproute2 expectations.
 
-> +static void imx94_switch_phylink_get_caps(int port,
-> +					  struct phylink_config *config)
-> +{
-> +	config->mac_capabilities = MAC_ASYM_PAUSE | MAC_SYM_PAUSE |
-> +				   MAC_1000FD;
-> +
-> +	switch (port) {
-> +	case 0 ... 1:
-> +		__set_bit(PHY_INTERFACE_MODE_SGMII,
-> +			  config->supported_interfaces);
-> +		__set_bit(PHY_INTERFACE_MODE_1000BASEX,
-> +			  config->supported_interfaces);
-> +		__set_bit(PHY_INTERFACE_MODE_2500BASEX,
-> +			  config->supported_interfaces);
-> +		config->mac_capabilities |= MAC_2500FD;
-> +		fallthrough;
-> +	case 2:
-> +		config->mac_capabilities |= MAC_10 | MAC_100;
-> +		__set_bit(PHY_INTERFACE_MODE_MII,
-> +			  config->supported_interfaces);
-> +		__set_bit(PHY_INTERFACE_MODE_RMII,
-> +			  config->supported_interfaces);
-> +		if (port == 2)
-> +			__set_bit(PHY_INTERFACE_MODE_REVMII,
-> +				  config->supported_interfaces);
+Signed-off-by: Ioana Lazea <ioana.lazea@canonical.com>
+---
+ tc/q_tbf.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-The "case 2" above already ensures that port is 2 here.
-
+diff --git a/tc/q_tbf.c b/tc/q_tbf.c
+index 9356dfd2..cbe11025 100644
+--- a/tc/q_tbf.c
++++ b/tc/q_tbf.c
+@@ -37,12 +37,12 @@ static int tbf_parse_opt(const struct qdisc_util *qu, int argc, char **argv,
+ 	struct tc_tbf_qopt opt = {};
+ 	__u32 rtab[256];
+ 	__u32 ptab[256];
+-	unsigned buffer = 0, mtu = 0, mpu = 0, latency = 0;
++	unsigned mtu = 0, mpu = 0, latency = 0;
+ 	int Rcell_log =  -1, Pcell_log = -1;
+ 	unsigned short overhead = 0;
+ 	unsigned int linklayer = LINKLAYER_ETHERNET; /* Assume ethernet */
+ 	struct rtattr *tail;
+-	__u64 rate64 = 0, prate64 = 0;
++	__u64 rate64 = 0, prate64 = 0, buffer64 = 0;
+ 
+ 	while (argc > 0) {
+ 		if (matches(*argv, "limit") == 0) {
+@@ -79,11 +79,11 @@ static int tbf_parse_opt(const struct qdisc_util *qu, int argc, char **argv,
+ 			const char *parm_name = *argv;
+ 
+ 			NEXT_ARG();
+-			if (buffer) {
++			if (buffer64) {
+ 				fprintf(stderr, "tbf: duplicate \"buffer/burst/maxburst\" specification\n");
+ 				return -1;
+ 			}
+-			if (get_size_and_cell(&buffer, &Rcell_log, *argv) < 0) {
++			if (get_size64_and_cell(&buffer64, &Rcell_log, *argv) < 0) {
+ 				explain1(parm_name, *argv);
+ 				return -1;
+ 			}
+@@ -175,7 +175,7 @@ static int tbf_parse_opt(const struct qdisc_util *qu, int argc, char **argv,
+ 		fprintf(stderr, "tbf: the \"rate\" parameter is mandatory.\n");
+ 		verdict = -1;
+ 	}
+-	if (!buffer) {
++	if (!buffer64) {
+ 		fprintf(stderr, "tbf: the \"burst\" parameter is mandatory.\n");
+ 		verdict = -1;
+ 	}
+@@ -200,7 +200,7 @@ static int tbf_parse_opt(const struct qdisc_util *qu, int argc, char **argv,
+ 	opt.peakrate.rate = (prate64 >= (1ULL << 32)) ? ~0U : prate64;
+ 
+ 	if (opt.limit == 0) {
+-		double lim = rate64*(double)latency/TIME_UNITS_PER_SEC + buffer;
++		double lim = rate64*(double)latency/TIME_UNITS_PER_SEC + buffer64;
+ 
+ 		if (prate64) {
+ 			double lim2 = prate64*(double)latency/TIME_UNITS_PER_SEC + mtu;
+@@ -217,7 +217,11 @@ static int tbf_parse_opt(const struct qdisc_util *qu, int argc, char **argv,
+ 		fprintf(stderr, "tbf: failed to calculate rate table.\n");
+ 		return -1;
+ 	}
+-	opt.buffer = tc_calc_xmittime(opt.rate.rate, buffer);
++	opt.buffer = tc_calc_xmittime(opt.rate.rate, buffer64);
++	if (opt.buffer == UINT_MAX) {
++		fprintf(stderr, "tbf: burst out of range\n");
++		return -1;
++	}
+ 
+ 	if (opt.peakrate.rate) {
+ 		opt.peakrate.mpu      = mpu;
+@@ -231,7 +235,11 @@ static int tbf_parse_opt(const struct qdisc_util *qu, int argc, char **argv,
+ 
+ 	tail = addattr_nest(n, 1024, TCA_OPTIONS);
+ 	addattr_l(n, 2024, TCA_TBF_PARMS, &opt, sizeof(opt));
+-	addattr_l(n, 2124, TCA_TBF_BURST, &buffer, sizeof(buffer));
++	if (buffer64 < (1ULL << 32)) {
++		__u32 buffer32 = (__u32)buffer64;
++
++		addattr_l(n, 2124, TCA_TBF_BURST, &buffer32, sizeof(buffer32));
++	}
+ 	if (rate64 >= (1ULL << 32))
+ 		addattr_l(n, 2124, TCA_TBF_RATE64, &rate64, sizeof(rate64));
+ 	addattr_l(n, 3024, TCA_TBF_RTAB, rtab, 1024);
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.43.0
+
