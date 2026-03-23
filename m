@@ -1,193 +1,152 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011056.outbound.protection.outlook.com [40.107.208.56])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D17139526D;
-	Mon, 23 Mar 2026 11:33:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774265614; cv=fail; b=YGoi2eo8Tqyf34P8q0SzkaAOIaFIoWNfN9Eje7T/yG5WNEOJmC3UpMHp/dJPX5M3++Fs2UNLXMm51jUKoRJVENxKObaGFIvaHmdX7/2WPnNFbXzT2yBrm3Y31Iibn1xyvpwIvSPoxTYTgcltKm+DMy+ldXzPCNvoV8W3/8cbqOo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774265614; c=relaxed/simple;
-	bh=MVJJ8hD++pFynZVdnQvyJ5T6vqOQsUo4UFyCwpnFT5Q=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WDEY+cprmSt25yPxkf6nKjVsgxI2SrcJofTwjn54+1aayc5kLFbdUXVbVpSQkLHnciJpAfdEAXNkmI11jL/UspnAfbL1DsktZY1/yb7ebzj1Qzed9XhepMy1DlliTLC5FBHw24ccN5tcQq0Mg2A9gjrS0w5Crv5Awc1fjseeN4g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=bOrg6LAI; arc=fail smtp.client-ip=40.107.208.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38AE8386435
+	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 11:34:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774265668; cv=none; b=auqHGVdJG0ZPgPiv93uTBPy1qSyw5ImfWygpJHqq5QveesRFheEVszdNGh3KV7/8gYZsMp7IYB0zgizCExuoi9dJo4pUdablKWAikgUavPnNxSJX0nO07MTaBdBAkOfkdlujbWhF+kjUbe845DVq4I4RhS9GZNa7fRKPQVCurws=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774265668; c=relaxed/simple;
+	bh=5y6Bd03R9I+jDsejN2kyRg3MgRmiMG2aUkV/pbS3EVc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZSTJjzR/mezsVwzcFES0Zp1incHB26VhiZrPzKaDRAGCJX8DvZdE93i8ynjLPp5Taz/DOF/BGHTop0s3/yiRjcwcmcb/phpQHpIeTHh9BHcLBpFueFdZattfjEjHu4jR2lFYUnlXMGz1HnATIM+WY2cbwF5jwyaLWFXHsHHhVX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=kEKOKaLc; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=VHLZm9S5; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="bOrg6LAI"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZqnfLxnCHP6hDfy7//0nmsk+1aT2tQ3lw7sxbwRFjtko3DQ6u3hKkZbUSOERcN9jdip/3rsXv2x20tJfDdd9t9nzNAqY+EfGcD/i6PDfwEjeqZw02MjRdPXe5M2DH5GBeKH6zdmyZmoLuPUgXdVB8KmFFCPJcZRJThYW9/sjlwnmppumPxgTYTGhwqD+pZmlZOxC4mgzjFFwRuyhUlONxb0QgOhJs32Ez4EJW00g3VQAgm/dyElSJPWOLl9jGDsqnP6pGxc12oFEu+4gck/zp1j+7tm8LLIxqWFLK8ppm1++ZayOJwwfuUwR2QktKX8QA5pBGInsJlB2yUguKK56Mg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=B7+Ksv4D6H8UyiXyqrgfGQ62IlygufAvOYQj2dErJCE=;
- b=CC9Cs2KUlKa+GZ4gWf8NLcu45XGjkeNEJI4Rzf1hY7yudL8wdxRVG9/VL3ETitX9W4vcE5SIN79m6Wkkx4w511N/HuBTZ+wE9pVE3yo4QRRvAAZ/ZHVIg7yCEYBT1Y0uEtDq0cOTK/7/3Rwf6CbZFyjuVoKx07glAnw59xdVOe+LFpkumJzPiQThHkZwZwlUse67+DfsX5vAzXgYQE2BiWVahuDc5kqVQWKShzr9F/HGtcGz9dOtIVhucxa2kF/CuDFgp+1yXT+sma/sHQJJ+dBizpGk7TrKJG9AnlJwGmgHXf4scAQI7xxxV8MAhpYtkm0vdIvCqV8ipwJV+5kaNg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=B7+Ksv4D6H8UyiXyqrgfGQ62IlygufAvOYQj2dErJCE=;
- b=bOrg6LAIwbUdSDzXjYRG/qsmMoxi/FFxMw1nq2Z4zXXAO4mQu7O0TX/QCjhVL9Xw44YpMoUlk+layg/r8Y/TtbJ1XkFw1O8LEWkAuWqRPi7Vrmn08tpHhnuhQovmIEjyL2qVvKjv2lOe6l+D0Lk/xeK4aONHneHt5fPSm3VTGgg=
-Received: from SJ0PR03CA0021.namprd03.prod.outlook.com (2603:10b6:a03:33a::26)
- by DS0PR12MB7727.namprd12.prod.outlook.com (2603:10b6:8:135::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Mon, 23 Mar
- 2026 11:32:09 +0000
-Received: from SJ5PEPF000001F3.namprd05.prod.outlook.com
- (2603:10b6:a03:33a:cafe::5c) by SJ0PR03CA0021.outlook.office365.com
- (2603:10b6:a03:33a::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9723.25 via Frontend Transport; Mon,
- 23 Mar 2026 11:32:06 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ5PEPF000001F3.mail.protection.outlook.com (10.167.242.71) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9723.19 via Frontend Transport; Mon, 23 Mar 2026 11:32:08 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 23 Mar
- 2026 06:31:35 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 23 Mar
- 2026 04:31:35 -0700
-Received: from xcbalucerop40x.xilinx.com (10.180.168.240) by
- satlexmb08.amd.com (10.181.42.217) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Mon, 23 Mar 2026 06:31:34 -0500
-From: <alejandro.lucero-palau@amd.com>
-To: <linux-cxl@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<dave.jiang@intel.com>, <dan.j.williams@intel.com>, <edward.cree@amd.com>,
-	<davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<edumazet@google.com>
-CC: Alejandro Lucero <alucerop@amd.com>
-Subject: [PATCH v24 06/11] cxl/hdm: Add support for getting region from committed decoder
-Date: Mon, 23 Mar 2026 11:31:12 +0000
-Message-ID: <20260323113117.2352709-7-alejandro.lucero-palau@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260323113117.2352709-1-alejandro.lucero-palau@amd.com>
-References: <20260323113117.2352709-1-alejandro.lucero-palau@amd.com>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="kEKOKaLc";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="VHLZm9S5"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62N77Mjh024253
+	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 11:34:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	yP7BePyV8V69Gp0dwYW6aB+HYb7u/dPAwd2KQHqi9jo=; b=kEKOKaLc7JHXads1
+	LiyvnEtYHpnm7QbgsRkuvvdn5iKUn31iiuV9BJoaGZr29co3jC6kI6pStMAiBmcR
+	6jgwwFDiUIfP3Xz6UPHNmYvTvu77fvc0/3f2yPaPzuL1lSCpUaV90AououKvT30O
+	G+3/JVwcwdGxb7zOb0GFIYmrQ91hdZ+HEuf27XuNJ31Kv3ueDWu+r1bdnSFlSjFW
+	8WQX0dIhJTah6TVeJXH/KuQByFuvwfFBRwAECylOs36ZaEM3MWnqreVobcxJz6S4
+	PMqMGMbj9ECQGPJ46f0leb96RmQAeSBh5pcCD6wQHyOSf5y4lr7Wt3oc4AH0X/nU
+	BpxW+A==
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d1h1e59sn-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 11:34:26 +0000 (GMT)
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-50b27636835so41241891cf.3
+        for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 04:34:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1774265665; x=1774870465; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yP7BePyV8V69Gp0dwYW6aB+HYb7u/dPAwd2KQHqi9jo=;
+        b=VHLZm9S5nGqvINpPdMec83tf82BOiFRZsVehKA0ImJfnX020GoamMP6LsVPrcKmZF5
+         u/8j19RKSk+kLa8Aimo4n8/QBTL2KOMN8tW9VI7AEouZy/iP6RuXrW2AIf757/bZp1Gv
+         6J0TgokhsMnktQFn9eZA4gY3+kjY9SyD7BwSMRfQQhaad3lXDRB3ZYcG5cQIjLPbx2ZO
+         w7uaKE5yxe3JgVZYrbrNOhH5bRuttQgaEUA9Sue6RdAd9iqK2ytpUS2XIBQJFr4sAggU
+         wydJwt2bO4Yi/K46+MyBgkAw19XTH83+cuHYsdMGNOmDXerCZrYlEG/MiDQ8jLJAzrzf
+         lhhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774265665; x=1774870465;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yP7BePyV8V69Gp0dwYW6aB+HYb7u/dPAwd2KQHqi9jo=;
+        b=PkuBu1UrMiw2WJAprJHXwL3PJZtDKLzUyK+ZOiNijXGhBpJYPMF2LHEtl6rTxGQur6
+         YV13nwfVmXgj727IV4iGVOoC9bBlza0c1ganKLWs0IATrKquDB6TOVkgsvhr1dz7ZNar
+         xoByKGgFhoeK6gxY8vCcFrBPNBCltNaJeU837rnNUO4o4Em2upk60V4q6MkpEy2P0CqS
+         hN78A8KwiAiCnSCZxTtESm/z0hXQCb0ocqYVlI66Lrdv+V6fDr7Xq4lRkatYngYD0PuP
+         WkCKSwX1ETz4NJWaND7xiNe+5Osh3A1xp7QAZmT/X6NtM/flswiGwcvaFbXVhxDBlCfw
+         60ng==
+X-Forwarded-Encrypted: i=1; AJvYcCU4k8fPdH3y53jCr/Rq3PQTX8Q83XD9hZvZMEMpB/FKWFztg7Fzu7GAe+Wm76B5xp7ZLEWREpU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywi/E4rEVh9z/0yxHK5/D3E+dEjHkb1bwX/SKoS9VPZ1G1ciGgE
+	AXe+lrG8fmcJQJv7Oo+Y3eXExjfsPam8e7yzSEJ8/XFjucz/KuAnlL1sNq8Sa1a3E6r+QyiSdZR
+	T9/9wIv+eUscym9jOB9rmBliy7sAfNGsMqSrfmuOUEdinXxjNTgD6BlJku2M=
+X-Gm-Gg: ATEYQzyvOYcnQtEE7URPkza4dcSwPhpQXYwksCIC6Fcxq61UmE9ENWk1GC3HC04Q1ha
+	mlmlcVzh/y+sGdDIei3igHmALvR3JZ9XI3QLbqmp1ntzSy04fqe477loKjeurjO/BGKdgDmKqbE
+	0NZPmkB5nLaTrL0tfD2Zh4GtGM1TqLSDHaZiF+U1ONrTDmR7qPHkcscNFtYgkxEjj8l0DiTakVx
+	hCLoNyzyRPqEJuo3emcyIzZs3+9uTGcphDI3M7JDbMwV+NE25sH5cvNCfcJqrY42aeJmbIdz9Z6
+	dvDvS+VHS1I4o7ZqZOjVboxqkkpmP0a/cL/0qoBua1f/WNz02MpPUjLN0sL/V5g4/f4dtdIhA3s
+	/FoqVNlcd6Jq9OgUIrEAdp1FtN77Pu5nvJxNADWDSDhWIR0EjZBpUNIiV0L2kCi25heF1TnOdUg
+	xIgWg=
+X-Received: by 2002:a05:622a:65c7:b0:50b:51eb:c355 with SMTP id d75a77b69052e-50b51ebc824mr45722081cf.9.1774265665434;
+        Mon, 23 Mar 2026 04:34:25 -0700 (PDT)
+X-Received: by 2002:a05:622a:65c7:b0:50b:51eb:c355 with SMTP id d75a77b69052e-50b51ebc824mr45721831cf.9.1774265665045;
+        Mon, 23 Mar 2026 04:34:25 -0700 (PDT)
+Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b983365a166sm489893366b.42.2026.03.23.04.34.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Mar 2026 04:34:24 -0700 (PDT)
+Message-ID: <b743b408-0b24-4660-9879-3536d8006d7b@oss.qualcomm.com>
+Date: Mon, 23 Mar 2026 12:34:21 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001F3:EE_|DS0PR12MB7727:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1a84adb0-a414-497b-e6ad-08de88cfd148
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|36860700016|376014|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	Ob3djKts3PS31yGoqS6Uuu3XeyIVdW0Kzgr58BJn40sBwjbh/tKmc5cfLs+538YpsLCdBAiP6aacFWBXbomYCKmoj3Jqgpq+dJF3EkZu9GVSo/3dUgVaeupJ528JN9s0AYbBbeN4owCXBc+BC6OdjSo0nx5rHBnEFWXYqV+P3FCUdyKrFsBCTdgudZTtjdOKn+QhhLNke9YiR5CAKN/WnPgSiElOItHovYT6Degcek5FXQm7JlHxXE2FHY66Xn9UVTjyCnv0k4I0uIUynkGhKBXxHqCEJW//7m5CsDXYPooF9unsRRPGQDnocJHE+ZKa2FEjgWVboyi/Wid3HSHpJNX/v2H4itqQ6PnpK/rzMU2vyQcaiJUTXM6lR6SVFzl3jmyWB/5kBr+4fOO/w6ZDxHNLlQ6owirQS9x3DBMDifmdKFdIz9Ou/EPkKG8+rNRtatLtdOCFxwvsb06OyJfzp+XoWPhN9yUr6mM47xSaDH5YQv9G2NUUKRm8wkckxuQ3OxgQdhVcIY9BfX56RnJUVhfDFXH8UAH4ggFRR5Rfrr7ImdTeTx962YvivNg8sjGf78tUcZo0PzbuMYUTXHhibedJBUMasuFqVKeuX3SFiYq8hRJ/Ppm5P1C3IIdko2S14M7WXvHheU4Q8eLqMmB2J2q128C9767OUjY/2i6PPjQoMTuhikzKK7j7a5hqJSfrOxOC5hjtk7PV+yKO6hLG6ZcB6eHPZsjal1Sp436Ji7yKdWFWocetNPSkRRpZGqSVlmYML63J5oFmKrI/RqnqHA==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700016)(376014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	c1gJ3qlNjbRloUSxX27320jHJjWFGMC9CdB0WxWuCE4yk0uYoppgYqcei7CPu3TrteAdZRQQhctdOdxYFkTeuFPWTyPr9l5EG5cEUObzxMMkEEWZn4DlqaBe4zpss4dfHmxzzq6vftGEOIzJajabzn9c+BGNhNaeetJ+85EayQRPrXRHYu35vWz+Ov93X/8pt4seGJEzzGlPC4hbQEyfPm1JhSTgoTG+uGlvukgUKTfZi70mwr3FxKoMhagDgGnZOsH8ZzsS41yTI+tEPqF2pGz6fvAX0dRqg7h9lD8tcWNLYCOaCXIdUPqQ+xx2q4KYUt96WNAF8IW1mrXEKkuRlzz0X9hCNEX3ZgbXLgKgieZw9iZUWq1OntONTFUmUUTukSp9VMMSPx4Xr8ACAqI1M+OL35ZCDP3V2QP3TvYmbZvW40Nrezd4m3Aaj2ueqBuS
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2026 11:32:08.2924
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1a84adb0-a414-497b-e6ad-08de88cfd148
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001F3.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7727
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH QUESTION 0/2] NFC support in Linux (and support for
+ Qualcomm SDM845 devices)
+To: david@ixit.cz, Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc: Petr Hodina <petr.hodina@protonmail.com>,
+        biemster <l.j.beemster@gmail.com>, netdev@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, oe-linux-nfc@lists.linux.dev,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org
+References: <20260322-oneplus-nfc-v1-0-5f22f544f0e2@ixit.cz>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20260322-oneplus-nfc-v1-0-5f22f544f0e2@ixit.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: bq0CfnPHSmXKUS_NHGeqn22lyGflzx_J
+X-Authority-Analysis: v=2.4 cv=epXSD4pX c=1 sm=1 tr=0 ts=69c12542 cx=c_pps
+ a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
+ a=XBYjAflyaPWs-M9QSm8A:9 a=QEXdDO2ut3YA:10 a=a_PwQJl-kcHnX1M80qC6:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIzMDA4OSBTYWx0ZWRfX6Roj4mW/PEoR
+ DQiZP4GgS3OjsGWlp1UfqbJa6sV7J/1i7p5pJtbZq+wKskiNVgKEnUWdYrpkg7Vz0KoCDLkPaSb
+ GczwIr2U6EcxXXsJ0kJwCq+NZahhgH3bwUuNmpumrCt4a2hXq6UQQ+/c1SHeybmH6lsMdx9BCg/
+ qlzSnP+btLcIEOWmo//fRZw8VZPMOwWp71R0+3t0C7gMrwy3vMVJ9t+Hd3rR7ZealdL/+iFAROV
+ 9aIB+D9XqPmdsCkrFi9XV7eqMo33BBUb4FRP68RHu0WoyItE3Lhh/qOA53N1yH5unre/jB/D+Ft
+ ulfQL1lLZp6nchkChdUp696GGVFIZoyeFxjyQaaakzCbUdbGKYImRLTJG1GY4EYN5FKzphPQR9m
+ cg4ZwfFhPS27ZbNSi+a3Rxo7Y5cKwWx7/mBCCOmplVeE/+1tP91qwB087SDfshaEOsIkxWfETgQ
+ Yfp6DJ7fSKGa0o3o/dQ==
+X-Proofpoint-GUID: bq0CfnPHSmXKUS_NHGeqn22lyGflzx_J
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-23_03,2026-03-20_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 malwarescore=0 spamscore=0 phishscore=0 lowpriorityscore=0
+ priorityscore=1501 bulkscore=0 clxscore=1015 adultscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603230089
 
-From: Alejandro Lucero <alucerop@amd.com>
+On 3/22/26 3:24 PM, David Heidelberg via B4 Relay wrote:
+> There isn't upstream driver.
+> 
+> I'm openining this as a starter. We need a NFC drivers I assume. I tried
+> quick check, but both of NFC drivers register
+> 
+> nfc: nfc_init: NFC Core ver 0.1
+> NET: Registered PF_NFC protocol family
+> 
+> but efficiently does nothing. In the See section, there are some ways
+> how to make NFC work, but rely on patched vendor libs, missing updates
+> etc.
+> 
+> 1. What hardware is present on Snapdragon 845, is there some
+>    documentation? It seems that both sdm845 devices has almost identical
+>    setup, thus it's NFC solution integrated? @Qualcomm
 
-A Type2 device configured by the BIOS can already have its HDM
-committed. Add a cxl_get_committed_decoder() function for cheking
-so after memdev creation. A CXL region should have been created
-during memdev initialization, therefore a Type2 driver can ask for
-such a region for working with the HPA. If the HDM is not committed,
-a Type2 driver will create the region after obtaining proper HPA
-and DPA space.
+As far as I'm able to tell, they're clearly external ICs
 
-Signed-off-by: Alejandro Lucero <alucerop@amd.com>
----
- drivers/cxl/core/hdm.c | 39 +++++++++++++++++++++++++++++++++++++++
- include/cxl/cxl.h      |  3 +++
- 2 files changed, 42 insertions(+)
-
-diff --git a/drivers/cxl/core/hdm.c b/drivers/cxl/core/hdm.c
-index c222e98ae736..006be88efaa5 100644
---- a/drivers/cxl/core/hdm.c
-+++ b/drivers/cxl/core/hdm.c
-@@ -686,6 +686,45 @@ int cxl_dpa_alloc(struct cxl_endpoint_decoder *cxled, u64 size)
- 	return devm_add_action_or_reset(&port->dev, cxl_dpa_release, cxled);
- }
- 
-+static int find_committed_endpoint_decoder(struct device *dev, const void *data)
-+{
-+	struct cxl_endpoint_decoder *cxled;
-+	struct cxl_port *port;
-+
-+	if (!is_endpoint_decoder(dev))
-+		return 0;
-+
-+	cxled = to_cxl_endpoint_decoder(dev);
-+	port = cxled_to_port(cxled);
-+
-+	return cxled->cxld.id == port->hdm_end;
-+}
-+
-+struct cxl_endpoint_decoder *cxl_get_committed_decoder(struct cxl_memdev *cxlmd,
-+						       struct cxl_region **cxlr)
-+{
-+	struct cxl_port *endpoint = cxlmd->endpoint;
-+	struct cxl_endpoint_decoder *cxled;
-+	struct device *cxled_dev;
-+
-+	if (!endpoint)
-+		return NULL;
-+
-+	guard(rwsem_read)(&cxl_rwsem.dpa);
-+	cxled_dev = device_find_child(&endpoint->dev, NULL,
-+				      find_committed_endpoint_decoder);
-+
-+	if (!cxled_dev)
-+		return NULL;
-+
-+	cxled = to_cxl_endpoint_decoder(cxled_dev);
-+	*cxlr = cxled->cxld.region;
-+
-+	put_device(cxled_dev);
-+	return cxled;
-+}
-+EXPORT_SYMBOL_NS_GPL(cxl_get_committed_decoder, "CXL");
-+
- static void cxld_set_interleave(struct cxl_decoder *cxld, u32 *ctrl)
- {
- 	u16 eig;
-diff --git a/include/cxl/cxl.h b/include/cxl/cxl.h
-index 10a9b8fa2f6b..2a61138e2a73 100644
---- a/include/cxl/cxl.h
-+++ b/include/cxl/cxl.h
-@@ -231,4 +231,7 @@ struct cxl_dev_state *_devm_cxl_dev_state_create(struct device *dev,
- int cxl_set_capacity(struct cxl_dev_state *cxlds, u64 capacity);
- struct cxl_memdev *devm_cxl_add_memdev(struct cxl_dev_state *cxlds,
- 				       const struct cxl_memdev_attach *attach);
-+struct cxl_region;
-+struct cxl_endpoint_decoder *cxl_get_committed_decoder(struct cxl_memdev *cxlmd,
-+						       struct cxl_region **cxlr);
- #endif /* __CXL_CXL_H__ */
--- 
-2.34.1
-
+Konrad
