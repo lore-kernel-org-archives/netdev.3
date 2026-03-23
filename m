@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0471438AC96
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3465538C2D6
 	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 10:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774261956; cv=none; b=sWh7ekKghb+MyU2GFPJ+ZKnU6rL7n11q21HbyMzppzMghyH45jGELgdKiv3uXPrMJSTmufFQunAtDfxUyn5mJUaioodvnGnMRn8x3jQlaM62R6a11zXyVushqZSSNr3t07mTcOxlj7ning8DV08JPhtJSYEOcvRILU3NzvbRjHU=
+	t=1774261956; cv=none; b=Upyp+eaxbXpeePbKvX7raYiwp1eI/fDLV4/Q7al1dn8U3XcSLtqLZHaOAo3eUMOJ6NVkYwMdNZVoXhMcNn9JrLeD4RlWiVRRYbivyzJtHpnkZfUWA4bRq14GzjUDIPQHCl0k9Yd+ofAk3Ca/Z0C/8Gsv5Y6eJ5PC5SwkJtR26hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774261956; c=relaxed/simple;
-	bh=dNrsYqqKTf1Z5G3ToizBJEztMv5xegsGRpeOVawV8vU=;
+	bh=gPxzCeo2/B2fU2no1tVGO+QJMcaBAKKT+D4gNkX0cR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tmUc2zJzNdKM9UM0YmVl5v+JboGeiTrhAQulKm1ewvpZrFvtwMxHmSSbKhXSqBINiuTjd2WrMj+0afsR0grOx3UoEDZdqCrR+uevCNbul6LN/oh0jXHd5d+Dd1MQZrmrap7EKDkeNqMuBhbn5i0PusiavmgB+yddZR0AEj86Uv4=
+	 MIME-Version; b=GrIV+Sp3/S7mOiyGLG0NxduF8X6lm1CtB/wupfm7eImW7x3WvicFwcvzEo7wEvgMEXRuiu7TT2Lj80iB+I48wDkPRfa8ame1OSAEjswgW7XNzSBHIdNZhzl2cRIv82ApiwcwdAVlWGoQ1RIVvK0EDp3BJYho0tM9eCoWnn/j3VI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,31 +18,31 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1w4caB-0008FL-Jz; Mon, 23 Mar 2026 11:32:27 +0100
+	id 1w4caB-0008FS-ML; Mon, 23 Mar 2026 11:32:27 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1w4caB-001i5e-0c;
+	id 1w4caB-001i5i-18;
 	Mon, 23 Mar 2026 11:32:27 +0100
 Received: from blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id D23F750A7BD;
-	Mon, 23 Mar 2026 10:32:26 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 0221550A7BF;
+	Mon, 23 Mar 2026 10:32:27 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	stable@vger.kernel.org
-Subject: [PATCH net 1/5] can: netlink: can_changelink(): add missing error handling to call can_ctrlmode_changelink()
-Date: Mon, 23 Mar 2026 11:27:57 +0100
-Message-ID: <20260323103224.218099-2-mkl@pengutronix.de>
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH net 3/5] can: statistics: add missing atomic access in hot path
+Date: Mon, 23 Mar 2026 11:27:59 +0100
+Message-ID: <20260323103224.218099-4-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323103224.218099-1-mkl@pengutronix.de>
 References: <20260323103224.218099-1-mkl@pengutronix.de>
@@ -58,39 +58,71 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-In commit e1a5cd9d6665 ("can: netlink: add can_ctrlmode_changelink()") the
-CAN Control Mode (IFLA_CAN_CTRLMODE) handling was factored out into the
-can_ctrlmode_changelink() function. But the call to
-can_ctrlmode_changelink() is missing the error handling.
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-Add the missing error handling and propagation to the call
-can_ctrlmode_changelink().
+Commit 80b5f90158d1 ("can: statistics: use atomic access in hot path")
+fixed a KCSAN issue in can_receive() but missed to convert the 'matches'
+variable used in can_rcv_filter().
 
-Cc: stable@vger.kernel.org
-Fixes: e1a5cd9d6665 ("can: netlink: add can_ctrlmode_changelink()")
-Link: https://patch.msgid.link/20260310-can_ctrlmode_changelink-add-error-handling-v1-1-0daf63d85922@pengutronix.de
+Fixes: 80b5f90158d1 ("can: statistics: use atomic access in hot path")
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20260318173413.28235-1-socketcan@hartkopp.net
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/dev/netlink.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/can/af_can.c | 4 ++--
+ net/can/af_can.h | 2 +-
+ net/can/proc.c   | 3 ++-
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
-index 0498198a4696..766d455950f5 100644
---- a/drivers/net/can/dev/netlink.c
-+++ b/drivers/net/can/dev/netlink.c
-@@ -601,7 +601,9 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
- 	/* We need synchronization with dev->stop() */
- 	ASSERT_RTNL();
+diff --git a/net/can/af_can.c b/net/can/af_can.c
+index f70e2ba0aadc..7bc86b176b4d 100644
+--- a/net/can/af_can.c
++++ b/net/can/af_can.c
+@@ -469,7 +469,7 @@ int can_rx_register(struct net *net, struct net_device *dev, canid_t can_id,
  
--	can_ctrlmode_changelink(dev, data, extack);
-+	err = can_ctrlmode_changelink(dev, data, extack);
-+	if (err)
-+		return err;
+ 	rcv->can_id = can_id;
+ 	rcv->mask = mask;
+-	rcv->matches = 0;
++	atomic_long_set(&rcv->matches, 0);
+ 	rcv->func = func;
+ 	rcv->data = data;
+ 	rcv->ident = ident;
+@@ -573,7 +573,7 @@ EXPORT_SYMBOL(can_rx_unregister);
+ static inline void deliver(struct sk_buff *skb, struct receiver *rcv)
+ {
+ 	rcv->func(skb, rcv->data);
+-	rcv->matches++;
++	atomic_long_inc(&rcv->matches);
+ }
  
- 	if (data[IFLA_CAN_BITTIMING]) {
- 		struct can_bittiming bt;
-
-base-commit: 8a63baadf08453f66eb582fdb6dd234f72024723
+ static int can_rcv_filter(struct can_dev_rcv_lists *dev_rcv_lists, struct sk_buff *skb)
+diff --git a/net/can/af_can.h b/net/can/af_can.h
+index 22f3352c77fe..87887014f562 100644
+--- a/net/can/af_can.h
++++ b/net/can/af_can.h
+@@ -52,7 +52,7 @@ struct receiver {
+ 	struct hlist_node list;
+ 	canid_t can_id;
+ 	canid_t mask;
+-	unsigned long matches;
++	atomic_long_t matches;
+ 	void (*func)(struct sk_buff *skb, void *data);
+ 	void *data;
+ 	char *ident;
+diff --git a/net/can/proc.c b/net/can/proc.c
+index 0938bf7dd646..de4d05ae3459 100644
+--- a/net/can/proc.c
++++ b/net/can/proc.c
+@@ -196,7 +196,8 @@ static void can_print_rcvlist(struct seq_file *m, struct hlist_head *rx_list,
+ 			"   %-5s     %03x    %08x  %pK  %pK  %8ld  %s\n";
+ 
+ 		seq_printf(m, fmt, DNAME(dev), r->can_id, r->mask,
+-				r->func, r->data, r->matches, r->ident);
++			   r->func, r->data, atomic_long_read(&r->matches),
++			   r->ident);
+ 	}
+ }
+ 
 -- 
 2.53.0
 
