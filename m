@@ -1,165 +1,162 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010027.outbound.protection.outlook.com [52.101.201.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2698E3AA182;
-	Mon, 23 Mar 2026 12:35:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774269329; cv=none; b=KPYrOOH+mtHRrcvBif28lYBPz/mXc7tNfK7/sQOiBLYZC3F2VQCoBg9+DP8TixQ8x5UsYfuuV53FxPJfEYMvbmU2wFsiLvSXO91Zx8+1ohpOBOA8zYb9KAMKvK158Ac5Rn0zCKIUz7r8OY0wQcOZZjOdiCFeh77mjnfh9nvG2sE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774269329; c=relaxed/simple;
-	bh=XApBBnOOJ5elwtHWxmuUDE0TpYF+/pV3i4s0gOrBn4Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R/dIvQQdqm28YGsQBYjDDMNBYD0R9vNObdKmp/cdG46UmHljJd48ppsWdepW5KF3ljc+vziuqSyy+8nixVxp3U5wStE16DvrwDYzjsPukB7RaOYaFcQCIbEONJP8WK40UwLiDVkUneyoHuc6llKzUspEy8GBi57TRuQi0acl4Dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QlhB9nVZ; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53F538B149;
+	Mon, 23 Mar 2026 12:37:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.27
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774269437; cv=fail; b=jyHr7eZjB36jaYqtmh/ajgHlz/FIySExXtcEORfASjJ06FPJmsouH12cyXIeiDuusqtd2w8qDch3GK8z0xb2/IQBbomhIMDb7/BKU/dHzXhTyhHGvQ48T3uZUU5mTq64KpsJUVmAfD8kJiuY25MhPCa2fjjkijqLiRpAbPPW5h4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774269437; c=relaxed/simple;
+	bh=eMWY5/Nj8HaV3TsBCD7SraH6Zniidw4cdXBPYJDJHoE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dZz02qdRG3fZNZBUA2lBrb3i/HeKLjb0nJ40pJTvaGklgve64FkdfgjFoPVz8H/T4CrPik0aBYfhKpMbNFXGwM3/Tcs0vQ/X4aM6QVUY81ai30rlObDqGSMf07AicWDJFOfS+Nbud0cge+LQUd0RPVw1kAf/R4dBREicRXRIyvQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=K0ge+YDC; arc=fail smtp.client-ip=52.101.201.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QlhB9nVZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B68E5C4CEF7;
-	Mon, 23 Mar 2026 12:35:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774269328;
-	bh=XApBBnOOJ5elwtHWxmuUDE0TpYF+/pV3i4s0gOrBn4Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QlhB9nVZJCPUurPUHX3n53uyZPTjebWMYxKOBXWmj7h7mKdR6Hw3Ja1TuoOUfAaAV
-	 bdk9LheDCb+crooqJkKtSN1jcx5vyS1YmgbIu80kJKujowxa0JPBEirKu7b+Ij8aoP
-	 UVPtnxT3E/isDy9NhWSnC8zaHLitzT7eKlMPhm6oTl94aqJWVsITJpHJUV3G+SL3DU
-	 b+DY5ous6EJdv7oCGf38atKvYfY8Xfk1UDkxfHLFY+IqlT4gKFgEnyhPXZ2YiQ7o04
-	 jD0Hy9szb3QpCy/nXiWhVc2r1n2GsUt2PIas9ZhDRGVUZn9isX6v1SvxUiH9O5lIo5
-	 85o6XacVa8pUg==
-Date: Mon, 23 Mar 2026 18:05:09 +0530
-From: Sumit Garg <sumit.garg@kernel.org>
-To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-	linux-media@vger.kernel.org, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-	linux-remoteproc@vger.kernel.org, andersson@kernel.org,
-	konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, robin.clark@oss.qualcomm.com, sean@poorly.run,
-	akhilpo@oss.qualcomm.com, lumag@kernel.org, abhinav.kumar@linux.dev,
-	jesszhan0024@gmail.com, marijn.suijten@somainline.org,
-	airlied@gmail.com, simona@ffwll.ch, vikash.garodia@oss.qualcomm.com,
-	dikshita.agarwal@oss.qualcomm.com, bod@kernel.org,
-	mchehab@kernel.org, elder@kernel.org, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, jjohnson@kernel.org, mathieu.poirier@linaro.org,
-	trilokkumar.soni@oss.qualcomm.com, pavan.kondeti@oss.qualcomm.com,
-	jorge.ramirez@oss.qualcomm.com, tonyh@qti.qualcomm.com,
-	vignesh.viswanathan@oss.qualcomm.com,
-	srinivas.kandagatla@oss.qualcomm.com,
-	amirreza.zarrabi@oss.qualcomm.com, jens.wiklander@linaro.org,
-	op-tee@lists.trustedfirmware.org, apurupa@qti.qualcomm.com,
-	skare@qti.qualcomm.com, linux-kernel@vger.kernel.org,
-	Sumit Garg <sumit.garg@oss.qualcomm.com>
-Subject: Re: [PATCH v2 01/15] arm64: dts: qcom: kodiak: Add EL2 overlay
-Message-ID: <acEzfd8I9UjByadc@sumit-xelite>
-References: <20260312062756.694390-1-sumit.garg@kernel.org>
- <20260312062756.694390-2-sumit.garg@kernel.org>
- <20260313060451.hswg6snnnexchmzs@hu-mojha-hyd.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="K0ge+YDC"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WqnT75eXKvkodX3VN8QsbkH6TBKurHO/qVzrbCzrbodmXlZ8jiq7Duss53JlkHEDrqHKdeNmBUijdVN5TXLOBXtjd4hw0cE8gR9508LQaVls+LzmqLZSLu5kixd/Y1WENDBnTz8veuew0xkF0SRz9Kee+JM+uwLcnlk1zCUVLeN7Q43R2zadU0SSv2XH/meUYFfhM3SqRHIrX49ppKGpl5uBJ8gN4BInIjZs7648d3dqHV93Pl3rQ+ybj4/BP8XxcpsSLX/nksL5M6qf9WLvZWOpqjxtNBs+a71fd0ih0OxmpIiqoN377d4+7wq7kDTAw9ZCdRMxTudS0osInd56Uw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qXGsLik8yqND3axVZO1CcocU/94ZSdes7aZBrxzg2Ug=;
+ b=SLyp6OFWZvHndazKYRYdhGGBBiZpz4CixWukO7lNB/Zjc5fCUMPGslNgrp8T5wboVHy/X63XdPpmfL25858+lMrnf/iCjnGZHAbOXSXvMDfVkOtvhVl8XvmlwUF0Lqh/kYPk+3i3fH/Ex6JXl8UkTNJj4J/2eIBKj7AFLtFEFVmd8q/9jwhzbjyui7QIcc1VKnEA9MKfZi4YGDCug1Dc5BCFond/Z1uNGR+Z0YAHfkPCOYdaUGiCxqhFsh/YBiW7fEjQoLedaL6X/kaZ4ERd6uCfcncgIh13MAFFslPM7o5l3N4HEAVKWXkE8NDQxU2rHm3jBKuJA7NyrD1gVl5g8A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qXGsLik8yqND3axVZO1CcocU/94ZSdes7aZBrxzg2Ug=;
+ b=K0ge+YDCUsS/qjx6qNPyG2iY2KIcBbiuhsbevAn77TdIzx6UfB239HmI4XKb0QNjUnVPkp80GJ40Dqsq897aD+1txmWMGiH30qjExtbr5HAh0667kFeI+qvwLVOcgNQHUIDA65TKWxK+//R8/C1bFvbfNNRXZsfOcOglOXsAPewRBda4p3hThGSLSXJJpb6J6oLXszFSmSvuHf/pz7iHCOdC2Es9PtdWFtwNsN+JildWwDWIxB4IK5GcMbQApw5ZrTzjiwV4cF9KhYaPjmNXzJHRyWZt6HjOw3R5GcT2tm6f4jTl3Dt7k66AinuxD6XqdiXhY05SG2miSvgtHN2Gug==
+Received: from SJ0PR03CA0294.namprd03.prod.outlook.com (2603:10b6:a03:39e::29)
+ by MN0PR12MB5978.namprd12.prod.outlook.com (2603:10b6:208:37d::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Mon, 23 Mar
+ 2026 12:37:09 +0000
+Received: from SJ1PEPF000026C3.namprd04.prod.outlook.com
+ (2603:10b6:a03:39e:cafe::83) by SJ0PR03CA0294.outlook.office365.com
+ (2603:10b6:a03:39e::29) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9723.31 via Frontend Transport; Mon,
+ 23 Mar 2026 12:37:02 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SJ1PEPF000026C3.mail.protection.outlook.com (10.167.244.100) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9723.19 via Frontend Transport; Mon, 23 Mar 2026 12:37:09 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 23 Mar
+ 2026 05:36:56 -0700
+Received: from c-237-113-240-247.mtl.labs.mlnx (10.126.231.35) by
+ rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Mon, 23 Mar 2026 05:36:52 -0700
+From: Cosmin Ratiu <cratiu@nvidia.com>
+To: <netdev@vger.kernel.org>
+CC: Sabrina Dubroca <sd@queasysnail.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Shuah Khan
+	<shuah@kernel.org>, <linux-kselftest@vger.kernel.org>, Cosmin Ratiu
+	<cratiu@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>
+Subject: [PATCH net v5 0/3] macsec: Add support for VLAN filtering in offload mode
+Date: Mon, 23 Mar 2026 14:36:30 +0200
+Message-ID: <20260323123633.756163-1-cratiu@nvidia.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260313060451.hswg6snnnexchmzs@hu-mojha-hyd.qualcomm.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF000026C3:EE_|MN0PR12MB5978:EE_
+X-MS-Office365-Filtering-Correlation-Id: a6868801-6cea-431b-e746-08de88d8e685
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|82310400026|1800799024|36860700016|13003099007|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	SmGDMPooWjILpCZKe7QfjhI2HE+enYMOlaABUQ4kfD5Sv4FA8w/NMUmTf9K9pZIfq1bCXc7OKrWQcD0WY9BbxfCuJxsvMe2S6KmQKCvEsvPMUUnPh50y0d/QlnnRiwhE1xZEHjqzyufjtcOBCOcWWKNs+s0TOz0lFO6iyh3QB+kX4p9hqUDxqJELnGKG6cJ9YC/B1Ja7yzUhvYySqrj3GE9lNR3ImtCtlUaDlySbppvLI0xKWXmXg9KbbJqqCoscUndIPjGXOVBQd8yZ0aG5aZdBNS9e+50W+KQdpewOciWwkQ3haBBS2TvOjF+axTxqsmmSzYO08sNGLcT+O0o72TtXXc2XYfKyIP9Lsh1+aB20YguvcT0UsLggUoeelkxdMazDtoO639wKKJTXxVNuyqLMz855GRk7UwFziec9vBrLuDgM6JB2jvqEBfDzpYNxSimJP3Fd/CgMqTiHRa/V3InzCLe3SAsCf+VeC9woVfU6bVryYIaNrEdpO8Yb20UzoNHgrjvoJZSnhUl7UYEF/FrTNc7iTr95pY2XH/9c1rmxvc6BMrE2+GBHT2Tdf/IYeqjbp78R1u0tXlNmGX3UwtGQUOpkJZqYaqrTrgtToYgTZbfZePcndMxbDy3ge89b4FQusASG+zeeLUXLXToChR3nsFt5gOu55Cpfy3bwRAEz/PKWzP2Yfv3sp2g/M0JdCCATRr6A4iIwQvYhF69i+qIDTfPq0VLkQzJoauvFC2MNToKNDk+puX8u3buEXxv/DdTcga5rwP1pyV5y5eOJRQ==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(82310400026)(1800799024)(36860700016)(13003099007)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	z63W0vOVildqPAM5QcvMVk1gXwznaRODYJbza1Vx7Dwd8maS4R4pgPbyDSQm5dlxsbPgc1j1rqQhzy4yXRm9bZwGVY+MH9HuZVwLd6dXRpJ0odHWKLxxrWYmsj0OnCq8o6ScRW8i349lB1rmfrCMKvorElHAsD4XaVk8Sq6LJit3Nv5K3yogr7GDVS0zEY6KZOAWlawYBfC9cx9Y4e2RgYTL7HZE2WzSKN5OsQpJMZaepLk6/976b1uBspi8gTyhIkprvsaNFqvLNUgAG1q9hlfyLlere/k3Z309vV7OdnKCzVTMhO7biHk3VrEDHjMaWMk1YV43vHYzpQQywdUd2QFidQJ35YoohsiIlyExToO/6PaRFjB/BG24/wrTi8lEUPkuVRn32mfT77398j2AYkEcOccIlJwwLZ0r2r6NXxUGnLgns+P5N5sKV5Nid5cr
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2026 12:37:09.3745
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a6868801-6cea-431b-e746-08de88d8e685
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF000026C3.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5978
 
-On Fri, Mar 13, 2026 at 11:34:51AM +0530, Mukesh Ojha wrote:
-> On Thu, Mar 12, 2026 at 11:57:42AM +0530, Sumit Garg wrote:
-> > From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-> > 
-> > All the existing variants Kodiak boards are using Gunyah hypervisor
-> > which means that, so far, Linux-based OS could only boot in EL1 on those
-> > devices.  However, it is possible for us to boot Linux at EL2 on these
-> > devices [1].
-> > 
-> > When running under Gunyah, the remote processor firmware IOMMU
-> > streams are controlled by Gunyah. However, without Gunyah, the IOMMU is
-> > managed by the consumer of this DeviceTree. Therefore, describe the
-> > firmware streams for each remote processor.
-> > 
-> > Add a EL2-specific DT overlay and apply it to Kodiak IOT variant
-> > devices to create -el2.dtb for each of them alongside "normal" dtb.
-> > 
-> > [1]
-> > https://docs.qualcomm.com/bundle/publicresource/topics/80-70020-4/boot-developer-touchpoints.html#uefi
-> > 
-> > Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-> > [SG: watchdog fixup]
-> > Signed-off-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
-> > ---
-> >  arch/arm64/boot/dts/qcom/Makefile        |  2 ++
-> >  arch/arm64/boot/dts/qcom/kodiak-el2.dtso | 35 ++++++++++++++++++++++++
-> >  2 files changed, 37 insertions(+)
-> >  create mode 100644 arch/arm64/boot/dts/qcom/kodiak-el2.dtso
-> > 
-> > diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
-> > index f80b5d9cf1e8..09a7f943190e 100644
-> > --- a/arch/arm64/boot/dts/qcom/Makefile
-> > +++ b/arch/arm64/boot/dts/qcom/Makefile
-> > @@ -139,6 +139,8 @@ dtb-$(CONFIG_ARCH_QCOM)	+= qcs404-evb-4000.dtb
-> >  dtb-$(CONFIG_ARCH_QCOM)	+= qcs615-ride.dtb
-> >  dtb-$(CONFIG_ARCH_QCOM)	+= qcs6490-radxa-dragon-q6a.dtb
-> >  dtb-$(CONFIG_ARCH_QCOM)	+= qcs6490-rb3gen2.dtb
-> > +qcs6490-rb3gen2-el2-dtbs := qcs6490-rb3gen2.dtb kodiak-el2.dtbo
-> > +dtb-$(CONFIG_ARCH_QCOM)	+= qcs6490-rb3gen2-el2.dtb
-> 
-> We may need to add for couple of more variants..
+This short series adds support for VLANs in macsec devices when offload
+mode is enabled. This allows VLAN netdevs on top of macsec netdevs to
+function, which accidentally used to be the case in the past, but was
+broken. This series adds back proper support.
 
-Sure, those can be follow up patches if Bjorn is happy to pick this one
-independently.
+As part of this, the existing nsim-only macsec offload tests were
+translated to Python so they can run against real HW and new
+traffic-based tests were added for VLAN filter propagation, since
+there's currently no uAPI to check VLAN filters.
 
-> 
-> >  
-> >  qcs6490-rb3gen2-vision-mezzanine-dtbs := qcs6490-rb3gen2.dtb qcs6490-rb3gen2-vision-mezzanine.dtbo
-> >  qcs6490-rb3gen2-industrial-mezzanine-dtbs := qcs6490-rb3gen2.dtb qcs6490-rb3gen2-industrial-mezzanine.dtbo
-> > diff --git a/arch/arm64/boot/dts/qcom/kodiak-el2.dtso b/arch/arm64/boot/dts/qcom/kodiak-el2.dtso
-> > new file mode 100644
-> > index 000000000000..0b3a69a0d765
-> > --- /dev/null
-> > +++ b/arch/arm64/boot/dts/qcom/kodiak-el2.dtso
-> > @@ -0,0 +1,35 @@
-> > +// SPDX-License-Identifier: BSD-3-Clause
-> > +/*
-> > + * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-> > + *
-> > + * Kodiak specific modifications required to boot in EL2.
-> > + */
-> > +
-> > +
-> > +/dts-v1/;
-> > +/plugin/;
-> > +
-> > +&gpu_zap_shader {
-> > +	status = "disabled";
-> > +};
-> > +
-> > +&remoteproc_adsp {
-> > +	iommus = <&apps_smmu 0x1800 0x0>;
-> > +};
-> > +
-> > +&remoteproc_cdsp {
-> > +	iommus = <&apps_smmu 0x11a0 0x0400>;
-> > +};
-> > +
-> > +&remoteproc_wpss {
-> > +	iommus = <&apps_smmu 0x1c03 0x1>,
-> > +		 <&apps_smmu 0x1c83 0x1>;
-> > +};
-> > +
-> > +&venus {
-> > +	status = "disabled";
-> > +};
-> > +
-> > +&watchdog {
-> > +	status = "okay";
-> > +};
-> 
-> 
-> rb3gen2 has modem as well, did we test that as well ?
+---
 
-OP-TEE don't have access to modem, it's locked down in XBL-SEC.
+V5:
+- Merged tests and macsec lib in a single file.
+- Fixed Python linter issues.
+- Added CONFIG_MACSEC to tools/testing/selftests/drivers/net/config
 
--Sumit
+V4:
+- Migrated nsim-only macsec tests to Python, usable against real hw.
+- Ran these tests against both nsim and mlx5.
+- Gave up on nsim patches since the tests no longer use them.
+
+V3: https://lore.kernel.org/netdev/20260306151004.2862198-1-cratiu@nvidia.com/t/#u
+- Moved back to net.
+- Added proper rollback support for VLAN filters in case of failure.
+- Added VLAN as a requirement for the new macsec tests.
+
+V2: https://lore.kernel.org/netdev/20260227090227.1552512-1-cratiu@nvidia.com/
+- Sent to net-next instead of net because of apparent complexity.
+- Changed VLAN filtering to only function in offload mode.
+- Added tests.
+
+V1: https://lore.kernel.org/netdev/20260107104723.2750725-1-cratiu@nvidia.com/
+
+
+Cosmin Ratiu (3):
+  selftests: Migrate nsim-only MACsec tests to Python
+  selftests: Add MACsec VLAN propagation traffic test
+  macsec: Support VLAN-filtering lower devices
+
+ drivers/net/macsec.c                          |  44 ++-
+ tools/testing/selftests/drivers/net/Makefile  |   1 +
+ tools/testing/selftests/drivers/net/config    |   1 +
+ tools/testing/selftests/drivers/net/macsec.py | 305 ++++++++++++++++++
+ .../selftests/drivers/net/netdevsim/Makefile  |   1 -
+ .../drivers/net/netdevsim/macsec-offload.sh   | 117 -------
+ 6 files changed, 346 insertions(+), 123 deletions(-)
+ create mode 100755 tools/testing/selftests/drivers/net/macsec.py
+ delete mode 100755 tools/testing/selftests/drivers/net/netdevsim/macsec-offload.sh
+
+-- 
+2.53.0
+
