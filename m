@@ -1,82 +1,82 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2D1381AFF
-	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 22:11:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2452381AE9
+	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 22:11:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774303873; cv=none; b=CfwzVsgGSect9QL2EdT7IbJW5J7OLLmhgDMxlhfH/au2w6PJomwDl6q0XUPMnZ0mknKxHz9vG7gnbSGPlPS0FNpl//6SygWW8eUFlvYSNnOUqc90SIcmKGA+yqcVyMVU34No3KZ+VlNtCpg0l7Bydyr9HDOu4qd5Lf/fDzM1i94=
+	t=1774303877; cv=none; b=W6P3mjb0UqmrLOG86RNVQdIBldWKZ+iQRn4fmvzT4AT+7485FkrYz+57ImfNWn4jDJWyml/PtiSDtNJfL6tpEGtLDfx6KRmgG3EtuXllY3Y6u8VUoyPw9tkY9ZeEkHKAlKrfK5dQt6sMs535+SLsTIMeczaj0puYIytun4N5/AE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774303873; c=relaxed/simple;
-	bh=eR9vCftckpcz3Lwwip9dzcvWVwAk/+Bn3BeN+58wzM0=;
+	s=arc-20240116; t=1774303877; c=relaxed/simple;
+	bh=cB/We4XYYp23CpFqIUHgOgIHrBHT0OQdWX2YeLvzkfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jtxaE1rG/4Ph9QTiDNxA3HVcoPcYf6RoS9LSiX7vSht8bMlHyev484Maq6CHCxxPJdRmh3mKTEjYB350efFDUb2vpy54ErbSiaA1LIAMTbcxLn49P1H0PjiuDU32OU4yh+R2Q/p/yLrCe81dntHvIYkoiyFuRux5tI5FXfGlQfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cZP+Jt9I; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=KRc5Om6f; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=ucskZpP55rils95hHJjS0wEceUsZRvlJwPRSVSnaL1Tyzso2HPIDkDeAGOaHlwcY1RtrrisLj6qWz4eW4KJ1Ld1l3zw0s0y5IQMMzbhjy0ePN6jTDf+SEkg1b7YfuYfa6YL7YZTJ1YyQQf2GunT2JiPFMvQ5PoroLxdy7JrZhQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SjIloayd; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=s28h6L1D; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cZP+Jt9I";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="KRc5Om6f"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SjIloayd";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="s28h6L1D"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774303871;
+	s=mimecast20190719; t=1774303875;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MzqQQQU0FEUWsba7gNKu6jIVRi0XQP+unQezVD8zBdw=;
-	b=cZP+Jt9IDq9dJr1GBY833CUw2HlBSCnbnQE3sdFzp3HQTt1rA6WyEN4g0uWqOXchT19Z9y
-	4229e5Q7f4VROoHu9yJS8iG0qb73SDAj6+0Eq3Y3ROtNmqDgxxmCRWYHXOi76IxziXiFUI
-	07CDc9gJ3jxM6/7yNMC/OPDGIMjBcGQ=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=3dlj1TaFTL5kAimyqlybUpocdDU6ZlqiPD4tvA7LZ1I=;
+	b=SjIloaydhZ3/Gr6UCLQs/KuhlCndOlV2/8zPRtd6dHhaCPk6r3vatJnxkttEInRv4Rq8qZ
+	W3EbRpD7KrjmONwIpa580KgevzZRu+e/rRbcIsxZ/gbVzei/Gr8m3PnwbBADvJ6WxoGMtn
+	r7gZx1cjcvkzwJs7smVzJEzp64z2iGQ=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-220-4uTRjuU_NICH6xqL1i_jpQ-1; Mon, 23 Mar 2026 18:11:09 -0400
-X-MC-Unique: 4uTRjuU_NICH6xqL1i_jpQ-1
-X-Mimecast-MFC-AGG-ID: 4uTRjuU_NICH6xqL1i_jpQ_1774303868
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4852ccff333so4892175e9.2
-        for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 15:11:09 -0700 (PDT)
+ us-mta-685-X16qnzd_NCet5ykXiUelkA-1; Mon, 23 Mar 2026 18:11:13 -0400
+X-MC-Unique: X16qnzd_NCet5ykXiUelkA-1
+X-Mimecast-MFC-AGG-ID: X16qnzd_NCet5ykXiUelkA_1774303872
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-43b4dcdb372so2488146f8f.0
+        for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 15:11:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1774303868; x=1774908668; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1774303871; x=1774908671; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MzqQQQU0FEUWsba7gNKu6jIVRi0XQP+unQezVD8zBdw=;
-        b=KRc5Om6f66LLOTsvx107pN3uPqhD2Xx3FZS4Aeej8Ts89FEXr+Io3ygplzcZ1kWRXd
-         bBUOQUf/dkcKiv7W8v/EM42QZTPbCGc1adXDcLB4UcmeKHmDRxYqYaQ6HlV2JzLMxfwC
-         2UBic0wGaT5KofokAb0wCHOK9cQ3xtbWANBAkIT+C1vxNwvDdpBEZPJe+QK5hk5oEe8v
-         K8L7rHAsiDldIZw87WvESgkip9MF0RQ9hcIUBLVzUtWolPiYliKcnD+c3fVQeQREHRFd
-         D0gqCfT4GQVxmCPkmo/AxFwc69lfr/bSe/IGu/u2+c4TojcX3se50/5eNZhtNNVVQpQw
-         ZsDg==
+        bh=3dlj1TaFTL5kAimyqlybUpocdDU6ZlqiPD4tvA7LZ1I=;
+        b=s28h6L1DOVwKRm6FvVH/tYKHA9KcYcYhuMbcir9CrSbZUogwISr00qgSxuUsFY74Oz
+         XTKlNRjhzWpbB35ek8FD/Ot9EzMQBW8OuLPtQTv5shQA706CG7ue2RaFgvs+vpLd5gX4
+         EWR19MCgxCHhemeVm7vIWEdXddRUW/VE6i1nk0Zgptk/QQV6RGEFLusjAnYQmU+2BI3E
+         dbJ5JjXlSlvidf+ipY5Hk+3gbeL2Fk5EeUKkGUtovNy72dF2LkMviULHyF0HLHyUAUdD
+         XpyBxTfdOZZ8y41tEaIUPSNwLcg+ty3yv9ml08Y0jc6t1L/kOQRAEgapc84Shc9A91iA
+         dUBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774303868; x=1774908668;
+        d=1e100.net; s=20251104; t=1774303871; x=1774908671;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=MzqQQQU0FEUWsba7gNKu6jIVRi0XQP+unQezVD8zBdw=;
-        b=g4f9SVJz+hvlF9Pr3+577dCggW+/0AmIxUDfnAYOslpSMzwnO6MDpbN3jeTV1DwuHQ
-         xcDCzWyM7ZKkKl23OU3rjDlGw5X2P/SJkxwf5uBqJEyvX61u7m8uz4H55qr5nALO2lsH
-         qStj7I/0Vi+3vYYW6csLZvbV1RlsptluUmVMX+xG0sdTbMKPs3TACi77nkNnvCE7sghM
-         /ePM9BJoFRXTHc/8ttaM8EpzSUe2pKRX6GlyEbSxvTu0R5wNqmXZ9qSitb24/gfvm+3M
-         KMBijOAO/YP7pdwUYwYhUsMxnkXEa0B3xZPdB0VYYMDyIrF8/oIuTsMju7yLgMt5pg3K
-         xODQ==
-X-Gm-Message-State: AOJu0Yx5aKZKlnEeTTuMHtLGOQ119I8bYBuywMv01rp7SQNELbvxwDax
-	KbBKkqFjN5jfJcar3chLVotnXx+h3Jtt08gRBwGRALF7DbAxj0gwLDY6YWdnZLWckcJmyFVqViS
-	DseD43gmJ51F/KAG7DWgu1zoHtCaQrfh+g1rBHsZS0I6uImVZDvqC4bB+Mhnsz9G265FIO+h/A6
-	8FZQ2zLcV7CyOPLWgeSk6cY9oHPZIlN4VJxtPG/1glPg==
-X-Gm-Gg: ATEYQzxQ+kjL8YPbtZrMWpuAa9B/5gXN4juQivNsQpBcLtMrS4jgiu5YQbMqhGO+hLS
-	p4N4I1fuZgAh8gyv9lYYRNTx+SsO0K+rFS+7f5vaN41ZRj5RnayKiM/8PRM09t2yEXMRU9s2VX0
-	rdPrHD1YDjE0nAriYsBZFc9jo+aQxhdsBP2Wu4jeuGaNva4lYqUAOusZiFEiWZWegA1VIvmTY3c
-	5zKbzZmJp5fpBLIH1Q/kpiIYBUIeIBbN2GhYI0VUXnqzli+lalWfl0xLSQKa1b4IJ5thapNi+hI
-	nrdVHlb0A+kCbyd7oVyAPzg3W/mVMaTDQCi5InJKvG5C0z6KjOBHb861fQxFUe5bVaHypCFa6D2
-	8r5oq+VRTMDfQ9cgN3/JVuB/zjHE4kjawb37/jzR/FXH/YyQIHTI=
-X-Received: by 2002:a05:600c:524e:b0:486:f634:ef3 with SMTP id 5b1f17b1804b1-486ff01efcdmr183488955e9.32.1774303867475;
-        Mon, 23 Mar 2026 15:11:07 -0700 (PDT)
-X-Received: by 2002:a05:600c:524e:b0:486:f634:ef3 with SMTP id 5b1f17b1804b1-486ff01efcdmr183488635e9.32.1774303866851;
-        Mon, 23 Mar 2026 15:11:06 -0700 (PDT)
+        bh=3dlj1TaFTL5kAimyqlybUpocdDU6ZlqiPD4tvA7LZ1I=;
+        b=qjoTij2Auko1P/p+2CWTHc37W3mYbCUJp3ZGZQkEHRwbZ9Z2spjz0m7uMTQH3jpNjk
+         vNbN/0eelPUountVe0qcTG8+ISF+KxQOLPIvZ89p2BGsSoQxR+cUKPAd338oyICXe+s7
+         8ZaR3THbrRaLEkIPmBIEeE20xwRvdgPbmYVEERN1p5POPLgdPc8Dyzmxcu4+B0rGdzYC
+         BGZ7oMMLsy8hcxoDs60mRxim0bxQPv1+mv/Zt42Wq1ra6T12SqxD+IwnZ5Zs5I0GGLC0
+         wVFEYKaOF5o2EcgFFBJ9/f2kANhlR3+pndaAku/4uiueDUf6Sw+qJFoxVbQzPOAjOZXd
+         n71Q==
+X-Gm-Message-State: AOJu0YzZzUoR2fbIP7mm55kfWyZQIsuZg7NUe7ziUek6R5CpGMorSs11
+	WT3bB1OsvUfrnSw6FrGCByPIrc3UxG2g0UbIEhwgYIKuXbcP00I3txQNsQpSCP+njZ9XdTv2FC6
+	aT4zEJvFC7LuHLNdb9psMAu4XhnZ/RqGz5stBS9wI7uDSQ5aM5C4HLTO+RljuqYSCG/YTYbrmCF
+	GV3Q//No/r6xFjmnPj9YPgFIuPdhaLUXrBCqcvCwcW2g==
+X-Gm-Gg: ATEYQzxBLI0PemdLGNURHF5lnE+5gS4Zh6TTNrYGooStOSarhIF1VzdmTlv2HvzKK/y
+	xTzKuRHKMVQZvUDfSKevoCMg8pkAYJre4l9C2CBrFDBR/OZpA2qtkdOuX3Xe8BB4suuSrS70KKL
+	1Ns0+kTatClWa6scPWcnYE5jRxbAtsoY1WE6c30ELzmME5uVs+RicS1Oj1NugUyNF5QmetPQmh3
+	SOuJ/SY293HCoNqwZMaFMXgCX8DXACRLCAeK86Q/Z4Q0wq1v9RFDkzqRJfEWIukY04F4GVfYkcW
+	EPhV/z7LOS7h8SWaa5gVxgJH7GH6owOFNYzjwDGG11csMsUEAvGHF5PF9T4bgMiuO8ojOJ/koDb
+	c9vYcoM/deDJWjPaFowOkZFPJNvf3wWYM0oXHWNjSCTVQIWrYA8M=
+X-Received: by 2002:a05:600c:524e:b0:485:3ae8:2231 with SMTP id 5b1f17b1804b1-486ff01efd8mr181474795e9.30.1774303871218;
+        Mon, 23 Mar 2026 15:11:11 -0700 (PDT)
+X-Received: by 2002:a05:600c:524e:b0:485:3ae8:2231 with SMTP id 5b1f17b1804b1-486ff01efd8mr181474525e9.30.1774303870588;
+        Mon, 23 Mar 2026 15:11:10 -0700 (PDT)
 Received: from localhost (net-2-44-37-38.cust.vodafonedsl.it. [2.44.37.38])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48711709e95sm2502125e9.8.2026.03.23.15.11.04
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-487116939b8sm6059515e9.3.2026.03.23.15.11.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 15:11:04 -0700 (PDT)
+        Mon, 23 Mar 2026 15:11:08 -0700 (PDT)
 From: Paolo Valerio <pvalerio@redhat.com>
 To: netdev@vger.kernel.org
 Cc: Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -89,9 +89,9 @@ Cc: Nicolas Ferre <nicolas.ferre@microchip.com>,
 	Lorenzo Bianconi <lorenzo@kernel.org>,
 	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
 	Nicolai Buchwitz <nb@tipi-net.de>
-Subject: [PATCH net-next v6 4/7] net: macb: make macb_tx_skb generic
-Date: Mon, 23 Mar 2026 23:10:44 +0100
-Message-ID: <20260323221047.2749577-5-pvalerio@redhat.com>
+Subject: [PATCH net-next v6 6/7] net: macb: add XDP support for gem
+Date: Mon, 23 Mar 2026 23:10:46 +0100
+Message-ID: <20260323221047.2749577-7-pvalerio@redhat.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323221047.2749577-1-pvalerio@redhat.com>
 References: <20260323221047.2749577-1-pvalerio@redhat.com>
@@ -103,354 +103,685 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The macb_tx_skb structure is renamed to macb_tx_buff with
-no functional changes.
-
-This is a preparatory step for adding xdp xmit support.
+Introduce basic XDP support for macb/gem with the XDP_TX, XDP_PASS,
+XDP_DROP, XDP_REDIRECT verdict support.
 
 Signed-off-by: Paolo Valerio <pvalerio@redhat.com>
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+Tested-by: Nicolai Buchwitz <nb@tipi-net.de>
 ---
- drivers/net/ethernet/cadence/macb.h      |   8 +-
- drivers/net/ethernet/cadence/macb_main.c | 112 +++++++++++------------
- 2 files changed, 60 insertions(+), 60 deletions(-)
+ drivers/net/ethernet/cadence/macb.h      |   3 +
+ drivers/net/ethernet/cadence/macb_main.c | 366 ++++++++++++++++++++---
+ 2 files changed, 335 insertions(+), 34 deletions(-)
 
 diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
-index 2c6ba1b63aab..1cc626088174 100644
+index d8c581394b98..a1cec805ee92 100644
 --- a/drivers/net/ethernet/cadence/macb.h
 +++ b/drivers/net/ethernet/cadence/macb.h
-@@ -965,7 +965,7 @@ struct macb_dma_desc_ptp {
- /* Scaled PPM fraction */
- #define PPM_FRACTION	16
+@@ -15,6 +15,7 @@
+ #include <linux/phy/phy.h>
+ #include <linux/workqueue.h>
+ #include <net/page_pool/helpers.h>
++#include <net/xdp.h>
  
--/* struct macb_tx_skb - data about an skb which is being transmitted
-+/* struct macb_tx_buff - data about an skb which is being transmitted
-  * @skb: skb currently being transmitted, only set for the last buffer
-  *       of the frame
-  * @mapping: DMA address of the skb's fragment buffer
-@@ -973,7 +973,7 @@ struct macb_dma_desc_ptp {
-  * @mapped_as_page: true when buffer was mapped with skb_frag_dma_map(),
-  *                  false when buffer was mapped with dma_map_single()
-  */
--struct macb_tx_skb {
-+struct macb_tx_buff {
+ #define MACB_GREGS_NBR 16
+ #define MACB_GREGS_VERSION 2
+@@ -1293,6 +1294,7 @@ struct macb_queue {
+ 	struct queue_stats stats;
+ 	struct page_pool	*page_pool;
  	struct sk_buff		*skb;
- 	dma_addr_t		mapping;
- 	size_t			size;
-@@ -1267,7 +1267,7 @@ struct macb_queue {
- 	spinlock_t		tx_ptr_lock;
- 	unsigned int		tx_head, tx_tail;
- 	struct macb_dma_desc	*tx_ring;
--	struct macb_tx_skb	*tx_skb;
-+	struct macb_tx_buff	*tx_buff;
- 	dma_addr_t		tx_ring_dma;
- 	struct work_struct	tx_error_task;
- 	bool			txubr_pending;
-@@ -1345,7 +1345,7 @@ struct macb {
- 	phy_interface_t		phy_interface;
++	struct xdp_rxq_info	xdp_rxq;
+ };
  
- 	/* AT91RM9200 transmit queue (1 on wire + 1 queued) */
--	struct macb_tx_skb	rm9200_txq[2];
-+	struct macb_tx_buff	rm9200_txq[2];
- 	unsigned int		max_tx_length;
+ struct ethtool_rx_fs_item {
+@@ -1398,6 +1400,7 @@ struct macb {
  
- 	u64			ethtool_stats[GEM_STATS_LEN + QUEUE_STATS_LEN * MACB_MAX_QUEUES];
+ 	struct macb_pm_data pm_data;
+ 	const struct macb_usrio_config *usrio;
++	struct bpf_prog	__rcu *prog;
+ };
+ 
+ #ifdef CONFIG_MACB_USE_HWSTAMP
 diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 84989ff0c3a9..a71d36b18170 100644
+index 4c5dd70f003b..537d02264851 100644
 --- a/drivers/net/ethernet/cadence/macb_main.c
 +++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -159,10 +159,10 @@ static struct macb_dma_desc *macb_tx_desc(struct macb_queue *queue,
- 	return &queue->tx_ring[index];
- }
+@@ -6,6 +6,7 @@
+  */
  
--static struct macb_tx_skb *macb_tx_skb(struct macb_queue *queue,
--				       unsigned int index)
-+static struct macb_tx_buff *macb_tx_buff(struct macb_queue *queue,
-+					 unsigned int index)
- {
--	return &queue->tx_skb[macb_tx_ring_wrap(queue->bp, index)];
-+	return &queue->tx_buff[macb_tx_ring_wrap(queue->bp, index)];
- }
- 
- static dma_addr_t macb_tx_dma(struct macb_queue *queue, unsigned int index)
-@@ -792,7 +792,7 @@ static void macb_mac_link_down(struct phylink_config *config, unsigned int mode,
- static void gem_shuffle_tx_one_ring(struct macb_queue *queue)
- {
- 	unsigned int head, tail, count, ring_size, desc_size;
--	struct macb_tx_skb tx_skb, *skb_curr, *skb_next;
-+	struct macb_tx_buff tx_buff, *buff_curr, *buff_next;
- 	struct macb_dma_desc *desc_curr, *desc_next;
- 	unsigned int i, cycles, shift, curr, next;
- 	struct macb *bp = queue->bp;
-@@ -824,8 +824,8 @@ static void gem_shuffle_tx_one_ring(struct macb_queue *queue)
- 
- 	for (i = 0; i < cycles; i++) {
- 		memcpy(&desc, macb_tx_desc(queue, i), desc_size);
--		memcpy(&tx_skb, macb_tx_skb(queue, i),
--		       sizeof(struct macb_tx_skb));
-+		memcpy(&tx_buff, macb_tx_buff(queue, i),
-+		       sizeof(struct macb_tx_buff));
- 
- 		curr = i;
- 		next = (curr + shift) % ring_size;
-@@ -841,9 +841,9 @@ static void gem_shuffle_tx_one_ring(struct macb_queue *queue)
- 			if (curr == ring_size - 1)
- 				desc_curr->ctrl |= MACB_BIT(TX_WRAP);
- 
--			skb_curr = macb_tx_skb(queue, curr);
--			skb_next = macb_tx_skb(queue, next);
--			memcpy(skb_curr, skb_next, sizeof(struct macb_tx_skb));
-+			buff_curr = macb_tx_buff(queue, curr);
-+			buff_next = macb_tx_buff(queue, next);
-+			memcpy(buff_curr, buff_next, sizeof(struct macb_tx_buff));
- 
- 			curr = next;
- 			next = (curr + shift) % ring_size;
-@@ -855,8 +855,8 @@ static void gem_shuffle_tx_one_ring(struct macb_queue *queue)
- 			desc_curr->ctrl &= ~MACB_BIT(TX_WRAP);
- 		if (curr == ring_size - 1)
- 			desc_curr->ctrl |= MACB_BIT(TX_WRAP);
--		memcpy(macb_tx_skb(queue, curr), &tx_skb,
--		       sizeof(struct macb_tx_skb));
-+		memcpy(macb_tx_buff(queue, curr), &tx_buff,
-+		       sizeof(struct macb_tx_buff));
- 	}
- 
- 	queue->tx_head = count;
-@@ -1197,21 +1197,21 @@ static int macb_halt_tx(struct macb *bp)
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++#include <linux/bpf_trace.h>
+ #include <linux/circ_buf.h>
+ #include <linux/clk-provider.h>
+ #include <linux/clk.h>
+@@ -1197,6 +1198,18 @@ static int macb_halt_tx(struct macb *bp)
  					bp, TSR);
  }
  
--static void macb_tx_unmap(struct macb *bp, struct macb_tx_skb *tx_skb, int budget)
-+static void macb_tx_unmap(struct macb *bp, struct macb_tx_buff *tx_buff, int budget)
++static void macb_tx_release_buff(void *buff, enum macb_tx_buff_type type, int budget)
++{
++	if (type == MACB_TYPE_SKB) {
++		napi_consume_skb(buff, budget);
++	} else {
++		if (!budget)
++			xdp_return_frame(buff);
++		else
++			xdp_return_frame_rx_napi(buff);
++	}
++}
++
+ static void macb_tx_unmap(struct macb *bp, struct macb_tx_buff *tx_buff,
+ 			  int budget)
  {
--	if (tx_skb->mapping) {
--		if (tx_skb->mapped_as_page)
--			dma_unmap_page(&bp->pdev->dev, tx_skb->mapping,
--				       tx_skb->size, DMA_TO_DEVICE);
-+	if (tx_buff->mapping) {
-+		if (tx_buff->mapped_as_page)
-+			dma_unmap_page(&bp->pdev->dev, tx_buff->mapping,
-+				       tx_buff->size, DMA_TO_DEVICE);
- 		else
--			dma_unmap_single(&bp->pdev->dev, tx_skb->mapping,
--					 tx_skb->size, DMA_TO_DEVICE);
--		tx_skb->mapping = 0;
-+			dma_unmap_single(&bp->pdev->dev, tx_buff->mapping,
-+					 tx_buff->size, DMA_TO_DEVICE);
-+		tx_buff->mapping = 0;
+@@ -1211,7 +1224,7 @@ static void macb_tx_unmap(struct macb *bp, struct macb_tx_buff *tx_buff,
  	}
  
--	if (tx_skb->skb) {
--		napi_consume_skb(tx_skb->skb, budget);
--		tx_skb->skb = NULL;
-+	if (tx_buff->skb) {
-+		napi_consume_skb(tx_buff->skb, budget);
-+		tx_buff->skb = NULL;
+ 	if (tx_buff->ptr) {
+-		napi_consume_skb(tx_buff->ptr, budget);
++		macb_tx_release_buff(tx_buff->ptr, tx_buff->type, budget);
+ 		tx_buff->ptr = NULL;
  	}
  }
+@@ -1275,7 +1288,8 @@ static void macb_tx_error_task(struct work_struct *work)
+ 	 * network engine about the macb/gem being halted.
+ 	 */
+ 	napi_disable(&queue->napi_tx);
+-	spin_lock_irqsave(&bp->lock, flags);
++	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
++	spin_lock(&bp->lock);
  
-@@ -1257,7 +1257,7 @@ static void macb_tx_error_task(struct work_struct *work)
- 	u32			queue_index;
- 	u32			packets = 0;
- 	u32			bytes = 0;
--	struct macb_tx_skb	*tx_skb;
-+	struct macb_tx_buff	*tx_buff;
- 	struct macb_dma_desc	*desc;
- 	struct sk_buff		*skb;
- 	unsigned int		tail;
-@@ -1297,16 +1297,16 @@ static void macb_tx_error_task(struct work_struct *work)
- 
+ 	/* Make sure nobody is trying to queue up new packets */
+ 	netif_tx_stop_all_queues(bp->dev);
+@@ -1299,6 +1313,10 @@ static void macb_tx_error_task(struct work_struct *work)
  		desc = macb_tx_desc(queue, tail);
  		ctrl = desc->ctrl;
--		tx_skb = macb_tx_skb(queue, tail);
--		skb = tx_skb->skb;
-+		tx_buff = macb_tx_buff(queue, tail);
-+		skb = tx_buff->skb;
+ 		tx_buff = macb_tx_buff(queue, tail);
++
++		if (tx_buff->type != MACB_TYPE_SKB)
++			goto unmap;
++
+ 		skb = tx_buff->ptr;
  
  		if (ctrl & MACB_BIT(TX_USED)) {
- 			/* skb is set for the last buffer of the frame */
- 			while (!skb) {
--				macb_tx_unmap(bp, tx_skb, 0);
-+				macb_tx_unmap(bp, tx_buff, 0);
- 				tail++;
--				tx_skb = macb_tx_skb(queue, tail);
--				skb = tx_skb->skb;
-+				tx_buff = macb_tx_buff(queue, tail);
-+				skb = tx_buff->skb;
- 			}
- 
- 			/* ctrl still refers to the first buffer descriptor
-@@ -1335,7 +1335,7 @@ static void macb_tx_error_task(struct work_struct *work)
+@@ -1336,6 +1354,7 @@ static void macb_tx_error_task(struct work_struct *work)
  			desc->ctrl = ctrl | MACB_BIT(TX_USED);
  		}
  
--		macb_tx_unmap(bp, tx_skb, 0);
-+		macb_tx_unmap(bp, tx_buff, 0);
++unmap:
+ 		macb_tx_unmap(bp, tx_buff, 0);
+ 	}
+ 
+@@ -1367,7 +1386,8 @@ static void macb_tx_error_task(struct work_struct *work)
+ 	netif_tx_start_all_queues(bp->dev);
+ 	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(TSTART));
+ 
+-	spin_unlock_irqrestore(&bp->lock, flags);
++	spin_unlock(&bp->lock);
++	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
+ 	napi_enable(&queue->napi_tx);
+ }
+ 
+@@ -1405,6 +1425,7 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
+ {
+ 	struct macb *bp = queue->bp;
+ 	unsigned long flags;
++	int skb_packets = 0;
+ 	unsigned int tail;
+ 	unsigned int head;
+ 	u16 queue_index;
+@@ -1419,6 +1440,7 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
+ 		struct macb_tx_buff *tx_buff;
+ 		struct macb_dma_desc *desc;
+ 		struct sk_buff *skb;
++		void *data = NULL;
+ 		u32 ctrl;
+ 
+ 		desc = macb_tx_desc(queue, tail);
+@@ -1437,10 +1459,18 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
+ 		/* Process all buffers of the current transmitted frame */
+ 		for (;; tail++) {
+ 			tx_buff = macb_tx_buff(queue, tail);
+-			skb = tx_buff->ptr;
++
++			if (tx_buff->type != MACB_TYPE_SKB) {
++				data = tx_buff->ptr;
++				packets++;
++				goto unmap;
++			}
+ 
+ 			/* First, update TX stats if needed */
+-			if (skb) {
++			if (tx_buff->ptr) {
++				data = tx_buff->ptr;
++				skb = tx_buff->ptr;
++
+ 				if (unlikely(skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) &&
+ 				    !ptp_one_step_sync(skb))
+ 					gem_ptp_do_txstamp(bp, skb, desc);
+@@ -1452,24 +1482,26 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
+ 				queue->stats.tx_packets++;
+ 				bp->dev->stats.tx_bytes += skb->len;
+ 				queue->stats.tx_bytes += skb->len;
++				skb_packets++;
+ 				packets++;
+ 				bytes += skb->len;
+ 			}
+ 
++unmap:
+ 			/* Now we can safely release resources */
+ 			macb_tx_unmap(bp, tx_buff, budget);
+ 
+-			/* skb is set only for the last buffer of the frame.
+-			 * WARNING: at this point skb has been freed by
++			/* data is set only for the last buffer of the frame.
++			 * WARNING: at this point the buffer has been freed by
+ 			 * macb_tx_unmap().
+ 			 */
+-			if (skb)
++			if (data)
+ 				break;
+ 		}
  	}
  
  	netdev_tx_completed_queue(netdev_get_tx_queue(bp->dev, queue_index),
-@@ -1413,7 +1413,7 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
- 	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
- 	head = queue->tx_head;
- 	for (tail = queue->tx_tail; tail != head && packets < budget; tail++) {
--		struct macb_tx_skb	*tx_skb;
-+		struct macb_tx_buff	*tx_buff;
- 		struct sk_buff		*skb;
- 		struct macb_dma_desc	*desc;
- 		u32			ctrl;
-@@ -1433,8 +1433,8 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
+-				  packets, bytes);
++				  skb_packets, bytes);
  
- 		/* Process all buffers of the current transmitted frame */
- 		for (;; tail++) {
--			tx_skb = macb_tx_skb(queue, tail);
--			skb = tx_skb->skb;
-+			tx_buff = macb_tx_buff(queue, tail);
-+			skb = tx_buff->skb;
+ 	queue->tx_tail = tail;
+ 	if (__netif_subqueue_stopped(bp->dev, queue_index) &&
+@@ -1519,9 +1551,27 @@ static int gem_rx_data_len(struct macb *bp, struct macb_queue *queue,
+ 	return len;
+ }
  
- 			/* First, update TX stats if needed */
- 			if (skb) {
-@@ -1454,7 +1454,7 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
++static unsigned int gem_rx_pad(struct macb *bp)
++{
++	if (rcu_access_pointer(bp->prog))
++		return XDP_PACKET_HEADROOM;
++
++	return NET_SKB_PAD;
++}
++
++static unsigned int gem_max_rx_data_size(int base_sz)
++{
++	return SKB_DATA_ALIGN(base_sz + ETH_HLEN + ETH_FCS_LEN);
++}
++
++static unsigned int __gem_total_rx_buffer_size(int data_sz, unsigned int headroom)
++{
++	return SKB_HEAD_ALIGN(data_sz + headroom);
++}
++
+ static unsigned int gem_total_rx_buffer_size(struct macb *bp)
+ {
+-	return SKB_HEAD_ALIGN(bp->rx_buffer_size + NET_SKB_PAD);
++	return __gem_total_rx_buffer_size(bp->rx_buffer_size, gem_rx_pad(bp));
+ }
+ 
+ static int gem_rx_refill(struct macb_queue *queue, bool napi)
+@@ -1558,7 +1608,8 @@ static int gem_rx_refill(struct macb_queue *queue, bool napi)
+ 				break;
  			}
  
- 			/* Now we can safely release resources */
--			macb_tx_unmap(bp, tx_skb, budget);
-+			macb_tx_unmap(bp, tx_buff, budget);
+-			paddr = page_pool_get_dma_addr(page) + NET_SKB_PAD + offset;
++			paddr = page_pool_get_dma_addr(page) +
++				gem_rx_pad(bp) + offset;
  
- 			/* skb is set only for the last buffer of the frame.
- 			 * WARNING: at this point skb has been freed by
-@@ -2332,8 +2332,8 @@ static unsigned int macb_tx_map(struct macb *bp,
- 	unsigned int f, nr_frags = skb_shinfo(skb)->nr_frags;
- 	unsigned int len, i, tx_head = queue->tx_head;
- 	u32 ctrl, lso_ctrl = 0, seq_ctrl = 0;
-+	struct macb_tx_buff *tx_buff = NULL;
- 	unsigned int eof = 1, mss_mfs = 0;
--	struct macb_tx_skb *tx_skb = NULL;
+ 			dma_sync_single_for_device(&bp->pdev->dev,
+ 						   paddr, bp->rx_buffer_size,
+@@ -1612,12 +1663,156 @@ static void discard_partial_frame(struct macb_queue *queue, unsigned int begin,
+ 	 */
+ }
+ 
++static int macb_xdp_submit_frame(struct macb *bp, struct xdp_frame *xdpf,
++				 struct net_device *dev, dma_addr_t addr)
++{
++	struct macb_tx_buff *tx_buff;
++	int cpu = smp_processor_id();
++	struct macb_dma_desc *desc;
++	struct macb_queue *queue;
++	unsigned int next_head;
++	unsigned long flags;
++	u16 queue_index;
++	int err = 0;
++	u32 ctrl;
++
++	queue_index = cpu % bp->num_queues;
++	queue = &bp->queues[queue_index];
++
++	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
++
++	/* This is a hard error, log it. */
++	if (CIRC_SPACE(queue->tx_head, queue->tx_tail, bp->tx_ring_size) < 1) {
++		netif_stop_subqueue(dev, queue_index);
++		netdev_dbg(bp->dev, "tx_head = %u, tx_tail = %u\n",
++			   queue->tx_head, queue->tx_tail);
++		err = -ENOMEM;
++		goto unlock;
++	}
++
++	/* progs can adjust the head. Sync and set the adjusted one.
++	 * This also implicitly takes into account ip alignment,
++	 * if present.
++	 */
++	addr += xdpf->headroom + sizeof(*xdpf);
++
++	dma_sync_single_for_device(&bp->pdev->dev, addr,
++				   xdpf->len, DMA_BIDIRECTIONAL);
++
++	next_head = queue->tx_head + 1;
++
++	ctrl = MACB_BIT(TX_USED);
++	desc = macb_tx_desc(queue, next_head);
++	desc->ctrl = ctrl;
++
++	desc = macb_tx_desc(queue, queue->tx_head);
++	tx_buff = macb_tx_buff(queue, queue->tx_head);
++	tx_buff->ptr = xdpf;
++	tx_buff->type = MACB_TYPE_XDP_TX;
++	tx_buff->mapping = 0;
++	tx_buff->size = xdpf->len;
++	tx_buff->mapped_as_page = false;
++
++	ctrl = (u32)tx_buff->size;
++	ctrl |= MACB_BIT(TX_LAST);
++
++	if (unlikely(macb_tx_ring_wrap(bp, queue->tx_head) == (bp->tx_ring_size - 1)))
++		ctrl |= MACB_BIT(TX_WRAP);
++
++	/* Set TX buffer descriptor */
++	macb_set_addr(bp, desc, addr);
++	/* desc->addr must be visible to hardware before clearing
++	 * 'TX_USED' bit in desc->ctrl.
++	 */
++	wmb();
++	desc->ctrl = ctrl;
++	queue->tx_head = next_head;
++
++	/* Make newly initialized descriptor visible to hardware */
++	wmb();
++
++	spin_lock(&bp->lock);
++	macb_tx_lpi_wake(bp);
++	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(TSTART));
++	spin_unlock(&bp->lock);
++
++	if (CIRC_SPACE(queue->tx_head, queue->tx_tail, bp->tx_ring_size) < 1)
++		netif_stop_subqueue(dev, queue_index);
++
++unlock:
++	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
++
++	return err;
++}
++
++static u32 gem_xdp_run(struct macb_queue *queue, void *buff_head,
++		       unsigned int *len, unsigned int *headroom,
++		       dma_addr_t addr)
++{
++	struct net_device *dev;
++	struct xdp_frame *xdpf;
++	struct bpf_prog *prog;
++	struct xdp_buff xdp;
++
++	u32 act = XDP_PASS;
++
++	rcu_read_lock();
++
++	prog = rcu_dereference(queue->bp->prog);
++	if (!prog)
++		goto out;
++
++	xdp_init_buff(&xdp, gem_total_rx_buffer_size(queue->bp), &queue->xdp_rxq);
++	xdp_prepare_buff(&xdp, buff_head, *headroom, *len, false);
++	xdp_buff_clear_frags_flag(&xdp);
++	dev = queue->bp->dev;
++
++	act = bpf_prog_run_xdp(prog, &xdp);
++	switch (act) {
++	case XDP_PASS:
++		*len = xdp.data_end - xdp.data;
++		*headroom = xdp.data - xdp.data_hard_start;
++		goto out;
++	case XDP_REDIRECT:
++		if (unlikely(xdp_do_redirect(dev, &xdp, prog))) {
++			act = XDP_DROP;
++			break;
++		}
++		goto out;
++	case XDP_TX:
++		xdpf = xdp_convert_buff_to_frame(&xdp);
++		if (unlikely(!xdpf) || macb_xdp_submit_frame(queue->bp, xdpf,
++							     dev, addr)) {
++			act = XDP_DROP;
++			break;
++		}
++		goto out;
++	default:
++		bpf_warn_invalid_xdp_action(dev, prog, act);
++		fallthrough;
++	case XDP_ABORTED:
++		trace_xdp_exception(dev, prog, act);
++		fallthrough;
++	case XDP_DROP:
++		break;
++	}
++
++	page_pool_put_full_page(queue->page_pool,
++				virt_to_head_page(xdp.data), true);
++out:
++	rcu_read_unlock();
++
++	return act;
++}
++
+ static int gem_rx(struct macb_queue *queue, struct napi_struct *napi,
+ 		  int budget)
+ {
+ 	struct skb_shared_info *shinfo;
+ 	struct macb *bp = queue->bp;
  	struct macb_dma_desc *desc;
- 	unsigned int offset, size;
- 	dma_addr_t mapping;
-@@ -2356,7 +2356,7 @@ static unsigned int macb_tx_map(struct macb *bp,
++	bool xdp_flush = false;
++	unsigned int headroom;
+ 	unsigned int entry;
+ 	struct page *page;
+ 	void *buff_head;
+@@ -1625,11 +1820,11 @@ static int gem_rx(struct macb_queue *queue, struct napi_struct *napi,
+ 	int data_len;
+ 	int nr_frags;
  
- 	offset = 0;
- 	while (len) {
--		tx_skb = macb_tx_skb(queue, tx_head);
-+		tx_buff = macb_tx_buff(queue, tx_head);
+-
+ 	while (count < budget) {
+ 		bool rxused, first_frame, last_frame;
+ 		dma_addr_t addr;
+ 		u32 ctrl;
++		u32 ret;
  
- 		mapping = dma_map_single(&bp->pdev->dev,
- 					 skb->data + offset,
-@@ -2365,10 +2365,10 @@ static unsigned int macb_tx_map(struct macb *bp,
- 			goto dma_error;
+ 		entry = macb_rx_ring_wrap(bp, queue->rx_tail);
+ 		desc = macb_rx_desc(queue, entry);
+@@ -1669,9 +1864,9 @@ static int gem_rx(struct macb_queue *queue, struct napi_struct *napi,
+ 		if (data_len < 0)
+ 			goto free_frags;
  
- 		/* Save info to properly release resources */
--		tx_skb->skb = NULL;
--		tx_skb->mapping = mapping;
--		tx_skb->size = size;
--		tx_skb->mapped_as_page = false;
-+		tx_buff->skb = NULL;
-+		tx_buff->mapping = mapping;
-+		tx_buff->size = size;
-+		tx_buff->mapped_as_page = false;
+-		addr += first_frame ? bp->rx_ip_align : 0;
+-
+-		dma_sync_single_for_cpu(&bp->pdev->dev,	addr, data_len,
++		dma_sync_single_for_cpu(&bp->pdev->dev,
++					addr + (first_frame ? bp->rx_ip_align : 0),
++					data_len,
+ 					page_pool_get_dma_dir(queue->page_pool));
  
- 		len -= size;
- 		offset += size;
-@@ -2385,7 +2385,7 @@ static unsigned int macb_tx_map(struct macb *bp,
- 		offset = 0;
- 		while (len) {
- 			size = umin(len, bp->max_tx_length);
--			tx_skb = macb_tx_skb(queue, tx_head);
-+			tx_buff = macb_tx_buff(queue, tx_head);
+ 		if (first_frame) {
+@@ -1683,6 +1878,18 @@ static int gem_rx(struct macb_queue *queue, struct napi_struct *napi,
+ 				queue->stats.rx_dropped++;
+ 			}
  
- 			mapping = skb_frag_dma_map(&bp->pdev->dev, frag,
- 						   offset, size, DMA_TO_DEVICE);
-@@ -2393,10 +2393,10 @@ static unsigned int macb_tx_map(struct macb *bp,
- 				goto dma_error;
++			headroom = bp->rx_headroom;
++
++			if (last_frame) {
++				ret = gem_xdp_run(queue, buff_head, &data_len,
++						  &headroom, addr - gem_rx_pad(bp));
++				if (ret == XDP_REDIRECT)
++					xdp_flush = true;
++
++				if (ret != XDP_PASS)
++					goto next_frame;
++			}
++
+ 			queue->skb = napi_build_skb(buff_head, gem_total_rx_buffer_size(bp));
+ 			if (unlikely(!queue->skb)) {
+ 				if (net_ratelimit())
+@@ -1702,7 +1909,7 @@ static int gem_rx(struct macb_queue *queue, struct napi_struct *napi,
+ 			 * setting the low 2/3 bits.
+ 			 * It is 3 bits if HW_DMA_CAP_PTP, else 2 bits.
+ 			 */
+-			skb_reserve(queue->skb, bp->rx_headroom);
++			skb_reserve(queue->skb, headroom);
+ 			skb_mark_for_recycle(queue->skb);
+ 			skb_put(queue->skb, data_len);
+ 		} else {
+@@ -1714,15 +1921,11 @@ static int gem_rx(struct macb_queue *queue, struct napi_struct *napi,
+ 				goto free_frags;
  
- 			/* Save info to properly release resources */
--			tx_skb->skb = NULL;
--			tx_skb->mapping = mapping;
--			tx_skb->size = size;
--			tx_skb->mapped_as_page = true;
-+			tx_buff->skb = NULL;
-+			tx_buff->mapping = mapping;
-+			tx_buff->size = size;
-+			tx_buff->mapped_as_page = true;
+ 			skb_add_rx_frag(queue->skb, nr_frags, page,
+-					buff_head - page_address(page) + NET_SKB_PAD,
++					buff_head - page_address(page) + gem_rx_pad(bp),
+ 					data_len, gem_total_rx_buffer_size(bp));
+ 		}
  
- 			len -= size;
- 			offset += size;
-@@ -2405,13 +2405,13 @@ static unsigned int macb_tx_map(struct macb *bp,
+ 		/* now everything is ready for receiving packet */
+-		queue->rx_buff[entry] = NULL;
+-
+-		netdev_vdbg(bp->dev, "%s %u (len %u)\n", __func__, entry, data_len);
+-
+ 		if (last_frame) {
+ 			bp->dev->stats.rx_packets++;
+ 			queue->stats.rx_packets++;
+@@ -1750,6 +1953,8 @@ static int gem_rx(struct macb_queue *queue, struct napi_struct *napi,
+ 			queue->skb = NULL;
+ 		}
+ 
++next_frame:
++		queue->rx_buff[entry] = NULL;
+ 		continue;
+ 
+ free_frags:
+@@ -1768,6 +1973,9 @@ static int gem_rx(struct macb_queue *queue, struct napi_struct *napi,
+ 		queue->rx_buff[entry] = NULL;
  	}
  
- 	/* Should never happen */
--	if (unlikely(!tx_skb)) {
-+	if (unlikely(!tx_buff)) {
- 		netdev_err(bp->dev, "BUG! empty skb!\n");
- 		return 0;
++	if (xdp_flush)
++		xdp_do_flush();
++
+ 	gem_rx_refill(queue, true);
+ 
+ 	return count;
+@@ -2709,13 +2917,13 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ static void macb_init_rx_buffer_size(struct macb *bp, unsigned int mtu)
+ {
+ 	unsigned int overhead;
+-	size_t size;
+ 
+ 	if (!macb_is_gem(bp)) {
+ 		bp->rx_buffer_size = MACB_RX_BUFFER_SIZE;
+ 	} else {
+-		size = mtu + ETH_HLEN + ETH_FCS_LEN;
+-		bp->rx_buffer_size = SKB_DATA_ALIGN(size + bp->rx_ip_align);
++		bp->rx_headroom = gem_rx_pad(bp) + bp->rx_ip_align;
++		bp->rx_buffer_size = gem_max_rx_data_size(mtu + bp->rx_ip_align);
++
+ 		if (gem_total_rx_buffer_size(bp) > PAGE_SIZE) {
+ 			overhead = bp->rx_headroom +
+ 				SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
+@@ -2766,6 +2974,8 @@ static void gem_free_rx_buffers(struct macb *bp)
+ 
+ 		kfree(queue->rx_buff);
+ 		queue->rx_buff = NULL;
++		if (xdp_rxq_info_is_reg(&queue->xdp_rxq))
++			xdp_rxq_info_unreg(&queue->xdp_rxq);
+ 		page_pool_destroy(queue->page_pool);
+ 		queue->page_pool = NULL;
  	}
- 
- 	/* This is the last buffer of the frame: save socket buffer */
--	tx_skb->skb = skb;
-+	tx_buff->skb = skb;
- 
- 	/* Update TX ring: update buffer descriptors in reverse order
- 	 * to avoid race condition
-@@ -2442,10 +2442,10 @@ static unsigned int macb_tx_map(struct macb *bp,
- 
- 	do {
- 		i--;
--		tx_skb = macb_tx_skb(queue, i);
-+		tx_buff = macb_tx_buff(queue, i);
- 		desc = macb_tx_desc(queue, i);
- 
--		ctrl = (u32)tx_skb->size;
-+		ctrl = (u32)tx_buff->size;
- 		if (eof) {
- 			ctrl |= MACB_BIT(TX_LAST);
- 			eof = 0;
-@@ -2468,7 +2468,7 @@ static unsigned int macb_tx_map(struct macb *bp,
- 			ctrl |= MACB_BF(MSS_MFS, mss_mfs);
- 
- 		/* Set TX buffer descriptor */
--		macb_set_addr(bp, desc, tx_skb->mapping);
-+		macb_set_addr(bp, desc, tx_buff->mapping);
- 		/* desc->addr must be visible to hardware before clearing
- 		 * 'TX_USED' bit in desc->ctrl.
- 		 */
-@@ -2484,9 +2484,9 @@ static unsigned int macb_tx_map(struct macb *bp,
- 	netdev_err(bp->dev, "TX DMA map failed\n");
- 
- 	for (i = queue->tx_head; i != tx_head; i++) {
--		tx_skb = macb_tx_skb(queue, i);
-+		tx_buff = macb_tx_buff(queue, i);
- 
--		macb_tx_unmap(bp, tx_skb, 0);
-+		macb_tx_unmap(bp, tx_buff, 0);
- 	}
- 
+@@ -2922,37 +3132,62 @@ static int macb_alloc_consistent(struct macb *bp)
  	return -ENOMEM;
-@@ -2809,8 +2809,8 @@ static void macb_free_consistent(struct macb *bp)
- 	dma_free_coherent(dev, size, bp->queues[0].rx_ring, bp->queues[0].rx_ring_dma);
+ }
  
- 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
--		kfree(queue->tx_skb);
--		queue->tx_skb = NULL;
-+		kfree(queue->tx_buff);
-+		queue->tx_buff = NULL;
- 		queue->tx_ring = NULL;
- 		queue->rx_ring = NULL;
+-static int gem_create_page_pool(struct macb_queue *queue)
++static int gem_create_page_pool(struct macb_queue *queue, int qid)
+ {
+ 	struct page_pool_params pp_params = {
+ 		.order = 0,
+ 		.flags = PP_FLAG_DMA_MAP,
+ 		.pool_size = queue->bp->rx_ring_size,
+ 		.nid = NUMA_NO_NODE,
+-		.dma_dir = DMA_FROM_DEVICE,
++		.dma_dir = rcu_access_pointer(queue->bp->prog)
++				? DMA_BIDIRECTIONAL
++				: DMA_FROM_DEVICE,
+ 		.dev = &queue->bp->pdev->dev,
+ 		.netdev = queue->bp->dev,
+ 		.napi = &queue->napi_rx,
+ 		.max_len = PAGE_SIZE,
+ 	};
+ 	struct page_pool *pool;
+-	int err = 0;
++	int err;
+ 
+ 	/* This can happen in the case of HRESP error.
+ 	 * Do nothing as page pool is already existing.
+ 	 */
+ 	if (queue->page_pool)
+-		return err;
++		return 0;
+ 
+ 	pool = page_pool_create(&pp_params);
+ 	if (IS_ERR(pool)) {
+ 		netdev_err(queue->bp->dev, "cannot create rx page pool\n");
+ 		err = PTR_ERR(pool);
+-		pool = NULL;
++		goto clear_pool;
  	}
-@@ -2888,9 +2888,9 @@ static int macb_alloc_consistent(struct macb *bp)
- 		queue->rx_ring = rx + macb_rx_ring_size_per_queue(bp) * q;
- 		queue->rx_ring_dma = rx_dma + macb_rx_ring_size_per_queue(bp) * q;
  
--		size = bp->tx_ring_size * sizeof(struct macb_tx_skb);
--		queue->tx_skb = kmalloc(size, GFP_KERNEL);
--		if (!queue->tx_skb)
-+		size = bp->tx_ring_size * sizeof(struct macb_tx_buff);
-+		queue->tx_buff = kmalloc(size, GFP_KERNEL);
-+		if (!queue->tx_buff)
- 			goto out_err;
+ 	queue->page_pool = pool;
+ 
++	err = xdp_rxq_info_reg(&queue->xdp_rxq, queue->bp->dev, qid,
++			       queue->napi_rx.napi_id);
++	if (err < 0) {
++		netdev_err(queue->bp->dev, "xdp: failed to register rxq info\n");
++		goto destroy_pool;
++	}
++
++	err = xdp_rxq_info_reg_mem_model(&queue->xdp_rxq, MEM_TYPE_PAGE_POOL,
++					 queue->page_pool);
++	if (err) {
++		netdev_err(queue->bp->dev, "xdp: failed to register rxq memory model\n");
++		goto unreg_info;
++	}
++
++	return 0;
++
++unreg_info:
++	xdp_rxq_info_unreg(&queue->xdp_rxq);
++destroy_pool:
++	page_pool_destroy(pool);
++clear_pool:
++	queue->page_pool = NULL;
++
+ 	return err;
+ }
+ 
+@@ -2999,7 +3234,7 @@ static int gem_init_rings(struct macb *bp, bool fail_early)
+ 		/* This is a hard failure. In case of HRESP error
+ 		 * recovery we always reuse the existing page pool.
+ 		 */
+-		last_err = gem_create_page_pool(queue);
++		last_err = gem_create_page_pool(queue, q);
+ 		if (last_err)
+ 			break;
+ 
+@@ -3449,11 +3684,24 @@ static int macb_close(struct net_device *dev)
+ 	return 0;
+ }
+ 
++static bool gem_xdp_valid_mtu(struct macb *bp, int mtu)
++{
++	return __gem_total_rx_buffer_size(gem_max_rx_data_size(mtu + bp->rx_ip_align),
++					  XDP_PACKET_HEADROOM) <= PAGE_SIZE;
++}
++
+ static int macb_change_mtu(struct net_device *dev, int new_mtu)
+ {
++	struct macb *bp = netdev_priv(dev);
++
+ 	if (netif_running(dev))
+ 		return -EBUSY;
+ 
++	if (rcu_access_pointer(bp->prog) && !gem_xdp_valid_mtu(bp, new_mtu)) {
++		netdev_err(dev, "MTU %d too large for XDP\n", new_mtu);
++		return -EINVAL;
++	}
++
+ 	WRITE_ONCE(dev->mtu, new_mtu);
+ 
+ 	return 0;
+@@ -3471,6 +3719,55 @@ static int macb_set_mac_addr(struct net_device *dev, void *addr)
+ 	return 0;
+ }
+ 
++static int gem_xdp_setup(struct net_device *dev, struct bpf_prog *prog,
++			 struct netlink_ext_ack *extack)
++{
++	struct macb *bp = netdev_priv(dev);
++	struct bpf_prog *old_prog;
++	bool need_update, running;
++	int err;
++
++	if (prog && !gem_xdp_valid_mtu(bp, dev->mtu)) {
++		NL_SET_ERR_MSG_MOD(extack, "MTU too large for XDP");
++		return -EOPNOTSUPP;
++	}
++
++	running = netif_running(dev);
++	need_update = !!bp->prog != !!prog;
++	if (running && need_update)
++		macb_close(dev);
++
++	old_prog = rcu_replace_pointer(bp->prog, prog, lockdep_rtnl_is_held());
++
++	if (running && need_update) {
++		err = macb_open(dev);
++		if (err) {
++			rcu_assign_pointer(bp->prog, old_prog);
++			return err;
++		}
++	}
++
++	if (old_prog)
++		bpf_prog_put(old_prog);
++
++	return 0;
++}
++
++static int gem_xdp(struct net_device *dev, struct netdev_bpf *xdp)
++{
++	struct macb *bp = netdev_priv(dev);
++
++	if (!macb_is_gem(bp))
++		return -EOPNOTSUPP;
++
++	switch (xdp->command) {
++	case XDP_SETUP_PROG:
++		return gem_xdp_setup(dev, xdp->prog, xdp->extack);
++	default:
++		return -EOPNOTSUPP;
++	}
++}
++
+ static void gem_update_stats(struct macb *bp)
+ {
+ 	struct macb_queue *queue;
+@@ -4745,6 +5042,7 @@ static const struct net_device_ops macb_netdev_ops = {
+ 	.ndo_hwtstamp_set	= macb_hwtstamp_set,
+ 	.ndo_hwtstamp_get	= macb_hwtstamp_get,
+ 	.ndo_setup_tc		= macb_setup_tc,
++	.ndo_bpf		= gem_xdp,
+ };
+ 
+ /* Configure peripheral capabilities according to device tree
+@@ -6031,11 +6329,11 @@ static int macb_probe(struct platform_device *pdev)
+ 		goto err_out_phy_exit;
+ 
+ 	if (macb_is_gem(bp)) {
+-		bp->rx_headroom = NET_SKB_PAD;
+-		if (!(bp->caps & MACB_CAPS_RSC)) {
++		if (!(bp->caps & MACB_CAPS_RSC))
+ 			bp->rx_ip_align = NET_IP_ALIGN;
+-			bp->rx_headroom += NET_IP_ALIGN;
+-		}
++
++		dev->xdp_features = NETDEV_XDP_ACT_BASIC |
++				    NETDEV_XDP_ACT_REDIRECT;
  	}
  
+ 	netif_carrier_off(dev);
 -- 
 2.53.0
 
