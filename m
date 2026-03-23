@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82AD735CB7B
-	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 22:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66E635CB7B;
+	Mon, 23 Mar 2026 22:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774304417; cv=none; b=q6IgLhAUkXXVt1OnVk1sG/QNbpFC2OlBmWskGMz5KV/yOTIt3PdHMx0tI06SvhNOTkHltFbDnugFoBkq8wKhGeJYM9JyIsv0oPAL0dIL8ap0p7Q81qUVaQcq9vlqO71OSkFNIfNG3H7f9hhmq2+bBGtZ4cd2x7FL4r6Fau8Sy68=
+	t=1774304425; cv=none; b=CNGXWMsSqHW2iaHfIifxN1zAepRosn2yS8pXyzsB2MXzV6Yj41YfenbG6OAgDOFV/kAZjcOOVekLDkA8qhPxIxg48FHMA4vvvZUAQcpDCBXXB7CvZ7J+WTFQX1tIbZXC/DQN/5T9BoT3oeIi5x5w3xq3ebz6YXPaBv2kNJffxAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774304417; c=relaxed/simple;
-	bh=bYXy3LdMj+0XWlcZO03oYQc6uOT3hzveDRqcIhsWjcg=;
+	s=arc-20240116; t=1774304425; c=relaxed/simple;
+	bh=u2PRXKsBmPIwGWhx9jKQwzxH5qBqFm5G2OrNpkcG+cs=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=KHKi3Wv6DxBzGIka4jVsJVC7Hzf6HgNi3xjC4ZHulfdW41OFAHqJ3l46gDe6+2wyUy5TlTtd2IGkATfklyWlDFpn5y+KL0HiD3nAZ2gqPZjHGp1E3wvWwbnEGiFTwy/Y9Bij83BcdBohzLLo7up38nv2t4EZdeIl2QN9J2XjsgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LsRkOhn9; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=WUuvfARe39YXOq2IpIomBGqWRScNs70s+BuFe1ZEnHY2D2/lFAgmgZXcA5HaiiaPi3n2ciOft590mEBNCO1UczmdH34/rhLnkx9hVAdEK0SGXxuq6Rz+zZfS+DiDip+dVewPvLON474bMGVe9qlb6unKG37receA1tXiDH0Lq/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=taLPUWaK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LsRkOhn9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487DEC4CEF7;
-	Mon, 23 Mar 2026 22:20:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="taLPUWaK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C32C4CEF7;
+	Mon, 23 Mar 2026 22:20:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774304417;
-	bh=bYXy3LdMj+0XWlcZO03oYQc6uOT3hzveDRqcIhsWjcg=;
+	s=k20201202; t=1774304425;
+	bh=u2PRXKsBmPIwGWhx9jKQwzxH5qBqFm5G2OrNpkcG+cs=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=LsRkOhn935rAVUXAN56mv/yfOFeKXpBNOFK4iU+/i2v8bp07rTM0BMVN6sn4HTdqS
-	 7DDYTJcitjUK2j5ZUiNusRiD6VmkHr1dVk3eMT4rts8b58IFwhMQoRrPQdcsS70Yo/
-	 YB//i7jAxXWTPXuUhf8JLgWPE3WNeGkNOSTx/ROrCYDnEdl27NmaqAGikhVlVvJ/vU
-	 JEPONe4rHQFREY1ECd1qsiZ8W/dbhJ+SqXXc6wRlxTQ3TPUPPyNK6BDXz1ebuI8YXO
-	 LDiEnBgtXLqt3dgjkQAKYkdOrhHNGiaMVZB8TwsGnV+rf1sAHxMHgbJO+iXLwFlX2n
-	 WtiP6dRz20ttQ==
+	b=taLPUWaKoOMvChkXrNDxMSLLzjVXBxwlbRV386OlYFSsbXE4j62rtjv7c1OsQknfR
+	 nLvtXP2RMICCzkyvZxMqApgP4jMFQig8OXo65n8Egn9hXBcjJzrVulArwYUIHI1GDa
+	 fcP+ppiXCuae35K4q3gN2PCS641UEFhs/qz8eRsO5XcoPBTTppmhwx29af8nvFZt1l
+	 2npEYfWNrxZoRvNYLq6CKT4cooSK8hnVnR3hh6YTlk9fHxY7GjllbQevF+S2tM1Xe/
+	 bBtQEdit3rufeJ/PatEBVI/sS3w6ZvOW8r+5riPTBx+kRRd+ZH5a+gduaR2DfSZzDz
+	 /rBqkcCDcQCYg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9F3E3808200;
-	Mon, 23 Mar 2026 22:20:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9F273808200;
+	Mon, 23 Mar 2026 22:20:14 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,38 +37,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 ethtool] cmis: Fix incorrect LSB field used for
- wavelength
- tolerance
+Subject: Re: [PATCH ethtool-next] netlink: settings: add netlink support for
+ RX
+ CQE Coalescing params
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177430440554.345009.8468557542937446046.git-patchwork-notify@kernel.org>
-Date: Mon, 23 Mar 2026 22:20:05 +0000
-References: <20260321153905.644959-1-alok.a.tiwari@oracle.com>
-In-Reply-To: <20260321153905.644959-1-alok.a.tiwari@oracle.com>
-To: ALOK TIWARI <alok.a.tiwari@oracle.com>
-Cc: danieller@nvidia.com, kuba@kernel.org, netdev@vger.kernel.org,
- mkubecek@suse.cz, alok.a.tiwarilinux@gmail.com
+ <177430441353.345009.4314896579030595975.git-patchwork-notify@kernel.org>
+Date: Mon, 23 Mar 2026 22:20:13 +0000
+References: <20260320203159.1590235-1-haiyangz@linux.microsoft.com>
+In-Reply-To: <20260320203159.1590235-1-haiyangz@linux.microsoft.com>
+To: Haiyang Zhang <haiyangz@linux.microsoft.com>
+Cc: mkubecek@suse.cz, linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+ haiyangz@microsoft.com, paulros@microsoft.com
 
 Hello:
 
-This patch was applied to ethtool/ethtool.git (master)
+This patch was applied to ethtool/ethtool.git (next)
 by Michal Kubecek <mkubecek@suse.cz>:
 
-On Sat, 21 Mar 2026 08:39:02 -0700 you wrote:
-> The wavelength tolerance calculation mistakenly uses the nominal
-> wavelength LSB field (CMIS_NOM_WAVELENGTH_LSB) instead of the correct
-> tolerance LSB field (CMIS_WAVELENGTH_TOL_LSB). This causes incorrect
-> values to be reported for the "Laser wavelength tolerance".
+On Fri, 20 Mar 2026 13:31:59 -0700 you wrote:
+> From: Haiyang Zhang <haiyangz@microsoft.com>
 > 
-> Use CMIS_NOM_WAVELENGTH_LSB -> CMIS_WAVELENGTH_TOL_LSB.
-> correct 0.005 nm LSB scaling for the tolerance field (per CMIS)
+> Add support to get/set RX CQE Coalescing parameters, including the max frames
+> and time out value in nanoseconds.
+> 
+> (Headers: dc3d720e12f6 "net: ethtool: add ethtool COALESCE_RX_CQE_FRAMES/NSECS")
 > 
 > [...]
 
 Here is the summary with links:
-  - [v2,ethtool] cmis: Fix incorrect LSB field used for wavelength tolerance
-    https://git.kernel.org/pub/scm/network/ethtool/ethtool.git/commit/?id=40d272752bb4
+  - [ethtool-next] netlink: settings: add netlink support for RX CQE Coalescing params
+    https://git.kernel.org/pub/scm/network/ethtool/ethtool.git/commit/?id=d35d87fbcda9
 
 You are awesome, thank you!
 -- 
