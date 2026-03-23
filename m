@@ -1,139 +1,126 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD713B38A4
-	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 16:26:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4874C3AF672
+	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 16:31:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283218; cv=none; b=Zfs3VbNdIvOkDWwccxtqaWzHO+j0T9w/yYYqyGsdpi01otNKR78Ku2shEEt3QeTZLgdoizIWU4rbMtXyoOleYBGyxjd6k4/oYxLTokjPNFJKdT/Q5AwrFN8Bk+7a3KRwUIXtXlImFE7MrYKGY7r6PljFuYoBricRFRIou1EJYjE=
+	t=1774283470; cv=none; b=ONRFdK0ZULFVXApjXPAtH/dv1yS3veOEoVEj0bADttOf/2tjfk6AxoAIAgiZdTtRm0YuwYXwQALJaG8aUstGmw6Aq2Z4KIqDfgzQ12uLtBGFt3uruhqTSmLtmTkCaVtmKeje0F7SqdyW/49kBOVR1W0MedsfkNPtQBpPyxqDByY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283218; c=relaxed/simple;
-	bh=ty/hlROjAFutjxKPtIH8wLEeJtfnPct//1rXrPvOkHY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZQ+GQT5OHYJgiFv+kcw1Rmi6gaR07mukYVhvagFAaMaonQFIz+Y6nl0wFoajSInakYS5nGgXlUc8LoGtyqMBsGDAD+m1yEDPOvSUvy0XsYhjEY+kB54AYSiRJv6tUQDbIsJ+l/M4reMxxfWXdX9GxpTkt7gn0HnLkvk6llbs89s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=fCZcTjk/; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1774283470; c=relaxed/simple;
+	bh=KLm6b7EJSgDbO8wAQ1vgmKDFikErCUASdQ5Z4cJMfhA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eaVUfzaDJeoJKQPMtk1lnZZVJLlnPiM+Sgwe/xmhGFNmkTJ5k5fGDcQ+YvOMpJ463RbPg/JNECjyf458TNgVSMCaMikIUA0j8OkcMiX1KqLyt1hZSsJtm0kFXl3Osj1jGyU8jKtfpTkSqB6x3FNyRjceqMiAgr+rOrPmE3odudA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lttW7s0j; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="fCZcTjk/"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 36F5CC58081;
-	Mon, 23 Mar 2026 16:27:20 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 453105FEF6;
-	Mon, 23 Mar 2026 16:26:53 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C9B0810450EAD;
-	Mon, 23 Mar 2026 17:26:41 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1774283211; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=+stKljmHE6dTCgbX5k2UqpPQqX57Vm+pSnMuyZYlZpQ=;
-	b=fCZcTjk/wuSjmpjaNM1oTCFWL+V/PJbmAIvnbbWg8WmDdUVcGY7EW76MJfu9kVb8wd+d0C
-	r6PUNYYghl1s8sFwGHzhRin6rrd8acmae02+75H8g6vJB20DQf9gNQEBXy+n4iYiX3Ppsc
-	15jJm5EkzsGOlcU1pjDrLJ007l4nt/+2eGlJDVN0HCfRCvo6/7Yvxyh5/V0xWIp/+gQ4Ce
-	RlwbJ3tR6ua93cV0mqVgbAibqUYslYVhsvuAG3bkD4DlOFTdo6azidZIAAEb7BNnUk5HUV
-	urDp2yMNxHZJEIlwMavBSn+9pmktK/oV9V9rGdT35v3lVX675FY77nrlSsri3A==
-Date: Mon, 23 Mar 2026 17:26:40 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: Daniel Machon <daniel.machon@microchip.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Horatiu Vultur
- <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>, "Alexei
- Starovoitov" <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- "Jesper Dangaard Brouer" <hawk@kernel.org>, John Fastabend
- <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, Arnd
- Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <bpf@vger.kernel.org>
-Subject: Re: [PATCH net-next 00/10] net: lan966x: add support for PCIe FDMA
-Message-ID: <20260323172640.2669232d@bootlin.com>
-In-Reply-To: <20260323155204.0321db13@bootlin.com>
-References: <20260320-lan966x-pci-fdma-v1-0-ef54cb9b0c4b@microchip.com>
-	<20260323155204.0321db13@bootlin.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lttW7s0j"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-483ad568d68so6299935e9.2
+        for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 09:31:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774283468; x=1774888268; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Snr3E4k4Xc+6SMIOwrn3jZd42/HG4jCfgy6iiScpIyM=;
+        b=lttW7s0jDhmdaK5tNG1T23W0FLQkrW7N8nrvcRYz2SQ6vpK7+qgqhaEtAvEXqc0jRg
+         V+nv+wpyRJ1s/0hMpwtLdHMbm+DRSh9kKlaYcfYFZkDTfonEziB0F+b4jwbnOTYPS8A9
+         pPaVAbVdfTr03mngzBcqciz9hWK02wtMCtH/ULj8lHqFWsQpRNprH3am/ZjXOchBdwWE
+         brsA1UwkV0RfuTJjqfHWfwvWu5h557BdIG0zU5YmFldmUO4ZMKRsbQxULDAB0CHUUshQ
+         2LXhmbo7AtPZKYDtcu5T9c7CY6c0Vz88vGACabfg2Ol7dzgC95zRt4CMsf0RQF05nLbB
+         PMYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774283468; x=1774888268;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Snr3E4k4Xc+6SMIOwrn3jZd42/HG4jCfgy6iiScpIyM=;
+        b=gsGZbREYlvS7Yyw9DN10K7+d9vHBamO/GwH2+52m5AnjodtgUk5OKEVFL9oUCTAQPb
+         hcIRq20Kl8+2n5tkyzE1fPWLBe2G9QwewuB+OMscPXGBM8dTzd/g//vhPNBAP0jQ/UYq
+         c0BbKuB0nNXc/KP1B1DAf5CDF42CTCeEiinE8P6dBpBgEkOg63ztGRXGdDxQgdmq7SeH
+         FmjW8WIKFukRyA3PXCbflszcZnjMMjEEM76GSPR6Ejf6T3q+EPEsqt2IxugK/9W+v4Hm
+         RatVwUlkItCukOXuM8p+wNhhRYnwieLupbVeIGmeuaEaMdgimLgPEcnWx0lT9okdjuTe
+         KtKw==
+X-Forwarded-Encrypted: i=1; AJvYcCVleu93zjDLGr2HCcy14Zk6U8m+fsja+9+1pICUmOXBuV51SHLcKTRT6wNMEm6plZddgY1fL1U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTu1EjhQWR4H+5R+LDYC4Ghq0Z0A0FKsJDKViZM9g/VFR83dIV
+	ajGV8Qn8WDGK/V69WKC6gjnv1cEJR1+LwNBdqZpje+EOBK07jRZbn4z3
+X-Gm-Gg: ATEYQzzi7sWcwm2WAAmWIpkAFWDRAO1xLc8suJmzkyaZbLjRny28j723L8VK5XgUWPl
+	PwBnapomJQtn1zuYw5II9iLmTXc6AJLp62aI51ceuSg6Ps63zRY2egND1wmDLHhX/E5GhHywlat
+	uPK3TTUcBqiTTNel3oYJXkk89LroOjEUAcb2NLcYvY6dOLpywhXlhT8Vy97sMh/Vcb1W+4KVg6S
+	PFRyWzIb/CWikq4GCJPKyfXUGMMnvHobNkil9YYdlbuWkDyiiB5HK3LokP4pEUcYrwPSjLqhr/q
+	jMNF7jQQf5lcp8lxu+tPvosqbXC+CSu+XbT4h9kbwbog+eSz6+Eg96g7htTk63cEVM7XJvlbDeQ
+	LiT9aglLxd+VOq+NMFkd4eBUeKTRuWXUMaDRTPploFyyNlDWzs89r7SW6TIgn569N5hfcJ01XOx
+	D9c/Vm92Ki6CTvwA0=
+X-Received: by 2002:a05:600c:c4ac:b0:485:f1d6:2b1d with SMTP id 5b1f17b1804b1-4870363da8fmr77534665e9.0.1774283467595;
+        Mon, 23 Mar 2026 09:31:07 -0700 (PDT)
+Received: from skbuf ([2a02:2f04:d50a:b400:653e:51cc:7cba:e6df])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486fe8359acsm290068055e9.12.2026.03.23.09.31.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Mar 2026 09:31:06 -0700 (PDT)
+Date: Mon, 23 Mar 2026 18:31:04 +0200
+From: Vladimir Oltean <olteanv@gmail.com>
+To: Daniel Golle <daniel@makrotopia.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Frank Wunderlich <frankwu@gmx.de>,
+	Chad Monroe <chad@monroe.io>,
+	Cezary Wilmanski <cezary.wilmanski@adtran.com>,
+	Liang Xu <lxu@maxlinear.com>,
+	"Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>,
+	Jose Maria Verdu Munoz <jverdu@maxlinear.com>,
+	Avinash Jayaraman <ajayaraman@maxlinear.com>,
+	John Crispin <john@phrozen.org>
+Subject: Re: [PATCH net-next v6 2/4] net: dsa: add bridge member iteration
+ macro and port mask helper
+Message-ID: <20260323163104.a2d2hbs7jfgsptj3@skbuf>
+References: <cover.1774136876.git.daniel@makrotopia.org>
+ <ff936ce4ad3044102c367c55e7a455ab0020e4b7.1774136876.git.daniel@makrotopia.org>
+ <acCllYmKczZrDgv9@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <acCllYmKczZrDgv9@makrotopia.org>
 
-Hi Daniel,
+On Mon, Mar 23, 2026 at 02:29:41AM +0000, Daniel Golle wrote:
+> I wasn't aware of the similar and equally named function in
+> yt921x.c[1]
 
-On Mon, 23 Mar 2026 15:52:04 +0100
-Herve Codina <herve.codina@bootlin.com> wrote:
+Yeah, I did request from the beginning for it to be moved to
+include/net/dsa.h, but I didn't follow through with the request (I guess
+I forgot):
+https://lore.kernel.org/netdev/20250825212357.3acgen2qezuy533y@skbuf/
 
-> Hi Daniel,
+> Patchwork CI has loudly uncovered it and I've learned my lesson to
+> always test an all-y build when changing even the most innocent
+> looking things which technically may affect other drivers.
+
+Since all DSA drivers are all in the same folder, technically you may be
+excused if you just enable all those when working on infra, instead of
+allyesconfig.
+
+> I'll move that function as-is, in a dedicated commit, to
+> include/net/dsa.h as an inline function instead of the helper
+> suggested here.
 > 
-> On Fri, 20 Mar 2026 16:00:56 +0100
-> Daniel Machon <daniel.machon@microchip.com> wrote:
+> A second commit will introduce the new helper macro
+> dsa_switch_for_each_bridge_member (modified to use (struct net_device
+> *) as parameter instead of (struct dsa_bridge *), and make use of it
+> in dsa_bridge_ports().
 > 
-> > When lan966x operates as a PCIe endpoint, the driver currently uses
-> > register-based I/O for frame injection and extraction. This approach is
-> > functional but slow, topping out at around 33 Mbps on an Intel x86 host
-> > with a lan966x PCIe card.
-> > 
-> > This series adds FDMA (Frame DMA) support for the PCIe path. When
-> > operating as a PCIe endpoint, the internal FDMA engine on lan966x cannot
-> > directly access host memory, so DMA buffers are allocated as contiguous
-> > coherent memory and mapped through the PCIe Address Translation Unit
-> > (ATU). The ATU provides outbound windows that translate internal FDMA
-> > addresses to PCIe bus addresses, allowing the FDMA engine to read and
-> > write host memory. Because the ATU requires contiguous address regions,
-> > page_pool and normal per-page DMA mappings cannot be used. Instead,
-> > frames are transferred using memcpy between the ATU-mapped buffers and
-> > the network stack. With this, throughput increases from ~33 Mbps to ~620
-> > Mbps for default MTU.
-> > 
-> > Patches 1-2 prepare the shared FDMA library: patch 1 renames the
-> > contiguous dataptr helpers for clarity, and patch 2 adds PCIe ATU region
-> > management and coherent DMA allocation with ATU mapping.
-> > 
-> > Patches 3-5 refactor the lan966x FDMA code to support both platform and
-> > PCIe paths: extracting the LLP register write into a helper, exporting
-> > shared functions, and introducing an ops dispatch table selected at
-> > probe time.
-> > 
-> > Patch 6 adds the core PCIe FDMA implementation with RX/TX using
-> > contiguous ATU-mapped buffers. Patches 7 and 8 extend it with MTU
-> > change and XDP support respectively.
-> > 
-> > Patches 9-10 update the lan966x PCI device tree overlay to extend the
-> > cpu register mapping to cover the ATU register space and add the FDMA
-> > interrupt.
-> >   
-> 
-> Thanks a lot for the series taking care of DMA and ATU in PCIe variants.
-> 
-> I have tested the whole series on both my ARM and x86 systems.
-> 
-> Doing a simple wget on my x86 system, I moved from 3.8MB/s to 11.2MB/s and
-> so the improvement is obvious.
-> 
-> Tested-by: Herve Codina <herve.codina@bootlin.com>
-> 
+> I'm also planning to introduce dsa_bridge_for_each_member macro in
+> addition to that which works on (struct dsa_bridge *) and uses
+> dsa_switch_for_each_bridge_member.
 
-Hum, I think I found an issue.
-
-If I remove the lan966x_pci module (modprobe -r lan966x_pci), and reload
-it (modprobe lan966x_pci), the board is not working.
-
-The system performs DHCP requests. Those requests are served by my PC (observed
-with Wireshark) but the system doesn't see those answers. Indeed, he continues
-to perform DHCP requests.
-
-Looks like the lan966x_pci module removal leaves the board in a bad state.
-
-Without the series applied, DHCP request answers from my PC are seen by the
-system after any module unloading / reloading.
-
-Do you have any ideas of what could be wrong?
-
-Best regards,
-Hervé
+I don't like the dsa_bridge_for_each_member() name. You are likely
+not considering cross-chip bridging, where a bridge spans multiple
+dsa_switch structures. That is also a serious reason why your
+bridge->priv design is not viable (two switches can't lay their eggs
+in the same basket without overwriting each other).
