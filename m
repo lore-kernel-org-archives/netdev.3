@@ -1,168 +1,180 @@
 Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8288386545
-	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 09:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E82F33064D
+	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 09:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774258307; cv=none; b=kh/ufau9MjLB4DS297lE21TwdliBhttgjdnhZNEVb0qbIGrZQYwM6/F9wnFH32IqoyAuqFcl2tOamd7HVX7ypS1m9nEraSRu3ypV30CMqIjPboShp3rlIFx6cq47gANAhf9gbc91tD/XYBUQtHyZMmLdqil3OdPA3uwRbR7Dqc4=
+	t=1774258307; cv=none; b=XAjJ/i6KPJ1Rc+feYdDeNRPuTX8d40D47vdH0Fqe72uVETLwfKJtjj81hE+Zj+kii6fTQnzhOr7YcDUSwihMO05xuEizus+QpDuRl0IeaA020Mtp9LvRLmjmMxQ8GhlSEPVwHjxy/jW/yN9Z2Q6TLO37HuzV+nUuZ/Gcy2/K/Vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774258307; c=relaxed/simple;
-	bh=FKdqYbJRCbHV8ED0taAnDFFEIfeq7RVIDgOTv57eXkE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YaKUzwVzN7aWtdq3F0EhyyBbC6hHNr8KBeMZVU1SmJxQdWw70zsoJ0pM7i0c2J6uEpU0uWF08IIYqLqkxPe892It7A3nNWXVa6obNUFPw6PUiQ/840aYeQ9SMydUSDrQJvs+vIxZtlm7ClPkXZ9OidTDUGIeSmsRb63F95benX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=spp/GR26; arc=none smtp.client-ip=185.125.188.122
+	bh=2yYK9eqyeT82cWS6knhL7d44t3BEnP2mgtCfvio2ceI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=g10e6bk2EdaD+1IcE5crBSGH/q48hZHqMh8L+gibb8kXxAFRh0IjgJEhw9Glb/s7SgBTd/zo3MiUeww5x0Tt+1Ota1/KApaCjPDnxXgdyydXMyojXvHLixTL+gZln2j7A0xZxFsf0Aiayf50a4GrwAvCz/iodjg75sj6m7Da1wU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=H45bhmGS; arc=none smtp.client-ip=185.125.188.122
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="spp/GR26"
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com [209.85.221.72])
+	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="H45bhmGS"
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com [209.85.221.70])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 3292C3F7FE
-	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 09:31:38 +0000 (UTC)
+	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 20FBC3F877
+	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 09:31:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20251003; t=1774258298;
-	bh=yYJfPNbB792lL6QrmI4JXU+RjVxNWhivL7IyPS98fSg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version;
-	b=spp/GR26vk+ZpBVJwa+AIQMFWYj+s5JVi8+Wbhleg9u9RCsh6FiBy/6zGy3E0ZTW8
-	 E70hO47NNoZLEn4PqBhrnSBY3KYTcaimh7kMk9exTLeyj0QB1K8OcLIxIMx8TJQKtv
-	 AjuJZDKyqjIhJCeFQhIeQw0dkmFKtXBDnkjVNBD3xJSIX0EmvK6zcsNMqZKJ2Y9nKr
-	 Q6S/9/Kewog3AeBHki62hngvEYz5/M8npP5COdIw9tPtaVGfpW6dMwMRWjlLY2eTh+
-	 J8UkQseDarc8ogIQMyj++TB/SdUAPS6G/ES5kYl42mqG4iQYpf77pjw3qCcuGBAX4t
-	 f5LWwj5vuz7wK0v7ky7p6h29dhsdGlbq9EP4j2jYAjbaC0LDVkc899XRinxeP+lO8+
-	 c/wmHdyHjost+cioYZ/UPrk2O1Ud57ogG3YhmC4CL6OZGiReRqpvXA3ZB3+Kn7lMTw
-	 3SKzxmmy20aKUrNmIq3zb11nup8Y+Yii+32eJUUkE6C71ueiSCmnXfn0uMsFWPgCSL
-	 iBELyBKtF3rWuBr9SRMZuxzmL6nYaD4Bycxi6usHqf9tGB67pSo7sudzghY6nWZreZ
-	 yS5g5mv50E7gPhbiTOm19Rg7UOW+cXR7GPH0tL2R3CjUD8vMXlnt7gTO44QcpAXhYK
-	 P1rpME+LOPt8s1Bg/7Sg4zAk=
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-439cbc5fb4fso3560970f8f.0
-        for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 02:31:38 -0700 (PDT)
+	s=20251003; t=1774258297;
+	bh=cN6VpjTmiSo4pkQzZdJn2BDRMXRoJ5nje1efWmRb9MQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	b=H45bhmGSBg7XXjJW9MNdDLefhBYn7YlSHBig1Jbr6Z4v65/mN++2ggErBkTy/93KG
+	 8WwzOmyrF6Yh5Hh7qcIDeTHqJH3Y6i7kTNpZKdU1xXuI1Ugd+juxDEKKkukZrgNgmh
+	 G5GQslO4XWwn2chayprigo+pSgTYh5QYEIJGY6KwcxWtn/neinpqSlSGEtjV+E8z3U
+	 Fmo0j0eHYZyZA5oxZWozw2MvVtxD9jHjRb52g5TkuGmQk13rfBjFdTSCN0Ta4G7X8z
+	 qTxj2idasB8P71EGfM+Ew1jUCHYisMD++hbq+pOCfJF3LqHZpwf3qMy1MC2npa7AZM
+	 cKlbG9dNxwyrhNY9k3is8sgO7AqD5Wzwl93XKJMyjYEHOi/FrN7bVsx3wETmTSUAvH
+	 iChCjY+nd3uIlUEixryQSBByC7TkT8Q4tTTBisC9VSMHsAx/8nMiZZs+2EJsLwzwuK
+	 rCrYSFZ5yNtOAW/xO+O+gsxkOUDUp0LhS8eW0gvoecOOm4977TgN7o8PSvjOxfAZQ4
+	 cik+KZ/y6ru7WglqqvpXrJjwN8VYvKCtQbJCLh4C6yKJ8o9IVtFmu2NAQxeub3miGC
+	 mwePTYFLXmtv6dP9MP7oxZneipFEqJrBjksFzsPx05VJk8S+YoY17gEb7Z/m8PC+Yf
+	 RqOMrkOb/DMvJQpTY+irF2M4=
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-43b4730dad8so3461199f8f.3
+        for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 02:31:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774258297; x=1774863097;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=yYJfPNbB792lL6QrmI4JXU+RjVxNWhivL7IyPS98fSg=;
-        b=aHMjMeOzFumzu962ar+n8vx/bUBLFa8vunE70JmQ/EhetRiD9qOzQnSK27Wkgw4LeN
-         ge2iOkfuXwkbgjJIeurJnBPHunxgLIDGYwAidblEw2OHCyX0LoEH2oEzCzZCN6zfGfQG
-         CGI8h87CUadM9UCSFxrnOhUT9xVDzjm2aGLeiRLZTgqWQulFAFRzFdl3r8mrMU7FWDjd
-         Ke36Wb9DnaAEiCjbH/wfne2YDe0XlgXhOxiUCIBsWYg7xc+xh05FcMZwmEEMIL5m09po
-         Y0Fv29yNCp/3aev54LLb4x5wOlKvV8IqPKPd/qaE+pyuNaZMwcWXqaTKv2mRcFhB89hA
-         nuzA==
-X-Gm-Message-State: AOJu0YyOOKnVTlutDoyILeJ6NW8Q2RRuGC0/Yv3ESzkQoyp7iFVd5Ihn
-	wlDubpO80GzkjumHLtyMQWDvC8dC8IwTUMxcikT5Iw6F+eDMg0CXp10y+uv1P9cCM56pLTY7Aw8
-	RS520fDABF4Jgq0OmQll2O5LnnFemPJwBB5gWxdN3ndDvc8Oy4NBD9l6rRrmt8fi+MbFbBnmZGc
-	mGu73AHA==
-X-Gm-Gg: ATEYQzxCsgts64HyNtrdqS1+dSIAeh/BtgBOuoxY65KzjfCR8Gllp3GHLk1Hq6pBObv
-	BUk7nRK/2B+VBAgUa6gPx0Uv8Rr27tVMtM8Zeq8GV3BF/jcpfR/QuI1EY/k/kTD0LghZ5NaXq0y
-	sRjyEP1OyP5qtQHkrDGelklbguV+D26Vp5jvHAC2WhTIqWTdAweSoTKn7WRIy9dah4MRcYDJBFK
-	vLnVNtvKfTLZyryBT6JXdqXzGyr+UT112PRLd189N0WTSaR04xlqUSanNUmllFpfRrfZzca5TXz
-	0blkxWd8Ebb0lCrdzNP55sVLHJDYBTyFLdXHovpTY4oqhQlOvgYF0ecWyfza3rVzGNsXlfatRLi
-	pgwV/rAwI++ts7/dbKU0G61Joig4lMSyJ
-X-Received: by 2002:a5d:5f94:0:b0:43b:5744:13fb with SMTP id ffacd0b85a97d-43b6423489dmr18149868f8f.4.1774258297067;
-        Mon, 23 Mar 2026 02:31:37 -0700 (PDT)
-X-Received: by 2002:a5d:5f94:0:b0:43b:5744:13fb with SMTP id ffacd0b85a97d-43b6423489dmr18149810f8f.4.1774258296574;
+        d=1e100.net; s=20251104; t=1774258296; x=1774863096;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cN6VpjTmiSo4pkQzZdJn2BDRMXRoJ5nje1efWmRb9MQ=;
+        b=q7xriSM7UVQonAJ8vAp/1QYyB+lIFtYy9zRnEWXGSbhWnv0VSSohvsks+sOk/G7Uce
+         DKBxbdkJmjgsjVFKIT2nHv81dQ3mSpZ/UbYNaoGjLbkO8krXX9w/6dQDVggTRIgqLu1b
+         nOlln74kL2Ltt4UWtVMcbskr49seZUXayb1jbaHX1fN8hkgScvzmvdvwpKjeYu+btgtl
+         89mYBDVP1faJer7MB+ZYrm4fdY5csamYgEOJgZrikK1C0hnsaqBwGfvgKt8cDm9Ife8a
+         KvoOauuIXnX5eRDH6BxQLLvCDCMebcStO4zj70ZXWNWRDjSuLkLLAdNLUgntBFQWzWRm
+         W/6w==
+X-Gm-Message-State: AOJu0YzQZQN177xdSYzK2bO/wYnusDeDF1NNN/LckDN29IW5cYRKu2PV
+	OEZhPrpM0UwTdvddXWmy163755QbtSs3kUzNh4+RslHJHovr8d7abmnVBmDBPod8poUnJzham8K
+	jYSx/8TjXYyHFxVvhPvq2c1jTy32M4NSLKRTXMQ7uf+v3ed3alBWvh/MMFDXq4WcIHsbNm0smBN
+	3Ue3OTvg==
+X-Gm-Gg: ATEYQzxi5kwIoFW4KQOl1KHH1JP9mdTPcNIisZRFbk5ww7vSqCguKct4TkOpEsOSbiL
+	9bjxya7z8vViUxV8yGeSusoOHRbRsDHK6eZUMsPiL8boSireOm0YnP613Hs4fvRJGnhHcZMgFTk
+	8hGpDkl6dQ5u77yded8GYdgWMM3w3ttuw/8b/1YeXpC10sM4f5eCkQ/rF4foybg5y0LqynE0xA2
+	MfFUMJ8z/DwVc7zQ2glCjUl0AkH3wj2EsTNXBLMJYw5HBqMDKF5YqOrS98HqFEREWhYEFb1v9Cd
+	Dpk6QzpQ1Zmtlz0Ku+4KGD1/6Iw666sfDy0qo/y1rkJCXKDFzabokuQS4HDjNISIlVT2d+GKGYi
+	o5cu/OjvYK15q1LLJzWT55ye7KIHhP5g5
+X-Received: by 2002:a05:6000:40ce:b0:43b:4489:d456 with SMTP id ffacd0b85a97d-43b642919d9mr17908471f8f.47.1774258296057;
         Mon, 23 Mar 2026 02:31:36 -0700 (PDT)
+X-Received: by 2002:a05:6000:40ce:b0:43b:4489:d456 with SMTP id ffacd0b85a97d-43b642919d9mr17908419f8f.47.1774258295520;
+        Mon, 23 Mar 2026 02:31:35 -0700 (PDT)
 Received: from devstation.. ([194.120.133.116])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b6cdfdfa9sm18901032f8f.9.2026.03.23.02.31.36
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b6cdfdfa9sm18901032f8f.9.2026.03.23.02.31.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 02:31:36 -0700 (PDT)
+        Mon, 23 Mar 2026 02:31:35 -0700 (PDT)
 From: Ioana Lazea <ioana.lazea@canonical.com>
 To: netdev@vger.kernel.org
 Cc: jhs@mojatatu.com,
 	stephen@networkplumber.org,
 	dsahern@gmail.com,
 	jay.vosburgh@canonical.com
-Subject: [PATCH iproute2-next 2/2] tc/htb: enable use of 64 bit burst 
-Date: Mon, 23 Mar 2026 09:29:13 +0000
-Message-ID: <20260323092918.11010-3-ioana.lazea@canonical.com>
+Subject: [PATCH iproute2-next 0/2] tc/tbf and tc/htb: Allow 64 bit burst 
+Date: Mon, 23 Mar 2026 09:29:11 +0000
+Message-ID: <20260323092918.11010-1-ioana.lazea@canonical.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260323092918.11010-1-ioana.lazea@canonical.com>
-References: <20260323092918.11010-1-ioana.lazea@canonical.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 
-Modify the HTB queueing discipline to allow burst sizes up to the
-limits supported by the kernel API, which may exceed 4 GB at higher rates.
 
-In the current implementation, the burst option is effectively limited
-to 4 GB due to the use of a 32-bit field while parsing the burst size.
-However, the kernel internally represents the burst in terms of time
-derived from the configured rate. As a result, at sufficiently high
-rates this time-based representation can correspond to burst sizes
-larger than 4 GB, making such bursts feasible without requiring changes
-to the kernel.
+        This patchset updates the TBF and HTB queuing discipline
+configurations to support burst sizes beyond the legacy 32-bit limits. 
+As network interface speeds increase, the kernel’s internal 
+representation of burst (calculated as time at a specific rate) can  
+easily exceed the 4 GB threshold. These changes enable userspace to 
+accommodate these larger values where the kernel API allows.
 
-This change removes the artificial 4 GB limit and allows larger burst
-sizes where supported by the kernel API.
+        Additionally, if the burst exceeds the upper limit supported by 
+the kernel API, it is now reported as an error in userspace before 
+attempting the Netlink transition. Previously, such values would 
+silently overflow, causing corrupted values to be passed to the kernel.
 
-Signed-off-by: Ioana Lazea <ioana.lazea@canonical.com>
----
+        The implementation follows the approach used for tc police burst 
+handling introduced in commit 3b26e8abf404 ("tc/police: enable use of 64 
+bit burst parameter"). The reasoning behind the patches proposed here is 
+largely based on the rationale described in the aforementioned change.
+
+        Similarly to the case of the tc police burst option, as 
+implemented now the TBF and HTB burst option limit the sizes of the 
+burst up to 4 GB (UINT_MAX for a 32 bit unsigned int) due to the 
+constraints in the user space tooling. Historically, TBF and HTB burst 
+options were capped at 32 bits, which was a sufficient limit for the 
+lower line rates common when they were initially developed. However, 
+since the underlying kernel logic treats the burst as a time-based 
+value, it is already capable of handling larger sizes at high rates 
+without requiring internal modifications. This patchset bridges that gap 
+in the user space tools.
+
+        The detailed technical explanation for this change was 
+previously detailed by Jay Vosburgh:
+
+Link: https://lore.kernel.org/netdev/20250916215731.3431465-1-jay.vosburgh@canonical.com/ 
+
+        To summarize the details at the link, the burst size is limited 
+by the kernel to approximately 274 seconds at the specified rate, and 
+has no inherent 4 GB limit.
+
+        Below is a short description of the main changes made to the TBF 
+and HTB queuing disciplines.
+
+        In both TBF and HTB, the primary modification replaces the 
+unsigned integer burst variable with an unsigned 64 bit integer variable 
+(buffer64) so that burst sizes larger than 4 GB can be represented and 
+passed correctly through the kernel API.
+
+        For the TBF qdisc specifically, the following logic was added:
+
+if (buffer64 < (1ULL << 32)) {
+        __u32 buffer32 = (__u32)buffer64;
+
+        addattr_l(n, 2124, TCA_TBF_BURST, &buffer32, sizeof(buffer32));
+}
+
+        Increasing the burst size representation to 64 bits introduces 
+an issue with TCA_TBF_BURST. The kernel expects this attribute as 
+NLA_U32 (a 32-bit unsigned value), while the updated implementation may 
+produce burst values exceeding this range. Passing such values would 
+cause the tbf_policy validation in the kernel to fail. To avoid this, 
+TCA_TBF_BURST is only included when the value fits within 32 bits. When 
+the attribute is omitted (for example, when buffer64 exceeds the 32-bit 
+limit), the kernel falls back to using the value stored in qopt->buffer, 
+which already supports larger burst sizes. 
+        As seen in commit 2e04ad424b03 ("sch_tbf: add 
+TBF_BURST/TBF_PBURST attribute"), TCA_TBF_BURST was originally 
+introduced to handle issues with very small burst values. Omitting the 
+attribute for large bursts therefore preserves the intended behavior 
+while avoiding incompatibilities with the kernel attribute policy. 
+Additionally, the burst value is explicitly cast to 32 bits where 
+required, ensuring that 64-bit values are not passed to kernel 
+interfaces expecting 32-bit fields.
+
+        These modifications bring the user space tools in line with the 
+kernel's internal 64-bit handling. The logic effectively avoids Netlink 
+attribute validation failures while preserving the original intent of 
+the burst mechanism for small values.
+
+        I look forward to your feedback on this approach.
+
+
+Ioana Lazea (2):
+  tc/tbf: enable use of 64 bit burst parameter
+  tc/htb: enable use of 64 bit burst parameter
+
  tc/q_htb.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ tc/q_tbf.c | 24 ++++++++++++++++--------
+ 2 files changed, 26 insertions(+), 14 deletions(-)
 
-diff --git a/tc/q_htb.c b/tc/q_htb.c
-index 545152ff..a3ad4215 100644
---- a/tc/q_htb.c
-+++ b/tc/q_htb.c
-@@ -112,14 +112,14 @@ static int htb_parse_class_opt(const struct qdisc_util *qu, int argc, char **arg
- {
- 	struct tc_htb_opt opt = {};
- 	__u32 rtab[256], ctab[256];
--	unsigned buffer = 0, cbuffer = 0;
-+	unsigned cbuffer = 0;
- 	int cell_log =  -1, ccell_log = -1;
- 	unsigned int mtu = 1600; /* eth packet len */
- 	unsigned short mpu = 0;
- 	unsigned short overhead = 0;
- 	unsigned int linklayer  = LINKLAYER_ETHERNET; /* Assume ethernet */
- 	struct rtattr *tail;
--	__u64 ceil64 = 0, rate64 = 0;
-+	__u64 ceil64 = 0, rate64 = 0, buffer64 = 0;
- 	char *param;
- 
- 	while (argc > 0) {
-@@ -158,7 +158,7 @@ static int htb_parse_class_opt(const struct qdisc_util *qu, int argc, char **arg
- 			   strcmp(*argv, "maxburst") == 0) {
- 			param = *argv;
- 			NEXT_ARG();
--			if (get_size_and_cell(&buffer, &cell_log, *argv) < 0) {
-+			if (get_size64_and_cell(&buffer64, &cell_log, *argv) < 0) {
- 				explain1(param);
- 				return -1;
- 			}
-@@ -225,8 +225,8 @@ static int htb_parse_class_opt(const struct qdisc_util *qu, int argc, char **arg
- 
- 	/* compute minimal allowed burst from rate; mtu is added here to make
- 	   sure that buffer is larger than mtu and to have some safeguard space */
--	if (!buffer)
--		buffer = rate64 / get_hz() + mtu;
-+	if (!buffer64)
-+		buffer64 = rate64 / get_hz() + mtu;
- 	if (!cbuffer)
- 		cbuffer = ceil64 / get_hz() + mtu;
- 
-@@ -240,7 +240,11 @@ static int htb_parse_class_opt(const struct qdisc_util *qu, int argc, char **arg
- 		fprintf(stderr, "htb: failed to calculate rate table.\n");
- 		return -1;
- 	}
--	opt.buffer = tc_calc_xmittime(rate64, buffer);
-+	opt.buffer = tc_calc_xmittime(rate64, buffer64);
-+	if (opt.buffer == UINT_MAX) {
-+		fprintf(stderr, "htb: burst out of range\n");
-+		return -1;
-+	}
- 
- 	if (tc_calc_rtable(&opt.ceil, ctab, ccell_log, mtu, linklayer) < 0) {
- 		fprintf(stderr, "htb: failed to calculate ceil rate table.\n");
 -- 
 2.43.0
 
