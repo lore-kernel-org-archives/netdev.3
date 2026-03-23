@@ -1,219 +1,154 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06381A3029;
-	Mon, 23 Mar 2026 16:55:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836B63BBA08
+	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 16:57:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774284938; cv=none; b=Np9skH7IDiXnP7uYg52huTw172BChYiiDCNx88qxEgAXtiJrUJjPRM8dImG9iqm7lf/P1u5r5pEWqYbWryVRp+bYeoXtqXA1UWboYZhDiAmzRDj2XBhMKWvN45jddtjPeyPGGlH6RTy70UuWX3PE27HOKsZnf3LZIowCr6vtCJ0=
+	t=1774285072; cv=none; b=deUz5gPGk4CwByftwix7o879xiQnQuyVaQh4nGvC0ofyg4wZurE4KLbB7kb9zfKfk27MtIpVOhx4tfxB9UE/Ld8g9+8V8ZCgp0XkI1VemjIORa+VXo7K36fx1Hx0XF5EtMCbyEskvwobTXMHjhHKPFbNFH4yuvvfjcaJVrm81es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774284938; c=relaxed/simple;
-	bh=B6l0kh39O9yLQYeypAEf4hibEOjQg7qDRhpBfi4ccFk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UD2JDiKupByg45xu3bo4enPCgKHS1H1TdCVyDrs6MARtQ9bMOGHiOHmO1deWcHHdeI1sozsH/Lb0udVOs+/uRWqcWcJkQpdTpaj8Y5gGWh4PQ3DtZewcErlQ6pHuezh7HLqofTLHDeZIb7f/6S+aV978wYAEUMobM1e/bLsW+p8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=U2aDbEUv; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1774285072; c=relaxed/simple;
+	bh=HaKS3N/t/8+2h/Pc8TJ2Vb22p+n4if8KpkCVDIHQAXY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Rxyru+ndD/403O3+JYejviqsugAhIUJXk9rxJws0tfKnqIHe+gnMCkh40esJfDxEIQ+Canq/u7O92hmGcNRkIXw8MYUlmnuXxXUtsHYYFnVhax8bCjHT+s1AxZUdCRpXDdYntPfx4LFMsJc1QNvtQU6WVuuCBQj/pcbu4geedh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W6gMHxuI; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="U2aDbEUv"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62NBxGMA3835046;
-	Mon, 23 Mar 2026 16:54:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=27cANW
-	RTfgqaXiP8gRd4PwTEU9pTJUqVC48fwjcISl8=; b=U2aDbEUvNjvYWm9quIU5eX
-	Z6OkizI2HDVheM20skeg1y9/YM8EfI2OVhXywwYgSvfaUjMGdLTkAknOUAkfv//P
-	FX5vj1l4BEXTh6ZpXa0bb7rvX9OSkDbNPOyMB5jWr1vairtYmWdzjELBEUplWmPE
-	NAlMNp003iW3sicrOPGrE2CJlyla3EVZv6U6GSNHUlDIo/ZQWW5uNA1mpiwFf4OI
-	HuxWXBOsqOua09VF/QaCyf3COmAQCFXKdpMSyefjVObV6fFjVehGHM0Jkma5tVnA
-	5i/lC/wDf9FTP4OTPrOP6fei53B93b1KYpOp+ZOF06bfBxlfsy5ALdsn/yHzqmyw
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1ktuqj34-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Mar 2026 16:54:07 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62NCgHAK026797;
-	Mon, 23 Mar 2026 16:54:06 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4d275kp427-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Mar 2026 16:54:06 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62NGs5Lc19989184
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 23 Mar 2026 16:54:06 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AFB4D58051;
-	Mon, 23 Mar 2026 16:54:05 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8BF785805F;
-	Mon, 23 Mar 2026 16:54:04 +0000 (GMT)
-Received: from [9.61.247.188] (unknown [9.61.247.188])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 23 Mar 2026 16:54:04 +0000 (GMT)
-Message-ID: <8e0a5562-4511-41df-9993-a77e51025e95@linux.ibm.com>
-Date: Mon, 23 Mar 2026 12:54:03 -0400
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W6gMHxuI"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-359f35dfef6so1704162a91.2
+        for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 09:57:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774285070; x=1774889870; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sZEofwQC58MPpqn9prf+xK4zUFx1LJf9Y6fgKZotzZc=;
+        b=W6gMHxuINpmkk1y+5VslwAOuEjlg+NwOK1UUVjsCllKPuEMXqzhUzVruKjme8dM2Yo
+         rFgEl2mCNsCHA2Uu0Dvi61vuKaxQvI9GPgWi8LuCBIAZMcYlkHOdZPuSGXVlUkX3xgjp
+         7qAwF0/jUACCQ98tU/HRb0UFLOtLxCIWg4M/0Ucxw5IqrJtXpniZB+fT/Ja/SssbIGRB
+         b5RZF6Cay1HyKNELdvYQfR40MWxHwKzSAojPTAla6XvZBL0a3Ob7HFMJ0nRE688UF8T/
+         s6uLlt8ccaK4fvxjGxBpRkcs2ILreI6mzv34nBNMNMUxKy7dATRVq2w8MsZsxr3f4gp0
+         ShdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774285070; x=1774889870;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sZEofwQC58MPpqn9prf+xK4zUFx1LJf9Y6fgKZotzZc=;
+        b=tAavykk/d8pyCA3jB8TJa20mL/lXbwLLurso+8ixqdOxIpBk6cPPupXeNCkYngDzdw
+         hUbuhmMgex3mrLJqMHFDs8y0ieIZYrN4RbFdYlHVc69aKi16sQhbvilyDHi+EPidj5E9
+         6M+jn8wvZlFWV1WkqZ2LPSHwdWG25kcKUbhkgPPqYUTDqJpRcTIndDnBdA8zn11K7a8v
+         hKtNF+/tUuXMLALFYzTm0uGdFnhaTi+ltYpSKCGrV17hrc0iZl75pyG/DW3WN8BKdwIa
+         FkItNmiTACkFeb4YAx8vHe6Ui8+VtsScRjCaTM4mYmIet/7DcqONs/+MxWzW8xf2agFt
+         glJg==
+X-Forwarded-Encrypted: i=1; AJvYcCViE78KQoHrzfEEgt8IGV2apHf9U3gKO964HbpzPnxj+AmZDHcUfbYTmxeq3jgAUegWebHXvCE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKDXscTsDJULlPEA/+6l+CFAjce8A6aqYwHInpoKtUgcicK+ID
+	5gWSn8q4jSS5bd2S8KvLbThMsdo9N0jp0iH2+zWMMl/17geRpCSQlxl5
+X-Gm-Gg: ATEYQzylurfT4G8jYGfPNpbyrhTp6g4NMRE9JYQtulGXgsdv38reE8gRZL4T28ZvZAw
+	TJw1Wob4nv10O8Kcg27ZZz2LDY7GHA8MWSrXO1/PfIzih56SqBk8wA059UIARTIKRjBo+/mRIk+
+	LJQmF4jql3LRL/V+XVz1xc4C6ewX9BNiLsDERWgIZ88obYp27DQzVCo+i74ePSB8MdvtzHRrvra
+	oh0E3Sirc2uUnDJygDa29yxidMlswMiW+wI3hsYIwdBTMF8daECAxF5LeeRG66iZRhZgR52GiRN
+	H0yC9aVfHimfAi1aY9QeUclAb2UX3h204otYM31Izn96+kx4LFU29vOTtRKrzLUAQqhPGtppKZ+
+	nI6Xyjm4LLgOpnCrHKFvvzXLFDbriqwYVpaF2o3+Or6ohrrElojiu3AZq1ohwHXTlaubuMxDZEL
+	qIMllgyEuPPxHw16g=
+X-Received: by 2002:a17:90b:4a50:b0:359:fc88:fa99 with SMTP id 98e67ed59e1d1-35bd2d39c11mr10734530a91.26.1774285069752;
+        Mon, 23 Mar 2026 09:57:49 -0700 (PDT)
+Received: from lgs.. ([199.182.234.55])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35bd4109c3bsm10185767a91.13.2026.03.23.09.57.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Mar 2026 09:57:49 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: "K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
+	Aditya Garg <gargaditya@linux.microsoft.com>,
+	Shiraz Saleem <shirazsaleem@microsoft.com>,
+	Kees Cook <kees@kernel.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PPATCH net v3] net: mana: fix use-after-free in add_adev() error path
+Date: Tue, 24 Mar 2026 00:57:30 +0800
+Message-ID: <20260323165730.945365-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v11] virtio_net: add page_pool support for buffer
- allocation
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: vishs@meta.com, andrew+netdev@lunn.ch, davem@davemloft.net, dw@davidwei.uk,
-        edumazet@google.com, eperezma@redhat.com, ilias.apalodimas@linaro.org,
-        jasowang@redhat.com, kernel-team@meta.com, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        pabeni@redhat.com, technoboy85@gmail.com,
-        virtualization@lists.linux.dev, xuanzhuo@linux.alibaba.com
-References: <20260310183107.2822016-1-vishs@meta.com>
- <20260323150136.14452-1-oelghoul@linux.ibm.com>
- <20260323114313-mutt-send-email-mst@kernel.org>
-Content-Language: en-US
-From: Omar Elghoul <oelghoul@linux.ibm.com>
-In-Reply-To: <20260323114313-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: jC1cegtA_skgwjP0ZQ_5d_FQq9Fi1ifB
-X-Authority-Analysis: v=2.4 cv=aMr9aL9m c=1 sm=1 tr=0 ts=69c1702f cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=YViDtvoEOCPqYsW2n6MA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIzMDEyNSBTYWx0ZWRfX/eUOA8fELL3m
- Sv4GjZEC9rY0KavYq9fLlYeoxMlN/xFUJfh01SeBWCg6Cg/f1PkIdeRlfLGNGuKlonBmztbgcy+
- v1JBo5BjPoqiai3kRgmtJlr9dVO24rY1wnTfy4aoa2SYqE7GdXwQqRo4CxZJlUOLsZL6eg0zZq/
- oBhDYE0UOETFfnDCv8ltM64vQUp5sqcRUFVe0AsQI2PHjVZ/TxYMjRmFz03LVEhuCXvjYxA2mQ4
- P8DHPCdOZNaTozIrUIiRwbbe5DHj0KM4K4bmx7DfyClRodLfa0CjuEryQS9KBocXIYFXJTKfTzF
- 72L3uQ8KW+HGiUsAhhaCpO2iErTffjkTLv3soA0IPGNInjZ5pavBJAwsN4uBEjd/0uKIrvieGs8
- 0n+b5L0kbhIlOa6YcYe6CGonhsUSqMXbXRfTwndObONgiqJlaXZ037cTozW5wjT/UVASPfYIxPm
- vz8ns5aVlr5IB+rKbMA==
-X-Proofpoint-GUID: 8_wUtNM7PdHPKzpZjWDg0Mt7OFV0rqP8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-23_04,2026-03-23_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 lowpriorityscore=0 adultscore=0 impostorscore=0 malwarescore=0
- suspectscore=0 phishscore=0 priorityscore=1501 bulkscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603230125
+Content-Transfer-Encoding: 8bit
 
-On 3/23/26 11:52 AM, Michael S. Tsirkin wrote:
-> On Mon, Mar 23, 2026 at 11:01:31AM -0400, Omar Elghoul wrote:
->> [...]
-> Well... I am not sure how I missed it. Obvious in hindsight:
->
-> static void receive_buf(struct virtnet_info *vi, struct receive_queue *rq,
->                          void *buf, unsigned int len, void **ctx,
->                          unsigned int *xdp_xmit,
->                          struct virtnet_rq_stats *stats)
-> {
->          struct net_device *dev = vi->dev;
->          struct sk_buff *skb;
->          u8 flags;
->                  
->          if (unlikely(len < vi->hdr_len + ETH_HLEN)) {
->                  pr_debug("%s: short packet %i\n", dev->name, len);
->                  DEV_STATS_INC(dev, rx_length_errors);
->                  virtnet_rq_free_buf(vi, rq, buf);
->                  return;
->          }
->          
->          /* About the flags below:
->           * 1. Save the flags early, as the XDP program might overwrite them.
->           * These flags ensure packets marked as VIRTIO_NET_HDR_F_DATA_VALID
->           * stay valid after XDP processing.
->           * 2. XDP doesn't work with partially checksummed packets (refer to
->           * virtnet_xdp_set()), so packets marked as
->           * VIRTIO_NET_HDR_F_NEEDS_CSUM get dropped during XDP processing.
->           */
->                  
->          if (vi->mergeable_rx_bufs) {
->                  flags = ((struct virtio_net_common_hdr *)buf)->hdr.flags;
->                  skb = receive_mergeable(dev, vi, rq, buf, ctx, len, xdp_xmit,
->                                          stats);
->          } else if (vi->big_packets) {
->                  void *p = page_address((struct page *)buf);
->                  
->                  flags = ((struct virtio_net_common_hdr *)p)->hdr.flags;
->                  skb = receive_big(dev, vi, rq, buf, len, stats);
->          } else {
->                  flags = ((struct virtio_net_common_hdr *)buf)->hdr.flags;
->                  skb = receive_small(dev, vi, rq, buf, ctx, len, xdp_xmit, stats);
->          }
->
->
-> So we are reading the header, before dma sync, which is within
-> receive_mergeable and friends:
-Thank you for your analysis and explanation.
->
-> static struct sk_buff *receive_mergeable(struct net_device *dev,
->                                           struct virtnet_info *vi,
->                                           struct receive_queue *rq,
->                                           void *buf,
->                                           void *ctx,
->                                           unsigned int len,
->                                           unsigned int *xdp_xmit,
->                                           struct virtnet_rq_stats *stats)
-> {
->          struct virtio_net_hdr_mrg_rxbuf *hdr = buf;
->          int num_buf = virtio16_to_cpu(vi->vdev, hdr->num_buffers);
->          struct page *page = virt_to_head_page(buf);
->          int offset = buf - page_address(page);
->          struct sk_buff *head_skb, *curr_skb;
->          unsigned int truesize = mergeable_ctx_to_truesize(ctx);
->          unsigned int headroom = mergeable_ctx_to_headroom(ctx);
->                  
->          head_skb = NULL;
->                  
->          if (rq->use_page_pool_dma)
->                  page_pool_dma_sync_for_cpu(rq->page_pool, page, offset, len);
->                  
->
->
-> Just as a test, the below should fix it (compiled only), but the real
-> fix is more complex since we need to be careful to avoid expensive syncing
-> twice.
+If auxiliary_device_add() fails, add_adev() jumps to add_fail and calls
+auxiliary_device_uninit(adev).
 
-I applied your patch and tested it on my system. With this change, I 
-could not reproduce the same error anymore. I would be happy to test a 
-proper fix once you have one.
+The auxiliary device has its release callback set to adev_release(),
+which frees the containing struct mana_adev. Since adev is embedded in
+struct mana_adev, the subsequent fall-through to init_fail and access
+to adev->id may result in a use-after-free.
 
->
->
-> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> index 97035b49bae7..57b4f5954bed 100644
-> --- a/drivers/net/virtio_net.c
-> +++ b/drivers/net/virtio_net.c
-> @@ -931,9 +931,19 @@ static struct sk_buff *page_to_skb(struct virtnet_info *vi,
->   
->   static void *virtnet_rq_get_buf(struct receive_queue *rq, u32 *len, void **ctx)
->   {
-> +	void *buf;
-> +
->   	BUG_ON(!rq->page_pool);
->   
-> -	return virtqueue_get_buf_ctx(rq->vq, len, ctx);
-> +	buf = virtqueue_get_buf_ctx(rq->vq, len, ctx);
-> +	if (buf && rq->use_page_pool_dma && *len) {
-> +		struct page *page = virt_to_head_page(buf);
-> +		int offset = buf - page_address(page);
-> +
-> +		page_pool_dma_sync_for_cpu(rq->page_pool, page, offset, *len);
-> +	}
-> +
-> +	return buf;
->   }
->   
->   static void virtnet_rq_unmap_free_buf(struct virtqueue *vq, void *buf)
->
->
->
->
+Fix this by saving the allocated auxiliary device id in a local
+variable before calling auxiliary_device_add(), and use that saved id
+in the cleanup path after auxiliary_device_uninit().
+
+Fixes: a69839d4327d ("net: mana: Add support for auxiliary device")
+Cc: stable@vger.kernel.org
+Reviewed-by: Long Li <longli@microsoft.com>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+v2:
+  - explain the UAF in more detail
+  - retarget to net
+  - preserve reverse xmas tree order for local variables
+
+v3:
+  - rebase onto the current net tree
+
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index 9017e806ecda..d03f42245ab8 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -3424,6 +3424,7 @@ static int add_adev(struct gdma_dev *gd, const char *name)
+ {
+ 	struct auxiliary_device *adev;
+ 	struct mana_adev *madev;
++	int id;
+ 	int ret;
+ 
+ 	madev = kzalloc_obj(*madev);
+@@ -3434,7 +3435,8 @@ static int add_adev(struct gdma_dev *gd, const char *name)
+ 	ret = mana_adev_idx_alloc();
+ 	if (ret < 0)
+ 		goto idx_fail;
+-	adev->id = ret;
++	id = ret;
++	adev->id = id;
+ 
+ 	adev->name = name;
+ 	adev->dev.parent = gd->gdma_context->dev;
+@@ -3460,7 +3462,7 @@ static int add_adev(struct gdma_dev *gd, const char *name)
+ 	auxiliary_device_uninit(adev);
+ 
+ init_fail:
+-	mana_adev_idx_free(adev->id);
++	mana_adev_idx_free(id);
+ 
+ idx_fail:
+ 	kfree(madev);
+-- 
+2.43.0
+
