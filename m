@@ -1,100 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2CEA183CC3
-	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 00:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2A740DFBE
+	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 00:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774224967; cv=none; b=saj25STq93wEI1jLmhv4+LlyMHu9XHTniJD0HSNbiXrGR/CUbFjtsToGNyjKwhXELqmoZ4pkKJh1xn++o96n60NXzRIF3BUyGPuMWqKf7kuGhYu16CAnaKI3GAk3Q7W3dtaTq2+NKGYU2d9fZku1u1VQ5W6IFNkDbYjuRsQs/k8=
+	t=1774225218; cv=none; b=sbWyV3yxM4oVWZl0FRt9N19OWvVbjYFC5IqfsSFL9DYVWambcsX5hDKm6n1OnWhvJd5nd7WPE21iIHcX4/QzeiqPh/yNa9ZuqI4kk+xzVfhBwAhCnB+02cpqvMBCN8iVku30KJBe2Z/oPgYfFXCPf4/1dFbEybkT/o6ZzPCI8XQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774224967; c=relaxed/simple;
-	bh=Vz6hlss71wCpMQTFpOI1UCwil8q0Rwfj9v3C/adr88w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lZp16CkeehC79TOwd3az6NehCRs66XmvmTIQ4wxZtgGeGhVRXYsvcuVJnRb/X3fqwYSHvcnaJGU4X1wGwaVy78bryiKAG5t4XG0KAUKbC5Y5aNO2AXeYi923hnkG8NOr7HdVCqvueq0+LC0+4XnsO1FAFPPiF95CJq2lydoUGRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K49IgaKB; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774225218; c=relaxed/simple;
+	bh=FddenOTFioJHYwodYeb1Qzvx5jpTbT4vC8qg2toYa6k=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=PFNLkEq9Ri65DeyVG8mtOX1qp4c+uaT/R+12FnjKuJ94XMvybNkfXIcqJx7Fl8GQBKmCPmv7Qp4S4kd5jD5MmP4aGykRTjOyOkb2ZLaFboKe7OnkvqxpA9niOUJo/k+8PbdRjwl/cz267tCAGUVd93hzIvUnvlIXHq5u7FHI5tA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W6YFTbWG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K49IgaKB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81D05C2BCB3
-	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 00:16:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W6YFTbWG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC130C19424;
+	Mon, 23 Mar 2026 00:20:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774224967;
-	bh=Vz6hlss71wCpMQTFpOI1UCwil8q0Rwfj9v3C/adr88w=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=K49IgaKBHvfjrjUTPdu5EtJnJwHDSCtVg5836pGr17Tolll4phlkn3kK6tscuRGv8
-	 lj5wVJvGU+l0/J3q8zhrEzFzUOcZ577TSsiAgd+xEM4SQUags8QNKmcaMuEsX2IIk6
-	 Eupr/0fE/NSaHgtnc8Hv6coQqu/Ie/rMmpxuqD+FL1PqFdABPdkDTe0xVxxhv0IBoj
-	 SxDPEqllePTuhppFENB0kGnniMAP9rmUokobao7jnz8BsjXfhNAMi4/3yzzIiD8l7k
-	 ZBBGM2pjbfHTbcV4vglorRmhvHpscvYWXeZOZ0N8aMxjr/cT2T6v5elPXiIGjKWhaZ
-	 w/LiUbTXc5X4Q==
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-38a723b2b29so28932081fa.2
-        for <netdev@vger.kernel.org>; Sun, 22 Mar 2026 17:16:07 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXRjhJB6479cDoP0rh3E+TRQY+ESoY1dm/pWLmBqxy49NdTHccooIGM0srj26EBmrJFN+4KXn0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8FoQSmBsEbn7UsEz1oAU6KId0+sKXVAEVwAPCBM2MpWDRYuWi
-	/x7qu8brOtbwhbXzN4xoHQWWib+YR1Ml5lgl8ego1Nl0GU87j7XR5SNZ/xRZwmnWMSaH47++aj9
-	CfBczzSHzS2DavKRjlJAohVEm2a5q4h0=
-X-Received: by 2002:a05:651c:1313:b0:38b:df0c:979f with SMTP id
- 38308e7fff4ca-38bf9741c1bmr26363211fa.37.1774224965758; Sun, 22 Mar 2026
- 17:16:05 -0700 (PDT)
+	s=k20201202; t=1774225218;
+	bh=FddenOTFioJHYwodYeb1Qzvx5jpTbT4vC8qg2toYa6k=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=W6YFTbWGvms0Ml3QwmNlpdoTBQh6ef13BfdrAfaTn0cVkmJIDWtisKd79CSVYBlNO
+	 W53BjAXkuosUG2PQJDnL7x9hFRfTmbwdckRGwTA6ZX38om20KPWEt0OSIR9g2/p2sn
+	 obwwvysJ0WtvR9ssZ+RJ4iiUpLkmFypm2EBfVCe8iyy+xXqC1V9xY/fiJM9gqFxhpP
+	 j9inOHbx/M7ve95wP2LtMNBWZNJPFf4DQG6lu3+nxqHEjSOrFHVJcPj9DSYrHa7rt1
+	 ty+vx5vvKs2l4gAW9hNIGI7JkKph6d6lCq4hVVhks6IlIuPxkYg3caaUT7cda9o8da
+	 CDb42Jd9UgxTg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02E9B3808200;
+	Mon, 23 Mar 2026 00:20:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260319121653.2975748-1-gary@kernel.org> <20260319121653.2975748-5-gary@kernel.org>
-In-Reply-To: <20260319121653.2975748-5-gary@kernel.org>
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Sun, 22 Mar 2026 20:15:29 -0400
-X-Gmail-Original-Message-ID: <CAJ-ks9k+aTosVrC+e5SAm7Hso60sGw=YiBRjwwx5ruRNgSRepA@mail.gmail.com>
-X-Gm-Features: AQROBzDn4PtiEdBNjn48YaossWLeRtmfaQJy0WX92eUX_bEnBMYsO2ItiMTXlbM
-Message-ID: <CAJ-ks9k+aTosVrC+e5SAm7Hso60sGw=YiBRjwwx5ruRNgSRepA@mail.gmail.com>
-Subject: Re: [PATCH v3 4/4] rust: make `build_assert` module the home of
- related macros
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Robin Murphy <robin.murphy@arm.com>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Yury Norov <yury.norov@gmail.com>, 
-	Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Ingo Molnar <mingo@redhat.com>, 
-	Waiman Long <longman@redhat.com>, Yury Norov <ynorov@nvidia.com>, rust-for-linux@vger.kernel.org, 
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH iproute2-next 0/3] devlink: show devlink instance index in
+ dev
+ output
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177422520679.3639702.9032336969676090718.git-patchwork-notify@kernel.org>
+Date: Mon, 23 Mar 2026 00:20:06 +0000
+References: <20260316154418.625026-1-jiri@resnulli.us>
+In-Reply-To: <20260316154418.625026-1-jiri@resnulli.us>
+To: Jiri Pirko <jiri@resnulli.us>
+Cc: netdev@vger.kernel.org, stephen@networkplumber.org, dsahern@gmail.com
 
-On Thu, Mar 19, 2026 at 8:17=E2=80=AFAM Gary Guo <gary@kernel.org> wrote:
->
-> From: Gary Guo <gary@garyguo.net>
->
-> Given the macro scoping rules, all macros are rendered 3 times, in the
-> module, in the top-level of kernel crate, and in the prelude.
->
-> Add `#[doc(no_inline)]` to the prelude so it just shows up as re-export.
-> Add `#[doc(hidden)]` to the macro definition and `#[doc(inline)]` to the
-> re-export inside `build_assert` module so the top-level items are hidden.
->
-> Signed-off-by: Gary Guo <gary@garyguo.net>
-> ---
->  drivers/gpu/nova-core/bitfield.rs    |  4 ++--
->  drivers/gpu/nova-core/num.rs         |  2 +-
->  rust/kernel/build_assert.rs          | 19 ++++++++++++-------
->  rust/kernel/dma.rs                   |  5 +++--
->  rust/kernel/io/register.rs           | 19 ++++++++++++-------
->  rust/kernel/io/resource.rs           |  2 +-
->  rust/kernel/ioctl.rs                 |  2 +-
->  rust/kernel/net/phy/reg.rs           |  8 +++++---
->  rust/kernel/num/bounded.rs           |  2 +-
->  rust/kernel/prelude.rs               |  3 ++-
->  rust/kernel/sync/atomic/internal.rs  |  9 ++++++---
->  rust/kernel/sync/atomic/predefine.rs |  2 +-
->  rust/kernel/sync/locked_by.rs        |  2 +-
->  rust/kernel/sync/refcount.rs         |  8 +++++---
->  rust/kernel/xarray.rs                | 10 ++++++++--
+Hello:
 
-Acked-by: Tamir Duberstein <tamird@kernel.org>
+This series was applied to iproute2/iproute2-next.git (main)
+by David Ahern <dsahern@kernel.org>:
+
+On Mon, 16 Mar 2026 16:44:15 +0100 you wrote:
+> From: Jiri Pirko <jiri@nvidia.com>
+> 
+> Support for identifying devlink instances by a unique index was recently
+> added on the kernel side:
+> https://lore.kernel.org/all/20260312100407.551173-1-jiri@resnulli.us/
+> 
+> This patchset adds the necessary userspace support.
+> 
+> [...]
+
+Here is the summary with links:
+  - [iproute2-next,1/3] update kernel headers
+    (no matching commit)
+  - [iproute2-next,2/3] mnl: add fallback implementation for mnl_attr_get_uint()
+    https://git.kernel.org/pub/scm/network/iproute2/iproute2-next.git/commit/?id=bef61beb2edf
+  - [iproute2-next,3/3] devlink: show devlink instance index in dev output
+    https://git.kernel.org/pub/scm/network/iproute2/iproute2-next.git/commit/?id=36252727bfc6
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
