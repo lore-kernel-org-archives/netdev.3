@@ -1,141 +1,249 @@
-Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1CBA3B5847
-	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 15:38:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C627A25392A
+	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 15:52:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774280287; cv=none; b=DpuGTU62RCVIkc++Fnk2dY2YlJCHap5Q4uUGxVDqI4HZ0Dr5bfqsht4J1Cwx0VtDtt8wkV8vxZQ+PY2DlfjAQMStV1PghBynjVXPFwy1gxIwHF2IEV4ua4UwAyQpEmsjdDHKsGXWy4a6qWue44dwrRiXrtSNllv169RaADPlj9U=
+	t=1774281160; cv=none; b=TzUKwwA6/qnt4UePEseIRYzDWBmW0rVpYDUiLXFuinbqCXsSKH9Hc+buflzbP9+Z/BsAbbokxXLUvHzRmAp5rWitMUFFPSaCAfDw57ddqTSZzux3LaViYlaQ7WYbW3Z7OH/l8D8xzNqdvgIPrikfqR3kjmJP5Yl6XaVrfM2xHL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774280287; c=relaxed/simple;
-	bh=vToF1UbNvL4l1OkVwlOI7+XcnxHkjKZMzjHswh/EJ+k=;
-	h=From:To:Cc:In-Reply-To:Subject:Date:Message-ID:MIME-Version:
-	 Content-Type:References; b=kzfm7YwHYdrYW2Jzwm+IaAzJNBdjtDLW/PSB5T/BOP98Q3bi/cru4eBnDfV1d5YB18qLkpshVVfF2NAPsReMOyvy9NLl9J7lKRsBrVtWizwdaDE0RSZsk0miy3maflExjQrKZ7jGRLLqEheDDBQpVuZ0EqDsxSlym2sVDX1IPlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=mgU9aFrC; arc=none smtp.client-ip=203.254.224.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1774281160; c=relaxed/simple;
+	bh=Wwsnsa8I13/EF4kOLN75rRcu9F+2YoHsOAAnaEjJ+F4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MeNicAwdzxzNqwyZt6tCRlWfXFoGoPUf9G/u9qL961HvMj10CF5DVbVuwEJuumOZk/pwmFWuA0tvNwo4ccQzai3ikbCtEUQZUxvlWERhggSoh1nqyF3dy0NKVsvDbk9ZRLBkJbYmkxvHxLoc/JZcE1qhn1PcWhH+BNDS9d6IGgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JHYA9YIn; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=mWGWWEnT; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="mgU9aFrC"
-Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
-	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20260323153802epoutp041c3c36e57e713f5030b9ca1e271e59c9~fgoRGEXYX1364013640epoutp04t
-	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 15:38:02 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20260323153802epoutp041c3c36e57e713f5030b9ca1e271e59c9~fgoRGEXYX1364013640epoutp04t
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1774280282;
-	bh=MYU9K1BczlLtBMfJPDu28QIk9pzoA+hXl3yf17nC2HI=;
-	h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
-	b=mgU9aFrC+5Kx+21CCBQ48vtUtevP0XGV5aHjupTGFTw7s0wbx2FYZ7piHu2gEGNx9
-	 7FiJ9iRzTsn7N6OtZVcQFwqx9+/yRy1FbPgDJReQh76dJWCUi3xQdbS9llr9OgF8ia
-	 3KFTDuksHm5/ZDwJUU6SICm8wW+RY1yai4quNiMM=
-Received: from epsnrtp03.localdomain (unknown [182.195.42.155]) by
-	epcas5p1.samsung.com (KnoxPortal) with ESMTPS id
-	20260323153802epcas5p1bb1e979594c5257c037cdf6411e7a177~fgoQZrLX82373723737epcas5p1t;
-	Mon, 23 Mar 2026 15:38:02 +0000 (GMT)
-Received: from epcpadp2new (unknown [182.195.40.142]) by
-	epsnrtp03.localdomain (Postfix) with ESMTP id 4ffckf0KMvz3hhT4; Mon, 23 Mar
-	2026 15:38:02 +0000 (GMT)
-Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
-	epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
-	20260323123542epcas5p349d0e7c45d02ccaa06c84dbdf1777126~feJElRtj12139221392epcas5p34;
-	Mon, 23 Mar 2026 12:35:42 +0000 (GMT)
-Received: from INBRO002756 (unknown [107.122.3.168]) by epsmtip2.samsung.com
-	(KnoxPortal) with ESMTPA id
-	20260323123538epsmtip2099c850de3b514ee4ac3f5a0092dd02a~feJAkDKG92361023610epsmtip2P;
-	Mon, 23 Mar 2026 12:35:38 +0000 (GMT)
-From: "Alim Akhtar" <alim.akhtar@samsung.com>
-To: "'Vladimir Oltean'" <vladimir.oltean@nxp.com>, "'Martin K. Petersen'"
-	<martin.petersen@oracle.com>
-Cc: <linux-phy@lists.infradead.org>, "'Vinod Koul'" <vkoul@kernel.org>,
-	"'Neil	Armstrong'" <neil.armstrong@linaro.org>,
-	<dri-devel@lists.freedesktop.org>, <freedreno@lists.freedesktop.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-arm-msm@vger.kernel.org>,
-	<linux-can@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
-	<linux-ide@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-media@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-	<linux-renesas-soc@vger.kernel.org>, <linux-riscv@lists.infradead.org>,
-	<linux-rockchip@lists.infradead.org>, <linux-samsung-soc@vger.kernel.org>,
-	<linux-scsi@vger.kernel.org>, <linux-sunxi@lists.linux.dev>,
-	<linux-tegra@vger.kernel.org>, <linux-usb@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <spacemit@lists.linux.dev>,
-	<UNGLinuxDriver@microchip.com>, "'Bart Van Assche'" <bvanassche@acm.org>,
-	"'Peter Griffin'" <peter.griffin@linaro.org>, "'James E.J. Bottomley'"
-	<James.Bottomley@HansenPartnership.com>, "'Krzysztof	Kozlowski'"
-	<krzk@kernel.org>, "'Chanho Park'" <chanho61.park@samsung.com>
-In-Reply-To: <20260323115848.ghdu4sbk75tvggfb@skbuf>
-Subject: RE: [PATCH v5 phy-next 09/27] scsi: ufs: exynos: stop poking into
- struct phy guts
-Date: Mon, 23 Mar 2026 18:05:36 +0530
-Message-ID: <1891546521.01774280282025.JavaMail.epsvc@epcpadp2new>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JHYA9YIn";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="mWGWWEnT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774281157;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SRzimLRML1I9K6FsP40IwKIHIhW+1XMgF4uRnLLyEos=;
+	b=JHYA9YInZy0Gloxg6hyVkq8eUFMN++l8cdC5nOJhxjzsEayzZB6RvtMdI3iBPR7JwqA0vJ
+	4m5MloB/h8iZfkyftg6IttDbs7yldAigUTgsC2505vf/nLn4gPZAlRuqNDi2OH+xiDGbJq
+	oyPfl0euM1Ejj7byzlsmEvtL/WljvSA=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-278-jYWE-FIhMVC3VMUIWCD9Lw-1; Mon, 23 Mar 2026 11:52:36 -0400
+X-MC-Unique: jYWE-FIhMVC3VMUIWCD9Lw-1
+X-Mimecast-MFC-AGG-ID: jYWE-FIhMVC3VMUIWCD9Lw_1774281155
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-486fa07f2bbso16331805e9.2
+        for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 08:52:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1774281155; x=1774885955; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=SRzimLRML1I9K6FsP40IwKIHIhW+1XMgF4uRnLLyEos=;
+        b=mWGWWEnTkNt44dS5MGYMVIM7mYUE176EwGRiirdeLO13cyVhNEi55hQSYfYbv5uVt/
+         F1ZKxeoBRQsVZLx8HXLMwBeitBmrkvencA0Nhf5PTX2/LFKDVuNQgoKcZEfFvHqSSEv2
+         QhpRey56ZVvaDoUcgqTn07KFnv2hLXCM000Z+r79K+tUvOcGGxp+nVP9/2tNi52fkzLr
+         STjXH7IIO+GRp37Jn12AaOpAzbR50wJmcM+orsUJYs1PML/PtLnhRwaYyeBMkLEWHRE0
+         NwozIoLarkl7ZwrJuzLgrzQ/hDu4DwchI/A4hWB3s9CrgBINcWAiE/S4SkQHVgKi9TsO
+         zUGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774281155; x=1774885955;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SRzimLRML1I9K6FsP40IwKIHIhW+1XMgF4uRnLLyEos=;
+        b=rUOPIB8+nLrVSnu9OiQxKladXfEIpWkZTo/q/anCyeNZWAb67kdWPc6daHu6aAAMYm
+         FW1x1nQ9pfPfbpfC2OpbhAeYwDCWa60PwgtfOjjtqqXOySFK3+lrhVcU/HrJHKa/glnS
+         f8GwGXdkOWS3ZyPJJKsJzcizmyQG/XVIIx0h6m74jGFpM/j/4OHWx4CAcoG/ED5GO4ry
+         GAgYHkxDjBlhwjSA9lur2uOSL+2skZamAN258WXOO5DLTwuIv332NC9kfV0a5Y58fmt4
+         umoAuu+z8RwabbEBKFcmBeoCcdG8mtvWGpkuGCyTcT+QUl4NlcTE+twIWFgBR0kxLBcB
+         4wBA==
+X-Forwarded-Encrypted: i=1; AJvYcCUIjvNVrtA7wiNHozx3Z8SFOHHmKGl8ufB38ThnQQ0yKxysQoCC5CMN0K51p5y2U9Mxy0SrTDU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXJEtawTmQIKH3LeSAbS2glb9aWVN/5rxCzzzTnCTtOHGJTxxd
+	18+C7nwTZCS58SRIzF04qru7dSY02bz5OZla3sqp4/C5+YJqWHdqZ3xtLo6syM9IbLqxcLM3xxB
+	bDPqVjVFOcLUp2VUhgVCKMgB5PeBHcOu18rf/5hjsqSGo2enTinDJanYgzg==
+X-Gm-Gg: ATEYQzwK5QPNQfIZwxSyhys2rojBkcaMFiWT06172tvTdPeTSzB7egSdQpumWIwgzWK
+	e/QTMIfn6C1+kiGY2AbrTb4WL+DOlu5gkx8t3ZBiIfmBnO7xUgSh1ph3S5uiUCED38H/PJCfNs1
+	WL4n4EfDQyAqHp5NfFpa8mfiQGCGEK1pNrlmTsKNWG4SqJrnBSrkccJ34RacRIrgWgqby8MenHm
+	3lRVYmFVSB1EjGotl3noQbYyl6tI+MiZMl735ihowGGsfZJHq70SjWJeojYA3f1rqhS1ZlF7PT/
+	6FbmlhqcemYRQzWULDe8xt38SCoKo2+xbxpzFHrOjhL3XTPy+8gWjr4XQweFXHkSXnHcoJ2T16K
+	eO6SBoNQbcf8rCkYd
+X-Received: by 2002:a05:600c:4705:b0:485:3a86:6392 with SMTP id 5b1f17b1804b1-486fee0d816mr174481425e9.20.1774281154660;
+        Mon, 23 Mar 2026 08:52:34 -0700 (PDT)
+X-Received: by 2002:a05:600c:4705:b0:485:3a86:6392 with SMTP id 5b1f17b1804b1-486fee0d816mr174480905e9.20.1774281154074;
+        Mon, 23 Mar 2026 08:52:34 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1525:da00:3ac2:1a22:72ff:4256])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-487017210dcsm238594505e9.10.2026.03.23.08.52.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Mar 2026 08:52:33 -0700 (PDT)
+Date: Mon, 23 Mar 2026 11:52:30 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Omar Elghoul <oelghoul@linux.ibm.com>
+Cc: vishs@meta.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	dw@davidwei.uk, edumazet@google.com, eperezma@redhat.com,
+	ilias.apalodimas@linaro.org, jasowang@redhat.com,
+	kernel-team@meta.com, kuba@kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, pabeni@redhat.com, technoboy85@gmail.com,
+	virtualization@lists.linux.dev, xuanzhuo@linux.alibaba.com
+Subject: Re: [PATCH net-next v11] virtio_net: add page_pool support for
+ buffer allocation
+Message-ID: <20260323114313-mutt-send-email-mst@kernel.org>
+References: <20260310183107.2822016-1-vishs@meta.com>
+ <20260323150136.14452-1-oelghoul@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQJoz1sM+EbPjkyDopxrfJVWkMJWdwI9AyWpAaSC6pgB9ZOp/gJXIgBltGJxFXA=
-Content-Language: en-us
-X-CMS-MailID: 20260323123542epcas5p349d0e7c45d02ccaa06c84dbdf1777126
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-X-CPGSPASS: Y
-X-Hop-Count: 3
-X-CMS-RootMailID: 20260323115859epcas5p10177db12a2e8aee9578271ff1411137b
-References: <20260319223241.1351137-1-vladimir.oltean@nxp.com>
-	<20260319223241.1351137-10-vladimir.oltean@nxp.com>
-	<yq1a4w3l04g.fsf@ca-mkp.ca.oracle.com>
-	<CGME20260323115859epcas5p10177db12a2e8aee9578271ff1411137b@epcas5p1.samsung.com>
-	<20260323115848.ghdu4sbk75tvggfb@skbuf>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260323150136.14452-1-oelghoul@linux.ibm.com>
 
-Hi Vladimir
-
-> -----Original Message-----
-> From: Vladimir Oltean <vladimir.oltean@nxp.com>
-> Sent: Monday, March 23, 2026 5:29 PM
-> To: Martin K. Petersen <martin.petersen@oracle.com>
-> Cc: linux-phy@lists.infradead.org; Vinod Koul <vkoul@kernel.org>; Neil
-> Armstrong <neil.armstrong@linaro.org>; dri-devel@lists.freedesktop.org;
-> freedreno@lists.freedesktop.org; linux-arm-kernel@lists.infradead.org;
-> linux-arm-msm@vger.kernel.org; linux-can@vger.kernel.org; linux-
-> gpio@vger.kernel.org; linux-ide@vger.kernel.org; linux-
-> kernel@vger.kernel.org; linux-media@vger.kernel.org; linux-
-> pci@vger.kernel.org; linux-renesas-soc@vger.kernel.org; linux-
-> riscv@lists.infradead.org; linux-rockchip@lists.infradead.org;
-linux-samsung-
-> soc@vger.kernel.org; linux-scsi@vger.kernel.org;
-linux-sunxi@lists.linux.dev;
-> linux-tegra@vger.kernel.org; linux-usb@vger.kernel.org;
-> netdev@vger.kernel.org; spacemit@lists.linux.dev;
-> UNGLinuxDriver@microchip.com; Bart Van Assche <bvanassche@acm.org>;
-> Alim Akhtar <alim.akhtar@samsung.com>; Peter Griffin
-> <peter.griffin@linaro.org>; James E.J. Bottomley
-> <James.Bottomley@HansenPartnership.com>; Krzysztof Kozlowski
-> <krzk@kernel.org>; Chanho Park <chanho61.park@samsung.com>
-> Subject: Re: [PATCH v5 phy-next 09/27] scsi: ufs: exynos: stop poking into
-> struct phy guts
+On Mon, Mar 23, 2026 at 11:01:31AM -0400, Omar Elghoul wrote:
+> Hi,
 > 
-> On Thu, Mar 19, 2026 at 10:15:17PM -0400, Martin K. Petersen wrote:
-> > Vladimir,
-> >
-> > > The Exynos host controller driver is clearly a PHY consumer (gets
-> > > the
-> > > ufs->phy using devm_phy_get()), but pokes into the guts of struct
-> > > ufs->phy
-> > > to get the generic_phy->power_count.
-> >
-> > Ah, newer version. Would still like an ack from Samsung.
-> >
-> > And I hit the wrong key, I did not actually apply this...
+> I've been testing linux-next (tags later than 03/17) and hit new issues in
+> virtio-net on s390x. I bisected the issue, and I found this patch to be the
+> first buggy commit.
 > 
-> I will have to resend v6 because of an armv7 build error I've caused for
-ufs-
-> qcom.c (which doesn't #include <linux/interrupt.h>, and relies on a
-transitive
-> inclusion from <linux/phy/phy.h>). It would be nice to get the ack from
-> Samsung, but I'll send the next version in the upcoming hours regardless.
-Will review and possibly test on one of the board later tonight
+> The issue seems to only be reproducible when running in Secure Execution.
+> Tested in a KVM guest, the virtio-net performance appears greatly reduced,
+> and the dmesg output shows many instances of the following error messages.
+> 
+> Partial relevant logs
+> =====================
+> [   49.332028] macvtap0: bad gso: type: 0, size: 0, flags 1 tunnel 0 tnl csum 0
+> [   74.365668] macvtap0: bad gso: type: 2e, size: 27948, flags 0 tunnel 0 tnl csum 0
+> [  403.302168] macvtap0: bad csum: flags: 2, gso_type: 23 rx_tnl_csum 0
+> [  403.302271] macvtap0: bad csum: flags: 2, gso_type: e0 rx_tnl_csum 0
+> [  403.302279] macvtap0: bad csum: flags: 2, gso_type: e1 rx_tnl_csum 0
+> [  403.309492] macvtap0: bad csum: flags: 2, gso_type: 4c rx_tnl_csum 0
+> [  403.317029] macvtap0: bad csum: flags: 2, gso_type: e0 rx_tnl_csum 0
+> 
+> Steps to reproduce
+> ==================
+> 1. Boot a Linux guest implementing this patch under QEMU/KVM (*) with SE
+>    enabled and a virtio-net-ccw device attached.
+> 2. Run dmesg. The error message is usually already present at boot time,
+>    but if not, it can be reproduced by creating any network traffic.
+> 
+> (*) This patch was not tested in a non-KVM hypervisor environment.
+> 
+> I've further confirmed that reverting this patch onto its parent commit
+> resolves the issue. Please let me know if you'd like me to test a fix or if
+> you would need more information.
+> 
+> Thanks in advance.
+> 
+> Best,
+> Omar
+
+Well... I am not sure how I missed it. Obvious in hindsight:
+
+static void receive_buf(struct virtnet_info *vi, struct receive_queue *rq,
+                        void *buf, unsigned int len, void **ctx,
+                        unsigned int *xdp_xmit,
+                        struct virtnet_rq_stats *stats)
+{
+        struct net_device *dev = vi->dev;
+        struct sk_buff *skb;
+        u8 flags;
+                
+        if (unlikely(len < vi->hdr_len + ETH_HLEN)) {
+                pr_debug("%s: short packet %i\n", dev->name, len);
+                DEV_STATS_INC(dev, rx_length_errors);
+                virtnet_rq_free_buf(vi, rq, buf);
+                return;
+        }
+        
+        /* About the flags below:
+         * 1. Save the flags early, as the XDP program might overwrite them.
+         * These flags ensure packets marked as VIRTIO_NET_HDR_F_DATA_VALID
+         * stay valid after XDP processing.
+         * 2. XDP doesn't work with partially checksummed packets (refer to
+         * virtnet_xdp_set()), so packets marked as
+         * VIRTIO_NET_HDR_F_NEEDS_CSUM get dropped during XDP processing.
+         */
+                
+        if (vi->mergeable_rx_bufs) {
+                flags = ((struct virtio_net_common_hdr *)buf)->hdr.flags;
+                skb = receive_mergeable(dev, vi, rq, buf, ctx, len, xdp_xmit,
+                                        stats);
+        } else if (vi->big_packets) {
+                void *p = page_address((struct page *)buf);
+                
+                flags = ((struct virtio_net_common_hdr *)p)->hdr.flags;
+                skb = receive_big(dev, vi, rq, buf, len, stats);
+        } else {
+                flags = ((struct virtio_net_common_hdr *)buf)->hdr.flags;
+                skb = receive_small(dev, vi, rq, buf, ctx, len, xdp_xmit, stats);
+        }       
 
 
+So we are reading the header, before dma sync, which is within
+receive_mergeable and friends:
+
+static struct sk_buff *receive_mergeable(struct net_device *dev,
+                                         struct virtnet_info *vi,
+                                         struct receive_queue *rq,
+                                         void *buf,
+                                         void *ctx,
+                                         unsigned int len,
+                                         unsigned int *xdp_xmit,
+                                         struct virtnet_rq_stats *stats)
+{               
+        struct virtio_net_hdr_mrg_rxbuf *hdr = buf;
+        int num_buf = virtio16_to_cpu(vi->vdev, hdr->num_buffers);
+        struct page *page = virt_to_head_page(buf);
+        int offset = buf - page_address(page);
+        struct sk_buff *head_skb, *curr_skb;     
+        unsigned int truesize = mergeable_ctx_to_truesize(ctx);
+        unsigned int headroom = mergeable_ctx_to_headroom(ctx);
+                
+        head_skb = NULL;
+                
+        if (rq->use_page_pool_dma)
+                page_pool_dma_sync_for_cpu(rq->page_pool, page, offset, len);
+                
+
+
+Just as a test, the below should fix it (compiled only), but the real
+fix is more complex since we need to be careful to avoid expensive syncing
+twice.
+
+
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 97035b49bae7..57b4f5954bed 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -931,9 +931,19 @@ static struct sk_buff *page_to_skb(struct virtnet_info *vi,
+ 
+ static void *virtnet_rq_get_buf(struct receive_queue *rq, u32 *len, void **ctx)
+ {
++	void *buf;
++
+ 	BUG_ON(!rq->page_pool);
+ 
+-	return virtqueue_get_buf_ctx(rq->vq, len, ctx);
++	buf = virtqueue_get_buf_ctx(rq->vq, len, ctx);
++	if (buf && rq->use_page_pool_dma && *len) {
++		struct page *page = virt_to_head_page(buf);
++		int offset = buf - page_address(page);
++
++		page_pool_dma_sync_for_cpu(rq->page_pool, page, offset, *len);
++	}
++
++	return buf;
+ }
+ 
+ static void virtnet_rq_unmap_free_buf(struct virtqueue *vq, void *buf)
+
+
+
+
+-- 
+MST
 
