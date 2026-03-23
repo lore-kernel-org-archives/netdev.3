@@ -1,15 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FDEE385507
-	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 10:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0471438AC96
+	for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 10:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774261954; cv=none; b=jE0LxWW2ylTsiD/TJr7NmibZNuGpEPEO8MpA3FsPXXaUy26QeIkT5DFOn9lveHwL5FOMbP/cc7VfQdalfqywVEAJWUKfSoOgL/M8yrmWnuri0bWReCD/3iI64OzQpK7UDm281xaDicKARI8/50Q9977x7UsCueVBsy76l3W+it4=
+	t=1774261956; cv=none; b=sWh7ekKghb+MyU2GFPJ+ZKnU6rL7n11q21HbyMzppzMghyH45jGELgdKiv3uXPrMJSTmufFQunAtDfxUyn5mJUaioodvnGnMRn8x3jQlaM62R6a11zXyVushqZSSNr3t07mTcOxlj7ning8DV08JPhtJSYEOcvRILU3NzvbRjHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774261954; c=relaxed/simple;
-	bh=qwzvvUNhdDlokAMOJCKWzDGLMwAqk7EOigcLTqyEIrM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GILrp++GIhRUC7tUhk1ZkUNqqo82Jn5KyMH9vBwhnPAdDRq4KWn2QRdZshtfvT0KoCrvcXU+tf/zMZKtDJHYHrX9ZpgJfvgpVhy8xmHt0naaV9PKYO+mhKZhVjgkz6TBwj02w3VQL0hUksXFdXmwcvfSoOZoSB/sIH9kBxO9TX4=
+	s=arc-20240116; t=1774261956; c=relaxed/simple;
+	bh=dNrsYqqKTf1Z5G3ToizBJEztMv5xegsGRpeOVawV8vU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tmUc2zJzNdKM9UM0YmVl5v+JboGeiTrhAQulKm1ewvpZrFvtwMxHmSSbKhXSqBINiuTjd2WrMj+0afsR0grOx3UoEDZdqCrR+uevCNbul6LN/oh0jXHd5d+Dd1MQZrmrap7EKDkeNqMuBhbn5i0PusiavmgB+yddZR0AEj86Uv4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -17,30 +18,34 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1w4caB-0008F8-Jz; Mon, 23 Mar 2026 11:32:27 +0100
+	id 1w4caB-0008FL-Jz; Mon, 23 Mar 2026 11:32:27 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1w4caB-001i5d-0L;
+	id 1w4caB-001i5e-0c;
 	Mon, 23 Mar 2026 11:32:27 +0100
 Received: from blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id C798050A7BC;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id D23F750A7BD;
 	Mon, 23 Mar 2026 10:32:26 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
-	kernel@pengutronix.de
-Subject: [PATCH net 0/5] pull-request: can 2026-03-23
-Date: Mon, 23 Mar 2026 11:27:56 +0100
-Message-ID: <20260323103224.218099-1-mkl@pengutronix.de>
+	kernel@pengutronix.de,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	stable@vger.kernel.org
+Subject: [PATCH net 1/5] can: netlink: can_changelink(): add missing error handling to call can_ctrlmode_changelink()
+Date: Mon, 23 Mar 2026 11:27:57 +0100
+Message-ID: <20260323103224.218099-2-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260323103224.218099-1-mkl@pengutronix.de>
+References: <20260323103224.218099-1-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,62 +58,39 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Hello netdev-team,
+In commit e1a5cd9d6665 ("can: netlink: add can_ctrlmode_changelink()") the
+CAN Control Mode (IFLA_CAN_CTRLMODE) handling was factored out into the
+can_ctrlmode_changelink() function. But the call to
+can_ctrlmode_changelink() is missing the error handling.
 
-this is a pull request of 5 patches for net/main.
+Add the missing error handling and propagation to the call
+can_ctrlmode_changelink().
 
-The first patch is by me and adds missing error handling to the CAN
-netlink device configuration code.
-
-Wenyuan Li contributes a patch for the mcp251x drier to add missing
-error handling for power enabling in th open and resume functions.
-
-Oliver Hartkopp's patch adds missing atomic access in hot path for the
-CAN procfs statistics.
-
-A series by Ali Norouzi and Oliver Hartkopp fix a can-Out-of-Bounds
-Heap R/W in the can-gw protocol and a UAF in the CAN isotp protocol.
-
-regards,
-Marc
-
+Cc: stable@vger.kernel.org
+Fixes: e1a5cd9d6665 ("can: netlink: add can_ctrlmode_changelink()")
+Link: https://patch.msgid.link/20260310-can_ctrlmode_changelink-add-error-handling-v1-1-0daf63d85922@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
+ drivers/net/can/dev/netlink.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-The following changes since commit 8a63baadf08453f66eb582fdb6dd234f72024723:
+diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
+index 0498198a4696..766d455950f5 100644
+--- a/drivers/net/can/dev/netlink.c
++++ b/drivers/net/can/dev/netlink.c
+@@ -601,7 +601,9 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	/* We need synchronization with dev->stop() */
+ 	ASSERT_RTNL();
+ 
+-	can_ctrlmode_changelink(dev, data, extack);
++	err = can_ctrlmode_changelink(dev, data, extack);
++	if (err)
++		return err;
+ 
+ 	if (data[IFLA_CAN_BITTIMING]) {
+ 		struct can_bittiming bt;
 
-  net: mvpp2: guard flow control update with global_tx_fc in buffer switching (2026-03-19 10:31:19 +0100)
+base-commit: 8a63baadf08453f66eb582fdb6dd234f72024723
+-- 
+2.53.0
 
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can.git tags/linux-can-fixes-for-7.0-20260323
-
-for you to fetch changes up to cce598ffc6afd01e7a780051f3ac624b60aa2ee4:
-
-  Merge patch series "can: fix can-gw Out-of-Bounds Heap R/W and isotp UAF" (2026-03-19 17:16:03 +0100)
-
-----------------------------------------------------------------
-linux-can-fixes-for-7.0-20260323
-
-----------------------------------------------------------------
-Ali Norouzi (1):
-      can: gw: fix OOB heap access in cgw_csum_crc8_rel()
-
-Marc Kleine-Budde (2):
-      can: netlink: can_changelink(): add missing error handling to call can_ctrlmode_changelink()
-      Merge patch series "can: fix can-gw Out-of-Bounds Heap R/W and isotp UAF"
-
-Oliver Hartkopp (2):
-      can: statistics: add missing atomic access in hot path
-      can: isotp: fix tx.buf use-after-free in isotp_sendmsg()
-
-Wenyuan Li (1):
-      can: mcp251x: add error handling for power enable in open and resume
-
- drivers/net/can/dev/netlink.c |  4 +++-
- drivers/net/can/spi/mcp251x.c | 29 ++++++++++++++++++++++++-----
- net/can/af_can.c              |  4 ++--
- net/can/af_can.h              |  2 +-
- net/can/gw.c                  |  6 +++---
- net/can/isotp.c               | 24 ++++++++++++++++++------
- net/can/proc.c                |  3 ++-
- 7 files changed, 53 insertions(+), 19 deletions(-)
