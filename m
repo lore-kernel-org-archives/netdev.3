@@ -1,34 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FED2745C
-	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 00:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D20D78F26;
+	Tue, 24 Mar 2026 00:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774311024; cv=none; b=QKD/pXfKQGMjdDHx+QPhBJ3l6hdnjesHzvqmsd9rBfwW8g/3YaaMgn29i+xwxYIREf2VFGEHZ1k+l89NDblx+NCNHM4Bn7dorfAY/lJW84TXx6wnA5JwGvoPAPt/hdtdkcYeF08mACO5666e8QPgjNv+K01Xp8xic0ti2vM0vzY=
+	t=1774311486; cv=none; b=cOC5Is5dZfQMlzMTxrf/ygdzKm9aMLu1ZxtzgG+/wfJXu4aaoEaQm5+d+IEUqh8BiOVoSFGqXMj0/PdBiNbOQWKVj7Qa3tRZNgb4dl34YaR55pJ1GWEfAVMjYIrLymqrr8MFivCleKU9aU+2AIpFmX+EAFOxxrVzoEJtcRCCmJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774311024; c=relaxed/simple;
-	bh=lhMaTA3N8WW0trnm4ZE0SeSUcwErXepN77xozOPtD0Y=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=cCphkVS1VvwC10uA9ZtQT1wTO+IllxPYQv/LavOcCUNJBqfYkRhacPH2sZJ1XurMsEb+LllOG5oOcE2dS86awXrI8A7jzpodJWAhidYRQ4Hzv0Y0AsbEBahTFFTlVkG2xByxAwsQnJo9SJpiL1iMC7Mj1ZXc0gCBwJDkbA0LpqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NFwheKe3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774311486; c=relaxed/simple;
+	bh=mBitpoQXvogW9UOH5+8mD5clOqD//aOwti5hId6Y2No=;
+	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
+	 To:Date:Message-ID; b=tHqQGjZOkwz26X3iz4vkkDddXTxMvzheiYYa+z3sVGvnzYqeQGMMx5hkb7EXBKt1m6kaKdkk9owGuQYHToniWStzzJCOSEU7x/buZrogOd72dxw2hBxTIEeiaWmutwIGDhC1KZqdWSaptsmvVrwO6Ej/sI8VEOOzc2p48S0DMtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qkt45Pdy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NFwheKe3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BFC2C4CEF7;
-	Tue, 24 Mar 2026 00:10:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qkt45Pdy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E44D0C4CEF7;
+	Tue, 24 Mar 2026 00:18:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774311024;
-	bh=lhMaTA3N8WW0trnm4ZE0SeSUcwErXepN77xozOPtD0Y=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=NFwheKe3zIH2ehxRoVORzCrBqUgEibVifT0G5Ftau8COJjsTWt/ib/GKFFKT51D/k
-	 48ADYQkd5K9E3eANZHLdyHDlXy7BLL8SpFSc/JzGAirWWrRwdeT+TdqY2uMpPFBTcy
-	 vpO9VbP2Lya45AdeOrOEIFvY7Cm7U4Tqg0RO304wbsq2LqCCDOkfPkwgihEpC7sJrc
-	 ILHOzPHSPUgcgSKJyyeeoKjnQaSDj+f3yEfjL6jx0Zxg5rhZg3UFYSHpbRw68wTODq
-	 b2VJ+LoUSZl57Z8+kVeWbtDFEaJ1fNgzLp2aqB/yQJbAwmzeRvae1oi+uk/sLvyHgp
-	 xZcWNTIPddDAA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02D763808200;
-	Tue, 24 Mar 2026 00:10:14 +0000 (UTC)
+	s=k20201202; t=1774311486;
+	bh=mBitpoQXvogW9UOH5+8mD5clOqD//aOwti5hId6Y2No=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=qkt45Pdy1OfDzs88N1FqRGBmJDh4R/jkPlEO4A2Jz1h3Z3uFvlDmRLbCPL2cmCGJ7
+	 g1Q3RWM533SkSfddCicFK8rkKS7LqXeSRrlxv+4GlU7mVKJaANUp9Nqwv9cJmlH2xE
+	 B7X6TUFcQhIVA9T913DBq/AtGo18HdYmvfTJjViuh0gIU2VyI0FYxD5sVOEE4mZmjy
+	 BwpL4FxooZvvuiPKcJgVKKVFF4tHmF1N5au/E9qHk4zucdn/zTpcqG8/UlbTzjDe3w
+	 tBfwRlrvH18alNPakK46dsg7LXiFpn5n2JJiB04KwGJX0GYQD56C7oU1wfDpSIt+So
+	 qnsmfR4w/bpQg==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -36,47 +33,26 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v6 net 0/3] ipv6: Fix two GC issues with permanent routes.
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177431101278.380025.9953514903195505875.git-patchwork-notify@kernel.org>
-Date: Tue, 24 Mar 2026 00:10:12 +0000
-References: <20260320072317.2561779-1-kuniyu@google.com>
-In-Reply-To: <20260320072317.2561779-1-kuniyu@google.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: dsahern@kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, thinker.li@gmail.com,
- lucien.xin@gmail.com, horms@kernel.org, kuni1840@gmail.com,
- netdev@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260224111821.3491352-1-andriy.shevchenko@linux.intel.com>
+References: <20260224111821.3491352-1-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v4 1/1] clk: baikal-t1: Remove not-going-to-be-supported code for Baikal SoC
+From: Stephen Boyd <sboyd@kernel.org>
+Cc: Michael Turquette <mturquette@baylibre.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Richard Cochran <richardcochran@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>, Randy Dunlap <rdunlap@infradead.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Brian Masney <bmasney@redhat.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, devicetree@vger.kernel.org, linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Date: Mon, 23 Mar 2026 17:18:03 -0700
+Message-ID: <177431148399.5403.17869158368644573054@lazor>
+User-Agent: alot/0.12
 
-Hello:
+Quoting Andy Shevchenko (2026-02-24 03:17:18)
+> As noticed in the discussion [1] the Baikal SoC and platforms
+> are not going to be finalized, hence remove stale code.
+>=20
+> Reviewed-by: Brian Masney <bmasney@redhat.com>
+> Link: https://lore.kernel.org/lkml/22b92ddf-6321-41b5-8073-f9c7064d3432@i=
+nfradead.org/ [1]
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Acked-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Fri, 20 Mar 2026 07:22:58 +0000 you wrote:
-> Patch 1 fixes the unbounded growth of tb6_gc_hlist due to
-> permanent routes whose exception routes have all expired.
-> 
-> Patch 2 fixes an issue where exception routes tied to
-> permanent routes are not properly aged.
-> 
-> Patch 3 is a selftest for the issue fixed by Patch 2.
-> 
-> [...]
-
-Here is the summary with links:
-  - [v6,net,1/3] ipv6: Remove permanent routes from tb6_gc_hlist when all exceptions expire.
-    https://git.kernel.org/netdev/net/c/6af51e9f3133
-  - [v6,net,2/3] ipv6: Don't remove permanent routes with exceptions from tb6_gc_hlist.
-    https://git.kernel.org/netdev/net/c/4be7b99c253f
-  - [v6,net,3/3] selftest: net: Add GC test for temporary routes with exceptions.
-    https://git.kernel.org/netdev/net/c/3e9e84e92c9c
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Applied to clk-next
