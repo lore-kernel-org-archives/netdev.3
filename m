@@ -1,235 +1,198 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from server.couthit.com (server.couthit.com [162.240.164.96])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D2F3AF66B
-	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 06:16:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774333017; cv=pass; b=OLqa/umPU3k9XErj68UUtgmbc4x/PsgKxuj4E7GMlhy085Uj24HJO9bzyfzPfeosDga4UOKuY/GGNQKE8l5iiy9uUyCUMv/1VVdSC+AU4i2glg6INtksFHxe2KmYr5ykM788Ae+q9nIlYGvLTz0jG08/vC1yiE1glkCWodvCOJo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774333017; c=relaxed/simple;
-	bh=ZcbX+5mJfGFHcWFhOYfFiN8hHaXsM3DySpqgTEdyijc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IG3kCJ7KZWBCeCmcM/P+NOqqQtsHunmbBLo+1V/DzWtpP2nduC5G7enKQfpePepDaRgtvOg+m7N+mm14GgIHUdiaGuNxkqSjjOvZ4jnjktAhorPWqAXFfHKVkM9Ft6iIvgMuRf2lgJt4CIv8R67aDp318NLuZiIiLmi3uKVsK1Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P5vBTiwh; arc=pass smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB6923EA84;
+	Tue, 24 Mar 2026 06:17:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774333041; cv=none; b=aFiQ1w0u3g41E0EXu0fPRdStNYRG7cK3NjqbW+2KT6Xa7EAm+YVod/1qb9frfE7xZSSD/KOoWIQ01wjj4P6mzz+5NBEeLxJ0HhVmI7JpbdR83Tdz7AZ3IU1yuoFutNJpDZMCuDVb5+KUJa/sZgBGaoZB7rZFvNCxskjpq+2UdNg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774333041; c=relaxed/simple;
+	bh=fkHDElAmhCE4ojupdnU3cYDhBoqE99JXsU0jtOaO4v4=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=Q97hGfeiexUsBSO48LQYInwsHs4IPSczzIdX2mFzxPWEyfcgmBprS3I0nFDL9sXMzBMEPtJf1cHkPfRWaBIujCbiEvC6upOf7sGjTo+A76M56Y2mSaT+uR307P5QyR3+Kh53jp9MT6Ir7RMrPDzevBzEBWPHHLD8BDsbJMzxYHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=bbWzOW8f; arc=none smtp.client-ip=162.240.164.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P5vBTiwh"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b79f8f7ea43so163631166b.2
-        for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 23:16:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774333012; cv=none;
-        d=google.com; s=arc-20240605;
-        b=UN3Mh12mowJ0NlFTIgV0IbypXqgSb4E8kHi/+9FRNNq0FCKdXNvD7HeBh8sbAl8pkt
-         UOYgAuNvpJt6mUrkU4BVdnFTN0SM5ffjhcHgG3QC6hn6Z3XtViJ8bMdDPAC7x9bmO4EJ
-         o54oirjs950eILdBX5tzHzfF+EaquynNpW0w+9lTSSa1Z3FE9+SUdL8QZFe4FEuhLwO9
-         8AVUXjG/Oa2mDX3YF8ZMSPv+OzUnV3tgzlHFaDNJF72F4ofoxKkFQfDrK1qdxQ/BCUMu
-         Hk1ilLZEhu4+AE7qjo41n0cRTlUTKFiMCxsNorWxWJmThp/BBi1yTiXJHXJlQpwk42CK
-         o85A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=+cvaC0YcLoRbJfn1y+y3/naIIgMA8OuvZpHsk5edtbU=;
-        fh=jGyeWrHpacyHgvxAWtYGDQtiSBtmzs4hxMYUbT8a2L4=;
-        b=Kv06g4XseMIAzKV1Zeu+8XaoM099d87F0YRwW65uoBYgSlBdu4J4Ohhjhl7xlGGE6I
-         AG4vXlVcV1EZqXegeWqispNA4B4+v7X1SyDdroVEoWcLRuxGndeJt27IvIOM6uIwm0WO
-         rTqGfL3H2t+tOFGiTs+kl0LOzp+ZUVtZ6NiTdWNgKK4g7RnhfkIwflBiloa6REZ88cVU
-         c+QkQ4NskEIfn/LxzyAq3eCExEnwzG1wf1/f9Q4lQKt/yWk/kbSgaTlcnLyFmxq5ejPX
-         kRTgFrDIv6m+2x88Z7MjwPXEiQZlJVtygZ0VYS+4WwGlD+YYDQklXh94kE+z5zZoSgFH
-         USPg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774333012; x=1774937812; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+cvaC0YcLoRbJfn1y+y3/naIIgMA8OuvZpHsk5edtbU=;
-        b=P5vBTiwhKr/mXWFR2ceG3bY4QU5IR7t2lhSZvd4/Ht3Wyv8U3yYpE/04EAqaWYRaWY
-         ZKtm7GH/YM/3dkYcK8AimAcQI3hstMd2SB6P5+1pWhT0A0cb7qmV3R6kHIyp9yj3o/6v
-         Z80i6vWnW08h+tOmeHlzA1iRncoEPvBz3B9jrxkepDWMYZb6Nf6ajyejmts8rWZJqXny
-         A2JIYJ/r2llAyQsk6gwDN3KPLnuDK8ZrKijR7NahAPWhA9ZEPCWKyTqIlx9WjWMYocew
-         IOIcwqRYkpIXCLgc8rd/IQjNzWW01MaCpmapXLTCTRLRpuhgF9QSLDpMV02qQsWQCxrv
-         j7rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774333012; x=1774937812;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+cvaC0YcLoRbJfn1y+y3/naIIgMA8OuvZpHsk5edtbU=;
-        b=HCfwNl4BiLhDEbks9sQM/IHtUoryqCq4K7MMnmaSfcAnB9hP6wqOCtUX4thmy/nFty
-         1tKNJGogTg7tKac3XuJk/vaePBg04++6CKly/5NAfImh6q5qa08FNKgeaENQ0GFVTnDJ
-         qKxkbghnaguBaQyuZ19g14bQFMEFY1YU0u1jVSxhsFNMuDFQ9NLKnlfSZMAMBml6sIr0
-         0Q8I5EmpDlO1YQ8FoXQqec4viK1LvKjxqdgpUsd+Zz16bDxWYmaLXw1RIAhyYk35Cujr
-         HGjRPcu04fZ9a7/g6K31yRH1ydQJS8BSWtVWz5J6d0oSTtVbMgqB5TQwqH9KGuUM6lHE
-         hlxg==
-X-Gm-Message-State: AOJu0YydVSZB7tv4Dzn0mL0CBjFkHfzXYxDYZwKiZhaKINXzNDwWVVlP
-	upN7l3/ETMCF8lRCARL7kcgWJk9RLPkpVD8zl0flTf2URQz+WPUITwPKMgQ5Mu193q/CPZ35fdd
-	nNAsx27ImRATB+l9HTqv7RRUIdVPHmrM=
-X-Gm-Gg: ATEYQzz25p3SblGaDrsF09Tfv2pNaBuSwu9RCtiTuGDkr0IzAmNnA69dylXztZ7C07R
-	q1YGQ/73Ho13ZgJq8xHZHA+qXkdiggn2Dt4JTma/vhJY/rrxIMxcTq+CilB+Q/e7ldBv9L5jIxb
-	mdMVPPdbQ0EiN7+pxz1BhXFOfS6nXW8NU6/FNcf2MdfU6xe2blXNZ3Y/rfEn4KvLWe8y7us7WGc
-	A8wxza4eBuXiP55Yst3NkEVyFBLTL03phEGdn3YeToNoNag6mm7rxyHAbbbMnlwk68GNDDCJged
-	LohGh7M=
-X-Received: by 2002:a17:907:da7:b0:b98:4c2a:d503 with SMTP id
- a640c23a62f3a-b984c2ada90mr763599666b.38.1774333011445; Mon, 23 Mar 2026
- 23:16:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="bbWzOW8f"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
+	; s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:
+	References:In-Reply-To:Message-ID:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=bgjC2f3Z8bWKh44Bxq0DLNe6UoZ6k/6sVOmxVskh0Ug=; b=bbWzOW8fqqsncxs3ZFjvWvk2Mr
+	ynElpPICQzJTvfKupOWYdj531v1N2Bdm0EuG8/O4fZmAOYsYUuqzsF4L9WcMbW+m5Q6k7BhU7aw44
+	t6XO9nKCTQeWmnHO55AX3Pd+Ek9i2UecnpccRR7V/Vhh9ey7WWtctIvG/0A37xr39NB0CmZU3mnLK
+	T56ZAi06dXRSTEygt6qCyQq9GAAar9Oqe0Bon6HppTirZo/SRKr6a0B4+E5MZGd1PxAFhrySwU6M/
+	HiIebszYKcb4KXg2XJ8kjght2Lv6+xBBflarNEUCmyff0tNInsQzcX1+Mb4WiybPvzVV2pSlgLJTL
+	NWWU9Sww==;
+Received: from [115.246.246.98] (port=54461 helo=zimbra.couthit.local)
+	by server.couthit.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.1)
+	(envelope-from <parvathi@couthit.com>)
+	id 1w4un2-0000000GuuQ-2q9K;
+	Tue, 24 Mar 2026 01:58:57 -0400
+Received: from localhost (localhost [127.0.0.1])
+	by zimbra.couthit.local (Postfix) with ESMTP id 8F4981B8098F;
+	Tue, 24 Mar 2026 11:28:50 +0530 (IST)
+Received: from zimbra.couthit.local ([127.0.0.1])
+ by localhost (zimbra.couthit.local [127.0.0.1]) (amavis, port 10032)
+ with ESMTP id iAaFhnawhd6z; Tue, 24 Mar 2026 11:28:50 +0530 (IST)
+Received: from localhost (localhost [127.0.0.1])
+	by zimbra.couthit.local (Postfix) with ESMTP id 4D30C1B809BF;
+	Tue, 24 Mar 2026 11:28:50 +0530 (IST)
+X-Virus-Scanned: amavis at couthit.local
+Received: from zimbra.couthit.local ([127.0.0.1])
+ by localhost (zimbra.couthit.local [127.0.0.1]) (amavis, port 10026)
+ with ESMTP id l5bd7S_18K2S; Tue, 24 Mar 2026 11:28:50 +0530 (IST)
+Received: from zimbra.couthit.local (zimbra.couthit.local [10.10.10.103])
+	by zimbra.couthit.local (Postfix) with ESMTP id 264761B8098F;
+	Tue, 24 Mar 2026 11:28:50 +0530 (IST)
+Date: Tue, 24 Mar 2026 11:28:50 +0530 (IST)
+From: Parvathi Pudi <parvathi@couthit.com>
+To: Kevin Hilman <khilman@baylibre.com>
+Cc: Parvathi Pudi <parvathi@couthit.com>, nm <nm@ti.com>, 
+	Vignesh Raghavendra <vigneshr@ti.com>, afd <afd@ti.com>, 
+	rogerq <rogerq@kernel.org>, tony <tony@atomide.com>, 
+	robh <robh@kernel.org>, krzk+dt <krzk+dt@kernel.org>, 
+	conor+dt <conor+dt@kernel.org>, 
+	richardcochran <richardcochran@gmail.com>, 
+	aaro koskinen <aaro.koskinen@iki.fi>, andreas <andreas@kemnade.info>, 
+	Andrew Lunn <andrew@lunn.ch>, 
+	linux-omap <linux-omap@vger.kernel.org>, 
+	devicetree <devicetree@vger.kernel.org>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, 
+	netdev <netdev@vger.kernel.org>, danishanwar <danishanwar@ti.com>, 
+	pratheesh <pratheesh@ti.com>, j-rameshbabu <j-rameshbabu@ti.com>, 
+	praneeth <praneeth@ti.com>, srk <srk@ti.com>, rogerq <rogerq@ti.com>, 
+	m-malladi <m-malladi@ti.com>, krishna <krishna@couthit.com>, 
+	mohan <mohan@couthit.com>, pmohan <pmohan@couthit.com>, 
+	basharath <basharath@couthit.com>, 
+	Murali Karicheri <m-karicheri2@ti.com>
+Message-ID: <200940616.724084.1774331930110.JavaMail.zimbra@couthit.local>
+In-Reply-To: <7hcy131w36.fsf@baylibre.com>
+References: <20260307122641.738450-1-parvathi@couthit.com> <20260307122641.738450-4-parvathi@couthit.com> <7ho6ks1r4s.fsf@baylibre.com> <91797572.667989.1773662409130.JavaMail.zimbra@couthit.local> <7hcy131w36.fsf@baylibre.com>
+Subject: Re: [PATCH v5 3/3] arm: dts: ti: Add device tree support for
+ PRU-ICSS on AM335x
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260321035439.900644-1-LivelyCarpet87@gmail.com> <20260323144535.GB85922@horms.kernel.org>
-In-Reply-To: <20260323144535.GB85922@horms.kernel.org>
-From: Tyllis Xu <livelycarpet87@gmail.com>
-Date: Tue, 24 Mar 2026 01:16:39 -0500
-X-Gm-Features: AQROBzBBCv2w0ZOtVdMmuKvgHj7C9SgIeMjOabKYcsILKAH01H0D6sFogiiH00U
-Message-ID: <CAJsYhQJm4mW1FHu2d=Pf8PfFyBWZA43QHpQ2esc0Cfuqqehh4w@mail.gmail.com>
-Subject: Re: [PATCH] ibmvnic: fix OOB array access in ibmvnic_xmit on queue
- count reduction
-To: Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, haren@linux.ibm.com, ricklind@linux.ibm.com, 
-	nnac123@linux.ibm.com, sukadev@linux.ibm.com, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	andrew+netdev@lunn.ch, stable@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	danisjiang@gmail.com, ychen@northwestern.edu
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+X-Mailer: Zimbra 9.0.0_ZEXTRAS_20240927 (ZimbraWebClient - GC138 (Linux)/9.0.0_ZEXTRAS_20240927)
+Thread-Topic: Add device tree support for PRU-ICSS on AM335x
+Thread-Index: S8Ccte6ObCw3Alp4fCQkM+hcJaygoQ==
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.couthit.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - couthit.com
+X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: smtp@couthit.com
+X-Authenticated-Sender: server.couthit.com: smtp@couthit.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-I'll try out the suggested changes and use more
-of the existing handling to create a new patch.
-I'll also remove the unlikely(). Thank you for
-your feedback!
 
+Hi,
 
-On Mon, Mar 23, 2026 at 9:45=E2=80=AFAM Simon Horman <horms@kernel.org> wro=
-te:
->
-> On Fri, Mar 20, 2026 at 10:54:39PM -0500, Tyllis Xu wrote:
-> > When the number of TX queues is reduced (e.g., via ethtool -L), the
-> > Qdisc layer retains previously enqueued skbs with queue mappings from
-> > before the reduction. After the reset completes and tx_queues_active is
-> > set to true, netif_tx_start_all_queues() drains these stale skbs throug=
-h
-> > ibmvnic_xmit(). The queue index from skb_get_queue_mapping() may exceed
-> > the newly allocated array bounds, causing out-of-bounds reads on
-> > tx_scrq[] and tx_pool[]/tso_pool[], and out-of-bounds writes on
-> > tx_stats_buffers[] in the function's exit path.
-> >
-> > The existing tx_queues_active guard does not help here: it is set to
-> > true by __ibmvnic_open() before netif_tx_start_all_queues() restarts
-> > queue draining, so stale skbs pass the check with an invalid queue inde=
-x.
-> >
-> > Add a bounds check against num_active_tx_scrqs immediately after the
-> > tx_queues_active guard. Use a dedicated out_unlock label to skip the
-> > per-queue stats updates (which also index tx_stats_buffers[queue_num])
-> > when the queue index is invalid.
-> >
-> > Fixes: 4219196d1f66 ("ibmvnic: fix race between xmit and reset")
-> > Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Tyllis Xu <LivelyCarpet87@gmail.com>
-> > ---
-> >  drivers/net/ethernet/ibm/ibmvnic.c | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
-> >
-> > diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/=
-ibm/ibmvnic.c
-> > index 5a510eed335e..c939391474cb 100644
-> > --- a/drivers/net/ethernet/ibm/ibmvnic.c
-> > +++ b/drivers/net/ethernet/ibm/ibmvnic.c
-> > @@ -2453,6 +2453,11 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *=
-skb, struct net_device *netdev)
-> >               goto out;
-> >       }
-> >
-> > +     if (unlikely(queue_num >=3D adapter->num_active_tx_scrqs)) {
-> > +             dev_kfree_skb_any(skb);
-> > +             goto out_unlock;
-> > +     }
-> > +
->
-> This doesn't seem quite right. Shouldn't it be as per other
-> blocks in this function that drop packets. In which case
-> it could re-use the existing handling in the conditional immediately abov=
-e
-> this hunk.
->
-> Also, I don't think unlikely() seems in keeping with the existing
-> implementation of this function.
->
-> I'm suggesting something like (completely untested):
->
-> diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ib=
-m/ibmvnic.c
-> index 5a510eed335e..67e1e62631e3 100644
-> --- a/drivers/net/ethernet/ibm/ibmvnic.c
-> +++ b/drivers/net/ethernet/ibm/ibmvnic.c
-> @@ -2457,7 +2457,8 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb=
-, struct net_device *netdev)
->         txq =3D netdev_get_tx_queue(netdev, queue_num);
->         ind_bufp =3D &tx_scrq->ind_buf;
->
-> -       if (ibmvnic_xmit_workarounds(skb, netdev)) {
-> +       if (ibmvnic_xmit_workarounds(skb, netdev) ||
-> +           queue_num >=3D adapter->num_active_tx_scrqs) {
->                 tx_dropped++;
->                 tx_send_failed++;
->                 ret =3D NETDEV_TX_OK;
->
-> Where the next line is:
->
->                 goto out;
->
-> ...
->
-> > @@ -2672,6 +2677,9 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *s=
-kb, struct net_device *netdev)
-> >       adapter->tx_stats_buffers[queue_num].bytes +=3D tx_bytes;
-> >       adapter->tx_stats_buffers[queue_num].dropped_packets +=3D tx_drop=
-ped;
-> >
-> > +     return ret;
-> > +out_unlock:
-> > +     rcu_read_unlock();
-> >       return ret;
-> >  }
->
-> My previous comment not, withstanding:
->
-> The RCU read side critical section is already enormous.
-> So perhaps making it slightly better doesn't make a difference.
->
-> If so, can we go for this slightly flow here (completely untested).
->
-> diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ib=
-m/ibmvnic.c
-> index 5a510eed335e..1e1cd8c11cf9 100644
-> --- a/drivers/net/ethernet/ibm/ibmvnic.c
-> +++ b/drivers/net/ethernet/ibm/ibmvnic.c
-> @@ -2664,14 +2664,14 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *s=
-kb, struct net_device *netdev)
->                 netif_carrier_off(netdev);
->         }
->  out:
-> -       rcu_read_unlock();
->         adapter->tx_send_failed +=3D tx_send_failed;
->         adapter->tx_map_failed +=3D tx_map_failed;
->         adapter->tx_stats_buffers[queue_num].batched_packets +=3D tx_bpac=
-kets;
->         adapter->tx_stats_buffers[queue_num].direct_packets +=3D tx_dpack=
-ets;
->         adapter->tx_stats_buffers[queue_num].bytes +=3D tx_bytes;
->         adapter->tx_stats_buffers[queue_num].dropped_packets +=3D tx_drop=
-ped;
-> -
-> +out_unlock:
-> +       rcu_read_unlock();
->         return ret;
->  }
->
->
-> --
-> pw-bot: changes-requested
+> Parvathi Pudi <parvathi@couthit.com> writes:
+>=20
+>> Hi,
+>>
+>>> Parvathi Pudi <parvathi@couthit.com> writes:
+>>>=20
+>>>> From: Roger Quadros <rogerq@ti.com>
+>>>>
+>>>> The TI Sitara AM335x ICE-V2 consists of single PRU-ICSS instance,
+>>>> This patch adds the new device tree overlay file in-order to enable
+>>>> PRU-ICSS instance, along with makefile changes.
+>>>>
+>>>> PRU-ICSS instance consists of two PRU cores along with various
+>>>> peripherals such as the Interrupt Controller (PRU_INTC), the Industria=
+l
+>>>> Ethernet Peripheral(IEP), the Real Time Media Independent Interface
+>>>> controller (MII_RT), and the Enhanced Capture (eCAP) event module.
+>>>>
+>>>> am33xx-l4.dtsi - Adds IEP and eCAP peripheral as child nodes
+>>>> of the PRUSS subsystem node.
+>>>>
+>>>> am335x-icev2-prueth.dtso - Adds PRU-ICSS instance node along with PRU
+>>>> eth port information and corresponding port configuration. It includes
+>>>> interrupt mapping for packet reception, HW timestamp collection, and P=
+RU
+>>>> Ethernet ports in MII mode,
+>>>>
+>>>> GPIO configuration, boot strapping along with delay configuration for
+>>>> individual PRU Ethernet port and other required nodes.
+>>>>
+>>>> Signed-off-by: Roger Quadros <rogerq@ti.com>
+>>>> Signed-off-by: Andrew F. Davis <afd@ti.com>
+>>>> Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
+>>>> Signed-off-by: Basharath Hussain Khaja <basharath@couthit.com>
+>>>> Signed-off-by: Parvathi Pudi <parvathi@couthit.com>
+>>>=20
+>>> [...]
+>>>=20
+>>>> +/*
+>>>> + * Disable CPSW switch node and
+>>>> + * MDIO configuration to prevent
+>>>> + * conflict with PRU-ICSS
+>>>> + */
+>>>> +&mac_sw {
+>>>> +        status =3D "disable";
+>>>> +};
+>>>> +
+>>>> +&davinci_mdio_sw {
+>>>> +        status =3D "disable";
+>>>> +};
+>>>=20
+>>> I think you need s/disable/disabled/?  (note the trailing 'd').  Withou=
+t
+>>> that, I don't think you're disabling these nodes, so I'm curious how it
+>>> is not conflicting with the PRU-ICSS.
+>>>=20
+>>> Kevin
+>>
+>> Thank you for pointing out this typo.
+>>
+>> We checked the kernel code as to why this did not create any issue in ou=
+r
+>> testing.  We found that the device availability check goes through
+>> of_device_is_available(), which only treats "ok" or "okay" as enabled.
+>> Anything else is effectively treated as not enabled.
+>>
+>> So even though "disable" isn't the usual DT value, it still prevents the
+>> node from being probed since it doesn't match "ok"/"okay".
+>=20
+> Yes, but since your node is in an overlay, if a previous .dts[i] had set
+> this to "ok", then your overlay would not disable it, which would not be
+> expected behavior.
+>=20
+>> We will update the value to "disabled" in the next version, since that i=
+s
+>> the standard.
+
+Sorry for the delayed response.
+
+In our setup, there is no previous .dts where we set this to "ok". We are w=
+orking
+with a combined DTB (base + overlay applied). When we de-compile the final =
+DTB
+back to DTS, we do see that the status property is set to "disable" for the=
+ node.
+At runtime, the kernel=E2=80=99s of_device_is_available() only treats "ok"/=
+"okay" as enabled,
+so "disable" results in the node not being probed, which is why we did not =
+observe
+any functional issue during testing.=20
+
+Are you referring to anything beyond the final merged DT result?
+
+Thanks and Regards,
+Parvathi.
