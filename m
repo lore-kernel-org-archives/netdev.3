@@ -1,108 +1,120 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 761F537F733;
-	Tue, 24 Mar 2026 15:52:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01AA37A48B
+	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 15:53:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774367546; cv=none; b=Wp1/VoCAORFveY7MN5ks2VteAtgbCPtRRJnP9rBpkxY5QgNcRuURz/ywWb7DkazmlYo4vkDibpN+GbEt4mccPAGVFfS42ah8nn26Egq3KB06Ug42wzYoM7xnCiD7h1jAMpK6twlvvqSv+bmiKtFVW0QobZjdqjBgzc7E4bxW5nQ=
+	t=1774367594; cv=none; b=L0zyExu2gXCUafADL3Ez18Bht+nQ+/0iYnc2+V2MCpEoMjaN7CHI304jYU/axWucRSdbB5sLNIwe5jLXmr0g0tOPDoMZPkJ7Fj7oMPyYpKLj7hgIOHrKkInNpvUYcJycdZY7JmO7Vd2B9PkXhMyjOfx8CYbbwp5NMg8F0KW8ZAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774367546; c=relaxed/simple;
-	bh=HyEhqdBvfa3r9tYRrYSgodtwHMxVIZ/6Kc/3pc0VDK0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C8czaNRNYq8PnkP5LBz1/K4CSQw9ZgBBUXqH8/lyioimSvBkCZ3lJkSTW5ZmG5c+aMwQyD2ZOyHyKmc6McDIRAf1xZ4XXIs+9RoUNJCqsIY+0HY1xuX1sZlWchfxw97dZLJNXqVjSjq1rO3Pe/A84e8ZRLcusvSjmYHEJEpdoLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OdI6f/H9; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1774367594; c=relaxed/simple;
+	bh=LiIV+5XNglCPPMFa9iO5svn7RW5PZppPVuZK2KTD5ng=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JJWf+EKHw3xCZ5NE6oqHOScY/24Y3r+2RKa2AmMp8NhvNTAS8rOePkApS8bFC9/+KCkwWTPYYdwlrSc/WPbUmMK0imQmglwo1nV2bbrba3CqeffKiKLMjStiWQJ8p3Pmu28TShlbF55b424FhoMVZCsIv/+HLX9pyCwR3q0axFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OWCLTzHO; arc=none smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OdI6f/H9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774367545; x=1805903545;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=HyEhqdBvfa3r9tYRrYSgodtwHMxVIZ/6Kc/3pc0VDK0=;
-  b=OdI6f/H9jEZOExpcH8b4S/+/sG/tPTHIABSWoDwNbWXMiT5Rh/0v6X6Y
-   LnQOc3zA0sRIs0rJpVq87QRr4C4J4aFAmuqkyVreEvUKtVFBbnaxgAXMb
-   bMU4Z2BpBunhLm3W0YCl6FMoZ5n2MdoQeB70Y1uXTCFAsKxKyD86AYqAO
-   8G6zeJ2Tp+IfksZprMNmxNLCLOLYSldVPCkHDDM+adATcNzJp6NNGfmBB
-   41Z4ClekuH/BKcumdW+X55ITawvi1BNASD5iwZobPWKNGPOPWU4YJsXPK
-   v2+PsnZnkAPlNoyc0WwNG3tX+qOip+s0kY0nv0RKnNHgGdxF3XMMahqVS
-   w==;
-X-CSE-ConnectionGUID: LtxnCQX+TgWaPlmjTKljQQ==
-X-CSE-MsgGUID: ULvY6SqTSIWJYuNFyctQmg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="77989926"
-X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
-   d="scan'208";a="77989926"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 08:52:24 -0700
-X-CSE-ConnectionGUID: ktOYh7fOQeW8ut6uCDpn3g==
-X-CSE-MsgGUID: 4HzScUrOR0qbSB6nEheW1A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
-   d="scan'208";a="223462626"
-Received: from igk-lkp-server01.igk.intel.com (HELO 9958d990ccf2) ([10.211.93.152])
-  by orviesa006.jf.intel.com with ESMTP; 24 Mar 2026 08:52:22 -0700
-Received: from kbuild by 9958d990ccf2 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w543H-000000006vF-1GXR;
-	Tue, 24 Mar 2026 15:52:19 +0000
-Date: Tue, 24 Mar 2026 16:51:45 +0100
-From: kernel test robot <lkp@intel.com>
-To: Artem Lytkin <iprintercanon@gmail.com>, netdev@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OWCLTzHO"
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5a27bfadca9so6571971e87.3
+        for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 08:53:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774367591; x=1774972391; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FhxZ2/HJu4L/xAHCzTO17lW76yrB8+9Q275K5Y2NCLM=;
+        b=OWCLTzHOWwZYhtGrUxkEwsLwzRb+O1/bvl8BXU75QEcLyjgpJe/hQ5Kq2fGCOVEerV
+         dpeR6o/dyrjmhxfO3tnMVqNRwFWctzyb/8apPI7zqeoBL2qxOigKb+EcOU7FjSJvhzQx
+         V/aKy5WEVL31xh1DKbIe8E4vNUlA0KmCZRrRbImLWvI1343kkdxlKOgQF+nAy+eUASqd
+         5t8Uut9y8IocSoW1HFHhxzUGpoxGy1hE2YYTo6gmJ1zfElDnvFH7vJR1IMWjUWacth1V
+         XfXVQZAqUjGaEv7NpHtPDPg35jtOQwBXKSI66pVmXhCkseHTzfXlBEiYTITGa7yUWz28
+         zDLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774367591; x=1774972391;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FhxZ2/HJu4L/xAHCzTO17lW76yrB8+9Q275K5Y2NCLM=;
+        b=QepbV0DsaW5uN+DO6md8DFQu/ttSwiEcsfRIe185Fk9Cw4/2dvJDj/zZ9kmGD0BDOI
+         F14ar6u4fXs6XRMQUFoVM/zeNc6UZXZKkKHiw5fT3j7yehTvDV3RC6nQbF9Hojv7dqrR
+         KCMuyclpzShOg5adxMI9Y3O1WZnKOwtDD+Ht5MUXKuEAFRqoUb4+VUoGvXaGtFs8nehI
+         fK5Y0FVkQzUx6znE8gWaQUeAFV2EvD0QloyRIpQvoZGWk2q3j0rvE5Cy9e+ce4/dMQbH
+         x8mhxrZOwkPAOba/+j7EDCC9YbTNiBj0vmXwrFKPaIOdK7LFWBrgGDsNmTPm2d+BKDks
+         UlXg==
+X-Gm-Message-State: AOJu0YylBS/3y5pMNRJVgvQhTkhXF9KfvVhTRwCh0ydT1SWU95Rx6VjD
+	H8WFYiIwvFW1Li1Mm3b+lErX+s8Uq7R+nHNzTF8vpdY/1O9RWBVg/TDwvPHq2lE1
+X-Gm-Gg: ATEYQzwvSWFiiAloifc1PiHhmTkTN0mbbcV7yTIkSHaIrPu997Da8MZeczaopxx0SRE
+	bz2+El2GyW3PHZTboqjiiwHJ4YGYIwR+/i9Cs3c7bwx/310iGtgHkp+SEQdctdcSqkWSdp5ya3z
+	p/hOx8qG8fH2rvR8+0CriIdjUW55YUqgLT6PX9Xx5sVSrTde2qCHO/YvLy4tP6F0TC4y8LzlM0U
+	TRq+rMAas6j+fD5Sa7o0uydDTD4gmi5B/ISVs2SEXMH73cO9qUABvfppsZgjNnDpxOLh6233+WF
+	oaSmi0VXG304Dt4SRpTEuyLKhlPIapc/LdTedE7m2fMqNQrQn6uMDW2KOGtb1pYFnFWmUO+aZj3
+	zwrpDiebMhUM0CR7PsO+fyT2NgoopcBPWh6PS0zbUFZliTzShUs9EDcIJRN4X+Q9KhbwasiA/Ta
+	CzqYn20vHFWROy3RTmUHjk4t9od4uroF8oYWiN7HG+ce3tTIaNMz5R7HPO15cO43/IKl3+nowsZ
+	4YJ4s1LRoomARcBwA==
+X-Received: by 2002:a05:6512:3d10:b0:5a2:851a:264a with SMTP id 2adb3069b0e04-5a29b97ecc8mr7788e87.10.1774367590545;
+        Tue, 24 Mar 2026 08:53:10 -0700 (PDT)
+Received: from localhost.localdomain (46-138-191-69.dynamic.spd-mgts.ru. [46.138.191.69])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38bf9aa7cd0sm32567841fa.32.2026.03.24.08.53.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Mar 2026 08:53:10 -0700 (PDT)
+From: Artem Lytkin <iprintercanon@gmail.com>
+To: netdev@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, fujita.tomonori@gmail.com,
-	andrew@lunn.ch, hkallweit1@gmail.com, tmgross@umich.edu,
-	ojeda@kernel.org, dakr@kernel.org
-Subject: Re: [PATCH 4/4] rust: phy: add interrupt support
-Message-ID: <202603241610.omlicT8x-lkp@intel.com>
-References: <20260323201925.8405-4-iprintercanon@gmail.com>
+Cc: fujita.tomonori@gmail.com,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	tmgross@umich.edu,
+	ojeda@kernel.org,
+	dakr@kernel.org
+Subject: [PATCH net-next v2 0/5] rust: phy: extend abstractions for real-world PHY drivers
+Date: Tue, 24 Mar 2026 18:52:44 +0300
+Message-ID: <20260324155249.15098-1-iprintercanon@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260323201925.8405-4-iprintercanon@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Artem,
+This series extends the Rust PHY abstractions in rust/kernel/net/phy.rs
+with features needed to write production-quality Rust PHY drivers, and
+adds a Realtek RTL8211F driver as the first user of these APIs.
 
-kernel test robot noticed the following build warnings:
+Patches 1-4 add new Device accessors, register manipulation helpers,
+driver callbacks (config_init, read_page/write_page, config_intr,
+handle_interrupt), and interrupt support infrastructure.
 
-[auto build test WARNING on rust/rust-next]
-[also build test WARNING on linus/master v7.0-rc5 next-20260323]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Patch 5 adds a Rust RTL8211F Gigabit Ethernet PHY driver that exercises
+all the new abstractions. The driver implements RGMII delay
+configuration, PHY EEE disable, paged register access, and
+interrupt-driven link detection. ALDPS, CLKOUT, and WoL are omitted
+as they require per-device private data not yet available in the
+abstraction. PME interrupts are not handled for the same reason.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Artem-Lytkin/rust-phy-add-paged-register-access-and-bit-manipulation-helpers/20260324-155532
-base:   https://github.com/Rust-for-Linux/linux rust-next
-patch link:    https://lore.kernel.org/r/20260323201925.8405-4-iprintercanon%40gmail.com
-patch subject: [PATCH 4/4] rust: phy: add interrupt support
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260324/202603241610.omlicT8x-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260324/202603241610.omlicT8x-lkp@intel.com/reproduce)
+config_init was previously proposed in an RFC for the Rockchip PHY
+driver [1] but not merged at that time. This series re-introduces it
+in a form consistent with the existing vtable infrastructure.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603241610.omlicT8x-lkp@intel.com/
+Changes since v1:
+  - Added cover letter (Andrew)
+  - Fixed Subject prefix to net-next (Andrew)
+  - Added RTL8211F driver as API user (Andrew)
+  - Fixed rustfmt issues reported by kernel test robot
+  - Removed RGMII from interface() doc example (Andrew)
 
-All warnings (new ones prefixed by >>):
+[1] https://lore.kernel.org/lkml/20240201-rockchip-rust-phy_depend-v2-0-c5fa4faab924@christina-quast.de/
 
->> warning: unsafe function's docs are missing a `# Safety` section
-   --> rust/kernel/net/phy.rs:564:5
-   |
-   564 |     unsafe extern "C" fn config_aneg_callback(phydev: *mut bindings::phy_device) -> c_int {
-   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-   |
-   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_safety_doc
-   = note: `-W clippy::missing-safety-doc` implied by `-W clippy::all`
-   = help: to override `-W clippy::all` add `#[allow(clippy::missing_safety_doc)]`
+Artem Lytkin (5):
+  rust: phy: add read-only device field accessors
+  rust: phy: add paged register access and bit manipulation helpers
+  rust: phy: add config_init, read_page, and write_page callbacks
+  rust: phy: add interrupt support
+  net: phy: realtek: add Rust RTL8211F PHY driver
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+ drivers/net/phy/realtek/Kconfig          |  12 ++
+ drivers/net/phy/realtek/Makefile         |   1 +
+ drivers/net/phy/realtek/rtl8211f_rust.rs | 140 +++++++++++++++++++
+ rust/kernel/net/phy.rs                   | 260 +++++++++++++++++++++++++++++++
+ 4 files changed, 413 insertions(+)
+ create mode 100644 drivers/net/phy/realtek/rtl8211f_rust.rs
