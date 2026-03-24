@@ -1,204 +1,95 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013044.outbound.protection.outlook.com [40.107.201.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B2B63FA5D0;
-	Tue, 24 Mar 2026 12:31:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774355474; cv=fail; b=L3hRbgP30GcqWX9FILbxPbyrt6R2dXRycsJli36XrfDzh9IAFFv58UcPHfNQxUmDGoMH088txlkN7GUeECUsdT7EM02+OX/6Q+VDeUeGXrvyuVGkUZ29zJV9YFnnMyUQ8hw0usTf9Ast48NrkQlzHXDCeNXJiAjqHDfax3F/Pjw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774355474; c=relaxed/simple;
-	bh=U+jRQP0+gtxO5B20GtBqzbI5RAKuRhakmRfRMn0s5e0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KogvBQIMEFdlfJ06+/d46LSSASoPHpIqiKTMmlw4Xt+4szIxz2fBwDRaEu3ibldsUnHOXX7of7hpEkuor0xFNIk/Zdm87EfTY3FSm5ZoiTwja5oB+ao+b86LbI/ZCoiey5LpAF5ipOQp5V5KfiljgU0WA+u9340lGY/HW5dQh48=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=oZQfXWMf; arc=fail smtp.client-ip=40.107.201.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8803FA5EB
+	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 12:31:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774355482; cv=none; b=qiMi+9iNzUMdz6QDNwsImAO7vh+0396Yr+H7kDMhq2wU1BJPnetsV28Cb2soNIge28DJZ+dkC738apYKo165EbnDD6kAcbG2qSWi6ItDTA5zCUN4iu3uQQByIbEmklG9JBH1nVF8SBDv45v9IZ+xeNUiX7gPZg7n5vP2YutxoLE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774355482; c=relaxed/simple;
+	bh=DN9QG712RR6lTFc1B4cCoM2R5uHblNYBTpFN1+j7etg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rsDoa+kg2zONbrQyN0srnqII/c5Dz1lmw8VxuxOuogPQYIUtoQhFYDgkTbOT+GlLDSRQ4QFBERISYJKtM/907vuLIm+wgTv16ixKIWgTtzwTMl26vUU5q/VryhoHoTn2FpS+Iz3u5S3/CIxItuTJR364f3tHmqiJcjxMD8/leLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=g9/sGMhK; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="oZQfXWMf"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=d4hBdPn+cun7Y/s4e++LDkgmWU6A2EnyW/HgkKzEoXPDULObCK9JRyHfykiM75RI6KzhTt1XJkz1c7HXky5+hwWWtpeXLOCP2jfhSdYPa6SwAm2MGHgxgCW/Ujk1hvkay7AZNP9sAxOXVIY1WTeQXUYnBSA4hfeKvD9aJK3AJDMn6Eoox8rH8k76egPU1oXox2PJ8nm+fJQriMDbBx6WPjcdsi+AIo6vzNfdfuZgRV0hrSMDv8xyjLVOqi9wOYiIovx3P23dTkXZXStdNrlLN3gFxVxe9293VQeJNTn+bP94au/4l0SqfPbyABkJcuxRoR6x11FpOII9Fxb4yF9Jbw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jz9K/OyMbIfKrOzNc03+7zFjT7ikB9qLAGavuipoF1Y=;
- b=O/zfKMBBSP4M6XvSaIgVdvcdtvqLY4giPes16rBUntRZrIN28QXsZ1+Y/MnzDFJfa2+m6r0l9B7yerOHxRbBXxFhd/WyCP+ocIFaQP34xRlgQpraOg9jPuMaMfJgEFULSq5Ew6RkQosc9mln7bFATYvtkAn0KFov1Cufm7lyc9IhlXDSm4MJnpoUwfmxDgpl/IaEF1TZQi9G/ceYfWip+a0RMJiMfJ4XDtetE+zNiIfyKQeIXTGJeQLG96ThiBwITfXhehdGFecf2AZt6D74xXjTQ/RhUCIybElYIYpd1+W/mJU33cgsmkgsaa89mPRn0hrn3VqhzrmJZLHh06a38Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jz9K/OyMbIfKrOzNc03+7zFjT7ikB9qLAGavuipoF1Y=;
- b=oZQfXWMfZCyXcSJZiOd+x6HUTWB8y/SZb+GU69dBDm12QJbnD+eMFrR+pUAWDVRI4kKhShGxnsucVwzmS9n8X0DR5k9pFuGpb0RA5RoFypp2JSU0R+lMJpTqqoCFm5ulJa1GJp6uHxwOyiXnfDrI8nnr3NxZjlySIQtqFKULgy7GBTrJ9rGsXCz3DNn/7iGc98qrpHKPowOm4YIhNYd6njhtJUVBwBYn7QlL6KPf7+VwKK+jHXNmRzyXxz8anQ+HfQ+VJTYqoRWv6aLdX5VTHm+BXOWZXpwWlODkbkkLvX9nVv2huZ1Oniz8PkVGIHe41NN0jlSv+6L6ThAmhw4RXQ==
-Received: from SN6PR05CA0029.namprd05.prod.outlook.com (2603:10b6:805:de::42)
- by MN0PR12MB5788.namprd12.prod.outlook.com (2603:10b6:208:377::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.16; Tue, 24 Mar
- 2026 12:31:06 +0000
-Received: from SA2PEPF000015C6.namprd03.prod.outlook.com
- (2603:10b6:805:de:cafe::db) by SN6PR05CA0029.outlook.office365.com
- (2603:10b6:805:de::42) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9723.31 via Frontend Transport; Tue,
- 24 Mar 2026 12:31:06 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SA2PEPF000015C6.mail.protection.outlook.com (10.167.241.196) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9723.19 via Frontend Transport; Tue, 24 Mar 2026 12:31:06 +0000
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 24 Mar
- 2026 05:30:48 -0700
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail203.nvidia.com
- (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 24 Mar
- 2026 05:30:47 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.6)
- with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Tue, 24
- Mar 2026 05:30:38 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>
-CC: Donald Hunter <donald.hunter@gmail.com>, Simon Horman <horms@kernel.org>,
-	Jiri Pirko <jiri@resnulli.us>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
-	<skhan@linuxfoundation.org>, Saeed Mahameed <saeedm@nvidia.com>, "Leon
- Romanovsky" <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, Mark Bloch
-	<mbloch@nvidia.com>, Chuck Lever <chuck.lever@oracle.com>, "Matthieu Baerts
- (NGI0)" <matttbe@kernel.org>, Cosmin Ratiu <cratiu@nvidia.com>, "Carolina
- Jubran" <cjubran@nvidia.com>, Daniel Zahka <daniel.zahka@gmail.com>, "Shay
- Drory" <shayd@nvidia.com>, Kees Cook <kees@kernel.org>, Daniel Jurgens
-	<danielj@nvidia.com>, Moshe Shemesh <moshe@nvidia.com>, Adithya Jayachandran
-	<ajayachandra@nvidia.com>, Willem de Bruijn <willemb@google.com>, David Wei
-	<dw@davidwei.uk>, Petr Machata <petrm@nvidia.com>, Stanislav Fomichev
-	<sdf@fomichev.me>, Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>, Gal Pressman <gal@nvidia.com>, Jiri Pirko
-	<jiri@nvidia.com>
-Subject: [PATCH net-next V8 09/14] net/mlx5: qos: Expose a function to clear a vport's parent
-Date: Tue, 24 Mar 2026 14:28:43 +0200
-Message-ID: <20260324122848.36731-10-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20260324122848.36731-1-tariqt@nvidia.com>
-References: <20260324122848.36731-1-tariqt@nvidia.com>
+	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="g9/sGMhK"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-48704db565eso30384145e9.1
+        for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 05:31:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1774355480; x=1774960280; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=DN9QG712RR6lTFc1B4cCoM2R5uHblNYBTpFN1+j7etg=;
+        b=g9/sGMhK4PxQBq6SCuvkYj15QCLV5QnIw4wKP6O6qwYZwNDbFxFBU/oW2OgW8skjQh
+         76BKsp1T4SnWWtLX4bx5B0A5tVMmLGmQR/9meT+HdW1bSF1owSH4TGy/5ogtZtrLSKM1
+         Hvi5qPhaklLRIq/LGZeXBSWSDUP1Hl4xPBsomIEySKvC25f/FxqG6al1NzN0uNiHoevm
+         oZQ2c4K2v+xA8K8/n/fteV6QaPZwIy/FX+kPyZgVf6ercjLXRa+Ldqxrh/9UZEQxQm1G
+         4gd6Lpmi0bG441kmOWgaqXzZD0bK1FPrHcGWEc2WMtdBOgGGEFqUxeUItRIeSAvSEeFG
+         Swfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774355480; x=1774960280;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DN9QG712RR6lTFc1B4cCoM2R5uHblNYBTpFN1+j7etg=;
+        b=DLPvq+SnmTbX/j7qOKEQvivJcZJOaq1kqTo68UOmZx7zMeiUqqBCqQVZ48WLlw/K7q
+         v0wHwbBAMxquZisQtCUHqmGoOY9pFw8yarpUVfPvDhR8tBvNJJqyuuyE42IlvK9sj9U7
+         gugYRFHjIFW0dEBXDWHnmuHatn6PrxMJ9wOrTNpWiZWAt23wa7zG5pu9uZPwyFDJIWDE
+         Q4v3DWU6VkFq9Tg4NHdy2gJrZgCxbyhMBGxDL69SdIzfywRGeRDpWZoyubc8EvLF1Nw9
+         xxMOxzoyjID6Fq/qjjiXcz9l29oAYzjJvrmIayid+ztdJBnZbeeMHR5e0K0alduIX0Kg
+         X1/g==
+X-Gm-Message-State: AOJu0YzQmF9z9VfHK4H5Kdsy4tTR3Z8aGxlIUHv6BgbvVaenfByOr3mw
+	73l/MaRQFR07yFnpr2Q8FxvHQzsNPadnwOObM2WSTHVdupIQWc1rin+59LkaYnT3FTA=
+X-Gm-Gg: ATEYQzzSf599jLue+fJ8qVnzjRrgkkeivXyvMwh9WxlGBj8PCn660b/vsiYVF2fjtUg
+	vLgUPLaOb0NXKvRy9PSTqDXgo1Yk3fko4wpiPN3fHBqQ24LofEdNEYAmDV/viyJeLqKTk4cVZyV
+	qCVy90nZ2yF7BMYLtFVPh1eS3F3/xX5+YFg1IdRAKoYvNgv4CSgwUWcibnahGpUXPZB0JjgnVTk
+	YGBwha1tJ8bLgFi7AvCNygUzOVeVxKn5jAdmkwtOcYJUuUCGqJPtrFWShQE0QSnlPGqvNRTkiWS
+	IL6Ec3Oupjnc5Atufpk/myChRCeOhnLhE9PP5Ax7x97nJlzmw3WeCEavsNS+ZjId8pwTkBYDpyQ
+	6PVH4EBZrsBWip3SJuFPgA/GERRU5ERVwp7gtDG2lpUMKwSpSOA6OWRtDrzgvoVk/nZJoEdz7Dm
+	usOOogp9nU4sUzc4qZWwQzLACZAPMMn+vHM9BLU0mzvZLIKg==
+X-Received: by 2002:a05:600c:8710:b0:485:35ba:1d81 with SMTP id 5b1f17b1804b1-486fee051camr217093495e9.21.1774355479578;
+        Tue, 24 Mar 2026 05:31:19 -0700 (PDT)
+Received: from FV6GYCPJ69 ([140.209.217.211])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-487117077cbsm45730395e9.6.2026.03.24.05.31.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Mar 2026 05:31:19 -0700 (PDT)
+Date: Tue, 24 Mar 2026 13:31:16 +0100
+From: Jiri Pirko <jiri@resnulli.us>
+To: Grzegorz Nitka <grzegorz.nitka@intel.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	intel-wired-lan@lists.osuosl.org, poros@redhat.com, richardcochran@gmail.com, 
+	andrew+netdev@lunn.ch, przemyslaw.kitszel@intel.com, anthony.l.nguyen@intel.com, 
+	Prathosh.Satish@microchip.com, ivecera@redhat.com, arkadiusz.kubalewski@intel.com, 
+	vadim.fedorenko@linux.dev, donald.hunter@gmail.com, horms@kernel.org, pabeni@redhat.com, 
+	kuba@kernel.org, davem@davemloft.net, edumazet@google.com, 
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: Re: [PATCH v2 net-next 2/8] dpll: allow registering FW-identified
+ pin with a different DPLL
+Message-ID: <4h6vp6vzu54okdnckxd52tg6oz3lhf3wy52xfkbluytc3gs6bn@dyu32dx4pnii>
+References: <20260321222627.1193603-1-grzegorz.nitka@intel.com>
+ <20260321222627.1193603-3-grzegorz.nitka@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF000015C6:EE_|MN0PR12MB5788:EE_
-X-MS-Office365-Filtering-Correlation-Id: f5d1761e-b153-4be6-69e1-08de89a138bf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|82310400026|376014|7416014|1800799024|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	uTeuHMON3u/6BOjuW3YzhVtr5vLrWpNWLjbTVi6+VGPqojnzHZ5URriDFHkuKI1ZZ19V4QVT4Tpp4Isbyy9aNx60fKCSdxuHTF/2+OouuVB6GDEEUYtX5sk6ApEBMgS5CFZE4FZG0K2bOF4GLBiAXq0dbZdV6oom0LJbbpABhPlo4SofjiZLw2EtHHxf+cOswy5ctZTmBog4F5V/1RoFoeCzX1sSeY19594G4X5vPPOMb955RGwHU7w6ghGgVlicTy6aOGVJRGRK9jeszGksT6YYaOI0tVtMDMknKBF3WGuFb6DKCYEdikJFS0EDqhvgUCwaENlYgeR+M5fB4HtGg/FytHtkDJljz5L/+IOLlzSuDk5i8/QXDezuVpe3Sp2Q1mDzzNBVEjmYqxReRvyw9gEvYzmP7espajgVvHZ6h1/8TOl5ivdeqYuaE2DTUVqrYLGfyNoHhrjXeSvVBR+fC3csHB02x83LvwCVVCiUwDhuEIL8M5EQS24I/YREcGZtMgeUN7x+GeLG489V32eJr5/6LtDCKYZ7+ePrNTJRkHIQpjp0GHmJdueJaYl9/LV2lB8dcULKCpzllz/YrvY/LuvqZxhiVipmGEnRWl6nif7QzTuZ/l1sPwF/iEfUxYGKQkb8mML0nDlGlNDiKcRKX/VXZydJ44VnYq+GkAmffQzZCIe7aDgeot63owRCDud20ljbNV/uNRJ0WKgwXJG0W5oiMeCXjV4NR2H8MLkPp6V/wGD0lvvGwmUccxXy0Dy/DoFrqlBEgMumxhhm4Ot9Og==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(376014)(7416014)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	Nb0HPoqWyFrPZfQv1Z16wm/mhONbDWZv5ceC0P1aLB0ZzLdC0YCv7uZMZ+aQDaMKb+83hlLjXAi/qL4QxWc9GOmgxfWvrzeFVOXG/mKCk6MsKO0ct5AdfYzzrg54CzjMjnkfyziPe+WLkIqilq4beygeNPBWUpFrjavxK6qgaHTDAltujX+UfJtutWhME9VwHQkvuwe0VcjKk0SFi8+AVlLcJ2hlsIJo/y2ZGNQLbaMeqdxBs7ObAZqCkG1a0qkyGHP+ravz1dVjEQX0LbmFnNsfmk2Uc1iD3RqvxuXrwkiiJKh9coKzS0oppGfZ0Knx8HlZT9g/3f+9xPYYwPcPs5v37wSGKMXQuM3Q8RDl2Xf7dZD1IuS/2/hzywADhXqH/bsycqjBmeedBc9Qu1W1/Z99ZJ40fZTksvVwK3oWbTza3Y2pcvEmxtZgKej0OkWI
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2026 12:31:06.6548
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f5d1761e-b153-4be6-69e1-08de89a138bf
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF000015C6.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5788
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260321222627.1193603-3-grzegorz.nitka@intel.com>
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+Sat, Mar 21, 2026 at 11:26:21PM +0100, grzegorz.nitka@intel.com wrote:
+>Relax the (module, clock_id) equality requirement when registering a
+>pin identified by firmware (pin->fwnode). Some platforms associate a
+>FW-described pin with a DPLL instance that differs from the pin's
+>(module, clock_id) tuple. For such pins, permit registration without
+>requiring the strict match. Non-FW pins still require equality.
+>
+>Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+>Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+>Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
 
-Currently, clearing a vport's parent happens with a call that looks like
-this:
-	mlx5_esw_qos_vport_update_parent(vport, NULL, NULL);
-
-Change that to something nicer that looks like this:
-	mlx5_esw_qos_vport_clear_parent(vport);
-
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
----
- .../ethernet/mellanox/mlx5/core/esw/devlink_port.c    |  2 +-
- drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c     | 11 +++++++++--
- drivers/net/ethernet/mellanox/mlx5/core/eswitch.h     |  3 +--
- 3 files changed, 11 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/devlink_port.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/devlink_port.c
-index 8bffba85f21f..6f884c4189a0 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/esw/devlink_port.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/devlink_port.c
-@@ -204,7 +204,7 @@ void mlx5_esw_offloads_devlink_port_unregister(struct mlx5_vport *vport)
- 		return;
- 	dl_port = vport->dl_port;
- 
--	mlx5_esw_qos_vport_update_parent(vport, NULL, NULL);
-+	mlx5_esw_qos_vport_clear_parent(vport);
- 	devl_rate_leaf_destroy(&dl_port->dl_port);
- 
- 	devl_port_unregister(&dl_port->dl_port);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
-index d04fda4b3778..4781a1a42f1a 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
-@@ -1866,8 +1866,10 @@ int mlx5_esw_devlink_rate_node_del(struct devlink_rate *rate_node, void *priv,
- 	return 0;
- }
- 
--int mlx5_esw_qos_vport_update_parent(struct mlx5_vport *vport, struct mlx5_esw_sched_node *parent,
--				     struct netlink_ext_ack *extack)
-+static int
-+mlx5_esw_qos_vport_update_parent(struct mlx5_vport *vport,
-+				 struct mlx5_esw_sched_node *parent,
-+				 struct netlink_ext_ack *extack)
- {
- 	struct mlx5_eswitch *esw = vport->dev->priv.eswitch;
- 	int err = 0;
-@@ -1892,6 +1894,11 @@ int mlx5_esw_qos_vport_update_parent(struct mlx5_vport *vport, struct mlx5_esw_s
- 	return err;
- }
- 
-+void mlx5_esw_qos_vport_clear_parent(struct mlx5_vport *vport)
-+{
-+	mlx5_esw_qos_vport_update_parent(vport, NULL, NULL);
-+}
-+
- int mlx5_esw_devlink_rate_leaf_parent_set(struct devlink_rate *devlink_rate,
- 					  struct devlink_rate *parent,
- 					  void *priv, void *parent_priv,
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-index 5128f5020dae..a5a02b26b80b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-@@ -455,8 +455,7 @@ int mlx5_eswitch_set_vport_trust(struct mlx5_eswitch *esw,
- 				 u16 vport_num, bool setting);
- int mlx5_eswitch_set_vport_rate(struct mlx5_eswitch *esw, u16 vport,
- 				u32 max_rate, u32 min_rate);
--int mlx5_esw_qos_vport_update_parent(struct mlx5_vport *vport, struct mlx5_esw_sched_node *node,
--				     struct netlink_ext_ack *extack);
-+void mlx5_esw_qos_vport_clear_parent(struct mlx5_vport *vport);
- int mlx5_eswitch_set_vepa(struct mlx5_eswitch *esw, u8 setting);
- int mlx5_eswitch_get_vepa(struct mlx5_eswitch *esw, u8 *setting);
- int mlx5_eswitch_get_vport_config(struct mlx5_eswitch *esw,
--- 
-2.44.0
-
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
