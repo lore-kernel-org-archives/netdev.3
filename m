@@ -1,58 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E95388394;
-	Tue, 24 Mar 2026 02:58:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291DE849C;
+	Tue, 24 Mar 2026 02:59:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774321096; cv=none; b=Ndyp06Wsj0xFFwSYb8H9SjLxP2q3Hv05LL0MBAMq/FLiFv4P7Mn1Dpt1fdn4+qSPCO3N04Go8LfM8Og8W96uZp/X+QZiyC+cJRYGyIE1Hcadr6+yS7G6iXOF3QyzrXmDyoCCxm21T8rLTcaBqE/PxMKxjKhz3UTQEBiMRMBmkVY=
+	t=1774321197; cv=none; b=gHIiOrj9XXZ66u9H/Kn8aKMtgUzofdns2Wd8IBIWVD+sUnpW9cwknb5ANcP+7gerFrAuJ0UDROEn8jDz0W4XQmKBEHgI86rFot3uAYSNV7FRORCvKvc0Yk1iKLWaL9LKSHZBxUoFid3hbWmO95IaMhTzWK9hKtar8bXMn9F3DAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774321096; c=relaxed/simple;
-	bh=MuSo6Nwc8wpuYTdHUl9jVCTWnPNwm8gfgGx2pvV/oBE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BOEykHYcvMahBQD3qgoKPxbDa84+WMVJsVNk7NI9Kcif5+0oQfx3AFwCzreCGewquyh55msKNu3s8Z4BebPSWyTZr9iRgh6lxlr0l7Zwaumgtz6j3gxDOep4AKOWiQlWcgIV5WZV4TFrn3dpbG2+oB06tZksDY2FKZ8nNWBx1Hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cZ/HZiuH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774321197; c=relaxed/simple;
+	bh=E5Oy3ZYpo3+Ps5TNqA1cUlIdTyftlK0p+7R4zW8Vt7Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bWzVPS3hwdjez17YxKrR5OYNpF9SAkvQiOzk3qyy22boafAqBboghYT//WERcdyQ15l999SCf5McikeTM/VNGstzZNnqY0CFGvldoLUmTTo0dUWDtA4N/8jKEq/JWkXoYUkPw4Ym4b6lwjeJnr9Bngf2Ldq3SO7CAb3up67jsHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=vj3Xv7BZ; arc=none smtp.client-ip=115.124.30.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cZ/HZiuH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 619D5C4CEF7;
-	Tue, 24 Mar 2026 02:58:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774321096;
-	bh=MuSo6Nwc8wpuYTdHUl9jVCTWnPNwm8gfgGx2pvV/oBE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=cZ/HZiuHF2wrJ4cm3D9neXjwaR+pWoAF849HcrGiIs8J/6qq+5HRvBflWe06nOixp
-	 ZKFJ+pHi3C+QAlYYESycmgKIujcEF1MT5KfxgqdTrFV50fQtHfqKA4uakIlM0Vsilw
-	 SaphnV4syt7HwkVd1kq4gHlBSh16LqGTVWtc+VG2e0p6GQt4bRgtryjOMjL17PES88
-	 eDh8FpVzdRSCOSZ64ysigQaCx+9Is1SrUm3ilZIfW9mP4bQeNjOeCQ4RVCXSi+QL0h
-	 /EJk5Yzl+tVtMuFImTR4n0wxpIJJ8i6KYSOpzPej7fsz3HGNkSmC1pE8DdjF8N5oJD
-	 SlMrjb9MK8Elg==
-Date: Mon, 23 Mar 2026 19:58:13 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, Aaron Conole
- <aconole@redhat.com>, Ilya Maximets <imaximet@redhat.com>, Eelco Chaudron
- <echaudro@redhat.com>, Stefano Brivio <sbrivio@redhat.com>,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, dev@openvswitch.org
-Subject: Re: [PATCH net-next v6 0/4] selftests: net: fix false failures due
- to missing features and host interference
-Message-ID: <20260323195813.7ebccd88@kernel.org>
-In-Reply-To: <20260321215908.175465-1-aleksey.oladko@virtuozzo.com>
-References: <20260321215908.175465-1-aleksey.oladko@virtuozzo.com>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="vj3Xv7BZ"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1774321192; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=B5wXALRpLgA30wVgjjEUsYNnGSqmUm7zNIHZ9rwo58Y=;
+	b=vj3Xv7BZJuogcydkfiH4V/ouBdiWwVK9dFVzdCzozhjIeCUox3zQeIaDqRruxbNxMUYXP4dB3khtY7ciOeF8i8ggS0iqVt50GodvDixLJcUscbwx4YXOP8mvnjBeMqDsdEEMeeHPziM04PVgVvWf1HIfQ6ukZ7p7ZWXNxTYPVVU=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=guwen@linux.alibaba.com;NM=1;PH=DS;RN=35;SR=0;TI=SMTPD_---0X.d.Lzd_1774321188;
+Received: from 30.221.131.145(mailfrom:guwen@linux.alibaba.com fp:SMTPD_---0X.d.Lzd_1774321188 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 24 Mar 2026 10:59:50 +0800
+Message-ID: <9855724f-4543-48b5-bf60-780b5215c103@linux.alibaba.com>
+Date: Tue, 24 Mar 2026 10:59:47 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] ptp: split clock drivers into two subdirectories
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: tglx@kernel.org, tglx@linutronix.de, richardcochran@gmail.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ jstultz@google.com, anna-maria@linutronix.de, frederic@kernel.org,
+ daniel.lezcano@kernel.org, sboyd@kernel.org, vladimir.oltean@nxp.com,
+ wei.fang@nxp.com, xiaoning.wang@nxp.com, jonathan.lemon@gmail.com,
+ vadim.fedorenko@linux.dev, yangbo.lu@nxp.com, svens@linux.ibm.com,
+ dwmw2@infradead.org, nick.shi@broadcom.com, ajay.kaher@broadcom.com,
+ alexey.makhalov@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
+ linux-fpga@vger.kernel.org, imx@lists.linux.dev, linux-s390@vger.kernel.org,
+ dust.li@linux.alibaba.com, xuanzhuo@linux.alibaba.com, mani@kernel.org,
+ imran.shaik@oss.qualcomm.com, taniya.das@oss.qualcomm.com
+References: <20260318073330.115808-1-guwen@linux.alibaba.com>
+ <20260318073330.115808-2-guwen@linux.alibaba.com>
+ <20260323191645.46569808@kernel.org>
+From: Wen Gu <guwen@linux.alibaba.com>
+In-Reply-To: <20260323191645.46569808@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On Sat, 21 Mar 2026 21:59:04 +0000 Aleksei Oladko wrote:
->  tools/testing/selftests/net/pmtu-test.sh      | 2492 +++++++++++++++++
->  tools/testing/selftests/net/pmtu.sh           | 2492 +----------------
 
-I think I asked twice already to fix the test instead of wrapping it in
-another helper.
+
+On 2026/3/24 10:16, Jakub Kicinski wrote:
+> On Wed, 18 Mar 2026 15:33:29 +0800 Wen Gu wrote:
+>>   drivers/ptp/emulated/Kconfig                 |  61 +++++
+>>   drivers/ptp/emulated/Makefile                |  11 +
+>>   drivers/ptp/{ => emulated}/ptp_kvm_arm.c     |   0
+>>   drivers/ptp/{ => emulated}/ptp_kvm_common.c  |   0
+>>   drivers/ptp/{ => emulated}/ptp_kvm_x86.c     |   0
+>>   drivers/ptp/{ => emulated}/ptp_s390.c        |   0
+>>   drivers/ptp/{ => emulated}/ptp_vmclock.c     |   0
+>>   drivers/ptp/{ => emulated}/ptp_vmw.c         |   0
+>>   drivers/ptp/ieee1588/Kconfig                 | 179 +++++++++++++
+>>   drivers/ptp/ieee1588/Makefile                |  16 ++
+>>   drivers/ptp/{ => ieee1588}/ptp_clockmatrix.c |   0
+>>   drivers/ptp/{ => ieee1588}/ptp_clockmatrix.h |   0
+>>   drivers/ptp/{ => ieee1588}/ptp_dfl_tod.c     |   0
+>>   drivers/ptp/{ => ieee1588}/ptp_dte.c         |   0
+>>   drivers/ptp/{ => ieee1588}/ptp_fc3.c         |   0
+>>   drivers/ptp/{ => ieee1588}/ptp_fc3.h         |   0
+>>   drivers/ptp/{ => ieee1588}/ptp_idt82p33.c    |   0
+>>   drivers/ptp/{ => ieee1588}/ptp_idt82p33.h    |   0
+>>   drivers/ptp/{ => ieee1588}/ptp_ines.c        |   0
+>>   drivers/ptp/{ => ieee1588}/ptp_mock.c        |   0
+>>   drivers/ptp/{ => ieee1588}/ptp_netc.c        |   0
+>>   drivers/ptp/{ => ieee1588}/ptp_ocp.c         |   0
+>>   drivers/ptp/{ => ieee1588}/ptp_pch.c         |   0
+>>   drivers/ptp/{ => ieee1588}/ptp_qoriq.c       |   0
+>>   26 files changed, 296 insertions(+), 253 deletions(-)
+> 
+> emulated sounds good but the ieee1588 doesn't sit well with me.
+> IEEE1588 doesn't describe tickers and external signals.
+> Let's leave them in the main directory? Or call it hw even if
+> it's not 100% accurate? In MAINTAINERS you can exclude subdir
+> with X:
+
+Thanks for the suggestion. Leaving the network-oriented drivers
+in the main directory and using X: in MAINTAINERS to exclude the
+emulated ones makes sense to me. The layout will be adjusted in
+the next version.
