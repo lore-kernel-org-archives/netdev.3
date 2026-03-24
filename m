@@ -1,184 +1,149 @@
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011007.outbound.protection.outlook.com [52.101.57.7])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0283FF8A7;
-	Tue, 24 Mar 2026 12:31:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774355520; cv=fail; b=HA+faQqb0yRerxUjbjdHDla/D+salvEs64BGiT3WMVAAC+op++Vp7b0N1IJaYw6MHn8bm2J+a4VU1tgHHpvnAvh2wGdOP/fQav86RxBb5reRXDOSosfhwKShBCKtCpoNFUtpbslZBrDulo0hqUsvOoIvYVmwRoxU6zv72G/QAhs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774355520; c=relaxed/simple;
-	bh=4eeUc9RIHIgWXag318UGpUedrMXCEQ+cUkvCB4gfNTs=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gfmx2IPWBXExIqGeOhIcYKx2eoPjhXwP/l7d5QYBSfglE5BlM/cMzIR/z4rWZRLaBF0HDhbZe6DgQGS7wKTm7diqI8WqLw9ov3KY/kijh//BLtn7QDFAg1yosjhM4Qrs6CLjcHmUFq55GSDOl09NwmvXN50n7gDFEJcmdBZoHVo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=YK98mlM8; arc=fail smtp.client-ip=52.101.57.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC2843FA5F2
+	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 12:35:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774355732; cv=none; b=WI2WKWjB02mxsNjMlu3dGhSq4RGw91yxMf2Eg9fhCAR9clVGVgPDm7/Id+kRb33G111m0snpqjfhjgxrhg+OokgkztOliMTxK/n9hAdk8EsfXH5WIMmBFI0tQdsjkkbD1A36T0cjXf5HSG63zwraHzeApXcO7xxdU0vGc1VkyXY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774355732; c=relaxed/simple;
+	bh=NBMwAFXGrzfWxo2rKM1L+KlTdhNaCvCR/vg0rPS4Crw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l55GeaXetemdPXv6g/piqJuoOa/H3gT+rcYNMkIb64csvVPdLMcOLQK7MctQIKhRRVNe7U/mrpc7vRF0pFWOIYSYsvZdR69G7Ss5sQJaDXLqZz2u7S2/hJAKzVksqcuW13mp7G5j72Fuu/g4CWOOhcXL1F4dxWscxoXVQXt9yNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eAuix5sD; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=hmQoqJsv; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="YK98mlM8"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=may//gz0jxHyISvcygepgM9i94KRhZ0yyPCnm6qIMJPcZcHXIG6N+NZo/5eqS/vQhvRcnG2emix9BUvIbZJQQMDKpQrfmBQWncyWYsc7meHUwc5apUbEOizrnYKgLkm1NImvVlleUCc/iLu60NwJL2y0A0rMyYzvoR18XeWkOVQTN+FrP52oHqy1kZ7o9WPyCrz7DvDep+l2Qlf17JSIreDl8/xnqU+c4qo+n+Qe0eJsJNcrUinz4OhnUW0r4XInZ5AEZMAGIY2cOza/tZEemfqjCQgyZZU2fwpbrb6OHZX9o08zJLIWUR14FoUcr6CPxVFm8yM7HgdOO8M1WBsCxg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2unoNL8G4Xxr5VtprXpzS1NFU/fJvHFzPSMcT54g87Y=;
- b=vFgQfJGoWi2A2CVkW3Rff0vTt6plkbXoETvwhosrKBz+orveSZjT+fGrDdGLcrvSbJR5mf8XnSSjAMd9E6VvTJvdAGkcMJtJEDkMlIOTrsG9JVU97luh23cOyuHByegK0qpF7xt9UtD8mk5qIFKSQO16KF+owEgUVpVFEREDJws2V7RH2F12dg6KKJ50M7ScaZnhgBPA3UjtkAMS5dhyJjWdMU03NulUYs4udZ93F5heIYS/adN/gNIfl1J9RBPFal1yJFc6GJiT6yHVNxbA3xUbyK6W/XRVSuHP09dHziBN/+jt2u90QZhQiWdxhgcw1IH9eXWwfTaabBdmwWsb1g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2unoNL8G4Xxr5VtprXpzS1NFU/fJvHFzPSMcT54g87Y=;
- b=YK98mlM8wDnSfqf/0c+sLnDVYZqxjif4/V6xc5OMpLgN/alcApCF+fd4hh5vyswcoyPhZjfMc0BpN+RWy0kqVmLWjHPmDPVzRdCz8lSAwVP7jPqnyTCghWV7Mal4BvR1iHtDYiZX2Yv4RIFqsi6N8hrjBTHo+2W7dkjljZ9oOrbulF33dNJUItArMSa1Y9rXcdWPPxgq/+iSwl+DypHVLIdjJxfATXndDGt9iF7dTyunlGbU1xIUbgTEOuUbiCgkbe22ikF/oo7hQKyWd3ADYX4ZcX4QEwSTsIiGSllhL4vT9kN8WB02ZnnXz8ClYB/MxkoRHkZLGEkrL3G+9cugsQ==
-Received: from BL1P221CA0038.NAMP221.PROD.OUTLOOK.COM (2603:10b6:208:5b5::9)
- by LV2PR12MB5751.namprd12.prod.outlook.com (2603:10b6:408:17d::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Tue, 24 Mar
- 2026 12:31:52 +0000
-Received: from MN1PEPF0000ECD9.namprd02.prod.outlook.com
- (2603:10b6:208:5b5:cafe::8b) by BL1P221CA0038.outlook.office365.com
- (2603:10b6:208:5b5::9) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9723.31 via Frontend Transport; Tue,
- 24 Mar 2026 12:32:11 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- MN1PEPF0000ECD9.mail.protection.outlook.com (10.167.242.138) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9723.19 via Frontend Transport; Tue, 24 Mar 2026 12:31:51 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 24 Mar
- 2026 05:31:34 -0700
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 24 Mar
- 2026 05:31:33 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.6)
- with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Tue, 24
- Mar 2026 05:31:24 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>
-CC: Donald Hunter <donald.hunter@gmail.com>, Simon Horman <horms@kernel.org>,
-	Jiri Pirko <jiri@resnulli.us>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
-	<skhan@linuxfoundation.org>, Saeed Mahameed <saeedm@nvidia.com>, "Leon
- Romanovsky" <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, Mark Bloch
-	<mbloch@nvidia.com>, Chuck Lever <chuck.lever@oracle.com>, "Matthieu Baerts
- (NGI0)" <matttbe@kernel.org>, Cosmin Ratiu <cratiu@nvidia.com>, "Carolina
- Jubran" <cjubran@nvidia.com>, Daniel Zahka <daniel.zahka@gmail.com>, "Shay
- Drory" <shayd@nvidia.com>, Kees Cook <kees@kernel.org>, Daniel Jurgens
-	<danielj@nvidia.com>, Moshe Shemesh <moshe@nvidia.com>, Adithya Jayachandran
-	<ajayachandra@nvidia.com>, Willem de Bruijn <willemb@google.com>, David Wei
-	<dw@davidwei.uk>, Petr Machata <petrm@nvidia.com>, Stanislav Fomichev
-	<sdf@fomichev.me>, Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>, Gal Pressman <gal@nvidia.com>, Jiri Pirko
-	<jiri@nvidia.com>
-Subject: [PATCH net-next V8 14/14] net/mlx5: Document devlink rates
-Date: Tue, 24 Mar 2026 14:28:48 +0200
-Message-ID: <20260324122848.36731-15-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20260324122848.36731-1-tariqt@nvidia.com>
-References: <20260324122848.36731-1-tariqt@nvidia.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eAuix5sD";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="hmQoqJsv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774355730;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7MwMKjcJPosCxD/VlpcS37/E9OBSvowsgq2ia8asyjs=;
+	b=eAuix5sDftkoQm59C+wuZ005tlezK37ej2K7tFJesUOMLjKgsV340R5q4eAadxh5yt4zXD
+	r9IdE3saVCh4tZ5vNFMj5dQFqQdzJZ4dFiVdl0xP2P+80820/d9J4T+rVMf0gQviIQ3RvT
+	XSZ4WKUw0vt0pISlLvRiFTJMJUnmRf8=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-156-BytMPQW2MTaTrvrZ0FwW5Q-1; Tue, 24 Mar 2026 08:35:29 -0400
+X-MC-Unique: BytMPQW2MTaTrvrZ0FwW5Q-1
+X-Mimecast-MFC-AGG-ID: BytMPQW2MTaTrvrZ0FwW5Q_1774355728
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-486ff4498b2so32771595e9.0
+        for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 05:35:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1774355727; x=1774960527; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7MwMKjcJPosCxD/VlpcS37/E9OBSvowsgq2ia8asyjs=;
+        b=hmQoqJsvLO7hV0Bi0lLoNuKTaiYczM/O7eilpDBtrdaAz1zD9EUbmB69dDuqYluGnt
+         nOxil2hypvVkBK+/A2kLnWTR4W6TTHUl7tPhCEtTFU/nDecfeVx7kxeAaoq1MWFFo87W
+         QTDwjj4BjKiRdFQDnhL9XHdcLtKEEQMf3NP9iJihmhj61lRWf4UXBQfhYGW0kS6YZK5P
+         xlm6qAADEimUpbFolb7TLA1WvTtz5eX1ZeITbaWK1Ca5E8ao7T8m3z2VhmqLA0pg5G2A
+         yyyImm/WrELc06Y+clpkyGXP33YHfG8DnQ9n4vIgRAw9kuZgHkVFM0HyNakd91DwQwm0
+         apRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774355727; x=1774960527;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7MwMKjcJPosCxD/VlpcS37/E9OBSvowsgq2ia8asyjs=;
+        b=P2SLxCWPwFOZJBOLIhTd7bgA8b0I+ysw8LTiyb/NlI84LSFvFwMn/XZ5PMyrdrkEbK
+         cMspt9lrLgX7pcHxprCeilspFVWDeRYYFeunrqF++c0BaGNIR9JPIRRTUIyFRhZvr8KN
+         r/tiV7p2KsSZXdjcG8NL77Qp5GhhvHDszMcmeiJwl95DcCxtjegMLsvZZ1q+XO/TZ1sx
+         KQB3hmbr0LenDzxeLzMsqYvgY/9I+iLpZ3mX9FIiAXGYn/DcfPpaJBDDk54qVTxMBPSF
+         gJ6KGxPU80Ooevygkr+2Ie2fBT2oTRxdp9QBE4QBEUqbXvYbcr1gDfpj+gZirh+KWWOp
+         uE3w==
+X-Forwarded-Encrypted: i=1; AJvYcCUEbOwSZ3r+rw8M9ZV4m/c/TZRrEDnBX0JEXt+SwVsAj3NbQKXFVClkmbkUjSYGcTsKnKZmFuA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0h82N/GooOZ/wB08DBDEsoapF5BIUliENet/8PcNW9NZPWPZg
+	a4G7HPIJKnB/AZWXObHuRX6eFM/xgX/goQyihntLGvsYwuW4oS+CtlwrQ/85rPuyDVxjowtxGV+
+	xMhYxnxQFfnSmN7nrPiAhX4hYp8qJ0KrRU/kqJTDSZwAZfBlVhG02UYcmWNEa2uCm6w==
+X-Gm-Gg: ATEYQzw7IMKtO8zGgwEPl0IkyfeYZ9jFPTeEr+IFWJN1GQqei+xLdMRF5jcczZDc1hQ
+	Z63T5iWfRoD38EUKagLDQ2vATYY4bLPdfGlG3SpPJmYjvK0typfvfUPfABDeqhrCqyIX8yT/nyb
+	dUfPkx0yVrJfQ4rG6rKh4i1UIyJ+naWzcuTyQi//KslJWv49GiHQoycm+hgoteZ6h0KXeGd/UHC
+	qIQwizCnkNO+bEqWUbCMFEpVfjKBZu8LlSR/iqCSDiJOJY67yhmWYM/ZGO07q2X0s8Vv3R7iJSG
+	PDsZb26qOZFfZRq/OLAwuG5I+mn0mPqQlNZKDIvnvy7P9Ri0RwANQqyGsVuH+JkpMHT36r5xyHH
+	e3QvEBEi6Fdq+2rUI8PG4jsjsCuobyTTLo/Vbi+u99p+9T0YiuxyI6QV5
+X-Received: by 2002:a05:600c:a55:b0:485:35a4:939c with SMTP id 5b1f17b1804b1-486ff0479ffmr222177325e9.29.1774355727304;
+        Tue, 24 Mar 2026 05:35:27 -0700 (PDT)
+X-Received: by 2002:a05:600c:a55:b0:485:35a4:939c with SMTP id 5b1f17b1804b1-486ff0479ffmr222176925e9.29.1774355726843;
+        Tue, 24 Mar 2026 05:35:26 -0700 (PDT)
+Received: from [192.168.88.32] ([212.105.153.60])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48710fe6f86sm23443595e9.6.2026.03.24.05.35.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 Mar 2026 05:35:26 -0700 (PDT)
+Message-ID: <75af5781-0ed2-4b05-879f-db6628af0692@redhat.com>
+Date: Tue, 24 Mar 2026 13:35:25 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN1PEPF0000ECD9:EE_|LV2PR12MB5751:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5270c316-bc1d-48f4-6760-08de89a153c8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|7416014|36860700016|1800799024|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	kwS9lbK+r3gk9nxUpR5TbBUxvpOpGjEqQ0KNtmCvwIRCIMOjdmtPB0emx71wKH+tf5YNH+3gQtsXETYxoF6v6u/ulO0Ti7o8ghpT0hiux0rIAKWDQBGC3SnKKGGT/u5X3PNhZ5+jtFZ/DsRG6g1u3KQfRV3lkWjrpiEOZ8Jo8ehnpmpcfLUdMZY9LqaFl/n4TpQ58wtJXgfAtvn95pQCnOHI4jh5V2c3Ywd/PAe/TIkgBQMtUfCArPrP98gI0O+GFkzfAlsDPxnfi4yRJo6xSqNTkE+fsJDt+CFji3cr024+oIEVrYCeIiq7kt6aZrijItYmu21beeUoahI4lUZHpqiV7kPM9Pf3oM1D/o5r/za/XBhbFdpJIEFl+TKDcc/Z1U2eCcepevtRl5kYUjfiY96Neap9Plkv2Yw8ziPq+4vhp8rnFo0PZ4a+cdP2OEl6AsNTbfgryk4eymjXcYL6exnesVZ1Arh3SxnaF/KmCfuK+YT5PF2HuxqiKS3An2Pbi3g+YD6tHY4f2GHQNhJD6Nx5yGcHaQZEbMuEa+dOxzP0aHyAdXMI3HoTq7JApV9nvCxeB3OT69VabztohazKUZG8abwTn/YP3YVXz3blWRIcpYm7zllq4hWLTxMB4SwJjlYGRNxtA9xhOZBTChHSCgjjuKIT/G7tmqPTbl69evAG1N1CUEZS7dtgxyAAZ7vBSi6Ae2/2mL/a6B3mRVeCgmzfbLU57clH4LiUcGP32VuAS+csC4Bu+6cM77o1QYQYhX8Cg8M0GSe4WIeiBeoZew==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(376014)(7416014)(36860700016)(1800799024)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	3U53vmerjCxiqcHdhQQZcwBIjxDiawBOdtHZaZ6ykoY87NqHqh1Hzdm3x0FEKNXQfLPa9D3lmzt+P/mjiCl2XiwXk4ZDPvtrE5vPWYt2pr1zj36Bjq2VUbVZ22aFkX3ZpunmF23JnxV+2D0SY7kTn7EHcmdHh1sOdKJo7uaQzUjc6GeUCvnRwR+6OLmJmbMcNjb+z+FolXLtHRPZfupaBAXMtSEAFnd4HBNluG+jTx6CC0WowXzz7GWeZXKywZk42EF4hmsUdsuH0T6XEB4uNzrgpMXVqEsr9udKFpU2j2qeQmuO2pLXX/mCI7FyrkCp0YwRzTZMAXKilt4BSbEFD90v44Wl22sHRVvrWDutw5aCPcPsEMFNWDM0tXWCD2GUop67R47//SWfLaj/oW8hlUS+gmHzU6qOVwcy3i5D0DglEi06A/QEfDEOs6ql9nlX
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2026 12:31:51.9508
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5270c316-bc1d-48f4-6760-08de89a153c8
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MN1PEPF0000ECD9.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5751
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 20/20] xfrm: iptfs: only publish mode_data after clone
+ setup
+To: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>, netdev@vger.kernel.org,
+ David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+References: <20260323083440.2741292-1-steffen.klassert@secunet.com>
+ <20260323083440.2741292-21-steffen.klassert@secunet.com>
+ <4cc9cb27-90b9-45fb-8d90-28cca9e12b96@redhat.com>
+ <acJ66ndBOEs7d-1D@secunet.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <acJ66ndBOEs7d-1D@secunet.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+On 3/24/26 12:52 PM, Steffen Klassert wrote:
+> On Tue, Mar 24, 2026 at 12:33:15PM +0100, Paolo Abeni wrote:
+>> On 3/23/26 9:34 AM, Steffen Klassert wrote:
+>>> From: Paul Moses <p@1g4.org>
+>>>
+>>> iptfs_clone_state() stores x->mode_data before allocating the reorder
+>>> window. If that allocation fails, the code frees the cloned state and
+>>> returns -ENOMEM, leaving x->mode_data pointing at freed memory.
+>>>
+>>> The xfrm clone unwind later runs destroy_state() through x->mode_data,
+>>> so the failed clone path tears down IPTFS state that clone_state()
+>>> already freed.
+>>>
+>>> Keep the cloned IPTFS state private until all allocations succeed so
+>>> failed clones leave x->mode_data unset. The destroy path already
+>>> handles a NULL mode_data pointer.
+>>>
+>>> Fixes: 6be02e3e4f37 ("xfrm: iptfs: handle reordering of received packets")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Paul Moses <p@1g4.org>
+>>> Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+>>
+>> While applying this series to verify the PR, I get the following error:
+>>
+>> Applying: xfrm: iptfs: only publish mode_data after clone setup
+>> error: sha1 information is lacking or useless (net/xfrm/xfrm_iptfs.c).
+>> error: could not build fake ancestor
+>> Patch failed at 0020 xfrm: iptfs: only publish mode_data after clone setup
+>>
+>> The above also prevents the CI from testing the series. Steffen, could
+>> you please have a look? Possibly a repost could be needed.
+> 
+> I guess this is due to a merge conflict with:
+> 
+> 69050f8d6d07 ("treewide: Replace kmalloc with kmalloc_obj for non-scalar types")
+> 
+> Repost will not help in that case. Not sure what to do
+> here. The only thing that would fix it is a forced rebase
+> of the ipsec tree onto the net tree.
 
-It seems rates were not documented in the mlx5-specific file, so add
-examples on how to limit VFs and groups and also provide an example of
-the intended way to achieve cross-esw scheduling.
+Out of blatant naiveness on my side, how much of a pain would be that
+option? If more than negligible, I guess we should avoid it.
 
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
----
- Documentation/networking/devlink/mlx5.rst | 33 +++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
-
-diff --git a/Documentation/networking/devlink/mlx5.rst b/Documentation/networking/devlink/mlx5.rst
-index 4bba4d780a4a..62c4d7bf0877 100644
---- a/Documentation/networking/devlink/mlx5.rst
-+++ b/Documentation/networking/devlink/mlx5.rst
-@@ -419,3 +419,36 @@ User commands examples:
- 
- .. note::
-    This command can run over all interfaces such as PF/VF and representor ports.
-+
-+Rates
-+=====
-+
-+mlx5 devices can limit transmission of individual VFs or a group of them via
-+the devlink-rate API in switchdev mode.
-+
-+User commands examples:
-+
-+- Print the existing rates::
-+
-+    $ devlink port function rate show
-+
-+- Set a max tx limit on traffic from VF0::
-+
-+    $ devlink port function rate set pci/0000:82:00.0/1 tx_max 10Gbit
-+
-+- Create a rate group with a max tx limit and adding two VFs to it::
-+
-+    $ devlink port function rate add pci/0000:82:00.0/group1 tx_max 10Gbit
-+    $ devlink port function rate set pci/0000:82:00.0/1 parent group1
-+    $ devlink port function rate set pci/0000:82:00.0/2 parent group1
-+
-+- Same scenario, with a min guarantee of 20% of the bandwidth for the first VFs::
-+
-+    $ devlink port function rate add pci/0000:82:00.0/group1 tx_max 10Gbit
-+    $ devlink port function rate set pci/0000:82:00.0/1 parent group1 tx_share 2Gbit
-+    $ devlink port function rate set pci/0000:82:00.0/2 parent group1
-+
-+- Cross-device scheduling::
-+
-+    $ devlink port function rate add pci/0000:82:00.0/group1 tx_max 10Gbit
-+    $ devlink port function rate set pci/0000:82:00.1/32769 parent pci/0000:82:00.0/group1
--- 
-2.44.0
+/P
 
