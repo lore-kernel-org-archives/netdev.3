@@ -1,154 +1,147 @@
-Received: from mailout3.samsung.com (mailout3.samsung.com [203.254.224.33])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA834388385
-	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 02:30:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB21E386C35;
+	Tue, 24 Mar 2026 02:35:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774319414; cv=none; b=qBBX6gdpGzpPdUSoMUaemVjWnCy7ukjhRgug65huJp54nj43lpUMEob0UgzAlEGXYDq1KnFovdboijmyZfs0Ejj+cRlFnzfWrcIyTiFQcZPEk9Q89uhpv2zY8VCkE6dpijcm7pF1NepyYUtLACnvTMH3jn1hjfPdPJCNj2fmBnw=
+	t=1774319735; cv=none; b=CEgZJFCuWhUInSN5HxGejEy3GRTA8LZmjJSI67esXS2DobqhujuEClyPSqdpzYiqJSPD8jQArzwXwooAm4Kw1MsgzyJmZKD1KTn3J43H/itO9yEPmndcxT0znfohXV54MLTc/0rI/CRbT7sJ9acuTkcHbwhP13q4R4zUbUHMVN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774319414; c=relaxed/simple;
-	bh=Vr+wLb3/yfuaY7Ek50G5tqooWQuxrr2KXAF3tU7VBDw=;
-	h=From:To:Cc:In-Reply-To:Subject:Date:Message-ID:MIME-Version:
-	 Content-Type:References; b=K8htJFDl+IljydT/BkBwEHSl6AWZQe9/qqgVIhYaM/Kjqv9FYS8ly+vPScZikHw9SeulEIqC31fT9moO3n6QattfXHjg8uPsu78RyrRfa5L2G9x8lADw/ibCiUYRU2zV6n9Om/n4QVB3yDtSRonvOGM7MrVf2agZ04OYhgClM+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=RTFBubUc; arc=none smtp.client-ip=203.254.224.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1774319735; c=relaxed/simple;
+	bh=d6UOTi2oJTOJsf8nOARM+VEycJjKk6B2ZgEYG+R0ACE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=i/ActY+CnekexRrvAZgvjrCyAXtBsppbqARLnW5eMVn+jT2ROkqbU450KD0++E33R6ddYEJSBu4ioLROgfXy/S95TgwUKV9QY5K//CPzrX/Fcosos29hzIfDspPsy+o13bmHx79rRGE6OnkmSeboTCaB0jAWO4KtkytCkLHaF4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=UUT0PtpM; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="RTFBubUc"
-Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
-	by mailout3.samsung.com (KnoxPortal) with ESMTP id 20260324023002epoutp03488fc0ff3e21aa838b088543515e6605~fphiVHqsR2187121871epoutp03c
-	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 02:30:02 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20260324023002epoutp03488fc0ff3e21aa838b088543515e6605~fphiVHqsR2187121871epoutp03c
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1774319402;
-	bh=xiEG8fs8U4waGFe76frAqj8GUGT8PfbUsJqfEpDU4H0=;
-	h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
-	b=RTFBubUceVdG5dBZjg2EJuOun+7AvU7K1xXJVOiY75v5S6AwPDX0GCIymngOFAphd
-	 E4RA3K/kK+gtTKLgy3khdnDiPmc2cGWIz79uHvHB6IujWAiNQY1L9e+YM2hT5hM2cb
-	 67/UCzZXuKEnGh+5DWuT53H601jKazX4GP44bHGA=
-Received: from epsnrtp02.localdomain (unknown [182.195.42.154]) by
-	epcas5p3.samsung.com (KnoxPortal) with ESMTPS id
-	20260324023002epcas5p3c3a08032a55b26ba4a7023fdeaebf3cd~fphhsTMXr1327213272epcas5p3T;
-	Tue, 24 Mar 2026 02:30:02 +0000 (GMT)
-Received: from epcpadp1new (unknown [182.195.40.141]) by
-	epsnrtp02.localdomain (Postfix) with ESMTP id 4ffvBx72xwz2SSKf; Tue, 24 Mar
-	2026 02:30:01 +0000 (GMT)
-Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
-	epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
-	20260323172713epcas5p4dd04df01adb71b7563e1cac14b927632~fiHlqRiPK1063110631epcas5p4A;
-	Mon, 23 Mar 2026 17:27:13 +0000 (GMT)
-Received: from INBRO002756 (unknown [107.122.3.168]) by epsmtip1.samsung.com
-	(KnoxPortal) with ESMTPA id
-	20260323172656epsmtip1078ac64ab1a734cd90e8019874a7de3a~fiHV3p2Rc1639516395epsmtip1L;
-	Mon, 23 Mar 2026 17:26:55 +0000 (GMT)
-From: "Alim Akhtar" <alim.akhtar@samsung.com>
-To: "'Vladimir Oltean'" <vladimir.oltean@nxp.com>,
-	<linux-phy@lists.infradead.org>
-Cc: "'Vinod Koul'" <vkoul@kernel.org>, "'Neil Armstrong'"
-	<neil.armstrong@linaro.org>, <dri-devel@lists.freedesktop.org>,
-	<freedreno@lists.freedesktop.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-arm-msm@vger.kernel.org>, <linux-can@vger.kernel.org>,
-	<linux-gpio@vger.kernel.org>, <linux-ide@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-media@vger.kernel.org>,
-	<linux-pci@vger.kernel.org>, <linux-renesas-soc@vger.kernel.org>,
-	<linux-riscv@lists.infradead.org>, <linux-rockchip@lists.infradead.org>,
-	<linux-samsung-soc@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
-	<linux-sunxi@lists.linux.dev>, <linux-tegra@vger.kernel.org>,
-	<linux-usb@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<spacemit@lists.linux.dev>, <UNGLinuxDriver@microchip.com>, "'Bart Van
- Assche'" <bvanassche@acm.org>, "'Peter Griffin'" <peter.griffin@linaro.org>,
-	"'James E.J. Bottomley'" <James.Bottomley@HansenPartnership.com>, "'Martin
- K. Petersen'" <martin.petersen@oracle.com>, "'Krzysztof Kozlowski'"
-	<krzk@kernel.org>, "'Chanho Park'" <chanho61.park@samsung.com>
-In-Reply-To: <20260319223241.1351137-10-vladimir.oltean@nxp.com>
-Subject: RE: [PATCH v5 phy-next 09/27] scsi: ufs: exynos: stop poking into
- struct phy guts
-Date: Mon, 23 Mar 2026 22:56:51 +0530
-Message-ID: <1891546521.01774319401971.JavaMail.epsvc@epcpadp1new>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="UUT0PtpM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=he
+	olnZZ/TAm2Z544mhYf3kljQ8hQo1beKRZUx0uD+PY=; b=UUT0PtpM+sAIwPxzv9
+	BhCf2G9vDubGuRoEHZUVQwfFYgUS3U6idS4rhRV15lTDmreGDAH1jTXkebRl55Kz
+	PRJ16MLIE1dGSW/T/SsyzF3BNs3nDFwsdO5/ALMWmsr0PPZLxcm9B1mEO4SliLkd
+	EfMJedZ4dupE96BQQVfcgTLMw=
+Received: from pek-lpg-core5.wrs.com (unknown [])
+	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wD31+4a+MFpBisSBA--.24406S2;
+	Tue, 24 Mar 2026 10:34:04 +0800 (CST)
+From: Robert Garcia <rob_garcia@163.com>
+To: stable@vger.kernel.org,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>,
+	Robert Garcia <rob_garcia@163.com>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-bluetooth@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 6.1.y] Bluetooth: eir: Fix possible crashes on eir_create_adv_data
+Date: Tue, 24 Mar 2026 10:34:02 +0800
+Message-Id: <20260324023402.2607704-1-rob_garcia@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQJoz1sM+EbPjkyDopxrfJVWkMJWdwIGLiEOAj0DJam0ghnJMA==
-Content-Language: en-us
-X-CMS-MailID: 20260323172713epcas5p4dd04df01adb71b7563e1cac14b927632
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-X-CPGSPASS: Y
-X-Hop-Count: 3
-X-CMS-RootMailID: 20260319223312epcas5p183a1e0c31206025da8cf00b5d745a0ce
-References: <20260319223241.1351137-1-vladimir.oltean@nxp.com>
-	<CGME20260319223312epcas5p183a1e0c31206025da8cf00b5d745a0ce@epcas5p1.samsung.com>
-	<20260319223241.1351137-10-vladimir.oltean@nxp.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD31+4a+MFpBisSBA--.24406S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxWw18ur1rAF43XF45Jry7Wrg_yoW5uF4rpF
+	Z8KF15ZrZ7Jw1UJrsFyay8Aa13Jr4UWry29rWDZFySqrn0vrZ7t34IkFySqF1ayFWqkF47
+	Z3W0qrW5urWqkw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piwID7UUUUU=
+X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbC5RwQe2nB+BzAhAAA3a
 
-HI Vladimir,
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-> -----Original Message-----
-> From: Vladimir Oltean <vladimir.oltean@nxp.com>
-> Sent: Friday, March 20, 2026 4:02 AM
-> To: linux-phy@lists.infradead.org
-> Cc: Vinod Koul <vkoul@kernel.org>; Neil Armstrong
-> <neil.armstrong@linaro.org>; dri-devel@lists.freedesktop.org;
-> freedreno@lists.freedesktop.org; linux-arm-kernel@lists.infradead.org;
-> linux-arm-msm@vger.kernel.org; linux-can@vger.kernel.org; linux-
-> gpio@vger.kernel.org; linux-ide@vger.kernel.org; linux-
-> kernel@vger.kernel.org; linux-media@vger.kernel.org; linux-
-> pci@vger.kernel.org; linux-renesas-soc@vger.kernel.org; linux-
-> riscv@lists.infradead.org; linux-rockchip@lists.infradead.org;
-linux-samsung-
-> soc@vger.kernel.org; linux-scsi@vger.kernel.org;
-linux-sunxi@lists.linux.dev;
-> linux-tegra@vger.kernel.org; linux-usb@vger.kernel.org;
-> netdev@vger.kernel.org; spacemit@lists.linux.dev;
-> UNGLinuxDriver@microchip.com; Bart Van Assche <bvanassche@acm.org>;
-> Alim Akhtar <alim.akhtar@samsung.com>; Peter Griffin
-> <peter.griffin@linaro.org>; James E.J. Bottomley
-> <James.Bottomley@HansenPartnership.com>; Martin K. Petersen
-> <martin.petersen@oracle.com>; Krzysztof Kozlowski <krzk@kernel.org>;
-> Chanho Park <chanho61.park@samsung.com>
-> Subject: [PATCH v5 phy-next 09/27] scsi: ufs: exynos: stop poking into
-struct
-> phy guts
-> 
-> The Exynos host controller driver is clearly a PHY consumer (gets the
-> ufs->phy using devm_phy_get()), but pokes into the guts of struct phy
-> to get the generic_phy->power_count.
-> 
-> The UFS core (specifically ufshcd_link_startup()) may call the variant
-> operation exynos_ufs_pre_link() -> exynos_ufs_phy_init() multiple times if
-> the link startup fails and needs to be retried.
-> 
-> However ufs-exynos shouldn't be doing what it's doing, i.e. looking at the
-> generic_phy->power_count, because in the general sense of the API, a
-> single Generic PHY may have multiple consumers. If ufs-exynos looks at
-> generic_phy->power_count, there's no guarantee that this ufs-exynos
-> instance is the one who previously bumped that power count. So it may be
-> powering down the PHY on behalf of another consumer.
-> 
-> The correct way in which this should be handled is ufs-exynos should
-> *remember* whether it has initialized and powered up the PHY before, and
-> power it down during link retries. Not rely on the power_count (which,
-btw,
-> on the writer side is modified under &phy->mutex, but on the reader side
-is
-> accessed unlocked). This is a discouraged pattern even if here it doesn't
-> cause functional problems.
-> 
-> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-> Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-> ---
-Thanks for the patch
-Acked-by: Alim Akhtar <alim.akhtar@samsung.com>
+[ Upstream commit 47c03902269aff377f959dc3fd94a9733aa31d6e ]
 
-Tested this patch for basic UFS functionality, UFS still works. 
-Feel free to add
-Tested-by: Alim Akhtar <alim.akhtar@samsung.com>
+eir_create_adv_data may attempt to add EIR_FLAGS and EIR_TX_POWER
+without checking if that would fit.
 
+Link: https://github.com/bluez/bluez/issues/1117#issuecomment-2958244066
+Fixes: 01ce70b0a274 ("Bluetooth: eir: Move EIR/Adv Data functions to its own file")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+[ Use pdu.data instead of pdu->data in hci_set_ext_adv_data_sync()
+ to keep context consistency. ]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
+---
+ net/bluetooth/eir.c      | 7 ++++---
+ net/bluetooth/eir.h      | 2 +-
+ net/bluetooth/hci_sync.c | 5 +++--
+ 3 files changed, 8 insertions(+), 6 deletions(-)
 
+diff --git a/net/bluetooth/eir.c b/net/bluetooth/eir.c
+index 3e1713673ecc..3f72111ba651 100644
+--- a/net/bluetooth/eir.c
++++ b/net/bluetooth/eir.c
+@@ -242,7 +242,7 @@ u8 eir_create_per_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr)
+ 	return ad_len;
+ }
+ 
+-u8 eir_create_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr)
++u8 eir_create_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr, u8 size)
+ {
+ 	struct adv_info *adv = NULL;
+ 	u8 ad_len = 0, flags = 0;
+@@ -286,7 +286,7 @@ u8 eir_create_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr)
+ 		/* If flags would still be empty, then there is no need to
+ 		 * include the "Flags" AD field".
+ 		 */
+-		if (flags) {
++		if (flags && (ad_len + eir_precalc_len(1) <= size)) {
+ 			ptr[0] = 0x02;
+ 			ptr[1] = EIR_FLAGS;
+ 			ptr[2] = flags;
+@@ -316,7 +316,8 @@ u8 eir_create_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr)
+ 		}
+ 
+ 		/* Provide Tx Power only if we can provide a valid value for it */
+-		if (adv_tx_power != HCI_TX_POWER_INVALID) {
++		if (adv_tx_power != HCI_TX_POWER_INVALID &&
++		    (ad_len + eir_precalc_len(1) <= size)) {
+ 			ptr[0] = 0x02;
+ 			ptr[1] = EIR_TX_POWER;
+ 			ptr[2] = (u8)adv_tx_power;
+diff --git a/net/bluetooth/eir.h b/net/bluetooth/eir.h
+index 0df19f2f4af9..4497f8fd5fef 100644
+--- a/net/bluetooth/eir.h
++++ b/net/bluetooth/eir.h
+@@ -9,7 +9,7 @@
+ 
+ void eir_create(struct hci_dev *hdev, u8 *data);
+ 
+-u8 eir_create_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr);
++u8 eir_create_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr, u8 size);
+ u8 eir_create_scan_rsp(struct hci_dev *hdev, u8 instance, u8 *ptr);
+ u8 eir_create_per_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr);
+ 
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 5ad09900f8ff..58003f2f6f36 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -1248,7 +1248,8 @@ static int hci_set_ext_adv_data_sync(struct hci_dev *hdev, u8 instance)
+ 			return 0;
+ 	}
+ 
+-	len = eir_create_adv_data(hdev, instance, pdu.data);
++	len = eir_create_adv_data(hdev, instance, pdu.data,
++				  HCI_MAX_EXT_AD_LENGTH);
+ 
+ 	pdu.cp.length = len;
+ 	pdu.cp.handle = instance;
+@@ -1279,7 +1280,7 @@ static int hci_set_adv_data_sync(struct hci_dev *hdev, u8 instance)
+ 
+ 	memset(&cp, 0, sizeof(cp));
+ 
+-	len = eir_create_adv_data(hdev, instance, cp.data);
++	len = eir_create_adv_data(hdev, instance, cp.data, sizeof(cp.data));
+ 
+ 	/* There's nothing to do if the data hasn't changed */
+ 	if (hdev->adv_data_len == len &&
+-- 
+2.34.1
 
