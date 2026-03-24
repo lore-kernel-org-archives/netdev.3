@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B036391E55
-	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 17:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E0E40824B
+	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 17:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774374461; cv=none; b=aa4sqAI4Sp3+nQPSkbzfRP2P4aX68BEcCzJFVzFs9otOFkImfPt26LBFPyhwGa/s9dlHBDWRyHs7epObHcFXQj4wAQRN+vslNWkUj/7oWhLfi8qYPt9EhHoMlf9Pv6lBHGXZQPpubkziaPHcpac+nx4YMhk9kD+ZEkFx8lBAnVw=
+	t=1774374475; cv=none; b=tbuUMrpYs06cvfYxk+kS1tJFm4XWa3t5kRlAUA5FqbFwY7WSJt81xCFvIVKfoes/1AQSUuRJ4cvtFDrgFx+6ZcgGRQGT36+QBP22Y0Iv3wR0nsXR6q02NVVsS+nsR0NJfrNaC/hb03tPNmuQn+0D/WyD6FmDyTol1Ss+684gs4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774374461; c=relaxed/simple;
-	bh=A1eOoOl3KfrucHwVTHSRkOCXPdZRyO6VuVfaQ6x61iM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QtU4+dlxbjYTc4P6oBF1EHW1/DjAq1gmx7Eal68gSoBkd25Pn3VOIZBXBOw1l7wBV3KhxPRbaoeK1EJybIkgMaNL9aMQE1m5dJf7kOQGUSl2DzVIWYpWsIDKvHgbFXYnLC6ul4N45Fcn8PzXv24hhpyLrvtKQWbMtBgfPux9AmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KXxOiYAa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774374475; c=relaxed/simple;
+	bh=CcwoNPIwzDuuQUlg2LdF8utRYm++HfK4cMy0kJw7ZBA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=q76Te8tyAtrfQB1Pl8fA2Iq+cFif2tuzz8bqLQecIKIW0N/H/S/wm3w3ImjMhIZkKuSP/vte5dH0qAMhq5UA88qSb7mfKnVgIFUrZ10YeUPzePsfGoGwUmwzPopRBETRO4olgBqHzLyKydBrlyoT6aeP4K+FmYnHOa2w5TUJbeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WOiLfKc7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KXxOiYAa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94560C19424;
-	Tue, 24 Mar 2026 17:47:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WOiLfKc7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27FD9C2BC87;
+	Tue, 24 Mar 2026 17:47:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774374460;
-	bh=A1eOoOl3KfrucHwVTHSRkOCXPdZRyO6VuVfaQ6x61iM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=KXxOiYAalQ3xnZqcA5cFxBCpaDB8hlOU1m1IcfjFxR79ndDaZP759CoiMTIHjaJDN
-	 fhnIGSAqBBeyzEp3xYBBi/+O6Omegx+sGtngdjqwoTplp9JFmdp77KG9VG4D4QLdbH
-	 5sTnp66yFklFSsNKFg9ZqB0AiaoQ4QbdVpGBqewFT65H+LZYhc6h32vh87aHyZIKli
-	 gdwhUxIHIuoLCtfwDADtYhCz3uUwDQSZIuE2SbB/v6vki1Ijq8zLADjhjnn3QNcvvW
-	 nsMKjRWRnnPBbf3zGKDqZnL0bzvDSAzZ0wlQSh4TmIyE7DzUtOu5AgcHp/fyXDmiWZ
-	 nF2kITsXH6MaA==
+	s=k20201202; t=1774374474;
+	bh=CcwoNPIwzDuuQUlg2LdF8utRYm++HfK4cMy0kJw7ZBA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=WOiLfKc7R14yMJ2K9Vy+655ZJL8xcXk7m0Huucwirb1Wwdc5hs7tHUvVFMeVlUZlk
+	 VCcHaMvVl7HI57nbihCvdjN9r8o18Hpq51qs7zcjptalw3y8OWyISsnltx3YbHPzaf
+	 /z3x2lN7Azan0x0M8CUQVKbFDoNGKgZUIyeoZf5uPh9vFxRRUZU5YgDgUA46f5i6jF
+	 Ucgd9IuTXq05uHt3HWW+a5SZNMSrpFcwQ+7bxxzKyAqqyCM+ZEeVM+MJySR2eeA1jY
+	 RNikcTGQZ4NQetWmLFaXbjgYzlxLo2mGKf3NKSqczYAd7xeGP1z2WafwTm59LoDKRe
+	 8n5VsiFAaYj6A==
 From: hawk@kernel.org
 To: netdev@vger.kernel.org
 Cc: hawk@kernel.org,
@@ -37,14 +38,13 @@ Cc: hawk@kernel.org,
 	jhs@mojatatu.com,
 	jiri@resnulli.us,
 	j.koeppeler@tu-berlin.de,
-	kernel-team@cloudflare.com,
-	Chris Arges <chris.arges@gmail.com>,
-	Mike Freemon <mike.freemon@cloudflare.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-Subject: [PATCH net-next 0/5] veth: add Byte Queue Limits (BQL) support
-Date: Tue, 24 Mar 2026 18:46:58 +0100
-Message-ID: <20260324174719.1224337-1-hawk@kernel.org>
+	kernel-team@cloudflare.com
+Subject: [PATCH 0/5] veth: add Byte Queue Limits (BQL) support
+Date: Tue, 24 Mar 2026 18:46:59 +0100
+Message-ID: <20260324174719.1224337-2-hawk@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260324174719.1224337-1-hawk@kernel.org>
+References: <20260324174719.1224337-1-hawk@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -145,10 +145,6 @@ Patch overview:
   3. veth: add tx_timeout watchdog as BQL safety net
   4. net: sched: add timeout count to NETDEV WATCHDOG message
   5. selftests: net: add veth BQL stress test
-
-Cc: Chris Arges <chris.arges@gmail.com>
-Cc: Mike Freemon <mike.freemon@cloudflare.com>
-Cc: Toke Høiland-Jørgensen <toke@toke.dk>
 
 Jesper Dangaard Brouer (5):
   net: add dev->bql flag to allow BQL sysfs for IFF_NO_QUEUE devices
