@@ -1,164 +1,185 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BFEE36493B
-	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 08:51:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C678236C9CB
+	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 08:55:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774342266; cv=none; b=Ml3bHfgHDCCof4JCpW4ku0Q9wgnbgfApOFjvJrucsS5ufPpticuChAkl8nBPALkNxSV8V4upDpCnkyoybS3hjog6eoMyJHo2Jg41QRN+X3baGgLcKK8Tqd1X0WA5sBq2wSf8imzGCnv2UdGIOD2EefJlaK5+KJcsOiiWVykSojQ=
+	t=1774342526; cv=none; b=mHmA/W7XKgtwugj/N+R2M/3Rg2nipd9pImQt6qN+3ozEcdeCAijBBUJZldH9k6pnGHGxN9LPydUBBHB3v6aoWtn8o86LhtwigMDydy29CZe2sdl6ZlpVFMy3WBQf4+PJhK/cZP4epI6KS/Qxvq/yRM8mdNOZEGFo3L1gIvsYu2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774342266; c=relaxed/simple;
-	bh=BP5xFVNnKfX2m9xCmdZElzXaGLxGrOE9UsIMD7cdVa8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pqVW8xkh4EQfNLyikDaX7O+A5bYuJpBCGmIS2cs6trdsxNusg6Pg5fGe6zbM4i4gfheTzGXI0BQU1kFHwMH2Nv0wA5Sp5WFVNmk5d8/YJJwadKXRGPZsY82G43JFl3hH2pyRBgRnIXeMSHp5T8MUCixB6I/Es1PZQuq5C+e+yMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=pmSoveqK; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=BSmvWg+X; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1774342526; c=relaxed/simple;
+	bh=nnwLfeX8Xj31jdUQAow/f6SrRJgezZGWNE5WWcyyXeI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YcyScwCEdtFK2HWcjEoFSwYkXNpzru15o69rxl/WahVKXhtmjEfPqrUuEtMXEozBFd+0bNKkmrsaXkD9g+bXqnJvBnBbOmkRIWdlTKnKqO0wA6GcE9W/pJecyCHK0QXaQk/qZVam7TeHL/0unPPkRHRS0uUJPs3E0nSkwC4ULz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FGe0pJR1; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=baSvWBmp; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="pmSoveqK";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="BSmvWg+X"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62O430ZX3170664
-	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 08:51:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	YkiOxI+HHv75B1gNQVjhEMF2BsDrdOpMpI/IECrj0mk=; b=pmSoveqK/7gCqVq5
-	7PyzUZ3lOZPEyCWLcbtOC3CmTPqklWnLNJdPy7cepY9z5pC2atn3YZ+XBkO99i/r
-	TftOI8llRocGqC3t8WnTMp6vBk0fCAGNrvOJR0mnK9kJPcf/DT9Iwa+UN1HRAp8o
-	HYF1RIRpf6uXPa6r113y8CVCcxZS56fGwd5ArtdW6XmvWneQUNI9CMSU96OiY8pF
-	kzoj8U77UuVy/lrsA8kibifksrrJsjFthe17Gx9xQWOFvlg9WjdH4Ym+47ygXhif
-	ppQnt6V4ZIu0bkP3R0MrDDws1ZwREMb8zwhUpI+W3i5NJFslyonFmJM6OuyKs8YB
-	II/zgg==
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d35r23v5f-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 08:51:04 +0000 (GMT)
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2aeb90532f6so23341365ad.0
-        for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 01:51:04 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FGe0pJR1";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="baSvWBmp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774342523;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZDbn4vfWWcZxsdXUlqagJpqSOsEI/45/fEadaMDENpk=;
+	b=FGe0pJR1E7sjRtTKSLfCbHc1zW6e05fjLBqlyUFStmMH2fwLYzROp4qRdiQfBuuH3AoNAv
+	pv8Wik0j9J171mfDIjVBKmpcx01p4j+338OiAG8ZIsR6yBgEjK4he5tprFIHWABlEkkuru
+	7Ih2qL1D5jaXChFqN3AM/2tBOtkjcb4=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-655-uUIyzQPVPyqaqdJJ27tu2w-1; Tue, 24 Mar 2026 04:55:21 -0400
+X-MC-Unique: uUIyzQPVPyqaqdJJ27tu2w-1
+X-Mimecast-MFC-AGG-ID: uUIyzQPVPyqaqdJJ27tu2w_1774342521
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4852ccff333so13173435e9.2
+        for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 01:55:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1774342263; x=1774947063; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YkiOxI+HHv75B1gNQVjhEMF2BsDrdOpMpI/IECrj0mk=;
-        b=BSmvWg+XY6EpJeGiGJ49My7IFX71KemsLb5zRUVas7YVb1GBlq8A8mGmGhvVF3IU7+
-         HIFk9SkrEdReQPU8gWBmUyUzj1eVXtkBtFWio1EDN1jxHMSUNt2Wwuhbm1vYShVoKvq8
-         CwvaqgshSo1SwBPQxTAoxpopsmYiu5g7l9+zecLybHyvoIdBREv3NwDG4KsVwJ5FIYhY
-         qSn44pTB+t0WyIra7YiGBM8V0ebP9qi4scyhRHz24QH4qRyODn4K2GrQC8/wWIok7zNS
-         UrhiRNXnCgmwySPOHoodNVgfYXUZdfXtkONvM7qGp9hSuPPfBECDcpk8jDr7rYEgfxfa
-         SETw==
+        d=redhat.com; s=google; t=1774342520; x=1774947320; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZDbn4vfWWcZxsdXUlqagJpqSOsEI/45/fEadaMDENpk=;
+        b=baSvWBmpJ8dt5kszkOwVJfidvVC9CS1E+q0J3347tW0kPOmg/h6+eCULRvZ4x92tHG
+         h3m6Y4RMVfpw4C9MfjKpb1mxSyGgkww9evIouCDGAFCeo1Bdd0vsGPbPu4VLD/n3o1jh
+         o6a0w+FUL8ZtY1qulGQe4BZRjnLApNTxbiOgr9lvpOzXU+J/3RXjZNB49LFeegCyJ6lZ
+         cjFg44FuoAxgsdqWxhBXijp4i2ghXtRoIkTU1ETHJI64AcuRK2VSTbcTquGxJzcijm1p
+         Umx3k2IzPf/HhzVB5eP/42VLpb8dKAdyTjFNAQHJS/iC3tkxmiovXZ9MoKeRFE0TwZHM
+         l4tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774342263; x=1774947063;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=YkiOxI+HHv75B1gNQVjhEMF2BsDrdOpMpI/IECrj0mk=;
-        b=YuWBrp/RDlQ4b1UbUizKMSeR0RSZ70LhC1EU73t6ifpwDEgY07FvuMRsgswQfBeCXc
-         ZyYBZXXGMYpCQURmQ+2oP7ArNOpP/7Z0MuxDUyILnDLjx0CxX1KSJGdHsr47pSQvu2XG
-         SXqVTntwYjtFYQTE4IGxuBp4zkEAneAy8fX3sW8MFp0Xi32JQwvitwakfA+goWnAGBn4
-         kOE8GrrumLPgeQ5JY81JOVJayxSjPoomZW31J/eniYLLWaNCWtv01HTRk+F3geAnmb+2
-         XvLUaDUK4+cTyFutGkzz3EW7iWRCNyYeze/9F0MI3+TAd3fZw2lvSoyx6z0qBoFWZGYM
-         m+1w==
-X-Gm-Message-State: AOJu0Yym+aEQV28ZhQZw/XR3h2UyPbPZooXFX7QD5ihovwbU7D1DHBlQ
-	JwQN7Zd8YnhkJZPaXsT/SCvSanYlRwThFiZ//zap/EEbUCN+h+f5VXDrdv5K9HKxklOhOrdg+5R
-	OyAJC4tm6g8lSeFoZV6+Q8yhkS2QPanT+irMt20K8E+1KIIp6kpM3KGLsRUg=
-X-Gm-Gg: ATEYQzxuj8ctd2a/qzeZZoUbIC5mYr0bgA62KbHPdbSWmHGSgKMARRwieBMr18j2OXr
-	xKj7/vsVOZN4xjhmirML0NQDOhA4oLD00eYZIg6gQCjVydItUwDdT5x4mvs4v54SWWf2bBt1qe9
-	oGih7CbhaDfpa7gakb1pzPXdijGV/sWx4XRWsBoVYdo428EArxNpVnZ5WcVVVVTGfn/Iv8uppCK
-	/GjdRcxXzl9/dGJqhHFfPbJUCSiye4scG8eKO/eq7+4hCKNjBw2dHIIHfJq/NbjtFOgEA64OTeR
-	mTYmF0eDmLYXVMMrcNTHx32uH5yC9xF1yP9eL7oiWkF/evvy/2MKLOTTNAZ2vR7Atq2HgzysWyI
-	vIQ2m7JMnDTPjk8Ie9ZLXyqY7UYN8rLW5cCrnkDkQJcEeuhtGIKrdgNB5SY8=
-X-Received: by 2002:a17:902:ce8b:b0:2ae:5eee:7a5 with SMTP id d9443c01a7336-2b08271a388mr144310955ad.12.1774342263197;
-        Tue, 24 Mar 2026 01:51:03 -0700 (PDT)
-X-Received: by 2002:a17:902:ce8b:b0:2ae:5eee:7a5 with SMTP id d9443c01a7336-2b08271a388mr144310555ad.12.1774342262653;
-        Tue, 24 Mar 2026 01:51:02 -0700 (PDT)
-Received: from hu-vpernami-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b08366c4f1sm135752265ad.59.2026.03.24.01.50.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Mar 2026 01:51:01 -0700 (PDT)
-From: Vivek Pernamitta <vivek.pernamitta@oss.qualcomm.com>
-Date: Tue, 24 Mar 2026 14:20:49 +0530
-Subject: [PATCH v9 2/2] net: mhi: Add IP_SW1 interface for M-plane support
- over MHI
+        d=1e100.net; s=20251104; t=1774342520; x=1774947320;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZDbn4vfWWcZxsdXUlqagJpqSOsEI/45/fEadaMDENpk=;
+        b=kAvq6R2CabTe2j5/EmWR6a1EQjB1idaYA3RFvQSxcBNmlQnReVCcu+Tw8Z3upoH1zJ
+         knvF3WFfUixo1cAwfecnLVSBzdjmJfk5udCRWkkcAhZyKn05FkcA8iNe6ynTxLon15uk
+         68cWVnrgp25t5cuMVsHjNS8eY5/nWTSBYaFmrqDiciBAwfD6NDrpOIhtRmwBHofojfd2
+         qFFviQPXN02g3ZIL5/o0ijCbpikCgAjmfckzaETMEdG4z/N9A+IxCSfaYmCoUseDCySg
+         ky6tseSn7xkztSzbjowVXRrxdFRxsvNjjTJ0uCWRlrlL8XN2izrpxMCgpMdvydW7F3+Z
+         w1sg==
+X-Forwarded-Encrypted: i=1; AJvYcCUZp8QP/Tc2N7jJWL8yr9t6jtZ/LSyy7K9BG5NqUGJKD6Pp0lPNyFu0RL2+cvL0BhUIy0Kx9Zw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyfgLuPUlzg8Y/oWwb3MUrqtN1PFzh2Bhjt7CYIJclo8SpD4Lv2
+	pYo4qzeqYHrQpVrSgLtiU55LN/U79pOn44/nLkeCKjzAXsIpCDG49exVOIopKXyYr+MIJX+/Xer
+	QnunhYGQNFQeKJLqL+Z/OvQ+ILeMd/X8mj0bsOj638z/TepA8gc0ISprtoQ==
+X-Gm-Gg: ATEYQzy6NTakiH0AxyIMDKOQfraFfr91Iz0uQcbSKrLh+Hm+n5++kqt40sVXFUHzaC2
+	VVm98Zzotczg4jecg64qt5Z7jSCGp9xjuAzI/EFyvY0G1cJqsNBZUyWE5FNC739iqjLHGHcvZ/X
+	MJs3ZKGbmKC08/Vx+eYpKl8TQT7QuFb3NEF9y4iPEknBFwDIoOY2Vl4HjrkU19/YHgbUPljqZnl
+	H8DGQ/1ZfWFIc40FwEjYuTu9VOt32KNQp0MBvdrO5PpF1lghgQqKbGy04VEp4irFabIXtLdpulw
+	o2Au/Lry5BJCLRWjiAW/1KNvNpONcI1IBARRsEirY8J/MqV5lQ96NAHZL861JAhuupnqVYIgG6p
+	HNwTa8i8l10WIx7AyiSK5N3Udsmv49bFHFKAhqyn7LJLEoP4WTa3d2GUU
+X-Received: by 2002:a05:600c:4e49:b0:486:f9a4:d487 with SMTP id 5b1f17b1804b1-486feb6253dmr201425995e9.0.1774342520525;
+        Tue, 24 Mar 2026 01:55:20 -0700 (PDT)
+X-Received: by 2002:a05:600c:4e49:b0:486:f9a4:d487 with SMTP id 5b1f17b1804b1-486feb6253dmr201425545e9.0.1774342519940;
+        Tue, 24 Mar 2026 01:55:19 -0700 (PDT)
+Received: from [192.168.88.32] ([212.105.153.60])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4870f7f5682sm20328145e9.3.2026.03.24.01.55.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 Mar 2026 01:55:19 -0700 (PDT)
+Message-ID: <6fb603dd-7bc2-4b60-bf93-7247d05f3250@redhat.com>
+Date: Tue, 24 Mar 2026 09:55:18 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260324-vdev_eth_next-20260323-v9-2-da6e4e486437@oss.qualcomm.com>
-References: <20260324-vdev_eth_next-20260323-v9-0-da6e4e486437@oss.qualcomm.com>
-In-Reply-To: <20260324-vdev_eth_next-20260323-v9-0-da6e4e486437@oss.qualcomm.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Vivek Pernamitta <vivek.pernamitta@oss.qualcomm.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1774342251; l=1328;
- i=vivek.pernamitta@oss.qualcomm.com; s=20241114; h=from:subject:message-id;
- bh=BP5xFVNnKfX2m9xCmdZElzXaGLxGrOE9UsIMD7cdVa8=;
- b=AOeaB1qZgeKf9F+laUUWfz+G0SYZ6U0kryISrayJS7D00Y7rgICwY36KKQ1oUdxrg/+oC80nS
- Hxwf7lZhr+TBnTNj5rZLQV6D/1If6Z2jMQfAa0yKrvM1VG0lTPGWWVs
-X-Developer-Key: i=vivek.pernamitta@oss.qualcomm.com; a=ed25519;
- pk=HDwn8xReb8K52LA6/CJc6S9Zik8gDCZ5LO4Cypff71Y=
-X-Authority-Analysis: v=2.4 cv=VvUuwu2n c=1 sm=1 tr=0 ts=69c25078 cx=c_pps
- a=IZJwPbhc+fLeJZngyXXI0A==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=EUspDBNiAAAA:8 a=HGtN7mBKGNpjqoInwjYA:9 a=QEXdDO2ut3YA:10
- a=uG9DUKGECoFWVXl0Dc02:22
-X-Proofpoint-GUID: JCP-FFXo_bl--o-P6WAFCYWmsfGdkQ9a
-X-Proofpoint-ORIG-GUID: JCP-FFXo_bl--o-P6WAFCYWmsfGdkQ9a
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI0MDA3MCBTYWx0ZWRfX52diakWppova
- SXpjaEjkYRY5mI6MMDEZNsdW6P9BqhWu9yHz+c34C42Xbl1FL4V5K0UrlM443lgtL2mqUAnZRjP
- 2Epoy2Fj7nkW/vlnTrEvhZhELOru+CMQcnIaC/uX+tvBZEA++HuzK89bnRAdk4zyuus45NdFRQz
- kzyUv82E+i7hPPCqmWCD0XIeph8L+n65IsVnHwyAbfp5D7BZNxgkuSl8NgEMoaBX1TJyt+tooUw
- d77tE41/78hC41C8UBDn/GtLybPsIl4UALoTryKUaGLnTYWf1hoEgydL5rIstrVm3prMuo3Qq6q
- cSYVLyq4tE8P2WPnHT8S6tRK8Wv/82PTIr//L+0IJ4LhXpDULsimTJ/PNULYHzbH+KPrmPsKT84
- hHjg82r05zAdsysIEHZhjCD1aI0en/pLZYp86shsDeLmsV9UqJefT7897CiyJT4jQBzB/RLRYHD
- 7F1BFke331ok7l6eANA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-24_02,2026-03-23_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 spamscore=0 adultscore=0 lowpriorityscore=0
- impostorscore=0 bulkscore=0 clxscore=1015 priorityscore=1501 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603240070
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net-next,v17,08/14] net: homa: create homa_rpc.h and homa_rpc.c
+To: John Ousterhout <ouster@cs.stanford.edu>
+Cc: horms@kernel.org, netdev@vger.kernel.org, kuba@kernel.org,
+ edumazet@google.com
+References: <20260316223228.2611-9-ouster@cs.stanford.edu>
+ <20260318072131.268946-1-pabeni@redhat.com>
+ <CAGXJAmy7=A+Jc+iJ6jwddWs6x0z4pOudRs31Q41m9HMZ4yTWnw@mail.gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <CAGXJAmy7=A+Jc+iJ6jwddWs6x0z4pOudRs31Q41m9HMZ4yTWnw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Introduce the IP_SW1 channel to represent the network interface
-exposed by the MHI device for M-plane communication. The driver
-creates a corresponding netdev, allowing the host to access the
-device network interface over MHI.
+On 3/23/26 11:43 PM, John Ousterhout wrote:
+> On Wed, Mar 18, 2026 at 12:21 AM Paolo Abeni <pabeni@redhat.com> wrote:
+>> This approach would allow lockless RCU lookups and faster reclamation. Paolo
+>> referenced tcp established socket lookup as an example:
+>>
+>>   "Have a look at tcp established socket lookup and the SLAB_TYPESAFE_BY_RCU
+>>    flag usage for slab-based allocations. A combo of such flag for RPC
+>>    allocation (using a dedicated kmem_cache) and RCU lookup should improve
+>>    consistently the performances, with a consolidate code layout and no
+>>    unmanageable problems with large number of objects waiting for the grace
+>>    period."
+>>
+>> The current code still uses plain kzalloc/kfree without a dedicated cache.
+>> Would it make sense to implement this optimization?
+>>
+>> Reference: https://lore.kernel.org/netdev/9209dfbb-ca3a-4fb7-a2fb-0567394f8cda@redhat.com/
+> 
+> I tried using a kmem_cache, but it made performance slightly worse:
+> average allocation time for a struct homa_rpc increased from about 380
+> cycles to about 400 cycles in my benchmarks. Since there is no
+> performance advantage to using kmem_cache I removed it.
 
-This interface enables support for O-RAN M-plane management
-between O-DU and O-RU, including capability exchange, configuration
-management, performance monitoring, and fault management using
-NETCONF/YANG, as defined by O-RAN WG4 M-plane specifications.
+So kzalloc/kfree is faster than kmem_cache?!? That is quite unexpected,
+possibly the kmem_cache pointer ends up on a contended cacheline?!? I
+guess it would be useful to understand the extra overhead, as kmalloc is
+basically another layer on top of kmem_cache.
 
-Signed-off-by: Vivek Pernamitta <vivek.pernamitta@oss.qualcomm.com>
----
- drivers/net/mhi_net.c | 1 +
- 1 file changed, 1 insertion(+)
+> I'm surprised how long allocation takes: 400 cycles seems like a *lot*
+> if there are per-cpu caches of the right size. Presumably no
+> synchronization is needed and all the function has to do in the normal
+> case is pull the top entry off a list.
+> 
+>>
+>>> +     if (!srpc) {
+>>> +             err = -ENOMEM;
+>>> +             goto error;
+>>> +     }
+>>
+>> [ ... ]
+>>
+>>> +error:
+>>> +     homa_bucket_unlock(bucket, id);
+>>> +     if (srpc && srpc->peer)
+>>> +             homa_peer_release(srpc->peer);
+>>> +     kfree(srpc);
+>>> +     return ERR_PTR(err);
+>>> +}
+>>
+>> [ ... ]
+>>
+>> In the v6 review thread, Paolo and Eric raised concerns about SKB freeing
+>> costs and suggested optimizations. Eric noted that proper software GRO
+>> significantly reduces SKB count using napi_get_frags() and napi_reuse_skb().
+> 
+> Unfortunately napi_reuse_skb is not currently exported. My
+> understanding is that I need to wait until Homa GRO is upstreamed
+> before I can request that it be exported. Once that happens I'll be
+> happy to use napi_reuse_skb.
 
-diff --git a/drivers/net/mhi_net.c b/drivers/net/mhi_net.c
-index 87d8c61fab983005eaea99603d74a557d1483b6e..b53ad126ee1f048748971abc4eb19e2636ae7cc8 100644
---- a/drivers/net/mhi_net.c
-+++ b/drivers/net/mhi_net.c
-@@ -430,6 +430,7 @@ static const struct mhi_device_id mhi_net_id_table[] = {
- 	{ .chan = "IP_HW0", .driver_data = (kernel_ulong_t)&mhi_hwip0 },
- 	/* Software data PATH (to modem CPU) */
- 	{ .chan = "IP_SW0", .driver_data = (kernel_ulong_t)&mhi_swip0 },
-+	{ .chan = "IP_SW1", .driver_data = (kernel_ulong_t)&mhi_swip0 },
- 	{ .chan = "IP_ETH0", .driver_data = (kernel_ulong_t)&mhi_eth0 },
- 	{ .chan = "IP_ETH1", .driver_data = (kernel_ulong_t)&mhi_eth0 },
- 	{}
+Ok
 
--- 
-2.34.1
+>> Paolo also suggested using deferred SKB freeing (skb_attempt_defer_free) to
+>> reduce the cost. While you mentioned that GRO is implemented in the full
+>> Homa but was left out of the initial patch series, would it be beneficial to
+>> include at least some of these optimizations in this initial submission?
+>>
+>> Reference: https://lore.kernel.org/netdev/9209dfbb-ca3a-4fb7-a2fb-0567394f8cda@redhat.com/
+> 
+> When I asked ChatGPT about homa_attempt_defer_free it said that it
+> only works if the skb has no dst, no destructor, and no skb_nfct. I'm
+> a bit unsure how to proceed. Is homa_attempt_defer_free only intended
+> for incoming packets? If so, then presumably there is no dst? But what
+> about the other fields? Do I need to do something to clean them up
+> before calling homa_attempt_defer_free?
+skb_attempt_defer_free() usage is intended for the RX path only.
+
+Incoming packets get state (dst, extensions, ct...) attached in the rx
+path before reaching the socket. You should free/release the state, if
+possible, before inserting the skb into the receive queue, so that you
+could defer free them after read.
+
+/P
 
