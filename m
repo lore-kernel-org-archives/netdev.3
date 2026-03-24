@@ -1,152 +1,72 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB2426CE2D
-	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 19:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0348E3B2FD9;
+	Tue, 24 Mar 2026 19:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774379242; cv=none; b=e/cDa1laLdt0SFkYUVHdbAXcMOYjJMkCulHqyJiQDd4Zq/MHodt7nD28DgvhNWGiXwaVNdJIqQ71lWVI92qQZyfTpz8OR01rFCobT1K63GwrsPcZAsISdJQU7N8/CQUocruGk/TpKP3xggvKe6l8JX+P/8E5AI6a/SsXkAibz9M=
+	t=1774379371; cv=none; b=XrKiGGA98Uw0YPCOsNGJtMAcOiIZhSdtL/lauE6GHZA9ZKg7lViWlv1R5uVLnc8oNgt+nAM8J0RLPmGSkfJ8VPqOflq2gd1Oj1yWa4IreIawhP232py4nM6TWrVoLOPIRm64glsyS0p+cpETHbnaEBGj7DNGd9mzp1VS4l4E0Lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774379242; c=relaxed/simple;
-	bh=K66xp1mThxZBb716Y4QF9sTnen6rnGdVq5eWC4X7axM=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=uaJZjtBlqHhgBaURI5rMa7FDPBakiRfvoLqKg3x1Z9kGXOdlcgr8QQDFKZ4fBwQhofNbEZptKN9WMoe9Xa5x6peLpX9aj9w3iGqnOI/2PvEmBVxBEcxZ9JNTbMG/cYNYi86WmpYnHKL2w7J4MKViQn/Bjz2WlzZFU1vDB4GVqI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CTFmjFP/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774379371; c=relaxed/simple;
+	bh=cLvyemoKai7DTqe2H3sBJp82HfUQPEIuN1t/PEFDUqs=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=IaefGNDpxUN9munFumo78zVsaeuQPoNAwhQwUzWBaM3Dxqb7kHTpM/6SRWeHj/Ftt7yB/0Krj8aIJRrn15F7SPZBuE5BKhDHDpGucntgRYyvEbEFoFNhGY1ITdTHfqLM3JoWnhhfeOLOp7h2DGBdJadDC/yfVWOmOAEEoEnw844=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FZ++px7B; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CTFmjFP/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4094C2BC9E;
-	Tue, 24 Mar 2026 19:07:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FZ++px7B"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62B5C2BCB7;
+	Tue, 24 Mar 2026 19:09:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774379242;
-	bh=K66xp1mThxZBb716Y4QF9sTnen6rnGdVq5eWC4X7axM=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=CTFmjFP/I0iSCaqQWt92FcXRCROgJ+OmJVfUm/V+hpnV1L3hnDcq5l04fFaKkeW+y
-	 TnrOj7vmiVrfC1wa2y1N1fgHws8DV5Seduh9Tna9bbrQW6D3Kr1CBdSdkg77/ANKrl
-	 4RueH7i02bnkYrf4SjKItQ2Z9y1ADVmXDuu11YcePg2qPH9K5YirwsIDA7mVFnTVFR
-	 9URkgtzweB2j5i1KpgWnEZ5WV+Faod55hY2C5KyvWL21L0rcWd1x/227sE6Rd2PnUP
-	 my2USfER+3wNDhoIC9qGGAYA9za4O9frUX0NjBJMEThmfhSqBdsY6s8uEq03tTGlug
-	 JHLhESkAiia0w==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id C4684F4006F;
-	Tue, 24 Mar 2026 15:07:20 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Tue, 24 Mar 2026 15:07:20 -0400
-X-ME-Sender: <xms:6ODCacP0j8AKPpVCkBiDSSQRrW3oCjZUS1YRquho04etOHmE0aINyw>
-    <xme:6ODCadw8hexXFM4VO2jsXOGdzXAZC7s9stJKT7TUoirr8CXuvDNtIKpUZCIWpRLZO
-    N3m0T0XXzpr4MJ8IXz8Ksy6MRLNZ3mgm_0Jvs9mq01T9iaaCPEij70>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefvddvfeekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedfvehhuhgt
-    khcunfgvvhgvrhdfuceotggvlheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
-    hnpefhffekffeftdfgheeiveekudeuhfdvjedvfedvueduvdegleekgeetgfduhfefleen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegthhhutg
-    hklhgvvhgvrhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeifeegleel
-    leehledqfedvleekgeegvdefqdgtvghlpeepkhgvrhhnvghlrdhorhhgsehfrghsthhmrg
-    hilhdrtghomhdpnhgspghrtghpthhtohepjedpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepjhhohhhnrdhfrghsthgrsggvnhgusehgmhgrihhlrdgtohhmpdhrtghpthhtoh
-    epkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkvghrnhgvlhdqthhlshdq
-    hhgrnhgushhhrghkvgeslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopegthh
-    hutghkrdhlvghvvghrsehorhgrtghlvgdrtghomhdprhgtphhtthhopehsugesqhhuvggr
-    shihshhnrghilhdrnhgvthdprhgtphhtthhopehhrghrvgesshhushgvrdguvgdprhgtph
-    htthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:6ODCaV1rWb9z1kUfCuPpnsu1Afq8EXIfOmA0nY2mNQNBbs2Bn5RLNw>
-    <xmx:6ODCaWKkkcGr-rD7tcNqxMjOrh8rimeIE7Lv_HcHvK9K6eGqdqjNVQ>
-    <xmx:6ODCaVxl5T7CNolBg22Pw-Y9NkyL_Z_fy4u8aXxpRqSPSKKMO4F38w>
-    <xmx:6ODCaUXL9afrgqmVn_Pd6zT2FV5qFgi4aW8VRxdiMdU720XvtR4knA>
-    <xmx:6ODCaVhIcCWO9UKWFVlQe_1rgwjbtNWXlLpXZnmrA4vtsIsanoKUMcXd>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 9D073780070; Tue, 24 Mar 2026 15:07:20 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=k20201202; t=1774379370;
+	bh=cLvyemoKai7DTqe2H3sBJp82HfUQPEIuN1t/PEFDUqs=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
+	b=FZ++px7BhBiiCpXKxydrJ8NGgV8kq5/IL5Aq7Oj2ZjMOrldJWmMMnzk06HAR6pJgu
+	 OF3Iyq27KBFAk2botQsmkwJFqHVu85QGTOZtwdEkVDBZCXuFFPjFoh8ls8r31JWUqY
+	 NIfAzaj1UsFzqpsp07vqOMA7QNmOQg10dY/O2BqoqZgVUzXdZNHBaLZhKWuno3dVTH
+	 YnDskexGUVxjCTh2UGQ6WaBbcV+N2lGPQK4chbeIeSujWJg2TtUr/+XxC7scWxXV0l
+	 vdtwbTQr2Q/7btVhU5V+CK4mbNnzWRcOk2wt//LDXkIQ8pY9UeKBmiarC/oJcJn8r1
+	 UWmoztiU1bMnA==
+Content-Type: multipart/mixed; boundary="===============5100326488123237701=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AJdrMbW-WYaB
-Date: Tue, 24 Mar 2026 15:07:00 -0400
-From: "Chuck Lever" <cel@kernel.org>
-To: "Sabrina Dubroca" <sd@queasysnail.net>
-Cc: john.fastabend@gmail.com, "Jakub Kicinski" <kuba@kernel.org>,
- netdev@vger.kernel.org, kernel-tls-handshake@lists.linux.dev,
- "Chuck Lever" <chuck.lever@oracle.com>, "Hannes Reinecke" <hare@suse.de>
-Message-Id: <66157d87-2cb8-4cd7-b8cd-1e2086825995@app.fastmail.com>
-In-Reply-To: <acK5Qj-F0wGFLUhj@krikkit>
-References: <20260324-tls-read-sock-v5-0-5408befe5774@oracle.com>
- <20260324-tls-read-sock-v5-6-5408befe5774@oracle.com>
- <acK5Qj-F0wGFLUhj@krikkit>
-Subject: Re: [PATCH net-next v5 6/6] tls: Flush backlog before waiting for a new record
-Content-Type: text/plain
+Message-Id: <458ec30c147d396db9a3f7a4be989d538ba8d9256b3df20cea088ade38d98cbc@mail.kernel.org>
+In-Reply-To: <20260324-vmscape-bhb-v8-10-68bb524b3ab9@linux.intel.com>
+References: <20260324-vmscape-bhb-v8-10-68bb524b3ab9@linux.intel.com>
+Subject: Re: [PATCH v8 10/10] x86/vmscape: Add cmdline vmscape=on to override attack vector controls
+From: bot+bpf-ci@kernel.org
+To: pawan.kumar.gupta@linux.intel.com,x86@kernel.org,jon@nutanix.com,nik.borisov@suse.com,hpa@zytor.com,jpoimboe@kernel.org,david.kaplan@amd.com,seanjc@google.com,bp@alien8.de,dave.hansen@linux.intel.com,peterz@infradead.org,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,kpsingh@kernel.org,jolsa@kernel.org,davem@davemloft.net,david.laight.linux@gmail.com,luto@kernel.org,tglx@kernel.org,mingo@redhat.com,dsahern@kernel.org,martin.lau@linux.dev,eddyz87@gmail.com,song@kernel.org,yonghong.song@linux.dev,john.fastabend@gmail.com,sdf@fomichev.me,haoluo@google.com,pbonzini@redhat.com,corbet@lwn.net
+Cc: linux-kernel@vger.kernel.org,kvm@vger.kernel.org,asit.k.mallick@intel.com,tao1.zhang@intel.com,bpf@vger.kernel.org,netdev@vger.kernel.org,linux-doc@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Tue, 24 Mar 2026 19:09:29 +0000 (UTC)
+
+--===============5100326488123237701==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
-
-
-On Tue, Mar 24, 2026, at 12:18 PM, Sabrina Dubroca wrote:
-> 2026-03-24, 08:53:28 -0400, Chuck Lever wrote:
->> From: Chuck Lever <chuck.lever@oracle.com>
->> 
->> While lock_sock is held, incoming TCP segments land on
->> sk->sk_backlog rather than sk->sk_receive_queue.
->> tls_rx_rec_wait() inspects only sk_receive_queue, so
->> backlog data remains invisible. For non-blocking callers
->> (read_sock, and recvmsg or splice_read with MSG_DONTWAIT)
->> this causes a spurious -EAGAIN. For blocking callers it
->> forces an unnecessary sleep/wakeup cycle.
->> 
->> Flush the backlog inside tls_rx_rec_wait() before checking
->> sk_receive_queue so the strparser can parse newly-arrived
->> segments immediately.
->> 
->> Fixes: 20ffc7adf53a ("net/tls: missing received data after fast remote close")
+> diff --git a/Documentation/admin-guide/hw-vuln/vmscape.rst b/Documentation/admin-guide/hw-vuln/vmscape.rst
+> --- a/Documentation/admin-guide/hw-vuln/vmscape.rst
+> +++ b/Documentation/admin-guide/hw-vuln/vmscape.rst
+> @@ -117,3 +117,7 @@
 >
-> How did you pick that Fixes tag? That commit mentions FIN/connection
-> closing, which doesn't seem related to the local backlog.
+>     Choose the mitigation based on the VMSCAPE variant the CPU is affected by.
+>     (default when CONFIG_MITIGATION_VMSCAPE=y)
+> +
+> + * ``vmscape=on``:
+> +
+> +   Same as `auto`, except that it overrides attack vector controls.
 
-20ffc7adf53a introduced the sk_receive_queue check inside the
-wait loop (then called tls_wait_data(), later refactored into
-tls_rx_rec_wait()).
-
-When lock_sock is held, incoming TCP will segments land on
-sk->sk_backlog, not sk->sk_receive_queue. The sk_receive_queue
-check introduced by 20ffc7adf53a doesn't see backlog data.
-
-
->> diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
->> index 8fb2f2a93846..84c4ae0330d1 100644
->> --- a/net/tls/tls_sw.c
->> +++ b/net/tls/tls_sw.c
->> @@ -1372,6 +1372,7 @@ tls_rx_rec_wait(struct sock *sk, struct sk_psock *psock, bool nonblock,
->>  		if (ret < 0)
->>  			return ret;
->>  
->> +		sk_flush_backlog(sk);
->
-> Do we need to update released when this returns true, like callers of
-> tls_read_flush_backlog() do?
-
-Good catch. v6 will do that.
+Should `auto` use double backticks here (``auto``) to match the rest of
+the file? All other inline code references in this document use RST
+literal markup with double backticks.
 
 
-> I also wonder if we'd want to update the
-> caller's flushed_at to avoid bypassing the "smart checks" in
-> tls_read_flush_backlog().
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-The flush in tls_rx_rec_wait() only fires when the loop finds
-no ready message, which is the cold path. The redundant flush
-from tls_read_flush_backlog() on the next iteration is wasteful
-but harmless. I'm not sure the additional complexity would be
-worth it, but if you believe it will add some value, let me
-know and I will add it.
-
-
->>  		if (!skb_queue_empty(&sk->sk_receive_queue)) {
->>  			/* Defer notification to the exit point;
->>  			 * this thread will consume the record
->
-> -- 
-> Sabrina
-
--- 
-Chuck Lever
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/23506000396
+--===============5100326488123237701==--
