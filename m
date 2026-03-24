@@ -1,240 +1,141 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFAA37B3F1
-	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 16:08:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774368498; cv=pass; b=VAADs5ZZpSLxaOPVfrDTkdTefNFRU6QW+F9TkD+3nvSObCQhzwXG4Q4KhJdQ2vB6KFkGWobZFQYIno8jFchFGKh30NbE02GpG3nAlzKyBsR+YHF2l/Wr/FejaxbXHtIOkIx28BS1y0p044skP4J5mcyelbU3D2no6O+x/c1OV1U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774368498; c=relaxed/simple;
-	bh=yTE53L70Mcc/Sf88kY21YSR/oIFc52KwMPcPwaLn0dA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aq1mNoPNjwLONa9rVOtxmO8FBvbttCTWApIkL6GOkWFSkOtJhw/ht2j666RvRa+ZO8QT31mjEp4XGngJboFaNQrMinoJoWT1UdzhwBwmftdnjc72RyZt6D8EE1nx9lgu95NEk1dQCZUjs8O/di9rCfRMzDCXOMWrLtt8tZbZKCI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=Yso2oqF9; arc=pass smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED135390C84;
+	Tue, 24 Mar 2026 16:09:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774368564; cv=none; b=uHXdyz/tVU/jOKhrSGFPhrrFnwPW+QFdPaT07arLPmr1dEAHyFvRITmMMA7SPPlKw5yi4MgnI62qYFaEhquuGtI3piBAnUMyZMQ2fmpu+ArNIoxdC7MVHdx8hXRQHmtQgCnKf9exsIqLnS2Fi8u99iaUABOuiIN+HLith4Eh9hQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774368564; c=relaxed/simple;
+	bh=cD21QrQ6E0LmHBU1ngnAKYZMoTRR8051WNRd2rrr2e4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H04r8moeCBipagdMCbSRz429M4ts+e2QYt70rD2vWu5JnlADbSankbujVVgJ/n6lVf109xUb3re+TQlw6xblPCYNQacJN0y0gCoEHuc4ETPimk0Re4sFgZZ4d++DNxHhf9Ja1YoNPktZc9wYpO+6p6rwABcpxr2gftRMSKHyYQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YxKsHBvy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="Yso2oqF9"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b982b0889d8so208643066b.2
-        for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 09:08:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774368494; cv=none;
-        d=google.com; s=arc-20240605;
-        b=c/8sxZVrO1vxKbbkkJLNnhhdbowSTZ9k23Ve+LjjNyNVgQcCiZg7Iz8F5X01Pfq8A1
-         3S1maCxN8VJZom+AE1u2X6pbLuMBF80PN6WnVjbyq7IKQBo/mZmnxiy7S9EW1wFJZ+O4
-         o8xL1kelaGjOAdPDUV3IXZ6n199NMlW0C9mu05ooauLgOjNzMOZ27pswEebtRF7AKqV3
-         3UbA5zM63UpefaaqSjSSiD80wG8+wt47rAQDTvk0UGCt9KZPEUhmSduPN5lRv3acYLsj
-         ft++utq9b/zv7hecWKS4So0eVVEvrKmq/0uab0Ht4wEgH421wA0OGRAlfrZ9RgbD6vEX
-         CmXg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=JgxJd69APQYyR/2yO/PNJ/PWlxMDYYndTvCiYToiJxU=;
-        fh=6onRMPJOFnN+SFYsH7i1T3oxeslPNmAyryxlffkEzvg=;
-        b=beUDryKIcyicOPS8UQhfTQwDPhUdo52hJfVFK56mjzMLsGB2eCxVDyxMYvNVXCHmRd
-         nAASMreQkriGlR/sYkjPkqv01mPWlUJ3hk9AvkKs0VSWJpyW2UhO5/tKz6go1zJ1EX3N
-         6/rI1wOu9NzypTdBe/TdTinS9lSApjSjNTh0CK9Wqqaf5FVaYw9tYHugAl+mCyMBoYPI
-         H7sh82dA6lPU/Tv2mSTm+Mtm+a9zw3VzrblZ0qrasK2xMcRAUlOOdp48+ullFDQFzQAI
-         beJ53LxTmqHc0L3bvz0cftKQfDl1GFQFT2slkm+rO6r1tPz1KB4W1kgZT55jSbxvGTlf
-         Pglw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=6wind.com; s=google; t=1774368494; x=1774973294; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JgxJd69APQYyR/2yO/PNJ/PWlxMDYYndTvCiYToiJxU=;
-        b=Yso2oqF9FCniBOjLutWP7eIAU7Wuho8KWmabIvRsZCSxmypxujedk5/8apAtJZBvWk
-         IM4oraUq70LGxd7AWWglXeo0DSM4Xe3MPcMt/FTaWs8DVWEnfpcpGXgv9TvUPHSxb84O
-         JInNt8TSIIuj1HqBR7sjhzASMZbkWFmqn4Igdm/ngQ0dJLIcfCcQqyhV2pD63uOrRu/S
-         RVrWfLb7CNSBamZ4qJ/9Z+MMNBohQeLNZuNccjCHHNUeES0Og9pXQBWJHMoJd7Dm39fU
-         2W6Lj1T7M08YNafw6JMLr/TCSSxXFP01w22D70Ygs1xpZBnla/ONxdV3bTKzvpJXMvBh
-         Sm0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774368494; x=1774973294;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=JgxJd69APQYyR/2yO/PNJ/PWlxMDYYndTvCiYToiJxU=;
-        b=Ia2yOEuNC2wX1KzruuNwCQJuyYE3zFYPEPLplachHKZebON8WYYyX1sWxSx1crYACV
-         Wf1FHdmoiPyVBuUKDeUaExsv1o3TrarDwz78fJePbLeReDfKevFLE3/nv4qgaqByp0Wk
-         FdYJFuSnXUln4iaJHgD43YIcKGmSZEezFaWHlB2G22SURA7ZtO91j1hr0DTkDY2zKxh7
-         p60vdEq2IuZg1uwe/tc/wmYG62ocKRQ3k6It4G8NmbWPTRkpbqXdhqtL3jAwy7IwK8sU
-         f5WSoXZtDMtRfN/RorAoRE3R817re3lP2dojllvJiukjoVcnFp/M3Dim98U2GbJMUHo/
-         f5Cw==
-X-Gm-Message-State: AOJu0YzyxLjNJz5aSlTld7wQyHTMAR3TtEDR6XvT3jsbU9zcPZ8ng0bE
-	mvpFFSWXVIcXPUGe0SH6AWd2kXpBw99jCig+IBpCnwRnld6Uo3ig6khuyZv95L8jl5ANNSq21K3
-	0YSHPkaphAEnvqVpeVTiqJdtok5xEL8IPZ/B02fbmYw==
-X-Gm-Gg: ATEYQzwY2w3F0vCrUi23yjzry5tnqfYh8IUvDFhRGMGQqbso/yLYxbrSYKDghcK6x3n
-	XHDhLJo4h3PndPvCr5f+ziGHGY4BbxSmDp1B0t2kWLGM1nkK7BwlywsMfoiEWKx18ucIzn1H++w
-	oczussYjISMXXBaTUzVzcU/eDjtx5b8l+/UPhNUZ3N15Wkjbz+h4HNyEMzNIy9AgDMty5spOI4f
-	SSt2mV+aPkS+I1vX52AYxUjVhiQ7T5iSwayKLSZlpgLdsTJJ57okpZT7Hm/OTJi8HuhS1t/3Zy+
-	8iJ8aVHw2izihalF0m6cwhz03puf034MxNAbkQojwg==
-X-Received: by 2002:a17:907:9607:b0:b98:3e7a:22c2 with SMTP id
- a640c23a62f3a-b983e7a2362mr1184123766b.31.1774368493870; Tue, 24 Mar 2026
- 09:08:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YxKsHBvy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FDC5C2BC9E;
+	Tue, 24 Mar 2026 16:09:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774368563;
+	bh=cD21QrQ6E0LmHBU1ngnAKYZMoTRR8051WNRd2rrr2e4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YxKsHBvy4RaesAtAyOqIR1DL1qBwY0P6PcV4Ia7yGieIkgwxAzvsAErvhH0y1zHFc
+	 eFVEAWjbj3RzFwlzkzE1fIfN9szi/hcPRj5zWK5VMhUhwAhYRMMXmq6KeniJZkq89e
+	 kVZ9Yz9mXhbhzsgJ2vB7VqkvQ4+fIhCfBbNCWjQ+pKDLeXUX9lfPTw5lY9a4S0GpTx
+	 o36pBm/EwEbDWyfCAvT2LgtHKSdDuy5U6Y+wzQdM1oHi1/tYM6KSsMPoj3/dEBb+63
+	 Rxc0hZ/fWxcX3ApRBqjLf1YWpBKjrLHNgkD+VmF5wdLC+CiG2Y/8HpS7jrpo57Hxdk
+	 lHfUOO6UWlodQ==
+Date: Tue, 24 Mar 2026 16:09:17 +0000
+From: Simon Horman <horms@kernel.org>
+To: Ratheesh Kannoth <rkannoth@marvell.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	sgoutham@marvell.com, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, donald.hunter@gmail.com,
+	jiri@resnulli.us, chuck.lever@oracle.com, matttbe@kernel.org,
+	cjubran@nvidia.com, shshitrit@nvidia.com, dtatulea@nvidia.com,
+	tariqt@nvidia.com, Saeed Mahameed <saeedm@nvidia.com>
+Subject: Re: [PATCH v7 net-next 2/5] devlink: Implement devlink param multi
+ attribute nested data values
+Message-ID: <20260324160917.GB111839@horms.kernel.org>
+References: <20260323035110.3908741-1-rkannoth@marvell.com>
+ <20260323035110.3908741-3-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260322000557.12559-1-andrea.mayer@uniroma2.it> <20260322000557.12559-3-andrea.mayer@uniroma2.it>
-In-Reply-To: <20260322000557.12559-3-andrea.mayer@uniroma2.it>
-From: Justin Iurman <justin.iurman@6wind.com>
-Date: Tue, 24 Mar 2026 16:08:02 +0000
-X-Gm-Features: AQROBzD2gpWqFRG9w607YocotENBeSisfVDtGru3X_mHbj1EL0iW7_nJBFn9GaI
-Message-ID: <CAOY2BqyfK_Bb2=NUagK3FG3BkLoaaY9v1JXMZkCU5EHXsNP2ag@mail.gmail.com>
-Subject: Re: [RFC PATCH net-next 2/3] seg6: add SRv6 L2 tunnel device (srl2)
-To: Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>, 
-	David Ahern <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Stefano Salsano <stefano.salsano@uniroma2.it>, Paolo Lungaroni <paolo.lungaroni@uniroma2.it>, 
-	Ahmed Abdelsalam <ahabdels@cisco.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260323035110.3908741-3-rkannoth@marvell.com>
 
-On Sun, Mar 22, 2026 at 12:06=E2=80=AFAM Andrea Mayer <andrea.mayer@uniroma=
-2.it> wrote:
->
-> Introduce srl2, an Ethernet pseudowire device over SRv6. It
-> encapsulates L2 frames in IPv6 with a Segment Routing Header for
-> transmission across an SRv6 network.
->
-> The encapsulation logic reuses seg6_do_srh_encap() with
-> IPPROTO_ETHERNET. The transmit path uses the standard IPv6 tunnel
-> infrastructure (dst_cache, ip6_route_output, ip6tunnel_xmit).
->
-> The device is configured with a segment list for point-to-point
-> L2 encapsulation.
->
-> Usage:
->
->   ip link add srl2-0 type srl2 segs fc00::a,fc00::b
->
-> Co-developed-by: Stefano Salsano <stefano.salsano@uniroma2.it>
-> Signed-off-by: Stefano Salsano <stefano.salsano@uniroma2.it>
-> Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-> ---
->  include/linux/srl2.h      |   7 +
->  include/uapi/linux/srl2.h |  20 +++
->  net/ipv6/Kconfig          |  16 +++
->  net/ipv6/Makefile         |   1 +
->  net/ipv6/seg6.c           |   1 +
->  net/ipv6/srl2.c           | 269 ++++++++++++++++++++++++++++++++++++++
->  6 files changed, 314 insertions(+)
->  create mode 100644 include/linux/srl2.h
->  create mode 100644 include/uapi/linux/srl2.h
->  create mode 100644 net/ipv6/srl2.c
->
+On Mon, Mar 23, 2026 at 09:21:07AM +0530, Ratheesh Kannoth wrote:
+> From: Saeed Mahameed <saeedm@nvidia.com>
+> 
+> Devlink param value attribute is not defined since devlink is handling
+> the value validating and parsing internally, this allows us to implement
+> multi attribute values without breaking any policies.
+> 
+> Devlink param multi-attribute values are considered to be dynamically
+> sized arrays of u64 values, by introducing a new devlink param type
+> DEVLINK_PARAM_TYPE_U64_ARRAY, driver and user space can set a variable
+> count of u32 values into the DEVLINK_ATTR_PARAM_VALUE_DATA attribute.
+> 
+> Implement get/set parsing and add to the internal value structure passed
+> to drivers.
+> 
+> This is useful for devices that need to configure a list of values for
+> a specific configuration.
+> 
+> example:
+> $ devlink dev param show pci/... name multi-value-param
+> name multi-value-param type driver-specific
+> values:
+> cmode permanent value: 0,1,2,3,4,5,6,7
+> 
+> $ devlink dev param set pci/... name multi-value-param \
+> 		value 4,5,6,7,0,1,2,3 cmode permanent
+> 
+> Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
 
-[snip]
+...
 
-> diff --git a/net/ipv6/srl2.c b/net/ipv6/srl2.c
-> new file mode 100644
-> index 000000000000..66aa5375d218
-> --- /dev/null
-> +++ b/net/ipv6/srl2.c
-> @@ -0,0 +1,269 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + *  SRv6 L2 tunnel device (srl2)
-> + *
-> + *  A virtual Ethernet device that encapsulates L2 frames in IPv6 with a
-> + *  Segment Routing Header (SRH) for transmission over an SRv6 network.
-> + *  On the remote side, a seg6_local behavior such as End.DT2U or End.DX=
-2
-> + *  decapsulates the inner Ethernet frame for L2 delivery.
-> + *
-> + *  The encapsulation logic reuses seg6_do_srh_encap() from seg6_iptunne=
-l.c
-> + *  with IPPROTO_ETHERNET (143). The transmit path uses the standard IPv=
-6
-> + *  tunnel infrastructure (dst_cache, ip6_route_output, ip6tunnel_xmit).
-> + *
-> + *  Authors:
-> + *     Andrea Mayer <andrea.mayer@uniroma2.it>
-> + *     Stefano Salsano <stefano.salsano@uniroma2.it>
-> + */
-> +
-> +#include <linux/module.h>
-> +#include <linux/netdevice.h>
-> +#include <linux/etherdevice.h>
-> +#include <net/dst_cache.h>
-> +#include <net/ip6_route.h>
-> +#include <net/ip_tunnels.h>
-> +#include <net/ip6_tunnel.h>
-> +#include <net/seg6.h>
-> +#include <linux/seg6.h>
-> +#include <linux/srl2.h>
-> +
-> +/* Conservative initial estimate for SRH size before newlink provides
-> + * the actual value. 256 bytes accommodates up to 15 SIDs.
-> + */
-> +#define SRL2_SRH_HEADROOM_EST  256
-> +
-> +struct srl2_priv {
-> +       struct ipv6_sr_hdr      *srh;
-> +       struct dst_cache        dst_cache;
-> +};
-> +
-> +/*
-> + * srl2_xmit - encapsulate an L2 frame in IPv6+SRH and transmit
-> + *
-> + * When the bridge (or local stack) sends a frame through this device,
-> + * skb->data points to the inner Ethernet header.  We look up a route
-> + * towards the first SID, prepend the outer IPv6+SRH via
-> + * seg6_do_srh_encap(), and transmit via ip6tunnel_xmit().
-> + *
-> + * The route lookup result is cached per-cpu in dst_cache. Since the
-> + * first SID is constant for the lifetime of the device, the cache
-> + * avoids repeated route lookups in the common case.
-> + */
-> +static netdev_tx_t srl2_xmit(struct sk_buff *skb, struct net_device *dev=
-)
-> +{
-> +       struct srl2_priv *priv =3D netdev_priv(dev);
-> +       struct net *net =3D dev_net(dev);
-> +       struct dst_entry *dst;
-> +       struct flowi6 fl6;
-> +       int err;
-> +
-> +       local_bh_disable();
-> +       dst =3D dst_cache_get(&priv->dst_cache);
-> +       local_bh_enable();
-> +
-> +       if (unlikely(!dst)) {
-> +               memset(&fl6, 0, sizeof(fl6));
-> +               fl6.daddr =3D priv->srh->segments[priv->srh->first_segmen=
-t];
-> +
-> +               dst =3D ip6_route_output(net, NULL, &fl6);
-> +               if (dst->error) {
-> +                       dst_release(dst);
-> +                       DEV_STATS_INC(dev, tx_carrier_errors);
-> +                       goto drop;
-> +               }
-> +
-> +               if (dst_dev(dst) =3D=3D dev) {
-> +                       dst_release(dst);
-> +                       DEV_STATS_INC(dev, collisions);
-> +                       goto drop;
-> +               }
-> +
-> +               local_bh_disable();
-> +               /* saddr is unused */
-> +               dst_cache_set_ip6(&priv->dst_cache, dst, &fl6.saddr);
-> +               local_bh_enable();
-> +       }
-> +
-> +       skb_scrub_packet(skb, false);
-> +
-> +       skb_dst_set(skb, dst);
-> +
-> +       err =3D seg6_do_srh_encap(skb, priv->srh, IPPROTO_ETHERNET);
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/pcie_cong_event.c b/drivers/net/ethernet/mellanox/mlx5/core/en/pcie_cong_event.c
+> index 2eb666a46f39..e96dfe322c14 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en/pcie_cong_event.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/pcie_cong_event.c
+> @@ -43,7 +43,6 @@ struct mlx5e_pcie_cong_event {
+>  	struct mlx5e_pcie_cong_stats stats;
+>  };
+>  
+> -
+>  static const struct counter_desc mlx5e_pcie_cong_stats_desc[] = {
+>  	{ MLX5E_DECLARE_STAT(struct mlx5e_pcie_cong_stats,
+>  			     pci_bw_inbound_high) },
 
-We shouldn't be reusing seg6_do_srh_encap() as it also manages its own
-lwt dst_cache. There's probably a need to rework that part to avoid
-code duplication.
+The above hunk seems to have been included by mistake.
+
+> @@ -259,7 +258,11 @@ mlx5e_pcie_cong_get_thresh_config(struct mlx5_core_dev *dev,
+>  		MLX5_DEVLINK_PARAM_ID_PCIE_CONG_OUT_HIGH,
+>  	};
+>  	struct devlink *devlink = priv_to_devlink(dev);
+> -	union devlink_param_value val[4];
+> +	union devlink_param_value *val;
+> +
+> +	val = kcalloc(4, sizeof(*val), GFP_KERNEL);
+> +	if (!val)
+> +		return -ENOMEM;
+>  
+>  	for (int i = 0; i < 4; i++) {
+>  		u32 id = ids[i];
+
+The lines following this hunk are:
+
+		int err;
+
+		err = devl_param_driverinit_value_get(devlink, id, &val[i]);
+		if (err)
+			return err;
+
+AI review points out that if the error condition above is reached,
+then val will be leaked.
+
+> @@ -275,6 +278,7 @@ mlx5e_pcie_cong_get_thresh_config(struct mlx5_core_dev *dev,
+>  	config->outbound_low = val[2].vu16;
+>  	config->outbound_high = val[3].vu16;
+>  
+> +	kfree(val);
+>  	return 0;
+>  }
+>  
+
+Overall I would suggest breaking the mlx5 driver changes out into a
+separate preparatory patch, which precedes the devlink patch in the
+patch-set.
+
+...
+
+-- 
+pw-bot: changes-requested
