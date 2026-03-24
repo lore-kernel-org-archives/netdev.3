@@ -1,63 +1,63 @@
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DA238AC76
-	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 15:53:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7C6365A1D
+	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 15:53:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774367597; cv=none; b=A0vmd+TsKgOwtJDBmMlkuHsxPDwrE6GmPFPv0WwRwlG3ZBvY2630PgnOHnCS/BQ7Rtc1WUjAiXS2r8QMSJcTW51plYCMN3HUFTL6sQU1X4j6PidfCOsLV36C5P4c2W9rdk3z62jxYM8pVo18VQHMzs4GDutFrM+GCFwtiZKg9XY=
+	t=1774367598; cv=none; b=r2fmn7q4WMQ+rB8ts+RWSX5EbVhhLplQ6KsbXf2OEp0Qfb+BoHXR7gWNAfVDoAGG8Vt9q0zzUSbUha6s1uZK4aP8YB9JcV6LySrT92KOBjgniyA1nKFQcQE8zUljQSjNiLtOXZKO3fdgmXhe9qKvWpskVIPPLANZHnrtSWoTubE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774367597; c=relaxed/simple;
-	bh=pabaukliVPTTBtCCbu7GRWF4HPcbxolgmd7lMaXKXsI=;
+	s=arc-20240116; t=1774367598; c=relaxed/simple;
+	bh=f2fhNgEZ9mq/NMTTBc2nagEfYfPtdMldazchFYecDeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WXVDF4jCLPwUl2F2YwDyDLF9b46ljJzf0trQ+NZyjwUOWGQpr+T48TbdnVaG7RkpE7jTHrf6yu0xAfqNJnc6mm97PG/jcD9pmoQSA9SBuM7MfhSY5qvh/3jFeNgNWqosMO0eoUofcjGKYX7P0S0z3Hscsq5ClRXwzOPd/GYPwOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CnmTiim2; arc=none smtp.client-ip=209.85.208.175
+	 MIME-Version; b=dpcBEnv7En4CQFVY96FrX0EGVwTuo9tm2VVyZgZcy63OqWECFlQbwriL19Gspak8tuIlRk0QI8GVg8A6HOStMpVnKpHiR6pe1JOekPIQ2QV68lj2jzd7sP6yRFfFfu/HZ0ogj17FGR4gTU8ElkXX0O3iPSRsfmRrKVkRIE94FR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cHU237Dg; arc=none smtp.client-ip=209.85.208.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CnmTiim2"
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-38a2e62b893so10976991fa.1
-        for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 08:53:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cHU237Dg"
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-38c01150eb2so34177641fa.2
+        for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 08:53:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774367593; x=1774972393; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1774367595; x=1774972395; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xl/xsq3xgipQKWzjnfnvy5NKeXM0GCll+kZa/2IQSxk=;
-        b=CnmTiim2xVF/kbpTidTyewQDOYU++BuvTFvgDnAPyOcSVIwlNhvobt+9xzcpeXHGlr
-         oe7ynRzxgC4NCmwk20Ns0+5pNq5FnxsgYApJ0KIcIrFD2QVsUDuPASCrIjK08pGxvABO
-         60jDt2mkE99BXxk/J5wHYim8zB1e/1OpdlAogCNWYB139eD9SRrWn5hKy/L0S+hD67KT
-         YyEgXhLdeak7pNzAOsPxqQeuoe0Du66jV0tYodocYfJGmvV8WLuNrWRslM31dhhSjU+h
-         hA4D+g1YXFnnbdlh3WzU2dLsbZYlC5vcTPLHxEldVc5EKFkp1NkBy1liAC8zWaTWBSLT
-         NCRw==
+        bh=FfeAjXMVYCj1aDUUjyZzfRg1uUQ9OgRu51XWUh4xZSo=;
+        b=cHU237DgfFPOuV/Oll6ioEVrCW1poKc4Lvsacv71LSG8Bi1vbSWCxiy8a9xWLfi5ja
+         B4Hqi9NaQRcMDd2NpNkj/Mo4q0z+6yMAOW4REm0huuFoA5nNsddxZy5M5TppgfOzaqQt
+         l+6kwvZuWxsurAXI3+iu48GDFKSQ+2/g14UvIHYjTTewEIZr0a0qOPsDhk4cCaGclLr0
+         MBZ6y6OpnGhNStmoX/58Q564Ql7g6ZeUXNdZoiniwyUE1kE/NqEMCE7rV2yVEG/9UDEA
+         kJIGlktzdL33mYcSGD3KTKwA//D4GBDNIDiRORtNFU2uzMOTKvqSyfavBYg3gYLBZdn8
+         9oUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774367593; x=1774972393;
+        d=1e100.net; s=20251104; t=1774367595; x=1774972395;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=xl/xsq3xgipQKWzjnfnvy5NKeXM0GCll+kZa/2IQSxk=;
-        b=nF1P/NzDgM4o7YKL3MrRBKXU3qR7/P8ynbWNSLiWZY+U7yQUvbKkPiSSy0LytoFWyD
-         jfGx7dlAwKZ08oDayT7EuhPysnaL7EFa9Lw2D5P9gxTG8OgzVEUu4kg/0MUfsbmzWHbD
-         LaR7dHrzA667EeLRGqCmUgk7/sYi8U8h3XARRWL4hQizASOAY68nNcKVty6BAQdGQhLH
-         YW7jwX0KOTAjtCOrREzN7gDw0Bvy3ZOvV6ubOsuwtvxP8SxS10QkG3D86ghioZLtVyvF
-         KanpjP/glM+ZDi4BQ2UMDh8tO1gnPbSu+vWMhErQp5pyVpSY+zFq1bFCmY1p8PkGG5RD
-         FvUw==
-X-Gm-Message-State: AOJu0YwRvSiPeVUHU4Bce+5hPMiPI1/29EVrYa20cew4j+TYguRSK8fr
-	3kmgULVzzRboCCU96N14E3CCVDXwCoC1JWOm3FpkWL2yVSGfiezfEmzo2c0KedCU
-X-Gm-Gg: ATEYQzyYHLGE39OY2Lmvk15tU1w0bS+EyD/mJttN+e7SbUsZ6uXVNSdD/IDIMdV2D0X
-	pqFxdCLlQMS6/q4tb8jA4UFuLFo5wjIlYQT4VdofVWSWOS7tm+Nf7ay6hw+UrFyH4KIHcZTnNo9
-	LM2zpRdhy+k1NjPQWOvVIl0kxUnuXA9akSC1WfHRTvTkLjyz3HiCCK8sOxzmCMocwaRMx7ELrO6
-	t5P4NOOBKP3YZCN1evSE49Izt42l35qVeU29w846vB1CSx+nSe7rGJOYg7LX8kTAhfA76ToPHtp
-	I/7QGjAXcJEwJZODX7vMPNAR3w6ZtwBcNrEgrp+EflCGB2yKrfWcQYUiEYEdq+jiRSo8+mdCOS2
-	AUvxXBVgYQ3zzdnc/uNa9jSgP2Yg4maK5TR2lMVco4TEl6gshqrJhmUdQjkRZw8iAb7f/+GoiUY
-	I6zuS4N9cT2W67JsiH53AQpAq8vivrLsZ0d+aGzJ/ja8ccRpABo2sI/MzSQxwKcasClJAqXpUDo
-	M1Wy2k6dM0KxCPU3A==
-X-Received: by 2002:a05:651c:4102:b0:38a:6acb:eb1d with SMTP id 38308e7fff4ca-38bf9640991mr42255771fa.12.1774367592961;
-        Tue, 24 Mar 2026 08:53:12 -0700 (PDT)
+        bh=FfeAjXMVYCj1aDUUjyZzfRg1uUQ9OgRu51XWUh4xZSo=;
+        b=a6j9M2pIsCoCZtBiQg2dvkDvHVG7m6Q1rf8rYN9XJkQdvLnk21r24PX9PdVdpttVbQ
+         PLi6S511gUUBUv2bDdRK7JhROpbfqbgCVlP+hPPcm+Lg7YXbM0LJwRlBHgipfnJZj1+Z
+         88FZpux9ONETvo2RudHSyWgJsDMHWikYBp4Rjw4G/vgZ9oJQ/qPIn/O7WpLBS4tls9ym
+         eWDne7mlsCRpFaF0AweuM74Z1LwSX7DGUO+AJgHCyn/P0nLwCP2NEJ0MO62L05Vw0DRc
+         V6Z8Y5gcIdHENHPttyhrttqDfN4u6MIItfMv0gltvzXlGC0Uea+UL9E2ypNuA5BdljmY
+         mtgg==
+X-Gm-Message-State: AOJu0Yy2Den/sApyp6t1h7AWkZ9sX0L++Y4YNSwy37SjQ70tm9JJhy+E
+	qDCEuTpAJnRMwfepAm93jRja/BV4ssWwZkDZilA32XQ/cFucX64+CrZShS9ntu6l
+X-Gm-Gg: ATEYQzwqtNx1LEHOVVr1wF32VOAdBOmi5VD2OVQDPYCX5mbcqEGp2b/oxUoW0Xrg95u
+	ABq8BAUdWeAODukroYlmYuXjfi0yb2uy/vfhh65VhqMlULioxMDQkU6/mSp4eb/ZPuak7GeVWdT
+	vqBvbX1GUkftm5DvYWAm3LDjmdgVyH5emFrrvd2g7FuEcZPpYADAptH2Ck8zZbCYKdTvwQY1r+O
+	/0CsqxE0c2J1q7BMBOjqSXZEw2pk0C019hChgB5FJRxpJufqEyJ14liB0/y2XcvVwvWr5U0zpPU
+	tL1Dqp/IWMB9tx8dmhEvK6QW2uA87mlSHdIkYhqOmBgG0PEZlRNuw7d2wl9ScejN2xR8MSjuO5d
+	Q+jMpt9Eykqq0OuowGtCsih3vJE46kACrnyKI26BIjVoSgKQF22WkzDeDp32jrORnnK6d4LLURh
+	t12FH80WQiZUGazPRkEkxgvYF4AEEfxpMzaYF+5KmNuKCH+GOOXaLNYrHrNEtAdERDXPhUPJ5Iv
+	tpM9E/YLsJy6wW+7Y/X1Tk7YhNQ
+X-Received: by 2002:a2e:894b:0:b0:389:fb7f:3def with SMTP id 38308e7fff4ca-38bf96ee30fmr42392691fa.23.1774367594407;
+        Tue, 24 Mar 2026 08:53:14 -0700 (PDT)
 Received: from localhost.localdomain (46-138-191-69.dynamic.spd-mgts.ru. [46.138.191.69])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38bf9aa7cd0sm32567841fa.32.2026.03.24.08.53.12
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38bf9aa7cd0sm32567841fa.32.2026.03.24.08.53.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Mar 2026 08:53:12 -0700 (PDT)
+        Tue, 24 Mar 2026 08:53:14 -0700 (PDT)
 From: Artem Lytkin <iprintercanon@gmail.com>
 To: netdev@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
@@ -67,9 +67,9 @@ Cc: fujita.tomonori@gmail.com,
 	tmgross@umich.edu,
 	ojeda@kernel.org,
 	dakr@kernel.org
-Subject: [PATCH net-next v2 3/5] rust: phy: add config_init, read_page, and write_page callbacks
-Date: Tue, 24 Mar 2026 18:52:47 +0300
-Message-ID: <20260324155249.15098-4-iprintercanon@gmail.com>
+Subject: [PATCH net-next v2 5/5] net: phy: realtek: add Rust RTL8211F PHY driver
+Date: Tue, 24 Mar 2026 18:52:49 +0300
+Message-ID: <20260324155249.15098-6-iprintercanon@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260324155249.15098-1-iprintercanon@gmail.com>
 References: <20260324155249.15098-1-iprintercanon@gmail.com>
@@ -81,153 +81,194 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add three new driver callbacks to the PHY abstraction:
+Add a Rust implementation of the Realtek RTL8211F Gigabit Ethernet PHY
+driver. This exercises the extended Rust PHY abstraction with
+config_init, read_page/write_page, and interrupt support callbacks.
 
-  - config_init: Called to initialize the PHY after a reset. This is
-    needed by nearly all real-world PHY drivers to configure
-    vendor-specific registers (RGMII delays, LED settings, etc.).
-    config_init was previously proposed in an RFC for the Rockchip PHY
-    driver but not merged at that time. This re-introduces it in a
-    form consistent with the existing vtable infrastructure.
+The driver implements:
+  - config_init: Configures RGMII TX/RX internal delays based on the
+    PHY interface mode, and disables PHY-level EEE so LPI is passed
+    to the MAC. This matches the C driver's essential initialization.
+    ALDPS and CLKOUT are left at hardware defaults since they depend
+    on device tree properties and per-device private data not yet
+    supported by the Rust PHY abstraction.
+  - read_page / write_page: Standard RTL821x page select register.
+  - config_intr: Enables/disables link status change interrupts.
+  - handle_interrupt: Reads INSR and triggers the state machine on
+    link change. PME/WoL interrupts are documented as unsupported.
 
-  - read_page / write_page: Required by page-based PHY chips (Realtek,
-    Marvell) for the kernel's paged register access infrastructure.
-    When these callbacks are registered, phy_read_paged(),
-    phy_write_paged(), and phy_modify_paged() use them to switch
-    register pages. Both must be implemented together.
-
-Each callback follows the established Adapter<T> pattern with
-unsafe extern "C" fn bridging to the Rust Driver trait method, and
-conditional registration in create_phy_driver() via HAS_* flags
-generated by the #[vtable] macro.
+The PHY ID 0x001cc916 matches the RTL8211F specifically.
 
 Signed-off-by: Artem Lytkin <iprintercanon@gmail.com>
 ---
- rust/kernel/net/phy.rs | 83 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 83 insertions(+)
+ drivers/net/phy/realtek/Kconfig          |  12 +++
+ drivers/net/phy/realtek/Makefile         |   1 +
+ drivers/net/phy/realtek/rtl8211f_rust.rs | 127 +++++++++++++++++++++++
+ 3 files changed, 140 insertions(+)
+ create mode 100644 drivers/net/phy/realtek/rtl8211f_rust.rs
 
-diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-index 142f7101723c8..9ffece7ee41c7 100644
---- a/rust/kernel/net/phy.rs
-+++ b/rust/kernel/net/phy.rs
-@@ -388,6 +388,51 @@ struct Adapter<T: Driver> {
- }
+diff --git a/drivers/net/phy/realtek/Kconfig b/drivers/net/phy/realtek/Kconfig
+index b05c2a1e90243..4cc880683367d 100644
+--- a/drivers/net/phy/realtek/Kconfig
++++ b/drivers/net/phy/realtek/Kconfig
+@@ -13,3 +13,15 @@ config REALTEK_PHY_HWMON
+ 	  Optional hwmon support for the temperature sensor
  
- impl<T: Driver> Adapter<T> {
-+    /// # Safety
-+    ///
-+    /// `phydev` must be passed by the corresponding callback in `phy_driver`.
-+    unsafe extern "C" fn config_init_callback(phydev: *mut bindings::phy_device) -> c_int {
-+        from_result(|| {
-+            // SAFETY: The C core calls config_init with the PHY mutex held
-+            // (from phy_init_hw), so the accessors on `Device` are okay to call.
-+            let dev = unsafe { Device::from_raw(phydev) };
-+            T::config_init(dev)?;
-+            Ok(0)
-+        })
+ endif # REALTEK_PHY
++
++config REALTEK_RTL8211F_RUST_PHY
++	tristate "Rust Realtek RTL8211F PHY driver"
++	depends on RUST && RUST_PHYLIB_ABSTRACTIONS && !REALTEK_PHY
++	help
++	  Rust driver for the Realtek RTL8211F Gigabit Ethernet PHY.
++	  This is a Rust implementation demonstrating the extended PHY
++	  abstraction with config_init, paged register access, and
++	  interrupt support.
++
++	  To compile this driver as a module, choose M here: the
++	  module will be called rtl8211f_rust.
+diff --git a/drivers/net/phy/realtek/Makefile b/drivers/net/phy/realtek/Makefile
+index dd21cf87f2f18..56ae5d2e39f65 100644
+--- a/drivers/net/phy/realtek/Makefile
++++ b/drivers/net/phy/realtek/Makefile
+@@ -2,3 +2,4 @@
+ realtek-y			+= realtek_main.o
+ realtek-$(CONFIG_REALTEK_PHY_HWMON) += realtek_hwmon.o
+ obj-$(CONFIG_REALTEK_PHY)	+= realtek.o
++obj-$(CONFIG_REALTEK_RTL8211F_RUST_PHY) += rtl8211f_rust.o
+diff --git a/drivers/net/phy/realtek/rtl8211f_rust.rs b/drivers/net/phy/realtek/rtl8211f_rust.rs
+new file mode 100644
+index 0000000000000..f89f2fa55c677
+--- /dev/null
++++ b/drivers/net/phy/realtek/rtl8211f_rust.rs
+@@ -0,0 +1,127 @@
++// SPDX-License-Identifier: GPL-2.0
++// Copyright (C) 2026 Artem Lytkin <iprintercanon@gmail.com>
++
++//! Rust Realtek RTL8211F Gigabit Ethernet PHY driver.
++
++use kernel::irq::IrqReturn;
++use kernel::net::phy::{self, reg::C22, DeviceId};
++use kernel::prelude::*;
++
++// Page select register (vendor-specific, register 0x1f).
++const PAGE_SELECT: C22 = C22::vendor_specific::<0x1f>();
++
++// Interrupt status register (vendor-specific, register 0x1d).
++const INSR: C22 = C22::vendor_specific::<0x1d>();
++
++// Interrupt enable register number (used with paged access on page 0xa42).
++const INER_REG: u16 = 0x12;
++const INER_LINK_STATUS: u16 = 1 << 4;
++
++// RGMII TX delay register on page 0xd08.
++const TX_DELAY_REG: u16 = 0x11;
++const TX_DELAY_EN: u16 = 1 << 8;
++
++// RGMII RX delay register on page 0xd08.
++const RX_DELAY_REG: u16 = 0x15;
++const RX_DELAY_EN: u16 = 1 << 3;
++
++// PHY EEE enable bit in PHYCR2 (default page, register 0x19).
++const PHYCR2: u16 = 0x19;
++const PHYCR2_PHY_EEE_ENABLE: u16 = 1 << 5;
++
++kernel::module_phy_driver! {
++    drivers: [Rtl8211f],
++    device_table: [
++        DeviceId::new_with_driver::<Rtl8211f>(),
++    ],
++    name: "rtl8211f_rust",
++    authors: ["Artem Lytkin"],
++    description: "Rust Realtek RTL8211F PHY driver",
++    license: "GPL",
++}
++
++struct Rtl8211f;
++
++#[vtable]
++impl phy::Driver for Rtl8211f {
++    const NAME: &'static CStr = c"RTL8211F Gigabit Ethernet (Rust)";
++    const PHY_DEVICE_ID: DeviceId = DeviceId::new_with_exact_mask(0x001cc916);
++
++    fn config_init(dev: &mut phy::Device) -> Result {
++        // Configure RGMII delays based on the PHY interface mode.
++        // This matches the C driver's rtl8211f_config_rgmii_delay().
++        let iface = dev.interface();
++        let tx_delay = iface == bindings::phy_interface_t_PHY_INTERFACE_MODE_RGMII_ID
++            || iface == bindings::phy_interface_t_PHY_INTERFACE_MODE_RGMII_TXID;
++        let rx_delay = iface == bindings::phy_interface_t_PHY_INTERFACE_MODE_RGMII_ID
++            || iface == bindings::phy_interface_t_PHY_INTERFACE_MODE_RGMII_RXID;
++
++        dev.modify_paged(
++            0xd08,
++            TX_DELAY_REG,
++            TX_DELAY_EN,
++            if tx_delay { TX_DELAY_EN } else { 0 },
++        )?;
++        dev.modify_paged(
++            0xd08,
++            RX_DELAY_REG,
++            RX_DELAY_EN,
++            if rx_delay { RX_DELAY_EN } else { 0 },
++        )?;
++
++        // Disable PHY-level EEE so LPI is passed up to the MAC layer.
++        // PHYCR2 is on the default page, no page switch needed.
++        dev.modify(PHYCR2, PHYCR2_PHY_EEE_ENABLE, 0)?;
++
++        // Note: ALDPS and CLKOUT configuration are omitted because they
++        // depend on device tree properties and per-device private data,
++        // which are not yet supported by the Rust PHY abstraction.
++        // The hardware defaults are preserved for these settings.
++
++        Ok(())
 +    }
 +
-+    /// # Safety
-+    ///
-+    /// `phydev` must be passed by the corresponding callback in `phy_driver`.
-+    unsafe extern "C" fn read_page_callback(phydev: *mut bindings::phy_device) -> c_int {
-+        from_result(|| {
-+            // SAFETY: This callback is called only in contexts
-+            // where we hold `phy_device->lock`, so the accessors on
-+            // `Device` are okay to call.
-+            let dev = unsafe { Device::from_raw(phydev) };
-+            let page = T::read_page(dev)?;
-+            Ok(page.into())
-+        })
++    fn read_page(dev: &mut phy::Device) -> Result<u16> {
++        dev.read(PAGE_SELECT)
 +    }
 +
-+    /// # Safety
-+    ///
-+    /// `phydev` must be passed by the corresponding callback in `phy_driver`.
-+    unsafe extern "C" fn write_page_callback(
-+        phydev: *mut bindings::phy_device,
-+        page: c_int,
-+    ) -> c_int {
-+        from_result(|| {
-+            // SAFETY: This callback is called only in contexts
-+            // where we hold `phy_device->lock`, so the accessors on
-+            // `Device` are okay to call.
-+            let dev = unsafe { Device::from_raw(phydev) };
-+            let page = u16::try_from(page).map_err(|_| code::EINVAL)?;
-+            T::write_page(dev, page)?;
-+            Ok(0)
-+        })
++    fn write_page(dev: &mut phy::Device, page: u16) -> Result {
++        dev.write(PAGE_SELECT, page)
 +    }
 +
-     /// # Safety
-     ///
-     /// `phydev` must be passed by the corresponding callback in `phy_driver`.
-@@ -580,6 +625,11 @@ pub const fn create_phy_driver<T: Driver>() -> DriverVTable {
-         flags: T::FLAGS,
-         phy_id: T::PHY_DEVICE_ID.id(),
-         phy_id_mask: T::PHY_DEVICE_ID.mask_as_int(),
-+        config_init: if T::HAS_CONFIG_INIT {
-+            Some(Adapter::<T>::config_init_callback)
++    fn config_intr(dev: &mut phy::Device) -> Result {
++        if dev.is_interrupts_enabled() {
++            // Acknowledge any pending interrupt.
++            dev.read(INSR)?;
++            // Enable link status change interrupt.
++            dev.write_paged(0xa42, INER_REG, INER_LINK_STATUS)?;
 +        } else {
-+            None
-+        },
-         soft_reset: if T::HAS_SOFT_RESET {
-             Some(Adapter::<T>::soft_reset_callback)
-         } else {
-@@ -630,6 +680,16 @@ pub const fn create_phy_driver<T: Driver>() -> DriverVTable {
-         } else {
-             None
-         },
-+        read_page: if T::HAS_READ_PAGE {
-+            Some(Adapter::<T>::read_page_callback)
-+        } else {
-+            None
-+        },
-+        write_page: if T::HAS_WRITE_PAGE {
-+            Some(Adapter::<T>::write_page_callback)
-+        } else {
-+            None
-+        },
-         link_change_notify: if T::HAS_LINK_CHANGE_NOTIFY {
-             Some(Adapter::<T>::link_change_notify_callback)
-         } else {
-@@ -657,6 +717,11 @@ pub trait Driver {
-     /// The default id and mask are zero.
-     const PHY_DEVICE_ID: DeviceId = DeviceId::new_with_custom_mask(0, 0);
- 
-+    /// Called to initialize the PHY, including after a reset.
-+    fn config_init(_dev: &mut Device) -> Result {
-+        build_error!(VTABLE_DEFAULT_ERROR)
++            // Disable all interrupts.
++            dev.write_paged(0xa42, INER_REG, 0)?;
++            // Acknowledge any pending interrupt.
++            dev.read(INSR)?;
++        }
++        Ok(())
 +    }
 +
-     /// Issues a PHY software reset.
-     fn soft_reset(_dev: &mut Device) -> Result {
-         build_error!(VTABLE_DEFAULT_ERROR)
-@@ -709,6 +774,24 @@ fn write_mmd(_dev: &mut Device, _devnum: u8, _regnum: u16, _val: u16) -> Result
-         build_error!(VTABLE_DEFAULT_ERROR)
-     }
- 
-+    /// Returns the current PHY register page number.
-+    ///
-+    /// Must be implemented together with [`Driver::write_page`]. The kernel's
-+    /// paged register access infrastructure requires both callbacks to be
-+    /// present.
-+    fn read_page(_dev: &mut Device) -> Result<u16> {
-+        build_error!(VTABLE_DEFAULT_ERROR)
-+    }
++    fn handle_interrupt(dev: &mut phy::Device) -> IrqReturn {
++        let irq_status = match dev.read(INSR) {
++            Ok(val) => val,
++            Err(_) => {
++                dev.phy_error();
++                return IrqReturn::None;
++            }
++        };
 +
-+    /// Sets the current PHY register page number.
-+    ///
-+    /// Must be implemented together with [`Driver::read_page`]. The kernel's
-+    /// paged register access infrastructure requires both callbacks to be
-+    /// present.
-+    fn write_page(_dev: &mut Device, _page: u16) -> Result {
-+        build_error!(VTABLE_DEFAULT_ERROR)
-+    }
++        if irq_status & INER_LINK_STATUS != 0 {
++            dev.trigger_machine();
++            return IrqReturn::Handled;
++        }
 +
-     /// Callback for notification of link change.
-     fn link_change_notify(_dev: &mut Device) {}
- }
++        // Note: PME/Wake-on-LAN interrupt (bit 7) is not handled because
++        // WoL support requires pm_wakeup_event() binding and per-device
++        // private data, which are not yet available.
++
++        IrqReturn::None
++    }
++}
 -- 
 2.43.0
 
