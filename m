@@ -1,66 +1,152 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33932C0F84
-	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 19:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB2426CE2D
+	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 19:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774379233; cv=none; b=axBjBJjtgpCkc6YdQnK+cAlEcNTGy9ScMcg8b+/J8TElcBtGZLv/hE9o9c1WnMmIwWk/tu6zbgEPFdkFE1vULw5gr7Z7kgiDKXw4gcZ3E8+BPhxdmlwvMLRhlyIXA2jVhMruDqsvbaFsJpCqhDcbRM4txkf8NuwiWtVkb21aqi4=
+	t=1774379242; cv=none; b=e/cDa1laLdt0SFkYUVHdbAXcMOYjJMkCulHqyJiQDd4Zq/MHodt7nD28DgvhNWGiXwaVNdJIqQ71lWVI92qQZyfTpz8OR01rFCobT1K63GwrsPcZAsISdJQU7N8/CQUocruGk/TpKP3xggvKe6l8JX+P/8E5AI6a/SsXkAibz9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774379233; c=relaxed/simple;
-	bh=AW1OlEhSS59XAz0xTMa+6MUUg+iZ6+WPjBax3z5pQ2M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jn7EcWKTFiFlqgwOqYzb7oEvp6szPOS/Q4JRiPkifekYzvENKpzjwWDL+h1Zit5s9Sh10OnomDPEPTBT2MOP+K3t+/XQU4zn229/2DZPcwjZhpyikmlSEASEV13ZhVd/BYozOqIxo4N7yItsxaNEoxt4KOrHZ0YVRUew+l5H+pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jQ0osLDS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774379242; c=relaxed/simple;
+	bh=K66xp1mThxZBb716Y4QF9sTnen6rnGdVq5eWC4X7axM=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=uaJZjtBlqHhgBaURI5rMa7FDPBakiRfvoLqKg3x1Z9kGXOdlcgr8QQDFKZ4fBwQhofNbEZptKN9WMoe9Xa5x6peLpX9aj9w3iGqnOI/2PvEmBVxBEcxZ9JNTbMG/cYNYi86WmpYnHKL2w7J4MKViQn/Bjz2WlzZFU1vDB4GVqI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CTFmjFP/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jQ0osLDS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E27A0C19424;
-	Tue, 24 Mar 2026 19:07:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CTFmjFP/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4094C2BC9E;
+	Tue, 24 Mar 2026 19:07:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774379233;
-	bh=AW1OlEhSS59XAz0xTMa+6MUUg+iZ6+WPjBax3z5pQ2M=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jQ0osLDS58/jZGZXdKes/JUpPFmIHJUrTMH365fnO4UsZ9RTw9HVslrWx0LAwE6Q7
-	 xAdkGe77ixS6ZD5xRrVCTPgWOXwDGpIrn0rR/eFAMkHegWiejekEMW3qJFpP4V8yvT
-	 qsVHbUy7HVXjHfWKtHIRnY7GxHbjjRLmrk1aa90XLpC0Ln1noO5OdSlg3+vljs4HbF
-	 zIT68zS2STz2xPJUxCVLVAQq/Qu4jXmhqZ3ycLh1bTY6e7rRO6QdV8JNrDF1heezph
-	 opI7YWtqPjo0kOZerfOX89Fnq9Y3Cw4IlaStTQtapB16ESStD9qBEao0SrwfrEGt6v
-	 GtFrkfthgOfnQ==
-Message-ID: <317fc769-8492-4358-81bb-e21a001a6beb@kernel.org>
-Date: Tue, 24 Mar 2026 13:07:12 -0600
+	s=k20201202; t=1774379242;
+	bh=K66xp1mThxZBb716Y4QF9sTnen6rnGdVq5eWC4X7axM=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=CTFmjFP/I0iSCaqQWt92FcXRCROgJ+OmJVfUm/V+hpnV1L3hnDcq5l04fFaKkeW+y
+	 TnrOj7vmiVrfC1wa2y1N1fgHws8DV5Seduh9Tna9bbrQW6D3Kr1CBdSdkg77/ANKrl
+	 4RueH7i02bnkYrf4SjKItQ2Z9y1ADVmXDuu11YcePg2qPH9K5YirwsIDA7mVFnTVFR
+	 9URkgtzweB2j5i1KpgWnEZ5WV+Faod55hY2C5KyvWL21L0rcWd1x/227sE6Rd2PnUP
+	 my2USfER+3wNDhoIC9qGGAYA9za4O9frUX0NjBJMEThmfhSqBdsY6s8uEq03tTGlug
+	 JHLhESkAiia0w==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id C4684F4006F;
+	Tue, 24 Mar 2026 15:07:20 -0400 (EDT)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Tue, 24 Mar 2026 15:07:20 -0400
+X-ME-Sender: <xms:6ODCacP0j8AKPpVCkBiDSSQRrW3oCjZUS1YRquho04etOHmE0aINyw>
+    <xme:6ODCadw8hexXFM4VO2jsXOGdzXAZC7s9stJKT7TUoirr8CXuvDNtIKpUZCIWpRLZO
+    N3m0T0XXzpr4MJ8IXz8Ksy6MRLNZ3mgm_0Jvs9mq01T9iaaCPEij70>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefvddvfeekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedfvehhuhgt
+    khcunfgvvhgvrhdfuceotggvlheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
+    hnpefhffekffeftdfgheeiveekudeuhfdvjedvfedvueduvdegleekgeetgfduhfefleen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegthhhutg
+    hklhgvvhgvrhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeifeegleel
+    leehledqfedvleekgeegvdefqdgtvghlpeepkhgvrhhnvghlrdhorhhgsehfrghsthhmrg
+    hilhdrtghomhdpnhgspghrtghpthhtohepjedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtohepjhhohhhnrdhfrghsthgrsggvnhgusehgmhgrihhlrdgtohhmpdhrtghpthhtoh
+    epkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkvghrnhgvlhdqthhlshdq
+    hhgrnhgushhhrghkvgeslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopegthh
+    hutghkrdhlvghvvghrsehorhgrtghlvgdrtghomhdprhgtphhtthhopehsugesqhhuvggr
+    shihshhnrghilhdrnhgvthdprhgtphhtthhopehhrghrvgesshhushgvrdguvgdprhgtph
+    htthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:6ODCaV1rWb9z1kUfCuPpnsu1Afq8EXIfOmA0nY2mNQNBbs2Bn5RLNw>
+    <xmx:6ODCaWKkkcGr-rD7tcNqxMjOrh8rimeIE7Lv_HcHvK9K6eGqdqjNVQ>
+    <xmx:6ODCaVxl5T7CNolBg22Pw-Y9NkyL_Z_fy4u8aXxpRqSPSKKMO4F38w>
+    <xmx:6ODCaUXL9afrgqmVn_Pd6zT2FV5qFgi4aW8VRxdiMdU720XvtR4knA>
+    <xmx:6ODCaVhIcCWO9UKWFVlQe_1rgwjbtNWXlLpXZnmrA4vtsIsanoKUMcXd>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 9D073780070; Tue, 24 Mar 2026 15:07:20 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 2/3] vrf: Use dst_dev_put() instead of using
- loopback device
-Content-Language: en-US
-To: Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, andrew+netdev@lunn.ch, petrm@nvidia.com,
- lirongqing@baidu.com
-References: <20260324155521.525292-1-idosch@nvidia.com>
- <20260324155521.525292-3-idosch@nvidia.com>
-From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <20260324155521.525292-3-idosch@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
+X-ThreadId: AJdrMbW-WYaB
+Date: Tue, 24 Mar 2026 15:07:00 -0400
+From: "Chuck Lever" <cel@kernel.org>
+To: "Sabrina Dubroca" <sd@queasysnail.net>
+Cc: john.fastabend@gmail.com, "Jakub Kicinski" <kuba@kernel.org>,
+ netdev@vger.kernel.org, kernel-tls-handshake@lists.linux.dev,
+ "Chuck Lever" <chuck.lever@oracle.com>, "Hannes Reinecke" <hare@suse.de>
+Message-Id: <66157d87-2cb8-4cd7-b8cd-1e2086825995@app.fastmail.com>
+In-Reply-To: <acK5Qj-F0wGFLUhj@krikkit>
+References: <20260324-tls-read-sock-v5-0-5408befe5774@oracle.com>
+ <20260324-tls-read-sock-v5-6-5408befe5774@oracle.com>
+ <acK5Qj-F0wGFLUhj@krikkit>
+Subject: Re: [PATCH net-next v5 6/6] tls: Flush backlog before waiting for a new record
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 
-On 3/24/26 9:55 AM, Ido Schimmel wrote:
-> Use dst_dev_put() to clean up the device referenced by the dst entry
-> instead of partially open coding it. Internally, the helper uses the
-> blackhole device instead of the loopback device.
-> 
-> Reviewed-by: Petr Machata <petrm@nvidia.com>
-> Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-> ---
->  drivers/net/vrf.c | 24 ++++--------------------
->  1 file changed, 4 insertions(+), 20 deletions(-)
-> 
-
-Reviewed-by: David Ahern <dsahern@kernel.org>
 
 
+On Tue, Mar 24, 2026, at 12:18 PM, Sabrina Dubroca wrote:
+> 2026-03-24, 08:53:28 -0400, Chuck Lever wrote:
+>> From: Chuck Lever <chuck.lever@oracle.com>
+>> 
+>> While lock_sock is held, incoming TCP segments land on
+>> sk->sk_backlog rather than sk->sk_receive_queue.
+>> tls_rx_rec_wait() inspects only sk_receive_queue, so
+>> backlog data remains invisible. For non-blocking callers
+>> (read_sock, and recvmsg or splice_read with MSG_DONTWAIT)
+>> this causes a spurious -EAGAIN. For blocking callers it
+>> forces an unnecessary sleep/wakeup cycle.
+>> 
+>> Flush the backlog inside tls_rx_rec_wait() before checking
+>> sk_receive_queue so the strparser can parse newly-arrived
+>> segments immediately.
+>> 
+>> Fixes: 20ffc7adf53a ("net/tls: missing received data after fast remote close")
+>
+> How did you pick that Fixes tag? That commit mentions FIN/connection
+> closing, which doesn't seem related to the local backlog.
+
+20ffc7adf53a introduced the sk_receive_queue check inside the
+wait loop (then called tls_wait_data(), later refactored into
+tls_rx_rec_wait()).
+
+When lock_sock is held, incoming TCP will segments land on
+sk->sk_backlog, not sk->sk_receive_queue. The sk_receive_queue
+check introduced by 20ffc7adf53a doesn't see backlog data.
+
+
+>> diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+>> index 8fb2f2a93846..84c4ae0330d1 100644
+>> --- a/net/tls/tls_sw.c
+>> +++ b/net/tls/tls_sw.c
+>> @@ -1372,6 +1372,7 @@ tls_rx_rec_wait(struct sock *sk, struct sk_psock *psock, bool nonblock,
+>>  		if (ret < 0)
+>>  			return ret;
+>>  
+>> +		sk_flush_backlog(sk);
+>
+> Do we need to update released when this returns true, like callers of
+> tls_read_flush_backlog() do?
+
+Good catch. v6 will do that.
+
+
+> I also wonder if we'd want to update the
+> caller's flushed_at to avoid bypassing the "smart checks" in
+> tls_read_flush_backlog().
+
+The flush in tls_rx_rec_wait() only fires when the loop finds
+no ready message, which is the cold path. The redundant flush
+from tls_read_flush_backlog() on the next iteration is wasteful
+but harmless. I'm not sure the additional complexity would be
+worth it, but if you believe it will add some value, let me
+know and I will add it.
+
+
+>>  		if (!skb_queue_empty(&sk->sk_receive_queue)) {
+>>  			/* Defer notification to the exit point;
+>>  			 * this thread will consume the record
+>
+> -- 
+> Sabrina
+
+-- 
+Chuck Lever
