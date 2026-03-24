@@ -1,178 +1,106 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2F5406274
-	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 15:19:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8AF3DF004
+	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 15:21:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774365559; cv=none; b=iI9na2B2g5H7hZFztuEX6ovDEiNRiJ3H9c173FhpkxgrFN27BPkrOeMT4VEbGHLQyqzaHbDXjntrIqJi9HosHFzhUnonP6SXk95NGFsCFMrN46k5khtPaaePB0nX7aoihAgK8og+UrlL2O1BqTwcx2+tTDCgkGAOGWd5bTyVLmE=
+	t=1774365684; cv=none; b=W+0w2tdj/0zbDRmgDlaXdRmqV7a42v7RTwSJ1zdjFyqcUQG69D5AHuYQYHyR8nMMLcDum65ySj58R2nOR5j78qvFee00rb+MOWRwH+6RtytIeHOh0cttns4Spyo33891NC36oES0sy0FFwyOr5NSTTkETS3gTrymk84JO5eFanA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774365559; c=relaxed/simple;
-	bh=yQu+yg14FNYHLy+s+BbhOlgj6hTn6x3xR7kw0ed5ygA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oY0S1C9IlTmCQmPWOE2VYULXStvA/W8J4D2NAFI6fv1mMAGfkUroXnlZWAbxVUeMGa7vqyfDRjQbzzRsLlyhDhXUOE1O93a79xc2FJ+x1yUuHI2BhAuDmiQojg5qI0/q85hqwNM+RUPPcWY6OpGdxpLBLnuZcSeRgqb26sdzm1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DgZTSMk8; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1774365684; c=relaxed/simple;
+	bh=EIvl+evZSdI4tBh15Sacy5+Jrtohe9ICNu5LjwM9W2I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EDP2Ms85LwVJ1guOwY0U3mcFrHCqpTfE8yrOMcC+FOf2pHBVXxC2386DjLXHCQrNpSupG3Ac0XoT6egzqC0asQ8b+1zQMAYkKcBlYcw4zw+SJ/ITt7aHIYx/pf5ZJDCe93pHkzeEkJ/yX14TIw6rJoIusOvOPYriyZ6YNrcnmYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=Y8V6oDM0; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DgZTSMk8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774365555;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=47K4ukq6ERapPLsJPgxXf1k9UvvwaRytR4+a7cgPSYw=;
-	b=DgZTSMk8MUQwgAX1/wPeE5pBySz9IhkNrmfu9Y4t/noRwZpAVR6aLBqAXGB7IbAk18j2xh
-	s3T0csefPxFehSgU5jxtVKMGFWyuZiQ9zM8yqdceQJHasgxVVqehcjQ/zJHp87VjyCTBuL
-	agYBmver4BNqwR4PlFNqNff3xxHMTYA=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-265-fwC_8vFtNWuKSKRWqW9RmQ-1; Tue,
- 24 Mar 2026 11:19:11 -0400
-X-MC-Unique: fwC_8vFtNWuKSKRWqW9RmQ-1
-X-Mimecast-MFC-AGG-ID: fwC_8vFtNWuKSKRWqW9RmQ_1774365549
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E95361956046;
-	Tue, 24 Mar 2026 15:19:08 +0000 (UTC)
-Received: from llong-thinkpadp16vgen1.westford.csb (unknown [10.22.65.192])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8BBCA1800764;
-	Tue, 24 Mar 2026 15:19:04 +0000 (UTC)
-From: Waiman Long <longman@redhat.com>
-To: Simon Horman <horms@verge.net.au>,
-	Julian Anastasov <ja@ssi.bg>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Chen Ridong <chenridong@huawei.com>,
-	Phil Auld <pauld@redhat.com>
-Cc: linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	lvs-devel@vger.kernel.org,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	sheviks <sheviks@gmail.com>,
-	Waiman Long <longman@redhat.com>
-Subject: [PATCH 2/2] ipvs: Guard access of HK_TYPE_KTHREAD cpumask with RCU
-Date: Tue, 24 Mar 2026 11:18:27 -0400
-Message-ID: <20260324151827.2006656-3-longman@redhat.com>
-In-Reply-To: <20260324151827.2006656-1-longman@redhat.com>
-References: <20260324151827.2006656-1-longman@redhat.com>
+	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="Y8V6oDM0"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-486b96760easo12965205e9.2
+        for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 08:21:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1774365679; x=1774970479; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZzMaHFnlgiUXA/8hXlEnMbh8V7BZ7v7XDlvylu1xk4o=;
+        b=Y8V6oDM0cDMM5NAaiMdFbhWT3ud3Z1XNHXmmcZPzxhpWPVrHVLrrOvDSx3G2uXICMd
+         KvbHi5TtaaF4kdv3G2Wsa8kMVmlGZ7Fy9ufmve1FsY1IAwiLHkx3pLp2tkLNRrwtlK67
+         kbnoAzeqMxnqddChsYa2nVs7rsSimmdITQhq3tuxC40fPngN4ogh2bEt2+Q0EpJa6Exz
+         lR+Eu38gT5UWX7YtSKGn27TKE8DuMhqj8um/2Gqw8diNe6vOX4sG2bVOBAq+bzQq9pOy
+         BVBNOIFmMy3KMXv+HnN1SIVh7ll1jLkFKfvEb/qGG8MyIMFNdqUgrY1YnVt9nh9W6268
+         Jg6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774365679; x=1774970479;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZzMaHFnlgiUXA/8hXlEnMbh8V7BZ7v7XDlvylu1xk4o=;
+        b=XzHEbQqAq3ygRXI7h/ZrClhmsbswctZiet04Xdf1pm13DIaL8VcZ8GqcZgt82eu5Mj
+         JeRRL0gP3UQMQ8fZNKrIAV9My6x8YX582aVS9JmEpGRw2qE1VdFsHkt8gO7mvTGvbGSg
+         k6Zajb972Yr23j60mvuq2wSlVEFwOyJHwkLCmkEe21JKfnffAmjOerlOJ5QvCJF/0Var
+         4V+JaGvZcliI9DdeStvMJ2OoGMibpFbDJ3GCI3o28vFzA7fsd+KTbYTWChgjiL5AW+Bt
+         Y8NIBgEQtn3p5G+vqSN8Qdu8iYeeLGSlmCxD7Mvc4Ji57zOcU+V1AT0wYyF5devY4dUc
+         lxbw==
+X-Forwarded-Encrypted: i=1; AJvYcCXe4SRjc8deQrnWK0ZUWUO74u90K6xi52Hj8pFtp2CAG9Oufndt1XJKhQGg1JAkbAHb5x5tMFs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yykatcmskuj/C3Qse26uKhawHboWWcY8dHnwHb02TlC+dYDhbdt
+	1EPm9qbnGesSytQi/vdY4xPxpfCBQAJUcVlQ+qWwMuYZeWNHK7iC+jEdQhgQWL+Cqxk=
+X-Gm-Gg: ATEYQzz/kza1qf0bCQfg+J7dSklmLNYazO4JclEZzml3BpXhpF+MUY6WkmiQXhDaYut
+	hFQ8koYBpqMKr5wkISRZ65wr7IOBDDi7DKMdK3JhuneKkW0adfpH4FEIgEEdF4sbcSp6fZYjygf
+	3442CXaNI0JzlgxMrhPodVHLsI/TOm8SYTJE5N7dsPkXMbYB/8JFPSZef9Y9koPgLMQ5VpYbM8l
+	5+32llj/BHg3kMxB8i5dix65FEHasxAx03y7pTO0wT0hLBYO7zv5ANdZQT+mJ/jd1Q/pqWX4J1P
+	w1X8vLlA7NyWsxh7fBz1fGxD7xmPicsr5pitHUjT0KmP3zok3vrSiB0U4LEaXAM2cRuoY5hnViC
+	zFqeXf78vgc9tqYaf4rANkYEPOEegSSfcfQrht3jPY63sDwdlRnAFd1pvVFeDf6bgxtaSguo+8r
+	fneRFB4muB4Pzjmq9QmtR2MOlNA86vJaYzkgM=
+X-Received: by 2002:a05:600c:8b62:b0:486:f9a4:d487 with SMTP id 5b1f17b1804b1-48715f025f3mr3399605e9.0.1774365678743;
+        Tue, 24 Mar 2026 08:21:18 -0700 (PDT)
+Received: from FV6GYCPJ69 ([140.209.217.211])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b6470393fsm39925317f8f.17.2026.03.24.08.21.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Mar 2026 08:21:18 -0700 (PDT)
+Date: Tue, 24 Mar 2026 16:21:15 +0100
+From: Jiri Pirko <jiri@resnulli.us>
+To: Ben Copeland <ben.copeland@linaro.org>
+Cc: jiri@nvidia.com, netdev@vger.kernel.org, kuba@kernel.org
+Subject: Re: [PATCH net-next v4 13/15] net/mlx5: Add a shared devlink
+ instance for PFs on same chip
+Message-ID: <vms2w2ctvoojfqm25hkqapeq7gvn4bsybnrj5rxwsuvfbwutw7@4i5pbtckvlqn>
+References: <20260312100407.551173-14-jiri@resnulli.us>
+ <20260324151014.860376-1-ben.copeland@linaro.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260324151014.860376-1-ben.copeland@linaro.org>
 
-The ip_vs_ctl.c file and the associated ip_vs.h file are the only places
-in the kernel where HK_TYPE_KTHREAD cpumask is being retrieved and used.
-Now that HK_TYPE_KTHREAD/HK_TYPE_DOMAIN cpumask can be changed at run
-time. We need to use RCU to guard access to this cpumask to avoid a
-potential UAF problem as the returned cpumask may be freed before it
-is being used.
+Tue, Mar 24, 2026 at 04:10:14PM +0100, ben.copeland@linaro.org wrote:
+>Hi Jiri,
+>
+>This breaks probe on AmpereOne systems where VPD has no serial number:
+>
+>[    0.839394] mlx5_core 0000:01:00.0: probe_one:1952:(pid 10): mlx5_shd_init failed with error code -2
+>[    0.846302] mlx5_core 0000:01:00.0: probe with driver mlx5_core failed with error -2
+>
+>Returning 0 instead of -ENOENT when no SN is found fixes it:
+>
+>--- a/drivers/net/ethernet/mellanox/mlx5/core/sh_devlink.c
+>+++ b/drivers/net/ethernet/mellanox/mlx5/core/sh_devlink.c
+>@@ -33,7 +33,7 @@ int mlx5_shd_init(struct mlx5_core_dev *dev)
+> 		start = pci_vpd_find_ro_info_keyword(vpd_data, vpd_size,
+> 						     PCI_VPD_RO_KEYWORD_SERIALNO, &kw_len);
+> 		if (start < 0)
+>-			return -ENOENT;
+>+			return 0;
 
-Signed-off-by: Waiman Long <longman@redhat.com>
----
- include/net/ip_vs.h            | 20 ++++++++++++++++----
- net/netfilter/ipvs/ip_vs_ctl.c | 13 ++++++++-----
- 2 files changed, 24 insertions(+), 9 deletions(-)
+Okay. That is probably the best fall-back. Do you want to send the fix,
+or should I?
 
-diff --git a/include/net/ip_vs.h b/include/net/ip_vs.h
-index 29a36709e7f3..17c85a575ef4 100644
---- a/include/net/ip_vs.h
-+++ b/include/net/ip_vs.h
-@@ -1155,7 +1155,7 @@ static inline int sysctl_run_estimation(struct netns_ipvs *ipvs)
- 	return ipvs->sysctl_run_estimation;
- }
- 
--static inline const struct cpumask *sysctl_est_cpulist(struct netns_ipvs *ipvs)
-+static inline const struct cpumask *__sysctl_est_cpulist(struct netns_ipvs *ipvs)
- {
- 	if (ipvs->est_cpulist_valid)
- 		return ipvs->sysctl_est_cpulist;
-@@ -1273,7 +1273,7 @@ static inline int sysctl_run_estimation(struct netns_ipvs *ipvs)
- 	return 1;
- }
- 
--static inline const struct cpumask *sysctl_est_cpulist(struct netns_ipvs *ipvs)
-+static inline const struct cpumask *__sysctl_est_cpulist(struct netns_ipvs *ipvs)
- {
- 	return housekeeping_cpumask(HK_TYPE_KTHREAD);
- }
-@@ -1290,6 +1290,18 @@ static inline int sysctl_est_nice(struct netns_ipvs *ipvs)
- 
- #endif
- 
-+static inline bool sysctl_est_cpulist_empty(struct netns_ipvs *ipvs)
-+{
-+	guard(rcu)();
-+	return cpumask_empty(__sysctl_est_cpulist(ipvs));
-+}
-+
-+static inline unsigned int sysctl_est_cpulist_weight(struct netns_ipvs *ipvs)
-+{
-+	guard(rcu)();
-+	return cpumask_weight(__sysctl_est_cpulist(ipvs));
-+}
-+
- /* IPVS core functions
-  * (from ip_vs_core.c)
-  */
-@@ -1604,7 +1616,7 @@ static inline void ip_vs_est_stopped_recalc(struct netns_ipvs *ipvs)
- 	/* Stop tasks while cpulist is empty or if disabled with flag */
- 	ipvs->est_stopped = !sysctl_run_estimation(ipvs) ||
- 			    (ipvs->est_cpulist_valid &&
--			     cpumask_empty(sysctl_est_cpulist(ipvs)));
-+			     sysctl_est_cpulist_empty(ipvs));
- #endif
- }
- 
-@@ -1620,7 +1632,7 @@ static inline bool ip_vs_est_stopped(struct netns_ipvs *ipvs)
- static inline int ip_vs_est_max_threads(struct netns_ipvs *ipvs)
- {
- 	unsigned int limit = IPVS_EST_CPU_KTHREADS *
--			     cpumask_weight(sysctl_est_cpulist(ipvs));
-+			     sysctl_est_cpulist_weight(ipvs);
- 
- 	return max(1U, limit);
- }
-diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
-index 35642de2a0fe..f38a2e2a9dc5 100644
---- a/net/netfilter/ipvs/ip_vs_ctl.c
-+++ b/net/netfilter/ipvs/ip_vs_ctl.c
-@@ -1973,11 +1973,14 @@ static int ipvs_proc_est_cpumask_get(const struct ctl_table *table,
- 
- 	mutex_lock(&ipvs->est_mutex);
- 
--	if (ipvs->est_cpulist_valid)
--		mask = *valp;
--	else
--		mask = (struct cpumask *)housekeeping_cpumask(HK_TYPE_KTHREAD);
--	ret = scnprintf(buffer, size, "%*pbl\n", cpumask_pr_args(mask));
-+	/* HK_TYPE_KTHREAD cpumask needs RCU protection */
-+	scoped_guard(rcu) {
-+		if (ipvs->est_cpulist_valid)
-+			mask = *valp;
-+		else
-+			mask = (struct cpumask *)housekeeping_cpumask(HK_TYPE_KTHREAD);
-+		ret = scnprintf(buffer, size, "%*pbl\n", cpumask_pr_args(mask));
-+	}
- 
- 	mutex_unlock(&ipvs->est_mutex);
- 
--- 
-2.53.0
 
+> 	}
+>
+>Thanks,
+>Ben
+>
