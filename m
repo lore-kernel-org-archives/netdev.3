@@ -1,36 +1,38 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA75B37BE6F
-	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 18:08:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F7E386C03;
+	Tue, 24 Mar 2026 18:08:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774375724; cv=none; b=u7ycc+0h14uHs495CztruUbOFCNuJ6HHNjm31veFngXWrwzkkpdvwDGWG0DlAK7gsSqnNZT1gBOQ/YaGD/3eRzHLsp/7nxMBf94zxdr8iS49N0rlVPL/AqbMl4FTD4nf2tkUwa3SjvnCOk3LwRdMtG9165xG7NcqpHlBalUmWHE=
+	t=1774375725; cv=none; b=Bt5TZsOEWeu1UPTLpshB0T+DAFftldonv33athRl6Xrhj9ArM9c7urmX8P71GxkItNpd8yzQ4VLZrB549vS+LlBPb9PDjIw5AzClcljgcAgTtRoor+aN8JsbXKBM6cIyf+k24EX4gC0e7Oe5KtDms838uXgCv8wHak274ZGEo9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774375724; c=relaxed/simple;
-	bh=NgfLipFM0Dk1gfiBEsohfyHzKpf3P1NucBsd11NO1UM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kRhN2pbnUgSGMJBAyTP76aTsbSx/S/Bjfg6hRdoQXyQDgowDTqNnpIJxhXYWAXwKEuH8D8uTv9YuPJhTGlS7TlHIyLfOqFE34/1s2Sf69d08a214/iYfJ/juXdVFz27PQqi+Dk4qBNWHtRQyKj43bpIqpr9jk36AOvh0WriFqbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=sytc89EJ; arc=none smtp.client-ip=185.246.84.56
+	s=arc-20240116; t=1774375725; c=relaxed/simple;
+	bh=NsCuh0kMJwd7g1iWiZQoKs0jSLMe/s4s+1AN3yqGpZs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=SSvyvnKfsP0mZNoMT9Y8gB1GJSriUB0+NbkxUuV6NN/nTLkkia6Q/P19g1L17X4XxnnEn/rzpY7PPhXyTvseBj2y7m2H0AGuAOksZZ/lKJorif8cARYnMLigbLYr/aOC3NXq1VmKpM6UQzYgply3ebV3TH5mWQzVVoZp66myJ6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=wJiTqLa2; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="sytc89EJ"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="wJiTqLa2"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 0E38A1A2FBA;
-	Tue, 24 Mar 2026 18:08:39 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 5D5794E427DB;
+	Tue, 24 Mar 2026 18:08:42 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C054C601A0;
-	Tue, 24 Mar 2026 18:08:38 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 40D1A1045081D;
-	Tue, 24 Mar 2026 19:08:33 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2C1B6601A0;
+	Tue, 24 Mar 2026 18:08:42 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0622F1045059C;
+	Tue, 24 Mar 2026 19:08:39 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1774375717; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=PNweYHXD+IcTbOdye61fCp5JZUKnt9he9k3dnaA244o=;
-	b=sytc89EJZoL+PUYaswLW530Sz7mXHoAqyhSxqUUsBhAdXrYI846GC+ZejX0PohUc3UWesb
-	wNGMKHYDAGqSBWM8W6K4YuYLLlkI+tH3rK8H1eQd8kQztqERC0g5xycpUFKMzt0IIC7RhG
-	TRD2gbyq0WOTLTnCHM8E4Y/NOURoxGAtqUBI++rPSkS/K2gOH0q0HVF2WZXkksiISbYlLG
-	l6U1LbItHYYVAiBy7DoqSC/jf40gEQVa4P04kuN0vk4sHCnUFjISDRHpnvt43k5fLebH6m
-	/DNkRaRtS+sLw2VW0pQJf+j+2fjv7dZfgVGeUrRfAMpviCZ0x0fvLU0de7+snA==
+	t=1774375721; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=ctnkA2Z/QP+/ow0ArbPhwunjtlwws5koYT6RP/2y1wg=;
+	b=wJiTqLa2Wl3YDxWbhRzjZpgeFNne1nnD6V2rIqQliVaarc2JCrBT/5VdIkdAaBOoRDjD5b
+	9jp/EOYTYY0a0j8UAAuRLX53krFotAiV3HdEw2kTjgsIBzw+yukZySnh4MfEqRN6/Px3zh
+	PXBWKu0/QhIktNW7D5FXLAc21ZcJiKsA1snm00Gh1z7vnj7khTVlZPDXBpQICvIiCqRpcZ
+	tllkGoD4P2d7bjNeHsFWDtKSeQzv6bihK8OEAuZI1NS5csusyOOeTbXJXJy5IGUrjxOCXw
+	ABeD2cZrMBcCIx/wbbXK+CbQs+uGhjHGhU0OQYizxl+l4HWDDXxR0gN4OCQIVA==
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -45,10 +47,12 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	thomas.petazzoni@bootlin.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 0/2] net: dsa: microchip: Small cleanups for ksz9477 SGMII
-Date: Tue, 24 Mar 2026 19:08:23 +0100
-Message-ID: <20260324180826.524327-1-maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next 2/2] net: dsa: microchip: drop an outdated comment about SGMII support
+Date: Tue, 24 Mar 2026 19:08:25 +0100
+Message-ID: <20260324180826.524327-3-maxime.chevallier@bootlin.com>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20260324180826.524327-1-maxime.chevallier@bootlin.com>
+References: <20260324180826.524327-1-maxime.chevallier@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,20 +62,27 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hi,
+SGMII support has been added to ksz9477, we can drop the comment saying
+that it'll be added later.
 
-While working with ksz9477, I've done some  very minor cleanups around the
-PCS code for the SGMII port. No changes intended.
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+---
+ drivers/net/dsa/microchip/ksz9477.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Maxime
-
-Maxime Chevallier (2):
-  net: dsa: microchip: Drop unnecessary check in ksz9477 PCS setup
-  net: dsa: microchip: drop an outdated comment about SGMII support
-
- drivers/net/dsa/microchip/ksz9477.c | 57 ++++++++++++++---------------
- 1 file changed, 27 insertions(+), 30 deletions(-)
-
+diff --git a/drivers/net/dsa/microchip/ksz9477.c b/drivers/net/dsa/microchip/ksz9477.c
+index 30d8c0146bbb..d3c23dcaea8c 100644
+--- a/drivers/net/dsa/microchip/ksz9477.c
++++ b/drivers/net/dsa/microchip/ksz9477.c
+@@ -525,7 +525,7 @@ int ksz9477_r_phy(struct ksz_device *dev, u16 addr, u16 reg, u16 *data)
+ 	 * A fixed PHY can be setup in the device tree, but this function is
+ 	 * still called for that port during initialization.
+ 	 * For RGMII PHY there is no way to access it so the fixed PHY should
+-	 * be used.  For SGMII PHY the supporting code will be added later.
++	 * be used.
+ 	 */
+ 	if (!dev->info->internal_phy[addr]) {
+ 		struct ksz_port *p = &dev->ports[addr];
 -- 
 2.49.0
 
