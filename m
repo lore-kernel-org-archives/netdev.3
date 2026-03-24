@@ -1,159 +1,412 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010063.outbound.protection.outlook.com [52.101.46.63])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A593FBEC7
-	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 12:30:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774355449; cv=none; b=cMmX2J7b6Lb4AnG05bNCPUL+KT9nGVxuRx1GiBoOYA6p2EUCEjPR7PUwEwk5GRvw3rrOWQ3joIX2rNgRQZwfh8YprzSRSqDvUZs9qfiJeefI7XE0Aw4CqjyGut/7YPVX76PIRm4+qw2/m2UplsUdDC2nu2d0uCpqGBsjhmi1SKU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774355449; c=relaxed/simple;
-	bh=kPbtBPPqa6qiIBKdA2aE5ynH8ryoYXd5xSPnEa57yjg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NoVXR5uqHmJtdUbYW53+ItHq5iB1NBjjzgYV/hBGeFXV/SQQpTMGtsaU0DrSXwbqUEyLLoqPnf9y3NxHltgnYklaOO6tDEv8mQZiCA+3XShJ7ZnIrW2hddxlF/eajKhDNvTaWQvLq5aXvjbpkYrxtNtzdYEYY6aZgXk1QgTNV+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=wGvFuPpF; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BCF3FB7FE;
+	Tue, 24 Mar 2026 12:30:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.63
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774355452; cv=fail; b=dopYr9Evjf20NkPeU4aJJJ43hsJICY6oIiXZWYmbopg68Nd4EAitkZ0f6orGcHgcqCk6npkqtzZgW4kpeHGtmURAb3wQfVVuV+vj0kjD38HTXaIDwWPE2u4oEfIrCWMQ5jrSvrxnDMboReHKXwj/1ANHTjZpRszxlAJr1BWUQug=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774355452; c=relaxed/simple;
+	bh=TQV4jxX132pKU/54Tvc6JwUv5mBUZDcKaRm4qt5QHgo=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OioOTp8K9lKJMKJ9J7H9G0+y4KF0URiP5NNElTQ/IN77higzkdOgVHzmw0urV8ehJYEVDlUzoQ+3srBx2lyeiBXd0hBpQRv9m5Z/Zwjuv0p4z7sUnBRPNDhHlCc2ScmYKBp9FiHXxM5T1C68j4RkMr0y7jPR8WujSZmtyUEPxbI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UXIK6zuT; arc=fail smtp.client-ip=52.101.46.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="wGvFuPpF"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4852e9ca034so36561325e9.2
-        for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 05:30:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1774355441; x=1774960241; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=650cxGRTwGdCgB7/1Uuk1bSKY+xLpPUDI9BTHKCNycA=;
-        b=wGvFuPpFruTdERbK42drlw4gZwix1mh5LWkYB1iw9sqOFlkiFbMAl3MdYysYrPCWw1
-         EeF28u2K9iLbS5a54quGbUjDciE69MVABAu/Ql5ksQQJatNM6ZV+4YT5idLNIVWjuEb3
-         ++sg3XItWcb0VDwiOXAkScAzkV7QDEoYjeccZ9sIg7/uuJbPdv5gD3JuUezDuJTrH2Yf
-         mTvRQWQn/yYyAbhHzILGnc+j2cJHiuwwE+s6cV2KdeJrgvFHWTD/+6UpKyThH4ezDvQK
-         vpv18lt28/2Q12BCH+i8+PqyHd7A2jsfxA6rVo5bVfsf+xNFfN5kkMlM5YEjbHnE/06Q
-         uuSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774355441; x=1774960241;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=650cxGRTwGdCgB7/1Uuk1bSKY+xLpPUDI9BTHKCNycA=;
-        b=dvRD/aQe/Bnl88jj2RMYuIDcMXako3HggssoaGOCWyvSUX5fFkAElG8iH4o/PzYwNe
-         oXmnAlcqca9LACvshnU3AtiS4ABorHNt5+039GEMYBSxecbX1RNwh6fAW8euDJCnotxH
-         9DncZ7509JrHLJESd0VuYMdFChEoGU1Zg4mG/W1J2nfES9GM7YNmykmwAoiqv81W0bn5
-         KaaEP0ixSPB7njVEanFvMO6SMguHuv1aOjaZHb2pKelWZJpbszScb9aETNiZ7lAqgqi+
-         A0ow3qgVL/heY+zN7A1rSJBHN3z330yrg39dj12JYGrjHivygre1OG6+qi7KK5bwO6/7
-         JMug==
-X-Gm-Message-State: AOJu0YwMWMWb4DF4uABZcAs0s7/aIvOD/A1mi4YfGjXJMYuIgb6EbIAs
-	jZDXGnJHSv1XnNaxqckrY7X+GiwqyV+Ie4A+x/hKuEIVk2xAzm9BHFHoK2Tus/W1Pbk=
-X-Gm-Gg: ATEYQzyqYGXOg/EnZTyUBz7zINxCW2tIfe/CqyYkRBrksneHQX1ow9WKYVfOW0N6pQH
-	PJpOFyjURJC/zZ18C5KtaUnnomxjWcOSpr8k/3rCNGv5OxbWzSYz01q8IBfCSKjIOqjwVdigUhJ
-	WL1ZZIK53fFWs2t0+62RgiFqY6Dw6vv1t9y1jQ7rQezhi6zQPNEi+ydJ4mw6sL4/OoJq8Tm+toE
-	gYkCP0s+R2kyb0/UhqtF14d5l76TQV2R2fvBfr636/Zm/2C4Ui8efbnt+QXjjA3EDP5f5CiHbg4
-	OmUYS+/GaIPR3GOIZUm5Wu5Q8sd0J4NVt/j9T1cYyWKqtjalpR1CKbfHZUgcLs9qCnhiaamIowI
-	50eyhX+pVop8Y/NmjaWV/1U36i5iKhY/wo7iKF4JLc8vgMZ8Zm7wd+fJuQCsbjAoBSNbzNMqj4r
-	T4+My+n9OSrWySKrdvYti8zus4Es+Kervvug==
-X-Received: by 2002:a05:600c:524e:b0:485:3ae8:2231 with SMTP id 5b1f17b1804b1-486ff01efd8mr208630005e9.30.1774355440868;
-        Tue, 24 Mar 2026 05:30:40 -0700 (PDT)
-Received: from FV6GYCPJ69 ([140.209.217.211])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-487117077cbsm45683595e9.6.2026.03.24.05.30.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Mar 2026 05:30:40 -0700 (PDT)
-Date: Tue, 24 Mar 2026 13:30:37 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Grzegorz Nitka <grzegorz.nitka@intel.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	intel-wired-lan@lists.osuosl.org, poros@redhat.com, richardcochran@gmail.com, 
-	andrew+netdev@lunn.ch, przemyslaw.kitszel@intel.com, anthony.l.nguyen@intel.com, 
-	Prathosh.Satish@microchip.com, ivecera@redhat.com, arkadiusz.kubalewski@intel.com, 
-	vadim.fedorenko@linux.dev, donald.hunter@gmail.com, horms@kernel.org, pabeni@redhat.com, 
-	kuba@kernel.org, davem@davemloft.net, edumazet@google.com, 
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: Re: [PATCH v2 net-next 3/8] dpll: extend pin notifier and netlink
- events with notification source ID
-Message-ID: <ose4zofbqvlzfhdina5nlolbj64inrhkr3nqok3dkheav2s6px@warnjuzviid5>
-References: <20260321222627.1193603-1-grzegorz.nitka@intel.com>
- <20260321222627.1193603-4-grzegorz.nitka@intel.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UXIK6zuT"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=W/iGE9JP+jBXFOAvzxo9BPwuZUMGg1RJytbH9AKNta5XNKMn4TY148EyfTroWDPf+AA2PgGo9iLYgvcpZ6c+TRg2P1BxmjVIUB3ZheRgGuSNR54ZEQSb0qa17O509uCI0jsOze/d7wN5NStQeY/4Vh32R/9xoksxZOTGZxUk6g/b28onUUqMfdn7GHJnQzdqLF6IcB3CHKs1IvlxiUCtsLb7uPasaTYLFqDVFY6j4qBmnNR+yXRoToauM/Qink5tYVjb78CJYM52rSXzEFdjnutZjqGhNs0kjKsXcq3Jc9Fl2XslqXdqevUl3XII9a1RMazlhm+4fz+gCgXZCwd9SA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0ErmufAnUGz67j98XqY8l86Fs50hNLi/1ukW7V9F8yU=;
+ b=Zbv1gsTRUcDRqTj1ExRODqmYfTve0nfjApglG06UctALnopO1QYrJcWmHSeRSiqw4V8guIIVgM6gDdZ8js1YEmBNFkZtNRyJTuViFLOcJTC7Rf3GMQYPfok2QsULcAXuSH6TmanhbyjPqOIReXB2wH85ydLhX26iruS2zOa5GhwnC/BOgAzhligGt0y2RCdrXBUZDhK+7nTNGwpWsKn2UHkq8HMPy/toIgEPjHoARxEkebfvJuJkHc8g8GayjrNfuOXEw+dV77vPkS7dLxjO4MAcSu+zsBOfOpHiWz0/tCt4BZBtT8ZqGcv+XVzY7DMfBT+3OMKpFUrtz5tnPhhj4g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0ErmufAnUGz67j98XqY8l86Fs50hNLi/1ukW7V9F8yU=;
+ b=UXIK6zuTw7wrHuxy2scF2N+0YH5YWWz89PknaA11PRfyi347LpU0c9JgDmhISSMC/v9FM39kPShBWN8LlBjvwBkX305QFlG/4dFMsL09klnMY75g6Fkp2N4jX756N4soS6lUq/2Rs47zhmCSwnE0GmolqhbbSbKuClVJ0mW/sGrmS0uZBYE7NBbFNgm2+4tHsG0xzuKTTLj0XuehMV5O7Wl3JOT9XDD4hNmzTTCph9cs7MCAIo1Ivhd/K/gXrePHnNSE/xrDtQPNW7GsNzt1OaZfRQRxmenapAvQuVwiafzLOtTGufCCZgXprkzQ6cm6yxf97fKlr2A3obwnTR/X6Q==
+Received: from MN2PR16CA0065.namprd16.prod.outlook.com (2603:10b6:208:234::34)
+ by BN5PR12MB9464.namprd12.prod.outlook.com (2603:10b6:408:2ab::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.9; Tue, 24 Mar
+ 2026 12:30:38 +0000
+Received: from MN1PEPF0000ECDB.namprd02.prod.outlook.com
+ (2603:10b6:208:234:cafe::6f) by MN2PR16CA0065.outlook.office365.com
+ (2603:10b6:208:234::34) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9723.31 via Frontend Transport; Tue,
+ 24 Mar 2026 12:30:36 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ MN1PEPF0000ECDB.mail.protection.outlook.com (10.167.242.139) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9723.19 via Frontend Transport; Tue, 24 Mar 2026 12:30:38 +0000
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 24 Mar
+ 2026 05:30:20 -0700
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail202.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 24 Mar
+ 2026 05:30:20 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.6)
+ with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Tue, 24
+ Mar 2026 05:30:11 -0700
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>
+CC: Donald Hunter <donald.hunter@gmail.com>, Simon Horman <horms@kernel.org>,
+	Jiri Pirko <jiri@resnulli.us>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+	<skhan@linuxfoundation.org>, Saeed Mahameed <saeedm@nvidia.com>, "Leon
+ Romanovsky" <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, Mark Bloch
+	<mbloch@nvidia.com>, Chuck Lever <chuck.lever@oracle.com>, "Matthieu Baerts
+ (NGI0)" <matttbe@kernel.org>, Cosmin Ratiu <cratiu@nvidia.com>, "Carolina
+ Jubran" <cjubran@nvidia.com>, Daniel Zahka <daniel.zahka@gmail.com>, "Shay
+ Drory" <shayd@nvidia.com>, Kees Cook <kees@kernel.org>, Daniel Jurgens
+	<danielj@nvidia.com>, Moshe Shemesh <moshe@nvidia.com>, Adithya Jayachandran
+	<ajayachandra@nvidia.com>, Willem de Bruijn <willemb@google.com>, David Wei
+	<dw@davidwei.uk>, Petr Machata <petrm@nvidia.com>, Stanislav Fomichev
+	<sdf@fomichev.me>, Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>, Gal Pressman <gal@nvidia.com>, Jiri Pirko
+	<jiri@nvidia.com>
+Subject: [PATCH net-next V8 06/14] devlink: Allow parent dev for rate-set and rate-new
+Date: Tue, 24 Mar 2026 14:28:40 +0200
+Message-ID: <20260324122848.36731-7-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20260324122848.36731-1-tariqt@nvidia.com>
+References: <20260324122848.36731-1-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260321222627.1193603-4-grzegorz.nitka@intel.com>
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN1PEPF0000ECDB:EE_|BN5PR12MB9464:EE_
+X-MS-Office365-Filtering-Correlation-Id: f4cff21a-cc37-4ecd-3355-08de89a127ec
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|36860700016|82310400026|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	B7qfdOfCnhylpvoYrWAEnuOV8vNKg6Qt1y1KxnClUmteOIJq8sEZIEl6GskdpbHeRCKjoss5yTkzSGc/q6EA74tpAgLFvJX6HdLw4gDB1TKMSM3t32ZScxCvt5f59TkIZt0NMxpiLZqwYODJ4nYOrC273PYJPDvVBpCz863EAYAyHSTXpEK26tGk/YqNtW/zLNfwkyFIfLcOJmMP6LGXsA5vxgaaM0IPbnLyZ0K8s/EjqC2q8x9XMIYHwqtwg0DxnZIWKaMdwSQu4DNou7Gm/wAXBpZ1Ctw4sjPo+zZQUhpT4XuLxj54cGixg7EzqRHqvizXQ2oZlhXmrXyuKDsRLEpVgXmUw/VpJ+mVQfsliI877U3G9NicC+Zi55wYmMW/P9BGMMphP8jQfaoV8NjbfWDCVLcy7uQoPWGDCfbfYfZAsbm0XMbEw2rEeYLQ+DFmLaRNxqY8RitKkLpGCSZcT7XeaX1nnViow4nHBO4so0CutN8srlEmJJcNjw4ZiZQpIJRvjG1+AiIsJ6VqLhSWQg7zgrE/ZMxrC3mui11NfdxwjBzrSMkpneztoZsKgY3zpA3zBj07/1XRF6yxY/pR2Gi5vllz5t5FbUThr1mTxtPuqNZDYgUDmwRCgCH9FLaK1th7UceDOShV+RF6Pa9oRlGVbfqhLVWdKZEdvviDZVLC5Ze+lbuVNeepPHDdean0XpjvlK+oAZwaF8uVt07fBuh3xXJVym/ZFXkhjfawQ+UkekXqMnwpO2pusPPVJ+L3+vQJNf5Be14+PtnZ7Mr6IQ==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(36860700016)(82310400026)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	aoQQHQqrm4DdjRkSvoEMpKvc21eY1fDisHaIkscMflwJ0YtfmkQLR5HJ2fgWe7LqRFthfB3h+TgcQ0bup1nvuOPK4zZsWAfJILgzQ6x/YqKs8TKzG1KRtEdV6AbFG1dyfRpRs+sK5A5lOobtpYbyYjxpOw2Y/EeWD1vCcJNH/3S6D9mecvBOhgqc42XPmTkPNc/wSoWUovzEqE2YIs8A7IZPA0S1gNl7p6Dy+EWAR9jt5WVzXyWBRkfhNFdXpSwH30nH/puDFbJ+BD0P6AHSarYtxcHptYQCHi+Xu/1NUqug2P5+UDcxk3qU0o1fq4o+7YariD7zI2VwdGLxRuiIuNNmHXur7a41JPhzeLR77YjwC3HxMuFMAAA8hqvDj01a2Y6lK0aOKeDYFfszy8anoPYwnHaFo17uqzzQHx6KvrC1mynkn0UEnl5pP82RFe8o
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2026 12:30:38.3914
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f4cff21a-cc37-4ecd-3355-08de89a127ec
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MN1PEPF0000ECDB.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN5PR12MB9464
 
-Sat, Mar 21, 2026 at 11:26:22PM +0100, grzegorz.nitka@intel.com wrote:
->Extend the DPLL pin notification API to include a source identifier
->indicating where the notification originates. This allows notifier
->consumers and netlink listeners to distinguish between notifications
->coming from an associated DPLL instance, a parent pin, or the pin
->itself.
->
->A new field, src_id, is added to struct dpll_pin_notifier_info and is
->passed through all pin-related notification paths. Callers of
->dpll_pin_notify() are updated to provide a meaningful source identifier
->based on their context:
->  - pin registration/unregistration use the DPLL's clock_id,
->  - pin-on-pin operations use the parent pin's clock_id,
->  - pin changes use the pin's own clock_id.
->
->This enables richer event routing and more accurate state handling in
->user space and in-kernel consumers.
->
->The current DPLL pin notification infrastructure does not provide any
->way to identify where a pin-related notification originates. Both the
->in-kernel notifier chain and the netlink notification path only carry
->information about the pin itself, not about the component that triggered
->the event.
->
->This becomes problematic on platforms where multiple DPLL devices or
->drivers share the same physical pin via firmware description (fwnode).
->In such setups pin creation, deletion, or state changes can be triggered
->from several independent contexts:
->
->  - from the DPLL device that owns the pin,
->  - from another DPLL device that re-registers or rebinds the same
->    fwnode-described pin,
->  - or from a pin-on-pin relationship (parent pin registering child
->    pins).
->
->Without a source identifier all these notifications look identical to
->listeners. Drivers cannot reliably determine whether a received event
->is a result of their own registration/unregistration actions or
->originated from a different DPLL instance. This leads to several types
->of problems:
->
->  * risk of duplicate pin registration when a driver reacts to its own
->    event,
->  * difficulty suppressing notifications that are merely internal
->    bookkeeping side effects,
->  * inability to implement correct pin‑multiplexing or cross‑device
->    synchronization logic when pins are shared across fwnode domains.
->
->To address this, extend `struct dpll_pin_notifier_info` with a new
->`src_id` field that identifies the originator of the event. The DPLL
->core sets this field for all pin notifications:
->
->  - pin registration/unregistration: the source is the clock_id of the
->    DPLL initiating the operation,
->  - pin-on-pin relationships: the source is the parent pin's clock_id,
->  - pin property/state updates: the source is the pin's own clock_id.
->
->Netlink notifications now also carry this additional field.
->
->With this information notifier consumers can differentiate true external
->events from internal ones and ignore the latter when appropriate.
->As shown later in this series, ICE/E825 devices rely on this to avoid
->reacting to the events that their own registration logic triggers
->when a shared-fwnode pin appears.
->
->This change only extends the notification metadata and does not alter
->existing semantics for drivers that do not use the new field.
->
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-This lenghty and verbose AI-generated patch description are so annoying.
-Care to cut it down to something like 1/8 without unnecessary things?
+Currently, a devlink rate's parent device is assumed to be the same as
+the one where the devlink rate is created.
 
+This patch changes that to allow rate commands to accept an additional
+argument that specifies the parent dev. This will allow devlink rate
+groups with leafs from other devices.
 
+Example of the new usage with ynl:
+
+Creating a group on pci/0000:08:00.1 with a parent to an already
+existing pci/0000:08:00.1/group1:
+./tools/net/ynl/pyynl/cli.py --spec \
+Documentation/netlink/specs/devlink.yaml --do rate-new --json '{
+    "bus-name": "pci",
+    "dev-name": "0000:08:00.1",
+    "rate-node-name": "group2",
+    "rate-parent-node-name": "group1",
+    "parent-dev": {
+        "bus-name": "pci",
+        "dev-name": "0000:08:00.1"
+    }
+  }'
+
+Setting the parent of leaf node pci/0000:08:00.1/65537 to
+pci/0000:08:00.0/group1:
+./tools/net/ynl/pyynl/cli.py --spec \
+Documentation/netlink/specs/devlink.yaml --do rate-set --json '{
+    "bus-name": "pci",
+    "dev-name": "0000:08:00.1",
+    "port-index": 65537,
+    "parent-dev": {
+        "bus-name": "pci",
+        "dev-name": "0000:08:00.0"
+    },
+    "rate-parent-node-name": "group1"
+  }'
+
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+---
+ Documentation/netlink/specs/devlink.yaml | 10 +++---
+ net/devlink/netlink.c                    | 40 +++++++++++++++++++++++-
+ net/devlink/netlink_gen.c                | 24 +++++++++-----
+ net/devlink/netlink_gen.h                |  8 +++++
+ net/devlink/rate.c                       |  4 ++-
+ 5 files changed, 72 insertions(+), 14 deletions(-)
+
+diff --git a/Documentation/netlink/specs/devlink.yaml b/Documentation/netlink/specs/devlink.yaml
+index 43cc0abf7235..7bf5116fad49 100644
+--- a/Documentation/netlink/specs/devlink.yaml
++++ b/Documentation/netlink/specs/devlink.yaml
+@@ -2271,8 +2271,8 @@ operations:
+       dont-validate: [strict]
+       flags: [admin-perm]
+       do:
+-        pre: devlink-nl-pre-doit
+-        post: devlink-nl-post-doit
++        pre: devlink-nl-pre-doit-parent-dev-optional
++        post: devlink-nl-post-doit-parent-dev-optional
+         request:
+           attributes:
+             - bus-name
+@@ -2285,6 +2285,7 @@ operations:
+             - rate-tx-weight
+             - rate-parent-node-name
+             - rate-tc-bws
++            - parent-dev
+ 
+     -
+       name: rate-new
+@@ -2293,8 +2294,8 @@ operations:
+       dont-validate: [strict]
+       flags: [admin-perm]
+       do:
+-        pre: devlink-nl-pre-doit
+-        post: devlink-nl-post-doit
++        pre: devlink-nl-pre-doit-parent-dev-optional
++        post: devlink-nl-post-doit-parent-dev-optional
+         request:
+           attributes:
+             - bus-name
+@@ -2307,6 +2308,7 @@ operations:
+             - rate-tx-weight
+             - rate-parent-node-name
+             - rate-tc-bws
++            - parent-dev
+ 
+     -
+       name: rate-del
+diff --git a/net/devlink/netlink.c b/net/devlink/netlink.c
+index 21a34e4d2a49..38a3e46c0be3 100644
+--- a/net/devlink/netlink.c
++++ b/net/devlink/netlink.c
+@@ -243,7 +243,29 @@ devlink_get_from_attrs_lock(struct net *net, struct nlattr **attrs,
+ struct devlink *
+ devlink_get_parent_from_attrs_lock(struct net *net, struct nlattr **attrs)
+ {
+-	return ERR_PTR(-EOPNOTSUPP);
++	unsigned int maxtype = ARRAY_SIZE(devlink_dl_parent_dev_nl_policy);
++	struct devlink *devlink;
++	struct nlattr **tb;
++	int err;
++
++	if (!attrs[DEVLINK_ATTR_PARENT_DEV])
++		return ERR_PTR(-EINVAL);
++
++	tb = kcalloc(maxtype + 1, sizeof(*tb), GFP_KERNEL);
++	if (!tb)
++		return ERR_PTR(-ENOMEM);
++
++	err = nla_parse_nested(tb, maxtype, attrs[DEVLINK_ATTR_PARENT_DEV],
++			       devlink_dl_parent_dev_nl_policy, NULL);
++	if (err)
++		goto out;
++
++	devlink = devlink_get_from_attrs_lock(net, tb, false);
++	kfree(tb);
++	return devlink;
++out:
++	kfree(tb);
++	return ERR_PTR(err);
+ }
+ 
+ static int __devlink_nl_pre_doit(struct sk_buff *skb, struct genl_info *info,
+@@ -322,6 +344,14 @@ int devlink_nl_pre_doit_port_optional(const struct genl_split_ops *ops,
+ 	return __devlink_nl_pre_doit(skb, info, DEVLINK_NL_FLAG_NEED_DEVLINK_OR_PORT);
+ }
+ 
++int devlink_nl_pre_doit_parent_dev_optional(const struct genl_split_ops *ops,
++					    struct sk_buff *skb,
++					    struct genl_info *info)
++{
++	return __devlink_nl_pre_doit(skb, info,
++				     DEVLINK_NL_FLAG_OPTIONAL_PARENT_DEV);
++}
++
+ static void __devlink_nl_post_doit(struct sk_buff *skb, struct genl_info *info,
+ 				   u8 flags)
+ {
+@@ -348,6 +378,14 @@ devlink_nl_post_doit_dev_lock(const struct genl_split_ops *ops,
+ 	__devlink_nl_post_doit(skb, info, DEVLINK_NL_FLAG_NEED_DEV_LOCK);
+ }
+ 
++void
++devlink_nl_post_doit_parent_dev_optional(const struct genl_split_ops *ops,
++					 struct sk_buff *skb,
++					 struct genl_info *info)
++{
++	__devlink_nl_post_doit(skb, info, DEVLINK_NL_FLAG_OPTIONAL_PARENT_DEV);
++}
++
+ static int devlink_nl_inst_single_dumpit(struct sk_buff *msg,
+ 					 struct netlink_callback *cb, int flags,
+ 					 devlink_nl_dump_one_func_t *dump_one,
+diff --git a/net/devlink/netlink_gen.c b/net/devlink/netlink_gen.c
+index eb35e80e01d1..f47a965972a0 100644
+--- a/net/devlink/netlink_gen.c
++++ b/net/devlink/netlink_gen.c
+@@ -44,6 +44,12 @@ devlink_attr_param_type_validate(const struct nlattr *attr,
+ }
+ 
+ /* Common nested types */
++const struct nla_policy devlink_dl_parent_dev_nl_policy[DEVLINK_ATTR_INDEX + 1] = {
++	[DEVLINK_ATTR_BUS_NAME] = { .type = NLA_NUL_STRING, },
++	[DEVLINK_ATTR_DEV_NAME] = { .type = NLA_NUL_STRING, },
++	[DEVLINK_ATTR_INDEX] = { .type = NLA_UINT, },
++};
++
+ const struct nla_policy devlink_dl_port_function_nl_policy[DEVLINK_PORT_FN_ATTR_CAPS + 1] = {
+ 	[DEVLINK_PORT_FUNCTION_ATTR_HW_ADDR] = { .type = NLA_BINARY, },
+ 	[DEVLINK_PORT_FN_ATTR_STATE] = NLA_POLICY_MAX(NLA_U8, 1),
+@@ -597,7 +603,7 @@ static const struct nla_policy devlink_rate_get_dump_nl_policy[DEVLINK_ATTR_INDE
+ };
+ 
+ /* DEVLINK_CMD_RATE_SET - do */
+-static const struct nla_policy devlink_rate_set_nl_policy[DEVLINK_ATTR_INDEX + 1] = {
++static const struct nla_policy devlink_rate_set_nl_policy[DEVLINK_ATTR_PARENT_DEV + 1] = {
+ 	[DEVLINK_ATTR_BUS_NAME] = { .type = NLA_NUL_STRING, },
+ 	[DEVLINK_ATTR_DEV_NAME] = { .type = NLA_NUL_STRING, },
+ 	[DEVLINK_ATTR_INDEX] = NLA_POLICY_FULL_RANGE(NLA_UINT, &devlink_attr_index_range),
+@@ -608,10 +614,11 @@ static const struct nla_policy devlink_rate_set_nl_policy[DEVLINK_ATTR_INDEX + 1
+ 	[DEVLINK_ATTR_RATE_TX_WEIGHT] = { .type = NLA_U32, },
+ 	[DEVLINK_ATTR_RATE_PARENT_NODE_NAME] = { .type = NLA_NUL_STRING, },
+ 	[DEVLINK_ATTR_RATE_TC_BWS] = NLA_POLICY_NESTED(devlink_dl_rate_tc_bws_nl_policy),
++	[DEVLINK_ATTR_PARENT_DEV] = NLA_POLICY_NESTED(devlink_dl_parent_dev_nl_policy),
+ };
+ 
+ /* DEVLINK_CMD_RATE_NEW - do */
+-static const struct nla_policy devlink_rate_new_nl_policy[DEVLINK_ATTR_INDEX + 1] = {
++static const struct nla_policy devlink_rate_new_nl_policy[DEVLINK_ATTR_PARENT_DEV + 1] = {
+ 	[DEVLINK_ATTR_BUS_NAME] = { .type = NLA_NUL_STRING, },
+ 	[DEVLINK_ATTR_DEV_NAME] = { .type = NLA_NUL_STRING, },
+ 	[DEVLINK_ATTR_INDEX] = NLA_POLICY_FULL_RANGE(NLA_UINT, &devlink_attr_index_range),
+@@ -622,6 +629,7 @@ static const struct nla_policy devlink_rate_new_nl_policy[DEVLINK_ATTR_INDEX + 1
+ 	[DEVLINK_ATTR_RATE_TX_WEIGHT] = { .type = NLA_U32, },
+ 	[DEVLINK_ATTR_RATE_PARENT_NODE_NAME] = { .type = NLA_NUL_STRING, },
+ 	[DEVLINK_ATTR_RATE_TC_BWS] = NLA_POLICY_NESTED(devlink_dl_rate_tc_bws_nl_policy),
++	[DEVLINK_ATTR_PARENT_DEV] = NLA_POLICY_NESTED(devlink_dl_parent_dev_nl_policy),
+ };
+ 
+ /* DEVLINK_CMD_RATE_DEL - do */
+@@ -1272,21 +1280,21 @@ const struct genl_split_ops devlink_nl_ops[74] = {
+ 	{
+ 		.cmd		= DEVLINK_CMD_RATE_SET,
+ 		.validate	= GENL_DONT_VALIDATE_STRICT,
+-		.pre_doit	= devlink_nl_pre_doit,
++		.pre_doit	= devlink_nl_pre_doit_parent_dev_optional,
+ 		.doit		= devlink_nl_rate_set_doit,
+-		.post_doit	= devlink_nl_post_doit,
++		.post_doit	= devlink_nl_post_doit_parent_dev_optional,
+ 		.policy		= devlink_rate_set_nl_policy,
+-		.maxattr	= DEVLINK_ATTR_INDEX,
++		.maxattr	= DEVLINK_ATTR_PARENT_DEV,
+ 		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
+ 	},
+ 	{
+ 		.cmd		= DEVLINK_CMD_RATE_NEW,
+ 		.validate	= GENL_DONT_VALIDATE_STRICT,
+-		.pre_doit	= devlink_nl_pre_doit,
++		.pre_doit	= devlink_nl_pre_doit_parent_dev_optional,
+ 		.doit		= devlink_nl_rate_new_doit,
+-		.post_doit	= devlink_nl_post_doit,
++		.post_doit	= devlink_nl_post_doit_parent_dev_optional,
+ 		.policy		= devlink_rate_new_nl_policy,
+-		.maxattr	= DEVLINK_ATTR_INDEX,
++		.maxattr	= DEVLINK_ATTR_PARENT_DEV,
+ 		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
+ 	},
+ 	{
+diff --git a/net/devlink/netlink_gen.h b/net/devlink/netlink_gen.h
+index 2817d53a0eba..e16615aaa03f 100644
+--- a/net/devlink/netlink_gen.h
++++ b/net/devlink/netlink_gen.h
+@@ -13,6 +13,7 @@
+ #include <uapi/linux/devlink.h>
+ 
+ /* Common nested types */
++extern const struct nla_policy devlink_dl_parent_dev_nl_policy[DEVLINK_ATTR_INDEX + 1];
+ extern const struct nla_policy devlink_dl_port_function_nl_policy[DEVLINK_PORT_FN_ATTR_CAPS + 1];
+ extern const struct nla_policy devlink_dl_rate_tc_bws_nl_policy[DEVLINK_RATE_TC_ATTR_BW + 1];
+ extern const struct nla_policy devlink_dl_selftest_id_nl_policy[DEVLINK_ATTR_SELFTEST_ID_FLASH + 1];
+@@ -29,12 +30,19 @@ int devlink_nl_pre_doit_dev_lock(const struct genl_split_ops *ops,
+ int devlink_nl_pre_doit_port_optional(const struct genl_split_ops *ops,
+ 				      struct sk_buff *skb,
+ 				      struct genl_info *info);
++int devlink_nl_pre_doit_parent_dev_optional(const struct genl_split_ops *ops,
++					    struct sk_buff *skb,
++					    struct genl_info *info);
+ void
+ devlink_nl_post_doit(const struct genl_split_ops *ops, struct sk_buff *skb,
+ 		     struct genl_info *info);
+ void
+ devlink_nl_post_doit_dev_lock(const struct genl_split_ops *ops,
+ 			      struct sk_buff *skb, struct genl_info *info);
++void
++devlink_nl_post_doit_parent_dev_optional(const struct genl_split_ops *ops,
++					 struct sk_buff *skb,
++					 struct genl_info *info);
+ 
+ int devlink_nl_get_doit(struct sk_buff *skb, struct genl_info *info);
+ int devlink_nl_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb);
+diff --git a/net/devlink/rate.c b/net/devlink/rate.c
+index 9ebbc72130c6..1949746fab29 100644
+--- a/net/devlink/rate.c
++++ b/net/devlink/rate.c
+@@ -655,9 +655,11 @@ int devlink_nl_rate_set_doit(struct sk_buff *skb, struct genl_info *info)
+ 
+ int devlink_nl_rate_new_doit(struct sk_buff *skb, struct genl_info *info)
+ {
+-	struct devlink *rate_devlink, *devlink = devlink_nl_ctx(info)->devlink;
++	struct devlink_nl_ctx *ctx = devlink_nl_ctx(info);
++	struct devlink *devlink = ctx->devlink;
+ 	struct devlink_rate *rate_node;
+ 	const struct devlink_ops *ops;
++	struct devlink *rate_devlink;
+ 	int err;
+ 
+ 	ops = devlink->ops;
+-- 
+2.44.0
 
