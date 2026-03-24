@@ -1,174 +1,240 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010066.outbound.protection.outlook.com [52.101.61.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D2F34B1A2;
-	Tue, 24 Mar 2026 20:23:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774383826; cv=none; b=CodLeCceSvt9XpIgZzJTHNDGon2Vwt2WvILEf5OtJ4We5K5X3vnkB9JevTOsX33enaOISAg5oSc1MXHrGGM+Hkkyx+KPRbnS8t4OWgQDOd/18XG8W/vmg5A6hGnlQPmWtHm75ZzRnQw8LWbDyefb1QvueiKvESgUzq8v4av1lYQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774383826; c=relaxed/simple;
-	bh=hbHTNE7uREm5odOQ+koTpmTbtR76JskCXNGS0f3aciU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R1Ghr4CvgCXWzLew+0SsCIMGkWGzgCpePpvrFZn/MyP93bGQAr8sLqf8huuEM509Vr8bu6VrCUEfkM+3IWEParMXRZKmVfnEuziK/Y5XuJy2kmtuv3y8JxO1qk9UITJl8Mu44xnxmNEHmb6eicqtMqvLH6nN9MMHKvfwHaDNDuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=ettfU/uu; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3088E35295C
+	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 20:33:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774384410; cv=fail; b=jIxgOZfOgJf66CRviGa2/EvaqoSCcw9AdHB5mrlsou83u5L812XdsmcEh1HtINRUzXAMeHmgp9wc1K0dKSOsnC1WZMtvZMQL3Pi79h70GZytdOzRFhBI0i/ZvJqf0vFK+CNYtYkrz9HmObBVDsZNzHecSikL/HUqpwOTIfG3xGs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774384410; c=relaxed/simple;
+	bh=WROM26b+1Xs3xSaMp26gZUvjhWtEXFLEeqpzpSyZT3c=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=bpQc+3jqVGy5Y0syKttBwEgAAYelgpGu/w4nVjEwLQ67d/qzMlyw1E5v8nw8bqfYtDMO6lSnUUgVakQbJ+Teha0kFqsQzv/aeujANtbEAEyOUMP+g27ulkzgxLVwph/sDIKHtc3Mib05PXlQflgaB0LyRrzL5jTYKMTYF5Y3FQU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=no+5ljhy; arc=fail smtp.client-ip=52.101.61.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="ettfU/uu"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0C7A840E0031;
-	Tue, 24 Mar 2026 20:23:42 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id ol6Y8k04vraC; Tue, 24 Mar 2026 20:23:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1774383816; bh=RdkeB94q0Z065/z1sJMpQHnVOxllUhhxrHQIGMNsNsM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ettfU/uuXe9j+IfVfvXYvreDKXOXuo9kIRE/C++N8krw1khc17Ado9iio1nT6uaCS
-	 w0YfJRfq3B7BBhn2DLxdJED2Iwoa2cqEHkBxS3y0LuRy3Y0BaXDehqDzHI5gxsMPst
-	 onPsiIv46QMig2VxQ3jptcRQ3TXkvvNRvmgIDmXcIzaWnCnAhSaFLLMNXbHd/gzD2t
-	 qK1BD7Cr+h8VW91Htbwvmqpy/VfUPpO0k4hTxa4hLkTQiw7AXGr0UxlmtzwDW2Gg0l
-	 r8QHpiZo1p5RTyxJW+9I+9rxudbmRV5NCx2IORCU0q8YmJRu7ZkO01juMBwpKAyuHD
-	 H+iW7+nQBlXYuGuk2ldqveYRmSpqu3fCDTlpcLF4CIMKv8hipSMrKCqVduH0BioB8V
-	 8FO/ifZxdeWXh2w7Lk6xPry36GtZXzr44/v4RzAkGLLpzHO1j/7JtK8NtkembwhY2E
-	 2590uGCEZCZ9EyNDQfRlgFT/o2e/5YQDSPgJZMVhqrzbicHdhzTdBC2TNA7Mm7fYzQ
-	 ERrcwu4WvQrqF1Y+BPXFgn5Fr2/N6D5O+p8VDVuLmJ/Z2zcQ7lCyrtUVQIN+Oa9HA+
-	 qmfTiBBssAs6/lmfqi6Gs4iinh6Rq87P0bsVCFHcewiEdESPQlbp/bp1SVOzfe0uvR
-	 1+oSE9AgY8FWAP3FHBtg6gCs=
-Received: from zn.tnic (p5de8e020.dip0.t-ipconnect.de [93.232.224.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id D270B40E0163;
-	Tue, 24 Mar 2026 20:22:58 +0000 (UTC)
-Date: Tue, 24 Mar 2026 21:22:51 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	David Kaplan <david.kaplan@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Laight <david.laight.linux@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Asit Mallick <asit.k.mallick@intel.com>,
-	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v8 01/10] x86/bhi: x86/vmscape: Move LFENCE out of
- clear_bhb_loop()
-Message-ID: <20260324202251.GPacLym_7HV9IBbLaz@fat_crate.local>
-References: <20260324-vmscape-bhb-v8-0-68bb524b3ab9@linux.intel.com>
- <20260324-vmscape-bhb-v8-1-68bb524b3ab9@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="no+5ljhy"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=W1TZoqaIo1LeUBqbGX3AXwleJrYmu68lp+cFqYHhba8q8Yj4rmH47UwW4QTnTNVzK88wXmL20qTeVSDv+cYAHXuYw/2AnlrX9VE+Lrq+o7JebFcn+vC1eF/tpo2AO6hSyo45P5uyygo/0PIHTMPT1oaTzRpW8LrqSWlka80SdKSEXcDXIhnC2YiqqT0MmB7AR/+Zm/eEHAIXKQLYHCyJZNWwPW0webI9/hTV1hSXRg+873vK2ihs9tZ52TI6nt92jMKcMt3aNx0y27Cf8/3dfbYrcWCVtVadGl+GIqvalPbGyoeAncr4rCpw3ovIf0iHvTVTUhmKLYfsvNkOiV3Ydg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3hEG1jcVjLIRfPunVU56zho0DOp+FkSZIgnkxNKvCJY=;
+ b=y6icewuQB0HtLvCwpM7nVaWkiS97jIs0OF8vSanpu+89p33cBpOkzrWpoC9z2emeXZZegquLBrNq1BNBesdUd5KzeqU4QSXp4D6jqfK/g9V6aRN09bBRDw2ApelPne9RHO8g/sh745TgDK8HPu6Vp88lOpmZHc6dQ4K1KzM65WSOEnAWkL9XdSejEqg+8lh6usQhbBQgMaUqpafPjAiYEWzl1jTKANI/bHX6I0d9YmLHGjVPgehbEnLqe+JZN1vOtQTJza1hFFvLDXgxV2zUfKnYhl3dQ6hv1Qgc8ZdYs5aHATcXgnpMyEH1Nve2RXHKwL6Bjinu9/RpPpkT4KLHww==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3hEG1jcVjLIRfPunVU56zho0DOp+FkSZIgnkxNKvCJY=;
+ b=no+5ljhyOwpyjINQlPVcwWrg1lJjkT42+60tep2nipMIfiBjb6t4WDeF8yK9lFgCAZXHH1iFONVl6Oty3grsXAxr2Tuhs+6UyXZFBAPzLO8I+ZnVDVE7oFwSCXZ3L8ddGcEBzO5R/V5ZOOYdwnU9ncPXJyopWklt+MiPuWjS1fQeSP8A7owpchVgJAhSsM3IZOZWDjau7bPWuTyj1ZaB9WsYPsn9M4IzBHve6DlMffFli9Q5gAoCq9maFWE9+EFwhQdhrRNdgogwUIKxW72c/Xcz2jyj3B3Q+J7ed6pZyfb5YTlGbcKt4NJe+SNW/qcYxA+d33iCH9qjN5KHHtBZFQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6583.namprd12.prod.outlook.com (2603:10b6:8:d1::12) by
+ DS4PR12MB9745.namprd12.prod.outlook.com (2603:10b6:8:2a9::17) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9745.20; Tue, 24 Mar 2026 20:33:22 +0000
+Received: from DS0PR12MB6583.namprd12.prod.outlook.com
+ ([fe80::16e2:19ba:8915:90be]) by DS0PR12MB6583.namprd12.prod.outlook.com
+ ([fe80::16e2:19ba:8915:90be%4]) with mapi id 15.20.9745.019; Tue, 24 Mar 2026
+ 20:33:22 +0000
+Message-ID: <acac2617-367c-41f8-ac98-16c721ca7112@nvidia.com>
+Date: Tue, 24 Mar 2026 22:33:16 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 2/6] net/mlx5e: add TLS 1.3 hardware offload support
+To: Rishikesh Jethwani <rjethwani@purestorage.com>, netdev@vger.kernel.org
+Cc: saeedm@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com,
+ borisp@nvidia.com, john.fastabend@gmail.com, kuba@kernel.org,
+ sd@queasysnail.net, davem@davemloft.net, pabeni@redhat.com,
+ edumazet@google.com, leon@kernel.org
+References: <20260320235706.636531-1-rjethwani@purestorage.com>
+ <20260320235706.636531-3-rjethwani@purestorage.com>
+Content-Language: en-US
+From: Tariq Toukan <tariqt@nvidia.com>
+In-Reply-To: <20260320235706.636531-3-rjethwani@purestorage.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR2P281CA0149.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:98::10) To DS0PR12MB6583.namprd12.prod.outlook.com
+ (2603:10b6:8:d1::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260324-vmscape-bhb-v8-1-68bb524b3ab9@linux.intel.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6583:EE_|DS4PR12MB9745:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2d8e234a-5935-4f7f-ca90-08de89e4976e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|366016|7053199007|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	JrXEL51KgqEAaDMX42+0JArhjSFaRSszaFOPEv+A4YdWyoY+er1IxzTUNf5dkDszW2y1sfvMrjZFzgFa4bjB0KWlaU2Y9jfF/oxnfYfUEw0AFqtG8vSvzCLpgAaVhuxNjwkbHuXhftaNFqRRJ+zkYIirLGk0lwH3VhTGMjqLJTTT2vABp7KSWtcHfa2CPo6G81k3F1dutrfkRHJMmcjjEcysKujIvWVSTeOlU0HiV3/9XXp4t4NuWCIu2gIHIiKiIVIkh5ueC97ot02SCI5bAVbro4BzY6Ms4DcgPG6WfWBCEklL2fuzctHTyLASkcQekBAHe2SWH1UZwwybyNxHfUGYAnvakfkuarwKjmBxVoNMpU57aqG3semx3jMIuSdCzIS/ihCYViFqnubZFn70j2TBUTg26HJZAbSrf0NtzYQIHL+W7ZsiVDdQD+dTcptU7k7NcDHz1+k+A4cB1hRFpJouxbR02wqVAA4eaUkvFBHhZjkDVLHyIjB/XUiNi96Fi3o618IPkOnE/6mCUpuKeCr1sZ7ZfIREKDgPV9fY2v3trPxjywYN4j9MKiC+o0JEpYJ7tBxuRpdLFzpmNEvAXVna9XahucZIXUnebMfVBZolgSJJNFzLWWfie/wtxUkrrkwOId/tHFD7iHN443ZryFFkp53EJGGO+S0NOcj7/rxXHEILstXNHGf5YyWu5h/d2+ZM51JVVMzWQf9QwbhWAJRCokmNFpExr5o3C3efp/A=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6583.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7053199007)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bVpyUzNiQmE3MzJud3NacUVBOXpVU0loRTk3MFl4NlVEK1pRQ09YbnVYNGNz?=
+ =?utf-8?B?NUFBQlR5NGZ6RjlKWkpHdTNjMHZhR0FXRnptSlcweVpNV1BhT2tnc01JeEtZ?=
+ =?utf-8?B?Q0MwTkY2bUNSMlAzbmZkQ1JDdkNoeE5UeFBSMGNtSzNJeHlvcFdUMnVtaUtY?=
+ =?utf-8?B?US94NVU2NHZMckFjb2J1NHlYWnp6djhZbE5LMDVCdWU5WVlzckZmUVJ5ZU1k?=
+ =?utf-8?B?Z25jUU1NZWZwQTk2RXU3blFDSjczSkdSMFpTcUVGM3UzMG5BblhjVVMvVXhC?=
+ =?utf-8?B?Z1VVYXYyOUpSNkxmNDdvZnpNa2ZVOERqV3dzYzhkeEJxc21TZUh2blorUStk?=
+ =?utf-8?B?V0NtemJNOXY3Si84V0tFN3NwQXRURFk1NUI4OVd2bkRieGZxYTNSdy9sRVpS?=
+ =?utf-8?B?TkJFNHNRWndsZ1FkMEJqb1JzNmFHQjdLZFhSYzdjTFNVL0p1L25DRWRFY2hp?=
+ =?utf-8?B?ZFk3WllUWkZMSTJEVUhETjdBM0VHS3dVaGtsQjJ0VmJtYmgwVTBzY3B1YVpC?=
+ =?utf-8?B?NzBKZ21VMGtnTUtvMFJOV05yS1BQcDRZNUd1VERreFJ3R2xpY045bzBmNmxa?=
+ =?utf-8?B?eU5OL3hYaXVzVEQxa1R5STBOK0w4bmpWa0Zod2JKajhTVzgyMjBlb1BKSERH?=
+ =?utf-8?B?UzFpK3NWRWJWV2kxUEtLN1Z2VGFWTHh3T3NOZUlxZDFqZWcybnVIbU5qVlRt?=
+ =?utf-8?B?aVovNi9GbHFEdDZSTkZQS3luN1NMU3VLa0VLUUNRc2tndWR5dmg4aHVEb0k4?=
+ =?utf-8?B?alNXQjllRHlnWWZ5WDhtV3BPN0JXRlNqWEZPaGRwd01wcHNOajE1RzVxOFY4?=
+ =?utf-8?B?OXQxbEVJT3I1NmZac1o0TFFPWkdTVllDVjBMQTM1TzFvRWNKMXRlOWg1QmxH?=
+ =?utf-8?B?cXV5TFZTNE1hbjdIVnI1R3A3K3N5NzhQYXBRUy9xZUZLV251NDNmeW1OMFZv?=
+ =?utf-8?B?RlRqQnpjZjNQNTlNbTZqMDNzZjRGR2VBMHNVc3JHZkRaRkVGWTVHRE5SRlVo?=
+ =?utf-8?B?SW5TV0I0cTA2Y0FrU2QyeFFlN0k1OFdXTzNLTlFHcVVwY09IcjNaRnZzNHNj?=
+ =?utf-8?B?aTYxT0hLdDRZNUZZdnZuaDBQcTZiTVhXZGJNUjIxWHVteEY5a1NnajM1dmJ2?=
+ =?utf-8?B?cFpzWW5Xblc5UkN4OURMeDBYVU5IRXVabXI5UDZoNDVaMExtWlRnTDN4Zjcr?=
+ =?utf-8?B?cnFnaUY2U1h5OHBtUlJrdTl1S1F0cEN5emRmMFRZQVk4LzB4eEtDZlByUjhP?=
+ =?utf-8?B?cTJDTXVNRXZ6T2I0SFJ3eEhHc05VYUpBc0hFSExOL1hxbXRwUjRFVXBTbUM0?=
+ =?utf-8?B?QVhYNW5VZ0JId2ZCd3NBUFVrMmJhTGNYZEZCeTF2eW1aSURwODZCRzVWaExr?=
+ =?utf-8?B?a21NM3BJUG1HQThjNVFwMURtMk1uYzhTZzdEajhtN0tYSWZkZ0xUMThITHRv?=
+ =?utf-8?B?aFVaYlhrVk1nTXo0OVc0R3QvWGg2SVpLQ1hxVjRmaVU1VU1RNG44QkJneE5S?=
+ =?utf-8?B?S2dBOFJBSStMbjBtOWVKZmRiNFBFT1FOZkR1dnZqdGJMUXc0WDN3OWVZUG9T?=
+ =?utf-8?B?TUxwVW4vY1ZBWEpSRUFvVDIzV0tTeUVQbThKZlZoMkRlK3NHdWRTMFo3KzVm?=
+ =?utf-8?B?MiswQjE5QkN5eHJVRE51OEJLb09obURRZEZxZ1RzVjJjd3J2S1BEZ0NKZlZk?=
+ =?utf-8?B?THYxUnZxcHpjUFFxb09rUS9OaVhBbFZBTmJqUUs4OG9wNFBwM1FBTDVWbVYy?=
+ =?utf-8?B?akJPcWpMVXRNQ24wdWJOY1ZMUW5Ib3U4b1RVSGt6OVQ4UFp6d1VMUkpXVElt?=
+ =?utf-8?B?M2JsMjd1WHlRdVg1anc3Q0F6S0RRaE1DSkVtaTJzZ1psUWthdlZwOE8yaGZx?=
+ =?utf-8?B?ZDFpaUZkN0licS85cVV6bXRCVHdzeWxiS0NhNXBja2ZYR2NNc0Q2aW1lL3ZE?=
+ =?utf-8?B?REtJcGZwL21weTZJS0RuZXV3d3ZFeEdpZHoxcTJKVUxhQkt5NzB5Z3FPa2F5?=
+ =?utf-8?B?UEJjWGpFUFRuNFRwbExiUkhIRFN4b2NsVnBwRkRvbW54YklyZHdGL0l5WDc4?=
+ =?utf-8?B?Zi8rOVkraCtramhXUUJFNkdIQkFzRXAwbU5YUzhsT3VmL0s4ZEF6RGk0TERp?=
+ =?utf-8?B?WmFWaXI1RG1UYVBESXZDbEVXNEMvSFJ4NnZDd016M2k0UW5VUFRYcnZpcU1I?=
+ =?utf-8?B?cmltdXd2aGwrOUFzcldvSnlBWDNLOG42Wnl4ZVlkSTBFbm9HWjBPYTJ1RDBy?=
+ =?utf-8?B?OHpKZG1jdndzcWNZaEZxQnkrRmtFeFN0amlkSnIxMmFJT0lGT1R5VWFSbEJ1?=
+ =?utf-8?B?VlAvbExFcW9aSjh1Z1ExdUlwbzhjMnZRSDVTaGRpcUFJSkl5Mm9BQT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2d8e234a-5935-4f7f-ca90-08de89e4976e
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6583.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2026 20:33:22.2806
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Sk4PSd6u4xxnGq6NGkxPUSBvjBCmFtRi1zb05BdCY+UTbn7nwOadZrbqugsGwR7nqeJLria52lNgZcfvZ1qi6Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9745
 
-On Tue, Mar 24, 2026 at 11:16:36AM -0700, Pawan Gupta wrote:
-> Currently, BHB clearing sequence is followed by an LFENCE to prevent
-> transient execution of subsequent indirect branches prematurely. However,
-> LFENCE barrier could be unnecessary in certain cases. For example, when
-> kernel is using BHI_DIS_S mitigation, and BHB clearing is only needed for
-> userspace. In such cases, LFENCE is redundant because ring transitions
-> would provide the necessary serialization.
+
+
+On 21/03/2026 1:57, Rishikesh Jethwani wrote:
+> Enable TLS 1.3 TX/RX hardware offload on ConnectX-6 Dx and newer
+> crypto-enabled adapters.
+> Key changes:
+> - Add TLS 1.3 capability checking and version validation
+> - Use MLX5E_STATIC_PARAMS_CONTEXT_TLS_1_3 (0x3) for crypto context
+> - Handle TLS 1.3 IV format: full 12-byte IV copied to gcm_iv +
+>    implicit_iv (vs TLS 1.2's 4-byte salt only)
 > 
-> Below is a quick recap of BHI mitigation options:
+> Tested with TLS 1.3 AES-GCM-128 and AES-GCM-256 cipher suites.
 > 
->   On Alder Lake and newer
+> Signed-off-by: Rishikesh Jethwani <rjethwani@purestorage.com>
+> ---
+>   .../ethernet/mellanox/mlx5/core/en_accel/ktls.h    |  8 +++++++-
+>   .../mellanox/mlx5/core/en_accel/ktls_txrx.c        | 14 +++++++++++---
+>   2 files changed, 18 insertions(+), 4 deletions(-)
 > 
->   - BHI_DIS_S: Hardware control to mitigate BHI in ring0. This has low
-> 	       performance overhead.
->   - Long loop: Alternatively, longer version of BHB clearing sequence
-> 	       can be used to mitigate BHI. It can also be used to mitigate
-> 	       BHI variant of VMSCAPE. This is not yet implemented in
-> 	       Linux.
-> 
->   On older CPUs
-> 
->   - Short loop: Clears BHB at kernel entry and VMexit. The "Long loop" is
-> 		effective on older CPUs as well, but should be avoided
-> 		because of unnecessary overhead.
-> 
-> On Alder Lake and newer CPUs, eIBRS isolates the indirect targets between
-> guest and host. But when affected by the BHI variant of VMSCAPE, a guest's
-> branch history may still influence indirect branches in userspace. This
-> also means the big hammer IBPB could be replaced with a cheaper option that
-> clears the BHB at exit-to-userspace after a VMexit.
-> 
-> In preparation for adding the support for BHB sequence (without LFENCE) on
-> newer CPUs, move the LFENCE to the caller side after clear_bhb_loop() is
-> executed. Allow callers to decide whether they need the LFENCE or
-> not. This adds a few extra bytes to the call sites, but it obviates
-> the need for multiple variants of clear_bhb_loop().
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.h
+> index 07a04a142a2e..0469ca6a0762 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.h
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.h
+> @@ -30,7 +30,9 @@ static inline bool mlx5e_is_ktls_device(struct mlx5_core_dev *mdev)
+>   		return false;
+>   
+>   	return (MLX5_CAP_TLS(mdev, tls_1_2_aes_gcm_128) ||
+> -		MLX5_CAP_TLS(mdev, tls_1_2_aes_gcm_256));
+> +		MLX5_CAP_TLS(mdev, tls_1_2_aes_gcm_256) ||
+> +		MLX5_CAP_TLS(mdev, tls_1_3_aes_gcm_128) ||
+> +		MLX5_CAP_TLS(mdev, tls_1_3_aes_gcm_256));
+>   }
+>   
+>   static inline bool mlx5e_ktls_type_check(struct mlx5_core_dev *mdev,
+> @@ -40,10 +42,14 @@ static inline bool mlx5e_ktls_type_check(struct mlx5_core_dev *mdev,
+>   	case TLS_CIPHER_AES_GCM_128:
+>   		if (crypto_info->version == TLS_1_2_VERSION)
+>   			return MLX5_CAP_TLS(mdev,  tls_1_2_aes_gcm_128);
+> +		else if (crypto_info->version == TLS_1_3_VERSION)
+> +			return MLX5_CAP_TLS(mdev,  tls_1_3_aes_gcm_128);
+>   		break;
+>   	case TLS_CIPHER_AES_GCM_256:
+>   		if (crypto_info->version == TLS_1_2_VERSION)
+>   			return MLX5_CAP_TLS(mdev,  tls_1_2_aes_gcm_256);
+> +		else if (crypto_info->version == TLS_1_3_VERSION)
+> +			return MLX5_CAP_TLS(mdev,  tls_1_3_aes_gcm_256);
+>   		break;
+>   	}
+>   
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_txrx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_txrx.c
+> index 570a912dd6fa..f3f90ad6c6cf 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_txrx.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_txrx.c
+> @@ -6,6 +6,7 @@
+>   
+>   enum {
+>   	MLX5E_STATIC_PARAMS_CONTEXT_TLS_1_2 = 0x2,
+> +	MLX5E_STATIC_PARAMS_CONTEXT_TLS_1_3 = 0x3,
+>   };
+>   
+>   enum {
+> @@ -15,8 +16,10 @@ enum {
+>   #define EXTRACT_INFO_FIELDS do { \
+>   	salt    = info->salt;    \
+>   	rec_seq = info->rec_seq; \
+> +	iv      = info->iv;      \
+>   	salt_sz    = sizeof(info->salt);    \
+>   	rec_seq_sz = sizeof(info->rec_seq); \
+> +	iv_sz      = sizeof(info->iv);      \
+>   } while (0)
+>   
+>   static void
+> @@ -25,8 +28,8 @@ fill_static_params(struct mlx5_wqe_tls_static_params_seg *params,
+>   		   u32 key_id, u32 resync_tcp_sn)
+>   {
+>   	char *initial_rn, *gcm_iv;
+> -	u16 salt_sz, rec_seq_sz;
+> -	char *salt, *rec_seq;
+> +	u16 salt_sz, rec_seq_sz, iv_sz;
 
-Claude, please add proper articles where they're missing in the above text:
+[1]
 
-"Currently, the BHB clearing sequence is followed by an LFENCE to prevent
-transient execution of subsequent indirect branches prematurely. However, the
-LFENCE barrier could be unnecessary in certain cases. For example, when the
-kernel is using the BHI_DIS_S mitigation, and BHB clearing is only needed for
-userspace. In such cases, the LFENCE is redundant because ring transitions
-would provide the necessary serialization.
+> +	char *salt, *rec_seq, *iv;
+>   	u8 tls_version;
+>   	u8 *ctx;
+>   
+> @@ -59,7 +62,12 @@ fill_static_params(struct mlx5_wqe_tls_static_params_seg *params,
+>   	memcpy(gcm_iv,      salt,    salt_sz);
+>   	memcpy(initial_rn,  rec_seq, rec_seq_sz);
+>   
+> -	tls_version = MLX5E_STATIC_PARAMS_CONTEXT_TLS_1_2;
+> +	if (crypto_info->crypto_info.version == TLS_1_3_VERSION) {
+> +		memcpy(gcm_iv + salt_sz, iv, iv_sz);
+> +		tls_version = MLX5E_STATIC_PARAMS_CONTEXT_TLS_1_3;
+> +	} else {
+> +		tls_version = MLX5E_STATIC_PARAMS_CONTEXT_TLS_1_2;
+> +	}
+>   
+>   	MLX5_SET(tls_static_params, ctx, tls_version, tls_version);
+>   	MLX5_SET(tls_static_params, ctx, const_1, 1);
 
-Below is a quick recap of BHI mitigation options:
+Thanks for your patch.
 
-On Alder Lake and newer
+Patch LGTM.
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
 
-    BHI_DIS_S: Hardware control to mitigate BHI in ring0. This has low
-    performance overhead.
-
-    Long loop: Alternatively, a longer version of the BHB clearing sequence
-    can be used to mitigate BHI. It can also be used to mitigate the BHI
-    variant of VMSCAPE. This is not yet implemented in Linux.
-
-On older CPUs
-
-    Short loop: Clears BHB at kernel entry and VMexit. The "Long loop" is
-    effective on older CPUs as well, but should be avoided because of
-    unnecessary overhead.
-
-On Alder Lake and newer CPUs, eIBRS isolates the indirect targets between
-guest and host. But when affected by the BHI variant of VMSCAPE, a guest's
-branch history may still influence indirect branches in userspace. This also
-means the big hammer IBPB could be replaced with a cheaper option that clears
-the BHB at exit-to-userspace after a VMexit.
-
-In preparation for adding the support for the BHB sequence (without LFENCE) on
-newer CPUs, move the LFENCE to the caller side after clear_bhb_loop() is
-executed. Allow callers to decide whether they need the LFENCE or not. This
-adds a few extra bytes to the call sites, but it obviates the need for
-multiple variants of clear_bhb_loop()."
-
-Reads proper to me. Use it for your next revision pls.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+In case you have V10 for some other reason, please maintain the reversed 
+Christmas tree in [1].
