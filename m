@@ -1,244 +1,383 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f99.google.com (mail-wr1-f99.google.com [209.85.221.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774D537DE80;
-	Tue, 24 Mar 2026 09:15:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF053D34BF
+	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 09:15:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774343711; cv=none; b=YuQXFndZWWujQE5Ha/2ONFdVXCvJ3ugKAF4KYpW9djdbLKE7yc+kidpIGp18pPmLCcQc65Q2hJE9ipF6K4sgChPQJLlXCqacYxDpxzj6J1reJm7KNOopC95hGZ9/vcAHg9XWKM/gj3xlFFg1Z4Clm63g/2X65e4q6AFvoltGNOM=
+	t=1774343721; cv=none; b=mveg/DY20xKtTXMn5OEbueJmfAREUEl95m+fa9tjlSfkCwQ+JC3MwGSZbK30XnELQWPH1ZafVbDUeDZZ16x8lsvK9CgtJXQTizcw6o6ZoCrBJP3vCFHcaG1GDlWDwOyQQCH4/D3+g6E1NCAM06RHEf8P+ZHZKaQds10KnxrR6uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774343711; c=relaxed/simple;
-	bh=WgzQAgK038Tv7CDxhS5srauI2DIDqbquJXT4rIP1XAA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tqW4uMfwFYDZv4+m8VPcI1Ua8Edc+yASMHVGM7RZou2QZVImBJoKFNp115M8GsjhdxYzHCWi0Yzdl5+pP4oh/v+He8CgB2WCrINXY9hMRjNIx2y79k1YsjF/PyLl0t813wffo19qPxhwYn/XjsBPjl5KqadDAcJuAz0NI9lAiNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=s5KFzkqE; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1774343721; c=relaxed/simple;
+	bh=Z6cnh74xVMaAsBmhH9mgEs6ADhQcc5Sxky7YCeIJyL8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=gPHN/fcisA9psjFIUAyC2jFdMFdKDNuT5LIno/wUlvfKxpbvnepx2wXlPymXt6L/22MT2MnKBNrWq+AsZMsFpK2P4zly5KTxrZpW6/ULQWUkFsJllhj+1t0T6yViP7IaWfGSEg2a+8SuqLtEAYTjIUZNKBsyIzIxCu9QfbtsQPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=NyJZSFIm; arc=none smtp.client-ip=209.85.221.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="s5KFzkqE"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=k2Hz1yOxyvLk9PND+a+O7YztgoEg7q/BSh75O/7XkQk=; b=s5KFzkqEJpNEnLHyxY19i1HjRz
-	oIU1ln9wgxsclooM8ffjWkVrEDW8zMltsHEJ4OQqNvuc1/psfQXl3c0g7VUSRqyV81+gIbw4l8fqf
-	OzGVKboQYNViO1AJASXz+H1nSFrYkTN2hUe58om3GYUrZVOgJVXwzlQ1mwpF5atRIAi7K1Hl++fCK
-	SH9LEd77cxIYw/sB52buLOmbdYsiHYYlYJEf1NHQPkcQAwRbkiveR28GQPsZCaoRR6ebnt1gT3HZ3
-	s8HYK5pWwk6AH7pVLmYhg3L61yGtYaolS3x9bM6H5fPtJui7O2eUSbdOxOe+jYsRMjrt1ufMWrnus
-	m8H3BunA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:49582)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1w4xqX-000000001cl-0bwB;
-	Tue, 24 Mar 2026 09:14:45 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1w4xqT-000000004wa-3z8U;
-	Tue, 24 Mar 2026 09:14:41 +0000
-Date: Tue, 24 Mar 2026 09:14:41 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
-Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>
-Subject: Re: [PATCH net-next 0/8] net: stmmac: improve PCS support
-Message-ID: <acJWAZrvvSn3G_jQ@shell.armlinux.org.uk>
-References: <abdYu864OmNWiWIW@shell.armlinux.org.uk>
- <ablpxwGks9m38fhM@shell.armlinux.org.uk>
- <absjNQ2s3Z5N2Zwo@oss.qualcomm.com>
- <abtE7sDT75I7uPnk@shell.armlinux.org.uk>
- <abvAuHFZzCFobO-V@shell.armlinux.org.uk>
- <7566c66b-2dda-4b29-b59e-4e4a7e159e21@oss.qualcomm.com>
- <abvy6nZyjyxUXMuf@shell.armlinux.org.uk>
- <bcab38a5-e7f7-47c9-ab9c-99294e095c22@oss.qualcomm.com>
- <abwSHGw39FTJGNb7@shell.armlinux.org.uk>
- <acGhQ0oui+dVRdLY@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="NyJZSFIm"
+Received: by mail-wr1-f99.google.com with SMTP id ffacd0b85a97d-43b5bded412so822105f8f.0
+        for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 02:15:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=6wind.com; s=google; t=1774343708; x=1774948508; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wqveLv0sjrlviXzI0Eh5yA2EqHK3iBJy0MdDxdgytgc=;
+        b=NyJZSFImtQ8t1HsVf0SIvCIwbebHrPYgB8oi0SIQACpwCWN3KsJb7uP69dUuKze2EM
+         NwBhBSHJtylWUQ90XHV8A2iJVJX+LayizXrA/wANpHctJlPwQgZCde6EZOaRZuPdDyKW
+         PBmbQp/3LeTey1Ht6Ox8V4VJiZTjsK8SvqU96VPIr9iUTkQzbfOq4JjJP3zpaRPssNSg
+         KdTa/E6rMX2dpnM6WNKCO4H54gXOLFddq+HTI5eFeHfL47W2pgxhq1rGRUa/CtdYLzeK
+         fPK9x6B8h7icLgQmfLUH8HET3Gw4OHaZ7hcwtYrPULY+Ur1rIY0Od3btUUR1YIa1Vp37
+         /Oww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774343708; x=1774948508;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=wqveLv0sjrlviXzI0Eh5yA2EqHK3iBJy0MdDxdgytgc=;
+        b=owAAflxNUi4YY5syzTeHhcFU5iUabaBNkG9vU7pPzs8cmZjITS3UYDlgK3WQgQ8SnZ
+         KRr9y9ufWQ9EXfF9Q0xFy3kfUGaXMFG+PCkn9Z79cT0ok+s+jHEngVkYDCMSsL44SGsA
+         MThKvLitPM0QYkjnfyRlMuOHAZXyfYTRDJ1jEicTjxly2x1homhicVXaK/J131LztVVz
+         93OJZqmvrksrD29CGMG+OznIo/tqnfloXyi62RwCFFb5aFHHdFr2jGf5Tl8j5onHhqM8
+         UeZHbo9tuerZqT8GWwY21eD/J+6Cyo9mxwvJXHOJMybOMmrqyR8ABBduAmZyQANVWYLy
+         U+6Q==
+X-Gm-Message-State: AOJu0YwRv92UmaSQWyoqx6NaJP/OIyxjEGwsujQN6m+UQye/9uhYyqKy
+	Yrdhtk0eBOHfcSho+Hk/H9IIwJNcrbT7Hu3CXLU2TxGyVQUwuqdO0+c7ptpb+AUvStsnERq8xmo
+	VJgJUZw/LrL77l+ZJk5zAyJn9kHznfNfu68S9
+X-Gm-Gg: ATEYQzxYJBRUZjhZv/ug/CxxdPkffLYZzBvdGMxpQinxDOp88lnGATVun+BUeA86xUh
+	y1u+zs000yn32nAxY8+bSjwP7h10+X63HRHIbX4qTL07wnBHoE8PxUsj98rZ9bRZrTFNWWIa7iO
+	2/aTARxODN0NFuHvqFrsv/t26U598/tWIvXFWJcb4WB5wX4z7V8et2+cLNMthaqbDp3HypuT5e0
+	79AJOn6fW7xUMR3s/EE/GyMdr70Z+mnmq0XnDECUbv1mh11H+CXHlpp5mq9OpFAu6psrJRDbgDb
+	x8rQ35iwwybBZXgyrnojpRjFDKi1Akn0Wp9LLyGshIQiNFf9Aq8Ujhya2g84Urg2FM3nFjVRoD4
+	s67m9Um0kz2RP+ZWeehz5eQOcbE06m8H2cio4jsPGM+6sSNPLc2+ElPKfR5xE1rAi4saeTVYtyg
+	==
+X-Received: by 2002:a05:6000:2f84:b0:439:ac98:751f with SMTP id ffacd0b85a97d-43b642424d6mr21220887f8f.23.1774343708341;
+        Tue, 24 Mar 2026 02:15:08 -0700 (PDT)
+Received: from smtpservice.6wind.com ([185.13.181.2])
+        by smtp-relay.gmail.com with ESMTP id ffacd0b85a97d-43b644b7468sm887997f8f.9.2026.03.24.02.15.08;
+        Tue, 24 Mar 2026 02:15:08 -0700 (PDT)
+X-Relaying-Domain: 6wind.com
+Received: from localhost (kadavar.dev.6wind.com [10.17.1.232])
+	by smtpservice.6wind.com (Postfix) with ESMTP id 39F911E280;
+	Tue, 24 Mar 2026 10:15:08 +0100 (CET)
+From: Justin Iurman <justin.iurman@6wind.com>
+To: netdev@vger.kernel.org
+Cc: andrea.mayer@uniroma2.it,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	justin.iurman@gmail.com,
+	nicolas.dichtel@6wind.com,
+	stefano.salsano@uniroma2.it,
+	Justin Iurman <justin.iurman@6wind.com>,
+	David Ahern <dsahern@kernel.org>
+Subject: [PATCH net-next v5 1/2] seg6: add per-route tunnel source address
+Date: Tue, 24 Mar 2026 10:14:33 +0100
+Message-Id: <20260324091434.359341-2-justin.iurman@6wind.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20260324091434.359341-1-justin.iurman@6wind.com>
+References: <20260324091434.359341-1-justin.iurman@6wind.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <acGhQ0oui+dVRdLY@oss.qualcomm.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 24, 2026 at 01:53:31AM +0530, Mohd Ayaan Anwar wrote:
-> Hi,
-> On Thu, Mar 19, 2026 at 03:11:24PM +0000, Russell King (Oracle) wrote:
-> > On Thu, Mar 19, 2026 at 02:50:29PM +0100, Konrad Dybcio wrote:
-> > > On 3/19/26 1:58 PM, Russell King (Oracle) wrote:
-> > > > On Thu, Mar 19, 2026 at 11:09:33AM +0100, Konrad Dybcio wrote:
-> > > >> On 3/19/26 10:24 AM, Russell King (Oracle) wrote:
-> > > >>> On Thu, Mar 19, 2026 at 12:35:58AM +0000, Russell King (Oracle) wrote:
-> > > >>>> On Thu, Mar 19, 2026 at 03:42:05AM +0530, Mohd Ayaan Anwar wrote:
-> > > >>>>> [    8.650486] qcom-ethqos 23040000.ethernet: clk_csr value out of range (0xffffff00 exceeds mask 0x00000f00), truncating
-> > > >>>>
-> > > >>>> Please look into this first - with the MDIO bus operating at
-> > > >>>> who-knows-what frequency, this could make reading from the PHY
-> > > >>>> unreliable.
-> > > >>>
-> > > >>> My guess is clk_get_rate(priv->plat->stmmac_clk) is returning zero,
-> > > >>> which means we don't know the rate of the CSR clock.
-> > > >>>
-> > > >>> From what I can see in drivers/clk/qcom/gcc-qcs404.c and
-> > > >>> drivers/clk/qcom/gcc-sdx55.c, this looks like this case - the
-> > > >>> struct clk_branch makes no mention of any clock rate, nor does it
-> > > >>> have any parent. From what I can see, neither of these drivers
-> > > >>> specify any rates for any of their clocks, which likely means that
-> > > >>> clk_get_rate() will be zero for all of them.
-> > > >>>
-> > > >>> Sadly, when I designed the clk API, I didn't think that people would
-> > > >>> be stupid enough not to implement the API properly, more fool me.
-> > > >>>
-> > > >>> Under the old code, we would've used STMMAC_CSR_20_35M, which means
-> > > >>> we're assuming that the CSR clock is between 20 and 35MHz, even
-> > > >>> though the value is zero. Is that the case? If it's higher than
-> > > >>> 35MHz, then you've been operating the MDIO bus out of IEEE 802.3
-> > > >>> specification, which can make PHY access unrealible.
-> > > >>>
-> > > >>> In any case, please fix your clock drivers.
-> > > >>
-> > > >> I'm not 100% sure the currently-passed AXI clock is what we want
-> > > >> there and the docs aren't super helpful.. is there a synopsys-name
-> > > >> for it? What rates would you expect it to run at?
-> > > > 
-> > > > There is no easy answer to that - it depends on the bus interfaces
-> > > > and whether the CSR (register) clock is separate.
-> > > > 
-> > > > The likely possible names are hclk_i (for AHB master), aclk_i (for
-> > > > AXI master), or clk_csr_i.
-> > > > 
-> > > > It does state that the CSR clock should have a minimum frequency of
-> > > > 25MHz to allow all statistics to be properly collected.
-> > > > 
-> > > > The rate of the CSR clock needs to be known, as selecting the divider
-> > > > for generating MDC within IEEE 802.3 specifications is rather
-> > > > fundamental. You may find something there which hints at what rate
-> > > > the dwmac's CSR clock runs at.
-> > > 
-> > > If it's either AXI or AHB, in both cases their direct parent is controlled
-> > > by an entity external to Linux and their rates may change at runtime,
-> > > based on aggregated needs of the bus. They're defined as levels/corners
-> > > (abstract term for a hidden volt+freq combo).
-> > > 
-> > > It may be that the operating range for the EMAC removes that variability,
-> > > but with no concrete evidence and just anecdotal experience, that's only
-> > > the case for the AHB clock
-> > 
-> > The important thing is that the MDC doesn't exceed the max clock
-> > frequency for the PHY and any other device connected to the MDIO
-> > bus. IEEE 802.3 specifies a max frequency of 2.5MHz (minimum period
-> > for MDC shall be 400 ns). Some PHYs can operate in excess of this,
-> > but one would need to confirm that all devices on the MDIO bus
-> > supports higher frequencies before using them. In the kernel, we
-> > generally err on the side of caution and stick to IEEE 802.3.
-> > 
-> > There are two ways to achieve the divider value with stmmac.
-> > 
-> > 1. if priv->plat->csr_clk is set to a value other than -1, this
-> >    configures the hardware divisor (for "normal" cores, it takes
-> >    STMMAC_CSR_* constants that can be found in include/linux/stmmac.h)
-> > 
-> > 2. otherwise, the rate of priv->plat->stmmac_clk is used as the CSR
-> >    clock value, which is the reference clock for the divider that
-> >    generates the MDC clock, and an appropriate divider is selected.
-> >    Given the available dividers, it works out at between 1.25MHz for
-> >    a CSR clock of just over 20MHz and 2.47MHz for 800MHz. (I have a
-> >    patch which documents the ranges for each of the STMMAC_CSR_xxx
-> >    values.)
-> > 
-> > Note that the dividier constants are not the actual divider itself,
-> > as can be seen in include/linux/stmmac.h
-> > 
-> 
-> As noted by Konrad, the AXI and AHB clock rates are indeed unknown to
-> the Linux kernel:
-> [    7.739389] [DBG] priv->plat->stmmac_clk rate = 0
-> [    7.739391] [DBG] priv->plat->pclk rate = 0
-> 
-> Additionally, here's what I found (focusing on QCS9100 Ride R3, but
-> most of this should be applicable to all qcom-ethqos consumers):
-> 
-> 1. clk_csr_i is connected to the SLV_AHB clock, named "pclk" in the
->    devicetree. This is the source for the MDC. The "stmmaceth" clock,
->    provided by AXI, is used for data transfers. It appears that the
->    devicetree gets it in reverse as per the stmmac clock
->    documentation added by Russell, i.e., the right order would be:
+Add SEG6_IPTUNNEL_SRC in the uapi for users to configure a specific
+tunnel source address. Make seg6_iptunnel handle the new attribute
+correctly. It has priority over the configured per-netns tunnel
+source address, if any.
 
-The documentation wasn't generated with some special knowledge, but by
-comparing the stmmac code with the databook and trying to work out what
-is going on. I would suggest not changing the DT description at the
-moment.
+Cc: David Ahern <dsahern@kernel.org>
+Signed-off-by: Justin Iurman <justin.iurman@6wind.com>
+Reviewed-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+---
+ include/uapi/linux/seg6_iptunnel.h |   1 +
+ net/ipv6/seg6_iptunnel.c           | 114 +++++++++++++++++++++--------
+ 2 files changed, 84 insertions(+), 31 deletions(-)
 
-It seems to me that the original intention was for "stmmac_clk" to be
-the "application clock", but then the Imagination Technologies
-Pistachio board came along, and "pclk" was added for possibly the slave
-interface - and thus pclk would really be more what CSR clock would be.
-
-However, the code that derives the CSR clock divider wasn't changed,
-and continued to use stmmac_clk.
-
-So now we're stuck with an utter mess, and there is no way now to work
-out exactly what was the case - I can find no documentation for this
-Pistachio board let alone the SoC. Hence:
-
-    There is confusion around stmmac_clk and pclk which can't be easily
-    resolved today as the Imagination Technologies Pistachio board that
-    pclk was introduced for has no public documentation and is likely now
-    obsolete. So the origins of pclk are lost to the winds of time.
-
-I haven't put much thought into whether this can be solved in some way.
-One passing throught is to basically deprecate the existing clock names
-and replace them with "application" and "csr-clock" which are the terms
-used in the databook.
-
-However, there's a couple of tables in the "Host (System Interface)
-Clock" section in the databook which gives the clocking for the various
-different configurations - the application clock is fairly easy to
-understand, but the CSR clock is quite complex as it depends on the
-master and slave interface configurations, as well as whether the
-designer selected the "use different clock for CSR" option.
-
-> 2. However, even with the correct naming, clk_get_rate() would return
->    0 for both clocks since they are firmware-managed.
-> 
-> 3. For GCC_EMAC0_SLV_AHB_CLK, the hardware documentation mentions the
->    range of 50 - 100 MHz. I am trying to check if there's any chance
->    of it turboing to a higher rate. For now, I think we can assume
->    this to be the working range.
-> 
-> In view of this, would setting priv->plat->clk_csr to
-> STMMAC_CSR_60_100M from the glue layer be correct?
-
-For the patch which I haven't submitted yet where I worked out the
-resulting ranges gives the following for this entry:
-
-        { CSR_F_60M,  STMMAC_CSR_60_100M },     // /42  1.43 - 2.38
-
-So, the divider is 42, which gives a range up to 2.38MHz with the
-100MHz input. At 50MHz, the MDIO clock will be 1.19MHz which is a
-little slow but 802.3 doesn't give a minimum rate. It will just
-take longer to access the PHY.
-
-The important thing is that the MDIO clock isn't too fast, as that
-will result in corrupted transfers. That said, some PHYs support
-faster MDIO clocks than 802.3 specifies, but in general it is a
-good idea that MACs stick to the 802.3 spec especially when they
-don't know what PHY (or indeed other MDIO devices) will be
-connected.
-
+diff --git a/include/uapi/linux/seg6_iptunnel.h b/include/uapi/linux/seg6_iptunnel.h
+index ae78791372b8..485889b19900 100644
+--- a/include/uapi/linux/seg6_iptunnel.h
++++ b/include/uapi/linux/seg6_iptunnel.h
+@@ -20,6 +20,7 @@
+ enum {
+ 	SEG6_IPTUNNEL_UNSPEC,
+ 	SEG6_IPTUNNEL_SRH,
++	SEG6_IPTUNNEL_SRC,	/* struct in6_addr */
+ 	__SEG6_IPTUNNEL_MAX,
+ };
+ #define SEG6_IPTUNNEL_MAX (__SEG6_IPTUNNEL_MAX - 1)
+diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
+index 3e1b9991131a..e76cc0cc481e 100644
+--- a/net/ipv6/seg6_iptunnel.c
++++ b/net/ipv6/seg6_iptunnel.c
+@@ -49,6 +49,7 @@ static size_t seg6_lwt_headroom(struct seg6_iptunnel_encap *tuninfo)
+ 
+ struct seg6_lwt {
+ 	struct dst_cache cache;
++	struct in6_addr tunsrc;
+ 	struct seg6_iptunnel_encap tuninfo[];
+ };
+ 
+@@ -65,6 +66,7 @@ seg6_encap_lwtunnel(struct lwtunnel_state *lwt)
+ 
+ static const struct nla_policy seg6_iptunnel_policy[SEG6_IPTUNNEL_MAX + 1] = {
+ 	[SEG6_IPTUNNEL_SRH]	= { .type = NLA_BINARY },
++	[SEG6_IPTUNNEL_SRC]	= NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
+ };
+ 
+ static int nla_put_srh(struct sk_buff *skb, int attrtype,
+@@ -87,23 +89,32 @@ static int nla_put_srh(struct sk_buff *skb, int attrtype,
+ }
+ 
+ static void set_tun_src(struct net *net, struct net_device *dev,
+-			struct in6_addr *daddr, struct in6_addr *saddr)
++			struct in6_addr *daddr, struct in6_addr *saddr,
++			struct in6_addr *route_tunsrc)
+ {
+ 	struct seg6_pernet_data *sdata = seg6_pernet(net);
+ 	struct in6_addr *tun_src;
+ 
+-	rcu_read_lock();
+-
+-	tun_src = rcu_dereference(sdata->tun_src);
+-
+-	if (!ipv6_addr_any(tun_src)) {
+-		memcpy(saddr, tun_src, sizeof(struct in6_addr));
++	/* Priority order to select tunnel source address:
++	 *  1. per route source address (if configured)
++	 *  2. per network namespace source address (if configured)
++	 *  3. dynamic resolution
++	 */
++	if (route_tunsrc && !ipv6_addr_any(route_tunsrc)) {
++		memcpy(saddr, route_tunsrc, sizeof(struct in6_addr));
+ 	} else {
+-		ipv6_dev_get_saddr(net, dev, daddr, IPV6_PREFER_SRC_PUBLIC,
+-				   saddr);
+-	}
++		rcu_read_lock();
++		tun_src = rcu_dereference(sdata->tun_src);
++
++		if (!ipv6_addr_any(tun_src)) {
++			memcpy(saddr, tun_src, sizeof(struct in6_addr));
++		} else {
++			ipv6_dev_get_saddr(net, dev, daddr,
++					   IPV6_PREFER_SRC_PUBLIC, saddr);
++		}
+ 
+-	rcu_read_unlock();
++		rcu_read_unlock();
++	}
+ }
+ 
+ /* Compute flowlabel for outer IPv6 header */
+@@ -125,7 +136,8 @@ static __be32 seg6_make_flowlabel(struct net *net, struct sk_buff *skb,
+ }
+ 
+ static int __seg6_do_srh_encap(struct sk_buff *skb, struct ipv6_sr_hdr *osrh,
+-			       int proto, struct dst_entry *cache_dst)
++			       int proto, struct dst_entry *cache_dst,
++			       struct in6_addr *route_tunsrc)
+ {
+ 	struct dst_entry *dst = skb_dst(skb);
+ 	struct net_device *dev = dst_dev(dst);
+@@ -182,7 +194,7 @@ static int __seg6_do_srh_encap(struct sk_buff *skb, struct ipv6_sr_hdr *osrh,
+ 	isrh->nexthdr = proto;
+ 
+ 	hdr->daddr = isrh->segments[isrh->first_segment];
+-	set_tun_src(net, dev, &hdr->daddr, &hdr->saddr);
++	set_tun_src(net, dev, &hdr->daddr, &hdr->saddr, route_tunsrc);
+ 
+ #ifdef CONFIG_IPV6_SEG6_HMAC
+ 	if (sr_has_hmac(isrh)) {
+@@ -202,14 +214,15 @@ static int __seg6_do_srh_encap(struct sk_buff *skb, struct ipv6_sr_hdr *osrh,
+ /* encapsulate an IPv6 packet within an outer IPv6 header with a given SRH */
+ int seg6_do_srh_encap(struct sk_buff *skb, struct ipv6_sr_hdr *osrh, int proto)
+ {
+-	return __seg6_do_srh_encap(skb, osrh, proto, NULL);
++	return __seg6_do_srh_encap(skb, osrh, proto, NULL, NULL);
+ }
+ EXPORT_SYMBOL_GPL(seg6_do_srh_encap);
+ 
+ /* encapsulate an IPv6 packet within an outer IPv6 header with reduced SRH */
+ static int seg6_do_srh_encap_red(struct sk_buff *skb,
+ 				 struct ipv6_sr_hdr *osrh, int proto,
+-				 struct dst_entry *cache_dst)
++				 struct dst_entry *cache_dst,
++				 struct in6_addr *route_tunsrc)
+ {
+ 	__u8 first_seg = osrh->first_segment;
+ 	struct dst_entry *dst = skb_dst(skb);
+@@ -272,7 +285,7 @@ static int seg6_do_srh_encap_red(struct sk_buff *skb,
+ 	if (skip_srh) {
+ 		hdr->nexthdr = proto;
+ 
+-		set_tun_src(net, dev, &hdr->daddr, &hdr->saddr);
++		set_tun_src(net, dev, &hdr->daddr, &hdr->saddr, route_tunsrc);
+ 		goto out;
+ 	}
+ 
+@@ -308,7 +321,7 @@ static int seg6_do_srh_encap_red(struct sk_buff *skb,
+ 
+ srcaddr:
+ 	isrh->nexthdr = proto;
+-	set_tun_src(net, dev, &hdr->daddr, &hdr->saddr);
++	set_tun_src(net, dev, &hdr->daddr, &hdr->saddr, route_tunsrc);
+ 
+ #ifdef CONFIG_IPV6_SEG6_HMAC
+ 	if (unlikely(!skip_srh && sr_has_hmac(isrh))) {
+@@ -383,9 +396,11 @@ static int seg6_do_srh(struct sk_buff *skb, struct dst_entry *cache_dst)
+ {
+ 	struct dst_entry *dst = skb_dst(skb);
+ 	struct seg6_iptunnel_encap *tinfo;
++	struct seg6_lwt *slwt;
+ 	int proto, err = 0;
+ 
+-	tinfo = seg6_encap_lwtunnel(dst->lwtstate);
++	slwt = seg6_lwt_lwtunnel(dst->lwtstate);
++	tinfo = slwt->tuninfo;
+ 
+ 	switch (tinfo->mode) {
+ 	case SEG6_IPTUN_MODE_INLINE:
+@@ -410,11 +425,11 @@ static int seg6_do_srh(struct sk_buff *skb, struct dst_entry *cache_dst)
+ 			return -EINVAL;
+ 
+ 		if (tinfo->mode == SEG6_IPTUN_MODE_ENCAP)
+-			err = __seg6_do_srh_encap(skb, tinfo->srh,
+-						  proto, cache_dst);
++			err = __seg6_do_srh_encap(skb, tinfo->srh, proto,
++						  cache_dst, &slwt->tunsrc);
+ 		else
+-			err = seg6_do_srh_encap_red(skb, tinfo->srh,
+-						    proto, cache_dst);
++			err = seg6_do_srh_encap_red(skb, tinfo->srh, proto,
++						    cache_dst, &slwt->tunsrc);
+ 
+ 		if (err)
+ 			return err;
+@@ -436,12 +451,12 @@ static int seg6_do_srh(struct sk_buff *skb, struct dst_entry *cache_dst)
+ 
+ 		if (tinfo->mode == SEG6_IPTUN_MODE_L2ENCAP)
+ 			err = __seg6_do_srh_encap(skb, tinfo->srh,
+-						  IPPROTO_ETHERNET,
+-						  cache_dst);
++						  IPPROTO_ETHERNET, cache_dst,
++						  &slwt->tunsrc);
+ 		else
+ 			err = seg6_do_srh_encap_red(skb, tinfo->srh,
+-						    IPPROTO_ETHERNET,
+-						    cache_dst);
++						    IPPROTO_ETHERNET, cache_dst,
++						    &slwt->tunsrc);
+ 
+ 		if (err)
+ 			return err;
+@@ -678,6 +693,10 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
+ 		if (family != AF_INET6)
+ 			return -EINVAL;
+ 
++		if (tb[SEG6_IPTUNNEL_SRC]) {
++			NL_SET_ERR_MSG(extack, "incompatible mode for tunsrc");
++			return -EINVAL;
++		}
+ 		break;
+ 	case SEG6_IPTUN_MODE_ENCAP:
+ 		break;
+@@ -702,13 +721,23 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
+ 	slwt = seg6_lwt_lwtunnel(newts);
+ 
+ 	err = dst_cache_init(&slwt->cache, GFP_ATOMIC);
+-	if (err) {
+-		kfree(newts);
+-		return err;
+-	}
++	if (err)
++		goto free_lwt_state;
+ 
+ 	memcpy(&slwt->tuninfo, tuninfo, tuninfo_len);
+ 
++	if (tb[SEG6_IPTUNNEL_SRC]) {
++		slwt->tunsrc = nla_get_in6_addr(tb[SEG6_IPTUNNEL_SRC]);
++
++		if (ipv6_addr_any(&slwt->tunsrc) ||
++		    ipv6_addr_is_multicast(&slwt->tunsrc) ||
++		    ipv6_addr_loopback(&slwt->tunsrc)) {
++			NL_SET_ERR_MSG(extack, "invalid tunsrc address");
++			err = -EINVAL;
++			goto free_dst_cache;
++		}
++	}
++
+ 	newts->type = LWTUNNEL_ENCAP_SEG6;
+ 	newts->flags |= LWTUNNEL_STATE_INPUT_REDIRECT;
+ 
+@@ -720,6 +749,12 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
+ 	*ts = newts;
+ 
+ 	return 0;
++
++free_dst_cache:
++	dst_cache_destroy(&slwt->cache);
++free_lwt_state:
++	kfree(newts);
++	return err;
+ }
+ 
+ static void seg6_destroy_state(struct lwtunnel_state *lwt)
+@@ -731,29 +766,46 @@ static int seg6_fill_encap_info(struct sk_buff *skb,
+ 				struct lwtunnel_state *lwtstate)
+ {
+ 	struct seg6_iptunnel_encap *tuninfo = seg6_encap_lwtunnel(lwtstate);
++	struct seg6_lwt *slwt = seg6_lwt_lwtunnel(lwtstate);
+ 
+ 	if (nla_put_srh(skb, SEG6_IPTUNNEL_SRH, tuninfo))
+ 		return -EMSGSIZE;
+ 
++	if (!ipv6_addr_any(&slwt->tunsrc) &&
++	    nla_put_in6_addr(skb, SEG6_IPTUNNEL_SRC, &slwt->tunsrc))
++		return -EMSGSIZE;
++
+ 	return 0;
+ }
+ 
+ static int seg6_encap_nlsize(struct lwtunnel_state *lwtstate)
+ {
+ 	struct seg6_iptunnel_encap *tuninfo = seg6_encap_lwtunnel(lwtstate);
++	struct seg6_lwt *slwt = seg6_lwt_lwtunnel(lwtstate);
++	int nlsize;
++
++	nlsize = nla_total_size(SEG6_IPTUN_ENCAP_SIZE(tuninfo));
+ 
+-	return nla_total_size(SEG6_IPTUN_ENCAP_SIZE(tuninfo));
++	if (!ipv6_addr_any(&slwt->tunsrc))
++		nlsize += nla_total_size(sizeof(slwt->tunsrc));
++
++	return nlsize;
+ }
+ 
+ static int seg6_encap_cmp(struct lwtunnel_state *a, struct lwtunnel_state *b)
+ {
+ 	struct seg6_iptunnel_encap *a_hdr = seg6_encap_lwtunnel(a);
+ 	struct seg6_iptunnel_encap *b_hdr = seg6_encap_lwtunnel(b);
++	struct seg6_lwt *a_slwt = seg6_lwt_lwtunnel(a);
++	struct seg6_lwt *b_slwt = seg6_lwt_lwtunnel(b);
+ 	int len = SEG6_IPTUN_ENCAP_SIZE(a_hdr);
+ 
+ 	if (len != SEG6_IPTUN_ENCAP_SIZE(b_hdr))
+ 		return 1;
+ 
++	if (!ipv6_addr_equal(&a_slwt->tunsrc, &b_slwt->tunsrc))
++		return 1;
++
+ 	return memcmp(a_hdr, b_hdr, len);
+ }
+ 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.39.2
+
