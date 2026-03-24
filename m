@@ -1,119 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12DAE361642;
-	Tue, 24 Mar 2026 13:18:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1541F3845C1;
+	Tue, 24 Mar 2026 13:20:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774358281; cv=none; b=I6nqmN1pwH8Qv49XzR8xjFFSnXTeA9kvl39FZacaoJhBKOToDxfSDleinRqfN36iUG3d5puljja7xQYtex+iMazvGwOvN/+vlACAgoZnHn1Paj6p5D4eFiaZl+STlcg3TQOiql40Jj0fk/B2yc0xci9+16bzM/hi6AvoURc1SeE=
+	t=1774358409; cv=none; b=e/N86JnS7XwWv4efXvAazpSTbGDv0CuZkkX83UG5lWjn8SjmFXoTPpIKe5u+twhdx5EWUR7STVAQMbXRh9U7yf/hxk+EorO6KP3aNLy9eiPmVtsSLaAHbWV1hz3WKR4S3atvJ81DnyioLJjP7ycfnVw5RrL8flXZYrIRjd9rrbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774358281; c=relaxed/simple;
-	bh=HpLBCnCa1xKeSeAwPwZvfU+iZI2wQruNJBD/Bjtt7xs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o+beL4VEnlWEl0Ybu6Ox50vRj5fnkoot2iEUwM3809R4SD92JQyTlwyreJAYhWvmKy2lzH7Wzze8LeXD4QTjS3wYNLByhnnaNbtC9tT2RYYCloYMhE2sR76EAMx7p9v/RL+1MO1OG7ap5i6BruEDXDvJ0D0XuFSGi4OfSd83+Ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SgKkkKaw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774358409; c=relaxed/simple;
+	bh=qUVAbqHbRVQBQKNw3UXWmjGiK4RDaKme5PKt7HpqiSk=;
+	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
+	 Content-Disposition:Content-Type:Message-Id:Date; b=K2O6gaiMxLaA2Fqh0m/LXECxW8HOZoqfZjJsTMqqdNQuSfV4S+1LAJWRWzG0HWLQsGObVwlQHYESFsvdTQSHE6O0KvvoYtvodMiW9Oz2lHVArBzNcu03iCYrVKfs+A8xfYeBoKe69gq+ez4sOgGAh71Vd3ozuddCTbkqxgalP5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=OM+YlRhw; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SgKkkKaw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC1CDC19424;
-	Tue, 24 Mar 2026 13:17:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774358280;
-	bh=HpLBCnCa1xKeSeAwPwZvfU+iZI2wQruNJBD/Bjtt7xs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=SgKkkKawaLyaRSyyYzCRV8n53IrfhlExirYkmudIsRcPrVUShRbEoG7tJSpdIjP4n
-	 abcb7cMTrrpqhSqHSyhmi0306RqDE86h0/FsAsg7A1V7kklJN9AxwWvmLOdBgjTmeC
-	 C1+hwKp8sZ/uoyRIF8QFuwtbAiL6zKniR2evCXsFioBUil+TpXFbWbN+s0NzvFPILV
-	 AVcdBxDVyoegkq7g6ojkPaKVQ8RBRC3pQPNA2zAFbDUgz8W1PexVkK2iGnZMSct0ri
-	 mazOqv/Ye+oknsXXrZ5IkZb/dah7+FiIiII5nuxd3+jC789HflgXzaJVwBikBrUgi0
-	 0pao3CRtXiYOQ==
-Message-ID: <b48d4311-51f2-4e71-8324-303af224bac6@kernel.org>
-Date: Tue, 24 Mar 2026 09:17:57 -0400
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="OM+YlRhw"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
+	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=I1QZg5J1wBw76UYVfAUUPPw5lf/Tu4jryU0wvfBdZZ0=; b=OM+YlRhwgM/rwbeTnYrY4ZL44V
+	lUn4S9oTaZaq+kFO+G4NTj+BZyi9UrFrgCXhtd7hJAet6LQNmnD7OQ2zX0P8B8RxsLL9LEoz6O0P2
+	JT6OxIWIl6mwb7os+PCDDiS8FEhI+8lkbbd5FrrCB94C6q6cJuxxJoIojbSE7aYWr5Xw+7ay7C+Bg
+	zEsOju5yaUl+3+55rKZJDftK1+PmcxU4/L1MU+R/s8vchp1NI8FYGeCYm4s/6prWZnz7vuP+MrJHp
+	PPkIpP80fFMnVyavGODmG577GD/LfKRaYRrAzjMwGgPruWC5ovQjFjR9dmJrkeAJuw1UcpR9OMK3D
+	oyASmLwA==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:50596 helo=rmk-PC.armlinux.org.uk)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1w51Yn-0000000025J-2OOn;
+	Tue, 24 Mar 2026 13:12:42 +0000
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1w51Yc-0000000DwWM-3REd;
+	Tue, 24 Mar 2026 13:12:30 +0000
+In-Reply-To: <acKNcX5PqtWYf8m3@shell.armlinux.org.uk>
+References: <acKNcX5PqtWYf8m3@shell.armlinux.org.uk>
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
+	netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH net-next 12/15] net: stmmac: qcom-ethqos: simplify
+ prg_rclk_dly programming
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH PATCH net-next v4 8/8] tls: Enable batch async decryption
- in read_sock
-To: Sabrina Dubroca <sd@queasysnail.net>
-Cc: john.fastabend@gmail.com, Jakub Kicinski <kuba@kernel.org>,
- netdev@vger.kernel.org, kernel-tls-handshake@lists.linux.dev,
- Chuck Lever <chuck.lever@oracle.com>, Hannes Reinecke <hare@suse.de>
-References: <20260317-tls-read-sock-v4-0-ab1086ec600f@oracle.com>
- <20260317-tls-read-sock-v4-8-ab1086ec600f@oracle.com>
- <acFK4DWAD5h_Oc0f@krikkit>
- <5190a4bf-cc66-424e-9c67-ffb3ddb58030@app.fastmail.com>
- <acHH6NVykWZo5Q3Q@krikkit>
-Content-Language: en-US
-From: Chuck Lever <cel@kernel.org>
-Organization: kernel.org
-In-Reply-To: <acHH6NVykWZo5Q3Q@krikkit>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1w51Yc-0000000DwWM-3REd@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Tue, 24 Mar 2026 13:12:30 +0000
 
-On 3/23/26 7:08 PM, Sabrina Dubroca wrote:
-> 2026-03-23, 11:04:16 -0400, Chuck Lever wrote:
->>
->> On Mon, Mar 23, 2026, at 10:14 AM, Sabrina Dubroca wrote:
->>> 2026-03-17, 11:04:21 -0400, Chuck Lever wrote:
->>>> +/* Bound on concurrent async AEAD submissions per read_sock
->>>> + * call.  Chosen to fill typical hardware crypto pipelines
->>>> + * without excessive memory consumption (each in-flight record
->>>> + * holds one cleartext skb plus its AEAD request context).
->>>> + */
->>>> +#define TLS_READ_SOCK_BATCH	16
->>>
->>> I suspect that at some point, we'll have a request to make this
->>> configurable (maybe system-wide, maybe by socket?).
->>
->> I appreciate your careful and close review. The series has
->> improved significantly.
->>
->> I will admit that the current value (16) is arbitrary. I agree
->> that someone might want to modify this value. At this point,
->> however, the constant is straightforward and it is still quite
->> easy to promote to a tunable later if that proves to be needed.
-> 
-> Agreed.
-> 
->> The right interface for this depends on kTLS consumer needs
->> that aren't clear (to me) yet.
-> 
-> In this case (read_sock), the kTLS consumer is NVMe/TCP etc, and
-> specifically users of those features with crypto acceleration
-> cards. I'm not familiar with either.
-> 
->> But let me know if you have a
->> preferred API mechanism or a specific use case in mind, or if
->> there is a netdev policy that should guide the introduction
->> of a suitable API for this purpose.
-> 
-> Nothing specific, I just thought I'd mention it since I was replying
-> to the patch anyway. I think at this stage "it seems easy to promote
-> to a tunable later" is enough consideration (just to avoid getting
-> trapped in some API (or lack thereof) and unable to change it, but I
-> agree that it shouldn't be a problem here).
+Rather than coding the entire register update twice with different
+values, use a local variable to specify the value and have one
+register update statement that uses this local variable. This results
+in neater code.
 
-I looked into this a little more yesterday before noticing that
-async crypto was disabled for TLS 1.3.
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+---
+ .../net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-The hardware crypto engines do not surface a concurrency limit to
-their consumers, but their ring sizes are typically much larger than
-the batch limit of 16 I've chosen here. We can't rely on them to
-tell kTLS where to set that limit.
-
-However, the loop was structured to continue until the batch limit
-was hit or reading gets -EBUSY. Either way 16 seems to be a safe
-but fairly conservative setting. For the larger rings it might cause
-a decrypt pipeline bubble.
-
-So the true purpose of the low limit is to constrain the amount of
-memory tls_read_sock sets aside for decryption in progress. That's
-going to be about 256KB per socket. Yes, that could be made larger
-or contingent upon TCP socket buffer sizes, for example.
-
-
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+index c88c693137d6..f9d6e97f197a 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+@@ -374,6 +374,7 @@ static int ethqos_dll_configure(struct qcom_ethqos *ethqos)
+ static int ethqos_rgmii_macro_init(struct qcom_ethqos *ethqos, int speed)
+ {
+ 	struct device *dev = &ethqos->pdev->dev;
++	unsigned int prg_rclk_dly;
+ 	int phase_shift;
+ 	int loopback;
+ 
+@@ -461,16 +462,16 @@ static int ethqos_rgmii_macro_init(struct qcom_ethqos *ethqos, int speed)
+ 		 */
+ 		if (ethqos->has_emac_ge_3) {
+ 			/* 0.9 ns */
+-			rgmii_updatel(ethqos, SDCC_DDR_CONFIG_PRG_RCLK_DLY,
+-				      FIELD_PREP(SDCC_DDR_CONFIG_PRG_RCLK_DLY,
+-						 115), SDCC_HC_REG_DDR_CONFIG);
++			prg_rclk_dly = 115;
+ 		} else {
+ 			/* 1.8 ns */
+-			rgmii_updatel(ethqos, SDCC_DDR_CONFIG_PRG_RCLK_DLY,
+-				      FIELD_PREP(SDCC_DDR_CONFIG_PRG_RCLK_DLY,
+-						 57), SDCC_HC_REG_DDR_CONFIG);
++			prg_rclk_dly = 57;
+ 		}
+ 
++		rgmii_updatel(ethqos, SDCC_DDR_CONFIG_PRG_RCLK_DLY,
++			      FIELD_PREP(SDCC_DDR_CONFIG_PRG_RCLK_DLY,
++					 prg_rclk_dly), SDCC_HC_REG_DDR_CONFIG);
++
+ 		rgmii_setmask(ethqos, SDCC_DDR_CONFIG_PRG_DLY_EN,
+ 			      SDCC_HC_REG_DDR_CONFIG);
+ 	}
 -- 
-Chuck Lever
+2.47.3
+
