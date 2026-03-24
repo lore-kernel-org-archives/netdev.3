@@ -1,43 +1,44 @@
 Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F943F99CD;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931FF3F99D1;
 	Tue, 24 Mar 2026 12:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774355430; cv=none; b=POf4XFjnu1PnqculilLo9MAOJ06cwk0vCDSf6LMJ7ewFtKGsnkqE6JADYCVe+Sgl6EOQ7qiRxIrOJFjLpExoDXuxTnpMkQrk2Sge+YrQaqU9t3/xUtQHguFy98tP+K4pLHZlKFdRxFB6jG4JOS+WV20q5ySEOqVNep1MxhN7gcc=
+	t=1774355430; cv=none; b=ksg1e0yXUjQTNWf1SyoLWg6WwOnaJxLfCxFTGOhCA7VYAdLyyzxMYIygnlROVzZ7BpUvrEF8U204LmY9Py40CahRopsvZCJoLwgwN80c4lUgoWKp0og7DNSWQxCF+DRE5Ui0EpwD79lwxBfhVoOm/QXKu6r694BsQMmhuIqUBTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774355430; c=relaxed/simple;
-	bh=rQpwsN7Cjk47XkxRTNapKlV5btqq58zaFAbWUaMcZsY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Zjky9EniRwEo080SWwsWtzegDk/8I0xYRHdBPr9379AUjNwZsjTw7Z9qmwAIoUBrjKbH0jX0WTZlfVgrbAKoC127rztCSQ3t9wmKC6OLGbBdj+JuYwXuHlteHNng+knItqPLbXlrdw1ZhLoubRomn784gyMJZaOj1nZ0FYbgKTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=SdxsBP5a; arc=none smtp.client-ip=188.40.3.216
+	bh=ku589tly/tCZifa7lwuGz9Rn8STrv9dkH8Z3dMpeH84=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IW1bTn9y01N8M3yxEh900hhK76oi6WAZgpZZSSSBJr4ZtO9VOpjo3IdDut3SDakyZGhm9wFPbkEbvUaiQllUwMtTJNb6vXUXJt2Syk5zX8ZQx7MdxvEt0W3DoCoyzf8D1Y/8vBWMCN5e35zqf0ooj5ZpDYLzjdnfqVAH8S5xflw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=kPkvszrt; arc=none smtp.client-ip=188.40.3.216
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="SdxsBP5a"
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="kPkvszrt"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=r2f84TTEWNrh6ZSSjAaDbdTly3GCRBMKBI+zPfcgc9Y=; b=SdxsBP5aJYd4z/xFwxCiA3pg2V
-	sTHuoCjzNSO3ZJ5umP6P3cZXGC/5ziC+kfIm8sJEHJRiic2wPmYXNFUyM9l0fHLsDJ4f4JVlxsI33
-	OcnmHXrll+bTLVa6hnH8JYiWjnddwpwwwGALji7C/57ZbXsMUNx2dJCTPoer0xGgcaRzdPPvFKgC7
-	NUaR8rCrpNqUkxwGc0LzrZ/jCaeGVzBvJtmz0oO7QUbWKPh7SwfGpiQFivoiCeuwAt5FX6Vy5+tO1
-	SpPef78ma2kA8OHhtNyR6JFaLxPzt9hwGA08McUAIbCzyNv6iFKRbIm4E7s0k5ILxji0XZDDQdgmx
-	JybvRH/w==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=YYZDaFWbRwD+Y6m8tmBwPFr2FatMkna546OJAPMNkgU=; b=kPkvszrtAcNA1Duv6MZr4nGqSN
+	59MyxnLWvTrZ0BWGTWrR1pg+V1IDXJEAE/JMiRCBGGd/hNIj143J58e22lfBR+EgqkHZcwxyhv6Hi
+	eeG86Pmi76UFq+FvbxnCUPOoW9dvSXEj+TCquWn/UhoZaF//dSmGU4q81SZf+MLVdj2B4LdeFyt0t
+	yFLvwpWg3pAEb6psJxLrsiyzESw5Ly32TwSVgOjoU5GE7S2X0/yIiYXEIoLNHsa3FhMda0MNWR/lE
+	PSKuRa42kLyKLo2l0hbz/vqJvvGgJqWia8UxSgpirx3hZMhCYZvaS/TDkZsmVlbsj2jNnGF5S8rHJ
+	WNy0dfGw==;
 Received: from sslproxy05.your-server.de ([78.46.172.2])
 	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <nora.schiffer@ew.tq-group.com>)
-	id 1w50tp-0005qD-1u;
-	Tue, 24 Mar 2026 13:30:21 +0100
+	id 1w50tr-0005qJ-13;
+	Tue, 24 Mar 2026 13:30:23 +0100
 Received: from localhost ([127.0.0.1])
 	by sslproxy05.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <nora.schiffer@ew.tq-group.com>)
-	id 1w50tp-000Pna-1M;
-	Tue, 24 Mar 2026 13:30:20 +0100
+	id 1w50tr-000Pna-0V;
+	Tue, 24 Mar 2026 13:30:22 +0100
 From: Nora Schiffer <nora.schiffer@ew.tq-group.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -60,10 +61,12 @@ Cc: Siddharth Vadapalli <s-vadapalli@ti.com>,
 	linux-arm-kernel@lists.infradead.org,
 	linux@ew.tq-group.com,
 	Nora Schiffer <nora.schiffer@ew.tq-group.com>
-Subject: [PATCH v2 0/7] J722S SGMII support
-Date: Tue, 24 Mar 2026 13:29:36 +0100
-Message-ID: <cover.1774354734.git.nora.schiffer@ew.tq-group.com>
+Subject: [PATCH v2 3/7] dt-bindings: net: ti: k3-am654-cpsw-nuss: Add ti,j722s-cpsw-nuss compatible
+Date: Tue, 24 Mar 2026 13:29:39 +0100
+Message-ID: <f0aab212828fb4cad774de6b88fe6d24dfa96833.1774354734.git.nora.schiffer@ew.tq-group.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <cover.1774354734.git.nora.schiffer@ew.tq-group.com>
+References: <cover.1774354734.git.nora.schiffer@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,42 +77,49 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: Clear (ClamAV 1.4.3/27950/Tue Mar 24 07:24:19 2026)
 
-The J722S CPSW and SERDES are very similar to the variants found on the
-AM64, but they additionally support SGMII. Introduce new compatible
-strings for the J722S to add this support to the drivers.
+The J722S CPSW3G is mostly identical to the AM64's, but additionally
+supports SGMII. The AM64 compatible ti,am642-cpsw-nuss is used as a
+fallback.
 
-This is a prerequisite for the Single-Pair Ethernet interface of the
-TQ-Systems MBa67xx baseboard for the TQMa67xx SoM, which will be
-submitted separately.
+Signed-off-by: Nora Schiffer <nora.schiffer@ew.tq-group.com>
+---
+ .../bindings/net/ti,k3-am654-cpsw-nuss.yaml   | 20 ++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-v2:
-- Keep support for the AM64 compatible strings as a fallback, adjust commit
-  messages (patches 1-3 and 7)
-- No changes to patches 4-6
-
-Nora Schiffer (7):
-  dt-bindings: phy: ti: phy-j721e-wiz: Add ti,j722s-wiz-10g compatible
-  dt-bindings: phy: ti: phy-gmii-sel: Add ti,j722s-phy-gmii-sel
-    compatible
-  dt-bindings: net: ti: k3-am654-cpsw-nuss: Add ti,j722s-cpsw-nuss
-    compatible
-  phy: ti: phy-j721e-wiz: add support for J722S SoC family
-  phy: ti: gmii-sel: add support for J722S SoC family
-  net: ethernet: ti: am65-cpsw: add support for J722S SoC family
-  arm64: dts: ti: k3-j722s-main: use J722S compatibles for WIZ, gmii-sel
-    and CPSW3G
-
- .../bindings/net/ti,k3-am654-cpsw-nuss.yaml   | 20 ++++++++++------
- .../bindings/phy/ti,phy-gmii-sel.yaml         | 24 ++++++++++++-------
- .../bindings/phy/ti,phy-j721e-wiz.yaml        | 20 ++++++++++------
- arch/arm64/boot/dts/ti/k3-j722s-main.dtsi     | 12 ++++++++--
- drivers/net/ethernet/ti/am65-cpsw-nuss.c      |  8 +++++++
- drivers/phy/ti/phy-gmii-sel.c                 | 11 +++++++++
- drivers/phy/ti/phy-j721e-wiz.c                | 24 +++++++++++++++++++
- 7 files changed, 94 insertions(+), 25 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/net/ti,k3-am654-cpsw-nuss.yaml b/Documentation/devicetree/bindings/net/ti,k3-am654-cpsw-nuss.yaml
+index a959c1d7e643a..70d25f5ff1cfe 100644
+--- a/Documentation/devicetree/bindings/net/ti,k3-am654-cpsw-nuss.yaml
++++ b/Documentation/devicetree/bindings/net/ti,k3-am654-cpsw-nuss.yaml
+@@ -53,13 +53,19 @@ properties:
+   "#size-cells": true
+ 
+   compatible:
+-    enum:
+-      - ti,am642-cpsw-nuss
+-      - ti,am654-cpsw-nuss
+-      - ti,j7200-cpswxg-nuss
+-      - ti,j721e-cpsw-nuss
+-      - ti,j721e-cpswxg-nuss
+-      - ti,j784s4-cpswxg-nuss
++    oneOf:
++      - items:
++          - enum:
++              - ti,am642-cpsw-nuss
++              - ti,am654-cpsw-nuss
++              - ti,j7200-cpswxg-nuss
++              - ti,j721e-cpsw-nuss
++              - ti,j721e-cpswxg-nuss
++              - ti,j784s4-cpswxg-nuss
++      - items:
++          - enum:
++              - ti,j722s-cpsw-nuss
++          - const: ti,am642-cpsw-nuss
+ 
+   reg:
+     maxItems: 1
 -- 
 TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
 Amtsgericht München, HRB 105018
 Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
 https://www.tq-group.com/
+
