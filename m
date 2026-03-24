@@ -1,120 +1,116 @@
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 957D63FFAB2
-	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 14:47:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5993E1DFF7
+	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 14:53:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774363627; cv=none; b=Mx7f+v4hyR0MCEV2hjiKQaUNQls30giklQ1fGWbNG9Z56+rtNwRLVuq1AaU19A9b3AwHJRYpnGYdrdRxHu9ev0m7ubEOCmKSY3HkHklwqwvO6f9sfC5pkGiguiRSECEAm7knr0BD6g781PlK7ZpunyjJaeA0h7fLGpX0NPLgUFE=
+	t=1774364022; cv=none; b=BXdveuIxYp/t7apzuMCtJrsmHy1CzN1mrGHW4YtwhxpkrkQb20kTbPZXsz4Fdyn9D5Y0UGqNQWvBEUuqDbHUOY0H5C6K/6+IkkQajoUXatsGkHH5XPmIA7/RjuGPvAUfelskbZWCZX5eaRqyhxxoq2AL5MbFquMCtjiu4ZzmB+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774363627; c=relaxed/simple;
-	bh=RHr+p+NJnyXnFaXgOkYd6TPAzRp0iVa/ExZnygRFp5E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wm7n2vqLftdaxsX20h7qB3rJCgZR5b/SLuPEsjCFW8Emkj0HA7QYokBwVrR+0wAFkn1kx0O7jrHjWbvTV0tV2Y6UYePS5hrN2bgPPENfmmzM1Y2stIlKiG3vljA99u1PTmFXwTeTfdJ1xX3YKLfWtcZWa4turjD4OuB4c8G+HNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=w7iAhT65; arc=none smtp.client-ip=95.215.58.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1774364022; c=relaxed/simple;
+	bh=SXjnvGi4R1c72XJGwZ8Zm6T4OvxABtSHWXoZg6vrEfs=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=qdKQ4UNLAoZnKUfDOHpLc1y0tXitJKcCMvX8z3igxqhIZDxkHbW5ymv56iNheZseF47HfcGES9PabkxY2mCC7U+DsIKSPqVEAVHPISQyg2SFgIsOOpB7pRcuCy//tJtyoW8fU0/lpOWOuOWqnceYasoM44OotG3dxZVMHd0sCXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kI0Z6qmR; arc=none smtp.client-ip=209.85.128.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="w7iAhT65"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774363620;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=X8z0UgAXupqavXsuuN5PnUogUWGbsdMwKt2VfNlKKxU=;
-	b=w7iAhT651RgNSlqI5hq0vDx5D+7cLrgs3dbFqu31rlh1+6Ir7V2GHWLMFwK7tnBWV+3VE2
-	gHvYJPIdGhb5O7xbxJv5Rer6mcR/qcGI/q1NJqAtKWpNRGH84cbDcbxRXO48Q9jUylHFOe
-	9+DkxAC6WqpwayW+/DKdYLP1rroYh/I=
-From: luka.gejak@linux.dev
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Cc: horms@kernel.org,
-	fmaurer@redhat.com,
-	liuhangbin@gmail.com,
-	linux-kernel@vger.kernel.org,
-	Luka Gejak <luka.gejak@linux.dev>
-Subject: [PATCH net-next v1 6/7] net: hsr: add missing blank lines after function declarations
-Date: Tue, 24 Mar 2026 15:46:29 +0100
-Message-ID: <20260324144630.189094-7-luka.gejak@linux.dev>
-In-Reply-To: <20260324144630.189094-1-luka.gejak@linux.dev>
-References: <20260324144630.189094-1-luka.gejak@linux.dev>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kI0Z6qmR"
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-7927261a3acso23030667b3.0
+        for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 07:53:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774364020; x=1774968820; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7ochj+QvGqw+fcfta2/7hBkzAJqloREVHuN2ZlebGWc=;
+        b=kI0Z6qmRkzdsFWhHWJnRHyvDxyxgL6bietl+hz4Rrq7DhYbwlzuyif5DhA/cyX5zR0
+         XDakjkw9EFs2lsW0XPzlmYHeBFotR8vY5CKCX1IXpIKjI+WqE7x5PpBnIhZSu5W0huRJ
+         +ZD/mxQBFNY4uePq8oyHH+SH/121MnrFLCZnMgoIB1iMjMcHiOxeO3T7N6J7ZxUzx9Qh
+         z4TnuuQOdPfKauRke7EZ0M0/gqB7X3R68+HSdaImEN9rJAdQ4o9WYf3eI3jI+ajVVrDK
+         r8YKJXg0J+vcy8XQcERYuEzml70pLE++d73GYuziP84EgTqpi5MIpiZtMMIYtQu8HQY5
+         b4ZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774364020; x=1774968820;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7ochj+QvGqw+fcfta2/7hBkzAJqloREVHuN2ZlebGWc=;
+        b=N6HDo++/gPsabbmG2DnlPMaAS4a3vpu2EX1RSQYbfLXyTmcZ0760oVuknuxnBcBg8W
+         v3WnZwzX2evqlMnuw43Dq7DjZhbYzrE57nJVndFR8SVQX3qai43u2UzMfgkhTHbVFFxF
+         9+6a5imWQ6nzUWBvmDw6eJ9jK7OeKNYy1s45eAFypjWreQGDekYzVw2hD0in0+IC2nSn
+         d5wneiy5l17eRPl9mOB+0cVmcq7f47eRzrZ8ur72S9bcsz3dXWfy4uXsnUamOZNRMCzY
+         yUgkv62vikOF9qsAz0LJ/4DLiGE1JPG4H1zYquyhRIHYHbgWfMrczDvmNAAKuTNrzzAM
+         WEdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXPFXvknbRepoW/2dgtreSCF8v1wSD+0p2PjF+aHWTH3i/WP8ezTYTpn13YuAgmqateTzhsqmE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyll9Y4jyaSzv9lqBQu4rI7U0uPqdySLCHjhqG5xWLbkL6cEZak
+	DCKf0P0Gy1lyuPPphqodEbtrZPtPFA1nPrM73teFUbrZyg9hUVWp22iZ
+X-Gm-Gg: ATEYQzy6wdfdZuaMLrW/8Sk+9oIHqhcwcnClP/r5EUixghtgNzDbzN1X3ZIW41sHyaT
+	OtBt3fn9/5IzwNizEqseF9s+iY+uoRa2UXqWNuxd7JHAsIqzcooG9pAQg/O5WirJLyGG6Aami/I
+	fbp8ewav7ad+XLNOsrSroSBXpT6URgeNCVJULCW4T3Tor5Z6J1wAiAnlia3OcovQHT5C69j7thX
+	GTBad57KFlcfGn9lnnxtgYNmuNzSgy2XOZDfynMOKDLhKuNJCXH2gPLQapAAVWZlA61uijMbzIK
+	IVChcX1+3LXi8ApURqzmkvWtmypHXsMFtiwA84wMGuKxcISCEwnC+Gli3qwIqCGwAh6bn+LSGZH
+	CkvVgtRIMLP12T+z8MvFO3j96WZ/1ntQBf6w4GAq9CnImTL/L20r8blko8upKdlA+O5KT8t3zo/
+	WoZloYDyv+gpgynbNYWgAGSv4yaoY4qWFmhpVQecUUye3bP8mRw/oFBDBpEB4BcM+vyobBhD3DE
+	dDY
+X-Received: by 2002:a05:690c:b05:b0:79a:51df:6a0a with SMTP id 00721157ae682-79a90c39a45mr165486337b3.60.1774364020286;
+        Tue, 24 Mar 2026 07:53:40 -0700 (PDT)
+Received: from gmail.com (180.134.85.34.bc.googleusercontent.com. [34.85.134.180])
+        by smtp.gmail.com with UTF8SMTPSA id 00721157ae682-79a903e0b8csm73393107b3.12.2026.03.24.07.53.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Mar 2026 07:53:37 -0700 (PDT)
+Date: Tue, 24 Mar 2026 10:53:37 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Eric Dumazet <edumazet@google.com>, 
+ "David S . Miller" <davem@davemloft.net>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, 
+ Neal Cardwell <ncardwell@google.com>, 
+ Kuniyuki Iwashima <kuniyu@google.com>, 
+ Willem de Bruijn <willemb@google.com>, 
+ netdev@vger.kernel.org, 
+ eric.dumazet@gmail.com, 
+ Eric Dumazet <edumazet@google.com>
+Message-ID: <willemdebruijn.kernel.94dd9c2ea7d@gmail.com>
+In-Reply-To: <20260324142556.1844523-1-edumazet@google.com>
+References: <20260324142556.1844523-1-edumazet@google.com>
+Subject: Re: [PATCH net-next] selftests/net: packetdrill: add
+ CONFIG_MAX_SKB_FRAGS=17
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-From: Luka Gejak <luka.gejak@linux.dev>
+Eric Dumazet wrote:
+> Before adding tests about RWIN, enforce the default linux value
+> for the number of fragments per skb.
+> 
+> With 17 fragments, sizeof(skb_shared_info) == 320.
+> 
+> With 45 fragments, sizeof(skb_shared_info) == 768.
+> 
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> ---
+>  tools/testing/selftests/net/packetdrill/config | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/tools/testing/selftests/net/packetdrill/config b/tools/testing/selftests/net/packetdrill/config
+> index c4a19a78552111df690d2c97c0f3a8abe2176ada..8c739db4752c3abaaa8862ea2aeb661a2d5f0575 100644
+> --- a/tools/testing/selftests/net/packetdrill/config
+> +++ b/tools/testing/selftests/net/packetdrill/config
+> @@ -1,6 +1,7 @@
+>  CONFIG_HZ=1000
+>  CONFIG_HZ_1000=y
+>  CONFIG_IPV6=y
+> +CONFIG_MAX_SKB_FRAGS=17
+>  CONFIG_NET_NS=y
+>  CONFIG_NET_SCH_FIFO=y
+>  CONFIG_NET_SCH_FQ=y
 
-Add missing blank lines after the inline function declarations to
-comply with the kernel coding style guidelines.
-
-Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
----
- net/hsr/hsr_main.h | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
-
-diff --git a/net/hsr/hsr_main.h b/net/hsr/hsr_main.h
-index 134e4f3fff60..202dc90bd2ab 100644
---- a/net/hsr/hsr_main.h
-+++ b/net/hsr/hsr_main.h
-@@ -143,6 +143,7 @@ static inline void set_prp_lan_id(struct prp_rct *rct, u16 lan_id)
- 	rct->lan_id_and_LSDU_size = htons((ntohs(rct->lan_id_and_LSDU_size) &
- 					  0x0FFF) | (lan_id << 12));
- }
-+
- static inline void set_prp_LSDU_size(struct prp_rct *rct, u16 LSDU_size)
- {
- 	rct->lan_id_and_LSDU_size = htons((ntohs(rct->lan_id_and_LSDU_size) &
-@@ -277,24 +278,36 @@ static inline bool prp_check_lsdu_size(struct sk_buff *skb,
- }
- 
- #if IS_ENABLED(CONFIG_DEBUG_FS)
-+
- void hsr_debugfs_rename(struct net_device *dev);
- void hsr_debugfs_init(struct hsr_priv *priv, struct net_device *hsr_dev);
- void hsr_debugfs_term(struct hsr_priv *priv);
- void hsr_debugfs_create_root(void);
- void hsr_debugfs_remove_root(void);
-+
- #else
-+
- static inline void hsr_debugfs_rename(struct net_device *dev)
- {
- }
-+
- static inline void hsr_debugfs_init(struct hsr_priv *priv,
- 				    struct net_device *hsr_dev)
--{}
-+{
-+}
-+
- static inline void hsr_debugfs_term(struct hsr_priv *priv)
--{}
-+{
-+}
-+
- static inline void hsr_debugfs_create_root(void)
--{}
-+{
-+}
-+
- static inline void hsr_debugfs_remove_root(void)
--{}
-+{
-+}
-+
- #endif
- 
- #endif /*  __HSR_PRIVATE_H */
--- 
-2.53.0
-
+Why do we need to make this explicit, if it is the default?
