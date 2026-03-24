@@ -1,171 +1,106 @@
-Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66EB2F3C26
-	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 22:49:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25A43C5558
+	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 22:49:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774392570; cv=none; b=URXQRFzx883RtOGQB+xGmm4FNNYMqMiGDfTGZfdS4MKzf+jIfug7pfSXtwg7vEZHotHTmQunrpEm7k6gUwFzStNobax6zJjviNM59IJx+NGqo5N0DOl8o9g9WEoAHVQKsSkemuDCQCwB7Q5uKJxBFP25LLIbtpDD+1woYhp0oKs=
+	t=1774392595; cv=none; b=LI64f6B03iFdbhxuHm7oeQ667Y0WDuEBQMULPzfW3NskdA1JzxE9TwJR+TBBewDe58ES1GeViYtpIW1IEYGUVK6sBRZyfvc2It18oiMI8UGPh5H+mapuGink6KTVTPFSMUn3hCeyZ2oxNqunhfxy3WVdvnAJ04imTwkzkrJ2qrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774392570; c=relaxed/simple;
-	bh=x66sLBkPM9N4hLXn1DtA+Tsks0CxriXlzYTWpFI/SYE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RhKYIUR4zN0/RY7uUDcJm5jrzgsXAiC5xTnWqlH2oEFoXHJ9C/aLgdzpSN5QYgiLUqmUWCAmo8CiTCMbFHI6XRb8EZAPUJ7PKnQ1fZjJxnEI0KDuJG26QTaMoshJ7xdoX4ydTuBw+5wDU8yHIDQR1fB/vFg0lHyXe89aZgpeXMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=goFNEleL; arc=none smtp.client-ip=74.125.82.176
+	s=arc-20240116; t=1774392595; c=relaxed/simple;
+	bh=/NueFm3/CazP49WvRA3Xr6pCyu+b38Sp1Lwfij/nZmQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EZhENVNAv0bHiIQKJ/Hp6/3XRJ8OhA1LyrfFAf9JwY9Dw/CE6gOqhggiBH7hhSC3M3lG/BRv8cTy1d8puc5YG2nZ96/5WVhPkSBfy07sm7HvnJYji2E75LMunNZAAWOq9+BOgtZxcfHNXnx61iXeGZJnhqSrGjZyzPBJ644aLBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FVq7gNw1; arc=none smtp.client-ip=209.85.221.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="goFNEleL"
-Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-2b6b0500e06so7119331eec.1
-        for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 15:49:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FVq7gNw1"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-43b41b545d9so1795078f8f.2
+        for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 15:49:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774392569; x=1774997369; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gNx1VzVQBg2bGT4I9Bs+XmhXlek+bgkFq6Ick2G8sfw=;
-        b=goFNEleL/6OQLHn+J+oosYrN144Gvq3n9PxHX01b3AOoBSzMntlYyfDBUev1IPmigZ
-         PJNtk4Puil6DsOG08u2pCFDFISC0hZRWi1B9SPmvozkwDXnq7KMGHUMsTG48keNg0TzD
-         4ux7C9aM+cSk5nll4X0cKKMzWfJza7Ui2/qr02Y9axCLE+5UeHxyAg+zw5hr5ZMGy+s2
-         Wr13RXhhNNJkgmTqx7vNdoQdlkz6i4BFXe5JyxWiA7mIuFsP21vN0NKAed52WPvzDxz3
-         ClVP44k1pNh21rMwxWJ+CfYqfExhhx0OcvYywKMsYisw5flN0b4YHgQc14etyGiDFJ7r
-         1NCg==
+        d=gmail.com; s=20251104; t=1774392593; x=1774997393; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mZibpwI/cvMwdZUDTWkM0UWWOXbQKhbXzaML3B8rLT4=;
+        b=FVq7gNw18T0LDH5X6jIAD/KTpzGF/UscBiFXLPRU7EjnVlRmDpl/emBdB+Qhei7vT2
+         m0xXXj3rn9nFccWMMFxQKWjVhwCvk3RKPVxeMHb2i+qqs5vhDDn8KIKitGHmQ5K2OJLf
+         JKLI0t2+Jcz5dZk0bXgXcRClWYc90Uy5z2ivVipcElOwct7pWFo1kRn5ADxIittk1O7N
+         I1g6LwisQteSGFIPewPhrFXIJeD/EOUNEmui1ZrZbOZ2wnikoBPvK6tlf19zxjqRbgXx
+         vomADLQJJWc5YcTmm0mlBHQes3Vxt5BG44XoNOs03MUF4+ImT3P9QonM+7EapxSr0dqm
+         w+DQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774392569; x=1774997369;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gNx1VzVQBg2bGT4I9Bs+XmhXlek+bgkFq6Ick2G8sfw=;
-        b=b2NWJuh5xfVscf6KpOhu1i1jZLdi58bf5nhOvkCq7w5gy1dvSq2liCAOyfISK+EeCU
-         hiO1WOtJJ+HEbn1cMjj7w7dfWlZy5F3OjhgrxaIO6xMbSbzXtCWfvXmaBIXTfnNhZ4cH
-         Z5B8lI7Uk3k61OW6LLHLv1umqcaOZtbQ2ZjQv7RV8VIAkM/Oew/62/QenCXyoPekiIh4
-         TPnA+cQHdgDIbilQ9nc07rayrjbm7iRRYcaDjxqetsWZtZgU8LJfiJEGmaiWEh9rQ98X
-         /HtXC0mEk3dvG/fKgOVYnZZiQCd7TOILNRp8bCgpFZjDc8Bn4atkGOpReNN/Q01DO65X
-         zHLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVwVn5KYIM4u3y8LYUQdXZlvBt8HyR/pk5vY/msO6XGr87zRXAEXFidvcozP3uXpuF0dDoSI+w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyG1MlFHqb9NmgYotYcf7/hN4ombogXIjUKoFRhEZHc5YWfZ+U/
-	dwOfnXUPvSPIEWp0PVHxFfh/vs8n8hjLatZzaYPB3wHtE0xXGgClVhg=
-X-Gm-Gg: ATEYQzx1sf9bvLYcFmIcwrlUw7cj0bURlzkaXLgD13PuKePiYeNNOX/Nqf1yOla+8sZ
-	QmtQCtCHUhRRpwh3qT1yO+Q7FDDGyxhKZbZ8yvegELtL4DQUAYRYh22e/adgw8qRc0bwra9MfDG
-	8JXm4Vhyyp680NR4uJUhOIRI+sI9H4P8lMVaHCQupVKxN+/FIcC3DdTFK25/tGuTN+CpIIUjyQe
-	BvKsKv0BoQjVm7VVyZ8eZkyAF2bkn255W0aDVobzEiRKbssTlhECkYU7A4CayWiPUYV1ALuDCD+
-	xgeyPeiuSno5gCKCDJHVlU+7On38H9kDL70O09qcBFxNfUaXBJ/kJ80YefpKrY5m96kF0+Zoxr8
-	JWipIETaW/gOp7x8iEBFHmURBovb6+/LoYuM5AD2vgfSFjDAAgD0WS9/XqwlEv86DA5rZrHcbyF
-	ihjv+TGFuAGUXI61QmsQbZjzpK3INICDTLCuOA8jbObYcUhggBet4vKVdY6fBRx1cemFYkVUnws
-	7fyeVI1+MzpbmwXCEE/xmkqDVXr
-X-Received: by 2002:a05:7301:6582:b0:2c1:2999:498e with SMTP id 5a478bee46e88-2c15d3a1176mr717588eec.18.1774392568523;
-        Tue, 24 Mar 2026 15:49:28 -0700 (PDT)
-Received: from localhost (c-76-102-12-149.hsd1.ca.comcast.net. [76.102.12.149])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c10b1961a2sm16796758eec.12.2026.03.24.15.49.27
+        d=1e100.net; s=20251104; t=1774392593; x=1774997393;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mZibpwI/cvMwdZUDTWkM0UWWOXbQKhbXzaML3B8rLT4=;
+        b=A4nFoXQXY5Q/W/MKjbLkS9KhiMHmZLa9TCOvu2rqp0kdX/Yd/iD6E/xfnagNKaBRPx
+         9QuYy6WtE1hS4lV0da4r4B8h3LD6KEtkKkLD4Uw8uxx6o6tBrtXjrtg/cPMjV67mcvga
+         GytNiRCe/Op0YkdvZi4tUUI/JUHbKk738Kun7d+O26QF7iylhIQ8QlsduNsbT2eJM8tq
+         BbNe/aRePl+FmvMDfi5gLiFdy58W4qLZEoqb7Lh6bqpDbkl7/XVeMpO/EfCT9ylQ84GZ
+         l7veKdswSBqAO1f5WQjxxOewfh3Xga3Homr5UyBKbkqvZ0W6tGjBEnVBaxSGRqxpqz4U
+         U2yQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXXMkywLhW6iu5Cu2erkQnPwvfUOY4lRG53HXlTYMZ/wCsg/AIxS+NEAoKZj+vl5zyGl42jA+Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhstBpv7SHslukHyNj9QkZ5CyImPPJnB9Wahbwgi9eIEAGbJMK
+	sQ3WE79WaY+jEcAH8zyMa27irDGVqERz5gnNwHjyMH6KDKsrenNylRRj
+X-Gm-Gg: ATEYQzyHrP7GHu0b6KF6lKqYRX2ycssN47uJfFKNqMcEv2/phJWVq8tmyNaatNOKQzn
+	F6LcfNtZ3h56n4wu176nA8wQwAgXf0c1ZTKxDPB11Ahu7BnuBAcOuO0vdsjnVVOjdBH+g71Ado8
+	1jLa+NmFNQtga/2jT6t0ULeJ9Y3Kd5VtPxTBePKavsxg0uR3mj82tt+BwFD0Nn8T3qLOP6jHeTF
+	0ohBFHkv2y61OgwimFxNECTcGnUf3bsxBIc5NN6u/Yz+aTkXbW2OdXyU+7yz4grddp3bHzVCqlF
+	ofH4cnfK1liumf/OXYWTrf1ZOyKyB3jFrOSdQH6WUW+Y/wXnG1ohFbNLYjzroZsWWqjE0AV6Wmc
+	6aZ3hxoHF/h+Vra8JE8b4cpzzUukNJRa+VdHZplYu7J1bW3+lXmUp/o+UwmKHz44/dVHJT8ixSD
+	11lU5wpKT3bHyO
+X-Received: by 2002:a5d:5f93:0:b0:439:b4dc:1e1e with SMTP id ffacd0b85a97d-43b88a0558cmr1695700f8f.29.1774392592899;
+        Tue, 24 Mar 2026 15:49:52 -0700 (PDT)
+Received: from yepc2 ([141.226.13.86])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b6470393fsm42653742f8f.17.2026.03.24.15.49.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Mar 2026 15:49:28 -0700 (PDT)
-Date: Tue, 24 Mar 2026 15:49:27 -0700
-From: Stanislav Fomichev <stfomichev@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	horms@kernel.org, corbet@lwn.net, skhan@linuxfoundation.org,
-	andrew+netdev@lunn.ch, michael.chan@broadcom.com,
-	pavan.chebbi@broadcom.com, anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com, saeedm@nvidia.com, tariqt@nvidia.com,
-	mbloch@nvidia.com, alexanderduyck@fb.com, kernel-team@meta.com,
-	johannes@sipsolutions.net, sd@queasysnail.net, jianbol@nvidia.com,
-	dtatulea@nvidia.com, mohsin.bashr@gmail.com,
-	jacob.e.keller@intel.com, willemb@google.com, skhawaja@google.com,
-	bestswngs@gmail.com, aleksandr.loktionov@intel.com, kees@kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org, linux-rdma@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	leon@kernel.org
-Subject: Re: [PATCH net-next v3 03/13] net: introduce ndo_set_rx_mode_async
- and dev_rx_mode_work
-Message-ID: <acMU93XN02PHmAGi@mini-arch>
-Mail-Followup-To: Stanislav Fomichev <stfomichev@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	horms@kernel.org, corbet@lwn.net, skhan@linuxfoundation.org,
-	andrew+netdev@lunn.ch, michael.chan@broadcom.com,
-	pavan.chebbi@broadcom.com, anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com, saeedm@nvidia.com, tariqt@nvidia.com,
-	mbloch@nvidia.com, alexanderduyck@fb.com, kernel-team@meta.com,
-	johannes@sipsolutions.net, sd@queasysnail.net, jianbol@nvidia.com,
-	dtatulea@nvidia.com, mohsin.bashr@gmail.com,
-	jacob.e.keller@intel.com, willemb@google.com, skhawaja@google.com,
-	bestswngs@gmail.com, aleksandr.loktionov@intel.com, kees@kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org, linux-rdma@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	leon@kernel.org
-References: <20260320012501.2033548-1-sdf@fomichev.me>
- <20260320012501.2033548-4-sdf@fomichev.me>
- <20260323162003.0d155055@kernel.org>
- <acLUMN1BYkIVyOk8@mini-arch>
- <20260324142114.216fcb01@kernel.org>
+        Tue, 24 Mar 2026 15:49:52 -0700 (PDT)
+From: Yochai Eisenrich <echelonh@gmail.com>
+To: "David S . Miller" <davem@davemloft.net>
+Cc: Yochai Eisenrich <echelonh@gmail.com>,
+	David Ahern <dsahern@kernel.org>,
+	security@kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH] net: ipv6: ndisc: fix ndisc_ra_useropt to initialize nduseropt_padX fields to zero to prevent an info-leak
+Date: Wed, 25 Mar 2026 00:49:25 +0200
+Message-ID: <20260324224925.2437775-1-echelonh@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260324142114.216fcb01@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On 03/24, Jakub Kicinski wrote:
-> On Tue, 24 Mar 2026 11:13:04 -0700 Stanislav Fomichev wrote:
-> > > > +		netif_addr_lock_bh(dev);
-> > > > +
-> > > > +		err = __hw_addr_list_snapshot(&uc_snap, &dev->uc,
-> > > > +					      dev->addr_len);
-> > > > +		if (!err)
-> > > > +			err = __hw_addr_list_snapshot(&uc_ref, &dev->uc,
-> > > > +						      dev->addr_len);
-> > > > +		if (!err)
-> > > > +			err = __hw_addr_list_snapshot(&mc_snap, &dev->mc,
-> > > > +						      dev->addr_len);
-> > > > +		if (!err)
-> > > > +			err = __hw_addr_list_snapshot(&mc_ref, &dev->mc,
-> > > > +						      dev->addr_len);  
-> > > 
-> > > This doesn't get slow with a few thousands of addresses?  
-> > 
-> > I can add kunit benchmark and attach the output? Although not sure where
-> > to go from that. The alternative to this is allocating an array of entries.
-> > I started with that initially but __hw_addr_sync_dev wants to kfree the
-> > individual entries and I decided not to have a separate helpers to
-> > manage the snapshots.
-> 
-> Let's see what the benchmark says. Hopefully it's fast enough and 
-> we don't have to worry. Is keeping these lists around between the
-> invocations of the work tricky?
+When processing Router Advertisements with user options the kernel
+builds an RTM_NEWNDUSEROPT netlink message. The nduseroptmsg struct
+has three padding fields that are never zeroed and can leak kernel data
 
-Yeah, that sounds doable, don't think it's too tricky, just extra
-list_head on net_device + change the alloc/free to use it.
-And then we keep this cache around until unregister? I will try to add it as
-a separate patch to cache these entries to keep it simple for review..
- 
-> > > Can we give the work a reference on the netdev (at init time) and
-> > > cancel + release it here instead of flushing / waiting?  
-> > 
-> > Not sure why cancel+release, maybe you're thinking about the unregister
-> > path? This is rtnl_unlock -> netdev_run_todo -> __rtnl_unlock + some
-> > extras.
-> > 
-> > And the flush is here to plumb the addresses to the real devices
-> > before we return to the callers. Mostly because of the following
-> > things we have in the tests:
-> > 
-> > # TEST: team cleanup mode lacp                                        [FAIL]
-> > #       macvlan unicast address not found on a slave
-> > 
-> > Can you explain a bit more on the suggestion?
-> 
-> Oh, I thought it's here for unregister! Feels like it'd be cleaner to
-> add the flush in dev_*c_add() and friends? How hard would it be to
-> identify the callers in atomic context?
+The fix is simple, just zeroes the padding fields.
 
-Not sure we can do it in dev_xc_add because it runs under rtnl :-(
-I currently do flush in netdev_run_todo because that's the place that
-doesn't hold rtnl. Otherwise flush will get stuck because the work
-handler grabs it...
+Fixes: 31910575a9de ("[IPv6]: Export userland ND options through netlink
+    (RDNSS support)")
+Signed-off-by: Yochai Eisenrich <echelonh@gmail.com>
+
+---
+ net/ipv6/ndisc.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
+index f6a5d8c73af9..186e60c79214 100644
+--- a/net/ipv6/ndisc.c
++++ b/net/ipv6/ndisc.c
+@@ -1209,6 +1209,9 @@ static void ndisc_ra_useropt(struct sk_buff *ra, struct nd_opt_hdr *opt)
+ 	ndmsg->nduseropt_icmp_type = icmp6h->icmp6_type;
+ 	ndmsg->nduseropt_icmp_code = icmp6h->icmp6_code;
+ 	ndmsg->nduseropt_opts_len = opt->nd_opt_len << 3;
++	ndmsg->nduseropt_pad1 = 0;
++	ndmsg->nduseropt_pad2 = 0;
++	ndmsg->nduseropt_pad3 = 0;
+
+ 	memcpy(ndmsg + 1, opt, opt->nd_opt_len << 3);
+
+--
+2.53.0
