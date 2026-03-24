@@ -1,80 +1,45 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB7E355F36
-	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 20:41:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE2878F26
+	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 20:51:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774384892; cv=none; b=Jgns+MQCKBgyTShoz/PIwh534dUbN011TyGtQe7OdYtPuts/JG6dG4t+jdVYDoQolwpSZ8hj2TN07jledfT0zyA/3YwPkzoAsOsgfg7gU4raH8ukF1dGloj74lDIOXrzkreq9k1y4PlqMw/hwIISb982P32csK8YD+cQVbbvH+s=
+	t=1774385475; cv=none; b=gUsAbCb2cIF2Xi3vWSBeWzHVATPMipBTIkl5udbbFn1EX1m/OHD2tLi5tbI9tlKsRja5XlICmqeLr0nNyGd39+FlyGrh+h5et/vzDO0cvRftyBAsVu1jHbbkrI0PORWqm28B4bl6hyeV2x0Ug0ce6R8WuS0gjt8AqR8kcJXbCHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774384892; c=relaxed/simple;
-	bh=JST0wXweMblcvbScw9Mq0yslegnTNej/ZY8bqddZfTc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X79vWR4bWFzGvOBDg/czqySXM3wQPZGU3JQltDHDUVfkWOwO8iKL4PRS5GPIdPWRDThYNKojb9tcwMXUgbt2XjL1ZyiYmm6ndd5q1i61oWPilBMUCFhm27S1/oD24JfXMDHqQ4orHroxFR7jM5mC2EtpHbapelufkQNaiH2Rf0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Kwp2MvlY; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1774385475; c=relaxed/simple;
+	bh=WOSadgevteDVxebTf1HjXpcBVMI22QfDIhpkZm6/+ow=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b8lPQty2mxCVozXeJLEx4x8jaBSL7/MOw+IixpAJ/Nm3M5P/ol21tb1NYMD5oCvZwyeZ4judp/wRRuRGHCoOEyvrQufO6FXORzHWuj+2cY1zF/DO0VKU/cE1AGofzIOTAWicMSX4lDA8T381IlPsx5Ab4Mj5EjaUbtOb4dYri0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ICwJt85A; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Kwp2MvlY"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-48334ee0aeaso15630145e9.1
-        for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 13:41:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774384890; x=1774989690; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BUoxypdfQgAMyIah8TMnPeb4KQBvT5cjozWxWchgdfs=;
-        b=Kwp2MvlYjBPeV7omWDQ3PzTV/oqb/w2aKiE9f927+sUFTFntXw/muApuK5UunGe+8d
-         svIjFyc3vraclWTTILt/eAjU6LENkAARTzMGw5K0k88mK1AJ0rqYvJsd6/Qi9GsDWshH
-         JEwrH2Xbw/+/1w5HFupyUyZeUn7bSh5RfdgmMmxvxucnOASIAwA1kL9zziG1J1XH5lxz
-         /5a1+YAtGrpyMOPfUwVpxCrBUTAhGivaPaIoAlZrY33F+BD1Pq7WQk/ereh94LXXq40e
-         WYAEN2P0SNSE05H7jCtQ5aQwiEI7j2MYirZsRaqQhssQ5GrDq2YFlaL+K5qcEVfzGc4m
-         3VTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774384890; x=1774989690;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=BUoxypdfQgAMyIah8TMnPeb4KQBvT5cjozWxWchgdfs=;
-        b=PXoGyHgCimauztgp6lPPWxDsevxnSI2MwGg01tzHeiMI8n9dhKXVeguyM3Z4T33zYI
-         tGemGzkhVl6qZnmuZnrrFVWvbleXB1WYadLUTYUDmR7+YdxwgtDxXsguMz+0TGjIgRos
-         /lS1g41Y3uacZBu7cqWd6K1gHuXsNxPXYd83vjNjDJMXlfW+uAiCGKNekZ1YdiVCQUZT
-         YprPehf8SvwuxwY1gKvnCY5rNFPeRK8XssHOh0fDtJQc/SwIFNJxpG+6i9n6hSbwSODA
-         dLMJOQBDaNJEuAgHwYcg1p4mzdAzyNwJ7W7AcPBu1qQzJYpJ+RzisxS4aJuwDdMUAeOj
-         eOOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWVfAqwz3hsV8TZw63nU1mNviHbv0ux+AjmeJe8KzSu5oiMQg2zbr+vVJUnb8TVRvjcjBYlFoU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHPe52Q+Upc6RvlPqoRDmxqOauevufK0sU5cxLRDsskWyM2pyy
-	/fsgv1V7gO74EUBpajkEZq6Xx2dXf02FasnFtdzo6waXk6WVUuJNH2IU
-X-Gm-Gg: ATEYQzxah6yBvmtZ+h+inaLkStIZJvLfArRu/OLg745oCHeY75oJCe7Kn9iDFNS1qK4
-	XiWXHLiJ+RYvu02bCXAwUjVTllLQYEI9C6rTNRk3W7Ezmpg6L63zZxLDlIuEruowcfPLQE2ue6V
-	5KaVg4XPsf+b8l6cZvszX7yQDBK7QIsRrHq+9UQ8N+J65/2edNuchSU6GEsQ5axD7/lmFA9WkAT
-	q9MwUBdNLwC+5rOwtbAKngNJGc2I42BOJPB2mxsMOjg5TXRFInZw/qnAm3aAWsRDMdTwFm6Idnj
-	bFPFcegv0l44Ht3eg+SG6XxApDjj68rvDVcclv/oUxAU2Mu7DWGGRydBuX6vuR4l/Ie2Oaa3smb
-	ikOSPcoN4xd0UcQGMHY3liWaZh5VYJWk4DZzi95sAlZV8U2x/0h/qgbCh0xKwHmcX1U63DKJ5ou
-	l9oylpuvA/1aCHCQSNU3mL
-X-Received: by 2002:a05:600c:a0a:b0:487:288:1198 with SMTP id 5b1f17b1804b1-4871605ce9fmr17884155e9.22.1774384889809;
-        Tue, 24 Mar 2026 13:41:29 -0700 (PDT)
-Received: from azaki-desk1.. ([41.234.201.118])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48716658352sm3686825e9.13.2026.03.24.13.41.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Mar 2026 13:41:29 -0700 (PDT)
-From: Ahmed Zaki <anzaki@gmail.com>
-To: netfilter-devel@vger.kernel.org,
-	andrew@lunn.ch,
-	olteanv@gmail.com,
-	pablo@netfilter.org,
-	fw@strlen.de,
-	kuba@kernel.org,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ICwJt85A"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 090D3C19424;
+	Tue, 24 Mar 2026 20:51:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774385475;
+	bh=WOSadgevteDVxebTf1HjXpcBVMI22QfDIhpkZm6/+ow=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ICwJt85AqchDDW9iKBXns1YHYZKuinL9YD5tSbcBvkZvzgtyU7eV5mvR/KOFr+3ok
+	 yKePMAecFxpd0oU43bFiLNp+ocsuHW1+nbrkSmz5oc8al/y775EI0oo8Ls1SNdpk+Z
+	 XBlqaDyTQJeWFT820tXNWMT/TmcIYcJ05d3fD6DPePSE9OW10WiUnwbK+sa84t6HO0
+	 nr5GiCzUPYEq84tbyz6oCl67ZUFogt9hwAnqvLYhchEzu65Z421319K1goDWHxLW9c
+	 F23ZOUlvNJt9Sw/2ZP4RVzAl/B/A0h5jzRpjXHNwe+mhlgoQxUAHJnGdEAMvLaTP80
+	 1D/fO2TLzRy/g==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
 	pabeni@redhat.com,
-	edumazet@google.com
-Cc: coreteam@netfilter.org,
-	netdev@vger.kernel.org
-Subject: [PATCH nf-next v2 2/2] net: dsa: update net_device stats with HW offloaded flows stats
-Date: Tue, 24 Mar 2026 14:40:16 -0600
-Message-ID: <20260324204016.2089193-3-anzaki@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260324204016.2089193-1-anzaki@gmail.com>
-References: <20260324204016.2089193-1-anzaki@gmail.com>
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Yiming Qian <yimingqian591@gmail.com>,
+	daniel.zahka@gmail.com,
+	willemdebruijn.kernel@gmail.com
+Subject: [PATCH net] net: psp: check for device unregister when creating assoc
+Date: Tue, 24 Mar 2026 13:51:07 -0700
+Message-ID: <20260324205107.318303-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,26 +48,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Set the new net_device flag flow_offload_via_parent to update the
-user net_device TX/RX stats with the HW offloaded traffic.
+psp_assoc_device_get_locked() obtains a psp_dev reference via
+psp_dev_get_for_sock() (which uses psp_dev_tryget() under RCU);
+it then acquires psd->lock and drops the reference. Before
+the lock is taken, psp_dev_unregister() can run to completion:
+take psd->lock, clear out state, unlock, drop the registration
+reference.
 
-Signed-off-by: Ahmed Zaki <anzaki@gmail.com>
+The expectation is that the lock prevents device unregistration,
+but much like with netdevs special care has to be taken when
+"upgrading" a reference to a locked device. Add the missing
+check if device is still alive. psp_dev_is_registered() exists
+already but had no callers, which makes me wonder if I either
+forgot to add this or lost the check during refactoring...
+
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Fixes: 6b46ca260e22 ("net: psp: add socket security association code")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- net/dsa/user.c | 1 +
- 1 file changed, 1 insertion(+)
+CC: daniel.zahka@gmail.com
+CC: willemdebruijn.kernel@gmail.com
+---
+ net/psp/psp_nl.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/dsa/user.c b/net/dsa/user.c
-index c4bd6fe90b45..331bc581bce7 100644
---- a/net/dsa/user.c
-+++ b/net/dsa/user.c
-@@ -2807,6 +2807,7 @@ int dsa_user_create(struct dsa_port *port)
- 
- 	p = netdev_priv(user_dev);
- 	user_dev->pcpu_stat_type = NETDEV_PCPU_STAT_TSTATS;
-+	user_dev->flow_offload_via_parent = true;
- 
- 	ret = gro_cells_init(&p->gcells, user_dev);
- 	if (ret)
+diff --git a/net/psp/psp_nl.c b/net/psp/psp_nl.c
+index 6afd7707ec12..c7c377a7790d 100644
+--- a/net/psp/psp_nl.c
++++ b/net/psp/psp_nl.c
+@@ -320,6 +320,11 @@ int psp_assoc_device_get_locked(const struct genl_split_ops *ops,
+ 	id = info->attrs[PSP_A_ASSOC_DEV_ID];
+ 	if (psd) {
+ 		mutex_lock(&psd->lock);
++		if (!psp_dev_is_registered(psd)) {
++			mutex_unlock(&psd->lock);
++			err = -ENODEV;
++			goto err_psd_put;
++		}
+ 		if (id && psd->id != nla_get_u32(id)) {
+ 			mutex_unlock(&psd->lock);
+ 			NL_SET_ERR_MSG_ATTR(info->extack, id,
 -- 
-2.43.0
+2.53.0
 
