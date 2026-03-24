@@ -1,95 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B231C3BEB;
-	Tue, 24 Mar 2026 00:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE94D3074A1
+	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 00:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774312124; cv=none; b=A/I9jaJ7V1fFtpv+4sOseTm9dT0Vg82Ay0AgTR73sl0o4774rM8xWfZTzl7nsA+YIycXvBsLyUo7H+kEEt1lwqyKc9EhEswQA1PFgpzpLgrqAkKfynfoUe3tmkO0XnyBN4qBW6IGaArHw6NVoyzrrKRxwUNVkZQ7PrWQ6Ej9kAQ=
+	t=1774312219; cv=none; b=KPKprf6fOGmcmXjzykGLz3EruuPB+kAUA+u9BIWFbjv2/cC8Aj6W20lD9vR+Guf+k/soyQDBAjioxKxA50bop9jxXDg9ol9Vke3sOFWKrFsmQltrEwtJjLe7sn9WGbfCamcPjo6sIGZyEy7dJTzMbgUwsiexsjHfCH42RJOGZuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774312124; c=relaxed/simple;
-	bh=9herclzyLSdDJPAvj1pF7VT6VknWU1hHfB//c6M6wX0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Fme/8VzGCR5wasqVpynFZIzfHDL8qrzDSiX98wopfmSjbpI+KM52vlcmY5pVXngZsEp2Nl6jP6dBSY7g21tDEliDbK2ccwxUs3X99KH8aslMTf8W8utw4mfCTv0Y0U6lMB/0AkaxTD4sA3uaPipCKQTaRs0Y19KiyF1MfSIGNSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ql+gcM9T; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774312219; c=relaxed/simple;
+	bh=rJXAUAHKP12XnC8hSCOlmPsbfvYA0AQKStzCw7+L4eE=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=tjiNDo9x0L7u04yh8Jmg66WrbWjP1Z1ULf1Zpfvg2FWfVwCt6oteDgXcW7pHa+B5gq2nGJ+02CZtj3LTmfW2K9MpCyFJJg5Yegf6PjAPXj9++bl+fWAgBci8AvT2BKCialV/Bkc2/2KlAWhxsMsrxfVIEQ4zAumomv7HbU05LvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q5QSsFDb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ql+gcM9T"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B84C4C2BC9E;
-	Tue, 24 Mar 2026 00:28:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q5QSsFDb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E26BC4CEF7;
+	Tue, 24 Mar 2026 00:30:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774312124;
-	bh=9herclzyLSdDJPAvj1pF7VT6VknWU1hHfB//c6M6wX0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ql+gcM9TQ7MjumZcWjxzu6dYO5NKwG4kpPAYCu7fmHZR9hMKDCHLcYWIsf9pAphJj
-	 DIjL8fgtJWlfJS/emvVfgnufD+XLcPZygCtxjni6DCmnB3tsxOdbWeQvSGR9w+ODxB
-	 Y+CyThvnfZ2OQfFSWbCBC1KW8MnrlifwGqqXr03rx7AfIJ6CJQ+2SJcNIvRvNFDam2
-	 v0OodSHlORij7iAVfMmS9w+J1IchVXTrLlWUDvIlgAIAbQWKx1VKJE4LmMzGZMieGl
-	 Dp7sHacrvam0w9UZtpQUNxpeGKesiN9Jf7GjxXPMP4UfAJXC+v9xL+FnYCptIMpQQp
-	 wmn3OQXbdJ/zA==
-Date: Mon, 23 Mar 2026 17:28:42 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: Buday Csaba <buday.csaba@prolan.hu>, Frank Li <frank.li@nxp.com>,
- Shenwei Wang <shenwei.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Richard Cochran
- <richardcochran@gmail.com>, Bence =?UTF-8?B?Q3PDs2vDoXM=?=
- <bence98@sch.bme.hu>, Francesco Dolcini <francesco.dolcini@toradex.com>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
- <netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net v2 1/1] net: fec: fix the PTP periodic output sysfs
- interface
-Message-ID: <20260323172842.7a62979d@kernel.org>
-In-Reply-To: <PAXPR04MB8510889775D757361CEAFA39884BA@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <7012fbf90b844083d5fa7d764ed6372fe0288157.1773928309.git.buday.csaba@prolan.hu>
-	<PAXPR04MB8510889775D757361CEAFA39884BA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+	s=k20201202; t=1774312218;
+	bh=rJXAUAHKP12XnC8hSCOlmPsbfvYA0AQKStzCw7+L4eE=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=q5QSsFDb6HUQvAn+i4mYLcw+qn7f7rUbV9vHL3PMPPxD+CV1kcrBUEhe2zw6RnQmu
+	 gLa3uSTlI4JDFKei+sAIuAAk72cX79UVelBEju14JdxlzOJBKmSJpLXBfuKizMf5Ny
+	 Izi8XT9LdYkFEyc5Ro/dk8V6F8lrMFfrEb0xEtekeoFVI4Z93ZTaq0/SAoB9XtxDIV
+	 7ranY4cPDgDMjCflme/ppNYtu8pSW4CqAObFtLxsecisLqs9/+8Buua9iUNyTx/aIK
+	 0pF9RLnbnffTy1kfBazDLKP+e4r8A+hMIJycRhF0HTEU9lPIdtRSCVRb5H8nMciIun
+	 UqJo255g/P6HQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9E6C3808200;
+	Tue, 24 Mar 2026 00:30:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] net: fix fanout UAF in packet_release() via NETDEV_UP
+ race
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177431220654.388684.858242122188558644.git-patchwork-notify@kernel.org>
+Date: Tue, 24 Mar 2026 00:30:06 +0000
+References: <20260319200610.25101-1-echelonh@gmail.com>
+In-Reply-To: <20260319200610.25101-1-echelonh@gmail.com>
+To: Yochai E <echelonh@gmail.com>
+Cc: willemdebruijn.kernel@gmail.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org
 
-On Mon, 23 Mar 2026 12:54:46 +0000 Wei Fang wrote:
-> > When the PPS channel configuration was implemented, the number of
-> > supported periodic outputs (`n_per_out`) was left at 1.
-> > 
-> > This prohibits using channels 1..3 from the sysfs interface, since
-> > period_store() rejects channel numbers greater than `n_per_out`.
-> > 
-> > Fix by increasing `n_per_out` to the number of channels supported
-> > by the hardware.
-> > 
-> > Fixes: 566c2d83887f ("net: fec: make PPS channel configurable")
-> > Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
-> > ---
-> >  drivers/net/ethernet/freescale/fec_ptp.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/net/ethernet/freescale/fec_ptp.c
-> > b/drivers/net/ethernet/freescale/fec_ptp.c
-> > index 4b7bad9a485d..1a7aa280e7f6 100644
-> > --- a/drivers/net/ethernet/freescale/fec_ptp.c
-> > +++ b/drivers/net/ethernet/freescale/fec_ptp.c
-> > @@ -756,7 +756,7 @@ void fec_ptp_init(struct platform_device *pdev, int
-> > irq_idx)
-> >  	fep->ptp_caps.max_adj = 250000000;
-> >  	fep->ptp_caps.n_alarm = 0;
-> >  	fep->ptp_caps.n_ext_ts = 0;
-> > -	fep->ptp_caps.n_per_out = 1;
-> > +	fep->ptp_caps.n_per_out = 4;
-> >  	fep->ptp_caps.n_pins = 0;
-> >  	fep->ptp_caps.pps = 1;
-> >  	fep->ptp_caps.adjfine = fec_ptp_adjfine;
-> > 
-> Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Hello:
 
-I don't understand why you think that we should be exposing 4 channels
-to the user when they can only use one. And have the user guess which
-one should be programmed. Please explain (and Buday will have to update
-the commit message), to me v1 looked like a much better fix.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Thu, 19 Mar 2026 22:06:10 +0200 you wrote:
+> `packet_release()` has a race window where `NETDEV_UP` can re-register a
+> socket into a fanout group's `arr[]` array. The re-registration is not
+> cleaned up by `fanout_release()`, leaving a dangling pointer in the fanout
+> array.
+> `packet_release()` does NOT zero `po->num` in its `bind_lock` section.
+> After releasing `bind_lock`, `po->num` is still non-zero and `po->ifindex`
+> still matches the bound device. A concurrent `packet_notifier(NETDEV_UP)`
+> that already found the socket in `sklist` can re-register the hook.
+> For fanout sockets, this re-registration calls `__fanout_link(sk, po)`
+> which adds the socket back into `f->arr[]` and increments `f->num_members`,
+> but does NOT increment `f->sk_ref`.
+> 
+> [...]
+
+Here is the summary with links:
+  - net: fix fanout UAF in packet_release() via NETDEV_UP race
+    https://git.kernel.org/netdev/net/c/42156f93d123
+
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
