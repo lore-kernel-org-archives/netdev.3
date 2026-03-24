@@ -1,148 +1,91 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C703537FE
-	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 20:40:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774384809; cv=pass; b=Z8yEggfNh6/5hHL0jSfsT4u/LtdgSsAIyp2zuV+oiG7zJj2HFjc/HHVDj54tIr0tNbv/zKtUzTVfJCSFpsg8BsDOnb79pTiWjmDFF1qTHtDpmQg9IL2qrA90LMl2NCi8fofzC7af6QQoxpBwRa/hbaRA7+pLtltOOYTh/luX1cs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774384809; c=relaxed/simple;
-	bh=I527tD2LADZrsZFQR21Bz3y0caQ83wQGhRDjZgOdcRI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=k7N845Fydob3cgSxrVjArXnslTkE+RevKfkXoNyc4c4bm9C/ZOHNQRqzqMu0YtEGtb86TyU4ZqufmWg27xntyDaZtw8SbMf9kPJIxrQdpkWxTvVxOJvf51lV2TY/GjfS0Dc7Enrc2LTTkLsScOGe6q/KHTaJGKP3mVvlUVgV6h8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Kf63acWi; arc=pass smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFACF33B6DB;
+	Tue, 24 Mar 2026 20:40:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774384829; cv=none; b=qAI8GsZCGj5NSm/2i7MwKp5dYSQPNYCMBnr/Vz3/T1fjK5j9CS6eonbC6zQSdasbK/ETeDqxnk3KVEiGuGK8hy8FINX+6BdwMsQpyF+dIb5BAY84YuNuqr0G2uauLjaNmSRwHAX6brDDfTBArdlwBf9Cn/Yl2IjQ+Zqi+Vu1DVs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774384829; c=relaxed/simple;
+	bh=AXVmjvVZyew8e8l10D950wEi1i5nQpWip8A+64k/G9Q=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Uo4OG2LdTKfRqT5A7KNyjjGpoNJ6NwpyT081Z4mJ5zwS2uZID6Bww6IGH8o5RC5tFbE5UjORETP22US7UHBAI3S9e9I6xKvC6EedbQFMIGNLBfSsbObe75lBGXhc/ZVPaQajlFc3VXW8JDuIDQV88BzYxZQ3hWmw24VkX4j9ncs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=stRmgJE5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Kf63acWi"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-50b392f1846so69892721cf.3
-        for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 13:40:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774384807; cv=none;
-        d=google.com; s=arc-20240605;
-        b=JNkp1zyWB8il2txDosRmiVevUmChQRNfPHawsSMIQmDp0n39jc6dUMrTXR5U4nE1Fg
-         BiMZDhw8XGuVu6xy3MFDbbw+gdhRXfEQ70UWXwXj6qz77AQ45JXlM3ytBUV5NU0vwOkS
-         +wZJEMHc2oavifQv1tV2FNF5w2s8k2RAiv7gLZODh1MH09UEv5rb5363uZtBrEZpr07H
-         D0IjQeH/laOeb8c4QpfYaD/6QNzBqBPy4OZ28eoL+evyDSq4FkPB3VnYqvGpL0K0n6SE
-         5Rqt53vuv46ZKCV60F8ngBtCL8uiBsCvCyngMIuOVqtoR39rJrMkP8Tq759G+a5/T8Qd
-         cRDA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=TJx6RzVW6fdo6krtMlTd5qSDS7LK2bGBCeZpFa66tzI=;
-        fh=bzHabNCJuTXYdhwPo3Ft++HW0iLEVsMXQ48FLmqSbhk=;
-        b=cAb0J9+YrbhW57OHeeWM7iSf3Jud1nGnfYFYCo3C0HwawFYKpPrryD+1YwqCDov09T
-         xToPJrd5xAVPD22NSOMx6HI9qWlFysznwe4sUIgXaX2k6iIJtuIUVYXvcn6yawTmpUdU
-         fvb+gzLSdRjru8OUhv0h8mqYBOJmqUxAwevVPRIn0k09Z46NiRBC6PYhm+C1L0tMVSR8
-         ioEMRHIe9w98eN1vbJ1noHbEFQx8nLJICza2ZFw2uaDADd1dyABF/FPv+1BPhel0YhD9
-         rhxBv8Zb4J7E6d1KcpqGJspf3wWv9BJMPQTLMy55Xg78L1m3uOZjWaVOZ4jFIGAJhT2C
-         qO1Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774384807; x=1774989607; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TJx6RzVW6fdo6krtMlTd5qSDS7LK2bGBCeZpFa66tzI=;
-        b=Kf63acWiztAOM+EJGdUdjdW7RKI/hyVlqouVSXzQob5jvT1io9JQPCxEJed+ee59VC
-         M472Ke8I2IWg7iK6zuEooZ7QHeAyK0u+KVtQa0MFkbUAzU/z0YOVtGioyRx4tGFYjNmJ
-         ua2u1VotB3rzxWSixLGOA+VeHK032cAIAiwOOYMz57g+f2jWwjBd3IiqSD6DoFG88hbt
-         CQM5rFa4w89i/E4RKGcDR2LIfBZ+z2e+aZ+4ZooRPGws/3+TZuXo4pMTep3YuLpd1cps
-         GfHlY2vJvFYICUYepOWnj5Yqfb4sDLOL1q4GNutDFLUbJUphBfjW08cRcMsxrB8iY+Fe
-         pySA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774384807; x=1774989607;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=TJx6RzVW6fdo6krtMlTd5qSDS7LK2bGBCeZpFa66tzI=;
-        b=VN1o4Djf6WU/4OOv7QykCjqqVnPgSJMb4WsoP8/1SdsPfHQXhmPFMyVrY344yldIgZ
-         vBIkOCNYJ6nbOq6opbrsNyMwM8lbKY1Tw9QFDVbdrafmSlmalVVPcc6LJRSEr6jFrdBN
-         aRZWVYJAOaOeEq5fZSr80ETcAy6uL9y3AOxdhgg9Gx0k6HTr8sjRKg0XcjYmvAnjLK11
-         t97K3JJxmLp1CP9VH1duZK6emakr2ZFWG6/Cv8zNfE6HZ4DC9r52NSphb69Zz2tyVuxv
-         1xkrZQcpm+37Sebo/3AObqswO2sRVAOryrxTV8Vb8l/yV9K+gGt9PuB1ASKzYsn9dIlL
-         g10Q==
-X-Gm-Message-State: AOJu0Yx80JIZNePNfrRJCegn3vBg4x065E3z+7jnExbBQwXzU0l9vTCm
-	taZWsAQocJbsdnBAk/bTM1WyYWAgu67An4yriDuDcStY6TVeK/F8EGw0VmwiQID4cx+QmZ1TJGK
-	OuB0G8129LgICIb7y4Kh5rj9ovilnotc/QVWmmjt+w14f475gNnwCeeyr
-X-Gm-Gg: ATEYQzyYIzkT8oDRWX/cxiMNwK4n26QEsYvHGDIMKToUHJylvo/o71TVOS7NuMls0nQ
-	GdIxcKefBeinmbhfBpqD4s4pXTGsU+X6mFrX62/HK2qTZgKXNLH2unjqDh8ohbFQgPerqPt+ZOC
-	r0Umdw/mnvEc6yxqvoFiQXk3YC+vXB/YhPns1dKfl/smyOnx4raaL8fDeyglM42kLF3hjIQnXPs
-	zfZ25i5irp9P3dA1FMEwg5ult3sDcnvJbdcB8uTcAvGp/6EoB8Lwbe1Mdi4Qz2iRi7XU9oak2Ci
-	AhOrC56CjwzHKR7qi7pEUmEXGoQDIVjqtWUQfw==
-X-Received: by 2002:a05:622a:684a:10b0:50b:46ba:d271 with SMTP id
- d75a77b69052e-50b80c87771mr14384801cf.12.1774384806395; Tue, 24 Mar 2026
- 13:40:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="stRmgJE5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DBAEC2BCB3;
+	Tue, 24 Mar 2026 20:40:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774384828;
+	bh=AXVmjvVZyew8e8l10D950wEi1i5nQpWip8A+64k/G9Q=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=stRmgJE5SoE23iYwr7bw4Q0H9NfMhPXhIhobUv70NrDm8ErnF96ZjFh2BDJ5/3YD2
+	 0hRHUAPuMsYAaBFzCrjD8mbyNgDc6dtdC8c3SjRoy5ovVeahOaMjH0ln71CERQ86zl
+	 QGoi9WNx+f18drwn/IwXORIe3vW5+ulqfJyVUMCqT5O6+J0asaYlrCApvWyhG2k2jL
+	 XW8Ilc47bGtmki6gMZj8HFtkH/elWUDaQCign5R8Bqnk8NgnKNwCUyaCXqeAHPfKbV
+	 nBTrDRhp+IGoOEph7m9gLM/4dkqXRpPudX/ZjjPzUATHxakVP5dNe1kf4DpE+7msl1
+	 k2g2AaTxxQmvw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CEA03808203;
+	Tue, 24 Mar 2026 20:40:17 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260324155521.525292-1-idosch@nvidia.com> <20260324155521.525292-4-idosch@nvidia.com>
-In-Reply-To: <20260324155521.525292-4-idosch@nvidia.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 24 Mar 2026 13:39:55 -0700
-X-Gm-Features: AaiRm52V_lCD9tMLxBR3akjJM1MGGiOV1vmYzMv4yespAM1FS1RAWqwd_1tnWuk
-Message-ID: <CANn89iJ9hD3vBiViEz886sVwuqQVbaocnE0UJHZMhchFHKiM-w@mail.gmail.com>
-Subject: Re: [PATCH net-next 3/3] vrf: Remove unnecessary synchronize_rcu() invocations
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
-	pabeni@redhat.com, dsahern@kernel.org, andrew+netdev@lunn.ch, 
-	petrm@nvidia.com, lirongqing@baidu.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH bpf-next v6 0/2] bpf: Add multi-level pointer parameter
+ support for trampolines
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177438481628.1297770.15710276152087682651.git-patchwork-notify@kernel.org>
+Date: Tue, 24 Mar 2026 20:40:16 +0000
+References: <20260314082127.7939-1-slava.imameev@crowdstrike.com>
+In-Reply-To: <20260314082127.7939-1-slava.imameev@crowdstrike.com>
+To: Slava Imameev <slava.imameev@crowdstrike.com>
+Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+ martin.lau@linux.dev, eddyz87@gmail.com, song@kernel.org,
+ yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
+ sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ shuah@kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-open-source@crowdstrike.com
 
-On Tue, Mar 24, 2026 at 8:56=E2=80=AFAM Ido Schimmel <idosch@nvidia.com> wr=
-ote:
->
-> vrf_rtable_release() and vrf_rt6_release() are called as part of the VRF
-> device's ndo_uninit() callback. As such, an RCU grace period passes
-> between the removal of the VRF slaves and the closing of the VRF device
-> until these functions are invoked.
->
-> Therefore, it should not be possible for any concurrent RCU readers to
-> try and acquire a reference on the dst entry while we are potentially
-> releasing the last reference via dst_release().
->
-> Given the above, the synchronize_rcu() invocations in these functions
-> seem unnecessary and only add unnecessary delay when deleting VRF
-> devices. Remove them.
->
-> Reviewed-by: Petr Machata <petrm@nvidia.com>
-> Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-> ---
->  drivers/net/vrf.c | 2 --
->  1 file changed, 2 deletions(-)
->
-> diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
-> index bfc9ea91ac20..75edb8eba87f 100644
-> --- a/drivers/net/vrf.c
-> +++ b/drivers/net/vrf.c
-> @@ -753,7 +753,6 @@ static void vrf_rt6_release(struct net_device *dev, s=
-truct net_vrf *vrf)
->         struct rt6_info *rt6 =3D rtnl_dereference(vrf->rt6);
->
->         RCU_INIT_POINTER(vrf->rt6, NULL);
+Hello:
 
-We could argue that the vrf->rt6 clearing is not needed,
-or should be done before the RCU grace period mentioned in the
-changelog started ?
+This series was applied to bpf/bpf-next.git (master)
+by Alexei Starovoitov <ast@kernel.org>:
 
-> -       synchronize_rcu();
->
->         if (rt6) {
->                 dst_dev_put(&rt6->dst);
-> @@ -992,7 +991,6 @@ static void vrf_rtable_release(struct net_device *dev=
-, struct net_vrf *vrf)
->         struct rtable *rth =3D rtnl_dereference(vrf->rth);
->
->         RCU_INIT_POINTER(vrf->rth, NULL);
-> -       synchronize_rcu();
->
->         dst_dev_put(&rth->dst);
->         dst_release(&rth->dst);
-> --
-> 2.53.0
->
+On Sat, 14 Mar 2026 19:21:25 +1100 you wrote:
+> This is v6 of a series adding support for new pointer types for
+> trampoline parameters.
+> 
+> Originally, only support for multi-level pointers was proposed.
+> As suggested during review, it was extended to single-level pointers.
+> During discussion, it was proposed to add support for any single or
+> multi-level pointer type that is not a single-level pointer to a
+> structure, with the condition if (!btf_type_is_struct(t)). The safety
+> of this condition is based on BTF data verification performed for
+> modules and programs, and vmlinux BTF being trusted to not contain
+> invalid types, so it is not possible for invalid types, like
+> PTR->DATASEC, PTR->FUNC, PTR->VAR and corresponding multi-level
+> pointers, to reach btf_ctx_access.
+> 
+> [...]
+
+Here is the summary with links:
+  - [bpf-next,v6,1/2] bpf: Support pointer param types via SCALAR_VALUE for trampolines
+    https://git.kernel.org/bpf/bpf-next/c/4145203841ba
+  - [bpf-next,v6,2/2] selftests/bpf: Add trampolines single and multi-level pointer params test coverage
+    https://git.kernel.org/bpf/bpf-next/c/e8571de53445
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
