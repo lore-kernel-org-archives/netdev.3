@@ -1,44 +1,62 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1C5345CB0
-	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 15:52:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 761F537F733;
+	Tue, 24 Mar 2026 15:52:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774367543; cv=none; b=mocKubMK/nlMozN8Nin1snw536ZZpVwGIl9lMI3aMaxaq69lGoS4gd7XyUm/U6sg4C4S25JlSRUKt9Lrrw9ES6E2qtY1irgB1XH71Ov84Hfk8Df4sY6GUzSXD3xbGo/2ZyZu8QI5WuN0IB6hijLO9UVJC/cgWXE9VdCwqeAg8PU=
+	t=1774367546; cv=none; b=Wp1/VoCAORFveY7MN5ks2VteAtgbCPtRRJnP9rBpkxY5QgNcRuURz/ywWb7DkazmlYo4vkDibpN+GbEt4mccPAGVFfS42ah8nn26Egq3KB06Ug42wzYoM7xnCiD7h1jAMpK6twlvvqSv+bmiKtFVW0QobZjdqjBgzc7E4bxW5nQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774367543; c=relaxed/simple;
-	bh=R8JWmMJtySLjZ3s4NOyy29qtw+4NgpQ8fBMz6ekmQnA=;
+	s=arc-20240116; t=1774367546; c=relaxed/simple;
+	bh=HyEhqdBvfa3r9tYRrYSgodtwHMxVIZ/6Kc/3pc0VDK0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E1C7UyHTevDt3QhTCM1QFb1TFQ4Y/FJYLBD6PBB6wt9cG9iPFu2J6jMTjFIk7hAbeUop39v8b2cm1OUI/8DfkV4bc3uUpiDYcCsz9EWsKQN57WvD9BJV70a5KwbeGfxjVFQFbuLatJ71bxPyho18KJSsJATx82YgIkgjqMr9KmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Aoh/n+Oe; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=C8czaNRNYq8PnkP5LBz1/K4CSQw9ZgBBUXqH8/lyioimSvBkCZ3lJkSTW5ZmG5c+aMwQyD2ZOyHyKmc6McDIRAf1xZ4XXIs+9RoUNJCqsIY+0HY1xuX1sZlWchfxw97dZLJNXqVjSjq1rO3Pe/A84e8ZRLcusvSjmYHEJEpdoLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OdI6f/H9; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Aoh/n+Oe"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=K6AgXLlDJnO7UTHXjUQnGbJVYMZwaMG9Gi599gyL8Lo=; b=Aoh/n+OeRrSMqmlWjUy64MMXce
-	wTsg4D0Ih39hv2ucY2CeZLICJYBWWx2agY12GLifsYGidOsS1JlyaygPpabfa5ZowOY3gAv7yfBQ5
-	f5/vjGo13yabfUMxNrNw8bT4sYUWtqihhZaNjhKb+pq35JKaEv/DUc3PfB30r6gC2UW4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1w543A-00D7nm-M4; Tue, 24 Mar 2026 16:52:12 +0100
-Date: Tue, 24 Mar 2026 16:52:12 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Daniel Wagner <wagner.daniel.t@gmail.com>
-Cc: netdev@vger.kernel.org,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	bcm-kernel-feedback-list@broadcom.com
-Subject: Re: [PATCH net-next] net: phy: bcm84881: add BCM84891/BCM84892
- support
-Message-ID: <47745fde-3b2a-4a57-9d36-746dc02e6959@lunn.ch>
-References: <20260324152503.1522071-2-wagner.daniel.t@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OdI6f/H9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774367545; x=1805903545;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=HyEhqdBvfa3r9tYRrYSgodtwHMxVIZ/6Kc/3pc0VDK0=;
+  b=OdI6f/H9jEZOExpcH8b4S/+/sG/tPTHIABSWoDwNbWXMiT5Rh/0v6X6Y
+   LnQOc3zA0sRIs0rJpVq87QRr4C4J4aFAmuqkyVreEvUKtVFBbnaxgAXMb
+   bMU4Z2BpBunhLm3W0YCl6FMoZ5n2MdoQeB70Y1uXTCFAsKxKyD86AYqAO
+   8G6zeJ2Tp+IfksZprMNmxNLCLOLYSldVPCkHDDM+adATcNzJp6NNGfmBB
+   41Z4ClekuH/BKcumdW+X55ITawvi1BNASD5iwZobPWKNGPOPWU4YJsXPK
+   v2+PsnZnkAPlNoyc0WwNG3tX+qOip+s0kY0nv0RKnNHgGdxF3XMMahqVS
+   w==;
+X-CSE-ConnectionGUID: LtxnCQX+TgWaPlmjTKljQQ==
+X-CSE-MsgGUID: ULvY6SqTSIWJYuNFyctQmg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="77989926"
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
+   d="scan'208";a="77989926"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 08:52:24 -0700
+X-CSE-ConnectionGUID: ktOYh7fOQeW8ut6uCDpn3g==
+X-CSE-MsgGUID: 4HzScUrOR0qbSB6nEheW1A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
+   d="scan'208";a="223462626"
+Received: from igk-lkp-server01.igk.intel.com (HELO 9958d990ccf2) ([10.211.93.152])
+  by orviesa006.jf.intel.com with ESMTP; 24 Mar 2026 08:52:22 -0700
+Received: from kbuild by 9958d990ccf2 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w543H-000000006vF-1GXR;
+	Tue, 24 Mar 2026 15:52:19 +0000
+Date: Tue, 24 Mar 2026 16:51:45 +0100
+From: kernel test robot <lkp@intel.com>
+To: Artem Lytkin <iprintercanon@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, fujita.tomonori@gmail.com,
+	andrew@lunn.ch, hkallweit1@gmail.com, tmgross@umich.edu,
+	ojeda@kernel.org, dakr@kernel.org
+Subject: Re: [PATCH 4/4] rust: phy: add interrupt support
+Message-ID: <202603241610.omlicT8x-lkp@intel.com>
+References: <20260323201925.8405-4-iprintercanon@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,69 +65,44 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260324152503.1522071-2-wagner.daniel.t@gmail.com>
+In-Reply-To: <20260323201925.8405-4-iprintercanon@gmail.com>
 
-> +static bool bcm84881_is_bcm8489x(struct phy_device *phydev)
-> +{
-> +	/* For C45 PHYs, phydev->phy_id is 0; match via the driver entry's
-> +	 * declared ID, which is what phy_bus_match() used to bind us.
-> +	 */
-> +	u32 id = phydev->drv->phy_id;
-> +
-> +	return (id & 0xfffffff0) == 0x35905080 ||
-> +	       (id & 0xfffffff0) == 0x359050a0;
+Hi Artem,
 
-phy_id_compare_model(). 
+kernel test robot noticed the following build warnings:
 
-> +/* BCM8489x speed LED control.
-> + * Dev1:a83b bit 1 (0x0002) = green, bit 4 (0x0010) = amber.
-> + * Dev1:a82f = 0x0020 gates amber on; green ignores the gate.
-> + * Writes are best-effort (LED is cosmetic; this callback is void).
-> + */
-> +static void bcm84881_link_change_notify(struct phy_device *phydev)
-> +{
-> +	if (phydev->link) {
-> +		/* 10G = green, else amber; matches vendor firmware */
-> +		u16 color = (phydev->speed == SPEED_10000) ? 0x0002 : 0x0010;
-> +
-> +		phy_write_mmd(phydev, MDIO_MMD_PMAPMD, BCM8489X_LED_GATE, 0x0020);
-> +		phy_modify_mmd(phydev, MDIO_MMD_PMAPMD, BCM8489X_LED_COLOR,
-> +			       0x0012, color);
-> +	} else {
-> +		phy_clear_bits_mmd(phydev, MDIO_MMD_PMAPMD,
-> +				   BCM8489X_LED_COLOR, 0x0012);
-> +	}
-> +}
+[auto build test WARNING on rust/rust-next]
+[also build test WARNING on linus/master v7.0-rc5 next-20260323]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-What are the capabilities of the LEDs?
+url:    https://github.com/intel-lab-lkp/linux/commits/Artem-Lytkin/rust-phy-add-paged-register-access-and-bit-manipulation-helpers/20260324-155532
+base:   https://github.com/Rust-for-Linux/linux rust-next
+patch link:    https://lore.kernel.org/r/20260323201925.8405-4-iprintercanon%40gmail.com
+patch subject: [PATCH 4/4] rust: phy: add interrupt support
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260324/202603241610.omlicT8x-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260324/202603241610.omlicT8x-lkp@intel.com/reproduce)
 
-This is going to cause problems in the future if somebody implements
-proper control of the LEDs via /sys/class/leds and the netdev trigger.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603241610.omlicT8x-lkp@intel.com/
 
-> +	{
-> +		.phy_id		= 0x35905081,
-> +		.phy_id_mask	= 0xfffffff0,
+All warnings (new ones prefixed by >>):
 
-PHY_ID_MATCH_MODEL()
+>> warning: unsafe function's docs are missing a `# Safety` section
+   --> rust/kernel/net/phy.rs:564:5
+   |
+   564 |     unsafe extern "C" fn config_aneg_callback(phydev: *mut bindings::phy_device) -> c_int {
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_safety_doc
+   = note: `-W clippy::missing-safety-doc` implied by `-W clippy::all`
+   = help: to override `-W clippy::all` add `#[allow(clippy::missing_safety_doc)]`
 
-> +		.name		= "Broadcom BCM84891",
-> +		.inband_caps	= bcm84881_inband_caps,
-> +		.config_init	= bcm84881_config_init,
-> +		.probe		= bcm84881_probe,
-> +		.get_features	= bcm84881_get_features,
-> +		.config_aneg	= bcm84881_config_aneg,
-> +		.aneg_done	= bcm84881_aneg_done,
-> +		.read_status	= bcm84881_read_status,
-> +		.link_change_notify = bcm84881_link_change_notify,
-> +	},
-> +	{
-> +		.phy_id		= 0x359050a1,
-> +		.phy_id_mask	= 0xfffffff0,
-
-PHY_ID_MATCH_MODEL()
-
-
-    Andrew
-
----
-pw-bot: cr
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
