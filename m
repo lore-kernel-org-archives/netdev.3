@@ -1,103 +1,121 @@
-Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C783F42AA6
-	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 05:27:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774330079; cv=pass; b=ID1r8P2P0zZfzaSHu2OE6fTfXtEVutFZBP/PF3JXZ/bU1m3prr/YnXwJnb+iCt6WA1M8FYRV/I9HfLF1pgmcBGKJrxItw/gUCt+isAhIIlhJUAOvSkpG0bWRvxzJLiJ4ZnFdNCMMzJmtWuLfmAvBPP0kLmzyyyFZj2/cl1vD6lA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774330079; c=relaxed/simple;
-	bh=RNjbcd2eV8/Fk8qF+ylPyEnsEtnpckM6nrd+K19etO0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mpB1bUl3Z/S6E0aAPOtPTuxxg+nUyDUIelNW05YfnjSOx0nGb7QojwfHJj/n2q2VPZxZu2KhxpMS1m3qGSq0UsimHjSoapA4KH+5yALNQDnqZ+snbLSGL+bgnbCbaCrY1P5YBBgyYHBwkGNdpdDfMl6fX0rFUwB6JXpxLJBPy6w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oDz0jr45; arc=pass smtp.client-ip=74.125.82.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C271A6832
+	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 05:30:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774330203; cv=none; b=Scfc39wa+oOEn+/fNgykNslcAZtvHE197t0OWmraURSnphZPjDq6XSjOdqQmMUdhJGlsZXySFtv/sF9D4km9uEPlw38Hk4OgMLq6nW0WWAOjb/WpO2l3YZkZEkLjTLUHQG5XDnpNaxZ58LeTXytQs7MU4XudpuXqq2owgsQDqSk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774330203; c=relaxed/simple;
+	bh=xNJI8BrDJcjv7B3CyIr/xSgaScE/My8YWxbTHX0hgl4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Hj2o7hDS/Oa72YqT2exBurgtA5T/puqrvBA4dASjUd+vHf1tUFoAwTWqTdhuXCYac5v1+pZyu0uSb6mic9+9OfR17Az29TN4q+zq5CtvUlgIPg8MIBPCNddJ+LfpSG2mqvKnTXxMmF/BypR7wHoslztFMx/fptrnYZASxk7bgoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iCSJx2U4; arc=none smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oDz0jr45"
-Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-12a74039dc6so744694c88.0
-        for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 22:27:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774330078; cv=none;
-        d=google.com; s=arc-20240605;
-        b=JB95sc5bUeGb8o7mDGPRxIowMihOUTUEGEO0MLmyPDc9dCUEqWEkq60DuqjgkrP7Gc
-         51CZimtdV6mFfIAw9IIaTBx/8soRB9Q/dDcIl2xAJ58p440AGur3utffNoOnK7X92kXm
-         Sw0QsjhTpKEuEBXTi9P87NlfpQU1fd9O683LHHZ6rMlGa4k2io7DgPVtaIzA+lpGNez4
-         4CqA8CVe3sBZh5+zRs+FtctohW6r+Zj4R285KHgMvCJXu8pxPCyFJ/9FVj8T+GoU3l/o
-         BNe3Jy+Ppe82M0z0HxorNpB57Of5ZlGvxDUYsD1lcLm6lkNRe53Ywc2Kk0cZjTpP8W9B
-         KcNw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=RNjbcd2eV8/Fk8qF+ylPyEnsEtnpckM6nrd+K19etO0=;
-        fh=IkQ6CVtaL/7aESb/2yeFOjnDNxNKsDakGPl8vFNk1kg=;
-        b=OPGJZAyz5LzF1NPilUNrc53gABQHYY5ebvCjzH23jWU6jXuCZnab1U0G0swgny6QTH
-         K2DoZKNVaZXRkiqRq31NQ0K+Ge6h4ide1+F+pNJNYsNTRGch8Q53D5JZjGSmR/0fq3ac
-         TZNAifsc1p4aK4rkO+Q1H4WVBCTS1EbKDWhwYg0sSknnKeAi2mfyOejMbJ3gxUq5jMmn
-         9pH5h6uqUTBJDSq99OJeInf3Caue4K5libFbQVpFaBtku70yluj8SbyDm9vBKH475Rm6
-         dI1mfdHJEPsGLrHSbl+WRC0Ky2DJ7K03sR2lOpo2xuFfFnEcYLPvIkIOxMFfZemNO4Oj
-         Tq2A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iCSJx2U4"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-359f35dfef6so2012887a91.2
+        for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 22:30:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774330078; x=1774934878; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=RNjbcd2eV8/Fk8qF+ylPyEnsEtnpckM6nrd+K19etO0=;
-        b=oDz0jr45eM5Oyxk4iUgGUrN8DzBZe5vWoYT7d/3kbvsJ24XyH0yGzIuxhqcf/7jltO
-         MoLT7C/rBanhRa537/N30B4A+dBLzJ+dijrnaoBSItgTDgB0UV8yFZE1u/2e/Q4cWzU2
-         qnSsg2iqh14hY4YvZHj5V+D1sKeg55nrhbUY6QaBzZzSs3pW+kTESLHVWhorMKyrlP9P
-         FtykjTP/cy2iD19EDoGruGYQnkZIhAMp09BP4twgc3ccVoUrqqzrl3IJ8hq2zW1UpWLm
-         uplWT0YuqUqliWqAxm3gtlGXLQqYI3NMDe7d4WjXvg4idlGL4OrRss965Go+lY/vBwbz
-         OBBg==
+        d=gmail.com; s=20251104; t=1774330200; x=1774935000; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mWQPpxJJ5vqy5RevxN77SFSwx0z5emoC9WwG+dKY3L0=;
+        b=iCSJx2U4HZsQdper25KI4WHkLKDbAz3U7F5tWdjc1f9xb56yVGsd4FYIuuGAyIr/mv
+         pHz/P5TNk0ZbJZFhZuS/YJWgF2laHydyyW1pJzWnMQ4kwBMwjOdVWk5A03JUWBo7Muys
+         nYaNgBJbAXCxthq+hHjn+dtuvY6Ojb8NjRIetdsthC1y8HfZAEUEu5zp34EryzXRcSVg
+         fsQi5tZs1ZE7Wifrhem6z+Sxt0JQR4E+67QrodjkQIhHd+AMT3bqRfN11XgWDCgoX0L8
+         ayqPjBKP8VLqb8fbZ/9X7R03bMT2iBlHKkp5xcDvfrgZ6cILbG3BxQYVHMy6PLjswzDc
+         8Uhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774330078; x=1774934878;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1774330200; x=1774935000;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RNjbcd2eV8/Fk8qF+ylPyEnsEtnpckM6nrd+K19etO0=;
-        b=ZXOm+VJG2/VfaeEig43RPiE/7QciEyafpCnySsrR9GtX8GqlNQbG+wSiP7+gH+ZPu+
-         CvLTO4UQfgsypvUo5S31c/3Gtj46HVKulLh9An4YR9I7eOmmpz5v4hqBINpEtbgvgmzK
-         m9Q8YcJQRFf5yV3KUo4twZdOsnocJMqxdobfHJU0NhjsXEa+3UyW4NkrWApg2kxjRnBx
-         gD1NX8yXNd+hKTJWPbM6B+wJ6EFrDtKsIY5978sqX7hlzJKO5+OFXq6GRsh3wCYI9Zdz
-         sULS8eOR7pDSLrdjGbbBIG5H8T4ROAoB91CSkViK0RleA5/7jyQoAW1s/6odZiY7+aV2
-         rbag==
-X-Gm-Message-State: AOJu0Yxe57PRrF6dURTDssHTwdidRsc6427xE+Tl9pgGUV2qQ8IJUr3U
-	AJYIXWAvdQUUYG4HxOCMQccjHR47TOD318Snt4DeFhII4AwuJDpGp5KP98IxLYtp6falr4z1z4c
-	Ois71dmmuDeiMAtazLzU23OIsq7Wvx7o=
-X-Gm-Gg: ATEYQzxS1yOasxYrixwgvBZr8uLpVJfsmc/Qix7c7iW+f/XjqsNm2Or+fadW+5mJudL
-	uG9bvtoO9V5aSexVx7Joz/5ybojdtrI0FOI24IrbNskiTX/QR8GP7s6C0ftwLahYe+bwTh4dXvM
-	TPmlhmyS8KP6mETPPGKBZb0ZCX9bhdX8+/PvYJzc6d5sfQ1OtHdIcqd8QquEQVbsaxwlAIBb0U5
-	Dzy5YwVgL/GF4ptEJTwr8XWJLW/1fB7sS3u//tnL3xqlb65uUUDyXCy2z7NXmAzlqbtFzCnYTpZ
-	RtLnq5S3flfUfdoeCws5Y5JYNqzt/E9lOm0aty2w
-X-Received: by 2002:a05:7022:327:b0:128:d494:a1ab with SMTP id
- a92af1059eb24-12a72652be2mr6281945c88.15.1774330077945; Mon, 23 Mar 2026
- 22:27:57 -0700 (PDT)
+        bh=mWQPpxJJ5vqy5RevxN77SFSwx0z5emoC9WwG+dKY3L0=;
+        b=amr6c9Nou7xUM9d81HWe8HljeU8/CXhYb8uuFzkk01Ahiyslc3bFAXhEuTXWJUi9vF
+         3IUt1ioILcr3iEhmcvwbFm15BgyxTla4px7wf3GR4okmotqoeOerqpEoo9xInq3k4qTr
+         EUCc1z1r0URRSHPKb5y7wM5Vk6SE/Qkx/vQaj9blV3um+fDXbQduvw4lklOGEiEwh0ix
+         IjBe0DKsptgdsIzLUXIyPVoKn8TJIvY1+Ih3Xi5Es4I8dKH1VRmN+pDwMRGVxEjW+oOh
+         AlprstveWq+qp4CG8h4JYYvUMn9sF9ekC24fLk0J00gmXyk3XPPAWKBk2JdjwLx8UHCI
+         TzzA==
+X-Forwarded-Encrypted: i=1; AJvYcCXfwg/aj/zy0QSamlW2TB/KEGVuWtY7bhf/vIp3GFRnjPOn0qnrhtT6WnfobYA3o7/83jAETbk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTMrfuOmp8Dg544bcC5heXfbyLvk434V04UR1tV535xAX5mioL
+	jF5WfmloSKv9qQBeyd3U1hTgViz2h1pO5M8hSd6LaQc/pugb2uJUjsna
+X-Gm-Gg: ATEYQzxzscAmCKxglSsJd7qD8CWFo0ndxjjNwUDd2DwDgAen6R8iJyS5AxhqUBqiO38
+	qEt2muoKJlM17AlQFfjbxdbLbijHMo/ua0oqhXpASHkoJkww+klA+c+Uypxi7ABxzq+CCfsBh/B
+	5mBArDsMFuEiPoqUkJE4fQa1XqUmThlc2yRyjl//C3mJ9/pOvHG2noS/GKhUl4Czv+o0CqqZbXZ
+	SHWvUuNwfzZ1aoPefEyEiLTrMDJFBrD73/MEphFjnA+FVilgILRuaADyaqg+tNYO6fKDFpVDJof
+	UL8XNqUwZXrnZ5IvRdQGds9sGqOPTAGMqjZ4AIKHeRZFhkkE6mvb6V5MzT/K9k0zoJHZN0RPD0r
+	8erXyuavLkLs88KiEFqIlDJIpSlfsqDeTeh63MGK/80UW7wOhjpcjwfjVLBjhdNCieJYZh0dWcI
+	el68YUW0kNFd1dzm1884RCIiA2Q8z0riPqMhZ2Eard
+X-Received: by 2002:a17:903:94f:b0:2b0:76b1:93f with SMTP id d9443c01a7336-2b082734032mr121627425ad.18.1774330200449;
+        Mon, 23 Mar 2026 22:30:00 -0700 (PDT)
+Received: from localhost.ntt.co.jp ([222.151.198.97])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b083516b96sm165458525ad.7.2026.03.23.22.29.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Mar 2026 22:30:00 -0700 (PDT)
+From: Ryohei Kinugawa <ryohei.kinugawa@gmail.com>
+To: rrameshbabu@nvidia.com,
+	saeedm@nvidia.com,
+	leon@kernel.org,
+	tariqt@nvidia.com,
+	mbloch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org
+Cc: Ryohei Kinugawa <ryohei.kinugawa@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	joe@dama.to
+Subject: [PATCH net-next v2] docs/mlx5: Fix typo subfuction
+Date: Tue, 24 Mar 2026 14:34:10 +0900
+Message-ID: <20260324053416.70166-1-ryohei.kinugawa@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260317065137.1533226-1-atwellwea@gmail.com> <20260317065137.1533226-4-atwellwea@gmail.com>
- <acAZoCnlITtD7ufM@gandalf.schnuecks.de>
-In-Reply-To: <acAZoCnlITtD7ufM@gandalf.schnuecks.de>
-From: Wesley Atwell <atwellwea@gmail.com>
-Date: Mon, 23 Mar 2026 23:27:48 -0600
-X-Gm-Features: AaiRm50Z9iLjwnRJbgwDlL-7pxLJace2gfxIa3Rg-XB7nLCBzCA2DVlascvPydg
-Message-ID: <CAN=sVvwBfu1zMipnPmTiejJm=Ai3korkNuxSRLee9DZztZWnRA@mail.gmail.com>
-Subject: Re: [PATCH net-next 3/3] selftests: packetdrill: cover scaled rwnd
- quantization slack
-To: Simon Baatz <gmbnomis@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, davem@davemloft.net, dsahern@kernel.org, 
-	edumazet@google.com, horms@kernel.org, kuba@kernel.org, kuniyu@google.com, 
-	ncardwell@google.com, pabeni@redhat.com, shuah@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hi,
+Fix two typos:
+ - 'Subfunctons' -> 'Subfunctions'
+ - 'subfuction' -> 'subfunction'
 
-Thanks for pointing that out, have a V3 coming that should fix all nits.
+Reviewed-by: Joe Damato <joe@dama.to>
+Signed-off-by: Ryohei Kinugawa <ryohei.kinugawa@gmail.com>
+---
+ .../device_drivers/ethernet/mellanox/mlx5/kconfig.rst         | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Thanks,
-Wesley Atwell
+diff --git a/Documentation/networking/device_drivers/ethernet/mellanox/mlx5/kconfig.rst b/Documentation/networking/device_drivers/ethernet/mellanox/mlx5/kconfig.rst
+index 34e911480108..b45d6871492c 100644
+--- a/Documentation/networking/device_drivers/ethernet/mellanox/mlx5/kconfig.rst
++++ b/Documentation/networking/device_drivers/ethernet/mellanox/mlx5/kconfig.rst
+@@ -114,13 +114,13 @@ Enabling the driver and kconfig options
+ **CONFIG_MLX5_SF=(y/n)**
+ 
+ |    Build support for subfunction.
+-|    Subfunctons are more light weight than PCI SRIOV VFs. Choosing this option
++|    Subfunctions are more light weight than PCI SRIOV VFs. Choosing this option
+ |    will enable support for creating subfunction devices.
+ 
+ 
+ **CONFIG_MLX5_SF_MANAGER=(y/n)**
+ 
+-|    Build support for subfuction port in the NIC. A Mellanox subfunction
++|    Build support for subfunction port in the NIC. A Mellanox subfunction
+ |    port is managed through devlink.  A subfunction supports RDMA, netdevice
+ |    and vdpa device. It is similar to a SRIOV VF but it doesn't require
+ |    SRIOV support.
+-- 
+2.47.3
+
