@@ -1,173 +1,207 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4BF63AB27F;
-	Tue, 24 Mar 2026 06:05:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774332309; cv=none; b=iNBSWbp/fpYsm6PQxV1GZZLo/r6m7tdzetJ592BrzVm57g8z8vWp2pc3g7Y0oGaMlbvflWggArv4BiZJWkUXGyLDggNdf0w9mxZPrLtFarr+Lp9NcgiOP1/FAva+DASbBLyD5/PAJv/u6/bqtamvFYsU1N7uBf8RT+Oett4eTws=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774332309; c=relaxed/simple;
-	bh=lgAOaXwx63jlZ4NF20oAO80m0dmNmB7iY7fzgBRIj8s=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=M0eu/RSGBXnF6ruCBM5TuhEL2/LQV3B4DQMEu9u9XT+BSifiNzs8WVhTE8wLqCY4nX7zQ7WBKwS49Xz8DeQBIWjg4Yv+pbDi3q2GdmqNnNHQQzEE+loEro020TzGzMyDZsAt6vLSod6cIpyxVK495w4eSpIMN71KNmcVgQgreGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=P450m6/C; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F762459ED
+	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 06:08:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774332484; cv=pass; b=k2O8Q0ZT/MfLUiIXBqYBrPcgoOjoXh+ouZCTjTImsKR7cw5MXQQuiizL/QLtx/gdkxpLRyplb7ZCqhI/1X1l6tFxQUAIYAUEyzCh/BjraQA17HXZbPw1rS4ImpHAs+TSiryZCb7BKqqCc9Y+n5BFsYNUJRd0tJ9KQ44Oqd8pHRE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774332484; c=relaxed/simple;
+	bh=mI7IXHOvVwfOeSEe+wG0QApSngBTg9jiiTJhWvTjxNc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HCCej9bwS59Xd5Stfhx5tvRT2qUrCRBWc+eShudkW3MPM/Ew/im3DSjw074ZjQI90bZiek4smJ378mH6Mb0ZImCmZbVZrYX2eb6zsg7VQ2rniOW1ET1/pR+2EmpnC4xCHEINF5ieFxxkI8mT1k+ZCZcIuqnhAW7bQoLqT6fuJPg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=czwr3N4O; arc=pass smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="P450m6/C"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62O645JB0536955, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1774332245; bh=o+uAhGp4kUANfU1omeqOJ3VOe58cQQosKNTQYobN19s=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=P450m6/CUeZaD3dg/msc9e2HqJXPwaRB+F15n0DWj8ZUMUVEOkndIUHdwDO9Fo6qt
-	 7oNfgaW6075bB6EVr9CE9eR+nfujQVsvbCZK181fhsIHnjBUVbg0FeQD6f1Rnc9+sl
-	 ide502pG8PpXvBThuafr0yeBL1DZmxwlSu22PHPOOlqelwegNTm9hAeFasaw89e9DH
-	 rvmc111B1T1D2QoPljqj6QbG37LhJ8dte0OyPBHfet548dTo+7ZbHxyRIKH4K3HkaY
-	 Nlta2+20RVJjmmRfv7Nhgqf1R9+S0Ai21DMEo0Ng9QJlr9tFUuzsgEsAvYvr031MFa
-	 D+s2ifQQGbDXw==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 62O645JB0536955
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 24 Mar 2026 14:04:05 +0800
-Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Tue, 24 Mar 2026 14:04:04 +0800
-Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
- RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Tue, 24 Mar 2026 14:04:03 +0800
-Received: from RTKEXHMBS03.realtek.com.tw ([::1]) by
- RTKEXHMBS03.realtek.com.tw ([fe80::368f:61f6:1754:de7d%9]) with mapi id
- 15.02.1748.010; Tue, 24 Mar 2026 14:04:03 +0800
-From: Hayes Wang <hayeswang@realtek.com>
-To: Chih Kai Hsu <hsu.chih.kai@realtek.com>,
-        "kuba@kernel.org"
-	<kuba@kernel.org>,
-        "davem@davemloft.net" <davem@davemloft.net>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        nic_swsd
-	<nic_swsd@realtek.com>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "linux-usb@vger.kernel.org"
-	<linux-usb@vger.kernel.org>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "bjorn@mork.no" <bjorn@mork.no>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        Chih Kai Hsu <hsu.chih.kai@realtek.com>
-Subject: RE: [PATCH net-next v3 1/2] r8152: add helper functions for PLA/USB
- OCP registers
-Thread-Topic: [PATCH net-next v3 1/2] r8152: add helper functions for PLA/USB
- OCP registers
-Thread-Index: AQHcup5a2tbaq/y5fUWL1A5/CeAKfrW9LZWA
-Date: Tue, 24 Mar 2026 06:04:03 +0000
-Message-ID: <be38bdf5c2b64629920bfe6688907992@realtek.com>
-References: <20260323082226.2601-450-nic_swsd@realtek.com>
- <20260323082226.2601-451-nic_swsd@realtek.com>
-In-Reply-To: <20260323082226.2601-451-nic_swsd@realtek.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="czwr3N4O"
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-667f8794e97so8430384a12.2
+        for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 23:08:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774332480; cv=none;
+        d=google.com; s=arc-20240605;
+        b=KXbThscGPXWprTzC33jJitRPatUIiHsNKStaS+FGXFH3F6Y63IZapNkHyoZ08nzPj6
+         9Ft7sklxQfyMvVmTckBnJCGDj8HPgLdCwmN8nr5oOemkpybBPQyetxIOaXcsl8moQR9U
+         5MLKnDjYlQJ6rWK+9KfrgQO7glfAGaD1+9eViUWWv3g4XVNrNQDLoceMfvsVn7brNVcX
+         cu2kA2Jtimzv3kWjuwPRQ19Vw45Ojkfl4YEq9o64BkIOWu5AFklmtYlMj/WW5mZXvnoy
+         VIsZMJljaI0U2LyMgO/qfuDdz04aqrEBO/VPPNe8m1XWPGV+A4y+5X46oTRCmYQAte9Y
+         NxRQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=B5zvAs0ntexVIDD9sucPNtVKRPH24qK9vYHSkiDVFPc=;
+        fh=+ErJ6w0RUBPxX2LlWIG+xqarT7vGhnFKBMFb7KA3mBY=;
+        b=WBLsy3FpC0hkRGBjgHOZvkq1zswtaFTsJSveGnOOpQwTeZryjuuyEBTL1oEV+FKY69
+         4isfFyTeMAqhj3S2KBt8t79xn+EMp6DWK1k58/hzvrqI36ppV91vz6aYJb6xDZiID7Ce
+         k/i0YZoH6V/p7HW/W5a0pnBHHpUZirzJkpLEmGiJ6ITD+7Nd+D6Hf2+284Zh2028vZnI
+         1kl9DOjLa+l4xb2bJRMyce8DQXd6c1Q2SlLP48JcbHR4E1htN9AYpxlwKJeDwlMNhhxV
+         y9LwWpEDqA4cuDrwzQN4ueHzLFaJ/lhjXsb1hYUZSWq0MDOY4NDNgh5Bt0LZovhsOnZV
+         Xaiw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774332480; x=1774937280; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=B5zvAs0ntexVIDD9sucPNtVKRPH24qK9vYHSkiDVFPc=;
+        b=czwr3N4OzNJYD72GQtxe/dMQdazGlyXGbhN3w45SUsLiu5pBfrdqcdFn2k7KZcPGOY
+         lEKEjKC6jlsEs9w3hIDXhMqqQ2kO2bguL5uKHEYsGaVQe5D4Y4KjsvBrwwo+NMJbijo7
+         WUNLHAheDm6ZhyK6Y+V70T3mA9xBa6T3U+ntIeQhcowqONeCiRTMW4DQfOzystf9fU9S
+         K1NK+tRt0WUe+zN5uHEEHuPwr4VeTsUspLNjL/AwG3qSwhaFns6iY32GWzDU+QspXwbU
+         TPOAzOxlygMcY7Myu6FL16/Srd0BMuCyYELA45lfFlIcP6at+ekHiT+hFT0Fq5H2QP9R
+         sz7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774332480; x=1774937280;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=B5zvAs0ntexVIDD9sucPNtVKRPH24qK9vYHSkiDVFPc=;
+        b=YzWJ0ep01KBXuUkpZzELgeHpcSDcqJpCfeAHu6f8GQOarq7SAeKZWYScWMU4MVaowu
+         7DipVN0xCIywOiQVPR20sjxPKaErfhr2Dp/5lrafb25D41BJG8Bg7XYQvPDPDaD681od
+         9bxp64dc48tSFR3YVp4I4+uLAlT16TqG1XzJdvTPvkDvBeMGi8WBU2UhHVcuwo7oBdeo
+         syd1eeORbdbcOctDL2PYqTwVlB2/YXw3e0EdAj51Uyc66Py6XsklA3+GitiEkpx1DsqA
+         kgb45n5cgA1FkPulbH2+J0hkSJIUjGAP20j03Hc5stYWkAFJpH6kT2SDfEmtZqq6zBcA
+         m8Ag==
+X-Gm-Message-State: AOJu0Yw3zbgDfia9eW9EzDWEg3uTwCVFiNgdVhrFk9LQHeY7mnxHTRcR
+	A05iQugR2WeGe1LL6BTGb3TmFIIo/NgRGRDYfOvMB9MT35MqewgNXFIPokAUMXZq2EMnBa3NYsr
+	yzvfz3Y79P4rZXNAF3jZX6GLQvTYgojc=
+X-Gm-Gg: ATEYQzxT/E3N8qv2Qfn9PAHlCC+LlFbz5p1tam6LsdFKQkD7E45gBjybNqUcOXMpOaO
+	Mf8PBz0xmmDqM1IbhzmVxeL2lvKgkfNMi0fKuHOOlCzfUGcv5EdJroNmfY8IgYk1CE0nNeBCLZO
+	5VwKkeE5iOsTs8fMwINB9SPHzyAFvlJCwQJjIrT93Bjst+aGO0Euvxl4DPuoA3IElFvIjV6zZ2L
+	8xDlSt/UdZrOUUYGQsom4iePy3cogPRmmzQbksgUwc55859PwCGQdvrCBIr2/+Sa8sDlMRg1nGc
+	zK12cok=
+X-Received: by 2002:a17:907:1c89:b0:b98:70fe:cd9a with SMTP id
+ a640c23a62f3a-b9870feced9mr385081766b.57.1774332479655; Mon, 23 Mar 2026
+ 23:07:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20260321041058.901149-1-LivelyCarpet87@gmail.com> <20260323141822.GB69756@horms.kernel.org>
+In-Reply-To: <20260323141822.GB69756@horms.kernel.org>
+From: Tyllis Xu <livelycarpet87@gmail.com>
+Date: Tue, 24 Mar 2026 01:07:47 -0500
+X-Gm-Features: AQROBzC9ip5K_wNQFZvrDdtzllrm__8yUSGaMMq_v9fzmsTMIsGUbtrFjLi2bjE
+Message-ID: <CAJsYhQJga9M1aqeOLu0ni4i5iRirTDTxP1c8qyWz4=-9pBpRtw@mail.gmail.com>
+Subject: Re: [PATCH] net: stmmac: fix integer underflow in chain mode jumbo_frm
+To: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, rmk+kernel@armlinux.org.uk, 
+	maxime.chevallier@bootlin.com, peppe.cavallaro@st.com, 
+	rayagond@vayavyalabs.com, stable@vger.kernel.org, danisjiang@gmail.com, 
+	ychen@northwestern.edu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Chih Kai Hsu <hsu.chih.kai@realtek.com>
-> Sent: Monday, March 23, 2026 4:22 PM
+I will try to change the code to consolidate with the ring-mode
+code, avoid whitespace diff, and resubmit the patch with a new
+correct subject line. Thank you for your feedback!
 
-> @@ -7166,21 +6942,17 @@ static void r8153_init(struct r8152 *tp)
->  	r8153_u1u2en(tp, true);
->  	usb_enable_lpm(tp->udev);
->=20
-> -	ocp_data =3D ocp_read_byte(tp, MCU_TYPE_PLA, PLA_CONFIG6);
-> -	ocp_data |=3D LANWAKE_CLR_EN;
-> -	ocp_write_byte(tp, MCU_TYPE_PLA, PLA_CONFIG6, ocp_data);
-> +	ocp_byte_set_bits(tp, MCU_TYPE_PLA, PLA_CONFIG6,
-> LANWAKE_CLR_EN);
->=20
-> -	ocp_data =3D ocp_read_byte(tp, MCU_TYPE_PLA, PLA_LWAKE_CTRL_REG);
-> -	ocp_data &=3D ~LANWAKE_PIN;
-> -	ocp_write_byte(tp, MCU_TYPE_PLA, PLA_LWAKE_CTRL_REG, ocp_data);
-> +	ocp_byte_clr_bits(tp, MCU_TYPE_PLA, PLA_LWAKE_CTRL_REG,
-> LANWAKE_PIN);
->=20
->  	/* rx aggregation */
-> -	ocp_data =3D ocp_read_word(tp, MCU_TYPE_USB, USB_USB_CTRL);
-> -	ocp_data &=3D ~(RX_AGG_DISABLE | RX_ZERO_EN);
-> -	if (tp->dell_tb_rx_agg_bug)
-> -		ocp_data |=3D RX_AGG_DISABLE;
-> +	ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_USB_CTRL,
-> +			  RX_AGG_DISABLE | RX_ZERO_EN);
->=20
-> -	ocp_write_word(tp, MCU_TYPE_USB, USB_USB_CTRL, ocp_data);
-> +	if (tp->dell_tb_rx_agg_bug)
-> +		ocp_word_set_bits(tp, MCU_TYPE_USB, USB_USB_CTRL,
-> +				  RX_AGG_DISABLE);
-
-I think you could combine above, such as
-
-	if (tp->dell_tb_rx_agg_bug)
-		ocp_word_w0w1(tp, MCU_TYPE_USB, USB_USB_CTRL, RX_ZERO_EN,
-			      RX_AGG_DISABLE);
-	else
-		ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_USB_CTRL,
-				  RX_AGG_DISABLE | RX_ZERO_EN);
-
->  	rtl_tally_reset(tp);
->=20
-> @@ -7200,7 +6972,6 @@ static void r8153_init(struct r8152 *tp)
->=20
->  static void r8153b_init(struct r8152 *tp)
->  {
-> -	u32 ocp_data;
->  	u16 data;
->  	int i;
->=20
-[...]
-> @@ -8306,48 +8028,39 @@ static void r8156b_init(struct r8152 *tp)
->=20
->  	usb_enable_lpm(tp->udev);
->=20
-> -	ocp_data =3D ocp_read_word(tp, MCU_TYPE_PLA, PLA_RCR);
-> -	ocp_data &=3D ~SLOT_EN;
-> -	ocp_write_word(tp, MCU_TYPE_PLA, PLA_RCR, ocp_data);
-> +	ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_RCR, SLOT_EN);
->=20
-> -	ocp_data =3D ocp_read_word(tp, MCU_TYPE_PLA, PLA_CPCR);
-> -	ocp_data |=3D FLOW_CTRL_EN;
-> -	ocp_write_word(tp, MCU_TYPE_PLA, PLA_CPCR, ocp_data);
-> +	ocp_word_set_bits(tp, MCU_TYPE_PLA, PLA_CPCR, FLOW_CTRL_EN);
->=20
->  	/* enable fc timer and set timer to 600 ms. */
->  	ocp_write_word(tp, MCU_TYPE_USB, USB_FC_TIMER,
->  		       CTRL_TIMER_EN | (600 / 8));
->=20
-> -	ocp_data =3D ocp_read_word(tp, MCU_TYPE_USB, USB_FW_CTRL);
->  	if (!(ocp_read_word(tp, MCU_TYPE_PLA, PLA_POL_GPIO_CTRL) &
-> DACK_DET_EN))
-> -		ocp_data |=3D FLOW_CTRL_PATCH_2;
-> -	ocp_data &=3D ~AUTO_SPEEDUP;
-> -	ocp_write_word(tp, MCU_TYPE_USB, USB_FW_CTRL, ocp_data);
-> +		ocp_word_set_bits(tp, MCU_TYPE_USB, USB_FW_CTRL,
-> +				  FLOW_CTRL_PATCH_2);
-> +
-> +	ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_FW_CTRL, AUTO_SPEEDUP);
-
-I think you could combine above, such as
-
-	if (!(ocp_read_word(tp, MCU_TYPE_PLA, PLA_POL_GPIO_CTRL) & DACK_DET_EN))
-		ocp_word_w0w1(tp, MCU_TYPE_USB, USB_FW_CTRL, AUTO_SPEEDUP,
-			      FLOW_CTRL_PATCH_2);
-	else
-		ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_FW_CTRL, AUTO_SPEEDUP);
-
-Best Regards,
-Hayes
-
+On Mon, Mar 23, 2026 at 9:18=E2=80=AFAM Simon Horman <horms@kernel.org> wro=
+te:
+>
+> On Fri, Mar 20, 2026 at 11:10:58PM -0500, Tyllis Xu wrote:
+> > The jumbo_frm() chain-mode implementation unconditionally computes
+> >
+> >     len =3D nopaged_len - bmax;
+> >
+> > where nopaged_len =3D skb_headlen(skb) (linear bytes only) and bmax is
+> > BUF_SIZE_8KiB or BUF_SIZE_2KiB.  However, the caller stmmac_xmit()
+> > decides to invoke jumbo_frm() based on skb->len (total length including
+> > page fragments):
+> >
+> >     is_jumbo =3D stmmac_is_jumbo_frm(priv, skb->len, enh_desc);
+> >
+> > When a packet has a small linear portion (nopaged_len <=3D bmax) but a
+> > large total length due to page fragments (skb->len > bmax), the
+> > subtraction wraps as an unsigned integer, producing a huge len value
+> > (~0xFFFFxxxx).  This causes the while (len !=3D 0) loop to execute
+> > hundreds of thousands of iterations, passing skb->data + bmax * i
+> > pointers far beyond the skb buffer to dma_map_single().  On IOMMU-less
+> > SoCs (the typical deployment for stmmac), this maps arbitrary kernel
+> > memory to the DMA engine, constituting a kernel memory disclosure and
+> > potential memory corruption from hardware.
+> >
+> > The ring-mode counterpart already guards against this with:
+> >
+> >     if (nopaged_len > BUF_SIZE_8KiB) { ... use len ... }
+> >     else { ... map nopaged_len directly ... }
+> >
+> > Apply the same pattern to chain mode: guard the chunked-DMA path with
+> > if (nopaged_len > bmax), and add an else branch that maps the entire
+> > linear portion as a single descriptor when it fits within bmax.  The
+> > fragment loop in stmmac_xmit() handles page fragments afterward.
+> >
+> > Fixes: 286a83721720 ("stmmac: add CHAINED descriptor mode support (V4)"=
+)
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Tyllis Xu <LivelyCarpet87@gmail.com>
+>
+> As a fix for code present in net this patch should be targeted at the net
+> tree like this:
+>
+> Subject: [PATCH net] net: stmmac: fix integer underflow in chain mode
+>
+> As is, our CI tries to apply this patch to the default tree, net-next.
+> Which fails due to a conflict with commit 6b4286e05508 ("net: stmmac:
+> rename STMMAC_GET_ENTRY() -> STMMAC_NEXT_ENTRY()"). So no CI tests were
+> run.
+>
+> > ---
+> >  drivers/net/ethernet/stmicro/stmmac/chain_mode.c | 71 ++++++++++++++--=
+-------
+> >  1 file changed, 44 insertions(+), 27 deletions(-)
+>
+> The bulk of this patch is whitespace change (indentation).
+> So seems useful to examine this patch with whitespace changes ignored.
+>
+> git diff -w yeilds;
+>
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/chain_mode.c b/drivers/n=
+et/ethernet/stmicro/stmmac/chain_mode.c
+> index 120a009c9992..c8980482dea2 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
+> @@ -31,6 +31,7 @@ static int jumbo_frm(struct stmmac_tx_queue *tx_q, stru=
+ct sk_buff *skb,
+>         else
+>                 bmax =3D BUF_SIZE_2KiB;
+>
+> +       if (nopaged_len > bmax) {
+>                 len =3D nopaged_len - bmax;
+>
+>                 des2 =3D dma_map_single(priv->device, skb->data,
+> @@ -77,6 +78,18 @@ static int jumbo_frm(struct stmmac_tx_queue *tx_q, str=
+uct sk_buff *skb,
+>                                 len =3D 0;
+>                         }
+>                 }
+> +       } else {
+> +               des2 =3D dma_map_single(priv->device, skb->data,
+> +                                     nopaged_len, DMA_TO_DEVICE);
+> +               desc->des2 =3D cpu_to_le32(des2);
+> +               if (dma_mapping_error(priv->device, des2))
+> +                       return -1;
+> +               tx_q->tx_skbuff_dma[entry].buf =3D des2;
+> +               tx_q->tx_skbuff_dma[entry].len =3D nopaged_len;
+> +               stmmac_prepare_tx_desc(priv, desc, 1, nopaged_len, csum,
+> +                               STMMAC_CHAIN_MODE, 0, !skb_is_nonlinear(s=
+kb),
+> +                               skb->len);
+> +       }
+>
+>         tx_q->cur_tx =3D entry;
+>
+> The code in the else arm of the new condition is quite similar to
+> the (not visible in the diff above) code at the top of the non-else
+> arm of the condition.
+>
+> I do see this is consistent with the ring-mode code.  So perhaps it is
+> appropriate as a fix. But I do wonder if this could be consolidated - e.g=
+.
+> by setting up some local variables rather than moving the mapping logic
+> into a condition.
