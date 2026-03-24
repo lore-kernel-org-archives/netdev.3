@@ -1,73 +1,100 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158B3355F4E
-	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 16:37:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72AB73EF0DD
+	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 16:38:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774370247; cv=none; b=FHRFY0AxoJCMeTDOgUEx88lcg3iw40ohQA/emcX39kTpYOYa9Q3ru9pDhfflfk3IMCcyw9VGrQzm/+by2hzkg7iudH2jQ+4CbrWhG0rY9aDCNHp8XgkTFmYLJsrQ9VPp2Gh6agojwEEIivqYdz9wSbR72141DChKdIBN0kYvkHI=
+	t=1774370304; cv=none; b=rE6MfPVNHUx6lR+/f5Y9WU11aWpP+Aj9EO1g1ET13zxt06+HN7TMK1HEMi5TV0e+jh1ENQ2Mb6ejAnpvIXNLbjqloaCtA0oT7TNoAZsZn2oZHtrOJQlht6eOMguOZeW4sPuZxzS/mkrmA9J6MHBWNveviW3lWLma3ybBQ5H6VIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774370247; c=relaxed/simple;
-	bh=SbNzD+59ATzZijDyEWjVtUVR5VhkAAce5/Wg4TcX0Dw=;
+	s=arc-20240116; t=1774370304; c=relaxed/simple;
+	bh=9nsFY7QyMnvQRCi1ZhAg0AmwNAl4qNb2zJwv+6wvvb8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YiH2qW8nbJ978Ebqy62LMkldvT0ZoFxwfRNKtAQKR5WQDmsHiMMnKCI3dcXU6U+XKAhIwLJz7An9tfGq43UaeE8DEx+izk/kJRs4X6tWCtXV865SA80xm8pFHv0d9lSCrG6HX9c/pnPKOq1Xb9K8g3Z5umGdwG0t17mCapwcyBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id A67126078E; Tue, 24 Mar 2026 17:37:22 +0100 (CET)
-Date: Tue, 24 Mar 2026 17:37:01 +0100
-From: Florian Westphal <fw@strlen.de>
-To: David Carlier <devnexen@gmail.com>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Phil Sutter <phil@nwl.cc>,
-	Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH] netfilter: conntrack: clamp TCP window scale to
- TCP_MAX_WSCALE via ctnetlink
-Message-ID: <acK9rdPQNqwejye9@strlen.de>
-References: <20260324163033.310087-1-devnexen@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=cLFfJ1/Wy5tBpMUEdH2uxnM4gOWljEuslh9aJPIBHHsKaaQlZhzJ5EW27PEMUVjICoyBv91OZuM2QVjL/9T4JI7Q6LUe9X+n2z6nrt6astaZ0jjoFD5akMzzpNHhdPAICvhi2l9YICM5ysIZn3QMAdxDvdrpFwn5Ma2odRWWjNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RBPNLUhO; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=GXSHEnLW; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RBPNLUhO";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="GXSHEnLW"
+Date: Tue, 24 Mar 2026 17:38:20 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1774370301;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4OwcY17kG5h3GJj8hGqhZl+mr4nThdAAmN0om3fgan0=;
+	b=RBPNLUhONgKgV8L/Ko1uutpVFGL+QUyAYE72RJxD1g9c6uTc/+7xTiME6s5zu964bUlNph
+	j6VIb4OBDSVGLiXE1GZUWLnFOib73wnXC+DInnEhs1Q9r0CietvAvSxaTz5PJ9Lyyughrt
+	eA0ipl883ZViW6DdY7nzi7w5uWv+qwLQka4z3M7O9TpvO0vtIwSC392z48g6onQ70LwpS1
+	S1JF54XE6oUz1OTWPCPjjwlmTFJdZC7erVwLbM7MclLeyrBeuOjN3UL1zOkdSPAJ13JPtt
+	07+XWmDPsOh3z5hqus0TPbc99YZMKvh9QY3UVBLLVmHVmQ1BAZi1vHV00ZFNiw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1774370301;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4OwcY17kG5h3GJj8hGqhZl+mr4nThdAAmN0om3fgan0=;
+	b=GXSHEnLWBbHV2bv7iDnZGbeT6zXWKMixSBKWQ/f04qzmrhpVkykh63HfZmrIU8QAE60Zho
+	RBuaDAG8nvDsnBBQ==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, "(JC), Jayachandran" <j-rameshbabu@ti.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Chintan Vankar <c-vankar@ti.com>, Danish Anwar <danishanwar@ti.com>,
+	Daolin Qiu <d-qiu@ti.com>, Eric Dumazet <edumazet@google.com>,
+	Felix Maurer <fmaurer@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH RFC net-next v2 2/2] af_packet: Add port specific
+ handling for HSR
+Message-ID: <20260324163820.p9M2z27W@linutronix.de>
+References: <willemdebruijn.kernel.3693c9aa8271@gmail.com>
+ <20260312154253.UC-QUPvD@linutronix.de>
+ <willemdebruijn.kernel.be379ee17449@gmail.com>
+ <20260313092226.SscHp2zQ@linutronix.de>
+ <20260313160410.LEhav8Xz@linutronix.de>
+ <willemdebruijn.kernel.1fbf050c50d62@gmail.com>
+ <20260317172906.eG2LxlZ7@linutronix.de>
+ <willemdebruijn.kernel.17068ce38efa5@gmail.com>
+ <20260319142613.KHz32I-V@linutronix.de>
+ <willemdebruijn.kernel.8e323262df61@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260324163033.310087-1-devnexen@gmail.com>
+In-Reply-To: <willemdebruijn.kernel.8e323262df61@gmail.com>
 
-David Carlier <devnexen@gmail.com> wrote:
-> The normal TCP option parsing path clamps td_scale to TCP_MAX_WSCALE
-> (14), but the ctnetlink path (nlattr_to_tcp) accepts any u8 value
-> (0-255). This td_scale is then used as a shift count for u32 values,
-> causing undefined behavior when >= 32.
+On 2026-03-19 12:27:57 [-0400], Willem de Bruijn wrote:
 > 
-> Use NLA_POLICY_MAX in the netlink policy to reject values exceeding
-> TCP_MAX_WSCALE at parse time, consistent with how commit f900e1d77ee0
-> ("netfilter: conntrack: add missing validation of SCTP netlink
-> attributes") addressed similar missing validations.
-> 
-> Fixes: c8e2078cfe41 ("[NETFILTER]: ctnetlink: add support for internal tcp connection tracking flags handling")
-> Signed-off-by: David Carlier <devnexen@gmail.com>
-> ---
->  net/netfilter/nf_conntrack_proto_tcp.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/netfilter/nf_conntrack_proto_tcp.c b/net/netfilter/nf_conntrack_proto_tcp.c
-> index 0c1d086e96cb..7d364337d71e 100644
-> --- a/net/netfilter/nf_conntrack_proto_tcp.c
-> +++ b/net/netfilter/nf_conntrack_proto_tcp.c
-> @@ -1386,8 +1386,8 @@ static int tcp_to_nlattr(struct sk_buff *skb, struct nlattr *nla,
->  
->  static const struct nla_policy tcp_nla_policy[CTA_PROTOINFO_TCP_MAX+1] = {
->  	[CTA_PROTOINFO_TCP_STATE]	    = { .type = NLA_U8 },
-> -	[CTA_PROTOINFO_TCP_WSCALE_ORIGINAL] = { .type = NLA_U8 },
-> -	[CTA_PROTOINFO_TCP_WSCALE_REPLY]    = { .type = NLA_U8 },
-> +	[CTA_PROTOINFO_TCP_WSCALE_ORIGINAL] = NLA_POLICY_MAX(NLA_U8, TCP_MAX_WSCALE),
-> +	[CTA_PROTOINFO_TCP_WSCALE_REPLY]    = NLA_POLICY_MAX(NLA_U8, TCP_MAX_WSCALE),
->  	[CTA_PROTOINFO_TCP_FLAGS_ORIGINAL]  = { .len = sizeof(struct nf_ct_tcp_flags) },
->  	[CTA_PROTOINFO_TCP_FLAGS_REPLY]	    = { .len = sizeof(struct nf_ct_tcp_flags) },
+> Right, so this is simple without hardware offload. Does this HW
+> offload exist, or is this aspirational. At least for infrequent PTP
+> it does not sound important.
 
-Makes sense, but I would prefer to update everything in one go, as in
-this pending patch:
+The snippet below was for the icssg driver as-is and it works with
+updated firmware to ignore PTP packets while HW offloading is enabled.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf-next.git/commit/?h=testing&id=3b77a876d9b980daf27f0fd70eaa7344db7c36a7
+The hardware offload in general forwards the packets without linux so if
+a packet arrives on port A, the HW forwards it on port B and the linux
+networking stack receives one copy and does not need to forward it
+anymore.
+This "cut-through" forwarding is beneficial because the packet is
+forwarded instantly without getting delayed by the software stack.
+
+For PTP packets I don't want any of this because the forwarding breaks
+the timestamp information. So I need to tell the driver not do any of
+the offloading while sending and the updated firmware does the same for
+incoming packets.
+
+There is no HW-offloading of PTP related packets.
+
+With the skb_ext I had, the mechanism was mostly the same but it relied
+only on the skb_ext data. Now it has to look at skb->mark.
+
+Sebastian
