@@ -1,184 +1,192 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC6C3D5246
-	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 15:16:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C029C30C60D;
+	Tue, 24 Mar 2026 15:18:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774365363; cv=none; b=m9jQe/jboPWlqdxAStO34GhoEytteVVZLSMQXJpyBvpKENjx4+ISqjoH9Ld3kfpEyGVRGGcYJA02AWNEy1V2bXhAWSaH7ZR3jIF6qYBx/Jon4d4/imK75uZuov5C9wJsCn6ekX0Yl3XldlJ739yEJtO75k74QYcZmaUSkjWiq0w=
+	t=1774365518; cv=none; b=HSoKfxOnzTu8zELHbhZTQ4Sj4l8/t1/HgzyEMI+9g8Chu2lWxD3boQ6bpEXNQ9OOJPT/22Lpsy3aUhJ2MPVOT0nicWprn2g+6GDr6GUlaikIOsz8mxJc2jvDHGhUZ6uNubgHKAY5yNWrjWptGI5nm3vpO+XuISREML5UkKmPNp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774365363; c=relaxed/simple;
-	bh=0DAQT5hcnfFP7UoqaO6an4vhVS498McC5K6b/zfmBDc=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=FTJ05KJYg1IpCheZyPowz2FY1+yUpqiD7kYoon5w1l+SF6hFgjT713LK5GCw/P1FtpGDJwnRSxn3pNS7oxcJCndkKyIKB7xDeV5TGSJBJPlB94on2kFpAuXy3/cWhFsU+R9Ipbz29SylmanM0gmj52Vjx+SlOTMM0kW8sF4IsOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YPvt3Jgd; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=cTiqyWVX; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1774365518; c=relaxed/simple;
+	bh=/3qMzl/kZ/3/MVIJaJoHytPt7GaNFhIrkE6OT1EEc34=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KM1COHohqT1aLpAV+xXNMi625gkEPWR1ABkZJVVV6DYM+VdYo/skTYWrJag0nya8a77jIO3+dFHsx/kYCFZGMRaja8fbtVhEcLSa/jVljfM5ERXl8I2xoS1snQ94d4lrv1SrsQ/4D0dMYJqWUNWfpKYMMKww8ka9z4P06d6yhFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=NobIAK46; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=RkcFpcaZ; arc=none smtp.client-ip=103.168.172.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YPvt3Jgd";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="cTiqyWVX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774365361;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=zZaZ+weNFt/DeQ+y853Qd9D2vVvyy8X2coFZA5Jbyn4=;
-	b=YPvt3JgdxNP0aJ9mB3lNrPhe3LBAwhkxcsdfSmD5LbScEwcBv+gmeeXYNo6TRkHRW72uww
-	ea+79So5XUR92xLsgx6V5bG0UvK2TqqQNJT6st0Al2YxcdX5mFSXeYkrc0JbhIHfZ3+72M
-	kRErp8r0D58Tp4ddhWDYxv/5p4V+6PE=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-212-lwNTobj5OwisQaz82rRZCg-1; Tue, 24 Mar 2026 11:15:59 -0400
-X-MC-Unique: lwNTobj5OwisQaz82rRZCg-1
-X-Mimecast-MFC-AGG-ID: lwNTobj5OwisQaz82rRZCg_1774365358
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-48531e6012bso74270735e9.1
-        for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 08:15:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1774365358; x=1774970158; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zZaZ+weNFt/DeQ+y853Qd9D2vVvyy8X2coFZA5Jbyn4=;
-        b=cTiqyWVXW6ThVGdsO/WivvYGEgD6vRr7fw2tex9trBb2cD0cjZKTxMvfrGnfsgqqTK
-         /VKFxciS1+PIN2pALJ/ziWHPHTRdfnZpBzArKkQ9NTNNCx2rQV/YSBWux1XMKJscM1Ic
-         1YOh1lo3hiRKu107RYjOKZ+upuhu9sRLuh6K5EYCkVbxA+PSutogn/8UFnpN9vPm3g5z
-         JpOI3uTeBvxy6aQg6DPyBrBJUSzkCTiIkoTFQvwknPUPJM8rUrwsh3n2vCEz0aXUkTvT
-         LyHiWBdqED0nxjCgfZvE5wyAeRBxq0BhZ5YXK1bt60GQVk+dZDr9CcCSljExBUWlzNzM
-         610g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774365358; x=1774970158;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zZaZ+weNFt/DeQ+y853Qd9D2vVvyy8X2coFZA5Jbyn4=;
-        b=U07QYC6D9RQhII05ySM5W3EeBoY6Vcq5koqt9DAWskg6azAAJTDzHoFID6XnSfwNxW
-         Fq/y00BMoBDzSYqnZwb1OKvhphYu6LZwiUAD/vd+UfSM4SRmP8VWCHAeVeBn6bZmfyXV
-         QHDNgWNntsLUOVhTiyTeEV6fzTLaZzwUvLXUXn2S0Jzm5h3sHKYrbCpNWWV87H9r08Us
-         1pFYqaUlRAiMk2YXwglKwBZ6TN9rD8z3tEehynnpnulz6N/zYhbI7lJuCq+oR/7JFlBC
-         6YeZ8r1rm2UzSn9nisNh0dWPf2//zoqmHfTbqjADcXligiHROSmAWQQ+tBZM8ur172rh
-         xd3w==
-X-Forwarded-Encrypted: i=1; AJvYcCXTIq+sXG7BTIvf3bwCDtLqkyOHAEnUZL9w7mc0VGpMH3XxtOomwTgEy446MpMSkd8P+AYbaW0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxF85/FAtXT4crct1YvE3SbOw6K+DhlVzuIHYZRnMtPgM9oAxu6
-	baKqf3eiW9aJ51nAgl5hWt/N2VNEbjQabwlCRto8O2V4/8aRQbulJFhbSgw4byrUTM+F92aM4sN
-	5SMRXealQDm83pzGhIDrmNvJ03nor5CMuCw4GCurh0Nedd0lWA49HMIoyuw==
-X-Gm-Gg: ATEYQzyluUqwxCqc3hPT6wmTQAA/DiWtSaKfcU2eBqyvfQA5iRLLIm6Xl3HhI9dU0tX
-	JBKOTEDRxcYku7S9k1IWse60pV6C4ZJ6L6BQlr61TCJV+dzqM7QwaoO6KMxEUy784PLZE5cFsKg
-	0tHTc91GWqb3MWF8by/zR6GmKvopjigMbKlQnoDBOs1xUgR5lcBL6XZkx4rF1IyPJNdVZSlAHi+
-	nMDmJliq8Ove2BYJQLF5OLNBE1KWRlZc1OCISFMbCrWj8GD50cYC6i2QxnTh1Rlaqi240//uulC
-	m6fqLTi2n0/s6x01ZyB8IxSEzNdnY9DfQ6UmRbwLtam+rdyrSDlcxDZ/HgyQ0Vwzn9YvD3po+95
-	OktDEVfRBxsC4OIQ/
-X-Received: by 2002:a05:600c:5296:b0:486:ffa3:593 with SMTP id 5b1f17b1804b1-4871606730amr1910525e9.28.1774365358074;
-        Tue, 24 Mar 2026 08:15:58 -0700 (PDT)
-X-Received: by 2002:a05:600c:5296:b0:486:ffa3:593 with SMTP id 5b1f17b1804b1-4871606730amr1909895e9.28.1774365357596;
-        Tue, 24 Mar 2026 08:15:57 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1525:da00:3ac2:1a22:72ff:4256])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-487116d82f1sm55500765e9.11.2026.03.24.08.15.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Mar 2026 08:15:57 -0700 (PDT)
-Date: Tue, 24 Mar 2026 11:15:54 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: Omar Elghoul <oelghoul@linux.ibm.com>,
-	Srikanth Aithal <sraithal@amd.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Vishwanath Seshagiri <vishs@meta.com>, netdev@vger.kernel.org,
-	virtualization@lists.linux.dev, bpf@vger.kernel.org
-Subject: [PATCH net-next] virtio_net: sync RX buffer before reading the header
-Message-ID: <f4caa9be9e5addae7851c012cab0a733be7f0974.1774365273.git.mst@redhat.com>
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="NobIAK46";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="RkcFpcaZ"
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfout.phl.internal (Postfix) with ESMTP id D8604EC00F2;
+	Tue, 24 Mar 2026 11:18:33 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-12.internal (MEProxy); Tue, 24 Mar 2026 11:18:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm2;
+	 t=1774365513; x=1774451913; bh=ErBmFVYHUC5AXjJ+G+Rf0z7n5tVs9tAz
+	GlgWab9PfFY=; b=NobIAK46k3w1MAU6sXxLqwLg0CIkB1kpjVy9bDgGFq8+OwXA
+	XND5h/ba5pxolewDr0RWWw6q/ARbWHYJpkft6KAiMYbX9ZcLwCPxFfxOSUM3IVGV
+	Y9OCYzFagIMk14IGQTMKxS5Q+FvTepYJ6wShLfdfcdMoh4pijdaYXTiFuUceQpf7
+	dIx+hnPxcMAfxeTfxI/Z4rQ8fzJbqaftocI6WftK6MdVfVhZPrxYzMlAXnYZOj1V
+	COKCZCRvhV2SZwFtJcnHhnGr0PoSHyLuuhfo0CTV/QL9fCvAfNNNjn56sfJOp59f
+	mhMNy0ZwvgABi5Ol3oPfWx4jzTbU6TxG22Y39g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774365513; x=
+	1774451913; bh=ErBmFVYHUC5AXjJ+G+Rf0z7n5tVs9tAzGlgWab9PfFY=; b=R
+	kcFpcaZgZanoFt/iOYDWVZW31nTBUpeCLlp1m25jOU3Qt1MAzkpSi8jjW2NO6Suy
+	bKnD7OLwlDllsnxDpLQZaCWyAjSlmSoDTP7Wm7gBaLR6fdiyewf8XIAcGHR1iUgT
+	oVmCBX/r2wg31z/aRJSv02Dx3ZvC5iIr16m8kZG27eKBxN84aj27/3wP7CcLGNkU
+	VjcllUujsoA8AUxGHKGXDxlfPS8Ap8wuAOqzuxeEHWqJwd9HVD5mGJE2IUYBnohx
+	edW1V4ipDB929RkaBTdN3GIjnEeXlLeOKqiQUErfujyaM76/6EZ5oFqM5yLAEGE0
+	hqnLF1DLCa5E6sLRgXbig==
+X-ME-Sender: <xms:SavCaQttukMMb4yhj8MfcYd4ChKZJlMsJKw0qGuWO2QmVndp_AxNOA>
+    <xme:SavCaQhR8ZSN2asOCzX00THBIKv-kiqObZn00641gRxZ9m7h0oV8LYtiZv_TrYljR
+    mxRK0WIL6CbllaYtfdGaOqs-CTGWqD3tLSGVI_A0XBq8CYz59zVyw>
+X-ME-Received: <xmr:SavCaWaICjk_Cn-AP4If2So1M0DBONuAAtu2Z4LR5T8RcSGUK5zX1ZMKHcPW>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefvdduledvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefurggsrhhi
+    nhgrucffuhgsrhhotggruceoshgusehquhgvrghshihsnhgrihhlrdhnvghtqeenucggtf
+    frrghtthgvrhhnpefgvdegieetffefvdfguddtleegiefhgeeuheetveevgeevjeduleef
+    ffeiheelvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
+    hmpehsugesqhhuvggrshihshhnrghilhdrnhgvthdpnhgspghrtghpthhtohepuddtpdhm
+    ohguvgepshhmthhpohhuthdprhgtphhtthhopegtrhgrthhiuhesnhhvihguihgrrdgtoh
+    hmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgu
+    rhgvfidonhgvthguvghvsehluhhnnhdrtghhpdhrtghpthhtohepuggrvhgvmhesuggrvh
+    gvmhhlohhfthdrnhgvthdprhgtphhtthhopehlihhnuhigqdhkshgvlhhfthgvshhtsehv
+    ghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepughtrghtuhhlvggrsehnvhhiug
+    hirgdrtghomhdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhrghdprhgtphht
+    thhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehprg
+    gsvghnihesrhgvughhrghtrdgtohhm
+X-ME-Proxy: <xmx:SavCafYuEst8soI7cHGORGjRp0PUhqM4ipxJF4f1iTsZ6di79WscQw>
+    <xmx:SavCabxrd_8k8x6ucTSQXEHS1eYIfseMaRvd0Yvq3kgl_zQcinQsMA>
+    <xmx:SavCabfXZSz7e7DUzhPfOCM5fmQ_3mQr_gtJjTJ2FE5N4bP8LBDJmw>
+    <xmx:SavCaQ4FWn9ukjd04ggKGfvng4fg7ENOxb_riXrI5CRvJBR0Bg2WwQ>
+    <xmx:SavCafWeWtHmzHJj4ZAE1s8BYytQxbIc8pGUJ4ASyD5oxOkFl-4ukrzy>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 24 Mar 2026 11:18:32 -0400 (EDT)
+Date: Tue, 24 Mar 2026 16:18:30 +0100
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Cosmin Ratiu <cratiu@nvidia.com>
+Cc: "kuba@kernel.org" <kuba@kernel.org>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	"shuah@kernel.org" <shuah@kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"edumazet@google.com" <edumazet@google.com>
+Subject: Re: [PATCH net v5 0/3] macsec: Add support for VLAN filtering in
+ offload mode
+Message-ID: <acKrRrOG0v9KDk_J@krikkit>
+References: <20260323123633.756163-1-cratiu@nvidia.com>
+ <acFODtfaa8LCKX4r@krikkit>
+ <5ae5d08d578fce1a01a548fad8552a14df8c5679.camel@nvidia.com>
+ <acFWIxzM-GxpAhjH@krikkit>
+ <20260323093243.17c14edb@kernel.org>
+ <acF1jeGLpq7qDKgY@krikkit>
+ <62b3b47291879328a868aa15fb7319b5ff13a20e.camel@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <62b3b47291879328a868aa15fb7319b5ff13a20e.camel@nvidia.com>
 
-receive_buf() reads the virtio header through buf before
-page_pool_dma_sync_for_cpu() runs in receive_small() or
-receive_mergeable(). The header buffer is thus unsynchronized at the
-point where flags and, for mergeable buffers, num_buffers are consumed.
+2026-03-24, 14:27:12 +0000, Cosmin Ratiu wrote:
+> On Mon, 2026-03-23 at 18:17 +0100, Sabrina Dubroca wrote:
+> > 2026-03-23, 09:32:43 -0700, Jakub Kicinski wrote:
+> > > On Mon, 23 Mar 2026 16:02:59 +0100 Sabrina Dubroca wrote:
+> > > > 2026-03-23, 14:42:00 +0000, Cosmin Ratiu wrote:
+> > > > > On Mon, 2026-03-23 at 15:28 +0100, Sabrina Dubroca wrote:  
+> > > > > > Why not? Being able to test without accessing real HW is
+> > > > > > still
+> > > > > > useful.
+> > > > > >   
+> > > > > The tests now send macsec traffic over VLANs and nsim, it's
+> > > > > just that
+> > > > > nsim doesn't deal with VLAN filters at all and there are no
+> > > > > stubbed
+> > > > > vlan filters in debugfs, since real hw doesn't have that
+> > > > > interface.  
+> > > > 
+> > > > Since netdevsim doesn't deal with VLAN filters at all, the "tests
+> > > > should be written so that they can run both against ``netdevsim``
+> > > > and
+> > > > a real device" bit of the docs doesn't fully apply here?
+> > > > 
+> > > > Anyway, I think the original tests had value, even if they're
+> > > > more
+> > > > limited in some ways than traffic tests. HW/driver behavior could
+> > > > be
+> > > > hiding problems in the stack with VLAN propagation, those simpler
+> > > > tests don't have that risk.
+> > > 
+> > > To be clear running the HW test without NETIF= should provide
+> > > similar functionality to what the old tests could do. It's entirely
+> > > okay to add netdevsim-specific subtests/test cases or asserts.
+> > > 
+> > > Is there anything specific that you'd like to be tested?
+> > 
+> > In v2/v3, nsim was exposing a debugfs file that contained the list of
+> > VLAN filters on that interface, and the selftest was grepping through
+> > that file to check if the correct entry was added/removed after each
+> > operation. I see that as testing the actual propagation of filters,
+> > while the traffic tests check the visible behavior of
+> > stack+driver+HW,
+> > which may not be correlated to actual propagation.
+> > 
+> > > Let's not make this about HW tests vs nsim-only tests.
+> > 
+> > That was not my intention. But since nsim doesn't currently implement
+> > VLAN filters, it seems running the HW test on nsim doesn't test
+> > anything at all.
+> > 
+> 
+> The problem with using the nsim-only VLAN filter debugfs is that it's a
+> test-only interface for figuring out a property of the stack.
 
-Omar Elghoul reported that on s390x Secure Execution this showed up as
-greatly reduced virtio-net performance together with "bad gso" and
-"bad csum" messages in dmesg. This is because with SE sync actually
-copies data, so the header is uninitialized.
+That's the whole point of netdevsim.
 
-Move the sync into receive_buf() so the
-header is synchronized before any access through buf.
+> Real HW
+> doesn't have that interface and thus the tests actually have to
+> generate traffic to ensure VLANs are propagated.
+> 
+> The new VLAN tests don't actually ensure anything on nsim, given that
+> it doesn't support VLANs. But on real HW they do - without the last
+> patch, the new tests fail on any hw supporting VLANs and MACsec.
 
-Tool use: Cursor with GPT-5.4 drafted the initial code move from prompt:
-"in drivers/net/virtio_net.c, move page_pool_dma_sync_for_cpu on receive
-path to before memory is accessed through buf".
-The result and the commit log were reviewed and edited manually.
+Well, they ensure that something in the stack+driver+HW combination is
+doing something that lets traffic go through. It's useful, but we can
+learn something extra from netdevsim.
 
-Fixes: 168b61da6871 ("virtio_net: add page_pool support for buffer allocation")
-Reported-by: Omar Elghoul <oelghoul@linux.ibm.com>
-Tested-by: Srikanth Aithal <sraithal@amd.com>
-Tested-by: Omar Elghoul <oelghoul@linux.ibm.com>
-Link: https://lore.kernel.org/r/20260323150136.14452-1-oelghoul@linux.ibm.com
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
- drivers/net/virtio_net.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+> Adding back the nsim debugfs file and test assertions guarded by "if
+> cfg._ns" would ensure filter propagation correctness, but would feel
+> non-Pythonic and a little hacky given that the same assertion can't
+> work on real HW.
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 97035b49bae7..2f57245c682d 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -1956,13 +1956,6 @@ static struct sk_buff *receive_small(struct net_device *dev,
- 	 */
- 	buf -= VIRTNET_RX_PAD + xdp_headroom;
- 
--	if (rq->use_page_pool_dma) {
--		int offset = buf - page_address(page) +
--			     VIRTNET_RX_PAD + xdp_headroom;
--
--		page_pool_dma_sync_for_cpu(rq->page_pool, page, offset, len);
--	}
--
- 	len -= vi->hdr_len;
- 	u64_stats_add(&stats->bytes, len);
- 
-@@ -2398,9 +2391,6 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
- 
- 	head_skb = NULL;
- 
--	if (rq->use_page_pool_dma)
--		page_pool_dma_sync_for_cpu(rq->page_pool, page, offset, len);
--
- 	u64_stats_add(&stats->bytes, len - vi->hdr_len);
- 
- 	if (check_mergeable_len(dev, ctx, len))
-@@ -2563,6 +2553,16 @@ static void receive_buf(struct virtnet_info *vi, struct receive_queue *rq,
- 		return;
- 	}
- 
-+	/* Sync the memory before touching anything through buf,
-+	 * unless virtio core did it already.
-+	 */
-+	if (rq->use_page_pool_dma) {
-+		struct page *page = virt_to_head_page(buf);
-+		int offset = buf - page_address(page);
-+
-+		page_pool_dma_sync_for_cpu(rq->page_pool, page, offset, len);
-+	}
-+
- 	/* About the flags below:
- 	 * 1. Save the flags early, as the XDP program might overwrite them.
- 	 * These flags ensure packets marked as VIRTIO_NET_HDR_F_DATA_VALID
+I think that's fine. The tests are anyway python wrappers around
+iproute commands, it's neither "Pythonic" nor pretty.
+Jakub, any objection?
+
+> So what would you like to happen? Bring back nsim patches + nsim-
+> specific test assertions?
+
+Yes, IMO that would be best.
+
 -- 
-MST
-
+Sabrina
