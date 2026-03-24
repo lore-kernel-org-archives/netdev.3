@@ -1,125 +1,137 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678ED3D2FFD
-	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 16:49:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774370970; cv=pass; b=MQ2wUH+mERQAqlht8TWTdQ2FjxKEoNvXgGUxtvdmWouRj/w3oopjlrjFNbwQLLTpDrKeRivz+/nCh8dfv2TtcAZAt5F7f3/DyjA92pcXzQFKhHo6WE9N4LCpEJ6dVOApKTeg1CMqQYQF8g6Q0Eq0bxztlwHDV7Wa7asP87KbErA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774370970; c=relaxed/simple;
-	bh=sTQqW7MB7tkWpsSAWmPEqS9yUjxACRtD5O5ZonpvFhY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=HxMtVMvArJHg0b/tnY5TvXh+OdO8vT3/u0pSlH6tiiKITdBKPlw/JgAz4kzm1nq2YmOMw9Xy6wQwPKdWPjawtRpXZTjPE/hVO2E5fOHaY31PD9tmHuQxHd5lydHO/q/R6bYDQkfWbw9uU/1uf/YlNrcDS0s1K40XrpXr6jc0zZI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hlx1xwb5; arc=pass smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hlx1xwb5"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b983ca059a1so176229266b.0
-        for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 09:49:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774370968; cv=none;
-        d=google.com; s=arc-20240605;
-        b=UOX6lTjLB1reVNg9jr5wWmRzWNMDletvMAczSAH9aesEmGGQHp8LGvY+wUOJq8+75+
-         knbpkU9bTxojkt44XqBSreGng/aN/SsStLT0BcL0i54iATXjF8kLkcLibFdCqqEYAdFf
-         0ZweAibrwf50Jeqqq4L0sQZbnMGVeH5iBGo5AozBo5XPaWBopfeneeUD1ui99pV9MaqN
-         4ngu3tiDw8Z8vau7pNlo4eVqfvypet9xfo25GtEqyQZz6YpeyyYUAPUqzYHTmoEAZgKo
-         H10sleU6srnw+fjc+FZgups7imZb+2RjQ7idXFznP6HD2+lffQDBGzIvSiL6BWLcel0q
-         OYKA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
-         :dkim-signature;
-        bh=LUyPHYFnDMu8hAARucm+50EyHryzQIeZaT9fhosOQIc=;
-        fh=oyMgT9uL4DaSydASd5OFzpQqjDZ3yzFs2ZKTMGkPTXM=;
-        b=kUR9SknsFyd5Ph43pvucBvAJ4MTrH87Jji9qm+u17PPcWDLHJYi92jPfgEbMCMTS99
-         8xPwm2jDwix0rSTr/DraZz4K82dDJklBU0LM7zNDt7fYw9561eYo2IYs9hRMrWJSItg1
-         uoOP8+gJkeZTKndi6rxUcqjNFLn3EU9ljYXWI5sdaQez1CZAkQdkvpW08kiJ6bJc3kzc
-         CddEMb3/Rb2EzlfEPZ1SPgE8qH8aKLlbpX/DaulUj9sipWVcXpIJEdgxyWDX9euQEAhd
-         i6Wne8jLZVJtPodJQjETzkEtJGTLpEWuBb2vrXQ12FfVPUOncOAZKD2ISYa4842ev2ac
-         4Ihw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774370968; x=1774975768; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LUyPHYFnDMu8hAARucm+50EyHryzQIeZaT9fhosOQIc=;
-        b=Hlx1xwb5jW9MbnR2HiOrVd41zDtrvMi+iqfqLsnK2Gk2tNpQWKsz4sVNUCygN9LMJM
-         hn1e3mGdsTVWvY8fsSZF6pSAqwnJE2qjBfLNOJt53R3jdjtAA66jW+UCm7rzajE4yR2A
-         S2MgKFeF2JALhVazO3q448nytvs0Okl3GSrPKTd613or/nUkpNzQ5YXM6Fdl7+O47fKg
-         S+ZRlNveULoxLuN3e0xoB8Zi+jPBmMAQB+fVXaZqhfw8iQpdB+JtHrSfTMbZLDf/xw0t
-         +Cp+0HNjBlzT9l626R+xT3zQ9FEjOSQRrjiEYSx2Gg3gRG0kPEVuL9oWncl3qN8qeWNG
-         vulg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774370968; x=1774975768;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LUyPHYFnDMu8hAARucm+50EyHryzQIeZaT9fhosOQIc=;
-        b=DU8W9XQjU+7W2KH9vDB3IZ6qf22kGmg0060fEeXUg01FBp4YQtazIZP5GliKF5Zj4M
-         fuvhcGcRq9G6O6LuuqWbrQCpcegN0pZaaiPEuT9hQ2vSTUs+MQLwcYpjdha2AvrbwUqW
-         OjBfHeWZRcx6tqs44JXhfP0B9KsUn6rYRHZmLJgyivDb0vz52Eo3vnA4N1/0/jrma961
-         27gPgp5Qmq8NwROO6DlYoVfrzqdzkKngaiph+qoywYei2ACPHwQPLfMxMSN8ZUL/Fodk
-         iqT5uvifxbV03R2RzyzOsGq4/B5GkgN+Q5OTOTgbRtMhVuSedhBSa17QzCZQVJOUVZEr
-         daeA==
-X-Forwarded-Encrypted: i=1; AJvYcCVPkn9ho3ZWCl16GlO4P+ZNEtSC9RA9sXOfWc/b5myH/DaJIosST749LTY9IFzVPliWRxnFJC8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/Eu5yweCErJkJBJ4dOUYWHyM/68pkV2yZAet/aw9CyBTvNXjU
-	c3Akw+faZGBtceiYO0PE2ATIFBW3WgYbQn/yiHrQinIlfVz5Gdyn8xWZqV8v8409oceMkh74g0C
-	8YiRwkhIUWKTWjzi7f30WcR6BnQ1uqak=
-X-Gm-Gg: ATEYQzwOaLGAoBjF6omd1rPjSXUJmr7OqPjBi/Ke+1AMA9Fn3PA+pxwkpEGAvUj3DC7
-	bNm/TMDviRXp6JVV3eoyqAm9n5YUZyNIKix9ddAYo9Be1QtkLPObo4Myl7yLyS0ZYrXdXEQUDFX
-	2cRL5ff7BpcnUKcpNILb6nlpGrFCwOHb3kFQ0PccLW5g3CaFMAY/nN7lpm/btqQHSI9CPthWFmO
-	yqVr9c2WIVUqcQaKrpz38bc5BcnCEIuJxyJTTwTy7LYBuMEgTeIS3sUWtlA7g4M0SymMNeOysy6
-	Rkk=
-X-Received: by 2002:a17:907:8694:b0:b98:11cb:5fa9 with SMTP id
- a640c23a62f3a-b9a3f1ac473mr9080366b.22.1774370967348; Tue, 24 Mar 2026
- 09:49:27 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466E23A1685;
+	Tue, 24 Mar 2026 16:51:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774371064; cv=none; b=MhvfISf8n7hVGgFsQZjRDTMZgQmcyKpyzGB1Tj+ot4s0aUIjsUz9JDwxJi0oD1heYCYjx8hYNnTXPSkypQsBwdu0RCj9ibtrTJcMlbp9rbVcZ4Wrd01EQnf3auY5S4LsmDbFzKgDs4x5mq3SNBjcCHakfx8SJfx9cWF4LRZMgRg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774371064; c=relaxed/simple;
+	bh=Rhv1jKbAfD76JauhzUq88SPmUMAlx2Lko0H1YJDIPFo=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=g0Imj3J1jIvOOrIL9N9D614R3oGGyLoghDQzZB815mVdjUFors1/POc12b5xwPeoPHalqhqshcdnZZOxsrZl2VttPMm4JAU44T//kmOwxMxbRFiJcLemF6KXUYx/uXjw/l2SyG8Bw+QLUcVjlyB96ZJq/7Y/UT9IopyuJdnc+zU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.224.107])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fgGHj16YrzHnGj5;
+	Wed, 25 Mar 2026 00:50:25 +0800 (CST)
+Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
+	by mail.maildlp.com (Postfix) with ESMTPS id D4DD840584;
+	Wed, 25 Mar 2026 00:50:58 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
+ (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 24 Mar
+ 2026 16:50:58 +0000
+Date: Tue, 24 Mar 2026 16:50:56 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: <alejandro.lucero-palau@amd.com>
+CC: <linux-cxl@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<dave.jiang@intel.com>, <dan.j.williams@intel.com>, <edward.cree@amd.com>,
+	<davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<edumazet@google.com>, Alejandro Lucero <alucerop@amd.com>, Gregory Price
+	<gourry@gourry.net>
+Subject: Re: [PATCH v24 08/11] cxl: Export function for unwinding cxl by
+ accelerators
+Message-ID: <20260324165056.000037b0@huawei.com>
+In-Reply-To: <20260323113117.2352709-9-alejandro.lucero-palau@amd.com>
+References: <20260323113117.2352709-1-alejandro.lucero-palau@amd.com>
+	<20260323113117.2352709-9-alejandro.lucero-palau@amd.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260320132356.63194-1-teknoraver@meta.com> <20260320132356.63194-2-teknoraver@meta.com>
- <1d708196-7b89-431f-bb17-177564196894@gmail.com> <CAFnufp0LRVxwh50cLrg=hUe6itshTqrNy53HkvBWk6MQ7uL0KA@mail.gmail.com>
- <acK+z8Udlg1qyDeu@devvm20253.cco0.facebook.com>
-In-Reply-To: <acK+z8Udlg1qyDeu@devvm20253.cco0.facebook.com>
-From: Matteo Croce <technoboy85@gmail.com>
-Date: Tue, 24 Mar 2026 17:48:51 +0100
-X-Gm-Features: AQROBzA2_iW4WgzLGFh7V8V5wrdvQTwU5-3V6Nc152QQriQY_B9N3jAu42FUgtE
-Message-ID: <CAFnufp0_xfO7XquPpWjHs3rJnPw=ygQgriGJXkss2nrrXq-UQw@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 1/2] e1000e: add basic XDP support
-To: Joe Damato <joe@dama.to>, Matteo Croce <technoboy85@gmail.com>, 
-	Mohsin Bashir <mohsin.bashr@gmail.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, netdev@vger.kernel.org, bpf@vger.kernel.org, 
-	intel-wired-lan@lists.osuosl.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
+ dubpeml500005.china.huawei.com (7.214.145.207)
 
-Il giorno mar 24 mar 2026 alle ore 17:41 Joe Damato <joe@dama.to> ha scritto:
->
-> On Sun, Mar 22, 2026 at 03:11:56AM +0100, Matteo Croce wrote:
-> > Il giorno ven 20 mar 2026 alle ore 22:23 Mohsin Bashir
-> > <mohsin.bashr@gmail.com> ha scritto:
->
-> [...]
->
-> > I addressed all the comments and I'll send a v4 soon, thanks!
->
-> I was paging through the code last night and I was wondering: have you
-> considered splitting this patch into multiple smaller patches?
->
-> It would probably make it easier for reviewers to read and comment on.
->
-> Just my 2 cents since you are sending a v4.
+On Mon, 23 Mar 2026 11:31:14 +0000
+alejandro.lucero-palau@amd.com wrote:
 
-I thought that all features included in NETDEV_XDP_ACT_BASIC must be
-submitted in a single commit.
+> From: Alejandro Lucero <alucerop@amd.com>
+> 
+> Add cxl_unregister_region() to the accelerator driver API
+> for a clean exit.
+> 
+> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
+> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+For this I'm seeing an outstanding question from Gregory on v23.
 
--- 
-Matteo Croce
+> ---
+>  drivers/cxl/core/region.c | 17 ++++++++++++-----
+>  include/cxl/cxl.h         |  1 +
+>  2 files changed, 13 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+> index 9c3ba911d865..8bb53a095290 100644
+> --- a/drivers/cxl/core/region.c
+> +++ b/drivers/cxl/core/region.c
+> @@ -2468,9 +2468,8 @@ static struct cxl_region *to_cxl_region(struct device *dev)
+>  	return container_of(dev, struct cxl_region, dev);
+>  }
+>  
+> -static void unregister_region(void *_cxlr)
+> +void cxl_unregister_region(struct cxl_region *cxlr)
+>  {
+> -	struct cxl_region *cxlr = _cxlr;
+>  	struct cxl_region_params *p = &cxlr->params;
+>  	int i;
+>  
+> @@ -2489,6 +2488,14 @@ static void unregister_region(void *_cxlr)
+>  	cxl_region_iomem_release(cxlr);
+>  	put_device(&cxlr->dev);
+>  }
+> +EXPORT_SYMBOL_NS_GPL(cxl_unregister_region, "CXL");
+> +
+> +static void __unregister_region(void *_cxlr)
+> +{
+> +	struct cxl_region *cxlr = _cxlr;
+> +
+> +	return cxl_unregister_region(cxlr);
+> +}
+>  
+>  static struct lock_class_key cxl_region_key;
+>  
+> @@ -2642,7 +2649,7 @@ static struct cxl_region *devm_cxl_add_region(struct cxl_root_decoder *cxlrd,
+>  	if (rc)
+>  		goto err;
+>  
+> -	rc = devm_add_action_or_reset(port->uport_dev, unregister_region, cxlr);
+> +	rc = devm_add_action_or_reset(port->uport_dev, __unregister_region, cxlr);
+>  	if (rc)
+>  		return ERR_PTR(rc);
+>  
+> @@ -2797,7 +2804,7 @@ static ssize_t delete_region_store(struct device *dev,
+>  	if (IS_ERR(cxlr))
+>  		return PTR_ERR(cxlr);
+>  
+> -	devm_release_action(port->uport_dev, unregister_region, cxlr);
+> +	devm_release_action(port->uport_dev, __unregister_region, cxlr);
+>  	put_device(&cxlr->dev);
+>  
+>  	return len;
+> @@ -3963,7 +3970,7 @@ static struct cxl_region *construct_region(struct cxl_root_decoder *cxlrd,
+>  
+>  	rc = __construct_region(cxlr, ctx);
+>  	if (rc) {
+> -		devm_release_action(port->uport_dev, unregister_region, cxlr);
+> +		devm_release_action(port->uport_dev, __unregister_region, cxlr);
+>  		return ERR_PTR(rc);
+>  	}
+>  
+> diff --git a/include/cxl/cxl.h b/include/cxl/cxl.h
+> index 122b3331469d..b8cdc604480a 100644
+> --- a/include/cxl/cxl.h
+> +++ b/include/cxl/cxl.h
+> @@ -236,4 +236,5 @@ struct cxl_endpoint_decoder *cxl_get_committed_decoder(struct cxl_memdev *cxlmd,
+>  						       struct cxl_region **cxlr);
+>  struct range;
+>  int cxl_get_region_range(struct cxl_region *region, struct range *range);
+> +void cxl_unregister_region(struct cxl_region *cxlr);
+>  #endif /* __CXL_CXL_H__ */
 
-perl -e 'for($t=0;;$t++){print chr($t*($t>>8|$t>>13)&255)}' |aplay
