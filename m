@@ -1,84 +1,45 @@
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C6D3AE70E
-	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 06:04:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C71E3AA4F7;
+	Tue, 24 Mar 2026 06:04:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774332272; cv=none; b=WvTY+L+v1FJflxnTbRwLNKWVrt5wuHVwQOc8xW5ZR9c6vDLZw4EUizBNCipZNvrUbPvrE+Sf2kiEiOG1Uinl6YU9p3WjRpyUVyZcl27J/iJmcMDkE1NppSIHn+vG1Mn8DzfSNnZwZTKlllHuxcCSVxQSm4bYIFLJLZPhQ+xZkRs=
+	t=1774332273; cv=none; b=macCauwP7JFLUTNE0S/U1RzB+WDnuHdb5LvvKqxoRA9sjwiuazHpJ5lMNlg4Vie4kwdjAjXd0VzSpsClpJs0v8jesTKrPzukGcoNQHSuxUfcv33ySHmfyHq14IplQS1fIPypvgyvdWjmo5xb/nwf3lbp+klt967BRf6H1GVyvS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774332272; c=relaxed/simple;
-	bh=eYCwzFxY2qGj3pCgqVAMjLFFIbI4v5MvL64DV7JicQ0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hC/DT1h78/EZG/jyzace3tgOrKLDlAi4aFYHX+egtm0cJpCtzUzL72dfw81nKyLaTAEkoA662AzuUJY1w2CnRU49Lk2QlS2OlmkgPxbkZzuBnD/OXm8WGWDZ4PJvpyZFA6xflcWcEz02LG52h/ii718eSZv51FHdZ6ADMWEMZ38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cmL3Jayq; arc=none smtp.client-ip=209.85.210.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1774332273; c=relaxed/simple;
+	bh=46mKEmqJ7If9n6oOQLlB27h455jj6EdxRIvtHJgTEo0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hFytGNp7KuQsyj5+pXKJseNwmrDmkPRQvCAdaToZcNZ8kw0Y6EcaJEQIGxJizX7cQTwqvt+OjWvu0Q1G9XHTgXNXjc5CNR0T+HmTPg25LAfE9PBbYEzO9IWdNwmj2FwEzfKP99liSAKd5ZI8ib9NJtCEqANa6cx7F01HPUm0Yzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=V1uJJN4w; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cmL3Jayq"
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-7d7f92bde91so1939036a34.1
-        for <netdev@vger.kernel.org>; Mon, 23 Mar 2026 23:04:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774332268; x=1774937068; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=b2bTKYrz6TONuhlNDgy7SEn2xSoQ5Qqb0S20rvcw5Ho=;
-        b=cmL3JayqeggRQV89G8Km3o8QnjpYMytrPcff4Jxqdar2vr0hzREkEgAqy1RlfqsB3y
-         uzagKgFCZspeHJIJfO9xSTkvTxy67i+VvP60inqbFm35IimacAs1nEf7SHhpapWDq6EV
-         pdlWswsgojz22h0PWPxGjVr8aiJENMmvpLab7I1LxcZXi9/iCKmYGBvxHO6bT5mfOzJV
-         8bKLJJ/LWXKxK+yGSy5arTCHYZtlBFsUQOhJdwtHTV+Ssm1g4eS74bzHvKjzQrrXFMg3
-         4uRdCOG8AiDhTyAq8/T7igSEO8TUnLwp9hh+iD1GGRKjs8tdmElkxSdV01iEFfyjVXcS
-         zfHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774332268; x=1774937068;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=b2bTKYrz6TONuhlNDgy7SEn2xSoQ5Qqb0S20rvcw5Ho=;
-        b=NtOCJLoOdd1hEVOrFdgLnXGTV4R6wk0qIodZRuuVosolvn3v8zsS5v6nBShb43eRkH
-         4Nzu3/Z/AiY+jw4/ZYh3jnaP+04BGmxMPitbMuZKyrxo5J+E9/8VXwTYjBlRMvcIfQqI
-         bn5uJ9ULuU3Ilo2fGWWFwhYvKxSmpwVJ5HdyguwuiRJy6IIzAOnGP3M8WypVstKdH9Ga
-         QVecrO0qhR6lVVfVDlO1B23DsLmYQUHssVGZZhAMl58Kp2J61iGOMTRKIizU+aandok3
-         8cgV7snyTYEeQtdie9Esct2ussd4Th9rKAh5na8cAbE7vhW9TgC4u8WzwYoRH6Qo6E5B
-         xLFg==
-X-Gm-Message-State: AOJu0YwwIuTCJC0QnPhIkox/7hok8juy5m7NKXu0nfvqP6oJJELB6kaY
-	9AEE31FXulRB6b+uil2W9q52mQHgOza08zZO6a/xGaUmYOdKeJMl5fmDZi6ukSdR
-X-Gm-Gg: ATEYQzy4bnjEDDHmw/GlYWI02c40MRTI1SvbTwH1HUhuDuVaFtLn7if9ahii02oBB59
-	1w4Vv5uRrX2BgW9ZartJC0cb3PTz02EpWbcxndByNyL55sVw/fNc8+2BiCBEQhb13Wv+P1rqad9
-	GHYNRInZU3ZTl6dSvSSzGzvVdzscIl4x1oYEPrp/RWAGziPeXniTUUNwGI1Uo1Qco4/v5XZzo4x
-	qKy+pX5BT2/9hjoKHttln3Y0P7X2GnoVCmoN15rgRkUZV/WDCPmOht6gs7bZpqXTLCcHDnlKFvN
-	U2a9Tf7bO/Y7pXX8ko4qZyV1BM8lBHlS+WS4fefbFDran/Z0YmSWno/ESlcfAb1bb42RiHScjrs
-	fJlFa6V82kw0chFHea3VwKFg/rjKV1yR8cIM7HbCZtxzm0ZxbTHxD1G05fsB3W1TM9Kw6ymJD9b
-	11ZfFf+HTo1hB24HHLRJRofslKsedTwPzPcMKvf8F3D80YWemCPWM38ktQBaWHLvK5DLKWVu8JQ
-	96r6RUZkeWdJl4OFFzG1zGI8WQj2eaJM01cNGaDNQ==
-X-Received: by 2002:a05:6830:6f88:b0:7d7:45eb:4e22 with SMTP id 46e09a7af769-7d7eaffb87cmr9661028a34.26.1774332267560;
-        Mon, 23 Mar 2026 23:04:27 -0700 (PDT)
-Received: from Atwell-Laptop.. (108-212-132-20.lightspeed.irvnca.sbcglobal.net. [108.212.132.20])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d7eadcb757sm11429957a34.15.2026.03.23.23.04.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 23:04:27 -0700 (PDT)
-From: Wesley Atwell <atwellwea@gmail.com>
-To: netdev@vger.kernel.org
-Cc: linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	ncardwell@google.com,
-	kuniyu@google.com,
-	dsahern@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	shuah@kernel.org,
-	gmbnomis@gmail.com,
-	Wesley Atwell <atwellwea@gmail.com>
-Subject: [PATCH net-next v2 3/3] selftests: packetdrill: cover scaled rwnd quantization slack
-Date: Tue, 24 Mar 2026 00:04:10 -0600
-Message-ID: <20260324060410.1137199-4-atwellwea@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260324060410.1137199-1-atwellwea@gmail.com>
-References: <20260324060410.1137199-1-atwellwea@gmail.com>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="V1uJJN4w"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=IN
+	uffQ2bP82R6qrvw57oC8K0VZlNzr1HNS+Vrn9bxsA=; b=V1uJJN4wnePmsA8Q+f
+	XvG+Qb2PVZiaYk8Y+m4n3uufLbr4cxHsIhElapq8P61e9hebHfay5h8msFCkuSZt
+	12b+9wBcmFzIedwzphfLZ1nqxTWQm/MItVF634yRJlpcph/sJMhlzNLoI61zyXhR
+	7x5K0ldrVEpn23ljE8emv90SA=
+Received: from pek-lpg-core5.wrs.com (unknown [])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wD3f63sKMJpJvBTBA--.36472S2;
+	Tue, 24 Mar 2026 14:02:21 +0800 (CST)
+From: Robert Garcia <rob_garcia@163.com>
+To: stable@vger.kernel.org,
+	Johannes Berg <johannes.berg@intel.com>
+Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Robert Garcia <rob_garcia@163.com>,
+	Luca Coelho <luciano.coelho@intel.com>,
+	Kalle Valo <kvalo@codeaurora.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 5.15.y] wifi: iwlwifi: read txq->read_ptr under lock
+Date: Tue, 24 Mar 2026 14:02:20 +0800
+Message-Id: <20260324060220.1192543-1-rob_garcia@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,106 +47,55 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3f63sKMJpJvBTBA--.36472S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJry3WrW7Aw43CF1xWr1DGFg_yoW8ZF4Up3
+	sa9r4jgrs5XFsrC3y8XF4S9rnIqa1DGanIkFyF9wnIvr13Jr1S9rWF9ryUtFyUtr4SvrWY
+	vF1jyFs8GF1UZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRSD77UUUUU=
+X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbDAg5Qu2nCKO4DywAA3C
 
-Add a packetdrill reproducer for the free_space-limited scaled
-no-shrink quantization case.
+From: Johannes Berg <johannes.berg@intel.com>
 
-Grow rcv_ssthresh with in-order data, then queue tiny OOO skbs so
-receive memory drives raw free_space just below rcv_ssthresh without
-advancing rcv_nxt. The final ACK reaches the case where raw free_space
-sits just above 84 scaled units while rcv_ssthresh stays slightly
-larger.
+[ Upstream commit c2ace6300600c634553657785dfe5ea0ed688ac2 ]
 
-Old code rounds that final free_space value up and advertises 85. With
-the fix, the ACK stays at 84.
+If we read txq->read_ptr without lock, we can read the same
+value twice, then obtain the lock, and reclaim from there
+to two different places, but crucially reclaim the same
+entry twice, resulting in the WARN_ONCE() a little later.
+Fix that by reading txq->read_ptr under lock.
 
-This gives fail-before/pass-after coverage for the actual raw
-free_space bug rather than the separate rcv_ssthresh-limited ALIGN-up
-behavior.
-
-Signed-off-by: Wesley Atwell <atwellwea@gmail.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240319100755.bf4c62196504.I978a7ca56c6bd6f1bf42c15aa923ba03366a840b@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ Change read_ptr definition according to commit
+413be839bfca9("wifi: iwlwifi: add a validity check of queue_id in iwl_txq_reclaim"). ]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
 ---
-v2:
-- replace the old rcv_ssthresh-limited sequence with an OOO-memory
-  reproducer for the raw free_space case
-- drop the follow-on ACK transition and keep the final free_space
-  failure case that proves the bug
-- drop the IPv4-only restriction after verifying the test passes for
-  ipv4, ipv6, and ipv4-mapped-ipv6
-- reword the in-file comments to describe the observed behavior without
-  referring to a removed path as "buggy"
+ drivers/net/wireless/intel/iwlwifi/queue/tx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
- .../packetdrill/tcp_rcv_quantization_credit.pkt    | 62 ++++++++++++++++++++++
- 1 file changed, 62 insertions(+)
- create mode 100644 tools/testing/selftests/net/packetdrill/tcp_rcv_quantization_credit.pkt
-
-diff --git a/tools/testing/selftests/net/packetdrill/tcp_rcv_quantization_credit.pkt b/tools/testing/selftests/net/packetdrill/tcp_rcv_quantization_credit.pkt
-new file mode 100644
-index 000000000000..bb4f63772326
---- /dev/null
-+++ b/tools/testing/selftests/net/packetdrill/tcp_rcv_quantization_credit.pkt
-@@ -0,0 +1,62 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+--mss=1000
-+
-+`./defaults.sh
-+sysctl -q net.ipv4.tcp_moderate_rcvbuf=0
-+sysctl -q net.ipv4.tcp_shrink_window=0
-+sysctl -q net.ipv4.tcp_rmem="4096 131072 $((32*1024*1024))"`
-+
-+// Exercise the scaled no-shrink path when raw backed free_space, not
-+// rcv_ssthresh, limits the post-ACK window in __tcp_select_window().
-+//
-+// Grow rcv_ssthresh with in-order data, then queue tiny OOO skbs so receive
-+// memory drops raw free_space to just over 84 scaled units while the current
-+// rcv_ssthresh stays slightly larger. The final OOO ACK should keep the
-+// sender-visible window at 84 rather than reopening it to 85.
-+   +0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-+   +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-+   +0 bind(3, ..., ...) = 0
-+   +0 listen(3, 1) = 0
-+
-+   +0 < S 0:0(0) win 32792 <mss 1000,nop,wscale 7>
-+   +0 > S. 0:0(0) ack 1 <mss 1460,nop,wscale 10>
-+   +0 < . 1:1(0) ack 1 win 257
-+
-+   +0 accept(3, ..., ...) = 4
-+
-+   +0 < P. 1:10001(10000) ack 1 win 257
-+   * > .  1:1(0) ack 10001
-+
-+   +0 < P. 10001:11024(1023) ack 1 win 257
-+   * > .  1:1(0) ack 11024
-+
-+   +0 < P. 12024:12025(1) ack 1 win 257
-+   * > .  1:1(0) ack 11024
-+
-+   +0 < P. 13024:13025(1) ack 1 win 257
-+   * > .  1:1(0) ack 11024
-+
-+   +0 < P. 14024:14025(1) ack 1 win 257
-+   * > .  1:1(0) ack 11024
-+
-+   +0 < P. 15024:15025(1) ack 1 win 257
-+   * > .  1:1(0) ack 11024
-+
-+   +0 < P. 16024:16025(1) ack 1 win 257
-+   * > .  1:1(0) ack 11024
-+
-+   +0 < P. 17024:17025(1) ack 1 win 257
-+   * > .  1:1(0) ack 11024
-+
-+   +0 < P. 18024:18025(1) ack 1 win 257
-+   * > .  1:1(0) ack 11024
-+
-+   +0 < P. 19024:19025(1) ack 1 win 257
-+   * > .  1:1(0) ack 11024
-+
-+// The last tiny OOO skb pushes raw free_space just below rcv_ssthresh
-+// without crossing the next lower scaled unit.
-+   +0 < P. 20024:20025(1) ack 1 win 257
-+   * > .  1:1(0) ack 11024 win 84
-+   +0 %{ assert (tcpi_rcv_wnd >> 10) == 84, tcpi_rcv_wnd }%
+diff --git a/drivers/net/wireless/intel/iwlwifi/queue/tx.c b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
+index cd852b95d812..d8322a40409b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/queue/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
+@@ -1524,7 +1524,7 @@ void iwl_txq_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
+ {
+ 	struct iwl_txq *txq = trans->txqs.txq[txq_id];
+ 	int tfd_num = iwl_txq_get_cmd_index(txq, ssn);
+-	int read_ptr = iwl_txq_get_cmd_index(txq, txq->read_ptr);
++	int read_ptr;
+ 	int last_to_free;
+ 
+ 	/* This function is not meant to release cmd queue*/
+@@ -1532,6 +1532,7 @@ void iwl_txq_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
+ 		return;
+ 
+ 	spin_lock_bh(&txq->lock);
++	read_ptr = iwl_txq_get_cmd_index(txq, txq->read_ptr);
+ 
+ 	if (!test_bit(txq_id, trans->txqs.queue_used)) {
+ 		IWL_DEBUG_TX_QUEUES(trans, "Q %d inactive - ignoring idx %d\n",
 -- 
-2.43.0
+2.34.1
+
