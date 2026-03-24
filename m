@@ -1,120 +1,95 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BDEC2248B9;
-	Tue, 24 Mar 2026 00:18:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B231C3BEB;
+	Tue, 24 Mar 2026 00:28:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774311489; cv=none; b=FHGG6eCcS/dpNQ5YSQRgJpKi++jvx+D8B7ZW6RflkGmsZkWHc+olcGAx8NLyF9JH7eXAUndqaDzufLwFRAr1HRIrGvylwi0/9sTtYYJ9VJkFpMT74camBgDEIF8cRc5qQ7lU5QPXggGPFZdv+kz6ARDSup9yzTB+NyyfL7WfR2o=
+	t=1774312124; cv=none; b=A/I9jaJ7V1fFtpv+4sOseTm9dT0Vg82Ay0AgTR73sl0o4774rM8xWfZTzl7nsA+YIycXvBsLyUo7H+kEEt1lwqyKc9EhEswQA1PFgpzpLgrqAkKfynfoUe3tmkO0XnyBN4qBW6IGaArHw6NVoyzrrKRxwUNVkZQ7PrWQ6Ej9kAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774311489; c=relaxed/simple;
-	bh=orAPuInm4zLrdumPOA24e1Op/6f0xyztBgvPPT5KutA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S7AAOtAJBi/bB4yGgRDv6ghYoSUmTS8v7yp0wvxmU4yg368YGoxl+F5xX/QCdDqasRb1B/ctSuTB+6zMAx2YVKgwuJ1z9xuyylKD4CSP8goDgHsrZQZuJoWW7SPMQhliLmCe3N0n33U1n8gvgCjjg2W6/jNlgx5tyvnA+sDShoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=sZ662905; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1774312124; c=relaxed/simple;
+	bh=9herclzyLSdDJPAvj1pF7VT6VknWU1hHfB//c6M6wX0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Fme/8VzGCR5wasqVpynFZIzfHDL8qrzDSiX98wopfmSjbpI+KM52vlcmY5pVXngZsEp2Nl6jP6dBSY7g21tDEliDbK2ccwxUs3X99KH8aslMTf8W8utw4mfCTv0Y0U6lMB/0AkaxTD4sA3uaPipCKQTaRs0Y19KiyF1MfSIGNSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ql+gcM9T; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="sZ662905"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=MSX287mEj1PJ0+XbuTwc2jwqBFKpfZ05vKNTdfaTtl4=; b=sZ6629058AagkkFpPjIjx6Cghk
-	K9W+B1mGljVY0+QGbgArajLwE1zhg89Swm31V/nmbkqUtcRr+qRgUnIq/wFde9SAvZon5yHXMCR3R
-	swwp20keUYq/Qyzmf9poS31TdRaJBaz68aWG2vueLZDl/FBclewi7+23aK7ar1tkRgxAV7ivvQu/9
-	tfJAb9Ys+E/NFEGFipZsb6C8HnMelzE0+RLVxF1RYRtBPHr9sNnSPa9nIxfS2ConDfzlsGqr8n/rA
-	OBj1uUMIjrahpkwOvhnfq4TBw95ZrW1smdWB4yy/WSqoZcHSvxH3Q9/KkKy2C/QYibzUfvne6lgLf
-	kgeUMN4g==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:60384)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1w4pSt-0000000016k-1WXx;
-	Tue, 24 Mar 2026 00:17:47 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1w4pSo-000000004XZ-45Va;
-	Tue, 24 Mar 2026 00:17:43 +0000
-Date: Tue, 24 Mar 2026 00:17:42 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Mark Brown <broonie@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Liam Girdwood <lgirdwood@gmail.com>, Lee Jones <lee@kernel.org>,
-	Pavel Machek <pavel@kernel.org>, Peter Rosin <peda@axentia.se>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Moritz Fischer <mdf@kernel.org>, Xu Yilun <yilun.xu@intel.com>,
-	Tom Rix <trix@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
-	linux-spi@vger.kernel.org, linux-leds@vger.kernel.org,
-	linux-fpga@vger.kernel.org, driver-core@lists.linux.dev
-Subject: Re: [PATCH 04/10] regulator: of: switch to using
- class_find_device_by_fwnode()
-Message-ID: <acHYJvbSZVPldSCU@shell.armlinux.org.uk>
-References: <20260322-remove-device-find-by-of-node-v1-0-b72eb22a1215@gmail.com>
- <20260322-remove-device-find-by-of-node-v1-4-b72eb22a1215@gmail.com>
- <360a8b4a-6507-417a-9fc1-c53b14868657@sirena.org.uk>
- <acGFksyx3SA0kJ5b@google.com>
- <7d46803e-b285-4e9c-8856-10100fa0ea85@sirena.org.uk>
- <cf92122d-6b15-458a-bf89-189a0a6874f7@lunn.ch>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ql+gcM9T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B84C4C2BC9E;
+	Tue, 24 Mar 2026 00:28:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774312124;
+	bh=9herclzyLSdDJPAvj1pF7VT6VknWU1hHfB//c6M6wX0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ql+gcM9TQ7MjumZcWjxzu6dYO5NKwG4kpPAYCu7fmHZR9hMKDCHLcYWIsf9pAphJj
+	 DIjL8fgtJWlfJS/emvVfgnufD+XLcPZygCtxjni6DCmnB3tsxOdbWeQvSGR9w+ODxB
+	 Y+CyThvnfZ2OQfFSWbCBC1KW8MnrlifwGqqXr03rx7AfIJ6CJQ+2SJcNIvRvNFDam2
+	 v0OodSHlORij7iAVfMmS9w+J1IchVXTrLlWUDvIlgAIAbQWKx1VKJE4LmMzGZMieGl
+	 Dp7sHacrvam0w9UZtpQUNxpeGKesiN9Jf7GjxXPMP4UfAJXC+v9xL+FnYCptIMpQQp
+	 wmn3OQXbdJ/zA==
+Date: Mon, 23 Mar 2026 17:28:42 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: Buday Csaba <buday.csaba@prolan.hu>, Frank Li <frank.li@nxp.com>,
+ Shenwei Wang <shenwei.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Richard Cochran
+ <richardcochran@gmail.com>, Bence =?UTF-8?B?Q3PDs2vDoXM=?=
+ <bence98@sch.bme.hu>, Francesco Dolcini <francesco.dolcini@toradex.com>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
+ <netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net v2 1/1] net: fec: fix the PTP periodic output sysfs
+ interface
+Message-ID: <20260323172842.7a62979d@kernel.org>
+In-Reply-To: <PAXPR04MB8510889775D757361CEAFA39884BA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <7012fbf90b844083d5fa7d764ed6372fe0288157.1773928309.git.buday.csaba@prolan.hu>
+	<PAXPR04MB8510889775D757361CEAFA39884BA@PAXPR04MB8510.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cf92122d-6b15-458a-bf89-189a0a6874f7@lunn.ch>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Mar 23, 2026 at 09:01:47PM +0100, Andrew Lunn wrote:
-> On Mon, Mar 23, 2026 at 07:05:13PM +0000, Mark Brown wrote:
-> > On Mon, Mar 23, 2026 at 11:28:27AM -0700, Dmitry Torokhov wrote:
-> > > On Mon, Mar 23, 2026 at 02:00:43PM +0000, Mark Brown wrote:
+On Mon, 23 Mar 2026 12:54:46 +0000 Wei Fang wrote:
+> > When the PPS channel configuration was implemented, the number of
+> > supported periodic outputs (`n_per_out`) was left at 1.
 > > 
-> > > > The regulator API is very deliberately specifically using the OF APIs,
-> > > > not the ACPI APIs, since ACPI really doesn't want to model regulators.
+> > This prohibits using channels 1..3 from the sysfs interface, since
+> > period_store() rejects channel numbers greater than `n_per_out`.
 > > 
-> > > For now? We also have software nodes and maybe we come up with something
-> > > else in the future...
+> > Fix by increasing `n_per_out` to the number of channels supported
+> > by the hardware.
 > > 
-> > > I think we should use firmware-agnostic APIs as much as possible, and
-> > > only use OF- or ACPI-specific ones when there is no generic equivalent.
-> > > This makes the code most flexible.
+> > Fixes: 566c2d83887f ("net: fec: make PPS channel configurable")
+> > Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
+> > ---
+> >  drivers/net/ethernet/freescale/fec_ptp.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
 > > 
-> > I think this is a worrying idea for core code like this, we have
-> > specific firmware bindings for specific firmware interfaces with the
-> > different interfaces having very different ideas of how things should be
-> > modelled.  The chances that firmware agnostic code is going to do the
-> > right thing seem low, and encouraging the use of generic APIs that might
-> > happen to run OK raises the risk that we'll get firmware vendors relying
-> > on them and leaving us with a conceptual mishmash to sort through.
-> 
-> How do you handle deprecated OF properties? This is a problem i've run
-> into before. A developer needs an ACPI binding, so they blindly
-> convert from of_ to device_ without engaging brain. As a result, they
-> bring all the deprecated OF properties we want to die into the brand
-> new ACPI bindings.
-> 
-> A agree with Mark here. OF != ACPI, and anything which makes it appear
-> they are the same is just going to lead developers down the wrong path
-> and increase Maintainers work pointing out all the problems.
+> > diff --git a/drivers/net/ethernet/freescale/fec_ptp.c
+> > b/drivers/net/ethernet/freescale/fec_ptp.c
+> > index 4b7bad9a485d..1a7aa280e7f6 100644
+> > --- a/drivers/net/ethernet/freescale/fec_ptp.c
+> > +++ b/drivers/net/ethernet/freescale/fec_ptp.c
+> > @@ -756,7 +756,7 @@ void fec_ptp_init(struct platform_device *pdev, int
+> > irq_idx)
+> >  	fep->ptp_caps.max_adj = 250000000;
+> >  	fep->ptp_caps.n_alarm = 0;
+> >  	fep->ptp_caps.n_ext_ts = 0;
+> > -	fep->ptp_caps.n_per_out = 1;
+> > +	fep->ptp_caps.n_per_out = 4;
+> >  	fep->ptp_caps.n_pins = 0;
+> >  	fep->ptp_caps.pps = 1;
+> >  	fep->ptp_caps.adjfine = fec_ptp_adjfine;
+> > 
+> Reviewed-by: Wei Fang <wei.fang@nxp.com>
 
-That's three who agree.
-
+I don't understand why you think that we should be exposing 4 channels
+to the user when they can only use one. And have the user guess which
+one should be programmed. Please explain (and Buday will have to update
+the commit message), to me v1 looked like a much better fix.
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+pw-bot: cr
