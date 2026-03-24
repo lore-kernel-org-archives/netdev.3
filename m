@@ -1,134 +1,53 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0963296BB6
-	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 10:41:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774348880; cv=pass; b=aZQFjD2U4l3x2HGlgoVqg//33tUaUV6M7pou4LsMss2hMqVGKK3piYaj0faPifj7y7WpI4Jdu1XZdRoyNMrZI8CD6mhwYzCWvWkmTUz3u6cMhfBDRvuWDAzCOcX1bODZCNoYl76uLQnA6925uQGRq/4HBSUo2trF/Z041i+akmw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774348880; c=relaxed/simple;
-	bh=xp93Eh1ICI7ML4MnMx9y0KJuC5k6BLcFMGK+4ZQVQm0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Nos/Ke25CLv+pxK6tuTVTATdAMfDW5fgNF9Y8H+n/xoS9MjWJlsM70KIw1PrCoaAfNkHiv2bFIgvPsKOfCLOwQqmprWs2rm6rj4m65gZ1RGwGSFmQyuh+KvysNa7W2vppjc6YIxx14/m7AzXswgy3DhLHqCaOoicob9vDvdbXkc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qehHjXVk; arc=pass smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B3223E3DB5;
+	Tue, 24 Mar 2026 10:42:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774348936; cv=none; b=Bi74QiHM/gHf04t6tfakRr+tLGzdQNdIJQ0f/YMNAq671UdmPCAp/yWJxHAx/D7UKNaJZpifE+2NMmbWyiuW1Fw/mI6RB3pQO7wtMROycyErSwPkCvxLk20SVwFKroHnvWBxW0Jv8x0S8krh0AQjymDA1a/OqHxfmUkIDburhdY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774348936; c=relaxed/simple;
+	bh=DqzbtwvvTaay8bANg1X3zYxfekLToIa0hhDkrZdYOJU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Lj1f08wwurMNQPOFfPaqa2a62BkXX0iAVWBQoHh9Yu44aiykN+rVXdVxqlcba5ENu6SvuPk/sb50o8o0hCAHDCRdt2DA5J8U2yHenewRZ8XEZqPpQKr/0gyOSZCAiVWLt+Pxh0mmsgfyRMy30jwn75FvBG1IbvVcbFfChGVaevg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0IIL6Yy1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qehHjXVk"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-660a58841d4so1696020a12.0
-        for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 03:41:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774348878; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Aj8dQQ8wj+G+11t/Tv586vkpL2yreknWU+reeV+mYcyLDoTAjxh07GMcFLc+sja+Xp
-         aFwrRuHc1jLoUuJj9ET827empXc0FvYo1NrskdN2u5KoVZtYzplcuzUQUMFATRfvqvd7
-         RnGTUS69RCmense/bvb9EQUrEmfht1Wi0MiQJYdsJXEV/wW/6MB6PVyGIJ/oatXIWC9R
-         zZCKy1/Ym50XI6/LAX0UynqWLYQm9mcP31z7aGwrcMRXb5NXjHBw+66lCYddK2ILL01m
-         GVDBv5jU/XIk8Zoo/gsOQ2r84aDqZFt1MshjhVZjU0GFhCjmLciQg7GKG4kDRIZGGk/5
-         NXxQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=QUZQ3NlXRGUuL7rO5FirwTVcowbf2uTh7HuSZrfvCxo=;
-        fh=HEL1uX4Ii5aMjP7NNoULCELp0yKG+PQyokpTGO9e8s4=;
-        b=B10hTmC+y9B86yqx+qqEGfdlEbHeA30IQzigYEKoUg67xnTTBPrWHylCKGZRjyVAGr
-         AwA1zsAWJFNNPJ2zpiAzNehfyodB2O+RPgKMaocAOSKBrwF5weSaJPd2GjvUMj/nAQZQ
-         kbV40HzK3sioZ/IG1+HQAX+8GimSbfJWWskociKtmFjZpFrAhoe3yXQZfTj605W30z7n
-         HtWkvpAu6mrV6lY+aXCb8yh/B+ZPYYKpErSlM9xOouUyVsXC7vV5+NP30BN6NXEvmbRf
-         44BnnCUBJjIwJuyZA5Mut8JWiHGBspybG1tkDbmVsVStMW50Jj22D91zqmyi6a77sSSB
-         ll2Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774348878; x=1774953678; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=QUZQ3NlXRGUuL7rO5FirwTVcowbf2uTh7HuSZrfvCxo=;
-        b=qehHjXVkt4rqacf5U2uDIW9GxUa7yyM1CsAaDVxBJDQQNdWbcKXRgxb4oybm0O/hp1
-         jebWvmP8z4HhT1Am6ON1dg/KU6DkwwC9sFx3w5f29OcicixtIFNzP4+n57kCISacN5Sd
-         njvFBUyzBXrJZlNRmAQG8LESU0L5VYrT256ZJMrEk/pB4HYrqqAXfFhHRmpffdYc96MR
-         ou3C2Nh1/4bixHRm4uK8kRVV1YUkD664pXlm6pO+Gvx6FFQ6jhDtE39tYrmH1roP7ZO7
-         Y0Kv47pOfJdY9afln9nuHlTjxqStfT/XXRPDiFHEIrKPooN8Yge2x/Hgeah6BbNWDnUA
-         N7bQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774348878; x=1774953678;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QUZQ3NlXRGUuL7rO5FirwTVcowbf2uTh7HuSZrfvCxo=;
-        b=GjSvPOyOtxvvKxu7JvCWJSWSLKmt2C2PwLKlRvcP+sCnK9YB0tFryGAsNv2bjjPVbe
-         1YW6iLJEosHgm2i3Japj7qtukQuvcb6uu7pGZY17YeTtzrnYea6tyVoZFzN0eQMKTHl1
-         qQ4xnIxeZhjcfoCNkZUj15u88rU6DHgSt5KZGY8bcXtp601GuTYHH+r41SuNBC7vGsWc
-         42r9brFFLDzOmvphYQeZ5qoDqb03xbeO0Za+UO8JBPXlZKDxTvl9Z9UI1U2xwgG1nsXO
-         RrIHlv0pBExU8AEgfgyQgcgI/OFOv6F7VWFh86S89CsBGwzGSTfcRzm2EmhRCdDPy39F
-         bwmg==
-X-Forwarded-Encrypted: i=1; AJvYcCU+1OtXL+1uzUS9NkWGzI0rh7oBKH1D6srsIV9kZaIo0mZsvZeCCRNNRbjF5TKQamZMwnUIMlU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTqY+7/lDTlrHT9r/SJHd6McA1oFRqNJhA6/Kt/M5E30EW/Oi7
-	lvI2r5IZOY76lVODey1ZypTQ8AdGWsXm0e2R3mpcuHxwnRlUw+a/JcF+9O1wAkK9leCOJ3Ef7YE
-	be9MyGJNop09vah9/mRUsS00sWQSX05w=
-X-Gm-Gg: ATEYQzxq8YH9A8nwpGU8ktkYwnzDuGE05xQ0piMHAfiSQLR5nqCBw9xJKM+rlyhUFH6
-	7yIfdjeY94VWa7hft2WX0xDBcBWzsap11pCdHuwnUM/oCW7uEMt+Koo/LI1F7zofG03NDkXWukf
-	P+K8X2f1SGHti4x1uyD4xwa5NG2XoETOdK3MvLnY63lvXcEBnwtJ8HcC0D1+7Cc6cD4oNCdkyrq
-	O7XdOKk2jzJdzXA7hAKOPmfyjk+jj1iQBALqYbXv/mPhj8Dtvh4rGC8Z8iJ6t5Mg4ryR0UZ2idI
-	w1ycEnPpBAfZ3q3f5xtVH5fPHwIhekYrEWQw4V0l501J3kQ+6vY=
-X-Received: by 2002:a17:907:d58e:b0:b97:aba7:1969 with SMTP id
- a640c23a62f3a-b982f3cbc95mr1051584066b.45.1774348877549; Tue, 24 Mar 2026
- 03:41:17 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0IIL6Yy1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6962DC2BCB1;
+	Tue, 24 Mar 2026 10:42:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1774348935;
+	bh=DqzbtwvvTaay8bANg1X3zYxfekLToIa0hhDkrZdYOJU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=0IIL6Yy182E2Y2AKeZLaw0NV5a7fQjGEcb2e6YPcjWfoQER2Uu84z+sBBArPsfGFU
+	 e9QDgEGKCsxKAetdxAuAgCPhH+63tiO9J5pi2Gytmw9BWhb+2puxOegaOoY2ou4J1h
+	 nJBK+pFZspTFkfFDnEnoGX/RIW48LvokTk/0HLtk=
+Date: Tue, 24 Mar 2026 11:32:33 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, edumazet@google.com,
+	kuniyu@google.com, kuba@kernel.org, dsahern@kernel.org,
+	netdev@vger.kernel.org, Ruohan Lan <ruohanlan@aliyun.com>
+Subject: Re: [PATCH 6.6 438/567] net: use dst_dev_rcu() in sk_setup_caps()
+Message-ID: <2026032419-unzip-twirl-b3e0@gregkh>
+References: <20260323134533.749096647@linuxfoundation.org>
+ <20260323134544.788448840@linuxfoundation.org>
+ <be03a2f9-f5ef-4431-818c-f0424366556d@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <willemdebruijn.kernel.c0bb5d182993@gmail.com> <20260320141459.9691-1-yss2813483011xxl@gmail.com>
- <willemdebruijn.kernel.2018fae77325e@gmail.com> <willemdebruijn.kernel.2497131610e6a@gmail.com>
- <CAMa1Pe4sxiyekrMKV6w5E3SJ1sk1ZzJs7wdepx6oLKGpRsi35A@mail.gmail.com>
- <willemdebruijn.kernel.5c56580eb49@gmail.com> <CAMa1Pe5XGeyk4rf7rX+4FjwPzUhxdKEw5Qsi2GwkeOMr6fw6Jg@mail.gmail.com>
- <willemdebruijn.kernel.35a7766bac9d6@gmail.com>
-In-Reply-To: <willemdebruijn.kernel.35a7766bac9d6@gmail.com>
-From: Guoyu Su <yss2813483011xxl@gmail.com>
-Date: Tue, 24 Mar 2026 18:40:46 +0800
-X-Gm-Features: AQROBzDs4gogp6j73rU5HK9XOl2G8NIEZm7k_y_R2oiqnjdRJPGiW5Zva0O6IJg
-Message-ID: <CAMa1Pe7Pn5+TTnsnX3yQD02sf1JiuYfnxt3==jCSeWB44rJs+w@mail.gmail.com>
-Subject: Re: [PATCH net v5] net: use skb_header_pointer() only for DODGY TCPv4
- GSO skbs
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: edumazet@google.com, davem@davemloft.net, kuba@kernel.org, 
-	pabeni@redhat.com, netdev@vger.kernel.org, horms@kernel.org, 
-	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com, 
-	syzbot+1543a7d954d9c6d00407@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <be03a2f9-f5ef-4431-818c-f0424366556d@kernel.org>
 
-> Perhaps you're running a different repro from the one I used. Which is
-> the C repro from the run at commit ca4ee40bf13d.
+On Tue, Mar 24, 2026 at 11:00:54AM +0100, Matthieu Baerts wrote:
+> @Greg: Is it possible to drop this patch for the moment?
+> (This patch was probably coming with dependences.)
 
-I reran with the exact ReproC from that run:
-https://syzkaller.appspot.com/text?tag=ReproC&x=10e3fe5a580000
-(commit ca4ee40bf13d), rebuilt locally, and reran.
+All now dropped, thanks for testing and letting me know.
 
-> I see that the virtio_net_hdr has hdr_len 106 and csum_start 88.
-> Those are fine. Same for your repro?
-
-Yes, same in my run as well:
-vnet_hlen=106, vnet_csum_start=88 (first 20 dumps are consistent).
-
-> The question is how skb->network_header can be greater than
-> skb->transport_header right after virtio_net_hdr_to_skb.
-
-From my instrumentation on the same skb in packet_snd():
-- packet_parse_headers() sets netoff from device L2 layout:
-  hard_hlen=172 on ip6gretap0, so netoff=172.
-- then virtio NEEDS_CSUM path sets transoff from csum_start:
-  transoff=88 (p_off=108).
-
-So for the same skb I consistently see:
-- snd_pre_parse / snd_post_parse: headlen=172, netoff=172
-- virtio_needs_csum: start=88, needed=108, p_off=108, transoff=88
-- gso_dodgy: nhoff=172, headlen=172, netoff=172, transoff=88
-
-I agree early sanity/drop in virtio_net_hdr_to_skb() is preferable if we can
-make the check precise. The current patch is only to make gso_features_check()
-safe for DODGY packets in the current path.
-
-For reference, skb_dump metadata on that same skb shows:
-headroom=4, mac=(4,172), trans=92, net=(176,-84), headlen=172.
+greg k-h
