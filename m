@@ -1,132 +1,91 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241143988EB
-	for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 15:37:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774366654; cv=pass; b=cmhCSDA3csfG0xYXFXjXVsikHWhkb1cigUwYAG9Pb5wXdDtu9LcYfw5U4gj1FQldB/tonajMskDuhLI/rRmNMnx5aom1JG5IPjpJ17ImTE7XFaXk/oLiR/39DSJTbnIRzrNFT+j2C3kijWsWRQUeyUQ1PCD5bZTb7LFIJ3W0T+0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774366654; c=relaxed/simple;
-	bh=aO0rHPZ6b8yKX59gnfCt1cb+E95HGTlMYs9Y8Z/muBs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZzuevbzmCiIBPsQg0iHEn1aQeAgG0saFGk6xPj365MAl1IoXB8E5FFM1Y16DE7kPPF06Ei2B0P6RvLXKHBuJhn8h1gpdxbuaH6DnkD52DM/RGrJg6e1BfsL3qZorSv+p9Sl8XiD0NuMuay/faqfvrZGNMfL2qTi7vpgM5vMzUxg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HBof7Pzs; arc=pass smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HBof7Pzs"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-506a747448dso34712131cf.0
-        for <netdev@vger.kernel.org>; Tue, 24 Mar 2026 08:37:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774366652; cv=none;
-        d=google.com; s=arc-20240605;
-        b=WTwMHEyTTKXcTjs2ogqjL8ZqMm/MIEnyXxNRbP9M31nb/GukQdhPXuY/3gA0zbSvpy
-         +QbAFZ9zd1/fgZ/ipD0k1J+Y9KaV7jflxpA40dkWeBEyG1oKps/H1pxEn6haIJDjR3q8
-         lCSqZ2menuVQkg8qiXxtEItSUzl3HRmsU7PJE92/+yn25y08AYih4a4xoNEvgySejxyh
-         wAG+S9PXMmye4mbPDziUflr6U74M+j1VI5uv50wPlHfm0ELO6DJs3pAnzhCAsvBJbMuo
-         AB5i8hwi8y2MrhELcVyklamJYh/riRVw5Dd2w+GGBcyZcZVqXOu9KHFz6weXRnrYLdiX
-         uuFw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=ucf4TAGdBEv2SQCZ1viH+u8hoUeJ99JEmseRUJ8lq0A=;
-        fh=YnRIGTzXycnrQ3W0GDJeW88VfgFniZTXDbZwAzla+O8=;
-        b=V0y/3fDYHP+fJ6jvAThOx/mJFrUcStodlwHI3eHHgP2i1slmaCzSsj/QZMOpdJxBMO
-         H8zhwhh7gUkqE5JqqmBmCX6yYFmCmQbyfY/tzsmAz1xyPBRbXdK4fdsVTnTb+21UM6Oa
-         WgYhbkkBaUPd3o8WNMwkFvma0hHwZPtC1lbpcVgGHalQets/BwUvkdRiavkWsWADRR5V
-         ikyb9SzVnnDzDONOiDJqrVviSCMYq1aLSAa2p83y69PAoekvcHUgzl3Bud6kkWvLivQJ
-         t2a/Lv8hS+XVt6PCfXvMRXIqjrGFWupAuQxwtVLamT0LTXqJZ2/C0Dyi4teQRRNwXpWV
-         IQBQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1774366652; x=1774971452; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ucf4TAGdBEv2SQCZ1viH+u8hoUeJ99JEmseRUJ8lq0A=;
-        b=HBof7PzsUQc+KCkR6WeghlWSGAPVlt/I1T4FsxjrVl9dIH9TkBRL5KtFNb7nfzVnSN
-         LwRRbOT4CBGKoyljQx5flD8bpELKws8Dtog5HztoTH+o0VfwGd5m7XANDT7DeFs6+puR
-         LwNm5ilClKGYVrzrQ5u3+cWBYHxmDhy282Nnlez2v2P5nUQGG6ATZ1kO7H50TRgIRIrm
-         54o05A2QnzGS/XyLa+cfbSeCPaBYqIiWX/IDKEbes9Qeo7aKyZrciPYDXkt6O3F7UHQa
-         CgFlXBgmQLwendfsJ42KXR1mBbAhKnpgQ3eX03hLengXDMkuP653803TfEivrWMYo/j/
-         cD5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774366652; x=1774971452;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ucf4TAGdBEv2SQCZ1viH+u8hoUeJ99JEmseRUJ8lq0A=;
-        b=JyNUnl3FRf4XbVKBXe7vKbXAaEfLHjl8/jLgJnREMMGjwvvqNgRqVNWn4HSPXN46dN
-         HYMrZg4QasrD3J/87LWcdj99eMcjkuf6SLbCCThkbq15XNARmu4HrfA+fblTSoiDHx39
-         5r1zUM072Nxz+xRbtemdKlnEJ4eM8c9/1tZMEFYQj4X5+teyrPqluyHNBSiPJObjUNLJ
-         rbNTbjarJLW7Ss1Q/4Xo2BuLWwTIDEdK/A7AI2AgeSaQQRQ0cqXi+Jt4s9xE8tA9pWr4
-         v+e1rN59WgNhUGJdVeGiRz3fdJqDMwfPNaFBWiU8TmBDpNaHyPwKi8rmTvZkcUnL1QKW
-         2vOw==
-X-Forwarded-Encrypted: i=1; AJvYcCX9N68YprrqGh9CkyviJVd3thUukcseshF6h4o6iemeR60ct+N+O5mnrT8Yhs4hTC3K6hq6dFg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzivI5caN7DAqFWtbNa03A2HY1hGlxn2u2p3N/BN+uIAPFhWu6g
-	KD7jj31Pdm7e+p1wHr0lUeliZBtYIb7rUeQWMfMy5Mw6XWrIE/KBZA0NrPGAFytWY2OwCo8VVvn
-	ZhUKe9gzmQ6N/e3ZT6XNGpmNqrRjq1gaunUNxgKxa
-X-Gm-Gg: ATEYQzyJHODL09Qx3T7F1qEGCO8J5T/XQ6PdiRga//zeZqWIqw5tR64yIqT1rsncfUL
-	kC/eS/ksouFU5QgvxJPFvKRnok0Zm6G+p5GnQPU7zWRJipuYuHSFTYQv3cTB72pl/7dUREl/Mgm
-	ZWoaZDL/r9TZD4ISyL4Y7iyV0FroRiI8QvYtQiWeqJXZRjf1eWlyORVx1A9f6Q3CpfjXjBnSM+g
-	xwkfN8xen7nmsOX4+GfM76/GHnSUL5qspHrJczagV75UQdVRXYytPY4wMtlu5eVTMtr6BOOte5g
-	QTSCyrh0brfQi952QKBQ4ipe17wL6Yz8ENvX9GfEASZDwYXUGvnXWbHnPb0P
-X-Received: by 2002:a05:622a:4ca:b0:509:39b5:a97c with SMTP id
- d75a77b69052e-50b80d70658mr1262501cf.27.1774366651777; Tue, 24 Mar 2026
- 08:37:31 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB8E23D7E6;
+	Tue, 24 Mar 2026 15:46:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.14
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774367173; cv=none; b=PgGP4kF9Lb4KzZRxOgm9L2Cr7rpNl6B/DzaxCpRWLhxC+Ayp1TCRJku19a1jXHQ+iW4vb3kRF+NkWk8JWc/SIrOB7o1PyLszWUwclHHFyo74JAAMSVJhEjmOx0nfGJCzxCF/9OpbT9ztiniGWPQ8YIakSLdRjBoYiiXpPPPcqFY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774367173; c=relaxed/simple;
+	bh=pLt1XqU3RZcuHwA0yFwsdkAZPuickPwzxs96gflSBRI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PKIh1kIbfoyFTXqxeZxZMlXOy6840g9+tH61TaySp891JZd+ZAE//cj5vIO3y3GTt+VeUp/0/Q6HYKI4wgKWe5Aj+0TxfIBVcF2wksaxj+OkcY9yoddqGmvV0QySz8XDLMoCL5NybTkERZGYOieVhV6n7fO+LeWfYiHHuUO35OQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AEFD388B35;
+	Tue, 24 Mar 2026 15:36:54 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf12.hostedemail.com (Postfix) with ESMTPA id F093718;
+	Tue, 24 Mar 2026 15:36:48 +0000 (UTC)
+Date: Tue, 24 Mar 2026 11:37:31 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Aaron Conole <aconole@redhat.com>
+Cc: "Vineeth Pillai (Google)" <vineeth@bitbyteword.org>, Peter Zijlstra
+ <peterz@infradead.org>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Alexei
+ Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend
+ <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, Eelco
+ Chaudron <echaudro@redhat.com>, Ilya Maximets <i.maximets@ovn.org>, Marcelo
+ Ricardo Leitner <marcelo.leitner@gmail.com>, Xin Long
+ <lucien.xin@gmail.com>, Jon Maloy <jmaloy@redhat.com>, Willem de Bruijn
+ <willemb@google.com>, Samiullah Khawaja <skhawaja@google.com>, Hangbin Liu
+ <liuhangbin@gmail.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ dev@openvswitch.org, linux-sctp@vger.kernel.org,
+ tipc-discussion@lists.sourceforge.net, linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 04/19] net: Use trace_call__##name() at guarded
+ tracepoint call sites
+Message-ID: <20260324113731.5252724e@gandalf.local.home>
+In-Reply-To: <f7ttsu58con.fsf@redhat.com>
+References: <20260323160052.17528-1-vineeth@bitbyteword.org>
+	<20260323160052.17528-5-vineeth@bitbyteword.org>
+	<f7ttsu58con.fsf@redhat.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260312100407.551173-14-jiri@resnulli.us> <20260324151014.860376-1-ben.copeland@linaro.org>
- <vms2w2ctvoojfqm25hkqapeq7gvn4bsybnrj5rxwsuvfbwutw7@4i5pbtckvlqn>
-In-Reply-To: <vms2w2ctvoojfqm25hkqapeq7gvn4bsybnrj5rxwsuvfbwutw7@4i5pbtckvlqn>
-From: Ben Copeland <ben.copeland@linaro.org>
-Date: Tue, 24 Mar 2026 15:37:20 +0000
-X-Gm-Features: AQROBzC6Z26_bkKWBwFtSwRM7x0SVesgyajNebBCMtYyb_dIiv2ErOc2Ep4I_RM
-Message-ID: <CAL0q8a6OXJ8qQYYYDCfAdujrsJ-QPt75kB=YQ3rwdZq5L=eO5Q@mail.gmail.com>
-Subject: Re: [PATCH net-next v4 13/15] net/mlx5: Add a shared devlink instance
- for PFs on same chip
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: jiri@nvidia.com, netdev@vger.kernel.org, kuba@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 44qkot3uem9ayugoztbi5z8yeb6k7s7e
+X-Rspamd-Server: rspamout08
+X-Rspamd-Queue-Id: F093718
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1+tQiMn63Ec6IOmabtDBFhjzQTi5TFzBjc=
+X-HE-Tag: 1774366608-75188
+X-HE-Meta: U2FsdGVkX19yuAlxy+EoRVjDrCnH7N5nKRqw/zEwwZC+0iz33Moky87HDcPHBdq7orWI1a5ex/4oOWmHKzFtnBCa+C49FaCGuGESvPmS6eZ+Yg7FW1CDh9GufeoAF7RG0MbJliPUtZnyFah7YBt3MUz8wzRb2slkVWkSdCnPR98osAg1Dv5cNHz+fvo4Rm/FeeyTXJhB3GR7WbPLLUpI27359JqfgGUZpS6mj02gpifyicIXkpQVM1FuCpTPvqu/QS4xU2T3ACQ+LE1YXEEaVkE/QVSk6ud7Bb4rOwYHU5U1cj60+lJz0HkA+QyxmF7zwiw8RbAoZJnkx7LY4I2JZY1LfL8PA3eumh07N3g04fE54z1+OipVfc+XHoobFK4GirBxqASTnUh57Y58A2OK8lhis1Y0GhcDtr3yfvdQzlAyMDeZBI6ofWRESVa6tnikL9TyMHTKDgVoCEHjprrt1Vu5o02xrlYKbo3y1RDFl/c4uV/O65kHRdh7Q5AaVYoZ/RLifpTQl1w=
 
-On Tue, 24 Mar 2026 at 15:21, Jiri Pirko <jiri@resnulli.us> wrote:
->
-> Tue, Mar 24, 2026 at 04:10:14PM +0100, ben.copeland@linaro.org wrote:
-> >Hi Jiri,
-> >
-> >This breaks probe on AmpereOne systems where VPD has no serial number:
-> >
-> >[    0.839394] mlx5_core 0000:01:00.0: probe_one:1952:(pid 10): mlx5_shd_init failed with error code -2
-> >[    0.846302] mlx5_core 0000:01:00.0: probe with driver mlx5_core failed with error -2
-> >
-> >Returning 0 instead of -ENOENT when no SN is found fixes it:
-> >
-> >--- a/drivers/net/ethernet/mellanox/mlx5/core/sh_devlink.c
-> >+++ b/drivers/net/ethernet/mellanox/mlx5/core/sh_devlink.c
-> >@@ -33,7 +33,7 @@ int mlx5_shd_init(struct mlx5_core_dev *dev)
-> >               start = pci_vpd_find_ro_info_keyword(vpd_data, vpd_size,
-> >                                                    PCI_VPD_RO_KEYWORD_SERIALNO, &kw_len);
-> >               if (start < 0)
-> >-                      return -ENOENT;
-> >+                      return 0;
->
-> Okay. That is probably the best fall-back. Do you want to send the fix,
-> or should I?
+On Tue, 24 Mar 2026 11:33:28 -0400
+Aaron Conole <aconole@redhat.com> wrote:
 
-I will leave it with you.
-
-Thanks,
-
-Ben
-
->
->
-> >       }
+> "Vineeth Pillai (Google)" <vineeth@bitbyteword.org> writes:
+> 
+> > Replace trace_foo() with the new trace_call__foo() at sites already
+> > guarded by trace_foo_enabled(), avoiding a redundant
+> > static_branch_unlikely() re-evaluation inside the tracepoint.
+> > trace_call__foo() calls the tracepoint callbacks directly without
+> > utilizing the static branch again.
 > >
-> >Thanks,
-> >Ben
-> >
+> > Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+> > Suggested-by: Peter Zijlstra <peterz@infradead.org>
+> > Signed-off-by: Vineeth Pillai (Google) <vineeth@bitbyteword.org>
+> > Assisted-by: Claude:claude-sonnet-4-6
+> > ---  
+> 
+> As noted before, I think we can just eliminate the guard in the
+> openvswitch module (and that would probably be a more understandable
+> fix) rather than replacing the call-in.
+
+That should probably be a separate patch, as it actually changes the
+code beyond the purpose of this patch.
+
+Removing the guard first, and then have a patch like this to modify the
+rest.
+
+-- Steve
