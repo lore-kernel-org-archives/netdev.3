@@ -1,85 +1,150 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f78.google.com (mail-oa1-f78.google.com [209.85.160.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55252750ED;
-	Wed, 25 Mar 2026 10:43:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74710395DA5
+	for <netdev@vger.kernel.org>; Wed, 25 Mar 2026 10:43:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774435399; cv=none; b=OLQ1gGEJXY8zw3ZIUObFosDfgCRQp8z4NHS2zdbw03NDKt/29s/u5SVokc0AhgldP5cHvnVW9j6E+cvyRzFMG+Fdu/WS4t9QmS720Vopu8AGJ8PsXcWNo7dwcDCliYFOQiIVf0DJBZpz4Nq2ThtCgj+7oDVYTQfqPK8Vy3ZMfKM=
+	t=1774435407; cv=none; b=lYSQL2Qr8KX7VbqjDfCJFcWcwY2d62Aoy5Pt4HY1+m/+7RInwDpFfEnueU+HBuUjA5YZdiNG2r4qNjslTCgzZiaFTIq+ZGg5fEtDlP7hQCEA7CEnAZuRGfysSuxtueQ5Fa4BBda7YYzjc8XVjbSaikZwxzo8xnYWYrN+yHt+29c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774435399; c=relaxed/simple;
-	bh=/KKBO46fIiQfZJaoULyevUqcMISDb643GiOSYMjvEiA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ntjHxJ6qEtws3xgHaskIOOzoJo1w9I68eND9aTcVmc1M9iyj3CE94m4DfscFwqTcnvZ12zegrbrkm+/QmnN/Oqr9hOgBJHj3YsBa/Iyq7ewTbV6RHT1njm5pSJCBV9dvSk7RQFogivSF4WCCluaV/2JW/ulJGttZ1Fpq2jkKEEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.99)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1w5Lhc-000000007kj-46hK;
-	Wed, 25 Mar 2026 10:43:09 +0000
-Date: Wed, 25 Mar 2026 10:43:05 +0000
-From: Daniel Golle <daniel@makrotopia.org>
-To: Vladimir Oltean <olteanv@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Frank Wunderlich <frankwu@gmx.de>,
-	Chad Monroe <chad@monroe.io>,
-	Cezary Wilmanski <cezary.wilmanski@adtran.com>,
-	Liang Xu <lxu@maxlinear.com>,
-	"Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>,
-	Jose Maria Verdu Munoz <jverdu@maxlinear.com>,
-	Avinash Jayaraman <ajayaraman@maxlinear.com>,
-	John Crispin <john@phrozen.org>
-Subject: Re: [PATCH net-next v6 2/4] net: dsa: add bridge member iteration
- macro and port mask helper
-Message-ID: <acO8OYhW2YH9eHiD@makrotopia.org>
-References: <cover.1774136876.git.daniel@makrotopia.org>
- <ff936ce4ad3044102c367c55e7a455ab0020e4b7.1774136876.git.daniel@makrotopia.org>
- <acCllYmKczZrDgv9@makrotopia.org>
- <20260323163104.a2d2hbs7jfgsptj3@skbuf>
- <acMe0vr5GT8ZSfI3@makrotopia.org>
- <20260325083427.eef2dmpv6lnyvlmn@skbuf>
+	s=arc-20240116; t=1774435407; c=relaxed/simple;
+	bh=2rqILl+4N509h5OcHN30omO6Y2zeTmhJoGC+vC6Kvoc=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Myw0KD/mVThgHy0V7MPNiH4i7iybZj5nSDEB7zCRj603c+elUtD5fTnBc62MlfVK982dkoTus4T0v5dnInLYLBJdIGTw0NZ4LLWrSa02xQ6QV6jX9TxKbM7S+YLukjh9YRAowMHSMqdmjmYzaFLzLpZfXxz6BT4OyU0ZQIbcd4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oa1-f78.google.com with SMTP id 586e51a60fabf-4171d16aad4so36869386fac.3
+        for <netdev@vger.kernel.org>; Wed, 25 Mar 2026 03:43:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774435405; x=1775040205;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sth+Yx3Anp5voHgHzU56hbsx1ZXp3cay5o4gpG4EVEo=;
+        b=p6y/E1Nldq5ac11NSZjwSLyfWFoRLNExxziH5a1h6hqjy6UDyosgIkxQYDcpX7gjSW
+         ijmkZ31nOWdJgqJoJBCCxUJcsMJ9zU2jQurTrossJTGl7YuYSOlnAwhUh4QyAequpPHi
+         eUfSq3XqZiWtMpxCji+rhpb8K/b21rYJqIg3FA7Mtq3gAnEirhclhUbojL3RDLJ82Did
+         dUsFchhWvlegi1EiPHltQ0CSSPwga8u9AWIPeQkpg2sXfsGl9d9OkB8DgNlFczMFMuBU
+         8zF08IVyKAEdcPC9Xr2RsY+4q4M6JWpMKSAKXWIHLARVI+7U3tcMtxQZFfrBAyIO+RI1
+         A+Mw==
+X-Forwarded-Encrypted: i=1; AJvYcCViae8J9z2Vwtb1iT1uVQto0Ev9GZdQwQ1XrQbnONoeyZBX9DsbX0ArWwKcEdpL5nrYwjzoLtY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywky9J2LPrmpAhNgZd/xw+dNkDeGSUE49HrNjCloNmJIJWmqFvI
+	h2r6s6gS1LnpJ09GuoKluXJthnhGfDF5zTq4E4Vwnsa8mVR8pEydTxyBm+9Hi0AG+QXFPUqm5uz
+	yjuDS+ptH4FYd7u5F14ES7mxRJJFNs9ByzfW6+lc1rrjbDSLZxTgUXB1rEEo=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260325083427.eef2dmpv6lnyvlmn@skbuf>
+X-Received: by 2002:a05:6820:1625:b0:67d:e70f:a1f with SMTP id
+ 006d021491bc7-67dff4784fdmr1706591eaf.32.1774435405461; Wed, 25 Mar 2026
+ 03:43:25 -0700 (PDT)
+Date: Wed, 25 Mar 2026 03:43:25 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69c3bc4d.a70a0220.234938.004e.GAE@google.com>
+Subject: [syzbot] [netfilter?] KCSAN: data-race in hash_ip4_add / hash_ip4_head
+From: syzbot <syzbot+1da17e4b41d795df059e@syzkaller.appspotmail.com>
+To: coreteam@netfilter.org, davem@davemloft.net, edumazet@google.com, 
+	fw@strlen.de, horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, netfilter-devel@vger.kernel.org, pabeni@redhat.com, 
+	pablo@netfilter.org, phil@nwl.cc, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Mar 25, 2026 at 10:34:27AM +0200, Vladimir Oltean wrote:
-> On Tue, Mar 24, 2026 at 11:31:30PM +0000, Daniel Golle wrote:
-> > On Mon, Mar 23, 2026 at 06:31:04PM +0200, Vladimir Oltean wrote:
-> > > On Mon, Mar 23, 2026 at 02:29:41AM +0000, Daniel Golle wrote:
-> > > > I'm also planning to introduce dsa_bridge_for_each_member macro in
-> > > > addition to that which works on (struct dsa_bridge *) and uses
-> > > > dsa_switch_for_each_bridge_member.
-> > > 
-> > > I don't like the dsa_bridge_for_each_member() name. You are likely
-> > > not considering cross-chip bridging, where a bridge spans multiple
-> > > dsa_switch structures. That is also a serious reason why your
-> > > bridge->priv design is not viable (two switches can't lay their eggs
-> > > in the same basket without overwriting each other).
-> > 
-> > dsa_bridge_for_each_local_member() ?
-> > 
-> > dsa_switch_for_each_dsa_bridge_member()
-> > (but that's too close to dsa_switch_for_each_bridge_member imho)
-> > 
-> > I was planning to have both, dsa_switch and dsa_bridge as parameters,
-> > of course, limiting the scope to a single dsa_switch.
-> 
-> I'm not sure that we do need two iterators. Just
-> dsa_switch_for_each_bridge_member() should be fine.
+Hello,
 
-Just for convenience. In my case, all callers always have a reference
-to 'struct dsa_bridge *', so instead of having the callers dereference
-'struct net_device *' from that, have a macro that does it for me.
+syzbot found the following issue on:
+
+HEAD commit:    24f9515de877 Merge tag 'for-linus' of git://git.kernel.org..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=149f16da580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=3a78dd265deac3a9
+dashboard link: https://syzkaller.appspot.com/bug?extid=1da17e4b41d795df059e
+compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/1bb1f4a7b1f6/disk-24f9515d.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/6d7e15112efa/vmlinux-24f9515d.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/ffad41df862f/bzImage-24f9515d.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+1da17e4b41d795df059e@syzkaller.appspotmail.com
+
+==================================================================
+BUG: KCSAN: data-race in hash_ip4_add / hash_ip4_head
+
+read-write to 0xffff88810e478c19 of 1 bytes by task 6489 on cpu 1:
+ hash_ip4_add+0x703/0xf60 net/netfilter/ipset/ip_set_hash_gen.h:965
+ hash_ip4_uadt+0x452/0x500 net/netfilter/ipset/ip_set_hash_ip.c:160
+ call_ad+0x231/0x640 net/netfilter/ipset/ip_set_core.c:1751
+ ip_set_ad+0x5c0/0x690 net/netfilter/ipset/ip_set_core.c:1841
+ ip_set_uadd+0x41/0x50 net/netfilter/ipset/ip_set_core.c:1864
+ nfnetlink_rcv_msg+0x509/0x5d0 net/netfilter/nfnetlink.c:302
+ netlink_rcv_skb+0x123/0x220 net/netlink/af_netlink.c:2550
+ nfnetlink_rcv+0x167/0x1720 net/netfilter/nfnetlink.c:669
+ netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+ netlink_unicast+0x5c0/0x690 net/netlink/af_netlink.c:1344
+ netlink_sendmsg+0x5c8/0x6f0 net/netlink/af_netlink.c:1894
+ sock_sendmsg_nosec net/socket.c:727 [inline]
+ __sock_sendmsg net/socket.c:742 [inline]
+ ____sys_sendmsg+0x563/0x5b0 net/socket.c:2592
+ ___sys_sendmsg+0x195/0x1e0 net/socket.c:2646
+ __sys_sendmsg net/socket.c:2678 [inline]
+ __do_sys_sendmsg net/socket.c:2683 [inline]
+ __se_sys_sendmsg net/socket.c:2681 [inline]
+ __x64_sys_sendmsg+0xd4/0x160 net/socket.c:2681
+ x64_sys_call+0x194c/0x3020 arch/x86/include/generated/asm/syscalls_64.h:47
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x12c/0x370 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+read to 0xffff88810e478c19 of 1 bytes by task 6498 on cpu 0:
+ hash_ip4_ext_size net/netfilter/ipset/ip_set_hash_gen.h:823 [inline]
+ hash_ip4_head+0x283/0x950 net/netfilter/ipset/ip_set_hash_gen.h:1275
+ ip_set_dump_do+0xa34/0xb00 net/netfilter/ipset/ip_set_core.c:1651
+ netlink_dump+0x455/0x8a0 net/netlink/af_netlink.c:2325
+ netlink_recvmsg+0x420/0x550 net/netlink/af_netlink.c:1976
+ sock_recvmsg_nosec net/socket.c:1078 [inline]
+ sock_recvmsg+0xf5/0x120 net/socket.c:1100
+ ____sys_recvmsg+0xf5/0x280 net/socket.c:2812
+ ___sys_recvmsg+0x11f/0x3b0 net/socket.c:2854
+ __sys_recvmsg net/socket.c:2887 [inline]
+ __do_sys_recvmsg net/socket.c:2893 [inline]
+ __se_sys_recvmsg net/socket.c:2890 [inline]
+ __x64_sys_recvmsg+0xd1/0x160 net/socket.c:2890
+ x64_sys_call+0x2b1a/0x3020 arch/x86/include/generated/asm/syscalls_64.h:48
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x12c/0x370 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+value changed: 0x01 -> 0x02
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 0 UID: 0 PID: 6498 Comm: syz.4.620 Tainted: G        W           syzkaller #0 PREEMPT(full) 
+Tainted: [W]=WARN
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
+==================================================================
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
