@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D61A34F49F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D69F34FF78;
 	Wed, 25 Mar 2026 07:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774423299; cv=none; b=ciy76iTFoVYzLZCjPR3pVJqRvjjR0v5j+T5VvogEDqM/t2/fgxfPYpgG7n+9SJCOH5ubDJMcFSVUXbdyuACURWTYiKPIXmiXwO450CkXZmeGyA+aoxxSgxwMPEfeGJSUDZvubSfcBV/Mr9UW7KfwO1pm9SmX6w/PGF15dOdP9AA=
+	t=1774423299; cv=none; b=LSBks3e9pAOsF0/bgbRqiTwCP+7BXQ2US1EzKeFIEshOGoo7/J8E+o+uJkic7fWAnqGUovbv+CyltP01AncbC1VNOvACahJodZmvplcpJvnwmahTCchzgS74ekTZCDIr3ZUQFAofeqygv1vH5u18iz/vy30dymQYZyiUXz+s5Lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774423299; c=relaxed/simple;
-	bh=GaJWaVTbn/UL3B4IZ3JOup4VGmfvjwuuWoZ7Ej05S78=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZRTIbuksWA289mM9dRO6ZP7B2a+eetsCxZRGFdM8H1hvGx78DstpsYsQWM49RIl4bXjcbvdHxIiI8M7aDqx33r0qnNK8cMBk+Fh0v6rehR7/VLUyBHpY9OKHBzUz8Yh1qIBUJmGKd/IwBAdduOlcn4wlvJcTKHdNB9le1ydN16M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M0Y74Anf; arc=none smtp.client-ip=10.30.226.201
+	bh=qSy9N+gRPs52hh9frh1cA4g+VCjg2QwryN4lX/B1p7w=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=PP808iHufTfPAAUPIFFNxghbGIAmSxW4k4bTK5roEnJDUBMcd1VqPXJa//M61A0joUh3H+jAQ58KEDkXWrsuV6Eo6BECtjMW54Wa/5ZY37k054sGisCk4wuomITtHzrjHSeIGHIX8z6nViTegvdwjaNHAeYFgnREik23yFQ5RGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e3AAjvec; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M0Y74Anf"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7FC2FC2BCB2;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e3AAjvec"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5A343C4CEF7;
 	Wed, 25 Mar 2026 07:21:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1774423299;
-	bh=GaJWaVTbn/UL3B4IZ3JOup4VGmfvjwuuWoZ7Ej05S78=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=M0Y74AnfbDwHsAkvbTU5Ae8qlExnAiBKDYbZRlvxWMPEdhg/1FCJRvLumNbe7Z9qC
-	 AUczzjdQKHRJYV/XIZk00ANGIWwMfg3wA9GhfFyswt73Xb2ye1EIuELvKsgETwJOM4
-	 8xYl7sMSls0Gmp5khFTPL1qzDoub7QM+UdFKFB9s1khoYPeDxrn7tTxYmsBXNEgZR0
-	 8DBcWP1+eCDjupRQFtz8Kwn+L5pnCikdpuSebaVbd7df46cR6FZqJKTp8efyHzCnxs
-	 HV6+6SD7ATvXiY2xHpRpvsOnWP1OqNFbOAUuGOKvy4hNER/RbCpviWJRnT7amrpeTH
-	 /Vx/i/ss9GbXA==
+	bh=qSy9N+gRPs52hh9frh1cA4g+VCjg2QwryN4lX/B1p7w=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=e3AAjvecKLfoOpsE0YgLruGAWi/53OWyTZwwcFP1er02WNNzoCEWEz0DVaOEl7mpP
+	 xV2rPK9hBHC17gT5UFSPZO5qpo3FOTJH/jrXajz3bPFLDmt00Bc/E3o0/6X3iPJDLG
+	 /ngJbskQM8mn+FQXuLUDLkZC9k352FR4c860Si7Pt00oI39BilpB3+9bqjbfm/HO6H
+	 AIMrDLcCgdPOU84q+1fZTtU4m4OycXyUvf5UbBQ6u5+8Ie2mJRuxTInCfZsWJJACw1
+	 ZNoeCQw5Th+kjuRICwuoqtkBmdDZhnIWGoqL314t2uK3kl/ocflMDz4lwLGd2HSRCx
+	 /QCqF1MBnw1oQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 75982FEA822;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A454FEA820;
 	Wed, 25 Mar 2026 07:21:39 +0000 (UTC)
 From: Satish Kharat via B4 Relay <devnull+satishkh.cisco.com@kernel.org>
-Date: Wed, 25 Mar 2026 00:21:40 -0700
-Subject: [PATCH net-next 2/6] enic: add V2 SR-IOV VF device ID
+Subject: [PATCH net-next 0/6] enic: SR-IOV V2 preparatory infrastructure
+Date: Wed, 25 Mar 2026 00:21:38 -0700
+Message-Id: <20260325-enic-sriov-v2-prep-v1-0-48f04ce110cc@cisco.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,17 +40,17 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260325-enic-sriov-v2-prep-v1-2-48f04ce110cc@cisco.com>
-References: <20260325-enic-sriov-v2-prep-v1-0-48f04ce110cc@cisco.com>
-In-Reply-To: <20260325-enic-sriov-v2-prep-v1-0-48f04ce110cc@cisco.com>
+X-B4-Tracking: v=1; b=H4sIAAKNw2kC/x2MsQqAMAwFf0UyG7BRHPwVcdD61CxRWimC9N8tj
+ ndw91JEUEQaqpcCkkY9rYCrK/LHbDtY18IkjfRNKx3D1HMMeiZOwlfAxbLBYV58u3pHJSxy0+e
+ fjmS42fDcNOX8Ae/5tDtuAAAA
 To: netdev@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org, Satish Kharat <satishkh@cisco.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1774423298; l=1690;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774423298; l=2762;
  i=satishkh@cisco.com; h=from:subject:message-id;
- bh=1chUHjnI8ZuULFMfvuOuwWNT2kAEAJEGnPmXwEaCezM=;
- b=VmrXT0awEfh6stHSRZl0LCMJQ6JD2asOuyGGKo1W1qqho3++AamyADVYD4KAEL5vbGK/93e4x
- L1QCbxhY3y7D/2D4USOSNOl1fLjQqJKKWIe0aaAYEhhqyVAoLfWVwX/
+ bh=qSy9N+gRPs52hh9frh1cA4g+VCjg2QwryN4lX/B1p7w=;
+ b=xI6mgt/ThBwIf5b/RTtJnNp69cE+vRfqz0zwMpLG6jcbQtnA6dl2PPpj8gMamiOLMiYmACtmG
+ 0S+Y2Al5FIgABktOVSOuXZw+NYMfr+mSX2eziO/vyKiK6DvDmHLqawj
 X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
  pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
 X-Endpoint-Received: by B4 Relay for satishkh@cisco.com/default with
@@ -58,48 +58,63 @@ X-Endpoint-Received: by B4 Relay for satishkh@cisco.com/default with
 X-Original-From: Satish Kharat <satishkh@cisco.com>
 Reply-To: satishkh@cisco.com
 
-From: Satish Kharat <satishkh@cisco.com>
+This is the first of four series adding SR-IOV V2 support to the enic
+driver for Cisco VIC 14xx/15xx adapters.
 
-Register the V2 VF PCI device ID (0x02b7) so the driver binds to V2
-virtual functions created via sriov_configure. Update enic_is_sriov_vf()
-to recognize V2 VFs alongside the existing V1 type.
+The existing V1 SR-IOV implementation has VFs that interact directly
+with the VIC firmware, leaving the PF driver with no visibility or
+control over VF behavior. V2 introduces a PF-mediated model where VFs
+communicate with the PF through a mailbox over a dedicated admin
+channel. This brings enic in line with the standard Linux SR-IOV
+model, enabling full PF management of VFs via ip link (MAC, VLAN,
+link state, spoofchk, trust, and per-VF statistics).
 
-Signed-off-by: Satish Kharat <satishkh@cisco.com>
+This preparatory series adds detection and resource helper code with
+no functional change to existing driver behavior:
+
+  - Extend BAR resource discovery for admin channel resources
+  - Register the V2 VF PCI device ID
+  - Detect VF type (V1/V2/usNIC) from SR-IOV PCI capability
+  - Make enic_dev_enable/disable ref-counted for shared use by data
+    path and admin channel
+  - Add type-aware resource allocation for admin WQ/RQ/CQ/INTR
+  - Detect presence of admin channel resources at probe time
+
+Tested on VIC 14xx and 15xx series adapters with V2 VFs under KVM
+(sriov_numvfs, VF passthrough, ip link VF configuration, VF traffic).
+
+Based in part on initial work by Christian Benvenuti.
+
 ---
- drivers/net/ethernet/cisco/enic/enic_main.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Satish Kharat (6):
+      enic: extend resource discovery for SR-IOV admin channel
+      enic: add V2 SR-IOV VF device ID
+      enic: detect SR-IOV VF type from PCI capability
+      enic: make enic_dev_enable/disable ref-counted
+      enic: add type-aware alloc for WQ, RQ, CQ and INTR resources
+      enic: detect admin channel resources for SR-IOV
 
-diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
-index e839081f9ee4..e16dfbcd2c22 100644
---- a/drivers/net/ethernet/cisco/enic/enic_main.c
-+++ b/drivers/net/ethernet/cisco/enic/enic_main.c
-@@ -66,12 +66,14 @@
- #define PCI_DEVICE_ID_CISCO_VIC_ENET         0x0043  /* ethernet vnic */
- #define PCI_DEVICE_ID_CISCO_VIC_ENET_DYN     0x0044  /* enet dynamic vnic */
- #define PCI_DEVICE_ID_CISCO_VIC_ENET_VF      0x0071  /* enet SRIOV VF */
-+#define PCI_DEVICE_ID_CISCO_VIC_ENET_VF_V2   0x02b7  /* enet SRIOV V2 VF */
- 
- /* Supported devices */
- static const struct pci_device_id enic_id_table[] = {
- 	{ PCI_VDEVICE(CISCO, PCI_DEVICE_ID_CISCO_VIC_ENET) },
- 	{ PCI_VDEVICE(CISCO, PCI_DEVICE_ID_CISCO_VIC_ENET_DYN) },
- 	{ PCI_VDEVICE(CISCO, PCI_DEVICE_ID_CISCO_VIC_ENET_VF) },
-+	{ PCI_VDEVICE(CISCO, PCI_DEVICE_ID_CISCO_VIC_ENET_VF_V2) },
- 	{ 0, }	/* end of table */
- };
- 
-@@ -307,7 +309,8 @@ int enic_sriov_enabled(struct enic *enic)
- 
- static int enic_is_sriov_vf(struct enic *enic)
- {
--	return enic->pdev->device == PCI_DEVICE_ID_CISCO_VIC_ENET_VF;
-+	return enic->pdev->device == PCI_DEVICE_ID_CISCO_VIC_ENET_VF ||
-+	       enic->pdev->device == PCI_DEVICE_ID_CISCO_VIC_ENET_VF_V2;
- }
- 
- int enic_is_valid_vf(struct enic *enic, int vf)
+ drivers/net/ethernet/cisco/enic/enic.h          | 18 +++++++++++
+ drivers/net/ethernet/cisco/enic/enic_dev.c      | 17 +++++++---
+ drivers/net/ethernet/cisco/enic/enic_main.c     | 42 ++++++++++++++++++++++++-
+ drivers/net/ethernet/cisco/enic/enic_res.c      | 10 ++++--
+ drivers/net/ethernet/cisco/enic/vnic_cq.c       | 14 +++++++--
+ drivers/net/ethernet/cisco/enic/vnic_cq.h       |  3 ++
+ drivers/net/ethernet/cisco/enic/vnic_dev.c      | 10 ++++++
+ drivers/net/ethernet/cisco/enic/vnic_intr.c     | 12 +++++--
+ drivers/net/ethernet/cisco/enic/vnic_intr.h     |  2 ++
+ drivers/net/ethernet/cisco/enic/vnic_resource.h |  4 +++
+ drivers/net/ethernet/cisco/enic/vnic_rq.c       | 14 +++++++--
+ drivers/net/ethernet/cisco/enic/vnic_rq.h       |  3 ++
+ drivers/net/ethernet/cisco/enic/vnic_wq.c       | 14 +++++++--
+ drivers/net/ethernet/cisco/enic/vnic_wq.h       |  3 ++
+ 14 files changed, 147 insertions(+), 19 deletions(-)
+---
+base-commit: b1c803d5c8167026791abfaed96fd3e6a1fcd750
+change-id: 20260324-enic-sriov-v2-prep-2fe1eabc3dc1
 
+Best regards,
 -- 
-2.43.0
+Satish Kharat <satishkh@cisco.com>
 
 
