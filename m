@@ -1,103 +1,126 @@
-Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.58.6])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B918345CD3;
-	Wed, 25 Mar 2026 09:13:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.132.58.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9B8347BC1;
+	Wed, 25 Mar 2026 09:14:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774430018; cv=none; b=TAdgF1cnEXdkR3aIMmlO3a6m5rEF/+hI3K5DZ6zoGsWe+xhd8PXP+8Fm6w/N3hlkl7Wk5AE8EfVnG0qlrxJFws60gRrLiod0+NnCsnRE0pS5SOrGceCTIve/YAVyfPfYjgkczTzKovlaocojjqH9UV09ZFFcLefER0P0YlsDMnw=
+	t=1774430043; cv=none; b=p69hyiCNsZ2JR4rRDBgvVsIfwcAer9GJQOdAj0Lfs/CwC/HDrOYj3mzObNUd5nb90kGT4lBf7FIs6aqvVXbrBCyBcpphrZbFHYSl+T3RhjUiLN5klDIStVtk/APmKto2ZKClpxaDGmMMwqD7O+2aAt5ZWwxKCHRdF3G2DnEUzCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774430018; c=relaxed/simple;
-	bh=HQT4kmLte2FA6Vq1NUhRZv5AfqORBcaUSyulASYLgKM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lg9t3XRLGAiq+Ik4GXi9s7nEbcje7pj/uEqZnHtBhayitrPoxXcputq1vT6GUPFDRDEmMi3U02Ob+mffUDbJ2WBYkSoExf0xFPfHE+CHqS8AdgAEgNDUWw+MGRnwr+C4zgrIlvFL/vkuLpKAhNoFC4JRhGOKKAM7ARuyVGRVs44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com; spf=pass smtp.mailfrom=mucse.com; arc=none smtp.client-ip=114.132.58.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mucse.com
-X-QQ-mid: zesmtpsz4t1774429932t80be807e
-X-QQ-Originating-IP: HVchvQAP+d6pcBPMDfa9I97T9rtvY6iapgmEO8XzS9I=
-Received: from localhost.localdomain ( [203.174.112.180])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 25 Mar 2026 17:12:09 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 7553183382821081949
-EX-QQ-RecipientCnt: 9
-From: Dong Yibo <dong100@mucse.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	danishanwar@ti.com
-Cc: linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	dong100@mucse.com
-Subject: [PATCH net-next 0/4] net: rnpgbe: Add TX/RX and link status support
-Date: Wed, 25 Mar 2026 17:12:00 +0800
-Message-Id: <20260325091204.94015-1-dong100@mucse.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1774430043; c=relaxed/simple;
+	bh=78pyxin5qndZKSJzDXsFFmZnhzDT7LLyrqA2VFYSpPo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=upkUNpIsg+06/j0pVK744setFYNMOqu13OtPvWqwnUVhb4PeXxSN3cAwyS4YMm5lAXPvutUpP3oF2pd/Z3v03HYQt/VSIba/ieiSYtdTo08P3qR2GZIOvXHHqBR0nqVvFBxFO0Wa/YEXxzz8p/9Qcue0xpofdhyI+6/dJlm8xwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=plX75fj6; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="plX75fj6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32EFCC4CEF7;
+	Wed, 25 Mar 2026 09:14:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774430043;
+	bh=78pyxin5qndZKSJzDXsFFmZnhzDT7LLyrqA2VFYSpPo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=plX75fj6Fi/CInEUCv8w5cHIDsad+uaIJX11gWXQZPLJJfOjxOosFJurvATwdmzyf
+	 XM1fLbDydsi7l/I4rpFP1BhjUzFOQ6/hjYw54HGBxNQsrwyEtfT2GI0a4cA2FlfiHb
+	 Sov+e/lBVY+RfSyA0pCltMc0T/7xgv642U1NGI0MXjy8jQyo/dCKntQ7HYnpgUgil6
+	 50NrK30hAVvx6h94jAhu8o0u0oOb2WcEjPIS4o6//SY9KR923JbehewO+oIH9PAMhT
+	 stADXCjZPDMiqTzvvHa2LGYvmbBAg6lKE7Lk6gOOGIJPio4X+XTCnZWFF3z1ULGLKk
+	 TlxBWeUuqn+DQ==
+Date: Wed, 25 Mar 2026 11:13:57 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Long Li <longli@microsoft.com>
+Cc: Konstantin Taranov <kotaranov@microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K . Y . Srinivasan" <kys@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH rdma v2] RDMA/mana_ib: Disable RX steering on RSS QP
+ destroy
+Message-ID: <20260325091357.GP814676@unreal>
+References: <20260323201106.1768705-1-longli@microsoft.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:mucse.com:qybglogicsvrgz:qybglogicsvrgz3a-1
-X-QQ-XMAILINFO: OW4JKxETGMY2adAB6aEA6waznMi8Bu3n+vwWRoWPzZtwKlYxVxBan3A0
-	YGXkjWhn/wU88uBTdPrNT1Qbfu5vXURZBEADV4ayjbnRa1WyrRNbotVtyBtAZo8EieA5JxC
-	jeEZU5qgp7ZEh/Y2Su11TcKr2xiIYHYeYRVB2hzl4K5+z2cjYiE/mHXnXLiGGCGDuplanv9
-	bb83IJ+M+KiSt7nKIvD7NCYn4qrPK+iROctZ5DBxLjSpnVU7Ytdl4iWEqVBsYVUR5lwKY1V
-	rjmhP5S3FgIW+y/Ihea9Jd2HNJx8TWRLUzKY9aIM2/jwx4JFXjzDJGLU7n6B9KHyenkdwjp
-	ueSC88bxD+l/cjRRm9RkzKpgq5H1o2EFui0uXex7RcHofXhWl7Q4U5nkej31S+lMtjGvL1o
-	2peZn2kQYpFQnj5Gcz4tOZYT+sptZ3XlYPY765EcHkoBjFo+CGvj5PILKPyuRr20cV2Ppq6
-	DdcdZi392AUYkp+Ja3GqQK1xKujdXYJpC0/Y4V+Ax1fyt1ZCgulqh0FZBwyAEKGddTibrBA
-	JN6/KNh1Q6khw1YzqM1Vx6aWzrvHyKp/iLpqwD7ZIyAxpg/tZ1p0egxeFSf5WhiQp9YKVIp
-	06UK/Yk3gXbk7pahu1Oq3nsc09rAfhQk4+2QTPvFVEf4ntJtHDMFzXXcWn5ZR6azf8UaCFf
-	yd/6jaOWwJBFx8WrNmEdkK6WhxjQ2kGKChSLNjlHedje/1z5KSR2SvsdxbZBrMhVB3UeyYZ
-	WNdnytavT7pRdRiCagvvTnQgDFlyZnP682lgRMnNpHkI9ObWCbKQc48nrCUcrv5/r3Z17oy
-	l9OCQ5vKG3fFvgSGPm6ENw0jiu3r/SW1dxIMaSt4OToZWgrljMFgil6lzh6Uq1jv+dRNpK/
-	2nloNPZPeFpqsYG+AaguI5pQUenxiWh/mHzXb6waMUJyeRFY3O6cutmn0Kw7F4kRRGWD5Jl
-	qtfBp1n6/sMpnyOvSTP9acEfpqg02k+A+JUKuXX8toxRxx9IhLq5lGK0hgWZ44qJrW/Q6kT
-	4HhWSp/Q==
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260323201106.1768705-1-longli@microsoft.com>
 
-This patch series adds the packet transmission, reception, and link status
-management features to the RNPGBE driver, building upon the previously
-introduced mailbox communication and basic driver infrastructure.
+On Mon, Mar 23, 2026 at 01:10:56PM -0700, Long Li wrote:
+> When an RSS QP is destroyed (e.g. DPDK exit), mana_ib_destroy_qp_rss()
+> destroys the RX WQ objects but does not disable vPort RX steering in
+> firmware. This leaves stale steering configuration that still points to
+> the destroyed RX objects.
+> 
+> If traffic continues to arrive (e.g. peer VM is still transmitting) and
+> the VF interface is subsequently brought up (mana_open), the firmware
+> may deliver completions using stale CQ IDs from the old RX objects.
+> These CQ IDs can be reused by the ethernet driver for new TX CQs,
+> causing RX completions to land on TX CQs:
+> 
+>   WARNING: mana_poll_tx_cq+0x1b8/0x220 [mana]  (is_sq == false)
+>   WARNING: mana_gd_process_eq_events+0x209/0x290 (cq_table lookup fails)
+> 
+> Fix this by disabling vPort RX steering before destroying RX WQ objects.
+> Note that mana_fence_rqs() cannot be used here because the fence
+> completion is delivered on the CQ, which is polled by user-mode (e.g.
+> DPDK) and not visible to the kernel driver.
+> 
+> Refactor the disable logic into a shared mana_disable_vport_rx() in
+> mana_en, exported for use by mana_ib, replacing the duplicate code.
+> The ethernet driver's mana_dealloc_queues() is also updated to call
+> this common function.
+> 
+> Fixes: 0266a177631d ("RDMA/mana_ib: Add a driver for Microsoft Azure Network Adapter")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Long Li <longli@microsoft.com>
+> ---
+> v2:
+>   - Removed redundant ibdev_err on mana_disable_vport_rx() failure as
+>     mana_cfg_vport_steering() already logs all failure scenarios.
+>   - Added comment clarifying this is best effort.
+>  drivers/infiniband/hw/mana/qp.c               | 15 +++++++++++++++
+>  drivers/net/ethernet/microsoft/mana/mana_en.c | 11 ++++++++++-
+>  include/net/mana/mana.h                       |  1 +
+>  3 files changed, 26 insertions(+), 1 deletion(-)
 
-The series introduces:
-- MSI-X/legacy interrupt handling with NAPI support
-- TX path with scatter-gather DMA and completion handling
-- RX path with page pool buffer management
-- Link status monitoring and carrier management
 
-These changes enable the RNPGBE driver to support basic tx/rx network operations.
+It doesn't apply to rdma-rc.
 
-Dong Yibo (4):
-  net: rnpgbe: Add interrupt handling
-  net: rnpgbe: Add basic TX packet transmission support
-  net: rnpgbe: Add RX packet reception support
-  net: rnpgbe: Add link status handling support
+Looking up https://lore.kernel.org/all/20260323201106.1768705-1-longli@microsoft.com/
+Grabbing thread from lore.kernel.org/all/20260323201106.1768705-1-longli@microsoft.com/t.mbox.gz
+Checking for newer revisions
+Grabbing search results from lore.kernel.org
+Analyzing 3 messages in the thread
+Looking for additional code-review trailers on lore.kernel.org
+Analyzing 0 code-review messages
+Checking attestation on all messages, may take a moment...
+---
+  [PATCH v2] RDMA/mana_ib: Disable RX steering on RSS QP destroy
+    + Link: https://patch.msgid.link/20260323201106.1768705-1-longli@microsoft.com
+    + Signed-off-by: Leon Romanovsky <leon@kernel.org>
+  ---
+  NOTE: install dkimpy for DKIM signature verification
+---
+Total patches: 1
+---
+Applying: RDMA/mana_ib: Disable RX steering on RSS QP destroy
+Patch failed at 0001 RDMA/mana_ib: Disable RX steering on RSS QP destroy
+error: patch failed: drivers/net/ethernet/microsoft/mana/mana_en.c:3339
+error: drivers/net/ethernet/microsoft/mana/mana_en.c: patch does not apply
+hint: Use 'git am --show-current-patch=diff' to see the failed patch
+hint: When you have resolved this problem, run "git am --continue".
+hint: If you prefer to skip this patch, run "git am --skip" instead.
+hint: To restore the original branch and stop patching, run "git am --abort".
+hint: Disable this message with "git config set advice.mergeConflict false"
+Press any key to continue...
 
- drivers/net/ethernet/mucse/Kconfig            |    1 +
- drivers/net/ethernet/mucse/rnpgbe/Makefile    |    3 +-
- drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h    |  183 +-
- .../net/ethernet/mucse/rnpgbe/rnpgbe_chip.c   |   39 +-
- drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h |   20 +
- .../net/ethernet/mucse/rnpgbe/rnpgbe_lib.c    | 1917 +++++++++++++++++
- .../net/ethernet/mucse/rnpgbe/rnpgbe_lib.h    |   90 +
- .../net/ethernet/mucse/rnpgbe/rnpgbe_main.c   |  103 +-
- .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c    |   20 +
- .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx.h    |    1 +
- .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c |  165 ++
- .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.h |   47 +
- 12 files changed, 2579 insertions(+), 10 deletions(-)
- create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
- create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.h
-
--- 
-2.25.1
-
+Thanks
