@@ -1,43 +1,71 @@
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5360B2737E3
-	for <netdev@vger.kernel.org>; Wed, 25 Mar 2026 12:04:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F120341ACA
+	for <netdev@vger.kernel.org>; Wed, 25 Mar 2026 12:08:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774440275; cv=none; b=E+sxV9RucZKzQf5EV7q40R3vGhoI8dw986d30MWv8t/OKdaBE440LitB291GEzaAX4v3DAX6nscTm6VjxhXh14mMyVyVyDG9hU7Y07YilpJOLwTpIvrOB+y/h+69J1LzyRnL38Gz7jXG0KknmoiWEZoYrKwoSRyNKDELn+44etU=
+	t=1774440499; cv=none; b=qpsO02wqKTKndMnM+E+P4Za4wwBNVG0fKFv7kj51B7iLDnymMoMYIVeH1o5yytX/Smwk7EdhzWBntaChtexfBqqm60ZMFB2R7zzHEKZP/1kr0CgdT+8lf0Fknfv3JCG1hh7hBuX4y+keR/dru/9rsSLDPY/CIzKaKNVKJdQn8Yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774440275; c=relaxed/simple;
-	bh=lig8eQIJT/YsmcN/8Cz5lLnyu/fmd5QKPODFHyG+1q4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KKGEnLfVFvH3Y6RD0j8+WauTagmzDnckeBnSSajzLE024j0ibmRX7eLDUT8UFK9j/aOBb/QXKdDPHbqvvlnjoEk497Nd4g2EZUohX1xws8jkUmdcQZT0zgEDAh5BkXNxktsykjyfxEy7bZXsO/o695fZeNa/u9S5f+348DdQ6tQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=KgtzccoR; arc=none smtp.client-ip=91.218.175.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1774440499; c=relaxed/simple;
+	bh=+cMoiw6D/IN3IntDhoppbwqa4lsSaKo8wfRqQOkKgz4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t3MM1nxIOmSPHqRTg1Md1lEWgOVM05SFeRfclMc7sw3rJKFsawHnC8QsSCE21m9r4i8rYoT+SfbSPByZR3oUnne5wWMlExkI/1dgygFUqpJA59wm5mW03TfTznX2dgDYM6d5SMiobg4fP9L2O9OaN9YwjV/2U7QHdezrMQhSZFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oxCfiD5L; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="KgtzccoR"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774440271;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=hT0uXBQF1/fOCxYPN3rGjScizPcptYIyLDnB3lOnOjg=;
-	b=KgtzccoRt8ZAjwlydpo305iE1JbzAbZqaHjfpnMKlbLQOitw1Cx8aEMvSWPkhIeMitxUpr
-	lI2c0jdT4mSm69+8hMFdaji76rgvxeLznIFDTEFvCHoP5+o8m09aXWjFRKYmar1fgzTP9j
-	Dw+1O7RBpWreSSzcWYWI1rMYdhKB1N4=
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-To: Richard Cochran <richardcochran@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Subject: [PATCH] ptp: ocp: fix resource freeing order
-Date: Wed, 25 Mar 2026 12:05:10 +0000
-Message-ID: <20260325120510.34481-1-vadim.fedorenko@linux.dev>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oxCfiD5L"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-43b3d9d0695so750351f8f.0
+        for <netdev@vger.kernel.org>; Wed, 25 Mar 2026 05:08:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774440496; x=1775045296; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zdYUqT0vzhqUOzwuw5MinoVNdtbVW6KIxEy0tW7Lyfs=;
+        b=oxCfiD5Lpv7n+ZOtCaO5DUJR1M9E0ChfUX0Afr9QslGia9E7TFgFC3dMdEvveEKMK1
+         FUipD/qgIIpMO1o9BRwSVznkT49iTxs4FRJiC+yBfAN4OXm6Q97zhbUPTMmYQ5eKe383
+         SALugI9/fTD7PYiNHgXBAqdlr1DHY9SZCnUYlLI6vf/AJE5vrWl2oaRxmUyPU42siMVo
+         gELgs1CFFKzHiU2A9n3CleurMb/kLuEdciWyzQPw2/j23kB2SIifAHKXIJl3sapl3vyZ
+         iBWj8rrodcvj6skaUrKIXyK2n3Kz274Cs1TV8ihXz4qAof4WS1LyU7E4h4mdj+C8K6nt
+         22Pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774440496; x=1775045296;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zdYUqT0vzhqUOzwuw5MinoVNdtbVW6KIxEy0tW7Lyfs=;
+        b=Ob93q0KoVXNpOexvznW248Qz85kGaeiFGgSmhYytbPuHoW0OGBnAtnCrAg1h4BHd8a
+         pbwfTLyZ7D4zdZTK2lup1r6jsKcAX+Zbi7ZOU7Xgp7yFKcaZ4A4wMv8WwJlwDLql7Rbp
+         PDJSq+jiBimYigG9fpzn1UykD7H1rD0hHlsP8vEtb12fFsvfmt+NP1g/6n9IqIesIBwX
+         vPXbHOe4fG1HkmajilemlU9hcyNJf56WO7Nbi28RJYuSh6kueq7uwV3Uk3Yru6DYayeD
+         4fuCfMHeSn6cFdSpGmNY102Pohh9ocD44mKbK1T7PLA7VrtcEspQ7EolWSEs6SB/NZz4
+         Cauw==
+X-Forwarded-Encrypted: i=1; AJvYcCV3eAuMNIsBZgN+eC+29IE2Ic7OvwJ+GNxuD+Bsoqp1+B3U49ElT5r27fSzMhI0EFl4bPSZThQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrNXm6+XZa41/N4ioCjPZ/WdsgUs0mMeV9Abvrv31GY3Kzvrb7
+	lVUYqflrxQE/Stkb2VlUSIDOcM4CL2L61kAstRNOCrxWw2D2Uv0n1xZa
+X-Gm-Gg: ATEYQzy3657k1KfRYfu93DinHIu79kbi3nywOjXEQTEA6HeG1Qd9bHjZBQcczdpsrQB
+	2XkB7E7GcL6TBlHV5jfftu6huGFxu66VYRAF/iFQR5AtI6hV/c0ZIcgeljLZC3JNBEdisxDl99K
+	UvDVre5WX73XjgsH/0/6I/dootj9aSvAmlDN6BpLW09rwoe+MZWuuU4I/jxMaLealSOXCcT9KzP
+	SU975aTz3QNIJZQLLkw1I8KKEiYhH7+O+kxZSD1eGwMtKJrizhi2yWiqwqN9I4P+UHt02fkV6wn
+	j7rUxrlgJTaqDYPUharc+gDlyRW8hKJMxv+nF7udQ86b5vKHBN4KLmhjOdwxaI4xIxDVjwVJfVO
+	0fh1OTAqLvJJpG/yIpfnSdQr5N4UWt9UoJyMyzrnJDF8bJVOMz/NKN2OC/dFOfQrtmBYtykUp5A
+	McVKpnCbQbeOpmgfkELXzxF9iW2edsuNLHbbGg4tXw1BYB/oLsKqa4XE/W+iLVsSKhMFJwq3EKN
+	5hyRm2r/w==
+X-Received: by 2002:a05:6000:98c:b0:43b:3c53:283d with SMTP id ffacd0b85a97d-43b805a1754mr10585982f8f.21.1774440496367;
+        Wed, 25 Mar 2026 05:08:16 -0700 (PDT)
+Received: from 127.com ([2620:10d:c092:600::1:8126])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b644ae37dsm48618289f8f.2.2026.03.25.05.08.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Mar 2026 05:08:15 -0700 (PDT)
+From: Pavel Begunkov <asml.silence@gmail.com>
+To: io-uring@vger.kernel.org
+Cc: asml.silence@gmail.com,
+	axboe@kernel.dk,
+	netdev@vger.kernel.org
+Subject: [PATCH io_uring-7.1 0/4] follow up zcrx fixes
+Date: Wed, 25 Mar 2026 12:08:17 +0000
+Message-ID: <cover.1774439286.git.asml.silence@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,45 +73,18 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-Commit a60fc3294a37 ("ptp: rework ptp_clock_unregister() to disable
-events") added a call to ptp_disable_all_events() which changes the
-configuration of pins if they support EXTTS events. In ptp_ocp_detach()
-pins resources are freed before ptp_clock_unregister() and it leads to
-use-after-free during driver removal. Fix it by changing the order of
-free/unregister calls.
+Follow up fixes for the recent update flagged by review.
 
-Fixes: a60fc3294a37 ("ptp: rework ptp_clock_unregister() to disable events")
-Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
----
- drivers/ptp/ptp_ocp.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Pavel Begunkov (4):
+  io_uring/zcrx: don't use mark0 for allocating xarray
+  io_uring/zcrx: don't clear not allocated niovs
+  io_uring/zcrx: use dma_len for chunk size calculation
+  io_uring/zcrx: use correct mmap off constants
 
-diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-index d88ab2f86b1b..16fd4804fc6a 100644
---- a/drivers/ptp/ptp_ocp.c
-+++ b/drivers/ptp/ptp_ocp.c
-@@ -4558,6 +4558,9 @@ ptp_ocp_detach(struct ptp_ocp *bp)
- 	ptp_ocp_detach_sysfs(bp);
- 	ptp_ocp_attr_group_del(bp);
- 	timer_delete_sync(&bp->watchdog);
-+	if (bp->ptp)
-+		ptp_clock_unregister(bp->ptp);
-+	kfree(bp->ptp_info.pin_config);
- 	ptp_ocp_unregister_ext(bp->ts0);
- 	ptp_ocp_unregister_ext(bp->ts1);
- 	ptp_ocp_unregister_ext(bp->ts2);
-@@ -4575,9 +4578,6 @@ ptp_ocp_detach(struct ptp_ocp *bp)
- 		clk_hw_unregister_fixed_rate(bp->i2c_clk);
- 	if (bp->n_irqs)
- 		pci_free_irq_vectors(bp->pdev);
--	if (bp->ptp)
--		ptp_clock_unregister(bp->ptp);
--	kfree(bp->ptp_info.pin_config);
- 	device_unregister(&bp->dev);
- }
- 
+ io_uring/zcrx.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
 -- 
-2.47.3
+2.53.0
 
