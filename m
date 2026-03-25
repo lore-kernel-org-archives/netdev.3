@@ -1,51 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35FBD346E43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DBD03537F1
 	for <netdev@vger.kernel.org>; Wed, 25 Mar 2026 06:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774420346; cv=none; b=NBDGCo5uJl/IjFwfQBPRjo4hSNRf8qrLF3R9h0PuXjyyyxQYvRBSUlDbd0xNUsPLUHn/8Tk9BdpKT5cVJqK34r8dOelTvjCJ3QHu5f7+EvlFQI72XS62XerDinvLibMaZ9r31zoUypFQqjbD4i9FxcwzZejCiNP1Fh+9yYf4fNg=
+	t=1774420347; cv=none; b=ivpy+u03qKyf/3YxROwBBag/s9D6RuBflu+37Lzqm/QzwPjMU3seCdmjDzIKD2vplpw6FtGAkjnWgMHAHB5iATZtm6TNyq7kvYUsHd3bqVWdFfarARRK91FTDxH14E3479jegDrz6eCRmVWcoGdrFxge1JThT/cJGqaI1SWPuMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774420346; c=relaxed/simple;
-	bh=371lIzolESrhOMrQZ+kRiBnks0CP6to8wN6H9X/ogJ4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QP/i6GTbeRQxIWiZmXEC5cNsh/lv7pIPWAQjtvXAQe1+X1VJuGzKGTJAWxh7ibvY1Bwp1nwL+b7ZguEmJlLXnedSP3nUvcF7KpHN3U3OblKb/XCmr2Gaz5o79MyVbC8p0lUIU21JyZYebX4E3vtZjAa2b0fnlkg1JZ1ArOZEjFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jOngbjWk; arc=none smtp.client-ip=198.175.65.14
+	s=arc-20240116; t=1774420347; c=relaxed/simple;
+	bh=rr6l49RKEKgpQ2DNOXWch18uCBagDtqaiQoNtQSds+k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JZfkff499wcDqTnbXP2LnKY3k0Ti0h8PUAqC9WPkmuDLTXCkfux+JsHQ6vgN01zFFvqxoS9QQgPBjKYkzqtxk/s0CLSijyItR6a/dHmyCPwYZ5VFRmtC+IhqGXEczwwv+6yvnkfoSWxAn4Z6yVTDLpIfmrYHv5QtYIZdWiSRzpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ghDbE9TE; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jOngbjWk"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ghDbE9TE"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1774420345; x=1805956345;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=371lIzolESrhOMrQZ+kRiBnks0CP6to8wN6H9X/ogJ4=;
-  b=jOngbjWk4dBYGijj4zX/Tj6JOyp4+AHswVnL9aINmna8QmlpZuqzL+83
-   YGP8xl1IKGIU7MP/hpRn54mm2VGrS8qXrYkFxFe2iDHWHSfQvUwx/Qu7y
-   KS1c+J5QNLI9dm/D+J6PP/FA+en9ceGOoVMfBH2+1CMvjOQC7lrNCfVPi
-   cGUv5pUg+Fn8N3vhOrvZP0IUVH+viBa6EaqAXCOdqa+u4hQl37axLu1kJ
-   rWcDlDzKXEmUq+pvH16w6ip6JG1gsWH3gi88KQjBgZyY1BlTNxEBJSYG+
-   pIJwxmsBcW5jVP56HaqnVUa+g+PmYMFn7M1gYKHoJ/wqJWnHHXdHNnaU3
-   Q==;
-X-CSE-ConnectionGUID: pWlo3TfEQOaUutKxTRwnjw==
-X-CSE-MsgGUID: DAnkBM78Rna+Lip8d89hxA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="79308064"
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=rr6l49RKEKgpQ2DNOXWch18uCBagDtqaiQoNtQSds+k=;
+  b=ghDbE9TExEI8WFMxu4mTwA/9PiB3JzNCjh97vJUzsBhSccZY23hJBqql
+   SQDXSriYcYy1FIkB2wB0M+6DbipCYUzVBV1u3vqL1sWFWve2p0Fb3GsUZ
+   nxwpwkQVC/6568YIyHxrbSct5G5buL7FzGSj8ILHkvC333Tjots6+cEv/
+   XIysqG0QNz/IfiNl3rSi4yFLZepTzDDUXS+RrlA69n4y/O4zb3mEF0IqH
+   zscDg6skB5XNWc21h5Db0kjSDrEgal802jDRNul36Smwvlz5U6SLfwAJY
+   tVCj95ypyLcDybQ50C5NS0Ok/kOMrWq6H0Oj4mUgqL/w7YERpNx9hi64U
+   A==;
+X-CSE-ConnectionGUID: ahSk1woGRFifC97bdlVhhg==
+X-CSE-MsgGUID: REuob8CxR7mrFaDz1gDF5g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="79308047"
 X-IronPort-AV: E=Sophos;i="6.23,139,1770624000"; 
-   d="scan'208";a="79308064"
+   d="scan'208";a="79308047"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 23:32:03 -0700
-X-CSE-ConnectionGUID: PJGG7ggXR1eJGOyTslFP1w==
-X-CSE-MsgGUID: Ws/d7Gt3TA6RpYxTaD8ssQ==
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 23:32:01 -0700
+X-CSE-ConnectionGUID: c4AZVoq4R++XfBqFDgcO0w==
+X-CSE-MsgGUID: AkmZzNiURHaHCed3r6J5yw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,139,1770624000"; 
-   d="scan'208";a="221693633"
+   d="scan'208";a="221693624"
 Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by fmviesa008.fm.intel.com with ESMTP; 24 Mar 2026 23:31:57 -0700
+  by fmviesa008.fm.intel.com with ESMTP; 24 Mar 2026 23:31:55 -0700
 Received: from pkitszel-desk.tendawifi.com (unknown [10.245.245.24])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id 691D32FC8;
-	Wed, 25 Mar 2026 06:31:55 +0000 (GMT)
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id A69C92FC5;
+	Wed, 25 Mar 2026 06:31:53 +0000 (GMT)
 From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 To: Jiri Pirko <jiri@resnulli.us>,
 	netdev@vger.kernel.org,
@@ -59,12 +58,10 @@ Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
 	davem@davemloft.net,
 	Michal Schmidt <mschmidt@redhat.com>,
 	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Subject: [PATCH net-next 2/2] devlink: unregister shared devlink resources on destroy
-Date: Wed, 25 Mar 2026 07:26:53 +0100
-Message-ID: <20260325063143.261806-3-przemyslaw.kitszel@intel.com>
+Subject: [PATCH net-next 0/2] devlink: shared devlink improvements
+Date: Wed, 25 Mar 2026 07:26:51 +0100
+Message-ID: <20260325063143.261806-1-przemyslaw.kitszel@intel.com>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20260325063143.261806-1-przemyslaw.kitszel@intel.com>
-References: <20260325063143.261806-1-przemyslaw.kitszel@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,29 +70,22 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Since shared devlink acts as a normal devlink instance, capable of all
-usual devlink operations, it must unregister its resources.
 
-I plan to make use of devlink resources on a shared instance for ice
-driver by separate series, coming soon.
+First patch unifies access to priv data set by driver
+(changelog in the patch).
 
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
----
- net/devlink/sh_dev.c | 1 +
- 1 file changed, 1 insertion(+)
+Second patch improves support of devlink resources registered for shared
+instance (new in v2 of the series).
 
-diff --git a/net/devlink/sh_dev.c b/net/devlink/sh_dev.c
-index b85e5cb1edbe..5de138bf3630 100644
---- a/net/devlink/sh_dev.c
-+++ b/net/devlink/sh_dev.c
-@@ -71,6 +71,7 @@ static void devlink_shd_destroy(struct devlink_shd *shd)
- 
- 	list_del(&shd->list);
- 	devl_lock(devlink);
-+	devl_resources_unregister(devlink);
- 	devl_unregister(devlink);
- 	devl_unlock(devlink);
- 	kfree(shd->id);
+Przemek Kitszel (2):
+  devlink: unify devlink_shd_get_priv() into devlink_priv()
+  devlink: unregister shared devlink resources on destroy
+
+ net/devlink/devl_internal.h |  7 +++++++
+ net/devlink/core.c          | 10 +++++++++-
+ net/devlink/sh_dev.c        |  9 +++++----
+ 3 files changed, 21 insertions(+), 5 deletions(-)
+
 -- 
 2.51.1
 
