@@ -1,122 +1,143 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-ej1-f99.google.com (mail-ej1-f99.google.com [209.85.218.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BBD83B27E0
-	for <netdev@vger.kernel.org>; Wed, 25 Mar 2026 13:43:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774446210; cv=pass; b=dGCufyBfN7pZAeLGHFMXsNYTMRK8QWfaxrYEtqO8wR7QU3uW1H5kZ1eUVkV0Yr9i4sZuDfERUai/Zi6/VWe0RSyGF0riUjrr4KPtIvzOnZ4in323VO368Zp/uoFMEC3+/Nx+Kr7gH+87gaqQbVyEfAeTyS1qzCFUteOZ3SunR0E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774446210; c=relaxed/simple;
-	bh=Ty+ZwtUIfiM1TTQbdI9KSw5FmoX7nhAYATEh+143UEQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cMTKhhUWoZjlDzGJS9t2CGGGjo8AOqS0zSEM3sXph/DgER61gwS5WOiFwcCGekWXHhqW4QiA+P2bL7FTIqPyzJExc94nUFMo+cGqYg/Bh298IS65bxZ2tukaBubu91s2aIgZycqAAaBApRmve1/MayIc8Htm9s8mwa2OCTSveL4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=O0+yIvEG; arc=pass smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556B924728F
+	for <netdev@vger.kernel.org>; Wed, 25 Mar 2026 13:44:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.99
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774446285; cv=none; b=edyl3MDAq40/NtHBP4eOO5WuScO6BBlvmnF8uIv/9dtNLd2eT4aJKA7CncGdK32zTLvfq+HvhIp/qcn+UL822onePIQcIjvwOqoD6zQHX4jmh1+ZfzIRBgcBmFPaWN20H3Ml8A6+lBTlMS06aZCpnNkXXdTSEF5+toWYeMFiJyY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774446285; c=relaxed/simple;
+	bh=Vn/C/y3fn0J44PEQ8tV+x8eQxQTSKd8u8V3OFxpUI78=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=nZWiArVyPHGVk32/syVcQXaZgtbzqokd8o0w+MPpya9bqJ6YKFveGHkyxK+aIe8sfh4XiRuc6lASjvXqNaKFfL0c4A0hZJP6IM7vYyHmuDFR6DDVrmkJ8yTHwYKZulaRUi7QNVVBvvPEqmlDOFo0fYlZO64srD3YB+vqzL5Jp00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=IBXVDEOZ; arc=none smtp.client-ip=209.85.218.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="O0+yIvEG"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-66abe08cdf5so334638a12.0
-        for <netdev@vger.kernel.org>; Wed, 25 Mar 2026 06:43:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774446207; cv=none;
-        d=google.com; s=arc-20240605;
-        b=iSD7EdjaQv7ffhfv0udewPEkW6whGOM7RqaiG93FxJz1PQkKsPhrWVo5eQRopHuMS8
-         LmKe87aXKlqyYPjQguisK54uzlbY93If/cGTfjELphciXH8XmiyE1kxhsTEzkrEC89Ko
-         WaM+jC3ya22iHDY65Tl+pzdnCOoQaXfrw3Ox1utZTM+EJkETsR6ypJriLovSq3JjOYEE
-         gC9oOewLrtvJuOPCbwPatb13yGu9rHRgqvf2XIvyX48Bm8OSP+8Agnc1EG6jZTYDI6kV
-         CnVNeHmFmQ1ekT783qE4OAS4dWtYy0++GROS99MjOPggquqPkmEmnvbs1fCTnFu6NW3f
-         EoyQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=lphqKf4F/uYNN8qYKbbQ1dR8GaPySrJrOoIkVeC30Gk=;
-        fh=6onRMPJOFnN+SFYsH7i1T3oxeslPNmAyryxlffkEzvg=;
-        b=QWowEXGzSg5OQLbeC9HXgNLnynsxxAmFWngcY3NYPxU6w2LuIhsOIYaJF3xglrzZeL
-         i/AaPSHBuJNmS2iEwDUKcZR1D00Rp6OS4bOnRaiDNFUpLsGvl/iUax0xGDeq1P68LqPR
-         75hkV0axfGmA5PPraSvPrm3BbYlSVqWE89c8X4um/ZjPjydRR8dxK5nGNNfCIDbnAHG5
-         6mRyGXFwJ6RaYxU0Ol3AGCOpyypWJESyV0JBCgmxBHc97TyykTrxH91/C8hJ2q0hyE23
-         frV/Lxm/as9kAQ2iGF+/5nwroTTd6Z1J4WG95YHbTba2z+4xLUd2AoeNV3OJ571rIeLR
-         jDdA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="IBXVDEOZ"
+Received: by mail-ej1-f99.google.com with SMTP id a640c23a62f3a-b9358bc9c50so370940166b.1
+        for <netdev@vger.kernel.org>; Wed, 25 Mar 2026 06:44:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=6wind.com; s=google; t=1774446207; x=1775051007; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=6wind.com; s=google; t=1774446283; x=1775051083; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lphqKf4F/uYNN8qYKbbQ1dR8GaPySrJrOoIkVeC30Gk=;
-        b=O0+yIvEG8NwTKVKyAiwaEouQbKQVnrDIizVFsXFS8fsB1m1kkx56AEhB+wmFkwvEwR
-         bGviQSUlBeb/rALyJxD0K1EZ6I26cophWc/eh4lmTMBqq1aVzJcjBqxipdvA4DWkrdf6
-         k7a7es4kzyvPhA0DtTAP4xepAQ3CLaxOmyrC3CCpUW45Tkm2sUSU1i6VPnU5NLl9oPCo
-         phU91kKYFj2tVXlPVWR0gVMMy59wQvCvuXFoYdT0Oc89m/jGRTWp/PzHGyP2o7cndyKt
-         o0kt8JhXR6HOabzTsUQBxWcRjiprg2qo9yJDWQI9pNVpBw/IHHXNiwsdAHT9PmR+456k
-         WXdA==
+        bh=3M8gSJcZpDyyVzHbLbG5c13dSIMrRCpl7D5jKFO/6rk=;
+        b=IBXVDEOZ9jfhTrWLFP4JVSeLVnpmnyFIL2qPRwYK74AUaAZAkUQz/zVvAHcA7jbcxR
+         crG4iIiaGJ+r8E/kl4gF+FU6RtBHWA6vr4O0QK4TKAO0fXj7YOnB43Xa2fjtjUlbipSA
+         XBRoi8DngMSfPiSkEGSBHQqC11CFw4WnQq3wLToznJd9Q1AUAvB/dn5MjXnb3WCKQUcD
+         NEHHaz033zcLMOxJ/9ZxHOMAUaE9dHLPWDr+l9vzwo19oFs4wZIdPrT4vcNc04gzMzqk
+         vnaPl7izWDG52+hh8zkXURVDKaX4zkrN+Fednzub1OjELlT4IU2creWsJ82BX6UD0FsM
+         kgXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774446207; x=1775051007;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1774446283; x=1775051083;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=lphqKf4F/uYNN8qYKbbQ1dR8GaPySrJrOoIkVeC30Gk=;
-        b=YqqyjGPx+rz0KgG0z0shrG+/9IWipEMDxsQf/vtNzA9PW2s233dolAAnsq+8uk3cXl
-         dvV8loNdj2tNSdmJMypBKmDevSeD1SEufTbIhh34Fieyea+tIGgTepIsH1EzEq0s28hu
-         bM9DCVp9aRtIjOeCbVcfrEXj/AJcWvHTXQuv39Rv8Sx98RmKF5ewTJSuE9HdCqIhQ/Am
-         Td0hR1Hps9a7nYLW42nmJp8aGbopu5K7mDGUYNVSa9t43rYL+e0EeuK7InKXi6bFgLwU
-         AIVv37ZNSH4xyCTTwjfp+Y7JMtwXyMD3E8qICZ7RZ8aydIwHFAsDXMvdzHdTs61tXFnA
-         yZDA==
-X-Gm-Message-State: AOJu0YxR2IY0zffLfz8RMVCuGNm0FpLAxtogJr48l4F+W5d8vEFuPsiN
-	zTBtB++/fD7hqIcGh5kxkykCtkvgLT0nM8YQVC2EiE9Qq8nms0PNw0OjlTGb6HeUrlVrR5dUutA
-	GHH85tNLpuUp0V+a/piZLab5xSPeQBRdEXuekMVYpmg==
-X-Gm-Gg: ATEYQzxd5Oqc+tWDELneCfiHg/YeHdtZMgMfCs8pI5gdAy7P96cz3DcHX2OdYj7WLmO
-	bOXkZkwiOeOmWE6KGDQPoRyXisqV96T0U7j2+o7v+CUvp8nNldJUfDGFqLI4oQbXmofYIeW8afD
-	iVLaXvEBJy8KMS9udJtXGCJ29HN/UvqTUwRiL+9WIhTsw+FZyp37K/Nz453YCwDg0ntSo8+n//R
-	/UIOKR74zil62QSDb5rREElXQC3rya8Vq32Y9Rc4Zk/PBCEFRLTzB8SCkrV0nvfRG3q2fDvdEz0
-	cIBZX7Om19zkRUD8hONGfIx5DRgnv7/wq9us88rW+Q==
-X-Received: by 2002:a17:907:d096:b0:b98:2df5:9bf0 with SMTP id
- a640c23a62f3a-b9a3f18cc41mr271759566b.22.1774446206701; Wed, 25 Mar 2026
- 06:43:26 -0700 (PDT)
+        bh=3M8gSJcZpDyyVzHbLbG5c13dSIMrRCpl7D5jKFO/6rk=;
+        b=egLSLvSgDolXYAn3DWs6Xo4pYwbkfjrfw7oGlfHAgZHO0jJ315nJUixO2qeE1uN3Mh
+         uzLZ8WFgn5RrHJRXf4Oh/aGDI705coCmJUCmR3KvCwhoZtG7aO+TfkB/41TCv3IdjnBm
+         9D/IcTgcdkixU3rJUf7rQI3wiviUBjtre5IeZ3s5jDs0UjXTiY5impVNg34zsEWFAvXq
+         6GOdvuuGMPcI3WGHJVM2eaPZOPHSOj2QgQsIlmVzxKbiNNjTgcMA0j1+ElTPmkA2Ff0J
+         hFHN8JHRgx/aYoSlp14XM+GEYvzcZb1ojXDdy/Ht9tlVccno5LthyqcbXY5GynTFE6m1
+         vKIQ==
+X-Gm-Message-State: AOJu0YypKF1vF6geWInGdsIcp+d0QtkqnOBm+VRcio8I0WsIy6qDyYWS
+	Dg5kYvxwK7OJfCw8YjTU1rREoSC3HdZLkgn5P2mV5FJ8+t6LN8edrToYcv4HVrHScmfthn+DUD3
+	FdFN3KBEGaSTYoDjE9lHdXa2EyA22GF5HoXfM
+X-Gm-Gg: ATEYQzxJOTM2vWeaaVOaI6I7Q3lBVqw5L2wqF5fREGTna9tOe1AuD1N7Z/duOA4yop2
+	M48OqN1VleK3lhgLRhNtegwdh4r8zL46VBi/hrC6vQRvvMyuKsBbcMC4VdSCJu+llMbACG6SU62
+	jVV71sddYf+FPv1JzCe/O9jbPHl0NmkMUF7WtM03e6Ow4+NRpytoZ4ZG2xRqh6eghCktUhybPc1
+	3Paz+F0hDa980TZtJKSqnu6luW53NK7CsiDV57/teLi+PYDA2RGRIpb8cBmzoeLVvflqLFbJL09
+	h6MzS3hJF+GnaU9y+i1tRx/x7Np1KnNvGioFZYm5ylu3HeEUivXd4e2qmfc6d0MjhxU3EjXuGiu
+	EhriKDuOnpkie0UsYZChghLiyKjHqJ/OtYa2rID+qQyxDAb2wcayY
+X-Received: by 2002:a17:907:d385:b0:b9b:1cad:fea4 with SMTP id a640c23a62f3a-b9b1cae00b5mr56258366b.18.1774446282601;
+        Wed, 25 Mar 2026 06:44:42 -0700 (PDT)
+Received: from smtpservice.6wind.com ([185.13.181.2])
+        by smtp-relay.gmail.com with ESMTP id a640c23a62f3a-b9973edf32asm21369866b.46.2026.03.25.06.44.42;
+        Wed, 25 Mar 2026 06:44:42 -0700 (PDT)
+X-Relaying-Domain: 6wind.com
+Received: from stryper.dev.6wind.com (stryper.dev.6wind.com [10.17.2.5])
+	by smtpservice.6wind.com (Postfix) with ESMTP id 6C0381EF6F;
+	Wed, 25 Mar 2026 14:44:42 +0100 (CET)
+From: Louis Scalbert <louis.scalbert@6wind.com>
+To: netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	jv@jvosburgh.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	fbl@redhat.com,
+	andy@greyhouse.net,
+	shemminger@vyatta.com,
+	Louis Scalbert <louis.scalbert@6wind.com>
+Subject: [PATCH net v2 2/3] bonding: 3ad: fix mux port state on oper down
+Date: Wed, 25 Mar 2026 14:44:38 +0100
+Message-Id: <20260325134439.3048615-3-louis.scalbert@6wind.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20260325134439.3048615-1-louis.scalbert@6wind.com>
+References: <20260325134439.3048615-1-louis.scalbert@6wind.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260322000557.12559-1-andrea.mayer@uniroma2.it> <20260322000557.12559-3-andrea.mayer@uniroma2.it>
-In-Reply-To: <20260322000557.12559-3-andrea.mayer@uniroma2.it>
-From: Justin Iurman <justin.iurman@6wind.com>
-Date: Wed, 25 Mar 2026 13:43:15 +0000
-X-Gm-Features: AQROBzAHzQ59MoQMqYBo9gvtuAAC5KYkGPyBexA5BkJcYV-H6wYp6Sd3JHvprkI
-Message-ID: <CAOY2Bqxb1C6myf7DBmfLM_3wZSweYQaQSAVSj_wDihf-N9vQJg@mail.gmail.com>
-Subject: Re: [RFC PATCH net-next 2/3] seg6: add SRv6 L2 tunnel device (srl2)
-To: Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>, 
-	David Ahern <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Stefano Salsano <stefano.salsano@uniroma2.it>, Paolo Lungaroni <paolo.lungaroni@uniroma2.it>, 
-	Ahmed Abdelsalam <ahabdels@cisco.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sun, Mar 22, 2026 at 12:06=E2=80=AFAM Andrea Mayer <andrea.mayer@uniroma=
-2.it> wrote:
->
-> Introduce srl2, an Ethernet pseudowire device over SRv6. It
-> encapsulates L2 frames in IPv6 with a Segment Routing Header for
-> transmission across an SRv6 network.
->
-> The encapsulation logic reuses seg6_do_srh_encap() with
-> IPPROTO_ETHERNET. The transmit path uses the standard IPv6 tunnel
-> infrastructure (dst_cache, ip6_route_output, ip6tunnel_xmit).
->
-> The device is configured with a segment list for point-to-point
-> L2 encapsulation.
->
-> Usage:
->
->   ip link add srl2-0 type srl2 segs fc00::a,fc00::b
+When the bonding interface has carrier down due to the absence of
+valid slaves and a slave transitions from down to up, the bonding
+interface briefly goes carrier up, then down again, and finally up
+once LACP negotiates collecting and distributing on the port.
 
-Thinking out loud...
+The interface should not transition to carrier up until LACP
+negotiation is complete.
 
-We'll likely need SRv6 encap configurations specific to each entry
-(i.e., MAC address), rather than (or in addition to) per interface.
+This happens because the actor and partner port states remain in
+collecting (and distributing) when the port goes down. When the port
+comes back up, it temporarily remains in this state until LACP
+renegotiation occurs.
 
-We could also add a "mode" (e.g., "normal" mode or reduced mode?).
+Previously this was mostly cosmetic, but since the bonding carrier
+state now depends on the LACP negotiation state, it causes the
+interface to flap.
+
+Fix this by unsetting the SELECTED flag when a port goes down so that
+the mux state machine transitions through ATTACHED and DETACHED,
+which clears the actor collecting and distributing flags. Do not
+attempt to set the SELECTED flag if the port is still disabled.
+
+Fixes: 655f8919d549 ("bonding: add min links parameter to 802.3ad")
+Signed-off-by: Louis Scalbert <louis.scalbert@6wind.com>
+---
+ drivers/net/bonding/bond_3ad.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad.c
+index 6d3613755d45..1771e406224c 100644
+--- a/drivers/net/bonding/bond_3ad.c
++++ b/drivers/net/bonding/bond_3ad.c
+@@ -1570,6 +1570,12 @@ static void ad_port_selection_logic(struct port *port, bool *update_slave_arr)
+ 	struct slave *slave;
+ 	int found = 0;
+ 
++	/* Disabled ports cannot be SELECTED.
++	 * Do not attempt to set the SELECTED flag if the port is still disabled.
++	 */
++	if (!port->is_enabled)
++		return;
++
+ 	/* if the port is already Selected, do nothing */
+ 	if (port->sm_vars & AD_PORT_SELECTED)
+ 		return;
+@@ -2794,6 +2800,7 @@ void bond_3ad_handle_link_change(struct slave *slave, char link)
+ 		/* link has failed */
+ 		port->is_enabled = false;
+ 		ad_update_actor_keys(port, true);
++		port->sm_vars &= ~AD_PORT_SELECTED;
+ 	}
+ 	agg = __get_first_agg(port);
+ 	ad_agg_selection_logic(agg, &dummy);
+-- 
+2.39.2
+
