@@ -1,62 +1,78 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6102773DE;
-	Wed, 25 Mar 2026 21:46:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB379347516;
+	Wed, 25 Mar 2026 22:00:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774475191; cv=none; b=fsv+gGBzFtiJvMaWQ+TA86za1rGGS2pNkHLfwsB1PhVyhUU1nLXbnf2U0ViLG+agNLSR6wNhibxM5AZLOvljwoMuGnkuHeEMAQ5bawKt5eixnAPqaTZUY1viaPxDRK1KGuxJ6WgvRpjEEIKgU+9Mvgc90dKKsSmQ9d+QmMv6VZU=
+	t=1774476010; cv=none; b=jnM4KtmplppC6XjmED4csKWno+4/W3B4i6fEL3JOEtD1afSW8+s4arwXJ/gLu4SwHL/BTvlBLjzt7jl+lTBjg/VqHWsN7m1pK6huTX2s1UGzGtZsJqsec3tTTonKo3QOVFGIQolTpXdY3pMR0e9MjQGX2G7q6p8xgK+sJh/OrB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774475191; c=relaxed/simple;
-	bh=4Fe2RtyviX4XAyMQSkJ4js2V2P1pz5B/N7YGrsl9zcc=;
+	s=arc-20240116; t=1774476010; c=relaxed/simple;
+	bh=o/Lg4BCHgB0lpbo3weSyFiK/fj641jkPf+FTpsIxKE8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e3LGQhAetbNF0MR7eFxixddUUQrwk04O1mYuTSgUIRLxba+tLtrKNxGhssvpbgbomE3yiByOlI4MJT4hp3ONGAbVFQ3Fbioa6HvQ1RucPTo1/Wp+70r/QiTNyyQ3c+Laj8UGb6DqcR+hYGguFxqBsx2RmEEDgcrVX+NZLZGv9vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gd+skQjS; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=PFn6YYvcnU2AYtjBHZQXA1Tv0wkTf168dRSPGrvLT7IZF8VirYMoQHt3iZ3ke5nWgNpk2MJ7RjjeUYgCPz12N/+ucEza8p0LO3gHqBxMZLGXY9YQfeEaVF/sI3NtRYOVQGSbHewqB6hif9KsQTEGprfWT+Tds5Sa8eWBU50G8Ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=5tawHl3e; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gd+skQjS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FEC6C4CEF7;
-	Wed, 25 Mar 2026 21:46:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774475190;
-	bh=4Fe2RtyviX4XAyMQSkJ4js2V2P1pz5B/N7YGrsl9zcc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gd+skQjS3BMVlPvY/Wq2/oTBkb3Q/8to8HmZ2p3JV8T6KVAB0Hdh3NuBqQibWG69O
-	 sTIdjVfGv/pVHtEboALTgNO8qC4pctE9+BrgnOFbNoSJQWvd2ho2m3stM8wW9QVRrB
-	 jsqc/XHaccHO/YHl2JI3wRXJnr8s+HTlQS1fYge0ucJe2vG4RpE1nTr/0s53cFYJ/N
-	 M8eYlciKHFcCoh2AdKuge+r0/BbSunYysDZqgLvqP47ttBFcfh4pPQSraN1QvsffbX
-	 wKW1iYoqH26weoB/8paywGKkmu9d+XwJSxkzsv/ju6Gl3XS97nHfty+38gOL8CePP/
-	 NBfC4CCUN+hUg==
-Date: Wed, 25 Mar 2026 16:46:29 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Conor Dooley <conor@kernel.org>
-Cc: Samuel Holland <samuel.holland@sifive.com>,
-	Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
-	Paul Walmsley <pjw@kernel.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="5tawHl3e"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Xhr1D24nKivYP/3T0AfCxVIkR9YFjI1CmvRMS0ErUhs=; b=5tawHl3e+uz9eT1sXa8Trr9UO3
+	ROaHbvVci5+1x1gHnzDm2slDD0JaznmGKOrxGbVFDkZMzS+rmgkpFFIzI8uoZ8Vm3HM5sU74Lbgg9
+	/PopU1JjeSWjAX4u00eOPjCt0e4mbNvr581G0kAg+1PHB+QCwy6hnY76o/2fmt4nVWL0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1w5WGR-00DMmg-Oz; Wed, 25 Mar 2026 22:59:47 +0100
+Date: Wed, 25 Mar 2026 22:59:47 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	devicetree@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	linux-riscv@lists.infradead.org,
-	=?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>,
-	Valentina.FernandezAlanis@microchip.com,
-	Alexandre Ghiti <alex@ghiti.fr>, Abin Joseph <abin.joseph@amd.com>,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Vineeth Karumanchi <vineeth.karumanchi@amd.com>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Conor Dooley <conor+dt@kernel.org>, Ryan.Wanner@microchip.com
-Subject: Re: [PATCH net-next v4 03/13] dt-bindings: net: cdns,macb: replace
- cdns,refclk-ext with cdns,refclk-source
-Message-ID: <177447518882.6335.6622280371140449690.robh@kernel.org>
-References: <20260318-surpass-puzzle-f94b46aa8808@spud>
- <20260318-mobilize-rule-d4a704468218@spud>
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+	Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com,
+	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Christophe Roullier <christophe.roullier@foss.st.com>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Radu Rendec <rrendec@redhat.com>, linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	Drew Fustini <dfustini@tenstorrent.com>,
+	linux-sunxi@lists.linux.dev, linux-amlogic@lists.infradead.org,
+	linux-mips@vger.kernel.org, imx@lists.linux.dev,
+	linux-renesas-soc@vger.kernel.org,
+	linux-rockchip@lists.infradead.org, sophgo@lists.linux.dev,
+	linux-riscv@lists.infradead.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: Re: [PATCH net-next v9 2/6] net: stmmac: qcom-ethqos: use generic
+ device properties
+Message-ID: <ba85f84e-740d-47d6-a8a0-97823bf2c4d7@lunn.ch>
+References: <20260316-qcom-sa8255p-emac-v9-0-c58934e76ff2@oss.qualcomm.com>
+ <20260316-qcom-sa8255p-emac-v9-2-c58934e76ff2@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,32 +81,16 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260318-mobilize-rule-d4a704468218@spud>
+In-Reply-To: <20260316-qcom-sa8255p-emac-v9-2-c58934e76ff2@oss.qualcomm.com>
 
+On Mon, Mar 16, 2026 at 01:05:07PM +0100, Bartosz Golaszewski wrote:
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> 
+> In order to drop the dependency on CONFIG_OF, convert all device property
+> getters from OF-specific to generic device properties and stop pulling
+> in any linux/of.h symbols.
 
-On Wed, 18 Mar 2026 16:37:34 +0000, Conor Dooley wrote:
-> From: Conor Dooley <conor.dooley@microchip.com>
-> 
-> Ryan added cdns,refclk-ext with the intent of decoupling the source of
-> the reference clock on sama7g5 (and related platforms) from the
-> compatible. Unfortunately, the default for sama7g5-emac is an external
-> reference clock, so this property had no effect there, so that
-> compatibility with older devicetrees is preserved.
-> Replace cdns,refclk-ext with one that supports both default states and
-> therefore is usable for sama7g5-emac.
-> 
-> For now, limit it to only the platforms that have USRIO controlled
-> reference clock selection, but this could be generalised in the future.
-> 
-> The existing property only works on devices that are compatible with
-> sama7g5-gem, so mark it deprecated, and limit its use to that specific
-> scenario.
-> 
-> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-> ---
->  .../devicetree/bindings/net/cdns,macb.yaml    | 56 ++++++++++++++++++-
->  1 file changed, 53 insertions(+), 3 deletions(-)
-> 
+Adding to what Russell said, please document your new binding. e.g. in
+Documentation/firmware-guide/acpi/dsd.
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-
+	Andrew
