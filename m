@@ -1,101 +1,163 @@
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA71382394;
-	Wed, 25 Mar 2026 07:42:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6DEF38C2BA
+	for <netdev@vger.kernel.org>; Wed, 25 Mar 2026 07:46:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774424529; cv=none; b=obxISa9oAR+b4z2qnCha4z357HtT4FXHIqKt/LaCJAt6HOMJWM/Q87r2LAdoQDeWMuyrxqk5qkfBboJ5M+qy3qLcOQXvXW+wDA3RX0zoR2Pg/r9VkYYBRAVnRAmcLKisPIdyZd5/ijx08wtoK/Lxmk+Y/hxz2NPJxlGXvRRboAY=
+	t=1774424801; cv=none; b=tUL0itxfrnAJboSWIh+LdOrGtSJSloKvWvcwribyrAYuzCV3qNAPrhVXRhcGhuanxey67jxamo9P0qi4kvaUxU/bosSZ8toNibv8FqtTKVCL6YQBb4ICdofCuScv/GhSs5yzQiBn0/TIToF95cqFA7vtbnzMJ4pz3tRUoy+TepE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774424529; c=relaxed/simple;
-	bh=UCcLxBo5DmyQB8qL6xdFcENHbnFfl/F5Zzx+9T5RRhI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t4IV7L5ZtPJwSIoyZeZ05KScZpac7gf47rx6TEJF5k4wytCpHFxTIzyU9MPw5VAkkDsHMKvsivXs4LvGgpzePlRfQ1sFz83lbt8NHagvPC4MZ/RO1HTmQrfDGI/02PBrVyImg3dBWZOF0Zb2V/RlyEx4SJBFRYmBZop7BIQFYSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [111.196.245.197])
-	by APP-05 (Coremail) with SMTP id zQCowAAXpgnAkcNpzB1uCw--.28929S2;
-	Wed, 25 Mar 2026 15:41:52 +0800 (CST)
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
-To: Justin Iurman <justin.iurman@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	pengpeng@iscas.ac.cn
-Subject: [PATCH] net/ipv6: ioam6: prevent schema length wraparound in trace fill
-Date: Wed, 25 Mar 2026 15:41:52 +0800
-Message-ID: <20260325074152.17064-1-pengpeng@iscas.ac.cn>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1774424801; c=relaxed/simple;
+	bh=dZYOh4XrYy5rxi9XVMMD1JfT9YZNj3TOU35ZtYGqb1c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=m5BSDcarkfBmG5M4UPbQesw8Ty+cERxBtSAorxjocsHBxwJHBdFxFoTlsRn1Gb7MdCNZ7aZwXsX1eIZ2iJLu7Sr+OnjBnu7Zjl4lXRIyIYSWj7bU3dUsYNZjbU7cVmk4GBcBAAcV6E+8wQwSLTEe72yLMwLGrCqPigeLxKRFwDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=jEMTsP2i; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="jEMTsP2i"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-48704db565eso38779595e9.1
+        for <netdev@vger.kernel.org>; Wed, 25 Mar 2026 00:46:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall.org; s=google; t=1774424794; x=1775029594; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iXYQ+HYt37DNeCQ0SFHpfNm2D/xmqdQlJV/hZeJHWhc=;
+        b=jEMTsP2iGoW6h3+9AN1UmoxxLGmfJaHU7kJOXw25UEXpIsaiCsX8fpFIMSrGw50rrB
+         mxULmizuy1STC7nGCvwKLpF0R047m8aR6eCMTnewMeQQafr5sjqClweMBTpk7kdmpQaZ
+         GGHxa3B0+Rmb09y5ZbzuIxKDlqDHKhi4w5lUr0Z3CS9lj8IkHywD0cYfleVTh0gifAIJ
+         cClcb6NuxIpEEFve4TEZ0hLsmnJmWsi6anZVvcnLOHIyAO520gYBM9buZ24B90gGuLB0
+         coP8NJUOpuszWFUI/25f0jkX9smVKrPpSQWQcp47MWfT+VRcpKYwrMf+HMkWXD2ecDfH
+         Hh3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774424794; x=1775029594;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iXYQ+HYt37DNeCQ0SFHpfNm2D/xmqdQlJV/hZeJHWhc=;
+        b=CkiTd1i6+G+T4GZMoEkXKS5ENtUsjI6ToOdDs+q2MBmYFJNsbCxVcdfLLXvbiauXsH
+         Ng6jmrSi+sroWibM8FPRNxdx+lDO5B/DOzVt04ACtYMKseb0d2gbVQ7RwQDt+artyfzl
+         6e+AvGEkaUkpSJtS2H9efBqieRPjp/D0WMoV1DNfYjvrhu7vEFvozb5iGEzw88up0JRa
+         J2fgO1OIeGHBwt4qpdDu4wYTGbwDvcPvC83quCVi34yJ157huY1TGEdw+x5FE4AgQkKD
+         +8wmMx7fjgKaKAg7V14VH5+iAnlz2PW9SsC0wEWbyhbCWkQZ1stjZDrtBgFHHj0FiYZL
+         rc9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXG7W/+Mxa5sn2kam5VcwgzVC+GYQOf2eKN8YbYGDnnK2uwuEasgPRRJ05cxbA04N+ZQhowYYc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJmiCPZx3tOrPFOvYNq0Yb5Sh82GAoYhtgNZMn9CFpl13PQDym
+	jelS4u6N8mCdK75MRaw15XKqlXrQW0Dd8W+UR9CjLKL6bLm205TS6hEMA+7Rtw4DdLs=
+X-Gm-Gg: ATEYQzyz1Y7vDUcyrOucTdgKs1oCxJ/BhwYCbiaf1zM5dlZPR7cQSXjRWmmO+PO3Exa
+	ocYsgFAm/9FZLHxoXEofuY/LsUoLyJyXE9b1po208hSeWfA9Q6Kj07YlH1NoRMIsljRwBu+avec
+	fEnNV2ETL5qIBZtv1h+2LGjFZkEEKxCQkIhUUgkHk54qM9u8MJYDwFq8HEDrUCT7QQu2+BpNEuS
+	JJfNM4nY6VU7BUVGiAUgR5fIyPqjjAuUd0XkNlZ9XaA55hsFIDyN78xLqfxglKqpFjZbF1UfJ/z
+	wf5+Lj16WSsFIh3Zf3M8tofar8tcl2tco6nwP9EmhK3/swIDN06LALHkdcFWpRhtUF95SwEAhOt
+	11yFBZkJFu3AoavDBufMTJr4M1u1Lt7xjkA1dpLaPinsCQ/Uc10tH1gu3EUxJsMhaCi80Q8En60
+	I1JTNBRwy60HGb9qo2F3Zhv3BT6nP0NAwrUL8YOEZrd4JJ17pUo1QDOA==
+X-Received: by 2002:a05:600c:1f8e:b0:485:4006:960c with SMTP id 5b1f17b1804b1-4871605aa53mr35214235e9.16.1774424794227;
+        Wed, 25 Mar 2026 00:46:34 -0700 (PDT)
+Received: from [192.168.0.161] (78-154-15-142.ip.btc-net.bg. [78.154.15.142])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-487116c086dsm118615395e9.8.2026.03.25.00.46.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Mar 2026 00:46:33 -0700 (PDT)
+Message-ID: <34a996fd-acfd-49c7-ac76-81ae12573029@blackwall.org>
+Date: Wed, 25 Mar 2026 09:46:32 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAAXpgnAkcNpzB1uCw--.28929S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7KF1DXw15uFy8uF4xuw4rKrg_yoW8GFWfpF
-	n8Kw13XFWDKFW8Kr1j9F45Jr1a9Fs5AFW3KFy5Aw1rKr1DGF10qFyrK3yruan8CrZ7GFWa
-	vFyqyw17Wrn8ZaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
-	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
-	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
-	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
-	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
-	VFxhVjvjDU0xZFpf9x0JUd-B_UUUUU=
-X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 1/3] net: bridge: add stp_mode attribute for STP
+ mode selection
+To: Andy Roulin <aroulin@nvidia.com>, netdev@vger.kernel.org
+Cc: bridge@lists.linux.dev, Ido Schimmel <idosch@nvidia.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <shuah@kernel.org>, Petr Machata <petrm@nvidia.com>,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260324184942.2828691-1-aroulin@nvidia.com>
+ <20260324184942.2828691-2-aroulin@nvidia.com>
+Content-Language: en-US
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <20260324184942.2828691-2-aroulin@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-ioam6_fill_trace_data() stores the schema contribution to the trace
-length in a u8. With bit 22 enabled and the largest schema payload,
-sclen becomes 1 + 1020 / 4, wraps from 256 to 0, and bypasses the
-remaining-space check. __ioam6_fill_trace_data() then positions the
-write cursor without reserving the schema area but still copies the
-4-byte schema header and the full schema payload, overrunning the trace
-buffer.
+On 24/03/2026 20:49, Andy Roulin wrote:
+> The bridge-stp usermode helper is currently restricted to the initial
+> network namespace, preventing userspace STP daemons (e.g. mstpd) from
+> operating on bridges in other network namespaces. Since commit
+> ff62198553e4 ("bridge: Only call /sbin/bridge-stp for the initial
+> network namespace"), bridges in non-init namespaces silently fall back
+> to kernel STP with no way to use userspace STP.
+> 
+> Add a new bridge attribute IFLA_BR_STP_MODE that allows explicit
+> per-bridge control over STP mode selection:
+> 
+>    BR_STP_MODE_AUTO (default) - Existing behavior: invoke the
+>      /sbin/bridge-stp helper in init_net only; fall back to kernel STP
+>      if it fails or in non-init namespaces.
+> 
+>    BR_STP_MODE_USER - Directly enable userspace STP (BR_USER_STP)
+>      without invoking the helper. Works in any network namespace. The
+>      caller is responsible for registering the bridge with the STP
+>      daemon after enabling STP.
+> 
+>    BR_STP_MODE_KERNEL - Directly enable kernel STP (BR_KERNEL_STP)
+>      without invoking the helper.
+> 
+> The mode can only be changed while STP is disabled (-EBUSY otherwise).
+> IFLA_BR_STP_MODE is processed before IFLA_BR_STP_STATE in
+> br_changelink(), so both can be set atomically in a single netlink
+> message.
+> 
+> This eliminates the need for call_usermodehelper() in user/kernel
+> modes, addressing the security concerns discussed in the thread at
+> https://lore.kernel.org/netdev/565B7F7D.80208@nod.at/ and providing
+> a cleaner alternative to extending the helper into namespaces.
+> 
+> Suggested-by: Ido Schimmel <idosch@nvidia.com>
+> Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+> Assisted-by: Claude:claude-opus-4-6
+> Signed-off-by: Andy Roulin <aroulin@nvidia.com>
+> ---
+>   include/uapi/linux/if_link.h | 40 ++++++++++++++++++++++++++++++++++++
+>   net/bridge/br_device.c       |  1 +
+>   net/bridge/br_netlink.c      | 18 +++++++++++++++-
+>   net/bridge/br_private.h      |  1 +
+>   net/bridge/br_stp_if.c       | 17 ++++++++-------
+>   5 files changed, 69 insertions(+), 8 deletions(-)
+> 
+[snip]
+>   #ifdef CONFIG_BRIDGE_VLAN_FILTERING
+> diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
+> index 6dbca845e625d..e4bb9c3f28726 100644
+> --- a/net/bridge/br_private.h
+> +++ b/net/bridge/br_private.h
+> @@ -540,6 +540,7 @@ struct net_bridge {
+>   		BR_KERNEL_STP,		/* old STP in kernel */
+>   		BR_USER_STP,		/* new RSTP in userspace */
+>   	} stp_enabled;
+> +	u32				stp_mode;
+>   
+>   	struct net_bridge_mcast		multicast_ctx;
+>   
+[snip]
 
-Keep sclen in an unsigned int so the remaining-space check and the write
-cursor calculation both see the full schema length.
+Not critical but there's a 4 byte hole in the same cache line betwen root_port
+and max_age, if you move stp_mode there we get:
 
-Fixes: 8c6f6fa67726 ("ipv6: ioam: IOAM Generic Netlink API")
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
----
- net/ipv6/ioam6.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+/* size: 1728, cachelines: 27, members: 53 */
+/* sum members: 1722, holes: 2, sum holes: 6 */
 
-diff --git a/net/ipv6/ioam6.c b/net/ipv6/ioam6.c
-index b76f89d92e7b..3978773bec42 100644
---- a/net/ipv6/ioam6.c
-+++ b/net/ipv6/ioam6.c
-@@ -708,7 +708,7 @@ static void __ioam6_fill_trace_data(struct sk_buff *skb,
- 				    struct ioam6_namespace *ns,
- 				    struct ioam6_trace_hdr *trace,
- 				    struct ioam6_schema *sc,
--				    u8 sclen, bool is_input)
-+				    unsigned int sclen, bool is_input)
- {
- 	struct net_device *dev = skb_dst_dev(skb);
- 	struct timespec64 ts;
-@@ -939,7 +939,7 @@ void ioam6_fill_trace_data(struct sk_buff *skb,
- 			   bool is_input)
- {
- 	struct ioam6_schema *sc;
--	u8 sclen = 0;
-+	unsigned int sclen = 0;
- 
- 	/* Skip if Overflow flag is set
- 	 */
--- 
-2.50.1 (Apple Git-155)
+vs
+
+/* size: 1736, cachelines: 28, members: 53 */
+/* sum members: 1722, holes: 4, sum holes: 14 */
+
+
 
