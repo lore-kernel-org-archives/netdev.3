@@ -1,70 +1,80 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19813A0B13;
-	Wed, 25 Mar 2026 17:59:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B78413227;
+	Wed, 25 Mar 2026 18:03:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774461564; cv=none; b=XYXSXDmVqpaCpB2QjMamZggaXGK+uTccIUHCluLOFSh1nwTi2M5rCXmisLoq79CDnGpU2gIgaqGD6vX//m/ajVFWD5dWSUdAM9wih8n/DcciCFyZjr6VV0pFjZp/P8SmxiN2MNcC7NrTn46+Mhd2TReg6VWsG9RUMximh97t0Xg=
+	t=1774461818; cv=none; b=PQeQiqLu6fXFYvZJZoPMGkbRQggcNh4mZxAsJl7dgOAeDRvtJIkorlPuugn2He2Uv9YRIqEyEeVXnaEq3BeWASrFyjqMaC47sz9t/s15JkX0RXYx3MMaRJ3XVUsDabYb+maAFq3z4LJJ4rjE4KSWzMEyE5DeXFxNZ69l5lKK5PY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774461564; c=relaxed/simple;
-	bh=55wjfoj7OHJ/Yrwpx+/PffPsrlu6eSVldPEERMBFMto=;
+	s=arc-20240116; t=1774461818; c=relaxed/simple;
+	bh=z+3MKcnaVgxUUEFrOwwtAjO55jdTD/Aap52HWyvjU10=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o5LYUNaQrYoCzVUg+7QVjBf1kcCwsBGmR1oWWX0bVrvYyCWycEHH7leqO/XFoeeSDLkgCUsHM/Aw9W3ou0vvcZEJGNXVGq2MObiYyhub87wToQFPPOF7eVzGgya/xBrwrcogSZsuXewDedKhY62592NUrb9bG7JClzWLSXuh6p8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=P+Ca03Pp; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=LO1xr1L0aAwIHfowoBnCGlpvlJI3JDi6kJOuTX27cI52nZ9BJtfBqgEfK5+n4yNwSQ73DK+/+KgiHANxhOuVnoHrj3xYMTklDU+Sj5cA6yLK/3ySrMy7mI8R2RZ8/xdH2YIjwcqY8hqxtq7tY0LpRozz4iMEgAWXDw+BMM5L74g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cgbXDzFK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="P+Ca03Pp"
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 848C1600B9;
-	Wed, 25 Mar 2026 18:59:19 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1774461559;
-	bh=hC3SqErnV5QOALLg28+waIy8Ptv1HifvTB5blRmrTxI=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cgbXDzFK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E8DAC4CEF7;
+	Wed, 25 Mar 2026 18:03:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774461817;
+	bh=z+3MKcnaVgxUUEFrOwwtAjO55jdTD/Aap52HWyvjU10=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=P+Ca03PpdJurIr7a0KUof23wT8ebLFwtB05XeWuBCHaMpsyxF9YfrqOJ3THZuAVdG
-	 foAItJouiOLJFR84nujyDb/IKAF6eceUfAQkQzxf9h3TUZVpISa+mrGikex0vo5Lc8
-	 F2W6LWGE1K8sPnNienw2wmmvsjb1i3ZlkHI0uNPZJN7Esx+otVt3/UF7iHMeCC+Pkp
-	 jgpZCm57/17UVPq0+AvQ9HFE5KF1xoNYpveLqbGos4rIELVHsElT1cJ3mZi/6X2fH2
-	 sFTuWZO1ZE/HGz+PmiPIHJLcPM0YD/wjPUttiXLWj3QnuedFDTtJRXOCNg8oYkuBS3
-	 edespKfwYXzBA==
-Date: Wed, 25 Mar 2026 18:59:17 +0100
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Florian Westphal <fw@strlen.de>
-Cc: netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, netfilter-devel@vger.kernel.org
-Subject: Re: [PATCH net 00/14] netfilter: updates for net
-Message-ID: <acQidRWPgfKyUYGz@chamomile>
-References: <20260325131108.23045-1-fw@strlen.de>
- <acQemtlq03AZvjL7@strlen.de>
- <acQgBRbJHRqbu--0@chamomile>
- <acQgrf3J2xAPS4ec@strlen.de>
+	b=cgbXDzFKuEwm0erfN2A14a6MqFPpdOFQ+JZrgxmk4/cS1JbAJDF8DZga7kHsEW5bZ
+	 zDYC9Jir/eUEG4lbfiVZe4uP96ssgyIY6mC9r3aGjmXQ+dEfU+oewxtydbBUifUGEg
+	 qTuY79FjkjNFPwzlz+1D0lSMPKb0UQ/USGXaohr0W/6ZhTtG4INz1/q9/UDHusbsr+
+	 tfkSjgKZdLFKfiygvCDhjoEEIJ4WTeYnnVLTNA2ZfTTtVLbiBJUxuK0ALluwhxtlfH
+	 5QX5ElCYZzn8oYIv/rLT+1Y7hF027n1q3Xh4asYYc2UnGeCba+yIuvBc+ygqYIvYKQ
+	 ZZNqfjEBOpdLw==
+Date: Wed, 25 Mar 2026 18:03:30 +0000
+From: Simon Horman <horms@kernel.org>
+To: lizhi2@eswincomputing.com
+Cc: devicetree@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, netdev@vger.kernel.org,
+	pabeni@redhat.com, mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com, rmk+kernel@armlinux.org.uk,
+	pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu,
+	alex@ghiti.fr, linux-riscv@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	maxime.chevallier@bootlin.com, ningyu@eswincomputing.com,
+	linmin@eswincomputing.com, pinkesh.vaghela@einfochips.com,
+	pritesh.patel@einfochips.com, weishangjuan@eswincomputing.com
+Subject: Re: [PATCH net-next v5 3/3] riscv: dts: eswin:
+ eic7700-hifive-premier-p550: enable Ethernet controller
+Message-ID: <20260325180330.GL111839@horms.kernel.org>
+References: <20260324073017.376-1-lizhi2@eswincomputing.com>
+ <20260324073408.439-1-lizhi2@eswincomputing.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <acQgrf3J2xAPS4ec@strlen.de>
+In-Reply-To: <20260324073408.439-1-lizhi2@eswincomputing.com>
 
-On Wed, Mar 25, 2026 at 06:51:41PM +0100, Florian Westphal wrote:
-> Pablo Neira Ayuso <pablo@netfilter.org> wrote:
-> > Will you please collapse this incremental fix to 8/14 in the new PR?
+On Tue, Mar 24, 2026 at 03:34:08PM +0800, lizhi2@eswincomputing.com wrote:
+> From: Zhi Li <lizhi2@eswincomputing.com>
 > 
-> I have no plans to make a new PR.
+> Enable the on-board Gigabit Ethernet controller on the
+> HiFive Premier P550 development board.
+> 
+> Signed-off-by: Zhi Li <lizhi2@eswincomputing.com>
+> ---
+>  .../dts/eswin/eic7700-hifive-premier-p550.dts | 42 ++++++++++++
+>  arch/riscv/boot/dts/eswin/eic7700.dtsi        | 66 +++++++++++++++++++
+>  2 files changed, 108 insertions(+)
 
-I can pick it up, I will post this PR in a few hours.
+Unfortunately this does not compile:
 
-I am very sorry I found this so late.
+$ ARCH=riscv make allmodconfig dtbs
+...
+  DTC     arch/riscv/boot/dts/eswin/eic7700-hifive-premier-p550.dtb
+arch/riscv/boot/dts/eswin/eic7700.dtsi:300.28-330.5: ERROR (phandle_references): /soc/ethernet@50400000: Reference to non-existent node or label "clk"
+...
 
-> It took me 6h to get this out the door and it turns out its dog shit.
-
-Maintainance is a lot work, not very well valued these days
-unfortunately.
-
-I will take care of it.
+-- 
+pw-bot: changes-requested
