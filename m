@@ -1,199 +1,105 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC65030AD0A;
-	Wed, 25 Mar 2026 04:40:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5771870809
+	for <netdev@vger.kernel.org>; Wed, 25 Mar 2026 04:50:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774413619; cv=none; b=ZNQXN/KXaY+qrFgh0q/8v4kGCX6I3IAKOguzYdbhxAqEwZgXSE78p5QqnNYuKSJQC+sQ9qFuODe/8NzwJ4hi1FbFX31pwT1YiZh7eP0q61cACFvWyjqJH35hIek1VuDdku3EY1m1fWrpgLNKp9q7b/Ibw6QTEWFzt+Fd3VZwhg8=
+	t=1774414224; cv=none; b=f0h7ZWIgR5c3l8+NQ2FpqFIloZ5tst05d9NwU2O5OEaUJYDbYQ/LDrhZ1gbBtvIR7oi/1QFofRxLAE1SHJkWvnZHmO9D4nPjiNY85ApFHL1CjRR3XhgIA3z9lQYqOKmzpE3u3BzmvOTlEjOJjL6U3ZXkrYpoHl3+tQAD/dQ7vaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774413619; c=relaxed/simple;
-	bh=FdrSZZJWlda4b/iHdGvUBNw53MhgoxQX4XFQbplHhPU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tX+R4J+iAydg33AejYXCcObdpe6O/zhRacSXmfe1fJymOCsATSpIQl1p+3guqyevo+qGF6DlvYyI0hCWnylprUh14GF28s2ma8Qz4eNY1OXzEwGOQy6ZR+AWs16LoK93kI6Wq12Ddlay97owqWu72j6xDKDJzeYtoaxQKICASoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i/DKoFBr; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1774414224; c=relaxed/simple;
+	bh=NOnb5W0LQimumxs5VACbGVyOcdX2vuC/C5pyx+AnOMU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XuBXfO5/f0UUhtBaDrN8OnOpUZiXwO+jh6PgKt4EQb3MT1jVLKHNX/fLku/P1OfVDTtunbGN8aqH2iPGisneNVCDPDDBwRJLLHb/qH5UV7LbuE1nBxwlEQIhyduCa7zQCfKxj3snE0lPgby0tQOBtNarRZNpW1IIJOxXCnevB/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aDrGqfSv; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i/DKoFBr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774413618; x=1805949618;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=FdrSZZJWlda4b/iHdGvUBNw53MhgoxQX4XFQbplHhPU=;
-  b=i/DKoFBrYGetkPBfnDiM6g6oXtAvrh91GzHTOadmxigPC9WBMQ08RP0l
-   Gv1/TtGfaPsR86a/l9tsMsxey9zc8Gc1IK11HE1FuLIxKMTlw0jBz7+PQ
-   /m4phX95eL+UTA7r0S0rTo7tW5klSsl1j/K9sFlAnnYJenxNtjTS3Yj/A
-   HFhUpmjuEJ/WEAc+cOPPNb6srWdaBjt3c/BMj5ciMt/fABifV9lQR4hnA
-   AR49by0iX4Muf6/FpwDBGLC7hH/LWCwGiC/seGDpnVNbOTWTQCbB+e1dn
-   XeE/0iDijcbuFChF5eZxatdPyvWCURzx46Y0CRaKNw5HPPNI3ZC8WJj4i
-   Q==;
-X-CSE-ConnectionGUID: HtK07444Rb+u25vT+J2NBQ==
-X-CSE-MsgGUID: +6i3zez1STyyeW8OFfxKMA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="79351762"
-X-IronPort-AV: E=Sophos;i="6.23,139,1770624000"; 
-   d="scan'208";a="79351762"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 21:40:15 -0700
-X-CSE-ConnectionGUID: ikyhIFZZQWCB7XOgW7Cv+g==
-X-CSE-MsgGUID: 7BUuh80bRCCN7c6107pPyw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,139,1770624000"; 
-   d="scan'208";a="228633803"
-Received: from lkp-server01.sh.intel.com (HELO 3905d212be1b) ([10.239.97.150])
-  by orviesa003.jf.intel.com with ESMTP; 24 Mar 2026 21:40:11 -0700
-Received: from kbuild by 3905d212be1b with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w5G2K-0000000064r-0e7u;
-	Wed, 25 Mar 2026 04:40:08 +0000
-Date: Wed, 25 Mar 2026 12:39:30 +0800
-From: kernel test robot <lkp@intel.com>
-To: Carlo Szelinsky <github@szelinsky.de>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Kory Maincent <kory.maincent@bootlin.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aDrGqfSv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774414222;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=pJnh0qeblB7QuhQfb4FwZ71GL5PXvoes3ViBRQuiUG0=;
+	b=aDrGqfSvtoTmeGs6XSPD1uoEdWhXdG8TyKgQVJKUZPZECsZjtvBJY2b7Hfus0TR4CsyIq7
+	j1AbdLPR54PAd8AIZYCSMrjk9C/o9DzG52ggpxdyor9t42YOC6gMMl0FxG3miPra8y3R3v
+	nwlqz8YIrtDqvnv6STnNNcxjYhVwoeI=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-597-xM6s-7JXM86MTFsko1JMMA-1; Wed,
+ 25 Mar 2026 00:50:18 -0400
+X-MC-Unique: xM6s-7JXM86MTFsko1JMMA-1
+X-Mimecast-MFC-AGG-ID: xM6s-7JXM86MTFsko1JMMA_1774414216
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8BA80195608B;
+	Wed, 25 Mar 2026 04:50:16 +0000 (UTC)
+Received: from localhost.redhat.com (unknown [10.72.112.30])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 51C301800361;
+	Wed, 25 Mar 2026 04:50:09 +0000 (UTC)
+From: Li Tian <litian@redhat.com>
+To: netdev@vger.kernel.org,
+	linux-hyperv@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-leds@vger.kernel.org, Carlo Szelinsky <github@szelinsky.de>
-Subject: Re: [PATCH v2 3/3] net: pse-pd: add LED trigger support via
- notification path
-Message-ID: <202603251254.o5PqMBRU-lkp@intel.com>
-References: <20260323201225.1836561-4-github@szelinsky.de>
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jason Wang <jasowang@redhat.com>,
+	Li Tian <litian@redhat.com>
+Subject: [PATCH net] netvsc: transfer lower device max tso size during VF transition
+Date: Wed, 25 Mar 2026 12:50:06 +0800
+Message-ID: <20260325045006.18607-1-litian@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260323201225.1836561-4-github@szelinsky.de>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Hi Carlo,
+When netvsc is accelerated by the lower device, we can advertise the
+lower device max tso size in order to get better performance.
+While a long-term migration to user-space bonding is planned, current
+users on RHEL 10 / Azure are experiencing significant performance
+regressions in 802.3ad environments. This patch provides a localized,
+safe fix within netvsc without introducing new core networking helpers.
 
-kernel test robot noticed the following build errors:
+Signed-off-by: Li Tian <litian@redhat.com>
+---
+ drivers/net/hyperv/netvsc_drv.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-[auto build test ERROR on robh/for-next]
-[also build test ERROR on net-next/main net/main linus/master v7.0-rc5 next-20260324]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Carlo-Szelinsky/dt-bindings-net-pse-pd-add-poll-interval-ms-property/20260325-040935
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
-patch link:    https://lore.kernel.org/r/20260323201225.1836561-4-github%40szelinsky.de
-patch subject: [PATCH v2 3/3] net: pse-pd: add LED trigger support via notification path
-config: hexagon-randconfig-001-20260325 (https://download.01.org/0day-ci/archive/20260325/202603251254.o5PqMBRU-lkp@intel.com/config)
-compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260325/202603251254.o5PqMBRU-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603251254.o5PqMBRU-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/net/pse-pd/pse_core.c:1221:10: error: no member named 'pi_led_trigs' in 'struct pse_controller_dev'
-    1221 |                 pcdev->pi_led_trigs = NULL;
-         |                 ~~~~~  ^
-   1 error generated.
-
-
-vim +1221 drivers/net/pse-pd/pse_core.c
-
-  1141	
-  1142	/**
-  1143	 * pse_controller_register - register a PSE controller device
-  1144	 * @pcdev: a pointer to the initialized PSE controller device
-  1145	 *
-  1146	 * Return: 0 on success and failure value on error
-  1147	 */
-  1148	int pse_controller_register(struct pse_controller_dev *pcdev)
-  1149	{
-  1150		size_t reg_name_len;
-  1151		int ret, i;
-  1152	
-  1153		mutex_init(&pcdev->lock);
-  1154		INIT_LIST_HEAD(&pcdev->pse_control_head);
-  1155		spin_lock_init(&pcdev->ntf_fifo_lock);
-  1156		ret = kfifo_alloc(&pcdev->ntf_fifo, pcdev->nr_lines, GFP_KERNEL);
-  1157		if (ret) {
-  1158			dev_err(pcdev->dev, "failed to allocate kfifo notifications\n");
-  1159			return ret;
-  1160		}
-  1161		INIT_WORK(&pcdev->ntf_work, pse_send_ntf_worker);
-  1162	
-  1163		if (!pcdev->nr_lines)
-  1164			pcdev->nr_lines = 1;
-  1165	
-  1166		if (!pcdev->ops->pi_get_admin_state ||
-  1167		    !pcdev->ops->pi_get_pw_status) {
-  1168			dev_err(pcdev->dev,
-  1169				"Mandatory status report callbacks are missing");
-  1170			return -EINVAL;
-  1171		}
-  1172	
-  1173		ret = of_load_pse_pis(pcdev);
-  1174		if (ret)
-  1175			return ret;
-  1176	
-  1177		if (pcdev->ops->setup_pi_matrix) {
-  1178			ret = pcdev->ops->setup_pi_matrix(pcdev);
-  1179			if (ret)
-  1180				return ret;
-  1181		}
-  1182	
-  1183		/* Each regulator name len is pcdev dev name + 7 char +
-  1184		 * int max digit number (10) + 1
-  1185		 */
-  1186		reg_name_len = strlen(dev_name(pcdev->dev)) + 18;
-  1187	
-  1188		/* Register PI regulators */
-  1189		for (i = 0; i < pcdev->nr_lines; i++) {
-  1190			char *reg_name;
-  1191	
-  1192			/* Do not register regulator for PIs not described */
-  1193			if (!pcdev->no_of_pse_pi && !pcdev->pi[i].np)
-  1194				continue;
-  1195	
-  1196			reg_name = devm_kzalloc(pcdev->dev, reg_name_len, GFP_KERNEL);
-  1197			if (!reg_name)
-  1198				return -ENOMEM;
-  1199	
-  1200			snprintf(reg_name, reg_name_len, "pse-%s_pi%d",
-  1201				 dev_name(pcdev->dev), i);
-  1202	
-  1203			ret = devm_pse_pi_regulator_register(pcdev, reg_name, i);
-  1204			if (ret)
-  1205				return ret;
-  1206		}
-  1207	
-  1208		ret = pse_register_pw_ds(pcdev);
-  1209		if (ret)
-  1210			return ret;
-  1211	
-  1212		mutex_lock(&pse_list_mutex);
-  1213		list_add(&pcdev->list, &pse_controller_list);
-  1214		mutex_unlock(&pse_list_mutex);
-  1215	
-  1216		ret = pse_led_triggers_register(pcdev);
-  1217		if (ret) {
-  1218			dev_warn(pcdev->dev, "Failed to register LED triggers: %d\n",
-  1219				 ret);
-  1220			/* Ensure pse_led_update() is a no-op on partial failure */
-> 1221			pcdev->pi_led_trigs = NULL;
-  1222		}
-  1223	
-  1224		return 0;
-  1225	}
-  1226	EXPORT_SYMBOL_GPL(pse_controller_register);
-  1227	
-
+diff --git a/drivers/net/hyperv/netvsc_drv.c b/drivers/net/hyperv/netvsc_drv.c
+index ee5ab5ceb2be..971607c7406f 100644
+--- a/drivers/net/hyperv/netvsc_drv.c
++++ b/drivers/net/hyperv/netvsc_drv.c
+@@ -2428,10 +2428,14 @@ static int netvsc_vf_changed(struct net_device *vf_netdev, unsigned long event)
+ 		 * This value is only increased for netvsc NIC when datapath is
+ 		 * switched over to the VF
+ 		 */
+-		if (vf_is_up)
++		if (vf_is_up) {
+ 			netif_set_tso_max_size(ndev, vf_netdev->tso_max_size);
+-		else
++			WRITE_ONCE(ndev->gso_max_size, READ_ONCE(vf_netdev->gso_max_size));
++			WRITE_ONCE(ndev->gso_ipv4_max_size,
++				   READ_ONCE(vf_netdev->gso_ipv4_max_size));
++		} else {
+ 			netif_set_tso_max_size(ndev, netvsc_dev->netvsc_gso_max_size);
++		}
+ 	}
+ 
+ 	return NOTIFY_OK;
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.53.0
+
