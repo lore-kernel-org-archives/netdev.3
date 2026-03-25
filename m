@@ -1,52 +1,46 @@
 Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0EC36492E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE03734CFBA;
 	Wed, 25 Mar 2026 07:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774423363; cv=none; b=vF9UjZ2i801Yhkh8gz3jQAJmfscgvGzbMVKhG9xOSTRGX+M/hrfSRAwngxGsORa8p0HAti6UWt5GE4YIe8oqSaT+p0/K1paYgLUHdjEdRPronRJK0iS29bwEGAFIocmofNBxvo1eik3NpXZv0g0eD4/TxpkOW9HY+h+E99Mwp2k=
+	t=1774423363; cv=none; b=ASssgRODrs7fJyZfeZeEDhINE4uKkaoYfgnaC9HTE3qk2tn3h8R7Za1x1Ti4VzaXcmUup9XXP6/S8quexC+Nnh49hdd47TNm0YfJyvfrOe3Pia033QnxoM1otvUMjDrjOd3G3Rmd5me3ZYctvyf/c5I6AXJ3SAbY0gvVlQ7rFi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774423363; c=relaxed/simple;
-	bh=bku4H/UZEGyHFNNbB/622394p04bXiZq69x3ssX7pBE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LmWSsO3X+LH0PGQsieROPmmuFGQC1WH1AX8/D5IHIXK98qEflnPKjXJ5W3fKwnkGs+7Grxeb/CNCnmQOYMaXts19AodYuS6+xYX6gckZQFPEpJRaVThZh0u2Hcb8vxwhH3ZYac6TQA5NQ8XoWHk+JKDc0Ig/xo3UJAjmmbzZyS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=Z5yC4AL4; arc=none smtp.client-ip=67.231.148.174
+	bh=U3SiB4CukSaaSjz/3kNQBGMuzbBCfZ3W2vcn/WOQprw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LwcsleKdRr4iybIuwVFeuk+Xav8PmfHYaHq4OzQUqzBxcjzd9ONolYM5kx8C8SqRI/Itkv6jIjDfWqSlXOktfJm4oYqmlkpFGyLh33K0aBBazAYeKB40FGiLipSR0ZNYPS+4448LP4jfrUWc9UB8EohIxBtXUG9L4tRk65rP0nE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=I1XG84Qf; arc=none smtp.client-ip=67.231.148.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="Z5yC4AL4"
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="I1XG84Qf"
 Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62P3GecW462175;
-	Wed, 25 Mar 2026 00:22:24 -0700
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62P3GsEa462835;
+	Wed, 25 Mar 2026 00:22:12 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=z
-	L9edTtQ+I8yjFW5xTW3OLUVfsJ015crBPbFIlBj9qU=; b=Z5yC4AL4rg7QlJL+n
-	DUI3DR3OhsNIefXN7q1tPPMapXQyQ4BhOhn4Cow9T7fCqyjKaGI1W54OT2pYdFzU
-	wOELNPgRQCoaP4Ixia7kaULRe4i3aMA+GCxYDRzuLW0KHH2AQd826gqhfBaTXsJW
-	GIBw5R8yjCnbBUyOicJBH7Fz6yEH467UxdTsAcL2bBokSZM+pH0836yxKI1DRGSq
-	uceFrlBsxKbz1N+4tUP+wMExW4DRkTdwjME81YnYRTCe5SCsjEG9n3xzlfdNqg6T
-	zfj7GWAcmn636QBvu7YSMBKjsUbas8zU+nyZittA2N8H/xgt1DCiDfKnGDmmxhJL
-	w8zFQ==
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=XmZZcFAzYgebUWMrfydMr17
+	wUwT/vxzmz11i787uBpc=; b=I1XG84QfhF1SSxJ95Nj2l0+O4RZgkOxwyzoSlK5
+	2DVzZfEd1zlPJ2i1+BQi9GiiI9agDDw4qUsSA8QTSkWrLiOvz+k6ix5ZcT1NMETk
+	jVfpCQ5FAvRG0yAgW2Kexk1FHj0UlT7V/rvZ5ObjIGP6tAXPCPNhbWgGW+xV8RhI
+	qNAFuNQQ3amKKDXCxsh79U38W0LNFdEwLLhCqnEBk4TwfJ6dT0dzxvLr3+521q63
+	p1HWWhgWJ3u5GWYRqxyCDePmaj00H37e8YScSUUPLtxkSlfxtDwbkVpkCZppr9qW
+	yzkiqcO8BXlZ+2IQibMzYR6l4q2YNeueXLi4LrrY+Be8AsQ==
 Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4d47na8e53-1
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4d47na8e4u-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Mar 2026 00:22:24 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+	Wed, 25 Mar 2026 00:22:12 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
  DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Wed, 25 Mar 2026 00:22:23 -0700
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Wed, 25 Mar 2026 00:22:21 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Wed, 25 Mar 2026 00:22:21 -0700
+ 15.2.1544.25; Wed, 25 Mar 2026 00:22:10 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Wed, 25 Mar 2026 00:22:10 -0700
 Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id 3458C3F7076;
-	Wed, 25 Mar 2026 00:22:15 -0700 (PDT)
+	by maili.marvell.com (Postfix) with ESMTP id 533993F7076;
+	Wed, 25 Mar 2026 00:22:05 -0700 (PDT)
 From: Ratheesh Kannoth <rkannoth@marvell.com>
 To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 CC: <sgoutham@marvell.com>, <davem@davemloft.net>, <edumazet@google.com>,
@@ -56,12 +50,10 @@ CC: <sgoutham@marvell.com>, <davem@davemloft.net>, <edumazet@google.com>,
         <shshitrit@nvidia.com>, <dtatulea@nvidia.com>, <tariqt@nvidia.com>,
         Ratheesh Kannoth
 	<rkannoth@marvell.com>
-Subject: [PATCH v8 net-next 2/6] net/mlx5e: heap-allocate devlink param values
-Date: Wed, 25 Mar 2026 12:51:55 +0530
-Message-ID: <20260325072159.1126964-3-rkannoth@marvell.com>
+Subject: [PATCH v8 net-next 0/6] octeontx2-af: npc: Enhancements.
+Date: Wed, 25 Mar 2026 12:51:53 +0530
+Message-ID: <20260325072159.1126964-1-rkannoth@marvell.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260325072159.1126964-1-rkannoth@marvell.com>
-References: <20260325072159.1126964-1-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -70,73 +62,112 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI1MDA1MSBTYWx0ZWRfXza69Geo/qdWl
- pVoPyzq+nnoJPKFq92E6nyk+wbtrALA6jUck+8LjJjZvZ/FkGsCQMW1Iz/F+1I0UXHFIdx+CV71
- 74fl00HOMvNVqvk78B7Wd6ON4kW0NE2A9Ew6TMr5y7S68vg0BTplxLt4p56quatdCM1PF53CGjf
- V8nu3adQwh105d4WmYZ+rq0UOUU50yJFjcdUmQmwu0hC9b+J7SEUh9VEYsnEqcNpE0L6BUaHKfC
- 2UrKmwNb6LigHftufiK8ATrcKKjx5AxbOW9FUNOsEwkO1x9F3OHxDRsXbk7sLTYWNfkWJiL7884
- FkWW8EsLXSQcA4PrTPPNnhmXb2OPTPajaYRCUTW2n1apAGDBIXtYwoqM4+gscIC0PZNYIC0HcHA
- YhXdUoWxtQP3eqisBENRn30eWju+KAhh/xJH7rMz2BZ3gNiBZ9Wh/pCJvR1OW3IpxT7wzsYdC0V
- q4X6RKScHItZzpjeUvg==
-X-Authority-Analysis: v=2.4 cv=LsifC3dc c=1 sm=1 tr=0 ts=69c38d30 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI1MDA1MSBTYWx0ZWRfX4BDNcVj5/exS
+ OUSfCHLzKmBQOZJfYhLk+aIfaU1P88w3mkToGvd9OiYHOiUiUQeSeudr91m68JvMbRYemJQ6DSs
+ WWoltt86QPRrM/OTz8+CGoy7/WqbnR2XERz/BAHWboCaAVeFkV17YiRH3Dhk2JoCkRHK+aRyPed
+ CJqUmlZDIGCeF5tS436YjSyipE9PqDxaRBybrJ0rkqkMm02T+/0b2gYVcejLrfQamLbaCXoTc7F
+ alKUO0lufw35LeR5sEQPN3feBHA87QWHkumSj5QKWOqa3VB1gI76qnHGBuOumfSpvs9kSU9QTfO
+ t2twN9l5FWe+kQ+bcsDvRYbmqLHMJa7JNoPezGs+GfYDXWpVBC0n/14nt5jCkSz5WzjH+LEo1/H
+ 0X+EzvCAZr9liSuvQ/qr1NpIcyLzlOSTVxl58/Ff6BLm9xpGsWCqIIoUuE+LxCCjV6hNXOaWEpR
+ RV/OTYeOBX9GooRgFgQ==
+X-Authority-Analysis: v=2.4 cv=LsifC3dc c=1 sm=1 tr=0 ts=69c38d24 cx=c_pps
  a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
  a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=EAYMVhzMl8SCOHhVQcBL:22 a=M5GUcnROAAAA:8 a=aWKQy79EXxaKdZR1qOkA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-ORIG-GUID: ejK-3yewcQDE9ushqwDSVMX7V3kT_cUO
-X-Proofpoint-GUID: ejK-3yewcQDE9ushqwDSVMX7V3kT_cUO
+ a=EAYMVhzMl8SCOHhVQcBL:22 a=VwQbUJbxAAAA:8 a=M5GUcnROAAAA:8
+ a=F3GfQixlnA_JdfTOFKwA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-ORIG-GUID: duHt4wvvFaWv8zdS5RIvqbZDlO0kJFEk
+X-Proofpoint-GUID: duHt4wvvFaWv8zdS5RIvqbZDlO0kJFEk
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-03-25_02,2026-03-24_01,2025-10-01_01
 
-union devlink_param_value grows when U64 array params
-are added to devlink. Keeping a four-element array of that
-union on the stack in mlx5e_pcie_cong_get_thresh_config()
-then trips -Wframe-larger-than=1280. Allocate the temporary
-values with kcalloc() and free them on success and
-error paths.
+This series extends Marvell octeontx2-af support for CN20K NPC (MCAM
+debuggability, allocation policy, default-rule lifetime, and optional
+KPU profiles from firmware files) and adds a devlink mechanism for
+multi-value parameters, with a small mlx5 follow-up to keep stack usage
+within -Wframe-larger-than limits once union devlink_param_value grows.
 
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
----
- .../ethernet/mellanox/mlx5/core/en/pcie_cong_event.c  | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+Patch 1 improves CN20K MCAM visibility in debugfs: mcam_layout marks
+enabled entries, dstats reports per-entry hit deltas, and mismatch lists
+enabled entries without a PF mapping. MCAM enable state is tracked in a
+bitmap updated from the CN20K enable path.
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/pcie_cong_event.c b/drivers/net/ethernet/mellanox/mlx5/core/en/pcie_cong_event.c
-index 2eb666a46f39..f02995552129 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/pcie_cong_event.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/pcie_cong_event.c
-@@ -259,15 +259,21 @@ mlx5e_pcie_cong_get_thresh_config(struct mlx5_core_dev *dev,
- 		MLX5_DEVLINK_PARAM_ID_PCIE_CONG_OUT_HIGH,
- 	};
- 	struct devlink *devlink = priv_to_devlink(dev);
--	union devlink_param_value val[4];
-+	union devlink_param_value *val;
-+
-+	val = kcalloc(4, sizeof(*val), GFP_KERNEL);
-+	if (!val)
-+		return -ENOMEM;
- 
- 	for (int i = 0; i < 4; i++) {
- 		u32 id = ids[i];
- 		int err;
- 
- 		err = devl_param_driverinit_value_get(devlink, id, &val[i]);
--		if (err)
-+		if (err) {
-+			kfree(val);
- 			return err;
-+		}
- 	}
- 
- 	config->inbound_low = val[0].vu16;
-@@ -275,6 +281,7 @@ mlx5e_pcie_cong_get_thresh_config(struct mlx5_core_dev *dev,
- 	config->outbound_low = val[2].vu16;
- 	config->outbound_high = val[3].vu16;
- 
-+	kfree(val);
- 	return 0;
- }
- 
--- 
+Patch 2 heap-allocates the temporary devlink param value array in
+mlx5e_pcie_cong_get_thresh_config() so a larger union devlink_param_value
+does not overflow the stack (patch 3).
+
+Patch 3 (Saeed) introduces DEVLINK_PARAM_TYPE_U64_ARRAY and nested
+DEVLINK_ATTR_PARAM_VALUE_DATA attributes so drivers and user space can
+exchange bounded u64 arrays; devlink_nl_param_fill() moves large locals
+to the heap as well.
+
+Patch 4 adds a runtime devlink parameter npc_srch_order (U64 array) to
+reorder CN20K subbank search during MCAM allocation.
+
+Patch 5 ties default MCAM entries (broadcast, multicast, promisc, ucast)
+to NIX LF alloc/free on CN20K, adds NIX_LF_DONT_FREE_DFT_IDXS for kernel
+PF suspend-style teardown, and adjusts free-all and default-entry paths
+so default rules are not freed as ordinary user rules.
+
+Patch 6 allows loading a custom KPU profile from /lib/firmware/kpu via
+module parameter kpu_profile on non-CN20K paths, with cam2/ptype support
+and shared helpers for firmware-sourced vs filesystem-sourced profiles;
+CN20K continues to use its existing custom KPU apply path.
+
+The mlx5 change is placed immediately before the devlink union growth
+so the series applies cleanly and stays warning-free when built
+incrementally.
+
+Ratheesh Kannoth (5):
+  octeontx2-af: npc: cn20k: debugfs enhancements
+  net/mlx5e: heap-allocate devlink param values
+  octeontx2-af: npc: cn20k: add subbank search order control
+  octeontx2-af: npc: cn20k: dynamically allocate and free default MCAM
+    entries
+  octeontx2-af: npc: Support for custom KPU profile from filesystem
+
+Saeed Mahameed (1):
+  devlink: Implement devlink param multi attribute nested data values
+
+ Documentation/netlink/specs/devlink.yaml      |   4 +
+ .../marvell/octeontx2/af/cn20k/debugfs.c      | 126 ++++-
+ .../ethernet/marvell/octeontx2/af/cn20k/npc.c | 255 +++++++--
+ .../ethernet/marvell/octeontx2/af/cn20k/npc.h |  10 +
+ .../net/ethernet/marvell/octeontx2/af/mbox.h  |   1 +
+ .../net/ethernet/marvell/octeontx2/af/npc.h   |  17 +
+ .../net/ethernet/marvell/octeontx2/af/rvu.h   |   6 +-
+ .../marvell/octeontx2/af/rvu_devlink.c        |  92 +++-
+ .../ethernet/marvell/octeontx2/af/rvu_nix.c   |  16 +-
+ .../ethernet/marvell/octeontx2/af/rvu_npc.c   | 521 ++++++++++++++----
+ .../ethernet/marvell/octeontx2/af/rvu_npc.h   |  17 +
+ .../ethernet/marvell/octeontx2/af/rvu_reg.h   |   1 +
+ .../ethernet/marvell/octeontx2/nic/otx2_pf.c  |   6 +-
+ .../mellanox/mlx5/core/en/pcie_cong_event.c   |  11 +-
+ include/net/devlink.h                         |   8 +
+ include/uapi/linux/devlink.h                  |   1 +
+ net/devlink/netlink_gen.c                     |   2 +
+ net/devlink/param.c                           |  91 ++-
+ 18 files changed, 979 insertions(+), 206 deletions(-)
+
+--
+v7 -> v8: Addressed Simon comments
+	https://lore.kernel.org/netdev/20260323035110.3908741-1-rkannoth@marvell.com/T/#t
+
+v6 -> v7: Addressed Simon comments
+	https://lore.kernel.org/netdev/20260320165432.98832-1-horms@kernel.org/
+
+v5 -> v6: Addressed Jakub,Jiri comments
+	https://lore.kernel.org/netdev/20260317045623.250187-1-rkannoth@marvell.com/
+
+v4 -> v5: Addressed Jakub comments
+	https://lore.kernel.org/netdev/20260312022754.2029595-6-rkannoth@marvell.com/
+
+v3 -> v4: Addressed Simon comments
+	https://lore.kernel.org/netdev/abDeXLpMMxp7G1v3@rkannoth-OptiPlex-7090/#t
+
+v2 -> v3: Addressed Simon comments.
+	https://lore.kernel.org/netdev/20260304043032.3661647-1-rkannoth@marvell.com/
+v1 -> v2: Addressed Jakub comments.
+	https://lore.kernel.org/netdev/20260302085803.2449828-1-rkannoth@marvell.com/#t
+
 2.43.0
-
