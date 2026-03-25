@@ -1,147 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from srv4.3e8.eu (srv4.3e8.eu [193.25.101.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED553F7E60;
-	Wed, 25 Mar 2026 16:44:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD12E3C661A;
+	Wed, 25 Mar 2026 16:50:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.25.101.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774457068; cv=none; b=HqGpeIphD1NAfFeddPtjMuwgXUJ1sCw6JN7bW/nfBlst3Fwn4JjNMzpYWPnUjb4UU41cPADz6xoYRKqnbgkZWF7pv/85F0hb+7pIQIMAHPBS0hGFr+Dry6Q45AVL5thWtqisRS8MtSxzENe2x1p0TgNnzwSqsbw2m9qBmorfbjA=
+	t=1774457449; cv=none; b=KLKRuYa85vVlTt3TrtIZOCfAlEY9cNbOeMs26G3z4kZrShyq2lR8mKUR7h6pJCF+mrvTiGaWf+VELJJN99sHm52YYCDydOXZF9xK//AnIbEY0SxyQy7xO1tzc9ppT8VoU4h98VrviUMAZFqDaSMeCeLGU32rXiFM8CpDe9n9cRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774457068; c=relaxed/simple;
-	bh=p1acyll1bR0nEEnbxjVK4uNTIZyXUWRjCnNxTq33pMI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AFveNHu2kN/1q8mZnpBtX+tRsr/j2SSzxN77eA24yqJnthJmU9egH3tE7vRWtfuNQbGiHEww3E9JD7UVCKahJYpbtH9ajX5jckIp8GlsTy2M+YBlW4fkBOFZbniSMnXhFjx40zuRvoYGURvMkcqFvRudhKuWmqtf+aXXbgwDpxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZK19vgAS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774457449; c=relaxed/simple;
+	bh=/J3VTTHDV7gm+KiMpeuYjd85uL9tISLNLi2tM0ly8kU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AmKvzmxknYPkCxznozLxNLZYiX9Vx1AScWG5AkXtZqNTzwhe7Ss2WmxGl155IZ+AiLRioKE0zZoE3zTQqxx91vp3VkTWuUq9DnJow2UtCySqgVbvsw8EA+I1hSj2pgV+1MjZkc9BiCGEW9vYPADHg+pA64jmULck8ZdzE+e0KSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=3e8.eu; spf=pass smtp.mailfrom=3e8.eu; dkim=pass (2048-bit key) header.d=3e8.eu header.i=@3e8.eu header.b=jphyO3UC; arc=none smtp.client-ip=193.25.101.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=3e8.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=3e8.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZK19vgAS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8356C4CEF7;
-	Wed, 25 Mar 2026 16:44:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774457068;
-	bh=p1acyll1bR0nEEnbxjVK4uNTIZyXUWRjCnNxTq33pMI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZK19vgAS8miXRfQna05EA3PaFDTJrgsk7EjO5enW3EhW4qxu32QMfiaMf3cUr00hC
-	 PXI7/tlscjxS4LueKgf/KVTiU/K7P+yKlSV4AKLbt1A/MmatmYXgG7b+hH2boSsX9H
-	 7cM48XUdYr/ckGy8a+eCRDyeyMaT0jA2j4yScaTRNkfdaqZmm46E12JmAzxvfNbvAZ
-	 PpfmOshQSFHjsrmTXq/2WU3Ln486qFBW7WCzlNd/okXE0xltCsmZ6i8oS3H57ia9RT
-	 qk3n+OsRGzWpGmwmJa/oek1yAd/sQzV4UaLcWE2iFfLgamCPyTTxKwI5vvoiAfatbv
-	 2prasgiCofRFg==
-Date: Wed, 25 Mar 2026 16:44:24 +0000
-From: Simon Horman <horms@kernel.org>
-To: Chih Kai Hsu <hsu.chih.kai@realtek.com>
-Cc: nic_swsd <nic_swsd@realtek.com>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"bjorn@mork.no" <bjorn@mork.no>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"davem@davemloft.net" <davem@davemloft.net>
-Subject: Re: [PATCH net-next v3 1/2] r8152: add helper functions for PLA/USB
- OCP registers
-Message-ID: <20260325164424.GG111839@horms.kernel.org>
-References: <20260323082226.2601-451-nic_swsd@realtek.com>
- <20260324180532.261099-1-horms@kernel.org>
- <9be8e74588604d9d9f5c10d33c6881e3@realtek.com>
+	dkim=pass (2048-bit key) header.d=3e8.eu header.i=@3e8.eu header.b="jphyO3UC"
+Received: from jan-pc (p200300ed4701bfa09bcb9dcee3f7b116.dip0.t-ipconnect.de [IPv6:2003:ed:4701:bfa0:9bcb:9dce:e3f7:b116])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by srv4.3e8.eu (Postfix) with ESMTPSA id 2BC504016A;
+	Wed, 25 Mar 2026 17:41:14 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=3e8.eu; s=mail20211217;
+	t=1774456876;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=U9r421GwLqbjrvPuOfTygpT5A8GyPUPozP8aliP/oWI=;
+	b=jphyO3UCsBCaWa2hZ6JAJGfMwtVSXYtG4PdIFE7AvJAHLPkwvub+5r12gx1UjU3MNLYdwy
+	uTJ/hM9yUERlSa7U8jdnoCvV5p2otd1YKxtYxR7/YOPIy223oLAqosCDKXmaNk3jXFwo7W
+	FRsqaanm/3puG8MvBWLq5oNr24R/Jt+kMdcfxIjsS3Spj/rm1pCIIJo1gW8UmIEFlXjxcX
+	y/rukJFuQDG2lVRjhnJdPFpZlqI/5538xSlWwlQP0ZrxlYDpxclDJIQyjeFSFglhSYsvWY
+	NM07kVc06GSzHzVtUACcDncHZsDkSh/Skk9onav0peGFYJ5pT9kVcGMvr1CTIw==
+From: Jan Hoffmann <jan@3e8.eu>
+To: Russell King <linux@armlinux.org.uk>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jan Hoffmann <jan@3e8.eu>
+Subject: [PATCH net-next] net: sfp: add quirk for ZOERAX SFP-2.5G-T
+Date: Wed, 25 Mar 2026 17:35:58 +0100
+Message-ID: <20260325164034.1542787-1-jan@3e8.eu>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9be8e74588604d9d9f5c10d33c6881e3@realtek.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Mar 25, 2026 at 03:35:24AM +0000, Chih Kai Hsu wrote:
-> On 25/03/26 2:06 am, Simon Horman wrote:
-> > 
-> > This is an AI-generated review of your patch. The human sending this email has
-> > considered the AI review valid, or at least plausible.
-> > 
-> > For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
-> > ---
-> > r8152: add helper functions for PLA/USB OCP registers
-> > 
-> > This commit introduces new helper functions (ocp_dword_w0w1,
-> > ocp_word_w0w1, ocp_byte_w0w1, and their _clr_bits/_set_bits variants) to
-> > simplify bitwise operations on PLA/USB OCP registers throughout the
-> > r8152 driver.
-> > 
-> > > diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c index
-> > > 3b6d4252d34c..ba6dc4dbfd80 100644
-> > > --- a/drivers/net/usb/r8152.c
-> > > +++ b/drivers/net/usb/r8152.c
-> > 
-> > [ ... ]
-> > 
-> > > @@ -3875,35 +3873,30 @@ static void r8153c_ups_en(struct r8152 *tp,
-> > > bool enable)
-> > >
-> > >  static void r8156_ups_en(struct r8152 *tp, bool enable)  {
-> > > -     u32 ocp_data = ocp_read_byte(tp, MCU_TYPE_USB,
-> > USB_POWER_CUT);
-> > > -
-> > >       if (enable) {
-> > >               r8156_ups_flags(tp);
-> > >
-> > > -             ocp_data |= UPS_EN | USP_PREWAKE | PHASE2_EN;
-> > > -             ocp_write_byte(tp, MCU_TYPE_USB, USB_POWER_CUT,
-> > ocp_data);
-> > > +             ocp_byte_set_bits(tp, MCU_TYPE_USB, USB_POWER_CUT,
-> > > +                               UPS_EN | USP_PREWAKE |
-> > PHASE2_EN);
-> > >
-> > > -             ocp_data = ocp_read_byte(tp, MCU_TYPE_USB,
-> > USB_MISC_2);
-> > > -             ocp_data |= UPS_FORCE_PWR_DOWN;
-> > > -             ocp_write_byte(tp, MCU_TYPE_USB, USB_MISC_2,
-> > ocp_data);
-> > > +             ocp_byte_set_bits(tp, MCU_TYPE_USB, USB_MISC_2,
-> > > +                               UPS_FORCE_PWR_DOWN);
-> > >
-> > >               switch (tp->version) {
-> > >               case RTL_VER_13:
-> > >               case RTL_VER_15:
-> > > -                     ocp_data = ocp_read_word(tp, MCU_TYPE_USB,
-> > USB_UPHY_XTAL);
-> > > -                     ocp_data &= ~OOBS_POLLING;
-> > > -                     ocp_write_byte(tp, MCU_TYPE_USB,
-> > USB_UPHY_XTAL, ocp_data);
-> > > +                     ocp_word_clr_bits(tp, MCU_TYPE_USB,
-> > USB_UPHY_XTAL,
-> > > +                                       OOBS_POLLING);
-> >                               ^^^^
-> > 
-> > Does this actually change the hardware behavior for RTL_VER_13 and
-> > RTL_VER_15?
-> > 
-> > The old code read a 16-bit word with ocp_read_word() to get OOBS_POLLING
-> > (BIT(8)), then cleared BIT(8) in the local variable, but wrote it back using
-> > ocp_write_byte(). Since ocp_write_byte() masks the data with 0xff, the write
-> > operation would only touch the low 8 bits and never actually clear BIT(8) in
-> > the hardware register. This made the old code effectively a no-op for clearing
-> > OOBS_POLLING.
-> > 
-> > The new code uses ocp_word_clr_bits() which calls ocp_word_w0w1(), and
-> > that performs a proper 16-bit read-modify-write cycle with ocp_write_word().
-> > This means BIT(8) will now actually be cleared in the hardware.
-> > 
-> The OOBS_POLLING (BIT(8)) must be cleared in the USB_UPHY_XTAL register.
-> The old code using ocp_write_byte() is wrong.
+This is a 2.5G copper module which appears to be based on a Motorcomm
+YT8821 PHY. There doesn't seem to be a usable way to to access the PHY
+(I2C address 0x56 provides only read-only C22 access, and Rollball is
+also not working).
 
-I expect the best way forward here is to submit a fix for (only) that
-problem to net-next.
+The module does not report the correct extended compliance code for
+2.5GBase-T, and instead claims to support SONET OC-48 and Fibre Channel:
 
-> 
-> > While this looks like it fixes a latent bug where OOBS_POLLING was never
-> > being cleared, the commit message describes this as pure refactoring to
-> > simplify the code with no mention of a behavioral change.
-> > 
-> I will mention this fix in the v4 commit message.
-> 
-> Thanks for your review.
-> 
-> Best Regards,
-> Chih-Kai
+  Identifier          : 0x03 (SFP)
+  Extended identifier : 0x04 (GBIC/SFP defined by 2-wire interface ID)
+  Connector           : 0x07 (LC)
+  Transceiver codes   : 0x00 0x01 0x00 0x00 0x40 0x40 0x04 0x00 0x00
+  Transceiver type    : FC: Multimode, 50um (M5)
+  Encoding            : 0x05 (SONET Scrambled)
+  BR Nominal          : 2500MBd
+
+Despite this, the kernel still sets 2500Base-X as interface mode based
+on the (incorrect) nominal signaling rate.
+
+However, it is also necessary to disable auto-negotiation for the module
+to actually work. Thus, create a SFP quirk to do this.
+
+Signed-off-by: Jan Hoffmann <jan@3e8.eu>
+---
+Note: I'm not quite sure "sfp_quirk_disable_autoneg" is enough here, or
+if it would be appropriate to use the full "sfp_quirk_oem_2_5g" quirk
+due to the not really correct compliance code / nominal signaling rate.
+
+ drivers/net/phy/sfp.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index 5db841377199..2e2fad79b221 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -567,6 +567,8 @@ static const struct sfp_quirk sfp_quirks[] = {
+ 	SFP_QUIRK_F("Turris", "RTSFP-2.5G", sfp_fixup_rollball),
+ 	SFP_QUIRK_F("Turris", "RTSFP-10", sfp_fixup_rollball),
+ 	SFP_QUIRK_F("Turris", "RTSFP-10G", sfp_fixup_rollball),
++
++	SFP_QUIRK_S("ZOERAX", "SFP-2.5G-T", sfp_quirk_disable_autoneg),
+ };
+ 
+ static size_t sfp_strlen(const char *str, size_t maxlen)
+-- 
+2.53.0
+
