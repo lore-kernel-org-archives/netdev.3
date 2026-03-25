@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4167A2EC54A;
-	Wed, 25 Mar 2026 04:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E8230AD0A
+	for <netdev@vger.kernel.org>; Wed, 25 Mar 2026 04:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774411828; cv=none; b=t5in2P/ZgMqcZVV5l213tq9nRX/ar7tymLSjwZfFEwVZIg3vzj4CPNNphBw0jTK7E58w9ht2xL4jjXcBKzCr68K9nS4+phiXajAigndso5Hn0TisOhKLnSGJCBE07SCa80zY2enjW9EK/xpcysmefOxWTluiCx2R1taoxEYWh0o=
+	t=1774411829; cv=none; b=OJv26xlHevsBLtxxVw4UXwOYzi2omY9tw4SsjXROIpT8RP4YOhHkjs3J85L92uPnVTC32OOIdlFqHTpUvBrUaZYHu+thULxrHcdOzXCaOmqPFHxuFYbhVjZWHCJ+ESMPTG+I4jwtv/Yvuzm0YZhuebqKrC/a6pqfk44KeBYXD4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774411828; c=relaxed/simple;
-	bh=akDemQiTVm5UCxXymzjOHOaTXpVPjA89/TYQMzejlEs=;
+	s=arc-20240116; t=1774411829; c=relaxed/simple;
+	bh=6wfxMxAxaYb09olhZ+8IgyiQ1UYLCEssHEOtqvXv4w4=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=rUBYO/zfw6/EQw0IirE4YgtHfLOXiT7oo5HW+J8VrLHuGCitoBtAPU4jThuqwnWYA+6XDCi6rzOIOfiPi7NH1afs+ZxednFn976N9STsySdiJozoW6ksKTmlUCBeV+z2wbaafiLPKr/lIl+p72hHdQnd2Pi/kCVVwDNDt6sF0KU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WsQY8KaY; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=FO83ObQRlhyNwLgL8e2KNFA/nTaNkoH0u87XVDR/jKG2hy+qcNt/9P81RITfc11LMn0O2p9DEVmMpNj2nuNOaRXBzrCkhsopU/xu/FK5D5NTOuDU5+QCEt5UFtkDWmOquZF0v3teu7dxqQO5/xWVir3igvkrMB0RCJSEXmsUtUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=onRitF7h; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WsQY8KaY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC632C2BC9E;
-	Wed, 25 Mar 2026 04:10:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="onRitF7h"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D2CC2BC9E;
+	Wed, 25 Mar 2026 04:10:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774411828;
-	bh=akDemQiTVm5UCxXymzjOHOaTXpVPjA89/TYQMzejlEs=;
+	s=k20201202; t=1774411829;
+	bh=6wfxMxAxaYb09olhZ+8IgyiQ1UYLCEssHEOtqvXv4w4=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=WsQY8KaYMnWpYuuTSfeYFP5tZnGZA7X4+iEaPuXMlXAYuav9SJzJ53iW+UGPdGlVC
-	 TjxM8JOZn1FGvcr+LcNsjs2eK98anzqKT5no2lXhV0kop2Jg/51V8E2rNM3RyHQ9/r
-	 FDreZkJjvtCPd1Bgb24q4Q2vE/sQsG7zMZ7n4EqbL6TR82FhXJvjaGQSyIOfXJ6ciR
-	 e5IeTxp9TuQzkg+K1OWMOc1MyQAA12jOgtWkez7EDQsveNKgXySTojEOs9AwSwlpEE
-	 r+y7RYwamLUOqsqJQSR0HNtH/zGc+dN94ZIz4haG+kYAsljZSalX7o4rdZz0UtQ1Q8
-	 P7HnPgNd+AqXA==
+	b=onRitF7hA0d3PKcQ+cLQ33Oe5SX6e6Xz5SJb6PT2QKTUR7oPPC6vcdc/UTS6MJ2uq
+	 GuMaBD8kcxmPj/MatMR5MjLr/0eabX4/NbbMbaqePWVIrSJX8F3+iNDdMzpbzkoJgm
+	 PpVUludY/5N+/1ZYNvLVTc82L8oI5ONJh0a0CqZxK4lE4I+mLRYJDY4T+hHw2/tXzU
+	 /6DuUGfvYElTM7qVXSLlS48Bci3bT/bTzFkMeyXyv5dTCy+zIuQ3IJ4LSSimuHv8C7
+	 O3AB8M3P/TOLQ51lj8xCh8blwXN6IexI0djcdcjXPWE4VsSsrk+mGKFQxUvJoZch+M
+	 nTlgq2Z9vLT4w==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA1083808203;
-	Wed, 25 Mar 2026 04:10:16 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FC853808203;
+	Wed, 25 Mar 2026 04:10:18 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2] selftests: drv-net: add missing tc config
- options for netkit tests
+Subject: Re: [PATCH v4 net-next] tcp: add cwnd_event_tx_start to
+ tcp_congestion_ops
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177441181528.1422230.1095710333878894810.git-patchwork-notify@kernel.org>
-Date: Wed, 25 Mar 2026 04:10:15 +0000
-References: <20260323-config-fixes-for-nk-tests-v2-1-6c505d83e52d@meta.com>
-In-Reply-To: <20260323-config-fixes-for-nk-tests-v2-1-6c505d83e52d@meta.com>
-To: Bobby Eshleman <bobbyeshleman@gmail.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, shuah@kernel.org, daniel@iogearbox.net,
- dw@davidwei.uk, netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, bobbyeshleman@meta.com
+ <177441181678.1422230.8337669113316666806.git-patchwork-notify@kernel.org>
+Date: Wed, 25 Mar 2026 04:10:16 +0000
+References: <20260323234920.1097858-1-edumazet@google.com>
+In-Reply-To: <20260323234920.1097858-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ ncardwell@google.com, kuniyu@google.com, martin.lau@kernel.org,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 23 Mar 2026 17:08:10 -0700 you wrote:
-> From: Bobby Eshleman <bobbyeshleman@meta.com>
+On Mon, 23 Mar 2026 23:49:20 +0000 you wrote:
+> (tcp_congestion_ops)->cwnd_event() is called very often, with
+> @event oscillating between CA_EVENT_TX_START and other values.
 > 
-> The NetDrvContEnv env context uses tc clsact qdiscs and BPF tc filters
-> for traffic redirection, but the kernel config options are missing from
-> the selftests config.
+> This is not branch prediction friendly.
 > 
-> Without them, the tc qdisc installation trips on:
+> Provide a new cwnd_event_tx_start pointer dedicated for CA_EVENT_TX_START.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v2] selftests: drv-net: add missing tc config options for netkit tests
-    https://git.kernel.org/netdev/net-next/c/112f4c632007
+  - [v4,net-next] tcp: add cwnd_event_tx_start to tcp_congestion_ops
+    https://git.kernel.org/netdev/net-next/c/d1e59a469737
 
 You are awesome, thank you!
 -- 
