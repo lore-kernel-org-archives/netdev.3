@@ -1,161 +1,182 @@
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F5F3BC670
-	for <netdev@vger.kernel.org>; Wed, 25 Mar 2026 15:14:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774451675; cv=pass; b=TA/9QVCrj0kbAQuD/CNDoHTSDVpWJ3EW1NhwyoF7uan7xpyNE3lw4cwdJ/j9UsMOy7HheFVHNA+4TS7chNi7w6+tpTinrifsz/ZOIwYd4TLq0d+tLjbC2qGnG8u8agTthSM7Phyf/3tUfAo021p6UWoQdFLmf48Mfmh52bzN50I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774451675; c=relaxed/simple;
-	bh=nFXtsQYitzxNyDBIP91p1FAZ7YRHXcxqC5D2Yp0z+J4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=N4DkxsC3fYm8WCG0PE2PhwQDau1Lqe3QSukY/XU+TMftzWZzy8ULg97Jx6v1vmsJHffqIQhRa1P5yl8xRl2/2uuPf/vjtRu37d12h5eQL7ct4uginu+BxOZfX9sj0y8mvKnh0yuaeqa5YnbaN3e2NimqkIUJcUcW/RTIou4FMAs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Wzimcalo; arc=pass smtp.client-ip=209.85.128.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE00020010C;
+	Wed, 25 Mar 2026 15:16:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774451796; cv=none; b=BRocw2/GmocDGHjCEe9NjOww3xVAW2or7m4NAjOfoLjxplZx+ol9WjGEMAxUwcZFob4CUkekkKFyk5PZzwHCCW1Kc1cEBYqTy3RylINKhVB6pIngrplnjoZEVv+ochaakO+60vA1uY3oMbmOUlHofkuldhlGkk+8VuuFwwseOcs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774451796; c=relaxed/simple;
+	bh=VpbZhNuuSl/ns05S2kGFJP+U2qoOXBtQ2LQID/TIRtI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=CvcXbzVNs7E1EUqwKThaVEewUw5ffP3WkLhl+ZJrTKYoCa4mfVTG/kahN08BXghm8k61xTaMc+eKKo0ekRv69Nj6T6lciCIMoy/pa3/hHO8/GDZ/K/Uk2eTstxFXDWmIlmIf0V0gKyGWb49lDB3p9iL/mrWRRQL4hR5mqGyuhJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=gneg3v9y; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Wzimcalo"
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-79a3ba1653fso55068267b3.3
-        for <netdev@vger.kernel.org>; Wed, 25 Mar 2026 08:14:34 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774451673; cv=none;
-        d=google.com; s=arc-20240605;
-        b=DwSsjXaf6UUhmAJIRUVVGqUJOA4dUfZxonRL/izNKRrRPPJLHv/22z7Fj2Mc55BM9s
-         kbXyaENgs3TkFM37WKZtQm/FFesHAStpXSfqiCRXuQ6hOLkqvU9UDlSHjrxU+ZM7fkSb
-         EAPYn8Sm3KYD+sTjis0agp4p4eIcwqqmNe4AqtaMhetel6QUDNPT8qhqATDFfknglBTs
-         2fwqNCrCdajS2Tga2owq9MtkJxlGdTu9+r04qqLJ507mfTLLUMg/aDLFgeSwVupzlwSb
-         h3yISEsorpiyGBlYnBcBBNIPPlXHZQoXYB+w9c3maFHPgVARmSH10TwfgGLj2om8JwmB
-         kKZg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=O66S96rEOTvUqlZiCU3x9vYPPQp/Mje+bdzAnxQr6SY=;
-        fh=JAAjS04vnrLrAEuaPKO1Ly84CeoMIE/oeY4MXXPeGwY=;
-        b=hmb4R/Iit/8GPmy1X4GuDm5+5faaU1OkaCKrKsVUVMt+MCHv7r4s81050U5gxqrunv
-         E0bOPiAiZOcPYKLcH0XR89unqHvWYIc5Dm7H8V+QyDUOU80DkuA+bZnANj2KcLjcuEwD
-         JIEhLjgKhQhO3kv3rUVeDASrjKG7r0S48bzX3hhO5kAHZ7/5Qbe5f6URZtpu8TDvL5vX
-         Jcyi1UfaOlsAC2r0pYgDZFSf1rhptQ334Gwucqmx1D9U0o8ilmlChjq24MCS2BHhxYqS
-         st1LYnpEqylnjW35QmnCaSfruxcY23gOb0ZJSpSvpoCp0tPKQQY7L914MDyq5sKPsRHz
-         MzIQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774451673; x=1775056473; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O66S96rEOTvUqlZiCU3x9vYPPQp/Mje+bdzAnxQr6SY=;
-        b=WzimcaloQIGcJR9h7bWHg5NReDB5v0Bzx0hDSMiqCsUVm2gTvjzPdrceLMof4YdEFm
-         Wyu6CEnIxBjwGCPRVV6N5mlyi2P2BGQZYo0cYo/uM7yJjWGzLOb/0gypYmL0BeadSBAC
-         88HqA/56bAzTjI36SpgKIXCpcg/oT/iXsS+f8LzZft2h4ctDoHAVhBDoH0ZpGGKFapl8
-         P/GgiypsSZxI8zYbhS5ZFvhc37DI78FHTjNHXvgKdunAWl07yNd3dIn++Qca0OBEOP6A
-         id0N8VLQYvTgspsoummvTIXqX8XPuVyNJWToY9O1XxEiyPsEZxFWjH4Y161pq0FnR5qi
-         ZI5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774451673; x=1775056473;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=O66S96rEOTvUqlZiCU3x9vYPPQp/Mje+bdzAnxQr6SY=;
-        b=hiL9lvcjGv+tRnOUGGenIVVxtmQIB/ILTPq5q6tBExuTTiSEtX5mITwm9pC9wlmp8R
-         XYCHbKKJoAws0FRG7lIGCc+Kx4EahBPmjN4JtAPITk3MaP9H4NeLCw4bdy2Mg1UtMjR4
-         NX13VJ84XizyF+AboMvfTTCHW7xLNjld4TGbmRx4DDW1r+7zMWsWL/APK3qJg6YbiEB2
-         HKnIMJSOeXqRbTmuCTBmrrDNDCvPgMXnlE/G3fcAedT2lhSrcDve+9p35/olC59aiHp2
-         zJiH+EmYwAA7+Jv6TTtpu/EOFi7o6gYnbMaWHCMP3RSILDQ9fgbkdkmfRkYKUYQ4jYHR
-         suZw==
-X-Forwarded-Encrypted: i=1; AJvYcCUf51voXx2SFFKx0mAy1KxC7dzcvyaOjaWhqM8vJBOGPKNMOJy8FA72HsRt1qmfdygt/eXFEzM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzY8eDudcQlq40Mbyu8r48iqlM+oKX3kbjHjtDE2kQLSydEb5oi
-	cvKp4reYFUu72JK3pErAhRGevKyHnELL+u4hx+KvXBq1mvpyNUS957MLEFUtPyxkNjtmjxMk9Uy
-	i4ZQdEb7d+64UUAShxIsbBFMiqENGKhSLNkNdRu2r
-X-Gm-Gg: ATEYQzwDqrWrmpEGKumF/TEVqFahnif1ECFcivgxOhwUZ3beweR6TSdRNLymOC8aqhI
-	tQtzBh+0nP+1eaX+FN+ZmEvocXn5A4agyTJqRy42LTKroPh8dHIMW7N4r2iHVbyIOKjIYXukQdL
-	pXOXZmarzJkBsLpfRtgq5jKekf+aricpkLsAhGTao7dwbMkdmcNeGuNbtLYfadVRrxOqvnn4bu1
-	ECTPDKkgoKW9UxM0qPcJuaV4UYu+PeVO5iFrU74Ld2/xKagr4Pas19AFfa1+OVFzzsrA5xjFMqk
-	0AguznPZpbpmp5legopl8cpAf89hUCtSa5zW
-X-Received: by 2002:a05:690c:6889:b0:79a:668a:b6e8 with SMTP id
- 00721157ae682-79acf6f01ffmr40430887b3.61.1774451673004; Wed, 25 Mar 2026
- 08:14:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="gneg3v9y"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62P1HmXV2945148;
+	Wed, 25 Mar 2026 15:16:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=02sTmvQ1zAB6bEnH7R8KDUUjdfiw
+	m1jwy5u8OYUaRS8=; b=gneg3v9ykjLDh13RUpbib2s6I9us1k/FkHkgS7uMJeZ8
+	RUmp323tjLcEzXoN4Z8uyGKoHgLUcBR81qZNuKyyldGoghVWID6AiBzgMsE+5uLc
+	R9WyUuB6D5R4r5iZsmwvZtuZNNUxmgfQvCuvWZFaCzAeIKpeWkTWOsYKxq99MOWx
+	Yw224eEVbv/jihc4EyGsuRE0hTsK2hSRvVq9aYGlLpJMsGFU/Tsoorg5pb3RSXYk
+	A0lcp1fzbJ+34yvp8q/yjUnXJ/HjnD1gOc1tbgjbq/+CKOVJ6zlqY3z71x1HH1tm
+	qNSxTIUtrRt+Rw5bK7uFGtZWrMF9hCVH06m1A8tFGw==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1ktv08m7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 25 Mar 2026 15:16:29 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62PC6MbX004380;
+	Wed, 25 Mar 2026 15:16:28 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d28c26sgh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 25 Mar 2026 15:16:28 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62PFGOOd41156904
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 25 Mar 2026 15:16:24 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8B3092004B;
+	Wed, 25 Mar 2026 15:16:24 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3F0EB20040;
+	Wed, 25 Mar 2026 15:16:24 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 25 Mar 2026 15:16:24 +0000 (GMT)
+From: Gerd Bayer <gbayer@linux.ibm.com>
+Subject: [PATCH v6 0/2] PCI: AtomicOps: Fix pci_enable_atomic_ops_to_root()
+Date: Wed, 25 Mar 2026 16:16:16 +0100
+Message-Id: <20260325-fix_pciatops-v6-0-10bf19d76dd1@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260324205301.1361608-1-atwellwea@gmail.com> <acOVlten_N_5evGX@gandalf.schnuecks.de>
-In-Reply-To: <acOVlten_N_5evGX@gandalf.schnuecks.de>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 25 Mar 2026 08:14:21 -0700
-X-Gm-Features: AQROBzD8224Q9HN0xgDwAcBw7dcRtTDRPO2HLV_Z6A8nB6U0lDUy4pisitfdkEk
-Message-ID: <CANn89iLJJ3EF2-qe4AWJN0teh05x0PPJjOAfB0uG9rNZuJUZUg@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 0/3] tcp: fix scaled no-shrink rwnd
- quantization slack
-To: Simon Baatz <gmbnomis@gmail.com>
-Cc: Wesley Atwell <atwellwea@gmail.com>, netdev@vger.kernel.org, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	David Ahern <dsahern@kernel.org>, Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAED8w2kC/23P3WrDMAwF4Fcpvp6LLdV23Ku9xxjDP8pqWJMQd
+ 6aj5N3nlI11JpdH4nxIN5ZpTpTZcXdjM5WU0zjUoJ92LJzc8E48xZoZCFBSCs37dH2bQnKXccr
+ cUKdFRyF4gaxWppnq/s69vNZ8Svkyzl93vch1+gNJ8R8qkgtOMajOKeM10PNHGj6v++TP+zCe2
+ YoV+ANANpcUqEAUEsl6Q0CbAP4CWmD7SsEKWBsl+OB6L+0WcHgAJDbAYQXQByOcRotqC1APALS
+ AqkDvojOA6Mh1LbAsyzeQ/xyisAEAAA==
+X-Change-ID: 20251106-fix_pciatops-7e8608eccb03
+To: Bjorn Helgaas <bhelgaas@google.com>, Jay Cornwall <Jay.Cornwall@amd.com>,
+        Felix Kuehling <Felix.Kuehling@amd.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Niklas Schnelle <schnelle@linux.ibm.com>
+Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, Leon Romanovsky <leon@kernel.org>,
+        Alexander Schmidt <alexs@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+        Gerd Bayer <gbayer@linux.ibm.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: uQjG6wlYtha8bjQIqZwWRzjebZrwsQDO
+X-Authority-Analysis: v=2.4 cv=aMr9aL9m c=1 sm=1 tr=0 ts=69c3fc4d cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=vQOT1DpSoXcvsw1ccD4A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI1MDEwNiBTYWx0ZWRfX2GpDRAcc6WTz
+ 1HSdAIaG00oASGwIuCFa6XeHxOR0NoGEHIKMQFmACACBss1N41BmzFVu63Ha//zUCjHgN2AAJW+
+ K3tFA3s0pOfj7Swva3WEFJJB70AuF+HSXhBlnEMf9Nbwiuf20Ggwjg3bwowAFt5TrrkSeD/LwyV
+ FXyC7FfxgwoG1JNG8nbzZvSqe+msGrPgxrbggPgxscqf82gMJsix/VmvjecEkp2jRpX4RxgScbn
+ IogOwZZ/+ka6J378SkulTFktb6oPiryxPOpm+dsmgsakLYmC5NPs9TjRzSS1At6/UFm7VpSB17+
+ bNOrHq6UK8CRkNtMG7dLQGqt2vb2fGON2mHVICp2M0XIblt2PAXH/XtUXLSOgAi5uCy6ud1nJkX
+ r455av+7ObpP8nAdwhLzF7n90SutxmmgOm88oXVxt6NDvJ7Tmy/q49X9Aae+ykrScIEbe6aSuoy
+ HZo88bJJ0GlPWMxv7EQ==
+X-Proofpoint-GUID: joWoaCiOBWI4xkTdCkeMdT5UmKbpaHg5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-25_04,2026-03-24_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 lowpriorityscore=0 adultscore=0 impostorscore=0 malwarescore=0
+ suspectscore=0 phishscore=0 priorityscore=1501 bulkscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603250106
 
-On Wed, Mar 25, 2026 at 12:58=E2=80=AFAM Simon Baatz <gmbnomis@gmail.com> w=
-rote:
->
-> Hi Wesley,
->
-> On Tue, Mar 24, 2026 at 02:52:58PM -0600, Wesley Atwell wrote:
-> > Hi,
-> >
-> > This v3 addresses the follow-up review on v2.
-> >
-> > Eric pointed out that 1/3 does not need the added packetdrill comment
-> > and that 2/3 compared signed free_space against an unsigned
-> > granularity.
-> >
-> > This revision drops the extra in-file comment from 1/3 and keeps
-> > the scaled-window granularity in int space in 2/3 so the comparison
-> > stays type-safe. The overall approach and reproducer remain unchanged
-> > from v2.
-> >
-> > Simon was right that the original 3/3 only showed the explicit
-> > rcv_ssthresh-limited ALIGN-up behavior. For v2, 3/3 was replaced with
-> > an OOO-memory-based reproducer that first grows rcv_ssthresh with
-> > in-order data and then drives raw backed free_space below
-> > rcv_ssthresh without advancing rcv_nxt. In the instrumented
-> > old-behavior run that shaped this test, the critical ACK reached
-> > free_space=3D86190, rcv_ssthresh=3D86286, and still advertised 87040
-> > (85 << 10). With 2/3 applied, the same ACK stays at 84.
-> >
-> > That follow-up also clarified why the broader 2/3 change is required.
-> > A narrower variant that preserved the old rcv_ssthresh-limited ALIGN-up
-> > behavior was not sufficient: earlier ACKs still stored 85 in tp->rcv_wn=
-d,
-> > and tcp_select_window() later preserved that extra unit because shrinki=
-ng
-> > was disallowed. Keeping tp->rcv_wnd representable across the scaled
-> > no-shrink path is what lets later ACKs settle at the correct
-> > wire-visible edge.
->
-> So, you are saying that 84 defines the "correct
-> wire-visible edge"?  That's a strong claim.
->
-> The test in 3/3 adds OOO packets until the window calculated from
-> free_space is 84.  But why stop there?  If I added further OOO
-> packets until the calculated window drops to 83, I can claim, by the
-> same reasoning, that 83 is the correct value and the initial 84 is
-> wrong.
->
-> In other words, this is a very synthetic scenario that can be steered
-> to arbitrary values.  As stated in v1, I would really like to see a
-> packetdrill (or real-world scenario) where the old behavior actually
-> hurts (after all, this series claims that the current behavior needs
-> to be fixed).
->
+Hi Bjorn et al.
 
-This series seems to be a social engineering experiment.
+On s390, AtomicOp Requests are enabled on a PCI function that supports
+them, despite the helper being ignorant about the root port's capability
+to supporting their completion.
 
-Could we have the prompts that were fed to an AI agent ?
+Patch 1: Fix the logic in pci_enable_atomic_ops_to_root()
+Patch 2: Update references to PCIe spec in that function.
 
-I really do not see the point. RWIN is by essence advisory, and TCP
-cannot accept
-arbitrary bloated (small skb->len / skb->truesize ratio) anyway.
+I did test that the issue is fixed with these patches. Also, I verified
+that on a Mellanox/Nvidia ConnectX-6 adapter plugged straight into the
+root port of a x86 system still gets AtomicOp Requests enabled.
+
+Due to lacking the required hardware, I did not test this with any PCIe
+switches between root port and endpoint. So test exposure to other
+environments is highly appreciated. One particularly rare setup is a
+RCiEP that might act as a AtomicOps Requestor - but was subject to a
+regression in v4 as reported by Sashiko.
+
+v5 of this series tries to make no functional changes for that class of
+devices either.
+
+Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
+---
+Changes in v6:
+- Incorporate Ilpo's editorial comments.
+- Correct logic in pci_is_atomicops_capable_rp() (annotated by Sashiko)
+- Link to v5: https://lore.kernel.org/r/20260323-fix_pciatops-v5-0-fada7233aea8@linux.ibm.com
+
+Changes in v5:
+- Introduce new pcibios_connects_to_atomicops_capable_rc() so arch's can
+  declare AtomicOps support outside of PCIe config space. Defaults to
+  "true" - except s390.
+- rebase to 7.0-rc5
+- Link to v4: https://lore.kernel.org/r/20260313-fix_pciatops-v4-0-93bc70a63935@linux.ibm.com
+
+Changes in v4:
+- drop patch 1 - it will become the base of a new series
+- previous patch 2, now 1: reword commit message
+- add a new patch to update references to PCI spec within
+  pci_enable_atomic_ops_to_root()
+- rebase to latest master
+- Link to v3: https://lore.kernel.org/r/20260306-fix_pciatops-v3-0-99d12bcafb19@linux.ibm.com
+
+Changes in v3:
+- rebase to 7.0-rc2
+- gentle ping
+- add netdev and rdma lists for awareness
+- Link to v2: https://lore.kernel.org/r/20251216-fix_pciatops-v2-0-d013e9b7e2ee@linux.ibm.com
+
+Changes in v2:
+- rebase to 6.19-rc1
+- otherwise unchanged to v1
+- Link to v1: https://lore.kernel.org/r/20251110-fix_pciatops-v1-0-edc58a57b62e@linux.ibm.com
+
+---
+Gerd Bayer (2):
+      PCI: AtomicOps: Do not enable without support in root complex
+      PCI: AtomicOps: Update references to PCIe spec
+
+ arch/s390/pci/pci.c |  5 +++++
+ drivers/pci/pci.c   | 54 +++++++++++++++++++++++++++++++++--------------------
+ include/linux/pci.h |  1 +
+ 3 files changed, 40 insertions(+), 20 deletions(-)
+---
+base-commit: c369299895a591d96745d6492d4888259b004a9e
+change-id: 20251106-fix_pciatops-7e8608eccb03
+
+Best regards,
+-- 
+Gerd Bayer <gbayer@linux.ibm.com>
+
