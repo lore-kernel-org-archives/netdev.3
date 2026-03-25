@@ -1,64 +1,64 @@
-Received: from mail-ej1-f98.google.com (mail-ej1-f98.google.com [209.85.218.98])
+Received: from mail-lj1-f228.google.com (mail-lj1-f228.google.com [209.85.208.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CC5258EDE
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB53E25E469
 	for <netdev@vger.kernel.org>; Wed, 25 Mar 2026 13:44:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.98
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774446285; cv=none; b=efocOgRNf+9r3iNvdMEC7UCXgxhNi6E8w1qnEbkhRZnIJ17vGU2Cl1pRNlyvhfOwZbMFFjkuxRj3B0AkQq1zfgONCFMYXEbbRXIhP4dp2niTk6YxIaXKDaGo5iFWcy41Qpu/03MMvyUlJ86xRC6eeIJBENEMrWjSbSpzEhJ2brM=
+	t=1774446286; cv=none; b=S/tN35QlpP/+x+lJ5AHYYA2lB+nVxolwmSkfT8piTXYu6ndbeRLq0+QRrUl59RvMUR+zMywl1iEZPPY0RslaJxmbhH7UJu0kPlllYL1WhT1sgFuoHtJSw9CkaS0J/wFTjxJIXXo0q8uX8xdzPdFZJ26W5rYtAycfgbNnL7hIN1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774446285; c=relaxed/simple;
-	bh=a4d5VEfcZaBUlv5wSQLVwDrF1j7hoMVD0q3eVf6XgDU=;
+	s=arc-20240116; t=1774446286; c=relaxed/simple;
+	bh=94WAVCejm7yjl+nIPIpo7hT75xUfhlHUlWEmMNuUklI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Bu7eVPwftsLdWnqgTIDv5OQTf/X4W9bzbZI49RmLAE5TR0Z7ej7C0AyzE/z3FXOV0uk5Hoex44VWJRjQkP/grNxE/c8zH5S6nFlWda6n+cCFJl/056E/1v3OMSB59MSVMA0p15xd+JVbXjrvvLTUBEceoDqDiOU7SsiccXVteEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=jGYHcgF+; arc=none smtp.client-ip=209.85.218.98
+	 MIME-Version; b=k3mG7G1liqchprv27pGtS3qvdhIAiXwRte6LGE31jlR1t+VVdAezCz6BX2oqZa9b0E4onzr6VTqFUgk9sjdti9ctAUg/TKLoTBWKclJ+Awmf111wssxpmIe1kykWXP3mNeQzv7xDBc+Hk96rfDo2CVnUFMpEEQ1Nlf0nFxxXKn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=C6kqXCoc; arc=none smtp.client-ip=209.85.208.228
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="jGYHcgF+"
-Received: by mail-ej1-f98.google.com with SMTP id a640c23a62f3a-b9a0762ed5fso135276266b.1
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="C6kqXCoc"
+Received: by mail-lj1-f228.google.com with SMTP id 38308e7fff4ca-38bcdda57b0so48334891fa.3
         for <netdev@vger.kernel.org>; Wed, 25 Mar 2026 06:44:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=6wind.com; s=google; t=1774446283; x=1775051083; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yYLAScOzVTPW96Q/e/ORxGkIfqDqePakPeJElsTBptk=;
-        b=jGYHcgF+wyOr09T9D5A12Yf4N56IddFI100Q6gxmccVEwZZvDwCib5wBv9SdbWYsTZ
-         zVJzmxWL7WZjrwRNRQr2IWElnVRz2CNNuwmffb8fuA4TWRiZAZBd0gFYFNyDRKkBFS4d
-         XcW5UWGdbnGyFAjmN8FfLVkG17mY0o+7O9BKLz8/eEyu0hNqHs1M8jx1D5vfiNQEfw97
-         tlCzzeN1IX+KtHKrQ1Ie9uDDkFkEM6RCHjkUUsmV4pbVPWkkvCrNyLFq5vhMy9GZSGTK
-         Fg0/3AkXs2b8Ph9b98Vw+LeYEMGIKq+G42M/Yh6lXd6rYyNKqx3pOb2t4KFOxCCqc91H
-         qfZw==
+        bh=IUsfoehVn5lZkFzrVLzZekZIzik8pjiRUWjdJgKgZ2c=;
+        b=C6kqXCocLiXvAVQv4qcE9Ay/YbME9hczdlH2FHP884k6VrI/RPjandFtE9zPpxfeV2
+         fBpgHN1KqoOsb22dUxy0eNBKr70gReRezJRjOJJOphAyD28xqWklfsXDalc2yStqbmiq
+         bcJkYVmHC4JeQB2I29jER8mxsT0fQi8boKZN5yZmJCWdqdo2pdD+8R02wxGHfFrzSwl8
+         EwokxjbpPzb3AqfhLR+nsWwz9/vHjG/7EcqnBOEen3tkAJ6Ykv9tPd49kKU+W9dYzO5N
+         PiS3bXp5pYe2qiaj87Og/IKq0hMZAMzksIOe688O7XGnWWS/eZL65iljGbvNuJTxiEz/
+         lgmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1774446283; x=1775051083;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=yYLAScOzVTPW96Q/e/ORxGkIfqDqePakPeJElsTBptk=;
-        b=Bi1SaU9uel2G6xeA+8eonwDMgZWj2eREi/VMoi8ybGmMEAfDUxdxCLUpsSjvxr9RFc
-         ezDFa4z3xEp3Y+UhdfXHQPp+s15By+kLlLN+T79IDQA6JEmJoqdZtBPSac75dt1SiYyc
-         DigvDU5kA+aQhs1WwGkLaoR3GQOhObpjFZgOquybcY4rcDB3pD27Ja0qr5IOu+TI0thO
-         WK7+GOsrP003M1JHyxQ3nvC7P3hlwLpeLPy+2wOeqv0umjVecD94AiI2phly1PxbKPu1
-         rOgLygl1NFzBpqZMQZvemndBjq+NQG+kmXyxNVz5Zk7B4ZA4akJ7rOPMAYniwqft9qzq
-         lSVA==
-X-Gm-Message-State: AOJu0Yw5at69RzU3gkOfdIS1LNWFL9k4iEw5W7WjOXrf4pF/cOTu50f9
-	+Kyw5xOZIeboinVdC2RqkS0TlBVsEY7Ro4SBrjdtdblIMGuAoxAuQhaHKAQEc1Ac+Q12keVySQb
-	eiEvz5G+jpNVO1si12rsXJStDiY9PYfG13+YM
-X-Gm-Gg: ATEYQzxl1ZKuJOeAUwXhDIrBsw5oQXlpTYbaBYKDWtiVJxSpgKKyqcYQN3vHK6MdE2d
-	+4pImlS82/cPZAc4OB3SV59+Hpc2KWUH4cOWwOXzI148f+zRC99H7KA3fqlkTC8yPzrEYvI9ckH
-	aF713tB42M7CZT7Hae85bnN5zRszHIYql+zsRK5DCWA5BJHJOOBdWJydOndS4SSX5urxLgBT15D
-	Chly8jIpfslwO6tDrOhGlS4qtRPSOhrgqENy9bQbLirH1pNI3IPZGKh5oF2m49SPK+NQtFrzaFt
-	JNB0MmJHTpvOPNM+Hzk4QHSYU6VyNo7PT24JKr0lApegV7EM4nmA+9qshqEOsIHhgixiW6Lmb/N
-	dfEPD3vuKJ1+Jrg5J61rmBoY1S/o+SixjR/aiDHUEogzLpVLks7Fz
-X-Received: by 2002:a17:907:e981:b0:b98:49ae:b722 with SMTP id a640c23a62f3a-b99c478a278mr290020666b.23.1774446282569;
-        Wed, 25 Mar 2026 06:44:42 -0700 (PDT)
+        bh=IUsfoehVn5lZkFzrVLzZekZIzik8pjiRUWjdJgKgZ2c=;
+        b=JvvWZV90S8ma7Xkml8i3HyOoQ2MYsGRRtjbR1hX/gamKXE5x4E+JMrLIIjnKPmXZcl
+         uM8Bo1BxilWSWBIaFtaTQ9NT6TtCDmpYRKg3HtAeu6zoh3mwTKBPMXqdGLZVAMwZlui6
+         Tocc5hI42y+r2wEt/gj5OoBfYrYbHi05bPAqM6zk2scJS57BWTQ4Gn8q/cEdWOQqGB4y
+         HVPTJP7cjyfdkuefFLbfM55lbmAgfihKU/A5rJdxvM3IcDz/HDwvtt60JvkJOxeUhwzU
+         NWPduXZ34JYjJ8RCSIbynhKEsHE1ckwpsKjF+j+lL3uWXk8bqwxj+F4CrDdmA0rMme1t
+         AyRw==
+X-Gm-Message-State: AOJu0YwNmULAMkq+FxQwd6cV+JM17SMuALh/9ZibYt1KEDfyR5cp1ZjY
+	6N26DqmPDvcCkLtme/8um7eZpAiZKCLVmUM6KmcEklZQ26ZFqS3qMBM0txmw3CI6VHJ3hvxId0i
+	9sZhflHDh9rUVrASI44k3eIInSlZ/qbJJTA15
+X-Gm-Gg: ATEYQzzVNMUbjRftBfR0Esp3S7ZY0l3U6TI7o9j0jAedUaEuoLOzpJdk1bWA4PbQMmp
+	yr4B43orZSgsjNKg9HcnpUSBjG+VvRPrt7IQyOEVPJ/k7aqMdp85YJTMlxu4hW9pMmOhkBn9HEp
+	kuFiZa3VBDVHpmuJKxfVXTYPxTeSpOmMyKAn7X0rAbZbp/Zr5f9zNqkVh5Y4peEPdFc2RDBs7Pq
+	JYTKx41QrGFi/lR1fWPTuxGcuCmHL3R+f/nCCfW6kd3/ZPOIcEw3t9ljCen1hOpagOcv4VKCjuW
+	p0JRvjt/fmfdMVJbTpIjm7iaBB0JlG4XQaS4NVtYqMx5dgr89qMXVXRm1q8A4ZpgZYRKjPbL9xC
+	GwCWDkHwpCPDpN+R+f6SPlyfq0osN9FEwGyMDwKEQWUVyh5RBfwhV
+X-Received: by 2002:a05:6512:a86:b0:5a2:82d2:c50a with SMTP id 2adb3069b0e04-5a29b999cfamr1152601e87.40.1774446283035;
+        Wed, 25 Mar 2026 06:44:43 -0700 (PDT)
 Received: from smtpservice.6wind.com ([185.13.181.2])
-        by smtp-relay.gmail.com with ESMTP id a640c23a62f3a-b9973f3fa74sm21157766b.72.2026.03.25.06.44.42;
-        Wed, 25 Mar 2026 06:44:42 -0700 (PDT)
+        by smtp-relay.gmail.com with ESMTP id 2adb3069b0e04-5a29ac06006sm317595e87.5.2026.03.25.06.44.42;
+        Wed, 25 Mar 2026 06:44:43 -0700 (PDT)
 X-Relaying-Domain: 6wind.com
 Received: from stryper.dev.6wind.com (stryper.dev.6wind.com [10.17.2.5])
-	by smtpservice.6wind.com (Postfix) with ESMTP id 63B6D1EF6E;
+	by smtpservice.6wind.com (Postfix) with ESMTP id 7798F1EF70;
 	Wed, 25 Mar 2026 14:44:42 +0100 (CET)
 From: Louis Scalbert <louis.scalbert@6wind.com>
 To: netdev@vger.kernel.org
@@ -71,9 +71,9 @@ Cc: andrew+netdev@lunn.ch,
 	andy@greyhouse.net,
 	shemminger@vyatta.com,
 	Louis Scalbert <louis.scalbert@6wind.com>
-Subject: [PATCH net v2 1/3] bonding: 3ad: fix carrier when no valid slaves
-Date: Wed, 25 Mar 2026 14:44:37 +0100
-Message-Id: <20260325134439.3048615-2-louis.scalbert@6wind.com>
+Subject: [PATCH net v2 3/3] bonding: 3ad: fix stuck negotiation on recovery
+Date: Wed, 25 Mar 2026 14:44:39 +0100
+Message-Id: <20260325134439.3048615-4-louis.scalbert@6wind.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20260325134439.3048615-1-louis.scalbert@6wind.com>
 References: <20260325134439.3048615-1-louis.scalbert@6wind.com>
@@ -85,80 +85,67 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When an 802.3ad (LACP) bonding interface has no slaves in the
-collecting/distributing state, the bonding master may still report
-carrier as up. In this situation, no slave is actually able to transmit
-or receive traffic.
+The previous commit introduced a side effect caused by clearing the
+SELECTED flag on disabled ports. After all ports in an aggregator go
+down, if only a subset of ports comes back up, those ports can no
+longer renegotiate LACP unless all aggregator ports come back up.
 
-As a result, upper-layer daemons consider the interface operational
-while traffic is effectively blackholed.
+1. All aggregator ports go down
+  - The SELECTED flag is cleared on all of them.
+2. One port comes back up
+  - Its SELECTED flag is set again.
+  - It enters the WAITING state and gets its READY_N flag.
+  - The remaining ports stay UNSELECTED. Because of that, they cannot
+  enter the WAITING state and therefore never get READY_N.
+  - __agg_ports_are_ready() returns 0 because it finds a port without
+  READY_N.
+  - As a result, __set_agg_ports_ready() keeps the READY flag cleared on
+  all ports.
+  - The port that came back up is therefore not marked READY and cannot
+  transition to ATTACHED.
+  - LACP negotiation becomes stuck, and the port cannot be used.
+3. All aggregator ports come back up
+  - They all regain SELECTED and READY_N.
+  - __agg_ports_are_ready() now returns 1.
+  - __set_agg_ports_ready() sets READY on all ports.
+  - They can then transition to ATTACHED.
+  - Negotiation resumes and the aggregator becomes operational again.
 
-Fix this by asserting carrier only when at least 'min_links' slaves are
-in the collecting/distributing state (or collecting only if the
-coupled_control default behavior is disabled).
+Consider only ports currently in the WAITING mux state for READY_N in
+order to avoid __agg_ports_are_ready() to return 0 because of a disabled
+port. That matches 802.3ad, which states: "The Selection Logic asserts
+Ready TRUE when the values of Ready_N for all ports that are waiting to
+attach to a given Aggregator are TRUE.".
 
 Fixes: 655f8919d549 ("bonding: add min links parameter to 802.3ad")
 Signed-off-by: Louis Scalbert <louis.scalbert@6wind.com>
 ---
- drivers/net/bonding/bond_3ad.c | 24 ++++++++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
+ drivers/net/bonding/bond_3ad.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad.c
-index af7f74cfdc08..6d3613755d45 100644
+index 1771e406224c..86657de7143d 100644
 --- a/drivers/net/bonding/bond_3ad.c
 +++ b/drivers/net/bonding/bond_3ad.c
-@@ -745,6 +745,22 @@ static void __set_agg_ports_ready(struct aggregator *aggregator, int val)
- 	}
+@@ -700,7 +700,8 @@ static void __update_ntt(struct lacpdu *lacpdu, struct port *port)
  }
  
-+static int __agg_valid_ports(struct aggregator *agg)
-+{
-+	struct port *port;
-+	int valid = 0;
-+
-+	for (port = agg->lag_ports; port;
-+	     port = port->next_port_in_aggregator) {
-+		if (port->actor_oper_port_state & LACP_STATE_COLLECTING &&
-+		    (!port->slave->bond->params.coupled_control ||
-+		     port->actor_oper_port_state & LACP_STATE_DISTRIBUTING))
-+			valid++;
-+	}
-+
-+	return valid;
-+}
-+
- static int __agg_active_ports(struct aggregator *agg)
- {
- 	struct port *port;
-@@ -2120,6 +2136,7 @@ static void ad_enable_collecting_distributing(struct port *port,
- 			  port->actor_port_number,
- 			  port->aggregator->aggregator_identifier);
- 		__enable_port(port);
-+		bond_3ad_set_carrier(port->slave->bond);
- 		/* Slave array needs update */
- 		*update_slave_arr = true;
- 		/* Should notify peers if possible */
-@@ -2141,6 +2158,7 @@ static void ad_disable_collecting_distributing(struct port *port,
- 			  port->actor_port_number,
- 			  port->aggregator->aggregator_identifier);
- 		__disable_port(port);
-+		bond_3ad_set_carrier(port->slave->bond);
- 		/* Slave array needs an update */
- 		*update_slave_arr = true;
- 	}
-@@ -2819,8 +2837,10 @@ int bond_3ad_set_carrier(struct bonding *bond)
- 	}
- 	active = __get_active_agg(&(SLAVE_AD_INFO(first_slave)->aggregator));
- 	if (active) {
--		/* are enough slaves available to consider link up? */
--		if (__agg_active_ports(active) < bond->params.min_links) {
-+		/* are enough slaves in collecting (and distributing) state to consider
-+		 * link up?
-+		 */
-+		if (__agg_valid_ports(active) < bond->params.min_links) {
- 			if (netif_carrier_ok(bond->dev)) {
- 				netif_carrier_off(bond->dev);
- 				goto out;
+ /**
+- * __agg_ports_are_ready - check if all ports in an aggregator are ready
++ * __agg_ports_are_ready - check if all ports in an aggregator that are in
++ * the WAITING state are ready
+  * @aggregator: the aggregator we're looking at
+  *
+  */
+@@ -716,6 +717,8 @@ static int __agg_ports_are_ready(struct aggregator *aggregator)
+ 		for (port = aggregator->lag_ports;
+ 		     port;
+ 		     port = port->next_port_in_aggregator) {
++			if (port->sm_mux_state != AD_MUX_WAITING)
++				continue;
+ 			if (!(port->sm_vars & AD_PORT_READY_N)) {
+ 				retval = 0;
+ 				break;
 -- 
 2.39.2
 
