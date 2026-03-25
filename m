@@ -1,171 +1,83 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5BA3A9638
-	for <netdev@vger.kernel.org>; Wed, 25 Mar 2026 10:38:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD0813A3808;
+	Wed, 25 Mar 2026 10:40:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774435140; cv=none; b=QH1gfg9y5W0xeYz40x98Zn3a/ABZtBJgXjgU7Frv7LvA2Z0pDEuOlqcte9S8mGXrGeL0+f+VmZtXojv9N+/DYYoDxDIBNfvHZZBnBwkZpof+0Qalwdx6aAIQseuWcgYB3JvHRTGrhry8ApQvicJ2DO+1xzU9Df12xYrS0IDLMwM=
+	t=1774435261; cv=none; b=CrrEsqyGXHtCx/Wo50BdadmIBAmhpo0moNNid+fOxBoSG606b7TwH3D7j7WsYMcBHP63Z6oc4hHkit0iNMiOuGLDGNTBDZuIEthXC3zUSwuugbMJbmsEkMoClGf9J6IrJKaIZ0ovi/fsDbaE1/OSf9q3tISK1gdvEiG6dGI3hDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774435140; c=relaxed/simple;
-	bh=q/p70rTE9Tr9jRBWaqCRufUFYPNnysoMHcnbGBsmToE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=BhKawMMPjlK5bdwFeH8FSBsf+ZkRRs6je0MH2snEZFWwGTl8T9I0AuHded1RnBF9+o6DEBiDYoyozJA8UmT7hOpVmHPP9Xyv2ZUlxfIL6NTiduE7c9rqoeUhaWTC7qJ9MRL/Asgau3T5oNLIVaFDtSfSTUSmaQFQhkSZrqRtBDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JECRANR7; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=tX1Yx76o; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1774435261; c=relaxed/simple;
+	bh=BcDi6nzVlQg2U3KmKSOB/wadPQ2QPbC8tRKQEuEiMYM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bBidy2QLy5S8z+pJ2qLjGpxunxAShbJEE0npO7eLIM2u0JzTngQ+AGgLShhG1IM9xLyypeX3H3jHn5+CwBDIE6j3HU/5P905ywif0brhsvUcS1Zokm0wHVtXa6FMCS/drKs7NM38gchfX3gIk7bCjy2x2rKaS0T9yWjYb62AV0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=6icw1ztY; arc=none smtp.client-ip=113.46.200.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JECRANR7";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="tX1Yx76o"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774435138;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A/Si9+s7QxxoCBvO+kz7sMzfMBjgo1CChr0Lcp9Yhl0=;
-	b=JECRANR7LQ7u2eVo5bvLR+Femsn9xTzMv2tkgm5u+aYpmqDa694ovwyjJyEW2AEAIB0xDF
-	mRNCqey+qA2qHgvuKve2X3qSv7O3kmJ2wZH5vdDRn6rK/PK5jPcYRlXyIH4XDEHB/v6fj3
-	uKCfXzUcySPlm0mZuzhA8huAJtAho5k=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-48-kflZgumsMxaPKXKqiCAddQ-1; Wed, 25 Mar 2026 06:38:56 -0400
-X-MC-Unique: kflZgumsMxaPKXKqiCAddQ-1
-X-Mimecast-MFC-AGG-ID: kflZgumsMxaPKXKqiCAddQ_1774435135
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-48534941525so60565605e9.2
-        for <netdev@vger.kernel.org>; Wed, 25 Mar 2026 03:38:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1774435135; x=1775039935; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=A/Si9+s7QxxoCBvO+kz7sMzfMBjgo1CChr0Lcp9Yhl0=;
-        b=tX1Yx76o4hh+qmR6PRkMISJx551kneyHeKyzY9Ebz8VQTodyf2ZdgZsF1W6SQ+0VkC
-         kVEirBg3qt0Uc8KEBoVQ0zQgCtpTNMB9irF16uygKLtMPQzbhBvz0wV7hs82XD2WF0Sh
-         tcVwwnByJqVp2mz/Rx7TB306oiwQm97j518f/kOOn1RnWU4Sb9FDNS8uolYJt7x63rfc
-         Yp19PlrZWf0X6aM7Fvub5ltAjcvvq28fIk1dcbVsjXhDDQ4XI/tuhSqiOEw00rE0B2gC
-         C5i6Liq20iEae6pFGmDXdkJdAasqiqE7aavx56AirnURwq9Nuus68BKCo8dufEphpP0m
-         PZCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774435135; x=1775039935;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=A/Si9+s7QxxoCBvO+kz7sMzfMBjgo1CChr0Lcp9Yhl0=;
-        b=T4U72o0W3l0NHsYw9rp+BgdwueV86SDn6yrCBtkBLFEEeMmKYID2ux2vaQ+bkMcWqJ
-         dA4oUsxq552FAcnEUt1mJMU2Lo23S1vPEUxUNqbW9ougeUSCS+dgnXvpRhJNqW9xm0Cv
-         EQyXxefMbux8PEwxl57GkOizc7oy5lFZd/L/Nss4JsHn2XTAlLdwdDMLk7p0zUA3W2aD
-         tqG0dxHFwbbigBKqnnVbbNsP5OaEFrVjTXYtiuzQeHtM/o6Wu8+NRxjjtyuO2GKSQzhV
-         46oTX3AvikpZ8D3nP71UDrvcJas54FukLEtKwTFB3s58FgPwLV0EfQ0wPZUYwG6qoUf1
-         8xCw==
-X-Forwarded-Encrypted: i=1; AJvYcCWmKktuyVACJK4+5h5ydRV7cD75F8UyVlmXOKapZwIO77R9dASHvewDG0Qi6DbKPiWItj7vcRM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYq0CIZddL4+OAHVeJduKeh0kNV957L7mCM5ukYlxGnUsYxPua
-	Hh17a1p/OstNTngdxuPcOE4MD6aol7T8SP5Mn36cj40RD+0SYLYNQUqOJB1YmylucdqX9fOg2sp
-	wKwNdk1MfmjdxbO2IZfYTDJSZt34N9jZXFKe9wL2MwRbY5vdNV8FoXdNRAA==
-X-Gm-Gg: ATEYQzyDRTCSZJMf6cZJ4m/RMvB7MXVJqPAZ5EwxMFIxHmGhorrT4OO/knTazlBw5Eb
-	p060ca58RIMzMX7CeOOk2UD4ke60OrPDQvAFuw8jdqXavsQWLsBb7nEN9sobiep0q7Q9Ktsk9IV
-	ffpQ50YmnOM5ItUAeG1DyfZ681+UWWtnHnj/55HZ2n1363M/6QquTHjXHV6m84Ytq/CNyVsT8Om
-	UnzJJ1m6ZtJ6I/PJBUSKZYClPLEurc0A2fUBdYj/+1N3B9HqK1fQM2zwld5VZxhYkcL4+D93K2a
-	6DCkM9ZJQRzi/7Cb/7He0By6bla1dej0PBK2HXRnQj9+V4sHX1poDUy5WeQ4klbIbmg32bk1DdX
-	EvD2zpslCZxrcDxcLRzwpy/FfNqjNdl0lseF02bTyGPo9CMLr
-X-Received: by 2002:a05:600c:3b22:b0:485:35a4:939c with SMTP id 5b1f17b1804b1-4871608dca6mr40636995e9.29.1774435135320;
-        Wed, 25 Mar 2026 03:38:55 -0700 (PDT)
-X-Received: by 2002:a05:600c:3b22:b0:485:35a4:939c with SMTP id 5b1f17b1804b1-4871608dca6mr40636315e9.29.1774435134601;
-        Wed, 25 Mar 2026 03:38:54 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk (alrua-x1.borgediget.toke.dk. [2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4871174f2cesm122268625e9.10.2026.03.25.03.38.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Mar 2026 03:38:53 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id 1A9015A4A85; Wed, 25 Mar 2026 11:38:53 +0100 (CET)
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To: Leon Hwang <leon.hwang@linux.dev>, bpf@vger.kernel.org
-Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
- <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, Andrii
- Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>,
- Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, Yonghong
- Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>, Stanislav
- Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Jiri Olsa
- <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>, "David S . Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Jesper Dangaard
- Brouer <hawk@kernel.org>, Lorenzo Bianconi <lorenzo@kernel.org>,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- netdev@vger.kernel.org, kernel-patches-bot@fb.com
-Subject: Re: [PATCH bpf-next 1/3] bpf: Disallow freplace on XDP with
- mismatched xdp_has_frags values
-In-Reply-To: <401134e3-2a2f-4c23-8ba0-3a4cc901d6a4@linux.dev>
-References: <20260324150444.68166-1-leon.hwang@linux.dev>
- <20260324150444.68166-2-leon.hwang@linux.dev> <87ecl9mc9d.fsf@toke.dk>
- <401134e3-2a2f-4c23-8ba0-3a4cc901d6a4@linux.dev>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date: Wed, 25 Mar 2026 11:38:52 +0100
-Message-ID: <878qbgmbwj.fsf@toke.dk>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="6icw1ztY"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=M1G5PSptWXXzPLH9d87A5P5m9OW3Nt2u+CyKoMXaMeo=;
+	b=6icw1ztYu295iNl9URcLYFKLnLJkQ37jl0EUZsh07i+gqmYgw5UxctCRRDBTVi1t/RC4+t1lA
+	b13Aad1xfLWYs+AODVUzko+D3rTO3KY7eH8InFZ/kqM+p8/ENsiK2c7xcaSk4xlJpGF7lLF5g4R
+	/A90cNHQSF0PpezVksdyjxA=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4fgjvw1ZZPz1K96l;
+	Wed, 25 Mar 2026 18:34:52 +0800 (CST)
+Received: from kwepemj500018.china.huawei.com (unknown [7.202.194.48])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8278F4055B;
+	Wed, 25 Mar 2026 18:40:55 +0800 (CST)
+Received: from huawei.com (10.50.85.128) by kwepemj500018.china.huawei.com
+ (7.202.194.48) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 25 Mar
+ 2026 18:40:54 +0800
+From: Li Xiasong <lixiasong1@huawei.com>
+To: "D. Wythe" <alibuda@linux.alibaba.com>, Dust Li
+	<dust.li@linux.alibaba.com>, Sidraya Jayagond <sidraya@linux.ibm.com>, Wenjia
+ Zhang <wenjia@linux.ibm.com>, Mahanta Jambigi <mjambigi@linux.ibm.com>, Tony
+ Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>
+CC: <linux-rdma@vger.kernel.org>, <linux-s390@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<yuehaibing@huawei.com>, <zhangchangzhong@huawei.com>,
+	<weiyongjun1@huawei.com>
+Subject: [PATCH net 0/2] net/smc: fix potential UAF in smc_pnet_add_ib
+Date: Wed, 25 Mar 2026 19:03:50 +0800
+Message-ID: <20260325110352.3833570-1-lixiasong1@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemj500018.china.huawei.com (7.202.194.48)
 
-Leon Hwang <leon.hwang@linux.dev> writes:
+This series fixes potential use-after-free issues in smc_pnet_add_ib()
+where the device pointer could be freed between find and apply operations.
 
-> On 25/3/26 00:18, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->> Leon Hwang <leon.hwang@linux.dev> writes:
->>=20
->>> xdp_has_frags was introduced by the commit
->>> c2f2cdbeffda ("bpf: introduce BPF_F_XDP_HAS_FRAGS flag in prog_flags lo=
-ading the ebpf program").
->>>
->>> The commit f45d5b6ce2e8 ("bpf: generalise tail call map compatibility c=
-heck")
->>> was to ensure backwards compatibility against tail calls. However, it
->>> missed that XDP progs can be extended by freplace progs, which could br=
-eak
->>> the backwards compatibility, e.g. xdp_has_frags=3Dtrue freplace progs a=
-re
->>> allowed to attach to xdp_has_frags=3Dfalse XDP progs.
->>>
->>> To avoid breaking the backwards compatibility via freplace, disallow
->>> freplace on XDP programs with different xdp_has_frags values.
->>=20
->> The problem you describe is not actually a problem, though? A
->> frags-aware program can run on a non-frags interface just fine.
->>=20
->> You're messing with long-standing behaviour (since 5.18!) to solve a
->> non-existent problem. In a way that completely breaks the frags handling
->> in libxdp[0]:
->>=20
->>     Running tests from ./test-libxdp.sh
->>      [test_link_so]                PASS
->>      [test_link_a]                 PASS
->>      [test_old_dispatcher]         PASS
->>      [test_xdp_devbound]           PASS
->>      [test_xdp_frags]              FAIL
->>           Kernel supports XDP programs with frags
->>           check_load_frags:	FAILED
->>           check_load_nofrags_success:	PASSED
->>           check_load_nofrags_fail:	PASSED
->>           check_load_frags_multi:	FAILED
->>           check_load_mix_big:	FAILED
->>           check_load_mix_small:	FAILED
->>           Test test_xdp_frags exited with return code: 1
->>=20
->>=20
->> Please don't do that.
->>=20
->> -Toke
->>=20
->> [0] Run 'make test' here: https://github.com/xdp-project/xdp-tools
->>=20
->
-> Indeed, it failed to 'make test'.
->
-> Will drop this patch in v2, as it wasn't an issue.
+The race occurs because smc_pnet_find_ib() and smc_pnet_find_smcd()
+release the mutex before returning the device pointer. If the device is
+removed (e.g., via smc_ib_remove_dev() or smcd_unregister_dev()) before
+smc_pnet_apply_ib() or smc_pnet_apply_smcd() is called, the freed
+pointer will be accessed.
 
-Great, thanks!
+Patch 1 fixes the issue for ib device, and patch 2 fixes the same issue
+for smcd device.
 
--Toke
+Li Xiasong (2):
+  net/smc: fix potential UAF in smc_pnet_add_ib for ib device
+  net/smc: fix potential UAF in smc_pnet_add_ib for smcd device
+
+ net/smc/smc_pnet.c | 121 ++++++++++++++++++++++++++++-----------------
+ 1 file changed, 75 insertions(+), 46 deletions(-)
+
+-- 
+2.34.1
 
