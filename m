@@ -1,104 +1,244 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8801A39A060;
-	Wed, 25 Mar 2026 08:49:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BCD927E05E;
+	Wed, 25 Mar 2026 08:50:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774428573; cv=none; b=qixVhTI0SPMCrrZMMKZi3Ia+CladP9cpTUACTHeZxpH9ioOZQQYgZryfWxmrVkDY4lE9I7MaKc4ojE+A0vvyTWeCmE1SU8SmTnFw4oIzJXkVXmzjjMXro5J13f1pzNphIHVssi4srD/SXxfXbNzojB6WFhv9nmArPFKpnQyj/wo=
+	t=1774428604; cv=none; b=mOR/np1vdeof5HHe2Oth27LXqaQoXNU5IWxny757CSCfLghwn7bXWFOdpIPCQPPif2OHjoGrIvwXqW79isdcgnMv8Kgb/suJPn+EryhdgAUCHJ7K5YIKgkVbL3kVm2dozuxQK/O2+frlJdxwhERXD5owy6E3xa3xma4JdKBtN4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774428573; c=relaxed/simple;
-	bh=oWiu4XCakpEEWouFgjSkDQdwlQEePei3CI0lNENWLjQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JazSpMwnYNi/VQjKIb88H2WjIP2cIrLYntMm6G+h+vqtGmngwAQELdd17Vf2KbAZ2G/03hpdDcE010632nc/y0hdKaujs/PT+L3zol3rZ9/fLk96Z2PemcqEFgk6RrFdk1lxIBYuI5XY9bt6sPnZ0Eur3P77WTE8fVfWOpCBo1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ltb7Z1iY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774428604; c=relaxed/simple;
+	bh=bQ+CJQDwbZW3Oi7e9RlQbLka0OhY6yoNqsgqQHob88w=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=oGFWQ5SAjduBU1In97WxUcIYMm+PWq88u4NBStpowLGDkrTg5lEGHDVvo0UEoIAWAfw9Yz63UC2e+nJne00CKjai22UXXZgWqFP8JvL96zqbCHai97LS/lf7nU4qsNh7Y+XipfbDL/iKR5fdwTYb7YgWuuTEifdvm3qdIepaizc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=eG92Zk38; arc=none smtp.client-ip=203.29.241.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ltb7Z1iY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DBF7C4CEF7;
-	Wed, 25 Mar 2026 08:49:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774428573;
-	bh=oWiu4XCakpEEWouFgjSkDQdwlQEePei3CI0lNENWLjQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ltb7Z1iYmSiPVmQYAbIrLOoN+Nr2Z+YdWmZOZaSTD/tsGAbbSQRbqSofeHb6qkCbh
-	 HKUW7VOg2Ihj0GIAPLLWBjynlKhsHh3Ys3KDc29Rem+kGcBhxtPhTWgQH2s4UvjB46
-	 gz/mVcWtL9ytM4SfSAClINJgkRMfa7FQF0FvLbaDA1RbbtL3H2i5hOfKVAd/GhZh2M
-	 /BV3cQA1QnK0kpl2xBsgdzcQdJUI1J7mUw8J3yUnCIGH3oxndxR9uhWCd629HuDhsK
-	 r7tD79zZiypj5bDBgmOipZkFwp0QdNFlX71D9qbfujgxE19uX75sx/HMaKAn6au5kl
-	 9EpfLDDNEDCJw==
-Date: Wed, 25 Mar 2026 10:25:34 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Zhiping Zhang <zhipingz@meta.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Bjorn Helgaas <bhelgaas@google.com>,
-	linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
-	netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	Keith Busch <kbusch@kernel.org>, Yochai Cohen <yochai@nvidia.com>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Bjorn Helgaas <helgaas@kernel.org>
-Subject: Re: [RFC v2 1/2] vfio: add callback to get tph info for dmabuf
-Message-ID: <20260325082534.GN814676@unreal>
-References: <20260324234615.3731237-1-zhipingz@meta.com>
- <20260324234615.3731237-2-zhipingz@meta.com>
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="eG92Zk38"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=codeconstruct.com.au; s=2022a; t=1774428592;
+	bh=bQ+CJQDwbZW3Oi7e9RlQbLka0OhY6yoNqsgqQHob88w=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=eG92Zk38pbK9DxyhO41Ir2kizPaFRKfDet/UzSAjpAZ+ZutyQAS4ZoCv93AjQgkSS
+	 GPxRYNbxp4Hw0tp6cckNvktc1J2y9aRxj7xZrR84m+nJYKfE3WdswKWVS9LzLwzClb
+	 Z/5QHavT/b9MA71vjcBInq3CVjFoJG9LFYhJLXE9v/C4DQVz/ZtbhWTGV21cYzVjr5
+	 zrciau+7dQju0imAcO/eKZLFjP4wlB1usUEvlBEuUJuBHBPwi+Vd4zg9UYyh17kQJG
+	 i+mhbZNV033HsgcLZldUQZEZvzgkyNduNxPO2WUrJocZsxDgOBqGRctF2Gi/cCft7j
+	 5/yCRRQHxgdvQ==
+Received: from pecola.lan (unknown [159.196.93.152])
+	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 6F6CF6452E;
+	Wed, 25 Mar 2026 16:49:51 +0800 (AWST)
+Message-ID: <91e228ea442ed3d0726ceb4d2b5a962f570e0805.camel@codeconstruct.com.au>
+Subject: Re: [net-next v35 1/1] mctp pcc: Implement MCTP over PCC Transport
+From: Jeremy Kerr <jk@codeconstruct.com.au>
+To: Adam Young <admiyo@os.amperecomputing.com>, Matt Johnston
+ <matt@codeconstruct.com.au>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Sudeep Holla
+	 <sudeep.holla@arm.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+	Huisong Li <lihuisong@huawei.com>
+Date: Wed, 25 Mar 2026 16:49:51 +0800
+In-Reply-To: <20260324211235.938599-2-admiyo@os.amperecomputing.com>
+References: <20260324211235.938599-1-admiyo@os.amperecomputing.com>
+	 <20260324211235.938599-2-admiyo@os.amperecomputing.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2+deb12u1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260324234615.3731237-2-zhipingz@meta.com>
 
-On Tue, Mar 24, 2026 at 04:46:02PM -0700, Zhiping Zhang wrote:
-> This patch adds a callback to get the tph info on DMA buffer exporters.
-> The tph info includes both the steering tag and the process hint (ph).
-> 
-> The steering tag and ph are encoded in the flags field of
-> vfio_device_feature_dma_buf instead of adding new fields to the uapi
-> struct, to preserve ABI compatibility.
-> 
-> Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
-> ---
->  drivers/vfio/pci/vfio_pci_dmabuf.c | 26 ++++++++++++++++++++++++--
->  include/linux/dma-buf.h            | 30 ++++++++++++++++++++++++++++++
->  include/uapi/linux/vfio.h          |  9 +++++++--
->  3 files changed, 61 insertions(+), 4 deletions(-)
+Hi Adam,
 
-<...>
+Only a couple of minor things inline, but overall: now that you have a
+one-patch series, you may drop the 0/1 cover-letter. The content of that
+will be dropped anyway - I think what you have in 1/1 here is
+comprehensive.
 
-> diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
-> index bb7b89330d35..e2a8962641d2 100644
-> --- a/include/uapi/linux/vfio.h
-> +++ b/include/uapi/linux/vfio.h
-> @@ -1505,8 +1505,13 @@ struct vfio_region_dma_range {
->  struct vfio_device_feature_dma_buf {
->  	__u32	region_index;
->  	__u32	open_flags;
-> -	__u32   flags;
-> -	__u32   nr_ranges;
-> +	__u32	flags;
-> +#define VFIO_DMABUF_FL_TPH		(1U << 0) /* TPH info is present */
-> +#define VFIO_DMABUF_TPH_PH_SHIFT	1         /* bits 1-2: PH (2-bit) */
-> +#define VFIO_DMABUF_TPH_PH_MASK	0x6U
-> +#define VFIO_DMABUF_TPH_ST_SHIFT	16        /* bits 16-31: steering tag */
-> +#define VFIO_DMABUF_TPH_ST_MASK		0xffff0000U
+> diff --git a/drivers/net/mctp/mctp-pcc.c b/drivers/net/mctp/mctp-pcc.c
+> new file mode 100644
+> index 000000000000..f8d620795349
+> --- /dev/null
+> +++ b/drivers/net/mctp/mctp-pcc.c
+> @@ -0,0 +1,366 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * mctp-pcc.c - Driver for MCTP over PCC.
+> + * Copyright (c) 2024-2026, Ampere Computing LLC
+> + *
+> + */
+> +
+> +/* Implementation of MCTP over PCC DMTF Specification DSP0256
+> + * https://www.dmtf.org/sites/default/files/standards/documents/DSP0292_=
+1.0.0WIP50.pdf
+> + */
+> +
+> +#include <linux/acpi.h>
+> +#include <linux/hrtimer.h>
+> +#include <linux/if_arp.h>
+> +#include <linux/init.h>
+> +#include <linux/kernel.h>
+> +#include <linux/mailbox_client.h>
+> +#include <linux/module.h>
+> +#include <linux/netdevice.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/skbuff.h>
+> +#include <linux/string.h>
+> +
+> +#include <acpi/acpi_bus.h>
+> +#include <acpi/acpi_drivers.h>
+> +#include <acpi/acrestyp.h>
+> +#include <acpi/actbl.h>
+> +#include <acpi/pcc.h>
+> +#include <net/mctp.h>
+> +#include <net/mctpdevice.h>
+> +
+> +#define MCTP_SIGNATURE=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 "MCTP"
+> +#define MCTP_SIGNATURE_LENGTH=C2=A0=C2=A0 (sizeof(MCTP_SIGNATURE) - 1)
+> +#define MCTP_MIN_MTU=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 68
+> +#define PCC_DWORD_TYPE=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 0x0c
+> +
+> +struct mctp_pcc_mailbox {
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0u32 index;
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct pcc_mbox_chan *chan;
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct mbox_client client;
+> +};
+> +
+> +/* The netdev structure. One of these per PCC adapter. */
+> +struct mctp_pcc_ndev {
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct net_device *ndev;
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct acpi_device *acpi_devic=
+e;
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct mctp_pcc_mailbox inbox;
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct mctp_pcc_mailbox outbox=
+;
+> +};
+> +
+> +/**
+> + * mbox_write_to_buffer - copy the contents of the data
+> + * pointer to the shared buffer.=C2=A0 Confirms that the command
+> + * flag has been set prior to writing.=C2=A0 Data should be a
+> + * properly formatted extended data buffer.
+> + * pcc_mbox_write_to_buffer
+> + * @pchan: channel
+> + * @len: Length of the overall buffer passed in, including the
+> + *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Entire header. The length value i=
+n the shared buffer header
+> + *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Will be calculated from len.
+> + * @data: Client specific data to be written to the shared buffer.
+> + * Return: number of bytes written to the buffer.
+> + */
+> +static int mbox_write_to_buffer(struct pcc_mbox_chan *pchan, int len, vo=
+id *data)
+> +{
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct acpi_pcct_ext_pcc_share=
+d_memory *pcc_header =3D data;
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/*
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * The PCC header length inclu=
+des the command field
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * but not the other values fr=
+om the header.
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0pcc_header->length =3D len - s=
+izeof(struct acpi_pcct_ext_pcc_shared_memory) + sizeof(u32);
 
-This extension of flags is basically kills future extension of this
-struct for anything that includes TPH.
+Minor, but you're using two different calculations for this: here,
+and in rx_callback(), where you use sizeof(pcc_header.command) instead
+of sizeof(u32), and have swapped the order.
 
-Add new
-enum vfio_device_feature_dma_buf_flags {
-    VFIO_DMABUF_FL_TPH  = 1 << 0
-}
+However, it's a bit odd that you're setting ->length here anyway, as
+you seem to have already done so earlier mctp_pcc_tx, but there using a
+(third, different) calculation?
 
-> +	__u32	nr_ranges;
+Perhaps just set up all pcc_header fields in mctp_pcc_tx, rather than
+casting skb->data back to a pcc header, then re-setting fields in that.
 
-add your "__u16 steering_tag" and "__u8 ph" fields here.
+With that changed, you may not need a helper for this at all, as it's
+just doing the length check and the memcpy_toio().
 
->  	struct vfio_region_dma_range dma_ranges[] __counted_by(nr_ranges);
->  };
-> 
-> --
-> 2.52.0
-> 
-> 
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (len > pchan->shmem_size)
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0return 0;
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0memcpy_toio(pchan->shmem,=C2=
+=A0 data, len);
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return len;
+> +}
+> +
+> +static void mctp_pcc_client_rx_callback(struct mbox_client *cl, void *ms=
+sg)
+> +{
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct acpi_pcct_ext_pcc_share=
+d_memory pcc_header;
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct mctp_pcc_ndev *mctp_pcc=
+_ndev;
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct mctp_pcc_mailbox *inbox=
+;
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct mctp_skb_cb *cb;
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct sk_buff *skb;
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0int size;
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0mctp_pcc_ndev =3D container_of=
+(cl, struct mctp_pcc_ndev, inbox.client);
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0inbox =3D &mctp_pcc_ndev->inbo=
+x;
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0memcpy_fromio(&pcc_header, inb=
+ox->chan->shmem, sizeof(pcc_header));
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0size =3D pcc_header.length - s=
+izeof(pcc_header.command) + sizeof(pcc_header);
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (size <=3D sizeof(pcc_heade=
+r)) {
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0dev_dstats_rx_dropped(mctp_pcc_ndev->ndev);
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0return;
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
+
+This condition (size <=3D sizeof(pcc_header)) reads a bit strangely given
+that you have just *added* a sizeof(pcc_header) one line up.
+
+The only way this path is taken is if you end up underflowing `size`,
+before adding the pcc_header size back on, which seems awkward. I would
+suggest checking the raw value of pcc_header.length, do the drop if that
+fails, *then* adjust for the header/command sizes.
+
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (memcmp(&pcc_header.command=
+, MCTP_SIGNATURE, MCTP_SIGNATURE_LENGTH) !=3D 0) {
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0dev_dstats_rx_dropped(mctp_pcc_ndev->ndev);
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0return;
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (size > mctp_pcc_ndev->ndev=
+->mtu)
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0dev_dbg(cl->dev, "MCTP_PCC bytes available exceeds MTU");
+
+We only got half way through the discussion on this, my bad. In that,
+you mentioned:
+
+> They get dropped by the MCTP layer in the Kernel, apparently, so the
+> dev-dbg is to help someone debug why.
+
+... which isn't the case. We're fine to receive packets larger than the
+MTU. It's a MTU, not a MRU :)
+
+Your driver is still fine to impose a limit if suitable, but you're not
+constrained by the MCTP core here.
+
+Cheers,
+
+
+Jeremy
