@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D69F34FF78;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E12355049;
 	Wed, 25 Mar 2026 07:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774423299; cv=none; b=LSBks3e9pAOsF0/bgbRqiTwCP+7BXQ2US1EzKeFIEshOGoo7/J8E+o+uJkic7fWAnqGUovbv+CyltP01AncbC1VNOvACahJodZmvplcpJvnwmahTCchzgS74ekTZCDIr3ZUQFAofeqygv1vH5u18iz/vy30dymQYZyiUXz+s5Lg=
+	t=1774423299; cv=none; b=RAlYk5Wg1kTPQPP1Byg15IHIpw+iB11cD68z3Sn20tothxZuZP7ayewEjvVXred8jFKsZXDNONu3WzRpJDl2Nqz2n5wr2bm/9SpgfQMI/IpRDesZ205Pnlso/dpgcK2nniT+Ehmq3k20iyIA1IdQoXAL0LB5YtS/+zYJISCiv7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774423299; c=relaxed/simple;
-	bh=qSy9N+gRPs52hh9frh1cA4g+VCjg2QwryN4lX/B1p7w=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=PP808iHufTfPAAUPIFFNxghbGIAmSxW4k4bTK5roEnJDUBMcd1VqPXJa//M61A0joUh3H+jAQ58KEDkXWrsuV6Eo6BECtjMW54Wa/5ZY37k054sGisCk4wuomITtHzrjHSeIGHIX8z6nViTegvdwjaNHAeYFgnREik23yFQ5RGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e3AAjvec; arc=none smtp.client-ip=10.30.226.201
+	bh=ZxR9g+zCxK8pArCJ7PTFR8axACYwGxTDHOn4nO9U1U8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=X6sIsaW1sl66zbCpWoY8Z9C73LXJnped+AsKs2Tk/uVbR1YO8XAcF1zqGI2wtKmNhG1AmZOiphTRCCPPMXJ6nzW/hjOxBT5Y0LsCC230uqHWGoC3rdiHw0m6HLPLTOeK/9B5ArK3MGx5y25oyIfeJiGXkTPQkMp4NJ+Ui1BlUCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=afsCAQdM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e3AAjvec"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5A343C4CEF7;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="afsCAQdM"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 98AEBC2BC9E;
 	Wed, 25 Mar 2026 07:21:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1774423299;
-	bh=qSy9N+gRPs52hh9frh1cA4g+VCjg2QwryN4lX/B1p7w=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=e3AAjvecKLfoOpsE0YgLruGAWi/53OWyTZwwcFP1er02WNNzoCEWEz0DVaOEl7mpP
-	 xV2rPK9hBHC17gT5UFSPZO5qpo3FOTJH/jrXajz3bPFLDmt00Bc/E3o0/6X3iPJDLG
-	 /ngJbskQM8mn+FQXuLUDLkZC9k352FR4c860Si7Pt00oI39BilpB3+9bqjbfm/HO6H
-	 AIMrDLcCgdPOU84q+1fZTtU4m4OycXyUvf5UbBQ6u5+8Ie2mJRuxTInCfZsWJJACw1
-	 ZNoeCQw5Th+kjuRICwuoqtkBmdDZhnIWGoqL314t2uK3kl/ocflMDz4lwLGd2HSRCx
-	 /QCqF1MBnw1oQ==
+	bh=ZxR9g+zCxK8pArCJ7PTFR8axACYwGxTDHOn4nO9U1U8=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=afsCAQdMDohdM8Xige7WpifiM9awuLuo7JPAYsMHoRQSetlugJ1fuEnWBPrPOm4H2
+	 6cIrHlOqtRcLcF40j5G5k1Fo0ktPIhezNgKGSJYYCvdgCtT+FaM4Vnh8mqEEnxdKDX
+	 zHi7xtlE1aE1L8FvLjZHsOCVqO54+iveIcEThmMCb9asS1pT2LbpDiaR2VBgsfu9il
+	 NDhmP2hyk8TG9YbW7fuPGZO8bXFIcrlHOfJjv1oYbUgdXiy+S+Anw5BMxSWaI7NNjh
+	 4lDcYVmi3e2UQM3mFH3ymPETQWW7V7d3HP7aVu5BwwCK4Jv8PRGL7ZLJMNsKwleoDn
+	 /R02i8cn8hF2Q==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A454FEA820;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 91C89FEA820;
 	Wed, 25 Mar 2026 07:21:39 +0000 (UTC)
 From: Satish Kharat via B4 Relay <devnull+satishkh.cisco.com@kernel.org>
-Subject: [PATCH net-next 0/6] enic: SR-IOV V2 preparatory infrastructure
-Date: Wed, 25 Mar 2026 00:21:38 -0700
-Message-Id: <20260325-enic-sriov-v2-prep-v1-0-48f04ce110cc@cisco.com>
+Date: Wed, 25 Mar 2026 00:21:41 -0700
+Subject: [PATCH net-next 3/6] enic: detect SR-IOV VF type from PCI
+ capability
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,17 +41,17 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAKNw2kC/x2MsQqAMAwFf0UyG7BRHPwVcdD61CxRWimC9N8tj
- ndw91JEUEQaqpcCkkY9rYCrK/LHbDtY18IkjfRNKx3D1HMMeiZOwlfAxbLBYV58u3pHJSxy0+e
- fjmS42fDcNOX8Ae/5tDtuAAAA
+Message-Id: <20260325-enic-sriov-v2-prep-v1-3-48f04ce110cc@cisco.com>
+References: <20260325-enic-sriov-v2-prep-v1-0-48f04ce110cc@cisco.com>
+In-Reply-To: <20260325-enic-sriov-v2-prep-v1-0-48f04ce110cc@cisco.com>
 To: netdev@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org, Satish Kharat <satishkh@cisco.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1774423298; l=2762;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774423298; l=3365;
  i=satishkh@cisco.com; h=from:subject:message-id;
- bh=qSy9N+gRPs52hh9frh1cA4g+VCjg2QwryN4lX/B1p7w=;
- b=xI6mgt/ThBwIf5b/RTtJnNp69cE+vRfqz0zwMpLG6jcbQtnA6dl2PPpj8gMamiOLMiYmACtmG
- 0S+Y2Al5FIgABktOVSOuXZw+NYMfr+mSX2eziO/vyKiK6DvDmHLqawj
+ bh=EHjug9jFvuqtjK7rgKqTb+ZxcNgtnQ9ViaQc7HzlDNE=;
+ b=yaOkGTKgsAhWqOdG77B5YS9h9fMZk/RoDGHOV+CUnvb4VnF5EFzIRQe9UXT8rvoPSrrf1lRt1
+ AaX3Bc4KwzOC4ZagmU9mgsJugzBW/VI1b2IWi9sS/aqXGddy268o3yf
 X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
  pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
 X-Endpoint-Received: by B4 Relay for satishkh@cisco.com/default with
@@ -58,63 +59,114 @@ X-Endpoint-Received: by B4 Relay for satishkh@cisco.com/default with
 X-Original-From: Satish Kharat <satishkh@cisco.com>
 Reply-To: satishkh@cisco.com
 
-This is the first of four series adding SR-IOV V2 support to the enic
-driver for Cisco VIC 14xx/15xx adapters.
+From: Satish Kharat <satishkh@cisco.com>
 
-The existing V1 SR-IOV implementation has VFs that interact directly
-with the VIC firmware, leaving the PF driver with no visibility or
-control over VF behavior. V2 introduces a PF-mediated model where VFs
-communicate with the PF through a mailbox over a dedicated admin
-channel. This brings enic in line with the standard Linux SR-IOV
-model, enabling full PF management of VFs via ip link (MAC, VLAN,
-link state, spoofchk, trust, and per-VF statistics).
+Read the VF device ID from the SR-IOV PCI capability at probe time to
+determine whether the PF is configured for V1, USNIC, or V2 virtual
+functions. Store the result in enic->vf_type for use by subsequent
+SR-IOV operations.
 
-This preparatory series adds detection and resource helper code with
-no functional change to existing driver behavior:
+The VF type is a firmware-configured property (set via UCSM, CIMC,
+Intersight etc) that is immutable from the driver's perspective. Only
+PFs are probed for this capability; VFs and dynamic vnics skip
+detection.
 
-  - Extend BAR resource discovery for admin channel resources
-  - Register the V2 VF PCI device ID
-  - Detect VF type (V1/V2/usNIC) from SR-IOV PCI capability
-  - Make enic_dev_enable/disable ref-counted for shared use by data
-    path and admin channel
-  - Add type-aware resource allocation for admin WQ/RQ/CQ/INTR
-  - Detect presence of admin channel resources at probe time
-
-Tested on VIC 14xx and 15xx series adapters with V2 VFs under KVM
-(sriov_numvfs, VF passthrough, ip link VF configuration, VF traffic).
-
-Based in part on initial work by Christian Benvenuti.
-
+Signed-off-by: Satish Kharat <satishkh@cisco.com>
 ---
-Satish Kharat (6):
-      enic: extend resource discovery for SR-IOV admin channel
-      enic: add V2 SR-IOV VF device ID
-      enic: detect SR-IOV VF type from PCI capability
-      enic: make enic_dev_enable/disable ref-counted
-      enic: add type-aware alloc for WQ, RQ, CQ and INTR resources
-      enic: detect admin channel resources for SR-IOV
+ drivers/net/ethernet/cisco/enic/enic.h      |  8 +++++++
+ drivers/net/ethernet/cisco/enic/enic_main.c | 37 +++++++++++++++++++++++++++++
+ 2 files changed, 45 insertions(+)
 
- drivers/net/ethernet/cisco/enic/enic.h          | 18 +++++++++++
- drivers/net/ethernet/cisco/enic/enic_dev.c      | 17 +++++++---
- drivers/net/ethernet/cisco/enic/enic_main.c     | 42 ++++++++++++++++++++++++-
- drivers/net/ethernet/cisco/enic/enic_res.c      | 10 ++++--
- drivers/net/ethernet/cisco/enic/vnic_cq.c       | 14 +++++++--
- drivers/net/ethernet/cisco/enic/vnic_cq.h       |  3 ++
- drivers/net/ethernet/cisco/enic/vnic_dev.c      | 10 ++++++
- drivers/net/ethernet/cisco/enic/vnic_intr.c     | 12 +++++--
- drivers/net/ethernet/cisco/enic/vnic_intr.h     |  2 ++
- drivers/net/ethernet/cisco/enic/vnic_resource.h |  4 +++
- drivers/net/ethernet/cisco/enic/vnic_rq.c       | 14 +++++++--
- drivers/net/ethernet/cisco/enic/vnic_rq.h       |  3 ++
- drivers/net/ethernet/cisco/enic/vnic_wq.c       | 14 +++++++--
- drivers/net/ethernet/cisco/enic/vnic_wq.h       |  3 ++
- 14 files changed, 147 insertions(+), 19 deletions(-)
----
-base-commit: b1c803d5c8167026791abfaed96fd3e6a1fcd750
-change-id: 20260324-enic-sriov-v2-prep-2fe1eabc3dc1
+diff --git a/drivers/net/ethernet/cisco/enic/enic.h b/drivers/net/ethernet/cisco/enic/enic.h
+index 366c65d072fc..0fd9cd917132 100644
+--- a/drivers/net/ethernet/cisco/enic/enic.h
++++ b/drivers/net/ethernet/cisco/enic/enic.h
+@@ -225,6 +225,13 @@ struct enic_rq {
+ 	struct page_pool *pool;
+ } ____cacheline_aligned;
+ 
++enum enic_vf_type {
++	ENIC_VF_TYPE_NONE,
++	ENIC_VF_TYPE_V1,
++	ENIC_VF_TYPE_USNIC,
++	ENIC_VF_TYPE_V2,
++};
++
+ /* Per-instance private data structure */
+ struct enic {
+ 	struct net_device *netdev;
+@@ -252,6 +259,7 @@ struct enic {
+ #ifdef CONFIG_PCI_IOV
+ 	u16 num_vfs;
+ #endif
++	enum enic_vf_type vf_type;
+ 	spinlock_t enic_api_lock;
+ 	bool enic_api_busy;
+ 	struct enic_port_profile *pp;
+diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
+index e16dfbcd2c22..acd05350ec1a 100644
+--- a/drivers/net/ethernet/cisco/enic/enic_main.c
++++ b/drivers/net/ethernet/cisco/enic/enic_main.c
+@@ -67,6 +67,7 @@
+ #define PCI_DEVICE_ID_CISCO_VIC_ENET_DYN     0x0044  /* enet dynamic vnic */
+ #define PCI_DEVICE_ID_CISCO_VIC_ENET_VF      0x0071  /* enet SRIOV VF */
+ #define PCI_DEVICE_ID_CISCO_VIC_ENET_VF_V2   0x02b7  /* enet SRIOV V2 VF */
++#define PCI_DEVICE_ID_CISCO_VIC_ENET_VF_USNIC 0x00cf /* enet USNIC VF */
+ 
+ /* Supported devices */
+ static const struct pci_device_id enic_id_table[] = {
+@@ -2621,6 +2622,41 @@ static void enic_iounmap(struct enic *enic)
+ 			iounmap(enic->bar[i].vaddr);
+ }
+ 
++#ifdef CONFIG_PCI_IOV
++static void enic_sriov_detect_vf_type(struct enic *enic)
++{
++	struct pci_dev *pdev = enic->pdev;
++	int pos;
++	u16 vf_dev_id;
++
++	if (enic_is_sriov_vf(enic) || enic_is_dynamic(enic))
++		return;
++
++	pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_SRIOV);
++	if (!pos) {
++		enic->vf_type = ENIC_VF_TYPE_NONE;
++		return;
++	}
++
++	pci_read_config_word(pdev, pos + PCI_SRIOV_VF_DID, &vf_dev_id);
++
++	switch (vf_dev_id) {
++	case PCI_DEVICE_ID_CISCO_VIC_ENET_VF:
++		enic->vf_type = ENIC_VF_TYPE_V1;
++		break;
++	case PCI_DEVICE_ID_CISCO_VIC_ENET_VF_USNIC:
++		enic->vf_type = ENIC_VF_TYPE_USNIC;
++		break;
++	case PCI_DEVICE_ID_CISCO_VIC_ENET_VF_V2:
++		enic->vf_type = ENIC_VF_TYPE_V2;
++		break;
++	default:
++		enic->vf_type = ENIC_VF_TYPE_NONE;
++		break;
++	}
++}
++#endif
++
+ static int enic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ {
+ 	struct device *dev = &pdev->dev;
+@@ -2734,6 +2770,7 @@ static int enic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 			num_pps = enic->num_vfs;
+ 		}
+ 	}
++	enic_sriov_detect_vf_type(enic);
+ #endif
+ 
+ 	/* Allocate structure for port profiles */
 
-Best regards,
 -- 
-Satish Kharat <satishkh@cisco.com>
+2.43.0
 
 
