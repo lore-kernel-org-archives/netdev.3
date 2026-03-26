@@ -1,159 +1,121 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED6928506A
-	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 08:31:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9634128506A;
+	Thu, 26 Mar 2026 08:32:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774513888; cv=none; b=B7MXyFOiiIcHTCRz3APqED5qLiBDJ3CgwkvKDQ/sAglvsRiRLaXA19VGF02m4eLbrbu/FvzZtCMCYnzmeTJuVaUL7fTaRMJPbKY+taESCoY1sR+GX038Qlb9/Wr/nvpRJbXwfWDMxTeKCwX4JlSE6QgXZnJJHPcrK411VYZ9b2I=
+	t=1774513974; cv=none; b=JZN+kJsrx2euEZDdzzfkdRKObrIisZD6DVd60NQ75C51+Rb4w9VRBYuQGCK3YSKyP4Pvs6hpgcxaoLUF6dhaoIBEpNb0LTMFn0ZTDT58+wtfYXHJYCkKN3Y1rCLWBD+KIR2Cm7mhxAGubTN9mdiAbdtyrg7fUiU0YhzBNhdLTKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774513888; c=relaxed/simple;
-	bh=HJ8lCiF59X0g1//sdZdXalOYoEGKz2/r4hNn4E6PKa4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F9ooblyE1Zz+1q/CK3LJvxqM4iHYj6dahK0d9JFrmYI2Sxkc/3PZPyIp/fZgHNCAoGtpLS/x5Iteo8Oz/JgfuubyxJm+zLwFy6++MWR5uWcqIFuUw2CIRAg+gdLyv34JM5CTrn2KgtU27VlatLBGBKNiEK9YUavYHvpfu7n+L9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bKoW2Y77; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=rCOnQ1Uq; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1774513974; c=relaxed/simple;
+	bh=7N6DCs6w4lwaNrc8nplqZYAKIoynQ0BIoe3R98tHZo8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fHUOqRPNeFRt+rA04MggF6nQUCkYxNSJOwq8hRi8IvSn+zTg50HtYh4WgncN2u1oxMzOtxNRamBghqlZ6ngVmvGUHC2dfgtAN9uzvfs3j41QxSq+2jVCyjVAWeWw8cHMl1mZ8CNtgaP2TQyj8Iv7FWuNC8pJ3rsvrSZxXiB0W5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j5RLwB4m; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bKoW2Y77";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="rCOnQ1Uq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774513885;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/luC6el/mw99mrk3zRpM9ICUlTK3AqWpNegZ4N5alNo=;
-	b=bKoW2Y77sCrIqiqJFCL/s9j/iCuFMIOtnyA2e0X022413bh301Y+XfVJ8Ydesz8QAMnhdN
-	9yy/Y5C0639rs7Jc0iaMvTjeW7fI8mnoJcTWrwb1caDDUrunjZWgLK7I4X06sevSLgZ37L
-	9UdAtj84zGtLT89WcFtv1J395aiJz4k=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-261-3XSsLJwkPdSHp_J9sRJCaQ-1; Thu, 26 Mar 2026 04:31:23 -0400
-X-MC-Unique: 3XSsLJwkPdSHp_J9sRJCaQ-1
-X-Mimecast-MFC-AGG-ID: 3XSsLJwkPdSHp_J9sRJCaQ_1774513882
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-486fa35b005so9546115e9.2
-        for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 01:31:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1774513882; x=1775118682; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/luC6el/mw99mrk3zRpM9ICUlTK3AqWpNegZ4N5alNo=;
-        b=rCOnQ1UqD76M2yuXwxls54PouHtM706OhyPTkP2AAYHunvHJwVUqktjE24/JZUHsZk
-         azwI72dzaqoHXd89LvN65vosxo3QfoDt4bDV+k5VqneGK2NjLDLP/IRr3yDYIVYA4Mix
-         hWMh1+6yFkV1vGmHb6QEnOfzusM5Uv8wIiJE3Us8DBAewBhy7lCnGOnL6wM1htghYez3
-         SHGDyNHPkqQc/6UJEd7blmy3gN7H4F99Y4uadqWhNQTwrz9ordwEabwV6LOdG88k5lPE
-         wBj35kTkIL1NOHSZ3V0zGtU1Pd9pj9LEBOQV6RfY4MtG3nEr7A4+C6qyI/1L0Ptp7lap
-         OEAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774513882; x=1775118682;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/luC6el/mw99mrk3zRpM9ICUlTK3AqWpNegZ4N5alNo=;
-        b=dKhCrPZ5k+2utkQTLkSmV8BZsw3kC1f3BhfYYDBzaIj8CfK37Qdvw+zsk//eGiF2Ot
-         BtB9qSXS2qkMrFNiv3a56fw2xbup/s6b3/us5QgU68OyxDOOm8CoKipm0XhovhTDiySl
-         3X1Jqh/UxUZ2Ewvqz1HeSMWDDJHFYwq4QSag3znTml8z4A/ckTLVJ9I0aO4SXMXeyucg
-         jwQ89J6SRRIZYmvmgE0Q84bBq6DSdbI8qRuPt8mGnVF5WHRgf9M36c47B1XAyrFU79Er
-         yQViD+6XAGXa0eyOLHQn+2vptd+AQSDsXes7oir13Jyeo8RApOliUuymRvpfa0DTZcWu
-         sQHg==
-X-Forwarded-Encrypted: i=1; AJvYcCXgIbf3Dzp0JXU9Cw3KOxYeF+1dcYzYEFm8hjSbXsZLNTpxpv9q15fBYWZ7CRza273/dq7+8aA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOEdwJHacEHh8QraLxJFnZoRfsEcclk9tBJp1RAoYC9qoIUsHr
-	Mh6LPuiBkNivclIh4COYoMG8jvbXgMYh9K0SM/6fQFbPtTTZoP7O4EeXeNb3Wbcl942o1rirXv+
-	+OP5/2bxI7W7Mzi+88uIQsrFgUnzdSOEXKwp9iQj/SO+bqBYoZzxjOjgO1g==
-X-Gm-Gg: ATEYQzyWoAJ7OXQQTBu211NFXCrAKkLWIDIiVcNh3rl2mJD8yAIhLwIpkwqqqcIUKbW
-	tE5G0OShozB/Ilp4DT7CeETZDweJeZvvr1SLh0UaL+gLtX+2FyU7hctLsrtQ41l+Vp526pL2JD4
-	aGtxxbN2jTq4cOmUvuXyZBwIZJFNaH1uMCQ7kggSZQaY5uuUQWEZfMnW3+n8z6QKpcC5AzBQhs+
-	sbdwkrHUBTvJG3jk14Zr9v+cRfdnsD8LftbgDaQ+ny5loIbUPBeBg1LB9ZmkxX8fA3Q7UL1cE8a
-	lZ0byChCOfR66VprIStjV44qN4betflk4od2oBAGT55azjUZtZGE0lhQPOWUPhdNPpjhiICTqh7
-	drP5GNwrAR2VzMwrLFC0Inch6rMiwayz2Mprlf1lqF468YvxeSlz+Zl6e
-X-Received: by 2002:adf:e84b:0:b0:43b:9416:1aeb with SMTP id ffacd0b85a97d-43b94161bb6mr2274273f8f.45.1774513882252;
-        Thu, 26 Mar 2026 01:31:22 -0700 (PDT)
-X-Received: by 2002:adf:e84b:0:b0:43b:9416:1aeb with SMTP id ffacd0b85a97d-43b94161bb6mr2274211f8f.45.1774513881704;
-        Thu, 26 Mar 2026 01:31:21 -0700 (PDT)
-Received: from [192.168.88.32] ([212.105.153.60])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b919df6d4sm6006940f8f.25.2026.03.26.01.31.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Mar 2026 01:31:21 -0700 (PDT)
-Message-ID: <1b02bbe0-cdc0-4f03-bae1-40cc5c9d6ee2@redhat.com>
-Date: Thu, 26 Mar 2026 09:31:19 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j5RLwB4m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BADF8C19423;
+	Thu, 26 Mar 2026 08:32:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774513974;
+	bh=7N6DCs6w4lwaNrc8nplqZYAKIoynQ0BIoe3R98tHZo8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=j5RLwB4mhSjAIbIkojluWbsyoV5NJ8KnCXPIRLdGJowWFWZ6zi8iN0C2sWJ+/IENT
+	 64ZGKgjnh3Q0D2BYQJ0gHui4P4WPjnPXb9I97NqAqsmF6/Gxjy/R6CABPzFucg6tZk
+	 ObGqjd1m9KFjITbk+Fuc1DcbKtGYTBBD/SE+DXiuD+7JrSs3b760mCaljM0lTOQqj4
+	 h8Way9dg8eOJohLIp4ss+wFBKvOeUrdXX7aUioOxzS0ND39ZHBjl+7O7Rur8psRVAG
+	 CpoDqH06ONCM565L+wa204itAZx3kYLOsitmc35115imWAuNGSiKDlzAWEIUZGg482
+	 co2W62RVQRMiw==
+Date: Thu, 26 Mar 2026 09:32:51 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Jon Hunter <jonathanh@nvidia.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Thierry Reding <thierry.reding@gmail.com>, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-tegra@vger.kernel.org
+Subject: Re: [PATCH V3 1/3] net: stmmac: Fix PTP ref clock for Tegra234
+Message-ID: <20260326-gigantic-tentacled-hornet-cbdb8d@quoll>
+References: <20260325135811.148480-1-jonathanh@nvidia.com>
+ <20260325135811.148480-2-jonathanh@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests: net: broadcast_pmtu: Fix false failure from
- incorrect ping exit code logic
-To: fffsqian@163.com, davem@davemloft.net, edumazet@google.com
-Cc: kuba@kernel.org, horms@kernel.org, shuah@kernel.org,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, Qingshuang Fu <fuqingshuang@kylinos.cn>
-References: <20260326040645.2020782-1-fffsqian@163.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260326040645.2020782-1-fffsqian@163.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260325135811.148480-2-jonathanh@nvidia.com>
 
-On 3/26/26 5:06 AM, fffsqian@163.com wrote:
-> From: Qingshuang Fu <fuqingshuang@kylinos.cn>
+On Wed, Mar 25, 2026 at 01:58:09PM +0000, Jon Hunter wrote:
+> Since commit 030ce919e114 ("net: stmmac: make sure that ptp_rate is not
+> 0 before configuring timestamping") was added the following error is
+> observed on Tegra234:
 > 
-> The broadcast_pmtu.sh test verifies that broadcast route MTU is respected,
-> but it uses an incorrect criteria for test success: it relies solely on
-> the ping command's exit code, which leads to false failures.
+>  ERR KERN tegra-mgbe 6800000.ethernet eth0: Invalid PTP clock rate
+>  WARNING KERN tegra-mgbe 6800000.ethernet eth0: PTP init failed
 > 
-> When the kernel correctly blocks oversized broadcast packets due to the
-> configured MTU limit (1500), ping fails to transmit any packets and returns
-> exit code 1. The original script interprets this as a test failure, even
-> though the kernel is properly enforcing the MTU (the core goal of the test).
+> It turns out that the Tegra234 device-tree binding defines the PTP ref
+> clock name as 'ptp-ref' and not 'ptp_ref' and the above commit now
+> exposes this and that the PTP clock is not configured correctly.
 > 
-> Fix this by:
-> 1. Checking ping's output for clear signs of MTU enforcement (instead of exit code)
->    - Match "0 packets transmitted" (no packets sent due to MTU limit)
->    - Match "message too long" (kernel rejects oversized packets)
-> 2. Use an exit code variable to avoid early exit breaking the script flow
-> 3. Maintain full compatibility with the original setup/cleanup logic
+> In order to update device-tree to use the correct 'ptp_ref' name, update
+> the Tegra MGBE driver to use 'ptp_ref' by default and fallback to using
+> 'ptp-ref' if 'ptp_ref' is not found.
 > 
-> After this fix, the script returns 0 (success) when the kernel enforces the
-> broadcast route MTU (packets blocked), and 1 (failure) only when the kernel
-> fails to enforce the MTU (packets are transmitted but no response is received).
-> 
-> Signed-off-by: Qingshuang Fu <fuqingshuang@kylinos.cn>
+> Fixes: d8ca113724e7 ("net: stmmac: tegra: Add MGBE support")
+> Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
 > ---
->  tools/testing/selftests/net/broadcast_pmtu.sh | 12 +++++++++---
->  1 file changed, 9 insertions(+), 3 deletions(-)
+>  .../net/ethernet/stmicro/stmmac/dwmac-tegra.c | 19 +++++++++++++++++--
+>  1 file changed, 17 insertions(+), 2 deletions(-)
 > 
-> diff --git a/tools/testing/selftests/net/broadcast_pmtu.sh b/tools/testing/selftests/net/broadcast_pmtu.sh
-> index 726eb5d25839..a8d2a205c51d 100755
-> --- a/tools/testing/selftests/net/broadcast_pmtu.sh
-> +++ b/tools/testing/selftests/net/broadcast_pmtu.sh
-> @@ -41,7 +41,13 @@ trap cleanup EXIT
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c
+> index b4b39e6a169e..ec18ee46889f 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c
+> @@ -9,7 +9,7 @@
+>  #include "stmmac_platform.h"
 >  
->  setup &&
->  	echo "Testing for broadcast route MTU" &&
-> -	ip net exec "${CLIENT_NS}" ping -f -M want -q -c 1 -s 8000 -w 1 -b "${CLIENT_BROADCAST_ADDRESS}" > /dev/null 2>&1
-> -
-> -exit $?
-> +	ping_output=$(ip net exec "${CLIENT_NS}" ping -f -M want -c 1 -s 8000 -w 1 -b \
-> +		"${CLIENT_BROADCAST_ADDRESS}" 2>&1) &&
-> +	if echo "${ping_output}" | grep -q -E "0 packets transmitted|message too long"; then
-> +		exit_code=0
-> +	else
-> +		exit_code=1
-> +	fi
+>  static const char *const mgbe_clks[] = {
+> -	"rx-pcs", "tx", "tx-pcs", "mac-divider", "mac", "mgbe", "ptp-ref", "mac"
+> +	"rx-pcs", "tx", "tx-pcs", "mac-divider", "mac", "mgbe", "ptp_ref", "mac"
+>  };
+>  
+>  struct tegra_mgbe {
+> @@ -216,6 +216,7 @@ static int tegra_mgbe_probe(struct platform_device *pdev)
+>  	struct plat_stmmacenet_data *plat;
+>  	struct stmmac_resources res;
+>  	struct tegra_mgbe *mgbe;
+> +	bool use_legacy_ptp;
+>  	int irq, err, i;
+>  	u32 value;
+>  
+> @@ -257,9 +258,23 @@ static int tegra_mgbe_probe(struct platform_device *pdev)
+>  	if (!mgbe->clks)
+>  		return -ENOMEM;
+>  
+> -	for (i = 0; i <  ARRAY_SIZE(mgbe_clks); i++)
+> +	/*
+> +	 * Older device-trees use 'ptp-ref' rather than 'ptp_ref'.
+> +	 * Fall back to the legacy name when 'ptp_ref' is absent.
+> +	 */
+> +	use_legacy_ptp = of_property_match_string(pdev->dev.of_node,
+> +						  "clock-names", "ptp_ref") < 0;
 > +
-> +exit ${exit_code}
+> +	for (i = 0; i < ARRAY_SIZE(mgbe_clks); i++) {
+>  		mgbe->clks[i].id = mgbe_clks[i];
+>  
+> +		if (use_legacy_ptp && !strcmp(mgbe_clks[i], "ptp_ref")) {
 
-Apparently now the CI test is consistently failing:
+Why index 0 is not valid? And why -EINVAL would be considered as legacy
+clock present?
 
-# selftests: net: broadcast_pmtu.sh
-# 0.03 [+0.03] Testing for broadcast route MTU
-not ok 1 selftests: net: broadcast_pmtu.sh # exit=1
+> +			dev_warn(mgbe->dev,
+> +				 "Device-tree update needed for PTP clock!\n");
+> +			mgbe->clks[i].id = "ptp-ref";
 
-/P
+Best regards,
+Krzysztof
 
