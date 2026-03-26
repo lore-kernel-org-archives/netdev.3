@@ -1,95 +1,154 @@
-Received: from out-ip0052.fra.mailhop.org (out-ip0052.fra.mailhop.org [18.158.144.38])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7483B224AF7
-	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 10:04:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.158.144.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C5E3DCDA3
+	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 10:06:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774519446; cv=none; b=i5i2VN7r8jlxOLcATm3GpU/gVyBGoNryIBfVjWoADz/R5lkGF49NUyeYKhC5Y64J383r5DL8ssqYRhQpfyxzBtQ79wAQqLKsN2UUv2XQbO6PZNw0m4MhtPWrfMYstzmEuU2urEMaK+hydSQJLvMosJbjPLsj1bgY78l+jNNBg8k=
+	t=1774519604; cv=none; b=K9F+EQMaJvgO6ZPSaFr9Gz7N7a9brXe1ex1N/5h/wpYtbFuLYdBbz0LpH4chYLpcl1gr1OBt/mdfZXDpVgxuhcD5wiBaxSmU/0lFsT4JtzaRYxkbyYW1rMBHA8SvqvOqPZ1YVKG1Udd9/wwIyvIzkJnHlLFv178kM/qOOW75s+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774519446; c=relaxed/simple;
-	bh=QfWEIqf+Wp46qmgxsgwYftEzg52EL1A1VTmkcb9WrPg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QGm014VDAbQdmgLrA9/hMFXRvgAOQ4BPaTj7zzlk0m6T/BgFuwVieXtn4lT0UnJshhdP2gCrNqELDPB8ur2pGX/nX1iY0hS0aHYGjsmYDe7WrPJLE1hOYnf7FHJ+dHWhAxz4/EnStOgnJ5w+vRIIoQwtcmxlNtNqcvIZWdz9vU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hitachienergy.com; spf=pass smtp.mailfrom=hitachienergy.com; dkim=pass (1024-bit key) header.d=hitachienergy.com header.i=@hitachienergy.com header.b=ce/L/9iX; dkim=pass (2048-bit key) header.d=outbound.mailhop.org header.i=@outbound.mailhop.org header.b=P9w+v+cQ; arc=none smtp.client-ip=18.158.144.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hitachienergy.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hitachienergy.com
+	s=arc-20240116; t=1774519604; c=relaxed/simple;
+	bh=3Z4uyOsHiPvuqdElKeIpFiSC+iUoqTQh5Ehvvr1kPGQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fje+Ja4j8hGcHzgw+hkx+xm86Zd/gfbD7HO4oHfjfPHLwCUF0H7ppzbhYSsOBoPiN1A2p1v+x2SAgTx2qNqMwjM8mMq9XnuApEbwqVpUCHiR2iYtHh+X/5nxqeYa3gi6mkhh5oOJM5QL0E8NHx51d9k0BndI13Ct1KnNm6HbE/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=p8HxopNj; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hitachienergy.com header.i=@hitachienergy.com header.b="ce/L/9iX";
-	dkim=pass (2048-bit key) header.d=outbound.mailhop.org header.i=@outbound.mailhop.org header.b="P9w+v+cQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="p8HxopNj"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-48371104ffdso1253235e9.1
+        for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 03:06:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=hitachienergy.com; s=duo-1630306886989-947ac67a;
-	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
-	 cfbl-address:cfbl-feedback-id:from;
-	bh=8mHjX6TyFjTvn38dtQM0Lm04BitL+7nkhimd3emS1kk=;
-	b=ce/L/9iXo1+wtsbWX1FWQlukl1rPpDnsGRwerxkYvfVZnb1rnRp43MjWjYQ7bSsjzt3XxN51EHNY6
-	 JBLDbwMEhzMIithPgX2hgcnBdhg8EhPZ1QA9iOMEgBkcug+Prt4cgOYWINERXE9pzbZbnfmTNg/NJs
-	 oGmgzO2W9B3DrTZw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=outbound.mailhop.org; s=dkim-high;
-	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
-	 cfbl-address:cfbl-feedback-id:from;
-	bh=8mHjX6TyFjTvn38dtQM0Lm04BitL+7nkhimd3emS1kk=;
-	b=P9w+v+cQ6/3NywsZDlfe7ZbTpRCl7hSa4Nmudc0SVDhz7KODrPcvS11jNgvpQBrpa9SI0CVnBeHHX
-	 C99gS+z67l9EWYzQSxa0iblwqXewo19usAUKK2606QwNoXzMBl5cHcbsFAAWaL+K8LJh0jCQnv4mCM
-	 iTe3qbssmmAs7RY2bbfawX6p/wTxa+KPWLe5oXlEo0QcQ7qWJW3LdWb8RLgVHUQ21zeEaurv4Q3QR8
-	 niBVgantLHQPgjCJXm48JwWTJB9gWmLBYNMYvaCkjk410WZG/tOM/UabJasSfvQoYmTSqIAyV/QdjY
-	 ndxT162zwFWt++9W/M0ErrCX5XPP6pQ==
-X-MHO-RoutePath: aGVkY3NtdHA=
-X-MHO-User: f387f247-28fa-11f1-8751-f54febe22707
-X-Report-Abuse-To: https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information
-X-Mail-Handler: DuoCircle Outbound SMTP
-CFBL-Feedback-ID: f387f247-28fa-11f1-8751-f54febe22707:9
-CFBL-Address: prvs=05455ff80f=abuse@outbound.mailhop.org; report=arf
-Received: from HPG0000000548.corp.hitachi-powergrids.com (unknown [20.62.140.138])
-	by outbound3.eu.mailhop.org (Halon) with ESMTPSA
-	id f387f247-28fa-11f1-8751-f54febe22707;
-	Thu, 26 Mar 2026 10:02:53 +0000 (UTC)
-Received: from gitsiv.hitachienergy.com (unknown [10.54.139.14])
-	by HPG0000000548.corp.hitachi-powergrids.com (Postfix) with ESMTP id 7BFAC161F;
-	Thu, 26 Mar 2026 10:02:51 +0000 (UTC)
-Received: from chbrn3-p-dev026.keymile.net (chbrn3-p-dev026.keymile.net [172.31.41.203])
-	by gitsiv.hitachienergy.com (Postfix) with ESMTP id 0474960B7D47;
-	Thu, 26 Mar 2026 11:02:51 +0100 (CET)
-From: Tomas Alvarez Vanoli <tomas.alvarez-vanoli@hitachienergy.com>
-To: netdev@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Cc: qiang.zhao@nxp.com,
-	andrew+netdev@lunn.ch,
-	Tomas Alvarez Vanoli <tomas.alvarez-vanoli@hitachienergy.com>
-Subject: [PATCH] net: wan/fsl_ucc_hdlc: cleanup ucc_hdlc_poll
-Date: Thu, 26 Mar 2026 11:02:32 +0100
-Message-ID: <20260326100232.904289-1-tomas.alvarez-vanoli@hitachienergy.com>
-X-Mailer: git-send-email 2.47.3
+        d=gmail.com; s=20251104; t=1774519600; x=1775124400; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=87Oy/L9EX9ic6ZQJ6JYJG2LSZTexkj3Tj2pljbEQdeA=;
+        b=p8HxopNjRcijTotkBOUfUt7XyX1lssF+d9c647dADI4TYGg9l0Vm3Wpih8miK36ccd
+         qPW7lxTmqn5Koh2mlm9I9i8Ph4Q8iledvmOJni6HPYgO6NWBHbzcAufPRQIExzYfuKoD
+         oeqL45XzjMqedZrAprby9YjG/oNXhYzqHws8awF2rbYU6Tl3O6VB/tQR1X9BJMHFnnv+
+         /TdcaXPHEWzYpKH0EGMqXC2QRS6VcybdHfzAHLSd5FSsXU4OzZDc+1x/VqkSBNVIwm0b
+         n8uknaFh9RdOfYB3Uq6cJJHDHCpZbbOXqF0slCpftAPN596FKkNRaep1m9FAoqXE5bA/
+         Moxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774519600; x=1775124400;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=87Oy/L9EX9ic6ZQJ6JYJG2LSZTexkj3Tj2pljbEQdeA=;
+        b=YTa8ApyMR3YCMSQNTLki7/V6WIQU5IWeT1GzBE4fsrs1nswoENV95tu0omy8+vSdNY
+         ycqsXjQHZd92/NvIO3sBC7G/DMdC/55cVqXr4jlf0TnhWCvYwMyF9nTO6eKGZg0DDfQd
+         IpTmbpMCSqbjCcWmjO66e8bxswtyPCFnm0rCn6oUTbYJjFUVTJpSTLdVCu109eoQewYI
+         T3pfA8C4PggX/CQhrg1cKwHW1zLVfNJfvrMTJPzEP8R/pILZBM83/2XAW8f/tpcAeXHm
+         qfnayPvCKSPkUBYZu13mdDJOkawLtUDrg9OucSUTjj5OxhVgxwn3H+rdR7L0o94Ek77Q
+         orng==
+X-Forwarded-Encrypted: i=1; AJvYcCVGlPPpfaXylkFLKC2dyAQVW8bT/d4J83FINHbR5B9uPCROkrl97UVM5JkSXAcX9Ai0WK3o+hI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIZ3bRdgEXGADn7QcXK0cIXW/+QQ7gFfd32PbsLqmPuC7L+Ma5
+	qnnph38XiWmEr0nkkA9B5S/iG9lDJUF/KSP2F4At1AL1PBjehexOcKtj
+X-Gm-Gg: ATEYQzy5SnREliGL5ZJz+xS7R4lchGKYj6WCERgHXyibDTBcJ1QYeY7ZoEIZdJSDqaF
+	5DxIFSpWSrt72S6HeSHA6saZdJxYY1GkhfFgoag8dTEZISZ4WNBcJsTLhNI3G47mVF/31Zs0G6M
+	+HOn/njp+BlUlB1IXf/odlPFqATlKJ0L/l/gf5gZ7iHi1MBVM6JxPDTaaT0lh73QOWYeLL9IQO4
+	70nwh1M6FWN/8JIKZVpkGR8NICazY3K8uxL3GfRmEH6rxMzJr/Zoz9FnpPdM8nTfwUybreJ8et2
+	VZEt+NaHwTeKGVE8BngTn0OW9sc6bh/MzQSjO+7mIfTptEjn9dRO05VxyjS6vMNhBwD01Q15bZg
+	3/BZIj7ZfWBTb73Aj8Gm2pMhOUqo7LXEbc0sXMsggdF94xhgXVXYJIvVNwtFDu4+03Xy/8o4zGl
+	N6YPGt1VjfHnRlx/0=
+X-Received: by 2002:a05:600c:b86:b0:485:385f:674d with SMTP id 5b1f17b1804b1-48716071cf9mr59463375e9.8.1774519599902;
+        Thu, 26 Mar 2026 03:06:39 -0700 (PDT)
+Received: from skbuf ([2a02:2f04:d50a:b400:cf79:b8bb:14ce:d80f])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b919e68a6sm7989318f8f.33.2026.03.26.03.06.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Mar 2026 03:06:39 -0700 (PDT)
+Date: Thu, 26 Mar 2026 12:06:37 +0200
+From: Vladimir Oltean <olteanv@gmail.com>
+To: Linus Walleij <linusw@kernel.org>,
+	Bastien Curutchet <bastien.curutchet@bootlin.com>,
+	Tristram Ha <Tristram.Ha@microchip.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Woojung Huh <woojung.huh@microchip.com>,
+	UNGLinuxDriver@microchip.com, netdev@vger.kernel.org
+Subject: Re: [PATCH net v4 0/4] net: dsa: ks8995: Post-move fixes
+Message-ID: <20260326100637.7xyd42yoop2faabf@skbuf>
+References: <20260326-ks8995-fixups-v4-0-989abba8f077@kernel.org>
+ <20260326100243.rxxmbiscjrbe3643@skbuf>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260326100243.rxxmbiscjrbe3643@skbuf>
 
-Immediately after setting to 0 we are adding to it, and subtracting 0
-from budget. Replace with just assignment and no subtraction.
+On Thu, Mar 26, 2026 at 12:02:43PM +0200, Vladimir Oltean wrote:
+> On Thu, Mar 26, 2026 at 10:57:31AM +0100, Linus Walleij wrote:
+> > This fixes some glearing issues in the Micrel KS8995 driver
+> > pointed out by Vladimir.
+> > 
+> > This patch series implements some required functionality
+> > and strips the driver down to just KS8995 deeming the other
+> > "micrel" variants to be actually handled by the Microchip
+> > KSZ driver.
+> > 
+> > If the KS8995 should actually *also* be managed by the Microchip
+> > driver and this driver deleted remains to be seen. It is clearly
+> > the origin chip for that hardware: it is very close to the
+> > "KSZ8 family" but there are differences.
+> > 
+> > It definitely has a different custom tag format for proper DSA
+> > tagging, but I have implemented that: I now have to figure out
+> > whether to do that on top of this driver or the KSZ driver before
+> > continuing.
+> > 
+> > In the meantime, this patch series makes the situation better.
+> > 
+> > Signed-off-by: Linus Walleij <linusw@kernel.org>
+> > ---
+> > Changes in v4:
+> > - Drop the final "port isolation" (should be better named "port separation")
+> >   patch, due to lack of time to revise the patch. Let's keep this one
+> >   for later.
+> > - Hope we can merge this first round of fixups so the driver is in some
+> >   reasonable state.
+> > - Link to v3: https://lore.kernel.org/r/20260219-ks8995-fixups-v3-0-a7fc63fe1916@kernel.org
+> > 
+> > Changes in v3:
+> > - Re-tag the series for net since they are fixes.
+> > - Implement mutual exclusion between .remove() and .shutdown()
+> >   as found by the AI reviewer.
+> > - Fix a typo in the patch dropping the KSZ chips support, 8955->8995,
+> >   found by the AI reviewer.
+> > - Add fallback compatibles for the deleted chips to the KSZ
+> >   SPI driver.
+> > - Implement port isolation.
+> > - Link to v2: https://lore.kernel.org/r/20260119-ks8995-fixups-v2-0-98bd034a0d12@kernel.org
+> > 
+> > Changes in v2:
+> > - Do port_bitmask in another way and fix a bug where BIT(port_bitmask)
+> >   was used instead of just port_bitmask.
+> > - Link to v1: https://lore.kernel.org/r/20260118-ks8995-fixups-v1-0-10a493f0339d@kernel.org
+> > 
+> > ---
+> > Linus Walleij (4):
+> >       net: dsa: ks8995: Add shutdown callback
+> >       net: dsa: microchip: Add fallback Micrel compatibles
+> >       net: dsa: ks8955: Delete KSZ8864 and KSZ8795 support
+> >       net: dsa: ks8995: Add stub bridge join/leave
+> > 
+> >  drivers/net/dsa/ks8995.c            | 198 ++++++++++++------------------------
+> >  drivers/net/dsa/microchip/ksz_spi.c |  15 +++
+> >  2 files changed, 81 insertions(+), 132 deletions(-)
+> > ---
+> > base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+> > change-id: 20260118-ks8995-fixups-84f25ac3f407
+> > 
+> > Best regards,
+> > -- 
+> > Linus Walleij <linusw@kernel.org>
+> > 
+> 
+> Bastien, would you mind also taking a look at this?
 
-Signed-off-by: Tomas Alvarez Vanoli <tomas.alvarez-vanoli@hitachienergy.com>
----
- drivers/net/wan/fsl_ucc_hdlc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
-index b72ab9951875e..3bd57527b1be6 100644
---- a/drivers/net/wan/fsl_ucc_hdlc.c
-+++ b/drivers/net/wan/fsl_ucc_hdlc.c
-@@ -628,8 +628,7 @@ static int ucc_hdlc_poll(struct napi_struct *napi, int budget)
- 	hdlc_tx_done(priv);
- 	spin_unlock(&priv->lock);
- 
--	howmany = 0;
--	howmany += hdlc_rx_done(priv, budget - howmany);
-+	howmany = hdlc_rx_done(priv, budget);
- 
- 	if (howmany < budget) {
- 		napi_complete_done(napi, howmany);
--- 
-2.47.3
-
+And also Tristram Ha. I didn't realize he is not a KSZ maintainer.
+It's been a year since Woojung last sent a reply to the mailing lists.
