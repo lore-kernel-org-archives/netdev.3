@@ -1,54 +1,72 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D24408249
-	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 16:30:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9137F2DA755;
+	Thu, 26 Mar 2026 16:32:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774542647; cv=none; b=mq3GEHtRJCIuGh/nE3A9F3T9ktS7Q+sfZZdW8IE6S5ZJAfQrmcsQugvpIEcIArCBjmohlmaq+6WggDCNwAWxQW+8FLjidR+YdcseyKQAfDDgNCj6cWi4kujQ3usFZeTXDwgUDlru03i3SiFehXDEVhYYnAUpciT+aPCD+ucc7pk=
+	t=1774542740; cv=none; b=P4Tl6Na1SU2oqBhJGE/CtNvAqU11voYPZMsfa7K3aPZOHfXfJU+aatfcj2q+GtCwFfO9rTKmSo9Z2vl+dk7w0ADD++/A+lS1MvqMPjc6jOUbikfl94vw76DtZPEXMm8xA+F3wsTyPi3QVrO1/GtJmcoNXR2GpGsCT9ewKdh6iYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774542647; c=relaxed/simple;
-	bh=Q6ygrNISnqK06ZF3+gTsacP5nZ1BbXpOoPpuk5tSWUs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=B6o0ODkSAYztXtMbFnnpOK1cYp5rYTi7gW/8xsZXH3Lfcp+z4IIn1AT3OmOv0+81hOaPQ581qJuMZ2vtt8Uj47/PAVnFQqmvRuRf4l/ftl3FoXkhXrh/Cc946EP/656Jbe7Qi8vDnwrTzFo4QRTsqVBU0gKtgoD1N+HWV7Ytdoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=au2FhtvI; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1774542740; c=relaxed/simple;
+	bh=wwTIrqtwLgvHf+RVkDregSmCC7vSro8vZJLp94r7apQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=ghRa1+rf/aVZAxDYcdLOR+KydpwJfEMm7J+kjQA1mR59zcb5IYuQFJl9m4WuzemaGIcq14r7havll4nxMdKRyweA6D6M0iJ7+9LD+k2BDGRivS3peKB2Idab8t3713t4XYjxDHYF6ieh8TqjRwiZtudG9mLuQk0JodJ1x2KArag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FbGO5AFv; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="au2FhtvI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774542643;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=HfJPHefirEBT+IHsICCftGd0UBoIUqtz+QB3oKFDn2g=;
-	b=au2FhtvIst5IWPJcaobaPXMZoU7XxKhcJ36PaKJ18iYewCbqQEdNK4v1OjTVzrs3ZdV1VI
-	C0nxd+P3vJt+jg62yMnKj8Sq+qCZrIn+TWRzM/plTwZmlrGwKq2/gH31TIyaTt9QlKmRGt
-	NGI1W12ewW1DZjg8aolnrKriRZbW+PM=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-575-1L6PWwxOM6Gd0VVDQ_CpNA-1; Thu,
- 26 Mar 2026 12:30:40 -0400
-X-MC-Unique: 1L6PWwxOM6Gd0VVDQ_CpNA-1
-X-Mimecast-MFC-AGG-ID: 1L6PWwxOM6Gd0VVDQ_CpNA_1774542639
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2E78819560B8;
-	Thu, 26 Mar 2026 16:30:39 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.45.224.220])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3346C3000223;
-	Thu, 26 Mar 2026 16:30:36 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: torvalds@linux-foundation.org
-Cc: kuba@kernel.org,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FbGO5AFv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774542738; x=1806078738;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=wwTIrqtwLgvHf+RVkDregSmCC7vSro8vZJLp94r7apQ=;
+  b=FbGO5AFvyCEZiW9QkxXutjadamopzygC1RXRmbrm3iUTa/tQKNjSwcwx
+   FVmlvY8gttZRJ6a7L8f53XmBiWlcdMNilG9FdzTRMTo7aF6mRX93Hv9Xu
+   k6BNHgzlIjCMd0uG2StSyJcri+FxlWGTqsl9IrRm6EYyiHtRLxg5KJ2EL
+   4hvSHxafI7XPTPJjjGeg65YFSI0lFpRGCM0GiCeeYDoaXgu+CJi7qKzHP
+   GU7KfEQaW4KhUoiwnONfnw8mmXdh3hgoRNmgiZB5dhddfAijR9TJ0mktL
+   0WHsZyT8v7kOlfokS0zsBIFbeWGYRkoNJDZuZ0ZkQqWOy97oRP5yIaPmL
+   g==;
+X-CSE-ConnectionGUID: eipKUXmiQcqIDniFaKJPcg==
+X-CSE-MsgGUID: 0jmMD7tuRHmU/0ZYjxAuDQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="74636532"
+X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; 
+   d="scan'208";a="74636532"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 09:32:17 -0700
+X-CSE-ConnectionGUID: yWty21wOQLieRFpmZS22Eg==
+X-CSE-MsgGUID: 2/jK9f1iQ2WB6beh716Fgw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; 
+   d="scan'208";a="225310843"
+Received: from gklab-003-001.igk.intel.com ([10.91.173.48])
+  by orviesa007.jf.intel.com with ESMTP; 26 Mar 2026 09:32:13 -0700
+From: Grzegorz Nitka <grzegorz.nitka@intel.com>
+To: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org,
+	poros@redhat.com,
+	richardcochran@gmail.com,
+	andrew+netdev@lunn.ch,
+	przemyslaw.kitszel@intel.com,
+	anthony.l.nguyen@intel.com,
+	Prathosh.Satish@microchip.com,
+	ivecera@redhat.com,
+	jiri@resnulli.us,
+	arkadiusz.kubalewski@intel.com,
+	vadim.fedorenko@linux.dev,
+	donald.hunter@gmail.com,
+	horms@kernel.org,
+	pabeni@redhat.com,
+	kuba@kernel.org,
 	davem@davemloft.net,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] Networking for v7.0-rc6
-Date: Thu, 26 Mar 2026 17:30:29 +0100
-Message-ID: <20260326163029.350902-1-pabeni@redhat.com>
+	edumazet@google.com,
+	Grzegorz Nitka <grzegorz.nitka@intel.com>
+Subject: [PATCH v4 net-next 0/8] dpll/ice: Add TXC DPLL type and full TX reference clock control for E825
+Date: Thu, 26 Mar 2026 17:28:24 +0100
+Message-Id: <20260326162832.3135857-1-grzegorz.nitka@intel.com>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,379 +75,150 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Hi Linus!
-
-The following changes since commit a1d9d8e833781c44ab688708804ce35f20f3cbbd:
-
-  Merge tag 'net-7.0-rc5' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-03-19 11:25:40 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git net-7.0-rc6
-
-for you to fetch changes up to db472c34a74770f39318ddb1efa986c0a8d5d86a:
-
-  Merge tag 'nf-26-03-26' of git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf (2026-03-26 15:38:14 +0100)
-
-----------------------------------------------------------------
-Including fixes from Bluetooth, CAN, IPsec and Netfilter.
-
-Notably, this includes the fix for the Bluetooth regression that you
-were notified about. I'm not aware of any other pending regressions.
-
-Current release - regressions:
-
-  - bluetooth:
-    - fix stack-out-of-bounds read in l2cap_ecred_conn_req
-    - fix regressions caused by reusing ident
-
-  - netfilter: revisit array resize logic
-
-  - eth: ice: set max queues in alloc_etherdev_mqs()
-
-Previous releases - regressions:
-
-  - core: correctly handle tunneled traffic on IPV6_CSUM GSO fallback
-
-  - bluetooth:
-    - fix dangling pointer on mgmt_add_adv_patterns_monitor_complete
-    - fix deadlock in l2cap_conn_del()
-
-  - sched: codel: fix stale state for empty flows in fq_codel
-
-  - ipv6: remove permanent routes from tb6_gc_hlist when all exceptions expire.
-
-  - xfrm: fix skb_put() panic on non-linear skb during reassembly
-
-  - openvswitch:
-    - avoid releasing netdev before teardown completes
-    - validate MPLS set/set_masked payload length
-
-  - eth: iavf: fix out-of-bounds writes in iavf_get_ethtool_stats()
-
-Previous releases - always broken:
-
-  - bluetooth: fix null-ptr-deref on l2cap_sock_ready_cb
-
-  - udp: fix wildcard bind conflict check when using hash2
-
-  - netfilter: fix use of uninitialized rtp_addr in process_sdp
-
-  - tls: Purge async_hold in tls_decrypt_async_wait()
-
-  - xfrm:
-    - prevent policy_hthresh.work from racing with netns teardown
-    - fix skb leak with espintcp and async crypto
-
-  - smc: fix double-free of smc_spd_priv when tee() duplicates splice pipe buffer
-
-  - can:
-    - add missing error handling to call can_ctrlmode_changelink()
-    - fix OOB heap access in cgw_csum_crc8_rel()
-
-  - eth: mana: fix use-after-free in add_adev() error path
-
-  - eth: virtio-net: fix for VIRTIO_NET_F_GUEST_HDRLEN
-
-  - eth: bcmasp: fix double free of WoL irq
-
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-
-----------------------------------------------------------------
-Ali Norouzi (1):
-      can: gw: fix OOB heap access in cgw_csum_crc8_rel()
-
-Anas Iqbal (1):
-      Bluetooth: hci_ll: Fix firmware leak on error path
-
-Arnd Bergmann (1):
-      net: b44: always select CONFIG_FIXED_PHY
-
-Cen Zhang (2):
-      Bluetooth: hci_sync: annotate data-races around hdev->req_status
-      Bluetooth: btintel: serialize btintel_hw_error() with hci_req_sync_lock
-
-Chuck Lever (1):
-      tls: Purge async_hold in tls_decrypt_async_wait()
-
-David Carlier (2):
-      net: ti: icssg-prueth: fix use-after-free of CPPI descriptor in RX path
-      netfilter: ctnetlink: use netlink policy range checks
-
-Eric Dumazet (1):
-      af_key: validate families in pfkey_send_migrate()
-
-Fernando Fernandez Mancera (1):
-      xfrm: iptfs: fix skb_put() panic on non-linear skb during reassembly
-
-Florian Westphal (2):
-      netfilter: nft_set_pipapo_avx2: don't return non-matching entry on expiry
-      selftests: netfilter: nft_concat_range.sh: add check for flush+reload bug
-
-Guangshuo Li (1):
-      net: mana: fix use-after-free in add_adev() error path
-
-Helen Koike (1):
-      Bluetooth: L2CAP: Fix null-ptr-deref on l2cap_sock_ready_cb
-
-Hyunwoo Kim (5):
-      xfrm: Fix work re-schedule after cancel in xfrm_nat_keepalive_net_fini()
-      Bluetooth: L2CAP: Validate PDU length before reading SDU length in l2cap_ecred_data_rcv()
-      Bluetooth: SCO: Fix use-after-free in sco_recv_frame() due to missing sock_hold
-      Bluetooth: L2CAP: Fix deadlock in l2cap_conn_del()
-      Bluetooth: L2CAP: Fix ERTM re-init and zero pdu_len infinite loop
-
-Jakub Kicinski (6):
-      Merge tag 'for-net-2026-03-19' of git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth
-      nfc: nci: fix circular locking dependency in nci_close_device
-      Merge branch 'net-macb-fix-two-lock-warnings-when-wol-is-used'
-      Merge branch 'rtnetlink-add-missing-attributes-in-if_nlmsg_size'
-      Merge branch 'net-bcmasp-fix-issues-during-driver-unbind'
-      Merge branch 'ipv6-fix-two-gc-issues-with-permanent-routes'
-
-Jiayuan Chen (2):
-      team: fix header_ops type confusion with non-Ethernet ports
-      selftests: team: add non-Ethernet header_ops reproducer
-
-Jonas Köppeler (1):
-      net_sched: codel: fix stale state for empty flows in fq_codel
-
-Joshua Hay (2):
-      idpf: clear stale cdev_info ptr
-      idpf: only assign num refillqs if allocation was successful
-
-Justin Chen (2):
-      net: bcmasp: fix double free of WoL irq
-      net: bcmasp: fix double disable of clk
-
-Kevin Hao (3):
-      net: macb: Move devm_{free,request}_irq() out of spin lock area
-      net: macb: Protect access to net_device::ip_ptr with RCU lock
-      net: macb: Use dev_consume_skb_any() to free TX SKBs
-
-Kohei Enju (1):
-      iavf: fix out-of-bounds writes in iavf_get_ethtool_stats()
-
-Kuniyuki Iwashima (3):
-      ipv6: Remove permanent routes from tb6_gc_hlist when all exceptions expire.
-      ipv6: Don't remove permanent routes with exceptions from tb6_gc_hlist.
-      selftest: net: Add GC test for temporary routes with exceptions.
-
-Luiz Augusto von Dentz (2):
-      Bluetooth: MGMT: Fix dangling pointer on mgmt_add_adv_patterns_monitor_complete
-      Bluetooth: L2CAP: Fix regressions caused by reusing ident
-
-Marc Kleine-Budde (2):
-      can: netlink: can_changelink(): add missing error handling to call can_ctrlmode_changelink()
-      Merge patch series "can: fix can-gw Out-of-Bounds Heap R/W and isotp UAF"
-
-Martin KaFai Lau (1):
-      udp: Fix wildcard bind conflict check when using hash2
-
-Michal Swiatkowski (1):
-      ice: set max queues in alloc_etherdev_mqs()
-
-Minseo Park (1):
-      Bluetooth: L2CAP: Fix stack-out-of-bounds read in l2cap_ecred_conn_req
-
-Minwoo Ra (1):
-      xfrm: prevent policy_hthresh.work from racing with netns teardown
-
-Mohammad Heib (1):
-      ionic: fix persistent MAC address override on PF
-
-Oliver Hartkopp (2):
-      can: statistics: add missing atomic access in hot path
-      can: isotp: fix tx.buf use-after-free in isotp_sendmsg()
-
-Pablo Neira Ayuso (6):
-      netfilter: nft_set_rbtree: revisit array resize logic
-      netfilter: nf_conntrack_expect: honor expectation helper field
-      netfilter: nf_conntrack_expect: use expect->helper
-      netfilter: ctnetlink: ensure safe access to master conntrack
-      netfilter: nf_conntrack_expect: store netns and zone in expectation
-      netfilter: nf_conntrack_expect: skip expectations in other netns via proc
-
-Paolo Abeni (7):
-      Merge branch 'virtio-net-fix-for-virtio_net_f_guest_hdrlen'
-      Merge branch 'team-fix-header_ops-type-confusion-and-add-selftest'
-      Merge tag 'linux-can-fixes-for-7.0-20260323' of git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can
-      Merge tag 'ipsec-2026-03-23' of git://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec
-      Merge tag 'for-net-2026-03-25' of git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth
-      Merge branch '100GbE' of git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/net-queue
-      Merge tag 'nf-26-03-26' of git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf
-
-Paolo Valerio (1):
-      net: macb: use the current queue number for stats
-
-Paul Moses (1):
-      xfrm: iptfs: only publish mode_data after clone setup
-
-Pengpeng Hou (1):
-      Bluetooth: btusb: clamp SCO altsetting table indices
-
-Petr Oros (2):
-      ice: fix inverted ready check for VF representors
-      ice: use ice_update_eth_stats() for representor stats
-
-Qi Tang (1):
-      net/smc: fix double-free of smc_spd_priv when tee() duplicates splice pipe buffer
-
-Qingfang Deng (1):
-      net: airoha: add RCU lock around dev_fill_forward_path
-
-Ren Wei (1):
-      netfilter: ip6t_rt: reject oversized addrnr in rt_mt6_check()
-
-Roshan Kumar (1):
-      xfrm: iptfs: validate inner IPv4 header length in IPTFS payload
-
-Sabrina Dubroca (17):
-      xfrm: add missing extack for XFRMA_SA_PCPU in add_acquire and allocspi
-      xfrm: fix the condition on x->pcpu_num in xfrm_sa_len
-      xfrm: call xdo_dev_state_delete during state update
-      esp: fix skb leak with espintcp and async crypto
-      xfrm: state: fix sparse warnings on xfrm_state_hold_rcu
-      xfrm: state: fix sparse warnings in xfrm_state_init
-      xfrm: state: fix sparse warnings around XFRM_STATE_INSERT
-      xfrm: state: add xfrm_state_deref_prot to state_by* walk under lock
-      xfrm: remove rcu/state_hold from xfrm_state_lookup_spi_proto
-      xfrm: state: silence sparse warnings during netns exit
-      xfrm: policy: fix sparse warnings in xfrm_policy_{init,fini}
-      xfrm: policy: silence sparse warning in xfrm_policy_unregister_afinfo
-      xfrm: add rcu_access_pointer to silence sparse warning for xfrm_input_afinfo
-      xfrm: avoid RCU warnings around the per-netns netlink socket
-      rtnetlink: count IFLA_PARENT_DEV_{NAME,BUS_NAME} in if_nlmsg_size
-      rtnetlink: count IFLA_INFO_SLAVE_KIND in if_nlmsg_size
-      rtnetlink: fix leak of SRCU struct in rtnl_link_register
-
-Steffen Klassert (1):
-      Merge branch 'xfrm-fix-most-sparse-warnings'
-
-Thangaraj Samynathan (1):
-      net: lan743x: fix duplex configuration in mac_link_up
-
-Toke Høiland-Jørgensen (1):
-      net: openvswitch: Avoid releasing netdev before teardown completes
-
-Wei Fang (1):
-      net: enetc: fix the output issue of 'ethtool --show-ring'
-
-Weiming Shi (2):
-      netfilter: nfnetlink_log: fix uninitialized padding leak in NFULA_PAYLOAD
-      netfilter: nf_conntrack_sip: fix use of uninitialized rtp_addr in process_sdp
-
-Wenyuan Li (1):
-      can: mcp251x: add error handling for power enable in open and resume
-
-Willem de Bruijn (1):
-      net: correctly handle tunneled traffic on IPV6_CSUM GSO fallback
-
-Xuan Zhuo (2):
-      virtio-net: correct hdr_len handling for VIRTIO_NET_F_GUEST_HDRLEN
-      virtio-net: correct hdr_len handling for tunnel gso
-
-Yang Yang (2):
-      openvswitch: defer tunnel netdev_put to RCU release
-      openvswitch: validate MPLS set/set_masked payload length
-
-Yochai Eisenrich (1):
-      net: fix fanout UAF in packet_release() via NETDEV_UP race
-
-Zhang Chen (1):
-      Bluetooth: L2CAP: Fix send LE flow credits in ACL link
-
-xietangxin (1):
-      virtio_net: Fix UAF on dst_ops when IFF_XMIT_DST_RELEASE is cleared and napi_tx is false
-
- drivers/bluetooth/btintel.c                        |  11 +-
- drivers/bluetooth/btusb.c                          |   5 +-
- drivers/bluetooth/hci_ll.c                         |   2 +
- drivers/net/can/dev/netlink.c                      |   4 +-
- drivers/net/can/spi/mcp251x.c                      |  29 +++++-
- drivers/net/ethernet/airoha/airoha_ppe.c           |   2 +
- drivers/net/ethernet/broadcom/Kconfig              |   2 +-
- drivers/net/ethernet/broadcom/asp2/bcmasp.c        |  41 ++++----
- drivers/net/ethernet/cadence/macb_main.c           |  41 +++++---
- .../net/ethernet/freescale/enetc/enetc_ethtool.c   |   2 +
- drivers/net/ethernet/intel/iavf/iavf_ethtool.c     |  31 +++---
- drivers/net/ethernet/intel/ice/ice.h               |  22 ++++
- drivers/net/ethernet/intel/ice/ice_ethtool.c       |  32 ++----
- drivers/net/ethernet/intel/ice/ice_main.c          |   4 +-
- drivers/net/ethernet/intel/ice/ice_repr.c          |   5 +-
- drivers/net/ethernet/intel/idpf/idpf.h             |   2 +-
- drivers/net/ethernet/intel/idpf/idpf_idc.c         |   6 +-
- drivers/net/ethernet/intel/idpf/idpf_txrx.c        |   2 +-
- drivers/net/ethernet/intel/idpf/idpf_virtchnl.c    |   2 +-
- drivers/net/ethernet/microchip/lan743x_main.c      |   5 +
- drivers/net/ethernet/microsoft/mana/mana_en.c      |   6 +-
- drivers/net/ethernet/pensando/ionic/ionic_lif.c    |  17 +--
- drivers/net/ethernet/ti/icssg/icssg_common.c       |   4 +-
- drivers/net/team/team_core.c                       |  65 +++++++++++-
- drivers/net/tun_vnet.h                             |   2 +-
- drivers/net/virtio_net.c                           |   7 +-
- include/linux/virtio_net.h                         |  53 +++++++++-
- include/net/bluetooth/l2cap.h                      |   1 +
- include/net/codel_impl.h                           |   1 +
- include/net/inet_hashtables.h                      |  14 +++
- include/net/ip6_fib.h                              |  21 +++-
- include/net/netfilter/nf_conntrack_core.h          |   5 +
- include/net/netfilter/nf_conntrack_expect.h        |  20 +++-
- include/net/netns/xfrm.h                           |   2 +-
- include/uapi/linux/netfilter/nf_conntrack_common.h |   4 +
- net/bluetooth/hci_conn.c                           |   2 +-
- net/bluetooth/hci_core.c                           |   2 +-
- net/bluetooth/hci_sync.c                           |  20 ++--
- net/bluetooth/l2cap_core.c                         |  71 +++++++++----
- net/bluetooth/l2cap_sock.c                         |   3 +
- net/bluetooth/mgmt.c                               |   2 +-
- net/bluetooth/sco.c                                |  10 +-
- net/can/af_can.c                                   |   4 +-
- net/can/af_can.h                                   |   2 +-
- net/can/gw.c                                       |   6 +-
- net/can/isotp.c                                    |  24 +++--
- net/can/proc.c                                     |   3 +-
- net/core/dev.c                                     |  22 +++-
- net/core/rtnetlink.c                               |  28 ++++-
- net/ipv4/esp4.c                                    |   9 +-
- net/ipv4/inet_connection_sock.c                    |  20 +---
- net/ipv4/udp.c                                     |   2 +-
- net/ipv6/addrconf.c                                |   4 +-
- net/ipv6/esp6.c                                    |   9 +-
- net/ipv6/ip6_fib.c                                 |  15 ++-
- net/ipv6/netfilter/ip6t_rt.c                       |   4 +
- net/ipv6/route.c                                   |   2 +-
- net/key/af_key.c                                   |  19 ++--
- net/netfilter/nf_conntrack_broadcast.c             |   8 +-
- net/netfilter/nf_conntrack_ecache.c                |   2 +
- net/netfilter/nf_conntrack_expect.c                |  39 ++++++-
- net/netfilter/nf_conntrack_h323_main.c             |  12 +--
- net/netfilter/nf_conntrack_helper.c                |  11 +-
- net/netfilter/nf_conntrack_netlink.c               |  75 ++++++-------
- net/netfilter/nf_conntrack_proto_tcp.c             |  10 +-
- net/netfilter/nf_conntrack_sip.c                   |  18 ++--
- net/netfilter/nfnetlink_log.c                      |   8 +-
- net/netfilter/nft_set_pipapo_avx2.c                |  20 ++--
- net/netfilter/nft_set_rbtree.c                     |  92 +++++++++++++---
- net/nfc/nci/core.c                                 |  10 +-
- net/openvswitch/flow_netlink.c                     |   2 +
- net/openvswitch/vport-netdev.c                     |  11 +-
- net/packet/af_packet.c                             |   1 +
- net/smc/smc_rx.c                                   |   9 +-
- net/tls/tls_sw.c                                   |   2 +-
- net/xfrm/xfrm_input.c                              |   5 +-
- net/xfrm/xfrm_iptfs.c                              |  17 ++-
- net/xfrm/xfrm_nat_keepalive.c                      |   2 +-
- net/xfrm/xfrm_policy.c                             |  12 ++-
- net/xfrm/xfrm_state.c                              | 116 ++++++++++++---------
- net/xfrm/xfrm_user.c                               |  32 ++++--
- tools/testing/selftests/drivers/net/team/Makefile  |   1 +
- tools/testing/selftests/drivers/net/team/config    |   2 +
- .../drivers/net/team/non_ether_header_ops.sh       |  41 ++++++++
- tools/testing/selftests/net/fib_tests.sh           |  61 ++++++++++-
- .../selftests/net/netfilter/nft_concat_range.sh    |  70 ++++++++++++-
- 86 files changed, 1057 insertions(+), 387 deletions(-)
- create mode 100755 tools/testing/selftests/drivers/net/team/non_ether_header_ops.sh
+NOTE: This series is intentionally submitted on net-next (not
+intel-wired-lan) as early feedback of DPLL subsystem changes is
+welcomed. In the past possible approaches were discussed in [1].
+
+This series extends the DPLL subsystem and the ICE driver to fully
+support transmit‑clock (TXC) reference selection on Intel E825‑class
+hardware. These devices expose a dedicated TX reference clock domain
+separate from PPS and SyncE/EEC, and they allow switching between
+multiple PHY‑sourced references (TXC0, EREF0, SyncE). Until now
+the kernel lacked a DPLL type to represent TXC‑class devices, and
+the ICE driver had no way to control or report the active TX reference.
+The series introduces: 
+
+Subsystem‑wide improvements:
+
+- A new DPLL type (DPLL_TYPE_TXC) to represent devices that generate a TX
+SERDES reference clock.
+- Improvements to pin registration for fwnode‑identified pins.
+- Addition of a notification source identifier (src_id) for more accurate
+pin event routing in both netlink and internal notifiers.
+
+Hardware/driver support:
+
+- ZL3073x: allow control of the SyncE_Ref pin state.
+- ICE/E825: full TXC DPLL instance with dedicated pins (EXT_EREF0 and
+SyncE) and proper integration into the notifier/mux logic.
+-A new CPI (Converged PHY Interface) subsystem implementing the low‑level
+command protocol required by E825 PHY clocking control.
+- Extension of the Restart AN AQ command with a TX reference clock
+selector.
+- Complete support for selecting, enabling, disabling, and tracking the
+active TX reference clock for E825 devices, including peer‑PHY routing
+and safe clean‑up of unused clock sources.
+
+This enables proper userspace‑driven clock control via the DPLL API and
+is a prerequisite for advanced SyncE deployments, link recovery modes, and
+multi‑clock orchestration on E825 NICs.
+
+Patch summary:
+
+dpll: add new DPLL type for transmit clock (TXC) usage
+Introduces DPLL_TYPE_TXC and publishes it through netlink.
+
+dpll: allow registering FW‑identified pin with a different DPLL
+Relax the (module, clock_id) matching rules when fwnode pins are
+involved.
+
+dpll: extend pin notifier and netlink events with notification source ID
+Adds src_id to pin notification paths and updates all callers.
+
+dpll: zl3073x: allow SyncE_Ref pin state change
+Advertise hardware support for state toggling.
+
+ice: add TX clock (TXC) DPLL interface for E825 devices
+Introduces the ICE TXC DPLL, its pins, and relations to existing PHY
+fwnode pins.
+
+ice: implement CPI support for E825C
+Adds the CPI command engine used for PHY‑side clock control.
+
+ice: add Tx reference clock index handling to AN restart command
+Wires the refclk field into the AQ Restart AN command.
+
+ice: add TX reference clock (tx_clk) control for E825 devices
+Implements full clock‑selection logic, state tracking, cleanup, and
+DPLL pin ops integration.
+
+
+Testing was performed on E825C hardware in multi‑port configurations,
+verifying TXC pin exposure, SyncE/EREF0 switching via DPLL netlink, and
+link recovery across all combinations.
+
+[1] https://lore.kernel.org/netdev/20250905160333.715c34ac@kernel.org/
+
+Changes in v4:
+ - rebased
+ - edited, shortened the commit message in 3/8 patch
+ - moved ice_get_ctrl_pf to the header file (patch 8/8) and
+   removed duplicated static definitions from ice_ptp and ice_txlck
+   modules
+ - add NULL/invalid pointer checker for returned pointer from
+   ice_get_ctrl_pf (patch 8/8)
+ - edited error message in case AN restart failure (patch 8/8)
+
+Changes in v3:
+- improved commit message (patch 1/8, AI review comment)
+- improved deinitialization path in ice_dpll_deinit_txclk_pins to
+  avoid potential NULL dereference. NULL checking moved to
+  ice_dpll_unregister_pins (patch 5/8, found by AI review)
+- removed redundant semicolon (patch 6/8)
+
+Changes in v2:
+- rebased
+- added autogenerated DPLL files (patch 1/8)
+- fixed checkpatch 'parenthesis alignment' warning (patch 2/8)
+- fixed error path in ice_dpll_init_txclk_pins (AI warning, patch 5/8)
+- fixed kdoc warnings (patch 6/8, patch 8/8)
+
+Grzegorz Nitka (8):
+  dpll: add new DPLL type for transmit clock (TXC) usage
+  dpll: allow registering FW-identified pin with a different DPLL
+  dpll: extend pin notifier and netlink events with notification source
+    ID
+  dpll: zl3073x: allow SyncE_Ref pin state change
+  ice: add TX clock (TXC) DPLL interface for E825 devices
+  ice: implement CPI support for E825C
+  ice: add Tx reference clock index handling to AN restart command
+  ice: add TX reference clock (tx_clk) control for E825 devices
+
+ Documentation/netlink/specs/dpll.yaml         |   3 +
+ drivers/dpll/dpll_core.c                      |  32 +-
+ drivers/dpll/dpll_core.h                      |   2 +-
+ drivers/dpll/dpll_netlink.c                   |  10 +-
+ drivers/dpll/dpll_netlink.h                   |   4 +-
+ drivers/dpll/dpll_nl.c                        |   2 +-
+ drivers/dpll/zl3073x/prop.c                   |   9 +
+ drivers/net/ethernet/intel/ice/Makefile       |   2 +-
+ drivers/net/ethernet/intel/ice/ice.h          |  12 +
+ .../net/ethernet/intel/ice/ice_adminq_cmd.h   |   2 +
+ drivers/net/ethernet/intel/ice/ice_common.c   |   5 +-
+ drivers/net/ethernet/intel/ice/ice_common.h   |   2 +-
+ drivers/net/ethernet/intel/ice/ice_cpi.c      | 347 ++++++++++++++++++
+ drivers/net/ethernet/intel/ice/ice_cpi.h      |  69 ++++
+ drivers/net/ethernet/intel/ice/ice_dpll.c     | 327 +++++++++++++++--
+ drivers/net/ethernet/intel/ice/ice_dpll.h     |   6 +
+ drivers/net/ethernet/intel/ice/ice_lib.c      |   3 +-
+ drivers/net/ethernet/intel/ice/ice_ptp.c      |  27 +-
+ drivers/net/ethernet/intel/ice/ice_ptp.h      |   7 +
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c   |  37 ++
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.h   |  34 ++
+ drivers/net/ethernet/intel/ice/ice_sbq_cmd.h  |   5 +-
+ drivers/net/ethernet/intel/ice/ice_txclk.c    | 256 +++++++++++++
+ drivers/net/ethernet/intel/ice/ice_txclk.h    |  41 +++
+ include/linux/dpll.h                          |   1 +
+ include/uapi/linux/dpll.h                     |   2 +
+ 26 files changed, 1194 insertions(+), 53 deletions(-)
+ create mode 100644 drivers/net/ethernet/intel/ice/ice_cpi.c
+ create mode 100644 drivers/net/ethernet/intel/ice/ice_cpi.h
+ create mode 100644 drivers/net/ethernet/intel/ice/ice_txclk.c
+ create mode 100644 drivers/net/ethernet/intel/ice/ice_txclk.h
+
+
+base-commit: d1e59a46973719e458bec78d00dd767d7a7ba71f
+-- 
+2.39.3
 
