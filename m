@@ -1,134 +1,73 @@
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6893148DD;
-	Thu, 26 Mar 2026 09:33:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86BB834751C;
+	Thu, 26 Mar 2026 09:40:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774517621; cv=none; b=nKtWGAzp6I5Vq/Rzum5sLsRGyhI91wADxJD3peU+TynOia0FffR/R1ZCMdzq8VYYyyC50noXonO+oPl4UQftEvFREGoPDXbln+ytrK1fNOAfVXHoUkeuGoHf7Cs/F6aOYJEU5Y7HeBGi6WohPRLv6QQkscPVGytk0Ta04Fg738M=
+	t=1774518021; cv=none; b=kzB0dV6+RSSbxr1YbSnpnbxo/XR166v4jsm77UZsUlP25K3LOuISAy9T7DVR/gccs99n/+sjDPLnEx5WF27xJPD0CGNAG8cz01bwkAzAWzwshEefTAKtWzqjqifMGmZYbR8hUdO0mOnz0SSPqLJD+tM6qGTD2gKX5cPou3wrga0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774517621; c=relaxed/simple;
-	bh=TlgZPqsifYUNanuJk7ktg2DgD57MAfIdrP8qwPSF/Yc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Dal61+L59LYiRB1D7KoStoRRXCYaYwfUAYj5Ay6bNO/V3LIFN/Cx3yHDSQF+UlQGom4ba2ntuK10k+hDfR9M06L4kKXam6rF8WmgnIvIIhjs+Qc+zBQ43rejq3t+rdu6Xr/ym6bMx7f3faJTyNEoeia9J1CvEkUX7EHvbrfBORs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=JIfL9S6Q; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+	s=arc-20240116; t=1774518021; c=relaxed/simple;
+	bh=DBWlVDLpjlSJOQIjxFfylhxmNpzxCQh62zKEJ4rruW8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UGSrx2rfMtAntafBzGsftrK+vcmr1MOSfyJ1C6xFZwNBYVNNHhITYZu5qClXawHAU+jli+uk4ZiNUN7thRQPyejMrL1COISIt0EkIR9epU0Nj9/65HQGZtt3t/Fr4cA63ME2/ja2YRZSXOCSvTZ+SETk9LwpkaUpzRtv+OLX53s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=uU3ip+Re; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="JIfL9S6Q"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=kpD74HZQXAuyN2XDecX4PjgJkz7NNLyVJZ/YVPKmMoY=; t=1774517620; x=1775727220; 
-	b=JIfL9S6QbT7dW93TWHrqbLMJJ256kQAz5x/8WOpv/Nu2P0a+yjcwhqdXmum/ZDTsLAEPLlwpopM
-	ZUTHGVXXF8Pd8HbD+nSR6KWIO62i9hBxWpbLvxcI27LK1T36cQ+vpucBfwAgvV9x65NwZGqvhEhk7
-	nKsjFB+ck7Zbgg4fIH+6cc+YTFv83QrP7Iw4aejibAue2eYnJTEmoKEnRBLqzN0rURtgLk5GfH0tL
-	J0jlWbZn4ijqk4CGsXhV1EVCYr6Q5hCfoJibOuf3NfYd83ba54x+ZiSxNcUwaXH/vBqiyriU1zZgC
-	98OGZAxMtijn3Bh1n8GJIhXo/ifNYpjwtaZA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1w5h5o-0000000CyVs-1pJE;
-	Thu, 26 Mar 2026 10:33:32 +0100
-From: Johannes Berg <johannes@sipsolutions.net>
-To: netdev@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [GIT PULL] wireless-2026-03-26
-Date: Thu, 26 Mar 2026 10:31:35 +0100
-Message-ID: <20260326093329.77815-3-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="uU3ip+Re"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Reply-To:Content-ID:Content-Description;
+	bh=sO7ZNNloh/wmoaVe3Wp31yt1J+XfYMQrOZ79Y8JLbdM=; b=uU3ip+ReM9snb4+J1PCUo53y9u
+	0P+h0Okwk8pWT+XN49Iiwg8P7bWCp6p0w1z7IeRcNoyNBJC3kBbOuvgLjdRmRmr2zTjXlu2oVwBaD
+	ag+hRTYAET2jYnOAJNtkwc8Kni1MREqL1EzbxVh3djl+dUP4tcEwSb+WOntgyZ1wp4mLYF7lAjGSo
+	Cej51+w2sVuwWjBe8e1//wHITlycsr2XhTqP0wQFmtTL3mEyiHXo6asd5WNgMsBod+DHnU4KAjHJZ
+	luFtiMaL2H4X+VVKYwlqIriR5jm77syVazXdLk/FJz43A4YDYcVPEoZ2SQP3TSQYUtS4I3nFNj2Na
+	wFSybENw==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <leitao@debian.org>)
+	id 1w5hCK-009l21-Cl; Thu, 26 Mar 2026 09:40:16 +0000
+Date: Thu, 26 Mar 2026 02:40:09 -0700
+From: Breno Leitao <leitao@debian.org>
+To: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, Donald Hunter <donald.hunter@gmail.com>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Maxime Chevallier <maxime.chevallier@bootlin.com>, Naveen Mamindlapalli <naveenm@marvell.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Danielle Ratson <danieller@nvidia.com>, Hariprasad Kelam <hkelam@marvell.com>, 
+	Ido Schimmel <idosch@nvidia.com>, Kory Maincent <kory.maincent@bootlin.com>, 
+	Leon Romanovsky <leon@kernel.org>, Michael Chan <michael.chan@broadcom.com>, 
+	Oleksij Rempel <o.rempel@pengutronix.de>, Pavan Chebbi <pavan.chebbi@broadcom.com>, 
+	Piergiorgio Beruto <piergiorgio.beruto@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan <shuah@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, 
+	Willem de Bruijn <willemb@google.com>, Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-rdma@vger.kernel.org
+Subject: Re: [PATCH net-next v2 08/12] netdevsim: Add MAC loopback simulation
+Message-ID: <acT-G3_9sUR3Npo1@gmail.com>
+References: <20260325145022.2607545-1-bjorn@kernel.org>
+ <20260325145022.2607545-9-bjorn@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260325145022.2607545-9-bjorn@kernel.org>
+X-Debian-User: leitao
 
-Hi,
+On Wed, Mar 25, 2026 at 03:50:15PM +0100, Björn Töpel wrote:
+> Implement the three ethtool loopback ops for MAC-level loopback
+> simulation:
+> 
+>  - get_loopback(): exact lookup by name ("mac")
+>  - get_loopback_by()_index: enumerate (single entry at index 0)
 
-And ... more fixes from drivers came in, notably iwlwifi with
-a bunch of things (their maintainer had been on vacation).
-
-I'm going to be on vacation next week, but I'm also not aware
-of anything missing from drivers etc. right now, so we'll see.
-I doubt this is the _last_ pull request for 7.0, but I think
-not much more will come in.
-
-Please pull and let us know if there's any problem.
-
-Thanks,
-johannes
-
-
-
-The following changes since commit a1d9d8e833781c44ab688708804ce35f20f3cbbd:
-
-  Merge tag 'net-7.0-rc5' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-03-19 11:25:40 -0700)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2026-03-26
-
-for you to fetch changes up to 789b06f9f39cdc7e895bdab2c034e39c41c8f8d6:
-
-  wifi: virt_wifi: remove SET_NETDEV_DEV to avoid use-after-free (2026-03-25 20:46:57 +0100)
-
-----------------------------------------------------------------
-Couple more fixes:
- - virt_wifi: remove SET_NETDEV_DEV to avoid UAF on teardown
- - iwlwifi:
-   - fix (some) devices that don't have 6 GHz (WiFi6E)
-   - fix potential OOB read of firmware notification
-   - set WiFi generation for firmware to avoid packet drops
-   - fix multi-link scan timing
- - wilc1000: fix integer overflow
- - ath11k/ath12k: fix TID during A-MPDU session teardown
- - wl1251: don't trust firmware TX status response index
-
-----------------------------------------------------------------
-Alexander Popov (1):
-      wifi: virt_wifi: remove SET_NETDEV_DEV to avoid use-after-free
-
-Alexey Velichayshiy (1):
-      wifi: iwlwifi: mvm: fix potential out-of-bounds read in iwl_mvm_nd_match_info_handler()
-
-Emmanuel Grumbach (1):
-      wifi: iwlwifi: mvm: don't send a 6E related command when not supported
-
-Johannes Berg (3):
-      wifi: iwlwifi: mld: correctly set wifi generation data
-      Merge tag 'iwlwifi-fixes-2026-03-24' of https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next
-      Merge tag 'ath-current-20260324' of git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath
-
-Pagadala Yesu Anjaneyulu (1):
-      wifi: iwlwifi: mld: Fix MLO scan timing
-
-Pengpeng Hou (1):
-      wifi: wl1251: validate packet IDs before indexing tx_frames
-
-Reshma Immaculate Rajkumar (2):
-      wifi: ath11k: Pass the correct value of each TID during a stop AMPDU session
-      wifi: ath12k: Pass the correct value of each TID during a stop AMPDU session
-
-Yasuaki Torimaru (1):
-      wifi: wilc1000: fix u8 overflow in SSID scan buffer size calculation
-
- drivers/net/wireless/ath/ath11k/dp_rx.c            |  15 ++-
- drivers/net/wireless/ath/ath12k/dp_rx.c            |   4 +-
- .../net/wireless/intel/iwlwifi/fw/api/commands.h   |   5 +
- drivers/net/wireless/intel/iwlwifi/fw/api/scan.h   |  10 ++
- drivers/net/wireless/intel/iwlwifi/mld/iface.c     | 101 ++++++++++++++-------
- drivers/net/wireless/intel/iwlwifi/mld/mac80211.c  |  19 ++++
- drivers/net/wireless/intel/iwlwifi/mld/mld.c       |   1 +
- drivers/net/wireless/intel/iwlwifi/mld/mlo.c       |   4 +-
- drivers/net/wireless/intel/iwlwifi/mld/notif.c     |   5 +
- drivers/net/wireless/intel/iwlwifi/mld/scan.c      |  30 +++++-
- drivers/net/wireless/intel/iwlwifi/mld/scan.h      |   9 +-
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c        |   2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c        |   3 +-
- drivers/net/wireless/microchip/wilc1000/hif.c      |   2 +-
- drivers/net/wireless/ti/wl1251/tx.c                |   8 +-
- drivers/net/wireless/virtual/virt_wifi.c           |   1 -
- 16 files changed, 163 insertions(+), 56 deletions(-)
+  - get_loopback_by_index(): enumerate (single entry at index 0)
