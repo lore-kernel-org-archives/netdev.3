@@ -1,126 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9F7749C;
-	Thu, 26 Mar 2026 09:30:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9427346E68;
+	Thu, 26 Mar 2026 09:33:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774517427; cv=none; b=clYsNcFpP2ozptCVZ/VJJTXFaqI3Shek2l/5rRtVLQLBHocg5hrFF+h26uSf0KZEUaP8W53iY0ZIAzPdou2pyf5uUyoWQ/9xq43C7KbneUuqQ2i0AMr92IAm6LAyHI1FvZLnbmCeG+t8KZWUKTt8bNG5JvNFLbP35gN0+/c8SVM=
+	t=1774517588; cv=none; b=Zo7uzO5ltOX3LHcjTEXEgGjyOtUNIxQS7ndeWQkjgXSGY8c4LBHRycThD8DI0o4bJ8K5v5r6hXb+k5oXG3KeMpfWnrpR5HuHHi7Befcg2nK+5qdvTaCM8sueyrFdFLR0cToEJ/e1ujlmFDZ2ElcV7o3i+ZIlbQfzMP3oZWnRIo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774517427; c=relaxed/simple;
-	bh=TAQ3eRNYXmeS2TuKDVL+vvlsP2LBU8S7kf6GbjrTDlI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Yuc4YyGBZBUmvlFdSaXwfNY6KX8Nmmth6mog5U++gTSo/y/sNFWxD1WHzryfLXCApKU0F9sZNXpy7jfwZhYrPgKVi5D4U8ABeqIFmS7eKwDztoZ0NFE9WjAdXADiy0vQgFyPLiL76XXGjtsdcpj2IrS/9DZ/IA1yGkDzdedeRAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cGraHzZq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774517588; c=relaxed/simple;
+	bh=lr+fL1xZKdJvJ+cIO01kA3TTYfyVOiqIfSGhQyVjGKc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cSjC3ZisnrBbxT2ArjQbBMi9T+I+eKTxtnQiRIenv6fu1guK/zMvpzcIYHgYNBDYTg9EKl0JD3DtesiNjLumCcmI2Id5ch7E04nME6NL6Q+D902Xvoau7lYtTF9JcJNVA50x4abKcaj36b8Scl8e3HGG9ieWJTuPoWC7bejsyLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=fdMqbocP; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cGraHzZq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEFB9C116C6;
-	Thu, 26 Mar 2026 09:30:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774517427;
-	bh=TAQ3eRNYXmeS2TuKDVL+vvlsP2LBU8S7kf6GbjrTDlI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cGraHzZqE1oGqS3tF2J4R3OWQn/hgaywvaNWs3WnUoAW/Qn2BcsDSeEFD9BdOVPAd
-	 hSU556KMki4gF7sEWOJcUgTpLzi4gpmzpAYvWJRGEEJ1PRo3Pzzm95o8bXoIKyOGFc
-	 7EZo0G5lD3XuxsmPOCM7Ngom2jcdhAwCpX62lrPDL0/ULEq4tzQnTbwxzdX1MpU+dR
-	 t1u1Zc4BvyrYky2pEHJ1iPW3o3wNfMjmXlqLyaVJ/e4T6vJLQW35UKDcshtVYOi8LG
-	 v2dvOIG11tMWL9xm9NJto8TZWtG1o5QuDGin4mzN/g9q3+O+I+BeEdbuec5lV/UHRO
-	 Y5P6xhEimVtVg==
-Message-ID: <be72b72c-81a9-4dbc-8e11-10c60732690f@kernel.org>
-Date: Thu, 26 Mar 2026 10:30:22 +0100
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="fdMqbocP"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Reply-To:Content-ID:Content-Description;
+	bh=Z0WUXCv4keO15fOq2l2m6s3jGy09mN43/z1icMRS0wY=; b=fdMqbocPxjGNnT5Ya5fGprjYIh
+	Hat0N0TO/7vRh3HaWvtE3QMCwmYzBJy8kcaPkVz44Fg4Vmb4JN4O6SP8YgN2YPU+YxwbymKEiJlJk
+	KDNcZpg+GubLqZSUb11th+uLQM2c5aFg3vftBlC3MCLbQ8wL6wnRnvLnJNDDR+SngKaF/zuy1LXs0
+	+3yMAD6VbfEsSokXz7Wu7jzPAkQQe51VFyeNCzMarAu/NnknLIkpuGGxDg4TLK1lADrobVDjxZ5dL
+	oBZVVBNsMqAFBSIbxV9nlirP+JUnn7t0vJQFj2xzg8Nhs7C7iBlcOIqT+JI3RMl7vcgKqG5pHGMF7
+	7sWWC3LQ==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <leitao@debian.org>)
+	id 1w5h5J-009kkg-25; Thu, 26 Mar 2026 09:33:01 +0000
+Date: Thu, 26 Mar 2026 02:32:54 -0700
+From: Breno Leitao <leitao@debian.org>
+To: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, Donald Hunter <donald.hunter@gmail.com>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Maxime Chevallier <maxime.chevallier@bootlin.com>, Naveen Mamindlapalli <naveenm@marvell.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Danielle Ratson <danieller@nvidia.com>, Hariprasad Kelam <hkelam@marvell.com>, 
+	Ido Schimmel <idosch@nvidia.com>, Kory Maincent <kory.maincent@bootlin.com>, 
+	Leon Romanovsky <leon@kernel.org>, Michael Chan <michael.chan@broadcom.com>, 
+	Oleksij Rempel <o.rempel@pengutronix.de>, Pavan Chebbi <pavan.chebbi@broadcom.com>, 
+	Piergiorgio Beruto <piergiorgio.beruto@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan <shuah@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, 
+	Willem de Bruijn <willemb@google.com>, Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-rdma@vger.kernel.org
+Subject: Re: [PATCH net-next v2 09/12] selftests: drv-net: Add MAC loopback
+ netdevsim test
+Message-ID: <acT8O5vHc7gl6hzG@gmail.com>
+References: <20260325145022.2607545-1-bjorn@kernel.org>
+ <20260325145022.2607545-10-bjorn@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] dt-bindings: net: pse-pd: add poll-interval-ms
- property
-To: Carlo Szelinsky <github@szelinsky.de>,
- Oleksij Rempel <o.rempel@pengutronix.de>,
- Kory Maincent <kory.maincent@bootlin.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org
-References: <20260323201225.1836561-1-github@szelinsky.de>
- <20260323201225.1836561-2-github@szelinsky.de>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20260323201225.1836561-2-github@szelinsky.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260325145022.2607545-10-bjorn@kernel.org>
+X-Debian-User: leitao
 
-On 23/03/2026 21:12, Carlo Szelinsky wrote:
-> Add the optional poll-interval-ms property for PSE controllers that
-> use poll-based event detection instead of interrupts. Defaults to
-> 500ms if not specified.
-> 
-> Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
+On Wed, Mar 25, 2026 at 03:50:16PM +0100, Björn Töpel wrote:
 
+> +def _dfs_write_u32(cfg, path, val):
+> +    with open(os.path.join(_nsim_dfs_path(cfg), path), "w",
+> +              encoding="utf-8") as f:
+> +        f.write(str(val))
 
-Please use scripts/get_maintainers.pl to get a list of necessary people
-and lists to CC. It might happen, that command when run on an older
-kernel, gives you outdated entries. Therefore please be sure you base
-your patches on recent Linux kernel.
+This function doesn't seem to be called, right?
 
-Tools like b4 or scripts/get_maintainer.pl provide you proper list of
-people, so fix your workflow. Tools might also fail if you work on some
-ancient tree (don't, instead use mainline) or work on fork of kernel
-(don't, instead use mainline). Just use b4 and everything should be
-fine, although remember about `b4 prep --auto-to-cc` if you added new
-patches to the patchset.
+> +def main() -> None:
+> +    """Run netdevsim loopback tests."""
+> +    with NetDrvEnv(__file__) as cfg:
+> +        cfg.ethnl = EthtoolFamily()
 
-You missed at least devicetree list (maybe more), so this won't be
-tested by automated tooling. Performing review on untested code might be
-a waste of time.
+Given some functions above assume this is nsim, should you call
+cfg.require_nsim() ?
 
-Please kindly resend and include all necessary To/Cc entries.
-
-Best regards,
-Krzysztof
+Reviewed-by: Breno Leitao <leitao@debian.org>
