@@ -1,32 +1,30 @@
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43BD39D6E6
-	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 17:46:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF2F41C30B
+	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 17:46:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774547193; cv=none; b=egr6ZjJbODULr5TgiKqvIhckdTtX1klA0uepgug5bPtMq/Xc7uQsCqhuGjfPjZZwuNlySIDgSSvAl+3CUMOOJ+pnHA5EvzW8hWJdWb9jroXZPxDZ28ZP7bOq/PdF9jCqz1+4dE6IEDom4oQkpuWIX2LFy4hicrghu0OWiK2eY+U=
+	t=1774547202; cv=none; b=kuUOQUDmwxp84OFTxVfUz0I2pxwrhuK7bJzcwSkZNAiH7+E6SB9h2w4SDlRX3DMdV6fOwvu/mv9a21Ju9nVEZCtJTDAQI/I6ujBx6TK7Vda/HUrI5pKeoHWf3GFhcK+AFV75j5JcfK9iB+FHuTk+U371abKuC/J5XOYwGwxLL8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774547193; c=relaxed/simple;
-	bh=+vw2JkvCXKRoQRcER3jPQEIB++vTT0CoMaEKfyNHHnE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dWDYywfvcS5b3FgORTa+wKV+rRuz5dqx7+wCKXz1MOcR4CzKEOqdZJSmvzhB92psoQf0vUNh/afTis4LILzmID/b/cxlSMY/BCS/UGST1lirI7qAz1cgbxdse2nVerm639ozgXtDOfoevghbH9MJB6122NIIn1Y3UzZrSyij5Is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=XxvibRvn; arc=none smtp.client-ip=95.215.58.189
+	s=arc-20240116; t=1774547202; c=relaxed/simple;
+	bh=U2Rk1go9BVcJuJ2EEhHc1TGH3yM1ERqWLgCMnpQumYg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jZBVAnE3W54gOvmQAGI/YPmZ176/hXvGNoqQpVvKAxR1z97cMTfyG7S9dK2Oo0T7jKBbrmKHp0zVW7nUp6eVlV2fKufD0yFPdHRoRChPQBurA2gPqZ+XuEDRKCKwVrocCB9piYMm/kM1Y4G5gL8jdPsS6DgPgSJDzrJ8bJTHrAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=C4BS8Uyq; arc=none smtp.client-ip=95.215.58.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="XxvibRvn"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="C4BS8Uyq"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774547187;
+	t=1774547186;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HCZCqssiuCqpmDoMVvWj4+RE/eoOZ2EbUqziqvm6HAE=;
-	b=XxvibRvnJcKmbi0t2gTV4FaZBAa4E5sb/AllqGZBIqLWHaIqhll5jGnGEdoeWS7RdofD6o
-	v7hmI8c616gGvMP/WZybPyCG8HmixmAzRV8N784ua9WpCfmH/xbh3/rapXeRCImbRKnW4T
-	Ct1qGcEkAmlIzG04r5XG1d6Nik1BFcA=
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=IDT4pyIhCwz8AX4AEf5QuLYdDUNg/3ZyvF/XHwUhyjw=;
+	b=C4BS8UyqMjKT5a3W1vu9ZrMFRDPXnleIQTHjI58434eGtLPBn347tRxENpBAHqWava/0do
+	K9sPIIVtFatI1ZdpRqCo96SkYmGbpVj3TkupWQrR2sxFjb6K+b+j0iNbZJosnR6ZELHa/6
+	kfD/TcWSeU0XE5/Ads5rbo34s07G3U4=
 From: luka.gejak@linux.dev
 To: davem@davemloft.net,
 	edumazet@google.com,
@@ -38,11 +36,9 @@ Cc: horms@kernel.org,
 	liuhangbin@gmail.com,
 	linux-kernel@vger.kernel.org,
 	luka.gejak@linux.dev
-Subject: [PATCH net-next v2 1/2] net: hsr: constify hsr_ops and prp_ops protocol operation structures
-Date: Thu, 26 Mar 2026 18:45:59 +0100
-Message-ID: <20260326174600.136232-2-luka.gejak@linux.dev>
-In-Reply-To: <20260326174600.136232-1-luka.gejak@linux.dev>
-References: <20260326174600.136232-1-luka.gejak@linux.dev>
+Subject: [PATCH net-next v2 0/2] net: hsr: subsystem cleanups and modernization
+Date: Thu, 26 Mar 2026 18:45:58 +0100
+Message-ID: <20260326174600.136232-1-luka.gejak@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,56 +50,27 @@ X-Migadu-Flow: FLOW_OUT
 
 From: Luka Gejak <luka.gejak@linux.dev>
 
-The hsr_ops and prp_ops structures are assigned to hsr->proto_ops during
-device initialization and are never modified at runtime. Declaring them
-as const allows the compiler to place these structures in read-only
-memory, which improves security by preventing accidental or malicious
-modification of the function pointers they contain.
+Changes in v2:
+ - dropped trivial cleanup-only patches per netdev clean-up policy
+ - added AI attribution for cover-letter/commit-message wording only
+ - dropped fallthrough/BIT conversion patches per review
 
-The proto_ops field in struct hsr_priv is also updated to a const
-pointer to maintain type consistency.
+This series contains two focused HSR cleanups with practical benefit.
+It constifies protocol operation tables and replaces a hardcoded 
+function name with __func__ to keep diagnostics correct across 
+refactoring.
+Assisted-by: Copilot:gpt-5.3-codex (cover-letter/commit-message wording 
+only)
 
-Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
----
- net/hsr/hsr_device.c | 4 ++--
- net/hsr/hsr_main.h   | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+Luka Gejak (2):
+  net: hsr: constify hsr_ops and prp_ops protocol operation structures
+  net: hsr: use __func__ instead of hardcoded function name
 
-diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
-index 5c3eca2235ce..90236028817d 100644
---- a/net/hsr/hsr_device.c
-+++ b/net/hsr/hsr_device.c
-@@ -616,7 +616,7 @@ static const struct device_type hsr_type = {
- 	.name = "hsr",
- };
- 
--static struct hsr_proto_ops hsr_ops = {
-+static const struct hsr_proto_ops hsr_ops = {
- 	.send_sv_frame = send_hsr_supervision_frame,
- 	.create_tagged_frame = hsr_create_tagged_frame,
- 	.get_untagged_frame = hsr_get_untagged_frame,
-@@ -626,7 +626,7 @@ static struct hsr_proto_ops hsr_ops = {
- 	.register_frame_out = hsr_register_frame_out,
- };
- 
--static struct hsr_proto_ops prp_ops = {
-+static const struct hsr_proto_ops prp_ops = {
- 	.send_sv_frame = send_prp_supervision_frame,
- 	.create_tagged_frame = prp_create_tagged_frame,
- 	.get_untagged_frame = prp_get_untagged_frame,
-diff --git a/net/hsr/hsr_main.h b/net/hsr/hsr_main.h
-index 33b0d2460c9b..134e4f3fff60 100644
---- a/net/hsr/hsr_main.h
-+++ b/net/hsr/hsr_main.h
-@@ -202,7 +202,7 @@ struct hsr_priv {
- 	enum hsr_version prot_version;	/* Indicate if HSRv0, HSRv1 or PRPv1 */
- 	spinlock_t seqnr_lock;	/* locking for sequence_nr */
- 	spinlock_t list_lock;	/* locking for node list */
--	struct hsr_proto_ops	*proto_ops;
-+	const struct hsr_proto_ops	*proto_ops;
- #define PRP_LAN_ID	0x5     /* 0x1010 for A and 0x1011 for B. Bit 0 is set
- 				 * based on SLAVE_A or SLAVE_B
- 				 */
+ net/hsr/hsr_device.c  | 4 ++--
+ net/hsr/hsr_forward.c | 2 +-
+ net/hsr/hsr_main.h    | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
 -- 
 2.53.0
 
