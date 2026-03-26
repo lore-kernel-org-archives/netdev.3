@@ -1,110 +1,112 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A83DB3FCB18
-	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 14:30:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774535428; cv=none; b=JMdDvqzA4nMIOuY0rrbfg8gEDcwC2w+Mtspd7AGfJ+hbHsZhiYiqedz5iTTjt1ch9u2jxf+ICEvzv6oaZznY4Qnz7DWEPLKPaGxEz5xdsdLILDH91jj/bXOVFigtnOF0AWizbi0Pbc/Ny9iMPejzDwwcRY3V8mxJSkaltWIvET4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774535428; c=relaxed/simple;
-	bh=kJ5DEvmEC6COhuG5ZifY0ak91bfECvqTWHiIvmlWccs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BeWiNGR2QwzKT4cN7xk+q/ZxP0K37Ex38g6tDy2/tcOmPLHJ3RuHcZYcSxHxEgGBHRyADTg2rB4wvPLxIYxrtKczfgSX3MynhgyQLd8fuZaAJvmaoDTmSWWDiwfc2Y9RUvH9wYWeqoyA8I0FPCZsxBWze5G56OdKjd/bT7NDFJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=N3SNlSbC; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2734F38A288
+	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 14:43:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774536200; cv=pass; b=t26U6KxN9TIr1omnK6J3LwBfBDkSsTb0XyNpZTqJ0Boa19RWngsXbasLM9Eti4sUetPHiCB5OM/z9BBjWtzckoCgkIDL9DLhGuoiQY60VJQeeQyff6gUVhCRSVnm8JC5N5zSVmUbmC6wqIyN2DCk/K+suNOcud9B+pDNOmSbgHs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774536200; c=relaxed/simple;
+	bh=FVFmAgQz4gE6E0Y4ObIalXmNJsTFXoYF3zXEEXfO3R4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QmSD1ZkAoRBtWycjcHcQFKcpSspOGB8uJ6Dt3RtvJu/3mOWiywpgTqFol2PIIoIcf6R8PJYeX6iVgCNBAzij37E9ZF3M7dSLfUs5htFYt72PEfICXuEQwjcHtVbW9ARo2dje7yuWSFrOOadMSLpVhQNQk8I01WogXPfJ686wlu8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RJqALb5A; arc=pass smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="N3SNlSbC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774535426;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6VW0YNLGPuLqDA6b95OWVGdGDmHTWKVFeGTWyx240+M=;
-	b=N3SNlSbCBINq5xf/sHmHgg1DHZdZdxabILqZ/ndrVhCSiyqZiGc6pAgnHgJUsDDUbZBlUi
-	T4K+wX7VPjTuw6gM9Xr2gpVwdBADyKz8UvXQN+u5wgwISjafRiYW7U+VXPBg4zbXZwk5y/
-	uqb19XYCxw23p9QvfeLuGkNPEOwHX9k=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-43-9e5ZRQ2pMpaT1HwQL31v9Q-1; Thu,
- 26 Mar 2026 10:30:23 -0400
-X-MC-Unique: 9e5ZRQ2pMpaT1HwQL31v9Q-1
-X-Mimecast-MFC-AGG-ID: 9e5ZRQ2pMpaT1HwQL31v9Q_1774535421
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 71E491955BCE;
-	Thu, 26 Mar 2026 14:30:21 +0000 (UTC)
-Received: from thinkpad (dhcp-64-111.muc.redhat.com [10.32.64.111])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 21C91180036E;
-	Thu, 26 Mar 2026 14:30:18 +0000 (UTC)
-Date: Thu, 26 Mar 2026 15:30:16 +0100
-From: Felix Maurer <fmaurer@redhat.com>
-To: luka.gejak@linux.dev
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, netdev@vger.kernel.org, horms@kernel.org,
-	liuhangbin@gmail.com, bigeasy@linutronix.de,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v1 4/4] net: hsr: reject unresolved interlink
- ifindex
-Message-ID: <acVC-NwCS9AO8Nmf@thinkpad>
-References: <20260324143503.187642-1-luka.gejak@linux.dev>
- <20260324143503.187642-5-luka.gejak@linux.dev>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RJqALb5A"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-829afe24fb5so801713b3a.0
+        for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 07:43:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774536198; cv=none;
+        d=google.com; s=arc-20240605;
+        b=D3ue2LaQj5YBKzX78b9jgd/3vqNYkmlMUoTn5sCVce91ImkAdX1FmzYdZ4JSrgPJHi
+         FK3GA40eRiccQsxncVhm75FXn9gL70Wtw9dJkWsvy0/bAM4yV/ySb7Tg1TkZeTnZiejg
+         k9759n2oJmbakbTGncgmUgQGzc5OUr5lxthXk6X4uPj339GBvZmmxDeFChMBhYiGOw+p
+         d7izIYzitnmRyi+19J547uvElteFzxLih3f4G56beNaJOHZLXjEnoz/s7YlcDv/Pt2sI
+         FRRuCUUByGO8P+49kAwC6umEGHkuyB2xEc+No0fvEtTdrUjXcU0UWt/4Q1ZyweJ+546T
+         VFpw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=FVFmAgQz4gE6E0Y4ObIalXmNJsTFXoYF3zXEEXfO3R4=;
+        fh=NP3WYT8z2Ci15TlaSQ/cI8Zq8LUdt/h5IQGFjoSXF1g=;
+        b=R8i/DIp+n/0o2VgCsT+nd2an7mdoUIY2VBAoZVqaMgTKarR7XRNeqF+ZRJwqoTmoNn
+         0T3CwzhucZ9X1Fh/YA777PRfqBDU3fWVTzI9CO0bMHws1hWARWuLlBTGuqpcgTUBh17d
+         9EZqt2h79lfW28rCFeTbFuZzd7fS3myZ7c2FY2E1mUmPITECbsSS0G3Ew3KDL2oJ2g/u
+         Db732eQUNZwSqEmRhogV7AhSQLPjLeqyUwGwpEkwZW4Q2eN7j0flWpr3OFOF4LyWJbgN
+         FoC/pB95FsD0RY+i7rwHRXvKoyJRmQT2FWhKkDobVW6luPRaEKpXCG/su6M2IvmPwTJ4
+         q2+A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774536198; x=1775140998; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FVFmAgQz4gE6E0Y4ObIalXmNJsTFXoYF3zXEEXfO3R4=;
+        b=RJqALb5AAvygIJTVL50uaxLdZMrLhLvw+8ou2Un04sVISYn60ms/0wjR+SdjSEPN36
+         Tf+w8ITMwvZSlzJFC+pT9d+9OrzZ+bDOoesuMLLIY/svIIs3OPiLd0t8UKfkF4Av6LGq
+         df6NA3NyO1JYX8iz2iLfJUMGtUQOb3bQeDMY/W0H07+BCtu51Q+rsQq/fj3XMz6KbQ1U
+         KCXWV+MDCdf/o+XAOiOnjtwuafUStOyj/PTGiDBO0ia2RP5KTW6EStfITMCscDnjc96c
+         VUcd8u11sDOeO2UlMD1yKL1DlejYFx48nSki4hJOQql+6h9anr4oz/5PGCf6GFlcDgEa
+         pG6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774536198; x=1775140998;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=FVFmAgQz4gE6E0Y4ObIalXmNJsTFXoYF3zXEEXfO3R4=;
+        b=Qzbf3Dz44vnBIT3HoUdaYaWeUXCP4XN34+sYgSY2eNw35OIHPxVK1I4dr5TXFxtmMJ
+         oa2wGA7TTXbWY7eOXUKPl6zdawdfp5ZBzRT+xlomENfcN4DKhFGhtqGiviinOOJdnnwG
+         echKYKKOVhRp7sefiSM1AEo2ufLvbUVoQ0VxhSB8ZjRCr7gi5isfQma6XCaUdLfeR1S7
+         R2TNrkdq2K2oZeDJKNUEekb2MNi1cQ5FKp04GHRcVSdz1ESQNiUKrecOJ0wDChfMUKTB
+         X0hOZGsdxHLPkHAQJQTB1b5zCLTRDNAMPeMtzs13DVDYnsLnjkV0B4GVXQEJTefT+XtP
+         m9mw==
+X-Forwarded-Encrypted: i=1; AJvYcCVLZ9VEe4Ewp9oGEpfrW+MhLzm8wTpR1v7Ort09Nm0GC8bz0CZvYorxR4uN61psQCN/r/gmAfw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9PoCBu5A78hQJRDSRN8ss5OSOXETcrxukuYNa8n82K9M/LAvg
+	e57E3k2OZhjKLgdSuL+oLgrmtwDKf7rGgtws0CTXAGz06JbQhvH4fjB8D6UoJ9zcQLchucymyQg
+	O2cOemJN1XJX/MuBNDjKsWmLJdDK8hlo=
+X-Gm-Gg: ATEYQzzZmyeCYHSLf9U4YTCxcH+OobqfFDGA67ALGgGr651vrL63wAczZ1vUVmXknQ2
+	+Ise9lqLezl9Pp4qmrfxcuv4oOPfr/PR7gUj2d8ggD8nOg3s8SM57ql4BUhlj/VmxsW747Hk/lF
+	U/OHu4+7NIMLBW6Wp0cdd2kjL+qBG0TWeIMqy4CeFUTVRjE0hLStdTh340t3PE+Kt6D2yRics9Y
+	spaTV8A3bu5tweMggMIPZK9ZckzBbF0IEvaMrNKGFx15brVuNyC/SxzIbS6utd+K7BOpFtT7OIO
+	UUMvNJr1aDwFd5oQixvzw4XOwIn2ApCPzI42rsxAp2FN6u6f7cbusVd7ej3hOkVr4oEcXfimOFv
+	CusxAfZ2+ffHFkWv082euJMzQ4MknFlwHSNMZRsZS
+X-Received: by 2002:a05:6a00:21d3:b0:827:3e19:574a with SMTP id
+ d2e1a72fcca58-82c6e0c9316mr7888671b3a.42.1774536198060; Thu, 26 Mar 2026
+ 07:43:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260324143503.187642-5-luka.gejak@linux.dev>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+References: <20260305013852.3769-1-dqfext@gmail.com> <CALW65jZRyKydW6bs-mYwh2mEn0dpv3opVEr=WczKn_0952_+Yg@mail.gmail.com>
+In-Reply-To: <CALW65jZRyKydW6bs-mYwh2mEn0dpv3opVEr=WczKn_0952_+Yg@mail.gmail.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Thu, 26 Mar 2026 10:43:06 -0400
+X-Gm-Features: AQROBzCH-dMP5gYoRzTA9-0LoSdsw0LRMs61HA75Mz0OWbc31OaZfkW_Re03PrI
+Message-ID: <CADvbK_fj_26MLP=+U+rzOMfqdPpdvFQJgN_fozd2uAjRsfHweQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v5] net: pppoe: implement GRO/GSO support
+To: Qingfang Deng <dqfext@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, Felix Fietkau <nbd@nbd.name>, linux-ppp@vger.kernel.org, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	David Ahern <dsahern@kernel.org>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Richard Gobert <richardbgobert@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 24, 2026 at 03:35:03PM +0100, luka.gejak@linux.dev wrote:
-> From: Luka Gejak <luka.gejak@linux.dev>
+On Wed, Mar 25, 2026 at 10:43=E2=80=AFPM Qingfang Deng <dqfext@gmail.com> w=
+rote:
 >
-> In hsr_newlink(), a provided but invalid IFLA_HSR_INTERLINK attribute
-> was silently ignored if __dev_get_by_index() returned NULL. This leads
-> to incorrect RedBox topology creation without notifying the user.
+> Hi all,
+>
+> In some cases (such as BIG TCP) a GRO skb length can overflow a u16,
+> then what should I do with the u16 length field here?
 
-Not really incorrect, it's just not a RedBox at all.
-
-> Fix this by returning -EINVAL and an extack message when the
-> interlink attribute is present but cannot be resolved.
->
-> Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
-
-Reviewed-by: Felix Maurer <fmaurer@redhat.com>
-
-> ---
->  net/hsr/hsr_netlink.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
->
-> diff --git a/net/hsr/hsr_netlink.c b/net/hsr/hsr_netlink.c
-> index db0b0af7a692..f0ca23da3ab9 100644
-> --- a/net/hsr/hsr_netlink.c
-> +++ b/net/hsr/hsr_netlink.c
-> @@ -76,9 +76,14 @@ static int hsr_newlink(struct net_device *dev,
->  		return -EINVAL;
->  	}
->
-> -	if (data[IFLA_HSR_INTERLINK])
-> +	if (data[IFLA_HSR_INTERLINK]) {
->  		interlink = __dev_get_by_index(link_net,
->  					       nla_get_u32(data[IFLA_HSR_INTERLINK]));
-> +		if (!interlink) {
-> +			NL_SET_ERR_MSG_MOD(extack, "Interlink does not exist");
-> +			return -EINVAL;
-> +		}
-> +	}
->
->  	if (interlink && interlink == link[0]) {
->  		NL_SET_ERR_MSG_MOD(extack, "Interlink and Slave1 are the same");
-> --
-> 2.53.0
->
-
+I think you can either add a check in pppoe_gro_complete() to ensure
+the aggregated size does not exceed U16_MAX, avoiding BIG TCP
+behavior; Or, set phdr->length to 0 and rely on skb->len to determine
+the actual length, as done in BIG TCP itself.
