@@ -1,76 +1,83 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62A343368BE
-	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 18:17:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58023A0E8E
+	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 18:17:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774549038; cv=none; b=L/dUneyFxlrQwDnU8BdtjD+4Cj+h5S1v4JNk8WQ5bogvg5QK5X/lihphWLSd+3DJKhJ6LZOqMDbKKDgaYfb4u/87pAUqzKLMBiBSVfWMBCAmkHtnlMuQ6z/t3OdvhohjIryZv0xpWzK8DrtbGGBZrKSxIzdnrybXSVDLpFYOlxE=
+	t=1774549046; cv=none; b=bi0QikBKYZAVDQv/zjuqIoWgu5tf2fJkV1VNB/ZawOxi2kOvk9/UnUci7Kj0JQzrLtPfTdMP0rC1t2IyFzkvru48L+kSJcTI6xDBui2t1XjOQkyFKOWDUvMhWkEjvokbGoKCvJLG+eSYFA02WjFmY4GlY7F48Xd6FdQ7JCxUCV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774549038; c=relaxed/simple;
-	bh=/s7mUG5Fv9kdG+vGSLKGdiphjJXIw7IkX1WF0aGUmUY=;
+	s=arc-20240116; t=1774549046; c=relaxed/simple;
+	bh=3QA7aqOs7NdMeZQANITREyYa0BBBRtzKjmLQSGKI2aI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jTKfVkk6DbDYY+i+czs6z6YjbmUPgAvV3MofiQjNvrfVZJkREyyIgdCJRXA47mAVaOwEnB5BbfkMjzJr6YmCHUDxnYr+Uv7Cq52CabKtGKeSTLqj9fpc9tekFBfUiYrCdgpvm9MI38oShAhb2IWniUOF6A5H75cqnEYYAEv4JQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=hxeD51F+; arc=none smtp.client-ip=209.85.214.176
+	 MIME-Version; b=e9H2PIBBUo9HWH/H+jXL8KopMu5s2ljEtawuQ6A4P9qTwNrt7p4NtzxyIQNvoHBGRzXgB9QeYByyJDuIjLYtavozOip41maOjv4e/5xytDaXr5fqMShpTN9xJX5H8TW1piv8aRsV1Re8k3wkQ5aTWjuddTTQ5eBlwd57BI7hZY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=qn+L6/4Y; arc=none smtp.client-ip=209.85.215.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="hxeD51F+"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2adbfab4501so6274745ad.2
-        for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 11:17:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="qn+L6/4Y"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c73ba417c6eso540711a12.3
+        for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 11:17:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1774549035; x=1775153835; darn=vger.kernel.org;
+        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1774549044; x=1775153844; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AE8phg7go9B6C5XM74Kv5AapiNe7XDiY/VQZh3AQgvY=;
-        b=hxeD51F+wfrdXVVfiTTIW38uGUn4VWizY3MoXuiZcIY8U/7HbXukA030/DUNI5aY/c
-         Mli9SrbBOpIBDdrR4qTQeDu8yVaxlf7c5NBXEpbHHTFVPGTXDxFVOpPr6D/ayODhEEYo
-         BWV/HozGdfdXfavqjfBD5my+xI3td4zEe+8Cn4/3Ixc93g5si4Nv+NwvQVXk51qb0jYs
-         8c+sRxBYTtv2rdaaKdz7CBsZhIlTGOH0J8PsO3noE+vc0XLBUK/oGKbUH8sJus9HeX4T
-         zW8ux4chS4VOphADnpdbtaLhgTAdXbWEm52wv8/7ElGH6glHAqeo0BAZMgNyeLPcaCk7
-         zr9g==
+        bh=po2OlVBw+U8MMEUlTvgdwAWaKuBpw4x1Cc+xzNEMXsE=;
+        b=qn+L6/4YYvm8eTTV4gt9Q9it35HN6F212tNVCZnTmzLMTO/HyKKwFGTXqEs7bBGcbt
+         wGuuaYv7PaAniF/e20orhJd9y54+PM4feSRo+w2y8/6dhY8/OqcHmevBJrsJFVOOIIH8
+         qbUQBT8OVSuvZgIfRiqM3OHskkMZwDlTO32GNa2lizYiVCxFTe7Ygf2ianxxILgT8E61
+         KzvkzddjdpVbvELfvyjfPMTO5SyVBkDnZNCO29OZhzr61PLcWe9i9SbgN37Q5X7zMrXa
+         vGFjh6Af2mfrKcqKirQcKSaRhw6NKBHGS/u7ZBQWYg45NMm1kfktQUG2LrfRew7RU0YQ
+         mHWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774549035; x=1775153835;
+        d=1e100.net; s=20251104; t=1774549044; x=1775153844;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=AE8phg7go9B6C5XM74Kv5AapiNe7XDiY/VQZh3AQgvY=;
-        b=IGqefa67jtNsfQBqBMk5G9jpR8gcyZ2GO2aCb4dTy/DdJdTiyPcpj1aoQl98CQmUQT
-         ONdm+CCS7OZC1GOkT/G79/8ZfGlkz/6dTXL5XqbqZyoD0F2xpumU/0CGdHyJ+S70xmFp
-         2qIJYnfL7Y7uKzpu9Y0Xzh49F7ThZYciIZy4ae/krauoZuGe5KV4b6s+Yv3dI65zHmhf
-         MCh+kbX4ip57aQKXTunkNAe3whrvO7C30eACk4GYidvQytkMHGdwthwBinDcp7YQUaBh
-         P5XpYOWMTFAsBTthjbejHODebY1cXlwgkOYeGsdHBi38sRxNyGW/bbLRIR8U2xiVhVdd
-         6dMQ==
-X-Gm-Message-State: AOJu0YxcRlKGXNoLa7UpfO1XwEZXvRNQamArX73kqft9eJVEsot75CwS
-	Sg+ZldHR2ghuwX6bQmnxMpHf8QPvb3IbcieoqIF6nzIvrV5br20Zm0AMPmjV4amIBMJmCeKIvJi
-	dZfg6
-X-Gm-Gg: ATEYQzzHkMvkOAJ2wM5pAP9JfjL5gs4mMKWOPEh+z6z9Is9UBL6UmmxQ/H884ncn/3t
-	HkITX1x2xkreIFiweM6pwBnpk/bHenFJfd2n+gZZJYIpt9VSRlV4UoQIAqbcIqff7Z0V+k0HLVS
-	l7QieJPqdF2QvTAoQ4x2qlUJ0o8PFLZXhg9WTRAFCQzJrmW783LTXfbC2GMSwnY2k226pMH82wC
-	HJsru9/ld/1Ir23XesagDyyQMi0+9d90vxzlOw2Emu5yjZ+azZx1W7/P/m/qd/RYc/yzThoUHuO
-	i3h1AN8zjsTYiC3q5pOvgTsTaxXZF876uI969neHe8nMYoYbPFVcHr7uCr1k/GPgdgxTyMHb3bw
-	3ZOgdfN9MA6F/Bhi+h4Cm26NhPTolD1Hdz3o5tg8QrBIzAN6ztFiiPuXx1gBjmgIehg7ErUhj+q
-	7O/7AoU3Gek+lqjME9EINL8Ub7DiORmaRG
-X-Received: by 2002:a17:903:2bce:b0:2ae:63a4:3baf with SMTP id d9443c01a7336-2b0b0b0f401mr99782905ad.46.1774549035400;
-        Thu, 26 Mar 2026 11:17:15 -0700 (PDT)
+        bh=po2OlVBw+U8MMEUlTvgdwAWaKuBpw4x1Cc+xzNEMXsE=;
+        b=QGOkoWXiXPpWiii/jMUZu11730HpHFfIZ2uESQV7dJ3lxdaIpA7toHVhcGceCn0Mmh
+         eYUzOvF4PInJNCUt+fMbj4JZNtW8rqjCM8EW16ULfuy4G6GIE8MwpJC02A3nDOQWffpi
+         EW8fRmeDta+YYpxASGux001WJeBmLSbA2WroJc5hMeyfmY1DxCR9z+ugN6orcCLb2Zi9
+         6CHYNUat7422CZxiZOJSQYANeyT/GC5xyBee85yXHlh1uRT5ndkvikmCAc1rfR0fwVSY
+         mfvWBW1+ILrjAbVKAeksyVz6tGqbDu3BpSiiq+1jDYNv368MWGRu8/Ayd2rmUvEs0wjo
+         FFpw==
+X-Gm-Message-State: AOJu0Yy4lwJBK6OCgrb17SjAZbyxnVr211/kHVxDZ8a4ZI5nrfU7HoTT
+	vuwfcZGu2i3jQl8S+ENKoJM/yeLG0nbdfN6A+KAOB2Rcw53i7NrDe2G98yb1eVHg32io6czkDk7
+	0q3Pp
+X-Gm-Gg: ATEYQzyTsTBOXJyRwFAenQJputJyGXAlPDJ1/72+DU5NIy43+F4hbs76V+pRHFJJKI2
+	NAqubgjaBmgqinIGdalFikfFpm2jo6gDMwYMozsIoJXALtx+bD3Mzf2h8aaXFih0omYc3l5iXEi
+	XhE2/0WA8gqpjHe2cDNrLVcNEu+17ypLMR68A5nK+5UfZKbe+P71tCQ8gcXGJILxxND2adzoZGa
+	sdlqeyxQfkj3CYDnfrh3+FgH/0xCLYBS2CeRKLIM9u+O9sHIagDD2iICicy2KNQRgj2g945Anl0
+	kFFsIz/I+/llRsYPVLKhAINRtWaG9bRVCNaN+eg0Ae2rHk1uxDS/4AyzNwS0quES8D0xnVTgPPW
+	0jp4A2ENmmBq1KhvIa+WlL1+c0+/nq54qSyf9oLK8V1WG/2bmbk9Ud1Mi6e8rAt8VSt//ZQRkom
+	UYBFkatmB+Gbay5yCg9S1+HhMXHzzlTC+6v/UrJ8Kk0ck=
+X-Received: by 2002:a17:903:3890:b0:2b0:6365:21a9 with SMTP id d9443c01a7336-2b0b0a7591amr89177155ad.31.1774549043898;
+        Thu, 26 Mar 2026 11:17:23 -0700 (PDT)
 Received: from phoenix.lan ([104.202.29.139])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0bc8c4bd3sm38590245ad.63.2026.03.26.11.17.10
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0bc8c4bd3sm38590245ad.63.2026.03.26.11.17.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2026 11:17:14 -0700 (PDT)
+        Thu, 26 Mar 2026 11:17:23 -0700 (PDT)
 From: Stephen Hemminger <stephen@networkplumber.org>
 To: netdev@vger.kernel.org
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Ji-Soo Chung <jschung2@proton.me>,
+	Gerlinde <lrGerlinde@mailfence.com>,
+	zyc zyc <zyc199902@zohomail.cn>,
+	Manas Ghandat <ghandatmanas@gmail.com>,
 	Stephen Hemminger <stephen@networkplumber.org>,
+	Jiri Pirko <jiri@resnulli.us>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
+	William Liu <will@willsroot.io>,
+	Savino Dicanosa <savy@syst3mfailure.io>,
 	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v3 1/7] net: Introduce skb tc depth field to track packet loops
-Date: Thu, 26 Mar 2026 11:01:00 -0700
-Message-ID: <20260326181701.308275-2-stephen@networkplumber.org>
+Subject: [PATCH v3 2/7] net/sched: Revert "net/sched: Restrict conditions for adding duplicating netems to qdisc tree"
+Date: Thu, 26 Mar 2026 11:01:01 -0700
+Message-ID: <20260326181701.308275-3-stephen@networkplumber.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260326181701.308275-1-stephen@networkplumber.org>
 References: <20260326181701.308275-1-stephen@networkplumber.org>
@@ -84,73 +91,92 @@ Content-Transfer-Encoding: 8bit
 
 From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-Add a 2-bit per-skb tc depth field to track packet loops across the stack.
+This reverts commit ec8e0e3d7adef940cdf9475e2352c0680189d14e.
 
-The previous per-CPU loop counters like MIRRED_NEST_LIMIT
-assume a single call stack and lose state in two cases:
-1) When a packet is queued and reprocessed later (e.g., egress->ingress
-   via backlog), the per-cpu state is gone by the time it is dequeued.
-2) With XPS/RPS a packet may arrive on one CPU and be processed on
-   another.
+The original patch rejects any tree containing two netems when
+either has duplication set, even when they sit on unrelated classes
+of the same classful parent. That broke configurations that have
+worked since netem was introduced.
 
-A per-skb field solves both by travelling with the packet itself.
+The re-entrancy problem the original commit was trying to solve is
+handled by later patch using tc_depth flag.
 
-The field fits in existing padding, using 2 bits that were previously a
-hole:
+Doing this revert will (re)expose the original bug with multiple
+netem duplication. When this patch is backported make sure
+and get the full series.
 
-pahole before(-) and after (+) diff looks like:
-   __u8       slow_gro:1;           /*   132: 3  1 */
-   __u8       csum_not_inet:1;      /*   132: 4  1 */
-   __u8       unreadable:1;         /*   132: 5  1 */
- + __u8       tc_depth:2;           /*   132: 6  1 */
-
- - /* XXX 2 bits hole, try to pack */
-   /* XXX 1 byte hole, try to pack */
-
-   __u16      tc_index;             /*   134     2 */
-
-There used to be a ttl field which was removed as part of tc_verd in commit
-aec745e2c520 ("net-tc: remove unused tc_verd fields").  It was already
-unused by that time, due to remove earlier in commit c19ae86a510c ("tc: remove
-unused redirect ttl").
-
-The first user of this field is netem, which increments tc_depth on
-duplicated packets before re-enqueueing them at the root qdisc.  On
-re-entry, netem skips duplication for any skb with tc_depth already set,
-bounding recursion to a single level regardless of tree topology.
-
-The other user is mirred which increments it on each pass
-and limits to depth to MIRRED_DEFER_LIMIT (3).
-
-The new field was called ttl in earlier versions of this patch
-but renamed to tc_depth to avoid confusion with IP ttl.
-
+Fixes: ec8e0e3d7ade ("net/sched: Restrict conditions for adding duplicating netems to qdisc tree")
+Reported-by: Ji-Soo Chung <jschung2@proton.me>
+Reported-by: Gerlinde <lrGerlinde@mailfence.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220774
+Reported-by: zyc zyc <zyc199902@zohomail.cn>
+Closes: https://lore.kernel.org/all/19adda5a1e2.12410b78222774.9191120410578703463@zohomail.cn/
+Reported-by: Manas Ghandat <ghandatmanas@gmail.com>
+Closes: https://lore.kernel.org/netdev/f69b2c8f-8325-4c2e-a011-6dbc089f30e4@gmail.com/
 Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 Reviewed-by: Stephen Hemminger <stephen@networkplumber.org>
 ---
- include/linux/skbuff.h | 2 ++
- 1 file changed, 2 insertions(+)
+ net/sched/sch_netem.c | 40 ----------------------------------------
+ 1 file changed, 40 deletions(-)
 
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index daa4e4944ce3..aba4c88a1b3f 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -821,6 +821,7 @@ enum skb_tstamp_type {
-  *	@_sk_redir: socket redirection information for skmsg
-  *	@_nfct: Associated connection, if any (with nfctinfo bits)
-  *	@skb_iif: ifindex of device we arrived on
-+ *	@tc_depth: counter for packet duplication
-  *	@tc_index: Traffic control index
-  *	@hash: the packet hash
-  *	@queue_mapping: Queue mapping for multiqueue devices
-@@ -1030,6 +1031,7 @@ struct sk_buff {
- 	__u8			csum_not_inet:1;
- #endif
- 	__u8			unreadable:1;
-+	__u8			tc_depth:2;
- #if defined(CONFIG_NET_SCHED) || defined(CONFIG_NET_XGRESS)
- 	__u16			tc_index;	/* traffic control index */
- #endif
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index 5de1c932944a..0ccf74a9cb82 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -974,41 +974,6 @@ static int parse_attr(struct nlattr *tb[], int maxtype, struct nlattr *nla,
+ 	return 0;
+ }
+ 
+-static const struct Qdisc_class_ops netem_class_ops;
+-
+-static int check_netem_in_tree(struct Qdisc *sch, bool duplicates,
+-			       struct netlink_ext_ack *extack)
+-{
+-	struct Qdisc *root, *q;
+-	unsigned int i;
+-
+-	root = qdisc_root_sleeping(sch);
+-
+-	if (sch != root && root->ops->cl_ops == &netem_class_ops) {
+-		if (duplicates ||
+-		    ((struct netem_sched_data *)qdisc_priv(root))->duplicate)
+-			goto err;
+-	}
+-
+-	if (!qdisc_dev(root))
+-		return 0;
+-
+-	hash_for_each(qdisc_dev(root)->qdisc_hash, i, q, hash) {
+-		if (sch != q && q->ops->cl_ops == &netem_class_ops) {
+-			if (duplicates ||
+-			    ((struct netem_sched_data *)qdisc_priv(q))->duplicate)
+-				goto err;
+-		}
+-	}
+-
+-	return 0;
+-
+-err:
+-	NL_SET_ERR_MSG(extack,
+-		       "netem: cannot mix duplicating netems with other netems in tree");
+-	return -EINVAL;
+-}
+-
+ /* Parse netlink message to set options */
+ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
+ 			struct netlink_ext_ack *extack)
+@@ -1067,11 +1032,6 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
+ 	q->gap = qopt->gap;
+ 	q->counter = 0;
+ 	q->loss = qopt->loss;
+-
+-	ret = check_netem_in_tree(sch, qopt->duplicate, extack);
+-	if (ret)
+-		goto unlock;
+-
+ 	q->duplicate = qopt->duplicate;
+ 
+ 	/* for compatibility with earlier versions.
 -- 
 2.53.0
 
