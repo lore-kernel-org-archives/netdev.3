@@ -1,128 +1,105 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7C53A6EE2
-	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 20:44:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774557889; cv=pass; b=Op1CZPImVTEL521OsRNSyNR73KoK+l2ACzy59E3l2GFIMtZttbDOoYGpFVF6S1U0QaGWCq9t1+ytRfCMwmTSfS7hDyFWedvPjiVhyrK2zch6GQlPBoBA1eiG5CwkVOJzWcMrhAHhbAzsIdGcR02HdA/JU6iR+NNn60x/JAqIBNQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774557889; c=relaxed/simple;
-	bh=6RU46qGrLkrG6LCEDpLTmbdBaVdxhmYHILUrHQsLDXI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I3+qGCgolTF/dhcpmGLZKFJfUbeIqNEQ+AxNag2nFNDbFoQKqnYcJ6cuVjAz14TG1/kDRun7ujYlGqoJsl/HoTnrHV6JiWzTtr73cKu1wKBCC5DHjXQcAUjIr4dfxUydPjse+oci7ruipAFuJyrFZ/whaqaFwafWU01qLHhjFRw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=m3R+q4x7; arc=pass smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA84A2D7DEE
+	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 20:45:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.202.193.197
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774557910; cv=none; b=J6Uuyb1O1zOa51ERBuULtF8IqNShdWErCv07hAPmKw2pkdwMsqGn0Qr6IGkdN9cIZFz603+7P5TAhYW2Mr3gl56xlKx30lisJXqyA4HNaQ7jsz7pEY7GClomTnUjD30rHqYf12AIPzONYmBGkqqq0EpNO/XcraHV/AbHwVksChs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774557910; c=relaxed/simple;
+	bh=A8Vv186XBmHJRcoqnKM+XynUbHzUn+KZwWgmTBD1Uos=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fCCwPAlcC87XQpJZ1venOoOj1RHvcQUL1WULadkgZvBfMIqWrmAZZoeIe09IdW78yHqnXqOtihxTsTfqnNz/GPHPb0yGks0xlsvDlCiUHuTMfDb4bPl4ir/xDmElcXKRyKvDjHUDcxRYeaR+dR+UXxpLHK4TXtmQvg7r86W2kfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tinyisr.com; spf=pass smtp.mailfrom=tinyisr.com; dkim=pass (2048-bit key) header.d=tinyisr.com header.i=@tinyisr.com header.b=QeCzl0nY; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=de0NzruM; arc=none smtp.client-ip=34.202.193.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tinyisr.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tinyisr.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="m3R+q4x7"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-35a1f549e7eso906335a91.0
-        for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 13:44:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774557888; cv=none;
-        d=google.com; s=arc-20240605;
-        b=MYtm8eYERXBy15h0I1nHQxd0w4Q51vuyWK8ysUpV1R9hUX1TxnIVr/a9c4z6++hwIk
-         8Mge5C2aJIBclbH1RKqNAS4ilmMApQwa/zgk2+Bz2c25f3/KfLp3V62U6rLu8ETcp5YU
-         ncqvHMqf+uk2Q1oE0QL5TQgJxSK1ySkMT9MD7RHb/q5yzUi2cTFoVeSBf2rX6d7MWOec
-         85cvGwvdp9R91LCt4A1nW2NdGIY7MRb9cGveAw0ZAzY6yHt7b+joYdSWckxVXos5jQ0H
-         3d8EuXzrTAMW9pRBJ8Wz8P/2DcQRUTJbyQk2U7LeuOa/o172tftmDIit7DG1krWWTrSp
-         Z4lA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NQRpKosNgrUEF/qxS6GkdZ7w4bboAXXJ19JHIebiM/w=;
-        fh=FQjwkTABzDdUldU2nQbo9jW4zYdAHpvK/5rS/6XTFzI=;
-        b=W6rRurMtB6MfLYuywWI/pAQGGeIJhlFyMIt9uBCrTiIf4xw1MSlkjj7xiIQeAD8OGA
-         rGMroclBGrU+BLYd4YrjC+Kbo+QNffeMntumRyG3tGZimGIIXdVgaOJOqY1kTM3pIKix
-         kqKvzfLh6/Dfp518q0D4797I0kAJFSnVW9FI+QuOOjB7V6h534ue8njJkufw//Akud/A
-         t6BMCi0Sfnh5Af+gzNGla+wv48BML9ewE0j9qyq6axH4eM6t6c1xy3Dgac3/ozGpqT11
-         owlj9yI9sf6iGBbpyQILM/u5lw2hJ9Xr7hkJseBWxE3KGVoHLvdpcUHb2LeWyAuW1uUO
-         T+eA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=asu.edu; s=google; t=1774557888; x=1775162688; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NQRpKosNgrUEF/qxS6GkdZ7w4bboAXXJ19JHIebiM/w=;
-        b=m3R+q4x7xil13kBZo/9P7gHojKRZM3iHOlq+4+xasQmrXNHU4czxByudzPmd4vCD20
-         fZ2HzXgOMIUd3rJwDvd+dYF2zSDdO7qLM+5IC1eKUADKlo0ssjXaw80JRdaGLbXoBdSp
-         nh9R2H9vKFCz+7xwfnU0g6y64zKlv4o4EoR4xfmKu/Sia8wAtNIDQJHTI2EUIt4h4Avd
-         kS4ieC3AK/7KOHDL7v21hgxV6kzdp8rU4/HfeD4rwbH6pov2lXXsYWrxh488sIvAbNeJ
-         31zj46dPPFH9AQ4FY5ptwjZj54NkWIUVpuXD3/2aHIWk7AOHPZfpyATRTYHFwqeDg6tc
-         dovw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774557888; x=1775162688;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NQRpKosNgrUEF/qxS6GkdZ7w4bboAXXJ19JHIebiM/w=;
-        b=Sun9Tta91xGVktoSJPF65SlYT31CQVr76EUwWEnZWEFLfbadJc//VzmAw++A6w33Ej
-         J5ZAqlygs8T7PMdNxpc6lTJYuYUK2YOXxf0vwke4b1DW/+uysoZlYdMQaCmzKAZU8rX0
-         +PbZraQMA4vh4CCCCK7RXfJvi/bPvx6PuABjaZaLtpY8zZsqz+srUNWztsvAwER6qFb5
-         zYStN8VDBuAm94tcImTxgEcl9JrdNizXJtpxGklx4XS2Tm1MBq2DQiu8D3LX99194XkK
-         U/oVmbxy/URa+NO6JJXG7lER1kV/gfSnSiAjV9sjtj6Ss2BC14Q6LKfYVRAGq1LTZB5x
-         cGPg==
-X-Forwarded-Encrypted: i=1; AJvYcCUcP16yvKdT6mel6Lu7lL1i9ndfDz9Y0fJgvhCbgEluc50VgujvDmR07V53tVYIueeYUlfpctk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyV0zb1HBxjMFlMkS8YyOmQU9XhuQlm5MPse3dcFhe5kZLeown5
-	+T7/f8EOUPxW5DNhCIN5u+H1Duvcd5fDDC9PEkqwTsQbn+KjV3knwUrtIZroT7hAhe+m4pWEdwe
-	tApNXVKOlSJ7lMP3+MJsVUPnU4x9LYRcvodaOVlWE
-X-Gm-Gg: ATEYQzw+QL/xT32ippmFrL8clbW3vblyd6E/vkAClzabDFaVC17OBdv5CcZ5UqNbBxS
-	SEl/7YdHji5px3YrjokdaFZcds9Eiztn4cypl7Q7rnb+SKSVMxkdbviarghickx11UB98p6G/XR
-	gBsapK6U1+8HNKASChiU/H9wCpWTcg8Ktex1XtNXHbyatabqR4rWutXwOnAk4xNqFqv90+73p7u
-	SWHjbghqcIH3cIwaZvVsGV/pMa0a8nzGCSrdc0hh46MF9TPect2TtkOn+Fuwe22TuYUzoLtXv63
-	5B9Z4xlY
-X-Received: by 2002:a17:90b:224c:b0:35b:9682:51dd with SMTP id
- 98e67ed59e1d1-35c0dd94a15mr8315570a91.24.1774557887676; Thu, 26 Mar 2026
- 13:44:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=tinyisr.com header.i=@tinyisr.com header.b="QeCzl0nY";
+	dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b="de0NzruM"
+Authentication-Results: purelymail.com; auth=pass
+DKIM-Signature: a=rsa-sha256; b=QeCzl0nYFGIfZpruiqDsEjRyFT9amF5gvn4iTTBr4U7lLFHwvIpDAGH+mJ1ucF3GQMlBwlfzO9Tp+mr+qyuWvXcbwVvsr9/0qaZd3oqp+HtCuj9s6Witf9svUSDBsc1uon8inYJKwLAB/avGqwtNkg9QIjQWUz76zD3d/f6M6QeYH1JLuerGTWvqOvrqJ0bY8/zSRKs7Fex3qK7oTtbBdcz/8wDtTj60ANYl9/uG5vZqpRWwGdj4UXxZmeO2XsmsURML7/aJy4t8IKQDj7Owjp0b0KzT+dxtgjS+Wylng29tFTpVS6yVoWLTMLfwUFAKJwJ9aUtBjS9kEpKFWmeZwQ==; s=purelymail1; d=tinyisr.com; v=1; bh=A8Vv186XBmHJRcoqnKM+XynUbHzUn+KZwWgmTBD1Uos=; h=Received:From:To:Subject:Date;
+DKIM-Signature: a=rsa-sha256; b=de0NzruMuOOniEcXGL1lDoVvSMRcpnxFZY8/pejwSxTjcCSGI1tjoG+ibTf0UNIBfhBAU40BLKydafPoakrpK55trJOzdNCjYfsYfjQ1oU/5qcbGOJB6aVeAppplYh6LvRqSDWNwYJiZVMG4xenDKvK6dD6G9MsIckUEz1OMi023xFgjlutXt1CjMHadJLhz7wxD+pO3Vag3iURPZC7ee8omBAKdg2awVfI5CiO7crPirx6BvxA08thFsqeD3krDVfrxUU4sUu8i0sgS21lTYeIt3mINu/gSDk29dEmAnP6FOeqa1w6qISQo7MarbTqn4MJl03r5stkXvHdu5WCqug==; s=purelymail1; d=purelymail.com; v=1; bh=A8Vv186XBmHJRcoqnKM+XynUbHzUn+KZwWgmTBD1Uos=; h=Feedback-ID:Received:From:To:Subject:Date;
+Feedback-ID: 99681:12517:null:purelymail
+X-Pm-Original-To: netdev@vger.kernel.org
+Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id 1206586277;
+          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+          Thu, 26 Mar 2026 20:44:29 +0000 (UTC)
+From: Joris Vaisvila <joey@tinyisr.com>
+To: netdev@vger.kernel.org
+Cc: horms@kernel.org,
+	pabeni@redhat.com,
+	kuba@kernel.org,
+	edumazet@google.com,
+	davem@davemloft.net,
+	olteanv@gmail.com,
+	Andrew Lunn <andrew@lunn.ch>,
+	devicetree@vger.kernel.org,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Joris Vaisvila <joey@tinyisr.com>
+Subject: [PATCH net-next 0/4] net: dsa: mt7628 embedded switch initial support
+Date: Thu, 26 Mar 2026 22:44:09 +0200
+Message-ID: <20260326204413.3317584-1-joey@tinyisr.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260326075851.3967598-1-xmei5@asu.edu> <g5kyhh74rriqg4ayz5txfqqtxpuklzu4kbkmcwihqpvyv4xq2s@xcpvtqh7bh5g>
- <20260326122137.4aae1d46@kernel.org>
-In-Reply-To: <20260326122137.4aae1d46@kernel.org>
-From: Xiang Mei <xmei5@asu.edu>
-Date: Thu, 26 Mar 2026 13:44:37 -0700
-X-Gm-Features: AQROBzB4yKeS9-ZtvH8MpE9VXxF1jdJZA2TgK6l-17gpEmJUytPSu16Wvx5VnWg
-Message-ID: <CAPpSM+Sz_z2LpJwJrc9g+A+vRb=dRyMaDnBdZPP7TT952bgjpg@mail.gmail.com>
-Subject: Re: [PATCH net v2] net/sched: sch_hfsc: fix divide-by-zero in rtsc_min()
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: security@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
-	jhs@mojatatu.com, jiri@resnulli.us, davem@davemloft.net, edumazet@google.com, 
-	horms@kernel.org, bestswngs@gmail.com
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-MIME-Autoconverted: from 8bit to quoted-printable by Purelymail
+Content-Type: text/plain; charset=UTF-8
 
-Thanks for the suggestion. A TDC selftest was added to v3.
+Hello,
 
-On Thu, Mar 26, 2026 at 12:21=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> w=
-rote:
->
-> On Thu, 26 Mar 2026 11:54:52 -0700 Xiang Mei wrote:
-> > PoC:
-> > ```sh
-> > #!/bin/sh
-> > ip link set lo up
-> >
-> > tc qdisc replace dev lo root handle 1: \
-> >     stab overhead 3000000 mtu 0 tsize 0 \
-> >     hfsc default 1
-> > tc class replace dev lo parent 1: classid 1:1 hfsc \
-> >     rt m1 32gbit d 1ms m2 0bit \
-> >     ls m1 32gbit d 1ms m2 0bit
-> >
-> > # Send UDP to loopback (same method as C PoC)
-> > python3 -c "
-> > import socket,time
-> > s=3Dsocket.socket(socket.AF_INET,socket.SOCK_DGRAM)
-> > s.sendto(b'A'*64,('127.0.0.1',1337))  # activate class
-> > time.sleep(1)                           # drain =E2=86=92 idle
-> > s.sendto(b'A'*64,('127.0.0.1',1337))  # reactivation =E2=86=92 div-by-z=
-ero
-> > "
-> > ```
->
-> Please turn this into a TDC selftest.
+This patch series adds initial support for the MediaTek MT7628 Embedded
+Switch.
+
+The driver implements the basic functionality required to operate the
+switch using DSA. The hardware provides five internal Fast Ethernet user
+ports and one Gigabit port connected internally to the CPU MAC.
+
+Bridge offloading is not yet supported.
+
+Tested on an MT7628NN-based board.
+
+Changes since RFC v3:
+=09- remove labels from DT binding
+=09- set ds->user_mii_bus if mdio node does not exist
+Link: https://lore.kernel.org/netdev/20260321194340.2140783-1-joey@tinyisr.=
+com
+
+Thanks,
+Joris
+
+
+Joris Vaisvila (4):
+  dt-bindings: net: dsa: add MT7628 ESW
+  net: phy: mediatek: add phy driver for MT7628 built-in Fast Ethernet
+    PHYs
+  net: dsa: initial MT7628 tagging driver
+  net: dsa: initial support for MT7628 embedded switch
+
+ .../bindings/net/dsa/mediatek,mt7628-esw.yaml | 101 +++
+ drivers/net/dsa/Kconfig                       |   7 +
+ drivers/net/dsa/Makefile                      |   1 +
+ drivers/net/dsa/mt7628.c                      | 637 ++++++++++++++++++
+ drivers/net/phy/mediatek/Kconfig              |  10 +-
+ drivers/net/phy/mediatek/Makefile             |   1 +
+ drivers/net/phy/mediatek/mtk-fe-soc.c         |  50 ++
+ include/net/dsa.h                             |   2 +
+ net/dsa/Kconfig                               |   6 +
+ net/dsa/Makefile                              |   1 +
+ net/dsa/tag_mt7628.c                          |  92 +++
+ 11 files changed, 907 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/devicetree/bindings/net/dsa/mediatek,mt76=
+28-esw.yaml
+ create mode 100644 drivers/net/dsa/mt7628.c
+ create mode 100644 drivers/net/phy/mediatek/mtk-fe-soc.c
+ create mode 100644 net/dsa/tag_mt7628.c
+
+--=20
+2.53.0
+
