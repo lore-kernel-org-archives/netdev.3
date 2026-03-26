@@ -1,27 +1,26 @@
-Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
+Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.65.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9760E2D7D59
-	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 02:16:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C831F1513
+	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 02:16:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.132.65.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774491367; cv=none; b=OY4p3mNYn0Gydg+Jjy9P4xlwzbPcA0MiuXzZ1/1SuxH86rMNdLTbgS2NqLzZEfztGXQAFLNMFYXRMoz94vac6k2uDINwrk7vnl7Qq0w4ysqQZ7CSXdBOem606ojTx6TYU+EyzLZhuao0OIGC6sG6sCKMnS2b9mHC0EtIkxbG6UM=
+	t=1774491374; cv=none; b=O9CuKAPg9TaAKnomA9DOZ8wD3HQQ0QYjW6gkLdL1uy9jm9CBahDJmNZVRc1UrOhQFPp2W3dcto0FKrKs2kN8y7TOYodkGGM35NW8dUAgAHA2jeG/2YejmAVuHtPwT10C9IOENBk39897CljxtYwevgBMOe0fjTXbobPMFKlJQQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774491367; c=relaxed/simple;
-	bh=bQ1iIvjboEs1N26sVJJEBNZjYLljImHXeHO8kndxh1Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mEofIoBEmax0N83RWC9mPETbIg5WneCnobhRZUEdjeREdj4ZoH6/OiebDtHuqSldF6xKU819iJMU2JdBRmofmHyiufa0De7hE21PH71PeK2EwFXgWDyNN9n3tAAqatbHWt2GAoJmHfCrVxV1iVKVMIB49KXwikJ5kJ4jlew07EI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.206.16.166
+	s=arc-20240116; t=1774491374; c=relaxed/simple;
+	bh=rSFZyamTpyvqnVtxB87EBpbdeG5QDUjYT4QqnXC/2kA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Hd01rIdEDiErOH5pMms9wk0gnR6j906N0awMJPvH3k3YpZvbyvpIape1xj5nj1fhuH6UYNZ5aScHHVZ7AeYi+l4PBCkk5qCviGawfJ5LSKyX6w46HDufr+xeWs2Cd83GiISkqLFXmS+X7mgNcy2v+/F+LAg01fEr9fkHrjrabuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=114.132.65.219
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpsz11t1774491310ta890498e
-X-QQ-Originating-IP: TJJ2EQBMcRc6B2jt3INTZmtj5J+tV1PxzZcCQ6ZgwdA=
+X-QQ-mid: esmtpsz11t1774491298t7f30495b
+X-QQ-Originating-IP: 3UozlLEp2T66kC0rKiVwiZLa4Ku3U/R9MYZAlPuY/6Q=
 Received: from lap-jiawenwu.trustnetic.com ( [36.20.60.44])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 26 Mar 2026 10:15:06 +0800 (CST)
+	id ; Thu, 26 Mar 2026 10:14:54 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 17796672652307540879
+X-BIZMAIL-ID: 12737786789963682063
 EX-QQ-RecipientCnt: 18
 From: Jiawen Wu <jiawenwu@trustnetic.com>
 To: netdev@vger.kernel.org
@@ -42,12 +41,10 @@ Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
 	Abdun Nihaal <abdun.nihaal@gmail.com>,
 	Breno Leitao <leitao@debian.org>,
 	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v6 03/11] net: ngbe: remove redundant macros
-Date: Thu, 26 Mar 2026 10:13:58 +0800
-Message-Id: <20260326021406.30444-4-jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v6 00/11] Wangxun improvement and new support
+Date: Thu, 26 Mar 2026 10:13:55 +0800
+Message-Id: <20260326021406.30444-1-jiawenwu@trustnetic.com>
 X-Mailer: git-send-email 2.21.0.windows.1
-In-Reply-To: <20260326021406.30444-1-jiawenwu@trustnetic.com>
-References: <20260326021406.30444-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,72 +54,91 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: M00LTjaIG6jEn7Mr9ugICi+112CAqujSbrtmLpZ433RZWvk2D4hK6fZv
-	dhyXVsNIRiYzPgMvSCgzciRAUo/nP8N4Jqrati8vqLuLfMwZplaO3jTcpQBfg8hwRgDq+BL
-	nGqTaJZdX+IExgBMrVSfQjCJXsokfcqwBI3gPtXHXD5teQ+gxCtZYtFmFP/a8MaMjzJZSZl
-	1mtOzCQby+eKCUwxtQEWPnzIFPjciA6cNpwIsQ6QLO6K0HYul4lCH4Oahqb2IALmuU3IrIK
-	WsWNZqZVDVmmPqC4Km+9rxmDCPSvwGwkkedZW/xMMsCMbwl6y2ZMM8IPUdHIV681eRbxREp
-	jHzpyFvY1J+UbszbsJZo/r+RvZ/b5gSbO98Ki51gqPy6UMegMr3/RkQagS34JUXOfo2bZ0L
-	Ir4mvEh3EcDWU3EuOkqn7FVjD3uTe84OMGNfIVKekuC1EtprdDu9NViDjXJ1YAG9MUy5vtH
-	n4XXqIcJrOP0qsdYba5qxa+60EPfSJufk0uMuV4v5ByYFdx7HUXYwEJ+2LCL5vpj+A/7yRj
-	7PGi4L1YjYv0UwCozOpqnfibLI0mS2/JWEF7aqPTDSKU2z8L6yvn3x8Ypim5IRpsVd3/hpq
-	qEvRW4OtLnNpZYtu9YboE+T4lTEClJJsg9OB/N8zi9SkDxYX2rYOV1Ba1upN4dai8Cu4svN
-	Pevtn1+Sw0x/G4bquVxNqfA++HF3rIU0O27Ib5AmG05WqiIkKL7G2H6TLoxKJ7pZA42OTZb
-	wU57yo1QAT7U2V99bYzDt38HVh8Po5iatXURgA0ASRoR4zse2SxQtUJDp/SaUI9Uicf7ZbI
-	OK885YYwRK1BgsT4dvm+D6ekLIAHaznuVXBbxDQlFPGGyNsSNdBnifELVtNFUic+r8ysRFV
-	CIVGISHKm2fBc33X5qQSXh04ISk3WRqoTxILtHEONUiDcqR5sJxN7qjCTn7WIS64Pwb3/ac
-	s04griqKepQywPRE0+Ao0bw6j5eTGkUBhXIXV01hgA536AwBSzhWpUTmkpr3gYa3mrQ/BYN
-	xUS0vMvIK19J3DPI1BdMNeak399Z1gZbRRMXHKbwZ0gpT6H6LziIISkt1enZSHQJrKQ4qlm
-	0+O1m9U5AW/n/NCOWbImhQ=
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+X-QQ-XMAILINFO: MSyoPQEuxKCukAz+MMz+SHbiGvqcN62NKgXl+KX9dFJa1oQHSbpI9h6p
+	wCks5bnB/0aKWb3oBvNf7bDCZMxfdKWCBj8dDOcwPbRu3l07ZqVrXZ/ZtXv+x8mWZM6lEhO
+	0uyAW+wOYRgJ7LreI+UU2pNyEjDFd89z0fjWFqMonJbWxBGLI/Wdnoz8Eq4Ie2w++qDOqzL
+	KQEqBrJhKbtPQERsHljDKTIq+xiRANYkgQ4Mo++cMTV5qbaI6b+rvwIbD3KN1+Kz58wjcyw
+	wmu8GGjU0a4KTGwrJs98+6s6/V1gu6tTvfaGEUV3KUaJ1pMcBChP8/ImzMXFI4bUMAUrzsc
+	mZmEfJMlWG1vyy5c+mSTr4+fkWABi5vN25An46DHYPA8UlR4JGfereY+V75GBNgi1Phl9bQ
+	v4s0FBawn20id/6Vk66m+oHjIiSaSqqTQLm4XtKIbF/iDQJV4TEN79daICbMW1S0RFeGs9c
+	COdCu5k1zktz119ht/RVx9wdr2TDF6JwtvvW+lF3+MuSSlB8pHEAeeuOGgKQYE0YQ8mzTRD
+	diEkSvHHGjqYpNnaY3qVmQHIpVNvPBfsZgE7/frnrYTT6eK8o24uEFWWJTkxYUT0P/OUGxQ
+	3EpG9yRDB3sZOdbLHB5Qqg1idjVMUmyM5cNyqXtS9GFKXb4TXn/fNNtWs5SW0sfkzEe7sXb
+	RmG75+QrxKzDxZeNTiMHmyKgkrcQiV3CoHmiHXqpZokD1IAAwSsD3pk0fpNOLll1jlQ7z9V
+	BzURy6LDGKoJXsXlOToDzpw/rCaQmt9uUFw83Rsh+waruXJZLp2OMX9CpbueYVBe7/PHqFL
+	VzY8i/zwhhTDIAjOgWJxY0awPlETNveJWfmq+EQIXBj0jXIzxythT4SOHP796thIoGtWOGi
+	gwtBvNJRK6VQCd8sV3ITWma0eHxTTCZG4Qg9QY7QgTh51IAqo7USEagjGoAUqNnmhkchsTp
+	NctIxdUp0YOPw/QDRCz/I4zOuzOMUmTxfIrqgyzxoLiH+OsB4jgl/iY4VRXXUPFRLKEKHVP
+	xbAmbhz6877EwJS8kcQ1bLaHN9S99FqdOyAqndYXkIog9mcIW60BJR8NXuf3v9FDIKHY1Ae
+	SAYUDF90qgK
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
 X-QQ-RECHKSPAM: 0
 
-NGBE_NCSI_SUP and NGBE_NCSI_MASK are duplicate-defined, they can be
-replaced by the macros defined in libwx. Just remove them.
+Implement power management function for txgbe. Clean up the same code in
+the two drivers, to make more use of lib functions.
 
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Joe Damato <joe@dama.to>
----
- drivers/net/ethernet/wangxun/ngbe/ngbe_main.c | 4 ++--
- drivers/net/ethernet/wangxun/ngbe/ngbe_type.h | 3 ---
- 2 files changed, 2 insertions(+), 5 deletions(-)
+Add Tx timeout process and pci_error_handlers ops, to recover the devices.
 
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-index e28ddf684a06..8c9d505721b1 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-@@ -57,7 +57,7 @@ static void ngbe_init_type_code(struct wx *wx)
- 
- 	wx->mac.type = wx_mac_em;
- 	type_mask = (u16)(wx->subsystem_device_id & NGBE_OEM_MASK);
--	ncsi_mask = wx->subsystem_device_id & NGBE_NCSI_MASK;
-+	ncsi_mask = wx->subsystem_device_id & WX_NCSI_MASK;
- 	wol_mask = wx->subsystem_device_id & WX_WOL_MASK;
- 
- 	val = rd32(wx, WX_CFG_PORT_ST);
-@@ -66,7 +66,7 @@ static void ngbe_init_type_code(struct wx *wx)
- 		       em_mac_type_mdi;
- 
- 	wx->wol_hw_supported = (wol_mask == WX_WOL_SUP) ? 1 : 0;
--	wx->ncsi_enabled = (ncsi_mask == NGBE_NCSI_MASK ||
-+	wx->ncsi_enabled = (ncsi_mask == WX_NCSI_SUP ||
- 			   type_mask == NGBE_SUBID_OCP_CARD) ? 1 : 0;
- 
- 	switch (type_mask) {
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-index f1957fa0add4..7077a0da4c98 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-@@ -37,9 +37,6 @@
- 
- #define NGBE_OEM_MASK				0x00FF
- 
--#define NGBE_NCSI_SUP				0x8000
--#define NGBE_NCSI_MASK				0x8000
--
- /**************** EM Registers ****************************/
- /* chip control Registers */
- #define NGBE_MIS_PRB_CTL			0x10010
+v6:
+- Remove changes to the reset process in patch 04/11.
+- Remove the inappropriate comments in patch 09/11, and detail the
+  commit message.
+
+v5: https://lore.kernel.org/all/20260317073827.4300-1-jiawenwu@trustnetic.com
+- Add patch 10/11 to handle Tx hang check with pause frame.
+- Clear WX_STATE_DISABLED bit in wx_resume().
+
+v4: https://lore.kernel.org/all/20260306063211.20536-1-jiawenwu@trustnetic.com
+- Add an initial patch to remove netdev->ethtool->wol_enabled setting.
+
+v3: https://lore.kernel.org/all/20260303030331.24076-1-jiawenwu@trustnetic.com
+- Detail the commit log for improving ngbe reset flow.
+- Correct the process of stopping the work queue.
+
+v2: https://lore.kernel.org/all/20260227073450.23680-1-jiawenwu@trustnetic.com
+- Split NCSI changes from the WOL patch.
+- Properly return and handle error codes.
+- Fix the typos.
+- Remove the check for PCIe errors and subsequent error handling, because
+  aer_recover_queue() does not want to be called by the ethernet driver.
+  The discussion link:
+  https://lore.kernel.org/linux-acpi/001c01dc9740$c7722540$56566fc0$@trustnetic.com/T/
+
+v1: https://lore.kernel.org/all/20260203075759.5852-1-jiawenwu@trustnetic.com
+
+Jiawen Wu (11):
+  net: ngbe: remove netdev->ethtool->wol_enabled setting
+  net: ngbe: move the WOL functions to libwx
+  net: ngbe: remove redundant macros
+  net: ngbe: implement libwx reset ops
+  net: wangxun: move reusable PCI driver ops functions into libwx
+  net: txgbe: add power management support
+  net: wangxun: move ethtool_ops.set_channels into libwx
+  net: wangxun: delete service_timer before cancel service_work
+  net: wangxun: add Tx timeout process
+  net: wangxun: improve flow control setting
+  net: wangxun: implement pci_error_handlers ops
+
+ drivers/net/ethernet/wangxun/libwx/Makefile   |   2 +-
+ drivers/net/ethernet/wangxun/libwx/wx_err.c   | 228 ++++++++++++++++++
+ drivers/net/ethernet/wangxun/libwx/wx_err.h   |  16 ++
+ .../net/ethernet/wangxun/libwx/wx_ethtool.c   |  39 ++-
+ .../net/ethernet/wangxun/libwx/wx_ethtool.h   |   4 +
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c    |  56 ++++-
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c   | 129 +++++++++-
+ drivers/net/ethernet/wangxun/libwx/wx_lib.h   |   4 +
+ drivers/net/ethernet/wangxun/libwx/wx_type.h  |  32 ++-
+ .../net/ethernet/wangxun/libwx/wx_vf_common.c |   1 +
+ .../net/ethernet/wangxun/ngbe/ngbe_ethtool.c  |  52 +---
+ drivers/net/ethernet/wangxun/ngbe/ngbe_main.c | 192 +++++++--------
+ drivers/net/ethernet/wangxun/ngbe/ngbe_type.h |  19 +-
+ .../ethernet/wangxun/txgbe/txgbe_ethtool.c    |  17 +-
+ .../net/ethernet/wangxun/txgbe/txgbe_main.c   |  78 +++---
+ .../net/ethernet/wangxun/txgbe/txgbe_type.h   |   3 +-
+ 16 files changed, 635 insertions(+), 237 deletions(-)
+ create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_err.c
+ create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_err.h
+
 -- 
 2.48.1
 
