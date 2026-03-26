@@ -1,70 +1,93 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56BA01DA23;
-	Thu, 26 Mar 2026 21:00:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176DA346E63;
+	Thu, 26 Mar 2026 21:03:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774558846; cv=none; b=E/AahyrrOJUfPaGGGhha368cv0nQiiDY3AVrMxD2oVnGqp3Qb7XAAWnP+Ca22uwlVDGAamDz1xoM4X3c7Q/QpBjXSlixOJs6YZkwjUe4sPE8nM6r+DKHfHqyTZmkUk312pI180uMYQE6XZPqTf0yfwb7JWxch7rdBH/9qXHNcsY=
+	t=1774558991; cv=none; b=AGrv5rwy69ZCxe0ocg/aMu8YX+EgIh5k7FGi1LMOpytl7OAnhHzvtycrciYQWXSmTqgQBpCDTL3wKeY27PfaWy4iXvBdr1mI3N1jPZrndAOS5EMbC9iC0uUVAenJh7+NHgjhdLRN/TtDDNAmxjhutK3OimS8w3YyzPUHVFQuT9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774558846; c=relaxed/simple;
-	bh=J9NwJDlizt5RFhlNf+xWff0v7TECnJrhMrG1hjnecGE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aw4PXopt4wlTvsFUrAbTpT5EKUOZjym+JA2DswiuuKgG41FalQP8sp8FTvOOn1ZLVUaOSmpSezPnbhp1zKpGNobv9Vkno386TdEx8T6WPoMuYtPQ9Dh0Re8dafvgudWQBWOFIZESxpEr3QLpNs7IZmCYd2YgJm4R8nk43LunHe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=tCm/V//5; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	s=arc-20240116; t=1774558991; c=relaxed/simple;
+	bh=Oga/OddxY2WJCZhkLe7zcVGjS6Fu4I4k5/6EH62Urbk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=szeZkdJJEMaEKEac4/jeT1SsUEMRT55nf43o96zp0tzF4C0WskdEWf4Do1YrS0zir83x9XuewaUh6xPvnopAOvBxU18C/h+q6XCVThmbSeWtLBo55oJbX0nW8TKedAgWHjzOkk+wMsNUfkZyGPeEplpJHZwCwuG4U0d8EHEpmf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gPAAIB3f; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="tCm/V//5"
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 75AA66017A;
-	Thu, 26 Mar 2026 22:00:43 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1774558843;
-	bh=u6xqYsXW9UHSRPe+ut5zht3QwseJFYjIz/8ldm+gK8g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tCm/V//5v5po8RYeLQimBFeEoi3LzpdoFLYxVS+nADc/LB/jzp1oO8r3kbHKeQJ1w
-	 OgMIvJsqVX6MoxlQmXq/gX9gabRA4mMZ4ACgal5d02ItBvtRRhZywT9/u0+UrvkISM
-	 W8hxxdlz3UaNrS7j7GSAIF2V6JZ3+11aYLeUlDsgp06k/xCQoQMkdoZ+WHlGswCgqr
-	 soxKzAFd5n8gT0Rg69WMj0N0XtZBKEsPsGYtxgHD25xvCBcxOt9BCcAPOqaMi7IYqQ
-	 tv1J68MOSaudhvmdDqe9fiW/AQ3/OYFcOZUQcT+B67V9p80LYPBIyE5pKsqK+MQhfA
-	 uy9+XdzabHnlw==
-Date: Thu, 26 Mar 2026 22:00:39 +0100
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Hyunwoo Kim <imv4bel@gmail.com>
-Cc: fw@strlen.de, phil@nwl.cc, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH net] netfilter: ctnetlink: fix use-after-free of
- exp->master in expectation dump
-Message-ID: <acWed9opPZfOIyAs@chamomile>
-References: <aaxeXUnPpqLUURrt@v4bel>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gPAAIB3f"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9306BC116C6;
+	Thu, 26 Mar 2026 21:03:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774558990;
+	bh=Oga/OddxY2WJCZhkLe7zcVGjS6Fu4I4k5/6EH62Urbk=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=gPAAIB3fsENGAvoB1ls1d+lyJstfElum/pLWj2DuNK2WleRkSJpZzbuOcSRguNRex
+	 LE7yjFpGJeYqgeiTWSX6kkVoDPXfYgQsoiYvVNcYBuRy7Weff6IyhdJ7LJejW3y2q7
+	 Lu58LJqd2qR99uWpkNGFPfJeYhdGTH7gmxUd9PImDf3hgeIKuz12xa1bfI6GtosZ25
+	 zz/3VILPimPfvECimlah9QRnSQlerX84zqBcJ1XtWuuz4pCn2J3IQkAwYpmSsY+R6p
+	 Vq0PeeQgRdA6sV45AaVZZ3KVJItFvjXCg6L1WvlZQDmeunZRkvtTNmqHb/caoBZYIw
+	 rdfYLFPYbjpsg==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aaxeXUnPpqLUURrt@v4bel>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 26 Mar 2026 22:03:02 +0100
+Message-Id: <DHD0NQH9UJ21.3J691DBDXS0K0@kernel.org>
+To: "Douglas Anderson" <dianders@chromium.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v2] device property: Make modifications of fwnode
+ "flags" thread safe
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J . Wysocki"
+ <rafael@kernel.org>, <stable@vger.kernel.org>, "Andy Shevchenko"
+ <andriy.shevchenko@linux.intel.com>, "Mark Brown" <broonie@kernel.org>,
+ "Wolfram Sang" <wsa+renesas@sang-engineering.com>, "Andrew Lunn"
+ <andrew@lunn.ch>, "Daniel Scally" <djrscally@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Fabio
+ Estevam" <festevam@gmail.com>, "Frank Li" <Frank.Li@nxp.com>, "Heikki
+ Krogerus" <heikki.krogerus@linux.intel.com>, "Heiner Kallweit"
+ <hkallweit1@gmail.com>, "Jakub Kicinski" <kuba@kernel.org>, "Len Brown"
+ <lenb@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Pengutronix Kernel
+ Team" <kernel@pengutronix.de>, "Rob Herring" <robh@kernel.org>, "Russell
+ King" <linux@armlinux.org.uk>, "Sakari Ailus"
+ <sakari.ailus@linux.intel.com>, "Saravana Kannan" <saravanak@kernel.org>,
+ "Sascha Hauer" <s.hauer@pengutronix.de>, <devicetree@vger.kernel.org>,
+ <driver-core@lists.linux.dev>, <imx@lists.linux.dev>,
+ <linux-acpi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-i2c@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-spi@vger.kernel.org>, <netdev@vger.kernel.org>
+References: <20260317090112.v2.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
+In-Reply-To: <20260317090112.v2.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
 
-On Sun, Mar 08, 2026 at 02:20:29AM +0900, Hyunwoo Kim wrote:
-> ctnetlink_exp_dump_table() iterates the expectation hash table under
-> rcu_read_lock and dereferences exp->master to access the master
-> conntrack's fields (ct_net, tuplehash, ct->ext).  However, expectations
-> do not hold a reference on exp->master.  A concurrent conntrack deletion
-> via NFNL_SUBSYS_CTNETLINK (a different nfnetlink subsystem mutex) can
-> free the master conntrack while the dump is in progress, leading to
-> use-after-free on ct->ext which is freed immediately by kfree().
+On Tue Mar 17, 2026 at 5:01 PM CET, Douglas Anderson wrote:
+> In various places in the kernel, we modify the fwnode "flags" member
+> by doing either:
+>   fwnode->flags |=3D SOME_FLAG;
+>   fwnode->flags &=3D ~SOME_FLAG;
 >
-> Fix this by taking a reference on exp->master with
-> refcount_inc_not_zero() before accessing it.  If the master conntrack is
-> already being destroyed, skip the expectation.
+> This type of modification is not thread-safe. If two threads are both
+> mucking with the flags at the same time then one can clobber the
+> other.
+>
+> While flags are often modified while under the "fwnode_link_lock",
+> this is not universally true.
+>
+> Create some accessor functions for setting, clearing, and testing the
+> FWNODE flags and move all users to these accessor functions. New
+> accessor functions use set_bit() and clear_bit(), which are
+> thread-safe.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: c2c724c868c4 ("driver core: Add fw_devlink_parse_fwtree()")
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Acked-by: Mark Brown <broonie@kernel.org>
+> Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> Signed-off-by: Douglas Anderson <dianders@chromium.org>
 
-For the record, ctnetlink_exp_dump_expect() does not access ct->ext
-anymore since f01794106042 ("netfilter: nf_conntrack_expect: use
-expect->helper"). I am archiving this proposed patch.
+    [ Fix fwnode_clear_flag() argument alignment, restore dropped blank
+      line in fwnode_dev_initialized(), and remove unnecessary parentheses
+      around fwnode_test_flag() calls. - Danilo ]
 
-Thanks for reporting.
+Applied to driver-core-testing, thanks!
