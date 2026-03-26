@@ -1,668 +1,267 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E626411608;
-	Thu, 26 Mar 2026 16:33:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71AEE41160C
+	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 16:33:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774542784; cv=none; b=LaV2xklgKhSzpK9WENZXsRFTje50UxKpNIs3aS/m7wWVFrbDvW0TqI7WQNlhc+9XaxTUmmkD9ISj6DtbKp/jqknMstW4OEgdx+Q4L7qxoPfaX3V8PXz0/8vV0uHrcB6PnePV3zvA34ErBdCH7njEkHCfQFG8qjF00EaNc+MyC3k=
+	t=1774542784; cv=none; b=D0Mi6SHEHAuwrdv2JgKMsbua+rEH+v95saZixE4HVjaYo8wn+1CV7x9cx3ULRkG/I84Cg19v3XL9WUHk/6U+/74/l/EafGjfLZZODKNL1lcMShKSH/OElRsasPrslI8AOT80b/BwLE47zrmE+NZc4xG3aMhkivYocfUsPlZ01WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774542784; c=relaxed/simple;
-	bh=8ceLVs2JsObasP3Lu+oXmghvt3ALk1HbwW5kHqK/T4Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uQYK6lrCfP7D+n4foSzmHWfKhJfgGZC9VLGPQEoxntNzt9qWgEBa5X/onpC3/4HUtoVnO8T8VXyCY9I96uSrTzfmCiBQF8cii/6DFwtwUN0BK2y+vmhezojNJ2vptauJDwYKmjTnlipII6sno9G2QRcY5FE4zja/O+LES608h1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IBClPsnw; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	bh=mXc8HhXjqNJCvEd/LGg/yieYTes/g78CIZi1NYJ6p0I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nerNfc1mFLK2Lo/05tRG5pCfNzFhmNiiOHtJJRYDQeS8IMvQEdcMAgcLWc4q4dbNkb9ww4wM3OsFAqHcv1yJuFZjzm+ExBcpTIneCtG6AKIxEQIpGDhTzORIWXtcSBiHuX/WSqM9PVdjQ2mN4FYreP0szgghYUGgtL16C4PskWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=Li9nxoSJ; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IBClPsnw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774542782; x=1806078782;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=8ceLVs2JsObasP3Lu+oXmghvt3ALk1HbwW5kHqK/T4Q=;
-  b=IBClPsnwa98bsL/QsQwVTRDOTtd8G7CnYeJ1C4/rX8DT3mgvPcYmHaWQ
-   SFCxdVYwmdaW1AjSFal2f84rHFuTtFcAJe0W4BQWpB40pjcEn66VC1b1m
-   gsk9JPiYO1o9vBglZSZbpvjTWoDd+EF/v8VYFRr+bLM/zOD4MZlOSreM9
-   mW8wwweKWIMz6YEFvEbRq7rY54e05d4gIkMzsZW4mVBOCA9htCbFtKW6m
-   NyfnJSkl5bSSSCOiQWHpOaXfVQF4Tz8eZUOIMZkVZSZwH1RHubPklID9z
-   DBWcRuP6rLSybuyAiI/AEoF4BaIylOnReEdyNNF6lkoGPWSCjZ1cuVeqH
-   A==;
-X-CSE-ConnectionGUID: JVih9PwfSCm+wyT/oddjBQ==
-X-CSE-MsgGUID: pg2R3EwcSb2C149vY80klg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="74636688"
-X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; 
-   d="scan'208";a="74636688"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 09:33:01 -0700
-X-CSE-ConnectionGUID: UEH2dNSlS32v7jmotODE2w==
-X-CSE-MsgGUID: 2nDTOYt9Ql6QRFNCuuUcFA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; 
-   d="scan'208";a="225311144"
-Received: from gklab-003-001.igk.intel.com ([10.91.173.48])
-  by orviesa007.jf.intel.com with ESMTP; 26 Mar 2026 09:32:57 -0700
-From: Grzegorz Nitka <grzegorz.nitka@intel.com>
-To: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org,
-	poros@redhat.com,
-	richardcochran@gmail.com,
-	andrew+netdev@lunn.ch,
-	przemyslaw.kitszel@intel.com,
-	anthony.l.nguyen@intel.com,
-	Prathosh.Satish@microchip.com,
-	ivecera@redhat.com,
-	jiri@resnulli.us,
-	arkadiusz.kubalewski@intel.com,
-	vadim.fedorenko@linux.dev,
-	donald.hunter@gmail.com,
-	horms@kernel.org,
-	pabeni@redhat.com,
-	kuba@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	Grzegorz Nitka <grzegorz.nitka@intel.com>
-Subject: [PATCH v4 net-next 5/8] ice: add TX clock (TXC) DPLL interface for E825 devices
-Date: Thu, 26 Mar 2026 17:28:29 +0100
-Message-Id: <20260326162832.3135857-6-grzegorz.nitka@intel.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20260326162832.3135857-1-grzegorz.nitka@intel.com>
-References: <20260326162832.3135857-1-grzegorz.nitka@intel.com>
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="Li9nxoSJ"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6634197cd98so157543a12.0
+        for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 09:33:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=6wind.com; s=google; t=1774542781; x=1775147581; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:content-language
+         :from:references:cc:to:subject:reply-to:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=3Uz6X41/9QvtVD+0d1JY1sxw6aOqQLEJwgRVp5WANGc=;
+        b=Li9nxoSJNKiJccyGD9yHbplqiHrTxZtxaczwGIMLi7rr9O6y29ZGBOpdAAXuUW8cfJ
+         OoZIEnmvMMetvXbU5SpuB7ijmk2XNCva4fNQ/+JdEbBJ92940MgAZb6p1UFD2Fq2xTdR
+         tcr9xcTZ/OgJG4bCKvrhEIqTcdmJ4TlCK1paJ3YG/ePD48gW4wqDYNS9tWyHrgABODR4
+         9YvZAq6neO1xXjzoCgqVTe0hdNleOSiE6d6y/Yja3hMFB365xHTdEEZzHkaLBdcKr1O2
+         u77ZpY/Xx2bzmZalj/QzrfQFP4pLy/X3KOK7U8F/z69wVAAF0+He+yWkpQquh1BMaRT+
+         O4pA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774542781; x=1775147581;
+        h=content-transfer-encoding:in-reply-to:organization:content-language
+         :from:references:cc:to:subject:reply-to:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3Uz6X41/9QvtVD+0d1JY1sxw6aOqQLEJwgRVp5WANGc=;
+        b=sm4ayDehkCJZEJB2hEwcyZt0RkFCv1U2MkbXGT9TAGt2nP0+fKrOdZ+UAny0kLF9Ie
+         L0MQlg73P6zgJRClAMOjyqRsH2Dn6RtjyypiskB9/DsU3bkdpkxtirotNrgxxPRxxebo
+         WLsDZUbotd8BBsDOu1p1uzSNvaoXl5Qojay63g+H1nsJClpfUe8o2Hk1wmuKOtTAgB4G
+         CspGodRD3niYDtnbz35xGuwCsYilN0DYs/FI+RTV2AFgB0Ac/H0vbBPXkyij1R1IapdJ
+         rK9h6p+kY/ekJMzrcZMGrmpFuIwxPq1CH9jm8XWQDWzYAe7V4iOXsdp12FyioSKdZdog
+         4Amw==
+X-Forwarded-Encrypted: i=1; AJvYcCWLV8V/eGfLUrSeJS6eLhaLuZTRrgnZxQ2ZZVI3k7/IDT0AKDJ6tToaERoIsoVJ9bdNtyQ+LpQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqRTksQ2yIt1mhSILwrO/tz/cahLjOzRSWbqfOs152MJdHYQ1G
+	WVgTcw9UwJyXvR6ZhVR62n4shXNP0UZCGU0yQva3jR4A5F5DXrPMNoHOYi85TujZERg=
+X-Gm-Gg: ATEYQzycQ2vx5JNxTzTewbd3NJMPrZxHO1G5WM/sI1u4UOD2BWYjZYmpG0WggF8MuWx
+	GTJlMYAmI9q7VtbHX1Mo2EUhIk4L7Zk9tgY7wsZ0rf9DjNSOTWER+RkANMgIcO7bmke43O7m/ht
+	kpm6qlT5nh5OctDX6kR7xLFKI6MxEcU269at50j8v5OG0O45r+42LqnJjOCY8l6ATdHaYE9wSVj
+	Aw/BJxDXP/4fD3SOGeX8u5QAFvC+THLqpIfccX6AV9jqX0E0JA5xkv0J6757mNcG6R0EoF0bZcs
+	KrSh3plJN5V1G+weD2/UIuxZe8yFYK9/gV82olUoH/3QaYe8uWFwJ7VUbanpo7tsoq3j91tZRU0
+	I1c4xP8S7F2AuasrTsSS0KQNyFemD4+SA32Xe2gbj450S5Y5noNT6lWAugko6/EBsKqCOx4jVZB
+	JfRHRuw6M2neMlpum3bL0R00j1dRnAcajYNQn1RHcCSNlhPqkG4VY+PEHVnNSlg8WHqklTCfy4E
+	XirxIQMGKuknDc=
+X-Received: by 2002:a05:6402:210f:b0:66a:55eb:1cef with SMTP id 4fb4d7f45d1cf-66a826fa22dmr2939717a12.8.1774542780713;
+        Thu, 26 Mar 2026 09:33:00 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:b41:c160:6a1d:efff:fe52:1959? ([2a01:e0a:b41:c160:6a1d:efff:fe52:1959])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-66ad6a5f283sm1242324a12.27.2026.03.26.09.32.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 26 Mar 2026 09:33:00 -0700 (PDT)
+Message-ID: <2bb55d10-38a9-4595-baef-678d59bf4059@6wind.com>
+Date: Thu, 26 Mar 2026 17:32:59 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Reply-To: nicolas.dichtel@6wind.com
+Subject: Re: [RFC PATCH net-next 0/3] seg6: SRv6 L2 VPN with End.DT2U and srl2
+ device
+To: Andrea Mayer <andrea.mayer@uniroma2.it>, netdev@vger.kernel.org
+Cc: "David S . Miller" <davem@davemloft.net>, David Ahern
+ <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>,
+ Stefano Salsano <stefano.salsano@uniroma2.it>,
+ Paolo Lungaroni <paolo.lungaroni@uniroma2.it>,
+ Ahmed Abdelsalam <ahabdels@cisco.com>,
+ Justin Iurman <justin.iurman@6wind.com>, linux-kernel@vger.kernel.org
+References: <20260322000557.12559-1-andrea.mayer@uniroma2.it>
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Content-Language: en-US
+Organization: 6WIND
+In-Reply-To: <20260322000557.12559-1-andrea.mayer@uniroma2.it>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Introduce a TX clock DPLL instance and pins for E825-based devices.
-The TXC domain exposes two reference pins:
-  - EXT_EREF0 (board external electrical reference)
-  - SYNCE (port-derived reference, described via fwnode)
+Le 22/03/2026 à 01:05, Andrea Mayer a écrit :
+> Hi all,
+Hi,
 
-A new pin type (ICE_DPLL_PIN_TYPE_TXCLK) and pin ops are added. The
-SYNCE pin is registered when its fwnode becomes available, while
-EXT_EREF0 is registered directly. The notifier worker is updated to
-register/unregister TXC pins and to ignore notifications that are a
-side effect of internal registration by checking the src_id.
+first, thank you for posting this RFC.
 
-A new per-pin attribute tracks the TX reference source
-(enum ice_e825c_ref_clk). The TXC DPLL device is created and torn
-down alongside existing PPS/EEC devices on E825, with specific init
-and deinit flows for the TXC pins.
+> 
+> this RFC series adds support for the SRv6 End.DT2U behavior and
+> introduces the srl2 Ethernet pseudowire device, together with
+> corresponding selftests.
+> 
+> Motivation
+> ==========
+> 
+> The main goal is to enable L2 service delivery through an internal
+> SRv6 L2 endpoint, in a way similar to how VXLAN provides L2 services
+> through a VXLAN netdevice.
+> 
+> Today, Linux supports SRv6 L2 decapsulation only through an
+> End.DX2-style model, where the exposed Ethernet frame is forwarded
+> to a configured egress interface. The current implementation does
+> not provide a native netdevice representing the SRv6 L2 service
+> endpoint. This is a significant limitation compared to VXLAN, where
+> the tunnel endpoint is represented by a netdevice that can be
+> attached to a bridge and integrated naturally into the local L2
+> data plane.
+> 
+> On the encapsulation side, the existing H.L2.Encaps mode is
+> implemented as a route-based lwtunnel, which only intercepts packets
+> entering the IP routing path. Non-IP protocols such as ARP are
+> never routed and therefore cannot be encapsulated, making it
+> unsuitable for full L2 service delivery.
+> 
+> Design
+> ======
+> 
+> This series addresses that limitation by introducing srl2, a native
+> SRv6 L2 endpoint interface. The intent is to make SRv6 L2 delivery
+> usable in the same deployment model already familiar from VXLAN: an
+> internal interface that represents the L2 service endpoint and can
+> participate naturally in local L2 forwarding.
+The current design, with vxlan, uses two interfaces: one bridge and one vxlan.
+I presume this design was chosen because the vxlan protocol is implemented in
+the vxlan driver.
+I wonder if using the same design for SRv6 is the best choice. Why not use only
+a bridge interface? Instead of pointing to a port, the FDB entries could point
+to a nexthop id. This enables to associate a srv6 encap directly to a MAC
+address. Something like:
 
-Current TXC pin state getters return DISCONNECTED as a placeholder;
-hardware-backed state reporting will be implemented in a follow-up.
+$ ip nexthop list id 1234
+id 1234 encap seg6 mode encap segs ...
+$ bridge fdb show dev br0
+02:03:04:05:06:07 dev br0 nhid 1234 ...
 
-Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
----
- drivers/net/ethernet/intel/ice/ice_dpll.c   | 296 ++++++++++++++++++--
- drivers/net/ethernet/intel/ice/ice_dpll.h   |   6 +
- drivers/net/ethernet/intel/ice/ice_ptp_hw.h |   7 +
- 3 files changed, 286 insertions(+), 23 deletions(-)
+What is the gain of having two interfaces?
+In term of scalability, it is interesting to have only one interface.
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
-index 62f75701d652..72518fd1398d 100644
---- a/drivers/net/ethernet/intel/ice/ice_dpll.c
-+++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
-@@ -19,6 +19,11 @@
- #define ICE_DPLL_SW_PIN_INPUT_BASE_QSFP		6
- #define ICE_DPLL_SW_PIN_OUTPUT_BASE		0
- 
-+#define E825_EXT_EREF_PIN_IDX			0
-+#define E825_EXT_SYNCE_PIN_IDX			1
-+#define E825_RCLK_PARENT_0_PIN_IDX		0
-+#define E825_RCLK_PARENT_1_PIN_IDX		1
-+
- #define ICE_DPLL_PIN_SW_INPUT_ABS(in_idx) \
- 	(ICE_DPLL_SW_PIN_INPUT_BASE_SFP + (in_idx))
- 
-@@ -57,6 +62,7 @@
-  * @ICE_DPLL_PIN_TYPE_OUTPUT: output pin
-  * @ICE_DPLL_PIN_TYPE_RCLK_INPUT: recovery clock input pin
-  * @ICE_DPLL_PIN_TYPE_SOFTWARE: software controlled SMA/U.FL pins
-+ * @ICE_DPLL_PIN_TYPE_TXCLK: transmit clock reference input pin
-  */
- enum ice_dpll_pin_type {
- 	ICE_DPLL_PIN_INVALID,
-@@ -64,6 +70,7 @@ enum ice_dpll_pin_type {
- 	ICE_DPLL_PIN_TYPE_OUTPUT,
- 	ICE_DPLL_PIN_TYPE_RCLK_INPUT,
- 	ICE_DPLL_PIN_TYPE_SOFTWARE,
-+	ICE_DPLL_PIN_TYPE_TXCLK,
- };
- 
- static const char * const pin_type_name[] = {
-@@ -71,10 +78,13 @@ static const char * const pin_type_name[] = {
- 	[ICE_DPLL_PIN_TYPE_OUTPUT] = "output",
- 	[ICE_DPLL_PIN_TYPE_RCLK_INPUT] = "rclk-input",
- 	[ICE_DPLL_PIN_TYPE_SOFTWARE] = "software",
-+	[ICE_DPLL_PIN_TYPE_TXCLK] = "txclk-input",
- };
- 
- static const char * const ice_dpll_sw_pin_sma[] = { "SMA1", "SMA2" };
- static const char * const ice_dpll_sw_pin_ufl[] = { "U.FL1", "U.FL2" };
-+static const char * const ice_dpll_ext_eref_pin = "EXT_EREF0";
-+static const char * const ice_dpll_fwnode_ext_synce = "clk_ref_synce";
- 
- static const struct dpll_pin_frequency ice_esync_range[] = {
- 	DPLL_PIN_FREQUENCY_RANGE(0, DPLL_PIN_FREQUENCY_1_HZ),
-@@ -2517,12 +2527,75 @@ ice_dpll_rclk_state_on_pin_get(const struct dpll_pin *pin, void *pin_priv,
- 	return ret;
- }
- 
-+/**
-+ * ice_dpll_txclk_state_on_dpll_set - set a state on TX clk pin
-+ * @pin: pointer to a pin
-+ * @pin_priv: private data pointer passed on pin registration
-+ * @dpll: registered dpll pointer
-+ * @dpll_priv: private data pointer passed on dpll registration
-+ * @state: state to be set on pin
-+ * @extack: error reporting
-+ *
-+ * Dpll subsystem callback, set a state of a Tx reference clock pin
-+ *
-+ * Return:
-+ * * negative - failure
-+ */
-+static int
-+ice_dpll_txclk_state_on_dpll_set(const struct dpll_pin *pin, void *pin_priv,
-+				 const struct dpll_device *dpll,
-+				 void *dpll_priv, enum dpll_pin_state state,
-+				 struct netlink_ext_ack *extack)
-+{
-+	/*
-+	 * TODO: set HW accordingly to selected TX reference clock.
-+	 * To be added in the follow up patches.
-+	 */
-+	return -EOPNOTSUPP;
-+}
-+
-+/**
-+ * ice_dpll_txclk_state_on_dpll_get - get a state of Tx clk reference pin
-+ * @pin: pointer to a pin
-+ * @pin_priv: private data pointer passed on pin registration
-+ * @dpll: registered dpll pointer
-+ * @dpll_priv: private data pointer passed on dpll registration
-+ * @state: on success holds pin state on parent pin
-+ * @extack: error reporting
-+ *
-+ * dpll subsystem callback, get a state of a TX clock reference pin.
-+ *
-+ * Return:
-+ * * 0 - success
-+ */
-+static int
-+ice_dpll_txclk_state_on_dpll_get(const struct dpll_pin *pin, void *pin_priv,
-+				 const struct dpll_device *dpll,
-+				 void *dpll_priv,
-+				 enum dpll_pin_state *state,
-+				 struct netlink_ext_ack *extack)
-+{
-+	/*
-+	 * TODO: query HW status to determine if the TX reference is selected.
-+	 * To be added in the follow up patches.
-+	 */
-+	*state = DPLL_PIN_STATE_DISCONNECTED;
-+
-+	return 0;
-+}
-+
- static const struct dpll_pin_ops ice_dpll_rclk_ops = {
- 	.state_on_pin_set = ice_dpll_rclk_state_on_pin_set,
- 	.state_on_pin_get = ice_dpll_rclk_state_on_pin_get,
- 	.direction_get = ice_dpll_input_direction,
- };
- 
-+static const struct dpll_pin_ops ice_dpll_txclk_ops = {
-+	.state_on_dpll_set = ice_dpll_txclk_state_on_dpll_set,
-+	.state_on_dpll_get = ice_dpll_txclk_state_on_dpll_get,
-+	.direction_get = ice_dpll_input_direction,
-+};
-+
- static const struct dpll_pin_ops ice_dpll_pin_sma_ops = {
- 	.state_on_dpll_set = ice_dpll_sma_pin_state_set,
- 	.state_on_dpll_get = ice_dpll_sw_pin_state_get,
-@@ -3023,9 +3096,13 @@ ice_dpll_unregister_pins(struct dpll_device *dpll, struct ice_dpll_pin *pins,
- {
- 	int i;
- 
--	for (i = 0; i < count; i++)
--		if (!pins[i].hidden)
--			dpll_pin_unregister(dpll, pins[i].pin, ops, &pins[i]);
-+	for (i = 0; i < count; i++) {
-+		if (pins[i].hidden)
-+			continue;
-+		if (IS_ERR_OR_NULL(pins[i].pin))
-+			continue;
-+		dpll_pin_unregister(dpll, pins[i].pin, ops, &pins[i]);
-+	}
- }
- 
- /**
-@@ -3199,19 +3276,40 @@ static bool ice_dpll_is_fwnode_pin(struct ice_dpll_pin *pin)
- 	return !IS_ERR_OR_NULL(pin->fwnode);
- }
- 
-+static bool ice_dpll_fwnode_eq(const struct fwnode_handle *a,
-+			       const struct fwnode_handle *b)
-+{
-+	return a && b && a == b;
-+}
-+
- static void ice_dpll_pin_notify_work(struct work_struct *work)
- {
- 	struct ice_dpll_pin_work *w = container_of(work,
- 						   struct ice_dpll_pin_work,
- 						   work);
- 	struct ice_dpll_pin *pin, *parent = w->pin;
-+	bool is_tx_synce_parent = false;
- 	struct ice_pf *pf = parent->pf;
-+	bool is_rclk_parent = false;
- 	int ret;
- 
- 	wait_for_completion(&pf->dplls.dpll_init);
- 	if (!test_bit(ICE_FLAG_DPLL, pf->flags))
- 		goto out; /* DPLL initialization failed */
- 
-+	/* Decide which parent we are handling, defensively checking FWNs */
-+	is_rclk_parent =
-+		ice_dpll_fwnode_eq(parent->fwnode,
-+				   pf->dplls.inputs[E825_RCLK_PARENT_0_PIN_IDX].fwnode) ||
-+		ice_dpll_fwnode_eq(parent->fwnode,
-+				   pf->dplls.inputs[E825_RCLK_PARENT_1_PIN_IDX].fwnode);
-+
-+	is_tx_synce_parent =
-+		ice_dpll_fwnode_eq(parent->fwnode,
-+				   pf->dplls.txclks[E825_EXT_SYNCE_PIN_IDX].fwnode);
-+	if (!is_rclk_parent && !is_tx_synce_parent)
-+		goto out;
-+
- 	switch (w->action) {
- 	case DPLL_PIN_CREATED:
- 		if (!IS_ERR_OR_NULL(parent->pin)) {
-@@ -3228,16 +3326,28 @@ static void ice_dpll_pin_notify_work(struct work_struct *work)
- 			goto out;
- 		}
- 
--		/* Register rclk pin */
--		pin = &pf->dplls.rclk;
--		ret = dpll_pin_on_pin_register(parent->pin, pin->pin,
--					       &ice_dpll_rclk_ops, pin);
--		if (ret) {
--			dev_err(ice_pf_to_dev(pf),
--				"Failed to register pin: %pe\n", ERR_PTR(ret));
--			dpll_pin_put(parent->pin, &parent->tracker);
--			parent->pin = NULL;
--			goto out;
-+		if (is_rclk_parent) {
-+			/* Register rclk pin via on-pin relationship */
-+			pin = &pf->dplls.rclk;
-+			ret = dpll_pin_on_pin_register(parent->pin, pin->pin,
-+						       &ice_dpll_rclk_ops, pin);
-+			if (ret) {
-+				dev_err(ice_pf_to_dev(pf),
-+					"RCLK pin register failed: %pe\n",
-+					ERR_PTR(ret));
-+				goto drop_parent_ref;
-+			}
-+		} else if (is_tx_synce_parent) {
-+			/* Register TX-CLK SYNCE pin directly to TXC DPLL */
-+			pin = &pf->dplls.txclks[E825_EXT_SYNCE_PIN_IDX];
-+			ret = dpll_pin_register(pf->dplls.txc.dpll, pin->pin,
-+						&ice_dpll_txclk_ops, pin);
-+			if (ret) {
-+				dev_err(ice_pf_to_dev(pf),
-+					"TX SYNCE pin register failed: %pe\n",
-+					ERR_PTR(ret));
-+				goto drop_parent_ref;
-+			}
- 		}
- 		break;
- 	case DPLL_PIN_DELETED:
-@@ -3246,11 +3356,18 @@ static void ice_dpll_pin_notify_work(struct work_struct *work)
- 			goto out;
- 		}
- 
--		/* Unregister rclk pin */
--		pin = &pf->dplls.rclk;
--		dpll_pin_on_pin_unregister(parent->pin, pin->pin,
--					   &ice_dpll_rclk_ops, pin);
--
-+		if (is_rclk_parent) {
-+			/* Unregister rclk pin */
-+			pin = &pf->dplls.rclk;
-+			dpll_pin_on_pin_unregister(parent->pin, pin->pin,
-+						   &ice_dpll_rclk_ops, pin);
-+		} else if (is_tx_synce_parent) {
-+			/* Unregister TX-CLK SYNCE pin from TXC DPLL */
-+			pin = &pf->dplls.txclks[E825_EXT_SYNCE_PIN_IDX];
-+			dpll_pin_unregister(pf->dplls.txc.dpll, pin->pin,
-+					    &ice_dpll_txclk_ops, pin);
-+		}
-+drop_parent_ref:
- 		/* Drop fwnode pin reference */
- 		dpll_pin_put(parent->pin, &parent->tracker);
- 		parent->pin = NULL;
-@@ -3276,6 +3393,12 @@ static int ice_dpll_pin_notify(struct notifier_block *nb, unsigned long action,
- 	if (pin->fwnode != info->fwnode)
- 		return NOTIFY_DONE; /* Not this pin */
- 
-+	/* Ignore notification which are the outcome of internal pin
-+	 * registration/unregistration calls - synce pin case.
-+	 */
-+	if (info->src_id == pin->pf->dplls.clock_id)
-+		return NOTIFY_DONE;
-+
- 	work = kzalloc_obj(*work);
- 	if (!work)
- 		return NOTIFY_DONE;
-@@ -3401,6 +3524,19 @@ ice_dpll_deinit_fwnode_pins(struct ice_pf *pf, struct ice_dpll_pin *pins,
- 	destroy_workqueue(pf->dplls.wq);
- }
- 
-+static int ice_dpll_deinit_txclk_pins(struct ice_pf *pf)
-+{
-+	struct ice_dpll_pin *synce_pin = &pf->dplls.txclks[E825_EXT_SYNCE_PIN_IDX];
-+	struct ice_dpll *dt = &pf->dplls.txc;
-+
-+	ice_dpll_unregister_pins(dt->dpll, pf->dplls.txclks,
-+				 &ice_dpll_txclk_ops,
-+				 ARRAY_SIZE(pf->dplls.txclks));
-+	ice_dpll_release_pins(&pf->dplls.txclks[E825_EXT_EREF_PIN_IDX], 1);
-+	ice_dpll_deinit_fwnode_pin(synce_pin);
-+	return 0;
-+}
-+
- /**
-  * ice_dpll_deinit_pins - deinitialize direct pins
-  * @pf: board private structure
-@@ -3420,8 +3556,10 @@ static void ice_dpll_deinit_pins(struct ice_pf *pf, bool cgu)
- 	struct ice_dpll *dp = &d->pps;
- 
- 	ice_dpll_deinit_rclk_pin(pf);
--	if (pf->hw.mac_type == ICE_MAC_GENERIC_3K_E825)
-+	if (pf->hw.mac_type == ICE_MAC_GENERIC_3K_E825) {
-+		ice_dpll_deinit_txclk_pins(pf);
- 		ice_dpll_deinit_fwnode_pins(pf, pf->dplls.inputs, 0);
-+	}
- 	if (cgu) {
- 		ice_dpll_unregister_pins(dp->dpll, inputs, &ice_dpll_input_ops,
- 					 num_inputs);
-@@ -3552,6 +3690,58 @@ ice_dpll_init_fwnode_pins(struct ice_pf *pf, struct ice_dpll_pin *pins,
- 	return ret;
- }
- 
-+static int ice_dpll_init_txclk_pins(struct ice_pf *pf, int start_idx)
-+{
-+	struct ice_dpll_pin *ref_pin = pf->dplls.txclks;
-+	struct ice_dpll *txc = &pf->dplls.txc;
-+	int ret;
-+
-+	/* Configure EXT_EREF0 pin */
-+	ret = ice_dpll_get_pins(pf, ref_pin, start_idx, 1, pf->dplls.clock_id);
-+	if (ret)
-+		return ret;
-+	ret = dpll_pin_register(txc->dpll, ref_pin->pin, &ice_dpll_txclk_ops,
-+				ref_pin);
-+	if (ret)
-+		goto err_release_ext_eref;
-+
-+	/*
-+	 * Configure EXT_SYNCE pin (fwnode-backed).
-+	 * The pin may not yet be available; in that case registration
-+	 * will be deferred via the notifier path.
-+	 */
-+	ref_pin++;
-+	ret = ice_dpll_init_fwnode_pin(ref_pin, ice_dpll_fwnode_ext_synce);
-+	if (ret)
-+		goto err_unregister_ext_eref;
-+
-+	if (IS_ERR_OR_NULL(ref_pin->pin)) {
-+		dev_dbg(ice_pf_to_dev(pf),
-+			"Tx-clk SYNCE pin not registered yet\n");
-+		return 0;
-+	}
-+
-+	ret = dpll_pin_register(txc->dpll, ref_pin->pin, &ice_dpll_txclk_ops,
-+				ref_pin);
-+	if (ret)
-+		goto err_deinit_synce;
-+
-+	return 0;
-+
-+err_deinit_synce:
-+	ice_dpll_deinit_fwnode_pin(ref_pin);
-+err_unregister_ext_eref:
-+	dpll_pin_unregister(txc->dpll,
-+			    pf->dplls.txclks[E825_EXT_EREF_PIN_IDX].pin,
-+			    &ice_dpll_txclk_ops,
-+			    &pf->dplls.txclks[E825_EXT_EREF_PIN_IDX]);
-+
-+err_release_ext_eref:
-+	ice_dpll_release_pins(&pf->dplls.txclks[E825_EXT_EREF_PIN_IDX], 1);
-+
-+	return ret;
-+}
-+
- /**
-  * ice_dpll_init_pins_e825 - init pins and register pins with a dplls
-  * @pf: board private structure
-@@ -3574,6 +3764,15 @@ static int ice_dpll_init_pins_e825(struct ice_pf *pf)
- 
- 	ret = ice_dpll_init_rclk_pin(pf, DPLL_PIN_IDX_UNSPEC,
- 				     &ice_dpll_rclk_ops);
-+
-+	if (ret)
-+		goto unregister_pins;
-+
-+	ret = ice_dpll_init_txclk_pins(pf, 0);
-+	if (ret)
-+		ice_dpll_deinit_rclk_pin(pf);
-+
-+unregister_pins:
- 	if (ret) {
- 		/* Inform DPLL notifier works that DPLL init was finished
- 		 * unsuccessfully (ICE_DPLL_FLAG not set).
-@@ -3692,7 +3891,7 @@ static int ice_dpll_init_pins(struct ice_pf *pf, bool cgu)
- static void
- ice_dpll_deinit_dpll(struct ice_pf *pf, struct ice_dpll *d, bool cgu)
- {
--	if (cgu)
-+	if (cgu || pf->hw.mac_type == ICE_MAC_GENERIC_3K_E825)
- 		dpll_device_unregister(d->dpll, d->ops, d);
- 	dpll_device_put(d->dpll, &d->tracker);
- }
-@@ -3727,12 +3926,13 @@ ice_dpll_init_dpll(struct ice_pf *pf, struct ice_dpll *d, bool cgu,
- 		return ret;
- 	}
- 	d->pf = pf;
--	if (cgu) {
-+	if (cgu || pf->hw.mac_type == ICE_MAC_GENERIC_3K_E825) {
- 		const struct dpll_device_ops *ops = &ice_dpll_ops;
- 
- 		if (type == DPLL_TYPE_PPS && ice_dpll_is_pps_phase_monitor(pf))
- 			ops =  &ice_dpll_pom_ops;
--		ice_dpll_update_state(pf, d, true);
-+		if (cgu)
-+			ice_dpll_update_state(pf, d, true);
- 		ret = dpll_device_register(d->dpll, type, ops, d);
- 		if (ret) {
- 			dpll_device_put(d->dpll, &d->tracker);
-@@ -4081,6 +4281,36 @@ static int ice_dpll_init_info_sw_pins(struct ice_pf *pf)
- 	return 0;
- }
- 
-+/**
-+ * ice_dpll_init_info_txclk_pins_e825c - initializes tx-clk pins information
-+ * @pf: board private structure
-+ *
-+ * Init information for tx-clks pin, cache them in pf->dplls.txclks
-+ *
-+ * Return:
-+ * * 0 - success
-+ */
-+static int ice_dpll_init_info_txclk_pins_e825c(struct ice_pf *pf)
-+{
-+	struct ice_dpll_pin *tx_pin;
-+
-+	for (int i = 0; i < ICE_DPLL_TXCLK_NUM_MAX; i++) {
-+		tx_pin = &pf->dplls.txclks[i];
-+		tx_pin->prop.type = DPLL_PIN_TYPE_EXT;
-+		tx_pin->prop.capabilities |=
-+				 DPLL_PIN_CAPABILITIES_STATE_CAN_CHANGE;
-+		tx_pin->pf = pf;
-+		if (i == E825_EXT_EREF_PIN_IDX) {
-+			tx_pin->prop.board_label = ice_dpll_ext_eref_pin;
-+			tx_pin->tx_ref_src = ICE_REF_CLK_EREF0;
-+		} else if (i == E825_EXT_SYNCE_PIN_IDX) {
-+			tx_pin->tx_ref_src = ICE_REF_CLK_SYNCE;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- /**
-  * ice_dpll_init_pins_info - init pins info wrapper
-  * @pf: board private structure
-@@ -4106,6 +4336,9 @@ ice_dpll_init_pins_info(struct ice_pf *pf, enum ice_dpll_pin_type pin_type)
- 			return ice_dpll_init_info_rclk_pin(pf);
- 	case ICE_DPLL_PIN_TYPE_SOFTWARE:
- 		return ice_dpll_init_info_sw_pins(pf);
-+
-+	case ICE_DPLL_PIN_TYPE_TXCLK:
-+		return ice_dpll_init_info_txclk_pins_e825c(pf);
- 	default:
- 		return -EINVAL;
- 	}
-@@ -4139,11 +4372,15 @@ static void ice_dpll_deinit_info(struct ice_pf *pf)
- static int ice_dpll_init_info_e825c(struct ice_pf *pf)
- {
- 	struct ice_dplls *d = &pf->dplls;
-+	struct ice_dpll *dt = &d->txc;
- 	int ret = 0;
- 	int i;
- 
- 	d->clock_id = ice_generate_clock_id(pf);
- 	d->num_inputs = ICE_SYNCE_CLK_NUM;
-+	dt->dpll_state = DPLL_LOCK_STATUS_LOCKED;
-+	dt->mode = DPLL_MODE_MANUAL;
-+	dt->dpll_idx = pf->ptp.port.port_num;
- 
- 	d->inputs = kzalloc_objs(*d->inputs, d->num_inputs);
- 	if (!d->inputs)
-@@ -4160,6 +4397,11 @@ static int ice_dpll_init_info_e825c(struct ice_pf *pf)
- 	ret = ice_dpll_init_pins_info(pf, ICE_DPLL_PIN_TYPE_RCLK_INPUT);
- 	if (ret)
- 		goto deinit_info;
-+
-+	ret = ice_dpll_init_pins_info(pf, ICE_DPLL_PIN_TYPE_TXCLK);
-+	if (ret)
-+		goto deinit_info;
-+
- 	dev_dbg(ice_pf_to_dev(pf),
- 		"%s - success, inputs: %u, outputs: %u, rclk-parents: %u\n",
- 		 __func__, d->num_inputs, d->num_outputs, d->rclk.num_parents);
-@@ -4292,6 +4534,9 @@ void ice_dpll_deinit(struct ice_pf *pf)
- 		ice_dpll_deinit_dpll(pf, &pf->dplls.pps, cgu);
- 	if (!IS_ERR_OR_NULL(pf->dplls.eec.dpll))
- 		ice_dpll_deinit_dpll(pf, &pf->dplls.eec, cgu);
-+	if (!IS_ERR_OR_NULL(pf->dplls.txc.dpll))
-+		ice_dpll_deinit_dpll(pf, &pf->dplls.txc, false);
-+
- 	ice_dpll_deinit_info(pf);
- 	mutex_destroy(&pf->dplls.lock);
- }
-@@ -4317,14 +4562,19 @@ static void ice_dpll_init_e825(struct ice_pf *pf)
- 	err = ice_dpll_init_info_e825c(pf);
- 	if (err)
- 		goto err_exit;
--	err = ice_dpll_init_pins_e825(pf);
-+	err = ice_dpll_init_dpll(pf, &pf->dplls.txc, false, DPLL_TYPE_TXC);
- 	if (err)
- 		goto deinit_info;
-+	err = ice_dpll_init_pins_e825(pf);
-+	if (err)
-+		goto deinit_txclk;
- 	set_bit(ICE_FLAG_DPLL, pf->flags);
- 	complete_all(&d->dpll_init);
- 
- 	return;
- 
-+deinit_txclk:
-+	ice_dpll_deinit_dpll(pf, &pf->dplls.txc, false);
- deinit_info:
- 	ice_dpll_deinit_info(pf);
- err_exit:
-diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.h b/drivers/net/ethernet/intel/ice/ice_dpll.h
-index ae42cdea0ee1..23f9d4da73c5 100644
---- a/drivers/net/ethernet/intel/ice/ice_dpll.h
-+++ b/drivers/net/ethernet/intel/ice/ice_dpll.h
-@@ -7,6 +7,7 @@
- #include "ice.h"
- 
- #define ICE_DPLL_RCLK_NUM_MAX	4
-+#define ICE_DPLL_TXCLK_NUM_MAX	2
- 
- /**
-  * enum ice_dpll_pin_sw - enumerate ice software pin indices:
-@@ -63,6 +64,7 @@ struct ice_dpll_pin {
- 	u8 ref_sync;
- 	bool active;
- 	bool hidden;
-+	enum ice_e825c_ref_clk tx_ref_src;
- };
- 
- /** ice_dpll - store info required for DPLL control
-@@ -111,9 +113,11 @@ struct ice_dpll {
-  * @lock: locks access to configuration of a dpll
-  * @eec: pointer to EEC dpll dev
-  * @pps: pointer to PPS dpll dev
-+ * @txc: pointer to TXC dpll dev
-  * @inputs: input pins pointer
-  * @outputs: output pins pointer
-  * @rclk: recovered pins pointer
-+ * @txclks: TX clock reference pins pointer
-  * @num_inputs: number of input pins available on dpll
-  * @num_outputs: number of output pins available on dpll
-  * @cgu_state_acq_err_num: number of errors returned during periodic work
-@@ -131,11 +135,13 @@ struct ice_dplls {
- 	struct completion dpll_init;
- 	struct ice_dpll eec;
- 	struct ice_dpll pps;
-+	struct ice_dpll txc;
- 	struct ice_dpll_pin *inputs;
- 	struct ice_dpll_pin *outputs;
- 	struct ice_dpll_pin sma[ICE_DPLL_PIN_SW_NUM];
- 	struct ice_dpll_pin ufl[ICE_DPLL_PIN_SW_NUM];
- 	struct ice_dpll_pin rclk;
-+	struct ice_dpll_pin txclks[ICE_DPLL_TXCLK_NUM_MAX];
- 	u8 num_inputs;
- 	u8 num_outputs;
- 	u8 sma_data;
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
-index 9bfd3e79c580..cbc9693179a1 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
-@@ -265,6 +265,13 @@ struct ice_cgu_pin_desc {
- 	struct dpll_pin_frequency *freq_supp;
- };
- 
-+enum ice_e825c_ref_clk {
-+	ICE_REF_CLK_ENET,
-+	ICE_REF_CLK_SYNCE,
-+	ICE_REF_CLK_EREF0,
-+	ICE_REF_CLK_MAX,
-+};
-+
- #define E810C_QSFP_C827_0_HANDLE 2
- #define E810C_QSFP_C827_1_HANDLE 3
- 
--- 
-2.39.3
+Regards,
+Nicolas
+
+> 
+> On top of that, the series adds support for End.DT2U so that Ethernet
+> payloads carried over SRv6 can be decapsulated and delivered into an
+> L2 domain through either a bridge port or an srl2 interface.
+> 
+> Relation to RFC 8986
+> ====================
+> 
+> RFC 8986 describes End.DT2U in terms of an abstract L2 table
+> associated with the SID. That abstraction specifies the externally
+> observable forwarding behavior of the node, but it does not mandate a
+> specific internal implementation. What matters is functional
+> equivalence.
+> 
+> This series enforces that property by restricting valid End.DT2U
+> decapsulation targets to endpoints that provide the required L2
+> forwarding semantics by construction.
+> 
+> When the target device is a bridge port, the Linux bridge provides
+> the expected behavior directly: source MAC learning, destination MAC
+> lookup, and unknown-unicast flooding within the corresponding L2
+> domain.
+> 
+> When the target device is an srl2 interface, the same model is
+> realized in a degenerate but valid form, corresponding to a minimal
+> two-port L2 domain in which one endpoint is srl2. In that case,
+> forwarding is trivial: frames are delivered to srl2 only when
+> addressed to its MAC address, or when they are broadcast or multicast.
+> No general FDB is required in this case because there are no
+> additional L2 destinations to learn.
+> 
+> Any other type of decapsulation target is rejected at configuration
+> time, since it would not guarantee the forwarding behavior required by
+> End.DT2U.
+> 
+> The srl2 device is the minimal baseline implementation providing
+> point-to-point L2 encapsulation with a single segment list.
+> Additional features can be added incrementally based on community
+> feedback and use cases.
+> 
+> Usage
+> =====
+> 
+>   ip link add srl2-0 type srl2 segs fc00::a,fc00::b
+>   ip link set srl2-0 master br0
+> 
+>   ip -6 route add fc00::100/128 encap seg6local action End.DT2U \
+>       l2dev srl2-0 dev dum0
+> 
+>   # encapsulating traffic from veth-hs into srl2-0
+>   ip link set veth-hs master br0
+> 
+> Selftest topology
+> =================
+> 
+>             cafe::1                                cafe::2
+>            10.0.0.1                               10.0.0.2
+>           +--------+                             +--------+
+>           |  hs-1  |                             |  hs-2  |
+>           +---+----+                             +----+---+
+>               |                                       |
+>         +-----+------+                         +------+-----+
+>         |   veth-hs  |                         |  veth-hs   |
+>         |      |     |   fcf0:0:1:2::/64       |     |      |
+>         |    br0     +-------------------------+   br0      |
+>         |      |     |                         |     |      |
+>         |   srl2-0   |                         |  srl2-0    |
+>         |    rt-1    |                         |   rt-2     |
+>         +------------+                         +------------+
+> 
+> The test verifies IPv4/IPv6 host-to-host and host-to-gateway
+> connectivity over the SRv6 L2 VPN, including ARP resolution
+> through the tunnel.
+> 
+> A companion iproute2 series provides userspace support:
+> 
+>   [RFC PATCH iproute2-next 0/4] seg6: add SRv6 End.DT2U and srl2 support
+> 
+> 
+> This is an RFC posting to collect feedback on both the overall design
+> and the userspace API before moving forward with a formal submission.
+> 
+> Comments are very welcome, especially on:
+> - the introduction of srl2 as an internal SRv6 L2 endpoint
+> - the choice of constraining End.DT2U targets to bridge ports
+>   and srl2 devices
+> - the netlink/uAPI exposure
+> - the selftest coverage and topology
+> 
+> Thanks,
+> Andrea and Stefano
+> 
+> 
+> Andrea Mayer (3):
+>   seg6: add support for the SRv6 End.DT2U behavior
+>   seg6: add SRv6 L2 tunnel device (srl2)
+>   selftests: seg6: add SRv6 srl2 + End.DT2U L2 VPN test
+> 
+>  include/linux/srl2.h                          |   7 +
+>  include/uapi/linux/seg6_local.h               |   3 +
+>  include/uapi/linux/srl2.h                     |  20 +
+>  net/ipv6/Kconfig                              |  16 +
+>  net/ipv6/Makefile                             |   1 +
+>  net/ipv6/seg6.c                               |   1 +
+>  net/ipv6/seg6_local.c                         | 160 ++++-
+>  net/ipv6/srl2.c                               | 269 ++++++++
+>  tools/testing/selftests/net/Makefile          |   1 +
+>  tools/testing/selftests/net/config            |   1 +
+>  .../selftests/net/srv6_srl2_l2vpn_test.sh     | 621 ++++++++++++++++++
+>  11 files changed, 1094 insertions(+), 6 deletions(-)
+>  create mode 100644 include/linux/srl2.h
+>  create mode 100644 include/uapi/linux/srl2.h
+>  create mode 100644 net/ipv6/srl2.c
+>  create mode 100755 tools/testing/selftests/net/srv6_srl2_l2vpn_test.sh
+> 
 
