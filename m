@@ -1,108 +1,81 @@
-Received: from out199-13.us.a.mail.aliyun.com (out199-13.us.a.mail.aliyun.com [47.90.199.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B33317173
-	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 12:16:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.199.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C3533F8D4
+	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 12:17:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774527374; cv=none; b=bTMKN0qw/WfNGemMQcQldOaCG1t4EWBlAPcOu+fQ4AWjJRxxBHwgUuB2z2lgw0af2+lS9I9xcvuxF0cqOVp13Xqf5lhAl3J4c20MxoSNuk87G0rJPM6iF3M8U0oC2TP1rvw6wlEwut/NE70UXn6zEA39hFMQzJFnfUR/NNAOLx8=
+	t=1774527444; cv=none; b=IXRnd3Jm963y/zVGEAAfAdVVDG7ZI7Ckf3chimx/1VWaDg+64OfIh3ikUqacCAm/66TTOp+tq/u3Gv+O3Ks3AzuWvWhnLyKbfgY7WNfSUlFXSxO698OitT5RaeHf3gpfj8ZkoX5hitY4k1BQInZW3KEC41OELp6rxSzIgYCH8yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774527374; c=relaxed/simple;
-	bh=3UWp1m3bckio7CqG1gPbUNey4urC7CK3nvLizOgBktQ=;
-	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To; b=DEBo2wK1fx+idE9KwdXAqqzi+hXwbuC7QJHlzLL0mAg6kIVZWox9Exk/LONuKxiTbMk2oTn2q0Ye0ZaVacjy4JmY4GJInpS/CeG0fHM4lmw/nvPnBV4ivzt1BxK7UnTEFFN4qQQDin/Gcm2kDWTbH0y5u5xxrQaDskzeIHTwu6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=QTMay2dz; arc=none smtp.client-ip=47.90.199.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1774527444; c=relaxed/simple;
+	bh=3VbtHsOVRFRjZnMXO5LgMUckZdMMBskrErAVbmlVWSw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZiQ73P1JlFF2xNtX1Ph/3E5CSa21udQ172yr3YEsHFmcFWa9Wz9UI15mgtLCklDmY6U2kR/mx5wX40HUILpS2hU1XgeLnZCVEOvjr1w2Ty/Iuy9+r3jpC2OQbpTn/Pb6codorv+ephfPDHbnHkSSZ6b/ao4LHUb29LwmKvwFy9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=du4SbXau; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="QTMay2dz"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1774527359; h=Message-ID:Subject:Date:From:To;
-	bh=Fr8L/qRD9ZecHm7QP/PNsxlVFPYB2g4rIf3tTqcg1fA=;
-	b=QTMay2dzuWwEErKr3hWs6tuKgs1HqwnCIrS862ho2um5+5Y/M9t1V4Ey2PS6Ry71WEERFQKqFQeAveCdtAndpbFMgWq1DIPpfxBIdMIsVO/sBewk5di5b2wfu/KK+1jROzy7LpoSj2uEILB01kwiLTI5gFb386ABjl544AJ0GEA=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R231e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=xuanzhuo@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0X.lMQ9P_1774527357;
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0X.lMQ9P_1774527357 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 26 Mar 2026 20:15:58 +0800
-Message-ID: <1774527071.3010762-2-xuanzhuo@linux.alibaba.com>
-Subject: Re: [PATCH net-next v35 0/8] eea: Add basic driver framework for Alibaba Elastic Ethernet Adaptor
-Date: Thu, 26 Mar 2026 20:11:11 +0800
-From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Wen Gu <guwen@linux.alibaba.com>,
- Philo Lu <lulie@linux.alibaba.com>,
- Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Dong Yibo <dong100@mucse.com>,
- "Ethan Nelson-Moore" <enelsonmoore@gmail.com>,
- Heiner Kallweit <hkallweit1@gmail.com>,
- Vivian Wang <wangruikang@iscas.ac.cn>,
- Dust Li <dust.li@linux.alibaba.com>,
- netdev@vger.kernel.org
-References: <20260323074441.91691-1-xuanzhuo@linux.alibaba.com>
- <cb8280ad-fd08-4201-9faa-d8b1bc4f0bd7@redhat.com>
- <1774525085.4029815-1-xuanzhuo@linux.alibaba.com>
- <cddbd5e9-6df0-40df-9ae1-6a6f296b4061@redhat.com>
-In-Reply-To: <cddbd5e9-6df0-40df-9ae1-6a6f296b4061@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="du4SbXau"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8040C19423;
+	Thu, 26 Mar 2026 12:17:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774527443;
+	bh=3VbtHsOVRFRjZnMXO5LgMUckZdMMBskrErAVbmlVWSw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=du4SbXauELOkRIZ4Mr6eNzSeKmc4VZmQFpauQEYxqPa7pbDa3O/vCUUbIs3T3iXDA
+	 04xMnalgNvzLD2ZXgA/WnqCFVOHjuKt3BrT99131wZJr+6bEFQv7oRqYIlEl9tS3S0
+	 AC/QWhpx7U6FVYV7g43M9qmhzOzeZkxIGLuYnJi56tlzM9YxKJ0bS8k5qDAPluxAER
+	 TiGK+Ek5N09nRLi1kfvjAh34KdqQNRxkvDVV41MBCzKgaOxtvptgxYfqzhrSEihfwW
+	 CKF0E7jfidziBvrrhBVnyvqeabr+kebAa6CPgwdcWnGmPGvZBkIwtVjydiasaIzMH3
+	 iEuXBYRGIXfJw==
+Message-ID: <fea7935a-ddd7-4ac2-a2f4-622133b91281@kernel.org>
+Date: Thu, 26 Mar 2026 13:17:18 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: wan/fsl_ucc_hdlc: cleanup ucc_hdlc_poll
+To: Tomas Alvarez Vanoli <tomas.alvarez-vanoli@hitachienergy.com>,
+ netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: qiang.zhao@nxp.com, andrew+netdev@lunn.ch
+References: <20260326100232.904289-1-tomas.alvarez-vanoli@hitachienergy.com>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <20260326100232.904289-1-tomas.alvarez-vanoli@hitachienergy.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, 26 Mar 2026 13:06:14 +0100, Paolo Abeni <pabeni@redhat.com> wrote:
-> On 3/26/26 12:38 PM, Xuan Zhuo wrote:
-> > On Thu, 26 Mar 2026 12:26:33 +0100, Paolo Abeni <pabeni@redhat.com> wrote:
-> >> On 3/23/26 8:44 AM, Xuan Zhuo wrote:
-> >>> Add a driver framework for EEA that will be available in the future.
-> >>>
-> >>> This driver is currently quite minimal, implementing only fundamental
-> >>> core functionalities. Key features include: I/O queue management via
-> >>> adminq, basic PCI-layer operations, and essential RX/TX data
-> >>> communication capabilities. It also supports the creation,
-> >>> initialization, and management of network devices (netdev). Furthermore,
-> >>> the ring structures for both I/O queues and adminq have been abstracted
-> >>> into a simple, unified, and reusable library implementation,
-> >>> facilitating future extension and maintenance.
-> >>
-> >> Unfortunately sashiko fund more stuff:
-> >>
-> >> https://sashiko.dev/#/patchset/20260323074441.91691-1-xuanzhuo%40linux.alibaba.com
-> >>
-> >> AFAIK checks vs malicious values from the H/W are not due, but stats
-> >> endianness, 32-bits, truesize related concerns looks real.
-> >
-> > I've looked at this, and I think most of it is meaningless. For example, since
-> > we have the following options,
-> >
-> > +	depends on 64BIT
-> >
-> > there's no need to consider some 32-bit related issues. Many other points are
-> > also unnecessary.
-> >
-> > I will go through these comments again. I'll try to fix them.
-> > I might introduce some defensive programming. ^_^ Just to make the
-> > AI happy. However, I can't make all these comments disappear.
-> Please, don't add defensive programming for AI's sake. AI reviews are
-> threaded alike other reviews: if there are valid argument to counter
-> them, should be ignored. Please instead mention on the ML why specific
-> comments are not relevant.
->
-> Note that defensive checks vs rouge H/W are AFAIK not needed, no need to
-> argument that.
 
-Sashiko doesn't seem to check the discussions on lore, but
-https://netdev-ai.bots.linux.dev/ should perform such checks.
-So I'm not sure how to make Sashiko aware of the detailed context.
 
-I will try to address the issues it currently reports. For the next version, I
-hope to incorporate more manual review of Sashiko's reports.
+Le 26/03/2026 à 11:02, Tomas Alvarez Vanoli a écrit :
+> Immediately after setting to 0 we are adding to it, and subtracting 0
+> from budget. Replace with just assignment and no subtraction.
+> 
+> Signed-off-by: Tomas Alvarez Vanoli <tomas.alvarez-vanoli@hitachienergy.com>
 
-Thanks.
+Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 
->
-> /P
->
+> ---
+>   drivers/net/wan/fsl_ucc_hdlc.c | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
+> index b72ab9951875e..3bd57527b1be6 100644
+> --- a/drivers/net/wan/fsl_ucc_hdlc.c
+> +++ b/drivers/net/wan/fsl_ucc_hdlc.c
+> @@ -628,8 +628,7 @@ static int ucc_hdlc_poll(struct napi_struct *napi, int budget)
+>          hdlc_tx_done(priv);
+>          spin_unlock(&priv->lock);
+> 
+> -       howmany = 0;
+> -       howmany += hdlc_rx_done(priv, budget - howmany);
+> +       howmany = hdlc_rx_done(priv, budget);
+> 
+>          if (howmany < budget) {
+>                  napi_complete_done(napi, howmany);
+> --
+> 2.47.3
+> 
+> 
+
