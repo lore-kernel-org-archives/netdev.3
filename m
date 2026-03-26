@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9979F3F7E67;
-	Thu, 26 Mar 2026 11:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961173FBEAB;
+	Thu, 26 Mar 2026 11:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774525792; cv=none; b=QOjx+SICz9uX0bVyjggOlSrOqKpPhAOTb1lpXtUKZNp02O6t999P2SBT01j4SubEdubJ71zALguH/6uBimZAdpuVUqDENsAbCWCBVwTN1Vub/ESColm/d4CrbMcB3uiDJoDNnjwGSVo6xfTIyMqRPpabFJt9QtcZ9uz8Zq968YU=
+	t=1774525800; cv=none; b=j9EM/q6QlZK7ni90qyfmxUDqIsXdyN0Q6Xb6drlnk+tSMQaGmzfn1737CioyR+R5K+GXgNtuLw08ZMAKXqiqAhBVVZrwCAVr3YkN/MiRtnFdbdXDTMbWGDPyyTYG8h8ejPAzVnlMfh+e1gN9L5aaui6fQqzccAgPuFj5gm8JgOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774525792; c=relaxed/simple;
-	bh=VpYczqwnmJncpyaWulNnHSoKDHNu7SSDIFJJMLI3IKM=;
+	s=arc-20240116; t=1774525800; c=relaxed/simple;
+	bh=FaWQTqp6l2AkN18SDD7RryzwFhKgM6MciHDFXpG1hd8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZmOWtlXNXShb1wXoJgy4W928ai5PZaTjXDILQl9aJ6VGCucfXHEJnKbyaGWrAJnVZuyH6sRmUbPEIKhppBDR+O3f7+2XxOcWUM0AKpmShNHIJjqjv0dLdtLV1uCg4L1PZlAm3cj+nwvmvpGkqsc3k9nN4ozxwrApyUCR9gt7SBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ax13Gi43; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version:Content-Type; b=EjM/Whr1xStUaUlBY6hFiPbk9/796n8OaHWvQIu9L0RKwV8LYjzyD72jIHA3PVxm3dENdxMlZ0nDbPZZJVMKJ4vhWyGKcQM4OxpU9oYTkrS6f0CcbAnCSvKK66JE7+6GfyYxtEH7p6O8+SnxI11MuxXoOF/yxJbJ8/6v/Xg+Kws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FPwz7LHC; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ax13Gi43"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FPwz7LHC"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774525783; x=1806061783;
+  t=1774525793; x=1806061793;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=VpYczqwnmJncpyaWulNnHSoKDHNu7SSDIFJJMLI3IKM=;
-  b=ax13Gi43FvWhlPpnGXMD6TNM8GbmlwMTs0vgyeAXIRolez3cd/rtDo9U
-   xZhSh89C82jsCU8mvbpope6y6+ALsUZ0qhs61oNU4wP2ZlLQNXZxEyQnt
-   29eYgsPT0A2wx0ydPFxO2NxSetRTy+koWbYZnYAScLTE2NmT9hqFrjCfR
-   n6SmlCiB83pjhjM8mLDuIQp+MhgaTQeUACFqBCzRu10jqN5EK72xr0p9Y
-   PPHAps5ktrUiPupsc7IInJv3Z5oTOOA7BV2h+Jp22wH0+DtPq+ghxCx9M
-   GxG2eI7VifR5uzcA2mQdb7yx+7QxCBiR0Kv3J4sxuWSUtk4Ci/Z3jrKP1
-   A==;
-X-CSE-ConnectionGUID: Bf2Eez8ATrGE0CK/otjX8A==
-X-CSE-MsgGUID: JOjibenPS5aqkeMWnB9bxg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="75776244"
+  bh=FaWQTqp6l2AkN18SDD7RryzwFhKgM6MciHDFXpG1hd8=;
+  b=FPwz7LHChhuYlsfMgM+LGW753KFPJvo73TH6aDiEv4WGA09PAnBoW82Q
+   JFyucBD7n6egWFbhYKakg0QJj/i8cftAqOKbXmm/PtzzaHqHjbdmBUEIT
+   gYucmPgUAa2Ub4h9hXPeTckZuQ8vxxPJIBbR1KVRjAZ3S9f26F0DtaEcY
+   gPEuXD2R14ZDVnI14kQe1W3JBGYkGQrqtjiDJ84hKI7LmbNnJni81FnLH
+   XDWwe518qWrjfSq7iEQOY6lAzJmgPmdUma77FChb364ecDGkp3etmRT2H
+   OeorPfrdArcMKK139a3K48UD8gufx+xuliK9MU6VuBEROp65RLpKCYA08
+   w==;
+X-CSE-ConnectionGUID: 2LdHgwX5RAaGu3D7Djuwag==
+X-CSE-MsgGUID: rLhoa5wxSE6ZIGrY+mBUhg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="75776267"
 X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; 
-   d="scan'208";a="75776244"
+   d="scan'208";a="75776267"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 04:49:39 -0700
-X-CSE-ConnectionGUID: 46bj7kW9R7S9SpyxqHarWA==
-X-CSE-MsgGUID: NfcD+BIAQc67VzcJ6YfK2w==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 04:49:51 -0700
+X-CSE-ConnectionGUID: +FaBTqxRRR+7yfNacDU45w==
+X-CSE-MsgGUID: vywfQWn4TyqTD46nIdR3cA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; 
-   d="scan'208";a="248029022"
+   d="scan'208";a="248029068"
 Received: from boxer.igk.intel.com ([10.102.20.173])
-  by fmviesa002.fm.intel.com with ESMTP; 26 Mar 2026 04:49:37 -0700
+  by fmviesa002.fm.intel.com with ESMTP; 26 Mar 2026 04:49:47 -0700
 From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 To: netdev@vger.kernel.org
 Cc: bpf@vger.kernel.org,
@@ -55,9 +55,9 @@ Cc: bpf@vger.kernel.org,
 	aleksander.lobakin@intel.com,
 	bjorn@kernel.org,
 	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Subject: [PATCH v4 net 03/11] xsk: fix XDP_UMEM_SG_FLAG issues
-Date: Thu, 26 Mar 2026 12:49:11 +0100
-Message-Id: <20260326114919.519456-4-maciej.fijalkowski@intel.com>
+Subject: [PATCH v4 net 07/11] selftests: bpf: have a separate variable for drop test
+Date: Thu, 26 Mar 2026 12:49:15 +0100
+Message-Id: <20260326114919.519456-8-maciej.fijalkowski@intel.com>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20260326114919.519456-1-maciej.fijalkowski@intel.com>
 References: <20260326114919.519456-1-maciej.fijalkowski@intel.com>
@@ -67,51 +67,41 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Currently xp_assign_dev_shared() is missing XDP_USE_SG being propagated
-to flags so set it in order to preserve mtu check that is supposed to be
-done only when no multi-buffer setup is in picture.
+Currently two different XDP programs share a static variable for
+different purposes (picking where to redirect on shared umem test &
+whether to drop a packet). This can be a problem when running full test
+suite - idx can be written by shared umem test and this value can cause
+a false behavior within XDP drop half test.
 
-Also, this flag has the same value as XDP_UMEM_TX_SW_CSUM so we could
-get unexpected SG setups for software Tx checksums. Since csum flag is
-UAPI, modify value of XDP_UMEM_SG_FLAG.
+Introduce a dedicated variable for drop half test so that these two
+don't step on each other toes. There is no real need for using
+__sync_fetch_and_add here as XSK tests are executed on single CPU.
 
-Fixes: d609f3d228a8 ("xsk: add multi-buffer support for sockets sharing umem")
+Reviewed-by: Björn Töpel <bjorn@kernel.org>
 Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 ---
- include/net/xdp_sock.h  | 2 +-
- net/xdp/xsk_buff_pool.c | 4 ++++
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ tools/testing/selftests/bpf/progs/xsk_xdp_progs.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/xdp_sock.h b/include/net/xdp_sock.h
-index 23e8861e8b25..ebac60a3d8a1 100644
---- a/include/net/xdp_sock.h
-+++ b/include/net/xdp_sock.h
-@@ -14,7 +14,7 @@
- #include <linux/mm.h>
- #include <net/sock.h>
+diff --git a/tools/testing/selftests/bpf/progs/xsk_xdp_progs.c b/tools/testing/selftests/bpf/progs/xsk_xdp_progs.c
+index 683306db8594..023d8befd4ca 100644
+--- a/tools/testing/selftests/bpf/progs/xsk_xdp_progs.c
++++ b/tools/testing/selftests/bpf/progs/xsk_xdp_progs.c
+@@ -26,8 +26,10 @@ SEC("xdp.frags") int xsk_def_prog(struct xdp_md *xdp)
  
--#define XDP_UMEM_SG_FLAG (1 << 1)
-+#define XDP_UMEM_SG_FLAG BIT(3)
- 
- struct net_device;
- struct xsk_queue;
-diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
-index 37b7a68b89b3..729602a3cec0 100644
---- a/net/xdp/xsk_buff_pool.c
-+++ b/net/xdp/xsk_buff_pool.c
-@@ -247,6 +247,10 @@ int xp_assign_dev_shared(struct xsk_buff_pool *pool, struct xdp_sock *umem_xs,
- 	struct xdp_umem *umem = umem_xs->umem;
- 
- 	flags = umem->zc ? XDP_ZEROCOPY : XDP_COPY;
+ SEC("xdp.frags") int xsk_xdp_drop(struct xdp_md *xdp)
+ {
++	static unsigned int drop_idx;
 +
-+	if (umem->flags & XDP_UMEM_SG_FLAG)
-+		flags |= XDP_USE_SG;
-+
- 	if (umem_xs->pool->uses_need_wakeup)
- 		flags |= XDP_USE_NEED_WAKEUP;
+ 	/* Drop every other packet */
+-	if (idx++ % 2)
++	if (drop_idx++ % 2)
+ 		return XDP_DROP;
  
+ 	return bpf_redirect_map(&xsk, 0, XDP_DROP);
 -- 
 2.43.0
 
