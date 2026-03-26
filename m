@@ -1,77 +1,76 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04BD33DED9;
-	Thu, 26 Mar 2026 20:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A3C332604;
+	Thu, 26 Mar 2026 20:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774555662; cv=none; b=up70nOG2tCmImAjaZ/eK+eqew+STFIgMvfp7fKKXXd+h1SycY7zwcm7TnwjIy1tdWZWNFsvQmbX1deN4C/lltEpmwisyWIN2fgPgGKdGX16pAPXbs9uHRWGYEim+gVxdxFzyOwwP9gNTZ0q3VRSjaUv1bqnLLxg08eGw5rihiK4=
+	t=1774555667; cv=none; b=PiyPSSMMi5AWOrleRw6X87FBKBdkb3OM/Q8ywh3gWYRzLi/L29TLtK25p2tFnET12MPmA9AUefA9VO8Yvk7cw3I25JWb5W2FEnUhB4gR3lFmptIrODKJbtJioBSuDxmj1SH18UzisrppSucFWYf+qFCBcNen12wTcb4pvDHqEz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774555662; c=relaxed/simple;
-	bh=Zmij4qsy/LNInbgFVfuHxXloLEr8lGElEmtXJi+eSXE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N83p/HRUavDoVoXm6RJqasYNCPm1AsDFUW46B9cNDpdHJwte1lAVJJgDDXIMSWP43+CQszDuBUxZdkiu7o3R7rExMhFDRdr3Ib/zefyij4tmu/zQ2Mj/n59DKkyuFZJznNcN4JMPLJT/41kGEcvzD5KfDF8wqce17ncpbIKJyoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gNUq4+jm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774555667; c=relaxed/simple;
+	bh=bp1iEoeqeUWKYCv7HTMg7A+5K8IQRL9BXMemdoAYYT4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aUvVhCpfYQglziK/gQ4ZzlKURHus1plPKduLtge4lmEIeZCJ8AYPc79oJLtp0fMBmwmAmXKka8ko0CssCzzvsRThsHXuU36AJ4SNR5w7i2TpaIPl2DOI7Z+CyGRpR8bnfUwxR+BVWfuvSLblvHE7wotI0FZ31FoWaEIhDBNo2jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FgcZD9KR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gNUq4+jm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04FFDC2BC87;
-	Thu, 26 Mar 2026 20:07:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FgcZD9KR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58AF4C19423;
+	Thu, 26 Mar 2026 20:07:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774555662;
-	bh=Zmij4qsy/LNInbgFVfuHxXloLEr8lGElEmtXJi+eSXE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=gNUq4+jmj9rEGfjyBMzhOPnu48LzgQ5aGFMLKoGqM6HvQ9uVeOOKYoOY/82JpU716
-	 askX+Y+WRlmwieeKTtu4d+vagJXN8+L2ul/rR1/DEFSapYNDlnR6IyrxfkNPzgBX8E
-	 JsHZqzyzAejo8PyLswGUlikJciMFIX42kpP49AbsjNNxrj1R3ORwOtlRKmta3VjF6G
-	 05Uo09B0CsHzv5XcLyLjJoSs8u8NMQFlP0lxNtaG6uY5dtwRCxJgxZvQ9ckIfoOtMJ
-	 oTKGcgnoAt9AhWfMSw5Rnvqo3pgumsyvcxtMTc9pDW1/RXpSKSSwyXXjy4bWnVnqv0
-	 Av9UBVJRrFJQw==
-Date: Thu, 26 Mar 2026 13:07:40 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Xin Long <lucien.xin@gmail.com>
-Cc: network dev <netdev@vger.kernel.org>, quic@lists.linux.dev,
- davem@davemloft.net, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Stefan Metzmacher
- <metze@samba.org>, Moritz Buhl <mbuhl@openbsd.org>, Tyler Fanelli
- <tfanelli@redhat.com>, Pengtao He <hepengtao@xiaomi.com>, Thomas Dreibholz
- <dreibh@simula.no>, linux-cifs@vger.kernel.org, Steve French
- <smfrench@gmail.com>, Namjae Jeon <linkinjeon@kernel.org>, Paulo Alcantara
- <pc@manguebit.com>, Tom Talpey <tom@talpey.com>,
- kernel-tls-handshake@lists.linux.dev, Chuck Lever <chuck.lever@oracle.com>,
- Jeff Layton <jlayton@kernel.org>, Steve Dickson <steved@redhat.com>, Hannes
- Reinecke <hare@suse.de>, Alexander Aring <aahringo@redhat.com>, David
- Howells <dhowells@redhat.com>, Matthieu Baerts <matttbe@kernel.org>, John
- Ericson <mail@johnericson.me>, Cong Wang <xiyou.wangcong@gmail.com>, "D .
- Wythe" <alibuda@linux.alibaba.com>, Jason Baron <jbaron@akamai.com>,
- illiliti <illiliti@protonmail.com>, Sabrina Dubroca <sd@queasysnail.net>,
- Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, Daniel Stenberg
- <daniel@haxx.se>, Andy Gospodarek <andrew.gospodarek@broadcom.com>, "Marc E
- . Fiuczynski" <marc@fiuczynski.com>
-Subject: Re: [PATCH net-next v11 06/15] quic: add stream management
-Message-ID: <20260326130740.74b4c92f@kernel.org>
-In-Reply-To: <CADvbK_eXUfnGGQgGc_k-ecCW3-Co1MpGb7UvMgLonPy3HRhyFA@mail.gmail.com>
-References: <cover.1774410440.git.lucien.xin@gmail.com>
-	<91c6fd0a44eb15a98f945171ead8062badb89a60.1774410440.git.lucien.xin@gmail.com>
-	<CADvbK_eXUfnGGQgGc_k-ecCW3-Co1MpGb7UvMgLonPy3HRhyFA@mail.gmail.com>
+	s=k20201202; t=1774555666;
+	bh=bp1iEoeqeUWKYCv7HTMg7A+5K8IQRL9BXMemdoAYYT4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FgcZD9KRl1ruYV0QQ45A33vgyq9qWjiTVHx3mE961Jym2mBaccT89Sz9ZFKm3X+cm
+	 sj67BdmhcWHr/0kV8jUDV6pcamMrsCcc2sngCsKRKNpUb2r7vmrVX7HX9bXNv9xtjj
+	 /RAcdBlJ9A+M8VNuwAkapSphCmv31Xld/vDyeU6nQ2cJSdipPZIqHqhCL+4oJ4YbJv
+	 qF6MgqpNSW22oMcMV2E8GIUq91k95q5Gafvq+ojg7JgbXKlXL1161KlRnYEOO9VYsV
+	 4Nx9ogTtUxzmjgzXYlIxnQmXHpuPg4AEoStmsbc0sgvKv98EBZjSJGLRqwIyKyiIOp
+	 I1J1W+/QnJwYA==
+Date: Thu, 26 Mar 2026 20:07:40 +0000
+From: Simon Horman <horms@kernel.org>
+To: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+	decui@microsoft.com, longli@microsoft.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, shradhagupta@linux.microsoft.com,
+	kotaranov@microsoft.com, dipayanroy@linux.microsoft.com,
+	yury.norov@gmail.com, kees@kernel.org, linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2] net: mana: Use at least SZ_4K in doorbell ID
+ range check
+Message-ID: <20260326200740.GY111839@horms.kernel.org>
+References: <20260325180423.1923060-1-ernis@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260325180423.1923060-1-ernis@linux.microsoft.com>
 
-On Thu, 26 Mar 2026 11:06:26 -0400 Xin Long wrote:
-> The AI report on
+On Wed, Mar 25, 2026 at 11:04:17AM -0700, Erni Sri Satya Vennela wrote:
+> mana_gd_ring_doorbell() accesses offsets up to DOORBELL_OFFSET_EQ
+> (0xFF8) + 8 bytes = 4KB within each doorbell page. A db_page_size
+> smaller than SZ_4K is fundamentally incompatible with the driver:
+> doorbell pages would overlap and the device cannot function correctly.
 > 
->   https://netdev-ai.bots.linux.dev/ai-review.html?id=1624d906-c0b6-4e12-a63f-5cbfc51b660e#patch-5
+> Validate db_page_size at the source and fail the
+> probe early if the value is below SZ_4K. This ensures the doorbell ID
+> range check in mana_gd_register_device() can rely on db_page_size
+> being valid.
 > 
-> is false positive.
-> 
-> As the sk_alloc() calls sk_prot_alloc() with __GFP_ZERO, and the streams->head
-> is always initialized to NULL.
+> Fixes: 89fe91c65992 ("net: mana: hardening: Validate doorbell ID from GDMA_REGISTER_DEVICE response")
+> Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+> ---
+> Changes in v2:
+> * Remove "db_page_sz = max_t(u64, SZ_4K, gc->db_page_size)" in
+>   mana_gd_register_device and validate db_page_sz at the source
+>   mana_gf_init_pf_regs and mana_gd_init_vf_regs.
+> * Update commit message.
 
-Can you also check the google one?
+Thanks for the update.
 
-https://sashiko.dev/#/patchset/4019cfba3ffd6f91aee24713d2adc778f858b4c4.1774410440.git.lucien.xin@gmail.com
+Reviewed-by: Simon Horman <horms@kernel.org>
+
