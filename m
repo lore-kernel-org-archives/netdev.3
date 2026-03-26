@@ -1,30 +1,30 @@
 Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A5DF34D907
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6100C3A7585
 	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 20:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.202.193.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774557912; cv=none; b=UqaXjfe1QYkfwu48uSywtg1yOlZInAxV3/1VrJ7VPLOwpv0xxmenTWps/oIAxuyi+uLuGsCNVBzZCaFCtp3XN/f5nwrmoM2GaDVXm9BEcMDQqx/vuMlR2i545FnJvgpALoP4PmGxqlse7QU0cTHXjlFseiI/vuCC7xTQF07PDec=
+	t=1774557912; cv=none; b=lcU2DZwpLgWCj/Qo78y1QhQx0PO1/OIHcEvcNzVKYCAHWW2hh+14bpQJQ0M2DabrcrN7H8PVB121Rry1adjF6VS3yDoZI2uBRjQ2gnm2IW0iWXKzIWT3NQXIs8pq0CjnUeySiRJyY+LvitKbyhwflz/X4Cmmxyjs895WtIdCjJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774557912; c=relaxed/simple;
-	bh=m7IHSkZEUu88sqJeHdwKupt3xgnbuvYT1gJue+XSGfE=;
+	bh=UVGTkL9ok5W1QfwaA+6IjrabqWEP58upZp8CyzRNJYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mZpfmRVrZRUd8rEbD33Qf2jI+NwFYBbMO0UWx71suD/V2Uhjn8htQZf5P2Sh0z/zjwOdcTImhER09/NRWjhMNWnMQhJzwuG/yzqksWsk9a8F7sq+kkpcInwdAP4ExO1JMgwaJrtmBd8SDADstxWDwnjIdBo3IWr2Orrb8Mj206I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tinyisr.com; spf=pass smtp.mailfrom=tinyisr.com; dkim=pass (2048-bit key) header.d=tinyisr.com header.i=@tinyisr.com header.b=oa8IREAk; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=e9VyW/46; arc=none smtp.client-ip=34.202.193.197
+	 MIME-Version:Content-Type; b=USaRjZMTVcVpVF1tDJVrDLdqnje6psY2A4WCt6h86a50yQG/fhUZFHm0E+35vyufKkYhnpYFaHaBD58Ta2olJG5zporXjwZNWs3UysY4sxXoqs0x06ohg4tz9pTn9pMR6xiEFTHi52QagJ3vAKau3wss/xDPPDEE41RgFFgob7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tinyisr.com; spf=pass smtp.mailfrom=tinyisr.com; dkim=pass (2048-bit key) header.d=tinyisr.com header.i=@tinyisr.com header.b=NBkVZArV; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=CfAQsauh; arc=none smtp.client-ip=34.202.193.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tinyisr.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tinyisr.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tinyisr.com header.i=@tinyisr.com header.b="oa8IREAk";
-	dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b="e9VyW/46"
+	dkim=pass (2048-bit key) header.d=tinyisr.com header.i=@tinyisr.com header.b="NBkVZArV";
+	dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b="CfAQsauh"
 Authentication-Results: purelymail.com; auth=pass
-DKIM-Signature: a=rsa-sha256; b=oa8IREAkccNQpBuS+txW5AQUfei8baCofCn3DARIJO918eblyDO7JBlQoOKtlze2f7AOhaGW1k9YTePZFKrFm+mBfhnus7ao2P3dU7D0D0YTNLPWexXMBwFyuyMH9xr6r0lcQ6RtHb7IoZeWIumvDrIaA6vXUf+hQeGmaI+7P3RDMMJ2SuAZn3qrFCxIStjGcChKWJthro+6sQg5273TK95XilgNS6og45JEzPNZ12gIUXbjSjlaPOlQxOmVtctC0X3PMKlLWeyjSjtrbOkGohkm/woihquxx86hKc42zUmm4gCcd9C5ym3jeKMBgv7+OjmFuO9x9TKPhFz96qDJmQ==; s=purelymail1; d=tinyisr.com; v=1; bh=m7IHSkZEUu88sqJeHdwKupt3xgnbuvYT1gJue+XSGfE=; h=Received:From:To:Subject:Date;
-DKIM-Signature: a=rsa-sha256; b=e9VyW/46sbwhnR5qkA+pOcXlvqzcUB5L8+3g4nYfaGxgR/rd3G+BIASNtRYS32pp5gUR+Ajs5jLDLdzhAeD8UuLIxkouBvpl57Db155+d6bLcZY/1fRW5Efd9I1AEJ2IzBb7pNP/XJ3+quk66j6O64cCrhLyTkVaUSXGMmlBsbdmDChzEGterIYpsa9VOAqxI1l8ywjjdSqd1uhgeJlCZSgSgxnd7DAz41jslln9IMSFZXG3QoOAmGTd2lWkfvOWSUzNyYkl2nMlYuD+oVC0oDPQYy6XkSvLSY+Y9A8WRkjD6j1cums5yATi8gsqE+T4Q5zIoeFGx3YJbvCuc387Sw==; s=purelymail1; d=purelymail.com; v=1; bh=m7IHSkZEUu88sqJeHdwKupt3xgnbuvYT1gJue+XSGfE=; h=Feedback-ID:Received:From:To:Subject:Date;
+DKIM-Signature: a=rsa-sha256; b=NBkVZArVmBknKGf7i0q8zehOSVQy6pFVZJMKHgZSVbiF0Cn0qNMmHt5qZ5nl1ylSqjLibt1leqDntv6SW/E0fYTK8Tkp6NDFn2a5TNDCz2aInbPjRWTwDJUm/TYzfiSxepXBAmHPtB3II+LtxurOgZ3WS+QtWxbHdZvZaUnv131qph+qc2oqZscocT85UrmgGPkQlVxDmHhYd2zKUvgyAe7KqiP6TzAiQcL4/QMswF3nek2f2JZQ1K9EENQD2eUXHG1lF3VdCu/CNMkbZjJRRIo8hgd8UIuINTc7GbOmI0WJ8vN+9D2+2kqtZCwZZdthD6vLsf5MNuDktQgrTSfL1Q==; s=purelymail1; d=tinyisr.com; v=1; bh=UVGTkL9ok5W1QfwaA+6IjrabqWEP58upZp8CyzRNJYA=; h=Received:From:To:Subject:Date;
+DKIM-Signature: a=rsa-sha256; b=CfAQsauhyYO2b08TnmfigV8C3StnQl4txJF7AYyrsP9aASPrAioK3s6FW8lR/AoNEhZA4acn6r1mwETniGGwMRkAg0qqTSR3zfLLaDO7bpBuJZkiZdPSz9w1cYNksHATnmATJJK78m0fb0Z7+Wc+qBRai5ua8bogXrzxBm2Wdml9X+xM+gRlD6CFBtpIekPa2LUgf4dzDvLB9Re9F1hfZf3xvhMHv2RkVZLeHZt08zWvf8AXfRBL7L/IB7rUEXoxkfJ+NGCcLP9pjuh8xJJDNaOgnACYfYyoHZuv5Ci5Xf6qtwAI2RqsfuxvmbVAc29kPrjLX2sdnez3OYqoT0/yXQ==; s=purelymail1; d=purelymail.com; v=1; bh=UVGTkL9ok5W1QfwaA+6IjrabqWEP58upZp8CyzRNJYA=; h=Feedback-ID:Received:From:To:Subject:Date;
 Feedback-ID: 99681:12517:null:purelymail
 X-Pm-Original-To: netdev@vger.kernel.org
 Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id 1206586277;
           (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-          Thu, 26 Mar 2026 20:44:31 +0000 (UTC)
+          Thu, 26 Mar 2026 20:44:34 +0000 (UTC)
 From: Joris Vaisvila <joey@tinyisr.com>
 To: netdev@vger.kernel.org
 Cc: horms@kernel.org,
@@ -39,9 +39,9 @@ Cc: horms@kernel.org,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Joris Vaisvila <joey@tinyisr.com>
-Subject: [PATCH net-next 1/4] dt-bindings: net: dsa: add MT7628 ESW
-Date: Thu, 26 Mar 2026 22:44:10 +0200
-Message-ID: <20260326204413.3317584-2-joey@tinyisr.com>
+Subject: [PATCH net-next 2/4] net: phy: mediatek: add phy driver for MT7628 built-in Fast Ethernet PHYs
+Date: Thu, 26 Mar 2026 22:44:11 +0200
+Message-ID: <20260326204413.3317584-3-joey@tinyisr.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260326204413.3317584-1-joey@tinyisr.com>
 References: <20260326204413.3317584-1-joey@tinyisr.com>
@@ -55,127 +55,113 @@ Content-Transfer-Encoding: quoted-printable
 X-MIME-Autoconverted: from 8bit to quoted-printable by Purelymail
 Content-Type: text/plain; charset=UTF-8
 
-Add bindings for MT7628 SoC's Embedded Switch.
+The Fast Ethernet PHYs present in the MT7628 SoCs require an
+undocumented bit to be set before they can establish 100mbps links.
+
+This commit adds the Kconfig option MEDIATEK_FE_SOC_PHY and the
+corresponding driver mtk-fe-soc.c.
 
 Signed-off-by: Joris Vaisvila <joey@tinyisr.com>
 ---
- .../bindings/net/dsa/mediatek,mt7628-esw.yaml | 101 ++++++++++++++++++
- 1 file changed, 101 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/dsa/mediatek,mt76=
-28-esw.yaml
+ drivers/net/phy/mediatek/Kconfig      | 10 +++++-
+ drivers/net/phy/mediatek/Makefile     |  1 +
+ drivers/net/phy/mediatek/mtk-fe-soc.c | 50 +++++++++++++++++++++++++++
+ 3 files changed, 60 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/phy/mediatek/mtk-fe-soc.c
 
-diff --git a/Documentation/devicetree/bindings/net/dsa/mediatek,mt7628-esw.=
-yaml b/Documentation/devicetree/bindings/net/dsa/mediatek,mt7628-esw.yaml
+diff --git a/drivers/net/phy/mediatek/Kconfig b/drivers/net/phy/mediatek/Kc=
+onfig
+index bb7dc876271e..b6a51f38c358 100644
+--- a/drivers/net/phy/mediatek/Kconfig
++++ b/drivers/net/phy/mediatek/Kconfig
+@@ -21,8 +21,16 @@ config MEDIATEK_GE_PHY
+ =09  common operations with MediaTek SoC built-in Gigabit
+ =09  Ethernet PHYs.
+=20
++config MEDIATEK_FE_SOC_PHY
++=09tristate "MediaTek SoC Fast Ethernet PHYs"
++=09help
++=09  Support for MediaTek MT7628 built-in Fast Ethernet PHYs.
++=09  This driver only sets an initialization bit required for the PHY
++=09  to establish 100 Mbps links. All other PHY operations are handled
++=09  by the kernel's generic PHY code.
++
+ config MEDIATEK_GE_SOC_PHY
+-=09tristate "MediaTek SoC Ethernet PHYs"
++=09tristate "MediaTek SoC Gigabit Ethernet PHYs"
+ =09depends on ARM64 || COMPILE_TEST
+ =09depends on ARCH_AIROHA || (ARCH_MEDIATEK && NVMEM_MTK_EFUSE) || \
+ =09=09   COMPILE_TEST
+diff --git a/drivers/net/phy/mediatek/Makefile b/drivers/net/phy/mediatek/M=
+akefile
+index ac57ecc799fc..6f9cacf7f906 100644
+--- a/drivers/net/phy/mediatek/Makefile
++++ b/drivers/net/phy/mediatek/Makefile
+@@ -1,5 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+ obj-$(CONFIG_MEDIATEK_2P5GE_PHY)=09+=3D mtk-2p5ge.o
++obj-$(CONFIG_MEDIATEK_FE_SOC_PHY)=09+=3D mtk-fe-soc.o
+ obj-$(CONFIG_MEDIATEK_GE_PHY)=09=09+=3D mtk-ge.o
+ obj-$(CONFIG_MEDIATEK_GE_SOC_PHY)=09+=3D mtk-ge-soc.o
+ obj-$(CONFIG_MTK_NET_PHYLIB)=09=09+=3D mtk-phy-lib.o
+diff --git a/drivers/net/phy/mediatek/mtk-fe-soc.c b/drivers/net/phy/mediat=
+ek/mtk-fe-soc.c
 new file mode 100644
-index 000000000000..d3c9df30ed5a
+index 000000000000..317944411fbe
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/net/dsa/mediatek,mt7628-esw.yaml
-@@ -0,0 +1,101 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/dsa/mediatek,mt7628-esw.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++++ b/drivers/net/phy/mediatek/mtk-fe-soc.c
+@@ -0,0 +1,50 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Driver for MT7628 Embedded Switch internal Fast Ethernet PHYs
++ */
++#include <linux/module.h>
++#include <linux/phy.h>
 +
-+title: Mediatek MT7628 Embedded Ethernet Switch
++#define MTK_FPHY_ID_MT7628=090x03a29410
++#define MTK_EXT_PAGE_ACCESS=090x1f
 +
-+maintainers:
-+  - Joris Vaisvila <joey@tinyisr.com>
++static int mt7628_phy_read_page(struct phy_device *phydev)
++{
++=09return __phy_read(phydev, MTK_EXT_PAGE_ACCESS);
++}
 +
-+description:
-+  The MT7628 SoC's built-in Ethernet Switch is a five port switch with
-+  integrated 10/100 PHYs. The switch registers are directly mapped in the =
-SoC's
-+  memory. The switch has an internally connected 1G CPU port and 5 user po=
-rts
-+  connected to the built-in Fast Ethernet PHYs.
++static int mt7628_phy_write_page(struct phy_device *phydev, int page)
++{
++=09return __phy_write(phydev, MTK_EXT_PAGE_ACCESS, page);
++}
 +
-+unevaluatedProperties: false
++static int mt7628_phy_config_init(struct phy_device *phydev)
++{
++=09/*
++=09 * This undocumented bit is required for the PHYs to be able to
++=09 * establish 100mbps links.
++=09 */
++=09return phy_write_paged(phydev, 0x8000, 30, BIT(13));
++}
 +
-+allOf:
-+  - $ref: dsa.yaml#/$defs/ethernet-ports
++static struct phy_driver mtk_soc_fe_phy_driver[] =3D {
++=09{
++=09=09PHY_ID_MATCH_EXACT(MTK_FPHY_ID_MT7628),
++=09=09.name =3D "MediaTek MT7628 PHY",
++=09=09.config_init =3D mt7628_phy_config_init,
++=09=09.read_page =3D mt7628_phy_read_page,
++=09=09.write_page =3D mt7628_phy_write_page,
++=09},
++};
 +
-+properties:
-+  compatible:
-+    const: mediatek,mt7628-esw
++module_phy_driver(mtk_soc_fe_phy_driver);
++static const struct mdio_device_id __maybe_unused mtk_soc_fe_phy_tbl[] =3D=
+ {
++=09{ PHY_ID_MATCH_EXACT(MTK_FPHY_ID_MT7628) },
++=09{ }
++};
 +
-+  reg:
-+    maxItems: 1
-+    description: MMIO address of the switch
++MODULE_DESCRIPTION("MediaTek SoC Fast Ethernet PHY driver");
++MODULE_AUTHOR("Joris Vaisvila <joey@tinyisr.com>");
++MODULE_LICENSE("GPL");
 +
-+  resets:
-+    items:
-+      - description: Phandle of system reset controller with ESW reset ind=
-ex
-+      - description: Phandle of system reset controller with EPHY reset in=
-dex
-+
-+  reset-names:
-+    items:
-+      - const: esw
-+      - const: ephy
-+
-+  mdio:
-+    $ref: /schemas/net/mdio.yaml#
-+    unevaluatedProperties: false
-+
-+required:
-+  - compatible
-+  - reg
-+  - resets
-+  - reset-names
-+
-+examples:
-+  - |
-+    switch0: switch@10110000 {
-+        reg =3D <0x10110000 0x8000>;
-+
-+        resets =3D <&sysc 23>, <&sysc 24>;
-+        reset-names =3D "esw", "ephy";
-+
-+        compatible =3D "mediatek,mt7628-esw";
-+
-+        ports {
-+            #address-cells =3D <1>;
-+            #size-cells =3D <0>;
-+
-+            port@0 {
-+                reg =3D <0>;
-+                phy-mode =3D "internal";
-+            };
-+
-+            port@1 {
-+                reg =3D <1>;
-+                phy-mode =3D "internal";
-+            };
-+
-+            port@2 {
-+                reg =3D <2>;
-+                phy-mode =3D "internal";
-+            };
-+
-+            port@3 {
-+                reg =3D <3>;
-+                phy-mode =3D "internal";
-+            };
-+
-+            port@4 {
-+                reg =3D <4>;
-+                phy-mode =3D "internal";
-+            };
-+
-+            port@6 {
-+                reg =3D <6>;
-+                ethernet =3D <&ethernet>;
-+                phy-mode =3D "rgmii";
-+
-+                fixed-link {
-+                    speed =3D <1000>;
-+                    full-duplex;
-+                };
-+            };
-+        };
-+    };
++MODULE_DEVICE_TABLE(mdio, mtk_soc_fe_phy_tbl);
 --=20
 2.53.0
 
