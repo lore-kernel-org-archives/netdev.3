@@ -1,81 +1,87 @@
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E5339B4A9
-	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 17:49:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C78836E48D;
+	Thu, 26 Mar 2026 18:04:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774547377; cv=none; b=M6PoVRU53SXFjN3IwBjZO96KEAxzadxnpDvMA0kMDHl5fASjON0bFQcPEynZ2pf+stc3ovFI/uDQTOCttueqfz1913iJZ4r0DdS669yMifa3kqfMMZ5zC7lqjtPk2ag9dr8pzEIHMjdgNnb1oCvEE0lfN6IW8wXjofaIRw9gBx8=
+	t=1774548299; cv=none; b=tXus0HfhlbnQ73tYQybfWl5NAs46AF+OyFXkRaApoItL+q+jN3lBhVk4aQXvVTRyWwVgsGr30ewuT5tjT5F9Am8iGzD4hLNIXRVxunS7lspUKFT83oY0QbzdgAEObvhEpjDvYOIlAQoKBQytX5kGDelQYUas04wZjwenYnh458E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774547377; c=relaxed/simple;
-	bh=Ys8BVN0x3U87U6nb5s7SqO4PUjwOesE4M8Kiph+9P6s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZDeAM98R+AAqzbV2K5VTj4r5cjX0QuumIICNweCfHOulhL4U2DHg0o9dQ6bgAf7aKtjT2CQ3OiYMiWq9foBsB4k3pWfBoG28nKq6wA5fvm6hrbKDmypLvCUj79uJjME4yQJMfw4htH1dO95GelPgbREJUiiAfT1FsLWyJBEeyek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Wb3kqIg8; arc=none smtp.client-ip=91.218.175.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1774548299; c=relaxed/simple;
+	bh=qpAtIegWs0nrmgQYz8seyUU8RILvB8VXDiR3yGSyW2s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kzfCMlWcnIOl1KIzik86lEY5Ixq0AUhF8f9iBNQ0yLuLcgOabXS09ZrmDWAHsNMsbZVEB87f4gg8TSVrKKXh9r8mY89Zu7gqlbYIPKcKToJZ73swTiYdW3hy/xxiytEX0v1/+ACQkmmqbqdNypv/oTse2j1jdm+wv5FfNf1qmEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oYRvSGgs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Wb3kqIg8"
-Message-ID: <c0c453f9-28aa-462f-884d-0e9beb2fdf0a@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774547361;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pZzE7Lq+Wi/ClrVVHCpj5Th0qEok0qKHryuF5ubIT4s=;
-	b=Wb3kqIg8DT0FCwK8Sajf0T8vfYIDFjXuvV+JIxaCOsQHmvS8CZc1vv7ceUVlNKanVPigEH
-	Sh5J4c7epGiRzznou9TavQlH1hb58SCRcIC2tifQcHzTC4rWg2yz/tiXqJycf3HJK0Twgl
-	sR9ei6ymSpsUNPgfMMG/67R4+fYe5zo=
-Date: Thu, 26 Mar 2026 10:49:14 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oYRvSGgs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11FD9C2BCB1;
+	Thu, 26 Mar 2026 18:04:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774548298;
+	bh=qpAtIegWs0nrmgQYz8seyUU8RILvB8VXDiR3yGSyW2s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oYRvSGgspK+mulzMUQ36UxRvcUstR5rZzn14ac570iMtTy/LIGM/WQmEhR+gRXN8A
+	 OyF2HSQocuufy7SRk9CWmxP9fphI0+iEJL9AEV2S91N39YljfkYPAh80tEdxd+kdK1
+	 pSKPPdPmWRXAd/zvgMddZWG4hFtEs4meYtL17T+6LL3p6TsdIRK1ci96GS7/zqrpH1
+	 lBU/4gQHH6CIEQ1FpFAt19qNfM1qE//Co9Av44XginlsW4ygFksy0DMfnXqbjO7siB
+	 d70mCpW42qPFJIXAmGeREuclg8pj3VFN9Afkzd9piMbjQbNuuiIvgdCnL45CAVfF/l
+	 +cPqdmU3sNN4Q==
+Date: Thu, 26 Mar 2026 18:04:53 +0000
+From: Simon Horman <horms@kernel.org>
+To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
+	netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net-next 03/15] net: stmmac: qcom-ethqos: eliminate
+ configure_func
+Message-ID: <20260326180453.GU111839@horms.kernel.org>
+References: <acKNcX5PqtWYf8m3@shell.armlinux.org.uk>
+ <E1w51Xs-0000000DwVV-2bnh@rmk-PC.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 3/5] bpf: add helper masks for ADJ_ROOM flags and encap
- validation
-To: "Hudson, Nick" <nhudson@akamai.com>
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- "Tottenham, Max" <mtottenh@akamai.com>, "Glasgall, Anna"
- <aglasgal@akamai.com>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20260318134242.2725749-1-nhudson@akamai.com>
- <20260318134242.2725749-4-nhudson@akamai.com>
- <f0f271ae-4d4c-4d52-8670-a14204da437d@linux.dev>
- <9E9BE3BD-1640-49E7-8801-130945073B24@akamai.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Martin KaFai Lau <martin.lau@linux.dev>
-In-Reply-To: <9E9BE3BD-1640-49E7-8801-130945073B24@akamai.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <E1w51Xs-0000000DwVV-2bnh@rmk-PC.armlinux.org.uk>
 
-
-
-On 3/26/26 10:02 AM, Hudson, Nick wrote:
->>>     static int bpf_skb_net_grow(struct sk_buff *skb, u32 off, u32 len_diff,
->>>        u64 flags)
->>> @@ -3502,6 +3513,11 @@ static int bpf_skb_net_grow(struct sk_buff *skb, u32 off, u32 len_diff,
->>>    unsigned int gso_type = SKB_GSO_DODGY;
->>>    int ret;
->>>   + if (unlikely(flags & ~(BPF_F_ADJ_ROOM_ENCAP_MASK |
->>> +        BPF_F_ADJ_ROOM_NO_CSUM_RESET |
->>> +        BPF_F_ADJ_ROOM_FIXED_GSO)))
->> Under which case this new check will be hit?
-> If a user supplies +ve len_diff and attempts to pass a DECAP flag.
+On Tue, Mar 24, 2026 at 01:11:44PM +0000, Russell King (Oracle) wrote:
+> Since ethqos_fix_mac_speed() is called via a function pointer, and only
+> indirects via the configure_func function pointer, eliminate this
+> unnecessary indirection.
 > 
-> The commit message had
-> 
->      Add flag validation to bpf_skb_net_grow() to reject invalid encap
->      flags early.
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-There is DECAP_MASK check in bpf_skb_adjust_room() and then !shrink is 
-rejected. What am I missing?
+...
+
+> @@ -623,14 +627,6 @@ static void ethqos_configure_sgmii(struct qcom_ethqos *ethqos,
+>  	ethqos_pcs_set_inband(ethqos, interface == PHY_INTERFACE_MODE_SGMII);
+>  }
+>  
+> -static void ethqos_fix_mac_speed(void *priv, phy_interface_t interface,
+> -				 int speed, unsigned int mode)
+> -{
+> -	struct qcom_ethqos *ethqos = priv;
+> -
+> -	ethqos->configure_func(ethqos, interface, speed);
+> -}
+> -
+>  static int qcom_ethqos_serdes_powerup(struct net_device *ndev, void *priv)
+>  {
+>  	struct qcom_ethqos *ethqos = priv;
+
+Hi Russell,
+
+FYI, AI generated review reports that the comment in ethqos_clks_config()
+that references ethqos_fix_mac_speed() should also be updated.
+
+...
