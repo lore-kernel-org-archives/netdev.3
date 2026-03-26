@@ -1,116 +1,86 @@
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04EA3AC0FA
-	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 09:09:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774516145; cv=pass; b=oKp3R3tqjbMvfKxpYom3BtjGb2SayFOOKuo0wgVsoB8gozHI+sZ48A7elNBDDSMrWwx/xs1fhyNal1j+UlEQyKTtLqfTmCeWaR8N6BaO/G+BkTFLDUf6m1bt0RtPTr1VY9IfN4730YfceTTeL6qsgotuvx7vm2+4yGKisMxxt7s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774516145; c=relaxed/simple;
-	bh=uA25o5lpi6eVBSrg/N1K6ROoeMRwYMOMW3SOAr/2gF0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FtUODbRvI/AdnbyTxbSP52s/XsFMtU7VeSR5bnbAEQ2K/pJE3uZP5g/VrOK9tdvyRulXO5GpvKTr6vVhScZcdB88YjqR0peJ7RUeZzxrW/ELhQO7IMhTLfTx2jLIU4OaL+1zK/v+3sk8fjmdCyr0ax5tF6v12S38j2gdG5kr3To=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=egxOrybp; arc=pass smtp.client-ip=209.85.128.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F6FB3AC0FA;
+	Thu, 26 Mar 2026 09:10:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774516218; cv=none; b=BcdReD8Extz/ngMz4OAaaGc4YQS8OVd3CXHdeHH93WntiJ0hI6I2U4PyjiutmfN/Y8A+gwpup2kgFICofGXOx0XdU9XGXjJ7mrQSM437aL0dSYHhLw3wUKyv3Nuf7AZuhSOxKMkhS1nhDjBwj21+BE6h+uWMGAGbE4CQehfOQrk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774516218; c=relaxed/simple;
+	bh=/1xRfd6xXT565etnvNqkfEEgLZJv7ZZbnDsBkKOaf1U=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=R8+IZN55XW6Ensjnqos9xxpL1YxmvJmTXTZSkOgXKi/chc3q4jXctIYQkQhczUf8weBYu9AoUx3ySF6Kr7GtRyhEGiMo/6U29z3kgKSMyKBXJk9s9tmr/sL4p04APySF5iyl5MrQf0O6t1JLVQTj91Hj7UWTPnyQuOb7j4QafHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tBEjJSu6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="egxOrybp"
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-7986e538decso6571297b3.1
-        for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 02:09:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774516143; cv=none;
-        d=google.com; s=arc-20240605;
-        b=GP9jRRFROIwlQhtSQxM9+69UcSZ+pfyDAhW0TxQM2Jw6s+4y54BXMJbvFXpppyihoX
-         /4c7CcwR/pVAOA4IutUlavsB+EvILErZFSVINCsLsmy70/nvVxraOgcYj1kE7KHb/keA
-         +prA5jcUiUlmriGJhYd4cHpP+yuLGudTEZnlcRtd3X6BDZ1zEYYltXRunhQBIokBjNMh
-         h5NpHyNko0yqM1Mj4hAX4ESAlsHb/peM0sslkdfpAqtUyGnwXQ6uvzx7zj8I85vC7b3K
-         cAqyM/dBBscZpvuo6HEQ/DjtCHMOOZ/vsn3AK1gLG4zZFk6Cy8oxueoaSvoFhOh4z2XJ
-         2jEg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=uA25o5lpi6eVBSrg/N1K6ROoeMRwYMOMW3SOAr/2gF0=;
-        fh=3vrntfd5hH25oSqoE5N3A54ysyp2x4qXVO67fQLwmZA=;
-        b=DFES28NOF74Kn8GeneG8tCJWWiwOzjNm19fXfXynBqEtOZ97npre9h6TH2nz7Hbro9
-         LD62iR832rRmDcg+JB9FItWf6bVfiRmee0mcSVcsjonrMoqlVBIJvVj9cAZaBbbXssUJ
-         lS2XUFQgeYKN8/oT9ZgMgHkc7i3IlEhQpbt2ZNg3TG+Fw77SsVleS5HSEw2a7BZITfjM
-         rjS+rDDVyUBNR//nL5bh7pOEJDx5jk9O6HSiRPdnKeeJsf30i3X4J+C40P17MLw4EhYp
-         x2ZBCOmVcUDKc8CB2+gtjJXe6jHCscO39GtCARUDyfAMm3k/smn+XF8euergWCDjKfqO
-         zS6Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774516143; x=1775120943; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uA25o5lpi6eVBSrg/N1K6ROoeMRwYMOMW3SOAr/2gF0=;
-        b=egxOrybplSlmvCycHtCuGYbW1A5P5oNITAlKux98JNdH32W3gd7FvITIugTC40APEq
-         Nf/gdQIFAgV2ksdsLd7vNMwXcKGMK9ojGYEyh87o8SKjGvdQp1cq332eGVhJ96pus4y0
-         3t13kiyljwG+ATCz/fWGN/CqRtf5GPblFfgMNE+jXRdHUs+9j+6mYLoDppfXgKQr51xt
-         u8Bu+X9v6yx/7TYZq0lXHgnTrkhf6d4cpVuv3d6D8YAtR0lqGSKu6klwi2djtA/SuIc5
-         ecpDDEaouBk6qPRzoWTlsMeKegO8HRjY2SFUb6fs+HqAbuKrEk+c0z3ZkmsO9RK0eD/s
-         SLNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774516143; x=1775120943;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=uA25o5lpi6eVBSrg/N1K6ROoeMRwYMOMW3SOAr/2gF0=;
-        b=qZLbpO4L7I1cobLboXkiglQizyyhEmsycwoT3BhKs7A36Uy2FsKnI2pf55lp4z4IJT
-         yil2jn7ZV4grS4P3DUvdiQVlDS7XY3H/wnlQPnqEIVCofHo+JnvPXuXzUQ5xJOJlY63n
-         pXQ7r0eNZBhAeWp2zNTYa3uuSgK5QECS5ike+2yJGR+2cNvxfbReRWS9newe3SrcvAzG
-         Cev2URciQ6OsjscjkCxT0YBAFx6L0k+A1Q+2uNodlwuL8wQXGSDFFG8ipn8CJoEJDAAl
-         25OYvOXKFIQRCdsdaWSyKxnRPqYaa5UvfvBaKpPiW4vlAyZiGaVxK9jsnDpB3zp4eUmQ
-         d4eg==
-X-Forwarded-Encrypted: i=1; AJvYcCU79W2+W/WzW8raErBjV0y5w23VO9OaV8atZaM9HFeneEKfFaysVefUVsaQigs8kBP1fR6n9Gs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywe8M0RCSm7dglgwMHkAUQV6kJl7GoIyItUhyc7lp/Vws9R7C9z
-	zXSmxZKmhf96SNJxS8DIGJ+c3ZZH9pptTYoLwjJkyxxS4K/CeEPme9cq1RAWRUCiAXgLgaO+ZE4
-	Kb0DkJ729ddNl/YttuLsJoJ49T2g0JEg=
-X-Gm-Gg: ATEYQzzq5zemb50nnXsYv1Ml/qh/30g2dqv2hG5YqNRPD2C7rmbJHBzTgBm/Y5sehXX
-	4QmAq6bd0eUJ2NMmbQoZIy2jacMZrMKfWQQklUgLl8A4s6Jzb+1ZlzXXbYa8H07mlFZcnNn0gV3
-	WOBdzXgpYwDUTKn5FPpMAfR2jFGY9UV3d3OnqcMojlClHKwFx/fgNtg/NQ8DywA9KpgfaLGJvXo
-	ttnk/11ll4CfhGjGFlGFtkT6as7guDFLAUnJdQ+LHhAouYReL5zTBTZm4Nb2b44eKA5q+Lvqc2/
-	Ym47QZtprWEYT0rX
-X-Received: by 2002:a05:690c:46c4:b0:799:3a3:2f25 with SMTP id
- 00721157ae682-79acf67c2cfmr77450957b3.38.1774516142930; Thu, 26 Mar 2026
- 02:09:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tBEjJSu6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 422EBC19423;
+	Thu, 26 Mar 2026 09:10:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774516218;
+	bh=/1xRfd6xXT565etnvNqkfEEgLZJv7ZZbnDsBkKOaf1U=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=tBEjJSu6vUj+TDp1IJRwJXWKLb0TYeuUeuqMIwGmh4nfq9Ltey4x5dU3Et8tPQZAP
+	 OrdgA6MzKyL0T8pP5/LF5YeCNO+qGHAXQd5D2f6Yak4Ew5Oq/bzaUsrjq7Zp8iPDjw
+	 GxREgMOFWlHYyJZ+7M2+Lpw0VQ4iMzNMoh7HhCtB3p4rCrKknDqnUwYu79SUHa5D1I
+	 OlRQvbTezqif2QWio10hv/w2STk1Swc7tBgPXTfxMjnO8j7K8xNQVudSPKxqaVshAt
+	 RcPERg5iZypSzS61kvlDFC17fp5pnEIa3asYmJW6npWmP5aeXduP/OZ4daJP8Nb3hy
+	 e2F5wfZ4u3Uow==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FCF33809A1C;
+	Thu, 26 Mar 2026 09:10:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260326021642.29170-1-dqfext@gmail.com> <20260326081304.xKa7-s_1@linutronix.de>
- <CALW65jYdzn_rZWa2zwYd5J+Gd=kyaGMsVFyX0fMJfKfgULMO6w@mail.gmail.com> <20260326083020.2fOQj5br@linutronix.de>
-In-Reply-To: <20260326083020.2fOQj5br@linutronix.de>
-From: Qingfang Deng <dqfext@gmail.com>
-Date: Thu, 26 Mar 2026 17:08:50 +0800
-X-Gm-Features: AQROBzAFY5MiCnvJ2DMtdJfFsNq_yFZ6iw3jGYwdcM9wBpkBnMh9AY45ZZy5_aw
-Message-ID: <CALW65jY48_cq7tZR2S_b+Y1zJw90PGtQcM9JzK1wDako4yUaWg@mail.gmail.com>
-Subject: Re: [PATCH net-next v4] selftests: net: add tests for PPP
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Shuah Khan <shuah@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Felix Maurer <fmaurer@redhat.com>, 
-	Antonio Quartulli <antonio@openvpn.net>, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-ppp@vger.kernel.org, 
-	netdev@vger.kernel.org, Paul Mackerras <paulus@ozlabs.org>, 
-	Guillaume Nault <gnault@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v5 0/6] TLS read_sock performance scalability
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177451620504.2447831.2574474654524015767.git-patchwork-notify@kernel.org>
+Date: Thu, 26 Mar 2026 09:10:05 +0000
+References: <20260324-tls-read-sock-v5-0-5408befe5774@oracle.com>
+In-Reply-To: <20260324-tls-read-sock-v5-0-5408befe5774@oracle.com>
+To: Chuck Lever <cel@kernel.org>
+Cc: john.fastabend@gmail.com, kuba@kernel.org, sd@queasysnail.net,
+ netdev@vger.kernel.org, kernel-tls-handshake@lists.linux.dev,
+ chuck.lever@oracle.com, hare@suse.de, alistair.francis@wdc.com
 
-On Thu, Mar 26, 2026 at 4:30=E2=80=AFPM Sebastian Andrzej Siewior
-<bigeasy@linutronix.de> wrote:
->
-> > AFAIK, this can only happen with PPTP or L2TP, which were not included
-> > in this patch.
->
-> Yeah, that one. I was sort of looking into but gave up after a while
-> digging through code, since I had no idea how to setup that up=E2=80=A6
+Hello:
 
-I used Google's Antigravity to generate the skeleton of the test, and
-the rest was some manual tweak and trial and error.
+This series was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Regards,
-Qingfang
+On Tue, 24 Mar 2026 08:53:22 -0400 you wrote:
+> I'd like to encourage in-kernel kTLS consumers (i.e., NFS and
+> NVMe/TCP) to coalesce on the use of read_sock. When I suggested
+> this to Hannes, he reported a number of nagging performance
+> scalability issues with read_sock. This series is an attempt to
+> run these issues down and get them fixed before we convert the
+> above sock_recvmsg consumers over to read_sock.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,v5,1/6] tls: Purge async_hold in tls_decrypt_async_wait()
+    https://git.kernel.org/netdev/net/c/84a8335d8300
+  - [net-next,v5,2/6] tls: Abort the connection on decrypt failure
+    (no matching commit)
+  - [net-next,v5,3/6] tls: Fix dangling skb pointer in tls_sw_read_sock()
+    (no matching commit)
+  - [net-next,v5,4/6] tls: Factor tls_strp_msg_release() from tls_strp_msg_done()
+    (no matching commit)
+  - [net-next,v5,5/6] tls: Suppress spurious saved_data_ready on all receive paths
+    (no matching commit)
+  - [net-next,v5,6/6] tls: Flush backlog before waiting for a new record
+    (no matching commit)
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
