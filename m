@@ -1,267 +1,571 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71AEE41160C
-	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 16:33:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74F2413229;
+	Thu, 26 Mar 2026 16:33:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774542784; cv=none; b=D0Mi6SHEHAuwrdv2JgKMsbua+rEH+v95saZixE4HVjaYo8wn+1CV7x9cx3ULRkG/I84Cg19v3XL9WUHk/6U+/74/l/EafGjfLZZODKNL1lcMShKSH/OElRsasPrslI8AOT80b/BwLE47zrmE+NZc4xG3aMhkivYocfUsPlZ01WQ=
+	t=1774542792; cv=none; b=JdpkoDZgdubqh3UpSon80CajpspOTFW14Xd8KMlG1U8mx4gRmh3/DM6wgKNEv9R2LwRLbTm2OOrr/0fCzdOqX7G/dfWr1L3IdCHgntFqJV/LWhFAiug6jiZWuvyt9p2XZyPfGWvdMYpEeW5ZMjtMBgVjKbkvx+NxvuF3KVkXJaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774542784; c=relaxed/simple;
-	bh=mXc8HhXjqNJCvEd/LGg/yieYTes/g78CIZi1NYJ6p0I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nerNfc1mFLK2Lo/05tRG5pCfNzFhmNiiOHtJJRYDQeS8IMvQEdcMAgcLWc4q4dbNkb9ww4wM3OsFAqHcv1yJuFZjzm+ExBcpTIneCtG6AKIxEQIpGDhTzORIWXtcSBiHuX/WSqM9PVdjQ2mN4FYreP0szgghYUGgtL16C4PskWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=Li9nxoSJ; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
+	s=arc-20240116; t=1774542792; c=relaxed/simple;
+	bh=RXeLAwQd/WhX+HnMNBfpNgz9UNtamMV0lERMiFBdSsM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=qAODhYGQGqYBMmQADe1+P+uFtFZ5AclWlixynBHPKVHWEqizVzjAhsWV4dJ5joOxkWEwX0VvsdglTQ9LHSsb+OX32hU18hOILtH14wrt+OSHyQQ1pt9fLM3UlFk1eMM2ArhSwE6UCHT/Agriluct+95Ihnv2cSOlwIx6Q1bw7a8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hAIyITwK; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="Li9nxoSJ"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6634197cd98so157543a12.0
-        for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 09:33:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=6wind.com; s=google; t=1774542781; x=1775147581; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:content-language
-         :from:references:cc:to:subject:reply-to:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=3Uz6X41/9QvtVD+0d1JY1sxw6aOqQLEJwgRVp5WANGc=;
-        b=Li9nxoSJNKiJccyGD9yHbplqiHrTxZtxaczwGIMLi7rr9O6y29ZGBOpdAAXuUW8cfJ
-         OoZIEnmvMMetvXbU5SpuB7ijmk2XNCva4fNQ/+JdEbBJ92940MgAZb6p1UFD2Fq2xTdR
-         tcr9xcTZ/OgJG4bCKvrhEIqTcdmJ4TlCK1paJ3YG/ePD48gW4wqDYNS9tWyHrgABODR4
-         9YvZAq6neO1xXjzoCgqVTe0hdNleOSiE6d6y/Yja3hMFB365xHTdEEZzHkaLBdcKr1O2
-         u77ZpY/Xx2bzmZalj/QzrfQFP4pLy/X3KOK7U8F/z69wVAAF0+He+yWkpQquh1BMaRT+
-         O4pA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774542781; x=1775147581;
-        h=content-transfer-encoding:in-reply-to:organization:content-language
-         :from:references:cc:to:subject:reply-to:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3Uz6X41/9QvtVD+0d1JY1sxw6aOqQLEJwgRVp5WANGc=;
-        b=sm4ayDehkCJZEJB2hEwcyZt0RkFCv1U2MkbXGT9TAGt2nP0+fKrOdZ+UAny0kLF9Ie
-         L0MQlg73P6zgJRClAMOjyqRsH2Dn6RtjyypiskB9/DsU3bkdpkxtirotNrgxxPRxxebo
-         WLsDZUbotd8BBsDOu1p1uzSNvaoXl5Qojay63g+H1nsJClpfUe8o2Hk1wmuKOtTAgB4G
-         CspGodRD3niYDtnbz35xGuwCsYilN0DYs/FI+RTV2AFgB0Ac/H0vbBPXkyij1R1IapdJ
-         rK9h6p+kY/ekJMzrcZMGrmpFuIwxPq1CH9jm8XWQDWzYAe7V4iOXsdp12FyioSKdZdog
-         4Amw==
-X-Forwarded-Encrypted: i=1; AJvYcCWLV8V/eGfLUrSeJS6eLhaLuZTRrgnZxQ2ZZVI3k7/IDT0AKDJ6tToaERoIsoVJ9bdNtyQ+LpQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxqRTksQ2yIt1mhSILwrO/tz/cahLjOzRSWbqfOs152MJdHYQ1G
-	WVgTcw9UwJyXvR6ZhVR62n4shXNP0UZCGU0yQva3jR4A5F5DXrPMNoHOYi85TujZERg=
-X-Gm-Gg: ATEYQzycQ2vx5JNxTzTewbd3NJMPrZxHO1G5WM/sI1u4UOD2BWYjZYmpG0WggF8MuWx
-	GTJlMYAmI9q7VtbHX1Mo2EUhIk4L7Zk9tgY7wsZ0rf9DjNSOTWER+RkANMgIcO7bmke43O7m/ht
-	kpm6qlT5nh5OctDX6kR7xLFKI6MxEcU269at50j8v5OG0O45r+42LqnJjOCY8l6ATdHaYE9wSVj
-	Aw/BJxDXP/4fD3SOGeX8u5QAFvC+THLqpIfccX6AV9jqX0E0JA5xkv0J6757mNcG6R0EoF0bZcs
-	KrSh3plJN5V1G+weD2/UIuxZe8yFYK9/gV82olUoH/3QaYe8uWFwJ7VUbanpo7tsoq3j91tZRU0
-	I1c4xP8S7F2AuasrTsSS0KQNyFemD4+SA32Xe2gbj450S5Y5noNT6lWAugko6/EBsKqCOx4jVZB
-	JfRHRuw6M2neMlpum3bL0R00j1dRnAcajYNQn1RHcCSNlhPqkG4VY+PEHVnNSlg8WHqklTCfy4E
-	XirxIQMGKuknDc=
-X-Received: by 2002:a05:6402:210f:b0:66a:55eb:1cef with SMTP id 4fb4d7f45d1cf-66a826fa22dmr2939717a12.8.1774542780713;
-        Thu, 26 Mar 2026 09:33:00 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:b41:c160:6a1d:efff:fe52:1959? ([2a01:e0a:b41:c160:6a1d:efff:fe52:1959])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-66ad6a5f283sm1242324a12.27.2026.03.26.09.32.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Mar 2026 09:33:00 -0700 (PDT)
-Message-ID: <2bb55d10-38a9-4595-baef-678d59bf4059@6wind.com>
-Date: Thu, 26 Mar 2026 17:32:59 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hAIyITwK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774542790; x=1806078790;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=RXeLAwQd/WhX+HnMNBfpNgz9UNtamMV0lERMiFBdSsM=;
+  b=hAIyITwKp4ACYN/cRXj0w8pn1RS8FflpkBKWQar+eFgrs87SMtkUaQEC
+   EyToFWtf4cZyuZ/St+lpcLaujydD74poUYbaSdTY9N6f7ENLqfvt1c3NN
+   7waW2XCNusa49cdt6KcxrGD5D/3nCXP32TnY5xMyep6StoWvkF8MkW1eT
+   aWzEaKWdQR6W0kqg/LYI00TJdUjylAqwvfmiNmMmLBNMkXoEPprN5Eqym
+   KDG1RLSSU7hR3ESu8XCEvqL5gg08lXa2mPMbqgxLYJdR4UKleljRZj7Im
+   W2B087m/qEE/S85/pxVcGVWAdID9q/H63KqvExNpvtp66W48eJHGx+Nub
+   w==;
+X-CSE-ConnectionGUID: THtOdPxFSrSXywdvANJm0w==
+X-CSE-MsgGUID: FDuJWYPaRo+nuJEGslCTFQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="74636714"
+X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; 
+   d="scan'208";a="74636714"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 09:33:10 -0700
+X-CSE-ConnectionGUID: 06dnr0SJRoGxAQ1iFRumMg==
+X-CSE-MsgGUID: y/jfD1TFR0eN4K+pN3EBqQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; 
+   d="scan'208";a="225311228"
+Received: from gklab-003-001.igk.intel.com ([10.91.173.48])
+  by orviesa007.jf.intel.com with ESMTP; 26 Mar 2026 09:33:05 -0700
+From: Grzegorz Nitka <grzegorz.nitka@intel.com>
+To: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org,
+	poros@redhat.com,
+	richardcochran@gmail.com,
+	andrew+netdev@lunn.ch,
+	przemyslaw.kitszel@intel.com,
+	anthony.l.nguyen@intel.com,
+	Prathosh.Satish@microchip.com,
+	ivecera@redhat.com,
+	jiri@resnulli.us,
+	arkadiusz.kubalewski@intel.com,
+	vadim.fedorenko@linux.dev,
+	donald.hunter@gmail.com,
+	horms@kernel.org,
+	pabeni@redhat.com,
+	kuba@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	Grzegorz Nitka <grzegorz.nitka@intel.com>
+Subject: [PATCH v4 net-next 6/8] ice: implement CPI support for E825C
+Date: Thu, 26 Mar 2026 17:28:30 +0100
+Message-Id: <20260326162832.3135857-7-grzegorz.nitka@intel.com>
+X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20260326162832.3135857-1-grzegorz.nitka@intel.com>
+References: <20260326162832.3135857-1-grzegorz.nitka@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: nicolas.dichtel@6wind.com
-Subject: Re: [RFC PATCH net-next 0/3] seg6: SRv6 L2 VPN with End.DT2U and srl2
- device
-To: Andrea Mayer <andrea.mayer@uniroma2.it>, netdev@vger.kernel.org
-Cc: "David S . Miller" <davem@davemloft.net>, David Ahern
- <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>,
- Stefano Salsano <stefano.salsano@uniroma2.it>,
- Paolo Lungaroni <paolo.lungaroni@uniroma2.it>,
- Ahmed Abdelsalam <ahabdels@cisco.com>,
- Justin Iurman <justin.iurman@6wind.com>, linux-kernel@vger.kernel.org
-References: <20260322000557.12559-1-andrea.mayer@uniroma2.it>
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Content-Language: en-US
-Organization: 6WIND
-In-Reply-To: <20260322000557.12559-1-andrea.mayer@uniroma2.it>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Le 22/03/2026 à 01:05, Andrea Mayer a écrit :
-> Hi all,
-Hi,
+Add full CPI (Converged PHY Interface) command handling required for
+E825C devices. The CPI interface allows the driver to interact with
+PHY-side control logic through the LM/PHY command registers, including
+enabling/disabling/selection of PHY reference clock.
 
-first, thank you for posting this RFC.
+This patch introduces:
+ - a new CPI subsystem (ice_cpi.c / ice_cpi.h) implementing the CPI
+   request/acknowledge state machine, including REQ/ACK protocol,
+   command execution, and response handling
+ - helper functions for reading/writing PHY registers over Sideband
+   Queue
+ - CPI command execution API (ice_cpi_exec) and a helper for enabling or
+   disabling Tx reference clocks (CPI 0xF1 opcode 'Config PHY clocking')
+ - addition of the non-posted write opcode (wr_np) to SBQ
+ - Makefile integration to build CPI support together with the PTP stack
 
-> 
-> this RFC series adds support for the SRv6 End.DT2U behavior and
-> introduces the srl2 Ethernet pseudowire device, together with
-> corresponding selftests.
-> 
-> Motivation
-> ==========
-> 
-> The main goal is to enable L2 service delivery through an internal
-> SRv6 L2 endpoint, in a way similar to how VXLAN provides L2 services
-> through a VXLAN netdevice.
-> 
-> Today, Linux supports SRv6 L2 decapsulation only through an
-> End.DX2-style model, where the exposed Ethernet frame is forwarded
-> to a configured egress interface. The current implementation does
-> not provide a native netdevice representing the SRv6 L2 service
-> endpoint. This is a significant limitation compared to VXLAN, where
-> the tunnel endpoint is represented by a netdevice that can be
-> attached to a bridge and integrated naturally into the local L2
-> data plane.
-> 
-> On the encapsulation side, the existing H.L2.Encaps mode is
-> implemented as a route-based lwtunnel, which only intercepts packets
-> entering the IP routing path. Non-IP protocols such as ARP are
-> never routed and therefore cannot be encapsulated, making it
-> unsuitable for full L2 service delivery.
-> 
-> Design
-> ======
-> 
-> This series addresses that limitation by introducing srl2, a native
-> SRv6 L2 endpoint interface. The intent is to make SRv6 L2 delivery
-> usable in the same deployment model already familiar from VXLAN: an
-> internal interface that represents the L2 service endpoint and can
-> participate naturally in local L2 forwarding.
-The current design, with vxlan, uses two interfaces: one bridge and one vxlan.
-I presume this design was chosen because the vxlan protocol is implemented in
-the vxlan driver.
-I wonder if using the same design for SRv6 is the best choice. Why not use only
-a bridge interface? Instead of pointing to a port, the FDB entries could point
-to a nexthop id. This enables to associate a srv6 encap directly to a MAC
-address. Something like:
+This provides the infrastructure necessary to support PHY-side
+configuration flows on E825C and is required for advanced link control
+and Tx reference clock management.
 
-$ ip nexthop list id 1234
-id 1234 encap seg6 mode encap segs ...
-$ bridge fdb show dev br0
-02:03:04:05:06:07 dev br0 nhid 1234 ...
+Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
+---
+ drivers/net/ethernet/intel/ice/Makefile      |   2 +-
+ drivers/net/ethernet/intel/ice/ice_cpi.c     | 347 +++++++++++++++++++
+ drivers/net/ethernet/intel/ice/ice_cpi.h     |  69 ++++
+ drivers/net/ethernet/intel/ice/ice_sbq_cmd.h |   5 +-
+ 4 files changed, 420 insertions(+), 3 deletions(-)
+ create mode 100644 drivers/net/ethernet/intel/ice/ice_cpi.c
+ create mode 100644 drivers/net/ethernet/intel/ice/ice_cpi.h
 
-What is the gain of having two interfaces?
-In term of scalability, it is interesting to have only one interface.
-
-Regards,
-Nicolas
-
-> 
-> On top of that, the series adds support for End.DT2U so that Ethernet
-> payloads carried over SRv6 can be decapsulated and delivered into an
-> L2 domain through either a bridge port or an srl2 interface.
-> 
-> Relation to RFC 8986
-> ====================
-> 
-> RFC 8986 describes End.DT2U in terms of an abstract L2 table
-> associated with the SID. That abstraction specifies the externally
-> observable forwarding behavior of the node, but it does not mandate a
-> specific internal implementation. What matters is functional
-> equivalence.
-> 
-> This series enforces that property by restricting valid End.DT2U
-> decapsulation targets to endpoints that provide the required L2
-> forwarding semantics by construction.
-> 
-> When the target device is a bridge port, the Linux bridge provides
-> the expected behavior directly: source MAC learning, destination MAC
-> lookup, and unknown-unicast flooding within the corresponding L2
-> domain.
-> 
-> When the target device is an srl2 interface, the same model is
-> realized in a degenerate but valid form, corresponding to a minimal
-> two-port L2 domain in which one endpoint is srl2. In that case,
-> forwarding is trivial: frames are delivered to srl2 only when
-> addressed to its MAC address, or when they are broadcast or multicast.
-> No general FDB is required in this case because there are no
-> additional L2 destinations to learn.
-> 
-> Any other type of decapsulation target is rejected at configuration
-> time, since it would not guarantee the forwarding behavior required by
-> End.DT2U.
-> 
-> The srl2 device is the minimal baseline implementation providing
-> point-to-point L2 encapsulation with a single segment list.
-> Additional features can be added incrementally based on community
-> feedback and use cases.
-> 
-> Usage
-> =====
-> 
->   ip link add srl2-0 type srl2 segs fc00::a,fc00::b
->   ip link set srl2-0 master br0
-> 
->   ip -6 route add fc00::100/128 encap seg6local action End.DT2U \
->       l2dev srl2-0 dev dum0
-> 
->   # encapsulating traffic from veth-hs into srl2-0
->   ip link set veth-hs master br0
-> 
-> Selftest topology
-> =================
-> 
->             cafe::1                                cafe::2
->            10.0.0.1                               10.0.0.2
->           +--------+                             +--------+
->           |  hs-1  |                             |  hs-2  |
->           +---+----+                             +----+---+
->               |                                       |
->         +-----+------+                         +------+-----+
->         |   veth-hs  |                         |  veth-hs   |
->         |      |     |   fcf0:0:1:2::/64       |     |      |
->         |    br0     +-------------------------+   br0      |
->         |      |     |                         |     |      |
->         |   srl2-0   |                         |  srl2-0    |
->         |    rt-1    |                         |   rt-2     |
->         +------------+                         +------------+
-> 
-> The test verifies IPv4/IPv6 host-to-host and host-to-gateway
-> connectivity over the SRv6 L2 VPN, including ARP resolution
-> through the tunnel.
-> 
-> A companion iproute2 series provides userspace support:
-> 
->   [RFC PATCH iproute2-next 0/4] seg6: add SRv6 End.DT2U and srl2 support
-> 
-> 
-> This is an RFC posting to collect feedback on both the overall design
-> and the userspace API before moving forward with a formal submission.
-> 
-> Comments are very welcome, especially on:
-> - the introduction of srl2 as an internal SRv6 L2 endpoint
-> - the choice of constraining End.DT2U targets to bridge ports
->   and srl2 devices
-> - the netlink/uAPI exposure
-> - the selftest coverage and topology
-> 
-> Thanks,
-> Andrea and Stefano
-> 
-> 
-> Andrea Mayer (3):
->   seg6: add support for the SRv6 End.DT2U behavior
->   seg6: add SRv6 L2 tunnel device (srl2)
->   selftests: seg6: add SRv6 srl2 + End.DT2U L2 VPN test
-> 
->  include/linux/srl2.h                          |   7 +
->  include/uapi/linux/seg6_local.h               |   3 +
->  include/uapi/linux/srl2.h                     |  20 +
->  net/ipv6/Kconfig                              |  16 +
->  net/ipv6/Makefile                             |   1 +
->  net/ipv6/seg6.c                               |   1 +
->  net/ipv6/seg6_local.c                         | 160 ++++-
->  net/ipv6/srl2.c                               | 269 ++++++++
->  tools/testing/selftests/net/Makefile          |   1 +
->  tools/testing/selftests/net/config            |   1 +
->  .../selftests/net/srv6_srl2_l2vpn_test.sh     | 621 ++++++++++++++++++
->  11 files changed, 1094 insertions(+), 6 deletions(-)
->  create mode 100644 include/linux/srl2.h
->  create mode 100644 include/uapi/linux/srl2.h
->  create mode 100644 net/ipv6/srl2.c
->  create mode 100755 tools/testing/selftests/net/srv6_srl2_l2vpn_test.sh
-> 
+diff --git a/drivers/net/ethernet/intel/ice/Makefile b/drivers/net/ethernet/intel/ice/Makefile
+index 5b2c666496e7..38db476ab2ec 100644
+--- a/drivers/net/ethernet/intel/ice/Makefile
++++ b/drivers/net/ethernet/intel/ice/Makefile
+@@ -54,7 +54,7 @@ ice-$(CONFIG_PCI_IOV) +=	\
+ 	ice_vf_mbx.o		\
+ 	ice_vf_vsi_vlan_ops.o	\
+ 	ice_vf_lib.o
+-ice-$(CONFIG_PTP_1588_CLOCK) += ice_ptp.o ice_ptp_hw.o ice_dpll.o ice_tspll.o
++ice-$(CONFIG_PTP_1588_CLOCK) += ice_ptp.o ice_ptp_hw.o ice_dpll.o ice_tspll.o ice_cpi.o
+ ice-$(CONFIG_DCB) += ice_dcb.o ice_dcb_nl.o ice_dcb_lib.o
+ ice-$(CONFIG_RFS_ACCEL) += ice_arfs.o
+ ice-$(CONFIG_XDP_SOCKETS) += ice_xsk.o
+diff --git a/drivers/net/ethernet/intel/ice/ice_cpi.c b/drivers/net/ethernet/intel/ice/ice_cpi.c
+new file mode 100644
+index 000000000000..97fe2ebb99f3
+--- /dev/null
++++ b/drivers/net/ethernet/intel/ice/ice_cpi.c
+@@ -0,0 +1,347 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (C) 2018-2026 Intel Corporation */
++
++#include "ice_type.h"
++#include "ice_common.h"
++#include "ice_ptp_hw.h"
++#include "ice_cpi.h"
++
++/**
++ * ice_cpi_get_dest_dev - get destination PHY for given phy index
++ * @hw: pointer to the HW struct
++ * @phy: phy index of port the CPI action is taken on
++ *
++ * Return: sideband queue destination PHY device.
++ */
++static enum ice_sbq_dev_id ice_cpi_get_dest_dev(struct ice_hw *hw, u8 phy)
++{
++	u8 curr_phy = hw->lane_num / hw->ptp.ports_per_phy;
++
++	/* In the driver, lanes 4..7 are in fact 0..3 on a second PHY.
++	 * On a single complex E825C, PHY 0 is always destination device phy_0
++	 * and PHY 1 is phy_0_peer.
++	 * On dual complex E825C, device phy_0 points to PHY on a current
++	 * complex and phy_0_peer to PHY on a different complex.
++	 */
++	if ((!ice_is_dual(hw) && phy) ||
++	    (ice_is_dual(hw) && phy != curr_phy))
++		return ice_sbq_dev_phy_0_peer;
++	else
++		return ice_sbq_dev_phy_0;
++}
++
++/**
++ * ice_cpi_write_phy - Write a CPI port register
++ * @hw: pointer to the HW struct
++ * @phy: phy index of port the CPI action is taken on
++ * @addr: PHY register address
++ * @val: Value to write
++ *
++ * Return:
++ * * 0 on success
++ * * other error codes when failed to write to PHY
++ */
++static int ice_cpi_write_phy(struct ice_hw *hw, u8 phy, u32 addr, u32 val)
++{
++	struct ice_sbq_msg_input msg = {
++		.dest_dev = ice_cpi_get_dest_dev(hw, phy),
++		.opcode = ice_sbq_msg_wr_np,
++		.msg_addr_low = lower_16_bits(addr),
++		.msg_addr_high = upper_16_bits(addr),
++		.data = val
++	};
++	int err;
++
++	err = ice_sbq_rw_reg(hw, &msg, LIBIE_AQ_FLAG_RD);
++	if (err)
++		ice_debug(hw, ICE_DBG_PTP,
++			  "Failed to write CPI msg to phy %d, err: %d\n",
++			  phy, err);
++
++	return err;
++}
++
++/**
++ * ice_cpi_read_phy - Read a CPI port register
++ * @hw: pointer to the HW struct
++ * @phy: phy index of port the CPI action is taken on
++ * @addr: PHY register address
++ * @val: storage for register value
++ *
++ * Return:
++ * * 0 on success
++ * * other error codes when failed to read from PHY
++ */
++static int ice_cpi_read_phy(struct ice_hw *hw, u8 phy, u32 addr, u32 *val)
++{
++	struct ice_sbq_msg_input msg = {
++		.dest_dev = ice_cpi_get_dest_dev(hw, phy),
++		.opcode = ice_sbq_msg_rd,
++		.msg_addr_low = lower_16_bits(addr),
++		.msg_addr_high = upper_16_bits(addr)
++	};
++	int err;
++
++	err = ice_sbq_rw_reg(hw, &msg, LIBIE_AQ_FLAG_RD);
++	if (err) {
++		ice_debug(hw, ICE_DBG_PTP,
++			  "Failed to read CPI msg from phy %d, err: %d\n",
++			  phy, err);
++		return err;
++	}
++
++	*val = msg.data;
++
++	return 0;
++}
++
++/**
++ * ice_cpi_wait_req0_ack0 - waits for CPI interface to be available
++ * @hw: pointer to the HW struct
++ * @phy: phy index of port the CPI action is taken on
++ *
++ * This function checks if CPI interface is ready to use by CPI client.
++ * It's done by assuring LM.CMD.REQ and PHY.CMD.ACK bit in CPI
++ * interface registers to be 0.
++ *
++ * Return: 0 on success, negative on error
++ */
++static int ice_cpi_wait_req0_ack0(struct ice_hw *hw, int phy)
++{
++	union cpi_reg_phy_cmd_data phy_regs;
++	union cpi_reg_lm_cmd_data lm_regs;
++
++	for (int i = 0; i < CPI_RETRIES_COUNT; i++) {
++		int err;
++
++		/* check if another CPI Client is also accessing CPI */
++		err = ice_cpi_read_phy(hw, phy, CPI0_LM1_CMD_DATA,
++				       &lm_regs.val);
++		if (err)
++			return err;
++		if (lm_regs.field.cpi_req)
++			return -EBUSY;
++
++		/* check if PHY.ACK is deasserted */
++		err = ice_cpi_read_phy(hw, phy, CPI0_PHY1_CMD_DATA,
++				       &phy_regs.val);
++		if (err)
++			return err;
++		if (phy_regs.field.error)
++			return -EFAULT;
++		if (!phy_regs.field.ack)
++			/* req0 and ack0 at this point - ready to go */
++			return 0;
++
++		msleep(CPI_RETRIES_CADENCE_MS);
++	}
++
++	return -ETIMEDOUT;
++}
++
++/**
++ * ice_cpi_wait_ack - Waits for the PHY.ACK bit to be asserted/deasserted
++ * @hw: pointer to the HW struct
++ * @phy: phy index of port the CPI action is taken on
++ * @asserted: desired state of PHY.ACK bit
++ * @data: pointer to the user data where PHY.data is stored
++ *
++ * This function checks if PHY.ACK bit is asserted or deasserted, depending
++ * on the phase of CPI handshake. If 'asserted' state is required, PHY command
++ * data is stored in the 'data' storage.
++ *
++ * Return: 0 on success, negative on error
++ */
++static int ice_cpi_wait_ack(struct ice_hw *hw, u8 phy, bool asserted,
++			    u32 *data)
++{
++	union cpi_reg_phy_cmd_data phy_regs;
++
++	for (int i = 0; i < CPI_RETRIES_COUNT; i++) {
++		int err;
++
++		err = ice_cpi_read_phy(hw, phy, CPI0_PHY1_CMD_DATA,
++				       &phy_regs.val);
++		if (err)
++			return err;
++		if (phy_regs.field.error)
++			return -EFAULT;
++		if (asserted && phy_regs.field.ack) {
++			if (data)
++				*data = phy_regs.val;
++			return 0;
++		}
++		if (!asserted && !phy_regs.field.ack)
++			return 0;
++
++		msleep(CPI_RETRIES_CADENCE_MS);
++	}
++
++	return -ETIMEDOUT;
++}
++
++#define ice_cpi_wait_ack0(hw, port) \
++	ice_cpi_wait_ack(hw, port, false, NULL)
++
++#define ice_cpi_wait_ack1(hw, port, data) \
++	ice_cpi_wait_ack(hw, port, true, data)
++
++/**
++ * ice_cpi_req0 - deasserts LM.REQ bit
++ * @hw: pointer to the HW struct
++ * @phy: phy index of port the CPI action is taken on
++ * @data: the command data
++ *
++ * Return: 0 on success, negative on CPI write error
++ */
++static int ice_cpi_req0(struct ice_hw *hw, u8 phy, u32 data)
++{
++	union cpi_reg_lm_cmd_data *lm_regs;
++	int err;
++
++	lm_regs = (union cpi_reg_lm_cmd_data *)&data;
++	lm_regs->field.cpi_req = 0;
++
++	err = ice_cpi_write_phy(hw, phy, CPI0_LM1_CMD_DATA, lm_regs->val);
++
++	return err;
++}
++
++/**
++ * ice_cpi_exec_cmd - writes command data to CPI interface
++ * @hw: pointer to the HW struct
++ * @phy: phy index of port the CPI action is taken on
++ * @data: the command data
++ *
++ * Return: 0 on success, otherwise negative on error
++ */
++static int ice_cpi_exec_cmd(struct ice_hw *hw, int phy, u32 data)
++{
++	return ice_cpi_write_phy(hw, phy, CPI0_LM1_CMD_DATA, data);
++}
++
++/**
++ * ice_cpi_exec - executes CPI command
++ * @hw: pointer to the HW struct
++ * @phy: phy index of port the CPI action is taken on
++ * @cmd: pointer to the command struct to execute
++ * @resp: pointer to user allocated CPI response struct
++ *
++ * This function executes CPI request with respect to CPI handshake
++ * mechanism.
++ *
++ * Return: 0 on success, otherwise negative on error
++ */
++int ice_cpi_exec(struct ice_hw *hw, u8 phy,
++		 const struct ice_cpi_cmd *cmd,
++		 struct ice_cpi_resp *resp)
++{
++	union cpi_reg_phy_cmd_data phy_cmd_data;
++	union cpi_reg_lm_cmd_data lm_cmd_data;
++	int err, err1 = 0;
++
++	if (!cmd || !resp)
++		return -EINVAL;
++
++	memset(&lm_cmd_data, 0, sizeof(lm_cmd_data));
++
++	lm_cmd_data.field.cpi_req = CPI_LM_CMD_REQ;
++	lm_cmd_data.field.get_set = cmd->set;
++	lm_cmd_data.field.opcode = cmd->opcode;
++	lm_cmd_data.field.portlane = cmd->port;
++	lm_cmd_data.field.data = cmd->data;
++
++	/* 1. Try to acquire the bus, PHY ACK should be low before we begin */
++	err = ice_cpi_wait_req0_ack0(hw, phy);
++	if (err)
++		goto cpi_exec_exit;
++
++	/* 2. We start the CPI request */
++	err = ice_cpi_exec_cmd(hw, phy, lm_cmd_data.val);
++	if (err)
++		goto cpi_exec_exit;
++
++	/*
++	 * 3. Wait for CPI confirmation, PHY ACK should be asserted and opcode
++	 *    echoed in the response
++	 */
++	err = ice_cpi_wait_ack1(hw, phy, &phy_cmd_data.val);
++	if (err)
++		goto cpi_deassert;
++
++	if (phy_cmd_data.field.ack &&
++	    lm_cmd_data.field.opcode != phy_cmd_data.field.opcode) {
++		err = -EFAULT;
++		goto cpi_deassert;
++	}
++
++	resp->opcode = phy_cmd_data.field.opcode;
++	resp->data = phy_cmd_data.field.data;
++	resp->port = phy_cmd_data.field.portlane;
++
++cpi_deassert:
++	/* 4. We deassert REQ */
++	err1 = ice_cpi_req0(hw, phy, lm_cmd_data.val);
++	if (err1)
++		goto cpi_exec_exit;
++
++	/* 5. PHY ACK should be deasserted in response */
++	err1 = ice_cpi_wait_ack0(hw, phy);
++
++cpi_exec_exit:
++	if (!err)
++		err = err1;
++
++	return err;
++}
++
++/**
++ * ice_cpi_set_cmd - execute CPI SET command
++ * @hw: pointer to the HW struct
++ * @opcode: CPI command opcode
++ * @phy: phy index CPI command is applied for
++ * @port_lane: ephy index CPI command is applied for
++ * @data: CPI opcode context specific data
++ *
++ * Return: 0 on success.
++ */
++static int ice_cpi_set_cmd(struct ice_hw *hw, u16 opcode, u8 phy, u8 port_lane,
++			   u16 data)
++{
++	struct ice_cpi_resp cpi_resp = {0};
++	struct ice_cpi_cmd cpi_cmd = {
++		.opcode = opcode,
++		.set = true,
++		.port = port_lane,
++		.data = data,
++	};
++
++	return ice_cpi_exec(hw, phy, &cpi_cmd, &cpi_resp);
++}
++
++/**
++ * ice_cpi_ena_dis_clk_ref - enables/disables Tx reference clock on port
++ * @hw: pointer to the HW struct
++ * @phy: phy index of port for which Tx reference clock is enabled/disabled
++ * @clk: Tx reference clock to enable or disable
++ * @enable: bool value to enable or disable Tx reference clock
++ *
++ * This function executes CPI request to enable or disable specific
++ * Tx reference clock on given PHY.
++ *
++ * Return: 0 on success.
++ */
++int ice_cpi_ena_dis_clk_ref(struct ice_hw *hw, u8 phy,
++			    enum ice_e825c_ref_clk clk, bool enable)
++{
++	u16 val;
++
++	val = FIELD_PREP(CPI_OPCODE_PHY_CLK_PHY_SEL_M, phy) |
++	      FIELD_PREP(CPI_OPCODE_PHY_CLK_REF_CTRL_M,
++			 enable ? CPI_OPCODE_PHY_CLK_ENABLE :
++			 CPI_OPCODE_PHY_CLK_DISABLE) |
++	      FIELD_PREP(CPI_OPCODE_PHY_CLK_REF_SEL_M, clk);
++
++	return ice_cpi_set_cmd(hw, CPI_OPCODE_PHY_CLK, phy, 0, val);
++}
++
+diff --git a/drivers/net/ethernet/intel/ice/ice_cpi.h b/drivers/net/ethernet/intel/ice/ice_cpi.h
+new file mode 100644
+index 000000000000..767107fc18e5
+--- /dev/null
++++ b/drivers/net/ethernet/intel/ice/ice_cpi.h
+@@ -0,0 +1,69 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/* Copyright (C) 2018-2025 Intel Corporation */
++
++#ifndef _ICE_CPI_H_
++#define _ICE_CPI_H_
++
++#define CPI0_PHY1_CMD_DATA	0x7FD028
++#define CPI0_LM1_CMD_DATA	0x7FD024
++#define CPI_RETRIES_COUNT	10
++#define CPI_RETRIES_CADENCE_MS	100
++
++#define CPI_OPCODE_PHY_CLK			0xF1
++#define CPI_OPCODE_PHY_CLK_PHY_SEL_M		GENMASK(9, 6)
++#define CPI_OPCODE_PHY_CLK_REF_CTRL_M		GENMASK(5, 4)
++#define CPI_OPCODE_PHY_CLK_PORT_SEL		0
++#define CPI_OPCODE_PHY_CLK_DISABLE		1
++#define CPI_OPCODE_PHY_CLK_ENABLE		2
++#define CPI_OPCODE_PHY_CLK_REF_SEL_M		GENMASK(3, 0)
++
++#define CPI_OPCODE_PHY_PCS_RESET		0xF0
++#define CPI_OPCODE_PHY_PCS_ONPI_RESET_VAL	0x3F
++
++#define CPI_LM_CMD_REQ		1
++#define CPI_LM_CMD_SET		1
++
++union cpi_reg_phy_cmd_data {
++	struct {
++		u16 data;
++		u16 opcode : 8;
++		u16 portlane : 3;
++		u16 reserved_13_11: 3;
++		u16 error : 1;
++		u16 ack : 1;
++	} __packed field;
++	u32 val;
++};
++
++union cpi_reg_lm_cmd_data {
++	struct {
++		u16 data;
++		u16 opcode : 8;
++		u16 portlane : 3;
++		u16 reserved_12_11: 2;
++		u16 get_set : 1;
++		u16 cpi_reset : 1;
++		u16 cpi_req : 1;
++	} __packed field;
++	u32 val;
++};
++
++struct ice_cpi_cmd {
++	u8 port;
++	u8 opcode;
++	u16 data;
++	bool set;
++};
++
++struct ice_cpi_resp {
++	u8 port;
++	u8 opcode;
++	u16 data;
++};
++
++int ice_cpi_exec(struct ice_hw *hw, u8 phy,
++		 const struct ice_cpi_cmd *cmd,
++		 struct ice_cpi_resp *resp);
++int ice_cpi_ena_dis_clk_ref(struct ice_hw *hw, u8 port,
++			    enum ice_e825c_ref_clk clk, bool enable);
++#endif /* _ICE_CPI_H_ */
+diff --git a/drivers/net/ethernet/intel/ice/ice_sbq_cmd.h b/drivers/net/ethernet/intel/ice/ice_sbq_cmd.h
+index 21bb861febbf..226243d32968 100644
+--- a/drivers/net/ethernet/intel/ice/ice_sbq_cmd.h
++++ b/drivers/net/ethernet/intel/ice/ice_sbq_cmd.h
+@@ -54,8 +54,9 @@ enum ice_sbq_dev_id {
+ };
+ 
+ enum ice_sbq_msg_opcode {
+-	ice_sbq_msg_rd	= 0x00,
+-	ice_sbq_msg_wr	= 0x01
++	ice_sbq_msg_rd		= 0x00,
++	ice_sbq_msg_wr		= 0x01,
++	ice_sbq_msg_wr_np	= 0x02
+ };
+ 
+ #define ICE_SBQ_MSG_FLAGS	0x40
+-- 
+2.39.3
 
