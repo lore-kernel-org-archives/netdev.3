@@ -1,220 +1,93 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF8DC3A0E93
-	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 18:17:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED4B3A6B93;
+	Thu, 26 Mar 2026 18:17:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774549057; cv=none; b=je3wpRG1PManDRLTdqrU/j/8J5PYCLyUW5ff2DEuvhYHQLYaENAZ9eOsKlfb4ZHwt+NsnDlXVzdMzKx56GQBerDxTI4yqXbqqvM/al8s9On/DDxwnkLmtL7c0NUdTrFkHohAin0bKv/zEjG+Z4Ynzngcj4aZFwN/3h1BRXr23k0=
+	t=1774549063; cv=none; b=DkORzzIaHFVQ6JRbX8gftOUS6AyCbU0zDf+jf59y/xNOw8VoAsuJLWiWjUYwSLb02ZshpeWXj8cpqy+kU2+x/rn0TGZFnA3MQiuIK5EwsPBXX7RY/uFYVyQhUnC2SZ+CcaVTd5lpk17i8hPNa2+79nrPTpRi/CzEl7/8hzQuh5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774549057; c=relaxed/simple;
-	bh=8MS4zQtV6FtWj/IUY9YaB2l6wuq7+k0MKb9PmXVy3Mk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U5uE58Bn/+cLB8UQVlMXVs764ltzo7Fr1GZx0zdQSEwahuKO+FODJ1I8Cf1i7fNfts/YpWyCIZTCcRrquIdL4wEblfdXUHgEOlYo5kigBi9RBtdeHICirbgrJdIi/Z/HtAWCO6zAlXJmuDv6lOGBMwr08yEiw4qVtpTOidn3rgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=oEc6WKes; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	s=arc-20240116; t=1774549063; c=relaxed/simple;
+	bh=8PyXRhXDYUicfM3gHiAkz4aS4iQGx9RZA0ICuqAXkpw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=li4/W5n3juPTmYHv2LOZqI904/xVm2ZPzI+eAQUDnwrZHfXfX6AT3wwJQmpH3asn2GKDDHUOLHAtLo9KxNBqvsGcwrttQxsZL3lGgtTBSw1eNGg0t6ML1b/6j7dp1L1Bu0Wu2h4CRMxsiDmTtkzPBjC5xWyqCnXEELBHbCJQDnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nJuxRyPN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="oEc6WKes"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2b056b7f783so5919915ad.1
-        for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 11:17:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1774549054; x=1775153854; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uRx7fHyBau0X1U+PMFN9nDLyGjIHEaCOQWYkJZdn+aM=;
-        b=oEc6WKesaeY06bOky/5Q1PiJTY8DWHOEIHM+1jTOV/OcSR0L7xig7s/2bzR445Fl2e
-         5H5R9IHXRT47vnhJiOOUopat6hH9lSudpgDsqWUbwDs1QF8wLtjx9ZFEBR7VdFFZ5bC5
-         4Cvu+iIsWtzSoCB4pVC0DAxw0EAQzjFj4dFHqNqzNTc33fsDzT6GrnWKfRVxpZER73Yi
-         /v6bQy4u8Lq8SYlnFGf+WtlXi1VRoF8HuPHKiV50x6bvfv6aibVVgusvk9zUkuofW4S8
-         fb0lKEJ63Whe3eSUR870R6WPX2XpVqrK6GeVOjlShZOV9WAYVjh8g/ylLO0X3Ab1YXeS
-         fFJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774549054; x=1775153854;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=uRx7fHyBau0X1U+PMFN9nDLyGjIHEaCOQWYkJZdn+aM=;
-        b=MQoErB2A+WAwTwvqwMspFnGhnbKezJ4A9mK5bGLLnxf5S8An8M3Pfly+SrLsVCVCEG
-         HN9Fa8MxfvCH6Q0P+0EQE3UJvJYKR2lUGXAddFefOB9eR2IkvWZuUWEQlkRC6If0vWfG
-         CIItqQtWZQi2D3IBSrjJVh+OseStbwnco7RqTEPa8RH/CkOcGyjFcqroMM1dlyDTJP5M
-         jvqFDl5V0yV+u1tBTzRbvqSoFFU0JOxMvam2xgwAnc/t3VZzIRDRXlq+IJzq+gQK4JPz
-         geFsHqM8Z5vfZJSeOLYaNfPEoW8WgCglr/9gb3XShjBQjya9UA6iyJrMyfhZaLu89x+4
-         tYrw==
-X-Gm-Message-State: AOJu0YxG5DPZrvf+U42hiMQPV8Kl7oYjZpBx6x/Qz65YQdhnQ5JqJ7pQ
-	bKIQ+M8JFhR0vRccXRzsbS/KlfYKaAzxMA9/0BRtEaE10L6y+cnAFZGftqhT9DvPTvoY35+wpBA
-	zViMH
-X-Gm-Gg: ATEYQzye3I3xP5exQ7dQ7jVLRg9iTFFqJUR2xc4JPFDoHcGYS7e42rewiwivPiS3vtE
-	6OkHU28/xov9myRY/nMWDSqBDeexHZwpIEbcSaudoMPev90WV/KwZoDJSiM1VJGlc2D2xd47L7n
-	yV4yo1WSllU5uSzZ34YekH09iMauphxRMsHmPzCcz1O4FkfRs9IgZNF2remYBqnM5NsI3EtFwml
-	z1vCrV0cAcO6AZDmfcTqGiKDLXelGxCfFm7KaC7CtLVjtdzJNS0sI5n888kYxRhxOCANGJyDP7j
-	vI3JuK83JPso7tB2EV0x/78hMV8I85dyxoYdEj5TI2J6QZlWgn/rBipP3TRDtCsRzrfdDAtjhnn
-	1MPe0dHRlIrZjyNvUvFfzYlg3XqokinZRVTf8T5LqNRT5rXyo7xfU4tCrb4XHGfOaKF+2oEGrBj
-	e1MbfpNG9GzBgTTfHp9dYuJhJDRlITLuZY
-X-Received: by 2002:a17:903:32c8:b0:2ae:4ad5:b76c with SMTP id d9443c01a7336-2b0c486bd45mr23970245ad.10.1774549053876;
-        Thu, 26 Mar 2026 11:17:33 -0700 (PDT)
-Received: from phoenix.lan ([104.202.29.139])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0bc8c4bd3sm38590245ad.63.2026.03.26.11.17.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2026 11:17:33 -0700 (PDT)
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Shuah Khan <shuah@kernel.org>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	William Liu <will@willsroot.io>,
-	Xiang Mei <xmei5@asu.edu>,
-	Savino Dicanosa <savy@syst3mfailure.io>,
-	linux-kselftest@vger.kernel.org (open list:KERNEL SELFTEST FRAMEWORK),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v3 3/7] Revert "selftests/tc-testing: Add tests for restrictions on netem duplication"
-Date: Thu, 26 Mar 2026 11:01:02 -0700
-Message-ID: <20260326181701.308275-4-stephen@networkplumber.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260326181701.308275-1-stephen@networkplumber.org>
-References: <20260326181701.308275-1-stephen@networkplumber.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nJuxRyPN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D17C116C6;
+	Thu, 26 Mar 2026 18:17:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774549063;
+	bh=8PyXRhXDYUicfM3gHiAkz4aS4iQGx9RZA0ICuqAXkpw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nJuxRyPNvbWaauHzIM6Yk02jw/EyANttS+tq9b85vZYZzLDQ+kax0lrk4ILII0jRa
+	 DagXkiatqQ9ZlqHRx2CzlKntbLCLiO9Mjyet4WYVA4RhvvkVXoXiGHlMpjozluqlgR
+	 Q1A8dbK+KWDsgieXX9mcaNm8NWUpiYtAwWxetA3yhFtlS4Ivh+A2ffvAYBiKqwO4gm
+	 1CPUc4QyiuypYsIstmwG3XqCK6czkbXqZ1fwdPAeV6UYiNhr7InV3Pgm92xeWA1mnG
+	 BEx0lhLepIzWDi4G/9JOkgyL1cuE4+tOoZUCLAa76nnNSFdNBnTmeQrWORoP7PI0D7
+	 PMePimlTaGVAQ==
+Date: Thu, 26 Mar 2026 18:17:36 +0000
+From: Simon Horman <horms@kernel.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Omar Elghoul <oelghoul@linux.ibm.com>,
+	Srikanth Aithal <sraithal@amd.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Vishwanath Seshagiri <vishs@meta.com>, netdev@vger.kernel.org,
+	virtualization@lists.linux.dev, bpf@vger.kernel.org
+Subject: Re: [PATCH net-next] virtio_net: sync RX buffer before reading the
+ header
+Message-ID: <20260326181736.GV111839@horms.kernel.org>
+References: <f4caa9be9e5addae7851c012cab0a733be7f0974.1774365273.git.mst@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f4caa9be9e5addae7851c012cab0a733be7f0974.1774365273.git.mst@redhat.com>
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+On Tue, Mar 24, 2026 at 11:15:54AM -0400, Michael S. Tsirkin wrote:
+> receive_buf() reads the virtio header through buf before
+> page_pool_dma_sync_for_cpu() runs in receive_small() or
+> receive_mergeable(). The header buffer is thus unsynchronized at the
+> point where flags and, for mergeable buffers, num_buffers are consumed.
+> 
+> Omar Elghoul reported that on s390x Secure Execution this showed up as
+> greatly reduced virtio-net performance together with "bad gso" and
+> "bad csum" messages in dmesg. This is because with SE sync actually
+> copies data, so the header is uninitialized.
+> 
+> Move the sync into receive_buf() so the
+> header is synchronized before any access through buf.
+> 
+> Tool use: Cursor with GPT-5.4 drafted the initial code move from prompt:
+> "in drivers/net/virtio_net.c, move page_pool_dma_sync_for_cpu on receive
+> path to before memory is accessed through buf".
+> The result and the commit log were reviewed and edited manually.
+> 
+> Fixes: 168b61da6871 ("virtio_net: add page_pool support for buffer allocation")
 
-This reverts commit ecdec65ec78d67d3ebd17edc88b88312054abe0d.
+Hi Michael,
 
-The tests added were related to check_netem_in_tree() which was
-just reverted in the previous patch.
+The hash for a patch with that subject in net-next appears to be 24fbd3967f3f.
 
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Stephen Hemminger <stephen@networkplumber.org>
----
- .../tc-testing/tc-tests/infra/qdiscs.json     |  5 +-
- .../tc-testing/tc-tests/qdiscs/netem.json     | 81 -------------------
- 2 files changed, 3 insertions(+), 83 deletions(-)
+> Reported-by: Omar Elghoul <oelghoul@linux.ibm.com>
+> Tested-by: Srikanth Aithal <sraithal@amd.com>
+> Tested-by: Omar Elghoul <oelghoul@linux.ibm.com>
+> Link: https://lore.kernel.org/r/20260323150136.14452-1-oelghoul@linux.ibm.com
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 
-diff --git a/tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json b/tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json
-index 6a39640aa2a8..ceb993ed04b2 100644
---- a/tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json
-+++ b/tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json
-@@ -702,6 +702,7 @@
-             "$TC qdisc add dev $DUMMY parent 1:1 handle 2:0 netem duplicate 100%",
-             "$TC filter add dev $DUMMY parent 1:0 protocol ip prio 1 u32 match ip dst 10.10.10.1/32 flowid 1:1",
-             "$TC class add dev $DUMMY parent 1:0 classid 1:2 hfsc ls m2 10Mbit",
-+            "$TC qdisc add dev $DUMMY parent 1:2 handle 3:0 netem duplicate 100%",
-             "$TC filter add dev $DUMMY parent 1:0 protocol ip prio 2 u32 match ip dst 10.10.10.2/32 flowid 1:2",
-             "ping -c 1 10.10.10.1 -I$DUMMY > /dev/null || true",
-             "$TC filter del dev $DUMMY parent 1:0 protocol ip prio 1",
-@@ -714,8 +715,8 @@
-             {
-                 "kind": "hfsc",
-                 "handle": "1:",
--                "bytes": 294,
--                "packets": 3
-+                "bytes": 392,
-+                "packets": 4
-             }
-         ],
-         "matchCount": "1",
-diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/netem.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/netem.json
-index 718d2df2aafa..3c4444961488 100644
---- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/netem.json
-+++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/netem.json
-@@ -336,86 +336,5 @@
-         "teardown": [
-             "$TC qdisc del dev $DUMMY handle 1: root"
-         ]
--    },
--    {
--        "id": "d34d",
--        "name": "NETEM test qdisc duplication restriction in qdisc tree in netem_change root",
--        "category": ["qdisc", "netem"],
--        "plugins": {
--            "requires": "nsPlugin"
--        },
--        "setup": [
--            "$TC qdisc add dev $DUMMY root handle 1: netem limit 1",
--            "$TC qdisc add dev $DUMMY parent 1: handle 2: netem limit 1"
--        ],
--        "cmdUnderTest": "$TC qdisc change dev $DUMMY handle 1: netem duplicate 50%",
--        "expExitCode": "2",
--        "verifyCmd": "$TC -s qdisc show dev $DUMMY",
--        "matchPattern": "qdisc netem",
--        "matchCount": "2",
--        "teardown": [
--            "$TC qdisc del dev $DUMMY handle 1:0 root"
--        ]
--    },
--    {
--        "id": "b33f",
--        "name": "NETEM test qdisc duplication restriction in qdisc tree in netem_change non-root",
--        "category": ["qdisc", "netem"],
--        "plugins": {
--            "requires": "nsPlugin"
--        },
--        "setup": [
--            "$TC qdisc add dev $DUMMY root handle 1: netem limit 1",
--            "$TC qdisc add dev $DUMMY parent 1: handle 2: netem limit 1"
--        ],
--        "cmdUnderTest": "$TC qdisc change dev $DUMMY handle 2: netem duplicate 50%",
--        "expExitCode": "2",
--        "verifyCmd": "$TC -s qdisc show dev $DUMMY",
--        "matchPattern": "qdisc netem",
--        "matchCount": "2",
--        "teardown": [
--            "$TC qdisc del dev $DUMMY handle 1:0 root"
--        ]
--    },
--    {
--        "id": "cafe",
--        "name": "NETEM test qdisc duplication restriction in qdisc tree",
--        "category": ["qdisc", "netem"],
--        "plugins": {
--            "requires": "nsPlugin"
--        },
--        "setup": [
--            "$TC qdisc add dev $DUMMY root handle 1: netem limit 1 duplicate 100%"
--        ],
--        "cmdUnderTest": "$TC qdisc add dev $DUMMY parent 1: handle 2: netem duplicate 100%",
--        "expExitCode": "2",
--        "verifyCmd": "$TC -s qdisc show dev $DUMMY",
--        "matchPattern": "qdisc netem",
--        "matchCount": "1",
--        "teardown": [
--            "$TC qdisc del dev $DUMMY handle 1:0 root"
--        ]
--    },
--    {
--        "id": "1337",
--        "name": "NETEM test qdisc duplication restriction in qdisc tree across branches",
--        "category": ["qdisc", "netem"],
--        "plugins": {
--            "requires": "nsPlugin"
--        },
--        "setup": [
--            "$TC qdisc add dev $DUMMY parent root handle 1:0 hfsc",
--            "$TC class add dev $DUMMY parent 1:0 classid 1:1 hfsc rt m2 10Mbit",
--            "$TC qdisc add dev $DUMMY parent 1:1 handle 2:0 netem",
--            "$TC class add dev $DUMMY parent 1:0 classid 1:2 hfsc rt m2 10Mbit"
--        ],
--        "cmdUnderTest": "$TC qdisc add dev $DUMMY parent 1:2 handle 3:0 netem duplicate 100%",
--        "expExitCode": "2",
--        "verifyCmd": "$TC -s qdisc show dev $DUMMY",
--        "matchPattern": "qdisc netem",
--        "matchCount": "1",
--        "teardown": [
--            "$TC qdisc del dev $DUMMY handle 1:0 root"
--        ]
-     }
- ]
--- 
-2.53.0
-
+...
