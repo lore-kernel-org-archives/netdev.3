@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54CEE328260;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D453431E3;
 	Thu, 26 Mar 2026 05:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774502339; cv=none; b=RlslipjJ5jYCgFLjkBieBYsDN8oDEW7R0jpLBKT1HTkWuqztHBE/Zy+crs5DM5oAiG4cm0yWsNymh/Fl+qQcBGHRQISTFY0WUqrJJ8u/CDyq1bBG5Ykiolm3ubE+1DrglFhPwnxlA0Aza25Qrs/7Fqiv+aotsHmT9cLRbPBJkEk=
+	t=1774502339; cv=none; b=cE8RjpVSyy4aCV/hV+LQfys08FideUkUlnoZaXIPSE8x+XmUnoAf3kXPot/pD4WwTXk2IpSDksepPQYOStXxrsLgqHL5BM8fcpU4Bn+MraI7qdPT5eX8/ALhp0Ql065AiGRjw2gYRjts6bILO53bDrXg37D+HhmCvKnw2a5Rb7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774502339; c=relaxed/simple;
-	bh=qHwtEmiaUzALs1U8lxciI7QvUZJpw94pPRYf1wfFSqU=;
+	bh=8nzLFxeuDNYsf3IkWcj76Hg9mmDN27Zptu4KIN/CWj8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=FpY9TqzBM7n/axGvNCi7gI1KcXTtkf5d6Vq/M2bTywi2OIK4lfYvYFv+CRmDQ34Kaq5u0x3LFHqmD3PDbzebqWn3uL0oybwQ04+DYxfe38lQozKjFv+AR8oM98wacy8oU8ojyPOLNlV1kfmXqtR8qQgOr81S3Ku1nGU7uXbGhDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CFswEQtm; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Eo1EuqbufAvL5d5NspDmRRrhHwnERi2w/PTr19vfUKKSLd35qTAIx8V6fnB+4G+0sA0bx7BiFzAFq5m+m8KW7BiGn4Cdkahvi0u/+po1cxf99ZNmh3nOyIJWR3zK+x0J7+h+JyAPpR+Lf1S8Y//40zTyGiQ0EtvT0Gg+U5EmlMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uw2Fg2Aw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CFswEQtm"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 30153C2BC87;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uw2Fg2Aw"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 560E5C19424;
 	Thu, 26 Mar 2026 05:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1774502339;
-	bh=qHwtEmiaUzALs1U8lxciI7QvUZJpw94pPRYf1wfFSqU=;
+	bh=8nzLFxeuDNYsf3IkWcj76Hg9mmDN27Zptu4KIN/CWj8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=CFswEQtmEknwRv3F/kroYtIDMRI9+9Vn2lSXcToGZa8VqYW70KIO2rcT+oS38t2+V
-	 mWv/uJlyLkW1dO1ZteDPZvJdGmLVDE5ajxrRe1h2vwo6lnNBybF0HCjIAV3u5WXeuw
-	 Dsp3hVg4fQrmckHh/q7L938VFQpt7XHaBMHp5Zjg/ZvIeyE+DJmoQUYeg24yCZGp+0
-	 65O6aZkpj4rYpuaWhf1dHMMWXguG/mjNJp4Nd3xpbGn4O98A84h5v1U8GDjhoR+//L
-	 oq9GGzNIPtj4DWs3bkHLKDWXfJGTFBvDknB7Yl7Twld9HXA/buU8RLmyc5Q3/XGUfv
-	 JKEGOb0GUjeZQ==
+	b=Uw2Fg2Awo2ZC9SshWNX4To5unpSLUgX8Nt/lJ5MMzcGuMy7/PpqhCPMPAMJ0Xl8iG
+	 tvCd5vJ55w+kczDAll/72TkDfTaSMKrltXjzr5kt6r0hK6wD2JycJ9scgUUOEPizyP
+	 WIO8ftd0+ivEGLcewGxESW5dJBzDw1QyMyotIGUVOAxDct49KViDDCw814Da+qAjRy
+	 Icxx1q02UJ4HXkNTu3cKD4lsfLCWRkQClfPF1lB7EhhAAYq1zz2P/ZqjGIwvgSUmAk
+	 290lcq7ByzxILXuZwFLzi6No5zGaDRhZtiq7/MX93TNuHKSeiY1NqhlefYykDum0PW
+	 +NwP6cRVvBe+A==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 20520109E552;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E290109E553;
 	Thu, 26 Mar 2026 05:18:59 +0000 (UTC)
 From: Satish Kharat via B4 Relay <devnull+satishkh.cisco.com@kernel.org>
-Date: Wed, 25 Mar 2026 22:18:59 -0700
-Subject: [PATCH net-next v2 1/6] enic: extend resource discovery for SR-IOV
- admin channel
+Date: Wed, 25 Mar 2026 22:19:02 -0700
+Subject: [PATCH net-next v2 4/6] enic: make enic_dev_enable/disable
+ ref-counted
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260325-enic-sriov-v2-prep-v2-1-f72cf716ebfa@cisco.com>
+Message-Id: <20260325-enic-sriov-v2-prep-v2-4-f72cf716ebfa@cisco.com>
 References: <20260325-enic-sriov-v2-prep-v2-0-f72cf716ebfa@cisco.com>
 In-Reply-To: <20260325-enic-sriov-v2-prep-v2-0-f72cf716ebfa@cisco.com>
 To: Satish Kharat <satishkh@cisco.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -49,11 +49,11 @@ To: Satish Kharat <satishkh@cisco.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1774502338; l=3356;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774502338; l=2385;
  i=satishkh@cisco.com; h=from:subject:message-id;
- bh=y0pGwL9wW5ULZUwdK19OUJqESwm7dxXUYk9R9IIroV8=;
- b=jezU0suFcewUN+3irj8bvJDft8gAVHaGGfGq/nHL+Wcv5Pc4x88C+DYLfOjZYrlPxgS83830c
- 64USyhns6MiDuY8+Y3HYUCNyeOpAIkkvwLXxj7bkLxC16cIxgD/1TI7
+ bh=UFxmA9CX8KV13iHlUmy26fUHGETjz4zvpBBpux+w9yI=;
+ b=JxRD9wvJzsZNpmzXqnmy0W1K9LtqxIV3ezpNSHS96K1Hwfi6DG/04EE0ofRjcwuhe48wHQhNR
+ qXU2fFOgy59Dg0xQFVEof8u1lRmjRsDvo3Adgu0xnAnymdZj2sBD3jJ
 X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
  pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
 X-Endpoint-Received: by B4 Relay for satishkh@cisco.com/default with
@@ -63,88 +63,75 @@ Reply-To: satishkh@cisco.com
 
 From: Satish Kharat <satishkh@cisco.com>
 
-VIC firmware exposes admin channel resources (WQ, RQ, CQ) for PF-VF
-communication when SR-IOV is active. Add the corresponding resource
-type definitions and teach the discovery and access functions to
-handle them.
+Both the data path (ndo_open/ndo_stop) and the upcoming admin channel
+need to enable and disable the vNIC device independently. Without
+reference counting, closing the admin channel while the netdev is up
+would inadvertently disable the entire device.
+
+Add an enable_count to struct enic, protected by the existing
+devcmd_lock. enic_dev_enable() issues CMD_ENABLE_WAIT only on the
+first caller (0 -> 1 transition), and enic_dev_disable() issues
+CMD_DISABLE only when the last caller releases (1 -> 0 transition).
+
+No functional change for the current single-caller data path.
 
 Signed-off-by: Satish Kharat <satishkh@cisco.com>
 ---
- drivers/net/ethernet/cisco/enic/enic.h          |  2 ++
- drivers/net/ethernet/cisco/enic/vnic_dev.c      | 10 ++++++++++
- drivers/net/ethernet/cisco/enic/vnic_resource.h |  4 ++++
- 3 files changed, 16 insertions(+)
+ drivers/net/ethernet/cisco/enic/enic.h     |  1 +
+ drivers/net/ethernet/cisco/enic/enic_dev.c | 17 +++++++++++++----
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/ethernet/cisco/enic/enic.h b/drivers/net/ethernet/cisco/enic/enic.h
-index 6959e85ab516..366c65d072fc 100644
+index 0fd9cd917132..67fd780b1fa1 100644
 --- a/drivers/net/ethernet/cisco/enic/enic.h
 +++ b/drivers/net/ethernet/cisco/enic/enic.h
-@@ -297,6 +297,8 @@ static inline struct net_device *vnic_get_netdev(struct vnic_dev *vdev)
- 	dev_warn(&(vdev)->pdev->dev, fmt, ##__VA_ARGS__)
- #define vdev_info(vdev, fmt, ...)					\
- 	dev_info(&(vdev)->pdev->dev, fmt, ##__VA_ARGS__)
-+#define vdev_dbg(vdev, fmt, ...)					\
-+	dev_dbg(&(vdev)->pdev->dev, fmt, ##__VA_ARGS__)
+@@ -260,6 +260,7 @@ struct enic {
+ 	u16 num_vfs;
+ #endif
+ 	enum enic_vf_type vf_type;
++	unsigned int enable_count;
+ 	spinlock_t enic_api_lock;
+ 	bool enic_api_busy;
+ 	struct enic_port_profile *pp;
+diff --git a/drivers/net/ethernet/cisco/enic/enic_dev.c b/drivers/net/ethernet/cisco/enic/enic_dev.c
+index 2cbae7c6cc3d..659787f73cf1 100644
+--- a/drivers/net/ethernet/cisco/enic/enic_dev.c
++++ b/drivers/net/ethernet/cisco/enic/enic_dev.c
+@@ -131,10 +131,13 @@ int enic_dev_set_ig_vlan_rewrite_mode(struct enic *enic)
  
- #define vdev_neterr(vdev, fmt, ...)					\
- 	netdev_err(vnic_get_netdev(vdev), fmt, ##__VA_ARGS__)
-diff --git a/drivers/net/ethernet/cisco/enic/vnic_dev.c b/drivers/net/ethernet/cisco/enic/vnic_dev.c
-index c72452749f5e..c8d657e97094 100644
---- a/drivers/net/ethernet/cisco/enic/vnic_dev.c
-+++ b/drivers/net/ethernet/cisco/enic/vnic_dev.c
-@@ -77,6 +77,9 @@ static int vnic_dev_discover_res(struct vnic_dev *vdev,
- 		u32 count = ioread32(&r->count);
- 		u32 len;
+ int enic_dev_enable(struct enic *enic)
+ {
+-	int err;
++	int err = 0;
  
-+		vdev_dbg(vdev, "res type %u bar %u offset 0x%x count %u\n",
-+			 type, bar_num, bar_offset, count);
-+
- 		r++;
+ 	spin_lock_bh(&enic->devcmd_lock);
+-	err = vnic_dev_enable_wait(enic->vdev);
++	if (enic->enable_count == 0)
++		err = vnic_dev_enable_wait(enic->vdev);
++	if (!err)
++		enic->enable_count++;
+ 	spin_unlock_bh(&enic->devcmd_lock);
  
- 		if (bar_num >= num_bars)
-@@ -90,6 +93,9 @@ static int vnic_dev_discover_res(struct vnic_dev *vdev,
- 		case RES_TYPE_RQ:
- 		case RES_TYPE_CQ:
- 		case RES_TYPE_INTR_CTRL:
-+		case RES_TYPE_ADMIN_WQ:
-+		case RES_TYPE_ADMIN_RQ:
-+		case RES_TYPE_ADMIN_CQ:
- 			/* each count is stride bytes long */
- 			len = count * VNIC_RES_STRIDE;
- 			if (len + bar_offset > bar[bar_num].len) {
-@@ -102,6 +108,7 @@ static int vnic_dev_discover_res(struct vnic_dev *vdev,
- 		case RES_TYPE_INTR_PBA_LEGACY:
- 		case RES_TYPE_DEVCMD:
- 		case RES_TYPE_DEVCMD2:
-+		case RES_TYPE_SRIOV_INTR:
- 			len = count;
- 			break;
- 		default:
-@@ -135,6 +142,9 @@ void __iomem *vnic_dev_get_res(struct vnic_dev *vdev, enum vnic_res_type type,
- 	case RES_TYPE_RQ:
- 	case RES_TYPE_CQ:
- 	case RES_TYPE_INTR_CTRL:
-+	case RES_TYPE_ADMIN_WQ:
-+	case RES_TYPE_ADMIN_RQ:
-+	case RES_TYPE_ADMIN_CQ:
- 		return (char __iomem *)vdev->res[type].vaddr +
- 			index * VNIC_RES_STRIDE;
- 	default:
-diff --git a/drivers/net/ethernet/cisco/enic/vnic_resource.h b/drivers/net/ethernet/cisco/enic/vnic_resource.h
-index b4776e334d63..d327821fa9b9 100644
---- a/drivers/net/ethernet/cisco/enic/vnic_resource.h
-+++ b/drivers/net/ethernet/cisco/enic/vnic_resource.h
-@@ -42,6 +42,10 @@ enum vnic_res_type {
- 	RES_TYPE_DEPRECATED1,		/* Old version of devcmd 2 */
- 	RES_TYPE_DEPRECATED2,		/* Old version of devcmd 2 */
- 	RES_TYPE_DEVCMD2,		/* Device control region */
-+	RES_TYPE_SRIOV_INTR = 45,	/* SR-IOV VF interrupt */
-+	RES_TYPE_ADMIN_WQ = 49,	/* Admin channel WQ */
-+	RES_TYPE_ADMIN_RQ,		/* Admin channel RQ */
-+	RES_TYPE_ADMIN_CQ,		/* Admin channel CQ */
+ 	return err;
+@@ -142,10 +145,16 @@ int enic_dev_enable(struct enic *enic)
  
- 	RES_TYPE_MAX,			/* Count of resource types */
- };
+ int enic_dev_disable(struct enic *enic)
+ {
+-	int err;
++	int err = 0;
+ 
+ 	spin_lock_bh(&enic->devcmd_lock);
+-	err = vnic_dev_disable(enic->vdev);
++	if (enic->enable_count == 0) {
++		spin_unlock_bh(&enic->devcmd_lock);
++		return 0;
++	}
++	enic->enable_count--;
++	if (enic->enable_count == 0)
++		err = vnic_dev_disable(enic->vdev);
+ 	spin_unlock_bh(&enic->devcmd_lock);
+ 
+ 	return err;
 
 -- 
 2.43.0
