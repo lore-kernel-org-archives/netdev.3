@@ -1,57 +1,35 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED8463B8928
-	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 14:17:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD67E3FAE16
+	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 14:20:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774534673; cv=none; b=jiU0KsQ5WkoqsyBl1uKFCvxLDkyUAmtonJApVwX0wm+4OpWnSypJD79XVuCN/XCM4vww4x5eEoDg6v4ZuQeSsRqYv9E6C6C9epubmjlt1OWZomgpv+HqI/7x4R/BL9N3MCLTlKXleBMm0O30PyeTyKUt5keOrPDJI+VMwVGdipk=
+	t=1774534824; cv=none; b=bu+wksOC+WdhgGcnoyuqSwWVjKz5m7bHUA8TivadzqycpkOUqe/B1yeWKivKJGI/3skXjkdjZ2bUqheeMiDrDppE6/rn3YE8OLNCyyzmpC5aoIJvBPX+yIOr2AdsBco79NKsD01/U56/NZ/sK+0wL/94xu8PvlYt29BtApSBEz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774534673; c=relaxed/simple;
-	bh=19JNJgIC1w0C8iD0XBuDVA7+MnIqP+1uGvp0jR8zkts=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NOr4sw4KBI93Sx3W2YiS6zzqner+Qut9pGX1BWIw/rLIxq3FcWDFaxIYoacNiXr/M2LDArundKwXM3tqjl86K0dloAVvlmEPa7pk1HH+oKrH2wDUIKoONw5TxGShOluMIi+0CnNsMOfAxsu6ZnH51ndRWtIhuKtyfnfLWRPrYDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XlMIDE+m; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1774534824; c=relaxed/simple;
+	bh=GN3q2jDb3yXGGB4AvYK4N+PEzgJ1AQEQxcCUBMHg29w=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=etYXDdSH+lfIf/sdzW87ScPlh674lw9ejtpHckzehj1ZPFXbEd+UGC1zsRjJsJfoscfbYVtfNJjFd49NFocN6GBTv9IO9jKS27q7LXAmC7G/Vjo1v+NRecRLAf7XGp70utDyN4HjgOdgstgCSb6PgJIqGLeCz5/zm6EFAr5CMjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=joGMUyRh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XlMIDE+m"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774534668; x=1806070668;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=19JNJgIC1w0C8iD0XBuDVA7+MnIqP+1uGvp0jR8zkts=;
-  b=XlMIDE+m6QXDZ0OaS3mfBl6ol7PG+KSTplErc4YMyKthUnJgdvX6xYsN
-   JbtisRJkP7AFe59k5gUsCT6dlv7DviPzmGSdLMy/pOnSNAXlQj7wG2FCu
-   6AuQo90JtA3uOFVpAHVnl31+Ln4fSDZd+bpavzGyCuil3WkYsPiQaOuFb
-   0JjaGn9uDR7hl+JiwjNbcyhxHDPdlxT7biOuUApkR10xL7ZHcETXeJVbK
-   OlCeRn2Mzmw/BzAcrbVBi4/dA/Zc+CTz8ZiUvZ7rUwtpS7pQoJ/twQ0Rq
-   ubbBmsADx1AAzcr7mOXARBdSGDtRFPLqDhS/J19FArQsi7Wo0dJfvVmNA
-   g==;
-X-CSE-ConnectionGUID: KFn8lJO0S2uItVw4VvlAYQ==
-X-CSE-MsgGUID: LTdEIZrdQQe2FMlpWcC9Yw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="98212692"
-X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; 
-   d="scan'208";a="98212692"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 07:17:47 -0700
-X-CSE-ConnectionGUID: zlYbFasVTCCazD3zHtYOyA==
-X-CSE-MsgGUID: FuCbrUlrRh6ZBfeOE+Krvw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; 
-   d="scan'208";a="229963510"
-Received: from amlin-019-225.igk.intel.com ([10.102.19.225])
-  by orviesa005.jf.intel.com with ESMTP; 26 Mar 2026 07:17:46 -0700
-From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-To: intel-wired-lan@lists.osuosl.org,
-	anthony.l.nguyen@intel.com,
-	aleksandr.loktionov@intel.com
-Cc: netdev@vger.kernel.org,
-	Marcin Szycik <marcin.szycik@intel.com>
-Subject: [PATCH iwl-next v3] ice: remove excessive memory allocation in ice_create_lag_recipe()
-Date: Thu, 26 Mar 2026 15:17:45 +0100
-Message-ID: <20260326141745.3804284-1-aleksandr.loktionov@intel.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="joGMUyRh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6520CC116C6;
+	Thu, 26 Mar 2026 14:20:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774534824;
+	bh=GN3q2jDb3yXGGB4AvYK4N+PEzgJ1AQEQxcCUBMHg29w=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=joGMUyRhNpT/9iWHpMFFN6HTfjikPye9/nCnjluP2nq2ERbOgd+pc710euwUvr8DB
+	 vkymuTNb3CmQUO6JNUcPkRSB7RPrjjwsAajvkywzndGToXtq9Zyi8WrEtXFpcfe73A
+	 GxbPF+gzWa7GDXVms5VXoirPKmqT4+ynshVUV2KHjdQywKBo91Q82fA9WyWGAxN9f1
+	 BpTi1v2jQDT5175SuBPSQMnxuz+UpvVrfKS7k035DWHruf6CWPMFlJQijBhtSqzXDO
+	 TBT47cgt2aU6JZoG3sfyKYjqxvLpPDkW7YuifVMKjTc/oajBkZwo2gu95EexT26qXF
+	 kwGSNfMlkWm3w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FF7839EFA69;
+	Thu, 26 Mar 2026 14:20:12 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,37 +37,50 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/6][pull request] Intel Wired LAN Driver Updates
+ 2026-03-23 (ice, iavf, idpf)
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177453481117.2576185.2499695518599161703.git-patchwork-notify@kernel.org>
+Date: Thu, 26 Mar 2026 14:20:11 +0000
+References: <20260323205843.624704-1-anthony.l.nguyen@intel.com>
+In-Reply-To: <20260323205843.624704-1-anthony.l.nguyen@intel.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org
 
-From: Marcin Szycik <marcin.szycik@intel.com>
+Hello:
 
-For some reason ice_create_lag_recipe() allocates an array of 64
-struct ice_aqc_recipe_data_elem elements, while it only needs one (1).
-Fix it, while also using kzalloc_obj().
+This series was applied to netdev/net.git (main)
+by Tony Nguyen <anthony.l.nguyen@intel.com>:
 
-Signed-off-by: Marcin Szycik <marcin.szycik@intel.com>
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
----
-v2 -> v3 use sizeof(*new_rcp) in memcpy() to match the allocation (Jakub)
-v1 -> v2 remove 'Fixes' from commit message because it's not a critical bug
----
- drivers/net/ethernet/intel/ice/ice_lag.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On Mon, 23 Mar 2026 13:58:35 -0700 you wrote:
+> For ice:
+> Michal corrects call to alloc_etherdev_mqs() to provide maximum number
+> of queues supported rather than currently allocated number of queues.
+> 
+> Petr Oros fixes issues related to some ethtool operations in switchdev
+> mode.
+> 
+> [...]
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lag.c b/drivers/net/ethernet/intel/ice/ice_lag.c
-index 310e8fe..9ad19c3 100644
---- a/drivers/net/ethernet/intel/ice/ice_lag.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lag.c
-@@ -2418,11 +2418,11 @@ static int ice_create_lag_recipe(struct ice_hw *hw, u16 *rid,
- 	if (err)
- 		return err;
- 
--	new_rcp = kzalloc(ICE_RECIPE_LEN * ICE_MAX_NUM_RECIPES, GFP_KERNEL);
-+	new_rcp = kzalloc_obj(*new_rcp, GFP_KERNEL);
- 	if (!new_rcp)
- 		return -ENOMEM;
- 
--	memcpy(new_rcp, base_recipe, ICE_RECIPE_LEN);
-+	memcpy(new_rcp, base_recipe, sizeof(*new_rcp));
- 	new_rcp->content.act_ctrl_fwd_priority = prio;
- 	new_rcp->content.rid = *rid | ICE_AQ_RECIPE_ID_IS_ROOT;
- 	new_rcp->recipe_indx = *rid;
+Here is the summary with links:
+  - [net,1/6] ice: set max queues in alloc_etherdev_mqs()
+    https://git.kernel.org/netdev/net/c/c7fcd269e1e0
+  - [net,2/6] ice: fix inverted ready check for VF representors
+    https://git.kernel.org/netdev/net/c/ad85de0fc09e
+  - [net,3/6] ice: use ice_update_eth_stats() for representor stats
+    https://git.kernel.org/netdev/net/c/2526e440df27
+  - [net,4/6] iavf: fix out-of-bounds writes in iavf_get_ethtool_stats()
+    https://git.kernel.org/netdev/net/c/fecacfc95f19
+  - [net,5/6] idpf: clear stale cdev_info ptr
+    https://git.kernel.org/netdev/net/c/1eb0db7e39da
+  - [net,6/6] idpf: only assign num refillqs if allocation was successful
+    https://git.kernel.org/netdev/net/c/b5e5797e3cd1
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
