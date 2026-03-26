@@ -1,99 +1,127 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A0839EF30;
-	Thu, 26 Mar 2026 18:15:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0352848A7
+	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 18:17:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774548937; cv=none; b=iP8t/QLCWIylJeM54/MBS7CCfDsI+Yyu0ZsGcuLooiw3bT5i0LWNkxfBuC3ksZWmIdPr7vvbAwRjjFEE3vj9ZYZYIiHR+G37vM6d2oy3NBCpIY4cLqyaLkzVtn0gN1xhAUgrQsBgcuUD6xc10yeevLT9avNcno+X7Bpvd02VKpM=
+	t=1774549032; cv=none; b=GpBSz4wc1IxrZgOCDlg14rz3QccRpKZsIpea37FUGQ5BUDhEC8iLv3HgZUjWyZ5SwFAIr0QokHOdq/9AF50Ye5XLDBac2GUjoOOPIHZ+RcyYwTpafeqENutARa5TT9Ta5e1n3wbjqDTtSVbymMkfLet4FeTEGW3BEYY5xGmDNVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774548937; c=relaxed/simple;
-	bh=InLnSJBLzWxlxo3dw4P0X/q8o5CvV5UAEslhTc14/us=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mZcpCHxg0TN/+broZvAUEaMi9iYwKymmtL1v0ou23kPBT+lhh8OXAfqf1kIzjd6jtqZmcZ9dALP5ww7rrBjH2Ea+cPqwepAEpAf0dgGcqTbR1SE75FyPDcAQrpUSo+OlLLqsTDh2IxaVpEb6sM4Ue1pL9eZM+L9/2Ni/0t+x3sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=A91llKaR; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1774549032; c=relaxed/simple;
+	bh=Qo5Cm4PCGKHqP3PTyQXFXIsqArS9qV9odeX5q/iHOkE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pcj11g2twPFk68LIcCB2LUSezjkKwvHhDig8jQ1GGfLxSuCSXU4EPy0Ndb3pJgknWROsW73Ql1hWWMO5EhN51gPs9cEJ2eUOsLlMEiM5NWeU65xlrh6WKmdCwphaCftxJE1MSuPI75L3YhBGMy8pv/kH/jrT0qo6dGlr9STIIvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=w5KZ3q9K; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="A91llKaR"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Q04VIAHNkeO/Oab8CZfYBVf+J5N6KJreQMXprmET4N4=; b=A91llKaRZg1Kmp6LhWd1OiFvcj
-	3itUEP0PSvXO6oGyTtfgHDbDG28LoaPafvUnAUVxPxPAGgzivyFflJrT+8x7+D5B6aEBiE5KUJvpx
-	hsLC3Q9MtLtj5zS6XTV+mTFQHCTk/a4GPoJsYEIH5dzvP8DG3wwdU6/BAhPw3H9Z4kE7jlOleNzY4
-	938Lcw/7mq1ZxXXkBvdTj0rrQ/E8FqgyUjbin2ESTPaMpntIg5biA5leRtVjbSi3EMVY1NPQ2UQUW
-	vZvi82S6JJQyDlX/01L00gn7bQ3JaN9y4RDLm9UG60iu0fAZ20CIs2Nv6xeag98tIykPe2I/N4nY9
-	WeQ2ggwA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:54672)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1w5pEw-0000000059k-0PVC;
-	Thu, 26 Mar 2026 18:15:30 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1w5pEt-000000007G1-3NVj;
-	Thu, 26 Mar 2026 18:15:27 +0000
-Date: Thu, 26 Mar 2026 18:15:27 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Simon Horman <horms@kernel.org>
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>, devicetree@vger.kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	Jakub Kicinski <kuba@kernel.org>, Jose Abreu <joabreu@synopsys.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
-	Yao Zi <me@ziyao.cc>
-Subject: Re: [PATCH net-next 1/2] net: stmmac: remove axi_kbbe, axi_mb and
- axi_rb members
-Message-ID: <acV3v-iyoCUTh2a8@shell.armlinux.org.uk>
-References: <acJh4z3pRKkeaFbR@shell.armlinux.org.uk>
- <E1w4ydo-0000000Dlpb-34jd@rmk-PC.armlinux.org.uk>
- <20260326172943.GR111839@horms.kernel.org>
- <acVxNBLE8Ck2qfjc@shell.armlinux.org.uk>
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="w5KZ3q9K"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2ad617d5b80so8466635ad.1
+        for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 11:17:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1774549030; x=1775153830; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=CFxlBVx5yscJEg4lFLZYL2roAG0vg1jGmC9bdNCeta8=;
+        b=w5KZ3q9K5vyCOpncYXaZ03vJ6aUVj5bBAF4Dge6CvoEZ4bAKABhEblmMOJEb9vxC1b
+         mUN+e7vyasxaAn4kxP3aemDt9YooWYalwHhKtpK0rJBr4CNWeesa5eLnRQ+Pxd30wFHX
+         FDOq9FLgfeE3Vs/RKqlMhaEWvp2HOoy+Pfapu8mcxvaHCaVns++z6gUZLpLgX3Wt68Lv
+         piOmThlDXHXFMet8EXCRcHGbAY6yMizw69D5K1dUewIaeSnbrszjsuPKvfHS37q1RIMi
+         g6pzSZSLb6Q0Vsdw04LDlEkqxFTpp7SNzQEdmklKU7ynBGeN4J86vVGCUFLoT9Q33Hcy
+         9Z9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774549030; x=1775153830;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CFxlBVx5yscJEg4lFLZYL2roAG0vg1jGmC9bdNCeta8=;
+        b=QjwnjFilhdV/H5dsy1A2kKHJ17XaxOL5VDXIJDSUHeqsKDA5qMIbwLipG8fSdc5R/f
+         uqJn9cbxcDhG7oFcRzq+CG+oLSIZ0vHa1rU6h4ktWWOnf42RBkzQOpyIdPMBgEp1SYV0
+         0Bu75OjOItDbzQhERZy2YqIvfpMfk+rsfoOvjsProSApVkQmbNzdtzXo0knSljy3gz+W
+         l8Y4tgE/wKHiWjNISraAKbX8iZhK6q0vUHBTMS7xqyRX6ETx7/eCto7TkmEM4DjNGIk1
+         hNqXF08CkYTqbXTS4AHXQIXDuJudgIokdlj3qXsq7kLpsOZ/scLx1A6JHtc0Mq8kZzoU
+         Zc2w==
+X-Gm-Message-State: AOJu0YwN+btsqgT2M0nObqDt9f3ftoSJppZ1BVo52eKmXDUare0IhDiI
+	fWzD+iG8eIIkHUhBDPHo8MBT5SYjSJXawCurTSg4wZcT1a6Yy5rFfWK7n2TorCQUWvbdG/8bKlo
+	i3mL0
+X-Gm-Gg: ATEYQzw1kdNpyTACiPMNyJD+3m6JEc2ll4+X0T2nbW4E+ERTbvaaQhZjkVJnsyEh8pP
+	H3ky9+SV1Px7w4qYtq5m1EvxJq1Pk9E6lN2Huna6mFrRNFpbyH6NCSR8qHfCEqopee5yg6Ixxcq
+	a1dQke7DWyoes0r7MSCwRXZcL9XgZK/QlJVzfwYImfVB0C3onbrh+4xlqeFJreS9Mhp1VMIYyy/
+	O19zucyVmdVMkgu/tv7ueHBOG06oBLrI5mDqDqnDlSu5FpVIFvibLXUFjVII9rtPINICok8RBLB
+	5Wiam+a8PinlOjO8xon6F7/kBA0VRC/MlvSGgO8BgCJIS/kxPAxUR4LBJamGUI8ArmLblZ/pI3M
+	4HS7ERLRUt/SCs27Dee5EOC7z570puNZ8Dm1FkYmpyNjaTJfLV49kt+9Cn51+5IDxub5Ismstng
+	3NLQ9Zuq5dK4lNthN7QkDOeFOOK9ZLGmKn
+X-Received: by 2002:a17:903:228c:b0:2b0:6e8f:8e79 with SMTP id d9443c01a7336-2b0b0adf54bmr95336515ad.42.1774549029619;
+        Thu, 26 Mar 2026 11:17:09 -0700 (PDT)
+Received: from phoenix.lan ([104.202.29.139])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0bc8c4bd3sm38590245ad.63.2026.03.26.11.17.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Mar 2026 11:17:09 -0700 (PDT)
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: netdev@vger.kernel.org
+Cc: Stephen Hemminger <stephen@networkplumber.org>
+Subject: [PATCH net v3 0/7] net/sched: Fix packet loops in mirred and netem
+Date: Thu, 26 Mar 2026 11:00:59 -0700
+Message-ID: <20260326181701.308275-1-stephen@networkplumber.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <acVxNBLE8Ck2qfjc@shell.armlinux.org.uk>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Mar 26, 2026 at 05:47:32PM +0000, Russell King (Oracle) wrote:
-> On Thu, Mar 26, 2026 at 05:29:43PM +0000, Simon Horman wrote:
-> > On Tue, Mar 24, 2026 at 10:05:40AM +0000, Russell King (Oracle) wrote:
-> > > axi_kbbe, axi_mb and axi_rb are all written, but nothing ever reads
-> > > their values. Remove the code that sets these and the struct members.
-> > > 
-> > > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> > 
-> > Hi Russell,
-> > 
-> > FYI, AI review suggests that these fields should also be removed from
-> > Documentation/networking/device_drivers/ethernet/stmicro/stmmac.rst
-> 
-> I noticed. I've prepared an update if netdev folk want that to happen
-> as I've noticed that that documentation is fairly out of date now.
+This a minor revision of Jamal's series that
+fixes packet loops caused by mirred ingress redirects
+and netem duplication in stacked qdisc trees.
 
-There's another reason I haven't submitted an update, and that's
-because netdev is fairly backlogged at the moment - currently there's
-381 patches in patchwork - four pages of patchwork, with the oldest
-"new" patch dated 21st March. I don't think netdev patchwork needs
-more patches at the moment!
+The core idea is a 2-bit per-skb tc_depth counter that travels with
+the packet.  The existing per-CPU mirred nest tracking loses state
+when a packet is deferred through the backlog or moves between CPUs
+via XPS/RPS.  A per-skb field covers both cases.
+
+Patch 1 adds the tc_depth field in a padding hole in sk_buff.
+Patches 2-3 revert the check_netem_in_tree() fix and its tests,
+which broke legitimate multi-netem configurations.
+Patch 4 uses tc_depth to stop netem duplicate recursion.
+Patch 5 uses tc_depth to catch mirred ingress redirect loops.
+Patches 6-7 add mirred and netem test cases.
+
+Thanks to Jamal and Victor for fixing this.
+
+There are additional netem bug fixes in the pipeline but those
+are held back until this series lands.
+
+Changes in v3:
+- Renamed skb->ttl to skb->tc_depth to avoid confusion with IP TTL
+- Expanded commit messages
+- Split mirred and netem test cases into separate patches
+- No code changes from v2
+
+Changes in v2:
+- Do not reuse skb->from_ingress (which was moved to skb->cb)
+
+Jamal Hadi Salim (5):
+  net: Introduce skb tc depth field to track packet loops
+  net/sched: Revert "net/sched: Restrict conditions for adding
+    duplicating netems to qdisc tree"
+  Revert "selftests/tc-testing: Add tests for restrictions on netem
+    duplication"
+  net/sched: fix packet loop on netem when duplicate is on
+  net/sched: Fix ethx:ingress -> ethy:egress -> ethx:ingress mirred loop
+
+Victor Nogueira (2):
+  selftests/tc-testing: Add mirred test cases exercising loops
+  selftests/tc-testing: Add netem test case exercising loops
+
+ include/linux/skbuff.h                        |   2 +
+ net/sched/act_mirred.c                        |  47 +-
+ net/sched/sch_netem.c                         |  47 +-
+ .../tc-testing/tc-tests/actions/mirred.json   | 616 +++++++++++++++++-
+ .../tc-testing/tc-tests/infra/qdiscs.json     |   5 +-
+ .../tc-testing/tc-tests/qdiscs/netem.json     |  96 +--
+ 6 files changed, 676 insertions(+), 137 deletions(-)
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.53.0
+
