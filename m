@@ -1,127 +1,148 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011064.outbound.protection.outlook.com [52.101.70.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF2432E743
-	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 07:49:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774511371; cv=none; b=kpJdhX0l/H2fVerClIGAou6bplwXrXcZDEkSTg2K/ThByHjW5iCTID2rgoxOsBkvThabN7nK1cmFx3+8egrlJOsPelA5zcZKCjAZ1AUnDjQ4EheKvnrJ+H/4ONgaS9v7ETixe2GZorFhHL6y+shWmxRPWY/pPtgfGLWw+Hlyg1M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774511371; c=relaxed/simple;
-	bh=2TSxO3dBxPDDS0TMU0ynhbj7RzjvstwfjFCorkhdimw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=H9LPVwmPz2I5hDMC9D9sp+w5JCnPuWlu5qgQKGNZSXIT9j41tlIfjoFOcYly6q1jPBsv81UTu2pL/tE8vV9KVwnh0yuHX7H57YEJLjsLtFLwLSqU6RUkjl7ySpSxN5Ej+7S8kxeo1Ezi4caY8Dnua24fSXLJNf4WSypHf1db2gY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=O4LfPlA6; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C081DE3B7;
+	Thu, 26 Mar 2026 07:50:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.64
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774511435; cv=fail; b=mSNNskbtjhPadyUoiDOhS3XiN32Tk7GWSWz99LzpXhC9zoLNkycbK5RT1AD9KCchi/IRPng1ZLXZobZyKL3uH87SjXJDsrA130S7lfyb3iXpWH9Vxs7ITJICAmrhGifF9xEVGk5BkyGcac1vDHfh0ifL1hpWeZfJdcb1aUss7XE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774511435; c=relaxed/simple;
+	bh=+0VpZnLtxr0xQCealwSV7VWQuHSTmGH53ZKLyU8ESJI=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=VXurGN9r8SEiC/e+HchYJ5QxnaVvmyndQ06QpRi05zRk2V4O9ufalppOOqRgLRd8HldZmUfsccay7ogz8yE03Z5LKgMKUO11z2fKEWcLUdAWsbBXY5pggKvhSAufrHqCafQhOZHgLjWYdnXyRKT5MISEWx2DDGKUwtvYf/aiLS8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Hk6K+NaF; arc=fail smtp.client-ip=52.101.70.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="O4LfPlA6"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id CA3651A2FF5;
-	Thu, 26 Mar 2026 07:49:27 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9716F5FDEB;
-	Thu, 26 Mar 2026 07:49:27 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DE847104507C8;
-	Thu, 26 Mar 2026 08:49:21 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1774511366; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=6vCpUNBSiAnYzq38lMljTJz/wGpcaU+8Km5eWOGP29M=;
-	b=O4LfPlA6DXdQvXswgXOIiIqA0zoyzh65smdruT1D4cZH0LIUieaE/NMYMxT79/ea3Lrlgg
-	z+5xD0lSFdrKgWiB92T+DEVmk5Kxila/MxT+9yZ3ozHOsFYYW0XQoAI42vXoMGBCh9KG6b
-	uSnavCLBGDt8DrmYRt4eZFRN8lIR52gsLgSbJOEiZ44S4CUr93s4X95s1MsHvPjBayyvyz
-	NEIM4Z+9QnvY9qVXTWedfHXrOM1sahBC9X3IqD6+0FRZThSVIIPrC23nRpucKD5vSfpvaW
-	z96VqNoA7sZEaXwCvqKWI5Bq8SFwwAYl8NCSsS/YMPoLJfd0nIGjkH4GBi1IQQ==
-Message-ID: <abb1c779-b306-42f8-b2b1-aa56bfcebe1b@bootlin.com>
-Date: Thu, 26 Mar 2026 08:49:20 +0100
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Hk6K+NaF"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GxqQXmzFJEZBjMXVJPtKFB3m7ry9LnkvI/SPTge5yIFS8c5MJUlEpVlZvBYtauEqeoeDk3GJfQUNXclljFsMr8hAa5gQMJ6Sd1ctFdLzw1yyGjsw0KYV2lZUw8TqyFRw+eTd23xf+5/x32EHUxhQqFBcQ/KcNj8y8MHg51ohbFBcvuGjPf/n1GSRLMUB4FIVj7JXXsx5YvO1bKgkiH5SOxN8ocQM5QzHdfNBPgdhfb/QhsSAZZ1shpUOgR/le47wCFSV4oZ1OGhGyS/xJJlAo73TzRRO8SVO1huEW8FfEYUbcsRye+LbS5vo+G0vmqDTawHb4cFkFmGc42nQiYQW6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cSOwxtd3Plpg7aD3exwgrD2YuU8ARRyWWMcoYgtFWTE=;
+ b=Xoogedz0iAIatmhgIJLhS1J/kclAmEFk4ZSbyDLSnF3eVFz56/e0qzzzfxFdPnYgQsron+OU3wgp2huRSXyDRVziOTveSCeulF8nIzTSn6bWNhgtBz6WHhBA+uqf5xJPauUO0ysyjBlCjALFoXt5LlaG/7D01JqwkZFbIhwqGu/e7ykje9cBesbSa9l85p0KTDz/uAu6JoEXk0kal/N5GNkRhCdmAyojl1zTjgr70nmm2Adam07jfmA2yt1872c/2ICdJrtVzUaM9XfC1xwXW9qrk2fbvugGsExwYwDXbwHsZPUlUaxcG58JwWFOARW+iGsXix3HLPZ8ifg8ha7BCQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cSOwxtd3Plpg7aD3exwgrD2YuU8ARRyWWMcoYgtFWTE=;
+ b=Hk6K+NaFaKPIb5A8jqLyMHTPt/XknTtlxJoC5TMRHxdRotQj+iOGvqLSwOcQWZf1wmo4D0IabbbkoLDnaRC01vUMzaOWjh9oDGSTjyq9cXT9TtVsZiTzd43Fj+ybqFG2aXrqkxBiIF3jH4Kn2ME+2ssOLtHhzfWn6BHo1z7nh5XMbKSAxqRsAZxs2p+U/UZ6h0VG/ocwSCuivo6VkVrtVcpV9EgOMuNC+DmwCxEwPwn7iSro45yMGOU1IR9S8+/4iFGZ/YsknwA1+3itKeB+XEP4FCn1g42ugNCHFdSWiZ8oNSFPKhyc4jrLe/1SABtdR+X9thqGq1WlTGC6NH6ygg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by AMBPR04MB12282.eurprd04.prod.outlook.com (2603:10a6:20b:720::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.24; Thu, 26 Mar
+ 2026 07:50:21 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694%3]) with mapi id 15.20.9745.019; Thu, 26 Mar 2026
+ 07:50:31 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	alexandru.marginean@nxp.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH v2 net 0/2] net: enetc: add more checks to enetc_set_rxfh()
+Date: Thu, 26 Mar 2026 15:52:31 +0800
+Message-Id: <20260326075233.3628047-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR06CA0011.apcprd06.prod.outlook.com
+ (2603:1096:4:186::16) To PAXPR04MB8510.eurprd04.prod.outlook.com
+ (2603:10a6:102:211::7)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] net: stmmac: skip VLAN restore when VLAN hash ops are
- missing
-To: Michal Piekos <michal.piekos@mmpsystems.pl>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20260321-vlan-restore-error-v2-1-45cf56a5223d@mmpsystems.pl>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20260321-vlan-restore-error-v2-1-45cf56a5223d@mmpsystems.pl>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|AMBPR04MB12282:EE_
+X-MS-Office365-Filtering-Correlation-Id: b044faf4-c098-4f3c-f20b-08de8b0c5a92
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|52116014|366016|19092799006|18002099003|56012099003|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	c+uTZESWMpsSRDPawFIyNJ+5nMtAZBbFUI74B0CEf59r/xGXRa8UFx01W/vmyvSGKmDDJy225/Qh5vhpVxS/BQll7UuMXF/LDZVMa20Xz3X3PsbHmG6Y0tf2+wH+sV/j1mYTXgHsd2cMIoaecqGrjDYj1sppYRpFPZNXnEFRL2AS/jHXagDz64p7faxkTaY8lhv+9glGthl1uN1ZLbt9WD55JucsM/ncCpKvLBBWPRDeAfWZn6R0KIXMP/RKPkd9cvZDevs/D24xacNHiMq8+zVevgorCkKspTBNqi9rNcWQ1a/pnLDIyhgnNBHa+vgOXqAwf2Jj9CAwmNzX2fhKPcHDDeHbaxPHqdOd34uW4M4IEBvaAffIx8oG8zo/r+08LUjPb3s4N28FsIEK9WjRyHroR0iySYq5OWfwnwy1cJj7W7iXctZjR4mc4Tfy7DAeWDtjV01avSKUQUlE9UCLMAL5GEBocYpLid656yD1Qo9uAu+yzZ9HIolVOEShX1++0WWCGsblOGaigH10a3b/HhzBKP4aplflDtxcibS+x8QNdqeRy0OE3RaU5pU9ZNTObSKtroLT2DvOdJsYaS7chX8hsc3iY8HwvToK6etyEPNnJkh1SxjbDSBFYzVtWFrDDQaj6+zgRwSDUSCXuWRjzqIji+jxSQZCUdrST7OHBUJ1wpvQOI8sLX2J1kfXTq6SO9CDO5wbqxZwyhHAUfDhbzgqs3gCZ4nsyYRSsYkwQvukLTx2BcYO3hm4R8ykbNog4DNr34QNTe57+YOehQ/m4JjmABvBEMVYUvkbpIgKS/4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(52116014)(366016)(19092799006)(18002099003)(56012099003)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?+ErObyF4TLy9lslSAqsv1fd/hMGMUDtlwJkeb6rKgRjb71qx9t3BYRRViDDX?=
+ =?us-ascii?Q?6vjKei/ekrjj8ONhzPMzCxemLaXW5rMf2/msLzvudzS+aOSChurR0uYfmjAv?=
+ =?us-ascii?Q?HECHHMh7zmiv8uaHaxq4xDnDNFSN7cxqsOVAvOB3K4MLVLntCHfZ264pJVzl?=
+ =?us-ascii?Q?h9/sO31nxxUUk6TPt5/6txMTZFpgB8wOI2RWjndFjWTtWKx47qH75Z6mOXGA?=
+ =?us-ascii?Q?Ah8mkeuuxt5+tKG9JcBsq+oyVuNZihzqtFOxEAxcqeeB8CBstx1xvPhwjhRe?=
+ =?us-ascii?Q?ixAc7BSONfzhXuZlmExxiZBAYlMgHdbjARYcUrCqQe34fOYIBL8EcvzC0Nkk?=
+ =?us-ascii?Q?GdE4P03KlbO4uLvg2Hb6PB3+04DYG54/yNckQ12xYO/Pgi9VrJAUXAyaKw/S?=
+ =?us-ascii?Q?GDP6LYF4Ye9C2A5/MPft9kyLvNQMG6zxiYPkUgt0wW4GH7q50Oa98vhWiwaF?=
+ =?us-ascii?Q?W7sSZYFMk6sG4QtXxUz3FYJSRn8KlgBcld5EsQmuQIJzDOQjvZl7LWpQlPtG?=
+ =?us-ascii?Q?nB9OfBvb7mQe50s8qaXgnTeXEp2SBJhUtMzHyvVRhjDpu0tgdwnLLiQBYsNy?=
+ =?us-ascii?Q?ZwADnK+7ya4fMgKSX2nAz9EYy381Z9BqN2tPdmNjlhXndpUYW7bI9X0MIjYW?=
+ =?us-ascii?Q?SCKHsV0pJPA/xAp49OA4r4ObxD0Pwo3pEZ6DZkZq0S4CB6wkPiAjRj0b1Zij?=
+ =?us-ascii?Q?orhzLVUIMU9fCc4DfIvPj0X6WQWMM82CAC2GJgnHhwvO17aM6zb2+XQjZhUV?=
+ =?us-ascii?Q?RLWr9klqLi7qfImjCwPCCEJP/r8jJeMkePNALVtelgOU7vbslAVNCvWh5pQl?=
+ =?us-ascii?Q?O5sxUAxRQ7BZ7mvcGxUYyHi2K8RJxozdJBrUevvUihCWudjkXwh5dibM1f+c?=
+ =?us-ascii?Q?W1f+/jQ93xze+KNefO9kICTqg7pdsKIPKxbQNAOZ/I7o5rSpKdpvIbyXaWf2?=
+ =?us-ascii?Q?yZEMkgWYvvttS9DXfsB+5FMZK+rHAgsWq7kIOq5l9K+h0ZfsDHwiGTnzjziu?=
+ =?us-ascii?Q?PaxKXZ0T3TaOldq+qK26BWmptQdl6GI5l0PTPj0OMHZ61zIsuFMVBtqZSQ/C?=
+ =?us-ascii?Q?sLTa9pY/XN80Cd9hkUcHdOGejKwy/R1rE8yv8OWRxRrCmBrvoHWdKa6o4Zpn?=
+ =?us-ascii?Q?nG/mDrY2rhYX45JJBWAPfEM08aXVyjxryUphYy4BnNfVWde1ODkvdUt8LUVE?=
+ =?us-ascii?Q?2HmUfEUSkAX/lmkhpTlOBmYDnjjYNETmZAoWdRvmZhTyoamEWmG5D350XvoV?=
+ =?us-ascii?Q?DDFq1OXPppfpUJCdhCrT7KmrsFb44gEpE+jkTGREUjnsd8u6pqCCUUmsqQa6?=
+ =?us-ascii?Q?IhWvsbqZQ6U4pWMuawEPhppVzXhK4cN3XxERj6ypBXkP875mDSG2rYW6xm6I?=
+ =?us-ascii?Q?IJnTF9mBqR8nx5/vkXxp6vQFs+3eFq6CXCHcJqqsCmVsyGGWZHR1mQ5KIIr2?=
+ =?us-ascii?Q?zYE7pV0RxKlD8pwXsMdyvYTKkerZMoFC210S0M5H4qcuMuSJZV0ZWueVJYUo?=
+ =?us-ascii?Q?5Um+UEF68/+vGh2VITWNhAqptubjFHoGtL9MjN2sQENGaExKCJDdX+urJHmx?=
+ =?us-ascii?Q?vCu7Wqm8ZIBljO6vfFPJ7MHTgoZGzjaxrWUYfrAreCqOwgU1NcD5++flF5fx?=
+ =?us-ascii?Q?sG06G6xncZn2q72Lse8hb5wIbQxGvB7NXbbbndZXbOyyunY5aMd/gMDub0uL?=
+ =?us-ascii?Q?RjvtW/xPsNlincnh4JxJqd1DuSb4JMana1Pq7ZuRcfGhltMavtjjBP//B77x?=
+ =?us-ascii?Q?3b2jT9cZ/g=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b044faf4-c098-4f3c-f20b-08de8b0c5a92
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2026 07:50:31.1627
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Z/trXBaHGw6Jfgv6LDlLDidCqAUQwyedVEPD2Q+cYMP82Xli8UyoQ5ge410erVW2+RxCYeUYhYEs9WW5XDlgDA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMBPR04MB12282
 
-Hi,
+ENETC only supports Toeplitz algorithm, and VFs do not support setting
+the RSS key, but enetc_set_rxfh() does not check these constraints and
+silently accepts unsupported configurations. This may mislead users or
+tools into believing that the requested RSS settings have been
+successfully applied. So add checks to reject unsupported hash functions
+and RSS key updates on VFs, and return "-EOPNOTSUPP" to user space.
 
-On 21/03/2026 06:38, Michal Piekos wrote:
-> stmmac_vlan_restore() unconditionally calls stmmac_vlan_update() when
-> NETIF_F_VLAN_FEATURES is set. On platforms where priv->hw->vlan (or
-> ->update_vlan_hash) is not provided, stmmac_update_vlan_hash() returns
-> -EINVAL via stmmac_do_void_callback(), resulting in a spurious
-> "Failed to restore VLANs" error even when no VLAN filtering is in use.
-> 
-> Check presence of VLAN HW FILTER flags before stmmac_vlan_update().
-> 
-> Tested on Orange Pi Zero 3.
-> 
-> Fixes: bd7ad51253a7 ("net: stmmac: Fix VLAN HW state restore")
-> Signed-off-by: Michal Piekos <michal.piekos@mmpsystems.pl>
-> ---
-> This patch fixes a noisy "Failed to restore VLANs" message on platforms
-> where stmmac VLAN hash ops are not implemented.
-> stmmac_vlan_restore() calls stmmac_vlan_update() without checking for
-> VLAN hash ops presence which results in -EINVAL. 
+---
+v2:
+1. Fix a typo in the commit message of patch 2.
+2. Collect Reviewed-by tag.
+---
 
-I've been seeing the same message on socfpga. My two cents on that is
-that this error messages doesn't bring anything to the table anyways.
+Wei Fang (2):
+  net: enetc: check whether the RSS algorithm is Toeplitz
+  net: enetc: do not allow VF to configure the RSS key
 
-As Russell explains, it's either triggered when the vlan op isn't
-implemented (the stmmac callback macro stuff turns that into a -EINVAL),
-or when some capabilities arent present. All in all, it's always stuff
-that users can't really do anything about, as it's HW limitations, I
-think we can simply discard this message.
+ drivers/net/ethernet/freescale/enetc/enetc_ethtool.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-Also, nothing actually checks what stmmac_vlan_restore() returns, so we
-might as well return void ?
-
-Maxime
-
-> ---
-> Changes in v2:
-> - Replace check for hash ops with check for HW FILTER flags
-> - Link to v1: https://lore.kernel.org/r/20260314-vlan-restore-error-v1-1-4fc6c3e2115f@mmpsystems.pl
-> ---
->  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 6827c99bde8c..cfc0ce9cec9c 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -6863,7 +6863,8 @@ static int stmmac_vlan_restore(struct stmmac_priv *priv)
->  {
->  	int ret;
->  
-> -	if (!(priv->dev->features & NETIF_F_VLAN_FEATURES))
-> +	if (!(priv->dev->features &
-> +	      (NETIF_F_HW_VLAN_CTAG_FILTER | NETIF_F_HW_VLAN_STAG_FILTER)))
->  		return 0;
->  
->  	if (priv->hw->num_vlan)
-> 
-> ---
-> base-commit: 42bddab0563fe67882b2722620a66dd98c8dbf33
-> change-id: 20260314-vlan-restore-error-f8b3a1c7f50a
-> 
-> Best regards,
+-- 
+2.34.1
 
