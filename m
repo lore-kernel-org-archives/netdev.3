@@ -1,100 +1,142 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7097421EE5;
-	Thu, 26 Mar 2026 17:31:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705BE41C30D;
+	Thu, 26 Mar 2026 17:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774546270; cv=none; b=M/iIu/agwBan15lEV5QqUI9T+nX77R1+S7ThnDhC60ac2amSydxoaHhkVILbaX+2ou7hGHQJ5w/TsRwaoOMnY0BwCdOYw4doDXvsGNZ4jexnTHDA5RW+y6HCTJ2UW/2k2AoETE8Em+ceignWC3SvKPWIaTs3MsPCRsKMmEbpWi0=
+	t=1774546272; cv=none; b=BnrEdWXXKnlptbBoi9324wC8kyRNFTOOJrRsaF2rb9JnIMFsra7CJWnJ9XphOtubhRwJAdSr+Z7gHbFy4PMztF73OJxxPDEIOISIKS2AaTgeyceTFduoEKy88Hi8qC7vAJB0RIdnVikHqeCTRKIo1l9URt87EdgDy7Q4mLaa1h0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774546270; c=relaxed/simple;
-	bh=UGjIEZbjcXuAUyCk/TZyfTyRY2/0pBcB6DD8go4Uaa0=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=SHqtV/+gxe+g9SzcubYRfix0wKXlREaeE8Jbcqu7upgSEZiQinKLErdDFyBqwae8zaiJhqiYLO/5BmvxO21bX8bxJpy5PbCGSFJsyM6Z3G3e1Fy5Jl0PO9Ong86wNqWqjRKeav0SEcSuj7g9aXntBrdcMV870aSVz1cZwB3gAZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=MHKva2tI; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1774546272; c=relaxed/simple;
+	bh=JIOc5GnB72K4q/HRE0zTqYJt05e5jkm8u7Q880pzdBg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mTYKcsEg17MJlm5Ug7EtE8GbxqxzhPDqrqlYSOJaX5KDMxzXWEa2TXE/FSEDWF33qgjnaDkqJuxXvp44zsN1IWOPbblHWXmn3HGuGufFIYyrRWhuhzgsddDqg0td2dyNaBdtfDyHS75Z3vUH3ySwDuKvxpS8e7AQcR//X885slA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=ejBmPAYA; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=jOXsAgpP; arc=none smtp.client-ip=160.80.4.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="MHKva2tI"
-Received: by linux.microsoft.com (Postfix, from userid 1173)
-	id 3C32C20B7128; Thu, 26 Mar 2026 10:31:05 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3C32C20B7128
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1774546265;
-	bh=WgiY0Cr10/koC/gjn73ozCFl/yXO3PvbCI7F7cJ9NW8=;
-	h=From:To:Subject:Date:From;
-	b=MHKva2tIvwvqngWORA+HxUMEuM62SYE27K7EFzkjSp8iDv6QuIlfyMgvuKmgI3Kz7
-	 odRtNRc0K5wK5QXZNUGIJ4qU3mo8F72PUYFbreGByM7S1kEm7PoJMViLjZuLpl8efS
-	 +B83cSfTIAUn69lrdM/L5y/7Phy9zWZbx91TSD8A=
-From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-To: kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	longli@microsoft.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	ernis@linux.microsoft.com,
-	ssengar@linux.microsoft.com,
-	dipayanroy@linux.microsoft.com,
-	gargaditya@linux.microsoft.com,
-	shirazsaleem@microsoft.com,
-	kees@kernel.org,
-	linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] net: mana: hardening: Validate adapter_mtu from MANA_QUERY_DEV_CONFIG
-Date: Thu, 26 Mar 2026 10:30:56 -0700
-Message-ID: <20260326173101.2010514-1-ernis@linux.microsoft.com>
-X-Mailer: git-send-email 2.43.7
+	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="ejBmPAYA";
+	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="jOXsAgpP"
+Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
+	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 62QHUbbp011755;
+	Thu, 26 Mar 2026 18:30:43 +0100
+Received: from [10.62.247.239] (93-33-118-253.ip44.fastwebnet.it [93.33.118.253])
+	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id D32A0120596;
+	Thu, 26 Mar 2026 18:30:42 +0100 (CET)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
+	s=ed201904; t=1774546244; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dKQp0iMzqepU2z7oj1+7CMIhVFuegfGwrdKsraVp8KY=;
+	b=ejBmPAYA7FjPQ+gBRxqyAoCBSEleA8Wy/XLoqJEJoJn4j1Jp5czTvGOMQcnS82qOyEVLDI
+	MQ/oOxyZNCeMGoDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
+	t=1774546244; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dKQp0iMzqepU2z7oj1+7CMIhVFuegfGwrdKsraVp8KY=;
+	b=jOXsAgpPYTPNb/wjJmNf4jEl1vQmkd3ReeuXPP/hD7LJJ5HzDlNNMe11k9QRvoB34Dzu6k
+	IiQM0PpJVBOwXUjRhrvRho26slfjWrLJ3HJzlb2rL7K03NU38zeW4ymbOK+eveE78ltZ53
+	N7GMTTCZ73KcIhkUuLcQS898xXPDy57oktMvncNSCxEYUsHnkGylX4TXJE5WXFRLPNuAAB
+	Fp4ENIc7VHpEDfYE85j0SmuPmzz2PE7TecSfHDW6AjvRt33afNQ11pd6kIusF3FjHSKVyu
+	zN89z0knQNJepcWufZukAdiKwQNhJMDosvnhjAA3fUrTf9I40e/4prv0pDc2CQ==
+Message-ID: <4d512ba5-a6fd-4d26-876b-5ea7a145d0cd@uniroma2.it>
+Date: Thu, 26 Mar 2026 18:30:42 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH net-next 0/3] seg6: SRv6 L2 VPN with End.DT2U and srl2
+ device
+Content-Language: it-IT
+To: nicolas.dichtel@6wind.com, Justin Iurman <justin.iurman@6wind.com>,
+        Andrea Mayer <andrea.mayer@uniroma2.it>
+Cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>,
+        David Ahern <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        Simon Horman <horms@kernel.org>,
+        Paolo Lungaroni <paolo.lungaroni@uniroma2.it>,
+        Ahmed Abdelsalam <ahabdels@cisco.com>, linux-kernel@vger.kernel.org
+References: <20260322000557.12559-1-andrea.mayer@uniroma2.it>
+ <CAOY2Bqx-ZmBm-o-BoUYCxJjGQn31WF8V2u7gbnB52gOSYvG5Rg@mail.gmail.com>
+ <6fef33af-b351-4bf6-a210-ae2283ec9f69@uniroma2.it>
+ <dfc4fb29-7f27-4e9f-b6c9-bd37cbddbf1e@6wind.com>
+From: Stefano Salsano <stefano.salsano@uniroma2.it>
+In-Reply-To: <dfc4fb29-7f27-4e9f-b6c9-bd37cbddbf1e@6wind.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
+X-Virus-Status: Clean
 
-As a part of MANA hardening for CVM, validate the adapter_mtu value
-returned from the MANA_QUERY_DEV_CONFIG HWC command.
+Il 26/03/2026 17:30, Nicolas Dichtel ha scritto:
+> 
+> 
+> Le 25/03/2026 à 08:10, Stefano Salsano a écrit :
+>> Il 24/03/2026 17:00, Justin Iurman ha scritto:
+>>> On Sun, Mar 22, 2026 at 12:06 AM Andrea Mayer <andrea.mayer@uniroma2.it> wrote:
+>>>>
+>>>> Hi all,
+>>>>
+>>>> this RFC series adds support for the SRv6 End.DT2U behavior and
+>>>> introduces the srl2 Ethernet pseudowire device, together with
+>>>> corresponding selftests.
+>>>
+>>> Hi Andrea,
+>>>
+>>> Thanks for the work you (and Stefano) put into this series! As
+>>> discussed offline, there is interest in such a solution.
+>>
+>> Hi Justin,
+>>
+>> thx for your interest!
+>>
+>>> A general comment: I'm not sure about the name "srl2", as we're
+>>> talking about SRv6 specifically here.
+>>
+>> fair point
+>>
+>>> I would personally love to have
+>>> "l2srv6", although I suspect we may end up with "l2seg6" to remain
+>>> consistent.
+>>
+>> I'd like to keep it as short as possible, our initial idea was seg6l2, very
+>> close to your last suggestion, then we opted for srl2 losing the "6" concept
+>>
+>> now it comes to my mind that l2 is somehow redudant in an interface type name,
+>> as an interface is an l2 concept per se, so my preferred option becomes:
+>>
+>> sr6
+> Note that the interface name is defined to kind + a number when the IFLA_IFNAME
+> attribute is not specified:
+> https://urldefense.com/v3/__https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/net/core/rtnetlink.c?h=v7.0-rc5*n3823__;Iw!!O5Bi4QcV!Bw3h__JfgzAoQlG3DyfQsdX5VEQi5Zx9dXbROUeKuwomkISAWgGMwNxjv059RhKI5xV9MpHHknEXDTb9diS16akPWyJi_dCP7aE$
+> 
+> Here, the default name will be 'sr60' :)
 
-The adapter_mtu value is used to compute ndev->max_mtu via:
-gc->adapter_mtu - ETH_HLEN. If hardware returns a bogus adapter_mtu
-smaller than ETH_HLEN (e.g. 0), the unsigned subtraction wraps to a
-huge value, silently allowing oversized MTU settings.
++1
 
-Add a validation check to reject adapter_mtu values below
-ETH_MIN_MTU + ETH_HLEN, returning -EPROTO to fail the device
-configuration early with a clear error message.
+> 'vti6' is already in this case, so it's probably ok. I vote for 'sr6' too ;-)
+> 
+> My two cents,
+> Nicolas
 
-Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
----
- drivers/net/ethernet/microsoft/mana/mana_en.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index b39e8b920791..bd07d17a6017 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -1207,10 +1207,16 @@ static int mana_query_device_cfg(struct mana_context *ac, u32 proto_major_ver,
- 
- 	*max_num_vports = resp.max_num_vports;
- 
--	if (resp.hdr.response.msg_version >= GDMA_MESSAGE_V2)
-+	if (resp.hdr.response.msg_version >= GDMA_MESSAGE_V2) {
-+		if (resp.adapter_mtu < ETH_MIN_MTU + ETH_HLEN) {
-+			dev_err(dev, "Adapter MTU too small: %u\n",
-+				resp.adapter_mtu);
-+			return -EPROTO;
-+		}
- 		gc->adapter_mtu = resp.adapter_mtu;
--	else
-+	} else {
- 		gc->adapter_mtu = ETH_FRAME_LEN;
-+	}
- 
- 	if (resp.hdr.response.msg_version >= GDMA_MESSAGE_V3)
- 		*bm_hostmode = resp.bm_hostmode;
 -- 
-2.34.1
+*******************************************************************
+Prof. Stefano Salsano
+Dipartimento Ingegneria Elettronica
+Universita' di Roma Tor Vergata
+Viale Politecnico, 1 - 00133 Roma - ITALY
+
+http://netgroup.uniroma2.it/Stefano_Salsano/
+
+E-mail  : stefano.salsano@uniroma2.it
+Office  : (Tel.) +39 06 72597770 (Fax.) +39 06 72597435
+*******************************************************************
 
