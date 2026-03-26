@@ -1,119 +1,148 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F343DA7E0;
-	Thu, 26 Mar 2026 10:02:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09413B47C1
+	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 10:02:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774519337; cv=none; b=i48molvcGsAOMoqsgYwkZRQ2mP/hLb7a+1Sl0DXjR74+Q8D76l4Cpus7/2vV26UAyHoxnyieBNoybmofev0b8BV3FelY1DMn5tyV4b6AYRJowoUWW/YzDyacjQxP7cI3Q9e+0/WdAultYkN5m0syEh9fP/WMnyrGHObX26ooBGg=
+	t=1774519370; cv=none; b=Tw6YHHop82CInupKdgSEY3KtvKT+PsH8jw9O9YqkifP1HQRrD/MDVW8+ih7xuxPFYYhiPZ2GizzPNQxOowKk8vcSwZZwN38o8fihO4JQe5H7o8qFiwF3VA6p1Yewq4EmzM12H7HmYAxepGAz97QALD6eB0d3mlh9fKry3P0eW8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774519337; c=relaxed/simple;
-	bh=UXJmkilgCUI/u+gPAR4mHLGMXteOiBgjgCWr/Gty7iQ=;
+	s=arc-20240116; t=1774519370; c=relaxed/simple;
+	bh=08lpgqFUpAIwc6HYcdjxzgJm+GiXbChw20x8AbBMuck=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NjLNwmb5JR2YXoMK5ZWIwmBuq7cpiBJ1Ya8OD3hrBPaSqfglZHPh6kKkUUcJ+fjz+qSPPj6BSXTeeDmLcMwog9vkNNPnW5la3ibw+P/irrLFPHsuyK54yc4ZK/mEzokr+xPrf9yX5LOGCrG5BcR9gROUd03cAqrRt3gXgJPwvak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=ijMJ9dSk; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xga/fZapMZTN9zGFt3602xduEknEV9b47/WqD4U47WC1NuH5C5HvL38N46RxwO6I42hu64YEvciZnIrk5eSQpG3nDrVvIOtoRGq98M5Fal1CItOmzzFCnXVsXglazwqfFEdJ4bgJXC75yEkYdpC740Mo2VRPec4vjlQohq9DgaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tq1Y382j; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="ijMJ9dSk"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8492640E015B;
-	Thu, 26 Mar 2026 10:02:10 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id MsheAMuzPrx7; Thu, 26 Mar 2026 10:02:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1774519325; bh=C2mWFe1qNi3PMZA4pOcAbJW8lmILDzuIi8XH3/XIOf4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ijMJ9dSk7+FFkbX12jIwy02uXnJL10wiFXoCPlwyUqT13WtlMZYKjbxhSv6iYc2V8
-	 nUsd00ftkQEUSwaK2E8alb0ef0/Xupyc18HwfYLnMtaijlwsn+75oPXw9IfCKIFI83
-	 RHVX7eE26VoJ5RkSC25P344LGu7gvbWuaxieYQirZGWgh6SzurTshnpHRQ00s4d5nj
-	 CNbq3g4A7hcApqUVqYTdPUzLrN8f8Yz97R8rmza03yD0SKlewWB23DacOnI3rnbs+e
-	 OfLHcLTgKyi0xISxpH6ZxdE0XoT4Tg98OsWAocu4lxrtE/noMbsP00NjCt77wGW0BM
-	 LlodWonuMOXUtG/PQwiUnR84xAs9n8OB5RedkQC/v7W6YTECWY+QjdAXmMiwddEYnS
-	 HckdK7FGeZtdMD5SWlmZ7HEIyCFn5WEHYx0OEe94m7OecMA0vBubPauJQrCQFzxUHm
-	 c2kAHHiOlnKIdCpDEFfvGX15hQ/NbwV5R4yxFdmd7+RLQSbY19hvOVAXwGQrz3SDbn
-	 ioNRWPdf69PAI3UX7KuhcQ63egfggLs8jKUJfW5mx7c445PFGK1T3Eud9r2pJisEWG
-	 /xTdFmPl3sUGISDldtEsZehMg3aiW1BhxxDgHb4cJUS1Oc+kD8NmUhVFtMLfP+6SlB
-	 XQ4dP5hDqOLsb+WVplWrz9TE=
-Received: from zn.tnic (p5de8e020.dip0.t-ipconnect.de [93.232.224.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id BF59740E0140;
-	Thu, 26 Mar 2026 10:01:27 +0000 (UTC)
-Date: Thu, 26 Mar 2026 11:01:20 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	David Kaplan <david.kaplan@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Laight <david.laight.linux@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Asit Mallick <asit.k.mallick@intel.com>,
-	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v8 02/10] x86/bhi: Make clear_bhb_loop() effective on
- newer CPUs
-Message-ID: <20260326100120.GAacUD8BVziYzLxZHB@fat_crate.local>
-References: <20260324-vmscape-bhb-v8-0-68bb524b3ab9@linux.intel.com>
- <20260324-vmscape-bhb-v8-2-68bb524b3ab9@linux.intel.com>
- <20260324205930.GQacL7Mp7vwGBKX1W7@fat_crate.local>
- <20260324221308.7sh6afdy6r6tsf4w@desk>
- <20260325203759.GCacRHp2t8a7c4Bp6E@fat_crate.local>
- <20260326083934.fk4wyhe6rgiss34z@desk>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tq1Y382j"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4832c8f9d87so1167635e9.3
+        for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 03:02:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774519367; x=1775124167; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=utiWtVJp/arBLJjuDQPxcAdocop4MVdMp6I/Iu6QHDc=;
+        b=Tq1Y382jnmR11i3nllw1ktiG0MuYuL8Qn6JyB4auF5keMDIC3vx6RPQWWZaddosfyN
+         WnriYgNRb+6LQCyiyjb1RfJuAO872tA/JTnXLbPzb6+1xFWVQAqk/LHt/kA2bWXZPouG
+         bCZXub2zIhPbYOcP6T/gH4FgTX6sZ01zw+HF2Bi6lUX/fc6GNnE5SCind/greT2hbDHb
+         +/s+NP1NXe3aBqqYbLvT9Vi5/RoLq5NG9HoWbSc+nZfXflOwgv+pj3JwQ07ktLdhkcyv
+         dwrgOc1iHfz/XNI7tf4zzwMcavT/YWV6dmtQDc2xEL1J1Dn/gPr1stlJf83Rou7cuDgX
+         htxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774519367; x=1775124167;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=utiWtVJp/arBLJjuDQPxcAdocop4MVdMp6I/Iu6QHDc=;
+        b=KV27Xw2NDL3xsBwnNAEOlhpCdpRgNf95Ww+kXXXC38aRCFkfxVcYrvTuFa/RvUb/Ja
+         YnPfFTRA3d/fJhQHAG8OHjySpdrBrNlYw/sCs92UFe57rcsXPfZcjTZeKa3Gywam94C7
+         HVgUmB0iJv5Zs+8EftvRQ4JvH1oSH3WmN8yNw7ANmIyvUOHqQwQyWvCmBIdxSffg4+1Q
+         NIxDF2kNPId0+eu9EF5UZzLlHpEJQc+K6RXJgRDr/DEAo697ZiiTer2dDLRDoGoJtWQY
+         Gh0Ln0EyDHGJZokA6DNrOH+zhGrInZI3EVNOUTuyAbpTgK8+vGCHPkcLAGx2Sncg2zy/
+         vT9g==
+X-Forwarded-Encrypted: i=1; AJvYcCVpBniod5dAQFCTMSO0oZN2gWJLn/Vt1SLF9bt4yO1kzkmyYeMQ12lgAFa8Mgc75zQpZjW4bYE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWXAxMW5FXqrAGlNJuNwkV6xwcAmmbubEB1Wga7ym9s77UhnLf
+	40f67JEAxI37sVe7Su8ydaEh4cV9EZRT3GcvQgygXWsX4cDzVvCaWmWP
+X-Gm-Gg: ATEYQzw+suOH+sAVhlijmYwEpED921zV2+ouqIwWq6WyDHX7oDbq/Cuk9eedrocu5s4
+	G9/TzGtA5gIbwN3O+b8m1c3zFPKpKoloi3jyGpoXQ9Bgg2ZQpQhKgfNg7sjHzqZQMHoZgBTEc9g
+	3RzI1jGaAf/7WJxgdvETfodt65aur3Mgw/IO1PTwwzmpHVjWlVrMdhovbxPY4TjMYfD6TmCTvOM
+	b4exSV6rRHO5G48C/XOoLoLQ4VSBxb3e3RySinnBZtadmxOUFyP2xPl/CqD91VOPV3/OmBjvfBl
+	zeTHA3eQnT02rHcpnOgb7gGYWVl99g7UZ0n321qUhw8EU7iJOdcK7rAmbYx4zCunErrmMr1z8T5
+	7DJTCfP7p0tom1bDQv+rLE6++MXSIZAU5SgdIqGmlqpLzDa1s1IO0Op0YkXVDF1bgIUD0OW8SYr
+	PB6xSPR1j+zbZnQQA=
+X-Received: by 2002:a05:600c:45ce:b0:486:fc61:541d with SMTP id 5b1f17b1804b1-48715fae515mr68921135e9.2.1774519366722;
+        Thu, 26 Mar 2026 03:02:46 -0700 (PDT)
+Received: from skbuf ([2a02:2f04:d50a:b400:cf79:b8bb:14ce:d80f])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48722ca344dsm17253865e9.12.2026.03.26.03.02.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Mar 2026 03:02:46 -0700 (PDT)
+Date: Thu, 26 Mar 2026 12:02:43 +0200
+From: Vladimir Oltean <olteanv@gmail.com>
+To: Linus Walleij <linusw@kernel.org>,
+	Bastien Curutchet <bastien.curutchet@bootlin.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Woojung Huh <woojung.huh@microchip.com>,
+	UNGLinuxDriver@microchip.com, netdev@vger.kernel.org
+Subject: Re: [PATCH net v4 0/4] net: dsa: ks8995: Post-move fixes
+Message-ID: <20260326100243.rxxmbiscjrbe3643@skbuf>
+References: <20260326-ks8995-fixups-v4-0-989abba8f077@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260326083934.fk4wyhe6rgiss34z@desk>
+In-Reply-To: <20260326-ks8995-fixups-v4-0-989abba8f077@kernel.org>
 
-On Thu, Mar 26, 2026 at 01:39:34AM -0700, Pawan Gupta wrote:
-> I believe the equivalent for cpu_feature_enabled() in asm is the
-> ALTERNATIVE. Please let me know if I am missing something.
+On Thu, Mar 26, 2026 at 10:57:31AM +0100, Linus Walleij wrote:
+> This fixes some glearing issues in the Micrel KS8995 driver
+> pointed out by Vladimir.
+> 
+> This patch series implements some required functionality
+> and strips the driver down to just KS8995 deeming the other
+> "micrel" variants to be actually handled by the Microchip
+> KSZ driver.
+> 
+> If the KS8995 should actually *also* be managed by the Microchip
+> driver and this driver deleted remains to be seen. It is clearly
+> the origin chip for that hardware: it is very close to the
+> "KSZ8 family" but there are differences.
+> 
+> It definitely has a different custom tag format for proper DSA
+> tagging, but I have implemented that: I now have to figure out
+> whether to do that on top of this driver or the KSZ driver before
+> continuing.
+> 
+> In the meantime, this patch series makes the situation better.
+> 
+> Signed-off-by: Linus Walleij <linusw@kernel.org>
+> ---
+> Changes in v4:
+> - Drop the final "port isolation" (should be better named "port separation")
+>   patch, due to lack of time to revise the patch. Let's keep this one
+>   for later.
+> - Hope we can merge this first round of fixups so the driver is in some
+>   reasonable state.
+> - Link to v3: https://lore.kernel.org/r/20260219-ks8995-fixups-v3-0-a7fc63fe1916@kernel.org
+> 
+> Changes in v3:
+> - Re-tag the series for net since they are fixes.
+> - Implement mutual exclusion between .remove() and .shutdown()
+>   as found by the AI reviewer.
+> - Fix a typo in the patch dropping the KSZ chips support, 8955->8995,
+>   found by the AI reviewer.
+> - Add fallback compatibles for the deleted chips to the KSZ
+>   SPI driver.
+> - Implement port isolation.
+> - Link to v2: https://lore.kernel.org/r/20260119-ks8995-fixups-v2-0-98bd034a0d12@kernel.org
+> 
+> Changes in v2:
+> - Do port_bitmask in another way and fix a bug where BIT(port_bitmask)
+>   was used instead of just port_bitmask.
+> - Link to v1: https://lore.kernel.org/r/20260118-ks8995-fixups-v1-0-10a493f0339d@kernel.org
+> 
+> ---
+> Linus Walleij (4):
+>       net: dsa: ks8995: Add shutdown callback
+>       net: dsa: microchip: Add fallback Micrel compatibles
+>       net: dsa: ks8955: Delete KSZ8864 and KSZ8795 support
+>       net: dsa: ks8995: Add stub bridge join/leave
+> 
+>  drivers/net/dsa/ks8995.c            | 198 ++++++++++++------------------------
+>  drivers/net/dsa/microchip/ksz_spi.c |  15 +++
+>  2 files changed, 81 insertions(+), 132 deletions(-)
+> ---
+> base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+> change-id: 20260118-ks8995-fixups-84f25ac3f407
+> 
+> Best regards,
+> -- 
+> Linus Walleij <linusw@kernel.org>
+> 
 
-Yes, you are.
-
-The point is that you don't want to stick those alternative calls inside some
-magic bhb_loop function but hand them in from the outside, as function
-arguments.
-
-Basically what I did.
-
-Then you were worried about this being C code and it had to be noinstr... So
-that outer function can be rewritten in asm, I think, and still keep it well
-separate.
-
-I'll try to rewrite it once I get a free minute, and see how it looks.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Bastien, would you mind also taking a look at this?
