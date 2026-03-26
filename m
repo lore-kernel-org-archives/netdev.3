@@ -1,152 +1,88 @@
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991D53F786B
-	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 12:19:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A185726982C
+	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 12:19:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774527550; cv=none; b=RhJhy20ay/+/PN9owHaIwcyTCICNm10uJLG2WHF/2wdeNPw5HnmWyQ3F+mKY7kfNeir0aCkv4g7/wYoXKdxuUaiYjbFOYiC5KIsRTak2NCDbAH5Vd4+uI48irbqFbt1VmHQ0vtAP7wlw/J3Fib3m6g2VG86ZmqaXHV5dVsl32hI=
+	t=1774527562; cv=none; b=hGiPKCMqi4kNvysXbh0tdSWk9xHK3qYTDLOV5tiUbez143cHR0R1ioUEVa5ho3chconKrfRM2IVd8QD8fyWlKoN8+lKEIy+KUZHQyjIclfa7ioKtQNYS10mNndZlzW+osbuPohAr3G39qz1cktSI43/Cpyp7U6o4XD4+MgKYu/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774527550; c=relaxed/simple;
-	bh=6QxCbieJJleZEWz03PvwCXWOh6SMITR1YbIicVfha6E=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RC4uMq9HbtW2A7TKA+oL0J35Q+AO+KfnROvJYY9ApQiFQx8uHXe29TLWvcFbvET3/XRubtxk160DZZPtJoWKNRpJQ/ZjlaXDjjVRgz3KiNewGglyxVWue2FHpkCkp4lCTZszjEtgtavXL/a1GCcU93QCrT928BPw2f9xn2S/KQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cp7OwJXk; arc=none smtp.client-ip=74.125.82.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1774527562; c=relaxed/simple;
+	bh=cxS4l1tkVK5CASnfRSmVTqevqOKI5ZREyGT5b/+/820=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Vam/rrcpcuMFZ9YDoAbjO6ATXNbbc4KBNDmg8hE2TaSyTKaaq4i1+pzCbtkwNMzm0gJQt6NOewL0q6nnIEqyAvQr+a2HRK7jCNGbO1roEGFBgdXf+aQJ9fqIOZinQWF7zyM9/QjF/HWPL2cdQuoTW6gRa6PB1mYMkvlO9HVEYnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XdiI7vh2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cp7OwJXk"
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-12732165d1eso1379352c88.1
-        for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 05:19:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774527549; x=1775132349; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G29ArKF84b4SeGetKeNGKRAR6Wyr/iQ+64xYn6vES30=;
-        b=cp7OwJXkeX8ZrguPRm6SJc116/R76b0tmxRSslXRgvCkEmqaxU1aFqm0epSfZPxSz2
-         yDO4RQ/eOa+07xqGdupAArpO5xLKShkQXi5D46/OVh80jNdMG+7feiKZGu4AKddZ7WXv
-         5ch1C3Lh+WUvelZOS5N1istCseryP1n8gMh3q+++SVUJzmmieMij+ix/u9OVk1OBJFm0
-         VvxBZ/BMkJ6yJkhJnfeHEHHVlTLreWW7VQO/sYszRp+W7TSOAg0NOnASvwd/bTiHckht
-         XKVx3ViYuTwZsImp9Daq3R/EIigMGF4uWHUZnbgjhz4/tPgZ9BQhwU6tXcplOfgNjgkQ
-         01Kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774527549; x=1775132349;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=G29ArKF84b4SeGetKeNGKRAR6Wyr/iQ+64xYn6vES30=;
-        b=U6GsTFtH9oc/A1AaF1Hk3jlkJWyHrBHcQchj2UOp/NdKUZ2FXyP2Mr80KIE6549cqK
-         hBXG4fu3wMQM17olZHWfHiF5C4OcQKVa6GzZa7ZBtPoARbaRDqkvIGJVHgNxAgcfUuqS
-         TTaaHYFw8UPBOpfecM4JOykPN8fINNHbg5R+IktPOVDcEG+kXGFJv1qPgoV6D5sICeli
-         fvsOmNVSkjXOpYYUFTngZn5xrwTGfNlGmcJn/2G6xvs8rhXu+UP3cQF9v1trlCpW7n/X
-         eqPg+2ag9d0C0GffHbMRcUl7b7G3BdMD7e8PujgQ4lCK2W39THOwzlYg9fZcPWnype6+
-         1Hnw==
-X-Forwarded-Encrypted: i=1; AJvYcCWoqArqYhcaJASLEI5ctIUd7JD5TTjBaV0IU54jIcsZU/21MUCKWXEKw4w4QpWRulNmaRfw/GE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy93sJDnROEPd6vPWzMrcsO2djgbA9TlLQK6xbXIS5obzF+VWAB
-	TP+BWLrQitjxleybmNPTmKo6mZCT9vYgwJGK+5rieR1Ls1nqA/Fbw/F9
-X-Gm-Gg: ATEYQzw/seXXltkRa0MNvc6rGhTj1kiJMxhIXk971jkG8GwiUxXj+kDGkQq3xuq6HYc
-	jwL20YcBjjCKHlwo2SwxcMTgcSBziHBdBA6rhKh/ZSgv1HOmx7AdNu7tkJl3nwubKnKWN0MzlTh
-	K0NITN0QopJg6W8njkC7uoU5slIOw4klrZR4s+7hpJ4lVTaJVChDyZ30FVYxt053FzuIhiFJyiK
-	T2hKxFoweU5KrpcrjfIdCtzQkZZdLm8TUuG3lpIGDTpx7laX6KOw61N1D536gTaCiW0JkZAfRH4
-	qQ3Y+YXpzbCL0y/Z8cOlEh+A1Xy1pQsoALyR6hOjRLBKzvCqT6hZCfqLRrSpzK2BhziCJZmj9nY
-	bC3kxCfrbc7eWM7ZLXEgPvltoRzN7BCjG3OomUS3WzMwloNGzX8f6ORx8qNKdIHtTsxoAp7c+F5
-	H1s2J3oLOrg0eLe69s+cXS9Y5M0bePlzLJnnJ6OR2EfZYM09WcbNkgzXLj+FkXpQSpG6samjpGm
-	Q==
-X-Received: by 2002:a05:7023:b0b:b0:128:d577:dc21 with SMTP id a92af1059eb24-12a96e68023mr3835481c88.13.1774527548431;
-        Thu, 26 Mar 2026 05:19:08 -0700 (PDT)
-Received: from DellG15.lan ([134.195.101.67])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12aa72492e7sm2473117c88.5.2026.03.26.05.19.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2026 05:19:07 -0700 (PDT)
-From: Guoyu Su <yss2813483011xxl@gmail.com>
-To: edumazet@google.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: willemdebruijn.kernel@gmail.com,
-	netdev@vger.kernel.org,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzkaller-bugs@googlegroups.com,
-	syzbot+1543a7d954d9c6d00407@syzkaller.appspotmail.com,
-	Guoyu Su <yss2813483011xxl@gmail.com>
-Subject: [PATCH net v6] net: use skb_header_pointer() for TCPv4 GSO frag_off
-Date: Thu, 26 Mar 2026 20:18:13 +0800
-Message-Id: <20260326121813.457049-1-yss2813483011xxl@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <willemdebruijn.kernel.1a9f35039caab@gmail.com>
-References: <willemdebruijn.kernel.1a9f35039caab@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XdiI7vh2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EA97C116C6;
+	Thu, 26 Mar 2026 12:19:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774527562;
+	bh=cxS4l1tkVK5CASnfRSmVTqevqOKI5ZREyGT5b/+/820=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=XdiI7vh2QpQr85a4TgeXPIFMHrJLEmfOYd1rbiJsDbcNT4JUYC+/jW7hrZJV/5t0r
+	 SMvA6Pge9TaIF571t2m9lQKwIpmlCmH/+XqG6RfGSwFhbwtawGdPQI8QY0pXVks9uJ
+	 EDu/FH7ked/xOcRkcY/zT+K4rw222HYvlNK9/K+uzVe80Qjvk/L1pkyAEYrQaVNcP/
+	 ug3lLvA7FrVNI1TjXZfM+q2x4FurNPX2AqGZnVkjF7IihGtp5DNYE4FdkYX/dtLwCz
+	 AcdiHw+QCJh5MkgPl9QqGuxfK/9paERgOQ4/x6L+f+vLUBM4uNhcArJdP64M3LyEpO
+	 G0nBxM9eeP3eg==
+Message-ID: <f1263c70-ef11-4622-93bf-a5f5acaf735c@kernel.org>
+Date: Thu, 26 Mar 2026 13:19:18 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 5/5] selftests: net: add veth BQL stress test
+To: netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, jhs@mojatatu.com,
+ jiri@resnulli.us, j.koeppeler@tu-berlin.de, kernel-team@cloudflare.com
+References: <20260324174719.1224337-1-hawk@kernel.org>
+ <20260324174719.1224337-7-hawk@kernel.org>
+Content-Language: en-US
+From: Jesper Dangaard Brouer <hawk@kernel.org>
+In-Reply-To: <20260324174719.1224337-7-hawk@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Syzbot reported a KMSAN uninit-value warning in gso_features_check()
-called from netif_skb_features() [1].
 
-gso_features_check() reads iph->frag_off to decide whether to clear
-mangleid_features. Accessing the IPv4 header via ip_hdr()/inner_ip_hdr()
-can rely on skb header offsets that are not always safe for direct
-dereference on packets injected from PF_PACKET paths.
 
-Use skb_header_pointer() for the TCPv4 frag_off check so the header read
-is robust whether data is already linear or needs copying.
+On 24/03/2026 18.47, hawk@kernel.org wrote:
+> From: Jesper Dangaard Brouer<hawk@kernel.org>
+> 
+> Add a selftest that exercises veth's BQL (Byte Queue Limits) code path
+> under sustained UDP load. The test creates a veth pair with GRO enabled
+> (activating the NAPI path and BQL), attaches a qdisc, optionally loads
+> iptables rules in the consumer namespace to slow NAPI processing, and
+> floods UDP packets for a configurable duration.
+> 
+[...]
+> 
+> Signed-off-by: Jesper Dangaard Brouer<hawk@kernel.org>
+> Tested-by: Jonas Köppeler<j.koeppeler@tu-berlin.de>
+> ---
+>   tools/testing/selftests/net/veth_bql_test.sh  | 784 ++++++++++++++++++
+>   .../selftests/net/veth_bql_test_virtme.sh     | 124 +++
+>   2 files changed, 908 insertions(+)
+>   create mode 100755 tools/testing/selftests/net/veth_bql_test.sh
+>   create mode 100755 tools/testing/selftests/net/veth_bql_test_virtme.sh
+> 
+> diff --git a/tools/testing/selftests/net/veth_bql_test.sh b/tools/testing/selftests/net/veth_bql_test.sh
+> new file mode 100755
+> index 000000000000..9b5923341040
+> --- /dev/null
+> +++ b/tools/testing/selftests/net/veth_bql_test.sh
 
-This also removes the SKB_GSO_DODGY special casing: skb_header_pointer()
-already fast-paths linear data, so a separate direct-access path is not
-needed.
+The netdev/shellcheck [0][1] had some review comments.
+I will work on addressing these.
 
-[1] https://syzkaller.appspot.com/bug?extid=1543a7d954d9c6d00407
+[0] 
+https://netdev-ctrl.bots.linux.dev/logs/build/1071815/14493217/shellcheck/stdout
+[1] https://www.shellcheck.net/
 
-Link: https://lore.kernel.org/netdev/willemdebruijn.kernel.1a9f35039caab@gmail.com/
-Fixes: cbc53e08a793 ("GSO: Add GSO type for fixed IPv4 ID")
-Reported-by: syzbot+1543a7d954d9c6d00407@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1543a7d954d9c6d00407
-Tested-by: syzbot+1543a7d954d9c6d00407@syzkaller.appspotmail.com
-Signed-off-by: Guoyu Su <yss2813483011xxl@gmail.com>
----
-v6:
- - Use skb_header_pointer() for both DODGY and non-DODGY TCPv4 GSO
-   packets in gso_features_check().
- - Drop the SKB_GSO_DODGY special-casing for IPv4 header access.
+pw-bot: changes-requested
 
-v5: https://lore.kernel.org/netdev/20260320141459.9691-1-yss2813483011xxl@gmail.com/
-v4: https://lore.kernel.org/netdev/20260319005421.14908-1-yss2813483011xxl@gmail.com/
-v3: https://lore.kernel.org/netdev/20260312104351.185370-1-yss2813483011xxl@gmail.com/
-v2: https://lore.kernel.org/netdev/20260308083319.1255118-1-yss2813483011xxl@gmail.com/
-v1: https://lore.kernel.org/netdev/20260307162905.3697050-1-yss2813483011xxl@gmail.com/
-
- net/core/dev.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
-
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 14a83f2035b9..8a15ca67cfed 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3805,10 +3805,16 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
- 	 * segmentation-offloads.rst).
- 	 */
- 	if (skb_shinfo(skb)->gso_type & SKB_GSO_TCPV4) {
--		struct iphdr *iph = skb->encapsulation ?
--				    inner_ip_hdr(skb) : ip_hdr(skb);
-+		const struct iphdr *iph;
-+		struct iphdr _iph;
- 
--		if (!(iph->frag_off & htons(IP_DF)))
-+		int nhoff = skb->encapsulation ?
-+			    skb_inner_network_offset(skb) :
-+			    skb_network_offset(skb);
-+
-+		iph = skb_header_pointer(skb, nhoff, sizeof(_iph), &_iph);
-+
-+		if (!iph || !(iph->frag_off & htons(IP_DF)))
- 			features &= ~dev->mangleid_features;
- 	}
- 
--- 
-2.34.1
-
+--Jesper
