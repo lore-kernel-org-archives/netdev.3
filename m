@@ -1,72 +1,125 @@
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9071041C2FA;
-	Thu, 26 Mar 2026 17:30:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF4D421EF7;
+	Thu, 26 Mar 2026 17:30:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774546211; cv=none; b=Ok3Xr713/MlOkNxGPaDhXTOiZg7kx6tJHEVknxkVTZjomPVBqtd5loKxSM0D1vhwppurBmyq7Wbggcj0mdD7LulkfI8tyfoyF2YTNop8jwhZkaI7GdPVmiEIwiDlNPHwQsSkpXgqn7EszePFMsUFwh5rC5dstzZJgWP44MBQKow=
+	t=1774546236; cv=none; b=jf+8gy9c7UeMLj3Q8SYS7VO4sW3TuKHk8D2rGraob0LKb0Me/XhK6AlD5HZRFCnGumuxE9CR8A/trDSLYsUkMVm75Ie1CtpD0l4wCNqC5phMt9FucaFLHw16CtiC7lI2rt9iImQeTrd2urW1aMUC3E0ILsbQ3WTwddmJWbTldt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774546211; c=relaxed/simple;
-	bh=DAU4SfHW0Z5kEwZHRmCMRMCWV+k23xpMa0Jz8WSqOAo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GzaNcdB1Mk3SKEamuLhshkDOJltMwq5rht69D/1dXem1IV9uwvtjwE8Xg02kBYdFI37919l2Aa/xpT9FC0U53jbzbC9PMpJ7Pjziprm4luSwV7a4ROTB6ShRAC3MagZgbvSWJ7gDlQ0MS7Vq70Zn2B8gAyW2tWrfDx8Kgdc9vaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=gC6GIeVi; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+	s=arc-20240116; t=1774546236; c=relaxed/simple;
+	bh=GDIgImmAITT14mH1h9x1AVZllXLG0K+mrW/IwOibwus=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YddUdhg3gticKIncDURK1yMDwwpTUQIaYWR7vactfjHsnK6a9vxY8zGzcb9PBvJW3Thy1TmXv4RiG8x6oHGqRE9hKZGIqxDTu8FtMlg3A10rA+NmJmCrvm3Pf21+2vyggaULTbPhk4qAyl4RHVYQO83JHVbndCFiFh/QURmsUiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=amKeoRSz; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=wULQHrO8; arc=none smtp.client-ip=160.80.4.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="gC6GIeVi"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=DAU4SfHW0Z5kEwZHRmCMRMCWV+k23xpMa0Jz8WSqOAo=;
-	t=1774546209; x=1775755809; b=gC6GIeViZW3fLFFg5mAaSYcqYAKvfMGdtHJgdRpWjUcB5et
-	uNXYm74tceWA716adlEAtH/uqzBgGiTKyEO70t8YCZvoSwC4zcQLoV36svU7DGCSqQuJWH4l5ehel
-	N+a0oaHD4G3qj7QmDP02NOgadmOQKsSSvImnfJG4iybHvqlA89LmTcSgErvlcrD5pKfIHrA9Wdyn1
-	j2dlD5mYLH0XnNOtRpX/v1NdJ7fFzrLK9XIy36f+PihgOvC2IeBGgpAyDyopo5PNWQ6irQ5knu06H
-	rmdhcRzKwgGOrbsAtbmoefWnCGzFQsErh05cwmIHQIsYSQXbx6KE40hF+4yTFTQQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1w5oWu-0000000DDEs-0Q9U;
-	Thu, 26 Mar 2026 18:30:00 +0100
-Message-ID: <94dad6848516ffb71967c2832c923f153d14e5d5.camel@sipsolutions.net>
-Subject: Re: [GIT PULL] wireless-2026-03-26
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Date: Thu, 26 Mar 2026 18:29:59 +0100
-In-Reply-To: <936e4100-5e3e-4c3a-8598-6724d904deac@redhat.com>
-References: <20260326093329.77815-3-johannes@sipsolutions.net>
-	 <936e4100-5e3e-4c3a-8598-6724d904deac@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="amKeoRSz";
+	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="wULQHrO8"
+Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
+	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 62QHTlq2011685;
+	Thu, 26 Mar 2026 18:29:52 +0100
+Received: from [10.62.247.239] (93-33-118-253.ip44.fastwebnet.it [93.33.118.253])
+	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 1DEC9122940;
+	Thu, 26 Mar 2026 18:29:42 +0100 (CET)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
+	s=ed201904; t=1774546183; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9I5dW3djYPBEN9GH1zFJpeHiokQiFFD8Dnrwz788XaE=;
+	b=amKeoRSzbtxoascx95Vtfoh72dbPlW1kktNlgBrzQc5y5TxxXlYC/VCbOSofWPAwnDPTEP
+	HBE+7e+nVAytABBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
+	t=1774546183; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9I5dW3djYPBEN9GH1zFJpeHiokQiFFD8Dnrwz788XaE=;
+	b=wULQHrO85NRYx2qPhcEygGTPL8OSwCZKgGErTOBrjhyooojDJfkMwnp0qXk9j5jnqtCNTP
+	Zw0myrTV26uf3vuwAL//h+BL5uEsvwlg4fdrsksAtIjSCaSjOPNGCZT9FZYZ/1K7wSFr1v
+	t9/B0+UGpmCcQ4RykMgiVRKqdciKPE3JGbOqkAR4gp7OnnOU5E06HDzRkwN6XJx1JpPAwr
+	CWgH8zXt4e4D/haYP9lDPS7ee+rTKDQPxw9C4sPDPqlfTB0Zu3JmpwcRoVXedqtafx7/ys
+	lnQaVvYjZotugkpzcC5hKMvxJx9UofUhjy8MOYH3jm2NBlsuHAZxPS9nqS8eSQ==
+Message-ID: <55aec00e-3031-44dd-a58d-7a6251891027@uniroma2.it>
+Date: Thu, 26 Mar 2026 18:29:41 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH net-next 2/3] seg6: add SRv6 L2 tunnel device (srl2)
+Content-Language: it-IT
+To: Justin Iurman <justin.iurman@6wind.com>,
+        Andrea Mayer <andrea.mayer@uniroma2.it>
+Cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>,
+        David Ahern <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        Simon Horman <horms@kernel.org>,
+        Paolo Lungaroni <paolo.lungaroni@uniroma2.it>,
+        Ahmed Abdelsalam <ahabdels@cisco.com>, linux-kernel@vger.kernel.org
+References: <20260322000557.12559-1-andrea.mayer@uniroma2.it>
+ <20260322000557.12559-3-andrea.mayer@uniroma2.it>
+ <CAOY2Bqxb1C6myf7DBmfLM_3wZSweYQaQSAVSj_wDihf-N9vQJg@mail.gmail.com>
+From: Stefano Salsano <stefano.salsano@uniroma2.it>
+In-Reply-To: <CAOY2Bqxb1C6myf7DBmfLM_3wZSweYQaQSAVSj_wDihf-N9vQJg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
+X-Virus-Status: Clean
 
-On Thu, 2026-03-26 at 18:24 +0100, Paolo Abeni wrote:
-> On 3/26/26 10:31 AM, Johannes Berg wrote:
-> > And ... more fixes from drivers came in, notably iwlwifi with
-> > a bunch of things (their maintainer had been on vacation).
-> >=20
-> > I'm going to be on vacation next week, but I'm also not aware
-> > of anything missing from drivers etc. right now, so we'll see.
-> > I doubt this is the _last_ pull request for 7.0, but I think
-> > not much more will come in.
-> >=20
-> > Please pull and let us know if there's any problem.
->=20
-> Blame on me, I left this one out of my bag, and it missed today net PR
-> for Linus.
+Il 25/03/2026 14:43, Justin Iurman ha scritto:
+> On Sun, Mar 22, 2026 at 12:06 AM Andrea Mayer <andrea.mayer@uniroma2.it> wrote:
+>>
+>> Introduce srl2, an Ethernet pseudowire device over SRv6. It
+>> encapsulates L2 frames in IPv6 with a Segment Routing Header for
+>> transmission across an SRv6 network.
+>>
+>> The encapsulation logic reuses seg6_do_srh_encap() with
+>> IPPROTO_ETHERNET. The transmit path uses the standard IPv6 tunnel
+>> infrastructure (dst_cache, ip6_route_output, ip6tunnel_xmit).
+>>
+>> The device is configured with a segment list for point-to-point
+>> L2 encapsulation.
+>>
+>> Usage:
+>>
+>>    ip link add srl2-0 type srl2 segs fc00::a,fc00::b
+> 
+> Thinking out loud...
+> 
+> We'll likely need SRv6 encap configurations specific to each entry
+> (i.e., MAC address), rather than (or in addition to) per interface.
 
-No worries, I just wanted to get it out before I go mostly offline for
-the next week, so it's not stuck on me :)
+agreed, this is the natural next step towards multipoint
+we've started exploring the design for this, happy to collaborate if 
+you're interested
 
-johannes
+> We could also add a "mode" (e.g., "normal" mode or reduced mode?).
+
+good point, the infrastructure is already in place, so adding a "mode" 
+parameter to sr6 to support reduced encap should be straightforward
+
+we suggest to address it as an immediate follow-up to this baseline 
+series and we have already some prototype code ready
+
+ciao
+Stefano and Andrea
+-- 
+*******************************************************************
+Prof. Stefano Salsano
+Dipartimento Ingegneria Elettronica
+Universita' di Roma Tor Vergata
+Viale Politecnico, 1 - 00133 Roma - ITALY
+
+http://netgroup.uniroma2.it/Stefano_Salsano/
+
+E-mail  : stefano.salsano@uniroma2.it
+Office  : (Tel.) +39 06 72597770 (Fax.) +39 06 72597435
+*******************************************************************
+
