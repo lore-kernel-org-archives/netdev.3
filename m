@@ -1,143 +1,68 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8657421F0F
-	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 18:18:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B8E393DE2;
+	Thu, 26 Mar 2026 18:19:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774549089; cv=none; b=KsRXIF1lMmtdoWNVF0Ogdee/U1xu6AQfA8ypYxsdbWH1Inwzd2CxMqRZbfDyKwgGpfv5xYcqU5thzTQtl4nc8GxEjVKtqJX8Wo0YQgKg49K/gwKTtQq7J1Qz9PCiWVoAilI80mzaDmm6OU+6rg1QSduiGUAcdJxZMgyHVe71vBk=
+	t=1774549141; cv=none; b=mnt1zxDDytmxZxKCJSOJRK19q7C64XUcdGowFcPdxTlFHXtyWKnNQs9y2YL0rRP6lJxN7sG1ZAkKBnYCUpazbzFNI7QmA8nTkd/NhZDF1fc7FdDpl3tWcdbkRtekLZkvyaSrTQye1cmVk+7Qb5rzNtmyhjj0+z5NwV1D1Dg1KkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774549089; c=relaxed/simple;
-	bh=xdUhF/KwIaxp28zFidG8j9PibEk6X7fY9j02u2I9ywU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DDkSvK0L7OJbyo/xnlH6/hJBBmWEjERBoSRiesKfhDs4mFjcCZfAp57WVAVn9KJbT6cDqy8J2O+zf7YTTntOb5cXftbMe6Q+r7M9ZSXIJH5T+ZCmy51P3t63AQ+x6Sm8MAWwaQ3Ho8hgsAJinEjtMTx0DaTULQ2nFizPbmI5H+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=GvlHPH3V; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	s=arc-20240116; t=1774549141; c=relaxed/simple;
+	bh=u7zUb6z4NROc2bFFfdZHwkQz7Cjg2WYcAnQhObyBRB4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=RLzDh+zx2HBzkjKM7Zi+fBmfct6W2mBQIHUcvt4lObTUBMfLX63NiQTYi8bwO6Ypm2vG9WuLYslOGOZT2Mh5kCPmLqZH+4AHcAxwbZQisigK9LHBh/8Awokqi7Md2l8rlE2953tnD9H2gDRhErbT+ARpmxbLoZgdjvs34eETAl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V46N4N53; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="GvlHPH3V"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-35a094cc3e9so825175a91.3
-        for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 11:18:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1774549083; x=1775153883; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dh1r6Pvg7BKd1OpHUecM5F37Mt8FqKX1fTxba/c1k+E=;
-        b=GvlHPH3VS2eK6FMcRfsBctB8QtRxpXMNencF/+xB2IqcVHnr3i8tdWFwlhKDq1hftd
-         KxoD8wtwHrUhS4zbqrd9J/sQbp/kXERVwE7bAoAmLyd/ckrGdP1SRrPT2JhaV9B6Pib3
-         +Utf1vooiwFnCiKVPZ+FfSBvoX6ftZXtQajkZsXgMbLjhLM1uTP94zs9MCA8CA9Q2YNL
-         mDygCVsXJpy+jdPZcwWxbbRL5ONPHI32J3ggP6gSS7Bm3oxSpq/e8qT1YcNNSKu7Tmiy
-         IPpTos3xhP4w5m9Lq451yiaMSHg6PiYpIlFgnYkI4t2HYHRHiCwPf+lIoAZY/pR2BdlG
-         3pRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774549083; x=1775153883;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=dh1r6Pvg7BKd1OpHUecM5F37Mt8FqKX1fTxba/c1k+E=;
-        b=qtgDBFwld+g5XgUwFQxGIK7ikki9QdlSpabp9Id2BWVzo6qw/U7fgP9YOlTF8bjI9O
-         r66hLfBTiDxjb5CHuJl/KaKn+hMPa631xKLOig+OGOyHBWF2uJWFJR0cwoXx6acwcNe0
-         cThwTzGW1M91DK95a+3uUkY76AAFml7E2mh86RrC2+hVwc7ZMahZln6bY22HS5L8koMm
-         yia6K4lpLU//izlwclSQvEQJncugpckck/F808ACMu9ZjYyRSMREWSzDkf9JkXBcC6KC
-         k09rYLSzy7zeMtQD+0yByVwE9n/qnArShzw1bKEhhiQqHerukfflX8nG6vjWVCOoklB+
-         limg==
-X-Gm-Message-State: AOJu0YzIxe2qMGxIr12dKAYGUI5FtbNBVTNKFpcqmbLiLppKN15y891O
-	8Aj3/3XvzCuOvX76DqxVqfhw5vHZVmOKknxvog0jVF+LyT08NQ75yUI+0VnYe7+HusTFkeHd2EF
-	hE1V/
-X-Gm-Gg: ATEYQzyaUAz0l0L7paA1WETecG0zNBAKebtSPdId3IJpTM3Z1tU4PTxYoy1cPRzVQYD
-	4omeennxDUE6LQas1u/pcqBq/Tl8wSXoksX/ziIROHvEPGPTiAo94nCxJH9IqDBX14kFeCp5Dmc
-	xzYhhJkd0ud6mKznBfzCK8BUUrrlClN5J6q0SaW4goWYchkl3v7nUd2vApHQjnCvQhINTlzBHDT
-	zUXGawkO+9depPtXWA2WS8L9OIWM3gNqdx/01HWW9Ehi5qolqbZrPQdXerL74CbeBIOrmckTCCJ
-	j9OXYZkI9yCEx9IihFWTKGHTnDknskmJ7jZxGBoZPl0D3UMI6M1DfFp88XYkmQ+ucgmoLpZqo22
-	RdQBiE70X/dxMszoA19i58h7OOXs+zjZVrR82PON6KVt1ebNKrmd5nsgQFqdPzsaAd9yOr0BN5v
-	glwZgu/47V0sZlTBvxmjjuZhfvCSUeZVvh
-X-Received: by 2002:a17:903:32cd:b0:2b0:c59f:3b58 with SMTP id d9443c01a7336-2b0c59f3e05mr23546195ad.9.1774549083508;
-        Thu, 26 Mar 2026 11:18:03 -0700 (PDT)
-Received: from phoenix.lan ([104.202.29.139])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0bc8c4bd3sm38590245ad.63.2026.03.26.11.17.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2026 11:18:03 -0700 (PDT)
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: netdev@vger.kernel.org
-Cc: Victor Nogueira <victor@mojatatu.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Shuah Khan <shuah@kernel.org>,
-	William Liu <will@willsroot.io>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Savino Dicanosa <savy@syst3mfailure.io>,
-	linux-kselftest@vger.kernel.org (open list:KERNEL SELFTEST FRAMEWORK),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v3 7/7] selftests/tc-testing: Add netem test case exercising loops
-Date: Thu, 26 Mar 2026 11:01:06 -0700
-Message-ID: <20260326181701.308275-8-stephen@networkplumber.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260326181701.308275-1-stephen@networkplumber.org>
-References: <20260326181701.308275-1-stephen@networkplumber.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V46N4N53"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12249C116C6;
+	Thu, 26 Mar 2026 18:19:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774549141;
+	bh=u7zUb6z4NROc2bFFfdZHwkQz7Cjg2WYcAnQhObyBRB4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=V46N4N53AVrLMXSfP1OOHfzXueZY6XDZ2aqkJoCGbkbGcegX4dBKyAOXAbBh6YGnW
+	 7zEL4PHWZWl9PWD0RBIo693xUHgieYtF9RKGfcb4swePIRy2tXAsbA2RxVkOhcu2cz
+	 QVz/+e/UIC26hDm+DiqzioW20KzTD38aQVPhA3HvAPxff+6Hz7m5JeXEbNLMO7grlB
+	 oxmmTbK+61bzlvsSy959Lx91zlGFwC3IAyCWRTSb6VDK8M4dZPwOk7JgS2xhFyob12
+	 efz+9F3Gys+dQ7BEgLHyxJe9w1/SgA1kpaQfFxYjX6LroXn/E4y3NV91VPslKgMH5C
+	 5RwjPvwg44/jA==
+From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>, netdev@vger.kernel.org
+Cc: bpf@vger.kernel.org, magnus.karlsson@intel.com, stfomichev@gmail.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ larysa.zaremba@intel.com, aleksander.lobakin@intel.com, Maciej Fijalkowski
+ <maciej.fijalkowski@intel.com>
+Subject: Re: [PATCH v4 net 04/11] xsk: validate MTU against usable frame
+ size on bind
+In-Reply-To: <20260326114919.519456-5-maciej.fijalkowski@intel.com>
+References: <20260326114919.519456-1-maciej.fijalkowski@intel.com>
+ <20260326114919.519456-5-maciej.fijalkowski@intel.com>
+Date: Thu, 26 Mar 2026 19:18:58 +0100
+Message-ID: <87bjgacv3h.fsf@all.your.base.are.belong.to.us>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Victor Nogueira <victor@mojatatu.com>
+Maciej Fijalkowski <maciej.fijalkowski@intel.com> writes:
 
-Add a netem nested duplicate test case to validate that it won't
-cause an infinite loop
+> AF_XDP bind currently accepts zero-copy pool configurations without
+> verifying that the device MTU fits into the usable frame space provided
+> by the UMEM chunk.
+>
+> This becomes a problem since we started to respect tailroom which is
+> subtracted from chunk_size (among with headroom). 2k chunk size might
+> not provide enough space for standard 1500 MTU, so let us catch such
+> settings at bind time. Furthermore, validate whether underlying HW will
+> be able to satisfy configured MTU wrt XSK's frame size multiplied by
+> supported Rx buffer chain length (that is exposed via
+> net_device::xdp_zc_max_segs).
+>
+> Fixes: 24ea50127ecf ("xsk: support mbuf on ZC RX")
+> Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Acked-by: Stephen Hemminger <stephen@networkplumber.org>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
----
- .../tc-testing/tc-tests/qdiscs/netem.json     | 33 ++++++++++++++++++-
- 1 file changed, 32 insertions(+), 1 deletion(-)
-
-diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/netem.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/netem.json
-index 3c4444961488..7c954989069d 100644
---- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/netem.json
-+++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/netem.json
-@@ -336,5 +336,36 @@
-         "teardown": [
-             "$TC qdisc del dev $DUMMY handle 1: root"
-         ]
--    }
-+    },
-+    {
-+        "id": "8c17",
-+        "name": "Test netem's recursive duplicate",
-+        "category": [
-+            "qdisc",
-+            "netem"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+            "$IP link set dev $DUMMY up || true",
-+            "$IP addr add 10.10.11.10/24 dev $DUMMY || true",
-+            "$TC qdisc add dev $DUMMY root handle 1: netem limit 1 duplicate 100%",
-+            "$TC qdisc add dev $DUMMY parent 1: handle 2: netem duplicate 100%"
-+        ],
-+        "cmdUnderTest": "ping -c 1 10.10.11.11 -W 0.01",
-+        "expExitCode": "1",
-+        "verifyCmd": "$TC -s -j qdisc ls dev $DUMMY root",
-+        "matchJSON": [
-+            {
-+                "kind": "netem",
-+                "handle": "1:",
-+                "bytes": 294,
-+                "packets": 3
-+            }
-+        ],
-+        "teardown": [
-+            "$TC qdisc del dev $DUMMY handle 1: root"
-+        ]
-+     }
- ]
--- 
-2.53.0
-
+Reviewed-by: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
