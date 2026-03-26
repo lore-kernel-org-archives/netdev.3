@@ -1,20 +1,20 @@
-Received: from zg8tmja2lje4os4yms4ymjma.icoremail.net (zg8tmja2lje4os4yms4ymjma.icoremail.net [206.189.21.223])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5BB239085;
-	Thu, 26 Mar 2026 03:45:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.21.223
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.75.44.102])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925A1395276;
+	Thu, 26 Mar 2026 03:45:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.75.44.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774496728; cv=none; b=MeKU8GMyJcO8HgzkYRWPQ2BKUlkoj4RpBrey9HLtyNpgLvY7bIb2mhZY610DCdcJh1vXe78DjjGES2w3cBIQi45ZM8gk74QrLL7OdR/IIzzCV9TDHjuTfr2BT2gjqRSEDeVEHWh97o13enC1J3qsc0lzzwSd0woVCKTa+X3qDRs=
+	t=1774496730; cv=none; b=NKaQOsRjVbxBmuIsUokpvFn2HMVI3ibzVfeu3zsJ8nYY39via9EbvToX1EXGdIm83sClrFI/HM8WxwmgejT3XGriTUJ6xTm9iVZvwoSSklm7jUTi1dlPtsSd4d60PGJQzppiYOb0/Bmy5aaEA/3Leq/SsBKm7faa3yOuPjUJhx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774496728; c=relaxed/simple;
-	bh=aBj5VNvoEcBdybyTO7STTreXFuiPjNIp5eDC+/92SmY=;
+	s=arc-20240116; t=1774496730; c=relaxed/simple;
+	bh=WAi+5kzsEfgBwlLajSD6rmuRw/hiBVGi4YC/Aa+RXRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SD4cmjQUyGcIqUbIyyI2LdJ56bOSOohucuSBO1Ac96UTSvIvgvs1iOMjJLtXpvFm6ZqVUdk8b29AgNTu2xxUh/zPvhNcMuuRcAV0DsxHIOIWifEJ2HLH37TlpqYD7UpFUzktyeB4aM9271q1Nqx9ykDirS3clrkB5EHvEvHpzLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=206.189.21.223
+	 MIME-Version; b=kweDiZ6FmOByYd4W4WeU21R90YGgllyjRtSlNl3K5EdJsDrdhMfWGunvCsyg8UtfQrt+xHUW8JkoveOVTlORMEMrMDdzgOuk4m91XsLSCrGL/j2VCgsJT1qHahewpxJfZvoNeJVM0F2ejIzcMYOPGP1nHDLv/coN87Hv6iM/PBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=13.75.44.102
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
 Received: from a800-server-1.tail7779b.ts.net (unknown [172.30.111.252])
-	by app1 (Coremail) with SMTP id ygmowABXyvqpq8RpxwyKAA--.44467S4;
-	Thu, 26 Mar 2026 11:44:57 +0800 (CST)
+	by app1 (Coremail) with SMTP id ygmowABXyvqpq8RpxwyKAA--.44467S5;
+	Thu, 26 Mar 2026 11:44:59 +0800 (CST)
 From: Yang Yang <n05ec@lzu.edu.cn>
 To: davem@davemloft.net,
 	edumazet@google.com,
@@ -36,9 +36,9 @@ Cc: andrew+netdev@lunn.ch,
 	tanyuan98@outlook.com,
 	bird@lzu.edu.cn,
 	n05ec@lzu.edu.cn
-Subject: [PATCH net 2/3] bridge: br_nd_send: validate ND option lengths
-Date: Thu, 26 Mar 2026 03:44:40 +0000
-Message-ID: <20260326034441.2037420-3-n05ec@lzu.edu.cn>
+Subject: [PATCH net 3/3] vxlan: validate ND option lengths in vxlan_na_create
+Date: Thu, 26 Mar 2026 03:44:41 +0000
+Message-ID: <20260326034441.2037420-4-n05ec@lzu.edu.cn>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260326034441.2037420-1-n05ec@lzu.edu.cn>
 References: <20260326034441.2037420-1-n05ec@lzu.edu.cn>
@@ -49,10 +49,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:ygmowABXyvqpq8RpxwyKAA--.44467S4
-X-Coremail-Antispam: 1UD129KBjvJXoW7Wry7Jw1rGF15Aw1ftrWDurg_yoW8ArWrpF
-	98KF1FkFZ7ArnIgr4kAF18ur1ft395GFWxGryDC3ySvF1rXF1qy3yqkr9Iqr1xAF1xKr4a
-	yrn0vrn0vF1DAFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+X-CM-TRANSID:ygmowABXyvqpq8RpxwyKAA--.44467S5
+X-Coremail-Antispam: 1UD129KBjvJXoW7Wry7Jw4UXFWfXFWkZr1UZFb_yoW8ArW3pF
+	ZxKFyjkrZ7ArWqvw4kAr4fZr1ftaykJ3WxKr9Yka93uF1rXwnYyw4YgasIvrnFyr1jkF4Y
+	vrsa9ryDZwn8AF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
 	9KBjDU0xBIdaVrnRJUUUBF1xkIjI8I6I8E6xAIw20EY4v20xvaj40_JFC_Wr1l1IIY67AE
 	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
 	IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2
@@ -66,17 +66,17 @@ X-Coremail-Antispam: 1UD129KBjvJXoW7Wry7Jw1rGF15Aw1ftrWDurg_yoW8ArWrpF
 	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1lIxAIcVCF
 	04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7
 	CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0pRpOJnUUUUU=
-X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQISCWnEBPoIygAAsJ
+X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQMSCWnEBPoIzQAAsP
 
-br_nd_send() walks ND options according to option-provided lengths.
-A malformed option can make the parser advance beyond the computed
-option span or use a too-short source LLADDR option payload.
+vxlan_na_create() walks ND options according to option-provided
+lengths. A malformed option can make the parser advance beyond the
+computed option span or use a too-short source LLADDR option payload.
 
 Validate option lengths against the remaining NS option area before
 advancing, and only read source LLADDR when the option is large enough
 for an Ethernet address.
 
-Fixes: ed842faeb2bd ("bridge: suppress nd pkts on BR_NEIGH_SUPPRESS ports")
+Fixes: 4b29dba9c085 ("vxlan: fix nonfunctional neigh_reduce()")
 Cc: stable@vger.kernel.org
 Reported-by: Yifan Wu <yifanwucs@gmail.com>
 Reported-by: Juefei Pu <tomapufckgml@gmail.com>
@@ -86,21 +86,21 @@ Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
 Suggested-by: Xin Liu <bird@lzu.edu.cn>
 Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
 ---
- net/bridge/br_arp_nd_proxy.c | 6 ++++--
+ drivers/net/vxlan/vxlan_core.c | 6 ++++--
  1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/bridge/br_arp_nd_proxy.c b/net/bridge/br_arp_nd_proxy.c
-index af3d1e33f50b8..6b5595868a39c 100644
---- a/net/bridge/br_arp_nd_proxy.c
-+++ b/net/bridge/br_arp_nd_proxy.c
-@@ -288,12 +288,14 @@ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
- 	ns_olen = request->len - (skb_network_offset(request) +
- 				  sizeof(struct ipv6hdr)) - sizeof(*ns);
- 	for (i = 0; i < ns_olen - 1; i += (ns->opt[i + 1] << 3)) {
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index 17c941aac32db..a94ac82a61364 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -1965,12 +1965,14 @@ static struct sk_buff *vxlan_na_create(struct sk_buff *request,
+ 	ns_olen = request->len - skb_network_offset(request) -
+ 		sizeof(struct ipv6hdr) - sizeof(*ns);
+ 	for (i = 0; i < ns_olen-1; i += (ns->opt[i+1]<<3)) {
 -		if (!ns->opt[i + 1]) {
 +		if (!ns->opt[i + 1] || i + (ns->opt[i + 1] << 3) > ns_olen) {
  			kfree_skb(reply);
- 			return;
+ 			return NULL;
  		}
  		if (ns->opt[i] == ND_OPT_SOURCE_LL_ADDR) {
 -			daddr = ns->opt + i + sizeof(struct nd_opt_hdr);
