@@ -1,125 +1,63 @@
-Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF4D421EF7;
-	Thu, 26 Mar 2026 17:30:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FFFA423144;
+	Thu, 26 Mar 2026 17:31:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774546236; cv=none; b=jf+8gy9c7UeMLj3Q8SYS7VO4sW3TuKHk8D2rGraob0LKb0Me/XhK6AlD5HZRFCnGumuxE9CR8A/trDSLYsUkMVm75Ie1CtpD0l4wCNqC5phMt9FucaFLHw16CtiC7lI2rt9iImQeTrd2urW1aMUC3E0ILsbQ3WTwddmJWbTldt8=
+	t=1774546261; cv=none; b=Ydeobf5WPU86JG86nfkE2/IV7vCagGNG7QGQQlYfMwIBNfQJFnpCU+3fLVEAOlQvsMLhSB1EcawwMJj9EgHT1L73eY16JxMsYO3mAXvfon2jq20l9amOJxlRgCz1PYeqBVwCN1xtQ73jikeRgHUV6/SyKJ2wpY9/sEfLqAB+YV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774546236; c=relaxed/simple;
-	bh=GDIgImmAITT14mH1h9x1AVZllXLG0K+mrW/IwOibwus=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YddUdhg3gticKIncDURK1yMDwwpTUQIaYWR7vactfjHsnK6a9vxY8zGzcb9PBvJW3Thy1TmXv4RiG8x6oHGqRE9hKZGIqxDTu8FtMlg3A10rA+NmJmCrvm3Pf21+2vyggaULTbPhk4qAyl4RHVYQO83JHVbndCFiFh/QURmsUiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=amKeoRSz; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=wULQHrO8; arc=none smtp.client-ip=160.80.4.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+	s=arc-20240116; t=1774546261; c=relaxed/simple;
+	bh=f3uQZ3KbpPjHvy59gBnkif0pO9fMKfnmmYRZRQlLEok=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=IAnN7UvJki6r9japxdYNicAg+KCj1XHS+UCJFRiFP4IdU50571NmXR0X/LaTresl6onyFXjbg25+Hq4GrR3xd3Sy1Ua1l+gnwTycJw4uyuCmbFeiylDLVcBiP2AFnC3kDsjEkFxOzrInTEubpL10EGyXDg0u+V4b2rPmDWah9W4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eINTcyHx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="amKeoRSz";
-	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="wULQHrO8"
-Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 62QHTlq2011685;
-	Thu, 26 Mar 2026 18:29:52 +0100
-Received: from [10.62.247.239] (93-33-118-253.ip44.fastwebnet.it [93.33.118.253])
-	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 1DEC9122940;
-	Thu, 26 Mar 2026 18:29:42 +0100 (CET)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
-	s=ed201904; t=1774546183; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9I5dW3djYPBEN9GH1zFJpeHiokQiFFD8Dnrwz788XaE=;
-	b=amKeoRSzbtxoascx95Vtfoh72dbPlW1kktNlgBrzQc5y5TxxXlYC/VCbOSofWPAwnDPTEP
-	HBE+7e+nVAytABBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
-	t=1774546183; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9I5dW3djYPBEN9GH1zFJpeHiokQiFFD8Dnrwz788XaE=;
-	b=wULQHrO85NRYx2qPhcEygGTPL8OSwCZKgGErTOBrjhyooojDJfkMwnp0qXk9j5jnqtCNTP
-	Zw0myrTV26uf3vuwAL//h+BL5uEsvwlg4fdrsksAtIjSCaSjOPNGCZT9FZYZ/1K7wSFr1v
-	t9/B0+UGpmCcQ4RykMgiVRKqdciKPE3JGbOqkAR4gp7OnnOU5E06HDzRkwN6XJx1JpPAwr
-	CWgH8zXt4e4D/haYP9lDPS7ee+rTKDQPxw9C4sPDPqlfTB0Zu3JmpwcRoVXedqtafx7/ys
-	lnQaVvYjZotugkpzcC5hKMvxJx9UofUhjy8MOYH3jm2NBlsuHAZxPS9nqS8eSQ==
-Message-ID: <55aec00e-3031-44dd-a58d-7a6251891027@uniroma2.it>
-Date: Thu, 26 Mar 2026 18:29:41 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eINTcyHx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0AF4C19423;
+	Thu, 26 Mar 2026 17:30:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774546260;
+	bh=f3uQZ3KbpPjHvy59gBnkif0pO9fMKfnmmYRZRQlLEok=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=eINTcyHxXFMKoTQmksNhECs8CyDSherl6x7YYZdrWkV4AwuyEOo/yB1JLjpKrHnUk
+	 sz3YHxaKRTbLvKvOM/TsE9GfFdtyW6vEQhdS7pN9TyHkA45ieHW80xZgJIFm+Dez9u
+	 IgRQbYIKwbSb8NrxB3RhCe8RY4SeXX+iQrSkdOb4lJ2a41/TRLeBR68lFORaDIbchL
+	 VcrnrJqZcZULu9M24O08cNPkh8zdGjAiimkL9PHwG1tKMo6/Ex7vUf3Ted0pZY4qb8
+	 h4PGnfXcSh0t2g5HaTyvqOPEjg7BwMayZSPGTwnXkFwrF6owaoauGFGwN3kLMrkgoR
+	 rPslcZEUOk6zA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9F1839F2037;
+	Thu, 26 Mar 2026 17:30:47 +0000 (UTC)
+Subject: Re: [GIT PULL] Networking for v7.0-rc6
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20260326163029.350902-1-pabeni@redhat.com>
+References: <20260326163029.350902-1-pabeni@redhat.com>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20260326163029.350902-1-pabeni@redhat.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git net-7.0-rc6
+X-PR-Tracked-Commit-Id: db472c34a74770f39318ddb1efa986c0a8d5d86a
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 453a4a5f97f0c95b7df458e6afb98d4ab057d90b
+Message-Id: <177454624641.3098378.14236139068355746366.pr-tracker-bot@kernel.org>
+Date: Thu, 26 Mar 2026 17:30:46 +0000
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: torvalds@linux-foundation.org, kuba@kernel.org, davem@davemloft.net, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH net-next 2/3] seg6: add SRv6 L2 tunnel device (srl2)
-Content-Language: it-IT
-To: Justin Iurman <justin.iurman@6wind.com>,
-        Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>,
-        David Ahern <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        Simon Horman <horms@kernel.org>,
-        Paolo Lungaroni <paolo.lungaroni@uniroma2.it>,
-        Ahmed Abdelsalam <ahabdels@cisco.com>, linux-kernel@vger.kernel.org
-References: <20260322000557.12559-1-andrea.mayer@uniroma2.it>
- <20260322000557.12559-3-andrea.mayer@uniroma2.it>
- <CAOY2Bqxb1C6myf7DBmfLM_3wZSweYQaQSAVSj_wDihf-N9vQJg@mail.gmail.com>
-From: Stefano Salsano <stefano.salsano@uniroma2.it>
-In-Reply-To: <CAOY2Bqxb1C6myf7DBmfLM_3wZSweYQaQSAVSj_wDihf-N9vQJg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
 
-Il 25/03/2026 14:43, Justin Iurman ha scritto:
-> On Sun, Mar 22, 2026 at 12:06 AM Andrea Mayer <andrea.mayer@uniroma2.it> wrote:
->>
->> Introduce srl2, an Ethernet pseudowire device over SRv6. It
->> encapsulates L2 frames in IPv6 with a Segment Routing Header for
->> transmission across an SRv6 network.
->>
->> The encapsulation logic reuses seg6_do_srh_encap() with
->> IPPROTO_ETHERNET. The transmit path uses the standard IPv6 tunnel
->> infrastructure (dst_cache, ip6_route_output, ip6tunnel_xmit).
->>
->> The device is configured with a segment list for point-to-point
->> L2 encapsulation.
->>
->> Usage:
->>
->>    ip link add srl2-0 type srl2 segs fc00::a,fc00::b
-> 
-> Thinking out loud...
-> 
-> We'll likely need SRv6 encap configurations specific to each entry
-> (i.e., MAC address), rather than (or in addition to) per interface.
+The pull request you sent on Thu, 26 Mar 2026 17:30:29 +0100:
 
-agreed, this is the natural next step towards multipoint
-we've started exploring the design for this, happy to collaborate if 
-you're interested
+> git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git net-7.0-rc6
 
-> We could also add a "mode" (e.g., "normal" mode or reduced mode?).
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/453a4a5f97f0c95b7df458e6afb98d4ab057d90b
 
-good point, the infrastructure is already in place, so adding a "mode" 
-parameter to sr6 to support reduced encap should be straightforward
+Thank you!
 
-we suggest to address it as an immediate follow-up to this baseline 
-series and we have already some prototype code ready
-
-ciao
-Stefano and Andrea
 -- 
-*******************************************************************
-Prof. Stefano Salsano
-Dipartimento Ingegneria Elettronica
-Universita' di Roma Tor Vergata
-Viale Politecnico, 1 - 00133 Roma - ITALY
-
-http://netgroup.uniroma2.it/Stefano_Salsano/
-
-E-mail  : stefano.salsano@uniroma2.it
-Office  : (Tel.) +39 06 72597770 (Fax.) +39 06 72597435
-*******************************************************************
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
