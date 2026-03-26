@@ -1,53 +1,80 @@
-Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD472D8376
-	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 02:16:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6FA83081D6
+	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 02:16:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774491405; cv=none; b=J2nlSEPEQqShFo66NMDnORbu6Ma4too2Lq1QNn/eGMRkYI9rdTJhyMsOx6zt+m7qJhLMLZtlz2SegOisrdYZMkTBuAwtkc0gUgH1Bm5RMaBQobWjhoKcHMADaD6M1i3XxYdmUzqBm+w8i4nJpr66WxXTNZwJv1bMfLC1CuAY8MI=
+	t=1774491415; cv=none; b=fj4DcilGeugu6KzQX7wuYFxdspc+CmOWDqJoXF+ZDEEg49ZN2BZR2LOCaiEJL41HBHZdvE+cbT1zJYhiBuFVOMm2WfCtYKbUvQUkviapzYsB/xGX/IqkaOKWfukgJOmm5KE5CFPoQ6tqph4psasWUKOyvpyQutOwJYWr54PCItI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774491405; c=relaxed/simple;
-	bh=WJSWaLjWbON+BMECS1XrVYPa7mMp0uQhMEJK8eIaaco=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SVyFTcMJXmZTAHgftINHs1uaqXoSBiDYdrVORgPGCOujtkTC+vVVELP+8LhSh5wT6gAORtDF+Z1jd5AvLV44pFcqUrSpNcZVOjsDUrcSGrE3X6Lxx3SmdfiHJaO6Ul5wG3n0RF6OEgQbTETuhwH4catzJ0xVj1v0ThA/Nlsm950=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=18.194.254.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpsz11t1774491329t88fdaaf6
-X-QQ-Originating-IP: 0VevYbMxWoLEqQ7o5s2PEueBSvKqIhzu/1lahORa2yU=
-Received: from lap-jiawenwu.trustnetic.com ( [36.20.60.44])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 26 Mar 2026 10:15:27 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 15204795085688658442
-EX-QQ-RecipientCnt: 18
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: netdev@vger.kernel.org
-Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	s=arc-20240116; t=1774491415; c=relaxed/simple;
+	bh=XL210it0gtQsEszctI6MjLScbi4X8gcsVy8bQGL8kHE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HBgJfbw+9UtEhaFFo84TKN46pMgSHwKLyo1ODKAIFp+Q2DaSPEQzj9hdEYW1W4IC9tzLnmUSraFfjtaAfCfcFhLPbI8QHTnys+S5X0FDwpCetIpEDxhtasxdZQm+ltJ8zYNqHr+S2zuQrjIyBWv+mvWcjvHoM05oaEJVMaBUhk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ET2C75lD; arc=none smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ET2C75lD"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-668d4751a3bso593971a12.2
+        for <netdev@vger.kernel.org>; Wed, 25 Mar 2026 19:16:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774491411; x=1775096211; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BmgS7jmIsFb12HXFzHaausAdN0MMTikyDLHIG6ToCYY=;
+        b=ET2C75lDl3dF1GWBDNPPHXY6R+M/C7yiiikMHpM6L8envXWQe/S06lOBVxuzZnA+6b
+         FQjhSqIgqpIyX30rocEXzH2Get1UZZ7y6Carv5gxGD2I1rnbR4HIbAlVrjRJX8b9MNCv
+         n3j0layCpgYYJj79JuO5zwwCn33L8W9De3yxnUUAgtN8/CuCCD27/AfVAJldCs5La8Fe
+         3TrW2WRrDLEbaaVF9XBcksDDx4VrDhy62uIHTCvmFMQVSb1B5GL3viBfvgwdEdhnC3J1
+         G5DW9VDwRT+dd/4kZnkCmgSsGY6Gn4+JgyGUFrnJ2ymOxnIMi+kfGTV8aCq90nvUYMSd
+         q0og==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774491411; x=1775096211;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BmgS7jmIsFb12HXFzHaausAdN0MMTikyDLHIG6ToCYY=;
+        b=GRxeVF/el87atN0ZAuDfmJwLlCJF8YH/ydjGXL3Kz47kKStR8GUUOd0ALj+qvRf7lb
+         RWWcdpnNMWrsytv2L4gE2cZHjmFo0I6EblsvsrKS6rWkyPH/PiMawumhZJgzeqAnqtrY
+         F/qdbic0uhchlBq9VxuRN8yr5mfXlX4g92Q5Zy81qcuOjSpUKwjqDvyOaRLjuWzcxjY+
+         0c8+w9vJ+47O1//aJgevTsfuEjVp5+kcRcO4jGGIFDGFFwDB8QiD/kBrDLR5uGHcgALi
+         8ex2r/LXsQI2Om9iAXmWuVtt38wA43663UR8f4ojwm6XatKqXEOQITtSmvpfOe8WnmTu
+         q0ig==
+X-Forwarded-Encrypted: i=1; AJvYcCVE6sx7XeSTfTvpM3YXqvCHTojn/yq1qX5hTK4kVhLgPBhivhBmgkFqbosEI84xwKeP1DxKk+4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyc+y5lvIUqF55PtKEYjLLUTzCSjtd+yfuUfCd2Or5NT4QcgcId
+	5heVwFj2Mbl5g3ic8+MQDAj3uiGxgKM100yro69r4h0rcYuPaMLzXNwu
+X-Gm-Gg: ATEYQzxgSaHzmBA8emYn9wACC9mHzaDbTKcrJT/jhBY0Y2AtP3xfnI05CPcYrgrY6QF
+	J1yG4iP9HqaAIo02RPKYPRyCeJIGpp6ejdV1qaUGQjG+Jocb2mGrqtl3mgdUj77g9YL5IwpDwro
+	3xnSrKHk/+QgRttUSHn0Js9kx8TML7f60OeSRiQTQTXMGh0e5t0fhv/c7RuXgChF6K/aEH3HTeE
+	hSbEup/6rppRjEQgUr2AhBvoNR4KLbDfZcZ2rNMpdENEjm0sSs0tVlG+RuC34ZgPuWoFUtoLQ/3
+	sAIz9ADXuP2R3FC824U579rNi9YbBC89Daco/TJruNI5gFL4y0VZ1gJ3lAeV3Wkx6ieWG81oiD6
+	9ppXNJwmP8clOpUvCM8e1scX/XiuYFdq77Ld/L65rg2v4ll/2v2WqnUSehJTqLyvXugb+7JEjVS
+	M5CFDTPcpuVfC9
+X-Received: by 2002:a05:6402:40d1:b0:66a:11c9:f6bd with SMTP id 4fb4d7f45d1cf-66a826e30admr3331546a12.27.1774491410742;
+        Wed, 25 Mar 2026 19:16:50 -0700 (PDT)
+Received: from gmail.com ([2a09:bac5:4e24:270f::3e4:5])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-66ad541489esm447262a12.0.2026.03.25.19.16.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Mar 2026 19:16:49 -0700 (PDT)
+From: Qingfang Deng <dqfext@gmail.com>
+To: Shuah Khan <shuah@kernel.org>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
 	Simon Horman <horms@kernel.org>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Kees Cook <kees@kernel.org>,
-	Joe Damato <joe@dama.to>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Breno Leitao <leitao@debian.org>,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v6 06/11] net: txgbe: add power management support
-Date: Thu, 26 Mar 2026 10:14:01 +0800
-Message-Id: <20260326021406.30444-7-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.21.0.windows.1
-In-Reply-To: <20260326021406.30444-1-jiawenwu@trustnetic.com>
-References: <20260326021406.30444-1-jiawenwu@trustnetic.com>
+	Felix Maurer <fmaurer@redhat.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Antonio Quartulli <antonio@openvpn.net>,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-ppp@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: Paul Mackerras <paulus@ozlabs.org>
+Subject: [PATCH net-next v4] selftests: net: add tests for PPP
+Date: Thu, 26 Mar 2026 10:16:24 +0800
+Message-ID: <20260326021642.29170-1-dqfext@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,169 +82,243 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: NYaxHkiwU7v1rd6UDLM7jhh3iVi/b+oYDV2v24CPEfT/KyT5j4DtdqGc
-	425b8qtBezVdPwco8qLHLRksPyP0ZWqpnKRxBbDKq3kh5L/ywHUeee6NGppL0DwlnsHVa0A
-	D47L++duWoU6qJQFuQOPET9sOZfQvnNn5iv2z6o5ow/ute9C+RerQhAlPx8uzFrxOymN7g7
-	sfh79Jx2z2d6M7ecjBYj2eje6Yuz6LMxQXcza6alE+lb7WPKAybAEJzI1i6SNt+MuZTe02h
-	EFJ9N2tfamyuZluPEN67EEUgXpKY/IcIevB7h/QuiqmotsBdYd5Cy9nbjyg8fKcfNt3IIHl
-	9+lLRAA/eSXpqk7xnPCbLlBd9aMKFFvHo567En5//Bi+OdP3S6Z5V+Z1wRAbAFuc8LjbTRM
-	mBdL1zeC1d5m5BV6foKbqjR/gAd+jG2+AUKTthWWI1egSRiolqnUcNKr8hjvC9IoL4xYuKa
-	/i2FSoo1dcuP+7iGLjiSABUuGGQ3K+xC8KDCliMKBHg3L54i3vDWNS4glHmnZG6L0W9wwzr
-	RRshBcRgavJn6oMl1KIUMZ14Zxnutrq2f08pEKOHrgdyeetEmOQgAMWYdrzvKXkL85Kbdyr
-	BUeHeITVIZdfQTHFbtO1NpbsIbRpZMhhGhHb1ExCUlRXipQ/dnf+HZbxn66o3QCOIEJdvdq
-	bJtVZ/7qu10y6UIGrsu578ZCu+M4ZmOqJdhmHfbFuaTggNuBvFLUlZRON58LDBL1FxCZJrd
-	cpkigmYlQlkC+9y7umqoArGRiJnGrNwao7fD2l9h4i0pSLS+IQ7iJq9EwIukuQ3PKVOvWgd
-	MFOsF0Xng8rG89TFS7eICTI4ZKdPR2UUzr+zVhTT98OCMuQzPp3s5j0EIJ5tDpRwe/7Yxmi
-	5LiCOLQXH+nfnE2BXiC/LrXmVC2xWykd2X7n4nqRcc8FQytKUQTkhHNfCGnPxqyxtCnF+3X
-	ervsaXavRbN2cz/mV3eNmX5az87pH7njg0p5DzxHBN4SnstpRs8lvm8l267LxydSp3BWIoP
-	r16AOsw9lcC1HBXGoRjHBZO3nVq0YR68aBYVk6lLZajh/Qbv/VRs7abT9v3ErhQJcSCRBpt
-	tLIdTEwzc1fUfiaOqJKlh5s8UMZzz9qMg==
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-X-QQ-RECHKSPAM: 0
 
-Support .suspend and .resume and Wake-on-LAN.
+Add ping and iperf3 tests for ppp_async.c and pppoe.c.
 
-Implement ethtool ops .get_wol and .set_wol to support Wake-on-LAN
-function. WOL requires hardware board support which is identified by
-subsystem device ID. Magic packets are checked by firmware, and
-currently only WAKE_MAGIC is supported.
-
-And WOL related operations are added to txgbe_shutdown(), it matches the
-implementation of wx_shutdown(). So change to call wx_shutdown()
-directly in txgbe driver.
-
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Joe Damato <joe@dama.to>
+Signed-off-by: Qingfang Deng <dqfext@gmail.com>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_hw.c    |  3 +-
- .../ethernet/wangxun/txgbe/txgbe_ethtool.c    |  2 +
- .../net/ethernet/wangxun/txgbe/txgbe_main.c   | 49 +++++++------------
- 3 files changed, 21 insertions(+), 33 deletions(-)
+v4: double quote $EXIT_STATUS (SC2086)
+ https://lore.kernel.org/netdev/20260325014411.3596-1-dqfext@gmail.com/
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-index bee9e245e792..150a063daafd 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-@@ -1313,8 +1313,7 @@ void wx_disable_rx(struct wx *wx)
- 		rxctrl &= ~WX_RDB_PB_CTL_RXEN;
- 		wr32(wx, WX_RDB_PB_CTL, rxctrl);
+ MAINTAINERS                                   |  1 +
+ tools/testing/selftests/Makefile              |  1 +
+ tools/testing/selftests/net/ppp/Makefile      | 15 +++++++
+ tools/testing/selftests/net/ppp/config        |  9 ++++
+ tools/testing/selftests/net/ppp/ppp_async.sh  | 43 ++++++++++++++++++
+ tools/testing/selftests/net/ppp/ppp_common.sh | 44 +++++++++++++++++++
+ .../selftests/net/ppp/pppoe-server-options    |  2 +
+ tools/testing/selftests/net/ppp/pppoe.sh      | 40 +++++++++++++++++
+ 8 files changed, 155 insertions(+)
+ create mode 100644 tools/testing/selftests/net/ppp/Makefile
+ create mode 100644 tools/testing/selftests/net/ppp/config
+ create mode 100755 tools/testing/selftests/net/ppp/ppp_async.sh
+ create mode 100644 tools/testing/selftests/net/ppp/ppp_common.sh
+ create mode 100644 tools/testing/selftests/net/ppp/pppoe-server-options
+ create mode 100755 tools/testing/selftests/net/ppp/pppoe.sh
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a09bf30a057d..d553437d5ac1 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -21078,6 +21078,7 @@ PPP PROTOCOL DRIVERS AND COMPRESSORS
+ L:	linux-ppp@vger.kernel.org
+ S:	Orphan
+ F:	drivers/net/ppp/ppp_*
++F:	tools/testing/selftests/net/ppp/
  
--		if (!(((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP) ||
--		      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP))) {
-+		if (!(wx->ncsi_enabled || wx->wol_hw_supported)) {
- 			/* disable mac receiver */
- 			wr32m(wx, WX_MAC_RX_CFG,
- 			      WX_MAC_RX_CFG_RE, 0);
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
-index 9157b8275be1..c92eb71e0c15 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
-@@ -575,6 +575,8 @@ static const struct ethtool_ops txgbe_ethtool_ops = {
- 	.get_link		= ethtool_op_get_link,
- 	.get_link_ksettings	= txgbe_get_link_ksettings,
- 	.set_link_ksettings	= wx_set_link_ksettings,
-+	.get_wol		= wx_get_wol,
-+	.set_wol		= wx_set_wol,
- 	.get_sset_count		= wx_get_sset_count,
- 	.get_strings		= wx_get_strings,
- 	.get_ethtool_stats	= wx_get_ethtool_stats,
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-index 30f66507809b..ddc7cea9d7c2 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-@@ -245,8 +245,7 @@ static void txgbe_disable_device(struct wx *wx)
- 		wx_set_all_vfs(wx);
- 	}
- 
--	if (!(((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP) ||
--	      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP))) {
-+	if (!(wx->ncsi_enabled || wx->wol_hw_supported)) {
- 		/* disable mac transmiter */
- 		wr32m(wx, WX_MAC_TX_CFG, WX_MAC_TX_CFG_TE, 0);
- 	}
-@@ -303,6 +302,7 @@ void txgbe_up(struct wx *wx)
- static void txgbe_init_type_code(struct wx *wx)
- {
- 	u8 device_type = wx->subsystem_device_id & 0xF0;
-+	u16 wol_mask, ncsi_mask;
- 
- 	switch (wx->device_id) {
- 	case TXGBE_DEV_ID_SP1000:
-@@ -347,6 +347,11 @@ static void txgbe_init_type_code(struct wx *wx)
- 		wx->media_type = wx_media_unknown;
- 		break;
- 	}
+ PPS SUPPORT
+ M:	Rodolfo Giometti <giometti@enneenne.com>
+diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
+index 450f13ba4cca..65f84e8a0cf0 100644
+--- a/tools/testing/selftests/Makefile
++++ b/tools/testing/selftests/Makefile
+@@ -78,6 +78,7 @@ TARGETS += net/netfilter
+ TARGETS += net/openvswitch
+ TARGETS += net/ovpn
+ TARGETS += net/packetdrill
++TARGETS += net/ppp
+ TARGETS += net/rds
+ TARGETS += net/tcp_ao
+ TARGETS += nolibc
+diff --git a/tools/testing/selftests/net/ppp/Makefile b/tools/testing/selftests/net/ppp/Makefile
+new file mode 100644
+index 000000000000..b39b0abadde6
+--- /dev/null
++++ b/tools/testing/selftests/net/ppp/Makefile
+@@ -0,0 +1,15 @@
++# SPDX-License-Identifier: GPL-2.0
 +
-+	wol_mask = wx->subsystem_device_id & WX_WOL_MASK;
-+	ncsi_mask = wx->subsystem_device_id & WX_NCSI_MASK;
-+	wx->wol_hw_supported = (wol_mask == WX_WOL_SUP) ? 1 : 0;
-+	wx->ncsi_enabled = (ncsi_mask == WX_NCSI_SUP) ? 1 : 0;
- }
- 
- /**
-@@ -534,34 +539,6 @@ static int txgbe_close(struct net_device *netdev)
- 	return 0;
- }
- 
--static void txgbe_dev_shutdown(struct pci_dev *pdev)
--{
--	struct wx *wx = pci_get_drvdata(pdev);
--	struct net_device *netdev;
--
--	netdev = wx->netdev;
--	netif_device_detach(netdev);
--
--	rtnl_lock();
--	if (netif_running(netdev))
--		txgbe_close_suspend(wx);
--	rtnl_unlock();
--
--	wx_control_hw(wx, false);
--
--	pci_disable_device(pdev);
--}
--
--static void txgbe_shutdown(struct pci_dev *pdev)
--{
--	txgbe_dev_shutdown(pdev);
--
--	if (system_state == SYSTEM_POWER_OFF) {
--		pci_wake_from_d3(pdev, false);
--		pci_set_power_state(pdev, PCI_D3hot);
--	}
--}
--
- /**
-  * txgbe_setup_tc - routine to configure net_device for multiple traffic
-  * classes.
-@@ -824,6 +801,14 @@ static int txgbe_probe(struct pci_dev *pdev,
- 	eth_hw_addr_set(netdev, wx->mac.perm_addr);
- 	wx_mac_set_default_filter(wx, wx->mac.perm_addr);
- 
-+	wx->wol = 0;
-+	if (wx->wol_hw_supported)
-+		wx->wol = WX_PSR_WKUP_CTL_MAG;
++top_srcdir = ../../../../..
 +
-+	netdev->ethtool->wol_enabled = !!(wx->wol);
-+	wr32(wx, WX_PSR_WKUP_CTL, wx->wol);
-+	device_set_wakeup_enable(&pdev->dev, wx->wol);
++TEST_PROGS := \
++	ppp_async.sh \
++	pppoe.sh \
++# end of TEST_PROGS
 +
- 	txgbe_init_service(wx);
- 
- 	err = wx_init_interrupt_scheme(wx);
-@@ -975,7 +960,9 @@ static struct pci_driver txgbe_driver = {
- 	.id_table = txgbe_pci_tbl,
- 	.probe    = txgbe_probe,
- 	.remove   = txgbe_remove,
--	.shutdown = txgbe_shutdown,
-+	.suspend  = wx_suspend,
-+	.resume   = wx_resume,
-+	.shutdown = wx_shutdown,
- 	.sriov_configure = wx_pci_sriov_configure,
- };
- 
++TEST_FILES := \
++	ppp_common.sh \
++	pppoe-server-options \
++# end of TEST_FILES
++
++include ../../lib.mk
+diff --git a/tools/testing/selftests/net/ppp/config b/tools/testing/selftests/net/ppp/config
+new file mode 100644
+index 000000000000..b45d25c5b970
+--- /dev/null
++++ b/tools/testing/selftests/net/ppp/config
+@@ -0,0 +1,9 @@
++CONFIG_IPV6=y
++CONFIG_PACKET=y
++CONFIG_PPP=m
++CONFIG_PPP_ASYNC=m
++CONFIG_PPP_BSDCOMP=m
++CONFIG_PPP_DEFLATE=m
++CONFIG_PPPOE=m
++CONFIG_PPPOE_HASH_BITS_4=y
++CONFIG_VETH=y
+diff --git a/tools/testing/selftests/net/ppp/ppp_async.sh b/tools/testing/selftests/net/ppp/ppp_async.sh
+new file mode 100755
+index 000000000000..c47a6f5c02dd
+--- /dev/null
++++ b/tools/testing/selftests/net/ppp/ppp_async.sh
+@@ -0,0 +1,43 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++
++source ppp_common.sh
++
++# Temporary files for PTY symlinks
++TTY_DIR=$(mktemp -d /tmp/ppp.XXXXXX)
++TTY_SERVER="$TTY_DIR"/server
++TTY_CLIENT="$TTY_DIR"/client
++
++cleanup() {
++	cleanup_all_ns
++	[ -n "$SOCAT_PID" ] && kill_process "$SOCAT_PID"
++	rm -fr "$TTY_DIR"
++}
++
++trap cleanup EXIT
++
++require_command socat
++ppp_common_init
++modprobe -q ppp_async
++
++# Create the virtual serial device
++socat -d PTY,link="$TTY_SERVER",rawer PTY,link="$TTY_CLIENT",rawer &
++SOCAT_PID=$!
++
++# Wait for symlinks to be created
++slowwait 5 [ -L "$TTY_SERVER" ]
++
++# Start the PPP Server
++ip netns exec "$NS_SERVER" pppd "$TTY_SERVER" 115200 \
++	"$IP_SERVER":"$IP_CLIENT" \
++	local noauth nodefaultroute debug
++
++# Start the PPP Client
++ip netns exec "$NS_CLIENT" pppd "$TTY_CLIENT" 115200 \
++	local noauth updetach nodefaultroute debug
++
++ppp_test_connectivity
++
++log_test "PPP async"
++
++exit "$EXIT_STATUS"
+diff --git a/tools/testing/selftests/net/ppp/ppp_common.sh b/tools/testing/selftests/net/ppp/ppp_common.sh
+new file mode 100644
+index 000000000000..c72218813f95
+--- /dev/null
++++ b/tools/testing/selftests/net/ppp/ppp_common.sh
+@@ -0,0 +1,44 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++# shellcheck disable=SC2153
++
++source ../lib.sh
++
++IP_SERVER="192.168.200.1"
++IP_CLIENT="192.168.200.2"
++
++ppp_common_init() {
++	# Package requirements
++	require_command pppd
++	require_command iperf3
++
++	# Check for root privileges
++	if [ "$(id -u)" -ne 0 ];then
++		echo "SKIP: Need root privileges"
++		exit $ksft_skip
++	fi
++
++	# Namespaces
++	setup_ns NS_SERVER NS_CLIENT
++}
++
++ppp_check_addr() {
++	dev=$1
++	addr=$2
++	ns=$3
++	ip -netns "$ns" -4 addr show dev "$dev" 2>/dev/null | grep -q "$addr"
++	return $?
++}
++
++ppp_test_connectivity() {
++	slowwait 10 ppp_check_addr "ppp0" "$IP_CLIENT" "$NS_CLIENT"
++
++	ip netns exec "$NS_CLIENT" ping -c 3 "$IP_SERVER"
++	check_err $?
++
++	ip netns exec "$NS_SERVER" iperf3 -s -1 -D
++	wait_local_port_listen "$NS_SERVER" 5201 tcp
++
++	ip netns exec "$NS_CLIENT" iperf3 -c "$IP_SERVER" -Z -t 2
++	check_err $?
++}
+diff --git a/tools/testing/selftests/net/ppp/pppoe-server-options b/tools/testing/selftests/net/ppp/pppoe-server-options
+new file mode 100644
+index 000000000000..66c8c9d319e9
+--- /dev/null
++++ b/tools/testing/selftests/net/ppp/pppoe-server-options
+@@ -0,0 +1,2 @@
++noauth
++noipdefault
+diff --git a/tools/testing/selftests/net/ppp/pppoe.sh b/tools/testing/selftests/net/ppp/pppoe.sh
+new file mode 100755
+index 000000000000..d5d9b898d537
+--- /dev/null
++++ b/tools/testing/selftests/net/ppp/pppoe.sh
+@@ -0,0 +1,40 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++
++source ppp_common.sh
++
++VETH_SERVER="veth-server"
++VETH_CLIENT="veth-client"
++
++cleanup() {
++	cleanup_all_ns
++}
++
++trap cleanup EXIT
++
++require_command pppoe-server
++ppp_common_init
++modprobe -q pppoe
++
++# Create the veth pair
++ip link add "$VETH_SERVER" type veth peer name "$VETH_CLIENT"
++ip link set "$VETH_SERVER" netns "$NS_SERVER"
++ip link set "$VETH_CLIENT" netns "$NS_CLIENT"
++ip -netns "$NS_SERVER" link set "$VETH_SERVER" up
++ip -netns "$NS_CLIENT" link set "$VETH_CLIENT" up
++
++# Start the PPP Server
++ip netns exec "$NS_SERVER" pppoe-server -I "$VETH_SERVER" \
++	-L "$IP_SERVER" -R "$IP_CLIENT" -N 1 -q "$(command -v pppd)" \
++	-k -O "$(pwd)/pppoe-server-options"
++
++# Start the PPP Client
++ip netns exec "$NS_CLIENT" pppd \
++	local debug updetach noipdefault noauth nodefaultroute \
++	plugin pppoe.so nic-"$VETH_CLIENT"
++
++ppp_test_connectivity
++
++log_test "PPPoE"
++
++exit "$EXIT_STATUS"
 -- 
-2.48.1
+2.43.0
 
