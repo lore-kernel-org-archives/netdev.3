@@ -1,372 +1,447 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013036.outbound.protection.outlook.com [52.101.83.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA74223504B;
-	Thu, 26 Mar 2026 08:01:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774512094; cv=none; b=mV9kjIQ7YfFDLv4sAxJnJ8vlXa6pTMADsgDyPhSBzqRyHdaozMhEJMEfY5PNZE40R4S6k4ANYT6hVpfuR7/LPqv0mD7TT4MJcsX60A01gVFl1TujFaTkmRcek6am7u1oYiRl10bmb/5MwUkxjUjKfsLiJdeJe4I9OpQ2rjCgWWE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774512094; c=relaxed/simple;
-	bh=y5oW7zxnjDdRFa0HXOEXh0mKNhkE6lygUG0JeG9Ond4=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FreepvSr0dPLPFh5n+RHIBu/7EifyFNH6jQbFdlE82Wk6TITpAdXzjObxf9Dhg1Qe/H2oXxyCMz9ufPLjjq2x8yF5p8rLr93D2tfgpkvB187YZghZs+we16RMQk6oyPnJd6ZEPchDwPUbAcb1R14X0WZm97HtANXQ8GYeQiqlws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=WtD/jlsO; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65B234AAF7;
+	Thu, 26 Mar 2026 08:04:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.36
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774512295; cv=fail; b=ndk8PqVSRCCEhOSieNqvnDAfMtbCZdNj+LwZQuLU3iPBBQazT3baHwaLU2NMNfkJhOE6Ou0lsBMYRUyzEaXXkJbCzA7549RILh+NUgfT2rD6FI7P2lD2LmCFJJIhMkB16E3d5S3aoOtmxsgzPMV7KV7GjPt/aE45gc81X3QhcYA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774512295; c=relaxed/simple;
+	bh=F4XpqD51Wf4pWGBzQiM99GW+7aePCBC59Buaz4ZpDvc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=msqN/GxCAGQ/aTtqEvZ0qMO14qzXdyD46deEbEa0Vnx5iOES6sr9Ygr3WOp8uZutXkgZvi9e4pAPYuaTvn0GMMxTdYhxwoEsVguscGuBkLq2NHhRBP+PJk45UZ7j53iaplcdIR3maHxPy5ZW21bjRZs5AfgMoe1vf73Jo9uqyN4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=iyUCviFq; arc=fail smtp.client-ip=52.101.83.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="WtD/jlsO"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62Q7F1w92125476;
-	Thu, 26 Mar 2026 01:01:16 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pfpt0220; bh=Bc8xIn9n/6+Fm0RK+RDcgYI+e
-	II5tdDJ+925QTFX2V4=; b=WtD/jlsOzuBc+5DNaF5zy/6dRICa9tRcoIYQ+3Ls+
-	uWA9h9apFysufdku+C5G5mQWm8ckf60lo9Yrcjq6ckornQZBJKxQqUVqZlDKCoW6
-	oVMWY8ltErkxftyrLz8slHUXBjp2KN8n30OLTjn2EnohAkIUDl+SyDZkJXbKlAkv
-	+rDlwzlCKAf3jifkRuAdUns0PSYfRPC6RSVCf51+V0OrvK6en9Q1Ma8nxxYgnHur
-	5fo/gvhbnq0bxZieQ/0LBzQmwFQKF+mdztwuODqS+PgZyzyjxhjDCxVc8rJqv6jR
-	3aC2zyqb7VLgQnYN2eScohApF3IwQjOYRaiwWnCtsokmA==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4d47nabvr5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Mar 2026 01:01:15 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 26 Mar 2026 01:01:13 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Thu, 26 Mar 2026 01:01:13 -0700
-Received: from hyd1358.marvell.com (unknown [10.29.37.11])
-	by maili.marvell.com (Postfix) with ESMTP id 1DF443F7070;
-	Thu, 26 Mar 2026 01:01:08 -0700 (PDT)
-From: Subbaraya Sundeep <sbhatta@marvell.com>
-To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
-        <gakula@marvell.com>, <bbhushan2@marvell.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Linu Cherian
-	<lcherian@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>
-Subject: [net-next PATCH v3 3/4] octeontx2-af: npa: cn20k: Add debugfs for Halo
-Date: Thu, 26 Mar 2026 13:30:47 +0530
-Message-ID: <1774512048-10740-4-git-send-email-sbhatta@marvell.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1774512048-10740-1-git-send-email-sbhatta@marvell.com>
-References: <1774512048-10740-1-git-send-email-sbhatta@marvell.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="iyUCviFq"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tEwGtr5YchncayJaMQPC0Lp4aqCG981bo/8wsk29E1FeTB9y5+YYSv0W3CHIW/AejncLBQZ3LeTm3PM//0fVLOmgVbk5mSaEQAVblKjgn0Kg6TtL5GwcPfaJXyfoj6oMbrqvPy9snD9V1Zxq3GCDpiiXEjfETNZWlfDbGm5rI/4b1u+HW97z0gXOqX3qgFNT9/FOF8ixa44pBPmT7Lrmt3xT06dPDsw/rcUuHWUG7DQ1Cf/2IfLe9TonoREVkpXrr9vmoRfbzB0nMHcb4r/BofNFo37HjHDeEd38oPiU0R+dKhf+6mHcuPl5g88wLc8AGCWqcQdpEdty8RF1hAWkTw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tRjT+jRvfqfKANEGJaIAZo2o38IyIaEZvfeg1A7/QFw=;
+ b=xz5ZJcwWYxHaskKNvx3L+tYJLEiyXI+0F7ZJVLSB3U2jHCsfEAjNqicZCzDOZpgvy+mYr5o38nwM8cVTHNO4Rilpz6QG436wYOl5FnvpZaG4ddWOEbOZ4WnJdPmLNigzDleuKTlDABIiOs3R4Lqo0t2NwS92E3AaBwkdLwYx1t/fbCB2DVilzT6gIRGeZ82+KzmD9WeSwWUt3ZGD1VO/l8ljaAQVsKnGUVUlpgeBrj+AlH48eDY9eTK6Z9PVfd7yrz6UR+YVdpwhakx4W9a6PnHo8AdxDW7ehnxezXXAd52UA+yVIQtSqhAs7M7+Yz2Xd05ChMtehx859AOFYJQUgQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tRjT+jRvfqfKANEGJaIAZo2o38IyIaEZvfeg1A7/QFw=;
+ b=iyUCviFqDrHn1EoAkK0LME37U+93AQfn18XinVq2CjZpIHXxo//uOK10GqHvrF2McUrpL9oaKUzAJ2qfPt0PpPHgAlES1UeftKiaY+XDjr4ER75sMWRU361IUDLn2PlZOuGHQ2/oYa/VMJ55WvTBN1X7leLFfz1jfPJopSKznx8sfcmJ2Oe6Ooni7dabl2IyWOFfAcyumNdSth1QxoErnIcbwm4ulzre4urg4DoomIGkixY0FPr8bmpv+DCTp+52dWpWOrU3o8bzW0103jCQdf17B6f3TZ1gJFkIP+p3Y2cFORM6nZmGqg5/YbXK17/2ot+w6jOgfLppMdIxpKzlyg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM9PR04MB8585.eurprd04.prod.outlook.com (2603:10a6:20b:438::13)
+ by AS8PR04MB7814.eurprd04.prod.outlook.com (2603:10a6:20b:2a1::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.22; Thu, 26 Mar
+ 2026 08:04:49 +0000
+Received: from AM9PR04MB8585.eurprd04.prod.outlook.com
+ ([fe80::f010:fca8:7ef:62f4]) by AM9PR04MB8585.eurprd04.prod.outlook.com
+ ([fe80::f010:fca8:7ef:62f4%4]) with mapi id 15.20.9723.030; Thu, 26 Mar 2026
+ 08:04:49 +0000
+Date: Thu, 26 Mar 2026 10:04:44 +0200
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Manivannan Sadhasivam <mani@kernel.org>
+Cc: linux-phy@lists.infradead.org, Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-can@vger.kernel.org, linux-gpio@vger.kernel.org,
+	linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, linux-scsi@vger.kernel.org,
+	linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
+	linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+	spacemit@lists.linux.dev, UNGLinuxDriver@microchip.com,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Nitin Rawat <quic_nitirawa@quicinc.com>
+Subject: Re: [PATCH v5 phy-next 10/27] scsi: ufs: qcom: keep parallel track
+ of PHY power state
+Message-ID: <20260326080444.gbesciaa5zwvcgoy@skbuf>
+References: <20260319223241.1351137-1-vladimir.oltean@nxp.com>
+ <20260319223241.1351137-11-vladimir.oltean@nxp.com>
+ <ezrcjjwtg5n76w4m65l27szu5mywx66ti3xuprkfcp3x6quvbf@2rew4zrnnbt2>
+ <20260325114309.3k7xkfrffpxp5xq4@skbuf>
+ <vu3cxpynr5mu2fzkrtmjcwijc5jz323wlnbc3r7lp2wxqmhydx@z5xhgf4myw2d>
+ <20260325115731.genmq2yew2p4dvbs@skbuf>
+Content-Type: multipart/mixed; boundary="a4enwsgxq6r6cc7o"
+Content-Disposition: inline
+In-Reply-To: <20260325115731.genmq2yew2p4dvbs@skbuf>
+X-ClientProxiedBy: BE1P281CA0439.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:b10:81::23) To AM9PR04MB8585.eurprd04.prod.outlook.com
+ (2603:10a6:20b:438::13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI2MDA1NyBTYWx0ZWRfXw76IffPBZ1m2
- PxqLUEz5LhuFKKK22NSgSG6dny/ysuJW67+JRruWNQE3o5pQBpwwwsYFvieBRrego/hzawvRjhV
- kK/Es3mIlV3ZdbupSNp4Ilu4CxSZaR/rrbRkU6dW7nYu2ApzlLXXmpeFn8GNkCbVQCsXgcD51xw
- G9raSReqjHqaG43J6q+ZzqtgAC+/DtWS4Nw1duiGyBssTvhp+l4CpB1i+RiJQshdd0fHV9qdZRB
- YjilbcIRTil64rza4HLTwgj408hqGWoqIYFqTHh/v5k0arPE0lpsuCq3Hyw8f8zB9z7A8YBBwtQ
- XS3wcFkqRGDmqQI5Cc60g4hzWnqUwqBGnM/FTtO8PDMtqN04OA0o1Ot4YajbF7Wd3XtGPWbGOPZ
- UHBXuTAw4y+ITsMF/T297MrAwGrpfKilW5DMHoTvwbV7ouM+5vo/waOmut5Si400rmrrhmzagYJ
- SKI5oWrK+RbEwP8aANg==
-X-Authority-Analysis: v=2.4 cv=LsifC3dc c=1 sm=1 tr=0 ts=69c4e7cb cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=EAYMVhzMl8SCOHhVQcBL:22 a=M5GUcnROAAAA:8 a=xE7MTFBHVDZtU5icdfMA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-ORIG-GUID: 0WaBlGrcJDoMN0c61UsUyjYqi3Q7KhNL
-X-Proofpoint-GUID: 0WaBlGrcJDoMN0c61UsUyjYqi3Q7KhNL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-26_02,2026-03-24_01,2025-10-01_01
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR04MB8585:EE_|AS8PR04MB7814:EE_
+X-MS-Office365-Filtering-Correlation-Id: f840a32e-0df4-4f58-6577-08de8b0e5990
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|19092799006|376014|6049299003|7416014|366016|10070799003|4053099003|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	csCUPcolJzm+0VI37kbpSWVm9QYVUJBx0CDMAVqQpFeDrUKpYUJIdKR9yMB2CaUlZ7WqhSSEqWCmnhoP9ifdnHsS2V5QUl46e8UsbbdFm7QYY8pIUjnAIbzhYzVzcvYwLqwpvc2Y4lHd+w5T/ney5w92NEVsKPTqhNJn1HSWjRA58MJ9JE2J+a4iRRiIJ+ru5AY/J0QnLZv7wEAkkxslisWp3uVH8DMyK1fhr63jNCvmYVUW3tsGzN14f7GDNPm8lMaa24zRoXxLKoMfx0L1iHNa/8O81lziG3phwHeeWA+r2139NlYrqNZjk3EdMEHUN2stWAaija3ZnFHAhhfDti5z3v6g2DZpy1b8noOROIDsUgM5XFRjBH4UkIfZIKsf+9M7eW2gIVhl5JswleBjz8R1N3GAARZfID10WgiAAmRhGDPZ5tg+0HDhuWrOJOEqKxtDPuDoRtzIjGz26o6qVCBfygCauy5lkLtz28uHEEPsZ72Lr5egG6QH6P/R7YKRWN+XApU9tbq1RMU1lgUhfS4BV2PdYfgGlFzjUfwmREs4R/P6nBy2M1LvdPnmJCm6sBkrEBg2HepaXushYxJzA7IHzap4UdQ1rIU867H8sLk3xsABMTzCX0IKCQKWwNfgu3pgiWeuVQMFGQKzDQBGnJrhWox0RLMKaC9HA0Dwx7EkzrzCWOKdLKGInZ6sT6iRilXj/moeHVf4i/djOap1tSTmCzxdFRLkf9zNXJswwm/PKiQL0CHEIfdQXTjzWXsI
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8585.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(376014)(6049299003)(7416014)(366016)(10070799003)(4053099003)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?vC+6/uYwZTIckYbcixpzKytcO6Cw4nDldrniCapqlP3sZd4vkfJ8kCoJpWvA?=
+ =?us-ascii?Q?7eliQTgzeuU3UhyG16F7vTHzDNnLFxKespsbzZ8l9ON+6eZsCI8IJzqkhJPG?=
+ =?us-ascii?Q?J18+/AZqtN/xF+EoJ2iXTD4iDelWxvLHyx8GM1hxT0ezdUlSl5OUeCP5/Uqc?=
+ =?us-ascii?Q?sXbZH4ZN45dGe/s/eV3ZYGJn2nQt73uQiJB14aKbBWG63mIZH4b6GKRRMros?=
+ =?us-ascii?Q?K5pAhoa79w3W+lSN/V91Exs3hHJZ5QQs8zP1jZ3zhRqI3rktc/AhzTHDzcBV?=
+ =?us-ascii?Q?uHh3JBnDJbSEA9tR4pi7xBChG/vuuOs7tx4EGAqc2GAmSIDuYeOdV24nNLoy?=
+ =?us-ascii?Q?NxZfwtI6u+C8WOZ5HehJAGqcoxh2vc23ZI+VfhsWHbVhgkXPfYAZKJtjz+za?=
+ =?us-ascii?Q?PPusfoI7ZP+FFjZWo9TVTKJWc5z4diBi9unZnTStbA/8KV9XkScZ/KA4FYgi?=
+ =?us-ascii?Q?wg5/siKcqcJSB4xqlRHaVA67JDHSfZDDyey/CvXaBedKoIN7WDqBeTFtwonT?=
+ =?us-ascii?Q?WnM7DdtfGdlD9XdNEBRTLfq7wOL7Wvwt7SVLVkJlETKzxlU9F9ZzyQotdc81?=
+ =?us-ascii?Q?MnTyW6xhUGODXoRG3d4NCjCHMAwu4qg83GwYRG94SPoXNM1kOFzEBFO3F0TK?=
+ =?us-ascii?Q?bKc849HdebFi609wiUmFO20c6wjE2coPn3+04c2vY+Qag+ONg78PrM0MEzK+?=
+ =?us-ascii?Q?kzXXT6rIhj7d0W0kYQvPBwIAUFfm85+dXr7Jf5HnQnG8kbc+fYwOI9UH0iEC?=
+ =?us-ascii?Q?dAi1dSazmAn8FLxumeZ0BgNZovV2qhT+hdbzu5VOX5I/wpIc5WX9//3Ijl3E?=
+ =?us-ascii?Q?CIAmReS3BmYWsxBoSZO/LhUoGXjaKH3RIT1l3dNcweWr6LNzYXcHA6mV/mwZ?=
+ =?us-ascii?Q?fNSTIAs82FtUgM6z9mEKuZl3TozBawFzR9Ytl4RNMJmfaMFUQ2Rqe1b/iHfe?=
+ =?us-ascii?Q?xj6sdrj6lX74m9V+WF2o9L9d2QcP+E4+AMr1oAF84FkYtvgv0fID6wAnsjUi?=
+ =?us-ascii?Q?5RPOvk/KRDRmsRFl4M69/Y388DHlTBs/Hg+Mz89LwmvYPBwxY4ss5EzgyWyH?=
+ =?us-ascii?Q?9OR0weBe36UdkU20LezVDOVw1Q66ly4ErhS686CyhrJRivf7ndsoUK9wtLOp?=
+ =?us-ascii?Q?sEzA4gem4WUXjG0rFKMjWRWhFVAeYoSDAVst0ZmbafDT3Il3Z7a1NDeKLIpo?=
+ =?us-ascii?Q?jJhzPQGrgl8TowUdMzO0c8afBx+JQ9G38Jc+bCgAKhUlHpnnqTPcA2XGxayJ?=
+ =?us-ascii?Q?ufdLdvvtTGtrGT06Zae9/wrJ1vJJLAoh1Y7BdXQ2bnNS8h8N7l1M3kD6JXGc?=
+ =?us-ascii?Q?s3tJQorVvFa4zKKNBrTyik2nDapb2cD5ijde4QBRGh9r1dljFMx6ZrGbVn5f?=
+ =?us-ascii?Q?XPMDpu6rJMSz55TRGyQ4ZvTeN9PzbOSax6NwyY9Ppw0S0S7rPoJMgeKh5bDR?=
+ =?us-ascii?Q?K5gTTjalyMw31pSr/41zbQXsvOaSkrpDSYXvHDkf5ZBAX5EjptCC7EW57Y/O?=
+ =?us-ascii?Q?11oeAszzSKuNBnRWEHHJ/G16YJYXF8PzGwafsnCobc8hYWP/Sy2jGMkB/8k7?=
+ =?us-ascii?Q?U8Oo/yhaIXiykeyetmrLRWRV3fASPAGZOQQGshiQfG+ykci4FzNA7aI9U+Rn?=
+ =?us-ascii?Q?0UkhfC9n2I2YGYtPG0ZCApRC3Otf0mAjhlNgWUqvShezS/52cizXsRpIl67a?=
+ =?us-ascii?Q?Oe5LrEP5Tj1d+ESwC1sH1D2WY+sc7j6BH7tRFRqp6SNDpU4tD5nETQiK6Hni?=
+ =?us-ascii?Q?MvUMwUPPkENaTv8WTQRAmY4H58GPbTqZbqdMglstCfRxMYpgJUmNyZy9Zdkx?=
+X-MS-Exchange-AntiSpam-MessageData-1: /UHHYE7DwLCbITtqgENAjqpRpb8fCd9brn4=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f840a32e-0df4-4f58-6577-08de8b0e5990
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8585.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2026 08:04:49.4753
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uOz1ZusyfzkmEXJ0GnhbBLPbvhvxHCGZsOlerWGNMMrnIipBUcghnCjMG44S4+eE5YuDkPONEXfm5uwZOvZxQw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7814
 
-From: Linu Cherian <lcherian@marvell.com>
+--a4enwsgxq6r6cc7o
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Similar to other hardware contexts add debugfs support for
-unified Halo context.
+On Wed, Mar 25, 2026 at 01:57:31PM +0200, Vladimir Oltean wrote:
+> On Wed, Mar 25, 2026 at 05:21:14PM +0530, Manivannan Sadhasivam wrote:
+> > I believe I added the power_count check for phy_exit(). But since that got
+> > moved, the check becomes no longer necessary.
+> 
+> FYI, the power_count keeps track of the balance of phy_power_on() and
+> phy_power_off() calls, whereas it is the init_count keeps track of
+> phy_init() and phy_exit() calls. They are only related to the extent
+> that you must respect the phy_init() -> phy_power_on() -> phy_power_off()
+> -> phy_exit() sequence. But in any case, both should be considered
+> PHY-internal fields. The "Order of API calls" section from
+> Documentation/driver-api/phy/phy.rst mentions the order that I just
+> described above, and consumers should just ensure they follow that.
 
-Sample output on cn20k::
-/sys/kernel/debug/cn20k/npa # cat halo_ctx
-======halo : 2=======
-W0: Stack base          ffffff790000
-W1: ena                 1
-W1: nat_align           0
-W1: stack_caching       1
-W1: aura drop ena       0
-W1: aura drop           0
-W1: buf_offset          0
-W1: buf_size            32
-W1: ref_cnt_prof                0
-W2: stack_max_pages     13
-W2: stack_pages         11
-W3: bp_0                0
-W3: bp_1                0
-W3: bp_2                0
+Ok, so we can close this topic of "checking the power_count not needed"
+by linking to the conversation which spun off here:
+https://lore.kernel.org/lkml/20260325120122.265973-1-manivannan.sadhasivam@oss.qualcomm.com/
 
-snip ..
+Mani, I spent some more time to figure out what's really going on with
+this unexpected phy_power_off() call. Do you think you could
+regression-test the patch attached?
 
-Signed-off-by: Linu Cherian <lcherian@marvell.com>
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Thanks!
+
+--a4enwsgxq6r6cc7o
+Content-Type: text/x-diff; charset=us-ascii
+Content-Disposition: attachment;
+	filename="0001-scsi-ufs-qcom-don-t-call-phy_power_on-before-phy_ini.patch"
+
+From 50dfff3541566eb094e931bd56c80011f29b9817 Mon Sep 17 00:00:00 2001
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+Date: Thu, 26 Mar 2026 10:01:55 +0200
+Subject: [PATCH] scsi: ufs: qcom: don't call phy_power_on() before phy_init()
+
+The Qualcomm UFS host controller driver violates the Generic PHY API
+expectation, documented in section "Order of API calls" from
+Documentation/driver-api/phy/phy.rst, and then tries to hide it.
+
+The expectation is that calls must be made in the phy_init() ->
+phy_power_on() -> phy_power_off() -> phy_exit() sequence.
+
+What we actually have is:
+
+ufshcd_init()
+-> ufshcd_hba_init()
+   -> ufshcd_setup_clocks(hba, true)
+      -> ufshcd_vops_setup_clocks(hba, true, POST_CHANGE)
+         -> ufs_qcom_setup_clocks(hba, true, POST_CHANGE)
+            -> phy_power_on(phy)
+   -> ufshcd_variant_hba_init()
+      -> ufs_qcom_init()
+         -> ufs_qcom_setup_clocks(hba, true, POST_CHANGE)
+            -> phy_power_on(phy)
+-> ufshcd_hba_enable()
+   -> ufshcd_vops_hce_enable_notify()
+      -> ufs_qcom_hce_enable_notify()
+         -> ufs_qcom_power_up_sequence()
+            -> if (phy->power_count) phy_power_off(phy)
+            -> phy_init(phy)
+
+This "works" because the way that the "phy_power_on was called before
+phy_init\n" condition is detected in phy-core.c is if the power_count is
+positive at the phy_init() call time.
+
+By having that "if (phy->power_count) phy_power_off(phy)" logic, the
+ufs-qcom.c technically sidesteps the test, but actually violates the
+Generic PHY API even more (calls phy_power_on() *and* phy_power_off()
+before phy_init()).
+
+The reason why I stumbled upon this was that I was trying to remove
+dereferences of phy->power_count from drivers. This is a PHY-internal
+field, and using it from drivers is highly likely to be incorrect, as
+this case showcases rather well.
+
+As commit 77d2fa54a945 ("scsi: ufs: qcom : Refactor phy_power_on/off
+calls") shows, this driver tries to couple the PHY power state with the
+HBA clocks, for power saving reasons. I won't try to change that, I will
+just move the phy_init() call earlier, to ufs_qcom_init().
+
+After the phy_init() movement, ufs_qcom_power_up_sequence() should no
+longer need to do either phy_init() nor the conditional phy_power_down().
+
+Because the UFS variant operations are not balanced, but the PHY API
+calls need to be, create wrappers for all Generic PHY API calls, and
+keep a "phy_initialized" and a "phy_powered_on" boolean, so that we call
+these only once, and they properly get paired with their phy_exit()/
+phy_power_off() counterparts rather than leave the phy->init_count and
+phy->power_count elevated.
+
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 ---
- .../marvell/octeontx2/af/cn20k/debugfs.c      | 60 ++++++++++++++++
- .../marvell/octeontx2/af/cn20k/debugfs.h      |  2 +
- .../marvell/octeontx2/af/rvu_debugfs.c        | 71 ++++++++++++++++---
- 3 files changed, 125 insertions(+), 8 deletions(-)
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Manivannan Sadhasivam <mani@kernel.org>
+Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: Nitin Rawat <quic_nitirawa@quicinc.com>
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.c b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.c
-index 3debf2fae1a4..c0cfd3a39c23 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.c
-@@ -489,3 +489,63 @@ void print_npa_cn20k_pool_ctx(struct seq_file *m,
- 		   pool->thresh_qint_idx, pool->err_qint_idx);
- 	seq_printf(m, "W8: fc_msh_dst\t\t%d\n", pool->fc_msh_dst);
+v5->v6: rewrite after actually understanding the core issue
+v4->v5: patch is new
+---
+ drivers/ufs/host/ufs-qcom.c | 104 ++++++++++++++++++++++++++----------
+ drivers/ufs/host/ufs-qcom.h |   2 +
+ 2 files changed, 79 insertions(+), 27 deletions(-)
+
+diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
+index 375fd24ba458..ed067247d72a 100644
+--- a/drivers/ufs/host/ufs-qcom.c
++++ b/drivers/ufs/host/ufs-qcom.c
+@@ -485,11 +485,70 @@ static u32 ufs_qcom_get_hs_gear(struct ufs_hba *hba)
+ 	return UFS_HS_G3;
  }
-+
-+void print_npa_cn20k_halo_ctx(struct seq_file *m, struct npa_aq_enq_rsp *rsp)
+ 
++static int ufs_qcom_phy_init(struct ufs_qcom_host *host)
 +{
-+	struct npa_cn20k_aq_enq_rsp *cn20k_rsp;
-+	struct npa_cn20k_halo_s *halo;
++	struct phy *phy = host->generic_phy;
++	int err;
 +
-+	cn20k_rsp = (struct npa_cn20k_aq_enq_rsp *)rsp;
-+	halo = &cn20k_rsp->halo;
++	if (host->phy_initialized)
++		return 0;
 +
-+	seq_printf(m, "W0: Stack base\t\t%llx\n", halo->stack_base);
++	err = phy_init(phy);
++	if (err)
++		return err;
 +
-+	seq_printf(m, "W1: ena \t\t%d\nW1: nat_align \t\t%d\n",
-+		   halo->ena, halo->nat_align);
-+	seq_printf(m, "W1: stack_caching\t%d\n",
-+		   halo->stack_caching);
-+	seq_printf(m, "W1: aura drop ena\t%d\n", halo->aura_drop_ena);
-+	seq_printf(m, "W1: aura drop\t\t%d\n", halo->aura_drop);
-+	seq_printf(m, "W1: buf_offset\t\t%d\nW1: buf_size\t\t%d\n",
-+		   halo->buf_offset, halo->buf_size);
-+	seq_printf(m, "W1: ref_cnt_prof\t\t%d\n", halo->ref_cnt_prof);
-+	seq_printf(m, "W2: stack_max_pages \t%d\nW2: stack_pages\t\t%d\n",
-+		   halo->stack_max_pages, halo->stack_pages);
-+	seq_printf(m, "W3: bp_0\t\t%d\nW3: bp_1\t\t%d\nW3: bp_2\t\t%d\n",
-+		   halo->bp_0, halo->bp_1, halo->bp_2);
-+	seq_printf(m, "W3: bp_3\t\t%d\nW3: bp_4\t\t%d\nW3: bp_5\t\t%d\n",
-+		   halo->bp_3, halo->bp_4, halo->bp_5);
-+	seq_printf(m, "W3: bp_6\t\t%d\nW3: bp_7\t\t%d\nW3: bp_ena_0\t\t%d\n",
-+		   halo->bp_6, halo->bp_7, halo->bp_ena_0);
-+	seq_printf(m, "W3: bp_ena_1\t\t%d\nW3: bp_ena_2\t\t%d\n",
-+		   halo->bp_ena_1, halo->bp_ena_2);
-+	seq_printf(m, "W3: bp_ena_3\t\t%d\nW3: bp_ena_4\t\t%d\n",
-+		   halo->bp_ena_3, halo->bp_ena_4);
-+	seq_printf(m, "W3: bp_ena_5\t\t%d\nW3: bp_ena_6\t\t%d\n",
-+		   halo->bp_ena_5, halo->bp_ena_6);
-+	seq_printf(m, "W3: bp_ena_7\t\t%d\n", halo->bp_ena_7);
-+	seq_printf(m, "W4: stack_offset\t%d\nW4: shift\t\t%d\nW4: avg_level\t\t%d\n",
-+		   halo->stack_offset, halo->shift, halo->avg_level);
-+	seq_printf(m, "W4: avg_con \t\t%d\nW4: fc_ena\t\t%d\nW4: fc_stype\t\t%d\n",
-+		   halo->avg_con, halo->fc_ena, halo->fc_stype);
-+	seq_printf(m, "W4: fc_hyst_bits\t%d\nW4: fc_up_crossing\t%d\n",
-+		   halo->fc_hyst_bits, halo->fc_up_crossing);
-+	seq_printf(m, "W4: update_time\t\t%d\n", halo->update_time);
-+	seq_printf(m, "W5: fc_addr\t\t%llx\n", halo->fc_addr);
-+	seq_printf(m, "W6: ptr_start\t\t%llx\n", halo->ptr_start);
-+	seq_printf(m, "W7: ptr_end\t\t%llx\n", halo->ptr_end);
-+	seq_printf(m, "W8: bpid_0\t\t%d\n", halo->bpid_0);
-+	seq_printf(m, "W8: err_int \t\t%d\nW8: err_int_ena\t\t%d\n",
-+		   halo->err_int, halo->err_int_ena);
-+	seq_printf(m, "W8: thresh_int\t\t%d\nW8: thresh_int_ena \t%d\n",
-+		   halo->thresh_int, halo->thresh_int_ena);
-+	seq_printf(m, "W8: thresh_up\t\t%d\nW8: thresh_qint_idx\t%d\n",
-+		   halo->thresh_up, halo->thresh_qint_idx);
-+	seq_printf(m, "W8: err_qint_idx \t%d\n", halo->err_qint_idx);
-+	seq_printf(m, "W9: thresh\t\t%llu\n", (u64)halo->thresh);
-+	seq_printf(m, "W9: fc_msh_dst\t\t%d\n", halo->fc_msh_dst);
-+	seq_printf(m, "W9: op_dpc_ena\t\t%d\nW9: op_dpc_set\t\t%d\n",
-+		   halo->op_dpc_ena, halo->op_dpc_set);
-+	seq_printf(m, "W9: stream_ctx\t\t%d\nW9: unified_ctx\t\t%d\n",
-+		   halo->stream_ctx, halo->unified_ctx);
++	host->phy_initialized = true;
++
++	return 0;
 +}
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.h b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.h
-index 0c5f05883666..7e00c7499e35 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.h
-@@ -27,5 +27,7 @@ void print_npa_cn20k_aura_ctx(struct seq_file *m,
- 			      struct npa_cn20k_aq_enq_rsp *rsp);
- void print_npa_cn20k_pool_ctx(struct seq_file *m,
- 			      struct npa_cn20k_aq_enq_rsp *rsp);
-+void print_npa_cn20k_halo_ctx(struct seq_file *m,
-+			      struct npa_aq_enq_rsp *rsp);
- 
- #endif
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-index fa461489acdd..0ac59103b4a4 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-@@ -968,6 +968,9 @@ static void print_npa_qsize(struct seq_file *m, struct rvu_pfvf *pfvf)
- 		seq_printf(m, "Aura count : %d\n", pfvf->aura_ctx->qsize);
- 		seq_printf(m, "Aura context ena/dis bitmap : %*pb\n",
- 			   pfvf->aura_ctx->qsize, pfvf->aura_bmap);
-+		if (pfvf->halo_bmap)
-+			seq_printf(m, "Halo context ena/dis bitmap : %*pb\n",
-+				   pfvf->aura_ctx->qsize, pfvf->halo_bmap);
- 	}
- 
- 	if (!pfvf->pool_ctx) {
-@@ -1195,6 +1198,20 @@ static void print_npa_pool_ctx(struct seq_file *m, struct npa_aq_enq_rsp *rsp)
- 		seq_printf(m, "W8: fc_msh_dst\t\t%d\n", pool->fc_msh_dst);
- }
- 
-+static const char *npa_ctype_str(int ctype)
++
++static void ufs_qcom_phy_exit(struct ufs_qcom_host *host)
 +{
-+	switch (ctype) {
-+	case NPA_AQ_CTYPE_AURA:
-+		return "aura";
-+	case NPA_AQ_CTYPE_HALO:
-+		return "halo";
-+	case NPA_AQ_CTYPE_POOL:
-+		return "pool";
-+	default:
-+		return "unknown";
++	if (host->phy_initialized) {
++		phy_exit(host->generic_phy);
++		host->phy_initialized = false;
 +	}
 +}
 +
- /* Reads aura/pool's ctx from admin queue */
- static int rvu_dbg_npa_ctx_display(struct seq_file *m, void *unused, int ctype)
++static int ufs_qcom_phy_power_on(struct ufs_qcom_host *host)
++{
++	int err;
++
++	if (host->phy_powered_on)
++		return 0;
++
++	err = phy_power_on(host->generic_phy);
++	if (err)
++		return err;
++
++	host->phy_powered_on = true;
++
++	return 0;
++}
++
++static int ufs_qcom_phy_set_gear(struct ufs_qcom_host *host,
++				 enum phy_mode mode)
++{
++	return phy_set_mode_ext(host->generic_phy, mode, host->phy_gear);
++}
++
++static int ufs_qcom_phy_calibrate(struct ufs_qcom_host *host)
++{
++	return phy_calibrate(host->generic_phy);
++}
++
++static void ufs_qcom_phy_power_off(struct ufs_qcom_host *host)
++{
++	if (host->phy_powered_on) {
++		phy_power_off(host->generic_phy);
++		host->phy_powered_on = false;
++	}
++}
++
+ static int ufs_qcom_power_up_sequence(struct ufs_hba *hba)
  {
-@@ -1211,6 +1228,7 @@ static int rvu_dbg_npa_ctx_display(struct seq_file *m, void *unused, int ctype)
+ 	struct ufs_qcom_host *host = ufshcd_get_variant(hba);
+ 	struct ufs_host_params *host_params = &host->host_params;
+-	struct phy *phy = host->generic_phy;
+ 	enum phy_mode mode;
+ 	int ret;
  
- 	switch (ctype) {
- 	case NPA_AQ_CTYPE_AURA:
-+	case NPA_AQ_CTYPE_HALO:
- 		npalf = rvu->rvu_dbg.npa_aura_ctx.lf;
- 		id = rvu->rvu_dbg.npa_aura_ctx.id;
- 		all = rvu->rvu_dbg.npa_aura_ctx.all;
-@@ -1235,6 +1253,9 @@ static int rvu_dbg_npa_ctx_display(struct seq_file *m, void *unused, int ctype)
- 	} else if (ctype == NPA_AQ_CTYPE_POOL && !pfvf->pool_ctx) {
- 		seq_puts(m, "Pool context is not initialized\n");
- 		return -EINVAL;
-+	} else if (ctype == NPA_AQ_CTYPE_HALO && !pfvf->aura_ctx) {
-+		seq_puts(m, "Halo context is not initialized\n");
-+		return -EINVAL;
+@@ -508,31 +567,22 @@ static int ufs_qcom_power_up_sequence(struct ufs_hba *hba)
+ 	if (ret)
+ 		return ret;
+ 
+-	if (phy->power_count)
+-		phy_power_off(phy);
+-
+-
+-	/* phy initialization - calibrate the phy */
+-	ret = phy_init(phy);
++	ret = ufs_qcom_phy_set_gear(host, mode);
+ 	if (ret) {
+-		dev_err(hba->dev, "%s: phy init failed, ret = %d\n",
++		dev_err(hba->dev, "%s: phy_set_mode_ext() failed, ret = %d\n",
+ 			__func__, ret);
+-		return ret;
+-	}
+-
+-	ret = phy_set_mode_ext(phy, mode, host->phy_gear);
+-	if (ret)
+ 		goto out_disable_phy;
++	}
+ 
+ 	/* power on phy - start serdes and phy's power and clocks */
+-	ret = phy_power_on(phy);
++	ret = ufs_qcom_phy_power_on(host);
+ 	if (ret) {
+ 		dev_err(hba->dev, "%s: phy power on failed, ret = %d\n",
+ 			__func__, ret);
+ 		goto out_disable_phy;
  	}
  
- 	memset(&aq_req, 0, sizeof(struct npa_aq_enq_req));
-@@ -1244,6 +1265,9 @@ static int rvu_dbg_npa_ctx_display(struct seq_file *m, void *unused, int ctype)
- 	if (ctype == NPA_AQ_CTYPE_AURA) {
- 		max_id = pfvf->aura_ctx->qsize;
- 		print_npa_ctx = print_npa_aura_ctx;
-+	} else if (ctype == NPA_AQ_CTYPE_HALO) {
-+		max_id = pfvf->aura_ctx->qsize;
-+		print_npa_ctx = print_npa_cn20k_halo_ctx;
- 	} else {
- 		max_id = pfvf->pool_ctx->qsize;
- 		print_npa_ctx = print_npa_pool_ctx;
-@@ -1251,8 +1275,7 @@ static int rvu_dbg_npa_ctx_display(struct seq_file *m, void *unused, int ctype)
+-	ret = phy_calibrate(phy);
++	ret = ufs_qcom_phy_calibrate(host);
+ 	if (ret) {
+ 		dev_err(hba->dev, "Failed to calibrate PHY: %d\n", ret);
+ 		goto out_disable_phy;
+@@ -543,7 +593,7 @@ static int ufs_qcom_power_up_sequence(struct ufs_hba *hba)
+ 	return 0;
  
- 	if (id < 0 || id >= max_id) {
- 		seq_printf(m, "Invalid %s, valid range is 0-%d\n",
--			   (ctype == NPA_AQ_CTYPE_AURA) ? "aura" : "pool",
--			max_id - 1);
-+			   npa_ctype_str(ctype), max_id - 1);
- 		return -EINVAL;
- 	}
+ out_disable_phy:
+-	phy_exit(phy);
++	ufs_qcom_phy_power_off(host);
  
-@@ -1265,12 +1288,19 @@ static int rvu_dbg_npa_ctx_display(struct seq_file *m, void *unused, int ctype)
- 		aq_req.aura_id = aura;
+ 	return ret;
+ }
+@@ -1233,7 +1283,6 @@ static int ufs_qcom_setup_clocks(struct ufs_hba *hba, bool on,
+ 				 enum ufs_notify_change_status status)
+ {
+ 	struct ufs_qcom_host *host = ufshcd_get_variant(hba);
+-	struct phy *phy;
+ 	int err;
  
- 		/* Skip if queue is uninitialized */
-+		if (ctype == NPA_AQ_CTYPE_AURA &&
-+		    !test_bit(aura, pfvf->aura_bmap))
-+			continue;
-+
-+		if (ctype == NPA_AQ_CTYPE_HALO &&
-+		    !test_bit(aura, pfvf->halo_bmap))
-+			continue;
-+
- 		if (ctype == NPA_AQ_CTYPE_POOL && !test_bit(aura, pfvf->pool_bmap))
- 			continue;
+ 	/*
+@@ -1244,8 +1293,6 @@ static int ufs_qcom_setup_clocks(struct ufs_hba *hba, bool on,
+ 	if (!host)
+ 		return 0;
  
--		seq_printf(m, "======%s : %d=======\n",
--			   (ctype == NPA_AQ_CTYPE_AURA) ? "AURA" : "POOL",
--			aq_req.aura_id);
-+		seq_printf(m, "======%s : %d=======\n", npa_ctype_str(ctype),
-+			   aq_req.aura_id);
- 		rc = rvu_npa_aq_enq_inst(rvu, &aq_req, &rsp);
- 		if (rc) {
- 			seq_puts(m, "Failed to read context\n");
-@@ -1299,6 +1329,12 @@ static int write_npa_ctx(struct rvu *rvu, bool all,
- 			return -EINVAL;
+-	phy = host->generic_phy;
+-
+ 	switch (status) {
+ 	case PRE_CHANGE:
+ 		if (on) {
+@@ -1263,16 +1310,12 @@ static int ufs_qcom_setup_clocks(struct ufs_hba *hba, bool on,
+ 				ufs_qcom_dev_ref_clk_ctrl(host, false);
+ 			}
+ 
+-			err = phy_power_off(phy);
+-			if (err) {
+-				dev_err(hba->dev, "phy power off failed, ret=%d\n", err);
+-				return err;
+-			}
++			ufs_qcom_phy_power_off(host);
  		}
- 		max_id = pfvf->aura_ctx->qsize;
-+	} else if (ctype == NPA_AQ_CTYPE_HALO) {
-+		if (!pfvf->aura_ctx) {
-+			dev_warn(rvu->dev, "Halo context is not initialized\n");
-+			return -EINVAL;
-+		}
-+		max_id = pfvf->aura_ctx->qsize;
- 	} else if (ctype == NPA_AQ_CTYPE_POOL) {
- 		if (!pfvf->pool_ctx) {
- 			dev_warn(rvu->dev, "Pool context is not initialized\n");
-@@ -1309,13 +1345,14 @@ static int write_npa_ctx(struct rvu *rvu, bool all,
+ 		break;
+ 	case POST_CHANGE:
+ 		if (on) {
+-			err = phy_power_on(phy);
++			err = ufs_qcom_phy_power_on(host);
+ 			if (err) {
+ 				dev_err(hba->dev, "phy power on failed, ret = %d\n", err);
+ 				return err;
+@@ -1441,6 +1484,13 @@ static int ufs_qcom_init(struct ufs_hba *hba)
+ 	if (err)
+ 		goto out_variant_clear;
  
- 	if (id < 0 || id >= max_id) {
- 		dev_warn(rvu->dev, "Invalid %s, valid range is 0-%d\n",
--			 (ctype == NPA_AQ_CTYPE_AURA) ? "aura" : "pool",
-+			 npa_ctype_str(ctype),
- 			max_id - 1);
- 		return -EINVAL;
- 	}
- 
- 	switch (ctype) {
- 	case NPA_AQ_CTYPE_AURA:
-+	case NPA_AQ_CTYPE_HALO:
- 		rvu->rvu_dbg.npa_aura_ctx.lf = npalf;
- 		rvu->rvu_dbg.npa_aura_ctx.id = id;
- 		rvu->rvu_dbg.npa_aura_ctx.all = all;
-@@ -1374,12 +1411,12 @@ static ssize_t rvu_dbg_npa_ctx_write(struct file *filp,
- 				     const char __user *buffer,
- 				     size_t count, loff_t *ppos, int ctype)
- {
--	char *cmd_buf, *ctype_string = (ctype == NPA_AQ_CTYPE_AURA) ?
--					"aura" : "pool";
-+	const char *ctype_string = npa_ctype_str(ctype);
- 	struct seq_file *seqfp = filp->private_data;
- 	struct rvu *rvu = seqfp->private;
- 	int npalf, id = 0, ret;
- 	bool all = false;
-+	char *cmd_buf;
- 
- 	if ((*ppos != 0) || !count)
- 		return -EINVAL;
-@@ -1417,6 +1454,21 @@ static int rvu_dbg_npa_aura_ctx_display(struct seq_file *filp, void *unused)
- 
- RVU_DEBUG_SEQ_FOPS(npa_aura_ctx, npa_aura_ctx_display, npa_aura_ctx_write);
- 
-+static ssize_t rvu_dbg_npa_halo_ctx_write(struct file *filp,
-+					  const char __user *buffer,
-+					  size_t count, loff_t *ppos)
-+{
-+	return rvu_dbg_npa_ctx_write(filp, buffer, count, ppos,
-+				     NPA_AQ_CTYPE_HALO);
-+}
++	err = ufs_qcom_phy_init(host);
++	if (err) {
++		dev_err(hba->dev, "%s: phy_init failed, ret = %d\n",
++			__func__, err);
++		goto out_variant_clear;
++	}
 +
-+static int rvu_dbg_npa_halo_ctx_display(struct seq_file *filp, void *unused)
-+{
-+	return rvu_dbg_npa_ctx_display(filp, unused, NPA_AQ_CTYPE_HALO);
-+}
-+
-+RVU_DEBUG_SEQ_FOPS(npa_halo_ctx, npa_halo_ctx_display, npa_halo_ctx_write);
-+
- static ssize_t rvu_dbg_npa_pool_ctx_write(struct file *filp,
- 					  const char __user *buffer,
- 					  size_t count, loff_t *ppos)
-@@ -2798,6 +2850,9 @@ static void rvu_dbg_npa_init(struct rvu *rvu)
- 			    &rvu_dbg_npa_qsize_fops);
- 	debugfs_create_file("aura_ctx", 0600, rvu->rvu_dbg.npa, rvu,
- 			    &rvu_dbg_npa_aura_ctx_fops);
-+	if (is_cn20k(rvu->pdev))
-+		debugfs_create_file("halo_ctx", 0600, rvu->rvu_dbg.npa, rvu,
-+				    &rvu_dbg_npa_halo_ctx_fops);
- 	debugfs_create_file("pool_ctx", 0600, rvu->rvu_dbg.npa, rvu,
- 			    &rvu_dbg_npa_pool_ctx_fops);
+ 	ufs_qcom_setup_clocks(hba, true, POST_CHANGE);
  
+ 	ufs_qcom_get_default_testbus_cfg(host);
+@@ -1466,8 +1516,8 @@ static void ufs_qcom_exit(struct ufs_hba *hba)
+ 	struct ufs_qcom_host *host = ufshcd_get_variant(hba);
+ 
+ 	ufs_qcom_disable_lane_clks(host);
+-	phy_power_off(host->generic_phy);
+-	phy_exit(host->generic_phy);
++	ufs_qcom_phy_power_off(host);
++	ufs_qcom_phy_exit(host);
+ }
+ 
+ static int ufs_qcom_fw_managed_init(struct ufs_hba *hba)
+diff --git a/drivers/ufs/host/ufs-qcom.h b/drivers/ufs/host/ufs-qcom.h
+index 1111ab34da01..33b1b1521916 100644
+--- a/drivers/ufs/host/ufs-qcom.h
++++ b/drivers/ufs/host/ufs-qcom.h
+@@ -282,6 +282,8 @@ struct ufs_qcom_host {
+ 	struct clk_bulk_data *clks;
+ 	u32 num_clks;
+ 	bool is_lane_clks_enabled;
++	bool phy_initialized;
++	bool phy_powered_on;
+ 
+ 	struct icc_path *icc_ddr;
+ 	struct icc_path *icc_cpu;
 -- 
-2.48.1
+2.34.1
 
+
+--a4enwsgxq6r6cc7o--
