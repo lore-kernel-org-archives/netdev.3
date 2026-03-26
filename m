@@ -1,85 +1,69 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FCF0421F0A
-	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 17:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0DD221C173;
+	Thu, 26 Mar 2026 17:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774545983; cv=none; b=g1z/ifWlJYiR10jVym29wRx3sk/6Mc3s/h8EA4CkexiqyiIzlZpMbru9dO6ZwXEZGWCrNJCzUSORfwaYLp0A0ASPVkwWxTNHGnV7q3gU1DdZS6vaPRrUCnOMHBJFI633vcostBF6MdjVtOySGSTk2MR+Jk0atNJRCgevCCx98HA=
+	t=1774546189; cv=none; b=E6aTkgoQIgnBai3YK8HislWGVpJmq51C1u9MkahCJuM8eTuHWgWy8V8yJvS1+5zQ4MQoNVIgIam+zPc4s2qpNxK52BEHVzNDrg2WtYeRJ9t0UDTnGWPJJNr7p7tpcCwhSXlGqB/3xegmGLxWLUfuEteVcqHZydekZfQ8dSiTlkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774545983; c=relaxed/simple;
-	bh=LWTFsv4nYZ9jDSFpy02H2jil6tYSVenX/HC1bWCcB7Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=l25bcx02Tg3fG5PcGMDGLjDVZFpVYLKFxWXYrcEiHeYTOgsBdnBAuHuKJVP45msChthozmwIKI++iE6czSNHrkypijRR+AbSfAYo8bLAGcxrrkR3/sLZv24XEn+Yx8zHJUdooXdr1wW9WNpRpeSflpxGnN+FuQFApz6hJRG1kJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y79mGE0e; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774546189; c=relaxed/simple;
+	bh=+1oNWwkOQNqPFvhgNYp/LhaQS4lNd0Ijc16A6Wr40VI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XAozFsnGCJFiN+F+5b96TgSUYodvAqcgHee05I6B2n8WqkinkSiwAlDBUUipJI6nrR6x0BZ5Ikfdc00lkQeyYpJogifDB6K4ZIJbHZV07KQjv3CI1JUsJWmBbI9j4L2sq+xEw+Bsx/Rr/fpZEJ3foX8rytETS8HcZUMYIV+sg/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jIE9gC6C; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y79mGE0e"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B8DFC116C6;
-	Thu, 26 Mar 2026 17:26:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jIE9gC6C"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DF9BC116C6;
+	Thu, 26 Mar 2026 17:29:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774545982;
-	bh=LWTFsv4nYZ9jDSFpy02H2jil6tYSVenX/HC1bWCcB7Q=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Y79mGE0egeDZNgxOvj5d4A4tjsi4khHu8JLdmL/JYL/TprpTrhe6pBxTGhWnG7G1l
-	 0lNrYhHsRev4ZDWc65bvhRaswKpgQWsaaiiQRIT17vXP9F4821GJNXcNfBaI7rFl6W
-	 nx3pNxModwUeINjqFh2rO1CcFGmLBeqfmVqALzim9aXfVlHHCfj7vMfRiRCE0bF0km
-	 xhVbeSbB5gLugnsn7HWDzy86GWIMa/CwegXY3Wv1JPu/7IUWWEE9YTb0xxUh9lpVJP
-	 GZNJZkeSBtQSDgCitwPWcTxg7eDQ7ThLgvcLxdBB/9bTRF0HGZrLpTxFsIWYfJqk2j
-	 kTqL30i0pHrjA==
-Message-ID: <d972e1e2-7090-47bd-988a-1ea854cbfb42@kernel.org>
-Date: Thu, 26 Mar 2026 11:26:21 -0600
+	s=k20201202; t=1774546189;
+	bh=+1oNWwkOQNqPFvhgNYp/LhaQS4lNd0Ijc16A6Wr40VI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jIE9gC6CRKFa3gJhsAbOAdhI5cxa7+OV5UzYRCYu4G/pOrB0cGkzcmTvUrL+/FBbN
+	 1tOCKs/tIjNA1xaBTUww4zks7IdYSdQ4uOUwhK9wIbYHvyZKQuCBcwBc545xDP/NR8
+	 PddxWnO21H75JtgNkorAIMByVCU/jRXG2ac5HzJdT0/WkLA6p8WRTV0RXRfHySkH/v
+	 dFFIZMaNXoP4ObiZTCNyf7l3j3mhAwmJ80q3e/Xq0FLY3CPhQIk42fYPdroFGtp3Yu
+	 vH8Ly8nnwDTm0BL4Al8TE8b9x+/wNffcoqEcWwZS4Qf/JUfRSArQcs5ShoLS243RWK
+	 rfPH+4IP8zh5Q==
+Date: Thu, 26 Mar 2026 17:29:43 +0000
+From: Simon Horman <horms@kernel.org>
+To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>, devicetree@vger.kernel.org,
+	Eric Dumazet <edumazet@google.com>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	Jakub Kicinski <kuba@kernel.org>, Jose Abreu <joabreu@synopsys.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+	Yao Zi <me@ziyao.cc>
+Subject: Re: [PATCH net-next 1/2] net: stmmac: remove axi_kbbe, axi_mb and
+ axi_rb members
+Message-ID: <20260326172943.GR111839@horms.kernel.org>
+References: <acJh4z3pRKkeaFbR@shell.armlinux.org.uk>
+ <E1w4ydo-0000000Dlpb-34jd@rmk-PC.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] ipv6: move IFA_F_PERMANENT percpu allocation in
- process scope
-Content-Language: en-US
-To: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>
-References: <8c8bfe2e1a324e501f0e15fef404a77443fd8caf.1774365668.git.pabeni@redhat.com>
-From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <8c8bfe2e1a324e501f0e15fef404a77443fd8caf.1774365668.git.pabeni@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <E1w4ydo-0000000Dlpb-34jd@rmk-PC.armlinux.org.uk>
 
-On 3/24/26 9:22 AM, Paolo Abeni wrote:
-> Observed at boot time:
+On Tue, Mar 24, 2026 at 10:05:40AM +0000, Russell King (Oracle) wrote:
+> axi_kbbe, axi_mb and axi_rb are all written, but nothing ever reads
+> their values. Remove the code that sets these and the struct members.
 > 
->  CPU: 43 UID: 0 PID: 3595 Comm: (t-daemon) Not tainted 6.12.0 #1
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-6.12 ???
+Hi Russell,
 
-> IFA_F_PERMANENT addresses require the allocation of a bunch of percpu
-> pointers, currently in atomic scope.
-> 
-> Similar to commit 51454ea42c1a ("ipv6: fix locking issues with loops
-> over idev->addr_list"), move fixup_permanent_addr() outside the
-> &idev->lock scope, and do the allocations with GFP_KERNEL. With such
-> change fixup_permanent_addr() is invoked with the BH enabled, and the
-> ifp lock acquired there needs the BH variant.
-> 
-> Note that we don't need to acquire a reference to the permanent
-> addresses before releasing the mentioned write lock, because
-> addrconf_permanent_addr() runs under RTNL and ifa removal always happens
-> under RTNL, too.
-> 
-> Also the PERMANENT flag is constant in the relevant scope, as it can be
-> cleared only by inet6_addr_modify() under the RTNL lock.
-> 
-> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-> ---
-> explicitly targeting net-next as this is IMHO an improvement more than a
-> bug fix
-> ---
->  net/ipv6/addrconf.c | 32 ++++++++++++++++++++------------
->  1 file changed, 20 insertions(+), 12 deletions(-)
-> 
-
-Reviewed-by: David Ahern <dsahern@kernel.org>
-
+FYI, AI review suggests that these fields should also be removed from
+Documentation/networking/device_drivers/ethernet/stmicro/stmmac.rst
