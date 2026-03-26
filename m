@@ -1,80 +1,53 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6FA83081D6
-	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 02:16:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58A42116F6
+	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 02:17:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774491415; cv=none; b=fj4DcilGeugu6KzQX7wuYFxdspc+CmOWDqJoXF+ZDEEg49ZN2BZR2LOCaiEJL41HBHZdvE+cbT1zJYhiBuFVOMm2WfCtYKbUvQUkviapzYsB/xGX/IqkaOKWfukgJOmm5KE5CFPoQ6tqph4psasWUKOyvpyQutOwJYWr54PCItI=
+	t=1774491462; cv=none; b=SBn100E2SVAq+cauRqEG4AelLKyyNX5EakmzxRDWDTVQr289Lq8L39a4cVyNvTnepGY8grQtoZTwcDUjtVPwj6qqR+JbTBjkrIVIF+wECspM2s7GHnY+wLuBeuPSzSVYNgcZZfaP/gntzEp2EwPJxBcT/HJoyvg1uoK3SMQH+oY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774491415; c=relaxed/simple;
-	bh=XL210it0gtQsEszctI6MjLScbi4X8gcsVy8bQGL8kHE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HBgJfbw+9UtEhaFFo84TKN46pMgSHwKLyo1ODKAIFp+Q2DaSPEQzj9hdEYW1W4IC9tzLnmUSraFfjtaAfCfcFhLPbI8QHTnys+S5X0FDwpCetIpEDxhtasxdZQm+ltJ8zYNqHr+S2zuQrjIyBWv+mvWcjvHoM05oaEJVMaBUhk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ET2C75lD; arc=none smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ET2C75lD"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-668d4751a3bso593971a12.2
-        for <netdev@vger.kernel.org>; Wed, 25 Mar 2026 19:16:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774491411; x=1775096211; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=BmgS7jmIsFb12HXFzHaausAdN0MMTikyDLHIG6ToCYY=;
-        b=ET2C75lDl3dF1GWBDNPPHXY6R+M/C7yiiikMHpM6L8envXWQe/S06lOBVxuzZnA+6b
-         FQjhSqIgqpIyX30rocEXzH2Get1UZZ7y6Carv5gxGD2I1rnbR4HIbAlVrjRJX8b9MNCv
-         n3j0layCpgYYJj79JuO5zwwCn33L8W9De3yxnUUAgtN8/CuCCD27/AfVAJldCs5La8Fe
-         3TrW2WRrDLEbaaVF9XBcksDDx4VrDhy62uIHTCvmFMQVSb1B5GL3viBfvgwdEdhnC3J1
-         G5DW9VDwRT+dd/4kZnkCmgSsGY6Gn4+JgyGUFrnJ2ymOxnIMi+kfGTV8aCq90nvUYMSd
-         q0og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774491411; x=1775096211;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BmgS7jmIsFb12HXFzHaausAdN0MMTikyDLHIG6ToCYY=;
-        b=GRxeVF/el87atN0ZAuDfmJwLlCJF8YH/ydjGXL3Kz47kKStR8GUUOd0ALj+qvRf7lb
-         RWWcdpnNMWrsytv2L4gE2cZHjmFo0I6EblsvsrKS6rWkyPH/PiMawumhZJgzeqAnqtrY
-         F/qdbic0uhchlBq9VxuRN8yr5mfXlX4g92Q5Zy81qcuOjSpUKwjqDvyOaRLjuWzcxjY+
-         0c8+w9vJ+47O1//aJgevTsfuEjVp5+kcRcO4jGGIFDGFFwDB8QiD/kBrDLR5uGHcgALi
-         8ex2r/LXsQI2Om9iAXmWuVtt38wA43663UR8f4ojwm6XatKqXEOQITtSmvpfOe8WnmTu
-         q0ig==
-X-Forwarded-Encrypted: i=1; AJvYcCVE6sx7XeSTfTvpM3YXqvCHTojn/yq1qX5hTK4kVhLgPBhivhBmgkFqbosEI84xwKeP1DxKk+4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyc+y5lvIUqF55PtKEYjLLUTzCSjtd+yfuUfCd2Or5NT4QcgcId
-	5heVwFj2Mbl5g3ic8+MQDAj3uiGxgKM100yro69r4h0rcYuPaMLzXNwu
-X-Gm-Gg: ATEYQzxgSaHzmBA8emYn9wACC9mHzaDbTKcrJT/jhBY0Y2AtP3xfnI05CPcYrgrY6QF
-	J1yG4iP9HqaAIo02RPKYPRyCeJIGpp6ejdV1qaUGQjG+Jocb2mGrqtl3mgdUj77g9YL5IwpDwro
-	3xnSrKHk/+QgRttUSHn0Js9kx8TML7f60OeSRiQTQTXMGh0e5t0fhv/c7RuXgChF6K/aEH3HTeE
-	hSbEup/6rppRjEQgUr2AhBvoNR4KLbDfZcZ2rNMpdENEjm0sSs0tVlG+RuC34ZgPuWoFUtoLQ/3
-	sAIz9ADXuP2R3FC824U579rNi9YbBC89Daco/TJruNI5gFL4y0VZ1gJ3lAeV3Wkx6ieWG81oiD6
-	9ppXNJwmP8clOpUvCM8e1scX/XiuYFdq77Ld/L65rg2v4ll/2v2WqnUSehJTqLyvXugb+7JEjVS
-	M5CFDTPcpuVfC9
-X-Received: by 2002:a05:6402:40d1:b0:66a:11c9:f6bd with SMTP id 4fb4d7f45d1cf-66a826e30admr3331546a12.27.1774491410742;
-        Wed, 25 Mar 2026 19:16:50 -0700 (PDT)
-Received: from gmail.com ([2a09:bac5:4e24:270f::3e4:5])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-66ad541489esm447262a12.0.2026.03.25.19.16.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Mar 2026 19:16:49 -0700 (PDT)
-From: Qingfang Deng <dqfext@gmail.com>
-To: Shuah Khan <shuah@kernel.org>,
+	s=arc-20240116; t=1774491462; c=relaxed/simple;
+	bh=6UnVheaexUHoIUCUZg7fVg1nnIhqbeJ2u8gvPc4xZSM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=vBjwTxrykD7UXk6SBiObrg1pKI5eh40MlC2/lqVZj2rbTF9XyAUB74WeBp4S5gNpiOsm0vvbM98drWw1yuEiQTIZ4xUAdtg0vN3imdQOD4ILjDqwEcZ6iTrRCOdEj52nck9eRdQUH8SOxX86JYSv8p2z74GE9AtdGPd/Wv/VMzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=18.194.254.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: esmtpsz11t1774491344t66de6181
+X-QQ-Originating-IP: fxd5+fCJQsSzxTb7Z7Gajv/JG0pKxM4WJ1jZprnP9Q0=
+Received: from lap-jiawenwu.trustnetic.com ( [36.20.60.44])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 26 Mar 2026 10:15:41 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 7126546818717435921
+EX-QQ-RecipientCnt: 18
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org
+Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
 	Simon Horman <horms@kernel.org>,
-	Felix Maurer <fmaurer@redhat.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Antonio Quartulli <antonio@openvpn.net>,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-ppp@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: Paul Mackerras <paulus@ozlabs.org>
-Subject: [PATCH net-next v4] selftests: net: add tests for PPP
-Date: Thu, 26 Mar 2026 10:16:24 +0800
-Message-ID: <20260326021642.29170-1-dqfext@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Kees Cook <kees@kernel.org>,
+	Joe Damato <joe@dama.to>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Breno Leitao <leitao@debian.org>,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v6 10/11] net: wangxun: improve flow control setting
+Date: Thu, 26 Mar 2026 10:14:05 +0800
+Message-Id: <20260326021406.30444-11-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.21.0.windows.1
+In-Reply-To: <20260326021406.30444-1-jiawenwu@trustnetic.com>
+References: <20260326021406.30444-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,243 +55,249 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: NGjsA6rwgPvymaDFfDIEsPlo2B0VBdWA43nkbShPPZa7TTgT+Zbnz2wo
+	gk5j5sgef1wx5OGagbIF1wH1lpidcbBkZDTjzu5Bm6pxHh1ExRaP0gQ8JFDxhHX1WoYS5hB
+	xN4+VEZhruFN2VBB8w8FDadt18mnALv2MIrpOWb9oXzJucJ5dn6DBPqHQuQl4cAXE5zXExa
+	bA7ZwMexc6LUtRhpr2m9ydvDpg9uAQ3bIZUDYQg+aq39jh6GDpp7cN3f1W1Ffj0pVSOi+gM
+	VJ639DOyTjQjDyW07adZ7pd9efRcWIbVE/1kaSW2tsoa0mXR/LfdGh8GKCGBXgPeOF6wJ0s
+	m965j9BssIhBG/zGtjxFolhdN5j4whYDXOPh1OkCnYe1g5F1fm3Gk65mhc9wRsJem85RmIa
+	Sg53X57MuNK6I/Bd+kZxm7mUdlGTmJ8Pl5UkHsrDN7cch7fllvuJ1T0tXGgjOAl2j/29BuV
+	5ao3+T9Jf6QUT0FDW74XCOkEvxc5WzOVQqb+B9TOWN08Ejus1yiT+3mAAZ1h2pQwTBqKfYw
+	zNgvvBCNy/37G5mkg6Smw0ISc7VxyLWxPmvnovdlTQ+MAXsto59749xOJDFcNPdwOZb5XlD
+	XVaK+IKBnMGlSfs3KclOmkgW0m+Ilzio2BCbSudXRVcyb7dcpPY0/dxkSGM+Fos4LC9fTnW
+	2FBcqNrhGMuGEDqrG87FegyQwW2q0dl+OGn4/FvsKx6+rWb17cYLozF4dmQYE9mvMVqPfnm
+	4BczL5gDjTL69tjWs1Yg4DytT10kG114HFnEjuB/FhKXCtgbr2imXdTFcmQuxCtB6JMoIn0
+	JdHwiDA309rwqA5hTjLXogkXkvLLuQheL3pi6Wy8Tgvh53ORgLry8GndVXh3jF+yZjv7/s6
+	Gem8fQgYwE2HbI3o/VIejnMEfzb53q8ki6zRDejOeqQ0V8LlNs65Yz9HfzD1ULkEiXcXBQc
+	Fb0AnL6br/CnjNoquKSUGLmWToAHu25GzbFHJZRDQIXXapgHhylMHMRW0EczfLkeOIInJVJ
+	fumuwzRwWZwohgAfiAlAbPjRdG3y3UYeXmIY1YLfMfCey02JSs5SdO1JchXL8OqmQ1YtA5O
+	BL+lmsm+Wjq1077XeBp4EFa+3n8/+WaT3qhxPw6b4BD
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+X-QQ-RECHKSPAM: 0
 
-Add ping and iperf3 tests for ppp_async.c and pppoe.c.
+Save the current mode of flow control, check the pause frame statistics
+in watchdog to clear WX_HANG_CHECK_ARMED.
 
-Signed-off-by: Qingfang Deng <dqfext@gmail.com>
+The received pause frames are divided into XON and XOFF to be counted.
+And due to the hardware defect of SP devices, XON packets cannot be
+trasmitted correctly, so Tx XON pause is disabled by default for those
+devices.
+
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
 ---
-v4: double quote $EXIT_STATUS (SC2086)
- https://lore.kernel.org/netdev/20260325014411.3596-1-dqfext@gmail.com/
+ .../net/ethernet/wangxun/libwx/wx_ethtool.c   |  2 +-
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c    | 52 +++++++++++++++++--
+ drivers/net/ethernet/wangxun/libwx/wx_type.h  | 16 +++++-
+ drivers/net/ethernet/wangxun/ngbe/ngbe_main.c |  3 +-
+ .../net/ethernet/wangxun/txgbe/txgbe_main.c   |  3 +-
+ 5 files changed, 66 insertions(+), 10 deletions(-)
 
- MAINTAINERS                                   |  1 +
- tools/testing/selftests/Makefile              |  1 +
- tools/testing/selftests/net/ppp/Makefile      | 15 +++++++
- tools/testing/selftests/net/ppp/config        |  9 ++++
- tools/testing/selftests/net/ppp/ppp_async.sh  | 43 ++++++++++++++++++
- tools/testing/selftests/net/ppp/ppp_common.sh | 44 +++++++++++++++++++
- .../selftests/net/ppp/pppoe-server-options    |  2 +
- tools/testing/selftests/net/ppp/pppoe.sh      | 40 +++++++++++++++++
- 8 files changed, 155 insertions(+)
- create mode 100644 tools/testing/selftests/net/ppp/Makefile
- create mode 100644 tools/testing/selftests/net/ppp/config
- create mode 100755 tools/testing/selftests/net/ppp/ppp_async.sh
- create mode 100644 tools/testing/selftests/net/ppp/ppp_common.sh
- create mode 100644 tools/testing/selftests/net/ppp/pppoe-server-options
- create mode 100755 tools/testing/selftests/net/ppp/pppoe.sh
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a09bf30a057d..d553437d5ac1 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -21078,6 +21078,7 @@ PPP PROTOCOL DRIVERS AND COMPRESSORS
- L:	linux-ppp@vger.kernel.org
- S:	Orphan
- F:	drivers/net/ppp/ppp_*
-+F:	tools/testing/selftests/net/ppp/
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+index 9ab7dce956e3..d1356ff5d69b 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+@@ -211,7 +211,7 @@ void wx_get_pause_stats(struct net_device *netdev,
  
- PPS SUPPORT
- M:	Rodolfo Giometti <giometti@enneenne.com>
-diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
-index 450f13ba4cca..65f84e8a0cf0 100644
---- a/tools/testing/selftests/Makefile
-+++ b/tools/testing/selftests/Makefile
-@@ -78,6 +78,7 @@ TARGETS += net/netfilter
- TARGETS += net/openvswitch
- TARGETS += net/ovpn
- TARGETS += net/packetdrill
-+TARGETS += net/ppp
- TARGETS += net/rds
- TARGETS += net/tcp_ao
- TARGETS += nolibc
-diff --git a/tools/testing/selftests/net/ppp/Makefile b/tools/testing/selftests/net/ppp/Makefile
-new file mode 100644
-index 000000000000..b39b0abadde6
---- /dev/null
-+++ b/tools/testing/selftests/net/ppp/Makefile
-@@ -0,0 +1,15 @@
-+# SPDX-License-Identifier: GPL-2.0
+ 	hwstats = &wx->stats;
+ 	stats->tx_pause_frames = hwstats->lxontxc + hwstats->lxofftxc;
+-	stats->rx_pause_frames = hwstats->lxonoffrxc;
++	stats->rx_pause_frames = hwstats->lxonrxc + hwstats->lxoffrxc;
+ }
+ EXPORT_SYMBOL(wx_get_pause_stats);
+ 
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+index 2f71dc24306d..4e0195f7df39 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+@@ -2772,6 +2772,15 @@ int wx_fc_enable(struct wx *wx, bool tx_pause, bool rx_pause)
+ 		}
+ 	}
+ 
++	if (rx_pause && tx_pause)
++		wx->fc.mode = wx_fc_full;
++	else if (rx_pause)
++		wx->fc.mode = wx_fc_rx_pause;
++	else if (tx_pause)
++		wx->fc.mode = wx_fc_tx_pause;
++	else
++		wx->fc.mode = wx_fc_none;
 +
-+top_srcdir = ../../../../..
+ 	/* Disable any previous flow control settings */
+ 	mflcn_reg = rd32(wx, WX_MAC_RX_FLOW_CTRL);
+ 	mflcn_reg &= ~WX_MAC_RX_FLOW_CTRL_RFE;
+@@ -2790,7 +2799,9 @@ int wx_fc_enable(struct wx *wx, bool tx_pause, bool rx_pause)
+ 
+ 	/* Set up and enable Rx high/low water mark thresholds, enable XON. */
+ 	if (tx_pause && wx->fc.high_water) {
+-		fcrtl = (wx->fc.low_water << 10) | WX_RDB_RFCL_XONE;
++		fcrtl = (wx->fc.low_water << 10);
++		if (wx->mac.type != wx_mac_sp)
++			fcrtl |= WX_RDB_RFCL_XONE;
+ 		wr32(wx, WX_RDB_RFCL, fcrtl);
+ 		fcrth = (wx->fc.high_water << 10) | WX_RDB_RFCH_XOFFE;
+ 	} else {
+@@ -2831,6 +2842,28 @@ int wx_fc_enable(struct wx *wx, bool tx_pause, bool rx_pause)
+ }
+ EXPORT_SYMBOL(wx_fc_enable);
+ 
++static void wx_update_xoff_rx_lfc(struct wx *wx)
++{
++	struct wx_hw_stats *hwstats = &wx->stats;
++	u64 data;
++	int i;
 +
-+TEST_PROGS := \
-+	ppp_async.sh \
-+	pppoe.sh \
-+# end of TEST_PROGS
++	if (wx->fc.mode != wx_fc_full &&
++	    wx->fc.mode != wx_fc_rx_pause)
++		return;
 +
-+TEST_FILES := \
-+	ppp_common.sh \
-+	pppoe-server-options \
-+# end of TEST_FILES
++	data = rd64(wx, WX_MAC_LXOFFRXC);
++	hwstats->lxoffrxc += data;
 +
-+include ../../lib.mk
-diff --git a/tools/testing/selftests/net/ppp/config b/tools/testing/selftests/net/ppp/config
-new file mode 100644
-index 000000000000..b45d25c5b970
---- /dev/null
-+++ b/tools/testing/selftests/net/ppp/config
-@@ -0,0 +1,9 @@
-+CONFIG_IPV6=y
-+CONFIG_PACKET=y
-+CONFIG_PPP=m
-+CONFIG_PPP_ASYNC=m
-+CONFIG_PPP_BSDCOMP=m
-+CONFIG_PPP_DEFLATE=m
-+CONFIG_PPPOE=m
-+CONFIG_PPPOE_HASH_BITS_4=y
-+CONFIG_VETH=y
-diff --git a/tools/testing/selftests/net/ppp/ppp_async.sh b/tools/testing/selftests/net/ppp/ppp_async.sh
-new file mode 100755
-index 000000000000..c47a6f5c02dd
---- /dev/null
-+++ b/tools/testing/selftests/net/ppp/ppp_async.sh
-@@ -0,0 +1,43 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
++	/* refill credits (no tx hang) if we received xoff */
++	if (!data)
++		return;
 +
-+source ppp_common.sh
-+
-+# Temporary files for PTY symlinks
-+TTY_DIR=$(mktemp -d /tmp/ppp.XXXXXX)
-+TTY_SERVER="$TTY_DIR"/server
-+TTY_CLIENT="$TTY_DIR"/client
-+
-+cleanup() {
-+	cleanup_all_ns
-+	[ -n "$SOCAT_PID" ] && kill_process "$SOCAT_PID"
-+	rm -fr "$TTY_DIR"
++	for (i = 0; i < wx->num_tx_queues; i++)
++		clear_bit(WX_HANG_CHECK_ARMED,
++			  wx->tx_ring[i]->state);
 +}
 +
-+trap cleanup EXIT
+ /**
+  * wx_update_stats - Update the board statistics counters.
+  * @wx: board private structure
+@@ -2844,6 +2877,10 @@ void wx_update_stats(struct wx *wx)
+ 	u64 restart_queue = 0, tx_busy = 0;
+ 	u32 i;
+ 
++	if (!netif_running(wx->netdev) ||
++	    test_bit(WX_STATE_RESETTING, wx->state))
++		return;
 +
-+require_command socat
-+ppp_common_init
-+modprobe -q ppp_async
+ 	/* gather some stats to the wx struct that are per queue */
+ 	for (i = 0; i < wx->num_rx_queues; i++) {
+ 		struct wx_ring *rx_ring = wx->rx_ring[i];
+@@ -2879,6 +2916,8 @@ void wx_update_stats(struct wx *wx)
+ 	wx->restart_queue = restart_queue;
+ 	wx->tx_busy = tx_busy;
+ 
++	wx_update_xoff_rx_lfc(wx);
 +
-+# Create the virtual serial device
-+socat -d PTY,link="$TTY_SERVER",rawer PTY,link="$TTY_CLIENT",rawer &
-+SOCAT_PID=$!
+ 	hwstats->gprc += rd32(wx, WX_RDM_PKT_CNT);
+ 	hwstats->gptc += rd32(wx, WX_TDM_PKT_CNT);
+ 	hwstats->gorc += rd64(wx, WX_RDM_BYTE_CNT_LSB);
+@@ -2893,7 +2932,10 @@ void wx_update_stats(struct wx *wx)
+ 	hwstats->mptc += rd64(wx, WX_TX_MC_FRAMES_GOOD_L);
+ 	hwstats->roc += rd32(wx, WX_RX_OVERSIZE_FRAMES_GOOD);
+ 	hwstats->ruc += rd32(wx, WX_RX_UNDERSIZE_FRAMES_GOOD);
+-	hwstats->lxonoffrxc += rd32(wx, WX_MAC_LXONOFFRXC);
++	if (wx->mac.type >= wx_mac_aml)
++		hwstats->lxonrxc = rd32(wx, WX_MAC_LXONRXC_AML);
++	else
++		hwstats->lxonrxc += rd32(wx, WX_MAC_LXONRXC);
+ 	hwstats->lxontxc += rd32(wx, WX_RDB_LXONTXC);
+ 	hwstats->lxofftxc += rd32(wx, WX_RDB_LXOFFTXC);
+ 	hwstats->o2bgptc += rd32(wx, WX_TDM_OS2BMC_CNT);
+@@ -2946,7 +2988,11 @@ void wx_clear_hw_cntrs(struct wx *wx)
+ 	rd64(wx, WX_RX_LEN_ERROR_FRAMES_L);
+ 	rd32(wx, WX_RDB_LXONTXC);
+ 	rd32(wx, WX_RDB_LXOFFTXC);
+-	rd32(wx, WX_MAC_LXONOFFRXC);
++	if (wx->mac.type >= wx_mac_aml)
++		wr32(wx, WX_MAC_LXONRXC_AML, 0);
++	else
++		rd32(wx, WX_MAC_LXONRXC);
++	rd32(wx, WX_MAC_LXOFFRXC);
+ }
+ EXPORT_SYMBOL(wx_clear_hw_cntrs);
+ 
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+index 434a582393d7..510fab4b3a0f 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
++++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+@@ -79,7 +79,9 @@
+ #define WX_RX_LEN_ERROR_FRAMES_L     0x11978
+ #define WX_RX_UNDERSIZE_FRAMES_GOOD  0x11938
+ #define WX_RX_OVERSIZE_FRAMES_GOOD   0x1193C
+-#define WX_MAC_LXONOFFRXC            0x11E0C
++#define WX_MAC_LXOFFRXC              0x11988
++#define WX_MAC_LXONRXC               0x11E0C
++#define WX_MAC_LXONRXC_AML           0x11F84
+ 
+ /*********************** Receive DMA registers **************************/
+ #define WX_RDM_VF_RE(_i)             (0x12004 + ((_i) * 4))
+@@ -1156,9 +1158,18 @@ enum wx_isb_idx {
+ 	WX_ISB_MAX
+ };
+ 
++/* Flow Control Settings */
++enum wx_fc_mode {
++	wx_fc_none = 0,
++	wx_fc_rx_pause,
++	wx_fc_tx_pause,
++	wx_fc_full
++};
 +
-+# Wait for symlinks to be created
-+slowwait 5 [ -L "$TTY_SERVER" ]
-+
-+# Start the PPP Server
-+ip netns exec "$NS_SERVER" pppd "$TTY_SERVER" 115200 \
-+	"$IP_SERVER":"$IP_CLIENT" \
-+	local noauth nodefaultroute debug
-+
-+# Start the PPP Client
-+ip netns exec "$NS_CLIENT" pppd "$TTY_CLIENT" 115200 \
-+	local noauth updetach nodefaultroute debug
-+
-+ppp_test_connectivity
-+
-+log_test "PPP async"
-+
-+exit "$EXIT_STATUS"
-diff --git a/tools/testing/selftests/net/ppp/ppp_common.sh b/tools/testing/selftests/net/ppp/ppp_common.sh
-new file mode 100644
-index 000000000000..c72218813f95
---- /dev/null
-+++ b/tools/testing/selftests/net/ppp/ppp_common.sh
-@@ -0,0 +1,44 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+# shellcheck disable=SC2153
-+
-+source ../lib.sh
-+
-+IP_SERVER="192.168.200.1"
-+IP_CLIENT="192.168.200.2"
-+
-+ppp_common_init() {
-+	# Package requirements
-+	require_command pppd
-+	require_command iperf3
-+
-+	# Check for root privileges
-+	if [ "$(id -u)" -ne 0 ];then
-+		echo "SKIP: Need root privileges"
-+		exit $ksft_skip
-+	fi
-+
-+	# Namespaces
-+	setup_ns NS_SERVER NS_CLIENT
-+}
-+
-+ppp_check_addr() {
-+	dev=$1
-+	addr=$2
-+	ns=$3
-+	ip -netns "$ns" -4 addr show dev "$dev" 2>/dev/null | grep -q "$addr"
-+	return $?
-+}
-+
-+ppp_test_connectivity() {
-+	slowwait 10 ppp_check_addr "ppp0" "$IP_CLIENT" "$NS_CLIENT"
-+
-+	ip netns exec "$NS_CLIENT" ping -c 3 "$IP_SERVER"
-+	check_err $?
-+
-+	ip netns exec "$NS_SERVER" iperf3 -s -1 -D
-+	wait_local_port_listen "$NS_SERVER" 5201 tcp
-+
-+	ip netns exec "$NS_CLIENT" iperf3 -c "$IP_SERVER" -Z -t 2
-+	check_err $?
-+}
-diff --git a/tools/testing/selftests/net/ppp/pppoe-server-options b/tools/testing/selftests/net/ppp/pppoe-server-options
-new file mode 100644
-index 000000000000..66c8c9d319e9
---- /dev/null
-+++ b/tools/testing/selftests/net/ppp/pppoe-server-options
-@@ -0,0 +1,2 @@
-+noauth
-+noipdefault
-diff --git a/tools/testing/selftests/net/ppp/pppoe.sh b/tools/testing/selftests/net/ppp/pppoe.sh
-new file mode 100755
-index 000000000000..d5d9b898d537
---- /dev/null
-+++ b/tools/testing/selftests/net/ppp/pppoe.sh
-@@ -0,0 +1,40 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+source ppp_common.sh
-+
-+VETH_SERVER="veth-server"
-+VETH_CLIENT="veth-client"
-+
-+cleanup() {
-+	cleanup_all_ns
-+}
-+
-+trap cleanup EXIT
-+
-+require_command pppoe-server
-+ppp_common_init
-+modprobe -q pppoe
-+
-+# Create the veth pair
-+ip link add "$VETH_SERVER" type veth peer name "$VETH_CLIENT"
-+ip link set "$VETH_SERVER" netns "$NS_SERVER"
-+ip link set "$VETH_CLIENT" netns "$NS_CLIENT"
-+ip -netns "$NS_SERVER" link set "$VETH_SERVER" up
-+ip -netns "$NS_CLIENT" link set "$VETH_CLIENT" up
-+
-+# Start the PPP Server
-+ip netns exec "$NS_SERVER" pppoe-server -I "$VETH_SERVER" \
-+	-L "$IP_SERVER" -R "$IP_CLIENT" -N 1 -q "$(command -v pppd)" \
-+	-k -O "$(pwd)/pppoe-server-options"
-+
-+# Start the PPP Client
-+ip netns exec "$NS_CLIENT" pppd \
-+	local debug updetach noipdefault noauth nodefaultroute \
-+	plugin pppoe.so nic-"$VETH_CLIENT"
-+
-+ppp_test_connectivity
-+
-+log_test "PPPoE"
-+
-+exit "$EXIT_STATUS"
+ struct wx_fc_info {
+ 	u32 high_water; /* Flow Ctrl High-water */
+ 	u32 low_water; /* Flow Ctrl Low-water */
++	enum wx_fc_mode mode; /* Flow Control Mode */
+ };
+ 
+ /* Statistics counters collected by the MAC */
+@@ -1175,7 +1186,8 @@ struct wx_hw_stats {
+ 	u64 mptc;
+ 	u64 roc;
+ 	u64 ruc;
+-	u64 lxonoffrxc;
++	u64 lxonrxc;
++	u64 lxoffrxc;
+ 	u64 lxontxc;
+ 	u64 lxofftxc;
+ 	u64 o2bgptc;
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+index b8db772c37c5..080310a51ef8 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+@@ -150,6 +150,7 @@ static void ngbe_service_task(struct work_struct *work)
+ 	struct wx *wx = container_of(work, struct wx, service_task);
+ 
+ 	wx_handle_errors_subtask(wx);
++	wx_update_stats(wx);
+ 
+ 	wx_service_event_complete(wx);
+ }
+@@ -401,8 +402,6 @@ static void ngbe_disable_device(struct wx *wx)
+ 
+ 		wr32(wx, WX_PX_TR_CFG(reg_idx), WX_PX_TR_CFG_SWFLSH);
+ 	}
+-
+-	wx_update_stats(wx);
+ }
+ 
+ static void ngbe_reset(struct wx *wx)
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+index d4f87fbb9565..e9439e4ebe61 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+@@ -132,6 +132,7 @@ static void txgbe_service_task(struct work_struct *work)
+ 	wx_handle_errors_subtask(wx);
+ 	txgbe_module_detection_subtask(wx);
+ 	txgbe_link_config_subtask(wx);
++	wx_update_stats(wx);
+ 
+ 	wx_service_event_complete(wx);
+ }
+@@ -261,8 +262,6 @@ static void txgbe_disable_device(struct wx *wx)
+ 
+ 	/* Disable the Tx DMA engine */
+ 	wr32m(wx, WX_TDM_CTL, WX_TDM_CTL_TE, 0);
+-
+-	wx_update_stats(wx);
+ }
+ 
+ void txgbe_down(struct wx *wx)
 -- 
-2.43.0
+2.48.1
 
