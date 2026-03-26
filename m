@@ -1,176 +1,219 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013026.outbound.protection.outlook.com [40.93.201.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C5933D6C7;
-	Thu, 26 Mar 2026 07:00:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774508461; cv=none; b=UiZ1G2cvHaz5+dYizDXj/c+mYMvSa9nUoTXYrawOf7X1exNNIpp87aOqifGSRyJfHvHMzrnpHySwXN1yvxLqOEDX9V6c1v0OCWcACq/tQ9pha1FhhQaSaJgWXRFl5GGCqBSAclBPmK4MnVksoZh0qjFOBdxLr0hFKGLnz2FZmuU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774508461; c=relaxed/simple;
-	bh=w28pNfBDG4Z68s0nlXT6h8IFyXvupvDjbdmIZ72WHOw=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BYCkKGBJtiP4tKWC9F+B32axlSdOuiSByPsit7OGcRmPY5dI4ypk0J82sCMa2ZtpguMftuwMSL7cHhfKsvS1VOW0WGW+zr37rNAlRTN0RClhF7SPMKAzzwmfPGFs5Z79jmv0OAsYYZMpdiYax8cb5oPCNxQuWCOWl75V6sI+sr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=cadSueIs; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8213C212FB9;
+	Thu, 26 Mar 2026 07:01:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.26
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774508468; cv=fail; b=chGhM5u89BrOCYUprrjrhcCUfcudBgsL5aPgCoUSV5VbGT/jBemfDeF+NfeCj65ofXLqmrt4NJxLyvLqwtNdJnfwnkomBnE2qHCGz/m0p7eFqNrxOoYTh6aZ4RLN8vdencrg+SCygjzZNJ4Noke0jOg3bQJd198PVuT+/PsiL4g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774508468; c=relaxed/simple;
+	bh=rVg+TMWTFvd84MmL6AgZ1GR7mtWchw28kpPxxvTO9J0=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KttSCB6HaoAmA1WKltlwa4U+bKWnNyRobAmzBeUrNdphl9C0O07rwJx0kMKqEzBN3FU9kV7GM8LHwajDYIspATpv59dwc6XvZFzy3Ss2DNUQkHCBS08gwfC1qAhPl50LaG0K6d53SD4tIXTmHOfaSDXYmtQzfnIoCH1LJR0w710=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=M4uQe63W; arc=fail smtp.client-ip=40.93.201.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="cadSueIs"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62PISfHk3460518;
-	Thu, 26 Mar 2026 00:00:38 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pfpt0220; bh=wHJFTGnWTTR7Yz76f4is6E4xI
-	5jIOmbM58n2FiDd+p4=; b=cadSueIs9N+Lrc7duvAeHz4COIiT25TNStunqbz83
-	yLPCY6Pc1oIaNh7blzP7AaXeTk7DnG5qB2hnAm79CPZfIOKnp8cutIQhz9vP5NWV
-	O7EMQeVdiqWF+PzgvEUYPgFnQWfQKPF3iUY6L4ZEQqm4FBMqwLBw88KR8Jz7rjnQ
-	iS6J7PcTC4C7VETn+hu+03duNFnnAd6ySzFhY0YjAaq4JS9dE8wK9rOvb6VU4gbX
-	35fapxETv+bAExyhgCPGtJbxPQkQEbU75xg4DsvoFlKJghqpHe8kJKF6yIqaL50I
-	YrmOH5FUnkP3e+ysclgFpcgGOTDPrt6rJxL+BneAPc3XA==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4d4b7hb6uh-5
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Mar 2026 00:00:38 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="M4uQe63W"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nBYjneiJ8zNlh3N/+pihEd6ePnZh6EWEXYdeUDsnx1KD5SlDGEET/st1uBPZD7i+DAhnVg+cRxxwDzJ7pOzKDywsw3oTVD3qFdpM6L/lwxDqyQ5BB7uh78ylXukMpTA9iMQUAu4gs5Wt+YM0Q9rKymcB2xKe22BMxtrS4QNu5hcE8Y1sILWE6t+BhINXv7v4iPJTlMHk8zK5yhqrprq789Qx3ccYB+aWJbXOQJnVau0SV07ikPR7N1QE+oQFCSsMfQek2Qch18stmQCcfiZHGJSSI/Kl1TMFYpWGrmsk+lH0kqy2fsyz0yUgvc6FM5r/w5tmg0WFG27RSYmv2fm2XA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sWsTYEXkESQDWpVGX2UqaFDMCn/DNM1NXLnY74SaiD4=;
+ b=bTesCjkx587LVi2ekqtixda1ggMqzpGA8FqzqBupol9I3mqJ6JaeAXye3ZOU2TjZhRQnSHuF3qwBg3iUrjXQaItWaYdG16mWCyiTxEDTMRrymZrkpgpo3qytRuBDOkLHmAtSjsItSsvRqLEg7O6mMMgnT7C0x8kqXCTrD8xQO6tm/JZcWNH7vVXzYd4agcnhkRPf2aHDeMnUJWfrRwpVcQ0Gfh65/OE1WfEpUFzyJRzeoJMhbUwdWsO/1fL506rTcvBBjWBNPbVVPEoa57cm+IWD8ii5CWI3PqC/iVQaQe37Ro2Z2rNMU3TKRCKGtxbqS2JgODVYn9jDkr0gsLY9CQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sWsTYEXkESQDWpVGX2UqaFDMCn/DNM1NXLnY74SaiD4=;
+ b=M4uQe63WQrwpgWqZ4QVU651c9mxdOsShIBxP3E7/hV4XJuN0t/Tji3TeWTiM5I/rMDf+ZhgRIaXbIOQ+8OAEIFUCDwL25uLDkEAnvwinuHneaXnbgAOCsBYHAsFegpVbMgK9W01eDYoobdl1ST6nLyqj9AsQTCBIvDSB7pdHMLRMknsyIb/uM+l0kXlX2CkRD+ELU/KoJMsWieK3cfkFu5HD3aIPXnM+ONPY1BXyIfD776pFAEMS792tGy+JZkBzJPFWbcG6hIDgRU9e3jqrZvofRQ28Uz47+bcTcSubTTqx4iDfUGvWiJ0yqgwD3DwHpiVCLUYyQoiTgpLxY4wkWw==
+Received: from MN0PR04CA0014.namprd04.prod.outlook.com (2603:10b6:208:52d::20)
+ by MN2PR12MB4047.namprd12.prod.outlook.com (2603:10b6:208:1de::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.8; Thu, 26 Mar
+ 2026 07:01:02 +0000
+Received: from BN2PEPF00004FBC.namprd04.prod.outlook.com
+ (2603:10b6:208:52d:cafe::f2) by MN0PR04CA0014.outlook.office365.com
+ (2603:10b6:208:52d::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9723.32 via Frontend Transport; Thu,
+ 26 Mar 2026 07:01:02 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ BN2PEPF00004FBC.mail.protection.outlook.com (10.167.243.182) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9745.21 via Frontend Transport; Thu, 26 Mar 2026 07:01:02 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 26 Mar
+ 2026 00:00:41 -0700
+Received: from drhqmail202.nvidia.com (10.126.190.181) by
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 26 Mar 2026 00:00:35 -0700
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 26 Mar 2026 00:00:35 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Thu, 26 Mar 2026 00:00:35 -0700
-Received: from kernel-ep2 (unknown [10.29.36.53])
-	by maili.marvell.com (Postfix) with SMTP id BE49A3F7077;
-	Thu, 26 Mar 2026 00:00:31 -0700 (PDT)
-Date: Thu, 26 Mar 2026 12:30:30 +0530
-From: Subbaraya Sundeep <sbhatta@marvell.com>
-To: Simon Horman <horms@kernel.org>
-CC: <kuba@kernel.org>, <gakula@marvell.com>, <bbhushan2@marvell.com>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <davem@davemloft.net>, <andrew+netdev@lunn.ch>, <edumazet@google.com>,
-        <pabeni@redhat.com>, <sgoutham@marvell.com>
-Subject: Re: [net-next PATCH v2 4/4] octeontx2-pf: cn20k: Use unified Halo
- context
-Message-ID: <20260326070030.GA1276961@kernel-ep2>
-References: <1773920826-16985-5-git-send-email-sbhatta@marvell.com>
- <20260320165037.96305-1-horms@kernel.org>
+ 15.2.2562.20; Thu, 26 Mar 2026 00:00:40 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
+ (10.126.190.181) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
+ Transport; Thu, 26 Mar 2026 00:00:30 -0700
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>
+CC: Donald Hunter <donald.hunter@gmail.com>, Simon Horman <horms@kernel.org>,
+	Jiri Pirko <jiri@resnulli.us>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+	<skhan@linuxfoundation.org>, Saeed Mahameed <saeedm@nvidia.com>, "Leon
+ Romanovsky" <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, Mark Bloch
+	<mbloch@nvidia.com>, Shuah Khan <shuah@kernel.org>, Chuck Lever
+	<chuck.lever@oracle.com>, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Carolina Jubran <cjubran@nvidia.com>, Cosmin Ratiu <cratiu@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>, Jacob Keller
+	<jacob.e.keller@intel.com>, Shahar Shitrit <shshitrit@nvidia.com>, "Daniel
+ Zahka" <daniel.zahka@gmail.com>, Parav Pandit <parav@nvidia.com>, "Adithya
+ Jayachandran" <ajayachandra@nvidia.com>, Kees Cook <kees@kernel.org>, "Shay
+ Drori" <shayd@nvidia.com>, Daniel Jurgens <danielj@nvidia.com>, Moshe Shemesh
+	<moshe@nvidia.com>, Willem de Bruijn <willemb@google.com>, David Wei
+	<dw@davidwei.uk>, Petr Machata <petrm@nvidia.com>, Stanislav Fomichev
+	<sdf@fomichev.me>, Daniel Borkmann <daniel@iogearbox.net>, Joe Damato
+	<joe@dama.to>, Nikolay Aleksandrov <razor@blackwall.org>, Vadim Fedorenko
+	<vadim.fedorenko@linux.dev>, "Michael S. Tsirkin" <mst@redhat.com>, "Antonio
+ Quartulli" <antonio@openvpn.net>, Allison Henderson
+	<allison.henderson@oracle.com>, Bui Quang Minh <minhquangbui99@gmail.com>,
+	Nimrod Oren <noren@nvidia.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-rdma@vger.kernel.org>, <linux-kselftest@vger.kernel.org>, Gal Pressman
+	<gal@nvidia.com>, Jiri Pirko <jiri@nvidia.com>
+Subject: [PATCH net-next V9 02/14] devlink: Add helpers to lock nested-in instances
+Date: Thu, 26 Mar 2026 08:59:37 +0200
+Message-ID: <20260326065949.44058-3-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20260326065949.44058-1-tariqt@nvidia.com>
+References: <20260326065949.44058-1-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260320165037.96305-1-horms@kernel.org>
-X-Authority-Analysis: v=2.4 cv=b4q/I9Gx c=1 sm=1 tr=0 ts=69c4d996 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=l0iWHRpgs5sLHlkKQ1IR:22 a=qit2iCtTFQkLgVSMPQTB:22 a=9R54UkLUAAAA:8
- a=VwQbUJbxAAAA:8 a=hM8Av25v_7ZSUbZF0EwA:9 a=CjuIK1q_8ugA:10
- a=YTcpBFlVQWkNscrzJ_Dz:22
-X-Proofpoint-ORIG-GUID: cfYzsdCj9b_rbahtQRhw92nV947suUmK
-X-Proofpoint-GUID: cfYzsdCj9b_rbahtQRhw92nV947suUmK
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI2MDA1MSBTYWx0ZWRfX7CfhkEw1gY2I
- Y5+f17Y7e14WRE5tgNPkacajP4ylMVo7+U/8P8UtDTtk8fGAXfWCxtveKmMd42DQ8KQKUKzigya
- TRX7rVRW03cE1gayQgledQgOViYj5qRnstlc6IaoTqttdQ/41kiiRIsW2gF5uQu4dLXF0DwaOj3
- TemdAXGtFSW3uvQTGp3AHlJc3CsdfntqVqPyZKiLT3szKy5ubFdYGszQHbcFJAB3qncJeh7TPLD
- Q/U3AkplmLHvBmLMwTQvzZoum3ad1AyIyFb5DKJqltj7J4qMTkVxXEKyDA1gevPcKl0CO8G50Zg
- H4RapFxApmOE5PDEGxENfnN+++YqEd3zQqjPdRe//1HXfPL2gKlCpe+PD7Z2C1Eu8seayucJmEB
- rlXtspwuA/x5AnsUUn/DAe/qHokTXCHracZ/iH0i08NCoerT5A4Jhowpg2X9wEbXGvZ1lRCb+kD
- TlPhsZF6892y+3wXPsg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-26_02,2026-03-24_01,2025-10-01_01
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF00004FBC:EE_|MN2PR12MB4047:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7b23a9e6-93bb-433d-7af2-08de8b057129
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|7416014|376014|36860700016|22082099003|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	E/vxr0zipJkBL8rf+LL4AWJRjfsWXtqMJzsobAth50Rbjpshl3UeW11Vp4Cy2EsIep/pz/UGumKLWcjAMKLZj60+s0Z26Rcg3aFRA/SUbbUVPwo3bujZ32Ok3QAh1X9QbOQq2AQPeSre+FPV5Xc4nEWpj+rH6PSNj439ClUZ1pfvh9u6EjLANUb8cxtBn1wLkDnuN0rzZ2HW517735gAIsYXFEJ5ZyEAvX28oMmor5TX1HC7yDBJjFdIh5MMCXHP2QWUSL/JbNa75HVUU7ZcloKt/Bet2fkVdcmH4lwQxLU+VmQzp3RYenWI498smePRzIxLv5IZfdZoyijLcH6evHSRMafrmrpfGwKChOh8nEbZ24SP0A+trFW4tVhHy9LCf8zyPnewrVg+XQ8fw8uzXnpc2N5k3USmXKsJDdoU24+aFzpvV6wfuAU7ap4N6u0QQG8nc3bwgXibxtfD2p+aesguZrSDm+HsInjHJe9UlWm2RIMGW9W9O9SBuXxTTu61lIrg9EAEQ6F9Q7Oh7XbqmEOCDwID1PHQNc/sznNNxKRT1/lW/JA0ITmb6h7NV82nuwixgpLXSaaC1IFWVkv2c5kZlrMiw0/VuvH9rz+mQasU1zk+5vjfqvJP7ZjKDx+TLUEz1mxfDv6BJxvZOeRcwjw717Vlc2xtp7hovxsU7FjWreik6VpK0DsCOxO9KV3a1LHf7up0xtLrZmuxEmZkPG/YLXnUTk+t+QsuguejEoWsZzpvlMYxhknZOqfK7S81FINjo6sKJ4EwqMLCp7xcxg==
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(7416014)(376014)(36860700016)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	CnoUN3kSjCN3/sJAs966NkCpVWBSTedw5XB4Cribo+l2uroOViM7L9RLNZrq7bN8u2Q6G97ku8VV+LVzRAmT+P6mmO8AX3+QZpJIBTjWhq9ML1qREXjPNJCcn7XpDvlUJ8kS7Vx2QQ7lO8fcrmTrnEmidycY8Kp3A2Sa7FbG7+x9p0d9adgulRFkAPpJ8Q+GduP+rn6euYCbZ4VMHaVCDUStjmmG1d50KODDD5hcSyRAZTJZXYmbd5sjWUPkR5/XOmkz1iN7EenzqBnCkZ+7Zd2OD9CqkRCnfUz9GoPLLOGrRZmuYQjHvb/J1FJuzyC3jKqs7np1pQ044atPYFaYmWEkSIu+3h39kYIQaiFcaXCNqysKWyTejawDlZxgqTBL+AzYTtuFzC+9C9wUUQ7KuOD4fg17GgR+9htMIVYAyGZIEhu+eZ2Min81lcQ0Efxl
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2026 07:01:02.1208
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7b23a9e6-93bb-433d-7af2-08de8b057129
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF00004FBC.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4047
 
-On 2026-03-20 at 22:20:37, Simon Horman (horms@kernel.org) wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> 
-> For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
-> ---
-> octeontx2-pf: cn20k: Use unified Halo context
-> 
-> Use unified Halo context present in CN20K hardware for
-> octeontx2 netdevs instead of aura and pool contexts.
-> 
-> > diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn20k.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn20k.c
-> > --- a/drivers/net/ethernet/marvell/octeontx2/nic/cn20k.c
-> > +++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn20k.c
-> 
-> [ ... ]
-> 
-> > +int cn20k_npa_alloc_dpc(struct otx2_nic *nic)
-> > +{
-> > +	struct npa_cn20k_dpc_alloc_req *req;
-> > +	struct npa_cn20k_dpc_alloc_rsp *rsp;
-> > +	int err;
-> > +
-> > +	req = otx2_mbox_alloc_msg_npa_cn20k_dpc_alloc(&nic->mbox);
-> > +	if (!req)
-> > +		return -ENOMEM;
-> > +
-> > +	/* Count successful ALLOC requests only */
-> > +	req->dpc_conf = 1ULL << 4;
-> > +
-> > +	err = otx2_sync_mbox_msg(&nic->mbox);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	rsp = (struct npa_cn20k_dpc_alloc_rsp *)otx2_mbox_get_rsp(&nic->mbox.mbox,
-> > +								  0, &req->hdr);
-> > +	if (IS_ERR(rsp))
-> > +		return PTR_ERR(rsp);
-> > +
-> > +	nic->npa_dpc = rsp->cntr_id;
-> > +
-> > +	return 0;
-> > +}
-> 
-> [ ... ]
-> 
-> > diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-> > --- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-> > +++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-> > @@ -1651,6 +1651,9 @@ int otx2_init_hw_resources(struct otx2_nic *pf)
-> >  	if (!is_otx2_lbkvf(pf->pdev))
-> >  		otx2_nix_config_bp(pf, true);
-> >
-> > +	if (is_cn20k(pf->pdev))
-> > +		cn20k_npa_alloc_dpc(pf);
->                 ^^^^^^^^^^^^^^^^^^^^^
-> 
-> Should the return value of cn20k_npa_alloc_dpc() be checked here?
-> 
-DPC counters are for debugging only we can proceed if counter was not
-allocated.
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-> Looking at cn20k_npa_alloc_dpc(), it can return -ENOMEM or errors from
-> otx2_sync_mbox_msg() or PTR_ERR() from otx2_mbox_get_rsp(). If the DPC
-> counter allocation fails, pf->npa_dpc remains 0 (from struct
-> zero-initialization).
-> 
-> Then cn20k_halo_aq_init() configures all NPA auras with
-> aq->halo.op_dpc_set = pfvf->npa_dpc (= 0), referencing an unallocated
-> DPC performance counter. On teardown, cn20k_npa_free_dpc() sends a mbox
-> message to free counter ID 0, which was never allocated.
-Agreed. Will add npa_dpc_valid flag and based on that only will use
-pfvf->npa_dpc to fix this.
+Upcoming code will need to obtain a reference to locked nested-in
+devlink instances. Add helpers to lock, obtain an already locked
+reference and unlock/unref the nested-in instance.
 
-Thanks,
-Sundeep
-> 
-> Every other error-returning mbox operation in this function checks the
-> return value and jumps to an error label on failure. Should this follow
-> the same pattern?
-> 
-> > +
-> >  	/* Init Auras and pools used by NIX RQ, for free buffer ptrs */
-> >  	err = otx2_rq_aura_pool_init(pf);
-> >  	if (err) {
-> 
-> [ ... ]
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+---
+ net/devlink/core.c          | 42 +++++++++++++++++++++++++++++++++++++
+ net/devlink/devl_internal.h |  3 +++
+ 2 files changed, 45 insertions(+)
+
+diff --git a/net/devlink/core.c b/net/devlink/core.c
+index eeb6a71f5f56..db11248df712 100644
+--- a/net/devlink/core.c
++++ b/net/devlink/core.c
+@@ -67,6 +67,48 @@ static void __devlink_rel_put(struct devlink_rel *rel)
+ 		devlink_rel_free(rel);
+ }
+ 
++struct devlink *devlink_nested_in_get_lock(struct devlink_rel *rel)
++{
++	struct devlink *devlink;
++
++	if (!rel)
++		return NULL;
++	devlink = devlinks_xa_get(rel->nested_in.devlink_index);
++	if (!devlink)
++		return NULL;
++	devl_lock(devlink);
++	if (devl_is_registered(devlink))
++		return devlink;
++	devl_unlock(devlink);
++	devlink_put(devlink);
++	return NULL;
++}
++
++/* Returns the nested in devlink object and validates its lock is held. */
++struct devlink *devlink_nested_in_get_locked(struct devlink_rel *rel)
++{
++	struct devlink *devlink;
++	unsigned long index;
++
++	if (!rel)
++		return NULL;
++	index = rel->nested_in.devlink_index;
++	devlink = xa_find(&devlinks, &index, index, DEVLINK_REGISTERED);
++	if (devlink)
++		devl_assert_locked(devlink);
++	return devlink;
++}
++
++void devlink_nested_in_put_unlock(struct devlink_rel *rel)
++{
++	struct devlink *devlink = devlink_nested_in_get_locked(rel);
++
++	if (devlink) {
++		devl_unlock(devlink);
++		devlink_put(devlink);
++	}
++}
++
+ static void devlink_rel_nested_in_notify_work(struct work_struct *work)
+ {
+ 	struct devlink_rel *rel = container_of(work, struct devlink_rel,
+diff --git a/net/devlink/devl_internal.h b/net/devlink/devl_internal.h
+index 7dfb7cdd2d23..3b4364677b18 100644
+--- a/net/devlink/devl_internal.h
++++ b/net/devlink/devl_internal.h
+@@ -136,6 +136,9 @@ typedef void devlink_rel_notify_cb_t(struct devlink *devlink, u32 obj_index);
+ typedef void devlink_rel_cleanup_cb_t(struct devlink *devlink, u32 obj_index,
+ 				      u32 rel_index);
+ 
++struct devlink *devlink_nested_in_get_lock(struct devlink_rel *rel);
++struct devlink *devlink_nested_in_get_locked(struct devlink_rel *rel);
++void devlink_nested_in_put_unlock(struct devlink_rel *rel);
+ void devlink_rel_nested_in_clear(u32 rel_index);
+ int devlink_rel_nested_in_add(u32 *rel_index, u32 devlink_index,
+ 			      u32 obj_index, devlink_rel_notify_cb_t *notify_cb,
+-- 
+2.44.0
+
