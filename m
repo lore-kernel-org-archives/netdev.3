@@ -1,183 +1,320 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012030.outbound.protection.outlook.com [52.101.66.30])
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F3363B27D8;
-	Thu, 26 Mar 2026 06:27:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.30
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774506453; cv=fail; b=pFBKaZUxRVdq56t6bVre9sar3/YXqyuvoQw+JUO6sxn15ilYkVxuW+JOloomEeUp2HEvDrCWZ1y6smhyemDk1b/afj0yQxAMdM5s62XGgCqBKe/pzyxvDVKXBofony6wtPoxMxcnm+GNoPABx0/l0yXaz/M7YT8kulEXkgSkJWc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774506453; c=relaxed/simple;
-	bh=7HSB2dE6vpsK0/UwCaQG69LI3UUEHuXUT6qrDbuRL0o=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=kLf/QtfA0H9/EA6ATKxtYZkihkwmEokt7F+PKadq4enb9o58Q/RNoJkfpIVvgN7MPQZUKauWcyku6DfVPNyqLRUbteAZcM1NgbQUa+pfc4fzciT3fbSC6PPQk2BiqJwo4FdTvhCSiWmYc+N1KdrEpH34mdbZGR0wqlBS3C9dY+4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=DZ/tCcKF; arc=fail smtp.client-ip=52.101.66.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2203B38BE
+	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 06:27:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774506459; cv=none; b=GK5mYrwmj+7KjLli13TKe5qokPODFwULeqJQn4NU1eOgAUgkz7z0hKiAwdsJgIWRlaWDEBo3NVz2p+uU3keKxjfQxmrwJbAj7w5EywGlFR5y5/ko2c++v+obeaT9pBSNzTDabtpGUuMQYjjuSUzWvnM1W96SllDbgefRxdoabOk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774506459; c=relaxed/simple;
+	bh=29zamgTScbbg5vvuvvtNvA6s4drRxnMdyD/RkK4l7BU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DyuE6JPyteq8JkxXB5Jlou9CppEL+lVMu51X/FDHLaNH1zVv/rTc+afbCy6x1o4XKJXLmVe4zSVd0BrAB9zFfMECmToYr/tRgcFG9qwokEa5kAv0oY987mrLLTqHYxF+4/Q+lwe4tJ3pBF9SKB1tvwtTDoDdRU2z7p3HNY9BHmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ROL0o+Td; arc=none smtp.client-ip=91.218.175.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="DZ/tCcKF"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GBlgWHIHEiC/4dke0gfOxWTjqqzvqHDO1Ww+C8N5Fth+aOJy1fSIJbXK49YrO7/uYr6YYsi1pnCBFV04xq6mobvsVYAcpKfVMt6QmJkrXGbG7N/CX6Uwygwdl0nI5dpAnkaBhrtoPcSjb6pBcGeEJxqvUCL44jix4VPRwDReSuS5iU7zuOEeE2lzMMIMKK/InjRACJBK8zvLBIfavebLlbP1mjHrhkeVX5I1fahRT6UkKZkpPvrluoGUMQHjlyK47NM2rVIXohxSH2dmvu3usEWyU7bpxdub94pTTP2aEIzMofKs8KSXCaLVhlZMmFCoLL0TIJadMRNTr8DQFNmbfw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=b/XZWFlsxzM+0lZxykfSK1STJKtwotZ7hmQM6Y2ONMU=;
- b=pL8A2tDd/ZcbWbpDpTOvr2aJa2MvXWhgAtD2b0Zn9nhuOHk6mtCEjSkwP+Y1APJGofy+NEZMlVQKzGQpa8AUqawFwGWk/6OY6I0azJaB5XJLZKUPUl3buMV1f+09VMM8QQVwWS6Kz+7h179Fx58sCFMlCngV894Xr9nX3ypq1JZxtDzySqNZTJVt0rFYTdnz1SpzWcErdn4CrCGyPNjuXhcbHvJ0DcAG/7aAAUV3w1/+Fd3jGb53EdSogC50zdMDdueitji5baKIQaK6R/YeTKoJbkPfAsuJIYl5t8bE4PDa0cc+ToZsKCyD6bScOlL6U5H2e2HANQEtSL7bWbtqQg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=b/XZWFlsxzM+0lZxykfSK1STJKtwotZ7hmQM6Y2ONMU=;
- b=DZ/tCcKFImVPq6aPOsg1EbHPwKzZVQI1MGPaKUIEyoZYjN26CeBzJdd2hbYEREME02Qa9qAUTdD48QYRnO9MBzIeNTsPeIMKVF758hT/aUJK7xMukV/DgNPsBAp9AWAj487GRYGAOHVOJDnlNHnyXELpfAhS5Ukhbnw8B7JMjpF8rHdXL6iQ+/OGayNtoQJtyR2Npx1ZgsCdLSiDLAK1e/3FQZqypwgtAckvXqyR5aeVbp662sNmzSSan/3w/jVGa4hvgK712GPImTqxtHpyfrLipWig3zAL0yPLYnXZrPLR2peeUKBMt2Vh/s7iMFg+YT6VG2xyS6YbYG3v95mgSg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by PA2PR04MB10309.eurprd04.prod.outlook.com (2603:10a6:102:41f::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.31; Thu, 26 Mar
- 2026 06:27:28 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::b476:c19a:24cd:3694]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::b476:c19a:24cd:3694%3]) with mapi id 15.20.9745.019; Thu, 26 Mar 2026
- 06:27:28 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	f.fainelli@gmail.com,
-	frank.li@nxp.com,
-	chleroy@kernel.org,
-	horms@kernel.org,
-	linux@armlinux.org.uk,
-	andrew@lunn.ch
-Cc: netdev@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ROL0o+Td"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1774506454;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9M3Pk1nKD0tOE5JdHLR3DyEbI3+wrZAKNOKkx5NkEK0=;
+	b=ROL0o+TdwMkUlRMbyt3+ck1m5f2b/8rXVxtKzzgaYiPa/kR7EWEZJSwcJ+8GiHlD2eyQdN
+	OxIk54G+GGF1Wy78LBC28SYE30PZJC1HBg4w6UeV1g5KExgIdZdzJwSBKPY2hzips3+IIy
+	jQhCsebZQkZmRBL9kHxC9hSnsIDaqVw=
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: netdev@vger.kernel.org
+Cc: Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	KP Singh <kpsingh@kernel.org>,
+	Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	bpf@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev
-Subject: [PATCH v3 net-next 01/14] dt-bindings: net: dsa: update the description of 'dsa,member' property
-Date: Thu, 26 Mar 2026 14:29:04 +0800
-Message-Id: <20260326062917.3552334-2-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260326062917.3552334-1-wei.fang@nxp.com>
-References: <20260326062917.3552334-1-wei.fang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MA5PR01CA0046.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1d6::15) To PAXPR04MB8510.eurprd04.prod.outlook.com
- (2603:10a6:102:211::7)
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH bpf v2 2/2] selftests/bpf: Add protocol check test for bpf_sk_assign_tcp_reqsk()
+Date: Thu, 26 Mar 2026 14:26:36 +0800
+Message-ID: <20260326062657.88446-3-jiayuan.chen@linux.dev>
+In-Reply-To: <20260326062657.88446-1-jiayuan.chen@linux.dev>
+References: <20260326062657.88446-1-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|PA2PR04MB10309:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2ff94605-0a7b-4349-a2a6-08de8b00c0ae
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|19092799006|366016|52116014|921020|38350700014|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	lXlUz/qDiaZjDfUAk7tMNCO/GB+8n5cmCKZKrC2J8LpdKFlTbGS0D3d+x0JKuiZvsqcvXLeZxvBVAFsowwNYQzfrjD6tqobsCV1+pYPbcpxYtem4+UyiwJ3nMzSEXZGA65W4Q3KtH6GWxQrO6OUOL9I18Zs3LN+tXBJ+FqlRYIE8xix400pQ/5tyemQoMasO4Smj/dqhk2Tg5fl8sIrjv7WCblBtTcDY96qhRt+zbl/72hQPlCX+/YGHzFh482R75EFxB2BzCNUns+W5cpVExNKFP0RgigxjomIl8EvFG2F77d73INxbe+alekKymkJuhUWmU8J6Zhl+sMG0NxpUOWoTjjCTHMpZs7Xite2vYUXzXWXW3l8zi8aYN41QBEUhpDVfum651GHB8ivVDGySA57zetJURgTHs/P90s/7J2phLp/u5abcIZjpAXYVSdp1Kv+k/35AyAEdBw1bX8nNLl5gg5mFBoqUSqfjBb3CZxPc0dOCqqeicyee48sK/icbH8khXbh56hSgtwLaneQLgFOHR6/lpf6rLYWvsVpG6aKScb7bnZnyaIakly2KNdxA5YJK4UTCP9FcXlNkYkIRaE11q6alGZcLuUFcFYOnavGVttE+Epyv+/qgVHLEoks5NiGsx+I9NQkfQRd2IdwEYElmXyGs5F4cp3YEWhYPmzGoozLUcOSYG8mJv8eVXAVR4KWkD6+gkbj+kfHGBymAVVP2ezAxzPCatVrSyypENe6jd9JHhb7c7ftLlACmOaxvdM5mqhkp6JmQCtgeNvhi5ysSUaz/k9DGDGi9vsiHtvmibKDr6CNTW+mIdbnVfW7P
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(19092799006)(366016)(52116014)(921020)(38350700014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?hzpJBJTG56kU5flPX+ZtgkWgTRibXUD7CYdjj8SRJD8b//lK8yVyzAOwB73U?=
- =?us-ascii?Q?tPEZwnR8IHAjgjTrK+k/v9kMTWy+cKzwgbdFbYRvXsU73E3ShcN6FQLihRN8?=
- =?us-ascii?Q?FFyz2b8Xc1zi4Mzp2VJ6eLwqZ5scutb6dMUPVSQtkckXl7xbqNx6IZEOAFGo?=
- =?us-ascii?Q?cjjGVw0fBSA/CIqC4xvCn3px/63W+TARCC1hUrI+5P9HnHNPR0yfu9Nuf9vP?=
- =?us-ascii?Q?MzULLA+AbY0kZOomzFtVeXPMHegt/jn2Y4cEwCfbga5KzIzGvT8ASyWzElZH?=
- =?us-ascii?Q?yw3Yu2gXR79B7eQBVM+m88rG6wOPfXPkgESHGW45+VeugQPjtzHD1FLO5wuE?=
- =?us-ascii?Q?E8KBO6OwGVKxYDBbj2ZlN3MiL2UEvLW/d+lIzgiwYXs/jhkkL9a0d9VxkKtA?=
- =?us-ascii?Q?T1CL/Ggq2VcArx1uRyz9qeXcdItJLFpRcb4hIG0po/GY3MdLRJEFBdJDgX7z?=
- =?us-ascii?Q?Nx8ZTEotBx0912h0rc4kqfZ4x0SglK7TpSWvPhSP7OkTu+fXzusKavOZ25vc?=
- =?us-ascii?Q?z81Qrdl4NrAZvxvt+b+2Pvf8r7o7CEy8vDutUXzcOZR4Rjl7oKgpg1TfMVxk?=
- =?us-ascii?Q?qMJTUlAOR4MITRKd5bz9U6ov2cfaYKJVAIg4vQMDS5sUnfrOVCPA0latu/Zj?=
- =?us-ascii?Q?2g3708wPVvEfPkVi6Iy4vpcddhUKNxs40DTzXxPv2REqjVUjgh9xiyQAwuGE?=
- =?us-ascii?Q?CnXS0PtpIcfCCUSFeuLO7ZpqErMHiO0ehCqciAtnwBYCTxmdchGUChfOqHxj?=
- =?us-ascii?Q?7GYvXadc0OENbITgSTtRLXWI+s3Xu9UkpCvXiptf+wtV6rja425CFEkbor/L?=
- =?us-ascii?Q?2mDFeszaSRQKbcxgcOI364CHUu85SYt7PQ0xMPYR3su+1a2oTrnTLXfoxR4t?=
- =?us-ascii?Q?p+oBY8JkTne2MfdJ4/WBy4626VfNiC8YkpM92l+5czpj3DYqOYzra9AsPqw6?=
- =?us-ascii?Q?kmmfMzCOcJ7ToqPM1XXJq2kxkMR9nlE9J0WnrHY7X3yn/0jsSAxUaWxZ1jZP?=
- =?us-ascii?Q?hK+iAMePmV35z7EHB6VrAaVk7g1lJYmFX0owMpJDMurVe6ZFN84s+oDmuRvp?=
- =?us-ascii?Q?GpJnNjjl2eBR0lKY0VwEOXrndpZB2Yai9OxUDdXrXD0hs/sdwi+j2s2e6GKv?=
- =?us-ascii?Q?2AMwd3i5Yprd9KkOzh5tTsK+5rv8GeQ3sSxMHoi+hu/QJd1ZgUQU3iBMbUBA?=
- =?us-ascii?Q?A99vWWtMsth28YVW7i8qxw7tquvCIQB3VVO1Hmnu1DBLus2Oq4AD5oGQERf0?=
- =?us-ascii?Q?UzZXiPuBYakO+pN0UicANmjGiM9t4XxfMkf5bB5yJDtDKjHL91E6sJIPwUoN?=
- =?us-ascii?Q?gCFp2xm12mQDTNwng8VqLDBlcnfl/6dXJgpJlHisLAfkMEbTDal/PGERKIDr?=
- =?us-ascii?Q?bAsnMbyKOKJ3F3q8eysmtDXIcbgJYyxD2OimofELRt9uDoX1s478hsPFuj/j?=
- =?us-ascii?Q?YtjXsZa3Rd2hHoj1w2sFCFz3xOiNjOL9GQ9T3WQ1dVFLfqjGiP+M0irRuml+?=
- =?us-ascii?Q?AXhmj0JhrYzzGlpYdxHyIre0pFVhnd66eHt15e/K7yGD3XHOJdPSVr1yKjcX?=
- =?us-ascii?Q?SN9IujDuSFvRxu3loSln4VJl6qBup2mXoPymEe3P7yUH4qU4Nptta3pCZbiH?=
- =?us-ascii?Q?Q7MHBbRtGB6+1wABTjq2oZwvqJhkSTPjJbGTH/Ee9WL0399KpTtIv0nMHxWW?=
- =?us-ascii?Q?l0QG+BdVFrVxB/F0bDuPrpNK0Ai6HCROeXpdCIUc1aSYonm2JMuSCT7s5zC2?=
- =?us-ascii?Q?w88SGjcoqw=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2ff94605-0a7b-4349-a2a6-08de8b00c0ae
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2026 06:27:28.5634
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QIZL80wALNxnI4U/n/M0IHnseJhedYqSVO3L0zjfLGwNjxPc9OP2IlGzNSg9Hr2QU+w+oVvWGmwnyqnEEVFebA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10309
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-The current description indicates that the 'dsa,member' property cannot
-be set for a switch that is not part of any cluster. Vladimir thinks
-that this is a case where the actual technical limitation was poorly
-transposed into words when this restriction was first documented, in
-commit 8c5ad1d6179d ("net: dsa: Document new binding").
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-The true technical limitation is that many DSA tagging protocols are
-topology-unaware, and always call dsa_conduit_find_user() with a
-switch_id of 0. Specifying a custom "dsa,member" property with a
-non-zero switch_id would break them.
+Add test_tcp_custom_syncookie_protocol_check to verify that
+bpf_sk_assign_tcp_reqsk() rejects non-TCP skbs. The test sends a UDP
+packet through TC ingress where a BPF program calls
+bpf_sk_assign_tcp_reqsk() on it and checks that the kfunc returns an
+error. A UDP server recv() is used as synchronization to ensure the
+BPF program has finished processing before checking the result.
 
-Therefore, for topology-aware switches, it is fine to specify this
-property for them, even if they are not part of any cluster. Our NETC
-switch is a good example which is topology-aware, the switch_id is
-carried in the switch tag, but the switch_id 0 is reserved for VEPA
-switch and cannot be used, so we need to use this property to assign
-a non-zero switch_id for it.
+Without the fix in bpf_sk_assign_tcp_reqsk(), the kfunc succeeds and
+attaches a TCP reqsk to the UDP skb, which causes a null pointer
+dereference panic when the kernel processes it through the UDP receive
+path.
 
-Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Test result:
+
+  ./test_progs -a tcp_custom_syncookie_protocol_check -v
+  setup_netns:PASS:create netns 0 nsec
+  setup_netns:PASS:ip 0 nsec
+  write_sysctl:PASS:open sysctl 0 nsec
+  write_sysctl:PASS:write sysctl 0 nsec
+  setup_netns:PASS:write_sysctl 0 nsec
+  test_tcp_custom_syncookie_protocol_check:PASS:open_and_load 0 nsec
+  test_tcp_custom_syncookie_protocol_check:PASS:start tcp_server 0 nsec
+  test_tcp_custom_syncookie_protocol_check:PASS:start udp_server 0 nsec
+  setup_tc:PASS:qdisc add dev lo clsact 0 nsec
+  setup_tc:PASS:filter add dev lo ingress 0 nsec
+  test_tcp_custom_syncookie_protocol_check:PASS:udp socket 0 nsec
+  test_tcp_custom_syncookie_protocol_check:PASS:sendto udp 0 nsec
+  test_tcp_custom_syncookie_protocol_check:PASS:recv udp 0 nsec
+  test_tcp_custom_syncookie_protocol_check:PASS:udp_intercepted 0 nsec
+  test_tcp_custom_syncookie_protocol_check:PASS:assign_ret 0 nsec
+  #471     tcp_custom_syncookie_protocol_check:OK
+  Summary: 1/0 PASSED, 0 SKIPPED, 0 FAILED
+
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
 ---
- Documentation/devicetree/bindings/net/dsa/dsa.yaml | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ .../bpf/prog_tests/tcp_custom_syncookie.c     | 84 ++++++++++++++++++-
+ .../bpf/progs/test_tcp_custom_syncookie.c     | 79 +++++++++++++++++
+ 2 files changed, 159 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/dsa/dsa.yaml b/Documentation/devicetree/bindings/net/dsa/dsa.yaml
-index 2abd036578d1..801e1411e5c2 100644
---- a/Documentation/devicetree/bindings/net/dsa/dsa.yaml
-+++ b/Documentation/devicetree/bindings/net/dsa/dsa.yaml
-@@ -28,7 +28,11 @@ properties:
-       A two element list indicates which DSA cluster, and position within the
-       cluster a switch takes. <0 0> is cluster 0, switch 0. <0 1> is cluster 0,
-       switch 1. <1 0> is cluster 1, switch 0. A switch not part of any cluster
--      (single device hanging off a CPU port) must not specify this property
-+      (single device hanging off a CPU port) does not usually need to specify
-+      this property, and then it becomes cluster 0, switch 0. For a topology
-+      aware switch, its switch index can be specified through this property,
-+      even if it is not part of any cluster. Also, topology-unaware switches
-+      must always be defined as index 0 of their cluster.
-     $ref: /schemas/types.yaml#/definitions/uint32-array
+diff --git a/tools/testing/selftests/bpf/prog_tests/tcp_custom_syncookie.c b/tools/testing/selftests/bpf/prog_tests/tcp_custom_syncookie.c
+index eaf441dc7e79..c50b76f70988 100644
+--- a/tools/testing/selftests/bpf/prog_tests/tcp_custom_syncookie.c
++++ b/tools/testing/selftests/bpf/prog_tests/tcp_custom_syncookie.c
+@@ -5,6 +5,7 @@
+ #include <sched.h>
+ #include <stdlib.h>
+ #include <net/if.h>
++#include <netinet/in.h>
  
- additionalProperties: true
+ #include "test_progs.h"
+ #include "cgroup_helpers.h"
+@@ -47,11 +48,10 @@ static int setup_netns(void)
+ 	return -1;
+ }
+ 
+-static int setup_tc(struct test_tcp_custom_syncookie *skel)
++static int setup_tc(int prog_fd)
+ {
+ 	LIBBPF_OPTS(bpf_tc_hook, qdisc_lo, .attach_point = BPF_TC_INGRESS);
+-	LIBBPF_OPTS(bpf_tc_opts, tc_attach,
+-		    .prog_fd = bpf_program__fd(skel->progs.tcp_custom_syncookie));
++	LIBBPF_OPTS(bpf_tc_opts, tc_attach, .prog_fd = prog_fd);
+ 
+ 	qdisc_lo.ifindex = if_nametoindex("lo");
+ 	if (!ASSERT_OK(bpf_tc_hook_create(&qdisc_lo), "qdisc add dev lo clsact"))
+@@ -127,7 +127,7 @@ void test_tcp_custom_syncookie(void)
+ 	if (!ASSERT_OK_PTR(skel, "open_and_load"))
+ 		return;
+ 
+-	if (setup_tc(skel))
++	if (setup_tc(bpf_program__fd(skel->progs.tcp_custom_syncookie)))
+ 		goto destroy_skel;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(test_cases); i++) {
+@@ -145,6 +145,82 @@ void test_tcp_custom_syncookie(void)
+ 
+ destroy_skel:
+ 	system("tc qdisc del dev lo clsact");
++	test_tcp_custom_syncookie__destroy(skel);
++}
+ 
++/* Test: bpf_sk_assign_tcp_reqsk() should reject non-TCP skb.
++ *
++ * Send a UDP packet through TC ingress where a BPF program calls
++ * bpf_sk_assign_tcp_reqsk() on it. The kfunc should return an error
++ * because the skb carries UDP, not TCP.
++ */
++void test_tcp_custom_syncookie_protocol_check(void)
++{
++	int tcp_server = -1, udp_server = -1, udp_client = -1;
++	struct test_tcp_custom_syncookie *skel;
++	struct sockaddr_in udp_addr;
++	char buf[32] = "test";
++	int udp_port, ret;
++
++	if (setup_netns())
++		return;
++
++	skel = test_tcp_custom_syncookie__open_and_load();
++	if (!ASSERT_OK_PTR(skel, "open_and_load"))
++		return;
++
++	/* Create a TCP listener so the BPF can find a LISTEN socket */
++	tcp_server = start_server(AF_INET, SOCK_STREAM, "127.0.0.1", 0, 0);
++	if (!ASSERT_NEQ(tcp_server, -1, "start tcp_server"))
++		goto destroy_skel;
++
++	/* Create a UDP server to receive the packet as synchronization */
++	udp_server = start_server(AF_INET, SOCK_DGRAM, "127.0.0.1", 0, 0);
++	if (!ASSERT_NEQ(udp_server, -1, "start udp_server"))
++		goto close_tcp;
++
++	skel->bss->tcp_listener_port = ntohs(get_socket_local_port(tcp_server));
++	udp_port = ntohs(get_socket_local_port(udp_server));
++	skel->bss->udp_test_port = udp_port;
++
++	ret = bpf_program__fd(skel->progs.tcp_custom_syncookie_badproto);
++	if (setup_tc(ret))
++		goto close_udp_server;
++
++	udp_client = socket(AF_INET, SOCK_DGRAM, 0);
++	if (!ASSERT_NEQ(udp_client, -1, "udp socket"))
++		goto cleanup_tc;
++
++	memset(&udp_addr, 0, sizeof(udp_addr));
++	udp_addr.sin_family = AF_INET;
++	udp_addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
++	udp_addr.sin_port = htons(udp_port);
++
++	ret = sendto(udp_client, buf, sizeof(buf), 0,
++		     (struct sockaddr *)&udp_addr, sizeof(udp_addr));
++	if (!ASSERT_EQ(ret, sizeof(buf), "sendto udp"))
++		goto cleanup_tc;
++
++	/* recv() ensures TC ingress BPF has processed the skb */
++	ret = recv(udp_server, buf, sizeof(buf), 0);
++	if (!ASSERT_EQ(ret, sizeof(buf), "recv udp"))
++		goto cleanup_tc;
++
++	ASSERT_EQ(skel->bss->udp_intercepted, true, "udp_intercepted");
++
++	/* assign_ret == 0 means kfunc accepted UDP skb (bug).
++	 * assign_ret < 0 means kfunc correctly rejected it (fixed).
++	 */
++	ASSERT_NEQ(skel->data->assign_ret, 0, "assign_ret");
++
++cleanup_tc:
++	system("tc qdisc del dev lo clsact");
++	if (udp_client >= 0)
++		close(udp_client);
++close_udp_server:
++	close(udp_server);
++close_tcp:
++	close(tcp_server);
++destroy_skel:
+ 	test_tcp_custom_syncookie__destroy(skel);
+ }
+diff --git a/tools/testing/selftests/bpf/progs/test_tcp_custom_syncookie.c b/tools/testing/selftests/bpf/progs/test_tcp_custom_syncookie.c
+index 7d5293de1952..386705b6c9f2 100644
+--- a/tools/testing/selftests/bpf/progs/test_tcp_custom_syncookie.c
++++ b/tools/testing/selftests/bpf/progs/test_tcp_custom_syncookie.c
+@@ -588,4 +588,83 @@ int tcp_custom_syncookie(struct __sk_buff *skb)
+ 	return tcp_handle_ack(&ctx);
+ }
+ 
++/* Test: call bpf_sk_assign_tcp_reqsk() on a UDP skb.
++ * The kfunc should reject it, but currently it doesn't check L4 protocol.
++ */
++__u16 tcp_listener_port = 0;
++__u16 udp_test_port = 0;
++int assign_ret = -1;
++bool udp_intercepted = false;
++
++SEC("tc")
++int tcp_custom_syncookie_badproto(struct __sk_buff *skb)
++{
++	void *data = (void *)(long)skb->data;
++	void *data_end = (void *)(long)skb->data_end;
++	struct bpf_sock_tuple tuple = {};
++	struct bpf_tcp_req_attrs attrs = {};
++	struct ethhdr *eth;
++	struct iphdr *iph;
++	struct udphdr *udp;
++	struct bpf_sock *skc;
++	struct sock *sk;
++
++	eth = (struct ethhdr *)data;
++	if (eth + 1 > data_end)
++		return TC_ACT_OK;
++
++	if (bpf_ntohs(eth->h_proto) != ETH_P_IP)
++		return TC_ACT_OK;
++
++	iph = (struct iphdr *)(eth + 1);
++	if (iph + 1 > data_end)
++		return TC_ACT_OK;
++
++	if (iph->protocol != IPPROTO_UDP)
++		return TC_ACT_OK;
++
++	udp = (struct udphdr *)(iph + 1);
++	if (udp + 1 > data_end)
++		return TC_ACT_OK;
++
++	if (bpf_ntohs(udp->dest) != udp_test_port)
++		return TC_ACT_OK;
++
++	udp_intercepted = true;
++
++	tuple.ipv4.saddr = iph->saddr;
++	tuple.ipv4.daddr = iph->daddr;
++	tuple.ipv4.sport = udp->source;
++	tuple.ipv4.dport = bpf_htons(tcp_listener_port);
++
++	skc = bpf_skc_lookup_tcp(skb, &tuple, sizeof(tuple.ipv4), -1, 0);
++	if (!skc)
++		return TC_ACT_OK;
++
++	if (skc->state != TCP_LISTEN) {
++		bpf_sk_release(skc);
++		return TC_ACT_OK;
++	}
++
++	sk = (struct sock *)bpf_skc_to_tcp_sock(skc);
++	if (!sk) {
++		bpf_sk_release(skc);
++		return TC_ACT_OK;
++	}
++
++	attrs.mss = 1460;
++	attrs.wscale_ok = 1;
++	attrs.snd_wscale = 7;
++	attrs.rcv_wscale = 7;
++	attrs.sack_ok = 1;
++
++	/* Call bpf_sk_assign_tcp_reqsk on a UDP skb. */
++	assign_ret = bpf_sk_assign_tcp_reqsk(skb, sk, &attrs, sizeof(attrs));
++
++	bpf_sk_release(skc);
++
++	/* Let the packet continue into the kernel */
++	return TC_ACT_OK;
++}
++
+ char _license[] SEC("license") = "GPL";
 -- 
-2.34.1
+2.43.0
 
