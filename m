@@ -1,82 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0FA31F9A6;
-	Thu, 26 Mar 2026 12:00:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58BE61DE8AF
+	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 12:00:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774526423; cv=none; b=INPRChZDNRPmZ97vpJSHVKtcc1nG7eZw9MGamwUk8sgGfIxCNG5Ju/t8QVldyVohVHBBaRksLWINvMe7j4xT7EJM4q9uNqzMSrWWOEAnddaVNhntmIT0Eem6tDcWuTP7yRBf8s8PmiUgpYi+EujbahDq4E5YQ94JbJWX1cijxOM=
+	t=1774526460; cv=none; b=Iux8FerC20WNhBoTTgNi3SiNzgRER+zQLtjXVnstnyWd4KTKL0YyqJgbdWdfklUpeVGYM/7TugnOcv0s9f20SHQidUISb1ZQhVz9G+H+MB7BbT7OfWpTi6IXgEPLBHH7H/VZSt+4vF30sroutl+6WwnGGEaAzTK2XePJKjerSH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774526423; c=relaxed/simple;
-	bh=u2HJmS/78KG7FoybFH+fCZmDSRZd13BgRzNbeZyfrKk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Y3MmpGPkmc0Tjmbcs81SOmC1hhUiAmW/tH2lbXhAHmpVjt8J/GXT/Rlag7bUCeijH0nW0bS4Awpr/nri4DrNDh5eCs6HJPFdQD3UCuLu4YLTZctfAckfDn9k54xlVTVetNUd59bcxKVh/OeY1fKa9WbESZiwN7Z4aUP+zQdRLwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ESl97Qfz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774526460; c=relaxed/simple;
+	bh=b9w5x4PR4Au3exK1pTgox5ELUIf4oFeVm8VO5zfgNWg=;
+	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To; b=d/+zmc1uI06ViutF9S5yVVmbQeOg6vjfkv+wFFFSOYfTpRw7Cjb4wTXQkR55eIBoqjz4NfiFrx5lvM8wKYWrZt1c9Zti+yDAFe/hotZunk2oe4K8L7ddxk+h3gq2EtP6Z8Y6demT9QxJ1Wr1Pyr4nRXftWhTA4fTl1sRoPlB/GU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=rAqps1BT; arc=none smtp.client-ip=115.124.30.119
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ESl97Qfz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA2CC116C6;
-	Thu, 26 Mar 2026 12:00:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774526422;
-	bh=u2HJmS/78KG7FoybFH+fCZmDSRZd13BgRzNbeZyfrKk=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=ESl97Qfzgv/NASh+RLt9v64k/t2hcJI1lA3HRFN1WIpBcQStEKirSqkSTjDuHraoA
-	 YEn8Ytgy7KJBFC8qgrQonwh30OsPFOa7ZiNGDgDcYGfEcC0UpuNv8aWBy4ciwmfLat
-	 hNTNQUQr5ODoPyH1edhPyaYIkV97zGGZInHMhHt0C8Vuv9RKpZH7PPjkdyFHevJdPv
-	 +b05iWsSn48bgcmuaJFqPatJI63Ziw5m3v0sveETyqvxm4iYm/cMR/k7Rbitdk0RRC
-	 c9iZrUjypX+NNDGqq0OyuNSqIxTbwDeRaLWnpi8x0hvnAFXjHfKc8SsjvDRfh2aa75
-	 ZzsZy9y2i4Gkw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9E0B39E961D;
-	Thu, 26 Mar 2026 12:00:10 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="rAqps1BT"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1774526454; h=Message-ID:Subject:Date:From:To;
+	bh=ETdmqNMFWOWHk8c5RCU0dqa9+iYWJARC9GJuc+8aOJA=;
+	b=rAqps1BT3DLzR2EElxSRQO2heCgmLfk3IdMRnReKGRrqM5ClGeKUrpeDP2IU3HkIiJJAgyqV9a5PhMaQdTrGlyXqKvOkPpttWlGtquutfLUW4jgTn8N6fX29xkbw1BLf9zMR9TG+2tyYmwGJIk1405qEKSeJIY3LtBAAsFGJDk4=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=xuanzhuo@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0X.lEwhM_1774526133;
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0X.lEwhM_1774526133 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 26 Mar 2026 19:55:34 +0800
+Message-ID: <1774525085.4029815-1-xuanzhuo@linux.alibaba.com>
+Subject: Re: [PATCH net-next v35 0/8] eea: Add basic driver framework for Alibaba Elastic Ethernet Adaptor
+Date: Thu, 26 Mar 2026 19:38:05 +0800
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Wen Gu <guwen@linux.alibaba.com>,
+ Philo Lu <lulie@linux.alibaba.com>,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+ Dong Yibo <dong100@mucse.com>,
+ "Ethan Nelson-Moore" <enelsonmoore@gmail.com>,
+ Heiner Kallweit <hkallweit1@gmail.com>,
+ Vivian Wang <wangruikang@iscas.ac.cn>,
+ Dust Li <dust.li@linux.alibaba.com>,
+ netdev@vger.kernel.org
+References: <20260323074441.91691-1-xuanzhuo@linux.alibaba.com>
+ <cb8280ad-fd08-4201-9faa-d8b1bc4f0bd7@redhat.com>
+In-Reply-To: <cb8280ad-fd08-4201-9faa-d8b1bc4f0bd7@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v5 0/3] net: dpaa2-mac: export standard
- statistics
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177452640929.2519455.2404595307977667457.git-patchwork-notify@kernel.org>
-Date: Thu, 26 Mar 2026 12:00:09 +0000
-References: <20260323115039.3932600-1-ioana.ciornei@nxp.com>
-In-Reply-To: <20260323115039.3932600-1-ioana.ciornei@nxp.com>
-To: Ioana Ciornei <ioana.ciornei@nxp.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- linux-kernel@vger.kernel.org
 
-Hello:
+On Thu, 26 Mar 2026 12:26:33 +0100, Paolo Abeni <pabeni@redhat.com> wrote:
+> On 3/23/26 8:44 AM, Xuan Zhuo wrote:
+> > Add a driver framework for EEA that will be available in the future.
+> >
+> > This driver is currently quite minimal, implementing only fundamental
+> > core functionalities. Key features include: I/O queue management via
+> > adminq, basic PCI-layer operations, and essential RX/TX data
+> > communication capabilities. It also supports the creation,
+> > initialization, and management of network devices (netdev). Furthermore,
+> > the ring structures for both I/O queues and adminq have been abstracted
+> > into a simple, unified, and reusable library implementation,
+> > facilitating future extension and maintenance.
+>
+> Unfortunately sashiko fund more stuff:
+>
+> https://sashiko.dev/#/patchset/20260323074441.91691-1-xuanzhuo%40linux.alibaba.com
+>
+> AFAIK checks vs malicious values from the H/W are not due, but stats
+> endianness, 32-bits, truesize related concerns looks real.
 
-This series was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+I've looked at this, and I think most of it is meaningless. For example, since
+we have the following options,
 
-On Mon, 23 Mar 2026 13:50:36 +0200 you wrote:
-> This patch set adds support for standard ethtool statistics - rmon,
-> eth-ctrl, eth-mac and pause - to dpaa2-mac and its users dpaa2-eth and
-> dpaa2-switch.
-> 
-> The first patch extends the firmware APIs related to MAC counters and
-> adds dpmac_get_statistics() which can be used to retrieve multiple counter
-> values through a single firmware call.
-> 
-> [...]
++	depends on 64BIT
 
-Here is the summary with links:
-  - [net-next,v5,1/3] net: dpaa2-mac: extend APIs related to statistics
-    https://git.kernel.org/netdev/net-next/c/fbf3fecf6ae1
-  - [net-next,v5,2/3] net: dpaa2-mac: retrieve MAC statistics in one firmware command
-    https://git.kernel.org/netdev/net-next/c/d369154d9d7f
-  - [net-next,v5,3/3] net: dpaa2-mac: export standard statistics
-    https://git.kernel.org/netdev/net-next/c/dd1d4ccb8602
+there's no need to consider some 32-bit related issues. Many other points are
+also unnecessary.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+I will go through these comments again. I'll try to fix them.
+I might introduce some defensive programming. ^_^ Just to make the
+AI happy. However, I can't make all these comments disappear.
+
+Currently, Opus's comments are OK. I think Opus's suggestions are more
+meaningful.
+
+Thanks.
 
 
+
+>
+> As for the acceptance criteria, we should not merge code with known
+> issues. A problem with this driver submission is the size and complexity
+> which allow LLMs to dig different things at different moments.
+>
+> /P
+>
