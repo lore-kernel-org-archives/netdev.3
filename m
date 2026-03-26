@@ -1,66 +1,35 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3653F99EB;
-	Thu, 26 Mar 2026 11:50:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0FA31F9A6;
+	Thu, 26 Mar 2026 12:00:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774525820; cv=none; b=t4jDptid7mIaveUxxjFFHJkht24npAjhPaDyem810yhE5bRoXbGiJR3DFF5wcqz9JwL1NzBl4TSqT2LL6PzjTFF4VSL4CGz5Op/EQZt6EKSOHVW2vKqO5uShRB5M4epYVVwLg7OckxJ4pejyCGgSTWk1KKdeeHczM6rEQetOOmA=
+	t=1774526423; cv=none; b=INPRChZDNRPmZ97vpJSHVKtcc1nG7eZw9MGamwUk8sgGfIxCNG5Ju/t8QVldyVohVHBBaRksLWINvMe7j4xT7EJM4q9uNqzMSrWWOEAnddaVNhntmIT0Eem6tDcWuTP7yRBf8s8PmiUgpYi+EujbahDq4E5YQ94JbJWX1cijxOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774525820; c=relaxed/simple;
-	bh=7DzG31ZGhqPkrPLi2IPyde6AgUF12n7Wafc6dg4dgKk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BJxn5k/i8Zk6pmI7DmkGW9+9GWRSjk2YQlYnKJ+CYDRqSjl30n/0zZ1VX73dHbv8ji8BuDGBuRRQIxsRi8CQu0K+S12GaW7VDyo83igdZlxrNVnIVVn3cw+oZ8in3QD2c8e8VzuYDDj089RQEzdkPtfMdsm0ZQhUnfblN+dPdLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UzF4KXWE; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1774526423; c=relaxed/simple;
+	bh=u2HJmS/78KG7FoybFH+fCZmDSRZd13BgRzNbeZyfrKk=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Y3MmpGPkmc0Tjmbcs81SOmC1hhUiAmW/tH2lbXhAHmpVjt8J/GXT/Rlag7bUCeijH0nW0bS4Awpr/nri4DrNDh5eCs6HJPFdQD3UCuLu4YLTZctfAckfDn9k54xlVTVetNUd59bcxKVh/OeY1fKa9WbESZiwN7Z4aUP+zQdRLwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ESl97Qfz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UzF4KXWE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774525812; x=1806061812;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=7DzG31ZGhqPkrPLi2IPyde6AgUF12n7Wafc6dg4dgKk=;
-  b=UzF4KXWE2tC1gpbNfYpiVpxAYrvoc1pTqiKvV1yLonFDVYhZ4slxTBCH
-   EJ9jxndCkdolyOsg2Gb5MGtHWMqw4tDWPO5s5T+dWP18I1hdSwmONPebW
-   ++vH5BL3AZk82fRmAhTeOH1D6dN4wSrxb6GzwXlpvBTkBA6viGYMc81qp
-   CeFJOg4daZpxMeL4wizrP7QxqRVEYXN9oxGnXjaRal8Vu6MvrXHtGPpUr
-   04NMyXpbFV4QQT8bQKEQceRrKnrMHKxwm3dUHAO5PT8HYI9SOAJtJVCMo
-   33/0cVxNFYf1p6X9tVAeEkG54ze8r1WxUo3SzNH/MmbzV6eo0Y/kx6f3Q
-   w==;
-X-CSE-ConnectionGUID: 1pIIxkmVQcum6UDVU2vhdw==
-X-CSE-MsgGUID: /IseyFuXR4epBu29wJqRaQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="75776286"
-X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; 
-   d="scan'208";a="75776286"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 04:49:57 -0700
-X-CSE-ConnectionGUID: jmEDcq75TleJGkVPD1Su3A==
-X-CSE-MsgGUID: vGLBuUVcSy6/7NwrGzD5KA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; 
-   d="scan'208";a="248029093"
-Received: from boxer.igk.intel.com ([10.102.20.173])
-  by fmviesa002.fm.intel.com with ESMTP; 26 Mar 2026 04:49:54 -0700
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-To: netdev@vger.kernel.org
-Cc: bpf@vger.kernel.org,
-	magnus.karlsson@intel.com,
-	stfomichev@gmail.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	larysa.zaremba@intel.com,
-	aleksander.lobakin@intel.com,
-	bjorn@kernel.org,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Subject: [PATCH v4 net 10/11] igc: remove home-grown xsk's frame size validation
-Date: Thu, 26 Mar 2026 12:49:18 +0100
-Message-Id: <20260326114919.519456-11-maciej.fijalkowski@intel.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20260326114919.519456-1-maciej.fijalkowski@intel.com>
-References: <20260326114919.519456-1-maciej.fijalkowski@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ESl97Qfz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA2CC116C6;
+	Thu, 26 Mar 2026 12:00:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774526422;
+	bh=u2HJmS/78KG7FoybFH+fCZmDSRZd13BgRzNbeZyfrKk=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=ESl97Qfzgv/NASh+RLt9v64k/t2hcJI1lA3HRFN1WIpBcQStEKirSqkSTjDuHraoA
+	 YEn8Ytgy7KJBFC8qgrQonwh30OsPFOa7ZiNGDgDcYGfEcC0UpuNv8aWBy4ciwmfLat
+	 hNTNQUQr5ODoPyH1edhPyaYIkV97zGGZInHMhHt0C8Vuv9RKpZH7PPjkdyFHevJdPv
+	 +b05iWsSn48bgcmuaJFqPatJI63Ziw5m3v0sveETyqvxm4iYm/cMR/k7Rbitdk0RRC
+	 c9iZrUjypX+NNDGqq0OyuNSqIxTbwDeRaLWnpi8x0hvnAFXjHfKc8SsjvDRfh2aa75
+	 ZzsZy9y2i4Gkw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9E0B39E961D;
+	Thu, 26 Mar 2026 12:00:10 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,43 +37,46 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v5 0/3] net: dpaa2-mac: export standard
+ statistics
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177452640929.2519455.2404595307977667457.git-patchwork-notify@kernel.org>
+Date: Thu, 26 Mar 2026 12:00:09 +0000
+References: <20260323115039.3932600-1-ioana.ciornei@nxp.com>
+In-Reply-To: <20260323115039.3932600-1-ioana.ciornei@nxp.com>
+To: Ioana Ciornei <ioana.ciornei@nxp.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ linux-kernel@vger.kernel.org
 
-Since this check is now present in core in xp_assign_dev(), remove
-redundant statement from igc_xdp_enable_pool().
+Hello:
 
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
----
- drivers/net/ethernet/intel/igc/igc_xdp.c | 11 -----------
- 1 file changed, 11 deletions(-)
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_xdp.c b/drivers/net/ethernet/intel/igc/igc_xdp.c
-index 9eb47b4beb06..4126173a0226 100644
---- a/drivers/net/ethernet/intel/igc/igc_xdp.c
-+++ b/drivers/net/ethernet/intel/igc/igc_xdp.c
-@@ -61,23 +61,12 @@ static int igc_xdp_enable_pool(struct igc_adapter *adapter,
- 	struct igc_ring *rx_ring, *tx_ring;
- 	struct napi_struct *napi;
- 	bool needs_reset;
--	u32 frame_size;
- 	int err;
- 
- 	if (queue_id >= adapter->num_rx_queues ||
- 	    queue_id >= adapter->num_tx_queues)
- 		return -EINVAL;
- 
--	frame_size = xsk_pool_get_rx_frame_size(pool);
--	if (frame_size < ETH_FRAME_LEN + VLAN_HLEN * 2) {
--		/* When XDP is enabled, the driver doesn't support frames that
--		 * span over multiple buffers. To avoid that, we check if xsk
--		 * frame size is big enough to fit the max ethernet frame size
--		 * + vlan double tagging.
--		 */
--		return -EOPNOTSUPP;
--	}
--
- 	err = xsk_pool_dma_map(pool, dev, IGC_RX_DMA_ATTR);
- 	if (err) {
- 		netdev_err(ndev, "Failed to map xsk pool\n");
+On Mon, 23 Mar 2026 13:50:36 +0200 you wrote:
+> This patch set adds support for standard ethtool statistics - rmon,
+> eth-ctrl, eth-mac and pause - to dpaa2-mac and its users dpaa2-eth and
+> dpaa2-switch.
+> 
+> The first patch extends the firmware APIs related to MAC counters and
+> adds dpmac_get_statistics() which can be used to retrieve multiple counter
+> values through a single firmware call.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,v5,1/3] net: dpaa2-mac: extend APIs related to statistics
+    https://git.kernel.org/netdev/net-next/c/fbf3fecf6ae1
+  - [net-next,v5,2/3] net: dpaa2-mac: retrieve MAC statistics in one firmware command
+    https://git.kernel.org/netdev/net-next/c/d369154d9d7f
+  - [net-next,v5,3/3] net: dpaa2-mac: export standard statistics
+    https://git.kernel.org/netdev/net-next/c/dd1d4ccb8602
+
+You are awesome, thank you!
 -- 
-2.43.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
