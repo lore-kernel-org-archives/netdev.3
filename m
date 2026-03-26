@@ -1,87 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B979C3C7DFA;
-	Thu, 26 Mar 2026 16:27:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC24D401485
+	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 16:29:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774542430; cv=none; b=OIFjZ3xXi9SXJWM8q/gMEGgVO297mRPl+ftVEvNOgEx0nLSkLklUn+k8HDaZjLIeg3EnlJQU90qDWPo5LNbylhiRquMt84poaGBkPBUIj/C/m1E8HurM7NOFrIPl0Jg654bRfGgESvtUwwMKKyzbpktMQNF4PauZajVOFrFwppc=
+	t=1774542551; cv=none; b=AIrI6aQj/WJG5RdV6QdlINDSF42C8eqXDxCoQnbXM+4eOI2wJkFhv5pvBcVRk63Sx1vh0ONffeQCbDOd2fky1/327MncwazLUHM/VnzO24QQ1J5Drx4q1TsG3Fm9oTsd28gyXJRKAxRevZx7earz/Kb/5uiX0ykNhQEnhsHdBqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774542430; c=relaxed/simple;
-	bh=FOmmId4ryA+YOTqhM7wpTHuU7R8PWpYh6XnlDyHrm5Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=I0kucDBwfB1XxT7AL3sPph9ICxoYpem0gyIsbwSs1BiNY1dLRbCO5SsDixYg2Yba8DiF74bGx3IxEnPduq/DF9hRwB7aj+2NtLg7F4gztsu2mRGYOZA/GJ/4TKZ6MBeznl1A3D2cGtp6fPEtpMz9GoDrfqg/6lLf+AB6qhX+Fh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QAgnWFiK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774542551; c=relaxed/simple;
+	bh=z6GMWOCYmwQPpclwbRHQ3L8tkjcwK1pnli6GFBfiIKE=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=ZiDcTDD9rAIrr2qnlYZDbf2LXgDqUptl6VWIresqMmi8yCGQ6F19nJkiXlkoyzo2heLQtruYql9HJUULNkS2r2mdWohqbxStWhYo2MBrshQQ6nifO9uph/BjV88WUD+i2YQJ/Qspp+p/VY3475aZXCHDc5LxVrs4dnqJodHH0SI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jb5+RN/w; arc=none smtp.client-ip=74.125.224.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QAgnWFiK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 741DAC116C6;
-	Thu, 26 Mar 2026 16:27:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774542430;
-	bh=FOmmId4ryA+YOTqhM7wpTHuU7R8PWpYh6XnlDyHrm5Y=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QAgnWFiKhaZC8sJ4Ors/P5eezAqBFP0cQPr45i3KsYolY5Uq4drWq17upyOaCgjJc
-	 UujlgTX0DYvSFjSRak6XNUNyqL4cltjUtObx+U0r8EVxxmoXoC69bJ4EK3X7lAVjs4
-	 idWWEMqO5yC+8yWAmK3EMnQQPH5jIChqCAZYp/3w2uPAAfdk8zVXaxjB7FP8EH+nf7
-	 d2zLC9irOEcQ9s6w/j9QpFRT/vfgTki3z4hOoZq3m5pjfFGguJPIEkG6ETcZAEOrbO
-	 vUB9hlJlBkRjaiBeKaJ/3n3tTbZvxNJjEuMNFWNBTtUXREvUtp9iC1sYAbcn1cLNDa
-	 sPw9JDaYRcA/g==
-Message-ID: <867939e4-59de-4c12-8fed-7cfeb1fe092b@kernel.org>
-Date: Thu, 26 Mar 2026 10:27:08 -0600
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jb5+RN/w"
+Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-64ae222d978so1287809d50.1
+        for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 09:29:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774542549; x=1775147349; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CDlf2p6914NjJVCVaq2Q/Nq8XSjjhMKVxHPhxp+UG88=;
+        b=Jb5+RN/wcmRrbnOKzgXeeDbTGMsRT1cr+jjEF+HdsswaqYWH9wBOTKkHp3MQ/Z/0iG
+         KmcOQuVStTRWRh0vCysHuGOHtd7tkfUTHzXpIUJtP8Nc0TGmwrBw5QbsPEjO8FjoEA8N
+         W+rcytTfs9K3Atk3eZ+dxwE4dSlAVOga9QOyBv2/nv0uJVivXhzLlHiMmxF/TNdC0xE4
+         JjO5xiuz27vdWX9zno1Z6blJ30yXzLfRg9w1k5uY36O0j1wH4gBpXo093g2jlfAL4xyX
+         ztXKRS5NRfJs+LJtPPdmiHMX+rRWk5adv0vl7IrYPg8b0XeYNMUcE4ZXivkmf40VCnav
+         WsvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774542549; x=1775147349;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CDlf2p6914NjJVCVaq2Q/Nq8XSjjhMKVxHPhxp+UG88=;
+        b=cvs6whMaB9LHyBFdFxgG4BkJVHgeNxfgiizDCldIXQdh/kaFeLKrb7bab8GKMDHIto
+         e4zjGCj9U3By8FnP2GGSlf97XtChzqBXd4FXfLkhT4O0N3BHetKnZ+p1Fs4HZqpK9yiz
+         kLN77MZBgnUSLy/d0/g1kaIFWkuwndzREvuxsj57+LjU3mV91q01QPCNkPJSiQ8WIKJ8
+         lneAXynmz9llXPqrsAxuLu7LWkYAeu7B3ngNYpkD+S9TNXul5Aq2s8baS2vo0Y3cj+g7
+         2hn22tXb32hQEUrFwXTqz8qCllBMV7Jy/Mxdu+LiJArgAMyfJJkwgbXBL0powIOp9l5Z
+         5hZw==
+X-Forwarded-Encrypted: i=1; AJvYcCVE3gygtlWW0fZ72cVoSOp7W6si18RaZh++a589pVrvSm0cN3o6qaHHNXJLzWLVVPTEXW9rKBg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJvWLlyzIqIFiOabYjKVVyigWQbDczJ6QKvV9Pv5bhJbPlk3s7
+	3S7X8Pil+d25Lrsjo2bBSkeNru7Mr7iT/3CvZjP972wXLO4OXwXYc1lv
+X-Gm-Gg: ATEYQzyDyXjEJ0jMEn13qr2Y372ZnHYq1B3fKN5fiskiVUQ1s9gLWfFhAia7PJJzDGC
+	2FEoKbT6MJUfK8bMm90uS/9qHojwc70E4D9+GAazd+vLi87rMPTOOEM9Uf9CsYHpiSKYVdpUeko
+	q4GMvLqr3MSaBmR+zhqw+XdMyzyvbMYhFqc5H/77EcOf+cATqe+qUPQJd55alFutofHRUlK8HGH
+	s9+Tt7cNOV3kIgGGquPug4/6HB7E1FT/wM0cuCQs71r3rVEhCSCK9O3vCCHO+gR2KSSq1l726xg
+	5lmvgBNMA9L98eVpX8bwFYIhiOubn7Mju/0gTLdKp49ArJ4L9hKYz6nKlCj71NTlJJoiMJamzjD
+	vZldUjPF2Mz0akCNWxbdxyD+dOe+2em25p6mFwkFRqah3bUC7TIQwGq7USsynpvplIOXOcx1Jxo
+	l8ZOtBW9GSOOtUuX14ZUIQJh+RlcA1xUZnf1L/ikDYutdTHR7e7Us3GLyAXE9XuidUaR0dHqGiY
+	ziWMkD+QQ11sGw=
+X-Received: by 2002:a53:e105:0:b0:64e:ba77:8412 with SMTP id 956f58d0204a3-64ee6185ff2mr5998843d50.73.1774542548777;
+        Thu, 26 Mar 2026 09:29:08 -0700 (PDT)
+Received: from gmail.com (180.134.85.34.bc.googleusercontent.com. [34.85.134.180])
+        by smtp.gmail.com with UTF8SMTPSA id 956f58d0204a3-64ef58ca09csm1662948d50.5.2026.03.26.09.29.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Mar 2026 09:29:08 -0700 (PDT)
+Date: Thu, 26 Mar 2026 12:29:07 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Qingfang Deng <dqfext@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Shuah Khan <shuah@kernel.org>, 
+ Simon Horman <horms@kernel.org>, 
+ Willem de Bruijn <willemb@google.com>, 
+ Petr Machata <petrm@nvidia.com>, 
+ Richard Gobert <richardbgobert@gmail.com>, 
+ Anubhav Singh <anubhavsinggh@google.com>, 
+ Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>, 
+ netdev@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+Cc: linux-ppp@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.29bf4e0691478@gmail.com>
+In-Reply-To: <20260326081127.61229-2-dqfext@gmail.com>
+References: <20260326081127.61229-1-dqfext@gmail.com>
+ <20260326081127.61229-2-dqfext@gmail.com>
+Subject: Re: [RFC PATCH net-next v6 2/2] selftests: net: test PPPoE packets in
+ gro.sh
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/11 net-next v5] bpf: remove ipv6_bpf_stub completely
- and use direct function calls
-Content-Language: en-US
-To: Fernando Fernandez Mancera <fmancera@suse.de>,
- Martin KaFai Lau <martin.lau@linux.dev>
-Cc: =?UTF-8?Q?Ricardo_B=2E_Marli=C3=A8re?= <rbm@suse.com>,
- Daniel Borkmann <daniel@iogearbox.net>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
- Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>,
- John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
- Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
- Jiri Olsa <jolsa@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
- Guillaume Nault <gnault@redhat.com>, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, netdev@vger.kernel.org
-References: <20260325120928.15848-1-fmancera@suse.de>
- <20260325120928.15848-10-fmancera@suse.de>
- <1ff47530-44ee-4012-a013-0202182de208@linux.dev>
- <99c37135-a1cc-4eb9-a910-ca38e129b5b0@suse.de>
- <93822084-f558-4194-be2b-cb328b81e412@kernel.org>
- <77792d0f-925f-4600-913c-b9dcdf8e9ea9@suse.de>
-From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <77792d0f-925f-4600-913c-b9dcdf8e9ea9@suse.de>
-Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: 7bit
 
-On 3/25/26 5:41 PM, Fernando Fernandez Mancera wrote:
-> Hi David, I did the following testing:
+Qingfang Deng wrote:
+> Add PPPoE test-cases to the GRO selftest.
 > 
-> 1. ipv6.disabled=1 since booting - the IPv6 nexthop cannot be added to
-> the IPv4 route at all.
+> Signed-off-by: Qingfang Deng <dqfext@gmail.com>
+> ---
+> v6: new patch
 > 
-> 2. ipv6.disabled=1 after booting but before configuring the IPv4 route -
-> same result as above.
-> 
-> 3. ipv6.disabled=1 after booting and after the IPv4 is configured - the
-> neighbor lookup is fine as the nd_tbl is initialized. It didn't crash.
-> 
-> I did tracing to make sure that code path was hit. I tested the
-> forwarding with 3 namespaces 1<-->2<-->3 loading the BPF program on the
-> second one performing the bpf_fib_lookup() instruction.
-> 
-> I could do more testing regarding this if needed, let me know.
-> 
+> I'm not sure if I should include all the existing IPv4/v6 tests for
+> PPPoE. There are tests that hardcode ETH_HLEN as the NH offset, which
+> are meant to test the L3 protocol, not the underlying protocol, and
+> changing all of them seems too invasive.
 
-that looks good. Thank you
+Overall this change looks good to me. But indeed all the churn of
+
+    (pppoe ? PPPOE_SES_HLEN : 0)
+ 
+is a bit annoying. Left a few representative snippets below.
+I think that could be avoided similar to MAX_HDR_LEN by having a
+global definition and using that everywhere. Still a lot of churn, but
+at least no repeated open-coded logic.
+
+Also consider whether running all these tests again in PPPoE adds
+value, if not, then indeed trim the tests to those that truly add
+code coverage. 
+
+> @@ -745,7 +777,7 @@ static void add_ipv4_ts_option(void *buf, void *optpkt)
+>  	memcpy(optpkt + tcp_offset + optlen, buf + tcp_offset,
+>  	       sizeof(struct tcphdr) + PAYLOAD_LEN);
+>  
+> -	iph = (struct iphdr *)(optpkt + ETH_HLEN);
+> +	iph = (struct iphdr *)(optpkt + ETH_HLEN + (pppoe ? PPPOE_SES_HLEN : 0));
+>  	iph->ihl = 5 + (optlen / 4);
+>  	iph->tot_len = htons(ntohs(iph->tot_len) + optlen);
+>  	iph->check = 0;
+> @@ -755,7 +787,7 @@ static void add_ipv4_ts_option(void *buf, void *optpkt)
+>  static void add_ipv6_exthdr(void *buf, void *optpkt, __u8 exthdr_type, char *ext_payload)
+>  {
+>  	struct ipv6_opt_hdr *exthdr = (struct ipv6_opt_hdr *)(optpkt + tcp_offset);
+> -	struct ipv6hdr *iph = (struct ipv6hdr *)(optpkt + ETH_HLEN);
+> +	struct ipv6hdr *iph = (struct ipv6hdr *)(optpkt + ETH_HLEN + (pppoe ? PPPOE_SES_HLEN : 0));
+>  	char *exthdr_payload_start = (char *)(exthdr + 1);
+>  
+>  	exthdr->hdrlen = 0;
 
 
