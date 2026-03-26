@@ -1,134 +1,102 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56AB92D5935
-	for <netdev@vger.kernel.org>; Thu, 26 Mar 2026 13:18:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7440C3EF67D;
+	Thu, 26 Mar 2026 13:18:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774531137; cv=none; b=MnvdvVOhjYyRifiMwvVPN/w9MF1kg7Tb60RpO8e2VnujZcDr+Ntovp1RQieV23OMiRWyVu6Y2kZxitorAHY2CQ+RNaEAkxy43/naPKjOCzf1TzOZqvg1agLugyH1nI/C4xo8TnrgWRsUo3Kc0d161YHXfbEu5s+FN8bFbZeSs+k=
+	t=1774531140; cv=none; b=jZ+msfGWkgP5o6FOw7CqBbv/7eTR2yEkT6dn0rgFfwMNEOu67rvBIbRnLOy07t5OzA884FKlFXbPPQUMS+4EpmortK1w3t1AIOFq3o66Husgj/gVJz+QMoD0VNOcAPXUNOFiItz5slE3Gbi+zqvMXOI5u/QJutRTrBP8eoEdbVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774531137; c=relaxed/simple;
-	bh=lb0GZ4LjZYME6LIEZSDsoau/6K8K5XJGRSMiunj2zEc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZTv3+TEv6aRqz4lixDWqucWf58VukO9XQ8R/JfgZTbTXVHRClr/Kpcb98obvFPaxPHIQCVVqZg+DKczUiHrIeozc7NBU12MvUhBb/zJGRS5yrISXbSo5mpL2KdntImwz5mcvRHEbMBfqxrooWQJt8xGyoRJ3QfJ0pAnpcHQp0JY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DiKk5KdO; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1774531140; c=relaxed/simple;
+	bh=dbSlJJLZr0aDkUKCge5XYxPSmLToKME6MYNLXskWdG4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=HN0/jKtInHPoSn9neQQqT23BeOcIQ4rP38D0kfRyQ8nFhqnYESLGxB1LY45wDY1JBbCL2POwZM93fAsXOkTb2NoMgc/+VN/mKX5XsasXKixa8q4H1HNCIgDhA4cmSa8tVLjE/xfYyK+lTPykZSpOHq3hh5WC5ak9wjRlg6TMVG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=Qa5yMiLN; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DiKk5KdO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774531135;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hXfYTLAZKbXpNf47trMTcMM/l7RhE1yxWdNYJ5ar7ck=;
-	b=DiKk5KdOu4QDjfMZ0NVoDdfnb9zOFHcsgtUbNjscwlbh5x+Mz0rrBf6anfQnZVYuWmnYR/
-	a6UZf74DyI/ri0DPM7QEbSIp7vVVRmMyN0iiJLRtxYy4RHIuIjBZZHbpwNuNYSHJc8n6/c
-	hN//zRmcKgVBrup5WqArIu34cbzByE8=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-228-EoAQyj13PUS2elco2fO-cg-1; Thu,
- 26 Mar 2026 09:18:52 -0400
-X-MC-Unique: EoAQyj13PUS2elco2fO-cg-1
-X-Mimecast-MFC-AGG-ID: EoAQyj13PUS2elco2fO-cg_1774531130
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 02D0818002C8;
-	Thu, 26 Mar 2026 13:18:50 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.44.33.121])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F3BEA1800107;
-	Thu, 26 Mar 2026 13:18:45 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: netdev@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-afs@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	stable@kernel.org
-Subject: [PATCH net v3 01/11] rxrpc: Fix key quota calculation for multitoken keys
-Date: Thu, 26 Mar 2026 13:18:26 +0000
-Message-ID: <20260326131838.634095-2-dhowells@redhat.com>
-In-Reply-To: <20260326131838.634095-1-dhowells@redhat.com>
-References: <20260326131838.634095-1-dhowells@redhat.com>
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="Qa5yMiLN"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62QDIN1801573874, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1774531103; bh=dbSlJJLZr0aDkUKCge5XYxPSmLToKME6MYNLXskWdG4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=Qa5yMiLNgKN4NGypfhmmU2ZphpmWmn3nwilmPv4bEITdcNGQNTOvjl2ncH7YsS20p
+	 Tqqdw7zq+A1nDqyuZY1fI36Zka6BVzE+whMMS9A+P58hmGhDJ49rpnRFstkFNWC01q
+	 it46x/ff3OaykAQXtYvJ5qw34nHvEQ2Vnmrap9XCaF6NU78SNNvzzD7RSOn+qmJ6+r
+	 m5b4xAr7GIqf4dQ8lSVmgU5vBOU+8KDMHidryttzreuQ3O83IwjAYhVi3PU9m/fWll
+	 qSyvMoxO3uL1M4VYFgAN2yAxD+41iNgvz8tD12k5d+3KWCQWtLq6hPakTXPZu6Rf+K
+	 OM0ZayGg9wUsw==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.26/5.94) with ESMTPS id 62QDIN1801573874
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 26 Mar 2026 21:18:23 +0800
+Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Thu, 26 Mar 2026 21:18:23 +0800
+Received: from RTKEXHMBS03.realtek.com.tw ([::1]) by
+ RTKEXHMBS03.realtek.com.tw ([fe80::368f:61f6:1754:de7d%9]) with mapi id
+ 15.02.1748.010; Thu, 26 Mar 2026 21:18:23 +0800
+From: Hayes Wang <hayeswang@realtek.com>
+To: Chih Kai Hsu <hsu.chih.kai@realtek.com>,
+        "kuba@kernel.org"
+	<kuba@kernel.org>,
+        "davem@davemloft.net" <davem@davemloft.net>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        nic_swsd
+	<nic_swsd@realtek.com>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>,
+        "linux-usb@vger.kernel.org"
+	<linux-usb@vger.kernel.org>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "bjorn@mork.no" <bjorn@mork.no>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        Chih Kai Hsu <hsu.chih.kai@realtek.com>
+Subject: RE: [PATCH net-next v4 1/3] r8152: fix incorrect register write to
+ USB_UPHY_XTAL
+Thread-Topic: [PATCH net-next v4 1/3] r8152: fix incorrect register write to
+ USB_UPHY_XTAL
+Thread-Index: AQHcvPOycbfPy/dSukipZ8LkOW+IpbXAy+uQ
+Date: Thu, 26 Mar 2026 13:18:23 +0000
+Message-ID: <9260dd860db047858a5a505bf2b2430e@realtek.com>
+References: <20260326073925.32976-453-nic_swsd@realtek.com>
+ <20260326073925.32976-454-nic_swsd@realtek.com>
+In-Reply-To: <20260326073925.32976-454-nic_swsd@realtek.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-In the rxrpc key preparsing, every token extracted sets the proposed quota
-value, but for multitoken keys, this will overwrite the previous proposed
-quota, losing it.
+Chih Kai Hsu <hsu.chih.kai@realtek.com>
+> Sent: Thursday, March 26, 2026 3:39 PM
+> To: kuba@kernel.org; davem@davemloft.net
+> Cc: netdev@vger.kernel.org; nic_swsd <nic_swsd@realtek.com>;
+> linux-kernel@vger.kernel.org; linux-usb@vger.kernel.org;
+> edumazet@google.com; bjorn@mork.no; pabeni@redhat.com; Chih Kai Hsu
+> <hsu.chih.kai@realtek.com>
+> Subject: [PATCH net-next v4 1/3] r8152: fix incorrect register write to
+> USB_UPHY_XTAL
+>=20
+> The old code used ocp_write_byte() to clear the OOBS_POLLING bit
+> (BIT(8)) in the USB_UPHY_XTAL register, but this doesn't correctly clear =
+a bit in
+> the upper byte of the 16-bit register.
+>=20
+> Fix this by using ocp_write_word() instead.
+>=20
+> Fixes: 195aae321c82 ("r8152: support new chips")
+> Signed-off-by: Chih Kai Hsu <hsu.chih.kai@realtek.com>
 
-Fix this by adding to the proposed quota instead.
+Reviewed-by: Hayes Wang <hayeswang@realtek.com>
 
-Fixes: 8a7a3eb4ddbe ("KEYS: RxRPC: Use key preparsing")
-Closes: https://sashiko.dev/#/patchset/20260319150150.4189381-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Eric Dumazet <edumazet@google.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
-cc: stable@kernel.org
----
- net/rxrpc/key.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/net/rxrpc/key.c b/net/rxrpc/key.c
-index 85078114b2dd..af403f0ccab5 100644
---- a/net/rxrpc/key.c
-+++ b/net/rxrpc/key.c
-@@ -72,7 +72,7 @@ static int rxrpc_preparse_xdr_rxkad(struct key_preparsed_payload *prep,
- 		return -EKEYREJECTED;
- 
- 	plen = sizeof(*token) + sizeof(*token->kad) + tktlen;
--	prep->quotalen = datalen + plen;
-+	prep->quotalen += datalen + plen;
- 
- 	plen -= sizeof(*token);
- 	token = kzalloc_obj(*token);
-@@ -199,7 +199,7 @@ static int rxrpc_preparse_xdr_yfs_rxgk(struct key_preparsed_payload *prep,
- 	}
- 
- 	plen = sizeof(*token) + sizeof(*token->rxgk) + tktlen + keylen;
--	prep->quotalen = datalen + plen;
-+	prep->quotalen += datalen + plen;
- 
- 	plen -= sizeof(*token);
- 	token = kzalloc_obj(*token);
-@@ -460,6 +460,7 @@ static int rxrpc_preparse(struct key_preparsed_payload *prep)
- 	memcpy(&kver, prep->data, sizeof(kver));
- 	prep->data += sizeof(kver);
- 	prep->datalen -= sizeof(kver);
-+	prep->quotalen = 0;
- 
- 	_debug("KEY I/F VERSION: %u", kver);
- 
-@@ -497,7 +498,7 @@ static int rxrpc_preparse(struct key_preparsed_payload *prep)
- 		goto error;
- 
- 	plen = sizeof(*token->kad) + v1->ticket_length;
--	prep->quotalen = plen + sizeof(*token);
-+	prep->quotalen += plen + sizeof(*token);
- 
- 	ret = -ENOMEM;
- 	token = kzalloc_obj(*token);
+Best Regards,
+Hayes
 
