@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CBA33F5BC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89383344DB8;
 	Thu, 26 Mar 2026 05:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774502339; cv=none; b=TyDjedoeiWBhycL4F03VZxCpkyQ5jQNAcCa83BKiOSOH7SSlN4XzsZdMSdKNBoOLti9HoZ2/ixNPTUrlemhX/BS3AZKcxQk+reVHXv9qJaMkioIVNrNJoIvesx2dO1Hvn3QuOZcuAEQE+sbCaUOPcWVsW/C8jXGNO9IiZccVqfg=
+	t=1774502339; cv=none; b=Wo7FunVydTNDUurpqQccMyUoJfP+AEAHxnP6PTLHKsYcusEds8MVmkh4LwuRwlkD3HI6R+dbs3Ddr3EU2BBxwQrC8FFBoooXpcnUA/wD/1pSgfVsnYZ8/9FXGpK/qkfDR8QzOn4HKrpWIbRvcmUbWhdECIRhekWJEL08bXbWRqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774502339; c=relaxed/simple;
-	bh=ZxR9g+zCxK8pArCJ7PTFR8axACYwGxTDHOn4nO9U1U8=;
+	bh=WXpYpK3yhKn2sm0AMqrjWN6OL03+heVozAsWmGdd/6M=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=E/8eTRKiDWbqEAHg9dGbMTH9PDAwhFLpPaMAMJ4cBqLpRCokZKl4IEtCQ9MLVx/eWPZ70CDXeNpIhveWxG7DkBTGNqIkkdtJwmBI48e57+EnfDTcjMeql+MH3jpDfllwMi7H2ykPVaIpfboDQco+lne6ygFuMWT9Mm/jrvxktOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OEn/zSbu; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=O7oMkCo4D6V+iPADrB5e4ln2CLls8+7+Az9ZVEQcDTX2rg+oVAlmPVgaSARqW/Pk8WuGkNACXAOPHhxtttLbfxqAtMojFlc3U9pTQM4S2qoZU9FZH4ZfAnZol86s3YJovuy1vPio+yGjGBF4nizpVGZwggKW1p7Jl9IjgBPBegE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CMgVwr6z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OEn/zSbu"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 4722EC2BCB2;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CMgVwr6z"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 663ADC2BCB6;
 	Thu, 26 Mar 2026 05:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1774502339;
-	bh=ZxR9g+zCxK8pArCJ7PTFR8axACYwGxTDHOn4nO9U1U8=;
+	bh=WXpYpK3yhKn2sm0AMqrjWN6OL03+heVozAsWmGdd/6M=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=OEn/zSbuLWAqDs7LnTNsxTluRfu9aP8df5/l/ORq7XVZLeMg4nCLfaLafAdOm6xcn
-	 06AuBcM/axg0e3oH1nua/Vn/rvUFetXmIdOsEcreNhMuZEFx31rIhfBQBjFcTg4EL8
-	 jWLH5WNynLCZMtYGRnqeSeRDLtmjhoVr4ysAWwnPuF9pIFxoRrImYayKs+VsT0X/m1
-	 3Yc/Wlg0nj+c5fUNU/W3V76qGJHpZwjNvG4O3sxbg6+D+VLCtj17wMEf+xK+oW/H4p
-	 rKmDfSNt3qlYDRaj6TYWqEyiqebZdyYRx1vN7MUj5fjV5dxrapqgguvalP0gvLX8JQ
-	 tocRoCCChSb2Q==
+	b=CMgVwr6zvHiMBPYvnarXKD4unJXle9+gHNHUiJA+7tUAgCh+cKV1dNfj7RUhnp2wJ
+	 YWr2tBpspjmw9ZKyTekh43Qk6wIJ3S3Hq7vHL0nvIqfgOBONo6wzGrfUcDpkn/SA9V
+	 DiVBGNTYXNBK/fFU8w0DtTFKqidAK4z2cjuFth/IyNytO458z2pFnd8+li3Q1lDWAC
+	 4p97DSZtqnUIKATnwxgj+14jtaV5XRMfakUazT0ngQ/AKelfMYolzJUq2RdzTwpvL3
+	 5I0Z7fC4dF0oLDTlkXAKKZFMX1+XyMppGyN7wazTpjsHCNMFWTzfpQj26qyMNbGq2d
+	 aQcj9Coucm2cQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F96B109E536;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5DACA109E552;
 	Thu, 26 Mar 2026 05:18:59 +0000 (UTC)
 From: Satish Kharat via B4 Relay <devnull+satishkh.cisco.com@kernel.org>
-Date: Wed, 25 Mar 2026 22:19:01 -0700
-Subject: [PATCH net-next v2 3/6] enic: detect SR-IOV VF type from PCI
- capability
+Date: Wed, 25 Mar 2026 22:19:03 -0700
+Subject: [PATCH net-next v2 5/6] enic: add type-aware alloc for WQ, RQ, CQ
+ and INTR resources
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260325-enic-sriov-v2-prep-v2-3-f72cf716ebfa@cisco.com>
+Message-Id: <20260325-enic-sriov-v2-prep-v2-5-f72cf716ebfa@cisco.com>
 References: <20260325-enic-sriov-v2-prep-v2-0-f72cf716ebfa@cisco.com>
 In-Reply-To: <20260325-enic-sriov-v2-prep-v2-0-f72cf716ebfa@cisco.com>
 To: Satish Kharat <satishkh@cisco.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -49,11 +49,11 @@ To: Satish Kharat <satishkh@cisco.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1774502338; l=3365;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774502338; l=10146;
  i=satishkh@cisco.com; h=from:subject:message-id;
- bh=EHjug9jFvuqtjK7rgKqTb+ZxcNgtnQ9ViaQc7HzlDNE=;
- b=AD0i77XBku6AEiTk8t2xkYir/gIjsd+fXx33Dw+/aSvAoL7RtiUjMV2ymSZWUddEPfCfux/yC
- q9l8UMp/3BDAoM1M835/mWX+uB0Jd9nf0RmRbbj2QmHcY9qSaA1A3fN
+ bh=sStTy9Bg8r3IiBcBVUP3bIWBVt484dhT5KCgXRyPs1c=;
+ b=1AeXR4Qe9/ZzOao/5zi5lVsMQHeeotUIF0pvS5hbFaIBl3HripGofdvwNjDQ0nkMzgrcKVGlA
+ bIc4m0IH19RBBTTv4HvaHXzwMSJ4Wf4XOEAhZr0cQdAjdtOV7Gd12xj
 X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
  pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
 X-Endpoint-Received: by B4 Relay for satishkh@cisco.com/default with
@@ -63,110 +63,229 @@ Reply-To: satishkh@cisco.com
 
 From: Satish Kharat <satishkh@cisco.com>
 
-Read the VF device ID from the SR-IOV PCI capability at probe time to
-determine whether the PF is configured for V1, USNIC, or V2 virtual
-functions. Store the result in enic->vf_type for use by subsequent
-SR-IOV operations.
+The existing vnic_wq_alloc(), vnic_rq_alloc(), vnic_cq_alloc() and
+vnic_intr_alloc() hardcode data-path resource types (RES_TYPE_WQ,
+RES_TYPE_RQ, RES_TYPE_CQ, RES_TYPE_INTR_CTRL). The upcoming admin
+channel uses different BAR resource types (RES_TYPE_ADMIN_WQ/RQ/CQ,
+RES_TYPE_SRIOV_INTR) for its queues.
 
-The VF type is a firmware-configured property (set via UCSM, CIMC,
-Intersight etc) that is immutable from the driver's perspective. Only
-PFs are probed for this capability; VFs and dynamic vnics skip
-detection.
+Add _with_type() variants that accept an explicit resource type
+parameter. Refactor the original functions as thin wrappers that
+pass the default data-path type. No functional change.
 
 Signed-off-by: Satish Kharat <satishkh@cisco.com>
 ---
- drivers/net/ethernet/cisco/enic/enic.h      |  8 +++++++
- drivers/net/ethernet/cisco/enic/enic_main.c | 37 +++++++++++++++++++++++++++++
- 2 files changed, 45 insertions(+)
+ drivers/net/ethernet/cisco/enic/vnic_cq.c   | 14 +++++++++++---
+ drivers/net/ethernet/cisco/enic/vnic_cq.h   |  3 +++
+ drivers/net/ethernet/cisco/enic/vnic_intr.c | 12 +++++++++---
+ drivers/net/ethernet/cisco/enic/vnic_intr.h |  2 ++
+ drivers/net/ethernet/cisco/enic/vnic_rq.c   | 14 +++++++++++---
+ drivers/net/ethernet/cisco/enic/vnic_rq.h   |  3 +++
+ drivers/net/ethernet/cisco/enic/vnic_wq.c   | 14 +++++++++++---
+ drivers/net/ethernet/cisco/enic/vnic_wq.h   |  3 +++
+ 8 files changed, 53 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/cisco/enic/enic.h b/drivers/net/ethernet/cisco/enic/enic.h
-index 366c65d072fc..0fd9cd917132 100644
---- a/drivers/net/ethernet/cisco/enic/enic.h
-+++ b/drivers/net/ethernet/cisco/enic/enic.h
-@@ -225,6 +225,13 @@ struct enic_rq {
- 	struct page_pool *pool;
- } ____cacheline_aligned;
- 
-+enum enic_vf_type {
-+	ENIC_VF_TYPE_NONE,
-+	ENIC_VF_TYPE_V1,
-+	ENIC_VF_TYPE_USNIC,
-+	ENIC_VF_TYPE_V2,
-+};
-+
- /* Per-instance private data structure */
- struct enic {
- 	struct net_device *netdev;
-@@ -252,6 +259,7 @@ struct enic {
- #ifdef CONFIG_PCI_IOV
- 	u16 num_vfs;
- #endif
-+	enum enic_vf_type vf_type;
- 	spinlock_t enic_api_lock;
- 	bool enic_api_busy;
- 	struct enic_port_profile *pp;
-diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
-index e16dfbcd2c22..acd05350ec1a 100644
---- a/drivers/net/ethernet/cisco/enic/enic_main.c
-+++ b/drivers/net/ethernet/cisco/enic/enic_main.c
-@@ -67,6 +67,7 @@
- #define PCI_DEVICE_ID_CISCO_VIC_ENET_DYN     0x0044  /* enet dynamic vnic */
- #define PCI_DEVICE_ID_CISCO_VIC_ENET_VF      0x0071  /* enet SRIOV VF */
- #define PCI_DEVICE_ID_CISCO_VIC_ENET_VF_V2   0x02b7  /* enet SRIOV V2 VF */
-+#define PCI_DEVICE_ID_CISCO_VIC_ENET_VF_USNIC 0x00cf /* enet USNIC VF */
- 
- /* Supported devices */
- static const struct pci_device_id enic_id_table[] = {
-@@ -2621,6 +2622,41 @@ static void enic_iounmap(struct enic *enic)
- 			iounmap(enic->bar[i].vaddr);
+diff --git a/drivers/net/ethernet/cisco/enic/vnic_cq.c b/drivers/net/ethernet/cisco/enic/vnic_cq.c
+index 27c885e91552..5a0dbb816223 100644
+--- a/drivers/net/ethernet/cisco/enic/vnic_cq.c
++++ b/drivers/net/ethernet/cisco/enic/vnic_cq.c
+@@ -20,13 +20,14 @@ void vnic_cq_free(struct vnic_cq *cq)
+ 	cq->ctrl = NULL;
  }
  
-+#ifdef CONFIG_PCI_IOV
-+static void enic_sriov_detect_vf_type(struct enic *enic)
-+{
-+	struct pci_dev *pdev = enic->pdev;
-+	int pos;
-+	u16 vf_dev_id;
-+
-+	if (enic_is_sriov_vf(enic) || enic_is_dynamic(enic))
-+		return;
-+
-+	pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_SRIOV);
-+	if (!pos) {
-+		enic->vf_type = ENIC_VF_TYPE_NONE;
-+		return;
-+	}
-+
-+	pci_read_config_word(pdev, pos + PCI_SRIOV_VF_DID, &vf_dev_id);
-+
-+	switch (vf_dev_id) {
-+	case PCI_DEVICE_ID_CISCO_VIC_ENET_VF:
-+		enic->vf_type = ENIC_VF_TYPE_V1;
-+		break;
-+	case PCI_DEVICE_ID_CISCO_VIC_ENET_VF_USNIC:
-+		enic->vf_type = ENIC_VF_TYPE_USNIC;
-+		break;
-+	case PCI_DEVICE_ID_CISCO_VIC_ENET_VF_V2:
-+		enic->vf_type = ENIC_VF_TYPE_V2;
-+		break;
-+	default:
-+		enic->vf_type = ENIC_VF_TYPE_NONE;
-+		break;
-+	}
-+}
-+#endif
-+
- static int enic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+-int vnic_cq_alloc(struct vnic_dev *vdev, struct vnic_cq *cq, unsigned int index,
+-	unsigned int desc_count, unsigned int desc_size)
++int vnic_cq_alloc_with_type(struct vnic_dev *vdev, struct vnic_cq *cq,
++			    unsigned int index, unsigned int desc_count,
++			    unsigned int desc_size, unsigned int res_type)
  {
- 	struct device *dev = &pdev->dev;
-@@ -2734,6 +2770,7 @@ static int enic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 			num_pps = enic->num_vfs;
- 		}
- 	}
-+	enic_sriov_detect_vf_type(enic);
- #endif
+ 	cq->index = index;
+ 	cq->vdev = vdev;
  
- 	/* Allocate structure for port profiles */
+-	cq->ctrl = vnic_dev_get_res(vdev, RES_TYPE_CQ, index);
++	cq->ctrl = vnic_dev_get_res(vdev, res_type, index);
+ 	if (!cq->ctrl) {
+ 		vdev_err(vdev, "Failed to hook CQ[%d] resource\n", index);
+ 		return -EINVAL;
+@@ -35,6 +36,13 @@ int vnic_cq_alloc(struct vnic_dev *vdev, struct vnic_cq *cq, unsigned int index,
+ 	return vnic_dev_alloc_desc_ring(vdev, &cq->ring, desc_count, desc_size);
+ }
+ 
++int vnic_cq_alloc(struct vnic_dev *vdev, struct vnic_cq *cq, unsigned int index,
++		  unsigned int desc_count, unsigned int desc_size)
++{
++	return vnic_cq_alloc_with_type(vdev, cq, index, desc_count, desc_size,
++				       RES_TYPE_CQ);
++}
++
+ void vnic_cq_init(struct vnic_cq *cq, unsigned int flow_control_enable,
+ 	unsigned int color_enable, unsigned int cq_head, unsigned int cq_tail,
+ 	unsigned int cq_tail_color, unsigned int interrupt_enable,
+diff --git a/drivers/net/ethernet/cisco/enic/vnic_cq.h b/drivers/net/ethernet/cisco/enic/vnic_cq.h
+index 0e37f5d5e527..d46d4d2ef6bb 100644
+--- a/drivers/net/ethernet/cisco/enic/vnic_cq.h
++++ b/drivers/net/ethernet/cisco/enic/vnic_cq.h
+@@ -73,6 +73,9 @@ static inline void vnic_cq_inc_to_clean(struct vnic_cq *cq)
+ void vnic_cq_free(struct vnic_cq *cq);
+ int vnic_cq_alloc(struct vnic_dev *vdev, struct vnic_cq *cq, unsigned int index,
+ 	unsigned int desc_count, unsigned int desc_size);
++int vnic_cq_alloc_with_type(struct vnic_dev *vdev, struct vnic_cq *cq,
++			    unsigned int index, unsigned int desc_count,
++			    unsigned int desc_size, unsigned int res_type);
+ void vnic_cq_init(struct vnic_cq *cq, unsigned int flow_control_enable,
+ 	unsigned int color_enable, unsigned int cq_head, unsigned int cq_tail,
+ 	unsigned int cq_tail_color, unsigned int interrupt_enable,
+diff --git a/drivers/net/ethernet/cisco/enic/vnic_intr.c b/drivers/net/ethernet/cisco/enic/vnic_intr.c
+index 25319f072a04..010ad8c2108d 100644
+--- a/drivers/net/ethernet/cisco/enic/vnic_intr.c
++++ b/drivers/net/ethernet/cisco/enic/vnic_intr.c
+@@ -19,13 +19,13 @@ void vnic_intr_free(struct vnic_intr *intr)
+ 	intr->ctrl = NULL;
+ }
+ 
+-int vnic_intr_alloc(struct vnic_dev *vdev, struct vnic_intr *intr,
+-	unsigned int index)
++int vnic_intr_alloc_with_type(struct vnic_dev *vdev, struct vnic_intr *intr,
++			      unsigned int index, unsigned int res_type)
+ {
+ 	intr->index = index;
+ 	intr->vdev = vdev;
+ 
+-	intr->ctrl = vnic_dev_get_res(vdev, RES_TYPE_INTR_CTRL, index);
++	intr->ctrl = vnic_dev_get_res(vdev, res_type, index);
+ 	if (!intr->ctrl) {
+ 		vdev_err(vdev, "Failed to hook INTR[%d].ctrl resource\n",
+ 			 index);
+@@ -35,6 +35,12 @@ int vnic_intr_alloc(struct vnic_dev *vdev, struct vnic_intr *intr,
+ 	return 0;
+ }
+ 
++int vnic_intr_alloc(struct vnic_dev *vdev, struct vnic_intr *intr,
++		    unsigned int index)
++{
++	return vnic_intr_alloc_with_type(vdev, intr, index, RES_TYPE_INTR_CTRL);
++}
++
+ void vnic_intr_init(struct vnic_intr *intr, u32 coalescing_timer,
+ 	unsigned int coalescing_type, unsigned int mask_on_assertion)
+ {
+diff --git a/drivers/net/ethernet/cisco/enic/vnic_intr.h b/drivers/net/ethernet/cisco/enic/vnic_intr.h
+index 33a72aa10b26..2bc2dbffdb80 100644
+--- a/drivers/net/ethernet/cisco/enic/vnic_intr.h
++++ b/drivers/net/ethernet/cisco/enic/vnic_intr.h
+@@ -89,6 +89,8 @@ static inline u32 vnic_intr_legacy_pba(u32 __iomem *legacy_pba)
+ void vnic_intr_free(struct vnic_intr *intr);
+ int vnic_intr_alloc(struct vnic_dev *vdev, struct vnic_intr *intr,
+ 	unsigned int index);
++int vnic_intr_alloc_with_type(struct vnic_dev *vdev, struct vnic_intr *intr,
++			      unsigned int index, unsigned int res_type);
+ void vnic_intr_init(struct vnic_intr *intr, u32 coalescing_timer,
+ 	unsigned int coalescing_type, unsigned int mask_on_assertion);
+ void vnic_intr_coalescing_timer_set(struct vnic_intr *intr,
+diff --git a/drivers/net/ethernet/cisco/enic/vnic_rq.c b/drivers/net/ethernet/cisco/enic/vnic_rq.c
+index 5ae80551f17c..a662d9fd1199 100644
+--- a/drivers/net/ethernet/cisco/enic/vnic_rq.c
++++ b/drivers/net/ethernet/cisco/enic/vnic_rq.c
+@@ -69,15 +69,16 @@ void vnic_rq_free(struct vnic_rq *rq)
+ 	rq->ctrl = NULL;
+ }
+ 
+-int vnic_rq_alloc(struct vnic_dev *vdev, struct vnic_rq *rq, unsigned int index,
+-	unsigned int desc_count, unsigned int desc_size)
++int vnic_rq_alloc_with_type(struct vnic_dev *vdev, struct vnic_rq *rq,
++			    unsigned int index, unsigned int desc_count,
++			    unsigned int desc_size, unsigned int res_type)
+ {
+ 	int err;
+ 
+ 	rq->index = index;
+ 	rq->vdev = vdev;
+ 
+-	rq->ctrl = vnic_dev_get_res(vdev, RES_TYPE_RQ, index);
++	rq->ctrl = vnic_dev_get_res(vdev, res_type, index);
+ 	if (!rq->ctrl) {
+ 		vdev_err(vdev, "Failed to hook RQ[%d] resource\n", index);
+ 		return -EINVAL;
+@@ -98,6 +99,13 @@ int vnic_rq_alloc(struct vnic_dev *vdev, struct vnic_rq *rq, unsigned int index,
+ 	return 0;
+ }
+ 
++int vnic_rq_alloc(struct vnic_dev *vdev, struct vnic_rq *rq, unsigned int index,
++		  unsigned int desc_count, unsigned int desc_size)
++{
++	return vnic_rq_alloc_with_type(vdev, rq, index, desc_count, desc_size,
++				       RES_TYPE_RQ);
++}
++
+ static void vnic_rq_init_start(struct vnic_rq *rq, unsigned int cq_index,
+ 	unsigned int fetch_index, unsigned int posted_index,
+ 	unsigned int error_interrupt_enable,
+diff --git a/drivers/net/ethernet/cisco/enic/vnic_rq.h b/drivers/net/ethernet/cisco/enic/vnic_rq.h
+index a1cdd729caec..9fc2090eac44 100644
+--- a/drivers/net/ethernet/cisco/enic/vnic_rq.h
++++ b/drivers/net/ethernet/cisco/enic/vnic_rq.h
+@@ -196,6 +196,9 @@ static inline int vnic_rq_fill(struct vnic_rq *rq,
+ void vnic_rq_free(struct vnic_rq *rq);
+ int vnic_rq_alloc(struct vnic_dev *vdev, struct vnic_rq *rq, unsigned int index,
+ 	unsigned int desc_count, unsigned int desc_size);
++int vnic_rq_alloc_with_type(struct vnic_dev *vdev, struct vnic_rq *rq,
++			    unsigned int index, unsigned int desc_count,
++			    unsigned int desc_size, unsigned int res_type);
+ void vnic_rq_init(struct vnic_rq *rq, unsigned int cq_index,
+ 	unsigned int error_interrupt_enable,
+ 	unsigned int error_interrupt_offset);
+diff --git a/drivers/net/ethernet/cisco/enic/vnic_wq.c b/drivers/net/ethernet/cisco/enic/vnic_wq.c
+index 29c7900349b2..5a20bdc62141 100644
+--- a/drivers/net/ethernet/cisco/enic/vnic_wq.c
++++ b/drivers/net/ethernet/cisco/enic/vnic_wq.c
+@@ -72,15 +72,16 @@ void vnic_wq_free(struct vnic_wq *wq)
+ 	wq->ctrl = NULL;
+ }
+ 
+-int vnic_wq_alloc(struct vnic_dev *vdev, struct vnic_wq *wq, unsigned int index,
+-	unsigned int desc_count, unsigned int desc_size)
++int vnic_wq_alloc_with_type(struct vnic_dev *vdev, struct vnic_wq *wq,
++			    unsigned int index, unsigned int desc_count,
++			    unsigned int desc_size, unsigned int res_type)
+ {
+ 	int err;
+ 
+ 	wq->index = index;
+ 	wq->vdev = vdev;
+ 
+-	wq->ctrl = vnic_dev_get_res(vdev, RES_TYPE_WQ, index);
++	wq->ctrl = vnic_dev_get_res(vdev, res_type, index);
+ 	if (!wq->ctrl) {
+ 		vdev_err(vdev, "Failed to hook WQ[%d] resource\n", index);
+ 		return -EINVAL;
+@@ -101,6 +102,13 @@ int vnic_wq_alloc(struct vnic_dev *vdev, struct vnic_wq *wq, unsigned int index,
+ 	return 0;
+ }
+ 
++int vnic_wq_alloc(struct vnic_dev *vdev, struct vnic_wq *wq, unsigned int index,
++		  unsigned int desc_count, unsigned int desc_size)
++{
++	return vnic_wq_alloc_with_type(vdev, wq, index, desc_count, desc_size,
++				       RES_TYPE_WQ);
++}
++
+ int enic_wq_devcmd2_alloc(struct vnic_dev *vdev, struct vnic_wq *wq,
+ 			  unsigned int desc_count, unsigned int desc_size)
+ {
+diff --git a/drivers/net/ethernet/cisco/enic/vnic_wq.h b/drivers/net/ethernet/cisco/enic/vnic_wq.h
+index 3bb4758100ba..1d448b7a9ba2 100644
+--- a/drivers/net/ethernet/cisco/enic/vnic_wq.h
++++ b/drivers/net/ethernet/cisco/enic/vnic_wq.h
+@@ -165,6 +165,9 @@ static inline void vnic_wq_service(struct vnic_wq *wq,
+ void vnic_wq_free(struct vnic_wq *wq);
+ int vnic_wq_alloc(struct vnic_dev *vdev, struct vnic_wq *wq, unsigned int index,
+ 	unsigned int desc_count, unsigned int desc_size);
++int vnic_wq_alloc_with_type(struct vnic_dev *vdev, struct vnic_wq *wq,
++			    unsigned int index, unsigned int desc_count,
++			    unsigned int desc_size, unsigned int res_type);
+ void vnic_wq_init(struct vnic_wq *wq, unsigned int cq_index,
+ 	unsigned int error_interrupt_enable,
+ 	unsigned int error_interrupt_offset);
 
 -- 
 2.43.0
