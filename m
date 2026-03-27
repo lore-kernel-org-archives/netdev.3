@@ -1,57 +1,57 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E57D3C3C1F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D0F2D73AE
 	for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 07:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774596169; cv=none; b=d+ZDUZVpLyFviwJ23lwNHpjkE1ufqMUFRT5XZFk5U1Mon1HsSZ6jYgPk/scypXE1ju3l5vM+gHzvcs/in+nTZV1mYK1WtvkZC0ow6VZIRw+kfXfbYE6EuxnSfbay4hJsjluaGuRrwvNJUmexfZo+ODfnxpvSaID6SrAw2plhRVE=
+	t=1774596169; cv=none; b=AEsf571/HVqeoHViiJ+qnE6KkXS1+3przL6/A6E8aof/T304Sj60P2zrMjFS5arRrYPNOI6aTsKORhlgqMM5ncijqZt0rEo3fVnsYCxp5jGqsFROEPuiwaDdshDdDOQUxuRuVkSOokhWGl+OPLgg4AIXsSD5WE4sSJl0Xjb7Llk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774596169; c=relaxed/simple;
-	bh=w2upXb+/H60kPmK6DnYQqP0hkeIBg/73pYuChVl8Uno=;
+	bh=NPzE/oAt4YAyOSuZTJ7ABZ8cwWD0xhoFinLo3gs+8r8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dzHMDCWmadmqrBvJ7PC5QdexVX7Vpo9Z7S9FiZRzk1pcMj/uBYa+LT6up4quHpvI2a/IEurFie5rJolEhHlFhOgoyUbweCE0vR17raLMHXJWQC6MHaad6RObKOTHWGbyP1Pcv4e3t5KoANfNg/HHQRtYxSGaBAmtL8Q0wcrZeQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lWbu+1Lz; arc=none smtp.client-ip=192.198.163.18
+	 MIME-Version; b=pZMem8OpRSpwkBSxqreetK6tITzqc8gWeICa7Cw0XafkhEaEu9q3OY6M+JoIgweI92LNViXEelyeYWG7HXfe+HjJTRLmx/1xP+eZIotC8XXsBqHtVeMvdIRHCZYS60wdFoPPIMB+08adyhZPw8PvRC5YZUgpAk+BEuvzAfLDd5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B3jRB//M; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lWbu+1Lz"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B3jRB//M"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1774596164; x=1806132164;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=w2upXb+/H60kPmK6DnYQqP0hkeIBg/73pYuChVl8Uno=;
-  b=lWbu+1LzBgT4jBaT6CU9ldKKjIz/OeWaOYnFoSuwdnJJYwUW3grJJk8/
-   iqOtFkLXukyyPmjLjlnWd6ixE9qNGAjyWgH1A3w1yVId2+1Pn4e3gA3KD
-   qrOY6OcRVsMkj6ax22GDEhhUBLgXQTlonGG012In06CZGoH3ijxPk1cxb
-   ZseL/KMT9ohv1ahFuDKFFtds4e4ToZjFNs8nMS0IehMO1kTDoqU1eAihn
-   d2v6Bsbdv+rWPq2Gz+1aA+8YobUaPD9FbtXZXnr9EIYEKOwxT9UE45zdT
-   waj4Nt7kMQ4xX2h+n6uVd4VfISWuoaEYRsmPuL25b6LE+M1t05YetOpt1
-   A==;
-X-CSE-ConnectionGUID: 6HaLFj6fR5SF//EdF4ZeWA==
-X-CSE-MsgGUID: QsP+sR5zTa2UaqfFWWvZzQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="74848622"
+  bh=NPzE/oAt4YAyOSuZTJ7ABZ8cwWD0xhoFinLo3gs+8r8=;
+  b=B3jRB//MZnYLR8AXH2/xfTvyLUZFeOBiCkkI4TlXRyFboXT1sQe48ymi
+   76ggW+HUWHk9Jo2dF5wjJj0Mc2gToSVoIVK7urkujw+PtgNoM3hNcswmF
+   BW7GI8YuqvrChb3uG6aOj5H1S0xlp2TqeqMzpFUne+fyigpTHuycOfWMP
+   0dXqHEexy0Oam4grXmUZoEuI6UvUcOlx9ecZapBqiY98GmxZIDG6K5ePn
+   f7UKztLkPeJZw1C1l8lnzTt/MawH+DNjo1Ev44dSr1LUvIbdoIgm8ku53
+   JDpx+DIuXKt1NC/LSUSkljejzhw7HEKdAfH78jcBki7ImoqzXlsf+O9V5
+   w==;
+X-CSE-ConnectionGUID: RthIeBKWQ1KbtF1CfRey4Q==
+X-CSE-MsgGUID: k7pyyFD6TteKERT1OUfWSA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="74848619"
 X-IronPort-AV: E=Sophos;i="6.23,143,1770624000"; 
-   d="scan'208";a="74848622"
+   d="scan'208";a="74848619"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 00:22:44 -0700
-X-CSE-ConnectionGUID: fRdz4TeRRHCLC1x9Iuc8AQ==
-X-CSE-MsgGUID: +3mJ6Il0QLyrFUxb1tDM7w==
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 00:22:42 -0700
+X-CSE-ConnectionGUID: 955Bkq6PQkykoS+cUp64Ng==
+X-CSE-MsgGUID: t9hH/tsHQxWCvK2Q9LqugQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,143,1770624000"; 
-   d="scan'208";a="222359644"
+   d="scan'208";a="222359563"
 Received: from amlin-019-225.igk.intel.com ([10.102.19.225])
-  by fmviesa008.fm.intel.com with ESMTP; 27 Mar 2026 00:22:43 -0700
+  by fmviesa008.fm.intel.com with ESMTP; 27 Mar 2026 00:22:41 -0700
 From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 To: intel-wired-lan@lists.osuosl.org,
 	anthony.l.nguyen@intel.com,
 	aleksandr.loktionov@intel.com
 Cc: netdev@vger.kernel.org,
-	Marcin Szycik <marcin.szycik@intel.com>
-Subject: [PATCH iwl-next] ice: call netif_keep_dst() once when entering switchdev mode
-Date: Fri, 27 Mar 2026 08:22:36 +0100
-Message-ID: <20260327072236.129802-5-aleksandr.loktionov@intel.com>
+	Lukasz Czapnik <lukasz.czapnik@intel.com>
+Subject: [PATCH iwl-next] ice: fix AQ error code comparison in ice_set_pauseparam()
+Date: Fri, 27 Mar 2026 08:22:35 +0100
+Message-ID: <20260327072236.129802-4-aleksandr.loktionov@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260327072236.129802-1-aleksandr.loktionov@intel.com>
 References: <20260327072236.129802-1-aleksandr.loktionov@intel.com>
@@ -63,42 +63,76 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Marcin Szycik <marcin.szycik@intel.com>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-netif_keep_dst() only needs to be called once for the uplink VSI, not
-once for each port representor.  Move it from ice_eswitch_setup_repr()
-to ice_eswitch_enable_switchdev().
+Fix unreachable code: the conditionals in ice_set_pauseparam() used
+the bitwise-AND operator suggesting aq_failures is a bitmap, but it
+is actually an enum, making the third condition logically unreachable.
 
-Fixes: defd52455aee ("ice: do Tx through PF netdev in slow-path")
-Signed-off-by: Marcin Szycik <marcin.szycik@intel.com>
+Replace the if-else ladder with a switch statement.  Also move the
+aq_failures initialization to the variable declaration and remove the
+redundant zeroing from ice_set_fc().
+
+Fixes: fcea6f3da546 ("ice: Add stats and ethtool support")
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
 Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 ---
 
- drivers/net/ethernet/intel/ice/ice_eswitch.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_common.c  |  1 -
+ drivers/net/ethernet/intel/ice/ice_ethtool.c | 12 ++++++++----
+ 2 files changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_eswitch.c b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-index 2e4f096..c30e27b 100644
---- a/drivers/net/ethernet/intel/ice/ice_eswitch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-@@ -117,8 +117,6 @@ static int ice_eswitch_setup_repr(struct ice_pf *pf, struct ice_repr *repr)
- 	if (!repr->dst)
- 		return -ENOMEM;
+diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
+index f1a6601..6dad7d4 100644
+--- a/drivers/net/ethernet/intel/ice/ice_common.c
++++ b/drivers/net/ethernet/intel/ice/ice_common.c
+@@ -3883,7 +3883,6 @@ ice_set_fc(struct ice_port_info *pi, u8 *aq_failures, bool ena_auto_link_update)
+ 	if (!pi || !aq_failures)
+ 		return -EINVAL;
  
--	netif_keep_dst(uplink_vsi->netdev);
--
- 	dst = repr->dst;
- 	dst->u.port_info.port_id = vsi->vsi_num;
- 	dst->u.port_info.lower_dev = uplink_vsi->netdev;
-@@ -312,6 +310,8 @@ static int ice_eswitch_enable_switchdev(struct ice_pf *pf)
- 	if (ice_eswitch_br_offloads_init(pf))
- 		goto err_br_offloads;
+-	*aq_failures = 0;
+ 	hw = pi->hw;
  
-+	netif_keep_dst(uplink_vsi->netdev);
-+
- 	pf->eswitch.is_running = true;
+ 	pcaps = kzalloc_obj(*pcaps);
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+index 2a4f06f..0cf064c 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+@@ -3501,7 +3501,7 @@ ice_set_pauseparam(struct net_device *netdev, struct ethtool_pauseparam *pause)
+ 	struct ice_vsi *vsi = np->vsi;
+ 	struct ice_hw *hw = &pf->hw;
+ 	struct ice_port_info *pi;
+-	u8 aq_failures;
++	u8 aq_failures = 0;
+ 	bool link_up;
+ 	u32 is_an;
+ 	int err;
+@@ -3572,18 +3572,22 @@ ice_set_pauseparam(struct net_device *netdev, struct ethtool_pauseparam *pause)
+ 	/* Set the FC mode and only restart AN if link is up */
+ 	err = ice_set_fc(pi, &aq_failures, link_up);
  
- 	return 0;
+-	if (aq_failures & ICE_SET_FC_AQ_FAIL_GET) {
++	switch (aq_failures) {
++	case ICE_SET_FC_AQ_FAIL_GET:
+ 		netdev_info(netdev, "Set fc failed on the get_phy_capabilities call with err %d aq_err %s\n",
+ 			    err, libie_aq_str(hw->adminq.sq_last_status));
+ 		err = -EAGAIN;
+-	} else if (aq_failures & ICE_SET_FC_AQ_FAIL_SET) {
++		break;
++	case ICE_SET_FC_AQ_FAIL_SET:
+ 		netdev_info(netdev, "Set fc failed on the set_phy_config call with err %d aq_err %s\n",
+ 			    err, libie_aq_str(hw->adminq.sq_last_status));
+ 		err = -EAGAIN;
+-	} else if (aq_failures & ICE_SET_FC_AQ_FAIL_UPDATE) {
++		break;
++	case ICE_SET_FC_AQ_FAIL_UPDATE:
+ 		netdev_info(netdev, "Set fc failed on the get_link_info call with err %d aq_err %s\n",
+ 			    err, libie_aq_str(hw->adminq.sq_last_status));
+ 		err = -EAGAIN;
++		break;
+ 	}
+ 
+ 	return err;
 -- 
 2.52.0
 
