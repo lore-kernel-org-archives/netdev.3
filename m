@@ -1,149 +1,237 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010002.outbound.protection.outlook.com [52.101.61.2])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254924594A
-	for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 15:35:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774625741; cv=none; b=qZs6jPct936kUcuqxQpWZvjGchYqxVMhVIv1gl5KHbBjJMgTEP8v9OU1OffI96hQVvEPXj/dGYxaQKWQVI5tR1Msw3c0tzhpx2OJnXMjFZthn9JJkhnKBLx/dC3OGjVrkYDpUxI/44VVgDKok6SqXRyH17cRELrbyRsnnuGE5gE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774625741; c=relaxed/simple;
-	bh=9tGnF2uOc24xA7oV6IGN3IfFS2WdAyzc+CjZ1Y3zCpo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BqRiJ0QGc9g4Ex+m2ZMzSMxS3slF83KFkwTMKam4lap0WaEkR8Y+hH/4NH4eZXp724f0mgfyGG4tpi7rW25IunfF41ZbGoYqWG8jE/4ntZLiQSPQPchkPS9Luy7075PCS6lR5WKbbKmy3LNCp7DBXHwsWKImfTWqHWhfqYaDsUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rFpI+8VL; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2D92DF156;
+	Fri, 27 Mar 2026 15:35:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.2
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774625745; cv=fail; b=qmvrZFwoM9PVn2nc6l9pDZR7+U18c6tX1/UmmGgMVt06Vv6Os4REoEmdiE/f6N8aKOoJVE1Ec19W6x3X3fXKxX1A+8I4l1aaHzJxxfCner0UONTc0NSh31sRN/AdQSS8QzPA9i5SgIYMTG1m9yCJzFTZVRPydwUtUt0kkCoq5Bo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774625745; c=relaxed/simple;
+	bh=mSdM94IOKvG12w0tUcrW1gmy8TKZJ6E5azly5UQ/4lY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=e8knlRCLQRS7qPcjDCpgbR6hEO+Vhx2fFzQcTnMwZKxjHapDNa+zaZ4l5cUM+9iiZQR1ka41YthTxw6ArE+kinMSszNR4oPk5QjR+/KCCCZmXD9RL7tF0JTJ/g8hsoTNfX2Tzi1rMxRHREgYyvq8Sqze7lPjsxUsVebH5JaREbc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=HYIlDdGH; arc=fail smtp.client-ip=52.101.61.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rFpI+8VL"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2b0c8362d93so11128665ad.3
-        for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 08:35:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774625739; x=1775230539; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IZxaCG2wbeKGdyIyvVHQIkk/pIRMFC2kB/SluPbDe8w=;
-        b=rFpI+8VL7F6a5ufC1OxjJcieJ863sl83DXlAsOJhomBOnFWyqxiKYHumNbx9tLGE3s
-         DtWj77ulvNJvW19xl8bc5zP9rteflTXks2gmIs8xyct8bAdhBcVSUinM0VebaOVRGAZX
-         Tpro4jg9zBQqzGjXJjdIx/5rSudifS2pl3Jdq8WZnMKBFWeCn2oZQMLiF1O2E0FPRfXx
-         ggO3MN6Jthev9sxzkAvVnCn5C3fwQE5Dyk10cupZlLtpKN1rGbiWNsm0+wYYfyGZMlex
-         aLsVgb52Wt4YACNEvd2bDWWBcmkuLK278UoeLlAVKFzFUSozn+UR/bMVjdy4cp7BjRQM
-         t9Ww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774625739; x=1775230539;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=IZxaCG2wbeKGdyIyvVHQIkk/pIRMFC2kB/SluPbDe8w=;
-        b=d522rQF5yzEqAVo1dHqbAe7Slgu+v2jjKUSsXm5jW+InUnboOoD7qimr3zvlXkMXB0
-         O8oRZFa/s1ZjeFjONNSnI5cysD5XLWqyvLxOIz3jTd8exLxkWagEH4opRrGrt/t0K+Lu
-         wpaS+eoxS5EswjUcRcf3WQncD1GeRkeBuzy9NxJTB3m4QNH4CYHPkAVUrER26xc2fHp0
-         DwXz7gtPwnYQslzrDAlFvTy1pmSd/YhKbYUWCVGazNE4dvb9gvaxIWy5IUK4s+tTplQ7
-         wMAcFlQhpMCCqEY6GW4AwW4qfNanCweDnENqht0G6QL6JgrbEo0yD+nQxJeZOLbzjhDO
-         zlVw==
-X-Forwarded-Encrypted: i=1; AJvYcCUNGFd5AAseZTbFkQXIn//4Br2a8zWuJ0AG73mQciFANRHmaxy5388VFdmP82GpRtze8MZY9CY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqORrD3By180X7A1UnjMdJIdSHu3PlaZhYtecwnmIaqcienSfb
-	4qiLBq6D8EYO2zja9U2MOD+Yr1fXoYt02i7Sj51XkVRTsv7d03yaOLKI
-X-Gm-Gg: ATEYQzxWr2JUOR1h9ym9HDlfpBWpG3Wo+sPNKjrM3bDz17DholUyvMWl4D1d6AjKZJx
-	zc754vTLhYXVwmFbvMLaa/4XbjlRwraIatSCwrs81JMAStxI1du3HViuwqU9dwWIeYS1FjDdmW2
-	4rCzRny3xvCN/qz8/WKsN1UHbBLZRWR/zkGfsewYGcxo6RtbilnKt3EG/m4Ix7rijRoURH7Jcgz
-	yBEfcjyuuKE8L3mCgzXhWdxMut5jsWMD0aqnGRkUPB52U0foOduexY204Mn2+G9ivH6vPCML1VE
-	vq8XQkMDWaOYS3iusdva++WlF7TqoThobJEnlSsj7cM+JxxS2y2RXet2KFC9oHxHDsflnHkMCjP
-	dMebsEGnf0RK5im1Xjw/hLapwvIadV0iw6nxm3lJU8g3h24f9NemDK+kovTaJCseNM5V/ra4/gI
-	4Btls5/Ke67/WDOygIYFCxLW6TEGiFUuqzRohN/kIwBgLxbuI8RMbV4hJm6MXaF93Dddvs5hy9Z
-	lpaypdOhbOA3Dwoy5Ssxm5PbEfrnem6QJxo9Bryvd2nmdbsQ92gGPb4E1+ZIxkm21PIUuVedpGK
-	emY8Hfe/3Rg=
-X-Received: by 2002:a17:903:285:b0:2b0:51f6:d468 with SMTP id d9443c01a7336-2b0cdc22e12mr36228035ad.17.1774625739173;
-        Fri, 27 Mar 2026 08:35:39 -0700 (PDT)
-Received: from DellG15.localdomain (2001-b030-8055-ffc7-2d87-7642-b84f-7a21.hinet-ip6.hinet.net. [2001:b030:8055:ffc7:2d87:7642:b84f:7a21])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0bc7afad1sm79099845ad.31.2026.03.27.08.35.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Mar 2026 08:35:38 -0700 (PDT)
-From: Guoyu Su <yss2813483011xxl@gmail.com>
-To: edumazet@google.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: willemdebruijn.kernel@gmail.com,
-	netdev@vger.kernel.org,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzkaller-bugs@googlegroups.com,
-	syzbot+1543a7d954d9c6d00407@syzkaller.appspotmail.com,
-	Guoyu Su <yss2813483011xxl@gmail.com>
-Subject: [PATCH net v7] net: use skb_header_pointer() for TCPv4 GSO frag_off check
-Date: Fri, 27 Mar 2026 23:35:07 +0800
-Message-Id: <20260327153507.39742-1-yss2813483011xxl@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <willemdebruijn.kernel.19f0cde3c6457@gmail.com>
-References: <willemdebruijn.kernel.19f0cde3c6457@gmail.com>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="HYIlDdGH"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AHwkL+knu79h/pWx6o2XNvvzW7DSJNwGTXKqYW5z76xTflVuFpuOi/0DnhpL70KOdCKaaqtSFE5bMmgaTnwJQ7FcUbD7g1Wzsy+MRLw22TpZ10v/Ly8yTA2/szrB1VQ6Y0mJZzpGX3nWO+JhFhdMo3PnhUTrYLBbNdUU6ogyTbNXeOjpiOzQEIB6NWJv2xXSygDY6M30OhDf933K9kHfOF6RAA4lRkfjZJPtRxKJRL/ChMLyLg9f7A0FVtRJARHAALT2BsvhyugKwJcZoQ2hdTfBjVnr3kTG0qiJfY+RbEQQEVbB/CU7Cq9McfSTtfqwxcs3xOYhIsmQCUPnSxZ1JA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VsLDPRQuWnveMMc+04YzyMN04lQBExwFdn5NFqN53Yk=;
+ b=TJU4cXLdWCGQuybEMlIR/XfVDdYxnbkIRVGTQKWD4XScK87/21eKG7etIypo+E289KnNsqR/M07sNSF01s4eaAPFIouKw/x6jmPCW05wCYtTFE79rz9bCl5Tn8IZ5upkZCc/ceQSeGYEKVAx3BQovW3fBUNayMih1s4kEmI3x5MuXFTtGXTRc4IXpI+SKouK7TQ4xLCPNiVivQQ/H+CtCzZMfae3MMxkZ+Q/hilvww0KMScwrjJrc065u6K7y2U4fhhm4D0Kx4yec59eQ6wgyi/U8jpkJCx9tO/7inByTkEVwhABgd/uMWOmj0ZekYOloLIB0djg1DevQ1xGZnULfA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microchip.com; dmarc=pass action=none
+ header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microchip.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VsLDPRQuWnveMMc+04YzyMN04lQBExwFdn5NFqN53Yk=;
+ b=HYIlDdGH8VZtzS+ZEVRE3U+9wKaLdndkYGs7o9rl2PfrcQexfCu//6OP4D86UX8gdWQwtK2p5VIwoc0wKAqSC0qZfoaq6GMQZUmEAZTOPPIX6eTiC5I+/E/VWHhwYHf6ltWzEWj4h7nXNpN42cnjlHWVNpsrZhkgUTXO9feEd5dKW5tKZSzp63opms2FCGcbbTH6R5CMVy8zaBXtFfBXoviMFwwpdQfFOGw8RNPdYmHwcOog2Xsj/56J6Nw4/JN0x9bGuvxk5yd9vY7Ye+IuuwO3KdtDWLTJKx8JRWS6UMxsyMUR9aWE7MhzPkJvGT7OwShjAIeYFdVYN5d3LeBtOQ==
+Received: from CY5PR11MB6462.namprd11.prod.outlook.com (2603:10b6:930:32::10)
+ by PH8PR11MB7990.namprd11.prod.outlook.com (2603:10b6:510:259::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.6; Fri, 27 Mar
+ 2026 15:35:40 +0000
+Received: from CY5PR11MB6462.namprd11.prod.outlook.com
+ ([fe80::10d1:11dd:5088:7559]) by CY5PR11MB6462.namprd11.prod.outlook.com
+ ([fe80::10d1:11dd:5088:7559%5]) with mapi id 15.20.9769.004; Fri, 27 Mar 2026
+ 15:35:40 +0000
+From: <Prathosh.Satish@microchip.com>
+To: <ivecera@redhat.com>, <netdev@vger.kernel.org>
+CC: <arkadiusz.kubalewski@intel.com>, <jiri@resnulli.us>,
+	<mschmidt@redhat.com>, <poros@redhat.com>, <horms@kernel.org>,
+	<vadim.fedorenko@linux.dev>, <linux-kernel@vger.kernel.org>,
+	<conor+dt@kernel.org>, <krzk+dt@kernel.org>, <robh@kernel.org>,
+	<devicetree@vger.kernel.org>, <pvaanane@redhat.com>
+Subject: RE: [PATCH net-next 2/5] dpll: zl3073x: use FIELD_MODIFY() for
+ clear-and-set patterns
+Thread-Topic: [PATCH net-next 2/5] dpll: zl3073x: use FIELD_MODIFY() for
+ clear-and-set patterns
+Thread-Index: AQHct8iojHzy4j+M10abM/1ReuO74bXCjx7g
+Date: Fri, 27 Mar 2026 15:35:39 +0000
+Message-ID:
+ <CY5PR11MB646215070FB6F16391909979EC57A@CY5PR11MB6462.namprd11.prod.outlook.com>
+References: <20260319174826.7623-1-ivecera@redhat.com>
+ <20260319174826.7623-3-ivecera@redhat.com>
+In-Reply-To: <20260319174826.7623-3-ivecera@redhat.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microchip.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CY5PR11MB6462:EE_|PH8PR11MB7990:EE_
+x-ms-office365-filtering-correlation-id: 8b963a21-2ef1-47fc-2f56-08de8c168022
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|1800799024|376014|7416014|38070700021|22082099003|56012099003|18002099003;
+x-microsoft-antispam-message-info:
+ TQBamX1/fhSz+Ntd3DtcOfq6IvtisZfxuWrd0xUe7vybcxHRdZ6gF8viWG0w2wMh+XnJkxTvlIbadh4XshEhYueFraGm1oGAvWKmJh4oysQf6F1x3wAV1QMGvRIKC3r5bwlbJCztuPuokAs7OEyVS1dNAtF7mDlsdvj5Qu8CIwemq1GlZJ7u3mid7hjnvi/iBk01bxuaB35aiV1Jz7jYmE4DIbMlm4X2Tx6pxbFB3Z9fdx4FeNvD0OYVrjQcPyUGTDSiVGhtxGSaVL0yY6MalOhPvbiOGhKWlvefL3lBXwefQWqbBQe2+jg5E+DY40hDzaIg5I50xpFB9vMQ0SlrCDGTmbG2d0xlW0kURYshRpmnj7FfeY19/6YQMVfGleCJhZDjUv2Ek/ZmM/L5VaqgsBnZp9yjDMOGxTrk4WY7CaEfm5ND0GH21+3FlME+9w7scywGj0winxovMDmtDPxBBfdPe2XFWEC00Q01DOyrU24WCSukruk+gC2RhlBgQXDUCWOfPN6VHgNG/I0soHFDYX95zgmGUC0OPsgpEuRcjPauPGDCeXWXHX27tgz7htb8/9B3Ql5u51scRSG/WaOtCJTODMFdkHxqHZpRLELs5Hi0IjnstviU0U03N3C3eh0sTFwuCIQ+4xoTSQoaO5iUypVnQ4TEOQTQibYGHKBFIrV+xdldAip7w+AX41KMooJeDomR059fzo1bXDnrX8ux+KGUqt6pBqc6C2VMj8sYgQIvmPACFdyxVAD9R9ypv6PsKrok4k8/hwIcsbxw9M1e4FV1rTYO5qPijyesRIdoA3A=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR11MB6462.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(38070700021)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?BGHVnbpTrrh3fbL37RR6AOHkzkAZJVm2XhVqL8kDcwo/Q5pKur05nC1Za5Rw?=
+ =?us-ascii?Q?Tce+lg7zRq0ycgacHCs6A+Vc2bdrhGNRmgceoTXNvTJc6Dj+otBRzOuiSX+y?=
+ =?us-ascii?Q?3c5VzEkduA92D1jYStvtZO877pot8ajUOTJ7Vbydjg5rhKbbtq0/0QnQ/xtC?=
+ =?us-ascii?Q?YCTw+rk8uo4JhihLfBFRJFd0UC4RrA3yOmArbwByKYXOIoQ+anaYyArAtSHc?=
+ =?us-ascii?Q?YgvKjZx3gkg9II5tnDE23AmfN3hN2u8NpCto8nsBXLziP3BD0MVOY/xXsQLu?=
+ =?us-ascii?Q?cZ2+tjPa6YzdAQivnLurcWSC+y3/Te12fo+abPAnF+/OHVVNW14Gti+Z1BgP?=
+ =?us-ascii?Q?j0RFT78loVgISFCMTHbvkjp1nyZWVGQTgPdQ+IO+06NiBoUmkruO1OgWxj/E?=
+ =?us-ascii?Q?MWH0qDvWLZXNIp4ieniAuVQCmylzD21bbuOH+nOvfARpZUwGmtlfss7bkq8P?=
+ =?us-ascii?Q?7tPKI1qRw9j2O1l0BuyIylX4LD5oMxWyo7K12oxOUIJHars2rb3IAtHotcWR?=
+ =?us-ascii?Q?0Zv80vAjVB1+xUVFwy7hS1zWYXRvT2l0QCgXxaAFVK1uAs8BeWhcZgP/6mU1?=
+ =?us-ascii?Q?G1TRPDMxJ51bcuQcV8E1BcVLda3dc1P1qFINo+BsNXejXVcfAkHevyMh7aZS?=
+ =?us-ascii?Q?7Ijqe0U3mpPjrX2/toyiI0zQncf0y7q7Qte2iBUWz2kLn+E90vXAXqylETeY?=
+ =?us-ascii?Q?vLABjVLW7eKG+fsZigsiBviqI/Af9DtgbLFTO/+e9co0E9GXLpilzx/Hc7RU?=
+ =?us-ascii?Q?KdgscA8tWcC7ots/1ECPEOF2YO+Xh+yRTlVvCz+DaCfHfQD1ybVGLGhpf53+?=
+ =?us-ascii?Q?EtUUeAh5+fgRmJWgIGy/l/dsnli0ckyrAR5ZFSUs3gkKdSRGUEyJFn9wf5vJ?=
+ =?us-ascii?Q?zX2ReEdL45TIMrd5DK185/miYtR4q3RLyRPFAKuB11t/+8ChrmXRbDwEXWOl?=
+ =?us-ascii?Q?jq8K9+O7lKYnNcSOxJGW+ht+YKSxgKTxBkU4/f11DpkWXtrYSekfFKBYgX0p?=
+ =?us-ascii?Q?ZsVyrQXHRsZX+VuY2gpUf5m1kJajIs5JmQou1bo1R4H85IFWty1ovyY6tTAo?=
+ =?us-ascii?Q?kvsos2wMX8pU2JR7t/j9RztjaYAIKQ9SBepb/YXERDj1yuNwRzTYmRzNetbx?=
+ =?us-ascii?Q?4qA9wivGDrR2HInDU4Jh9/0Rvzd3aLYV6NvRYKCG26PM/bnO5wyOpk88J0dt?=
+ =?us-ascii?Q?zaBiLjLEY7VHDIegY8OzNjgmvwPGHl3vsVyUeuIA5OVNsfmrTup9BSKSw+mb?=
+ =?us-ascii?Q?AwCCHb6geZE4+Jv63/mnL0C561xe9gvsges2UlrwaKQPYmvvcZokTKMFpnfg?=
+ =?us-ascii?Q?jPJLqBwKOBHimfFhBaEUtnjefTS2BKOnjzOerAmN0jpZ1JRPFPMmYt1YEdAZ?=
+ =?us-ascii?Q?yT7jqTjj4P0gYlQv52dgCffp6Hvcv7CkFJQYhWB2Zs/tT2Ql6GfwY/zZI0an?=
+ =?us-ascii?Q?gJw+dNkqR/3YQObZNsQR88QtlqbaCf+DBABIlH6Dn1EVvvELKXRkyL4y6L57?=
+ =?us-ascii?Q?uxDal4WjpP4hj/fuKidCUUVnH8snG5cPjzblyRMVitk1R93JkFZIT4JvWU9H?=
+ =?us-ascii?Q?sjroJuFLiMrFgZtAjQyKVnNj9JpEcfsjpASTyAa2wSm2+Rz4FxkpmtIFEEzF?=
+ =?us-ascii?Q?k6NRoj0dH2Iq6ZBTeCgvbw+lTnRJ9xH6zYF4WIDkLw8EM1WJeSeWtBZJ3XoH?=
+ =?us-ascii?Q?eVxXdxW9bL8krdBnTqBr/C1zd8jCbhLIaksNUzOYxmO19V0zaHKu+Oa71Hc6?=
+ =?us-ascii?Q?Ou+02rZcxQ=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: microchip.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6462.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8b963a21-2ef1-47fc-2f56-08de8c168022
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Mar 2026 15:35:39.9186
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: pY6DgwFpEmEy2SqOYL7rkmfynP/+/hCVail0xr84m2lAufMJdeMoc7p7/w7TF7zgum+s3MARRM/31xbMyg3P/ZDT8W8Z/yVqTNuIVzn2rwE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB7990
 
-Syzbot reported a KMSAN uninit-value warning in gso_features_check()
-called from netif_skb_features() [1].
+Reviewed-by: prathosh.satish@microchip.com
 
-gso_features_check() reads iph->frag_off to decide whether to clear
-mangleid_features. Accessing the IPv4 header via ip_hdr()/inner_ip_hdr()
-can rely on skb header offsets that are not always safe for direct
-dereference on packets injected from PF_PACKET paths.
+-----Original Message-----
+From: Ivan Vecera <ivecera@redhat.com>=20
+Sent: Thursday, March 19, 2026 5:48 PM
+To: netdev@vger.kernel.org
+Cc: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>; Jiri Pirko <jiri=
+@resnulli.us>; Michal Schmidt <mschmidt@redhat.com>; Petr Oros <poros@redha=
+t.com>; Prathosh Satish - M66066 <Prathosh.Satish@microchip.com>; Simon Hor=
+man <horms@kernel.org>; Vadim Fedorenko <vadim.fedorenko@linux.dev>; linux-=
+kernel@vger.kernel.org; Conor Dooley <conor+dt@kernel.org>; Krzysztof Kozlo=
+wski <krzk+dt@kernel.org>; Rob Herring <robh@kernel.org>; devicetree@vger.k=
+ernel.org; Pasi Vaananen <pvaanane@redhat.com>
+Subject: [PATCH net-next 2/5] dpll: zl3073x: use FIELD_MODIFY() for clear-a=
+nd-set patterns
 
-Use skb_header_pointer() for the TCPv4 frag_off check so the header read
-is robust whether data is already linear or needs copying.
+EXTERNAL EMAIL: Do not click links or open attachments unless you know the =
+content is safe
 
-[1] https://syzkaller.appspot.com/bug?extid=1543a7d954d9c6d00407
+Replace open-coded clear-and-set bitfield operations with FIELD_MODIFY().
 
-Link: https://lore.kernel.org/netdev/willemdebruijn.kernel.1a9f35039caab@gmail.com/
-Fixes: cbc53e08a793 ("GSO: Add GSO type for fixed IPv4 ID")
-Reported-by: syzbot+1543a7d954d9c6d00407@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1543a7d954d9c6d00407
-Tested-by: syzbot+1543a7d954d9c6d00407@syzkaller.appspotmail.com
-Signed-off-by: Guoyu Su <yss2813483011xxl@gmail.com>
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
 ---
-v7:
- - Drop revision-diff wording from commit message body.
- - Minor style: keep variable definitions contiguous in gso_features_check().
- - No functional change from v6.
+ drivers/dpll/zl3073x/chan.h  | 17 ++++++-----------  drivers/dpll/zl3073x/=
+core.c  |  3 +--  drivers/dpll/zl3073x/flash.c |  3 +--
+ 3 files changed, 8 insertions(+), 15 deletions(-)
 
-v6: https://lore.kernel.org/netdev/20260326121813.457049-1-yss2813483011xxl@gmail.com/
-v5: https://lore.kernel.org/netdev/20260320141459.9691-1-yss2813483011xxl@gmail.com/
-v4: https://lore.kernel.org/netdev/20260319005421.14908-1-yss2813483011xxl@gmail.com/
-v3: https://lore.kernel.org/netdev/20260312104351.185370-1-yss2813483011xxl@gmail.com/
-v2: https://lore.kernel.org/netdev/20260308083319.1255118-1-yss2813483011xxl@gmail.com/
-v1: https://lore.kernel.org/netdev/20260307162905.3697050-1-yss2813483011xxl@gmail.com/
+diff --git a/drivers/dpll/zl3073x/chan.h b/drivers/dpll/zl3073x/chan.h inde=
+x e0f02d3432086..481da2133202b 100644
+--- a/drivers/dpll/zl3073x/chan.h
++++ b/drivers/dpll/zl3073x/chan.h
+@@ -66,8 +66,7 @@ static inline u8 zl3073x_chan_ref_get(const struct zl3073=
+x_chan *chan)
+  */
+ static inline void zl3073x_chan_mode_set(struct zl3073x_chan *chan, u8 mod=
+e)  {
+-       chan->mode_refsel &=3D ~ZL_DPLL_MODE_REFSEL_MODE;
+-       chan->mode_refsel |=3D FIELD_PREP(ZL_DPLL_MODE_REFSEL_MODE, mode);
++       FIELD_MODIFY(ZL_DPLL_MODE_REFSEL_MODE, &chan->mode_refsel,=20
++ mode);
+ }
 
- net/core/dev.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ /**
+@@ -77,8 +76,7 @@ static inline void zl3073x_chan_mode_set(struct zl3073x_c=
+han *chan, u8 mode)
+  */
+ static inline void zl3073x_chan_ref_set(struct zl3073x_chan *chan, u8 ref)=
+  {
+-       chan->mode_refsel &=3D ~ZL_DPLL_MODE_REFSEL_REF;
+-       chan->mode_refsel |=3D FIELD_PREP(ZL_DPLL_MODE_REFSEL_REF, ref);
++       FIELD_MODIFY(ZL_DPLL_MODE_REFSEL_REF, &chan->mode_refsel, ref);
+ }
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index fc5557062414..831129f2a69b 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3821,10 +3821,15 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
- 	 * segmentation-offloads.rst).
- 	 */
- 	if (skb_shinfo(skb)->gso_type & SKB_GSO_TCPV4) {
--		struct iphdr *iph = skb->encapsulation ?
--				    inner_ip_hdr(skb) : ip_hdr(skb);
-+		const struct iphdr *iph;
-+		struct iphdr _iph;
-+		int nhoff = skb->encapsulation ?
-+			    skb_inner_network_offset(skb) :
-+			    skb_network_offset(skb);
- 
--		if (!(iph->frag_off & htons(IP_DF)))
-+		iph = skb_header_pointer(skb, nhoff, sizeof(_iph), &_iph);
-+
-+		if (!iph || !(iph->frag_off & htons(IP_DF)))
- 			features &= ~dev->mangleid_features;
- 	}
- 
--- 
-2.34.1
+ /**
+@@ -110,13 +108,10 @@ zl3073x_chan_ref_prio_set(struct zl3073x_chan *chan, =
+u8 ref, u8 prio)  {
+        u8 *val =3D &chan->ref_prio[ref / 2];
+
+-       if (!(ref & 1)) {
+-               *val &=3D ~ZL_DPLL_REF_PRIO_REF_P;
+-               *val |=3D FIELD_PREP(ZL_DPLL_REF_PRIO_REF_P, prio);
+-       } else {
+-               *val &=3D ~ZL_DPLL_REF_PRIO_REF_N;
+-               *val |=3D FIELD_PREP(ZL_DPLL_REF_PRIO_REF_N, prio);
+-       }
++       if (!(ref & 1))
++               FIELD_MODIFY(ZL_DPLL_REF_PRIO_REF_P, val, prio);
++       else
++               FIELD_MODIFY(ZL_DPLL_REF_PRIO_REF_N, val, prio);
+ }
+
+ /**
+diff --git a/drivers/dpll/zl3073x/core.c b/drivers/dpll/zl3073x/core.c inde=
+x 6363002d48d46..7eebfc1ad1019 100644
+--- a/drivers/dpll/zl3073x/core.c
++++ b/drivers/dpll/zl3073x/core.c
+@@ -743,8 +743,7 @@ int zl3073x_dev_phase_avg_factor_set(struct zl3073x_dev=
+ *zldev, u8 factor)
+        value =3D (factor + 1) & 0x0f;
+
+        /* Update phase measurement control register */
+-       dpll_meas_ctrl &=3D ~ZL_DPLL_MEAS_CTRL_AVG_FACTOR;
+-       dpll_meas_ctrl |=3D FIELD_PREP(ZL_DPLL_MEAS_CTRL_AVG_FACTOR, value)=
+;
++       FIELD_MODIFY(ZL_DPLL_MEAS_CTRL_AVG_FACTOR, &dpll_meas_ctrl,=20
++ value);
+        rc =3D zl3073x_write_u8(zldev, ZL_REG_DPLL_MEAS_CTRL, dpll_meas_ctr=
+l);
+        if (rc)
+                return rc;
+diff --git a/drivers/dpll/zl3073x/flash.c b/drivers/dpll/zl3073x/flash.c in=
+dex 83452a77e3e98..f85535c8ad246 100644
+--- a/drivers/dpll/zl3073x/flash.c
++++ b/drivers/dpll/zl3073x/flash.c
+@@ -194,8 +194,7 @@ zl3073x_flash_cmd_wait(struct zl3073x_dev *zldev, u32 o=
+peration,
+        if (rc)
+                return rc;
+
+-       value &=3D ~ZL_WRITE_FLASH_OP;
+-       value |=3D FIELD_PREP(ZL_WRITE_FLASH_OP, operation);
++       FIELD_MODIFY(ZL_WRITE_FLASH_OP, &value, operation);
+
+        rc =3D zl3073x_write_u8(zldev, ZL_REG_WRITE_FLASH, value);
+        if (rc)
+--
+2.52.0
 
