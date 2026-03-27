@@ -1,38 +1,38 @@
 Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621B639447B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620F239446B;
 	Fri, 27 Mar 2026 12:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774613480; cv=none; b=tC8LTRvZ2oSBE79zS+0VHBS6rnahlysTBJmeLB1Cxv19u/BZfnZhVP08D/VTtlxp8hsrMgHbsu3s0MvUsQOYqYp/gVbKgSILdOzmqhhVmVh/t0ZVoYKjFexlstlW57oGiw7LyVft7adliBx+UUQvoJkgwKEUt95N7tUP1PbmK5o=
+	t=1774613481; cv=none; b=qwtQWPHK4pph4HOL3BSpoYxvZlJYLOb5/hg9sYdTetPGmcJR/ahEDg72yqFu0LReMXkJld0tamjGL9phQEp/B0OlOwFIzNBZa9YwHdAU+ieq3hSBfHHd18+Ov6ecRkyYxYLZQNhAPY1wgLl6eYsorQQbtVqtRaSfDFnfRkFBa/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774613480; c=relaxed/simple;
-	bh=uxp79e+lvDPLB4AthBNIkcicVeaLzdj36JFHyWd+Kpo=;
+	s=arc-20240116; t=1774613481; c=relaxed/simple;
+	bh=YY4T7TMmhyRQpxW/75bfS5G1j7/95crLSD2DQXKDiKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QfZUH/jx5q+CpmoazZuCzuGoliot1D25EEzwHgTGQGxhH5wxecaJi+ahhvLRmtoWXO5NmRZ13xbjxtH7PPjul4NlYnFSie7ZmNtdtBAmjJ2JcQk+n+4vHNnehPs8XNHklnv5BUoMpX+oYRGzd34/P89wAu08xKK0D/6pcAVJZVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=VcovLM8T; arc=none smtp.client-ip=213.133.104.62
+	 MIME-Version; b=YW7MHaFEXebHwhWWVPdv5FMXyVSzfs8KKSQECJ5lpccABBufNp9sp/JLprxb5CvlbToiIc7ia68UTNPLEZW52VieYlfgBYr7ojw53AGywNfUH/O8UsRJ7TxT2pYlCbCw2bHSCd+ahsMtHOq+NwAWK99+s1htdi0vmbJmsQfcNtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=B/OOvF8M; arc=none smtp.client-ip=213.133.104.62
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="VcovLM8T"
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="B/OOvF8M"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=kPLVrGm0yGmr2kw4VkETFsROpWLn+lwE+bj5HCsw3a8=; b=VcovLM8TuUpH+ZZNf7RgwndUJd
-	nnA8KfbpGQdXFz/tELjNc7lUkmOddNHJ/mx+g0KZ5x0Khtf7szx/04BddjMp0Wew8/0BVIYR11jpz
-	nS3cSLHILa4tSDWzFD3/PDP9qRTNUA0L9wZawXZ669tDQpUBpHYFpqeae6xgxGNXMy5oElJpGFTQI
-	l9r28iVSmls8UdNtPJ/BaCegRNVOmffwPk7uRLu/oddiAgdw9XYaEeQPra+GFFCb4DHVJgSkTDK8Y
-	RJstpRqD3nPvjb3GAgQN9NeELvsXo54/nJnUddFAHMglG5VTiLGdpH3Em1U1vgC4Js5AvV9z0mLcR
-	NyZ6FDYw==;
+	bh=apXZKXvCe246XzEzdOO4RcC0tVH8jgumRDPcWbMAkMU=; b=B/OOvF8M5iueTvQa1njuh7bF+x
+	j57U/mqzWTsoc5W1yYDfg6ofxkgF+OxqLV6UPFBUNr2vdbxahvzyf6HI6smhIBoaT9Up08Nh2DZf9
+	8KUeyOLQLSHC4TQVNGkO+xo55s0uR+kUdGUJrrJ0kiDGGDfSqBiY1L7SpiGQSohpbZQ+Ol2iDCjmi
+	ZskwWy2Ica8DAeZVsScv3iZ6PzVlAkdij4D1+ynFP0/VmmjqpdqS1uvobJPeiS6h9h9LmM+gCk4Is
+	kYE+q+gZCeTLZZyfPhZikGsQDz60PdH2jlMQTZgCJGNo2btlrNNIe8W/zm5EXYaKGWHKPrW5NV7zf
+	ouOHmd6A==;
 Received: from localhost ([127.0.0.1])
 	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <daniel@iogearbox.net>)
-	id 1w661g-000AMs-2B;
-	Fri, 27 Mar 2026 13:10:56 +0100
+	id 1w661k-000ANU-0B;
+	Fri, 27 Mar 2026 13:11:00 +0100
 From: Daniel Borkmann <daniel@iogearbox.net>
 To: netdev@vger.kernel.org
 Cc: bpf@vger.kernel.org,
@@ -51,9 +51,9 @@ Cc: bpf@vger.kernel.org,
 	toke@redhat.com,
 	yangzhenze@bytedance.com,
 	wangdongdong.6@bytedance.com
-Subject: [PATCH net-next v10 04/14] net, ethtool: Disallow leased real rxqs to be resized
-Date: Fri, 27 Mar 2026 13:10:39 +0100
-Message-ID: <20260327121049.334562-5-daniel@iogearbox.net>
+Subject: [PATCH net-next v10 07/14] net: Proxy netdev_queue_get_dma_dev for leased queues
+Date: Fri, 27 Mar 2026 13:10:42 +0100
+Message-ID: <20260327121049.334562-8-daniel@iogearbox.net>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260327121049.334562-1-daniel@iogearbox.net>
 References: <20260327121049.334562-1-daniel@iogearbox.net>
@@ -66,99 +66,95 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: Clear (ClamAV 1.4.3/27953/Fri Mar 27 07:24:46 2026)
 
-Similar to AF_XDP, do not allow queues in a physical netdev to be
-resized by ethtool -L when they are leased. Cover channel resize
-paths (both netlink and ioctl) to reject resizing when the queues
-would be affected.
+From: David Wei <dw@davidwei.uk>
 
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Co-developed-by: David Wei <dw@davidwei.uk>
+Extend netdev_queue_get_dma_dev to return the physical device of the
+real rxq for DMA in case the queue was leased. This allows memory
+providers like io_uring zero-copy or devmem to bind to the physically
+leased rxq via virtual devices such as netkit.
+
 Signed-off-by: David Wei <dw@davidwei.uk>
+Co-developed-by: Daniel Borkmann <daniel@iogearbox.net>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
 ---
- net/ethtool/channels.c | 17 ++++++++++++-----
- net/ethtool/ioctl.c    | 16 +++++++++++-----
- 2 files changed, 23 insertions(+), 10 deletions(-)
+ include/net/netdev_queues.h |  3 ++-
+ net/core/netdev_queues.c    | 36 ++++++++++++++++++++++++++++--------
+ 2 files changed, 30 insertions(+), 9 deletions(-)
 
-diff --git a/net/ethtool/channels.c b/net/ethtool/channels.c
-index 45232cf1c144..63ed5ebf19a8 100644
---- a/net/ethtool/channels.c
-+++ b/net/ethtool/channels.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
+diff --git a/include/net/netdev_queues.h b/include/net/netdev_queues.h
+index 748b70552ed1..d14a45a13b40 100644
+--- a/include/net/netdev_queues.h
++++ b/include/net/netdev_queues.h
+@@ -380,7 +380,8 @@ static inline unsigned int netif_xmit_timeout_ms(struct netdev_queue *txq)
+ 					 get_desc, start_thrs);		\
+ 	})
  
--#include <net/xdp_sock_drv.h>
-+#include <net/netdev_queues.h>
+-struct device *netdev_queue_get_dma_dev(struct net_device *dev, int idx);
++struct device *netdev_queue_get_dma_dev(struct net_device *dev,
++					unsigned int idx);
+ bool netdev_can_create_queue(const struct net_device *dev,
+ 			     struct netlink_ext_ack *extack);
+ bool netdev_can_lease_queue(const struct net_device *dev,
+diff --git a/net/core/netdev_queues.c b/net/core/netdev_queues.c
+index 177401828e79..9a945d74c3a7 100644
+--- a/net/core/netdev_queues.c
++++ b/net/core/netdev_queues.c
+@@ -6,27 +6,47 @@
  
- #include "common.h"
- #include "netlink.h"
-@@ -169,14 +169,21 @@ ethnl_set_channels(struct ethnl_req_info *req_info, struct genl_info *info)
- 	if (ret)
- 		return ret;
+ #include "dev.h"
  
--	/* Disabling channels, query zero-copy AF_XDP sockets */
-+	/* ensure channels are not busy at the moment */
- 	from_channel = channels.combined_count +
- 		       min(channels.rx_count, channels.tx_count);
--	for (i = from_channel; i < old_total; i++)
--		if (xsk_get_pool_from_qid(dev, i)) {
--			GENL_SET_ERR_MSG(info, "requested channel counts are too low for existing zerocopy AF_XDP sockets");
-+	for (i = from_channel; i < old_total; i++) {
-+		bool losing_rx = i >= channels.combined_count +
-+				      channels.rx_count;
++static struct device *
++__netdev_queue_get_dma_dev(struct net_device *dev, unsigned int idx)
++{
++	const struct netdev_queue_mgmt_ops *queue_ops = dev->queue_mgmt_ops;
++	struct device *dma_dev;
 +
-+		if (netdev_queue_busy(dev, i,
-+				      losing_rx ? NETDEV_QUEUE_TYPE_RX :
-+						  NETDEV_QUEUE_TYPE_TX, NULL)) {
-+			GENL_SET_ERR_MSG(info,
-+					 "requested channel counts are too low due to busy queues (AF_XDP or queue leasing)");
- 			return -EINVAL;
- 		}
-+	}
- 
- 	ret = dev->ethtool_ops->set_channels(dev, &channels);
- 	return ret < 0 ? ret : 1;
-diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
-index 3c713a91ad0d..f7288bc6cae4 100644
---- a/net/ethtool/ioctl.c
-+++ b/net/ethtool/ioctl.c
-@@ -27,12 +27,12 @@
- #include <linux/net.h>
- #include <linux/pm_runtime.h>
- #include <linux/utsname.h>
-+#include <linux/ethtool_netlink.h>
- #include <net/devlink.h>
- #include <net/ipv6.h>
--#include <net/xdp_sock_drv.h>
- #include <net/flow_offload.h>
- #include <net/netdev_lock.h>
--#include <linux/ethtool_netlink.h>
-+#include <net/netdev_queues.h>
- 
- #include "common.h"
- 
-@@ -2284,13 +2284,19 @@ static noinline_for_stack int ethtool_set_channels(struct net_device *dev,
- 	if (ret)
- 		return ret;
- 
--	/* Disabling channels, query zero-copy AF_XDP sockets */
-+	/* Disabling channels, query busy queues (AF_XDP, queue leasing) */
- 	from_channel = channels.combined_count +
- 		min(channels.rx_count, channels.tx_count);
- 	to_channel = curr.combined_count + max(curr.rx_count, curr.tx_count);
--	for (i = from_channel; i < to_channel; i++)
--		if (xsk_get_pool_from_qid(dev, i))
-+	for (i = from_channel; i < to_channel; i++) {
-+		bool losing_rx = i >= channels.combined_count +
-+				      channels.rx_count;
++	if (queue_ops && queue_ops->ndo_queue_get_dma_dev)
++		dma_dev = queue_ops->ndo_queue_get_dma_dev(dev, idx);
++	else
++		dma_dev = dev->dev.parent;
 +
-+		if (netdev_queue_busy(dev, i,
-+				      losing_rx ? NETDEV_QUEUE_TYPE_RX :
-+						  NETDEV_QUEUE_TYPE_TX, NULL))
- 			return -EINVAL;
-+	}
++	return dma_dev && dma_dev->dma_mask ? dma_dev : NULL;
++}
++
+ /**
+  * netdev_queue_get_dma_dev() - get dma device for zero-copy operations
+  * @dev:	net_device
+  * @idx:	queue index
+  *
+- * Get dma device for zero-copy operations to be used for this queue.
++ * Get dma device for zero-copy operations to be used for this queue. If the
++ * queue is leased from a physical queue, we retrieve the physical queue's
++ * dma device.
+  * When such device is not available or valid, the function will return NULL.
+  *
+  * Return: Device or NULL on error
+  */
+-struct device *netdev_queue_get_dma_dev(struct net_device *dev, int idx)
++struct device *netdev_queue_get_dma_dev(struct net_device *dev,
++					unsigned int idx)
+ {
+-	const struct netdev_queue_mgmt_ops *queue_ops = dev->queue_mgmt_ops;
++	struct net_device *orig_dev = dev;
+ 	struct device *dma_dev;
  
- 	ret = dev->ethtool_ops->set_channels(dev, &channels);
- 	if (!ret)
+-	if (queue_ops && queue_ops->ndo_queue_get_dma_dev)
+-		dma_dev = queue_ops->ndo_queue_get_dma_dev(dev, idx);
+-	else
+-		dma_dev = dev->dev.parent;
++	if (!netif_rxq_is_leased(dev, idx))
++		return __netdev_queue_get_dma_dev(dev, idx);
+ 
+-	return dma_dev && dma_dev->dma_mask ? dma_dev : NULL;
++	if (!netif_get_rx_queue_lease_locked(&dev, &idx))
++		return NULL;
++
++	dma_dev = __netdev_queue_get_dma_dev(dev, idx);
++	netif_put_rx_queue_lease_locked(orig_dev, dev);
++	return dma_dev;
+ }
+ 
+ bool netdev_can_create_queue(const struct net_device *dev,
 -- 
 2.43.0
 
