@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6AD318B9C;
-	Fri, 27 Mar 2026 02:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504E9330330;
+	Fri, 27 Mar 2026 02:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774577420; cv=none; b=RuvRmuh7IqYnbACJw+qejwXg19v8WaOJ1hR9R6y3c/KIdYt/shc5SiE0rGHcQmCGbX89/5azPuOHzw53/w4Mv8UFy+1QSaFm8C5bezi2v4MRp7bN4S9BVscjyXNf1iUJjidehiFhtktxxlnIRB2HBu+wbMtCTKcNxUG+ZEo+Glk=
+	t=1774577421; cv=none; b=qTnHcu7m8/Vcup4XY0Ezk/WjsyWMnFd9aDkdcw4Nyd971WcRoVtX9FJxh6jf1gHljG4MLjYYrL7A639MoG/wa7pmpQdV9D+nBwhgRGFrNdAfPeKMjrvKN2F9hvS4hmLHIZbJTDkqEmEuaRAyol9W5gY9NZ468c6rqw41uWi5vw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774577420; c=relaxed/simple;
-	bh=XL2XaiBFzO/RZQtR+6VxjzdTf0vKl3oagcj/NyvFaCw=;
+	s=arc-20240116; t=1774577421; c=relaxed/simple;
+	bh=HWwilsjJarrXBHBtNXrPyxHPRfiQkF06LtsZJa2qGkA=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=TOJLi0pNXK3KkKg9fNnjtJl4J9mln/3hJRQRnYroVBTG3ClPrWmk/hIiE/VvgfCAKOmT2EBsSG/mP/PWOiFY9pH6Bi3ZtagiGR+BM6FNu5iO5nItRoi8j2hwPWO6Jg9RzULKq3ANd0ZiulRYkjnPP5d0ztJSdiHzbfsD8ipIfsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fi06MZQF; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=UAIqkJxFV6tS/RbGqHTFCa09NW6JLbPBlYkP+r/Bu6D8QGiSR7zP972Im3aDsUxxJuhLsB6/WB21dC7ToE8c7meC1cc40pLtJFVWjghvumyGZKjgCaalAnKgOBfSik4Zz/coxXtil3elwwtl/gL9nbTLkKJdUFCgRInKanNiQPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DSuJmIOR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fi06MZQF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFCAFC116C6;
-	Fri, 27 Mar 2026 02:10:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DSuJmIOR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7FA2C116C6;
+	Fri, 27 Mar 2026 02:10:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774577419;
-	bh=XL2XaiBFzO/RZQtR+6VxjzdTf0vKl3oagcj/NyvFaCw=;
+	s=k20201202; t=1774577420;
+	bh=HWwilsjJarrXBHBtNXrPyxHPRfiQkF06LtsZJa2qGkA=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=fi06MZQFzo1TMjvusqFERQeAbZ1Md7XigHXnhwPmpIgPyR1ypjJh6FirpHB/sHTkC
-	 MeqxAlp5pAHTeYhBbSQrhE3Zr3PVdcY7FTvPSJi66CcAF8DNQctCHfMBE+e48WDkTz
-	 7IY1bJh9pfV4y4qSuL2Zvu4YoSyvdn4eHtrMmfTy5zQasFlkNT+Zjj1k+Pea7H51ER
-	 yJEvJP0HjLVBiVDrSXl9rkR5h7fcP41vajrT/XuACbWMMrtgdzIyFoEvcv206SF2KU
-	 NVS4o6hwGoUaq/cuY8dZwmRUE3hSxsKUoDhWrYNe1Ami5rwkmMoM8apfeALp8HQ0f2
-	 WPFT0pFNYunWw==
+	b=DSuJmIORxKBJJtnJzkNSMJXiooHONZU2DElijz/D7oxorXHmt0c+wnNgMsF3t+0im
+	 /l8CBDrFEy8Sk6/YUwytwUbF8WF69hNuMJjVxSzUO9qRoMMfOAWeBT68+m2wwfuQZN
+	 7XWEGkLgvq91e8ndQ3sgQneprjb4C9PEIZ52h+UCL4VHLjTShmHK66qGLJRYdwTzcC
+	 33Tff46XKsp6nVTEGYlzQApKluVCbj7/KWePE8odAzTdID5FyX5KRakEs8gen5QBEP
+	 q1mGN3WSZ3JdMjcXRx04rkhUVG/dUpwaQvp6iJ3d7yw3Itgak66hlmoBe0ixOns4mL
+	 2dXSOnZW6N6CQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FD263809A07;
-	Fri, 27 Mar 2026 02:10:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CEC23809A07;
+	Fri, 27 Mar 2026 02:10:08 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,45 +37,45 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net,v2] net: mana: Fix RX skb truesize accounting
+Subject: Re: [PATCH net] net: ethernet: mtk_ppe: avoid NULL deref when gmac0
+ is
+ disabled
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177457740604.3263687.14878454384764628197.git-patchwork-notify@kernel.org>
-Date: Fri, 27 Mar 2026 02:10:06 +0000
+ <177457740729.3263687.4179857130043396261.git-patchwork-notify@kernel.org>
+Date: Fri, 27 Mar 2026 02:10:07 +0000
 References: 
- <acLUhLpLum6qrD/N@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+ <20260324-wed-crash-gmac0-disabled-v1-1-3bc388aee565@simonwunderlich.de>
 In-Reply-To: 
- <acLUhLpLum6qrD/N@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-To: Dipayaan Roy <dipayanroy@linux.microsoft.com>
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
- decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, leon@kernel.org,
- longli@microsoft.com, kotaranov@microsoft.com, horms@kernel.org,
- shradhagupta@linux.microsoft.com, ssengar@linux.microsoft.com,
- ernis@linux.microsoft.com, shirazsaleem@microsoft.com,
- linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
- stephen@networkplumber.org, jacob.e.keller@intel.com,
- dipayanroy@microsoft.com
+ <20260324-wed-crash-gmac0-disabled-v1-1-3bc388aee565@simonwunderlich.de>
+To: Sven Eckelmann (Plasma Cloud) <se@simonwunderlich.de>
+Cc: nbd@nbd.name, lorenzo@kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+ eladwf@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ stable@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 24 Mar 2026 11:14:28 -0700 you wrote:
-> MANA passes rxq->alloc_size to napi_build_skb() for all RX buffers.
-> It is correct for fragment-backed RX buffers, where alloc_size matches
-> the actual backing allocation used for each packet buffer. However, in
-> the non-fragment RX path mana allocates a full page, or a higher-order
-> page, per RX buffer. In that case alloc_size only reflects the usable
-> packet area and not the actual backing memory.
+On Tue, 24 Mar 2026 09:36:01 +0100 you wrote:
+> If the gmac0 is disabled, the precheck for a valid ingress device will
+> cause a NULL pointer deref and crash the system. This happens because
+> eth->netdev[0] will be NULL but the code will directly try to access
+> netdev_ops.
+> 
+> Instead of just checking for the first net_device, it must be checked if
+> any of the mtk_eth net_devices is matching the netdev_ops of the ingress
+> device.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] net: mana: Fix RX skb truesize accounting
-    https://git.kernel.org/netdev/net/c/f73896b4197e
+  - [net] net: ethernet: mtk_ppe: avoid NULL deref when gmac0 is disabled
+    https://git.kernel.org/netdev/net/c/976ff48c2ac6
 
 You are awesome, thank you!
 -- 
