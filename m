@@ -1,141 +1,177 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE293BD24A
-	for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 13:11:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83AE0225760;
+	Fri, 27 Mar 2026 13:11:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774617089; cv=none; b=D9HCs+sdWQWSu6holIhYJuNvK7pz5wmw4GpvrYzg6tADTEzJLtTmMzYQUD/R5CrmmdqIml8a1uFIW1e/amZAAiVG3huOwcGBMa4DHuCGAGBnL+9Hni2Q7VJuF+p1LZnR347hDsgURG7jdWFjs83GDA0sAA3WW4C4f9oyGipDVO4=
+	t=1774617090; cv=none; b=HuZ55yXTrBsMM21Ndll00gG3IDvM4EkNOThqquzzJhJRyzAkiy3UAQ6RRzLh+Ny632r/cvjR5g4wapRiJeEOj5S1dTpuQZiAgpm4Hp2S+jzTLiWisulzDXRelEOlDAUgguFfVZfX736PboQuB6OqOB8P3cEYZMYt9R8Ugptw2mA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774617089; c=relaxed/simple;
-	bh=nzoQaay+raQjhTgYBaF5aWNmIVaEh6xyvzO/+HCw13g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Hvy2tS5FApsiTTBfzWNPhxlEwe9MIKIovKKFkyJUxHfMvSkZsUcEUPpyZRtS409ScMVtFLVrwDPvcU59QkraJ/KT5MCllcHPEgE5ODUUYMZ70zYxEb3rfFIE+KbsuWBwieD5RvJskxt+D292X3TdY5qc86E+EGtGst96iyu+2G0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=aElAa59X; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1774617090; c=relaxed/simple;
+	bh=VulyuWgkoLsxmBOeLgDF0beLPvgQfeLav/LDt2v0t0Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=oeSdx+jFzWnAN0AX1iRJdckRsJm1o92swbDStu9yMHsu7dN6KIeoMJI1KSNiJcyMDH0TK2n6ukQaKw/LN23XuiIhQwxGiE6ErQmqfxYP/2wjRQWuNA0kQe/3iaEtUPel5/yEeYTTy55+3cYlNhnKbbkMiaVuzDQ+prlwFL38M7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uzJWSEsY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="aElAa59X"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-486b9675d36so18628045e9.0
-        for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 06:11:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1774617086; x=1775221886; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ccf0sTgtLqz3zlYVLqeO3X4QYfoZ2D16OMDmsuZJ+v4=;
-        b=aElAa59XdQxBmlRKGy/6PHKqf3dejpCsQk1ZTdlDe0EaDoJKHf7iaTaIojgE/SyWa/
-         T4vfxQDjQCPB/19OkOaOEQywUrv3RInGgLW2Dh9r2wW2bZ0WYMVaBFpr21HmlswMx3NV
-         RpbDuaJy0eM4U7CW0b2PG/FfcsorEJDvRrtx4gW/sLl67rfV1Vp+tarO5FlArhyawTln
-         KoRmUlMctIa6w1RgM60R/KN5lPSXnC1KEIGly+BzQxj63jNFyjkvBSUVgOGIhx+2Nlid
-         pgcnmLOw05cEXzaC/C0VkeD6MaNfUjRiBXzCGaSmtyXoPR5GE54jlixLkdPTLJJtu2e0
-         Vn/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774617086; x=1775221886;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ccf0sTgtLqz3zlYVLqeO3X4QYfoZ2D16OMDmsuZJ+v4=;
-        b=eyBZtK7Vh8AsnkPqI0lOUDe/wr/n8jbmc8d/5Fce1T39KJtaVXyAz7sYWpAIwpp9ZY
-         QPaJzsxSHMFJgc3s2fhCWCNn8i5TtO8717RCqIGfL+279mXQydCWcpUROpR9rbWBlajC
-         OBfZXZEUggaMG/tMmXUskX/clnUH0ctsOlgc03Oc1+2Gp8p3j1/kQ7sajDdsI/nhZPR6
-         JNu06cKF+0ZMjuBOwWUXVuZLw4HwarMzA6H8Kqc6HqDF6jySai92C/XR2HQ04nMHVrUI
-         RTG77FLUSiux6y7WNavPiEifjqVorSxEaD4Dq0LcuiHnXRKkLcqLmoNW38WpDtUNCqFB
-         cPRg==
-X-Forwarded-Encrypted: i=1; AJvYcCVXDD/F3krpAh5UK+mEMIlcpStSm8XVuqdBWPgp4aAXdmhsUaJkl4R1Sgd5523h4d1HInbiwHk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YznterTMCgtYHRsUWUrSp9iEePZ5eWbfavDxIprAlzJMI/791fq
-	qv2ro7l20FGly0bbqiUS1Ead+/xOnVuhMpvXpW2END2QPHTuo1vtJ0DY310eirv/BB4=
-X-Gm-Gg: ATEYQzzF1NpIXUWvY0iCa8dZ8bDqQn42yg/upvbCwPTLjKWKq4gDjEYJiStrCBuEP9D
-	A76CiJUoEpTGj50IwWAtC454o2H71eZqTNSVnjLgux0jWGN7cLIjhnmxB2MDM/57oamZGSs8A1Z
-	MadxYjbGWh62NmAcTyFal3jJE15zKiQHa/BAJrvoiR9ojzK30XQK24E/ykNXNhBVcRFdg8nI9L1
-	/spMIatAtWNCikqj/bdv8Jg/MzWNNb7oBfkDQSdNQdimHjDYwDKq36SmcQTKqx2H2TMAEvPgZ/y
-	pRuL256wCEexFGDtQMM64LHHIzjyFFbFeDsdqMWeqlSTveNsUbH/V/2OGFWCCT4+03h8Ta1gEVV
-	zZhSdXnnWadITn99fZvk91ohAc6bw/Oz5tOO5yMsXRxbzSLvey9fvWct2qQz/bo7p/zQWqzvA5+
-	RT1brhz+pJU+rd2n7hdeDTuDkXJA==
-X-Received: by 2002:a05:600c:a108:b0:485:17a7:b9c7 with SMTP id 5b1f17b1804b1-48727d6f6d8mr35069435e9.10.1774617085665;
-        Fri, 27 Mar 2026 06:11:25 -0700 (PDT)
-Received: from pathway.suse.cz ([176.114.240.130])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b9192e3e8sm17747282f8f.5.2026.03.27.06.11.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Mar 2026 06:11:25 -0700 (PDT)
-Date: Fri, 27 Mar 2026 14:11:23 +0100
-From: Petr Mladek <pmladek@suse.com>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org, netdev@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uzJWSEsY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A865C2BCB9;
+	Fri, 27 Mar 2026 13:11:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774617090;
+	bh=VulyuWgkoLsxmBOeLgDF0beLPvgQfeLav/LDt2v0t0Q=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=uzJWSEsYuV9O8gqXqPtM98AeQAOMLpOClXs2/Kdc/oyJs742IqR3bQqrg94qNWTgR
+	 DuRRtozNqI/ONZn9CM23YHoNOioMwBK0jJ6qVZfdM9n5kw0ljxuxp8MwpEN1M+KvfO
+	 JRua3tfvleDdwIDiygc5YTQC9+xdWsGrPTmD7F3AO5qpRAv6dFH5B2Aw/w20dog20T
+	 rH1SREC7kAD1OpIUVIJJ09O7l28gtuTPnw8Z+pSNOIqs60LDue5Bz27ZLPOSGRH/2B
+	 V+jioGA9JuBBF7exzUJHdBEWEsjtfjFBkyuOIrz0pQUYK/u+rqG7uPlr/j3skinM2y
+	 EgAQdPZRqUi9g==
+From: Sumit Garg <sumit.garg@kernel.org>
+To: linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	freedreno@lists.freedesktop.org,
+	linux-media@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath12k@lists.infradead.org,
+	linux-remoteproc@vger.kernel.org
+Cc: andersson@kernel.org,
+	konradybcio@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	robin.clark@oss.qualcomm.com,
+	sean@poorly.run,
+	akhilpo@oss.qualcomm.com,
+	lumag@kernel.org,
+	abhinav.kumar@linux.dev,
+	jesszhan0024@gmail.com,
+	marijn.suijten@somainline.org,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	vikash.garodia@oss.qualcomm.com,
+	dikshita.agarwal@oss.qualcomm.com,
+	bod@kernel.org,
+	mchehab@kernel.org,
+	elder@kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	jjohnson@kernel.org,
+	mathieu.poirier@linaro.org,
+	trilokkumar.soni@oss.qualcomm.com,
+	mukesh.ojha@oss.qualcomm.com,
+	pavan.kondeti@oss.qualcomm.com,
+	jorge.ramirez@oss.qualcomm.com,
+	tonyh@qti.qualcomm.com,
+	vignesh.viswanathan@oss.qualcomm.com,
+	srinivas.kandagatla@oss.qualcomm.com,
+	amirreza.zarrabi@oss.qualcomm.com,
+	jens.wiklander@linaro.org,
+	op-tee@lists.trustedfirmware.org,
+	apurupa@qti.qualcomm.com,
+	skare@qti.qualcomm.com,
+	harshal.dev@oss.qualcomm.com,
 	linux-kernel@vger.kernel.org,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH next] netfilter: nf_conntrack_h323: Correct indentation
- when H323_TRACE defined
-Message-ID: <acaB-0VR1sAXPsed@pathway.suse.cz>
-References: <20260326201819.3900-1-david.laight.linux@gmail.com>
- <acZSPeowuYC7ivgA@pathway.suse.cz>
- <20260327125527.13aaf590@pumpkin>
+	Sumit Garg <sumit.garg@oss.qualcomm.com>
+Subject: [PATCH v3 01/15] arm64: dts: qcom: kodiak: Add EL2 overlay
+Date: Fri, 27 Mar 2026 18:40:29 +0530
+Message-ID: <20260327131043.627120-2-sumit.garg@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260327131043.627120-1-sumit.garg@kernel.org>
+References: <20260327131043.627120-1-sumit.garg@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260327125527.13aaf590@pumpkin>
+Content-Transfer-Encoding: 8bit
 
-On Fri 2026-03-27 12:55:27, David Laight wrote:
-> On Fri, 27 Mar 2026 10:47:41 +0100
-> Petr Mladek <pmladek@suse.com> wrote:
-> 
-> > On Thu 2026-03-26 20:18:19, david.laight.linux@gmail.com wrote:
-> > > From: David Laight <david.laight.linux@gmail.com>
-> > > 
-> > > The trace lines are indented using PRINT("%*.s", xx, " ").
-> > > Userspace will treat this as "%*.0s" and will output no characters
-> > > when 'xx' is zero, the kernel treats it as "%*s" and will output
-> > > a single ' ' - which is probably what is intended.
-> > > 
-> > > Change all the formats to "%*s" removing the default precision.
-> > > This gives a single space indent when level is zero.
-> > > 
-> > > Signed-off-by: David Laight <david.laight.linux@gmail.com>
-> > > ---
-> > >  net/netfilter/nf_conntrack_h323_asn1.c | 38 +++++++++++++-------------
-> > >  1 file changed, 19 insertions(+), 19 deletions(-)
-> > > 
-> > > diff --git a/net/netfilter/nf_conntrack_h323_asn1.c b/net/netfilter/nf_conntrack_h323_asn1.c
-> > > index 7b1497ed97d2..287402428975 100644
-> > > --- a/net/netfilter/nf_conntrack_h323_asn1.c
-> > > +++ b/net/netfilter/nf_conntrack_h323_asn1.c
-> > > @@ -276,7 +276,7 @@ static unsigned int get_uint(struct bitstr *bs, int b)
-> > >  static int decode_nul(struct bitstr *bs, const struct field_t *f,
-> > >                        char *base, int level)
-> > >  {
-> > > -	PRINT("%*.s%s\n", level * TAB_SIZE, " ", f->name);
-> > > +	PRINT("%*s%s\n", level * TAB_SIZE, " ", f->name);
-> > >  
-> > >  	return H323_ERROR_NONE;
-> > >  }  
-> > 
-> > The change is important for making the kernel %*.s handling POSIX
-> > compliant. The dot '.' without any following number is handled
-> > a zero precision by POSIX. It would print no space "" when
-> > also the field width was zero, aka when level == 0.
-> > 
-> > It has no efect if the field width (@level) is always > 0 because
-> > vsprintf() would add the required emptry spaces ' ' anyway.
-> 
-> That looks like C&P AI output...
+From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
 
-I believe that these days AI would be able to formulate it a much better
-way than me.
+All the existing variants Kodiak boards are using Gunyah hypervisor
+which means that, so far, Linux-based OS could only boot in EL1 on those
+devices.  However, it is possible for us to boot Linux at EL2 on these
+devices [1].
 
-Best Regards,
-Petr
+When running under Gunyah, the remote processor firmware IOMMU
+streams are controlled by Gunyah. However, without Gunyah, the IOMMU is
+managed by the consumer of this DeviceTree. Therefore, describe the
+firmware streams for each remote processor.
+
+Add a EL2-specific DT overlay and apply it to Kodiak IOT variant
+devices to create -el2.dtb for each of them alongside "normal" dtb.
+
+[1]
+https://docs.qualcomm.com/bundle/publicresource/topics/80-70020-4/boot-developer-touchpoints.html#uefi
+
+Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+[SG: watchdog fixup]
+Signed-off-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+---
+ arch/arm64/boot/dts/qcom/Makefile        |  2 ++
+ arch/arm64/boot/dts/qcom/kodiak-el2.dtso | 35 ++++++++++++++++++++++++
+ 2 files changed, 37 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/qcom/kodiak-el2.dtso
+
+diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
+index f80b5d9cf1e8..09a7f943190e 100644
+--- a/arch/arm64/boot/dts/qcom/Makefile
++++ b/arch/arm64/boot/dts/qcom/Makefile
+@@ -139,6 +139,8 @@ dtb-$(CONFIG_ARCH_QCOM)	+= qcs404-evb-4000.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= qcs615-ride.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= qcs6490-radxa-dragon-q6a.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= qcs6490-rb3gen2.dtb
++qcs6490-rb3gen2-el2-dtbs := qcs6490-rb3gen2.dtb kodiak-el2.dtbo
++dtb-$(CONFIG_ARCH_QCOM)	+= qcs6490-rb3gen2-el2.dtb
+ 
+ qcs6490-rb3gen2-vision-mezzanine-dtbs := qcs6490-rb3gen2.dtb qcs6490-rb3gen2-vision-mezzanine.dtbo
+ qcs6490-rb3gen2-industrial-mezzanine-dtbs := qcs6490-rb3gen2.dtb qcs6490-rb3gen2-industrial-mezzanine.dtbo
+diff --git a/arch/arm64/boot/dts/qcom/kodiak-el2.dtso b/arch/arm64/boot/dts/qcom/kodiak-el2.dtso
+new file mode 100644
+index 000000000000..0b3a69a0d765
+--- /dev/null
++++ b/arch/arm64/boot/dts/qcom/kodiak-el2.dtso
+@@ -0,0 +1,35 @@
++// SPDX-License-Identifier: BSD-3-Clause
++/*
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
++ *
++ * Kodiak specific modifications required to boot in EL2.
++ */
++
++
++/dts-v1/;
++/plugin/;
++
++&gpu_zap_shader {
++	status = "disabled";
++};
++
++&remoteproc_adsp {
++	iommus = <&apps_smmu 0x1800 0x0>;
++};
++
++&remoteproc_cdsp {
++	iommus = <&apps_smmu 0x11a0 0x0400>;
++};
++
++&remoteproc_wpss {
++	iommus = <&apps_smmu 0x1c03 0x1>,
++		 <&apps_smmu 0x1c83 0x1>;
++};
++
++&venus {
++	status = "disabled";
++};
++
++&watchdog {
++	status = "okay";
++};
+-- 
+2.51.0
+
