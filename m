@@ -1,120 +1,67 @@
-Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42998611E
-	for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 23:16:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E97346A1D
+	for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 23:47:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774653389; cv=none; b=GU82JUxKwVIAQoe45E/gKLj+izrN3a0VdlF9cjXLjlQyMuLGF20juzHnEbiUp+Tkm4h6bsL+Ebw1cnJRrswdHoEhtyPr59DfubxWxsvQm+7JdeCUFj/Bqnwc+kbgcglmXY8jwaGsRaqlznyWHcM4zfjf4qp5cG5ozCQ0LLWgAF4=
+	t=1774655240; cv=none; b=RlktPZfwWb8DedNrwYoWeGAtSpuMGE3tkPjXr0CccnUN+iTfLL3h+XhizcuBQMeIPQ6HeDtF0PfMvhYqoIiwbmtpxcTNi8FAeh7SQdrCw/AxV6BMbTOveYvUA07x0TWPgEawfiG/J4WnDNHxLbz1zu1WP4bOhHFZX9LsmNEXr6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774653389; c=relaxed/simple;
-	bh=30NFUSR5ovcInYrHdA+br3YLavF9L/Aa+60gqiD3QaQ=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=C28t3bqYTTmVKGQVcgOV0+pm3a1pvsB/+/0l/WJzrUz/4eMSYRY+HK45gFkcVUSjTtAUYNRxj2fh6BDmOTyCkTWJkY/2HYF+CALo5L1WediV245v9NmRMxHquxWJ2h03OpRNLC5xHTM0+gdrgMOzEEBIf+vwAK3Rycbtj1beaSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JPLe0J6A; arc=none smtp.client-ip=74.125.224.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1774655240; c=relaxed/simple;
+	bh=LJC6boXcVhCOgdtGYeqxWCvOrumqAszQh6+n3gXpp+A=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=H2CopvTfesA/wxjdXByOrV6yHoZYowiPqXdsZX96klWKDVlR33xx/1fUiCTeD5giUv2b5AS2tlCdZTq6iNa+C4YJXoC0AnSYkbDlYTMSp7HjVV9ZjiZA6/dXhQfWoDaVYkRiV9wKwwJbFSkVlijDa77800VILcUqSjNGabRZrK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=km2qaZOB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JPLe0J6A"
-Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-64acd19e1dfso2601761d50.0
-        for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 16:16:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774653387; x=1775258187; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=30NFUSR5ovcInYrHdA+br3YLavF9L/Aa+60gqiD3QaQ=;
-        b=JPLe0J6AWNldyrPvTVhpZMfF6lqRulYl0G1MZFkkoH+w6QdjzCqnac8x0vaEnoZdeg
-         JTRgN9bEZZUWWIz7MAh4GdkTrMsT69uTOsz/jyutdjkwPO0izmV1PyyURWXthOwMv722
-         YApY5jmf098b+Hp/tiF42SgZJ2a1giHsTj8VZCwEhvUKlohbGrBgNFdB6j/t6D7t2H+G
-         ndD25zjEantY3BgKfFPWIGePLOTOi+KdE3chHXuRrEyKvOQ/VfyA6/InCLxhHsWmtStv
-         5jPTXtxbqTTv0fXPac9ANPTKw4XZuJRxK6kYH+BA2PFSVQkJLlHwEW70sV0FFE3WPWKM
-         eSaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774653387; x=1775258187;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=30NFUSR5ovcInYrHdA+br3YLavF9L/Aa+60gqiD3QaQ=;
-        b=boUSloyBK2un/zWC+tz9P+eD0QXSWINmpS9tGYRl4iCw3aCJeaGn7MeKLtzFF1wNRj
-         LIPkK9AeP4CqxFs+y55gczhPjDVycxxX2gU+VINpj3UjYG1iSn4KBQoIbP6wk+m9T+o0
-         ps1tlZJzYBEhAxbRcNDq8ZYeMNZSHzx7+6Sdk8jud4TlMCrI0BejbiN0mHp9Z0lt6FDx
-         uaqMMHV7jyDa3SQ7cSe0U2BEc/4EKeCmWWNDR7aXl52X8M09BfjqNhJmaipyqUJjcvDn
-         vFT0Siny2TwRKDC9JFXwiAX3qMfo4jHJ6bSa4ZQezSApK8NgHtBn3jXjEYcPo6g8mdSl
-         t/cA==
-X-Forwarded-Encrypted: i=1; AJvYcCVL7+m1KRmnj1ns8twDyoaj9iintWeaNXRrUWaZm0OTAGubKDd4mN2jHUBDEdAl8Fsvq3ocgXg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyq+YwH5JMYz+wiFobGUZKYr/6fGXuc1uD/UhkAGpoOWn7fjX93
-	TuocJUstXbSxd3ynCjmD1gwZHhdbwsUunxjALQNR7vv0dI6dR5h/S6qy
-X-Gm-Gg: ATEYQzyxQQG04nZL9gcMaI0cliwoc9WqEAixe8o6LarPyYJcsQFZpFhHjG7fxgurI7b
-	MKjNqP24cdt+JTlECW73jJVzZZIaDAKDbP9UKiHOYnoKjrFV/nVEE7EyQ3LwsQRN7w4uI2s0rF8
-	jeZRTFvur1eXdh8iLKWHhhaWSVo6j7y2bjTwNSmqXy5Ou1HJtdYPCvNqBCFp8y1B27WnKP3BVza
-	y4MoQ8cAdjCZpe39CMtazqyjae28U35iIhi8A7FJiChWEk5pTRcILBbispPsgEwp56gNJaieDSR
-	cdG7rhKW0aTqcl1OayQqC5Bw4qjFGLAoLaVwMkoAuOT8ey9BT6pCs+m5Hq1hNOYD5B1SUBnDXET
-	7u10fWWtaqOp2OBXQWQ/y3XvB2pkJWiz8HoC9bqcYrHaIpMJOd16ZIS3FpcZijX4S9ZVLja1WdL
-	sbUTUnBegauEGXWqdY8vOcbzOCKutK8v2xTOgO5m5Lygf3p1OSuR7Di4KD7Uvn8M7hMTW9BcY3t
-	QJC
-X-Received: by 2002:a05:690c:a015:b0:79c:875c:c93e with SMTP id 00721157ae682-79c875cd870mr12075077b3.10.1774653387228;
-        Fri, 27 Mar 2026 16:16:27 -0700 (PDT)
-Received: from gmail.com (180.134.85.34.bc.googleusercontent.com. [34.85.134.180])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-79cb7721b82sm2403667b3.15.2026.03.27.16.16.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Mar 2026 16:16:20 -0700 (PDT)
-Date: Fri, 27 Mar 2026 19:16:19 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>, 
- Eric Dumazet <edumazet@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Jason Wang <jasowang@redhat.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- Simon Horman <horms@kernel.org>, 
- Kuniyuki Iwashima <kuni1840@gmail.com>, 
- netdev@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.64bceda776b2@gmail.com>
-In-Reply-To: <CAAVpQUB=LtWXq_bzET2DOkyw_y5qRsuUf_fNCRE+TtiVHFktZw@mail.gmail.com>
-References: <20260327213441.3781433-1-kuniyu@google.com>
- <CANn89iLshTzN95t+GV0Tk97n_BCDzjAGDNTb=vSyF1rQNqwe_A@mail.gmail.com>
- <CAAVpQUB=LtWXq_bzET2DOkyw_y5qRsuUf_fNCRE+TtiVHFktZw@mail.gmail.com>
-Subject: Re: [PATCH v1 net-next] tun: Ignore tun in netdev_lock_pos().
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="km2qaZOB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F5A4C19423;
+	Fri, 27 Mar 2026 23:47:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774655240;
+	bh=LJC6boXcVhCOgdtGYeqxWCvOrumqAszQh6+n3gXpp+A=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=km2qaZOBKVgNrSzyi1afKAHfByPv2flHHCdCWRdIpAQYPxYvE2C+GMSKp5spf+21s
+	 6NVoLUMYoVLr9HU9okRXyJoZW1qzcWnQGKy0CcV/YsyjRKtFAdzGEC3K7Qnn/HEiI9
+	 wfhf20Rr5klNZmdq8/X5BwVXTayxGCVeWGF0oyjk9lW3QkfVb0tVHDSMgzhNLwoqQ3
+	 WWRNU9yNyiLRVZA63p+1ChWhOyvWmturIlJJxB3iMdfuOMv/ZBydBg5Dk1SodZQEFv
+	 RDdIYZ93jtZq8qHj9tzybuzIkVr++WgjrPpOAo15epn1mA4fbtJ7tFSf/A6BNauO0F
+	 h31Z3ot0FVk1Q==
+Date: Fri, 27 Mar 2026 16:47:18 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: Jiri Pirko <jiri@resnulli.us>, <netdev@vger.kernel.org>, Tony Nguyen
+ <anthony.l.nguyen@intel.com>, <intel-wired-lan@lists.osuosl.org>,
+ "Aleksandr Loktionov" <aleksandr.loktionov@intel.com>,
+ <edumazet@google.com>, <horms@kernel.org>, <pabeni@redhat.com>,
+ <davem@davemloft.net>, "Michal Schmidt" <mschmidt@redhat.com>
+Subject: Re: [PATCH net-next 1/2] devlink: unify devlink_shd_get_priv() into
+ devlink_priv()
+Message-ID: <20260327164718.72bf4b65@kernel.org>
+In-Reply-To: <f930e404-412c-46c0-9e3c-feee4d3c70fb@intel.com>
+References: <20260325063143.261806-1-przemyslaw.kitszel@intel.com>
+	<20260325063143.261806-2-przemyslaw.kitszel@intel.com>
+	<20260326143808.1fd69825@kernel.org>
+	<f930e404-412c-46c0-9e3c-feee4d3c70fb@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Kuniyuki Iwashima wrote:
-> On Fri, Mar 27, 2026 at 2:48=E2=80=AFPM Eric Dumazet <edumazet@google.c=
-om> wrote:
-> >
-> > On Fri, Mar 27, 2026 at 2:34=E2=80=AFPM Kuniyuki Iwashima <kuniyu@goo=
-gle.com> wrote:
-> > >
-> > > dev->type could be any value on tun due to TUNSETLINK.
-> > >
-> > > Let's not warn about it in netdev_lock_pos().
-> > >
-> > > Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-> >
-> > Hmmm... should we instead have a list of supported types ?
-> >
-> > And reject user space requests for unsupported ones ?
-> =
+On Fri, 27 Mar 2026 08:42:47 +0100 Przemek Kitszel wrote:
+> > If we are worried about misuse we should instead add an accessor
+> > for "individual" (better name welcome) instance and WARN_ON()
+> > when devlink_priv() is used in the shared setup.  
+> 
+> that would require the same amount of code as this patch (curr ver)
+> has, only with WARN_ON() instead proper value (IOW: we detect what
+> developer wanted, and give them big warning instead)
 
-> I chose a safer way but maybe we could reuse tun_get_addr_len()
-> and define the default case there as unsupported ?
-> =
+I guess I don't understand why you're so certain that you know what
+the developer wanted. I'm of the opinion that the "individual" devlink
+instances should not exist at all. Y'all want them, and claim to have
+use cases for them. And yet, it is somehow not valid to get their priv.
 
-> I guess it's okay even if it breaks userspace because we can
-> just add a single line to restore the support.
-
-We shouldn't risk breaking userspace, over such a sanity check.
-
-Presumably any truly newly added type will have a non-zero addr_len.
-While tun sets this to zero for weird inputs. Maybe just filter on
-that in the WARN_ONCE?=
