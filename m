@@ -1,56 +1,57 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C26C3CCFDE
-	for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 07:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D483BF696
+	for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 07:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774596670; cv=none; b=cp4kOWcjrjiHo0WVhPDN9eDE7B5In9eH+XfEd3xOQpT6+iC7YKwEp2npveepSLlXc/DC7SS8GpXF6wEojFqQfO3LCIybRAwG6Z6YkG/219aVtX5KxTAsD2mYJP8S+hszMmwiHoZwGopP7+cOsLU8CkZn4UXQ4GCRAPuDHLYUDCE=
+	t=1774596674; cv=none; b=G0P293RIm6xRK8X37UkVZRWc1m9eUl5wfWtpS7HxHu5DbADMPxwV/SeEicYPpv45jLGGyUL6rBUE4spXKqTJbomvRj2aiChodUmCT0gub4eSMy/X0VA/f1uEEoWXqd23q8rtNeOVNO5OISDrgaMiIkVBpGQa9fZjOyzKRi+mkms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774596670; c=relaxed/simple;
-	bh=Hilwd6wmLhVdcH05Km0NTcg0JGgAPDArrIlWyELkXNU=;
+	s=arc-20240116; t=1774596674; c=relaxed/simple;
+	bh=w3FMcVYaCrwrpfwoeEHl6nNRYb9VqqgyYnHsaVgefjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gxcnNT+yZKb+dh5887WKk5biS6EFl38zOYDg1HKQADLAlcg32Ehfa7S5ZC7C4NV+Scz3Wp0xGGW/u/sBsRkMzy20WJvx0UJVS4CX1d9EtAHIf5J2so5S8nS804JhTWDeALPV0uZj+VrEZrl82i3cKzAUaihO+xpOJaIh4ldCm90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G/q9SHZA; arc=none smtp.client-ip=192.198.163.14
+	 MIME-Version; b=DJtzjeELJ0RP4PFCVimwhUxO+Ol9b6LVbaQ7E/yiL8zsz89RLxe6WFNw9zdDJ90NuUFfPw32q1IPAbQPkcqilG7nRcGuDiCKyjpvg4yg1SQPAOGc83p3HyWctXOBqx0X5LMl9gLQtKOLmXW+wsIlGW4motolv7DCq4+m7AcAkW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h8IFk8tE; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G/q9SHZA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h8IFk8tE"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774596663; x=1806132663;
+  t=1774596668; x=1806132668;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Hilwd6wmLhVdcH05Km0NTcg0JGgAPDArrIlWyELkXNU=;
-  b=G/q9SHZAuiJCTVTUaCr9khWWsN9N8H4UV3K+eIvyGcMUv1xIy3STTupq
-   AXbEKoSpotMnImsd74zszHOn7QYLOK7kt+RN/fJb2KaIeM9kmFM0sW5P8
-   MNKGsFj89IDc8YPtERbTzR43qOC33L6dYCtUY41uIgHfvCJkpKObidL2T
-   oMQvNdqbr7NX4anooh0PqmJisqo6S9fpQIdVIgq6JXxuAzN3vwu6TSqf2
-   ZljfNuXWg6cw1+h1/H2xkbXb1AWSsD3v6Raw+Wnc368IxYJ7mjNGsgcjn
-   5KzWE15j1eNGvOju+2sILVR3Matlnhqd6j6xvfSLeDgZxvlytmHV85iZj
-   Q==;
-X-CSE-ConnectionGUID: LgBHb9h+R0CFm6OMmBhEXw==
-X-CSE-MsgGUID: oVCSWF+KTPS5tM/1yJzsTQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="75734319"
+  bh=w3FMcVYaCrwrpfwoeEHl6nNRYb9VqqgyYnHsaVgefjc=;
+  b=h8IFk8tExckefY0yR+/CL6WqoVZgMiKU2oRjfdbAP55ssjxNr/nwui4M
+   8DS3dA5AIC0Lj6n8wrc0CbqgWfiu+GPSbNB9dRmy6s8VPd1Pp6zRo6p3N
+   uZjs/agh5V71ShtHocLeS86es26n7fKmTRR4gdJeRHLVHplj15pcUKhfV
+   I5x29NP7MIvmHgW4fShIVvidqxIkPFVQSSh7TbMEmGcSlLhhy3CTaIwiL
+   xq4+qu2p3iW5sXpifO/1iwGjLjWzliKINyVRUx7YoM9UHdVUkEu9X71tt
+   +IIaGaXpnBJpC9jFiy98zhDHLBwZSZriw9gN18p6Ab8xi7dSRX4cBLenI
+   A==;
+X-CSE-ConnectionGUID: yaoLgKZQRFadl4jcdHsV3w==
+X-CSE-MsgGUID: C4F1qrN+QeGrj5+ie3K2Vg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="75734325"
 X-IronPort-AV: E=Sophos;i="6.23,143,1770624000"; 
-   d="scan'208";a="75734319"
+   d="scan'208";a="75734325"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 00:30:56 -0700
-X-CSE-ConnectionGUID: NfVt3QrVR9SQ3aRWJamXHQ==
-X-CSE-MsgGUID: IDICe1k5S/m3D9QIyM3DWg==
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 00:30:59 -0700
+X-CSE-ConnectionGUID: HlMc/K/cRtG7tuq41lPEKQ==
+X-CSE-MsgGUID: ANQZfXGWT+CTad4XqS9ztQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,143,1770624000"; 
-   d="scan'208";a="255740381"
+   d="scan'208";a="255740394"
 Received: from amlin-019-225.igk.intel.com ([10.102.19.225])
-  by orviesa002.jf.intel.com with ESMTP; 27 Mar 2026 00:30:55 -0700
+  by orviesa002.jf.intel.com with ESMTP; 27 Mar 2026 00:30:57 -0700
 From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 To: intel-wired-lan@lists.osuosl.org,
 	anthony.l.nguyen@intel.com,
 	aleksandr.loktionov@intel.com
-Cc: netdev@vger.kernel.org
-Subject: [PATCH iwl-next] ixgbe: call ixgbe_setup_fc() before fc_enable() after NVM update
-Date: Fri, 27 Mar 2026 08:30:40 +0100
-Message-ID: <20260327073046.134085-6-aleksandr.loktionov@intel.com>
+Cc: netdev@vger.kernel.org,
+	Marcin Szycik <marcin.szycik@linux.intel.com>
+Subject: [PATCH iwl-next] ixgbe: fix cls_u32 nexthdr path returning success when no entry installed
+Date: Fri, 27 Mar 2026 08:30:42 +0100
+Message-ID: <20260327073046.134085-8-aleksandr.loktionov@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260327073046.134085-1-aleksandr.loktionov@intel.com>
 References: <20260327073046.134085-1-aleksandr.loktionov@intel.com>
@@ -62,42 +63,36 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Radoslaw Tyl <radoslawx.tyl@intel.com>
+ixgbe_configure_clsu32() returns 0 (success) after the nexthdr loop
+even when ixgbe_clsu32_build_input() fails for every candidate entry
+and no jump-table slot is actually programmed.  Callers that test the
+return value would then falsely believe the filter was installed.
 
-During an NVM update the PHY reset clears the Technology Ability Field
-(IEEE 802.3 clause 37 register 7.10) back to hardware defaults.  When
-the driver subsequently calls only hw->mac.ops.fc_enable() the SRRCTL
-register is recalculated from the stale autonegotiated capability bits,
-which the MDD (Malicious Driver Detect) logic treats as an invalid
-change and halts traffic on the PF.
+The variable 'err' already tracks the last ixgbe_clsu32_build_input()
+return value; if the loop completes with a successful break, err is 0.
+If all attempts failed, err holds the last failure code.  Change the
+unconditional 'return 0' to 'return err' so errors are propagated
+correctly.
 
-Fix by calling ixgbe_setup_fc() immediately before fc_enable() in
-ixgbe_watchdog_update_link() so that flow-control autoneg and the
-PHY registers are re-programmed in the correct order after any reset.
-
-Signed-off-by: Radoslaw Tyl <radoslawx.tyl@intel.com>
 Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-index 52f0cdc..db954e9 100644
+index db954e9..8ac80ff 100644
 --- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
 +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-@@ -8041,6 +8041,12 @@ static void ixgbe_watchdog_update_link(struct ixgbe_adapter *adapter)
- 		pfc_en |= !!(adapter->ixgbe_ieee_pfc->pfc_en);
- 
- 	if (link_up && !((adapter->flags & IXGBE_FLAG_DCB_ENABLED) && pfc_en)) {
-+		if (hw->mac.ops.setup_fc) {
-+			int err = hw->mac.ops.setup_fc(hw);
-+
-+			if (err)
-+				e_warn(drv, "setup_fc failed: %d\n", err);
-+		}
- 		hw->mac.ops.fc_enable(hw);
- 		ixgbe_set_rx_drop_en(adapter);
+@@ -10311,7 +10311,7 @@ static int ixgbe_configure_clsu32(struct ixgbe_adapter *adapter,
+ 				kfree(jump);
+ 			}
+ 		}
+-		return 0;
++		return err;
  	}
+ 
+ 	input = kzalloc_obj(*input);
 -- 
 2.52.0
 
