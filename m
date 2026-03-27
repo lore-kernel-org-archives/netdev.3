@@ -1,35 +1,33 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5843F99DF;
-	Fri, 27 Mar 2026 14:55:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7ADC3FA5CD
+	for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 14:56:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774623322; cv=none; b=ftCJIL70y/FOviEgPPWpWCNKFPBrktQ9OuYD82qFIpx8K+ZcwBg8gU6xhoPf8NBj9m29fT8kNjR0zyhy78SsID3+JubQWUYzsrj0wEE+DRI5yIvzMsZ99KdNcCnHWr1wqsGgEE5HGwAObSbEvRsLDy2s8EkSG3Ij0V9IMa1CpHk=
+	t=1774623364; cv=none; b=laxthenAJh3jrJkIM5lCfAURVoNH7lNZ5laEwLlFrM1JMZtgzI+ft0KMimc4iUXS5sYnba/Doqn+GEYLs5A7FB5fzbBHQ4cLPlnTyWPndDEGtc4R2Y7ILrg1NISLWvhGOIZ0qe/hyGb+rRwwXDkUxPVU93rzaKMqCCRnKuIpdTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774623322; c=relaxed/simple;
-	bh=T+KQ37jHwWtYw3vucW7+wu32h2LngUqMA4j4rk4dfyE=;
+	s=arc-20240116; t=1774623364; c=relaxed/simple;
+	bh=jZCcR5j/UkZ+vWnh1spokvEW2kGZ26yt5slMyeiCYbM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Lrh/BQYw0rJG7Ucxuc/wz9y/o0eLL2jPF4cfJW+bzx2AYhnRZML5pz+l06wtUcjrkvvuVgAxECnAN8tprM9QH+BTqlazVR2KyJZ/SgLgu1/cLqBa4SlClJg+d3kE/rI135ZXloe+/J1ojA45TVyjJYR96QjTXdigX2gfbCJvFOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=NVUt3fDw; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	 In-Reply-To:Content-Type; b=QBFyVFWmEcOrCsbredQAYunLP11399WIx74JlIOQh7a810bLhaOjCWAY3x1JuPEJjxcWO7zQqIvAI922ruClN2zwGbelFkJwNag2oykP9koIvUGqSvA4BjJHI+ZXsTFsagkeFWnG6BX8FWCdO14IV9vpZeSXOCNOjudwT3lD0Jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XthLW/It; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="NVUt3fDw"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E68BA108582;
-	Fri, 27 Mar 2026 15:55:14 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1774623317;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=O3U6KBp5eEItdm326gyDQSusCSAfn1puIfEFX1XPUdk=;
-	b=NVUt3fDwRABcutDS7WJf5ejKhiImODoNwU89rycq8ImOEeRghCk4mHysUjpxLN+JdLxrAD
-	YysQpaCV5wz9GErd08aZm92Sjtx7Hyxe4xkrz2m19gQ8HejFS6dmM/wmRVgfvGoR7qJFYt
-	9TLOjEb2UZmwRRfo7dzMn43E/2jJUrbMMFa6m7VSthcZ5rTn1uRBwPgaX5ARIYUpmCZ01L
-	d7tU4T5XCqnTgL129b541YEVYG9auPJ5sNTZJ/7PeMCKHQPA3fTkrE0/jxYepIHpm93mzm
-	csG7ctMpvOfcfyZSqRo4jk2bPoksajsq13/wzLL28DcUNhtZu0GDQPy8KTTgsQ==
-Message-ID: <80e21085-84b9-4ebd-9a60-1d7acfc1a56b@nabladev.com>
-Date: Fri, 27 Mar 2026 15:55:14 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XthLW/It"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02BF3C19423;
+	Fri, 27 Mar 2026 14:56:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774623364;
+	bh=jZCcR5j/UkZ+vWnh1spokvEW2kGZ26yt5slMyeiCYbM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=XthLW/It58z0tOqNfHqcHuXs4U1EWfG+omU5jMnBgxLrCjggWH4v3kySpacfr2epK
+	 nWwj5/eBGg2LdT+CGlu6OchbUZV30AU4Zo1t13mzXEVIJ7NP1oRTq6cVUINXMNOXPt
+	 SVLitzbLV8Am33aaLeH59byPD4O/+JJ2lGBxjqBr4NR4FJex5tEs6/O//fCG7DX8s0
+	 0X1ZhA24SQlAoV0ELsw/RvPfEP4Ou/0K9sZcyJJaUBvjYl1iuta6i5k/BRwyWD4XQB
+	 qyJJlNGWprLamIKZPcB27Py5bM9vkefNCyfcAlpNCti06Y8Jbj1CLCrvJ9pwLr0ssJ
+	 qcqLHvNfdTCXw==
+Message-ID: <23856f10-6f3c-471c-b262-af117de1dbaa@kernel.org>
+Date: Fri, 27 Mar 2026 08:56:03 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,44 +35,60 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] net: dsa: microchip: implement KSZ87xx Module 3
- low-loss cable errata
-To: Bastien Curutchet <bastien.curutchet@bootlin.com>,
- Vladimir Oltean <olteanv@gmail.com>,
- Fidelio Lawson <lawson.fidelio@gmail.com>
-Cc: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com,
- Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Marek Vasut <marex@denx.de>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- Fidelio Lawson <fidelio.lawson@exotec.com>
-References: <20260326-ksz87xx_errata_low_loss_connections-v1-0-79a698f43626@exotec.com>
- <20260326-ksz87xx_errata_low_loss_connections-v1-0-79a698f43626@exotec.com>
- <20260326-ksz87xx_errata_low_loss_connections-v1-3-79a698f43626@exotec.com>
- <20260326-ksz87xx_errata_low_loss_connections-v1-3-79a698f43626@exotec.com>
- <20260326094211.hdaf4tz7lbjyjznn@skbuf>
- <2848158c-a807-4d26-be87-248d4107c5b4@bootlin.com>
+Subject: Re: [PATCH net-next v2 3/3] vrf: Remove unnecessary RCU protection
+ around dst entries
 Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <2848158c-a807-4d26-be87-248d4107c5b4@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, andrew+netdev@lunn.ch, petrm@nvidia.com,
+ lirongqing@baidu.com
+References: <20260326203233.1128554-1-idosch@nvidia.com>
+ <20260326203233.1128554-4-idosch@nvidia.com>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <20260326203233.1128554-4-idosch@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-On 3/27/26 3:47 PM, Bastien Curutchet wrote:
-
-Hello Bastien,
-
->> FYI, the driver is in a restructuring process. The ksz88xx_switch_ops
->> will be split out of the common ksz_switch_ops. This will conflict with
->> your series, so you should rebase on top of that much larger set.
->> You can coordinate with Bastien Curutchet to see what is the status:
->> https://lore.kernel.org/netdev/20260313153849.qkfzv5c2u6fepjku@skbuf
+On 3/26/26 2:32 PM, Ido Schimmel wrote:
+> During initialization of a VRF device, the VRF driver creates two dst
+> entries (for IPv4 and IPv6). They are attached to locally generated
+> packets that are transmitted out of the VRF ports (via the
+> l3mdev_l3_out() hook). Their purpose is to redirect packets towards the
+> VRF device instead of having the packets egress directly out of the VRF
+> ports. This is useful, for example, when a queuing discipline is
+> configured on the VRF device.
 > 
-> Indeed, I'm currently polishing a first iteration for it. I'll send it 
-> ASAP.
-I would argue that this low-loss cable errata is a bugfix, so maybe that 
-should have a priority over restructuring ?
+> In order to avoid a NULL pointer dereference, commit b0e95ccdd775 ("net:
+> vrf: protect changes to private data with rcu") made the pointers to the
+> dst entries RCU protected. As far as I can tell, this was needed because
+> back then the dst entries were released (and the pointers reset to NULL)
+> before removing the VRF ports.
+> 
+> Later on, commit f630c38ef0d7 ("vrf: fix bug_on triggered by rx when
+> destroying a vrf") moved the removal of the VRF ports to the VRF
+> device's dellink() callback. As such, the tear down sequence of a VRF
+> device looks as follows:
+> 
+> 1. VRF ports are removed.
+> 2. VRF device is unregistered.
+>     a. Device is closed.
+>     b. An RCU grace period passes.
+>     c. ndo_uninit() is called.
+>         i. dst entries are released.
+> 
+> Given the above, the Tx path will always see the same fully initialized
+> dst entries and will never race with the ndo_uninit() callback.
+> 
+> Therefore, there is no need to make the pointers to the dst entries RCU
+> protected. Remove it as well as the unnecessary NULL checks in the Tx
+> path.
+> 
+> Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+> ---
+>  drivers/net/vrf.c | 56 ++++++++++-------------------------------------
+>  1 file changed, 12 insertions(+), 44 deletions(-)
+> 
+
+Reviewed-by: David Ahern <dsahern@kernel.org>
+
+
