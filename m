@@ -1,331 +1,174 @@
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2265396576;
-	Fri, 27 Mar 2026 12:11:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C650392836;
+	Fri, 27 Mar 2026 12:13:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774613489; cv=none; b=Ah1+hIhEhYt+AKBq0f9JsLEwtps/U1nK/xQ85dHVVXZadj2X2dTC2BmrpNpSjB0i3f9jkR9xjqBldv7wufqcsGBOc460Z5njF+h2C9+WLIhhIVG2ksDSrl7GKp3fdL5vGtIE+ln5eVSm2b7Mb5ybYhlAfBSYZ5zaXDq+WpidUpc=
+	t=1774613631; cv=none; b=GEdMgE02tOfEMshLfByVX2HGz2S9hP/hbojo0CKOw3/tYUNXfXDCKIndHmoAnENtd/c8AhKdL3pBnPaVAjOQ4tzVGsp0Cb+GZygfjWsL7jZQIw0YMhPPGXGHSlQ1si0gkAQvOR6lSmrn+R/9/ZuPs89h3IKkXtwXSarGjTQEsPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774613489; c=relaxed/simple;
-	bh=EwlJDszPpfEdKhOhu7f108JikiWoOZWkmZViWA1GeC0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KA1lFmpQU/sp3+EfYmIyciWqGoiqlUn7NhNBYjhsOhbxHGOHE2UTQdWaDXvhZ9fBcrDFM0rhRSMnvDa5LbFyP8gtykrOYqv+mxrQR3rgKOukDTFpeVub+7hX7+Cw1qngiCuLnu6ijnAcrH9A6T6h4VAzyRq4npIwasJo0LaiX8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=X4uJLn7k; arc=none smtp.client-ip=213.133.104.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
+	s=arc-20240116; t=1774613631; c=relaxed/simple;
+	bh=FLli+dZ1C9O4tzBSYDltIR6beAvUPfOCqGpu+ZcWdY4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dGVKoROwYySMAvc+BwBmgrX1x03tm5NMs9UTgYUXZpojXKS0YhFAUbr4MUANnL/Uo7sg54Bg8mZUxTpXmnNjhRAwRsfKcx7D48D6EtNRpLOO8cvix86MfPK8RmAiF8lIi1kQZRylxfZL/MmCADpLlQpRhXjMrxIW85F22c+W3lI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sx0Z0Tq3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="X4uJLn7k"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=2CfLTFsaBvNqZg4DLZFKNzwuTNoI1glmMV6lIBJA3y8=; b=X4uJLn7kEGsdZ2qVX0qJsDwrwx
-	Kx8nSq/QOu5B2nwg30o3M34PiAf3y2eROdPJ4uTHXIX4ZyFRxTsXLZs6UHDFLOdIAkkt3lPC1n4cm
-	nEdAJzDXT+8wEq+Pk9AOc4qq4WY4nnRDZHFChbhFD21qMIPBGQmlGL17VbotWzKHYPHVgM2kLn1wk
-	AC4qp5gSn//mhj3zJaRyvw69T0UGAmbvxGIPdwbN6zh3F9Hdl0pcJpdEhpq3socf7oyu2/Ja+1Sin
-	plOXVbXlj99nPZI25BrMyalZdIIZfrePI9xhDWVNMo8qR6fHuIfWxZ3+jqBC7RB5V1r9zGjqAtduO
-	XgLqECjw==;
-Received: from localhost ([127.0.0.1])
-	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1w661f-000AMe-1O;
-	Fri, 27 Mar 2026 13:10:55 +0100
-From: Daniel Borkmann <daniel@iogearbox.net>
-To: netdev@vger.kernel.org
-Cc: bpf@vger.kernel.org,
-	kuba@kernel.org,
-	davem@davemloft.net,
-	razor@blackwall.org,
-	pabeni@redhat.com,
-	willemb@google.com,
-	sdf@fomichev.me,
-	john.fastabend@gmail.com,
-	martin.lau@kernel.org,
-	jordan@jrife.io,
-	maciej.fijalkowski@intel.com,
-	magnus.karlsson@intel.com,
-	dw@davidwei.uk,
-	toke@redhat.com,
-	yangzhenze@bytedance.com,
-	wangdongdong.6@bytedance.com
-Subject: [PATCH net-next v10 03/14] net: Add lease info to queue-get response
-Date: Fri, 27 Mar 2026 13:10:38 +0100
-Message-ID: <20260327121049.334562-4-daniel@iogearbox.net>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260327121049.334562-1-daniel@iogearbox.net>
-References: <20260327121049.334562-1-daniel@iogearbox.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sx0Z0Tq3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A36C19423;
+	Fri, 27 Mar 2026 12:13:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774613631;
+	bh=FLli+dZ1C9O4tzBSYDltIR6beAvUPfOCqGpu+ZcWdY4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Sx0Z0Tq35iqE1hkxxftnyb4ndneZSGSkda1nyqEi0xjSzdP3HPl7uGj+LsOma3jZk
+	 PFGRlRvyPItoWsD9h9JVcFH6659uTKBDVt5L4Tl+chf8Dcqb3BQ+VjcDHMpTNujCw4
+	 jqIUKn18gzw7BoM/ox/gBEWJylIzOLBI/FlQihquS76bZZJvtIfhBNsTwLpzquwGUA
+	 O2xavrv1l5yzt6megVI+kJf/2QxPauGJAq3srWRdfHJ1DqiMU2/1FA1UIh1jHNbQE7
+	 xM5non5TgZMja5rwhO0+dx7kyzIelsVRRkjoGriU6V77zAxzni+mEbMbOxKvIJeggx
+	 q41P8zm+g76fw==
+Message-ID: <c23acf06-8d10-4a3c-a3df-d62860ba6b31@kernel.org>
+Date: Fri, 27 Mar 2026 13:13:45 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.4.3/27953/Fri Mar 27 07:24:46 2026)
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net v3] mptcp: fix soft lockup in mptcp_recvmsg()
+Content-Language: fr
+To: Li Xiasong <lixiasong1@huawei.com>, Mat Martineau <martineau@kernel.org>,
+ Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev,
+ linux-kernel@vger.kernel.org, yuehaibing@huawei.com,
+ zhangchangzhong@huawei.com, weiyongjun1@huawei.com
+References: <20260327075544.3622851-1-lixiasong1@huawei.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20260327075544.3622851-1-lixiasong1@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Populate nested lease info to the queue-get response that returns the
-ifindex, queue id with type and optionally netns id if the device
-resides in a different netns.
+Hi Li,
 
-Example with ynl client when using AF_XDP via queue leasing:
+On 27/03/2026 08:55, Li Xiasong wrote:
+> syzbot reported a soft lockup in mptcp_recvmsg() [0].
+> 
+> When receiving data with MSG_PEEK | MSG_WAITALL flags, the skb is not
+> removed from the sk_receive_queue. This causes sk_wait_data() to always
+> find available data and never perform actual waiting, leading to a soft
+> lockup.
+> 
+> Fix this by adding a 'last' parameter to track the last peeked skb.
+> This allows sk_wait_data() to make informed waiting decisions and prevent
+> infinite loops when MSG_PEEK is used.
 
-  # ip a
-  [...]
-  4: enp10s0f0np0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 xdp/id:24 qdisc mq state UP group default qlen 1000
-    link/ether e8:eb:d3:a3:43:f6 brd ff:ff:ff:ff:ff:ff
-    inet 10.0.0.2/24 scope global enp10s0f0np0
-       valid_lft forever preferred_lft forever
-    inet6 fe80::eaeb:d3ff:fea3:43f6/64 scope link proto kernel_ll
-       valid_lft forever preferred_lft forever
-  [...]
+Thank you for the new version!
 
-  # ethtool -i enp10s0f0np0
-  driver: mlx5_core
-  [...]
+(...)
 
-  # ynl --family netdev --output-json --do queue-get \
-        --json '{"ifindex": 4, "id": 15, "type": "rx"}'
-  {'id': 15,
-   'ifindex': 4,
-   'lease': {'ifindex': 8, 'netns-id': 0, 'queue': {'id': 1, 'type': 'rx'}},
-   'napi-id': 8227,
-   'type': 'rx',
-   'xsk': {}}
+> diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+> index cf1852b99963..60f6e6a189b7 100644
+> --- a/net/mptcp/protocol.c
+> +++ b/net/mptcp/protocol.c
 
-  # ip netns list
-  foo (id: 0)
+(...)
 
-  # ip netns exec foo ip a
-  [...]
-  8: nk@NONE: <BROADCAST,MULTICAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
-      link/ether 00:00:00:00:00:00 brd ff:ff:ff:ff:ff:ff
-      inet6 fe80::200:ff:fe00:0/64 scope link proto kernel_ll
-         valid_lft forever preferred_lft forever
-  [...]
+> @@ -2343,7 +2347,7 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+>  
+>  		pr_debug("block timeout %ld\n", timeo);
+>  		mptcp_cleanup_rbuf(msk, copied);
+> -		err = sk_wait_data(sk, &timeo, NULL);
+> +		err = sk_wait_data(sk, &timeo, last);
 
-  # ip netns exec foo ethtool -i nk
-  driver: netkit
-  [...]
+sashiko is saying [1] this:
 
-  # ip netns exec foo ls /sys/class/net/nk/queues/
-  rx-0  rx-1  tx-0
+> Will this cause a soft lockup if all socket buffers in the receive queue
+> have already been peeked?
+>
+> If the queue only contains already-peeked buffers, the loop in
+> __mptcp_recvmsg_mskq() skips them using a continue statement:
+>
+>     if (flags & MSG_PEEK) {
+>         /* skip already peeked skbs */
+>         if (total_data_len + data_len <= copied_total) {
+>             total_data_len += data_len;
+>             continue;
+>         }
+>
+> This means last is never assigned and remains NULL.
+>
+> When last is NULL, sk_wait_data() checks if the receive queue tail is
+> not equal to NULL. Since the queue still contains the unconsumed buffers,
+> this evaluates to true and sk_wait_data() returns immediately without
+> sleeping.
+>
+> Does this result in an infinite loop here when MSG_PEEK and MSG_WAITALL
+> are used together?
 
-  # ip netns exec foo ynl --family netdev --output-json --do queue-get \
-        --json '{"ifindex": 8, "id": 1, "type": "rx"}'
-  {"id": 1, "type": "rx", "ifindex": 8, "xsk": {}}
+I *think* that's a false positive. When MSG_PEEK and MSG_WAITALL are
+used together, sk_wait_data() will be call with "last" != NULL and will
+be unblocked when a new data packet (skb->len > 0) is added to the
+queue. In other words, when walking the queue in __mptcp_recvmsg_mskq,
+it should never be full of already-peeked skb. Or did I miss something?
 
-Note that the caller of netdev_nl_queue_fill_one() holds the netdevice
-lock. For the queue-get we do not lock both devices. When queues get
-{un,}leased, both devices are locked, thus if __netif_get_rx_queue_lease()
-returns a lease pointer, it points to a valid device. The netns-id is
-fetched via peernet2id_alloc() similarly as done in OVS.
+If yes, "*last = skb" could be added before the "continue".
 
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Co-developed-by: David Wei <dw@davidwei.uk>
-Signed-off-by: David Wei <dw@davidwei.uk>
----
- include/net/netdev_rx_queue.h | 14 ++++++++
- net/core/netdev-genl.c        | 66 ++++++++++++++++++++++++++++++++---
- net/core/netdev_rx_queue.c    | 54 ++++++++++++++++++++++++++++
- 3 files changed, 130 insertions(+), 4 deletions(-)
+If no, this patch can be applied in 'net' directly:
 
-diff --git a/include/net/netdev_rx_queue.h b/include/net/netdev_rx_queue.h
-index 1d41c253f0a3..7e98c679ea84 100644
---- a/include/net/netdev_rx_queue.h
-+++ b/include/net/netdev_rx_queue.h
-@@ -67,6 +67,20 @@ get_netdev_rx_queue_index(struct netdev_rx_queue *queue)
- 	return index;
- }
- 
-+enum netif_lease_dir {
-+	NETIF_VIRT_TO_PHYS,
-+	NETIF_PHYS_TO_VIRT,
-+};
-+
-+struct netdev_rx_queue *
-+__netif_get_rx_queue_lease(struct net_device **dev, unsigned int *rxq,
-+			   enum netif_lease_dir dir);
-+
-+struct netdev_rx_queue *
-+netif_get_rx_queue_lease_locked(struct net_device **dev, unsigned int *rxq);
-+void netif_put_rx_queue_lease_locked(struct net_device *orig_dev,
-+				     struct net_device *dev);
-+
- int netdev_rx_queue_restart(struct net_device *dev, unsigned int rxq);
- void netdev_rx_queue_lease(struct netdev_rx_queue *rxq_dst,
- 			   struct netdev_rx_queue *rxq_src);
-diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
-index 5d5e5b9a8af0..515832854251 100644
---- a/net/core/netdev-genl.c
-+++ b/net/core/netdev-genl.c
-@@ -386,12 +386,63 @@ static int nla_put_napi_id(struct sk_buff *skb, const struct napi_struct *napi)
- 	return 0;
- }
- 
-+static int
-+netdev_nl_queue_fill_lease(struct sk_buff *rsp, struct net_device *netdev,
-+			   u32 q_idx, u32 q_type)
-+{
-+	struct net_device *orig_netdev = netdev;
-+	struct nlattr *nest_lease, *nest_queue;
-+	struct netdev_rx_queue *rxq;
-+	struct net *net, *peer_net;
-+
-+	rxq = __netif_get_rx_queue_lease(&netdev, &q_idx,
-+					 NETIF_PHYS_TO_VIRT);
-+	if (!rxq || orig_netdev == netdev)
-+		return 0;
-+
-+	nest_lease = nla_nest_start(rsp, NETDEV_A_QUEUE_LEASE);
-+	if (!nest_lease)
-+		goto nla_put_failure;
-+
-+	nest_queue = nla_nest_start(rsp, NETDEV_A_LEASE_QUEUE);
-+	if (!nest_queue)
-+		goto nla_put_failure;
-+	if (nla_put_u32(rsp, NETDEV_A_QUEUE_ID, q_idx))
-+		goto nla_put_failure;
-+	if (nla_put_u32(rsp, NETDEV_A_QUEUE_TYPE, q_type))
-+		goto nla_put_failure;
-+	nla_nest_end(rsp, nest_queue);
-+
-+	if (nla_put_u32(rsp, NETDEV_A_LEASE_IFINDEX,
-+			READ_ONCE(netdev->ifindex)))
-+		goto nla_put_failure;
-+
-+	rcu_read_lock();
-+	peer_net = dev_net_rcu(netdev);
-+	net = dev_net_rcu(orig_netdev);
-+	if (!net_eq(net, peer_net)) {
-+		s32 id = peernet2id_alloc(net, peer_net, GFP_ATOMIC);
-+
-+		if (nla_put_s32(rsp, NETDEV_A_LEASE_NETNS_ID, id))
-+			goto nla_put_failure_unlock;
-+	}
-+	rcu_read_unlock();
-+	nla_nest_end(rsp, nest_lease);
-+	return 0;
-+
-+nla_put_failure_unlock:
-+	rcu_read_unlock();
-+nla_put_failure:
-+	return -ENOMEM;
-+}
-+
- static int
- netdev_nl_queue_fill_one(struct sk_buff *rsp, struct net_device *netdev,
- 			 u32 q_idx, u32 q_type, const struct genl_info *info)
- {
- 	struct pp_memory_provider_params *params;
--	struct netdev_rx_queue *rxq;
-+	struct net_device *orig_netdev = netdev;
-+	struct netdev_rx_queue *rxq, *rxq_lease;
- 	struct netdev_queue *txq;
- 	void *hdr;
- 
-@@ -409,17 +460,22 @@ netdev_nl_queue_fill_one(struct sk_buff *rsp, struct net_device *netdev,
- 		rxq = __netif_get_rx_queue(netdev, q_idx);
- 		if (nla_put_napi_id(rsp, rxq->napi))
- 			goto nla_put_failure;
-+		if (netdev_nl_queue_fill_lease(rsp, netdev, q_idx, q_type))
-+			goto nla_put_failure;
- 
-+		rxq_lease = netif_get_rx_queue_lease_locked(&netdev, &q_idx);
-+		if (rxq_lease)
-+			rxq = rxq_lease;
- 		params = &rxq->mp_params;
- 		if (params->mp_ops &&
- 		    params->mp_ops->nl_fill(params->mp_priv, rsp, rxq))
--			goto nla_put_failure;
-+			goto nla_put_failure_lease;
- #ifdef CONFIG_XDP_SOCKETS
- 		if (rxq->pool)
- 			if (nla_put_empty_nest(rsp, NETDEV_A_QUEUE_XSK))
--				goto nla_put_failure;
-+				goto nla_put_failure_lease;
- #endif
--
-+		netif_put_rx_queue_lease_locked(orig_netdev, netdev);
- 		break;
- 	case NETDEV_QUEUE_TYPE_TX:
- 		txq = netdev_get_tx_queue(netdev, q_idx);
-@@ -437,6 +493,8 @@ netdev_nl_queue_fill_one(struct sk_buff *rsp, struct net_device *netdev,
- 
- 	return 0;
- 
-+nla_put_failure_lease:
-+	netif_put_rx_queue_lease_locked(orig_netdev, netdev);
- nla_put_failure:
- 	genlmsg_cancel(rsp, hdr);
- 	return -EMSGSIZE;
-diff --git a/net/core/netdev_rx_queue.c b/net/core/netdev_rx_queue.c
-index a1f23c2c96d4..a4d8cad6db74 100644
---- a/net/core/netdev_rx_queue.c
-+++ b/net/core/netdev_rx_queue.c
-@@ -41,6 +41,60 @@ bool netif_rxq_is_leased(struct net_device *dev, unsigned int rxq_idx)
- 	return false;
- }
- 
-+/* Virtual devices eligible for leasing have no dev->dev.parent, while
-+ * physical devices always have one. Use this to enforce the correct
-+ * lease traversal direction.
-+ */
-+static bool netif_lease_dir_ok(const struct net_device *dev,
-+			       enum netif_lease_dir dir)
-+{
-+	if (dir == NETIF_VIRT_TO_PHYS && !dev->dev.parent)
-+		return true;
-+	if (dir == NETIF_PHYS_TO_VIRT && dev->dev.parent)
-+		return true;
-+	return false;
-+}
-+
-+struct netdev_rx_queue *
-+__netif_get_rx_queue_lease(struct net_device **dev, unsigned int *rxq_idx,
-+			   enum netif_lease_dir dir)
-+{
-+	struct net_device *orig_dev = *dev;
-+	struct netdev_rx_queue *rxq = __netif_get_rx_queue(orig_dev, *rxq_idx);
-+
-+	if (rxq->lease) {
-+		if (!netif_lease_dir_ok(orig_dev, dir))
-+			return NULL;
-+		rxq = rxq->lease;
-+		*rxq_idx = get_netdev_rx_queue_index(rxq);
-+		*dev = rxq->dev;
-+	}
-+	return rxq;
-+}
-+
-+struct netdev_rx_queue *
-+netif_get_rx_queue_lease_locked(struct net_device **dev, unsigned int *rxq_idx)
-+{
-+	struct net_device *orig_dev = *dev;
-+	struct netdev_rx_queue *rxq;
-+
-+	/* Locking order is always from the virtual to the physical device
-+	 * see netdev_nl_queue_create_doit().
-+	 */
-+	netdev_ops_assert_locked(orig_dev);
-+	rxq = __netif_get_rx_queue_lease(dev, rxq_idx, NETIF_VIRT_TO_PHYS);
-+	if (rxq && orig_dev != *dev)
-+		netdev_lock(*dev);
-+	return rxq;
-+}
-+
-+void netif_put_rx_queue_lease_locked(struct net_device *orig_dev,
-+				     struct net_device *dev)
-+{
-+	if (orig_dev != dev)
-+		netdev_unlock(dev);
-+}
-+
- /* See also page_pool_is_unreadable() */
- bool netif_rxq_has_unreadable_mp(struct net_device *dev, unsigned int rxq_idx)
- {
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+
+
+[1]
+https://sashiko.dev/#/patchset/20260327075544.3622851-1-lixiasong1%40huawei.com
+
+Cheers,
+Matt
 -- 
-2.43.0
+Sponsored by the NGI0 Core fund.
 
