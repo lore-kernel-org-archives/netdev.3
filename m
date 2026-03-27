@@ -1,546 +1,432 @@
-Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A3A33DC4CA;
-	Fri, 27 Mar 2026 08:28:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.171
+Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 595583D3D02;
+	Fri, 27 Mar 2026 08:31:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774600115; cv=none; b=S3hRc/brZXh8sRwyUGwrBELrZcGyH5TwaLKVxOW3OUIk5Ja0ugfc2LPUOClqqtbsb8WAjv5oaq975Hyz+60Qb16STPJXnuF9beFaN6WcwcjYnjk88twRaTP5eyBD5FhELfYSlwCDCpmrMUt8MPXwrLLcTdvYtM//N4lUlT1JbSE=
+	t=1774600317; cv=none; b=Ne5ZKdDXiAzgtOBCQSAf+IwU7re1Mh6xEzDo7HQv/m+tjMD/942FHm2g6h7AQkTfwyl/YGTOWTokw49RnAi375mZGUu/Bv5OYCUYrIw44O9hv8Zupfl6gQKprH+9MtcW+FTNxRUhZ+mCrLhNclQwb02boCi+rh441p9Qifjs5mk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774600115; c=relaxed/simple;
-	bh=z4pxeiYEVN/vlA6O2fjcSkb0WUjIMAbPsZLHy9ATS4I=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=M/O+UAgLRmhuvT8zn6w/NrPf6GpxZfIFXUPnA302S/1TKyihmee5fJUKJ8MS5onO5CNspNSVBNxWqJ3yJjRdTqDuWNOURZrr6hKJaonJHvYjVVSExRyVYjSR3wRjpAywoeumzUsmz7ogtXRAUOMXveVzuSaH7fkrNEiT/ywWlpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; arc=none smtp.client-ip=210.160.252.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
-X-CSE-ConnectionGUID: m7/Siwh0QPWwIsVoM1YTxg==
-X-CSE-MsgGUID: UHKICGU3RSSPmSCYXhpxhQ==
-Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie5.idc.renesas.com with ESMTP; 27 Mar 2026 17:28:25 +0900
-Received: from [127.0.1.1] (unknown [10.226.78.135])
-	by relmlir5.idc.renesas.com (Postfix) with ESMTP id 39B174012274;
-	Fri, 27 Mar 2026 17:28:22 +0900 (JST)
-From: Michael Dege <michael.dege@renesas.com>
-Date: Fri, 27 Mar 2026 09:27:43 +0100
-Subject: [PATCH net-next v2 13/13] net: renesas: rswitch: add vlan aware
- switching
+	s=arc-20240116; t=1774600317; c=relaxed/simple;
+	bh=C5zCJ2dSSr2sUEmtiMBLlNl+9IFiw1PPxBngmjF/gZs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=B5m4b8qX8cTGvf7iGUAj9vfV+vUixNvJ9EqT15Yd0fvAq3zkDjZsIHnMtu+/ZQATMWBiR5wEkfxa6Fj/nE1V4jAwULe//ygk3YHXjTw/74K4OORnoO6lYdL2O7ha0R4KAohU1CtuBXIMQX9XJBbgfRg5I6M4C5fvfCub5w0rNkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=OoYtxFEH; arc=none smtp.client-ip=129.217.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="OoYtxFEH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tu-dortmund.de;
+	s=unimail; t=1774600297;
+	bh=C5zCJ2dSSr2sUEmtiMBLlNl+9IFiw1PPxBngmjF/gZs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=OoYtxFEHguYXITndQdnURTe59OppSq1IZqB+aZK0SCdXwRRqo7f4lAn3saL9h8fFp
+	 kt+2R8RktS6vYjK4of8RlBKvg5B1Dqm2npsCHl9lKO5i1DHcZe1dWtgL6nWCPcigsO
+	 6KfcaS7MgsUaJs+UA6oEgJjnyUhWcRah7uutJaLQ=
+Received: from [IPV6:2a01:599:313:1ec8:db54:5cf5:3244:cdab] (tmo-120-113.customers.d1-online.com [80.187.120.113])
+	(authenticated bits=0)
+	by unimail.uni-dortmund.de (8.18.2/8.18.2) with ESMTPSA id 62R8VWni018737
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 27 Mar 2026 09:31:33 +0100 (CET)
+Message-ID: <b9d84d88-46d5-4fd3-a5b2-d914f54766f6@tu-dortmund.de>
+Date: Fri, 27 Mar 2026 09:31:32 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260327-rswitch_add_vlans-v2-13-d7f4358ca57a@renesas.com>
-References: <20260327-rswitch_add_vlans-v2-0-d7f4358ca57a@renesas.com>
-In-Reply-To: <20260327-rswitch_add_vlans-v2-0-d7f4358ca57a@renesas.com>
-To: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Michael Dege <michael.dege@renesas.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1774600062; l=15012;
- i=michael.dege@renesas.com; s=20251023; h=from:subject:message-id;
- bh=z4pxeiYEVN/vlA6O2fjcSkb0WUjIMAbPsZLHy9ATS4I=;
- b=5vgZ8P9JCSJhwnPg9x/omhXBpxll1tp3Aaq2lcNWfBPZKV9aSv3CNdLKEXs7qItCHFrXfy7yM
- aN9FuUUDIP2At9JnAP923u05gyI2JjMDQHY6RMBwVUSY+WF+u82s333
-X-Developer-Key: i=michael.dege@renesas.com; a=ed25519;
- pk=gu1rwIcCrAxNMv2I8fIfiQvt51xzZwnQy4Ua/DscQt8=
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v8 4/4] tun/tap & vhost-net: avoid ptr_ring
+ tail-drop when a qdisc is present
+To: Jason Wang <jasowang@redhat.com>
+Cc: willemdebruijn.kernel@gmail.com, andrew+netdev@lunn.ch,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, mst@redhat.com, eperezma@redhat.com,
+        leiyang@redhat.com, stephen@networkplumber.org, jon@nutanix.com,
+        tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        virtualization@lists.linux.dev
+References: <20260312130639.138988-1-simon.schippers@tu-dortmund.de>
+ <20260312130639.138988-5-simon.schippers@tu-dortmund.de>
+ <CACGkMEtN9XgYPGHQg4TEWEsa_UcMbcnzO=VaTFT=0Tn4BayMDw@mail.gmail.com>
+ <0908392d-6314-4141-b908-6c9a880ba0a4@tu-dortmund.de>
+ <cda710f8-033a-4772-b5ce-a2cfddf42bea@tu-dortmund.de>
+ <CACGkMEuLqxnz=GtdKp3-u0egkGT_eZUgBBwvvtHcgAYpLJv-UA@mail.gmail.com>
+ <3d3274b4-f274-4cf9-9d0f-989d05148604@tu-dortmund.de>
+ <CACGkMEsUag4zNZG+aYipHv_PirbKb_rs7DzSOr-NF8ckhUaJOQ@mail.gmail.com>
+Content-Language: en-US
+From: Simon Schippers <simon.schippers@tu-dortmund.de>
+In-Reply-To: <CACGkMEsUag4zNZG+aYipHv_PirbKb_rs7DzSOr-NF8ckhUaJOQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Add vlan support to L2 HW bridge.
+On 3/27/26 02:13, Jason Wang wrote:
+> On Thu, Mar 26, 2026 at 11:31 PM Simon Schippers
+> <simon.schippers@tu-dortmund.de> wrote:
+>>
+>> On 3/26/26 03:41, Jason Wang wrote:
+>>> On Wed, Mar 25, 2026 at 10:48 PM Simon Schippers
+>>> <simon.schippers@tu-dortmund.de> wrote:
+>>>>
+>>>> On 3/24/26 11:14, Simon Schippers wrote:
+>>>>> On 3/24/26 02:47, Jason Wang wrote:
+>>>>>> On Thu, Mar 12, 2026 at 9:07 PM Simon Schippers
+>>>>>> <simon.schippers@tu-dortmund.de> wrote:
+>>>>>>>
+>>>>>>> This commit prevents tail-drop when a qdisc is present and the ptr_ring
+>>>>>>> becomes full. Once an entry is successfully produced and the ptr_ring
+>>>>>>> reaches capacity, the netdev queue is stopped instead of dropping
+>>>>>>> subsequent packets.
+>>>>>>>
+>>>>>>> If producing an entry fails anyways due to a race, tun_net_xmit returns
+>>>>>>> NETDEV_TX_BUSY, again avoiding a drop. Such races are expected because
+>>>>>>> LLTX is enabled and the transmit path operates without the usual locking.
+>>>>>>>
+>>>>>>> The existing __tun_wake_queue() function wakes the netdev queue. Races
+>>>>>>> between this wakeup and the queue-stop logic could leave the queue
+>>>>>>> stopped indefinitely. To prevent this, a memory barrier is enforced
+>>>>>>> (as discussed in a similar implementation in [1]), followed by a recheck
+>>>>>>> that wakes the queue if space is already available.
+>>>>>>>
+>>>>>>> If no qdisc is present, the previous tail-drop behavior is preserved.
+>>>>>>
+>>>>>> I wonder if we need a dedicated TUN flag to enable this. With this new
+>>>>>> flag, we can even prevent TUN from using noqueue (not sure if it's
+>>>>>> possible or not).
+>>>>>>
+>>>>>
+>>>>> Except of the slight regressions because of this patchset I do not see
+>>>>> a reason for such a flag.
+>>>>>
+>>>>> I have never seen that the driver prevents noqueue. For example you can
+>>>>> set noqueue to your ethernet interface and under load you soon get
+>>>>>
+>>>>> net_crit_ratelimited("Virtual device %s asks to queue packet!\n",
+>>>>>                                            dev->name);
+>>>>>
+>>>>> followed by a -ENETDOWN. And this is not prevented even though it is
+>>>>> clearly not something a user wants.
+>>>>>
+>>>>>>>
+>>>>>>> Benchmarks:
+>>>>>>> The benchmarks show a slight regression in raw transmission performance,
+>>>>>>> though no packets are lost anymore.
+>>>>>>>
+>>>>>>> The previously introduced threshold to only wake after the queue stopped
+>>>>>>> and half of the ring was consumed showed to be a descent choice:
+>>>>>>> Waking the queue whenever a consume made space in the ring strongly
+>>>>>>> degrades performance for tap, while waking only when the ring is empty
+>>>>>>> is too late and also hurts throughput for tap & tap+vhost-net.
+>>>>>>> Other ratios (3/4, 7/8) showed similar results (not shown here), so
+>>>>>>> 1/2 was chosen for the sake of simplicity for both tun/tap and
+>>>>>>> tun/tap+vhost-net.
+>>>>>>>
+>>>>>>> Test setup:
+>>>>>>> AMD Ryzen 5 5600X at 4.3 GHz, 3200 MHz RAM, isolated QEMU threads;
+>>>>>>> Average over 20 runs @ 100,000,000 packets. SRSO and spectre v2
+>>>>>>> mitigations disabled.
+>>>>>>>
+>>>>>>> Note for tap+vhost-net:
+>>>>>>> XDP drop program active in VM -> ~2.5x faster, slower for tap due to
+>>>>>>> more syscalls (high utilization of entry_SYSRETQ_unsafe_stack in perf)
+>>>>>>>
+>>>>>>> +--------------------------+--------------+----------------+----------+
+>>>>>>> | 1 thread                 | Stock        | Patched with   | diff     |
+>>>>>>> | sending                  |              | fq_codel qdisc |          |
+>>>>>>> +------------+-------------+--------------+----------------+----------+
+>>>>>>> | TAP        | Transmitted | 1.151 Mpps   | 1.139 Mpps     | -1.1%    |
+>>>>>>> |            +-------------+--------------+----------------+----------+
+>>>>>>> |            | Lost/s      | 3.606 Mpps   | 0 pps          |          |
+>>>>>>> +------------+-------------+--------------+----------------+----------+
+>>>>>>> | TAP        | Transmitted | 3.948 Mpps   | 3.738 Mpps     | -5.3%    |
+>>>>>>> |            +-------------+--------------+----------------+----------+
+>>>>>>> | +vhost-net | Lost/s      | 496.5 Kpps   | 0 pps          |          |
+>>>>>>> +------------+-------------+--------------+----------------+----------+
+>>>>>>>
+>>>>>>> +--------------------------+--------------+----------------+----------+
+>>>>>>> | 2 threads                | Stock        | Patched with   | diff     |
+>>>>>>> | sending                  |              | fq_codel qdisc |          |
+>>>>>>> +------------+-------------+--------------+----------------+----------+
+>>>>>>> | TAP        | Transmitted | 1.133 Mpps   | 1.109 Mpps     | -2.1%    |
+>>>>>>> |            +-------------+--------------+----------------+----------+
+>>>>>>> |            | Lost/s      | 8.269 Mpps   | 0 pps          |          |
+>>>>>>> +------------+-------------+--------------+----------------+----------+
+>>>>>>> | TAP        | Transmitted | 3.820 Mpps   | 3.513 Mpps     | -8.0%    |
+>>>>>>> |            +-------------+--------------+----------------+----------+
+>>>>>>> | +vhost-net | Lost/s      | 4.961 Mpps   | 0 pps          |          |
+>>>>>>> +------------+-------------+--------------+----------------+----------+
+>>>>>>>
+>>>>>>> [1] Link: https://lore.kernel.org/all/20250424085358.75d817ae@kernel.org/
+>>>>>>>
+>>>>>>> Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+>>>>>>> Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+>>>>>>> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
+>>>>>>> ---
+>>>>>>>  drivers/net/tun.c | 30 ++++++++++++++++++++++++++++--
+>>>>>>>  1 file changed, 28 insertions(+), 2 deletions(-)
+>>>>>>>
+>>>>>>> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+>>>>>>> index b86582cc6cb6..9b7daec69acd 100644
+>>>>>>> --- a/drivers/net/tun.c
+>>>>>>> +++ b/drivers/net/tun.c
+>>>>>>> @@ -1011,6 +1011,8 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
+>>>>>>>         struct netdev_queue *queue;
+>>>>>>>         struct tun_file *tfile;
+>>>>>>>         int len = skb->len;
+>>>>>>> +       bool qdisc_present;
+>>>>>>> +       int ret;
+>>>>>>>
+>>>>>>>         rcu_read_lock();
+>>>>>>>         tfile = rcu_dereference(tun->tfiles[txq]);
+>>>>>>> @@ -1063,13 +1065,37 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
+>>>>>>>
+>>>>>>>         nf_reset_ct(skb);
+>>>>>>>
+>>>>>>> -       if (ptr_ring_produce(&tfile->tx_ring, skb)) {
+>>>>>>> +       queue = netdev_get_tx_queue(dev, txq);
+>>>>>>> +       qdisc_present = !qdisc_txq_has_no_queue(queue);
+>>>>>>> +
+>>>>>>> +       spin_lock(&tfile->tx_ring.producer_lock);
+>>>>>>> +       ret = __ptr_ring_produce(&tfile->tx_ring, skb);
+>>>>>>> +       if (__ptr_ring_produce_peek(&tfile->tx_ring) && qdisc_present) {
+>>>>>>
+>>>>>> So, it's possible that the administrator is switching between noqueue
+>>>>>> and another qdisc. So ptr_ring_produce() can fail here, do we need to
+>>>>>> check that or not?
+>>>>>>
+>>>>>
+>>>>> Do you mean that? My thoughts:
+>>>>>
+>>>>> Switching from noqueue to some qdisc can cause a
+>>>>>
+>>>>> net_crit_ratelimited("Virtual device %s asks to queue packet!\n",
+>>>>>                                            dev->name);
+>>>>>
+>>>>> followed by a return of -ENETDOWN in __dev_queue_xmit().
+>>>>> This is because tun_net_xmit detects some qdisc with
+>>>>>
+>>>>> qdisc_present = !qdisc_txq_has_no_queue(queue);
+>>>>>
+>>>>> and returns NETDEV_TX_BUSY even though __dev_queue_xmit() did still
+>>>>> detect noqueue.
+>>>>>
+>>>>> I am not sure how to solve this/if this has to be solved.
+>>>>> I do not see a proper way to avoid parallel execution of ndo_start_xmit
+>>>>> and a qdisc change (dev_graft_qdisc only takes qdisc_skb_head lock).
+>>>>>
+>>>>> And from my understanding the veth implementation faces the same issue.
+>>>>
+>>>> How about rechecking if a qdisc is connected?
+>>>> This would avoid -ENETDOWN.
+>>>>
+>>>> diff --git a/net/core/dev.c b/net/core/dev.c
+>>>> index f48dc299e4b2..2731a1a70732 100644
+>>>> --- a/net/core/dev.c
+>>>> +++ b/net/core/dev.c
+>>>> @@ -4845,10 +4845,17 @@ int __dev_queue_xmit(struct sk_buff *skb, struct net_device *sb_dev)
+>>>>                                 if (is_list)
+>>>>                                         rc = NETDEV_TX_OK;
+>>>>                         }
+>>>> +                       bool qdisc_present = !qdisc_txq_has_no_queue(txq);
+>>>>                         HARD_TX_UNLOCK(dev, txq);
+>>>>                         if (!skb) /* xmit completed */
+>>>>                                 goto out;
+>>>>
+>>>> +                       /* Maybe a qdisc was connected in the meantime */
+>>>> +                       if (qdisc_present) {
+>>>> +                               kfree_skb(skb);
+>>>> +                               goto out;
+>>>> +                       }
+>>>> +
+>>>>                         net_crit_ratelimited("Virtual device %s asks to queue packet!\n",
+>>>>                                              dev->name);
+>>>>                         /* NETDEV_TX_BUSY or queue was stopped */
+>>>>
+>>>
+>>> Probably not, and we likely won't hit this warning because qdisc could
+>>> not be changed during ndo_start_xmit().
+>>
+>> Okay.
+>>
+>>>
+>>> I meant something like this:
+>>>
+>>> 1) set noqueue to tuntap
+>>> 2) produce packets so tuntap is full
+>>> 3) set e.g fq_codel to tuntap
+>>> 4) then we can hit the failure of __ptr_ring_produce()
+>>>
+>>> Rethink of the code, it looks just fine.
+>>
+>> Yes, in this case it just returns NETDEV_TX_BUSY which is fine with a
+>> qdisc attached.
+>>
+>>>
+>>>>
+>>>>>
+>>>>>
+>>>>> Switching from some qdisc to noqueue is no problem I think.
+>>>>>
+>>>>>>> +               netif_tx_stop_queue(queue);
+>>>>>>> +               /* Avoid races with queue wake-ups in __tun_wake_queue by
+>>>>>>> +                * waking if space is available in a re-check.
+>>>>>>> +                * The barrier makes sure that the stop is visible before
+>>>>>>> +                * we re-check.
+>>>>>>> +                */
+>>>>>>> +               smp_mb__after_atomic();
+>>>>>>
+>>>>>> Let's document which barrier is paired with this.
+>>>>>>
+>>>>>
+>>>>> I am basically copying the (old) logic of veth [1] proposed by
+>>>>> Jakub Kicinski. I must admit I am not 100% sure what it pairs with.
+>>>>>
+>>>>> [1] Link: https://lore.kernel.org/all/20250424085358.75d817ae@kernel.org/
+>>>
+>>> So it looks like it implicitly tries to pair with tun_ring_consume():
+>>>
+>>> 1) spinlock(consumer_lock)
+>>> 2) store NULL to ptr_ring // STORE
+>>> 3) spinunlock(consumer_lock) // RELEASE
+>>> 4) spinlock(consumer_lock) // ACQURE
+>>> 5) check empty
+>>> 6) spinunlock(consumer_lock)
+>>> 7) netif_wakeup_queue() // test_and_set() which is an RMW
+>>>
+>>> RELEASE + ACQUIRE implies a full barrier
+>>
+>> Thanks.
+>>
+>>>
+>>> I see several problems
+>>>
+>>> 1) Due to batch consumption, we may get spurious wakeups under heavy
+>>> load (we can try disabling batch consuming to see if it helps).
+>>
+>> I assume that you mean the waking in the recheck of the producer happens
+>> too often and then wakes too often. But this would just take slightly
+>> more producer cpu as the SOFTIRQ runs on the producer cpu and not slow
+>> down the consumer?
+>>
+>> Why would disabling batch consume help here?
+> 
+> We could end up with.
+> 
+> 1) consumer wakes up the producer but the slot is not cleaned
 
-On R-Car S4 there is limited vlan support, which is not fully
-802.1Q compliant. The aim of this driver addition is to get as
-close as possible to the correct behavior. Limitations are:
-- all ports should be in the same default vlan
-- default vlans are not stripped on egress.
+Ah okay.. I guess MST will not like this:
 
-Signed-off-by: Michael Dege <michael.dege@renesas.com>
----
- drivers/net/ethernet/renesas/rswitch_l2.c | 406 ++++++++++++++++++++++++++----
- 1 file changed, 357 insertions(+), 49 deletions(-)
+From now on I assume that by "batch consumption" you mean that
+__ptr_ring_zero_tail() is only called after consuming ring.batch
+elements. And you want to disable it so __ptr_ring_zero_tail() is
+called after each consumption.
+(And I assume that you do not mean ptr_ring_consume_batched() in
+vhost_net_buf_produce() as that does not make sense to me.)
 
-diff --git a/drivers/net/ethernet/renesas/rswitch_l2.c b/drivers/net/ethernet/renesas/rswitch_l2.c
-index ea95a87ed234..ebd9d8d71a53 100644
---- a/drivers/net/ethernet/renesas/rswitch_l2.c
-+++ b/drivers/net/ethernet/renesas/rswitch_l2.c
-@@ -7,6 +7,7 @@
- #include <linux/err.h>
- #include <linux/etherdevice.h>
- #include <linux/if_bridge.h>
-+#include <linux/if_vlan.h>
- #include <linux/kernel.h>
- #include <net/switchdev.h>
- 
-@@ -173,22 +174,6 @@ static void rswitch_port_update_brdev(struct net_device *ndev,
- 	rswitch_update_offload_brdev(rdev->priv);
- }
- 
--static int rswitch_port_update_stp_state(struct net_device *ndev, u8 stp_state)
--{
--	struct rswitch_device *rdev;
--
--	if (!is_rdev(ndev))
--		return -ENODEV;
--
--	rdev = netdev_priv(ndev);
--	rdev->learning_requested = (stp_state == BR_STATE_LEARNING ||
--				    stp_state == BR_STATE_FORWARDING);
--	rdev->forwarding_requested = (stp_state == BR_STATE_FORWARDING);
--	rswitch_update_l2_offload(rdev->priv);
--
--	return 0;
--}
--
- static int rswitch_netdevice_event(struct notifier_block *nb,
- 				   unsigned long event,
- 				   void *ptr)
-@@ -212,61 +197,395 @@ static int rswitch_netdevice_event(struct notifier_block *nb,
- 	return NOTIFY_OK;
- }
- 
--static int rswitch_update_ageing_time(struct net_device *ndev, clock_t time)
-+static int rswitch_port_update_stp_state(struct net_device *ndev, u8 stp_state)
- {
--	struct rswitch_device *rdev = netdev_priv(ndev);
--	u32 reg_val;
-+	struct rswitch_device *rdev;
- 
- 	if (!is_rdev(ndev))
- 		return -ENODEV;
- 
-+	rdev = netdev_priv(ndev);
-+	rdev->learning_requested = (stp_state == BR_STATE_LEARNING ||
-+				    stp_state == BR_STATE_FORWARDING);
-+	rdev->forwarding_requested = (stp_state == BR_STATE_FORWARDING);
-+	rswitch_update_l2_offload(rdev->priv);
-+
-+	return 0;
-+}
-+
-+static int rswitch_update_ageing_time(struct rswitch_private *priv, clock_t time)
-+{
-+	u32 reg_val;
-+
- 	if (!FIELD_FIT(FWMACAGC_MACAGT, time))
- 		return -EINVAL;
- 
- 	reg_val = FIELD_PREP(FWMACAGC_MACAGT, time);
- 	reg_val |= FWMACAGC_MACAGE | FWMACAGC_MACAGSL;
--	iowrite32(reg_val, rdev->priv->addr + FWMACAGC);
-+	iowrite32(reg_val, priv->addr + FWMACAGC);
- 
- 	return 0;
- }
- 
--static int rswitch_port_attr_set(struct net_device *ndev, const void *ctx,
--				 const struct switchdev_attr *attr,
--				 struct netlink_ext_ack *extack)
-+static void rswitch_update_vlan_filtering(struct rswitch_private *priv,
-+					  bool vlan_filtering)
- {
-+	if (vlan_filtering)
-+		rswitch_modify(priv->addr, FWPC0(AGENT_INDEX_GWCA),
-+			       0, FWPC0_VLANSA | FWPC0_VLANRU);
-+	else
-+		rswitch_modify(priv->addr, FWPC0(AGENT_INDEX_GWCA),
-+			       FWPC0_VLANSA | FWPC0_VLANRU, 0);
-+}
-+
-+static int rswitch_handle_port_attr_set(struct net_device *ndev,
-+					struct notifier_block *nb,
-+					struct switchdev_notifier_port_attr_info *info)
-+{
-+	const struct switchdev_attr *attr = info->attr;
-+	struct rswitch_private *priv;
-+	int err = 0;
-+
-+	priv = container_of(nb, struct rswitch_private, rswitch_switchdev_blocking_nb);
-+
- 	switch (attr->id) {
- 	case SWITCHDEV_ATTR_ID_PORT_STP_STATE:
--		return rswitch_port_update_stp_state(ndev, attr->u.stp_state);
-+		err = rswitch_port_update_stp_state(ndev, attr->u.stp_state);
-+
-+		break;
- 	case SWITCHDEV_ATTR_ID_BRIDGE_AGEING_TIME:
--		return rswitch_update_ageing_time(ndev, attr->u.ageing_time);
-+		err = rswitch_update_ageing_time(priv, attr->u.ageing_time);
-+
-+		break;
-+	case SWITCHDEV_ATTR_ID_BRIDGE_VLAN_FILTERING:
-+		rswitch_update_vlan_filtering(priv, attr->u.vlan_filtering);
-+
-+		break;
-+	case SWITCHDEV_ATTR_ID_BRIDGE_MC_DISABLED:
-+
-+		break;
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-+
-+	if (err < 0)
-+		return err;
-+
-+	info->handled = true;
-+
-+	return NOTIFY_DONE;
-+}
-+
-+static int rswitch_read_vlan_table(struct rswitch_private *priv, u16 vid,
-+				   u32 *vlanslvs, u32 *vlandvs)
-+{
-+	int err;
-+
-+	iowrite32(FIELD_PREP(VLANVIDS, vid), priv->addr + FWVLANTS);
-+	err = rswitch_reg_wait(priv->addr, FWVLANTSR0, VLANTS, 0);
-+	if (err < 0)
-+		return err;
-+
-+	/* check if vlans are present in table */
-+	if (!(ioread32(priv->addr + FWVLANTSR0) & VLANSNF)) {
-+		*vlanslvs = (ioread32(priv->addr + FWVLANTSR1) & VLANSLVS);
-+		*vlandvs = (ioread32(priv->addr + FWVLANTSR3) & VLANDVS);
-+	}
-+
-+	return 0;
-+}
-+
-+static int rswitch_write_vlan_table(struct rswitch_private *priv, u16 vid, u32 index)
-+{
-+	u32 vlancsdl = priv->gwca.l2_shared_rx_queue->index;
-+	u32 vlanslvs = 0, vlandvs = 0;
-+	int err;
-+
-+	err = rswitch_read_vlan_table(priv, vid, &vlanslvs, &vlandvs);
-+	if (err < 0)
-+		return err;
-+
-+	rswitch_modify(priv->addr, FWVLANTL0, VLANED, 0);
-+	iowrite32(FIELD_PREP(VLANVIDL, vid), priv->addr + FWVLANTL1);
-+
-+	vlanslvs |= BIT(index);
-+	vlandvs  |= BIT(index);
-+	iowrite32(FIELD_PREP(VLANSLVL, vlanslvs), priv->addr + FWVLANTL2);
-+	iowrite32(FIELD_PREP(VLANCSDL, vlancsdl), priv->addr + FWVLANTL3(GWCA_INDEX));
-+	iowrite32(FIELD_PREP(VLANDVL, vlandvs), priv->addr + FWVLANTL4);
-+
-+	return rswitch_reg_wait(priv->addr, FWVLANTLR, VLANTL, 0);
-+}
-+
-+static int rswitch_erase_vlan_table(struct rswitch_private *priv, u16 vid, u32 index)
-+{
-+	u32 vlanslvs = 0, vlandvs = 0;
-+	int err;
-+
-+	err = rswitch_read_vlan_table(priv, vid, &vlanslvs, &vlandvs);
-+	if (err < 0)
-+		return err;
-+
-+	vlanslvs &= ~BIT(index);
-+	vlandvs  &= ~BIT(index);
-+
-+	/* only erase empty vlan table entries */
-+	if (vlanslvs == 0)
-+		rswitch_modify(priv->addr, FWVLANTL0, 0, VLANED);
-+
-+	iowrite32(FIELD_PREP(VLANVIDL, vid), priv->addr + FWVLANTL1);
-+	iowrite32(FIELD_PREP(VLANSLVL, vlanslvs), priv->addr + FWVLANTL2);
-+	iowrite32(FIELD_PREP(VLANDVL, vlandvs), priv->addr + FWVLANTL4);
-+
-+	return rswitch_reg_wait(priv->addr, FWVLANTLR, VLANTL, 0);
-+}
-+
-+static int rswitch_port_set_vlan_tag(struct rswitch_etha *etha,
-+				     struct switchdev_obj_port_vlan *p_vlan,
-+				     bool delete)
-+{
-+	u32 err, vem_val;
-+
-+	err = rswitch_etha_change_mode(etha, EAMC_OPC_CONFIG);
-+	if (err < 0)
-+		return err;
-+
-+	rswitch_modify(etha->addr, EAVCC, VIM, 0);
-+
-+	if (((ioread32(etha->addr + EAVTC) & CTV) == p_vlan->vid) && delete) {
-+		rswitch_modify(etha->addr, EAVTC, CTV, 0);
-+		rswitch_modify(etha->addr, EAVCC, VEM, 0);
-+	} else if (!delete) {
-+		if ((p_vlan->flags & BRIDGE_VLAN_INFO_PVID) &&
-+		    (p_vlan->flags & BRIDGE_VLAN_INFO_UNTAGGED))
-+			vem_val = FIELD_PREP(VEM, C_TAG_VLAN);
-+		else if (p_vlan->flags & BRIDGE_VLAN_INFO_PVID)
-+			vem_val = FIELD_PREP(VEM, HW_C_TAG_VLAN);
-+		else
-+			vem_val = 0;
-+		rswitch_modify(etha->addr, EAVCC, VEM, vem_val);
-+		rswitch_modify(etha->addr, EAVTC, CTV, FIELD_PREP(CTV, p_vlan->vid));
-+	}
-+
-+	return rswitch_etha_change_mode(etha, EAMC_OPC_OPERATION);
-+}
-+
-+static int rswitch_gwca_set_vlan_tag(struct rswitch_private *priv,
-+				     struct switchdev_obj_port_vlan *p_vlan,
-+				     bool delete)
-+{
-+	u32 err, vem_val;
-+
-+	err = rswitch_gwca_change_mode(priv, GWMC_OPC_CONFIG);
-+	if (err < 0)
-+		return err;
-+
-+	rswitch_modify(priv->addr, GWVCC, VIM, 0);
-+
-+	if (((ioread32(priv->addr + GWVTC) & CTV) == p_vlan->vid) && delete) {
-+		rswitch_modify(priv->addr, GWVTC, CTV, 0);
-+		rswitch_modify(priv->addr, GWVCC, VEM, 0);
-+	} else  if (!delete) {
-+		if ((p_vlan->flags & BRIDGE_VLAN_INFO_PVID) &&
-+		    (p_vlan->flags & BRIDGE_VLAN_INFO_UNTAGGED))
-+			vem_val = FIELD_PREP(VEM, C_TAG_VLAN);
-+		else if (p_vlan->flags & BRIDGE_VLAN_INFO_PVID)
-+			vem_val = FIELD_PREP(VEM, HW_C_TAG_VLAN);
-+		else
-+			vem_val = 0;
-+		rswitch_modify(priv->addr, GWVCC, VEM, vem_val);
-+		rswitch_modify(priv->addr, GWVTC, CTV, FIELD_PREP(CTV, p_vlan->vid));
-+	}
-+
-+	return rswitch_gwca_change_mode(priv, GWMC_OPC_OPERATION);
-+}
-+
-+static int rswitch_port_obj_do_add(struct net_device *ndev,
-+				   struct switchdev_obj_port_vlan *p_vlan)
-+{
-+	struct rswitch_device *rdev = netdev_priv(ndev);
-+	struct rswitch_private *priv = rdev->priv;
-+	struct rswitch_etha *etha = rdev->etha;
-+	int err;
-+
-+	/* Set Rswitch VLAN mode */
-+	iowrite32(br_vlan_enabled(rdev->brdev) ? FIELD_PREP(FWGC_SVM, C_TAG) : 0,
-+		  priv->addr + FWGC);
-+
-+	err = rswitch_write_vlan_table(priv, p_vlan->vid, etha->index);
-+	if (err < 0)
-+		return err;
-+
-+	/* If the default vlan for this port has been set, don't overwrite it. */
-+	if (ioread32(etha->addr + EAVCC))
-+		return NOTIFY_DONE;
-+
-+	if (br_vlan_enabled(rdev->brdev))
-+		rswitch_modify(priv->addr, FWPC0(etha->index), 0, FWPC0_VLANSA | FWPC0_VLANRU);
-+
-+	rswitch_modify(priv->addr, FWPC2(AGENT_INDEX_GWCA),
-+		       FIELD_PREP(FWPC2_LTWFW, BIT(etha->index)),
-+		       0);
-+
-+	return rswitch_port_set_vlan_tag(etha, p_vlan, false);
-+}
-+
-+static int rswitch_port_obj_do_add_gwca(struct net_device *ndev,
-+					struct rswitch_private *priv,
-+					struct switchdev_obj_port_vlan *p_vlan)
-+{
-+	int err;
-+
-+	if (!(p_vlan->flags & BRIDGE_VLAN_INFO_BRENTRY))
-+		return NOTIFY_DONE;
-+
-+	/* Set Rswitch VLAN mode */
-+	iowrite32(br_vlan_enabled(ndev) ? FIELD_PREP(FWGC_SVM, C_TAG) : 0, priv->addr + FWGC);
-+
-+	err = rswitch_write_vlan_table(priv, p_vlan->vid, AGENT_INDEX_GWCA);
-+	if (err < 0)
-+		return err;
-+
-+	/* If the default vlan for this port has been set, don't overwrite it. */
-+	if (ioread32(priv->addr + GWVCC))
-+		return NOTIFY_DONE;
-+
-+	return rswitch_gwca_set_vlan_tag(priv, p_vlan, false);
-+}
-+
-+static int rswitch_port_obj_do_del(struct net_device *ndev,
-+				   struct switchdev_obj_port_vlan *p_vlan)
-+{
-+	struct rswitch_device *rdev = netdev_priv(ndev);
-+	struct rswitch_private *priv = rdev->priv;
-+	struct rswitch_etha *etha = rdev->etha;
-+	u32 err;
-+
-+	err = rswitch_port_set_vlan_tag(etha, p_vlan, true);
-+	if (err < 0)
-+		return err;
-+
-+	rswitch_modify(priv->addr, FWPC0(etha->index), FWPC0_VLANSA | FWPC0_VLANRU, 0);
-+	rswitch_modify(priv->addr, FWPC2(AGENT_INDEX_GWCA), 0,
-+		       FIELD_PREP(FWPC2_LTWFW, BIT(etha->index)));
-+	rswitch_modify(priv->addr, FWPC2(rdev->port),
-+		       0, FIELD_PREP(FWPC2_LTWFW, GENMASK(RSWITCH_NUM_AGENTS - 1, 0)));
-+
-+	return rswitch_erase_vlan_table(priv, p_vlan->vid, etha->index);
-+}
-+
-+static int rswitch_port_obj_do_del_gwca(struct net_device *ndev,
-+					struct rswitch_private *priv,
-+					struct switchdev_obj_port_vlan *p_vlan)
-+{
-+	int err;
-+
-+	err = rswitch_gwca_set_vlan_tag(priv, p_vlan, true);
-+	if (err < 0)
-+		return err;
-+
-+	rswitch_modify(priv->addr, FWPC0(AGENT_INDEX_GWCA),
-+		       FWPC0_VLANSA | FWPC0_VLANRU,
-+		       0);
-+
-+	return rswitch_erase_vlan_table(priv, p_vlan->vid, AGENT_INDEX_GWCA);
-+}
-+
-+static int rswitch_handle_port_obj_add(struct net_device *ndev,
-+				       struct notifier_block *nb,
-+				       struct switchdev_notifier_port_obj_info *info)
-+{
-+	struct switchdev_obj_port_vlan *p_vlan = SWITCHDEV_OBJ_PORT_VLAN(info->obj);
-+	struct rswitch_private *priv;
-+	int err;
-+
-+	priv = container_of(nb, struct rswitch_private, rswitch_switchdev_blocking_nb);
-+
-+	if ((p_vlan->flags & BRIDGE_VLAN_INFO_MASTER) ||
-+	    (p_vlan->flags & BRIDGE_VLAN_INFO_RANGE_BEGIN) ||
-+	    (p_vlan->flags & BRIDGE_VLAN_INFO_RANGE_END) ||
-+	    (p_vlan->flags & BRIDGE_VLAN_INFO_ONLY_OPTS))
-+		return NOTIFY_DONE;
-+
-+	switch (info->obj->id) {
-+	case SWITCHDEV_OBJ_ID_PORT_VLAN:
-+		if (!is_rdev(ndev))
-+			err = rswitch_port_obj_do_add_gwca(ndev, priv, p_vlan);
-+		else
-+			err = rswitch_port_obj_do_add(ndev, p_vlan);
-+
-+		if (err < 0)
-+			return err;
-+
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
-+	info->handled = true;
-+
-+	return NOTIFY_DONE;
-+}
-+
-+static int rswitch_handle_port_obj_del(struct net_device *ndev,
-+				       struct notifier_block *nb,
-+				       struct switchdev_notifier_port_obj_info *info)
-+{
-+	struct switchdev_obj_port_vlan *p_vlan = SWITCHDEV_OBJ_PORT_VLAN(info->obj);
-+	struct rswitch_private *priv;
-+	int err;
-+
-+	priv = container_of(nb, struct rswitch_private, rswitch_switchdev_blocking_nb);
-+
-+	if ((p_vlan->flags & BRIDGE_VLAN_INFO_MASTER) ||
-+	    (p_vlan->flags & BRIDGE_VLAN_INFO_RANGE_BEGIN) ||
-+	    (p_vlan->flags & BRIDGE_VLAN_INFO_RANGE_END) ||
-+	    (p_vlan->flags & BRIDGE_VLAN_INFO_ONLY_OPTS))
-+		return NOTIFY_DONE;
-+
-+	switch (info->obj->id) {
-+	case SWITCHDEV_OBJ_ID_PORT_VLAN:
-+		if (!is_rdev(ndev))
-+			err = rswitch_port_obj_do_del_gwca(ndev, priv, p_vlan);
-+		else
-+			err = rswitch_port_obj_do_del(ndev, p_vlan);
-+
-+		if (err < 0)
-+			return err;
-+
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
-+	info->handled = true;
-+
-+	return NOTIFY_DONE;
- }
- 
- static int rswitch_switchdev_blocking_event(struct notifier_block *nb,
--					    unsigned long event, void *ptr)
-+					    unsigned long event,
-+					    void *ptr)
- {
- 	struct net_device *ndev = switchdev_notifier_info_to_dev(ptr);
--	int ret;
-+	int err;
- 
- 	switch (event) {
- 	case SWITCHDEV_PORT_OBJ_ADD:
--		return -EOPNOTSUPP;
-+		err = rswitch_handle_port_obj_add(ndev, nb, ptr);
-+
-+		return notifier_from_errno(err);
- 	case SWITCHDEV_PORT_OBJ_DEL:
--		return -EOPNOTSUPP;
-+		err = rswitch_handle_port_obj_del(ndev, nb, ptr);
-+
-+		return notifier_from_errno(err);
- 	case SWITCHDEV_PORT_ATTR_SET:
--		ret = switchdev_handle_port_attr_set(ndev, ptr,
--						     is_rdev,
--						     rswitch_port_attr_set);
--		break;
--	default:
--		if (!is_rdev(ndev))
--			return NOTIFY_DONE;
--		ret = -EOPNOTSUPP;
-+		err = rswitch_handle_port_attr_set(ndev, nb, ptr);
-+
-+		return notifier_from_errno(err);
- 	}
- 
--	return notifier_from_errno(ret);
-+	return NOTIFY_DONE;
- }
- 
- static int rswitch_gwca_write_mac_address(struct rswitch_private *priv, const u8 *mac)
-@@ -389,7 +708,6 @@ static int rswitch_switchdev_event(struct notifier_block *nb,
- 	struct switchdev_notifier_fdb_info *fdb_info;
- 	struct switchdev_notifier_info *info = ptr;
- 	struct rswitch_private *priv;
--	int err;
- 
- 	priv = container_of(nb, struct rswitch_private, rswitch_switchdev_nb);
- 
-@@ -424,16 +742,6 @@ static int rswitch_switchdev_event(struct notifier_block *nb,
- 		queue_work(system_long_wq, &switchdev_work->work);
- 
- 		break;
--	case SWITCHDEV_PORT_ATTR_SET:
--		err = switchdev_handle_port_attr_set(ndev, ptr,
--						     is_rdev,
--						     rswitch_port_attr_set);
--		return notifier_from_errno(err);
--
--		if (!is_rdev(ndev))
--			return NOTIFY_DONE;
--
--		return notifier_from_errno(-EOPNOTSUPP);
- 	}
- 
- 	return NOTIFY_DONE;
+I think my current implementation works fine with that:
+The consumer only wakes after consuming >= ring.size/2.
+And this is for TAP and TAP+vhost-net.
+And ring.size/2 is always bigger than a single ring.batch (see
+__ptr_ring_set_size() ), which ensures that __ptr_ring_zero_tail()
+is called and the slot is cleaned before waking.
 
--- 
-2.43.0
+Waking on ptr_ring_empty() also ensures that __ptr_ring_zero_tail()
+is called and the slot is cleaned before waking.
 
+> 2) producer is woken up but see the ring is full, so it need to drop the packet 
+> 
+> This probably defeat the goal of zero packet loss.
+
+No then NETDEV_TX_BUSY is returned (noticeable as qdisc requeue).
+
+And this happened very rarely for me in my benchmarks.
+Here the average of the 20 runs @ 100.000.000 packets each:
+
+TAP single queue: 23.6 requeues
+TAP 2 queues: 35.5 requeues
+TAP+vhost-net single queue: 1.9 requeues
+TAP+vhost-net 2 queues: 12.1 requeues
+
+> 
+>> Wouldn't it just decrease the consumer speed?
+> 
+> Not sure, we probably need a benchmark.
+> 
+>>
+>> Apart from that I do not see a different method to do this recheck.
+>> The ring producer is only safely able to do a !produce_peek (so a check
+>> for !full).
+>>
+>> The normal waking (after consuming half of the ring) should be fine IMO.
+>>
+>>> 2) So the barriers don't help but would slow down the consuming
+>>> 3) Two spinlocks were used instead of one, this is another reason we
+>>> will see a performance regression
+>>
+>> You are right, I can change it to a single spin_lock. Apart from that
+>> I do not see how the barriers/locking could be reduced further.
+>>
+>>> 4) Tricky code that needs to be understood or at least requires a comment tweak.
+>>>
+>>> Note that due to ~IFF_TX_SKB_SHARING, pktgen can't clone skbs, so we
+>>> may not notice the real degradation.
+>>
+>> So run pktgen with pg_set SHARED?
+> 
+> Probably (as a workaround).
+> 
+
+Okay, for future benchmarks I will add this command to my benchmark
+scripts.
+
+>> I am pretty sure that the vhost
+>> thread was always at 100% CPU so pktgen was not the bottleneck. And when
+>> I had perf enabled I always saw that in my patched version not the
+>> creation of SKB's took most CPU in pktgen but a different unnamed
+>> function (I assume this is a waiting function).
+> 
+> Let's try and see.
+> 
+> Thanks
+> 
+>>
+>>
+>> Thank you!
+>>
+>>>
+>>>>>
+>>>>>>> +               if (!__ptr_ring_produce_peek(&tfile->tx_ring))
+>>>>>>> +                       netif_tx_wake_queue(queue);
+>>>>>>> +       }
+>>>>>>> +       spin_unlock(&tfile->tx_ring.producer_lock);
+>>>>>>> +
+>>>>>>> +       if (ret) {
+>>>>>>> +               /* If a qdisc is attached to our virtual device,
+>>>>>>> +                * returning NETDEV_TX_BUSY is allowed.
+>>>>>>> +                */
+>>>>>>> +               if (qdisc_present) {
+>>>>>>> +                       rcu_read_unlock();
+>>>>>>> +                       return NETDEV_TX_BUSY;
+>>>>>>> +               }
+>>>>>>>                 drop_reason = SKB_DROP_REASON_FULL_RING;
+>>>>>>>                 goto drop;
+>>>>>>>         }
+>>>>>>>
+>>>>>>>         /* dev->lltx requires to do our own update of trans_start */
+>>>>>>> -       queue = netdev_get_tx_queue(dev, txq);
+>>>>>>>         txq_trans_cond_update(queue);
+>>>>>>>
+>>>>>>>         /* Notify and wake up reader process */
+>>>>>>> --
+>>>>>>> 2.43.0
+>>>>>>>
+>>>>>>
+>>>>>> Thanks
+>>>>>>
+>>>>
+>>>
+>>> Thanks
+>>>
+>>
+> 
