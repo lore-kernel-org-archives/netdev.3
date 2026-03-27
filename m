@@ -1,159 +1,215 @@
-Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010025.outbound.protection.outlook.com [52.101.46.25])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A27829ACDB
-	for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 19:24:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.176
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774639467; cv=none; b=P7At/jfvk8EGIlTZZmmfxO9Fja9AfU/+wMGHa58wtEsliRFBw1pzoOBsJ3x6n2DARNoWGmFo9DAmdr/JNGGhvpbYMbDHcbyrrL2nFitwrya5IZWHavZ49V0aw4jH20VE/hdcbZgAF9Ubg0K3FHYaUA0l4KfhP1m0Cg1sBGy2fPM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774639467; c=relaxed/simple;
-	bh=L23tTLiBe2b7sgdSRGfvZfLh7KNUbOvlds6WSVyPQYY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L+E58jF50k0lkhvTppOKYE5NzXFY214xWRQAfWixO5maiFYynEaHmq6igI0nR7TwuWM7BXoVH7l2jBJdHC1iYRCuBaF4R7VvJGyggzbgMf4SAqJe8a2L/17OT92QpfYRyLhuzQkgNUZHW08zg1RLfRSNyozigoWpDqAJnhyLZ7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DZz3y3zG; arc=none smtp.client-ip=74.125.82.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7930383C77;
+	Fri, 27 Mar 2026 19:36:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.25
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774640210; cv=fail; b=IE5h7eS94AdPjqv1yaEBnJDpdsh1g6SLlYNJVUgGhjsKxPUPVFqz3K8s2yrsOK83i4gdGOWL1aYHteXTUy4lCwwgBZU6KQxZkrT4n66pQ0JZeVciYVZci0a5uu+TYu18dNFaKd6Z4JFWouGLxB5srVNCxFBH71KcZSYGsQoHYZk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774640210; c=relaxed/simple;
+	bh=J3Et0Bhr2Eh9IVqpUnaYvzBlDO+NFTQjemoS/WOC6GA=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:CC:References:
+	 In-Reply-To:Content-Type; b=B4UTqIKpbAR3/4AS5va6PIn/pikBF/NsDklJuCYZrpwPgJ5+K34cZsmlgv5ADTjjo2SpPQlawH5VdJAxOMF/0o6hThD+XLjQa+6Nk/0mJDiU4iCL0Ca7sI41groy9jQ/P4u2/yOq5onDUP7a6NCgKjXBsalpbIzjlx+Zu9pNins=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=pE8YAzn9; arc=fail smtp.client-ip=52.101.46.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DZz3y3zG"
-Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-2c1632faeb9so4237941eec.0
-        for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 12:24:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774639466; x=1775244266; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=DHdbMRwuqWnRYgbmqY+SsmGUlT6k9iE5mPMFEtpe0wE=;
-        b=DZz3y3zGvoc+cRtoD1znqO8c/RsrwGuf9IkrGONYB/Jn9AlUPNDnGqHzJXno17r519
-         xiQmZPn2cpxpr3Vdk9S4a/ssLRLIHoGhqxiFffUHyU+lJyRqEv5eNsg8SZtIhEfRSO/u
-         L+JrYPXjIUiQZ1uXOX2RfcjYs7FHAvaY9rsewD1TbscScdyDIMhWcrfOg48r4c5GKaVr
-         J1m523EFBoogvAYgO85mRwAKlqkSgKUOy+80ai2ehO4jNDDOeYVxRcGK9DLJqDpFmmNf
-         GcS+W3BCVKbk7J6/sChcdlLkmrHdg9VWbrw9BDUcDmkA/0PFDFoFDaek1r83EIGjNNyS
-         z5cA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774639466; x=1775244266;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DHdbMRwuqWnRYgbmqY+SsmGUlT6k9iE5mPMFEtpe0wE=;
-        b=aAojbEvqCKSgOqf+dwrZDXsI7BAabqn1se3OFF2PnFBPvBjTNZ4w0AU7hTx0nq8VuR
-         QrHs5kVayChveiiBfznXdfX0sGyavY4YWaWmpU1Hxb0EWRGYBiNfleP8475x4NWQQcGG
-         pGAzVW0g+fSklzJooUf2Dtq6T+YGLIZfwxuJmy3Vw5kTGb6+eoP9xTRJGioH43O/pi/4
-         sBbBppIN0Uh6szgZJdGK3VS0kWuiEYYA0rigS9yopnb8irrTMsGNLtYxKKLNG+lTkSZu
-         03yBFTX9fLWtgS0RbM2Yp/Qz9Fv21F8l6FsvPSKwKROX2SEmfq9XEP6R1o7KFsT7kr+T
-         8FwA==
-X-Forwarded-Encrypted: i=1; AJvYcCUZ/uhyUmWKQ/eOOLzcEeG8RYRDoKxx8obv7OYyYsF+symayhgUU/IJZshUqNphsaPR9R/byns=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxv2aYau+LlIh8O/VHOTVmMQ7fV2E0Wy3tQ6lXYvT61yzz/E0n+
-	TJPFA+m8MK3rzKvYnx3rpRL2DhZ2KxyN7yBn/lbd4aOuSlt7OWnsKJIM
-X-Gm-Gg: ATEYQzx17GZqGtknePmi5pbMKuysViTri0x+sU4XI7wWlZBtmG3cQaRGZxfONNxFtPP
-	Nu9G+nUGM/NOGd0xFUm/BecX/NluqhDPluTRaoJ1btkiqxS/LIzszjP5NdoOBK6t9mT/T6LUHY2
-	AmALjMz+PfbRQ600c5aAVfxkkiKOCjXRfQaG53I4vWEks5gJVQZFArINb7Sk9Qs2d5RCy6gTizg
-	AcAcUEyCEeie64sHfXRC3e/Mi2YryDhnUN8jC4CFSwK3pplWyZRAvLCvVqZ05SJwKYhgQQ3ngqL
-	XJSLiQT82iNXb8eLinTOUytOeK4Kqx4dxjSSIW9ateTtPh11ptwpwf1gIJ1FCMjhHcAeTp9ZdvR
-	YXbO4J+rouWxUEQH9URxLyzu8TrGlvaUVt9Xr2INAWNKuLOhuQt5RgV3arMFZm7/9XcYMhu8Uss
-	SczDZ/3ZGhQ4TzoHhiW6rKGybUGNyrWp1LXOM5h1+YOB/HVDMBAXQbdHFthcpZA6OhnQ==
-X-Received: by 2002:a05:7301:6781:b0:2c0:f814:5885 with SMTP id 5a478bee46e88-2c185dfe365mr2188934eec.18.1774639465478;
-        Fri, 27 Mar 2026 12:24:25 -0700 (PDT)
-Received: from ryzen ([2601:644:8000:5b5d::8bd])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c3c79722e0sm187279eec.31.2026.03.27.12.24.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Mar 2026 12:24:24 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: linux-atm-general@lists.sourceforge.net
-Cc: Chas Williams <3chas3@gmail.com>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	netdev@vger.kernel.org (open list:ATM),
-	linux-kernel@vger.kernel.org (open list),
-	linux-hardening@vger.kernel.org (open list:KERNEL HARDENING (not covered by other areas):Keyword:\b__counted_by(_le|_be)?\b)
-Subject: [PATCHv3] atm: nicstar: simplify allocation
-Date: Fri, 27 Mar 2026 12:24:07 -0700
-Message-ID: <20260327192407.365369-1-rosenp@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="pE8YAzn9"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hs7jPWA89GRqyinBCSh9f9FGFKn16SaQ4RLVIXj615/GJJXXhBANxWEp+spwwTs1eq5sz1P/OAdF3AASxalV9KH1XFWFmWLUqj+Mcpf1/H5fYkNzqgmEGNYbnE4nHzcJ72tqzc7OjPVi/BnUCYzdsultw7xs6otY0TnoWLPPd7YcoQJ5pK4k9NzLEZrLWeo/W3h1cadSkJl54fZ8L2iRzUm+mbWasJbjIBSPHWkjEBuDUo1HVU6gjFy8CLz3bjy4mHGj0XnNjO6xHL/tnpVN52TS0B054XwpS9j/A9RSNufKMuMwYEG3fTLsGvO1fdQuFvVah0CHUUzSCPDaKtIK9A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6eZUTHZhBJEeUm+zecjWolgL9ueqAOSWyDO4KP93o+Q=;
+ b=XLVReTjorPZjQI2ay2FjQFLVxoXoSupg/43JJ5PBnFYURxlFivwU8Ulu9tmTO7uHmBy/UFnfsHqiLmBNKL51fKezqZqaQVCcLh6ixbUomkawu0wPBAJd/r8Oqs4EqbLg8gX2kOm52im3wbezPHdoPmzS9oB26VnJfBZtxzVasowMVQe8sUqgT3t2Rl0rZdmJhiH4OjkhcctBf0aT7Co33XJzhPclNd8TN9/gf+9rCzZl69ZL5iiDj92OPmJRtDRFlBGMgfgbnvKmxr0bbe3QNpUMYppqpzrcG4JMAmxHlIkZnunQOhJu4/aV/R/5KEEU6Wg2UHxa7UOInJX7BH+cjQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6eZUTHZhBJEeUm+zecjWolgL9ueqAOSWyDO4KP93o+Q=;
+ b=pE8YAzn9BZo/8VNu+xEacESh0y4pknZMWdba9TZRiDrWhpRbL4yxbXHAMQl1rLJmj3I2YyuduuTgieMlh1eVPYgJDrhxjh+KM3z/3PnIxo/Jo8pLXQXVS96ji1i3z0pigjCtG1xN1c4ODZ4A/esM5HdxZcVSuUaFCF28hiR+U7c=
+Received: from PH7PR17CA0049.namprd17.prod.outlook.com (2603:10b6:510:325::26)
+ by DS0PR12MB7656.namprd12.prod.outlook.com (2603:10b6:8:11f::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.10; Fri, 27 Mar
+ 2026 19:36:39 +0000
+Received: from SN1PEPF00036F3F.namprd05.prod.outlook.com
+ (2603:10b6:510:325:cafe::32) by PH7PR17CA0049.outlook.office365.com
+ (2603:10b6:510:325::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9745.23 via Frontend Transport; Fri,
+ 27 Mar 2026 19:36:38 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SN1PEPF00036F3F.mail.protection.outlook.com (10.167.248.23) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9745.21 via Frontend Transport; Fri, 27 Mar 2026 19:36:38 +0000
+Received: from [10.31.193.100] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 27 Mar
+ 2026 14:36:37 -0500
+Message-ID: <40f6ebb4-383c-4526-a526-c405a1c702ea@amd.com>
+Date: Fri, 27 Mar 2026 14:36:36 -0500
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+From: "Cheatham, Benjamin" <benjamin.cheatham@amd.com>
+Subject: Re: [PATCH v24 06/11] cxl/hdm: Add support for getting region from
+ committed decoder
+To: <alejandro.lucero-palau@amd.com>
+CC: <linux-cxl@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<dave.jiang@intel.com>, <dan.j.williams@intel.com>, <edward.cree@amd.com>,
+	<davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<edumazet@google.com>
+References: <20260323113117.2352709-1-alejandro.lucero-palau@amd.com>
+ <20260323113117.2352709-7-alejandro.lucero-palau@amd.com>
+Content-Language: en-US
+In-Reply-To: <20260323113117.2352709-7-alejandro.lucero-palau@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF00036F3F:EE_|DS0PR12MB7656:EE_
+X-MS-Office365-Filtering-Correlation-Id: e024f1ce-8c8d-42c5-fbf8-08de8c382a64
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|36860700016|376014|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	RCYGtibqScYc4gaKmzCd8k/wgGtqBsAeEzzxHR6TJHd6SoXCDbVC7AR1jBZB7p2zy24EdhdGrp3lA/cQitgbvrx2AVvuw8Tk3QaZ0EvQcYSsf0fbJPgV8ec0u6RQzhuVbsJlDLiDKGSxuAtRVWlf3uzxHzRJD3pMFKZT0PutyWdgQwMV+AeqgJIBtGAkRWEegtdtkaUIEA1F1afHmLJx6sxgFotG3v6dzXGq0LB0cczOXzJw6fSzZN7Ac7bCJ6oO/TUKKvo3BnUA5LfLyTXftEO0BUfNOY+hN9jcdyfpA1tNJWB10Y6W7gSOoBKPR0tGzyMBLRDc3ECXzpPEJwYyH8A+iefthiPh6KAKsXtEUeE6YxxP0WujdlKFID3rC5Z0mKGJ/r8bgEq68n5Ax8Vz9BYlLaSNd/1nVZhizux2fnw/Tx4GSQZl31D/mq0rWP8E1rcq4gvrfrxhTxPekomUsw0z791tmOQT6u5KekJFPwzJYSrtwQUwSfZACDK/vkkTgqBgm75zYqcBh9IdNbpc73aAbeee5ODxc44W6eTrtC6kOUixdmRxgrOx3iWkUSni13UTF5SsMVLZ73ms41sRFbH1vG/owJJeP+n97ExQQTzVQPq5ybPeQE1MKm/QxtLUph7xTv3Agc8eRNivZls4EHFEuZbNdx9anYocG724jsYCjTSS7ZRaSUUlmsfYmQluN7xmdjmWkPUvV81cZoaCweKAngJqRJ8dduGHIuFhY7rLKOdfsLiSG+E7IGLDqBgyEynqxkcOHt2OuowQzZr0VA==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700016)(376014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	0jKdtRZ4tY1cj0Ix2+B3FN7t2rUg+iBHwLVr7CqLG8LfQHxWp6g/R3wLE9SsoevgD+FsO0huM6bF+X9adXK6T2Ma8RlfyCpc/5ka5ezT/Mz5miGKZtK27A+B8JwhXCNhC4tKMjSJtrTAldvda51WKabTBeT9XFUwEkRjVk8dqdfdgfXB9eoPFhNvpeagyHs8/awdtU1XAR/RslN7Si1lsbfCUzHzZL7JcVFxysAd19dbgo9moGNwair5eBIwFmL4eNLgkkQ8ztxtqS7KjtvePtTRDZ1w2gj99Ly8Y9oMDAY7B7ho7zRm6R0M6L2qHlOp0HeQi5Q4FoW/uaTzfxoohwIla3p/pm3UCRjFd37170P35gBCRYbqwJAFeaJNfGIL6/aPNm+mOLCipNrlSFaltqYVLEaMP1VI8yjiOtRs1sTppEdJ5EcQcRKZC+RSW3gA
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2026 19:36:38.9900
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e024f1ce-8c8d-42c5-fbf8-08de8c382a64
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF00036F3F.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7656
 
-Use a flexible array member with kzalloc_flex to combine allocations
-into one.
+On 3/23/2026 6:31 AM, alejandro.lucero-palau@amd.com wrote:
+> From: Alejandro Lucero <alucerop@amd.com>
+> 
+> A Type2 device configured by the BIOS can already have its HDM
+> committed. Add a cxl_get_committed_decoder() function for cheking
+> so after memdev creation. A CXL region should have been created
+> during memdev initialization, therefore a Type2 driver can ask for
+> such a region for working with the HPA. If the HDM is not committed,
+> a Type2 driver will create the region after obtaining proper HPA
+> and DPA space.
+> 
+> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
+> ---
+>  drivers/cxl/core/hdm.c | 39 +++++++++++++++++++++++++++++++++++++++
+>  include/cxl/cxl.h      |  3 +++
+>  2 files changed, 42 insertions(+)
+> 
+> diff --git a/drivers/cxl/core/hdm.c b/drivers/cxl/core/hdm.c
+> index c222e98ae736..006be88efaa5 100644
+> --- a/drivers/cxl/core/hdm.c
+> +++ b/drivers/cxl/core/hdm.c
+> @@ -686,6 +686,45 @@ int cxl_dpa_alloc(struct cxl_endpoint_decoder *cxled, u64 size)
+>  	return devm_add_action_or_reset(&port->dev, cxl_dpa_release, cxled);
+>  }
+>  
+> +static int find_committed_endpoint_decoder(struct device *dev, const void *data)
+> +{
+> +	struct cxl_endpoint_decoder *cxled;
+> +	struct cxl_port *port;
+> +
+> +	if (!is_endpoint_decoder(dev))
+> +		return 0;
+> +
+> +	cxled = to_cxl_endpoint_decoder(dev);
+> +	port = cxled_to_port(cxled);
+> +
+> +	return cxled->cxld.id == port->hdm_end;
+> +}
 
-Add __counted_by for extra runtime analysis. Move counting variable
-assignment to right after allocation as required by __counted_by.
+I am still not convinced this is the right check. I have two reasons:
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- v3: reduce to 80 columns
- v2: use kzalloc_flex
- drivers/atm/nicstar.c | 18 ++++++------------
- drivers/atm/nicstar.h |  5 +++--
- 2 files changed, 9 insertions(+), 14 deletions(-)
+1. I would be surprised if just always taking the last endpoint decoder is what we want here.
+There's no guarantee that the last endpoint decoder is programmed to match the range, which is only
+now an issue since you're not looking at uncommitted decoders anymore. Suggestion below...
 
-diff --git a/drivers/atm/nicstar.c b/drivers/atm/nicstar.c
-index 24e51343df15..c0bed85daf96 100644
---- a/drivers/atm/nicstar.c
-+++ b/drivers/atm/nicstar.c
-@@ -867,23 +867,18 @@ static scq_info *get_scq(ns_dev *card, int size, u32 scd)
- 	if (size != VBR_SCQSIZE && size != CBR_SCQSIZE)
- 		return NULL;
+2. I'm sure it's possible, but I'm not aware of any case (outside of interleaving) that there
+would be multiple endpoint decoders above a singular port. So, it may be that the whole check is
+overkill and we can just cast the endpoint port into the endpoint decoder and be done with it.
+If the rest of the set hasn't changed from v23, interleaving is still broken. At that point,
+I'd say ditch the interleaving support for now and we can complicate all of this later.
 
--	scq = kmalloc_obj(*scq);
-+	scq = kzalloc_flex(*scq, skb, size / NS_SCQE_SIZE);
- 	if (!scq)
- 		return NULL;
--        scq->org = dma_alloc_coherent(&card->pcidev->dev,
--				      2 * size,  &scq->dma, GFP_KERNEL);
-+
-+	scq->num_entries = size / NS_SCQE_SIZE;
-+
-+	scq->org = dma_alloc_coherent(&card->pcidev->dev, 2 * size, &scq->dma,
-+				      GFP_KERNEL);
- 	if (!scq->org) {
- 		kfree(scq);
- 		return NULL;
- 	}
--	scq->skb = kzalloc_objs(*scq->skb, size / NS_SCQE_SIZE);
--	if (!scq->skb) {
--		dma_free_coherent(&card->pcidev->dev,
--				  2 * size, scq->org, scq->dma);
--		kfree(scq);
--		return NULL;
--	}
--	scq->num_entries = size / NS_SCQE_SIZE;
- 	scq->base = PTR_ALIGN(scq->org, size);
- 	scq->next = scq->base;
- 	scq->last = scq->base + (scq->num_entries - 1);
-@@ -928,7 +923,6 @@ static void free_scq(ns_dev *card, scq_info *scq, struct atm_vcc *vcc)
- 				}
- 			}
- 	}
--	kfree(scq->skb);
- 	dma_free_coherent(&card->pcidev->dev,
- 			  2 * (scq->num_entries == VBR_SCQ_NUM_ENTRIES ?
- 			       VBR_SCQSIZE : CBR_SCQSIZE),
-diff --git a/drivers/atm/nicstar.h b/drivers/atm/nicstar.h
-index 1b7f1dfc1735..76635d46016e 100644
---- a/drivers/atm/nicstar.h
-+++ b/drivers/atm/nicstar.h
-@@ -667,14 +667,15 @@ typedef struct scq_info {
- 	ns_scqe *next;
- 	volatile ns_scqe *tail;	/* Not related to the nicstar register */
- 	unsigned num_entries;
--	struct sk_buff **skb;	/* Pointer to an array of pointers
--				   to the sk_buffs used for tx */
- 	u32 scd;		/* SRAM address of the corresponding
- 				   SCD */
- 	int tbd_count;		/* Only meaningful on variable rate */
- 	wait_queue_head_t scqfull_waitq;
- 	volatile char full;	/* SCQ full indicator */
- 	spinlock_t lock;	/* SCQ spinlock */
-+	struct sk_buff *skb[] __counted_by(num_entries);
-+	/* Pointer to an array of pointers
-+	   to the sk_buffs used for tx */
- } scq_info;
+Suggestion: If you don't want to abandon interleaving or I'm wrong about the topology, checking
+if the decoder is committed by checking the HDM decoder registers directly is probably the
+correct way to do this.
 
- typedef struct rsq_info {
---
-2.53.0
+That gets you *a* decoder, but I'm not sure it's the right one. Getting the right one would require
+checking the resource attached to the decoder and verifying it matches the HPA range expected by
+the accelerator and/or region. I don't know if we expect the accelerator to know the HPA range
+at this point, in which case this is pretty easy. I have an inkling of what to do otherwise, but
+I'd need time to think it through.
+> +
+> +struct cxl_endpoint_decoder *cxl_get_committed_decoder(struct cxl_memdev *cxlmd,
+> +						       struct cxl_region **cxlr)
+> +{
+> +	struct cxl_port *endpoint = cxlmd->endpoint;
+> +	struct cxl_endpoint_decoder *cxled;
+> +	struct device *cxled_dev;
+> +
+> +	if (!endpoint)
+> +		return NULL;
+> +
+> +	guard(rwsem_read)(&cxl_rwsem.dpa);
+> +	cxled_dev = device_find_child(&endpoint->dev, NULL,
+> +				      find_committed_endpoint_decoder);
+> +
+> +	if (!cxled_dev)
+> +		return NULL;
+> +
+> +	cxled = to_cxl_endpoint_decoder(cxled_dev);
+> +	*cxlr = cxled->cxld.region;
+
+I think the region type should be set already at this point, so I'd check it's set to
+CXL_DECODER_DEVMEM here as a sanity check.
+
+> +
+> +	put_device(cxled_dev);
+> +	return cxled;
+> +}
+> +EXPORT_SYMBOL_NS_GPL(cxl_get_committed_decoder, "CXL");
+> +
+>  static void cxld_set_interleave(struct cxl_decoder *cxld, u32 *ctrl)
+>  {
+>  	u16 eig;
+> diff --git a/include/cxl/cxl.h b/include/cxl/cxl.h
+> index 10a9b8fa2f6b..2a61138e2a73 100644
+> --- a/include/cxl/cxl.h
+> +++ b/include/cxl/cxl.h
+> @@ -231,4 +231,7 @@ struct cxl_dev_state *_devm_cxl_dev_state_create(struct device *dev,
+>  int cxl_set_capacity(struct cxl_dev_state *cxlds, u64 capacity);
+>  struct cxl_memdev *devm_cxl_add_memdev(struct cxl_dev_state *cxlds,
+>  				       const struct cxl_memdev_attach *attach);
+> +struct cxl_region;
+> +struct cxl_endpoint_decoder *cxl_get_committed_decoder(struct cxl_memdev *cxlmd,
+> +						       struct cxl_region **cxlr);
+>  #endif /* __CXL_CXL_H__ */
 
