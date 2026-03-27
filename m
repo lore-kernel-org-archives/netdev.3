@@ -1,56 +1,56 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C500A3CD8AB
-	for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 07:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1AF63CAE80
+	for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 07:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774596679; cv=none; b=lp4GIx8HI1xnbEmkBwQntAixzQMWxGjxEuohgRxhDzuYpaoVdKW9losOjsoHliHOYLthSSSCbsU0QaS9b5hf5iNRTOG7qcW3nZJRDTba8XAZoZaUQhRzXGDGOVKvRIkbpG7G6fLFABYNQ97IvkysoAnTMwk1R2m4d0tfpAy2PXs=
+	t=1774596686; cv=none; b=Dfm+A68IxbXxYapv47v6h5u0jHdeW7+maVT0IvMtBLBkyvp0hH2CjFtc12uqQ7Q5OjT5diiNj2LpuaD/S8iUiNDUe4OpTb3O9u06vdsQ79n/EvCFQKXTUKv/DJC8Ffc7BCUStzR/SRc4q6RrJuByQ+w/xCZf1WYNOAlTXPi3TR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774596679; c=relaxed/simple;
-	bh=8p/HtnBUPvGrSHRur7c8OxjrxPjk33dmg37K91oRb6I=;
+	s=arc-20240116; t=1774596686; c=relaxed/simple;
+	bh=yOMRZi0/3SiDel76zDrsB6VaNT3oaM/8FJKDjA+kZU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E3/1UAYI7PaHKTkoheQZhrOxhVHMuWQx9F3MkYrU3aKBuBtdE7C97evL83kw35qixN5+9mv36AJVYpalKPWTCtONlF3+F2vHJ1wQ8qiCJxoLuKSyc2rU2i5yPy2WoHcPEURKp7u4cWf1AISKw/KkeMfqVNU02HA7GS17z32e3Vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IEWUVPm2; arc=none smtp.client-ip=192.198.163.14
+	 MIME-Version; b=GtVmW8GCm1qYQFnoJZI8QzKtcqOWqvjEjPJJvax4BI2tEjeNpOZa+ZPycb3fzZ3l/PQK6HAusI2m/BbEsbT3XMzckvGngL5fxK5Gi05qCLHYalRZxN73UWVOeBlj1O30EnyGHaaxc1Sx8155O+Q1JzcPIJBC3++AphLjOQ50xn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ee/wyvWz; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IEWUVPm2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ee/wyvWz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774596671; x=1806132671;
+  t=1774596675; x=1806132675;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=8p/HtnBUPvGrSHRur7c8OxjrxPjk33dmg37K91oRb6I=;
-  b=IEWUVPm2zXR3+ZfQ0SrdEAN1yrse3YGHe1/9LVOHb8MojSsYS3M/aOQ9
-   bv3S9rAqvBj3flqdbTRYSThFA9WQGEXctqenG82+45JtjzNsANzpPt07W
-   WWavK3Tzt1NuTwS4gTt5U32LmXPKDKhhA4gVvD0qt1yhYuz+u9Ax9UQIk
-   ImboiVWCRcI8Jps+CaGYtYIu+CpZDmT7FY309/YnxtOBeyf6TGwcRZBkA
-   ipdXoGNu3E5PjVSmd9543kDskm66ZupllZUHZOs5Y7pMWSOOL8tF99Wx8
-   5CAVojb6p4ao4cE9sMfOkJAm6axWEnQzRZj1xXMWLuwzxpsgy7njkgrW5
-   w==;
-X-CSE-ConnectionGUID: iLAGKp7WQyG8rfjEFMXcgQ==
-X-CSE-MsgGUID: LyL7eEfET86ccFPnigkL0w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="75734328"
+  bh=yOMRZi0/3SiDel76zDrsB6VaNT3oaM/8FJKDjA+kZU0=;
+  b=ee/wyvWzSYdeqocxXe1v9y3BU1ljBdWP9EO+umtAf39SD4ud3q7G0WR7
+   o13ANlDGQeCzBVNmsRMRJrpOgQwDmJHrY9TWQ28Tay2CMeF5QNhwIvzRX
+   3DLzhsF9rIrtZmkMQKMgA0O3dijM5LD2ENpY35zO7kAOu6ry6PATKRk2W
+   uMP6c4sLYsLonmTYyp7mtV0ag0eTfwVUn88eCtPS9MynrYX8VRceBH9BU
+   ++fKdOpYR5IVi2lrJhUr+TZTjIQvr5fmqYWneEqdSUh4vUjO2g6mIm91h
+   y8OKC1rXZekHZsLshRy0shlR/h5HWS+axqyAZW2zaer0tE2puxcirZRR2
+   A==;
+X-CSE-ConnectionGUID: yPHLbxCfSUWPWxI3d73N9g==
+X-CSE-MsgGUID: XRQVla9HR0ivCUHz+nAR5w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="75734332"
 X-IronPort-AV: E=Sophos;i="6.23,143,1770624000"; 
-   d="scan'208";a="75734328"
+   d="scan'208";a="75734332"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 00:31:00 -0700
-X-CSE-ConnectionGUID: LN1ynwVCQrSlFleup1Cjgg==
-X-CSE-MsgGUID: slsuElGSTNygE3LNi3aO6Q==
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 00:31:03 -0700
+X-CSE-ConnectionGUID: iwt7FBKaQt+b0OKEi/VAiA==
+X-CSE-MsgGUID: 7qbuhTliSaiKAsw4i5HMWQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,143,1770624000"; 
-   d="scan'208";a="255740404"
+   d="scan'208";a="255740432"
 Received: from amlin-019-225.igk.intel.com ([10.102.19.225])
-  by orviesa002.jf.intel.com with ESMTP; 27 Mar 2026 00:30:59 -0700
+  by orviesa002.jf.intel.com with ESMTP; 27 Mar 2026 00:31:02 -0700
 From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 To: intel-wired-lan@lists.osuosl.org,
 	anthony.l.nguyen@intel.com,
 	aleksandr.loktionov@intel.com
 Cc: netdev@vger.kernel.org
-Subject: [PATCH iwl-next] ixgbe: use int instead of u32 for error code variables
-Date: Fri, 27 Mar 2026 08:30:43 +0100
-Message-ID: <20260327073046.134085-9-aleksandr.loktionov@intel.com>
+Subject: [PATCH iwl-next] ixgbe: fix ITR value overflow in adaptive interrupt throttling
+Date: Fri, 27 Mar 2026 08:30:45 +0100
+Message-ID: <20260327073046.134085-11-aleksandr.loktionov@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260327073046.134085-1-aleksandr.loktionov@intel.com>
 References: <20260327073046.134085-1-aleksandr.loktionov@intel.com>
@@ -62,127 +62,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The variables used to store return values of kernel and driver functions
-throughout the ixgbe driver are declared as u32 in several places.  Such
-functions return negative errno values on error (e.g. -EIO, -EFAULT),
-which are sign-extended negative integers.  Storing them in an unsigned
-u32 silently wraps the value: -EIO (0xFFFFFFF7) stored in u32 becomes a
-large positive number, so any "if (status)" truthiness check still works
-by accident, but comparisons against specific negative error codes or
-propagation up the call stack would produce wrong results.
+ixgbe_update_itr() packs a mode flag (IXGBE_ITR_ADAPTIVE_LATENCY, bit 7)
+and a usecs delay (bits [6:0]) into an unsigned int, then stores it in
+ring_container->itr which is u8.  Values above 0xFF wrap, corrupting both
+the delay and the mode-flag on the next readback.
 
-In the Linux kernel, u32 is reserved for fixed-width quantities used in
-hardware interfaces or protocol structures.  Using it for generic error
-codes misleads reviewers into thinking the value is hardware-constrained.
+Separate the mode bits from the usecs sub-field; clamp only the latter to
+[0, IXGBE_ITR_ADAPTIVE_LATENCY - 1] via min_t(unsigned int, ...) so
+overflow cannot bleed into bit 7.  Add a WARN_ONCE() when the raw usecs
+value exceeds U8_MAX so out-of-range ITR computations are visible in
+dmesg during development and testing.
 
-Change all such local variables from u32 to int driver-wide: one in
-ixgbe_main.c (ixgbe_resume), three in ixgbe_phy.c
-(ixgbe_identify_phy_generic, ixgbe_tn_check_overtemp,
-ixgbe_set_copper_phy_power), and six in ixgbe_x550.c
-(ixgbe_check_link_t_X550em, ixgbe_get_lasi_ext_t_x550em,
-ixgbe_enable_lasi_ext_t_x550em, ixgbe_handle_lasi_ext_t_x550em,
-ixgbe_ext_phy_t_x550em_get_link, ixgbe_setup_internal_phy_t_x550em).
-
-No functional change.
-
+Fixes: b4ded8327fea ("ixgbe: Update adaptive ITR algorithm")
 Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c |  2 +-
- drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c  |  6 +++---
- drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c | 12 ++++++------
- 3 files changed, 10 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-index 210c7b9..703451d 100644
+index 1885fe8..4d53bd63 100644
 --- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
 +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-@@ -7518,6 +7518,6 @@ static int ixgbe_resume(struct device *dev_d)
- 	struct pci_dev *pdev = to_pci_dev(dev_d);
- 	struct ixgbe_adapter *adapter = pci_get_drvdata(pdev);
- 	struct net_device *netdev = adapter->netdev;
--	u32 err;
-+	int err;
+@@ -2901,8 +2901,12 @@ static void ixgbe_update_itr(struct ixgbe_q_vector *q_vector,
+ 	if ((itr & IXGBE_ITR_ADAPTIVE_LATENCY) && itr < ring_container->itr)
+ 		itr = ring_container->itr - IXGBE_ITR_ADAPTIVE_MIN_INC;
+ clear_counts:
+-	/* write back value */
+-	ring_container->itr = itr;
++	WARN_ONCE((itr & ~IXGBE_ITR_ADAPTIVE_LATENCY) > U8_MAX,
++		  "ITR value %u exceeds U8_MAX, clamping\n", itr);
++
++	ring_container->itr = (itr & IXGBE_ITR_ADAPTIVE_LATENCY) |
++		min_t(unsigned int, itr & ~IXGBE_ITR_ADAPTIVE_LATENCY,
++		      IXGBE_ITR_ADAPTIVE_LATENCY - 1);
  
- 	adapter->hw.hw_addr = adapter->io_addr;
- 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c
-index a1b2c3d..b4c5d6e 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c
-@@ -264,5 +264,5 @@ int ixgbe_identify_phy_generic(struct ixgbe_hw *hw)
- {
--	u32 status = -EFAULT;
-+	int status = -EFAULT;
- 	u32 phy_addr;
- 
- 	if (!hw->phy.phy_semaphore_mask) {
-@@ -2812,6 +2812,6 @@ bool ixgbe_tn_check_overtemp(struct ixgbe_hw *hw)
- {
- 	u16 phy_data = 0;
--	u32 status;
-+	int status;
- 
- 	if (hw->device_id != IXGBE_DEV_ID_82599_T3_LOM)
- 		return false;
-@@ -2833,5 +2833,5 @@ int ixgbe_set_copper_phy_power(struct ixgbe_hw *hw, bool on)
- {
--	u32 status;
-+	int status;
- 	u16 reg;
- 
- 	/* Bail if we don't have copper phy */
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
-index c1d2e3f..d4e5f6a 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
-@@ -1912,6 +1912,6 @@ static int ixgbe_check_link_t_X550em(struct ixgbe_hw *hw,
- 				     bool link_up_wait_to_complete)
- {
--	u32 status;
-+	int status;
- 	u16 i, autoneg_status;
- 
- 	if (hw->mac.ops.get_media_type(hw) != ixgbe_media_type_copper)
-@@ -2331,6 +2331,6 @@ static int ixgbe_get_lasi_ext_t_x550em(struct ixgbe_hw *hw, bool *lsc,
- 				       bool *is_overtemp)
- {
--	u32 status;
-+	int status;
- 	u16 reg;
- 
- 	*is_overtemp = false;
-@@ -2419,6 +2419,6 @@ static int ixgbe_enable_lasi_ext_t_x550em(struct ixgbe_hw *hw)
- {
- 	bool lsc, overtemp;
--	u32 status;
-+	int status;
- 	u16 reg;
- 
- 	/* Clear interrupt flags */
-@@ -2512,7 +2512,7 @@ static int ixgbe_handle_lasi_ext_t_x550em(struct ixgbe_hw *hw,
- {
- 	struct ixgbe_phy_info *phy = &hw->phy;
- 	bool lsc;
--	u32 status;
-+	int status;
- 
- 	status = ixgbe_get_lasi_ext_t_x550em(hw, &lsc, is_overtemp);
- 	if (status)
-@@ -2608,5 +2608,5 @@ static int ixgbe_ext_phy_t_x550em_get_link(struct ixgbe_hw *hw, bool *link_up)
- {
--	u32 ret;
-+	int ret;
- 	u16 autoneg_status;
- 
- 	*link_up = false;
-@@ -2642,7 +2642,7 @@ static int ixgbe_setup_internal_phy_t_x550em(struct ixgbe_hw *hw)
- {
- 	ixgbe_link_speed force_speed;
- 	bool link_up;
--	u32 status;
-+	int status;
- 	u16 speed;
- 
- 	if (hw->mac.ops.get_media_type(hw) != ixgbe_media_type_copper)
+ 	/* next update should occur within next jiffy */
+ 	ring_container->next_update = next_update + 1;
 -- 
 2.52.0
+
