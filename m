@@ -1,43 +1,43 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA9A3D9054;
-	Fri, 27 Mar 2026 08:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8052C78F4A;
+	Fri, 27 Mar 2026 08:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774601081; cv=none; b=lFxPFfgt+J16I6jEwe49sVCB1pN8VKkbf10J2t8u2bwzAyXCkZTQILPckUCjHN6jqdscSj3D5FEtS3i6Aqa1wZ5ctpkXdJirhYuvP4Nz5yogcPc8ob4mZxXvsNeTXv1cpmxe5FLDkM966c/+CU7vJcHpaOGQcwBrKlGKAuTssRM=
+	t=1774601091; cv=none; b=U8iDsFigWGorvv+SLEaeRckF+n2L5Jqvymbz6jwNltQxbMmeib2yKUPlIdVmWuuxQ0nizk/QJGCEDRkWLGOnpMc1NoFo1v/XRShul6VUlP+oW7qfZYXhqjueGQNMnmilemDXo7ydo3MS0aa8uyVQ3kq5wwOgOGDUHVUB2CzCQVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774601081; c=relaxed/simple;
-	bh=L2CaujBfYutnxxLo0NWSPVvrZ9ZZXFTNnSz9I2dSnag=;
+	s=arc-20240116; t=1774601091; c=relaxed/simple;
+	bh=hNT+jBOKN370EHmX3VJS+rIqe17u6kuwJuFGsOfagxg=;
 	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=ivA3Kw9FSbbqu9DZGdJ9mPcKsx61mjjxW8c69otLs1G8ShnRH5jrRnPmiLn6k+EyvyYKUorMlp17MeGwExwNVsrWN2h1oF+7x9/v+NiTapaA5UkzRxQczzy+rbj2b3a8ZsBbFywIhY22bLSSe6VSHPk71DbNhKy3NCqOB5FD83A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Sho6R/c3; arc=none smtp.client-ip=78.32.30.218
+	 Content-Disposition:Content-Type:Message-Id:Date; b=NB15RegWHOulsZMRx8yP9Gsh6wbo9pLA+XvBtT16m4dzDLNQgx8y5t78SLEyV/pChg4oH43f3mwklcBFg0tENRgo7TZ2jjy5BFTflq4MaOCi166J4NARf5rcZIzX98K3oLSs8HLH9qDp1Brvs7/5FgEOEuZLpnUI/G84TPszfCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=IGbqXh0g; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Sho6R/c3"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="IGbqXh0g"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
 	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
 	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=6DigMrnI/JE7R5NqvfuBaK1nizsaQmBG/fde8RVluEk=; b=Sho6R/c34IQJwUJOYbt0TbTzjl
-	wtiZ9BmP3i7P9bFZ19gxSiZDUe4evzyMV/vxpc+O5gPAgH9OIcbaoTIlIc9WAzdNZFyfBjkBhfuGn
-	pGtyi2HCVjZdI97q+98BkplvCOn+oEYEK8bdxH+F23UV/4i+T9xmvhgSvDf2O6lKkzQTyz6bPuVpM
-	cGTuScdGpLSx7MhRWWpxjL6ymFqmLABWcoky01tP458PeZwkE0CZPjecQTVALuOQzu75Up7RJ2IUK
-	papHbXYjGrSylWRdLUYRBrwQAZharHYzpRqQ7N4gZVKkl4ebE6nnfnathqivH+hWQtl95s9ECtjDE
-	c4X+9+cQ==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:51092 helo=rmk-PC.armlinux.org.uk)
+	bh=91aFdcZ4XqhYUXG8pjH2NRoyqYtPZcFZqsGvYKtLHds=; b=IGbqXh0gq9/IgZnjxawZpojuu/
+	Zq1EzKZFWSnD3uJcMKLmPghl5CH1uwivgbcjAczYbn9BA+zjrs3SERKb5R922BLbb9PTw7/4yNjNG
+	Z5r6RngAu9WfdSSim4kVH4sHTnototjxLRgxgWm5N1aDF6EH42wn5HH9Gp/qqTAczuJ6VM7TxA+hE
+	5LNol7y0NWZBdUUmkUztq2d9CEOapSzWy+A6r9jM4hHqV0prvY5ChUpTSwAlDOAcK3Ml54IwmDCn/
+	Gb3P7EQnfR2ufrU3jJVjoSEH9qQ6wRGxz6tAd/aI9jHtHzrL2/+8l4r5kN5Bqr9qKtf3UaX+UghJl
+	KZjyzJaQ==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:37304 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rmk@armlinux.org.uk>)
-	id 1w62nw-000000005rw-1JLG;
-	Fri, 27 Mar 2026 08:44:32 +0000
+	id 1w62o5-000000005sc-3tqY;
+	Fri, 27 Mar 2026 08:44:42 +0000
 Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
 	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1w62nt-0000000E3D2-2fWk;
-	Fri, 27 Mar 2026 08:44:29 +0000
+	id 1w62o3-0000000E3DE-3Vf8;
+	Fri, 27 Mar 2026 08:44:39 +0000
 In-Reply-To: <acZDEg9wdjhBTHlL@shell.armlinux.org.uk>
 References: <acZDEg9wdjhBTHlL@shell.armlinux.org.uk>
 From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
@@ -53,8 +53,8 @@ Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
 	netdev@vger.kernel.org,
 	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next v2 13/15] net: stmmac: qcom-ethqos: move loopback
- decision next to reg update
+Subject: [PATCH net-next v2 15/15] net: stmmac: qcom-ethqos: move phase_shift
+ to register update site
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,58 +64,52 @@ MIME-Version: 1.0
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1w62nt-0000000E3D2-2fWk@rmk-PC.armlinux.org.uk>
+Message-Id: <E1w62o3-0000000E3DE-3Vf8@rmk-PC.armlinux.org.uk>
 Sender: Russell King <rmk@armlinux.org.uk>
-Date: Fri, 27 Mar 2026 08:44:29 +0000
+Date: Fri, 27 Mar 2026 08:44:39 +0000
 
-Move the loopback decision next to the register update, and make the
-local variable unsigned. As a result, there is now no need for the
-comment referring to the programming being later.
+Move the determination of the phase shift enable alongside the register
+update, and make "phase_shift" unsigned.
 
 Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- .../ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c    | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ .../ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-index 580deec1dc30..9dae40c27903 100644
+index 667676c29a95..ad3a983d2a08 100644
 --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-@@ -374,9 +374,8 @@ static int ethqos_dll_configure(struct qcom_ethqos *ethqos)
- static int ethqos_rgmii_macro_init(struct qcom_ethqos *ethqos, int speed)
+@@ -375,14 +375,7 @@ static int ethqos_rgmii_macro_init(struct qcom_ethqos *ethqos, int speed)
  {
  	struct device *dev = &ethqos->pdev->dev;
--	unsigned int prg_rclk_dly;
-+	unsigned int prg_rclk_dly, loopback;
- 	int phase_shift;
--	int loopback;
- 
- 	/* Determine if the PHY adds a 2 ns TX delay or the MAC handles it */
- 	if (ethqos->phy_mode == PHY_INTERFACE_MODE_RGMII_ID ||
-@@ -389,12 +388,6 @@ static int ethqos_rgmii_macro_init(struct qcom_ethqos *ethqos, int speed)
- 	rgmii_clrmask(ethqos, RGMII_CONFIG2_TX_TO_RX_LOOPBACK_EN,
- 		      RGMII_IO_MACRO_CONFIG2);
- 
--	/* Determine if this platform wants loopback enabled after programming */
--	if (ethqos->rgmii_config_loopback_en)
--		loopback = RGMII_CONFIG_LOOPBACK_EN;
--	else
--		loopback = 0;
+ 	unsigned int prg_rclk_dly, loopback;
+-	int phase_shift;
 -
- 	/* Select RGMII, write 0 to interface select */
- 	rgmii_clrmask(ethqos, RGMII_CONFIG_INTF_SEL, RGMII_IO_MACRO_CONFIG);
+-	/* Determine if the PHY adds a 2 ns TX delay or the MAC handles it */
+-	if (ethqos->phy_mode == PHY_INTERFACE_MODE_RGMII_ID ||
+-	    ethqos->phy_mode == PHY_INTERFACE_MODE_RGMII_TXID)
+-		phase_shift = 0;
+-	else
+-		phase_shift = RGMII_CONFIG2_TX_CLK_PHASE_SHIFT_EN;
++	unsigned int phase_shift;
  
-@@ -476,6 +469,11 @@ static int ethqos_rgmii_macro_init(struct qcom_ethqos *ethqos, int speed)
- 			      SDCC_HC_REG_DDR_CONFIG);
- 	}
+ 	/* Disable loopback mode */
+ 	rgmii_clrmask(ethqos, RGMII_CONFIG2_TX_TO_RX_LOOPBACK_EN,
+@@ -416,6 +409,14 @@ static int ethqos_rgmii_macro_init(struct qcom_ethqos *ethqos, int speed)
  
-+	if (ethqos->rgmii_config_loopback_en)
-+		loopback = RGMII_CONFIG_LOOPBACK_EN;
-+	else
-+		loopback = 0;
+ 	rgmii_clrmask(ethqos, RGMII_CONFIG2_DATA_DIVIDE_CLK_SEL,
+ 		      RGMII_IO_MACRO_CONFIG2);
 +
- 	rgmii_updatel(ethqos, RGMII_CONFIG_LOOPBACK_EN, loopback,
- 		      RGMII_IO_MACRO_CONFIG);
++	/* Determine if the PHY adds a 2 ns TX delay or the MAC handles it */
++	if (ethqos->phy_mode == PHY_INTERFACE_MODE_RGMII_ID ||
++	    ethqos->phy_mode == PHY_INTERFACE_MODE_RGMII_TXID)
++		phase_shift = 0;
++	else
++		phase_shift = RGMII_CONFIG2_TX_CLK_PHASE_SHIFT_EN;
++
+ 	rgmii_updatel(ethqos, RGMII_CONFIG2_TX_CLK_PHASE_SHIFT_EN, phase_shift,
+ 		      RGMII_IO_MACRO_CONFIG2);
  
 -- 
 2.47.3
