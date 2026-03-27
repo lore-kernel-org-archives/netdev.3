@@ -1,99 +1,90 @@
-Received: from courrier.aliel.fr (pouet.aliel.fr [65.21.61.41])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77D9379EC4;
-	Fri, 27 Mar 2026 09:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.61.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3CD3D6689
+	for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 09:39:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774604253; cv=none; b=YhEizAxG4RTcqXYx4+oY9VLsDP9lTJw2DZEXz7Ek7eraNAXfL9qho8QX4E2VGnWRcjZHb9Ilh1BnE4g7mpqfMx7LT+RY9ft7cBEzc409163ScqNkmLMoy70YnK4B6K+hbhb7WaSG9SdmwvNyHkg3Sx2zHhX+xebU45iHFKON8D0=
+	t=1774604387; cv=none; b=sWQq5j7TIAqNQsnByhvvqv8hCTDLU4WPdzLmYWWDFAJPQYO4FoFDvuysb5Eb3iCQqKTs05UlrlMFvk3XbZnihzuRpQcrL9+XwzODED3Fu7eMjbUjG+q2JSHiMaLbDoNzV/1m6qY4gRRoLigAT9lc7jxEHLBonzdt8ubi+So0nqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774604253; c=relaxed/simple;
-	bh=cCrKuuyOz5qG2rFBsp37cnDOUzhVXzOLst/bIvh8j+A=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=hyIUSlx4DI6iMEn67ojhYCiWrfpUhapiQlSMi5mhlFbrbfhF9OAGQEZ/puNT5U4TD3a/aTxh7du08IkYq7SEfQvTYTRm6cvbN4zUV8baq6aEmP36VJ8P8hcu0OLGy/xuM6YA4rpZq8URAic+pQdtLm+8GqQEu6qjjlkMOlxXbvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aliel.fr; spf=pass smtp.mailfrom=aliel.fr; dkim=pass (1024-bit key) header.d=aliel.fr header.i=@aliel.fr header.b=FgkXKXD9; arc=none smtp.client-ip=65.21.61.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aliel.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliel.fr
+	s=arc-20240116; t=1774604387; c=relaxed/simple;
+	bh=vE7aAgOybl8kkMRNRMKH3/474cFLbolEO1kCDStPcHk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qfudrCC490yF/Kbs76J8ZKwDXV75fNSa6WJGVPG5guAXdO5ZiH1tVEREGR7kVl3fn8O+ke+TaEu9lP3D2J1KANNSJPmwtmo1/ZpDs6PXqZq6PlA45LetZJjw6qfFHhXTA+/RuQ9b1K0OhSl0O3znOaj+bo3tM1WhKQD1GnVeEa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aG6eFPCN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aliel.fr header.i=@aliel.fr header.b="FgkXKXD9"
-From: Ronald Claveau <linux-kernel-dev@aliel.fr>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aliel.fr;
-	s=courrier-s1; t=1774604242;
-	bh=cCrKuuyOz5qG2rFBsp37cnDOUzhVXzOLst/bIvh8j+A=;
-	h=From:Date:Subject:To:Cc;
-	b=FgkXKXD9iXLEZQAnfELBmS7V93ht232DzX+JEbXFdYBrm7ChAVeXfp3e4l57j1nwF
-	 itc5IBJlAL5t32cDWr7w6uKj4Ex9MEMNkSR3ohDEzo08OzlnzPUWyMBIhP+pjWCLTk
-	 /7TdBBtXGuD8ux8M36dd/At3l4EklgM1VU9pg7eQ=
-Date: Fri, 27 Mar 2026 10:36:26 +0100
-Subject: [PATCH net-next v2] dt-bindings: net: wireless: brcm: Add
- compatible for bcm43752
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aG6eFPCN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E81AC19423;
+	Fri, 27 Mar 2026 09:39:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774604386;
+	bh=vE7aAgOybl8kkMRNRMKH3/474cFLbolEO1kCDStPcHk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aG6eFPCNSVxypTv9jEH5KH/xPEibbRyBfFUVet2kUEFX32KUxGclPCcrocoYApiZk
+	 1VSGqwxvqtzFLlMgthLlDYa8yUkL5fgDPPsLURNzErv4pmm5WzPmEdp2sZbLSlEJ4S
+	 7DBjsBL2GPDPGLeZAz9HyylFUIUaYOTluLi7RxvTecQf25aK1c0TEv1+Sq5JINuXcm
+	 lKG/P+Cdr4KwjYaA3qKHvnHb0AfXD0w4XGC9oWLklkdZhmOl1hYO7kw0uyn2+2HPuq
+	 JERvnxKGEB3U+MRMMzjLGt+6XtJGgSsTpfkA/eTOKZi3Q0iLPMQG0ArFOaRMrUl6C5
+	 qaBALaVB3IFYw==
+Date: Fri, 27 Mar 2026 09:55:35 +0100
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next] net: airoha: Grab flow_offload_mutex running
+ airoha_register_gdm_devices()
+Message-ID: <acZGBngWPvjB6ZyA@lore-rh-laptop>
+References: <20260324-airoha-regiser-race-fix-v1-1-6014df55886b@kernel.org>
+ <20260326200605.39222917@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260327-add-bcm43752-compatible-v2-1-5b28e6637101@aliel.fr>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WNTQqDMBBGryKz7hRN/F/1HsXFRMc6oFGSIBbx7
- g1eoMvH43vfCZ6dsIc2OcHxLl5WG0E9Eugnsh9GGSKDSlWZalUiDQOafsl1VSjs12WjIGZmZFX
- mlI9VU2mCuN4cj3Lc5TdYDmj5CNBFM4kPq/vel3t2+7/1PcMMjTYNFTUZXZsXzcLzc3TQXdf1A
- yPTs3THAAAA
-X-Change-ID: 20260326-add-bcm43752-compatible-e264a4f7973a
-To: Johannes Berg <johannes@sipsolutions.net>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, van Spriel <arend@broadcom.com>
-Cc: linux-wireless@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
- Conor Dooley <conor.dooley@microchip.com>, 
- Ronald Claveau <linux-kernel-dev@aliel.fr>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openssh-sha256; t=1774604241; l=1596;
- i=linux-kernel-dev@aliel.fr; s=id_ed25519; h=from:subject:message-id;
- bh=cCrKuuyOz5qG2rFBsp37cnDOUzhVXzOLst/bIvh8j+A=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgMGec55oxeeisqykQiUedekMYyOnR9
- BG9E/7rDWyqdNoAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QIfB4fa5UnaYIw0QLG9SkKH5Df9Rhm2DOTJfIGNKliU28PbcrWWyEMIDqEabsSl4xy16qD9S7fD
- B1ndbnYkdBgI=
-X-Developer-Key: i=linux-kernel-dev@aliel.fr; a=openssh;
- fpr=SHA256:kch4osYZ6A1BrPps5AUs6KnfdE2wm4ocMtyTc8TmZMs
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="fJ1bmY2v5shV2XLg"
+Content-Disposition: inline
+In-Reply-To: <20260326200605.39222917@kernel.org>
 
-Add bcm43752 compatible with its bcm4329 compatible fallback.
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Signed-off-by: Ronald Claveau <linux-kernel-dev@aliel.fr>
----
-The Khadas VIM4 board based on Amlogic A311D2 aka T7 features an AP6275s Wi-Fi/Bluetooth module with a BCM43752 chipset.
-This patch aims to add this chipset with its fallback to bcm4329 compatible.
+--fJ1bmY2v5shV2XLg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The original patch series is here:
-https://lore.kernel.org/r/20260326-add-emmc-t7-vim4-v5-0-d3f182b48e9d@aliel.fr
----
-Changes in v2:
-- Add netdev in CC.
-- Link to v1: https://lore.kernel.org/r/20260326-add-bcm43752-compatible-v1-1-b3b9a58ab38b@aliel.fr
----
- Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml | 1 +
- 1 file changed, 1 insertion(+)
+On Mar 26, Jakub Kicinski wrote:
+> On Tue, 24 Mar 2026 17:54:45 +0100 Lorenzo Bianconi wrote:
+> > Netfilter flowtable can theoretically try offload flower rules as soon
+> > as a net-device is registered while not all the other ones are
+> > registered/initialized, triggering a possible NULL pointer dereferencing
+> > of qdma pointer in airoha_ppe_set_cpu_port routine. In order to avoid a=
+ny
+> > possible race, grab the flow_offload_mutex running
+> > airoha_register_gdm_devices().
+>=20
+> Sashiko says this causes a lock ordering issue:
+> https://sashiko.dev/#/patchset/20260324-airoha-regiser-race-fix-v1-1-6014=
+df55886b@kernel.org
 
-diff --git a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-index 3be7576787644..81fd3e37452a6 100644
---- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-+++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-@@ -42,6 +42,7 @@ properties:
-               - brcm,bcm4356-fmac
-               - brcm,bcm4359-fmac
-               - brcm,bcm4366-fmac
-+              - brcm,bcm43752-fmac
-               - cypress,cyw4373-fmac
-               - cypress,cyw43012-fmac
-               - infineon,cyw43439-fmac
+Ack, right. Thx for pointing this issue out. I will work on a different
+solution.
 
----
-base-commit: 45b2b84ac6fde39c427018d6cdf7d44258938faa
-change-id: 20260326-add-bcm43752-compatible-e264a4f7973a
+Regards,
+Lorenzo
 
-Best regards,
--- 
-Ronald Claveau <linux-kernel-dev@aliel.fr>
+--fJ1bmY2v5shV2XLg
+Content-Type: application/pgp-signature; name=signature.asc
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCacZGAgAKCRA6cBh0uS2t
+rFjSAQDQ1c+Kgc2ua9ykMwg2Ik7Y9Qnbiz1WGHZhludsXoIdewEA4EpBiexqldQr
+kxPBov/kITpBYnXQ0uVDyd5zKQouIwk=
+=E/LG
+-----END PGP SIGNATURE-----
+
+--fJ1bmY2v5shV2XLg--
