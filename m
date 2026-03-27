@@ -1,272 +1,245 @@
-Received: from srv4.3e8.eu (srv4.3e8.eu [193.25.101.238])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7373803D1;
-	Fri, 27 Mar 2026 20:22:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.25.101.238
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774642966; cv=none; b=GnpdTOYj1jyMs+50gnbla+/EHjgv+HfS/AYTXhIe/p0FfnhM+zpFDDG0P0lvHeGuYxSQDAIy1dl8dq5scJ6ce4cItvblHBEB7QMBlot1OZhIXk3GGFvgh1s6pBZUyQlu4/lsJIuWcfKNSAxLqKPGnD+vChoOVznsRR4GW1axqQA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774642966; c=relaxed/simple;
-	bh=IMczZJ5EpmZ/jhP8MlzU+8UMoEl5TSQcpq8UFP2Mvac=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LycX470hElMlLLQ+q4u1B4IIbydNV0MUXNTryFyRFh0qBNyi93yHo9XvpVvamas45KmuTLDEyGaLeWGkY+WApRquxKdcS8nHGbCrSASGnex1hrRjgkVw9veITONpifr1XqMDItTCfnKheVqkTkj22LKHx028fC7rITZRergHggo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=3e8.eu; spf=pass smtp.mailfrom=3e8.eu; dkim=pass (2048-bit key) header.d=3e8.eu header.i=@3e8.eu header.b=UzlKpIJ+; arc=none smtp.client-ip=193.25.101.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=3e8.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=3e8.eu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0E437E2F5
+	for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 20:24:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774643051; cv=pass; b=tiiNKJ0SIf4rABOwvnoosWVSAyeNkEwCl0eL9QZHPBkQJSdKNO3mBsEEgh3FeiqxNWX+TwcZVNo9J7/PW91ecPEyMjOdpWtWj9vPxmVRhAE9ZdI5wVtDge9YqgkElezYIw8C8vh8RwYSW+wZbXWnVQLyf678UMS8FxJDXjZudiI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774643051; c=relaxed/simple;
+	bh=fe8HYEgNDSZEJwtPnP9d7rdRK4mOuzWO1Arb10bM66I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Yb6NcVfovtm+xS+fstGOiPLxB8KOZ968Ob9iE740ihXvaQjip5d7a+JyNVdfiWbIlji82pjfZJtQuHR6rs6ffpxI6XVSIcXhHrs9Xz9xUBFdQx+/YQYyab1srduhz9Ewnt87i9WOQKjlCaULMA27QxME/W914Nt2JSHDnnwUYK4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VuqQy0dF; arc=pass smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=3e8.eu header.i=@3e8.eu header.b="UzlKpIJ+"
-Received: from jan-pc (p200300ed4701bfa09bcb9dcee3f7b116.dip0.t-ipconnect.de [IPv6:2003:ed:4701:bfa0:9bcb:9dce:e3f7:b116])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by srv4.3e8.eu (Postfix) with ESMTPSA id 5661340293;
-	Fri, 27 Mar 2026 21:21:12 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=3e8.eu; s=mail20211217;
-	t=1774642875;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=hx3OyUWNAbordCl0xtcofmMXwfp0i+JgS6dQqnfJI5A=;
-	b=UzlKpIJ+Mt7uAgQvT9p/oh/Sc82FzL1JLDydgAhRMggnCLYe+HyUaRh1PhWfRuiPXzb0S2
-	Hw+HgoBPd2HBJJyFoF4vrdXyg/WLJlTm84CqkNVOSMOGgOCMK/B3Je8YfA1XSibNHAAOPq
-	KpRnPHy7FRg6u9Uzoh4DzmCejiaTmrxFhyedvxxHH707Q+Z/YraQn9WjzNoDNzzBIzXOUA
-	ryYNXU4Ea+cqF+r/qelSJ+XqWF7NQYOv9zMxZpcTJ2Q0adGgG5UdJ8WEWEudv3SN4DYmqb
-	bFJiKHr9w1tTOcdWp97rWpw9noyGZyoOqxOO0w9Nx6ZcclI006hX7PsXvRfFpw==
-From: Jan Hoffmann <jan@3e8.eu>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Markus Stockhausen <markus.stockhausen@gmx.de>,
-	Damien Dejean <dam.dejean@gmail.com>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jan Hoffmann <jan@3e8.eu>
-Subject: [PATCH net-next v2] net: phy: realtek: support MDI swapping for RTL8226-CG
-Date: Fri, 27 Mar 2026 20:32:28 +0100
-Message-ID: <20260327202001.413280-1-jan@3e8.eu>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VuqQy0dF"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-66b0f489f3aso3006380a12.3
+        for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 13:24:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774643047; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Ou1fGNwLEq9bUzh3DO6cXsD223OC0Sfn3OUGpepyF1tY03E1S7sMl61IwTEuI6KpaD
+         vDzAEpVgA2irK8ZTde/0nHTztw9eM2TVfqb9b9TNCgSoOwxy2/RR0VmIJ4XmqAmR9lUY
+         48LSkE/bPyYi8Tse19lF40WI7OgAvmuw4gtEjgTqxqCx6cQKc0hEz4Tgk/gbdyEhVX6T
+         XikCfEsMP7P5oPIFzzUAIm6fhtJG+WggScEpMX3gS3kEvq5u8ocAFTcqSBGxpSN8DTTC
+         +YqfeZ6I6c/4CFo9AWXEdFAG+CiHaoQ+hkwrR6mH1AWvWTYzkwVROQkuHfRWvEee8YHv
+         xbZg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=9WeOtA6rLKd2feImk1nWk/a5NsEeM0kN8oqqyEId0bQ=;
+        fh=VZSezCaVQsSBYXN3uu4q+vdnGcbExcXlel+wuWt4Ihs=;
+        b=MfPy841n+HJsZBJ5b97tj/kZ0+B7SDNn5FUj+MRhhzGeLKfGYb7pZgd5JDI+wV11en
+         5vJbtu1y4bC7maWMwLXynV8oaO2b7yfufQs5WvxD2dcBFKNInVVSlSQZ4qoUWD0Fg8Dn
+         2iOWGsBTrbxlOzX+1icejrMbKXyFuQszt5fPbpM2Iz4cxiUr2lrQ0Iz3MkPURQFrMOPk
+         jwtP4sS01PipYBhiv2Dn6T++KfKHB77ZGAcvvBicYG1UjSHVAkkz6ane2np6mDLGIFse
+         J9LTOg2AwjcQM+Qqi3gH1R1F69bj9lGjihHcOaDC8CBfGmtkTZ6Xhd9faZJwobe5WP6X
+         8/dg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1774643047; x=1775247847; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=9WeOtA6rLKd2feImk1nWk/a5NsEeM0kN8oqqyEId0bQ=;
+        b=VuqQy0dFFUKCW5LFnvEaxGiKsvA7wZMtgk9MpLPdPYNG0CjRWontr06l/oScJ9SlL1
+         r9wEtzgkdnjKi0jIFmkCWVMcUt1DKXUUnD7yfUC1jgsUScQbM2/1SadvK6JBbSkmQYv4
+         qSJ68sbS0T6VZPCTKM6GaMbq+iX9Q7TUrvklbvVXtraoXJ2iQJiNf1CCxINzF8kNLKwP
+         NOvf4x8hp0t8wrVujWooo56OYrlQ2VJYEsTv/8AoqFdQu5mfMcrvLthjlYiwU3SoH/Us
+         hlNdeZy9StxdLBHAoU7DXMvu0AqipWs5uVJE/jJHuiXn0PFfRmPiYl7JPpxJvKz+0G7z
+         /5RQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774643047; x=1775247847;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9WeOtA6rLKd2feImk1nWk/a5NsEeM0kN8oqqyEId0bQ=;
+        b=r2h4FKo3VjY5tpgNLk7Z4c5wj1ift5e3VR8jy7mkvrYKLMLRlHZU4xbgyvKexfBY91
+         upur7qT4REyImI7saPQexQWUUQDlmfvFRe2ITMKTgefK3ZMTOWpE85tBTMYbSF+t3IrA
+         9ZkfmV+Xk+LDMuWjRGNCeUpyKE1gncxSeE9DFOXTtjP0wYOdFAYK/hmTlfltpfE+67/u
+         Cw0xs51fSZ3V/wMj2MDsf1x2ImOhCtIrs1BM00mKJ6gaxUjEZAPG0QiTV1I9VjAvXGab
+         My2Lx87hTHMu15dakFgKeNwPBKBnrjnIChsectbH4SqZHBfuJJrvkHyMXhL8fDcNyKTR
+         qIuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXvcp2ma6SNHNpuFeMidzGYDKODJ1FqTqnyKsvaCtgM6LDxSpgvIxRVQ5SuPjxlHruZwjoxXuY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxcn48JjiKLUu5OCfKpUS4Z0zr0obgFik2VuhHVq9gTgpLtJ6OL
+	DPXnuoLeJGfmVM2CqotgF0iPj1Te6CjSG7C0prEykTs+OB1039lPmagLypVlx55Eo++Hwl5Eew3
+	s88B2Ck9fVNAIqw9ozXkHVwH3UzOuLt4VJhxWxqAI2w==
+X-Gm-Gg: ATEYQzw+kLsHbRljtpPQJ55kMvyOmAKaULLrPIxJua9ITTNBFHJBzI2NBQngeSwcNpZ
+	FOwieQ1cl/wpApsqo23VuUafOpRxLtmbdQHGjgcFF6j8tXjzPLgg18wO/RuHkPo0HTzVNmQjfuE
+	RjHYWkZpF4p7BGx79rTK4bZaTaiqaMhFTjrJlJHT1YignqCdlMO7/coTaVnGMDpcYRsCaXPyOV2
+	5PGBvhht1wtoVVxlz3YExjw4DhfAIAsbfg0rI0krlz/5Qvsn/NnJbBrsnvIwTXjSa6mXjdWRXg+
+	yQHDC8XiNQ9My4xV2PznzFH+74ISyJQyNBbY7BHG
+X-Received: by 2002:a05:6402:46db:b0:66a:199d:138 with SMTP id
+ 4fb4d7f45d1cf-66b28c66cbemr2039826a12.20.1774643046839; Fri, 27 Mar 2026
+ 13:24:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260327184706.1600329-1-vladimir.oltean@nxp.com> <20260327184706.1600329-10-vladimir.oltean@nxp.com>
+In-Reply-To: <20260327184706.1600329-10-vladimir.oltean@nxp.com>
+From: Peter Griffin <peter.griffin@linaro.org>
+Date: Fri, 27 Mar 2026 20:23:54 +0000
+X-Gm-Features: AQROBzCjrloDfUGTlNvOpQXdM4anVOjHCl2P0WQRB2XbIrpLYVg7AhYSjcExBJI
+Message-ID: <CADrjBPqMwtrae7LB9A8xipg6R0rHGewe69awQ_jJnsf=2c=eTw@mail.gmail.com>
+Subject: Re: [PATCH v6 phy-next 09/28] scsi: ufs: exynos: stop poking into
+ struct phy guts
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: linux-phy@lists.infradead.org, Vinod Koul <vkoul@kernel.org>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, dri-devel@lists.freedesktop.org, 
+	freedreno@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org, 
+	linux-arm-msm@vger.kernel.org, linux-can@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, linux-ide@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-rockchip@lists.infradead.org, 
+	linux-samsung-soc@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org, 
+	linux-usb@vger.kernel.org, netdev@vger.kernel.org, spacemit@lists.linux.dev, 
+	UNGLinuxDriver@microchip.com, Bart Van Assche <bvanassche@acm.org>, 
+	Alim Akhtar <alim.akhtar@samsung.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	"Martin K. Petersen" <martin.petersen@oracle.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	Chanho Park <chanho61.park@samsung.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Add support for configuring swapping of MDI pairs (ABCD->DCBA) when the
-property "enet-phy-pair-order" is specified.
+On Fri, 27 Mar 2026 at 18:48, Vladimir Oltean <vladimir.oltean@nxp.com> wrote:
+>
+> The Exynos host controller driver is clearly a PHY consumer (gets the
+> ufs->phy using devm_phy_get()), but pokes into the guts of struct phy
+> to get the generic_phy->power_count.
+>
+> The UFS core (specifically ufshcd_link_startup()) may call the variant
+> operation exynos_ufs_pre_link() -> exynos_ufs_phy_init() multiple times
+> if the link startup fails and needs to be retried.
+>
+> However ufs-exynos shouldn't be doing what it's doing, i.e. looking at
+> the generic_phy->power_count, because in the general sense of the API, a
+> single Generic PHY may have multiple consumers. If ufs-exynos looks at
+> generic_phy->power_count, there's no guarantee that this ufs-exynos
+> instance is the one who previously bumped that power count. So it may be
+> powering down the PHY on behalf of another consumer.
+>
+> The correct way in which this should be handled is ufs-exynos should
+> *remember* whether it has initialized and powered up the PHY before, and
+> power it down during link retries. Not rely on the power_count (which,
+> btw, on the writer side is modified under &phy->mutex, but on the reader
+> side is accessed unlocked). This is a discouraged pattern even if here
+> it doesn't cause functional problems.
+>
+> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+> Acked-by: Alim Akhtar <alim.akhtar@samsung.com>
+> Tested-by: Alim Akhtar <alim.akhtar@samsung.com>
+> ---
 
-Unfortunately, no documentation about this feature is available, but
-this implementation still tries to avoid magic numbers and raw register
-numbers where it seems clear what is going on. As it is unknown whether
-the patching step can be safely reversed, only enabling MDI swapping is
-supported.
+Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
 
-Some other Realtek PHYs also support similar mechanisms:
-
-- RTL8221B-VB-CG allows to configure MDI swapping via the same register,
-  but does not need the additional patching step. However, it is unclear
-  whether a driver implementation for that PHY is necessary, as it is
-  known to support configuration via strapping pins (which is working
-  fine at least in Zyxel XGS1210-12 rev B1).
-
-- The patching step seems to match the one for the integrated PHYs of
-  some Realtek PCIe/USB NICs (see for example the r8152 driver).
-
-For now, only implement this for the RTL8226-CG PHY, where it is needed
-for the switches Zyxel XGS1010-12 rev A1 and XGS1210-12 rev A1.
-
-Signed-off-by: Jan Hoffmann <jan@3e8.eu>
----
-v2:
- - Added register/field definitions where possible. For some registers,
-   it seems hard to find a proper name, but I still defined them where
-   some of the fields are known.
- - Introduced new helper function to swap RG_LPF_CAP and RG_LPF_CAP_XG
-   values, in order to reduce duplication.
-
- drivers/net/phy/realtek/realtek_main.c | 149 ++++++++++++++++++++++++-
- 1 file changed, 148 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
-index 023e47ad605b..2f007dc8ec8c 100644
---- a/drivers/net/phy/realtek/realtek_main.c
-+++ b/drivers/net/phy/realtek/realtek_main.c
-@@ -174,6 +174,20 @@
- #define RTL8224_VND1_MDI_PAIR_SWAP		0xa90
- #define RTL8224_VND1_MDI_POLARITY_SWAP		0xa94
- 
-+#define RTL8226_VND1_UNKNOWN_6A21		0x6a21
-+#define  RTL8226_VND1_UNKNOWN_6A21_MDI_SWAP_EN	BIT(5)
-+
-+#define RTL8226_VND2_UNKNOWN_D068		0xd068
-+#define  RTL8226_VND2_UNKNOWN_D068_PAIR_SEL	GENMASK(4, 3)
-+#define RTL8226_VND2_ADCCAL_OFFSET		0xd06a
-+
-+#define RTL8226_VND2_RG_LPF_CAP_XG_P0_P1	0xbd5a
-+#define RTL8226_VND2_RG_LPF_CAP_XG_P2_P3	0xbd5c
-+#define RTL8226_VND2_RG_LPF_CAP_P0_P1		0xbc18
-+#define RTL8226_VND2_RG_LPF_CAP_P2_P3		0xbc1a
-+#define  RTL8226_RG_LPF_CAP_PAIR_A_MASK		GENMASK(4, 0)
-+#define  RTL8226_RG_LPF_CAP_PAIR_B_MASK		GENMASK(12, 8)
-+
- #define RTL8366RB_POWER_SAVE			0x15
- #define RTL8366RB_POWER_SAVE_ON			BIT(12)
- 
-@@ -1447,6 +1461,139 @@ static unsigned int rtl822x_inband_caps(struct phy_device *phydev,
- 	}
- }
- 
-+static int rtl8226_set_mdi_swap(struct phy_device *phydev, bool swap_enable)
-+{
-+	u16 val = swap_enable ? RTL8226_VND1_UNKNOWN_6A21_MDI_SWAP_EN : 0;
-+
-+	return phy_modify_mmd(phydev, MDIO_MMD_VEND1, RTL8226_VND1_UNKNOWN_6A21,
-+			      RTL8226_VND1_UNKNOWN_6A21_MDI_SWAP_EN, val);
-+}
-+
-+static int rtl8226_swap_rg_lpf_cap(struct phy_device *phydev, u32 reg_p0_p1, u32 reg_p2_p3)
-+{
-+	u16 val_p0, val_p1, val_p2, val_p3;
-+	int ret;
-+
-+	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, reg_p0_p1);
-+	if (ret < 0)
-+		return ret;
-+
-+	val_p0 = FIELD_GET(RTL8226_RG_LPF_CAP_PAIR_A_MASK, ret);
-+	val_p1 = FIELD_GET(RTL8226_RG_LPF_CAP_PAIR_B_MASK, ret);
-+
-+	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, reg_p2_p3);
-+	if (ret < 0)
-+		return ret;
-+
-+	val_p2 = FIELD_GET(RTL8226_RG_LPF_CAP_PAIR_A_MASK, ret);
-+	val_p3 = FIELD_GET(RTL8226_RG_LPF_CAP_PAIR_B_MASK, ret);
-+
-+	ret = phy_modify_mmd(phydev, MDIO_MMD_VEND2, reg_p0_p1,
-+			     RTL8226_RG_LPF_CAP_PAIR_A_MASK | RTL8226_RG_LPF_CAP_PAIR_B_MASK,
-+			     FIELD_PREP(RTL8226_RG_LPF_CAP_PAIR_A_MASK, val_p3) |
-+			     FIELD_PREP(RTL8226_RG_LPF_CAP_PAIR_B_MASK, val_p2));
-+	if (ret < 0)
-+		return ret;
-+
-+	return phy_modify_mmd(phydev, MDIO_MMD_VEND2, reg_p2_p3,
-+			     RTL8226_RG_LPF_CAP_PAIR_A_MASK | RTL8226_RG_LPF_CAP_PAIR_B_MASK,
-+			     FIELD_PREP(RTL8226_RG_LPF_CAP_PAIR_A_MASK, val_p1) |
-+			     FIELD_PREP(RTL8226_RG_LPF_CAP_PAIR_B_MASK, val_p0));
-+}
-+
-+static int rtl8226_patch_mdi_swap(struct phy_device *phydev)
-+{
-+	u16 adccal_offset[4];
-+	int ret;
-+
-+	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, RTL8226_VND2_UNKNOWN_D068);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (!(ret & BIT(1))) {
-+		/* already swapped */
-+		return 0;
-+	}
-+
-+	/* The exact meaning of these bits is unknown. We only know that bit 1
-+	 * is used as a flag that swapping is already done.
-+	 */
-+	ret = phy_modify_mmd(phydev, MDIO_MMD_VEND2, RTL8226_VND2_UNKNOWN_D068, 0x7, 0x1);
-+	if (ret < 0)
-+		return ret;
-+
-+	for (int i = 0; i < 4; i++) {
-+		ret = phy_modify_mmd(phydev, MDIO_MMD_VEND2, RTL8226_VND2_UNKNOWN_D068,
-+				     RTL8226_VND2_UNKNOWN_D068_PAIR_SEL,
-+				     FIELD_PREP(RTL8226_VND2_UNKNOWN_D068_PAIR_SEL, i));
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, RTL8226_VND2_ADCCAL_OFFSET);
-+		if (ret < 0)
-+			return ret;
-+
-+		adccal_offset[i] = ret;
-+	}
-+
-+	for (int i = 0; i < 4; i++) {
-+		ret = phy_modify_mmd(phydev, MDIO_MMD_VEND2, RTL8226_VND2_UNKNOWN_D068,
-+				     RTL8226_VND2_UNKNOWN_D068_PAIR_SEL,
-+				     FIELD_PREP(RTL8226_VND2_UNKNOWN_D068_PAIR_SEL, i));
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = phy_write_mmd(phydev, MDIO_MMD_VEND2, RTL8226_VND2_ADCCAL_OFFSET,
-+				    adccal_offset[3 - i]);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
-+	ret = rtl8226_swap_rg_lpf_cap(phydev, RTL8226_VND2_RG_LPF_CAP_XG_P0_P1,
-+				      RTL8226_VND2_RG_LPF_CAP_XG_P2_P3);
-+	if (ret < 0)
-+		return ret;
-+
-+	return rtl8226_swap_rg_lpf_cap(phydev, RTL8226_VND2_RG_LPF_CAP_P0_P1,
-+				       RTL8226_VND2_RG_LPF_CAP_P2_P3);
-+}
-+
-+static int rtl8226_config_mdi_order(struct phy_device *phydev)
-+{
-+	u32 order;
-+	int ret;
-+
-+	ret = of_property_read_u32(phydev->mdio.dev.of_node, "enet-phy-pair-order", &order);
-+
-+	/* Property not present, nothing to do */
-+	if (ret == -EINVAL || ret == -ENOSYS)
-+		return 0;
-+
-+	if (ret)
-+		return ret;
-+
-+	/* Only enabling MDI swapping is supported */
-+	if (order != 1)
-+		return -EINVAL;
-+
-+	ret = rtl8226_set_mdi_swap(phydev, true);
-+	if (ret)
-+		return ret;
-+
-+	return rtl8226_patch_mdi_swap(phydev);
-+}
-+
-+static int rtl8226_config_init(struct phy_device *phydev)
-+{
-+	int ret;
-+
-+	ret = rtl8226_config_mdi_order(phydev);
-+	if (ret)
-+		return ret;
-+
-+	return rtl822x_config_init(phydev);
-+}
-+
- static int rtl822xb_get_rate_matching(struct phy_device *phydev,
- 				      phy_interface_t iface)
- {
-@@ -2384,7 +2531,7 @@ static struct phy_driver realtek_drvs[] = {
- 		.soft_reset	= rtl822x_c45_soft_reset,
- 		.get_features	= rtl822x_c45_get_features,
- 		.config_aneg	= rtl822x_c45_config_aneg,
--		.config_init	= rtl822x_config_init,
-+		.config_init	= rtl8226_config_init,
- 		.inband_caps	= rtl822x_inband_caps,
- 		.config_inband	= rtl822x_config_inband,
- 		.read_status	= rtl822xb_c45_read_status,
--- 
-2.53.0
-
+> Cc: Alim Akhtar <alim.akhtar@samsung.com>
+> Cc: Peter Griffin <peter.griffin@linaro.org>
+> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+> Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
+> Cc: Krzysztof Kozlowski <krzk@kernel.org>
+> Cc: Chanho Park <chanho61.park@samsung.com>
+>
+> v5->v6: collect tags from Alim Akhtar
+> v4->v5: collect tag, add "scsi: " prefix to commit title
+> v3->v4: none
+> v2->v3:
+> - add Cc Chanho Park, author of commit 3d73b200f989 ("scsi: ufs:
+>   ufs-exynos: Change ufs phy control sequence")
+> v1->v2:
+> - add better ufs->phy_powered_on handling in exynos_ufs_exit(),
+>   exynos_ufs_suspend() and exynos_ufs_resume() which ensures we won't
+>   enter a phy->power_count underrun condition
+> ---
+>  drivers/ufs/host/ufs-exynos.c | 24 ++++++++++++++++++++----
+>  drivers/ufs/host/ufs-exynos.h |  1 +
+>  2 files changed, 21 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/ufs/host/ufs-exynos.c b/drivers/ufs/host/ufs-exynos.c
+> index 76fee3a79c77..274e53833571 100644
+> --- a/drivers/ufs/host/ufs-exynos.c
+> +++ b/drivers/ufs/host/ufs-exynos.c
+> @@ -963,9 +963,10 @@ static int exynos_ufs_phy_init(struct exynos_ufs *ufs)
+>
+>         phy_set_bus_width(generic_phy, ufs->avail_ln_rx);
+>
+> -       if (generic_phy->power_count) {
+> +       if (ufs->phy_powered_on) {
+>                 phy_power_off(generic_phy);
+>                 phy_exit(generic_phy);
+> +               ufs->phy_powered_on = false;
+>         }
+>
+>         ret = phy_init(generic_phy);
+> @@ -979,6 +980,8 @@ static int exynos_ufs_phy_init(struct exynos_ufs *ufs)
+>         if (ret)
+>                 goto out_exit_phy;
+>
+> +       ufs->phy_powered_on = true;
+> +
+>         return 0;
+>
+>  out_exit_phy:
+> @@ -1527,6 +1530,9 @@ static void exynos_ufs_exit(struct ufs_hba *hba)
+>  {
+>         struct exynos_ufs *ufs = ufshcd_get_variant(hba);
+>
+> +       if (!ufs->phy_powered_on)
+> +               return;
+> +
+>         phy_power_off(ufs->phy);
+>         phy_exit(ufs->phy);
+>  }
+> @@ -1728,8 +1734,10 @@ static int exynos_ufs_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op,
+>         if (ufs->drv_data->suspend)
+>                 ufs->drv_data->suspend(ufs);
+>
+> -       if (!ufshcd_is_link_active(hba))
+> +       if (!ufshcd_is_link_active(hba) && ufs->phy_powered_on) {
+>                 phy_power_off(ufs->phy);
+> +               ufs->phy_powered_on = false;
+> +       }
+>
+>         return 0;
+>  }
+> @@ -1737,9 +1745,17 @@ static int exynos_ufs_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op,
+>  static int exynos_ufs_resume(struct ufs_hba *hba, enum ufs_pm_op pm_op)
+>  {
+>         struct exynos_ufs *ufs = ufshcd_get_variant(hba);
+> +       int err;
+>
+> -       if (!ufshcd_is_link_active(hba))
+> -               phy_power_on(ufs->phy);
+> +       if (!ufshcd_is_link_active(hba) && !ufs->phy_powered_on) {
+> +               err = phy_power_on(ufs->phy);
+> +               if (err) {
+> +                       dev_err(hba->dev, "Failed to power on PHY: %pe\n",
+> +                               ERR_PTR(err));
+> +               } else {
+> +                       ufs->phy_powered_on = true;
+> +               }
+> +       }
+>
+>         exynos_ufs_config_smu(ufs);
+>         exynos_ufs_fmp_resume(hba);
+> diff --git a/drivers/ufs/host/ufs-exynos.h b/drivers/ufs/host/ufs-exynos.h
+> index abe7e472759e..683b9150e2ba 100644
+> --- a/drivers/ufs/host/ufs-exynos.h
+> +++ b/drivers/ufs/host/ufs-exynos.h
+> @@ -227,6 +227,7 @@ struct exynos_ufs {
+>         int avail_ln_rx;
+>         int avail_ln_tx;
+>         int rx_sel_idx;
+> +       bool phy_powered_on;
+>         struct ufs_pa_layer_attr dev_req_params;
+>         struct ufs_phy_time_cfg t_cfg;
+>         ktime_t entry_hibern8_t;
+> --
+> 2.43.0
+>
