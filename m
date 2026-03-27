@@ -1,203 +1,272 @@
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from srv4.3e8.eu (srv4.3e8.eu [193.25.101.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E2C146D5A;
-	Fri, 27 Mar 2026 20:20:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774642860; cv=fail; b=W+EHRG041LxvE98EdXJLgjwoHbWCnzbysdyxqncKkQM5R/E/zDc+nWfryeBgtNWdzmfPlUGvJPjHFHLPWLApqHgKlfTkKW5wjqcKpCMnf+Uu1+VAwC2VsSiE+zCTh50Wrsk2OEjg07mkvNfd+BqQeiriPyuVoR/9qnquQA2ukQQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774642860; c=relaxed/simple;
-	bh=p9xxlEoIiGz2BcFPlG7RZkJyn0r1ENB6aEr9eBYWhZ4=;
-	h=To:Cc:Subject:From:In-Reply-To:Message-ID:References:Date:
-	 Content-Type:MIME-Version; b=WfQp5yE0/pDzdqV7XttsipLuAcvCvB3I7BeUcct92SjfufDa+o8VwxIjx4M+g8TkpDK1JnBcjXSHTyEhbbx8kZaSf7Ky5CArrKOiPOr2FPHZa0ZTlK2zx3MV0OH1B1jsfJU+kS4KiJw6kDk9XwwuNTQIXioMJQqRGnnTzlyG1Lw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=Fsy/STBc; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=l4HwjKbk; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7373803D1;
+	Fri, 27 Mar 2026 20:22:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.25.101.238
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774642966; cv=none; b=GnpdTOYj1jyMs+50gnbla+/EHjgv+HfS/AYTXhIe/p0FfnhM+zpFDDG0P0lvHeGuYxSQDAIy1dl8dq5scJ6ce4cItvblHBEB7QMBlot1OZhIXk3GGFvgh1s6pBZUyQlu4/lsJIuWcfKNSAxLqKPGnD+vChoOVznsRR4GW1axqQA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774642966; c=relaxed/simple;
+	bh=IMczZJ5EpmZ/jhP8MlzU+8UMoEl5TSQcpq8UFP2Mvac=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LycX470hElMlLLQ+q4u1B4IIbydNV0MUXNTryFyRFh0qBNyi93yHo9XvpVvamas45KmuTLDEyGaLeWGkY+WApRquxKdcS8nHGbCrSASGnex1hrRjgkVw9veITONpifr1XqMDItTCfnKheVqkTkj22LKHx028fC7rITZRergHggo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=3e8.eu; spf=pass smtp.mailfrom=3e8.eu; dkim=pass (2048-bit key) header.d=3e8.eu header.i=@3e8.eu header.b=UzlKpIJ+; arc=none smtp.client-ip=193.25.101.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=3e8.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=3e8.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="Fsy/STBc";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="l4HwjKbk"
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62RGu1HP3771475;
-	Fri, 27 Mar 2026 20:20:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=/4sQG77Rnsi0MhLJ3m
-	He18f9KD/0gnBqDImIeyx2M4c=; b=Fsy/STBc9NGEYvns1SYwtuWHfWCeHg+2rP
-	2z92lNwz2JZXVPpToWdPP29wpTrTY75iL6R9qRRHa6W0wQAiK+ggmGVhyrukWqMy
-	QWH+XsAT3e05TFcU7LqW/poOEzxfKZ6m+PuaKLrmRuP4XEkeczdYQjhHenx0CRXb
-	tNDIRdY75K0rGxVvL0SrqiaZISDskVca2rPXDZ8iYS065uA/ef5OE/Br3BdhdjLC
-	z/PWegJ0a05eL/u12tfFmBla3j5Pges38Z7oK7yAozpPKJjzewuUW30LSXzS8qlL
-	rzrJoXWzkk4Mg0g8hcT8iW3BoScKbJCtqR2UVqDQxh6E963mtTcA==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4d1kj2jtev-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 27 Mar 2026 20:20:36 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 62RJfjhd038380;
-	Fri, 27 Mar 2026 20:20:35 GMT
-Received: from ph0pr06cu001.outbound.protection.outlook.com (mail-westus3azon11011031.outbound.protection.outlook.com [40.107.208.31])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4d26xuj2t9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 27 Mar 2026 20:20:35 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=a83Q7Wz1klg2pCkKfPwfGQTTTls4anmaceIhS9NmiRc+vhSigkKpsrl2nkEn022QPqOtSXx9ZqU+lckpoz0sF9qJUlOINlA568d25XJK8prl4yR7St8yejGLvabqWEdEIK6BHtoXMqf3l/rpRofF4+7VRxLBPvAMqeBRPwwKmFSDV5iW3ScfJGMEdXRsj4V3YcO2veajV26CmNctS/8vmJwtMszGCeJlHJIxZcOLz/ms2AJ35L1XF5lJ+SOACY6FBCGazapicOdp/krbxGvb06PaP5dqDHSrrOMeQUaHOHaEn4UTyJ25avyqvwiAb1e3bPQaBe4NtU7PZwTrEryILg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/4sQG77Rnsi0MhLJ3mHe18f9KD/0gnBqDImIeyx2M4c=;
- b=h1YdZ04LfhOuUhr07qIhW1ngfh8+pvy5dSQubW/vY21OHD5HnWDLUjdi9U3YyCkYiNdG5HHi+j+64Rkb385ijNSOBZsxoZvOZnSqIJZOendMANFO13DupiZlYNO7RbzuDwmjKhZWwiqAHlfKOSCKCHhuyl8wwFZMtcrtPQoylQp9d8KLU4KvrL3WNe9FcGTlGZ163rw100ZfhOoLyw2Lh6L3RZmBtUQsqud9O2g+2XhDmYwYjOTk5dOuwjkA82L7rKU47twtpDZBfk399smTerK9gkAsc6Snjza9zt6JAHzIWrg5wWAi7rp5bJEEYY5cFeVJsEYuKRGbbLIR9eo5XA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/4sQG77Rnsi0MhLJ3mHe18f9KD/0gnBqDImIeyx2M4c=;
- b=l4HwjKbkkROesAfvEEhApWjopaI0BuVih9lh8nbRHm0pwWsy/ulGi8U6UG3GMylEQG/9Hrk6vX8K/AIeaX/x3OER8IPhmW4B92hLqimPeYJXPG3ilLRyRW2DcUAcT7vsSaMGIOfUjCAWmHpVu/9bwnHOeD9No5OcyAdjh/fJs5A=
-Received: from CH0PR10MB5338.namprd10.prod.outlook.com (2603:10b6:610:cb::8)
- by CY8PR10MB6850.namprd10.prod.outlook.com (2603:10b6:930:9e::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.23; Fri, 27 Mar
- 2026 20:20:31 +0000
-Received: from CH0PR10MB5338.namprd10.prod.outlook.com
- ([fe80::e525:dd71:b002:6ad5]) by CH0PR10MB5338.namprd10.prod.outlook.com
- ([fe80::e525:dd71:b002:6ad5%6]) with mapi id 15.20.9745.023; Fri, 27 Mar 2026
- 20:20:31 +0000
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: <linux-phy@lists.infradead.org>, Vinod Koul <vkoul@kernel.org>,
-        Neil
- Armstrong <neil.armstrong@linaro.org>,
-        <dri-devel@lists.freedesktop.org>, <freedreno@lists.freedesktop.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-arm-msm@vger.kernel.org>, <linux-can@vger.kernel.org>,
-        <linux-gpio@vger.kernel.org>, <linux-ide@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-media@vger.kernel.org>,
-        <linux-pci@vger.kernel.org>, <linux-renesas-soc@vger.kernel.org>,
-        <linux-riscv@lists.infradead.org>,
-        <linux-rockchip@lists.infradead.org>,
-        <linux-samsung-soc@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
-        <linux-sunxi@lists.linux.dev>, <linux-tegra@vger.kernel.org>,
-        <linux-usb@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <spacemit@lists.linux.dev>, <UNGLinuxDriver@microchip.com>,
-        Manivannan
- Sadhasivam <mani@kernel.org>,
-        "James E.J. Bottomley"
- <James.Bottomley@HansenPartnership.com>,
-        "Martin K. Petersen"
- <martin.petersen@oracle.com>
-Subject: Re: [PATCH v6 phy-next 11/28] scsi: ufs: qcom: include missing
- <linux/interrupt.h>
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-In-Reply-To: <20260327184706.1600329-12-vladimir.oltean@nxp.com> (Vladimir
-	Oltean's message of "Fri, 27 Mar 2026 20:46:49 +0200")
-Organization: Oracle Corporation
-Message-ID: <yq1tsu19g8y.fsf@ca-mkp.ca.oracle.com>
-References: <20260327184706.1600329-1-vladimir.oltean@nxp.com>
-	<20260327184706.1600329-12-vladimir.oltean@nxp.com>
-Date: Fri, 27 Mar 2026 16:20:30 -0400
-Content-Type: text/plain
-X-ClientProxiedBy: CH0PR03CA0353.namprd03.prod.outlook.com
- (2603:10b6:610:11a::15) To CH0PR10MB5338.namprd10.prod.outlook.com
- (2603:10b6:610:cb::8)
+	dkim=pass (2048-bit key) header.d=3e8.eu header.i=@3e8.eu header.b="UzlKpIJ+"
+Received: from jan-pc (p200300ed4701bfa09bcb9dcee3f7b116.dip0.t-ipconnect.de [IPv6:2003:ed:4701:bfa0:9bcb:9dce:e3f7:b116])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by srv4.3e8.eu (Postfix) with ESMTPSA id 5661340293;
+	Fri, 27 Mar 2026 21:21:12 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=3e8.eu; s=mail20211217;
+	t=1774642875;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=hx3OyUWNAbordCl0xtcofmMXwfp0i+JgS6dQqnfJI5A=;
+	b=UzlKpIJ+Mt7uAgQvT9p/oh/Sc82FzL1JLDydgAhRMggnCLYe+HyUaRh1PhWfRuiPXzb0S2
+	Hw+HgoBPd2HBJJyFoF4vrdXyg/WLJlTm84CqkNVOSMOGgOCMK/B3Je8YfA1XSibNHAAOPq
+	KpRnPHy7FRg6u9Uzoh4DzmCejiaTmrxFhyedvxxHH707Q+Z/YraQn9WjzNoDNzzBIzXOUA
+	ryYNXU4Ea+cqF+r/qelSJ+XqWF7NQYOv9zMxZpcTJ2Q0adGgG5UdJ8WEWEudv3SN4DYmqb
+	bFJiKHr9w1tTOcdWp97rWpw9noyGZyoOqxOO0w9Nx6ZcclI006hX7PsXvRfFpw==
+From: Jan Hoffmann <jan@3e8.eu>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Markus Stockhausen <markus.stockhausen@gmx.de>,
+	Damien Dejean <dam.dejean@gmail.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jan Hoffmann <jan@3e8.eu>
+Subject: [PATCH net-next v2] net: phy: realtek: support MDI swapping for RTL8226-CG
+Date: Fri, 27 Mar 2026 20:32:28 +0100
+Message-ID: <20260327202001.413280-1-jan@3e8.eu>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH0PR10MB5338:EE_|CY8PR10MB6850:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1d38edeb-712f-46ff-dd51-08de8c3e4b53
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	DSNx3qMfIWbpK7IQO+vumNk7C3N/AgFNjMpadqCJNRbmiHhZXbBNristikLW4084E2gCS4Us2oAFXVQjxi0UHVrgefngGaeCWaJqGcxQ7bFvV0GjQBFhsfAgIa2Es0P+3UEkGDKamVfi4noUluUYjKJvYIjPY0htjs/XhZHTmOon6C0K7wXvPh6p0cnCz72er2EjnrQWh1kHALkBjo9m5TEeIw6RGo8ZOLUsIIMaMtIDn6cK5ygSSE0HPW9rvHHTLlI8G/g4ZERGl/wrJqFr3rqAjwtKzOCLTPPyRL+fEtboYOLN0PD3ftm1Kk8+L1Qx/o1SZrxSOE+zlq/p9wECOCSsjpeLLNYWM4WLlqi63l0mhQLLULNkj48UONAqSGGi0Kw2dtdQNBKuIiJ4j0YAxWeou9iRKTUSe2urcCgJTv4uDxSKQTMKY/TcNadzzqZPcwDqFv09MveEIMJmSC+BqfePPvNaPFgX0Rcc6pXhDurAaCLECOVXYNUn5WYXAHZTyghcVQp1RPXH33cavrGkY1+gn4/zXIDB+t03NFLt1hzS6g+kCJdmLCTAezxW+1EQ8aPqDFSq9k3UsXdEIl53ee+kCddchR5ZL5kfTWeIVpDUq3uGNTcMkTh68WTTdn+6fgOBqjTQTR5BKtrau88ij9aadTrjl5NL0ID1oFyJh+OarJUp7QCbuFm7gVSxVkOeJK2aqHkSLQFCmLsh6c6be6oWFVtf8vjPM+2iPMq+Yaw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR10MB5338.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+KBrtVZ1RvV9x9v57pzY8bS/rTd18BDctayHCFYg3Qp7Hn1zjonu7/Jvccm5?=
- =?us-ascii?Q?6uXIYpho31ELaKc7YHsOntEOHnZ3onh8Kz06zBoY0CXnAlYhVTsGby0wKXxQ?=
- =?us-ascii?Q?XjkXx2nz4shCCZLtpe9tNM7SKOA+5zwlDDTKOFc8b/vQzMoUcAfysuN8b+Ws?=
- =?us-ascii?Q?oH20n77yMSHU8UmyPEZiqWCTwPcOd59qpZfDlxpVMyRYNnImBdbgssLcTg0z?=
- =?us-ascii?Q?RvTzOTgoC3Qs6HFA1R8sU4n9HyJDyQr6SMPC26Uook3C0tX36bJE7JnKyVCW?=
- =?us-ascii?Q?0lj6VtTITcM8eTPaOtS9KfTG8xCer2o8KNBYaTh8NXE3Rxfh0ys+oUz7CYVc?=
- =?us-ascii?Q?80E4tALGjvDUmp4g2ZDvtaFr8fptakCBn7hVwtCF2gN7hzyK08z9KDpmn9C1?=
- =?us-ascii?Q?7NdRSCG0ELvdp171w4pt7VpCmJG36bvaRaOkqGD1MlQSclVG1FalfJt/3Zi+?=
- =?us-ascii?Q?OJnxq5kesmjVY07ikZtIPlzChsONcjAPFM92RdNMm7DmSmHN4AyMs/XP5Amw?=
- =?us-ascii?Q?xxI0MF1VVnxqf0ZzWF8vh/nE+ptakI2da+F84bUTWkO9aSSMXTdSiJmXcone?=
- =?us-ascii?Q?Sm12oOY8J3n3Ihl9BDxDOLmQa8Sg+lCpuovylJKZ30wIJ4OJY+lhLEEz/Kqo?=
- =?us-ascii?Q?fy+oajVlxWpm4TDPUMj6rGdbA9QiyoFZnrnMbgw3TQ24KgRYfYrFlsRwpJIU?=
- =?us-ascii?Q?uKcx9UvWfSQJVWkg+fMmCTuTOzg4t9kDICSO0Ceh4YA+za9LpdsfprXMTgds?=
- =?us-ascii?Q?wSf3P8c84jAsXZbuV0RrWuzBtP3nUvPGOITBDyv3Erz/BiXu6XXBnmv9DqWM?=
- =?us-ascii?Q?zW3nS4RXfOCpX4xQ7CsbT4cyL9gNnjMAk5IzkARS2ALxTKVYQPCG5ZQavGGy?=
- =?us-ascii?Q?4RxWY3ArBT8NZ4HBeGMXKlNLjMgUOE4Gi+B3x5Gp+wB8pkqcVMA/Y7sBf3I6?=
- =?us-ascii?Q?muE15+dEBsjxyC2rZVH4/8tvaKuvMY2Xdwu2RT8b+wbl10eQC2+ZtS1pN10c?=
- =?us-ascii?Q?d/Gn/BWWRgUZVu5LcrHdiUR+Bwe3Fc7XI0utYGbk5O7y8WNFaDUcxYfvqn+X?=
- =?us-ascii?Q?XzNP97WlTsIUB9+/XB6PZMd1RGJsKXROl/Ku+ZI9Jn79WihVBoibBLxHs9Ef?=
- =?us-ascii?Q?gyyG+zAbZJXRHZqAJgZK4fk6ILiM/9xFZzia983phuNy/Se7cjAAKA4bkt6S?=
- =?us-ascii?Q?oReq7msfXHnFjexl5PnZ6Oa/Iapy1w3KGBCQziGHqozdLqDgHf4nFHu0lejR?=
- =?us-ascii?Q?vQzxbUidBBg2eGJ+m7zLKHTMtajcZgHATSdTkJaaT9MpMh2bRUtWlnSX4Cex?=
- =?us-ascii?Q?HXi/GMNmDf+UJbQPLl+S7hbZJ/vA0rpETQOZ3YsjzeS12Kh2vz9LtDmSkhkk?=
- =?us-ascii?Q?gJZmtThRSvgEBWjYoSYJ24bJVLNBvvb2gsJbaxLAgbdFJ6y+wwL5k8dz6Ja7?=
- =?us-ascii?Q?TYzq53anOqEifAB1/fW7MaXnc7mUJ4xiuHSvwQHOyKdqy9UxDYoZfgnGegAL?=
- =?us-ascii?Q?MeUfHlpRea8Xzg640bkWCCHfZGEwcOD0Au6GZ2boZKJmQofJRQhSGbNS8Qgr?=
- =?us-ascii?Q?Hb7H5D1smVLoFzhciGc9lyDk4WjChi/nm3T/GrPc4/VfW4AnA3WdbX6tWi9S?=
- =?us-ascii?Q?hvVQAaKBYvBY9dIv6g/Jw3giiPZSg89rjp5JRMt0hUb5UInk/GpFCrcDfHUt?=
- =?us-ascii?Q?qoPqEEYjHVlQwZtn/CoUHiQZzZBclvResiHP9NCt1xEx0g8Ss/nEyQzdWNCC?=
- =?us-ascii?Q?Guv+h4dvvo5W5CWNNePLDIdoGL18DiY=3D?=
-X-Exchange-RoutingPolicyChecked:
-	csr2t4K+vjuLhqKTuy7GEX5yzoUpAGMUVmrr0HlHyOQInIf2+EMUauLOaYDAlY++UqJVgd+iuWFtXahbzEizLW8zMfAR2dciJkCXS3tnuf/EIsVx1rqiuoD2dWewxWBmUXXSYD4JH37+sucZVgc9fU+zCMqj8bKVXn/QJqzOg748i2chspEMImqI54eRCoEGB6GXg9g3efGJ98A6KeXgQiLf2WuqxQjaVjPC6XdK2Jwf7vgXNJoqyqpaM/g28kytXH1q+eLTWObWileHwUnQ1Q4XR+e4C1Vg5OtUrDXFfMb8+K4WiZRyu9h9wM87ZYDxErzv5pJfSXtmOKYtPRQFtw==
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	XykP6A1xO2FJ/87DTLPnl+yCWgzsOF0EuSrooZLbwTiwlirfgBhwl04EqazBjr3cLYfRdxb/CubZfUWBR2bgFPUirOl956mKTYUm6TSFu30CIP3YauKzkexdpzTW0L/33zAk/lh4Tp8Hjc51qt9EvJJxm8oj1TKbulxw3Ot4kJXPSAwQKXQtWPcf1w9qCu+yMImGUnU6237heV2AKXIdBpSN/HfCCEdaDmK26p2ZhY5+LmcdzOXog4W+qu5RyX5qWz1NrnHx/rr2msP8mNH1Gmr/Tpi4rf+7fQfFK0F1D79enCHl1PPJwKJQbS/vgQ+iU1pfY1sRv4SHCxIX3Nn1erkZFbPkQQsaiq0yHcy2iHihhNih2xpdaI7XYhzCV6+jaVzwsaYrGOAKUYXqMtxwGqN/LMqZB/rrZwY906VgxTFG8PlGALWuFlJvTEke1x8ICumqV9facqKEoPPcV+pVGORereHS6smYfW/u/EKyRa4R6ZZHrL3dRhkDiUbDxV/QKFuNlM3Xa5/fD7SC67biFE3J2M8gTyHoB8vnd23dS3D2mLLHqM4hikNkG+JFjdRwdn3hAsgFegHei2KTD2ITe1S3uvw7O0t0JOlloBRT/AM=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1d38edeb-712f-46ff-dd51-08de8c3e4b53
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR10MB5338.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2026 20:20:31.4030
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: C+4q8fS71z6dMKW2eLzf11lN3KLIvzhPk2GZJ+q8aJ74aeHGJsL+W7UX8cFyWpV5b+zsVbHLmWg/0Xb6f2VgDOVjbD3g8TTdplOzR/6/ncQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR10MB6850
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-27_01,2026-03-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 mlxscore=0 spamscore=0
- adultscore=0 phishscore=0 bulkscore=0 suspectscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2603050001
- definitions=main-2603270142
-X-Proofpoint-ORIG-GUID: SqhaSZ2GlbhU9WE6peMkWcPC0MDIYuiQ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI3MDE0MiBTYWx0ZWRfX5QeZ4bBq4evj
- kw5OZMrKKyZ2ltt/BN+cCRPNLvxTOQin0cGynQKN+gdh9k/h+cpHw8bcHJTlXoPKena6Jjwrg1i
- uGbNd3NRBZajlCMz1DsKfkKDCgl3J7njy+AouvHSoh+Kp9ojOORUv8q11Oks2ozEzTP/W0WgWeg
- V6XuBVnzX1IOSD2JdhxMEtPNSR9bxIrXIcL6B5KVYoc3Cn6G0GzNvpIsSdZ92N1yEuG/GTXffEi
- usIVKenOnZaqJ92+GB+nDrvXyl2CtKMHyrhqMjtjfrDEhhEJZXIKGSOKOugihXjAz8zlCFuGME4
- r38WMQHEcTtMIQEB/cujU85yroHQohk0+pSwv+iENjI5wXZZZFq24h7IBClfAwdWQKtVV0ylZ0n
- tLrT8iVUN3FOsTktAmm7W6QkJbgd36CNrtq/i4qevdJkYlUxF7YLshYfQceYs9JT9j5YvX6mMVz
- zRrrkHQo23xudZVXCXMMUBjV7a9CEa0XMRrVyJgs=
-X-Proofpoint-GUID: SqhaSZ2GlbhU9WE6peMkWcPC0MDIYuiQ
-X-Authority-Analysis: v=2.4 cv=KtJAGGWN c=1 sm=1 tr=0 ts=69c6e694 b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=Yq5XynenixoA:10
- a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
- a=RD47p0oAkeU5bO7t-o6f:22 a=yPCof4ZbAAAA:8 a=pKwsvEHCoKUmO1iIalcA:9
- a=MTAcVbZMd_8A:10 cc=ntf awl=host:12276
+Content-Transfer-Encoding: 8bit
 
+Add support for configuring swapping of MDI pairs (ABCD->DCBA) when the
+property "enet-phy-pair-order" is specified.
 
-Vladimir,
+Unfortunately, no documentation about this feature is available, but
+this implementation still tries to avoid magic numbers and raw register
+numbers where it seems clear what is going on. As it is unknown whether
+the patching step can be safely reversed, only enabling MDI swapping is
+supported.
 
-> The point is that <linux/phy/phy.h> will stop providing
-> <linux/regulator/consumer.h>, and this would break the transitive
-> include chain on armv7.
+Some other Realtek PHYs also support similar mechanisms:
 
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+- RTL8221B-VB-CG allows to configure MDI swapping via the same register,
+  but does not need the additional patching step. However, it is unclear
+  whether a driver implementation for that PHY is necessary, as it is
+  known to support configuration via strapping pins (which is working
+  fine at least in Zyxel XGS1210-12 rev B1).
 
+- The patching step seems to match the one for the integrated PHYs of
+  some Realtek PCIe/USB NICs (see for example the r8152 driver).
+
+For now, only implement this for the RTL8226-CG PHY, where it is needed
+for the switches Zyxel XGS1010-12 rev A1 and XGS1210-12 rev A1.
+
+Signed-off-by: Jan Hoffmann <jan@3e8.eu>
+---
+v2:
+ - Added register/field definitions where possible. For some registers,
+   it seems hard to find a proper name, but I still defined them where
+   some of the fields are known.
+ - Introduced new helper function to swap RG_LPF_CAP and RG_LPF_CAP_XG
+   values, in order to reduce duplication.
+
+ drivers/net/phy/realtek/realtek_main.c | 149 ++++++++++++++++++++++++-
+ 1 file changed, 148 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
+index 023e47ad605b..2f007dc8ec8c 100644
+--- a/drivers/net/phy/realtek/realtek_main.c
++++ b/drivers/net/phy/realtek/realtek_main.c
+@@ -174,6 +174,20 @@
+ #define RTL8224_VND1_MDI_PAIR_SWAP		0xa90
+ #define RTL8224_VND1_MDI_POLARITY_SWAP		0xa94
+ 
++#define RTL8226_VND1_UNKNOWN_6A21		0x6a21
++#define  RTL8226_VND1_UNKNOWN_6A21_MDI_SWAP_EN	BIT(5)
++
++#define RTL8226_VND2_UNKNOWN_D068		0xd068
++#define  RTL8226_VND2_UNKNOWN_D068_PAIR_SEL	GENMASK(4, 3)
++#define RTL8226_VND2_ADCCAL_OFFSET		0xd06a
++
++#define RTL8226_VND2_RG_LPF_CAP_XG_P0_P1	0xbd5a
++#define RTL8226_VND2_RG_LPF_CAP_XG_P2_P3	0xbd5c
++#define RTL8226_VND2_RG_LPF_CAP_P0_P1		0xbc18
++#define RTL8226_VND2_RG_LPF_CAP_P2_P3		0xbc1a
++#define  RTL8226_RG_LPF_CAP_PAIR_A_MASK		GENMASK(4, 0)
++#define  RTL8226_RG_LPF_CAP_PAIR_B_MASK		GENMASK(12, 8)
++
+ #define RTL8366RB_POWER_SAVE			0x15
+ #define RTL8366RB_POWER_SAVE_ON			BIT(12)
+ 
+@@ -1447,6 +1461,139 @@ static unsigned int rtl822x_inband_caps(struct phy_device *phydev,
+ 	}
+ }
+ 
++static int rtl8226_set_mdi_swap(struct phy_device *phydev, bool swap_enable)
++{
++	u16 val = swap_enable ? RTL8226_VND1_UNKNOWN_6A21_MDI_SWAP_EN : 0;
++
++	return phy_modify_mmd(phydev, MDIO_MMD_VEND1, RTL8226_VND1_UNKNOWN_6A21,
++			      RTL8226_VND1_UNKNOWN_6A21_MDI_SWAP_EN, val);
++}
++
++static int rtl8226_swap_rg_lpf_cap(struct phy_device *phydev, u32 reg_p0_p1, u32 reg_p2_p3)
++{
++	u16 val_p0, val_p1, val_p2, val_p3;
++	int ret;
++
++	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, reg_p0_p1);
++	if (ret < 0)
++		return ret;
++
++	val_p0 = FIELD_GET(RTL8226_RG_LPF_CAP_PAIR_A_MASK, ret);
++	val_p1 = FIELD_GET(RTL8226_RG_LPF_CAP_PAIR_B_MASK, ret);
++
++	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, reg_p2_p3);
++	if (ret < 0)
++		return ret;
++
++	val_p2 = FIELD_GET(RTL8226_RG_LPF_CAP_PAIR_A_MASK, ret);
++	val_p3 = FIELD_GET(RTL8226_RG_LPF_CAP_PAIR_B_MASK, ret);
++
++	ret = phy_modify_mmd(phydev, MDIO_MMD_VEND2, reg_p0_p1,
++			     RTL8226_RG_LPF_CAP_PAIR_A_MASK | RTL8226_RG_LPF_CAP_PAIR_B_MASK,
++			     FIELD_PREP(RTL8226_RG_LPF_CAP_PAIR_A_MASK, val_p3) |
++			     FIELD_PREP(RTL8226_RG_LPF_CAP_PAIR_B_MASK, val_p2));
++	if (ret < 0)
++		return ret;
++
++	return phy_modify_mmd(phydev, MDIO_MMD_VEND2, reg_p2_p3,
++			     RTL8226_RG_LPF_CAP_PAIR_A_MASK | RTL8226_RG_LPF_CAP_PAIR_B_MASK,
++			     FIELD_PREP(RTL8226_RG_LPF_CAP_PAIR_A_MASK, val_p1) |
++			     FIELD_PREP(RTL8226_RG_LPF_CAP_PAIR_B_MASK, val_p0));
++}
++
++static int rtl8226_patch_mdi_swap(struct phy_device *phydev)
++{
++	u16 adccal_offset[4];
++	int ret;
++
++	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, RTL8226_VND2_UNKNOWN_D068);
++	if (ret < 0)
++		return ret;
++
++	if (!(ret & BIT(1))) {
++		/* already swapped */
++		return 0;
++	}
++
++	/* The exact meaning of these bits is unknown. We only know that bit 1
++	 * is used as a flag that swapping is already done.
++	 */
++	ret = phy_modify_mmd(phydev, MDIO_MMD_VEND2, RTL8226_VND2_UNKNOWN_D068, 0x7, 0x1);
++	if (ret < 0)
++		return ret;
++
++	for (int i = 0; i < 4; i++) {
++		ret = phy_modify_mmd(phydev, MDIO_MMD_VEND2, RTL8226_VND2_UNKNOWN_D068,
++				     RTL8226_VND2_UNKNOWN_D068_PAIR_SEL,
++				     FIELD_PREP(RTL8226_VND2_UNKNOWN_D068_PAIR_SEL, i));
++		if (ret < 0)
++			return ret;
++
++		ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, RTL8226_VND2_ADCCAL_OFFSET);
++		if (ret < 0)
++			return ret;
++
++		adccal_offset[i] = ret;
++	}
++
++	for (int i = 0; i < 4; i++) {
++		ret = phy_modify_mmd(phydev, MDIO_MMD_VEND2, RTL8226_VND2_UNKNOWN_D068,
++				     RTL8226_VND2_UNKNOWN_D068_PAIR_SEL,
++				     FIELD_PREP(RTL8226_VND2_UNKNOWN_D068_PAIR_SEL, i));
++		if (ret < 0)
++			return ret;
++
++		ret = phy_write_mmd(phydev, MDIO_MMD_VEND2, RTL8226_VND2_ADCCAL_OFFSET,
++				    adccal_offset[3 - i]);
++		if (ret < 0)
++			return ret;
++	}
++
++	ret = rtl8226_swap_rg_lpf_cap(phydev, RTL8226_VND2_RG_LPF_CAP_XG_P0_P1,
++				      RTL8226_VND2_RG_LPF_CAP_XG_P2_P3);
++	if (ret < 0)
++		return ret;
++
++	return rtl8226_swap_rg_lpf_cap(phydev, RTL8226_VND2_RG_LPF_CAP_P0_P1,
++				       RTL8226_VND2_RG_LPF_CAP_P2_P3);
++}
++
++static int rtl8226_config_mdi_order(struct phy_device *phydev)
++{
++	u32 order;
++	int ret;
++
++	ret = of_property_read_u32(phydev->mdio.dev.of_node, "enet-phy-pair-order", &order);
++
++	/* Property not present, nothing to do */
++	if (ret == -EINVAL || ret == -ENOSYS)
++		return 0;
++
++	if (ret)
++		return ret;
++
++	/* Only enabling MDI swapping is supported */
++	if (order != 1)
++		return -EINVAL;
++
++	ret = rtl8226_set_mdi_swap(phydev, true);
++	if (ret)
++		return ret;
++
++	return rtl8226_patch_mdi_swap(phydev);
++}
++
++static int rtl8226_config_init(struct phy_device *phydev)
++{
++	int ret;
++
++	ret = rtl8226_config_mdi_order(phydev);
++	if (ret)
++		return ret;
++
++	return rtl822x_config_init(phydev);
++}
++
+ static int rtl822xb_get_rate_matching(struct phy_device *phydev,
+ 				      phy_interface_t iface)
+ {
+@@ -2384,7 +2531,7 @@ static struct phy_driver realtek_drvs[] = {
+ 		.soft_reset	= rtl822x_c45_soft_reset,
+ 		.get_features	= rtl822x_c45_get_features,
+ 		.config_aneg	= rtl822x_c45_config_aneg,
+-		.config_init	= rtl822x_config_init,
++		.config_init	= rtl8226_config_init,
+ 		.inband_caps	= rtl822x_inband_caps,
+ 		.config_inband	= rtl822x_config_inband,
+ 		.read_status	= rtl822xb_c45_read_status,
 -- 
-Martin K. Petersen
+2.53.0
+
