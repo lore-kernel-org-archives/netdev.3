@@ -1,90 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3CD3D6689
-	for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 09:39:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0EBC3DBD46
+	for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 09:40:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774604387; cv=none; b=sWQq5j7TIAqNQsnByhvvqv8hCTDLU4WPdzLmYWWDFAJPQYO4FoFDvuysb5Eb3iCQqKTs05UlrlMFvk3XbZnihzuRpQcrL9+XwzODED3Fu7eMjbUjG+q2JSHiMaLbDoNzV/1m6qY4gRRoLigAT9lc7jxEHLBonzdt8ubi+So0nqo=
+	t=1774604406; cv=none; b=qAVJC2EGFx9BcxQ8ubCN+hxlpgR7Ca5GdX+TfiM+/lNpkFFqK1qWClbw3HjVLkfNQ/C1tziO2hxWODnE/5Wl7XRLWi41tdLS7SxgIwLITJ3dtG8Z0OraLQ8XHYC+jE2GIcAP/+5bZnKfVRB+w3RcC3WqeQe1pRix4Ye8gSJP+B8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774604387; c=relaxed/simple;
-	bh=vE7aAgOybl8kkMRNRMKH3/474cFLbolEO1kCDStPcHk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qfudrCC490yF/Kbs76J8ZKwDXV75fNSa6WJGVPG5guAXdO5ZiH1tVEREGR7kVl3fn8O+ke+TaEu9lP3D2J1KANNSJPmwtmo1/ZpDs6PXqZq6PlA45LetZJjw6qfFHhXTA+/RuQ9b1K0OhSl0O3znOaj+bo3tM1WhKQD1GnVeEa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aG6eFPCN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774604406; c=relaxed/simple;
+	bh=rmmlf4KKWtRHguk2iBVhE8jcOsAloGPjFm1p9NESs3c=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=BXVScZSGW7Y//JtZ1mOvogUWmIM4xDojJryTZMSttiD7KB75Uo09BoqVl0WNXaGSrJvO9xu6mstz3ug9Mjdq8mE4VRHL8mUK9wpnUd9s+TFPG+Zfz385QybpmTltl4MdZx+tCz/1IIkLjC48CrwYM/tE0FmgnJCYahDbC5zAbA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=fLfbgQ2U; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aG6eFPCN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E81AC19423;
-	Fri, 27 Mar 2026 09:39:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774604386;
-	bh=vE7aAgOybl8kkMRNRMKH3/474cFLbolEO1kCDStPcHk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aG6eFPCNSVxypTv9jEH5KH/xPEibbRyBfFUVet2kUEFX32KUxGclPCcrocoYApiZk
-	 1VSGqwxvqtzFLlMgthLlDYa8yUkL5fgDPPsLURNzErv4pmm5WzPmEdp2sZbLSlEJ4S
-	 7DBjsBL2GPDPGLeZAz9HyylFUIUaYOTluLi7RxvTecQf25aK1c0TEv1+Sq5JINuXcm
-	 lKG/P+Cdr4KwjYaA3qKHvnHb0AfXD0w4XGC9oWLklkdZhmOl1hYO7kw0uyn2+2HPuq
-	 JERvnxKGEB3U+MRMMzjLGt+6XtJGgSsTpfkA/eTOKZi3Q0iLPMQG0ArFOaRMrUl6C5
-	 qaBALaVB3IFYw==
-Date: Fri, 27 Mar 2026 09:55:35 +0100
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="fLfbgQ2U"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=WUPmq1A5eaO109OW3qO6eHS11Ep2OeWicoobVOUG9AI=; b=fLfbgQ2UujCA7PbAk0yuuAA5t1
+	4MTeVFDKsrj8Gcggwihm9v+awDhPb78uHdVsxMyKgunZybO9QMzqEQt3M3bQOKgHCYjAEGgbMYNQJ
+	wkHZRW7Ao8lvat74xIMHKZjhNv1WP1nSV6313Af66dsdjdkGcT/f7XbBNF94EwLDrXY2kYfqDxvIO
+	I4SEY4ybTwcm/gp0ouGt59m7uQM9xB9uoHqNrpUASlLIGgk6L5c1NUjFXZcaOmKBrh3FYmOzl3fMh
+	OADA9lfdW/Hatqz1qHSQnc+5d59ssjRWHssVbskYH8+g6K3v/YiSTUg0iAWFMIoNfB3cyLOeUUWR2
+	HC+VcwQQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:34894)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1w63fX-000000005xG-0JIU;
+	Fri, 27 Mar 2026 09:39:55 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1w63fU-000000007wj-3Q70;
+	Fri, 27 Mar 2026 09:39:52 +0000
+Date: Fri, 27 Mar 2026 09:39:52 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next] net: airoha: Grab flow_offload_mutex running
- airoha_register_gdm_devices()
-Message-ID: <acZGBngWPvjB6ZyA@lore-rh-laptop>
-References: <20260324-airoha-regiser-race-fix-v1-1-6014df55886b@kernel.org>
- <20260326200605.39222917@kernel.org>
+	linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH net-next 0/2] net: stmmac: fix and clean up TSO/GSO support
+Message-ID: <acZQaDeCoib5S5UA@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="fJ1bmY2v5shV2XLg"
-Content-Disposition: inline
-In-Reply-To: <20260326200605.39222917@kernel.org>
-
-
---fJ1bmY2v5shV2XLg
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Mar 26, Jakub Kicinski wrote:
-> On Tue, 24 Mar 2026 17:54:45 +0100 Lorenzo Bianconi wrote:
-> > Netfilter flowtable can theoretically try offload flower rules as soon
-> > as a net-device is registered while not all the other ones are
-> > registered/initialized, triggering a possible NULL pointer dereferencing
-> > of qdma pointer in airoha_ppe_set_cpu_port routine. In order to avoid a=
-ny
-> > possible race, grab the flow_offload_mutex running
-> > airoha_register_gdm_devices().
->=20
-> Sashiko says this causes a lock ordering issue:
-> https://sashiko.dev/#/patchset/20260324-airoha-regiser-race-fix-v1-1-6014=
-df55886b@kernel.org
+This series:
 
-Ack, right. Thx for pointing this issue out. I will work on a different
-solution.
+1. moves setting priv->tso from stmmac_fix_features() to
+   stmmac_set_features() as fix_features is not supposed to change
+   driver state.
 
-Regards,
-Lorenzo
+2. simplifies the TSO/GSP test in stmmac_xmit() to simply check if the
+   skbuff is a GSO buffer, and whether the gso_type is one that we
+   should handle.
 
---fJ1bmY2v5shV2XLg
-Content-Type: application/pgp-signature; name=signature.asc
+A previous version of patch 1 was posted in February:
 
------BEGIN PGP SIGNATURE-----
+https://lore.kernel.org/r/E1vuU3X-0000000Ae9G-1Er8@rmk-PC.armlinux.org.uk/
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCacZGAgAKCRA6cBh0uS2t
-rFjSAQDQ1c+Kgc2ua9ykMwg2Ik7Y9Qnbiz1WGHZhludsXoIdewEA4EpBiexqldQr
-kxPBov/kITpBYnXQ0uVDyd5zKQouIwk=
-=E/LG
------END PGP SIGNATURE-----
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h      |  3 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 38 +++++++++++------------
+ 2 files changed, 21 insertions(+), 20 deletions(-)
 
---fJ1bmY2v5shV2XLg--
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
