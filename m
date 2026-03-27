@@ -1,219 +1,344 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010013.outbound.protection.outlook.com [40.93.198.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC05E2DF156
-	for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 15:34:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774625644; cv=none; b=QgUhimNUTwbB8HaUsHQ88+XiB35rCWQare1x9Xh0Qlpv+2e2RUGs0OpkeTH0pO3s+NqUFo5XIe3gBpR77wy5+EuTjwNOQgLSVi8XoK0Ipv9tbdrV2y3GqMwPgi2i5F66CcqA622MQUNIjK7HqqAXakXckO5BZSlQ3WNa8sksNUM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774625644; c=relaxed/simple;
-	bh=o3+d9UHxiI6zvg0auw9A95x0svAKTXZdoNsWwF48kQg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UO82Ouv+0CpjQCdNgP42TMPMAvDhrCAvGirScp0Rd7TIO/p+13eJR2dHMOnDG1f5IOFn+luOxw5HMRqVU+XpkKrxpiZsI9CnbLOVSRjb8iCErOwISADmO6NuH4VOMUo77ClvSxiov2AtVfae+ABU4Yixz4mcWB4EiFd7WEU8H2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NSaKYma4; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38EF54594A;
+	Fri, 27 Mar 2026 15:35:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774625718; cv=fail; b=GnoSb3SjuKZLRFYLTGP0Lg/K7PzTNa8iBziGJT9XxRB6SdtKfgsoPzO1EYhk9LNFJQliB/6aMz6oHBHH1zlLB4vIt013bhkEC8XiXJCDaSVyUSM6rqTFT8RgXFP5glGF2ARkZ/qGfIyE+IExFFJ4JXFvhrZeSmjg9AnjHKzRcXE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774625718; c=relaxed/simple;
+	bh=Jrp/2wp56x67hkVfNBaeKSMKdSDvbJ5thRxqGrKo4gY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ne8MDNs4ymYcwyO0jkgV580WxYllFWxTjCGEmbpTb7z5R37tCk70ex48jS+cmSbMjSH52EIVRSFsHpsf8LYMZ9GXN9TnEVXGBkrIX3LXrTGQ81M6tZbJsX/ZQy/tOSZ2JO0RfkFAcu6chDFvjZNfQNqfVdp1UcaKDVfoCm71+oY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=ioH9Egjw; arc=fail smtp.client-ip=40.93.198.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NSaKYma4"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ab46931cf1so25240685ad.0
-        for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 08:34:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774625642; x=1775230442; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=AcKc3gGZ7437lTSALjViPsBhwLBjsjChb2jRBX8x3t4=;
-        b=NSaKYma4SrUQRsed6+VM7Eii28cmz8lnhbxZHJnN45Lc1J/Z1AyDvWWdvwrRHpub/Y
-         +cR3mV7NixXMuI8FTyouXjkTzUSxVtVbnpoQQu5x/AiMXG9L6WXtoBa6nC9PqPN7qk7r
-         PxWBbCgb9rSNt389ZGH1XJBg/H4roY5UTXWar8x6DIcn5vKzyc6xg8qU7dxivN3knnkv
-         QrpWHur+gzhMNN/Z/pUFnXP4O6RuApTni1aBVGwvxppbj/84hKAsWh18iB9I68IQwDCd
-         k4w7I1VyEOSxyGE2jpCg1vIN/mY+8ag3sSENGhDnuIsARY0MiPp5g6kp2gLrbIckXRrd
-         53nQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774625642; x=1775230442;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AcKc3gGZ7437lTSALjViPsBhwLBjsjChb2jRBX8x3t4=;
-        b=eLaCxc7azzqy89ODqnmmTj5TNBqyzvFIkkRjX4ksjFnoHJqL1eO4Wrung3uKShKnno
-         ErJivkYtE47FaHSoD23rQNq82GbP1nbfil29GKQXAj5R5NuJtHH0ZCCS6mmmA2vtZFCd
-         3HQvfZ1rAxzg9HTRtQscu9IQHMIpa3PYWPAwWzcAcpY++p2S2+8il1mraAwrTB33IrqA
-         rh40TCNuyirr2Hmnos5u6+sPbDuGdj5yhOjJEgBRcjzChyqKxXQRhQWHn7nQ7IqhjRIt
-         U5jf0uqbmWtitYN7msSHTXNab2lyyQlTc859GuT6ntktoz7HIOXr+eW94M3++BW7+lKc
-         ZlQg==
-X-Gm-Message-State: AOJu0YyIPWtaN8rIvIXBZfKNiKRnjwCMxdDfpwUd9XnX/AkOJUN2Jhnl
-	YURz/qp9vvvFSdJIVeC/VZamdz3J3NNe+7nW7cuBCCtNKKwMzTGbediW
-X-Gm-Gg: ATEYQzzurjqbl3B3p1PN9IZV+uBt0kBRyJ3nPlGOJ4JUbExHIpqBW6eZpCnkktZkeAM
-	U8OtQbyn8iKlIwZjRn1wy3fukLTpjhgh+sWlvKDrkR3BZ5KpVRRApQjDS9vc2WFSgSm3kusQPu1
-	roQPP4fVevffWh/TeFP3wpqLzkiIZ4uGsmstiiQY5YUh0jnsPNijEpCTgIHo+Ibadt8MHBOqEB0
-	6fnOudNIzeXDPEzMDzLWeIwXDoEuarDu5KGsiWrVSxTVRDs5m8aSuDrAtDA2YfTD8Yf4sNeiH7H
-	BFOTGEDLwOY1szNQ7ZCSzv2sZJWTSCD0m6MIiGKbAw60ETdGBK6y+RjVOQp2AAVu1HpYJ9oRi6g
-	wh4+w45zaicGYFHp1mpXz/BqMg2BbAHfsrKQribxFBzKtR7NpS3BJ1odL1VhpXEmUiauxjImfqW
-	WT522LTVjzvNyifeAkGIvQSC5t+kE4MHgxLssk10a7omFT0CzOTNg9gs/feSk8HI20tQjAsZ0=
-X-Received: by 2002:a17:903:b83:b0:2ae:cd8c:bd04 with SMTP id d9443c01a7336-2b0c485870amr64696105ad.10.1774625642069;
-        Fri, 27 Mar 2026 08:34:02 -0700 (PDT)
-Received: from KERNELXING-MC1.tencent.com ([2408:8207:1924:8520:1049:edd4:9cef:b3b5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0bc76b936sm64108625ad.11.2026.03.27.08.33.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Mar 2026 08:34:01 -0700 (PDT)
-From: Jason Xing <kerneljasonxing@gmail.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	kuniyu@google.com,
-	stfomichev@gmail.com
-Cc: netdev@vger.kernel.org,
-	Jason Xing <kerneljasonxing@gmail.com>
-Subject: [PATCH v2 net-next] net: add sysctl to toggle napi_consume_skb() alien skb defer
-Date: Fri, 27 Mar 2026 23:33:47 +0800
-Message-Id: <20260327153347.98647-1-kerneljasonxing@gmail.com>
-X-Mailer: git-send-email 2.33.0
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="ioH9Egjw"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Qkf/l2MFRZX0nntt5gMLlVgYuK1QC6s0SrVJ4yW+btynLHUM3P5jW8N/wyhompSjKgm46/g2Vv1Yi79U+ePawHiFg2wIk5c8dz8saHG8edMUkKmcwWTkHyDr05HLyMF7ZvVRc91DtIW6yFjv9nSLmo+pFyludzf/z2rkQSV8Odq6+CcIOWVIfHUSn3SguNTUXskAM9GO0k7tI105R6YrkeCpYEjyKndUwd83Ve0tgRfAepa53F6A4RWWtIgL2ZyAFMMyk0xWJkP7pG2Cz1fl0kunqNx6hUy1Tv40uvM2QANmXuAvqGPqFr1HpEnJHL4+93496WCoy7y8sVpOAe3kYg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aQbiiPZi5KjP8T7xmL5GdxJO6DzjSGXHq0YZkbY+9Hw=;
+ b=giWPGaqoxf4RIRUONsAUbkVLdqEar2gXLn+/GyoE0XawkVmO2w+f8nsX34RhBT85EX1kFPrIvA9CH0XvYEN/fJFItYOM1PleyX/SH+6A/lj3NB6+2BAuKWVpTVBfN6XgeYrkibQ5p8eWlD3BcCGTyOOX8yFi/JmtQzjIPLwLP8YDEv7RYHCwZ+y7K8/MuWJtHiwRiIhpeXLqJDRR8n0tFe+aC74pLIIr2elohkOvjpBxryl1Wf1dz49j+2rkQu+Wfx9F7TlGb6zps4wc0E/Gk0z+WDQz6pkEHWPeDVkSSway0LL3ClbcrZPeySM4qyAs2ZUghu2YuMJrgdYNz7ek8w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microchip.com; dmarc=pass action=none
+ header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microchip.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aQbiiPZi5KjP8T7xmL5GdxJO6DzjSGXHq0YZkbY+9Hw=;
+ b=ioH9EgjwCP5UjkUeLOwczZYThN7se+KmsKBWFtn4SC2t2SK7tPrUhs8YOBCsmE4FBLLDrFMxUsuJGWJl0rhg7V7uxlvwTxRQaQYfgolffPYYn9cXWteJzM6Ezdb0KvLH1xlFzMfvEiiHCx8lJlxLHpquk17kzpRM7gPoIHFKhgjth4F/X+W7z7Fnxio+CsBzKyrQ3TyKeFayIiP4EzzCLWaaYeDIY/VV0wVOA4NqS48NfPkTtdLxmPDoOkgkMlAbvpIR8v6pMbPWsxriBwjqnvc377vvZ3EsksNiK7q9jdtZgmPL8gc0/XLPMe+rugGMYBv/6wM1ZIT0nd7C0KT7QA==
+Received: from CY5PR11MB6462.namprd11.prod.outlook.com (2603:10b6:930:32::10)
+ by PH8PR11MB7990.namprd11.prod.outlook.com (2603:10b6:510:259::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.6; Fri, 27 Mar
+ 2026 15:35:13 +0000
+Received: from CY5PR11MB6462.namprd11.prod.outlook.com
+ ([fe80::10d1:11dd:5088:7559]) by CY5PR11MB6462.namprd11.prod.outlook.com
+ ([fe80::10d1:11dd:5088:7559%5]) with mapi id 15.20.9769.004; Fri, 27 Mar 2026
+ 15:35:13 +0000
+From: <Prathosh.Satish@microchip.com>
+To: <ivecera@redhat.com>, <netdev@vger.kernel.org>
+CC: <arkadiusz.kubalewski@intel.com>, <jiri@resnulli.us>,
+	<mschmidt@redhat.com>, <poros@redhat.com>, <horms@kernel.org>,
+	<vadim.fedorenko@linux.dev>, <linux-kernel@vger.kernel.org>,
+	<conor+dt@kernel.org>, <krzk+dt@kernel.org>, <robh@kernel.org>,
+	<devicetree@vger.kernel.org>, <pvaanane@redhat.com>
+Subject: RE: [PATCH net-next 3/5] dpll: zl3073x: add ref sync and output clock
+ type helpers
+Thread-Topic: [PATCH net-next 3/5] dpll: zl3073x: add ref sync and output
+ clock type helpers
+Thread-Index: AQHct8iob6AD3G/6r0Sa4cekTHbRzbXCjsPg
+Date: Fri, 27 Mar 2026 15:35:13 +0000
+Message-ID:
+ <CY5PR11MB64621FF7F9F8E5EF85C7057EEC57A@CY5PR11MB6462.namprd11.prod.outlook.com>
+References: <20260319174826.7623-1-ivecera@redhat.com>
+ <20260319174826.7623-4-ivecera@redhat.com>
+In-Reply-To: <20260319174826.7623-4-ivecera@redhat.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microchip.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CY5PR11MB6462:EE_|PH8PR11MB7990:EE_
+x-ms-office365-filtering-correlation-id: c6f12b82-c778-4f7d-8226-08de8c167032
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|1800799024|376014|7416014|38070700021|22082099003|56012099003|18092099006|18002099003;
+x-microsoft-antispam-message-info:
+ 70uR41iM7pWG5iaxyiifcp3cXg1mmpAtfF8yLuo+yCIsh8xYO2+V33dNBkOAWMwX1m1GIQ6qNkNvu01HAfBi0d1KDVYV/or3qrjeqbjmc2I197YsFY0uXzPn762gcTF9s/yxwrkTeNptW9VORdfnscKePjOV8aQ/EvHHPNWiW+l8nOs6jJu6WYJBgpt2zSxWtJGvbQ6qg1VkHP8sspiJnhTCn/RYkA2t8ykA9C+oGpJWlpR+EgsIK5KsrFS9LXZ2VL4dpuaE8cEXzJ/ztw79/HTUC1l+4dhXRB3GgIq9kwOzT79GNXRnX3mvxTiFLwjAlrXe3hOdwtF9bEwr7oaZspR9RevKVsbErgJGbl/VI4XpGCEBGf0WJcTRXnTCfF4f2T+m4lA9LUxjTW4Do6k/eFQjPTbJVM8S19h0pXHceaBwAbS2gzXKvtySdnFZkeklP3CriB5WpVHzG5aiarn9wdszDb0mZvfkXVczfI7Qfnyj2K12T+qQsXQAEh1/A/NnvZMBfgDsmevy2aPQiPJamlzqn+RRGh6aRE6gXvbwBqt/HBfb2A/4t5NcvxFw51l8cdsj0EM1iwtfvvOw1CDk+xK07PB8B3bJfU2K6tp50KA8S/TO1Q7ThhcPmLjdvtXq+V2qj50rv16pj9d6q2SA7XZop3z1/dqBevTm8zK7C/axDryS0pfOsf9j5kLDI7FWcswMD1t57O1c5bcSWcZmdKEMSMiSCRyjk5vnRR0R3B6uX0o/oE49v5CVPjzOG5M4mZhNtbXXNb7QBC1hg+lK7NAx3oAENFfhUWAYFt6KsWg=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR11MB6462.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(38070700021)(22082099003)(56012099003)(18092099006)(18002099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?DNsoP6mqsPUL8LC3up+5qfm8kC8u0apDtfDyS5qSzvh9o9bOgUyQi8NQCdi3?=
+ =?us-ascii?Q?V0glrEgLvgBJLFGQ/7y6tLDRH6Ca/YDXTG9yg/csGHdUVmgnmcH3ajz8EF5h?=
+ =?us-ascii?Q?foqRCA468zvDeWt6vEQJ4wuy6LyXWAIJ2eUp9kKg6WHBjZFo3O4ljGsU050T?=
+ =?us-ascii?Q?YN4hBBMxb/17QqJPC2TVEOD96atNNtbiXLtgfvroBWrmZz2HhXtYOFJspYEC?=
+ =?us-ascii?Q?YcU6rgFDlLV5+LW7wLnyM0k5+Y/synvoyqXig/BRZSYalTFGyu8HGyt+L670?=
+ =?us-ascii?Q?PdNEjaYDhYh7RwdMWYBu6772qmhIkfGnxt1pA2FKWVjs7KgjlNYRZajENV5+?=
+ =?us-ascii?Q?LVFtL2ujGJEBVZ1gTQN2eNIOD8/EGLppYh/K57yOxI3NVWUYc0/wUmldpyIJ?=
+ =?us-ascii?Q?Ozh2rd7PlKOuQBd7dP14PjBBsEYjgG4/3UcjR6kxLnX1WuACCJfXQFL78Ytq?=
+ =?us-ascii?Q?DzII/hXKNSE2mFLjOOYKrqQAn83mRDdRMc4EToITITpYBSrpWCjtDBi1UYjC?=
+ =?us-ascii?Q?an2f9YQCJEMTlKuw/k4ewZNcW2nrsMXOv+NY1nM9ZfHE0fFAVrtfBI/hPZCt?=
+ =?us-ascii?Q?21i45CdN1ZQ0XEC8WtY67FmRCqjKoUuHUOiLEOJRN+LNwtOVwGhKGFtpcckk?=
+ =?us-ascii?Q?SQ8k+BcYp2M8UrNhEUGZvGyMYDhYhJqygYGrSO/KcZUT0HarP08PgnxpPIJ0?=
+ =?us-ascii?Q?xzv7VVog2dQnNqVuOyG/h9FZcvhhzNTDGWk4UlaiXQ+VaCnhT4C13qEjHGM1?=
+ =?us-ascii?Q?PQNYHcNxFfrGcyE/jGr4osWBWeVwMrGLT6dlUv3x9QJDcJnGN2TbLavn4T8p?=
+ =?us-ascii?Q?u4pu+Bhm5BEcGFPwSCjjXjY6iWaLM6PkiZl2qyST9gSgnpGAsr9FnoeB8nJ5?=
+ =?us-ascii?Q?83eaO7vBBhhVjsY1WWtdbG+8b/fJk4UDhgjYcQ/LVUN//rWu029kGIk3pt+4?=
+ =?us-ascii?Q?jCe2pC8Z+vnT3Erwt8wQ9x8OgaoOdJwB0he+2CDftNNbqX3GY2bCFPnAbTkI?=
+ =?us-ascii?Q?tTklWfoyR6ffE6ZYFTjTXnOeeNygpYVabvDDQRfYRGIzLtCK5Vc4OFCY22oA?=
+ =?us-ascii?Q?M25Frikc0l5JitVpIcsaVCbEvDtNjF3QbJdWQoxLUqMQb9GGFDKAQzmIWnBF?=
+ =?us-ascii?Q?LsWOgswVKJM5Gh0GsCBTYGAZf/G/kuc4T7C6CUjgFtSLa0T0xmQmlmjOOYin?=
+ =?us-ascii?Q?hSWyUijw68/c5ug5yJg3Tk4bvkwMmPzvtCfZc8QZDHWHYr9MEfxog4a9hcj3?=
+ =?us-ascii?Q?foYbMSu/j9hFwGrDtYsJGv89YArQwPqR78TrcqrCXpKZqYhAwcKgcuGpTewK?=
+ =?us-ascii?Q?+l8AhNS2XH7RnSy1j/1Kis4+E1NQEOQmRza3lvhHNdoQ1CjXztBfqYEy+ADY?=
+ =?us-ascii?Q?pXvp3vW+QxqieB5BpT4yiFoUKLG8oJbSgnAn645GwIgkIRo0whPcHa/456f7?=
+ =?us-ascii?Q?HNW+Dvemd39nklJEbQP5m2+8hToTpvEPu7uRzbUBjxPjmNi+UCZ4i+maiXiV?=
+ =?us-ascii?Q?EGXwp1trIWKBJx1F2L+6HdyMbRWFvTsnwVrEfgIZ8VXuXmI+3a19DX1OOcHX?=
+ =?us-ascii?Q?AcEIjdSB3OPaReiNUGCeL0Heq78tV4lWYEdPYhVvtrMZE2vL46Ha2CMwUKwb?=
+ =?us-ascii?Q?Fy4sZM0Y1x/sNGg++e7W3EvkziECX7110lmRgsfdZcEOJajUyeUZRr8F1DsL?=
+ =?us-ascii?Q?LZYFSOcFKpVwRduQy0cf3q1Ciqpcbtt62sNWMA+bjrWj1W/wkUuR7ZWu9+eh?=
+ =?us-ascii?Q?549tLMUIAAaraQt6h/9bM43mk5AFdfk=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: microchip.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6462.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c6f12b82-c778-4f7d-8226-08de8c167032
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Mar 2026 15:35:13.2429
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: iCv57QDuTO7xJufsFA0hwFJgGw3QIcFfcXxAS6yDSol0/koQ3u7LjH9WiYSl7KfL75A8WPH12F3pv2IPDmjR0Fvmskl2Iqi/8zNH+Rg87/Y=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB7990
 
-Commit e20dfbad8aab ("net: fix napi_consume_skb() with alien skbs")
-defers freeing of alien SKBs (alloc_cpu != current cpu) via
-skb_attempt_defer_free() on the TX completion path to reduce cross-NUMA
-SLUB spinlock contention to improve multi-queue UDP workloads.
+Reviewed-by: prathosh.satish@microchip.com
 
-However, this unconditionally impacts the napi_skb_cache fast recycle
-path for single-flow / few-flow workloads (e.g. AF_XDP benchmarks[1]):
-when the TX completion NAPI CPU differs from the SKB allocation CPU,
-SKBs are deferred instead of being returned to the local napi_skb_cache,
-forcing RX allocations back to the slow slab path.
+-----Original Message-----
+From: Ivan Vecera <ivecera@redhat.com>=20
+Sent: Thursday, March 19, 2026 5:48 PM
+To: netdev@vger.kernel.org
+Cc: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>; Jiri Pirko <jiri=
+@resnulli.us>; Michal Schmidt <mschmidt@redhat.com>; Petr Oros <poros@redha=
+t.com>; Prathosh Satish - M66066 <Prathosh.Satish@microchip.com>; Simon Hor=
+man <horms@kernel.org>; Vadim Fedorenko <vadim.fedorenko@linux.dev>; linux-=
+kernel@vger.kernel.org; Conor Dooley <conor+dt@kernel.org>; Krzysztof Kozlo=
+wski <krzk+dt@kernel.org>; Rob Herring <robh@kernel.org>; devicetree@vger.k=
+ernel.org; Pasi Vaananen <pvaanane@redhat.com>
+Subject: [PATCH net-next 3/5] dpll: zl3073x: add ref sync and output clock =
+type helpers
 
-The existing net.core.skb_defer_max=0 could disable this, but it is a
-global switch that also disables the defer mechanism in TCP/UDP/MPTCP
-recvmsg paths, losing its positive SLUB locality benefits there. AF_XDP
-can co-exist with other protocols. That's the reason why I gave up
-reusing skb_defer_disable_key. Besides, if the defer path is disabled,
-that means TCP/UDP/MPTCP in process path will trigger directly freeing
-skb with enabling/disabling bottom half(in kfree_skb_napi_cache())
-which could affect others. So my thinking is not to touch this path.
+EXTERNAL EMAIL: Do not click links or open attachments unless you know the =
+content is safe
 
-Add a dedicated sysctl net.core.napi_consume_skb_defer backed by a
-static key to selectively control the alien skb defer feature. Let
-users decide which is the best fit for their own requirements.
+Add ZL_REF_SYNC_CTRL_MODE_REFSYNC_PAIR and ZL_REF_SYNC_CTRL_PAIR register d=
+efinitions.
 
-This patch also avoids touching local_bh* pair(in kfree_skb_napi_cache())
-to minimize the overhead.
+Add inline helpers to get and set the sync control mode and sync pair field=
+s of the reference sync control register:
 
-[1]: taskset -c 0 ./xdpsock -i enp2s0f1 -q 1 -t -S -s 64
-1) sysctl -w net.core.napi_consume_skb_defer=1 (as default)
- sock0@enp2s0f1:1 txonly xdp-skb
-                   pps            pkts           1.00
-rx                 0              0
-tx                 1,851,950      20,397,952
+  zl3073x_ref_sync_mode_get/set() - ZL_REF_SYNC_CTRL_MODE field
+  zl3073x_ref_sync_pair_get/set() - ZL_REF_SYNC_CTRL_PAIR field
 
-2)sysctl -w net.core.napi_consume_skb_defer=0
- sock0@enp2s0f1:1 txonly xdp-skb
-                   pps            pkts           1.00
-rx                 0              0
-tx                 1,985,067      25,530,432
+Add inline helpers to get and set the clock type field of the output mode r=
+egister:
 
-For AF_XDP scenario, it turns out to be around 6.6% improvement.
+  zl3073x_out_clock_type_get/set() - ZL_OUTPUT_MODE_CLOCK_TYPE field
 
-Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
+Convert existing esync callbacks to use the new helpers.
+
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
 ---
-V2
-Link: https://lore.kernel.org/all/20260326144249.97213-1-kerneljasonxing@gmail.com/
-1. reuse proc_do_static_key() (Eric)
-2. add doc (Stan)
----
- Documentation/admin-guide/sysctl/net.rst | 13 +++++++++++++
- net/core/net-sysfs.h                     |  1 +
- net/core/skbuff.c                        |  5 ++++-
- net/core/sysctl_net_core.c               |  7 +++++++
- 4 files changed, 25 insertions(+), 1 deletion(-)
+ drivers/dpll/zl3073x/dpll.c | 24 ++++++++-----------  drivers/dpll/zl3073x=
+/out.h  | 22 ++++++++++++++++++  drivers/dpll/zl3073x/ref.h  | 46 +++++++++=
+++++++++++++++++++++++++++++
+ drivers/dpll/zl3073x/regs.h |  2 ++
+ 4 files changed, 80 insertions(+), 14 deletions(-)
 
-diff --git a/Documentation/admin-guide/sysctl/net.rst b/Documentation/admin-guide/sysctl/net.rst
-index 0724a793798f..42e06f93306f 100644
---- a/Documentation/admin-guide/sysctl/net.rst
-+++ b/Documentation/admin-guide/sysctl/net.rst
-@@ -368,6 +368,19 @@ by the cpu which allocated them.
- 
- Default: 128
- 
-+napi_consume_skb_defer
-+----------------------
-+When set to 1 (default), napi_consume_skb() defers freeing SKBs whose
-+allocation CPU differs from the current CPU via skb_attempt_defer_free().
-+This reduces cross-NUMA SLUB spinlock contention for multi-queue workloads.
+diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c inde=
+x 79ef62d69a32d..276f0a92db0b1 100644
+--- a/drivers/dpll/zl3073x/dpll.c
++++ b/drivers/dpll/zl3073x/dpll.c
+@@ -137,7 +137,7 @@ zl3073x_dpll_input_pin_esync_get(const struct dpll_pin =
+*dpll_pin,
+        esync->range =3D esync_freq_ranges;
+        esync->range_num =3D ARRAY_SIZE(esync_freq_ranges);
+
+-       switch (FIELD_GET(ZL_REF_SYNC_CTRL_MODE, ref->sync_ctrl)) {
++       switch (zl3073x_ref_sync_mode_get(ref)) {
+        case ZL_REF_SYNC_CTRL_MODE_50_50_ESYNC_25_75:
+                esync->freq =3D ref->esync_n_div =3D=3D ZL_REF_ESYNC_DIV_1H=
+Z ? 1 : 0;
+                esync->pulse =3D 25;
+@@ -173,8 +173,7 @@ zl3073x_dpll_input_pin_esync_set(const struct dpll_pin =
+*dpll_pin,
+        else
+                sync_mode =3D ZL_REF_SYNC_CTRL_MODE_50_50_ESYNC_25_75;
+
+-       ref.sync_ctrl &=3D ~ZL_REF_SYNC_CTRL_MODE;
+-       ref.sync_ctrl |=3D FIELD_PREP(ZL_REF_SYNC_CTRL_MODE, sync_mode);
++       zl3073x_ref_sync_mode_set(&ref, sync_mode);
+
+        if (freq) {
+                /* 1 Hz is only supported frequency now */ @@ -578,7 +577,7=
+ @@ zl3073x_dpll_output_pin_esync_get(const struct dpll_pin *dpll_pin,
+        const struct zl3073x_synth *synth;
+        const struct zl3073x_out *out;
+        u32 synth_freq, out_freq;
+-       u8 clock_type, out_id;
++       u8 out_id;
+
+        out_id =3D zl3073x_output_pin_out_get(pin->id);
+        out =3D zl3073x_out_state_get(zldev, out_id); @@ -601,8 +600,7 @@ z=
+l3073x_dpll_output_pin_esync_get(const struct dpll_pin *dpll_pin,
+        esync->range =3D esync_freq_ranges;
+        esync->range_num =3D ARRAY_SIZE(esync_freq_ranges);
+
+-       clock_type =3D FIELD_GET(ZL_OUTPUT_MODE_CLOCK_TYPE, out->mode);
+-       if (clock_type !=3D ZL_OUTPUT_MODE_CLOCK_TYPE_ESYNC) {
++       if (zl3073x_out_clock_type_get(out) !=3D=20
++ ZL_OUTPUT_MODE_CLOCK_TYPE_ESYNC) {
+                /* No need to read esync data if it is not enabled */
+                esync->freq =3D 0;
+                esync->pulse =3D 0;
+@@ -635,8 +633,8 @@ zl3073x_dpll_output_pin_esync_set(const struct dpll_pin=
+ *dpll_pin,
+        struct zl3073x_dpll_pin *pin =3D pin_priv;
+        const struct zl3073x_synth *synth;
+        struct zl3073x_out out;
+-       u8 clock_type, out_id;
+        u32 synth_freq;
++       u8 out_id;
+
+        out_id =3D zl3073x_output_pin_out_get(pin->id);
+        out =3D *zl3073x_out_state_get(zldev, out_id); @@ -648,15 +646,13 @=
+@ zl3073x_dpll_output_pin_esync_set(const struct dpll_pin *dpll_pin,
+        if (zl3073x_out_is_ndiv(&out))
+                return -EOPNOTSUPP;
+
+-       /* Select clock type */
++       /* Update clock type in output mode */
+        if (freq)
+-               clock_type =3D ZL_OUTPUT_MODE_CLOCK_TYPE_ESYNC;
++               zl3073x_out_clock_type_set(&out,
++                                         =20
++ ZL_OUTPUT_MODE_CLOCK_TYPE_ESYNC);
+        else
+-               clock_type =3D ZL_OUTPUT_MODE_CLOCK_TYPE_NORMAL;
+-
+-       /* Update clock type in output mode */
+-       out.mode &=3D ~ZL_OUTPUT_MODE_CLOCK_TYPE;
+-       out.mode |=3D FIELD_PREP(ZL_OUTPUT_MODE_CLOCK_TYPE, clock_type);
++               zl3073x_out_clock_type_set(&out,
++                                         =20
++ ZL_OUTPUT_MODE_CLOCK_TYPE_NORMAL);
+
+        /* If esync is being disabled just write mailbox and finish */
+        if (!freq)
+diff --git a/drivers/dpll/zl3073x/out.h b/drivers/dpll/zl3073x/out.h index =
+edf40432bba5f..660889c57bffa 100644
+--- a/drivers/dpll/zl3073x/out.h
++++ b/drivers/dpll/zl3073x/out.h
+@@ -42,6 +42,28 @@ const struct zl3073x_out *zl3073x_out_state_get(struct z=
+l3073x_dev *zldev,  int zl3073x_out_state_set(struct zl3073x_dev *zldev, u8=
+ index,
+                          const struct zl3073x_out *out);
+
++/**
++ * zl3073x_out_clock_type_get - get output clock type
++ * @out: pointer to out state
++ *
++ * Return: clock type of given output (ZL_OUTPUT_MODE_CLOCK_TYPE_*)  */=20
++static inline u8 zl3073x_out_clock_type_get(const struct zl3073x_out=20
++*out) {
++       return FIELD_GET(ZL_OUTPUT_MODE_CLOCK_TYPE, out->mode); }
 +
-+Setting this to 0 disables the defer path in napi_consume_skb() only,
-+allowing SKBs to be returned to the local napi_skb_cache immediately.
-+This can benefit single-flow or few-flow workloads (e.g. AF_XDP TX)
-+where the defer detour hurts the fast recycle path.
++/**
++ * zl3073x_out_clock_type_set - set output clock type
++ * @out: pointer to out state
++ * @type: clock type (ZL_OUTPUT_MODE_CLOCK_TYPE_*)  */ static inline=20
++void zl3073x_out_clock_type_set(struct zl3073x_out *out, u8 type) {
++       FIELD_MODIFY(ZL_OUTPUT_MODE_CLOCK_TYPE, &out->mode, type); }
 +
-+Default: 1
-+
- optmem_max
- ----------
- 
-diff --git a/net/core/net-sysfs.h b/net/core/net-sysfs.h
-index 38e2e3ffd0bd..a026f757867e 100644
---- a/net/core/net-sysfs.h
-+++ b/net/core/net-sysfs.h
-@@ -14,4 +14,5 @@ int netdev_change_owner(struct net_device *, const struct net *net_old,
- extern struct mutex rps_default_mask_mutex;
- 
- DECLARE_STATIC_KEY_FALSE(skb_defer_disable_key);
-+DECLARE_STATIC_KEY_TRUE(napi_consume_skb_defer_key);
- #endif
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 3d6978dd0aa8..3db90a9aa61d 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -94,6 +94,7 @@
- 
- #include "dev.h"
- #include "devmem.h"
-+#include "net-sysfs.h"
- #include "netmem_priv.h"
- #include "sock_destructor.h"
- 
-@@ -1519,7 +1520,8 @@ void napi_consume_skb(struct sk_buff *skb, int budget)
- 
- 	DEBUG_NET_WARN_ON_ONCE(!in_softirq());
- 
--	if (skb->alloc_cpu != smp_processor_id() && !skb_shared(skb)) {
-+	if (static_branch_likely(&napi_consume_skb_defer_key) &&
-+	    skb->alloc_cpu != smp_processor_id() && !skb_shared(skb)) {
- 		skb_release_head_state(skb);
- 		return skb_attempt_defer_free(skb);
- 	}
-@@ -7257,6 +7259,7 @@ static void kfree_skb_napi_cache(struct sk_buff *skb)
- }
- 
- DEFINE_STATIC_KEY_FALSE(skb_defer_disable_key);
-+DEFINE_STATIC_KEY_TRUE(napi_consume_skb_defer_key);
- 
  /**
-  * skb_attempt_defer_free - queue skb for remote freeing
-diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
-index b508618bfc12..e85ce10afa1f 100644
---- a/net/core/sysctl_net_core.c
-+++ b/net/core/sysctl_net_core.c
-@@ -676,6 +676,13 @@ static struct ctl_table net_core_table[] = {
- 		.proc_handler	= proc_do_skb_defer_max,
- 		.extra1		= SYSCTL_ZERO,
- 	},
-+	{
-+		.procname	= "napi_consume_skb_defer",
-+		.data		= &napi_consume_skb_defer_key.key,
-+		.maxlen		= sizeof(napi_consume_skb_defer_key),
-+		.mode		= 0644,
-+		.proc_handler	= proc_do_static_key,
-+	},
- };
- 
- static struct ctl_table netns_core_table[] = {
--- 
-2.41.3
+  * zl3073x_out_signal_format_get - get output signal format
+  * @out: pointer to out state
+diff --git a/drivers/dpll/zl3073x/ref.h b/drivers/dpll/zl3073x/ref.h index =
+06d8d4d97ea26..09fab97a71d7e 100644
+--- a/drivers/dpll/zl3073x/ref.h
++++ b/drivers/dpll/zl3073x/ref.h
+@@ -106,6 +106,52 @@ zl3073x_ref_freq_set(struct zl3073x_ref *ref, u32 freq=
+)
+        return 0;
+ }
+
++/**
++ * zl3073x_ref_sync_mode_get - get sync control mode
++ * @ref: pointer to ref state
++ *
++ * Return: sync control mode (ZL_REF_SYNC_CTRL_MODE_*)  */ static=20
++inline u8 zl3073x_ref_sync_mode_get(const struct zl3073x_ref *ref) {
++       return FIELD_GET(ZL_REF_SYNC_CTRL_MODE, ref->sync_ctrl); }
++
++/**
++ * zl3073x_ref_sync_mode_set - set sync control mode
++ * @ref: pointer to ref state
++ * @mode: sync control mode (ZL_REF_SYNC_CTRL_MODE_*)  */ static inline=20
++void zl3073x_ref_sync_mode_set(struct zl3073x_ref *ref, u8 mode) {
++       FIELD_MODIFY(ZL_REF_SYNC_CTRL_MODE, &ref->sync_ctrl, mode); }
++
++/**
++ * zl3073x_ref_sync_pair_get - get sync pair reference index
++ * @ref: pointer to ref state
++ *
++ * Return: paired reference index
++ */
++static inline u8
++zl3073x_ref_sync_pair_get(const struct zl3073x_ref *ref) {
++       return FIELD_GET(ZL_REF_SYNC_CTRL_PAIR, ref->sync_ctrl); }
++
++/**
++ * zl3073x_ref_sync_pair_set - set sync pair reference index
++ * @ref: pointer to ref state
++ * @pair: paired reference index
++ */
++static inline void
++zl3073x_ref_sync_pair_set(struct zl3073x_ref *ref, u8 pair) {
++       FIELD_MODIFY(ZL_REF_SYNC_CTRL_PAIR, &ref->sync_ctrl, pair); }
++
+ /**
+  * zl3073x_ref_is_diff - check if the given input reference is differentia=
+l
+  * @ref: pointer to ref state
+diff --git a/drivers/dpll/zl3073x/regs.h b/drivers/dpll/zl3073x/regs.h inde=
+x 5ae50cb761a97..d425dc67250fe 100644
+--- a/drivers/dpll/zl3073x/regs.h
++++ b/drivers/dpll/zl3073x/regs.h
+@@ -213,7 +213,9 @@
+ #define ZL_REG_REF_SYNC_CTRL                   ZL_REG(10, 0x2e, 1)
+ #define ZL_REF_SYNC_CTRL_MODE                  GENMASK(2, 0)
+ #define ZL_REF_SYNC_CTRL_MODE_REFSYNC_PAIR_OFF 0
++#define ZL_REF_SYNC_CTRL_MODE_REFSYNC_PAIR     1
+ #define ZL_REF_SYNC_CTRL_MODE_50_50_ESYNC_25_75        2
++#define ZL_REF_SYNC_CTRL_PAIR                  GENMASK(7, 4)
+
+ #define ZL_REG_REF_ESYNC_DIV                   ZL_REG(10, 0x30, 4)
+ #define ZL_REF_ESYNC_DIV_1HZ                   0
+--
+2.52.0
 
