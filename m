@@ -1,417 +1,252 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3EF433ADA7
-	for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 10:34:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774607674; cv=none; b=LiG27aQUHPGybtCiP1iIHj5pRAbc3EwiiAzRI2jKX0oGQEz2TACpyEVR9CLT9sBpsSXeDA4imjcYPXYgcghgYCrfdDNhtkFP4aDQOzyJfOTi9/Dkik3s27cc1hjISJuWL7rjPQAlgsYspJ7zIZ63Hd/5ku1MbQWCxMMIzBqoTIc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774607674; c=relaxed/simple;
-	bh=BCw/Xc+yPQOPqxvqPfk22LM6xF38n2ci3+5e8iEcT1o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F1+0xv0Dqe+JJ+Gbme2emeFO+b9rmL/FcboRYNloDi+J1UM7Mc0m+mUwiKbUUs5pzt6vAEq7yo3kxHLVBx1MsvApwlx9q6gFZfBZ/m7vbUy+ULmRzws84BK/ebKRpusRvmJiYQLO89JS+Ess+Vb7Ppy69eYIP2OJn6orp2px3L0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OpmwWsts; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Mg3HBhMS; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CCB3DEAE8;
+	Fri, 27 Mar 2026 10:37:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774607861; cv=fail; b=r71RqO9rkELjbVQdAb9nTLxtQRf0lA2NR2VcgUYwrYS7l0mnEYiJGN4Vcaaa+pfwwglzRTzxpK28xFn48Sn5+6vvZDaxFXlCnCSq8VK9lzwuKhrYcEwMcZytm//8/oSIAd4bzEcgV6IrbABDiV0JuXZyulqSzICUnElqaXbfmRM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774607861; c=relaxed/simple;
+	bh=cJuzKl0+ar/wseQsimOk/vi4H8JNYz9OUVu+RmlNoMA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=L9Q6BqrNIrtUvYNKgpsnDDqkNpDhN2UIy8vHba7NCE+OV7g9SAtuB/JxwtoXHk/qyIxk7HAzAlrqZS9SpjilCrGhSnRL4FlzOMFx4ZTJDqi2jYDKEK0CTxK2M5In9GBCmUvSpVdhCSe7qqWy7pL6Wm9wj6Z1pnq7iTGGtf+Ldn4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RWVh0dtQ; arc=fail smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OpmwWsts";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Mg3HBhMS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774607672;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9DVZ0ZiCH5gLAQgROkR7a+AA1Jb2BcwfjDddpxmGZHU=;
-	b=OpmwWstsHZWDdF8KpPSAgBffNDl0sDJMzITa0DiZFi0Bk/h3AYc94Cj8muY7P2lo3djQEx
-	1725QbmgjDGe9PNl7dQs5XDhnZCd2si0T3Gvapynqf7QAmqA0OCxeOfHecDAjWtV1LP7xl
-	B/RzB8x6NhfdVCwcZ6hc2Rrk+oOu5ms=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-407-K4-584lrOuaDQwTgmBOaig-1; Fri, 27 Mar 2026 06:34:30 -0400
-X-MC-Unique: K4-584lrOuaDQwTgmBOaig-1
-X-Mimecast-MFC-AGG-ID: K4-584lrOuaDQwTgmBOaig_1774607669
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-486fb142205so24763605e9.1
-        for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 03:34:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1774607669; x=1775212469; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9DVZ0ZiCH5gLAQgROkR7a+AA1Jb2BcwfjDddpxmGZHU=;
-        b=Mg3HBhMSafW1oZKQLv7JLuMYm/Zn9EoVgIgOica1fTsYht5G43xp+PQVEpZcDnbkEc
-         UrbKDAz96T2jM041we/gGovGKVfVFe6GBeqDLqdw5RpE59WDqwY6CwT2lcZzEHKurdS5
-         mW6d5AKQ0/hYHHxTigDebTwSFZBMP+XArLS5hN/SbVl4vYoG0RP98qwxBGFC4HEOFBJ9
-         u2D2L5A3Lq0iSvHpkDw7sVWOJaLTZ/7okAafKoNzsZ6joLhstjBrea6Z2qIGn6xft+OB
-         WyuLVUfayT62wzD8FHBs4zxgpY1HAMuvdWiMUFQEewxLs6riTo/6AxxDmV0bwwub0wbf
-         5hCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774607669; x=1775212469;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9DVZ0ZiCH5gLAQgROkR7a+AA1Jb2BcwfjDddpxmGZHU=;
-        b=qOwwd1eiO0tNd8md9lc5GZXqtb1qxsRB1mHQYKNubCaxFzdiPu8X8hfiYZNhxU4ElU
-         tge0tVY4Vk/gd9ySF60vVKb2GRiXD7vK7a7idcJZ1z1xKukId3Tar8dKQtwPYX7BX77L
-         1lXcW0hoVabTheDA4eIuTMeyQVBDW8hZjyvSZFxUXLazfu69ze9nmTJJrP+YahJxdjB2
-         3IAIEcjroAxjurF1kDSLlSornfH70ABxd+wZh4hRjh8cLqtG7am3aPssBgAuMPKR6aeM
-         3nV8tWC4jRkpQM0go1Z+FkjkHZct4DlK/YOBoM9u+WyIbA7jDdOrdQeUM57eWQy0K+Re
-         V/WQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVpIzKJt/VTN8GX7Bi+Y+EvIuA5TRtVAa74FedbEzIqISLIQ3OlwAm3aOWdD7XGgjHcVFdAvdU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXGsWUvWKz/kwCVQrcB0zhTMgi1/ktK60/2Jl5ZfasZVtWxIiX
-	X5l51ClOF3Ad1EQ3DnBJuNuLCLlAEKYS+t2R72hgqIqG+MbFvLwhU83uGcD52QsPv95wpZ7e9zd
-	+BSW9n7W/LpM8KTb2aH0/nI84t/EXignl3eRW9rnS3uWRTPvBgdaLdugShQ==
-X-Gm-Gg: ATEYQzzCcd8lnS6i089AGkpuqqL+oJVpL1DipaC38DZLrFlRVmTirwETBwJKT9qz0kH
-	/yXPbecNds9OlBB018kcPNN5k5ACuqpg1JA9ePj7G0mAbr6aNef+f5jXdTTSfO5aBN4CrSbf1IL
-	JtplcGGBAnDZpcN2+QUnbs/v3vmBVNo94LDTTM/pMc8EErJyuzk+OxZQnJMwX7bMuiC6WSGR8od
-	M9ivCPjdxdqHSY5mUCINTFzGGvWDla58AYubiwTIvICSfgfGKd1K3zNtgSe5tTBNZ5n/ec3/+yA
-	vTdue2BtavZshVV5khHnJnCoVCbkZSZ1MrBF7W9fkhErUyAEBbk2X3XPMUfbBI6Rs++TlxsZdaA
-	Nh6EanqZ1XvpXekooH9y6
-X-Received: by 2002:a05:600c:a010:b0:485:ae14:8192 with SMTP id 5b1f17b1804b1-48727d4588cmr33714685e9.7.1774607669048;
-        Fri, 27 Mar 2026 03:34:29 -0700 (PDT)
-X-Received: by 2002:a05:600c:a010:b0:485:ae14:8192 with SMTP id 5b1f17b1804b1-48727d4588cmr33713955e9.7.1774607668538;
-        Fri, 27 Mar 2026 03:34:28 -0700 (PDT)
-Received: from [192.168.2.83] ([46.175.183.46])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48722c65989sm139918865e9.2.2026.03.27.03.34.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Mar 2026 03:34:27 -0700 (PDT)
-Message-ID: <416f5f4f-93a8-41f7-93f5-fdf1fc0f7768@redhat.com>
-Date: Fri, 27 Mar 2026 11:34:25 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RWVh0dtQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774607855; x=1806143855;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=cJuzKl0+ar/wseQsimOk/vi4H8JNYz9OUVu+RmlNoMA=;
+  b=RWVh0dtQI9/Ex5JuZusw6KMLzdzsoFsG8uyKIv+smEefm6ZvNAkKTvBa
+   J+ijqdB2gOJFpbQ3vzWN83elJxr40RTDV41xcMHlIviQ5c/wlTviMdpq1
+   KI2Ti+ohVz5Udd6cMvzRD0X0It3eUz9kd+LBQMvjXQ2XEeiwDLVPsNnht
+   wUMUfkg6HJKwNWU0Ek48sNwIckPMi81STcCg96+cVR9T3QsbOuvqcacBy
+   5Eh/M3ejBmtkQAZ77HC86gfgpWbJvx1H0EqcCWovT99AAUoPEGwExAcnZ
+   Son2qaMNDzGPoQ/avwACc2C/nFRPuk7mX2vjYW1nFEmZz0JBaS5bC9Dje
+   Q==;
+X-CSE-ConnectionGUID: 7k9mMqjWQhakIkzAkZenIw==
+X-CSE-MsgGUID: V8YdL9U2Q5yNags9gda5Cg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="93260097"
+X-IronPort-AV: E=Sophos;i="6.23,144,1770624000"; 
+   d="scan'208";a="93260097"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 03:37:32 -0700
+X-CSE-ConnectionGUID: 7aAlPfJQT2iOhqa5UlgxWQ==
+X-CSE-MsgGUID: hF+h7UHEQnGiOic8oo2tkQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,144,1770624000"; 
+   d="scan'208";a="263220149"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 03:37:31 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Fri, 27 Mar 2026 03:37:29 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Fri, 27 Mar 2026 03:37:29 -0700
+Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.21) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Fri, 27 Mar 2026 03:37:28 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=khN2jXhSHmXvIyIFEUZeUoAbeZIa8JyezgBVrsBvUosG3G1VkjpLsLmTFQiGcnFNPISoHNozVJl0wrc8qb1pteoZv2qBXhUeh3v1RAxJRZopwHs9LOdGsIfEnTpFDzWm2v6nAml8wMT1DW/+Ony+UVZcY1i4Bd6rBoAa1owgOp8DOc7GTW/Brwb1QuqJclpfl+rF6j5o2reR3+A7nrWV/Sr7UtzfYpr8AW7nlRtWQ59BL6BlsBkil52PKhXv7wHXQWvng7RFRFJbAbBpNivp+fv3t09dYH8ze0fpTECTFQlyIYXSkr2PtJK4o+K25FQAXFGQlYPcDMSVfCPo1UPn5g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XAjTLOLgJOw7s+GLhKvyawS6rx4EGrpQ+QcVxzU6YHw=;
+ b=CKdtKl+qsJE7xSe0PZPi3OCBktHIh4L0CmDfGmzrUjBJhHcBgSu/AQc6TPXsb9mEwIpvUlHnjEpVBf9ymEVLiemFEENm6ysF9Xv//0K3YXPKZpo0bkbUN0Mj2k+2W3L3OkltjWHzqiprmRiyr0yg6mZXDa1uk7tL3vfyKH63SNy8W2bVOGHT+A0A3VzkuApQ3URq0TyPdHbfwfWHd0ZalP9PALq+23aulr8Y0trdPYFGXSFR6EHp5t8Dsh6kpZ0romdYBMsyNloLX6HJp760DMBGYq4eVEGEUZOK9KYPNhNp41ufu/Y1fRP0uxLLHlLOHKmzfcrTh9BCC9RrV8U/Ow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA3PR11MB8985.namprd11.prod.outlook.com (2603:10b6:208:575::17)
+ by PH3PPFCE69B97EC.namprd11.prod.outlook.com (2603:10b6:518:1::d4d) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.7; Fri, 27 Mar
+ 2026 10:37:24 +0000
+Received: from IA3PR11MB8985.namprd11.prod.outlook.com
+ ([fe80::355c:96ca:a45:dd5d]) by IA3PR11MB8985.namprd11.prod.outlook.com
+ ([fe80::355c:96ca:a45:dd5d%5]) with mapi id 15.20.9745.012; Fri, 27 Mar 2026
+ 10:37:24 +0000
+From: "Romanowski, Rafal" <rafal.romanowski@intel.com>
+To: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>, Yury Norov
+	<ynorov@nvidia.com>, "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, "David
+ S. Miller" <davem@davemloft.net>, =?iso-8859-1?Q?Thomas_Hellstr=F6m?=
+	<thomas.hellstrom@linux.intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	Andrew Morton <akpm@linux-foundation.org>, David Airlie <airlied@gmail.com>,
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, "Brost,
+ Matthew" <matthew.brost@intel.com>, Paolo Abeni <pabeni@redhat.com>,
+	"Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>, "Vivi, Rodrigo"
+	<rodrigo.vivi@intel.com>, Simona Vetter <simona@ffwll.ch>, Yury Norov
+	<yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	"intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
+CC: Simon Horman <horms@kernel.org>, David Laight
+	<david.laight.linux@gmail.com>
+Subject: RE: [Intel-wired-lan] [PATCH v2 3/4] ice: use bitmap_empty() in
+ ice_vf_has_no_qs_ena
+Thread-Topic: [Intel-wired-lan] [PATCH v2 3/4] ice: use bitmap_empty() in
+ ice_vf_has_no_qs_ena
+Thread-Index: AQHcqeGn7rJVzSnEMEiMvYocEfzYx7Wa1JKAgCeC+hA=
+Date: Fri, 27 Mar 2026 10:37:24 +0000
+Message-ID: <IA3PR11MB89858BFD62FDC8DAF0B548658F57A@IA3PR11MB8985.namprd11.prod.outlook.com>
+References: <20260302011159.61778-1-ynorov@nvidia.com>
+ <20260302011159.61778-4-ynorov@nvidia.com>
+ <IA3PR11MB8986F3692384856A06EACA7DE57EA@IA3PR11MB8986.namprd11.prod.outlook.com>
+In-Reply-To: <IA3PR11MB8986F3692384856A06EACA7DE57EA@IA3PR11MB8986.namprd11.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA3PR11MB8985:EE_|PH3PPFCE69B97EC:EE_
+x-ms-office365-filtering-correlation-id: 44bf339b-f3b9-4cee-4327-08de8becd58f
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014|921020|38070700021|56012099003|22082099003|18002099003;
+x-microsoft-antispam-message-info: PoovDwqz8RgfF7zPkGysteea0/Wu9rc3bIS0aWAkmNoqMM84kVTL4DzF4x5ab74Dnt/A19XfwOHDa/v1nV1ihvUpKznIKIpsLKXRa61zDpMSECKIMe+mT+CQkoFBfeWIcQW4SdFydKeqGIdHrLzT8PxR19mpob6pCPjGGA8yGyEsilsSdUfcHpf3Jr/BgkxnIJjiK36yotA8jXR062Ja2oTmO4wr8TTIKO5l3nprCQYsvHSlzb/2/QNCw0l3w/flOy4MJB3nqXEgED0905OGaPpdNVNMoKi9alyKoBqmE9vWVryK9eEm8CRLE3RVnBitO80aS2+rQUNe2i8ynjJENVOjolpm+wbaQLmwY39qaTFx78l5h10iUQrO7Ct13DRXS5EvzRehOvzfqOkzZrgmlAfRyfwsJ1vYyUY7Aw57ttAwp7fYxtnq0CfRsopCfuSJF2iD8r9rAEJAJOBttOw5d0ASTJ6/dgMcMalQIyOZl6O9ac3+flSuwtQ5Or/EsfK+9f/+xs6UVCxqsdkgl9My4yDfNOT+vVuNFU4PVreEgQUHnrF0G1QYh346zzvwjdbSItQNS4C3rdZOcDsBi0kFOiKU9kOfTmcv482Qg//IPQ9ADOg0qtqQ9Nv5R3Hq4dJHi1V4j3TZ7ZpTDqNCYtpnPCFR5RTC1DrIDy5ABmC9DEwIAhgY/czYiykxEhk/KoctUCrI8MSQA/PUm+lNuM29f+SFgFv4Gl0TZMk3zl+PkLp3R69IE5tcHK47oB+d+gXEtNfIvBvR2a6LtGUo9j30CECFrFK31jmDI+2KdNeN3iVACHVUiVYghgk5ghndr5fH
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8985.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(921020)(38070700021)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?e5K7U0rOQGysBDs54qLlpMl8PKyR2Cufp8rAjUywtBuiF0WhlwkyLKLW/P?=
+ =?iso-8859-1?Q?Rn+vYSkXGWZP3ztVRW4tETKM1iOfUeaJw0WSTWCDhob37c2PE3ay2kUGuC?=
+ =?iso-8859-1?Q?FSuxyZzabp3nBE98LQMHSijkX6h4/BSVVf0Az/JTNZvF6UBZf/k+Zu7Bzo?=
+ =?iso-8859-1?Q?SIdI9W2miCYJCDtJ9KSlU4dltT1YbZDwsIYa/BloBeL3mofepVNny/sBdy?=
+ =?iso-8859-1?Q?KHjNjvY7ylY4qRjWv0YnwSRwKt+pSab9LWRCi1pDDtlylRGhYBCT1gF0ZU?=
+ =?iso-8859-1?Q?S5V9FTi2T/JwNG+qMqtkYpyiETYqCCMgj+uFQCTUlbtXqRlh21xDKbxj89?=
+ =?iso-8859-1?Q?34w2t4eE/A63r2uLg+2o7k4z2Evsrb6ZqgWmPbnOD9FPuPU4OjaOI87LXm?=
+ =?iso-8859-1?Q?1MnXfeBQWU3UhfnUrcc7wJoLAf257cbYKmhIqi6pLzpgBZO1RlKE8nDCm2?=
+ =?iso-8859-1?Q?5pOAD5gWfBeQy7CelIxKnV/7iGitHl0C0emdtKihGit774Ogg6kH3zAbRS?=
+ =?iso-8859-1?Q?oVv7+v1W6RPszkg+Tm1ao8PX8Bk9+Gzy0E3Q7zsCxYrJokqfR/nHMQf6dW?=
+ =?iso-8859-1?Q?aWaZTE/yt61tNahqiAA5GoLXwPmY2ymyxpePsWxHwLmcJTjYmdJvmcSSXY?=
+ =?iso-8859-1?Q?M5muXmv3BWlzOMZ8SeCaD5koUNsw8V6AJTDPbbGL0HWnGtKZuHZ3b/qPTX?=
+ =?iso-8859-1?Q?Gr1J/loHsYHDLpo64UgBwnDC+cn4iD34DA0Pf1OqWT0DVUUDnn3NJ5i0ll?=
+ =?iso-8859-1?Q?MRg51ReuXUzFoqS9MlxKHDIVGafJ6PWRMOqqH3Czys0B/nlxSM5wTOjHkH?=
+ =?iso-8859-1?Q?6MahEN0U3O++n2kFHqJulfo4SZKvurQLYb20eUfTGag7CnGVsZce7bxv3C?=
+ =?iso-8859-1?Q?mrMhOoW/Bd5vl1sF+Ser7mDhGp5mOFjNe40GjNa9zeTejUU3QCehXGRbnp?=
+ =?iso-8859-1?Q?4Qy4Vl8pcrRtgvMpEqNch0YODTLcmhH9Yn6X+qf+jVRO4Jo6vrwgN6RYb5?=
+ =?iso-8859-1?Q?nI0MgqK3WcioChO50PK6g5l1al5p06UlKbVqBEaKriKC+JySqfrbr4BM4h?=
+ =?iso-8859-1?Q?gbeTqCqButQnQkgzUVnISxXRkjtSVniuTLs6WguUApdlxyNVLl/1eSLik+?=
+ =?iso-8859-1?Q?lBT6knF/nnzZw1qI+nqHhdDI+QacrUXxzuCZ9LvEhqFFzbizkLONEK5tPp?=
+ =?iso-8859-1?Q?fXQiF5n5N1BMlxSH+axZSvHOzraIvGmOmQGHH7HLyGquijn7OcymgcN3hl?=
+ =?iso-8859-1?Q?9GF/htAg5hdVvOBpk4VcRoFverbqkm14ukAzNRjfDzZvPXFMtoHX1r9VQV?=
+ =?iso-8859-1?Q?wXoDQk+LfoiQG1bnHc9sFlB7NDmpxY0YVmaO4DELjPpF93uZtrHgKUS/Gx?=
+ =?iso-8859-1?Q?IwKpwNtbQL9QrYJtfO+Xvdvi/QrCXHORTnXc9N7d9L8W+7m2V5RxIYqhqP?=
+ =?iso-8859-1?Q?DE2xpKYJLMrQs2/w/umwmJt4y6una2BJsaK6EIVnvDgAcNbwf31oglEE6n?=
+ =?iso-8859-1?Q?yVL3KXx8RpRbiTyTe7fThE9x1bdAPossikZ6eH9CakoEWMiz+/x2E4BJlX?=
+ =?iso-8859-1?Q?a6FPIK9jU/QD3nsVfq/yvQO6vxAn88ngs8GiRvR02Rs/YGsGYx9QG+ubC7?=
+ =?iso-8859-1?Q?NE6BzwEIzRDw8MuqN7s92fTLzD1brOeq/cDDb3hNDgBr8q+khUdcXsUEWG?=
+ =?iso-8859-1?Q?Abvbzezzc+pqWsn+iBHMnoQ4kWCUILmGUup0TtZdfthvAEyBGhAvZXA3Wm?=
+ =?iso-8859-1?Q?7upNHSnfCX7q6j/CVl7mGUjEhMmsqDGHGE6Mbs3d3Vq82Oxg/X0HgJZ7Bh?=
+ =?iso-8859-1?Q?FB9UR+xMoQ=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 5/5] dpll: zl3073x: add ref-sync pair support
-To: Ivan Vecera <ivecera@redhat.com>, netdev@vger.kernel.org
-Cc: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- Jiri Pirko <jiri@resnulli.us>, Michal Schmidt <mschmidt@redhat.com>,
- Prathosh Satish <Prathosh.Satish@microchip.com>,
- Simon Horman <horms@kernel.org>, Vadim Fedorenko
- <vadim.fedorenko@linux.dev>, linux-kernel@vger.kernel.org,
- Conor Dooley <conor+dt@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Rob Herring <robh@kernel.org>,
- devicetree@vger.kernel.org, Pasi Vaananen <pvaanane@redhat.com>
-References: <20260319174826.7623-1-ivecera@redhat.com>
- <20260319174826.7623-6-ivecera@redhat.com>
-Content-Language: en-US
-From: Petr Oros <poros@redhat.com>
-In-Reply-To: <20260319174826.7623-6-ivecera@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-Exchange-RoutingPolicyChecked: vMSVc6ItyDJZLZJQ1qCZwRrw4T72tMdtKvW7Rq+bYIjvFjlrAY+0itGaIqUAHPbbRNKZ2Oo+4RsTYum3/vLJLkdrHNaGaY5/SFm7KbtEm/YCUjSrn3eQwCqoSKaHB+e1vLCxB4QWKSCoiBHQtlDxIgvsbCex76ogc4RvEZC0d6n4efpSYJZxI8+hqeXIzzzpJe/mRYKCL+iVOTbfHHzngDtaEqnDB8OvnP6Ta5g268Zyblqzgm0iK2zq4CdIKnTVyZheRUJFvdk4IIeQR8srCAwZA3sGFyioDF+DaGgE5ui7x5A8pX39gtKSBTYa1oqbyRRbXtwYypJS8vfo0YjplA==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8985.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 44bf339b-f3b9-4cee-4327-08de8becd58f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Mar 2026 10:37:24.4322
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: AEb5yRsNleaGke42Zg7NzKWdr8JPLyycKzlGzZf+DLA3cVqrXFvMTOrLb7+arf/QGV31IHYhPCA0UhPg7y76whiD+SuqKnoRBFL0BoXuByI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH3PPFCE69B97EC
+X-OriginatorOrg: intel.com
 
-> Add support for ref-sync pair registration using the 'ref-sync-sources'
-> phandle property from device tree. A ref-sync pair consists of a clock
-> reference and a low-frequency sync signal where the DPLL locks to the
-> clock reference but phase-aligns to the sync reference.
->
-> The implementation:
-> - Stores fwnode handle in zl3073x_dpll_pin during pin registration
-> - Adds ref_sync_get/set callbacks to read and write the sync control
->    mode and pair registers
-> - Validates ref-sync frequency constraints: sync signal must be 8 kHz
->    or less, clock reference must be 1 kHz or more and higher than sync
-> - Excludes sync source from automatic reference selection by setting
->    its priority to NONE on connect; on disconnect the priority is left
->    as NONE and the user must explicitly make the pin selectable again
-> - Iterates ref-sync-sources phandles to register declared pairings
->    via dpll_pin_ref_sync_pair_add()
->
-> Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-> ---
->   drivers/dpll/zl3073x/dpll.c | 207 +++++++++++++++++++++++++++++++++++-
->   1 file changed, 206 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
-> index 276f0a92db0b1..8010e2635f641 100644
-> --- a/drivers/dpll/zl3073x/dpll.c
-> +++ b/drivers/dpll/zl3073x/dpll.c
-> @@ -13,6 +13,7 @@
->   #include <linux/module.h>
->   #include <linux/netlink.h>
->   #include <linux/platform_device.h>
-> +#include <linux/property.h>
->   #include <linux/slab.h>
->   #include <linux/sprintf.h>
->   
-> @@ -30,6 +31,7 @@
->    * @dpll: DPLL the pin is registered to
->    * @dpll_pin: pointer to registered dpll_pin
->    * @tracker: tracking object for the acquired reference
-> + * @fwnode: firmware node handle
->    * @label: package label
->    * @dir: pin direction
->    * @id: pin id
-> @@ -45,6 +47,7 @@ struct zl3073x_dpll_pin {
->   	struct zl3073x_dpll	*dpll;
->   	struct dpll_pin		*dpll_pin;
->   	dpll_tracker		tracker;
-> +	struct fwnode_handle	*fwnode;
->   	char			label[8];
->   	enum dpll_pin_direction	dir;
->   	u8			id;
-> @@ -184,6 +187,109 @@ zl3073x_dpll_input_pin_esync_set(const struct dpll_pin *dpll_pin,
->   	return zl3073x_ref_state_set(zldev, ref_id, &ref);
->   }
->   
-> +static int
-> +zl3073x_dpll_input_pin_ref_sync_get(const struct dpll_pin *dpll_pin,
-> +				    void *pin_priv,
-> +				    const struct dpll_pin *ref_sync_pin,
-> +				    void *ref_sync_pin_priv,
-> +				    enum dpll_pin_state *state,
-> +				    struct netlink_ext_ack *extack)
-> +{
-> +	struct zl3073x_dpll_pin *sync_pin = ref_sync_pin_priv;
-> +	struct zl3073x_dpll_pin *pin = pin_priv;
-> +	struct zl3073x_dpll *zldpll = pin->dpll;
-> +	struct zl3073x_dev *zldev = zldpll->dev;
-> +	const struct zl3073x_ref *ref;
-> +	u8 ref_id, mode, pair;
-> +
-> +	ref_id = zl3073x_input_pin_ref_get(pin->id);
-> +	ref = zl3073x_ref_state_get(zldev, ref_id);
-> +	mode = zl3073x_ref_sync_mode_get(ref);
-> +	pair = zl3073x_ref_sync_pair_get(ref);
-> +
-> +	if (mode == ZL_REF_SYNC_CTRL_MODE_REFSYNC_PAIR &&
-> +	    pair == zl3073x_input_pin_ref_get(sync_pin->id))
-> +		*state = DPLL_PIN_STATE_CONNECTED;
-> +	else
-> +		*state = DPLL_PIN_STATE_DISCONNECTED;
-> +
-> +	return 0;
-> +}
-> +
-> +static int
-> +zl3073x_dpll_input_pin_ref_sync_set(const struct dpll_pin *dpll_pin,
-> +				    void *pin_priv,
-> +				    const struct dpll_pin *ref_sync_pin,
-> +				    void *ref_sync_pin_priv,
-> +				    const enum dpll_pin_state state,
-> +				    struct netlink_ext_ack *extack)
-> +{
-> +	struct zl3073x_dpll_pin *sync_pin = ref_sync_pin_priv;
-> +	struct zl3073x_dpll_pin *pin = pin_priv;
-> +	struct zl3073x_dpll *zldpll = pin->dpll;
-> +	struct zl3073x_dev *zldev = zldpll->dev;
-> +	u8 mode, ref_id, sync_ref_id;
-> +	struct zl3073x_chan chan;
-> +	struct zl3073x_ref ref;
-> +	int rc;
-> +
-> +	ref_id = zl3073x_input_pin_ref_get(pin->id);
-> +	sync_ref_id = zl3073x_input_pin_ref_get(sync_pin->id);
-> +	ref = *zl3073x_ref_state_get(zldev, ref_id);
-> +
-> +	if (state == DPLL_PIN_STATE_CONNECTED) {
-> +		const struct zl3073x_ref *sync_ref;
-> +		u32 ref_freq, sync_freq;
-> +
-> +		sync_ref = zl3073x_ref_state_get(zldev, sync_ref_id);
-> +		ref_freq = zl3073x_ref_freq_get(&ref);
-> +		sync_freq = zl3073x_ref_freq_get(sync_ref);
-> +
-> +		/* Sync signal must be 8 kHz or less and clock reference
-> +		 * must be 1 kHz or more and higher than the sync signal.
-> +		 */
-> +		if (sync_freq > 8000) {
-> +			NL_SET_ERR_MSG(extack,
-> +				       "sync frequency must be 8 kHz or less");
-> +			return -EINVAL;
-> +		}
-> +		if (ref_freq < 1000) {
-> +			NL_SET_ERR_MSG(extack,
-> +				       "clock frequency must be 1 kHz or more");
-> +			return -EINVAL;
-> +		}
-> +		if (ref_freq <= sync_freq) {
-> +			NL_SET_ERR_MSG(extack,
-> +				       "clock frequency must be higher than sync frequency");
-> +			return -EINVAL;
-> +		}
-> +
-> +		zl3073x_ref_sync_pair_set(&ref, sync_ref_id);
-> +		mode = ZL_REF_SYNC_CTRL_MODE_REFSYNC_PAIR;
-> +	} else {
-> +		mode = ZL_REF_SYNC_CTRL_MODE_REFSYNC_PAIR_OFF;
-> +	}
-> +
-> +	zl3073x_ref_sync_mode_set(&ref, mode);
-> +
-> +	rc = zl3073x_ref_state_set(zldev, ref_id, &ref);
-> +	if (rc)
-> +		return rc;
-> +
-> +	/* Exclude sync source from automatic reference selection by setting
-> +	 * its priority to NONE. On disconnect the priority is left as NONE
-> +	 * and the user must explicitly make the pin selectable again.
-> +	 */
-> +	if (state == DPLL_PIN_STATE_CONNECTED) {
-> +		chan = *zl3073x_chan_state_get(zldev, zldpll->id);
-> +		zl3073x_chan_ref_prio_set(&chan, sync_ref_id,
-> +					  ZL_DPLL_REF_PRIO_NONE);
-> +		return zl3073x_chan_state_set(zldev, zldpll->id, &chan);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->   static int
->   zl3073x_dpll_input_pin_ffo_get(const struct dpll_pin *dpll_pin, void *pin_priv,
->   			       const struct dpll_device *dpll, void *dpll_priv,
-> @@ -1100,6 +1206,8 @@ static const struct dpll_pin_ops zl3073x_dpll_input_pin_ops = {
->   	.phase_adjust_set = zl3073x_dpll_input_pin_phase_adjust_set,
->   	.prio_get = zl3073x_dpll_input_pin_prio_get,
->   	.prio_set = zl3073x_dpll_input_pin_prio_set,
-> +	.ref_sync_get = zl3073x_dpll_input_pin_ref_sync_get,
-> +	.ref_sync_set = zl3073x_dpll_input_pin_ref_sync_set,
->   	.state_on_dpll_get = zl3073x_dpll_input_pin_state_on_dpll_get,
->   	.state_on_dpll_set = zl3073x_dpll_input_pin_state_on_dpll_set,
->   };
-> @@ -1190,8 +1298,11 @@ zl3073x_dpll_pin_register(struct zl3073x_dpll_pin *pin, u32 index)
->   	if (IS_ERR(props))
->   		return PTR_ERR(props);
->   
-> -	/* Save package label, esync capability and phase adjust granularity */
-> +	/* Save package label, fwnode, esync capability and phase adjust
-> +	 * granularity.
-> +	 */
->   	strscpy(pin->label, props->package_label);
-> +	pin->fwnode = fwnode_handle_get(props->fwnode);
->   	pin->esync_control = props->esync_control;
->   	pin->phase_gran = props->dpll_props.phase_gran;
->   
-> @@ -1236,6 +1347,8 @@ zl3073x_dpll_pin_register(struct zl3073x_dpll_pin *pin, u32 index)
->   	dpll_pin_put(pin->dpll_pin, &pin->tracker);
->   	pin->dpll_pin = NULL;
->   err_pin_get:
-> +	fwnode_handle_put(pin->fwnode);
-> +	pin->fwnode = NULL;
->   	zl3073x_pin_props_put(props);
->   
->   	return rc;
-> @@ -1265,6 +1378,9 @@ zl3073x_dpll_pin_unregister(struct zl3073x_dpll_pin *pin)
->   
->   	dpll_pin_put(pin->dpll_pin, &pin->tracker);
->   	pin->dpll_pin = NULL;
-> +
-> +	fwnode_handle_put(pin->fwnode);
-> +	pin->fwnode = NULL;
->   }
->   
->   /**
-> @@ -1735,6 +1851,88 @@ zl3073x_dpll_free(struct zl3073x_dpll *zldpll)
->   	kfree(zldpll);
->   }
->   
-> +/**
-> + * zl3073x_dpll_ref_sync_pair_register - register ref_sync pairs for a pin
-> + * @pin: pointer to zl3073x_dpll_pin structure
-> + *
-> + * Iterates 'ref-sync-sources' phandles in the pin's firmware node and
-> + * registers each declared pairing.
-> + *
-> + * Return: 0 on success, <0 on error
-> + */
-> +static int
-> +zl3073x_dpll_ref_sync_pair_register(struct zl3073x_dpll_pin *pin)
-> +{
-> +	struct zl3073x_dev *zldev = pin->dpll->dev;
-> +	struct fwnode_handle *fwnode;
-> +	struct dpll_pin *sync_pin;
-> +	dpll_tracker tracker;
-> +	int n, rc;
-> +
-> +	for (n = 0; ; n++) {
-> +		/* Get n'th ref-sync source */
-> +		fwnode = fwnode_find_reference(pin->fwnode, "ref-sync-sources",
-> +					       n);
-> +		if (IS_ERR(fwnode)) {
-> +			rc = PTR_ERR(fwnode);
-> +			break;
-> +		}
-> +
-> +		/* Find associated dpll pin */
-> +		sync_pin = fwnode_dpll_pin_find(fwnode, &tracker);
-> +		fwnode_handle_put(fwnode);
-> +		if (!sync_pin) {
-> +			dev_warn(zldev->dev, "%s: ref-sync source %d not found",
-> +				 pin->label, n);
-> +			continue;
-> +		}
-> +
-> +		/* Register new ref-sync pair */
-> +		rc = dpll_pin_ref_sync_pair_add(pin->dpll_pin, sync_pin);
-> +		dpll_pin_put(sync_pin, &tracker);
-> +
-> +		/* -EBUSY means pairing already exists from another DPLL's
-> +		 * registration.
-> +		 */
-> +		if (rc && rc != -EBUSY) {
-> +			dev_err(zldev->dev,
-> +				"%s: failed to add ref-sync source %d: %pe",
-> +				pin->label, n, ERR_PTR(rc));
-> +			break;
-> +		}
-> +	}
-> +
-> +	return rc != -ENOENT ? rc : 0;
-> +}
-> +
-> +/**
-> + * zl3073x_dpll_ref_sync_pairs_register - register ref_sync pairs for a DPLL
-> + * @zldpll: pointer to zl3073x_dpll structure
-> + *
-> + * Iterates all registered input pins of the given DPLL and establishes
-> + * ref_sync pairings declared by 'ref-sync-sources' phandles in the
-> + * device tree.
-> + *
-> + * Return: 0 on success, <0 on error
-> + */
-> +static int
-> +zl3073x_dpll_ref_sync_pairs_register(struct zl3073x_dpll *zldpll)
-> +{
-> +	struct zl3073x_dpll_pin *pin;
-> +	int rc;
-> +
-> +	list_for_each_entry(pin, &zldpll->pins, list) {
-> +		if (!zl3073x_dpll_is_input_pin(pin) || !pin->fwnode)
-> +			continue;
-> +
-> +		rc = zl3073x_dpll_ref_sync_pair_register(pin);
-> +		if (rc)
-> +			return rc;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->   /**
->    * zl3073x_dpll_register - register DPLL device and all its pins
->    * @zldpll: pointer to zl3073x_dpll structure
-> @@ -1758,6 +1956,13 @@ zl3073x_dpll_register(struct zl3073x_dpll *zldpll)
->   		return rc;
->   	}
->   
-> +	rc = zl3073x_dpll_ref_sync_pairs_register(zldpll);
-> +	if (rc) {
-> +		zl3073x_dpll_pins_unregister(zldpll);
-> +		zl3073x_dpll_device_unregister(zldpll);
-> +		return rc;
-> +	}
-> +
->   	return 0;
->   }
->   
+> -----Original Message-----
+> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of
+> Loktionov, Aleksandr
+> Sent: Monday, March 2, 2026 8:14 AM
+> To: Yury Norov <ynorov@nvidia.com>; Nguyen, Anthony L
+> <anthony.l.nguyen@intel.com>; David S. Miller <davem@davemloft.net>;
+> Thomas Hellstr=F6m <thomas.hellstrom@linux.intel.com>; Andrew Lunn
+> <andrew+netdev@lunn.ch>; Andrew Morton <akpm@linux-foundation.org>;
+> David Airlie <airlied@gmail.com>; Eric Dumazet <edumazet@google.com>; Jak=
+ub
+> Kicinski <kuba@kernel.org>; Brost, Matthew <matthew.brost@intel.com>; Pao=
+lo
+> Abeni <pabeni@redhat.com>; Kitszel, Przemyslaw
+> <przemyslaw.kitszel@intel.com>; Vivi, Rodrigo <rodrigo.vivi@intel.com>; S=
+imona
+> Vetter <simona@ffwll.ch>; Yury Norov <yury.norov@gmail.com>; Rasmus
+> Villemoes <linux@rasmusvillemoes.dk>; dri-devel@lists.freedesktop.org; in=
+tel-
+> xe@lists.freedesktop.org; linux-kernel@vger.kernel.org; netdev@vger.kerne=
+l.org;
+> intel-wired-lan@lists.osuosl.org
+> Cc: Simon Horman <horms@kernel.org>; David Laight
+> <david.laight.linux@gmail.com>
+> Subject: Re: [Intel-wired-lan] [PATCH v2 3/4] ice: use bitmap_empty() in
+> ice_vf_has_no_qs_ena
+>=20
+>=20
+>=20
+> > -----Original Message-----
+> > From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
+> > Of Yury Norov via Intel-wired-lan
+> > Sent: Monday, March 2, 2026 2:12 AM
+> > To: Nguyen, Anthony L <anthony.l.nguyen@intel.com>; David S. Miller
+> > <davem@davemloft.net>; Thomas Hellstr=F6m
+> > <thomas.hellstrom@linux.intel.com>; Andrew Lunn
+> > <andrew+netdev@lunn.ch>; Andrew Morton <akpm@linux-foundation.org>;
+> > David Airlie <airlied@gmail.com>; Eric Dumazet <edumazet@google.com>;
+> > Jakub Kicinski <kuba@kernel.org>; Brost, Matthew
+> > <matthew.brost@intel.com>; Paolo Abeni <pabeni@redhat.com>; Kitszel,
+> > Przemyslaw <przemyslaw.kitszel@intel.com>; Vivi, Rodrigo
+> > <rodrigo.vivi@intel.com>; Simona Vetter <simona@ffwll.ch>; Yury Norov
+> > <yury.norov@gmail.com>; Rasmus Villemoes <linux@rasmusvillemoes.dk>;
+> > dri-devel@lists.freedesktop.org; intel-xe@lists.freedesktop.org;
+> > linux-kernel@vger.kernel.org; netdev@vger.kernel.org; intel-wired-
+> > lan@lists.osuosl.org
+> > Cc: Yury Norov <ynorov@nvidia.com>; Simon Horman <horms@kernel.org>;
+> > David Laight <david.laight.linux@gmail.com>
+> > Subject: [Intel-wired-lan] [PATCH v2 3/4] ice: use bitmap_empty() in
+> > ice_vf_has_no_qs_ena
+> >
+> > bitmap_empty() is more verbose and efficient, as it stops traversing
+> > {r,t}xq_ena as soon as the 1st set bit found.
+> >
+> > Signed-off-by: Yury Norov <ynorov@nvidia.com>
+> > ---
+> >  drivers/net/ethernet/intel/ice/ice_vf_lib.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.c
+> > b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
+> > index c8bc952f05cd..772f6b07340d 100644
+> > --- a/drivers/net/ethernet/intel/ice/ice_vf_lib.c
+> > +++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
+> > @@ -1210,8 +1210,8 @@ bool ice_is_vf_trusted(struct ice_vf *vf)
+> >   */
+> >  bool ice_vf_has_no_qs_ena(struct ice_vf *vf)  {
+> > -	return (!bitmap_weight(vf->rxq_ena, ICE_MAX_RSS_QS_PER_VF) &&
+> > -		!bitmap_weight(vf->txq_ena, ICE_MAX_RSS_QS_PER_VF));
+> > +	return bitmap_empty(vf->rxq_ena, ICE_MAX_RSS_QS_PER_VF) &&
+> > +		bitmap_empty(vf->txq_ena, ICE_MAX_RSS_QS_PER_VF);
+> >  }
+> >
+> >  /**
+> > --
+> > 2.43.0
+>=20
+> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 
-LGTM.
-
-
-Reviewed-by: Petr Oros <poros@redhat.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
 
