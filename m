@@ -1,126 +1,139 @@
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844573BED2D
-	for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 08:55:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962C33D3D12
+	for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 08:56:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774601744; cv=pass; b=sLyFBpyx4qbAS8haL3UYukB0yMhcVR5YGhThizk5s07i3eNQ12UGGll0+rvJznrr33gebP8eNYMsPK7VvbW7bMk/3tiaXtJi6ECZVZl1x6LLSEaz12ynrD+s4r2++LjwexTX9vcSB7yns3b6zWTIXHW2fq3i6ErJj6M7rXTPAdc=
+	t=1774601811; cv=pass; b=R01sa6R+9+JWak2/a0D0bvZBj3Iv83eymvsXqzBzolorgYDdL3eA+HsBQEdg/x7rLzlInzbClWzjCINKE4msW+56rXXIVHxMVRb5LHICVNCI5IgkYqGY74Debky2cKZnLRLLFHoCz5kC98pPistesQgMYwKW7eS9eBodjjfzoFY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774601744; c=relaxed/simple;
-	bh=8UeDx3YcJwKvTruLriZjWHcVAvboJUZ2/LdgvefG7Qg=;
+	s=arc-20240116; t=1774601811; c=relaxed/simple;
+	bh=BAy7dt9p8q1EPcSpdCj4Qxmjm7cEvuikrTG/6GyZGOk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uuWXP/ywuLB9+EosYBdJRsQkuiBV3KCffqECY8rfmM78hgmDXYhK91qZj+gjqp9wZd++092nozTl0zzOwEERgyFjWoqYWfkGYU0PKS7TFgbjvvombiuiS5cEPSJNWoMAETwrIeXBCc/aAR/vyl1LUxTJIPfKACmz2Rhnf4FsP7I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IglS6tQ1; arc=pass smtp.client-ip=209.85.210.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=Vg/pg8U5+TI4jCaYRMwvQQqCcjhmZvuEuAxn5tReCSXJogu5Ai5xLUJV4Ni7Dar5/yhK+6twoU7WQ2ckZAU5W2kifwuQv/pHtv8pV4OwrrJLSWk23El+lEvQ6cFzSnQCxeH+2xvlyIgdy+AP2q94rjkiIH4oTgllxJ7wayRN/bY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cTqQEdqP; arc=pass smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IglS6tQ1"
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7d7e5e8c907so1178186a34.0
-        for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 01:55:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774601742; cv=none;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cTqQEdqP"
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-899ee491af3so20541426d6.1
+        for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 01:56:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774601809; cv=none;
         d=google.com; s=arc-20240605;
-        b=SiPhWxgVGXnb6RraQzZkbgQm+SjBQ1RfnC1oKxzMnQ3hIVjPfZZ+j1lDpJs1u2+Kv/
-         XjRYbQcX5oSzh/GFktq7IBMCWwV60AHbSwSLZZX0/y0cW4Gn3aV1R3gwvXTimFT6fTQ+
-         S2aIIjSrwIMfVv8C/+0tOMXjtgSabaX5/zv5tYpjJlT5Yqcfobnz6l3eyRockwu5yHxo
-         y/ebOZDqGwQ+5pmrEljceDCfbitiyMASiruFBrhHlxOUtDvYvXVAQ2iKs3EpIZn1YMxF
-         lNIbUdDAwkZhbzExGMseXBGzdIKNhGGGeU+HnTMbH0h7FCDyqQ4L8ucPU7BJnaO3AZU+
-         OF8Q==
+        b=hcj7ZA8gqUDk6NDMoPZf3fmXuil0mLASMs5A3rFJdYaSqrrV9NP3MK3DYMmO6asT11
+         cIUTn6vCODkoLv8tEa010yJhhmkLogr/41LaKmtqPe/5K07GQfg9MQwqnsXjtbAJJyO/
+         mWAjHnvbnAkTpsh44HKhEpzz37RIMp1Wo0JXOJzuK99dqf+s/ub4jYmeBjjZJq0g1upP
+         4kRb44n3kTfQfiKpS5eLbYXTIXiDXBvTrejqJIk1MvqnFB0PKPKsDelJ2hAmnkxN27fF
+         RycFXUiXanxkrSrKiXcm4eut1VImeNYLsl0NqgS6BeRAGA7sHpWurKCodFcoIJfEgbdq
+         g7Ew==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=8UeDx3YcJwKvTruLriZjWHcVAvboJUZ2/LdgvefG7Qg=;
-        fh=7ydaQ9ymFSq3Qj7ComF7ttJTQSfmFe8O8iD2CDMmDc4=;
-        b=EkjbeqWqmYZq0nOIpZ8/Wckbouw9dYCKVFfBJ0QK4X93VdS9SduW2OaPTj1p0F87i+
-         /Ln7mLAlr55MBZfuTqrQ+seDVR7VK7a611hm2k+SEfUro5/Voe3ZdORKb9wMFMJ8LY7N
-         B/8xPWdotM8PyTSoJRSti2uqHcljqtRAWlYv5xH1Lzk8xAspLbRBvB4cFUr8DYGKshtr
-         Xn+f7cbzSFEtHQA3qx+nyBwGJs5hG1bT4OPPelazer5ZRWb3vMMJK+6Mn5zZBIxTCRz3
-         LLV/9saLaIBHe9IH95SNJOkK7gljgpPq7X/4DdFrXrTxFbcqhQGcMt8wRuqns6norups
-         htTg==;
+        bh=TfgIZBix8EryPJVpFF9gdxswK0/Wk70kOkvKn4+DmBE=;
+        fh=SfaTiBu+sDri2m+yxOLRil/8GjJH7/lbBmQdPMjjiNA=;
+        b=gWuf78TrV5qWleqpdkkiJR52KNjvdHCRpQ5RBXMmNHUTE3kOTuEMwIZQCiboYJb/S8
+         YnSY2JygQC8HOiyETVcujFFCCZt0QrOpDXWuGMS/lpUyWViBBPlneL3zfLBeMbChkEXM
+         s1/fVov950UUvXggYcH5IFIqeGkjMWVBY/XyWXLKzXhJhVzYSXf2sObledGwISmQBL5s
+         TvcqUDc262f8P1u/grBdzQ+SNuB7vGZ7VHpo4zxT6A5hRz29k4F0v27XRUWk+/1ConaM
+         6ChpgYY7qlGHfHfqjlMw/mhFwIhs3tQWbwoqVW2EtaJfFVu8F+R8/JTlf8gTBaDR3Ufo
+         bqkQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774601742; x=1775206542; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1774601809; x=1775206609; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=8UeDx3YcJwKvTruLriZjWHcVAvboJUZ2/LdgvefG7Qg=;
-        b=IglS6tQ1kT98PuQVEJ/9vIkSbSQyWVnGpcOnD1sq1NChMAi9+JZ0SbKmyYQD30uPyD
-         RViBypQ7Hp2REZRbdgCmFYzT/UK4A9GP+Fj5+oZAE7HbhuxpmivIAfnXv4Qb/vQHIiYn
-         9lzP3AEA9a/bF29qml63ddnPqB7H+lHiaqMPw0smovdnjGPtdnQbWuK3/BxxaWO6z5xi
-         +SE8caXgBzIhFOzZvSv6QJI2HCT3+H6WAOzcf9ZOUwJQ6n0MbjofBrt+FlH3dMSbUtKo
-         QJfG3vsd+3+9lqEE5zP1yNqpXMCqAw7PzEUgcQrSkpd2Ahmp6/EgsT3jShCZamH1Nj5t
-         Tx5w==
+        bh=TfgIZBix8EryPJVpFF9gdxswK0/Wk70kOkvKn4+DmBE=;
+        b=cTqQEdqPnow5Rm3VoB5C9szOQnE/fT6KZDAoBKrzWzq8IquPwcxr+fo6S/yfXCZQFv
+         3dRMY02qH2kNvxYVYi5jRSYaweAXoGJohGOrmNc6mkZEipbnftOaX9iAOye/zPMUn25E
+         Q0bnXptTMwRek6mkJ3FgGSUZmvCrPB8YpIKTt8QtQDDZoq3E5Q2GXSTPldpNZWPW66YI
+         sJHp5+bNkYaif/DvS6sQumf8MVsks0R8rEbX93ND/Cvt5kLeBdFEjXPWBh78sBuLW01x
+         bUs7Yc1vtnCeDXzvZ2TfvzITbwLfJ/JwJtstiKsdzCLVyT0J6lUdib1hdmDUUbntI/A3
+         PYMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774601742; x=1775206542;
+        d=1e100.net; s=20251104; t=1774601809; x=1775206609;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8UeDx3YcJwKvTruLriZjWHcVAvboJUZ2/LdgvefG7Qg=;
-        b=g9HhnHjB02CSp69sXyX21jHqTfz7fSR0v0mpv7xcb6IciV7iBVxgVyfw9oVrRNT1Jh
-         mgI4wAsGWdA52yprJdYXW2a8Yv0wOVla6pPmhg4g7BFkIt3sp2zq0XapOC7IvUZ+q3NC
-         ZBilOpW+l/lcKZhVxo1afoESpgbaxZYoMjzze8obaNPI086+j4jK73AtUC/JmlWVEI5f
-         YiZ6SqR5ZX+H3zDp5W1vr/TC4u4W6rIsUuxMh2hR5cbO9aKT/VMtNr6gc8hhszeCheCb
-         Jq9W0D6moEUOXjwUQXzvYcFStnV6WGnLQYodzMGE1CeymcvX6GW8eqiw+XqIhX92zqoW
-         in6Q==
-X-Gm-Message-State: AOJu0YxWK+/uv+gH8m377oHrnkY7VjRvy+PoiodfPnS0lVcSkjHcQu/s
-	QmuqVyhDl9J21ypuZ7R3cf/3psBfSkyQDPYMsGkv8dAiU1jC2hoiy35NFCEoSn/9t+Q5yupfe0J
-	ryd8FoaaP/7W72NUAxDl5YpFTzXaUqR9m2U75t9A=
-X-Gm-Gg: ATEYQzx88GA34wGqEMC5N3ButULUIcsnwny2QCXdCNqzqq+3syw95gG1Ve73Xr8X1Q3
-	7HIccJR46k27upNPaEbJmV5QUb9jPT5FXMCeXP2R/iYuFLgruoYH7wvad9tGdohWOiFGqw4s4zc
-	UvyLTJAZ3S5UrjqXrUqGpqzD5/NXZsv8vvikdTryUlYkTjxDC86X+W0euOmeR6khfJyXGGjfc9f
-	2Js59qkICaTn39cRAkgVHR2u0BeoiBzRoo4kTz+3oAyD8WF4g63VtCeVAqxaW7oBkF9A6E8o4C1
-	pmHaMYqr88tRPnbR1lj3EY23cN0yApUu9VvIMXgx3yjgysNSa38pCCrDHQu6iNUzYDus
-X-Received: by 2002:a05:6820:1746:b0:67a:2ff:91b0 with SMTP id
- 006d021491bc7-67e185f6198mr757083eaf.3.1774601742384; Fri, 27 Mar 2026
- 01:55:42 -0700 (PDT)
+        bh=TfgIZBix8EryPJVpFF9gdxswK0/Wk70kOkvKn4+DmBE=;
+        b=XAqvlqlVP+fxMABt/qb2JYcpkgVR58EGEMROLrAIx4WAGu77sA8l8gflSz6w6ARDHV
+         yF58X91+JvZ/u9mancl1K+gWXse0fpW92Yj0QWXCv1gsNZEHp3DRY7e8y0oDviHsQ1y8
+         J0igeh3QIKS2jH9RiO9srQsDDU4+pvKuRCVNE4WPOQB0ymYnk8/GrStz82CDt/AXFhm5
+         BG3SstYa3rk9RFZDgl6S9QSe7HqV/sJ3WRrtyelJB4Rt3D6HBORfH/vJcukB4so/xzU1
+         o9VKF8KiBm/bvbQF721EbAjDbI8vAv1guzu9Rmv9F1xQqJ14YJScMAHeqHidH2gJkkhb
+         5AgQ==
+X-Gm-Message-State: AOJu0YzSoAlwBxzkP1oeGXQ3qD41yDPiH7wQZ/PATJW33gQyYLH/Betq
+	iB2pePEdZTO5AckimfQWrCuM3NI4q6RSw9XMwE5uZl04OS+XSFEcfmVQHirnX/tZc26RRv7SNyQ
+	3sbs7mVpx0Yxqex3X+6w/Ac4qGULX+qwUH9/Yl34s
+X-Gm-Gg: ATEYQzwDK/QMgOxVy+8DUyV5S1rDAicW0LhSDPEC0au9QNQ6xNYGYP+6YZ+quEmv7sD
+	C+0eKqGoeold5kJo2P7DLXvqEYm1NPhtfK9jToK/X/7VvqsR6NjHE1l6W+qK4jdUfHRIfsDS6VU
+	NqWf0FMks5fcvdD6hbbfUq6L0Ymuu8So85XGAtVqh6EEQsT8hp/YSgggnMNCDaaTj1cQkmi0bDW
+	PDXlKCZCIbWqQyrl5CWURY3wdohXydpESWXpsKf9dgjUzgVJH9zc7HpFLtUDwvIDIB2KqOFE0h3
+	+KE+GiinPOr7dxoIYOIFmVCtt3L7J5C4FAojzivA0WKTEl9SXwfyy3m8IB0f
+X-Received: by 2002:a05:6214:194d:b0:89c:6bc6:e4fd with SMTP id
+ 6a1803df08f44-89ce8d97094mr20986136d6.19.1774601809403; Fri, 27 Mar 2026
+ 01:56:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260324080730.4051666-1-nickgarlis@gmail.com> <20260326203646.2da52419@kernel.org>
-In-Reply-To: <20260326203646.2da52419@kernel.org>
-From: Nikolaos Gkarlis <nickgarlis@gmail.com>
-Date: Fri, 27 Mar 2026 09:55:31 +0100
-X-Gm-Features: AQROBzBE9sNWESWLlPyFHmXvgfF-G49bmzGAUszR-lFSp9bJ-i3w1oYKu6ORBcI
-Message-ID: <CA+jwDRk_pg6jLsg_nZ+DwHKcLk-TjbhS5o8aveOD5ns=yxUYCg@mail.gmail.com>
-Subject: Re: [PATCH] rtnetlink: add missing netlink_ns_capable() check for
- peer netns
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org
+References: <20260325152801.236343-1-jiri@resnulli.us>
+In-Reply-To: <20260325152801.236343-1-jiri@resnulli.us>
+From: Ben Copeland <ben.copeland@linaro.org>
+Date: Fri, 27 Mar 2026 08:56:38 +0000
+X-Gm-Features: AQROBzAikv2UHh7exGnWEGTfTrjOShVNQIpn1v4T-UcswAGH9lv0Fr1OUhO_SJk
+Message-ID: <CAL0q8a4X6OTB-LAUyuzdVxdqDmi6DU5a+1PR=63zijxq4xdrxg@mail.gmail.com>
+Subject: Re: [PATCH net-next] mlx5: shd: Gracefully avoid shared devlink
+ creation when no usable SN is found
+To: Jiri Pirko <jiri@resnulli.us>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch, saeedm@nvidia.com, 
+	leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com, 
+	admiyo@amperemail.onmicrosoft.com
 Content-Type: text/plain; charset="UTF-8"
 
-Hi Jakub,
+On Wed, 25 Mar 2026 at 15:28, Jiri Pirko <jiri@resnulli.us> wrote:
+>
+> From: Jiri Pirko <jiri@nvidia.com>
+>
+> On some HW, not even fall-back "SERIALNO" is found in VPD data. Unify
+> the behavior with the case there are no VPD data at all and avoid
+> creation of shared devlink instance.
+>
+> Fixes: 2a8c8a03f306 ("net/mlx5: Add a shared devlink instance for PFs on same chip")
+> Reported-by: Adam Young <admiyo@amperemail.onmicrosoft.com>
+> Closes: https://lore.kernel.org/all/bab5b6bc-aa42-4af1-80d1-e56bcef06bc2@amperemail.onmicrosoft.com/
+> Reported-by: Ben Copeland <ben.copeland@linaro.org>
+> Closes: https://lore.kernel.org/all/20260324151014.860376-1-ben.copeland@linaro.org/
+> Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+> ---
+>  drivers/net/ethernet/mellanox/mlx5/core/sh_devlink.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/sh_devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/sh_devlink.c
+> index bc33f95302df..b925364765ac 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/sh_devlink.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/sh_devlink.c
+> @@ -33,7 +33,7 @@ int mlx5_shd_init(struct mlx5_core_dev *dev)
+>                 start = pci_vpd_find_ro_info_keyword(vpd_data, vpd_size,
+>                                                      PCI_VPD_RO_KEYWORD_SERIALNO, &kw_len);
+>                 if (start < 0)
+> -                       return -ENOENT;
+> +                       return 0; /* No usable serial number found, ignore. */
+>         }
+>         sn = kstrndup(vpd_data + start, kw_len, GFP_KERNEL);
+>         if (!sn)
+> --
+> 2.51.1
+>
 
-I've created a crude reproduction script using some AI. If that helps,
-you can find it here:
-https://gist.githubusercontent.com/nickgarlis/5a5815d438aa19b409806712f35f2cb1/raw/c7e2dd0902f1f53f5750f7bbd3ba39ff0b21e43e/inject_iface.c
 
-> AI assistant here suggests this is not the valid Fixes tag,
-> which seems true on the surface. This commit was fixing
-> cleanup, IDK how it could break input validation?
+Tested-by: Ben Copeland <ben.copeland@linaro.org>
 
-I went back to check and ran the test against 7a0ea70da56e (the commit
-prior) and it does seem like it was broken then too. I think I must have
-messed up my testing process when I initially submitted the patch.
+Tested before and after on the Ampere Server, and the applied fix worked.
 
-It also seems like the bug was always there or at least - almost always
-- since Iassume it wasn't a problem before unprivileged namespaces
-were introduced ?
+Thanks!
 
-In that case, should the tags point to the introduction of the
-attributes (like shown below) or point to the introduction of
-the namespaces ?
-
-Fixes: 0eb87b02a705 ("veth: Set VETH_INFO_PEER to veth_link_ops.peer_type.")
-Fixes: 6b84e558e95d ("vxcan: Set VXCAN_INFO_PEER to vxcan_link_ops.peer_type.")
-Fixes: fefd5d082172 ("netkit: Set IFLA_NETKIT_PEER_INFO to
-netkit_link_ops.peer_type.")
-
-> Reported-by tags are only when the reporter is different than author
-> the Google's bounty program rules have been amended to make this
-> explicit, please let us know if other programs still mislead people
-
-That was a mistake on my part, not going through the docs properly.
-I'll fix all of the tags in a V2 if you want to accept the patch.
+Ben
