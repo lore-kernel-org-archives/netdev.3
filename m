@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E05A2DC344;
-	Fri, 27 Mar 2026 03:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62A8936C9D9;
+	Fri, 27 Mar 2026 03:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774581620; cv=none; b=Bk2yMeYYv2jr/L3eFTnhs/Od8XM+9GxZfZkMkbj9O7XkyyYpuX3rz7GjE8a92APS9BkwUSk3xdPXQNk4YSCZBdbRlEdj3ArMPjRN07ZtuBaGctZvHj/8OP4duehp/2NwTlbIIzU/OIUOwHlt2tPvXUNdAy0i5BJSXes6LZB972U=
+	t=1774581621; cv=none; b=hWQdswL2/sjMqvh1oasLvv00osyhzhlZvLGw4NND7rWafowVGPfj3qYFaa1INIDslg5h85fX98nYVj+FPORlRADs2/E8GLxRKykfYy8x1btHbmyRVBtFZelZJ/blLtfYbgB0icGDzcvjwEaEFI/8XNKM/PysJlf24IBqJbvdFlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774581620; c=relaxed/simple;
-	bh=vk+zRmQ+v4KaJieMrzy5TUowtEPMCkm9f5/l7bJGDWo=;
+	s=arc-20240116; t=1774581621; c=relaxed/simple;
+	bh=DhbcKHjh5x2YBkGqLZ2b6lJ88BJYAnATP1LfKr6nbf0=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=VsyXF8X2nsajd/qUC/p9JHSnq+eReEqghR26E+hmxnsm1OkOQG60XHVuegnFcxe5Id2QbAiSkhkODD2IvBKA7G9Z5HkHrsg9/tLIj+zWAihHIlDwBTC83sHo+KB78ZxQ1A/CD42XLhE1YvIe4DL6ZbR1SKSnHphekR/P4yVdgB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ou2vWs01; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=rAh3ExZHEtX7MccQSMgQ5XL1SseM4UY3haRWtuP7HLEpf9O5AAhsQUExopfSEGqWAhR3xpwemQSjTNfiHmJC5+8HN2/ngnWrM1+7JfL5lna/IEvrBq1dgMf3l/3guvnbRKXbS2feBO6OssDVL86w7ZNnWLOSzS0o8UwC98xxTo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ot8s8f3X; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ou2vWs01"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6864C2BCB0;
-	Fri, 27 Mar 2026 03:20:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ot8s8f3X"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EFD6C116C6;
+	Fri, 27 Mar 2026 03:20:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774581619;
-	bh=vk+zRmQ+v4KaJieMrzy5TUowtEPMCkm9f5/l7bJGDWo=;
+	s=k20201202; t=1774581621;
+	bh=DhbcKHjh5x2YBkGqLZ2b6lJ88BJYAnATP1LfKr6nbf0=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Ou2vWs01AHnVsUcO0ZvN+4ldvfzkaykEAAIKXBjdEOELEtpWQu94IzI7JoM9PGRIP
-	 eyURzRpISEwJdwEbNTA+ulpqU0Zx2s3prSROIIXRNrcQdvXa2S9UJg+LYindvFZhH4
-	 rmBokYeOSFRmPVyh/o1+kcP3pSKVMYtBNo9QJKqpT+pRFKUsX5ImqcDzFew66Xm5rs
-	 RR/F2aY8ME2Z10pGmf+nEIBfF65FZbqnCRGY7eRhU7kEpx5bnGWLUhXJ7FVchN83MQ
-	 MmiSG9V4eJBNn0xipzeFibKiLCZ7CuhWtV+rnuq2zgL0IPOc+m7u9mMioXyDthSSff
-	 Xnthos5JPR1oA==
+	b=ot8s8f3X1nadVwsLnSL494VTQH9h1OnIWHCQQb89zbJSBeGa2OhbvOXr9qZT80SYU
+	 KIX6E5kOErx72eiKIsFIttM9vvDR6HEhp4G5NJkMuqM/PC6Cw/gupJX/ddJGHzWDRG
+	 nscoRi/mUSHuR1TST0zWHDzAnYNkFejC53EbsdosvLuyOCgerLQEytb1yeDoOSKDgD
+	 7q8iKIbiEDlnreDm4ZZkae3VUiKCQ2cG89Fr+HwoMagvjwjlSPaZhj9gnbWRwpdvUn
+	 cwX5EobON5a4Ua+vEjCzJm4br4MpsPojQzidIXt1JglZrT/PyzTsZmlipbgRdtdn0h
+	 32YXvO9NbXT7A==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FE1A380692E;
-	Fri, 27 Mar 2026 03:20:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9FF13809A0B;
+	Fri, 27 Mar 2026 03:20:08 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,44 +37,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3 1/1] net: fec: fix the PTP periodic output sysfs
- interface
+Subject: Re: [PATCH net] netdevsim: fix build if SKB_EXTENSIONS=n
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177458160604.3283168.10059556551058678731.git-patchwork-notify@kernel.org>
-Date: Fri, 27 Mar 2026 03:20:06 +0000
-References: 
- <8ec2afe88423c2231f9cf8044d212ce57846670e.1774359059.git.buday.csaba@prolan.hu>
-In-Reply-To: 
- <8ec2afe88423c2231f9cf8044d212ce57846670e.1774359059.git.buday.csaba@prolan.hu>
-To: Buday Csaba <buday.csaba@prolan.hu>
-Cc: wei.fang@nxp.com, frank.li@nxp.com, shenwei.wang@nxp.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, richardcochran@gmail.com,
- francesco.dolcini@toradex.com, bence98@sch.bme.hu, imx@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+ <177458160728.3283168.17126892713307578593.git-patchwork-notify@kernel.org>
+Date: Fri, 27 Mar 2026 03:20:07 +0000
+References: <20260324140857.783-1-dqfext@gmail.com>
+In-Reply-To: <20260324140857.783-1-dqfext@gmail.com>
+To: Qingfang Deng <dqfext@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, atwellwea@gmail.com,
+ daniel.zahka@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 24 Mar 2026 14:32:30 +0100 you wrote:
-> When the PPS channel configuration was implemented, the channel
-> index for the periodic outputs was configured as the hardware
-> channel number.
+On Tue, 24 Mar 2026 22:08:56 +0800 you wrote:
+> __skb_ext_put() is not declared if SKB_EXTENSIONS is not enabled, which
+> causes a build error:
 > 
-> The sysfs interface uses a logical channel index, and rejects numbers
-> greater than `n_per_out` (see period_store() in ptp_sysfs.c).
-> That property was left at 1, since the driver implements channel
-> selection, not simultaneous operation of multiple PTP hardware timer
-> channels.
+> drivers/net/netdevsim/netdev.c: In function 'nsim_forward_skb':
+> drivers/net/netdevsim/netdev.c:114:25: error: implicit declaration of function '__skb_ext_put'; did you mean 'skb_ext_put'? [-Werror=implicit-function-declaration]
+>   114 |                         __skb_ext_put(psp_ext);
+>       |                         ^~~~~~~~~~~~~
+>       |                         skb_ext_put
+> cc1: some warnings being treated as errors
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v3,1/1] net: fec: fix the PTP periodic output sysfs interface
-    https://git.kernel.org/netdev/net/c/e8e44c98f789
+  - [net] netdevsim: fix build if SKB_EXTENSIONS=n
+    https://git.kernel.org/netdev/net/c/57a04a13aac1
 
 You are awesome, thank you!
 -- 
