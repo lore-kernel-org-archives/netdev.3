@@ -1,141 +1,195 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805352F744F
-	for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 13:23:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774617794; cv=pass; b=eYFVdPjJC1bQ1icVNtJdDdgnGWDqBpqhL1aDFxhBnTCKplMZ+LRj0xDLDUiLmYsMAzPSPDDnLqfkX+47C96M8rqM1HtypVJiCj8/xKpR8tvUFOkvj8xWzhYaum0zvgYu/3d2zPw2GuBzSIq4aJNc+Cdyj0oLywAv8TtqzS3vMEY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774617794; c=relaxed/simple;
-	bh=Q7oU4hJPlL6djnZwZRz9W0OHitIv8nDHH8/rU8cIL9E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gDBQlH2RONbny6X46IxzFNR/PHzdDqDg9AH9+rk40qoY6qYz+/ypKcLg7z5uWCxwwkz2Jd5J7lw7RQpVWOpDrCceds+bnzn3CkH0xKf6phDViQ7tQBrItexKCUHTlf4Ks8vMZ+KV0ico2H8haESDGh6aBr3TCxxTB2DeZ8CkQmY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XDCfkIYU; arc=pass smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C0B3EAC8D
+	for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 13:29:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774618185; cv=none; b=BR6Hyh26Qmt873Cl0VR29xc+Ew62Gi1vijMvXh+KVIx/OOhaJCT/+usqXzRIGKNj6t4eJILYp2IUJBdd2no9zhUEiswpJq6xens6/lVvL9Q9UMSQwi9BgveoIPEgI9PGIs6OR+2E2zfOzg+Mweh5o14dOwZTC1xNWLO+z82O5ko=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774618185; c=relaxed/simple;
+	bh=NJqVpvJhJBm0VShieAiUFCZ4442kUiTh0IjxnWGK4zk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RKWw1IHJBDfnn6FzaRIm7QdXiBLk500zHkPCxquKimWTclWQYDbhrBRUBLOkHi6Vf5RjcxJzbL1VFJdxizZ1Q3lvtUbz7lLKgZdEXGhIuQYTRP34j4aePzs0F+WaRhJTbxrgQy1/va56zqQBlfu98ITuGjLYDVag24PPvknWkTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=aadqkOco; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=OZkyxgsh; arc=none smtp.client-ip=202.12.124.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XDCfkIYU"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-82c4b5dfe6cso1054469b3a.2
-        for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 06:23:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774617793; cv=none;
-        d=google.com; s=arc-20240605;
-        b=NwVzrZln1StBDlqrYDEZTWhkKa9xAsPS1xagALUR2Pvb4whlbCs1FOsNpCxvVMgzbJ
-         PBjrXiuSNOvog0PwAgGYkhEyvrNarQ2Bg2L3rLtCHLCSRL+5fskMOEKu8REFR3PPihCY
-         S3JrUs3K3k9V4VvnJjiLBLKAIGlM+IDVp11xGMysqLiXSuQ+VCiV0GO6S4QrQQRJSuCB
-         RAW+fQY+d+tapnfUOXN3iw6m7SG3Y+2D5DPXMOSbh1gGa2eKlXFI75dy5VtOU7cjKAkQ
-         cRGqOjzDO+4V7IUVNxqgtOi9IjsXewqLdF3x/h9RK8sHPQeHxb4StO8lDlYlIR2HN2qI
-         tq8w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Q7oU4hJPlL6djnZwZRz9W0OHitIv8nDHH8/rU8cIL9E=;
-        fh=rW1SPKhnWhUsegGFLwYSiKI2O9T8tYouWbuQ1tqqTtE=;
-        b=E3XXJHcbhNuyaFmzh+3Y6LtYBPAQlagFdydREI7ta93h0+nmaDWDK/Z0J8gogrq+1T
-         EikS97Q1qq8ifSTxj+0LQrj82RPX5+erpL1xyXiJ5qTTvsPOWntzHHGVt1UOp6egIadu
-         LZQiMK2c5mSI3Evl1hbobwlb1d9aiEJUgdjRSPFR+CRHoYYUrkw+lLIxqUAkVaZAhqKu
-         yChtu+ND7IhiDxaZAVksyN9Chh/4eNyYzI/opWWtf9IQM+4kTQ81r0w9Mcw9uneB4dvI
-         wngbwoSxkeSbYJZKoA+LnAjFDZq+uxrjMflLOKVgNMyto715eMFbWuc0l/VQ8WxDXY/K
-         zBug==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774617793; x=1775222593; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q7oU4hJPlL6djnZwZRz9W0OHitIv8nDHH8/rU8cIL9E=;
-        b=XDCfkIYU5rDBEBTa5vmP9uZ/JNUMJlVrZmm8QlvpYXySCENxjFzEP0J15N+2blV4AL
-         mqiAjZjEsl9tjDHQSWd4dB6lJG2L6eqz602L7xJIGA+xSzt4gKo79elrZcFT42HWaiLv
-         lgMGbSku+Vtlfdl0RUjZWj1af60U2rD5uH6XQiAHLnLapQk+EsT0z5NrED7Cmndby8zo
-         SImpwE2jCyipxmdOr6pCQjjvm05fEAm0Dgtheb0dCn4KV8kdk8IHQsKRzBYS9mXBnAPB
-         kHh2XPS1U4/GgxiFlvrZV3Ka8w8ElP+gu3oDXkMnIYQ83HINIBFsCiDVHaamFIsSBylq
-         qVjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774617793; x=1775222593;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Q7oU4hJPlL6djnZwZRz9W0OHitIv8nDHH8/rU8cIL9E=;
-        b=Paa/GCppipheF2bS5ZGka9g3p1USxiGBUVOJ8TTtUVj/95U84i/5fc7uMC+0XdDjiy
-         eg+TT6XMnDgY8diEc+EuzQj8FlZIjDzD7T3yy9O1BwtQx7e2qdXFTb1wWQn3WFbn4HVu
-         UV5aiX0ohnz5+T+o1zj7bPc/Z+UaAkcwrFQeRAII3IQ2LcLJPMBMfsUc18WonQ9r0E94
-         vEYiBXp8cxvcnJT22JZKIkzpyGkmnUfleysZaZ94M5uqk9o7ud17g+PyZt1e2qZZZUNO
-         /DE3m+EnqecczxWFKfcfWyKnaJIYSAFC3tfQ8VdogYVRF4QHk1JZ6gr2ft07joNnHtgW
-         oVrw==
-X-Forwarded-Encrypted: i=1; AJvYcCXzzT6kDFX8wB6qH2032RodSjO/QAceY7nch3PlzztclQnoeGrlyWCv0F+kfU3zB/GW18N5bWI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5hw0CFUkK5Pn6qKGeMhhiaCZPDWT1AbBUVHEM4Jo34kXTrz88
-	wPp7Ip855P5FU66mZp2KbxckSb4OVWZ+f98KFhd0slgwwC/PfnIkXtqJK2l7ft8dCUPBKOCKSm1
-	Cn4wYI0Fkkr2n6lu+n45Qw7Knv2LPK4g=
-X-Gm-Gg: ATEYQzx4nER7ODqkBoGIMw62/bvTJonB2EtixMz4T2BybVHTgWCaIzvn+Y0ieHJo2fY
-	tadlSkxMkrm2hXc1DqqRKiFmkdTqIegRz3tNHeP06FOWNsMW/ChoAPceBpxu6W6/SSVvnRYwjc9
-	KWmWOJ21W+T/itehZYLqMqhYAriWKDsY159InbP5uYHaB8bjSdKb43XT01KbsXtwk/YS6WkCTyW
-	CbAYcF1db27+Ldw0qFCl7fBx/sJU8AAUIPX5dJfYBt0vBJE685c9PzAbkSA2HFfHs9AxQdlwSvU
-	ADCwD4+cYKENxEnH+1+ZhcC129Iss8WcaGDbEFwSybVhmAiSi1op86ZYFtLIMCJDUQRVZcpjNU9
-	kOCZ1ozexXQdtUf9C
-X-Received: by 2002:a05:6a00:1253:b0:82c:212a:906a with SMTP id
- d2e1a72fcca58-82c9605d1e6mr2451504b3a.36.1774617792775; Fri, 27 Mar 2026
- 06:23:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="aadqkOco";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="OZkyxgsh"
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id A707B7A0170;
+	Fri, 27 Mar 2026 09:29:40 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-10.internal (MEProxy); Fri, 27 Mar 2026 09:29:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1774618180; x=
+	1774704580; bh=2IXZxqukJb5w4rqqyV4J/rzB7JNGA6tYKyvKZ3+L5ZE=; b=a
+	adqkOcoti1Opoh4vogjp6UqyGX7KUR57yG6lFjoqiT+PpsbDFkXhlRQrnk+yogCZ
+	Noo+12e9DzcKEJ3javxDHNNx3efaJN2Y2f5h/SDBPu0ORJr5CMbxM79/9kgq6NOg
+	U62RtoZmKx1agbOFUsysLdEbekQpslWUqY/3cN8nMR2UOahcAbbjz+mlsn1g5Mx1
+	nJFd/aJhRZtf01jK4F1uDj3h+/21Idq2/DxsuEtAIAm5E1lL8tI2WSbai1CqaspP
+	FjqDwLziHUMLPFDRXmzsgW/xymJJ6rHhE/IsQcYi9MowA2KEOR/fPGE7NyGalZtl
+	BJaD5JCqJWJwAOazJX66A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1774618180; x=1774704580; bh=2IXZxqukJb5w4rqqyV4J/rzB7JNGA6tYKyv
+	KZ3+L5ZE=; b=OZkyxgsh2VKpgj1jlyS8c/w+TRKh36By/bPXZK1kGFxxjs+obi5
+	XJRF7p6Tj9+EzhhxZQ8rLsawPO4Ule88Oasz+a40tGX0yJ6/ny6C/xeO2atOmTsg
+	ZNoLmhwoTQ2uWW/N5jKTTGzJNegO6tkypAWL1KU5BR65q1eQtQWlDQJpXWrREHgF
+	nqGDXB8D38q3Q0vQXggnxK/mn1tlSkdwgutlme3tNgIFlj4ZJuruVlyC+nL72UcY
+	+aRYrSIXFP7TCTUHYO/KdgN594GxdWXuRdsDYCdonRt7l+kSLd4sLI7IByaTaFOl
+	hJz0aWJjtQQNW8ccQ03BfF9jPMbaSb7Upsg==
+X-ME-Sender: <xms:Q4bGaUbDhOpMkSBW5UD7K6jREFIxDmLBPS7m8f2St6X4ZgblMznFAw>
+    <xme:Q4bGabNzsZelcfzJ8w9XkIWYk_YUmhKq1KuRcm2dd6tA-DnDZLAzkgh1x8t8PTH5q
+    vZi0IGxVYdg_z07DsCJ-FiPrfOp_4V1cJ6fXh16r5WVpzP1S8qHqA>
+X-ME-Received: <xmr:Q4bGaaVO1q98NRDqFNKLpOrl8u0xgtBcWPj3xxyln1hQ3kNdO5-4935jUCrf>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeffedtgedtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtjeenucfhrhhomhepufgrsghrihhn
+    rgcuffhusghrohgtrgcuoehsugesqhhuvggrshihshhnrghilhdrnhgvtheqnecuggftrf
+    grthhtvghrnhepuefhhfffgfffhfefueeiudegtdefhfekgeetheegheeifffguedvueff
+    fefgudffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epshgusehquhgvrghshihsnhgrihhlrdhnvghtpdhnsggprhgtphhtthhopeduvddpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtoheprhhjvghthhifrghnihesphhurhgvshhtoh
+    hrrghgvgdrtghomhdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdr
+    ohhrghdprhgtphhtthhopehsrggvvggumhesnhhvihguihgrrdgtohhmpdhrtghpthhtoh
+    epthgrrhhiqhhtsehnvhhiughirgdrtghomhdprhgtphhtthhopehmsghlohgthhesnhhv
+    ihguihgrrdgtohhmpdhrtghpthhtohepsghorhhishhpsehnvhhiughirgdrtghomhdprh
+    gtphhtthhopehjohhhnhdrfhgrshhtrggsvghnugesghhmrghilhdrtghomhdprhgtphht
+    thhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrvhgvmhesuggrvh
+    gvmhhlohhfthdrnhgvth
+X-ME-Proxy: <xmx:Q4bGaYL3sTH74Ky0hbo95YO8qyoK_5odIs-lPEQarXFNbZV6C88NWg>
+    <xmx:Q4bGadrEhzsRq_ycVY6_9xp4CwneZuCvdt5D6WpczaKXh5B3WYLlcg>
+    <xmx:Q4bGaXx-oQNa3fia3kpdDqY_u3Xq7585CdYTFoGpedOjvp9vPU2WmA>
+    <xmx:Q4bGaZtQT4_yq9PiqYnTTfCSqrJxohPL7Bx_EjFVKtvgG2R7X-Hwrw>
+    <xmx:RIbGaSOOdZn58B9g-3SDhes_EumEt52XH03JBmI67nZI1tJL1HTVcNdQ>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 27 Mar 2026 09:29:39 -0400 (EDT)
+Date: Fri, 27 Mar 2026 14:29:37 +0100
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Rishikesh Jethwani <rjethwani@purestorage.com>
+Cc: netdev@vger.kernel.org, saeedm@nvidia.com, tariqt@nvidia.com,
+	mbloch@nvidia.com, borisp@nvidia.com, john.fastabend@gmail.com,
+	kuba@kernel.org, davem@davemloft.net, pabeni@redhat.com,
+	edumazet@google.com, leon@kernel.org
+Subject: Re: [PATCH v9 5/6] tls: add hardware offload key update support
+Message-ID: <acaGQYExqMXEx7vZ@krikkit>
+References: <20260320235706.636531-1-rjethwani@purestorage.com>
+ <20260320235706.636531-6-rjethwani@purestorage.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260305013852.3769-1-dqfext@gmail.com> <CALW65jZRyKydW6bs-mYwh2mEn0dpv3opVEr=WczKn_0952_+Yg@mail.gmail.com>
- <CADvbK_fj_26MLP=+U+rzOMfqdPpdvFQJgN_fozd2uAjRsfHweQ@mail.gmail.com>
- <CADvbK_f3LwEt+-BG-1Pcr4jMn6Jxry+0p-Fu_s0C6Px+F_NHCA@mail.gmail.com> <CALW65javKc9H1zQ4m5cb0qPfXix+bWM9LcVZ+uQN5BdgdTQ=gQ@mail.gmail.com>
-In-Reply-To: <CALW65javKc9H1zQ4m5cb0qPfXix+bWM9LcVZ+uQN5BdgdTQ=gQ@mail.gmail.com>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Fri, 27 Mar 2026 09:23:00 -0400
-X-Gm-Features: AQROBzDeJATj6uIDvTHeARXRmosZWl-Wxm7cMWSFpdK_thjyU_C8O3jj3D6-iPg
-Message-ID: <CADvbK_fug3vckLkfufLTtqTEKzywRUw8C_dzfW032_cb6vLpZg@mail.gmail.com>
-Subject: Re: [PATCH net-next v5] net: pppoe: implement GRO/GSO support
-To: Qingfang Deng <dqfext@gmail.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, Felix Fietkau <nbd@nbd.name>, linux-ppp@vger.kernel.org, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	David Ahern <dsahern@kernel.org>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Richard Gobert <richardbgobert@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260320235706.636531-6-rjethwani@purestorage.com>
 
-On Thu, Mar 26, 2026 at 9:49=E2=80=AFPM Qingfang Deng <dqfext@gmail.com> wr=
-ote:
->
-> Hi,
->
-> On Thu, Mar 26, 2026 at 10:44=E2=80=AFPM Xin Long <lucien.xin@gmail.com> =
-wrote:
-> >
-> > On Thu, Mar 26, 2026 at 10:43=E2=80=AFAM Xin Long <lucien.xin@gmail.com=
-> wrote:
-> > >
-> > > On Wed, Mar 25, 2026 at 10:43=E2=80=AFPM Qingfang Deng <dqfext@gmail.=
-com> wrote:
-> > > >
-> > > > Hi all,
-> > > >
-> > > > In some cases (such as BIG TCP) a GRO skb length can overflow a u16=
-,
-> > > > then what should I do with the u16 length field here?
-> > >
-> > > I think you can either add a check in pppoe_gro_complete() to ensure
-> > sorry, I meant add a check in pppoe_gro_receive().
-> > > the aggregated size does not exceed U16_MAX, avoiding BIG TCP
-> > > behavior; Or, set phdr->length to 0 and rely on skb->len to determine
-> > > the actual length, as done in BIG TCP itself.
->
-> In my v6 patch, I set phdr->length to 0xFFFF. Is that okay?
->
-> https://lore.kernel.org/netdev/20260326081127.61229-1-dqfext@gmail.com/
+2026-03-20, 17:57:05 -0600, Rishikesh Jethwani wrote:
+> Add TLS KeyUpdate (rekey) support for hardware offload connections.
+> 
+> When tls_dev_add() fails during hardware rekey, the connection
+> gracefully degrades to software encryption/decryption while
+> maintaining TLS_HW configuration.
+> 
+> Tested on Mellanox ConnectX-6 Dx (Crypto Enabled) with multiple
+> TLS 1.3 key update cycles.
 
-I think you need to check how the PPPoE stack handles this value. If
-it recalculates the actual length using skb->len when phdr->length =3D=3D
-0xFFFF, then this approach might be fine.
+Now your commit messages have gone from "overly detailed descriptions
+of every minor change" to not describing anything about a pretty
+complex patch. This is also not helpful for reviewers.
 
-Also, how does the PPPoE stack distinguish between 0xFFFF being the
-actual payload length versus it being used as a marker to indicate a
-jumbo packet (similar to BIG TCP)?
+Something like an overview of the parts that you're adding (flags,
+extra SW context, saved sequence numbers, etc) and how they come
+together to make the key transition work would probably help us figure
+out what this patch does and if it does it correctly.
 
-Thanks.
+[short example: during the key transition a temporary SW ctx is used
+because [...]. clean_acked keeps track of ACKs and sets the READY flag
+when [...], then the next sendmsg call will complete the rekey in the
+offload ctx and tear down the temporary SW ctx. etc]
+
+
+
+Only a few comments on the rekey completion for now, I'm still looking
+at the patch.
+
+[...]
+> +static int tls_device_complete_rekey(struct sock *sk, struct tls_context *ctx)
+> +{
+[...]
+> +	rc = netdev->tlsdev_ops->tls_dev_add(netdev, sk, TLS_OFFLOAD_CTX_DIR_TX,
+> +					     &offload_ctx->rekey_crypto_send.info,
+> +					     tcp_sk(sk)->write_seq);
+> +
+[...]
+> +	/* following this assignment tls_is_skb_tx_device_offloaded
+> +	 * will return true and the context might be accessed
+> +	 * by the netdev's xmit function.
+> +	 */
+> +	smp_store_release(&sk->sk_validate_xmit_skb, tls_validate_xmit_skb);
+> +
+> +	tls_sw_release_resources_tx(sk);
+
+The write_seq we passed to tls_dev_add could be wrong if this ends up
+pushing encrypted data on the socket?
+
+> +	ctx->rekey_sw_ctx = NULL;
+> +	ctx->rekey_cipher_ctx = NULL;
+> +
+> +	return 0;
+
+
+[...]
+> @@ -187,6 +404,32 @@ static void tls_tcp_clean_acked(struct sock *sk, u32 acked_seq)
+>  	}
+>  
+>  	ctx->unacked_record_sn += deleted_records;
+> +
+> +	/* Track ACKs to determine when HW rekey can complete:
+> +	 * complete_seq captures write_seq when old-key data is ACKed,
+> +	 * REKEY_READY is set once all pending data (including any new) is
+> +	 * ACKed.
+> +	 */
+> +	if (test_bit(TLS_TX_REKEY_PENDING, &tls_ctx->flags) &&
+> +	    !test_bit(TLS_TX_REKEY_FAILED, &tls_ctx->flags)) {
+> +		u32 boundary_seq = READ_ONCE(tls_ctx->rekey_boundary_seq);
+> +		u32 complete_seq = READ_ONCE(tls_ctx->rekey_complete_seq);
+> +
+> +		if (!before(acked_seq, boundary_seq) && complete_seq == 0) {
+> +			complete_seq = tcp_sk(sk)->write_seq;
+> +			WRITE_ONCE(tls_ctx->rekey_complete_seq, complete_seq);
+> +		}
+> +
+> +		if (complete_seq != 0) {
+> +			u32 current_write_seq = tcp_sk(sk)->write_seq;
+> +
+> +			if (before(complete_seq, current_write_seq))
+> +				WRITE_ONCE(tls_ctx->rekey_complete_seq, current_write_seq);
+> +			else if (!before(acked_seq, complete_seq))
+> +				set_bit(TLS_TX_REKEY_READY, &tls_ctx->flags);
+> +		}
+
+This is a really tricky part. AFAIU the rekey will only complete if
+the peer manages to ACK fast enough, so that we don't already have
+more data already in flight? And if not, we stay in SW mode "forever"?
+
+Could we move to REKEY_READY as soon as acked >= boundary, and let
+closing the SW context handle all the data that was sent since the
+rekey was requested? Then we have a situation similar to the initial
+setup, with some data floating in the queues that doesn't need to be
+encrypted (in the initial setup case, because it's pre-encryption;
+here, because it went through SW encrypt), and HW taking over after
+that.
+
+-- 
+Sabrina
