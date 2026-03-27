@@ -1,150 +1,164 @@
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A92E3DCD87
-	for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 10:37:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6011B3B4E9A
+	for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 10:39:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774607881; cv=pass; b=U1NXrxcu5l6BI4EsExCVdMpgqitFFfzi7iypwOxnaR8CwFbxKU6BGuKGjKxhEzKooSmUKZiD1jd9ASkhK2rTswDLv99UVshZaw4E4HnSDCFuCxAeVifZpwMjQIlLRPVq5NgbqXT0UlzRMEdI+C3cSZPVaKi8bDZ+ReTDRdiogAY=
+	t=1774607969; cv=pass; b=dBFy8LjTmDMgdWGmyIvGmprU8zvSOejwq2mO1l2Rj/mbi5TJU6QYEuaziEwwNprNM/p3R3LxGkc4Q5KOZautcQXbEsFuCPwzfrQzN/tv7FEFp6WJP0PZhV6QTc49DewLm9pMgD0WY/kIuWQHHf/9Q7Z6hIXuyC3xGF37YXOqaCQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774607881; c=relaxed/simple;
-	bh=dL7g5B6+bEqOjoNZIsYaoVnqIJkDP5v40waj6KEcH38=;
+	s=arc-20240116; t=1774607969; c=relaxed/simple;
+	bh=N8fq7UtLOxR4Iv+iBktgqxIt69VvXXVbPrs3reH1t6A=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=crqVlPsA8rsNwjCYWwP+7xJX057eJoI+v88sFho2vHK+x/En7pozJGyCSL6QV1v9L7Bmrvkm1hPoiPgOGgAp25WVUQpbml7tzn0FdySoR5CaUTqyo8X7VNBHOvRExAboxSzfjguK4yWHwYmnxIzlHzPMBdCyPVj6OoKS1gnS5eA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O0zt0Bg5; arc=pass smtp.client-ip=209.85.167.50
+	 To:Cc:Content-Type; b=sVJcwptj/lGr+KqLmTQEnLRFi7sn/x6weASF5oyG6292m2QfsLiu3ZEMdoWht7kV0Ik3JSL7ZNovdlwFLW7EfWQGRGSCxa8K7cR+8ao9RL2B/Doo4h+ln9n6yxiOt5zvue9Q9XOy10QRJ6T17JvfAVLluQg1Hgodd7E+7LDted8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gkUG3L0s; arc=pass smtp.client-ip=74.125.224.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O0zt0Bg5"
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-59e5aa4ca41so357093e87.2
-        for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 03:37:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774607878; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gkUG3L0s"
+Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-6500040f128so154995d50.0
+        for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 03:39:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774607967; cv=none;
         d=google.com; s=arc-20240605;
-        b=J+oVBkYRSNrOPpDh8W8qwKSTCAeXlSqWcg9DO8lEVFr/WxbbowhnZOVLUkIDjtVU/c
-         fJwpolROzrxLMcQqa9I4QqVmTDiAOamnM+N9Mrbw8kq6C46xJYTvHiNCCSnr/Y8NkrnR
-         iVu9Q2VeSEzow5n3B7VpcrXENWF0UJZczujzWavgAJ1yOhP+xi1ASOfdFaxM02OLgWt+
-         kkE9msyG2Bj/NI8ygNLvqQndnf/++6oOVT+EV/GidgBXNptAjjVGVOt18nLKeSoHC+4+
-         zfXr6BNTR8ekEtSWxTZyvaA06Ric7bCaM3uS9x9wKaRZObc7AAnOsugJGE30GPF5Xa96
-         jN5g==
+        b=NCCJ+1QIFL0MUBZXs7mqa5V1+N2FQDycRUGHDBNGayK9vSKFlFb81qH0i34bYzzz9I
+         DllMlVpe95YdeYPVe3vf/UalUHIGf0WedXK2nphEgPNMf/4YEFlCczefJGt4hPcBU2D0
+         FnrGPUBHGdbNcC4oSXbQpHubXKtR96nZ1VQBEEdquahwtsfbVU3F0HbpNfGOT49DbxsL
+         zj5sCiAO4xcxSSkqFfIyhs+EG0QTuWgiU2Z5qDYUqrcJMLBReucSGB38R3Rl2n6kqdWM
+         nyvhnt0ZufxJIek8Bm93E5zJNE1Bf1oTTfZ579SP1PO058zFwtZeYK9XgHYvdkTAg2sk
+         j1eQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=jhD1D8zHO+hBH+Nf1ekUTq2RJpwckifmx0XEo5ywQ1E=;
-        fh=cGKiNixxesD20kaYjAF4sjdU7wb63T59hZb3XPQk/5g=;
-        b=RzMuioj0jdkwYtQDdgl8OWNezYdo0mOqYaVVmJ79AvMpJn0fC6ADjBxM6czzJKccx4
-         PaZuz4bEwSD7zi4aOvUtLQV+gNJIb4bEGKo21CTQ22aELerAbslBhn9T4wQUYPIcvCsn
-         u77FMALBXwA+cJz7M8u3y0P3R6SXtKFVgDJUm1v7KS+M13d141by9zlWJpW0ehxa7QoC
-         I5cTA0BRmfsSdU8Jug4vp2/fn+anvo56PXguN6VO6ixKNevWMFGB/4ugajv4I/qGyCfT
-         PW8ITK7vamKhKehMwsoWD19Cb+6c8BFrbsLU+LAiyz8imYYwZT4pKB5kLZFOCrF5WcEM
-         L+Zw==;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=J3EDHpPb5AhiaBsdFZsph770IiBUnt3skegE31v5MuI=;
+        fh=Bq6fgS7s0Q38dcc+gqeO2s2+Z3aw17K05ERkcVv2ZS8=;
+        b=KhWHcnLVkSTHcCZT5U2k1lCtMsj+UV4Elbnr5Fib8bH4oaHT0n1uAQH/qAtjjqwD9b
+         X+NPb9MndrUHO7xAYL9fTaNYf/N2d9t3IoADUK0qyHCKkWrEG/q+yvzDkKPVJtaWZ9Ae
+         jl+RPZj49bPbup1gP6wNAhuOYZVgudPiI802EoQtVMe6XzIGlp89VyqCT36+j/nFyi/5
+         iT3q1Vflj4YO8rUdB9pZR8nayWlj+4tvkDlKRPQimqvv8AAtInHN7QVFiPZ9DYEkPmcQ
+         pnXbu/mERAjA/xnLo8KwqJe/fSdOByi63Peijzq3hsakyJvjjSKTPLVdojJsLeQLuq2G
+         Wd0g==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774607878; x=1775212678; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jhD1D8zHO+hBH+Nf1ekUTq2RJpwckifmx0XEo5ywQ1E=;
-        b=O0zt0Bg5PjouJ9kW2F+RbCVnDeibRHMc+4SejttZ6Vlurg/WPRH18+xvI6IhJIA/yp
-         Cou8PVfoM1HpBmnEyRfRJpBcGxp50jGbWqsNtycAf+iOvhmwT8M+wZHKAc1hXdc8jaVh
-         eEnMn+7Ba6PKPjBgjENaRGdkNiyhBolpB8iprdvbbE1G6hMOcDOQ3DKQCIodR43+rrqn
-         55c+gnMZifFJOEszxt8nVdgOjd7NszD9KdxjrHpHgKx8gP7MGsNbaZp0CsYEhT/rbwLA
-         3pmLsmdsVRpEgCsBWhMhKFvIwfSTc6T2rEJEsY11wNsw2k25R+qd6ZDyPHwYixcZl0v7
-         H03A==
+        d=gmail.com; s=20251104; t=1774607967; x=1775212767; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=J3EDHpPb5AhiaBsdFZsph770IiBUnt3skegE31v5MuI=;
+        b=gkUG3L0sFpuPUFbsvC0dQduTPgXtbVoQggYZ7mSM6oX8y/AI39c/Z0Wu/Xs7XhbC7X
+         b5i6OoxR+yhzUtRw1q9lSog5o8L/n9YNHHag7Eun7Qm1zNREchFjzhc0M/Y4Wtixkjqt
+         M5M1GkOVZFEBsJyXwASMjqFu3UFXnphWxNuaObVdtgVVoAM29yf6Ru9E3a8fXd1GPiG6
+         pi5lshG7+DoIt52x80cYNMPXOpKRmaIs8QKntotlu13FwjD73mYJ2Q4QFt7Jn/NykIHN
+         Z1fhk/Rg8bVo+6W+EBNSfrrsOEuXFi5rE4Xl2RHjHy2c4VM0A2Nqb8s9eJmBJlpgmQ1M
+         yHSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774607878; x=1775212678;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jhD1D8zHO+hBH+Nf1ekUTq2RJpwckifmx0XEo5ywQ1E=;
-        b=Eg3la98rNw4CzdxZmzIMfqhKiJAkhiCTpyDE0NvFyGaKQUq1wMF68qoAXmJa4wCmuk
-         lvhZkahWEGyIayxGxRI5tN9orH06WN04suTWrsda0o0yUuu/n7GO2NKIHqHLohCOVfAU
-         3082Q95Q/oiNkc+a/kHqG6dpxJG44DsVuaKISY+nvlsLF37iewEJKRkLjw4+Up+RpfHD
-         eAK/ICIqTixKkhIOKeFmkAaXdvN9W5wGieViWK6dxto5xypcp9cPIrckr4epZNwZjPpP
-         CDachPCK7gNHLWPnrBl6Fz0/olr49d24cEPVgFyi3ihc4upkTTNqJCPWu8239ktDf45J
-         A0Mw==
-X-Forwarded-Encrypted: i=1; AJvYcCWbwX/jFQM34BDkmShRNbUdHjo2/dxJD6wvN4wFo937XAkjHouGjpSFKOTGYwuVi5PCelxoZTY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4ryfnCFbUWtiY13mc8zuT2xk1jzsMGbm+P/4daQpyTh1NuAcI
-	Ns1C323/+XQf/ERMRN9Yu7ZW6chpQCLs8jA42nYZkp22woYOpLxhmUnbWu5Hq8aNvv4DJVXmUsS
-	dBzYwQUR1BoQatrSjCeApLyXPkCASok4=
-X-Gm-Gg: ATEYQzxhL/6S8j4jI5zqC8jmpwB8l9lBGvoFheEV73U8RztXJelHd5YL7T5NOU2EtEL
-	h+26y2GqOnQrHtUwmCo/znqv324t6biTHmPPZoryjZPUzSgiIfFgG7nXBaymn8Q/StI655hBD77
-	ts3IF9s/FKjkTAQjIeJBnunyhZLxH8Qqq/X6RCMnOmo4c9zGC41GRKxMl51L+oysQaYpcjAmdcx
-	Jeq121IJltKxZV0nXRNCtaWiUDPbeeKRJgNU6V7HsJj07kWNxFl/Y9asOAFgOmwk1lGXXs0qMOs
-	IRjA/SoVw83oCwEnHFU=
-X-Received: by 2002:a05:6512:1292:b0:5a1:378c:11e8 with SMTP id
- 2adb3069b0e04-5a2ab7fb871mr685854e87.14.1774607877886; Fri, 27 Mar 2026
- 03:37:57 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1774607967; x=1775212767;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=J3EDHpPb5AhiaBsdFZsph770IiBUnt3skegE31v5MuI=;
+        b=aAGuqDNOlByyECLBzWmGhCQ1ccbq1ifO2X1ac65HPj7NeWJysQSsSpWo/XNIVYxq81
+         IfGmIc+1ggmTbaCJRiiDVuiotqZMKpFxreDT9WopuhWFmtpMfnyj4LGTHn4Kom33jjA7
+         Mk28WcSyiWb5+EdauLry8VzSZJPDhx70l+C0/U8HNYu6IOiHEWk7PsCr8Lf4j4By/ccN
+         nYg//+zDLXOtnJBoToDcUNT7rqlJHbtTqxMAP4pCuikWj/EM4BxcDp/EWIH5gGFUgb5J
+         Jg0yPr14RGEWUg7ysNvoJ/PBplqaqts16jM7rTw9hZbzvGIW52w4oC+IDVmrfqrnQOTz
+         Q7Gw==
+X-Forwarded-Encrypted: i=1; AJvYcCXFeF5mXHZSJUUCpgR6XM7clgD9CECWq5TIZ7dGop1mC4Y212j3dWgKAfojk51uFtqBInaMiw8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhtBw9jJSoeVDskX00MRlo8B2qFbEFAALnX0ttcNhvDfNRwXqm
+	ZrEAhTkLz0GmD1Hv24Llosgb2fs1E+W2gfyKO7H2rG8TK4Q/RLRIO6QHaT4F2MMfEejk4JnOgPS
+	wGMJHUgRmWv7yX4Pv+rS+phs2shA0XjM=
+X-Gm-Gg: ATEYQzyEQAVr7myRR7xI9vehWECG2qbEbtjqZS3gUXjN01NzM0MxCDPa9AtO+Oop8px
+	Wp+Fzp1m6Kr/CoH3QrJtvVLT16gaKOAqjkhr07Bgrj7ltbOoXBlPX/15j7HGeCkpS62l76fgUb9
+	RPQWoDjU0W/7uKSbIOVQIZVWXxoqhZT5c0Wo9QSCl4jC8ylWggUXv/V2N3SJoKzlWOfB0xxTI/g
+	CgfOyejKs8qIddWRBveYzGSCHLlpAUkxApYSYDaf/HBxrgej9+tGumdpBAcQQF58HATqSmGlW6g
+	KnF8WpVjfXRfgSOuOGvXsi0v4883zVuftHosQnn/boIm17kw
+X-Received: by 2002:a05:690c:4c09:b0:79a:b46c:e608 with SMTP id
+ 00721157ae682-79bddd5dedcmr18719737b3.10.1774607967433; Fri, 27 Mar 2026
+ 03:39:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260326144249.97213-1-kerneljasonxing@gmail.com>
- <CANn89iL6FyoHBrfpwYSd5wPzFh3Y_1T8C6bVFuRRf7PP5p=WRw@mail.gmail.com> <CAL+tcoBL5+qSQhz8BO0ozOoEE0EgPpaoaPvp455e+gqrRyrEUQ@mail.gmail.com>
-In-Reply-To: <CAL+tcoBL5+qSQhz8BO0ozOoEE0EgPpaoaPvp455e+gqrRyrEUQ@mail.gmail.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Fri, 27 Mar 2026 18:37:19 +0800
-X-Gm-Features: AQROBzDsQR6337y6G-5zUfqQ9zvpzl4RF0bF4hBNxis-N-06yGHHYBP-_yOMGZI
-Message-ID: <CAL+tcoDZx9j_HuzTge3u11_kz8FmEVfw_DMzMRzRd9hv+gjTdA@mail.gmail.com>
-Subject: Re: [PATCH net-next] net: add sysctl to toggle napi_consume_skb()
- alien skb defer
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	netdev@vger.kernel.org
+References: <20260325125131.53399-1-devnexen@gmail.com> <20260327102924.GF111839@horms.kernel.org>
+In-Reply-To: <20260327102924.GF111839@horms.kernel.org>
+From: David CARLIER <devnexen@gmail.com>
+Date: Fri, 27 Mar 2026 10:39:15 +0000
+X-Gm-Features: AQROBzBJJOv5FvWWrA-8SBYmzTxhOKlhxOqal3cqYu71wFo9yUVcl9nKQidk5fw
+Message-ID: <CA+XhMqzcdZcztwuar_j2Cv=3rogmaE=Xmn3Y1_avxYm6eGnsyQ@mail.gmail.com>
+Subject: Re: [PATCH] net: ti: icssg-prueth: fix missing data copy and wrong
+ recycle in ZC RX dispatch
+To: Simon Horman <horms@kernel.org>
+Cc: danishanwar@ti.com, rogerq@kernel.org, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	m-malladi@ti.com, jacob.e.keller@intel.com, 
+	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 27, 2026 at 12:21=E2=80=AFAM Jason Xing <kerneljasonxing@gmail.=
-com> wrote:
-...
-> > Seems a copy/paste of proc_do_static_key() ?
+Hi Simon and thanks for the feedback, will keep this in mind. Cheers !
+
+On Fri, 27 Mar 2026 at 10:29, Simon Horman <horms@kernel.org> wrote:
 >
-> Thanks, Eric. Much simpler right now:
-> diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
-> index b508618bfc12..a6a1b2c3f8e1 100644
-> --- a/net/core/sysctl_net_core.c
-> +++ b/net/core/sysctl_net_core.c
-> @@ -676,6 +676,16 @@ static struct ctl_table net_core_table[] =3D {
->                 .proc_handler   =3D proc_do_skb_defer_max,
->                 .extra1         =3D SYSCTL_ZERO,
->         },
-> +       {
-> +               .procname       =3D "napi_consume_skb_defer",
-> +               .data           =3D &napi_consume_skb_defer_key.key,
-> +               .maxlen         =3D sizeof(napi_consume_skb_defer_key),
-> +               .mode           =3D 0644,
-> +               .proc_handler   =3D proc_do_static_key,
-> +       },
->  };
-
-Eric, when I'm investigating the static key feature, I wonder if we
-can replace some sysctl knob that only carries either 1 or 2 with a
-corresponding static key? The merits are 1) we can minimize the size
-of net.core.xxx or net_hotdata which helps put the structure into one
-cache line, 2) in hot paths, the static key can be more efficient.
-
-Here is the list that I've found so far:
-1. sysctl_bypass_prot_mem
-2. sysctl_tstamp_allow_data
-3. net_hotdata.tstamp_prequeue
-4. sysctl_tcp_early_demux
-5. sysctl_ip_early_demux
-6. sysctl_tcp_l3mdev_accept
-7. sysctl_tcp_moderate_rcvbuf
-8. sysctl_tcp_nometrics_save
-9. sysctl_tcp_no_ssthresh_metrics_save
-10. sysctl_tcp_dsack
-11. sysctl_tcp_abort_on_overflow
-12. sysctl_tcp_slow_start_after_idle
-13. sysctl_tcp_timestamps
-...(some other tcp sysctls)...
-
-Some of them can be accessed in multiple places, which means they can
-be hot. Maybe we can try some relatively hot knobs first, like
-sysctl_tcp_timestamps, sysctl_tcp_early_demux...? Do you think it's
-feasible?
-
-Thanks,
-Jason
+> + Meghana Malladi
+>
+> On Wed, Mar 25, 2026 at 12:51:30PM +0000, David Carlier wrote:
+> > emac_dispatch_skb_zc() allocates a new skb via napi_alloc_skb() but
+> > never copies the packet data from the XDP buffer into it. The skb is
+> > passed up the stack containing uninitialized heap memory instead of
+> > the actual received packet, leaking kernel heap contents to userspace.
+> >
+> > Copy the received packet data from the XDP buffer into the skb using
+> > skb_copy_to_linear_data().
+> >
+> > Additionally, remove the skb_mark_for_recycle() call since the skb is
+> > backed by the NAPI page frag allocator, not page_pool. Marking a
+> > non-page_pool skb for recycle causes the free path to return pages to
+> > a page_pool that does not own them, corrupting page_pool state.
+> >
+> > The non-ZC path (emac_rx_packet) does not have these issues because it
+> > uses napi_build_skb() to wrap the existing page_pool page directly,
+> > requiring no copy, and correctly marks for recycle since the page comes
+> > from page_pool_dev_alloc_pages().
+> >
+> > Fixes: 7a64bb388df3 ("net: ti: icssg-prueth: Add AF_XDP zero copy for RX")
+> > Signed-off-by: David Carlier <devnexen@gmail.com>
+> > ---
+> >  drivers/net/ethernet/ti/icssg/icssg_common.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> Hi David,
+>
+> Thanks for the update.
+> My understanding is that this addresses the review of v1.
+>
+> Reviewed-by: Simon Horman <horms@kernel.org>
+>
+> v1: https://lore.kernel.org/all/20260324211402.342474-1-devnexen@gmail.com/
+>
+> Some points to keep in mind for the future:
+>
+> * Please include a version number in the subject when posting versions >
+>   This helps a lot in tracking things.
+>
+>   Subject: [PATCH v2] ...
+>
+> * Please include the target tree. As a fix for code, which I asusme
+>   is present in net, in this case that would be the net tree.
+>
+>   Subject: [PATCH net v2] ...
+>
+>   Otherwise it would probably be the net-next tree.
+>
+> * Please CC all relevant parties. In this case that would
+>   include Meghana as he provided review of v1.
+>
+> * Please consider including a changelog, along with links to earlier
+>   versions below the scissors ("---")
+>
+> * b4 can help with most of these things
+>
+> * More information on the Netdev development process can be found at
+>   https://docs.kernel.org/process/maintainer-netdev.html
+>
+> ...
