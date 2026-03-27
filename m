@@ -1,161 +1,157 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 971813ED13E;
-	Fri, 27 Mar 2026 13:59:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774619944; cv=none; b=ei+ZexzAfN+v7KJCFpc1TAz788uhUvmsANlVqa0gyQPPeqNNtHah/aT46JE30BCqkn+XaREwDyBJiDJDxJe4E8pjXe+xyqdxVYE5WjgsBprXmd46a83Ld9n6o2u3o+f6eoZWQkKgbu/En2HagpiAQtgN5Ct0kTbxWS59T0t5NOE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774619944; c=relaxed/simple;
-	bh=RxwxYCW56PNiCQCHThhCbANEJOjI+CRqaSU3dcjzd+U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j1ghKhsukogxF8qUCCe9SDJTyJmfaTKCzR8pkVmmZDKePD/3YBU4abDrmW+5OQNhnnPltT/FP0mdnTfucuDLqeuAG7ZWUtMRY4VtD2YnhdZ4jTeU+9appNJidVoKynqKANo08cGp9QKUYiwrQWOpGX6HbJboBZKlk8JZXCzVCzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SaNUDrBR; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A7E221264
+	for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 14:01:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774620102; cv=pass; b=rqyYK30b4K6duPl+4y6pA+PyHTyHgBoK41pl/E+cSAs8VWBei8OX8M7zdbtcnV0OtTOi3NdfFbU2H5BvUjyb1Gki4NQa5Njmi19tvoHat0nj66sprm2E6PXFIU3Nm7/TaJ30rx/yrFOCcy4jbea25LeHNcQHQ57lzz9wt70ZR64=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774620102; c=relaxed/simple;
+	bh=yhIU6ohqPFA78hwbR2qe01CYD73TcGKUCp8noC5N+Sk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QkHVWhprKxsm6yyqUrHcLhRacXeg3Gl43aQ5HDmpJJ9KOVSwVJh/mbdZqskFyKvmQmxwM70NIZHnwV3MIFQYsn4Y0fuNQZYRzObzs/PYPGRW2ITtdzP8LN8Acps22yFHUnLwoBt6DiCHvLXAQ6Af8VhN2oM57Qya2PqXaMjrX+s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=B7CgAbxn; arc=pass smtp.client-ip=209.85.128.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SaNUDrBR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E9FCC2BC87;
-	Fri, 27 Mar 2026 13:59:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774619944;
-	bh=RxwxYCW56PNiCQCHThhCbANEJOjI+CRqaSU3dcjzd+U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SaNUDrBR/CivKiWnUyg4LQb3RDVGBbPowDqYDRYgLYXsGvbw43RTT//1hPZpDqEJa
-	 zjGVUtzi76Ax6BCaqFo2wNRygHQABehUmInPLa8QCWWwmNpg1h0OIj4aLZwmfVAB9p
-	 bAtBUIeA758fbZhZemYWYHQI6poxiAygUM2cwmH8gLklRju329G2FPlO9nUwltuW/6
-	 B8Vunnuumu3hgMbh8CHID4UNVSYJ1bXtnfWg+Aceh3MP78mJ16U8ochX1/QHDoU+x8
-	 8VEyPFdDuNeQgx7G5Xg2/l13V6Ptq1gv/5L+ucvgRK0SzVmuE5m9WEfrvU3D/sXciy
-	 mgVTiYn9YcqMQ==
-From: Simon Horman <horms@kernel.org>
-To: anthony.l.nguyen@intel.com
-Cc: Simon Horman <horms@kernel.org>,
-	magnus.karlsson@intel.com,
-	maciej.fijalkowski@intel.com,
-	sdf@fomichev.me,
-	nxne.cnse.osdt.itp.upstreaming@intel.com,
-	daniel@iogearbox.net,
-	davem@davemloft.net,
-	aleksander.lobakin@intel.com,
-	kohei@enjuk.jp,
-	pabeni@redhat.com,
-	hawk@kernel.org,
-	ast@kernel.org,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org,
-	kuba@kernel.org,
-	edumazet@google.com,
-	aleksandr.loktionov@intel.com,
-	john.fastabend@gmail.com,
-	bpf@vger.kernel.org,
-	jacob.e.keller@intel.com
-Subject: Re: [PATCH net-next v2 3/5] ice: migrate to netdev ops lock
-Date: Fri, 27 Mar 2026 13:57:09 +0000
-Message-ID: <20260327135707.590630-3-horms@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260325200644.2528726-4-anthony.l.nguyen@intel.com>
-References: <20260325200644.2528726-4-anthony.l.nguyen@intel.com>
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="B7CgAbxn"
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-79a46ebe2beso20859277b3.2
+        for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 07:01:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774620100; cv=none;
+        d=google.com; s=arc-20240605;
+        b=P+bcIgd35L1SGf+GxALD/fALTYTv7ShadyFDGkICscVQ0M6I2RnP04UQOOlJE56qkF
+         sU4J/5dX+vQczAOLjel7vozUuTJHp3wMVqp2jzzyM5Y4dKB6Z6IvZbuhwqUFuFFDx16O
+         KKgm1SbcYLxwhq0L2UmyJwHu79Mwre1qqU/GI40+GqrG+nwIvmljyxpODH0zMnZY6JgC
+         DmQOG0lfYHTDIjlDOFgrTAcEWXFDf5QIEt4ShPvS4HZTLXbqkaukvy2YYQVc/uaheON4
+         spE6T8y20QkOjlizMtJr77IKGl7llk2YPS5k+kO5ISKk7kdv8+N/tHcRv/iykleTQO1T
+         bnnQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=2Mrj2spaSYxEVRO3PScAwVhr9Ih786FqnFHJLtyiUrw=;
+        fh=Gji7v8LgRzG6bgEKSWQS7BpHyCjny9xJWuDeNdfBPeA=;
+        b=e3aEWYH/eu5Ih01E54dXNouK6/ziVXBjjxJK47bVtvtnHZZ8jYAjDcWHawRPnSSgz9
+         GJPNp249XzjnA8my/btpWFEjubtv3o1CiRs8cy/qjo171heUgKT6usSI21w+4HXKqCbn
+         RF8CdrrwLAapcQc9lcKie8wOEzIy2CXYVKRo/n4JwEfnWBfDKuMCucLBIhEZASkdvObC
+         WRUr4ukZ+5UptJsAIqU1/oLCaBt0WybAnZybld05XQb25snNwTE8qgJlIxMKeeJnX53U
+         NVjWFjqBAfp5s/Dtmn97E5Glq2pFDCZ26XKyR2WEXpnUjzaAmX84w2tRQ9RrSkwMCgwB
+         eSjw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1774620100; x=1775224900; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2Mrj2spaSYxEVRO3PScAwVhr9Ih786FqnFHJLtyiUrw=;
+        b=B7CgAbxn7bQ5lubTxmLrbRcuaDDC9cV71bJY6qV5Ylu6N/cBYx9kKOI9FT0Fr1bxDh
+         2o4Z1sqi0R/zes6cmh5uMXPiBQYZeH/N1fvAcGsETlkLch9l7VmM7FUrnv9rgPb/I46Q
+         QqlGoMXB5z1SoROebyJumdfPRtOQM6cpgcUUFDWixblogy8rc5nrHO0eRRtfUsfIpDdu
+         BsLX/TtDRIbL6nBr/zgI1gqDPf3wOcXFM+5kKHtdWphiKo6QkqCiR400vG06d1m7SnP3
+         rqQ23Oy+TES7VhIJpVG6T7qYnzzR6Zan/lSQXDmOTE5bNOzI73C2tAfpmfYEa7+9nukH
+         aycA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774620100; x=1775224900;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=2Mrj2spaSYxEVRO3PScAwVhr9Ih786FqnFHJLtyiUrw=;
+        b=Z21ZOAxZlwR2721+l6CdF7J4zGwq/9YCLSkvWQ0828eSkgzphvHJ0RXKCmPnxVNy7x
+         dVwAIU6BcviIUSvVvbNSC4xOZTrqi+9/uZlr2uXboRYlgvq7m1s3e3xO3uMnoiBB0CpV
+         uzGApkphD3J7Q7B3PQJ4Tig7oebGBr+L6eQ+WuCoDBATY0Y8hbNTO7UXkirz8bq/rT+U
+         MRM+sUgIQ8B/m20hp7oILk4h3PIqFrqZAo7iwRgvWtlqMsomMR0w4vhCigPpO37VO3sA
+         hbN5xaTXEsB0f9Iz1/4TUYNDWeQUbLtzb4GclqsBkkG4PJvi6nzkTTVuVDIlYGfgzuQt
+         KUSA==
+X-Forwarded-Encrypted: i=1; AJvYcCUiEDo9RjyCdYTAEjMDkKukt2vG0hmFq0FKsOYafWLfp8iZ66TYDenFMt3lJFwayCGuvZtmKbo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6OqGzbBHmpxLjZanBzDkh7/iOcg7m3slUQcnlCxDLtZ3hGr3T
+	4ZbTjAYIJ/fhX1WInDCZpT/G89BmJItpoUh6Z0pBJNN+r74Cr7i7EXUzfFe4Hco4NI8Fqf4rHTY
+	irIgsUyY3igfh60Eq+NaUIfb+6q+Gq9U8uWX+/IMG
+X-Gm-Gg: ATEYQzxJ4Vds/SoVFn8HPEKrlRqXXzB68LMDy4DRi/WH04E8ccyV6tiBe6PHalrIZ3N
+	lhcc3GOWLxLaq4NEVhE9g2PYJbPzEejP9ccgOb/OQW0ewR4Z7Op/kNQQZVzW8udlj3jmpmH4ujI
+	qGqxvyvSBTh/bkpXSaflV0xyop4SdlGGiGDYN0TNFjAnLOth5vvo71QRXrJcZNpuRN+6mVSIQ/i
+	W0qpU6rtFYoDrSU7poS1Ii1twa75CBYHVjdD/YaLvU/Z4beKdenghS+97BG7epg4KQS1BjWGqQY
+	JjghgPIdYrDKUGR3uLUGetclgZcOvw==
+X-Received: by 2002:a05:690c:15:b0:79a:b0c8:da98 with SMTP id
+ 00721157ae682-79bddcbb3d3mr22481887b3.8.1774620100129; Fri, 27 Mar 2026
+ 07:01:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260326204310.1549327-1-xmei5@asu.edu>
+In-Reply-To: <20260326204310.1549327-1-xmei5@asu.edu>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Fri, 27 Mar 2026 10:01:28 -0400
+X-Gm-Features: AQROBzCr1Qvc4ZOQayH19ZWAAhgc9YoVU7dsgvbGWpfm1akZtjABNySZ7A4JTYc
+Message-ID: <CAM0EoMk_M8nzTSXsjiRCcS3gkujFjRbTT+xPEEHCA6Ye4tAj2Q@mail.gmail.com>
+Subject: Re: [PATCH net v3 1/2] net/sched: sch_hfsc: fix divide-by-zero in rtsc_min()
+To: Xiang Mei <xmei5@asu.edu>
+Cc: security@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
+	jiri@resnulli.us, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	horms@kernel.org, bestswngs@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+On Thu, Mar 26, 2026 at 4:43=E2=80=AFPM Xiang Mei <xmei5@asu.edu> wrote:
+>
+> m2sm() converts a u32 slope to a u64 scaled value.  For large inputs
+> (e.g. m1=3D4000000000), the result can reach 2^32.  rtsc_min() stores
+> the difference of two such u64 values in a u32 variable `dsm` and
+> uses it as a divisor.  When the difference is exactly 2^32 the
+> truncation yields zero, causing a divide-by-zero oops in the
+> concave-curve intersection path:
+>
+>   Oops: divide error: 0000
+>   RIP: 0010:rtsc_min (net/sched/sch_hfsc.c:601)
+>   Call Trace:
+>    init_ed (net/sched/sch_hfsc.c:629)
+>    hfsc_enqueue (net/sched/sch_hfsc.c:1569)
+>    [...]
+>
+> Widen `dsm` to u64 and replace do_div() with div64_u64() so the full
+> difference is preserved.
+>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Reported-by: Weiming Shi <bestswngs@gmail.com>
+> Signed-off-by: Xiang Mei <xmei5@asu.edu>
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
----
-ice: migrate to netdev ops lock
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
 
-Queue management ops unconditionally enable netdev locking. The same
-lock is taken by default by several NAPI configuration functions, such
-as napi_enable() and netif_napi_set_irq().  Request ops locking in
-advance and make sure we use the _locked counterparts of those functions
-to avoid deadlocks, taking the lock manually where needed (suspend/resume,
-queue rebuild and resets).
-
-> diff --git a/drivers/net/ethernet/intel/ice/ice_dcb_lib.c b/drivers/net/ethernet/intel/ice/ice_dcb_lib.c
-> index bd77f1c001ee..2ca3fc6e8abd 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_dcb_lib.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_dcb_lib.c
-
-[ ... ]
-
-> @@ -273,14 +273,13 @@ void ice_vsi_cfg_dcb_rings(struct ice_vsi *vsi)
->  /**
->   * ice_dcb_ena_dis_vsi - disable certain VSIs for DCB config/reconfig
->   * @pf: pointer to the PF instance
->   * @ena: true to enable VSIs, false to disable
-> - * @locked: true if caller holds RTNL lock, false otherwise
->   *
->   * Before a new DCB configuration can be applied, VSIs of type PF, SWITCHDEV
->   * and CHNL need to be brought down. Following completion of DCB configuration
->   * the VSIs that were downed need to be brought up again. This helper function
->   * does both.
->   */
-> -static void ice_dcb_ena_dis_vsi(struct ice_pf *pf, bool ena, bool locked)
-> +static void ice_dcb_ena_dis_vsi(struct ice_pf *pf, bool ena)
+cheers,
+jamal
+> ---
+> v2: resend to netdev ML
+> v3: append selftest in 2/2
+>
+>  net/sched/sch_hfsc.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
+> index b5657ffbbf84..83b2ca2e37fc 100644
+> --- a/net/sched/sch_hfsc.c
+> +++ b/net/sched/sch_hfsc.c
+> @@ -555,7 +555,7 @@ static void
+>  rtsc_min(struct runtime_sc *rtsc, struct internal_sc *isc, u64 x, u64 y)
 >  {
->  	int i;
+>         u64 y1, y2, dx, dy;
+> -       u32 dsm;
+> +       u64 dsm;
 >
-> @@ -294,9 +293,9 @@ static void ice_dcb_ena_dis_vsi(struct ice_pf *pf, bool ena, bool locked)
->  		case ICE_VSI_CHNL:
->  		case ICE_VSI_PF:
->  			if (ena)
-> -				ice_ena_vsi(vsi, locked);
-> +				ice_ena_vsi(vsi);
->  			else
-> -				ice_dis_vsi(vsi, locked);
-> +				ice_dis_vsi(vsi);
->  			break;
->  		default:
->  			continue;
-
-[Simon says: this seems to be a false positive and what the AI
- suggests seems to be the exact opposite of what is correct]
-
-The DCB callers all hold the RTNL lock rather than the netdev lock. While
-ice_ena_vsi() and ice_dis_vsi() now take the netdev lock internally, their
-_locked counterparts (ice_ena_vsi_locked and ice_dis_vsi_locked) would be
-more appropriate here since the netdev lock is not held by ice_pf_dcb_cfg()
-or ice_dcb_process_lldp_set_mib_change().
-
-> diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-> index e7308e381e2f..82f6523bc726 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_main.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_main.c
-
-[ ... ]
-
-> @@ -7263,7 +7271,7 @@ static void ice_napi_disable_all(struct ice_vsi *vsi)
->  		struct ice_q_vector *q_vector = vsi->q_vectors[q_idx];
+>         if (isc->sm1 <=3D isc->sm2) {
+>                 /* service curve is convex */
+> @@ -598,7 +598,7 @@ rtsc_min(struct runtime_sc *rtsc, struct internal_sc =
+*isc, u64 x, u64 y)
+>          */
+>         dx =3D (y1 - y) << SM_SHIFT;
+>         dsm =3D isc->sm1 - isc->sm2;
+> -       do_div(dx, dsm);
+> +       dx =3D div64_u64(dx, dsm);
+>         /*
+>          * check if (x, y1) belongs to the 1st segment of rtsc.
+>          * if so, add the offset.
+> --
+> 2.43.0
 >
->  		if (q_vector->rx.rx_ring || q_vector->tx.tx_ring)
-> -			napi_disable(&q_vector->napi);
-> +			napi_disable_locked(&q_vector->napi);
->
->  		cancel_work_sync(&q_vector->tx.dim.work);
->  		cancel_work_sync(&q_vector->rx.dim.work);
-
-[Simon says: this one seems plausible to me. Could you take a look?]
-
-Does this introduce a lockdep warning in the eswitch/switchdev path?
-
-ice_napi_disable_all() is called via ice_down(), and ice_down() can be
-reached through the eswitch path without holding the netdev lock:
-
-ice_eswitch_attach()
-  -> ice_eswitch_enable_switchdev()
-    -> ice_eswitch_setup_env()
-      -> ice_down(uplink_vsi)
-        -> ice_napi_disable_all()
-          -> napi_disable_locked()
-
-At this point napi_disable_locked() will assert that the netdev lock is
-held, but the eswitch code path doesn't take it. The uplink_vsi is the
-main PF VSI with a valid netdev, so the early return won't trigger.
-
-Should ice_eswitch_setup_env() take the netdev lock before calling
-ice_down(), or should ice_down() have both locked and unlocked variants?
