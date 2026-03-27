@@ -1,50 +1,79 @@
-Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010001.outbound.protection.outlook.com [52.101.85.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65EA530F927;
-	Fri, 27 Mar 2026 07:32:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774596742; cv=none; b=fGCodFcjBSinhXygH6ZeSMITolVUV0ubj5OB4/bCPAKAIKCWQYKiL+Do6kX1k2+EuHT/jyb5DWdkrKx2pIRZzaqW/cvltpJZjtQmyI5E5KG6gCWi2VM88QoAAmXZCn6gq+li2wbQyzMEeq6sFQ0cBf7n2qxyCUdQB20T++9rZ2U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774596742; c=relaxed/simple;
-	bh=sPIq4oegDN+UKCJQyVm2Z2Ah5A/OXXT0CKNhqwvY1ec=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=byydRqkIqyWTHgxyPQebRw4QxJVKwdEmQLTD+1q7DC7RcA500fIYoc6U8QqMJD7f3woW4D2tXGQTXEyMo2wgrfTt0KiQAI3Du4RQ7nnbv/mRD1t2FqYphWyLkhPcNND8vEEpsgJ75PqDKi2RHPYs29yfvARYr/XGK+Vl1qUYO5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=yrxc40M2; arc=none smtp.client-ip=113.46.200.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F23133B955;
+	Fri, 27 Mar 2026 07:32:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.1
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774596780; cv=fail; b=rrsZczH0IiVcGDrzF4OlqjReWeIiczf2ui1XmNi95G+L0TIAioPpWjO4ZVmUT+eyBcPs/zf/rqoFXYiLT/Jc21ghdhSRvBIBoIapY8KMfF/KBoqgd0oyktXbako4mje5BRjuoan0Gda/N3+GuvLplBFMXWxneinR6kfMuubNkJA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774596780; c=relaxed/simple;
+	bh=k+ldLvpeESO2M1Dh1THQ50oOnSF1VDorwMV7LyBlJ2s=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lElx2UUBupJwCUntSlkxwioYu3BesYtgvBIjL7JrpbaKmvzd/RPeAnOeK8babOs8cM4XSYNM2Pu14fda7gYk4Hgs7tOrGYqD8e/DlWFhwq3+KnYlOwfXVHydnINC1CRAgBzW1Bz/uMLpnhesBLWEKn/vt9ue5u/zzWC0em67t+o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Um9sZbBI; arc=fail smtp.client-ip=52.101.85.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="yrxc40M2"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=JlOVJvch5CnHpSnAoS69wCZR9XjUE7/EkqJycR+1o9A=;
-	b=yrxc40M20ytoWJ3FnjbvHeDJVvaRzULkYULAsjamP8Ae3DDI1wDzh/nkIs0Pjev787bpuhmiR
-	LeqOP0DhZk07NkXP/QE/nPh2ICgcd/AiHOGl7u6VZwT7+KiGz1yss/BOLzyFNN9hl8TssktuDMf
-	Alc+K/TpCK+9++VYFbii0aY=
-Received: from mail.maildlp.com (unknown [172.19.163.200])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4fhsd60zZ0zKm67;
-	Fri, 27 Mar 2026 15:26:02 +0800 (CST)
-Received: from kwepemj500018.china.huawei.com (unknown [7.202.194.48])
-	by mail.maildlp.com (Postfix) with ESMTPS id B04E94055B;
-	Fri, 27 Mar 2026 15:32:10 +0800 (CST)
-Received: from huawei.com (10.50.85.128) by kwepemj500018.china.huawei.com
- (7.202.194.48) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 27 Mar
- 2026 15:32:10 +0800
-From: Li Xiasong <lixiasong1@huawei.com>
-To: Matthieu Baerts <matttbe@kernel.org>, Mat Martineau
-	<martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>
-CC: <netdev@vger.kernel.org>, <mptcp@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <yuehaibing@huawei.com>,
-	<zhangchangzhong@huawei.com>, <weiyongjun1@huawei.com>
-Subject: [PATCH net v3] mptcp: fix soft lockup in mptcp_recvmsg()
-Date: Fri, 27 Mar 2026 15:55:44 +0800
-Message-ID: <20260327075544.3622851-1-lixiasong1@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Um9sZbBI"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YCOtdM6YCZDJLPAJ8FYnucz7H7z458aIzYsVGDHq+VRX1tb2xHEv7tF4+73QETdN+SP6WdF+1cuPx2SuKJDbbkqxP434yiRjFGGaxUjHf/Bkl33fqrtZrbWp+13jSwtoMUVmDfElQrQONkIw2V+7jocl+iCnfdsLHVXIDKVc6KWezJfbdxTHIeBw2eXsxxqmLmNwMtglUtkq52uFSYLXkuwAKK9i8UD3NhcQcW0hzYsGh6C9iVnHIztxHppLOYIbqPU0mswg1hAFXqFQ0lzZy3lVQeiJKF1T/W0ZF6vpT9NAfJUe9BhQFH3bnDgUb4EhgTF6gMUBFHgS+YA1yqQJWw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7Lw3Xr3tzeWhm7IMeEFBS4oGCg0PVxBCcbz9CNMfMas=;
+ b=TjAwoo2wuNv9v7GQNwSiSyqanOYwIhC9oH+sFlBTZ1FLsfoiYcOCX3XjmoTjoP9NSzfzr65pY1fWy6gWAUN6pbTPMjVdcicaZN3OHcNbgqz1eQcYfzqS20WlIYY2j/03YHh2YuNIex8YuGPNdJPtUnzoNXm0yoh/VA8z2Fim7/6HAdBfNJ7J95UHFQ+9fsXM/glKHQiOgFevd635E3M4rxXt8nLlex6BCw+xsmhCDK2DhO02ZXFensgEOYbXolbE5VFvadbtxrYSARhf9iY5AB4ZxWHp/XnjR/JohP92G+xFNIQBiCfqTHnJvfgE+PrGxdQKd0OYUlAU7bXV/iA/qQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lunn.ch smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7Lw3Xr3tzeWhm7IMeEFBS4oGCg0PVxBCcbz9CNMfMas=;
+ b=Um9sZbBI5xIIrCAmsNe0wkBZsXk7gVaepgGeUGRXMjnK7EsJsI7rQwusBx5th72T2GIC0D/GUnbMCxDLdSHF/uRzM8Kt5WxoLpFrLf1LW8CJCCmUDln8mMsIXqYdA9iTJPqjCaVzM5djROTzZ0effQSAh0dq52N4EaFAoTrIN9Y=
+Received: from CH5P222CA0005.NAMP222.PROD.OUTLOOK.COM (2603:10b6:610:1ee::16)
+ by CH2PR12MB9460.namprd12.prod.outlook.com (2603:10b6:610:27f::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.9; Fri, 27 Mar
+ 2026 07:32:49 +0000
+Received: from DS2PEPF000061C5.namprd02.prod.outlook.com
+ (2603:10b6:610:1ee:cafe::e7) by CH5P222CA0005.outlook.office365.com
+ (2603:10b6:610:1ee::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9745.23 via Frontend Transport; Fri,
+ 27 Mar 2026 07:32:47 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ DS2PEPF000061C5.mail.protection.outlook.com (10.167.23.72) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9745.21 via Frontend Transport; Fri, 27 Mar 2026 07:32:49 +0000
+Received: from SATLEXMB03.amd.com (10.181.40.144) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Fri, 27 Mar
+ 2026 02:32:48 -0500
+Received: from satlexmb08.amd.com (10.181.42.217) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 27 Mar
+ 2026 02:32:47 -0500
+Received: from xhdsuragupt40.xilinx.com (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Fri, 27 Mar 2026 02:32:44 -0500
+From: Suraj Gupta <suraj.gupta2@amd.com>
+To: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>
+CC: Michal Simek <michal.simek@amd.com>, Sean Anderson
+	<sean.anderson@linux.dev>, Daniel Borkmann <daniel@iogearbox.net>, "Ariane
+ Keller" <ariane.keller@tik.ee.ethz.ch>, <netdev@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH net V2 0/2] Correct BD length masks and BQL accounting for multi-BD TX packets
+Date: Fri, 27 Mar 2026 13:02:36 +0530
+Message-ID: <20260327073238.134948-1-suraj.gupta2@amd.com>
+X-Mailer: git-send-email 2.49.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,124 +82,54 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemj500018.china.huawei.com (7.202.194.48)
+Received-SPF: None (SATLEXMB03.amd.com: suraj.gupta2@amd.com does not
+ designate permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS2PEPF000061C5:EE_|CH2PR12MB9460:EE_
+X-MS-Office365-Filtering-Correlation-Id: 040db9c3-8ed2-4f27-16c6-08de8bd30c34
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|376014|7416014|36860700016|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	wuxDM7e0ndSE0yPYMahbU1ZCrU542IwkqjlSGnCLr9HkvQK1iH4ho9Iq4Xx5JS2pzCKQZOiMuwrkQFdvEpDi2fvNssbOlVVNYZ/Oi1E9Evvd6wZEhvzglD2NO5azJtJci6YJTISX2LE9ggX8gKLjJxkxdfO/6JzwK+X/iv3BgNCxWIosrBLokOsag0D7nXetAEEWN+JracLcosQgxNSuK2q+uGYjD2LECLFJirM3lBHgCZV4RLf182BoxEjCGoj5BdfpR9iy+GuqZ5XliL51GdoA1raVZ7Ckyn1TLHjZO8AF3Xx6gcRo2XapqHMOF44Hr6/pPF2pVNa2VyoStaBO8NPzwCXcsi1lc8hxVgqkEBxvEcUEaF0tY5jTsG3t8U3HqABGZ97gRkh/rY+AjBEAM9GwyvXHaM+zUIXXYYAUC8g0qE6YEllRgw7PLNFFuPtnvLG6FgzrsNmHjhpI9oXx2OvI8ty9dymF7AkwQXbAr/RPuc78zkPauz9bCR9t/6Kn1MyL/ZRuAflKhZry1xzhS5fNbTqSqgJ8DwpHhlt1qVeDHCQImiJbreWoDGgBrM+i9GHDN/KlHqJ22kpYxDtMVBOVLY1W2kx3MSFCJ15Z8lZjhg2MtQs0blmc/jkMTTxYK+FwNbAEVsT96JzNmeF89nSKMBN2y7NeyoIma6okVNhGCIJOiCm6Bgo+Ursr/giSOyXi8xZgxyMBeZS1Uq0ih2fNWDjViSy0bMQvhyNDdDP86r6n2jpTystwCCA/FMzNdjPWWWgzo/BAaX+aIFfIIA==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(376014)(7416014)(36860700016)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	hFi5wXJVfAr4LIixCjAjJVOgtwgmHps7UXBvBT9sdY/5clUaodJtBwIr9k8EQDza3KiK6w8sgFVS0Nw8iCjSBhV5GFA4fD7o9KsDjfdTOAxasM7paduVwTVFWijk0/HjA9ux76fTzTh9Wg3kR5dr2NnEb1+O4iZ4uWbF/lyRC4v2DIZsfuWqxGxsc/0pLq+G6IGwGiCQ5NkE7OxIn4C91ssobiTXUUmxYZUXJiBZ0EQ/z7CyOpXyG0hO7kZOqjnZxgNggZAbvKMH7bmpIaV9zyMxcX5NEjlRqVzE318j8PdE6v5evL9xtLdCV1XbKAjgkbVg7WquIwvMzK7P6B34bzuhE9bTCSSpsRSvPJMvg88UTABzb6f2XjkxPFrEonlM4oiVWvTmfi0b12REnv1Mlq0XJ/i6ovbnU5ee743q5u/Hh+nsKUUku1o8xi70dveE
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2026 07:32:49.1526
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 040db9c3-8ed2-4f27-16c6-08de8bd30c34
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS2PEPF000061C5.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB9460
 
-syzbot reported a soft lockup in mptcp_recvmsg() [0].
-
-When receiving data with MSG_PEEK | MSG_WAITALL flags, the skb is not
-removed from the sk_receive_queue. This causes sk_wait_data() to always
-find available data and never perform actual waiting, leading to a soft
-lockup.
-
-Fix this by adding a 'last' parameter to track the last peeked skb.
-This allows sk_wait_data() to make informed waiting decisions and prevent
-infinite loops when MSG_PEEK is used.
-
-[0]:
-watchdog: BUG: soft lockup - CPU#2 stuck for 156s! [server:1963]
-Modules linked in:
-CPU: 2 UID: 0 PID: 1963 Comm: server Not tainted 6.19.0-rc8 #61 PREEMPT(none)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-RIP: 0010:sk_wait_data+0x15/0x190
-Code: 80 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 41 56 41 55 41 54 49 89 f4 55 48 89 d5 53 48 89 fb <48> 83 ec 30 65 48 8b 05 17 a4 6b 01 48 89 44 24 28 31 c0 65 48 8b
-RSP: 0018:ffffc90000603ca0 EFLAGS: 00000246
-RAX: 0000000000000000 RBX: ffff888102bf0800 RCX: 0000000000000001
-RDX: 0000000000000000 RSI: ffffc90000603d18 RDI: ffff888102bf0800
-RBP: 0000000000000000 R08: 0000000000000002 R09: 0000000000000101
-R10: 0000000000000000 R11: 0000000000000075 R12: ffffc90000603d18
-R13: ffff888102bf0800 R14: ffff888102bf0800 R15: 0000000000000000
-FS:  00007f6e38b8c4c0(0000) GS:ffff8881b877e000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055aa7bff1680 CR3: 0000000105cbe000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- mptcp_recvmsg+0x547/0x8c0 net/mptcp/protocol.c:2329
- inet_recvmsg+0x11f/0x130 net/ipv4/af_inet.c:891
- sock_recvmsg+0x94/0xc0 net/socket.c:1100
- __sys_recvfrom+0xb2/0x130 net/socket.c:2256
- __x64_sys_recvfrom+0x1f/0x30 net/socket.c:2267
- do_syscall_64+0x59/0x2d0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x76/0x7e arch/x86/entry/entry_64.S:131
-RIP: 0033:0x7f6e386a4a1d
-Code: 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 8d 05 f1 de 2c 00 41 89 ca 8b 00 85 c0 75 20 45 31 c9 45 31 c0 b8 2d 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 6b f3 c3 66 0f 1f 84 00 00 00 00 00 41 56 41
-RSP: 002b:00007ffc3c4bb078 EFLAGS: 00000246 ORIG_RAX: 000000000000002d
-RAX: ffffffffffffffda RBX: 000000000000861e RCX: 00007f6e386a4a1d
-RDX: 00000000000003ff RSI: 00007ffc3c4bb150 RDI: 0000000000000004
-RBP: 00007ffc3c4bb570 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000103 R11: 0000000000000246 R12: 00005605dbc00be0
-R13: 00007ffc3c4bb650 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
-
-Fixes: 8e04ce45a8db ("mptcp: fix MSG_PEEK stream corruption")
-Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
----
-
-v2->v3:
-Thanks to Matthieu Baerts for the review.
-- Initialize last to NULL.
-- Only update 'last' when MSG_PEEK is set, avoiding dangling pointer.
-
-v1->v2:
-Thanks to Matthieu Baerts for the suggestion and review.
-- Move 'last' variable definition into the while loop in mptcp_recvmsg() to
-  narrow its scope.
-- In __mptcp_recvmsg_mskq(), assign 'last' right after 'copied' is updated,
-  regardless of MSG_PEEK flag.
-https://lore.kernel.org/netdev/20260324085131.4187473-1-lixiasong1@huawei.com/
-
-v1:
-https://lore.kernel.org/netdev/20260302052651.1466983-1-lixiasong1@huawei.com/
+This patch series fixes two issues in the Xilinx AXI Ethernet driver:
+ 1. Corrects the BD length masks to match the AXIDMA IP spec.
+ 2. Fixes BQL accounting for multi-BD TX packets.
 
 ---
- net/mptcp/protocol.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+Changes in V2:
+- Define BD length masks with GENMASK(25, 0) per PG021.
+- Credit BQL using skb->len on packet completion instead of summing
+  per-BD actual lengths from descriptor status.
+---
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index cf1852b99963..60f6e6a189b7 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2006,7 +2006,7 @@ static void mptcp_eat_recv_skb(struct sock *sk, struct sk_buff *skb)
- static int __mptcp_recvmsg_mskq(struct sock *sk, struct msghdr *msg,
- 				size_t len, int flags, int copied_total,
- 				struct scm_timestamping_internal *tss,
--				int *cmsg_flags)
-+				int *cmsg_flags, struct sk_buff **last)
- {
- 	struct mptcp_sock *msk = mptcp_sk(sk);
- 	struct sk_buff *skb, *tmp;
-@@ -2058,6 +2058,8 @@ static int __mptcp_recvmsg_mskq(struct sock *sk, struct msghdr *msg,
- 			}
- 
- 			mptcp_eat_recv_skb(sk, skb);
-+		} else {
-+			*last = skb;
- 		}
- 
- 		if (copied >= len)
-@@ -2288,10 +2290,12 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 		cmsg_flags = MPTCP_CMSG_INQ;
- 
- 	while (copied < len) {
-+		struct sk_buff *last = NULL;
- 		int err, bytes_read;
- 
- 		bytes_read = __mptcp_recvmsg_mskq(sk, msg, len - copied, flags,
--						  copied, &tss, &cmsg_flags);
-+						  copied, &tss, &cmsg_flags,
-+						  &last);
- 		if (unlikely(bytes_read < 0)) {
- 			if (!copied)
- 				copied = bytes_read;
-@@ -2343,7 +2347,7 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 
- 		pr_debug("block timeout %ld\n", timeo);
- 		mptcp_cleanup_rbuf(msk, copied);
--		err = sk_wait_data(sk, &timeo, NULL);
-+		err = sk_wait_data(sk, &timeo, last);
- 		if (err < 0) {
- 			err = copied ? : err;
- 			goto out_err;
+Suraj Gupta (2):
+  net: xilinx: axienet: Correct BD length masks to match AXIDMA IP spec
+  net: xilinx: axienet: Fix BQL accounting for multi-BD TX packets
+
+ drivers/net/ethernet/xilinx/xilinx_axienet.h      | 4 ++--
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 9 ++++-----
+ 2 files changed, 6 insertions(+), 7 deletions(-)
+
 -- 
-2.34.1
+2.49.1
 
