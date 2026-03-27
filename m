@@ -1,59 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2AB3CEB8B
-	for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 07:31:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65EA530F927;
+	Fri, 27 Mar 2026 07:32:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774596686; cv=none; b=Kxi9TM5/Xkpy83psFKKJ6P2kFehYWhQvaQWdIAVPL9neeDoG/3/lKxZsXE4aAaJeJny6SKJYyBnu7pOswf+bbMi5EUCYNEeDnqXNC6M6fjKZGnNvA2kUJgFXh+wtT/Fs9+ldSIAgFA2ZSGQSixAyaInkI8/2AUaRZghdu1pKhyU=
+	t=1774596742; cv=none; b=fGCodFcjBSinhXygH6ZeSMITolVUV0ubj5OB4/bCPAKAIKCWQYKiL+Do6kX1k2+EuHT/jyb5DWdkrKx2pIRZzaqW/cvltpJZjtQmyI5E5KG6gCWi2VM88QoAAmXZCn6gq+li2wbQyzMEeq6sFQ0cBf7n2qxyCUdQB20T++9rZ2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774596686; c=relaxed/simple;
-	bh=QTbc+V8S9tIlg4mhaTbYxSvbv3dy+sH80dNtXOoQmKA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rPtI4APLurYf99Qd5qnoq6iQtLOQtndBZvkUHqh2ZnJH8APBPgjQFLqEnzz71TdujncbcAPaiXYST9EphX17wp9LXM4Il8/S12HZ4JAvErCrBBEFFg+cUd8F00Dg32P8d/Y2wQBbNHLMCC5t0syAv6czPnoS6obyuQXyfZe3s/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RPMfPwro; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1774596742; c=relaxed/simple;
+	bh=sPIq4oegDN+UKCJQyVm2Z2Ah5A/OXXT0CKNhqwvY1ec=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=byydRqkIqyWTHgxyPQebRw4QxJVKwdEmQLTD+1q7DC7RcA500fIYoc6U8QqMJD7f3woW4D2tXGQTXEyMo2wgrfTt0KiQAI3Du4RQ7nnbv/mRD1t2FqYphWyLkhPcNND8vEEpsgJ75PqDKi2RHPYs29yfvARYr/XGK+Vl1qUYO5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=yrxc40M2; arc=none smtp.client-ip=113.46.200.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RPMfPwro"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774596679; x=1806132679;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=QTbc+V8S9tIlg4mhaTbYxSvbv3dy+sH80dNtXOoQmKA=;
-  b=RPMfPwro71BEyrYG8deNXjEVTCge7XdizZTNs1dd9uVy4B72xEXqUigb
-   YTyYpHsCVvrkXV/3PzpPar3+J2LL2I8vJqm9hXRMlngRHl5wdZfxq1mfj
-   P52KdBXj79ec/AcW8FGWVcfzSdqBqReALpVwDu3V1YTzwWGdXJWKHkPat
-   LWS1yT+CSUkFD7zGN2cJuf4rguHUMiEQGDXTpA6DhZAKAQRpWu+Nlz3TS
-   vZi8b309vOIBcQBUeYtsQDVu3dEc4FQ8INS3cIPmyziWwZsBFr8KXnb/B
-   Ib5fy6VHcJGa7P0AEhlo6MCma+2iJbotxNZwvnv6DH3cdUJacCoqBQx4C
-   g==;
-X-CSE-ConnectionGUID: aoU7tAFLShej6low7qDd0Q==
-X-CSE-MsgGUID: k6WqAJgxT3yuzD2a75lx2g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="75734335"
-X-IronPort-AV: E=Sophos;i="6.23,143,1770624000"; 
-   d="scan'208";a="75734335"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 00:31:04 -0700
-X-CSE-ConnectionGUID: z9BBHnttQH2GFsKTFs2Nhg==
-X-CSE-MsgGUID: Adr+VMHDTJ+eNwSeTiifwQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,143,1770624000"; 
-   d="scan'208";a="255740450"
-Received: from amlin-019-225.igk.intel.com ([10.102.19.225])
-  by orviesa002.jf.intel.com with ESMTP; 27 Mar 2026 00:31:03 -0700
-From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-To: intel-wired-lan@lists.osuosl.org,
-	anthony.l.nguyen@intel.com,
-	aleksandr.loktionov@intel.com
-Cc: netdev@vger.kernel.org
-Subject: [PATCH iwl-next] ixgbe: extend 5 s SWFW semaphore timeout to all X550EM variants
-Date: Fri, 27 Mar 2026 08:30:46 +0100
-Message-ID: <20260327073046.134085-12-aleksandr.loktionov@intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260327073046.134085-1-aleksandr.loktionov@intel.com>
-References: <20260327073046.134085-1-aleksandr.loktionov@intel.com>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="yrxc40M2"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=JlOVJvch5CnHpSnAoS69wCZR9XjUE7/EkqJycR+1o9A=;
+	b=yrxc40M20ytoWJ3FnjbvHeDJVvaRzULkYULAsjamP8Ae3DDI1wDzh/nkIs0Pjev787bpuhmiR
+	LeqOP0DhZk07NkXP/QE/nPh2ICgcd/AiHOGl7u6VZwT7+KiGz1yss/BOLzyFNN9hl8TssktuDMf
+	Alc+K/TpCK+9++VYFbii0aY=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4fhsd60zZ0zKm67;
+	Fri, 27 Mar 2026 15:26:02 +0800 (CST)
+Received: from kwepemj500018.china.huawei.com (unknown [7.202.194.48])
+	by mail.maildlp.com (Postfix) with ESMTPS id B04E94055B;
+	Fri, 27 Mar 2026 15:32:10 +0800 (CST)
+Received: from huawei.com (10.50.85.128) by kwepemj500018.china.huawei.com
+ (7.202.194.48) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 27 Mar
+ 2026 15:32:10 +0800
+From: Li Xiasong <lixiasong1@huawei.com>
+To: Matthieu Baerts <matttbe@kernel.org>, Mat Martineau
+	<martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>
+CC: <netdev@vger.kernel.org>, <mptcp@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <yuehaibing@huawei.com>,
+	<zhangchangzhong@huawei.com>, <weiyongjun1@huawei.com>
+Subject: [PATCH net v3] mptcp: fix soft lockup in mptcp_recvmsg()
+Date: Fri, 27 Mar 2026 15:55:44 +0800
+Message-ID: <20260327075544.3622851-1-lixiasong1@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,39 +52,125 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemj500018.china.huawei.com (7.202.194.48)
 
-From: Marta Plantykow <marta.a.plantykow@intel.com>
+syzbot reported a soft lockup in mptcp_recvmsg() [0].
 
-The 5-second SWFW semaphore timeout added for X550 (ixgbe_mac_X550)
-also applies to X550EM devices (e.g. X550EM_a, X550EM_x) since they
-share the same FW and the same SR-dump-driven worst-case latency of
-~3.2 s / module-update latency of ~4.5 s.  Change the mac-type
-comparison from '== ixgbe_mac_X550' to a range check that covers
-all three X550-family enum values (ixgbe_mac_X550, ixgbe_mac_X550EM_x,
-ixgbe_mac_x550em_a) without inadvertently capturing later entries such
-as ixgbe_mac_e610 which share the same swfw-sync function but have
-not been validated against this exact timing requirement.
+When receiving data with MSG_PEEK | MSG_WAITALL flags, the skb is not
+removed from the sk_receive_queue. This causes sk_wait_data() to always
+find available data and never perform actual waiting, leading to a soft
+lockup.
 
-Signed-off-by: Marta Plantykow <marta.a.plantykow@intel.com>
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Fix this by adding a 'last' parameter to track the last peeked skb.
+This allows sk_wait_data() to make informed waiting decisions and prevent
+infinite loops when MSG_PEEK is used.
+
+[0]:
+watchdog: BUG: soft lockup - CPU#2 stuck for 156s! [server:1963]
+Modules linked in:
+CPU: 2 UID: 0 PID: 1963 Comm: server Not tainted 6.19.0-rc8 #61 PREEMPT(none)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+RIP: 0010:sk_wait_data+0x15/0x190
+Code: 80 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 41 56 41 55 41 54 49 89 f4 55 48 89 d5 53 48 89 fb <48> 83 ec 30 65 48 8b 05 17 a4 6b 01 48 89 44 24 28 31 c0 65 48 8b
+RSP: 0018:ffffc90000603ca0 EFLAGS: 00000246
+RAX: 0000000000000000 RBX: ffff888102bf0800 RCX: 0000000000000001
+RDX: 0000000000000000 RSI: ffffc90000603d18 RDI: ffff888102bf0800
+RBP: 0000000000000000 R08: 0000000000000002 R09: 0000000000000101
+R10: 0000000000000000 R11: 0000000000000075 R12: ffffc90000603d18
+R13: ffff888102bf0800 R14: ffff888102bf0800 R15: 0000000000000000
+FS:  00007f6e38b8c4c0(0000) GS:ffff8881b877e000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000055aa7bff1680 CR3: 0000000105cbe000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ mptcp_recvmsg+0x547/0x8c0 net/mptcp/protocol.c:2329
+ inet_recvmsg+0x11f/0x130 net/ipv4/af_inet.c:891
+ sock_recvmsg+0x94/0xc0 net/socket.c:1100
+ __sys_recvfrom+0xb2/0x130 net/socket.c:2256
+ __x64_sys_recvfrom+0x1f/0x30 net/socket.c:2267
+ do_syscall_64+0x59/0x2d0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e arch/x86/entry/entry_64.S:131
+RIP: 0033:0x7f6e386a4a1d
+Code: 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 8d 05 f1 de 2c 00 41 89 ca 8b 00 85 c0 75 20 45 31 c9 45 31 c0 b8 2d 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 6b f3 c3 66 0f 1f 84 00 00 00 00 00 41 56 41
+RSP: 002b:00007ffc3c4bb078 EFLAGS: 00000246 ORIG_RAX: 000000000000002d
+RAX: ffffffffffffffda RBX: 000000000000861e RCX: 00007f6e386a4a1d
+RDX: 00000000000003ff RSI: 00007ffc3c4bb150 RDI: 0000000000000004
+RBP: 00007ffc3c4bb570 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000103 R11: 0000000000000246 R12: 00005605dbc00be0
+R13: 00007ffc3c4bb650 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
+
+Fixes: 8e04ce45a8db ("mptcp: fix MSG_PEEK stream corruption")
+Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c
-index 85047ef..298958d 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c
-@@ -577,7 +577,8 @@ int ixgbe_acquire_swfw_sync_X540(struct ixgbe_hw *hw, u32 mask)
+v2->v3:
+Thanks to Matthieu Baerts for the review.
+- Initialize last to NULL.
+- Only update 'last' when MSG_PEEK is set, avoiding dangling pointer.
+
+v1->v2:
+Thanks to Matthieu Baerts for the suggestion and review.
+- Move 'last' variable definition into the while loop in mptcp_recvmsg() to
+  narrow its scope.
+- In __mptcp_recvmsg_mskq(), assign 'last' right after 'copied' is updated,
+  regardless of MSG_PEEK flag.
+https://lore.kernel.org/netdev/20260324085131.4187473-1-lixiasong1@huawei.com/
+
+v1:
+https://lore.kernel.org/netdev/20260302052651.1466983-1-lixiasong1@huawei.com/
+
+---
+ net/mptcp/protocol.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index cf1852b99963..60f6e6a189b7 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2006,7 +2006,7 @@ static void mptcp_eat_recv_skb(struct sock *sk, struct sk_buff *skb)
+ static int __mptcp_recvmsg_mskq(struct sock *sk, struct msghdr *msg,
+ 				size_t len, int flags, int copied_total,
+ 				struct scm_timestamping_internal *tss,
+-				int *cmsg_flags)
++				int *cmsg_flags, struct sk_buff **last)
+ {
+ 	struct mptcp_sock *msk = mptcp_sk(sk);
+ 	struct sk_buff *skb, *tmp;
+@@ -2058,6 +2058,8 @@ static int __mptcp_recvmsg_mskq(struct sock *sk, struct msghdr *msg,
+ 			}
  
- 	swmask |= swi2c_mask;
- 	fwmask |= swi2c_mask << 2;
--	if (hw->mac.type == ixgbe_mac_X550)
-+	if (hw->mac.type >= ixgbe_mac_X550 &&
-+	    hw->mac.type <= ixgbe_mac_x550em_a)
- 		timeout = 1000;
+ 			mptcp_eat_recv_skb(sk, skb);
++		} else {
++			*last = skb;
+ 		}
  
- 	for (i = 0; i < timeout; i++) {
+ 		if (copied >= len)
+@@ -2288,10 +2290,12 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+ 		cmsg_flags = MPTCP_CMSG_INQ;
+ 
+ 	while (copied < len) {
++		struct sk_buff *last = NULL;
+ 		int err, bytes_read;
+ 
+ 		bytes_read = __mptcp_recvmsg_mskq(sk, msg, len - copied, flags,
+-						  copied, &tss, &cmsg_flags);
++						  copied, &tss, &cmsg_flags,
++						  &last);
+ 		if (unlikely(bytes_read < 0)) {
+ 			if (!copied)
+ 				copied = bytes_read;
+@@ -2343,7 +2347,7 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+ 
+ 		pr_debug("block timeout %ld\n", timeo);
+ 		mptcp_cleanup_rbuf(msk, copied);
+-		err = sk_wait_data(sk, &timeo, NULL);
++		err = sk_wait_data(sk, &timeo, last);
+ 		if (err < 0) {
+ 			err = copied ? : err;
+ 			goto out_err;
 -- 
-2.52.0
+2.34.1
 
