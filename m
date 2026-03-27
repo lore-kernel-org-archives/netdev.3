@@ -1,46 +1,57 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAAA13815F7;
-	Fri, 27 Mar 2026 11:48:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E798C3803EB
+	for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 11:52:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774612108; cv=none; b=YgMYtyLvGbaONWzezeQDWPv2P0N+h8kWwdMHZ3JtrYlIHVVlJWpB9tAbtbtX3kP6KfyjRCX5oZRcVCDyN+Gx3Wvmyf0Y/PcIoRkmJ2ofkWRa+PM4KVYtttYvqniJnu6w+QSlqW5GRbMm6bgWCRDM3SbPS5kv1l9NwJ0/RuGajPI=
+	t=1774612337; cv=none; b=Sa4zOb4Zt2ARkYnjQw/IfLeuV11AcI0X5G12luSUyXLAWF/LcK2Wy0T1vt2QK4fD8DQSGO7V/wlTyplFzNZXC8jVdYpCPr4Lgd/gZYT84LsjLycfJGWsGQKHjUWQzG16m5nUfRe8IoNxe9fZoqF7x/0RuB1/Xx+NPQa9EAA/skk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774612108; c=relaxed/simple;
-	bh=Kwtx7sJmgY9H63obq3O12tOE4ThiZXqrxNJqOnkc86c=;
+	s=arc-20240116; t=1774612337; c=relaxed/simple;
+	bh=Bk22uo8F/Egi+gknvqKqeX7KwESPqCGlkuouHl7zNIw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bc4bAQ1MMuEwtJ5bzgEzQYMNa5qWSy96RKDus2D+Kmb8EvdzT4GTJ/X9iUd6wP6U+RwWpLS9586Er4RMYTj1jZ3p4tgEM4+vdvv1sMKxd1gO4Unq/bXQXPlcAfAuzd1ET5J+dNt0oDJJrTY76ikaYdG+Y3oCSLK8zN2ISP5R3T0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=tm/l+TU5; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=sckuRP3uyVv9HoxKtWAfX5/9O6QKRNs8xhqbOQ/mvbTifr4pWD/8kPZK8edhTtZcVB7c7RopYIrzYyzRMQXm4ZgDheIQ93Ah2JkMD735xitEupPlOAzUktTtqNOWkgh6/by5NSk8d7fEmomTGP9SYaOF4fAr0HrDEyNrX6lI1Qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=h54B5z6h; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="tm/l+TU5"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=DAhJnv5c2JC/LGwNBMq3wIdQ+V/gMdi8PLZ3o0VQ/OA=; b=tm/l+TU5AGFWW1JeSpiASjvKDl
-	QnDu7nLiy8lHwChc+hkUWr97Fp0DuFTzkClvkKwutwvko/Wf9WlLHxEMmRB3sqLqc+9+fjc3BKcm7
-	WrBnSEbnpw2pbOVMqo3GphX3Kzij4riEHmsmo6HC+dTE6ATWNLaGMhvQVTvoU1gnR+f8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1w65fl-00DeIa-E1; Fri, 27 Mar 2026 12:48:17 +0100
-Date: Fri, 27 Mar 2026 12:48:17 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Joris Vaisvila <joey@tinyisr.com>
-Cc: netdev@vger.kernel.org, horms@kernel.org, pabeni@redhat.com,
-	kuba@kernel.org, edumazet@google.com, davem@davemloft.net,
-	olteanv@gmail.com, devicetree@vger.kernel.org,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Subject: Re: [PATCH net-next 2/4] net: phy: mediatek: add phy driver for
- MT7628 built-in Fast Ethernet PHYs
-Message-ID: <95814693-ed58-46ca-a680-8b93e4adee72@lunn.ch>
-References: <20260326204413.3317584-1-joey@tinyisr.com>
- <20260326204413.3317584-3-joey@tinyisr.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h54B5z6h"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774612334;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J8wF1bQAAVB9lEiUJRa0unp7pKMmUsagGzAN/jdisLU=;
+	b=h54B5z6h8ePOyeh6WMnm3P8/3y05jI2gcGwDfxLrozI9zWGOarmRkkwEoL6KdcV+TbdeKC
+	Nb0JtOqeWjgZD9+Ln6xMAbqmoxIre8d8ULEDgkIsYZuDu7Nz6lN0mUVFyDOzA9i56dQtGb
+	ir0jONngan8T/NC5+fLmuaiR7B5GQ08=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-145-w7ZOAXulPrKdMi5LOhXGeQ-1; Fri,
+ 27 Mar 2026 07:52:10 -0400
+X-MC-Unique: w7ZOAXulPrKdMi5LOhXGeQ-1
+X-Mimecast-MFC-AGG-ID: w7ZOAXulPrKdMi5LOhXGeQ_1774612329
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E8D6919560AF;
+	Fri, 27 Mar 2026 11:52:08 +0000 (UTC)
+Received: from thinkpad (unknown [10.44.33.208])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 42C721800673;
+	Fri, 27 Mar 2026 11:52:05 +0000 (UTC)
+Date: Fri, 27 Mar 2026 12:52:02 +0100
+From: Felix Maurer <fmaurer@redhat.com>
+To: luka.gejak@linux.dev
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, netdev@vger.kernel.org, horms@kernel.org,
+	liuhangbin@gmail.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 2/4] net: hsr: fix VLAN add unwind on slave
+ errors
+Message-ID: <acZvYp_SYvypHWgk@thinkpad>
+References: <20260326154715.38405-1-luka.gejak@linux.dev>
+ <20260326154715.38405-3-luka.gejak@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,17 +60,97 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260326204413.3317584-3-joey@tinyisr.com>
+In-Reply-To: <20260326154715.38405-3-luka.gejak@linux.dev>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On Thu, Mar 26, 2026 at 10:44:11PM +0200, Joris Vaisvila wrote:
-> The Fast Ethernet PHYs present in the MT7628 SoCs require an
-> undocumented bit to be set before they can establish 100mbps links.
-> 
-> This commit adds the Kconfig option MEDIATEK_FE_SOC_PHY and the
-> corresponding driver mtk-fe-soc.c.
-> 
-> Signed-off-by: Joris Vaisvila <joey@tinyisr.com>
+Thank you for updating this patch!
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+On Thu, Mar 26, 2026 at 04:47:13PM +0100, luka.gejak@linux.dev wrote:
+> From: Luka Gejak <luka.gejak@linux.dev>
+>
+> When vlan_vid_add() fails for a secondary slave, the error path calls
+> vlan_vid_del() on the failing port instead of the peer slave that had
+> already succeeded. This results in asymmetric VLAN state across the HSR
+> pair.
+>
+> Fix this by switching to a centralized unwind path that removes the VID
+> from any slave device that was already programmed.
+>
+> Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
+> ---
+>  net/hsr/hsr_device.c | 46 ++++++++++++++++++++++++++------------------
+>  1 file changed, 27 insertions(+), 19 deletions(-)
+>
+> diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+> index 5c3eca2235ce..75c491279df8 100644
+> --- a/net/hsr/hsr_device.c
+> +++ b/net/hsr/hsr_device.c
+> @@ -532,8 +532,8 @@ static void hsr_change_rx_flags(struct net_device *dev, int change)
+>  static int hsr_ndo_vlan_rx_add_vid(struct net_device *dev,
+>  				   __be16 proto, u16 vid)
+>  {
+> -	bool is_slave_a_added = false;
+> -	bool is_slave_b_added = false;
+> +	struct net_device *slave_a_dev = NULL;
+> +	struct net_device *slave_b_dev = NULL;
+>  	struct hsr_port *port;
+>  	struct hsr_priv *hsr;
+>  	int ret = 0;
+> @@ -546,29 +546,28 @@ static int hsr_ndo_vlan_rx_add_vid(struct net_device *dev,
+>  			continue;
+>
+>  		ret = vlan_vid_add(port->dev, proto, vid);
+> -		switch (port->type) {
+> -		case HSR_PT_SLAVE_A:
+> -			if (ret) {
+> -				/* clean up Slave-B */
+> +		if (ret) {
+> +			switch (port->type) {
+> +			case HSR_PT_SLAVE_A:
+>  				netdev_err(dev, "add vid failed for Slave-A\n");
+> -				if (is_slave_b_added)
+> -					vlan_vid_del(port->dev, proto, vid);
+> -				return ret;
+> +				break;
+> +			case HSR_PT_SLAVE_B:
+> +				netdev_err(dev, "add vid failed for Slave-B\n");
+> +				break;
+> +			default:
+> +				break;
+>  			}
+>
+> -			is_slave_a_added = true;
+> +			goto unwind;
+> +		}
+> +
+> +		switch (port->type) {
+> +		case HSR_PT_SLAVE_A:
+> +			slave_a_dev = port->dev;
+>  			break;
+>
 
-    Andrew
+nit: superflous empty line (it's inconsistent with the other case
+blocks)
+
+>  		case HSR_PT_SLAVE_B:
+> -			if (ret) {
+> -				/* clean up Slave-A */
+> -				netdev_err(dev, "add vid failed for Slave-B\n");
+> -				if (is_slave_a_added)
+> -					vlan_vid_del(port->dev, proto, vid);
+> -				return ret;
+> -			}
+> -
+> -			is_slave_b_added = true;
+> +			slave_b_dev = port->dev;
+>  			break;
+>  		default:
+>  			break;
+
+I think this would look cleaner with the good and the bad paths in the
+same switch-case, but that may be a matter of (my) taste. What do you
+think?
+
+Thanks,
+   Felix
+
