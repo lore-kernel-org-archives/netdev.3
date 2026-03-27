@@ -1,145 +1,165 @@
-Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E19333D47DB;
-	Fri, 27 Mar 2026 08:32:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774600377; cv=none; b=gdn76TIJlafVkuMrkJSxI3ILSunYbAZX1ZUsfi35OnMoP8960/5jeXEcqauqHz7izg08PJ84eFXmI1tWg7l2kvaDbqJtBUS/bayDxZCDLUxXvZuufHCO3Z8IQE9FiUAwWM4r7tDvJl7nq8f/1c+CLD80g5GMZv0zXdDtgZYkuWQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774600377; c=relaxed/simple;
-	bh=5sVvqqlN6CQ8D82GR0F47f6Lz9uuFnIDmt0lpbIo+6g=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=K2F+P/tx5sPXn8ZvfWnJ0IZOeh2EPtVWx+Pf4UweeojCIloj/ijO+Zfuu3NSRBOPOqyj6KT9F1zRt+NoWf8h9Lgtdp3CUt9sdunziznxL5QtMcOiIXwbphXW1EGqH5G4N/c0//SoxGhZdOYlSeRd+lKjzFA/qMdvRn9+aW7Sins=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; arc=none smtp.client-ip=210.160.252.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
-X-CSE-ConnectionGUID: Z67X1Hx4SpKRxd/gjClTLw==
-X-CSE-MsgGUID: 20yoYbAKTwyUuTMBMWBCGQ==
-Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie6.idc.renesas.com with ESMTP; 27 Mar 2026 17:27:45 +0900
-Received: from [127.0.1.1] (unknown [10.226.78.135])
-	by relmlir5.idc.renesas.com (Postfix) with ESMTP id 3891440116AA;
-	Fri, 27 Mar 2026 17:27:42 +0900 (JST)
-From: Michael Dege <michael.dege@renesas.com>
-Subject: [net-next PATCH v2 00/13] net: renesas: rswitch: R-Car S4 add VLAN
- aware switching
-Date: Fri, 27 Mar 2026 09:27:30 +0100
-Message-Id: <20260327-rswitch_add_vlans-v2-0-d7f4358ca57a@renesas.com>
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D2B3D6CB1
+	for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 08:35:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774600519; cv=pass; b=N5hQHlUqvzMWAk0zMo7ptO0uHtVzuimN7SAWgJiboyXfOaY0JVXwuxPdKQbR3TNiOywpe3x+DXf791hDA3lQF45gMRKW+1qCstpLRhfYQY7ETnLk7XDI2/zh8Vix3Omvq3M1EK3sAeIIrpBOoxpMh+bdHP4XQT0xDzdBeIJis1k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774600519; c=relaxed/simple;
+	bh=qYBJ7lG2jPqlCAQklJIlC/RTAf122HGcyvH4xyxPcD0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jGgBfjO8WJhdfWvBbk56Tr9fwZp0JsLDXE1Q0xox+5DdzuoPkBbEmJZ7It4XjBObUvKHMPTXGMSs9KptwF6jNw97bBNxrGQrMMsF/gCryGOvGfzwIJRpBnPWhjn74m2VSi+p68pTc/sRncP3hs85FHPV5a+QnXrTnXAF0+NgME4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pSRVoD3i; arc=pass smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pSRVoD3i"
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5a299cba953so2109313e87.2
+        for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 01:35:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774600516; cv=none;
+        d=google.com; s=arc-20240605;
+        b=bwP7vvmvUkghIUCcTQmVfWKKYj8t8OdeaXakzfIUr34zrKD84lVwSqoAygkGl8HJEI
+         /zyrk2pOWARuyDwLpK5yvViTvtHS2wdz2wl8BPEQ+uFRA+vzHbz1HBlJn1TkXDhzH3N/
+         bo+A+1tTKvTOZ3nS0lawtvI1dCaoB1tDQA9WJbVV+pi9C9zjhRDSp+WtPNxIVMFxMvh0
+         HVYIM9kWCXNfJuMb7+UBfptFfmXtpkbDjGisZNaB8W/Q42xuNfDYEabvav7sf3BwAQMx
+         iMC/oH9GsIIVEMwGOptv1X9uSQvajh/uchXYHeXUYOsYlD6W2heFt0z3rMhznDclJ6+4
+         zB0w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=qYBJ7lG2jPqlCAQklJIlC/RTAf122HGcyvH4xyxPcD0=;
+        fh=CktjoNrYNBUUaU+S7nKhHFB2PCywnAAvKowoQ4HD6pg=;
+        b=JsMX2FaGOXbakNeCFttQRfy+0At3Hl2QvIfkUpF+7cyuvhRDi483hd/KZciB1+n5DZ
+         N2QeKI9/gy8blFoGlOR8qs6UQpSooCB2wySaerQ5HD3d7uWUaaCkIpcXBQLYOWH+ssbG
+         an2iYF3z4Mwh4XdenMKBH/YahmYL0rEUCGsxwqQNZ+rXUT9t3P+w6jGt2uGX8nmcaXDj
+         0tV/JPoe73UfwhXIR6kDShR2ZVdVevYdE46dMqZpPLsECiNBWgHVvhM9CtwpZdG/OL2H
+         gwFdQwhLvLbQNMLaE5vODl1/rvohBDc8CSMlZTotAL+rkwbdC8w0jyUUF1NHqPYoOyuI
+         9rSQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774600516; x=1775205316; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qYBJ7lG2jPqlCAQklJIlC/RTAf122HGcyvH4xyxPcD0=;
+        b=pSRVoD3iBtz3+bbNs5Tjgg89pFWgjkXtiTsTaqvSEFdWbzXjF0yOOLjNZi7tkCbEzG
+         VdWRgfyDxuoLjDwbmoWBSzsUC01sCG5esIddP82A0OMf1VjKTRz7b7zcMf/toEMuSMGS
+         DNAZRhmdhpMJx3/Ghc3kPNZarwgoAHJ1ZKXscptmPTP70ygJwE4NIZZRcvyqVNfjVCZy
+         1SY38KuH/roOBWWIzslAkUWMGBg66q4CZXiIyo7EAelgUYRuHBRFiPh5bSeLx00tqjSt
+         IE+GsjJAplCGpn/36zB6QPhvN6YC264N5k3MvgHk6aDLwDxd7vUpZHWnVj4b4UhcUTbw
+         HBzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774600516; x=1775205316;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=qYBJ7lG2jPqlCAQklJIlC/RTAf122HGcyvH4xyxPcD0=;
+        b=eJpE6uSWsEGubo9mfZCqWFYGJaoI7Qedao9ddBboyXQZ1cdXuSBTW+55iAwPbcbDOY
+         UjKqjiYMgcRu/fynCar8ffUvvTH4GTenPmtcjAaY3v7Cejt5NIOYAAigpezVLLWHodx5
+         HiuuHVaW744WsFylrk72EtNrilltlgEaPIPzxNkqhggawZ5QxaHOHEYHsbO2b6X3zno0
+         0AC54Tsal1MH4GD2srCgtC+NcMWRCOBWCr2OkHiaAJMmB12kxjibpwsVxwAi+Yj5ZnJA
+         MsD3I+Emi5RAPg+CNnuX1zo66BZSQ7AqlSlRALPriRk4xiGXqbcdcx2GJ/bQStcFhe9a
+         SMLA==
+X-Forwarded-Encrypted: i=1; AJvYcCVQ9V0sYx95IylRZIdhbtMdyPwq+/GFHsiZMXhofMFZQMTONo7K7FWX6ikWvcWjm/GGwzq/0Ig=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwivARUNS0S9gyqzJtvg62JNMdJz8T7VtaSq19yWupUQwax0kg8
+	PreMk+her59osVzFdf9F8adoAMrDn7v4Qldiv5jgkEvF1HY3m+fEm0AW6BvOr1FwIhSGSizxgFL
+	PIIgNZyJqI12YkeJ3wb3KGUuT1MqvnLWfCZU0uTY=
+X-Gm-Gg: ATEYQzytIFmXKFbD8cgVU9o0GTpRiIs7xHPrssapGkT+jnubj3SHjHUoS9t91jTO0i5
+	7VhqBZ+qyyTinDiXaMRL1VWX+GK+8BApn9Fy/Z1jLM5GyPlnqi6EnaQ5qDCMU1dgPV4SFUkuITV
+	5U1NpvZFdYbJK7CR1DmEOvyCan/iEd5F7vPszeHJysoW3RbFmN0uXKzHKTkWNR3N89FzskoAF/9
+	Fw11e9KsMmhciOgZPU9o4wRYQYelIdJ7POyybiZIsOogNKuaEp7VYdyazeBIavAr5KGJgffM+sj
+	TIeUNWGF
+X-Received: by 2002:a05:6512:10ce:b0:5a2:9cb6:ef4e with SMTP id
+ 2adb3069b0e04-5a2ab920dbemr645542e87.21.1774600515244; Fri, 27 Mar 2026
+ 01:35:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAHM/xmkC/22NywrCMBBFf6XM2kiSah+u/A8pJU0mdkBTyZSol
- P67sW5dngP33AUYIyHDqVggYiKmKWTQuwLsaMIVBbnMoKWupNJSRH7SbMfeONenmwksyvbQNIM
- fdFtZyLtHRE+vrXnpMo/E8xTf20VSX/urlar+U0tKSFGaYz14I7126hwxIBve2+kO3bquH2kTa
- k+0AAAA
-X-Change-ID: 20260120-rswitch_add_vlans-39488bfb296c
-To: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Michael Dege <michael.dege@renesas.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1774600062; l=3517;
- i=michael.dege@renesas.com; s=20251023; h=from:subject:message-id;
- bh=5sVvqqlN6CQ8D82GR0F47f6Lz9uuFnIDmt0lpbIo+6g=;
- b=q7M6Zg12fgkv2tmDnteQrEfRiD395cEvKZwXZManFusAcbwNC/c3xCBnZtFxUNn6FypTmaXhH
- fLZWrVvCUcLCbjUHYmjWFi919F5Rk9xNXdIFbFkrp5/z+MxVgE3B07G
-X-Developer-Key: i=michael.dege@renesas.com; a=ed25519;
- pk=gu1rwIcCrAxNMv2I8fIfiQvt51xzZwnQy4Ua/DscQt8=
+References: <20260326144249.97213-1-kerneljasonxing@gmail.com> <acYD8JT16b3_htIz@mini-arch>
+In-Reply-To: <acYD8JT16b3_htIz@mini-arch>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Fri, 27 Mar 2026 16:34:37 +0800
+X-Gm-Features: AQROBzBFpeC9jgdD2TkLOeX99Kk7Kr0iH0GXi8wk5nv1NgDam9EvjEI6SoT6zYk
+Message-ID: <CAL+tcoBHpSo6FHto4qxibdjUEkDPOaYTvVOUHv+OU_wh1PSqkQ@mail.gmail.com>
+Subject: Re: [PATCH net-next] net: add sysctl to toggle napi_consume_skb()
+ alien skb defer
+To: Stanislav Fomichev <stfomichev@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello!
+On Fri, Mar 27, 2026 at 12:13=E2=80=AFPM Stanislav Fomichev
+<stfomichev@gmail.com> wrote:
+>
+> On 03/26, Jason Xing wrote:
+> > Commit e20dfbad8aab ("net: fix napi_consume_skb() with alien skbs")
+> > defers freeing of alien SKBs (alloc_cpu !=3D current cpu) via
+> > skb_attempt_defer_free() on the TX completion path to reduce cross-NUMA
+> > SLUB spinlock contention to improve multi-queue UDP workloads.
+> >
+> > However, this unconditionally impacts the napi_skb_cache fast recycle
+> > path for single-flow / few-flow workloads (e.g. AF_XDP benchmarks[1]):
+> > when the TX completion NAPI CPU differs from the SKB allocation CPU,
+> > SKBs are deferred instead of being returned to the local napi_skb_cache=
+,
+> > forcing RX allocations back to the slow slab path.
+> >
+> > The existing net.core.skb_defer_max=3D0 could disable this, but it is a
+> > global switch that also disables the defer mechanism in TCP/UDP/MPTCP
+> > recvmsg paths, losing its positive SLUB locality benefits there. AF_XDP
+> > can co-exist with other protocols. That's the reason why I gave up
+> > reusing skb_defer_disable_key. Besides, if the defer path is disabled,
+> > that means TCP/UDP/MPTCP in process path will trigger directly freeing
+> > skb with enabling/disabling bottom half(in kfree_skb_napi_cache())
+> > which could affect others. So my thinking is not to touch this path.
+> >
+> > Add a dedicated sysctl net.core.napi_consume_skb_defer backed by a
+> > static key to selectively control the alien skb defer feature. Let
+> > users decide which is the best fit for their own requirements.
+>
+> For a non-zc path adding a userspace knob feels like too much. And there
+> is zero documentation for users to decide which mode to use.
 
-The current R-Car S4 rswitch driver only supports basic HW offloading
-for L2 switching/bridgeing. This patchset extends the driver with
-support for VLAN aware switching.
+AF_XDP is the only one case that I use to exemplify. Reusing defer max
+is not flexible and good enough as I've mentioned in the commit.
 
-1. For every port mode change from configuration to operation and
-   vice-versa you need to change to disabled mode first. The
-   functions rswitch_<port>_change_mode now take care of this. 
+Please note that the knob is applicable for single or few flows
+regardless of what kinds of protocols/tunnels, which brings 6.6%
+improvement back that is not trivial/negligible.
 
-2. In upcomming changes for adding vlan support struct net_device
-   will not be available in all cases, therefore use struct device
-   instead.
+You're right about the doc. Will add the following one, thanks.
+diff --git a/Documentation/admin-guide/sysctl/net.rst
+b/Documentation/admin-guide/sysctl/net.rst
+index 0724a793798f..42e06f93306f 100644
+--- a/Documentation/admin-guide/sysctl/net.rst
++++ b/Documentation/admin-guide/sysctl/net.rst
+@@ -368,6 +368,19 @@ by the cpu which allocated them.
 
-3. Fix typo in register define macro and remove duplicate macro.
+ Default: 128
 
-4. Add register definitions needed fo vlan support.
++napi_consume_skb_defer
++----------------------
++When set to 1 (default), napi_consume_skb() defers freeing SKBs whose
++allocation CPU differs from the current CPU via skb_attempt_defer_free().
++This reduces cross-NUMA SLUB spinlock contention for multi-queue workloads=
+.
++
++Setting this to 0 disables the defer path in napi_consume_skb() only,
++allowing SKBs to be returned to the local napi_skb_cache immediately.
++This can benefit single-flow or few-flow workloads (e.g. AF_XDP TX)
++where the defer detour hurts the fast recycle path.
++
++Default: 1
++
+ optmem_max
+ ----------
 
-5. Add exception path for packets with unknown destitination MAC
-   addresses.
-
-6. Make the helper functions rswitch_reg_wait(),
-   rswitch_etha_change_mode() and rswitch_etha_change_mode()
-   available to the whole driver.
-
-7. Add basic start-up time initialization needed to support VLANs.
-
-8. Update ETHA and GWCA port HW initializations.
-
-9. Clean up is_rdev() rswitch_device checking.
-
-10. Provide struct rswitch_private to notifiers.
-
-11. Add handler for FDB notifications to configure bridge MAC address
-    to GWCA registers and update static MAC table entry.
-
-12. Add vlan support to L2 HW bridge.
-
-Configuration example:
-ip link add name br0 type bridge vlan_filtering 1
-ip link set dev tsn0 master br0
-ip link set dev tsn1 master br0
-ip link set dev br0 up
-ip link set dev tsn0 up
-ip link set dev tsn1 up
-bridge vlan add dev tsn0 vid 4
-bridge vlan add dev tsn1 vid 4
-bridge vlan add dev br0 vid 4 self
-ip a a 192.168.1.20/24 dev br0
-ip l a link br0 name br0.1 type vlan id 1
-ip l a link br0 name br0.4 type vlan id 4
-ip a a 192.168.2.20/24 dev br0.1
-ip a a 192.168.4.20/24 dev br0.4
-ip link set dev br0.1 up
-ip link set dev br0.4 up
-
-Signed-off-by: Michael Dege <michael.dege@renesas.com>
----
-Changes in v2:
-- Reworked reswitch_update_l2_hw_forwarding_gwca() as suggested.
-- Fixed missing initialization found by test robot.
-- Link to v1: https://lore.kernel.org/r/20260317-rswitch_add_vlans-v1-0-3a57bfa0f2d1@renesas.com
-
----
-Michael Dege (13):
-      net: renesas: rswitch: improve port change mode functions
-      net: renesas: rswitch: use device instead of net_device
-      net: renesas: rswitch: fix FWPC2 register access macros
-      net: renesas: rswitch: add register definitions for vlan support
-      net: renesas: rswitch: add exception path for packets with unknown dst MAC
-      net: renesas: rswitch: add forwarding rules for gwca
-      net: renesas: rswitch: make helper functions available to whole driver
-      net: renesas: rswitch: add basic vlan init to rswitch_fwd_init
-      net: renesas: rswitch: update port HW init
-      net: renesas: rswitch: clean up is_rdev rswitch_device checking
-      net: renesas: rswitch: add passing of rswitch_private into notifiers
-      net: renesas: rswitch: add handler for FDB notification
-      net: renesas: rswitch: add vlan aware switching
-
- drivers/net/ethernet/renesas/rswitch.h      | 181 +++++++-
- drivers/net/ethernet/renesas/rswitch_l2.c   | 637 ++++++++++++++++++++++++----
- drivers/net/ethernet/renesas/rswitch_l2.h   |   6 +-
- drivers/net/ethernet/renesas/rswitch_main.c | 203 ++++++---
- 4 files changed, 871 insertions(+), 156 deletions(-)
----
-base-commit: 1f318b96cc84d7c2ab792fcc0bfd42a7ca890681
-change-id: 20260120-rswitch_add_vlans-39488bfb296c
-
-Best regards,
--- 
-Michael Dege <michael.dege@renesas.com>
-
+Thanks,
+Jason
