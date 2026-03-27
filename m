@@ -1,138 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8E234B434;
-	Fri, 27 Mar 2026 13:39:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A0123BA240
+	for <netdev@vger.kernel.org>; Fri, 27 Mar 2026 13:39:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774618776; cv=none; b=Njt+QfpblRldCbEXKDPSpZq+kp6L/dPcPBISIHZyak6SJCsw8+pPTjhjqgdaHUyn7I+EvJYhndYy6KSHn+/zBFVB4OAkuk2+k16kIrS1rZRWk28rBV9Ft3+n6n4wMrQdjjMMLwKujonid6sZlK9EuunXFrWI173LjNtMVZTJ2Ic=
+	t=1774618788; cv=none; b=B5OBS+YNpV6smWrmDEWZ3Ji9YSFPcRUZO+DWyXUVoGs5B1bg/F9KzVlA7CVb5ApKDJq+xmTgWWEjkrKNrvBWtjIPm51pJ7VB8xOqWozE1u9CnpDbSqBYRZyo2vcepxndy/DtrDDOsj8u/fN6ln8KLYxKGowL0jwXwT04sx17SFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774618776; c=relaxed/simple;
-	bh=EK3L84nzzwEQPvQOCJndbS7CWv2sJDVmRS0NFbkNFt4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YYMy1XWqfnLoDqeNLPMSxbVl7YLKw0rqsEVlRZNFxd2IHVr6znWdKnV33854Y8hOfvnoHpjM53CUQ1IBAy+A8BVssTV0S6E7k9ZLuz9Rzu2Y82vCgJahObBWTLlshMu+FePlLIRef092EwBLNDdOopk4NDPTLr8YpnzZENjJuhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gZ2a9OOm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774618788; c=relaxed/simple;
+	bh=hEaspTznCILfYV6jaFc5EHHRWvl339LC2jPJ9NYB560=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gRF52KJBEbiNET7SR8Wnd3dIXlUNfKK+cMVKl0ZuVU39pzzKaQA2R0Tw4JdQDTUZKm0HF+EnIiPg3b078/hsuNzpP0WyT3O6GOs1W0SMFTt+HvQYqzPo118nQdHgZOb7MFkNce8dn1WSw2052B2qZg9cBsEe6AnErsHz0+n2Gq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=moI0enwJ; arc=none smtp.client-ip=91.218.175.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gZ2a9OOm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2EF8C19423;
-	Fri, 27 Mar 2026 13:39:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774618776;
-	bh=EK3L84nzzwEQPvQOCJndbS7CWv2sJDVmRS0NFbkNFt4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gZ2a9OOmIUE9p1djDWK+JEQLE1+0jE5+eHqkLh0g4U+My9MeFyfXvW8YyFq805afi
-	 Mrhqpi0tviIOqOjc2irCWiYCF1mQOpnX/ZgjyLQUyNzp3RFW8qM+aKwuyeQPAJgSA0
-	 6wPdrWKseyd0ZYZuS8WB7cZi1N+PVw7RrzzgJOAcllE8v4VGoNpaLbxjvxoVN3sWng
-	 G22Co7kk/1POJ7t06mXgXbeqzdMcKYD7o/7DaHBMQkvF2hcgOA8JXt58wkDndNlpe1
-	 97UWhS+jO80p3kcwYdY5DfYiELCVdjQlPIugLIUtArmmyE5ZxIE/+DJ2HxOA2JDiKH
-	 6dPWYSZ4WIkWw==
-Message-ID: <2da6cbcc-677d-4ba8-9762-ecb47b157f21@kernel.org>
-Date: Fri, 27 Mar 2026 14:39:24 +0100
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="moI0enwJ"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1774618783;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=zuo556uKPNU8qJ9YrErR7thE//vVmtMhX8AMu3EOM/Q=;
+	b=moI0enwJ0DWoEtX51QxaE9ANIs2zlxNFtZY5C87CmuKdI0E73aPZ9LtkpGPsSDpcoEtyFo
+	6t+7erNo2gVWCL2NDJpg1gohz9QLE17Pd1kzm7iy//6iHx+g6h2/xWnn5VpPyxnv7iv7hJ
+	RgM8LMqwudKmhF2gYfo7S3Pj1/IO7Yg=
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: bpf@vger.kernel.org
+Cc: Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH bpf v3 0/2] bpf: tcp: Fix null-ptr-deref in arbitrary SYN Cookie
+Date: Fri, 27 Mar 2026 21:38:52 +0800
+Message-ID: <20260327133915.286037-1-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/15] firmware: qcom: Add a generic PAS service
-To: Sumit Garg <sumit.garg@kernel.org>,
- Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
- linux-media@vger.kernel.org, netdev@vger.kernel.org,
- linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
- linux-remoteproc@vger.kernel.org, andersson@kernel.org,
- konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, robin.clark@oss.qualcomm.com, sean@poorly.run,
- akhilpo@oss.qualcomm.com, lumag@kernel.org, abhinav.kumar@linux.dev,
- jesszhan0024@gmail.com, marijn.suijten@somainline.org, airlied@gmail.com,
- simona@ffwll.ch, vikash.garodia@oss.qualcomm.com,
- dikshita.agarwal@oss.qualcomm.com, bod@kernel.org, mchehab@kernel.org,
- elder@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- jjohnson@kernel.org, mathieu.poirier@linaro.org,
- trilokkumar.soni@oss.qualcomm.com, pavan.kondeti@oss.qualcomm.com,
- jorge.ramirez@oss.qualcomm.com, tonyh@qti.qualcomm.com,
- vignesh.viswanathan@oss.qualcomm.com, srinivas.kandagatla@oss.qualcomm.com,
- amirreza.zarrabi@oss.qualcomm.com, jens.wiklander@linaro.org,
- op-tee@lists.trustedfirmware.org, apurupa@qti.qualcomm.com,
- skare@qti.qualcomm.com, linux-kernel@vger.kernel.org,
- Sumit Garg <sumit.garg@oss.qualcomm.com>
-References: <20260312062756.694390-1-sumit.garg@kernel.org>
- <20260312062756.694390-3-sumit.garg@kernel.org>
- <20260313072450.sx7vqtvh62nflhff@hu-mojha-hyd.qualcomm.com>
- <acE3MR4SVCPUzcgR@sumit-xelite>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <acE3MR4SVCPUzcgR@sumit-xelite>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On 23/03/2026 13:50, Sumit Garg wrote:
->>> +
->>> +#include <linux/device/devres.h>
->>> +#include <linux/firmware/qcom/qcom_pas.h>
->>> +#include <linux/kernel.h>
->>> +#include <linux/module.h>
->>> +
->>> +#include "qcom_pas.h"
->>> +
->>> +struct qcom_pas_ops *ops_ptr;
->>
->> Should this be static ?
-> 
-> It was static earlier in v1. I dropped it based on earlier v1 discussion
-> with Krzysztof. Let me conclude that discussion on the other thread
-> again.
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-The discussion was whether this should be singleton in the first place,
-not making it a global singleton.
+bpf_sk_assign_tcp_reqsk() does not validate the L4 protocol of the skb,
+only checking skb->protocol (L3). A BPF program that calls this kfunc on
+a non-TCP skb (e.g. UDP) will succeed, attaching a TCP reqsk to the skb.
 
-Of course it cannot be anything else than static - nothing should poke here.
+When the skb enters the UDP receive path, skb_steal_sock() returns the
+TCP listener socket from the reqsk. The UDP code then casts this TCP
+socket to udp_sock and accesses UDP-specific fields at invalid offsets,
+causing a null pointer dereference:
 
-Best regards,
-Krzysztof
+  BUG: KASAN: null-ptr-deref in __udp_enqueue_schedule_skb+0x19d/0x1df0
+  Read of size 4 at addr 0000000000000008 by task test_progs/537
+
+  CPU: 1 UID: 0 PID: 537 Comm: test_progs Not tainted 7.0.0-rc4+ #46 PREEMPT
+  Call Trace:
+   <IRQ>
+   dump_stack_lvl (lib/dump_stack.c:123)
+   print_report (mm/kasan/report.c:487)
+   kasan_report (mm/kasan/report.c:597)
+   __kasan_check_read (mm/kasan/shadow.c:32)
+   __udp_enqueue_schedule_skb (net/ipv4/udp.c:1719)
+   udp_queue_rcv_one_skb (net/ipv4/udp.c:2370 net/ipv4/udp.c:2500)
+   udp_queue_rcv_skb (net/ipv4/udp.c:2532)
+   udp_unicast_rcv_skb (net/ipv4/udp.c:2684)
+   __udp4_lib_rcv (net/ipv4/udp.c:2742)
+   udp_rcv (net/ipv4/udp.c:2937)
+   ip_protocol_deliver_rcu (net/ipv4/ip_input.c:209)
+   ip_local_deliver_finish (./include/linux/rcupdate.h:879 net/ipv4/ip_input.c:242)
+   ip_local_deliver (net/ipv4/ip_input.c:265)
+   __netif_receive_skb_one_core (net/core/dev.c:6164 (discriminator 4))
+   __netif_receive_skb (net/core/dev.c:6280)
+
+Solution
+
+Patch 1: Add L4 protocol validation in bpf_sk_assign_tcp_reqsk(). Check
+ip_hdr(skb)->protocol (IPv4) and ipv6_hdr(skb)->nexthdr (IPv6) against
+IPPROTO_TCP, returning -EINVAL for non-TCP skbs.
+Patch 2: Add selftest that calls bpf_sk_assign_tcp_reqsk() on a UDP skb
+and verifies the kfunc rejects it.
+
+
+---
+v1: https://lore.kernel.org/bpf/20260323105510.51990-1-jiayuan.chen@linux.dev/
+v2: https://lore.kernel.org/bpf/20260326062657.88446-1-jiayuan.chen@linux.dev/
+
+Changes in v3:
+- Add IPv6 test coverage, reuse test_cases[] to iterate over both
+  address families
+- Share TCP/UDP port to simplify BPF program, remove unnecessary
+  global variables
+- Use connect_to_fd() + send()/recv() instead of manual sockaddr
+  construction
+- Suggested-by: Kuniyuki Iwashima
+
+Changes in v2:
+- Add Reviewed-by tag from Kuniyuki Iwashima for patch 1
+- Use UDP socket recv() instead of kern_sync_rcu() for synchronization
+  in selftest
+
+Jiayuan Chen (2):
+  bpf: tcp: Reject non-TCP skb in bpf_sk_assign_tcp_reqsk()
+  selftests/bpf: Add protocol check test for bpf_sk_assign_tcp_reqsk()
+
+ net/core/filter.c                             |   6 +
+ .../bpf/prog_tests/tcp_custom_syncookie.c     |  94 ++++++++++++++-
+ .../bpf/progs/test_tcp_custom_syncookie.c     | 109 ++++++++++++++++++
+ 3 files changed, 205 insertions(+), 4 deletions(-)
+
+-- 
+2.43.0
+
