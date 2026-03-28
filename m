@@ -1,205 +1,135 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE2C23741
-	for <netdev@vger.kernel.org>; Sat, 28 Mar 2026 09:32:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4E23859DB
+	for <netdev@vger.kernel.org>; Sat, 28 Mar 2026 10:18:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774690324; cv=none; b=a8CQaE5Y+lxgzrCnW4DtsysITE/tUOkL+l1Znd/12lIMRo2O6B8G1XGduNP5Ce1kVE20PSXrBa/iUhS+/mwybu8vb2dDDaFm3dlE+sQY1YuhwCjjvL5qFi7yNcBBt6z0Eyi0bkdhnRVcBMqB80BUlOSDbk+5kujGLIWEFDwRSHo=
+	t=1774693093; cv=none; b=mqcvWR8nTRUTjCWq1mcKZePiiihOR2FHV86x2ar2W9AVRAvJaOJ2yY3z59P37XV2vOsNPz/FA9L4/+YmmAuSGukfClOwu3sHPGclR8nRL4gs7zbnIX6NL+W97+0aNpuXhVzeRlRwuSOJF1BjvTBjd5upXgwgH5EAqDKmb18eg9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774690324; c=relaxed/simple;
-	bh=zbe7zLAKxYnla4uDGSHbbRkMaKigipNDN4jdwz0543A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L31eBeVzSZ3m2rNL4PkF2U0ZhMsheGeF55E3RKVxhMhw2CuIn/crM73hlnjVF88S27eag4s6J1ZJQlak6y65If3nosqUFfWq66arwxoYHQo9nlPQRKTQa+tXXOtgzhJ1XGYRaYsed4x2vt6BEVoXQPEfJAzS9xoYDwWWaFo0qtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=jygvWVod; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1774693093; c=relaxed/simple;
+	bh=yGOwKDe8FApAodSaWtRpINZ/Pf59eGdK50djmfUVcLs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=EyYNzKRL6M6DmuC+HSypVF0Fv2zwacRPno2U7QF7WyqmBB2a1gpUfS29NAzMZM07IsH3b1/lYqzyn4o2imV+YSye91Fg/vn6Yp1yUxsNE8iLHrrFqamEISy9NlW74Yx4bWbCA0ifUE/JkLXHOnMlGM4AecQCNL12HFxU9vBbi8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c1Y/mbvn; arc=none smtp.client-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="jygvWVod"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=xqFakPzox2Tt3Kr/+AFr8gsg35djsA6QelXBB7J+GoA=; b=jygvWVodbHt83RJwV62jJhRo/5
-	z0VCH6g9pH/qCd3XqiFSUCqYvbNZGNDnQxlqVkRcIhfqAZ8TDBFqILRXfzR/pNP9Ch0G+/Z1orBU6
-	fJ2MiswMm/tP5kIRquSvC5KVFimg0r42SIZ3PYowf3dex2gkvXIOl7JeCuAlcucbDw0SSWyd3580u
-	l8vcMcusWPjsnu+s2wI86C1j8TUX0LND+Rs0wzWiQc20L68cF2fUHl5g2CQe4w0wFdITgbKK16j4L
-	2FlwYN9SY+Qc2SY+gQ1xh52qlNwOtXKMeAUwwoFcduc0ESp54q7uCy+2E/2JYjrZHIG5LX0sM3odO
-	8kPsb3cg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:33302)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1w6Q1G-0000000075R-4B5u;
-	Sat, 28 Mar 2026 09:31:51 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1w6Q1D-000000000Yj-0ZQ5;
-	Sat, 28 Mar 2026 09:31:47 +0000
-Date: Sat, 28 Mar 2026 09:31:46 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>, Ong Boon Leong <boon.leong.ong@intel.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH net-next 2/2] net: stmmac: simplify GSO/TSO test in
- stmmac_xmit()
-Message-ID: <acegAqUb-Dzy87d8@shell.armlinux.org.uk>
-References: <acZQaDeCoib5S5UA@shell.armlinux.org.uk>
- <E1w63fl-0000000E3Vb-3JkY@rmk-PC.armlinux.org.uk>
- <aceQRSc5o4D-HHmq@shell.armlinux.org.uk>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c1Y/mbvn"
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-50b29c4e554so36800371cf.0
+        for <netdev@vger.kernel.org>; Sat, 28 Mar 2026 03:18:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774693091; x=1775297891; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=p/w2BHpjQT/TnLHn0OH9cw7cV2SlAEzKZqiWqm6HLaI=;
+        b=c1Y/mbvnOUaN9RICuUO4Fw60ZbinToYUN6Kn8O763tO1E74XGg1SYsZmDNDGCMF8tJ
+         TU4umoQfBhcS9fApi9QmI+v9dGad8ypoLjY4EfsYqKmMokMJnEXxxjn4ptTlW9pE/5OW
+         e6ij7ifwdm4LE5iyuKFLA2sAH+JDHNso3SfwsLa1RS/gUan4EQVR5HtTNPwz82PWE0lo
+         mJOj18XosmQ1lQYfZBEOzK444fqmQqEv3TdoaJMMaCbsLF8CflRh1IVQW8dNCVzkFMPX
+         E9ItgZB2fbQrMNwkvPdMO+vrwilOONsTzKa6XqlYTZOGWfTiRKVdm7Ri02PFPKanMOmP
+         s30A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774693091; x=1775297891;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p/w2BHpjQT/TnLHn0OH9cw7cV2SlAEzKZqiWqm6HLaI=;
+        b=CBObW8bNGYhvGYCrX7fG3JgUUmWkGKtE807gSzvuz/vXZBFUWZpjVAV6I1NZmaecEc
+         72Ulo/n7NCriiuT/p42ADaPNkJohaWZ09rSXzzUIN68GL1F63ywLKqkQjtUXPPsNvY+V
+         Ahu0Qfr7mNnqjG6Fwfr0lN0qWGr01UzfRvpcrE716G6yRQeRRRTGhWCh3hnV7i4Eqp+G
+         RoW0/aRrcuk5U6QK70vCMoQXVvIc8k0pgq6rhxUdHkeYfrl9fvUcoRBLa9/jtPUMyBsv
+         E4VHyWgyYEemCkSbgAesdtOrbtFZhkl58kG6H54+rmIWkt3EodGR2ips/O4RfswLiqe/
+         nyYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVk6hZH1pmvcSUjAF9YEWn3FjUppzWE8GDGhS0CcWAtaPGaDg8JWbJvhdVaqrNUVut/f0mJQm8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+/bRKUk/oafR6AmjyM2xx5oLlyleQUEvKVKMCOXVNcgrPUg+7
+	Aj7ONL7fMCjFu0kkpGIfPWR35Pql9mjAUUfnC0d3cP3Gwtrb6Jfx5TpGBouUXg==
+X-Gm-Gg: ATEYQzysk0qTPqQfiVyDB1+KLVjKoZpthh1XEfb3sK2aVV7xb+gSmc94mShUBbmx6s+
+	tzEvZh9WM/lNMZQtaso85OeXmzppxPGin7L6Ve0Zu72xhdG7AwHuC2w0oygJERz31JZPRLEtQ5V
+	jCaFmHvmP9tDolsg3LrX+gP5j0ewqgff6nqGfr/9hkoRdTDMCA3TYbZOnGLZI3vEmzf+fpSnjrb
+	QWqXKCXfebLj2+MJtWEhWp+FMeYAUSStr+s54HTNltVhnkECowbh5h+Ulpft+ayZ66kXTmVGogQ
+	b9lLF9fTd63Q92dpOs4v5gPRmUPCFvIhOWhxE/UXj+AJV1fcsGIRU9LEzhX8k6ukS+k7kevv0Ij
+	JFUYlDUEjPHrB73uZdOtmtxLXH4iLNIIctKMD+8LZ2GvC2KuAMxf1hSBsBHBj98SVwYy8lLfA3b
+	EbjfE3ZWATOej+25LQPWWDXjOnqjN2y2Ev
+X-Received: by 2002:a05:622a:5a92:b0:509:965f:888f with SMTP id d75a77b69052e-50ba3672de7mr71964701cf.0.1774693091161;
+        Sat, 28 Mar 2026 03:18:11 -0700 (PDT)
+Received: from localhost.localdomain ([128.224.253.2])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50bb2e17372sm15490681cf.24.2026.03.28.03.18.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Mar 2026 03:18:10 -0700 (PDT)
+From: Kevin Hao <haokexin@gmail.com>
+Subject: [PATCH net-next 0/4] net: macb: Remove dedicated IRQ handler for
+ WoL
+Date: Sat, 28 Mar 2026 18:17:44 +0800
+Message-Id: <20260328-macb-irq-v1-0-7b3e622fb46c@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aceQRSc5o4D-HHmq@shell.armlinux.org.uk>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMiqx2kC/x3MOwqAMBBF0a3I1A7ERAXdilj4eeoURk1EAsG9G
+ ywPXG4kDyfw1GaRHB7xctiEIs9o2ga7gmVOJq10rYwueB+mkcVdXFYGUM1oTFNSyk+HRcK/6sj
+ iZotwU/++H12ouPhkAAAA
+X-Change-ID: 20260321-macb-irq-453ee09b3394
+To: Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Kevin Hao <haokexin@gmail.com>, netdev@vger.kernel.org
+X-Mailer: b4 0.14.2
 
-On Sat, Mar 28, 2026 at 08:24:37AM +0000, Russell King (Oracle) wrote:
-> On Fri, Mar 27, 2026 at 09:40:09AM +0000, Russell King (Oracle) wrote:
-> > The test in stmmac_xmit() to see whether we should pass the skbuff to
-> > stmmac_tso_xmit() is more complex than it needs to be. This test can
-> > be simplified by storing the mask of GSO types that we will pass, and
-> > setting it according to the enabled features.
-> > 
-> > Note that "tso" is a mis-nomer since commit b776620651a1 ("net:
-> > stmmac: Implement UDP Segmentation Offload"). Also note that this
-> > commit controls both via the TSO feature. We preserve this behaviour
-> > in this commit.
-> > 
-> > Also, this commit unconditionally accessed skb_shinfo(skb)->gso_type
-> > for all frames, even when skb_is_gso() was false. This access is
-> > eliminated.
-> > 
-> > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> 
-> AI review of this patch regurgitates Jakub's point that was discussed.
-> 
-> > @@ -3700,7 +3700,7 @@ static int stmmac_hw_setup(struct net_device *dev)
-> >  	stmmac_set_rings_length(priv);
-> >  
-> >  	/* Enable TSO */
-> > -	if (priv->tso) {
-> > +	if (priv->gso_enabled_types) {
-> >  		for (chan = 0; chan < tx_cnt; chan++) {
-> >  			struct stmmac_tx_queue *tx_q = &priv->dma_conf.tx_queue[chan];
-> >  
-> 
-> ...
-> 
-> > @@ -7828,7 +7834,7 @@ static int __stmmac_dvr_probe(struct device *device,
-> >  		ndev->hw_features |= NETIF_F_TSO | NETIF_F_TSO6;
-> >  		if (priv->plat->core_type == DWMAC_CORE_GMAC4)
-> >  			ndev->hw_features |= NETIF_F_GSO_UDP_L4;
-> > -		priv->tso = true;
-> > +		stmmac_set_gso_types(priv, true);
-> 
-> Clearly, the issue it is regurgitating has been there for a long time
-> and isn't a new issue introduced by this patch.
-> 
-> AI needs to stop doing this, because it is encouraging multiple changes
-> in a single patch, which is against the normal kernel process.
-> 
-> As already pointed out, there are multiple issues with stmmac TSO
-> support, particularly with glue drivers that enable TSO on some
-> queues/channels and not others, since netdev core TSO support is
-> global across all channels.
-> 
-> So, won't the AI response in this patch - it's just another pre-
-> existing issue that needs fixing in a separate patch.
+During debugging of a suspend/resume issue, I observed that the macb driver
+employs a dedicated IRQ handler for Wake-on-LAN (WoL) support. To my knowledge,
+no other Ethernet driver adopts this approach. This implementation unnecessarily
+complicates the suspend/resume process without providing any clear benefit.
+Instead, we can easily modify the existing IRQ handler to manage WoL events,
+avoiding any overhead in the TX/RX hot path.
 
-Looking at the TSO vs TBS issue (which precludes the use of TSO on a
-channel in stmmac) I can't find an obvious reason for this in the
-available documentation. However, unfortunately, iMX8MP doesn't support
-TSO, so the TSO bits are elided there, but does support TBS (needing
-enhanced descriptors to be enabled). STM32MP151 on the other hand
-supports TSO but not TBS, and thus fails to mention anything about
-enhanced descriptors or TBS.
+I am skeptical that the minor optimizations to the IRQ handler proposed in this
+patch series would yield any measurable performance improvement. However, it
+does appear that the execution time of the macb_interrupt() function is
+slightly reduced.
 
-When stmmac_enable_tbs() enables TBS, it isn't actually enabling a
-feature specific bit, but switching the channel to use enhanced
-descriptor format. This format extends the basic descriptors by
-placing four extra 32-bit words before the basic descriptor.
+The following data(net throughput and execution time of macb_interrupt) were
+collected from my AMD Zynqmp board using the commands:
+  taskset -c 1,2,3 iperf3 -c 192.168.3.4 -t 60 -Z -P 3 -R
+  cat /sys/kernel/debug/tracing/trace_stat/function0
 
-Looking at the enhanced normal descriptor format for TDES3, it
-indicates that the format includes bit 18 in the control field, which
-is the TSE bit (TCP segmentation enable for this packet.) So, it seems
-it's not a limitation of the descriptor format.
+Before:
+-------
+  [SUM]   0.00-60.00  sec  5.99 GBytes   857 Mbits/sec    0             sender
+  [SUM]   0.00-60.00  sec  5.98 GBytes   856 Mbits/sec                  receiver
 
-So, either "TSO and TBS cannot co-exist" is incorrect, or there is a
-hardware limitation that isn't documented between these two manuals.
+  Function                               Hit    Time            Avg             s^2
+  --------                               ---    ----            ---             ---
+  macb_interrupt                      218538    723327.5 us     3.309 us        1.022 us
 
-One other interesting point is that stmmac_tso_xmit() seems to
-handle the case where TSO and TBS are enabled on the channel:
+After:
+------
+  [SUM]   0.00-60.00  sec  5.99 GBytes   857 Mbits/sec    0             sender
+  [SUM]   0.00-60.00  sec  5.98 GBytes   857 Mbits/sec                  receiver
 
-                if (tx_q->tbs & STMMAC_TBS_AVAIL)
-                        mss_desc = &tx_q->dma_entx[tx_q->cur_tx].basic;
-                else
-                        mss_desc = &tx_q->dma_tx[tx_q->cur_tx];
+Function                               Hit    Time            Avg             s^2
+  --------                               ---    ----            ---             ---
+  macb_interrupt                      218558    646355.1 us     2.957 us        1.290 us
 
-                stmmac_set_mss(priv, mss_desc, mss);
-...
-        if (tx_q->tbs & STMMAC_TBS_AVAIL)
-                desc = &tx_q->dma_entx[first_entry].basic;
-        else
-                desc = &tx_q->dma_tx[first_entry];
-        first = desc;
+---
+Kevin Hao (4):
+      net: macb: Replace open-coded implementation with napi_schedule()
+      net: macb: Consolidate MACB_CAPS_ISR_CLEAR_ON_WRITE checks in IRQ handler
+      net: macb: Factor out the handling of non-hot IRQ events into a separate function
+      net: macb: Remove dedicated IRQ handler for WoL
 
-etc.
+ drivers/net/ethernet/cadence/macb_main.c | 244 +++++++++++++------------------
+ 1 file changed, 102 insertions(+), 142 deletions(-)
+---
+base-commit: 3b058d1aeeeff27a7289529c4944291613b364e9
+change-id: 20260321-macb-irq-453ee09b3394
 
-Avoiding enabling TSO for a TBS channel was added by this commit:
-
-commit 5e6038b88a5718910dd74b949946d9d9cee9a041
-Author: Ong Boon Leong <boon.leong.ong@intel.com>
-Date:   Wed Apr 21 17:11:49 2021 +0800
-
-    net: stmmac: fix TSO and TBS feature enabling during driver open
-
-    TSO and TBS cannot co-exist and current implementation requires two
-    fixes:
-
-     1) stmmac_open() does not need to call stmmac_enable_tbs() because
-        the MAC is reset in stmmac_init_dma_engine() anyway.
-     2) Inside stmmac_hw_setup(), we should call stmmac_enable_tso() for
-        TX Q that is _not_ configured for TBS.
-
-    Fixes: 579a25a854d4 ("net: stmmac: Initial support for TBS")
-    Signed-off-by: Ong Boon Leong <boon.leong.ong@intel.com>
-    Signed-off-by: David S. Miller <davem@davemloft.net>
-
-which doesn't really explain the background, and leaves all the TBS
-cruft in the TSO transmit path (nothing like properly updating the
-driver, eh? No wonder stmmac is such a mess!)
-
-Maybe Ong Boon Leong can indicate where this restriction comes from?
-Note: as mentioned previously, disabling TSO only on some channels is
-actually wrong - the netdev core doesn't know which channels support
-TSO and which don't, so the driver is likely to still get TSO skbuffs
-for channels that the above commit has disabled TSO support. So, if
-TBS is enabled and it is incompatible with TSO, then either we need
-to use software TSO support _or_ disable TSO for the entire interface.
-
-Incidentally, while looking at this, I found a few more pre-conditions
-for TSO:
-
-- TxPBL must be >= 4
-- MSS[13:0] must be more than the configured data width in bytes, up to
-  a maximum of 1023 bytes.
-
-I'm fairly certain that the driver does nothing to ensure that this
-in the case for either of these two points.
-
+Best regards,
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Kevin Hao <haokexin@gmail.com>
+
