@@ -1,154 +1,216 @@
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347A3237A4F
-	for <netdev@vger.kernel.org>; Sat, 28 Mar 2026 15:47:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9E213AA2D
+	for <netdev@vger.kernel.org>; Sat, 28 Mar 2026 15:52:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774712875; cv=none; b=WYApWI2J29hE1qrWQscA2/fPHUTSYyATfc6bLDex4csCJkGIpKlWVIg4ddH0hS3FdVxYVjt6QWoNaLIz6gUQ2w8+XjTsZKQTU0YriNCmXFjvtQ0Vougs5UDppHLbs4ZTcPoL6MRraHz12rL1q3RulXo2c9OT0hi4AlYdH0KJqCo=
+	t=1774713164; cv=none; b=BIKOHDH4/jDCCkWwSfWrgV7PPd0okmS9FKtN7AvcuA5sZJpDT7c4JHxIu3wR5hd3hJbf5RwLj0QCI2Q7YL4VMZcaaKecdPZWUeyWDsQ82nX8o7I6Ovw41+woubS0C7xsv+qSAPb1VgBOUFhTb8tP5G5To7i5DqyF64oYmaDMHPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774712875; c=relaxed/simple;
-	bh=Yev9UV/I8swSwv3LUCQDvu20G+cSD5KmPOhjN/tcxOo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CG8OhZygBvr6Z9Y5KebLN00s43mLNOkatK7qBpnHkf5XDyLh9sxFaPl5n1pzyTqW7AkeL7RScglOjPu/jjrZXbhS2/cpYsZatN7aeJw8Im56bsldLqu5Zrys5ag7F9i2gL1KyOca1+rB3BUNZ61Y3V+m1EkmvyIpiUiAuBeT0nE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T2XeDzUe; arc=none smtp.client-ip=209.85.218.41
+	s=arc-20240116; t=1774713164; c=relaxed/simple;
+	bh=93XagFVPNl3duxbBvxcwUDBo3vyzqKak8SMWenv0TS4=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=g4goCk+eI+0acwIEasCuNauBD7WZNXZqSO8jCgjSiDzOX+e/2K0c9rgl2CbH9Wq57EuKrttPJraPRzDETsUqUOVeOY/wASNXDqyNXkpeET4rHu9tuiTCT5f9ZmqECLyww2BdnV5YxrX1MNuL2/pCzzR+hsGVusUvZL8P72deERg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pTFwf9Vp; arc=none smtp.client-ip=209.85.208.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T2XeDzUe"
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b9a0762ed5fso426719966b.1
-        for <netdev@vger.kernel.org>; Sat, 28 Mar 2026 08:47:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pTFwf9Vp"
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-38a43f1f978so26962711fa.3
+        for <netdev@vger.kernel.org>; Sat, 28 Mar 2026 08:52:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774712871; x=1775317671; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3xnJLgLPDdJ1GsL2xUFaC/e6C6O7gdTvGVWbkMiWCSI=;
-        b=T2XeDzUetMb/Oa6zznFkTsRfaAupYKgCyHZGbCQJkWrh/4cf7bnjX3AbtbZFGfohHH
-         f6gcscfTFJNjx6bx72i1tA2NbhiqW6gjuPKjdsWLR4dSxwll1QLDdGEVwiOwyzsiu82D
-         zN+6JHhxQuopp04GimH0kmvA9Q7zhCAXV4BwU+CDIcPXNTckNBru9R1p/FbsGeTuVnUB
-         2yXW58Uo40ROd6ICilctH77kny/LcbsOOMA1V23MInydnnGRM4ARJ0WIiW+ydEkR91kx
-         SH5FNW/f4KOWC9MuVX6WgZP0ziZuCKdmGkpTQ/VVvpDpM3y5VHRsRZZekbZLja4yHbXK
-         B+9A==
+        d=gmail.com; s=20251104; t=1774713161; x=1775317961; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=y7pyXU2qFzEOnU8j2MDB/XlKYkbXJkeDxLklHnoWscA=;
+        b=pTFwf9VpgkkL4V5yKtX9uG2X9s24eusiMb8jCAgtWMPXsvm3Bu1ATv5obC0bO0oOHp
+         MwsgX/gU+2ZzI+puBX2XvkCANrQlzYP7vfn2pf8xjyz406QCN7XN7Hk9ohKfrNbP/u4g
+         6Vax+X5kbWBNGZaHgGykzKINTVEJdDphIqrS2kcmCIoc1ocfJ+lkvK/6LiBX1eIG1gGW
+         QKukpLK1XsYZi90GDtvLFbdPZ1YCi7u6KzoMjxnUSj3t3Tct5xKxKqOOhb20CV+evgYs
+         R/OIyQp0CqVHJrZrh/ZsdrMirI+TDuuNL8WmAUZ3/sdGXgnIOUM47A2voOi1OQlTfles
+         3yQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774712871; x=1775317671;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3xnJLgLPDdJ1GsL2xUFaC/e6C6O7gdTvGVWbkMiWCSI=;
-        b=FpRhfFP91H4gcIoo09GiBcgqLTj65UGb4USNREsPGBzAG6VgMfnGfoG1YWbqg0o4EK
-         iasBz/Vvvq0X5fBho3QaozprX1aNVhgB45NuQmlkP6h7DgfWhOPFsoDcq9jztvIoVeQL
-         jFe7v6rCEZj3zvMGHoaG1ySW4Q1WFNUfbfJXuX4WBAMGqZNTa+hRXxR6eOky0KHEcs/x
-         dYBws0cFmFeTxP6Havu+z8fNnYoDiCpkgc4MesEMEwcYloqS6NiDOz9KZogSBitpyUla
-         Dtoz4YafSEg0hX/tiEDtTQ+L3jp074UbCIs6Pu18lqXvRCCXDpNZE+sfFhzRk0fvLdqt
-         cF4Q==
-X-Gm-Message-State: AOJu0YwGe6YanAjcxt8ExPp2YEMt+fCylKewMTykcDFQ35dIh/0LhseP
-	Tw1iTu7j3alpBwcYSQmFFI/WUwuhXBQlnNUpHsnOj1YtNs+dztMV8KzXfmsovL2q
-X-Gm-Gg: ATEYQzy7XtyEbILSSEiaib/ioWyiR+W622QeXN+iURIV8vPKeXlbNQDzvwxCVlD8mnw
-	KH68ZzqzECIV6llBvRsrbtAPLINggaGQJeYiWaI7CeNwkPYUrzB2sQyFkHz0zdvoLu3F+DIs+34
-	809d05Q5oigSwb1vwnAgcLaOvtd42pA91HYFh8c5YjmtnTEr9yEQsdc3PpIvlOsrSDumEylfYAs
-	2r8IllGh8eeClGa3LmnYcvmP/TzKa6svAf3YAhPvGhnrYsKLtZaK1y9Z1QIlzhUdIklcllI6g3O
-	/8cmK7HQS3mFDYG1Fyje7crXoCHrH6EQKGfvOSqZE6uFTMGbrOCznOxMpFQCY1ZHo/+LMShBhS6
-	p6hPKHSMpUDPqDpKVLHRkgGLI6unoJa1JYxXnma3p8ZOtD/ncf58Wq8jnzCCDTfo22620OoPgA3
-	twEIrX4fd0h1i8y8/LX8YipKcyhfwp7WU16fUFFVWRkYs1PcpLBx8Ldv2HWv+q2SkA8EKlkI2re
-	nzPw3t4kAQ=
-X-Received: by 2002:a05:6512:3b2c:b0:5a2:7b8b:8a80 with SMTP id 2adb3069b0e04-5a2abc3eedfmr1920106e87.3.1774705957433;
-        Sat, 28 Mar 2026 06:52:37 -0700 (PDT)
-Received: from pop-os.. ([2a02:2121:86b:dd40:8edb:ab33:1974:67a6])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2b1456dffsm459537e87.70.2026.03.28.06.52.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Mar 2026 06:52:35 -0700 (PDT)
-From: Nikolaos Gkarlis <nickgarlis@gmail.com>
-To: netdev@vger.kernel.org
-Cc: kuba@kernel.org,
-	nickgarlis@gmail.com,
-	kuniyu@google.com
-Subject: [PATCH net v3] rtnetlink: add missing netlink_ns_capable() check for peer netns
-Date: Sat, 28 Mar 2026 14:52:15 +0100
-Message-Id: <20260328135215.901879-1-nickgarlis@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20251104; t=1774713161; x=1775317961;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=y7pyXU2qFzEOnU8j2MDB/XlKYkbXJkeDxLklHnoWscA=;
+        b=JFNUUtqDWaQ2BS5trvN/U+kBHylFoN2U7AVtbN5Blnkxj2wyRjBmjdfJFxEqynmScX
+         5Fcc45n3Ty74J9SQFCX3sHymJkSRf8z47ISbD98Tm7tvy9GwPr5BuXZqV0lrA2biTR/4
+         YQykyMKgXBfO4x08IAnjDg7O2y5RoNq2+JemiNVn/GeMYzhfwuHI+phAOP0QxjlwFcno
+         H1GMibQTDxQkYDikAG/++ijM15Zqwyksf1UVJUFfGUeMu3SBGcGJoOB4IkryjdxwrhQU
+         EsNKjusO5p9Cpi+7AHW394LbbZKv2o7E1kIRve+hzcaLNI+We/TFmgP+Jg4WiuxEmy7x
+         yUQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWAh32mxCS8WvxIwK34MdsqkwrTH1O1LdzFI5TEuRuBSHDgq8wBMzyzs4lG1YzUVCXxggEpL/8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyqecf6KI8CSZ+yEnnQMNg2BoM7vnggFQyOyIwRgNZNuewC5BkH
+	D+hzrVt0VqINhNlcDxv//o1P/ZBFwwAZarW17ndZfzFfjQEKMudl3otOT6qfgA==
+X-Gm-Gg: ATEYQzwiukmE9ABJGzVkAmAbvQue24NEHLN0psU2cpZOf52KZ26cI4wOOxDHiRbLkPW
+	ug/690Hq8f0qJcz6NuoGWcv1Ewe2+BTx8kxrb/1QglramTPFRlbpZeIDh56FzoISy0PGP0ljepb
+	+y+jjS/FwxbAXPUwrMTVoLW++3yQtdgKHoO1Stp/rf7pIBlAp7BCKJc4qbVGblPNqyR+wKrRTNu
+	atwFJQ72H7TXs3mGk0HKIj6x0Mh6jPVCnrfjPlDcHKtYKC/hNW3xKABJ8w07aU38Fm2V4GmZnAP
+	HE5JKmdfEbeKNCVXLE/AdEnPQ2AVPCTG+lSqUJCJ4KcGcGmizUqtNU+84Fo8vmOkXEoMZ0RHY5J
+	xzGvCxvGau9LwOG8kCPi5VU2FQ/0mWBDo4HylyExInQEAXfrTQnf44c5Cw98XDTme9HvwmkbMl+
+	VZQcuWSffvz70tkpGdMQ5uAPYNYoqL2ynFhFHScFr8zuvpH5mtJJHuudjagR91BLemizF80qaYx
+	KkyzfVdcSd+udAtNGwQ6+z+gzqgwVsdTpQrHtNuY87duNTo13uWxCyZYDJAafS8yqoc7/BgQdhs
+	jCpQAbJgZqpNYfh7rxY2WEoAkZcQw3hB4w==
+X-Received: by 2002:a17:907:1c1e:b0:b98:5b6b:9138 with SMTP id a640c23a62f3a-b9b50363003mr311019166b.19.1774693320670;
+        Sat, 28 Mar 2026 03:22:00 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:20d:1300:1b1c:4449:176a:89ea? (2001-1c00-020d-1300-1b1c-4449-176a-89ea.cable.dynamic.v6.ziggo.nl. [2001:1c00:20d:1300:1b1c:4449:176a:89ea])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9b7b1e3aeesm62735466b.48.2026.03.28.03.21.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 28 Mar 2026 03:22:00 -0700 (PDT)
+Message-ID: <6f42d92b-a26d-49a4-bef7-2227c252eea7@gmail.com>
+Date: Sat, 28 Mar 2026 11:21:59 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] net: phy: air_en8811h: add AN8811HB MCU
+ assert/deassert support
+From: Eric Woudstra <ericwouds@gmail.com>
+To: "Lucien.Jheng" <lucienzx159@gmail.com>, andrew@lunn.ch,
+ hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bjorn@mork.no
+Cc: frank-w@public-files.de, daniel@makrotopia.org, lucien.jheng@airoha.com
+References: <20260326153518.8387-1-lucienzx159@gmail.com>
+ <edeee8e5-0de3-48ea-aeb5-cc705fdcd469@gmail.com>
+Content-Language: en-US
+In-Reply-To: <edeee8e5-0de3-48ea-aeb5-cc705fdcd469@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-rtnl_newlink() lacks a CAP_NET_ADMIN capability check on the peer
-network namespace when creating paired devices (veth, vxcan,
-netkit). This allows an unprivileged user with a user namespace
-to create interfaces in arbitrary network namespaces, including
-init_net.
 
-Add a netlink_ns_capable() check for CAP_NET_ADMIN in the peer
-namespace before allowing device creation to proceed.
 
-Fixes: 81adee47dfb6 ("net: Support specifying the network namespace upon device creation.")
-Signed-off-by: Nikolaos Gkarlis <nickgarlis@gmail.com>
----
-v3:
-  - Move netlink_ns_capable() check from rtnl_newlink() into
-    rtnl_get_peer_net(), after the last rtnl_link_get_net_ifla(tb)
-    call. The tbp path is already covered by rtnl_link_get_net_capable()
-    in the caller. (suggested by Kuniyuki)
-  - Pass skb to rtnl_get_peer_net() for the capability check.
-  - Add IS_ERR() check on rtnl_link_get_net_ifla(tb) return value.
-v2:
-  - Removed "Reported-by" tag
-  - Fixed "Fixes" tag with the help of Kuniyuki Iwashima (thanks !)
+On 3/27/26 5:41 AM, Eric Woudstra wrote:
+> static int __air_pbus_reg_write(struct mdio_device *mdio, u32 pbus_address,
+> 				u32 pbus_data)
+> {
+> 	int ret;
+> 
+> 	ret = __mdiobus_write(mdio->bus, mdio->addr, AIR_EXT_PAGE_ACCESS,
+> 			      (u16)(pbus_address >> 6));
+> 	if (ret < 0)
+> 		return ret;
+> 
+> 	ret = __mdiobus_write(mdio->bus, mdio->addr, (pbus_address >> 2) & 0xf,
+> 			      (u16)pbus_data);
+> 	if (ret < 0)
+> 		return ret;
+> 
+> 	ret = __mdiobus_write(mdio->bus, mdio->addr, AIR_PBUS_DATA_HIGH,
+> 			      (u16)(pbus_data >> 16));
+> 	if (ret < 0)
+> 		return ret;
+> 
+> 	return 0;
+> }
+> 
+> static int air_pbus_reg_write(struct mdio_device *mdio, u32 pbus_address,
+> 			      u32 pbus_data)
+> {
+> 	int ret;
+> 
+> 	mutex_lock(&mdio->bus->mdio_lock);
+> 
+> 	ret = __air_pbus_reg_write(mdio, pbus_address, pbus_data);
+> 	if (ret < 0)
+> 		dev_err(&mdio->dev, "%s 0x%08x failed: %d\n", __func__,
+> 			pbus_address, ret);
+> 
+> 	mutex_unlock(&mdio->bus->mdio_lock);
+> 
+> 	return ret;
+> }
+> 
+> static int __air_pbus_reg_read(struct mdio_device *mdio, u32 pbus_address,
+> 			       u32 *pbus_data)
+> {
+> 	int ret, pbus_data_low;
+> 
+> 	ret = __mdiobus_write(mdio->bus, mdio->addr, AIR_EXT_PAGE_ACCESS,
+> 			      (u16)(pbus_address >> 6));
+> 	if (ret < 0)
+> 		return ret;
+> 
+> 	ret = __mdiobus_read(mdio->bus, mdio->addr, (pbus_address >> 2) & 0xf);
+> 	if (ret < 0)
+> 		return ret;
+> 	pbus_data_low = ret;
+> 
+> 	ret = __mdiobus_read(mdio->bus, mdio->addr, AIR_PBUS_DATA_HIGH);
+> 	if (ret < 0)
+> 		return ret;
+> 
+> 	*pbus_data = (ret << 16) + pbus_data_low;
+> 
+> 	return 0;
+> }
+> 
+> static int air_pbus_reg_read(struct mdio_device *mdio, u32 pbus_address,
+> 			     u32 *pbus_data)
+> {
+> 	int ret;
+> 
+> 	mutex_lock(&mdio->bus->mdio_lock);
+> 
+> 	ret = __air_pbus_reg_read(mdio, pbus_address, pbus_data);
+> 	if (ret < 0)
+> 		dev_err(&mdio->dev, "%s 0x%08x failed: %d\n", __func__,
+> 			pbus_address, ret);
+> 
+> 	mutex_unlock(&mdio->bus->mdio_lock);
+> 
+> 	return ret;
+> }
+> 
+> With:
+> 
+> #define AIR_PBUS_DATA_HIGH		0x10
 
- net/core/rtnetlink.c | 20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+Small correction using upper_16_bits() and lower_16_bits():
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index fae8034efbf..4be7fc6e23a 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -3894,12 +3894,14 @@ static int rtnl_newlink_create(struct sk_buff *skb, struct ifinfomsg *ifm,
- 	goto out;
- }
- 
--static struct net *rtnl_get_peer_net(const struct rtnl_link_ops *ops,
-+static struct net *rtnl_get_peer_net(struct sk_buff *skb,
-+				     const struct rtnl_link_ops *ops,
- 				     struct nlattr *tbp[],
- 				     struct nlattr *data[],
- 				     struct netlink_ext_ack *extack)
- {
- 	struct nlattr *tb[IFLA_MAX + 1];
-+	struct net *net;
- 	int err;
- 
- 	if (!data || !data[ops->peer_type])
-@@ -3915,7 +3917,19 @@ static struct net *rtnl_get_peer_net(const struct rtnl_link_ops *ops,
- 			return ERR_PTR(err);
- 	}
- 
--	return rtnl_link_get_net_ifla(tb);
-+	net = rtnl_link_get_net_ifla(tb);
-+	if (IS_ERR(net))
-+		return net;
-+
-+	if (!net)
-+		return NULL;
-+
-+	if (!netlink_ns_capable(skb, net->user_ns, CAP_NET_ADMIN)) {
-+		put_net(net);
-+		return ERR_PTR(-EPERM);
-+	}
-+
-+	return net;
- }
- 
- static int __rtnl_newlink(struct sk_buff *skb, struct nlmsghdr *nlh,
-@@ -4054,7 +4068,7 @@ static int rtnl_newlink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 		}
- 
- 		if (ops->peer_type) {
--			peer_net = rtnl_get_peer_net(ops, tb, data, extack);
-+			peer_net = rtnl_get_peer_net(skb, ops, tb, data, extack);
- 			if (IS_ERR(peer_net)) {
- 				ret = PTR_ERR(peer_net);
- 				goto put_ops;
--- 
-2.34.1
+static int __air_pbus_reg_write(struct mdio_device *mdio, u32 pbus_address,
+				u32 pbus_data)
+{
+	int ret;
+
+	ret = __mdiobus_write(mdio->bus, mdio->addr, AIR_EXT_PAGE_ACCESS,
+			      (u16)(pbus_address >> 6));
+	if (ret < 0)
+		return ret;
+
+	ret = __mdiobus_write(mdio->bus, mdio->addr, (pbus_address >> 2) & 0xf,
+			      lower_16_bits(pbus_data));
+	if (ret < 0)
+		return ret;
+
+	ret = __mdiobus_write(mdio->bus, mdio->addr, AIR_PBUS_DATA_HIGH,
+			      upper_16_bits(pbus_data));
+	if (ret < 0)
+		return ret;
+
+	return 0;
+}
+
+static int air_pbus_reg_write(struct mdio_device *mdio, u32 pbus_address,
+			      u32 pbus_data)
+{
+	int ret;
+
+	mutex_lock(&mdio->bus->mdio_lock);
+
+	ret = __air_pbus_reg_write(mdio, pbus_address, pbus_data);
+	if (ret < 0)
+		dev_err(&mdio->dev, "%s 0x%08x failed: %d\n", __func__,
+			pbus_address, ret);
+
+	mutex_unlock(&mdio->bus->mdio_lock);
+
+	return ret;
+}
 
