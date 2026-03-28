@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC321F16B;
-	Sat, 28 Mar 2026 03:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B6A35FF6B
+	for <netdev@vger.kernel.org>; Sat, 28 Mar 2026 03:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774669227; cv=none; b=tgF98RfNIrFdfFhNZOeexCLf9JM/rYd9JfSwVQEwJeiQDmLDwN1NOaVPeXMcRC24YG2EXhPOZgTuWdHgf+QYfYYmlT8Iopxp7c7QyV2kh7LOpkQ41jdABThAmiQSA22QSBT8paFWT9okL6838Yl5glNVHw6jJX/p515qUMFc+vs=
+	t=1774669229; cv=none; b=SHBw/2IIWipWFrU/9YIqEL5zHyoJu0XkHywhottkMuXvtP20UZO3GGFb+LVxfYm/AGXC58PirSZDNLufVvuVQtwHcm8SwAEaFTd5FRSrcfuxrnkHdLd3W2L/TqNWuvvEfVIowiSrw4gNuneekYPtSRJD4T97idNVdqlQkMrApxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774669227; c=relaxed/simple;
-	bh=89UbiLj17IXKiOjBpxTyV1V6JPFLc2HpE1rwd750GOw=;
+	s=arc-20240116; t=1774669229; c=relaxed/simple;
+	bh=xKgSQtOM+CtRChF3giWqmyUjr1/tlqIWkzrB2vVCbMg=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=YinLZvWj1BBYZmFDOdY9MceSQx+EZxBPK/jEZGGNXTgJZXRD3Z2S4NHuHp0ZZ7TKzkrJtPR9MlpACMUq4Wj1GG2d3b/RaOPKEtci0VVs88kaylH6vzBGGEe4GmoMf3N4HT36UtIOiGo1DTLl/aDZZPZpXF2h4+rN0nJN+6nWIh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZWNAZ2qh; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=nigmd5w20H4qK6ZHUyxG+w0+bZdMkbuKMBIaAyO1mZzdPmHFg9BzkyCHiZBJPDBWsP0KgKEBpgv2Jv2FUzu7nbrTRvLPkj/+ZiUH6JXRF7YP4/SgNtQjVYlCoz2hJ2VUrWoLM6iLWOTuNmD/pZPu8PdhtF9Sy5T5cgpbsojWXlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SeFe9J5d; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZWNAZ2qh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6173FC4CEF7;
-	Sat, 28 Mar 2026 03:40:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SeFe9J5d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4252C4CEF7;
+	Sat, 28 Mar 2026 03:40:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774669227;
-	bh=89UbiLj17IXKiOjBpxTyV1V6JPFLc2HpE1rwd750GOw=;
+	s=k20201202; t=1774669228;
+	bh=xKgSQtOM+CtRChF3giWqmyUjr1/tlqIWkzrB2vVCbMg=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=ZWNAZ2qhgV3pxWZppktLr8dd7JN+Rd4x0ql9NXYcnxmrRD7iyR0eKiW11cXqZd30S
-	 ri75Ax5R4Ks4hnxYQUOGP/Zq6Nc+prIN1UlS8yxUcaGPamMjrTwKBQ7uoJAQztDMW8
-	 8ytPVb9/MNgMuql6AzLIJVxROAQCwdfqQFcY2Q7dg2maZ1g3G0RERAs2jhNA31fMib
-	 hQLktzTFuV7RC1QzPS6Y5w+KqOeIuMTMI+UkH4NPaxI6Z+7X+cTr6han7v4wwhWQFO
-	 2Z4k1VYAvUV3f9xmhgp46CdiDUmFF3EYdnIqMxXQFqz5FOIYuqcNyn2FsFnzMk/LHs
-	 y1zBEfbhE/tqA==
+	b=SeFe9J5djPix8UH+9axBH0tKh9GS/DDEu6q8a29VZDw8trqjHg6Y7fxJLmo2iVD2H
+	 iX6E+2boMgC0ffFE0czhpmFGjLfpTun+agchsMqiC44pyUiou0MoCcxyzQDYmwIme1
+	 h0Yw0tpwdTUwFnG1hEgRDog9jZ2W3Q6w5oSYv0vwwIZtuy7NMGE3kgE9huPRyJ8Vhn
+	 ij9VNZD4t72awZDwEE3ot7FVyzk+7OzFUycGIWwm1yFcy8mF6mxqgnvezRPrts8CJa
+	 soUUfPtvksnPAzEd5qMi+5sNPgWmaFY1HrIsL2woBMVbIAi52lsCW/kMfCbVcJez8D
+	 XAbNc6DW/qp4A==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FE423930181;
-	Sat, 28 Mar 2026 03:40:14 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA0893930181;
+	Sat, 28 Mar 2026 03:40:15 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,46 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/3] bridge/vxlan: harden ND option parsing paths
+Subject: Re: [PATCH net 0/2] Fix page fragment handling when PAGE_SIZE > 4K
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177466921304.4169512.6574568898601672683.git-patchwork-notify@kernel.org>
-Date: Sat, 28 Mar 2026 03:40:13 +0000
-References: <20260326034441.2037420-1-n05ec@lzu.edu.cn>
-In-Reply-To: <20260326034441.2037420-1-n05ec@lzu.edu.cn>
-To: Yang Yang <n05ec@lzu.edu.cn>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, razor@blackwall.org, idosch@nvidia.com,
- andrew+netdev@lunn.ch, horms@kernel.org, florian.fainelli@broadcom.com,
- roopa@cumulusnetworks.com, dlstevens@us.ibm.com, nb@tipi-net.de,
- netdev@vger.kernel.org, bridge@lists.linux.dev, linux-kernel@vger.kernel.org,
- yifanwucs@gmail.com, tomapufckgml@gmail.com, tanyuan98@outlook.com,
- bird@lzu.edu.cn
+ <177466921428.4169512.12440330427205497180.git-patchwork-notify@kernel.org>
+Date: Sat, 28 Mar 2026 03:40:14 +0000
+References: <20260324195123.3486219-1-dimitri.daskalakis1@gmail.com>
+In-Reply-To: <20260324195123.3486219-1-dimitri.daskalakis1@gmail.com>
+To: Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>
+Cc: davem@davemloft.net, alexanderduyck@fb.com, kuba@kernel.org,
+ edumazet@google.com, pabeni@redhat.com, andrew+netdev@lunn.ch,
+ horms@kernel.org, mike.marciniszyn@gmail.com, lee@trager.us,
+ jacob.e.keller@intel.com, mohsin.bashr@gmail.com, almasrymina@google.com,
+ netdev@vger.kernel.org, kernel-team@meta.com
 
 Hello:
 
 This series was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 26 Mar 2026 03:44:38 +0000 you wrote:
-> Hi,
+On Tue, 24 Mar 2026 12:51:21 -0700 you wrote:
+> From: Dimitri Daskalakis <daskald@meta.com>
 > 
-> This series hardens ND option parsing in bridge and vxlan paths.
+> FBNIC operates on fixed size descriptors (4K). When the OS supports pages
+> larger than 4K, we fragment the page across multiple descriptors.
 > 
-> Patch 1 linearizes the request skb in br_nd_send() before walking ND
-> options. Patch 2 adds explicit ND option length validation in
-> br_nd_send(). Patch 3 adds matching ND option length validation in
-> vxlan_na_create().
+> While performance testing, I found several issues with our page fragment
+> handling, resulting in low throughput and potential RX stalls.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/3] bridge: br_nd_send: linearize skb before parsing ND options
-    https://git.kernel.org/netdev/net/c/a01aee7cafc5
-  - [net,2/3] bridge: br_nd_send: validate ND option lengths
-    https://git.kernel.org/netdev/net/c/850837965af1
-  - [net,3/3] vxlan: validate ND option lengths in vxlan_na_create
-    https://git.kernel.org/netdev/net/c/afa9a05e6c49
+  - [net,1/2] eth: fbnic: Account for page fragments when updating BDQ tail
+    https://git.kernel.org/netdev/net/c/b38c55320bf8
+  - [net,2/2] eth: fbnic: Fix debugfs output for BDQ's with page frags
+    https://git.kernel.org/netdev/net/c/f3567dd428b2
 
 You are awesome, thank you!
 -- 
