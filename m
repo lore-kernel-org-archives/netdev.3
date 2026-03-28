@@ -1,44 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ACE529CE1;
-	Sat, 28 Mar 2026 00:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F4027472;
+	Sat, 28 Mar 2026 00:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774657571; cv=none; b=YSlkj9iLhlvooSGb0ENsYgewb1Ueh7PNf7OI4E9EEEGgVsIO5JKhKvv4O/sAg+2mrMsS+R9WY871G7I0qV0hGqfnqGvGXewtGk5+Hih/JcG4zyCxiwHkAMl0/0FXlniYAK5ScKZT5qDWaW3ZNz/5Rxen5CdAlMF8hKpialtINYs=
+	t=1774658015; cv=none; b=vAeGF9g+AoqMxa/DKdaf0B2vq3YVt0I8K78kaszHufD3o/6HjHqd+1l1+jjd+7PqQA9MBwnwS8FvYmmV5zwmfit5acqfbZxeIaHXvnfzjfhWnGvzylG68ilSOt66sWV+yN5aQAVIbHYPH+T3OpmRLzxcwZ8SQFnvtNAF8slzROA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774657571; c=relaxed/simple;
-	bh=On3JLPKP5M4KBigXQBxIRUwwWe4X/XKC7AZ+Vp4kLyk=;
+	s=arc-20240116; t=1774658015; c=relaxed/simple;
+	bh=ek6qtnjmWH1Vxb53j8u1fMJG2PqErRkSwBDjxGRCEic=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MAZy2p0ASh1moAlwaViRwKyyfW97TXwqRzV473v/7YtfmYt5hsjs7yNlPw2hCUVf2rj+MBpqsOqGtKWNjW7CsC50U0/Z7B9BIkAe6FuicPwGdyJWc3JNEF/SWQ2oONmdf1n6APocC6XHQ5coQEbycSYpaiTaJ15s4KJYAiJw26Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g+PuOpZG; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=kYeSPpNX65L4gB53fF1jN+Nwqe4OP1p6E89UpppBfhG6CewOlYAbehTAdmkxCCiOPiEbFYf5aElT+7jI0M6cz0+VZWTo8AaSlCDKUAmWS2oBEeLI/FOM7dSqtSZVm4ekqOYbhO5DmejK8Swg4ChgLyKeLxkuVMAllm3st3UzBGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LePBlutr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g+PuOpZG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3857C19423;
-	Sat, 28 Mar 2026 00:26:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LePBlutr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 520B4C19423;
+	Sat, 28 Mar 2026 00:33:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774657571;
-	bh=On3JLPKP5M4KBigXQBxIRUwwWe4X/XKC7AZ+Vp4kLyk=;
+	s=k20201202; t=1774658014;
+	bh=ek6qtnjmWH1Vxb53j8u1fMJG2PqErRkSwBDjxGRCEic=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=g+PuOpZGW2JtAseTNOwv/pMlZhrhxREkqtN6RWlKTMzrVVWciJ7J8xbWce8lk/jrq
-	 n3u2RjHmCz3JrLOS17BoT4qv8K/mEXUmwCz42ne+58B7aMpH9v8KjdTeH4MgZv/2Bk
-	 nq8f1p6T6Dpf48cnv5ZsFjp2kPhvdx9ZGhcRdxgZZYierLcKEmQDNu4XS95s6l8aED
-	 MkTUeJtq3xtiMONmvodcMBiuv0xtbm6cVEO54DPCfHYpgdDv9h1Fhg50dWiUFxBz48
-	 jwgLaYY4V6oSRW3NvCHy3mSa4YYzTkbi5fDWKr8nUPsTXOLzjkZz9bzaYEhuThDX5B
-	 0WdpGuFHoXANw==
-Date: Fri, 27 Mar 2026 17:26:07 -0700
+	b=LePBlutrzAIavrVidgMT1Hn05mD15a+OP+bNz9tqg3koccogw6bncnoUMbNZe5XYQ
+	 HDRiz5nBjVxqm+dwDyM6SzFbFT9oZz2+CmQwErpAJlyZh7CxOLTSGSviK4vX+bQw9J
+	 WV0AaAPeh1uFGK+Oke9YozJnSGbUYEzhYNhfaN60Ij8yMF+O2BUfaOfVwjqfAfd2l/
+	 jZijf6X6rUrBbAO5rzyfIV5bTBe910U0pi3gUegOjby5uvHku7cJzX/qoAL5CEG1OW
+	 /EozEk0PMjeBrFyViGLNabEef/az6yuAH3Q4T3TuhMsSBgvExqY386dTCL+9DOmCv+
+	 MU8yvy/Ur8yAg==
+Date: Fri, 27 Mar 2026 17:33:23 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: "Chuck Lever" <cel@kernel.org>
-Cc: john.fastabend@gmail.com, "Sabrina Dubroca" <sd@queasysnail.net>,
- netdev@vger.kernel.org, kernel-tls-handshake@lists.linux.dev, "Chuck Lever"
- <chuck.lever@oracle.com>, "Hannes Reinecke" <hare@suse.de>, "Alistair
- Francis" <alistair.francis@wdc.com>
-Subject: Re: [PATCH net-next v6 0/6] TLS read_sock performance scalability
-Message-ID: <20260327172607.1ae2bde9@kernel.org>
-In-Reply-To: <722ffab1-f3d8-4309-afa0-482d64ae3a33@app.fastmail.com>
-References: <20260326-tls-read-sock-v6-0-fd887b9e7f06@oracle.com>
-	<20260326175430.7ceff326@kernel.org>
-	<722ffab1-f3d8-4309-afa0-482d64ae3a33@app.fastmail.com>
+To: Martin Schiller <ms@dev.tdt.de>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Yiming Qian
+ <yimingqian591@gmail.com>, linux-x25@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, security@kernel.org
+Subject: Re: [PATCH net] net/x25: Fix overflow when accumulating packets
+Message-ID: <20260327173323.4f4783df@kernel.org>
+In-Reply-To: <b2099069e5dce49a0bc068a8d318f3a2@dev.tdt.de>
+References: <20260327-x25_fraglen-v1-1-9fc751d4f754@dev.tdt.de>
+	<b2099069e5dce49a0bc068a8d318f3a2@dev.tdt.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,26 +47,14 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 27 Mar 2026 09:35:09 -0400 Chuck Lever wrote:
-> On Thu, Mar 26, 2026, at 8:54 PM, Jakub Kicinski wrote:
-> > On Thu, 26 Mar 2026 09:50:45 -0400 Chuck Lever wrote:  
-> >> I'd like to encourage in-kernel kTLS consumers (i.e., NFS and
-> >> NVMe/TCP) to coalesce on the use of read_sock. When I suggested
-> >> this to Hannes, he reported a number of nagging performance
-> >> scalability issues with read_sock. This series is an attempt to
-> >> run these issues down and get them fixed before we convert the
-> >> above sock_recvmsg consumers over to read_sock.
-> >> 
-> >> Batch async decryption and its submit/deliver scaffolding were
-> >> dropped from this series because async_capable is always false
-> >> for TLS 1.3, which NFS and NVMe/TCP both require. Async crypto
-> >> support for TLS 1.3 is a prerequisite for revisiting that work.  
-> >
-> > Please repost the remaining 5 patches  
+On Fri, 27 Mar 2026 09:36:00 +0100 Martin Schiller wrote:
+> > +	/* make sure we don't overflow */
+> > +	if (x25->fraglen + skb->len > sizeof(x25->fraglen)) {  
 > 
-> To make sure I understand your request, do you mean the TLS-related
-> patches that are pre-requisites for Alistair's KeyUpdate series?
+> Please ignore this patch. I'll send a V2 without that
+> "sizeof()" nonsense in a moment.
 
-Oh, no, sorry, we merged patch 1 as a Fix and shipped it to Linus.
-I meant to ask for you to fetch net-next, rebase and repost.
-Patch 1 should "disappear" (unless I messed something up)
+We ask that submitters wait 24h before reposting:
+https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#tl-dr
+-- 
+pv-bot: 24h
