@@ -1,286 +1,82 @@
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908C227B343
-	for <netdev@vger.kernel.org>; Sat, 28 Mar 2026 10:18:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13727386C0C;
+	Sat, 28 Mar 2026 10:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774693108; cv=none; b=KJhZQVYmY7Xr3Q0el0Pc1VRLv1iSz4G0AXXtmlZEO2zDSUTK587ReCJ6jtzwM9reNr0+y/vG4BbxgPzcbIZPsCDH+Bz9jLLWBW/6qgv6LDhcSCQLW9YIyrCwt7FcAsBJLdE4MgCE8Bl6kBjnoh5AlmrG0lR74TJrhO0y+FVydDQ=
+	t=1774693521; cv=none; b=SmgdvmFzK4Xc5zYrijwRcuvX8E6LA4gbdzNhWiVxn8Xr9KsTEzkJVpPWBdJkg3q+7vWKrEvk1uDezHw3PrgTv5HvbrTilsv6ACnXE0A9Yk3tj7WH9fktGT5X6N55Vk0beDOM/+uSxk9TxuPcWV9fIekq7SqmyGPANMY76mEv4rQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774693108; c=relaxed/simple;
-	bh=z3Q6Ub6eZntdR+yjtMU1sOruGYzB+66LUEFvDVoYVTo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=FpdJ9hc/sORarvPA5s3DRPIyQu9wPEwFoxY66pqbb0UIJEHmwbA/IEEteKDo3tZKlR9uyRGZ0O/sjk4/45z8wGLi9OZ4kgtfytSpuCaIRAtWx0sf4oYHkR2/34tcwsMHcJ2WlLtjOr7AQKxNYlgafZ2azQWGe+3LebnCmOv5klA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=s8rm2Poj; arc=none smtp.client-ip=209.85.160.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1774693521; c=relaxed/simple;
+	bh=Wsh2qYytOvwuwza3IaTTqM4VH5pzbA5oDqBtLXjQwQQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MkdfQznBQPQXWnkok4e5jOhuWGPO+uHGUGl23b/oFItYUM0hyoY9rfBXeaSHwRSrAUFpCsjNXQNRYUfAAwuCWcJdEIXtUzyLyBqzqZLPDFYUIl8dQcSW89dLGV+fJLw5YMoK6J1YaEfnvIYQbdt8eKkcVfvqjHcCDCgipdy6HFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=q6Xo5Ah6; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="s8rm2Poj"
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-509217e84a3so24434901cf.3
-        for <netdev@vger.kernel.org>; Sat, 28 Mar 2026 03:18:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774693106; x=1775297906; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9rff8AXpzD8NbsmqMfMlyjp8BORw8w2LjOLxO5njrPs=;
-        b=s8rm2PojZO5amf6SyirZYwRvQej6lcdmy9088SB1KxbwpS0lwEJdvkZ7Vre0qFh2lN
-         j+Y2NWzY2bX2R4aR3HjvMq8Npt4ynbxsiFaAgyzM2TsfQFS/EAjoMp3FdKwYMua8ujJ/
-         8a7rTilr2q9MGl7WeXXGZwRh4gjpgut2t2312rhSRFfMTKhVT3JmQHPZxYVw4A0560X1
-         0M+Bhp9fkTVxBY60zSr+gPAj22xMLhSIk/pwI+I8rylZaBwRhYp8Tx18XuAALO52FzTk
-         97lbS1xGt0A8uc54CRKggA2V3jKaEgV43xuocao7IIBDjbGu9+eQ0O/aB3qwAkA//e0i
-         3QWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774693106; x=1775297906;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=9rff8AXpzD8NbsmqMfMlyjp8BORw8w2LjOLxO5njrPs=;
-        b=Dq5M0jocfe3ygiPkDbD6wrvWmXxZcYvEH4U8ApB6FPj2yp21Hgz7wNtQfyvhyO80rI
-         EY3I7ulMcFPUlhhLAuDlHqY5HBhXHtItVufZpvF2A3VQPlxGItpK51CN+cwTXjknbdg6
-         KhWmVeqAEgxMLJqlddstrK21VXQNbLy1O5LBDfy81cZGIdAzlEF+ZMUEYwSLCPCjC0cr
-         RPPi/3+mmBxVhuXC8zFIdh3FoPa78MvwDxK1IFe43zF6STCrpr/qBvSSqUP6aH3hbZ0G
-         IUC4mWpfE106pKT6zVOGaNTJKXI7mC8iDPcShwXxN5zna8y6qyYQELcBDf/9ZJDzZZEq
-         Aj/g==
-X-Forwarded-Encrypted: i=1; AJvYcCWKlwtxXZr5MbQ712DfB+rY28ekfTJ+ljDHtpOm2qMuzPBLN9g7D0Dzu6QS8OCYfKjOeWDMyLA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyt5nB8o9H1DoTB9HZAWRWwmCuCE7OLw3A8WaLVSruG57MvQo3R
-	F3+sQv7yYNqpRPxZE8khGjpEfbYOpGaVCy6FBvfyd5u4ac7h1QtOYV+6
-X-Gm-Gg: ATEYQzxfRwQiQ4Nh7/dhvavtKwgBzg6cUhQ6g4m/WXtGf7UlEEja9N7MmkHlFYggeVG
-	83d2rFfxeP5iYjxztTXc6FjSBBv31RuV2yGSBMiEuq/Y73EaI24aszP57s3TbcJO4BKhQaAvRfy
-	j5fQgssE/y+THvmW5W+lhywqy6p0AHRE0gx2uHVvo/lR/yjG9aj/aiEQe9WB/f86+0vwNP3g776
-	FiJSG4MX0wdtX42CUqXB5oe75eF4oJ5Jq79mNYSoKTdnvN4dv1QSk2DrE+Rv/j7UFoDp+EQN3tC
-	Un4wDRiodqC2aqrgRhIdYi7inyyq21YCZUR6ANGY4g4ny1rLqRbo/H+syycsLwaLqQHWhg0BDcT
-	Eh9yVbZfsbbbxk4tQ2YD8X+5KtBBVy5RwuGJ4xrCZN5beWBKoHYT0WmnnqLQeTt7byMesSq7Ape
-	SYusNGtHL09eYbdrFRfJvUNg3c73heNErQ4U3Zil7MM4w=
-X-Received: by 2002:ac8:5814:0:b0:50b:51f7:c660 with SMTP id d75a77b69052e-50ba398f849mr74156431cf.61.1774693105530;
-        Sat, 28 Mar 2026 03:18:25 -0700 (PDT)
-Received: from localhost.localdomain ([128.224.253.2])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50bb2e17372sm15490681cf.24.2026.03.28.03.18.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Mar 2026 03:18:25 -0700 (PDT)
-From: Kevin Hao <haokexin@gmail.com>
-Date: Sat, 28 Mar 2026 18:17:48 +0800
-Subject: [PATCH net-next 4/4] net: macb: Remove dedicated IRQ handler for
- WoL
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="q6Xo5Ah6"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=S6OyOHlz9Wy2vwI6pxqWW/pqak1TG4VrC3axA8pR8go=; b=q6Xo5Ah6GantLv/VpZQ+LXjalJ
+	lW+MyIKB+AGAGsIGtZGOEsFpuDHwWEzzlTCHoI2R9zP9A2KDtFiJFtM6qB747z5yykc5VRN7+jiga
+	xUIv6tIsIuZQLAREv+FjV+hSJLRr4Hh/+nlnrP7nFAE21BcIQ4J/gk4P0skeBV5z5eX2Nt6Y1sy7B
+	/vsaGIP3CW5xRiLOEWb4UpexQV/ZsnGW76QvEg92RLvr5seLSMmG/luTSZYqLVHMDXpqX5bn7z6v2
+	nh/6P2P9gcXXz93H3HjghaQWA/p0g3fuh6B9Z3/MdkNnNLezSdlcJ7n72lJQ+ZbBT1jyeKi2/QiI8
+	L2Q5TcyA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:55356)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1w6Qqt-0000000078G-1uzR;
+	Sat, 28 Mar 2026 10:25:11 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1w6Qqo-000000000ap-3L8h;
+	Sat, 28 Mar 2026 10:25:06 +0000
+Date: Sat, 28 Mar 2026 10:25:06 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Eric Woudstra <ericwouds@gmail.com>
+Cc: "Lucien.Jheng" <lucienzx159@gmail.com>, andrew@lunn.ch,
+	hkallweit1@gmail.com, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, bjorn@mork.no,
+	frank-w@public-files.de, daniel@makrotopia.org,
+	lucien.jheng@airoha.com
+Subject: Re: [PATCH v2] net: phy: air_en8811h: add AN8811HB MCU
+ assert/deassert support
+Message-ID: <acesgklpv8GlNeVf@shell.armlinux.org.uk>
+References: <20260326153518.8387-1-lucienzx159@gmail.com>
+ <edeee8e5-0de3-48ea-aeb5-cc705fdcd469@gmail.com>
+ <6f42d92b-a26d-49a4-bef7-2227c252eea7@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260328-macb-irq-v1-4-7b3e622fb46c@gmail.com>
-References: <20260328-macb-irq-v1-0-7b3e622fb46c@gmail.com>
-In-Reply-To: <20260328-macb-irq-v1-0-7b3e622fb46c@gmail.com>
-To: Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Kevin Hao <haokexin@gmail.com>, netdev@vger.kernel.org
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6f42d92b-a26d-49a4-bef7-2227c252eea7@gmail.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-In the current implementation, the suspend/resume path frees the
-existing IRQ handler and sets up a dedicated WoL IRQ handler, then
-restores the original handler upon resume. This approach is not used
-by any other Ethernet driver and unnecessarily complicates the
-suspend/resume process. After adjusting the IRQ handler in the previous
-patches, we can now handle WoL interrupts without introducing any
-overhead in the TX/RX hot path. Therefore, the dedicated WoL IRQ
-handler is removed.
+On Sat, Mar 28, 2026 at 11:21:59AM +0100, Eric Woudstra wrote:
+> static int air_pbus_reg_write(struct mdio_device *mdio, u32 pbus_address,
+> 			      u32 pbus_data)
+> {
+> 	int ret;
+> 
+> 	mutex_lock(&mdio->bus->mdio_lock);
 
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
----
- drivers/net/ethernet/cadence/macb_main.c | 116 ++++++++-----------------------
- 1 file changed, 29 insertions(+), 87 deletions(-)
-
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index c53b28b42a46489722461957625e8377be63e427..de166dd9e637f5e436274b99f2c5eef99dcdb351 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -71,7 +71,8 @@ struct sifive_fu540_macb_mgmt {
- 					| MACB_BIT(TXUBR))
- 
- #define MACB_INT_MISC_FLAGS	(MACB_TX_ERR_FLAGS | MACB_BIT(RXUBR) | \
--				 MACB_BIT(ISR_ROVR) | MACB_BIT(HRESP))
-+				 MACB_BIT(ISR_ROVR) | MACB_BIT(HRESP) | \
-+				 GEM_BIT(WOL) | MACB_BIT(WOL))
- 
- /* Max length of transmit frame must be a multiple of 8 bytes */
- #define MACB_TX_LEN_ALIGN	8
-@@ -2027,62 +2028,32 @@ static void macb_hresp_error_task(struct work_struct *work)
- 	netif_tx_start_all_queues(dev);
- }
- 
--static irqreturn_t macb_wol_interrupt(int irq, void *dev_id)
-+static void macb_wol_interrupt(struct macb_queue *queue, u32 status)
- {
--	struct macb_queue *queue = dev_id;
- 	struct macb *bp = queue->bp;
--	u32 status;
- 
--	status = queue_readl(queue, ISR);
--
--	if (unlikely(!status))
--		return IRQ_NONE;
--
--	spin_lock(&bp->lock);
--
--	if (status & MACB_BIT(WOL)) {
--		queue_writel(queue, IDR, MACB_BIT(WOL));
--		macb_writel(bp, WOL, 0);
--		netdev_vdbg(bp->dev, "MACB WoL: queue = %u, isr = 0x%08lx\n",
--			    (unsigned int)(queue - bp->queues),
--			    (unsigned long)status);
--		if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
--			queue_writel(queue, ISR, MACB_BIT(WOL));
--		pm_wakeup_event(&bp->pdev->dev, 0);
--	}
--
--	spin_unlock(&bp->lock);
--
--	return IRQ_HANDLED;
-+	queue_writel(queue, IDR, MACB_BIT(WOL));
-+	macb_writel(bp, WOL, 0);
-+	netdev_vdbg(bp->dev, "MACB WoL: queue = %u, isr = 0x%08lx\n",
-+		    (unsigned int)(queue - bp->queues),
-+		    (unsigned long)status);
-+	if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
-+		queue_writel(queue, ISR, MACB_BIT(WOL));
-+	pm_wakeup_event(&bp->pdev->dev, 0);
- }
- 
--static irqreturn_t gem_wol_interrupt(int irq, void *dev_id)
-+static void gem_wol_interrupt(struct macb_queue *queue, u32 status)
- {
--	struct macb_queue *queue = dev_id;
- 	struct macb *bp = queue->bp;
--	u32 status;
- 
--	status = queue_readl(queue, ISR);
--
--	if (unlikely(!status))
--		return IRQ_NONE;
--
--	spin_lock(&bp->lock);
--
--	if (status & GEM_BIT(WOL)) {
--		queue_writel(queue, IDR, GEM_BIT(WOL));
--		gem_writel(bp, WOL, 0);
--		netdev_vdbg(bp->dev, "GEM WoL: queue = %u, isr = 0x%08lx\n",
--			    (unsigned int)(queue - bp->queues),
--			    (unsigned long)status);
--		if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
--			queue_writel(queue, ISR, GEM_BIT(WOL));
--		pm_wakeup_event(&bp->pdev->dev, 0);
--	}
--
--	spin_unlock(&bp->lock);
--
--	return IRQ_HANDLED;
-+	queue_writel(queue, IDR, GEM_BIT(WOL));
-+	gem_writel(bp, WOL, 0);
-+	netdev_vdbg(bp->dev, "GEM WoL: queue = %u, isr = 0x%08lx\n",
-+		    (unsigned int)(queue - bp->queues),
-+		    (unsigned long)status);
-+	if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
-+		queue_writel(queue, ISR, GEM_BIT(WOL));
-+	pm_wakeup_event(&bp->pdev->dev, 0);
- }
- 
- static int macb_interrupt_misc(struct macb_queue *queue, u32 status)
-@@ -2147,6 +2118,14 @@ static int macb_interrupt_misc(struct macb_queue *queue, u32 status)
- 			queue_writel(queue, ISR, MACB_BIT(HRESP));
- 	}
- 
-+	if (macb_is_gem(bp)) {
-+		if (status & GEM_BIT(WOL))
-+			gem_wol_interrupt(queue, status);
-+	} else {
-+		if (status & MACB_BIT(WOL))
-+			macb_wol_interrupt(queue, status);
-+	}
-+
- 	return 0;
- }
- 
-@@ -5943,7 +5922,6 @@ static int __maybe_unused macb_suspend(struct device *dev)
- 	unsigned long flags;
- 	u32 tmp, ifa_local;
- 	unsigned int q;
--	int err;
- 
- 	if (!device_may_wakeup(&bp->dev->dev))
- 		phy_exit(bp->phy);
-@@ -6007,39 +5985,15 @@ static int __maybe_unused macb_suspend(struct device *dev)
- 			/* write IP address into register */
- 			tmp |= MACB_BFEXT(IP, ifa_local);
- 		}
--		spin_unlock_irqrestore(&bp->lock, flags);
- 
--		/* Change interrupt handler and
--		 * Enable WoL IRQ on queue 0
--		 */
--		devm_free_irq(dev, bp->queues[0].irq, bp->queues);
- 		if (macb_is_gem(bp)) {
--			err = devm_request_irq(dev, bp->queues[0].irq, gem_wol_interrupt,
--					       IRQF_SHARED, netdev->name, bp->queues);
--			if (err) {
--				dev_err(dev,
--					"Unable to request IRQ %d (error %d)\n",
--					bp->queues[0].irq, err);
--				return err;
--			}
--			spin_lock_irqsave(&bp->lock, flags);
- 			queue_writel(bp->queues, IER, GEM_BIT(WOL));
- 			gem_writel(bp, WOL, tmp);
--			spin_unlock_irqrestore(&bp->lock, flags);
- 		} else {
--			err = devm_request_irq(dev, bp->queues[0].irq, macb_wol_interrupt,
--					       IRQF_SHARED, netdev->name, bp->queues);
--			if (err) {
--				dev_err(dev,
--					"Unable to request IRQ %d (error %d)\n",
--					bp->queues[0].irq, err);
--				return err;
--			}
--			spin_lock_irqsave(&bp->lock, flags);
- 			queue_writel(bp->queues, IER, MACB_BIT(WOL));
- 			macb_writel(bp, WOL, tmp);
--			spin_unlock_irqrestore(&bp->lock, flags);
- 		}
-+		spin_unlock_irqrestore(&bp->lock, flags);
- 
- 		enable_irq_wake(bp->queues[0].irq);
- 	}
-@@ -6081,7 +6035,6 @@ static int __maybe_unused macb_resume(struct device *dev)
- 	struct macb_queue *queue;
- 	unsigned long flags;
- 	unsigned int q;
--	int err;
- 
- 	if (!device_may_wakeup(&bp->dev->dev))
- 		phy_init(bp->phy);
-@@ -6108,17 +6061,6 @@ static int __maybe_unused macb_resume(struct device *dev)
- 			queue_writel(bp->queues, ISR, -1);
- 		spin_unlock_irqrestore(&bp->lock, flags);
- 
--		/* Replace interrupt handler on queue 0 */
--		devm_free_irq(dev, bp->queues[0].irq, bp->queues);
--		err = devm_request_irq(dev, bp->queues[0].irq, macb_interrupt,
--				       IRQF_SHARED, netdev->name, bp->queues);
--		if (err) {
--			dev_err(dev,
--				"Unable to request IRQ %d (error %d)\n",
--				bp->queues[0].irq, err);
--			return err;
--		}
--
- 		disable_irq_wake(bp->queues[0].irq);
- 
- 		/* Now make sure we disable phy before moving
+I wonder why we have phy_lock_mdio_bus() but not mdio_bus_lock()...
+Should a helper be provided at mdio bus level to complement the PHY
+level helper if we're going to have MDIO drivers directly manipulating
+the lock?
 
 -- 
-2.53.0
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
