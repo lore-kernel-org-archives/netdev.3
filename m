@@ -1,139 +1,129 @@
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E22223D2AB;
-	Sun, 29 Mar 2026 10:25:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4DE302163
+	for <netdev@vger.kernel.org>; Sun, 29 Mar 2026 10:32:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774779903; cv=none; b=Nz8rFhXC/S0vJgHrbKiBdWY8h90LqcGh1UEfrIIp+uWRYjJShyPSnHFNfBWey+Ys91bc/ZeRcqBgjw3YkTmrgfMAA6xYMaYW9QzM4amDenikl1YhB84KRszOe69bJHVNae6KLxRvb3vl/IS2z/nJYSvo9daYIDG9DHbS07kxlQU=
+	t=1774780371; cv=none; b=aPeLrD0RWxVPYHFdU/3H9X6NET4MANoUz+MeIJpBPhsFfR2dZPrnghsSLNojaHgLG+3DIozY8HM8ruyxYynorV1VqjHeXkcI1StoEp0MTOhyfXsoOO7s7uGVeBhhFm9/Iv9Cg/LGk+k7OorKaBzNEzyKNF3xAcHN7loxIsRWwvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774779903; c=relaxed/simple;
-	bh=apYe6lSrS+a3Sp+pbSOXODOzy5wo4UOC8YD4tT7Ki04=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J473ChD8XiCXciBdcnLn4zVVkZyJGF7XX5WAWPQByIks8KUy5H4rG7u0AdykkrNXZmd5bJqQZOFBUhhwyXB++777y3YQE2gpVRaYVqlU3PibelFoTTidjU7oG8cb6jnThPOC/hnmFFjXXdHYzALxdkKkz2PBiGP2YMfbckD6H+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=moehl.eu; spf=pass smtp.mailfrom=moehl.eu; dkim=pass (2048-bit key) header.d=moehl.eu header.i=maximilian@moehl.eu header.b=ZLIkeQNp; arc=none smtp.client-ip=212.227.126.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=moehl.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=moehl.eu
+	s=arc-20240116; t=1774780371; c=relaxed/simple;
+	bh=H5kTsfBqoaymzwtE0f4kGO+QKpbjF0HlaDUOV/uNet4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=curUiewA9qe4TXof99QGfFrRjlDRC56BXv7PlJKFEpjQLCIwaPxN+idkgo6mojiAcBgtFs8bE+aiDfLKATGMU53uxtmYGctSn+KL5vYYrDUZ2+ydAAg6M+pLQGAO1/TrUdR2WWA9yAEi/aPLkcQk5ZpIeoBKGH+un4IxggJcSLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QNBGtbCZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=moehl.eu header.i=maximilian@moehl.eu header.b="ZLIkeQNp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=moehl.eu;
-	s=s1-ionos; t=1774779899; x=1775384699; i=maximilian@moehl.eu;
-	bh=Ob0kz/Bt1b8DFffYxiZDCy79PwTTmaiwjGjmfn5xAZc=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:
-	 MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=ZLIkeQNpulKnVl9hY+peF3DD951ZpDbxuL8VKSD/iIZqASUG+uoprGunXOq9GDZ6
-	 KtR37XGpnV314uc584FSAWuyxUGZXnAOmou9BYmlPIgjYk0f1D43XDWXuDf7wBWGz
-	 xhiU8gR/y4GQkUIptWW6O2GyuH72rsAfNCvTl1Vv0TzWSuvQyhRs09tq72KcaK4cz
-	 npJAUv/tPW2ND0zO4ezcJfZRnSmDXAVCgQN4NzndrO52/L6upZhvCPdMyrpo52o1Y
-	 WRniwbFxdR4s2XR05vTe8A2g0JbHYT6RrEI8fZD6iC+tL+SYEKaC33Qfm89SNYHgS
-	 g3hwqAlZvST126UjAA==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from client.hidden.invalid by mrelayeu.kundenserver.de (mreue011
- [212.227.17.165]) with ESMTPSA (Nemesis) id 1MirX2-1vcx9F2A20-00cE91; Sun, 29
- Mar 2026 11:12:29 +0200
-From: Maximilian Moehl <maximilian@moehl.eu>
-To: "David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Maximilian Moehl <maximilian@moehl.eu>
-Subject: [PATCH] net/ipv6: repeat route lookup with saddr set for ECMP
-Date: Sun, 29 Mar 2026 11:12:01 +0200
-Message-ID: <20260329091201.63646-1-maximilian@moehl.eu>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QNBGtbCZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAA82C116C6;
+	Sun, 29 Mar 2026 10:32:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774780371;
+	bh=H5kTsfBqoaymzwtE0f4kGO+QKpbjF0HlaDUOV/uNet4=;
+	h=From:Date:Subject:To:Cc:From;
+	b=QNBGtbCZnr0gu12JO1gWqdp4bWA8J7HoSjvT1LVvQbCnbMFE3C9T4UYIEw4wukuwQ
+	 jZimwY98STVOauxRL20o9HbKie2RcSdFoMidfjwtReYd4C7qQttMw0eylELXZTbMvB
+	 NuVW8Kn+vlA+AwEw0DpgIx+XBcbq+PZAdotca542CkUOmWBNLmGWZEYcvu0B+U3Iut
+	 QoMROxGrjptruN+VkxtTPLYCO5d7XjfnJjDVx1iRaC6z9xrsAAvbkAZ+RmRPzG22Ee
+	 5PcOCrxRFIztWmUQNWarcbBUDnKal4PyE7VsfkzIsUOFiAk+z8CdW+ln0pYNUH0IYf
+	 crygs3pG88P1w==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Date: Sun, 29 Mar 2026 12:32:27 +0200
+Subject: [PATCH net-next v2] net: airoha: Delay offloading until all
+ net_devices are fully registered
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:z3+FHQUWGPd7b8fXdGtA7Wwgfb/EUDNKMRiSriR1HJoncjJE5fa
- QaHTT2m3vQk/B2AkLknxr4oti0HLWfZ9f1XU61Sx32TwMWXnHEyQf0BP+UKMMO/NyagERPR
- FEUngCrzTwXwPu4TimUoIqlK/sKCOlmktBsufsxjp/QRZuYyJQfvfVML5qtIGytyw9pXaKt
- C+ZbO8Ng5tWeW1+aFG34A==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:46/8E3Vdst8=;v6Lp1ODk5dOHMOeC4S/OBhvCNnZ
- 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
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260329-airoha-regiser-race-fix-v2-1-f4ebb139277b@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WNwQqDMBBEf0X23C1Jqqn01P8oHlLd6NKSyEbEI
+ vn3Bum1x5nhvdkhkTAluFU7CK2cOIYSzKmCfnJhJOShZDDKWHUxGh1LnBwKjVxQFNcTet7QU9v
+ U3urhahUUehYq9WF+QKAFA20LdGWZOC1RPsflqo/9Z6//2leNGq3S9eCbpm3t8/4iCfQ+Rxmhy
+ zl/AW1cTiHJAAAA
+X-Change-ID: 20260321-airoha-regiser-race-fix-fe854f61d760
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+X-Mailer: b4 0.14.2
 
-When the routing decision involves ECMP, the initial hash is calculated
-with saddr being :: and the decision which interface to select from an
-ECMP group is based on that hash. If the route lookup has to be
-repeated, e.g. because a route was updated, the hash is calculated with
-saddr set to the previously selected address. This can cause the
-selected interface to change, breaking ongoing connections.
+Netfilter flowtable can theoretically try to offload flower rules as soon
+as a net_device is registered while all the other ones are not
+registered or initialized, triggering a possible NULL pointer dereferencing
+of qdma pointer in airoha_ppe_set_cpu_port routine. Moreover, if
+register_netdev() fails for a particular net_device, there is a small
+race if Netfilter tries to offload flowtable rules before all the
+net_devices are properly unregistered in airoha_probe() error patch,
+triggering a NULL pointer dereferencing in airoha_ppe_set_cpu_port
+routine. In order to avoid any possible race, delay offloading until
+all net_devices are registered in the networking subsystem.
 
-To ensure the initial interface selection is based on an actual saddr
-the route lookup is repeated after the source address selection if a
-hash was calculated.
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+Changes in v2:
+- Do not grab flow_offload_mutex in airoha_register_gdm_devices() since
+  it can trigger a deadlock. Add DEV_STATE_REGISTERED flag instead to
+  mark when all net_devices are fully registered.
+- Link to v1: https://lore.kernel.org/r/20260324-airoha-regiser-race-fix-v1-1-6014df55886b@kernel.org
+---
+ drivers/net/ethernet/airoha/airoha_eth.c | 2 ++
+ drivers/net/ethernet/airoha/airoha_eth.h | 1 +
+ drivers/net/ethernet/airoha/airoha_ppe.c | 7 +++++++
+ 3 files changed, 10 insertions(+)
 
-Signed-off-by: Maximilian Moehl <maximilian@moehl.eu>
-Link: https://lore.kernel.org/all/aOYLRyIlc7XU7-7n@shredder/
-=2D--
-I've created a write-up of what I've done, including the steps taken
-to test the patch: https://moehl.eu/blog/linux-ipv6-ecmp-instability.html
-
- net/ipv6/ip6_output.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 8e2a6b28cea7..465fce51d017 100644
-=2D-- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -1148,6 +1148,18 @@ static int ip6_dst_lookup_tail(struct net *net, con=
-st struct sock *sk,
- 			*dst =3D NULL;
- 		}
-=20
-+		/* If ECMP was involved the initial hash was calculted
-+		 * with saddr=3D:: which can result in instability
-+		 * when it is later re-calculated with the selected
-+		 * saddr. Lookup the route again with the chosen
-+		 * saddr to get a stable result.
-+		 */
-+		if (fl6->mp_hash) {
-+			fl6->mp_hash =3D 0;
-+			dst_release(*dst);
-+			*dst =3D NULL;
-+		}
-+
- 		if (fl6->flowi6_oif)
- 			flags |=3D RT6_LOOKUP_F_IFACE;
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index 82e53c60f561f6314fbf201ba8bc8711e40edc68..743ef0db30980ce74059dfb63553030ef3bf735f 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -2957,6 +2957,8 @@ static int airoha_register_gdm_devices(struct airoha_eth *eth)
+ 			return err;
  	}
+ 
++	set_bit(DEV_STATE_REGISTERED, &eth->state);
++
+ 	return 0;
+ }
+ 
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
+index 7df4dbcd8861856c54c2a38bc89c69180ac2f6dc..af29fc74165b8fffb59f45b4725dbd963f1b876d 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.h
++++ b/drivers/net/ethernet/airoha/airoha_eth.h
+@@ -88,6 +88,7 @@ enum {
+ 
+ enum {
+ 	DEV_STATE_INITIALIZED,
++	DEV_STATE_REGISTERED,
+ };
+ 
+ enum {
+diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
+index 58b14aea7c2f33ebce11c51d892eefff692378ca..c057bb2d105d92947bb8c421d89ee94fc0c10f2f 100644
+--- a/drivers/net/ethernet/airoha/airoha_ppe.c
++++ b/drivers/net/ethernet/airoha/airoha_ppe.c
+@@ -1389,6 +1389,13 @@ int airoha_ppe_setup_tc_block_cb(struct airoha_ppe_dev *dev, void *type_data)
+ 	struct airoha_eth *eth = ppe->eth;
+ 	int err = 0;
+ 
++	/* Netfilter flowtable can try to offload flower rules while not all
++	 * the net_devices are registered or initialized. Delay offloading
++	 * until all net_devices are registered in the system.
++	 */
++	if (!test_bit(DEV_STATE_REGISTERED, &eth->state))
++		return -EBUSY;
++
+ 	mutex_lock(&flow_offload_mutex);
+ 
+ 	if (!eth->npu)
 
-base-commit: dc9e9d61e301c087bcd990dbf2fa18ad3e2e1429
-=2D-=20
-2.53.0
+---
+base-commit: ced629dc8e5c51ff2b5d847adeeb1035cd655d58
+change-id: 20260321-airoha-regiser-race-fix-fe854f61d760
+
+Best regards,
+-- 
+Lorenzo Bianconi <lorenzo@kernel.org>
 
