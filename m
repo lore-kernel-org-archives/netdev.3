@@ -1,50 +1,86 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f225.google.com (mail-pg1-f225.google.com [209.85.215.225])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DBA31DF25C;
-	Sun, 29 Mar 2026 22:42:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EEBA76026
+	for <netdev@vger.kernel.org>; Sun, 29 Mar 2026 23:26:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774824172; cv=none; b=COiGjC3S127QayDHLR/FETffIKtlgtLmWtzeiHTjjvxqDozYffd9/0F7zEh0qhUAjyTrP5b8zRgq46+VSBbeDX8IOvOmhJFcCmlvVDX8bAJbiuVGAd625ex+DpvxmeYpCgo8nkGt+yzrNFQ5Dv/yGYCkDc0OSfU7QVkMM4Rof+Q=
+	t=1774826781; cv=none; b=EMbXSAPDwyENPLXREZbzQdBaV/mRVSFkpqYQCnHpGYcOXg4RBr8jMtUc/VNiSMr60J2ZCnMQlg6iwW6x3Dybv14q8CLZG/yczyCeldJtXbnMbUFSRaPHDxUgptAAaA8hpD9lNbRVyXG6L3AV5yh8S2b1SBRiBdjrQCFYG9WANGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774824172; c=relaxed/simple;
-	bh=OUyvD9eFuvFaSGYXUKLVaERy0588vxAJJ7Ux6EirYN0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=avj1REtcAVxWZwoIStXkGSp1jsT9NZyit3rpByUjzzQ5gASzIHOB/MKTIINTOWQRqax6dT2i449CFBJowh3p5XUJkdfUSDrG6mJrjhbbLFjP3+KfMax/g03GQAeqrs1GHXNXWwB0lbZ+asezZyRzBIby64kPx5xsLIBPwAleHzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=hbj/gQwK; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1774826781; c=relaxed/simple;
+	bh=1xOHODMAgvKgd5GgJmQS/F2KWMI29korXGGFzg/RfEc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NgIvZ+/0u4VawsdV2gFtb3NaJQoPyr8DOO48ZD0oR8cqQQbd6XAZ8RQ13MpRyNogGTeMm4++rarkjCi8iB6kx2VPigYHkZ0s3miDiz14rVpwpLVaQQ68nP3xaWbqOdeJWnFe8K+XAjVwBhcg5vTwVeGU5htdWx0b934GRaGrSf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=QnY/YxM4; arc=none smtp.client-ip=209.85.215.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="hbj/gQwK"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1B295A5869;
-	Mon, 30 Mar 2026 00:42:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1774824155; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=+sPJPQ1EPJVXS2Do8JruNXI9aH3le6IuYIcunDVpA2A=;
-	b=hbj/gQwKs1CAYsplh1a4C/VegnNWtCq8vTSriin7x8VhyOTY6IRP4u70mZ03eYJLATmp4J
-	/hNTmShLqxcnXhXwbUVQuB9ToaCNvdfhunBH9p5mg/Jfn+DSsFARWBiR0qxQxmLt+kCA4z
-	jX3rWV3V52MjnqnQ0wjCfI26qAA0WsSDtoBFIq7jaFzTRHrlytSChEs16FQcFDqK6hceVz
-	mqdIs/aUIWVsmkkSpfYrMX64rLG5Sw3f6VcfvzcP6FH7ZgLgCnTQxGFzpJEtVndy5lyIB3
-	/1QgiFUgJnUdNikYWLx1XGpgoBxkp+BPw9ZwPYpAHxdykKs+d+YOcyu0eaLH4A==
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: netdev@vger.kernel.org
-Cc: Phil Elwell <phil@raspberrypi.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/2] net: phy: microchip: add downshift tunable support for LAN88xx
-Date: Mon, 30 Mar 2026 00:41:59 +0200
-Message-ID: <20260329224202.500229-2-nb@tipi-net.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260329224202.500229-1-nb@tipi-net.de>
-References: <20260329224202.500229-1-nb@tipi-net.de>
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="QnY/YxM4"
+Received: by mail-pg1-f225.google.com with SMTP id 41be03b00d2f7-b6ce6d1d3dcso1344958a12.3
+        for <netdev@vger.kernel.org>; Sun, 29 Mar 2026 16:26:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774826780; x=1775431580;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dy7kQgmt0nTqUEAxGOoU8xpIjihI+S3fDEVXuwNPr6I=;
+        b=RNGO3eR9AnTQgA8op+9kjp5hodyE08uF5tVME8/mXtRip/k+mcGYjtuOncELIThkJ6
+         C9rByElWggIsXdpoPFCjn+DT8afTLKmeXeaCNERQ29/47/kLoEW/PLrVA68nxmbyN6aY
+         0ZqAixHRtctmkdp5b+YkyqAFgT4dC97qJte8kwmCxgKoR5eiI8aK3Nw8ahffBaMoeUAp
+         kk3jgXlk52Ts0c72I3dUjcqz7rDuvgil3dJjKJ3YDgydgIh1rEzPY3yfLkw+iYp3uoT7
+         ZykE4Ix9PnsFbCV73kxKesUmqJ62t5Pp57SFJQ/UhTgKJA32R34HaTeuL8SSk74UqiaH
+         sDGw==
+X-Gm-Message-State: AOJu0YxUzj9LIAX9lim+RTwaEzcYaLJkqAa1oLrcXOwtey1FJtU3hf7y
+	Dc5d2AVdffB5oLYnx42BiVuGgnW9ziqf4nqTkksdvcSGQs9Nb8hukcEd4ui/Lq8Wl5BlM/dLWxV
+	cvtKIKhOO9+DYz27oxuimJVgOfD4pOermENaTFxjm+VGVwwKe5GojOtGgEQArpG6ckaMUET46z+
+	RAP/BkDy+naX5810XY0x7QIo77TjoD5kIAxuPemKZBOQIBBo/vbzHniM1M53pIFjmmKRh3/6tWl
+	QVwaahoOOk=
+X-Gm-Gg: ATEYQzwnb2lahjqvG/HISjjYBgHawLBBk6Ehc5nEgb9KL9fT0UtkKvdCVnYQtpdGS67
+	kBP6oegG6u0SRSkzFLSxxz/tGCtvkia5oIcZEh2H5uWE8lzhiFOdGbrUQ7fcLLPwYyiPK4eklYB
+	I+5dNAq/7lD9Ik4IMKNWEfsz58Jo2J1XJeF/YBxJtsT+Mod9y84I642qfUnCslf4COkgyI9X9BX
+	WTFR7GCcEL2I69aRALHloAIqrHTr8jfQ2+ijdKdlUdTf/ahJ9CsTBzKKn+tsXs0ZgXNBdSPUdbw
+	u2irk0ntFtRzW3ZS95caEwy+EhBcBmYUSWqw1tLraKes+RkXWZsD5Og2nkjZrDIVNSKhFWaV2TJ
+	PS1O9CFqec012B1SXuapcRYZLNH06uGWOEx3RQZF1lgfAqc5L7xoagDi/cLXXoZbM0JQ9+XuRSH
+	jwJY00j1d0flVKLfEuFGZwqw+7qcfjHPGHO5wSZUBhTMeKpMNx4vEI0UYa
+X-Received: by 2002:a17:902:e952:b0:2b0:571f:6f09 with SMTP id d9443c01a7336-2b0cdcd5695mr108886065ad.44.1774826779448;
+        Sun, 29 Mar 2026 16:26:19 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-15.dlp.protect.broadcom.com. [144.49.247.15])
+        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2b242765926sm6704335ad.45.2026.03.29.16.26.19
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 29 Mar 2026 16:26:19 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-509219f94b0so76322381cf.3
+        for <netdev@vger.kernel.org>; Sun, 29 Mar 2026 16:26:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1774826778; x=1775431578; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=dy7kQgmt0nTqUEAxGOoU8xpIjihI+S3fDEVXuwNPr6I=;
+        b=QnY/YxM4WkKRAN1Bci3xf50eunszZJlWgENkvG556d8IJYjG0S+cMGdrMw1xbMHqUB
+         6ga0rTrSkVl5r03n+g0ZqsjmE1lFOxYs3MiO285JT7+KuqtZaGd3pMWp+3cK82VKmorr
+         3GvR1wjianLKw1dYaLMD0iYi6sbFoZCe6ccdI=
+X-Received: by 2002:ac8:58c1:0:b0:50b:8ccc:a420 with SMTP id d75a77b69052e-50ba37f2722mr142453351cf.16.1774826778052;
+        Sun, 29 Mar 2026 16:26:18 -0700 (PDT)
+X-Received: by 2002:ac8:58c1:0:b0:50b:8ccc:a420 with SMTP id d75a77b69052e-50ba37f2722mr142453071cf.16.1774826777514;
+        Sun, 29 Mar 2026 16:26:17 -0700 (PDT)
+Received: from lvnvda3289.lvn.broadcom.net ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50bb7729698sm41601531cf.29.2026.03.29.16.26.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 29 Mar 2026 16:26:16 -0700 (PDT)
+From: Michael Chan <michael.chan@broadcom.com>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	pavan.chebbi@broadcom.com,
+	andrew.gospodarek@broadcom.com
+Subject: [PATCH net 0/3] bnxt_en: Bug fixes
+Date: Sun, 29 Mar 2026 16:25:25 -0700
+Message-ID: <20260329232528.870637-1-michael.chan@broadcom.com>
+X-Mailer: git-send-email 2.45.4
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,153 +88,26 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-Implement the standard ETHTOOL_PHY_DOWNSHIFT tunable for the LAN88xx
-PHY. This allows runtime configuration of the auto-downshift feature
-via ethtool:
+The first patch is a refactor patch needed by the second patch to
+fix XDP ring initialization during FW reset.  The third patch
+fixes an issue related to stats context reservation for RoCE.
 
-  ethtool --set-phy-tunable eth0 downshift on count 3
+Michael Chan (2):
+  bnxt_en: Refactor some basic ring setup and adjustment logic
+  bnxt_en: Don't assume XDP is never enabled in
+    bnxt_init_dflt_ring_mode()
 
-The LAN88xx PHY supports downshifting from 1000BASE-T to 100BASE-TX
-after 2-5 failed auto-negotiation attempts. Valid count values are
-2, 3, 4 and 5.
+Pavan Chebbi (1):
+  bnxt_en: Restore default stat ctxs for ULP when resource is available
 
-This is based on an earlier downstream implementation by Phil Elwell.
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 68 +++++++++++++------
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h     |  1 +
+ .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c |  5 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c |  5 +-
+ 4 files changed, 52 insertions(+), 27 deletions(-)
 
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
----
- drivers/net/phy/microchip.c  | 89 ++++++++++++++++++++++++++++++++++++
- include/linux/microchipphy.h |  9 ++++
- 2 files changed, 98 insertions(+)
-
-diff --git a/drivers/net/phy/microchip.c b/drivers/net/phy/microchip.c
-index dc8634e7bcbe..a044be1ade79 100644
---- a/drivers/net/phy/microchip.c
-+++ b/drivers/net/phy/microchip.c
-@@ -193,6 +193,93 @@ static void lan88xx_config_TR_regs(struct phy_device *phydev)
- 		phydev_warn(phydev, "Failed to Set Register[0x1686]\n");
- }
- 
-+static int lan88xx_get_downshift(struct phy_device *phydev, u8 *data)
-+{
-+	int val;
-+
-+	val = phy_read_paged(phydev, 1, LAN78XX_PHY_CTRL3);
-+	if (val < 0)
-+		return val;
-+
-+	if (!(val & LAN78XX_PHY_CTRL3_AUTO_DOWNSHIFT)) {
-+		*data = DOWNSHIFT_DEV_DISABLE;
-+		return 0;
-+	}
-+
-+	switch (val & LAN78XX_PHY_CTRL3_DOWNSHIFT_CTRL_MASK) {
-+	case LAN78XX_PHY_CTRL3_DOWNSHIFT_CTRL_2:
-+		*data = 2;
-+		break;
-+	case LAN78XX_PHY_CTRL3_DOWNSHIFT_CTRL_3:
-+		*data = 3;
-+		break;
-+	case LAN78XX_PHY_CTRL3_DOWNSHIFT_CTRL_4:
-+		*data = 4;
-+		break;
-+	case LAN78XX_PHY_CTRL3_DOWNSHIFT_CTRL_5:
-+		*data = 5;
-+		break;
-+	}
-+
-+	return 0;
-+}
-+
-+static int lan88xx_set_downshift(struct phy_device *phydev, u8 cnt)
-+{
-+	u32 mask = LAN78XX_PHY_CTRL3_DOWNSHIFT_CTRL_MASK |
-+		   LAN78XX_PHY_CTRL3_AUTO_DOWNSHIFT;
-+	u32 val;
-+
-+	if (cnt == DOWNSHIFT_DEV_DISABLE)
-+		return phy_modify_paged(phydev, 1, LAN78XX_PHY_CTRL3,
-+					LAN78XX_PHY_CTRL3_AUTO_DOWNSHIFT, 0);
-+
-+	if (cnt == DOWNSHIFT_DEV_DEFAULT_COUNT)
-+		cnt = 2;
-+
-+	switch (cnt) {
-+	case 2:
-+		val = LAN78XX_PHY_CTRL3_DOWNSHIFT_CTRL_2;
-+		break;
-+	case 3:
-+		val = LAN78XX_PHY_CTRL3_DOWNSHIFT_CTRL_3;
-+		break;
-+	case 4:
-+		val = LAN78XX_PHY_CTRL3_DOWNSHIFT_CTRL_4;
-+		break;
-+	case 5:
-+		val = LAN78XX_PHY_CTRL3_DOWNSHIFT_CTRL_5;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return phy_modify_paged(phydev, 1, LAN78XX_PHY_CTRL3, mask,
-+				val | LAN78XX_PHY_CTRL3_AUTO_DOWNSHIFT);
-+}
-+
-+static int lan88xx_get_tunable(struct phy_device *phydev,
-+			       struct ethtool_tunable *tuna, void *data)
-+{
-+	switch (tuna->id) {
-+	case ETHTOOL_PHY_DOWNSHIFT:
-+		return lan88xx_get_downshift(phydev, data);
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
-+static int lan88xx_set_tunable(struct phy_device *phydev,
-+			       struct ethtool_tunable *tuna, const void *data)
-+{
-+	switch (tuna->id) {
-+	case ETHTOOL_PHY_DOWNSHIFT:
-+		return lan88xx_set_downshift(phydev, *(const u8 *)data);
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
- static int lan88xx_probe(struct phy_device *phydev)
- {
- 	struct device *dev = &phydev->mdio.dev;
-@@ -499,6 +586,8 @@ static struct phy_driver microchip_phy_driver[] = {
- 	.set_wol	= lan88xx_set_wol,
- 	.read_page	= lan88xx_read_page,
- 	.write_page	= lan88xx_write_page,
-+	.get_tunable	= lan88xx_get_tunable,
-+	.set_tunable	= lan88xx_set_tunable,
- },
- {
- 	PHY_ID_MATCH_MODEL(PHY_ID_LAN937X_TX),
-diff --git a/include/linux/microchipphy.h b/include/linux/microchipphy.h
-index 517288da19fd..a8deae3977e9 100644
---- a/include/linux/microchipphy.h
-+++ b/include/linux/microchipphy.h
-@@ -61,6 +61,15 @@
- /* Registers specific to the LAN7800/LAN7850 embedded phy */
- #define LAN78XX_PHY_LED_MODE_SELECT		(0x1D)
- 
-+/* PHY Control 3 register (page 1) */
-+#define LAN78XX_PHY_CTRL3			(0x14)
-+#define  LAN78XX_PHY_CTRL3_AUTO_DOWNSHIFT	BIT(4)
-+#define  LAN78XX_PHY_CTRL3_DOWNSHIFT_CTRL_MASK	GENMASK(3, 2)
-+#define  LAN78XX_PHY_CTRL3_DOWNSHIFT_CTRL_2	(0 << 2)
-+#define  LAN78XX_PHY_CTRL3_DOWNSHIFT_CTRL_3	(1 << 2)
-+#define  LAN78XX_PHY_CTRL3_DOWNSHIFT_CTRL_4	(2 << 2)
-+#define  LAN78XX_PHY_CTRL3_DOWNSHIFT_CTRL_5	(3 << 2)
-+
- /* DSP registers */
- #define PHY_ARDENNES_MMD_DEV_3_PHY_CFG		(0x806A)
- #define PHY_ARDENNES_MMD_DEV_3_PHY_CFG_ZD_DLY_EN_	(0x2000)
 -- 
 2.51.0
 
