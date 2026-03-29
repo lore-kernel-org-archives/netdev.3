@@ -1,67 +1,67 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 017792EB10
-	for <netdev@vger.kernel.org>; Sun, 29 Mar 2026 05:00:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7473F1E5B63
+	for <netdev@vger.kernel.org>; Sun, 29 Mar 2026 05:04:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774760405; cv=none; b=glOI2chKlcV3qGQoLMF+o+7RkpgQZlq7v1XUjWCNAHQR537+MFZv2WY7e6Kkv9Yp6yEZzk8LK2K5FT/IWBYJ0NJHgl14a4BqWiBjQb3nSMOK1ZBnClx3y4daS64+WByMvurvxix2dAtyzAuBj9KN3G4/4K271icHwHwByEyAYmw=
+	t=1774760695; cv=none; b=HERC/n+OWz4usl6MJA8NyUCqBKoKgTEvMsPznyea5aMhR7GhThupvJznJTZAT+PxImsrRX6C803G8rSiv08F/LCtBNv2HaqSVRBQXmpkuF+0nICJ8T43Hw0ip6LFmbRZjsekcWvYKtGNYoiqGQQWRNwIQ/j7YcBroRBInrWoUh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774760405; c=relaxed/simple;
-	bh=LOtH3S8qYAKpoSp7FFj6apFYxHA7wWRgd48/9/MpHjA=;
+	s=arc-20240116; t=1774760695; c=relaxed/simple;
+	bh=YsmQIxTiRjmI+JRHgsQd4RviKt0EcrsKyidXL2UsypQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TGsxlIMoSl3969uwD/K8wX8XZow3mJh+e6RCHhcRGZy8s7YKMFLLBQkLWnIpGX6/jRRHUr8timpTAA0hWISQM/HQQyt+W0tCEGG28ag03YEE3CuI8Qd+KI92wuXZr2qcjccQwUrTi0jk2Hk8sOViVI7DxAlh+jkrkdpozZrjFew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d4dDySjW; arc=none smtp.client-ip=209.85.214.182
+	 In-Reply-To:Content-Type; b=YgSvC5MufcpfI/jQE0QO1hcGFMDo8DBr3mHXNjd9GwugZzn453lEiVBlWJW8+jzd4GIkD6HYAbC5DFw4XnbVaIEMMD2K8ml9CLMbSMYetFVaKZHqSUWLHtLkLVVGR5IDwrd6Jsjvlnv0XXp37qPdw6d5vKlqgmpmEjTHHZTYiwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JYbhE9DS; arc=none smtp.client-ip=209.85.210.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d4dDySjW"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2ab077e3f32so14595245ad.3
-        for <netdev@vger.kernel.org>; Sat, 28 Mar 2026 22:00:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JYbhE9DS"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-82a67ce6969so2617949b3a.1
+        for <netdev@vger.kernel.org>; Sat, 28 Mar 2026 22:04:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774760403; x=1775365203; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1774760694; x=1775365494; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=FlCtCV3bo5lFe242o6uj0fTlU+XxEfIY7TYvULOn41o=;
-        b=d4dDySjW8f+9xq8Md5HUMSTLiIG+x+7fiKGJC4VJl4qTKl+ONuyYEWJVHbQN+euNPL
-         gTHHc+Ojgx1STqu2/TkeVKI4LK4Y1nTjFOBNEIT09tmqHsmMCmVd4nuniyfNf0Gxpgts
-         nxTUMLZeUffA1KdWyIzD0Ui6DUqNRmk4DGIfqJOLEKOQTr/F5KlziasZhn1ZEP2sO7Z9
-         bSoPDrDdYJwAAoPN+Okq5AzNAmnYIlCIKBJ/IHHaylzTUzIv7Jjsy4qxgmHUl2ReNUuR
-         rtt6/t125C+KHT0DSTRLPtJE43bMQXickAFxgKSZYFf9B9eLUUt/5Ylwrnd7dyeWLDzG
-         ehxg==
+        bh=PGypEvtCOYQMr1Ct5ICI/amTFZd7Yh8geLd8yNwqV00=;
+        b=JYbhE9DSeJ1Ejx0XRl9jIcJiQTvS//UpztS5gtOjyLAG33sM/NhaAQ/iitMBSYPssY
+         uY7tGIcHvfYK2GYk9DNZmvUOAB+hzvbi8Pvg35k0DR/xGJ3ehGbxZ/LUlMilR8mMzpCi
+         QuO9039/M49JKN26lyP79yTmDwVwyvsHxva34cGB/x96fZBve9yrFYZIr7Ssp+nHUl9h
+         8IAAVVuESEWp01aCrNC4ASmlcUGY+p18lgCsUbeLhYqcmmliEQBFvg1u81t6RXb7HMsi
+         wUTNiuzAUlUXEN2KQVvO5qtzqne0GVxwP/MfaEun1G0MKFAAWHbJ4AdiCvUY1N6tE3bM
+         KIUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774760403; x=1775365203;
+        d=1e100.net; s=20251104; t=1774760694; x=1775365494;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=FlCtCV3bo5lFe242o6uj0fTlU+XxEfIY7TYvULOn41o=;
-        b=QPTTpF0LO3yjt309xa7H1Us0Ybgu3WJhlSZfkOrcdvglRs+kr7Fhc/0Z+RjCmKAszL
-         LCbGe6PUa9wdo5fNJ2jzyqOercDoM0HZgBJEpeDvQusSImIbJBmkmnU8bk/Kue3P7kTr
-         CrYnOeA2PGtttuHxhKY0Cq5eBkVl5qHTV58ezVdOHuN5t30/n2MLnKWgVK/2TJuXLcne
-         1Y8Q7WuoE5XWW2kaldxX2E/N8YndOZFERNSGqmZ0Xif9KzoQVdEBh2apHAqUf1KIbKPU
-         fpNJutO8hEXXaUbnsti1lbNpV1/GFaWcZpmPMaeZoavUbG6zLrmnY3nbmEaZHAf6N+yU
-         W5Og==
-X-Forwarded-Encrypted: i=1; AJvYcCUCgZXLQSo+rINxj4fo5RKsrC5Y2s6gxVTzgkaVjPoPLj5T1hUVHERNd2OXDUKP8BQwp/9f5Rs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZLEY7nNcpxZTspH2CAYn9/Uw2tD7EO7ZlT2dIkvKCo56b/0Td
-	XLm+u2OK8Tx2hONDqsAZSpMyf+0ogv4oTKTJ5XHPffwm2YJmlRcZYH9/
-X-Gm-Gg: ATEYQzzkpchiVpH40PAZ5I0D2hDjH7zrYm8wUEFuoFyKyr3bVkQAlPNCy6Fpf4M34K6
-	IGxi0wdS6Nycwg3vfFaLosXGEh2LdQ6m5qgpwwuXaYWSDU4D+9nPzQ/kzRhw9senqcvfWbWVB+K
-	F1c/BCNDBaSC67B5zR4iehFWxr3O3WdyJCPQPo92nsZaoK1fih5kYgdDhuNzBt15iF0+eE4whkw
-	KXcXCQD80Y74ldfRfXaetIwO9FAcCgDp6QMSishFyqx+J0d6NihD/GhHxANqkxVT15zQY6sd/Bn
-	xMXfuizApHip3huaD9Z/FZYA81YTyIKQWIo/OrmoQCGjuJ6YzMEOIA4x4iIzPpSMHEJWqgEGKia
-	wst1Goo5PfROuCFy7f+uxZlDlB9MgBKDsPVcUNx2sR8IRajZ0ZGZMvCT45fwssbdneudH9B1Kaf
-	I9HjAlPK47WoQVxqyWfM1laAs1XFyvbnngACXWsMTi0z2LRnrjNCKRZokkUFqprS17e+AQLxyPI
-	J+IQ2xl8xo=
-X-Received: by 2002:a17:903:1a2f:b0:2b0:6a3d:36e9 with SMTP id d9443c01a7336-2b0cdcb73d7mr82282055ad.33.1774760403187;
-        Sat, 28 Mar 2026 22:00:03 -0700 (PDT)
+        bh=PGypEvtCOYQMr1Ct5ICI/amTFZd7Yh8geLd8yNwqV00=;
+        b=TmmIVxxWBkMHf+JmrYfn8pRoO3f0rR3sPN+OvlLEBkU7Z838nFL77ybZuldDTHP4AO
+         RcYkYx3i1hrqSCkOyMPr1LAj/NhNe2Ov9Dznw4pj1pySr4ias4cfhouhTlh+5SKWltzY
+         PR57PNM30tzVHWGLs8X+C3XQUF5CndlUGit8xxpqIApPDZwVlNaFrkY9fusNnCB7+deU
+         M5W/lTN6YdXeuOko92OXAYmu8+wruXy5b91I3FdZjDyOGvGt0Q9/4r+nUnPEgFPH6odI
+         6U0hkugHbJwafCv1CN/Y5Z8q5pPLVmvtSN3sEg94DqEaM9CPgYNJeMGAW7YxvJP07WB6
+         rQZg==
+X-Forwarded-Encrypted: i=1; AJvYcCVNm/qc5SSs7JnwtlRufXGA4iQxdgXsO+Q3Ia33mmie/fSXLzzRUF2XtCoaN+EEolZogE3bPR0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YygdmVpzYReYcRf2t7ZlpcQQ2jYEuP5jeWSw/zo03Z1QVzYm96E
+	QAxd9EA24d2rwz7rzZyQHbIqqgXvjxNG1TtkhaejMxr9KnDloRiNRf8C
+X-Gm-Gg: ATEYQzwQWKaAFkD1RbWgbZFXiyuAvK7nIlO4/Fh+Y8goRHWYn64FP0NGBq8By6kC8y2
+	eIaYyFOqZAw1lJZzwPrTXHbVr3CwS2Xmj76btaXF7cLaqWlfbmTzKejRaGcDW24H4C634mLSfIE
+	8bxOM8/VYEOtd6FA8R0FkAvBHjoCmAs3nePZIC/uMaBZ5T+wgeYfK1zhU4uuZrsFne+uNeue204
+	673pSAWQBj0FwNn37GEVViZJ0FB+ZfgditCmTxipMEDJiZBJFa9aI/xHZtk0pge9HLwpMG3H65h
+	5cg8IFZ4zqwAkN/y2Niscn+/clrCdMR/ZYDTHEGSpHpTNWWiTeuF7SJylHsX9FZy1qT0N2NmoOd
+	iXZdjS61x/Eds49687irvS6yyZR8ae3xO3gMk8yY6z/cf9BsLbsiCAESVQ4L1bFSnbxulPVHnun
+	qHEe36J1awfl6kEfQU26epTHNdYVODh7fXW/gHBg5hPGbhJV7t9QWVkqcasxljBichFq/XCAh0d
+	E71Ps99FAE=
+X-Received: by 2002:a05:6a00:bc0b:b0:82a:7893:e14f with SMTP id d2e1a72fcca58-82c95ee41bfmr7022672b3a.41.1774760693576;
+        Sat, 28 Mar 2026 22:04:53 -0700 (PDT)
 Received: from [192.168.0.5] (124-218-201-66.cm.dynamic.apol.com.tw. [124.218.201.66])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b24276689asm38292635ad.38.2026.03.28.22.00.00
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82ca8467824sm3520330b3a.17.2026.03.28.22.04.50
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 28 Mar 2026 22:00:02 -0700 (PDT)
-Message-ID: <3ea0140a-4805-4fd1-a311-695f38d8bdef@gmail.com>
-Date: Sun, 29 Mar 2026 12:59:58 +0800
+        Sat, 28 Mar 2026 22:04:52 -0700 (PDT)
+Message-ID: <5de3f9ca-ffe7-40ca-93a7-fb7e8e513ec2@gmail.com>
+Date: Sun, 29 Mar 2026 13:04:48 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -77,15 +77,15 @@ To: Eric Woudstra <ericwouds@gmail.com>, andrew@lunn.ch,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bjorn@mork.no
 Cc: frank-w@public-files.de, daniel@makrotopia.org, lucien.jheng@airoha.com
 References: <20260326153518.8387-1-lucienzx159@gmail.com>
- <d59bfdca-08cb-4595-8583-eec61e282599@gmail.com>
+ <edeee8e5-0de3-48ea-aeb5-cc705fdcd469@gmail.com>
 Content-Language: en-US
 From: "Lucien.Jheng" <lucienzx159@gmail.com>
-In-Reply-To: <d59bfdca-08cb-4595-8583-eec61e282599@gmail.com>
+In-Reply-To: <edeee8e5-0de3-48ea-aeb5-cc705fdcd469@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 
-Eric Woudstra 於 2026/3/27 上午 04:00 寫道:
+Eric Woudstra 於 2026/3/27 下午 12:41 寫道:
 >
 > On 3/26/26 4:35 PM, Lucien.Jheng wrote:
 >> AN8811HB needs a MCU soft-reset cycle before firmware loading begins.
@@ -94,46 +94,7 @@ Eric Woudstra 於 2026/3/27 上午 04:00 寫道:
 >> through the PHY-addr+8 MDIO bus node rather than the BUCKPBUS indirect
 >> path.  This clears the MCU state before the firmware loading sequence
 >> starts.
-> Perhapse you can register this extra device in the probe() function:
->
-> struct mdio_device *mdiodev;
->
-> mdiodev = mdio_device_create(phydev->mdio.bus,
-> 			     phydev->mdio.addr + EN8811H_PBUS_ADDR_OFFS);
-> if (IS_ERR(mdiodev))
-> 	return PTR_ERR(mdiodev);
->
-> ret = mdio_device_register(mdiodev);
-> if (ret) {
-> 	mdio_device_free(mdiodev);
-> 	return ret;
-> }
->
-> priv->pbusdev = mdiodev;
->
-> In the define part add:
->
-> #define EN8811H_PBUS_ADDR_OFFS	8
->
-> Add to struct en8811h_priv:
->
-> struct mdio_device	*pbusdev;
->
-> And in the remove function:
->
-> mdio_device_remove(priv->pbusdev);
-> mdio_device_free(priv->pbusdev);
->
-> Then you can use the device:
->
-> ret = en8811hb_some_neat_function(priv->pbusdev);
-
-Thank you for the feedback
-
-I will handle the registration of this extra device within the probe 
-function in the next version.
-
-
+>>
 >> Add __air_pbus_reg_write() as a low-level helper for this access, then
 >> implement an8811hb_mcu_assert() / _deassert() on top of it.  Wire both
 >> into an8811hb_load_firmware() and en8811h_restart_mcu() so every
@@ -213,6 +174,99 @@ function in the next version.
 >> +	return 0;
 >> +}
 >> +
+> Maybe you can use mutex_lock() and mutex_unlock() here also, like so:
+>
+> static int __air_pbus_reg_write(struct mdio_device *mdio, u32 pbus_address,
+> 				u32 pbus_data)
+> {
+> 	int ret;
+>
+> 	ret = __mdiobus_write(mdio->bus, mdio->addr, AIR_EXT_PAGE_ACCESS,
+> 			      (u16)(pbus_address >> 6));
+> 	if (ret < 0)
+> 		return ret;
+>
+> 	ret = __mdiobus_write(mdio->bus, mdio->addr, (pbus_address >> 2) & 0xf,
+> 			      (u16)pbus_data);
+> 	if (ret < 0)
+> 		return ret;
+>
+> 	ret = __mdiobus_write(mdio->bus, mdio->addr, AIR_PBUS_DATA_HIGH,
+> 			      (u16)(pbus_data >> 16));
+> 	if (ret < 0)
+> 		return ret;
+>
+> 	return 0;
+> }
+>
+> static int air_pbus_reg_write(struct mdio_device *mdio, u32 pbus_address,
+> 			      u32 pbus_data)
+> {
+> 	int ret;
+>
+> 	mutex_lock(&mdio->bus->mdio_lock);
+>
+> 	ret = __air_pbus_reg_write(mdio, pbus_address, pbus_data);
+> 	if (ret < 0)
+> 		dev_err(&mdio->dev, "%s 0x%08x failed: %d\n", __func__,
+> 			pbus_address, ret);
+>
+> 	mutex_unlock(&mdio->bus->mdio_lock);
+>
+> 	return ret;
+> }
+>
+> static int __air_pbus_reg_read(struct mdio_device *mdio, u32 pbus_address,
+> 			       u32 *pbus_data)
+> {
+> 	int ret, pbus_data_low;
+>
+> 	ret = __mdiobus_write(mdio->bus, mdio->addr, AIR_EXT_PAGE_ACCESS,
+> 			      (u16)(pbus_address >> 6));
+> 	if (ret < 0)
+> 		return ret;
+>
+> 	ret = __mdiobus_read(mdio->bus, mdio->addr, (pbus_address >> 2) & 0xf);
+> 	if (ret < 0)
+> 		return ret;
+> 	pbus_data_low = ret;
+>
+> 	ret = __mdiobus_read(mdio->bus, mdio->addr, AIR_PBUS_DATA_HIGH);
+> 	if (ret < 0)
+> 		return ret;
+>
+> 	*pbus_data = (ret << 16) + pbus_data_low;
+>
+> 	return 0;
+> }
+>
+> static int air_pbus_reg_read(struct mdio_device *mdio, u32 pbus_address,
+> 			     u32 *pbus_data)
+> {
+> 	int ret;
+>
+> 	mutex_lock(&mdio->bus->mdio_lock);
+>
+> 	ret = __air_pbus_reg_read(mdio, pbus_address, pbus_data);
+> 	if (ret < 0)
+> 		dev_err(&mdio->dev, "%s 0x%08x failed: %d\n", __func__,
+> 			pbus_address, ret);
+>
+> 	mutex_unlock(&mdio->bus->mdio_lock);
+>
+> 	return ret;
+> }
+>
+> With:
+>
+> #define AIR_PBUS_DATA_HIGH		0x10
+>
+Thank you for your feedback.
+
+I should add mutex_lock() and mutex_unlock() to protect these operations.
+
+I will include this in the next version.
+
 >>   static int __air_buckpbus_reg_write(struct phy_device *phydev,
 >>   				    u32 pbus_address, u32 pbus_data)
 >>   {
