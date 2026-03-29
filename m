@@ -1,100 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from srv4.3e8.eu (srv4.3e8.eu [193.25.101.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D141D28D830;
-	Sun, 29 Mar 2026 19:14:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA6B219EB;
+	Sun, 29 Mar 2026 19:17:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.25.101.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774811697; cv=none; b=iEMzWAxDjfByy7JU7zy4VTfZww+liu8Vjjy0wHeUCnaMyqILTCQQFr5klVB9P3aD4jaQTdziQIFJUZSWmU5bQeK+KXszgsHvsVIVrP6I0EUyN5KerFfjjwyXjEYNs3N3gNGCdebTxj/21pH6CnAOAMu8Vt/VwrW/U82gewb8sGU=
+	t=1774811832; cv=none; b=ZmJ0Lm2+W44c3tavfCNcM83wiubJnI9GW8oUevmTRj+naY1hWczqrFRGvnGH5Jg16FDJde+HuLW7tbONoHgDYwWuGCkr/XlmSTxGkfMkpRUH7t5DE0gsLl1rhNN7tqXi0FWjCtv7UjrRwlYgUPSPkZTACZJ0bWXWev3CQ8CevjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774811697; c=relaxed/simple;
-	bh=2t4y18byjP1MjQQ2XhoChveQhWdoC7SnSWd/GP1c26g=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FVHYEzCEHf/eKGr5iUnXWcHWu8pHOrXPHhCARo7HKWDo2JvvNyYrHUC+VVTTCx2iqFqblfLgspzJQU1t+UtDDU43HOpOcg6xb9iRBogh8O5aFg1C0oZzntTmpmv8cceduZULf/sZSpuv3OIL7QuIT8mrdauzH2281Vb0TQ6Y0Ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L71CGYcE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774811832; c=relaxed/simple;
+	bh=iDguSZeDDg3K/rUzPfSTz34uIIU6lSSUQBvG2SUCra8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=otcTwPP3t4BTd0gK0SI/qszbIdRbgESmRndF7/QD300q0tUnSq0TDk4XWcgDMdXixMs2/EIsC6CADNqKDt+hYoZPtldh49O2b2YxKiN7bQI3813xPZjzw6WzARtseFkaKCaVLHGGyhDOQyavd9J4d1l9SPpTw0y4K5hAEd7t/jI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=3e8.eu; spf=pass smtp.mailfrom=3e8.eu; dkim=pass (2048-bit key) header.d=3e8.eu header.i=@3e8.eu header.b=Ucz1g4is; arc=none smtp.client-ip=193.25.101.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=3e8.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=3e8.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L71CGYcE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3851C116C6;
-	Sun, 29 Mar 2026 19:14:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774811697;
-	bh=2t4y18byjP1MjQQ2XhoChveQhWdoC7SnSWd/GP1c26g=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=L71CGYcE68iwQWH4swEnEnQd5j4J1W+HudNK3TShVFeCpkhI95IU4g4JXoykRuJrq
-	 k5Lip9ePtirW1wyHq/ZlHphH9D3zjq3SkRTWSKi4C+uIhO6SfqpcXVeYHCp1aNUfvo
-	 /B+FEGp00aaRdk80zHhk74rzEZH+rpRdusZvw6maC3gyZL7HXZpwNyiK94+LhLnKip
-	 dIUabtN4QvKW3DPfjhIBzqkWkDS+DEK59P6bs1a0SIM2PXnAogWQ7SZOzond6lQCaE
-	 02lqUAhSz0HiRhlUXj8XHI0Az2eqbWszHG9+TzIJgbP9Kmfz6qelpSkiGQI4YHqE/z
-	 4K3ecNoUfEvew==
-Date: Sun, 29 Mar 2026 12:14:55 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: netdev@vger.kernel.org, Marc Dionne <marc.dionne@auristor.com>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, linux-afs@lists.infradead.org,
- linux-kernel@vger.kernel.org, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, John Johansen
- <john.johansen@canonical.com>, Minas Harutyunyan <hminas@synopsys.com>,
- Simon Horman <horms@kernel.org>, apparmor@lists.ubuntu.com,
- linux-usb@vger.kernel.org, stable@kernel.org
-Subject: Re: [PATCH net v3 04/11] list: Move on_list_rcu() to list.h and add
- on_list() also
-Message-ID: <20260329121455.72f87d3b@kernel.org>
-In-Reply-To: <20260326131838.634095-5-dhowells@redhat.com>
-References: <20260326131838.634095-1-dhowells@redhat.com>
-	<20260326131838.634095-5-dhowells@redhat.com>
+	dkim=pass (2048-bit key) header.d=3e8.eu header.i=@3e8.eu header.b="Ucz1g4is"
+Received: from jan-pc (p200300ed471586a0ca7f531ffd8aba41.dip0.t-ipconnect.de [IPv6:2003:ed:4715:86a0:ca7f:531f:fd8a:ba41])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by srv4.3e8.eu (Postfix) with ESMTPSA id C34B640242;
+	Sun, 29 Mar 2026 21:15:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=3e8.eu; s=mail20211217;
+	t=1774811753;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=urO0gciKGpIOPjd+7D68lJt9wPp29NDycNeCkBLbJcw=;
+	b=Ucz1g4is2wHhaROEeucQ9UqJv6ZW1fjHv071uZfmwHs79ew/r4UqQAkUxwUf417rOv+yY8
+	NXBxwqirNN7RnvQlm/aZaaUyCW8SwGCsAiyoElArIuHRQ1X+BV9Derztoqt7vHg3mSm0DW
+	7al0RblMoofcdMfvreJPs7S6xN2xdjBDgPPsiG2o72EIYTP8Esre50KvHaXA3PbCOj+VfM
+	W46YPAWR0O7tHZr5mAgCZWqABUrWyqMo1qF/M8rG8cUhViY0PeEq/xgYQnUISQja78CeFj
+	JA7kkAurCzGkb+TXqgqa4GewB106z9HrvXyTZHLRgIpTRkJnVKWfn0RZnb8yEA==
+From: Jan Hoffmann <jan@3e8.eu>
+To: Russell King <linux@armlinux.org.uk>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jan Hoffmann <jan@3e8.eu>
+Subject: [PATCH net-next v2] net: sfp: add quirk for ZOERAX SFP-2.5G-T
+Date: Sun, 29 Mar 2026 21:11:11 +0200
+Message-ID: <20260329191304.720160-1-jan@3e8.eu>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, 26 Mar 2026 13:18:29 +0000 David Howells wrote:
-> Unfortunately, list_empty() is not usable with an entry that has been
-> removed from a list with list_del_rcu() as ->next must be left pointing at
-> the following entry so as not to break traversal under RCU.
+This is a 2.5G copper module which appears to be based on a Motorcomm
+YT8821 PHY. There doesn't seem to be a usable way to to access the PHY
+(I2C address 0x56 provides only read-only C22 access, and Rollball is
+also not working).
 
-This seems to break build for jffs.
-Someone already marked this as rejected in PW.
-Whoever it was PLEASE STOP.
+The module does not report the correct extended compliance code for
+2.5GBase-T, and instead claims to support SONET OC-48 and Fibre Channel:
 
-Quoting documentation:
+  Identifier          : 0x03 (SFP)
+  Extended identifier : 0x04 (GBIC/SFP defined by 2-wire interface ID)
+  Connector           : 0x07 (LC)
+  Transceiver codes   : 0x00 0x01 0x00 0x00 0x40 0x40 0x04 0x00 0x00
+  Transceiver type    : FC: Multimode, 50um (M5)
+  Encoding            : 0x05 (SONET Scrambled)
+  BR Nominal          : 2500MBd
 
-  Updating patch status
-  ~~~~~~~~~~~~~~~~~~~~~
-  
-  Contributors and reviewers do not have the permissions to update patch
-  state directly in patchwork. Patchwork doesn't expose much information
-  about the history of the state of patches, therefore having multiple
-  people update the state leads to confusion.
-  
-  Instead of delegating patchwork permissions netdev uses a simple mail
-  bot which looks for special commands/lines within the emails sent to
-  the mailing list. For example to mark a series as Changes Requested
-  one needs to send the following line anywhere in the email thread::
-  
-    pw-bot: changes-requested
-  
-  As a result the bot will set the entire series to Changes Requested.
-  This may be useful when author discovers a bug in their own series
-  and wants to prevent it from getting applied.
-  
-  The use of the bot is entirely optional, if in doubt ignore its
-  existence completely. Maintainers will classify and update the state
-  of the patches themselves. No email should ever be sent to the list
-  with the main purpose of communicating with the bot, the bot commands
-  should be seen as metadata. 
-  The use of the bot is restricted to authors of the patches (the
-  ``From:`` header on patch submission and command must match!),
-  maintainers of the modified code according to the MAINTAINERS file
-  (again, ``From:`` must match the MAINTAINERS entry) and a handful of
-  senior reviewers. 
-  Bot records its activity here:
-  
-    https://netdev.bots.linux.dev/pw-bot.html
-  
-See:
-  https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#updating-patch-status
+Despite this, the kernel still enables the correct 2500Base-X interface
+mode. However, for the module to actually work, it is also necessary to
+disable inband auto-negotiation.
+
+Enable the existing "sfp_quirk_oem_2_5g" for this module, which handles
+that and also sets the bit for 2500Base-T link mode.
+
+Signed-off-by: Jan Hoffmann <jan@3e8.eu>
+---
+v2:
+ - use "sfp_quirk_oem_2_5g" instead of "sfp_quirk_disable_autoneg"
+
+ drivers/net/phy/sfp.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index 5db841377199..0a455a2daccb 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -567,6 +567,8 @@ static const struct sfp_quirk sfp_quirks[] = {
+ 	SFP_QUIRK_F("Turris", "RTSFP-2.5G", sfp_fixup_rollball),
+ 	SFP_QUIRK_F("Turris", "RTSFP-10", sfp_fixup_rollball),
+ 	SFP_QUIRK_F("Turris", "RTSFP-10G", sfp_fixup_rollball),
++
++	SFP_QUIRK_S("ZOERAX", "SFP-2.5G-T", sfp_quirk_oem_2_5g),
+ };
+ 
+ static size_t sfp_strlen(const char *str, size_t maxlen)
+-- 
+2.53.0
+
