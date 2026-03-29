@@ -1,217 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75537386C0F;
-	Sun, 29 Mar 2026 19:56:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CFC257845
+	for <netdev@vger.kernel.org>; Sun, 29 Mar 2026 20:02:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774814203; cv=none; b=uTRwtnyMeTAGwBZP/6uf2VmyBmeJP4hyglgS0dFM0XjwrSOa+bKAgiBIkz+hZfyjnqkOlc468/y+jzT8QKfY119R6pQN0G0TESUe89sFGrd/jdP2hb10MKvdcSMRui8tR0xf5m9z1Dl9OMOZm2c+fkwhwdeoqaxl6NBx3Z3NFE8=
+	t=1774814521; cv=none; b=lZiItS4Ed2f1hFREyIDzyj9Z/jBnTv0Z6Dquw29niie6GmusATjLS5Nf0aJHjGtoB9D+mnVGwNpxxqcU1fVwaHtD9+E/Zzce1HtBuit7p6qrLYPcOdujsJLCvV6+U6pjdnMPkhsY+tR8XvUFamNbCTV9rix9Smg1YYUPzu7ehaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774814203; c=relaxed/simple;
-	bh=rzmuSdC783UdanWK5KRP7rxT8rboYecl70TfW8YAGFs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R5bS7t4Drm+/8qRLGqK7rODsJ1Iv/uDU2X7cyXBQ4fmwrw94YepppuI5m1ETsO0D3+oRQwAFzeiUI0H21SRKaMJuHq6Y3eWXDg5HyxNq2k/j9CqbByD780VR4mFDF6wIrR/fH7OkkZDmbPFrlvE2v3l9Ed6TbuD9swD1Tlj6r7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=erzw5uW1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774814521; c=relaxed/simple;
+	bh=6KesuHunNm5vzupfH6dWeNmGrojSoSm6OoZ7E509dxI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bxD1j9TyNkJ9gmdDb7mxbauAXGvtU6hgHy9o0SCLNedgPmShE+VoGc64jmeN5u9ty3erMZKhv2Q0U6T/SXpF/STizjIUHR2AUrp9PXPNGCVHe75rGO7nQ/ThCInaiyoUwGjIreX70ZjLWx5x6rRkLezXIsxh1c4NTaAoFSf91kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=JekhqfT7; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="erzw5uW1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57CDAC2BCB1;
-	Sun, 29 Mar 2026 19:56:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774814201;
-	bh=rzmuSdC783UdanWK5KRP7rxT8rboYecl70TfW8YAGFs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=erzw5uW1zwami3pWq3vSKGV4s2VbQ2uOun4lwWhU2tPuihfwEXm7I3+ZvAIkdP7s2
-	 MdM1wePQfVw5wfZHLu0uq5ZQcy1kP03FFg8BVkDl6wlBkdWj7gKsLB+UCG4+TKXaqc
-	 FhuMULU1bWjM6Inc/pGDDnrdfo1A6zBPfO5gbfnkzxURWGsBslmvCSFB+UG9vs4zkF
-	 II0ULuuMbK+jgM/iun8uX5c2OqNjR0V21ueUsXKJ7WzEZ6WaegNLsk7yO1r1o3eSCE
-	 8MCvmOA0hoIbVfjR4BJkrG7xrF3r1E0qzm5yjL+7kHyuNbd72JcmX9UQ2GNWQwqBf0
-	 ItPWiQV7NILaQ==
-From: Jakub Kicinski <kuba@kernel.org>
-To: jensemil.schulzostergaard@microchip.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	UNGLinuxDriver@microchip.com,
-	andrew@lunn.ch,
-	olteanv@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	woojung.huh@microchip.com,
-	linux@armlinux.org.uk,
-	Steen.Hegelund@microchip.com,
-	daniel.machon@microchip.com,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next v2 9/9] net: dsa: lan9645x: add port statistics
-Date: Sun, 29 Mar 2026 12:56:39 -0700
-Message-ID: <20260329195639.2789284-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260324-dsa_lan9645x_switch_driver_base-v2-9-f7504e3b0681@microchip.com>
-References: <20260324-dsa_lan9645x_switch_driver_base-v2-9-f7504e3b0681@microchip.com>
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="JekhqfT7"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b8d7f22d405so584344266b.0
+        for <netdev@vger.kernel.org>; Sun, 29 Mar 2026 13:02:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1774814519; x=1775419319; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=W2LBsWL0RCR7A1/NBeRjO1DmOoAWjMff84GLac5q8D4=;
+        b=JekhqfT7S/8S3fOXygO+G3tv8ClmY6WZ+pFZWo0tdyj79q1llTout79e8bAAs3XR7u
+         IP+xpWflJfhHHuQcJjyKb9BribdvSyh2GGym47VzrFgnFWVWzeC1lRCQHEGpakTrGMni
+         Mb41H650xJ9KzGdOLMp83IfqpESMGZEFjULwY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774814519; x=1775419319;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=W2LBsWL0RCR7A1/NBeRjO1DmOoAWjMff84GLac5q8D4=;
+        b=aXyw0CuvHTpuSQ/7DR4icfWcFRR0JYXIMwZ85A00urA9fx/G79c0JzUcbl+HWNVW6i
+         6wD8jQeNJls/qqBokLk9xF2bs8Fg8QsBbI6Ito3i0gR4l9bA99WVkXEInh2zlCBbdd77
+         0GTXn7NqFq4UetwtN+86gRa9EXemwLrIANIocX6wE6NIK0Cqg/XMI/l+iF7WZr1sv/tu
+         SpZOMiz0i0khucjs740GbUoihWt5lwB6muVr/avih56YsVCrFbHgK1n8bxBEwFoMsesY
+         xCJ0f/R8l0Et3HRWX1eEsnmU/8vwztyXM4jkBj9zWUSyquDIZsmFKdKQVlbcAdM6PsbF
+         /60w==
+X-Forwarded-Encrypted: i=1; AJvYcCWHMWQAOSHPMZ46OqZGGItHn8909CtZo2KZeZWCJs06WmdfwoEloNXF1sMjFdSnRNgGqg1GtVM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5k+YpMJJMj0mmyvA2OyK2KGrsRdUip0BLHM58BzOUsPjjtyBl
+	drd6l5XKHEh4id+x1nUetxsbQ2W9QMCtwLg6439bdGRj9WYT43U6OK7V+CtGJAMGbz1ANXnns2Q
+	KHaCTH+A=
+X-Gm-Gg: ATEYQzz+SRfRaotT4FLc43EISP/7uVEOEQ8luDrOm9V7uZ8uoi7U+7A3Mc54NhrCRKO
+	a+i/1szRVklr2aEWT5bRuVtRE5Z6CledxlfH70YHskWiumxjUU+nFqe+oPbh5pX2QNl61ZuJPgR
+	irOCbIErbeeZciGjckXnVOny44+yeaLuvm0B75S6Iduxd6P+vm7B2NUdE5/oLvngQqFPLh9Ral8
+	G4uM16UKeAEXUKiRaBz5BdlIMMdufIj878nsBDwHH5vj++iDaDXkyGHi311vF+W39BivfhUSZl1
+	r/cyZKqrJupvE4xXn5wlaFNWqRDUZSWsPvj7bpQzuXVD0llH1Cc4bpQqbAClYbZwT1oilZeCzU8
+	oQMLBt8C/jo+vjVJsmIKYVRS3tgFABbAaf5+Jh0eHjBIjnDPFqpoB6LPoC9Klpf03HC+T5naduh
+	7O6aA5qBfjnSKL8DNOZ7hgXe4NuQTlETJvpwSdYB9+biW5mt6c2Yp8qFLmtzdjMbvr8/VaXKZQ
+X-Received: by 2002:a17:906:ee84:b0:b98:32c1:249b with SMTP id a640c23a62f3a-b9b502bd39amr600540666b.8.1774814518778;
+        Sun, 29 Mar 2026 13:01:58 -0700 (PDT)
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com. [209.85.208.44])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9b7ae520c2sm196952066b.21.2026.03.29.13.01.57
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 29 Mar 2026 13:01:57 -0700 (PDT)
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-66abe08cdf5so5845726a12.0
+        for <netdev@vger.kernel.org>; Sun, 29 Mar 2026 13:01:57 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVD3AvwJGPRRW5FfzufK223t2VsnaE/sVemeNJUKJ7vZPMmLppn7Dv+ZJtNAEPCQGMW7C5UsQA=@vger.kernel.org
+X-Received: by 2002:a05:6402:370f:b0:665:638d:75c1 with SMTP id
+ 4fb4d7f45d1cf-66b2836522dmr5313873a12.3.1774814517026; Sun, 29 Mar 2026
+ 13:01:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260326131838.634095-1-dhowells@redhat.com> <20260326131838.634095-5-dhowells@redhat.com>
+ <20260329121208.6092419d@kernel.org>
+In-Reply-To: <20260329121208.6092419d@kernel.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sun, 29 Mar 2026 13:01:40 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiJ6gEELLviexdmSHnyjVoG7MFo8Qwhd1zxs_tCnL-=gQ@mail.gmail.com>
+X-Gm-Features: AQROBzCLNnOtMDq7_zEYzn905-QyT8tE9Dg3ZE8enKPKMkcfb1CkLbH9Xycl1-E
+Message-ID: <CAHk-=wiJ6gEELLviexdmSHnyjVoG7MFo8Qwhd1zxs_tCnL-=gQ@mail.gmail.com>
+Subject: Re: [PATCH net v3 04/11] list: Move on_list_rcu() to list.h and add
+ on_list() also
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: David Howells <dhowells@redhat.com>, netdev@vger.kernel.org, 
+	Marc Dionne <marc.dionne@auristor.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, linux-afs@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	John Johansen <john.johansen@canonical.com>, Minas Harutyunyan <hminas@synopsys.com>, 
+	Simon Horman <horms@kernel.org>, apparmor@lists.ubuntu.com, linux-usb@vger.kernel.org, 
+	stable@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-net: dsa: lan9645x: add port statistics
-    
-Add statistics support for the port counters. Chip registers are 32 bit,
-so this unit is responsible maintaining a 64bit software cache, and
-updating it frequently to handle overflows in hardware.
+On Sun, 29 Mar 2026 at 12:12, Jakub Kicinski <kuba@kernel.org> wrote:
+>
+> Could someone with sufficient weight to their name ack this?
 
-> diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
-> index 24a60f40f6b8..9a46c08dad59 100644
-> --- a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
-> +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
-[ ... ]
-> @@ -262,6 +264,12 @@ static int lan9645x_setup(struct dsa_switch *ds)
->  	if (!lan9645x->owq)
->  		return -ENOMEM;
->  
-> +	err = lan9645x_stats_init(lan9645x);
-> +	if (err) {
-> +		dev_err(dev, "Failed to init stats.\n");
-> +		goto owq_destroy;
-> +	}
-> +
-[ ... ]
-> diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.c
-> index 000000000000..3e82a859f173
-> --- /dev/null
-> +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.c
-[ ... ]
-> +static const struct lan9645x_ethtool_stat lan9645x_port_ethtool_stats[] = {
-> +	{ "rx_uc",              SCNT_RX_UC },
-> +	{ "rx_cat_drop",        SCNT_RX_CAT_DROP },
-[ ... ]
-> +	{ "tx_uc",              SCNT_TX_UC },
-> +	{ "tx_drop",            SCNT_TX_DROP },
-[ ... ]
-> +};
+I don't particularly like it. I think the name is too generic, and
+it's all wrong anyway. Whether something is on a list or not ends up
+being much too specific to the use-case, and I do *not* see a huge
+advantage to a helper function that just wraps "list_empty()" with
+another name that is actually *less* descriptive.
 
-Is it necessary to duplicate standard networking statistics in the driver
-private ethtool output?
+So no. NAK.
 
-The networking subsystem guidelines state that stats possessing a standard UAPI
-representation, such as tx_dropped and rx_packets in struct rtnl_link_stats64,
-should not be duplicated in the ethtool -S output.
+As you mention, the RCU version at least does something else, but
+honestly, it looks pretty damn questionable too. And no, it does not
+work for non-RCU lists in any kind of generic sense, since iut's
+perfectly valid to remove list entries without poisoning them.,
 
-Could these redundant strings be removed since the driver natively supports
-them via lan9645x_stats_get_stats64?
+For example, some places that want a simple "am I on a list" will use
+__list_del_clearprev(), which does *not* poison the prev pointer, but
+just clears it instead. And then the "am I on a list" is just checking
+prev for NULL or not.
 
-[ ... ]
-> +static const struct lan9645x_view_stats lan9645x_view_stat_cfgs[] = {
-> +	[LAN9645X_STAT_PORTS] = {
-> +		.name = "ports",
-> +		.type = LAN9645X_STAT_PORTS,
-> +		.layout = lan9645x_port_stats_layout,
-> +		.num_cnts = ARRAY_SIZE(lan9645x_port_stats_layout),
-> +		.num_indexes = NUM_PHYS_PORTS,
-> +	},
-> +};
-[ ... ]
-> +static u64 *lan9645x_stats_view_idx_update(struct lan9645x *lan9645x,
-> +					   enum lan9645x_view_stat_type vtype,
-> +					   int idx)
-> +{
-> +	struct lan9645x_stats *s = lan9645x->stats;
-> +
-> +	mutex_lock(&s->hw_lock);
-> +	__lan9645x_stats_view_idx_update(lan9645x, vtype, idx);
-> +	mutex_unlock(&s->hw_lock);
-> +
-> +	return STAT_COUNTERS(lan9645x, vtype, idx);
-> +}
+In other words: all of this is wrong. Whether you are on a list or not
+is simply not a generic operation. It depends on the user.
 
-Does this code overflow the allocated buffer when called for the CPU port?
+The name is also *MUCH* too generic anyway.
 
-The stats buffer cnts is allocated using num_indexes, which is NUM_PHYS_PORTS
-(9). This covers ports 0 to 8. However, the CPU port is defined as index 9
-(CPU_PORT = 9).
-
-When the DSA core invokes stat callbacks like get_ethtool_stats or get_stats64
-for the CPU port, the idx argument is 9. While the helper
-__lan9645x_stats_view_idx_update skips the hardware read for out-of-bounds
-indices, lan9645x_stats_view_idx_update ignores that failure and returns the
-result of STAT_COUNTERS(lan9645x, vtype, idx).
-
-This computes a pointer past the end of the cnts array, which the callers then
-blindly dereference, potentially leaking kernel memory or causing a crash. Can
-bounds checking be added to the callers, or should the buffer be sized to
-include the CPU port?
-
-[ ... ]
-> +void lan9645x_stats_get_ethtool_stats(struct lan9645x *lan9645x, int port,
-> +				      u64 *data)
-> +{
-> +	struct lan9645x_stats *stats = lan9645x->stats;
-> +	u64 *c;
-> +	int i;
-> +
-> +	c = lan9645x_stats_view_idx_update(lan9645x, LAN9645X_STAT_PORTS, port);
-> +
-> +	spin_lock(&stats->sw_lock);
-> +	for (i = 0; i < ARRAY_SIZE(lan9645x_port_ethtool_stats); i++)
-> +		*data++ = c[lan9645x_port_ethtool_stats[i].idx];
-> +	spin_unlock(&stats->sw_lock);
-> +}
-[ ... ]
-> +/* Called in atomic context */
-> +void lan9645x_stats_get_stats64(struct lan9645x *lan9645x, int port,
-> +				struct rtnl_link_stats64 *stats)
-> +{
-> +	struct lan9645x_stats *s = lan9645x->stats;
-> +	u64 *c;
-> +
-> +	c = STAT_COUNTERS(lan9645x, LAN9645X_STAT_PORTS, port);
-> +
-> +	spin_lock(&s->sw_lock);
-
-Can this code deadlock when a softirq interrupts a process holding the lock?
-
-The sw_lock spinlock protects the 64-bit software stats counters. In
-lan9645x_stats_get_stats64, which acts as the ndo_get_stats64 callback, this
-lock is acquired using a plain spin_lock. The code comment notes this function
-is called in atomic context (such as from NET_RX_SOFTIRQ via dev_get_stats).
-
-Concurrently, process context paths like lan9645x_stats_get_ethtool_stats and
-lan9645x_check_stats_work also acquire sw_lock using plain spin_lock. Because
-plain spin_lock does not disable softirqs, if a softirq preempts the execution
-on a CPU while process context holds sw_lock, the softirq will spin
-indefinitely waiting for the lock.
-
-Should the process-context acquisitions use spin_lock_bh instead?
-
-[ ... ]
-> +int lan9645x_stats_init(struct lan9645x *lan9645x)
-> +{
-> +	const struct lan9645x_view_stats *vs;
-> +	struct lan9645x_stats *stats;
-> +	int err, i;
-> +
-> +	lan9645x->stats = devm_kzalloc(lan9645x->dev, sizeof(*stats),
-> +				       GFP_KERNEL);
-
-Will this memory be leaked when the DSA switch unbinds and rebinds?
-
-The lan9645x_stats_init function allocates lan9645x->stats, vstat->cnts, and
-vstat->buf using devm_kzalloc and devm_kcalloc. This function is called from
-lan9645x_setup, which is the DSA .setup callback.
-
-The DSA tree lifecycle is independent of the platform device lifecycle. If the
-master netdevice is unbound and bound again, the DSA switch's .teardown and
-.setup callbacks will be invoked multiple times. Because .teardown cannot free
-devres-managed memory, the memory tied to the platform device will be leaked
-on every setup cycle until the switch's platform device itself is destroyed.
-
-Could this use standard kzalloc allocations paired with kfree in teardown?
+               Linus
