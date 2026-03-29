@@ -1,38 +1,50 @@
 Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B641547C0
-	for <netdev@vger.kernel.org>; Sun, 29 Mar 2026 22:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D82277CA4;
+	Sun, 29 Mar 2026 22:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774824172; cv=none; b=qPuAwdcIfI0ZodIA0DL2WASMSvfiQCENKoBtCmyD55HUw1mL/YtGd9GvZ3qw7hg5a9F2F66GtskeA9UfHSLvGyGUGtpe+JqcMKB68y93HoPMsybk9/GiTQE6muDBSPiOY9eMEFDlsIC6lLKYqhejUeUN69fspIs+AYfTYgPKYbQ=
+	t=1774824172; cv=none; b=JcJKczMlGS72IK1xIBXdJ8/hCPe63rkE5SX6m/wGdmB6y7YSgnANx2Hqnkk5ytnjUZRs8p9NAQ/fyJLSEGBCsB6CYL2Ytg6l9H1Df35b4YCQWFEdtjhmn6PVrUZBqaZzoArjTO7RkvsrRmcngijGHeWn+u/jtIqo1Zn0xzBzDxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774824172; c=relaxed/simple;
-	bh=D/EETRuBRvXLCxFVJbBJqhykDeqaXnQZUxfjKU6RlAI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i+PVT+Yl72D994sIn5KGOWMfMX/Jg5b6T+w5bi20hGKsQFIuNHweBbSwQO3bqbsjcIqN7Ha8JV713vDiFVC0UOThsnglvqze6tQ8Gwp5nkY+qsH7D7HdJ5cjOIsn5aXvLhwdy3j5tefS/+I06iu/ITlfxiGNeHUd6JufOzWGhNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=4R9gBMrw; arc=none smtp.client-ip=194.13.80.246
+	bh=PHg2mt8D99dRuK3VNr7RPwFyahRZ5TreuFGpdQJZp9M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=D9Lvo0+Bai983JIkylc5SgtlIW42eoaNd8CLFGHa0QQZMl7I1Rv09NOo4V9NYLQ3SKHQ9KZvuG+W33VEantZp96g72Db9aHh3NSHna0BmeI+eRBYA7YMgeIX8Fqza1gBKio7Z/wM8nEvqRMjmaJCfr4EGYJYBHADURm4iTQuqZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=Y5LL9Wfz; arc=none smtp.client-ip=194.13.80.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="4R9gBMrw"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 84C1DA01B0;
-	Mon, 30 Mar 2026 00:42:30 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="Y5LL9Wfz"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 85A7FA56EE;
+	Mon, 30 Mar 2026 00:42:36 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1774824151; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=dA4Rs9Jb5I2ZpDuifAoeSxEzZ8pORM0cDNmRTw+QskQ=;
-	b=4R9gBMrwxdScZ8wGlCGUNtQdFzg/fPOnWlAKA4fGLblQ7IOezSzBbHmYgHDsYDBsgJ2dne
-	LoOwj+Ln4ZEw2UOa3qObqYBK3JyjTurOLQpYnIvUD2wCtgFPX0PStK/Lg/A6kLk//Rt/zQ
-	znk4jaQ1Md3eGjxH7XBRafMHlSebqhDdti/PaRsBbKBfK++IO0e2p+hMV83z4bZzYoOHdH
-	xQbbpdfzAx2F3p98S7vGwpIp19304GGwZJK5cEpk97DYUH8g8jpOk8LrqebOjOo++Xgu4A
-	z3/S30KuSJaV3dhrqtBRditQtCZ3gF2ypy4OdXzRc4p5/JO1MoI6ReWvG+fXMg==
+	t=1774824156; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=zDrp64/Br7qFng+yJZ1qOsRzDJYt/z0dMo5iM6ZoVNE=;
+	b=Y5LL9WfzuIjRhdVndUC5KTDZd/sPV/dVA3OQVbTlz6Vj02Z4EiTZHFMgtRvpJ2nRKOA+R4
+	O0TW5O/tkXWgpgVttErM89+RkLkhHx4uEG7eg0aeG6SABXVDRBmLUErsvgBWx2imosTtWo
+	v4x8IPk2lzYSQxeOWcADcHBHd49SRAfuGbUnyk8MACxGlLThYxuzstUHUqRjZF48oRi/jk
+	OQjRLsHHQGp3AJ+RvPb0ssyq0P93lhdsqwLfLC1HTYg6a4qemmrnu4qx07rtKhe6Ot+WMy
+	fcLD4N0FjXAt5NIlMpFzb50Rj7vnLTJBMVGnZgMEpYa4g9vgitjcrMUl25dAJQ==
 From: Nicolai Buchwitz <nb@tipi-net.de>
 To: netdev@vger.kernel.org
 Cc: Phil Elwell <phil@raspberrypi.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>
-Subject: [PATCH net-next 0/2] net: phy: microchip: add downshift support for LAN88xx
-Date: Mon, 30 Mar 2026 00:41:58 +0200
-Message-ID: <20260329224202.500229-1-nb@tipi-net.de>
+	Nicolai Buchwitz <nb@tipi-net.de>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 2/2] net: phy: microchip: enable downshift by default on LAN88xx
+Date: Mon, 30 Mar 2026 00:42:00 +0200
+Message-ID: <20260329224202.500229-3-nb@tipi-net.de>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260329224202.500229-1-nb@tipi-net.de>
+References: <20260329224202.500229-1-nb@tipi-net.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,30 +54,45 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Add standard ETHTOOL_PHY_DOWNSHIFT tunable support for the Microchip
-LAN88xx PHY, following the same pattern used by Marvell and other PHY
-drivers.
+Enable auto-downshift from 1000BASE-T to 100BASE-TX after 2 failed
+auto-negotiation attempts by default. This ensures that links with
+faulty or missing cable pairs (C and D) fall back to 100Mbps without
+requiring userspace configuration.
 
-Ethernet cables with faulty or missing pairs (specifically C and D)
-can successfully auto-negotiate 1000BASE-T but fail to establish a
-stable link. The LAN88xx PHY supports automatic downshift to
-100BASE-TX after a configurable number of failed attempts (2-5).
+Users can override or disable downshift at runtime:
 
-Patch 1 adds the get/set tunable implementation.
-Patch 2 enables downshift by default with a count of 2.
+  ethtool --set-phy-tunable eth0 downshift off
 
-Based on an earlier downstream implementation by Phil Elwell.
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+---
+ drivers/net/phy/microchip.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-Tested on Raspberry Pi 3B+ (LAN7515/LAN88xx).
-
-Nicolai Buchwitz (2):
-  net: phy: microchip: add downshift tunable support for LAN88xx
-  net: phy: microchip: enable downshift by default on LAN88xx
-
- drivers/net/phy/microchip.c  | 96 +++++++++++++++++++++++++++++++++++-
- include/linux/microchipphy.h |  9 ++++
- 2 files changed, 104 insertions(+), 1 deletion(-)
-
+diff --git a/drivers/net/phy/microchip.c b/drivers/net/phy/microchip.c
+index a044be1ade79..3455fe713088 100644
+--- a/drivers/net/phy/microchip.c
++++ b/drivers/net/phy/microchip.c
+@@ -371,7 +371,7 @@ static void lan88xx_set_mdix(struct phy_device *phydev)
+ 
+ static int lan88xx_config_init(struct phy_device *phydev)
+ {
+-	int val;
++	int val, err;
+ 
+ 	/*Zerodetect delay enable */
+ 	val = phy_read_mmd(phydev, MDIO_MMD_PCS,
+@@ -384,6 +384,11 @@ static int lan88xx_config_init(struct phy_device *phydev)
+ 	/* Config DSP registers */
+ 	lan88xx_config_TR_regs(phydev);
+ 
++	/* Enable downshift after 2 failed attempts by default */
++	err = lan88xx_set_downshift(phydev, 2);
++	if (err < 0)
++		return err;
++
+ 	return 0;
+ }
+ 
 -- 
 2.51.0
 
