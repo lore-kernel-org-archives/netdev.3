@@ -1,52 +1,67 @@
-Received: from srv4.3e8.eu (srv4.3e8.eu [193.25.101.238])
+Received: from mout-y-209.mailbox.org (mout-y-209.mailbox.org [91.198.250.237])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA6B219EB;
-	Sun, 29 Mar 2026 19:17:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.25.101.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2B42C11FE;
+	Sun, 29 Mar 2026 19:19:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.198.250.237
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774811832; cv=none; b=ZmJ0Lm2+W44c3tavfCNcM83wiubJnI9GW8oUevmTRj+naY1hWczqrFRGvnGH5Jg16FDJde+HuLW7tbONoHgDYwWuGCkr/XlmSTxGkfMkpRUH7t5DE0gsLl1rhNN7tqXi0FWjCtv7UjrRwlYgUPSPkZTACZJ0bWXWev3CQ8CevjA=
+	t=1774811987; cv=none; b=emEwK9z/QAJno3MicI8jrWdLcR/gvpMbAQF8sKV08aK14FhJFCwAoqE9ZyMkb9sv4X2iG/EOQIuYb2HKLe5+jml+vH/paMRzxtZIF2Jw8KnqfEFEbHkU/U8bTZS0+9gnwMM4oQ4N2kcYS/IsGOtukj/WFxSDdQ5Vn/EjNlFkyYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774811832; c=relaxed/simple;
-	bh=iDguSZeDDg3K/rUzPfSTz34uIIU6lSSUQBvG2SUCra8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=otcTwPP3t4BTd0gK0SI/qszbIdRbgESmRndF7/QD300q0tUnSq0TDk4XWcgDMdXixMs2/EIsC6CADNqKDt+hYoZPtldh49O2b2YxKiN7bQI3813xPZjzw6WzARtseFkaKCaVLHGGyhDOQyavd9J4d1l9SPpTw0y4K5hAEd7t/jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=3e8.eu; spf=pass smtp.mailfrom=3e8.eu; dkim=pass (2048-bit key) header.d=3e8.eu header.i=@3e8.eu header.b=Ucz1g4is; arc=none smtp.client-ip=193.25.101.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=3e8.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=3e8.eu
+	s=arc-20240116; t=1774811987; c=relaxed/simple;
+	bh=zFBeQYVNC8x00m5+sFnrPZHbxYdH+e/c8dDnAvyzjjI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bvOaLSUc+JbMm8fnQSqJvDc/rVQRM5U4X745YEAiG+GXn90opBcf842AKo0XeygjeewZ83fGKQzG0RYyKNu36vxVqIzfwx6eDigq8vShaHp00HQMBoC7hix9nOChFepCmaatK11qxm805vqeqKdFrs3CWoCe43YkH8Yg9mexLiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=Yzqi9vRd; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=XKxdYa0f; arc=none smtp.client-ip=91.198.250.237
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=3e8.eu header.i=@3e8.eu header.b="Ucz1g4is"
-Received: from jan-pc (p200300ed471586a0ca7f531ffd8aba41.dip0.t-ipconnect.de [IPv6:2003:ed:4715:86a0:ca7f:531f:fd8a:ba41])
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="Yzqi9vRd";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="XKxdYa0f"
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by srv4.3e8.eu (Postfix) with ESMTPSA id C34B640242;
-	Sun, 29 Mar 2026 21:15:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=3e8.eu; s=mail20211217;
-	t=1774811753;
+	by mout-y-209.mailbox.org (Postfix) with ESMTPS id 4fkPMf5JcXzB13n;
+	Sun, 29 Mar 2026 21:19:42 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1774811982;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=urO0gciKGpIOPjd+7D68lJt9wPp29NDycNeCkBLbJcw=;
-	b=Ucz1g4is2wHhaROEeucQ9UqJv6ZW1fjHv071uZfmwHs79ew/r4UqQAkUxwUf417rOv+yY8
-	NXBxwqirNN7RnvQlm/aZaaUyCW8SwGCsAiyoElArIuHRQ1X+BV9Derztoqt7vHg3mSm0DW
-	7al0RblMoofcdMfvreJPs7S6xN2xdjBDgPPsiG2o72EIYTP8Esre50KvHaXA3PbCOj+VfM
-	W46YPAWR0O7tHZr5mAgCZWqABUrWyqMo1qF/M8rG8cUhViY0PeEq/xgYQnUISQja78CeFj
-	JA7kkAurCzGkb+TXqgqa4GewB106z9HrvXyTZHLRgIpTRkJnVKWfn0RZnb8yEA==
-From: Jan Hoffmann <jan@3e8.eu>
-To: Russell King <linux@armlinux.org.uk>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zFBeQYVNC8x00m5+sFnrPZHbxYdH+e/c8dDnAvyzjjI=;
+	b=Yzqi9vRdr3SzSz/PJxm9wPPE7JRSgQ/ZYEkbz/LeBREPvgbdEC7UFd9NxbEugUsljn4fYL
+	pOj6qkIAospxyMfvRo6kQNjdIUd4ftfSDEFVn+VUgCHqCtHS81zRAljYkf48SCC5PYgsmS
+	/ocNsBuAaZDzezDe7PppuXMBZJ252Hri5QoR8xz0SNVP9VmylqFEWC4bVFFHPob1ygkmJ9
+	bkX/SgvP5E7Q5DXRzlBlPAA2iEgulVwZ5oy6fZ95d2pZwfYmFuvCz/gavIzO7P/j6b1vby
+	O18mkLocKA3cGulov6qgxyl78VJlMVLmuG5y1OQbHoE8hXv75138BdZAGF+nEg==
+From: Mashiro Chen <mashiro.chen@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1774811981;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zFBeQYVNC8x00m5+sFnrPZHbxYdH+e/c8dDnAvyzjjI=;
+	b=XKxdYa0fOj9oVb2kHeHX50gd/ZweDUg0Yk2mZz3rDFqWbpC828eQRWM+tMvtHNJQgdnw2+
+	vV+HFhd5dzOumP1fIuRY/oVwb9Wnk62njaNYzf0IzsFhpvvennzcF/6NyDJ6Y+pKAH9ZIL
+	9BnJzy/ENYm7xAhpH0OLYRqk89qTaspYi4ML8dvIUJRAzzMT2sWL/p4XB9xb/RnT1HYm+Z
+	8g99vA2YkY53PTgUi39lnXtlpfVk5PlxojbK8JhxEoWYFbU4VaIv1rRC48dlb63aAPKfCo
+	Ptlat7eWIGDa12/0ZciZESoKzIfAfGld7SN7V+PVTCbgKQEXk++6sovSSaf9tg==
+To: kuba@kernel.org
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	linux-hams@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Jan Hoffmann <jan@3e8.eu>
-Subject: [PATCH net-next v2] net: sfp: add quirk for ZOERAX SFP-2.5G-T
-Date: Sun, 29 Mar 2026 21:11:11 +0200
-Message-ID: <20260329191304.720160-1-jan@3e8.eu>
-X-Mailer: git-send-email 2.53.0
+	mashiro.chen@mailbox.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com
+Subject: Re: [PATCH 0/5] hamradio: mkiss: modernize and clean up mkiss driver
+Date: Mon, 30 Mar 2026 03:19:23 +0800
+Message-ID: <20260329191923.821284-1-mashiro.chen@mailbox.org>
+In-Reply-To: <20260329103508.4905cc09@kernel.org>
+References: <20260329103508.4905cc09@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,51 +69,22 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-MBO-RS-META: 18kjeg8guodyyrajkz9fgufneradckas
+X-MBO-RS-ID: cf6a7534abaa90038c8
 
-This is a 2.5G copper module which appears to be based on a Motorcomm
-YT8821 PHY. There doesn't seem to be a usable way to to access the PHY
-(I2C address 0x56 provides only read-only C22 access, and Rollball is
-also not working).
+Hi Jakub,
 
-The module does not report the correct extended compliance code for
-2.5GBase-T, and instead claims to support SONET OC-48 and Fibre Channel:
+Thank you for the quick review and for pointing out the Netdev policy
+regarding clean-up patches. I apologize for the noise; I was not fully
+aware of the specific guidelines for the Netdev subsystem in this regard.
 
-  Identifier          : 0x03 (SFP)
-  Extended identifier : 0x04 (GBIC/SFP defined by 2-wire interface ID)
-  Connector           : 0x07 (LC)
-  Transceiver codes   : 0x00 0x01 0x00 0x00 0x40 0x40 0x04 0x00 0x00
-  Transceiver type    : FC: Multimode, 50um (M5)
-  Encoding            : 0x05 (SONET Scrambled)
-  BR Nominal          : 2500MBd
+I will respect these guidelines and focus my further contributions on
+functional improvements or bug fixes.
 
-Despite this, the kernel still enables the correct 2500Base-X interface
-mode. However, for the module to actually work, it is also necessary to
-disable inband auto-negotiation.
+Regarding the current series, I understand them do not meet the Netdev
+Standard for clean-up patches and I will drop these submissions.
 
-Enable the existing "sfp_quirk_oem_2_5g" for this module, which handles
-that and also sets the bit for 2500Base-T link mode.
+Thank you again for your time and guidance.
 
-Signed-off-by: Jan Hoffmann <jan@3e8.eu>
----
-v2:
- - use "sfp_quirk_oem_2_5g" instead of "sfp_quirk_disable_autoneg"
-
- drivers/net/phy/sfp.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index 5db841377199..0a455a2daccb 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -567,6 +567,8 @@ static const struct sfp_quirk sfp_quirks[] = {
- 	SFP_QUIRK_F("Turris", "RTSFP-2.5G", sfp_fixup_rollball),
- 	SFP_QUIRK_F("Turris", "RTSFP-10", sfp_fixup_rollball),
- 	SFP_QUIRK_F("Turris", "RTSFP-10G", sfp_fixup_rollball),
-+
-+	SFP_QUIRK_S("ZOERAX", "SFP-2.5G-T", sfp_quirk_oem_2_5g),
- };
- 
- static size_t sfp_strlen(const char *str, size_t maxlen)
--- 
-2.53.0
-
+Best Regards,
+Mashiro Chen
