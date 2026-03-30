@@ -1,187 +1,213 @@
-Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704C63C6A30;
-	Mon, 30 Mar 2026 11:40:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD1C3C8708;
+	Mon, 30 Mar 2026 11:44:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774870833; cv=none; b=RUFg4XSZKn1NhzYtSZuKegfvJAStztgCG/sFtmna42hzIOje67b0fNUXy/G8RHb3Gt4uY5C3UZhBRYQGsVNM2fFOw9Igmu9Y+IdkPs6xjHqEjs7vFv3yKWCtDhOxnOj10ZiHvzMBFhbVE/chKLGejceJFfokRxFDc94Zj2CGooI=
+	t=1774871091; cv=none; b=GKWWXVHG5OrWaZwDnpk3yC0h5deRQShucOyNbz2Q77p5zsBpjo6EDF2F9KXP0bV5ipN7OCFTvRCWwkQFv6EBvhzAz9CJ/D/K6UC42dYKa/DPS8C/bhL10X5OuSrRzEsRlCnUClO261TWzAyLz36pu8Io+VJvyo4FsM0n5Mue5BE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774870833; c=relaxed/simple;
-	bh=h3B146AXDaMG8OjaKqu6sgqpCUkBTNvoDdB7NLG6G8U=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mkhYEHp2kx+jv+lZmv7oBsMkRCsXMrLAsx6ZepFVZfqLVvedjR55vH1sH9KgvJls1JHKWxfenMm/FjzkUAe+BYj7ZrwlReh10x1NU3ENcPf0Nu5Z/NPiYKETPeWtOjCjudiX+Kh5oSRgsxPH55nZCOVqPhZW7lYeBOCAbbHeMxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=XarzyNs+; arc=none smtp.client-ip=113.46.200.225
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1774871091; c=relaxed/simple;
+	bh=+vNFMjBw+BlWXkXKp5/4ZPOOzvowJH1kwHTM8x5kX+g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KMZ8Hdz1n094v/kwCSXESOAKJkrCFr22REzA+YQ6R0z49z0GCTOMsFDwMXHVhsJhJiKPYlrMXWwALIb+tQucaWjvXuiSfV8tVCXnWglsPFb8dPw0jhkmOWlJojdKKTXzWRcxbUg4QvluPD8o2ITKYGkQGP2H28reuOhxFnFFyCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=YYmjw9F/; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="XarzyNs+"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=yKZmHt33n8RZwizYvWZr4IymRKCPNMxFJhuhxnffLpg=;
-	b=XarzyNs+KkS7jMvu7guwX1kJUWxVXv5DkvP1d/5fWJdlqzMITX+/X/tjDVEFyiWRBtCbNyV3S
-	DeEZw6R9t4OJ856xlUxZnAmCcAjA6xInaHf69Q+oJvkuZIgau+BdFj66T9Vy6dVCMGUTyy1Rz3N
-	IiFbzUgKqqTHaN8pTEAZwyU=
-Received: from mail.maildlp.com (unknown [172.19.163.214])
-	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4fkq0D2hnfz1K99G;
-	Mon, 30 Mar 2026 19:34:20 +0800 (CST)
-Received: from kwepemj500018.china.huawei.com (unknown [7.202.194.48])
-	by mail.maildlp.com (Postfix) with ESMTPS id BA3A140561;
-	Mon, 30 Mar 2026 19:40:26 +0800 (CST)
-Received: from huawei.com (10.50.85.128) by kwepemj500018.china.huawei.com
- (7.202.194.48) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 30 Mar
- 2026 19:40:26 +0800
-From: Li Xiasong <lixiasong1@huawei.com>
-To: Matthieu Baerts <matttbe@kernel.org>, Mat Martineau
-	<martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>
-CC: <netdev@vger.kernel.org>, <mptcp@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <yuehaibing@huawei.com>,
-	<zhangchangzhong@huawei.com>, <weiyongjun1@huawei.com>
-Subject: [PATCH net v4] mptcp: fix soft lockup in mptcp_recvmsg()
-Date: Mon, 30 Mar 2026 20:03:35 +0800
-Message-ID: <20260330120335.659027-1-lixiasong1@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="YYmjw9F/"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62TFkTaS3661208;
+	Mon, 30 Mar 2026 11:44:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=wCNCpVtkWBSkchpYjTadWOMtt6ARsf5cI42FipovX
+	pQ=; b=YYmjw9F/vGbgXci4qOucFSAZbrSp2UiOiMKh4As7EjqIGlByhQyCsvIfu
+	4E/9GdEAJ9RaHyjMy+UKFxivtDheS4ZyD0u30diZt1cLXXdCAftOZFrmw/ISGYpx
+	EsUuN4QKQfnhKA/BkL9WtY1+jrXMYzckJnyLDc6tnHwOdu03VkFp/PLc1DPFoo3F
+	bnjwVeJ/hJOwsjOvNTO0MnlEWAx0aMUWIcRZ9E+gKaWZeIEmimQVnmrOKlz0Zh+g
+	edbzijNoERBWXKhy4jEmJVFgvz0oPb3a9gYe5WUDCLSWu/rao4eHTaR2uOKKmbDd
+	euEoiyueWeRuNqc6PQaCqPN3ps3dA==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d64dgeepy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Mar 2026 11:44:41 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62U9UFoO005977;
+	Mon, 30 Mar 2026 11:44:40 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4d6spxvryx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Mar 2026 11:44:40 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62UBia4I17105218
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 30 Mar 2026 11:44:37 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CF35920043;
+	Mon, 30 Mar 2026 11:44:36 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8E16920040;
+	Mon, 30 Mar 2026 11:44:36 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Mon, 30 Mar 2026 11:44:36 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55271)
+	id 6CA64E083A; Mon, 30 Mar 2026 13:44:36 +0200 (CEST)
+From: Alexandra Winter <wintera@linux.ibm.com>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Thorsten Winkler <twinkler@linux.ibm.com>, netdev@vger.kernel.org,
+        linux-s390@vger.kernel.org, Aswin Karuvally <aswin@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, Simon Horman <horms@kernel.org>,
+        Nagamani PV <nagamani@linux.ibm.com>
+Subject: [PATCH net-next] net/iucv: Add missing kernel-doc return value descriptions
+Date: Mon, 30 Mar 2026 13:44:36 +0200
+Message-ID: <20260330114436.2010108-1-wintera@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemj500018.china.huawei.com (7.202.194.48)
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzMwMDA4OSBTYWx0ZWRfX9/yYC1bEQD1t
+ QzCCLfRIay3Uy47HFNRdwcXjyU1eNl+IkizLV9f7Dd0ccDEDSfPmJlwW6SuGFLib68H2bv0pYF3
+ V4xmEFtY23zSEOA3I3RFgzYSATdRAA0XwFetuWso6YARzTT/Kz3G52uRinjdIYELg6ydlDZqIQU
+ tIxTcOQ9PR2dGydsXWS2qtLh6M8PA2dr8qM+lR9f7CMiW9w2W+o8SELpcmvRJgu8g+2OHEwWtsN
+ D0W+pRI2CUxRpfpU7+hpgpOL92JhAQAo3YPg/+cqRaU3aYeNOYd3IZDIKZYfBet+hF3NUeyLOwf
+ hbfaVvi/9JeBXTnoFm0PwfMCeiYvxS4tiXVcg9gCElP5zvoa3RK3pAzgZGN17MvlNpiGLks/omv
+ hc8w73eQ4EHnL6+WIQkxcaDEosOl0CKl+WU+8SabRzIyI2dF1g7vuy1VgnwXcTNSBgDAA6/R6wG
+ dqRMzbUTBKClscfDnHg==
+X-Authority-Analysis: v=2.4 cv=QKZlhwLL c=1 sm=1 tr=0 ts=69ca6229 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=hiOhG4pdgJk7uAqAlJ4A:9
+X-Proofpoint-GUID: zAH9kKw55int6JhHooHDSWnU2COFV92V
+X-Proofpoint-ORIG-GUID: I-z35pEHXLzFInofZempiY0Wn7N1vbMz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-29_05,2026-03-28_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 phishscore=0 adultscore=0 impostorscore=0 clxscore=1015
+ spamscore=0 bulkscore=0 priorityscore=1501 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603300089
 
-syzbot reported a soft lockup in mptcp_recvmsg() [0].
+From: Nagamani PV <nagamani@linux.ibm.com>
 
-When receiving data with MSG_PEEK | MSG_WAITALL flags, the skb is not
-removed from the sk_receive_queue. This causes sk_wait_data() to always
-find available data and never perform actual waiting, leading to a soft
-lockup.
+Add missing return value descriptions for several functions in
+net/iucv/af_iucv.c and net/iucv/iucv.c to address kernel-doc warnings.
 
-Fix this by adding a 'last' parameter to track the last peeked skb.
-This allows sk_wait_data() to make informed waiting decisions and prevent
-infinite loops when MSG_PEEK is used.
+Warnings detected with:
+scripts/kernel-doc -none -Wall net/iucv/*
+Warning: net/iucv/af_iucv.c:131 No description found for return value of =
+'iucv_msg_length'
+Warning: net/iucv/af_iucv.c:150 No description found for return value of =
+'iucv_sock_in_state'
+...
 
-[0]:
-watchdog: BUG: soft lockup - CPU#2 stuck for 156s! [server:1963]
-Modules linked in:
-CPU: 2 UID: 0 PID: 1963 Comm: server Not tainted 6.19.0-rc8 #61 PREEMPT(none)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-RIP: 0010:sk_wait_data+0x15/0x190
-Code: 80 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 41 56 41 55 41 54 49 89 f4 55 48 89 d5 53 48 89 fb <48> 83 ec 30 65 48 8b 05 17 a4 6b 01 48 89 44 24 28 31 c0 65 48 8b
-RSP: 0018:ffffc90000603ca0 EFLAGS: 00000246
-RAX: 0000000000000000 RBX: ffff888102bf0800 RCX: 0000000000000001
-RDX: 0000000000000000 RSI: ffffc90000603d18 RDI: ffff888102bf0800
-RBP: 0000000000000000 R08: 0000000000000002 R09: 0000000000000101
-R10: 0000000000000000 R11: 0000000000000075 R12: ffffc90000603d18
-R13: ffff888102bf0800 R14: ffff888102bf0800 R15: 0000000000000000
-FS:  00007f6e38b8c4c0(0000) GS:ffff8881b877e000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055aa7bff1680 CR3: 0000000105cbe000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- mptcp_recvmsg+0x547/0x8c0 net/mptcp/protocol.c:2329
- inet_recvmsg+0x11f/0x130 net/ipv4/af_inet.c:891
- sock_recvmsg+0x94/0xc0 net/socket.c:1100
- __sys_recvfrom+0xb2/0x130 net/socket.c:2256
- __x64_sys_recvfrom+0x1f/0x30 net/socket.c:2267
- do_syscall_64+0x59/0x2d0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x76/0x7e arch/x86/entry/entry_64.S:131
-RIP: 0033:0x7f6e386a4a1d
-Code: 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 8d 05 f1 de 2c 00 41 89 ca 8b 00 85 c0 75 20 45 31 c9 45 31 c0 b8 2d 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 6b f3 c3 66 0f 1f 84 00 00 00 00 00 41 56 41
-RSP: 002b:00007ffc3c4bb078 EFLAGS: 00000246 ORIG_RAX: 000000000000002d
-RAX: ffffffffffffffda RBX: 000000000000861e RCX: 00007f6e386a4a1d
-RDX: 00000000000003ff RSI: 00007ffc3c4bb150 RDI: 0000000000000004
-RBP: 00007ffc3c4bb570 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000103 R11: 0000000000000246 R12: 00005605dbc00be0
-R13: 00007ffc3c4bb650 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
+No functional change.
 
-Fixes: 8e04ce45a8db ("mptcp: fix MSG_PEEK stream corruption")
-Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
+Reviewed-by: Aswin Karuvally <aswin@linux.ibm.com>
+Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+Signed-off-by: Nagamani PV <nagamani@linux.ibm.com>
+Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
 ---
+ net/iucv/af_iucv.c | 12 +++++++-----
+ net/iucv/iucv.c    |  6 ++++++
+ 2 files changed, 13 insertions(+), 5 deletions(-)
 
-v3->v4:
-Thanks to Matthieu Baerts and sashiko for the review.
-- __mptcp_recvmsg_mskq: update 'last' when skipping already peeked skbs.
-- Link to v3: https://lore.kernel.org/netdev/20260327075544.3622851-1-lixiasong1@huawei.com
-
-v2->v3:
-Thanks to Matthieu Baerts for the review.
-- Initialize last to NULL.
-- Only update 'last' when MSG_PEEK is set, avoiding dangling pointer.
-- Link to v2: https://lore.kernel.org/netdev/20260324085131.4187473-1-lixiasong1@huawei.com
-
-v1->v2:
-Thanks to Matthieu Baerts for the suggestion and review.
-- Move 'last' variable definition into the while loop in mptcp_recvmsg() to
-  narrow its scope.
-- In __mptcp_recvmsg_mskq(), assign 'last' right after 'copied' is updated,
-  regardless of MSG_PEEK flag.
-- Link to v1: https://lore.kernel.org/netdev/20260302052651.1466983-1-lixiasong1@huawei.com
-
----
- net/mptcp/protocol.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
-
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index cf1852b99963..65c3bb8016f4 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2006,7 +2006,7 @@ static void mptcp_eat_recv_skb(struct sock *sk, struct sk_buff *skb)
- static int __mptcp_recvmsg_mskq(struct sock *sk, struct msghdr *msg,
- 				size_t len, int flags, int copied_total,
- 				struct scm_timestamping_internal *tss,
--				int *cmsg_flags)
-+				int *cmsg_flags, struct sk_buff **last)
+diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
+index 6554d2cffc19..72dfccd4e3d5 100644
+--- a/net/iucv/af_iucv.c
++++ b/net/iucv/af_iucv.c
+@@ -127,6 +127,8 @@ static inline void low_nmcpy(unsigned char *dst, char=
+ *src)
+  * if the socket data len is > 7, the function returns 8.
+  *
+  * Use this function to allocate socket buffers to store iucv message da=
+ta.
++ *
++ * Returns: Length of the IUCV message.
+  */
+ static inline size_t iucv_msg_length(struct iucv_message *msg)
  {
- 	struct mptcp_sock *msk = mptcp_sk(sk);
- 	struct sk_buff *skb, *tmp;
-@@ -2023,6 +2023,7 @@ static int __mptcp_recvmsg_mskq(struct sock *sk, struct msghdr *msg,
- 			/* skip already peeked skbs */
- 			if (total_data_len + data_len <= copied_total) {
- 				total_data_len += data_len;
-+				*last = skb;
- 				continue;
- 			}
- 
-@@ -2058,6 +2059,8 @@ static int __mptcp_recvmsg_mskq(struct sock *sk, struct msghdr *msg,
- 			}
- 
- 			mptcp_eat_recv_skb(sk, skb);
-+		} else {
-+			*last = skb;
- 		}
- 
- 		if (copied >= len)
-@@ -2288,10 +2291,12 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 		cmsg_flags = MPTCP_CMSG_INQ;
- 
- 	while (copied < len) {
-+		struct sk_buff *last = NULL;
- 		int err, bytes_read;
- 
- 		bytes_read = __mptcp_recvmsg_mskq(sk, msg, len - copied, flags,
--						  copied, &tss, &cmsg_flags);
-+						  copied, &tss, &cmsg_flags,
-+						  &last);
- 		if (unlikely(bytes_read < 0)) {
- 			if (!copied)
- 				copied = bytes_read;
-@@ -2343,7 +2348,7 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 
- 		pr_debug("block timeout %ld\n", timeo);
- 		mptcp_cleanup_rbuf(msk, copied);
--		err = sk_wait_data(sk, &timeo, NULL);
-+		err = sk_wait_data(sk, &timeo, last);
- 		if (err < 0) {
- 			err = copied ? : err;
- 			goto out_err;
--- 
-2.34.1
+@@ -145,7 +147,7 @@ static inline size_t iucv_msg_length(struct iucv_mess=
+age *msg)
+  * @state:	first iucv sk state
+  * @state2:	second iucv sk state
+  *
+- * Returns true if the socket in either in the first or second state.
++ * Returns: true if the socket is either in the first or second state.
+  */
+ static int iucv_sock_in_state(struct sock *sk, int state, int state2)
+ {
+@@ -156,9 +158,9 @@ static int iucv_sock_in_state(struct sock *sk, int st=
+ate, int state2)
+  * iucv_below_msglim() - function to check if messages can be sent
+  * @sk:		sock structure
+  *
+- * Returns true if the send queue length is lower than the message limit=
+.
+- * Always returns true if the socket is not connected (no iucv path for
+- * checking the message limit).
++ * Returns: true, if either the socket is not connected (no iucv path fo=
+r
++ * checking the message limit) or if the send queue length is lower
++ * than the message limit.
+  */
+ static inline int iucv_below_msglim(struct sock *sk)
+ {
+@@ -883,7 +885,7 @@ static int iucv_sock_getname(struct socket *sock, str=
+uct sockaddr *addr,
+  * list and the socket data len at index 7 (last byte).
+  * See also iucv_msg_length().
+  *
+- * Returns the error code from the iucv_message_send() call.
++ * Returns: the return code from the iucv_message_send() call.
+  */
+ static int iucv_send_iprm(struct iucv_path *path, struct iucv_message *m=
+sg,
+ 			  struct sk_buff *skb)
+diff --git a/net/iucv/iucv.c b/net/iucv/iucv.c
+index 6641c49b09ac..e03bc4a74f67 100644
+--- a/net/iucv/iucv.c
++++ b/net/iucv/iucv.c
+@@ -687,6 +687,8 @@ static int iucv_cpu_down_prep(unsigned int cpu)
+  *
+  * @pathid: path identification number.
+  * @userdata: 16-bytes of user data.
++ *
++ * Returns: 0 on success, the result of the CP b2f0 IUCV call.
+  */
+ static int iucv_sever_pathid(u16 pathid, u8 *userdata)
+ {
+@@ -1092,6 +1094,8 @@ EXPORT_SYMBOL(iucv_message_purge);
+  *
+  * Internal function used by iucv_message_receive and __iucv_message_rec=
+eive
+  * to receive RMDATA data stored in struct iucv_message.
++ *
++ * Returns: 0
+  */
+ static int iucv_message_receive_iprmdata(struct iucv_path *path,
+ 					 struct iucv_message *msg,
+@@ -1852,6 +1856,8 @@ static enum cpuhp_state iucv_online;
+=20
+ /**
+  * iucv_init - Allocates and initializes various data structures.
++ *
++ * Returns: 0 on success, return code on failure.
+  */
+ static int __init iucv_init(void)
+ {
+--=20
+2.51.0
 
