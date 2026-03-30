@@ -1,62 +1,62 @@
-Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3013D3E121C
-	for <netdev@vger.kernel.org>; Mon, 30 Mar 2026 22:31:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0EB93E4C9E
+	for <netdev@vger.kernel.org>; Mon, 30 Mar 2026 22:31:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774909925; cv=none; b=WtAyjd93/KyluG+JJnnUJn7XgGHkxUAvV1lW+T0/Q8yJ7yBhti0elTbbfFs6aORjeQrjf3nAHRr6BO/OIziKMEYoq2j9bVfPR9dcTjMa0kyGWcdA+Hg2eKPFnONW5eIOiOwtEVYnr55nnVP0vJgydUBEacUhq/YpqnVV4jifmsM=
+	t=1774909930; cv=none; b=NsHmrg8qgLRmRbSXJ9Wnty4xi/MSRx80K1fczZ+LeEaZJ30vA5umN2UH8xVyv8UtFVHfeb5HIKglLVqI6kBMM4zENHHA6DmcFpp51054T/xzz1WQykSIe4nVojj9nR35yRJmlWyaLSLLI5hrVDx5vj0HvSiJXgfMcmuml1gFLC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774909925; c=relaxed/simple;
-	bh=nvL4F1EMyCcTXJ5/JDAbNnx0SaNT4GYo0GAWARCUGnQ=;
+	s=arc-20240116; t=1774909930; c=relaxed/simple;
+	bh=0eEQnYi/h1O2NSFaZ3m14i2tLBWZDOfhFhyM6V7c3Ws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gl5/+PuMP/tm+I4yx3rd1i9dtNRIem+FRrZ9Zk0AAeEuiJmYOD+/+OHiJg3rzUYy/3qariZ0VtYJIMKCwzPEfzNNn17W8dN79enCQhPS0qSYpDVDiP8ck6u2Tp8m27vOSEWkhajUcr3gaLIdeibjEY3MPhNC2C6n1/5S0Eho/lI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CgyEIfDH; arc=none smtp.client-ip=74.125.224.43
+	 MIME-Version; b=KtKzB16CnBMHBhzsPxnsMcC2vPYlZc7p8g+91JFaQhwBQznTszNy6pC2xqI66Yi7y26hm7U2RwbzyIJZRqVV3jM2yXZ+N/Un1rsZQT0PorObnDtguIjw8JwtE/XrOQQpQZzvwn1UjwU90OGaVzXPMnFn8vJdfSCLbEfP2kYxA3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fSuYInUp; arc=none smtp.client-ip=74.125.224.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CgyEIfDH"
-Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-64ee072d105so813645d50.3
-        for <netdev@vger.kernel.org>; Mon, 30 Mar 2026 15:31:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fSuYInUp"
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-64ee072d105so813651d50.3
+        for <netdev@vger.kernel.org>; Mon, 30 Mar 2026 15:31:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774909911; x=1775514711; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1774909914; x=1775514714; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Ia2pXaacJxqVW8U65rm9c9otRG8MxkuOMZodgHKgwjE=;
-        b=CgyEIfDH/7WT67YGjjAXZHePo3D3kpBhVi1jqFrgoycmJnysSOBn+VlLNfI8DtBjHl
-         fxAcwl3i5o2TcqaCo82ZmVDy/fEI9BqdDMoI8i+P7cZs8/BrKe+Bc8/1jG1wGuRGNs83
-         kJptj2zuoEk7hSwQ2sK3ue/mrwyuOFQNEAsLHVxveZMS6ftoZOovgUEGYVvbZFFT1pqL
-         W3ZB9Va8te1Zkrf1AqD1A3l7kUtp8mg8qDHT4NTMesfbj7d/wdK5kYMfHsyk6ZO+HXMb
-         eyHsEAj9mv90gj58zBBrUd8S74cQbFGTsygM2jZ5iXNfLjnvaXi8yjV5s5yiPXU62Pq6
-         T6Tg==
+        bh=MkkE9RKgYZFgGjfzyRVXtjOFGEaEUsgQCKLDm14Lefs=;
+        b=fSuYInUpMN+h+gkU0m1uX/ZtTBEuqr7iW3xpTbgadKiBr69Gy/CPDscdIv+du9I7S/
+         bce8PixDNztO6CaN+IYe/bEUtPTBORbyhc4v+ssvSIs6yZxE/lGtEf5DohrJ5R2ytYWZ
+         ci/GxQaR4XDm2ZTqIfZL7deWdu5kak4OmtBlx9+Jq2ZShqm7UqJfMvmZCNpDBeeoKYDA
+         jTcI0PwTMJU4CB0rEGRi8725bcPQDPgxFITXPZbdA8xzawDEquPD6WsD94Cjs3wlrJVC
+         DqK7Y5YwSkd7+X3rCfCWSzDCZPdICywGjJkAhx4ByNcksSIOT2nExepD6SozKuuHzbyI
+         X+Kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774909911; x=1775514711;
+        d=1e100.net; s=20251104; t=1774909914; x=1775514714;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Ia2pXaacJxqVW8U65rm9c9otRG8MxkuOMZodgHKgwjE=;
-        b=AUHO1vR2s9bX4oPX+ePIpj1W1lD2IIPKQSXHBkqMVPUnmdctWZWw8aMM3GOIu55E8S
-         jQDktHrpVRsrQb/lIrXwywxXd3rxob+h0dghoGUvogOZRfXn8whjgMXPE9q6p6AgYa52
-         NJWdA/xqEHCtYxL1+5VKBDTfwoAekB0t/i/NwX/9R2dYwpowaXYLq/iZdLkvdLPvZy4w
-         JGVHs684RRjcPbkxBcD5ZirTQnnlLFQDR02NEQRjY+6A8ENKAMfZzA9ft00Sf+/yYDnY
-         vjPnfynbytfM/y4nxmSlS1JHwIRYAPprBJxxDUlzPQbx7ynPgvAq4H5uoYIasJbuKc63
-         ODng==
-X-Gm-Message-State: AOJu0YxrKpRg18bOigL8BQfw/v88RCr68b0H21yy7lTBhJfmIdRdz7fi
-	EhDauvkrsLxmwZLJo7B7pYQYgdLS5wqwxQNKxu7qMhJ/ArMXkis99bsouayYw/Ve
-X-Gm-Gg: ATEYQzzyCkHsuRbNHZdYABe5SL3LAastZoTgB5Zls31ndZ/XQryj2g0BsXUzEHjUjDu
-	GSJ7QNDBoX0VddMadrjn4ge9ycLo68+8gFH3im5/Ft60MIOE+pbex/hbxO3Bl+win7ElBkgux4N
-	+QIbuSWVv+TkuuwV3KvyJ4ur927To4uJ+Y2MQtlB/M8djtGw35Jht0HLBS33wF2pQIBbsk8c+F2
-	wijNe5CmU6gjmChXq62MDnTfXTgVnjMzBDz3k6Kz0eN+xRCXTFcU43InAgpVX9Us7ctRlbjz76x
-	oHrupkmDEayZhNO9260K2Iq0+rj0RVrPhjJQ1gMMZzYsc1B2C886i1zDOCdmg91xwbEZIQpLhyt
-	CNAIZm0pJYwQBHdsu5IGaRbLsfQFyuu3UQI6AsRiyyIc51e3nirdIk3x/YYKhj3pJrOfBJ10yn7
-	MwSGIGBKDiybsbUEV7utdwx9Q=
-X-Received: by 2002:a05:690c:46c7:b0:79d:4a94:2329 with SMTP id 00721157ae682-79d4a9436c4mr72869227b3.3.1774909911111;
-        Mon, 30 Mar 2026 15:31:51 -0700 (PDT)
-Received: from localhost ([2a03:2880:21ff:5::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-79cb9a8f324sm41421047b3.28.2026.03.30.15.31.50
+        bh=MkkE9RKgYZFgGjfzyRVXtjOFGEaEUsgQCKLDm14Lefs=;
+        b=Knao04ofS3aeTHgPKdqoBjw6eJbgooIR4gNq+Gmd8W+M3fG5aI81ZwyEqBNev7ea4C
+         oA1XU17kHg8A55dA2DVm7uS5RMQyRhcsE9VRJ/3EBjzq9HLehuHu4UYg7CG2NNFOqFfv
+         Gy59T5xr65YyJYsFDhVkqPPHP3+JXKTlZxqrIj7nAE+rSGe7DGtiSO7TpJOm2PPCkUD8
+         SZhcqK6641T2CkIX+iw10+aHJoy8Tm8vV6wkHmOxnIAu6rvrQO4ESSKYOmuFUB028B/P
+         EbBn4/zjDR+fa+xjDR4s5uGFJHVZ8FERsLR5vZcVd3erbRowEoprEDHZDV3ZZ0yOc1Te
+         1dzg==
+X-Gm-Message-State: AOJu0YyAOONFHxC+61GL66QQAeromQhalYpH4xrKV2zLzQwCUqnm9k+j
+	75+FI4w+wDh9Vj11jEqR9lNLk8Q7VgyHXB2U2IsH/dpOr3Zso66+3WZP6KEsNzeM
+X-Gm-Gg: ATEYQzzpbAPj0OgUSM38HWQbYaPFLcXg7hf4FDP9/R7xJVHYLmnyAjtd9140esC+VKt
+	ICfBR9fJad9u/h3bODN+/0tTY3Sx/cqg0x5theVEOGIbOuqvUzYpVe5orHm9JBChw4ooHOFGuOh
+	+4oZMdOCwKSucELU5mg/Go261VV9fVqdhyBAGR4+oE3moaLPbqzyOoPDhLuJXUSXQ4pPJqMg9OP
+	pRsArUWwhfcaFejpecduRswdFNg7Vtyld19GIQKnllMHFN/UTdp9cLdoLLOmf1D++gjoR996p1t
+	nsxRAg8oZI6Dq72Lwa+0lyjeT67exjmFd++ytx7C/TYp4fC/Y2Gp/YDRiS6+fu4Ej4h3gn3jR5b
+	ddTQKFt7ok+zBbbo+CGj9wS++X+JlpnEZ++QoVNyqf6Pz7msF7HMhW5Bh8wYQdr6Ma2vUFwWzGC
+	0xclX7sjDoZefO6xIB3x2J4hw=
+X-Received: by 2002:a05:690c:3501:b0:79c:ed68:2ece with SMTP id 00721157ae682-79ced777cd8mr77317237b3.4.1774909914053;
+        Mon, 30 Mar 2026 15:31:54 -0700 (PDT)
+Received: from localhost ([2a03:2880:21ff:1::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-79cb7135c1asm41514277b3.10.2026.03.30.15.31.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 15:31:50 -0700 (PDT)
+        Mon, 30 Mar 2026 15:31:53 -0700 (PDT)
 From: Wei Wang <weibunny.kernel@gmail.com>
 To: netdev@vger.kernel.org,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -68,9 +68,9 @@ To: netdev@vger.kernel.org,
 	Eric Dumazet <edumazet@google.com>,
 	Simon Horman <horms@kernel.org>
 Cc: Wei Wang <weibunny@fb.com>
-Subject: [PATCH v9 net-next 3/5] psp: add a new netdev event for dev unregister
-Date: Mon, 30 Mar 2026 15:31:40 -0700
-Message-ID: <20260330223143.2394706-4-weibunny.kernel@gmail.com>
+Subject: [PATCH v9 net-next 5/5] selftest/net: psp: Add test for dev-assoc/disassoc
+Date: Mon, 30 Mar 2026 15:31:42 -0700
+Message-ID: <20260330223143.2394706-6-weibunny.kernel@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260330223143.2394706-1-weibunny.kernel@gmail.com>
 References: <20260330223143.2394706-1-weibunny.kernel@gmail.com>
@@ -84,175 +84,689 @@ Content-Transfer-Encoding: 8bit
 
 From: Wei Wang <weibunny@fb.com>
 
-Add a new netdev event for dev unregister and handle the removal of this
-dev from psp->assoc_dev_list, upon the first dev-assoc operation.
+Add a new param to NetDrvContEnv to add an additional bpf redirect
+program on nk_host to redirect traffic to the psp_dev_local.
+The topology looks like this:
+  Host NS:  psp_dev_local <---> nk_host
+                |                |
+                |                | (netkit pair)
+                |                |
+  Remote NS: psp_dev_peer      Guest NS: nk_guest
+             (responder)             (PSP tests)
+
+Add following tests for dev-assoc/dev-disassoc functionality:
+1. Test the output of `./tools/net/ynl/pyynl/cli.py --spec
+Documentation/netlink/specs/psp.yaml --dump dev-get` in both default and
+the guest netns.
+2. Test the case where we associate netkit with psp_dev_local, and
+send PSP traffic from nk_guest to psp_dev_peer in 2 different netns.
+3. Test to make sure the key rotation notification is sent to the netns
+for associated dev as well
+4. Test to make sure the dev change notification is sent to the netns
+for associated dev as well
+5. Test for dev-assoc/dev-disassoc without nsid parameter.
+6. Test the deletion of nk_guest in client netns, and proper cleanup in
+the assoc-list for psp dev.
 
 Signed-off-by: Wei Wang <weibunny@fb.com>
 ---
- Documentation/netlink/specs/psp.yaml |  2 +-
- net/psp/psp-nl-gen.c                 |  2 +-
- net/psp/psp-nl-gen.h                 |  3 ++
- net/psp/psp.h                        |  1 +
- net/psp/psp_main.c                   | 70 ++++++++++++++++++++++++++++
- net/psp/psp_nl.c                     |  8 ++++
- 6 files changed, 84 insertions(+), 2 deletions(-)
+ tools/testing/selftests/drivers/net/config    |   1 +
+ .../selftests/drivers/net/lib/py/env.py       |  54 +-
+ tools/testing/selftests/drivers/net/psp.py    | 492 ++++++++++++++++--
+ 3 files changed, 513 insertions(+), 34 deletions(-)
 
-diff --git a/Documentation/netlink/specs/psp.yaml b/Documentation/netlink/specs/psp.yaml
-index 336ef19155ff..d7c1fc62de1c 100644
---- a/Documentation/netlink/specs/psp.yaml
-+++ b/Documentation/netlink/specs/psp.yaml
-@@ -320,7 +320,7 @@ operations:
-             - nsid
-         reply:
-           attributes: []
--        pre: psp-device-get-locked
-+        pre: psp-device-get-locked-dev-assoc
-         post: psp-device-unlock
-     -
-       name: dev-disassoc
-diff --git a/net/psp/psp-nl-gen.c b/net/psp/psp-nl-gen.c
-index 114299c64423..389a8480cc3d 100644
---- a/net/psp/psp-nl-gen.c
-+++ b/net/psp/psp-nl-gen.c
-@@ -135,7 +135,7 @@ static const struct genl_split_ops psp_nl_ops[] = {
- 	},
- 	{
- 		.cmd		= PSP_CMD_DEV_ASSOC,
--		.pre_doit	= psp_device_get_locked,
-+		.pre_doit	= psp_device_get_locked_dev_assoc,
- 		.doit		= psp_nl_dev_assoc_doit,
- 		.post_doit	= psp_device_unlock,
- 		.policy		= psp_dev_assoc_nl_policy,
-diff --git a/net/psp/psp-nl-gen.h b/net/psp/psp-nl-gen.h
-index 4dd0f0f23053..24d51bff997f 100644
---- a/net/psp/psp-nl-gen.h
-+++ b/net/psp/psp-nl-gen.h
-@@ -21,6 +21,9 @@ int psp_device_get_locked_admin(const struct genl_split_ops *ops,
- 				struct sk_buff *skb, struct genl_info *info);
- int psp_assoc_device_get_locked(const struct genl_split_ops *ops,
- 				struct sk_buff *skb, struct genl_info *info);
-+int psp_device_get_locked_dev_assoc(const struct genl_split_ops *ops,
-+				    struct sk_buff *skb,
-+				    struct genl_info *info);
- void
- psp_device_unlock(const struct genl_split_ops *ops, struct sk_buff *skb,
- 		  struct genl_info *info);
-diff --git a/net/psp/psp.h b/net/psp/psp.h
-index 0f9c4e4e52cb..fd7457dedd30 100644
---- a/net/psp/psp.h
-+++ b/net/psp/psp.h
-@@ -15,6 +15,7 @@ extern struct mutex psp_devs_lock;
+diff --git a/tools/testing/selftests/drivers/net/config b/tools/testing/selftests/drivers/net/config
+index 77ccf83d87e0..cdde8234dc07 100644
+--- a/tools/testing/selftests/drivers/net/config
++++ b/tools/testing/selftests/drivers/net/config
+@@ -7,4 +7,5 @@ CONFIG_NETCONSOLE=m
+ CONFIG_NETCONSOLE_DYNAMIC=y
+ CONFIG_NETCONSOLE_EXTENDED_LOG=y
+ CONFIG_NETDEVSIM=m
++CONFIG_NETKIT=y
+ CONFIG_XDP_SOCKETS=y
+diff --git a/tools/testing/selftests/drivers/net/lib/py/env.py b/tools/testing/selftests/drivers/net/lib/py/env.py
+index 6a71c7e7f136..a70d776cf6b8 100644
+--- a/tools/testing/selftests/drivers/net/lib/py/env.py
++++ b/tools/testing/selftests/drivers/net/lib/py/env.py
+@@ -2,6 +2,7 @@
  
- void psp_dev_free(struct psp_dev *psd);
- int psp_dev_check_access(struct psp_dev *psd, struct net *net, bool admin);
-+void psp_attach_netdev_notifier(void);
+ import ipaddress
+ import os
++import re
+ import time
+ import json
+ from pathlib import Path
+@@ -327,7 +328,7 @@ class NetDrvContEnv(NetDrvEpEnv):
+               +---------------+
+     """
  
- void psp_nl_notify_dev(struct psp_dev *psd, u32 cmd);
+-    def __init__(self, src_path, rxqueues=1, **kwargs):
++    def __init__(self, src_path, rxqueues=1, install_tx_redirect_bpf=False, **kwargs):
+         self.netns = None
+         self._nk_host_ifname = None
+         self._nk_guest_ifname = None
+@@ -338,6 +339,8 @@ class NetDrvContEnv(NetDrvEpEnv):
+         self._init_ns_attached = False
+         self._old_fwd = None
+         self._old_accept_ra = None
++        self._nk_host_tc_attached = False
++        self._nk_host_bpf_prog_pref = None
  
-diff --git a/net/psp/psp_main.c b/net/psp/psp_main.c
-index 178b848989f1..160eaf3e7229 100644
---- a/net/psp/psp_main.c
-+++ b/net/psp/psp_main.c
-@@ -375,10 +375,80 @@ int psp_dev_rcv(struct sk_buff *skb, u16 dev_id, u8 generation, bool strip_icv)
- }
- EXPORT_SYMBOL(psp_dev_rcv);
+         super().__init__(src_path, **kwargs)
  
-+static void psp_dev_disassoc_one(struct psp_dev *psd, struct net_device *dev)
-+{
-+	struct psp_assoc_dev *entry, *tmp;
-+
-+	list_for_each_entry_safe(entry, tmp, &psd->assoc_dev_list, dev_list) {
-+		if (entry->assoc_dev == dev) {
-+			list_del(&entry->dev_list);
-+			rcu_assign_pointer(entry->assoc_dev->psp_dev, NULL);
-+			netdev_put(entry->assoc_dev, &entry->dev_tracker);
-+			kfree(entry);
-+			return;
-+		}
-+	}
-+}
-+
-+static int psp_netdev_event(struct notifier_block *nb, unsigned long event,
-+			    void *ptr)
-+{
-+	struct net_device *dev = netdev_notifier_info_to_dev(ptr);
-+	struct psp_dev *psd;
-+
-+	if (event != NETDEV_UNREGISTER)
-+		return NOTIFY_DONE;
-+
-+	rcu_read_lock();
-+	psd = rcu_dereference(dev->psp_dev);
-+	if (psd && psp_dev_tryget(psd)) {
-+		rcu_read_unlock();
-+		mutex_lock(&psd->lock);
-+		psp_dev_disassoc_one(psd, dev);
-+		mutex_unlock(&psd->lock);
-+		psp_dev_put(psd);
-+	} else {
-+		rcu_read_unlock();
-+	}
-+
-+	return NOTIFY_DONE;
-+}
-+
-+static struct notifier_block psp_netdev_notifier = {
-+	.notifier_call = psp_netdev_event,
-+};
-+
-+static bool psp_notifier_registered;
-+
-+/**
-+ * psp_attach_netdev_notifier() - register netdev notifier on first use
-+ *
-+ * Register the netdevice notifier when the first device association
-+ * is created. In many installations no associations will be created and
-+ * the notifier won't be needed.
-+ *
-+ * Must be called without psd->lock held, due to lock ordering:
-+ * rtnl_lock -> psd->lock (the notifier callback runs under rtnl_lock
-+ * and takes psd->lock).
-+ */
-+void psp_attach_netdev_notifier(void)
-+{
-+	if (READ_ONCE(psp_notifier_registered))
-+		return;
-+
-+	mutex_lock(&psp_devs_lock);
-+	if (!psp_notifier_registered) {
-+		if (!register_netdevice_notifier(&psp_netdev_notifier))
-+			WRITE_ONCE(psp_notifier_registered, true);
-+	}
-+	mutex_unlock(&psp_devs_lock);
-+}
-+
- static int __init psp_init(void)
- {
- 	mutex_init(&psp_devs_lock);
+@@ -388,7 +391,13 @@ class NetDrvContEnv(NetDrvEpEnv):
+         self._setup_ns()
+         self._attach_bpf()
  
- 	return genl_register_family(&psp_nl_family);
- }
++        if install_tx_redirect_bpf:
++            self._attach_tx_redirect_bpf()
 +
- subsys_initcall(psp_init);
-diff --git a/net/psp/psp_nl.c b/net/psp/psp_nl.c
-index 8a70848c74d7..e77c4ec3991e 100644
---- a/net/psp/psp_nl.c
-+++ b/net/psp/psp_nl.c
-@@ -159,6 +159,14 @@ int psp_device_get_locked(const struct genl_split_ops *ops,
- 	return __psp_device_get_locked(ops, skb, info, false);
- }
+     def __del__(self):
++        if self._nk_host_tc_attached:
++            cmd(f"tc filter del dev {self._nk_host_ifname} ingress pref {self._nk_host_bpf_prog_pref}", fail=False)
++            self._nk_host_tc_attached = False
+         if self._tc_attached:
+             cmd(f"tc filter del dev {self.ifname} ingress pref {self._bpf_prog_pref}")
+             self._tc_attached = False
+@@ -496,3 +505,46 @@ class NetDrvContEnv(NetDrvEpEnv):
+         value = ipv6_bytes + ifindex_bytes
+         value_hex = ' '.join(f'{b:02x}' for b in value)
+         bpftool(f"map update id {bss_map_id} key hex 00 00 00 00 value hex {value_hex}")
++
++    def _attach_tx_redirect_bpf(self):
++        """
++        Attach BPF program on nk_host ingress to redirect TX traffic.
++
++        Packets from nk_guest destined for the nsim network arrive at nk_host
++        via the netkit pair. This BPF program redirects them to the physical
++        interface so they can reach the remote peer.
++        """
++        bpf_obj = self.test_dir / "nk_redirect.bpf.o"
++        if not bpf_obj.exists():
++            raise KsftSkipEx("BPF prog nk_redirect.bpf.o not found")
++
++        cmd(f"tc qdisc add dev {self._nk_host_ifname} clsact")
++
++        cmd(f"tc filter add dev {self._nk_host_ifname} ingress bpf obj {bpf_obj} sec tc/ingress direct-action")
++        self._nk_host_tc_attached = True
++
++        tc_info = cmd(f"tc filter show dev {self._nk_host_ifname} ingress").stdout
++        match = re.search(r'pref (\d+).*nk_redirect\.bpf.*id (\d+)', tc_info)
++        if not match:
++            raise Exception("Failed to get TX redirect BPF prog ID")
++        self._nk_host_bpf_prog_pref = int(match.group(1))
++        nk_host_bpf_prog_id = int(match.group(2))
++
++        prog_info = bpftool(f"prog show id {nk_host_bpf_prog_id}", json=True)
++        map_ids = prog_info.get("map_ids", [])
++
++        bss_map_id = None
++        for map_id in map_ids:
++            map_info = bpftool(f"map show id {map_id}", json=True)
++            if map_info.get("name").endswith("bss"):
++                bss_map_id = map_id
++
++        if bss_map_id is None:
++            raise Exception("Failed to find TX redirect BPF .bss map")
++
++        ipv6_addr = ipaddress.IPv6Address(self.nsim_v6_pfx)
++        ipv6_bytes = ipv6_addr.packed
++        ifindex_bytes = self.ifindex.to_bytes(4, byteorder='little')
++        value = ipv6_bytes + ifindex_bytes
++        value_hex = ' '.join(f'{b:02x}' for b in value)
++        bpftool(f"map update id {bss_map_id} key hex 00 00 00 00 value hex {value_hex}")
+diff --git a/tools/testing/selftests/drivers/net/psp.py b/tools/testing/selftests/drivers/net/psp.py
+index 864d9fce1094..0ef6a522769e 100755
+--- a/tools/testing/selftests/drivers/net/psp.py
++++ b/tools/testing/selftests/drivers/net/psp.py
+@@ -5,6 +5,7 @@
  
-+int psp_device_get_locked_dev_assoc(const struct genl_split_ops *ops,
-+				    struct sk_buff *skb, struct genl_info *info)
-+{
-+	psp_attach_netdev_notifier();
+ import errno
+ import fcntl
++import os
+ import socket
+ import struct
+ import termios
+@@ -14,9 +15,12 @@ from lib.py import defer
+ from lib.py import ksft_run, ksft_exit, ksft_pr
+ from lib.py import ksft_true, ksft_eq, ksft_ne, ksft_gt, ksft_raises
+ from lib.py import ksft_not_none
+-from lib.py import KsftSkipEx
+-from lib.py import NetDrvEpEnv, PSPFamily, NlError
++from lib.py import ksft_variants, KsftNamedVariant
++from lib.py import KsftSkipEx, KsftFailEx
++from lib.py import NetDrvEpEnv, NetDrvContEnv, PSPFamily, NlError
++from lib.py import NetNSEnter
+ from lib.py import bkg, rand_port, wait_port_listen
++from lib.py import ip
+ 
+ 
+ def _get_outq(s):
+@@ -117,11 +121,13 @@ def _get_stat(cfg, key):
+ # Test case boiler plate
+ #
+ 
+-def _init_psp_dev(cfg):
++def _init_psp_dev(cfg, use_psp_ifindex=False):
+     if not hasattr(cfg, 'psp_dev_id'):
+         # Figure out which local device we are testing against
++        # For NetDrvContEnv: use psp_ifindex instead of ifindex
++        target_ifindex = cfg.psp_ifindex if use_psp_ifindex else cfg.ifindex
+         for dev in cfg.pspnl.dev_get({}, dump=True):
+-            if dev['ifindex'] == cfg.ifindex:
++            if dev['ifindex'] == target_ifindex:
+                 cfg.psp_info = dev
+                 cfg.psp_dev_id = cfg.psp_info['id']
+                 break
+@@ -394,6 +400,297 @@ def _data_basic_send(cfg, version, ipver):
+     _close_psp_conn(cfg, s)
+ 
+ 
++def _data_basic_send_netkit_psp_assoc(cfg, version, ipver):
++    """
++    Test basic data send with netkit interface associated with PSP dev.
++    """
 +
-+	return __psp_device_get_locked(ops, skb, info, false);
-+}
++    _init_psp_dev(cfg, True)
++    psp_dev_id_for_assoc = cfg.psp_dev_id
 +
- void
- psp_device_unlock(const struct genl_split_ops *ops, struct sk_buff *skb,
- 		  struct genl_info *info)
++    # Associate PSP device with nk_guest interface (in guest namespace)
++    nk_guest_dev = ip(f"link show dev {cfg._nk_guest_ifname}", json=True, ns=cfg.netns)[0]
++    nk_guest_ifindex = nk_guest_dev['ifindex']
++
++    cfg.pspnl.dev_assoc({'id': psp_dev_id_for_assoc, 'ifindex': nk_guest_ifindex, 'nsid': cfg.psp_dev_peer_nsid})
++
++    # Check if assoc-list contains nk_guest
++    dev_info = cfg.pspnl.dev_get({'id': psp_dev_id_for_assoc})
++
++    if 'assoc-list' in dev_info:
++        found = False
++        for assoc in dev_info['assoc-list']:
++            if assoc['ifindex'] == nk_guest_ifindex and assoc['nsid'] == cfg.psp_dev_peer_nsid:
++                found = True
++                break
++        ksft_true(found, "Associated device not found in dev_get() response")
++    else:
++        raise RuntimeError("No assoc-list in dev_get() response after association")
++
++    # Enter guest namespace (netns) to run PSP test
++    with NetNSEnter(cfg.netns.name):
++        cfg.pspnl = PSPFamily()
++
++        s = _make_psp_conn(cfg, version, ipver)
++
++        rx_assoc = cfg.pspnl.rx_assoc({"version": version,
++                                       "dev-id": cfg.psp_dev_id,
++                                       "sock-fd": s.fileno()})
++        rx = rx_assoc['rx-key']
++        tx = _spi_xchg(s, rx)
++
++        cfg.pspnl.tx_assoc({"dev-id": cfg.psp_dev_id,
++                            "version": version,
++                            "tx-key": tx,
++                            "sock-fd": s.fileno()})
++
++        data_len = _send_careful(cfg, s, 100)
++        _check_data_rx(cfg, data_len)
++        _close_psp_conn(cfg, s)
++
++    # Clean up - back in host namespace
++    cfg.pspnl = PSPFamily()
++    cfg.pspnl.dev_disassoc({'id': psp_dev_id_for_assoc, 'ifindex': nk_guest_ifindex, 'nsid': cfg.psp_dev_peer_nsid})
++
++    del cfg.psp_dev_id
++    del cfg.psp_info
++
++
++def _key_rotation_notify_multi_ns_netkit(cfg, version, ipver):
++    """ Test key rotation notifications across multiple namespaces using netkit """
++    _init_psp_dev(cfg, True)
++    psp_dev_id_for_assoc = cfg.psp_dev_id
++
++    # Associate PSP device with nk_guest interface (in guest namespace)
++    nk_guest_dev = ip(f"link show dev {cfg._nk_guest_ifname}", json=True, ns=cfg.netns)[0]
++    nk_guest_ifindex = nk_guest_dev['ifindex']
++
++    cfg.pspnl.dev_assoc({'id': psp_dev_id_for_assoc, 'ifindex': nk_guest_ifindex, 'nsid': cfg.psp_dev_peer_nsid})
++
++    # Create listener in guest namespace; socket stays bound to that ns
++    with NetNSEnter(cfg.netns.name):
++        peer_pspnl = PSPFamily()
++        peer_pspnl.ntf_subscribe('use')
++
++    # Create listener in main namespace
++    main_pspnl = PSPFamily()
++    main_pspnl.ntf_subscribe('use')
++
++    # Trigger key rotation on the PSP device
++    cfg.pspnl.key_rotate({"id": psp_dev_id_for_assoc})
++
++    # Poll both sockets from main thread
++    for pspnl, label in [(main_pspnl, "main"), (peer_pspnl, "guest")]:
++        for i in range(100):
++            pspnl.check_ntf()
++
++            try:
++                msg = pspnl.async_msg_queue.get_nowait()
++                break
++            except Exception:
++                pass
++
++            time.sleep(0.1)
++        else:
++            raise KsftFailEx(f"No key rotation notification received in {label} namespace")
++
++        ksft_true(msg['msg'].get('id') == psp_dev_id_for_assoc,
++                  f"Key rotation notification for correct device not found in {label} namespace")
++
++    # Clean up
++    cfg.pspnl.dev_disassoc({'id': psp_dev_id_for_assoc, 'ifindex': nk_guest_ifindex, 'nsid': cfg.psp_dev_peer_nsid})
++    del cfg.psp_dev_id
++    del cfg.psp_info
++
++
++def _dev_change_notify_multi_ns_netkit(cfg, version, ipver):
++    """ Test dev_change notifications across multiple namespaces using netkit """
++    _init_psp_dev(cfg, True)
++    psp_dev_id_for_assoc = cfg.psp_dev_id
++
++    # Associate PSP device with nk_guest interface (in guest namespace)
++    nk_guest_dev = ip(f"link show dev {cfg._nk_guest_ifname}", json=True, ns=cfg.netns)[0]
++    nk_guest_ifindex = nk_guest_dev['ifindex']
++
++    cfg.pspnl.dev_assoc({'id': psp_dev_id_for_assoc, 'ifindex': nk_guest_ifindex, 'nsid': cfg.psp_dev_peer_nsid})
++
++    # Create listener in guest namespace; socket stays bound to that ns
++    with NetNSEnter(cfg.netns.name):
++        peer_pspnl = PSPFamily()
++        peer_pspnl.ntf_subscribe('mgmt')
++
++    # Create listener in main namespace
++    main_pspnl = PSPFamily()
++    main_pspnl.ntf_subscribe('mgmt')
++
++    # Trigger dev_change by calling dev_set (notification is always sent)
++    cfg.pspnl.dev_set({'id': psp_dev_id_for_assoc, 'psp-versions-ena': cfg.psp_info['psp-versions-cap']})
++
++    # Poll both sockets from main thread
++    for pspnl, label in [(main_pspnl, "main"), (peer_pspnl, "guest")]:
++        for i in range(100):
++            pspnl.check_ntf()
++
++            try:
++                msg = pspnl.async_msg_queue.get_nowait()
++                break
++            except Exception:
++                pass
++
++            time.sleep(0.1)
++        else:
++            raise KsftFailEx(f"No dev_change notification received in {label} namespace")
++
++        ksft_true(msg['msg'].get('id') == psp_dev_id_for_assoc,
++                  f"Dev_change notification for correct device not found in {label} namespace")
++
++    # Clean up
++    cfg.pspnl.dev_disassoc({'id': psp_dev_id_for_assoc, 'ifindex': nk_guest_ifindex, 'nsid': cfg.psp_dev_peer_nsid})
++    del cfg.psp_dev_id
++    del cfg.psp_info
++
++
++def _psp_dev_get_check_netkit_psp_assoc(cfg, version, ipver):
++    """ Check psp dev-get output with netkit interface associated with PSP dev """
++
++    _init_psp_dev(cfg, True)
++    psp_dev_id_for_assoc = cfg.psp_dev_id
++
++    # Associate PSP device with nk_guest interface (in guest namespace)
++    nk_guest_dev = ip(f"link show dev {cfg._nk_guest_ifname}", json=True, ns=cfg.netns)[0]
++    nk_guest_ifindex = nk_guest_dev['ifindex']
++
++    cfg.pspnl.dev_assoc({'id': psp_dev_id_for_assoc, 'ifindex': nk_guest_ifindex, 'nsid': cfg.psp_dev_peer_nsid})
++
++    # Check 1: In default netns, verify dev-get has correct ifindex and assoc-list
++    dev_info = cfg.pspnl.dev_get({'id': psp_dev_id_for_assoc})
++
++    # Verify the PSP device has the correct ifindex
++    ksft_eq(dev_info['ifindex'], cfg.psp_ifindex)
++
++    # Verify assoc-list exists and contains the associated nk_guest with correct ifindex and nsid
++    ksft_true('assoc-list' in dev_info, "No assoc-list in dev_get() response after association")
++    found = False
++    for assoc in dev_info['assoc-list']:
++        if assoc['ifindex'] == nk_guest_ifindex and assoc['nsid'] == cfg.psp_dev_peer_nsid:
++            found = True
++            break
++    ksft_true(found, "Associated device not found in assoc-list with correct ifindex and nsid")
++
++    # Check 2: In guest netns, verify dev-get has assoc-list with nk_guest device
++    with NetNSEnter(cfg.netns.name):
++        peer_pspnl = PSPFamily()
++
++        # Dump all devices in the guest namespace
++        peer_devices = peer_pspnl.dev_get({}, dump=True)
++
++        # Find the device with by-association flag
++        peer_dev = None
++        for dev in peer_devices:
++            if dev.get('by-association'):
++                peer_dev = dev
++                break
++
++        ksft_not_none(peer_dev, "No PSP device found with by-association flag in guest netns")
++
++        # Verify assoc-list contains the nk_guest device
++        ksft_true('assoc-list' in peer_dev and len(peer_dev['assoc-list']) > 0,
++                  "Guest device should have assoc-list with local devices")
++
++        # Verify the assoc-list contains nk_guest ifindex with nsid=-1 (same namespace)
++        found = False
++        for assoc in peer_dev['assoc-list']:
++            if assoc['ifindex'] == nk_guest_ifindex:
++                ksft_eq(assoc['nsid'], -1,
++                        "nsid should be -1 (NETNSA_NSID_NOT_ASSIGNED) for same-namespace device")
++                found = True
++                break
++        ksft_true(found, "nk_guest ifindex not found in assoc-list")
++
++    # Clean up
++    cfg.pspnl.dev_disassoc({'id': psp_dev_id_for_assoc, 'ifindex': nk_guest_ifindex, 'nsid': cfg.psp_dev_peer_nsid})
++
++    del cfg.psp_dev_id
++    del cfg.psp_info
++
++
++def _dev_assoc_no_nsid(cfg):
++    """ Test dev-assoc and dev-disassoc without nsid attribute """
++    _init_psp_dev(cfg, True)
++    psp_dev_id = cfg.psp_dev_id
++
++    # Get nk_host's ifindex (in host namespace, same as caller)
++    nk_host_dev = ip(f"link show dev {cfg._nk_host_ifname}", json=True)[0]
++    nk_host_ifindex = nk_host_dev['ifindex']
++
++    # Associate without nsid - should look up ifindex in caller's netns
++    cfg.pspnl.dev_assoc({'id': psp_dev_id, 'ifindex': nk_host_ifindex})
++
++    # Verify assoc-list contains the device
++    dev_info = cfg.pspnl.dev_get({'id': psp_dev_id})
++    ksft_true('assoc-list' in dev_info, "No assoc-list after association")
++    found = False
++    for assoc in dev_info['assoc-list']:
++        if assoc['ifindex'] == nk_host_ifindex:
++            found = True
++            break
++    ksft_true(found, "Associated device not found in assoc-list")
++
++    # Disassociate without nsid - should also use caller's netns
++    cfg.pspnl.dev_disassoc({'id': psp_dev_id, 'ifindex': nk_host_ifindex})
++
++    # Verify assoc-list no longer contains the device
++    dev_info = cfg.pspnl.dev_get({'id': psp_dev_id})
++    found = False
++    if 'assoc-list' in dev_info:
++        for assoc in dev_info['assoc-list']:
++            if assoc['ifindex'] == nk_host_ifindex:
++                found = True
++                break
++    ksft_true(not found, "Device should not be in assoc-list after disassociation")
++
++    del cfg.psp_dev_id
++    del cfg.psp_info
++
++
++def _psp_dev_assoc_cleanup_on_netkit_del(cfg):
++    """ Test that assoc-list is cleared when associated netkit interface is deleted """
++    _init_psp_dev(cfg, True)
++    psp_dev_id_for_assoc = cfg.psp_dev_id
++
++    # Associate PSP device with nk_guest interface (in guest namespace)
++    nk_guest_dev = ip(f"link show dev {cfg._nk_guest_ifname}", json=True, ns=cfg.netns)[0]
++    nk_guest_ifindex = nk_guest_dev['ifindex']
++
++    cfg.pspnl.dev_assoc({'id': psp_dev_id_for_assoc, 'ifindex': nk_guest_ifindex, 'nsid': cfg.psp_dev_peer_nsid})
++
++    # Verify assoc-list exists in default netns
++    dev_info = cfg.pspnl.dev_get({'id': psp_dev_id_for_assoc})
++    ksft_true('assoc-list' in dev_info, "No assoc-list after association")
++    found = False
++    for assoc in dev_info['assoc-list']:
++        if assoc['ifindex'] == nk_guest_ifindex and assoc['nsid'] == cfg.psp_dev_peer_nsid:
++            found = True
++            break
++    ksft_true(found, "Associated device not found in assoc-list")
++
++    # Delete the netkit interface in the guest namespace
++    ip(f"link del {cfg._nk_guest_ifname}", ns=cfg.netns)
++
++    # Mark netkit as already deleted so cleanup won't try to delete it again
++    # (deleting nk_guest also removes nk_host since they're a pair)
++    cfg._nk_host_ifname = None
++    cfg._nk_guest_ifname = None
++
++    # Verify assoc-list is gone in default netns after netkit deletion
++    dev_info = cfg.pspnl.dev_get({'id': psp_dev_id_for_assoc})
++    ksft_true('assoc-list' not in dev_info or len(dev_info['assoc-list']) == 0,
++              "assoc-list should be empty after netkit deletion")
++
++    del cfg.psp_dev_id
++    del cfg.psp_info
++
++
+ def __bad_xfer_do(cfg, s, tx, version='hdr0-aes-gcm-128'):
+     # Make sure we accept the ACK for the SPI before we seal with the bad assoc
+     _check_data_outq(s, 0)
+@@ -571,33 +868,162 @@ def removal_device_bi(cfg):
+         _close_conn(cfg, s)
+ 
+ 
+-def psp_ip_ver_test_builder(name, test_func, psp_ver, ipver):
+-    """Build test cases for each combo of PSP version and IP version"""
+-    def test_case(cfg):
+-        cfg.require_ipver(ipver)
+-        test_func(cfg, psp_ver, ipver)
+-
+-    test_case.__name__ = f"{name}_v{psp_ver}_ip{ipver}"
+-    return test_case
++@ksft_variants([
++    KsftNamedVariant(f"v{v}_ip{ip}", v, ip)
++    for v in range(4) for ip in ("4", "6")
++])
++def data_basic_send(cfg, version, ipver):
++    cfg.require_ipver(ipver)
++    _data_basic_send(cfg, version, ipver)
++
++
++@ksft_variants([
++    KsftNamedVariant(f"ip{ip}", ip)
++    for ip in ("4", "6")
++])
++def data_mss_adjust(cfg, ipver):
++    cfg.require_ipver(ipver)
++    _data_mss_adjust(cfg, ipver)
++
++
++@ksft_variants([
++    KsftNamedVariant(f"v{v}_ip6", v, "6")
++    for v in range(4)
++])
++def data_basic_send_netkit_psp_assoc(cfg, version, ipver):
++    cfg.require_ipver(ipver)
++    _data_basic_send_netkit_psp_assoc(cfg, version, ipver)
++
++
++@ksft_variants([
++    KsftNamedVariant(f"v{v}_ip6", v, "6")
++    for v in range(4)
++])
++def key_rotation_notify_multi_ns_netkit(cfg, version, ipver):
++    cfg.require_ipver(ipver)
++    _key_rotation_notify_multi_ns_netkit(cfg, version, ipver)
++
++
++@ksft_variants([
++    KsftNamedVariant(f"v{v}_ip6", v, "6")
++    for v in range(4)
++])
++def dev_change_notify_multi_ns_netkit(cfg, version, ipver):
++    cfg.require_ipver(ipver)
++    _dev_change_notify_multi_ns_netkit(cfg, version, ipver)
++
++
++@ksft_variants([
++    KsftNamedVariant(f"v{v}_ip6", v, "6")
++    for v in range(4)
++])
++def psp_dev_get_check_netkit_psp_assoc(cfg, version, ipver):
++    cfg.require_ipver(ipver)
++    _psp_dev_get_check_netkit_psp_assoc(cfg, version, ipver)
++
++
++@ksft_variants([
++    KsftNamedVariant(f"v{v}_ip6", v, "6")
++    for v in range(4)
++])
++def dev_assoc_no_nsid(cfg, version, ipver):
++    cfg.require_ipver(ipver)
++    _dev_assoc_no_nsid(cfg)
++
++
++def _get_nsid(ns_name):
++    """Get the nsid for a namespace."""
++    for entry in ip("netns list-id", json=True):
++        if entry.get("name") == str(ns_name):
++            return entry["nsid"]
++    raise KsftSkipEx(f"nsid not found for namespace {ns_name}")
++
++
++def _setup_psp_attributes(cfg):
++    """
++    Set up PSP-specific attributes on the environment.
++
++    This sets attributes needed for PSP tests based on whether we're using
++    netdevsim or a real NIC.
++    """
++    if cfg._ns is not None:
++        # netdevsim case: PSP device is the local dev (in host namespace)
++        cfg.psp_dev = cfg._ns.nsims[0].dev
++        cfg.psp_ifname = cfg.psp_dev['ifname']
++        cfg.psp_ifindex = cfg.psp_dev['ifindex']
++
++        # PSP peer device is the remote dev (in _netns, where psp_responder runs)
++        cfg.psp_dev_peer = cfg._ns_peer.nsims[0].dev
++        cfg.psp_dev_peer_ifname = cfg.psp_dev_peer['ifname']
++        cfg.psp_dev_peer_ifindex = cfg.psp_dev_peer['ifindex']
++    else:
++        # Real NIC case: PSP device is the local interface
++        cfg.psp_dev = cfg.dev
++        cfg.psp_ifname = cfg.ifname
++        cfg.psp_ifindex = cfg.ifindex
++
++        # PSP peer device is the remote interface
++        cfg.psp_dev_peer = cfg.remote_dev
++        cfg.psp_dev_peer_ifname = cfg.remote_ifname
++        cfg.psp_dev_peer_ifindex = cfg.remote_ifindex
++
++    # Get nsid for the guest namespace (netns) where nk_guest is
++    cfg.psp_dev_peer_nsid = _get_nsid(cfg.netns.name)
++
++
++def _setup_psp_routes(cfg):
++    """
++    Set up routes for cross-namespace connectivity.
++
++    Traffic flows:
++    1. remote (_netns) -> nk_guest (netns):
++       psp_dev_peer -> psp_dev_local -> BPF redirect -> nk_host -> nk_guest
++       Needs: route in _netns to nk_v6_pfx/64 via psp_dev_local
++
++    2. nk_guest (netns) -> remote (_netns):
++       nk_guest -> nk_host -> psp_dev_local -> psp_dev_peer
++       Needs: route in netns to dev_v6_pfx/64 via nk_host
++    """
++    # In _netns (remote namespace): add route to nk_guest prefix via psp_dev_local
++    # psp_dev_peer can reach psp_dev_local via the link, then traffic goes through BPF
++    ip(f"-6 route add {cfg.nk_v6_pfx}/64 via {cfg.nsim_v6_pfx}1 dev {cfg.psp_dev_peer_ifname}",
++       ns=cfg._netns)
++
++    # In netns (guest namespace): add route to remote peer prefix
++    # nk_guest default route goes to nk_host, but we need explicit route to dev_v6_pfx/64
++    ip(f"-6 route add {cfg.nsim_v6_pfx}/64 via fe80::1 dev {cfg._nk_guest_ifname}",
++       ns=cfg.netns)
+ 
+ 
+-def ipver_test_builder(name, test_func, ipver):
+-    """Build test cases for each IP version"""
+-    def test_case(cfg):
+-        cfg.require_ipver(ipver)
+-        test_func(cfg, ipver)
++def main() -> None:
++    """ Ksft boiler plate main """
+ 
+-    test_case.__name__ = f"{name}_ip{ipver}"
+-    return test_case
++    # Use a different prefix for netkit guest to avoid conflict with dev prefix
++    nk_v6_pfx = "2001:db9::"
+ 
++    # Set LOCAL_PREFIX_V6 to a DIFFERENT prefix than the dev prefix to avoid BPF
++    # redirecting psp_responder traffic. The BPF only redirects traffic
++    # matching LOCAL_PREFIX_V6, so dev traffic (2001:db8::) won't be affected.
++    if "LOCAL_PREFIX_V6" not in os.environ:
++        os.environ["LOCAL_PREFIX_V6"] = nk_v6_pfx
+ 
+-def main() -> None:
+-    """ Ksft boiler plate main """
++    try:
++        env = NetDrvContEnv(__file__, install_tx_redirect_bpf=True)
++        has_cont = True
++    except KsftSkipEx:
++        env = NetDrvEpEnv(__file__)
++        has_cont = False
+ 
+-    with NetDrvEpEnv(__file__) as cfg:
++    with env as cfg:
+         cfg.pspnl = PSPFamily()
+ 
++        if has_cont:
++            cfg.nk_v6_pfx = nk_v6_pfx
++            _setup_psp_attributes(cfg)
++            _setup_psp_routes(cfg)
++
+         # Set up responder and communication sock
++        # psp_responder runs in _netns (remote namespace with psp_dev_peer)
+         responder = cfg.remote.deploy("psp_responder")
+ 
+         cfg.comm_port = rand_port()
+@@ -611,17 +1037,17 @@ def main() -> None:
+                                                           cfg.comm_port),
+                                                          timeout=1)
+ 
+-                cases = [
+-                    psp_ip_ver_test_builder(
+-                        "data_basic_send", _data_basic_send, version, ipver
+-                    )
+-                    for version in range(0, 4)
+-                    for ipver in ("4", "6")
+-                ]
+-                cases += [
+-                    ipver_test_builder("data_mss_adjust", _data_mss_adjust, ipver)
+-                    for ipver in ("4", "6")
+-                ]
++                cases = [data_basic_send, data_mss_adjust]
++
++                if has_cont:
++                    cases += [
++                        data_basic_send_netkit_psp_assoc,
++                        key_rotation_notify_multi_ns_netkit,
++                        dev_change_notify_multi_ns_netkit,
++                        psp_dev_get_check_netkit_psp_assoc,
++                        dev_assoc_no_nsid,
++                        _psp_dev_assoc_cleanup_on_netkit_del,
++                    ]
+ 
+                 ksft_run(cases=cases, globs=globals(),
+                          case_pfx={"dev_", "data_", "assoc_", "removal_"},
 -- 
 2.52.0
 
