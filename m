@@ -1,158 +1,184 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012033.outbound.protection.outlook.com [40.107.209.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E163C9EFE
-	for <netdev@vger.kernel.org>; Mon, 30 Mar 2026 12:10:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774872660; cv=none; b=fxUHplOXC2ctrSC3yNJrdov7G8yk+X6QflRryAK4/FTZO9rlrnrnLHqyP5NddfCpvIt7UXHUBZ4EJIRAS8xrSi4KLF7kwgXooeR3kNWQ4iwD5n1z4tAKbvne6L0S/Dhx1o1u+3YyaSXhbaybkXDmbRRQdL7n5/nSX96P/C9H4DI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774872660; c=relaxed/simple;
-	bh=+LMQoTvu244a85Ncb5u2POFz1DjpQtqMwBU9f7MsV38=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Q6oiBTkgbaDt8Ofk/8kyjBu/RtW7m4O2mwfVrn+t8l/QUczBGwD3ExXH+bvae3y68h5x6gkRW4MY934Xj/+BNVSqUKE3+imRBGEIJ0USKkeIWwq0tD72nWMX6IN52NJ68HchFIVRqS+aAl9VjsEAILw0K+g2uNOrmlRlcDKxjT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ATRnpqS5; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=y84QewfJ; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ATRnpqS5; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=y84QewfJ; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700C226158B;
+	Mon, 30 Mar 2026 12:12:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.33
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774872724; cv=fail; b=JEOa9OKkRrTa9YrGbe/MNR7sRgmFvqc57hlgiiwKHerEhvwim/Ff2sHszMag86vrTSCv29gGdjQ5WAGfbj/kJLnz63z17zTmy6MX6TYuKdx++8ZMkJwiTqnB531tNvfejMacs1+HvAtCIbHx81lwKYrw8nboPi7qnpkTo4vFvZI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774872724; c=relaxed/simple;
+	bh=Tj5XRuEXRP3Ptle2HfUzKCvGnKIgODEAxqzwi3fl/tQ=;
+	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=nbAeF1RnXbJG0ijtyWRZxMZmSWx0Tw8h3RApQmpuCrPMufh5AijjNPvn+/YhZCPr0HsJQNKoXaEulbhVFyqwkTHyHa3tu/0bMV2SxWjDs47b7YMq0GuoCZWJIbMTLzf7ur14CHBFecHueF6yR1fdrAmqLF91jco8yx1oKcGMqhs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=K5haupm7; arc=fail smtp.client-ip=40.107.209.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ATRnpqS5";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="y84QewfJ";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ATRnpqS5";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="y84QewfJ"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 4C96A5BD4C;
-	Mon, 30 Mar 2026 12:10:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1774872657; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=0Aiho5oPMkWNSDw5vCE+2Y0Zrx63tX6ET7WiXGit7WQ=;
-	b=ATRnpqS5y5bHge/fqewsFrAy0cf4AxqRJTYmorm3eu9NEclVMRhI8Oeu72wXfyICvmc8Q7
-	Q2bw2kGXiZBKO/WoUms/T3tSS0NQVu9ix848fpGXTK243342DWfHxSE1TlNaYQfFEoGCJA
-	eZDYdQS8hyOmOS1jYFJ3DfMBbYy2e+I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1774872657;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=0Aiho5oPMkWNSDw5vCE+2Y0Zrx63tX6ET7WiXGit7WQ=;
-	b=y84QewfJ9bXt4vs5Ny/yi7xpmaGvsuNPUHNsKWf/l5s451i66Po59uGwvjk3oATYXN/b/N
-	IO9Vtiqq6wQWNkCQ==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ATRnpqS5;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=y84QewfJ
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1774872657; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=0Aiho5oPMkWNSDw5vCE+2Y0Zrx63tX6ET7WiXGit7WQ=;
-	b=ATRnpqS5y5bHge/fqewsFrAy0cf4AxqRJTYmorm3eu9NEclVMRhI8Oeu72wXfyICvmc8Q7
-	Q2bw2kGXiZBKO/WoUms/T3tSS0NQVu9ix848fpGXTK243342DWfHxSE1TlNaYQfFEoGCJA
-	eZDYdQS8hyOmOS1jYFJ3DfMBbYy2e+I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1774872657;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=0Aiho5oPMkWNSDw5vCE+2Y0Zrx63tX6ET7WiXGit7WQ=;
-	b=y84QewfJ9bXt4vs5Ny/yi7xpmaGvsuNPUHNsKWf/l5s451i66Po59uGwvjk3oATYXN/b/N
-	IO9Vtiqq6wQWNkCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 94F2E4A0A2;
-	Mon, 30 Mar 2026 12:10:56 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id DR80IVBoymkKSwAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Mon, 30 Mar 2026 12:10:56 +0000
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-To: netdev@vger.kernel.org
-Cc: sdf@fomichev.me,
-	petrm@nvidia.com,
-	idosch@nvidia.com,
-	razor@blackwall.org,
-	pabeni@redhat.com,
-	kuba@kernel.org,
-	edumazet@google.com,
-	davem@davemloft.net,
-	andrew+netdev@lunn.ch,
-	Fernando Fernandez Mancera <fmancera@suse.de>
-Subject: [PATCH net-next] net: vxlan: check ipv6_mod_enabled() on neigh_reduce()
-Date: Mon, 30 Mar 2026 14:10:33 +0200
-Message-ID: <20260330121033.4479-1-fmancera@suse.de>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="K5haupm7"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jVeBft6CQelcksWm81ChhbaJloRl7Lb6nXJcFuCyo9A+Tmra6xdStZ11NHyiiRoePHfo1/DxsoD/4Ax45EJEl0oomVJk0HLI5OJMRdI4ufXUQ+qANE3FB/P6TUIRulpqtmeuK1Qu3om5/VkKrNPARQpSKW57+QTlDxpTmX1a9E4OOZGN0vd3HsabOjd7iS//4nwOSlwnipwGJtBFdiIe48SYwvbCvBcpfVgwWTcw6XgN0AW3Nr+pEUJVVG0sLIwVykkooghVY3k12RyIuXM2lKj1xLDwFossss/DuPq4lF/fEL/GjFBM4nwmkB4OLfnVSwMNr3KHa/KhWQcbUzbDqw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=N+Y6sQwXwlhS8xhnLt4GK8QARazoSTbQ1gBM8PYsIZQ=;
+ b=bSiD+X9282pnctbc0tAbTuN5jUUiRl7N9+5kKIxmPU8h9T7bUgdzKfDG3FkkghH2OtJ+6EZy4ZC/ETkVZ2SeSqUQZUnd4kDOmQVGHsG3888yEhapFgRtYT9sELXBe//MSm1qbtcSsXoZoYou/i0ZLXhCnRXYMv3qJDg93nJUvg3IgUS7Ygzd6bQBMByw78s6tZbVoWjYADbu9by3mBz/Vkf02z/3Aij/RVC6S2xeDbwU1/UL9avKkXopbojJaFq2wOayHZskY30Bzn0DqtylXsszRJ/JY9i4J4wa3CaPPcjkitHok692HIwXt4fMlCJKcimqAgWHZmEs4Od0KVbIng==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=N+Y6sQwXwlhS8xhnLt4GK8QARazoSTbQ1gBM8PYsIZQ=;
+ b=K5haupm7gZlqtt10gFATeBZ4NPGcONo+IXk0hso97ymFaYN/wa/U5UQ03Pwzn1Kc1s4XPvIP99AWuNyAvpXwJ8EmXiWHIOpGCw9Q3EKY41/eI4gectNIJIMqvCl1KtR37LMFSwcyq8dEb7hkOdnZkKWmcWKhmjVp2vUn3vxkzN0b3B2yMR38Ln1A+2hILnx+8kpLDpRN7shhBKNiH2E5w/DOFkLY8Te8DlcgUWZ3a7ahcpO5fb01beWiTv/IE1kFbr451gPlKBOCUzoCVylWnUI2DZzql5214nzjPylPIdH+7bR50fo67GnA3av6MX4q3AeDUbCpnTXsz5zcJ9QtuA==
+Received: from BY3PR10CA0004.namprd10.prod.outlook.com (2603:10b6:a03:255::9)
+ by CY5PR12MB6549.namprd12.prod.outlook.com (2603:10b6:930:43::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Mon, 30 Mar
+ 2026 12:11:57 +0000
+Received: from CO1PEPF00012E7E.namprd03.prod.outlook.com
+ (2603:10b6:a03:255:cafe::8) by BY3PR10CA0004.outlook.office365.com
+ (2603:10b6:a03:255::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9745.28 via Frontend Transport; Mon,
+ 30 Mar 2026 12:11:32 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CO1PEPF00012E7E.mail.protection.outlook.com (10.167.249.53) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9745.21 via Frontend Transport; Mon, 30 Mar 2026 12:11:56 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 30 Mar
+ 2026 05:11:41 -0700
+Received: from fedora (10.126.230.35) by rnnvmail201.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 30 Mar
+ 2026 05:11:35 -0700
+References: <20260326132828.805703-1-ioana.ciornei@nxp.com>
+ <20260326132828.805703-11-ioana.ciornei@nxp.com>
+User-agent: mu4e 1.8.14; emacs 30.2
+From: Petr Machata <petrm@nvidia.com>
+To: Ioana Ciornei <ioana.ciornei@nxp.com>
+CC: <netdev@vger.kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, <linux-kernel@vger.kernel.org>, <petrm@nvidia.com>,
+	<willemb@google.com>, <linux-kselftest@vger.kernel.org>
+Subject: Re: [PATCH net-next v4 10/10] selftests: drivers: hw: add test for
+ the ethtool standard counters
+Date: Mon, 30 Mar 2026 14:03:35 +0200
+In-Reply-To: <20260326132828.805703-11-ioana.ciornei@nxp.com>
+Message-ID: <87bjg54ivh.fsf@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-1.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email]
-X-Rspamd-Queue-Id: 4C96A5BD4C
-X-Spam-Flag: NO
-X-Spam-Score: -1.51
-X-Spam-Level: 
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF00012E7E:EE_|CY5PR12MB6549:EE_
+X-MS-Office365-Filtering-Correlation-Id: 89368ff2-f862-42bf-1354-08de8e5589b6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700016|1800799024|376014|7416014|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	trUewd3m6K1At0VV4U2THDU0xgpqy3xd7+9oVXt7Ms7Mvx1PscN7S9yZ3CCvIVqsNEzacIBQx4w1GhmtJNcOaunZgy+Ps+mfAJFtVsvfb4SU7Pi8fbku1AM67IDbX1xKqkefXJ4B+vACMXpXBDuRoXulw+0dshG/AGLtkcyPx0HjqEpVdP8QHt/Sw97Zyt1M0yC8Iu3wCzhcrgDWcr4YfytxsmXMDSLDkeYYxtYpxpJtt9yQUC83l8Y4z/GNQP5T5csyTmSig8SU8s1cckpEMjWiluan/bKt1T/Z34NqL4iKBwwRDYQQ2YbRwz1LPxLvX86f4shHo9IZcFiaazYm/yHLjfUlrI4zveW/FKv40cGn+vnlEb62k3q2JCRrxD5StECbEGsJPWmBkfKdfyrCAJXH5hS3eRHMw7oxtzRPL1zRJdsJChQPeA/jt28a276YLxP5liPNaTrbXS4ULbyq8AcyLCuWTMyqsmc+FGLN9En5j4vkKfNAP3K9HJsyX6OE/vyfY4JbdNElo2rix32kfbOIJjDycEL3EyhKCQ2Z3CGtnb2lmZwoMHL1O34yseZpHf8IykFBJti8V9vL9kML0uUjrzxIXNlpY9F6wzZh32yqnTOZWEUDk1CqI0mBb+XOWLPwCwrtOYN4Y17kDe8AOt9mk+vA/WhORrRBBTHsPRdBDR/Cg7C0A7C0Da0iP7+60RRMfMHYvHhq8WbG2YSb9DvZ39SryjvpPTvafuLFS1dQJWA0zqDN7QopqcA+xNK3ZtPVRqiYcCh89cXe+tU+1Q==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(1800799024)(376014)(7416014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	fMLRqMVC5qPYb2u14dxUKqJeYcgkW8QsBLHjoVwwwihrG5s/VlVhX5kJgO8HP5iXzw6XeMU/PzTrkp/rA/+qEeEM8sUsCC4IGudMIRHyP8ZJ0uhmz4T9LCTg0mNf7vm/D4srwLgHdAkcCT02euLseJvINBx9B7HuF2EBpcPotoSCMVM6A4L7dxOHu2I0k4/6HIZBOJI+i2B9KJGkuFkIPzkXyZcwxDe7KJMOG5tJd2vAINYeyMOpaNcVUB5VS4wUKLttu0+drj2uSAaWvmx2HHyA2UR4O9XYL1R2fTv1AO32Daf3J3PO2xKCHn99eZx09ckVvmogJAKJyg20Lv7C8tBMFnniq5uFfK873ITUdqR4lN/Rb6CFvpRrVQOSRT9DtQ/4ft+T0mHIyfB4mVfsUlYYTM4r1nulvcH7kMl1txXhyn6shh6SLpUdVNdxvaJR
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2026 12:11:56.5996
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 89368ff2-f862-42bf-1354-08de8e5589b6
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF00012E7E.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6549
 
-IPv6 must be enabled or otherwise neigh_reduce() might cause a kernel
-panic. This was prevented by a check on in6_dev. Use ipv6_mod_enabled()
-instead as it is cleaner and also consistent with the code at
-route_shortcircuit().
 
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
----
- drivers/net/vxlan/vxlan_core.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+Ioana Ciornei <ioana.ciornei@nxp.com> writes:
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index b5fbd03418b6..b3b692c4b628 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -2027,13 +2027,11 @@ static int neigh_reduce(struct net_device *dev, struct sk_buff *skb, __be32 vni)
- 	struct vxlan_dev *vxlan = netdev_priv(dev);
- 	const struct in6_addr *daddr;
- 	const struct ipv6hdr *iphdr;
--	struct inet6_dev *in6_dev;
- 	struct neighbour *n;
- 	struct nd_msg *msg;
- 
- 	rcu_read_lock();
--	in6_dev = __in6_dev_get(dev);
--	if (!in6_dev)
-+	if (unlikely(!ipv6_mod_enabled()))
- 		goto out;
- 
- 	iphdr = ipv6_hdr(skb);
--- 
-2.53.0
+> Add a new selftest - ethtool_std_stats.sh - which validates the
+> eth-ctrl, eth-mac and pause standard statistics exported by an
+> interface. Collision related eth-mac counters as well as the error ones
+> will be checked against zero since that is the most likely correct
+> scenario.
+>
+> The central part of this patch is the traffic_test() function which
+> gathers the 'before' counter values, sends a batch of traffic and then
+> interrogates again the same counters in order to determine if the delta
+> is on target. The function receives an array through which the caller
+> can request what counters to be interrogated and, for each of them, what
+> is their target delta value.
+>
+> The output from this selftest looks as follows on a LX2160ARDB board:
+>
+>  $ ./run_kselftest.sh -t drivers/net/hw:ethtool_std_stats.sh
+>  TAP version 13
+>  1..1
+>  # timeout set to 0
+>  # selftests: drivers/net/hw: ethtool_std_stats.sh
+>  # TAP version 13
+>  # 1..26
+>  # ok 1 ethtool_std_stats.eth-ctrl-MACControlFramesTransmitted
+>  # ok 2 ethtool_std_stats.eth-ctrl-MACControlFramesReceived
+>  # ok 3 ethtool_std_stats.eth-mac-FrameCheckSequenceErrors
+>  # ok 4 ethtool_std_stats.eth-mac-AlignmentErrors
+>  # ok 5 ethtool_std_stats.eth-mac-FramesLostDueToIntMACXmitError
+>  # ok 6 ethtool_std_stats.eth-mac-CarrierSenseErrors # SKIP
+>  # ok 7 ethtool_std_stats.eth-mac-FramesLostDueToIntMACRcvError
+>  # ok 8 ethtool_std_stats.eth-mac-InRangeLengthErrors # SKIP
+>  # ok 9 ethtool_std_stats.eth-mac-OutOfRangeLengthField # SKIP
+>  # ok 10 ethtool_std_stats.eth-mac-FrameTooLongErrors # SKIP
+>  # ok 11 ethtool_std_stats.eth-mac-FramesAbortedDueToXSColls # SKIP
+>  # ok 12 ethtool_std_stats.eth-mac-SingleCollisionFrames # SKIP
+>  # ok 13 ethtool_std_stats.eth-mac-MultipleCollisionFrames # SKIP
+>  # ok 14 ethtool_std_stats.eth-mac-FramesWithDeferredXmissions # SKIP
+>  # ok 15 ethtool_std_stats.eth-mac-LateCollisions # SKIP
+>  # ok 16 ethtool_std_stats.eth-mac-FramesWithExcessiveDeferral # SKIP
+>  # ok 17 ethtool_std_stats.eth-mac-BroadcastFramesXmittedOK
+>  # ok 18 ethtool_std_stats.eth-mac-OctetsTransmittedOK
+>  # ok 19 ethtool_std_stats.eth-mac-BroadcastFramesReceivedOK
+>  # ok 20 ethtool_std_stats.eth-mac-OctetsReceivedOK
+>  # ok 21 ethtool_std_stats.eth-mac-FramesTransmittedOK
+>  # ok 22 ethtool_std_stats.eth-mac-MulticastFramesXmittedOK
+>  # ok 23 ethtool_std_stats.eth-mac-FramesReceivedOK
+>  # ok 24 ethtool_std_stats.eth-mac-MulticastFramesReceivedOK
+>  # ok 25 ethtool_std_stats.pause-tx_pause_frames
+>  # ok 26 ethtool_std_stats.pause-rx_pause_frames
+>  # # 10 skipped test(s) detected.  Consider enabling relevant config options to improve coverage.
+>  # # Totals: pass:16 fail:0 xfail:0 xpass:0 skip:10 error:0
+>  ok 1 selftests: drivers/net/hw: ethtool_std_stats.sh
+>
+> Please note that not all MACs are counting the software injected pause
+> frames as real Tx pause. For example, on a LS1028ARDB the selftest
+> output will reflect the fact that neither the ENETC MAC, nor the Felix
+> switch MAC are able to detect Tx pause frames injected by software.
+>
+>  $ ./run_kselftest.sh -t drivers/net/hw:ethtool_std_stats.sh
+>  (...)
+>  # # software sent pause frames not detected
+>  # ok 25 ethtool_std_stats.pause-tx_pause_frames # XFAIL
+>  # ok 26 ethtool_std_stats.pause-rx_pause_frames
+>
+> Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
 
+I didn't go into details much, but the code looks broadly correct.
+
+Acked-by: Petr Machata <petrm@nvidia.com>
