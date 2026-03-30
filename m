@@ -1,107 +1,97 @@
-Received: from szelinsky.de (szelinsky.de [85.214.127.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290323D6683;
-	Mon, 30 Mar 2026 13:30:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.127.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A741B4F1F
+	for <netdev@vger.kernel.org>; Mon, 30 Mar 2026 13:32:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774877438; cv=none; b=bylXu0RqyJD98sRi+Z+BF11jvVZ+88rp/miZT6qR4vb0XIqiUbTQp+5tLzG+rlhUPNgWFBEgb1unEKZymQgRvqIdsJpUA0T6M91Ws73fhP9FQ6zh892z91VeUAsmxxjvEztB4v+zlb4YpnvExO4ohOptZYlEM7hnva+1MVzEtJU=
+	t=1774877543; cv=none; b=JYAFaCGsQnwv0WusOwTDEZjaQudyrgXyPufb/6Ub7L5+XWMNAOhenf5hY8S1t3vwqVbGe52gJ4DQKG8JM/lSuIrGypqwohP+kcixuWSaKcZGZLBF18u8orl1s3k2/F6/kKwj6+Wdur8HFK63m43C0bRfWtZ1soVYww55ZwNscq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774877438; c=relaxed/simple;
-	bh=it94019hWDi5+EXmvp75kgDn02LPqyjsNMrM+AQU/Og=;
+	s=arc-20240116; t=1774877543; c=relaxed/simple;
+	bh=iD3d77B2D7TjEvsYdGDnR63jDfJN3DzzvZeiONNGPCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ReBzMwblqI35FzHem0Lk27vLU0c2n0E4yXbd8p1egW2Vaks5YzdKwFvCByQRfM4bDsa6NuYdjzuNxjcpEhM0uNO7//SBOtYqa7CIxy5lj4m5QVBR8fQUhoaVcSSc8+TrXrhD93isiMQ3bVfeyk7u8/7O2PomniA+vIBaCdnrUr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=ggzdcOXD; arc=none smtp.client-ip=85.214.127.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
+	 MIME-Version:Content-Type; b=Z84IRpaT6q4Mic73Uex8rE+SOoQr9bzhkSgZTmiHJOmqz15XtGnI9sBQLpL+dqpa9F2/z90RKoKTzlRgBfWEW77CLuRdj9LhXcF4UcPrRNtFpJhMHojKf/Fr4rC4DIMIi2+v56nQ95ZjyPKmkRSjNuvfe7rmYbnE8I6G6XwNEKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OccewnNk; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="ggzdcOXD"
-Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id 9F82BE83AA4;
-	Mon, 30 Mar 2026 15:30:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1774877435;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J8V18lfevbDQW5TG2gGwA3EgNlE6m1hYJ87gxmtAghI=;
-	b=ggzdcOXDMB2TY+K511w+aHfLN9jlR//RpXi/7uC04VC+4hJrdcK1Z5ziyR5I8l6NXxZQ05
-	Y5iYqWexwz4gTWk/bGtL+JJbBOiqoZBzO49lsTeZbTuhjKsn8kPFsujpTLE/2ZzLVdx5UO
-	ldMGdaPOm9IWHCPvO2TYRTLFJr7rI2yU7MkhaHUXVvI8x+kZeSvSFhBl2iWd6YlnAdbKEi
-	vt5Lb8SwuZo0zcIhG0HFfyIMRsNhszvMltzlg66dTNq+IaH8973ZeyIl/ORhfnyPJWLEH6
-	beNstmgS3fDz2hzEcybuS6dxyDqi3KrPfXKGrVmge1WwL26eNGzJYOIKZk5ISg==
-X-Virus-Scanned: Debian amavisd-new at szelinsky.de
-Received: from szelinsky.de ([127.0.0.1])
-	by localhost (szelinsky.de [127.0.0.1]) (amavisd-new, port 10025)
-	with ESMTP id teRtMx4CBOZK; Mon, 30 Mar 2026 15:30:35 +0200 (CEST)
-Received: from p14sgen5.fritz.box (dslb-002-205-089-102.002.205.pools.vodafone-ip.de [2.205.89.102])
-	by szelinsky.de (Postfix) with ESMTPSA;
-	Mon, 30 Mar 2026 15:30:35 +0200 (CEST)
-From: Carlo Szelinsky <github@szelinsky.de>
-To: Kory Maincent <kory.maincent@bootlin.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OccewnNk"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2aaf59c4f7cso18435725ad.1
+        for <netdev@vger.kernel.org>; Mon, 30 Mar 2026 06:32:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774877542; x=1775482342; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iD3d77B2D7TjEvsYdGDnR63jDfJN3DzzvZeiONNGPCI=;
+        b=OccewnNkRuoq9J8SATNCTzhv8frRTEs8F2qnGxiXCf+jxB4TOa48lO9UZyNwRNmVyi
+         /nNvn/bgTBg03E6Kq8hBgo8oeDI8q2JCY2EqIRE4W/BffQgRRqC5oOvPqlWKUwqXbCHE
+         T5Fzha26GPgZxmxqhG7S7jl2ExTK7JOqgzuUgk6m3ge3kTskfRn1K9Rg9h0XkE1IdUhj
+         VhyPJdEC+Doj/U7SmEFNp62zaGpvRQ6msk1Kliz+hA3qRadVHaHd6i+9zQWAirGD2X4f
+         fapnta+7vgj94QtYeVq7TR+NKCavB2+gNQo4gxFTq8IQKqRDNKu6W1EIoynykKpKbPnz
+         MizQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774877542; x=1775482342;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=iD3d77B2D7TjEvsYdGDnR63jDfJN3DzzvZeiONNGPCI=;
+        b=Wb7cwBMSPnKTu5g/28OSEshPDryylWRa6P4nJ3hVmuG969vkVtFS2eSC79H4x9quIn
+         CnvXxKocYOd0bs4gRwi1SgLTiB3KBHe4lacTKZeBelowV4o06GhMG9AyifDO23Fzef5Z
+         UA6eBg1aT8hmGh5HscaRW4udsjF+jVtxS7E9AUL1bItTqtsH6MsJuAXEQao2xAZ6iWW/
+         KjZMxx3V30KvgObMnabVVw41nFcOxnoPkI2IV23PxJ1/suOuT9AYc3ljWaGlA2qI/w5t
+         1enihr8ClqIyD4zo1IYDK3kPYtdM++Q5RSRgzg7D/xCLcnvhFceGSqvVX1LbKKtaqX+n
+         PGLg==
+X-Forwarded-Encrypted: i=1; AJvYcCVbjQbz6zO1tB+iJ5myDsQNtd9e14+U/DI/o5RuD86l73oiUlKIOYgdspIUoGosafy5QAL2Fms=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwcIg2iIUqYkC7gehgS0EEp/mrE5+7vCVl3u3KaKAjAxJte0hZR
+	Z5ZmjjgCEbdYa6xjoERX1dT3Zsb9gbQvPPe9zkhjyKS6rbjy9BlIFIkk3Fa8wen8kow=
+X-Gm-Gg: ATEYQzw4j7yUcLEuvrjx0ZigVR8mrKlo2AWg9xaeImhtZ81y88kz34m1QKll9Cb13Hd
+	aGiMljr+tYzYt3QWO2gNjEsqv/EA4yh/N61zKSheCagaWdwAbBnAUpjZq70US47V9HN1wAVr5Yi
+	bP6us0qQ54nOUTUDy91b+BcK5Zq0on/8dnviVAefV4UHVJBYOcIR4liPMCJkrGlS9Rnza4XOr8R
+	LhFLm6CzudF5woe6krqf8XPpzNfw+xvif4sGHgz/35aQ0TTTdfHpfYnJ3/kOcjyBvY++O9Kh2y6
+	ak0zCpZiysgUhnXJ8ECjKarQk+9JLi4BEoBL0c6cyHJ3URv+zpallZ20AEqkFPqfMwuPKAQgqwC
+	heraNqP+NN5fpYSGRR5uII+9XlSTzg7m1o93TOHcWrvhHVqfivSQzAve1A7um960ZgktnFs8ciy
+	VDnw+TAvM3mZHsGoa0HzLwl48FX8uO1eI2rvw=
+X-Received: by 2002:a17:903:2408:b0:2b2:54c1:2067 with SMTP id d9443c01a7336-2b254c120d9mr33320645ad.21.1774877541967;
+        Mon, 30 Mar 2026 06:32:21 -0700 (PDT)
+Received: from localhost.localdomain ([47.236.127.140])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2427afbe0sm99601525ad.72.2026.03.30.06.32.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Mar 2026 06:32:21 -0700 (PDT)
+From: Qi Tang <tpluszz77@gmail.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Carlo Szelinsky <github@szelinsky.de>
-Subject: [PATCH net-next v2 3/3] net: mdio: treat PSE EPROBE_DEFER as non-fatal during PHY registration
-Date: Mon, 30 Mar 2026 15:29:52 +0200
-Message-ID: <20260330132952.2950531-4-github@szelinsky.de>
+	Qi Tang <tpluszz77@gmail.com>
+Subject: Re: [PATCH] netfilter: ctnetlink: validate expect class against master helper
+Date: Mon, 30 Mar 2026 21:32:16 +0800
+Message-ID: <20260330133216.241532-1-tpluszz77@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260330132952.2950531-1-github@szelinsky.de>
-References: <20260329161014.2908509-1-github@szelinsky.de>
- <20260330132952.2950531-1-github@szelinsky.de>
+In-Reply-To: <acpkPEJRvzeY863Y@chamomile>
+References: <acpkPEJRvzeY863Y@chamomile>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-When a PSE controller driver is built as a module, it may not be probed
-yet when PHYs are registered on the MDIO bus. This causes
-fwnode_find_pse_control() -> of_pse_control_get() to return
--EPROBE_DEFER, which currently propagates up and destroys the PHY
-device.
+On Mon, Mar 30, 2026 at 01:52:36PM +0200, Pablo Neira Ayuso wrote:
+> Better to ignore the helper name proposed by userspace when creating
+> the expectation.
+>
+> The master conntrack must already has a helper, and such helper must
+> be the same that is specified here.
 
-Treat -EPROBE_DEFER as non-fatal, allowing the PHY to register
-successfully with psec=NULL. The PSE control can be resolved lazily
-when first needed.
+Agreed, your approach is much cleaner -- removing the separate helper
+lookup entirely eliminates the mismatch class rather than just
+patching the validation side.
 
-Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
-Acked-by: Kory Maincent <kory.maincent@bootlin.com>
----
- drivers/net/mdio/fwnode_mdio.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+Thanks for the quick fix!
 
-diff --git a/drivers/net/mdio/fwnode_mdio.c b/drivers/net/mdio/fwnode_mdio.c
-index ba7091518265..2a03b3fc41e6 100644
---- a/drivers/net/mdio/fwnode_mdio.c
-+++ b/drivers/net/mdio/fwnode_mdio.c
-@@ -161,8 +161,12 @@ int fwnode_mdiobus_register_phy(struct mii_bus *bus,
- 
- 	psec = fwnode_find_pse_control(child, phy);
- 	if (IS_ERR(psec)) {
--		rc = PTR_ERR(psec);
--		goto unregister_phy;
-+		if (PTR_ERR(psec) == -EPROBE_DEFER) {
-+			psec = NULL;
-+		} else {
-+			rc = PTR_ERR(psec);
-+			goto unregister_phy;
-+		}
- 	}
- 
- 	phy->psec = psec;
--- 
-2.43.0
-
+Qi Tang
