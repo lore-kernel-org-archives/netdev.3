@@ -1,42 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C0C3BD63D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D123BD640;
 	Mon, 30 Mar 2026 10:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774867036; cv=none; b=QnccX7QL/Brr0yh23xLlZyCNBjKfxQ3PM09XYpk5xrrz2LLzlZyOJtZoluQGXDhUFcTuyBqTlgxhs8SmmWDnFZNAu80f+nVR256dkEB7cgEulFbVSyfLPU6TWXUZkebPy9lj6UjFy6qrF/f+ioDGMUb6X3goIidOKSkvJzhIlDY=
+	t=1774867036; cv=none; b=HqlXIeU5SIWf7vw2paBcTt33mWN/TL9JC78+AzQDBTzxZqf+019DCSPBfZ2pFIbDC29lLDwyfj1306b1cHVSywq5rDoNIZNetOaGgF+ZmUAPHe1rILQPcM7c0lGYlbM94rUX9RmqGHhBW3HbwMxRQzJUIFLz4nm48UV0pI6+uBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774867036; c=relaxed/simple;
-	bh=Wuj9wzQSeaoI1UP2Rxw8a3jZFk0scJPGzVBIPzjE0QU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GJuO2qKrkpqwEr38FU08wQ613Q/+kF1cQtzL1VNNvMumrxDpXXFxEAVHW6TxNwymdghsGrNsQC5pJRgxK+tTCMb9KGlHENWCA5On5z5p3PBvNg+tFVdCDjL30TjFS3NvcPil9Oli/gTuynkagMP+/A0TLG1mLsSTTXK2YFGdT88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Om1yCdWu; arc=none smtp.client-ip=10.30.226.201
+	bh=p7GepPmyAJRiDLZfTTTE//9a3j+GbLbQyAnUhYl/P3w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=E9/56uQpDaWpx5ArjfdAzREAYM4bntGwQXNxU2ucwHVK5XKjmMwlf4I7wMY539UVqUpxviamfCqa2UHafCou6YeI+yPZgoeVeBP1C5Fft2jht6hlMKv8nm4ezMiMFyvYE1HfAdg3trNOAmMUCdYo0WtZBoG0r+Q/vOPghm1UQzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AQwefIDK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Om1yCdWu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F97CC2BCB1;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AQwefIDK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B272C4CEF7;
 	Mon, 30 Mar 2026 10:37:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1774867036;
-	bh=Wuj9wzQSeaoI1UP2Rxw8a3jZFk0scJPGzVBIPzjE0QU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Om1yCdWumupyfTwxfn5X4O4pb5fvrpiG1KZ888DXxkLgqhqHq7wgJwrOp9ZQLmlHR
-	 Opt/wW1bRxnMvFElfkLhKXqS8cPQ95+qjQHz+//+gDG+UJzlkvDpIyW70hBrpQvS5w
-	 l6B6V88VBofN5dKEnePbZC9vtQ3slRk/72rHQJbJfYL9VeArIHJ+aesybdzeROtpw4
-	 0brdFhaRlXHUVjU99Jqt1h3082Jsg3MsJ6d00kpUv3Tjfg3B7S6CvIwCOnaZyMjhOp
-	 V73t0MgY0J1EFRDuOOtgCV8RGzuI6/gng/JRvgx+VmM+i3Cz0nw5QgN00is0Zl740y
-	 ApFWEKrUL0nHw==
+	bh=p7GepPmyAJRiDLZfTTTE//9a3j+GbLbQyAnUhYl/P3w=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=AQwefIDKLKiOyS8VuILVu71Uma+GriTd1FOPfWtSV6XvUwF1LbRgm7H8rH3GgPvq5
+	 EyzT7jmKJQNXZnZAfvmwehrBO/jkponb0urWrosfrjoZhftPs+2VVG3IlaWJSmdMaY
+	 AqZazHBFK3+wsyOFTTGVXat0hiLcqyCDbFp+hdpe6GiIjDXsqeItuDlqorKKMo1/vE
+	 vSIHVDwtJ2YZiW8P644fi1jROB6fd9i3d0yzajOd4WDzLBDZQUDFeMCqzRplrwR9h+
+	 BAPb0hZzne1gxYB4KRfWm7+IFPTao9rO+7MfE97JYTRpJ7QCq55d2a+uUU6TWU5Hoz
+	 La8eDJl/y1dyw==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1w79zd-0000000713S-48Lw;
+	id 1w79ze-0000000713W-05Xj;
 	Mon, 30 Mar 2026 12:37:14 +0200
 From: Johan Hovold <johan@kernel.org>
 To: netdev@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 0/3] nfc: refactor USB endpoint lookups
-Date: Mon, 30 Mar 2026 12:36:52 +0200
-Message-ID: <20260330103655.1672331-1-johan@kernel.org>
+Subject: [PATCH 2/3] nfc: pn533: refactor endpoint lookup
+Date: Mon, 30 Mar 2026 12:36:54 +0200
+Message-ID: <20260330103655.1672331-3-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260330103655.1672331-1-johan@kernel.org>
+References: <20260330103655.1672331-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,22 +48,92 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Use the common USB helper for looking up bulk and interrupt endpoints
-instead of open coding.
+Use the common USB helpers for looking up bulk and interrupt endpoints
+(and determining endpoint numbers) instead of open coding.
 
-Johan
+Signed-off-by: Johan Hovold <johan@kernel.org>
+---
+ drivers/nfc/pn533/usb.c | 34 +++++++++++-----------------------
+ 1 file changed, 11 insertions(+), 23 deletions(-)
 
-
-Johan Hovold (3):
-  nfc: nfcmrvl: refactor endpoint lookup
-  nfc: pn533: refactor endpoint lookup
-  nfc: port100: refactor endpoint lookup
-
- drivers/nfc/nfcmrvl/usb.c | 20 ++++----------------
- drivers/nfc/pn533/usb.c   | 34 +++++++++++-----------------------
- drivers/nfc/port100.c     | 27 ++++++---------------------
- 3 files changed, 21 insertions(+), 60 deletions(-)
-
+diff --git a/drivers/nfc/pn533/usb.c b/drivers/nfc/pn533/usb.c
+index 0ff2f0d7caf4..efb07f944fce 100644
+--- a/drivers/nfc/pn533/usb.c
++++ b/drivers/nfc/pn533/usb.c
+@@ -476,14 +476,9 @@ static const struct pn533_phy_ops usb_phy_ops = {
+ static int pn533_usb_probe(struct usb_interface *interface,
+ 			const struct usb_device_id *id)
+ {
++	struct usb_endpoint_descriptor *ep_in, *ep_out;
+ 	struct pn533 *priv;
+ 	struct pn533_usb_phy *phy;
+-	struct usb_host_interface *iface_desc;
+-	struct usb_endpoint_descriptor *endpoint;
+-	int in_endpoint = 0;
+-	int out_endpoint = 0;
+-	int rc = -ENOMEM;
+-	int i;
+ 	u32 protocols;
+ 	enum pn533_protocol_type protocol_type = PN533_PROTO_REQ_ACK_RESP;
+ 	struct pn533_frame_ops *fops = NULL;
+@@ -491,6 +486,7 @@ static int pn533_usb_probe(struct usb_interface *interface,
+ 	int in_buf_len = PN533_EXT_FRAME_HEADER_LEN +
+ 			 PN533_STD_FRAME_MAX_PAYLOAD_LEN +
+ 			 PN533_STD_FRAME_TAIL_LEN;
++	int rc;
+ 
+ 	phy = devm_kzalloc(&interface->dev, sizeof(*phy), GFP_KERNEL);
+ 	if (!phy)
+@@ -503,21 +499,11 @@ static int pn533_usb_probe(struct usb_interface *interface,
+ 	phy->udev = interface_to_usbdev(interface);
+ 	phy->interface = interface;
+ 
+-	iface_desc = interface->cur_altsetting;
+-	for (i = 0; i < iface_desc->desc.bNumEndpoints; ++i) {
+-		endpoint = &iface_desc->endpoint[i].desc;
+-
+-		if (!in_endpoint && usb_endpoint_is_bulk_in(endpoint))
+-			in_endpoint = endpoint->bEndpointAddress;
+-
+-		if (!out_endpoint && usb_endpoint_is_bulk_out(endpoint))
+-			out_endpoint = endpoint->bEndpointAddress;
+-	}
+-
+-	if (!in_endpoint || !out_endpoint) {
++	rc = usb_find_common_endpoints(interface->cur_altsetting, &ep_in,
++				       &ep_out, NULL, NULL);
++	if (rc) {
+ 		nfc_err(&interface->dev,
+ 			"Could not find bulk-in or bulk-out endpoint\n");
+-		rc = -ENODEV;
+ 		goto error;
+ 	}
+ 
+@@ -525,18 +511,20 @@ static int pn533_usb_probe(struct usb_interface *interface,
+ 	phy->out_urb = usb_alloc_urb(0, GFP_KERNEL);
+ 	phy->ack_urb = usb_alloc_urb(0, GFP_KERNEL);
+ 
+-	if (!phy->in_urb || !phy->out_urb || !phy->ack_urb)
++	if (!phy->in_urb || !phy->out_urb || !phy->ack_urb) {
++		rc = -ENOMEM;
+ 		goto error;
++	}
+ 
+ 	usb_fill_bulk_urb(phy->in_urb, phy->udev,
+-			  usb_rcvbulkpipe(phy->udev, in_endpoint),
++			  usb_rcvbulkpipe(phy->udev, usb_endpoint_num(ep_in)),
+ 			  in_buf, in_buf_len, NULL, phy);
+ 
+ 	usb_fill_bulk_urb(phy->out_urb, phy->udev,
+-			  usb_sndbulkpipe(phy->udev, out_endpoint),
++			  usb_sndbulkpipe(phy->udev, usb_endpoint_num(ep_out)),
+ 			  NULL, 0, pn533_out_complete, phy);
+ 	usb_fill_bulk_urb(phy->ack_urb, phy->udev,
+-			  usb_sndbulkpipe(phy->udev, out_endpoint),
++			  usb_sndbulkpipe(phy->udev, usb_endpoint_num(ep_out)),
+ 			  NULL, 0, pn533_ack_complete, phy);
+ 
+ 	switch (id->driver_info) {
 -- 
 2.52.0
 
