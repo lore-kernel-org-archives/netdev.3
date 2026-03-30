@@ -1,100 +1,202 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013025.outbound.protection.outlook.com [40.107.162.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336243C0612;
-	Mon, 30 Mar 2026 11:09:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774868960; cv=none; b=OllzTkZGSyIw3AJfW+21lcy+RCMscUF0JMy0UK4F+GEyiKzvArLGKBV9gl1Rayde/l72S9daj2WX+yWfCMUiVOxUZ4dCQpOWPAf2jG3MrpuxQzyRF0E3qWmH7KJ30xX3KKViWsSct5AWd9feKBFMTA3ddib2IfPeUgdrxk7xw00=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774868960; c=relaxed/simple;
-	bh=k54Zap4HElXxr0bDos8RPOZ3GVUZ3bkTtMh0+mp8NjI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QueNe/7WPHudyvjjNz6ABz1qdF2Y/TFKFXTM+Hzbwmz+8kEWZzoGtrT1RTKZ4vLCGiHEEmq9cgSf4CJIp6L9Qj8p+8cugZfMwzcSE2BhtFC1QJnSdO0E+EROx1bVixXHvgGV1eWpqO951u4coNQcLXt0xrB61WuzXw4d94WpLFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Y4WC6ACd; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D6A3C3440;
+	Mon, 30 Mar 2026 11:12:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.25
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774869128; cv=fail; b=Pc0pUHMOCWCL8bFiu6eS1iQ+2ULhaX1cdJCSKfxRLtpF0U1ten91laWB/sIrsQwsAJsTB+JDztHV0rXl90R5jEg/MTx4BpJNs3wcR0D2zhxPD4PXNv4pO4CdnKezujpGLVsDsmmoXHYjRBEEqiea4Bq83gKFimSoxPfYvisYdNo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774869128; c=relaxed/simple;
+	bh=kZ2Ka5IewB4d6tsyd0ujlTAD+UZKVUG0+6JmqE5c6cI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Ngf52tyW7V2i4VluXHyOeAgrFaCClPOcWZxASjNRlnjDe5Bqkncm1tILbleFgFb4J5bL5imeo4hG1XntEram1JF7ifUUjGnOyf5gjsN+91/kN/k6Yq3869I3Iiv1hoAhM8513QD3KLLPD4Y8rrM8P44jz/B3myPiXKChUNeuJ2s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=gNhGM1Xx; arc=fail smtp.client-ip=40.107.162.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Y4WC6ACd"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 419F64E42866;
-	Mon, 30 Mar 2026 11:09:12 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 0D6695FFA8;
-	Mon, 30 Mar 2026 11:09:12 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 81032104500A5;
-	Mon, 30 Mar 2026 13:09:05 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1774868950; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=xwRrRLlPDpnvyRc4Og3x+xkt86+ixqnLEHUm07b8DV4=;
-	b=Y4WC6ACdtbCD0glRCzCT/ZRap1g0l6uOG/8lBc72f6DfW46Ays31m4Vcnqqgk2lq/dmmaC
-	vvbViaOee6pxUpuEwH6nGz7H2+zFdwUZPRIklLTjApt0pYpx9MYSHPHKlmvHFT1g6462IO
-	hs1MrrWFv2hq4qgDTf1/KdzCulKdgpqf79rqx9jApUta7dOoaygQ96tCbev+WP8NlKyg8D
-	xL0HMPz0JhG8NCgnBhUEscBJSGa+3mYTcQ3NqkR3YqLAt4/JY43nyJf54W8HFVWPMsjX6a
-	KB7z8XyoGR3Sfx4r5d+/bzaJ4+5b3M+YjjC5Ngc0ZoqMKN+TOGX7bFQELPe4YQ==
-Date: Mon, 30 Mar 2026 13:09:04 +0200
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Carlo Szelinsky <github@szelinsky.de>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Andrew Lunn
- <andrew+netdev@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, Russell
- King <linux@armlinux.org.uk>, Jakub Kicinski <kuba@kernel.org>, "David S .
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/3] net: pse-pd: support module-based PSE controller
- drivers
-Message-ID: <20260330130904.5f0f4b61@kmaincent-XPS-13-7390>
-In-Reply-To: <20260329161014.2908509-1-github@szelinsky.de>
-References: <20260329161014.2908509-1-github@szelinsky.de>
-Organization: bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="gNhGM1Xx"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=j3DlNd9gXcb7kyn+tdjFNgfwPVLBf+H8E2NwbCOuYqnxu5CTNJTOB/5J5MONVIG55Z1sPNZxH7ZnBVo1UiIb4TVSXYuWUnLS5gU5Q/jKYYzKcPdUtZubEbMGRLzbYAupHllcp++CXamJMSbXMXG30X3Xc3NSmES22SPzMK/26vhJCNDC29AdvCrjGn/2c0WA40A5ZJ9ZR1lSf+Ppw3oTb59KF70kjYyTBzCXYoKOglQXy2DMEqDItnf1FO1fUsipnjN8xzF0AVFuElCgeed0VVC2jvrx6btDnmQjglhOpiPfNjOfFafFUFGQS5AKTbP7ifuf4tLVqeIDOh68Pa65Lg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YgUgB9xmTGBiP+2RpVgzYSYzzRnJtwcku6cOKIg0uhA=;
+ b=GlcsRu6OsRJ9Fhk2orCQ831YpoGYuCv/5Khazv56rarjps5sOP9ACbpierTaycoBKrASal/pam0i/PMArWrgCPJw8jYe0yk6ISGKVz9WUWeCyCDoGz2tYROi/JDNfetj2H2zxL7/kohAMZ0yG59xFftGkvvigKCgirrsm2iCYfKhrRggQWYtM0JoIh2KvH/MsotpkQgiVEwWV7RgM9uN2Nh0yEngxPkk8Ih1rwaNwlpQQ3oS1FpTMT/rBv/Hxq/mVub5lOrqYONiVsGkbuAR86lG85ruphM3wF9kLRXOlFf3Di8zQ4aF2eCOBUuvv5unTOc4yAOj9QkjRc9V2WTmzg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YgUgB9xmTGBiP+2RpVgzYSYzzRnJtwcku6cOKIg0uhA=;
+ b=gNhGM1XxYYvEDGswiS+IBfVUtKUFf6oykfhKihzOjpXJyiR1rptjRz09G6oOwO4r7N3MmYJM9vZXxWo+wT4WP7Z2hme3dzek/kprmFXTxTUxQaca8aKs34OkN9gq2UgTVdwzjAV6iVhS+Cm8gn0M++sRrzSVaOfoNTDdf7iyjQfWcph4pJE+/7x9SEfeQYIs/y7tnyo+Wa8OC/I9p7jpVgepIEelu84ZnPUm0d4Z8aWQWOpFLNe5uqv83EB3i/EzFB/WFHAkcGdTdeeq6zTO/t82P0It5UTPSzbOmTDf4aAq0j0Kf+KB+z6Eh0qlt3JWYFBRBaqIPPe6L9oqFy/tdw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8253.eurprd04.prod.outlook.com (2603:10a6:102:1bf::7)
+ by AM9PR04MB8778.eurprd04.prod.outlook.com (2603:10a6:20b:409::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.28; Mon, 30 Mar
+ 2026 11:12:00 +0000
+Received: from PAXPR04MB8253.eurprd04.prod.outlook.com
+ ([fe80::2b4e:8130:4419:d633]) by PAXPR04MB8253.eurprd04.prod.outlook.com
+ ([fe80::2b4e:8130:4419:d633%3]) with mapi id 15.20.9745.027; Mon, 30 Mar 2026
+ 11:12:00 +0000
+Date: Mon, 30 Mar 2026 14:11:43 +0300
+From: Ioana Ciornei <ioana.ciornei@nxp.com>
+To: Petr Machata <petrm@nvidia.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S.  Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	linux-kernel@vger.kernel.org, willemb@google.com, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next v4 00/10] selftests: drivers: bash support for
+ remote traffic generators
+Message-ID: <usxkovboo5jt6vu2jvbwpnsltvewjil27xizt3jjhggu5o4td3@2cgex6op4mzc>
+References: <20260326132828.805703-1-ioana.ciornei@nxp.com>
+ <20260326120342.6429fbdc@kernel.org>
+ <5cuoazp2svgjja5h663zc34dafkuqa2grrm7lzpuunvrjogydf@43mryp77gq2q>
+ <20260327172454.6b9bc8f3@kernel.org>
+ <87a4vp61m4.fsf@nvidia.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87a4vp61m4.fsf@nvidia.com>
+X-ClientProxiedBy: AM8P191CA0017.EURP191.PROD.OUTLOOK.COM
+ (2603:10a6:20b:21a::22) To PAXPR04MB8253.eurprd04.prod.outlook.com
+ (2603:10a6:102:1bf::7)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8253:EE_|AM9PR04MB8778:EE_
+X-MS-Office365-Filtering-Correlation-Id: e511083d-f4b7-4a7c-f85d-08de8e4d2a11
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|1800799024|376014|7416014|366016|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	gcZmtErnezOW8XdK8t+2nTb9MDWN3mPvv8A194UNQ2byzIkt0Q6lsAiHvNTtw16gUeX3PsCGQxnPm7RxUV+RBNfL0V7Q7/lynJ/5blHrr30yeGwhFK5djfSHiZBvNBbg4JG2izzFt+11JGcG9+m07J5QoTPhe7h2C2kWvQDtY+T1QETGwzpmwRW47AlAuq7ctnngBbHgYaxHrPzjXKO2QEETZ/J5eyrUUjUYEvq7JRkrqgHrR/hceycbKVjOAo2skKsGXONyJYLurRZl77CL//YSJtNOhh9hdi+46//wvX67BwLj7zCikCOxrpsO1zqm91q7nCF94wnesfXJYrNPcTMhsvLBHQaRLv0qGLjvAZyRhpXRW40iVmXMoIiHcoKLVYgRhat8c5Wf90VYfRwRdyh6tgvNonnk2cejWfYVo4IOMJy72By5eiCS55GK1KrnNjkwWbIJkGH3z4aYL0D57t1wZ3qQ2vjtAiYQzHt0iNXZDzIuUS+RuFnrzAC9Kn5pLmUzrjDBLrO7ZL6OSgkohqLcdk4aBKi6pTQpEbAqDfyYyxSIbzXZTTWyRf8gYlgNad+FOZ/TfkZ7l81z98mQ241QvGRLbh+wMneTWuVo37g9EAb9u5uUXh86HRmjoQowpVBNxKVmKiywqHDPMaVG5PtL3rBjyV+ALhwXwcQK2oozC5ZqWIygNn6VTFlqf2TX
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8253.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(376014)(7416014)(366016)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ryK50KatMq4q/FFADJ7+Mb+S2ia/L1raS+ZBEyjUsOPeLtmXEJHbq4HUkt4M?=
+ =?us-ascii?Q?KpXgjiiVJtP2EKitpdJMYBcpANbss7QwL9DoAdsA8lg8xvKK3uYFLOZkIJt3?=
+ =?us-ascii?Q?rNWRPAoi6IoNuXdqb7e/xyv3Bd+SE7vfDjqprlks8qDZoWRvvX5vVLHM16Ef?=
+ =?us-ascii?Q?KxJBw0hSXzJrXuvmf6PFn0AdL2itRVGqjwDZzAs6DtlhII+1kNvm9qUTid2b?=
+ =?us-ascii?Q?63pAN+sLlwj4Di64zC6YltjEzCojlaiKChuMs5XVhsIfVz9YthDFpaAuqH01?=
+ =?us-ascii?Q?1b+XVYT+d83PsFElRXAJNKCHJ32j7UgBvjx06L7PnMsDrHTpcxKU1Bs7EDva?=
+ =?us-ascii?Q?050BMhuR3M/82rIVTMaK/bTWJvc/OvNWPPIsQdxewMNguluSXzwEwgVaOdqD?=
+ =?us-ascii?Q?5nVSUsa0D5pdObNXrPaiQmk5AX74duRsIlvk0/i8C/7OwdOSMaofJYrkyhco?=
+ =?us-ascii?Q?tVDmkBsZX0qtkYf11qL380OiCccUK4890JZET0h8bbOt5KrQTj5s17qCu7tB?=
+ =?us-ascii?Q?hL4J3+Ct3AoNIxsroRNIH7Uvyz+OWrQHWs51k+ZB2HHP/P1ItSRv8LYPXJgI?=
+ =?us-ascii?Q?4h+wgR/oLWcK9dQdmgSFQoStnXVdMC/tb9yzUuLy06VJSXyMZRfwjHIDQ7a1?=
+ =?us-ascii?Q?g2HAbjmO5h3KPXVzZY6nJE851u50dzFKgodQje2qj8g6WuM7gZuBEutDyeTT?=
+ =?us-ascii?Q?ggNJLJvscTwardkqgyh1qyJaSSgPDQV8Ro3x+efgDR8UGvFqNo+bgb0HczL5?=
+ =?us-ascii?Q?GK7NHrLBmttSIWiXTJjLxEmNjkzL2VQ4Z7l6CHlYm+/T/s8CsvQK6NX0khe7?=
+ =?us-ascii?Q?/pekn6tGC2n8ykAshoLq/JD2JLnDzsxgDqy4F0Lz214oKtLyCUUGTpH55pgm?=
+ =?us-ascii?Q?3hYT50exWWZSEUF7feQSSc/wdDxH2uznuoUSe01i3MVt4WRascGguUGM4Qzf?=
+ =?us-ascii?Q?P4VuUsD11VLaZMXqU3h6Ppjgy6StY3SqJdYGt9Kf6HBIyvZwx2ZE7uxPwQPJ?=
+ =?us-ascii?Q?FldilQ9p0rTkACTgunURbESNd7SXdhQNVXbVmB8+Y+KvXLmj67MaNXFmAQj3?=
+ =?us-ascii?Q?7prfNre8T28D7QnLoVak60/Kkk3gy1ajEMxoi2T8F6FjPH/n1Z8m7B4Ob75z?=
+ =?us-ascii?Q?uxonL/PgG5LSCyWOYffCIPSTV4T7ldp6vRPJgDgtQS7NzUri61SlY6RCSxmn?=
+ =?us-ascii?Q?VuLVurrCcJoTuIU113eSH/HnpJZu1weUqqN+7WEiraopMVsuiL3Da06C8udq?=
+ =?us-ascii?Q?BMF7hHlO4/+2Tp8y7D9PPMt99OtdKQ7Z2DXQAWi8i1x2gRbnrpZpL/JAwKVf?=
+ =?us-ascii?Q?yAsVOrRhmNmiX6qhl9sOi3EHyms58D9zGeNR+tzvEWNKuUdPSy/SOvje+Hr2?=
+ =?us-ascii?Q?3b0IwYglRElfDMgtkVgD8bogveieyBAgngnA8hi0hzSV9T2eOHxnX1eP1ZkL?=
+ =?us-ascii?Q?CqQ6YWGN25b03bOEgi0D6+HNt2aXPvEJROvdO2UthPvhN5jeD0ACeyhvjHM8?=
+ =?us-ascii?Q?Ch//AkkxHmrdVb3EPhAmkLMYnw4/6GmhlOHroK5jpX+JiDZ4fEQho7++rZBc?=
+ =?us-ascii?Q?LmSMaCmHytE19YHkHpyO3KpD79F68ZQR3TsxiYY1Ed4pLUlatCIdOCvIHSzU?=
+ =?us-ascii?Q?zzGtEGkWWicZAKqkTvcNopU7aeLCRLsoVmB9z2gOztP40pg6gQaCflJNKhiA?=
+ =?us-ascii?Q?ycbC4GyrGX392OLeGX+f5FfPMhMq9AQu/HVcJTmFYS1aG4KlFB8sGEIexgMh?=
+ =?us-ascii?Q?/3RUuT0eiA=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e511083d-f4b7-4a7c-f85d-08de8e4d2a11
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8253.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2026 11:12:00.4057
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: SXRvyiw0o8gkqCSO8zlZpNB8ssuZbEHgSFCNVY911rVlwrD61iEiSx2BSsf+cwjhI/VADe3wQAaBFTxxy98VwA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8778
 
-On Sun, 29 Mar 2026 18:10:11 +0200
-Carlo Szelinsky <github@szelinsky.de> wrote:
+On Mon, Mar 30, 2026 at 12:38:54PM +0200, Petr Machata wrote:
+> 
+> Jakub Kicinski <kuba@kernel.org> writes:
+> 
+> > On Fri, 27 Mar 2026 09:32:22 +0200 Ioana Ciornei wrote:
+> >> On Thu, Mar 26, 2026 at 12:03:42PM -0700, Jakub Kicinski wrote:
+> >> > On Thu, 26 Mar 2026 15:28:18 +0200 Ioana Ciornei wrote:  
+> >> > > This patch set aims to add the necessary support so that bash written
+> >> > > selftests are also able to easily run with a remote traffic generator
+> >> > > system, either be it in another netns or one accessible through ssh.
+> >> > > 
+> >> > > This patch set is a result of the discussion from v1:
+> >> > > https://lore.kernel.org/all/20260303084330.340b6459@kernel.org/
+> >> > > Even though the python infrastructure is already established, some
+> >> > > things are easier in bash and it would be a shame to leave behind the
+> >> > > bash tests that we already have.  
+> >> > 
+> >> > I think this introduces a bunch of regressions, eg:
+> >> > 
+> >> > https://netdev-ctrl.bots.linux.dev/logs/vmksft/forwarding/results/575622/4-local-termination-sh/stdout
+> >> > 
+> >> > https://netdev-ctrl.bots.linux.dev/logs/vmksft/netdevsim/results/575802/18-netcons-resume-sh/stdout  
+> >> 
+> >> I cannot reproduce this unfortunately. For example, local_termination.sh
+> >> gives me the following result with the exact patches that I submitted.
+> >> Any idea on what might be the difference?
+> >
+> > Hm, the system that runs this on our end is:
+> >
+> > # cat /etc/redhat-release 
+> > Fedora release 43 (Forty Three)
+> >
+> > And it has this added on top of default install:
+> >
+> > # cat /etc/systemd/network/99-default.link
+> > [Match]
+> > OriginalName=*
+> >
+> > [Link]
+> > NamePolicy=keep kernel database onboard slot path
+> > AlternativeNamesPolicy=database onboard slot path mac
+> > MACAddressPolicy=none
+> 
+> The observed issues are consistent with TARGETS being defined, but not
+> an array:
+> 
+> $ declare -A T
+> $ T=([a.100]=b)
+> $ U=foo
+> $ if declare -p T &>/dev/null; then echo "${T[a.100]}"; else echo fail; fi
+> b
+> $ if declare -p U &>/dev/null; then echo "${U[a.100]}"; else echo fail; fi
+> bash: a.100: syntax error: invalid arithmetic operator (error token is ".100")
 
-> When a PSE controller driver is built as a module, it may not be probed
-> yet when PHYs are registered on the MDIO bus. This causes
-> of_pse_control_get() to return -EPROBE_DEFER, destroying the PHY device.
-> Later, regulator_late_cleanup disables the unclaimed PSE regulators,
-> permanently killing PoE.
+Totally agree, that's what it looks like.
 
-That's a good idea. I still think that one day I will remove registering
-a regulator for every PIs as it only brings pain and fixups, but well until
-then lets continue dealing with it.
+On the other hand, I don't see any other use of the TARGETS variable in
+tools/testing/selftests. The only way I can trigger that kind of error
+is by setting and exporting TARGETS before running the test.
 
-You forgot net-next in the patch subject.
-=20
-> This series fixes the issue in three steps:
->=20
->   1. Treat -EPROBE_DEFER as non-fatal during PHY registration, allowing
->      the PHY to register with psec=3DNULL.
->=20
->   2. Add an admin_state_synced flag to pse_pi so that pse_pi_is_enabled()
->      reports unclaimed PIs as disabled, preventing regulator_late_cleanup
->      from shutting them down. The existing dual-path behavior (software-
->      tracked vs. hardware-queried state) is preserved for claimed PIs.
->=20
->   3. Add pse_control_try_resolve() for lazy PSE control resolution on
->      first ethtool access, serialized by RTNL.
->=20
-> This is tested on my setup, but I am not fully sure if this is the right
-> approach to solve this problem. I would love to get feedback from the
-> maintainers on whether the overall design direction makes sense, or if
-> there is a better way to handle the deferred PSE control acquisition.
+ root@localhost:~/ksft-net-drv# export TARGETS=test
+ root@localhost:~/ksft-net-drv# ./run_kselftest.sh -t drivers/net/netconsole:netcons_resume.sh
+ [ 1895.134633] kselftest: Running tests in drivers/net/netconsole
+ TAP version 13
+ 1..1
+ # timeout set to 45
+ # selftests: drivers/net/netconsole: netcons_resume.sh
+ # Running with bind mode: ifname
+ # /root/ksft-net-drv/drivers/net/lib/sh/../../../../net/lib.sh: line 707: eni497np1: unbound variable
+ not ok 1 selftests: drivers/net/netconsole: netcons_resume.sh # exit=1
 
-You approach seems good to me.
+So this means that TARGETS is used by the netdev testing
+infrastructure, I presume.
 
---=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+Anyhow, I can change the variable name to avoid this. Something like
+NETIF_TARGETS?
+
