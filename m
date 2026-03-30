@@ -1,184 +1,80 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD1936AB54;
-	Mon, 30 Mar 2026 23:41:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38A53876B9
+	for <netdev@vger.kernel.org>; Mon, 30 Mar 2026 23:42:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774914087; cv=none; b=kqAo6gsJzdji2QIMT9Ws9oElmDI4RVPU9DaduE1Ws9w50+7c14ehE6MdmhaSiPqeFAQCDZ2Uutr70cTAH2fHpWv1cOwv/2QLJP0aMu8HvtVmFRRHTzfkSVH/0TM0DIwWMdsSmivJZROx4zWvViXNLf/VCeYQj29CYJdIT9HLS6Q=
+	t=1774914145; cv=none; b=J/ObKFnCWkbyim2y6DPUm7pJR+I6mjnnvo0COxUrukZsbJrI/mE3EruTeio88fXdz6KAkhnfP8Wb2IlHHt6+eADhZzg272h23+OTfrJvu6fmKvMRaHNd6tUnBWzvQ0OezUY5pigIZ+N+hncayttw29YeRzW0R+A5C1o6ZDeK7Gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774914087; c=relaxed/simple;
-	bh=Wsb68vwebu5k5GbIZ4m7HzQHX0mtcKHGVK4H/spGrgw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JVnx6tlXPQvo2dfbgAG6ijzehOigNmcSt8KT0qksXaVH+jx9RcfhUcj38cOYqbcT9A3WdqAyl54ioP0wXa9nc4lDTZAsNU/baJ/ecHJkzICkW+uwD0Bk2BllpmsbaIdNBh0W3SpdRtpOSp/6AdYPLbRiwMH9azTwBtn0wwXq8nE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=MbuYaueX; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1774914145; c=relaxed/simple;
+	bh=aHrIbDCRF2C63qxAWklCYHcqyfF0RZoSgHISzrHOz9s=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MLCP3EvH79WV9yh9Ygs0q59wkqPxVCyut2+MRQBX+MZiAcA97ctSvemM3uA7ejLhiVxvcr3An+axlnsOzlyH4kseAoDWYUbb7faIY3EgrW0gJErhh3tdM/isKYqK2Utg1DgVwe2+3Aw6AuH9wF1ON3xjsdrvvEGXmaXQVkRVz1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q1VSOtlx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="MbuYaueX"
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1w7LeK-002rCb-89; Tue, 31 Mar 2026 01:04:00 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector1; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID;
-	bh=SqFNvY1V+aOz8GRhxciZ/yNPa759gjISZHD7MtM/Fmg=; b=MbuYaueXdMQp3bLFmRL8FrrdFK
-	YG+4GryjUIHI3irD+p5oUWptBWhztRePe4mUiF0Tlx7WPDuWnEH3BSOBI2Hcvs8mUonnf5OJkC0e1
-	l4JStv8HZsIewiWqcI/kaFH7P9VDrh0tVvNiiXi8hw9ySV+yFlnf+JRTM3g7UEIdjgJ1LZaRYKHwq
-	4KlLft08Jvx8tiFmg7SSNIx7I77UCKTUX47sWwP0yAhGJgTNzT5PORenOwtVzi2aUIIWmiIjZB7/J
-	WWhQISfgt2cZvnDOqoptGzEWzHzaTqZtTEQO+nATgc/APm3MGVhcTJrtVxLUqzjTvTmyOKo05ZMvd
-	mHc9I1Bg==;
-Received: from [10.9.9.72] (helo=submission01.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1w7Le8-0006EB-KT; Tue, 31 Mar 2026 01:03:48 +0200
-Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1w7Ldp-007xmP-N0; Tue, 31 Mar 2026 01:03:29 +0200
-Message-ID: <27fa6e91-02a5-46cd-8c95-b75fd2c5fa08@rbox.co>
-Date: Tue, 31 Mar 2026 01:03:23 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q1VSOtlx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE0A5C4CEF7;
+	Mon, 30 Mar 2026 23:42:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774914145;
+	bh=aHrIbDCRF2C63qxAWklCYHcqyfF0RZoSgHISzrHOz9s=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=q1VSOtlxR4oiyc2fLxazcaNC8M5IhUGTkgAvRrzVAWCqhFe4l8xQDBgzerxWvD0KA
+	 yWFBZmBbHzI/fd2pbIxl+bGHyTikCvjZHZl/nhqo+sGe8MHIPYc8TeJuxZncvbUi0a
+	 htsWUlWRkufWs4hN76gc2I3zO+jpCDDc6+FMCQZfDXX/tFu+rnlL5DoIEBT5OzYfSv
+	 m4zXgSftUzB24MCIvy6YBxjiiFWih0qFSd2xUGU0/tt0ItYtavVyNGIH1kbtXsT3Rz
+	 RsDSZ7wtmzNqH3qpLb2GhuYJ1XdMZZl0I02CawjX5SopRiB7etyHl9+kaTKSDv8g+o
+	 0ffNP2TE7Zh/w==
+Date: Mon, 30 Mar 2026 16:42:24 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Andrew Lunn <andrew@lunn.ch>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org, Ong Boon
+ Leong <boon.leong.ong@intel.com>, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net-next 00/10] net: stmmac: TSO fixes/cleanups
+Message-ID: <20260330164224.0b75f251@kernel.org>
+In-Reply-To: <acl0pTqJ97o0PRxY@shell.armlinux.org.uk>
+References: <achJ1dfeT6Q8rBuX@shell.armlinux.org.uk>
+	<20260329111123.740bada9@kernel.org>
+	<acl0pTqJ97o0PRxY@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf v3 5/5] bpf, sockmap: Adapt for af_unix-specific lock
-To: Martin KaFai Lau <martin.lau@linux.dev>
-Cc: Jiayuan Chen <mrpre@163.com>, John Fastabend <john.fastabend@gmail.com>,
- Jakub Sitnicki <jakub@cloudflare.com>, Eric Dumazet <edumazet@google.com>,
- Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Willem de Bruijn <willemb@google.com>, "David S. Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>, Yonghong Song <yhs@fb.com>,
- Andrii Nakryiko <andrii@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Eduard Zingerman
- <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>,
- Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
- Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>,
- Cong Wang <cong.wang@bytedance.com>, netdev@vger.kernel.org,
- bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-References: <20260306-unix-proto-update-null-ptr-deref-v3-0-2f0c7410c523@rbox.co>
- <20260306-unix-proto-update-null-ptr-deref-v3-5-2f0c7410c523@rbox.co>
- <2192e9ef-894f-4826-b296-4f90e973a31b@163.com>
- <b9a956dd-ebb2-47ca-8b49-ccbba6ff9b26@rbox.co>
- <b21fac4e-891b-481c-9734-e95290e49097@linux.dev>
- <fa818820-c0c9-48dc-8ebc-661cb3349935@rbox.co>
- <dd043c69-4d03-46fe-8325-8f97101435cf@linux.dev>
-Content-Language: pl-PL, en-GB
-From: Michal Luczaj <mhal@rbox.co>
-In-Reply-To: <dd043c69-4d03-46fe-8325-8f97101435cf@linux.dev>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 3/26/26 07:26, Martin KaFai Lau wrote:
-> On 3/15/26 4:58 PM, Michal Luczaj wrote:
->>> Beside, from looking at the may_update_sockmap(), I don't know if it is
->>> even doable (or useful) to bpf_map_update_elem(unix_sk) in
->>> tc/flow_dissector/xdp. One possible path is the SOCK_FILTER when looking
->>> at unix_dgram_sendmsg() => sk_filter(). It was not the original use case
->>> when the bpf_map_update_elem(sockmap) support was added iirc.
->>
->> What about a situation when unix_sk is stored in a sockmap, then tc prog
->> looks it up and invokes bpf_map_update_elem(unix_sk)? I'm not sure it's
->> useful, but seems doable.
+On Sun, 29 Mar 2026 19:51:17 +0100 Russell King (Oracle) wrote:
+> > While I have you - you have a significantly negative "reviewer score".
+> > You post much more than you review. Which should earn you extra 24h
+> > of delay in our system. I've been trying to ignore that and prioritize
+> > applying your patches but it'd be great if you could review a bit more.  
 > 
-> [ Sorry for the late reply ]
+> Sorry, but given the effort that stmmac is taking, I don't have much
+> capacity to extend mental cycles elsewhere.
 > 
-> It is a bummer that the bpf_map_update_elem(unix_sk) path is possible 
-> from tc :(
+> This two patch series wouldn't have exploded into ten (or maybe even
+> more) patches had someone not pointed out the problem with
+> suspend/resume interacting with disabling TSO... which prompted me to
+> look deeper and discover a multitude of other problems. Should I
+> instead ignore these bugs and not bother trying to fix this stuff?
 > 
-> Then unix_state_lock() in its current form cannot be safely acquired in 
-> sock_map_update_elem(). It is currently a spin_lock() instead of 
-> spin_lock_bh().
-
-Is there a specific deadlock you have in your mind?
-
->>> The only path left is bpf_iter, which I believe was the primary use case
->>> when adding bpf_map_update_elem(sockmap) support [1]. It would be nice
->>> to avoid bh_lock_sock() when calling from all bpf_iter (tcp/udp/unix)
->>> where lock_sock() has already been done. It is more for
->>> reading-correctness though. This just came to my mind.
->>> has_current_bpf_ctx() can be used to check this. sockopt_lock_sock() has
->>> been using it to conditionally take lock_sock() or not.
->>
->> [ One clarification: bh_lock_sock() is a sock_map_update_elem() thing,
->> which can only be called by a bpf prog. IOW, has_current_bpf_ctx() is
->> always `true` in sock_map_update_elem(), right? ]
+> Honestly, I'm getting tired of stmmac with it sucking lots of my time,
+> and I suspect you're getting tired of the constant stream of patches
+> for it - but the reason there's a constant stream is because there's
+> so much that's wrong or broken in this driver.
 > 
-> For all the bpf prog types allowed by may_update_sockmap() to do 
-> bpf_map_update_elem(sockmap), only BPF_TRACE_ITER should have 
-> has_current_bpf_ctx() == true. The tc prog (and others allowed in 
-> may_update_sockmap()) will have has_current_bpf_ctx() == false when 
-> calling sock_map_update_elem().
+> So either we let the driver rot, or... what?
 
-OK, so let's take test_sockmap_update.c:copy_sock_map(). It is a tc prog
-and it calls bpf_map_update_elem() -> sock_map_update_elem(), right? But
-running `test_progs -t "sockmap_basic/sockmap update"` shows (pr_warn() in
-sock_map_update_elem()) that has_current_bpf_ctx() == true. That's expected
-and has_current_bpf_ctx() would be false if sock_map_update_elem() was ran
-via a hook?
-
-> The tc case of bpf_map_update_elem(unix_sk) is unfortunate and requires 
-> going back to the drawing board. I think checking unix_peer(sk) for NULL 
-> without acquiring unix_state_lock() is needed for the 
-> sock_map_update_elem() path, since changing unix_state_lock() for this 
-> unknown use case seems overkill.
-> 
-> Whether sock_map_update_elem_"sys"() needs unix_state_lock() is up for 
-> debate.
-
-All right, I'll re-spin the series reverting back to v1.
-
-> For bpf_iter_unix_seq_show(), one thought is to add unix_state_lock() 
-> there before running the bpf iter prog. iiuc, it is what Kuniyuki has in 
-> mind also to allow bpf iter prog having a stable view of unix_sock. This 
-> could be a followup.
-> [fwiw, it was why I first thought of has_current_bpf_ctx() to avoid 
-> sock_map_update_elem() taking unix_state_lock() again if 
-> bpf_iter_unix_seq_show() acquires unix_state_lock() earlier. I later 
-> concluded (but proved to be incorrect) that tc cannot call 
-> bpf_map_update_elem(unix_sk).]
-> 
->>
->> Let me know if I'm correctly rephrasing your idea: assume all bpf-context
->> callers hold the socket locked or keep it "stable" (meaning: "sk won't
->> surprise sockmap update by some breaking state change coming from another
->> thread"). As you said, most bpf iters already take the sock_lock(), and I
-> 
-> Right, all bpf iter (udp, tcp, unix) has acquired the lock_sock() before 
-> running the bpf iter prog. afaik, the only exception is netlink bpf iter 
-> but it cannot be added to sock_map afaik.
-
-And sock_{map,hash}_seq_show() (being a part of bpf iter machinery) needs
-to take lock_sock() just as well? Would that require a special-casing
-(unix_state_lock()) for af_unix?
-
->> have a patch that fixes sock_{map,hash}_seq_show(). Then we could try
->> dropping that bh_lock_sock().
->>
->>> [ I would still keep patch 3 though. ]
->>
->> Right.
->>
->>> [1]: https://lore.kernel.org/bpf/20200821102948.21918-1-lmb@cloudflare.com/
->>>
->>>>
->>>> In a parallel thread I've asked Kuniyuki if it might be better to
->>>> completely drop patch 2/5, which would change how we interact with
->>>> sock_map_close(). Lets see how it goes.
->>>>
->>>
->>> If patch 2 is dropped, lock_sock() is always needed for unix_sk?
->>
->> For sock_map_update_elem_sys() I wanted to lock_sock()+unix_state_lock()
->> following Kuniyuki's suggestion to keep locking pattern/order (that repeats
->> when unix bpf iter prog invokes bpf_map_update_elem() ->
->> sock_map_update_elem()). For sock_map_update_elem() not, we can't sleep there.
-> 
-
+I was hoping to nudge you towards reviewing more rather than have you
+slow down TBH :) Your patches are generally excellent so not a burden
+for my PoV. And stmmac is a toilet, a very popular one at that, so
+efforts to clean it up are most appreciated. If you could review a
+couple of series every time you post - the balance should be restored
+to our tooling universe.
