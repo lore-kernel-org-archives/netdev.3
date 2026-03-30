@@ -1,244 +1,112 @@
-Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E7D2E7623;
-	Mon, 30 Mar 2026 14:33:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.117.225.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C60E3064A3;
+	Mon, 30 Mar 2026 14:36:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774881188; cv=none; b=Hgx0GW7MQoSXimZsnUKxt9llb7OWyz1h8lwFT7BF+E2mackAIxx0lulYbXKiZEDyXpejWU8uG/i00QFkNIAitEWRFQ0XTvpvc02WXs5G539kwa0e3xBiD302yMKYLVkVovLI9dciEmA7MUgDuxDO9wgaqkJ7O12i1PuT6ks3Ugs=
+	t=1774881407; cv=none; b=pVMa/TN1Uj2TTAcbY+ULOd6a+WgKE0F2PVCKyvZZh+2RZmvUA1PLx7tgepFjiRkgAkkLtUvTbjPU9pOU1lt8x01YqmJQDtrP+6n/aemvBSbr8VtAlgei72+vAd2aSmY4FvG0IZ6I7bs2lWoH0tL5VfDXpLY6PoUgJ43wknlNxLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774881188; c=relaxed/simple;
-	bh=qXyMA/3yrrPgyhk87wJOL1csRZbxo4+mbkZUAZM/io8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AzGcjNd9aU+sE3SX1HZAS8XFI58lYqwFIE+xUHve1zPx6esBTlt9iWvRWqEGxZXb7/JgHgpMV4gjjBs63OUlrBYO+CR10cPPXfveeU45Gqn/lVLhbUnWmh9hqe7m9uENcNoW9jm0+PMhpS8ClYl6DZxYsZheh8P2j/MKlU6jtHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=LeyyIUo0; arc=none smtp.client-ip=130.117.225.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
+	s=arc-20240116; t=1774881407; c=relaxed/simple;
+	bh=oHxTxG2Nh5IuTVNHul4winSqHGDUCAQCu25ksvmIBVM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=NHWox4FYB2pGHy5LJRZnuEut2XSBhVs/FpdiayiVEKYdLt0MZ8/TnXRN7s1Jdx9lMJXmdLJ0IzxPmhUeQDLx7ByzU66J80SLRi6JkaxvTd2j2ChRCmJgtVzeqX/GDOPIzPz/R/4wlIaAycMPTDAC67gOPhHkWbbPjIVT7/N+nj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j7PakSWL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="LeyyIUo0"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=virtuozzo.com; s=relay; h=Content-Type:MIME-Version:Message-ID:Date:Subject
-	:From; bh=ykovE9Ss5bS4WvX5GU5qRjuShXMBEAaY8t91/xSP7TU=; b=LeyyIUo0IQMuI2+1YjG
-	y8j6KFNBWSAd9qTpze3MRd5gEQuaoTDGuA7NY1niouI39T3zhw+x1uqt9XDr3CxL8u9HBkPln18Po
-	fE11EIitaV+FppRj8Mc1awBVVUcG6UcOy9bbY+zoTNjOnQuYzfKv4WtuWv7WtlnJSfnt9KMwXUlEB
-	Oh6QhttlE7kG2W0F8A+9B4nAh+BbKN2RZPaFj2OKQmwwF3ZjOVOTO1aRw57XMl+kIEVVb1DCLOruF
-	QqPG+4fP2jQp1boS12vrB9N/CVWCKcpvnmfxLATBP2966lh1Xd0FPRSIRqM/hhIVsdQsqJ8Kpw+rw
-	mwO9PWIA4U1JEug==;
-Received: from ch-demo-asa.virtuozzo.com ([130.117.225.8] helo=f0.vzint.dev)
-	by relay.virtuozzo.com with esmtp (Exim 4.96)
-	(envelope-from <khorenko@virtuozzo.com>)
-	id 1w7Dde-009NzU-1F;
-	Mon, 30 Mar 2026 16:32:48 +0200
-From: Konstantin Khorenko <khorenko@virtuozzo.com>
-To: Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Mikhail Zaslonko <zaslonko@linux.ibm.com>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Vasileios Almpanis <vasileios.almpanis@virtuozzo.com>,
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Konstantin Khorenko <khorenko@virtuozzo.com>
-Subject: [PATCH 0/1] lib/zlib: fix GCOV-induced crashes from concurrent inflate_fast()
-Date: Mon, 30 Mar 2026 16:32:54 +0200
-Message-ID: <20260330143256.306326-1-khorenko@virtuozzo.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j7PakSWL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A4E5C4CEF7;
+	Mon, 30 Mar 2026 14:36:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774881407;
+	bh=oHxTxG2Nh5IuTVNHul4winSqHGDUCAQCu25ksvmIBVM=;
+	h=From:Subject:Date:To:Cc:From;
+	b=j7PakSWLOFyQ9f13rZmL3pOGcETVRjYYKiEVAgy8v78aYsDD8H+CxaoGROn3MayUx
+	 doXXPzdnOb1bZuw3w+WaEH/YhIySAdLjOssUVEQ3DSC6fVdlqK9P8JlRvXYXx8qGTU
+	 h/I7MTARSMPI1b8W02tplyKm7KrS2D3h6ecBm9+H3AvMG2fLWdUCXxTzqbvPeitohq
+	 eBdCr8ca2nquBUQCRb+toYcSM7YR51lSvAkp2c0Vv0ICP9cjC6LSeAH5muW310GOpn
+	 DuRjYusnqDKJRm23r43UCdNG0VJbQDKH/82usAWx6sVsdPrt3t+twwn4InRwcnkgal
+	 GRnf5Gbmi30IQ==
+From: Chuck Lever <cel@kernel.org>
+Subject: [PATCH v2 0/2] Bypass usercopy hardening for kernel-only iterators
+Date: Mon, 30 Mar 2026 10:36:29 -0400
+Message-Id: <20260330-bypass-user-copy-v2-0-f236179e7fd6@oracle.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAG2KymkC/yWMQQrCMBBFr1Jm7WCaQEWvIi6ScWxHMAmZViyld
+ zfR5fv89zZQLsIKl26Dwm9RSbGCPXRAk48jo9wrgzV2MM4OGNbsVXGpHlLKKzo+uX7oic4mQNV
+ y4Yd8fsnr7c+6hCfT3DrtEbwyhuIjTW1KRUaJx5fXmQvs+xe5Jh4IlAAAAA==
+X-Change-ID: 20260326-bypass-user-copy-3e73161cc90b
+To: Al Viro <viro@zeniv.linux.org.uk>, Kees Cook <kees@kernel.org>, 
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: linux-hardening@vger.kernel.org, linux-block@vger.kernel.org, 
+ linux-fsdevel@vger.kernel.org, netdev@vger.kernel.org, 
+ Chuck Lever <chuck.lever@oracle.com>
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1753;
+ i=chuck.lever@oracle.com; h=from:subject:message-id;
+ bh=oHxTxG2Nh5IuTVNHul4winSqHGDUCAQCu25ksvmIBVM=;
+ b=owEBbQKS/ZANAwAKATNqszNvZn+XAcsmYgBpyop1Jk/zlwbCvkynME26o1jUl+31D3JmnYXkj
+ RD9wDp9nhmJAjMEAAEKAB0WIQQosuWwEobfJDzyPv4zarMzb2Z/lwUCacqKdQAKCRAzarMzb2Z/
+ lw1QD/9kD5ulEQARWAHavD0+hXtMU0Ng5VqMewVWz7E7mSSOEoGmlLwwlE22m+JOzl5D299UJac
+ QqtZnRnLv7pCt8c7TdVpxHb8EliZS39Thlm7xJggrIo4zu3SdLbAI3frihW+Pp52k3KrQ50yBka
+ tHh1gOnzD6bH+T+vR2KiFXuZs+Cixd5f1VsaMF7PylVYX6jXPim2shkNr5CVLatOsUateABBfe1
+ xG6QRAFwph7eseyV3G71KQuDhdEdhkBQX9r76UFPdLvG73DtA1BUzkApFE1pJWtDGougMnye5qL
+ mKnxAe9hGenFNz/Z+B6R/PJyv7SOS1jfc+1LWpJpPldb1Z19y01nRvLc6hNJodVLEqGpoIKz0kx
+ ieMwFUm3fCiVHakyzTtZFRU9BMioiQfwx5RwZ4aJTe72WqSTyr/InpNio8hZYompQNQnsi7mYDY
+ c3cks8TRfdqIuoxnYp3whvcjXqKsNbR43GiRhxP+S9GOfMolUdmjgO5pOzs8YffKTYmwGjue64N
+ MdMzfEaUCn5nhRWO4VuqhhhEx5l35mwIp610M8365zxW5uJqqZI/jREYqhKP5x+sO65HdhEwtis
+ 6rgM8HJmx80zct0jVo2YYcQ+BmW+PhLwua7NMc5IAy59bTTMAUNwDKssNNNRvPGpCsNersJtROY
+ V8qS+Be9A/xaGAA==
+X-Developer-Key: i=chuck.lever@oracle.com; a=openpgp;
+ fpr=28B2E5B01286DF243CF23EFE336AB3336F667F97
 
-## Summary
+Profiling NFSD under an iozone workload showed that hardened
+usercopy checks consume roughly 1.3% of CPU in the TCP receive
+path. The runtime check in check_object_size() validates that
+copy buffers reside in expected slab regions, which is
+meaningful when data crosses the user/kernel boundary but adds
+no value when both source and destination are kernel addresses.
 
-GCC can merge global GCOV branch counters with loop induction variables,
-causing out-of-bounds memory writes when the same function executes
-concurrently on multiple CPUs. We observed kernel crashes in zlib's
-inflate_fast() during IPComp (IP Payload Compression) decompression when
-the kernel is built with CONFIG_GCOV_KERNEL=y.
+The fix splits check_copy_size() into two variants: the
+existing full check, and a new __compiletime_check_copy_size()
+that retains the compile-time object size assertion and the
+runtime overflow check but omits check_object_size(). A
+user_backed_iter() test at each call site selects between
+them, so user-backed iterators continue to receive the full
+validation.
 
-This patch adds -fprofile-update=atomic to the zlib Makefiles to prevent
-the problematic optimization.
-
-## Problem Discovery
-
-The issue was discovered while running the LTP networking stress test on
-a 6.12-based kernel with GCOV enabled:
-
-  Test:     LTP net_stress.ipsec_udp -> udp4_ipsec06
-  Command:  udp_ipsec.sh -p comp -m transport -s 100:1000:65000:R65000
-  Kernel:   6.12.0-55.52.1.el10 based (x86_64) with CONFIG_GCOV_KERNEL=y
-
-The crash occurred in inflate_fast() during concurrent IPComp packet
-decompression:
-
-  BUG: unable to handle page fault for address: ffffd0a3c0902ffa
-  RIP: inflate_fast+1431
-  Call Trace:
-   zlib_inflate
-   __deflate_decompress
-   crypto_comp_decompress
-   ipcomp_decompress [xfrm_ipcomp]
-   ipcomp_input [xfrm_ipcomp]
-   xfrm_input
-
-Analysis showed a write 3.4 MB past the end of a 65 KB decompression
-buffer, hitting unmapped vmalloc guard pages.
-
-## Verification on Upstream Kernel
-
-We verified the bug is present in upstream Linux v7.0-rc5 (commit
-46b513250491) with both:
-
-- GCC 14.2.1 20250110 (Red Hat 14.2.1-7)
-- GCC 16.0.1 20260327 (experimental, built from source)
-
-We compiled lib/zlib_inflate/inffast.c with the kernel's standard GCOV
-flags (including the existing -fno-tree-loop-im workaround from commit
-2b40e1ea76d4) and inspected the assembly output. Both compilers exhibit
-the problematic optimization.
-
-## Root Cause: GCOV Counter IV-Merging
-
-When CONFIG_GCOV_KERNEL=y, GCC instruments every basic block with counter
-updates. In zlib's inner copy loops, GCC can optimize by merging these
-global GCOV counters with the loop induction variables that compute store
-addresses.
-
-For example, in the pattern-fill loop in inflate_fast() (conceptually
-`do { *sout++ = pat16; } while (--loops);`), GCC may generate code that:
-
-1. Loads the current GCOV counter value from global memory
-2. Uses that value to compute the base address, start index, and end bound
-3. On each iteration, uses the counter as both:
-   - The value to write back to the global counter
-   - The index for the data store
-
-This optimization is valid for single-threaded code but breaks when the
-same function executes concurrently on multiple CPUs, because the GCOV
-counter is a single global variable shared by all CPUs.
-
-### Assembly Examples
-
-**GCC 14.2.1 (Red Hat)** — pattern-fill loop without -fprofile-update=atomic:
-
-    movq    __gcov0.inflate_fast+248(%rip), %r9
-    leaq    1(%r9), %rax                        # rax = counter + 1
-    leaq    (%r9,%rdi), %rsi                    # rsi = counter + loops (end)
-    negq    %r9
-    leaq    (%r15,%r9,2), %r9                   # r9 = base - counter*2
-  .L42:
-    movq    %rax, __gcov0.inflate_fast+248(%rip)
-    movw    %cx, (%r9,%rax,2)                   # WRITE using merged counter
-    addq    $1, %rax
-    cmpq    %rax, %rsi
-    jne     .L42
-
-Here, %rax serves dual purpose: GCOV counter and memory index.  If another
-CPU updates __gcov0.inflate_fast+248 between the initial load and the loop
-iteration, the write address becomes invalid.
-
-**GCC 16.0.1 (experimental)** — same pattern, different register allocation:
-
-    movq    __gcov0.inflate_fast+248(%rip), %r14
-    leaq    1(%r14), %rdx
-    leaq    (%r14,%r8), %rdi                    # end bound from counter
-    negq    %r14
-    leaq    (%rbx,%r14,2), %rbx                 # base address from counter
-  .L42:
-    movq    %rdx, __gcov0.inflate_fast+248(%rip)
-    movw    %si, (%rbx,%rdx,2)                  # WRITE using merged counter
-    addq    $1, %rdx
-    cmpq    %rdx, %rdi
-    jne     .L42
-
-Both compilers merge the counter with the loop IV; both are vulnerable.
-
-**With -fprofile-update=atomic** (GCC 14.2.1):
-
-    movq    %rdi, %r9                           # pure pointer
-  .L42:
-    lock addq   $1, __gcov0.inflate_fast+248(%rip)
-    addq    $2, %r9
-    movw    %ax, -2(%r9)                        # WRITE using pure pointer
-    subq    $1, %rdx
-    jne     .L42
-
-The GCOV counter update is isolated as a standalone atomic instruction.
-The write address is computed purely from local registers, making
-concurrent execution safe.
-
-## Why Existing Workarounds Don't Help
-
-The kernel already passes -fno-tree-loop-im when building with GCOV
-(commit 2b40e1ea76d4, "gcov: disable tree-loop-im to reduce stack usage").
-That flag prevents GCC from hoisting loop-invariant memory operations out
-of loops, which was causing excessive stack usage.
-
-However, -fno-tree-loop-im does NOT prevent the IVopts (induction variable
-optimization) pass from merging GCOV counters with loop induction
-variables.  These are separate optimization passes, and the IV-merging
-happens even with -fno-tree-loop-im present.
-
-## The Fix: -fprofile-update=atomic
-
-Adding -fprofile-update=atomic tells GCC that profile counters may be
-accessed concurrently. This causes GCC to:
-
-1. Use atomic instructions (lock addq) for counter updates
-2. Treat counter variables as opaque — they cannot be merged with loop IVs
-
-This completely eliminates the problematic optimization while preserving
-GCOV functionality.
-
-The flag is added only to lib/zlib_inflate/, lib/zlib_deflate/, and
-lib/zlib_dfltcc/ Makefiles to minimize performance overhead. Zlib is
-particularly vulnerable because:
-
-- inflate_fast() has tight inner loops that GCC heavily optimizes
-- IPComp and other subsystems call zlib from multiple CPUs concurrently
-- The per-CPU isolation (scratch buffers, crypto transforms) protects
-  data structures but cannot protect global GCOV counters
-
-Applying -fprofile-update=atomic globally would make all GCOV counter
-updates use atomic instructions, adding overhead throughout the kernel.
-By scoping it to zlib, we fix the known crash site with minimal impact.
-
-## GCC Bug Report Status
-
-A bug report for the upstream GCC project is being filed.
-
-i'm not sure if GCC team will accept this as a bug as the compiler
-optimization looks technically valid under the C standard (data races on
-non-atomic variables are undefined behavior), but it creates a practical
-problem for kernel code that routinely executes the same function on
-multiple CPUs.
-
-And anyway we need to fix/workaround the issue until/if the compiler is fixed.
-
-## Testing
-
-Verified the fix by:
-
-1. Compiling lib/zlib_inflate/inffast.c with and without
-   -fprofile-update=atomic using the kernel's exact build flags
-2. Inspecting assembly output to confirm the atomic flag prevents
-   counter-IV merging
-3. Testing on upstream v7.0-rc5 with GCC 14.2.1 and GCC 16.0.1
+Patch 1 applies this to copy_to_iter(). Patch 2 applies the
+same change to copy_from_iter(). copy_from_iter_nocache() is
+left unchanged because all current callers pass user-space
+addresses; the bypass there is deferred until that changes.
 
 ---
+Changes since v1:
+- Updated commit message for clarity and completeness
+- Rename the check_copy_size() function (Kees)
+- Added __compiletime_check_copy_size() stub to
+  tools/virtio/linux/ucopysize.h
+- Add second patch to convert copy_from_iter()
 
-Konstantin Khorenko (1):
-  lib/zlib: use atomic GCOV counters to prevent crash in inflate_fast
+---
+Chuck Lever (2):
+      iov: Bypass usercopy hardening for copy_to_iter()
+      iov: Bypass usercopy hardening for copy_from_iter()
 
- lib/zlib_deflate/Makefile | 6 ++++++
- lib/zlib_dfltcc/Makefile  | 6 ++++++
- lib/zlib_inflate/Makefile | 7 +++++++
- 3 files changed, 19 insertions(+)
+ include/linux/ucopysize.h      | 16 +++++++++++++++-
+ include/linux/uio.h            | 18 ++++++++++++++----
+ tools/virtio/linux/ucopysize.h |  6 ++++++
+ 3 files changed, 35 insertions(+), 5 deletions(-)
+---
+base-commit: 7aaa8047eafd0bd628065b15757d9b48c5f9c07d
+change-id: 20260326-bypass-user-copy-3e73161cc90b
 
--- 
-2.43.0
+Best regards,
+--  
+Chuck Lever
+
