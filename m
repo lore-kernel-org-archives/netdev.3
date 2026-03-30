@@ -1,172 +1,118 @@
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC833939DE;
-	Mon, 30 Mar 2026 18:46:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795733346A0
+	for <netdev@vger.kernel.org>; Mon, 30 Mar 2026 18:50:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774896366; cv=none; b=jCf2HjfI/1AAoJSYm8z9c2cOh9itZYA4YU+tHAqnfqmXFHtU87NCbR2ZQD0IIVe3ESzrANa5fLq1uDQaDqOOjuduabswOkfTsu3u3NRMwvPRAvzIyF9V1tfgg14raWdTLXK328GgH+leqAuIHvkX1yausfBMELxoKnQrAz00OWg=
+	t=1774896626; cv=none; b=fiJk9jZnlf90Som/SJ+hpsBJgUjTT46LaOQa9ggl/ULZKrnvYUuTf6PQZBaNlQzCM46aeqj+jpv/TeS1578p2LhrPO4uJprbBGDcZVDUtDkOuRFkKGixKoScJPOxVarASvWr8CpMBoPiuyDsvclyo/+sVhkym0GD+VH/CRuSUZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774896366; c=relaxed/simple;
-	bh=/3hR/Omnd/Mne96bhoska9NhWkVzECp3mp2oC/dtMK0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O5O2ef/eoz6V0W6/DNKKPIpBSGvOJtIQ/FfCy/GxHcVi59hm2Exd+EQtDxa34bPFCAYWcjtsvQ6I5cp74GCLNyXfQ0Lc0oNK0xlZiDYnB4+odEZmra2gN69XAju97rdDopXQ46uMG8HcUA0vG8bR+Ne5T5KzJBWiXbpASnmiVjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=k4xaS/FZ; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+	s=arc-20240116; t=1774896626; c=relaxed/simple;
+	bh=QsrmC22upVvQWb1ttkE2gs6nFEWpOFmpRk7fl+hFzkY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iw08xsCpM6n56tq2AvswwcaLa6JcXiBQMdPNM33UhqiAZ/quVisVKbWdC2CH6NK0PMSSyp5esmVR/xcJPHr8VdoUTyM4sGDmTg1QAWiA9EnJkRP76hcfrez21Yi2xABdiHiDM1whjAcvU2Itb9mFqtwhOmuQFmfguyhc34XBmRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=dXamNKUK; arc=none smtp.client-ip=95.215.58.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="k4xaS/FZ"
-Received: from debian (unknown [79.139.249.222])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 62093413A4BC;
-	Mon, 30 Mar 2026 18:45:51 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 62093413A4BC
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1774896351;
-	bh=dl1hRi0waXOJUFOF2hoWF00XofxxAKlV/NOmwnGxKZs=;
-	h=From:To:Cc:Subject:Date:From;
-	b=k4xaS/FZozIm7jUXxaskJ0A29AtphtWGzhhnN5UDHd/TNOurODabVQTbmJjXGuEDM
-	 zkG+S9uTFaRyhj927xVJzHuCMb4hovZcxTvNJfvmr/7HrdUjZDdXLfToaCWf+G21nn
-	 y00QJPfmmmxkc8iKIun1df63OruKfh/qERgzsGrE=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Tong Zhang <ztong0001@gmail.com>,
-	Bartosz Folta <bfolta@cadence.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: [PATCH net 1/2] net: macb: fix clk handling on PCI glue driver removal
-Date: Mon, 30 Mar 2026 21:45:40 +0300
-Message-ID: <20260330184542.626619-1-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="dXamNKUK"
+Message-ID: <8a57e85b-8917-48b8-9412-b10a38fa230b@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1774896612;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZbI/xWQ/rrC6wAb85E1XodfYiivSfrUvb5aJFFUK0R4=;
+	b=dXamNKUKlXf3V7TOgKCvckNA8R4hlEefGV1lkULsTRrQwPcO2HWM0lPy99bob7KpucHVR2
+	/8gwDkVk+iRKYIITKU+oy1ANThY8TLqSVDzZVX4hMvZS5Rr2cSLcS00JMdKNC/JI5oV52B
+	Z4J7fYAAc5CJeelap4+eCNbFtAmW+oU=
+Date: Mon, 30 Mar 2026 14:49:59 -0400
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net V2 2/2] net: xilinx: axienet: Fix BQL accounting for
+ multi-BD TX packets
+To: Suraj Gupta <suraj.gupta2@amd.com>,
+ Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Michal Simek <michal.simek@amd.com>,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ Ariane Keller <ariane.keller@tik.ee.ethz.ch>, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260327073238.134948-1-suraj.gupta2@amd.com>
+ <20260327073238.134948-3-suraj.gupta2@amd.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Sean Anderson <sean.anderson@linux.dev>
+In-Reply-To: <20260327073238.134948-3-suraj.gupta2@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-platform_device_unregister() may still want to use the registered clks
-during runtime resume callback.
+On 3/27/26 03:32, Suraj Gupta wrote:
+> When a TX packet spans multiple buffer descriptors (scatter-gather),
+> axienet_free_tx_chain sums the per-BD actual length from descriptor
+> status into a caller-provided accumulator. That sum is reset on each
+> NAPI poll. If the BDs for a single packet complete across different
+> polls, the earlier bytes are lost and never credited to BQL. This
+> causes BQL to think bytes are permanently in-flight, eventually
+> stalling the TX queue.
+> 
+> The SKB pointer is stored only on the last BD of a packet. When that
+> BD completes, use skb->len for the byte count instead of summing
+> per-BD status lengths. This matches netdev_sent_queue(), which debits
+> skb->len, and naturally survives across polls because no partial
+> packet contributes to the accumulator.
+> 
+> Fixes: c900e49d58eb ("net: xilinx: axienet: Implement BQL")
+> Signed-off-by: Suraj Gupta <suraj.gupta2@amd.com>
+> ---
+>  drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 9 ++++-----
+>  1 file changed, 4 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> index b06e4c37ff61..263c4b67fd5a 100644
+> --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> @@ -770,8 +770,8 @@ static int axienet_device_reset(struct net_device *ndev)
+>   * @first_bd:	Index of first descriptor to clean up
+>   * @nr_bds:	Max number of descriptors to clean up
+>   * @force:	Whether to clean descriptors even if not complete
+> - * @sizep:	Pointer to a u32 filled with the total sum of all bytes
+> - *		in all cleaned-up descriptors. Ignored if NULL.
+> + * @sizep:	Pointer to a u32 accumulating the total byte count of
+> + *		completed packets (using skb->len). Ignored if NULL.
+>   * @budget:	NAPI budget (use 0 when not called from NAPI poll)
+>   *
+>   * Would either be called after a successful transmit operation, or after
+> @@ -805,6 +805,8 @@ static int axienet_free_tx_chain(struct axienet_local *lp, u32 first_bd,
+>  				 DMA_TO_DEVICE);
+>  
+>  		if (cur_p->skb && (status & XAXIDMA_BD_STS_COMPLETE_MASK)) {
+> +			if (sizep)
+> +				*sizep += cur_p->skb->len;
+>  			napi_consume_skb(cur_p->skb, budget);
+>  			packets++;
+>  		}
+> @@ -818,9 +820,6 @@ static int axienet_free_tx_chain(struct axienet_local *lp, u32 first_bd,
+>  		wmb();
+>  		cur_p->cntrl = 0;
+>  		cur_p->status = 0;
+> -
+> -		if (sizep)
+> -			*sizep += status & XAXIDMA_BD_STS_ACTUAL_LEN_MASK;
+>  	}
+>  
+>  	if (!force) {
 
-Note that there is a commit d82d5303c4c5 ("net: macb: fix use after free
-on rmmod") that addressed the similar problem of clk vs platform device
-unregistration but just moved the bug to another place.
+Reviewed-by: Sean Anderson <sean.anderson@linux.dev>
 
-Save the pointers to clks into local variables for reuse after platform
-device is unregistered.
-
-BUG: KASAN: use-after-free in clk_prepare+0x5a/0x60
-Read of size 8 at addr ffff888104f85e00 by task modprobe/597
-
-CPU: 2 PID: 597 Comm: modprobe Not tainted 6.1.164+ #114
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.1-0-g3208b098f51a-prebuilt.qemu.org 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x8d/0xba
- print_report+0x17f/0x496
- kasan_report+0xd9/0x180
- clk_prepare+0x5a/0x60
- macb_runtime_resume+0x13d/0x410 [macb]
- pm_generic_runtime_resume+0x97/0xd0
- __rpm_callback+0xc8/0x4d0
- rpm_callback+0xf6/0x230
- rpm_resume+0xeeb/0x1a70
- __pm_runtime_resume+0xb4/0x170
- bus_remove_device+0x2e3/0x4b0
- device_del+0x5b3/0xdc0
- platform_device_del+0x4e/0x280
- platform_device_unregister+0x11/0x50
- pci_device_remove+0xae/0x210
- device_remove+0xcb/0x180
- device_release_driver_internal+0x529/0x770
- driver_detach+0xd4/0x1a0
- bus_remove_driver+0x135/0x260
- driver_unregister+0x72/0xb0
- pci_unregister_driver+0x26/0x220
- __do_sys_delete_module+0x32e/0x550
- do_syscall_64+0x35/0x80
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
- </TASK>
-
-Allocated by task 519:
- kasan_save_stack+0x2c/0x50
- kasan_set_track+0x21/0x30
- __kasan_kmalloc+0x8e/0x90
- __clk_register+0x458/0x2890
- clk_hw_register+0x1a/0x60
- __clk_hw_register_fixed_rate+0x255/0x410
- clk_register_fixed_rate+0x3c/0xa0
- macb_probe+0x1d8/0x42e [macb_pci]
- local_pci_probe+0xd7/0x190
- pci_device_probe+0x252/0x600
- really_probe+0x255/0x7f0
- __driver_probe_device+0x1ee/0x330
- driver_probe_device+0x4c/0x1f0
- __driver_attach+0x1df/0x4e0
- bus_for_each_dev+0x15d/0x1f0
- bus_add_driver+0x486/0x5e0
- driver_register+0x23a/0x3d0
- do_one_initcall+0xfd/0x4d0
- do_init_module+0x18b/0x5a0
- load_module+0x5663/0x7950
- __do_sys_finit_module+0x101/0x180
- do_syscall_64+0x35/0x80
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-Freed by task 597:
- kasan_save_stack+0x2c/0x50
- kasan_set_track+0x21/0x30
- kasan_save_free_info+0x2a/0x50
- __kasan_slab_free+0x106/0x180
- __kmem_cache_free+0xbc/0x320
- clk_unregister+0x6de/0x8d0
- macb_remove+0x73/0xc0 [macb_pci]
- pci_device_remove+0xae/0x210
- device_remove+0xcb/0x180
- device_release_driver_internal+0x529/0x770
- driver_detach+0xd4/0x1a0
- bus_remove_driver+0x135/0x260
- driver_unregister+0x72/0xb0
- pci_unregister_driver+0x26/0x220
- __do_sys_delete_module+0x32e/0x550
- do_syscall_64+0x35/0x80
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: d82d5303c4c5 ("net: macb: fix use after free on rmmod")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
----
- drivers/net/ethernet/cadence/macb_pci.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/cadence/macb_pci.c b/drivers/net/ethernet/cadence/macb_pci.c
-index fc4f5aee6ab3..0ce5b736ea43 100644
---- a/drivers/net/ethernet/cadence/macb_pci.c
-+++ b/drivers/net/ethernet/cadence/macb_pci.c
-@@ -109,10 +109,12 @@ static void macb_remove(struct pci_dev *pdev)
- {
- 	struct platform_device *plat_dev = pci_get_drvdata(pdev);
- 	struct macb_platform_data *plat_data = dev_get_platdata(&plat_dev->dev);
-+	struct clk *pclk = plat_data->pclk;
-+	struct clk *hclk = plat_data->hclk;
- 
--	clk_unregister(plat_data->pclk);
--	clk_unregister(plat_data->hclk);
- 	platform_device_unregister(plat_dev);
-+	clk_unregister(pclk);
-+	clk_unregister(hclk);
- }
- 
- static const struct pci_device_id dev_id_table[] = {
--- 
-2.53.0
-
+Although FWIW this may result in slightly-different statistics. Not sure
+if we care since this will only affect packets that could not be sent
+for whatever reason (collisions, loss of carrier, etc.)
