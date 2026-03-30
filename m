@@ -1,185 +1,167 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012032.outbound.protection.outlook.com [52.101.48.32])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F159933A6E1;
-	Mon, 30 Mar 2026 15:14:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774883670; cv=fail; b=T0CmJz96GCA0ZrTq8X7LJBH179rzZ6Xl37q8G6rDEJIpLjNJ4kauI1AKhiIPgQ9Q/7sIG8YBuRx4Zwrs3oNW833fLXDjMT6zwnVJCndJP5LrBfvox7zJpb7Fl42sJXHGlNLpcUPaUcq+AWH2F/j0kWxxuOByn4iyL8fUt2sr9RI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774883670; c=relaxed/simple;
-	bh=nw2xqc9GcPmCEiCPDgTbdw8QY8lZbUcqO5Rr4z5U9NU=;
-	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=unfwS9n2vfOCK4NTu5myyKWPwY665J2WkUGyrIXjCxHdWldEDsgaSSEWTJtjSfJWu9jjfhhFwoHt/WmWTfflJg6gNa65X4LVyZ7F1MqOD4oTokeKEmYmj14SX3m+tN2vnhOM6433BHQSixoc5dtKJvms3Vi7ZRTp5FgfvMRdiTQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=PBMRZk1n; arc=fail smtp.client-ip=52.101.48.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9847B3431E7;
+	Mon, 30 Mar 2026 15:21:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774884072; cv=none; b=gttaboT+da3o+5ynEdIklroE/49YTiB9SgHkKC//qWxPyFLJ6NvzczWl2O6kWXo0+d5fWSGybFb0Japh2H05xjmtrHJi46iZ6hYIdHF6mgfYeQFznnYQ7tvwyBRJb8rlSI2eF1HaHNIBcNwVt+kCByUWOgaWwzYReMVTkB/irs0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774884072; c=relaxed/simple;
+	bh=/Zv/LzGzn+Zw5AjQS84R2gM/G3q6GWIAfBAwe6PyxSc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rECb/ttFj+boV93HZPGNRJCqurDpHgw4q8C4kZ2yb0WvixYn/6JtSVmwSTE2ISTn4jv+WpZC4UnXQSThQfxhqAYWaAMMdSKnkhra254v5kgFiodvbP5fJ9W0h+t9urACZbB5JOLg1sbXDjQw8LJ6ABQ5yE0MS64Ybly/+b35HVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSRALObR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="PBMRZk1n"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rHogezfAvuqkEsFAaSO55Uwoc/yMoHgLUjMUwfwH2uNZKmkKTZMlUNyrdLYqAj24pO3JGk7cDSo9nxqjpCyQyP48yOUfn+P9EADuRfW7ey9GVZNQNafY5yIAnmfs1+EmD49rXyA7vBTZS5zd0g5frSrnm5PN6qpJ9GFbShxZQl+lypTmUXstzymgZsJI28V+thb6M6sAgTbbGupx5PuTXs93dwykvukzAQBrfysskecTf+9RyVpQqYFVZTX0WytyPBe1ImW17P7vLjKDX8v6nSrX0nk2vkWIbJ7YMDbdVgEelrdwkHNVAWWZVhV4c0ko6l6I5U3amoh4bh1CnPiEUQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+/u+gt8du4GreDjwn78BLz+bE4uGIkPlZPySJjINpvQ=;
- b=CJslTwTvJcH05OH8aIAkHUoopaeRtMLSb621jqBoYGA9aLpDbq0CU8XQEpaL/yx9BBewa6qTfA1V6VrIGM74uVtd8DOzEObrDDF74Y673tSHxu9f2wDXoAW180L9eVkPtbG6pQ99fkmjLAgGdC2UKdaNdmu8WdQA0STy0zdNGFK20bUJGbjDlnC0jUQ31bpqmVgiJpYCKrdi67FtJMbCEtMqJ+DTaqkthBx6f1BxNuWr0TF9pAVz9sOBVJxoKXKEt0M1YlMEMHG8BAShBbpJG1yunki2dokQiLkWt2jZEwzZkElZ5PB4CQ9xbUzO/gY9Go733t9kCLcOVEtN4NtsQQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+/u+gt8du4GreDjwn78BLz+bE4uGIkPlZPySJjINpvQ=;
- b=PBMRZk1nBYxHjg59Gcxhd8vFu75QU6nLolhyge6EQ0/857SuCfcRur3BaqoEZMj0f8/0VsT+1UF4TrAJaFYGvMppVto678jtbB8SlSH2sBqyWq9MJFsm6DFenzT+oSRzqcc/R/oDe4HAbAxxl2HSTKsczf46oP3E1qhOBts9gQnvmIb9y0DJa4ja9i3r7KYvM9VXA05aZ1na2PPIP64Ehb+SoX3Tclxg5jzmvto4eCWIFlK7N0nwCrfHyrvP82Eb1XTZGUJS/Xr90GJoRUrFffAS87z6D+iQ0a9PRsEoCCvy9uF3j0ioGbD5HG1vhk56CxS5p2V9TS44M2dZ3RVCVw==
-Received: from PH2PEPF00003855.namprd17.prod.outlook.com (2603:10b6:518:1::75)
- by IA1PR12MB6283.namprd12.prod.outlook.com (2603:10b6:208:3e5::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Mon, 30 Mar
- 2026 15:14:21 +0000
-Received: from CY4PEPF0000E9DA.namprd05.prod.outlook.com
- (2a01:111:f403:c936::) by PH2PEPF00003855.outlook.office365.com
- (2603:1036:903:48::3) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9745.28 via Frontend Transport; Mon,
- 30 Mar 2026 15:14:20 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- CY4PEPF0000E9DA.mail.protection.outlook.com (10.167.241.73) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9745.21 via Frontend Transport; Mon, 30 Mar 2026 15:14:20 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 30 Mar
- 2026 08:13:58 -0700
-Received: from fedora (10.126.231.35) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 30 Mar
- 2026 08:13:52 -0700
-References: <20260326132828.805703-1-ioana.ciornei@nxp.com>
- <20260326132828.805703-3-ioana.ciornei@nxp.com>
- <871ph15zip.fsf@nvidia.com> <87se9h4juh.fsf@nvidia.com>
- <mmr6xs4soark6ilc2xymgcvn3wij2yoaeokpuv5i62mxtddvpa@jdyswkdydpon>
-User-agent: mu4e 1.8.14; emacs 30.2
-From: Petr Machata <petrm@nvidia.com>
-To: Ioana Ciornei <ioana.ciornei@nxp.com>
-CC: Petr Machata <petrm@nvidia.com>, <netdev@vger.kernel.org>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S.   Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, "Paolo
- Abeni" <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <willemb@google.com>,
-	<linux-kselftest@vger.kernel.org>
-Subject: Re: [PATCH net-next v4 02/10] selftests: net: add helpers for
- running a command on other targets
-Date: Mon, 30 Mar 2026 16:55:52 +0200
-In-Reply-To: <mmr6xs4soark6ilc2xymgcvn3wij2yoaeokpuv5i62mxtddvpa@jdyswkdydpon>
-Message-ID: <877bqt4afo.fsf@nvidia.com>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSRALObR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC3D5C19423;
+	Mon, 30 Mar 2026 15:21:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1774884072;
+	bh=/Zv/LzGzn+Zw5AjQS84R2gM/G3q6GWIAfBAwe6PyxSc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LSRALObROJOc3vlOV8jdZ8Xte8qUYj6bHVlbYKVvNFcanIZxwJR3YySEaYpUXPKkz
+	 zzFkxvfUPQp5cWXilPvDDaqxj4qTl3qadChiHvEe14+jZj864/zkqjnZ84+c6qSJ5C
+	 W10s+twUT2bdRm2TPEbI0mkivf/vMM06RjDzX4bg=
+Date: Mon, 30 Mar 2026 17:21:09 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Cc: "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Kees Cook <kees@kernel.org>, linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org, Tony Luck <tony.luck@intel.com>
+Subject: Re: [PATCH RFC net-next] usb: gadget: u_ether: fix eth_get_drvinfo()
+ oops
+Message-ID: <2026033036-glimpse-monsieur-6c0e@gregkh>
+References: <E1w6oNQ-0000000ER1E-43NU@rmk-PC.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9DA:EE_|IA1PR12MB6283:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0d12526e-51f7-4f05-f4e9-08de8e6f04b9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|36860700016|7416014|376014|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	yF7PqJKapShPl3Zjkgu1X0EP6iuv/mdC4HUxazePNHimMiKtN5Kfewbicx+h3Fodj61HqUwsVtEjXsaeEsVRKFz/oO9KX0+ZUc1Cklm6vNxGY7qf/IT5T1MD3xVHEEV+GyYifTYUUjqyg6sfLyzTLd963QULwXfTMDBjYHGShvNdiA/fTYwPgwjRxW8gJPtyKoqBSxFRAlKO3C+TNfVFg94e0KgB/rXXbPR/YesafaF6W02YBtoc6GSIX8Ozgx515T/T6U4C49V3ut0MGoS/K+R1y8OjeZXr6skmZbKe5u9o11hDXKOeeOhl5HQhYeTB9EdX7NNUU0R7//YneKokN31zxHV6vJDe8y3EQGdul98G17Fm+tGZs6ulRRaS9bcaLPg/prhyXF9cRptQ9m9lzbrUVuv3tASdVxYWgjzlEFzB6qXVH80cDMvH3ngDC7wqDO0re0neJFeWRpq/WYZylxSfq5sEA3sO7Ol9ecwW1ijUCyHW4eXdGdR1VqECqtdb9OJExaEm08eL+DUeP7jQYQO1hWoSMRnBpA7uaWMy77TIDR9LDytM7Zk0rmNd/KyzYbBHradTRa95yGkJ2h6UnqPFHcn2ehprhjm+TLIz1gjuxzPsttP9PZqDNPR+0wq9nz8HEx1wlazVdyBDGACczNPky34ts3yNhrm+iBqpj76Ns1qZndCZOuf05vqVd9QEK0QaXUlLnCmFg2XD+KQ7wFnsW0Vs+YmzsRuKDy6+xGM4LeCxyausbSmzlh1gSVPbjjfdTe0G9nInFgHw+XB8iQ==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700016)(7416014)(376014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	FO4vk40hvjF3v9/TtW+fasvJ7cW3HrCEIIQ0CYQvF9wEsLVufaxnGbRgFI4idVGBaYGnGXDkVi3od9gIMIBWgVhIqzri5iLjRIIabYsYigmOhdpXGWUKx7Z0i5r2JvYGifioobPDsMNO6ujFGOcAI/f9+nvVxRPb+3U7gBos2Ntj343P+K2/scGpki8OVGSTxbCPfEEoc/lb9SBCnIQXHU9tIFfJIi1ZdQd1/nL8j5JDfrsuuLT8EA2nGjHuvS1J0I2UlAUyfbGa5o8IQo/6moVO8fYCijWPGvfI6NefEirmjxWgmQTBm5dt+DApGXwG6dFtyBIoqm/pBdT+2yortzYWF8n+6/ZfQFhf416qamU+I7jVJAJ1kiZqe7CNDA3oMNaDbvX1SKKgLBmEAdWVQLD1RuxT8x9Hu/KVKYJplbtCl69KUe7h5DewX5/M+XYA
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2026 15:14:20.3874
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d12526e-51f7-4f05-f4e9-08de8e6f04b9
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000E9DA.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6283
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <E1w6oNQ-0000000ER1E-43NU@rmk-PC.armlinux.org.uk>
 
+On Sun, Mar 29, 2026 at 12:32:20PM +0100, Russell King (Oracle) wrote:
+> The following oops was observed on the nVidia Jetson Xavier NX1
+> platform with 7.0.0-rc5, which is caused by dev->gadget becoming NULL
+> while the u_ether device is still visible to userspace. Adding some
+> debug reveals that we see this sequence:
+> 
+> net usb1: gadget detached
+> tegra-xudc 3550000.usb: ep 0 disabled
+> net usb1: no gadget for drvinfo
+> usb1 (unregistering): left allmulticast mode
+> usb1 (unregistering): left promiscuous mode
+> l4tbr0: port 2(usb1) entered disabled state
+> 
+> Put a sticky plaster over this (it's racy!) I suspect
+> gether_detach_gadget() needs to at least take the RTNL as well to
+> prevent ethtool ops running concurrently with the gadget being
+> detached.
+> 
+> Unable to handle kernel NULL pointer dereference at virtual address 000000000000
+> 00d0
+> Mem abort info:
+>   ESR = 0x0000000096000004
+>   EC = 0x25: DABT (current EL), IL = 32 bits
+>   SET = 0, FnV = 0
+>   EA = 0, S1PTW = 0
+>   FSC = 0x04: level 0 translation fault
+> Data abort info:
+>   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+>   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+>   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+> user pgtable: 4k pages, 48-bit VAs, pgdp=00000001086b1000
+> [00000000000000d0] pgd=0000000000000000, p4d=0000000000000000
+> Internal error: Oops: 0000000096000004 [#1]  SMP
+> Modules linked in: snd_soc_tegra210_mvc snd_soc_tegra186_asrc snd_soc_tegra210_m
+> ixer snd_soc_tegra210_admaif snd_soc_tegra_pcm snd_soc_tegra210_ope snd_soc_tegr
+> a186_dspk snd_soc_tegra210_i2s snd_soc_simple_card_utils snd_soc_tegra210_dmic s
+> nd_soc_tegra210_amx snd_soc_tegra210_adx snd_soc_tegra210_sfc rtw88_8822ce rtw88
+> _8822c rtw88_pci rtw88_core mac80211 libarc4 sha256 cfg80211 snd_soc_tegra210_ah
+> ub snd_soc_core snd_pcm_dmaengine snd_pcm snd_timer tegra210_adma zram tegra_drm
+>  zsmalloc usb_f_ncm syscopyarea usb_f_mass_storage drm_client_lib sysfillrect sy
+> simgblt ramoops fb_sys_fops reed_solomon nls_iso8859_1 drm_display_helper nls_cp437 vfat drm_kms_helper fb fat cec drm_dp_aux_bus tegra_aconnect usb_f_acm u_serial usb_f_rndis u_ether max77620_wdt realtek tegra_xudc phy_package snd phy_tegra194_p2u dwmac_dwc_qos_eth soundcore stmmac_platform pwm_tegra rtc_efi tegra186_gpc_dma virt_dma tegra_bpmp_thermal host1x pcie_tegra194 libcomposite udc_core drm drm_panel_orientation_quirks backlight efivarfs ip_tables
+>  x_tables
+> CPU: 1 UID: 0 PID: 4181 Comm: systemd-udevd Not tainted 7.0.0-rc5-net-next+ #640 PREEMPT
+> Hardware name: NVIDIA NVIDIA Jetson Xavier NX Developer Kit/Jetson, BIOS 6.0-37391689 08/28/2024
+> pstate: 80400009 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> pc : eth_get_drvinfo+0x4c/0x80 [u_ether]
+> lr : eth_get_drvinfo+0x40/0x80 [u_ether]
+> sp : ffff80008484bb60
+> x29: ffff80008484bb60 x28: ffff000083de18c0 x27: 0000000000000000
+> x26: 0000000000000000 x25: ffff0000947da0a8 x24: 0000000000004000
+> x23: ffff0000a38a5600 x22: 0000000000000000 x21: ffff80007a3a5558
+> x20: ffff0000947da000 x19: ffff0000a38a5608 x18: 0000000000000000
+> x17: 0000000000000000 x16: 0000000000000000 x15: 0000ffffe09af760
+> x14: 0000000000000000 x13: 0000000000000020 x12: 0101010101010101
+> x11: 7f7f7f7f7f7f7f7f x10: 00007ffff0071c50 x9 : 0000000000000020
+> x8 : 0101010101010101 x7 : ffff0000a38a5634 x6 : fefefefefefefeff
+> x5 : ffff0000a38a562c x4 : 0000000000383030 x3 : 0000000000383030
+> x2 : 0000000000000020 x1 : 0000000000000000 x0 : ffff0000a38a564c
+> Call trace:
+>  eth_get_drvinfo+0x4c/0x80 [u_ether] (P)
+>  ethtool_get_drvinfo+0x54/0x1e0
+>  __dev_ethtool+0x698/0x2000
+>  dev_ethtool+0x90/0x1a0
+>  dev_ioctl+0x37c/0x594
+>  sock_ioctl+0x390/0x5bc
+>  __arm64_sys_ioctl+0x408/0xeb4
+>  invoke_syscall.constprop.0+0x50/0xe0
+>  do_el0_svc+0x40/0xc0
+>  el0_svc+0x48/0x2a0
+>  el0t_64_sync_handler+0xa0/0xe4
+>  el0t_64_sync+0x19c/0x1a0
+> Code: 95a68811 f9468a81 d2800402 91011260 (f9406821)
+> ---[ end trace 0000000000000000 ]---
+> 
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> ---
+> 
+> 1. get_maintainers.pl is picking up on the PSTORE folk because of the
+> mention of "ramoops" in the commit message... even though this has
+> nothing to do with them.
+> 
+> 2. I think there's more bugs here as mentioned in the commit message,
+> since setting dev->gadget to NULL without taking any locking while
+> the u_ether device is still published to userspace looks mightily
+> dangerous. Seems to be another kernel driver that fails to obey the
+> basics discussed in OLS some twenty years ago concerning the order
+> of setup/publish/unpublish/teardown... and we still don't seem to
+> be able to get it right. :(
+> 
+> 3. Patch generated against the net-next tree, because that's what I'm
+> working with being focussed on stmmac at the moment - but I would like
+> my test platform not to oops and reboot itself when I instead want it
+> to power off.
+> 
+>  drivers/usb/gadget/function/u_ether.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/usb/gadget/function/u_ether.c b/drivers/usb/gadget/function/u_ether.c
+> index 1a9e7c495e2e..d1ae91889537 100644
+> --- a/drivers/usb/gadget/function/u_ether.c
+> +++ b/drivers/usb/gadget/function/u_ether.c
+> @@ -113,6 +113,10 @@ static void eth_get_drvinfo(struct net_device *net, struct ethtool_drvinfo *p)
+>  
+>  	strscpy(p->driver, "g_ether", sizeof(p->driver));
+>  	strscpy(p->version, UETH__VERSION, sizeof(p->version));
+> +
+> +	if (!dev->gadget)
+> +		return;
+> +
+>  	strscpy(p->fw_version, dev->gadget->name, sizeof(p->fw_version));
+>  	strscpy(p->bus_info, dev_name(&dev->gadget->dev), sizeof(p->bus_info));
+>  }
+> -- 
+> 2.47.3
 
-Ioana Ciornei <ioana.ciornei@nxp.com> writes:
+This is fixed much the same way in a patch that was sent before you, so
+I'll take that one and get it into 7.0-final so that you don't trip over
+this anymore.
 
-> On Mon, Mar 30, 2026 at 01:32:41PM +0200, Petr Machata wrote:
->> 
->> Petr Machata <petrm@nvidia.com> writes:
->> 
->> > Ioana Ciornei <ioana.ciornei@nxp.com> writes:
->> >
->> >> +run_on()
->> >> +{
->> >> +	local iface=$1; shift
->> >> +	local target="local:"
->> >> +
->> >> +	if declare -p TARGETS &>/dev/null; then
->> >> +		target="${TARGETS[$iface]}"
->> >
->> > So I think Jakub's runs fail because there's a shell export somewhere
->> > that gets inherited through make to the launched test. I guess it would
->> > be enough for the test to validate that TARGETS is an array, because
->> > those don't get inherited.
->> >
->> > Is there a reason not to reuse DRIVER_TEST_CONFORMANT as a tell though?
->> >
->> >> +	fi
->> >> +
->> >> +	__run_on "$target" "$@"
->> >> +}
->> >
->> > Does the latter helper need to be in net/lib.sh? Since it uses TARGETS,
->> > which are a forwarding/lib.sh concept, it seems misplaced there.
->> 
->> Oh, I see, there's an invocation from mac_get() in net/lib.sh itself.
->> Hummm. Not sure how to tackle this.
->> 
->> I think lib.sh might unset TARGETS explicitly? Or declare -A, but leave
->> empty? Since it's now an API, net/lib.sh needs to set it to a reasonable
->> value (or erase). Then forwarding/lib.sh might in theory rely on
->> existence of that variable and not have to declare it at all.
->> 
->> Or, maybe have a stub run_on() like this to satisfy the run_on() API:
->> 
->> run_on()
->> {
->> 	"$@"
->
->          shift; "$@"
+thanks,
 
-Indeed!
-
->> }
->> 
->> And have the full-blown thing in forward/lib.sh. All the magic with
->> TARGETS really belongs to forwarding/lib.sh. Bash allows function
->> redefinition just fine, so a user importing just net/lib.sh would get
->> the stub, and forwarding/lib.sh users would get the full thing.
->
-> I really like the idea of the stub run_on() in net/lib.sh. This would
-> also give me the possibility to check for DRIVER_TEST_CONFORMANT = "yes"
-> in the full-blown run_on() without having to move its default
-> definition in net/lib.sh.
->
-> I quickly changed to this approach and it seems to look good.
-
-Yeah, I like it best as well.
-
-Then I think you don't need to worry about the TARGETS export, because
-forwarding/lib.sh will add the "array-ness" to whatever comes from the
-outside, if anything, and the function will be able to use like that.
+greg k-h
