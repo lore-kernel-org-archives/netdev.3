@@ -1,66 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80F8B3DDDB1;
-	Mon, 30 Mar 2026 22:23:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E30A83E3D9D
+	for <netdev@vger.kernel.org>; Mon, 30 Mar 2026 22:26:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774909402; cv=none; b=e+5oWSvHIo/LgktVmgT4y7GPTXg1jQUSY3RRMaSdG1GSXfzmZ7Uyy+Rbcq7b2S81pwJuVqQxkH7oH9BYP3yhhSFtpqNT2yf7Wzo90HFanPqienxF835FmcoSo5bpShl0vrVspDn+zMsWU5IcCazQ+XydEzj2coD9pOOBEfkPSG0=
+	t=1774909607; cv=none; b=BbmnBKNd/Bne6GIadEyNejEuTNSG7Fn2raPKk/h+vB8QoJDrBb4LW1w6CJRxEjw5sZit82Ckq6y8lBRNvlCmQo4292zjxASAF5eNlDUNi3UxS9DoHQ5wk4zmFmjrQ6rsRMOqDCYTMWqkSWRgZmLrMkbDXdjN/5NVGqeXbvjJqTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774909402; c=relaxed/simple;
-	bh=R/RTYULXwMk5jUyXPTlsjfkiAucxmpo5A8GIlmR+4pI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L9KpfDNy8+zTgr1/k/4XYi/iDabxRdad8LGqd8W2+xW6D6gO+HeLMxiAC94a0Kx57gpzG+FMe8e9Xp8BBX1/LMvIFjwx7fj84EsAZtU6dK/LRhTRPrDi+CLRrC8p3oMF6sLqRQf+T7nnpu/7CWzm2giYXApEmbXmrEYCDQZtPmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X0rYMfry; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774909607; c=relaxed/simple;
+	bh=njYxOmFhF0kKZxmCluaJeRNQJOvHXtTT/LYX+fA/Jes=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UxC0lpaKO4Fb8a1fWHFOdnS/kZCrzEvG07osFlUipvrKSONHz/LU9g9PxejLzR+t0vpLWHwqjs1ZiKSxwR8ZgnRrm08Tv89G/omBlGILMSgUd8SojzgvC4tji7gqzU2lPCaK8exXAy67pG3yTlaD5vh0quB/G+mSRUMPdmWe7mY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=SRVjkBgu; arc=none smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X0rYMfry"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7EB4C4CEF7;
-	Mon, 30 Mar 2026 22:23:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774909401;
-	bh=R/RTYULXwMk5jUyXPTlsjfkiAucxmpo5A8GIlmR+4pI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=X0rYMfryywhutY6O4h5DcOtft954Mqqbo5clo1gTAQiKIfqI2gr263Ib68H1c878N
-	 aGehaKv/M3SGBbBhpXye4W0sHfhmB8v4XkbiBdXXcBxxL2fnDNcTKLhhjZ05/W3O2Z
-	 a3RZ/iE5LeQEwlH6m7zKLtHtmXxotgZFzO7x/YhOPVdbqMXzpxDP0xYmnKPAxu7Cl5
-	 RA+Zlj9AJ4u6oV0vwBYzfr3tunqPhVC+ja03upecAu/kYlEKe5BF2AtxoEMpIBbnMY
-	 O7FWd9HlrjlCgG++1J0ODjkGg/q15snobTvSXA8Ra5P1rsxU+5CZcs3xXyydDLxOGb
-	 mcrPri0YQjK/w==
-Date: Mon, 30 Mar 2026 15:23:18 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
- decui@microsoft.com, longli@microsoft.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- kotaranov@microsoft.com, horms@kernel.org,
- shradhagupta@linux.microsoft.com, shirazsaleem@microsoft.com,
- dipayanroy@linux.microsoft.com, yury.norov@gmail.com, kees@kernel.org,
- ssengar@linux.microsoft.com, gargaditya@linux.microsoft.com,
- linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org
-Subject: Re: [PATCH net-next v4] net: mana: Expose hardware diagnostic info
- via debugfs
-Message-ID: <20260330152318.144c1b30@kernel.org>
-In-Reply-To: <acrKgG0USsGABqYT@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <20260319070926.1459515-1-ernis@linux.microsoft.com>
-	<20260323174444.2717da3d@kernel.org>
-	<acK56AlPfVW8cDPe@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-	<acrKgG0USsGABqYT@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="SRVjkBgu"
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-8cfc40e4158so596223585a.1
+        for <netdev@vger.kernel.org>; Mon, 30 Mar 2026 15:26:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1774909593; x=1775514393; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=MMpjIoYB4wkYY1B4Qvo8YM+LGvG/wS7KH0HgKJnMSKw=;
+        b=SRVjkBguFjfCZK6KyO2Br10O0nqWk6wAn3BLxlEleze8weF4NGKj5VBS1no0JjO5YI
+         g/8icibDzjoJ0tJ3mTX8v++aieNJw05tHkPlWTQpChPxIIwkR+mVcZapcZOaZwamMkGU
+         BxFsK6CI60m3/NSHR9n7W/1RRGEA/BwYPMseTh37M/BCi6MEgkRPdeEMsVaqjQzrH1M2
+         hfIKXlVf8INWVlRRJtrqNQBeTHeyhxBgPBBJti+7t1bjluyepJUzik8KVlxhpl/B3k5a
+         5bv6rOSUlHPqk37gDhEw2D5iGe/tdQtZx2u/ofN+hR7axrwuYFIQPz5ctd56nxod8Ysk
+         WMGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774909593; x=1775514393;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MMpjIoYB4wkYY1B4Qvo8YM+LGvG/wS7KH0HgKJnMSKw=;
+        b=cfW41bDlLTtpRlx/mzSSKb1DgcTeaqSt1MYnEt43iQ8rngv3qLV3NQUcyhZ/bGFwhl
+         tw1S7LLmgk59ewMHpNpiMp8pHgRqVU4EBxBcR96mq2QuVoUcRwBXrFleYqCHf+FR8u9T
+         7aFxUTJ5a+Tjq40ZxdpABEx/WBXPTA/HWhIYgbmNDcm9ujW4PZWQ5eNOIk2znrnY5rIM
+         Ow4sVrUrOUA/keWH8XOdp55lvP8zm/wq3IgmF73lenXuzEUJvi4tgT+hZCS73e4MhqzV
+         Ju/crU5Fj9Vxpcwaujt2dGVBIuC18R1e10ZaTz1NY0dgJlAUAeheonlEAdCOhPmHJI8B
+         s8Kw==
+X-Forwarded-Encrypted: i=1; AJvYcCXP+iVrYV5CYAPQwDybKA7fUpDytBEYI2yJ4JL02pfwZXaMdVcpjevsGXOibgZnkTlcFbfowcs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvXoav3L2pMw0aEnL8/j/TLmRL+QX1oakva40PE/zzJNyyaHA2
+	FthZUpP6EpEc8M+ENJ7iE858aBKT9AgpZbwg6Deb1A3EjPzVjBiBq2h958QnpHDNtUU=
+X-Gm-Gg: ATEYQzzHd9sXmgn0kgVvzS6vKjMyLf89TiOEoG2yELbGzA6GKtsJCk7oxgvD++JaDe+
+	K88Is/vnupolcIIZa9bGGeSprx1jopAqvPeJUdrmw2LNc4MyxGwKTcZmCuV/OvcRvNoVKWqD0O+
+	d7ZDFOacqcxkdXLSfBhFZSkctJq1QDwxKB114qFMr7YXO8GQouGS3zhqaRUhYke8uuIXNQPlTWr
+	rK0+tDvCY87j+U1fhEaUnTCtvX2h9YVbAC6s0vnxO9Zby77Z9hx/r8lIuX9cRnUhlNQux2KYOBa
+	b1QBBSmge3bvBcPvLyBv25Mg8ydto5Skyzrm2MTBv7x7Q+Jl/wilKGdxqUZ/a8lvG5YVPpBiVLz
+	6jymd0JV8i0GlzhZH9DZ8T0DXmVwdI+x1EFG27tLDEoH4fKNtgt/BlBwQExOUwyESDTZO1LiYtG
+	jELupsWhS0upY3Nnxs92Z0TH2vHfKjbVu7KcI86EfpU1gyzn0scEVlyDXcY9OFDtOpLxerbQ==
+X-Received: by 2002:a05:620a:2991:b0:8cf:cfdf:733e with SMTP id af79cd13be357-8d01c689577mr1767721685a.32.1774909592771;
+        Mon, 30 Mar 2026 15:26:32 -0700 (PDT)
+Received: from ziepe.ca (mctnnbsa70w-159-2-73-22.dhcp-dynamic.fibreop.nb.bellaliant.net. [159.2.73.22])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8d028090f43sm711572985a.45.2026.03.30.15.26.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Mar 2026 15:26:32 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1w7L43-00000005H5o-0vBI;
+	Mon, 30 Mar 2026 19:26:31 -0300
+Date: Mon, 30 Mar 2026 19:26:31 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Gerd Bayer <gbayer@linux.ibm.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Michal Kalderon <mkalderon@marvell.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jay Cornwall <Jay.Cornwall@amd.com>,
+	Felix Kuehling <Felix.Kuehling@amd.com>,
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Alexander Schmidt <alexs@linux.ibm.com>, linux-s390@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-rdma@vger.kernel.org
+Subject: Re: [PATCH v7 1/3] PCI: AtomicOps: Do not enable requests by RCiEPs
+Message-ID: <20260330222631.GF246076@ziepe.ca>
+References: <20260330-fix_pciatops-v7-1-f601818417e8@linux.ibm.com>
+ <20260330214253.GA92498@bhelgaas>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260330214253.GA92498@bhelgaas>
 
-On Mon, 30 Mar 2026 12:09:52 -0700 Erni Sri Satya Vennela wrote:
-> Just a quick follow=E2=80=91up on this. Since these issues were pre=E2=80=
-=91existing and
-> not introduced by this patch, would you prefer that I send them as a
-> separate fix patch, or fold the fixes into the current patch?
+On Mon, Mar 30, 2026 at 04:42:53PM -0500, Bjorn Helgaas wrote:
+> [+to amdgpu, bnxe_re, mlx5 IB, qedr, mlx5 maintainers]
+> 
+> On Mon, Mar 30, 2026 at 03:09:44PM +0200, Gerd Bayer wrote:
+> > Since root complex integrated end points (RCiEPs) attach to a bus that
+> > has no bridge device describing the root port, the capability to
+> > complete AtomicOps requests cannot be determined with PCIe methods.
+> > 
+> > Change default of pci_enable_atomic_ops_to_root() to not enable
+> > AtomicOps requests on RCiEPs.
+> 
+> I know I suggested this because there's nothing explicit that tells us
+> whether the RC supports atomic ops from RCiEPs [1].  But I'm concerned
+> that GPUs, infiniband HCAs, and NICs that use atomic ops may be
+> implemented as RCiEPs and would be broken by this.
 
-Anything that's pre-existing should be a separate patch, before any new
-code. If the bug exists only in net-next - earlier in the same series,
-if the bug exists in net - posted separately for the net tree.
+AFAIK none of the NICs are integrated into root complexes in their
+topology model..
+
+Jason
