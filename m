@@ -1,65 +1,50 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90EFC3BD65B
-	for <netdev@vger.kernel.org>; Mon, 30 Mar 2026 11:35:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704C63C6A30;
+	Mon, 30 Mar 2026 11:40:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774870530; cv=none; b=UhO2LH6gm/HkaNUYJaMvKkuWWwbAMB6b+A33aS9z+bhQfkEQfwvqV6hfQ9pJ6zSSzsDzMb/ReCblRsSX5qrCoEgnBtYAXCygPxO9FAP68/oJn0FnAHDk+tyPU3SxJ4VXFrAr/jfGKO2JZWF+JVEnno/CGX13uDNT0VjuQmtCW5o=
+	t=1774870833; cv=none; b=RUFg4XSZKn1NhzYtSZuKegfvJAStztgCG/sFtmna42hzIOje67b0fNUXy/G8RHb3Gt4uY5C3UZhBRYQGsVNM2fFOw9Igmu9Y+IdkPs6xjHqEjs7vFv3yKWCtDhOxnOj10ZiHvzMBFhbVE/chKLGejceJFfokRxFDc94Zj2CGooI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774870530; c=relaxed/simple;
-	bh=s0GYGHG3bHHnLSUpuw3XwU4YANaEchmaJvsIJazD/8g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QKAFV5XibIHIS8Z5FAzPNKchplP3lZFb/yqQhpS06iojFLeMPnPeZrniOSzfUfVJMnRf9fqGfCWZPh924bPk4gFYWV5efivmNsRhp//ICxjClQqw69ihjY8eoj9AQ4KxzcV7Tp9ceo4sAbo6YeDsXlBX5DM91+MD0AGe+PriaFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HhqU71P0; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1774870833; c=relaxed/simple;
+	bh=h3B146AXDaMG8OjaKqu6sgqpCUkBTNvoDdB7NLG6G8U=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mkhYEHp2kx+jv+lZmv7oBsMkRCsXMrLAsx6ZepFVZfqLVvedjR55vH1sH9KgvJls1JHKWxfenMm/FjzkUAe+BYj7ZrwlReh10x1NU3ENcPf0Nu5Z/NPiYKETPeWtOjCjudiX+Kh5oSRgsxPH55nZCOVqPhZW7lYeBOCAbbHeMxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=XarzyNs+; arc=none smtp.client-ip=113.46.200.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HhqU71P0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774870528;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=FiZviYo8L2f9R9HpzuBCyEjwLeRZJHeIjS+87uHF2Oc=;
-	b=HhqU71P03dSYseWStW1VMndlYNKtpnoxL58xrGfvw/8Bs+1rIqcxNS3Ur6XvGc9L1NJaa3
-	2ox/it8XKMdBjdtcoQyVNZCDKj7bt0vhr4Saod7P2xHwdtHdm/EQkr7Wy2Es/idLP6mUwN
-	Ceg8h1kqil88fusH8GEiCDbvXmJMWlw=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-128-oMNhOeO0MPygyrTPLK-6HQ-1; Mon,
- 30 Mar 2026 07:35:23 -0400
-X-MC-Unique: oMNhOeO0MPygyrTPLK-6HQ-1
-X-Mimecast-MFC-AGG-ID: oMNhOeO0MPygyrTPLK-6HQ_1774870521
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5EDEC19560B1;
-	Mon, 30 Mar 2026 11:35:20 +0000 (UTC)
-Received: from yiche-laptop.redhat.com (unknown [10.72.112.165])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 627951955D84;
-	Mon, 30 Mar 2026 11:35:12 +0000 (UTC)
-From: Yi Chen <yiche@redhat.com>
-To: Chen Yi <yiche@redhat.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	Long Xin <lxin@redhat.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>
-Cc: coreteam@netfilter.org,
-	netfilter-devel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH] selftests: netfilter: conntrack_sctp_collision.sh: Introduce SCTP INIT collision test
-Date: Mon, 30 Mar 2026 19:35:09 +0800
-Message-ID: <20260330113509.23990-1-yiche@redhat.com>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="XarzyNs+"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=yKZmHt33n8RZwizYvWZr4IymRKCPNMxFJhuhxnffLpg=;
+	b=XarzyNs+KkS7jMvu7guwX1kJUWxVXv5DkvP1d/5fWJdlqzMITX+/X/tjDVEFyiWRBtCbNyV3S
+	DeEZw6R9t4OJ856xlUxZnAmCcAjA6xInaHf69Q+oJvkuZIgau+BdFj66T9Vy6dVCMGUTyy1Rz3N
+	IiFbzUgKqqTHaN8pTEAZwyU=
+Received: from mail.maildlp.com (unknown [172.19.163.214])
+	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4fkq0D2hnfz1K99G;
+	Mon, 30 Mar 2026 19:34:20 +0800 (CST)
+Received: from kwepemj500018.china.huawei.com (unknown [7.202.194.48])
+	by mail.maildlp.com (Postfix) with ESMTPS id BA3A140561;
+	Mon, 30 Mar 2026 19:40:26 +0800 (CST)
+Received: from huawei.com (10.50.85.128) by kwepemj500018.china.huawei.com
+ (7.202.194.48) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 30 Mar
+ 2026 19:40:26 +0800
+From: Li Xiasong <lixiasong1@huawei.com>
+To: Matthieu Baerts <matttbe@kernel.org>, Mat Martineau
+	<martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>
+CC: <netdev@vger.kernel.org>, <mptcp@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <yuehaibing@huawei.com>,
+	<zhangchangzhong@huawei.com>, <weiyongjun1@huawei.com>
+Subject: [PATCH net v4] mptcp: fix soft lockup in mptcp_recvmsg()
+Date: Mon, 30 Mar 2026 20:03:35 +0800
+Message-ID: <20260330120335.659027-1-lixiasong1@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,147 +52,136 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemj500018.china.huawei.com (7.202.194.48)
 
-The existing test covered a scenario where a delayed INIT_ACK chunk
-updates the vtag in conntrack after the association has already been
-established.
+syzbot reported a soft lockup in mptcp_recvmsg() [0].
 
-A similar issue can occur with a delayed SCTP INIT chunk.
+When receiving data with MSG_PEEK | MSG_WAITALL flags, the skb is not
+removed from the sk_receive_queue. This causes sk_wait_data() to always
+find available data and never perform actual waiting, leading to a soft
+lockup.
 
-Add a new simultaneous-open test case where the client's INIT is
-delayed, allowing conntrack to establish the association based on
-the server-initiated handshake.
+Fix this by adding a 'last' parameter to track the last peeked skb.
+This allows sk_wait_data() to make informed waiting decisions and prevent
+infinite loops when MSG_PEEK is used.
 
-When the stale INIT arrives later, it may overwirte the vtag in
-conntrack, causing subsequent SCTP DATA chunks to be considered
-as invalid and then dropped by nft rules matching on ct state invalid.
+[0]:
+watchdog: BUG: soft lockup - CPU#2 stuck for 156s! [server:1963]
+Modules linked in:
+CPU: 2 UID: 0 PID: 1963 Comm: server Not tainted 6.19.0-rc8 #61 PREEMPT(none)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+RIP: 0010:sk_wait_data+0x15/0x190
+Code: 80 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 41 56 41 55 41 54 49 89 f4 55 48 89 d5 53 48 89 fb <48> 83 ec 30 65 48 8b 05 17 a4 6b 01 48 89 44 24 28 31 c0 65 48 8b
+RSP: 0018:ffffc90000603ca0 EFLAGS: 00000246
+RAX: 0000000000000000 RBX: ffff888102bf0800 RCX: 0000000000000001
+RDX: 0000000000000000 RSI: ffffc90000603d18 RDI: ffff888102bf0800
+RBP: 0000000000000000 R08: 0000000000000002 R09: 0000000000000101
+R10: 0000000000000000 R11: 0000000000000075 R12: ffffc90000603d18
+R13: ffff888102bf0800 R14: ffff888102bf0800 R15: 0000000000000000
+FS:  00007f6e38b8c4c0(0000) GS:ffff8881b877e000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000055aa7bff1680 CR3: 0000000105cbe000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ mptcp_recvmsg+0x547/0x8c0 net/mptcp/protocol.c:2329
+ inet_recvmsg+0x11f/0x130 net/ipv4/af_inet.c:891
+ sock_recvmsg+0x94/0xc0 net/socket.c:1100
+ __sys_recvfrom+0xb2/0x130 net/socket.c:2256
+ __x64_sys_recvfrom+0x1f/0x30 net/socket.c:2267
+ do_syscall_64+0x59/0x2d0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e arch/x86/entry/entry_64.S:131
+RIP: 0033:0x7f6e386a4a1d
+Code: 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 8d 05 f1 de 2c 00 41 89 ca 8b 00 85 c0 75 20 45 31 c9 45 31 c0 b8 2d 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 6b f3 c3 66 0f 1f 84 00 00 00 00 00 41 56 41
+RSP: 002b:00007ffc3c4bb078 EFLAGS: 00000246 ORIG_RAX: 000000000000002d
+RAX: ffffffffffffffda RBX: 000000000000861e RCX: 00007f6e386a4a1d
+RDX: 00000000000003ff RSI: 00007ffc3c4bb150 RDI: 0000000000000004
+RBP: 00007ffc3c4bb570 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000103 R11: 0000000000000246 R12: 00005605dbc00be0
+R13: 00007ffc3c4bb650 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
 
-This test verifies such stale INIT chunks do not corrupt conntrack
-state.
-
-Signed-off-by: Yi Chen <yiche@redhat.com>
+Fixes: 8e04ce45a8db ("mptcp: fix MSG_PEEK stream corruption")
+Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
 ---
- .../net/netfilter/conntrack_sctp_collision.sh | 84 ++++++++++++++-----
- 1 file changed, 65 insertions(+), 19 deletions(-)
 
-diff --git a/tools/testing/selftests/net/netfilter/conntrack_sctp_collision.sh b/tools/testing/selftests/net/netfilter/conntrack_sctp_collision.sh
-index d860f7d9744b..7f8f1b6b746a 100755
---- a/tools/testing/selftests/net/netfilter/conntrack_sctp_collision.sh
-+++ b/tools/testing/selftests/net/netfilter/conntrack_sctp_collision.sh
-@@ -23,8 +23,19 @@ SERVER_PORT=1234
- CLIENT_GW="198.51.200.2"
- SERVER_GW="198.51.100.2"
+v3->v4:
+Thanks to Matthieu Baerts and sashiko for the review.
+- __mptcp_recvmsg_mskq: update 'last' when skipping already peeked skbs.
+- Link to v3: https://lore.kernel.org/netdev/20260327075544.3622851-1-lixiasong1@huawei.com
+
+v2->v3:
+Thanks to Matthieu Baerts for the review.
+- Initialize last to NULL.
+- Only update 'last' when MSG_PEEK is set, avoiding dangling pointer.
+- Link to v2: https://lore.kernel.org/netdev/20260324085131.4187473-1-lixiasong1@huawei.com
+
+v1->v2:
+Thanks to Matthieu Baerts for the suggestion and review.
+- Move 'last' variable definition into the while loop in mptcp_recvmsg() to
+  narrow its scope.
+- In __mptcp_recvmsg_mskq(), assign 'last' right after 'copied' is updated,
+  regardless of MSG_PEEK flag.
+- Link to v1: https://lore.kernel.org/netdev/20260302052651.1466983-1-lixiasong1@huawei.com
+
+---
+ net/mptcp/protocol.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index cf1852b99963..65c3bb8016f4 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2006,7 +2006,7 @@ static void mptcp_eat_recv_skb(struct sock *sk, struct sk_buff *skb)
+ static int __mptcp_recvmsg_mskq(struct sock *sk, struct msghdr *msg,
+ 				size_t len, int flags, int copied_total,
+ 				struct scm_timestamping_internal *tss,
+-				int *cmsg_flags)
++				int *cmsg_flags, struct sk_buff **last)
+ {
+ 	struct mptcp_sock *msk = mptcp_sk(sk);
+ 	struct sk_buff *skb, *tmp;
+@@ -2023,6 +2023,7 @@ static int __mptcp_recvmsg_mskq(struct sock *sk, struct msghdr *msg,
+ 			/* skip already peeked skbs */
+ 			if (total_data_len + data_len <= copied_total) {
+ 				total_data_len += data_len;
++				*last = skb;
+ 				continue;
+ 			}
  
-+assert_pass()
-+{
-+	local ret=$?
-+	if [ $ret != 0 ]; then
-+		echo "FAIL: ${@}"
-+		exit $ksft_fail
-+	else
-+		echo "PASS: ${@}"
-+	fi
-+}
-+
- # setup the topo
--setup() {
-+topo_setup() {
- 	setup_ns CLIENT_NS SERVER_NS ROUTER_NS
- 	ip -n "$SERVER_NS" link add link0 type veth peer name link1 netns "$ROUTER_NS"
- 	ip -n "$CLIENT_NS" link add link3 type veth peer name link2 netns "$ROUTER_NS"
-@@ -42,21 +53,51 @@ setup() {
- 	ip -n "$CLIENT_NS" link set link3 up
- 	ip -n "$CLIENT_NS" addr add $CLIENT_IP/24 dev link3
- 	ip -n "$CLIENT_NS" route add $SERVER_IP dev link3 via $CLIENT_GW
-+}
+@@ -2058,6 +2059,8 @@ static int __mptcp_recvmsg_mskq(struct sock *sk, struct msghdr *msg,
+ 			}
  
--	# simulate the delay on OVS upcall by setting up a delay for INIT_ACK with
--	# tc on $SERVER_NS side
--	tc -n "$SERVER_NS" qdisc add dev link0 root handle 1: htb r2q 64
--	tc -n "$SERVER_NS" class add dev link0 parent 1: classid 1:1 htb rate 100mbit
--	tc -n "$SERVER_NS" filter add dev link0 parent 1: protocol ip u32 match ip protocol 132 \
--		0xff match u8 2 0xff at 32 flowid 1:1
--	if ! tc -n "$SERVER_NS" qdisc add dev link0 parent 1:1 handle 10: netem delay 1200ms; then
--		echo "SKIP: Cannot add netem qdisc"
--		exit $ksft_skip
--	fi
-+conf_delay()
-+{
-+	# simulate the delay on OVS upcall by setting up a delay for INIT_ACK/INIT with
-+	case $1 in
-+	"INIT") chunk_type=1
-+		# tc on $CLIENT_NS side
-+		tc -n "$CLIENT_NS" qdisc add dev link3 root handle 1: htb r2q 64
-+		tc -n "$CLIENT_NS" class add dev link3 parent 1: classid 1:1 htb rate 100mbit
-+		tc -n "$CLIENT_NS" filter add dev link3 parent 1: protocol ip \
-+			u32 match ip protocol 132 0xff match u8 $chunk_type 0xff at 32 flowid 1:1
-+		if ! tc -n "$CLIENT_NS" qdisc add dev link3 parent 1:1 handle 10: \
-+			netem delay 1200ms; then
-+			echo "SKIP: Cannot add netem qdisc"
-+			exit $ksft_skip
-+		fi
-+		;;
-+	"INIT_ACK") chunk_type=2
-+		# tc on $SERVER_NS side
-+		tc -n "$SERVER_NS" qdisc add dev link0 root handle 1: htb r2q 64
-+		tc -n "$SERVER_NS" class add dev link0 parent 1: classid 1:1 htb rate 100mbit
-+		tc -n "$SERVER_NS" filter add dev link0 parent 1: protocol ip \
-+			u32 match ip protocol 132 0xff match u8 $chunk_type 0xff at 32 flowid 1:1
-+		if ! tc -n "$SERVER_NS" qdisc add dev link0 parent 1:1 handle 10: \
-+			netem delay 1200ms; then
-+			echo "SKIP: Cannot add netem qdisc"
-+			exit $ksft_skip
-+		fi
-+		;;
-+	esac
+ 			mptcp_eat_recv_skb(sk, skb);
++		} else {
++			*last = skb;
+ 		}
  
- 	# simulate the ctstate check on OVS nf_conntrack
--	ip net exec "$ROUTER_NS" iptables -A FORWARD -m state --state INVALID,UNTRACKED -j DROP
--	ip net exec "$ROUTER_NS" iptables -A INPUT -p sctp -j DROP
-+	ip net exec "$ROUTER_NS" nft -f - <<-EOF
-+	table ip t {
-+	        chain forward {
-+	                type filter hook forward priority filter; policy accept;
-+	                meta l4proto { icmp, icmpv6 } accept
-+	                ct state new counter accept
-+	                ct state established,related counter accept
-+	                ct state invalid log flags all counter drop
-+	                counter
-+	        }
-+	}
-+	EOF
+ 		if (copied >= len)
+@@ -2288,10 +2291,12 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+ 		cmsg_flags = MPTCP_CMSG_INQ;
  
- 	# use a smaller number for assoc's max_retrans to reproduce the issue
- 	modprobe -q sctp
-@@ -64,8 +105,6 @@ setup() {
- }
+ 	while (copied < len) {
++		struct sk_buff *last = NULL;
+ 		int err, bytes_read;
  
- cleanup() {
--	ip net exec "$CLIENT_NS" pkill sctp_collision >/dev/null 2>&1
--	ip net exec "$SERVER_NS" pkill sctp_collision >/dev/null 2>&1
- 	cleanup_all_ns
- }
+ 		bytes_read = __mptcp_recvmsg_mskq(sk, msg, len - copied, flags,
+-						  copied, &tss, &cmsg_flags);
++						  copied, &tss, &cmsg_flags,
++						  &last);
+ 		if (unlikely(bytes_read < 0)) {
+ 			if (!copied)
+ 				copied = bytes_read;
+@@ -2343,7 +2348,7 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
  
-@@ -81,7 +120,14 @@ do_test() {
- 
- # run the test case
- trap cleanup EXIT
--setup && \
--echo "Test for SCTP Collision in nf_conntrack:" && \
--do_test && echo "PASS!"
--exit $?
-+
-+echo "Test for SCTP INIT_ACK Collision in nf_conntrack:"
-+topo_setup && conf_delay INIT_ACK
-+do_test
-+assert_pass "The delayed INIT_ACK chunk did not disrupt sctp ct tracking."
-+
-+echo "Test for SCTP INIT Collision in nf_conntrack:"
-+
-+topo_setup && conf_delay INIT
-+do_test
-+assert_pass "The delayed INIT chunk did not disrupt sctp ct tracking."
+ 		pr_debug("block timeout %ld\n", timeo);
+ 		mptcp_cleanup_rbuf(msk, copied);
+-		err = sk_wait_data(sk, &timeo, NULL);
++		err = sk_wait_data(sk, &timeo, last);
+ 		if (err < 0) {
+ 			err = copied ? : err;
+ 			goto out_err;
 -- 
-2.53.0
+2.34.1
 
