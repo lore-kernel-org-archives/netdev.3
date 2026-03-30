@@ -1,259 +1,349 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011004.outbound.protection.outlook.com [52.101.65.4])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013001.outbound.protection.outlook.com [40.93.196.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2853C5555;
-	Mon, 30 Mar 2026 11:46:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3822130F547;
+	Mon, 30 Mar 2026 11:50:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.1
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774871188; cv=fail; b=Je360EMz4EjsxFnWQhtIvbSKJ9/tJM3Kdxb2k52Ftks4dR9dFGLxgxnnTyxrxfkZo6YnuDhXTQGXOrHD9HuwMCj+Mx97gFL9cliBmoh7HU+giZE9dcc/wu6yrQ77k9aUtGjG7efaAQHGiwgMqZdr0bTRFCFYcrI4g4T8761ScYE=
+	t=1774871452; cv=fail; b=anEJ/0t/vsKPTcFlv6WdNudyezOebPnVBErdXQFNP6J6AIBYf+1VkAQk0zX7preBRll0IjlEgMHfoP91D8RE9jxS6dgX0awxbaiuCXc2GzpL60YS9aIOEV78rFkYAq9Jh7hTDttYQWgn5yGUt4X4OtxaNhRyReAYxv0g0Fw0WiI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774871188; c=relaxed/simple;
-	bh=IKqzTwIjnf0oAN/+Ea/LGSO8CchS0oVsb17lg0LIh2k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=oDqrwlg7u+ejritC6S2vXicnGh5phflEgXm0BiMiUpvS4+zD8G+7ReCyZHFqNG/UqocbKTVVdRbNzdZCmrT8S29+OFfO8BiS73uwe8pVm0ZWLMZa+6vlBkvy9S0Nu2GHgHXoe3OtxofGhw3eKopBGCwinHv+Slh8pa9CtOhuPzk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=k/k0GIbE; arc=fail smtp.client-ip=52.101.65.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1774871452; c=relaxed/simple;
+	bh=OPtfQtvjizEm76poWJkNAYWJ427BxYYi/iQAH8+VaZo=;
+	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=TsrL9B4C1kKOll1hZj0FmTiiBlX+zRaNLZveY09zZgHtNtf9uvz2SGMDkfRZALCHoppNQCzXTFMzxpF8Fxw01IKP2PDKoyOjESSa0T1OTcqq8iPcfoCzVyr9c7HaNdVkKqVYimUkPu5bpivoE8uBi2YM61NDkP6PLUYTeWAxdI4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=DOX29jD0; arc=fail smtp.client-ip=40.93.196.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="k/k0GIbE"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="DOX29jD0"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oF6ltUX4IIQgwyQHCN0vQ1e+/jp1FlUtnEcGTuLAfzFpcZSAIyq3jA6FYuJdfK4/5or8n5IACS6KZhFNUlpz0yW5B2EYdHWVzPZX751sAEmJBSjFlUb2JCJj4ZaaqoKf4h3IeQYPFvjR90xNTUrCwWPp7hNKwBhq3DrUijXmtlCVNeKNt6XrgguhnIrd7eD4fG5SP9lFCzM6rdoMb/nSigqde5rV5R3nm0xw2lTRtxH9MA1W4aEda4IrGydOkFf4zWp+w2mjZIrVuaP7udc2uC5jkWmVmd4lpQPnLg7YjypDT8fNUX2uUz0WgHSn1czk8hZowpfnvwDFidwqsY7lKA==
+ b=ypwjYMHC9oabCmqmshKeq4/7JKvj9Zi+csgvpp1RpgXX9Vc9G2DnMTK4uow4i44+X36xcUMqJG6KYH+HxvuVIx1Qq7w8JqyQiNFKWR4AuC/raRwE9M7XwwTRqTOw/jXIKI0s9TntH95gPs05hTn5z3KyOnInVRojkjWajOI+nl9JEQ9frWyn1C0Mzz8v+4PqatUzrFtPLk7QAK8NnN9PlGOD4UfwBn8IRDnhSUyt+CvX/A3iSHe0mRouEgHmjQRz76JmW8ORAuQa0eAiibfZzqCHZIn/ZZbJvOj5/fsjmrU4NZsRZm8/VMhbPFq3XKRrlDWq96IJhj0421/sGbf3GQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6fj6ITh1IAT4NXFjhx7MZS5cWsaUT05KqkEuAnTR2Y8=;
- b=vEyKY6o4wvKNhxy5RHn2msa67sQYzuetvOVAViqAhgOjrTEclQ8Ys+rhVsA7+nvu2gS7oLGv3qxnMeGGT4/3t5lZOQBlsBLklLqUeKF4UT0gkhqhHznmxjRAihRbLBCJDEpt55DniBCpeLWZTn5FJxjlD9W8wSYCGqZvCDevS5W9H8vJS0A8ZRyUlVy3NEnZsmj7q3jusV1dAMdJ24pFkMzsCAXSJNcpWRPpu2iJ0HO1cyfUHY4ha1/oaVNvgF4JH5doony1FSgs/6ic6oR9YhKhFiDnnohHWWMjxUm6uHu2ofoUHYRo73+QjVfg2MAIwUdk1UNAt5vsLVOLRndTcg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ bh=pYsAhJBh2iIIuK80/NJMrsbbjHWvbJR1adsPd9eDaXc=;
+ b=ZUfZYmRqWyGQOknr6lXT/mrl9G+8guv6pCFgDrkz0+ER4KxeKB2T3zClCevH0lTHcOwbkrY/XmZIR3MSaz2bV9Fpc2OsLquYHfqARSHmyry7l7IsCFonPW8/Nd48+FFPbyBp6aNshx/SjqKIL3HV2TWFeAn66+QwmU4fYyjxBB2MiMAzHY1McAxd8sovq//ZWbJzU5jCz9yKjRzQXJqD7QmSN3eMwgvFsINhvnahheaTJGYYmHzY4qmnpQPK2e8lIBUFSFOwF6t1wobFhdkrhn2QUe+j6VCdFjeb2mKU0hedFackmd9hR42f9eDtKqArr4taMWYh7LvrTxdo6+ZkDg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6fj6ITh1IAT4NXFjhx7MZS5cWsaUT05KqkEuAnTR2Y8=;
- b=k/k0GIbEb+DSdxJPdKUt7PQabk4GLylTw1piZjpWb2+Aq5q5z49swxWboES/AzMxzpzaKyeUASpfTMqO/TRYbuXWcKH8S45QDbYs3PibVGC17Kkx2CEa0zQ37FhdAxjUsGezViplRs2RnWQRZuMTSoUVu1HI5YAqoxXjQPwyL2SwV+xHGmNdgEEycI5l2LjY13u5HnYWREiBr/4HhaMxu6KDz0OcILTwPcUJ5NcBSKK0d5ybIfI92u09mVx+ErSFt8Q1R1xjgDGA8SQjYn3SKYcevtnm7YUgrdWJGQqbuuT00eIfVrN28rafoM+CH6M5uv+9e0fzn7UM55hfD0fR9w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM9PR04MB8585.eurprd04.prod.outlook.com (2603:10a6:20b:438::13)
- by DU4PR04MB11815.eurprd04.prod.outlook.com (2603:10a6:10:622::6) with
+ bh=pYsAhJBh2iIIuK80/NJMrsbbjHWvbJR1adsPd9eDaXc=;
+ b=DOX29jD0V7pzQdJdLF6MqDSCrtKUi7NuoWwLKoJEX69ZEKkDCulae9w3W6EiT8aceHaVjEhLEEJBZu7cTZNR0UbFRlPePFkAUTKCPksIez8peM2j3D30+HAn8DeUFSHewOqqcsCZivD5Iql5wJezc1tOcFzhKH2KylTLhISy7FeV0RRuLhoALK9nnxp28bEWsddsHEhVaVd4BUaQe3NF5bwzJHVyIFHKiA6dzN2b8V5XB3LnoxoP/FFrRgm61XEQzcd5JyCkYA0tJdV7Ds3O5cEeYq2OL2okg1zCG1xGHY89/yCDUCToMUUKu5zkzEqQpQCeLER+jy0KPjY67PscRA==
+Received: from CYXPR02CA0022.namprd02.prod.outlook.com (2603:10b6:930:cf::26)
+ by DS7PR12MB8231.namprd12.prod.outlook.com (2603:10b6:8:db::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.28; Mon, 30 Mar
- 2026 11:46:23 +0000
-Received: from AM9PR04MB8585.eurprd04.prod.outlook.com
- ([fe80::f010:fca8:7ef:62f4]) by AM9PR04MB8585.eurprd04.prod.outlook.com
- ([fe80::f010:fca8:7ef:62f4%4]) with mapi id 15.20.9745.027; Mon, 30 Mar 2026
- 11:46:23 +0000
-Date: Mon, 30 Mar 2026 14:46:20 +0300
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: linux-phy@lists.infradead.org
-Cc: netdev@vger.kernel.org, Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Josua Mayer <josua@solid-run.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH phy-next 0/3] Lynx 28G: better init(), exit(),
- power_on(), power_off()
-Message-ID: <20260330114620.7uvdlxgfgmmmuugt@skbuf>
-References: <20260321011451.1557091-1-vladimir.oltean@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260321011451.1557091-1-vladimir.oltean@nxp.com>
-X-ClientProxiedBy: WA2P291CA0048.POLP291.PROD.OUTLOOK.COM
- (2603:10a6:1d0:1f::10) To AM9PR04MB8585.eurprd04.prod.outlook.com
- (2603:10a6:20b:438::13)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Mon, 30 Mar
+ 2026 11:50:45 +0000
+Received: from CY4PEPF0000E9D8.namprd05.prod.outlook.com
+ (2603:10b6:930:cf:cafe::62) by CYXPR02CA0022.outlook.office365.com
+ (2603:10b6:930:cf::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9745.28 via Frontend Transport; Mon,
+ 30 Mar 2026 11:50:39 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CY4PEPF0000E9D8.mail.protection.outlook.com (10.167.241.71) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9745.21 via Frontend Transport; Mon, 30 Mar 2026 11:50:44 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 30 Mar
+ 2026 04:50:28 -0700
+Received: from fedora (10.126.231.35) by rnnvmail201.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 30 Mar
+ 2026 04:50:22 -0700
+References: <20260326132828.805703-1-ioana.ciornei@nxp.com>
+ <20260326132828.805703-4-ioana.ciornei@nxp.com>
+User-agent: mu4e 1.8.14; emacs 30.2
+From: Petr Machata <petrm@nvidia.com>
+To: Ioana Ciornei <ioana.ciornei@nxp.com>
+CC: <netdev@vger.kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, <linux-kernel@vger.kernel.org>, <petrm@nvidia.com>,
+	<willemb@google.com>, <linux-kselftest@vger.kernel.org>
+Subject: Re: [PATCH net-next v4 03/10] selftests: net: extend lib.sh to
+ parse drivers/net/net.config
+Date: Mon, 30 Mar 2026 13:28:49 +0200
+In-Reply-To: <20260326132828.805703-4-ioana.ciornei@nxp.com>
+Message-ID: <87wlyt4juu.fsf@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8585:EE_|DU4PR04MB11815:EE_
-X-MS-Office365-Filtering-Correlation-Id: 52dcf873-3afb-4f1a-5dba-08de8e51f7be
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D8:EE_|DS7PR12MB8231:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8c7195f7-ad4e-4087-adfd-08de8e5293bc
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|366016|376014|1800799024|19092799006|56012099003|18002099003|22082099003;
+	BCL:0;ARA:13230040|82310400026|376014|36860700016|7416014|1800799024|18002099003|22082099003|56012099003;
 X-Microsoft-Antispam-Message-Info:
-	7ZJ2DxYRy1jXsJgbkWcizW+awfAMCSoSfNabvk/g57lIsecYF+bCsOKfryjJ0RHOIWSJPj3mModci6HQ0uoeqiY9YpaHocGlBYIHO8lZSUGjrk2cW7RJh0IwBjPfC1T1Q03WQHPt5Tmxu2DpsSUPib94/pTbNIAENTziHgX3O/Bf/onSEinWh2kwsMLf6eh7CqzDRHjX6jLIn7Qb0/or4Mph8dldx7jfro9PrJ2CjAE0fdc5DWzFZ0KUKH17zce7iQnTAjgH3qagnk8Nnum/g8N0SZo+ZoI0D5VKys5wgziNPg6ePPB+VMPaVIhP+txd5O7Y1dDk3ayKPAUryGkMeN8vWcjzB2sXTofuiPkOC/MstMJIEKZ/YuIPV1fRfku1mKfwMWGTe7Q2Cy3SVkaL2f+ZkzOmrl+YQXtfJHQ9vzaJ67LrcV6uWIaxbVyEFMk/OvQQ+S4HYGkr5E8DMLn1ToLflB9+89yn+fJ2UFoFi47hmcMEeeO7SgFaJQSTRdHvSKdv4xtMVXG7ntq66ZjpMzBKM5A8S7UvOgt4A6IxIPZry9W9swO9n5jujlFdITucKkU3QRqFW37BHMfjXa4Kr8nsSVUDs3Eh+o8SV95zj0pi0Rk5zmdEGSjbgHlHXmjyGqk3tznBUE9tSOaFTs5Q4eMaQA82NnDtXAHz3se2mQ4ZU7sGPwbpE6kRK4mpMoz9
+	S59946ceO8uDiqD/h/22g4MpB4oE/PxVuCeq476EeCeDHqCykjFJqrlXKBihV2Xoz4oAP5QBnGvpgOp+EXz148Sfoqq4NyUjl/6jRT2StDSGdZhrQVLeOlyzGnWuHWWzwtEy1VFbwATZKOb+YfROYSh1NuKI/vNc5XQv7PWgaDcbPjk59emOFecsi0y+onMUKjJExLwGlJ2wcMqGt65KiniYibFlGL7hyBnCjMfsmZLl69BQEJ/rjapjTzQVySuTaOIfHUxw3l63j4XV9GF+IBU4GepjefRfPI48bEJlf/XXULDQmjKQbn8yE9DVuVspnILRDuKOj3W2YU8EDES74fAJONhZTVy5Dy05RP+E8XIWWQd9df4cmHHCIu8GQGzXnRKj5JJJbhWQjQIkmBBsRbcfgxpO1D9t5BiMI1hxppFUygCScGaHKgC0j79l17USRrr2Bz+knAHYcx/Y25fQxSswmwGXPcWPe9HzJ4Qfz5bsxSYw2BSJUWYAxE6URPwLfxbL3g8+z4WpMujzrKkxjOo4zVBuud0KT+AM8SgShr6IJwt+Ztn/Dh60vdAC8H0bIL9xGcUqMgA4qqAG7TdEx6O+9teCLJHEnNyUzZdic9sAJupd7IIeme4KWUsM3HFdYZPJfuTniSh8QyBpI9hLdLLWfdjMAbRevTngBmj+vFzgbKgkeXwZEbs5ZqpR48nlYQOwWzSzl8fOgzS4NUx+s5wsiWMrRTc2zYtnZFcgEu3GHj8kLu4ZF4X6INSugDerV0NhKQhXJmWpPUmDiOYPjg==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8585.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(376014)(1800799024)(19092799006)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700016)(7416014)(1800799024)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?5YBDRfSZ4JGbRXLwpjrnU0g2K9YVxk2W01mv7iFvPbPBaZMQaYg4GHdKBD0Y?=
- =?us-ascii?Q?l5YyOc+4scD0Uj0lHyBtyPfcyVZoes8M3qrYo/btsE9xeckZHyg4S7IanMyF?=
- =?us-ascii?Q?LrBZDWPfmveByPyQWKQp4PYx1fUOeYsgUpTMomKl5vVGhvjnYTOG5ooVha7n?=
- =?us-ascii?Q?jBE0IwuSgfLnFXMBRJ90rO5gEA2XsKDxmCc56VBX2KuurxPeF8kkCa0UW0Re?=
- =?us-ascii?Q?xHxNlNxZ3ONSKnsR3Axf4uoKJqFt50Ppr+U8dNJl91RLfFIdRiwJ7aUuStL2?=
- =?us-ascii?Q?7rrH0But7BfKThkM3fEoLMEixqT/jroeRhgEMM8az64Cpu1jsYblge++8lNI?=
- =?us-ascii?Q?50UTAEkDxik8N/suwqFGKhRfKtwK9OyTJ1QXNCCQUpqmr5+pucRJw8bFZold?=
- =?us-ascii?Q?pFPRmTCEqoNGhnSTSO64Q1fiMD3/bouphsICG3cCXLs1kXS2GFt3sFIcV3Xo?=
- =?us-ascii?Q?kJoYrXXoyLRBtio9N9NjkQodJ+RFPvURDO7kZZfVUnbokNSN7xWzh0pNzgzF?=
- =?us-ascii?Q?339aiunTznhnQxcu41I2ZNtXU01qSFFS3MXVsuCSrfyEoxWPFApveSCo4JUf?=
- =?us-ascii?Q?PnnkC5J/v3PTEzeEFM+JMAD7PKMduhEmTuqDWe/+Sa6Oz3h5PhZcSlw6p372?=
- =?us-ascii?Q?7BLNPz9Ehewh38gnq4X5D23JXyRcuOz1F09zPW1y1rYknu28LbdKeWS+3cQf?=
- =?us-ascii?Q?hwLSQvEyzrqo8MvpIQnhB3SlSFXr5pPXxG2zrFpzHe5iQubO7f/EIDhMaVt1?=
- =?us-ascii?Q?tpEejcAIwEe5YaHYkbjQwFE0hURPv3qiAQcQOw0/dtg2n2ZIjpE5MF61bExn?=
- =?us-ascii?Q?i2m9fKxrNBGIEvMzKKp0Y34Qb7gHTdvx1Nqbf3S5FTzzO5KnnWyKQOQ08XkC?=
- =?us-ascii?Q?s5iOQ7uZvbX39+RaFMlgWQEH9nlPUklGhZOdq4RKn0FEhXOoNkq7YILqwXqb?=
- =?us-ascii?Q?y0H21rcXpLfebuKIHL2Q0tfCu4sCkyTwTevp5zivlKyHeYiN5nweG1k2Akm4?=
- =?us-ascii?Q?xrdB5zKBFZ4u7PXY4+AuTR4U3ofE+9I06OOmRgfSl5p6KE1XIEx8DI6tQSTX?=
- =?us-ascii?Q?pRiIpCozLm3Fvwn0y5TKSLRUNcjGqkcUz6/xFzmBIGG0ONRx0hfabdzInRwy?=
- =?us-ascii?Q?FsJjVdux3MFHZjqV1geq5oz8NqPvIUdFVBEli1Ua3bcMRvhpP+sMSo7G+5VY?=
- =?us-ascii?Q?EoLZp6JWaW+p4AmigyncwPW01g7uCMC1fqR4YjSKviuoQWNdQdn2b3NZ7KWV?=
- =?us-ascii?Q?DzRiYkcfDlA7g4/kzBHqkZX5QSIbRQku0RT8BPA7zwlc5Tv9VnWSL4qM52i7?=
- =?us-ascii?Q?T5OOdXEaBFsfPPj2DGtUxxdgTR4tdtLuz/yLxqFj97bF7f798qZyykfVq374?=
- =?us-ascii?Q?8q+dEetO6NgALTwAGJKYbIpsYS5q545N5urK9hIc75reH/t7VG6SpiENNSe0?=
- =?us-ascii?Q?wpvKlIfzCM0fPbhFWdFexNSdRHxRy6MZrBTuc7YHg4qwastffLAi0MBJ3IlF?=
- =?us-ascii?Q?tgQTE8rX5W9uh8MecmYTQSK+kKN9MWg2N3Z7wGwACwCywTJqjDh9dkzO9IQ3?=
- =?us-ascii?Q?/dvRNGT9z+WpQfI6+JZPui3f+uVuDOgMYEEnSY0HOL5ir5wC2RkKHr4EYA3m?=
- =?us-ascii?Q?7KXiiEOLPWsVepoZEtFiVn56j+PJpcgjiXamWtkcky2y10kH4uE/31HP+BVa?=
- =?us-ascii?Q?TlG1G+YnxX6a0R7UZw1YRHuGONjfRu497c3YU/6Yqp1WspZJDScvptIoEAIk?=
- =?us-ascii?Q?7SuvIe9r+Bolvp6cXUbgthzmFQGYn3FSXi7ko1mdhvz36+LuXUP+4ZWEIeOs?=
-X-MS-Exchange-AntiSpam-MessageData-1: JSqwlddShgvFpwF5oqno2nG/CerCdbnwcwY=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 52dcf873-3afb-4f1a-5dba-08de8e51f7be
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8585.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2026 11:46:23.5622
+	MSxLrVaAfnayIt+/x5CTztcgdkLE/ArOkiEP2r2eed6N+OSLNyO2a5DE/FdyyT9yXUrIzV2wkGRgIQ7zi4vcSwCr8M5KFOSvb9d6N9mKCdxiiV4lJLuAafSJSpwwTWL+0b6Nkahf70UZ/EAjcVo5xkTuFmgiHDvs758GTHu+zDpmjhGRRB1Rkuapn+r1OhzlF5tcAuzjb4Th8eFenOGTHThwuTq3dOu6gB/+cicsRl3qFYW7mITNN6zmvi5Fu5gvF6aKNgMJ6Sb3zyVEHegcv+14fbXDTvd4gXpRricv33LvV/DG2qA7IgjU3WIAyG/++jtH6pV2QLk/X+8yZi8DOE7wfGHS6zrpojMoi5ZeOGkDK30CfHLkUWJl7meI7G33XpQQgflZ+lzRwcfieY9/fFJgqiA4lwmQENQXdx2XTT3xHFWRW/KbefsfcR7Pwwgs
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2026 11:50:44.9158
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pmc2gsrwLLBEAPGdvhp1nHRL0EI68/q1ge7RDlk6k+EtIfDn4lg3xcfLiRSf/pChdOjLclzfvHU/qC5v/RIADQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB11815
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8c7195f7-ad4e-4087-adfd-08de8e5293bc
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000E9D8.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8231
 
-On Sat, Mar 21, 2026 at 03:14:48AM +0200, Vladimir Oltean wrote:
-> This is a set of 3 improvements to the 28G Lynx SerDes driver as found
-> on NXP Layerscape:
-> - avoid kernel hangs if lane resets/halts fail due to other bugs
-> - actually have phy_power_down() cut power from lanes, not just halt them
-> - allow consumers to call phy_exit(), to balance the phy->init_count
-> 
-> Especially change 3 will allow further development of the dpaa2-eth
-> consumer. To permit phy_exit() and other patches in net-next to be
-> submitted in this development cycle without functionally breaking
-> networking, please apply this change on top of v7.0-rc1 and provide
-> it as a stable tag to be pulled in netdev.
-> 
-> Vladimir Oltean (3):
->   phy: lynx-28g: use timeouts when waiting for lane halt and reset
->   phy: lynx-28g: truly power the lanes up or down
->   phy: lynx-28g: implement phy_exit() operation
-> 
->  drivers/phy/freescale/phy-fsl-lynx-28g.c | 190 +++++++++++++++++++----
->  1 file changed, 157 insertions(+), 33 deletions(-)
-> 
-> -- 
-> 2.34.1
+
+Ioana Ciornei <ioana.ciornei@nxp.com> writes:
+
+> Extend lib.sh so that it's able to parse driver/net/net.config and
+> environment variables such as NETIF, REMOTE_TYPE, LOCAL_V4 etc described
+> in drivers/net/README.rst.
 >
+> In order to make the transition towards running with a single local
+> interface smoother for the bash networking driver tests, beside sourcing
+> the net.config file also translate the new env variables into the old
+> style based on the NETIFS array. Since the NETIFS array only holds the
+> network interface names, also add a new array - TARGETS - which keeps
+> track of the target on which a specific interfaces resides - local,
+> netns or accesible through an ssh command.
+>
+> For example, a net.config which looks like below:
+>
+> 	NETIF=eth0
+> 	LOCAL_V4=192.168.1.1
+> 	REMOTE_V4=192.168.1.2
+> 	REMOTE_TYPE=ssh
+> 	REMOTE_ARGS=root@192.168.1.2
+>
+> will generate the NETIFS and TARGETS arrays with the following data.
+>
+> 	NETIFS[p1]="eth0"
+> 	NETIFS[p2]="eth2"
+>
+> 	TARGETS[eth0]="local:"
+> 	TARGETS[eth2]="ssh:root@192.168.1.2"
+>
+> The above will be true if on the remote target, the interface which has
+> the 192.168.1.2 address is named eth2.
+>
+> Since the TARGETS array is indexed by the network interface name,
+> document a new restriction README.rst which states that the remote
+> interface cannot have the same name as the local one.
+>
+> Also keep the old way of populating the NETIFS variable based on the
+> command line arguments. This will be invoked in case NETIF is not
+> defined.
+>
+> Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+> ---
+> Changes in v4:
+> - reword the entry in README.rst to mention that the different interface
+>   names is only a bash restriction and the python infrastructure does
+>   not have the same problem.
+> - only declare the TARGETS array when necessary
 
-I've analyzed the AI review output from
-https://sashiko.dev/#/patchset/20260321011451.1557091-1-vladimir.oltean%40nxp.com
-and I don't consider anything from it to be actionable.
+I guess you mean at the point where it's necessary, instead of it being
+a user API. Right now TARGETS is defined always, and I think that's
+better than having it only defined sometimes.
 
-> > @@ -1065,7 +1097,7 @@ static void lynx_28g_cdr_lock_check(struct work_struct *work)
-> >  	struct lynx_28g_priv *priv = work_to_lynx(work);
-> >  	struct lynx_28g_lane *lane;
-> >  	u32 rrstctl;
-> > -	int i;
-> > +	int err, i;
-> >
-> >  	for (i = 0; i < LYNX_28G_NUM_LANE; i++) {
-> >  		lane = &priv->lane[i];
-> Can this dereference a NULL pointer for unpopulated lanes?
-> If the device tree contains available child nodes, lynx_28g_probe_lane()
-> is only called for lanes explicitly defined by the "reg" property, leaving
-> lane->phy as NULL for the rest.
-> Since the loop unconditionally iterates over all LYNX_28G_NUM_LANE (8) lanes:
-> 	for (i = 0; i < LYNX_28G_NUM_LANE; i++) {
-> 		lane = &priv->lane[i];
-> 		mutex_lock(&lane->phy->mutex);
-> 		if (!lane->init || !lane->powered_up) {
-> Would it crash on mutex_lock(&lane->phy->mutex) before checking
-> if the lane is initialized?
+> - add a new flags - DRIVER_TEST_CONFORMANT - that needs to be set by the
+>   test
+> - rework the check_env() function so that its logic is simpler
+> - source drivers/net/net.config only if DRIVER_TEST_CONFORMANT == yes
+> - check that NETIF and the remote netif have different names and abort
+>   test is not
+>
+> Changes in v3:
+> - s/TARGET/CUR_TARGET
+> - this used to be patch #2/9 in v2. Swapped the two patches so that the
+>   run_cmd used in this patch is defined earlier, not later.
+> Changes in v2:
+> - patch is new
+>
+>  .../testing/selftests/drivers/net/README.rst  |   4 +
+>  tools/testing/selftests/net/forwarding/lib.sh | 106 ++++++++++++++++--
+>  2 files changed, 101 insertions(+), 9 deletions(-)
+>
+> diff --git a/tools/testing/selftests/drivers/net/README.rst b/tools/testing/selftests/drivers/net/README.rst
+> index c94992acf10b..1897aa1583ec 100644
+> --- a/tools/testing/selftests/drivers/net/README.rst
+> +++ b/tools/testing/selftests/drivers/net/README.rst
+> @@ -26,6 +26,10 @@ The netdevice against which tests will be run must exist, be running
+>  Refer to list of :ref:`Variables` later in this file to set up running
+>  the tests against a real device.
+>  
+> +The current support for bash tests restricts the use of the same interface name
+> +on the local system and the remote one and will bail if this case is
+> +encountered.
+> +
+>  Both modes required
+>  ~~~~~~~~~~~~~~~~~~~
+>  
+> diff --git a/tools/testing/selftests/net/forwarding/lib.sh b/tools/testing/selftests/net/forwarding/lib.sh
+> index 3009ce00c5dc..93b865681840 100644
+> --- a/tools/testing/selftests/net/forwarding/lib.sh
+> +++ b/tools/testing/selftests/net/forwarding/lib.sh
+> @@ -3,6 +3,7 @@
+>  
+>  ##############################################################################
+>  # Topology description. p1 looped back to p2, p3 to p4 and so on.
+> +#shellcheck disable=SC2034 # SC doesn't see our uses of global variables
 
-This is fixed as of commit
-https://git.kernel.org/pub/scm/linux/kernel/git/phy/linux-phy.git/commit/?id=a258d843a3e4cb687da19437f8f81fee55ad7d35
-not present in linux-phy/next.
+The shellcheck line should be moved elsewhere. The comment is related to
+NETIFS, and it's weird there's a shellcheck declaration between a
+comment and the thing it's commenting.
 
-> > @@ -1081,9 +1113,17 @@ static void lynx_28g_cdr_lock_check(struct work_struct *work)
-> >  		if (!(rrstctl & LNaRRSTCTL_CDR_LOCK)) {
-> >  			lynx_28g_lane_rmw(lane, LNaRRSTCTL, LNaRRSTCTL_RST_REQ,
-> >  					  LNaRRSTCTL_RST_REQ);
-> > -			do {
-> > -				rrstctl = lynx_28g_lane_read(lane, LNaRRSTCTL);
-> > -			} while (!(rrstctl & LNaRRSTCTL_RST_DONE));
-> > +
-> > +			err = read_poll_timeout(lynx_28g_lane_read, rrstctl,
-> > +						!!(rrstctl & LNaRRSTCTL_RST_DONE),
-> > +						LYNX_28G_LANE_RESET_SLEEP_US,
-> > +						LYNX_28G_LANE_RESET_TIMEOUT_US,
-> > +						false, lane, LNaRRSTCTL);
-> > +			if (err) {
-> > +				dev_warn_once(&lane->phy->dev,
-> > +					      "Lane %c receiver reset failed: %pe\n",
-> > +					      'A' + lane->id, ERR_PTR(err));
-> > +			}
-> Since dev_warn_once() uses a static boolean flag that is evaluated per call
-> site rather than per lane, will this mask errors for subsequent lanes?
-> If a receiver reset times out on any lane, the warning is printed and the
-> static flag is set to true. If any other lane subsequently fails the reset,
-> the warning will be silently suppressed.
-> Would a per-lane state tracking mechanism or dev_warn_ratelimited() be more
-> appropriate here to ensure multi-lane failures can be diagnosed?
+>  declare -A NETIFS=(
+>      [p1]=veth0
+> @@ -85,6 +86,9 @@ declare -A NETIFS=(
+>  # e.g. a low-power board.
+>  : "${KSFT_MACHINE_SLOW:=no}"
+>  
+> +# Whether the test is conforming to the requirements and usage described in
+> +# drivers/net/README.rst.
+> +: "${DRIVER_TEST_CONFORMANT:=no}"
 
-Unjustified complexity for an error case that should never really trigger
-in production environments.
+Not sure this makes sense as user API either honestly. Given the
+differences between requirements of the two test types I can't imagine a
+non-conformant test would be runnable like that. The actual line is OK,
+but it should be moved probably above the if check, so as not to
+indicate it's usable as a user API.
 
-> > diff --git a/drivers/phy/freescale/phy-fsl-lynx-28g.c b/drivers/phy/freescale/phy-fsl-lynx-28g.c
-> > --- a/drivers/phy/freescale/phy-fsl-lynx-28g.c
-> > +++ b/drivers/phy/freescale/phy-fsl-lynx-28g.c
-> [ ... ]
-> > +static int lynx_28g_power_on(struct phy *phy)
-> > +{
-> > +	struct lynx_28g_lane *lane = phy_get_drvdata(phy);
-> > +	int err;
-> > +
-> > +	if (lane->powered_up)
-> > +		return 0;
-> > +
-> > +	/* Power up the RX and TX portions of the lane */
-> > +	lynx_28g_lane_rmw(lane, LNaRRSTCTL, 0, LNaRRSTCTL_DIS);
-> > +	lynx_28g_lane_rmw(lane, LNaTRSTCTL, 0, LNaTRSTCTL_DIS);
-> > +
-> > +	err = lynx_28g_lane_reset(phy);
-> > +	if (err)
-> > +		return err;
-> If lynx_28g_lane_reset() returns an error, the function returns immediately
-> without setting lane->powered_up to true. Does this leave the hardware
-> powered up while the software state considers it powered off?
-> If a subsequent cleanup calls lynx_28g_power_off(), it will check
-> if (!lane->powered_up) and return 0 immediately, leaving the DIS bits
-> cleared permanently. Should the error path restore the DIS bits before
-> returning?
+>  ##############################################################################
+>  # Find netifs by test-specified driver name
+>  
+> @@ -340,17 +344,101 @@ fi
+>  ##############################################################################
+>  # Command line options handling
+>  
+> -count=0
+> +check_env() {
+> +	if [[ ! (( -n "$LOCAL_V4" && -n "$REMOTE_V4") ||
+> +		 ( -n "$LOCAL_V6" && -n "$REMOTE_V6" )) ]]; then
+> +		echo "SKIP: Invalid environment, missing or inconsistent LOCAL_V4/REMOTE_V4/LOCAL_V6/REMOTE_V6"
+> +		echo "Please see tools/testing/selftests/drivers/net/README.rst"
+> +		exit "$ksft_skip"
+> +	fi
+>  
+> -while [[ $# -gt 0 ]]; do
+> -	if [[ "$count" -eq "0" ]]; then
+> -		unset NETIFS
+> -		declare -A NETIFS
+> +	if [[ -z "$REMOTE_TYPE" ]]; then
+> +		echo "SKIP: Invalid environment, missing REMOTE_TYPE"
+> +		exit "$ksft_skip"
+>  	fi
+> -	count=$((count + 1))
+> -	NETIFS[p$count]="$1"
+> -	shift
+> -done
+> +
+> +	if [[ -z "$REMOTE_ARGS" ]]; then
+> +		echo "SKIP: Invalid environment, missing REMOTE_ARGS"
+> +		exit "$ksft_skip"
+> +	fi
+> +}
+> +
+> +get_ifname_by_ip()
+> +{
+> +	local target=$1; shift
+> +	local ip_addr=$1; shift
+> +
+> +	__run_on "$target" ip -j addr show to "$ip_addr" | jq -r '.[].ifname'
+> +}
+> +
+> +# Based on DRIVER_TEST_CONFORMANT, decide if to source drivers/net/net.config
+> +# or not. In the "yes" case, the test expects to pass the arguments through the
+> +# variables specified in drivers/net/README.rst file. If not, fallback on
+> +# parsing the script arguments for interface names.
+> +if [ "${DRIVER_TEST_CONFORMANT}" = "yes" ]; then
+> +	if [[ -f $net_forwarding_dir/../../drivers/net/net.config ]]; then
+> +		source "$net_forwarding_dir/../../drivers/net/net.config"
+> +	fi
+> +
+> +	if (( NUM_NETIFS > 2)); then
+> +		echo "SKIP: DRIVER_TEST_CONFORMANT=yes and NUM_NETIFS is bigger than 2"
+> +		exit "$ksft_skip"
+> +	fi
+> +
+> +	check_env
+> +
+> +	# Populate the NETIFS and TARGETS arrays automatically based on the
+> +	# environment variables. The TARGETS array is indexed by the network
+> +	# interface name keeping track of the target on which the interface
+> +	# resides. Values will be strings of the following format -
+> +	# <type>:<args>.
+> +	#
+> +	# TARGETS[eth0]="local:" - meaning that the eth0 interface is
+> +	# accessible locally
+> +	# TARGETS[eth1]="netns:foo" - eth1 is in the foo netns
+> +	# TARGETS[eth2]="ssh:root@10.0.0.2" - eth2 is accessible through
+> +	# running the 'ssh root@10.0.0.2' command.
+> +
+> +	unset NETIFS
+> +	declare -A NETIFS
+> +	declare -A TARGETS
+> +
+> +	NETIFS[p1]="$NETIF"
+> +	TARGETS[$NETIF]="local:"
+> +
+> +	# Locate the name of the remote interface
+> +	remote_target="$REMOTE_TYPE:$REMOTE_ARGS"
+> +	if [[ -v REMOTE_V4 ]]; then
+> +		remote_netif=$(get_ifname_by_ip "$remote_target" "$REMOTE_V4")
+> +	else
+> +		remote_netif=$(get_ifname_by_ip "$remote_target" "$REMOTE_V6")
+> +	fi
+> +	if [[ ! -n "$remote_netif" ]]; then
+> +		echo "SKIP: cannot find remote interface"
+> +		exit "$ksft_skip"
+> +	fi
+> +
+> +	if [[ "$NETIF" == "$remote_netif" ]]; then
+> +		echo "SKIP: local and remote interfaces cannot have the same name"
+> +		exit "$ksft_skip"
+> +	fi
+> +
+> +	NETIFS[p2]="$remote_netif"
+> +	TARGETS[$remote_netif]="$REMOTE_TYPE:$REMOTE_ARGS"
+> +else
+> +	count=0
 
-Same. If lynx_28g_lane_reset() times out, there is really no way to keep
-the software state in sync no matter whether lane->powered_up is true or
-false. The lane is broken regardless.
+This leg is missing declare -A TARGETS.
 
-> > @@ -1007,7 +1074,7 @@ static int lynx_28g_set_mode(struct phy *phy, enum phy_mode mode, int submode)
-> >
-> >  out:
-> >  	if (powered_up)
-> > -		lynx_28g_power_on(phy);
-> > +		lynx_28g_lane_reset(phy);
-> >
-> >  	return err;
-> >  }
-> If lynx_28g_lane_reset() fails during the success path where err is 0,
-> the return value of the reset call is discarded and the function still
-> returns 0.
-> Can this hide a hardware failure from the caller, misleading the MAC driver
-> into thinking the link is successfully brought back up? Should err be
-> updated with the return value of lynx_28g_lane_reset() here if err is
-> currently 0?
+Since both legs need to declare it, why not move it up above the if?
 
-As explained in the commit message, handling and propagating the
-lynx_28g_lane_reset() error to the caller isn't really any better.
-The caller would think that lynx_28g_set_mode() failed, thus that the
-mode wasn't changed. But it was changed.
+> +	while [[ $# -gt 0 ]]; do
+> +		if [[ "$count" -eq "0" ]]; then
+> +			unset NETIFS
+> +			declare -A NETIFS
+> +		fi
+> +		count=$((count + 1))
+> +		NETIFS[p$count]="$1"
+> +		TARGETS[$1]="local:"
+> +		shift
+> +	done
+> +fi
+>  
+>  ##############################################################################
+>  # Network interfaces configuration
 
-I do not plan to send a v2 to address any of the change suggestions above.
