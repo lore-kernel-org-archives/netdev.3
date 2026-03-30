@@ -1,121 +1,148 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C1C3CA481
-	for <netdev@vger.kernel.org>; Mon, 30 Mar 2026 13:07:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 260B53D333F;
+	Mon, 30 Mar 2026 13:10:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774876055; cv=none; b=PO8irghWsd9TbmRilqop8wBGON7793i0L5EcR/XsQeZOW5HRJhZoGTG0PORO7g54sPAEO6/F83s563kChmKxrs6eS+mRWK89gIG0LgeO747QOfYPpIZHLQ3C3h2cEcBXCT+ixD5FbqvSVAi1zbR+Ry2yP3v2w4/RQGKpNtnb2CA=
+	t=1774876213; cv=none; b=qHvOQX44tohTxTViaCE8CBsTSUihVi7ME/Lm7gJvfpLq4/x6fBmE1G/moOPSPtKoGS22QD7xRNWFlgdNy7GYMowKifanoUPALTdpq8g3PAYiP3bLEzYpzhaYz1Jyd/U7BPdPptqxVLRVuiz2/BtLeEW4TiurxY+YpERObmwazNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774876055; c=relaxed/simple;
-	bh=C8NNL7hwaTk7W11gVRZRwpeVV5rtR8at0YoB5aRdk3s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=M35V50aS6KLw/+RoMQLIcKqsmt25tl5cge4IL951tPS1pInLVZGmJIl3lc77rBxnEz1eIwaeFoesJuZ4mone8YgN5nKzy06YmPmeJs01ax78Qqh947k7k7nIuQRZfsBUPfQgiCX3plDNgiqp+PvJRNmI+YpOw2QmikAEezPUTRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Y7BTAk1f; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1774876213; c=relaxed/simple;
+	bh=+z0ds1dEkDsjD2TbiG1J1ECIKxoY5I0HhGpLfURiclQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=U6N64RkF3eC7iGirr7L40XZRjhR4B1W4Yrt1+7ZshddW2cNEnRwrPsa4uHAgRhdFSB8eajiOwTy0SrVFX8VnXeWS9BcFnN0JYi7RxW8SdEhTrdfz42zZhNGI1RPKRqfEXE4+stsC/NX+JcmfSroZPeMB2L2qsO0oN4gJkWY3l8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=U9k3SEGC; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Y7BTAk1f"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id D05204E42869;
-	Mon, 30 Mar 2026 13:07:29 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9CC785FFA8;
-	Mon, 30 Mar 2026 13:07:29 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A46CB10450083;
-	Mon, 30 Mar 2026 15:07:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1774876049; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=kxvWlb22Njz2egFEf3cDrys6xgKK//DxYUkt6sa1KI4=;
-	b=Y7BTAk1fzkpu2QGNVyq1Qe1qk+fNedxyKVoun+GAZkv9jy8TC41cR5t7Gk1hp65n41i6b5
-	DHCiNw5f91uhU0tPoejTqfyw9+bFg8lE5Q0tvWGesrMwCZKim3ja6Z/8rCYXlHB9qDmYKs
-	18qZ3GYLQYDbyoiZyXEbYH0nh98WrEXiED59vrMUuWcEye/9mpRNMwdLm9BLIpfFF3OlKb
-	Q5aJbod/01ojURy9JaudHfw+RCdcISTuMB5Pw1PoMASvXVJuTG2IHG3AYV89I3WW6sp5v3
-	QezCAQXmgp4cJ2T9VQmq5zu7BW79lJaTjYOmIkWhAMouCsg+X4BDnzzhClYHbA==
-Message-ID: <20b8349c-932d-4138-a155-5359cc3a10b2@bootlin.com>
-Date: Mon, 30 Mar 2026 15:07:24 +0200
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="U9k3SEGC"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62U0jCiT462561;
+	Mon, 30 Mar 2026 13:10:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=CHeSzO
+	4goq394woaZUo2vkt/fxPpeKAgtzg8EVdB714=; b=U9k3SEGCyHG5yQb7QvISk3
+	5GHtl1iCyzCoWlnunTc0+O9IB9zfY+PrUCUuvC+rtmaC+AEb/wx0QJAmb8NlJ6fw
+	IhrClLOTT2+XshHlnwQMxa5008uTuSaAEjCTXu5BYyzAtZDdr2p+hhGLfvQtEPyh
+	UWGxtgCOP9ybe//Zh/OKQ/oWhDXuSow3uh6lQ3sRaoHMsJi6Gnek5mGyokLTXR31
+	6iMhyF6qMD2/G66tQdHPPIVXRL3SjpAfzXvXLq8RrUctGGc+26YUl1d6jfCLgw36
+	2HarZWGsMUx/jfAFcaBvW6gaxixjiyecwK/4APOQmJSfmxyNE5TNoyAfnvfPszsA
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d66nnevwa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Mar 2026 13:10:07 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62UBFMQD008703;
+	Mon, 30 Mar 2026 13:10:06 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d6v11cqy9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Mar 2026 13:10:06 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62UDA2SD42664208
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 30 Mar 2026 13:10:02 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A628F2004B;
+	Mon, 30 Mar 2026 13:10:02 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 68C032004D;
+	Mon, 30 Mar 2026 13:10:02 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 30 Mar 2026 13:10:02 +0000 (GMT)
+From: Gerd Bayer <gbayer@linux.ibm.com>
+Date: Mon, 30 Mar 2026 15:09:44 +0200
+Subject: [PATCH v7 1/3] PCI: AtomicOps: Do not enable requests by RCiEPs
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net: phylink: allow PHYs to be attached in
- 802.3z inband mode
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>,
- Andrew Lunn <andrew@lunn.ch>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
- Alexis Lothore <alexis.lothore@bootlin.com>
-References: <E1w66jW-0000000E3qS-23fW@rmk-PC.armlinux.org.uk>
- <a5d7aedb-9770-492f-b528-0a28a652279b@bootlin.com>
- <acatrPb1DdHuyVoL@shell.armlinux.org.uk>
- <30a2cad9-fa2c-4abe-ad51-983d70564c7c@lunn.ch>
- <acptbbfTt_FJgms6@shell.armlinux.org.uk>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <acptbbfTt_FJgms6@shell.armlinux.org.uk>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Message-Id: <20260330-fix_pciatops-v7-1-f601818417e8@linux.ibm.com>
+References: <20260330-fix_pciatops-v7-0-f601818417e8@linux.ibm.com>
+In-Reply-To: <20260330-fix_pciatops-v7-0-f601818417e8@linux.ibm.com>
+To: Bjorn Helgaas <bhelgaas@google.com>, Jay Cornwall <Jay.Cornwall@amd.com>,
+        Felix Kuehling <Felix.Kuehling@amd.com>,
+        =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Niklas Schnelle <schnelle@linux.ibm.com>
+Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, Leon Romanovsky <leon@kernel.org>,
+        Alexander Schmidt <alexs@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+        Gerd Bayer <gbayer@linux.ibm.com>
+X-Mailer: b4 0.14.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: nR_7MWUNmRcBNJwufyVy4G_yWkey58SG
+X-Authority-Analysis: v=2.4 cv=KslAGGWN c=1 sm=1 tr=0 ts=69ca762f cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
+ a=l8ywxVsZnL7a6Sv94yEA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzMwMDEwMCBTYWx0ZWRfX2sq8oqfMVQA+
+ YeBcz7oajtbLWPeE9dkM/BaFYthp6zT+ff9iEmmOX9AsLPLOf8TXoicBR8gPeDxDDsk5qyG5Frb
+ VYL2l3eO0/k9pnW7LICm0O+TqhI9UXcWctZuOshqgoqipqfECUH8e830QOZRSBiZvo2UMm25Jhs
+ YOc7AKGL0BPBIC8D2N7dkf7yqxl3iWX37t3KPrUu/u6G32QWM4bxrVimZ2AT17/IKoCR9LAvQoR
+ ezfqlbZgXCLCew2how5IZUefljiZaXfdiiuMmrzrCqoE6oqsNvPIv2meOCOv1OsUV74F0zI4yKx
+ cKOHkNypn0M+al4GxQEGlUVFA1t4D5Da7KUf4zjrIvG5VoAfUI1s11heAaFizpajFSSQB5cAB5i
+ G+rb4kv2yrDtwr6ZXOn00uV/UnggzT6TAvEI3b3x1PKGsjfyrTYeZkv+nWXcUpYz/Y0VBFvBHqd
+ Fm9OovqYqPLfnXxpTpw==
+X-Proofpoint-ORIG-GUID: P-slp7YBInZbi8orMA2p2Lc-oqwdirtq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-29_05,2026-03-28_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0
+ phishscore=0 adultscore=0 bulkscore=0 impostorscore=0 clxscore=1015
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2603300100
 
+Since root complex integrated end points (RCiEPs) attach to a bus that
+has no bridge device describing the root port, the capability to
+complete AtomicOps requests cannot be determined with PCIe methods.
 
+Change default of pci_enable_atomic_ops_to_root() to not enable
+AtomicOps requests on RCiEPs.
 
-On 30/03/2026 14:32, Russell King (Oracle) wrote:
-> On Mon, Mar 30, 2026 at 02:26:58PM +0200, Andrew Lunn wrote:
->>> As I've recently said, I think we're more or less boxed in between a
->>> rock and a hard place because of the hacks that qcom-ethqos introduced
->>> with its PCS support. At the moment, I am failing to see any path where
->>> the stmmac PCS can be programmed for inband according to phylink's
->>> wishes and qcom-ethqos can be made to work without its hacks.
->>>
->>> This all ultimately comes back to the half-hearted phylink conversion
->>> of stmmac that was done behind my back without my review. Had the
->>> conversion been done fully, and kept up with the phylink changes for
->>> PCS support, then we probably wouldn't be in this situation today.
->>>
->>> Unfortunately, the driver is going to keep breaking all the time that
->>> it abuses phylink, and at the moment I see no way to stop this sodding
->>> driver abusing phylink.
->>
->> "The needs of the many outweigh the needs of the few"
->>
->> The MAC driver is used by a lot of different SoCs. If qcom-ethqos
->> caused this problem, should we consider breaking backwards
->> compatibility for it, if that opens up a path for getting clean
->> phylink integration for all the other variants?
-> 
-> Consider something like mvneta (which supports 2.5G speeds) connected
-> to a 2.5G PHY that uses 2500BASE-X for 2.5G speeds, and SGMII for
-> slower speeds with inband.
-> 
-> How should this be described in DT?
-> 
-> 	phy-mode = "2500base-x";
-> 	managed = "in-band-status";
-> 
-> will fail today, as these tests will refuse to attach a PHY in that
-> setup, and without a PHY attached, we will never know if it switches
-> to SGMII mode.
-> 
-> This patch makes phylink more flexible and permissive.
+Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
+---
+ drivers/pci/pci.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-You're patch is clearly correct IMO
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 8479c2e1f74f1044416281aba11bf071ea89488a..135e5b591df405e87e7f520a618d7e2ccba55ce1 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -3692,15 +3692,14 @@ int pci_enable_atomic_ops_to_root(struct pci_dev *dev, u32 cap_mask)
+ 
+ 	/*
+ 	 * Per PCIe r4.0, sec 6.15, endpoints and root ports may be
+-	 * AtomicOp requesters.  For now, we only support endpoints as
+-	 * requesters and root ports as completers.  No endpoints as
++	 * AtomicOp requesters.  For now, we only support (legacy) endpoints
++	 * as requesters and root ports as completers.  No endpoints as
+ 	 * completers, and no peer-to-peer.
+ 	 */
+ 
+ 	switch (pci_pcie_type(dev)) {
+ 	case PCI_EXP_TYPE_ENDPOINT:
+ 	case PCI_EXP_TYPE_LEG_END:
+-	case PCI_EXP_TYPE_RC_END:
+ 		break;
+ 	default:
+ 		return -EINVAL;
 
-> However, as has been found, this patch causes problems for stmmac,
-> so it needs a different approach, because stmmac interprets an
-> optional PHY as "we must have a PHY if we don't we fail" at the
-> moment.
+-- 
+2.51.0
 
-What would be the consequences of changing stmmac's stmmac_init_phy so
-that it doesn't error-out when no PHY is found AND we have a PCS AND
-we're using any of the SGMII/1000BaseX/SFP-compatible modes ?
-
-I don't think it would break current setups that work, but I may be
-wrong here, especially as I don't have a good understanding on the
-problem caused by qcom-ethqos here :(
-
-Maxime
