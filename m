@@ -1,193 +1,239 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010002.outbound.protection.outlook.com [52.101.61.2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7973B39C657;
-	Mon, 30 Mar 2026 19:41:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.2
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774899701; cv=fail; b=T6obDGKKd4v9hg/WCqsf+6uaPVNwwc5SG0rS/E192n4FIos9PX/LB6Cf5YLy/MopY4tlV3J+VqYB4IAbJv/tcJiPa4WkcJy+4Lk5Rz86TECIMQifseOpdzeI9JMtc5AmbhBOyo42xA2OcSbT7d1lpoQTLss5Z/1OLRmztAAeWt4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774899701; c=relaxed/simple;
-	bh=3oLVVLGUTfyyl53Q/t4cBzCIcZnfl8DYPZt9ykD7yXI=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B71geMBfoO5FzJqRlPEBx3+fDrkRCrEDbB59gEtNUdc1nBHc56UELkFPGuPQdcGbG2UZBCc+uPblJogIYZFs0bYf/gSCEZOK0bFLJwpoP2ntNQluBXGx9W5F1J3BCA/Zozb4wE6tMq/BOpLoMPqD8co6eRtIUVUbsPd/pjX+hMI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=nAfJJaLJ; arc=fail smtp.client-ip=52.101.61.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4EBE39B486
+	for <netdev@vger.kernel.org>; Mon, 30 Mar 2026 19:43:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774899810; cv=none; b=hDsBlWV9HLKCb2h60/owhZtIgrh7HZIqB76WpH89+EH0KCxjaoiUdCTG+GmpjOBFl9dc0F13uSK3n+iYzd8Sqpgxw5T6rC+TDk4gB5qGC1AiTlFMW4eQTyj+IBi55J6fibwSIrniiKCMdBKT2T2/69itIXH2q/f18dXZjhU99x0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774899810; c=relaxed/simple;
+	bh=+t3dAFdK+R3FJznv4V0o2Y4UBd8hPo2r6yQozGF55w8=;
+	h=From:Content-Type:Mime-Version:Subject:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=f3DvHrkM36ohe6uOW3mSdhSssMs4IAaBIaLO3Cpr7No+KqShrb8l7cLXW0juMokmh5eRPNZebsSCjp7KXRyvCct+x3wnD38l4zSEaNJBPYf5NXARPC0XBYGdm69Ck2wSin25PsFeYouvOXA/EsXS4HaNiVfE0h1YhekJVtVvNDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=vanvalzah.com; spf=none smtp.mailfrom=vanvalzah.com; dkim=pass (2048-bit key) header.d=vanvalzah-com.20230601.gappssmtp.com header.i=@vanvalzah-com.20230601.gappssmtp.com header.b=08PxFZL1; arc=none smtp.client-ip=209.85.219.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=vanvalzah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=vanvalzah.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="nAfJJaLJ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oHAQirv07Smk99nNDSvyxbEQuNmRtRbZB/lsqZRuangV16ecFiWNPrt7UfRQPMNe5aYmGvof3sZ1j0cVke4WwzqSO5sowiwiHrQ48Uha4d89hJgdZc9qJZGr4iEqe83iqGaLcq8r1Ah7CSAkJvXFwbT6ixDnmhHoqm7vo7zWCteW0veG1w8aH71VKLmNqfPpHcbxUC2dGqcOcFNCy7xanTBMYv3kyTvJeB8+uEFx5Fgk2ICJvbMcB0y+rWWl7YNa6/pjPBygBcJg4/rkxAm7DqU2kSavyjfOcmIkKVBc43+R23jCCLUGs4gfqLLt2+l2AhJuJNRgR6GXvD+A+VbSzw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SM9auaHOrMZWp0CLBIt9tOkxvRY8sMgav07IBasu5Gw=;
- b=P4VRQ19Bxmg4XHbpfaR7kZy2IVIjro/v1+Be5USmJy4iSENXDyt+nrY9UGZt13jG4tl5UxGDme5GscnsmaRF12ccbndRG8nKkgbMVsEfERK3LySm7pM8AYYxdq/eUT2OH+Aq//ziwyd+tXqnFL6WMgu6OuhZLxe26T4lL8knkiV4MGDW5TwNqpBBE9xZj6xUICWP62PaYuY9qCeDxnH6KtHjaRXDd60fupsJ0Uar4/pk4iDg4Z6F5HVjQdJ2cPojyqi4O9XW0d9GFO3Svsjzj2AOC6Uzt1sM1gYSnbY0FnxVX5AW68LKjhVGrwzHqy89/bywN0CwYvBRHkRITkInXw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SM9auaHOrMZWp0CLBIt9tOkxvRY8sMgav07IBasu5Gw=;
- b=nAfJJaLJdOWovpdTQMW1RbCIfGl4xF7F6xy5TCs6YDF6Q8Q8R7pVU5l5aXfKsjm3K30WORKUQcZz6QopGI++/FZRJsvb9DqxO0iAGdX/XdX/G3RoyMOFjK1jumve8w2E+g72jtR9oDkj1UEYTwFljq3rXtVjf51L/JnHDb/mEzviOpofe8YXY23cuNXtnUHJ46lAD39ZDdIYsQhARyD9+/HuagguAz/nTakfLTvxyBmbD0EJ2cKVR6fZZqmcZjteteVyxRtQgFDuo9BDktUkb9t8l/1RCxFYg+RmcebKaWfppf30i6xzcrK0pRUh2sFFf6F4SidIZH6BzjuCNtxngQ==
-Received: from BL1P223CA0007.NAMP223.PROD.OUTLOOK.COM (2603:10b6:208:2c4::12)
- by DS7PR12MB8420.namprd12.prod.outlook.com (2603:10b6:8:e9::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Mon, 30 Mar
- 2026 19:41:31 +0000
-Received: from BL02EPF00029928.namprd02.prod.outlook.com
- (2603:10b6:208:2c4:cafe::b2) by BL1P223CA0007.outlook.office365.com
- (2603:10b6:208:2c4::12) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9745.28 via Frontend Transport; Mon,
- 30 Mar 2026 19:41:31 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- BL02EPF00029928.mail.protection.outlook.com (10.167.249.53) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9745.21 via Frontend Transport; Mon, 30 Mar 2026 19:41:30 +0000
-Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 30 Mar
- 2026 12:41:11 -0700
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Mon, 30 Mar 2026 12:41:10 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
- (10.126.190.181) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
- Transport; Mon, 30 Mar 2026 12:41:06 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>
-CC: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Shay Drory
-	<shayd@nvidia.com>, Shay Agroskin <shayag@mellanox.com>, Saeed Mahameed
-	<saeedm@mellanox.com>, Jianbo Liu <jianbol@nvidia.com>,
-	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Gal Pressman <gal@nvidia.com>
-Subject: [PATCH net 3/3] net/mlx5: Fix switchdev mode rollback in case of failure
-Date: Mon, 30 Mar 2026 22:40:15 +0300
-Message-ID: <20260330194015.53585-4-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20260330194015.53585-1-tariqt@nvidia.com>
-References: <20260330194015.53585-1-tariqt@nvidia.com>
+	dkim=pass (2048-bit key) header.d=vanvalzah-com.20230601.gappssmtp.com header.i=@vanvalzah-com.20230601.gappssmtp.com header.b="08PxFZL1"
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-89fc349b5c2so23490626d6.0
+        for <netdev@vger.kernel.org>; Mon, 30 Mar 2026 12:43:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=vanvalzah-com.20230601.gappssmtp.com; s=20230601; t=1774899807; x=1775504607; darn=vger.kernel.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:subject:mime-version:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EVnvOEnlzzcMRA6vcJ6WQFSlz4MS17QRsyRF4cxVWkw=;
+        b=08PxFZL1Y7ad0sqNyF806uixloZgsyfFawUpR6WU5AAYUl2KeGGpE7s4jJ1TzC3OB6
+         LRpvqVtQajOeKGy7f6yqeVOpBTSzeLSkjr6HZOH33/Av+WmJuK0j8aUUf9bz9qXU6FJr
+         REWFUatehKq5NvbZ3shgnHoAxl3nBHibnVlozHMOBcPMuNqFtHvhPaGLAN1l+Ngp+dUs
+         W7C2qssnHlf5vFHwKkD9Zg+UX8oUw2+Jp46FW6JnMf8tMgQ43hfBvCIPBMD3ykswUxxM
+         l00tzAiDxjtHZsSyqzYQMBUWf+cLlhq4UYieooWUTIW9Q/jk4XfV1Gh/SbfcxnUJEB4n
+         LI2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774899807; x=1775504607;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:subject:mime-version:from:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EVnvOEnlzzcMRA6vcJ6WQFSlz4MS17QRsyRF4cxVWkw=;
+        b=Tl4smys5oHedDCPwIgfS5zNw3AN2UJEUVFeT07keNu9ehWqGLiYSutLtfW1vlAGgSc
+         fdpHbWfFi8rwuOill6lffZva6T6yY919ZdAL5aMkZ1r9yucbAH9q+yVRxQaJX6DGf1s8
+         wwapFRN1iJ2x3ftpKf0VDw1eVFm5rnFb8zVk5xUJMSwxiyBAQc8Z3ml9b02l7nSVt69u
+         icbcka1xBmlAdFcB5bw/10wBZrXxuG/5tLROPdOnAS6+o839LAoi0YQrjUqYRyfCqFK4
+         mDcMzDUufG2mhYPSI3tldHoQQzvdeoyeWagDIrJaLgMxpYsj3fbtsDUD9S9cH0qDTDTr
+         GIeg==
+X-Forwarded-Encrypted: i=1; AJvYcCWPLJkxWJO5rUydQZltxqU/oHGlyT8tffRdI8cnsGSoZ9DwNzespHiuFuM3+U6YVsGjjWlVKTQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7Q4CqLUfRSHL+It/PE3G6ToveMJfzpLFU5PWF7cR16sg69589
+	zRn/hiu8iVfwmNz2PFGhurZJ6AToNAj1IBfCAU1ueMWLxetAk4VckU4vXjtLc+hDdLQ=
+X-Gm-Gg: ATEYQzyKeXt0jw74HQv72JSpwNQtEDs7wzXCqPzmDcBY2x05/9wWB4ZDK9CaU7urG6i
+	MwgA8KBoqL6JxyUPCgjsRZl5vAEqFgCz1HlHPFvlEh1zM9wDJluEjaXKR1OGVgbFUF3m9fbYFR7
+	x/WivIRdPSCnlv//5VaAhxxaEMlHI0NO2DLPkZGVjMEVSacogWT8p9mlEk31CIP6TxFWw5YHn4X
+	aUXb5ARyC9xzcTqFyQUcmfTwOHXi9GTlAxbaAzCmXah4QGQTaaL/UbP6a9cK1KTQpmDRYaGs+op
+	s32Pt/EEF1Wc16NlzCpUakn9mW1jGSYfM4RwtY4GacQpsJBQpf6LhAmTKCKcclarYb4v8cousx9
+	IepbG9vAikP2o7xNSumxmx2ArGSKgtW0YIR9jVIK25TbUU7gwVrfu+kZa4deYzVLs68jm6Zd8Xu
+	0GCY0=
+X-Received: by 2002:a05:6214:4010:b0:8a0:29f3:1439 with SMTP id 6a1803df08f44-8a029f31c24mr90309166d6.27.1774899807239;
+        Mon, 30 Mar 2026 12:43:27 -0700 (PDT)
+Received: from smtpclient.apple ([75.104.94.42])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89ecf95f4f9sm80203496d6.37.2026.03.30.12.43.20
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 30 Mar 2026 12:43:26 -0700 (PDT)
+From: Bob Van Valzah <bob@vanvalzah.com>
+X-Google-Original-From: Bob Van Valzah <Bob@VanValzah.Com>
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF00029928:EE_|DS7PR12MB8420:EE_
-X-MS-Office365-Filtering-Correlation-Id: 20a8d3f5-3347-4f9e-53f8-08de8e9457a9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|1800799024|36860700016|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	xkpZC4yahJuD+S26tTIL4fsR9ZPrYkxXNTU8ZehhQ9mW1fXkErXpdSRKE4h79k9T96lVF/yk8QYIr/BVlw9qJ81iyWH4AxfRSAXP0WG4VJPtXz+gAUvYd0RXrpSOKUjyy9KNv4BwkvQsssBjINRE5ETp5kT53/4SmIbiWaTiuiSovYjLfTix2pLtiI4sy44BURtgzN5CELJr3WRcUnf+nkCQyQ0V50Qywi+Ue2INnI1I+6o+I6AEY0Qc8Rg+f/Abf+OXLQvnXWaK1Akkd+FI/bZ+vAEwOSbrYqBK2VmauKEa8L7Qi/k20a9pExf1/A/Vl+eaMQwnNPiKc+TXyLV/Z6bwqWcj3EBKnhpjaSb3JaCCYPbKbqNmOa92pAGcR5YUQVtNcUroddSboEGpW4N7L76wAiITxJmvhHOMYEDN3hUEEeKPepUkSb7eVAXm35lr3wwx0v56xIMRmIsZfrxP0NV6OiSnvANe384MoNpO+Zjlnkgvms+0ipLCb+kmS9ohplkt/nrD121Mhw53+QDKHjx5urh7GMoPdKCV8rYJiw9WJWf9sCVRElmTVRa+K5UDm2d6x1ebBIXdQuG4fPAZ0ghAdB8+8jYcPbkEwRy/7cEWOagqYZlP4HaIOtr3p2G2WlTfd06p3lQ+bPVKlLF5UZT8zpHx1E+lnab8dFiHx4x7DDgt3l0Vpy+MdvQn3qp0yMo51VrrAxmpjSXY1c7XvUVVNVqBlll5UVn4VISeF45PfhIlYHH0hG2G1dvyrQvlot+ADAP9nRQIsvUPxoJ2hw==
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(82310400026)(1800799024)(36860700016)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	Wo9/r1vx3M3cKrNIFt+3zwQq2stpAPppbFqOPvxRvgWnybVAbst5naG4Om6vAA42UNcGTDNlNb3Lis8sG6AYFuOfNr3h+kpOlnxW4R0s+XZI5GOWFud97JdQssqrkBgj35RJwGXHIvc9Sv08+FH9LX37Khq3DkInvYX9QwDnIwX5LM+3qsLuu06FCvh1p0xX29/Y9HJPdrYPC1WKdMrlmYPypSWgKV06yjpp7gDO5VNsqkl2t7pqtu3/RTlKDez6vMo0Po8JorDSsFxTaRgQU1atpLqNTNAl2moRy16fpyldL+6UCCfutq6qZacpJHzmoqNrCeHsvZ3ar5E0yAODQJ3k+QZD31kHDue8gB2vEIPUXjlYxikuLgFgaesDYXB3ndgTSjbnFUyJ8F/pnKod/JR1pJ3uJTfNO+niipaZWiqdoY3n3353FBW4SGl0SdCa
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2026 19:41:30.8470
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 20a8d3f5-3347-4f9e-53f8-08de8e9457a9
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF00029928.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8420
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
+Subject: Re: [PATCH] igc: fix Tx timestamp timeout caused by unlocked TIMINCA
+ write in adj fine
+In-Reply-To: <65977d5b-16eb-418c-995e-6a918f67707a@linux.dev>
+Date: Mon, 30 Mar 2026 14:42:29 -0500
+Cc: intel-wired-lan@lists.osuosl.org,
+ anthony.l.nguyen@intel.com,
+ netdev@vger.kernel.org,
+ julianstj@fb.com,
+ jeff@jeffgeerling.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <B22CCB1A-15FE-4233-9F47-7FE522C8D6FF@VanValzah.Com>
+References: <D1C3B3DF-960F-40C7-BBD7-994359F0C8AD@vanvalzah.com>
+ <65977d5b-16eb-418c-995e-6a918f67707a@linux.dev>
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+X-Mailer: Apple Mail (2.3864.400.21)
 
-From: Saeed Mahameed <saeedm@nvidia.com>
+Thanks for following up Vadim. To be clear, we do not see our patch as a =
+solution to the problem, since it does not eliminate the underlying =
+contention, it just reduces the likelihood.
 
-If for some internal reason switchdev mode fails, we rollback to legacy
-mode, before this patch, rollback will unregister the uplink netdev and
-leave it unregistered causing the below kernel bug.
+We now have a bit more hands-on time running the patch and can see its =
+limitations. The driver just throws the timeout error less often now. =
+Moreover, our code calling adjfine() has to be ready for an EBUSY. The =
+patch is certainly not an elegant solution. It may well have worked =
+better, or perhaps been a complete fix, if we had taken tmreg_lock. =
+Sorry if we sent our patch prematurely.
 
-To fix this, we need to avoid netdev unregister by setting the proper
-rollback flag 'MLX5_PRIV_FLAGS_SWITCH_LEGACY' to indicate legacy mode.
+We think the contention happens when a system call made by a clock =
+disciplining daemon like ts2phc changes a PHC's frequency, while a =
+timestamping daemon like ptp4l has requested a timestamp against that =
+same PHC. A plausible explanation is that the hardware fails to produce =
+a timestamp for a packet when it collides with a PHC frequency =
+adjustment, leading to the timestamp timeout. We see this contention =
+128x more often than the average user because we cranked our PTP sync =
+rate up to 128 Hz. We care about every ns here. The likelihood probably =
+also scales with the number of PTP clients.
 
-devlink (431) used greatest stack depth: 11048 bytes left
-mlx5_core 0000:00:03.0: E-Switch: Disable: mode(LEGACY), nvfs(0), \
-	necvfs(0), active vports(0)
-mlx5_core 0000:00:03.0: E-Switch: Supported tc chains and prios offload
-mlx5_core 0000:00:03.0: Loading uplink representor for vport 65535
-mlx5_core 0000:00:03.0: mlx5_cmd_out_err:816:(pid 456): \
-	QUERY_HCA_CAP(0x100) op_mod(0x0) failed, \
-	status bad parameter(0x3), syndrome (0x3a3846), err(-22)
-mlx5_core 0000:00:03.0 enp0s3np0 (unregistered): Unloading uplink \
-	representor for vport 65535
- ------------[ cut here ]------------
-kernel BUG at net/core/dev.c:12070!
-Oops: invalid opcode: 0000 [#1] SMP NOPTI
-CPU: 2 UID: 0 PID: 456 Comm: devlink Not tainted 6.16.0-rc3+ \
-	#9 PREEMPT(voluntary)
-RIP: 0010:unregister_netdevice_many_notify+0x123/0xae0
-...
-Call Trace:
-[   90.923094]  unregister_netdevice_queue+0xad/0xf0
-[   90.923323]  unregister_netdev+0x1c/0x40
-[   90.923522]  mlx5e_vport_rep_unload+0x61/0xc6
-[   90.923736]  esw_offloads_enable+0x8e6/0x920
-[   90.923947]  mlx5_eswitch_enable_locked+0x349/0x430
-[   90.924182]  ? is_mp_supported+0x57/0xb0
-[   90.924376]  mlx5_devlink_eswitch_mode_set+0x167/0x350
-[   90.924628]  devlink_nl_eswitch_set_doit+0x6f/0xf0
-[   90.924862]  genl_family_rcv_msg_doit+0xe8/0x140
-[   90.925088]  genl_rcv_msg+0x18b/0x290
-[   90.925269]  ? __pfx_devlink_nl_pre_doit+0x10/0x10
-[   90.925506]  ? __pfx_devlink_nl_eswitch_set_doit+0x10/0x10
-[   90.925766]  ? __pfx_devlink_nl_post_doit+0x10/0x10
-[   90.926001]  ? __pfx_genl_rcv_msg+0x10/0x10
-[   90.926206]  netlink_rcv_skb+0x52/0x100
-[   90.926393]  genl_rcv+0x28/0x40
-[   90.926557]  netlink_unicast+0x27d/0x3d0
-[   90.926749]  netlink_sendmsg+0x1f7/0x430
-[   90.926942]  __sys_sendto+0x213/0x220
-[   90.927127]  ? __sys_recvmsg+0x6a/0xd0
-[   90.927312]  __x64_sys_sendto+0x24/0x30
-[   90.927504]  do_syscall_64+0x50/0x1c0
-[   90.927687]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[   90.927929] RIP: 0033:0x7f7d0363e047
+Sorry, in retrospect, we may have overstated our case in declaring the =
+root cause as the lack of locking, since our locking only reduces the =
+likelihood of the timestamp timeout. Intel may provide insight to the =
+underlying cause of the timeout, but my hunch is that the collision of a =
+timestamp request against a PHC and a frequency change of the same PHC =
+causes the timestamp request to fail, leading to the timeout. Our repro =
+code makes this happen so reliably that it should be easy for the =
+hardware guys to explain exactly what=E2=80=99s going on. Hopefully, =
+they can advise on a more elegant avoidance strategy than our ham-handed =
+lock.
 
-Fixes: 2a4f56fbcc47 ("net/mlx5e: Keep netdev when leave switchdev for devlink set legacy only")
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
----
- drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c | 2 ++
- 1 file changed, 2 insertions(+)
+We have not tried recovering a timestamp following the error. We may =
+have used the term =E2=80=9Ccorrupted=E2=80=9D poorly here. Since the =
+error message says =E2=80=9Ctimeout," that could mean the hardware =
+produced no timestamp at all, rather than a corrupted one.
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-index 7a9ee36b8dca..01f6aecc4fcc 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-@@ -3761,6 +3761,8 @@ int esw_offloads_enable(struct mlx5_eswitch *esw)
- 	return 0;
- 
- err_vports:
-+	/* rollback to legacy, indicates don't unregister the uplink netdev */
-+	esw->dev->priv.flags |= MLX5_PRIV_FLAGS_SWITCH_LEGACY;
- 	mlx5_esw_offloads_rep_unload(esw, MLX5_VPORT_UPLINK);
- err_uplink:
- 	esw_offloads_steering_cleanup(esw);
--- 
-2.44.0
+This isn=E2=80=99t a show-stopper for us, but we note that timekeeping =
+daemons with imperfect error handling could react to this situation =
+poorly and perhaps fail silently.
+
+	Bob
+
+> On Mar 30, 2026, at 11:39=E2=80=AFAM, Vadim Fedorenko =
+<vadim.fedorenko@linux.dev> wrote:
+>=20
+> On 29/03/2026 04:25, Bob Van Valzah wrote:
+>> Hi,
+>> We found a race in igc_ptp_adjfine_i225() that causes "Tx timestamp
+>> timeout" errors and eventually wedges EXTTS when a PTP grandmaster
+>> (ptp4l with hardware timestamping) runs concurrently with PHC
+>> frequency discipline (any GPSDO calling clock_adjtime ADJ_FREQUENCY).
+>> Root cause: igc_ptp_adjfine_i225() writes IGC_TIMINCA without holding
+>> any lock.  Every other PTP clock operation in igc_ptp.c (adjtime,
+>> gettime, settime) holds tmreg_lock, but adjfine does not.  When the
+>> increment rate changes while the hardware is capturing a TX =
+timestamp,
+>> the captured value is corrupt.  The driver retries for
+>> IGC_PTP_TX_TIMEOUT (15s), then logs the timeout and frees the skb.
+>> Repeated occurrences eventually prevent EXTTS from delivering events.
+>> The attached reproducer (triggers in ~17 seconds on i226):
+>>   One thread calling clock_adjtime(ADJ_FREQUENCY) at ~200k/s on the
+>>   PHC, another sending UDP packets with SO_TIMESTAMPING requesting
+>>   hardware TX timestamps at ~100k/s.  A Python reproducer is at:
+>>   =
+https://github.com/bobvan/PePPAR-Fix/blob/main/tools/igc_tx_timeout_repro.=
+py
+>>   At realistic rates (1 Hz adjfine from a GPSDO + ptp4l at 128 Hz
+>>   sync), the race triggers in ~30 minutes.
+>> The attached patch holds ptp_tx_lock around the TIMINCA write and
+>> skips the write if any TX timestamps are pending (tx_tstamp[i].skb
+>> !=3D NULL), returning -EBUSY.  This doesn't fully close the hardware
+>> race (a new TX capture can start between the check and the write),
+>> but at realistic rates the residual probability gives ~25 year MTBF
+>> vs ~30 minutes without the patch.
+>> A complete fix would likely require either disabling TX timestamping
+>> around TIMINCA writes (via TSYNCTXCTL), or making the timeout =
+recovery
+>> path more robust so a single corrupt timestamp doesn't wedge the
+>> subsystem.  We'd welcome guidance from the igc maintainers on the
+>> preferred approach.
+>> Tested on:
+>>   - Intel i226 (TimeHAT v5 board on Raspberry Pi 5)
+>>   - Kernel 6.12.62+rpt-rpi-2712 (Raspberry Pi OS)
+>>   - Intel out-of-tree igc driver 5.4.0-7642.46
+>>   - Stock upstream igc_ptp.c (same code, same bug)
+>> Bob
+>> ---
+>>  drivers/net/ethernet/intel/igc/igc_ptp.c | 18 +++++++++++++++++-
+>>  1 file changed, 17 insertions(+), 1 deletion(-)
+>> diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c =
+b/drivers/net/ethernet/intel/igc/igc_ptp.c
+>> index XXXXXXX..XXXXXXX 100644
+>> --- a/drivers/net/ethernet/intel/igc/igc_ptp.c
+>> +++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
+>> @@ -47,8 +47,10 @@ static int igc_ptp_adjfine_i225(struct =
+ptp_clock_info *ptp, long scaled_ppm)
+>>  {
+>>         struct igc_adapter *igc =3D container_of(ptp, struct =
+igc_adapter,
+>>                                                ptp_caps);
+>>         struct igc_hw *hw =3D &igc->hw;
+>> +       unsigned long flags;
+>>         int neg_adj =3D 0;
+>>         u64 rate;
+>>         u32 inca;
+>> +       int i;
+>>         if (scaled_ppm < 0) {
+>>                 neg_adj =3D 1;
+>> @@ -63,7 +65,21 @@ static int igc_ptp_adjfine_i225(struct =
+ptp_clock_info *ptp, long scaled_ppm)
+>>         if (neg_adj)
+>>                 inca |=3D ISGN;
+>> -       wr32(IGC_TIMINCA, inca);
+>> +       /* Changing the clock increment rate while a TX timestamp is =
+being
+>> +        * captured by the hardware can corrupt the timestamp, =
+causing the
+>> +        * driver to report "Tx timestamp timeout" and eventually =
+wedging
+>> +        * the EXTTS subsystem.  Serialize with pending TX =
+timestamps:
+>> +        * skip the rate change if any are in flight.
+>> +        */
+>> +       spin_lock_irqsave(&igc->ptp_tx_lock, flags);
+>> +       for (i =3D 0; i < IGC_MAX_TX_TSTAMP_REGS; i++) {
+>> +               if (igc->tx_tstamp[i].skb) {
+>> +                       spin_unlock_irqrestore(&igc->ptp_tx_lock, =
+flags);
+>> +                       return -EBUSY;
+>> +               }
+>> +       }
+>> +       wr32(IGC_TIMINCA, inca);
+>> +       spin_unlock_irqrestore(&igc->ptp_tx_lock, flags);
+>=20
+> It's a bit weird solution, because in this case we may end up having =
+no
+> successful calls to adjfine with high amount of TX timestamp packets =
+in flight. Another problem here is that access to timing registers is
+> guarded by tmreg_lock, but here you use ptp_tx_lock, which protects
+> queue.
+>=20
+> Were you able to recover "corrupted" time stamps to figure out why =
+they
+> are discarded?
+>=20
+>=20
+>>         return 0;
+>>  }
+>> --
+>> 2.39.2
+
 
