@@ -1,156 +1,213 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010050.outbound.protection.outlook.com [52.101.85.50])
+Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A2F3064B2;
-	Mon, 30 Mar 2026 14:40:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774881610; cv=fail; b=ObV3ncGovjPLMQvg6Ilu8jnH+iTeopMSfL7E8unnhyHtgkeb6q+dtHzZ5FcAYwGQrpfetbmoY2wG9ANYzFAdAkJZWNahLM7oCeCXn6+r+cnJgdOU41KIpl04TSCWSaKpO6j3HpJ3xSYb2QGwD51bUJRgKPk+KyhTVQ+0cTI2UR8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774881610; c=relaxed/simple;
-	bh=n2cmnuTQ+yz++CtpJpO8BX39V+lBhGTvJiKqvgx5yvs=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VMoMViXmqLYZ5UfsGCjjFxaUBO2e0YUBn1+IiBOXGNYecY5kliRaS67qM7v8OV7echavGbV5Yyo4e/lWY66cErZi5ylFIj7qC3U98GQPSBcXIDeVrZV38TpAf75QV4NBAuaiVfmchw6wfQDhGTdXLKk/mejEcrqfhayXM1EoqIY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=nyQqG3BC; arc=fail smtp.client-ip=52.101.85.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C042E7BB6
+	for <netdev@vger.kernel.org>; Mon, 30 Mar 2026 14:43:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774881837; cv=none; b=XvTwaYepZqsAAqpKCR7wJYKxNumAYxoXFJ9y2FjjCcGteHNmyu5BeBj+4yuN0VtmZuVp4eCyllo05vXIlmGV1COjzXWVTvCSx+QSvQ6g0Drtq9U//uDAFjRfhO124IQn9foWdGlfB9kIxhgE7IPF2kC1haenNcvKONmDEfVJFNg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774881837; c=relaxed/simple;
+	bh=bMwMT7lON0y7CIGbcCN9vu9X2Xfdqp7xMQNiMGzPsQY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u3xRBzl6b1a7uNOvCQ9XIIUt5WWeIDgBY6Ebx9iLjOyUoWqtzECIwftdeI3jvKDlv1dM4lw7uYmhT9ewMFHh4VHflUpWBWtO4ZT8S7ocotbmRxCyWSixRWO4n+xtiXBc2THS5o0sPgBJwxlVesLEIgDGmOe6EYDSzw9OAitLmYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=LFIcGSfZ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=iJ/W+yCt; arc=none smtp.client-ip=202.12.124.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="nyQqG3BC"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WEU5ZSN6Q+LhIRg/OdQJ5VwQSAtwuqSoZRDOsBP6L5AqMsg2yLl7SC1dNqRQFSVXxzsZ+oe0dKevV17pp3yDNfAHHO14a/QNox8sjz7O28U3X7fAZGPQElFSdScYLCMNAHzDiy1IpTJMpXLRkwyD4JfzjN2P2rh9evrVe4qk9XG2gHCVs/ePJGQFZIAm4YYilQ7N+ij37vElkubXFMTLIenz3ajDqNiKUuoHZrCJmOEzE1Sls5/VMGtrSOT+GB17AcW/sqAJf1Db8Awa0nFdEFVM8sxb88Aqk/KAHOOozcjCKWsRwP79gQOPhzWcdOYzXARNJK/91RNAQETBA/nUbA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=E9H3EhRQtJVCBMhFlVrWI9aHccOgPy8Cie+m5jIEdbg=;
- b=iG3ZGpZ25wMfAANpt8wsQmN8bgLsbIoc2hJM7n3aZSS/MrMfh5ccsaFJzcIuv4ad2trc4Bpqnf+4X+A6o4IbhXug6Iuj0JsJgNT/TBphiMmu7I2WKKeXZmkdEADc2s+HG7vFLz21emAEOvEHsWpprHRprxnH9gl6nelOBdZ9punlWQ55RXBkyif58akiYyKRwwurSj1wbnkgWPA6iQOoZ7fqNrfzEx2IoGntqVIHaeM7erqkJw0n1VWQ0auady74K8H4H/nIxLZhqO+v8MJr/qu8RyLMMmAMTpBoc3flCVOkI94yCDsRgB+1XebWwOt1dx5FQArjYgPQO37Ii/MoDg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=E9H3EhRQtJVCBMhFlVrWI9aHccOgPy8Cie+m5jIEdbg=;
- b=nyQqG3BCYJI+zlWRWGoKTgLQSOgfKcPptibUPtv1/J2Es36ae4k5heAR7c9m/Umsp6SmTT6QxyPzeozEHSX7Fo4XL4TeJeU6ooKIx3aF415/yXjDFMwcEnW57+xcDkJssfxe67AOuaB/cfr7E5PV861yxUW0DCEY6OK6GaYI4YQ=
-Received: from BY5PR17CA0033.namprd17.prod.outlook.com (2603:10b6:a03:1b8::46)
- by PH8PR12MB6890.namprd12.prod.outlook.com (2603:10b6:510:1ca::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Mon, 30 Mar
- 2026 14:38:51 +0000
-Received: from MWH0EPF000A672F.namprd04.prod.outlook.com
- (2603:10b6:a03:1b8:cafe::7d) by BY5PR17CA0033.outlook.office365.com
- (2603:10b6:a03:1b8::46) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9745.28 via Frontend Transport; Mon,
- 30 Mar 2026 14:38:52 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- MWH0EPF000A672F.mail.protection.outlook.com (10.167.249.21) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9745.21 via Frontend Transport; Mon, 30 Mar 2026 14:38:50 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 30 Mar
- 2026 09:38:48 -0500
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 30 Mar
- 2026 07:38:47 -0700
-Received: from xcbalucerop40x.xilinx.com (10.180.168.240) by
- satlexmb07.amd.com (10.181.42.216) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Mon, 30 Mar 2026 09:38:46 -0500
-From: <alejandro.lucero-palau@amd.com>
-To: <linux-cxl@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<dave.jiang@intel.com>, <dan.j.williams@intel.com>, <edward.cree@amd.com>,
-	<davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<edumazet@google.com>
-CC: Alejandro Lucero <alucerop@amd.com>
-Subject: [PATCH v25 08/11] cxl: Export function for unwinding cxl by accelerators
-Date: Mon, 30 Mar 2026 15:38:24 +0100
-Message-ID: <20260330143827.1278677-9-alejandro.lucero-palau@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260330143827.1278677-1-alejandro.lucero-palau@amd.com>
-References: <20260330143827.1278677-1-alejandro.lucero-palau@amd.com>
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="LFIcGSfZ";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="iJ/W+yCt"
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id CFB817A0181;
+	Mon, 30 Mar 2026 10:43:52 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-12.internal (MEProxy); Mon, 30 Mar 2026 10:43:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1774881832; x=
+	1774968232; bh=TVgwWzC98O9JJ07tqs/JeVGRYZaiUT/cn6TNW2863Ms=; b=L
+	FIcGSfZqMYQQr5kouaQ61avt77Wg6EctHDNtDvUuHuoAAZFDRIgAzPQFNZYgJ9lZ
+	JalIV4PLPerEWPLOTXvMfKQHWmW9hQzhMd8z4X1uUl+u4o46exkSDkiKJXRcui+f
+	es4qPjN3w2yv/kJ3S3ylz9OMR+tS/pycDPMNf01qUYhSr4RWBR1hpmwGILEzQxQg
+	gLKpdSmUvHrT/RduAAbj5h2/pRntgY34x5GxPlYAo7ZXcQg0X1SJUstQIZ84sMc4
+	BDd5iqP1fAWKuxMnPXeUX2lgp5+8XOokDBEO7Cdk6ybHhG/MUKIUdNdXGw2/4iNg
+	++XJlH4WKTL9ASTrcQSTw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1774881832; x=1774968232; bh=TVgwWzC98O9JJ07tqs/JeVGRYZaiUT/cn6T
+	NW2863Ms=; b=iJ/W+yCtv2CaNm5YgShrcyeL113ekUw3pAGUiUoORvESgflwb0A
+	fWQek/OOvnySU82x7XsWgzsA6FQ4K9HvoHDCDTUMKd7QCC70FPwfUZk6AGImqCFv
+	fWAyyfTAgTFWviZEn16qPkMkuK0EWAUEC5oxlvmIS+kx57yp++UsN5rLd4bZhCcM
+	IRBXGO53uPby0I/u0w7empySiaSP8SYKjtFYNay4WPS9RmvNLQs050b0juwzFRLp
+	sk/Fy72WAHn5ifxBjp2MVdGjy6FGmkl4bgWQSWFJ3IQDpojEcIdZAfYdJ3aC/0pW
+	pD0hJ3EsWK2ctGg4ULGfrPvceRBkzCcl18g==
+X-ME-Sender: <xms:J4zKaSC2VvzmjgyU9diwKTVFtVKfQgtyFOzejFQ0Xouy9sTztGSPBQ>
+    <xme:J4zKaWhp9XLthw9o2yjnTc1DmhE_HfYQNRo9SfmOw0tpXjrvtsfAkmOsFjxLXmJ8q
+    wpRzPWcoZlaUVIFOxsmnU3UgbJfGr-AiQI4RLLALEr7FDlv3GnyWfYd>
+X-ME-Received: <xmr:J4zKacPfT_NbxQ7xXZhm1lNo-s9IZOMVd7ToWo1LfKRuiE4Yvt8kO9mzMAAQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeffeelvdehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtjeenucfhrhhomhepufgrsghrihhn
+    rgcuffhusghrohgtrgcuoehsugesqhhuvggrshihshhnrghilhdrnhgvtheqnecuggftrf
+    grthhtvghrnhepuefhhfffgfffhfefueeiudegtdefhfekgeetheegheeifffguedvueff
+    fefgudffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epshgusehquhgvrghshihsnhgrihhlrdhnvghtpdhnsggprhgtphhtthhopeekpdhmohgu
+    vgepshhmthhpohhuthdprhgtphhtthhopegtvghlsehkvghrnhgvlhdrohhrghdprhgtph
+    htthhopehjohhhnhdrfhgrshhtrggsvghnugesghhmrghilhdrtghomhdprhgtphhtthho
+    pehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgvthguvghvsehvghgvrh
+    drkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhgvrhhnvghlqdhtlhhsqdhhrghnughs
+    hhgrkhgvsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheptghhuhgtkhdrlh
+    gvvhgvrhesohhrrggtlhgvrdgtohhmpdhrtghpthhtoheprghlihhsthgrihhrrdhfrhgr
+    nhgtihhsseifuggtrdgtohhmpdhrtghpthhtohephhgrrhgvsehsuhhsvgdruggv
+X-ME-Proxy: <xmx:J4zKae91h573YcszvwSK3S60_TlNpkmnFzjdkuRdNXLqLe60KI9piw>
+    <xmx:KIzKaVdBubC464yJFGKzDKvKraZl5tgZtcHlAM3w52EC7N3p-hEPYA>
+    <xmx:KIzKaVzcfJCCXSoyBTAYn0kzN8ds0l_kGDGmyAWOZnCuHe3v91gekw>
+    <xmx:KIzKaSJQEicjy-63PHCiAodJ1d0jo3LOkySsQTsGluVfbNYdBLGlKA>
+    <xmx:KIzKaRwl9SWiVbLlz7ZfOjBdHcaGSnCNoq1GLmYVKtknLSzMzt0RrYBb>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 30 Mar 2026 10:43:51 -0400 (EDT)
+Date: Mon, 30 Mar 2026 16:43:44 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Chuck Lever <cel@kernel.org>
+Cc: john.fastabend@gmail.com, kuba@kernel.org, netdev@vger.kernel.org,
+	kernel-tls-handshake@lists.linux.dev,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	Hannes Reinecke <hare@suse.de>
+Subject: Re: [PATCH net-next v7 4/5] tls: Suppress spurious saved_data_ready
+ on all receive paths
+Message-ID: <acqMIKWFmx6B1lD8@krikkit>
+References: <20260328-tls-read-sock-v7-0-15678415dfc1@oracle.com>
+ <20260328-tls-read-sock-v7-4-15678415dfc1@oracle.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000A672F:EE_|PH8PR12MB6890:EE_
-X-MS-Office365-Filtering-Correlation-Id: 926858de-7ecd-4c82-757d-08de8e6a0f5e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700016|82310400026|376014|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	tkxseo//PoWPzmijVtAcCP5XIVYIQ/GoSeA0R4RUW/vN31iUaCgfn/m7HfUlXRdVtAC+tbOsDO3XbuYSL5bvGcanV0CyjFksoScm4mcTKXMpdMCO4AKeELihuiylB+eOzi9tbMudVDd9YRgRLOgGuc62zuJZD2z+BLnNhD1d9uuCWqwELwoURzHPl9+CKbpdh7JwwMtclVEWG/FXMFAj8BWJw65p7B4JMsDU60a4HRlmpTIhryyjndMBHY5xWQrV+1M2TaQYLoUVfRZvEeBYHuTM30JWpkh0ARnWVw5O0/0b/n6s8v0YcbM8oPxh6MR5lucADxMWoqGiVyHdJ2r2c7o8V0d1D4WeVfhW+59blM9FrANGDrSHROb/0hQ40Urd++LZEzYYl9qRULEHdqFpVukZ60TzbeoFUJhEr/6cHAPism68/PZJlfI6UIfin1sgCPGp7SSNVac+riiflTLgxH+ze3H43BLW8dmgud0O6MBfa2PsVGt3cnqEPXKkG1P2EnMGQ3t+2JIH34YmQIt6T5gXDoe0SGCE/DRnIlm7OlWt0cWbhRa0fgmWz2ie34mCQtko44rdOWaGlm6tvrcqYDrjfXKn/+Fc8GLGehyLJMj3hE1zSsuFf6t2ZNjWcU+Gs0yVyByF+fZOzKvGsEkQ2a3kOgQt5zSwCgtKQcQDJVXcvI1qo855z+vxvgB/wLvyAc8/jZP6EoU7dl6b0hAvh0jFcJyFMH9T8PKf+D8+dG1u09Q6ITJPJNAsGF5Qy5d+9hD4ltfoGNoq/FDx7kY/uw==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(82310400026)(376014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	fsuadvH1xLlaDapmpG40WZelCgqraAO3vWT5eCKHe2exrRU7qUbBNh46CW6hYoy6aQn9akmKlZLdhp+Gvzya3BOL7Y0ItAWdofsquJ3b9Q7huAwmukDPogG9k+3Z+5oXpdMz1uw6xv2PaZHhueWU6l7IJIfZUgJg6UksEX1yYTYCGxZxCq+xjhG4QuEdkWXmGZKstslAS9et/MHuTGpX/0Xo/P75iPOgfjirB+ws3Sii9ahATtQTeuZr8RSc1/RlIgU54aP9aIiRRUxpKej/je2/M8qI1GD4kURz24NlkHy8FscUyzcouRggp1h5MpcOucdak2nQtz9XJtCjvGSMbJ2IjXuMEIJkBMYHV7FhVsyXjzHC8IqOJ9Qk805GXe+lsIQeu/3WtaR3jf46PVrkNrOXtTUMJluIdIpZUGmR4jNA6BU+h6SM1ojofxxclQXu
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2026 14:38:50.7347
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 926858de-7ecd-4c82-757d-08de8e6a0f5e
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MWH0EPF000A672F.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6890
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260328-tls-read-sock-v7-4-15678415dfc1@oracle.com>
 
-From: Alejandro Lucero <alucerop@amd.com>
+2026-03-28, 11:17:11 -0400, Chuck Lever wrote:
+> diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+> index 5fdd43a55f1e..8fb2f2a93846 100644
+> --- a/net/tls/tls_sw.c
+> +++ b/net/tls/tls_sw.c
+> @@ -1373,7 +1373,11 @@ tls_rx_rec_wait(struct sock *sk, struct sk_psock *psock, bool nonblock,
+>  			return ret;
+>  
+>  		if (!skb_queue_empty(&sk->sk_receive_queue)) {
+> -			tls_strp_check_rcv(&ctx->strp);
+> +			/* Defer notification to the exit point;
+> +			 * this thread will consume the record
+> +			 * directly.
+> +			 */
 
-Add cxl_unregister_region() to the accelerator driver API
-for a clean exit.
+That's a really nice improvement over the comment you had here
+before. Thanks.
 
-Signed-off-by: Alejandro Lucero <alucerop@amd.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
----
- drivers/cxl/core/region.c | 8 ++++++++
- include/cxl/cxl.h         | 1 +
- 2 files changed, 9 insertions(+)
+> +			tls_strp_check_rcv(&ctx->strp, false);
+>  			if (tls_strp_msg_ready(ctx))
+>  				break;
+>  		}
 
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index 9c3ba911d865..b3a6d08be461 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -2490,6 +2490,14 @@ static void unregister_region(void *_cxlr)
- 	put_device(&cxlr->dev);
- }
- 
-+void cxl_unregister_region(struct cxl_region *cxlr)
-+{
-+	struct cxl_port *port = to_cxl_port(cxlr->cxlrd->cxlsd.cxld.dev.parent);
-+
-+	devm_release_action(port->uport_dev, unregister_region, cxlr);
-+}
-+EXPORT_SYMBOL_NS_GPL(cxl_unregister_region, "CXL");
-+
- static struct lock_class_key cxl_region_key;
- 
- static struct cxl_region *cxl_region_alloc(struct cxl_root_decoder *cxlrd, int id)
-diff --git a/include/cxl/cxl.h b/include/cxl/cxl.h
-index aa3cf8509b41..e046c59904a5 100644
---- a/include/cxl/cxl.h
-+++ b/include/cxl/cxl.h
-@@ -235,4 +235,5 @@ struct cxl_region;
- struct cxl_region *cxl_get_region_from_committed_decoder(struct cxl_memdev *cxlmd);
- struct range;
- int cxl_get_region_range(struct cxl_region *region, struct range *range);
-+void cxl_unregister_region(struct cxl_region *cxlr);
- #endif /* __CXL_CXL_H__ */
+[...]
+> @@ -2142,7 +2146,7 @@ int tls_sw_recvmsg(struct sock *sk,
+>  		err = tls_record_content_type(msg, tls_msg(darg.skb), &control);
+>  		if (err <= 0) {
+>  			DEBUG_NET_WARN_ON_ONCE(darg.zc);
+> -			tls_rx_rec_done(ctx);
+> +			tls_rx_rec_release(ctx);
+>  put_on_rx_list_err:
+>  			__skb_queue_tail(&ctx->rx_list, darg.skb);
+>  			goto recv_end;
+> @@ -2156,7 +2160,8 @@ int tls_sw_recvmsg(struct sock *sk,
+>  		/* TLS 1.3 may have updated the length by more than overhead */
+>  		rxm = strp_msg(darg.skb);
+>  		chunk = rxm->full_len;
+> -		tls_rx_rec_done(ctx);
+> +		tls_rx_rec_release(ctx);
+> +		tls_strp_check_rcv(&ctx->strp, false);
+
+Not strictly an objection against your patch, but after those changes,
+calling tls_strp_check_rcv() at this point in tls_sw_recvmsg() is
+starting to look like a leftover from the transition from generic strp
+to custom strp. We're not going to do anything with the next record
+until we call tls_rx_rec_wait(), so it seems it would fit better
+before the loop in tls_rx_rec_wait().
+
+
+[...]
+> @@ -2290,7 +2296,7 @@ ssize_t tls_sw_splice_read(struct socket *sock,  loff_t *ppos,
+>  		if (err < 0)
+>  			goto splice_read_end;
+>  
+> -		tls_rx_rec_done(ctx);
+> +		tls_rx_rec_release(ctx);
+>  		skb = darg.skb;
+>  	}
+>  
+> @@ -2317,6 +2323,7 @@ ssize_t tls_sw_splice_read(struct socket *sock,  loff_t *ppos,
+>  	consume_skb(skb);
+>  
+>  splice_read_end:
+> +	tls_strp_check_rcv(&ctx->strp, true);
+
+This is in effect adding a
+
+if (strp->msg_ready)
+    tls_rx_msg_ready(strp);
+
+[a bit more than that]
+in case we dequeue from the rx_list but don't use the record (or only
+part of it).
+
+I wonder if that should be seen as a problem (another spurious wakeup)
+or an improvement (wake up because there's data ready)? Or if we
+should wake up anyway if we exit with rx_list non-empty, regardless or
+the parser's state, since there is data to read (tls_sk_poll looks at
+both rx_list and msg_ready).
+
+[this applies to all 3 RX functions, but this one is the simplest,
+which makes it more visible]
+
+>  	tls_rx_reader_unlock(sk, ctx);
+>  	return copied ? : err;
+>  
+> @@ -2382,7 +2389,7 @@ int tls_sw_read_sock(struct sock *sk, read_descriptor_t *desc,
+>  			tlm = tls_msg(skb);
+>  			decrypted += rxm->full_len;
+>  
+> -			tls_rx_rec_done(ctx);
+> +			tls_rx_rec_release(ctx);
+
+With this, there's no tls_strp_check_rcv() call inside the
+tls_sw_read_sock() loop, so in the next iteration, tls_rx_rec_wait()
+will have to go for at least one round of its own loop. [this points
+back to the recvmsg comment above, and a bit to the "cold path"
+discussion we had earlier]
+
+
+(Sorry that I'm only thinking about all this at v7...)
+
+>  		}
+>  
+>  		/* read_sock does not support reading control messages */
+> @@ -2412,6 +2419,7 @@ int tls_sw_read_sock(struct sock *sk, read_descriptor_t *desc,
+>  	}
+>  
+>  read_sock_end:
+> +	tls_strp_check_rcv(&ctx->strp, true);
+>  	tls_rx_reader_release(sk, ctx);
+>  	return copied ? : err;
+
+
 -- 
-2.34.1
-
+Sabrina
