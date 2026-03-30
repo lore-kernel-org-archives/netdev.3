@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19BB23CFF6E;
-	Mon, 30 Mar 2026 13:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E96D83D332C;
+	Mon, 30 Mar 2026 13:03:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774875789; cv=none; b=MP9lzwztRpz+C/W82wTkpGBc1Yges3npI97quFiMNJbPtOXxkz2XTZlW6U4zUf4jqJcxuVG5zGMu62hLxs34r+4qmT1sZYLA3hlKwiK2JdR5IyoXF2/E0V//jA6qeZDviigrW5t/7VMPL688j6hcGQrRqeFCvrLJPElkuVH6Ius=
+	t=1774875830; cv=none; b=Q0qHI7/RsiMdwKxIUnexkZmevA+uZaDt17+0/nnnYm3rskzQ5PFnVNQsts8jFavQMN7nUjeCuBm/vjXbMmkmgT7d+y+f/0cMSHfG8mWGSJ5JkQCUolWmrgV6YgT4F/U76cbc9pnyRtrvds4/23EHqIBqgGYscq/TxXUhxZGFg+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774875789; c=relaxed/simple;
-	bh=fZFv1sL22s1KLoFQRd7hx3UzLd4aDAomV5puiFgoK6I=;
+	s=arc-20240116; t=1774875830; c=relaxed/simple;
+	bh=rlIALot4FV8I3Dx11iR0n/ZuwFVfXPNiFMj4N+fBIHM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UtQHqhVH0NodAOHWKXwFeRVPypOhBEuCMt4roxXPALoTk0TxRgDXW7jDb997LNjIdYgYfRldTy5k3RgMFQOwyMPvrOhypoCnUbRwtMuY8Se4GUtxLCba809+n99CDxM+g5GKXkWZnYaYL1ZUBW/3QIrXVuuxEzp+xb+BHVDPe8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=fBrIrBct; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=X08YBbf2gXTI3oohjDZ76vImtxbbD7M2kr77YPROj5m3ZgOwydg0xpAJ0LedrFVjW1sIh5YxrxsPe6kyBza2QopmGwbAIAX7cUGtdpw+z0FjPbBDyvYPHa40AWO9LBqVk1OKmEdyBwTNVDP4FuKxbOF4HWW/koapdcJ1q09GQZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=QXGSOnsu; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="fBrIrBct"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="QXGSOnsu"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=V4U0/TuhcWrZ0MeULa8tBifO46s5JTqhmO1GQ8H5Gk0=; b=fBrIrBcthFrPIk7gAMmpTtsLys
-	9sjwRRMO2ia5a+V7hkxgAGvSzSC8zqZ7iYu9U6mMBVJewN+43RIwS0Bwi34IKTZ90opVgvtT6l3vT
-	Xk8cqeP1kkfQt29Xt2Hdbi1jN6Qsk5gkVqpiwlhZb30r8Uy6rKfrjBjGUWbWDtrfF8eI=;
+	bh=b5FRnzK6ZO9xNWMuxsR0nQdMaQmMU3NTtQAvW5N3aw4=; b=QXGSOnsuiDelAZWCjUKP6GRrjG
+	+Zxg+ymX6KrcsRCnWWSd5foiexH14loxMuq7cjl32T0TWX1PBzNyuFuINkjVqwCXZryGMTtnDY9Oo
+	5uLkHvBrSNEjm6MqTys4soEd0rMGiljlciFqiBHC6m9Fx9F5Au+WqZ/98pr01ezp/IVo=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1w7CGg-00E2CB-Hx; Mon, 30 Mar 2026 15:02:58 +0200
-Date: Mon, 30 Mar 2026 15:02:58 +0200
+	id 1w7CHL-00E2DD-VH; Mon, 30 Mar 2026 15:03:39 +0200
+Date: Mon, 30 Mar 2026 15:03:39 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: Nicolai Buchwitz <nb@tipi-net.de>
 Cc: netdev@vger.kernel.org, Phil Elwell <phil@raspberrypi.com>,
@@ -37,11 +37,11 @@ Cc: netdev@vger.kernel.org, Phil Elwell <phil@raspberrypi.com>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] net: phy: microchip: add downshift tunable support
- for LAN88xx
-Message-ID: <30e7b68e-b7fb-44d6-83bf-e6acd09e7fd8@lunn.ch>
+Subject: Re: [PATCH 2/2] net: phy: microchip: enable downshift by default on
+ LAN88xx
+Message-ID: <4e1f47a5-b448-4bb8-9239-1792b549c361@lunn.ch>
 References: <20260329224202.500229-1-nb@tipi-net.de>
- <20260329224202.500229-2-nb@tipi-net.de>
+ <20260329224202.500229-3-nb@tipi-net.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,37 +50,20 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260329224202.500229-2-nb@tipi-net.de>
+In-Reply-To: <20260329224202.500229-3-nb@tipi-net.de>
 
-> +static int lan88xx_set_downshift(struct phy_device *phydev, u8 cnt)
-> +{
-> +	u32 mask = LAN78XX_PHY_CTRL3_DOWNSHIFT_CTRL_MASK |
-> +		   LAN78XX_PHY_CTRL3_AUTO_DOWNSHIFT;
-> +	u32 val;
-> +
-> +	if (cnt == DOWNSHIFT_DEV_DISABLE)
-> +		return phy_modify_paged(phydev, 1, LAN78XX_PHY_CTRL3,
-> +					LAN78XX_PHY_CTRL3_AUTO_DOWNSHIFT, 0);
-> +
-> +	if (cnt == DOWNSHIFT_DEV_DEFAULT_COUNT)
-> +		cnt = 2;
-> +
-> +	switch (cnt) {
-> +	case 2:
-> +		val = LAN78XX_PHY_CTRL3_DOWNSHIFT_CTRL_2;
-> +		break;
-> +	case 3:
-> +		val = LAN78XX_PHY_CTRL3_DOWNSHIFT_CTRL_3;
-> +		break;
-> +	case 4:
-> +		val = LAN78XX_PHY_CTRL3_DOWNSHIFT_CTRL_4;
-> +		break;
-> +	case 5:
-> +		val = LAN78XX_PHY_CTRL3_DOWNSHIFT_CTRL_5;
-> +		break;
-> +	default:
-> +		return -EINVAL;
+On Mon, Mar 30, 2026 at 12:42:00AM +0200, Nicolai Buchwitz wrote:
+> Enable auto-downshift from 1000BASE-T to 100BASE-TX after 2 failed
+> auto-negotiation attempts by default. This ensures that links with
+> faulty or missing cable pairs (C and D) fall back to 100Mbps without
+> requiring userspace configuration.
+> 
+> Users can override or disable downshift at runtime:
+> 
+>   ethtool --set-phy-tunable eth0 downshift off
+> 
+> Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
 
-And this could be a range check followed by a FIELD_PREP(cnt - 2);
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-	Andrew
+    Andrew
