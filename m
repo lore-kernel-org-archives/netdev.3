@@ -1,43 +1,43 @@
 Received: from szelinsky.de (szelinsky.de [85.214.127.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E7640DFB4;
-	Mon, 30 Mar 2026 13:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0558437F75F;
+	Mon, 30 Mar 2026 13:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.127.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774877432; cv=none; b=jFGwfJj+5ZtEvZ0IbTN6TxOwf3R5AjQTOyign0pyenS7ftmA78E8xOPrwalET8+BXoAcZFx1EKT44o+5yApEEb2438rdBoBJ++1Td3TwfmeyH9oQLotAaIIdbIcSYitPkKAmZBvNAPEFV1MT6BrvGZtQ3oUfZD2iMaa4p6EQpgQ=
+	t=1774877434; cv=none; b=XxxbBudyEdGu8TszSdpzLaWs3mU4PfYOFs3xsQ9WBiInqHSkjRkDxATFUVrWgXiDeXKaob0SJssdPrsD1IjuFrNUvZmrQigPmZ2/DuahDBxOu3oDJUrgpjGPeJWnd2r6b8GXJHjv++JYu6R9Q9/HiE9dcjiJTbMTTzE+VWLg1YE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774877432; c=relaxed/simple;
-	bh=I53+4x8QLsRQYCUgrpPnllpmhk7T0pUCk75VG9OJeKA=;
+	s=arc-20240116; t=1774877434; c=relaxed/simple;
+	bh=5YhF6FKdqzylfrNrOK0gXUeArO/IGwe5hCoJARHZgAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z81XtMksq3vHphevr78q3pdaKlYN904QmfSDdqGrWhi1sR2bD5BzGEe3B2EhGGoSDX6QIdpKaL37aIg8/ovOktyw2LgmOjb7qLbaUfXtEZbPr96VBVwqlRPNyx4ESXhm7ubTCHMUzjf6qv+WnCdVfOUu4Iajpdx/KehjYFBzzTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=Bv0zOFWx; arc=none smtp.client-ip=85.214.127.56
+	 MIME-Version; b=N4db1OIEEh32jGwvJzG+8Z+XhAlsfmwrE1/B/PYoCjevgWZWozZP/XPICia1Xu0M1s9ghhbFO4IADl3pbd+JH806tkPXACFEoW3xBhoGxruK43Nci2lu7ghkqhM90ioai+NcPgOe+ilTtTASut0LOqnZMEaKyXCDrYExQNHy3Ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=SgNtH1Fv; arc=none smtp.client-ip=85.214.127.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="Bv0zOFWx"
+	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="SgNtH1Fv"
 Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id 84596E838DF;
-	Mon, 30 Mar 2026 15:30:27 +0200 (CEST)
+	by szelinsky.de (Postfix) with ESMTP id 404CFE8392D;
+	Mon, 30 Mar 2026 15:30:31 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1774877427;
+	s=mail; t=1774877431;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JnZMBJsLnU7PkgxfK7Y/dVM7d0dGIFtqowGcQ6qE3Ws=;
-	b=Bv0zOFWx0KArdynhA602lO1md03zYfV44BWf2LGrFXpO4KQStsyQgPXv/A0Z3ftKxjaUbC
-	oIAmaaKxAvp+RuZRHBAdSPT7gNv++50QQ9ASd9SAhvXlsD/KkXYbA0QSVISspEfF/N6zaw
-	PcriUxTCx9B82S+z7dsMpHcagKgksgEfdqd52HwcSyDa0MV+ufhh9+QuzfktTkv7l7YUUr
-	xZKAobmgZGkzFGxjbu+GZfPwSZwes8fMDC9Nfm/Bh0r0lgT1PJ/9IzV91L5YF+b6ix8Cm0
-	UiV14JqqkWy+wTKJFE6vVzDeXu8AkZFMfdIHXngL3eQugwjcbNZ+T8mbWfZGjQ==
+	bh=XxcFZjE73jyWoRwAxSgnECQDbuLjien1jQVNIfj90C0=;
+	b=SgNtH1Fv/zEP8gI/BxfKQo+LOT10ny1owFm8nHD4S5tGf2MGLYxKp0GI01fp6YJR0A1Unf
+	tupqH4FELd2lTNXXE8enQTRj49sPiZmcPhdHa2OdQbWOIEv2W3Qke2K0tC3KBsbKe9teC7
+	MJ9lhqZUpF+8TnqOf8oE2patMJtzAaCbnGpVC9k7hCJFKXc3TWmd5LBC0Kt3/Pu6DHOGAc
+	C6NSUUBp13ZffsaVinKidUsttX9dAiBA4VC6mYNOZa16PVnGA01BURwLgqO30IH0qFYhFh
+	ycWARAl/E/t5WwA4ncCC0cW8eJ2aDFKvaayOVLlmJEqwHXKhGxQJJokqC14xJw==
 X-Virus-Scanned: Debian amavisd-new at szelinsky.de
 Received: from szelinsky.de ([127.0.0.1])
 	by localhost (szelinsky.de [127.0.0.1]) (amavisd-new, port 10025)
-	with ESMTP id oho3NqL8rmRx; Mon, 30 Mar 2026 15:30:27 +0200 (CEST)
+	with ESMTP id Ql5i64NHGlQW; Mon, 30 Mar 2026 15:30:31 +0200 (CEST)
 Received: from p14sgen5.fritz.box (dslb-002-205-089-102.002.205.pools.vodafone-ip.de [2.205.89.102])
 	by szelinsky.de (Postfix) with ESMTPSA;
-	Mon, 30 Mar 2026 15:30:27 +0200 (CEST)
+	Mon, 30 Mar 2026 15:30:30 +0200 (CEST)
 From: Carlo Szelinsky <github@szelinsky.de>
 To: Kory Maincent <kory.maincent@bootlin.com>,
 	Oleksij Rempel <o.rempel@pengutronix.de>,
@@ -52,12 +52,13 @@ Cc: Heiner Kallweit <hkallweit1@gmail.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Carlo Szelinsky <github@szelinsky.de>
-Subject: [PATCH net-next v2 0/3] net: pse-pd: support module-based PSE controller drivers
-Date: Mon, 30 Mar 2026 15:29:49 +0200
-Message-ID: <20260330132952.2950531-1-github@szelinsky.de>
+Subject: [PATCH net-next v2 1/3] net: pse-pd: prevent regulator cleanup from disabling unclaimed PSE PIs
+Date: Mon, 30 Mar 2026 15:29:50 +0200
+Message-ID: <20260330132952.2950531-2-github@szelinsky.de>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260329161014.2908509-1-github@szelinsky.de>
+In-Reply-To: <20260330132952.2950531-1-github@szelinsky.de>
 References: <20260329161014.2908509-1-github@szelinsky.de>
+ <20260330132952.2950531-1-github@szelinsky.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,50 +67,74 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When a PSE controller driver is built as a module, it may not be probed
-yet when PHYs are registered on the MDIO bus. This causes
-of_pse_control_get() to return -EPROBE_DEFER, destroying the PHY device.
-Later, regulator_late_cleanup disables the unclaimed PSE regulators,
-permanently killing PoE.
+When a PSE controller driver is loaded as a module, its PI regulators
+are registered before any consumer (PHY) acquires the corresponding PSE
+control via of_pse_control_get(). The regulator framework's
+regulator_late_cleanup then calls pse_pi_is_enabled(), which queries
+hardware and sees the PI is enabled. Since no consumer holds it
+(use_count == 0), regulator_late_cleanup disables it, killing PoE.
 
-This series fixes the issue in three steps:
+Add an admin_state_synced flag to struct pse_pi that is set when a
+consumer first acquires the PSE control and syncs admin_state_enabled
+from hardware. In pse_pi_is_enabled(), report unsynchronized PIs as
+disabled so regulator_late_cleanup skips them.
 
-  1. Add an admin_state_synced flag to pse_pi so that pse_pi_is_enabled()
-     reports unclaimed PIs as disabled, preventing regulator_late_cleanup
-     from shutting them down. The existing dual-path behavior (software-
-     tracked vs. hardware-queried state) is preserved for claimed PIs.
+This preserves the existing dual-path behavior: software-tracked state
+for software-controlled power domains, and hardware queries for
+hardware-controlled domains. The admin_state_synced flag is only false
+before the first consumer acquisition, which is the exact window where
+regulator_late_cleanup could incorrectly disable the PI.
 
-  2. Add pse_control_try_resolve() for lazy PSE control resolution on
-     first ethtool access, serialized by RTNL.
+Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
+Acked-by: Kory Maincent <kory.maincent@bootlin.com>
+---
+ drivers/net/pse-pd/pse_core.c | 13 +++++++++++++
+ include/linux/pse-pd/pse.h    |  1 +
+ 2 files changed, 14 insertions(+)
 
-  3. Treat -EPROBE_DEFER as non-fatal during PHY registration, allowing
-     the PHY to register with psec=NULL. This is ordered last because it
-     changes probe behavior and relies on patches 1 and 2 for correct
-     lazy resolution.
-
-Thanks to Kory Maincent for the review and feedback on v1.
-
-Changes in v2:
-  - Reordered patches: moved the EPROBE_DEFER patch last since it
-    changes probe behavior and depends on the other two patches for
-    correct lazy resolution (Kory Maincent)
-  - Added net-next to subject prefix (Kory Maincent)
-  - Collected Acked-by tags
-
-Carlo Szelinsky (3):
-  net: pse-pd: prevent regulator cleanup from disabling unclaimed PSE
-    PIs
-  net: pse-pd: add lazy PSE control resolution for modular drivers
-  net: mdio: treat PSE EPROBE_DEFER as non-fatal during PHY registration
-
- drivers/net/mdio/fwnode_mdio.c |  8 ++++--
- drivers/net/pse-pd/pse_core.c  | 49 ++++++++++++++++++++++++++++++++++
- include/linux/pse-pd/pse.h     |  6 +++++
- net/ethtool/pse-pd.c           |  4 +++
- 4 files changed, 65 insertions(+), 2 deletions(-)
-
-
-base-commit: cf0d9080c6f795bc6be08babbffa29b62c06e9b0
---
+diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
+index 3beaaaeec9e1..566b07c336bf 100644
+--- a/drivers/net/pse-pd/pse_core.c
++++ b/drivers/net/pse-pd/pse_core.c
+@@ -421,6 +421,18 @@ static int pse_pi_is_enabled(struct regulator_dev *rdev)
+ 
+ 	id = rdev_get_id(rdev);
+ 	mutex_lock(&pcdev->lock);
++
++	/*
++	 * Report the PI as disabled until a consumer has acquired it
++	 * and synced admin_state_enabled from hardware. This prevents
++	 * regulator_late_cleanup from disabling unclaimed PSE PIs
++	 * when the PSE controller driver loads as a module.
++	 */
++	if (!pcdev->pi[id].admin_state_synced) {
++		ret = 0;
++		goto out;
++	}
++
+ 	if (pse_pw_d_is_sw_pw_control(pcdev, pcdev->pi[id].pw_d)) {
+ 		ret = pcdev->pi[id].admin_state_enabled;
+ 		goto out;
+@@ -1431,6 +1443,7 @@ pse_control_get_internal(struct pse_controller_dev *pcdev, unsigned int index,
+ 		goto free_psec;
+ 
+ 	pcdev->pi[index].admin_state_enabled = ret;
++	pcdev->pi[index].admin_state_synced = true;
+ 	psec->ps = devm_regulator_get_exclusive(pcdev->dev,
+ 						rdev_get_name(pcdev->pi[index].rdev));
+ 	if (IS_ERR(psec->ps)) {
+diff --git a/include/linux/pse-pd/pse.h b/include/linux/pse-pd/pse.h
+index 4e5696cfade7..b86cce740551 100644
+--- a/include/linux/pse-pd/pse.h
++++ b/include/linux/pse-pd/pse.h
+@@ -260,6 +260,7 @@ struct pse_pi {
+ 	struct device_node *np;
+ 	struct regulator_dev *rdev;
+ 	bool admin_state_enabled;
++	bool admin_state_synced;
+ 	struct pse_power_domain *pw_d;
+ 	int prio;
+ 	bool isr_pd_detected;
+-- 
 2.43.0
 
