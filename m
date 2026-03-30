@@ -1,149 +1,166 @@
-Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F673BF699;
-	Mon, 30 Mar 2026 10:43:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49CB73BD23B
+	for <netdev@vger.kernel.org>; Mon, 30 Mar 2026 10:43:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774867394; cv=none; b=cx1KnXvnz57WwE/M5J9U7hlz0QZsRM/bV6Ivy57WBDaktnnM3J17fcz3NVV0r9MB9q1MJAZndw3+NCXfODUWzNX6k/6r9Ef3EWNAu2bOiOhJ14rNEzzZrtNA4uiN3XwxIjIB8eOdswPMqw2+VAf7brpx06W2H+Q4eAL+WE+ijLo=
+	t=1774867440; cv=none; b=qww40dpSEhwMgF6IPruTwbodzJ3nR4wbrnGEy0g/FuicxESG9Yk74jN7PGP/wm1VSUPBuAtpBa5YJ52BboY+tsJNqJEqAgDLpk/J0UZNfsaSuvTxzmgFLkaOXornNol9D6YzwHsSmZ4fIZ/kcHet62ZTrLjTqbBK5DOYvkceJzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774867394; c=relaxed/simple;
-	bh=531yv0Fevuus5pVVZKvem5krvxUk0IpEdrb262gMyZM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=fXZuOj7zeuwOkezliwfQugJ4IPOlixywZPj128E9hXFbo7r5NCgDc6pN20XtS43GOud1ppw3Qnu5/1uZ13zIZandQqwXaif8FAF6pzHNasU5kVm1EupuPwU4CF7fDkrjezlpzVk4Jf5acFpUFkvxYNhhlTCTC2vUGfXbf/TAE9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=1pOYxzfW; arc=none smtp.client-ip=113.46.200.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1774867440; c=relaxed/simple;
+	bh=0NaCRr9qEPpuUE1FAw5AixgLvtREFNQs0j4yj3eOJ2I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GBkEaHrBCO4/vUH8z9+2sMWe7Dp6hjQ0QhbeTRR2IhA4T8Hk8ss+GSE2FUlGDRm30desB8/d4fG6aDPNBS1nWgFaoBisAoQcKnUmrSsNir9m8P6d5H4w7N45Ga5dixrL+ocaTQjOqRLntK1CWoJqWpS6156wokySvprg5rFb8gI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=apveyVId; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="1pOYxzfW"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=FijnqdE6OSWehu5JGbmzn2xyJ6RHFhLBH81LWWs9vNk=;
-	b=1pOYxzfWs28lCmu4qi8ofr29DlGUrt+tVcnM4GKKfqO34Gw7wa+oczx0Dpw+04WNdebAe1c2k
-	J5hmqRzGrlLZmmjwHEBiBrG7PVjRmZocajNx5X/Fk4S6CTBCD0kpj9M269XQGVBY3oAltMnuopm
-	oUvmC3IrW+4Fd9oo4rGr818=
-Received: from mail.maildlp.com (unknown [172.19.163.127])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4fknjz71lpzKm76;
-	Mon, 30 Mar 2026 18:36:55 +0800 (CST)
-Received: from kwepemj500018.china.huawei.com (unknown [7.202.194.48])
-	by mail.maildlp.com (Postfix) with ESMTPS id 70CBA402AB;
-	Mon, 30 Mar 2026 18:43:06 +0800 (CST)
-Received: from [10.174.178.79] (10.174.178.79) by
- kwepemj500018.china.huawei.com (7.202.194.48) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 30 Mar 2026 18:43:05 +0800
-Message-ID: <2a013d86-70ea-473e-9c50-332f9b0bfd81@huawei.com>
-Date: Mon, 30 Mar 2026 18:43:05 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="apveyVId"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2b258576d8cso2946475ad.0
+        for <netdev@vger.kernel.org>; Mon, 30 Mar 2026 03:43:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774867439; x=1775472239; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/nfMTusRMBUcug+NPUw9SapTsWZw2E0CZcmoh/QoIp0=;
+        b=apveyVIdikiaoUscz3u+fGhbovMldQhSqwseWtvwRosvbSGtxKqUw05DBoRCKecIIK
+         Je7u8DC1qYQvcYbotfIShJ5S0wp1Y511R0SlpzohXCdKe888NEJsdT3GvQ6Einh2WQKF
+         9bzRW44mKltY7fdMOaOMbbxJgTZXvB0S6LhrMPAd4PojTEfNHqb4ONqGPu17wrSwxRBG
+         7e7Q2/cmrIyaTBb7Y5A8Vekv+9lGH6Vz0Dt8FrQnNxOFNzf7AO8XryGxPAqBqeKTOHO+
+         s2Dz+uhO6/utnrpPMmAz3vzbxaXnHI0Y67Dftkq1yw5X8TcKXsumc1dzsp6LSFqikBxq
+         xL6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774867439; x=1775472239;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/nfMTusRMBUcug+NPUw9SapTsWZw2E0CZcmoh/QoIp0=;
+        b=DMsIjeAUzoaUifn3fM0DcZ1jcLQPOeyywKjR9blSDreKHaHOgzJvkJz6orP7w9gb9i
+         ISesMfxcJGRLGbIxWrPk3Sh2BveFBVur58Nk+bz2gdI5A2dFHjXIUZN1K3AH78BGAuA3
+         o8+N9qxRnJo4zv36BVMiiCwIvo0r64GIWjosbSzEk+J99JzSbPpVoz011EZTH47HRRoc
+         9S5hBT+Vpdq4h0MF9HHHyKO4Sti8WnnoQ9H6QzJLQ5O99tqR3AgMmU9ulhhpXfzCL72V
+         QYCc05a5S3hJGv3uFGmXI82rNDg6ICx9fuMNHooZeIBq56D5hRRbEEcWylFI7uyKvOmd
+         xaKA==
+X-Forwarded-Encrypted: i=1; AJvYcCUJ9RqPGSTEw+LZ59caRX6Me0aVKkZN3n2JhcuUcgzagC1Y/IoKN49376YEcmminv+r5nfsirI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrkuFirzUADe4I+ya/RaVtr4haAky5TWFXR1NDHLvq0RrX4iMk
+	vBaA/gMqXvQie/JHrqdQdEgCXbMhltB+kdFuw1gKSQCdj7ZwiYeIPioa
+X-Gm-Gg: ATEYQzzqvk2pMZ5jrVfp2dZeG7T/rvY8/JtqwgTzMr+gm2Czrmx+sDsLBR139UqmJ28
+	uJ0rd80aTBdruqvsajUisvbAnO1ILVLT+1RkLmG7HMMU5HSP/+GrLhfMtmIVTK481LIRyE2thLP
+	LDxEQr5A9VMhfJ6N/75x/arX6dvorXfHPVPY/pE5ArB+lo0I9Ppz7Y4Luvk1ysNCAIBxtDG2eIT
+	yg6TvcgJnvZT2/F+J9M+A8PfTbWAP3bB3m/UNUldd/XNoLvX764Hx3DIelmKtj3AOKO6Uoq2/oI
+	n0oFoSFaq2KwoCkTJ6/HTi4g89nz8q0olFbcQoHGXs0E3XJm9OW7YAO6fhGeyONPjOkhg6OoP0P
+	zFR9hNU5HZ5F0jidnadN3bNYvvOIEnQBWRoj8MnZ+fvVNdrPkAW0Cshz1sTh0N25UqgX8UBQ7Qb
+	T9jF22myIL69SSFOBvi2Z2aBD0d0GidllxNmT3Q0h7WppZCMNnJRd/PSvQXCVDEcqrVHT1lzbWt
+	7DtYiEWqINf
+X-Received: by 2002:a17:902:f542:b0:2aa:d5e5:b136 with SMTP id d9443c01a7336-2b0cdd7bb09mr126049405ad.38.1774867438367;
+        Mon, 30 Mar 2026 03:43:58 -0700 (PDT)
+Received: from SLSGDTSWING002.tail0ac356.ts.net ([129.126.109.177])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b242642864sm88311575ad.12.2026.03.30.03.43.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Mar 2026 03:43:57 -0700 (PDT)
+From: Weiming Shi <bestswngs@gmail.com>
+To: Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] net/sched: taprio: fix NULL pointer dereference in class dump
+Date: Mon, 30 Mar 2026 18:29:08 +0800
+Message-ID: <20260330102904.2677818-5-bestswngs@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3] mptcp: fix soft lockup in mptcp_recvmsg()
-To: Matthieu Baerts <matttbe@kernel.org>
-CC: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, <netdev@vger.kernel.org>, <mptcp@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <yuehaibing@huawei.com>,
-	<zhangchangzhong@huawei.com>, <weiyongjun1@huawei.com>
-References: <20260327075544.3622851-1-lixiasong1@huawei.com>
- <c23acf06-8d10-4a3c-a3df-d62860ba6b31@kernel.org>
-From: Li Xiasong <lixiasong1@huawei.com>
-In-Reply-To: <c23acf06-8d10-4a3c-a3df-d62860ba6b31@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemj500018.china.huawei.com (7.202.194.48)
+Content-Transfer-Encoding: 8bit
 
-Hi Matt,
+When a TAPRIO child qdisc is deleted via RTM_DELQDISC, taprio_graft()
+is called with new == NULL and stores NULL into q->qdiscs[cl - 1].
+Subsequent RTM_GETTCLASS dump operations walk all classes via
+taprio_walk() and call taprio_dump_class(), which calls taprio_leaf()
+returning the NULL pointer, then dereferences it to read child->handle,
+causing a kernel NULL pointer dereference.
 
-On 3/27/2026 8:13 PM, Matthieu Baerts wrote:
-> Hi Li,
-> 
-> On 27/03/2026 08:55, Li Xiasong wrote:
->> syzbot reported a soft lockup in mptcp_recvmsg() [0].
->>
->> When receiving data with MSG_PEEK | MSG_WAITALL flags, the skb is not
->> removed from the sk_receive_queue. This causes sk_wait_data() to always
->> find available data and never perform actual waiting, leading to a soft
->> lockup.
->>
->> Fix this by adding a 'last' parameter to track the last peeked skb.
->> This allows sk_wait_data() to make informed waiting decisions and prevent
->> infinite loops when MSG_PEEK is used.
-> 
-> Thank you for the new version!
-> 
-> (...)
-> 
->> diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
->> index cf1852b99963..60f6e6a189b7 100644
->> --- a/net/mptcp/protocol.c
->> +++ b/net/mptcp/protocol.c
-> 
-> (...)
-> 
->> @@ -2343,7 +2347,7 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
->>  
->>  		pr_debug("block timeout %ld\n", timeo);
->>  		mptcp_cleanup_rbuf(msk, copied);
->> -		err = sk_wait_data(sk, &timeo, NULL);
->> +		err = sk_wait_data(sk, &timeo, last);
-> 
-> sashiko is saying [1] this:
-> 
->> Will this cause a soft lockup if all socket buffers in the receive queue
->> have already been peeked?
->>
->> If the queue only contains already-peeked buffers, the loop in
->> __mptcp_recvmsg_mskq() skips them using a continue statement:
->>
->>     if (flags & MSG_PEEK) {
->>         /* skip already peeked skbs */
->>         if (total_data_len + data_len <= copied_total) {
->>             total_data_len += data_len;
->>             continue;
->>         }
->>
->> This means last is never assigned and remains NULL.
->>
->> When last is NULL, sk_wait_data() checks if the receive queue tail is
->> not equal to NULL. Since the queue still contains the unconsumed buffers,
->> this evaluates to true and sk_wait_data() returns immediately without
->> sleeping.
->>
->> Does this result in an infinite loop here when MSG_PEEK and MSG_WAITALL
->> are used together?
-> 
-> I *think* that's a false positive. When MSG_PEEK and MSG_WAITALL are
-> used together, sk_wait_data() will be call with "last" != NULL and will
-> be unblocked when a new data packet (skb->len > 0) is added to the
-> queue. In other words, when walking the queue in __mptcp_recvmsg_mskq,
-> it should never be full of already-peeked skb. Or did I miss something?
-> 
-> If yes, "*last = skb" could be added before the "continue".
-> 
-> If no, this patch can be applied in 'net' directly:
-> 
-> Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-> 
+The bug is reachable with namespace-scoped CAP_NET_ADMIN on any kernel
+with CONFIG_NET_SCH_TAPRIO enabled. On systems with unprivileged user
+namespaces enabled, an unprivileged local user can trigger a kernel
+panic by creating a taprio qdisc inside a new network namespace,
+grafting an explicit child qdisc, deleting it, and requesting a class
+dump. The RTM_GETTCLASS dump itself requires no capability.
 
-Through code analysis and testing, there is indeed the special scenario
-sashiko described:
+ Oops: general protection fault, probably for non-canonical address 0xdffffc0000000007: 0000 [#1] SMP KASAN NOPTI
+ KASAN: null-ptr-deref in range [0x0000000000000038-0x000000000000003f]
+ RIP: 0010:taprio_dump_class (net/sched/sch_taprio.c:2475)
+ Call Trace:
+  <TASK>
+  tc_fill_tclass (net/sched/sch_api.c:1966)
+  qdisc_class_dump (net/sched/sch_api.c:2329)
+  taprio_walk (net/sched/sch_taprio.c:2510)
+  tc_dump_tclass_qdisc (net/sched/sch_api.c:2353)
+  tc_dump_tclass_root (net/sched/sch_api.c:2370)
+  tc_dump_tclass (net/sched/sch_api.c:2431)
+  rtnl_dumpit (net/core/rtnetlink.c:6827)
+  netlink_dump (net/netlink/af_netlink.c:2325)
+  rtnetlink_rcv_msg (net/core/rtnetlink.c:6927)
+  netlink_rcv_skb (net/netlink/af_netlink.c:2550)
+  </TASK>
 
-when receiving data with MSG_PEEK | MSG_WAITALL while waiting for data
-and calling shutdown(sock_fd, SHUT_WR) in another thread simultaneously,
-mptcp_close_wake_up will wake up sk_wait_data, but sk->sk_state remains
-FIN_WAIT2, leading to a busy loop with CPU at 100%, which can further
-lead to soft lockup.
+Fix this by substituting &noop_qdisc when new is NULL in
+taprio_graft(), following the same pattern used by multiq_graft() and
+prio_graft(). This ensures q->qdiscs[] slots are never NULL, making
+all consumer paths (dump, enqueue, dequeue) safe. The noop_qdisc is a
+kernel-global builtin qdisc that drops all packets, which is
+functionally equivalent to a NULL child for data path purposes. The
+refcount increment and flag modification are guarded with
+!= &noop_qdisc to avoid modifying the global singleton.
 
-Adding '*last = skb' before 'continue' can properly solve it. I'll send
-v4 with this fix later.
+Fixes: 665338b2a7a0 ("net/sched: taprio: dump class stats for the actual q->qdiscs[]")
+Cc: stable@vger.kernel.org
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+---
+ net/sched/sch_taprio.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-Thanks,
-Li Xiasong
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index f721c03514f60..cecaef16c0dd1 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -2183,6 +2183,9 @@ static int taprio_graft(struct Qdisc *sch, unsigned long cl,
+ 	if (!dev_queue)
+ 		return -EINVAL;
+ 
++	if (!new)
++		new = &noop_qdisc;
++
+ 	if (dev->flags & IFF_UP)
+ 		dev_deactivate(dev);
+ 
+@@ -2196,14 +2199,14 @@ static int taprio_graft(struct Qdisc *sch, unsigned long cl,
+ 	*old = q->qdiscs[cl - 1];
+ 	if (FULL_OFFLOAD_IS_ENABLED(q->flags)) {
+ 		WARN_ON_ONCE(dev_graft_qdisc(dev_queue, new) != *old);
+-		if (new)
++		if (new != &noop_qdisc)
+ 			qdisc_refcount_inc(new);
+ 		if (*old)
+ 			qdisc_put(*old);
+ 	}
+ 
+ 	q->qdiscs[cl - 1] = new;
+-	if (new)
++	if (new != &noop_qdisc)
+ 		new->flags |= TCQ_F_ONETXQUEUE | TCQ_F_NOPARENT;
+ 
+ 	if (dev->flags & IFF_UP)
+-- 
+2.43.0
 
