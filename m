@@ -1,117 +1,117 @@
-Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2123238150
-	for <netdev@vger.kernel.org>; Mon, 30 Mar 2026 13:42:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA4CC238150;
+	Mon, 30 Mar 2026 13:42:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774878151; cv=none; b=mYdVAjGgnr0XKE0wmllN3O4moHuw+MvJp+DnbgtR9L4ZXc9R28jF9MZh3SNvdr2UZMQUC94gvMW1s64rYd+wZo+7dDTyHXl+5AqmmA9eDe8MhyvfO0mEg3mPdqa0Seucw3CKDhkzrgNrXD8QTSH18NEohU5QG5kvP5H0s3aelqg=
+	t=1774878171; cv=none; b=XpETNgWxMzKIL4b/B70NVgGz0Mg94PFKgoMoJ0v5dQ3rU43ryeRzH5FCeqgvzDHU7WtDzju1lmfSwChE2Vs0L+VCePRBbcwJDWXyBvKuGsUEwyJEeoj/F23hmGKQ9zUquPlE8+3ItltN3CRxwQi6WxqnrdDeHvWrPaknBD32Anw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774878151; c=relaxed/simple;
-	bh=OxeMDfIOeJPo0liFSF+iS4Bsty37kddULdD/aIXYKGE=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=DGD20JVL+kvCtwogqkAI2WnrxJPCK7mxyrqxGK5q6OHCU7kBtgXSGhZTLHZyM/sKt6RjmzQ1QmnEXZaRLBhz0djhwKdVgS+viDUkT5bcfzPBpaq3mGl3GV5btkj4w3XHgCaRMsImdlvfRte7kN7cpGIFh2IpP2oC4iHThK1ioBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P8f4jU1z; arc=none smtp.client-ip=74.125.224.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1774878171; c=relaxed/simple;
+	bh=6IRIpHIj+N++yiCem11RlYYa0rcQ4NBJhwZvsqPL2WA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LhSA1JC/1n3pQPOicfOILReSh2WDsOQVhDArhqiWQK5VKrFiIARAiTju7unofqk+M1eCSnbXCGQTOT9QrVJ+DMPYs0gu5RuzMYcxg2llp1OjklN3IB1fVVOfAk1Dz+JgKT4Yj6W0656iIYFQr1iN3lU7REi+odyuXAAZTbnIyFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=jk9ZJLSj; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P8f4jU1z"
-Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-65003f40a22so4295542d50.2
-        for <netdev@vger.kernel.org>; Mon, 30 Mar 2026 06:42:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774878149; x=1775482949; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dReUoPRdYJoj/PVvzy5/qVwqlhgJ0D0SdiCFOdc0j84=;
-        b=P8f4jU1zWYaPeg2MbgI/MgQcMM4Di0TOPJMh+/7IXFzaq1Ve+FGzdTgr31JvePwvgX
-         j4L14uLya5lWF/Bu+aQzl/q5WzLnPg5WXC1xuG6SphyaD0HH6HtXRgGWXeeE4x/SNN0S
-         5OeSSorGYaonjJloIR3LOT6t89WXqT0y6W4eex8Eo86VKYJTg/ZnGSDUcNpDTGNj6v8a
-         RmbOVWQccJisKLHxwG181MKNxehwD0akU6h6a+SnBeKOKmwhwjkcRjKLnLCapcokL/Rj
-         4iqdNqqhoOCPz/bmy0/Bx0k/kC5sHmKXud5kKyNjjxhq9mh83zxmaTw0dYKpos8SNGhY
-         XQ4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774878149; x=1775482949;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=dReUoPRdYJoj/PVvzy5/qVwqlhgJ0D0SdiCFOdc0j84=;
-        b=BJrm9gbnpGu3YZDw/rzO1n2dp9JH7AsHtaiqTJ/l/Bk657pC1FTioiuKaLTIA5a/aP
-         KZS6aYXOQRcFV7kH9PTQYIPtW2DkLlNiK1Sh5T2nmBWy5XN66xR0IN74YgIwkQZG5MOl
-         3qC/asR5KncPN7acPCmEGjYQo/huGk/AZ4brmI/+dasfT3Z6PX49CHclEJ+Xx/2q9i2q
-         8t3XD3LypETXs7iKcncX4VMsTkjF4Y3hsZpKZ4dU6p77ijA/iz/VIcouy22qj+GjS991
-         kw9vKQOkDn7PHeKdUt5KtWMvUskv2jR2TrxHkjLrO+yrO3kAUjuPInNxZJfYIsA0G+ES
-         DdgQ==
-X-Gm-Message-State: AOJu0YwjVxa+2Wz0lHmgY2CmxW+zIqPj0oEevAOegC+jPTxh5m6FvpN8
-	jb05hsCsBBVanRzO9FnXbeQ8A8gD6J0dBtH/Z219ENjR+IA8pgBeskCp
-X-Gm-Gg: ATEYQzx4GQgVoykxtUDrn+TfVZrKktjYw0y/9kX//l02JbmW7hJfDmHeTvwd9CCDZAo
-	VSMqBrBlQtbiodbGqvEkKpWkbpOtawQTnV+kRvSkWiZ08E4s91JF9NEHDQanmLgKMnD4/qLzD+e
-	72DZiKsn0h/VhtrT6+N62R9DB86EnI5iPgeEYVIeiNae5I+BFo7F7/AIvGp597Sc3j2XH1op8LS
-	4XCqcUzgcPyCVS+AS8cEq9L4QuAL+PmujM7ZaCWJ57HZ4mRph5DQc63LDBM6jUPm278KlM+LHeL
-	dyb0eHDT6cSAon0yolFTEkhL+o55L9ge/BQnsElkvvEAQEwsd7GN434+OSAt3qXy2STGqawCDP6
-	mqSwN7ok+/gCZTAPNJ8NkPgCmrnxybj2ZIQ5+CzmwfOgvKeM64FR60H5tZD8exBJZukztQ/ZcKV
-	HsQpjx8yCCMN+FIQP3RULdy9RN9iHG8Jos2H9zd7I1ANXRE1jJR/IrC/Mt8iLsnlzKB1j7jao2a
-	6sm
-X-Received: by 2002:a53:d005:0:b0:650:1bc2:7e13 with SMTP id 956f58d0204a3-6501bc286e4mr3068003d50.7.1774878147225;
-        Mon, 30 Mar 2026 06:42:27 -0700 (PDT)
-Received: from gmail.com (180.134.85.34.bc.googleusercontent.com. [34.85.134.180])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-65009200901sm4033085d50.1.2026.03.30.06.42.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 06:42:26 -0700 (PDT)
-Date: Mon, 30 Mar 2026 09:42:26 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>, 
- bpf@vger.kernel.org
-Cc: netdev@vger.kernel.org, 
- davem@davemloft.net, 
- edumazet@google.com, 
- pabeni@redhat.com, 
- andrew+netdev@lunn.ch, 
- horms@kernel.org, 
- Jakub Kicinski <kuba@kernel.org>, 
- maze@google.com, 
- willemdebruijn.kernel@gmail.com, 
- ast@kernel.org, 
- daniel@iogearbox.net, 
- andrii@kernel.org, 
- martin.lau@linux.dev, 
- eddyz87@gmail.com, 
- song@kernel.org, 
- yonghong.song@linux.dev, 
- john.fastabend@gmail.com, 
- kpsingh@kernel.org, 
- sdf@fomichev.me, 
- haoluo@google.com, 
- jolsa@kernel.org
-Message-ID: <willemdebruijn.kernel.15a62f8f2870@gmail.com>
-In-Reply-To: <20260329180428.2657785-1-kuba@kernel.org>
-References: <20260329180428.2657785-1-kuba@kernel.org>
-Subject: Re: [PATCH bpf-next v2 1/2] net: clear the dst when performing encap
- / decap
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="jk9ZJLSj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1774878169; x=1806414169;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=6IRIpHIj+N++yiCem11RlYYa0rcQ4NBJhwZvsqPL2WA=;
+  b=jk9ZJLSjmlLYCd5+LZpB3CcGd8MV9L0mxw9d+mFBjXsb4vOZ4yrHHgyB
+   fjomy57DAVAGrNU/zINlsYa6ALVjCZGXN2WMIllJWWt14xLltn7jrf+B2
+   f2Q0nlTtqpbgXsszOhTG6YT2bCdHqdCnthchNkcBPkK4DwyTuh1q2FwB/
+   2P/slvaDw9k/SzqDBV215kldFi4+efiV/t4XhHeNv4aI3iVfGmUYxs4sO
+   wb+IZXBmAvt44OsFURNMt567BgDakqB1Gz2ihelohMbrV4xkYccHXa5Sa
+   hmaZ5ronNON0Wl8wiaH4OsrhljfkrsOMfG6UwBd7sJ6fGlfaZdS4iwKHO
+   Q==;
+X-CSE-ConnectionGUID: 8rpL+xwkQsmCO/TnwCZ14w==
+X-CSE-MsgGUID: XlUhTyqySMC9CJYhTwfLtA==
+X-IronPort-AV: E=Sophos;i="6.23,150,1770620400"; 
+   d="scan'208";a="222664073"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2026 06:42:42 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.87.151) by
+ chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.35; Mon, 30 Mar 2026 06:42:30 -0700
+Received: from che-ll-i17164.microchip.com (10.10.85.11) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Mon, 30 Mar 2026 06:42:26 -0700
+From: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
+To: <parthiban.veerasooran@microchip.com>, <piergiorgio.beruto@gmail.com>,
+	<andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <steve.glendinning@shawell.net>,
+	<UNGLinuxDriver@microchip.com>
+CC: <netdev@vger.kernel.org>, <linux-usb@vger.kernel.org>
+Subject: [PATCH net-next 0/3] Add OATC10 Sleep Wake-up support and LAN867x Rev.D0 handling
+Date: Mon, 30 Mar 2026 19:12:19 +0530
+Message-ID: <20260330134222.67597-1-parthiban.veerasooran@microchip.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Jakub Kicinski wrote:
-> Commit ba9db6f907ac ("net: clear the dst when changing skb protocol")
-> added dst clearing when a BPF program changes the skb protocol
-> (e.g. IPv4 to IPv6). Since that was a fix we only cleared the dst when
-> the L3 protocol actually changes to keep it minimal. As suggested during
-> the discussion (see Link) encap or decap operation which wraps or unwraps
-> a same-protocol header may also render the existing dst incorrect - even
-> if that doesn't result in a crash, just the wrong route for the now-outermost
-> IP dst.
-> 
-> Make dropping dst unconditional for bpf_skb_change_proto() and all
-> L3 encap / decap ops.
-> 
-> Link: https://lore.kernel.org/CANP3RGfRaYwve_xgxH6Tp2zenzKn2-DjZ9tg023WVzfdJF3p_w@mail.gmail.com
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This patch series adds support for 10BASE‑T1S Open Alliance TC10 (OATC10)
+Sleep/Wake‑up to the generic Clause 45 PHY layer and integrates it with
+the Microchip LAN867x Rev.D0 T1S PHY driver. It also ensures that PHY
+suspend is properly invoked from the smsc95xx USB Ethernet driver so that
+low‑power states are entered during system suspend.
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+Patch Summary:
+
+1. add generic OATC10 suspend/resume helpers
+   - Add TC10 Sleep/Wake‑up MDIO register definitions
+   - Implement genphy_c45_oatc10_suspend() and genphy_c45_oatc10_resume()
+   - Cache PLCA configuration in struct phy_device for restore after wake
+
+2. add LAN867x Rev.D0 TC10 suspend and Wake‑on‑PHY support
+   - Enable TC10 low‑power entry via generic helpers
+   - Restore configuration correctly on resume
+   - Add ethtool WoL support using PHY wake‑up pulse (WUP)
+   - Mark driver with PHY_ALWAYS_CALL_SUSPEND
+
+3. suspend attached PHY on system suspend
+   - Call phy_suspend() before USB suspend
+   - Allows TC10‑capable PHYs to enter low‑power state
+
+Testing:
+
+Tested on EVB-LAN8670-USB Rev.D0 with suspend/resume cycles and verified:
+  - PLCA configuration is preserved across low-power transitions.
+  - Wake-up Pulse triggers proper resume.
+  - ethtool WOL operations function as expected.
+
+Reference:
+Open Alliance TC10 10BASE-T1S Sleep/Wake-up Specification:
+https://opensig.org/wp-content/uploads/2024/01/TC14_TC10_JWG_10BASE-T1S-Sleep-Wake-up-Specification_1.0_final.pdf
+
+
+Parthiban Veerasooran (3):
+  net: phy: phy-c45: add OATC10 Sleep/Wakeup support in 10BASE-T1S PHYs
+  net: phy: microchip_t1s: add suspend and WOL support for LAN867x
+    Rev.D0
+  net: usb: smsc95xx: suspend PHY during USB suspend
+
+ drivers/net/phy/mdio-open-alliance.h | 13 ++++
+ drivers/net/phy/microchip_t1s.c      | 67 ++++++++++++++++++++-
+ drivers/net/phy/phy-c45.c            | 82 ++++++++++++++++++++++++++
+ drivers/net/usb/smsc95xx.c           |  6 ++
+ include/linux/phy.h                  | 88 +++++++++++++++-------------
+ 5 files changed, 211 insertions(+), 45 deletions(-)
+
+
+base-commit: cf0d9080c6f795bc6be08babbffa29b62c06e9b0
+-- 
+2.34.1
+
