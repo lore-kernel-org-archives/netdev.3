@@ -1,125 +1,122 @@
-Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4C43D6CBF;
-	Mon, 30 Mar 2026 13:54:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.117.225.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03AD73D7D6E;
+	Mon, 30 Mar 2026 13:54:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774878851; cv=none; b=a+cQRqWcEaIIId4LWeopkbRUp3f4QcVxwGv20UTVx0/23xQP/8bsvQp1rGPCQo1cVIzj2iDoUhhaz+b1JUinrTR61SCUVGhLygLREdO+Dx2IWSzxMhzQ4Ksx/zP+suVwNYdoebckeQR3OE41j0DLMes1BT6EnZhhD2QpxotiWS8=
+	t=1774878862; cv=none; b=dpRSYVX/eE+jy40ep8pxoVdPnoJftQhCdxEuES7Onre906nyc/e9/FnkmU11/kN1hMiwGxOrVeVsPlOgklAHKKiwqEBhzDvQdAjz6Y0Y2NFLC3joiM1ka1q/DaEuL0sPVxeLMme30YN2f7pmPbxZkxPXWoF62viFz1+cUpAXIjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774878851; c=relaxed/simple;
-	bh=3wqL/ZOabGJTKHQkIzSyfktrSZelS5TutLBuqcE2hJg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XhP5PIJM4A3XxC/kB30nKCOWhT2gmOdqzMHDw+M6T2CTuVm3yM3tiA/No4zKrWaPA2BnUdtBJFiJTTGrZznP1/TeOEfbuD5cSGWt/QBEoydr16xY8r3CkVjXTyfma2ZrlZpIoYGvVVPhUJuBtUxddqqIXVUHxAlvjZJTHiElPIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=NVBgBEre; arc=none smtp.client-ip=130.117.225.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
+	s=arc-20240116; t=1774878862; c=relaxed/simple;
+	bh=kiV33SNaIHt2u3ZiqMFhM9GNQZkQJS6RAT81XUGT0uY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TKZYCqDb6V41VPnVUJpEqbw+b9iI/m31V6+RZAtgDqHo8Hzub91i2qjU9PeMaaXZC1AE2frVs9t0CV7fx/g0rkjEtvh2RcHHmhXBYNNDdNEX6b0QXFFbKCdDglsZAHBIP1m8k9RNZpT2p94fGBvQDyAu4Ilc1TeL1y6NQTlg8iE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u2CMbGLW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="NVBgBEre"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
-	Content-Type; bh=RvpF4NWzXA5Zk+Axwgkhf4Kh3Qtm2TPo14q5EXgxvgM=; b=NVBgBErekONl
-	lR18KWco6fDJivDylQAGfMT3EtCJMBGpbXyk97mg0tnUyeT/EZ/BfcBgmSA0gbDE2UItFC150j/Zy
-	ClIcbs8TEJUAywtuQ/UE5Xe1/7K+0IsKDGBD1Nmh0SabK2VWKc6bDMgOXbPkh7ncj45V7VySrApFu
-	plLxexHVRTOmH1Ia+ZnDGgV7gVwYcHPvcp/XkmLUx8wLicAc6CsxdR9Os9ub+2BUYw5j2hG9qIiZC
-	Eq3Jx6MiGxZ+B9php8SO+z0OdSn7+X4rd1t7kmNakbTV4dEdJxCty2R1FlVw5QHV19DDNxzEqHGx1
-	0jkAZADQTqxq58I09VRnuw==;
-Received: from [130.117.225.5] (helo=finist-alma9.vzint.dev)
-	by relay.virtuozzo.com with esmtp (Exim 4.96)
-	(envelope-from <khorenko@virtuozzo.com>)
-	id 1w7D1c-008K2q-1l;
-	Mon, 30 Mar 2026 15:53:30 +0200
-From: Konstantin Khorenko <khorenko@virtuozzo.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: horms@kernel.org,
-	arnd@arndb.de,
-	linux@weissschuh.net,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Konstantin Khorenko <khorenko@virtuozzo.com>
-Subject: [PATCH 0/1] Fix kernel build failure with CONFIG_GCOV_PROFILE_ALL=y
-Date: Mon, 30 Mar 2026 16:53:36 +0300
-Message-ID: <20260330135337.937540-1-khorenko@virtuozzo.com>
-X-Mailer: git-send-email 2.43.5
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u2CMbGLW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39E09C2BCB0;
+	Mon, 30 Mar 2026 13:54:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774878861;
+	bh=kiV33SNaIHt2u3ZiqMFhM9GNQZkQJS6RAT81XUGT0uY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=u2CMbGLWor5UcJriYfajC9KWK9zzWl1NibpjsHMIGKKuFLFZr4XkT77I38Pk8kR1U
+	 BtZFmndQPNxZhEP4mYQXI6EPJTHFVGvtTbcCCYyWpuBWGpG31ekcKjW8yVWcmhKAyf
+	 r002uGhfqGopJIZgdQv+xD7pIfntPrI1kv6JWswQWqMvY+U4QXDBNGtbyyt+ZpmaRg
+	 q87ONgxlwY8a+pCR0XpZoEpCBBU2dHTbkxxOzGnYCMKJAvQMHdqUu1GNondfeKVl6S
+	 rTBPT9vLWVFu66sYVZjbXZg0XeBDDgI3QEp7SLz4ng8VJ+nEsl6NOSLEPo15bjfjaz
+	 UERv6RfNwsiSg==
+Message-ID: <37a72b05-1429-4f82-8b68-e394760c7369@kernel.org>
+Date: Mon, 30 Mar 2026 15:54:14 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net v4] mptcp: fix soft lockup in mptcp_recvmsg()
+Content-Language: fr
+To: Li Xiasong <lixiasong1@huawei.com>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev,
+ linux-kernel@vger.kernel.org, yuehaibing@huawei.com,
+ zhangchangzhong@huawei.com, weiyongjun1@huawei.com,
+ Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>
+References: <20260330120335.659027-1-lixiasong1@huawei.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20260330120335.659027-1-lixiasong1@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-This patch fixes a build failure in net/core/skbuff.c that occurs when
-CONFIG_GCOV_PROFILE_ALL=y is enabled.  The issue manifests as a
-BUILD_BUG_ON compile-time assertion failure, even though the actual
-runtime value satisfies the constraint.
+Hi Li,
 
-Build failure without this patch
----------------------------------
+On 30/03/2026 14:03, Li Xiasong wrote:
+> syzbot reported a soft lockup in mptcp_recvmsg() [0].
+> 
+> When receiving data with MSG_PEEK | MSG_WAITALL flags, the skb is not
+> removed from the sk_receive_queue. This causes sk_wait_data() to always
+> find available data and never perform actual waiting, leading to a soft
+> lockup.
+> 
+> Fix this by adding a 'last' parameter to track the last peeked skb.
+> This allows sk_wait_data() to make informed waiting decisions and prevent
+> infinite loops when MSG_PEEK is used.
 
-With the following configuration enabled:
+Thank you for this new version:
 
-  CONFIG_GCOV_KERNEL=y
-  CONFIG_GCOV_PROFILE_ALL=y
-  # CONFIG_GCOV_PROFILE_FTRACE is not set
-  CONFIG_GCOV_PROFILE_RDS=y
-  CONFIG_GCOV_PROFILE_URING=y
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-The kernel fails to build with:
+@netdev maintainers: this patch can be applied in 'net' directly, thank you!
 
-  In file included from <command-line>:
-  In function 'skb_extensions_init',
-      inlined from 'skb_init' at net/core/skbuff.c:5214:2:
-  ././include/linux/compiler_types.h:706:45: error: call to '__compiletime_assert_1490' declared with attribute error: BUILD_BUG_ON failed: skb_ext_total_length() > 255
-    706 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-        |                                             ^
-  ././include/linux/compiler_types.h:687:25: note: in definition of macro '__compiletime_assert'
-    687 |                         prefix ## suffix();                             \
-        |                         ^~~~~~
-  ././include/linux/compiler_types.h:706:9: note: in expansion of macro '_compiletime_assert'
-    706 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-        |         ^~~~~~~~~~~~~~~~~~~
-  ./include/linux/build_bug.h:40:37: note: in expansion of macro 'compiletime_assert'
-     40 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-        |                                     ^~~~~~~~~~~~~~~~~~
-  ./include/linux/build_bug.h:51:9: note: in expansion of macro 'BUILD_BUG_ON_MSG'
-     51 |         BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
-        |         ^~~~~~~~~~~~~~~~
-  net/core/skbuff.c:5163:9: note: in expansion of macro 'BUILD_BUG_ON'
-   5163 |         BUILD_BUG_ON(skb_ext_total_length() > 255);
-        |         ^~~~~~~~~~~~
-  make[4]: *** [scripts/Makefile.build:289: net/core/skbuff.o] Error 1
-
-Root cause
-----------
-
-CONFIG_GCOV_PROFILE_ALL adds -fprofile-arcs -ftest-coverage -fno-tree-loop-im
-to all kernel compilation units.  The skb_ext_total_length() function uses
-a __always_inline loop over skb_ext_type_len[] array.  GCOV instrumentation
-inserts branch counters, and -fno-tree-loop-im prevents loop optimization,
-breaking the compiler's ability to constant-fold the result.  BUILD_BUG_ON
-requires a compile-time constant and fails.
-
-The problem is more pronounced in recent kernels (7.0+) where the number of
-SKB extensions grew from 4 to 5+ (with addition of SKB_EXT_CAN, SKB_EXT_PSP,
-etc.).  With 4 elements, GCC can still unroll and fold; with 5+, it gives up.
-
-This affects both older and newer GCC versions (tested with GCC 11.4.1 and
-GCC 16.0.1 20260327 experimental).
-
-Solution
---------
-
-Add a CONFIG_GCOV_PROFILE_ALL guard to the BUILD_BUG_ON, following the
-existing pattern for CONFIG_KCOV_INSTRUMENT_ALL which has the same issue.
-
-Konstantin Khorenko (1):
-  net: fix skb_ext_total_length() BUILD_BUG_ON with CONFIG_GCOV_PROFILE_ALL
-
- net/core/skbuff.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
+Cheers,
+Matt
 -- 
-2.43.5
+Sponsored by the NGI0 Core fund.
+
