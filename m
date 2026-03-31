@@ -1,65 +1,65 @@
-Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
+Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A6C40DFAB
-	for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 00:05:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2301D40DFAB
+	for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 00:05:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774915513; cv=none; b=tuQbZcI4MdUFkcTfl/f6ouANfp8fry8RjqzYEDccjIRoi/68N/Szo5RuvPZ2LhtQAatgdBs/7mQIrp3IJhzICOW9Rw7IAOT5irKQ3p2voPDlv9BaWNUDjPxUWLwJapv9RPbYfY3BvQeSerPeHvdgdu8oWX+itodu/0Y5fZq/E9k=
+	t=1774915516; cv=none; b=HRCj2mkZwpnfBDLNjK8vKCDx54L1887OSzG26aGpzwaNDD90sprQVvkENRzqtnReZr6+2nVw10P/P3IxsEkgRmQuTmxM4kI8+a0c6jNrC8EG+w4udWth1+CuWdCASrW40FCggqcHLbOQqDTUOaYSWpzIlAVq8o8ijUQJiTyB4oE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774915513; c=relaxed/simple;
-	bh=maW/AdYWuK8BsDS8KSzSgHXYaUMsPA074OQ12rZ89jQ=;
+	s=arc-20240116; t=1774915516; c=relaxed/simple;
+	bh=t2q54dSmGg/P9XU/0IB+SlhWx+nOeGh1AY4CpjdTCuY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Pr3tPOVx3L5ws94s9Fq+UAqIL7qhhMjzbo69x0FZB3goNwzWyvUAg9kGv8w8jYO2aNrfhI1GmYv/Dz0LdDQXs6i84faLEYD+wOfMwsaIq6RIRu8Siziu3tW/KMWojJTk9I+soFpIEpVqAgriI1YFwIC69g6F3BqOFshsk4jx4mU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=Wl7NfIXI; arc=none smtp.client-ip=209.85.161.44
+	 MIME-Version; b=mjJy6YnCf6UDnqlbkdj48WSUj9K9q/8yeYcaC2FVu6w/LC6DmqTj8EWuXeUqFWRhisHqfONusEpjzQMVh/e/q5R054bQ4ipRy0M8P4OkMuTsOvdszGF+trqJeZRnCjj8lHjvTVsXEznVSrLbVH/cRDcQ3Hv+hvjFuBdofL553Eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=RciHCOBK; arc=none smtp.client-ip=209.85.210.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="Wl7NfIXI"
-Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-67e02b821cfso2910242eaf.0
-        for <netdev@vger.kernel.org>; Mon, 30 Mar 2026 17:05:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="RciHCOBK"
+Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7d7d4ebccf7so4360108a34.0
+        for <netdev@vger.kernel.org>; Mon, 30 Mar 2026 17:05:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google2022; t=1774915511; x=1775520311; darn=vger.kernel.org;
+        d=purestorage.com; s=google2022; t=1774915514; x=1775520314; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qtDiVIInccujlIt2Sqa5fOCnM6byWdzYUVqLrms+bSo=;
-        b=Wl7NfIXIVMnfByucO5kpwJFhHxNIyUDx1m2f4iKH6IC70KVWyhUflLsEaPgTlicg74
-         r4x5ZzOzTJfFEOHAvqQ+uKEG2AZ2WOMCLUDBjSBMp8Ih1ODVEt6pgsrBMjyfaNL+DBQY
-         MojIswjy9FejXoShaZM1E48j+siPTsTuJgkzBXmZ9e8lpctev9VHJB036w46VDoYsRYJ
-         j8MtwDVURNPGfc/lEOpnEXAyxKmTS46V+H1xeMvJayUjLYhlpRSyMWWUWesS4305Kkw5
-         Wqhcbz8eH3ReJhaEShMtStIvHFucw6XUe3F5aZere5XfcJmgguFVb43XrSrR79Zrkkuo
-         0Gsg==
+        bh=JUYswyn48cyLyzm2NTizcwnGHwsK5SZG4hQrEOA7tkU=;
+        b=RciHCOBKhq7yhvPigzCn+YKSfSGHAF01TX2xuz7M7oM1pmupwcxG0rHM/5uWukSWGd
+         qFBF0PdhCudlOPuVckInro1H9BDiOgDpuCGBlhs2qWVZ/lGZxEnEEGI7PZ3mqPftGlXF
+         EcTztDm8Meqrl2ByEJK0LicyNXrMsEMPmmBgjJqFP0PJsMJZynb5shmumSlkBD89y5Sq
+         hSwU1iHOzZDrDsDslJSRsSnp2KnDQZsyxdy6ZQYVVbtdAHyUQEkLLevywrfxqncK95Ln
+         2aAG20vzi7VNIlTQmOkNZJElVyZT/r89ty7LGrT8Kl5cIdgk+L6x7/uQT7RpU+YlkTCy
+         19rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774915511; x=1775520311;
+        d=1e100.net; s=20251104; t=1774915514; x=1775520314;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=qtDiVIInccujlIt2Sqa5fOCnM6byWdzYUVqLrms+bSo=;
-        b=s7kVbfI5EZxYglCO+r645AY7i91jDzFjCrBQwJxWtsOj73yIqPDKCD+Te/06kF+2FM
-         OaY3k95vZN8GDvhqyaZbKQ+9eAA7VTjB+WK/hQ4OGMt0Rv5ZD1DTLbLl+OXCd5ShpeaO
-         cFLu/ZF2bgCzvWa8jGgYDK7SLn+lLVPABgSABq2xv+CTx9PYX4SFvYYh7veGltIQYVND
-         j2jp+WdxpXuiDiW7Bar1UbONtZxJ0I+BpzFXgG26EQfN831TObzOIWnJqRXyAZA2zMB1
-         YgUsoGsYUvM0cMaiwiBDteChHHFXWrlFUUoLWfBMTwHvokiDSRaNdkQTTbf56GNWhvLr
-         /Vlw==
-X-Gm-Message-State: AOJu0Yxtin9CY8cqOZYqvm23Zor7nwcHu0d0uya3qv7w+BV8uXy4W3le
-	P/vFKPf7Olpc7K5RrfsL07lOwWzbOzxoA5kYHdn04y2YmnhvYd77fsIl3ZmXhKGloip4q1YCqCR
-	2exXkr4UcGiV6m4hKZP7OhOOz2KTEVnK9COUk5rj6LYaR/XChqaJiFs1pLr0KRkO2XUIKUmtC8z
-	h7QRJp/wtSjvPBUKW11+fC8X7BI7RZgJ7W+tHQTTOov+ZFNbY=
-X-Gm-Gg: ATEYQzwa5oj75jbLLlZj8RtmuzuYyIBGJoMzpobaYsJAsZVZ6R84mHcQPYmBP6UrHnH
-	DvTuCof6U2a/PF0Wg53tScwGz/9PmZixYHRU68X5OzJHxXiiXwQ8bJSulAcymvMtbRe3VEOSRkd
-	KFx5le5EWpew9r8/OoyBpxyaM9QKlE8D7KYfJQYkLwZEPaZkQMOnmiOSvV8mTNgqpe0E1Qetc/J
-	mK4RMAvSUpBVnyesz30H8wc5xbDnQtR2ro8KHw+TlvnPgbYmHQhZG1DmOP9syfWReaW/OA/VOw+
-	uyPaR0VuxIB4qR7aT+QerIUIilV7exDSEhgHOekOcjT0s74L6o08LZu0B5iVoz94OKVLV7baayL
-	RUy23rv6D0oM/beoj2JmblJ1BkGb95Ks2OEfRDRoHy6mOUSW0zhiCP0Hk/FKFfX6Fr+uQVOi3FL
-	z/99h7GS9d64PvR8qEPppxqUw4e0leQ8Cjfv4XapK1mSaeasIu300QbxljWrG2hy8i1BNT0f+im
-	AY=
-X-Received: by 2002:a05:6820:2227:b0:67e:2f4b:5ef with SMTP id 006d021491bc7-67e2f4b0cf5mr3880443eaf.53.1774915510764;
-        Mon, 30 Mar 2026 17:05:10 -0700 (PDT)
+        bh=JUYswyn48cyLyzm2NTizcwnGHwsK5SZG4hQrEOA7tkU=;
+        b=gUIEKaRhrYhcwHTjsJ3r7rJ/iLEQCSsrp5EIzmxIyW728WF/JBWZf21RFROyCwHHyL
+         ynP4c0hIY4PTJq9l/XDvJVwJH818y9K7C7WWCxop9XAav2ycJZIK1OUO0s7ZAPTXHKEZ
+         +3bnA31MtSDYfAtcuZ1vO1lSZs3BEzWnIblfv/eEdddRKteZVqVW742T26NvHOKFrFF2
+         4c9oY5WQZrmEPku3DcXo1pu/s5wrbeOtlkUwh4GOOw4QnrV9MOncUHs2PUNcOt2MqhG6
+         Xk54OLlXHYPAYuDDQRv7wl2qWQJLf20VXs9dhapbW24TvQqIP6GHuL4FZWTw+ErVhOl8
+         +/hA==
+X-Gm-Message-State: AOJu0YyB6wfq4NI74YrFQjrWNFhDMk0Y1UHYms5UvJkFOU70hnhFCkAr
+	WggPEAXPBlWhKwaK78snHnT+xM9idC+6XGpKTSDUrwGt1453+bCPuaiwecFV+/T4BsrhhI7forT
+	34UhuBH3Pg+kCL2WKSqIwo6TUqB5H5bA5GFqXH0CTWNenrHyJ86B6wHOCx+iwmMeUu4I3U4/tLz
+	RoiJ0ILZuM4zGTjSqGXJ93vQYuIOqIWMXr/r+ogpD1CzH4H2M=
+X-Gm-Gg: ATEYQzzQ1qECwo/a3eaUl51n/O6qEC8BaAzP5EeapQpvSGo1tSV+qyyWhTi99gz4c1F
+	0or2cicw8UMViQhTSf8HavN4+yw1cvBnvjB+LaicDBiyfrUFy17ezNkZ2GUTfKcDugiozKFIu7N
+	zWeR3JKfOtridNF+ElvEghFjXK8kkhq/O0n0uxEgHPI3YndM20iqkZQjVhlazDzHdDFpra5JUh6
+	WvsFbzvHW4JAfvAF38/HI/nbJeKWzVVd3UOk5frRK3MXzHtjbNCubYtzw3Ei5rIlnrJFmmCUQ4e
+	crmvX2iifPoADpOJ1yYQJkfsntNWdh6wq60DnTPGJlnndKzBhKiRhAwkxrfOCvEocHxaNoJ6rzE
+	JzJ66VnesybWwKtsAozzqEp8y+ZwoCmnMc0SHXrNvFSN7Ra/uFfpfF1XQ5ffocy6QUwsAs90UOd
+	i0qSV6t0GwbLqCZNmRrClIs6YqX4sIWaiPFciqB74SkwxQ/9GuRRPon6oxRqvIUqreznXPhLZ11
+	+k=
+X-Received: by 2002:a05:6820:1609:b0:67e:3100:2ba2 with SMTP id 006d021491bc7-67e31002edcmr3230940eaf.62.1774915513816;
+        Mon, 30 Mar 2026 17:05:13 -0700 (PDT)
 Received: from dev-rjethwani.tier4-kif-devvm.svc.slc-eng-prd2 ([208.88.159.128])
-        by smtp.googlemail.com with ESMTPSA id 006d021491bc7-67e231cb2e2sm5627807eaf.12.2026.03.30.17.05.09
+        by smtp.googlemail.com with ESMTPSA id 006d021491bc7-67e231cb2e2sm5627807eaf.12.2026.03.30.17.05.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 17:05:10 -0700 (PDT)
+        Mon, 30 Mar 2026 17:05:13 -0700 (PDT)
 From: Rishikesh Jethwani <rjethwani@purestorage.com>
 To: netdev@vger.kernel.org
 Cc: saeedm@nvidia.com,
@@ -74,9 +74,9 @@ Cc: saeedm@nvidia.com,
 	edumazet@google.com,
 	leon@kernel.org,
 	Rishikesh Jethwani <rjethwani@purestorage.com>
-Subject: [PATCH v10 1/6] net: tls: reject TLS 1.3 offload in chcr_ktls and nfp drivers
-Date: Mon, 30 Mar 2026 18:04:39 -0600
-Message-Id: <20260331000444.4103528-2-rjethwani@purestorage.com>
+Subject: [PATCH v10 2/6] net/mlx5e: add TLS 1.3 hardware offload support
+Date: Mon, 30 Mar 2026 18:04:40 -0600
+Message-Id: <20260331000444.4103528-3-rjethwani@purestorage.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260331000444.4103528-1-rjethwani@purestorage.com>
 References: <20260331000444.4103528-1-rjethwani@purestorage.com>
@@ -88,43 +88,101 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-These drivers only support TLS 1.2. Return early when TLS 1.3
-is requested to prevent unsupported hardware offload attempts.
+Enable TLS 1.3 TX/RX hardware offload on ConnectX-6 Dx and newer
+crypto-enabled adapters.
+Key changes:
+- Add TLS 1.3 capability checking and version validation
+- Use MLX5E_STATIC_PARAMS_CONTEXT_TLS_1_3 (0x3) for crypto context
+- Handle TLS 1.3 IV format: full 12-byte IV copied to gcm_iv +
+  implicit_iv (vs TLS 1.2's 4-byte salt only)
+
+Tested with TLS 1.3 AES-GCM-128 and AES-GCM-256 cipher suites.
 
 Signed-off-by: Rishikesh Jethwani <rjethwani@purestorage.com>
 ---
- drivers/net/ethernet/chelsio/inline_crypto/ch_ktls/chcr_ktls.c | 3 +++
- drivers/net/ethernet/netronome/nfp/crypto/tls.c                | 3 +++
- 2 files changed, 6 insertions(+)
+ .../ethernet/mellanox/mlx5/core/en_accel/ktls.h    |  8 +++++++-
+ .../mellanox/mlx5/core/en_accel/ktls_txrx.c        | 14 +++++++++++---
+ 2 files changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/chelsio/inline_crypto/ch_ktls/chcr_ktls.c b/drivers/net/ethernet/chelsio/inline_crypto/ch_ktls/chcr_ktls.c
-index f5acd4be1e69..29e108ce6764 100644
---- a/drivers/net/ethernet/chelsio/inline_crypto/ch_ktls/chcr_ktls.c
-+++ b/drivers/net/ethernet/chelsio/inline_crypto/ch_ktls/chcr_ktls.c
-@@ -431,6 +431,9 @@ static int chcr_ktls_dev_add(struct net_device *netdev, struct sock *sk,
- 	atomic64_inc(&port_stats->ktls_tx_connection_open);
- 	u_ctx = adap->uld[CXGB4_ULD_KTLS].handle;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.h
+index 07a04a142a2e..0469ca6a0762 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.h
+@@ -30,7 +30,9 @@ static inline bool mlx5e_is_ktls_device(struct mlx5_core_dev *mdev)
+ 		return false;
  
-+	if (crypto_info->version != TLS_1_2_VERSION)
-+		goto out;
-+
- 	if (direction == TLS_OFFLOAD_CTX_DIR_RX) {
- 		pr_err("not expecting for RX direction\n");
- 		goto out;
-diff --git a/drivers/net/ethernet/netronome/nfp/crypto/tls.c b/drivers/net/ethernet/netronome/nfp/crypto/tls.c
-index 9983d7aa2b9c..13864c6a55dc 100644
---- a/drivers/net/ethernet/netronome/nfp/crypto/tls.c
-+++ b/drivers/net/ethernet/netronome/nfp/crypto/tls.c
-@@ -287,6 +287,9 @@ nfp_net_tls_add(struct net_device *netdev, struct sock *sk,
- 	BUILD_BUG_ON(offsetof(struct nfp_net_tls_offload_ctx, rx_end) >
- 		     TLS_DRIVER_STATE_SIZE_RX);
+ 	return (MLX5_CAP_TLS(mdev, tls_1_2_aes_gcm_128) ||
+-		MLX5_CAP_TLS(mdev, tls_1_2_aes_gcm_256));
++		MLX5_CAP_TLS(mdev, tls_1_2_aes_gcm_256) ||
++		MLX5_CAP_TLS(mdev, tls_1_3_aes_gcm_128) ||
++		MLX5_CAP_TLS(mdev, tls_1_3_aes_gcm_256));
+ }
  
-+	if (crypto_info->version != TLS_1_2_VERSION)
-+		return -EOPNOTSUPP;
-+
- 	if (!nfp_net_cipher_supported(nn, crypto_info->cipher_type, direction))
- 		return -EOPNOTSUPP;
+ static inline bool mlx5e_ktls_type_check(struct mlx5_core_dev *mdev,
+@@ -40,10 +42,14 @@ static inline bool mlx5e_ktls_type_check(struct mlx5_core_dev *mdev,
+ 	case TLS_CIPHER_AES_GCM_128:
+ 		if (crypto_info->version == TLS_1_2_VERSION)
+ 			return MLX5_CAP_TLS(mdev,  tls_1_2_aes_gcm_128);
++		else if (crypto_info->version == TLS_1_3_VERSION)
++			return MLX5_CAP_TLS(mdev,  tls_1_3_aes_gcm_128);
+ 		break;
+ 	case TLS_CIPHER_AES_GCM_256:
+ 		if (crypto_info->version == TLS_1_2_VERSION)
+ 			return MLX5_CAP_TLS(mdev,  tls_1_2_aes_gcm_256);
++		else if (crypto_info->version == TLS_1_3_VERSION)
++			return MLX5_CAP_TLS(mdev,  tls_1_3_aes_gcm_256);
+ 		break;
+ 	}
  
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_txrx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_txrx.c
+index 570a912dd6fa..f3f1be1d4034 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_txrx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_txrx.c
+@@ -6,6 +6,7 @@
+ 
+ enum {
+ 	MLX5E_STATIC_PARAMS_CONTEXT_TLS_1_2 = 0x2,
++	MLX5E_STATIC_PARAMS_CONTEXT_TLS_1_3 = 0x3,
+ };
+ 
+ enum {
+@@ -15,8 +16,10 @@ enum {
+ #define EXTRACT_INFO_FIELDS do { \
+ 	salt    = info->salt;    \
+ 	rec_seq = info->rec_seq; \
++	iv      = info->iv;      \
+ 	salt_sz    = sizeof(info->salt);    \
+ 	rec_seq_sz = sizeof(info->rec_seq); \
++	iv_sz      = sizeof(info->iv);      \
+ } while (0)
+ 
+ static void
+@@ -24,9 +27,9 @@ fill_static_params(struct mlx5_wqe_tls_static_params_seg *params,
+ 		   union mlx5e_crypto_info *crypto_info,
+ 		   u32 key_id, u32 resync_tcp_sn)
+ {
++	u16 salt_sz, rec_seq_sz, iv_sz;
++	char *salt, *rec_seq, *iv;
+ 	char *initial_rn, *gcm_iv;
+-	u16 salt_sz, rec_seq_sz;
+-	char *salt, *rec_seq;
+ 	u8 tls_version;
+ 	u8 *ctx;
+ 
+@@ -59,7 +62,12 @@ fill_static_params(struct mlx5_wqe_tls_static_params_seg *params,
+ 	memcpy(gcm_iv,      salt,    salt_sz);
+ 	memcpy(initial_rn,  rec_seq, rec_seq_sz);
+ 
+-	tls_version = MLX5E_STATIC_PARAMS_CONTEXT_TLS_1_2;
++	if (crypto_info->crypto_info.version == TLS_1_3_VERSION) {
++		memcpy(gcm_iv + salt_sz, iv, iv_sz);
++		tls_version = MLX5E_STATIC_PARAMS_CONTEXT_TLS_1_3;
++	} else {
++		tls_version = MLX5E_STATIC_PARAMS_CONTEXT_TLS_1_2;
++	}
+ 
+ 	MLX5_SET(tls_static_params, ctx, tls_version, tls_version);
+ 	MLX5_SET(tls_static_params, ctx, const_1, 1);
 -- 
 2.25.1
 
