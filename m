@@ -1,176 +1,122 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69094423A82;
-	Tue, 31 Mar 2026 16:48:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C374425CD7
+	for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 16:50:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975685; cv=none; b=ayqRn5kuA1tISuqm1bSE1LE/lJfPYc++eqVi3ZWXRUU50mZmLUVBpF1lADk8bGJ/vYsQwvNVet3CG0/rzjzFB18j2XQKCFRQjOiaz88767muq5v6cBizKCRIbT8Oxf/4MR9LvGRwCp6i0khZrEnY7BbuJD4ZBSg7uoHr/rSyllI=
+	t=1774975850; cv=none; b=Q9aAf7ovFBQ5J0cp4rI9W+zofAagZw9uGYyI84GtIIMuqUUIJFHSQkmb8s3kbJC/5KeiUT6aQVvX7cICsPeYS3yz+P3YBL4yRKApVlTdhnVCpqKSUFDX1e/es7G54qyytp68bKij3uArxhGYSHydmWqkRjp0KcEOjS2CSgZft3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975685; c=relaxed/simple;
-	bh=aM5qG+4yxm72Z97PK63zuUnHgVpyXdwXPEQPrA1BXew=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VSLrS5b0aEPIu7rSswZZuqEx5YVIbNpX0g1Pl0Gg2L+CrgBEHHflGgKPaaITfVCw+MSEB7feYRn9W1aQBkASS42bXpZD5eXc6uk77InIdW++pA8mixve43XfVBsvTzFs7m0oA2Sv9U4oH9155oCOf1mqAEs4LHZalK53F/JLmGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cR06CJgo; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1774975850; c=relaxed/simple;
+	bh=Wx3rCjft+f2xsQztl0u/tUkCuC3NJhEmQV+HjeE0iDk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AkhGGOFHBuXtdIr5ZhW33R0bpUrPWGV4gGRh4D50MDL7FRNtr8HNjzFKNEcw6ehX5C4A3cICY42/LZ8SPwoEbCxDE8F+eHyzN6t32OXJqNEHPAilqvijF6130RpVcvumIJ2gDfbguoZ6IGURuc9T7xUsuO8k1cxohMNu14UpEGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DEGNpU6C; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cR06CJgo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774975685; x=1806511685;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=aM5qG+4yxm72Z97PK63zuUnHgVpyXdwXPEQPrA1BXew=;
-  b=cR06CJgofq4K5XuciCpMHfKuQIMNEHwpiGgL2tvqgMTFeSPXEVwyPoAf
-   tpErLh/nK5yUJ//ENRCEDKYj0JPsOBX/T/PT9b4nPTTwr1hiizECOMM/e
-   gDpqAITsX/bv+MWZrLxoooHiJiADWGcrjiQPQYPJJy9dDQUhuJDOt2Rdi
-   oI3Lhvqfg7QPRp18dtPuZA4fe6nZP05TCZcXUO/ZAzDRzJJMtBSFbDo2Q
-   /97Pa1TAp1/QnRP5pxIUOEHcWqknMQHbmYNrdUPbVJHCI123OAzPU0KJz
-   XayLd2z4O1ouBpDXt1yjaQU1MnYkjWiH045tEdrO6XlPVVVIxyOTK1X/J
-   Q==;
-X-CSE-ConnectionGUID: 5LIx6tQDS7qLZSTyq3aNNw==
-X-CSE-MsgGUID: 65WjkHOQR5KdqdTCsSMtWA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="63550246"
-X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
-   d="scan'208";a="63550246"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 09:48:04 -0700
-X-CSE-ConnectionGUID: 5P2aml7iQBGT1HScRhkx8w==
-X-CSE-MsgGUID: 4l/5J7rUR/iNXcsH1WvH+w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
-   d="scan'208";a="221557860"
-Received: from lkp-server01.sh.intel.com (HELO 283bf2e1b94a) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 31 Mar 2026 09:48:00 -0700
-Received: from kbuild by 283bf2e1b94a with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w7cFw-00000000389-40Ha;
-	Tue, 31 Mar 2026 16:47:56 +0000
-Date: Wed, 1 Apr 2026 00:47:35 +0800
-From: kernel test robot <lkp@intel.com>
-To: alejandro.lucero-palau@amd.com, linux-cxl@vger.kernel.org,
-	netdev@vger.kernel.org, dave.jiang@intel.com,
-	dan.j.williams@intel.com, edward.cree@amd.com, davem@davemloft.net,
-	kuba@kernel.org, pabeni@redhat.com, edumazet@google.com
-Cc: oe-kbuild-all@lists.linux.dev, Alejandro Lucero <alucerop@amd.com>,
-	Martin Habets <habetsm.xilinx@gmail.com>,
-	Fan Ni <fan.ni@samsung.com>, Edward Cree <ecree.xilinx@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v25 05/11] sfc: create type2 cxl memdev
-Message-ID: <202604010047.zovyb3Z0-lkp@intel.com>
-References: <20260330143827.1278677-6-alejandro.lucero-palau@amd.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DEGNpU6C"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774975848;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NM71jEPy1P0WHGHdPzJuToYXqWbTBefaY9NqYpg0IOU=;
+	b=DEGNpU6ChfjLoNW2dkyowSlFIh2W8ERWnEE52G7IOUK17S87akUxQVKOtu9sujDQnj1UuX
+	/KcHsAmJFkNGO2etv1ubmpv+4QqwkC8khzFXFWO1eBNQcsfOP2fsfEb5R/6rIA4nuiO3nN
+	22c7fK/WAALMKdw/JoMmsT5J0sK6Hd4=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-93-QYj4AEahP0GCg0Tqw5U3Wg-1; Tue,
+ 31 Mar 2026 12:50:44 -0400
+X-MC-Unique: QYj4AEahP0GCg0Tqw5U3Wg-1
+X-Mimecast-MFC-AGG-ID: QYj4AEahP0GCg0Tqw5U3Wg_1774975841
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F054619560B1;
+	Tue, 31 Mar 2026 16:50:39 +0000 (UTC)
+Received: from llong-thinkpadp16vgen1.westford.csb (unknown [10.22.80.26])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8787A180075B;
+	Tue, 31 Mar 2026 16:50:36 +0000 (UTC)
+From: Waiman Long <longman@redhat.com>
+To: Simon Horman <horms@verge.net.au>,
+	Julian Anastasov <ja@ssi.bg>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Chen Ridong <chenridong@huawei.com>,
+	Phil Auld <pauld@redhat.com>
+Cc: linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	lvs-devel@vger.kernel.org,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	sheviks <sheviks@gmail.com>,
+	Waiman Long <longman@redhat.com>
+Subject: [PATCH-next v2 1/2] sched/isolation: Make HK_TYPE_KTHREAD an alias of HK_TYPE_DOMAIN
+Date: Tue, 31 Mar 2026 12:50:14 -0400
+Message-ID: <20260331165015.2777765-2-longman@redhat.com>
+In-Reply-To: <20260331165015.2777765-1-longman@redhat.com>
+References: <20260331165015.2777765-1-longman@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260330143827.1278677-6-alejandro.lucero-palau@amd.com>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Hi,
+Since commit 041ee6f3727a ("kthread: Rely on HK_TYPE_DOMAIN for preferred
+affinity management"), kthreads default to use the HK_TYPE_DOMAIN
+cpumask. IOW, it is no longer affected by the setting of the nohz_full
+boot kernel parameter.
 
-kernel test robot noticed the following build errors:
+That means HK_TYPE_KTHREAD should now be an alias of HK_TYPE_DOMAIN
+instead of HK_TYPE_KERNEL_NOISE to correctly reflect the current kthread
+behavior. Make the change as HK_TYPE_KTHREAD is still being used in
+some networking code.
 
-[auto build test ERROR on 64584273dfb8a1e5fc7d78094ba22a93c204b44e]
+Fixes: 041ee6f3727a ("kthread: Rely on HK_TYPE_DOMAIN for preferred affinity management")
+Signed-off-by: Waiman Long <longman@redhat.com>
+---
+ include/linux/sched/isolation.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/alejandro-lucero-palau-amd-com/sfc-add-cxl-support/20260331-055820
-base:   64584273dfb8a1e5fc7d78094ba22a93c204b44e
-patch link:    https://lore.kernel.org/r/20260330143827.1278677-6-alejandro.lucero-palau%40amd.com
-patch subject: [PATCH v25 05/11] sfc: create type2 cxl memdev
-config: x86_64-randconfig-003-20260331 (https://download.01.org/0day-ci/archive/20260401/202604010047.zovyb3Z0-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260401/202604010047.zovyb3Z0-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202604010047.zovyb3Z0-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   ld: vmlinux.o: in function `efx_cxl_init':
->> drivers/net/ethernet/sfc/efx_cxl.c:78:(.text+0xd33fcd): undefined reference to `devm_cxl_add_memdev'
-
-
-vim +78 drivers/net/ethernet/sfc/efx_cxl.c
-
-    16	
-    17	int efx_cxl_init(struct efx_probe_data *probe_data)
-    18	{
-    19		struct efx_nic *efx = &probe_data->efx;
-    20		struct pci_dev *pci_dev = efx->pci_dev;
-    21		struct efx_cxl *cxl;
-    22		u16 dvsec;
-    23		int rc;
-    24	
-    25		probe_data->cxl_pio_initialised = false;
-    26	
-    27		/* Is the device configured with and using CXL? */
-    28		if (!pcie_is_cxl(pci_dev))
-    29			return 0;
-    30	
-    31		dvsec = pci_find_dvsec_capability(pci_dev, PCI_VENDOR_ID_CXL,
-    32						  PCI_DVSEC_CXL_DEVICE);
-    33		if (!dvsec) {
-    34			pci_info(pci_dev, "CXL_DVSEC_PCIE_DEVICE capability not found\n");
-    35			return 0;
-    36		}
-    37	
-    38		pci_dbg(pci_dev, "CXL_DVSEC_PCIE_DEVICE capability found\n");
-    39	
-    40		/* Create a cxl_dev_state embedded in the cxl struct using cxl core api
-    41		 * specifying no mbox available.
-    42		 */
-    43		cxl = devm_cxl_dev_state_create(&pci_dev->dev, CXL_DEVTYPE_DEVMEM,
-    44						pci_dev->dev.id, dvsec, struct efx_cxl,
-    45						cxlds, false);
-    46	
-    47		if (!cxl)
-    48			return -ENOMEM;
-    49	
-    50		rc = cxl_pci_setup_regs(pci_dev, CXL_REGLOC_RBI_COMPONENT,
-    51					&cxl->cxlds.reg_map);
-    52		if (rc) {
-    53			pci_err(pci_dev, "No component registers\n");
-    54			return rc;
-    55		}
-    56	
-    57		if (!cxl->cxlds.reg_map.component_map.hdm_decoder.valid) {
-    58			pci_err(pci_dev, "Expected HDM component register not found\n");
-    59			return -ENODEV;
-    60		}
-    61	
-    62		if (!cxl->cxlds.reg_map.component_map.ras.valid) {
-    63			pci_err(pci_dev, "Expected RAS component register not found\n");
-    64			return -ENODEV;
-    65		}
-    66	
-    67		/* Set media ready explicitly as there are neither mailbox for checking
-    68		 * this state nor the CXL register involved, both not mandatory for
-    69		 * type2.
-    70		 */
-    71		cxl->cxlds.media_ready = true;
-    72	
-    73		if (cxl_set_capacity(&cxl->cxlds, EFX_CTPIO_BUFFER_SIZE)) {
-    74			pci_err(pci_dev, "dpa capacity setup failed\n");
-    75			return -ENODEV;
-    76		}
-    77	
-  > 78		cxl->cxlmd = devm_cxl_add_memdev(&cxl->cxlds, NULL);
-    79		if (IS_ERR(cxl->cxlmd)) {
-    80			pci_err(pci_dev, "CXL accel memdev creation failed");
-    81			return PTR_ERR(cxl->cxlmd);
-    82		}
-    83	
-    84		probe_data->cxl = cxl;
-    85	
-    86		return 0;
-    87	}
-    88	
-
+diff --git a/include/linux/sched/isolation.h b/include/linux/sched/isolation.h
+index dc3975ff1b2e..cf0fd03dd7a2 100644
+--- a/include/linux/sched/isolation.h
++++ b/include/linux/sched/isolation.h
+@@ -20,6 +20,11 @@ enum hk_type {
+ 	HK_TYPE_KERNEL_NOISE,
+ 	HK_TYPE_MAX,
+ 
++	/*
++	 * HK_TYPE_KTHREAD is now an alias of HK_TYPE_DOMAIN
++	 */
++	HK_TYPE_KTHREAD = HK_TYPE_DOMAIN,
++
+ 	/*
+ 	 * The following housekeeping types are only set by the nohz_full
+ 	 * boot commandline option. So they can share the same value.
+@@ -29,7 +34,6 @@ enum hk_type {
+ 	HK_TYPE_RCU     = HK_TYPE_KERNEL_NOISE,
+ 	HK_TYPE_MISC    = HK_TYPE_KERNEL_NOISE,
+ 	HK_TYPE_WQ      = HK_TYPE_KERNEL_NOISE,
+-	HK_TYPE_KTHREAD = HK_TYPE_KERNEL_NOISE
+ };
+ 
+ #ifdef CONFIG_CPU_ISOLATION
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.53.0
+
