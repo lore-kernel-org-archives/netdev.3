@@ -1,301 +1,97 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D1FA3DE426
-	for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 20:59:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774990790; cv=fail; b=rEjW5Ze8RtQjVOtX16dBOM7hH+o1Gw0Y7o4z5Ozjfp9zdaA41NHk+/Ph6Poc5zAV+lDq0jjtlZbLeIak/3TK13a7Vz+1gvBP3P3H3rWh5I+++wl9vZ9H+ma2WabxnDcc0XXnWWY4z3eIV1GmUHNBouQg6XWbK6I5ocfMlkLwbfA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774990790; c=relaxed/simple;
-	bh=iRO0+qAMoKN49lK37sJE0ncgG67+Oy+5TpwT0RWCPaA=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=ilA0IvP0/6v2+eV75lzA+SrWG06eaT9vsPg0hKIvbcf4RPs9i0yog/ESdEEeDFM+ffNSViKN4g1ggITC0w3u9n39JmwMaQorssrR1Bfa6Ibwv0YwpT4qYstGTROwIJ6Yj5e1aqexNMdiEld0Fqj7/xQSIEpfGIw4aaOUF+hb0uI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gSFqTEVs; arc=fail smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2173F787D
+	for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 21:07:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774991257; cv=none; b=HuECRyzEyjdcciyhzxArC9SyVXe0cQYzwKsf3Sm8piXGSt9ekbvsTvC066JEQ79hThDUWaRzcyIk4095U7r3vNhOPwKlPNse57z4E5seCYBQzUmWFOEdqj7evCP7gHkr6L9+mx2Cpl9hr+2out/TzYhPgKuSgsl0z6hzXoJyRAY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774991257; c=relaxed/simple;
+	bh=CeGlRCs7IM01/a/Kg5gDCFAH29SjhOjsTar/dGLyF3w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=crNe/AmexWGt5akSH4Dmm6/TAmOeNYm0K03z72eGgqZSvpGp9PW8icBftEIgMWNlzCNJiEYQAE81PMaamzx23u3Ca3PhFtuovcdkJ7D5FrtNvkFwSn41xfnXuKW2XINABhf1iHny3qUmOXThAFtrj4T1IrpsBImtyg+fe/yFPdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b7jTPJeV; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gSFqTEVs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774990789; x=1806526789;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=iRO0+qAMoKN49lK37sJE0ncgG67+Oy+5TpwT0RWCPaA=;
-  b=gSFqTEVs5AqzQv4aH+5JTCiT1COHWlMMuJvb8X6xg1+r2XaMTPCXmctW
-   cNhWsYbM8tDvP5zrEHPo2om1N/+9hq9x1zlIrxXcsuIc8L58fBbu7GvxJ
-   sJr5KC+l13si3T/LzonuwiCEEeq/is83o2X3ZZpUre99WX/gYS6q4jbUH
-   dGpgsnM2fzNZhUmSm7syI9y4T1Rn0BL21RF8xESs7q6I3VnFVTUifNCvy
-   spct+9E5tP71+QJVIa+pjIes1235tEWtgueUraN5T3gR+NY/uNJX42hOa
-   fZxGA8mFaYTRdEe3wOKnt1c7EcF7DvZ6GYpe/aJCBBfLXGh4mr/0G22Wm
-   w==;
-X-CSE-ConnectionGUID: FY78i0MKR9aba+zn0rqrlA==
-X-CSE-MsgGUID: C6mrpgpTQzO8OxVcRZU7+w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="86320529"
-X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
-   d="scan'208";a="86320529"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 13:59:49 -0700
-X-CSE-ConnectionGUID: 4ycotK+ESXapKBoDARsMmA==
-X-CSE-MsgGUID: wr8iNMG3Q7exJLSNV1M/8w==
-X-ExtLoop1: 1
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 13:59:48 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 31 Mar 2026 13:59:48 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Tue, 31 Mar 2026 13:59:48 -0700
-Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.71) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 31 Mar 2026 13:59:45 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=O2TXd1x+t+F5FWI72jEDswPvi+/r3ObIXH6Dd7iMPu+chZVaQn/Sf5o8usQrimLSlA0tqjoera9kXjV7UzydAc8lnA9J441fGUuW3XWh93LuEEGjlEplQL70dyTzIiuWnLzRjeHRLSVnGBAh+pFjuPLk6heZsHWwE0oaEBK6AqwYUYfhwShrEFepx+jPrttGWxkTDvIy1Z1nQdMrE4qSf7s168OgfARXgcauXCt4+8bivvXilNgKFb4X/+pDc7owcWCaYJBFSWrhpPiok5trvrJer6CgS+DobaffaeuqWlyPqoU0/U/RmKWXHGJF7E8bTKS/r3HfWk2sc+cdssNu+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EJkytKdj3xO2CoFB9s7uX007H//WA36iG8SaZUw68OM=;
- b=L4ZOe1cfm0/H7u2Nj9vUNo4NTrj+cKwSQ5gIhsk5m0+2FxOAfxUWudx3HN4HI+SQ3kKz3KgvyIV3fUZcg9UyHxQm8Hone3zLocU05HTm90t1smpaXAQV6IRYkGVPN7XFyRX5oJWy4L7WXZmjaMAEp9GnhhMYWaTa8ZvgNKKKTEbPF4hNbz/eVrzUvOw0uj/k4Owp3+bRbUc34AOsBpqlMOxLwN5ORRhazWkOT4BQxOp/9Yz1QtVUF4vsm21Ak511zSDw5HfYbkpSaqknjS96pFs9UZtams6dKfZh/sfCELeTf9OK2sglKjgRMAL1sJ7Pwe2hbuCwRKidj8RMLT6AIQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB8230.namprd11.prod.outlook.com (2603:10b6:8:158::21)
- by CH2PR11MB8779.namprd11.prod.outlook.com (2603:10b6:610:285::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Tue, 31 Mar
- 2026 20:59:39 +0000
-Received: from DS0PR11MB8230.namprd11.prod.outlook.com
- ([fe80::2592:f5a9:a751:be40]) by DS0PR11MB8230.namprd11.prod.outlook.com
- ([fe80::2592:f5a9:a751:be40%4]) with mapi id 15.20.9769.015; Tue, 31 Mar 2026
- 20:59:39 +0000
-Message-ID: <be397b6a-eb45-4709-b1ae-2eb831441945@intel.com>
-Date: Tue, 31 Mar 2026 13:59:37 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-next v3] ice: add 200G_AUI8 PHY type definitions and
- wire them up
-To: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	<intel-wired-lan@lists.osuosl.org>
-CC: <netdev@vger.kernel.org>, Paul Greenwalt <paul.greenwalt@intel.com>,
-	"Simon Horman" <horms@kernel.org>, Paul Menzel <pmenzel@molgen.mpg.de>
-References: <20260324153542.674859-1-aleksandr.loktionov@intel.com>
-Content-Language: en-US
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-In-Reply-To: <20260324153542.674859-1-aleksandr.loktionov@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR04CA0367.namprd04.prod.outlook.com
- (2603:10b6:303:81::12) To DS0PR11MB8230.namprd11.prod.outlook.com
- (2603:10b6:8:158::21)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b7jTPJeV"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-43cf73bbfbdso1972431f8f.1
+        for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 14:07:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774991255; x=1775596055; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=N6xiV/Md8AP840O0O8l5DFejlK6PlJBQPDkc7TZ0VxM=;
+        b=b7jTPJeVb4duFHiEvw3WdOj1tO9hTskE0pGZ8ZRzS8hokoPHmIZAYfnsMTHxOoHa4i
+         dN9BAoWNJW2+vcJOd40exDKsbSW4/K3KavDLUxDYX9wRLM4mq3/3XxhhmC90G8MOccKq
+         iGU0oBGyfaJouqaSFlTbUgaP6Ech2bkBF4yOGxT/1vF+K3ta6QXnwsRJFiJ6jHPh1p4o
+         xJblxVprpjuqTfYEE4TuKfy+QvSnNwUdFnQy1YLVm5sBrLMKJn7Ir+KLWrYe6MabqBl9
+         Zl92TtSymgjphTwnLm7b8vwdm6G1Ubtl/RmNkG5nzNBvuyE2LJxOBUN6CF9/lkZEcv3A
+         IFgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774991255; x=1775596055;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=N6xiV/Md8AP840O0O8l5DFejlK6PlJBQPDkc7TZ0VxM=;
+        b=M3SYncFkJu8T1ettlYhKcDIOD39Gk0wbhvQem6gWLLo3KfG2h98ryHTw99Wf4i+57S
+         On/TbDQb5d6OFK6wXq6M8mVAzHWFG+9yzhydQZtMdJ4QVvmBQ/PxykwrC/QZaC21bHTu
+         ak2KIwcMuO7ncdpEulhCdITzzIMLa5L/tOr5xQxU9C5UqWFu2dtJjC8vItxoX+xmpEr+
+         XGjM6kjxOa1XVj/y6Y2Kwe53BPYkKLkItA3q7Ene4S1SFVDC5/eC4BP1e+lGIYew0H7w
+         6LvjblSVKlNMC3TY56molOn5C4rajeTC/UlYtoULEt+YPgXn8dlocBcBqmbRHRSPtRX/
+         Awew==
+X-Forwarded-Encrypted: i=1; AJvYcCUXFBPwCgcV4nV36eW9AtTvemln/1Q0QgxVjzfKkb2WNvq+Bx9IJu3t7N8cXhkN6UNKs0ndRLk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyS5W15CmXJWiXx4I/Xtuv7EtbxPR+GSm5+f4W9HqNJz/YFfNe8
+	l4PsSwtDcdGbfMAbIJHG70U3bxGZVLs3cYDx/aONJEXgIf8uXtU+XVhH
+X-Gm-Gg: ATEYQzzJo19Pv9X8lAumyRLYKMwPnZnXWEEvmd9QXeyXM5RxRttCu9QSOyINXc80+5O
+	luWWk8xoTFoyS/N0bKAwPCSQ/YU//j207mKQuE6hBIGc/GClXmCteoZkKf/QFaHG/Sv32V6wSjq
+	V3uZwQKCQyJ2LCn/W6RJi5xZWZCg1RQKYga0jw2xQRf2+lPhGg1p0niawt5g5qibeEzUzTUZKOD
+	ICmVJp2DWZhvqVF+Q+ejVnEKHoRkKZqMCB80r2Rcb5MO9OzU9Q4qaqZl8xutjoEm6Tln2VUsdxT
+	b4Br7Mmd3D1ojyNLdiWeA/dxsVtJJKEpNa1M6gVSPWSG+wUsgW/q8J75eoxU5QgHaedcbLMse7x
+	fGVgeyLSVdsiKEv9u9VZXJb0pqkmd3K8o3moihuGmzYaLVc4RA83pNpvBwktieucmSRSenJHfrd
+	XLTk/k59DJNkF1Ck1ccmO0U4csWC1PoiJ7RU9G6xR/0yOgTggAILzuFHw98Q7fm4K2gGfr1gVc1
+	/ENnjYvmALHzRQivuX0dBSBblSTsA==
+X-Received: by 2002:a5d:5d0f:0:b0:439:d8cc:3626 with SMTP id ffacd0b85a97d-43d15105668mr1988984f8f.48.1774991254538;
+        Tue, 31 Mar 2026 14:07:34 -0700 (PDT)
+Received: from 127.mynet ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43cf2570b18sm32431393f8f.31.2026.03.31.14.07.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Mar 2026 14:07:33 -0700 (PDT)
+From: Pavel Begunkov <asml.silence@gmail.com>
+To: io-uring@vger.kernel.org
+Cc: asml.silence@gmail.com,
+	axboe@kernel.dk,
+	netdev@vger.kernel.org
+Subject: [PATCH io_uring-7.1 v3 0/6] follow up zcrx fixes
+Date: Tue, 31 Mar 2026 22:07:37 +0100
+Message-ID: <cover.1774780198.git.asml.silence@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB8230:EE_|CH2PR11MB8779:EE_
-X-MS-Office365-Filtering-Correlation-Id: af7578e3-cde7-4f88-2475-08de8f686c73
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info: TNI+YOhiyJ32lApvQL8r30E5jf36FhFp1RwGJ/b7fGgF34E1mw4CQcmpil+pulRe629EiClcPWPgtmQ1i3vs196bUpqC8VkzsXHqB2jKKW2JjwKNKiDcNtfKhLnTACzp1XEuJ4YcPdc2Nd/1GrBW6EGEfaWhyPY9HIrd5NZnJbFfUf06xisSjfCJfr+Db5D4USmLWU9kAq71KEo+95CPuRnR5EltSInPieeA7nR+UP6ya+hR9oi5CqzmWFtuJzztHrnTVGAJPMlh6PCXT41cZu6PM1YAfvpNJ1wHljSwlEOajdLoNeo4Y/cm0O07Ya8NOCIM2b12jCQCvxMhH9wz3CwyqqIIEbxpu9Mc+VfUYfwF/4pyyaXz95zAGooT5whgjdQGadRuVW+5e2IGIBztIJLv+947ayAMXISokYd/DDhff3wT1VREt6vT7B7BsVUBY/Y7Ex4RQEURlrgM2TrRHtS4uG5nSLKPDP9EmCRjNCDNmlTq8lNH8Crkd24TnpXygcPSSbkKK0zZ3Gj9YoVG/MLI7Vwf7mblmHNCbZ+pY6TPPIg3dpFSQ5EoCnCJ7Gf6LunpQ7hEVsGn1Mujdx3JUwsSmF7mr7MKP2M1CyXFK9Ot63+EIvmKZmAYwF3LcHpDOOy2Vskhi2SlRP+MX5kaX+c0P5o+2iwBNWkKoLepESWW1OdJoH8dxsh9ocdZ2hucMMyTvnK1B9kEcq/XqS28pi0dIKqn1w0CuNmxrMPwZi4=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8230.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?K1FnRFAvVzludyszRGQxenAwMzFUVzkwWUtvVzNIaC9Wak5EY0krUUxqUGhy?=
- =?utf-8?B?c2Vrb0hhejkvZXJwcXYyWUJDSS9yRHlkZDUwQ2pya0lRTWFibldTTHpUQWZn?=
- =?utf-8?B?eC8yY0hPd2VGK0t0WGd4dmxnWG84Z2NhRVg1NDFmOXNsV3ZMaGxpcEpoUU9r?=
- =?utf-8?B?aWpoZUVXdmREc1lBUFFLVG1NSkRBQmlsZHhHbXk2clVFWWt6MEVJaTdCdXhs?=
- =?utf-8?B?SFJ1cHQ3eXRTWXBqakE5YU9FWlhuOGc3bTl4cmpzQVZadG1SbUR1cUx1ZEVO?=
- =?utf-8?B?dHhXeEpZSUQzOWQvL3dSMk1LMmxEUHlKbGdabHk3a054U1VOcGU4ZmxiV0s5?=
- =?utf-8?B?VWtHVllQSGhqalM2YVFSbDdTNXl6enRvc3RtSFhMZE5sRkJ0dHBGbDVNRjVk?=
- =?utf-8?B?c09WNjFvaDBmQSs4NU1qRm9IUXdCRlE5RWYzSHZ5MGVwYlBkVzNjM0JERjF4?=
- =?utf-8?B?ZWhHbW1lTExRSW5aZlFTclRhMDI0MmFubXR4dExucWVmNFhXb2NHdFBaN05G?=
- =?utf-8?B?dFV0bXkvUXUyRlNGTE1LTVhDbnRMYjF1bFBwMDVXYlFFb0dFWDBHOFB0Y0Vn?=
- =?utf-8?B?djZadm1xU3pMMVhPZHp6ZHp6VDJtbXg1ZzJRdWdESHZocDVmVXFTZy8xRjRI?=
- =?utf-8?B?b0tNc3pZN3paRXM5OUc3aklxd0NCY0VITXhMa2pkQ1NsNjRsUzAzY3o3R3hy?=
- =?utf-8?B?aXBwbTFaNWZVRlNZVVJpYjNRTHAwWXYyK1duc3o5OUNCcXhDSkI2Q1lROFZz?=
- =?utf-8?B?ekZkOE14U0FsY0VOT3VSRjlCUGRHYk9kZElGei9kK0daY1hEVjd2M3NPOThD?=
- =?utf-8?B?cjgvQ1F0R0RCK2xIYWE2RlM1OHhnTkUrT0xvR3NHZktxVVZ0eVZFcEpLOFpl?=
- =?utf-8?B?NkFCMWhTVE1GdlpRaUZMK005OFc2OFl3OFZ6dXFXM2RWTTh4SWhMem4rTnRJ?=
- =?utf-8?B?U3lyNVh4THR6UmNoM0g0Yk9MazlwdXd4dXNwV2JtVmxqcEE4QlJRY1haeXoz?=
- =?utf-8?B?L0pzVXVLU2VSeUtIdHArOWY3bG0rdmZPaUpTNUQ1bHFBWWczTjNWb3NXaEQv?=
- =?utf-8?B?TFo4WklIbUJFWldRY2VRQXhtQUJCK3NhTU04SzFwQ0pxN2x0Q05LT1hqdDlS?=
- =?utf-8?B?Zks4akI2L3JuZXk3bVg1Tis2dWlUMWVaemxXK2xqSHBTUXlRLzZQK0dDc2tU?=
- =?utf-8?B?Z1NOUUJrZTZrc3VaTkh6K3Robm95bHEzK1BsdHBUZkVwYVcvTkt1cytQcHFj?=
- =?utf-8?B?ZHUxbktWaEpyUHN5M3BWcStLbEU0TXhqeWd0dkVYS29uRUN1ajdBR3ZBdFh0?=
- =?utf-8?B?cGU2S1I0RXJySmxLN2FObE9lcWhKZWlhb0dlamVNelQ4VG95Y2xHNXNCNU82?=
- =?utf-8?B?dnJiYkpWSnhJM0dVaTJBV3hXeEx0cTA4M0RzbElMcnFFc3pvankxcm1XVzBT?=
- =?utf-8?B?b0hXY01XMmRVdnI2WCtpdG5GRUFtRW1XdXlRUFQrVnhENHZIbVA5ZWxSS211?=
- =?utf-8?B?d2FlSjlENTVqWTFsWlpEOWdBdkFhV3EzYm9VVWZDcitnV2d6c2ZpRlN6UFBj?=
- =?utf-8?B?WlIzdDc3bStkRWw2YkpIL00wMTVMR1VUWnlUWTVLdjBlTGFPUG1OOTZqYmIv?=
- =?utf-8?B?ODFIT1kxWVRmS2QxSTMwSTMwYnpYeEowWThSNUtSS2JzWjdQYk1MUFRTL3p1?=
- =?utf-8?B?d2lFOWw5WXJrOGVtbVRnN3pqbkkzcGtmV1p1VVdIK1h1WVhIWVdRQUdGZjlZ?=
- =?utf-8?B?eE9LcXRDb0xrYW9LRnh1UEZLL3Z3K21NTkRrYksrSExFbUJXU2toS0tNa3FF?=
- =?utf-8?B?MUlvWDNTSUFhc29ZWVFVdWkrMFhpQ1lURWl2M1BnbVJrQTZLenBYRFFpanZJ?=
- =?utf-8?B?SCsrL0xvNkxyQVYyMHlHRzJTMUJXbEptMkdTY0xtMVdCbnFCN09ta0xQbTZm?=
- =?utf-8?B?ZC80ZUVNaVJHZGlqR3lLU3lVVWZaempzZ3EyVHlkWDFSdmRyMHJ1MFRiNjA3?=
- =?utf-8?B?bUNmU0tZUWVmV0hmaXF5UHJPYW1KWng5MEVLL3piQmlLSjRDQmZuZW1TTFZx?=
- =?utf-8?B?SldmbVVUZ1VETVdsVXpiTktMUTZ6T3lGWEQxRllwM2FCZ3JFOFQ3UHhCTTNk?=
- =?utf-8?B?b3g4Si9rLzl6b2J1d0NacXhYWGFEQjFGYTduRDN5UVdBcnE3YUhvMmNTMi92?=
- =?utf-8?B?cmNGU0tBcEZIV0Q4c1pUNEY5TUF6QzU1RWpIRXJTNFF2S09sUTZHbWZMOG43?=
- =?utf-8?B?ak11elQ3RHhIeDZMRjVKYnJPcVZidTNteGd0V3ZFR2VmVW9wOWhseXJrT1N6?=
- =?utf-8?B?dUd1NElmRUJnNVRlWmJBT2NjaE4rMkdZWi8zK0gyQnNHOFlCUU5pVHJhNDlw?=
- =?utf-8?Q?QfGBswyEwQbEv61k=3D?=
-X-Exchange-RoutingPolicyChecked: rrEyLBknGtsVOLjCnMcXS1jAIaWk7RROWUvOEjZRCTMjMlFM0Tgllz7mgkYP5nuu+WYDlIOiq74Umf7ctQeO/QksWwv8fEk/DeGm9UgZMLRh79EeCt3LzYqu2R5uAyvHx1kaH3f5cBGFiWM5Y/9GfW8wxfHJYyffaFwat8/ji71Ar08ZIsYfELNuBjiL/DliuJiJs8UYEJ8zM1N+xp2JG0GFr+lOa+SnIc7qwg0lKvT/D4nLXiGTrtWyVuF4ioMp+Aro09cclYp4+AehBRNPT+V2L7an/mGq0ol6ygBWVZOSrP5/Lnb9NtmjDd1ILOItlj2vt2O5gzeNXe7CpjxoNg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: af7578e3-cde7-4f88-2475-08de8f686c73
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8230.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 20:59:39.3976
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gCZJ55JWv3j5Pd2OZCelLUu4VkywGQo24BAWMr3TQ1qN7DrRYY6IZTPGQCDVsUDoBxi3noZwQtI0RvA5EQw0HUbgREDQqvcE5Mw7yFwbzU0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR11MB8779
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 
+Follow up fixes for the recent update flagged by review.
 
+v3: include the mmap_offset cast patch from Anas
+v2: reject REG_NODEV + ->rx_buf_size
 
-On 3/24/2026 8:35 AM, Aleksandr Loktionov wrote:
-> ice_link_mode_str_high[] lacks entries for phy_type_high bits 5-14
-> (all 200G PHY types on E825C); ice_dump_phy_type() prints nothing for
-> them when ICE_DBG_LINK is set (e.g. 'ethtool -s ethX msglvl 0x10').
-> The loop also iterates all 64 bits against a 5-entry array - undefined
-> behaviour for any matched bit beyond the end.  Add strings for bits
-> 5-14 and guard the loop with ARRAY_SIZE(), falling back to "unknown"
-> for unrecognised bits.
-> 
-> ICE_PHY_TYPE_HIGH_200G_AUI8_AOC_ACC (bit 13) and 200G_AUI8 (bit 14)
-> were absent from ice_adminq_cmd.h; ICE_PHY_TYPE_HIGH_MAX_INDEX capped
-> at 12 caused ice_update_phy_type() to skip them entirely, leaving both
-> invisible to 200G speed requests.  Add the definitions and bump
-> MAX_INDEX to 14.
+Anas Iqbal (1):
+  io_uring: cast id to u64 before shifting in io_allocate_rbuf_ring()
 
-I don't believe support for these two types got implemented so I don't 
-think there is need to add them.
+Pavel Begunkov (5):
+  io_uring/zcrx: reject REG_NODEV with large rx_buf_size
+  io_uring/zcrx: don't use mark0 for allocating xarray
+  io_uring/zcrx: don't clear not allocated niovs
+  io_uring/zcrx: use dma_len for chunk size calculation
+  io_uring/zcrx: use correct mmap off constants
 
-> 
-> Wire the two new types throughout the driver:
-> - ice_get_media_type(): handle all ten 200G phy_type_high values so
->    E825C ports no longer return ICE_MEDIA_UNKNOWN.  AOC_ACC interfaces
->    map to FIBER; bare AUI4/AUI8 to DA with cage, else BACKPLANE
->    (matching existing AUI2/CAUI2 logic); CR4_PAM4 to DA; SR4/FR4/LR4/
->    DR4 to FIBER; KR4_PAM4 to BACKPLANE.
-> - ice_get_link_speed_based_on_phy_type(): return ICE_AQ_LINK_SPEED_200GB
->    for both new types so ice_update_phy_type() enables them correctly.
-> - phy_type_high_lkup[13,14]: AUI8 is 8-lane 25G-per-lane; no
->    200000baseSR8/CR8 ethtool modes exist yet, so approximate with
->    SR4_Full/CR4_Full - matching AUI4 at indices 11-12.  FIXME once
->    those link modes land upstream.
-> - ICE_PHY_TYPE_HIGH_MASK_200G: add bits 13-14 for the minimum-speed
->    floor in ice_mask_min_supported_speeds().
-> 
-> Suggested-by: Paul Greenwalt <paul.greenwalt@intel.com>
-> Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-> Cc: Simon Horman <horms@kernel.org>
-> Cc: Paul Menzel <pmenzel@molgen.mpg.de>
-> ---
-> v3 -> v4: add ARRAY_SIZE() OOB guard in ice_dump_phy_type(); cover all
->            ten 200G phy_type_high values in ice_get_media_type(); add FIXME
->            to lkup[13..14] for missing SR8/CR8 modes; rename subject
->            fix subject; fix debug enable example (ethtool, not modprobe);
->            add AUI8 speed mapping, lkup[13-14], MASK_200G bits 13-14,
->            and AUI8->SR4/CR4 approximation comment
-> v1 -> v2: add ICE_PHY_TYPE_HIGH_MAX_INDEX update
-> ---
->   .../net/ethernet/intel/ice/ice_adminq_cmd.h   |  4 ++-
->   drivers/net/ethernet/intel/ice/ice_common.c   | 31 ++++++++++++++++++-
->   drivers/net/ethernet/intel/ice/ice_ethtool.c  |  4 ++-
->   drivers/net/ethernet/intel/ice/ice_ethtool.h  |  8 +++++
->   4 files changed, 44 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h b/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
-> index 859e9c6..efe985c 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
-> +++ b/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
-> @@ -1044,7 +1044,9 @@ struct ice_aqc_get_phy_caps {
->   #define ICE_PHY_TYPE_HIGH_200G_KR4_PAM4		BIT_ULL(10)
->   #define ICE_PHY_TYPE_HIGH_200G_AUI4_AOC_ACC	BIT_ULL(11)
->   #define ICE_PHY_TYPE_HIGH_200G_AUI4		BIT_ULL(12)
-> -#define ICE_PHY_TYPE_HIGH_MAX_INDEX		12
-> +#define ICE_PHY_TYPE_HIGH_200G_AUI8_AOC_ACC	BIT_ULL(13)
-> +#define ICE_PHY_TYPE_HIGH_200G_AUI8		BIT_ULL(14)
-> +#define ICE_PHY_TYPE_HIGH_MAX_INDEX		14
->   
->   struct ice_aqc_get_phy_caps_data {
->   	__le64 phy_type_low; /* Use values from ICE_PHY_TYPE_LOW_* */
-> diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
-> index ce11fea..2f3a268 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_common.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_common.c
-> @@ -84,6 +84,16 @@ static const char * const ice_link_mode_str_high[] = {
->   	[2] = "100G_CAUI2",
->   	[3] = "100G_AUI2_AOC_ACC",
->   	[4] = "100G_AUI2",
-> +	[5] = "200G_CR4_PAM4",
-> +	[6] = "200G_SR4",
-> +	[7] = "200G_FR4",
-> +	[8] = "200G_LR4",
-> +	[9] = "200G_DR4",
-> +	[10] = "200G_KR4_PAM4",
-> +	[11] = "200G_AUI4_AOC_ACC",
-> +	[12] = "200G_AUI4",
-> +	[13] = "200G_AUI8_AOC_ACC",
-> +	[14] = "200G_AUI8",
->   };
->   
->   /**
-> @@ -107,9 +117,14 @@ ice_dump_phy_type(struct ice_hw *hw, u64 low, u64 high, const char *prefix)
->   	ice_debug(hw, ICE_DBG_PHY, "%s: phy_type_high: 0x%016llx\n", prefix, high);
->   
->   	for (u32 i = 0; i < BITS_PER_TYPE(typeof(high)); i++) {
-> -		if (high & BIT_ULL(i))
-> +		if (!(high & BIT_ULL(i)))
-> +			continue;
-> +		if (i < ARRAY_SIZE(ice_link_mode_str_high))
->   			ice_debug(hw, ICE_DBG_PHY, "%s:   bit(%d): %s\n",
->   				  prefix, i, ice_link_mode_str_high[i]);
-> +		else
-> +			ice_debug(hw, ICE_DBG_PHY, "%s:   bit(%d): unknown\n",
-> +				  prefix, i);
->   	}
->   }
->   
-> @@ -605,13 +620,25 @@ static enum ice_media_type ice_get_media_type(struct ice_port_info *pi)
->   		switch (hw_link_info->phy_type_high) {
->   		case ICE_PHY_TYPE_HIGH_100G_AUI2:
->   		case ICE_PHY_TYPE_HIGH_100G_CAUI2:
-> +		case ICE_PHY_TYPE_HIGH_200G_AUI4:
-> +		case ICE_PHY_TYPE_HIGH_200G_AUI8:
->   			if (ice_is_media_cage_present(pi))
->   				return ICE_MEDIA_DA;
->   			fallthrough;
->   		case ICE_PHY_TYPE_HIGH_100GBASE_KR2_PAM4:
-> +		case ICE_PHY_TYPE_HIGH_200G_KR4_PAM4:
->   			return ICE_MEDIA_BACKPLANE;
->   		case ICE_PHY_TYPE_HIGH_100G_CAUI2_AOC_ACC:
->   		case ICE_PHY_TYPE_HIGH_100G_AUI2_AOC_ACC:
-> +		case ICE_PHY_TYPE_HIGH_200G_AUI4_AOC_ACC:
-> +		case ICE_PHY_TYPE_HIGH_200G_AUI8_AOC_ACC:
-> +			return ICE_MEDIA_FIBER;
-> +		case ICE_PHY_TYPE_HIGH_200G_CR4_PAM4:
-> +			return ICE_MEDIA_DA;
+ io_uring/zcrx.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-Any reason we don't put this with the other DAs above...
+-- 
+2.53.0
 
-> +		case ICE_PHY_TYPE_HIGH_200G_SR4:
-> +		case ICE_PHY_TYPE_HIGH_200G_FR4:
-> +		case ICE_PHY_TYPE_HIGH_200G_LR4:
-> +		case ICE_PHY_TYPE_HIGH_200G_DR4:
->   			return ICE_MEDIA_FIBER;
-
-and these with the other FIBERs?
-
-Thanks,
-Tony
