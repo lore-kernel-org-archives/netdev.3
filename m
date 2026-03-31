@@ -1,59 +1,58 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2DF3CF05E;
-	Tue, 31 Mar 2026 07:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DD883D332E
+	for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 07:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774943326; cv=none; b=N/sAfHFApkkc/2CyfkdDB1NWbcX30SaYNYPs+0UgpLZPIer95LVWWb4RPG1pu5qWp3yo+XEQkun9d3vlYcXBAyQW4pXlv5uVVAb3Fp0xTKtmVaQTmsjtO9Ef5iqSVQcu7AlEBPp0xLLIpPqUfKUrVk5DBCAKS/4sCR/smWN1Zvc=
+	t=1774943443; cv=none; b=CxtH2JREm6SnxzTWlFskMH6AcHN2vNcevfZZ01KbDtFe1rBULN9ECYFEJtv+NAL300QPb3NK/WEsIdYUs51tVgU6S4RDRCJqL7AKE2cMItZ4jknD0jJ2EClLQY4R1A2Q+Aq/C+gJbFASEFzA1bCxNEOsBC9vCxxtYVNvsE9V8B0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774943326; c=relaxed/simple;
-	bh=/t67qqd21VFdjg7fVhZEzL4bAAFMUvic+guZoUhEwns=;
+	s=arc-20240116; t=1774943443; c=relaxed/simple;
+	bh=mdPeeJoWaY/FEdeB1gZCuU3NmQdwalLB08y+b87yg88=;
 	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZvXkaMLaDQE23UWTjroTvPhna4qQgQD+TpTOIKZrD9qL1L5Qgnfbbg9f5q8uBF13NNIhcGHYmvcX8f0Z6l7WyksEKCyC9XLWwZVoBjvq746pgmCiTnAxt3h8e7BxTnd37jSURt7ajqRoQcpF7Di2kO9/mOShNFXPviaKrwwnWRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=bameE7Wr; arc=none smtp.client-ip=62.96.220.36
+	 Content-Type:Content-Disposition:In-Reply-To; b=K+h984SgWyYBYPuz+BQS5qd4JB5PWXkB1m/lq7JVoUfJsM7LZbNa+ysFQOSzxt72nhTyeZBug4rIdTNcqv9uKrDMwaImA+1weRsoDJhlhBcBTSb5hnLFQ5MIjJA4p1JqrbOTudioheRomW4bw0uUXYriU6IJWniZRk7zwMBWDXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=suKrskLE; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="bameE7Wr"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="suKrskLE"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id EAA8C207E4;
-	Tue, 31 Mar 2026 09:48:42 +0200 (CEST)
+	by mx1.secunet.com (Postfix) with ESMTP id BB06F207BB;
+	Tue, 31 Mar 2026 09:50:39 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id uLFMNqg3sQp4; Tue, 31 Mar 2026 09:48:42 +0200 (CEST)
+ with ESMTP id G0OSxYg32PfD; Tue, 31 Mar 2026 09:50:39 +0200 (CEST)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 6913A207BB;
-	Tue, 31 Mar 2026 09:48:42 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 6913A207BB
+	by mx1.secunet.com (Postfix) with ESMTPS id 141EE205E5;
+	Tue, 31 Mar 2026 09:50:39 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 141EE205E5
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1774943322;
-	bh=Pmkr6rvdYjCnnfLoVpV7BYGjRGhM4jnaqReV3hgO0uQ=;
+	s=202301; t=1774943439;
+	bh=k9yL4sNL9NSzItenOeRoT43xmKm+rIk7f9WJfgt+1fA=;
 	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=bameE7WrQnhpnhdGAEZSPtCVxg/mE6+nBhERnbNlGHPKxP6ILVUA7uCzGKv0t9Jlh
-	 nrgYoKyiQvJ9j9RUAv1q8uuIywYM4B6RuyfjI7VbUagXeh7GWO1+9W8b3EuTH0ziGp
-	 5YlSvBuCD0ppElBQDjG8TNmMvhUqdjzFFjFW2fNwY1rlDfYdjyToKtZBznAmk8+QWb
-	 K+5yLedsubEm2WrLeB6dbbdHy/m/uRzIcIh39pwDcqH1lbnCpKy7em17HyO/oirKfh
-	 IjbG91Y59/VwyX3RtBDFgflpqzH9i2e29xI0Kd0vs5kCW9gn0D/Fk0Hzy9anP8ysvf
-	 MID+DezsEQqRA==
+	b=suKrskLEjf+NFsZn7RDLwicGgdZJx+002uKk1mjuWv5W5lOT8bC4MNFJmm44HxarX
+	 vqI8In70XUD7t13u+t/ujSktdoHDZfIbbX8d+hgub4hRiLd/q3uIxDffFrUu+aeG2d
+	 GRhOAi7uglydnhKECHUsf5zmy/TA2IuXB1LqXdReibW8g5aZ1rasp2lCelQiIuF4DQ
+	 D60ALEErqtLImRZGPSKkhHk+kNqNve5UmlSyTwDxNTDlFxrWWnIbJm019uaE25I6C8
+	 UjILW/DXoxzOhh8YXTz82xijE2f61FyVhTVDyNionQdGRF9bmDp5iSBUIec20oH5Oo
+	 PQNMRFaWEH2hA==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 31 Mar
- 2026 09:48:41 +0200
-Received: (nullmailer pid 1485646 invoked by uid 1000);
-	Tue, 31 Mar 2026 07:48:40 -0000
-Date: Tue, 31 Mar 2026 09:48:40 +0200
+ 2026 09:50:38 +0200
+Received: (nullmailer pid 1487476 invoked by uid 1000);
+	Tue, 31 Mar 2026 07:50:37 -0000
+Date: Tue, 31 Mar 2026 09:50:37 +0200
 From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Keenan Dong <keenanat2000@gmail.com>
-CC: <netdev@vger.kernel.org>, <herbert@gondor.apana.org.au>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] xfrm: account XFRMA_IF_ID in aevent size calculation
-Message-ID: <act8WMTZ73-2xXrj@secunet.com>
-References: <20260326123639.94056-1-keenanat2000@gmail.com>
+To: <nicholas@carlini.com>
+CC: <netdev@vger.kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, "David
+ S . Miller" <davem@davemloft.net>, Milad Nasr <srxzr@anthropic.com>
+Subject: Re: [PATCH] xfrm6: fix slab-out-of-bounds write in xfrm6_input_addr()
+Message-ID: <act8zZGYpN9DJ4-w@secunet.com>
+References: <20260328163516.2111971-1-nicholas@carlini.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,25 +61,49 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20260326123639.94056-1-keenanat2000@gmail.com>
+In-Reply-To: <20260328163516.2111971-1-nicholas@carlini.com>
 X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
  (10.32.0.171)
 
-On Thu, Mar 26, 2026 at 08:36:39PM +0800, Keenan Dong wrote:
-> xfrm_get_ae() allocates the reply skb with xfrm_aevent_msgsize(), then
-> build_aevent() appends attributes including XFRMA_IF_ID when x->if_id is
-> set.
+On Sat, Mar 28, 2026 at 04:35:16PM +0000, nicholas@carlini.com wrote:
+> From: Nicholas Carlini <nicholas@carlini.com>
 > 
-> xfrm_aevent_msgsize() does not include space for XFRMA_IF_ID. For states
-> with if_id, build_aevent() can fail with -EMSGSIZE and hit BUG_ON(err < 0)
-> in xfrm_get_ae(), turning a malformed netlink interaction into a kernel
-> panic.
+> The bounds check guarding sp->xvec[sp->len++] uses == where >= is
+> required. When sp->len has already reached XFRM_MAX_DEPTH via prior
+> ESP processing in xfrm_input(), the check (1 + 6 == 6) is false and
+> the write goes out of bounds into the adjacent skbuff_ext_cache slab
+> object.
 > 
-> Account XFRMA_IF_ID in the size calculation unconditionally and replace
-> the BUG_ON with normal error unwinding.
+> An unprivileged local user can trigger this by entering a
+> user+network namespace, configuring six transport-mode ESP SAs plus
+> one MIP6 routing SA, and injecting an IPv6 packet with six ESP
+> layers followed by multiple Routing Header Type 2 extensions.
 > 
-> Fixes: 7e6526404ade ("xfrm: Add a new lookup key to match xfrm interfaces.")
-> Reported-by: Keenan Dong <keenanat2000@gmail.com>
-> Signed-off-by: Keenan Dong <keenanat2000@gmail.com>
+> The check was correct (>) when the function was introduced, but
+> was changed to == during a refactor in 2007.
+> 
+> Fixes: 9473e1f631de ("[XFRM] MIPv6: Fix to input RO state correctly.")
+> Reported-by: Milad Nasr <srxzr@anthropic.com>
+> Signed-off-by: Nicholas Carlini <nicholas@carlini.com>
+> ---
+>  net/ipv6/xfrm6_input.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/net/ipv6/xfrm6_input.c b/net/ipv6/xfrm6_input.c
+> index 9005fc156a20..a958c08589d6 100644
+> --- a/net/ipv6/xfrm6_input.c
+> +++ b/net/ipv6/xfrm6_input.c
+> @@ -246,7 +246,7 @@ int xfrm6_input_addr(struct sk_buff *skb, xfrm_address_t *daddr,
+>          goto drop;
+>      }
+> 
+> -    if (1 + sp->len == XFRM_MAX_DEPTH) {
+> +    if (1 + sp->len >= XFRM_MAX_DEPTH) {
+>          XFRM_INC_STATS(net, LINUX_MIB_XFRMINBUFFERERROR);
+>          goto drop;
+>      }
 
-Applied to the ipsec tree, thanks a lot!
+Your patch is malformed (whitespaces instead of tabs).
+Please fix this and rebase on top of the ipsec tree.
+
+Thanks!
