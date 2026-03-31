@@ -1,74 +1,90 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61393E1D03;
-	Tue, 31 Mar 2026 12:23:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+Received: from outbound.baidu.com (jpmx.baidu.com [119.63.196.201])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id 1D1A43E0C77;
+	Tue, 31 Mar 2026 12:26:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=119.63.196.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774959837; cv=none; b=GaLCmKeCys2W1SFNKIr/p6GDuR2fQ2F1HWxEIQ4YXDQ8TUEwwc/j5VNsgKVliqAH93jNyADt0TECk9mXpGom0vjHvucG6XnzLwYuTi+II19Btc7JR/9ohm1/JnifBBskWGPJCoJgCraqz3cfLPUjbjKUUrDttBt743XHDbiaksU=
+	t=1774959986; cv=none; b=Cnmh9sfew1m7/JsCBkApotl6CWalSMF/9c+etbdziarubyCsnrTIcW31OCgCKZ3MA2hTj6D854oCo8Q4P8fQXSUFx8ANnSP1sF1B9nAW+qGdsE2YsBa2Kb6lBlSRDI/rXkAau4hEizz91fCUVdbe0AAoulQ0VVyER78/KFnDax4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774959837; c=relaxed/simple;
-	bh=6EHU6i3Kxk1PsCup6AbdyOQktdihYokChOMhMY1WDMY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aGNmofD5NmHQjgIq5TPNww/x/NpW9MMAnNi5KNbXCOVCyxRIm9kUxtRdZGr6DWvPNXFyy/0ywJbaQdgpQkMaX8C5XvWoMd8IivM/IV0xUsQRURmBJdBpI7Sqt7rJbnznpArBDsj9xZCTQYhG8odZdE9lgAYerRZccmrFDR360mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=bLomtK/b; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1774959986; c=relaxed/simple;
+	bh=pCJYj+yIsvTQfbdDJAagLaKC2zgC2vgl8J602FoyfD8=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=u5lzNNVprq1Mp66CAmDUFaaEWCZCsoqmDCIpxVRddGW2Ad8JiCoqmDUExOa1zwiDtW1CdUjVgcRZamrx3Z0er+29VzRi7djXeRUvPcwQFJ7Tfa9BagtUTaUxMJzXkD0X29K17kMbNAkIjlRLMZzYpo67bpwtKpXKmCox6sBJ8nA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com; spf=pass smtp.mailfrom=baidu.com; dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b=cz/Qtj9y; arc=none smtp.client-ip=119.63.196.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="bLomtK/b"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=dksMoYQmNn4rvPd11eAqblukoSAKuwPHp8JrhoOdYjk=; b=bLomtK/b0H07CzFlV5YH8R3djV
-	pdef76doN/DTo8CfsgGdBR6wIQik44SLikp9HhSGATx5w5ldmp48wltGiioRfdSj8t0ZFSAmX86Gc
-	OIXQIvoKgk7Cr1e+4HjapmJZL3AJA3RbjLvKxhUUmH033agnB+vgS0yCgGwGV1GG1pvs=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1w7Y8J-00EC3H-SQ; Tue, 31 Mar 2026 14:23:47 +0200
-Date: Tue, 31 Mar 2026 14:23:47 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Joris Vaisvila <joey@tinyisr.com>
-Cc: netdev@vger.kernel.org, horms@kernel.org, pabeni@redhat.com,
-	kuba@kernel.org, edumazet@google.com, davem@davemloft.net,
-	olteanv@gmail.com, devicetree@vger.kernel.org,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Subject: Re: [PATCH net-next v2 3/4] net: dsa: initial MT7628 tagging driver
-Message-ID: <60abbf88-e97a-4c2d-acc3-ecf3dd338a80@lunn.ch>
-References: <20260330184017.766200-1-joey@tinyisr.com>
- <20260330184017.766200-4-joey@tinyisr.com>
+	dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b="cz/Qtj9y"
+X-MD-Sfrom: lirongqing@baidu.com
+X-MD-SrcIP: 172.31.50.47
+From: lirongqing <lirongqing@baidu.com>
+To: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Li RongQing <lirongqing@baidu.com>,
+	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH][net-next] net/mlx5: Move command entry freeing outside of spinlock
+Date: Tue, 31 Mar 2026 08:26:04 -0400
+Message-ID: <20260331122604.1933-1-lirongqing@baidu.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260330184017.766200-4-joey@tinyisr.com>
+Content-Type: text/plain
+X-ClientProxiedBy: bjhj-exc3.internal.baidu.com (172.31.3.13) To
+ bjkjy-exc3.internal.baidu.com (172.31.50.47)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
+	s=selector1; t=1774959976;
+	bh=ecjXzqLRA55slfTGCO4Yrp8OrmKK3TGwSqxDk6NDAvs=;
+	h=From:To:Subject:Date:Message-ID:Content-Type;
+	b=cz/Qtj9yCU/Rr0n+t7AprtHKdLgZq5YgoiAhxeRJAZa5IyVZNXK2jmHyN5oNounS7
+	 XN4Ux5p6GhkvE2eCm4a8APzLBsn/H56/3QtSkK7nnpvrirJZsBCyJr3Kik5RAhj75Q
+	 frf0411NGiW+guVzWf8qUmTavUS6LXy51ckDytkY2QdluOzgGjFsz03rQafynfgdiT
+	 8m6gQppRWE5yRSofbq8XHK2vwSth2ekR1SNvIVPwJAM6YX1n7AwJN2RM2sk+RgbP4C
+	 oIy9aIwnjjBIGEyK5ct1mMY3mYasNgtZudvEmkOahZMsTqSHjKepL5/OxV3bHcvFrI
+	 3hbNlx/zTp4Wg==
 
-On Mon, Mar 30, 2026 at 09:40:16PM +0300, Joris Vaisvila wrote:
-> Add support for the MT7628 embedded switch's tag.
-> 
-> The MT7628 tag is merged with the VLAN TPID field when a VLAN is
-> appended by the switch hardware. It is not installed if the VLAN tag is
-> already there on ingress. Due to this hardware quirk the tag cannot be
-> trusted for port 0 if we don't know that the VLAN was added by the
-> hardware. As a workaround for this the switch is configured to always
-> append the port PVID tag even if the incoming packet is already tagged.
-> The tagging driver can then trust that the tag is always accurate and
-> the whole VLAN tag can be removed on ingress as it's only metadata for
-> the tagger.
-> 
-> On egress the MT7628 tag allows precise TX, but the correct VLAN tag
-> from tag_8021q is still appended or the switch will not forward the
-> packet.
-> 
-> Signed-off-by: Joris Vaisvila <joey@tinyisr.com>
+From: Li RongQing <lirongqing@baidu.com>
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Move the kfree() call outside the critical section to reduce lock
+holding time. This aligns with the general principle of minimizing
+work under locks.
 
-    Andrew
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/cmd.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+index 6c99c7f..c89417c 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+@@ -196,17 +196,18 @@ static void cmd_ent_put(struct mlx5_cmd_work_ent *ent)
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&cmd->alloc_lock, flags);
+-	if (!refcount_dec_and_test(&ent->refcnt))
+-		goto out;
++	if (!refcount_dec_and_test(&ent->refcnt)) {
++		spin_unlock_irqrestore(&cmd->alloc_lock, flags);
++		return;
++	}
+ 
+ 	if (ent->idx >= 0) {
+ 		cmd_free_index(cmd, ent->idx);
+ 		up(ent->page_queue ? &cmd->vars.pages_sem : &cmd->vars.sem);
+ 	}
++	spin_unlock_irqrestore(&cmd->alloc_lock, flags);
+ 
+ 	cmd_free_ent(ent);
+-out:
+-	spin_unlock_irqrestore(&cmd->alloc_lock, flags);
+ }
+ 
+ static struct mlx5_cmd_layout *get_inst(struct mlx5_cmd *cmd, int idx)
+-- 
+2.9.4
+
