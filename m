@@ -1,135 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B163AA4EC;
-	Tue, 31 Mar 2026 13:10:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A21A135A53
+	for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 13:24:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774962648; cv=none; b=dcJLHcQN+/gHhFHpkuU6lx3olPmAaHGgmPju/dQmiFJjzYffSdbVQgVox586v3A0fyUVFNNSy+Jp2OzbLSnhxXLPB6NU31Ki1oqd1N2t6UzZsgFxrlts5uKwgxKi+ytk5CvtjG+YGkPlNRFn+l0lvtPL5sg6mejPqqNPqNU3fWE=
+	t=1774963480; cv=none; b=koem2jyH577HUvxNFlgtemyfdtWEc3Ti9/e0YsWCvkobE8E4XohHA7xt+LOWbKQ1Rs5uT0Jpl4oVyidUITqVrvZWYeq3VJuy/T2/eJv6lWIyDpHSxs/HKzwLEWpvOfBlgnrQBqcwKEfz44duerP6Th6feqR+SmD6mhFQHuiHkYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774962648; c=relaxed/simple;
-	bh=H0eVMKEWi51A1OOnFbl4r5rkAhTgLqp8o3RwpipEpKY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FBgB6qn+Z1Pfyp4/8z1TVKVeUu+pnRXSIKveEToiAg5bXp/1C/q7pUL05wSG2DbR1QCvVuGbtTSpvMCPkH5jKUsrBUkRq3gbiEuOqKEqh+B674k4STrsNWEQEjPS+cNeD1JcjCAz36uNOwf6565S75fx0viQtldl5r8ugix5Ebs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l9YZCM+p; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774963480; c=relaxed/simple;
+	bh=Uhy4axSEFW2Qezt3TBNhyBcjDSrK7116X2GQnMj67Ds=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=C0iNIczTudH6oXLXwFkS/Skvdzu5BjExEeDZBF17jnWXi+n1tmiTSh9aoBS71B3hTBP9ZaVz14IujI0A1Q71cd3C/Dm+Kh4UTVKsGcUFeAwYP3i76W7xLbdSrd0b07HMiho1W/kNWaS8dzKV7/RY2qXgRMKj18i7IInwdM1RU8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Xv8Qufrq; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=HkkXWSJ7; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l9YZCM+p"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9772FC19423;
-	Tue, 31 Mar 2026 13:10:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774962648;
-	bh=H0eVMKEWi51A1OOnFbl4r5rkAhTgLqp8o3RwpipEpKY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=l9YZCM+puP/uyhhRfSMUh+dBedmeyvh7H4LNp9JqVQ5qaZjZdTn8TbWvfGca3nT9Q
-	 U3SFo+eYmiYBwAnAJ1yPP/CsOgDcCnv/GKmkaMpPMXuGH6xtxN+vud/psvx+n26pQS
-	 VQHiUoJkJJon08lc9MtZC7oHExp9x/mInpJO4snchj5o90af6jj/K44qK0R7uvIpmQ
-	 zGFwuz7/6Lt9vI17D7Qip1liGsoNLUiY5zSTu/xjXN5oP7yVnVmgm57tgL4sGwm/qi
-	 hulicRD8oqAewXzvJ7TYnl93wFIxArRBQ3k0UJsF4fHrqdRvVRWLNUNe7l5o/B6YIn
-	 mJmxr0rhaUosw==
-From: Conor Dooley <conor@kernel.org>
-To: netdev@vger.kernel.org
-Cc: conor@kernel.org,
-	Conor Dooley <conor.dooley@microchip.com>,
-	kernel test robot <lkp@intel.com>,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org
-Subject: [PATCH net-next v2] net: macb: fix use of at91_default_usrio without CONFIG_OF
-Date: Tue, 31 Mar 2026 14:10:21 +0100
-Message-ID: <20260331-enroll-sensation-50901318a419@spud>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Xv8Qufrq";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="HkkXWSJ7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774963478;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9eAEdH/RFIKcmDncsXTS+NqcpAUMnQKgVC83ZaxUTu8=;
+	b=Xv8Qufrq42HFTUgwUYxxxJjD2lbnCVcT/RrLdx3/X2gNU7me4JtfSQp2Laq6NP8hz063+0
+	+N7ogW/i287KrXTdeZbaAan3CcDdwFO7Ev51rDZ9FJdtmBHHkhj/NN3CXROZEevOUXRB+B
+	+kpIC3LYARwm5B/Aouktpe5RLuwypfg=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-651-eVl8gUDjNlSF3nXUw50CVg-1; Tue, 31 Mar 2026 09:24:36 -0400
+X-MC-Unique: eVl8gUDjNlSF3nXUw50CVg-1
+X-Mimecast-MFC-AGG-ID: eVl8gUDjNlSF3nXUw50CVg_1774963476
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-48532df52c5so62015885e9.1
+        for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 06:24:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1774963475; x=1775568275; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9eAEdH/RFIKcmDncsXTS+NqcpAUMnQKgVC83ZaxUTu8=;
+        b=HkkXWSJ72hOcCnB9JF0AiZf5Mufa1jDsLMfgMGCEsUoVXMTxM/4HNWMrU8MbW9OEYp
+         vZcWrl/PXnG43wLQVe8hfrfWyedQOBMjuVAo1Vv6LRRkaa3+S9w2UIs8R8KFhsI+RClD
+         FDxmOOqxim71GjEGO9wWm2D+ugU53tdWrHgGHvP7m83h2tb3ikCNhVb0xJW2Ixb2YSR/
+         YVC31/zYiqzIfzpgHpfjxydHZyKfi2FE+OPGjiqLqFeEL1ep27MjGnwXcAcXmgS5uC0f
+         MURB89EFuF1PB2pxZyOW59H5MNux8FvyhDf2WMV5w04RLz0CqYeP+x4bx1umGi7pLdHV
+         QFPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774963475; x=1775568275;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9eAEdH/RFIKcmDncsXTS+NqcpAUMnQKgVC83ZaxUTu8=;
+        b=MDkuImoUyVm0UEdsyA2FM1Pitvc9I3aSwzqbe479X7tmv38Bk50pC29JZ6xrAanad/
+         CDqXaBX/xd2PJvQcA6H4u9vejND/KSs/twe43j7dXW+Q4z1vDP4QGAg+gTbWWwsLsoaV
+         R0M517y/FKltaL54nYZzD/NGzrSUoDVpKyu/oTc9SpFyY3kliAnh9IgndmLPzXhH1MLJ
+         06WCxG5KY5xo3c8FSEn+F05WWOCci697+96ayGsV1VVr7nhub1ai4TTBhhDWOXXHUXlA
+         OoCLwM2ZAi89L6xRz+u71s7yJawP+96uIGQKC8za98sN75AgGluET8880t5SgtO3vGS9
+         pDRg==
+X-Gm-Message-State: AOJu0Yx3kGQX1AeyDOH8oNLSJ7ZWUXydU7Kp7zPjq2lP77MgkMm9kncZ
+	C8OJTxOBIntadv8VOSjmIq/bMgSjgN0V2yNEnQcyftUjzrW6tYNawECTQzXSfvZvyNn54E5Wsfm
+	feQ4C0ZIT7rRmg8Y4hFlXb+f5bSBgts7Gq17MSl71B+ysTu7EMQagwMUzQg==
+X-Gm-Gg: ATEYQzxmiEfoFrI4NHl2NM2oX66e6/W/oC+ZCW6FS5MSbapJlJ7/Q0JK8ph6NrujpHK
+	521nAP6bmIYbPn7Ev52CvU5CqbMGw8bGYmLvEET5ZC1FxkS5V3VG66VGu2nshsu4gy3xPmABbkj
+	MNONfXkDixOuZUUpmylQrRVLrvbhDdKSd6OScGUnbfxOpsvVVwdzWFmVZOYd2eRjy6bkdkGk8aP
+	OSQumK2YW+YzIeWRgAbUYko9X743v6Wm6qlmHxBCkFOnEpX+TkEbfxChyGwgy38ZNg+9fq04DMy
+	D3mBNa4twntw/v0/E4PHg6GMM6wD5/Ezfq4Mx65DOP0evFkwIQ8Gv/Qc0M/vrfiKOcpkUYmma8e
+	G0X/Hbpjn2qko4J9vIWqbY+Y1n5XF0662UZuIU3ESyDEuu44XkJswt9+f
+X-Received: by 2002:a05:600c:8b31:b0:485:30f7:6e88 with SMTP id 5b1f17b1804b1-48727efabdemr333299355e9.31.1774963475452;
+        Tue, 31 Mar 2026 06:24:35 -0700 (PDT)
+X-Received: by 2002:a05:600c:8b31:b0:485:30f7:6e88 with SMTP id 5b1f17b1804b1-48727efabdemr333298965e9.31.1774963474986;
+        Tue, 31 Mar 2026 06:24:34 -0700 (PDT)
+Received: from [192.168.88.32] ([212.105.155.58])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887c536a7fsm37452055e9.1.2026.03.31.06.24.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 31 Mar 2026 06:24:34 -0700 (PDT)
+Message-ID: <4c7118f6-425b-4584-86fb-97f2a68c4474@redhat.com>
+Date: Tue, 31 Mar 2026 15:24:33 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2898; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=uqiW7t5PqCoWnIG6QJ1cWBX3j3b9KsdAUQtWJ0U1YJo=; b=owGbwMvMwCVWscWwfUFT0iXG02pJDJmnj+99+qdU3kXiVJNWc5Xenb+JmWbBX3LfPjaQC1+of 7Hq4ottHaUsDGJcDLJiiiyJt/tapNb/cdnh3PMWZg4rE8gQBi5OAZhI1yOG//kfIzWn+YYv3N8V vXBG9Z8JHwsMDL8dvfJD6drO7RfY5s9lZPjLcKGF0eXt1It2j+ue8N86oL8tsjzv3sHrl96bpH0 36GIGAA==
-X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2] net: phy: realtek: support MDI swapping for
+ RTL8226-CG
+To: Jan Hoffmann <jan@3e8.eu>, Andrew Lunn <andrew@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Daniel Golle <daniel@makrotopia.org>,
+ Markus Stockhausen <markus.stockhausen@gmx.de>,
+ Damien Dejean <dam.dejean@gmail.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260327202001.413280-1-jan@3e8.eu>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260327202001.413280-1-jan@3e8.eu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Conor Dooley <conor.dooley@microchip.com>
+On 3/27/26 8:32 PM, Jan Hoffmann wrote:
+> +static int rtl8226_config_mdi_order(struct phy_device *phydev)
+> +{
+> +	u32 order;
+> +	int ret;
+> +
+> +	ret = of_property_read_u32(phydev->mdio.dev.of_node, "enet-phy-pair-order", &order);
+> +
+> +	/* Property not present, nothing to do */
+> +	if (ret == -EINVAL || ret == -ENOSYS)
+> +		return 0;
+> +
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Only enabling MDI swapping is supported */
+> +	if (order != 1)
+> +		return -EINVAL;
 
-If CONFIG_OF is not enabled, at91_default_usrio is used undeclared in
-gem_default_config. Move at91_default_usrio back above the CONFIG_OF
-section where macb_default_usrio used to be, so that it is unconditionally
-defined and defined prior to any of the users.
+I guess some existing setup may have "enet-phy-pair-order" == 0, and the
+above will make them fail. I think you should just pass with no action
+in such a case.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202603280028.wQjUrIvv-lkp@intel.com/
-Reported-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Closes: https://lore.kernel.org/all/06a701dcc014$86def5b0$949ce110$@trustnetic.com/
-Fixes: a17871778ee28 ("net: macb: rename macb_default_usrio to at91_default_usrio as not all platforms have mii mode control in usrio")
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
----
-lkp also reported this over the weekend, but against the dev copy in my
-tree. I had thought that CONFIG_OF was standard off on x86, but I guess
-it isn't, given lkp didn't catch it until randconfigs.
-
-Seem to have come down with some sort of bug, hopefully I haven't cocked
-this v2 up somehow in my addled state.
-
-v2:
-- Do the boring thing that works... Probably worth a revisit later, cos
-  there's a bunch of confusing naming here still - "default_gem_config"
-  is used for cdns,macb and of course "at91_default_usrio" is used on
-  things where I am reasonably confident it shouldn't, like the Xilinx
-  boards.
-
-CC: Andrew Lunn <andrew+netdev@lunn.ch>
-CC: David S. Miller <davem@davemloft.net>
-CC: Eric Dumazet <edumazet@google.com>
-CC: Jakub Kicinski <kuba@kernel.org>
-CC: Paolo Abeni <pabeni@redhat.com>
-CC: Nicolas Ferre <nicolas.ferre@microchip.com>
-CC: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-CC: netdev@vger.kernel.org
-CC: devicetree@vger.kernel.org
-CC: linux-kernel@vger.kernel.org
-CC: linux-riscv@lists.infradead.org
----
- drivers/net/ethernet/cadence/macb_main.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 12e2b2f4aaf88..3e37b0a3e7e4b 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -4949,6 +4949,13 @@ static int macb_init(struct platform_device *pdev,
- 		return macb_init_dflt(pdev);
- }
- 
-+static const struct macb_usrio_config at91_default_usrio = {
-+	.mii = MACB_BIT(MII),
-+	.rmii = MACB_BIT(RMII),
-+	.rgmii = GEM_BIT(RGMII),
-+	.clken = MACB_BIT(CLKEN),
-+};
-+
- #if defined(CONFIG_OF)
- /* 1518 rounded up */
- #define AT91ETHER_MAX_RBUFF_SZ	0x600
-@@ -5523,13 +5530,6 @@ static int eyeq5_init(struct platform_device *pdev)
- 	return ret;
- }
- 
--static const struct macb_usrio_config at91_default_usrio = {
--	.mii = MACB_BIT(MII),
--	.rmii = MACB_BIT(RMII),
--	.rgmii = GEM_BIT(RGMII),
--	.clken = MACB_BIT(CLKEN),
--};
--
- static const struct macb_usrio_config mpfs_usrio = {
- 	.tsu_source = 0,
- };
--- 
-2.53.0
+/P
 
