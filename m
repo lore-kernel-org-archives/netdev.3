@@ -1,83 +1,129 @@
-Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com [209.85.161.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ida.uls.co.za (ida.uls.co.za [154.73.32.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CEE63D7D87
-	for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 08:07:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7621E2D3ED1;
+	Tue, 31 Mar 2026 08:09:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=154.73.32.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774944447; cv=none; b=tFITrZWJ6ls0K5Mrm0NjYumii5ZTiqgHpGUZ8bUkTjqJgvsLUKKN6hdaM8Rnkhj4N44SPfghqNC6xsPuTfRrnaJQ3oIEbNsOh2TgzaKAYNI+P3Y8H5cbHQFqbSBOT34mu5uMrL/8DedQMpKVtTyC3QSPNZh8F4rFfIVwuMOn3xg=
+	t=1774944549; cv=none; b=M/Gcwle+cQA4Wx0qjYKavl8DaJ+Xf2F92lpal8NujlsF2ldlDbC5CWgRwAjRVWe2XponiFOXNK1cbjYyGbmaUOaqsI+pZvAtjLbCwBqpVCIMLisUua5dAcjMC2KtUNOQQ0cnbFCrWi/XpmI9A9u6b6RZ9QpqMNnfg61D+Hkt554=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774944447; c=relaxed/simple;
-	bh=dgLNqVyiq4rJK7inbNEq1N31z/NGSsmDfpAVHUogY/Q=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Zuibyqnm+5lD2hWsU1Kutet3HY17vlEsDddKru5EjZl6Si79e7oJKaOUrrUuJOexa5BcFweSTNS66lzzHusMq3fSqD1Brrzseb9ieKHQ3EQXAEEV5phyTM2wTC2ucUnrp/tkCqvutO1rN2JOX8T5SUV+RI8qT+7AoYZ5Txdbd5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f70.google.com with SMTP id 006d021491bc7-67df391509fso21013071eaf.3
-        for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 01:07:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774944441; x=1775549241;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+Falw6vbbyCbmrRDrjdbavA0kWxpOh6dMsGLFaJojcc=;
-        b=aZDqOu/QoZstg+7tjSlcZ3F48yKgft4QjqJRg1ZYbXjX2gBrboC6StvarnaP/Pe5OE
-         hWWtIb+9VLk0euk3gVlSGWMyhsaR1+3eaEKc6uN3nylUiZicpAaMDheOy7zpiym+nrhm
-         OD15NP5363xAj+OoqON/J2me5PtGdNz+Tdaf87pWrPPFaJZetV4oc4np1AJWJSVvaYMb
-         VDwutBI0T7S/dLGy2l71NIc1YOFfWbUMz1+4xIi7GbiCuFpD4VitWe536gKccSdKLbSB
-         yPjqwYBkmMafdCDGWO7VbOowddQENcm1eqfwpZ8X9sxKkqpUkM6evxuzOUTfKq4+4dJN
-         Wp8A==
-X-Forwarded-Encrypted: i=1; AJvYcCWqaTtkJTkLmfCSAIQ5gpSsarj/cYOcJ+19UcCwvayVE8Apq8gYausbFLht05x2lXjEfgtL92k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyal2L/PW05r3lX60VHaLr8pPcUkoALEA76idUv4z5PDhNt5rWL
-	ca4dpiCx0ZX+4HGkY9iKBmPV2qTM5ljDcJo+EKKwyRgVFLMAaYXSDAd6Hw5NlTuRBdXgT3CDOCE
-	VEgYh6wdb6z2VeO46C5qNEzTBSqmd2gO6PEuaXTMb+Ky2cWQfoGSYeEYDrYs=
+	s=arc-20240116; t=1774944549; c=relaxed/simple;
+	bh=voN4zkkG1QRyEOmKlMzsZ7FxBc/G7IYZvBjrhtdfMgc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XQhvyEOgCh2U86NNIdQLhMspO9cgoeA1MhW6RXWUUtR2aXVE1l7aua6t6yktbhOdifeg87w+KZpxo4gRgkMr1RAqj4uBTo4j+auW/TqZFOofrt5qIEmMIyD9u6MhLV0Tls1cFKw2Z6mXdLAmuQVRk6Pq9uOdGZjdQCqpSdrI0AE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uls.co.za; spf=pass smtp.mailfrom=uls.co.za; arc=none smtp.client-ip=154.73.32.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uls.co.za
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uls.co.za
+Received: from [165.16.203.0] (helo=[192.168.42.23])
+	by ida.uls.co.za with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.98.2)
+	(envelope-from <jaco@uls.co.za>)
+	id 1w7U9Z-000000006XJ-01J2;
+	Tue, 31 Mar 2026 10:08:49 +0200
+Message-ID: <f37fca7f-710c-4f7a-a7c5-9d8cc129bf21@uls.co.za>
+Date: Tue, 31 Mar 2026 10:08:46 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:179a:b0:67b:a667:f53e with SMTP id
- 006d021491bc7-67e185ed405mr8132037eaf.1.1774944441679; Tue, 31 Mar 2026
- 01:07:21 -0700 (PDT)
-Date: Tue, 31 Mar 2026 01:07:21 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69cb80b9.a70a0220.97f31.0282.GAE@google.com>
-Subject: [syzbot] Monthly wpan report (Mar 2026)
-From: syzbot <syzbot+list2ec276fed9b7f4fd3ec7@syzkaller.appspotmail.com>
-To: alex.aring@gmail.com, linux-kernel@vger.kernel.org, 
-	linux-wpan@vger.kernel.org, miquel.raynal@bootlin.com, netdev@vger.kernel.org, 
-	stefan@datenfreihafen.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] pppoe: update Kconfig URLs
+To: Qingfang Deng <dqfext@gmail.com>
+Cc: linux-ppp@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Eric Biggers <ebiggers@kernel.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@ozlabs.org>,
+ Dianne Skoll <dianne@skoll.ca>, James Carlson <carlsonj@workingcode.com>
+References: <20260331033303.5664-1-dqfext@gmail.com>
+ <0aa6aa20-0e2a-48e9-8273-53b2fecd287b@uls.co.za>
+ <20260331075438.290119-1-dqfext@gmail.com>
+Content-Language: en-GB
+From: Jaco Kroon <jaco@uls.co.za>
+Autocrypt: addr=jaco@uls.co.za; keydata=
+ xsBNBFXtplYBCADM6RTLCOSPiclevkn/gdf8h9l+kKA6N+WGIIFuUtoc9Gaf8QhXWW/fvUq2
+ a3eo4ULVFT1jJ56Vfm4MssGA97NZtlOe3cg8QJMZZhsoN5wetG9SrJvT9Rlltwo5nFmXY3ZY
+ gXsdwkpDr9Y5TqBizx7DGxMd/mrOfXeql57FWFeOc2GuJBnHPZQMJsQ66l2obPn36hWEtHYN
+ gcUSPH3OOusSEGZg/oX/8WSDQ/b8xz1JKTEgcnu/JR0FxzjY19zSHmbnyVU+/gF3oeJFcEUk
+ HvZu776LRVdcZ0lb1bHQB2K9rTZBVeZLitgAefPVH2uERVSO8EZO1I5M7afV0Kd/Vyn9ABEB
+ AAHNG0phY28gS3Jvb24gPGphY29AdWxzLmNvLnphPsLAdwQTAQgAIQUCVe2mVgIbAwULCQgH
+ AgYVCAkKCwIEFgIDAQIeAQIXgAAKCRAILcSxr/fungCPB/sHrfufpRbrVTtHUjpbY4bTQLQE
+ bVrh4/yMiKprALRYy0nsMivl16Q/3rNWXJuQ0gR/faC3yNlDgtEoXx8noXOhva9GGHPGTaPT
+ hhpcp/1E4C9Ghcaxw3MRapVnSKnSYL+zOOpkGwye2+fbqwCkCYCM7Vu6ws3+pMzJNFK/UOgW
+ Tj8O5eBa3DiU4U26/jUHEIg74U+ypYPcj5qXG0xNXmmoDpZweW41Cfo6FMmgjQBTEGzo9e5R
+ kjc7MH3+IyJvP4bzE5Paq0q0b5zZ8DUJFtT7pVb3FQTz1v3CutLlF1elFZzd9sZrg+mLA5PM
+ o8PG9FLw9ZtTE314vgMWJ+TTYX0kzsBNBFXtplYBCADedX9HSSJozh4YIBT+PuLWCTJRLTLu
+ jXU7HobdK1EljPAi1ahCUXJR+NHvpJLSq/N5rtL12ejJJ4EMMp2UUK0IHz4kx26FeAJuOQMe
+ GEzoEkiiR15ufkApBCRssIj5B8OA/351Y9PFore5KJzQf1psrCnMSZoJ89KLfU7C5S+ooX9e
+ re2aWgu5jqKgKDLa07/UVHyxDTtQKRZSFibFCHbMELYKDr3tUdUfCDqVjipCzHmLZ+xMisfn
+ yX9aTVI3FUIs8UiqM5xlxqfuCnDrKBJjQs3uvmd6cyhPRmnsjase48RoO84Ckjbp/HVu0+1+
+ 6vgiPjbe4xk7Ehkw1mfSxb79ABEBAAHCwF8EGAEIAAkFAlXtplYCGwwACgkQCC3Esa/37p7u
+ XwgAjpFzUj+GMmo8ZeYwHH6YfNZQV+hfesr7tqlZn5DhQXJgT2NF6qh5Vn8TcFPR4JZiVIkF
+ o0je7c8FJe34Aqex/H9R8LxvhENX/YOtq5+PqZj59y9G9+0FFZ1CyguTDC845zuJnnR5A0lw
+ FARZaL8T7e6UGphtiT0NdR7EXnJ/alvtsnsNudtvFnKtigYvtw2wthW6CLvwrFjsuiXPjVUX
+ 825zQUnBHnrED6vG67UG4z5cQ4uY/LcSNsqBsoj6/wsT0pnqdibhCWmgFimOsSRgaF7qsVtg
+ TWyQDTjH643+qYbJJdH91LASRLrenRCgpCXgzNWAMX6PJlqLrNX1Ye4CQw==
+Organization: Ultimate Linux Solutions (Pty) Ltd
+In-Reply-To: <20260331075438.290119-1-dqfext@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-report: Relay access (ida.uls.co.za).
 
-Hello wpan maintainers/developers,
+Hi,
 
-This is a 31-day syzbot report for the wpan subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/wpan
+On 2026/03/31 09:54, Qingfang Deng wrote:
+> Hi,
+>
+> On Tue, 31 Mar 2026 08:21:40 +0200, Jaco Kroon wrote:
+>> On 2026/03/31 05:33, Qingfang Deng wrote:
+>>> --- a/drivers/net/ppp/Kconfig
+>>> +++ b/drivers/net/ppp/Kconfig
+>>> @@ -122,11 +122,10 @@ config PPPOE
+>>>    	help
+>>>    	  Support for PPP over Ethernet.
+>>>    
+>>> -	  This driver requires the latest version of pppd from the CVS
+>>> -	  repository at cvs.samba.org.  Alternatively, see the
+>>> -	  RoaringPenguin package (<http://www.roaringpenguin.com/pppoe>)
+>>> -	  which contains instruction on how to use this driver (under
+>>> -	  the heading "Kernel mode PPPoE").
+>>> +	  This driver requires the latest version of pppd at
+>>> +	  <https://ppp.samba.org>.
+>>> +	  Alternatively, see the out-of-tree RP-PPPoE plugin at
+>>> +	  <https://dianne.skoll.ca/projects/rp-pppoe/>.
+>> ppp now exclusively has the plugin code (originally from roaring penguin
+>> I believe).  Latest version is no longer relevant, that plugin has been
+>> available since at least a few versions back already (at least a decade,
+>> probably closer to two).
+>>
+>> That same code has recently been dropped from rp-pppoe, which now
+>> primarily focusses on pppoe-server, and relies on the plugin now part of
+>> ppp package itself. rp-pppoe is only required if you're running a
+>> pppoe-server, and I don't think rp-pppoe at this stage will function
+>> without ppp.
+>>
+>> Most people will never need rp-pppoe.
+> Thanks for the information.
+>
+> I just checked pppd's changelog: version 2.4.2 or later has the PPPoE
+> plugin.
+>
+> I can update the help message accordingly:
+>
+> 	  To work in client mode, pppd version 2.4.2 or later is
+> 	  required. To work in server mode, the pppoe-server command
+> 	  from the RP-PPPoE package is also required, available at
+> 	  <https://dianne.skoll.ca/projects/rp-pppoe/>.
 
-During the period, 0 new issues were detected and 0 were fixed.
-In total, 5 issues are still open and 26 have already been fixed.
+I like this.  You have however dropped the ppp.samba.org link, just 
+re-add that I reckon.
 
-Some of the still happening issues:
+Signed-off-by: Jaco Kroon <jaco@uls.co.za>
 
-Ref Crashes Repro Title
-<1> 436     Yes   KMSAN: uninit-value in ieee802154_hdr_push (2)
-                  https://syzkaller.appspot.com/bug?extid=60a66d44892b66b56545
-<2> 350     Yes   WARNING in lowpan_xmit (2)
-                  https://syzkaller.appspot.com/bug?extid=5b74e0e96f12e3728ec8
-<3> 46      Yes   KMSAN: kernel-infoleak in move_addr_to_user (7)
-                  https://syzkaller.appspot.com/bug?extid=346474e3bf0b26bd3090
+For what my sign-off is worth in this case :).
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+Kind regards,
+Jaco
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
-
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
