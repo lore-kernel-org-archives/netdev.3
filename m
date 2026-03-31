@@ -1,38 +1,38 @@
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209843D890C;
-	Tue, 31 Mar 2026 07:56:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1D823DBD6B;
+	Tue, 31 Mar 2026 07:56:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774943812; cv=none; b=RX5EIAg/aQE0naEgUXpEfCfAejrDfzmlgQm7XXcXr35qOsbci40zRNMLx+89dBI36TviJxX28UnZmphhKdzybqrpo8nMZSVqCm0c/MIEaL7tacfQUxJ3WVVe0vnB5X+Y9gKijL4hbQt6sTLSReToAoPrtDH0vfpKi5d1WCBYvKE=
+	t=1774943817; cv=none; b=BK+tZR3dX5W0Q5zphqYOdNHcy6P0WICMUqoT7KMOWCjuQlDzbm9loUkBT39SSthVdzxGBTio/IUMgUFjpRyoJgurEv3Dt2K9UTY63bhUpTZw9YoB8bLZcVmiW5FTGQMRod+kjtEl6Ru5PwXjIJel317ioh68eHs6uAgV47lrOAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774943812; c=relaxed/simple;
-	bh=cna6hxyszkmCJv2oV4ywCnP32140SL1uJrvdVs2lxew=;
+	s=arc-20240116; t=1774943817; c=relaxed/simple;
+	bh=GHm4Tkq/jR7F1cxZivfMJHrrf7Co+SAMDPUjCIOfEFc=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XcnhYHbzdZmAZVeK2dZO2Lpr+ZiDvr7APHfl3R8kYm2VRIChZxfzW0Q6u3bVvyjWTrAzlg1ocR8hR3g516leL4bzfsBO0zg+cd2lWk0CzG6jbZwfCY49nFkg7s1pVvJfvk5H9ftI0JDZG7JJSAIa3Bu7qyZuyo0o1dXVYwZmBEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=evoA1A3p; arc=none smtp.client-ip=113.46.200.222
+	 MIME-Version:Content-Type; b=X5iwIchojYKT5WbG4cpXfXxBfmVMN2KRg+JR/GS1W+7uCCpwaYpALcSNe0b4gWg2fGTZHOmXf1nfkoNE8FcmJbyEKzFReSrFgIexXV4vZY47fZ1eqAoXpGlwR58eaSogLdNtVJENnI5Gzvcpv3ZEkELMSN5VX4IbO4W0ukWjLM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=6i7myuC9; arc=none smtp.client-ip=113.46.200.227
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="evoA1A3p"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="6i7myuC9"
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=0sJgBkvmlXENL4UZo2O0u5UDW2/sKbbMDz7Ua6C9GGQ=;
-	b=evoA1A3poZWbeWYJSrUTyZSvVymur7TYgzbb5Rv9XuG9rVPncHVXDCS0nkpXIVjxUbXu8NFnP
-	ZYMKkvQumkBatAofHuBKva98GHqLXMS/P/l43rK0Q5+WyHAtoxvaVqQV/1rOz2bjaoxWdWZcG0k
-	Dw8wa2X726VqVsc9zSyBBEw=
-Received: from mail.maildlp.com (unknown [172.19.163.200])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4flKzY20TDzLltx;
-	Tue, 31 Mar 2026 15:50:33 +0800 (CST)
+	bh=NnYaVZum+bxrIlqVzYb/4Mb17ttO7H1xxO1BG4kn4W8=;
+	b=6i7myuC9ku565MOt7YC/6eD8l6vZ38CHsrH69i4cMWz8u/WtkMxODTYgylx0KAIy10YrOSpLt
+	+YemB9Z2r3IKzZ5JHchRT9RrWEqN6x80rPwZglBU7sDlJf5/Ox57uyMjP4jbWPea8hpd9B6muaY
+	r9zLG9LuBjSB9zjqSdC7qAo=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4flL0W2KnFznTXc;
+	Tue, 31 Mar 2026 15:51:23 +0800 (CST)
 Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
-	by mail.maildlp.com (Postfix) with ESMTPS id A1F1D40563;
-	Tue, 31 Mar 2026 15:56:41 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 89BA940565;
+	Tue, 31 Mar 2026 15:56:47 +0800 (CST)
 Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.189.124) by
  kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Tue, 31 Mar 2026 15:56:40 +0800
+ 15.2.1544.36; Tue, 31 Mar 2026 15:56:46 +0800
 From: Fan Gong <gongfan1@huawei.com>
 To: Fan Gong <gongfan1@huawei.com>, Zhu Yikai <zhuyikai1@h-partners.com>,
 	<netdev@vger.kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric
@@ -44,9 +44,9 @@ CC: <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, luosifu
 	<zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>, Shi Jing
 	<shijing34@huawei.com>, Zheng Jiezhen <zhengjiezhen@h-partners.com>, Maxime
  Chevallier <maxime.chevallier@bootlin.com>
-Subject: [PATCH net-next v03 3/6] hinic3: Add ethtool coalesce ops
-Date: Tue, 31 Mar 2026 15:56:22 +0800
-Message-ID: <ffc357656b2412abf6e8de4200d289e761f3e6ea.1774940117.git.zhuyikai1@h-partners.com>
+Subject: [PATCH net-next v03 6/6] hinic3: Remove unneeded coalesce parameters
+Date: Tue, 31 Mar 2026 15:56:25 +0800
+Message-ID: <9999532202386c143af05341928de9345d35d94e.1774940117.git.zhuyikai1@h-partners.com>
 X-Mailer: git-send-email 2.51.0.windows.1
 In-Reply-To: <cover.1774940117.git.zhuyikai1@h-partners.com>
 References: <cover.1774940117.git.zhuyikai1@h-partners.com>
@@ -61,279 +61,49 @@ Content-Type: text/plain
 X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
  kwepemf100013.china.huawei.com (7.202.181.12)
 
-  Implement following ethtool callback function:
-.get_coalesce
-.set_coalesce
-
-  These callbacks allow users to utilize ethtool for detailed
-RX coalesce configuration and monitoring.
+  Remove unneeded coalesce parameters in irq handling.
 
 Co-developed-by: Zhu Yikai <zhuyikai1@h-partners.com>
 Signed-off-by: Zhu Yikai <zhuyikai1@h-partners.com>
 Signed-off-by: Fan Gong <gongfan1@huawei.com>
 ---
- .../ethernet/huawei/hinic3/hinic3_ethtool.c   | 233 +++++++++++++++++-
- 1 file changed, 231 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/huawei/hinic3/hinic3_irq.c | 6 +-----
+ drivers/net/ethernet/huawei/hinic3/hinic3_rx.h  | 3 ---
+ 2 files changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c b/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c
-index 7fd8ad053c6e..a9599a63696f 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c
-@@ -17,6 +17,11 @@
- #include "hinic3_nic_cfg.h"
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c b/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
+index d3b3927b5408..42464c007174 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
+@@ -156,13 +156,9 @@ static int hinic3_set_interrupt_moder(struct net_device *netdev, u16 q_id,
+ 	spin_unlock_irqrestore(&nic_dev->channel_res_lock, flags);
  
- #define HINIC3_MGMT_VERSION_MAX_LEN     32
-+/* Coalesce time properties in microseconds */
-+#define COALESCE_PENDING_LIMIT_UNIT     8
-+#define COALESCE_TIMER_CFG_UNIT         5
-+#define COALESCE_MAX_PENDING_LIMIT      (255 * COALESCE_PENDING_LIMIT_UNIT)
-+#define COALESCE_MAX_TIMER_CFG          (255 * COALESCE_TIMER_CFG_UNIT)
+ 	err = hinic3_set_interrupt_cfg(nic_dev->hwdev, info);
+-	if (err) {
++	if (err)
+ 		netdev_err(netdev,
+ 			   "Failed to modify moderation for Queue: %u\n", q_id);
+-	} else {
+-		nic_dev->rxqs[q_id].last_coalesc_timer_cfg = coalesc_timer_cfg;
+-		nic_dev->rxqs[q_id].last_pending_limit = pending_limit;
+-	}
  
- static void hinic3_get_drvinfo(struct net_device *netdev,
- 			       struct ethtool_drvinfo *info)
-@@ -986,9 +991,231 @@ static void hinic3_get_pause_stats(struct net_device *netdev,
- 	kfree(ps);
+ 	return err;
  }
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_rx.h b/drivers/net/ethernet/huawei/hinic3/hinic3_rx.h
+index cd2dcaab6cf7..a64a51d766c5 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_rx.h
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_rx.h
+@@ -112,9 +112,6 @@ struct hinic3_rxq {
+ 	dma_addr_t             cqe_start_paddr;
  
-+static int hinic3_set_queue_coalesce(struct net_device *netdev, u16 q_id,
-+				     struct hinic3_intr_coal_info *coal)
-+{
-+	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-+	struct hinic3_intr_coal_info *intr_coal;
-+	struct hinic3_interrupt_info info = {};
-+	int err;
-+
-+	intr_coal = &nic_dev->intr_coalesce[q_id];
-+
-+	intr_coal->coalesce_timer_cfg = coal->coalesce_timer_cfg;
-+	intr_coal->pending_limit = coal->pending_limit;
-+	intr_coal->rx_pending_limit_low = coal->rx_pending_limit_low;
-+	intr_coal->rx_pending_limit_high = coal->rx_pending_limit_high;
-+
-+	if (!test_bit(HINIC3_INTF_UP, &nic_dev->flags) ||
-+	    q_id >= nic_dev->q_params.num_qps || nic_dev->adaptive_rx_coal)
-+		return 0;
-+
-+	info.msix_index = nic_dev->q_params.irq_cfg[q_id].msix_entry_idx;
-+	info.interrupt_coalesc_set = 1;
-+	info.coalesc_timer_cfg = intr_coal->coalesce_timer_cfg;
-+	info.pending_limit = intr_coal->pending_limit;
-+	info.resend_timer_cfg = intr_coal->resend_timer_cfg;
-+	err = hinic3_set_interrupt_cfg(nic_dev->hwdev, info);
-+	if (err) {
-+		netdev_warn(netdev, "Failed to set queue%u coalesce\n", q_id);
-+		return err;
-+	}
-+
-+	return 0;
-+}
-+
-+static int is_coalesce_exceed_limit(struct net_device *netdev,
-+				    const struct ethtool_coalesce *coal)
-+{
-+	const struct {
-+		const char *name;
-+		u32 value;
-+		u32 limit;
-+	} coalesce_limits[] = {
-+		{"rx_coalesce_usecs",
-+		 coal->rx_coalesce_usecs,
-+		 COALESCE_MAX_TIMER_CFG},
-+		{"rx_max_coalesced_frames",
-+		 coal->rx_max_coalesced_frames,
-+		 COALESCE_MAX_PENDING_LIMIT},
-+		{"rx_max_coalesced_frames_low",
-+		 coal->rx_max_coalesced_frames_low,
-+		 COALESCE_MAX_PENDING_LIMIT},
-+		{"rx_max_coalesced_frames_high",
-+		 coal->rx_max_coalesced_frames_high,
-+		 COALESCE_MAX_PENDING_LIMIT},
-+	};
-+
-+	for (int i = 0; i < ARRAY_SIZE(coalesce_limits); i++) {
-+		if (coalesce_limits[i].value > coalesce_limits[i].limit) {
-+			netdev_err(netdev, "%s out of range %d-%d\n",
-+				   coalesce_limits[i].name, 0,
-+				   coalesce_limits[i].limit);
-+			return -EOPNOTSUPP;
-+		}
-+	}
-+	return 0;
-+}
-+
-+static int is_coalesce_legal(struct net_device *netdev,
-+			     const struct ethtool_coalesce *coal)
-+{
-+	int err;
-+
-+	err = is_coalesce_exceed_limit(netdev, coal);
-+	if (err)
-+		return err;
-+
-+	if (coal->rx_max_coalesced_frames_low >=
-+	    coal->rx_max_coalesced_frames_high &&
-+	    coal->rx_max_coalesced_frames_high > 0) {
-+		netdev_err(netdev, "invalid coalesce frame high %u, low %u, unit %d\n",
-+			   coal->rx_max_coalesced_frames_high,
-+			   coal->rx_max_coalesced_frames_low,
-+			   COALESCE_PENDING_LIMIT_UNIT);
-+		return -EOPNOTSUPP;
-+	}
-+
-+	return 0;
-+}
-+
-+static void check_coalesce_align(struct net_device *netdev,
-+				 u32 item, u32 unit, const char *str)
-+{
-+	if (item % unit)
-+		netdev_warn(netdev, "%s in %d units, change to %u\n",
-+			    str, unit, item - item % unit);
-+}
-+
-+#define CHECK_COALESCE_ALIGN(member, unit) \
-+	check_coalesce_align(netdev, member, unit, #member)
-+
-+static void check_coalesce_changed(struct net_device *netdev,
-+				   u32 item, u32 unit, u32 ori_val,
-+				   const char *obj_str, const char *str)
-+{
-+	if ((item / unit) != ori_val)
-+		netdev_dbg(netdev, "Change %s from %d to %u %s\n",
-+			   str, ori_val * unit, item - item % unit, obj_str);
-+}
-+
-+#define CHECK_COALESCE_CHANGED(member, unit, ori_val, obj_str) \
-+	check_coalesce_changed(netdev, member, unit, ori_val, obj_str, #member)
-+
-+static int hinic3_set_hw_coal_param(struct net_device *netdev,
-+				    struct hinic3_intr_coal_info *intr_coal)
-+{
-+	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-+	int err;
-+	u16 i;
-+
-+	for (i = 0; i < nic_dev->max_qps; i++) {
-+		err = hinic3_set_queue_coalesce(netdev, i, intr_coal);
-+		if (err)
-+			return err;
-+	}
-+
-+	return 0;
-+}
-+
-+static int hinic3_get_coalesce(struct net_device *netdev,
-+			       struct ethtool_coalesce *coal,
-+			       struct kernel_ethtool_coalesce *kernel_coal,
-+			       struct netlink_ext_ack *extack)
-+{
-+	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-+	struct hinic3_intr_coal_info *interrupt_info;
-+
-+	interrupt_info = &nic_dev->intr_coalesce[0];
-+
-+	/* TX/RX uses the same interrupt.
-+	 * So we only declare RX ethtool_coalesce parameters.
-+	 */
-+	coal->rx_coalesce_usecs = interrupt_info->coalesce_timer_cfg *
-+				  COALESCE_TIMER_CFG_UNIT;
-+	coal->rx_max_coalesced_frames = interrupt_info->pending_limit *
-+					COALESCE_PENDING_LIMIT_UNIT;
-+
-+	coal->use_adaptive_rx_coalesce = nic_dev->adaptive_rx_coal;
-+
-+	coal->rx_max_coalesced_frames_high =
-+		interrupt_info->rx_pending_limit_high *
-+		COALESCE_PENDING_LIMIT_UNIT;
-+
-+	coal->rx_max_coalesced_frames_low =
-+		interrupt_info->rx_pending_limit_low *
-+		COALESCE_PENDING_LIMIT_UNIT;
-+
-+	return 0;
-+}
-+
-+static int hinic3_set_coalesce(struct net_device *netdev,
-+			       struct ethtool_coalesce *coal,
-+			       struct kernel_ethtool_coalesce *kernel_coal,
-+			       struct netlink_ext_ack *extack)
-+{
-+	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-+	struct hinic3_intr_coal_info *ori_intr_coal;
-+	struct hinic3_intr_coal_info intr_coal = {};
-+	char obj_str[32];
-+	int err;
-+
-+	err = is_coalesce_legal(netdev, coal);
-+	if (err)
-+		return err;
-+
-+	CHECK_COALESCE_ALIGN(coal->rx_coalesce_usecs, COALESCE_TIMER_CFG_UNIT);
-+	CHECK_COALESCE_ALIGN(coal->rx_max_coalesced_frames,
-+			     COALESCE_PENDING_LIMIT_UNIT);
-+	CHECK_COALESCE_ALIGN(coal->rx_max_coalesced_frames_high,
-+			     COALESCE_PENDING_LIMIT_UNIT);
-+	CHECK_COALESCE_ALIGN(coal->rx_max_coalesced_frames_low,
-+			     COALESCE_PENDING_LIMIT_UNIT);
-+
-+	ori_intr_coal = &nic_dev->intr_coalesce[0];
-+	snprintf(obj_str, sizeof(obj_str), "for netdev");
-+
-+	CHECK_COALESCE_CHANGED(coal->rx_coalesce_usecs, COALESCE_TIMER_CFG_UNIT,
-+			       ori_intr_coal->coalesce_timer_cfg, obj_str);
-+	CHECK_COALESCE_CHANGED(coal->rx_max_coalesced_frames,
-+			       COALESCE_PENDING_LIMIT_UNIT,
-+			       ori_intr_coal->pending_limit, obj_str);
-+	CHECK_COALESCE_CHANGED(coal->rx_max_coalesced_frames_high,
-+			       COALESCE_PENDING_LIMIT_UNIT,
-+			       ori_intr_coal->rx_pending_limit_high, obj_str);
-+	CHECK_COALESCE_CHANGED(coal->rx_max_coalesced_frames_low,
-+			       COALESCE_PENDING_LIMIT_UNIT,
-+			       ori_intr_coal->rx_pending_limit_low, obj_str);
-+
-+	intr_coal.coalesce_timer_cfg =
-+		(u8)(coal->rx_coalesce_usecs / COALESCE_TIMER_CFG_UNIT);
-+	intr_coal.pending_limit = (u8)(coal->rx_max_coalesced_frames /
-+				      COALESCE_PENDING_LIMIT_UNIT);
-+
-+	nic_dev->adaptive_rx_coal = coal->use_adaptive_rx_coalesce;
-+
-+	intr_coal.rx_pending_limit_high =
-+		(u8)(coal->rx_max_coalesced_frames_high /
-+		     COALESCE_PENDING_LIMIT_UNIT);
-+
-+	intr_coal.rx_pending_limit_low =
-+		(u8)(coal->rx_max_coalesced_frames_low /
-+		     COALESCE_PENDING_LIMIT_UNIT);
-+
-+	/* coalesce timer or pending set to zero will disable coalesce */
-+	if (!nic_dev->adaptive_rx_coal &&
-+	    (!intr_coal.coalesce_timer_cfg || !intr_coal.pending_limit))
-+		netdev_warn(netdev, "Coalesce will be disabled\n");
-+
-+	return hinic3_set_hw_coal_param(netdev, &intr_coal);
-+}
-+
- static const struct ethtool_ops hinic3_ethtool_ops = {
--	.supported_coalesce_params      = ETHTOOL_COALESCE_USECS |
--					  ETHTOOL_COALESCE_PKT_RATE_RX_USECS,
-+	.supported_coalesce_params      = ETHTOOL_COALESCE_RX_USECS |
-+					  ETHTOOL_COALESCE_RX_MAX_FRAMES |
-+					  ETHTOOL_COALESCE_USE_ADAPTIVE_RX |
-+					  ETHTOOL_COALESCE_RX_MAX_FRAMES_LOW |
-+					  ETHTOOL_COALESCE_RX_MAX_FRAMES_HIGH,
- 	.get_link_ksettings             = hinic3_get_link_ksettings,
- 	.get_drvinfo                    = hinic3_get_drvinfo,
- 	.get_msglevel                   = hinic3_get_msglevel,
-@@ -1004,6 +1231,8 @@ static const struct ethtool_ops hinic3_ethtool_ops = {
- 	.get_eth_ctrl_stats             = hinic3_get_eth_ctrl_stats,
- 	.get_rmon_stats                 = hinic3_get_rmon_stats,
- 	.get_pause_stats                = hinic3_get_pause_stats,
-+	.get_coalesce                   = hinic3_get_coalesce,
-+	.set_coalesce                   = hinic3_set_coalesce,
- };
+ 	struct dim             dim;
+-
+-	u8                     last_coalesc_timer_cfg;
+-	u8                     last_pending_limit;
+ } ____cacheline_aligned;
  
- void hinic3_set_ethtool_ops(struct net_device *netdev)
+ struct hinic3_dyna_rxq_res {
 -- 
 2.43.0
 
