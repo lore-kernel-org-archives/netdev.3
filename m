@@ -1,94 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93A123536B;
-	Tue, 31 Mar 2026 08:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EEC93EC2C7
+	for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 08:49:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774946381; cv=none; b=KlWOK8OgTa9U27QrwNoqW2Tdc8MY2LyD0cUREqgklWYpmh+e1y4xLJ84ZWxb6fiEXNYqUKMDU25cfTmrjunIaW2MCyP6ftD/XGQbekGMtpnv1Uc5hxKvx/2XjGgnAi8EJXpfVViYOg/58LrZSyCDxCsXyexFp6n/uUiF6TqK/YM=
+	t=1774946982; cv=none; b=CrEBarWYeuIlm5G45UKgh1vl4Sz/fkJLm7b+i3NgDaRq7qrPzywKgAgLAcqP+tDMcXCPPSQXAPgNUQL8HStbsdZtxQJjMO6TIl83mDeKAW6P7OYPPv4hfMJ0nYMdl6OcThIHBUgdjYVfe5jL1USYmz2+EGVoL+PbFoFxNKYN8hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774946381; c=relaxed/simple;
-	bh=9sA0RSLV5+ly21pfDzUPFohcEh6PFz1+BwavgS11Jjk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YYmSgpPv2eEwjvMGhml08haE/RXfa7ty0YlCjPJ0GPaBy8cGQuOdlAMDpSsbEwXj2JuUuee86UsuwB5UAN6kVj2x4Qiq52nVSip3TyjQr/KnCVyuoidBnD1kur9oL9ExCWUwHPgNPuLtf8Y2kUs9zBupS+8eLqK8qzt7RQhDQe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QXdHaeEt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774946982; c=relaxed/simple;
+	bh=RS1Ck0BGfQhaAUv2uBlmWhFdskT6vREcAGwkW0luATc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kmTs6TPJZX8SZj4vME2FTV/WYLiFp28oWyISuYDUbFq8qzvd3AIVJh9ipM0FyNqa8FNAlWDFHEX5tE6tCzN+0P43shdB7sDF23LnRZ1rInyXsyb8wMgBrniGu7/Biy4thlJqsIjj4x83iFZxZ/xIRAHkA7zbsdm6nCiXjEt0Zhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PNLvLIXw; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QXdHaeEt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E524DC19423;
-	Tue, 31 Mar 2026 08:39:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774946380;
-	bh=9sA0RSLV5+ly21pfDzUPFohcEh6PFz1+BwavgS11Jjk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QXdHaeEtt5Ygpyji6z/xXuLjEqwGjMQ/Sp1FN/mQ2+fxi2PSQp7uWY/j0NOmTQSTw
-	 wL8FNAz3qm7sxxFcktmOGZoPY0Ijih+SPXYWE8u6EYWx5qVJ87XUTfv6G+eIXPVNuh
-	 mbDjmCJQlg4JPOprQJhnmegmjeeTDKhk7fAXzwQHPdd4KVN60L7abuTEXxteDa1mV9
-	 P2SCxMQ3nTv39zNrP4dCNDeUH88jiuMxgs6k9PqoPpCFkSLvJuwquC2I/jeBe8S67m
-	 ywYE3vpGeijji9987NQqLhFiSlMRfwsXVV1LMpaeO5cKfvGYMtHiqkGjGR5SyMmXKy
-	 NVL5A4/QbSnFA==
-Date: Tue, 31 Mar 2026 11:39:36 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Zhiping Zhang <zhipingz@meta.com>
-Cc: Keith Busch <kbusch@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Bjorn Helgaas <bhelgaas@google.com>, linux-rdma@vger.kernel.org,
-	linux-pci@vger.kernel.org, netdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, Yochai Cohen <yochai@nvidia.com>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Bjorn Helgaas <helgaas@kernel.org>
-Subject: Re: [RFC v2 1/2] vfio: add callback to get tph info for dmabuf
-Message-ID: <20260331083936.GB814676@unreal>
-References: <20260324234615.3731237-1-zhipingz@meta.com>
- <20260324234615.3731237-2-zhipingz@meta.com>
- <20260325082534.GN814676@unreal>
- <acW2BwQKaUbS3eL9@kbusch-mbp>
- <CAH3zFs1nbAKpYxwzMcwpC_Sdy+3tE0n0wUzxJ411gV-q1O++qQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PNLvLIXw"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b97ed4ad579so856096466b.3
+        for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 01:49:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774946978; x=1775551778; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CYw2GjIKOsjp/mmCKVfO+JWSxrQEDXep6q58GlKZmXM=;
+        b=PNLvLIXwNMP4tBjkIMGQhnu/OKDoz9ajO4vRZuI2LgJiDI7qrCPS0H+SeAueQ8gMv5
+         XXFeYcgqvovqqG/8tIRbVkwrb/bzGyf8m9lZLUVLonjI1aM+tiZFXFEgtE7wTiAAvXaV
+         M3sbixzeXOHPuSqI/9Up9QQd3TonM1sIMkcch6K+obj1bUJn2PRKtq0ZbLF4Y6piEtmx
+         WP6xuroc4RpyOLM1yKwDGJ3KslnTuf+nXQhU9wzzLpmOaKlVV0VdiG5foe7w1Gs5XFmu
+         b/B+6BOiG5JA+NyaThLjEM1Psq5nIbpyouw5yMXA6vGGak1a9C28Pw4GRsjKLoOn8Z0e
+         wKwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774946978; x=1775551778;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=CYw2GjIKOsjp/mmCKVfO+JWSxrQEDXep6q58GlKZmXM=;
+        b=JDO31+oKBoTEc0FuzVpSUdM5RWQjCSUXfZeiTKYcHskgk8bf6zYfGJV6hcb35qKMwk
+         NPzakrMpJvED8UI5mnB03f3GyBFquKQ1tvXjX32FDnj57hODUwh2ScQMKa4IorM9O+YO
+         3Xlte0bRRWKX81nI+LGLirsauADPh+WStIlUv3O0/VlOJxHlmcW5KjxN6vnKazhgzbui
+         8hBGyVAelI0FLJak9HpYBS+jA7n3VKqa3ru95+UFl/O2wbjkafRYnA6rs8mSgzw5ljhG
+         HtZFDf4yUYJJi7QKhqGLfKFL/FhFpzT9b20txMdW5ZZZxJvtp1ULQmNcvhTSDk3g4hAI
+         jRMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWRS6Cfolbukb4OmP6Hzmch09i+WlKSNOI+7HQMapdrCmq8483f+lewDNa5+CFgVG0iKGRKUBA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YybPi/4pW/6ffy00ATqTzvXZRElxT5ypMEVTeTq240yYhkdwaDl
+	ud95NcFjClQPptc6wzxnLpihF/VNOelOL/4jPEkqzI8BzE6PFw6CPFH6
+X-Gm-Gg: ATEYQzwLGyha/5+/hUeksrxX9g663kmXb5VFnhrjAquQajavayHR14VdCWQ1rqJJE01
+	E+IhznacdsKKwIdDyqu30VGjuhsUYb4876nZW4n2hvpvGz/jcJyZTNykVl2hS00gCnzBb33392C
+	hqy2y4CIYcmXFyy2RQjkZ2yxt03OEgIsGx1KzKDnr4LfanfaiSns5Ubq6anVGNK89+qisHkVtXA
+	eXiN4aauWlYg1adYdAUf14/EXcQqwMdSyqIkXgxQ0xCX43kvWh2yzirL5e1JNjgS3cTRb4xW6sQ
+	KRxy06iTXkAeVqK6ROD+yFT5lI1pDMtMz6eAmUxrly7yDNxPMS7hoyd0j9AVJBg/uE7CsJP53OK
+	hoj/C0gEOJSdVWYN/KDvRA9X0V8EzWujg2rdiaPbuKAmcQQ1iepVvBLIpocQz6HPzM2iofev6cZ
+	uZWKSpKbBKs5qr8egMXQ==
+X-Received: by 2002:a17:907:ca84:b0:b97:cc05:61a7 with SMTP id a640c23a62f3a-b9b5098de17mr954021166b.51.1774946978317;
+        Tue, 31 Mar 2026 01:49:38 -0700 (PDT)
+Received: from gmail.com ([2408:820c:2708:af80:8182:8384:8586:8788])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9b7ae7416dsm384119966b.28.2026.03.31.01.49.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Mar 2026 01:49:37 -0700 (PDT)
+From: Qingfang Deng <dqfext@gmail.com>
+To: Jaco Kroon <jaco@uls.co.za>
+Cc: linux-ppp@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Paul Mackerras <paulus@ozlabs.org>,
+	Dianne Skoll <dianne@skoll.ca>,
+	James Carlson <carlsonj@workingcode.com>
+Subject: Re: [PATCH net-next] pppoe: update Kconfig URLs
+Date: Tue, 31 Mar 2026 16:49:20 +0800
+Message-ID: <20260331084920.300558-1-dqfext@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <f37fca7f-710c-4f7a-a7c5-9d8cc129bf21@uls.co.za>
+References: <20260331033303.5664-1-dqfext@gmail.com> <0aa6aa20-0e2a-48e9-8273-53b2fecd287b@uls.co.za> <20260331075438.290119-1-dqfext@gmail.com> <f37fca7f-710c-4f7a-a7c5-9d8cc129bf21@uls.co.za>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH3zFs1nbAKpYxwzMcwpC_Sdy+3tE0n0wUzxJ411gV-q1O++qQ@mail.gmail.com>
 
-On Thu, Mar 26, 2026 at 03:55:44PM -0700, Zhiping Zhang wrote:
-> On Thu, Mar 26, 2026 at 3:41 PM Keith Busch <kbusch@kernel.org> wrote:
-> >
-> > >
-> > On Wed, Mar 25, 2026 at 10:25:34AM +0200, Leon Romanovsky wrote:
-> > > On Tue, Mar 24, 2026 at 04:46:02PM -0700, Zhiping Zhang wrote:
-> > > >  struct vfio_device_feature_dma_buf {
-> > > >     __u32   region_index;
-> > > >     __u32   open_flags;
-> > > > -   __u32   flags;
-> > > > -   __u32   nr_ranges;
-> > > > +   __u32   flags;
-> > > > +#define VFIO_DMABUF_FL_TPH         (1U << 0) /* TPH info is present */
-> > > > +#define VFIO_DMABUF_TPH_PH_SHIFT   1         /* bits 1-2: PH (2-bit) */
-> > > > +#define VFIO_DMABUF_TPH_PH_MASK    0x6U
-> > > > +#define VFIO_DMABUF_TPH_ST_SHIFT   16        /* bits 16-31: steering tag */
-> > > > +#define VFIO_DMABUF_TPH_ST_MASK            0xffff0000U
-> > >
-> > > This extension of flags is basically kills future extension of this
-> > > struct for anything that includes TPH.
-> > >
-> > > Add new
-> > > enum vfio_device_feature_dma_buf_flags {
-> > >     VFIO_DMABUF_FL_TPH  = 1 << 0
-> > > }
+Hi,
+
+On Tue, 31 Mar 2026 10:08:46 +0200, Jaco Kroon wrote:
 > 
-> yes we can do that.
-> 
-> > >
-> > > > +   __u32   nr_ranges;
-> > >
-> > > add your "__u16 steering_tag" and "__u8 ph" fields here.
-> >
-> That is what I did in V1, Leon.
+> I like this.  You have however dropped the ppp.samba.org link, just 
+> re-add that I reckon.
 
-Not really, you did only half of the work. You didn't introduce new flag
-and didn't calculate "old dma range" position.
+I think this link belongs in the PPP section:
 
-Thanks
+diff --git a/drivers/net/ppp/Kconfig b/drivers/net/ppp/Kconfig
+index f57fba84fe55..cf927bdc288f 100644
+--- a/drivers/net/ppp/Kconfig
++++ b/drivers/net/ppp/Kconfig
+@@ -13,10 +13,9 @@ config PPP
+ 	  otherwise you can't use it; most Internet access providers these
+ 	  days support PPP rather than SLIP.
+ 
+-	  To use PPP, you need an additional program called pppd as described
+-	  in the PPP-HOWTO, available at
+-	  <http://www.tldp.org/docs.html#howto>.  Make sure that you have
+-	  the version of pppd recommended in <file:Documentation/Changes>.
++	  To use PPP, you need an additional program called pppd, available at
++	  <https://ppp.samba.org>.  Make sure that you have the version of pppd
++	  recommended in <file:Documentation/Changes>.
+ 	  The PPP option enlarges your kernel by about 16 KB.
+ 
+ 	  There are actually two versions of PPP: the traditional PPP for
+
+
+Your thoughts?
