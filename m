@@ -1,66 +1,86 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27093B0AD6
-	for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 23:43:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F052311958
+	for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 23:49:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775000639; cv=none; b=S6F4QU38NPXKQigdfh2aAvzUZmfLLKiXLLenKvERyB7lNQPflGYeASfPc/CNVbTcder0BeA6efodOjzhFXWXuLx/ipzXqGCzPT9M0Jlf4QIse03uJf1wH1AdTyL5aKuf7DPJTPdNcBNnnHVoTLF3NQ9oC6R+7nsTjDK7sTm92DU=
+	t=1775000972; cv=none; b=Hk6lI4rQqNhm+c4mtskEzrr0z3u7fnJ0CNd1bFFYqtRSRBJomcCGBlN+iswU9BzbnWE6VtF5snom9oO5S/oqyQpjMCwksXziXF+11+uUMpGAvK4HVhSRQY3gWYZiSL2YEq1HEd9pLX2V5yw0MM+vzDYY39OsYGU2wQTx/i5McjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775000639; c=relaxed/simple;
-	bh=wj0/xKBgALzavOxAhIq01G4Rvn8u+bDBzb3YZdAlTlc=;
+	s=arc-20240116; t=1775000972; c=relaxed/simple;
+	bh=UyMVRepP/rnOhUnJa8xf8Ft93q2ZedCPMrUbrrTdRgk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fvCO4EhIeX+6HrTduq+PKEeVUOIAysHzjGmHL3rEi1jlh/pKrWVfpn98Phtx/VH7pw0tyBU3Jn18nlwDEK1UTGMbsUAwh6d+58txJNloozF7/lp87ly3xcwktWhGmtciuBTXJxLdG4t9LwHVqNJDUQcVm9mVa8O1LJPuToOomnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M3+WQA9j; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=WDMKSfPFTqalRXMcLeWTYMLLoerOJtqnSaYtXqtxBsTQ1wJoDqaH3cAcICqvAaojqPGOWEjMYHm8QF8rm+lTuUzbINO5AJo8evHgA/0UXgt5unNvMISsy6mcYkgWBUqmSZFGoWI+gITvvySehF/fnyoEpLQGWUn1oWzA0SL1OdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b=XCH4OTXs; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M3+WQA9j"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775000637; x=1806536637;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=wj0/xKBgALzavOxAhIq01G4Rvn8u+bDBzb3YZdAlTlc=;
-  b=M3+WQA9jAmMfl/nq1t9o6Ppuw9DCpmOlr7x/vI6s0Dfi3h3gQVnQbMzJ
-   94idZ6J6neF26e3BTuVBWxqHO/uSvApMNeMXbbr/W16OiS6WGTP7diMks
-   nlplcEBnZ1Em5jNBsf7/rCClISYbzo8oNDxsjAD+Mh2x3QHvs2vgl7Xoa
-   cwNW7vZCe9RMfmfIoG9qQOlUSScUYvFrM43WAv6YG+u7jVbiLcOfPhhGe
-   ww1DbGc8OnwXptC1t/pIOCfZYeaIiggwIxCPJ5iL4GM24pMOk2nz1rHus
-   dUpVbahZbrslxaWk7kYhd42mjc0yPBWSKN8qOYgB+8rva9oZijRwnohjm
-   g==;
-X-CSE-ConnectionGUID: UEjmN85+Q9GoLbsqMru0CA==
-X-CSE-MsgGUID: DAykrzZWS6W/tLGl1qeQIg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="86332442"
-X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
-   d="scan'208";a="86332442"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 16:43:57 -0700
-X-CSE-ConnectionGUID: yz9R+XOgSIyjpugxB6yAEA==
-X-CSE-MsgGUID: /G3vij3ISleQfy8tNz8KFA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
-   d="scan'208";a="257008198"
-Received: from lkp-server01.sh.intel.com (HELO 283bf2e1b94a) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 31 Mar 2026 16:43:54 -0700
-Received: from kbuild by 283bf2e1b94a with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w7ikQ-000000004Qb-2pib;
-	Tue, 31 Mar 2026 23:43:50 +0000
-Date: Wed, 1 Apr 2026 07:43:02 +0800
-From: kernel test robot <lkp@intel.com>
-To: Wei Wang <weibunny.kernel@gmail.com>, netdev@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Daniel Zahka <daniel.zahka@gmail.com>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	David Wei <dw@davidwei.uk>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b="XCH4OTXs"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c70bfef17a4so4600105a12.2
+        for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 16:49:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20230601.gappssmtp.com; s=20230601; t=1775000970; x=1775605770; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MQoMxYx/EUYySte96DMrsK+QpxxOGj4DhnUvsx3xPFg=;
+        b=XCH4OTXsUJXyIdoMk99VsriQPu+BVD1jk81Xt96YYXrm0JcuK9MgBkhwJWNvwpC8cN
+         QtFAPaFLLUf36RR71WUi+ih2yKQH8x0oPgl66Rr/XGNFw9xKc6FrvHuIB1M7T/CJdVgw
+         fL+TplxAYJONqAeCOpfQtf+EENCxBi/5d2A6kokLzM6SscjPuRnIwkHlsjqXEMX5ziCv
+         dXpzUbCQqxnaNHFk5Wb16N+oLZ3bluPpD5yn4mdQCVzo4cp8+fuGo5gf8y17fYC+JpqC
+         5D2LeF40NCrjVMJqLHBye1lhs/+s6ram4y2XlbkRTnQk/Dt+VWKxh2op5j9vw4ZCPKNe
+         rDUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775000970; x=1775605770;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MQoMxYx/EUYySte96DMrsK+QpxxOGj4DhnUvsx3xPFg=;
+        b=HhPZias2812Qb8dAmJmC2mHYxCY2S4MsIGix4Wb8Ni31X1ROYoyAE9P7ELUoVN1hHA
+         0vOzhlw8xNfk5dHMqGu/0p14iB9p+ufuHt0wx8FNDG/6mNryYGnW89+iGi+VSD/2B2zY
+         M1cwam0QOkAOdlIZwFSdN+IZUIpJKUulx4DyCcG5++qOnsoIahC4IC8zB8YtYK6YCEJe
+         muRj90cU5j1FDCfp8XDPaTKOYLj9oScls9BXtq5Cxl5r1o+3pvCipjqEypg6ZsVuyrts
+         x8TiKairr8lfK2gOChY1aIOlBIGlQ5rDrK7xlht3xgecAt+W5kx9v0FVPxEAu3qNS5av
+         CKiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWgJeDDndbkpI6OZyK2Et5Ld4XGPY7m9pZeDXhyee/KnVi2DhWhm5/rQuDejPNfJmfGxGlggPo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwegpbCMga+c7bBCwns2VO7I0pIrc2MB85S6iAzXKvlnEkriveZ
+	ADi3bww5j6v3C4TbbCWU3DcWY93fNWDf57QUbE59byGDaSqYMjCmbzKDj+gwCEb9No0=
+X-Gm-Gg: ATEYQzwjJp2jawL3fW9z+66ajETRcoqwOAzTkiQ8j8Y0ze0IKZpamEab9YkzgefcbVJ
+	6pwLTHVHDPZ7IG3UamdwmPpqy+TC2aoaowrnmir2kISesM2/+EsVqgJI80K16gGl/kfNO6dWXqH
+	Pnj9EzoxKL8tCAkmjO2MajaoNkz1HTDgQPs8CdLQlvHBUcgs0TBTOw8HT9tDmgHJlCeOE7B8sqv
+	3Tg/KxmucUPFgVG4fdSqOyki40kKxHKXDZ4DsVXsa3Yhfirwk/N6HF1IGJiYXbHLYPWRHuNgzwH
+	S85bMacaVIKbmOm5XkDqzju04e+LYv5YNJXQw3XN99ZnS27SNv6tOSMkb0AXT70jVzhDokt9GCo
+	pNKjCAR/7514N971BNH1eRb3fs0L++DgWTE8ZK9ungXx553z7Jws4oV12xQ+29fhx9bf/vhCopZ
+	MQPDQ0
+X-Received: by 2002:a05:6a20:94ca:b0:39b:7f5f:d591 with SMTP id adf61e73a8af0-39ef79e7243mr1045522637.63.1775000970519;
+        Tue, 31 Mar 2026 16:49:30 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:43::])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c76bdaed389sm276018a12.12.2026.03.31.16.49.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Mar 2026 16:49:29 -0700 (PDT)
+Date: Tue, 31 Mar 2026 16:49:29 -0700
+From: Joe Damato <joe@dama.to>
+To: Wang Jun <1742789905@qq.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, Wei Wang <weibunny@fb.com>
-Subject: Re: [PATCH v9 net-next 2/5] psp: add new netlink cmd for dev-assoc
- and dev-disassoc
-Message-ID: <202604010708.Yck6IfPj-lkp@intel.com>
-References: <20260330223143.2394706-3-weibunny.kernel@gmail.com>
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	gszhai@bjtu.edu.cn, 25125332@bjtu.edu.cn, 25125283@bjtu.edu.cn,
+	23120469@bjtu.edu.cn
+Subject: Re: [PATCH v2] net: ns83820: fix DMA mapping error handling in
+ hard_start_xmit
+Message-ID: <acxdiUMDaYE5WmzX@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>, Wang Jun <1742789905@qq.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	gszhai@bjtu.edu.cn, 25125332@bjtu.edu.cn, 25125283@bjtu.edu.cn,
+	23120469@bjtu.edu.cn
+References: <51dfd8ae-dc4e-4837-9b00-c596c457117e@redhat.com>
+ <tencent_EB7280CE1394ABF5035CDA078FC60A481906@qq.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,109 +89,37 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260330223143.2394706-3-weibunny.kernel@gmail.com>
+In-Reply-To: <tencent_EB7280CE1394ABF5035CDA078FC60A481906@qq.com>
 
-Hi Wei,
+On Tue, Mar 31, 2026 at 08:21:41PM +0800, Wang Jun wrote:
+> Hi Paolo Abeni,
+> 
+> This is v2 of the DMA mapping error handling fix for ns83820. Changes since v1:
+> 
+> - Added queue restart check in error path to avoid potential TX queue stall
+>   (as pointed out by the AI review)
+> - Adjusted variable declarations to follow reverse christmas tree order
+> - Switched from dma_unmap_single to dma_unmap_page for fragments
 
-kernel test robot noticed the following build warnings:
+Usually you'd put the changelog below. Take a look at how this recent patch
+does it:
 
-[auto build test WARNING on net-next/main]
+https://lore.kernel.org/netdev/20260331123858.1912449-2-charles.perry@microchip.com/
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Wei-Wang/psp-add-admin-non-admin-version-of-psp_device_get_locked/20260331-065558
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20260330223143.2394706-3-weibunny.kernel%40gmail.com
-patch subject: [PATCH v9 net-next 2/5] psp: add new netlink cmd for dev-assoc and dev-disassoc
-config: sh-randconfig-r113-20260401 (https://download.01.org/0day-ci/archive/20260401/202604010708.Yck6IfPj-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 15.2.0
-sparse: v0.6.5-rc1
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260401/202604010708.Yck6IfPj-lkp@intel.com/reproduce)
+> diff --git a/drivers/net/ethernet/natsemi/ns83820.c b/drivers/net/ethernet/natsemi/ns83820.c
+> index cdbf82affa7b..f8d037db4ffb 100644
+> --- a/drivers/net/ethernet/natsemi/ns83820.c
+> +++ b/drivers/net/ethernet/natsemi/ns83820.c
+> @@ -1051,6 +1051,12 @@ static netdev_tx_t ns83820_hard_start_xmit(struct sk_buff *skb,
+>  	int stopped = 0;
+>  	int do_intr = 0;
+>  	volatile __le32 *first_desc;
+> +	int i;
+> +	int frag_mapped_count = 0;
+> +	unsigned int main_len = 0;
+> +	unsigned int frag_dma_len[MAX_SKB_FRAGS];
+> +	dma_addr_t main_buf = 0;
+> +	dma_addr_t frag_dma_addr[MAX_SKB_FRAGS];
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202604010708.Yck6IfPj-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
->> net/psp/psp_nl.c:494:13: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected struct psp_dev [noderef] __rcu *_n_ @@     got struct psp_dev *psd @@
-   net/psp/psp_nl.c:494:13: sparse:     expected struct psp_dev [noderef] __rcu *_n_
-   net/psp/psp_nl.c:494:13: sparse:     got struct psp_dev *psd
-
-vim +494 net/psp/psp_nl.c
-
-   449	
-   450	int psp_nl_dev_assoc_doit(struct sk_buff *skb, struct genl_info *info)
-   451	{
-   452		struct psp_dev *psd = info->user_ptr[0];
-   453		struct psp_assoc_dev *psp_assoc_dev;
-   454		struct net_device *assoc_dev;
-   455		u32 assoc_ifindex;
-   456		struct sk_buff *rsp;
-   457		struct net *net;
-   458		int nsid;
-   459	
-   460		if (GENL_REQ_ATTR_CHECK(info, PSP_A_DEV_IFINDEX))
-   461			return -EINVAL;
-   462	
-   463		if (info->attrs[PSP_A_DEV_NSID]) {
-   464			nsid = nla_get_s32(info->attrs[PSP_A_DEV_NSID]);
-   465	
-   466			net = get_net_ns_by_id(genl_info_net(info), nsid);
-   467			if (!net) {
-   468				NL_SET_BAD_ATTR(info->extack,
-   469						info->attrs[PSP_A_DEV_NSID]);
-   470				return -EINVAL;
-   471			}
-   472		} else {
-   473			net = get_net(genl_info_net(info));
-   474		}
-   475	
-   476		psp_assoc_dev = kzalloc(sizeof(*psp_assoc_dev), GFP_KERNEL);
-   477		if (!psp_assoc_dev) {
-   478			put_net(net);
-   479			return -ENOMEM;
-   480		}
-   481	
-   482		assoc_ifindex = nla_get_u32(info->attrs[PSP_A_DEV_IFINDEX]);
-   483		assoc_dev = netdev_get_by_index(net, assoc_ifindex,
-   484						&psp_assoc_dev->dev_tracker,
-   485						GFP_KERNEL);
-   486		if (!assoc_dev) {
-   487			put_net(net);
-   488			kfree(psp_assoc_dev);
-   489			NL_SET_BAD_ATTR(info->extack, info->attrs[PSP_A_DEV_IFINDEX]);
-   490			return -ENODEV;
-   491		}
-   492	
-   493		/* Check if device is already associated with a PSP device */
- > 494		if (cmpxchg(&assoc_dev->psp_dev, NULL, psd)) {
-   495			NL_SET_ERR_MSG(info->extack,
-   496				       "Device already associated with a PSP device");
-   497			netdev_put(assoc_dev, &psp_assoc_dev->dev_tracker);
-   498			put_net(net);
-   499			kfree(psp_assoc_dev);
-   500			return -EBUSY;
-   501		}
-   502	
-   503		psp_assoc_dev->assoc_dev = assoc_dev;
-   504		rsp = psp_nl_reply_new(info);
-   505		if (!rsp) {
-   506			rcu_assign_pointer(assoc_dev->psp_dev, NULL);
-   507			netdev_put(assoc_dev, &psp_assoc_dev->dev_tracker);
-   508			put_net(net);
-   509			kfree(psp_assoc_dev);
-   510			return -ENOMEM;
-   511		}
-   512	
-   513		list_add_tail(&psp_assoc_dev->dev_list, &psd->assoc_dev_list);
-   514	
-   515		put_net(net);
-   516	
-   517		psp_nl_notify_dev(psd, PSP_CMD_DEV_CHANGE_NTF);
-   518	
-   519		return psp_nl_reply_send(rsp, info);
-   520	}
-   521	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+You mentioned it was fixed to reverse christmas tree in the changelog above,
+but doesn't seem like it in the patch?
