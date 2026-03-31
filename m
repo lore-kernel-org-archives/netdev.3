@@ -1,124 +1,128 @@
-Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B19E4266BA;
-	Tue, 31 Mar 2026 16:51:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.117.225.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5A0426D20;
+	Tue, 31 Mar 2026 16:52:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975911; cv=none; b=ko74yVaOo+FbU911dy5cBwSINN0ho/uWGep/EwtgY+l//wZLNWTvVrfZY7pOmI4aXPmz3oJ25yCKGc/Wor8YUPK+IFDTXVGJncI/+SpnqgJIJv8c1VNT2uRUHXr0kNuOwNR2+6gmW5jgd6I+tgZkwx74krARHWQzavZMu3LE52U=
+	t=1774975972; cv=none; b=bO48wH9/IwxI/IvDs9veF12o3hYtN+4Y6F9uLjOpo96YlVXW0T8Jn3yB2YZl4j8pJFONNLdN1qFwS5gUJqz7jz7buFRz0rM+57sSdadufeJ4EvmAQw3SKAomS8GPwkJKhw0yVzzXTB1Ksq+v+LX8heKOQ0z5pP34xLh4nvvsG+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975911; c=relaxed/simple;
-	bh=BCrwzD6ttTbaxfhTPSf9QJlID9s+VgHuvYje0FKxhw4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IqEOd+ENWi3cBOb3J4Ghs2Hd6jkz1wlmgzRi+FjxVDOqG90xumDdqmYPBhUL/Z9ZBoyO4koSr2GByc2LuUuKQNB9cALCHyRiLW8OGW80VocOvMnbCSYIEnyFri23TbHjuSZ4VxaAOr+HmxS9QJ5zT5r6fQGQVBm1DLgA/WBRpj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=pbSqU2tc; arc=none smtp.client-ip=130.117.225.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
+	s=arc-20240116; t=1774975972; c=relaxed/simple;
+	bh=Lfkw22piQF1Hnab39FNJQNBXwCljMCpCQxPx6A77SCo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UspMfp0SHQ7fT+k7tEhHgZYQ4YmzJ/Hwu603MCquCWqJgXe88I7aaFegQaYOpVY1VyHKKk6PO3AZTtA+lk64Tw3EBngPIsdvFZ0LOQik1aCeCIwrqEmYxWqTG5RD897FhBwWhKHKaYFDbCb8kbOLbra+KivjsUpFJBnepqAKDo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X4AZlpVN; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="pbSqU2tc"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=virtuozzo.com; s=relay; h=Content-Type:MIME-Version:Message-ID:Date:Subject
-	:From; bh=cmyO4L0pupPYl2ZiDlWDHRDENJhqCYsBYc/D1uvpZJw=; b=pbSqU2tcrOFLN1kXXOo
-	ZUMKIfNd0GGv88LBo3ZdozmnFXM6LLxtieHRlHfnFJRchtBIuas3ZZNJzRXCYky+CcmfLXpQfXu4q
-	EpsSPN5f1xqzOY13G6y3VowXfCXfUW5/hmx/CB6G8JCazTazXLjiieR9w8pazfcO8EAbEirwdgiag
-	fbTDEjXZKKC98k0YzTYZKiVpz3ZZ+00GB6r/0n8qLyifSBUet+k4XN+WNSBXwTLnqO47KLrcPpE4D
-	xtcnXuj1NT5oSayG1D4VNJThkUKDn0yGTMhAl/lZGL4meWhkSYijRG+XMmH4W6TJ6159m4rFlbXpB
-	0qg4FywdHma/W6g==;
-Received: from [130.117.225.5] (helo=finist-alma9.vzint.dev)
-	by relay.virtuozzo.com with esmtp (Exim 4.96)
-	(envelope-from <khorenko@virtuozzo.com>)
-	id 1w7cHC-00HHGg-01;
-	Tue, 31 Mar 2026 18:51:16 +0200
-From: Konstantin Khorenko <khorenko@virtuozzo.com>
-To: "David S . Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X4AZlpVN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774975971; x=1806511971;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Lfkw22piQF1Hnab39FNJQNBXwCljMCpCQxPx6A77SCo=;
+  b=X4AZlpVNWWEAMWpb8hPKHQ9n1/Xn4xhzARuhzxyqTBO2IH0Pdq26JOAy
+   23Iv56tok36Hzak2WC7PiD8WZnjK+8d1Lm1CP52OcDscpurMtqBtJlGMC
+   w1s2OqME/lu6E9tWSq9Md1Vmo2FhyjGwVh08hKnydlTyVSZlITHfP6cXE
+   YafgvteVsh4TOfwatUoU2LYZAEus8DC/NBDw8cl4G1m3MEKpL8k2p87fE
+   /oHdq0lL09/kK/rf3fKr4U++S6yNZH8RlTFdTkOhnKj/naDjev6IUXHVw
+   6qGOELv6g5OlJ1xu0rIe0JpnsGKNbJJAs4p2vFmFWd37ogDht0k0QC9U+
+   A==;
+X-CSE-ConnectionGUID: ukq2CRnSTay4pUpuHlBsog==
+X-CSE-MsgGUID: nU0uPXOERPGuff0qYuiDcQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="76011992"
+X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
+   d="scan'208";a="76011992"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 09:52:50 -0700
+X-CSE-ConnectionGUID: wmrsDVQhSdaqqR9AcLAxQw==
+X-CSE-MsgGUID: Q6H8HRIDSP+9SoiiVpzixw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
+   d="scan'208";a="230863703"
+Received: from igk-lkp-server01.igk.intel.com (HELO 9958d990ccf2) ([10.211.93.152])
+  by orviesa004.jf.intel.com with ESMTP; 31 Mar 2026 09:52:46 -0700
+Received: from kbuild by 9958d990ccf2 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w7cKb-000000008SD-12F6;
+	Tue, 31 Mar 2026 16:52:45 +0000
+Date: Tue, 31 Mar 2026 18:51:52 +0200
+From: kernel test robot <lkp@intel.com>
+To: Jordan Rife <jrife@google.com>, netdev@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Jordan Rife <jrife@google.com>, bpf@vger.kernel.org,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
 	Eric Dumazet <edumazet@google.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Yusuke Suzuki <yusuke.suzuki@isovalent.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Cc: Simon Horman <horms@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Konstantin Khorenko <khorenko@virtuozzo.com>
-Subject: [PATCH v2 1/1] net: fix skb_ext_total_length() BUILD_BUG_ON with CONFIG_GCOV_PROFILE_ALL
-Date: Tue, 31 Mar 2026 19:50:27 +0300
-Message-ID: <20260331165125.959833-2-khorenko@virtuozzo.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20260331165125.959833-1-khorenko@virtuozzo.com>
-References: <20260331165125.959833-1-khorenko@virtuozzo.com>
+	Kuniyuki Iwashima <kuniyu@google.com>
+Subject: Re: [PATCH net-next v3 2/4] udp: Remove disconnected sockets from
+ the 4-tuple hash
+Message-ID: <202603311827.nefybt0I-lkp@intel.com>
+References: <20260330215707.2374657-3-jrife@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260330215707.2374657-3-jrife@google.com>
 
-When CONFIG_GCOV_PROFILE_ALL=y is enabled, the kernel fails to build:
+Hi Jordan,
 
-  In file included from <command-line>:
-  In function 'skb_extensions_init',
-      inlined from 'skb_init' at net/core/skbuff.c:5214:2:
-  ././include/linux/compiler_types.h:706:45: error: call to
-    '__compiletime_assert_1490' declared with attribute error:
-    BUILD_BUG_ON failed: skb_ext_total_length() > 255
+kernel test robot noticed the following build errors:
 
-CONFIG_GCOV_PROFILE_ALL adds -fprofile-arcs -ftest-coverage
--fno-tree-loop-im to CFLAGS globally. GCC inserts branch profiling
-counters into the skb_ext_total_length() loop and, combined with
--fno-tree-loop-im (which disables loop invariant motion), cannot
-constant-fold the result. BUILD_BUG_ON requires a compile-time constant
-and fails.
+[auto build test ERROR on net-next/main]
 
-The issue manifests in kernels with 5+ SKB extension types enabled
-(e.g., after addition of SKB_EXT_CAN, SKB_EXT_PSP). With 4 extensions
-GCC can still unroll and fold the loop despite GCOV instrumentation;
-with 5+ it gives up.
+url:    https://github.com/intel-lab-lkp/linux/commits/Jordan-Rife/udp-Only-compare-daddr-dport-when-sk_state-TCP_ESTABLISHED/20260331-082300
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20260330215707.2374657-3-jrife%40google.com
+patch subject: [PATCH net-next v3 2/4] udp: Remove disconnected sockets from the 4-tuple hash
+config: x86_64-kexec (https://download.01.org/0day-ci/archive/20260331/202603311827.nefybt0I-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260331/202603311827.nefybt0I-lkp@intel.com/reproduce)
 
-Mark skb_ext_total_length() with __no_profile to prevent GCOV from
-inserting counters into this function. Without counters the loop is
-"clean" and GCC can constant-fold it even with -fno-tree-loop-im active.
-This allows BUILD_BUG_ON to work correctly while keeping GCOV profiling
-for the rest of the kernel.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603311827.nefybt0I-lkp@intel.com/
 
-This also removes the CONFIG_KCOV_INSTRUMENT_ALL preprocessor guard
-introduced by d6e5794b06c0, as __no_profile handles both GCOV and KCOV
-instrumentation at the root cause level rather than just disabling the
-check.
+All errors (new ones prefixed by >>):
 
-Fixes: 5d21d0a65b57 ("net: generalize calculation of skb extensions length")
-Fixes: d6e5794b06c0 ("net: avoid build bug in skb extension length calculation")
+>> net/ipv4/udp.c:2182:31: error: call to undeclared function 'udp_get_table_prot'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    2182 |         struct udp_table *udptable = udp_get_table_prot(sk);
+         |                                      ^
+   net/ipv4/udp.c:2182:31: note: did you mean 'vm_get_page_prot'?
+   include/linux/mm.h:4105:10: note: 'vm_get_page_prot' declared here
+    4105 | pgprot_t vm_get_page_prot(vm_flags_t vm_flags);
+         |          ^
+>> net/ipv4/udp.c:2182:20: error: incompatible integer to pointer conversion initializing 'struct udp_table *' with an expression of type 'int' [-Wint-conversion]
+    2182 |         struct udp_table *udptable = udp_get_table_prot(sk);
+         |                           ^          ~~~~~~~~~~~~~~~~~~~~~~
+   2 errors generated.
 
-Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
-Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
----
- net/core/skbuff.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 0e217041958a..47c7f0ab6e84 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -5145,7 +5145,7 @@ static const u8 skb_ext_type_len[] = {
- #endif
- };
- 
--static __always_inline unsigned int skb_ext_total_length(void)
-+static __always_inline __no_profile unsigned int skb_ext_total_length(void)
- {
- 	unsigned int l = SKB_EXT_CHUNKSIZEOF(struct skb_ext);
- 	int i;
-@@ -5159,9 +5159,7 @@ static __always_inline unsigned int skb_ext_total_length(void)
- static void skb_extensions_init(void)
- {
- 	BUILD_BUG_ON(SKB_EXT_NUM > 8);
--#if !IS_ENABLED(CONFIG_KCOV_INSTRUMENT_ALL)
- 	BUILD_BUG_ON(skb_ext_total_length() > 255);
--#endif
- 
- 	skbuff_ext_cache = kmem_cache_create("skbuff_ext_cache",
- 					     SKB_EXT_ALIGN_VALUE * skb_ext_total_length(),
+vim +/udp_get_table_prot +2182 net/ipv4/udp.c
+
+  2179	
+  2180	static int udp_disconnect_unhash4(struct sock *sk, int flags)
+  2181	{
+> 2182		struct udp_table *udptable = udp_get_table_prot(sk);
+  2183	
+  2184		udp_unhash4(udptable, sk);
+  2185		__udp_disconnect(sk, flags);
+  2186	
+  2187		return 0;
+  2188	}
+  2189	
+
 -- 
-2.43.5
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
