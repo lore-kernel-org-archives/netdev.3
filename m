@@ -1,260 +1,157 @@
 Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F31423173;
-	Tue, 31 Mar 2026 15:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7A63FFAAA;
+	Tue, 31 Mar 2026 15:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774971505; cv=none; b=GdmQE7qj4Pu/9rQxsMIOmiL+c+esksHLkltr0okxnRJTGFCa070ijBZ/+c1q/7kbUwTJzDm+AzgazSAB0YMk1owlgSSfXkB5En6ZRfqje8bIrgsRR8NL9qFyTloH5mfJV21lxokwZBgHF8Yh2vDy1f2Ll+ZsYylKl4m2cdZl68c=
+	t=1774972566; cv=none; b=JKuTiAARr9NT2L/zGelpdfoihfX/Kn52NzpZi3AZ2Q8lhxRQ3DI8SrHOMLM/ZyUTvR3YQBlO94KNY1WRQLgdzD+uKbEydJbLMfOU6NyQJDzpSizM3IadAXKD2LcYfBQHLFCnIJxGQoJPBZ+QvaTZIxW529pULk3QJeaxxJs9ky0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774971505; c=relaxed/simple;
-	bh=sha5iUK+ld7auJ1XsQIL2NCgXgH7GuElZWKOLIy6d48=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NE2p8XijzNQlSvMSoHwszIYaM8k+ywG6Q8SWv5l+ffkzxhloYoTDlqqgUp2hNzE6+UkLSFajDNrsZRwSiLoN9siO2hDaH50IwmZL45X9sJTm2HbKhWoAGQfEVTJNViHygyyYu1w8TNNl9V4y5lFek0y8nFgvQ4N180w4pVkTLJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=EsFS25m3; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=2w+5FIGK; arc=none smtp.client-ip=23.88.97.239
+	s=arc-20240116; t=1774972566; c=relaxed/simple;
+	bh=Uld0ty6cXAQe0/m8iEoQG8+Flc7B+IO0P/ntT2Zstpk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=CQcQ+x+1oEYvR3jEPz2RTJxDepGRMLUKcl4typ78QwsP3Ghp8TjA3z4kQ8byf1hGvwY8IhcwL16osKGSO1GEE+/09h2CkX1nzuYjCUsXc8nbwK0qqL7scqpbrPNxPgZZIgbg5vK+xs2fnNYJsZA1EaWO2wzF8GP30wjDYPWDNgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=u6pI0k4P; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=wk8WO/vV; arc=none smtp.client-ip=23.88.97.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="EsFS25m3";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="2w+5FIGK"
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="u6pI0k4P";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="wk8WO/vV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1774971496;
-	bh=sha5iUK+ld7auJ1XsQIL2NCgXgH7GuElZWKOLIy6d48=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=EsFS25m3fA7jYymqF1oFYslXKPxhG40OEqFP2FWS4k2bTtxjNGTQH953ReQohGtgl
-	 R17xTasDUQ1E2WWVGf3Mf77kdn2ZETFNeI/pcsDTmT5uuJu+VMz9ygfkjQflWfMSMA
-	 NMDpS6WUh/D+4WF9Br/vTe0vCvM+/mz9m4kOThyj4a15KV8/NIUXneLoONZ3Uyrg0P
-	 EfqK3mjVMEjxc68qIiJO6WIGZJrlzrwph0w7FEn7pI5b4sVFAjU8SWu2hVKkZ8Yt5K
-	 HrvBDP4qIQ+FYaC8dta0OzYzOVqG/cnizmB9kcUwKTDxY7/cRAUkzjTj5qSrAHG/0k
-	 /1GAzPM8E1kuQ==
+	s=default; t=1774972563;
+	bh=Uld0ty6cXAQe0/m8iEoQG8+Flc7B+IO0P/ntT2Zstpk=;
+	h=From:Subject:Date:To:Cc:From;
+	b=u6pI0k4PeRwCOQ81FweCFRNZng7jY60z+oaT/d+aBr1VtB5I6yJd7lb7IZFC6IYxe
+	 0SUbxEswlgWV7B24VYr/kNoNA96a7l3mJ2WZRliBjn/Gjbf6rjlnEuKr/hTnpRMk3t
+	 WQ5C3/UPqc/tQHpfyvUJEZPsx0IEC07mJorreT0tfNsHdX4Fm5amc1zbUYlnZyvd8x
+	 q9wZLjli6DvVCl++8AWvAT4CFRdOHFNGQvTxb3IbmkZuwEehH+Sv72FrTHGkr7ynWU
+	 1uDcRPObhuEXzN8dpxYvy0kvlXbB8sJmKQp2c8+8vwp6GChfg+HYm75HD728bQBMvY
+	 pDwPw89wMc/Pw==
 Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 38DA0406F0; Tue, 31 Mar 2026 15:38:16 +0000 (UTC)
+	id 35E56406F0; Tue, 31 Mar 2026 15:56:03 +0000 (UTC)
 X-Spam-Level: 
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1774971495;
-	bh=sha5iUK+ld7auJ1XsQIL2NCgXgH7GuElZWKOLIy6d48=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=2w+5FIGK7kyu1OdIgcWAnnEi3yl2X/GYDlFxOUMt4HcUWvXp93LMtkmyouZfZGAEn
-	 UX1Sd+jnWPtEkCxUO+lrDWcXXGJuUOQw76Q/ScW/VSfqaWDS5JwsQvRG+gRH5iC4uR
-	 rPbBM0EIXv3UmB18/XAA/W9cW46l0oOBy4dHRNs45jSWNvjpFJs+j5B6g4vI7c9izH
-	 FtbsUqGeZFzG8pgjXk5icd09tAxNqLvTkDFSQi7EG41Lb6XroDWBuWs7vD87AOWceC
-	 vIRlHoHy3aCJm0um172KWQ6MbERutet7T/uSLSd0anM4CKxX/74QrK904ErLS4Mj3p
-	 aDxR7epkyt2tg==
-Received: from [IPV6:2003:c6:9f04:eb00::1c8] (p200300c69f04eb0000000000000001c8.dip0.t-ipconnect.de [IPv6:2003:c6:9f04:eb00::1c8])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 3A1AE406E4;
-	Tue, 31 Mar 2026 15:38:15 +0000 (UTC)
-Message-ID: <203f565c-4cf9-4591-9d1a-34c68577cf18@birger-koblitz.de>
-Date: Tue, 31 Mar 2026 17:38:15 +0200
+	s=default; t=1774972562;
+	bh=Uld0ty6cXAQe0/m8iEoQG8+Flc7B+IO0P/ntT2Zstpk=;
+	h=From:Subject:Date:To:Cc:From;
+	b=wk8WO/vVjMLXIpM/4FsBITbIs6Efv97wwb6jJPHt3aIkQr5C5TEiKPv2p5XVppkkz
+	 JzVbHoljshZkTHYjGm661ImwoQ4jv5jfgQD2+J5uRToxjz86kvLGsQgR+1a7lpdWNJ
+	 UE76kSIciGctM1pEP9eFHmWhLD1zJz6mOk/9Gvm7qIqfII9/3qLMknnEMkwU8STbLK
+	 KYf0jfaL9VTRyaJ1JqkjadxlDhXtfx1PR3Ca8ZO1FQP9xTERoiRDVcDOGmnJguxl0l
+	 JGwYSZb+ry9IYHlkONB4dzKoWJE/pkg/o0vvnZ161G9WP84ZhxwQPxcnZHHaJAqoTb
+	 Ku5zL3YipCM6g==
+Received: from DebianDesktop.lan (p200300c69f04eb0000000000000001c8.dip0.t-ipconnect.de [IPv6:2003:c6:9f04:eb00::1c8])
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 23963406E4;
+	Tue, 31 Mar 2026 15:56:02 +0000 (UTC)
+From: Birger Koblitz <mail@birger-koblitz.de>
+Subject: [PATCH net-next v5 0/2] r8152: Add support for the RTL8157 5Gbit
+ USB Ethernet chip
+Date: Tue, 31 Mar 2026 17:55:52 +0200
+Message-Id: <20260331-rtl8157_next-v5-0-deb3095f8380@birger-koblitz.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v4 2/2] r8152: Add support for the RTL8157
- hardware
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260324-rtl8157_next-v4-2-034312b12de5@birger-koblitz.de>
- <20260329193457.2764549-2-kuba@kernel.org>
-From: Birger Koblitz <mail@birger-koblitz.de>
-Content-Language: en-US
-In-Reply-To: <20260329193457.2764549-2-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIjuy2kC/3XPwQrCMAwG4FeRnq00bWerJ99DRFKbalE26cpQx
+ 97dbqcx9PjzJ19Iz1pKkVq2X/UsURfb2NQlVOsVu9ywvhKPvmQmhdwKBZqn/LBQmXNNr8yRwG6
+ tIqcDsrLyTBTia+KOrKbMxyl2Ks0ttrlJ7+lOB1P/m+yAC75zaIzT0mLwBxfTlRK/N+4R82fja
+ QI7OUfMApEFAUEIAbW1Hv4haoZIsUDUiCAFuqAJHs0/RM+R5Tu6IEJpBdKB9FT9QoZh+AJiFRR
+ tiQEAAA==
+X-Change-ID: 20260314-rtl8157_next-ae18683eb4fa
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Birger Koblitz <mail@birger-koblitz.de>
+X-Mailer: b4 0.14.2
 
+Add support for the RTL8157, which is a 5GBit USB-Ethernet adapter
+chip in the RTL815x family of chips.
 
-On 3/29/26 21:34, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> r8152: Add support for the RTL8157 hardware
-> 
-> This commit adds support for the RTL8157 chip, including its new 16-byte
-> descriptor format, SRAM/ADV interfaces, and PHY setup. It reuses existing
-> initialization functions where possible while branching for chip-specific
-> logic.
-> 
->> diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
->> index bab8e10e5f99..010126e6dae4 100644
->> --- a/drivers/net/usb/r8152.c
->> +++ b/drivers/net/usb/r8152.c
->> @@ -1629,6 +1862,28 @@ static u16 sram_read(struct r8152 *tp, u16 addr)
->>   	return ocp_reg_read(tp, OCP_SRAM_DATA);
->>   }
->>   
->> +static void sram_write_w0w1(struct r8152 *tp, u16 addr, u16 clear, u16 set)
->> +{
->> +	u16 data = sram_read(tp, addr);
->> +
->> +	data = (data & ~clear) | set;
->> +	ocp_reg_write(tp, OCP_SRAM_DATA, data);
->> +}
-> 
-> Does this sequence write the modified data back to the wrong address?
-> 
-> Indirect SRAM access ports typically auto-increment their internal address
-> pointer upon read. Since sram_read() reads OCP_SRAM_DATA, the address
-> pointer likely advances, causing the subsequent ocp_reg_write() to corrupt
-> the adjacent register instead of the intended one. Should this use
-> sram_write(tp, addr, data) to reset the address before writing?
-> 
-The SRAM access does not have this alleged behaviour. This optimization is
-found in the out-of-tree driver by Realtek. I also read back the values written
-into the SRAM address as well as the following address, and the code is correct.
+The RTL8157 uses a different frame descriptor format, and different
+SRAM/ADV access methods, plus offers 5GBit/s Ethernet, so support for these
+features is added in addition to chip initialization and configuration.
 
-> 
-> Is the same auto-increment issue present here with OCP_SRAM2_DATA?
-No. Again, the optimization is also found in the out-of-tree driver and I explicitly
-verified the data written.
+The module was tested with an OEM RTL8157 USB adapter:
+[25758.328238] usb 4-1: new SuperSpeed Plus Gen 2x1 USB device number 2 using xhci_hcd
+[25758.345565] usb 4-1: New USB device found, idVendor=0bda, idProduct=8157, bcdDevice=30.00
+[25758.345585] usb 4-1: New USB device strings: Mfr=1, Product=2, SerialNumber=7
+[25758.345593] usb 4-1: Product: USB 10/100/1G/2.5G/5G LAN
+[25758.345599] usb 4-1: Manufacturer: Realtek
+[25758.345605] usb 4-1: SerialNumber: 000300E04C68xxxx
+[25758.534241] r8152-cfgselector 4-1: reset SuperSpeed Plus Gen 2x1 USB device number 2 using xhci_hcd
+[25758.603511] r8152 4-1:1.0: skip request firmware
+[25758.653351] r8152 4-1:1.0 eth0: v1.12.13
+[25758.689271] r8152 4-1:1.0 enx00e04c68xxxx: renamed from eth0
+[25763.271682] r8152 4-1:1.0 enx00e04c68xxxx: carrier on
 
+The RTL8157 adapter was tested against an AQC107 PCIe-card supporting
+10GBit/s and an RTL8126 5Gbit PCIe-card supporting 5GBit/s for
+performance, link speed and EEE negotiation. Using USB3.2 Gen 1 with
+the RTL8157 USB adapter and running iperf3 against the AQC107 PCIe
+card resulted in 3.47 Gbits/sec, whereas using USB3.2 Gen2 resulted
+in 4.70 Gbits/sec, speeds against the RTL8126-card were the same.
 
-> 
-> [ ... ]
-> 
->> @@ -4080,6 +4473,14 @@ static void rtl8156_runtime_enable(struct r8152 *tp, bool enable)
->>   	}
->>   }
->>   
->> +static void rtl8157_runtime_enable(struct r8152 *tp, bool enable)
->> +{
->> +	r8153_queue_wake(tp, enable);
->> +	r8153b_u1u2en(tp, false);
->> +	r8157_u2p3en(tp, false);
->> +	rtl_runtime_suspend_enable(tp, enable);
->> +}
-> 
-> Does this function break power management upon the first suspend and resume
-> cycle? Unlike rtl8156_runtime_enable() which checks the enable parameter,
-> this implementation unconditionally calls r8153b_u1u2en(tp, false) and
-> r8157_u2p3en(tp, false) even when resuming.
-This appears to be a bug in the out-of-tree driver. I will change this
-function to follow the behaviour of rtl8156_runtime_enable() in v5. I have also traced
-the PM functions while entering and leaving S3 sleep, and the behavior is now correct.
+As the code integrates the RTL8157-specific code with existing RTL8156 code
+in order to improve code maintainability (instead of adding RTL8157-specific
+functions duplicaing most of the RTL8156 code), regression tests were done
+with an Edimax EU-4307 V1.0 USB-Ethernet adapter with RTL8156.
 
+The code is based on the out-of-tree r8152 driver published by Realtek under
+the GPL.
 
-> 
-> [ ... ]
-> 
->> @@ -6693,7 +7052,7 @@ static void rtl8156_up(struct r8152 *tp)
->>   	r8153_aldps_en(tp, true);
->>   	r8153_u2p3en(tp, true);
->>   
->> -	if (tp->udev->speed >= USB_SPEED_SUPER)
->> +	if (tp->version != RTL_VER_16 && tp->udev->speed >= USB_SPEED_SUPER)
->>   		r8153b_u1u2en(tp, true);
->>   }
-> 
-> Because r8153_u2p3en(tp, true) is called unconditionally just before the
-> modified lines, will RTL8157 incorrectly write to the legacy USB_U2P3_CTRL
-> register instead of using its specific r8157_u2p3en() function?
-This was a mistake. I will fix this to call r8153_u2p3en() only for non-RTL8157
-chips.
+This patch is on top of linux-next as the code re-uses the 2.5 Gbit EEE
+recently added in r8152.c.
 
+Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
+---
+Changes in v5:
+- Filter advertising in rtl8152_set_speed() to prevent incorrect speeds
+- Prevent double USB transfers in rtl8152_get_link_ksettings()
+- Make sure OCP_EEE_ADV2 and OCP_EEE_LPABLE2 are read if a device
+  supports 5GBit but not 2.5Gbit
+- Fix rtl8157_runtime_enable() to follow the behavior of
+  rtl8156_runtime_enable()
+- Prevent call to r8153_u2p3en in rtl8156_up() for RTL8157
+- Fix rtl8157_unload() to disable interrupt mitigation
+- Link to v4: https://lore.kernel.org/r/20260324-rtl8157_next-v4-0-034312b12de5@birger-koblitz.de
 
-> 
-> [ ... ]
-> 
->> @@ -6706,13 +7065,13 @@ static void rtl8156_down(struct r8152 *tp)
->>   		return;
->>   	}
->>   
->> -	ocp_data = ocp_read_word(tp, MCU_TYPE_PLA, PLA_MAC_PWR_CTRL3);
->> -	ocp_data |= PLA_MCU_SPDWN_EN;
->> -	ocp_write_word(tp, MCU_TYPE_PLA, PLA_MAC_PWR_CTRL3, ocp_data);
->> +	ocp_word_set_bits(tp, MCU_TYPE_PLA, PLA_MAC_PWR_CTRL3, PLA_MCU_SPDWN_EN);
->>   
->>   	r8153b_u1u2en(tp, false);
->> -	r8153_u2p3en(tp, false);
->> -	r8153b_power_cut_en(tp, false);
->> +	if (tp->version != RTL_VER_16) {
->> +		r8153_u2p3en(tp, false);
->> +		r8153b_power_cut_en(tp, false);
->> +	}
->>   	r8153_aldps_en(tp, false);
-> 
-> While the legacy registers are correctly avoided for RTL_VER_16 here, are we
-> missing calls to r8157_u2p3en(tp, false) and r8157_power_cut_en(tp, false)?
-> If omitted, these power states might remain permanently enabled when the
-> interface goes down.
-These calls are not in the out-of-tree driver. It appears the r8157_u2p3en()
-is not used in the _up and _down functions. I measured the USB power
-consumption with an interposed USB dongle on the port, and the power use is
-better than for the RTL8153 when the link is down.
+Changes in v4:
+- Fix return type of ocp_adv_read()
+- In r8152_tx_csum() use tx_desc
+- Use TCPHO_MAX_2 for RTL8157 in rtl8152_features_check()
+- Include RTL_VER_12 in RTL8156B chip versions in rtl8156_init()
+- Remove inline keyword from rx_agg_align and tx_agg_align
+- Link to v3: https://lore.kernel.org/r/20260320-rtl8157_next-v3-0-1aefeca7fda7@birger-koblitz.de
 
-> 
-> [ ... ]
-> 
->> @@ -8362,10 +8825,21 @@ static void r8156b_init(struct r8152 *tp)
->>   
->>   	set_bit(GREEN_ETHERNET, &tp->flags);
->>   
->> -	/* rx aggregation */
->> -	ocp_data = ocp_read_word(tp, MCU_TYPE_USB, USB_USB_CTRL);
->> -	ocp_data &= ~(RX_AGG_DISABLE | RX_ZERO_EN);
->> -	ocp_write_word(tp, MCU_TYPE_USB, USB_USB_CTRL, ocp_data);
->> +	/* rx aggregation / 16 bytes Rx descriptor */
->> +	if (tp->version == RTL_VER_16)
->> +		ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_USB_CTRL, RX_AGG_DISABLE | RX_DESC_16B);
-> 
-> Is it intended to clear the RX_DESC_16B bit for RTL_VER_16? The driver uses
-> sizeof(struct rx_desc_v2) which is a 16-byte descriptor for RTL8157.
-> Clearing this bit might configure the hardware to send 8-byte descriptors
-> instead, leading to packet parsing corruption in rx_bottom().
-The code is correct as per the out-of-tree driver. I also tested packet
-transmission in various stress-tests.
+Changes in v3:
+- Apply reverse Christmas tree order for declarations
+- Use poll_timeout_us for register polling
+- In rtl8156_enable(), fix version comparison: tp->version >= RTL_VER_16
+- Correct error handling of r8153_phy_status in r8157_hw_phy_cfg()
+- Fix use of ocp_word_clr_bits for PLA_MCU_SPDWN_EN register
+- Link to v2: https://lore.kernel.org/r/20260317-rtl8157_next-v2-0-10ea1fa488d1@birger-koblitz.de
 
-> 
-> [ ... ]
-> 
->> @@ -9647,6 +10158,29 @@ static int rtl_ops_init(struct r8152 *tp)
->>   		tp->rx_buf_sz		= 32 * 1024;
->>   		tp->eee_en		= true;
->>   		tp->eee_adv		= MDIO_EEE_1000T | MDIO_EEE_100TX;
->> +		r8152_desc_init(tp);
->> +		break;
->> +
->> +	case RTL_VER_16:
->> +		tp->eee_en		= true;
->> +		tp->eee_adv		= MDIO_EEE_1000T | MDIO_EEE_100TX;
->> +		tp->eee_adv2		= MDIO_EEE_2_5GT | MDIO_EEE_5GT;
->> +		ops->init		= r8156_init;
->> +		ops->enable		= rtl8156_enable;
->> +		ops->disable		= rtl8153_disable;
->> +		ops->up			= rtl8156_up;
->> +		ops->down		= rtl8156_down;
->> +		ops->unload		= rtl8153_unload;
-> 
-> Will using rtl8153_unload for RTL_VER_16 result in incorrect power cut
-> teardown? rtl8153_unload calls the legacy r8153_power_cut_en(tp, false).
-> RTL8157 seems to require r8157_power_cut_en(tp, false) to properly clear
-> USB_MISC_2 bit 1 and PCUT_STATUS on module unload.
-This behaviour is also found in the out-of-tree driver by Realtek.
-The out-of-tree function reads:
+Changes in v2:
+- Fixed missing initialization of ret value in wait_cmd_ready()
+- Combine all parts with RTL8157-specific code to avoid undefined functions
+- Link to v1: https://lore.kernel.org/r/20260314-rtl8157_next-v1-0-9ba77b428afd@birger-koblitz.de
 
-static void rtl8157_unload(struct r8152 *tp)
-{
-	if (test_bit(RTL8152_UNPLUG, &tp->flags))
-		return;
+---
+Birger Koblitz (2):
+      r8152: Add support for 5Gbit Link Speeds and EEE
+      r8152: Add support for the RTL8157 hardware
 
-	r8153_power_cut_en(tp, false);
+ drivers/net/usb/r8152.c | 1169 +++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 882 insertions(+), 287 deletions(-)
+---
+base-commit: 5c9e55fecf9365890c64f14761a80f9413a3b1d1
+change-id: 20260314-rtl8157_next-ae18683eb4fa
 
-	/* Disable Interrupt Mitigation */
-	if (ocp_byte_clr_bits(tp, MCU_TYPE_USB, 0xcf04,
-			      BIT(0) | BIT(1) | BIT(2) | BIT(7)) < 0)
-		return;
-}
-
-However, I had forgotten to add the "Disable Interrupt Mitigation" part.
-I therefore added it, depending on RTL_VER_16.
-
-I tested unloading and re-loading the driver, again while measuring the USB power
-consumption with an interposed USB dongle on the port, and the wattage
-in the state where the driver is unloaded for the RTL8157 is lower than the
-one for the RTL8153 (280mW vs 450mW). The driver behavior now appear
-correct.
-
+Best regards,
+-- 
+Birger Koblitz <mail@birger-koblitz.de>
 
