@@ -1,84 +1,74 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24C63EC2C7;
-	Tue, 31 Mar 2026 10:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B03C3B47D7;
+	Tue, 31 Mar 2026 10:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774952424; cv=none; b=B513pI2iKySfdy+xJxh/GtBiWweSDeKoDoSNeTf8y+ag7JTWMnopKzNHNkWMDV07Wd7xeCMkwbjHlNLpp1GbzmYWSGOZfwYhx/30iDJzH+OuHuk7cd0JXntPbGsglDmpsG4S/45cpFXKqiokCLrwttI86mpcs8vMUIpf/ggdUmc=
+	t=1774952983; cv=none; b=Ycs+G98JMirtATPacqPhcOOQ/sf/Af0UDYuXjaGo0+uw/6gZnTASNXC1RGunnHNRDTdNo6LSodEbLLxEvvPGfBcnW3HMDeiNak4en73fJUAPesViEyeT/NVtLWwHMUODU1eXMmx4ro83XE44PCjTbu9rZ+9XHQKYdJbrjoFQHaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774952424; c=relaxed/simple;
-	bh=GL+c/lSOQxZG1kVN2DXUiFsjniVUu9ycy0pQ3qX7sEI=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=H9O6lrbLzDzV/3WqvkTJ4NgliPRDgDyG4btbCJ9CcUbgW8lUZAN9YoDJPbnZBiaIw1qxMgQRJ+ekaRxF47wLaHh/qNYjhwyxeaYwcFsdO/Vz2gUcnUTWGgJnvXvore/8PdrBGhT8dVJmBUGlt7iEczFYL2n4go3EmAVTYh6Q7C0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mGAL+k2z; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774952983; c=relaxed/simple;
+	bh=Sb7+YT5MlZJy3yCTsyHBgr+LrhrODBwZbdlcoutQ1nw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=tlswOLXW0gUdWs/6XS55Fz9AHspbunOcayOZtQ6yGxaAa0gJhjdPBU0VKGV+eXDL5sUCLRNkeHYbXgwMTq5dPs11Uit1Nx0jeUb4BIwLtABVzRejQ+I6qj9tzYCqzFqMR14iak7XgstowiD+QkVWvTtG4DubpNxxXcU2MgKk9yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vJ9FIk/L; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mGAL+k2z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51694C19423;
-	Tue, 31 Mar 2026 10:20:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vJ9FIk/L"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A1DC19423;
+	Tue, 31 Mar 2026 10:29:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774952424;
-	bh=GL+c/lSOQxZG1kVN2DXUiFsjniVUu9ycy0pQ3qX7sEI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=mGAL+k2zgnJsHTenMRQL8f+dBUDC4XKO11aDvCacu3izChojkn7G/mMKrzpATZnM9
-	 qPi4GnAFXVgVM2QKXOjGvqcgU8jj5v6Qlok7ptwmnQKI1vrtuGmKMm1DkbL5ZFRwtp
-	 3VFJFe+kzZdtjQ2msFF/k6porUHDUJqooGAiSLZjEJv7ULw60YQKrttqdulLPvTm7b
-	 qiN+7V/6LHv2tiJ39MQQhGDSu+bbOoLov2ZeVG01Y0DLichoSiownkSKsMv16P18qR
-	 WEbEtE9CnLXaQjOFbzqs7xY+4ocS4boOOYOjiX2iWyigwDbD2X7orCVcVBEzLUJzpS
-	 RwCZkKncbCCDg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FF3A392FF5A;
-	Tue, 31 Mar 2026 10:20:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1774952982;
+	bh=Sb7+YT5MlZJy3yCTsyHBgr+LrhrODBwZbdlcoutQ1nw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=vJ9FIk/Ll0EXNGBCluxgxPor0U2/hwdbzW2L893wEEKHUVwai7LIFwGuoPHKx/2Xk
+	 tIUzLJFX3eGbHWTC17sI92TDNei63m2WFyCVchSA4wM18LgbbL4NO5YHMGHP3NcaUR
+	 hS4HeQJ9sry3fcQBW8cky5JeF/ZF6Q1GS5P75y4ou9zjxQ3gPXn4w4dKE74zyasx0d
+	 z2tmHSq5VLMfWJf3YGnK5kXmTpxorfM2Z+Y4GvYlrdjhGQEQOogS7Fn/mNXmDeeiZM
+	 Dd28P/M9qNBOmIT2l5CL7Ss9icBNMu8Qp+wuReaKHX1sOQiwmxqxrIypiJz6gNJFpI
+	 CzqyNanidwx3g==
+From: Lee Jones <lee@kernel.org>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Vinod Koul <vkoul@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
+ Mark Brown <broonie@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+ Peter Rosin <peda@axentia.se>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, Moritz Fischer <mdf@kernel.org>, 
+ Xu Yilun <yilun.xu@intel.com>, Tom Rix <trix@redhat.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-phy@lists.infradead.org, linux-spi@vger.kernel.org, 
+ linux-leds@vger.kernel.org, linux-fpga@vger.kernel.org, 
+ driver-core@lists.linux.dev
+In-Reply-To: <20260322-remove-device-find-by-of-node-v1-5-b72eb22a1215@gmail.com>
+References: <20260322-remove-device-find-by-of-node-v1-5-b72eb22a1215@gmail.com>
+Subject: Re: (subset) [PATCH 05/10] leds: led-class: switch to using
+ class_find_device_by_fwnode()
+Message-Id: <177495297689.3815589.6859873475520670878.b4-ty@b4>
+Date: Tue, 31 Mar 2026 11:29:36 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net V2 0/2] Correct BD length masks and BQL accounting for
- multi-BD TX packets
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177495240804.2222159.14302586518463810554.git-patchwork-notify@kernel.org>
-Date: Tue, 31 Mar 2026 10:20:08 +0000
-References: <20260327073238.134948-1-suraj.gupta2@amd.com>
-In-Reply-To: <20260327073238.134948-1-suraj.gupta2@amd.com>
-To: Suraj Gupta <suraj.gupta2@amd.com>
-Cc: radhey.shyam.pandey@amd.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- michal.simek@amd.com, sean.anderson@linux.dev, daniel@iogearbox.net,
- ariane.keller@tik.ee.ethz.ch, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+X-Mailer: b4 0.16-dev-ad80c
 
-Hello:
+On Sun, 22 Mar 2026 18:54:23 -0700, Dmitry Torokhov wrote:
+> In preparation to class_find_device_by_of_node() going away switch to
+> using class_find_device_by_fwnode().
 
-This series was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Applied, thanks!
 
-On Fri, 27 Mar 2026 13:02:36 +0530 you wrote:
-> This patch series fixes two issues in the Xilinx AXI Ethernet driver:
->  1. Corrects the BD length masks to match the AXIDMA IP spec.
->  2. Fixes BQL accounting for multi-BD TX packets.
-> 
-> ---
-> Changes in V2:
-> - Define BD length masks with GENMASK(25, 0) per PG021.
-> - Credit BQL using skb->len on packet completion instead of summing
->   per-BD actual lengths from descriptor status.
-> 
-> [...]
+[05/10] leds: led-class: switch to using class_find_device_by_fwnode()
+        commit: b6de441f8ce22e3ead3b858342fe5652598a3572
 
-Here is the summary with links:
-  - [net,V2,1/2] net: xilinx: axienet: Correct BD length masks to match AXIDMA IP spec
-    https://git.kernel.org/netdev/net/c/393e0b4f178e
-  - [net,V2,2/2] net: xilinx: axienet: Fix BQL accounting for multi-BD TX packets
-    https://git.kernel.org/netdev/net/c/d1978d03e867
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+--
+Lee Jones [李琼斯]
 
