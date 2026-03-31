@@ -1,153 +1,196 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012058.outbound.protection.outlook.com [40.107.200.58])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4133F3D8902;
-	Tue, 31 Mar 2026 11:59:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.58
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774958379; cv=fail; b=Z4B8VmW6fKVlNp4VfdAPoFC9ayVB9ffXwq/7CuLt9t5CX82iIrq30zU4eXRVSgoPQfIiGi1JWxfD7jBJRTR3fFIBMD8IgawbKIg9Ql7TWUV4wNQrMwSVDyAQvV6Mhxf//yZqGj4JWKrRdJ/Ao0aEV4/gDZcEcSh75rW5zHo+zog=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774958379; c=relaxed/simple;
-	bh=6fNvyL3pD5FuquhpWD0dnlt8JOaUqQUzVRe1ajgAR1w=;
-	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=i08mFJyeTqg5P+st5TD5ujI1FGKWZUzZpLE21ymykLKZeOMNtb+6L7KVffB/nQeypN2KfkiCg0khovREf7OdCpD3atwmRMVyadb0BGeFJDego6FYsDaq3yf+jCcUgeTT/mF7fs+PfcaDARF0mKxBWoSEU23bGjAdi/VzcOO86Js=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=PZL9Kl/X; arc=fail smtp.client-ip=40.107.200.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F423DC4D0
+	for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 12:00:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774958404; cv=none; b=RDtnwY/En7IYvNWMktZQMu+4atgakjwCQmW+jCNqUpbr3RRrz0NS8e8CZxJyugIfEdXK+5rdp1P6S9HkWxJKc5QnspwrTraNfIuUDbfhjkNxABH/EYA5bg5koUVYiYC6TZEufmYTv1B+Y+eTagQQNsjFHbvbBaKt8pYYY3+nQNw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774958404; c=relaxed/simple;
+	bh=TeW+WR4PTVnP9Pp/5/unSciFX21YayQUZJgukeIfeOQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Rakb22dDL5t0uQZgT2hPeVtbKpupGlpRicfrP8H7d7rMOl7BrZzkUV9CQm9u3Nm2z0PaZPc1Ad1VlhTc33Ds+G1RRCEeu0AROmEYDfWdY/q+JGXbbwKkl3qfJlH9lwRErAYRJVmXsyJNg4hr6MxVVDy2fH9U78eBJY9G4qswcAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=UO7nW114; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=8fD/YgN1; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=JCIDS4sI; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=FicygYR2; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="PZL9Kl/X"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NwzaNITvQgJli/MQT2Nq1XC4edvukVPMjQM5NI04Tw6l6B3ITiuuILo8cJ6bEWhl+icj/OU6KZ0ovbLCq+dL5mEK3qWN+flNilxSxyBPorLffGatpwijWUX5iEpDJ2HgGIm9gSUapMcs2LcIui2aK6+RHv4aQ+WGvpDAj1aOE83CjgI1BUoYboGH6hIayIvaxYkSKz0EZfSktAnNCNd5Ve/TQWNVZj9Xd2QAlBGLGElGoOJ/TjWU/34GAFXhNBy0b9mBd6uDfT2cJ00GdU30TJ3r9JrF9iA3NGmx83Ic3mDMAlrh4Io8qWi87kNqHxMarfJrpYOZd4q2EwyFbCkinA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=l+cedi+rZgDXST9mJWtXk3xbLFMCRAgxOxGluRXEuWE=;
- b=YVxjGYYSPpI8UIp42CSXO/ErkoqqSXsf4sYMBLuDTnOd45EFT0WGD1tOSrHHgqeeqE2iTqT0YhtRf8G5fLwZ0Bbq3Udfs4WRC7u1LvvZIuXFux9HTAAWxaF2h966IKQuoIfYP+vNjSN8ZuGkU/OqgJiT6qXbgYbx+uWQmfGEdXy+u/0wdYpSjWAHlCSWrKgcN45pv/t+thLwUKMRNm0lOQN36AfHfmJORz7r95viAytzXZo+E/KDFtvapVvXG2+hCDmdJ+aO6smmEzIuDvYD1czP0Q8tUQrqQxVTpzWgDR81U3vIy05tEsXaeU53dT7Uj7IOPCDQ+/8jfx2Mm6o2Mg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=l+cedi+rZgDXST9mJWtXk3xbLFMCRAgxOxGluRXEuWE=;
- b=PZL9Kl/XuDPzXuZTSfn4qLs9mljn2eFyiblqN0PWSAVoz4jSJLgd//N3vTuj4o2b0LB9v8Mb7pewRYPIAmQDt30ZGa8Jg//dOGL3rqHNV+kRh1ra8DZJeXKLzlQQ00vCSgVa49Vz5Gct+v11nF55K45OsIs+Cq/YKI95h7a7daY7fRWHjWKJ09pXXps8NqrGMUS2HXfJqLJfqhEFZhSjnwfDh4wOtbShNDriPcR5xfpYCMQ7nBA4gZMFoUAE5Q+DRy7o7TyxDhCDV2GnCUZpSqBEuI9+Vuhb0Mse9C03eB9N1chyO/6EVZrXbGen3pQvsJeY3mSeyEmVxgbzvZbcgw==
-Received: from PH7P221CA0045.NAMP221.PROD.OUTLOOK.COM (2603:10b6:510:33c::17)
- by DM6PR12MB4092.namprd12.prod.outlook.com (2603:10b6:5:214::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.16; Tue, 31 Mar
- 2026 11:59:32 +0000
-Received: from CY4PEPF0000FCC2.namprd03.prod.outlook.com
- (2603:10b6:510:33c:cafe::93) by PH7P221CA0045.outlook.office365.com
- (2603:10b6:510:33c::17) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9745.28 via Frontend Transport; Tue,
- 31 Mar 2026 11:59:29 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CY4PEPF0000FCC2.mail.protection.outlook.com (10.167.242.104) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9745.21 via Frontend Transport; Tue, 31 Mar 2026 11:59:31 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 31 Mar
- 2026 04:59:12 -0700
-Received: from fedora (10.126.231.35) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 31 Mar
- 2026 04:59:06 -0700
-References: <20260326132828.805703-1-ioana.ciornei@nxp.com>
- <20260326132828.805703-3-ioana.ciornei@nxp.com>
- <871ph15zip.fsf@nvidia.com> <20260330170439.35ef3cac@kernel.org>
-User-agent: mu4e 1.8.14; emacs 30.2
-From: Petr Machata <petrm@nvidia.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: Petr Machata <petrm@nvidia.com>, Ioana Ciornei <ioana.ciornei@nxp.com>,
-	<netdev@vger.kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Paolo
- Abeni" <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <willemb@google.com>,
-	<linux-kselftest@vger.kernel.org>
-Subject: Re: [PATCH net-next v4 02/10] selftests: net: add helpers for
- running a command on other targets
-Date: Tue, 31 Mar 2026 13:53:52 +0200
-In-Reply-To: <20260330170439.35ef3cac@kernel.org>
-Message-ID: <87se9g2os9.fsf@nvidia.com>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="UO7nW114";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="8fD/YgN1";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="JCIDS4sI";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="FicygYR2"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id DB35C5BD0A;
+	Tue, 31 Mar 2026 11:59:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1774958401; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=ONP7w9VX6YgrpD+mtY5h+h3i5fpOqeRMgJNMWgV/TWU=;
+	b=UO7nW1140Z8oJY7ZNQePo6rSit/Q/vN7QW6Vhc+kdl0I3s0ucaGlN2Ml1isIHrPW+OZOl5
+	7kYt1MhjuOue8Lb1sfow9JK4WKJ/igIimXCfd/hk/NQyJK1Iv0M4qVmglurtS05/ZkbB4l
+	DisFWEMWj5xt3ZFZTchbWlBHiHQoUpk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1774958401;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=ONP7w9VX6YgrpD+mtY5h+h3i5fpOqeRMgJNMWgV/TWU=;
+	b=8fD/YgN1caz3XcKpqxStsHKuDP61R5wuRR15pcddABEWuFvlZ0o+Bh8WfAIXnC+FbMuNwR
+	CT8IESg8clM5uRCQ==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=JCIDS4sI;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FicygYR2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1774958399; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=ONP7w9VX6YgrpD+mtY5h+h3i5fpOqeRMgJNMWgV/TWU=;
+	b=JCIDS4sImH9x8SbXDZ8O605YxACYGelVYc8A6BnG6N1RQ1kiGnfsEucVDw9EKSmU6fRwAD
+	VIZYH3JIWa5TXddACqP3g6ANZT1tBUxwyjLkF231XXmaQCmsdoAsBoB70ADdpxlp7gJHyG
+	VpOetpZ7EXimClYWQ3s/KF6eyHeJLvE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1774958399;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=ONP7w9VX6YgrpD+mtY5h+h3i5fpOqeRMgJNMWgV/TWU=;
+	b=FicygYR24PIBJQzsZXrJkSv6xEprxXZgFYIVmXtPHGkdORQL4hUbduHd7jciMg8vfVfSBV
+	O+XXldCOOHe1NDCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 506494A0A2;
+	Tue, 31 Mar 2026 11:59:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id MmmtED+3y2nNeQAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Tue, 31 Mar 2026 11:59:59 +0000
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+To: netdev@vger.kernel.org
+Cc: horms@kernel.org,
+	pabeni@redhat.com,
+	kuba@kernel.org,
+	edumazet@google.com,
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Yiming Qian <yimingqian591@gmail.com>
+Subject: [PATCH net] ipv4: nexthop: allocate skb dynamically in rtm_get_nexthop()
+Date: Tue, 31 Mar 2026 13:59:43 +0200
+Message-ID: <20260331115943.10404-1-fmancera@suse.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000FCC2:EE_|DM6PR12MB4092:EE_
-X-MS-Office365-Filtering-Correlation-Id: eabf478d-76bc-474f-35f2-08de8f1cf814
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|376014|7416014|82310400026|1800799024|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	1wjbpIkQSUK7FwWjvrjDO8yntiFvJN/cKgz5we4XxyEk7OYlNZVRdcVeEBndeqhAgU2pbG6+FQyZ9igqN2kgMa/K9loL3OLJgRGV9N3KfBysNablP4yUtDn30Fq08w2UtJj2MnIqJMX/LCGQVby0lCwj7t3KQs9HizAnj5LzRf1VcsQlQhBngkw7mV3IJ4XpFXbZk7m0uVozsMdcTUgSacs9SgQKo7iZdQ3rVDTYGFEePt81bZLw9TrOBqKk2rgYnfnEswIj34ceOzrce+KCeF7Nkii77nI4t75mXy2ekAJSONLC6AbPeWeO8KXmQ/9th8w6J8uY6sgqu+6X/1u3UcBpDabOfHb486ycUfg/kcGlFmTabFpet5z0zsOxQQS5cTa827KHL3ac3KSatVP0bQivTMsTk2PGf8qWCtHkAQ7nC60xOoOUneySZMnUXQap7S9zV/KO1rZW+uPmsQKaDkA8DD+g5XI0sgVcLtFoZGt2mqUfj+esNrgKCFulI7jkDSGhdk6ryi3ehn6sy1B7ZFUkq+C+MKpAuWj+PV7dQiyJ8OZBpJTqpnBvRbxdrOgJrG08oBPuap6ITbADE52g3gQ+qLZVIYIANJGCADZtaoOt4tRyKIMrG3m6bPvBTwB+6ocWOTlvYM8Rmca5CStRO+APJ3AIOihW05lS/BNDXXtXIe/EfYPEJJjHDYizsJSUaVpSi6il7gqJrmfOWNEthj1eJYTXybig+1945OMpXNicXxLiL1HIUmOialtuZYAWit5qTNC3N3MMudqXQBDt1Q==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(376014)(7416014)(82310400026)(1800799024)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	FTS0C57tPZrfff62niGLGD0jVdc6zu3sLzanU6oW2Z3262Yoiu9matBTUL2wumpXyaVGGqq+COU/bP4SetCA8RSgctJrmg6lDqeTa2pKgMEmtWeaMMiFJW1Jsfj2K9j1W/EiGf2Fxkjzq4Te6EsPITh471lvrF/WhsDAljKsPH5v6Ple/1/pCpH0KmzgZX65mmR8dHXqmXuJjYbMU3TG3ImiNP+M8C8XkY5BcSxQDPzfcQ30goork22SiJT0T1g1Byr058tpEZXXmPXhKtzjBfWgP9pVezGNBBaOz/s+fY5GmA2csQszlglKLrkcOfcwG+109TPKSWjboKV+icTr/PP3BVT8lVHSLTXiJATAD9LbvbZh5ngiYkGUnel5htN6OIY5VCxLJjAmz2Nw30VnoGdFROv5a1MUWUROi9AhDPX93i0fpaWWBzK+0fZuCRiQ
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 11:59:31.5819
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: eabf478d-76bc-474f-35f2-08de8f1cf814
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000FCC2.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4092
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RCVD_TLS_ALL(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,redhat.com,google.com,davemloft.net,suse.de,gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:dkim,suse.de:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com]
+X-Rspamd-Action: no action
+X-Spam-Flag: NO
+X-Spam-Score: -3.01
+X-Spam-Level: 
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: DB35C5BD0A
 
+When querying a nexthop object via RTM_GETNEXTHOP, the kernel currently
+allocates a fixed-size skb using NLMSG_GOODSIZE. While sufficient for
+single nexthops and small Equal-Cost Multi-Path groups, this fixed
+allocation fails for large nexthop groups like 512+ nexthops.
 
-Jakub Kicinski <kuba@kernel.org> writes:
+This results in the following warning splat:
 
-> On Mon, 30 Mar 2026 13:02:12 +0200 Petr Machata wrote:
->> > +run_on()
->> > +{
->> > +	local iface=$1; shift
->> > +	local target="local:"
->> > +
->> > +	if declare -p TARGETS &>/dev/null; then
->> > +		target="${TARGETS[$iface]}"  
->> 
->> So I think Jakub's runs fail because there's a shell export somewhere
->> that gets inherited through make to the launched test. I guess it would
->> be enough for the test to validate that TARGETS is an array, because
->> those don't get inherited.
->
-> Great catch, FWIW. Yes TARGETS is what ksft makefiles use to define
-> the group of tests. We do 
->
->   make ... TARGETS=drivers/net ... run_tests
+ WARNING: net/ipv4/nexthop.c:3395 at rtm_get_nexthop+0x176/0x1c0, CPU#19: rep/9282
+ [...]
+ RIP: 0010:rtm_get_nexthop+0x176/0x1c0
+ [...]
+ Call Trace:
+  <TASK>
+  rtnetlink_rcv_msg+0x168/0x670
+  netlink_rcv_skb+0x5c/0x110
+  netlink_unicast+0x203/0x2e0
+  netlink_sendmsg+0x222/0x460
+  ____sys_sendmsg+0x35a/0x380
+  ___sys_sendmsg+0x99/0xe0
+  __sys_sendmsg+0x8a/0xf0
+  do_syscall_64+0x12f/0x1590
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  </TASK>
 
-That'll do it. I thought the make command line-defined variables don't
-get inherited, which is why I said shell exports, but indeed they do:
+Fix this by allocating the size dynamically using nh_nlmsg_size(), this
+is consistent with nexthop_notify() behavior. In addition, replace
+alloc_skb() with nlmsg_new().
 
-$ cat foo.mk
-all:
-	echo TARGETS=$(TARGETS)
-	bash x.sh
+This cannot be reproduced via iproute2 as the group size is currently
+limited and the command fails as follows:
 
-$ cat x.sh
-echo $TARGETS
+addattr_l ERROR: message exceeded bound of 1048
 
-$ make TARGETS=TARGETS -f foo.mk
-echo TARGETS=TARGETS
-TARGETS=TARGETS
-bash x.sh
-TARGETS
+Fixes: 430a049190de ("nexthop: Add support for nexthop groups")
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Closes: https://lore.kernel.org/netdev/CAL_bE8Li2h4KO+AQFXW4S6Yb_u5X4oSKnkywW+LPFjuErhqELA@mail.gmail.com/
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+---
+Note: as this cannot be reproduced by iproute2 and a custom C script
+is needed to trigger it, I do not think a selftest covering this corner
+case is worth here.
+---
+ net/ipv4/nexthop.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
+index c942f1282236..b502c3ad41bf 100644
+--- a/net/ipv4/nexthop.c
++++ b/net/ipv4/nexthop.c
+@@ -3377,15 +3377,15 @@ static int rtm_get_nexthop(struct sk_buff *in_skb, struct nlmsghdr *nlh,
+ 	if (err)
+ 		return err;
+ 
+-	err = -ENOBUFS;
+-	skb = alloc_skb(NLMSG_GOODSIZE, GFP_KERNEL);
+-	if (!skb)
+-		goto out;
+-
+ 	err = -ENOENT;
+ 	nh = nexthop_find_by_id(net, id);
+ 	if (!nh)
+-		goto errout_free;
++		goto out;
++
++	err = -ENOBUFS;
++	skb = nlmsg_new(nh_nlmsg_size(nh), GFP_KERNEL);
++	if (!skb)
++		goto out;
+ 
+ 	err = nh_fill_node(skb, nh, RTM_NEWNEXTHOP, NETLINK_CB(in_skb).portid,
+ 			   nlh->nlmsg_seq, 0, op_flags);
+-- 
+2.53.0
+
