@@ -1,47 +1,58 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62DC933F8C1
-	for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 13:03:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E82A3E5EC9;
+	Tue, 31 Mar 2026 13:07:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774962239; cv=none; b=r4iFeywjSEdit+xBo0/lGQ59XYP5jMr8QKeaudZS74sCOq+J7eUbAt200q0JNHpqqyYIe2+OVkTvsg8Xz02MX1jJ86HuIA7I5Er5VNbFELCmjciJdadn3iMqEmpCobev+TvbxlMP+Pww5MhpfcIOJguv7uZfULL/kfZatexsFlg=
+	t=1774962478; cv=none; b=HQnTLVGC8j3ZO9lw7gzEzeytbPmf5jyBYwtPdGJlBxdudMho7P0NLmgFPVt0W65Isn//KanMScR3XnTWgGPk68JJ7+fE1SXLy2/WPrlawz3FIbNcMUzmObVJ2wNroC0zjWn6jB551sW6jBoQNUdOqh34Ob6asoCUewFB50zQRkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774962239; c=relaxed/simple;
-	bh=Yl18ulpr6gLt4/hsDp++OZeojzFkBO4fOypFsHDVd3Y=;
+	s=arc-20240116; t=1774962478; c=relaxed/simple;
+	bh=eosv1AZxzlSDL5rb2/xDDZuxQtW9KHKcYbpvcjA+Eb0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZyrB+iUVH41eqOfYQV909vLNxrGf4w7UU1FpMGxw7jLzw/Xvn+qvbVoWg0HUZ9YQd28pPtL77FtSE/jMXB8pxD1zlgilIQmnK17zp71VTTIcXY+9JqzTaIUK0ymnrUDX3TQz1Y78sTgTIMRUL34I2W9+GG3TkB5TMuEgFwsvBwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=sSuyLFFu; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=mZI9qWENb3j6o+PPZnRMs6gRooOplAnP8HzjRkxerQAlMsFmKwobgHO/TS0Xlr9fcqbuTzgQMUvutRXQGTmgnxXhYoMcQXOH3Gt9pdy7hnN3qTZgeHEdfWPHmIpGTfxiNArlEM/B7HYR7Pi1CG96gELKDASQpL3gPabV2ibTAEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=i+xuOMXf; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="sSuyLFFu"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=OQwu9ux6pSKExzagKmtjFfwlMK7uhCpxAnHWFSdGKXg=; b=sSuyLFFukKULQMI3CxUANI8SHM
-	qfOThEwRMN3JYO49ILy27vmaNMPyG4bl2mPTsx7KBn6+Wac2BuI9xzRKoFFymEgDb6ZP83sxvsvtF
-	zopsJOEns5bXq1+lulNA8dOLYgym1ZsLcod8EKmf3jWAlGFZ3OUG3rLqi2DnRBHmTPwE=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1w7Yl8-00ECMj-Jw; Tue, 31 Mar 2026 15:03:54 +0200
-Date: Tue, 31 Mar 2026 15:03:54 +0200
-From: Andrew Lunn <andrew@lunn.ch>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="i+xuOMXf"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=1sO/3nA/45rKDmeI79eubvzryv2xW7zUpGf4TvMjB2I=; b=i+xuOMXfN/z1pnGaVlTZDVBVej
+	+OQUKTtgErtR8OHs/RNH7L4DczjIUnF6sAqFDKbQy2KtZ4ol5qHg1GToJDrofCPjxlZyGUumF405x
+	YKMpxCq5IU5XVWjerIwF7cY6ed9qDVX/HK1Wd13hIFlHZbXOROciiFEVqMqcC3jvmkFYSs/2hdmu3
+	7AzaHWFPdMbAONzqh298d0KZf5VksL87ZTmceUBTY37hlZJatiPKTEI+5UME+17ZTvPfxUMMD2gX7
+	Aif15E+MzsYSapEUP0VexHYi1NqmHbOSJvs4FbYsczTX/HPw97hTywaM90WdbfMkTpwb9N3+OG/OB
+	pLx2gvcw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:42808)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1w7Yox-000000001rh-1uLR;
+	Tue, 31 Mar 2026 14:07:51 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1w7Yos-000000003kB-2g58;
+	Tue, 31 Mar 2026 14:07:46 +0100
+Date: Tue, 31 Mar 2026 14:07:46 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
 To: Jiawen Wu <jiawenwu@trustnetic.com>
-Cc: 'Jakub Kicinski' <kuba@kernel.org>, netdev@vger.kernel.org,
-	mengyuanlou@net-swift.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	richardcochran@gmail.com, linux@armlinux.org.uk, horms@kernel.org,
-	michal.swiatkowski@linux.intel.com, jacob.e.keller@intel.com,
-	kees@kernel.org, joe@dama.to, larysa.zaremba@intel.com,
-	abdun.nihaal@gmail.com, leitao@debian.org
-Subject: Re: [PATCH net-next v6 04/11] net: ngbe: implement libwx reset ops
-Message-ID: <3d9cc075-77e5-483d-a268-000c83020bb3@lunn.ch>
-References: <20260326021406.30444-5-jiawenwu@trustnetic.com>
- <20260331005527.3459556-1-kuba@kernel.org>
- <073601dcc0de$a87b2e30$f9718a90$@trustnetic.com>
+Cc: netdev@vger.kernel.org, Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Abdun Nihaal <abdun.nihaal@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH net] net: txgbe: fix RTNL assertion warning when remove
+ module
+Message-ID: <acvHIpPd8BL_wFFU@shell.armlinux.org.uk>
+References: <D56A7C3379B4DA62+20260331071107.5414-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,23 +61,20 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <073601dcc0de$a87b2e30$f9718a90$@trustnetic.com>
+In-Reply-To: <D56A7C3379B4DA62+20260331071107.5414-1-jiawenwu@trustnetic.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-> > static inline int wx_set_state_reset(struct wx *wx)
-> > {
-> >         u8 timeout = 50;
-> > 
-> >         while (test_and_set_bit(WX_STATE_RESETTING, wx->state)) {
-> >                 timeout--;
-> >                 if (!timeout)
-> >                         return -EBUSY;
-> > 
-> >                 usleep_range(1000, 2000);
-> >         }
-> > 
-> >         return 0;
-> > }
+On Tue, Mar 31, 2026 at 03:11:07PM +0800, Jiawen Wu wrote:
+> For the copper NIC with external PHY, the driver called
+> phylink_connect_phy() during probe and phylink_disconnect_phy() during
+> remove. It caused an RTNL assertion warning in phylink_disconnect_phy()
+> upon module remove.
+> 
+> To fix this, move the phylink connect/disconnect PHY to ndo_open/close.
 
-At minimum, this should use one of the helpers from iopoll.h.
+Wouldn't it be simpler to just wrap the phylink_disconnect_phy() in the
+remove function with rtnl_lock()..rtnl_unlock() ?
 
-	Andrew
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
