@@ -1,200 +1,145 @@
-Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
+Received: from smtpbgau2.qq.com (smtpbgau2.qq.com [54.206.34.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF723B774B
-	for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 07:13:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4EF394793
+	for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 07:20:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.34.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774941223; cv=none; b=mtS8EFy1jQ/5lboIc+ZOrSsgxQFO/6Wy+aqmFyk3UX6mVZg/l1IeXa7ujpm1COUw+oZ3XIg8qkJ6jPe3dzROGsosWrZ4La18+UkzmnU2v7hVf2Ry+94WvwuGJgjdWXU5ahm8Uts+7OchXl1qxVhDHZV8IGgucuxZdRph3ZKJ6jw=
+	t=1774941610; cv=none; b=uMphhQhgIM2kkMU86/TWHtRW8ChtBkmbBl+Q7hpJs4Kf3PSoPA42KoMpYBmkb9xFDpMFa/8+fa6rGAUF3ee6J33g8FDe+KO+grspxcOapniwHgO7dVgwOCnzMuxqb1XxJCCC5yY25FFgt+2BSPhUkftZWIduDxDwTRRFxYBgZKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774941223; c=relaxed/simple;
-	bh=0f3xzzz8ag9SNW7fb5jqQqPgwNvN6ZIv9z48me9iRiw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M22vj6/AJKfHYsyV4PAGJPzm6q4QOlHd5wCKR0YzEmYe8mVNGOkvuak5wOVDsPScug+sApCNgDIM70Fy3unJRf1Ytm1pPCpjQnEpJNuhp0+4cmoOfNmrgohSFdr5J2mAWmQnc/YAd/B4h+4lxCAxwTYNspHNm7qdL+W0VBQXKOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.206.16.166
+	s=arc-20240116; t=1774941610; c=relaxed/simple;
+	bh=elCprgIfyZmynNxyFih948fHQDY6a/gAsEUW4KZbOJk=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=a85nPlSakCVI9fhTd1WXRdbs8VLZfMmdvRPadiACGcBtt2DrgWErp/xMchmRnWUutb/4Tg/YV/iJXRKmB3bT0JwP60C7T5smGzz+VCOEhR32fStlWt17hMVM0gdAAUyCeG79Vzx1xWMKwbFesg20a1Oi/w8fPUK87ekycyIWjKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.206.34.216
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpsz17t1774941099t14806ba7
-X-QQ-Originating-IP: +nL0vZovCMrBp6hTi9EZPmMc8xhqeBn1iAA2s+VSSKg=
-Received: from w-MS-7E16.trustnetic.com ( [115.227.224.139])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 31 Mar 2026 15:11:16 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 14711434964415801438
-EX-QQ-RecipientCnt: 13
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: netdev@vger.kernel.org
-Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] net: txgbe: fix RTNL assertion warning when remove module
-Date: Tue, 31 Mar 2026 15:11:07 +0800
-Message-ID: <D56A7C3379B4DA62+20260331071107.5414-1-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.48.1
+X-QQ-mid:Yeas9t1774941546t748t35093
+Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [115.227.224.139])
+X-QQ-SSF:0000000000000000000000000000000
+From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
+X-BIZMAIL-ID: 5401902762098304351
+To: "'Jakub Kicinski'" <kuba@kernel.org>
+Cc: <netdev@vger.kernel.org>,
+	<mengyuanlou@net-swift.com>,
+	<andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>,
+	<edumazet@google.com>,
+	<pabeni@redhat.com>,
+	<richardcochran@gmail.com>,
+	<linux@armlinux.org.uk>,
+	<horms@kernel.org>,
+	<michal.swiatkowski@linux.intel.com>,
+	<jacob.e.keller@intel.com>,
+	<kees@kernel.org>,
+	<joe@dama.to>,
+	<larysa.zaremba@intel.com>,
+	<abdun.nihaal@gmail.com>,
+	<leitao@debian.org>,
+	<netdev@vger.kernel.org>,
+	<mengyuanlou@net-swift.com>,
+	<andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>,
+	<edumazet@google.com>,
+	<pabeni@redhat.com>,
+	<richardcochran@gmail.com>,
+	<linux@armlinux.org.uk>,
+	<horms@kernel.org>,
+	<michal.swiatkowski@linux.intel.com>,
+	<jacob.e.keller@intel.com>,
+	<kees@kernel.org>,
+	<joe@dama.to>,
+	<larysa.zaremba@intel.com>,
+	<abdun.nihaal@gmail.com>,
+	<leitao@debian.org>
+References: <20260326021406.30444-5-jiawenwu@trustnetic.com> <20260331005527.3459556-1-kuba@kernel.org>
+In-Reply-To: <20260331005527.3459556-1-kuba@kernel.org>
+Subject: RE: [PATCH net-next v6 04/11] net: ngbe: implement libwx reset ops
+Date: Tue, 31 Mar 2026 15:19:05 +0800
+Message-ID: <073601dcc0de$a87b2e30$f9718a90$@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: zh-cn
+Thread-Index: AQGnYjFgiICnEG1OS+zPz18hM02VsQLH5aBfthy4xNA=
 X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: MDqtQ4jGWXAGih0efTJlJ3tbYXfXkmB99E+IATvnlj5VBgRux/V9j32i
-	vBAdqClZucKkrhTxplOZvtS6BqvgvKKXP6vY0bPwhdtdlO5EWFky10ih95xVLReK6NlXvPL
-	ZQ4bNiz0FA5A3YPj0eEwTMBcBDsSqFXfQbkh4Pt8cT6cV/jcsIMyxQ3w9OyYrR5edVX06wy
-	HtZI9GC/17TcYek+OlP4UfvqXkbBF9VLdsakJwhxhyd423a7zOXUa6Jx3qBRHCf+DPRDrsH
-	YWZ87W/EQTXsAoQ4ezfUaRiE/I6Fub9mH0C0lE3NDW2Uy9Nf7RY6pK+++qEvYGwEr5Go1BR
-	5Gv4g8yOEJuglypw+6vxZVN2mBzVWtJoc4u+QFXeimu2wb59Tz59co29j3Z1hMCXn7HXWXe
-	2HCax2aodgFKK5pursIM8y5XoWfqBmryevTKLm3o5wRqvohOyFcOiKDAwjbdVu79Sy7QCxD
-	g4+Hy3M37Ax1RO9azc6h7gLB90MCmGvg7t3+I//fsp+snf8Mbgcr/v0nD22ZOn963Wbg3Cx
-	qelm4I/bQTzsBLPlJUlJMp4D2BAOp4RkTdFL1PM/KtTt9vOUjcVV7p5G8wi87W3y7HWDXl8
-	kCM5etqlOpb3f/lqv9QmjX9SBWY2bM+1zrLFk2NOT9XcIOLovkTPsCLCUwqvxCm26aX2VOM
-	5QOmfk/qWMVlKIR3nMPaWtfir4r+s29hhF+mZiCaAZF6l1b+PAH8Z7rTxhEXQEmpqsc85qm
-	c/eiTNm2GQDx7kHelbgU9Z0YT/d6f1pXXCiXFHz8wi7c1mbNVzQ9NM0oGsq4PTz1QVohRig
-	1DpLFO3Jju9ofJa4mvkBQJqTnlgB+HXTuiVFslxY8rEnDu3W+bTeIpRdhNGdFN3IyGLCK/G
-	bZ0AFmoOM7M2bd5yXsi2zbxoszzBHrKQ64N82hdhu6AoSN9h6kzL+cbhIpGMjlwP5H8nczi
-	YqI1fuX1NZHrwFr8QQsec2d65i3hVVg9f9xEJuKjy8OIOwWdmyEtDKtBR3I0lG7/ThYZvEp
-	XYbJUmCjoWgR/lkShBBB0DfQOZcPVOjJoW5VclirmyJzLXHdr6AKAKDX6nLP4=
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+Feedback-ID: Yeas:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: MKP3LwvGEIjI/a51TJEFxsbxjgtZZqq2Ffjo4uins8uvgvefpVoW9NlH
+	KyaRp8G0j7N/EAvJl0TtLiaOFPO0wei4g0+vP4Zc+lZp0vnDaW6C8wxZnx3ZD9LuMN36OAD
+	qctz2UrV07ikUhv2PzboRVvE+k6JUkW+E8AE31LaDN0h+0CZGRZCowltMTVslIs2jKEy9aD
+	VU5d/CIr8L1nwBkG9n/NFvWiBwSIy4obVDDKyvBCQJNHYBJqYZxppRJq0leqLoQyuJVo5g1
+	wP+8GWqr0ZA9XsNJBS1XINhY+o1PeooU1PrIOjw1VGp6bdDC42h+bu4P3ildulnfa24gIc3
+	z6EdAoaoN6pi90O8dSOYhTiv5tQg7vQV9mVHK+ZrJUP3Jx7QGnMLwnJe3gqgqALKvQ1dl7g
+	CZHwU7vDKvgn9rrpEzzkliZlbEKsXOswKiquWvOyQ3ED+HlPUDxragcJhNOgLUGM/McWQhq
+	o8nPIYFiHqPLrhxXmCUOngJAxmXu74E5VnJVkPnATZH9OyHSSZYB3htnsFttw6+PLfMHZ8N
+	//Cgrzm1wQjSirLAiP/EYW9cyDWRtgV3/tUbCMfn308kunhc+U/Zc2tnR4yDZcp2/WLLEim
+	NGzOmGzB3eM36Bw5leioTnhE2SON8c6Q9U1u9x0A6s1tduK4ZbX/t7nzN6oh+fXittJRqEz
+	iUdbuorIYl9clLMq9KfC0x0yMzEG3Qbrrhgh+eXq6PCoTSIgYW4VYiHzHIQ5P9LUbYtfGOB
+	8aXsDSTWckivCerps1EmWpobwM4jgE98zPwlDYwc3HiYnWKJk6kYCyND0c0le5/TTZaL4zm
+	WOYRAU3tqs3bG0TLIPTy2dtTWKUMnKf4fFQ2eLCUO3rRxKJPRnwm00iYC/LTDZf04YcaSRH
+	CCKC/U70Yt1dyqluBCJG3B/LJ5/G5DQUvuOrgGk6OENQY8qX2sc8q7wtnCIA9qJ5q7NhxLA
+	cCQj94br0HNEdEoaINZ3wJqHGXv4ZvrrxhneK/SSdmeISrZluas+TmdMAiCRddYsJCdDCA+
+	Kt/ZKPo0Z0xusQI5iBX1DbNbEJmHuitS5O03T+Gp5NEYkCHi8HYRhgABxH1JknN2U1UlsBV
+	tkw3BIHbuwYIZX7Cl9zYBtdEs7i/tkE6Ij1OFx5ncwIfsur1WwSyVrQAWNlpak534iE1zOu
+	rNVD
+X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
 X-QQ-RECHKSPAM: 0
 
-For the copper NIC with external PHY, the driver called
-phylink_connect_phy() during probe and phylink_disconnect_phy() during
-remove. It caused an RTNL assertion warning in phylink_disconnect_phy()
-upon module remove.
+> > +static void ngbe_reinit_locked(struct wx *wx)
+> > +{
+> > +	int err = 0;
+> > +
+> > +	netif_trans_update(wx->netdev);
+> > +
+> > +	err = wx_set_state_reset(wx);
+> > +	if (err) {
+> > +		wx_err(wx, "wait device reset timeout\n");
+> > +		return;
+> > +	}
+> > +
+> > +	ngbe_down(wx);
+> > +	ngbe_up(wx);
+> > +
+> > +	clear_bit(WX_STATE_RESETTING, wx->state);
+> > +}
+> 
+> Is it possible to use a standard kernel mutex here instead of a bit flag for
+> synchronization?
+> 
+> Looking at the underlying implementation of wx_set_state_reset(), it relies
+> on an open-coded polling loop:
+> 
+> static inline int wx_set_state_reset(struct wx *wx)
+> {
+>         u8 timeout = 50;
+> 
+>         while (test_and_set_bit(WX_STATE_RESETTING, wx->state)) {
+>                 timeout--;
+>                 if (!timeout)
+>                         return -EBUSY;
+> 
+>                 usleep_range(1000, 2000);
+>         }
+> 
+>         return 0;
+> }
+> 
+> Using a bit flag and a sleep-polling loop to guard a teardown and bringup
+> section acts as an ad-hoc lock. This approach bypasses standard kernel
+> synchronization guarantees and prevents lockdep from analyzing the lock
+> ordering.
+> 
+> Since this context is allowed to sleep, could this section be protected by
+> a standard mutex instead?
 
-To fix this, move the phylink connect/disconnect PHY to ndo_open/close.
+I think using a state flag here would be better. Because other code paths
+(like watchdog) need to check if a reset is in process without taking a lock.
 
- ------------[ cut here ]------------
- RTNL: assertion failed at drivers/net/phy/phylink.c (2351)
- WARNING: drivers/net/phy/phylink.c:2351 at
-phylink_disconnect_phy+0xd8/0xf0 [phylink], CPU#0: rmmod/4464
- Modules linked in: ...
- CPU: 0 UID: 0 PID: 4464 Comm: rmmod Kdump: loaded Not tainted 7.0.0-rc4+
- Hardware name: Micro-Star International Co., Ltd. MS-7E16/X670E GAMING
-PLUS WIFI (MS-7E16), BIOS 1.90 12/31/2024
- RIP: 0010:phylink_disconnect_phy+0xe4/0xf0 [phylink]
- Code: 5b 41 5c 41 5d 41 5e 41 5f 5d 31 c0 31 d2 31 f6 31 ff e9 3a 38 8f e7
-48 8d 3d 48 87 e2 ff ba 2f 09 00 00 48 c7 c6 c1 22 24 c0 <67> 48 0f b9 3a
-e9 34 ff ff ff 66 90 90 90 90 90 90 90 90 90 90 90
- RSP: 0018:ffffce7288363ac0 EFLAGS: 00010246
- RAX: 0000000000000000 RBX: ffff89654b2a1a00 RCX: 0000000000000000
- RDX: 000000000000092f RSI: ffffffffc02422c1 RDI: ffffffffc0239020
- RBP: ffffce7288363ae8 R08: 0000000000000000 R09: 0000000000000000
- R10: 0000000000000000 R11: 0000000000000000 R12: ffff8964c4022000
- R13: ffff89654fce3028 R14: ffff89654ebb4000 R15: ffffffffc0226348
- FS:  0000795e80d93780(0000) GS:ffff896c52857000(0000)
-knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00005b528b592000 CR3: 0000000170d0f000 CR4: 0000000000f50ef0
- PKRU: 55555554
- Call Trace:
-  <TASK>
-  txgbe_remove_phy+0xbb/0xd0 [txgbe]
-  txgbe_remove+0x4c/0xb0 [txgbe]
-  pci_device_remove+0x41/0xb0
-  device_remove+0x43/0x80
-  device_release_driver_internal+0x206/0x270
-  driver_detach+0x4a/0xa0
-  bus_remove_driver+0x83/0x120
-  driver_unregister+0x2f/0x60
-  pci_unregister_driver+0x40/0x90
-  txgbe_driver_exit+0x10/0x850 [txgbe]
-  __do_sys_delete_module.isra.0+0x1c3/0x2f0
-  __x64_sys_delete_module+0x12/0x20
-  x64_sys_call+0x20c3/0x2390
-  do_syscall_64+0x11c/0x1500
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? do_syscall_64+0x15a/0x1500
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? do_fault+0x312/0x580
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? __handle_mm_fault+0x9d5/0x1040
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? count_memcg_events+0x101/0x1d0
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? handle_mm_fault+0x1e8/0x2f0
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? do_user_addr_fault+0x2f8/0x820
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? irqentry_exit+0xb2/0x600
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? exc_page_fault+0x92/0x1c0
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Fixes: 02b2a6f91b90 ("net: txgbe: support copper NIC with external PHY")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
----
- drivers/net/ethernet/wangxun/txgbe/txgbe_main.c |  8 ++++++++
- drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c  | 11 -----------
- 2 files changed, 8 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-index 0de051450a82..b4f95b3188dd 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-@@ -474,6 +474,12 @@ static int txgbe_open(struct net_device *netdev)
- 	if (err)
- 		goto err_free_irq;
- 
-+	if (wx->phydev) {
-+		err = phylink_connect_phy(wx->phylink, wx->phydev);
-+		if (err)
-+			goto err_free_irq;
-+	}
-+
- 	wx_ptp_init(wx);
- 
- 	txgbe_up_complete(wx);
-@@ -527,6 +533,8 @@ static int txgbe_close(struct net_device *netdev)
- 	wx_free_irq(wx);
- 	txgbe_free_misc_irq(wx->priv);
- 	wx_free_resources(wx);
-+	if (wx->phydev)
-+		phylink_disconnect_phy(wx->phylink);
- 	txgbe_fdir_filter_exit(wx);
- 	wx_control_hw(wx, false);
- 
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-index 8ea7aa07ae4e..7268a0c101f3 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-@@ -294,16 +294,6 @@ static int txgbe_phylink_init(struct txgbe *txgbe)
- 	if (IS_ERR(phylink))
- 		return PTR_ERR(phylink);
- 
--	if (wx->phydev) {
--		int ret;
--
--		ret = phylink_connect_phy(phylink, wx->phydev);
--		if (ret) {
--			phylink_destroy(phylink);
--			return ret;
--		}
--	}
--
- 	wx->phylink = phylink;
- 
- 	return 0;
-@@ -657,7 +647,6 @@ void txgbe_remove_phy(struct txgbe *txgbe)
- 		return;
- 	case wx_mac_sp:
- 		if (txgbe->wx->media_type == wx_media_copper) {
--			phylink_disconnect_phy(txgbe->wx->phylink);
- 			phylink_destroy(txgbe->wx->phylink);
- 			return;
- 		}
--- 
-2.48.1
 
