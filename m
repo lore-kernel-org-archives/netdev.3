@@ -1,82 +1,86 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from dianne.skoll.ca (dianne.skoll.ca [144.217.161.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A7A40DFB9;
-	Tue, 31 Mar 2026 13:25:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A9835B63B;
+	Tue, 31 Mar 2026 13:28:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.217.161.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774963526; cv=none; b=NSu7Wv/c6ESo5/PGKeyryrPQJZYqAmOmlwd/ESrYBLaoB5kHoMJM9PIUkr2g0aajf2ZBYxPDkYIIsQqD/ZdGlK/lFrGEhzKqPeMB7rxdr5OmlhjXZhgs3AmWj4Gq7G5UbRYZ0aiJ0db5qP2th88qnC+LQADkxH+CCcWCW6PJHgM=
+	t=1774963691; cv=none; b=ZnNnY+u/yI8uw3ypnmPl+b+w+oSvUu21+JYF4oA1xLxoN2NLrdA7iXjMS/ptEkV7Y0DfwVxlgHMZo8ZBpI+1CFvAaiiOnWQ6R1ywblqAaeE2u6skIODWM+fpwBLBCYLic9j2IYX6+As1CwItbBnFmxhgPLdol/2QVPngabOMoSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774963526; c=relaxed/simple;
-	bh=Ly6/4S7J4geHgQY5tvnPgbhPiiPxZ9OCJ/8Jtke1RcE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VV0J5acZBfchT+Cuyz2R7ajcu3D1auWyrMQqHN42Lnm+D+oUFZkzE+6oK9W5Jz+rWvi53L3aowJx442FaALG+vBared6JJLSKPVlIK/Jh1Z2oGXDfoa+XIYnctIFXvTUTWyEFNAV55z0MXqD9zLo/k8ghQ4Nx/BQB1bMSXS9AlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=ASE1G+jB; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1774963691; c=relaxed/simple;
+	bh=7MFxKShVTxd+lY7R+mrO+Qf6lV8BcIFtVcpjcItRLnQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QdBWamyBkEyoQJqaQ65s1kikS+Mqmv/1dN0EH38DRw4Mfa+JCFA2XIdFFqCkgqgp5FJo/jKej9PNhYYKVKYv4V3aFkeT7RHJwnLajXJ0gZrXv8Qs1X532xIbaLmMMtmGoCJLwwg1rSQCrZUijg4Ugve95fNkhwhPY40atgmakkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=skoll.ca; spf=pass smtp.mailfrom=skoll.ca; dkim=pass (2048-bit key) header.d=skoll.ca header.i=@skoll.ca header.b=qQtF0T0u; arc=none smtp.client-ip=144.217.161.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=skoll.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=skoll.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="ASE1G+jB"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=DT+vgC5GXM15UUYIt8jVOrq7hQsR3Kl52e6YumuVgbo=; b=ASE1G+jBY0+Zdw7m+MNrwynC3M
-	oz1UtlZZ8QrFCgHW01uF8i3NGyZ54AbmCEiMkVTqTAhPkRqLjopmruGoYGctz81Sq5uUPunwrNMoN
-	DLbLRt3ZEBAb1pfCnJXhfdw3pLUm1i15h8fpfJCgpXTW4xmXRN16fpK5mILuWEaegy4xefNKObCVf
-	heNp+hlKFYCCNrbVfDYkooB3XjjyWeCauOSEresJzTdXLdTvq9YuO06ZXRXqGjwHvSDFmfnBMHK03
-	iGMn3gCTXTApIpnrYe/9g30ihDgwiTOovgpnS+5JgWwMXvIkS8lVBMsayN7yPz8I3xDBk/+/wrVjg
-	9i8iExCA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:43612)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1w7Z5l-000000001se-3Q5v;
-	Tue, 31 Mar 2026 14:25:13 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1w7Z5j-000000003lJ-3F0n;
-	Tue, 31 Mar 2026 14:25:11 +0100
-Date: Tue, 31 Mar 2026 14:25:11 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Julian Braha <julianbraha@gmail.com>
-Cc: manabian@gmail.com, davem@davemloft.net, peppe.cavallaro@st.com,
-	alexandre.torgue@foss.st.com, mcoquelin.stm32@gmail.com,
-	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] stmmac: cleanup dead dependencies on STMMAC_PLATFORM and
- STMMAC_ETH in Kconfig
-Message-ID: <acvLN7toll85veZy@shell.armlinux.org.uk>
-References: <20260331125817.117091-1-julianbraha@gmail.com>
+	dkim=pass (2048-bit key) header.d=skoll.ca header.i=@skoll.ca header.b="qQtF0T0u"
+Received: from pi4.skoll.ca ([192.168.84.18])
+	by dianne.skoll.ca (8.18.1/8.18.1/Debian-6) with ESMTPS id 62VDGwqq821975
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 31 Mar 2026 09:16:59 -0400
+Received: from gato.skoll.ca (gato.skoll.ca [192.168.83.21])
+	by pi4.skoll.ca (Postfix) with ESMTPS id 4flTDB0jcczdZXB3;
+	Tue, 31 Mar 2026 09:16:58 -0400 (EDT)
+Date: Tue, 31 Mar 2026 09:16:55 -0400
+From: Dianne Skoll <dianne@skoll.ca>
+To: Jaco Kroon <jaco@uls.co.za>
+Cc: Qingfang Deng <dqfext@gmail.com>, linux-ppp@vger.kernel.org,
+        Andrew Lunn
+ <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo
+ Abeni <pabeni@redhat.com>, Eric Biggers <ebiggers@kernel.org>,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Paul Mackerras
+ <paulus@ozlabs.org>,
+        James Carlson <carlsonj@workingcode.com>
+Subject: Re: [PATCH net-next] pppoe: update Kconfig URLs
+Message-ID: <20260331091655.30212333@gato.skoll.ca>
+In-Reply-To: <0aa6aa20-0e2a-48e9-8273-53b2fecd287b@uls.co.za>
+References: <20260331033303.5664-1-dqfext@gmail.com>
+	<0aa6aa20-0e2a-48e9-8273-53b2fecd287b@uls.co.za>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260331125817.117091-1-julianbraha@gmail.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=skoll.ca; h=date
+	:from:to:cc:subject:message-id:in-reply-to:references
+	:mime-version:content-type:content-transfer-encoding; s=canit2;
+	 bh=N+o/fN6BS9t/TFQkepTVDOf/PV5JJHZ1MG5m3Iia2pE=; b=qQtF0T0uQ3rv
+	K2GevO5H8WxzEB+0OqJJoAo9Bi7oO35liWdNLePTxjYCmxd/bsGQxt9F9tna2HCF
+	qBsklxR/zMtyRp9FyOCi6zGZUMwvUD8aHYI6wmdNgKB8rvoiVEPJgZuecttWjoPG
+	GDm8fbER9GSioRfvb2szvQJtIasTdpfOGWHy4WApEAfMZ84m8Y64hExT9K03f6aO
+	Q58JjmLCHPx3UCW2B7bDfREetn4V8fkmM2TX8qi0RlTju9yJWS9W2QZffos8ShAu
+	HDkQx24YdeuGXk2IF7hFKTkV3YPwlVHfy5pxCmBPOLP1VSBs5uUFOTnPJqoDSXuq
+	S4dnXiyXQA==
+X-Scanned-By: CanIt (www . roaringpenguin . com)
+X-Scanned-By: mailmunge 3.20 on 192.168.83.18
+X-Spam-Score: undef - relay 192.168.84.18 marked with skip_spam_scan
+X-CanIt-Geo: No geolocation information available for 192.168.84.18
+X-CanItPRO-Stream: outbound (inherits from default)
+X-Canit-Stats-ID: Bayes signature not available
+X-CanIt-Archive-Cluster: tWKWaF/NcZkqjWIj0BEJTBHJhwY
+X-CanIt-Archived-As: base/20260331 / 01gVpgW3L
 
-On Tue, Mar 31, 2026 at 01:58:17PM +0100, Julian Braha wrote:
-> There are already 'if STMMAC_ETH' and 'STMMAC_PLATFORM'
-> conditions wrapping these config options, making the
-> 'depends on' statements duplicate dependencies (dead code).
-> 
-> I propose leaving the outer 'if STMMAC_PLATFORM...endif' and
-> 'if STMMAC_ETH...endif' conditions, and removing the
-> individual 'depends on' statements.
-> 
-> This dead code was found by kconfirm, a static analysis tool for Kconfig.
-> 
-> Signed-off-by: Julian Braha <julianbraha@gmail.com>
+On Tue, 31 Mar 2026 08:21:40 +0200
+Jaco Kroon <jaco@uls.co.za> wrote:
 
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> That same code has recently been dropped from rp-pppoe,
 
-Thanks!
+That is not the case.  I still ship all of the plugin code with rp-pppoe.
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+> Most people will never need rp-pppoe.
+
+This is correct because the ppp project *also* ships the plugin code.
+
+Regards,
+
+Dianne.
