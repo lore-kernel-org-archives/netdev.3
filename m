@@ -1,127 +1,130 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B9E1A3154;
-	Tue, 31 Mar 2026 03:54:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486C41A3154
+	for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 03:56:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774929274; cv=none; b=s4Imwjohc/d3qCVtuA4YL8VgqPg4rhs7/v7vSeVlmP5eAU+tUZ6JjKnO5nttSrt9pubOlvyLyASMWccW2x21CDdmhuwVpyYDbqNquaRk1Ny9Bk6mH1hv2ocQfBG/ltzMi6QVp3QdZtqmIJU1d65Tn9CGuycxamPBCQ0uiZZLeqg=
+	t=1774929394; cv=none; b=gJrhU3EpJlHvbWFXYPkMjt3U/mES+1EtfcBYD18Rg6wo6yusc5TpvVzk8NlyXtpB27uf7NtmckIKI4bd03XpBasNN25wTVmm3g79e9Vj4VPY3kkkUdsmu34ZNa3dET0oyrDPkO++g8NutD9YnEuM/FNOpyYE4tjEkWgGIzIRN9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774929274; c=relaxed/simple;
-	bh=ATZV6iycX6yHF6Pq4Es1cRfIe5pU2PFBMmBvdNhgBdc=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uPrnCbouX2dnKL6Fx8INFJMFwypuT7jciBUxK8Zymi0DEW56lkr/8QhgPONN7deWh5lGLcwFvZu3EOraMpe6ukJS9sUmZCyWRH6F+YNMG9wkPWVymD1wl+8HU85JSmDCDzJQF/pnyjEopgvEYGN969Hr0jXdBisLoZ2uhnEDh2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=G/PW045v; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1774929394; c=relaxed/simple;
+	bh=/1d/SQB0lDkfk6gQGl066QQ60SbR0X67jpMKif4tqy8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=JhLQVpqzw+J6QdbcZjOYyvljEBXewO+oSl1753hPCAcqrvovQ8RuwOgiUfiNg8JCDCX+YZLQL6hYm5el3KyGObbT/a6wMZRsNhrBlAXFwlidh3QQ/fgkTPJN5ijuFJT/IpXYQgji8rOs4zCs6fK1SLh1EnpX08hZNplQXvgGpC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hLyvP+X9; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="G/PW045v"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62UGNWDo3053916;
-	Mon, 30 Mar 2026 20:43:13 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pfpt0220; bh=2AdKfCKm/uHWeLRWf9vQNwB7K
-	mqObbWnQF+GtyT5gmA=; b=G/PW045vhMBacMs3iMIHo7DpP7JTzxBetvKp8Y5pS
-	yEuIobpg9q2ipxbeZ5K0BCX587VIWrm6Cc8SLwGLJtUIMsHyPXk/N7ESYAt3/Ks0
-	ZwNVZSoD48SVpeSbnvikybTo5cpAnAY+atkDO5qRV5qCxS1wE5E0Pe8mIJg0JjDB
-	37uu/RccwZScKuwv8vrqoJjoCLV9J7zvpbGcdsINn+4H/+MMywf+2GMgKp4aH9hk
-	D0AZF5TAkjGsrTpuvVHW5gHnqnUPoWw82kgx6nvF0taVajvGUf7rAJvA2eUeScfC
-	mOS6GoVI6i8MEbC0K6KVg4l4rYqppbGTZR266IdMdWxsA==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4d6yr73xrv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 30 Mar 2026 20:43:13 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Mon, 30 Mar 2026 20:43:12 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Mon, 30 Mar 2026 20:43:12 -0700
-Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with SMTP id 454C03F705A;
-	Mon, 30 Mar 2026 20:43:07 -0700 (PDT)
-Date: Tue, 31 Mar 2026 09:13:06 +0530
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: Simon Horman <horms@kernel.org>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <sgoutham@marvell.com>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <donald.hunter@gmail.com>,
-        <jiri@resnulli.us>, <chuck.lever@oracle.com>, <matttbe@kernel.org>,
-        <cjubran@nvidia.com>, <shshitrit@nvidia.com>, <dtatulea@nvidia.com>,
-        <tariqt@nvidia.com>
-Subject: Re: [PATCH v8 net-next 6/6] octeontx2-af: npc: Support for custom
- KPU profile from filesystem
-Message-ID: <actCysjPKrnzExJx@rkannoth-OptiPlex-7090>
-References: <20260325072159.1126964-1-rkannoth@marvell.com>
- <20260325072159.1126964-7-rkannoth@marvell.com>
- <20260327133036.GE567789@horms.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hLyvP+X9"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2b24ddb2428so11257915ad.0
+        for <netdev@vger.kernel.org>; Mon, 30 Mar 2026 20:56:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774929392; x=1775534192; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ll3YM4do8VUXTzcFrksYghcaSP2fNs5r3be4UVdcfFo=;
+        b=hLyvP+X96WTV/3rUwX8jafFUtLelHgKKQB1B1NpnztwRrmPae6hfXy9YnLbfSjSTIO
+         OQG7VPd0d9pVzv2vXT+F4fB3bXk3zj6YXHi8k/dFzAn4ClL4Uu4R81ydF4xLd+ACZW3P
+         povzWBjOmNfjnXYcGOdK5B8Z5HK/cekBPJbgonY9PuvhzNrXkFntAGTKiRzQHVLtrBIn
+         Gwt3+OUChSccEvKW5CJgAWjmtjRqE9DrVlonUYV6B3mN8htWc4dDearsr+e2ITO1Ys1n
+         7IQVwczLPBDth6Gp43+72xK4xau+4LuVTT/o0SKNqNU2BmrNmFfQmj6Q2crsQoBIH1Yf
+         v/vA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774929392; x=1775534192;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ll3YM4do8VUXTzcFrksYghcaSP2fNs5r3be4UVdcfFo=;
+        b=GUDIUmYaU1ae7eM25NRbyR91oPZ8Nhsjyzsq4ByUAGTgbx982f/dx7weL4IgvUhiOi
+         ojWurByYzMY5FSpDVtN/rCtEvgUJ/MimDH/DhCDZ34uid+UGZwnz47H6ahFuYsuCvCbw
+         woiPpFCjmq4edOQBxxqfopJGZbmG1NN2Ay6Cc02cTBGvIVYhIY1lSXO6Z3HpYxmshgDJ
+         vzEHqNDwrXUGFZydDwUWChNBQxh1E3jUhXEufDzepCX/RkHmNh/RqCLyVws4qxFFAQ6f
+         3RBfORhesYFHqGiGsztMaQ/2ZJpHuzepBAXjiwsSP/jAqc1y4Ko3PQgPMjMVMDf7/ZPP
+         N0+g==
+X-Gm-Message-State: AOJu0YyLMOoP1MdRQtDtgiG7nuAMJSC6kyAZID7ydp4LaSyfEnyO+Hig
+	Y5XPwp/6rttN10w80WpaHnEHTVhvCAwKLL+G81J4KOERgKntIAk+cBmB
+X-Gm-Gg: ATEYQzz8T8LOV0oWpJnf6Z8prqZlewnhGQ4zEqGOEleUlqCAsLs1rr3JonAmbbzcB1A
+	8hrc33KpNnQ+vuikg8AnF1U6BxmPY3qwjsyVYBf7JDzvrdGmiUgmnLJgJnWhFF0Yx7tllMTtYS0
+	IsV37aeNzwIoXJIdChW5Q58XjTcGe9JSuAZpD04M6MkuT+OVKnHwL4oahY5j2T2eiMlDXb1iagL
+	km/YOMXp4beHNCyCLk2oXxgNhKgq1cdwwr/HZv+GA2rqcRUpXi3jBKLbSMevZMnzXQbs9Vh4blr
+	1aXJkDG8EGw5OnUqkyHfBF0L/nM6UG5P+T5iiOaR+mDdve8JUDg8xEG5TvbD4UR/W9tP33SbRCe
+	JjWFApgjAfxg7BVOQeE6ZTRsr3SeiiDC6yMR8OzvEMY0DshFFEbNqdwBntzq0kMWHnKRYmZqrdF
+	/lXm1CPCpSbgxqiH46bJy5zl5gDhbvqtoc1aHzdT0TIGgVSc15sIjbFJlvA0YGGDNK982PdqTez
+	Ope30gRDCCx+0pSmnZCdO9P5PZvqkMk32jO+KESBbwaORwZpD0=
+X-Received: by 2002:a17:902:f54d:b0:2b0:673a:7c90 with SMTP id d9443c01a7336-2b0cdcb7203mr145646665ad.28.1774929391550;
+        Mon, 30 Mar 2026 20:56:31 -0700 (PDT)
+Received: from 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa ([240e:34c:5765:500:c92f:4f4e:9953:45b7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b24266e487sm94680625ad.24.2026.03.30.20.56.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Mar 2026 20:56:31 -0700 (PDT)
+From: Hangbin Liu <liuhangbin@gmail.com>
+Subject: [PATCH net-next 0/4] ynl/ethtool/netlink: warn nla_len overflow
+ for large string sets
+Date: Tue, 31 Mar 2026 11:56:10 +0800
+Message-Id: <20260331-b4-ynl_ethtool-v1-0-dda2a9b55df8@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260327133036.GE567789@horms.kernel.org>
-X-Proofpoint-GUID: SnWgw0JvzTdgsB2ff63YnKQoHaGpZadF
-X-Proofpoint-ORIG-GUID: SnWgw0JvzTdgsB2ff63YnKQoHaGpZadF
-X-Authority-Analysis: v=2.4 cv=a949NESF c=1 sm=1 tr=0 ts=69cb42d1 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=l0iWHRpgs5sLHlkKQ1IR:22 a=qit2iCtTFQkLgVSMPQTB:22 a=9R54UkLUAAAA:8
- a=VwQbUJbxAAAA:8 a=JAhMjkpjCbTQvw1v-iEA:9 a=CjuIK1q_8ugA:10
- a=YTcpBFlVQWkNscrzJ_Dz:22 a=lhd_8Stf4_Oa5sg58ivl:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzMxMDAzMiBTYWx0ZWRfX00mx2mbcYNZb
- JuC2i4tyirho9LvXi/rtpIzbNlbe0Ygh0VdpqzeQxw3zICdrlv3E0zWxld9RDZTpEuD6wmKgvPK
- MXYsB6Fs+IZdzyMPaRNxRt9F+RxVLe6Hu3p2q0Ewq7j4Yg5W1s7IOMmlPRllMAsTHxrsQkJtPov
- v4/vckIQoBnWNPi3X8aRlC6AWADxk/hEM0BIa8+2sSqOPYKoxvBX9vDK3sroqxoJ2xmn6Lxt5Wz
- JiQd9AiQKusgnpW9WugPeEYipkBfXVphFsg+Q+5gnSQHgHJv+9oIlfGGRPzHH2Dq9BhQkyYnAhT
- oI64X+/M+/ey79Hk2YIhWN6NxhhplOxevKT6sBjjlXa4EfQ6uRXxuDue9akzqIQ7H2/S/+7GVDE
- 6kMQHjpeYEIGJDBHOv9IOTu3bXwt+AtiNLDQjDrPYW7Hl3uX7hgf6ygDpXc71dq7N8Jhgc7cN/W
- Tt2rZRfywg2nBx9aWug==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-31_01,2026-03-28_01,2025-10-01_01
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqEMAxA0atI1gacTEcHryIyaE01IKm0RRTx7
+ pZZvsX/F0QOwhHa4oLAu0TxmvEqC7DLoDOjTNlAFdXVmwyOBk9df5yW5P2K7tvYyZD7NGQhR1t
+ gJ8d/2IFyQuUjQX/fD4hMEptqAAAA
+X-Change-ID: 20260324-b4-ynl_ethtool-f87cd42f572c
+To: Donald Hunter <donald.hunter@gmail.com>, 
+ Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Andrew Lunn <andrew@lunn.ch>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Hangbin Liu <liuhangbin@gmail.com>
+X-Mailer: b4 0.14.3
 
-On 2026-03-27 at 19:00:36, Simon Horman (horms@kernel.org) wrote:
-> AI review flags that:
->
-> npc_load_kpu_profile_from_fs() calls npc_apply_custom_kpu(),
-> which returns early if the following condition is met.
->
-> 	if (fw->kpus > profile->kpus)
->
-> Does npc_prepare_default_kpu() need to be called before
-> npc_load_kpu_profile_from_fs() to initialise profile->kpus,
-> which is 0 by default due to profile being allocated using devm_kzalloc()?
-simon,
+This series addresses a silent data corruption issue triggered when ynl
+retrieves string sets from NICs with a large number of statistics entries
+(e.g. mlx5_core with thousands of ETH_SS_STATS strings).
 
-Thank you very much for your time.
+The root cause is that struct nlattr.nla_len is a __u16 (max 65535
+bytes). When a NIC exports enough statistics strings, the
+ETHTOOL_A_STRINGSET_STRINGS nest built by strset_fill_set() exceeds
+this limit. nla_nest_end() silently truncates the length on assignment,
+producing a corrupted netlink message. In the doit path the corrupted
+message is delivered to userspace without any error; in the dumpit path
+an -EMSGSIZE may be returned if the data does not fit in the dump skb.
 
-The v9 AI review has raised the following concern again:
-https://netdev-ai.bots.linux.dev/ai-review.html?id=f29b81fe-bb3f-4902-85de-8271effbb41c
+Patch 1 improves the userspace tool: rename the doit/dumpit helpers
+to do_set/do_get and convert do_get to use ynl.do() with an
+explicit device header instead of a full dump with client-side filtering.
 
-"In the filesystem loading path, does profile->kpus need to be initialized
-before calling npc_load_kpu_profile_from_fs()?
+Patch 2 adds a --dbg-small-recv option to the YNL ethtool tool,
+matching the same option already present in cli.py, to aid debugging
+of netlink message size issues.
 
-Simon Horman raised this concern in v8 review on lore:
-https://lore.kernel.org/netdev/20260327133036.GE567789@horms.kernel.org/"
+Patch 3 is the kernel fix: check whether the strings_attr nest would
+exceed U16_MAX before calling nla_nest_end() in strset_fill_set(),
+and return -EMSGSIZE early if so.
 
-would like to clarify that npc_prepare_default_kpu(rvu, profile) is invoked
-very early in the flow, and therefore applies to all execution paths
-(default, filesystem loading, and firmware loading). Additionally,
-if the filesystem loading fails, npc_prepare_default_kpu() is invoked again to
-ensure that all values are reset to their defaults before attempting to load from firmware.
+Patch 4 adds a generic WARN_ON_ONCE() in nla_nest_end() itself, so
+that any future caller hitting the same overflow is immediately visible
+in the kernel log rather than silently corrupting data.
 
-Could you please advise on the best way to address the AI review comment?
-Specifically, would you recommend:
+---
+Hangbin Liu (4):
+      tools: ynl: ethtool: use doit instead of dumpit for per-device GET
+      tools: ynl: ethtool: add --dbg-small-recv option
+      ethtool: strset: check nla_len overflow before nla_nest_end
+      netlink: warn on nla_len overflow in nla_nest_end()
 
-1. Adding a clarifying comment in the code, or
-2. Invoking npc_prepare_default_kpu() again just before npc_load_kpu_profile_from_fs()
+ include/net/netlink.h          |  1 +
+ net/ethtool/strset.c           |  4 +++
+ tools/net/ynl/pyynl/ethtool.py | 77 ++++++++++++++++++++++--------------------
+ 3 files changed, 46 insertions(+), 36 deletions(-)
+---
+base-commit: dc9e9d61e301c087bcd990dbf2fa18ad3e2e1429
+change-id: 20260324-b4-ynl_ethtool-f87cd42f572c
 
-to make this behavior clearer?
+Best regards,
+-- 
+Hangbin Liu <liuhangbin@gmail.com>
 
-Thank you once again !
