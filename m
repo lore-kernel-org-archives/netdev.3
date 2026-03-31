@@ -1,73 +1,72 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96B693F7E85
-	for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 21:07:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9278E421895
+	for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 21:07:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774991258; cv=none; b=uli0BgIew70ekh/U5+qhmly9QOXFH1Hwf4We5e4GAEquVdB1TF8ibbI1wUJWFMxFo8I5Rg1vLWjehlRTWP/O2ktJbfcV8bE2O3mLc9EhE6wm9nK/CiIWCNWZF8P9Di+JOSQfqlFpLUDeyJbZwyml5rl1uvEOqOPuSC5R46bEeAg=
+	t=1774991259; cv=none; b=moDEWv/ErWZuhccmtjBSpi1sGEgzggjbhPCCo2Fk19rZO1cK6L6TrqyM0vJrFVWGP1pN+dT5Prdp8+bhorvgft1CGGA322XHAAgLKERJxDWrrLZWRs1CNvo5WmNnR5IkoeTVGEofUO0JShDQ8VSU9GuET/es2OXOTRRZ/b7PSaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774991258; c=relaxed/simple;
-	bh=pwg7obW1F45qdk6CF931VQ3fdTHsQqpoLghThsE9nsg=;
+	s=arc-20240116; t=1774991259; c=relaxed/simple;
+	bh=Gq32s5tYKhbS4ootE2KfxYlA7AVpiFPecbymE0oIebY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hCegfgf6sptvP2tywwiob11wWEh0iFfq9SHRJ5fHHVjs4x71hpTqfqQY4C01Y5y8R/QMw4ZApcSKCywV0Q5XiSClxILcCUbrsIR/2DgWd/fSJZFwwCv9e/isuZOWahMFc8EqUkP2klkuFex6zoUzzGoqVypeE8dLQFmk7vuD3lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aQBVeCXu; arc=none smtp.client-ip=209.85.221.42
+	 MIME-Version; b=hRcsC+A5/cnDdmuCah04RAFYfJZXXQHkhN3H36HgV/vmgSymqrr9nSa+JYLYFNXF5C2qOxrFEnrgghmANxu2oIUzMo3OFK39veIQbOcOC7sJtU7lmR8xLuiQnQnKkeSOVcKYvigk7f66hUi8QOEp30dzS+TMH2hyABx2xWkoqts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dq5heiMU; arc=none smtp.client-ip=209.85.221.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aQBVeCXu"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-43d03db7f87so1327048f8f.3
-        for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 14:07:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dq5heiMU"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-439d8dc4ae4so6042541f8f.2
+        for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 14:07:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774991256; x=1775596056; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1774991257; x=1775596057; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0roaam8cmLBX+UQ0cLs13fGICp7YbtIQisTozBtEwtY=;
-        b=aQBVeCXu02RZ5/XP6IqVZc+e+ZsjpL1m7jHgrhYkqewLr24JRyvjzdyFcGgJ3tGmRW
-         ACM5rujXmA3Cq8sRfOW/goJt3iiGe6Vje9BMyvT+MncPVuSSe0r64LyhJe4JnuOKecrz
-         +AXk2BGgfMW+/yI/aGzWQDvbuGlPZheFhN81w8zvQO+oGAgjNMMq2Pt1TRTR22f6larX
-         PB7LzCCjEdCkhILbA3x00AMI3VJhywGGF+hNk33CyjCVDvuc3sK9u9Bb+mWcTR08BEqH
-         Yo37QIo2VT943GnUTuM1zXwiVHRbGmErGfbcmagMFD0rktr7qA3VDxwy/K6qxn6Og4My
-         yNMw==
+        bh=KM1fZLaVB3LcWo3TFeDG4Fp8xcZW77vC4Fuw3DPa4mk=;
+        b=dq5heiMU1DoMZpJs5nr7BsiOKgOjyOUl9wSdUN2enPtUweYnfXkGvZoysfLPesBFlQ
+         c8TYAAEuR+GWX2oDHr0Fg0ETdctUxfD80x6aD2ESYskycWi//ImxpWDg2G/U9TOfezXB
+         64+Fqy0dE/sQqmxDOw0OVDqakD/oaVaJA4pfaJulwn0BMrvxL7yLNhtbasnM4GZMzrSm
+         KsuqK/ebQsKYozw44m6PKzFRa8Qw0LoB8mrzs9fIjRif1M0lzLjD2Z6BY2mdR4FiLHNK
+         p+4Bktn3JsZ+vo2bCHvqz8VncIlwRXtBvyRBCPCPXULsmDi/DdoWrJjV/4xWBkRd7jsP
+         KSWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774991256; x=1775596056;
+        d=1e100.net; s=20251104; t=1774991257; x=1775596057;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=0roaam8cmLBX+UQ0cLs13fGICp7YbtIQisTozBtEwtY=;
-        b=o6WPSY+234CPmUncm61fsiRKfSoCJQq4syljr83Wi6MKYHYCTpr2ok4j0cGulCLQRj
-         0xLZSJ1/AKBuFOIfePfWzylgy6q0NSTPPlCusBxDLx6tO3G/qhPstpvDbodHlqzuUBlF
-         GqY9Mq4yncNZGFp6wLzbJubxas3LLaIwJhcGvLfdNvxH4nureUrfqjs0dysE9msFK+2v
-         rf3BhEQenQ6nJufZ/KYGAh67ioxRplmpFZu73xOsNJ9tNL9G448WEZj+Ab/au9Z3n9s9
-         TTPDOVcZVU7n7ZSdzAH+WB6swxRErKA3XQSZ7mIL0MnCQHdVOgl28nJX5KvWRuPhQeV1
-         kXyw==
-X-Forwarded-Encrypted: i=1; AJvYcCWh2ExCYka7k39EoLJIZ8UE82CrHC0AiA0vZNYifnf8zrOp5JqBEmh1JL+IliquJ5d1dWEKjrk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzktHMLJyFvcq3UP5fLYTIn04gVdIHUeCaCrLWDouZTFWzy34sO
-	mWnxh6dEYWt8YtDGn+6Z2CFeuzpvhqU6XyDOQyDkYzWy3m+MSVJR9YNo
-X-Gm-Gg: ATEYQzycg6+pN5pGVRAIJQEfnDEoWsz8yDq3xjPn2ezVGEEl31mpmZLsU+JikId+UWw
-	ZOBEZdWGy3IH+CNk4TPJzdqdZSVGHw+/mrgnrW944TgLjKUAeTh2Nj6JiEFSSuTP5bdi5/25O69
-	zL2k/utAJNkc/7/NtrZVHyuvoGDe11ZzrIpgafTB8B8YbvuaTlqqBLdhQak5Om70PDgxrJ70cWA
-	g+cWYO24DNv/yuP2ZTh8GEyg5ywlrNh/TLbrRzn2aaw3nyflIOPk1jjJk7GEn0yHMg5Wvg5ORH9
-	61on9+5lfLsECjEGBHu8pzmUzWROtIRUpmAHd6VyBtDnTiOetg1TVB5gMAWj3xvylv8npxn6uTG
-	uLkrXLxweMZUYt6yiJ+U6TfxxOFPN/lvF9FHeiuM+NBs+koWs2K4lL4NRxIOvbDAPagG7ZfVBXt
-	/6iCxXT9/BiAvJ+7UdD1MyqAKh4RhgW43Sc+xp7UR3uMrkSanKuq3fNKxstzx/l5l+IlGawxqVO
-	jKLNNO8DXQb7XniO4lVl0JJH4zCQg==
-X-Received: by 2002:a05:6000:230c:b0:43c:e7a7:9256 with SMTP id ffacd0b85a97d-43d150513d6mr1976348f8f.12.1774991256052;
+        bh=KM1fZLaVB3LcWo3TFeDG4Fp8xcZW77vC4Fuw3DPa4mk=;
+        b=A+H5Y/eOQWQyFZxOPdUDkedLiyLvGiEox9i98t2qgNo0NGayesHQwKGYqRqkz0gZQl
+         nBCwPTmjBvrq0RA9pyqHUtVAgb/qIFJHs/oRRi2IMVHCL9+3J99BG6vGh4iJQJ1l55pd
+         /gm9ATaMViuAwitisaNpfmGL7+cHKsx0pAASK1vj2VCbLMjUbgJCE4CboAGFM+L/3ATG
+         BQHVHn514SlHLklIVMRLaznVNFWqkURQmW2kR1BAMdt0fOZKd/p6Cdpyja2MHbFF7jnh
+         5//XlZpradluhHbVR/mh02UfJdKRjjsFIp8ezYEsT1KS9iHu7mNuDi8lzhYTFgD/O6kw
+         mc8g==
+X-Forwarded-Encrypted: i=1; AJvYcCWTdUBB5r6qMvuX99tiroRL1xJb2i63sDU7XeQJRrZlyjVUFz04vga1w8jU+pGUlGA6pLwscMY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzl15cgeBO/EfE0Pk4qv7iVg11klKRXSiSVKeGJc5znXZNWMk2f
+	P+C3Edn6HFGmDEVbQiytp8a0u4T5DB9gLrcaPCK2lR/qqybEMJSiG4OD
+X-Gm-Gg: ATEYQzzYvWImiNQd/0H5XaFqM8CXwbCA9oo47dcfFDzP+P3Cswb8xNNCNNjk/L2h3jn
+	6yvagMSRXVhCI35iRn/Nyz+5mmxcPizBlaSLQQ/+uUZyqPQ6XImF9aMjLpWswDqAqsqpWHGxIyx
+	rNjjuwOk+Nt47j2eNS1ZrVIFAL1+hNIrtTZHB3Uh15h8NB82pB+YKfh643wXznGI3rA0BLA+ryv
+	mtvQzDkait2YJCX4alns/JUmt/K3EElSc28EZTUOo0OiHk+yGkyErv4W7f/1OLnLBLch4n6riY0
+	BQPqToD6gMWr0rDTvBVFVohzS9k8BqBiDPqvCjdcdwHFNzO+tWQ1wVcJn6FIq5X5iAmFwiALRfJ
+	eioNGVRjn80S7YuiUlYOYE/eQmujo6yAndBxKXw7lgd6d4sCrqWy9N1Oi/oOQ5yqmWZwSk3osfI
+	diVTczLaXJsH2DgNZy3cZsHFx3RBJVLCbomlf6ICe6NLMR/A0vatHI2nOvpijYzUbKOKGe4tro8
+	nl4zpNPHG7OsChie+jtatzNvryYrQ==
+X-Received: by 2002:a05:6000:3112:b0:43d:714:34c3 with SMTP id ffacd0b85a97d-43d150dd750mr1858412f8f.43.1774991256803;
         Tue, 31 Mar 2026 14:07:36 -0700 (PDT)
 Received: from 127.mynet ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43cf2570b18sm32431393f8f.31.2026.03.31.14.07.35
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43cf2570b18sm32431393f8f.31.2026.03.31.14.07.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 14:07:35 -0700 (PDT)
+        Tue, 31 Mar 2026 14:07:36 -0700 (PDT)
 From: Pavel Begunkov <asml.silence@gmail.com>
 To: io-uring@vger.kernel.org
 Cc: asml.silence@gmail.com,
 	axboe@kernel.dk,
-	netdev@vger.kernel.org,
-	Anas Iqbal <mohd.abd.6602@gmail.com>
-Subject: [PATCH io_uring-7.1 v3 2/6] io_uring: cast id to u64 before shifting in io_allocate_rbuf_ring()
-Date: Tue, 31 Mar 2026 22:07:39 +0100
-Message-ID: <52400e1b343691416bef3ed3ae287fb1a88d407f.1774780198.git.asml.silence@gmail.com>
+	netdev@vger.kernel.org
+Subject: [PATCH io_uring-7.1 v3 3/6] io_uring/zcrx: don't use mark0 for allocating xarray
+Date: Tue, 31 Mar 2026 22:07:40 +0100
+Message-ID: <f232cfd3c466047d333b474dd2bddd246b6ebb82.1774780198.git.asml.silence@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1774780198.git.asml.silence@gmail.com>
 References: <cover.1774780198.git.asml.silence@gmail.com>
@@ -79,37 +78,34 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Anas Iqbal <mohd.abd.6602@gmail.com>
+XA_MARK_0 is not compatible with xarray allocating entries, use
+XA_MARK_1.
 
-Smatch warns:
-io_uring/zcrx.c:393 io_allocate_rbuf_ring() warn: should 'id << 16' be a 64 bit type?
-
-The expression 'id << IORING_OFF_PBUF_SHIFT' is evaluated using 32-bit
-arithmetic because id is a u32. This may overflow before being promoted
-to the 64-bit mmap_offset.
-
-Cast id to u64 before shifting to ensure the shift is performed in
-64-bit arithmetic.
-
-Signed-off-by: Anas Iqbal <mohd.abd.6602@gmail.com>
+Fixes: fda90d43f4fac ("io_uring/zcrx: return back two step unregistration")
 Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
 ---
- io_uring/zcrx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/zcrx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index 1ce867c68446..b8f15439d5df 100644
+index b8f15439d5df..5c0a49340722 100644
 --- a/io_uring/zcrx.c
 +++ b/io_uring/zcrx.c
-@@ -384,7 +384,7 @@ static int io_allocate_rbuf_ring(struct io_ring_ctx *ctx,
- 		return -EINVAL;
+@@ -929,12 +929,12 @@ int io_register_zcrx(struct io_ring_ctx *ctx,
  
- 	mmap_offset = IORING_MAP_OFF_ZCRX_REGION;
--	mmap_offset += id << IORING_OFF_PBUF_SHIFT;
-+	mmap_offset += (u64)id << IORING_OFF_PBUF_SHIFT;
+ static inline bool is_zcrx_entry_marked(struct io_ring_ctx *ctx, unsigned long id)
+ {
+-	return xa_get_mark(&ctx->zcrx_ctxs, id, XA_MARK_0);
++	return xa_get_mark(&ctx->zcrx_ctxs, id, XA_MARK_1);
+ }
  
- 	ret = io_create_region(ctx, &ifq->rq_region, rd, mmap_offset);
- 	if (ret < 0)
+ static inline void set_zcrx_entry_mark(struct io_ring_ctx *ctx, unsigned long id)
+ {
+-	xa_set_mark(&ctx->zcrx_ctxs, id, XA_MARK_0);
++	xa_set_mark(&ctx->zcrx_ctxs, id, XA_MARK_1);
+ }
+ 
+ void io_terminate_zcrx(struct io_ring_ctx *ctx)
 -- 
 2.53.0
 
