@@ -1,56 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D04302756
-	for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 00:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C4618859B
+	for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 01:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774918553; cv=none; b=kyIi0WxNc/oBrczLlQ6IL/bTpW2Bro5BF3+wAyzPyTMcTAEx3FJCLWbfqITpOh62Ho0T3uhWYIckQDcyhm8OTTVynLqY7yIncYsjKbl9j+ZPiR4Prp+rqIgso9Tln2h7ZiwbnpN2nRQX2uDJaw62ghyBdv94Q3/gNxTWhuB0LTk=
+	t=1774918821; cv=none; b=MsUjSZ/bX1GvXhB7kr4D3B6TgzJF/xQmeTkuyfpS4qv8+0z783gh0X0xQBBQn3DcKXMCk/y1hBafCLGhlBPCglQKNfYDAw62PS+Stxy6oAjBGONsQNRyJMJhiTP07ikuYyOVESZVDXZX2hhFq3h84kxWwBRtFVgfjBuCAlzDSgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774918553; c=relaxed/simple;
-	bh=/G4BfT6kJGkx/O87btMe/6GcimNnuxzeJ1d4cXHPB4A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g5xybCGbiKkTxXSQv6/lf3qFAFsFtMkuKJjUfN4SiGX9yOKehnobjA1UP4D5zm7XZUXYh8HkDaX7+tH2w8NfxOqmKeKZ7G4f4vf715GsjW/mlE1UM7pnquXMHrOO8sKNR+dDu/smhugoa7CS33KKZKPQ2EDpF0eeqlqebpu2cXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YiL7mWmr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774918821; c=relaxed/simple;
+	bh=szpEjX0j6heXzguxWqJ0qH7qpPaR+6vOp8U6CI4dkXA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=FurC3Ff70ImOzvyD1UwV/gCtuNN4Mx6f5EmlP3zCG1cfMbN7nRFWsxsy4lH09eelH1jX6/e7XLMiJltjQ7mGhDLkVEl5jmetolPbFLSFwWLA8/DMc4BolmH22NWoHeKtTytG+n+rTXl3YXQ8v7maioOlVdihlP4bftW7c6CbEnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gijhxp5S; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YiL7mWmr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97259C4CEF7;
-	Tue, 31 Mar 2026 00:55:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gijhxp5S"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B15C4CEF7;
+	Tue, 31 Mar 2026 01:00:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774918553;
-	bh=/G4BfT6kJGkx/O87btMe/6GcimNnuxzeJ1d4cXHPB4A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YiL7mWmrRzkiPViiHvMrHIccoy/szDnS4ZhCdm7FCbXhOi4NP3oprmHtdNI9JiZmy
-	 shgn5s2XO9g42+nSiU7q5G9qhMhK9//Rp2DcTX1eH1vELdev9rki9G46vVlD+lzdYa
-	 ivDS/DBQO0GaBNq6ABSgMUBmHzhiL+2GH69OUqJkBN51dkAxNgr1MSKhtRytCeJBw1
-	 OEnXyfA96XaRMwJwQGuHw1ry6hBKg/lJxHA5Cw9RC9TgGcTmFJlardPrBFfNwMTZpq
-	 3tEd5URsprQO2ZAM9uWROITNnNRgzwypNtBx3B1Yb1vhI6aEE77KZtGdSgbQX7jNUH
-	 RkAA8LiNAWX/g==
-From: Jakub Kicinski <kuba@kernel.org>
-To: jiawenwu@trustnetic.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	mengyuanlou@net-swift.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	richardcochran@gmail.com,
-	linux@armlinux.org.uk,
-	horms@kernel.org,
-	michal.swiatkowski@linux.intel.com,
-	jacob.e.keller@intel.com,
-	kees@kernel.org,
-	joe@dama.to,
-	larysa.zaremba@intel.com,
-	abdun.nihaal@gmail.com,
-	leitao@debian.org
-Subject: Re: [PATCH net-next v6 11/11] net: wangxun: implement pci_error_handlers ops
-Date: Mon, 30 Mar 2026 17:55:51 -0700
-Message-ID: <20260331005551.3459846-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260326021406.30444-12-jiawenwu@trustnetic.com>
-References: <20260326021406.30444-12-jiawenwu@trustnetic.com>
+	s=k20201202; t=1774918821;
+	bh=szpEjX0j6heXzguxWqJ0qH7qpPaR+6vOp8U6CI4dkXA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=Gijhxp5S35kX2LmIbq7BsLVAGOIjfArqd1GvOuzAQOh+x4TGgku2C2y7FVs0Nlxxm
+	 ghCe5TJkDmgUKYdRoA8dg/FmyPnS4kZPR/TI8SMxMWVHMw3cYt6QKg0NXK2+YiYUDh
+	 6UD1na2OlRGRbX/qg8EfeDPH1KMaYm/itnvlhhx9NvY8ZuCY3r107qop1wK+L5m7v9
+	 MEqO3HZyqXCOvzostCgW1VfxkQDUYEl+3Fc6bpBZ7XPLeLh2qwj9rhv7RzG6ecvQw5
+	 gXHVaAyK4a3680PvndlYtcX248+u7nRel7+s5CBeI/QZbNmLORQ/ozHIMyfQorAhvr
+	 XZGwwQLpaj07w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B2A41392FF97;
+	Tue, 31 Mar 2026 01:00:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,88 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] net: sched: cls_api: fix tc_chain_fill_node to initialize
+ tcm_info to zero to prevent an info-leak
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177491880562.2039242.10970042830045841478.git-patchwork-notify@kernel.org>
+Date: Tue, 31 Mar 2026 01:00:05 +0000
+References: <20260328211436.1010152-1-echelonh@gmail.com>
+In-Reply-To: <20260328211436.1010152-1-echelonh@gmail.com>
+To: Yochai E <echelonh@gmail.com>
+Cc: davem@davemloft.net, jhs@mojatatu.com, jiri@resnulli.us,
+ security@kernel.org, netdev@vger.kernel.org
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-net: wangxun: implement pci_error_handlers ops
+Hello:
 
-Support AER driver to handle the PCIe errors for Wangxun devices.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_err.c b/drivers/net/ethernet/wangxun/libwx/wx_err.c
-> index bb77bdce69d22..86b318647a3ca 100644
-> --- a/drivers/net/ethernet/wangxun/libwx/wx_err.c
-> +++ b/drivers/net/ethernet/wangxun/libwx/wx_err.c
-[ ... ]
-> @@ -3,11 +3,113 @@
->  
->  #include <linux/netdevice.h>
->  #include <linux/pci.h>
-> +#include <linux/aer.h>
->  
->  #include "wx_type.h"
->  #include "wx_lib.h"
->  #include "wx_err.h"
-[ ... ]
-> +static pci_ers_result_t wx_io_slot_reset(struct pci_dev *pdev)
-> +{
-> +	struct wx *wx = pci_get_drvdata(pdev);
-> +	pci_ers_result_t result;
-> +
-> +	if (pci_enable_device_mem(pdev)) {
-> +		wx_err(wx, "Cannot re-enable PCI device after reset.\n");
-> +		result = PCI_ERS_RESULT_DISCONNECT;
-> +	} else {
-> +		/* make all bar access done before reset. */
-> +		smp_mb__before_atomic();
-> +		clear_bit(WX_STATE_DISABLED, wx->state);
-> +		pci_set_master(pdev);
-> +		pci_restore_state(pdev);
-> +		pci_save_state(pdev);
-> +		pci_wake_from_d3(pdev, false);
-> +
-> +		wx->do_reset(wx->netdev, false);
+On Sun, 29 Mar 2026 00:14:36 +0300 you wrote:
+> When building netlink messages, tc_chain_fill_node() never initializes
+> the tcm_info field of struct tcmsg. Since the allocation is not zeroed,
+> kernel heap memory is leaked to userspace through this 4-byte field.
+> 
+> The fix simply zeroes tcm_info alongside the other fields that are
+> already initialized.
+> 
+> [...]
 
-Is it possible that the ngbe driver ignores this hardware reset request?
+Here is the summary with links:
+  - net: sched: cls_api: fix tc_chain_fill_node to initialize tcm_info to zero to prevent an info-leak
+    https://git.kernel.org/netdev/net/c/e6e3eb5ee89a
 
-If ngbe_do_reset() only performs an action when reinit is true, it appears it
-would be a no-op when called with false from this AER recovery path. Will
-this leave the ngbe MAC hardware uninitialized after the PCI slot reset and
-break the device when traffic resumes?
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-> +		result = PCI_ERS_RESULT_RECOVERED;
-> +	}
-> +
-> +	pci_aer_clear_nonfatal_status(pdev);
-> +
-> +	return result;
-> +}
-> +
-> +/**
-> + * wx_io_resume - called when traffic can start flowing again.
-> + * @pdev: Pointer to PCI device
-> + *
-> + * This callback is called when the error recovery driver tells us that
-> + * its OK to resume normal operation.
-> + */
-> +static void wx_io_resume(struct pci_dev *pdev)
-> +{
-> +	struct wx *wx = pci_get_drvdata(pdev);
-> +	struct net_device *netdev;
-> +
-> +	netdev = wx->netdev;
-> +	rtnl_lock();
-> +	if (netif_running(netdev))
-> +		netdev->netdev_ops->ndo_open(netdev);
 
-Does this code need to check the return value of ndo_open()?
-
-If ndo_open() fails due to memory allocation or IRQ request failures, the
-resources will remain unallocated. Because the failure is ignored and
-netif_device_attach() is called unconditionally below, will the networking
-stack invoke the transmit handler and dereference the unallocated rings?
-
-> +
-> +	netif_device_attach(netdev);
-> +	rtnl_unlock();
-> +}
