@@ -1,61 +1,79 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3C6199EAD;
-	Tue, 31 Mar 2026 01:07:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85771548EE;
+	Tue, 31 Mar 2026 01:10:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774919280; cv=none; b=ACgdIRcEii0yihAXVFfEE8nQi51nK8SvRx9dUXkubrdULNxkKTd/a7eRjqrJOzwqpxwGq3ghpKY4Hr1R77QGsvPpq54pe3dUSfZZY5nwdvs2CN5Xb6wSDA9nwI0PmrcyWTK4zxTQh8TZTr9yR2eLA2O0VLnfmDqrUOxMQqI//j4=
+	t=1774919422; cv=none; b=Ma6wQbQ/Q91mxZpIv3zCQmxif0MSLRbaeYkBt1sVHK4IC9g9lV00VQo2uMCmnsJRICVtechbGpPy+HFv6VJI3nZeBiSvlKYOMAjnEa/xzRSZk3QURfyMQt3iHEHuknVPpDCjRtdVVFCvUxjah11TsE7w4M0veucoohnsENJaPOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774919280; c=relaxed/simple;
-	bh=YPKedhinytKiFM0fCdGWpHxSrEqj4peL3W4HELhDc5M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J7q8yhKm2F4PIPxV+l/MAly82e/u8FzL7xikWfep9A2SqgRc4vo4uLgwj0izk+LB2Hp7sZNjIMjrWTF4NydSGSafO6c/BSMLsGL1Y0oqQv53oeI5PvRZHYGrCsn/cirEAz0p+3tkigh2h/uuWdNxMPTYg7qB6WeLEIRiV4sbJr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=GkKF1MWD; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1774919422; c=relaxed/simple;
+	bh=Uf0hLhDoRKYV8KUasE1qKevKhLjr1VDqmB5YSdv2fJg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=T73Xwd+/zowo1wBDvCeCuxHbuolfgnRm1Egr1NNQhTbUv2bbPlYpt5jyAfh5xDo1wIxTooAOayhWjwvk6vzIPncn6SyzLHZ00FOTk78aqW47wvkmCwcw3TlWs4uPKKsY3fl2p2kpuNKPMAq+e+gfmkRYBHD14zauqsDCZMccAQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L4Vw+Ehd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="GkKF1MWD"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=pkngNd6jf/U4DeIklxaRbT3w8CR4haD9hiqqW+Z52cc=; b=GkKF1MWD45LJjuq3sZ9HD+UUR1
-	Lh6qHABIGTqroDP3XSSLo7AinZKAMwfonGsKzD1r06DiRBjv2fYvtWWRg8wepm9w2meMbuUdJ0DO/
-	2hLUKj5vbQ+j6Jf5HkrzfDZi7FtW4PaqJj/hKXD4khBeG11Cj7FDd6jmFynPE9p6/7Q8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1w7Na9-00E7Pz-UX; Tue, 31 Mar 2026 03:07:49 +0200
-Date: Tue, 31 Mar 2026 03:07:49 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Daniel Golle <daniel@makrotopia.org>
-Cc: Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: dsa: mxl862xx: cancel pending work on
- probe error
-Message-ID: <b94aae11-e0ae-495d-b440-c3b89e251795@lunn.ch>
-References: <3fd163f5bb88de426ca9847549f94b4296170ef0.1774911025.git.daniel@makrotopia.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L4Vw+Ehd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BE7BC4CEF7;
+	Tue, 31 Mar 2026 01:10:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774919422;
+	bh=Uf0hLhDoRKYV8KUasE1qKevKhLjr1VDqmB5YSdv2fJg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=L4Vw+EhdnrympL5O5eJgG/vvBN703pwlt1dHDdXvYMqArApxWUA2EzwbG9J5UwUvD
+	 Vsk7Xu+M2LvlpRV4REia6+VZpW+i21YJ8Dxe5ZK3FPGZfOCcqNznOYfgm2gv1rlgeU
+	 xpz9y5vQzUzCwt2FWa47Y6/nU+/xhTLu35PDOcwN8+HqhSx7krKRxt0qRaF3+ScbW7
+	 J2OEL5asfRs7k73NCG2xiGWDGubi3rp9FCjJ6KjajWRP6o5UlMm031VnMXHedWTMFS
+	 0ITxfQgyHzaJjScmUtrmbLCW3jGiunl0NM/t/H7PTYQmW/L/RUPVfGAats0zL+JZXQ
+	 yk/KDqTqt983A==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CEBC392FF97;
+	Tue, 31 Mar 2026 01:10:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3fd163f5bb88de426ca9847549f94b4296170ef0.1774911025.git.daniel@makrotopia.org>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v7] bnxt_en: set backing store type from query type
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177491940629.2043537.7272762691684317333.git-patchwork-notify@kernel.org>
+Date: Tue, 31 Mar 2026 01:10:06 +0000
+References: <20260328234357.43669-1-pengpeng@iscas.ac.cn>
+In-Reply-To: <20260328234357.43669-1-pengpeng@iscas.ac.cn>
+To: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Cc: michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
-On Mon, Mar 30, 2026 at 11:52:09PM +0100, Daniel Golle wrote:
-> Call mxl862xx_host_shutdown() in case dsa_register_switch() returns
-> an error, so any still pending crc_err_work get canceled.
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Sun, 29 Mar 2026 07:43:56 +0800 you wrote:
+> bnxt_hwrm_func_backing_store_qcaps_v2() stores resp->type from the
+> firmware response in ctxm->type and later uses that value to index
+> fixed backing-store metadata arrays such as ctx_arr[] and
+> bnxt_bstore_to_trace[].
 > 
-> Fixes: a319d0c8c8ce ("net: dsa: mxl862xx: add CRC for MDIO communication")
-> Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+> ctxm->type is fixed by the current backing-store query type and matches
+> the array index of ctx->ctx_arr. Set ctxm->type from the current loop
+> variable instead of depending on resp->type.
+> 
+> [...]
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Here is the summary with links:
+  - [net,v7] bnxt_en: set backing store type from query type
+    https://git.kernel.org/netdev/net/c/4ee937107d52
 
-    Andrew
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
