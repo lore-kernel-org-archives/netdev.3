@@ -1,135 +1,120 @@
-Received: from mail-vs1-f98.google.com (mail-vs1-f98.google.com [209.85.217.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ida.uls.co.za (ida.uls.co.za [154.73.32.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7CC53B19A6
-	for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 06:52:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0881524A067;
+	Tue, 31 Mar 2026 06:54:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=154.73.32.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774939935; cv=none; b=Yy9s/6wFdev/WpnemJ7h2hPO1Gmsf1VU/LZlaslXffLaUSpkFxarOWbu0QkTVGYChxC8f3Pprsr3WBTyos4p7w9df0gFwBY2O6RdjKu4fhzzF5PGVnBGpvkVmze3zTNl9996c78GpNezrnGupPvQFKk2S0jgWI61hC78JaGDEHE=
+	t=1774940063; cv=none; b=F/qK/z5kKvnjta97NIcBz2g/7rp5QOOJU9L8t3OASEXxkX5ed795O0N9irxtFSZeb2kezzkqar2t/I6ah3vDsjg61thu3GzA8NqeGA3TSXoGaCg6vIJ3g6CYoeHTm/kt4R88ZOzfcZcm71fAKa6ldUykJRF/fAj6rqyz8tylBYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774939935; c=relaxed/simple;
-	bh=/1OgYLDwEHxJBpyAokMFCDp5vl+qmWYmsNfdrvzc++s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sJwasdx3grB6C+k7AU5fLkr/iQcbnOaSes4MJ13V4IMpYnC8HtMuqCjQdyMEhxpcmhNt8zttg3LEwINSnH6mVpwDHs78nip6R4i1h3Q5DWn1A1FZ4IW/7wjmwIUfQprCVnSjvsRt/mzWSDhZT9d9ffUsoKbBGov5fr1kS1mHkNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Ro6yrOj0; arc=none smtp.client-ip=209.85.217.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Ro6yrOj0"
-Received: by mail-vs1-f98.google.com with SMTP id ada2fe7eead31-604f834349cso1348479137.0
-        for <netdev@vger.kernel.org>; Mon, 30 Mar 2026 23:52:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774939933; x=1775544733;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bgCmYxTMS32a0ezMQisHZWTCSW/iVBdMYQeWbZZiVhY=;
-        b=fkVOjQ1/cWHq+d9Y5fI0EbMxXtpaR7zr/FAJCIUSvMgt7pbluGWrtwz6DAzyk+hlKS
-         BE5so1bFbIKD4rXqKsYyqLVoUV3uPGp44TUO8ICukTIoY0JILgANAXB+pHlzfmXQDgFG
-         DumjocyaOiPNNHJUOHfScDHEnHkc1qSqWkijbsesR0d/6DVc8XoJmvJGK4rKRi3uwFWY
-         Yu7pPSb4Jzs2zqa995997cr5nnD/6K4LVBDR7PYDXIquxhPnPf9JLmrYqMP5sjs9VSo1
-         AWTAxiW29/lelhouMt55GyJUNFZdb5W20wE/UNVS4Jlj3jHWR2NX1Dc5n+WQzgiQ5lRP
-         RXZQ==
-X-Gm-Message-State: AOJu0YxzmN/nOdQ82LCowORb2PA83eU28GQsluWKEQbNRjLRK7KcYM5/
-	IOrVmUo7awrbp6DL1mrZo1/9IajuPQiDxBXkp2ms8NAiW/d3+FeHB4mlO5bmYxp6BWX3NqYuYfx
-	CO6Esz2As4YQY3FPmSTIIokma1bKzMUjaGFCPYpj8f7Ft4V3Zxh7z4oHF8BPg0pE0jAi9JdHrB4
-	iyHbfZDqAJ4LsfwdoWG7cMD5wTEWvhq5OnLdpjmE+CMglUs2VlE/pT8+YDQZurNjXfjIWqXmcZk
-	YnazqYd148=
-X-Gm-Gg: ATEYQzzduwbe0c7gt03lc6gS5459KJ6jbbBoWaV0V2caCVHSrTAWaUiGKI0evKoeKl+
-	oI+NpOJP9m1reZ4xA//OYwiVKMR+/8wjSvc2IVMWNWaGXQ2FcpFhlxK1UpUhSAsXgbciU76lZpy
-	DkrOsIB+pmRW5R1mOATg6MtruTyODU2vBnjhkuO8AtfJXX+cZ6rAsQbDuXOufgZWXUHr2MyQj21
-	CfIIoqSL0oZSySRyY9dJwTI9ItafCCH7uc8axB7KrhoQzIjKmRWWrfOviOdnThF0YveolDHyc1i
-	gPUkiC5EfSLV1ejZlV4Il086mzNNlhrg3a7wxim1ZRIyuBvnl6V0gqIlqNvyzPJPBjA+X9/WgLA
-	3VtGUFNoAW2cJk9Z+NJFb+XgbelT0Lz/93k17nCCgkht6C35j0/Y3yx74tE7VrncKGXAqjFkPbf
-	+VbuGf0k+QtQaV7mXGf5BDH/Ab5pRgSrV8u5rIu4oZ2/pZ+9abwyp+pU2G
-X-Received: by 2002:a05:6102:5241:b0:604:ee6f:185 with SMTP id ada2fe7eead31-604f92dee03mr5576032137.34.1774939932495;
-        Mon, 30 Mar 2026 23:52:12 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-15.dlp.protect.broadcom.com. [144.49.247.15])
-        by smtp-relay.gmail.com with ESMTPS id a1e0cc1a2514c-9539e3b226dsm703042241.4.2026.03.30.23.52.11
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 30 Mar 2026 23:52:12 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-89c4ec516e5so32930716d6.0
-        for <netdev@vger.kernel.org>; Mon, 30 Mar 2026 23:52:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1774939931; x=1775544731; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bgCmYxTMS32a0ezMQisHZWTCSW/iVBdMYQeWbZZiVhY=;
-        b=Ro6yrOj0pYpU1R5x9Rs7dleomNXUCTxGsAAYj0c7ZqJpOxeWC2eBj9hI2OJGbqICsB
-         vMSDjs8NVSQ+rZkWOqc3gZf0CfcNFkU+EEX4sJRnSsCCAa9uarZ+CeGQP5dpgs6yTtXQ
-         ZO9pkeeU0Rb6ilY4gqIS/gP4j8ZJR+i3dcPsc=
-X-Received: by 2002:ad4:5ca7:0:b0:8a1:34df:bbe3 with SMTP id 6a1803df08f44-8a3b27d3255mr86366d6.28.1774939931232;
-        Mon, 30 Mar 2026 23:52:11 -0700 (PDT)
-X-Received: by 2002:ad4:5ca7:0:b0:8a1:34df:bbe3 with SMTP id 6a1803df08f44-8a3b27d3255mr86086d6.28.1774939930676;
-        Mon, 30 Mar 2026 23:52:10 -0700 (PDT)
-Received: from lvnvda3289.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89ecbda4d50sm80543966d6.15.2026.03.30.23.52.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 23:52:10 -0700 (PDT)
-From: Michael Chan <michael.chan@broadcom.com>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	pavan.chebbi@broadcom.com,
-	andrew.gospodarek@broadcom.com,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Subject: [PATCH net v2 3/3] bnxt_en: Restore default stat ctxs for ULP when resource is available
-Date: Mon, 30 Mar 2026 23:51:38 -0700
-Message-ID: <20260331065138.948205-4-michael.chan@broadcom.com>
-X-Mailer: git-send-email 2.45.4
-In-Reply-To: <20260331065138.948205-1-michael.chan@broadcom.com>
-References: <20260331065138.948205-1-michael.chan@broadcom.com>
+	s=arc-20240116; t=1774940063; c=relaxed/simple;
+	bh=O/0qHlCx7400cSiRBCThKdrPCIzm2gw2WUdC8zjc5Hk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=C/QL2ZfzdqlDXgpBn2xy2uQIvsa+X8Op9xpdaDzkXkfyEbRo70G7XWYMoHboesZKEOzewS2qhSTIo/QGYHyQ/kEksPUirBvRd405xuCAag+285zWK3FRjq39k8gf2DyknVcoF2+Nwify2QRZsmweAUI//ojgYGd+72EmyYrpB0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uls.co.za; spf=pass smtp.mailfrom=uls.co.za; arc=none smtp.client-ip=154.73.32.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uls.co.za
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uls.co.za
+Received: from [165.16.201.5] (helo=[192.168.1.162])
+	by ida.uls.co.za with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.98.2)
+	(envelope-from <jaco@uls.co.za>)
+	id 1w7SWB-000000000du-0quy;
+	Tue, 31 Mar 2026 08:24:03 +0200
+Message-ID: <0aa6aa20-0e2a-48e9-8273-53b2fecd287b@uls.co.za>
+Date: Tue, 31 Mar 2026 08:21:40 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] pppoe: update Kconfig URLs
+To: Qingfang Deng <dqfext@gmail.com>, linux-ppp@vger.kernel.org,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Eric Biggers <ebiggers@kernel.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: Paul Mackerras <paulus@ozlabs.org>, Dianne Skoll <dianne@skoll.ca>,
+ James Carlson <carlsonj@workingcode.com>
+References: <20260331033303.5664-1-dqfext@gmail.com>
+Content-Language: en-GB
+From: Jaco Kroon <jaco@uls.co.za>
+Autocrypt: addr=jaco@uls.co.za; keydata=
+ xsBNBFXtplYBCADM6RTLCOSPiclevkn/gdf8h9l+kKA6N+WGIIFuUtoc9Gaf8QhXWW/fvUq2
+ a3eo4ULVFT1jJ56Vfm4MssGA97NZtlOe3cg8QJMZZhsoN5wetG9SrJvT9Rlltwo5nFmXY3ZY
+ gXsdwkpDr9Y5TqBizx7DGxMd/mrOfXeql57FWFeOc2GuJBnHPZQMJsQ66l2obPn36hWEtHYN
+ gcUSPH3OOusSEGZg/oX/8WSDQ/b8xz1JKTEgcnu/JR0FxzjY19zSHmbnyVU+/gF3oeJFcEUk
+ HvZu776LRVdcZ0lb1bHQB2K9rTZBVeZLitgAefPVH2uERVSO8EZO1I5M7afV0Kd/Vyn9ABEB
+ AAHNG0phY28gS3Jvb24gPGphY29AdWxzLmNvLnphPsLAdwQTAQgAIQUCVe2mVgIbAwULCQgH
+ AgYVCAkKCwIEFgIDAQIeAQIXgAAKCRAILcSxr/fungCPB/sHrfufpRbrVTtHUjpbY4bTQLQE
+ bVrh4/yMiKprALRYy0nsMivl16Q/3rNWXJuQ0gR/faC3yNlDgtEoXx8noXOhva9GGHPGTaPT
+ hhpcp/1E4C9Ghcaxw3MRapVnSKnSYL+zOOpkGwye2+fbqwCkCYCM7Vu6ws3+pMzJNFK/UOgW
+ Tj8O5eBa3DiU4U26/jUHEIg74U+ypYPcj5qXG0xNXmmoDpZweW41Cfo6FMmgjQBTEGzo9e5R
+ kjc7MH3+IyJvP4bzE5Paq0q0b5zZ8DUJFtT7pVb3FQTz1v3CutLlF1elFZzd9sZrg+mLA5PM
+ o8PG9FLw9ZtTE314vgMWJ+TTYX0kzsBNBFXtplYBCADedX9HSSJozh4YIBT+PuLWCTJRLTLu
+ jXU7HobdK1EljPAi1ahCUXJR+NHvpJLSq/N5rtL12ejJJ4EMMp2UUK0IHz4kx26FeAJuOQMe
+ GEzoEkiiR15ufkApBCRssIj5B8OA/351Y9PFore5KJzQf1psrCnMSZoJ89KLfU7C5S+ooX9e
+ re2aWgu5jqKgKDLa07/UVHyxDTtQKRZSFibFCHbMELYKDr3tUdUfCDqVjipCzHmLZ+xMisfn
+ yX9aTVI3FUIs8UiqM5xlxqfuCnDrKBJjQs3uvmd6cyhPRmnsjase48RoO84Ckjbp/HVu0+1+
+ 6vgiPjbe4xk7Ehkw1mfSxb79ABEBAAHCwF8EGAEIAAkFAlXtplYCGwwACgkQCC3Esa/37p7u
+ XwgAjpFzUj+GMmo8ZeYwHH6YfNZQV+hfesr7tqlZn5DhQXJgT2NF6qh5Vn8TcFPR4JZiVIkF
+ o0je7c8FJe34Aqex/H9R8LxvhENX/YOtq5+PqZj59y9G9+0FFZ1CyguTDC845zuJnnR5A0lw
+ FARZaL8T7e6UGphtiT0NdR7EXnJ/alvtsnsNudtvFnKtigYvtw2wthW6CLvwrFjsuiXPjVUX
+ 825zQUnBHnrED6vG67UG4z5cQ4uY/LcSNsqBsoj6/wsT0pnqdibhCWmgFimOsSRgaF7qsVtg
+ TWyQDTjH643+qYbJJdH91LASRLrenRCgpCXgzNWAMX6PJlqLrNX1Ye4CQw==
+Organization: Ultimate Linux Solutions (Pty) Ltd
+In-Reply-To: <20260331033303.5664-1-dqfext@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+X-Spam-report: Relay access (ida.uls.co.za).
 
-From: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Hi,
 
-During resource reservation, if the L2 driver does not have enough
-MSIX vectors to provide to the RoCE driver, it sets the stat ctxs for
-ULP also to 0 so that we don't have to reserve it unnecessarily.
+On 2026/03/31 05:33, Qingfang Deng wrote:
+> Both links are no longer valid. Update them to the correct URLs.
+>
+> Signed-off-by: Qingfang Deng <dqfext@gmail.com>
+> ---
+>   drivers/net/ppp/Kconfig | 9 ++++-----
+>   1 file changed, 4 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/net/ppp/Kconfig b/drivers/net/ppp/Kconfig
+> index a1806b4b84be..c751959c53a1 100644
+> --- a/drivers/net/ppp/Kconfig
+> +++ b/drivers/net/ppp/Kconfig
+> @@ -122,11 +122,10 @@ config PPPOE
+>   	help
+>   	  Support for PPP over Ethernet.
+>   
+> -	  This driver requires the latest version of pppd from the CVS
+> -	  repository at cvs.samba.org.  Alternatively, see the
+> -	  RoaringPenguin package (<http://www.roaringpenguin.com/pppoe>)
+> -	  which contains instruction on how to use this driver (under
+> -	  the heading "Kernel mode PPPoE").
+> +	  This driver requires the latest version of pppd at
+> +	  <https://ppp.samba.org>.
+> +	  Alternatively, see the out-of-tree RP-PPPoE plugin at
+> +	  <https://dianne.skoll.ca/projects/rp-pppoe/>.
 
-However, subsequently the user may reduce L2 rings thereby freeing up
-some resources that the L2 driver can now earmark for RoCE. In this
-case, the driver should restore the default ULP stat ctxs to make
-sure that all RoCE resources are ready for use.
+ppp now exclusively has the plugin code (originally from roaring penguin 
+I believe).  Latest version is no longer relevant, that plugin has been 
+available since at least a few versions back already (at least a decade, 
+probably closer to two).
 
-The RoCE driver may fail to initialize in this scenario without this
-fix.
+That same code has recently been dropped from rp-pppoe, which now 
+primarily focusses on pppoe-server, and relies on the plugin now part of 
+ppp package itself. rp-pppoe is only required if you're running a 
+pppoe-server, and I don't think rp-pppoe at this stage will function 
+without ppp.
 
-Fixes: d630624ebd70 ("bnxt_en: Utilize ulp client resources if RoCE is not registered")
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
----
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 2 ++
- 1 file changed, 2 insertions(+)
+Most people will never need rp-pppoe.
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index f11f3a704da5..3f775196ef81 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -8045,6 +8045,8 @@ static int __bnxt_reserve_rings(struct bnxt *bp)
- 		ulp_msix = bnxt_get_avail_msix(bp, bp->ulp_num_msix_want);
- 		if (!ulp_msix)
- 			bnxt_set_ulp_stat_ctxs(bp, 0);
-+		else
-+			bnxt_set_dflt_ulp_stat_ctxs(bp);
- 
- 		if (ulp_msix > bp->ulp_num_msix_want)
- 			ulp_msix = bp->ulp_num_msix_want;
--- 
-2.51.0
+Kind regards,
+Jaco
 
+
+>   
+>   choice
+>   	prompt "Number of PPPoE hash bits"
