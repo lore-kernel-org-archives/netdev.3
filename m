@@ -1,201 +1,72 @@
-Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD0630F547;
-	Tue, 31 Mar 2026 01:00:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1E440DFB9;
+	Tue, 31 Mar 2026 01:03:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774918848; cv=none; b=befUXoCp4yFQ16IWp+yXEE9G4+7Rqbv+PwWwrg4Y244/2R9C2HQC1oRMI24YlU+3NLoFRPKGCPGHo/7FmO9USqPIAo3Y7OSrfXujq+Iy08jQs/N1ckngovprIL5K+yqvHj9kolhM3jUGqvtoezSqRv0QCN0USNzCOKIPoqrEVyw=
+	t=1774919000; cv=none; b=jxgxJNf1mCQD5tiIzrtwGewEKwpGqIVnp1cafcxKP1RmQr2jOFmLo9DMMP377tJHTIks3NYjsU035Oo/wNsYY0S9FIUiUMsWAkjYvfcdpb8gQaMVWO6a/8nNseaQv/IbWFRIGvmjEBrZtXdtvZTp6XeMButFvfhdlherps6yTHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774918848; c=relaxed/simple;
-	bh=1PMYpS3eHXdozYEG0BLpvIo8mJnGFpw+EGQEAaPg+uE=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=QF0pYbI+GLrgPL7oDzGdOKv9hQNy2Ep2+UaGPyrA6zlKnAE/EybIxVAZMk27KAxPGijTWxExEL5I2eRDxEQbyNzRQUGKMmSDGQiwaq7MT4CACSmuRMjQIBmeNzNAd9cY1z0AtEohbFagCl4k3cYYfdqy0cLKH8ixPEOb2+XFniU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=88C4Ya+Z; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=Ozh4OGnj; arc=none smtp.client-ip=160.80.4.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+	s=arc-20240116; t=1774919000; c=relaxed/simple;
+	bh=EEnGHDGcPXbkA4XoPEgIoHMDOY3ZA9HT/e9LOMKZytg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qDJ/MF7d0zokgsaOfspXwUuxKx3LQD4SdWygg4B/kOwvdmEd84hhVpcydqx6LvnoXR102FqZZcd+yid1iVRDShhpg0vmd+ooOm+SjQwgMdf4Jv5TCeCKjXBtMxDwanNQfhzPDKB1gRO5clR8XTbkNEiEiXaJGjJoByreb4CskXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=bKGtF3rm; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="88C4Ya+Z";
-	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="Ozh4OGnj"
-Received: from smtpauth-2019-1.uniroma2.it (smtpauth-2019-1.uniroma2.it [160.80.5.46])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 62V0xxO6008641;
-	Tue, 31 Mar 2026 03:00:04 +0200
-Received: from lubuntu-18.04 (host-82-51-149-179.retail.telecomitalia.it [82.51.149.179])
-	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id AF59C1204E9;
-	Tue, 31 Mar 2026 02:59:53 +0200 (CEST)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
-	s=ed201904; t=1774918794; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hluqR8Jvewx7Jb4dA5xRd82YyqNTyiQaRFsleJlVd1Q=;
-	b=88C4Ya+ZNC1+oG3LNWDLu96fzb4qBCEFlJPBt/rOtNFQiDbca7kjz4Xy/O0Oi0SVws9aJ+
-	62/uV2arM9Gx67DQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
-	t=1774918794; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hluqR8Jvewx7Jb4dA5xRd82YyqNTyiQaRFsleJlVd1Q=;
-	b=Ozh4OGnjzQJZsDy+6XHfskYHcBXJ3lx+xDs+2MaR4Tvl6wl8yWCpmk2vVFeDLV83o7212q
-	4k7j64gO4KgUa6cO36LHhGj0Pa4VevB+l+b0pR52Ve4pI4oxIWDSSLFooQn9R6Azez+ReR
-	ZLcR5BqAsiIPsxHN1HDPyVuYaHAogUJe2gqBPykM2CYYSFmwW+VvZUznc/7tkxvBcUeJvW
-	Tq2fxveKaVwp2W3Hb3V/gzMax+PxSqBQQC1AxB2mwYX2jfDlglRKhNXMUwo837TqZa2WfG
-	Xu3LmjSJixDp1qROymSzNUYTkiYDj+31cpZ6rRV/UtyfzLasSsUjV+ZVV9f/Gw==
-Date: Tue, 31 Mar 2026 02:59:52 +0200
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: nicolas.dichtel@6wind.com
-Cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>,
-        David
- Ahern <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>,
-        Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        Simon Horman
- <horms@kernel.org>,
-        Stefano Salsano <stefano.salsano@uniroma2.it>,
-        Paolo
- Lungaroni <paolo.lungaroni@uniroma2.it>,
-        Ahmed Abdelsalam
- <ahabdels@cisco.com>,
-        Justin Iurman <justin.iurman@6wind.com>, linux-kernel@vger.kernel.org,
-        Andrea Mayer <andrea.mayer@uniroma2.it>
-Subject: Re: [RFC PATCH net-next 2/3] seg6: add SRv6 L2 tunnel device (srl2)
-Message-Id: <20260331025952.6cc772c826739da350d0c56e@uniroma2.it>
-In-Reply-To: <a4a4ba6d-da13-4bb1-b6b2-1f9a5de190a7@6wind.com>
-References: <20260322000557.12559-1-andrea.mayer@uniroma2.it>
-	<20260322000557.12559-3-andrea.mayer@uniroma2.it>
-	<a4a4ba6d-da13-4bb1-b6b2-1f9a5de190a7@6wind.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="bKGtF3rm"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=9jV5sRl7iwcYGmx0pZppSKRzzBz6NVBY7Uz72jbXcC4=; b=bKGtF3rmqCnWl/tm+oiS9c6MMi
+	ezxpdVlSFY/B3t2gcinwlpod2VDuBWo9C2/iWJD+jkhprTyZAFq5GqHHUWjb1xLKUHyPlpjI8B1LQ
+	s7ZMziCdkEkfcH1GQFIy9E8ZH9RImWaPCWO8yf8X1NP4mKpefbGWj7V+q0v46YJqqTow=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1w7NVQ-00E7Oi-Fa; Tue, 31 Mar 2026 03:02:56 +0200
+Date: Tue, 31 Mar 2026 03:02:56 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: netdev@vger.kernel.org, Phil Elwell <phil@raspberrypi.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] net: phy: microchip: add downshift tunable
+ support for LAN88xx
+Message-ID: <1778259e-6513-4af3-bd43-63ffdcc1dc9c@lunn.ch>
+References: <20260330224630.579937-1-nb@tipi-net.de>
+ <20260330224630.579937-2-nb@tipi-net.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260330224630.579937-2-nb@tipi-net.de>
 
-On Thu, 26 Mar 2026 17:44:29 +0100
-Nicolas Dichtel <nicolas.dichtel@6wind.com> wrote:
+On Tue, Mar 31, 2026 at 12:46:26AM +0200, Nicolai Buchwitz wrote:
+> Implement the standard ETHTOOL_PHY_DOWNSHIFT tunable for the LAN88xx
+> PHY. This allows runtime configuration of the auto-downshift feature
+> via ethtool:
+> 
+>   ethtool --set-phy-tunable eth0 downshift on count 3
+> 
+> The LAN88xx PHY supports downshifting from 1000BASE-T to 100BASE-TX
+> after 2-5 failed auto-negotiation attempts. Valid count values are
+> 2, 3, 4 and 5.
+> 
+> This is based on an earlier downstream implementation by Phil Elwell.
+> 
+> Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
 
->=20
->=20
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-Thanks Nicolas for your time and for the review.
-
-
-> Le 22/03/2026 =E0 01:05, Andrea Mayer a =E9crit=A0:
-> > Introduce srl2, an Ethernet pseudowire device over SRv6. It
-> > encapsulates L2 frames in IPv6 with a Segment Routing Header for
-> > transmission across an SRv6 network.
-> >=20
-> > The encapsulation logic reuses seg6_do_srh_encap() with
-> > IPPROTO_ETHERNET. The transmit path uses the standard IPv6 tunnel
-> > infrastructure (dst_cache, ip6_route_output, ip6tunnel_xmit).
-> >=20
-> > The device is configured with a segment list for point-to-point
-> > L2 encapsulation.
-> >=20
-> > Usage:
-> >=20
-> >   ip link add srl2-0 type srl2 segs fc00::a,fc00::b
-> >=20
-> > Co-developed-by: Stefano Salsano <stefano.salsano@uniroma2.it>
-> > Signed-off-by: Stefano Salsano <stefano.salsano@uniroma2.it>
-> > Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-> > ---
-> >  include/linux/srl2.h      |   7 +
-> >  include/uapi/linux/srl2.h |  20 +++
-> >  net/ipv6/Kconfig          |  16 +++
-> >  net/ipv6/Makefile         |   1 +
-> >  net/ipv6/seg6.c           |   1 +
-> >  net/ipv6/srl2.c           | 269 ++++++++++++++++++++++++++++++++++++++
-> >  6 files changed, 314 insertions(+)
-> >  create mode 100644 include/linux/srl2.h
-> >  create mode 100644 include/uapi/linux/srl2.h
-> >  create mode 100644 net/ipv6/srl2.c
-> >=20
-> > diff --git a/include/linux/srl2.h b/include/linux/srl2.h
-> > new file mode 100644
-> > index 000000000000..c1342b979402
-> > --- /dev/null
-> > +++ b/include/linux/srl2.h
-> > @@ -0,0 +1,7 @@
-> > +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> > +#ifndef _LINUX_SRL2_H
-> > +#define _LINUX_SRL2_H
-> > +
-> > +#include <uapi/linux/srl2.h>
-> > +
-> > +#endif
-> Is this really needed?
-
-No. Moving IFLA_SRL2_* to if_link.h makes both srl2.h headers
-unnecessary.
-
-
->=20
-> > diff --git a/include/uapi/linux/srl2.h b/include/uapi/linux/srl2.h
-> > new file mode 100644
-> > index 000000000000..e7c8f6fc0791
-> > --- /dev/null
-> > +++ b/include/uapi/linux/srl2.h
-> > @@ -0,0 +1,20 @@
-> > +/* SPDX-License-Identifier: GPL-2.0-or-later WITH Linux-syscall-note */
-> > +/*
-> > + *  SRv6 L2 tunnel device
-> > + *
-> > + *  Author:
-> > + *  Andrea Mayer <andrea.mayer@uniroma2.it>
-> > + */
-> > +
-> > +#ifndef _UAPI_LINUX_SRL2_H
-> > +#define _UAPI_LINUX_SRL2_H
-> > +
-> > +enum {
-> > +	IFLA_SRL2_UNSPEC,
-> > +	IFLA_SRL2_SRH,	/* binary: struct ipv6_sr_hdr + segments */
-> > +	__IFLA_SRL2_MAX,
-> > +};
-> > +
-> > +#define IFLA_SRL2_MAX (__IFLA_SRL2_MAX - 1)
-> It should probably be generated automatically from specs, see
-> https://docs.kernel.org/userspace-api/netlink/intro-specs.html
->=20
-
-We'll add srl2 to rt-link.yaml. It seems that if_link.h is not
-auto-generated from the spec yet, so I think we need to add
-IFLA_SRL2_* there manually like the other link types.
-
-
-> > [snip]
-> > +static void srl2_setup(struct net_device *dev)
-> > +{
-> > +	ether_setup(dev);
-> > +
-> > +	dev->netdev_ops =3D &srl2_netdev_ops;
-> > +	dev->needs_free_netdev =3D true;
-> > +	dev->pcpu_stat_type =3D NETDEV_PCPU_STAT_DSTATS;
-> > +	dev->needed_headroom =3D LL_MAX_HEADER + sizeof(struct ipv6hdr) +
-> > +			       SRL2_SRH_HEADROOM_EST;
-> > +
-> > +	dev->priv_flags &=3D ~IFF_TX_SKB_SHARING;
-> > +	dev->priv_flags |=3D IFF_LIVE_ADDR_CHANGE | IFF_NO_QUEUE;
-> > +	dev->lltx =3D true;
-> > +
-> Maybe setting dev->netns_immutable to true ?
->=20
-
-It makes sense; the SRv6 configuration is bound to the current
-netns, so the device should stay there as well.
-
-
-> Regards,
-> Nicolas
-
-Thanks,
-Andrea
+    Andrew
