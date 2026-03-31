@@ -1,75 +1,47 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE3444E037
-	for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 21:07:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7083B37B40B;
+	Tue, 31 Mar 2026 21:08:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774991262; cv=none; b=dIcwmLDZGu8qMmq0nG8y1Hk6rf/+k5KMJqc8BiBX8qN6k9tKC+rmuFIqzI/TB+E2mIglHGOJtgLRWLO584iEX9oRPR0ocUk2yk2pTwcxaOOooBRiMfYak1cfiPYp7LZUVa2EOdukEXZTlAXLQp4DSL6S0TMY2k7wFKOemDfXRrM=
+	t=1774991285; cv=none; b=DsvxhXmkaIsbaamxvYBIZw36eNhMs5MQQGLpv5Sh15clNBCREDCp6afB4JpOq9pmxoWH+42qjtbE3EE9ysSXImAogMwMf3Lfz5jygkkZBjSVLhHedqBKGW4rY87XdOKOVtEKb4Fn+gWUUcsmUrXZo1XKdLndI7MphQHvUJkC6VQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774991262; c=relaxed/simple;
-	bh=1HxAxGz21Z+mV4nQVkIRzMQr3cqtoOeT3hoEcNfGYlI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=krMfNl754AWlCqOyMOIWfYxHtVk2iwN2dgMIkwUFTFp/exxBUnWW8CbEzBsoeLGoMakJh1YW99rEFdc8g3jO+u6v0AJW6idrM1ZRpybWn08Uz/6pbezZ1fO29NirgMXzV+NDNNhr8FngCdFe3QLuab3Y7rGHy2wmwvrEOBHXp/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FGz9sz+a; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1774991285; c=relaxed/simple;
+	bh=4+HD6s1BTQWhbAYZra/lv7rJnAmnSfTgNsUCWZJFNPY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FJAHg3IGZXItof1dMyMVKlkuYKkDFjsb0b79IbTA+l4hDhXFT/bZinrDj5edvquo2bMW63kTd82fxdy54jsTNby+l8Rmu0gN9ZpFsnAfvG9pUAHojvZvUdOzw8fwahoYXQ6BLFHfBVB+ybTOflwz7P4LzT1IyHiMZQO1z0NRza8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KeiqU9at; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FGz9sz+a"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-43b9d3ebed5so4538768f8f.1
-        for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 14:07:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774991259; x=1775596059; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9E8cpgSiBnzd/+76DItta3KLSsX/PyTBe1odLIcto+8=;
-        b=FGz9sz+a3qrC4rH69SrjtdPGV4y0y+hsv3n0ypRg8tfMEj8WiHWhLkasqhFRMaJlee
-         9tipIm9LkQTdmI4FqWS6ipumGfUX38VoSfXT7DUgHFakvcF1a6vqCkZh50FdP6P8oLgh
-         +IYScxuMxrjsWMInb4Z4X4mPXxnDFYug1EekhjG/eUE6pmuAU3AqZP+XU3z4VDI7GuES
-         YEeOky/e+ranekmp1Mg4Qunhl6H9Uf+arqL03p0qzexlclHtDfbeUCxA+IqVnzeQT37l
-         qtJFaK8NonjZv6MIRVSAsa8Z3zJ2LPqJ7oEjRbNA3djG4hZ4M7TROxIVvfaG40wWRqb7
-         79Hg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774991259; x=1775596059;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9E8cpgSiBnzd/+76DItta3KLSsX/PyTBe1odLIcto+8=;
-        b=peNqC8fbFtbqRu4vTLYtumh1Ei+I0hyBLLX4JSiqmD0gt1sEqakZhVqNKNiL5fWfwG
-         3dasRk6G6mqcwx45U+P1DBeq++wKRGmQPm6j5xYh77cKI7hS79k+IYBkyrUvTK+aULPV
-         p3DIwBuGmODQhHBXJAp5Bx5qWGtmrLSvZZI8gCEANOMsatoW8rbKBHJ/hoGxFyRyfPfG
-         H9Oit9iuAG3uu3+Q8Go9NhFwwRqG3glMGhfdKOROE/MylCCaVtjXE7oY3KCWlvJsUwYb
-         la0HpnqjW1YzpbCVSS9LF6pWrcK80D58qi5nH6b5Twh7jDOfTmG6B2tP/zgfTYz1IyAf
-         ky/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCX3Dr67ApwZDQ5sBn/zoDNo8esq64yS8UlYUD5i1LKoyK2NkmMaWZ2gfR5MHHxHfPtwlADGGk8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzy8BuJVpsj4jRISQ+fZLAgtAt9XB0g2Yh/4G2Uh8G6TYIRD2Wk
-	4m7HIXQ6N8kovlO4hHl04XHvtld2IGHUKnYeSDp3YfeQUZa0SBG8Y5zj
-X-Gm-Gg: ATEYQzzoYyDcBH7pdm6/dJXYCJXyk3Fz7vuQP8NsGGXZ7aTJniFG0Glu3d4WIXjb0bb
-	0RCyh07tbIUZpxDPUO1efQBUYFJCr0/z4Et4Nb2oK5o56VjI2Ip2D5MJbig1j8re/zkN6Lf8tAG
-	4oycJmRfCfvrjsHnKGFJBL2VPLlXlEfQnyaNkR2J0V1kdFeIkZxQrPxfMQichSgqYyXi+lWdKWe
-	oJQ4zpn/jTy0YZqV9TzSmBMZZ9oVIRPJ/Uo0kIM9O4JwfOIopPC9u3H55u4esEUosJbIOPzdHkj
-	ZZeH/pW7uAoVf0oOmDJUpSdDX+7yTaa25LNuPJ3iX0GkOUOqZ++p4cudE8tjR/LNHK8KQwVSYRl
-	51G9nAH4hiqp/tp2oNgBgrtm0tSqxvEpuV5CDyGeqV7vHE65s4CMt880NrmPQWbbs9+i1Pd5vYl
-	zdyQlaAalEyw3LcZx8Xfhi0v1xHhIXM0QChSMiiwOnTQqO6DKT+wCApuRqtINIDtqhHEc+mbxTb
-	R7cl3kysJZIPxrsrH2yVTf3G7Ih6Q==
-X-Received: by 2002:a05:6000:4205:b0:43c:f737:a3fa with SMTP id ffacd0b85a97d-43d150e7f47mr2017516f8f.30.1774991259283;
-        Tue, 31 Mar 2026 14:07:39 -0700 (PDT)
-Received: from 127.mynet ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43cf2570b18sm32431393f8f.31.2026.03.31.14.07.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 14:07:38 -0700 (PDT)
-From: Pavel Begunkov <asml.silence@gmail.com>
-To: io-uring@vger.kernel.org
-Cc: asml.silence@gmail.com,
-	axboe@kernel.dk,
-	netdev@vger.kernel.org
-Subject: [PATCH io_uring-7.1 v3 6/6] io_uring/zcrx: use correct mmap off constants
-Date: Tue, 31 Mar 2026 22:07:43 +0100
-Message-ID: <fe16ebe9ba4048a7e12f9b3b50880bd175b1ce03.1774780198.git.asml.silence@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1774780198.git.asml.silence@gmail.com>
-References: <cover.1774780198.git.asml.silence@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KeiqU9at"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E546C19423;
+	Tue, 31 Mar 2026 21:08:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774991285;
+	bh=4+HD6s1BTQWhbAYZra/lv7rJnAmnSfTgNsUCWZJFNPY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=KeiqU9atEz8eHLh7Dd5zVWpybXU8pZMelnzU2HBdg7Azksw0u0YPJU6edVGKhIiUY
+	 BzEMwCCCWUfZKfONFyb2scP3th/W0mq9WBGvYikPRglo8OkdMrgC8ajn9zjQTl4QEC
+	 u0UMzF4Wrd2Nw4JPyWDURdQyDmEdLBg7WGlEQ6Sm79/FRZG4v/PlQVKggs2HnPgiXJ
+	 u7B3iwq5Gf+AdSPq9Px2aZwqv5Myy36fpJx9a/fSCma0LgzjKv2WyT4nhioqS4VQEe
+	 n1Og7ysipuPJsdegodU5aTMP/Tiqfvu17Q/GDiuy1b8aej+HIZ/AV2/+i7TLnwC2HZ
+	 twTyx1GnEVxig==
+From: hawk@kernel.org
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	dsahern@kernel.org,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	shuah@kernel.org,
+	linux-kselftest@vger.kernel.org,
+	hawk@kernel.org,
+	ivan@cloudflare.com,
+	kernel-team@cloudflare.com
+Subject: [RFC PATCH net-next 0/4] ipv4/ipv6: local address lookup scaling
+Date: Tue, 31 Mar 2026 23:07:35 +0200
+Message-ID: <20260331210739.3998753-1-hawk@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,28 +50,180 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-zcrx was using IORING_OFF_PBUF_SHIFT during first iterations, but there
-is now a separate constant it should use. Both are 16 so it doesn't
-change anything, but improve it for the future.
+From: Jesper Dangaard Brouer <hawk@kernel.org>
 
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
----
- io_uring/zcrx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On servers with many IPv4 addresses (e.g. Cloudflare edge nodes with
+~700 addrs), __ip_dev_find() becomes visible in perf profiles on the
+unconnected UDP sendmsg path:
 
-diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index 3bf800426fd2..bd970fb084c1 100644
---- a/io_uring/zcrx.c
-+++ b/io_uring/zcrx.c
-@@ -386,7 +386,7 @@ static int io_allocate_rbuf_ring(struct io_ring_ctx *ctx,
- 		return -EINVAL;
- 
- 	mmap_offset = IORING_MAP_OFF_ZCRX_REGION;
--	mmap_offset += (u64)id << IORING_OFF_PBUF_SHIFT;
-+	mmap_offset += (u64)id << IORING_OFF_ZCRX_SHIFT;
- 
- 	ret = io_create_region(ctx, &ifq->rq_region, rd, mmap_offset);
- 	if (ret < 0)
+  udp_sendmsg
+    ip_route_output_flow
+      ip_route_output_key_hash_rcu
+        __ip_dev_find              <-- source address validation
+          inet_lookup_ifaddr_rcu   <-- walks inet_addr_lst hash chain
+
+The current inet_addr_lst is a fixed-size hlist hash table with 256
+buckets (IN4_ADDR_HSIZE). At 700 addresses this gives ~2.8 entries per
+bucket on average. The O(N/256) lookup cost grows linearly as addresses
+are added, with no mechanism to resize. IPv6 has the same issue with
+inet6_addr_lst (IN6_ADDR_HSIZE = 256).
+
+This series presents two approaches. The first two patches are a
+minimal, low-risk fix. The last two patches are a more complete but
+higher-complexity solution. Both are included so maintainers can
+evaluate the trade-off.
+
+Approach A: compile-time CONFIG option (patches 1-2)
+----------------------------------------------------
+
+The simplest fix: add CONFIG_INET_ADDR_HASH_BUCKETS and
+CONFIG_INET6_ADDR_HASH_BUCKETS (default 256, range 64-16384, EXPERT)
+so operators can size the tables at build time.
+
+ - 2 lines of Kconfig + 1 line change each
+ - Zero runtime behavior change at default settings
+ - Immediately deployable for known workloads
+ - Does not help workloads that cannot rebuild their kernel
+ - Memory cost scales with the chosen bucket count per netns
+
+Approach B: rhltable conversion (patches 3-4)
+---------------------------------------------
+
+Convert IPv4 inet_addr_lst from a fixed hlist to an rhltable (resizable
+hash linked table). The rhltable:
+
+ - Maintains O(1) lookup regardless of address count
+ - Automatically grows and shrinks as addresses are added/removed
+ - Eliminates the fixed IN4_ADDR_HSIZE compile-time limit
+ - Uses the rhl (resizable hash list) variant to preserve support for
+   duplicate keys -- the same IP can exist on multiple interfaces, and
+   the old hlist already allowed this
+
+The rhashtable_params are tuned for this use case:
+
+ - No .hashfn set: with key_len = sizeof(__be32), the default path
+   calls jhash2(key, 1, seed), which the compiler fully inlines since
+   jhash2 is static inline and the length is a compile-time constant.
+   The result is equivalent to jhash_1word().
+
+ - .obj_cmpfn provides a direct __be32 comparison, replacing the
+   generic memcmp() call in the default rhashtable_compare(). The
+   compiler inlines this to a single cmp instruction in the inner
+   lookup loop.
+
+ - .min_size = 32 reduces initial memory vs the old fixed 256-bucket
+   hlist (256 x 8 = 2048 bytes per netns). The rhltable starts at
+   32 x 8 = 256 bytes for buckets plus ~180 bytes of metadata, so
+   ~440 bytes total per netns -- a 4x reduction. Most containers
+   only have loopback, so 32 buckets is more than sufficient.
+
+With these settings, objdump confirms that inet_lookup_ifaddr_rcu()
+contains zero indirect calls and zero function calls to hashfn or
+cmpfn -- everything is inlined by the compiler.
+
+The check_lifetime() work function previously iterated all hash buckets
+directly. Since rhltable does not expose bucket iteration, this is
+converted to iterate via for_each_netdev + in_dev->ifa_list, which is
+the natural way to walk all addresses and avoids coupling the lifetime
+logic to the hash table internals.
+
+Benchmarks
+----------
+
+Performance was measured using bpftrace kprobe/kretprobe on
+__ip_dev_find inside a virtme-ng VM (4 vCPUs, veth pair, network
+namespaces, CPU-isolated host). A C benchmark tool sends unconnected
+UDP packets in a tight loop, cycling through all source addresses to
+exercise the lookup path on every sendto().
+
+__ip_dev_find average latency (bpftrace stats, 5 rounds x 3s):
+
+  Addrs   rhltable (ns)   hlist (ns)   Improvement
+  -----   -------------   ----------   -----------
+     20           201          200          0%
+    100           210          218         +4%
+    500           206          234        +12%
+    700           218          237         +8%
+   1000           214          228         +6%
+   2000           231          265        +13%
+   5000           247          335        +26%
+
+At low address counts (20) the rhltable matches the hlist. The
+custom obj_cmpfn (single cmp vs memcmp) and the compiler-inlined
+jhash2 keeps the more advanced hash table as fast as the simple hlist.
+
+At the production use-case of ~700 addresses, the rhltable provides an
+8% reduction in __ip_dev_find latency (218 ns vs 237 ns). The
+improvement grows with address count, reaching 26% at 5000 addresses
+as hlist chains lengthen while rhltable stays flat.
+
+Note: bpftrace kprobe/kretprobe instrumentation adds constant overhead
+to each call, so the absolute nanosecond values are inflated. The
+relative improvement percentages are the meaningful comparison.
+
+UDP sendmsg throughput (end-to-end, 10 rounds x 3s, unconnected
+sendto() cycling all source addresses, iptables DROP on receiver,
+virtme-ng VM with CPU isolation, frequency pinned to 1400 MHz):
+
+  Addrs   rhltable (pkt/s)   hlist (pkt/s)   Improvement
+  -----   ----------------   -------------   -----------
+     20          385,696          389,206        -0.9%
+    100          382,188          382,693        -0.1%
+    500          378,509          366,216        +3.4%
+    700          375,295          361,877        +3.7%
+   1000          365,848          356,039        +2.8%
+   2000          345,092          333,232        +3.6%
+   5000          324,478          303,649        +6.9%
+  10000          330,775          268,786       +23.1%
+
+The absolute throughput is low because CPUs are deliberately
+down-clocked for measurement stability (CV < 2%). The relative
+improvement percentages are the meaningful comparison.
+
+At the production use-case of ~700 addresses, rhltable provides a
++3.7% throughput improvement, growing to +23% at 10,000 addresses as
+hlist O(N/256) chain walks dominate.
+
+Summary
+-------
+
+Patches 1-2 (CONFIG option) are trivial, safe, and solve the immediate
+problem for operators who can rebuild their kernel. Patches 3-4
+(rhltable) are a better long-term solution that works automatically for
+all workloads, at the cost of more complex code and a harder review.
+
+If the rhltable approach is acceptable, patches 1-2 become unnecessary
+(the rhltable supersedes the fixed hash table entirely). They are
+included here to give maintainers the choice.
+
+Future work: a similar rhltable conversion for IPv6 inet6_addr_lst.
+
+Cc: Ivan Babrou <ivan@cloudflare.com>
+Cc: kernel-team@cloudflare.com
+
+Jesper Dangaard Brouer (4):
+  ipv4: make inet_addr_lst hash table size configurable
+  ipv6: make inet6_addr_lst hash table size configurable
+  ipv4: convert inet_addr_lst to rhltable for dynamic resizing
+  selftests: net: add IPv4 address lookup stress test
+
+ include/linux/inetdevice.h                    |   3 +-
+ include/net/ip.h                              |   5 -
+ include/net/netns/ipv4.h                      |   4 +-
+ net/ipv4/devinet.c                            | 149 ++--
+ net/ipv6/Kconfig                              |  15 +
+ net/ipv6/addrconf.c                           |   2 +-
+ tools/testing/selftests/net/Makefile          |   3 +
+ .../selftests/net/ipv4_addr_lookup_test.sh    | 804 ++++++++++++++++++
+ .../net/ipv4_addr_lookup_test_virtme.sh       | 282 ++++++
+ .../selftests/net/ipv4_addr_lookup_trace.bt   | 178 ++++
+ .../net/ipv4_addr_lookup_udp_sender.c         | 401 +++++++++
+ 11 files changed, 1772 insertions(+), 74 deletions(-)
+ create mode 100755 tools/testing/selftests/net/ipv4_addr_lookup_test.sh
+ create mode 100755 tools/testing/selftests/net/ipv4_addr_lookup_test_virtme.sh
+ create mode 100644 tools/testing/selftests/net/ipv4_addr_lookup_trace.bt
+ create mode 100644 tools/testing/selftests/net/ipv4_addr_lookup_udp_sender.c
+
 -- 
-2.53.0
+2.43.0
 
