@@ -1,353 +1,141 @@
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79113CD8D9
-	for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 07:41:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774942885; cv=none; b=h19h08tfEQ418v9nSN1+FunT8iGhF9pib74bmCYuDtvKxBYKB+JfRl5WedbBrY0PcPt8lVuEgARcumXPDCVLF637z2nASE0aXbwXuKGozsfeqN2DpQnSSc6JbJQyOCGJ0oO/dlJ0UMVSGEUWrpfLvQzV1TpYqUCHKouB4csYBHw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774942885; c=relaxed/simple;
-	bh=3JutQZddoBNbcTYuKGe4z6Sei7iHuu+t8apx7FT4jew=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=HYmxmBBf+1+oComeruoDeo5OqVjONwbn8tPd52vfYqdrkepCuGD4X3kTeC91CbJuamvjWZz3IF4J+3IRk8dbQIzXn1Ubu9WBz9Nmlupk8Sq95hCSbcrFeMzV1PB4pZn+GALBD4CPYVTmAmzvBPpLvMuYQUmD4R5q49R+Bz6VhwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=ektWt1lr; arc=none smtp.client-ip=203.29.241.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61BC43C3436
+	for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 07:41:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.181
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774942907; cv=pass; b=YpPhJPV7f2fW7CNEOF6uWEGs2226VNDWWoI8Djp1vm3D/DTp+FgWvz78DFkkWSVXueuYAqW6GNq5S4upSyDl1+dQbF8k+vPdwdN5wtk+IHHqtU0IYC4gKhcJrqU175a9SJIS5Tn2RUYD7u7q6FmqMV4gwU9s6ZLoiPzSH6+VSYM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774942907; c=relaxed/simple;
+	bh=aWPwc0cTosgJmdbPXI037r01bH5DgAIXxmQX/wcosfg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZdLQKu8mO18zT/8DWQyPnNCCF1vWCF6X+0Y5JjF6/WT90Q2YqSBP344Y3G3PT+t6EjxbdTnQx1c9XlV9FXfpKi4O9N1szlo2mDFBWQkafoNA4hUtGsBvMpJeBulmKGiLWms7nissJBaozuZxakLXS7muKGUs8TYO3URVYUls/3g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SSlHoI1v; arc=pass smtp.client-ip=209.85.208.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="ektWt1lr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SSlHoI1v"
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-38a23dd61c1so44506801fa.1
+        for <netdev@vger.kernel.org>; Tue, 31 Mar 2026 00:41:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774942905; cv=none;
+        d=google.com; s=arc-20240605;
+        b=KbGgLn485xp1ZuaYwCvNCxtqyDcoLHQVElG2ancT2rVm3LYHZxRRn9hLnaE2Aj8pyP
+         Y9XwgWsXV7CDRdzJzYs2dsAQjCv6HF8gNmrDfRm9cxVJbYEZ2oSKvCAktLaK8L3nUFax
+         Eu2stiOzBnJK0ehTtjzf0RSqeu4FJYu7QmotYosg3GoQj6RyfREHA9ae4Hz7YNdbY619
+         +tn6eGPPm72JotOywVqygh9IIl70gJz4W6aA5swIZvNm6R8/4Q1RnKVqoD2ihuDJdFcC
+         p49zK8L4bN1/LSI7VR0Jl5X15v7sZtylsGl67kDDudGvhakb2rNY+XcwMF6L0jz7913M
+         4VIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=KKZX1gxZy4jzOatrXwkZvEdUXieJsQW6+W95OcMVVlM=;
+        fh=EeGS1bnM/DKqihJcfO387qjehLEAMRIDG5yIYVYW5fQ=;
+        b=Pf3i0ixiatAfTkNpu/lYu26hjX/+tTmAtRbafe0Dn5QxYU4DtR8Cir5k72CH1WT+r7
+         HBtrvXxbdUct0BZoJKNXjI9Be7WzK/k24xEj+W1SZCOhhxlHrqXoB9Hc1Cbkz16+mOSi
+         F6WWTvyAoSGGfQFM9vTKFBf77pYPKiBfn0D+Pe+zjx3bEGi2vZ18LJ0+aMO37Q+5mlb/
+         iVw9a6YoWmFaTbgxBqMG+SZdpf9y2/yEBqpbflF+MjtleQwrSdBnfmvHXhUWHUQnBqIE
+         foimDihWgI033JLnfgO9MjgVOjLF8KAy5DtOhZyXsBorLaQk3Vqfg9Njj5+BFVAsHg3q
+         +vPQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1774942877;
-	bh=yrYoGPJ7SJ5q6d4HC40ilOjkXt2E0Z+/9Rbr3rh09/I=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=ektWt1lraZkbiGP++zCnv0hbFoM3M2nPlUC690ZxlhrJwsPkjoUhWg+rq1pA/IfbY
-	 vMxwGL7eUdSwdznn5+koUAE9XH9Qgg5s0MAdPI4fjtnHM/P2TKsPUxQkSitdICxSeI
-	 m6UlYmsSeLDAS34p8cNf5oLmC5I0acXw9I3lyw6q0NbOLFGiFzoXliycfoqkixJn8P
-	 3MBs0Evuc6UoED2jJKAp2w8B8quWX56YntzDVtvqEUPaKBcRfF4kp3fE71ej7CCxTd
-	 OWcXBQcVZJoqEyaZMAxtosz16ptNLcD57iHf0FEzaTWAdFQRZq4wMNrxDjn223CXhp
-	 YSEZparxtXFKg==
-Received: by codeconstruct.com.au (Postfix, from userid 10000)
-	id CE7CE65DF6; Tue, 31 Mar 2026 15:41:17 +0800 (AWST)
-From: Jeremy Kerr <jk@codeconstruct.com.au>
-Date: Tue, 31 Mar 2026 15:41:06 +0800
-Subject: [PATCH net-next 1/3] net: mctp: perform source address lookups
- when we populate our dst
+        d=gmail.com; s=20251104; t=1774942905; x=1775547705; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KKZX1gxZy4jzOatrXwkZvEdUXieJsQW6+W95OcMVVlM=;
+        b=SSlHoI1vIi2HVARd10GAqsYXtycM5rWwtFIa6r2o2OsYk58qqACn/CyLyMnNoDqJeU
+         JxcNloUuMo4dN4wfWhopULnLy9AWIkxx0XF8Y9UhGDQ/OTYauV/95d970WlwL2yF4VnV
+         +6IolfoUeGmOrt7DSpwF947Nuh51VC9V2RMeUc87vgm2Mqve/6xKcs8bj4EDR8EzpITw
+         ERVTY3C7/5sexVGdEAU2wk+hppVlrCQL+uvxp9/Nt+/RLa6paL8xvaanYzABpaOmFhe8
+         47jfMQldpNUvWLJ5wXNoX9m8iOXSjtriF2xSFUyN/A9Y78nmgKnKkCFRtSRXcblU0Z2w
+         bToA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774942905; x=1775547705;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=KKZX1gxZy4jzOatrXwkZvEdUXieJsQW6+W95OcMVVlM=;
+        b=cMuZRoPVueMLJVEot7nWrcu+caslREcxVwNhoZ46DdzpyAuJWvu2oarboieYlXtMs5
+         LyNRoM5H+ZUG8b99JEOhxtrJllhJrU8yz7cFWKEsYcrZ+ILUZGyf00RmbWGP78C/qcMS
+         Zj8FTXuDca9YMbksqF3zjulyI3oUcUbXwKA1MTdmFy+sY6BglNA584HOPljyCuya9bB3
+         D1yK53j/oz+AAG7B/C/+ut9MXOo1IHp2lKwKbpH5DxwYJyNZ/1lawk1aPVlFR12UMzN3
+         XXqFEI+N1qhD8CBYifjbQMoCfkvpd1fsGS/d5Otn0LHcmAKwhHXMSMtO8NHkgXZSb38m
+         Y6vA==
+X-Forwarded-Encrypted: i=1; AJvYcCUigOwGp4CdT/S3z59Ak2qbrKNGRb9etGbyPu2uBFKp1HJ6EDK9YyIDGiO5xSVf1qbuBQYkMZ4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8pk2U19I+8nx0uVIZ4LViYw101dCyhSnlDAmFgXmE7b55CYmr
+	h5ylMm/49GvCO7poO3je1m7UFGAG4pYyqLDYjtEIoB8665orC5V6zQ6D2YPYRB3WXCbqw8p/nQZ
+	BtMOQ/9b+WhdUbZMhWdHvjOCjzBBv7bA=
+X-Gm-Gg: ATEYQzxis/z2HIgNYP7zUscQz8IMrPMjBMSkE8XCnFpO4jBikyJQlJVsTJMNxgITMVB
+	WAILpgZa2DigZRLgpKmwWRiNhBrYCvECUKQJ0oUK9XbhY9Misdh6zP5iI+jNWZu6P1jRy/fNUpB
+	fr0Nb45MUcNLPDrSY56ad5ZNW/t4j4DLXKPQIPRp1Lp0DLPcXYjYjoO0KlMxg9uDhr0XuGfFMmr
+	PAkTimFdKhDUXbS4lffslF5sp+Qr1cpkLcdNe+pwtgESo+goTUh9EoTUL5gT89kX3qUcc3h306S
+	niKunA==
+X-Received: by 2002:a05:651c:324d:b0:38a:437a:516c with SMTP id
+ 38308e7fff4ca-38c73ff1327mr53062951fa.17.1774942904207; Tue, 31 Mar 2026
+ 00:41:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260331-dev-mctp-null-eids-v1-1-b4d047372eaf@codeconstruct.com.au>
-References: <20260331-dev-mctp-null-eids-v1-0-b4d047372eaf@codeconstruct.com.au>
-In-Reply-To: <20260331-dev-mctp-null-eids-v1-0-b4d047372eaf@codeconstruct.com.au>
-To: Matt Johnston <matt@codeconstruct.com.au>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org
-X-Mailer: b4 0.14.2
+References: <CAKvcANOzRwFk0jm4xBfMGVNJrgGhBT8zvb6r49qc=WdB5zP_fg@mail.gmail.com>
+ <20260328185804.41325-1-xiaoguai0992@gmail.com> <20260330181541.5a3c9f73@kernel.org>
+In-Reply-To: <20260330181541.5a3c9f73@kernel.org>
+From: Kangzheng Gu <xiaoguai0992@gmail.com>
+Date: Tue, 31 Mar 2026 15:41:28 +0800
+X-Gm-Features: AQROBzBrXvn1mm06vDIzXBB3QWsVoi1e3Vq6PUpdCG8chWsRve8q_yAD7-HYpV0
+Message-ID: <CAKvcANN1OEqXv9fo=cxTEEnq+=qs8NnZBrDTf=FTzdo9rHYJbQ@mail.gmail.com>
+Subject: Re: [PATCH] net-shapers: free rollback entries using kfree_rcu
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: gregkh@linuxfoundation.org, davem@davemloft.net, edumazet@google.com, 
+	pabeni@redhat.com, horms@kernel.org, kees@kernel.org, p@1g4.org, 
+	netdev@vger.kernel.org, stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Rather than querying the output device for its address in
-mctp_local_output, set up the source address when we're populating the
-dst structure. If no address is assigned, use MCTP_ADDR_NULL.
+Hi,
 
-This will allow us more flexibility when routing for NULL-source-eid
-cases. For now though, we still reject a NULL source address in the
-output path.
+Jakub Kicinski <kuba@kernel.org> =E4=BA=8E2026=E5=B9=B43=E6=9C=8831=E6=97=
+=A5=E5=91=A8=E4=BA=8C 09:15=E5=86=99=E9=81=93=EF=BC=9A
+> If dump can see NOT_VALID entries we have a bigger problem than a UAF
+> don't you think? :/
+I am not sure. My concern is whether the NOT_VALID can be exposed to
+user by design.
+I find that NOT_VALID is used in limited place.
+A representative one is that net_shaper_nl_get_doit calling
+net_shaper_lookup to check the NOT_VALID flag.
+If it is a problem, maybe there are more paths that should be guarded
+with NOT_VALID check.
 
-We need to update the tests a little, so that addresses are assigned
-before we do the dst lookups.
+I use the kfree_rcu since net_shaper_pre_insert has another failing
+path like this:
+    xa_lock(&hierarchy->shapers);
+    prev =3D __xa_store(&hierarchy->shapers, index, cur, GFP_KERNEL);
+    __xa_set_mark(&hierarchy->shapers, index, NET_SHAPER_NOT_VALID);
+    xa_unlock(&hierarchy->shapers);
+    if (xa_err(prev)) {
+        NL_SET_ERR_MSG(extack, "Can't insert shaper into device store");
+        kfree_rcu(cur, rcu);
+        ret =3D xa_err(prev);
+        goto free_id;
+    }
 
-Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
----
- include/net/mctp.h         |  1 +
- net/mctp/route.c           | 51 +++++++++++++++++++++++++++++-----------------
- net/mctp/test/route-test.c | 23 +++++++++++----------
- net/mctp/test/utils.c      | 27 ++++++++++++++++++++++++
- net/mctp/test/utils.h      |  1 +
- 5 files changed, 73 insertions(+), 30 deletions(-)
+Beside rollback, I also find another kfree(cur) in net_shaper_flush,
+which I reported several weeks ago to security@kernel:
+        <CAKvcANOZufuVeDqPAuMWh0GCiV5pGmmZHrRo_V+_8YSG7Cs_ag@mail.gmail.com=
+>
+It involves another free of shaper using kfree instead of kfree_rcu, I
+think it is also a problem.
+I noticed this patch
+https://patchwork.kernel.org/project/netdevbpf/patch/20260309173450.538026-=
+1-p@1g4.org/,
+but it seems that there is no further progress on it.
+Except in rollback and flush, all other frees of shaper uses
+kfree_rcu, so I think that it maybe just the problem of free rather
+than the flag.
 
-diff --git a/include/net/mctp.h b/include/net/mctp.h
-index c3207ce98f07fcbb436e968d503bc45666794fdc..e1e0a69afdcef7f0924523757010e75ea53e8e7c 100644
---- a/include/net/mctp.h
-+++ b/include/net/mctp.h
-@@ -270,6 +270,7 @@ struct mctp_dst {
- 	struct mctp_dev *dev;
- 	unsigned int mtu;
- 	mctp_eid_t nexthop;
-+	mctp_eid_t saddr;
- 
- 	/* set for direct addressing */
- 	unsigned char halen;
-diff --git a/net/mctp/route.c b/net/mctp/route.c
-index 021e04f1ea7c950af4c4e21d7afbc8c98d093186..f6a88e668e68a8431e58ccc46e7ebb7bf2303f71 100644
---- a/net/mctp/route.c
-+++ b/net/mctp/route.c
-@@ -880,6 +880,21 @@ static bool mctp_rt_compare_exact(struct mctp_route *rt1,
- 		rt1->max == rt2->max;
- }
- 
-+static mctp_eid_t mctp_dev_saddr(struct mctp_dev *dev)
-+{
-+	mctp_eid_t addr = MCTP_ADDR_NULL;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&dev->addrs_lock, flags);
-+	if (dev->num_addrs) {
-+		/* use the outbound interface's first address as our source */
-+		addr = dev->addrs[0];
-+	}
-+	spin_unlock_irqrestore(&dev->addrs_lock, flags);
-+
-+	return addr;
-+}
-+
- /* must only be called on a direct route, as the final output hop */
- static void mctp_dst_from_route(struct mctp_dst *dst, mctp_eid_t eid,
- 				unsigned int mtu, struct mctp_route *route)
-@@ -892,6 +907,7 @@ static void mctp_dst_from_route(struct mctp_dst *dst, mctp_eid_t eid,
- 		dst->mtu = min(dst->mtu, mtu);
- 	dst->halen = 0;
- 	dst->output = route->output;
-+	dst->saddr = mctp_dev_saddr(route->dev);
- }
- 
- int mctp_dst_from_extaddr(struct mctp_dst *dst, struct net *net, int ifindex,
-@@ -924,6 +940,7 @@ int mctp_dst_from_extaddr(struct mctp_dst *dst, struct net *net, int ifindex,
- 	dst->halen = halen;
- 	dst->output = mctp_dst_output;
- 	dst->nexthop = 0;
-+	dst->saddr = mctp_dev_saddr(dev);
- 	memcpy(dst->haddr, haddr, halen);
- 
- 	rc = 0;
-@@ -958,6 +975,7 @@ int mctp_route_lookup(struct net *net, unsigned int dnet,
- {
- 	const unsigned int max_depth = 32;
- 	unsigned int depth, mtu = 0;
-+	struct mctp_dst dst_tmp;
- 	int rc = -EHOSTUNREACH;
- 
- 	rcu_read_lock();
-@@ -978,9 +996,15 @@ int mctp_route_lookup(struct net *net, unsigned int dnet,
- 			mtu = mtu ?: rt->mtu;
- 
- 		if (rt->dst_type == MCTP_ROUTE_DIRECT) {
--			if (dst)
--				mctp_dst_from_route(dst, daddr, mtu, rt);
--			rc = 0;
-+			mctp_dst_from_route(&dst_tmp, daddr, mtu, rt);
-+			/* we need a source address */
-+			if (dst_tmp.saddr == MCTP_ADDR_NULL) {
-+				mctp_dst_release(&dst_tmp);
-+			} else {
-+				if (dst)
-+					*dst = dst_tmp;
-+				rc = 0;
-+			}
- 			break;
- 
- 		} else if (rt->dst_type == MCTP_ROUTE_GATEWAY) {
-@@ -1116,26 +1140,15 @@ int mctp_local_output(struct sock *sk, struct mctp_dst *dst,
- 	struct mctp_sock *msk = container_of(sk, struct mctp_sock, sk);
- 	struct mctp_sk_key *key;
- 	struct mctp_hdr *hdr;
--	unsigned long flags;
- 	unsigned int netid;
--	mctp_eid_t saddr;
--	int rc;
-+	int rc = 0;
- 	u8 tag;
- 
- 	KUNIT_STATIC_STUB_REDIRECT(mctp_local_output, sk, dst, skb, daddr,
- 				   req_tag);
- 
--	rc = -ENODEV;
--
--	spin_lock_irqsave(&dst->dev->addrs_lock, flags);
--	if (dst->dev->num_addrs == 0) {
-+	if (dst->saddr == MCTP_ADDR_NULL)
- 		rc = -EHOSTUNREACH;
--	} else {
--		/* use the outbound interface's first address as our source */
--		saddr = dst->dev->addrs[0];
--		rc = 0;
--	}
--	spin_unlock_irqrestore(&dst->dev->addrs_lock, flags);
- 	netid = READ_ONCE(dst->dev->net);
- 
- 	if (rc)
-@@ -1146,8 +1159,8 @@ int mctp_local_output(struct sock *sk, struct mctp_dst *dst,
- 			key = mctp_lookup_prealloc_tag(msk, netid, daddr,
- 						       req_tag, &tag);
- 		else
--			key = mctp_alloc_local_tag(msk, netid, saddr, daddr,
--						   false, &tag);
-+			key = mctp_alloc_local_tag(msk, netid, dst->saddr,
-+						   daddr, false, &tag);
- 
- 		if (IS_ERR(key)) {
- 			rc = PTR_ERR(key);
-@@ -1174,7 +1187,7 @@ int mctp_local_output(struct sock *sk, struct mctp_dst *dst,
- 	hdr = mctp_hdr(skb);
- 	hdr->ver = 1;
- 	hdr->dest = daddr;
--	hdr->src = saddr;
-+	hdr->src = dst->saddr;
- 
- 	/* route output functions consume the skb, even on error */
- 	return mctp_do_fragment_route(dst, skb, dst->mtu, tag);
-diff --git a/net/mctp/test/route-test.c b/net/mctp/test/route-test.c
-index 61c989c43ec09c9e105de4e51b295d07bb93d6da..639b7c41c2a233fa78f789d0ef25b87a15fb702b 100644
---- a/net/mctp/test/route-test.c
-+++ b/net/mctp/test/route-test.c
-@@ -174,7 +174,9 @@ static void mctp_rx_input_test_to_desc(const struct mctp_rx_input_test *t,
- KUNIT_ARRAY_PARAM(mctp_rx_input, mctp_rx_input_tests,
- 		  mctp_rx_input_test_to_desc);
- 
--/* set up a local dev, route on EID 8, and a socket listening on type 0 */
-+/* set up a local dev (with addr 8), route on EID 8, and a socket listening on
-+ * type 0
-+ */
- static void __mctp_route_test_init(struct kunit *test,
- 				   struct mctp_test_dev **devp,
- 				   struct mctp_dst *dst,
-@@ -191,6 +193,10 @@ static void __mctp_route_test_init(struct kunit *test,
- 	if (netid != MCTP_NET_ANY)
- 		WRITE_ONCE(dev->mdev->net, netid);
- 
-+	dev->mdev->addrs = kmalloc_objs(u8, 1, GFP_KERNEL);
-+	dev->mdev->num_addrs = 1;
-+	dev->mdev->addrs[0] = 8;
-+
- 	mctp_test_dst_setup(test, dst, dev, 68);
- 
- 	rc = sock_create_kern(&init_net, AF_MCTP, SOCK_DGRAM, 0, &sock);
-@@ -928,11 +934,6 @@ static void mctp_test_flow_init(struct kunit *test,
- 	 */
- 	__mctp_route_test_init(test, &dev, dst, sock, MCTP_NET_ANY);
- 
--	/* Assign a single EID. ->addrs is freed on mctp netdev release */
--	dev->mdev->addrs = kmalloc(sizeof(u8), GFP_KERNEL);
--	dev->mdev->num_addrs = 1;
--	dev->mdev->addrs[0] = 8;
--
- 	skb = alloc_skb(len + sizeof(struct mctp_hdr) + 1, GFP_KERNEL);
- 	KUNIT_ASSERT_TRUE(test, skb);
- 	__mctp_cb(skb);
-@@ -1058,8 +1059,6 @@ static void mctp_test_route_output_key_create(struct kunit *test)
- 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, dev);
- 	WRITE_ONCE(dev->mdev->net, netid);
- 
--	mctp_test_dst_setup(test, &dst, dev, 68);
--
- 	rc = sock_create_kern(&init_net, AF_MCTP, SOCK_DGRAM, 0, &sock);
- 	KUNIT_ASSERT_EQ(test, rc, 0);
- 
-@@ -1067,6 +1066,8 @@ static void mctp_test_route_output_key_create(struct kunit *test)
- 	dev->mdev->num_addrs = 1;
- 	dev->mdev->addrs[0] = src_eid;
- 
-+	mctp_test_dst_setup(test, &dst, dev, 68);
-+
- 	skb = alloc_skb(sizeof(struct mctp_hdr) + 1 + len, GFP_KERNEL);
- 	KUNIT_ASSERT_TRUE(test, skb);
- 	__mctp_cb(skb);
-@@ -1165,7 +1166,7 @@ static void mctp_test_route_gw_lookup(struct kunit *test)
- 	struct mctp_test_dev *dev;
- 	int rc;
- 
--	dev = mctp_test_create_dev();
-+	dev = mctp_test_create_dev_with_addr(8);
- 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, dev);
- 
- 	/* 8 (local) -> 10 (gateway) via 9 (direct) */
-@@ -1195,7 +1196,7 @@ static void mctp_test_route_gw_loop(struct kunit *test)
- 	struct mctp_test_dev *dev;
- 	int rc;
- 
--	dev = mctp_test_create_dev();
-+	dev = mctp_test_create_dev_with_addr(8);
- 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, dev);
- 
- 	/* two routes using each other as the gw */
-@@ -1254,7 +1255,7 @@ static void mctp_test_route_gw_mtu(struct kunit *test)
- 	unsigned int netid;
- 	int rc;
- 
--	dev = mctp_test_create_dev();
-+	dev = mctp_test_create_dev_with_addr(8);
- 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, dev);
- 	dev->ndev->mtu = mtus->dev;
- 	mdev = dev->mdev;
-diff --git a/net/mctp/test/utils.c b/net/mctp/test/utils.c
-index 97afe8cd2b05c9f047c4a6e8c9fb1b4496183cfe..2f79f8c1a2b44beb4917a9b92ffd72955a3a03c6 100644
---- a/net/mctp/test/utils.c
-+++ b/net/mctp/test/utils.c
-@@ -80,6 +80,26 @@ struct mctp_test_dev *mctp_test_create_dev(void)
- 	return __mctp_test_create_dev(0, NULL);
- }
- 
-+struct mctp_test_dev *mctp_test_create_dev_with_addr(mctp_eid_t addr)
-+{
-+	struct mctp_test_dev *dev;
-+
-+	dev = __mctp_test_create_dev(0, NULL);
-+	if (!dev)
-+		return NULL;
-+
-+	dev->mdev->addrs = kmalloc_objs(u8, 1, GFP_KERNEL);
-+	if (!dev->mdev->addrs) {
-+		mctp_test_destroy_dev(dev);
-+		return NULL;
-+	}
-+
-+	dev->mdev->num_addrs = 1;
-+	dev->mdev->addrs[0] = 8;
-+
-+	return dev;
-+}
-+
- struct mctp_test_dev *mctp_test_create_dev_lladdr(unsigned short lladdr_len,
- 						  const unsigned char *lladdr)
- {
-@@ -171,6 +191,8 @@ struct mctp_test_route *mctp_test_create_route_gw(struct net *net,
- void mctp_test_dst_setup(struct kunit *test, struct mctp_dst *dst,
- 			 struct mctp_test_dev *dev, unsigned int mtu)
- {
-+	unsigned long flags;
-+
- 	KUNIT_EXPECT_NOT_ERR_OR_NULL(test, dev);
- 
- 	memset(dst, 0, sizeof(*dst));
-@@ -179,6 +201,11 @@ void mctp_test_dst_setup(struct kunit *test, struct mctp_dst *dst,
- 	__mctp_dev_get(dst->dev->dev);
- 	dst->mtu = mtu;
- 	dst->output = mctp_test_dst_output;
-+	dst->saddr = MCTP_ADDR_NULL;
-+	spin_lock_irqsave(&dev->mdev->addrs_lock, flags);
-+	if (dev->mdev->num_addrs)
-+		dst->saddr = dev->mdev->addrs[0];
-+	spin_unlock_irqrestore(&dev->mdev->addrs_lock, flags);
- }
- 
- void mctp_test_route_destroy(struct kunit *test, struct mctp_test_route *rt)
-diff --git a/net/mctp/test/utils.h b/net/mctp/test/utils.h
-index 4cc90c9da4d1bfe9c63b2cac5253f9e09be3b147..47603732e6a570f7bb7e138246071fdbc092f790 100644
---- a/net/mctp/test/utils.h
-+++ b/net/mctp/test/utils.h
-@@ -42,6 +42,7 @@ struct mctp_test_bind_setup {
- };
- 
- struct mctp_test_dev *mctp_test_create_dev(void);
-+struct mctp_test_dev *mctp_test_create_dev_with_addr(mctp_eid_t eid);
- struct mctp_test_dev *mctp_test_create_dev_lladdr(unsigned short lladdr_len,
- 						  const unsigned char *lladdr);
- void mctp_test_destroy_dev(struct mctp_test_dev *dev);
-
--- 
-2.39.5
-
+Best Regards,
+Kangzheng
