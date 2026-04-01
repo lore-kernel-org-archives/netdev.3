@@ -1,169 +1,171 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6085647CC7E;
-	Wed,  1 Apr 2026 16:56:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 750543DCDA2
+	for <netdev@vger.kernel.org>; Wed,  1 Apr 2026 16:59:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775062594; cv=none; b=jd1espSPOhXADpKkpguom2NqlCrCEAV6ORgE7hZD9KuCQdI+5S3MuwXyw18izwJzxiFrq6eSyC1enXtRjf4gQD7DHNbK+t/I5lVyttS2MNFzKgcc1kV8IhE2jTAe3s3//af8VeiipZ4gZQKaEF0besSGt+botl2ycQO9vTuuytU=
+	t=1775062793; cv=none; b=n9NPGCePmPrBq6seMS0z83vAajqp1bAe+WHP5R1NtepluAWKnpKJwu7tkfaC8y9IQugQS5JD9t2fY27N00Lnd+9dOPTghbmghjjQ5h6YJLwlsiwpyDHl3oee6i6tzggxCHsorbG+/DclllIyieFSQpdxLW1WbNY2I0KHS81ZGoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775062594; c=relaxed/simple;
-	bh=rGzIkMjGgut585CN3VOg0XUDnVimGxpKVxfZ7xuFWQA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Vz5Htra6LUK4rhm2syq6y7Hto7jfg87mqXXBcMVMAgBUcrxeQL4dlw6I5biYuW5gzHWnIxtRzPEqgn0fgHXpPTt9LHnv3c7rgs/9sYQzv9jyXfhp+d5k2E+nsZLKEFp4Hv9F+eh6oZ4wUU79A/qrFDzVCwJLYKhYDiOsFtaCoxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ciPsfua7; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1775062793; c=relaxed/simple;
+	bh=kJjatoj12q1IVFN7ceHnVQp6+VKfe2YdEN9hKvtcchQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=sD1pe4oS2Brby9kalFyggLP5icpoR0fx0+t99zKz9Fw9ATaVvm28MmAew75pWL1+M2LB6wr1BwAPMoINcy6eI4UN5PNnJ0Ho2nqLoGDEdv8tntVflogs2mOmLCW+rNWPLhIsHbp6unzzdLiZFhLpxy4fPOQ7KHIjMIml7u32s4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rC7fNxoD; arc=none smtp.client-ip=91.218.175.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ciPsfua7"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6319diBc4036177;
-	Wed, 1 Apr 2026 16:56:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=OnuL3r
-	zlzIEr4MZtc6JVwkA/w4TfoM4dP2yVRbDVUTE=; b=ciPsfua7U5ucNGK+0Ki9oR
-	XhPPjkLRkJ7+RfPAyW0buzl7l6B5gDLtunz9oO45LGKL4anCQ4V8d45yCs1JVcHS
-	rtlBnzh4CfzkY7AHiteOntAuqxvkGpJJ35pG0Zeo0D7yjhzG7SWLlDlZkl2g+WhW
-	gAuzTlFK3kWYMmo2SX3mrbjktw+wjV2L09PBI/4rClt436YwMojMj0n4C561+48i
-	deuAvyoRsHrK9CSynXcdJV4puZ4K9+ps8g2ukn6hT8HmEIumyuxr4lgO4aXWL8pk
-	V1dl0/7xMobGwdy+xrKoXRxo4acA8shEQhW0dmX6+pExXcT6JcBVT+xQmMbLYasQ
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d66ms8dwb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 01 Apr 2026 16:56:21 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 631EpJ65005910;
-	Wed, 1 Apr 2026 16:56:21 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4d6spy6m2u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 01 Apr 2026 16:56:21 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 631GuK5x31326796
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 1 Apr 2026 16:56:20 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 114C65805F;
-	Wed,  1 Apr 2026 16:56:20 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0D8F958054;
-	Wed,  1 Apr 2026 16:56:17 +0000 (GMT)
-Received: from [9.111.188.215] (unknown [9.111.188.215])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  1 Apr 2026 16:56:16 +0000 (GMT)
-Message-ID: <007cd524-06c6-47b9-98b4-4ecf4d0ba421@linux.ibm.com>
-Date: Wed, 1 Apr 2026 18:55:27 +0200
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rC7fNxoD"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/4] gcov: use atomic counter updates to fix concurrent
- access crashes
-To: Konstantin Khorenko <khorenko@virtuozzo.com>,
-        Mikhail Zaslonko <zaslonko@linux.ibm.com>,
-        =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Josh Poimboeuf
- <jpoimboe@kernel.org>,
-        Vasileios Almpanis
- <vasileios.almpanis@virtuozzo.com>,
-        Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>
-References: <20260401142020.1434243-1-khorenko@virtuozzo.com>
- <20260401142020.1434243-5-khorenko@virtuozzo.com>
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <20260401142020.1434243-5-khorenko@virtuozzo.com>
+Mime-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775062788;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PpiUdagjamy+bZwyP2hl/BIuvfqngZCXPP6zxd4vuSE=;
+	b=rC7fNxoDQSUfZxMXYaIV4WUpwL6FDs2YYR5tH6ZkyWvnqFqzYBLAK6zMNgeokKBQT1QFUh
+	9yleGRp4Kni9JuAJzwI6UUZmVDdIQYvFrdaaT2LPdxXG9xxJPt3UB319vj/QxTyAMH/+M/
+	nyzycow4vxNCpA3zsbXD0WPcXL83SnQ=
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=J6enLQnS c=1 sm=1 tr=0 ts=69cd4e36 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=TYBLyS7eAAAA:8
- a=VnNF1IyMAAAA:8 a=GFBSSUJuQz_BDAv-O8oA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=zvYvwCWiE4KgVXXeO06c:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDAxMDE1NyBTYWx0ZWRfX5xbjruUR5NtP
- uZCMrRequfOXapSg5i/7qT2kpk8wRXzKBY5YSmI+mkJKs8Hp9b4V31ACY2BFHJbBfQov7AJyApI
- atexni3Oc+V7C7e9cPn0qkUCyisKsX2S+xF9gQxgMVCy1o1BjcpQJiylW1ty2NptolkZlR5kFip
- iy6knv8OXIj6F2S92RiPb5NRnPIc4RjeRhW5GMeWlZKIziKSkllGg+s1jZ2+L+DOxsp3X7O19yu
- bJ4bzp9W2ogZflz1cbiMqncJPt8UCYCkCub890x/5wjsg4cmFI6kG1J4FvWPk3FUdumugaWadg1
- i3k3HwnSu7hdLBWELD15xfW+mQj/pKkE51t3FtzL3MF6TYo5ERaPjF1QED3pjPe17SPAb+sZ4Xs
- 39KV2nJXY4bz/NPDop5lA1a7tZFn8beL1VDeeTiBrXbCCLAjL3sbZi6pqKQHHVbDtOlTDjjPhA/
- 9fu4uhxbXoztAsZVvqQ==
-X-Proofpoint-GUID: FhHeyWQILF-ObIYtSUTAdW3_PzKFXe3x
-X-Proofpoint-ORIG-GUID: d7DOFv_A9vaxFjF4Fz6xh6Qu4bWJCYax
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-01_04,2026-04-01_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 clxscore=1011 adultscore=0 priorityscore=1501 bulkscore=0
- phishscore=0 malwarescore=0 lowpriorityscore=0 spamscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2604010157
+Date: Wed, 01 Apr 2026 18:59:44 +0200
+Message-Id: <DHHZ8POWJINS.1CRKQT33EM1WW@linux.dev>
+Cc: <netdev@vger.kernel.org>, <fmaurer@redhat.com>, <horms@kernel.org>
+Subject: Re: [PATCH net-next v4 1/2] net: hsr: require valid EOT supervision
+ TLV
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Luka Gejak" <luka.gejak@linux.dev>
+To: "Fernando Fernandez Mancera" <fmancera@suse.de>, <luka.gejak@linux.dev>,
+ <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+ <pabeni@redhat.com>
+References: <20260401092324.52266-1-luka.gejak@linux.dev>
+ <20260401092324.52266-2-luka.gejak@linux.dev>
+ <2d94a1a6-e6c5-427c-b10f-63377cb10407@suse.de>
+In-Reply-To: <2d94a1a6-e6c5-427c-b10f-63377cb10407@suse.de>
+X-Migadu-Flow: FLOW_OUT
 
-On 01.04.2026 16:20, Konstantin Khorenko wrote:
-> GCC's GCOV instrumentation can merge global branch counters with loop
-> induction variables as an optimization.  In inflate_fast(), the inner
-> copy loops get transformed so that the GCOV counter value is loaded
-> multiple times to compute the loop base address, start index, and end
-> bound.  Since GCOV counters are global (not per-CPU), concurrent
-> execution on different CPUs causes the counter to change between loads,
-> producing inconsistent values and out-of-bounds memory writes.
-> 
-> The crash manifests during IPComp (IP Payload Compression) processing
-> when inflate_fast() runs concurrently on multiple CPUs:
-> 
->   BUG: unable to handle page fault for address: ffffd0a3c0902ffa
->   RIP: inflate_fast+1431
->   Call Trace:
->    zlib_inflate
->    __deflate_decompress
->    crypto_comp_decompress
->    ipcomp_decompress [xfrm_ipcomp]
->    ipcomp_input [xfrm_ipcomp]
->    xfrm_input
-> 
-> At the crash point, the compiler generated three loads from the same
-> global GCOV counter (__gcov0.inflate_fast+216) to compute base, start,
-> and end for an indexed loop.  Another CPU modified the counter between
-> loads, making the values inconsistent — the write went 3.4 MB past a
-> 65 KB buffer.
-> 
-> Add -fprofile-update=atomic to CFLAGS_GCOV at the global level in the
-> top-level Makefile.  This tells GCC that GCOV counters may be
-> concurrently accessed, causing counter updates to use atomic
-> instructions (lock addq) instead of plain load/store.  This prevents
-> the compiler from merging counters with loop induction variables.
-> 
-> Applying this globally rather than per-subsystem not only addresses the
-> observed crash in zlib but makes GCOV coverage data more consistent
-> overall, preventing similar issues in any kernel code path that may
-> execute concurrently.
-> 
-> Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
+On Wed Apr 1, 2026 at 4:47 PM CEST, Fernando Fernandez Mancera wrote:
+> On 4/1/26 11:23 AM, luka.gejak@linux.dev wrote:
+>> From: Luka Gejak <luka.gejak@linux.dev>
+>>=20
+>> Supervision frames are only valid if terminated with a zero-length EOT
+>> TLV. The current check fails to reject non-EOT entries as the terminal
+>> TLV, potentially allowing malformed supervision traffic.
+>>=20
+>> Fix this by strictly requiring the terminal TLV to be HSR_TLV_EOT
+>> with a length of zero.
+>>=20
+>> Reviewed-by: Felix Maurer <fmaurer@redhat.com>
+>> Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
+>> ---
+>>   net/hsr/hsr_forward.c | 41 ++++++++++++++++++++++-------------------
+>>   1 file changed, 22 insertions(+), 19 deletions(-)
+>>=20
+>> diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
+>> index 0aca859c88cb..17b705235c4a 100644
+>> --- a/net/hsr/hsr_forward.c
+>> +++ b/net/hsr/hsr_forward.c
+>> @@ -82,39 +82,42 @@ static bool is_supervision_frame(struct hsr_priv *hs=
+r, struct sk_buff *skb)
+>>   	    hsr_sup_tag->tlv.HSR_TLV_length !=3D sizeof(struct hsr_sup_payloa=
+d))
+>>   		return false;
+>>  =20
+>> -	/* Get next tlv */
+>> +	/* Advance past the first TLV payload to reach next TLV header */
+>>   	total_length +=3D hsr_sup_tag->tlv.HSR_TLV_length;
+>> -	if (!pskb_may_pull(skb, total_length))
+>> +	/* Linearize next TLV header before access */
+>> +	if (!pskb_may_pull(skb, total_length + sizeof(struct hsr_sup_tlv)))
+>>   		return false;
+>>   	skb_pull(skb, total_length);
+>>   	hsr_sup_tlv =3D (struct hsr_sup_tlv *)skb->data;
+>>   	skb_push(skb, total_length);
+>>  =20
+>> -	/* if this is a redbox supervision frame we need to verify
+>> -	 * that more data is available
+>> +	/* Walk through TLVs to find end-of-TLV marker, skipping any unknown
+>> +	 * extension TLVs to maintain forward compatibility.
+>>   	 */
+>> -	if (hsr_sup_tlv->HSR_TLV_type =3D=3D PRP_TLV_REDBOX_MAC) {
+>> -		/* tlv length must be a length of a mac address */
+>> -		if (hsr_sup_tlv->HSR_TLV_length !=3D sizeof(struct hsr_sup_payload))
+>> -			return false;
+>> +	for (;;) {
+>> +		if (hsr_sup_tlv->HSR_TLV_type =3D=3D HSR_TLV_EOT &&
+>> +		    hsr_sup_tlv->HSR_TLV_length =3D=3D 0)
+>> +			return true;
+>>  =20
+>
+> I do not follow this approach, why a loop? From IEC 62439-3, I do not=20
+> understand that supervision frames could have multiple=20
+> PRP_TLV_REDBOX_MAC TLVs. The current code handles the TLVs correctly.
+>
+> Which makes me wonder, how are you testing this? Do you have some=20
+> hardware with HSR/PRP support that is sending these frames? If so, which=
+=20
+> one? Are you testing this using a HSR/PRP environment with purely Linux=
+=20
+> devices?
+>
+> Thanks,
+> Fernando.
+>
+>> -		/* make sure another tlv follows */
+>> -		total_length +=3D sizeof(struct hsr_sup_tlv) + hsr_sup_tlv->HSR_TLV_l=
+ength;
+>> -		if (!pskb_may_pull(skb, total_length))
+>> +		/* Validate known TLV types */
+>> +		if (hsr_sup_tlv->HSR_TLV_type =3D=3D PRP_TLV_REDBOX_MAC) {
+>> +			if (hsr_sup_tlv->HSR_TLV_length !=3D
+>> +			    sizeof(struct hsr_sup_payload))
+>> +				return false;
+>> +		}
+>> +
+>> +		/* Advance past current TLV: header + payload */
+>> +		total_length +=3D sizeof(struct hsr_sup_tlv) +
+>> +				hsr_sup_tlv->HSR_TLV_length;
+>> +		/* Linearize next TLV header before access */
+>> +		if (!pskb_may_pull(skb,
+>> +				   total_length + sizeof(struct hsr_sup_tlv)))
+>>   			return false;
+>>  =20
+>> -		/* get next tlv */
+>>   		skb_pull(skb, total_length);
+>>   		hsr_sup_tlv =3D (struct hsr_sup_tlv *)skb->data;
+>>   		skb_push(skb, total_length);
+>>   	}
 
-Thanks, this looks good to me!
+Hi Fernando,
 
-Successfully tested this series on s390 (except for patch 3 which
-depends on x86) using GCC 15.2.0, GCC 10.1.0, and current Clang from git
-(20260401).
+You are right that IEC 62439-3 does not specify multiple=20
+PRP_TLV_REDBOX_MAC TLVs. My intention with the loop was not to handle=20
+multiple RedBox MACs, but rather to make the parser robust against=20
+unknown TLV types. If a future revision of the standard or a vendor=20
+extension introduces a new TLV, the loop allows the kernel to safely=20
+skip over unrecognized TLVs by reading their length, ensuring it can=20
+still validate the HSR_TLV_EOT marker at the end.
 
-Tested-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+However, if the preference for the HSR subsystem is strict adherence to=20
+only currently defined TLVs over forward compatibility, I completely=20
+understand.
 
--- 
-Peter Oberparleiter
-Linux on IBM Z Development - IBM Germany R&D
+Furthermore, I am testing this using a purely Linux environment by=20
+using a virtual HSR environment on Arch Linux. I set up two network=20
+namespaces connected via veth pairs and instantiated HSR interfaces.
+
+The nodes successfully synchronized and maintained the connection. I=20
+confirmed this by observing the expected duplicate packets (DUP!)=20
+during ping tests between namespaces and by verifying that supervision=20
+frames were correctly parsed, allowing the nodes to populate their=20
+remote node tables.
+
+Let me know if you'd prefer I drop the loop for v5.
+Best regards,
+Luka Gejak
