@@ -1,199 +1,118 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A28381AE9;
-	Wed,  1 Apr 2026 07:32:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5324D27442
+	for <netdev@vger.kernel.org>; Wed,  1 Apr 2026 07:33:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775028758; cv=none; b=aRPOtm3cvfKa7GACOeLdraxE5U6Kkm0GSYfooHmskuAQQlVzt9EvQHXVeMYm6uxJDeNb5vd60dF7eUalREzV/6wWCsEGBeWol79FJsMPBqG61RZHliYNVEGp8cXmVlmmxSow5i0ai74OZwtkNcf7fgEVPYc3zOZllofTkkM5ZnE=
+	t=1775028836; cv=none; b=j+fdnuMefkUqa4S2sUgNjbushWwKRtU+VDZUNFTe2SKUrqr1RokKgjk+c7VZZCHNKCJtBXnyx2cJKplCzeysyQ3DjYVGfR4ZiaBn6cwldh2WdxyAnFVBSKh0xtzWgLqy1AThdq4W1Xc/a7AbwfezCBmFWaQdckl13XJL1R3RJMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775028758; c=relaxed/simple;
-	bh=lAkJjjHd7gHpaqpH3Cr1BqQoEkk7qoY8Ml90OwFuqBI=;
-	h=Message-ID:Subject:From:To:CC:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=CnbB5Gv9rxFpyklDeIZKmByjF7sbj6grxCfLFT4SVlOsvWbu2UNQqg9Ps67QYBwdTPb8M3PO3DWkYkxDZl8IMCX71fDKZwcQtvWQglBCWyUhDWb1teIabUHo0nu/Gvml5+LUoO2QDfGfJtD/BEakhnSYUDzAgFTDcNMsbnkFS40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=c9nnB7Jd; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="c9nnB7Jd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1775028754; x=1806564754;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=lAkJjjHd7gHpaqpH3Cr1BqQoEkk7qoY8Ml90OwFuqBI=;
-  b=c9nnB7Jd5ywjwzWUlkWOs8ceEDu7hv82rNHBapu+daxXLCt3+7NJ/Xdd
-   i/6jKJ90Bo3I7/MAu2bRRii86MALvP/RdId3RSaO1CHaTflBJBIAAviKI
-   uDmK9PjTVIAR1JSOWGk0BMx0WH+8fhh/BfLIRfFn83MMBzo9s3z20abLB
-   emQQX2jbe5Twy7cWTakZjRPPCXWU5aIjgTrF3VmwJasc67VTdyn0OuVz9
-   +EoJCte2YWp+rjlGgasLXp77v4GyMwS+TPlRKis5wwkcit3X6aMgCtDDO
-   ul/MMBrqsUUPn1xfuYuBNjk9wVFLeT24Y3QeRmjzE7hjVIiYM9kilZVGr
-   w==;
-X-CSE-ConnectionGUID: UB3oepBeSxy1sJkvz5/npA==
-X-CSE-MsgGUID: 43Y3VxG0T1i7Bt7g4RF5DA==
-X-IronPort-AV: E=Sophos;i="6.23,153,1770620400"; 
-   d="scan'208";a="54768591"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 00:32:33 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.87.151) by
- chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.35; Wed, 1 Apr 2026 00:31:52 -0700
-Received: from DEN-DL-M77643.microsemi.net (10.10.85.11) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Wed, 1 Apr 2026 00:31:49 -0700
-Message-ID: <5b731463a01dc4dbeaf98fe914fede8719786560.camel@microchip.com>
-Subject: Re: [PATCH net-next v2 1/9] net: dsa: add tag driver for LAN9645X
-From: Jens Emil Schulz Ostergaard <jensemil.schulzostergaard@microchip.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: <UNGLinuxDriver@microchip.com>, <andrew@lunn.ch>, <olteanv@gmail.com>,
-	<davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
-	<horms@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-	<conor+dt@kernel.org>, <woojung.huh@microchip.com>, <linux@armlinux.org.uk>,
-	<Steen.Hegelund@microchip.com>, <daniel.machon@microchip.com>,
-	<linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<devicetree@vger.kernel.org>
-Date: Wed, 1 Apr 2026 09:31:49 +0200
-In-Reply-To: <20260329195620.2789042-1-kuba@kernel.org>
-References: <20260324-dsa_lan9645x_switch_driver_base-v2-1-f7504e3b0681@microchip.com>
-	 <20260329195620.2789042-1-kuba@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2.1 
+	s=arc-20240116; t=1775028836; c=relaxed/simple;
+	bh=hdflUWalle47wvavTKoBbyFh0m5OhsZ3UXRrYZLUEFg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Js9wZqCTtAH6NM6+AsQXfA0d5XBXwRlBkOtieyxbBVIAOB4LQHfNvIJoXeajcNWdeuT+7UF49V5Yp8Re/A+y3GB8rYiuQtgNJ7wNLUHUUUt+84dvWqodRRlib7Wgx/gS8gARH6K5zMgSiNJz2XrTCd/UtQWUMINvAB4xAYytudE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1w7q57-000765-JP; Wed, 01 Apr 2026 09:33:41 +0200
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1w7q56-003AhQ-1b;
+	Wed, 01 Apr 2026 09:33:40 +0200
+Received: from blackshift.org (unknown [IPv6:2a0a:edc0:0:701:a82f:fdef:12b2:33d])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 1BFAE513373;
+	Wed, 01 Apr 2026 07:33:40 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	linux-can@vger.kernel.org,
+	kernel@pengutronix.de
+Subject: [PATCH net-next 0/6] pull-request: can-next 2026-04-01
+Date: Wed,  1 Apr 2026 09:30:08 +0200
+Message-ID: <20260401073338.5592-1-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-On Sun, 2026-03-29 at 12:56 -0700, Jakub Kicinski wrote:
-> EXTERNAL EMAIL: Do not click links or open attachments unless you know th=
-e content is safe
->=20
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> net: dsa: add tag driver for LAN9645X
->=20
-> Add a tag driver for LAN9645x switches using a front port as the CPU port
-> (NPI port). The driver configures a long prefix for extraction and no
-> prefix for injection to handle the internal frame header (IFH).
->=20
-> > diff --git a/net/dsa/tag_lan9645x.c b/net/dsa/tag_lan9645x.c
-> > new file mode 100644
-> > index 000000000000..9130fb0d61be
-> > --- /dev/null
-> > +++ b/net/dsa/tag_lan9645x.c
->=20
-> [ ... ]
->=20
-> > +static void lan9645x_xmit_get_vlan_info(struct sk_buff *skb,
-> > +                                     struct net_device *br,
-> > +                                     u32 *vlan_tci, u32 *tag_type)
-> > +{
-> > +     struct vlan_ethhdr *hdr;
-> > +     u16 proto, tci;
-> > +
-> > +     if (!br || !br_vlan_enabled(br)) {
-> > +             *vlan_tci =3D 0;
-> > +             *tag_type =3D LAN9645X_IFH_TAG_TYPE_C;
-> > +             return;
-> > +     }
-> > +
-> > +     hdr =3D (struct vlan_ethhdr *)skb_mac_header(skb);
-> > +     br_vlan_get_proto(br, &proto);
-> > +
-> > +     if (ntohs(hdr->h_vlan_proto) =3D=3D proto) {
-> > +             vlan_remove_tag(skb, &tci);
->=20
-> Is it possible for a maliciously crafted packet (e.g., via AF_PACKET) to =
-have a
-> length of 14 bytes with h_vlan_proto set to ETH_P_8021Q?
->=20
-> If so, vlan_remove_tag() would read vhdr->h_vlan_TCI at offset 14, causin=
-g an
-> out-of-bounds read.
->=20
-> Furthermore, if the packet contains fragments and the VLAN header is not =
-in the
-> linear data area, vlan_remove_tag() could corrupt the SKB when shifting t=
-he MAC
-> header.
->=20
-> Would it be safer to use skb_vlan_untag() instead?
->=20
+Hello netdev-team,
 
-I think skb_vlan_untag is for the rx path, and will not make sense here. Bu=
-t I
-can add a check like
+this is a pull request of 6 patches for net-next/main.
 
-	if (skb_headlen(skb) >=3D VLAN_ETH_HLEN &&
-	    ntohs(hdr->h_vlan_proto) =3D=3D proto) {
-		vlan_remove_tag(skb, &tci);
-		*vlan_tci =3D tci;
-	} else {
+The first patch is by Ethan Nelson-Moore and removes a useless copy of
+PCI_DEVICE_DATA from the ctucanfd driver.
 
-so we know the linear data area has the bytes.
+Geert Uytterhoeven's patch for the rcar_can converts the driver to use
+the FIELD_MODIFY macro.
 
-> > +             *vlan_tci =3D tci;
-> > +     } else {
-> > +             rcu_read_lock();
-> > +             br_vlan_get_pvid_rcu(br, &tci);
-> > +             rcu_read_unlock();
-> > +             *vlan_tci =3D tci;
-> > +     }
-> > +
-> > +     *tag_type =3D (proto !=3D ETH_P_8021Q) ? LAN9645X_IFH_TAG_TYPE_S =
-:
-> > +                                          LAN9645X_IFH_TAG_TYPE_C;
-> > +}
->=20
-> [ ... ]
->=20
-> > +static struct sk_buff *lan9645x_rcv(struct sk_buff *skb,
-> > +                                 struct net_device *ndev)
-> > +{
-> > +     u32 src_port, qos_class, vlan_tci, tag_type, popcnt, etype_ofs;
-> > +     u8 *orig_skb_data =3D skb->data;
-> > +     struct dsa_port *dp;
-> > +     u32 ifh_gap_len =3D 0;
-> > +     u16 vlan_tpid;
-> > +     u8 *ifh;
-> > +
-> > +     /* DSA master already consumed DMAC,SMAC,ETYPE from long prefix. =
-Go back
-> > +      * to beginning of frame.
-> > +      */
-> > +     skb_push(skb, ETH_HLEN);
-> > +     /* IFH starts after our long prefix */
-> > +     ifh =3D skb_pull(skb, LAN9645X_LONG_PREFIX_LEN);
->=20
-> Could skb_pull() return NULL here if skb->len is less than 16 bytes?
->=20
-> If it returns NULL, the blind dereference of ifh in the subsequent
-> lan9645x_ifh_get() calls would cause a NULL pointer dereference.
->=20
-> Additionally, is the 44-byte tag (16-byte prefix + 28-byte IFH) guarantee=
-d to
-> be in the linear data buffer (skb->data)?
->=20
-> Without calling pskb_may_pull(skb, LAN9645X_TOTAL_TAG_LEN) first, accessi=
-ng it
-> via the ifh pointer might result in out-of-bounds reads if the packet pay=
-load
-> is in paged fragments.
->=20
+Viken Dadhaniya contributes 2 patches for the mcp251xfd driver that
+add transceiver standby control.
 
+The last 2 aptches are by Johan Hovold and refactor the usb endpoint
+lookup of the kvaser_usb and ucan driver.
 
-I can add pskb_may_pull calls to ensure skb->data is availble.
+regards,
+Marc
 
-> > +
-> > +     popcnt =3D lan9645x_ifh_get(ifh, IFH_POP_CNT, IFH_POP_CNT_SZ);
-> > +     etype_ofs =3D lan9645x_ifh_get(ifh, IFH_ETYPE_OFS, IFH_ETYPE_OFS_=
-SZ);
-> > +     src_port =3D lan9645x_ifh_get(ifh, IFH_SRCPORT, IFH_SRCPORT_SZ);
-> --
-> pw-bot: cr
+---
 
+The following changes since commit f1359c240191e686614847905fc861cbda480b47:
+
+  net/iucv: Add missing kernel-doc return value descriptions (2026-03-31 20:14:56 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can-next.git tags/linux-can-next-for-7.1-20260401
+
+for you to fetch changes up to 50b4927288144fbd2f947b0e4c0ef32949587e67:
+
+  Merge patch series "can: refactor USB endpoint lookups" (2026-04-01 09:27:58 +0200)
+
+----------------------------------------------------------------
+linux-can-next-for-7.1-20260401
+
+----------------------------------------------------------------
+Ethan Nelson-Moore (1):
+      net: can: ctucanfd: remove useless copy of PCI_DEVICE_DATA macro
+
+Geert Uytterhoeven (1):
+      can: rcar_can: Convert to FIELD_MODIFY()
+
+Johan Hovold (2):
+      can: kvaser_usb: leaf: refactor endpoint lookup
+      can: ucan: refactor endpoint lookup
+
+Marc Kleine-Budde (2):
+      Merge patch series "can: mcp251xfd: add XSTBYEN transceiver standby control"
+      Merge patch series "can: refactor USB endpoint lookups"
+
+Viken Dadhaniya (2):
+      dt-bindings: can: mcp251xfd: add microchip,xstbyen property
+      can: mcp251xfd: add support for XSTBYEN transceiver standby control
+
+ .../bindings/net/can/microchip,mcp251xfd.yaml      |  8 +++++
+ drivers/net/can/ctucanfd/ctucanfd_pci.c            |  8 -----
+ drivers/net/can/rcar/rcar_can.c                    |  3 +-
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c     | 37 ++++++++++++++++++++
+ drivers/net/can/spi/mcp251xfd/mcp251xfd.h          |  1 +
+ drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c   | 25 +++++---------
+ drivers/net/can/usb/ucan.c                         | 40 ++++++----------------
+ 7 files changed, 66 insertions(+), 56 deletions(-)
