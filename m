@@ -1,37 +1,37 @@
 Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9133238643E;
-	Wed,  1 Apr 2026 07:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E702B35E936;
+	Wed,  1 Apr 2026 07:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775029546; cv=none; b=dCRrc8gmOT4oXHzxmVgOMVteIpES5/nAUSlGXVDJftgaw3atZ5cyaY5C/WYe6dvqODhl+F95/LJgloSzl+Z196khTuX0Gs0OT3tRPJYc6tIzSdQ+HyxWP0cu2YPLdsMeZtl8mpdL89yTvqzXO68D2Z7fjK4gfKJ+xxzJjApb5Os=
+	t=1775029547; cv=none; b=NQ++2YkEVUvJxdfNb8+aDqCgpjoJumppJXjSj4Wzg0jIPjs4STQMz/4knnWFwcAnpp+f1spxlVZmdisID6BKOsghdFhyJh1c6MpuVZnXUzeCOrgcdWzfR+bkYm0Vgh2EOG1vAtctQWu6PaJRs2IhhL9utEX/dzuBeHV35WWcv0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775029546; c=relaxed/simple;
-	bh=9R+JVXf4BtoLSJ29Oe17bA2hZ9tUe54L63YtyNAu4Ys=;
+	s=arc-20240116; t=1775029547; c=relaxed/simple;
+	bh=kApfysLmil/v0Oj2JmnKLBK0dorCkw228crfG1s8AD0=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h7fCMqQODH0kLX20RoRiiU3N6lgvb0cK63XmpibI8IrSbAxEkyGiHFXowjAgSfBtmAcYHIlDEaamuuaUp75gdf9DOS11qdQXxWDvDPEgzO2hJaGQayRFbDljn/Skmczki330V5gpWPdCx4pRwojLodYRKjHF5Kpk6zrvU7VnzWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=cGXZEtGH; arc=none smtp.client-ip=90.155.92.199
+	 MIME-Version; b=Xpes9io5/H/23AXuW3XYrkaIxb2kXso3Qv/alnLwHoAEtSUgbo8guJbFlAoQMYeV/fcc+vv3IwMdIMwr8rzMQYC54nzznCGJm85Zjy/9KwPZczQKWFvqNNGezIYE4yAkRnLIM7orkcH9CspWxkwwpOatgdUjyxrmS60zVneIe3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ICgU3kYI; arc=none smtp.client-ip=90.155.92.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="cGXZEtGH"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ICgU3kYI"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:
-	From:Reply-To:Cc:Content-ID:Content-Description;
-	bh=5iG19Rn9VazMkVS9llniL6PBW1JOyaflEHOOD98tRZo=; b=cGXZEtGHD9fH3O9CZN4XP5sxfi
-	H8mHOXi9NQOmDZi4ip1Y6phk85JdqIAuKBx+xqD+WQReEjlWnndfUL9yz3LdeD4sCBOas46aF6W7I
-	bcK3LJaLrEDUmYK/7fg7uR0BRH2pbgTxQ+v5yl8oq1vkTYgnLYVTxyv/FeydxPJBssY88jdSgioW1
-	z/wT7xqPFDUMM4Dl+GgRna90n+n9hKzCX0Dl3jB1kbs1WJj/8I/LUPqb2AVjuUjpFAPdQxAK1Qbdf
-	DA9oYeheAcq/IUqUFSNZDQ4DHMmZs7leRaYMlDeIgUiYAuD9OTc1d7rGbKsGbXvAbd4nM7pX41kUC
-	poZKL3SA==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description;
+	bh=TjlEaZufkIfdPkUMCDh5SD89kPYTqyaHCXw8Muwc4Dk=; b=ICgU3kYIYD7TcubUA2flzaCQ0/
+	Y1xq8IIwcHVpeuRBs2Sk5bzpKgsAJH4Ach8Tt1JHYt4wh0jYcY6e+SATwyK4RcZ/7221wQ27l1y2E
+	O3cgTAk/OztH7NNk72E5Bf2RwSS34DSuaYUnyizucHQyG/+WmOWj1vdkACs6nq4qlMsZGSsEfWGNS
+	hXSAVX0fEOkaA99zZ9kqYN6yxmdUYCJQkEtOxNFaQ7BJhkHkfggNP9lw9mMGOfHK6IUONyvssH4Q0
+	9gZpb8pHebi9BTlNi6Yopj0pLSCVCcKonmuA4rkAb/dLverJuSQ9UZS7Ic1Jul4M9LMCBmkEXo8vL
+	C49g96Qw==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w7qGN-0000000HLQN-0BwS;
+	id 1w7qGN-0000000HLQS-0BKX;
 	Wed, 01 Apr 2026 07:45:19 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w7qGM-00000007xe8-1pgr;
+	id 1w7qGM-00000007xeP-3Bbt;
 	Wed, 01 Apr 2026 08:45:18 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: Saeed Mahameed <saeedm@nvidia.com>,
@@ -83,9 +83,9 @@ To: Saeed Mahameed <saeedm@nvidia.com>,
 	coreteam@netfilter.org,
 	torvalds@linux-foundation.org,
 	jon.maddog.hall@gmail.com
-Subject: [PATCH 2/6] net: Add CONFIG_LEGACY_IP option
-Date: Wed,  1 Apr 2026 08:44:16 +0100
-Message-ID: <20260401074509.1897527-3-dwmw2@infradead.org>
+Subject: [PATCH 6/6] net: Warn when processes listen on AF_INET sockets
+Date: Wed,  1 Apr 2026 08:44:20 +0100
+Message-ID: <20260401074509.1897527-7-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260401074509.1897527-1-dwmw2@infradead.org>
 References: <20260401074509.1897527-1-dwmw2@infradead.org>
@@ -95,50 +95,36 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-Add a new CONFIG_LEGACY_IP boolean option under CONFIG_INET that will
-gate Legacy IP functionality. When disabled, the kernel will not
-register the AF_INET socket family, IPv4 packet handler, ARP, or IPv4
-routing, while the shared TCP/UDP/INET socket infrastructure remains
-available for IPv6.
-
-This is the first step toward making Legacy IP optional. The option
-defaults to y and currently has no effect — subsequent patches will use
-it to guard IPv4 entry points.
+There is no need to listen on AF_INET sockets; a modern application can
+listen on IPv6 (without IPV6_V6ONLY) and will accept connections from
+the 20th century via IPv4-mapped addresses (::ffff:x.x.x.x) on the IPv6
+socket.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- net/ipv4/Kconfig | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ net/ipv4/af_inet.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/ipv4/Kconfig b/net/ipv4/Kconfig
-index df922f9f5289..aef2c5349e62 100644
---- a/net/ipv4/Kconfig
-+++ b/net/ipv4/Kconfig
-@@ -2,6 +2,17 @@
- #
- # IP configuration
- #
-+config LEGACY_IP
-+	bool "The IPv4 protocol (Legacy IP)"
-+	help
-+	  Support for IP version 4 (IPv4).
+diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
+index dc358faa1647..3838782a8437 100644
+--- a/net/ipv4/af_inet.c
++++ b/net/ipv4/af_inet.c
+@@ -240,6 +240,9 @@ int inet_listen(struct socket *sock, int backlog)
+ 	struct sock *sk = sock->sk;
+ 	int err = -EINVAL;
+ 
++	pr_warn_once("process '%s' (pid %d) is listening on an AF_INET socket. Consider using AF_INET6 with IPV6_V6ONLY=0 instead.\n",
++		     current->comm, task_pid_nr(current));
 +
-+	  Legacy IP is the protocol used by the early ARPANET, before IPv6
-+	  was standardised in the final decade of the 1900s. It should only
-+	  be necessary these days to interoperate with legacy networks.
-+
-+	  If unsure, say N.
-+
- config IP_MULTICAST
- 	bool "IP: multicasting"
- 	help
+ 	lock_sock(sk);
+ 
+ 	if (sock->state != SS_UNCONNECTED || sock->type != SOCK_STREAM)
 -- 
 2.51.0
 
