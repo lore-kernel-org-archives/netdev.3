@@ -1,15 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5324D27442
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D065837DEA3
 	for <netdev@vger.kernel.org>; Wed,  1 Apr 2026 07:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775028836; cv=none; b=j+fdnuMefkUqa4S2sUgNjbushWwKRtU+VDZUNFTe2SKUrqr1RokKgjk+c7VZZCHNKCJtBXnyx2cJKplCzeysyQ3DjYVGfR4ZiaBn6cwldh2WdxyAnFVBSKh0xtzWgLqy1AThdq4W1Xc/a7AbwfezCBmFWaQdckl13XJL1R3RJMo=
+	t=1775028837; cv=none; b=d+4fESsWrRZ66H28d2FBAeADUJK818RnjTQYML2LFiakCkHffFXy+D+pRW1sPB8EXZffjVu5ka488QGA+B7PmbBlScmgMw2tQBLL3bABzq1uEF+TGMcEAiG7jneOHsFuT8kqZaQCHPkZG6unZS4muryaGP8NP6YNlr0uHdpNQGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775028836; c=relaxed/simple;
-	bh=hdflUWalle47wvavTKoBbyFh0m5OhsZ3UXRrYZLUEFg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Js9wZqCTtAH6NM6+AsQXfA0d5XBXwRlBkOtieyxbBVIAOB4LQHfNvIJoXeajcNWdeuT+7UF49V5Yp8Re/A+y3GB8rYiuQtgNJ7wNLUHUUUt+84dvWqodRRlib7Wgx/gS8gARH6K5zMgSiNJz2XrTCd/UtQWUMINvAB4xAYytudE=
+	s=arc-20240116; t=1775028837; c=relaxed/simple;
+	bh=nL756XhjqKTzrvO6bcJUd3kAUQonYqxPvA1Bit1xogA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KHIQ7kARimlm0m7XVkMtU3CH3piuBzooQuHLt19ym7yhLf1t1VN/v7/M+BEApP4N047hC+CLW+0oyn3XCdepBzjtqxN6ek/MBwuXTkhP5aeAY1RoY2KtHvJC/WxdxrF5LsRqLEycViGl7ZHszzmuKwUQX2oENDVmIB+580QS4uw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -17,30 +18,34 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1w7q57-000765-JP; Wed, 01 Apr 2026 09:33:41 +0200
+	id 1w7q57-00076A-JR; Wed, 01 Apr 2026 09:33:41 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1w7q56-003AhQ-1b;
-	Wed, 01 Apr 2026 09:33:40 +0200
+	id 1w7q57-003AhX-0C;
+	Wed, 01 Apr 2026 09:33:41 +0200
 Received: from blackshift.org (unknown [IPv6:2a0a:edc0:0:701:a82f:fdef:12b2:33d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 1BFAE513373;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id AE894513376;
 	Wed, 01 Apr 2026 07:33:40 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
-	kernel@pengutronix.de
-Subject: [PATCH net-next 0/6] pull-request: can-next 2026-04-01
-Date: Wed,  1 Apr 2026 09:30:08 +0200
-Message-ID: <20260401073338.5592-1-mkl@pengutronix.de>
+	kernel@pengutronix.de,
+	Johan Hovold <johan@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH net-next 3/6] can: kvaser_usb: leaf: refactor endpoint lookup
+Date: Wed,  1 Apr 2026 09:30:11 +0200
+Message-ID: <20260401073338.5592-4-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260401073338.5592-1-mkl@pengutronix.de>
+References: <20260401073338.5592-1-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,66 +58,58 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Hello netdev-team,
+From: Johan Hovold <johan@kernel.org>
 
-this is a pull request of 6 patches for net-next/main.
+Use the common USB helper for looking up bulk and interrupt endpoints
+instead of open coding.
 
-The first patch is by Ethan Nelson-Moore and removes a useless copy of
-PCI_DEVICE_DATA from the ctucanfd driver.
-
-Geert Uytterhoeven's patch for the rcar_can converts the driver to use
-the FIELD_MODIFY macro.
-
-Viken Dadhaniya contributes 2 patches for the mcp251xfd driver that
-add transceiver standby control.
-
-The last 2 aptches are by Johan Hovold and refactor the usb endpoint
-lookup of the kvaser_usb and ucan driver.
-
-regards,
-Marc
-
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260330101817.1664787-2-johan@kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
+ .../net/can/usb/kvaser_usb/kvaser_usb_leaf.c  | 25 ++++++-------------
+ 1 file changed, 8 insertions(+), 17 deletions(-)
 
-The following changes since commit f1359c240191e686614847905fc861cbda480b47:
+diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
+index fd191ec5738b..df737cfc5ea0 100644
+--- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
++++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
+@@ -1957,27 +1957,18 @@ static int kvaser_usb_leaf_get_berr_counter(const struct net_device *netdev,
+ 
+ static int kvaser_usb_leaf_setup_endpoints(struct kvaser_usb *dev)
+ {
+-	const struct usb_host_interface *iface_desc;
+-	struct usb_endpoint_descriptor *endpoint;
+-	int i;
++	struct usb_host_interface *iface_desc;
++	int ret;
+ 
+ 	iface_desc = dev->intf->cur_altsetting;
+ 
+-	for (i = 0; i < iface_desc->desc.bNumEndpoints; ++i) {
+-		endpoint = &iface_desc->endpoint[i].desc;
++	/* use first bulk endpoint for in and out */
++	ret = usb_find_common_endpoints(iface_desc, &dev->bulk_in, &dev->bulk_out,
++					NULL, NULL);
++	if (ret)
++		return -ENODEV;
+ 
+-		if (!dev->bulk_in && usb_endpoint_is_bulk_in(endpoint))
+-			dev->bulk_in = endpoint;
+-
+-		if (!dev->bulk_out && usb_endpoint_is_bulk_out(endpoint))
+-			dev->bulk_out = endpoint;
+-
+-		/* use first bulk endpoint for in and out */
+-		if (dev->bulk_in && dev->bulk_out)
+-			return 0;
+-	}
+-
+-	return -ENODEV;
++	return 0;
+ }
+ 
+ const struct kvaser_usb_dev_ops kvaser_usb_leaf_dev_ops = {
+-- 
+2.53.0
 
-  net/iucv: Add missing kernel-doc return value descriptions (2026-03-31 20:14:56 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can-next.git tags/linux-can-next-for-7.1-20260401
-
-for you to fetch changes up to 50b4927288144fbd2f947b0e4c0ef32949587e67:
-
-  Merge patch series "can: refactor USB endpoint lookups" (2026-04-01 09:27:58 +0200)
-
-----------------------------------------------------------------
-linux-can-next-for-7.1-20260401
-
-----------------------------------------------------------------
-Ethan Nelson-Moore (1):
-      net: can: ctucanfd: remove useless copy of PCI_DEVICE_DATA macro
-
-Geert Uytterhoeven (1):
-      can: rcar_can: Convert to FIELD_MODIFY()
-
-Johan Hovold (2):
-      can: kvaser_usb: leaf: refactor endpoint lookup
-      can: ucan: refactor endpoint lookup
-
-Marc Kleine-Budde (2):
-      Merge patch series "can: mcp251xfd: add XSTBYEN transceiver standby control"
-      Merge patch series "can: refactor USB endpoint lookups"
-
-Viken Dadhaniya (2):
-      dt-bindings: can: mcp251xfd: add microchip,xstbyen property
-      can: mcp251xfd: add support for XSTBYEN transceiver standby control
-
- .../bindings/net/can/microchip,mcp251xfd.yaml      |  8 +++++
- drivers/net/can/ctucanfd/ctucanfd_pci.c            |  8 -----
- drivers/net/can/rcar/rcar_can.c                    |  3 +-
- drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c     | 37 ++++++++++++++++++++
- drivers/net/can/spi/mcp251xfd/mcp251xfd.h          |  1 +
- drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c   | 25 +++++---------
- drivers/net/can/usb/ucan.c                         | 40 ++++++----------------
- 7 files changed, 66 insertions(+), 56 deletions(-)
