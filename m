@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A701D33F5AB;
-	Wed,  1 Apr 2026 02:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E1932D7F0;
+	Wed,  1 Apr 2026 02:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775011226; cv=none; b=Kp0k/Xmhf3TpPuisNEhkQxMo97Fwd1J2D6QMQ3O1Q+QmlUd8g6K9EXOXtSS2C68O8TOjovOAe5JKUNEbwDFnYoZVN7whHyJtr7SP0iHY9ioop6aQU1axPrW4taPtwY18gGm6TGUtg210lQDpTrNPhpm4eePwMIom50PL8nuckj4=
+	t=1775011822; cv=none; b=IPPzeV5sTEIJFi3fo+3PdHkh8kqSnWM1ySG9zjKp3uB9h16b1KDfEOds8e02aP8LpoSTq7k/7+124dL3OHFxDdvzKuRxijIiixaqzqdNAlyPrPjqLk5psUByPHbr3nE1zXDFdsXv+jtu0dTmRHbUu92r2hmCTl/SOGN1n7WL2c8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775011226; c=relaxed/simple;
-	bh=xQWxTzsJVt2DIMw6LB9eudekO/bx1GkyFvqOIjPUccQ=;
+	s=arc-20240116; t=1775011822; c=relaxed/simple;
+	bh=1GfZ3GG+Kz4xvMyFmYhFRdKznZF4JhQREtcBgVPA/so=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=K56GfzpvuXg5Ltsyi4nuEaf/cXD1fG1rmUGTDUGpdrTOTN4aR3jYPk34HE7xZhI68rqnZV109dkvPdp40KcoHAzDy7BcFwmxUee54ryAo00WRrNNNxu3z+Uj+KFpn3FRTK246wCdJXjfBAQ3TrYiNM8ND10WdkaC8Amby2FnQqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jwJPYGWJ; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=pguTTtrOVQmAeObMYGQe1GjCjvQezJlH3sBS6RinamFalMr0jGYk3qY0fdrqHj9/XbtyfJNkCHZ73DTUDw+vgcbTqHmFzA+T7+rN95c/LFj/fll90wI3E3ccs4UqPflqZ/zxoSh4JfNnoxckMpRuURNi02JDpqXZ1+X1Um6Hda8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ROf9BTCw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jwJPYGWJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE16CC19423;
-	Wed,  1 Apr 2026 02:40:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ROf9BTCw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81BA5C19423;
+	Wed,  1 Apr 2026 02:50:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775011226;
-	bh=xQWxTzsJVt2DIMw6LB9eudekO/bx1GkyFvqOIjPUccQ=;
+	s=k20201202; t=1775011821;
+	bh=1GfZ3GG+Kz4xvMyFmYhFRdKznZF4JhQREtcBgVPA/so=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=jwJPYGWJ0dnYWgVA+7+2g+WTVk9+QPYdw/vPhE/5xe41nBv8jXKKiIRrPHnCwRWOV
-	 8IyWBRYyeEdtIaqdBuue9+plvKlHqmWHoWuqiaJoViqCVRIOw1str3lXMiEui+wX5m
-	 mxw/abu/hCBviIqBiMsJj/22Oh9nm7Kd2ZdRRttg2BTFUu5kZsvMM4wpWVTYEXJWhR
-	 jkfm9cq3xz9VeqEf0QI2KdJ4jHLgD7bkWbpALq90eDxRH9kK1SDE2hZmM/G8Ihq2Bp
-	 5Lp6gWHFz2UpyQbl5cvT/EGpAaWHShgbE77ngvAlUXaiKMhBVzWBpFHUix5TvMI13+
-	 g3tKmbw30JjRA==
+	b=ROf9BTCwb+Ve3iwXZlHBOua2B+weyMxepGGg/FWPqPZ8fc0B6AoNEiMezqthtdxKn
+	 3hnIgmBpJUqsvpMIlarNsK2mEgPUAwCAEoucEg2LXr36fkKEkRy6j4cvHEHIE/O0BC
+	 vaXmCS/tuDaQHv9R5fVAOhAo0y8Pc+OarNX6H7ciHa9/eXLk6pkX94xXTUVrfd+oWm
+	 pDnKFQmFdobLSD8QQenT4xtuI4xSikY3H2IdtWmZf1h8HyWq5Pcqc3o1v9hNoe4TKo
+	 8pUHOwGtTSTm/nCeQ8NxHq8oq2KYMouXdv0i1kMq+VwUX83jegI46H+XQYzBnFM24I
+	 P9ROQMWgsdsrA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CE2D3808203;
-	Wed,  1 Apr 2026 02:40:10 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02D003808203;
+	Wed,  1 Apr 2026 02:50:06 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,38 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 0/2] declance: Improve DMA error reporting
+Subject: Re: [PATCH net v2] net: ftgmac100: fix ring allocation unwind on open
+ failure
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177501120929.3042140.7144845991669708956.git-patchwork-notify@kernel.org>
-Date: Wed, 01 Apr 2026 02:40:09 +0000
-References: <alpine.DEB.2.21.2603291835550.60268@angie.orcam.me.uk>
-In-Reply-To: <alpine.DEB.2.21.2603291835550.60268@angie.orcam.me.uk>
-To: Maciej W. Rozycki <macro@orcam.me.uk>
+ <177501180479.3045143.14479627194268343314.git-patchwork-notify@kernel.org>
+Date: Wed, 01 Apr 2026 02:50:04 +0000
+References: <20260328163257.60836-1-yufan.chen@linux.dev>
+In-Reply-To: <20260328163257.60836-1-yufan.chen@linux.dev>
+To: Yufan Chen <yufan.chen@linux.dev>
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sun, 29 Mar 2026 19:07:18 +0100 (BST) you wrote:
-> Hi,
+On Sun, 29 Mar 2026 00:32:57 +0800 you wrote:
+> ftgmac100_alloc_rings() allocates rx_skbs, tx_skbs, rxdes, txdes, and
+> rx_scratch in stages. On intermediate failures it returned -ENOMEM
+> directly, leaking resources allocated earlier in the function.
 > 
->  D'oh, this v2 fixes a silly thinko in the commit description of 2/2.
-> 
->  Inspired by a recent discussion[1] I have come up with this pair of
-> small improvements to DMA error reporting with declance.  Please apply.
+> Rework the failure path to use staged local unwind labels and free
+> allocated resources in reverse order before returning -ENOMEM. This
+> matches common netdev allocation cleanup style.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v2,1/2] declance: Rate-limit DMA errors
-    https://git.kernel.org/netdev/net-next/c/ee769323b1bf
-  - [net-next,v2,2/2] declance: Include the offending address with DMA errors
-    https://git.kernel.org/netdev/net-next/c/aae5efaeb8aa
+  - [net,v2] net: ftgmac100: fix ring allocation unwind on open failure
+    https://git.kernel.org/netdev/net/c/c0fd0fe745f5
 
 You are awesome, thank you!
 -- 
