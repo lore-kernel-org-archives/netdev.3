@@ -1,42 +1,42 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA20478E56
-	for <netdev@vger.kernel.org>; Wed,  1 Apr 2026 16:39:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9849047AF67
+	for <netdev@vger.kernel.org>; Wed,  1 Apr 2026 16:39:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775061577; cv=none; b=WMXQ3vgXWkAKqzYlJNq0hww8++iZbJ6jrN7VR3QADMe7/7Vev6lyoCkaF3ASATORocprQydugt7N+8fJgpdJZHiMGSET10/VheXhJ6k3NMZqpncyoNBfIrdjEyqEiDebxunWjUGLbf/G/vNXp5nmKeke4j9uxvhpJSBCdtJkJVM=
+	t=1775061581; cv=none; b=cfmswIxGxekI+K0QjwzbFyqeDt5bPgz0sTaND51Cm5OnecLb6eJvIb1FuaGx4iNA77Wlj10k273YMyYEZcMlCGRkbEDWW3ZHY8uycuQqWqNZkaQul5idTfrfYgLMTpgm+tyrTwUT3RwIKZZkg/jwfTUeT/fNp4RkOGS2MAXqrHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775061577; c=relaxed/simple;
-	bh=p7Luq0FBAy6wiOaPfbXiHVPf61+o5ImPPHQwzl94OEU=;
+	s=arc-20240116; t=1775061581; c=relaxed/simple;
+	bh=YP6CtUF9AL4yooz8CZtnf8bQL1uJ5a4WtdyvnKsuHT8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=kK6mmWT8x1ULRYhzFm4NpZcWB9zN6gFJ/2D7dXJnQkp/MR2zhgoC3GFVJOIOcK7IcxXtgPXtatCrjOhEO41WyAgf2TACul7P1mRKnvsTCIkC1U9XVRcd9Yxw/Cxu3QYRHbKNQKL7UaPTn+czGD0yIIvoCA+NQbFCM9hniI1vFPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=WJZqPxzo; arc=none smtp.client-ip=185.171.202.116
+	 In-Reply-To:To:Cc; b=f4NleSBhkOXI8PbkzNku1PKh3bn3npBM5uRFYXhUo5GHwgNABcKyoOzNkuk9UxatLOoDhAvqQQVscWYRMjiTFgnPHoxTXrDFHfyx7pFOs58RKi7Qp7cDRGEIXaU9DFo2xRYaqK2cV0UbH+si+XExtCBkZTuNRMKpEVt5Sz76Eac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=T2eMdf8U; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="WJZqPxzo"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="T2eMdf8U"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 50BA3C59970;
-	Wed,  1 Apr 2026 16:40:04 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id D87E94E42898;
+	Wed,  1 Apr 2026 16:39:35 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 3FCB4602BF;
-	Wed,  1 Apr 2026 16:39:33 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 31F9110450637;
-	Wed,  1 Apr 2026 18:39:30 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id AEF10602BF;
+	Wed,  1 Apr 2026 16:39:35 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4D661104507D9;
+	Wed,  1 Apr 2026 18:39:32 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1775061572; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1775061574; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=LzXtFxzisqeODwJ7M+kJsVHj+h3/fdo/aXOIgPH+rH4=;
-	b=WJZqPxzoDxgKLSqV6DIzBuDbL4Co9jn4dfWSWNQwSAD1swxTvQd7NIQo6l6Bx/E8q+x4Kf
-	UgopVt4fN6enfhXuitg7+ueABP4mZDGigufUosjtKF27md6UKIKvJkV5qv7Rwv9/WMEh2l
-	fZ3zhEDAINqzH5m5Dem3xmvlNU8AiZmtGWE14Im2xtSEgj9GRK81+KzE1RQbxpuNAHdiub
-	3Citc1ZiL8/G8Oto/fNNc9qdSf6zW7PR+6aPEkWM8aqaWGrXMFrgAIsKYXCLzUcMM1I4B9
-	bGbXbMeHo0sbDBjMoR3WdPjuOBkZjqiFY6P2C3OXVdUDQsNg+qDTeHteRdB+hw==
+	bh=0+PuJJPyolIoWacMBFDdkg6OvWsMTEUZdEigZZJOtyI=;
+	b=T2eMdf8UA6kMo1dMR2i8CJydBOl46HuFTA9a7unpQeGbpkL5kswazb0c4ZBE1fBIEAJKjW
+	DY9sMrCnEETVtc4YwVLc8JpNa26Ti/l3Um+Aod4nkzF4/Z5DgaHsNZVcJs3YwWKdbRhcPj
+	CeigXU7P7cAqXqFEfPRsRFjm7HNdc2bH61WLIGkJEHPbZkjPIwfyPRPU2iDJ9h/17cNV1o
+	sMhawq20xvHW37GJISpP1l2ffZRPx7VC5hItQHTO+Z+jwtnjogphTFxdtj+9WYA4MOTQ5e
+	fOiLim58Pq6f9unBagr76K+198DGpVuNcfE/GDLK8ClStRGJtMOifVZCc1xQKg==
 From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Date: Wed, 01 Apr 2026 18:39:07 +0200
-Subject: [PATCH net-next 04/11] net: macb: enforce reverse christmas tree
- (RCT) convention
+Date: Wed, 01 Apr 2026 18:39:08 +0200
+Subject: [PATCH net-next 05/11] net: macb: allocate tieoff descriptor once
+ across device lifetime
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260401-macb-context-v1-4-9590c5ab7272@bootlin.com>
+Message-Id: <20260401-macb-context-v1-5-9590c5ab7272@bootlin.com>
 References: <20260401-macb-context-v1-0-9590c5ab7272@bootlin.com>
 In-Reply-To: <20260401-macb-context-v1-0-9590c5ab7272@bootlin.com>
 To: Nicolas Ferre <nicolas.ferre@microchip.com>, 
@@ -68,156 +68,169 @@ Cc: Paolo Valerio <pvalerio@redhat.com>, Conor Dooley <conor@kernel.org>,
 X-Mailer: b4 0.15.0
 X-Last-TLS-Session-Version: TLSv1.3
 
-Enforce the reverse christmas tree convention in those functions:
+The tieoff descriptor is a RX DMA descriptor ring of size one. It gets
+configured onto queues for Wake-on-LAN during system-wide suspend when
+hardware does not support disabling individual queues
+(MACB_CAPS_QUEUE_DISABLE).
 
-   macb_tx_error_task()
-   gem_rx_refill()
-   gem_rx()
-   macb_rx_frame()
-   macb_init_rx_ring()
-   macb_rx()
-   macb_rx_pending()
-   macb_start_xmit()
+MACB/GEM driver allocates it alongside the main RX ring
+inside macb_alloc_consistent() at open. Free is done by
+macb_free_consistent() at close.
 
-The goal is to minimise unrelated diff in future patches.
+Change to allocate once at probe and free on probe failure or device
+removal. This makes the tieoff descriptor lifetime much longer,
+avoiding repeating coherent buffer allocation on each open/close cycle.
+
+Main benefit: we dissociate its lifetime from the main ring's lifetime.
+That way there is less work to be doing on resources (re)alloc. This
+currently happens on close/open, but will soon also happen on context
+swap operations (set_ringparam, change_mtu, set_channels, etc).
 
 Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 61 ++++++++++++++++----------------
- 1 file changed, 30 insertions(+), 31 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c | 70 ++++++++++++++++----------------
+ 1 file changed, 36 insertions(+), 34 deletions(-)
 
 diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 087401163771..081f220f6756 100644
+index 081f220f6756..d5023fdc0756 100644
 --- a/drivers/net/ethernet/cadence/macb_main.c
 +++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -1250,20 +1250,19 @@ static dma_addr_t macb_get_addr(struct macb *bp, struct macb_dma_desc *desc)
+@@ -2679,12 +2679,6 @@ static void macb_free_consistent(struct macb *bp)
+ 	unsigned int q;
+ 	size_t size;
  
- static void macb_tx_error_task(struct work_struct *work)
+-	if (bp->rx_ring_tieoff) {
+-		dma_free_coherent(dev, macb_dma_desc_get_size(bp),
+-				  bp->rx_ring_tieoff, bp->rx_ring_tieoff_dma);
+-		bp->rx_ring_tieoff = NULL;
+-	}
+-
+ 	bp->macbgem_ops.mog_free_rx_buffers(bp);
+ 
+ 	size = bp->num_queues * macb_tx_ring_size_per_queue(bp);
+@@ -2782,16 +2776,6 @@ static int macb_alloc_consistent(struct macb *bp)
+ 	if (bp->macbgem_ops.mog_alloc_rx_buffers(bp))
+ 		goto out_err;
+ 
+-	/* Required for tie off descriptor for PM cases */
+-	if (!(bp->caps & MACB_CAPS_QUEUE_DISABLE)) {
+-		bp->rx_ring_tieoff = dma_alloc_coherent(&bp->pdev->dev,
+-							macb_dma_desc_get_size(bp),
+-							&bp->rx_ring_tieoff_dma,
+-							GFP_KERNEL);
+-		if (!bp->rx_ring_tieoff)
+-			goto out_err;
+-	}
+-
+ 	return 0;
+ 
+ out_err:
+@@ -2799,19 +2783,6 @@ static int macb_alloc_consistent(struct macb *bp)
+ 	return -ENOMEM;
+ }
+ 
+-static void macb_init_tieoff(struct macb *bp)
+-{
+-	struct macb_dma_desc *desc = bp->rx_ring_tieoff;
+-
+-	if (bp->caps & MACB_CAPS_QUEUE_DISABLE)
+-		return;
+-	/* Setup a wrapping descriptor with no free slots
+-	 * (WRAP and USED) to tie off/disable unused RX queues.
+-	 */
+-	macb_set_addr(bp, desc, MACB_BIT(RX_WRAP) | MACB_BIT(RX_USED));
+-	desc->ctrl = 0;
+-}
+-
+ static void gem_init_rx_ring(struct macb_queue *queue)
  {
--	struct macb_queue	*queue = container_of(work, struct macb_queue,
--						      tx_error_task);
--	bool			halt_timeout = false;
--	struct macb		*bp = queue->bp;
--	unsigned int		q;
--	u32			packets = 0;
--	u32			bytes = 0;
--	struct macb_tx_skb	*tx_skb;
--	struct macb_dma_desc	*desc;
--	struct sk_buff		*skb;
--	unsigned int		tail;
--	unsigned long		flags;
-+	struct macb_queue *queue = container_of(work, struct macb_queue,
-+						tx_error_task);
-+	unsigned int q = queue - queue->bp->queues;
-+	struct macb *bp = queue->bp;
-+	struct macb_tx_skb *tx_skb;
-+	struct macb_dma_desc *desc;
-+	bool halt_timeout = false;
-+	struct sk_buff *skb;
-+	unsigned long flags;
-+	unsigned int tail;
-+	u32 packets = 0;
-+	u32 bytes = 0;
+ 	queue->rx_tail = 0;
+@@ -2839,8 +2810,6 @@ static void gem_init_rings(struct macb *bp)
  
--	q = queue - bp->queues;
- 	netdev_vdbg(bp->netdev, "macb_tx_error_task: q = %u, t = %u, h = %u\n",
- 		    q, queue->tx_tail, queue->tx_head);
+ 		gem_init_rx_ring(queue);
+ 	}
+-
+-	macb_init_tieoff(bp);
+ }
  
-@@ -1483,11 +1482,11 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
+ static void macb_init_rings(struct macb *bp)
+@@ -2858,8 +2827,6 @@ static void macb_init_rings(struct macb *bp)
+ 	bp->queues[0].tx_head = 0;
+ 	bp->queues[0].tx_tail = 0;
+ 	desc->ctrl |= MACB_BIT(TX_WRAP);
+-
+-	macb_init_tieoff(bp);
+ }
  
- static void gem_rx_refill(struct macb_queue *queue)
- {
--	unsigned int		entry;
--	struct sk_buff		*skb;
--	dma_addr_t		paddr;
- 	struct macb *bp = queue->bp;
- 	struct macb_dma_desc *desc;
-+	struct sk_buff *skb;
-+	unsigned int entry;
-+	dma_addr_t paddr;
+ static void macb_reset_hw(struct macb *bp)
+@@ -5530,6 +5497,33 @@ static int eyeq5_init(struct platform_device *pdev)
+ 	return ret;
+ }
  
- 	while (CIRC_SPACE(queue->rx_prepared_head, queue->rx_tail,
- 			bp->rx_ring_size) > 0) {
-@@ -1580,11 +1579,11 @@ static int gem_rx(struct macb_queue *queue, struct napi_struct *napi,
- 		  int budget)
- {
- 	struct macb *bp = queue->bp;
--	unsigned int		len;
--	unsigned int		entry;
--	struct sk_buff		*skb;
--	struct macb_dma_desc	*desc;
--	int			count = 0;
-+	struct macb_dma_desc *desc;
-+	struct sk_buff *skb;
-+	unsigned int entry;
-+	unsigned int len;
-+	int count = 0;
++static int macb_alloc_tieoff(struct macb *bp)
++{
++	/* Tieoff is a workaround in case HW cannot disable queues, for PM. */
++	if (bp->caps & MACB_CAPS_QUEUE_DISABLE)
++		return 0;
++
++	bp->rx_ring_tieoff = dma_alloc_coherent(&bp->pdev->dev,
++						macb_dma_desc_get_size(bp),
++						&bp->rx_ring_tieoff_dma,
++						GFP_KERNEL);
++	if (!bp->rx_ring_tieoff)
++		return -ENOMEM;
++
++	return 0;
++}
++
++static void macb_free_tieoff(struct macb *bp)
++{
++	if (!bp->rx_ring_tieoff)
++		return;
++
++	dma_free_coherent(&bp->pdev->dev, macb_dma_desc_get_size(bp),
++			  bp->rx_ring_tieoff,
++			  bp->rx_ring_tieoff_dma);
++	bp->rx_ring_tieoff = NULL;
++}
++
+ static const struct macb_usrio_config at91_default_usrio = {
+ 	.mii = MACB_BIT(MII),
+ 	.rmii = MACB_BIT(RMII),
+@@ -5946,10 +5940,14 @@ static int macb_probe(struct platform_device *pdev)
  
- 	while (count < budget) {
- 		u32 ctrl;
-@@ -1670,12 +1669,12 @@ static int gem_rx(struct macb_queue *queue, struct napi_struct *napi,
- static int macb_rx_frame(struct macb_queue *queue, struct napi_struct *napi,
- 			 unsigned int first_frag, unsigned int last_frag)
- {
--	unsigned int len;
--	unsigned int frag;
-+	struct macb *bp = queue->bp;
-+	struct macb_dma_desc *desc;
- 	unsigned int offset;
- 	struct sk_buff *skb;
--	struct macb_dma_desc *desc;
--	struct macb *bp = queue->bp;
-+	unsigned int frag;
-+	unsigned int len;
+ 	netif_carrier_off(netdev);
  
- 	desc = macb_rx_desc(queue, last_frag);
- 	len = desc->ctrl & bp->rx_frm_len_mask;
-@@ -1751,9 +1750,9 @@ static int macb_rx_frame(struct macb_queue *queue, struct napi_struct *napi,
++	err = macb_alloc_tieoff(bp);
++	if (err)
++		goto err_out_unregister_mdio;
++
+ 	err = register_netdev(netdev);
+ 	if (err) {
+ 		dev_err(&pdev->dev, "Cannot register net device, aborting.\n");
+-		goto err_out_unregister_mdio;
++		goto err_out_free_tieoff;
+ 	}
  
- static inline void macb_init_rx_ring(struct macb_queue *queue)
- {
-+	struct macb_dma_desc *desc = NULL;
- 	struct macb *bp = queue->bp;
- 	dma_addr_t addr;
--	struct macb_dma_desc *desc = NULL;
- 	int i;
+ 	INIT_WORK(&bp->hresp_err_bh_work, macb_hresp_error_task);
+@@ -5963,6 +5961,9 @@ static int macb_probe(struct platform_device *pdev)
  
- 	addr = queue->rx_buffers_dma;
-@@ -1772,9 +1771,9 @@ static int macb_rx(struct macb_queue *queue, struct napi_struct *napi,
- {
- 	struct macb *bp = queue->bp;
- 	bool reset_rx_queue = false;
--	int received = 0;
--	unsigned int tail;
- 	int first_frag = -1;
-+	unsigned int tail;
-+	int received = 0;
+ 	return 0;
  
- 	for (tail = queue->rx_tail; budget > 0; tail++) {
- 		struct macb_dma_desc *desc = macb_rx_desc(queue, tail);
-@@ -1849,8 +1848,8 @@ static int macb_rx(struct macb_queue *queue, struct napi_struct *napi,
- static bool macb_rx_pending(struct macb_queue *queue)
- {
- 	struct macb *bp = queue->bp;
--	unsigned int		entry;
--	struct macb_dma_desc	*desc;
-+	struct macb_dma_desc *desc;
-+	unsigned int entry;
- 
- 	entry = macb_rx_ring_wrap(bp, queue->rx_tail);
- 	desc = macb_rx_desc(queue, entry);
-@@ -2500,10 +2499,10 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb,
- 	unsigned int q = skb_get_queue_mapping(skb);
- 	unsigned int desc_cnt, nr_frags, frag_size, f;
- 	struct macb_queue *queue = &bp->queues[q];
-+	netdev_tx_t ret = NETDEV_TX_OK;
- 	unsigned int hdrlen;
- 	unsigned long flags;
- 	bool is_lso;
--	netdev_tx_t ret = NETDEV_TX_OK;
- 
- 	if (macb_clear_csum(skb)) {
- 		dev_kfree_skb_any(skb);
++err_out_free_tieoff:
++	macb_free_tieoff(bp);
++
+ err_out_unregister_mdio:
+ 	mdiobus_unregister(bp->mii_bus);
+ 	mdiobus_free(bp->mii_bus);
+@@ -5992,6 +5993,7 @@ static void macb_remove(struct platform_device *pdev)
+ 	if (netdev) {
+ 		bp = netdev_priv(netdev);
+ 		unregister_netdev(netdev);
++		macb_free_tieoff(bp);
+ 		phy_exit(bp->phy);
+ 		mdiobus_unregister(bp->mii_bus);
+ 		mdiobus_free(bp->mii_bus);
 
 -- 
 2.53.0
