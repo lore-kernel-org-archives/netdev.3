@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99D1410D1F
-	for <netdev@vger.kernel.org>; Wed,  1 Apr 2026 10:57:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62883F8E1F
+	for <netdev@vger.kernel.org>; Wed,  1 Apr 2026 10:58:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775041076; cv=none; b=pkfKLwXvcaCAsQQW40zbF0IpBE1YH4gNNltK6Rq9YK2DNfcRlQT/kVNNtVGegV/akLMEerWxTf4rG0MIIovKuEQNBLW/Kvu33950e5cNT5ZUX0SFAyZ8dpsGq+eYMzi/xv6VyKGn/tQlXvGu5VZr2LD1szPgmh4N4m4y7hT0mhA=
+	t=1775041084; cv=none; b=fpbXHUiJDGhZcGrZ9x2I1kMQ+FdpdlVUA96i6QoLpTkwWYmiRoEMUJE/UF8gkAATPDPOVRq8CLQHnt/AUZaleziP2GBZoUq656UWgrukCKdVtCWkrD81tN6QTCSjH7Zc79YW3MR4GoqjFIy3iQ3w6GMIFFCgJc1s+VOs4wRxm0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775041076; c=relaxed/simple;
-	bh=E5Ktr5ujZ7VRhGZNliJlSlHfN++85hVgVhq64IAONJQ=;
+	s=arc-20240116; t=1775041084; c=relaxed/simple;
+	bh=JwJGdbweTuuDjN+NXcqYxN+qucEYzBfYu1eIx/secDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uoFuWmhhG6t08+HljWzRxDEBbMBgKTEI/WQycHnTFKxRmzUe82lBBbS0gf22Gck7fS6wju0ZTTAsU7i2DFAoN563T0btFWPkhp0Ad0/KdOTcRZc2JfgsZxLxVlGcMWwKPNGpKJ0JnQHCZb62Qb5IptWEKM9JMVC0KUd8zGsz3UI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OMmpB5Cu; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=g70ivd4j/LNi5gYS9tZyU4YkSGRYFUPjHezWmFLSUTB9VNvlHSB3LICqXCFRE1x2sEsrGYXkWjrVjqm/kjDhjRAprZ89A05eHUrSX8llTGNCqOfmuPjUluQxm489f+T04F7srjpkrFkivykSXFDoj4tKAIiGSILmgLw272gZSDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=X5VDOX1M; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OMmpB5Cu"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="X5VDOX1M"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775041074;
+	s=mimecast20190719; t=1775041081;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=svfAwTnHVWeMxDrZSO9dpHkcb5nEFh4Zczxno4SRn7Y=;
-	b=OMmpB5CuUIEQwIHKBLOLxPLP6rMTUuDQUSsDPpng7j8TZ7bGmqqHXNebEArhxMnx0T9CP8
-	fDpJTRKDzKt49u3C5pEZyXlKIuYysWnmgcJVvgYzN2ekW+QBdyEYA5tyocc2ke6RB6zBF2
-	73zB7mPBGxLZvyF2DqWIZKWY3El201k=
+	bh=qQyK5djJUrk3jo4ippjZIsLsgYqKegjuq875Nu7Zr74=;
+	b=X5VDOX1Me9tpgSB/VC3VcnoyISnL6/t1kpeKm7w1fngnHIRwzEc21rSOxp1m3ucVOgTviq
+	OGjP2Xhoo4ucH47r8etaO7qnLytgNh+rDu1FMhDnw0GrOP0wCLmMs1ppvLihvBWlPVIL+Q
+	FCJgPk0wnikV7kqggYFeCVm0x7S2PpQ=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-433-uGEGZSpYOnyW0kxwK7WGGQ-1; Wed,
- 01 Apr 2026 06:57:51 -0400
-X-MC-Unique: uGEGZSpYOnyW0kxwK7WGGQ-1
-X-Mimecast-MFC-AGG-ID: uGEGZSpYOnyW0kxwK7WGGQ_1775041070
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-374-_l04Z0iCNL6WDu-06kIelg-1; Wed,
+ 01 Apr 2026 06:57:58 -0400
+X-MC-Unique: _l04Z0iCNL6WDu-06kIelg-1
+X-Mimecast-MFC-AGG-ID: _l04Z0iCNL6WDu-06kIelg_1775041076
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id ABDD6180035C;
-	Wed,  1 Apr 2026 10:57:49 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 676FB18005B2;
+	Wed,  1 Apr 2026 10:57:56 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.44.35.245])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BB68B1800351;
-	Wed,  1 Apr 2026 10:57:45 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6EB2330001A2;
+	Wed,  1 Apr 2026 10:57:51 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: netdev@vger.kernel.org
 Cc: David Howells <dhowells@redhat.com>,
@@ -52,13 +52,18 @@ Cc: David Howells <dhowells@redhat.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	linux-afs@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Keenan Dong <keenanat2000@gmail.com>,
+	Luxiao Xu <rakukuip@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ren Wei <enjou1224z@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
 	Simon Horman <horms@kernel.org>,
-	Willy Tarreau <w@1wt.eu>,
 	stable@kernel.org
-Subject: [PATCH net v4 14/15] rxrpc: fix oversized RESPONSE authenticator length check
-Date: Wed,  1 Apr 2026 11:56:07 +0100
-Message-ID: <20260401105614.1696001-15-dhowells@redhat.com>
+Subject: [PATCH net v4 15/15] rxrpc: fix reference count leak in rxrpc_server_keyring()
+Date: Wed,  1 Apr 2026 11:56:08 +0100
+Message-ID: <20260401105614.1696001-16-dhowells@redhat.com>
 In-Reply-To: <20260401105614.1696001-1-dhowells@redhat.com>
 References: <20260401105614.1696001-1-dhowells@redhat.com>
 Precedence: bulk
@@ -68,38 +73,22 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-From: Keenan Dong <keenanat2000@gmail.com>
+From: Luxiao Xu <rakukuip@gmail.com>
 
-rxgk_verify_response() decodes auth_len from the packet and is supposed
-to verify that it fits in the remaining bytes. The existing check is
-inverted, so oversized RESPONSE authenticators are accepted and passed
-to rxgk_decrypt_skb(), which can later reach skb_to_sgvec() with an
-impossible length and hit BUG_ON(len).
+This patch fixes a reference count leak in rxrpc_server_keyring()
+by checking if rx->securities is already set.
 
-Decoded from the original latest-net reproduction logs with
-scripts/decode_stacktrace.sh:
-
-RIP: __skb_to_sgvec()
-  [net/core/skbuff.c:5285 (discriminator 1)]
-Call Trace:
- skb_to_sgvec() [net/core/skbuff.c:5305]
- rxgk_decrypt_skb() [net/rxrpc/rxgk_common.h:81]
- rxgk_verify_response() [net/rxrpc/rxgk.c:1268]
- rxrpc_process_connection()
-   [net/rxrpc/conn_event.c:266 net/rxrpc/conn_event.c:364
-    net/rxrpc/conn_event.c:386]
- process_one_work() [kernel/workqueue.c:3281]
- worker_thread()
-   [kernel/workqueue.c:3353 kernel/workqueue.c:3440]
- kthread() [kernel/kthread.c:436]
- ret_from_fork() [arch/x86/kernel/process.c:164]
-
-Reject authenticator lengths that exceed the remaining packet payload.
-
-Fixes: 9d1d2b59341f ("rxrpc: rxgk: Implement the yfs-rxgk security class (GSSAPI)")
-Signed-off-by: Keenan Dong <keenanat2000@gmail.com>
+Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Ren Wei <enjou1224z@gmail.com>
+Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
 Signed-off-by: David Howells <dhowells@redhat.com>
 cc: Marc Dionne <marc.dionne@auristor.com>
 cc: Eric Dumazet <edumazet@google.com>
@@ -107,25 +96,25 @@ cc: "David S. Miller" <davem@davemloft.net>
 cc: Jakub Kicinski <kuba@kernel.org>
 cc: Paolo Abeni <pabeni@redhat.com>
 cc: Simon Horman <horms@kernel.org>
-cc: Willy Tarreau <w@1wt.eu>
 cc: linux-afs@lists.infradead.org
 cc: netdev@vger.kernel.org
 cc: stable@kernel.org
 ---
- net/rxrpc/rxgk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/rxrpc/server_key.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/rxrpc/rxgk.c b/net/rxrpc/rxgk.c
-index 01dbdf0b5cf2..9e4a4ff28913 100644
---- a/net/rxrpc/rxgk.c
-+++ b/net/rxrpc/rxgk.c
-@@ -1224,7 +1224,7 @@ static int rxgk_verify_response(struct rxrpc_connection *conn,
+diff --git a/net/rxrpc/server_key.c b/net/rxrpc/server_key.c
+index 36b05fd842a7..d4777851079f 100644
+--- a/net/rxrpc/server_key.c
++++ b/net/rxrpc/server_key.c
+@@ -125,6 +125,9 @@ int rxrpc_server_keyring(struct rxrpc_sock *rx, sockptr_t optval, int optlen)
  
- 	auth_offset	= offset;
- 	auth_len	= ntohl(xauth_len);
--	if (auth_len < len)
-+	if (auth_len > len)
- 		goto short_packet;
- 	if (auth_len & 3)
- 		goto inconsistent;
+ 	_enter("");
+ 
++	if (rx->securities)
++		return -EEXIST;
++
+ 	if (optlen <= 0 || optlen > PAGE_SIZE - 1)
+ 		return -EINVAL;
+ 
 
