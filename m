@@ -1,293 +1,92 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07DF3644D0;
-	Wed,  1 Apr 2026 15:31:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B774376BD3
+	for <netdev@vger.kernel.org>; Wed,  1 Apr 2026 15:38:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775057475; cv=none; b=AdfDj0pEmGXMPfR6gY3AHNB+ZERwSpzfiYqBWvMn4aaYv6D/ZTl0fowFNZZk0ml0YgY+5ZwRrXL0x04eyzLwloaJwOTXgQTcOC29Im3mUcCKD9ZOKDdQeTCkR80xY0zUCiJ2aJV5KWykOLtSCv80NzKjups878T153jGtlyQyhA=
+	t=1775057913; cv=none; b=ETB7BFEfwNZXR9h9YYOlswM9xHZ9pOryhECr3J8bSEnErIqSPFK7fQTYZUjD4oaqAp1/OebM6FNGuyNCkbMGKK5IKDH96NK0mjgknztej3Akd0QZtCZfJ4cgVf32QyU54oWVVcumnAZCYY443jt47qfz+tTJjzzW7o1SFfIZMss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775057475; c=relaxed/simple;
-	bh=WXpYpK3yhKn2sm0AMqrjWN6OL03+heVozAsWmGdd/6M=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SOuYelwKyDHwDKobV186nODM632Uq7kpp+pbml4fZRTQHyn+TML16E3K8fMLWuElC2WyqmsCVOqpoC4wPcPL7cMU2GyGAQCbnpPJZrIq8qQUOndVhwrd5B/pHt+15zYhalVG72hPdWvC4rcaiLWP8Eh7yxm1aFSaZbSpRMfgeis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K15S9q4q; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775057913; c=relaxed/simple;
+	bh=PV2WUyCNxZsTEzWvaE6YE1Uo9Sqb9ySZd54noc/aseg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dVPaFVqDX6iPf4ryIYcpShGbsHayb4XDYnkRqOCpjCZ584N2u+I4K38QSpBagIViT2sukDlJ68MuLCx/P4At07ZEKqVpu53Q3shpvoaLC/WJi4+JkPyjjbUL5I3s0nvJF0+0VuCMRDWUzLJoGSxlweXqH9kV2k9cKTaa0nJ6/58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=pTwVqz/B; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K15S9q4q"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7FA22C2BCC9;
-	Wed,  1 Apr 2026 15:31:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775057475;
-	bh=WXpYpK3yhKn2sm0AMqrjWN6OL03+heVozAsWmGdd/6M=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=K15S9q4qAlBYpsQNWmOQkPFm4xa4B832TB0O2KmzDNExhB2HReBWdTyAVU27RO7tu
-	 oOHa34ZYp1C2exZlNREuZRrb/q/IlHEBit+W7M35cjTZxoEhPUbpmEUP6IUWSNE+JD
-	 F19/B0Zu0nnjU8HCktln6GXE1nSJo/o6/oaXukqIJaIzv1+KjmlQSXw83WUxiyigmp
-	 Zt8SBZpFeFVMTYMmdsgubEhT+k3oxBT3R4amKfxj1aaU4k1MXQLL4l8Y2yC1hNMwQ5
-	 w+eortLosyVKKlEtPNKf/URBdAnGVbBOT26cmg+qD8n8TG/+L8ZpJ6ZVaVGNQM7SBN
-	 7/Weoj+0tx3LQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 48C9710F6FDC;
-	Wed,  1 Apr 2026 15:31:15 +0000 (UTC)
-From: Satish Kharat via B4 Relay <devnull+satishkh.cisco.com@kernel.org>
-Date: Wed, 01 Apr 2026 08:31:15 -0700
-Subject: [PATCH net-next v4 5/6] enic: add type-aware alloc for WQ, RQ, CQ
- and INTR resources
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="pTwVqz/B"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=dlvekUpkNUvVrcxx8wGKU4Wqnvw5G90EbFLhti+p1u0=; b=pTwVqz/Bk8fnteG1sl1TsHBsnv
+	7STf73U+sSDdDK9LGRhX07NYXNxHGE/5H3pfUq7Z1YhOf3G51cwMrS1yjBbwD/GhQEdFiL573bhPg
+	PunbpT9XzjqmT+q/kgmJDuisC+3ocUMspgUd69PggCTXzArH1m9njItfZf2qceIEbl2Q=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1w7xeB-00ENUI-1q; Wed, 01 Apr 2026 17:38:23 +0200
+Date: Wed, 1 Apr 2026 17:38:23 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Nicolai Buchwitz <nb@tipi-net.de>, netdev@vger.kernel.org
+Subject: Re: RFC: phylink: disable PHY autonomous EEE when MAC manages LPI
+Message-ID: <ea94e96c-3e76-4c2b-a08c-43ce6decca08@lunn.ch>
+References: <d86c53213a6328b701b8aabbde5d1c83@tipi-net.de>
+ <04ff15af-26be-4278-bc2a-889e7802d271@lunn.ch>
+ <aczMqBNesQH-tHx0@shell.armlinux.org.uk>
+ <ccb68eaaca5512d5d662326d0817bd50@tipi-net.de>
+ <48abd3e3-a3ee-4e85-a3d8-20c8ceedfb77@lunn.ch>
+ <ac00PIpzXPjxktzC@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260401-enic-sriov-v2-prep-v4-5-d5834b2ef1b9@cisco.com>
-References: <20260401-enic-sriov-v2-prep-v4-0-d5834b2ef1b9@cisco.com>
-In-Reply-To: <20260401-enic-sriov-v2-prep-v4-0-d5834b2ef1b9@cisco.com>
-To: Satish Kharat <satishkh@cisco.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775057474; l=10146;
- i=satishkh@cisco.com; h=from:subject:message-id;
- bh=sStTy9Bg8r3IiBcBVUP3bIWBVt484dhT5KCgXRyPs1c=;
- b=QDWbSAdilTGNFIidA6YoRSI3LNJAipzz9EPQY7zXH9No1iZy380co2BRD4Y0Bt7bBoRzfEGy9
- mp2c2be6+DsCDOZ6uGPCx99Q0VWhRfN4K5FMew9AaOUDJjdHnVvycxZ
-X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
- pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
-X-Endpoint-Received: by B4 Relay for satishkh@cisco.com/default with
- auth_id=639
-X-Original-From: Satish Kharat <satishkh@cisco.com>
-Reply-To: satishkh@cisco.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ac00PIpzXPjxktzC@shell.armlinux.org.uk>
 
-From: Satish Kharat <satishkh@cisco.com>
+On Wed, Apr 01, 2026 at 04:05:32PM +0100, Russell King (Oracle) wrote:
+> On Wed, Apr 01, 2026 at 03:11:24PM +0200, Andrew Lunn wrote:
+> > > Thanks Russell and Andrew. You're both heading in the same direction,
+> > > so to make sure I understand correctly:
+> > > 
+> > > 1. Add a new phylib interface (separate from phy_ethtool_set_eee) to
+> > >    control PHY-autonomous EEE, e.g. phy_set_autonomous_eee(phydev,
+> > >    enable) and phy_get_autonomous_eee(phydev) to query the current
+> > >    state.
+> > 
+> > In the end, we want the MAC driver using phylib to just call the
+> > phylib methods for configuring EEE, and the MAC driver should not care
+> > if EEE is actually implemented in the PHY or the MAC. The adjust_link
+> > callback would simply not enable LPI if the PHY is doing EEE.
+> 
+> This won't work.
+> 
+> If we mask out eee.tx_lpi_enabled when calling into phylib to tell
+> phylib drivers to disable SmartEEE (that's what I'm calling it here
+> because it's easier to type)),
 
-The existing vnic_wq_alloc(), vnic_rq_alloc(), vnic_cq_alloc() and
-vnic_intr_alloc() hardcode data-path resource types (RES_TYPE_WQ,
-RES_TYPE_RQ, RES_TYPE_CQ, RES_TYPE_INTR_CTRL). The upcoming admin
-channel uses different BAR resource types (RES_TYPE_ADMIN_WQ/RQ/CQ,
-RES_TYPE_SRIOV_INTR) for its queues.
+We need phylib to handle some state information. Are we doing MAC EEE
+or SmartEEE? We can then set phydev->enable_tx_lpi == True to indicate
+if the MAC should be sending LPI indications, if and only if the
+phylib knows we are doing MAC EEE and it should be enabled because the
+user said so.
 
-Add _with_type() variants that accept an explicit resource type
-parameter. Refactor the original functions as thin wrappers that
-pass the default data-path type. No functional change.
+then phylib records that tx_lpi_enabled
+> was false. This then makes the following in phy_check_link_status():
+> 
+>                 phydev->enable_tx_lpi = phydev->eee_cfg.tx_lpi_enabled &&
+>                                         phydev->eee_active;
 
-Signed-off-by: Satish Kharat <satishkh@cisco.com>
----
- drivers/net/ethernet/cisco/enic/vnic_cq.c   | 14 +++++++++++---
- drivers/net/ethernet/cisco/enic/vnic_cq.h   |  3 +++
- drivers/net/ethernet/cisco/enic/vnic_intr.c | 12 +++++++++---
- drivers/net/ethernet/cisco/enic/vnic_intr.h |  2 ++
- drivers/net/ethernet/cisco/enic/vnic_rq.c   | 14 +++++++++++---
- drivers/net/ethernet/cisco/enic/vnic_rq.h   |  3 +++
- drivers/net/ethernet/cisco/enic/vnic_wq.c   | 14 +++++++++++---
- drivers/net/ethernet/cisco/enic/vnic_wq.h   |  3 +++
- 8 files changed, 53 insertions(+), 12 deletions(-)
+Which will need to change to take into account the state information.
 
-diff --git a/drivers/net/ethernet/cisco/enic/vnic_cq.c b/drivers/net/ethernet/cisco/enic/vnic_cq.c
-index 27c885e91552..5a0dbb816223 100644
---- a/drivers/net/ethernet/cisco/enic/vnic_cq.c
-+++ b/drivers/net/ethernet/cisco/enic/vnic_cq.c
-@@ -20,13 +20,14 @@ void vnic_cq_free(struct vnic_cq *cq)
- 	cq->ctrl = NULL;
- }
- 
--int vnic_cq_alloc(struct vnic_dev *vdev, struct vnic_cq *cq, unsigned int index,
--	unsigned int desc_count, unsigned int desc_size)
-+int vnic_cq_alloc_with_type(struct vnic_dev *vdev, struct vnic_cq *cq,
-+			    unsigned int index, unsigned int desc_count,
-+			    unsigned int desc_size, unsigned int res_type)
- {
- 	cq->index = index;
- 	cq->vdev = vdev;
- 
--	cq->ctrl = vnic_dev_get_res(vdev, RES_TYPE_CQ, index);
-+	cq->ctrl = vnic_dev_get_res(vdev, res_type, index);
- 	if (!cq->ctrl) {
- 		vdev_err(vdev, "Failed to hook CQ[%d] resource\n", index);
- 		return -EINVAL;
-@@ -35,6 +36,13 @@ int vnic_cq_alloc(struct vnic_dev *vdev, struct vnic_cq *cq, unsigned int index,
- 	return vnic_dev_alloc_desc_ring(vdev, &cq->ring, desc_count, desc_size);
- }
- 
-+int vnic_cq_alloc(struct vnic_dev *vdev, struct vnic_cq *cq, unsigned int index,
-+		  unsigned int desc_count, unsigned int desc_size)
-+{
-+	return vnic_cq_alloc_with_type(vdev, cq, index, desc_count, desc_size,
-+				       RES_TYPE_CQ);
-+}
-+
- void vnic_cq_init(struct vnic_cq *cq, unsigned int flow_control_enable,
- 	unsigned int color_enable, unsigned int cq_head, unsigned int cq_tail,
- 	unsigned int cq_tail_color, unsigned int interrupt_enable,
-diff --git a/drivers/net/ethernet/cisco/enic/vnic_cq.h b/drivers/net/ethernet/cisco/enic/vnic_cq.h
-index 0e37f5d5e527..d46d4d2ef6bb 100644
---- a/drivers/net/ethernet/cisco/enic/vnic_cq.h
-+++ b/drivers/net/ethernet/cisco/enic/vnic_cq.h
-@@ -73,6 +73,9 @@ static inline void vnic_cq_inc_to_clean(struct vnic_cq *cq)
- void vnic_cq_free(struct vnic_cq *cq);
- int vnic_cq_alloc(struct vnic_dev *vdev, struct vnic_cq *cq, unsigned int index,
- 	unsigned int desc_count, unsigned int desc_size);
-+int vnic_cq_alloc_with_type(struct vnic_dev *vdev, struct vnic_cq *cq,
-+			    unsigned int index, unsigned int desc_count,
-+			    unsigned int desc_size, unsigned int res_type);
- void vnic_cq_init(struct vnic_cq *cq, unsigned int flow_control_enable,
- 	unsigned int color_enable, unsigned int cq_head, unsigned int cq_tail,
- 	unsigned int cq_tail_color, unsigned int interrupt_enable,
-diff --git a/drivers/net/ethernet/cisco/enic/vnic_intr.c b/drivers/net/ethernet/cisco/enic/vnic_intr.c
-index 25319f072a04..010ad8c2108d 100644
---- a/drivers/net/ethernet/cisco/enic/vnic_intr.c
-+++ b/drivers/net/ethernet/cisco/enic/vnic_intr.c
-@@ -19,13 +19,13 @@ void vnic_intr_free(struct vnic_intr *intr)
- 	intr->ctrl = NULL;
- }
- 
--int vnic_intr_alloc(struct vnic_dev *vdev, struct vnic_intr *intr,
--	unsigned int index)
-+int vnic_intr_alloc_with_type(struct vnic_dev *vdev, struct vnic_intr *intr,
-+			      unsigned int index, unsigned int res_type)
- {
- 	intr->index = index;
- 	intr->vdev = vdev;
- 
--	intr->ctrl = vnic_dev_get_res(vdev, RES_TYPE_INTR_CTRL, index);
-+	intr->ctrl = vnic_dev_get_res(vdev, res_type, index);
- 	if (!intr->ctrl) {
- 		vdev_err(vdev, "Failed to hook INTR[%d].ctrl resource\n",
- 			 index);
-@@ -35,6 +35,12 @@ int vnic_intr_alloc(struct vnic_dev *vdev, struct vnic_intr *intr,
- 	return 0;
- }
- 
-+int vnic_intr_alloc(struct vnic_dev *vdev, struct vnic_intr *intr,
-+		    unsigned int index)
-+{
-+	return vnic_intr_alloc_with_type(vdev, intr, index, RES_TYPE_INTR_CTRL);
-+}
-+
- void vnic_intr_init(struct vnic_intr *intr, u32 coalescing_timer,
- 	unsigned int coalescing_type, unsigned int mask_on_assertion)
- {
-diff --git a/drivers/net/ethernet/cisco/enic/vnic_intr.h b/drivers/net/ethernet/cisco/enic/vnic_intr.h
-index 33a72aa10b26..2bc2dbffdb80 100644
---- a/drivers/net/ethernet/cisco/enic/vnic_intr.h
-+++ b/drivers/net/ethernet/cisco/enic/vnic_intr.h
-@@ -89,6 +89,8 @@ static inline u32 vnic_intr_legacy_pba(u32 __iomem *legacy_pba)
- void vnic_intr_free(struct vnic_intr *intr);
- int vnic_intr_alloc(struct vnic_dev *vdev, struct vnic_intr *intr,
- 	unsigned int index);
-+int vnic_intr_alloc_with_type(struct vnic_dev *vdev, struct vnic_intr *intr,
-+			      unsigned int index, unsigned int res_type);
- void vnic_intr_init(struct vnic_intr *intr, u32 coalescing_timer,
- 	unsigned int coalescing_type, unsigned int mask_on_assertion);
- void vnic_intr_coalescing_timer_set(struct vnic_intr *intr,
-diff --git a/drivers/net/ethernet/cisco/enic/vnic_rq.c b/drivers/net/ethernet/cisco/enic/vnic_rq.c
-index 5ae80551f17c..a662d9fd1199 100644
---- a/drivers/net/ethernet/cisco/enic/vnic_rq.c
-+++ b/drivers/net/ethernet/cisco/enic/vnic_rq.c
-@@ -69,15 +69,16 @@ void vnic_rq_free(struct vnic_rq *rq)
- 	rq->ctrl = NULL;
- }
- 
--int vnic_rq_alloc(struct vnic_dev *vdev, struct vnic_rq *rq, unsigned int index,
--	unsigned int desc_count, unsigned int desc_size)
-+int vnic_rq_alloc_with_type(struct vnic_dev *vdev, struct vnic_rq *rq,
-+			    unsigned int index, unsigned int desc_count,
-+			    unsigned int desc_size, unsigned int res_type)
- {
- 	int err;
- 
- 	rq->index = index;
- 	rq->vdev = vdev;
- 
--	rq->ctrl = vnic_dev_get_res(vdev, RES_TYPE_RQ, index);
-+	rq->ctrl = vnic_dev_get_res(vdev, res_type, index);
- 	if (!rq->ctrl) {
- 		vdev_err(vdev, "Failed to hook RQ[%d] resource\n", index);
- 		return -EINVAL;
-@@ -98,6 +99,13 @@ int vnic_rq_alloc(struct vnic_dev *vdev, struct vnic_rq *rq, unsigned int index,
- 	return 0;
- }
- 
-+int vnic_rq_alloc(struct vnic_dev *vdev, struct vnic_rq *rq, unsigned int index,
-+		  unsigned int desc_count, unsigned int desc_size)
-+{
-+	return vnic_rq_alloc_with_type(vdev, rq, index, desc_count, desc_size,
-+				       RES_TYPE_RQ);
-+}
-+
- static void vnic_rq_init_start(struct vnic_rq *rq, unsigned int cq_index,
- 	unsigned int fetch_index, unsigned int posted_index,
- 	unsigned int error_interrupt_enable,
-diff --git a/drivers/net/ethernet/cisco/enic/vnic_rq.h b/drivers/net/ethernet/cisco/enic/vnic_rq.h
-index a1cdd729caec..9fc2090eac44 100644
---- a/drivers/net/ethernet/cisco/enic/vnic_rq.h
-+++ b/drivers/net/ethernet/cisco/enic/vnic_rq.h
-@@ -196,6 +196,9 @@ static inline int vnic_rq_fill(struct vnic_rq *rq,
- void vnic_rq_free(struct vnic_rq *rq);
- int vnic_rq_alloc(struct vnic_dev *vdev, struct vnic_rq *rq, unsigned int index,
- 	unsigned int desc_count, unsigned int desc_size);
-+int vnic_rq_alloc_with_type(struct vnic_dev *vdev, struct vnic_rq *rq,
-+			    unsigned int index, unsigned int desc_count,
-+			    unsigned int desc_size, unsigned int res_type);
- void vnic_rq_init(struct vnic_rq *rq, unsigned int cq_index,
- 	unsigned int error_interrupt_enable,
- 	unsigned int error_interrupt_offset);
-diff --git a/drivers/net/ethernet/cisco/enic/vnic_wq.c b/drivers/net/ethernet/cisco/enic/vnic_wq.c
-index 29c7900349b2..5a20bdc62141 100644
---- a/drivers/net/ethernet/cisco/enic/vnic_wq.c
-+++ b/drivers/net/ethernet/cisco/enic/vnic_wq.c
-@@ -72,15 +72,16 @@ void vnic_wq_free(struct vnic_wq *wq)
- 	wq->ctrl = NULL;
- }
- 
--int vnic_wq_alloc(struct vnic_dev *vdev, struct vnic_wq *wq, unsigned int index,
--	unsigned int desc_count, unsigned int desc_size)
-+int vnic_wq_alloc_with_type(struct vnic_dev *vdev, struct vnic_wq *wq,
-+			    unsigned int index, unsigned int desc_count,
-+			    unsigned int desc_size, unsigned int res_type)
- {
- 	int err;
- 
- 	wq->index = index;
- 	wq->vdev = vdev;
- 
--	wq->ctrl = vnic_dev_get_res(vdev, RES_TYPE_WQ, index);
-+	wq->ctrl = vnic_dev_get_res(vdev, res_type, index);
- 	if (!wq->ctrl) {
- 		vdev_err(vdev, "Failed to hook WQ[%d] resource\n", index);
- 		return -EINVAL;
-@@ -101,6 +102,13 @@ int vnic_wq_alloc(struct vnic_dev *vdev, struct vnic_wq *wq, unsigned int index,
- 	return 0;
- }
- 
-+int vnic_wq_alloc(struct vnic_dev *vdev, struct vnic_wq *wq, unsigned int index,
-+		  unsigned int desc_count, unsigned int desc_size)
-+{
-+	return vnic_wq_alloc_with_type(vdev, wq, index, desc_count, desc_size,
-+				       RES_TYPE_WQ);
-+}
-+
- int enic_wq_devcmd2_alloc(struct vnic_dev *vdev, struct vnic_wq *wq,
- 			  unsigned int desc_count, unsigned int desc_size)
- {
-diff --git a/drivers/net/ethernet/cisco/enic/vnic_wq.h b/drivers/net/ethernet/cisco/enic/vnic_wq.h
-index 3bb4758100ba..1d448b7a9ba2 100644
---- a/drivers/net/ethernet/cisco/enic/vnic_wq.h
-+++ b/drivers/net/ethernet/cisco/enic/vnic_wq.h
-@@ -165,6 +165,9 @@ static inline void vnic_wq_service(struct vnic_wq *wq,
- void vnic_wq_free(struct vnic_wq *wq);
- int vnic_wq_alloc(struct vnic_dev *vdev, struct vnic_wq *wq, unsigned int index,
- 	unsigned int desc_count, unsigned int desc_size);
-+int vnic_wq_alloc_with_type(struct vnic_dev *vdev, struct vnic_wq *wq,
-+			    unsigned int index, unsigned int desc_count,
-+			    unsigned int desc_size, unsigned int res_type);
- void vnic_wq_init(struct vnic_wq *wq, unsigned int cq_index,
- 	unsigned int error_interrupt_enable,
- 	unsigned int error_interrupt_offset);
+However, i think this is down the road. If the MAC driver calls
+phy_support_eee(), we should call the SmartEEE disable method of the
+PHY driver. When we add support for SmartEEE then we need this
+additional state information.
 
--- 
-2.43.0
-
-
+	Andrew
