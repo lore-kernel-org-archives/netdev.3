@@ -1,119 +1,111 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC4A43D4EC;
-	Wed,  1 Apr 2026 13:45:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775051112; cv=none; b=L2VZOd0Z7gFrdB9FFX0NS6ElIm5//DV62RMi87Jdb+o0HHKi61uy8zIPxP4+wUPr1TngTJB0iVYPx5rOkCnQlKv1qK9/lZk5/RDXCXeJHG3kKabL5D8/xMTBwY08HY6prmYX8lkP14HyHvf8KVwaB4y5a8WtFGJx42bIK3MnOO4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775051112; c=relaxed/simple;
-	bh=JEkpcUu5tmbXpB+CAQqzBj/teBni9I2iyT4pxd/il8k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZRFVRO7TjwcK1Vfkcq00KLd73CV/NtNtWlOmcTf7mReTXzeq4xOlvHaG6kluX0CPp+69DRD0D/JqmoJncDlz8yDLNxDeDPSQ1Mi8gmkr3wPpJJKGxgsHASAnq0zfrM4hM+s4vGThI+JVdhunL5649p34muMnVF4y6i2KIZ79i3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.99)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1w7viL-000000001en-0Oze;
-	Wed, 01 Apr 2026 13:34:33 +0000
-Date: Wed, 1 Apr 2026 14:34:30 +0100
-From: Daniel Golle <daniel@makrotopia.org>
-To: Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	David Yang <mmyangfl@gmail.com>, Simon Horman <horms@kernel.org>,
-	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Frank Wunderlich <frankwu@gmx.de>, Chad Monroe <chad@monroe.io>,
-	Cezary Wilmanski <cezary.wilmanski@adtran.com>,
-	Liang Xu <lxu@maxlinear.com>,
-	"Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>,
-	Jose Maria Verdu Munoz <jverdu@maxlinear.com>,
-	Avinash Jayaraman <ajayaraman@maxlinear.com>,
-	John Crispin <john@phrozen.org>
-Subject: [PATCH net-next v9 1/4] net: dsa: move dsa_bridge_ports() helper to
- dsa.h
-Message-ID: <4f8bbfce3e4e3a02064fc4dc366263136c6e0383.1775049897.git.daniel@makrotopia.org>
-References: <cover.1775049897.git.daniel@makrotopia.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6840140825C
+	for <netdev@vger.kernel.org>; Wed,  1 Apr 2026 13:46:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775051219; cv=pass; b=QauYh4Qul7BUvbp7inSKBBb5sbDkf3vdtR4GPAB+ws3an7e8sm0oIPPskR0Q8/Grb9h0ilZMlrc0hB6LnGa4XEcDed3nth4AL3du8vzv112DS0h8NriZ53eylGrasiRkeCQk5y83CzTtjld6xgWPLdORV1YIzmW0dQS/Fy82kSs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775051219; c=relaxed/simple;
+	bh=M2QHE7KrhXXsCLenOGnANdMwrdPI1+laSLsq8uh1r0I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FE+RTj7DLH3HUSXVJFEn5ggMnzJ0Mo8YAZxJOs2T5YJZ3kGyjlzaMQxDyvEqintuaJ/4qRrHzbMSF4EnSZEVmssYwJC+hTcydr2SOr1DQTrqV/VM6o+G64BDE+HPwTxkUBVpm57cRkGtyVEnj9EON1ZWULtCYSoHMvZvLCBJSQg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QYebEEnr; arc=pass smtp.client-ip=209.85.160.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QYebEEnr"
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-509134ab2d2so54065131cf.0
+        for <netdev@vger.kernel.org>; Wed, 01 Apr 2026 06:46:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775051217; cv=none;
+        d=google.com; s=arc-20240605;
+        b=C8HgNdE0u5UP3m5cuiWiTSIYtcQP0lECOnvCPo0I+OdqevDSh+HiiBr5iLdJpgthy/
+         hxUB5PGKRly6rIDlmTi9XU3GHTztif/inEYK9VM4+JAGLKumWJb2hLXQXghmvlzRQh8k
+         o11wIbwmn5k0e/gveJqVU7OGXASyS+jmv03YmvGGySdEk6sWfPrv2SxalVuahi4D0K27
+         Q4nnaYQIRGsxWugqo8uvANV0E3sPQHbo5bhh0b1192fkV30VdPAEYQHAr3wbW7aSBfRy
+         zQXpJ3wmaY/ieKS7+iD3PH9QmYIzv3lOuvHq4VvF5TQoW3fHgjI+Qz7/3C+D7RcRLM2F
+         nYHg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=M2QHE7KrhXXsCLenOGnANdMwrdPI1+laSLsq8uh1r0I=;
+        fh=jJiDcQtV1uByr6RRdMGMtNLLJhMCJI28DtNr6SWpEkw=;
+        b=AmD5EAiwnQLZUdnKOMQT7QULY/P9bhjl+ER4CHK7/l2dpW74bIC8MmAPY6vK5zynAp
+         oVSsfC67x6SQuQ+54qe6wBXHTWoeSIvWpiN+fhUvLn6ZVDxM9ORVQpYeZKMyrlswOONT
+         avj2ei3mdzo7m0M8ag3wP1A6wCheSjAnky/amD/kFg1Ft3rR02xWYU08T19S4PDn44yi
+         4M0X6stA+H9DlI5RYUtR11pDNEb8qlW1NIE+O1uZ+TNkwStQD47AbD5W2dyNquPuvktv
+         92sZzkQiPoW2vSycgIsCqPoxQge9bkljY9d9Tgf9LM9+3QCXqsidoKCCXBmbrvIdWITX
+         pnfw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775051217; x=1775656017; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=M2QHE7KrhXXsCLenOGnANdMwrdPI1+laSLsq8uh1r0I=;
+        b=QYebEEnr4pYjqllPKuptQKheLvmGnUhF91Au95xJtL6Kz8RIPLEcSTvkzJYoogx/2V
+         nOS3IIlkQrlnbFJERO8MaTKh9zxivI5RNKlBo2zDZ99fnRQT3HV6tLsOgO1mXbSsHmQ0
+         tmHegnUysc7xTo9CkzDBNp/KYLOf30F85CtRNNGwVRqRMnUBbX04HrmCcD1vo3uJmxjw
+         b1gZiyEbVW+A+ren3uuBRAXo5s4ubiwAdtlQx9kyY3HGiUyYAevIseParCuBLWzJJsOK
+         ZAZSoPiUFz2jMLtboxS7XzH87mFWbi327dWF8hVWHn9ydkaNXqz+kveIe5q6z7rl+9Nm
+         MDKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775051217; x=1775656017;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=M2QHE7KrhXXsCLenOGnANdMwrdPI1+laSLsq8uh1r0I=;
+        b=baHXV0QHhNSpQE9DUliPxXodVkym6w6iiQWLPAyDigZWxOsuvT5EC6H8R/Cu8+TWNI
+         GIDxwa7hR+19iMoOmnlGuVE6vyBfb8BgYSnXVPnY5MGeFfrUkD8A4RTyRzpxcJpWKzVC
+         DcyBpHUKGtxmuWCHGlh8yf1SOlSaCacxDeh0BRm6KB5TPmRdaFcfyAnwCGywWLtLfDjX
+         5/kc/W49Gk2xkw9BnngOyPrBZrbUUtIuuw1rTHWaqkHJxFfg6n/yZiAwXoDk76pgdYpm
+         5ldSA370uPVvOR5K93gtkXsQIWezteb7UaJK0u0GtAToZiLKO0laW7W5GlGeHLVYuLHd
+         h5Ug==
+X-Forwarded-Encrypted: i=1; AJvYcCUnAazR2/RaiN7khrLS/mM+kH+mjJTXwU0FN9q71+qOzh0BLxF9uzUHSAa400nIUYqUcxn8kiQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxsTpmW7+D42GsKqvhU6Z/0h6DP4u8nz4pwkaGI8jFLA7EHN/Yw
+	AZVnXBQFiBl5JqMOKvusp5/rVpIHLXgp6bPDJ9trNxc8oscplZ3bbDewYxgXe7tgMPhJglg2rFH
+	qAB6wnQeveoBIxaoEGBadpAlSLUeAlWdyiCWLIJtz1p6cwFMlz2pLluYx
+X-Gm-Gg: ATEYQzzjXdYL+Sl5238aG8dhHUzFWVm3h3GnGYfClYYZWDTmxpx5YZfkLvcUvKnvipO
+	MQWdoPGUAyA7jbEEBlPYF8L8J6rvwHjdK0tnJ1mvBlsPvQz+9fpZKwv4WotfH3AtRNrgIDgWPnF
+	JyFRHCJppfjBggtOt7abkirzcFRUagm7x34pMWsKJWUYTFbT3K9xpnPMEklU1FXfEEen65yDISj
+	lEWbC05bT62tFrR5QWTqBxOI0T1gs7M6fJowX8zY4UoncZVbaaJULU/8MpPahg+fIR08z8yEbTr
+	hKqLJ4FL
+X-Received: by 2002:a05:622a:4cc9:b0:50b:34b7:fd62 with SMTP id
+ d75a77b69052e-50d3bc9b7afmr49524231cf.25.1775051216746; Wed, 01 Apr 2026
+ 06:46:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1775049897.git.daniel@makrotopia.org>
+References: <CAL_bE8JNzawgr5OX5m+3jnQDHry2XxhQT5=jThW1zDPtUikRYA@mail.gmail.com>
+In-Reply-To: <CAL_bE8JNzawgr5OX5m+3jnQDHry2XxhQT5=jThW1zDPtUikRYA@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 1 Apr 2026 06:46:44 -0700
+X-Gm-Features: AQROBzDw-vv9yAeBcQACa0Ha7Hj591DuevJ1YlB80M12Fi0S9_3msdvlSh6I5IY
+Message-ID: <CANn89i+XNV-Axy3gDSdVadBaHUYqvxPxJ_OGyZYo8=-EdqRqtA@mail.gmail.com>
+Subject: Re: [BUG][SECURITY?] ipv6: opt_flen wrap via repeated IPV6_DSTOPTS
+ cmsgs triggers skb_under_panic (local DoS)
+To: =?UTF-8?B?6ZKx5LiA6ZOt?= <yimingqian591@gmail.com>
+Cc: security@kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The yt921x driver contains a helper to create a bitmap of ports
-which are members of a bridge.
+On Wed, Apr 1, 2026 at 6:19=E2=80=AFAM =E9=92=B1=E4=B8=80=E9=93=AD <yimingq=
+ian591@gmail.com> wrote:
+>
+> Hi,
+>
+> I believe I found a locally triggerable kernel bug in the IPv6 sendmsg
+> ancillary-data path that can panic the kernel via `skb_under_panic()`
+> (local DoS).
 
-Move the helper as static inline function into dsa.h, so other driver
-can make use of it as well.
+OK, but why sending this report twice ?
 
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
----
-v9: no changes
-v8: no changes
-v7: new patch
----
- drivers/net/dsa/yt921x.c | 13 -------------
- include/net/dsa.h        | 13 +++++++++++++
- 2 files changed, 13 insertions(+), 13 deletions(-)
+Do you have a patch already, or are you asking one of us to provide it ?
 
-diff --git a/drivers/net/dsa/yt921x.c b/drivers/net/dsa/yt921x.c
-index 904613f4694ad..5b66109ecc235 100644
---- a/drivers/net/dsa/yt921x.c
-+++ b/drivers/net/dsa/yt921x.c
-@@ -2154,19 +2154,6 @@ yt921x_bridge_join(struct yt921x_priv *priv, int port, u16 ports_mask)
- 	return 0;
- }
- 
--static u32
--dsa_bridge_ports(struct dsa_switch *ds, const struct net_device *bdev)
--{
--	struct dsa_port *dp;
--	u32 mask = 0;
--
--	dsa_switch_for_each_user_port(dp, ds)
--		if (dsa_port_offloads_bridge_dev(dp, bdev))
--			mask |= BIT(dp->index);
--
--	return mask;
--}
--
- static int
- yt921x_bridge_flags(struct yt921x_priv *priv, int port,
- 		    struct switchdev_brport_flags flags)
-diff --git a/include/net/dsa.h b/include/net/dsa.h
-index 6c17446f3dcc2..e93b4feaca966 100644
---- a/include/net/dsa.h
-+++ b/include/net/dsa.h
-@@ -831,6 +831,19 @@ dsa_tree_offloads_bridge_dev(struct dsa_switch_tree *dst,
- 	return false;
- }
- 
-+static inline u32
-+dsa_bridge_ports(struct dsa_switch *ds, const struct net_device *bdev)
-+{
-+	struct dsa_port *dp;
-+	u32 mask = 0;
-+
-+	dsa_switch_for_each_user_port(dp, ds)
-+		if (dsa_port_offloads_bridge_dev(dp, bdev))
-+			mask |= BIT(dp->index);
-+
-+	return mask;
-+}
-+
- static inline bool dsa_port_tree_same(const struct dsa_port *a,
- 				      const struct dsa_port *b)
- {
--- 
-2.53.0
+Please do not CC security@ to anything you made public on netdev@,
+this is not welcomed.
