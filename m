@@ -1,298 +1,120 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7955639936F;
-	Wed,  1 Apr 2026 07:45:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0483338B157
+	for <netdev@vger.kernel.org>; Wed,  1 Apr 2026 07:47:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775029551; cv=none; b=QStxo3oX22odQeZUxJUqej3TKP6nKvsheTL722f3WlV5u3PPMatXiqt7qNmdzSdVFIkWPPfy6we2vHsrFwzWqO+616JAFCCjOmvgN6/jTH+vKIBbdvDOd3Q02C3Pap5jM5FEie5Lm1R00RekRW9yu1bxeuao7CZhIjctJnQlWZ4=
+	t=1775029659; cv=none; b=K372T94W7tvFD0ROrI5g3sit/PvCgyKyFnTw1zPzAUvlvbfN/RBIY7Vqw1uJ8/rBhBzaW5H+UE5RXf9P82kkY7Wcp44YwOGgsNEvq+XFw2NZWvltWY1AR10TpDA3XLLDDcfyECEQdpLuldAXPfCy0jwm1Co2YBMA4rff0dGFfG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775029551; c=relaxed/simple;
-	bh=+tR2lkGhY7EMKxIv9XlfDa5D+Kafii4siVw1srfeq1Y=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X0JuGKPmSa1LGWrvJIkwGnVqqDsyermBI/0eNFSBgUIOeI/VWso4r2I8pTyny0QzwTRcKp0t8PH2JRxt4PfV8nrElkIAi47/bM+0abWaTRxyv+a7VcwucG69hlnW39hBIm0FfIjbQ+qJKe16bVMiplAVsZsVfPcMPCbo+JLvSUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=XmZ0vjW/; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
+	s=arc-20240116; t=1775029659; c=relaxed/simple;
+	bh=ta/b9mb9PhX7NWzYBYsjlwKw1j/ZhvuAs1Q63BONb/0=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=cBAgojYq2pPU5lZ9t+tbx1hykrID2y+o6BpVe65vXyIKFjqX+kzTq7vCWYPdgeV2G42zQri1bvU3EE1SPxeENPN+qf+Squ+nK9ZaSzX9OUGDqQ/XeUviYjxG0OSmAM07CoI4dAqbac9k7TQRBGGgcw4AIfczukG9VgwYlbGOW3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=Z7TzvARy; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="XmZ0vjW/"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description;
-	bh=rUPZcZvnz7m4wObN0nRKDSPdiuPMBaSG6sDNy+wfNnY=; b=XmZ0vjW/LAOkBb5O+5LmfCk5YI
-	n8C7/YEH/1OL7qrT9tmUxRH1AvhkSP1DC33BAFZa/XLf4jRDI2N3NZqjWHOn+7sUESjIM1aasCgA4
-	JBIzZF6GADalqzb484AmGNw/yymN7DMeWwDe63XCJwHL4+6jeB8/s2BCmtK9Y9DjhZl2LXE2exenv
-	5UNcjFFLrHczGy9tgX4x9RLKNa0chk+2fuONLjXfVSiQoITjn3ij5WJNeyhuBO28yKyWy0KYFAtDd
-	34i6caZsumKmuoFkoLuH0sqvSRVFs3CPszxsTh9RD6P2LkTvTFD/fIbqcapt5G6lIiaqPKWm+nVz3
-	HfXKpo5Q==;
-Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w7qGN-0000000HLQQ-0Bmv;
-	Wed, 01 Apr 2026 07:45:19 +0000
-Received: from dwoodhou by i7.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w7qGM-00000007xeB-26NS;
-	Wed, 01 Apr 2026 08:45:18 +0100
-From: David Woodhouse <dwmw2@infradead.org>
-To: Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	KP Singh <kpsingh@kernel.org>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	Guillaume Nault <gnault@redhat.com>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Kees Cook <kees@kernel.org>,
-	Alexei Lazar <alazar@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Paul Moore <paul@paul-moore.com>,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	oss-drivers@corigine.com,
-	bridge@lists.linux.dev,
-	bpf@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	torvalds@linux-foundation.org,
-	jon.maddog.hall@gmail.com
-Subject: [PATCH 3/6] net: Guard Legacy IP entry points with CONFIG_LEGACY_IP
-Date: Wed,  1 Apr 2026 08:44:17 +0100
-Message-ID: <20260401074509.1897527-4-dwmw2@infradead.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260401074509.1897527-1-dwmw2@infradead.org>
-References: <20260401074509.1897527-1-dwmw2@infradead.org>
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="Z7TzvARy"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 87B39A5860;
+	Wed,  1 Apr 2026 09:47:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1775029652; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=TJ/onB010N86yTqr2fxvYvqXl6w6EoERbIpLsKzY7Y0=;
+	b=Z7TzvARy3/IwS9VW01zvrISZWToXS/Q3FONvj6r8bJFGnqh4ZnrZUDHV1+wdhFEDEoERwF
+	mzX931x97J9rE4+3j89mrlM0+7NyGAOmWWB9v1H4cBKcBJFhO+dspRHLt+MvqDt+hyvw2G
+	zppFh4xgo9gVJ7judSTZeoIn+zDLbawT3fZdTfYkfXIhSWl8UgDakIpvTPg5JU7zgWJb7P
+	D/Hu/y+mPWEHqNsDvem/kCp//Q5jFAv+NWio8E0yXqCtLOhwStdQUfG4TwfDfr/idex3nE
+	yJ55/mlJMg/ddL5RkCcPUsRD8Rfh9WIkxQ4HpPa8DSJyzmi8MlBgwDGQWGkM5A==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: David Woodhouse <dwmw2@infradead.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+Date: Wed, 01 Apr 2026 09:47:31 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Justin Chen <justin.chen@broadcom.com>
+Cc: netdev@vger.kernel.org, pabeni@redhat.com, kuba@kernel.org,
+ edumazet@google.com, davem@davemloft.net, andrew+netdev@lunn.ch,
+ bcm-kernel-feedback-list@broadcom.com, florian.fainelli@broadcom.com,
+ opendmb@gmail.com
+Subject: Re: [PATCH net v2 4/4] net: bcmgenet: relax the xmit ring full case
+In-Reply-To: <20260401003840.3112454-5-justin.chen@broadcom.com>
+References: <20260401003840.3112454-1-justin.chen@broadcom.com>
+ <20260401003840.3112454-5-justin.chen@broadcom.com>
+Message-ID: <71b87f5416d6d6d41396b5008702ccac@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+On 1.4.2026 02:38, Justin Chen wrote:
+> We have a queue size of 32. If a packet is multiple fragments we can
+> run through this queue really quickly. Currently we stop the xmit
+> queue at SKB_FRAG_SIZE which by default can take up half the queue.
+> Instead lets just look at the incoming packet and freeze the queue
+> if the incoming packet has more fragments than free_bds. This will
+> relieve some of the queue timeouts we have been seeing.
+> 
+> Fixes: 1c1008c793fa ("net: bcmgenet: add main driver file")
+> Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+> ---
+>  drivers/net/ethernet/broadcom/genet/bcmgenet.c | 9 +++------
+>  1 file changed, 3 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c 
+> b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> index 54f71b1e85fc..a1aa1278842e 100644
+> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> @@ -2018,10 +2018,10 @@ static int bcmgenet_tx_poll(struct napi_struct 
+> *napi, int budget)
+> 
+>  	spin_lock(&ring->lock);
+>  	work_done = __bcmgenet_tx_reclaim(ring->priv->dev, ring);
+> -	if (ring->free_bds > (MAX_SKB_FRAGS + 1)) {
+> -		txq = netdev_get_tx_queue(ring->priv->dev, ring->index);
+> +	txq = netdev_get_tx_queue(ring->priv->dev, ring->index);
+> +	if (netif_tx_queue_stopped(txq))
+>  		netif_tx_wake_queue(txq);
+> -	}
+> +
+>  	spin_unlock(&ring->lock);
+> 
+>  	if (work_done == 0) {
+> @@ -2224,9 +2224,6 @@ static netdev_tx_t bcmgenet_xmit(struct sk_buff 
+> *skb, struct net_device *dev)
+> 
+>  	netdev_tx_sent_queue(txq, GENET_CB(skb)->bytes_sent);
+> 
+> -	if (ring->free_bds <= (MAX_SKB_FRAGS + 1))
+> -		netif_tx_stop_queue(txq);
+> -
 
-Wrap the IPv4-specific registrations in inet_init() with
-CONFIG_LEGACY_IP guards. When LEGACY_IP is disabled, the kernel
-will not:
- - Register the AF_INET socket family
- - Register the ETH_P_IP packet handler (ip_rcv)
- - Initialize ARP, ICMP, IGMP, or IPv4 routing
- - Register IPv4 protocol handlers (TCP/UDP/ICMP over IPv4)
- - Initialize IPv4 multicast routing, proc entries, or fragmentation
+With this removed, the only queue stop is the NETDEV_TX_BUSY path at
+entry. That means every ring-full hits BUSY and requeues rather than
+stopping proactively on the previous transmit.
 
-The shared INET infrastructure (tcp_prot, udp_prot, tcp_init, etc.)
-remains initialized for use by IPv6.
+Would it work to keep the proactive stop but base it on the actual
+packet size instead of MAX_SKB_FRAGS?
 
-Also update INDIRECT_CALL_INET to not use ip_rcv/ip_list_rcv as
-direct call targets when LEGACY_IP is disabled, avoiding a link-time
-reference to functions that will eventually be compiled out.
+	if (ring->free_bds <= (nr_frags + 1))
+		netif_tx_stop_queue(txq);
 
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
----
- include/linux/indirect_call_wrapper.h |  4 +++-
- net/ipv4/af_inet.c                    | 20 +++++++++++++-----
- net/ipv4/devinet.c                    |  2 ++
- net/ipv4/route.c                      |  1 -
- net/ipv4/tcp_ipv4.c                   | 30 ++++++++++++++-------------
- 5 files changed, 36 insertions(+), 21 deletions(-)
+That avoids reserving half the ring for the worst case while still
+preventing BUSY from becoming the normal path.
 
-diff --git a/include/linux/indirect_call_wrapper.h b/include/linux/indirect_call_wrapper.h
-index dc272b514a01..25a3873da462 100644
---- a/include/linux/indirect_call_wrapper.h
-+++ b/include/linux/indirect_call_wrapper.h
-@@ -57,9 +57,11 @@
-  * builtin, this macro simplify dealing with indirect calls with only ipv4/ipv6
-  * alternatives
-  */
--#if IS_BUILTIN(CONFIG_IPV6)
-+#if IS_BUILTIN(CONFIG_IPV6) && IS_ENABLED(CONFIG_LEGACY_IP)
- #define INDIRECT_CALL_INET(f, f2, f1, ...) \
- 	INDIRECT_CALL_2(f, f2, f1, __VA_ARGS__)
-+#elif IS_BUILTIN(CONFIG_IPV6)
-+#define INDIRECT_CALL_INET(f, f2, f1, ...) INDIRECT_CALL_1(f, f2, __VA_ARGS__)
- #elif IS_ENABLED(CONFIG_INET)
- #define INDIRECT_CALL_INET(f, f2, f1, ...) INDIRECT_CALL_1(f, f1, __VA_ARGS__)
- #else
-diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
-index c7731e300a44..dc358faa1647 100644
---- a/net/ipv4/af_inet.c
-+++ b/net/ipv4/af_inet.c
-@@ -1922,7 +1922,15 @@ static int __init inet_init(void)
- 	/*
- 	 *	Tell SOCKET that we are alive...
- 	 */
-+	/* Initialize the socket-side protocol switch tables. */
-+	for (r = &inetsw[0]; r < &inetsw[SOCK_MAX]; ++r)
-+		INIT_LIST_HEAD(r);
-+
-+#ifdef CONFIG_XFRM
-+	xfrm_init();
-+#endif
- 
-+#ifdef CONFIG_LEGACY_IP
- 	(void)sock_register(&inet_family_ops);
- 
- #ifdef CONFIG_SYSCTL
-@@ -1957,10 +1965,6 @@ static int __init inet_init(void)
- 		pr_crit("%s: Cannot add IGMP protocol\n", __func__);
- #endif
- 
--	/* Register the socket-side information for inet_create. */
--	for (r = &inetsw[0]; r < &inetsw[SOCK_MAX]; ++r)
--		INIT_LIST_HEAD(r);
--
- 	for (q = inetsw_array; q < &inetsw_array[INETSW_ARRAY_LEN]; ++q)
- 		inet_register_protosw(q);
- 
-@@ -1975,6 +1979,7 @@ static int __init inet_init(void)
- 	 */
- 
- 	ip_init();
-+#endif /* CONFIG_LEGACY_IP */
- 
- 	/* Initialise per-cpu ipv4 mibs */
- 	if (init_ipv4_mibs())
-@@ -1987,7 +1992,8 @@ static int __init inet_init(void)
- 	udp_init();
- 
- 	/* Add UDP-Lite (RFC 3828) */
--	udplite4_register();
-+	if (IS_ENABLED(CONFIG_LEGACY_IP))
-+		udplite4_register();
- 
- 	raw_init();
- 
-@@ -1997,6 +2003,7 @@ static int __init inet_init(void)
- 	 *	Set the ICMP layer up
- 	 */
- 
-+#ifdef CONFIG_LEGACY_IP
- 	if (icmp_init() < 0)
- 		panic("Failed to create the ICMP control socket.\n");
- 
-@@ -2007,10 +2014,12 @@ static int __init inet_init(void)
- 	if (ip_mr_init())
- 		pr_crit("%s: Cannot init ipv4 mroute\n", __func__);
- #endif
-+#endif /* CONFIG_LEGACY_IP */
- 
- 	if (init_inet_pernet_ops())
- 		pr_crit("%s: Cannot init ipv4 inet pernet ops\n", __func__);
- 
-+#ifdef CONFIG_LEGACY_IP
- 	ipv4_proc_init();
- 
- 	ipfrag_init();
-@@ -2018,6 +2027,7 @@ static int __init inet_init(void)
- 	dev_add_pack(&ip_packet_type);
- 
- 	ip_tunnel_core_init();
-+#endif /* CONFIG_LEGACY_IP */
- 
- 	rc = 0;
- out:
-diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
-index 537bb6c315d2..9b9db10e5db2 100644
---- a/net/ipv4/devinet.c
-+++ b/net/ipv4/devinet.c
-@@ -348,7 +348,9 @@ static int __init inet_blackhole_dev_init(void)
- 
- 	return PTR_ERR_OR_ZERO(in_dev);
- }
-+#ifdef CONFIG_LEGACY_IP
- late_initcall(inet_blackhole_dev_init);
-+#endif
- 
- int inet_addr_onlink(struct in_device *in_dev, __be32 a, __be32 b)
- {
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 463236e0dc2d..125614f552c7 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -3773,7 +3773,6 @@ int __init ip_rt_init(void)
- 	if (ip_rt_proc_init())
- 		pr_err("Unable to create route proc files\n");
- #ifdef CONFIG_XFRM
--	xfrm_init();
- 	xfrm4_init();
- #endif
- 	rtnl_register_many(ip_rt_rtnl_msg_handlers);
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index c7b2463c2e25..7660bd45aac7 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -3717,25 +3717,27 @@ static void __init bpf_iter_register(void)
- 
- void __init tcp_v4_init(void)
- {
--	int cpu, res;
-+	if (IS_ENABLED(CONFIG_LEGACY_IP)) {
-+		int cpu, res;
- 
--	for_each_possible_cpu(cpu) {
--		struct sock *sk;
-+		for_each_possible_cpu(cpu) {
-+			struct sock *sk;
- 
--		res = inet_ctl_sock_create(&sk, PF_INET, SOCK_RAW,
--					   IPPROTO_TCP, &init_net);
--		if (res)
--			panic("Failed to create the TCP control socket.\n");
--		sock_set_flag(sk, SOCK_USE_WRITE_QUEUE);
-+			res = inet_ctl_sock_create(&sk, PF_INET, SOCK_RAW,
-+						   IPPROTO_TCP, &init_net);
-+			if (res)
-+				panic("Failed to create the TCP control socket.\n");
-+			sock_set_flag(sk, SOCK_USE_WRITE_QUEUE);
- 
--		/* Please enforce IP_DF and IPID==0 for RST and
--		 * ACK sent in SYN-RECV and TIME-WAIT state.
--		 */
--		inet_sk(sk)->pmtudisc = IP_PMTUDISC_DO;
-+			/* Please enforce IP_DF and IPID==0 for RST and
-+			 * ACK sent in SYN-RECV and TIME-WAIT state.
-+			 */
-+			inet_sk(sk)->pmtudisc = IP_PMTUDISC_DO;
- 
--		sk->sk_clockid = CLOCK_MONOTONIC;
-+			sk->sk_clockid = CLOCK_MONOTONIC;
- 
--		per_cpu(ipv4_tcp_sk.sock, cpu) = sk;
-+			per_cpu(ipv4_tcp_sk.sock, cpu) = sk;
-+		}
- 	}
- 	if (register_pernet_subsys(&tcp_sk_ops))
- 		panic("Failed to create the TCP control socket.\n");
--- 
-2.51.0
+>  	if (!netdev_xmit_more() || netif_xmit_stopped(txq))
+>  		/* Packets are ready, update producer index */
+>  		bcmgenet_tdma_ring_writel(priv, ring->index,
 
+This wakes unconditionally even if only 1 BD was reclaimed. Combined
+with the above, it can create a tight stop/wake/BUSY thrash when the
+ring is near-full.
+
+Thanks
+
+Nicolai
