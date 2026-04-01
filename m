@@ -1,43 +1,43 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3726B379998
-	for <netdev@vger.kernel.org>; Wed,  1 Apr 2026 07:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9BFC36EA8B
+	for <netdev@vger.kernel.org>; Wed,  1 Apr 2026 07:22:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775028148; cv=none; b=pCb2O/8j0QNyaEvPruRkJcLk1guFIie9PWSYfKucGiidXp4R2dTEEOk8QEQ6Sz5qGWWPLznqKnSD0XGyaANAVjL8vaVljTJR9fpW4O0eYhsj35VHZ5n28C5Rvl+dFkprwHB80sUGvG0gwvX/Me8HCDoS/cAAyobeNvbMmWGKNtI=
+	t=1775028153; cv=none; b=CsLx2Lc/N3hxYFCd1FHJfst7dkpvAAlFPM6xhmuNiXFQzCdZhjzekJbBprGsF9L5Jei14s3mZi7Fg/tAQvgQSnxUrj6LOg6MuWJJnCroNPe3ddAVBlnvTh3rgHinarJw03htCP60/k7ZyFMfKOStgsLSSCcMCRRjg6NNZB08ePQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775028148; c=relaxed/simple;
-	bh=8x+9FJRmZfxgEcXhzz36OT7S1cp6v1RFSFuji2PXCqU=;
+	s=arc-20240116; t=1775028153; c=relaxed/simple;
+	bh=pUcDquLlHVjQZ+/0nY2I8HPTx2U5C2c2ancprO1/UWk=;
 	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=GaUycRwRU9OL0aO3/8Mgt6VyD3bk0oN35oe9sqJc815eewjkZJZLfcCnWpVVhqrFGC2B25fV5GVRL7xIZOVPP8n2r0HnMq9096qrqTKZc/yXXXNNBZBpBqh9kO6+7Y09X7KrW2C5M/vJ8fUnns0UkeQY3sJu+m60EmM6d5WSup8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=1MX05kwM; arc=none smtp.client-ip=78.32.30.218
+	 Content-Disposition:Content-Type:Message-Id:Date; b=Cr/PSWtaI3nSXB4OfZOROfg56VK51Mj7ZoEhlP0Fg0hwGIueUMFyhi7MI9MZ3ig/dwTCMTJmndhiVbzfhcg+33pI4tq7WateClWYi/CgavcPTUS6VVvbdqqUnp5bvMR9n3YcyfB36ndE0uyhwzHfn5UpR6Bj78kQPOD/oOX9kjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=DWllS1wt; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="1MX05kwM"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="DWllS1wt"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
 	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
 	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=alPn9o8ewPxsbOPsRLwsXL+u+H9tvwotLTBjFhbxb9s=; b=1MX05kwMDnGsZEqsRJbKB+ZR2o
-	cFODAf/0XkUTtVkekuwBDJGtopg5rtuD2yEMu4fuMGYmuvaw0rlPkOBlP0rKRTwzGqY2kDGAK1zAI
-	uZTjOYlZuPmRXKYLM72sD23mhic1XNO23CjumH1fhTR51og17igo3PxONsIid74US9Dx+oWQb5FAG
-	9C50G/+u2ddRZpWIf/2ZIzGce5VDQxgniIRJXxkqWiBGPEPfRbycFP3H8u89GcvtoLdXdsvGRDPxC
-	Uk2+ZweaKcDXIkNNG5gwB83CDSeayWJLpufgYVfDL+gRPfbFth3o4zdGw4PvdGpIj/HHVnAafICCQ
-	CcA5EB/A==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:59464 helo=rmk-PC.armlinux.org.uk)
+	bh=7e//swqwHU8cxAR5zK0XovUJAr7PPmCorHDhD/SbGoE=; b=DWllS1wtCsr/wuu8J3LmNYkVaS
+	yorU2v7Cu5jHVhdQObSTEnlCMqGNYp8nG9h0W1evG9+RAriihKpkLMiv9/pZuSRixRhkfGUyeRIIl
+	yB7mhiu7o0oI5go87sIb6b9yvv/OD0EMXm91i8iE3onYWpInA8tZvNEv4XlilPSQGCWTdM/iANjH5
+	/hRbVGKgXxFMopr0GIzcrI1Aye8JPnfPjeN85g3QLFfBY4cmp8tmkjtH33SZpQZBNmheKR/4A3UM5
+	HObAWBsVXa4d11wCc9oGLLts1K2xmKGwmdepxk6Xzt95HBIGVd2rMyijZEQrTwjDjXtIv1ZsZigZs
+	/LW3ZgIQ==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:56898 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rmk@armlinux.org.uk>)
-	id 1w7pu4-000000002jA-37sy;
-	Wed, 01 Apr 2026 08:22:17 +0100
+	id 1w7puA-000000002jU-4BQj;
+	Wed, 01 Apr 2026 08:22:23 +0100
 Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
 	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1w7pu3-0000000Eatz-39ts;
-	Wed, 01 Apr 2026 08:22:15 +0100
+	id 1w7pu8-0000000Eau5-3Zne;
+	Wed, 01 Apr 2026 08:22:20 +0100
 In-Reply-To: <aczHVF04LIGq_lYO@shell.armlinux.org.uk>
 References: <aczHVF04LIGq_lYO@shell.armlinux.org.uk>
 From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
@@ -52,7 +52,8 @@ Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	netdev@vger.kernel.org,
 	Ong Boon Leong <boon.leong.ong@intel.com>,
 	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next v2 13/14] net: stmmac: check txpbl for TSO
+Subject: [PATCH net-next v2 14/14] net: stmmac: move "TSO supported" message
+ to stmmac_set_gso_features()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,52 +63,42 @@ MIME-Version: 1.0
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1w7pu3-0000000Eatz-39ts@rmk-PC.armlinux.org.uk>
+Message-Id: <E1w7pu8-0000000Eau5-3Zne@rmk-PC.armlinux.org.uk>
 Sender: Russell King <rmk@armlinux.org.uk>
-Date: Wed, 01 Apr 2026 08:22:15 +0100
+Date: Wed, 01 Apr 2026 08:22:20 +0100
 
-Documentation states that TxPBL must be >= 4 to allow TSO support, but
-the driver doesn't check this. TxPBL comes from the platform glue code
-or DT. Add a check with a warning if platform glue code attempts to
-enable TSO support with TxPBL too low.
+Move the "TSO supported" message to stmmac_set_gso_features() so that
+we group all probe-time TSO stuff in one place.
 
 Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 5286ad6412a3..406c32142d90 100644
+index 406c32142d90..3e01f968115d 100644
 --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4388,6 +4388,8 @@ static void stmmac_set_gso_types(struct stmmac_priv *priv, bool tso)
- static void stmmac_set_gso_features(struct net_device *ndev)
- {
- 	struct stmmac_priv *priv = netdev_priv(ndev);
-+	const struct stmmac_dma_cfg *dma_cfg;
-+	int txpbl;
+@@ -4391,6 +4391,9 @@ static void stmmac_set_gso_features(struct net_device *ndev)
+ 	const struct stmmac_dma_cfg *dma_cfg;
+ 	int txpbl;
  
++	if (priv->dma_cap.tsoen)
++		dev_info(priv->device, "TSO supported\n");
++
  	if (!(priv->plat->flags & STMMAC_FLAG_TSO_EN))
  		return;
-@@ -4397,6 +4399,18 @@ static void stmmac_set_gso_features(struct net_device *ndev)
- 		return;
+ 
+@@ -7469,9 +7472,6 @@ static int stmmac_hw_init(struct stmmac_priv *priv)
+ 		devm_pm_set_wake_irq(priv->device, priv->wol_irq);
  	}
  
-+	/* FIXME:
-+	 *  STM32MP151 (v4.2 userver v4.0) states that TxPBL must be >= 4. It
-+	 *  is not clear whether PBLx8 (which multiplies the PBL value by 8)
-+	 *  influences this.
-+	 */
-+	dma_cfg = priv->plat->dma_cfg;
-+	txpbl = dma_cfg->txpbl ?: dma_cfg->pbl;
-+	if (txpbl < 4) {
-+		dev_warn(priv->device, "txpbl(%d) is too low for TSO\n", txpbl);
-+		return;
-+	}
-+
- 	ndev->hw_features |= NETIF_F_TSO | NETIF_F_TSO6;
- 	if (priv->plat->core_type == DWMAC_CORE_GMAC4)
- 		ndev->hw_features |= NETIF_F_GSO_UDP_L4;
+-	if (priv->dma_cap.tsoen)
+-		dev_info(priv->device, "TSO supported\n");
+-
+ 	if (priv->dma_cap.number_rx_queues &&
+ 	    priv->plat->rx_queues_to_use > priv->dma_cap.number_rx_queues) {
+ 		dev_warn(priv->device,
 -- 
 2.47.3
 
