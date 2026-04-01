@@ -1,143 +1,96 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com [209.85.210.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8BA5382F3B
-	for <netdev@vger.kernel.org>; Wed,  1 Apr 2026 07:33:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6352037F745
+	for <netdev@vger.kernel.org>; Wed,  1 Apr 2026 07:42:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775028839; cv=none; b=tH6UP98stZ7D46rZeOBKzMOWXi1GxlWZBpFO1njvEhNE+w4fQPxBKVRG5e2jC9yGqqR3h1++hWOngBo7XSL7ZYdnxvgYzMXYL2e3T0pezOC6ybFj5YOkaDuYsgyCGCyrXwctHjPkXAn04rGLRAq5XcEe7ZWm6UTLPo1Sq+Wm3oU=
+	t=1775029347; cv=none; b=OUnGZG99rM3Tcm1rNS7e6v/6jmux1YR0uUQSW4mb4iaxFf+sxiCu/jAgFLQFdyRkgysjkjOwEDfs7FfVkrtacp6kvS5YgE48YoZnbIVpKNc1MRqRfXcUCRimRyhv2FR5E3KGOHWMy5kC8PBmqravg0WKu0yKhXTXaHU15+1OP6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775028839; c=relaxed/simple;
-	bh=/Bl1O4sytSPWbTDLt0UZg3ZvSglhwogCfG8r6+fa9mM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O25SAIDioC4g6pYIx6lYVFU7nBCQ+VZYTNGILljsg7+QwdbEfluzwfLPl4Uf+Od5YLvOl4E3JMm6T+S2mFODJ3iA7aTDoPOVCjmXqqjKn6fq2vak+QjgLJMazL0Mrze+UGclgkkj2JWRs9lU2/yVxTJjtf0SHuNajq3h0ZY80Ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1w7q57-00077B-T8; Wed, 01 Apr 2026 09:33:41 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1w7q57-003Ahh-2C;
-	Wed, 01 Apr 2026 09:33:41 +0200
-Received: from blackshift.org (unknown [IPv6:2a0a:edc0:0:701:a82f:fdef:12b2:33d])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 52B39513379;
-	Wed, 01 Apr 2026 07:33:41 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Johan Hovold <johan@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 6/6] can: ucan: refactor endpoint lookup
-Date: Wed,  1 Apr 2026 09:30:14 +0200
-Message-ID: <20260401073338.5592-7-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260401073338.5592-1-mkl@pengutronix.de>
-References: <20260401073338.5592-1-mkl@pengutronix.de>
+	s=arc-20240116; t=1775029347; c=relaxed/simple;
+	bh=txXUfYvaeQJYycp0fUA9LLKONMLQ2GKqQcMKym2NH8s=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=XZ48zWzJbSkDBxIqsKMnGMdn6x8sWAtD51Z9Ms8nYbmaOY/FyjmrmFOrE8Datlf0pxPBJbpEh81XOJTKDX9DDSgD2Cl4qMkMR21SX5t3oXXPn51B7xMuLFFKnQQHJNocj2pGND9BnGsGThDk+E5I4/6fFbzz9+khqRpS7yG/Y6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f69.google.com with SMTP id 46e09a7af769-7d7eb8cf3d6so23914195a34.0
+        for <netdev@vger.kernel.org>; Wed, 01 Apr 2026 00:42:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775029344; x=1775634144;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=I3gTuXpKCN7VYI+q2l2Hi9gL9Ghm548UsftJe2Z4drE=;
+        b=muXNF6zhIyILMA6JlZrv2jfiWwZfZ6wgXD7l7jDV6791qPreFsx2eAipETS6i4gcCn
+         BKIF4LoXMoyRF807QDNai6OmzKKpZwouS2DNSodcws1Fjcf2zb7gbfvTcrqFPAq8gE2y
+         oZO9awhxEcqA8C8O+ZApn1E7lFgxedyiqWkR4FCJxx1ia+zGkUyiN9TB9bTNfQ8cd1Q8
+         6j7MUL3PyrHg27GQ6TYvi6mSIWifpOSwY4MJhynnbyxYRp0fRnz+ZGRnTRFcxXaog1TM
+         6t+3kneplKEuW9T0XeW5QXqH1QnVzB4UT7yc/RZGF3/Qj+kekd2W5TylD8XyDACWTfu2
+         m47Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWZ1Moaam7Ig7V1qfOl0QojBcjhrZnGToFEiwEA3K8E8r/14eV61o8NoTAaO/vjrmzt6LTpnxw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFczKXSwWW6Envy3Cb4Bh8znydVf+ALCB6iI1aN5F86qyzNvzX
+	0bUTwov3kWEK2xeXwXGmzv4CWqwygBJaxZeo7pgV+5ychtnzyLNkzHpCB2rXDd7cf/+BW4nlJ7y
+	VAkIM9ZafOzrRe7xa44MwKsGgPvkHhJ4olJFu9uC7md3K+ENj/j3/sSbdeNE=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+X-Received: by 2002:a05:6820:1745:b0:67e:fbc:de68 with SMTP id
+ 006d021491bc7-67fabc08953mr1169405eaf.26.1775029344454; Wed, 01 Apr 2026
+ 00:42:24 -0700 (PDT)
+Date: Wed, 01 Apr 2026 00:42:24 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69cccc60.050a0220.183828.003f.GAE@google.com>
+Subject: [syzbot] Monthly wireless report (Apr 2026)
+From: syzbot <syzbot+listb52ea0a54d3fbb4630b8@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-From: Johan Hovold <johan@kernel.org>
+Hello wireless maintainers/developers,
 
-Use the common USB helpers for looking up bulk and interrupt endpoints
-(and determining endpoint numbers and max packet sizes) instead of open
-coding.
+This is a 31-day syzbot report for the wireless subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/wireless
 
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260330101817.1664787-3-johan@kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+During the period, 2 new issues were detected and 2 were fixed.
+In total, 51 issues are still open and 174 have already been fixed.
+
+Some of the still happening issues:
+
+Ref  Crashes Repro Title
+<1>  28045   Yes   WARNING in rate_control_rate_init (3)
+                   https://syzkaller.appspot.com/bug?extid=9bdc0c5998ab45b05030
+<2>  14590   No    WARNING in kcov_remote_start (6)
+                   https://syzkaller.appspot.com/bug?extid=3f51ad7ac3ae57a6fdcc
+<3>  10607   Yes   WARNING in __rate_control_send_low (3)
+                   https://syzkaller.appspot.com/bug?extid=34463a129786910405dd
+<4>  6950    Yes   WARNING in __cfg80211_ibss_joined (2)
+                   https://syzkaller.appspot.com/bug?extid=7f064ba1704c2466e36d
+<5>  1226    Yes   WARNING in ieee80211_start_next_roc
+                   https://syzkaller.appspot.com/bug?extid=c3a167b5615df4ccd7fb
+<6>  872     Yes   INFO: task hung in reg_check_chans_work (7)
+                   https://syzkaller.appspot.com/bug?extid=a2de4763f84f61499210
+<7>  810     Yes   INFO: rcu detected stall in ieee80211_handle_queued_frames
+                   https://syzkaller.appspot.com/bug?extid=1c991592da3ef18957c0
+<8>  790     No    INFO: task hung in netdev_run_todo (4)
+                   https://syzkaller.appspot.com/bug?extid=894cca71fa925aabfdb2
+<9>  719     Yes   WARNING in ieee80211_tx_h_rate_ctrl
+                   https://syzkaller.appspot.com/bug?extid=0d516b33238bd97ee864
+<10> 619     Yes   INFO: task hung in crda_timeout_work (8)
+                   https://syzkaller.appspot.com/bug?extid=d41f74db64598e0b5016
+
 ---
- drivers/net/can/usb/ucan.c | 40 +++++++++++---------------------------
- 1 file changed, 11 insertions(+), 29 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/drivers/net/can/usb/ucan.c b/drivers/net/can/usb/ucan.c
-index 0ea0ac75e42f..506d9e74aa79 100644
---- a/drivers/net/can/usb/ucan.c
-+++ b/drivers/net/can/usb/ucan.c
-@@ -1302,13 +1302,12 @@ static int ucan_probe(struct usb_interface *intf,
- 		      const struct usb_device_id *id)
- {
- 	int ret;
--	int i;
- 	u32 protocol_version;
- 	struct usb_device *udev;
- 	struct net_device *netdev;
- 	struct usb_host_interface *iface_desc;
- 	struct ucan_priv *up;
--	struct usb_endpoint_descriptor *ep;
-+	struct usb_endpoint_descriptor *ep_in, *ep_out;
- 	u16 in_ep_size;
- 	u16 out_ep_size;
- 	u8 in_ep_addr;
-@@ -1343,37 +1342,20 @@ static int ucan_probe(struct usb_interface *intf,
- 	}
- 
- 	/* check interface endpoints */
--	in_ep_addr = 0;
--	out_ep_addr = 0;
--	in_ep_size = 0;
--	out_ep_size = 0;
--	for (i = 0; i < iface_desc->desc.bNumEndpoints; i++) {
--		ep = &iface_desc->endpoint[i].desc;
--
--		if (((ep->bEndpointAddress & USB_ENDPOINT_DIR_MASK) != 0) &&
--		    ((ep->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK) ==
--		     USB_ENDPOINT_XFER_BULK)) {
--			/* In Endpoint */
--			in_ep_addr = ep->bEndpointAddress;
--			in_ep_addr &= USB_ENDPOINT_NUMBER_MASK;
--			in_ep_size = le16_to_cpu(ep->wMaxPacketSize);
--		} else if (((ep->bEndpointAddress & USB_ENDPOINT_DIR_MASK) ==
--			    0) &&
--			   ((ep->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK) ==
--			    USB_ENDPOINT_XFER_BULK)) {
--			/* Out Endpoint */
--			out_ep_addr = ep->bEndpointAddress;
--			out_ep_addr &= USB_ENDPOINT_NUMBER_MASK;
--			out_ep_size = le16_to_cpu(ep->wMaxPacketSize);
--		}
--	}
--
--	/* check if interface is sane */
--	if (!in_ep_addr || !out_ep_addr) {
-+	ret = usb_find_common_endpoints_reverse(iface_desc, &ep_in, &ep_out,
-+						NULL, NULL);
-+	if (ret) {
- 		dev_err(&udev->dev, "%s: invalid endpoint configuration\n",
- 			UCAN_DRIVER_NAME);
- 		goto err_firmware_needs_update;
- 	}
-+
-+	in_ep_addr = usb_endpoint_num(ep_in);
-+	out_ep_addr = usb_endpoint_num(ep_out);
-+	in_ep_size = usb_endpoint_maxp(ep_in);
-+	out_ep_size = usb_endpoint_maxp(ep_out);
-+
-+	/* check if interface is sane */
- 	if (in_ep_size < sizeof(struct ucan_message_in)) {
- 		dev_err(&udev->dev, "%s: invalid in_ep MaxPacketSize\n",
- 			UCAN_DRIVER_NAME);
--- 
-2.53.0
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
