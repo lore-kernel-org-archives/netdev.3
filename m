@@ -1,155 +1,69 @@
-Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DFA747DD5F;
-	Wed,  1 Apr 2026 18:59:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A393382DE;
+	Wed,  1 Apr 2026 19:01:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775069980; cv=none; b=UrspiTnv+XgWGWpj6dAx5JDDSPnKqvehTh/4tGnHtOxKiP/RE2hToU67Godhg93nyGhDpRTrpCAJmVzpPZ5VE/U+y1TnVeNSoBQ5ZKJ0MuOIYMhNmstAwufxtGerWns6hqvs0IEz382JHQgJJXhGIidHOXu9dPreOlfY2MbQIZs=
+	t=1775070068; cv=none; b=Q3xjrlw9Kv6z/ZZuPqDHyCOp94kobRdq9+z9mudVOAyw0J5vZ2FK26GmfMCZXT3XCaJT5ZQzdi5cORKT3Bp7cxMXyPXUe1+KzUxCLlLNYG5mRr1gBLbLCYNlmOBDqyMoVdmuvFaVGPOr00e0xaeKtzxPuLdjQ1ky3Dhiqr8m+HU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775069980; c=relaxed/simple;
-	bh=YM9uc0Zy1HNxNhPg2ddGuC8aqyjWmJ1l8HhkN6I21CM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=unouwPWOBqbFZ3ehD1ouOBWY4b1+DNEKPrFe74ZhJSv8AzWL2cFmlb2IENiFkVsMYTyjpoyESH64ioeys0CWuHii0KtZUyM1DN1ldXaEWxcp6qJKGvauV0vAHuV/JxWiKP8FHGj0dhh230Lc4ZROjOKKfAkzZ/2icEo4c4XQ+eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; arc=none smtp.client-ip=160.80.4.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
-Received: from localhost.localdomain ([160.80.103.126])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 631Ix8mi029079;
-	Wed, 1 Apr 2026 20:59:15 +0200
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
-        david.lebrun@uclouvain.be, stefano.salsano@uniroma2.it,
-        paolo.lungaroni@uniroma2.it, nicolas.dichtel@6wind.com,
-        linux-kernel@vger.kernel.org, Andrea Mayer <andrea.mayer@uniroma2.it>,
-        stable@vger.kernel.org
-Subject: [PATCH net v2 1/2] seg6: separate dst_cache for input and output paths in seg6 lwtunnel
-Date: Wed,  1 Apr 2026 20:57:54 +0200
-Message-Id: <20260401185755.29813-2-andrea.mayer@uniroma2.it>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20260401185755.29813-1-andrea.mayer@uniroma2.it>
-References: <20260401185755.29813-1-andrea.mayer@uniroma2.it>
+	s=arc-20240116; t=1775070068; c=relaxed/simple;
+	bh=uvh8oOR8f012iFbqSPUUmUgjDYv1sLltGScE5WU8BrI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n6G1LyV7UF7kh0AY1xXDEqHh9ezsqi3AmKqfGLoZ8B8Tft8Pqtj1CubkD27RKljhXXpyCLeO7jQwy+i8+pNa1Mv4q0xQ1fwRymj2nSNyx13Fddq84Xoe3+GDtfX46MtWHI9Dbfbe4/05SxU9gpuW/W3ge89vXdg4709H9zBV0Rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=x867PCu2; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="x867PCu2"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=8MpH8X6sjaPrUpqh7/He3PqKvB7B8nmD6tdg+fBP6uI=; b=x867PCu238MpZ7Gonv8MF+FBKO
+	2R8qti0IOEIscNfG9s4Qhcov6/9FV8f3bhiwehCJWt7Pt02/SrmPE7bHADzj/hWFfnD5eowxG7Fnp
+	Py9i/cIc8Zo0lTwCEh2fh3UzfMvHQXOZQr7rMdglK8kyoDBY/PL6yVvK/rQ/NeSQjQo0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1w80o7-00EP25-Ha; Wed, 01 Apr 2026 21:00:51 +0200
+Date: Wed, 1 Apr 2026 21:00:51 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Birger Koblitz <mail@birger-koblitz.de>
+Cc: Jakub Kicinski <kuba@kernel.org>, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v4 1/2] r8152: Add support for 5Gbit Link Speeds
+ and EEE
+Message-ID: <f308c593-a186-4a2b-ac4d-78491d6e7255@lunn.ch>
+References: <20260324-rtl8157_next-v4-1-034312b12de5@birger-koblitz.de>
+ <20260329193449.2764517-1-kuba@kernel.org>
+ <50dc7e8c-6c6d-47d1-866e-677638b4deaf@birger-koblitz.de>
+ <20260331175649.729e60a7@kernel.org>
+ <59b4be26-1fee-40f1-b9ff-45881cddc7df@birger-koblitz.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <59b4be26-1fee-40f1-b9ff-45881cddc7df@birger-koblitz.de>
 
-The seg6 lwtunnel uses a single dst_cache per encap route, shared
-between seg6_input_core() and seg6_output_core(). These two paths
-can perform the post-encap SID lookup in different routing contexts
-(e.g., ip rules matching on the ingress interface, or VRF table
-separation). Whichever path runs first populates the cache, and the
-other reuses it blindly, bypassing its own lookup.
+>  One thing I
+> noticed in particular is that the AI does not seem to take into account
+> that the code actually works: suspecting broken SRAM-access or wrong
+> descriptor-size settings would break the driver at such a fundamental level,
+> it would not be able to work at all.
 
-Fix this by splitting the cache into cache_input and cache_output,
-so each path maintains its own cached dst independently.
+The flip side to this is that we get a lot of patches which are
+compile tested only. So assuming the patch has run on real hardware is
+a poor assumption to make.
 
-Fixes: 6c8702c60b88 ("ipv6: sr: add support for SRH encapsulation and injection with lwtunnels")
-Cc: stable@vger.kernel.org
-Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
----
- net/ipv6/seg6_iptunnel.c | 34 +++++++++++++++++++++++-----------
- 1 file changed, 23 insertions(+), 11 deletions(-)
+We humans however do have a feeling about who is submitting the
+patches and how likely they have run it on hardware. So we know to
+look for fundamental problems or not.
 
-diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
-index 3e1b9991131a..d6a0f7df9080 100644
---- a/net/ipv6/seg6_iptunnel.c
-+++ b/net/ipv6/seg6_iptunnel.c
-@@ -48,7 +48,8 @@ static size_t seg6_lwt_headroom(struct seg6_iptunnel_encap *tuninfo)
- }
- 
- struct seg6_lwt {
--	struct dst_cache cache;
-+	struct dst_cache cache_input;
-+	struct dst_cache cache_output;
- 	struct seg6_iptunnel_encap tuninfo[];
- };
- 
-@@ -488,7 +489,7 @@ static int seg6_input_core(struct net *net, struct sock *sk,
- 	slwt = seg6_lwt_lwtunnel(lwtst);
- 
- 	local_bh_disable();
--	dst = dst_cache_get(&slwt->cache);
-+	dst = dst_cache_get(&slwt->cache_input);
- 	local_bh_enable();
- 
- 	err = seg6_do_srh(skb, dst);
-@@ -504,7 +505,7 @@ static int seg6_input_core(struct net *net, struct sock *sk,
- 		/* cache only if we don't create a dst reference loop */
- 		if (!dst->error && lwtst != dst->lwtstate) {
- 			local_bh_disable();
--			dst_cache_set_ip6(&slwt->cache, dst,
-+			dst_cache_set_ip6(&slwt->cache_input, dst,
- 					  &ipv6_hdr(skb)->saddr);
- 			local_bh_enable();
- 		}
-@@ -564,7 +565,7 @@ static int seg6_output_core(struct net *net, struct sock *sk,
- 	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
- 
- 	local_bh_disable();
--	dst = dst_cache_get(&slwt->cache);
-+	dst = dst_cache_get(&slwt->cache_output);
- 	local_bh_enable();
- 
- 	err = seg6_do_srh(skb, dst);
-@@ -591,7 +592,7 @@ static int seg6_output_core(struct net *net, struct sock *sk,
- 		/* cache only if we don't create a dst reference loop */
- 		if (orig_dst->lwtstate != dst->lwtstate) {
- 			local_bh_disable();
--			dst_cache_set_ip6(&slwt->cache, dst, &fl6.saddr);
-+			dst_cache_set_ip6(&slwt->cache_output, dst, &fl6.saddr);
- 			local_bh_enable();
- 		}
- 
-@@ -701,11 +702,13 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
- 
- 	slwt = seg6_lwt_lwtunnel(newts);
- 
--	err = dst_cache_init(&slwt->cache, GFP_ATOMIC);
--	if (err) {
--		kfree(newts);
--		return err;
--	}
-+	err = dst_cache_init(&slwt->cache_input, GFP_ATOMIC);
-+	if (err)
-+		goto err_free_newts;
-+
-+	err = dst_cache_init(&slwt->cache_output, GFP_ATOMIC);
-+	if (err)
-+		goto err_destroy_input;
- 
- 	memcpy(&slwt->tuninfo, tuninfo, tuninfo_len);
- 
-@@ -720,11 +723,20 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
- 	*ts = newts;
- 
- 	return 0;
-+
-+err_destroy_input:
-+	dst_cache_destroy(&slwt->cache_input);
-+err_free_newts:
-+	kfree(newts);
-+	return err;
- }
- 
- static void seg6_destroy_state(struct lwtunnel_state *lwt)
- {
--	dst_cache_destroy(&seg6_lwt_lwtunnel(lwt)->cache);
-+	struct seg6_lwt *slwt = seg6_lwt_lwtunnel(lwt);
-+
-+	dst_cache_destroy(&slwt->cache_input);
-+	dst_cache_destroy(&slwt->cache_output);
- }
- 
- static int seg6_fill_encap_info(struct sk_buff *skb,
--- 
-2.43.0
-
+	Andrew
