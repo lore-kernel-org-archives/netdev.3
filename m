@@ -1,292 +1,187 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011029.outbound.protection.outlook.com [40.107.208.29])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011041.outbound.protection.outlook.com [52.101.57.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4723F2111;
-	Wed,  1 Apr 2026 10:25:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D0421D3D2;
+	Wed,  1 Apr 2026 10:30:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.41
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775039157; cv=fail; b=sOQBgpbjsxA2VgjXy6jOeFTt2cKCcFOpXEtElUNXd/nMQKXYETKQ+XziSH1DSDsLm3cFAEffGVB+gvbnO4kA2iWugtq114iUCe3K+RiEYNG/vyIJtDJT/fUXf2Nt2uqdYnhOyRtONlfDhq660fACmrtvb0PI3Ro7wSPADL+PkQA=
+	t=1775039402; cv=fail; b=oIcGIGVZyr46f4PSNbimJhomEHLWGQQDzjHnpHIH6UOy6SWA83rTg8CvwJ8Z7vuczdc+TbyM84kZa3/C5YLrMkhvGm0F/6Bpk8f5mUBP26RipHHOAji5gErrYeJHuuHt+bbQvVKZy8kaAKyl1Oi6EC1fB7fbtkGd08rUMBOZAoQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775039157; c=relaxed/simple;
-	bh=eMYNowOFUhuRcDDp73Hi3cFIYgTd17uUvVPQt5dokHU=;
+	s=arc-20240116; t=1775039402; c=relaxed/simple;
+	bh=PwCYgnz3FiN4gZh/TIQhg8qHBdvgukDKR863bC+Qt28=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K7zl+UiV7zS3hPMWiCHqrNn/KSagSv06Bm22nTtC/IQJUgNZcriLlnoy+rMwlSje1chrDL8oTTjQkmD/HYTrPunqeaUmymrEzAULqifB5oS3b0P+w3hA4reQCWrgxu9aNXNw/R0NsfDCkNEF1e0Zjv1SO1PdeA18HszrcPbWLUE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=frBARuNw; arc=fail smtp.client-ip=40.107.208.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	 MIME-Version:Content-Type; b=W01JrIY+DfL263gugHXbUg4e6DHY3g5nn9W6+2vXtN6/N3c4xfg5f4AMRHBwg0UbbzhRj7L4ka/qrNIlZHdvLVTJ9wd9tks6DxAQ42PTVarXUU+FUhZngGVUDY8l8MbZCtdNNjlOBBEHcCl3Ws3ZcEik+pEsHHNtKKwvZ9yxz44=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=BWZnzfGX; arc=fail smtp.client-ip=52.101.57.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="frBARuNw"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="BWZnzfGX"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=D2DN7S++DQrXkEqeH01xuI/DqhKpugf87sPgrwMjitLO58ySAN0xljslYKTuwzrNLD0645erpkJDpi2Vd85V7Us/T2uaE9OBufGpi6+k7OnkuKnMU1KwnDptTkna5rJ0KuMZwYwqwkj7lbj9fgiEkSFNkhN1I0RVRanQSCgfapYlGq0rykELAlu8VZMbaUZiz5PJ63Ue1LXQz69xF0bWnTdK9yCo+8ygtaBHmkdRFCXtjPsDRetMjxsrwUiKolbdqz8ipgH3w4iZF8Oj7X2nGjszlrhGaNmemJf095pm0ZopmIrg4O5S8N0Wu/zvSO2hLEes6EBV3QL4MNLiVw8esA==
+ b=X5a9LNfKGnroAk2k86yFu9cfHI6H+UX6eU7jEOGrxnB7qPUfHSjVJa61cBbEOnW/Fe2PSjJXs8LLl2HhN0QBn3GJSL2V+YVjq/l9W7lUCLimBWTeb9PTIkdut1xUkW/o7p9DEeeYfBgtTlwpqvaH7+6+DWvg9hh+/l2kPjnNL59yykDqUhh6KuYkB3SemDzTu1G/jzXkFvC0fAe/TaxaVeDo39xRUcgG4FmBV9+iKnbnpwkc6RgO6o7PdWAnAe2Cl+c9ioRIbRzNfZECzCEyUKUCNbKELzmtwY6FIWHAHShhpW7upQUg1jvTl7JE5R9XGts51iHc27VsIIDm4t2FEQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yMe7Azw7JSxyTgI/jHxFnhhmL0JukzyPj2qiasOI90w=;
- b=toWed/BjhhXT1bi4rXbfOO9feU7DjDT/0LpIx7hhsIhukIeP6xWKZHUWUkgt2R1Qt8JRqpjWIqKHY+ZGHqwOQNOJn35vnB1BMBNAalkxVW5OL5BeX6vDw2x+znrOvYru5CUqEiYT3zPS7wG7dSuvepK9itdt/ws79RifuQHk5JSNgDkjrEdWhF9DiYDtK9taJB/e0g6NG95jk2auql6dxVNxgAzAqo4+wJ31+dpv5OoB1WZ/NvPoRuDIhLxNp1qLx7TWxUkxOQV8ySduIMJj2xn/VsF+gVo8+ArtxB0UJm4HwZfp0DLD1KPV51PEGjGrwFgTHct/8ynW/DhWQdTSJA==
+ bh=JKOL05Ic6LmKCZffYWiMvKk9yL5oiSo54tybJmknTQE=;
+ b=MWrj7KJ/pUGdZSr1tSxVMDbGgclSq92/V/Rp732+ucxjG8OSuMucH0wZV5QgDO1cmG6NF9ISWt5qtzoRsmxWNofF3N05fgeJVtDU0tZdZ495/JEWvGWDPqqkUmuXSu1IU4StfWgEaGTCdKiXcDdBEbHU7xyMtmDjWRtQgbSVi+ueY0FInICtvcF68gAUryGO9dYETDWZfA+/0H0lFZRicNyu3pvRkrIx7L9jbxFiNr2SfEvLf/2xHhDFP7D4q6FizyUX/aRTy7Wzg4YK78ig4QfUQw/CTnmTFQmx2cV8IhmQpQ6nEWpuPGRM95V9lEMElU2haSRo3Wf7G0KflWe1+A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=ziepe.ca smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ 216.228.118.232) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yMe7Azw7JSxyTgI/jHxFnhhmL0JukzyPj2qiasOI90w=;
- b=frBARuNwoalReaCcGyejVs7+IMBHRwJEw0W1xaw+yatlm5JODB2sciHYcywjTsb08Wzl6fOS/hpsfjN9uPW2KStAT1svGN+N8trGVfL4A5iwCWbEYblK13H8xeY8PQ4oCiosb5uhoAF8gZ6kAznbKOlElVlcynIfz83G+VEowk4=
-Received: from DM6PR03CA0073.namprd03.prod.outlook.com (2603:10b6:5:333::6) by
- SAWPR12MB999142.namprd12.prod.outlook.com (2603:10b6:806:4e1::12) with
+ bh=JKOL05Ic6LmKCZffYWiMvKk9yL5oiSo54tybJmknTQE=;
+ b=BWZnzfGXvbuetTygfQ+agFzLXmYrXDEI7jROjCqCE7RbVYIo/g6XsKfpBNp+2tPoxQKyCXXhtBdxe1FbkIX4fVWSkYPSSUf9b/fjpTQoiRusatqWr8PNCPBaxDuJEmXN5oSi3wB7y/h8rSvUlOkhkf3ZQiVahUKTRzWmFtFKNqTk9KNpR+uPlnS3aqYXyN0INgxzRm7tRmNbmntQvxq6XCM7FKZ/jHcFBf1WBj8paf2fZv/jsPMslpLZuqGuHzqvRWI4fVvjWmXQjI1NmyZR1sCIFT2p9I8reGTxvbhVbwd1YtN9ftu5cBqgCSMeUU5o2w33lilhbElDMyJp2efMdA==
+Received: from IA4P221CA0010.NAMP221.PROD.OUTLOOK.COM (2603:10b6:208:559::13)
+ by DS0PR12MB6581.namprd12.prod.outlook.com (2603:10b6:8:d3::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Wed, 1 Apr
- 2026 10:25:51 +0000
-Received: from DS3PEPF000099E0.namprd04.prod.outlook.com
- (2603:10b6:5:333:cafe::be) by DM6PR03CA0073.outlook.office365.com
- (2603:10b6:5:333::6) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9745.30 via Frontend Transport; Wed,
- 1 Apr 2026 10:25:50 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- DS3PEPF000099E0.mail.protection.outlook.com (10.167.17.203) with Microsoft
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Wed, 1 Apr
+ 2026 10:29:55 +0000
+Received: from BN2PEPF00004FBF.namprd04.prod.outlook.com
+ (2603:10b6:208:559:cafe::a7) by IA4P221CA0010.outlook.office365.com
+ (2603:10b6:208:559::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9745.31 via Frontend Transport; Wed,
+ 1 Apr 2026 10:29:59 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ BN2PEPF00004FBF.mail.protection.outlook.com (10.167.243.185) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9769.17 via Frontend Transport; Wed, 1 Apr 2026 10:25:50 +0000
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 1 Apr
- 2026 05:25:49 -0500
-Received: from xhdipdslab46.xilinx.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Wed, 1 Apr 2026 05:25:46 -0500
-From: Abhijit Gangurde <abhijit.gangurde@amd.com>
-To: <jgg@ziepe.ca>, <leon@kernel.org>, <brett.creeley@amd.com>,
-	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>
-CC: <allen.hubbe@amd.com>, <nikhil.agarwal@amd.com>,
-	<linux-rdma@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Abhijit Gangurde <abhijit.gangurde@amd.com>
-Subject: [PATCH 4/4] RDMA/ionic: add completion timestamp to CQE format
-Date: Wed, 1 Apr 2026 15:55:01 +0530
-Message-ID: <20260401102501.3395305-5-abhijit.gangurde@amd.com>
+ 15.20.9769.17 via Frontend Transport; Wed, 1 Apr 2026 10:29:54 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 1 Apr
+ 2026 03:29:53 -0700
+Received: from drhqmail203.nvidia.com (10.126.190.182) by
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Wed, 1 Apr 2026 03:29:52 -0700
+Received: from moonraker.nvidia.com (10.127.8.14) by mail.nvidia.com
+ (10.126.190.182) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
+ Transport; Wed, 1 Apr 2026 03:29:50 -0700
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Thierry Reding <thierry.reding@kernel.org>
+CC: <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-tegra@vger.kernel.org>, Jon Hunter <jonathanh@nvidia.com>
+Subject: [PATCH V4 1/3] net: stmmac: Fix PTP ref clock for Tegra234
+Date: Wed, 1 Apr 2026 11:29:39 +0100
+Message-ID: <20260401102941.17466-2-jonathanh@nvidia.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260401102501.3395305-1-abhijit.gangurde@amd.com>
-References: <20260401102501.3395305-1-abhijit.gangurde@amd.com>
+In-Reply-To: <20260401102941.17466-1-jonathanh@nvidia.com>
+References: <20260401102941.17466-1-jonathanh@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-NVConfidentiality: public
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PEPF000099E0:EE_|SAWPR12MB999142:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6884ffcd-c2cd-4afc-dc53-08de8fd90bfd
+X-MS-TrafficTypeDiagnostic: BN2PEPF00004FBF:EE_|DS0PR12MB6581:EE_
+X-MS-Office365-Filtering-Correlation-Id: a9a7c11c-a1b9-4f15-af98-08de8fd99d68
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|7416014|1800799024|36860700016|18002099003|56012099003|22082099003;
+	BCL:0;ARA:13230040|7416014|36860700016|82310400026|376014|1800799024|56012099003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	I4kDUpiUVez6sgvKdYIG2nhx6n/nrKUiuG6DBnLdVju9zgFKGUlTJVqYk868zremDbViTG7VXGpkmgxjANuOL1B2mKmVrz3c7GVDmMmt8SoUmhbHiFpMMN25nP9mWcMjaXbmrSkWot9/jTyse+tVM8r37xg5J2nWg/mGIARKxD8CuxU2YaaMtpF+5rVp7I0bT5yzjGcTHGgveOjNTnmHhWfgBBVYhMHQf9EbspjyrPjU9gKuBc7wron6TiU4NIVCaif375HLp7VOxgHml+YyWCJSPVpFM0abslpFgEZLQJqkhUCOwMQWHZbYkCr//p767OKQwUjFmpRFl5DYEuB/LaEaWC3HAaVBr+JPqxOHoSeGMlR7pTd+PbV2rh6TtOmol89WUODP0k4AveRHxa+im0o98B05/ZGWYTMFUU12+Buj8/d2NaW9dU1YJSOkau26zUREOnjcbJv4Z1CC65MfVREvP1q0EAmrBMDmd40YJD4BdIz7WBuLk58nrweoC4o0wXk9Lr72cK5Xgwil5SzF3FgZc0lxltqYV82RPSfPvuox9jSn9u7eDCsFrCMXNvUbfWgUHwIfDkReuEdwSCeA4y9R7IAklBG1tJc+K2TFpWN7gioXlhrjWE/tZzDStg9vT+AADWiCdW5RX2p3PnnjxOOPSGx0BNsD2Lx+2mVDJ221ekkL0uBO0y8N2rtIkOsBx1+MKTpL/QR8NGLYQAIAaQhFkp82/u3NcUq3swCe7q2XEOvdVXvKhoKnBZQdu/jZZiTWpcjy5OTjhHqS1dIRaQ==
+	Xvj0JS/WIezLNJgnWgvSJOsZy6480r4Id2r0rCr2sWnMwUgVBxM8zcEpCJwE4w5UA4mz15a9zgZF00iZE95o8bxyiwOaytg6eQrC0qw9KZOv9q8WWh7CVgmj2a8aRei/owITJv3bJIDualEu66OpfZhNzzxlKKd2jT8BsKJT2/47ingYridDAp55BA65Bkz4ztE3AJ1NGIiEx8e3icv7OrO5zU1ha0IZf5GjvHM8OdsxXdPmtvZnnFbRADKe3No+GQjHBfxxsQR+oecYDoK9dFodE/9S9KcPENMZbEpW8GGuzytay8PvrWNkW/34OuecaWqv7KzEuw9QZKEsiB/qlk6kC3Q8i8nZHiAo9kkSxtsKwNcXLRq3Jw1JXsE/F10naESZUa6Yc5/4SYzWe1ePMrQBBcT3f3dlnUyoKzk5e7sL5b5uLGUFqV06wgo/WxiWKLSVelrrkiS2GioAJVEo613zzRowgAaWE0fbFizJyKRBNjplLurEyGRN8OPpyHq0VG+oEn43kFe6Qk5rICB+0AE2MU6psTFS72Kc1wnkvPb5o0VF/ZZxVyHDgLEDmjpPYWdsuephR7WLUUsORofM9u3DaLPQTWKbx9o2TA0XhQdHcTBX0JNvJOtuv5XuP6eV8+afAg8OKmjIvaKJCImTpMb9zd+zBYsNyqJ05CkVJXZJ33A8rMu2fOqogLfXoyg7fT68yLl1a2zYWp/aLQn5kzVuS8conzgqgVW0xOgBcVcSnEDki74repJUk+BucyaWl0VkKPo+JgthvXN1ypEEpw==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(7416014)(1800799024)(36860700016)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(36860700016)(82310400026)(376014)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	ZVSPEImS2QiqFg3W0cHxDHcZuxa6VvwTlqJuavfwne8JsiJIjpU5Vq83pEy3Kw+UAV9kYkGceGwpppOdv9+GFaUP+I5Jr+a8TEf0bMjarz8Kz8t45F7eBZreJ/z/MwLYKfdpb92p7w/7pXqgqY07yno3gajzMlfj1NgHnC3u0zcBPf0kAIro/C9tBf+Y0n4tTidK/jiXamG0pVSNyR7QrQiIO0CRvtxzzBF1m5iInLyRZGTGYKhcz0vON/Z+3IcVqAmNAxTE/Q8KeWXIViuEDkNlhpq3rosqJqKrh+GKzJl1/1NCty7jSGF4M4NeyTXXYRkttE5Ps+doCIs4nntyJJJTsvvu8kfjv4n9pUjJ+rzOqeGXrbTIIULL6nLq6BGBWjurV6yoiV9p34N5avsKC/RReypgDJD1YVFj4e9q496Q0AX6Q6wh/Az6qa+06mfH
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Apr 2026 10:25:50.4282
+	7Yau2fZfhBHwEtFoOD47bGGP5Q1xkZaGNRepGgk5gzSTubVLFwRGtH4GHVtAzAKFgourvbewEUtbAlM0Kv4iv4w1685gVFDt4UukO4QHgBafSP7lRzTLjUOepdg37Al2WZebiF8bjkjWx5lXCXurCxaPI34C80AFx/0ZyUhmqFd9T4HpY3etTAWelu1k6XFuO+TvpxHvhqdF6USTrIAg9ynn1TyoIwIHXSdC3nx4pajGSx+Iyp6HCqHmnrHG74Ij3QGNM+VgoxgUreT0FUrlm/BlrWHDgzCeJghgO3r8dri3I8Pc4xisWd/rkWtf2tlN4bYzfBaLXwet7/mi9qkJfOBih1L7EDE+zeVuoubQx9APPK1euP0pMvJsi1L0ECj69fgFr2vulgFESZg5OhGFs6XCnqmIO3Bu/+MV840OdEpc+szOrDrNDhI3iAVRbIaV
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Apr 2026 10:29:54.2808
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6884ffcd-c2cd-4afc-dc53-08de8fd90bfd
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-Network-Message-Id: a9a7c11c-a1b9-4f15-af98-08de8fd99d68
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	DS3PEPF000099E0.namprd04.prod.outlook.com
+	BN2PEPF00004FBF.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SAWPR12MB999142
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6581
 
-Update the CQE structure to include hardware timestamp.
-When firmware supports RDMA completion timestamps,
-the hardware populates the timestamp field.
+Since commit 030ce919e114 ("net: stmmac: make sure that ptp_rate is not
+0 before configuring timestamping") was added the following error is
+observed on Tegra234:
 
-Co-developed-by: Allen Hubbe <allen.hubbe@amd.com>
-Signed-off-by: Allen Hubbe <allen.hubbe@amd.com>
-Signed-off-by: Abhijit Gangurde <abhijit.gangurde@amd.com>
+ ERR KERN tegra-mgbe 6800000.ethernet eth0: Invalid PTP clock rate
+ WARNING KERN tegra-mgbe 6800000.ethernet eth0: PTP init failed
+
+It turns out that the Tegra234 device-tree binding defines the PTP ref
+clock name as 'ptp-ref' and not 'ptp_ref' and the above commit now
+exposes this and that the PTP clock is not configured correctly.
+
+In order to update device-tree to use the correct 'ptp_ref' name, update
+the Tegra MGBE driver to use 'ptp_ref' by default and fallback to using
+'ptp-ref' if this clock name is present.
+
+Fixes: d8ca113724e7 ("net: stmmac: tegra: Add MGBE support")
+Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
 ---
- drivers/infiniband/hw/ionic/ionic_datapath.c | 43 ++++++++++----------
- drivers/infiniband/hw/ionic/ionic_fw.h       | 12 ++++--
- 2 files changed, 31 insertions(+), 24 deletions(-)
+ .../net/ethernet/stmicro/stmmac/dwmac-tegra.c | 20 +++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/ionic/ionic_datapath.c b/drivers/infiniband/hw/ionic/ionic_datapath.c
-index aa2944887f23..3e2300f7ea10 100644
---- a/drivers/infiniband/hw/ionic/ionic_datapath.c
-+++ b/drivers/infiniband/hw/ionic/ionic_datapath.c
-@@ -32,6 +32,7 @@ static int ionic_flush_recv(struct ionic_qp *qp, struct ib_wc *wc)
- {
- 	struct ionic_rq_meta *meta;
- 	struct ionic_v1_wqe *wqe;
-+	u64 wqe_idx;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c
+index b4b39e6a169e..3af2f001fada 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c
+@@ -9,7 +9,7 @@
+ #include "stmmac_platform.h"
  
- 	if (!qp->rq_flush)
- 		return 0;
-@@ -40,21 +41,22 @@ static int ionic_flush_recv(struct ionic_qp *qp, struct ib_wc *wc)
- 		return 0;
- 
- 	wqe = ionic_queue_at_cons(&qp->rq);
-+	wqe_idx = le64_to_cpu(wqe->base.wqe_idx);
- 
--	/* wqe_id must be a valid queue index */
--	if (unlikely(wqe->base.wqe_id >> qp->rq.depth_log2)) {
-+	/* wqe_idx must be a valid queue index */
-+	if (unlikely(wqe_idx >> qp->rq.depth_log2)) {
- 		ibdev_warn(qp->ibqp.device,
- 			   "flush qp %u recv index %llu invalid\n",
--			   qp->qpid, (unsigned long long)wqe->base.wqe_id);
-+			   qp->qpid, (unsigned long long)wqe_idx);
- 		return -EIO;
- 	}
- 
--	/* wqe_id must indicate a request that is outstanding */
--	meta = &qp->rq_meta[wqe->base.wqe_id];
-+	/* wqe_idx must indicate a request that is outstanding */
-+	meta = &qp->rq_meta[wqe_idx];
- 	if (unlikely(meta->next != IONIC_META_POSTED)) {
- 		ibdev_warn(qp->ibqp.device,
- 			   "flush qp %u recv index %llu not posted\n",
--			   qp->qpid, (unsigned long long)wqe->base.wqe_id);
-+			   qp->qpid, (unsigned long long)wqe_idx);
- 		return -EIO;
- 	}
- 
-@@ -133,8 +135,8 @@ static int ionic_poll_recv(struct ionic_ibdev *dev, struct ionic_cq *cq,
- {
- 	struct ionic_qp *qp = NULL;
- 	struct ionic_rq_meta *meta;
-+	u16 vlan_tag, wqe_idx;
- 	u32 src_qpn, st_len;
--	u16 vlan_tag;
- 	u8 op;
- 
- 	if (cqe_qp->rq_flush)
-@@ -144,7 +146,7 @@ static int ionic_poll_recv(struct ionic_ibdev *dev, struct ionic_cq *cq,
- 
- 	st_len = be32_to_cpu(cqe->status_length);
- 
--	/* ignore wqe_id in case of flush error */
-+	/* ignore wqe_idx in case of flush error */
- 	if (ionic_v1_cqe_error(cqe) && st_len == IONIC_STS_WQE_FLUSHED_ERR) {
- 		cqe_qp->rq_flush = true;
- 		cq->flush = true;
-@@ -160,20 +162,19 @@ static int ionic_poll_recv(struct ionic_ibdev *dev, struct ionic_cq *cq,
- 		return -EIO;
- 	}
- 
--	/* wqe_id must be a valid queue index */
--	if (unlikely(cqe->recv.wqe_id >> qp->rq.depth_log2)) {
-+	wqe_idx = le64_to_cpu(cqe->recv.wqe_idx_timestamp) & IONIC_V1_CQE_WQE_IDX_MASK;
-+	/* wqe_idx must be a valid queue index */
-+	if (unlikely(wqe_idx >> qp->rq.depth_log2)) {
- 		ibdev_warn(&dev->ibdev,
--			   "qp %u recv index %llu invalid\n",
--			   qp->qpid, (unsigned long long)cqe->recv.wqe_id);
-+			   "qp %u recv index %u invalid\n", qp->qpid, wqe_idx);
- 		return -EIO;
- 	}
- 
--	/* wqe_id must indicate a request that is outstanding */
--	meta = &qp->rq_meta[cqe->recv.wqe_id];
-+	/* wqe_idx must indicate a request that is outstanding */
-+	meta = &qp->rq_meta[wqe_idx];
- 	if (unlikely(meta->next != IONIC_META_POSTED)) {
- 		ibdev_warn(&dev->ibdev,
--			   "qp %u recv index %llu not posted\n",
--			   qp->qpid, (unsigned long long)cqe->recv.wqe_id);
-+			   "qp %u recv index %u not posted\n", qp->qpid, wqe_idx);
- 		return -EIO;
- 	}
- 
-@@ -408,7 +409,7 @@ static int ionic_comp_msn(struct ionic_qp *qp, struct ionic_v1_cqe *cqe)
- static int ionic_comp_npg(struct ionic_qp *qp, struct ionic_v1_cqe *cqe)
- {
- 	struct ionic_sq_meta *meta;
--	u16 cqe_idx;
-+	u16 wqe_idx;
- 	u32 st_len;
- 
- 	if (qp->sq_flush)
-@@ -430,8 +431,8 @@ static int ionic_comp_npg(struct ionic_qp *qp, struct ionic_v1_cqe *cqe)
- 		return 0;
- 	}
- 
--	cqe_idx = cqe->send.npg_wqe_id & qp->sq.mask;
--	meta = &qp->sq_meta[cqe_idx];
-+	wqe_idx = le64_to_cpu(cqe->send.npg_wqe_idx_timestamp) & qp->sq.mask;
-+	meta = &qp->sq_meta[wqe_idx];
- 	meta->local_comp = true;
- 
- 	if (ionic_v1_cqe_error(cqe)) {
-@@ -811,7 +812,7 @@ static void ionic_prep_base(struct ionic_qp *qp,
- 	meta->signal = false;
- 	meta->local_comp = false;
- 
--	wqe->base.wqe_id = qp->sq.prod;
-+	wqe->base.wqe_idx = cpu_to_le64(qp->sq.prod);
- 
- 	if (wr->send_flags & IB_SEND_FENCE)
- 		wqe->base.flags |= cpu_to_be16(IONIC_V1_FLAG_FENCE);
-@@ -1205,7 +1206,7 @@ static int ionic_prep_recv(struct ionic_qp *qp,
- 
- 	meta->wrid = wr->wr_id;
- 
--	wqe->base.wqe_id = meta - qp->rq_meta;
-+	wqe->base.wqe_idx = cpu_to_le64(meta - qp->rq_meta);
- 	wqe->base.num_sge_key = wr->num_sge;
- 
- 	/* total length for recv goes in base imm_data_key */
-diff --git a/drivers/infiniband/hw/ionic/ionic_fw.h b/drivers/infiniband/hw/ionic/ionic_fw.h
-index adfbb89d856c..ee23062a1762 100644
---- a/drivers/infiniband/hw/ionic/ionic_fw.h
-+++ b/drivers/infiniband/hw/ionic/ionic_fw.h
-@@ -332,7 +332,7 @@ struct ionic_v1_cqe {
- 			__le16		old_rq_cq_cindex;
- 		} admin;
- 		struct {
--			__u64		wqe_id;
-+			__le64		wqe_idx_timestamp;
- 			__be32		src_qpn_op;
- 			__u8		src_mac[6];
- 			__be16		vlan_tag;
-@@ -342,13 +342,19 @@ struct ionic_v1_cqe {
- 			__u8		rsvd[4];
- 			__be32		msg_msn;
- 			__u8		rsvd2[8];
--			__u64		npg_wqe_id;
-+			__le64		npg_wqe_idx_timestamp;
- 		} send;
- 	};
- 	__be32				status_length;
- 	__be32				qid_type_flags;
+ static const char *const mgbe_clks[] = {
+-	"rx-pcs", "tx", "tx-pcs", "mac-divider", "mac", "mgbe", "ptp-ref", "mac"
++	"rx-pcs", "tx", "tx-pcs", "mac-divider", "mac", "mgbe", "ptp_ref", "mac"
  };
  
-+/* bits for cqe wqe_idx and timestamp */
-+enum ionic_v1_cqe_wqe_idx_timestamp_bits {
-+	IONIC_V1_CQE_WQE_IDX_MASK	= 0xffff,
-+	IONIC_V1_CQE_TIMESTAMP_SHIFT	= 16,
-+};
-+
- /* bits for cqe recv */
- enum ionic_v1_cqe_src_qpn_bits {
- 	IONIC_V1_CQE_RECV_QPN_MASK	= 0xffffff,
-@@ -423,7 +429,7 @@ static inline u32 ionic_v1_cqe_qtf_qid(u32 qtf)
+ struct tegra_mgbe {
+@@ -216,6 +216,7 @@ static int tegra_mgbe_probe(struct platform_device *pdev)
+ 	struct plat_stmmacenet_data *plat;
+ 	struct stmmac_resources res;
+ 	struct tegra_mgbe *mgbe;
++	bool use_legacy_ptp = false;
+ 	int irq, err, i;
+ 	u32 value;
  
- /* v1 base wqe header */
- struct ionic_v1_base_hdr {
--	__u64				wqe_id;
-+	__le64				wqe_idx;
- 	__u8				op;
- 	__u8				num_sge_key;
- 	__be16				flags;
+@@ -257,9 +258,24 @@ static int tegra_mgbe_probe(struct platform_device *pdev)
+ 	if (!mgbe->clks)
+ 		return -ENOMEM;
+ 
+-	for (i = 0; i <  ARRAY_SIZE(mgbe_clks); i++)
++	/*
++	 * Older device-trees use 'ptp-ref' rather than 'ptp_ref'.
++	 * Fall back when the legacy name is present.
++	 */
++	if (of_property_match_string(pdev->dev.of_node, "clock-names",
++				     "ptp-ref") >= 0)
++		use_legacy_ptp = true;
++
++	for (i = 0; i < ARRAY_SIZE(mgbe_clks); i++) {
+ 		mgbe->clks[i].id = mgbe_clks[i];
+ 
++		if (use_legacy_ptp && !strcmp(mgbe_clks[i], "ptp_ref")) {
++			dev_warn(mgbe->dev,
++				 "Device-tree update needed for PTP clock!\n");
++			mgbe->clks[i].id = "ptp-ref";
++		}
++	}
++
+ 	err = devm_clk_bulk_get(mgbe->dev, ARRAY_SIZE(mgbe_clks), mgbe->clks);
+ 	if (err < 0)
+ 		return err;
 -- 
 2.43.0
 
