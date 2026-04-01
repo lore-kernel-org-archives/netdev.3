@@ -1,44 +1,44 @@
 Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86D92517AF;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27A53A9D88;
 	Wed,  1 Apr 2026 12:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775046369; cv=none; b=P5P8Rf9avZchsH7+2BsgIWG1dqljbamoA+iI3M2iQI1pQAfOkmfnL7P4pbV9Jl2SLTctdXon6W8jC/vmHviWMQlx6dCxkEs0d1lWMfmfduKN2H2SV2CRZvc/6cvfpw0//3YMAkEyEYiG1h6q+ZYOJ2CtM91c8oxof1arh9LPEAs=
+	t=1775046369; cv=none; b=C4uMQKcccSljIhmgcOT4V3jleLYTk8dmmDloF3d7q8t5HUvPt0DfRSqklixvmAjHMj+sCfNV/+UsNiT6oOqHHfo4QGqTynvveWUec7ZZtLOUuL6wqrC5gfohB0fg7v9G8EDygbClRWw6aZ9KllT/62TJBsxtOM918/SPrCpjiR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775046369; c=relaxed/simple;
-	bh=gMJ4qA4+BpPEiz7VEhBVeNQFffnLFENP2d7DPETg0gw=;
+	bh=67pUq+Zzouat6pnv7Ak0f4xBhOcxS1uB3sfXCVAiQR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zl2f0vCXcPwia/eTbtifyQDsMpVeRib6K7P71qT8ht2hs6EH30MAaHyluDsSPi9mkqnoDxBT7uXqIlgI5lg33FR+6hgk5vXhAuM4gsivZJZpseg/Ym13FlO2KihoCo4iNR3PsyjPKEtbT/UbO2IpA5lZJSA6grbXgm612c9QfuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=qUPqjwtj; arc=none smtp.client-ip=188.40.3.216
+	 MIME-Version:Content-Type; b=I9B4m4RAXyVIDKWj+AKMO4OYZJgXhWE6ad2EfvpovArFZYuO8f9PZWGiHpT2V1P6GUOtqvfQU9WjZ/wIgJmPjQae3DTg4m96asq0sGJOFvk5E30dm52j0BbEegfSnpe9+OeyECJ4Di/sHm40uGZg6FHzIdzCl9hvm2X1bvEssRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=cY/aMbdt; arc=none smtp.client-ip=188.40.3.216
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="qUPqjwtj"
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="cY/aMbdt"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:Content-Type:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=E2G3cP9X4cNiCp8YAHg4IjVGgRKZxQbDkjOgRFSfK7s=; b=qUPqjwtj78zGf4p2xh8VKaEQ+Q
-	nXh0ts7fQKRqRNCbcMe+P/Qdiy6M/f2n/Gkt+xCOOKyQSjQAVmiVAsngP00UMTqqrNikSusWRdnyJ
-	HoAOnGFoKlFfEWH+8ewMciN9PotAn5dqkZuL5zQbxgSz+r7SPxXXi1AfOk0u3DUJuj9zE4HxWSclL
-	Wxr41qgXd//s/IAhl9wvXLV+9vWEWF3NytCTUTN7M9548MRofsfaMaCtjzwh0qzQA3bgMJGqo9ExM
-	hl/fGl4BPN3TATHfh8JfCQLqCLmTz+Iso5CHa0lnTN2KXpe7xM2cNxBsWPbnoqe37oLgDZG+CGlaY
-	5u0no4Uw==;
+	bh=iXZKh39YA9QQda5suRG0NPBgfkw/vmM7xN5WKLiYDaU=; b=cY/aMbdtyM7606X2A+IiHSBqXd
+	Gx1sHTKTaYJDjkJRa+JgRFvk/dUSEYTeNJbzFdV6Pfy/0gFTKq1l8yHFL+rN+YuaqLlCn+YLXjL5N
+	3wexm59ZPQjxoWswaGfuyiybwJekliqtE2RQXPK4URSmkJW1H33stARljCt4FjYwAEpAwhzYTCrS8
+	z9HtTjX//SRyMXBKnFS9QUgpngFo6haEyF28w2froKsDDJMzg3k9F5Fvm6QKjS9me8uFAg08QhioA
+	+oKadGNiQqS3ETWLLkOnQTn8oyrxbfYZNCY+5T0cYAMJQJszlI/5qHN8IOj7CNJlkZvxMwhZSA6J0
+	pCTApuWw==;
 Received: from sslproxy07.your-server.de ([78.47.199.104])
 	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <nora.schiffer@ew.tq-group.com>)
-	id 1w7ue3-000IQk-26;
-	Wed, 01 Apr 2026 14:26:03 +0200
+	id 1w7ue5-000IRC-1N;
+	Wed, 01 Apr 2026 14:26:05 +0200
 Received: from localhost ([127.0.0.1])
 	by sslproxy07.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <nora.schiffer@ew.tq-group.com>)
-	id 1w7ue3-00089b-0X;
-	Wed, 01 Apr 2026 14:26:02 +0200
+	id 1w7ue4-00089b-35;
+	Wed, 01 Apr 2026 14:26:04 +0200
 From: Nora Schiffer <nora.schiffer@ew.tq-group.com>
 To: Nishanth Menon <nm@ti.com>,
 	Vignesh Raghavendra <vigneshr@ti.com>,
@@ -62,9 +62,9 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	linux-arm-kernel@lists.infradead.org,
 	linux@ew.tq-group.com,
 	Nora Schiffer <nora.schiffer@ew.tq-group.com>
-Subject: [PATCH v3 2/5] dt-bindings: phy: ti: phy-gmii-sel: Add ti,j722s-phy-gmii-sel compatible
-Date: Wed,  1 Apr 2026 14:25:22 +0200
-Message-ID: <5ac1c52827a1a246584dddb62335f9ce4715eceb.1775045279.git.nora.schiffer@ew.tq-group.com>
+Subject: [PATCH v3 5/5] arm64: dts: ti: k3-j722s-main: use J722S compatibles for WIZ, gmii-sel and CPSW3G
+Date: Wed,  1 Apr 2026 14:25:25 +0200
+Message-ID: <55607ba1ca2bcf5c60a7d1e3c88fd20053a8be5c.1775045279.git.nora.schiffer@ew.tq-group.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1775045279.git.nora.schiffer@ew.tq-group.com>
 References: <cover.1775045279.git.nora.schiffer@ew.tq-group.com>
@@ -78,50 +78,52 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: Clear (ClamAV 1.4.3/27958/Wed Apr  1 08:24:34 2026)
 
-The J722S gmii-sel is mostly identical to the AM64's, but additionally
-supports SGMII. The AM64 compatible ti,am654-phy-gmii-sel is used as a
-fallback.
+Update WIZ, gmii-sel and CPSW3G to use the J722S-specific compatible
+strings, enabling SGMII support. The fallback compatibles preserve
+compatibility of the updated Device Trees with older kernels.
 
 Signed-off-by: Nora Schiffer <nora.schiffer@ew.tq-group.com>
 ---
- .../bindings/phy/ti,phy-gmii-sel.yaml         | 24 ++++++++++++-------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ arch/arm64/boot/dts/ti/k3-j722s-main.dtsi | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/phy/ti,phy-gmii-sel.yaml b/Documentation/devicetree/bindings/phy/ti,phy-gmii-sel.yaml
-index be41b4547ec6d..6e12a75100eb8 100644
---- a/Documentation/devicetree/bindings/phy/ti,phy-gmii-sel.yaml
-+++ b/Documentation/devicetree/bindings/phy/ti,phy-gmii-sel.yaml
-@@ -47,15 +47,21 @@ description: |
+diff --git a/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi b/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi
+index 9ee5d0c8ffd1e..70f430aa3a944 100644
+--- a/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi
+@@ -18,7 +18,7 @@ serdes_refclk: clk-0 {
  
- properties:
-   compatible:
--    enum:
--      - ti,am3352-phy-gmii-sel
--      - ti,dra7xx-phy-gmii-sel
--      - ti,am43xx-phy-gmii-sel
--      - ti,dm814-phy-gmii-sel
--      - ti,am654-phy-gmii-sel
--      - ti,j7200-cpsw5g-phy-gmii-sel
--      - ti,j721e-cpsw9g-phy-gmii-sel
--      - ti,j784s4-cpsw9g-phy-gmii-sel
-+    oneOf:
-+      - items:
-+          - enum:
-+              - ti,am3352-phy-gmii-sel
-+              - ti,dra7xx-phy-gmii-sel
-+              - ti,am43xx-phy-gmii-sel
-+              - ti,dm814-phy-gmii-sel
-+              - ti,am654-phy-gmii-sel
-+              - ti,j7200-cpsw5g-phy-gmii-sel
-+              - ti,j721e-cpsw9g-phy-gmii-sel
-+              - ti,j784s4-cpsw9g-phy-gmii-sel
-+      - items:
-+          - enum:
-+              - ti,j722s-phy-gmii-sel
-+          - const: ti,am654-phy-gmii-sel
+ &cbass_main {
+ 	serdes_wiz0: phy@f000000 {
+-		compatible = "ti,am64-wiz-10g";
++		compatible = "ti,j722s-wiz-10g", "ti,am64-wiz-10g";
+ 		ranges = <0x0f000000 0x0 0x0f000000 0x00010000>;
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+@@ -56,7 +56,7 @@ serdes0: serdes@f000000 {
+ 	};
  
-   reg:
-     maxItems: 1
+ 	serdes_wiz1: phy@f010000 {
+-		compatible = "ti,am64-wiz-10g";
++		compatible = "ti,j722s-wiz-10g", "ti,am64-wiz-10g";
+ 		ranges = <0x0f010000 0x0 0x0f010000 0x00010000>;
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+@@ -451,6 +451,14 @@ pcie0_ctrl: pcie0-ctrl@4070 {
+ 	};
+ };
+ 
++&cpsw3g {
++	compatible = "ti,j722s-cpsw-nuss", "ti,am642-cpsw-nuss";
++};
++
++&phy_gmii_sel {
++	compatible = "ti,j722s-phy-gmii-sel", "ti,am654-phy-gmii-sel";
++};
++
+ &oc_sram {
+ 	reg = <0x00 0x70000000 0x00 0x40000>;
+ 	ranges = <0x00 0x00 0x70000000 0x40000>;
 -- 
 TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
 Amtsgericht München, HRB 105018
