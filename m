@@ -1,95 +1,132 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C39A2E06EF
-	for <netdev@vger.kernel.org>; Wed,  1 Apr 2026 07:41:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA42137E2E9
+	for <netdev@vger.kernel.org>; Wed,  1 Apr 2026 07:43:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775029335; cv=none; b=Xzh5jpQMEvpTvXvr+4ixEiKLmGul3vXhS7ykOpgQkPI4MRTF6pFYkQIe4IzhmS7LkmeNOGi+XhJzA3+JwVhtBfhdBn21nxaZW2xuspx6EV39QBT/qH8mS98AXDN4HJBmrLFxQa//aj9g7TN9Ap37u2RcaKvVnQQRTlL5ZtPqZtA=
+	t=1775029429; cv=none; b=QjiY3fEitFvYwV2026TzcywogpHxgQSOAQ8LlWk+g87t4Pv8DV56OlYbpdZYRagQhJ16hotdYexN7Kcv1eYgFl0OXncXrq+5jtX6Smoh2ZA6hQOVlWOI90A6xZuaWN5BIspyVUGr8BabQHJfePRnFFwuL4giTS+KX3o4xqZp9XA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775029335; c=relaxed/simple;
-	bh=omeWshwr8teoYM4DAKXNSFFfci8Xy08FvnAKbjN9YzA=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=pO/1CNcVz5SsJ0vgGtYlODqx8bZX8AZNqk03DIqrKj4iqfI0bQvyAiDrlHOEGzLG7EhdaGDooURy+S+lmcOM9G4EcMv2Osh12+HB+cuDrwZLOzMotQfuZaTLzONyORz3qXg3cgKT6jpeovZmfeu5XtAP8INhND4X06x+I3aF98o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B1273A0304;
-	Wed,  1 Apr 2026 09:41:10 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1775029274; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=Xoi/+TPhDDN/NKwq5I85OXvtTwNxhwe0eRy/nEKKAT8=;
-	b=0zdLQ7blBmk6kFPReZJwDjei8coFpsHTU4MMSRqBwo0z/2RJ97W1XolvNBqWMhheCTo3bK
-	8NIW1B0Gbb6YZSYpUVXQrYrUVqQF1GucznqB8lsBmlSnzEJ3iYBdAigWWQWo1EHv/VH6bu
-	BwsZ0w39cWdrJJCcy6hG1l882+RzvwCiLvM8/1hePRMiGq6+bCFwsSJ2skGaICEBTtT5Ik
-	sHWSH9QpG+ipfU7wn3S37kwzUUpblcgweGuBSJbSohQ8HDmxG4wWVmr+yYWsmS5ZngLpIf
-	DftPJRSPpC43RF/QDPXK0AjMzeMYVti+ZaQ1OfsCI3RenYt6A4uUpEtdG8ytbA==
+	s=arc-20240116; t=1775029429; c=relaxed/simple;
+	bh=MGQjG9RG2L1BRwtJNuMG4DkE6vZDy5uaXGG6rrK/Dyw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HS7QwX62ISkOcUHRpaa63tDD9u4FfrfFrOaS3gEOrf8xiJEI9ZT62ZafaP9lr7xiqTIRgdE/DvsJ1nF6RnUPT2g/923xaa6sz4bCiM8dvwLCYTCYsFbO0qLPWjbUkuBdNOMU3VUrgUtQpqyS9gZSpEjOW+m2fRxUTiWouNj9WkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Nh+rKhKR; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Nh+rKhKR"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=/65kwVupnIGgGUwuTAfYyqPqn9Wa3MzMWivYlBM/6rY=; b=Nh+rKhKRfyJbFl7uiiVnfO+MMd
+	L+/aay38GK+K+bqZNkf00koAZ7e4+fnMLOwGuqCzrGw4S8wa/sHPRu1TOUU6APywSeEvKTq0SnkGH
+	ou3hFB6Mw58sasiQ+6XmwZhqXMB3wPItW+DnMPxc1ndX+eORW0g/4ASgrgOIS/Wd5Ua4YL0snHIR+
+	9QHwwMLO8SevjEtNz9zp0k9frHsYgGgiNbpuzYlwogVOhFh/f9DwfGEBoc/9H6ZLhEWM/5HUlyjgl
+	cTdDiL6cz4fe+E2amatXwmrR5kKmnuIXWOv2VDxdiq8Tnc5UPzr61zOSDimOvoHldaQD4vK6MbXf7
+	UBdWHPOg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:46488)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1w7qEo-000000002lS-0kjR;
+	Wed, 01 Apr 2026 08:43:42 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1w7qEi-000000004d6-1RDO;
+	Wed, 01 Apr 2026 08:43:36 +0100
+Date: Wed, 1 Apr 2026 08:43:36 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Nicolai Buchwitz <nb@tipi-net.de>, netdev@vger.kernel.org
+Subject: Re: RFC: phylink: disable PHY autonomous EEE when MAC manages LPI
+Message-ID: <aczMqBNesQH-tHx0@shell.armlinux.org.uk>
+References: <d86c53213a6328b701b8aabbde5d1c83@tipi-net.de>
+ <04ff15af-26be-4278-bc2a-889e7802d271@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 01 Apr 2026 09:41:10 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Justin Chen <justin.chen@broadcom.com>
-Cc: netdev@vger.kernel.org, pabeni@redhat.com, kuba@kernel.org,
- edumazet@google.com, davem@davemloft.net, andrew+netdev@lunn.ch,
- bcm-kernel-feedback-list@broadcom.com, florian.fainelli@broadcom.com,
- opendmb@gmail.com
-Subject: Re: [PATCH net v2 1/4] net: bcmgenet: fix off-by-one in
- bcmgenet_put_txcb
-In-Reply-To: <20260401003840.3112454-2-justin.chen@broadcom.com>
-References: <20260401003840.3112454-1-justin.chen@broadcom.com>
- <20260401003840.3112454-2-justin.chen@broadcom.com>
-Message-ID: <59b90453a26318d478cf8890b53afcce@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <04ff15af-26be-4278-bc2a-889e7802d271@lunn.ch>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On 1.4.2026 02:38, Justin Chen wrote:
-> The write_ptr points to the next open tx_cb. We want to return the
-> tx_cb that gets rewinded, so we must rewind the pointer first then
-> return the tx_cb that it points to. That way the txcb can be correctly
-> cleaned up.
+On Wed, Apr 01, 2026 at 12:56:08AM +0200, Andrew Lunn wrote:
+> On Tue, Mar 31, 2026 at 11:27:20PM +0200, Nicolai Buchwitz wrote:
+> > Hi
+> > 
+> > Some PHYs (e.g. Broadcom BCM54xx "AutogrEEEn") manage EEE LPI
+> > autonomously without forwarding LPI signaling to the MAC. This works
+> > fine when the MAC doesn't support EEE, but conflicts with MACs that
+> > implement their own LPI control via phylink's mac_enable_tx_lpi /
+> > mac_disable_tx_lpi.
+> > 
+> > When the MAC has lpi_capabilities set, the PHY should use Native EEE
+> > mode so the MAC can control LPI entry/exit and observe RX LPI
+> > transitions.
+> > 
+> > I'm thinking of a flag on phy_device (similar to mac_managed_pm) that
+> > phylink sets when the MAC has lpi_capabilities, and that PHY drivers
+> > check in config_init to disable their autonomous EEE mode:
+> > 
+> >   /* set by phylink when MAC manages LPI */
+> >   phydev->mac_managed_lpi = true;
+> > 
+> >   /* in bcm54xx_config_init: */
+> >   if (phydev->mac_managed_lpi)
+> >       bcm_phy_modify_exp(phydev, MII_BUF_CNTL0,
+> >                          AUTOGREEEN_EN, 0);
+> > 
+> > This came up while adding EEE support to the Cadence macb driver (used
+> > on Raspberry Pi 5 with a BCM54210PE PHY). The PHY's AutogrEEEn mode
+> > prevented the MAC from tracking LPI state. As a workaround, the
+> > Raspberry Pi tree currently carries a downstream patch that
+> > unconditionally disables AutogrEEEn for all BCM54xx PHYs, since both
+> > genet and macb now support EEE properly. That's obviously not suitable
+> > for upstream where other MACs paired with BCM54xx may not have LPI
+> > support.
+> > 
+> > Does this seem like a reasonable approach, or is there a better way to
+> > handle PHY autonomous EEE within phylink?
 > 
-> Fixes: 876dbadd53a7 ("net: bcmgenet: Fix unmapping of fragments in 
-> bcmgenet_xmit()")
-> Signed-off-by: Justin Chen <justin.chen@broadcom.com>
-> ---
->  drivers/net/ethernet/broadcom/genet/bcmgenet.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c 
-> b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> index 482a31e7b72b..0f6e4baba25b 100644
-> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> @@ -1819,15 +1819,15 @@ static struct enet_cb *bcmgenet_put_txcb(struct 
-> bcmgenet_priv *priv,
->  {
->  	struct enet_cb *tx_cb_ptr;
-> 
-> -	tx_cb_ptr = ring->cbs;
-> -	tx_cb_ptr += ring->write_ptr - ring->cb_ptr;
-> -
->  	/* Rewinding local write pointer */
->  	if (ring->write_ptr == ring->cb_ptr)
->  		ring->write_ptr = ring->end_ptr;
->  	else
->  		ring->write_ptr--;
-> 
-> +	tx_cb_ptr = ring->cbs;
-> +	tx_cb_ptr += ring->write_ptr - ring->cb_ptr;
-> +
->  	return tx_cb_ptr;
->  }
+> You should also think about it from the other direction. What happens
+> with the MAC does not indicate it supports EEE, but the PHY has
+> autonomous EEE. At some point in the future we are going to want the
+> PHY drivers to export API calls so that phylink/phylib can implement
+> ethtool set_eee and get_eee using this autonomous EEE.
 
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+Indeed - this needs to first be solved in phylib so that non-phylink
+drivers can work before adding support to phylink.
 
-Thanks
+> Maybe it makes more sense for Broadcom BCM54xx etc, to implement a
+> .set_eee() call which only accepts eee_enable == False, and when
+> called so, disables autonomous EEE. .get_eee() can similarly return
+> that EEE is disabled. When phylink sees the MAC implements EEE it can
+> calll into the PHY driver to turn off autonomous EEE. And we have a
+> path to later add support for turning on and fully configuring
+> autonomous EEE.
 
-Nicolai
+I think the current phylink_ethtool_[sg]et_eee() may eventually need
+tweaking - for the case where the MAC eee ops are populated but the
+MAC support is disabled for some reason - e.g. the instance doesn't
+support EEE but the driver does for other instances.
+
+However, I don't think we can re-use phy_ethtool_set_eee() for this -
+even with MAC based EEE, we still call through to phylib's
+phy_ethtool_set_eee() which would change the on-PHY EEE support in
+ways we wouldn't want. This call remains necessary because of the
+requirement to configure the EEE advertisement which happens at phylib
+level.
+
+I think we need a separate phylib interface which disables PHY-based
+EEE.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
