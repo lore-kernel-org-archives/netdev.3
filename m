@@ -1,195 +1,111 @@
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF9D03644D5
-	for <netdev@vger.kernel.org>; Wed,  1 Apr 2026 16:21:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775060462; cv=none; b=Cm8Rh6iJvMq0PchmAE3jg5kjhHhXVSqcvX2qvjP/3FIPCBQShdcyccCcuKvUrecDulgl/rr4tkGC8jqJaHhV29RMJfGCycwQBhAccSLDBmuxDOmsGJmoHyMr/qrqH5XjRYHX21GLg8MOFXswBkh1IxEl1XKfGxuFxPGVJOtHfNk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775060462; c=relaxed/simple;
-	bh=vqf1PiQgIrSLvLOIqCuthN86/GGCYXPRBreHnHltp80=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=REbcPzipV86HYS1Okxeup1fQKXMZlcXKhXwYE0PZiY0JcVFG0XEpCzyQswGX/IOZrfqC2aQWx+zOfYK3B8XGS1Nz+D5+nvDXJQpWC88Rn6HEFBdJ+kluiR0JSsBqCXu/HXswYBIfS7eUtcFM/F1RZhU3wGrHjxKJhCqSh/BnzNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BNE45O+3; arc=none smtp.client-ip=74.125.82.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30EB7472764
+	for <netdev@vger.kernel.org>; Wed,  1 Apr 2026 16:26:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775060819; cv=pass; b=q2CA3lyAhl7fu08VPe+TyeTg8tkVLnOr++ANJdFCTaDiw15BKbbd0NTfzN7u/PdSHiI3Tkz2383Rllt+tHHp+vVQ21DpKkdEEZ1iToiq/aeMy/m394yOe78DEGDbZRQBJAu7jRb2OspJOVgyew+YCcBPsZtWChnjwC9qyxSEF+4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775060819; c=relaxed/simple;
+	bh=aRnkEa25gfmVdvPFf+5MkiWXV/I4OmCVvJh9nqR0Y8I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Vr1lMPCtB9iuzHLaQNzxTh9xZFx6EigVWRmSWQF1ZjsyeLMgAqrvFp2410VVCTgXlMfqKa8l51Sg2C5smVg5SE18ugUiC9muU18g5qjYNwwKx6m/heBAEqttjkxmVHIppxA9PrSalXsUwA0DhpzcQ5A0WoMwbiF/JZtUGzskKo4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E05UbC01; arc=pass smtp.client-ip=209.85.218.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BNE45O+3"
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-2c160cb021cso7419164eec.1
-        for <netdev@vger.kernel.org>; Wed, 01 Apr 2026 09:21:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E05UbC01"
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b8f97c626aaso1279882466b.2
+        for <netdev@vger.kernel.org>; Wed, 01 Apr 2026 09:26:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775060813; cv=none;
+        d=google.com; s=arc-20240605;
+        b=N2+ZkamQdEBeHIrVBmiZpjjqYsiGw/xdbXLpS3na7PfyrDiForzQs1N8NFflh9N/Ia
+         4jXsrXBC9vGs+C1FtEIQRT39jX3JY0DcBnXFZ7WRa2gAwQqO42uWCc3hbnKrx2HnF2b6
+         QlWKLwtH3Mc9/8sqPpf/LE53tafpUzETTQo3d2QejQ6xGtiE6ZR2wQFRlfmjjFLniA/i
+         nqwXPN5SV34L/GPL/aJL8b41rnQhG7mFAYHl2pvLdNBsfp6DBkNGMX6v+Uv9V+CmK0NL
+         u7mVWqjhAG37pTwYtZkN16g2kcFG6ErVv6SYOQRa7A/LJBbK/cuwILbZ9aQKLJ7S9UYJ
+         gphw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=kxzG6nqvRd5o0MUgb1a8DsaU/+sSmmJoEEk2DEGOW88=;
+        fh=PVmNIy0A5AZkRSKSdwam8trLeJ3H7pr+mRbFQ3/VIV8=;
+        b=a4pTYWrcBI0goocaE9dgoVczul5JH6xofm1+WFuPnhS0vLoAtZR/d5H6KSQ3hzUdmN
+         Xy2EwqN4l21FbZh7LoyrS7r/wntIaPAV0TXhGsHe1Kg0/zmw8b7OB/+krqXuHGKZVhB4
+         KNr3rHI3Fq9SX87Ff6KVSFvxNaia1XHR7KLh5rGEBppcbMgZC6g3G53+X3Jq2alawemF
+         hRND5IuLRPaiLG0458o2bPcNNSlS8CI1ndgeOJ8SJWFz7FM5N7RksCPQWm3IxrD/nYkA
+         c/QptqCOlClfR8vpZKCrvoloHD0mVxSw7qRv7GlJvVrituRc1FXk3ZIcXkQcmROZlOXg
+         XwOg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775060460; x=1775665260; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6brUS/+KN+QlXTcwRDDuVwUelenxIPcKdQxQmBulR1c=;
-        b=BNE45O+3NVsAQGgQj1RNyaCUlBChtmDeBTLHeVtYINkc/ccArh4lb3w+uEBU5yahai
-         UNh+Ndpqd9XuNVjqnqwdaq0xc3owzEU237n17YEGADTta8CUXIn4orZYlC/VrSxGpAOc
-         Eh7dFf533GJO+rWiGiSInXk+Rvhn0y+ff4K/agx0KF4vqXSGo69d3Ygbv4O1AWDlZsMw
-         GmTCjdKykQ7jVnwmcHACAXfMCThmI0Uc2wk1chAaWtIxoOnK2+oqHf1EwEl/7LxUjKyF
-         W69NDNTHjl8nO5VW2zh4JPFrs3uOmeVM3ecRgox7fv3HLKiqQ/f5YGhEG+9a53YqUjuJ
-         uBHw==
+        d=gmail.com; s=20251104; t=1775060813; x=1775665613; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=kxzG6nqvRd5o0MUgb1a8DsaU/+sSmmJoEEk2DEGOW88=;
+        b=E05UbC01dvR0hXuKLJo4/RG1Gqc5LcrN3vlvUAGELbgG/G0Nb3RPD5uUGEpN0CL6+o
+         jIOAcuNyPNVluNCEuCF7aR7PMMhzM2QgRjtkCTjBt88XIxNnyUh0+O9elny0adx7TpAV
+         dYiCzJlWGoEtRN5ZMcwVZike1XMA0rYuxyQbm7SiXSJdcYwN+CFSRQtx+TYBR2fMCMh1
+         OPWXjsp6ylL2HGFWVyHnar3XEgdrBabuWpRxKkCBhI0jXVP3U3pqusF5dtumlhSitLbO
+         JpuswJgLy2BIVvJ2ZAksTjREj4LYApvKbEULwjrpqzzoru+LWrFetsB2ijXY6hptMTyr
+         MDYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775060460; x=1775665260;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6brUS/+KN+QlXTcwRDDuVwUelenxIPcKdQxQmBulR1c=;
-        b=HjoYfEv/wf61sH0BFKS41c51nXEQjCv/21ZUmUrN5k/+SnT6G0FFhfm7QfbJ/jTkgm
-         ruCZQjq0JsVWLPCu7mogVv+4qNbRfCYk10seMthwmLR4DXXfbeI2juX6EvlsiOIdjcsS
-         Ppd0/sM7B80r566K4zvU7ZQIajU6pqE3Ave09jPXPosN1s0qMXhF1TwhbICNuEvQA5z1
-         7yMxSkOy4nj3WhxqFWlTdkSWhOYxwrrQn3EIkpDMorKlYQGNPuyEEXlMyPEG21Tc1krO
-         qwxhFipLIF+ab/gHfMVptTVXkPI8YYFAAxCOTq3tr3/UMcwAmkreiLbWA+BMZVUuUrr1
-         F6hw==
-X-Forwarded-Encrypted: i=1; AJvYcCUshtP5dg0F+00+TkCAnIc47gmD+AkRj5gR8ic5H/paG0Sn6t+5NZ2RY/UI8nge4PQ8g7slKz4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNbCObf/4bp7mntMfSXPlfC3GhBX2taHAiNIaIQGZozdcMuRZt
-	mtS9MV4exw4IoaTmk3iItCMpktm8sCuCtuqL1/FPaH7QFLo9p+v0rCE=
-X-Gm-Gg: ATEYQzx30YBg6jsBQIBYsOEkWkmGEW2gEM2UdZSUkEXyLqPPKwRAHTbwKL0sebVcPwH
-	WGickeonihhhkdSprYIm3KhokBYfYg/QJ1PAjpOM17I8puHbF9zol7Re+MaxMSdbzrC/6LWNUym
-	oxH8lSrfHS3JxoniGXfaHeQM1250tYhvilYLjqDK2V08qSKAyIC4cBsTr8yesWPX93b/uY07hBd
-	DgoSIcvA+Co215/VkFyovbGcOKuTcBi7fvEFXmZeuV1xLwC532Jf0jeN+Pj5oW0iC0yAugEPtHc
-	x6O2Mez6H6OYqGWIS1/5beEBS0kOqS4iHoMHBRqDqpskE7mt3BECYtUkRMd2payZuOPV0IsAM/+
-	G80jjdCv1KW7lO4KUtUymNVCakfGg6ECKlgjxnYvxnYSbYUYcA2SLOeSS6MXEP86A+gJZdBNjqP
-	HL4FaABp8XjpS2AHGEzzUNatxw2kohROMuV1Szi1jvPP8M3SUa06PptipLJGx73GP+4IEL0GcEZ
-	g2tEsoWJCs6cUu59g==
-X-Received: by 2002:a05:7301:4090:b0:2c1:b26:8424 with SMTP id 5a478bee46e88-2c933d8e814mr2313816eec.33.1775060459420;
-        Wed, 01 Apr 2026 09:20:59 -0700 (PDT)
-Received: from localhost (c-76-102-12-149.hsd1.ca.comcast.net. [76.102.12.149])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ca792f3f54sm144003eec.7.2026.04.01.09.20.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Apr 2026 09:20:59 -0700 (PDT)
-Date: Wed, 1 Apr 2026 09:20:58 -0700
-From: Stanislav Fomichev <stfomichev@gmail.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	KP Singh <kpsingh@kernel.org>, Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
-	Guillaume Nault <gnault@redhat.com>,
-	David Woodhouse <dwmw@amazon.co.uk>, Kees Cook <kees@kernel.org>,
-	Alexei Lazar <alazar@nvidia.com>, Gal Pressman <gal@nvidia.com>,
-	Paul Moore <paul@paul-moore.com>, netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
-	oss-drivers@corigine.com, bridge@lists.linux.dev,
-	bpf@vger.kernel.org, linux-wireless@vger.kernel.org,
-	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-	torvalds@linux-foundation.org, jon.maddog.hall@gmail.com
-Subject: Re: [PATCH 6/6] net: Warn when processes listen on AF_INET sockets
-Message-ID: <ac1F6hIHcoZo-soO@mini-arch>
-Mail-Followup-To: Stanislav Fomichev <stfomichev@gmail.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	KP Singh <kpsingh@kernel.org>, Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
-	Guillaume Nault <gnault@redhat.com>,
-	David Woodhouse <dwmw@amazon.co.uk>, Kees Cook <kees@kernel.org>,
-	Alexei Lazar <alazar@nvidia.com>, Gal Pressman <gal@nvidia.com>,
-	Paul Moore <paul@paul-moore.com>, netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
-	oss-drivers@corigine.com, bridge@lists.linux.dev,
-	bpf@vger.kernel.org, linux-wireless@vger.kernel.org,
-	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-	torvalds@linux-foundation.org, jon.maddog.hall@gmail.com
-References: <20260401074509.1897527-1-dwmw2@infradead.org>
- <20260401074509.1897527-7-dwmw2@infradead.org>
+        d=1e100.net; s=20251104; t=1775060813; x=1775665613;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kxzG6nqvRd5o0MUgb1a8DsaU/+sSmmJoEEk2DEGOW88=;
+        b=PbgdfmeuKfzE/V1gT+MDchgSqcgvgG11vH05tGfLfCP33v1PoyGwtsGKwNfifJ/sFI
+         H0pWCmCv5Ptv2WLoMCfeQm0UCGSeUxa1t5udHl32XpjTRORK2YZtqmI369CeLASDtYFB
+         cxSbuQ2K5L5Bw/nbz6bXRynjQD/xZ2XqESG2RJ25zGJWDjnWDC9Pix0edcd0FgRlPLY9
+         4Tws8Fz4LCOOLgC+eJTMaH2VE2YDe65gqqAZqyKuOeQzlUz4XvGwSfrZ7w/a2+/sUeiL
+         SRbCpiVXzCzv9lGxeK5WHmBBeXsntTPJRpdRGczGlY84UvY+cP5JM1rDAFn2slHfMI08
+         E5Wg==
+X-Gm-Message-State: AOJu0Yzdfp5O/vK/uDtTKmF08IGALmHkCmJNhd/yP2QjTSxnRUAkHHMV
+	0MVtKh74VLl80xukoTUv/mhkTrJ47va4/HXALUs15sHg2KkTGI0MaeFJFpWJmrZ/zZuVX/9mWe2
+	tjV7XqDqlI2++ch/hAA2W8I3RWLV0M0g=
+X-Gm-Gg: ATEYQzzIY924yfhYzL1BNz3atbTxJTIeC4fC96QlPmXjHEq55q3sPReyyMsJUGeC7aZ
+	gnfcCTkB2Veu7vq7NOV/ZHiXbV7lpbHQC8fRp52UoaRrN1D6Qp3JtvJNNuapSE6x3z4OceuY6Xj
+	jfbkPyL9ap+FrmutC1IuBTv2Cv/Ett9Kv3/nFyAjvMrT0zNGmg4nhjRTkV2vqOD5RxqG1/vaLqd
+	8hadvaAzv+t6+/sGYB6erPv062lvAGVWcUlnjMyrq+7Do8qycXeBzQIyXRbhW6rZoOm9Lp5MC2R
+	iPbRMsaUDpdtPum8po7geqX49Q9tysAB4KDMM9w=
+X-Received: by 2002:a17:907:a604:b0:b98:1129:51 with SMTP id
+ a640c23a62f3a-b9c138e4238mr302325566b.17.1775060812773; Wed, 01 Apr 2026
+ 09:26:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260401074509.1897527-7-dwmw2@infradead.org>
+References: <act8zZGYpN9DJ4-w@secunet.com> <20260401045652.1807999-1-nicholas@carlini.com>
+In-Reply-To: <20260401045652.1807999-1-nicholas@carlini.com>
+From: I Viswanath <viswanathiyyappan@gmail.com>
+Date: Wed, 1 Apr 2026 21:56:40 +0530
+X-Gm-Features: AQROBzDWT2XlmBMeGQpas9U4Q_ShuQKK5Ui1C2yCXIWERyKl-doSNdd4GhAvh_o
+Message-ID: <CAPrAcgNbbcLrJDBs03=CQU0VzbqaEGi_h4gsrWY693ERsuTE1A@mail.gmail.com>
+Subject: Re: [PATCH v2] xfrm6: fix slab-out-of-bounds write in xfrm6_input_addr()
+To: nicholas@carlini.com
+Cc: netdev@vger.kernel.org, Steffen Klassert <steffen.klassert@secunet.com>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, "David S . Miller" <davem@davemloft.net>, 
+	Milad Nasr <srxzr@anthropic.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 04/01, David Woodhouse wrote:
-> From: David Woodhouse <dwmw@amazon.co.uk>
-> 
-> There is no need to listen on AF_INET sockets; a modern application can
-> listen on IPv6 (without IPV6_V6ONLY) and will accept connections from
-> the 20th century via IPv4-mapped addresses (::ffff:x.x.x.x) on the IPv6
-> socket.
-> 
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-> ---
->  net/ipv4/af_inet.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
-> index dc358faa1647..3838782a8437 100644
-> --- a/net/ipv4/af_inet.c
-> +++ b/net/ipv4/af_inet.c
-> @@ -240,6 +240,9 @@ int inet_listen(struct socket *sock, int backlog)
->  	struct sock *sk = sock->sk;
->  	int err = -EINVAL;
->  
-> +	pr_warn_once("process '%s' (pid %d) is listening on an AF_INET socket. Consider using AF_INET6 with IPV6_V6ONLY=0 instead.\n",
-> +		     current->comm, task_pid_nr(current));
-> +
->  	lock_sock(sk);
->  
->  	if (sock->state != SS_UNCONNECTED || sock->type != SOCK_STREAM)
-> -- 
-> 2.51.0
-> 
+On Wed, 1 Apr 2026 at 10:26, <nicholas@carlini.com> wrote:
 
-Does this also need to look at the proto? inet6_stream_ops seem to be
-using inet_listen as well.
+> -       if (1 + sp->len == XFRM_MAX_DEPTH) {
+> +       if (1 + sp->len >= XFRM_MAX_DEPTH) {
+>                 XFRM_INC_STATS(net, LINUX_MIB_XFRMINBUFFERERROR);
+>                 goto drop;
+>         }
 
-const struct proto_ops inet6_stream_ops = {
-        .family            = PF_INET6,
-        .owner             = THIS_MODULE,
-        .release           = inet6_release,
-        .bind              = inet6_bind,
-        .connect           = inet_stream_connect,       /* ok           */
-        .socketpair        = sock_no_socketpair,        /* a do nothing */
-        .accept            = inet_accept,               /* ok           */
-        .getname           = inet6_getname,
-        .poll              = tcp_poll,                  /* ok           */
-        .ioctl             = inet6_ioctl,               /* must change  */
-        .gettstamp         = sock_gettstamp,
-        .listen            = inet_listen,               /* ok           */
+If you look at other places where sp->len is incremented, you will
+notice the guard condition is always (sp->len == XFRM_MAX_DEPTH). This
+bug exists because in xfrm6_input.c, the greatest valid index is taken
+to be XFRM_MAX_DEPTH - 2 when it should be XFRM_MAX_DEPTH - 1.
+Therefore, The correct fix should be using the common guard not
+changing the guard to use >=
+
+On a tangential note, There is no guard present before the increment
+in xfrm_output.c which is probably another OOB bug
