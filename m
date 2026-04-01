@@ -1,125 +1,183 @@
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5180477E24
-	for <netdev@vger.kernel.org>; Wed,  1 Apr 2026 14:53:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 187602FFF8F
+	for <netdev@vger.kernel.org>; Wed,  1 Apr 2026 14:56:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775055227; cv=none; b=c8c7OKWPcRr3pguBwELLoPI/Jikp/Lk+iv1tpcKyJogqQ2CBjg2tny1l1PnVk5PohPGCFSruXLKBZ2btvr94t9MssTxK6tlVyab5r/IjcGTLs4HMw2I1uu1q2xLMINr/E5AUy372vk0C5mXk5gwg6dC7Avjjal8aRoki0cU1g/k=
+	t=1775055409; cv=none; b=YwtAXtS3aqIOTT4DGwkvScPBH1f3dwnqno4P+ID5WdV5XrN5L+G9R0gAzNwpGNpJOriu/SsLtU2TjpQsvkVmsZ1j+0W+D1wu/NZckrts9KkLgcA6lut8zAUG9urY/YKvCq1CRXKR1ZAhhdzTjUozNCqC2fx4nPI//x9kOqRQ8Mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775055227; c=relaxed/simple;
-	bh=WWc2WPGjnLDzGTWjnud0UH8yc9NV/+PJ1u9AIBSpiuQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TIhsm1PhIzzJjndzHSSnFsAj/AlejCCU5PsU1i0lyENF6GtpzfMI/MaESrjx+sNcp68ARfXWg6WnJnIBTT7qguUPGRbZlv36cVIkWeQlLJNvbVbC62uKGyX7kL7PGV0rF0d2+mguSJXi641GYhAgcwMED9myvhvq0MUGSNeToq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=rYE0InF1; arc=none smtp.client-ip=74.125.82.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	s=arc-20240116; t=1775055409; c=relaxed/simple;
+	bh=zmAIsh5TPGPWyaH9h1u8K4jk5A9WaffOj9BvsQ5Dack=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=JZbYXIzsgShFT8IJ+KvG+NZNYihbieacvWJqpp4maWc5P+A06bGA+CJzmbC8uwzBp2oN82ZbJlFTJCheweAS8GuBzsn+RxLxcZIfwSUY00zlff1YP8ALpA5W4a/t+tXdY2Fvv4/twYK8qsbGjE6rNvqX+8UPKyXpm+F7dy2/kE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=hw/eBYEO; arc=none smtp.client-ip=91.218.175.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="rYE0InF1"
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-2c156c4a9efso6766047eec.1
-        for <netdev@vger.kernel.org>; Wed, 01 Apr 2026 07:53:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1775055225; x=1775660025; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TQkiQzykTuUlpr+LQhcAQNW1WP+8TnEM/NAdEMX1s/E=;
-        b=rYE0InF17Hjcx9fw2kc66jzuRzXSqydwDfgGgy3y8voUavGZI7T/CikDhEVcgfekMc
-         uIvazRJ0S6o+SN86qvoQjLaVKMXp+NTy2Flm0V6OvZTDK5AWw+OJeDRkr0fD6ukYPydx
-         acIDiEq6V4TskpjXgw9L8AwiiweMEcWup95MFa0Jrzbq/A4mY4/5Aut/6v4uhoyAaZxN
-         xeMyv7vl6qgk5l0lD3MCcKHAgoEIWNnOU2eAJwcSiv0kW+JCueL/2y24+sIpB2RvYcl6
-         2AIDgpReKrUTFn5jk36xqW+8bPcOi9NarnElc77Xu4yno/Ft4kHE+IbJFKqXdXpgRgLQ
-         r44Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775055225; x=1775660025;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=TQkiQzykTuUlpr+LQhcAQNW1WP+8TnEM/NAdEMX1s/E=;
-        b=ldAD2wJDDJUs1Dc1C/BZC8N0imYv+RMeFGSv0ndbPE06Me6GR2dpNDls2F4WJJzlsj
-         NocqUT0n1ojPvB4bVeYv0PyYpTnhAVzJkl5plod/qm3kXfGyVyQozBxTgcMBBvyPrfmk
-         6hXZtmEy6Yz45vMKXMEMcp95Y/SECS6wHkGTEKyKzAL1WLDA2ZaPFYDKp9idR4TbQFZM
-         Lrsw4noiteNAU643oOf3usDMNzqmFyp2XPisZQb8UX+JTDqHpBthY6pgeuyIZkGrJChZ
-         qQbtpQlv5sarBYVo1ClY1Q3pUrBKulN4wpTk2sQ17TjLICN9AjJ0dms+DsCdbDve8PNX
-         8CYA==
-X-Gm-Message-State: AOJu0YxA6FgC+aX+bP37VbZLbUQrAfyaYa5q0JPuQ2qkWfmYWBXi448a
-	kRx+JGQF1/vs1z3iOQy5Qm75mDQenCiI6MtckE/84TD6Xy/kaMKJk+L8KORpk5ssyxKJD8h6vhU
-	uNR57
-X-Gm-Gg: ATEYQzwA+9jZl4WsjxGAMPTwQHs6BTEcETWCjZ2VwEuAuJYcl1WtAV8gz0bh1IysO53
-	NpJS6XbwLQmjC1sP6e3AdKHp4+Arp0Dt7K/0IGNQVkp9KxtuDnZdS+e4zxw20t6kgMv9+D2XWAk
-	E58LL1q3Wpvwz8NZJQp5sNQDsnsmpDZAQ9XUDHHCl4x8ltsNh7dI/KW0VlVJg0fXuTWs2cJSzQy
-	UHOoT6VI7wmlqEe06JkjRdKJXLaP36/a2KbDruBlPTfiddTPJLoYS4fIWoA2IPJHdZuIE7Y8WQE
-	g5Avumh/S3sdsIITNWNEvgdZ3A6rsXMtGLKlSNTs8e9t/MStayWSSUyo+D/LuRccWVgsWmmS+d8
-	dsnpz1VWsrYhUbiCx+1NDTFUXIK8LjIbFXvdp6bN8EcG9WRBvdIDDCegJYKH/HB154RMFoW5zfS
-	gFnsIPhF8OeeW+5THj49YXsw5lj2QQ/uR6
-X-Received: by 2002:a05:7300:2291:b0:2ca:2f21:64da with SMTP id 5a478bee46e88-2ca2f217676mr396507eec.0.1775055224489;
-        Wed, 01 Apr 2026 07:53:44 -0700 (PDT)
-Received: from phoenix.lan ([104.202.41.210])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c3c3bda13csm12804830eec.6.2026.04.01.07.53.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Apr 2026 07:53:44 -0700 (PDT)
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: netdev@vger.kernel.org
-Cc: Stephen Hemminger <stephen@networkplumber.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Yousuk Seung <ysseung@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net v2 7/7] net/sched: netem: fix slot delay calculation overflow
-Date: Wed,  1 Apr 2026 07:51:59 -0700
-Message-ID: <20260401145332.78285-8-stephen@networkplumber.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260401145332.78285-1-stephen@networkplumber.org>
-References: <20260401145332.78285-1-stephen@networkplumber.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="hw/eBYEO"
+Date: Wed, 01 Apr 2026 16:19:12 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775055405;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zmAIsh5TPGPWyaH9h1u8K4jk5A9WaffOj9BvsQ5Dack=;
+	b=hw/eBYEOa6ANBvKQ6dQqLqdn50aNhBEEfAswHqtoFJwkgq4Q2Znu9WLyLXv46lrxjDMDS7
+	7M7PybEWiuW0sI9BgAW9QQk6qjzLayTARCZBNS91Hs6X3qtChGS7tB6wPxnRuge3szD38r
+	w9MCkVVkAe8D0APflPTaHYFMYCm6VD8=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Luka Gejak <luka.gejak@linux.dev>
+To: Fernando Fernandez Mancera <fmancera@suse.de>, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
+CC: netdev@vger.kernel.org, fmaurer@redhat.com, horms@kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_net-next_v4_1/2=5D_net=3A_hs?=
+ =?US-ASCII?Q?r=3A_require_valid_EOT_supervision_TLV?=
+In-Reply-To: <8cf382ce-b110-4758-9de4-8944ba980ca3@suse.de>
+References: <20260401092324.52266-1-luka.gejak@linux.dev> <20260401092324.52266-2-luka.gejak@linux.dev> <4549f521-6395-4c26-921e-eaead7248a36@suse.de> <85A635E3-DF1B-42CA-B552-729943E5C0D5@linux.dev> <1a22150a-0f4c-412a-9789-ece497d1c92c@suse.de> <7540A920-76E7-4768-9E62-6666D0FECFA9@linux.dev> <8cf382ce-b110-4758-9de4-8944ba980ca3@suse.de>
+Message-ID: <72395245-A435-453C-925B-93417BA845F6@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Migadu-Flow: FLOW_OUT
 
-get_slot_next() computes a random delay between min_delay and
-max_delay using:
+On April 1, 2026 3:44:16 PM GMT+02:00, Fernando Fernandez Mancera <fmancera=
+@suse=2Ede> wrote:
+>On 4/1/26 3:31 PM, Luka Gejak wrote:
+>> On April 1, 2026 2:05:49 PM GMT+02:00, Fernando Fernandez Mancera <fman=
+cera@suse=2Ede> wrote:
+>>> On 4/1/26 1:06 PM, Luka Gejak wrote:
+>>>> On April 1, 2026 11:52:02 AM GMT+02:00, Fernando Fernandez Mancera <f=
+mancera@suse=2Ede> wrote:
+>>>>> On 4/1/26 11:23 AM, luka=2Egejak@linux=2Edev wrote:
+>>>>>> From: Luka Gejak <luka=2Egejak@linux=2Edev>
+>>>>>>=20
+>>>>>> Supervision frames are only valid if terminated with a zero-length =
+EOT
+>>>>>> TLV=2E The current check fails to reject non-EOT entries as the ter=
+minal
+>>>>>> TLV, potentially allowing malformed supervision traffic=2E
+>>>>>>=20
+>>>>>> Fix this by strictly requiring the terminal TLV to be HSR_TLV_EOT
+>>>>>> with a length of zero=2E
+>>>>>>=20
+>>>>>> Reviewed-by: Felix Maurer <fmaurer@redhat=2Ecom>
+>>>>>> Signed-off-by: Luka Gejak <luka=2Egejak@linux=2Edev>
+>>>>>> ---
+>>>>>=20
+>>>>> Hi,
+>>>>>=20
+>>>>> This has not been reviewed by Felix=2E Felix provided his Reviewed-b=
+y tag for the v1 which was completely different than this=2E
+>>>>>=20
+>>>>> Revisions of this patch:
+>>>>>=20
+>>>>> v3: https://lore=2Ekernel=2Eorg/all/20260329112313=2E17164-4-luka=2E=
+gejak@linux=2Edev/
+>>>>>=20
+>>>>> v2: https://lore=2Ekernel=2Eorg/all/20260326154715=2E38405-4-luka=2E=
+gejak@linux=2Edev/
+>>>>>=20
+>>>>> v1: https://lore=2Ekernel=2Eorg/all/20260324143503=2E187642-4-luka=
+=2Egejak@linux=2Edev/
+>>>>>=20
+>>>>> Are these contributions LLM/AI generated? I believe so based on the =
+email history=2E
+>>>>>=20
+>>>>> AI generated review on rtl8723bs: https://lore=2Ekernel=2Eorg/all/B2=
+394A3C-25FD-4CEA-8557-3E68F1F60357@linux=2Edev/
+>>>>>=20
+>>>>> Another AI generated review on rtl8723bs: https://lore=2Ekernel=2Eor=
+g/all/3831D599-655E-40B2-9E5D-9DF956013088@linux=2Edev/
+>>>>>=20
+>>>>> Likely an AI generated review on a 1 year old HSR patch: https://lor=
+e=2Ekernel=2Eorg/all/DHFG26KI6L23=2E1YCOVQ5SSYMO5@linux=2Edev/
+>>>>>=20
+>>>>> If these are indeed, AI generated contributions or reviews they shou=
+ld be disclosed beforehand=2E Also there is the Assisted-by: tag=2E Also no=
+te that developer must take full responsibility for the contribution which =
+means understanding it completely=2E
+>>>>>=20
+>>>>> https://docs=2Ekernel=2Eorg/process/coding-assistants=2Ehtml#signed-=
+off-by-and-developer-certificate-of-origin
+>>>>>=20
+>>>>> Thanks,
+>>>>> Fernando=2E
+>>>>=20
+>>>> Hi Fernando,
+>>>> About the Reviewed-by tag, that was my mistake=2E I forgot to remove =
+it
+>>>> when rebasing=2E And about AI=2E I=E2=80=99ve been using it to help f=
+ormat my
+>>>> emails and translate them into English since it isn't my native
+>>>> language=2E However, the technical logic and the code itself are my o=
+wn
+>>>> work, written without AI=2E
+>>>=20
+>>> So I don't think this change in code is related to rebasing at all=2E =
+The code in this function is identical when comparing net and net-next tree=
+ so why a rebase would cause such change in the code? Am I missing somethin=
+g here?
+>>>=20
+>>> In addition to that, the new logic does not make any sense=2E What mot=
+ivated the diff from v3 to v4? All that information is missing=2E
+>>>=20
+>>> Thanks,
+>>> Fernando=2E
+>>>=20
+>>> Should I send v5, and if so, what should I
+>>>> do besides stripping the Reviewed-by tag? I've read the documentation
+>>>> on coding assistants you linked and will make sure to follow it on th=
+e
+>>>> next revision=2E
+>>>> Best regards,
+>>>> Luka Gejak
+>>>>=20
+>>>=20
+>>=20
+>> Hi Fernando,
+>> These 2 patches were in the same patch series as 2 other patches=2E
+>> Then, when rebasing to edit 3rd patch in original patch series(3/4), I
+>> forgot to remove the Reviewed-by tag(I ran git commit --amend
+>> --no-edit)=2E Then I separated 1st 2 and 2nd 2 patches into separate
+>> series (one for net and other for net-next) because I was instructed
+>> to do so by Jakub Kicinski=2E His email:
+>>> I think that patches 1 and 2 need to go to net with a Fixes tag=2E
+>>> They look like run of the mill bug fixes=2E 3 and 4 are logical
+>>> fixes and change behavior so net-next makes sense=2E
+>>>=20
+>
+>This is not addressing my concern=2E I am not complaining that it went in=
+to a separate series=2E That makes sense=2E The v3 version of the patch "ne=
+t: hsr: require valid EOT supervision TLV" is now something completely diff=
+erent but the commit message is the same=2E
+>
+>v3: https://lore=2Ekernel=2Eorg/all/20260329112313=2E17164-4-luka=2Egejak=
+@linux=2Edev/
+>
+>I could guess the reason is that in order to make sure the last TLV is a =
+EOT TLV with 0 length but all that explanation is missing on the commit mes=
+sage=2E
+>
+>>> FWIW AI has something to say about patch 3, I did not investigate:
+>>> https://sashiko=2Edev/#/patchset/20260329112313=2E17164-2-luka=2Egejak=
+@linux=2Edev
+>>> --=20
+>>> pw-bot: cr
+>
 
-  get_random_u32() * (max_delay - min_delay) >> 32
-
-This overflows signed 64-bit arithmetic when the delay range exceeds
-approximately 2.1 seconds (2^31 nanoseconds), producing a negative
-result that effectively disables slot-based pacing. This is a
-realistic configuration for WAN emulation (e.g., slot 1s 5s).
-
-Use mul_u64_u32_shr() which handles the widening multiply without
-overflow.
-
-Fixes: 0a9fe5c375b5 ("netem: slotting with non-uniform distribution")
-Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
----
- net/sched/sch_netem.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index ca4de7ae6f2f..5f497fc544ea 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -659,9 +659,8 @@ static void get_slot_next(struct netem_sched_data *q, u64 now)
- 
- 	if (!q->slot_dist)
- 		next_delay = q->slot_config.min_delay +
--				(get_random_u32() *
--				 (q->slot_config.max_delay -
--				  q->slot_config.min_delay) >> 32);
-+			mul_u64_u32_shr(q->slot_config.max_delay - q->slot_config.min_delay,
-+					get_random_u32(), 32);
- 	else
- 		next_delay = tabledist(q->slot_config.dist_delay,
- 				       (s32)(q->slot_config.dist_jitter),
--- 
-2.53.0
-
+Hi Fernando,
+I apologize for the confusion=2E Now I get what you were talking about=2E
+The commit message in v4 didn't reflect the logic change from v3=2E I=20
+will update commit message accordingly=2E The motivation for the "TLV=20
+walker" refactor in v4 was to fix two issues in v3: linearization/
+paged frames and forward compatibility=2E
+Best regards,
+Luka Gejak
