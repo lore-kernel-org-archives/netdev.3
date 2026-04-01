@@ -1,110 +1,145 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327F7330667
-	for <netdev@vger.kernel.org>; Wed,  1 Apr 2026 08:53:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3817F3AEF51
+	for <netdev@vger.kernel.org>; Wed,  1 Apr 2026 09:00:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.171
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775033618; cv=pass; b=C03ILrYagDGSlKp4ZbqcMr5sSte135l8YkvvBbS8Wtz4ldMxcF4fhNxKNMwdhD31R7I+d/bqWOjbofMRLddmdsjSejk8mi85+RpfImXN8dGfJaK+hZw4kOczGNg+yiMohw3tiNiCURwtbpAQI9To/YuZKkppZ+CeU6lg8ZUFszI=
+	t=1775034005; cv=pass; b=UBu8uyI9n7yjA8d2orOt5dXJowWNRjGRq9fCgbMI96c2yJdBeo/MjB1aGZc37LHkZCrdP1cpd/wP38I2aK0et0ZiJI8E2ZiXJkyPMR4UQoTDOo9nxKN7EmxxwIntcRkkqnpQQqqJxpiTgqxVie9sGWRmm2i23+FSiUO3uVKXbGQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775033618; c=relaxed/simple;
-	bh=wT9VgK8WGe5LH03zxzBpqoG32taUZAX5doc4MZUXGaw=;
+	s=arc-20240116; t=1775034005; c=relaxed/simple;
+	bh=Y4tlxC4t2eDmDD0AGJDkyzsfUADdkuF+z9xAWJoAvHU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NLQyO8bMf3v74F42Cfz26QkMXLulqbHGYAykXs7HmO/14g/svpgukokP5gjS9zzB2kN1VyUDHS/geim4cXgzY+4CfBybWrKFRiZxoPZ2N/UeR3ywKzPdQdU2FWc5tQHS3A4bQYq33xXXJRG4Wo5EXjG/X+aUYvgOfSM1pIrv51g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VAHpY28J; arc=pass smtp.client-ip=209.85.160.179
+	 To:Cc:Content-Type; b=f+XbnCEE620LHIYancRpHjq5PSqliodtFN6CP+uniHyEGOmSvH4UkkJtJnG/V4AhXztjuM3nE37hILO7MU5BQyO9rhI79FzmHRo1OxpcTP+uBzCBk8vePcLzBecM38QTNdiT/EIuLUqajnL+YM5XbuiJWW63GIWTM6H/iH+mHUM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UI/3bU2u; arc=pass smtp.client-ip=209.85.160.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VAHpY28J"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-50b351eaf81so58105691cf.3
-        for <netdev@vger.kernel.org>; Wed, 01 Apr 2026 01:53:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775033616; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UI/3bU2u"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-506251815a3so55849651cf.0
+        for <netdev@vger.kernel.org>; Wed, 01 Apr 2026 02:00:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775034003; cv=none;
         d=google.com; s=arc-20240605;
-        b=A3zwqZXZc4i8inxIE8oyCr5DWSvjUGXsbvE5kJOhhjrFtF4EA2QfmJhiwvEyNQCkpW
-         nn0g2xM8Fo/wyjalMVzIBA7VdHiUCexjfzasQNKPWEmH7RafkSs0dYXjMtt57faVCUqc
-         ieyub5Ns0m7Ck5rKAZeKn53C7KkG46LM6m1L+QS81d3WV4Xm5RPUT71YLdoL+WIIxBbV
-         64UWfx8Ck/i1/s+c54BXmDsOq7qVlWUePY0JTcL3hpH0ieG9WAhG1w8XmMafm8LSO+I2
-         r5zzUmci0oeXh9E/gI8zn4QUJFfymXjuPMJbrHlk19hCq1lshITOciSCtxoSTL9dNvYJ
-         dDiA==
+        b=itu7kwKe7M+JFBph7z8bX19Pti6D7sMlKGBxkPg77uqHeo45L+XqBW4pArZzxcgAzP
+         trMHG127uqSKdsa7R6O02nbkQICl2eZnwtLAF2+oaJdVXDzdv+3qy5M8evXlZjjwgEzz
+         dDc+Tlou7fkdRXZxLmufoacOKU42Vj40yyZ+AC4hU0LzRTvSrmVfQGzFfZ1rOxBMZhN4
+         tuZs0Z54soThHG4mi9E48vMIudS+DgRJfhcZUSjRUwuJPQgds5+o9D+vrV+kNCqqoXvI
+         p9thbjY5wj5j48FbCXTZ6atW6Dwf60YuNhhr7t9dPlT3xbSSKDQRQge9faNoNfxTbtZL
+         L4wA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=wT9VgK8WGe5LH03zxzBpqoG32taUZAX5doc4MZUXGaw=;
-        fh=AE+XXZPku6tuai1v86IUmecr7dx5MEqKx92GLonjM0c=;
-        b=U3r384/j7eRvnilnY800YV3G7NU0jVC3Y7i8XCBeBj1MfzNZUIssygpoUZkxe9xSEe
-         JW883/BVfYRkG3AFm0drSaU2oUMNuze+TFp4dnDrruVS6aliFZWh+jvfsIFuaqfpwVyG
-         cPVJwQ+BAK0L8vajhaIpETF9VjbvCso10ihOb38KBgkL/a8BKrcHvsPbfp9el/ob055W
-         PsXp0NZDA/YYYcS02az8H1e1trjbMwM7H9BHEIeH275OnOXWP2W31wQz15mr6njYJm9A
-         eyjqdq8xb+0Gv9WbZ0SNEFxFSoksCmaLwejecxZTYTkMg2p+5zo7uktwjvhIPh7tEis7
-         A+Rg==;
+        bh=t3v7jCVnjjhYRt6tVrut9zYg8uOYVxilmLAwFseeoWk=;
+        fh=e/EeZSWxhm5+WUCR/U52SpY7WEms5JcwYw4dGYu7bv4=;
+        b=PROYkNjcBuBgb5otcYmbCb2YmyVHqjYK1D+rept+rrgXsP358EJ9+/RJylW3A1P2UB
+         fMjn4GRXY+0M2D1afFXCx7tfpQCmuO5Yy2UazKE2QcxDeODs+ogJSDryMSz69JoHqp6E
+         8oW2hoLnp6h82i2yfqsyBYBSZFCiLWSVSnH3kbr/01kwrKt2TIH88x7GiITrOXtTbPaU
+         c5IKEhf+mIf2vHCjs66zmV+OXLWT+ElGJQ5Su36Ytq3pqLFdDThTV30xxBXPjkDDq27R
+         x16Hgmc0kXI7DuhRkNHVJS/8ssDoxuYCKNKwg2C7xhF8AjssH0mE7J7AIAvW4ib0gjcH
+         8EcA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775033616; x=1775638416; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1775034003; x=1775638803; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wT9VgK8WGe5LH03zxzBpqoG32taUZAX5doc4MZUXGaw=;
-        b=VAHpY28JJ057qJDXNYRDKg53OzJdBN+Ke+DQABPMiZ6vbFYsAnmZWM1f0hvLHJchHH
-         S1XJa1qoanP8S52kPFVFFSqkUHKtfO4m0xKa4bOhmdfKxTr2oxK4Yvl5VwqJUabSWVf9
-         +o4esoiYehDhx199sYtL+UgkER1VDC2CzVL1ph+r0lXh1I942woWhX1GI9Z7i5/ykVAA
-         NCWOm+cwYUbIWmYq14ayXjStn8P1eNuLb4Pq46rOQ8YiWzPXsZ0AjwLyJu+opQa2Opr9
-         kn+2Qp3/1TGl8N+7zhZ27maDEHW0Ir/OeybZDpd5duQNwGbFDP9jgEYSMS13iEopFKXB
-         dV7w==
+        bh=t3v7jCVnjjhYRt6tVrut9zYg8uOYVxilmLAwFseeoWk=;
+        b=UI/3bU2ul04ifiq2T+T7vguFdsao6iLdWlChCeWf8brEzxcEeSB6OB3YZj4p/hw0bt
+         6dYFZY2zR/t/7bRh+PtXXbW+fH2ofDok9f8PKmudd/6ozUNhoDNeX3JQOGZkuvFHje8F
+         g315yX+t9VNMMYsriOdcqGR6Chekv5u+PCbc3hhQFilmHZwxUCFIKJWilFmRPZU1PyR+
+         d1j5MnKw3WWkZrfhk08Vl23ni7pvztTtVhI+oBJIfBU6fHRgFtAM6T7oVqFkdSjeBYCU
+         tYTFVMCgAoDQYDIIOoZkqI6CxpGFgnxVa5wW69HQTtf6R5shaQ6xR0K7+VGW2LJbY9gz
+         98Sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775033616; x=1775638416;
+        d=1e100.net; s=20251104; t=1775034003; x=1775638803;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=wT9VgK8WGe5LH03zxzBpqoG32taUZAX5doc4MZUXGaw=;
-        b=f5oDLTOPNlsbU6PD4VZGDCLlzE7wYpKQM4Nl1gu9CefpdI8CkZoL2wHeD6grCOmjfP
-         m9QYXi3UnSvc1kL23N1paLRvhkbkkenTeQUrCiOD0Y8ab/PBYzTQsiuPu2e4Evdgvi7t
-         e0g0hFkVQS6DlyzsSapvrUkRErgnMGTrNSv+gCLGVQfUAfnJqC+budKWIEwFJ65dTNTe
-         1ymeO4TC2cZMmFJnlVrqS2aNnneUntTnu+de7z4K78DU59aA7iPA7rtjvSVDnI99LK0E
-         zuGwDcjCd4JXRlgZ1sMfi/9WHEMyw9DiS25fNOC8yIqJbN+MwMIOS44J8pnu7hiRa2iw
-         TbMw==
-X-Gm-Message-State: AOJu0YyBuMrc58ZtLUs+lN4YxtP+BYO4b1vGCtSXL+wqFeOzmqELOa2J
-	uCskxY1pfbImBhA6L9y9ghaTIc8XNTeY9wg8miR5MMuquBGdLisvUpaeAaFiaQF/0YJXlzfc3U9
-	j7Q0YQrRvOqEWybRI5Iqiuvp8j9hesLDe/1Cfy/IR
-X-Gm-Gg: ATEYQzxunSudt8/+w3+ghQAoWKDmUJg+5I1/bdYn0ru8R4FeaEBftfRzh0InhY/wlPJ
-	PqzgSErQgRRxeoil9tC8rKyMKQmD1q9ehYHVsgLLPh2mT4UJ6HyXUcCIZx/WUSsC36JrTgU/pKV
-	l8El26fz+3K3SbC3jElK7/pfoCpLk4KzIya47F72wBnVECLlsuHPs0iQS0t58hVBfUm1cQ9Erpc
-	XtiekKuIFrxREwTXBvEQrSRDowZE4l2aWNUCVKL9+l5WP/4rOvwgNYDP2vAt3SN9N5h7QIH7pue
-	Y1EqyZNodBInJ0tW
-X-Received: by 2002:a05:622a:148e:b0:50b:3893:a2d8 with SMTP id
- d75a77b69052e-50d3bd57670mr36524641cf.63.1775033615624; Wed, 01 Apr 2026
- 01:53:35 -0700 (PDT)
+        bh=t3v7jCVnjjhYRt6tVrut9zYg8uOYVxilmLAwFseeoWk=;
+        b=rq6MZDuAQ8di413Qq2pYJDUs79dpIlkIYDYEbFsoEtHo3V9i6J87j49lbFSuLSgnl5
+         nZ2KrUSyuFmlYKROUc8NMi13t1h33JwtU4eZ6h+X1jDdT7XW8+7LotaSxy67brsfHu4V
+         zKTA0OjLh+0Kco4iOBs7XGVEEWhhHtzSZvsYc2XJ4adaAbOjRCtpAk5T2tYvhsPTmdoo
+         +76n4/LW0x6NTAmUtj0DV7gR9oWjCGVcvNr5QyL1AS+M/D1ZRxVUqALuCgscRwhXFYHr
+         bgSVi3NhG1AuAa5Zs12yfJ/VbSECzfeReT8ExfTMODHVgRODMftD+4WA5GUYbBezFp3D
+         FC2w==
+X-Gm-Message-State: AOJu0YyhlCnTeXQZIOCtsHnSxF2h1YpEYKC3a6bjg+g7IAZDOIzS/SWf
+	HN5wq8qA6py+Ub5ZUXjuWuwc8SDXGdJfDjdTLjGb1TLSstQaJsqgxo1jvBKJAJEGIofKxb/P84M
+	5oudAfkncNrWkHhrBVjA8jEziSglBvsu0eqefcVTR
+X-Gm-Gg: ATEYQzwN8rZ+oQ4VyykHiFpnOb/KzGmPYQh5HSqFaACCTucnvtivBTvFyPUQhVX0JWe
+	cWXUKzHdu98OSr8rYb1/PgN37qb8QM5wrO65lMfSooouVi6PPC7Y+sB22eSauBkfKveoAIcP7Tk
+	FbUke3zu2AU+YSe7EmP0/h3YaaXNdtRHNavKETylAadhA7e3FyArBVsCoW+qKMFdQJhNb7iCh6N
+	RFomfyniXgzDWKLTg+A6tZoMk6iOM9xtb4J5ZMevEE2owHgNvK9BGRLV7mWWdgenTjKhNVV9+nX
+	S3C9Sw==
+X-Received: by 2002:a05:622a:98d:b0:509:4d26:25df with SMTP id
+ d75a77b69052e-50d3bd95a43mr36004121cf.66.1775034002527; Wed, 01 Apr 2026
+ 02:00:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260401081741.4273-1-fmancera@suse.de>
-In-Reply-To: <20260401081741.4273-1-fmancera@suse.de>
+References: <20260401081741.4273-1-fmancera@suse.de> <20260401081741.4273-2-fmancera@suse.de>
+In-Reply-To: <20260401081741.4273-2-fmancera@suse.de>
 From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 1 Apr 2026 01:53:24 -0700
-X-Gm-Features: AQROBzBjOHv0uLoZXSvxK-yaPKUsFTpXvAXsyOYQPovCGBYrLFrpG4m1I5hAzdY
-Message-ID: <CANn89i+j+MRPEn9oO+7W5+o9vWsfFz5raSFzL=RPwTu55iXkRg@mail.gmail.com>
-Subject: Re: [PATCH 1/2 net v2] ipv4: nexthop: avoid duplicate
- NHA_HW_STATS_ENABLE on nexthop group dump
+Date: Wed, 1 Apr 2026 01:59:50 -0700
+X-Gm-Features: AQROBzBNZygE-aubWzKJuOgJ4HWpFUEF3TO_WU8EPml_mkG4KlGSxtgqy3tLjOk
+Message-ID: <CANn89iJUfVerrEbqkXt-ddSaMM-6ewiFN=awxXGEj4M+6onKRw@mail.gmail.com>
+Subject: Re: [PATCH 2/2 net v2] ipv4: nexthop: allocate skb dynamically in rtm_get_nexthop()
 To: Fernando Fernandez Mancera <fmancera@suse.de>
 Cc: netdev@vger.kernel.org, idosch@nvidia.com, petrm@nvidia.com, 
 	horms@kernel.org, pabeni@redhat.com, kuba@kernel.org, davem@davemloft.net, 
-	dsahern@kernel.org, kees@kernel.org
+	dsahern@kernel.org, kees@kernel.org, Yiming Qian <yimingqian591@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Wed, Apr 1, 2026 at 1:17=E2=80=AFAM Fernando Fernandez Mancera
 <fmancera@suse.de> wrote:
 >
-> Currently NHA_HW_STATS_ENABLE is included twice everytime a dump of
-> nexthop group is performed with NHA_OP_FLAG_DUMP_STATS. As all the stats
-> querying were moved to nla_put_nh_group_stats(), leave only that
-> instance of the attribute querying.
+> When querying a nexthop object via RTM_GETNEXTHOP, the kernel currently
+> allocates a fixed-size skb using NLMSG_GOODSIZE. While sufficient for
+> single nexthops and small Equal-Cost Multi-Path groups, this fixed
+> allocation fails for large nexthop groups like 512 nexthops.
 >
-> Fixes: 5072ae00aea4 ("net: nexthop: Expose nexthop group HW stats to user=
- space")
+> This results in the following warning splat:
+>
+>  WARNING: net/ipv4/nexthop.c:3395 at rtm_get_nexthop+0x176/0x1c0, CPU#20:=
+ rep/4608
+>  [...]
+>  RIP: 0010:rtm_get_nexthop (net/ipv4/nexthop.c:3395)
+>  [...]
+>  Call Trace:
+>   <TASK>
+>   rtnetlink_rcv_msg (net/core/rtnetlink.c:6989)
+>   netlink_rcv_skb (net/netlink/af_netlink.c:2550)
+>   netlink_unicast (net/netlink/af_netlink.c:1319 net/netlink/af_netlink.c=
+:1344)
+>   netlink_sendmsg (net/netlink/af_netlink.c:1894)
+>   ____sys_sendmsg (net/socket.c:721 net/socket.c:736 net/socket.c:2585)
+>   ___sys_sendmsg (net/socket.c:2641)
+>   __sys_sendmsg (net/socket.c:2671)
+>   do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64=
+.c:94)
+>   entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+>   </TASK>
+>
+> Fix this by allocating the size dynamically using nh_nlmsg_size() and
+> using nlmsg_new(), this is consistent with nexthop_notify() behavior. In
+> addition, adjust nh_nlmsg_size_grp() so it calculates the size needed
+> based on flags passed.
+>
+> This cannot be reproduced via iproute2 as the group size is currently
+> limited and the command fails as follows:
+>
+> addattr_l ERROR: message exceeded bound of 1048
+>
+> Fixes: 430a049190de ("nexthop: Add support for nexthop groups")
+> Reported-by: Yiming Qian <yimingqian591@gmail.com>
+> Closes: https://lore.kernel.org/netdev/CAL_bE8Li2h4KO+AQFXW4S6Yb_u5X4oSKn=
+kywW+LPFjuErhqELA@mail.gmail.com/
 > Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
 
 Reviewed-by: Eric Dumazet <edumazet@google.com>
+
+Thanks !
