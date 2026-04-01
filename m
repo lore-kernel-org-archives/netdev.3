@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673BE37F723
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B9A37FF72
 	for <netdev@vger.kernel.org>; Wed,  1 Apr 2026 07:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775028838; cv=none; b=dv7J9lz4eVQkti+lfFgKuCIarhkA8PkN64wkDOBcSbdCelCei9gtjbJ1eG9sEB6nn5PhMtQ3BcrYAKnJ6oXL5rbykQnEV2ZOSW3My33qV+159xx64+yB2fihXpnBHhSeN0Zo8zghVLXYH188samu4oLyj1pj5am8Mxg+q63SVXU=
+	t=1775028838; cv=none; b=q0bL9tP0qG2LvhfjImN96cg1+O5T/TgkJKULlD2YJ3qsjJdZ2mTWoFbnZtfYIxeqXaMx8ybbvvbr2vCDngtFT3scKS+sJUOFH6zAiInz7+iC9VqRJixVO7CdeFglGvv83JPkFPD9TBgL1uHKe8/zX5zer99cuPfZ7LBxNBj3cxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775028838; c=relaxed/simple;
-	bh=Br1CRtH+8L2wkF2I9ziBqzHvAU9qrQ26aU+H6cuE70I=;
+	bh=IpWoLWNA+ZknNT0lnlGpp5HjVNy4Wnpuf4XEj0aFCiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YmWkofc7D/9udRBxnhYiGfFVKTaGQy2l2js7aMF7dPt2R7lDqDcicmqVQKXerCJSMHSNkNRVZYw1Lj9WieiSfbbYJg3MpBYvNYjdAgZzJflB10MJ5et819PRuXM4qbh/VHrAXoWf70oFGnkkrPmky7Bi19P5XnngjwXMQNDxj+M=
+	 MIME-Version; b=AqOd5xOJrhjQHbb6iJvbz92wm+9pznxfWeG0bCmqob90rqOXHIqK2xF0KDxBSNoeryps8Xs+pwgumOsJeNdx9YCriJq6M0VXu3JdTwfgfuWmsHhhooazQLEMniAI37mIHFX5xxN9fF1v7qILWSfMDusLHZkSHn4mXCRnUN3rLbo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,19 +18,19 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1w7q57-000769-O9; Wed, 01 Apr 2026 09:33:41 +0200
+	id 1w7q57-000768-JU; Wed, 01 Apr 2026 09:33:41 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1w7q56-003AhU-2r;
+	id 1w7q56-003AhS-2J;
 	Wed, 01 Apr 2026 09:33:40 +0200
 Received: from blackshift.org (unknown [IPv6:2a0a:edc0:0:701:a82f:fdef:12b2:33d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 7A584513375;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 461DA513374;
 	Wed, 01 Apr 2026 07:33:40 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -38,11 +38,12 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 2/6] net: can: ctucanfd: remove useless copy of PCI_DEVICE_DATA macro
-Date: Wed,  1 Apr 2026 09:30:10 +0200
-Message-ID: <20260401073338.5592-3-mkl@pengutronix.de>
+Subject: [PATCH net-next 1/6] dt-bindings: can: mcp251xfd: add microchip,xstbyen property
+Date: Wed,  1 Apr 2026 09:30:09 +0200
+Message-ID: <20260401073338.5592-2-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260401073338.5592-1-mkl@pengutronix.de>
 References: <20260401073338.5592-1-mkl@pengutronix.de>
@@ -58,39 +59,41 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+From: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
 
-The ctucanfd driver has its own copy of the PCI_DEVICE_DATA macro. I
-assume this was done to support older kernel versions where it didn't
-exist, but that is irrelevant once the driver is in the mainline
-kernel. Remove it.
+Add the boolean property 'microchip,xstbyen' to enable the dedicated
+transceiver standby control function on the INT0/GPIO0/XSTBY pin of
+the MCP251xFD family.
 
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Link: https://patch.msgid.link/20260130114134.47421-1-enelsonmoore@gmail.com
+Signed-off-by: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://patch.msgid.link/20260321135031.3107408-2-viken.dadhaniya@oss.qualcomm.com
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/ctucanfd/ctucanfd_pci.c | 8 --------
- 1 file changed, 8 deletions(-)
+ .../devicetree/bindings/net/can/microchip,mcp251xfd.yaml  | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/can/ctucanfd/ctucanfd_pci.c b/drivers/net/can/ctucanfd/ctucanfd_pci.c
-index 7b847b667973..625788fa8976 100644
---- a/drivers/net/can/ctucanfd/ctucanfd_pci.c
-+++ b/drivers/net/can/ctucanfd/ctucanfd_pci.c
-@@ -22,14 +22,6 @@
+diff --git a/Documentation/devicetree/bindings/net/can/microchip,mcp251xfd.yaml b/Documentation/devicetree/bindings/net/can/microchip,mcp251xfd.yaml
+index 2d13638ebc6a..28e494262cd9 100644
+--- a/Documentation/devicetree/bindings/net/can/microchip,mcp251xfd.yaml
++++ b/Documentation/devicetree/bindings/net/can/microchip,mcp251xfd.yaml
+@@ -44,6 +44,14 @@ properties:
+       signals a pending RX interrupt.
+     maxItems: 1
  
- #include "ctucanfd.h"
- 
--#ifndef PCI_DEVICE_DATA
--#define PCI_DEVICE_DATA(vend, dev, data) \
--.vendor = PCI_VENDOR_ID_##vend, \
--.device = PCI_DEVICE_ID_##vend##_##dev, \
--.subvendor = PCI_ANY_ID, .subdevice = PCI_ANY_ID, 0, 0, \
--.driver_data = (kernel_ulong_t)(data)
--#endif
--
- #ifndef PCI_VENDOR_ID_TEDIA
- #define PCI_VENDOR_ID_TEDIA 0x1760
- #endif
++  microchip,xstbyen:
++    type: boolean
++    description:
++      If present, configure the INT0/GPIO0/XSTBY pin as transceiver standby
++      control. The pin is driven low when the controller is active and high
++      when it enters Sleep mode, allowing automatic standby control of an
++      external CAN transceiver connected to this pin.
++
+   spi-max-frequency:
+     description:
+       Must be half or less of "clocks" frequency.
+
+base-commit: f1359c240191e686614847905fc861cbda480b47
 -- 
 2.53.0
 
