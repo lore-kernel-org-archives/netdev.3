@@ -1,122 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBEFB28690
-	for <netdev@vger.kernel.org>; Wed,  1 Apr 2026 02:14:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C80156CA
+	for <netdev@vger.kernel.org>; Wed,  1 Apr 2026 02:18:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775009685; cv=none; b=DixQ3uH0C54qDkNk1ztS3H7Kv7U02bhkfs9ZDi3m458mt7c6Ew9QC68zKEhPHt1I7vYIF37SXrjecjYZqfit6UDLZgTiuZGPUHy6G+UnqJfnXrDpvFwphTVV/L0ff9F3YmO3oF76MLcDZKhepLmEg0KUfx3MYh9/IFOY0UdUiUg=
+	t=1775009921; cv=none; b=KSSdjuzeLoU8K4GV5yq1S0eo/3jTt+1gD8ovmlyQsEoUKdub8Iq7Oeib4oixOvpxDWBC42Zwk/peMP98IU4Bkvh6mV4QC1CxmVqr1T8phkB28tPS+MZfYBAOG2Knh/l+KkW9zz/81//hK497YP1U1k/OQpRGd+jF0qvAaeey5co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775009685; c=relaxed/simple;
-	bh=RKIRkB7dwIPp5lClJ0dJhiaIpEWh1SS1HK0MYCHKxr4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ocnhcyhIa1oIdLc+lwQpSkv4nvgza/4q5e/2EXooZz3s9Nv+UiT4bEu0qN361MU3UsKtuAIVW3uRC2r5UMtor9lCyZ/MNXlR4cUiuf3vvOpX+D5YCJa87MJM8eTceAobPTNxX7sA7InLt58PbKMBMmx5la++G30FZBuUm2jb7ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZVscnBww; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZVscnBww"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E58A3C19423;
-	Wed,  1 Apr 2026 02:14:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775009685;
-	bh=RKIRkB7dwIPp5lClJ0dJhiaIpEWh1SS1HK0MYCHKxr4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ZVscnBwwOBiFAsll4NVdYRbBAXWGY8Ze/q5YwnVc+YFVTOgSiYDhd7PjpdKVSSRf1
-	 6iFNAFS4dU5D/Ejz42tpLoP1cxj04gmQwSeiuzKdKsL6AFRSoU+7aj5WimTnqTrKNy
-	 RUyZEDtqo+c95zRN23P/OXEF3lTNteHrTtzfvOrrd5PodIcSlkphGia0tnzYkWmNZR
-	 zlWfqubtg+AdVRV37GjaT2gL82zGETBvkBtKb+5m37vAyng7+rKl33icWM9rMFracm
-	 OCm2g/DfYdSyDMxfg6ItV0dj1++M1g2OsJRPwk2weREjPgoTJSXZ/OP1whKseQrmrQ
-	 8GP1uk/qqOt3w==
-Date: Tue, 31 Mar 2026 19:14:44 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Linus Walleij <linusw@kernel.org>
-Cc: Hans Ulli Kroll <ulli.kroll@googlemail.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
- netdev@vger.kernel.org, Andreas Haarmann-Thiemann <eitschman@nebelreich.de>
-Subject: Re: [PATCH net] net: ethernet: cortina: Fix SKB leak
-Message-ID: <20260331191444.79ed1da9@kernel.org>
-In-Reply-To: <20260330-gemini-ethernet-fix-v1-1-18783a45d13a@kernel.org>
-References: <20260330-gemini-ethernet-fix-v1-1-18783a45d13a@kernel.org>
+	s=arc-20240116; t=1775009921; c=relaxed/simple;
+	bh=o64+1RkjX8yy7bj4xpp8kQYTPeJethVN3dN34VjYyw8=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=gq0AhkIeKmD3Ivq5s5eSuwhtT/w3B+YO4zAqG8ESBfmiHocK7M5kT9JjjErIcTfDD6KcN/E9z/o2A4mfDiNdl/9/0WHkxBlvaIVbdxtGgrqedBjbtO8yUsifME1tZxefWBK9GiaagbdNGBq9uxR3Qe8q/kiVoWxLEVkn7k5cPGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.204.34.129
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid:Yeas1t1775009796t108t02985
+Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [115.227.224.139])
+X-QQ-SSF:0000000000000000000000000000000
+From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
+X-BIZMAIL-ID: 10809986777126156013
+To: "'Russell King \(Oracle\)'" <linux@armlinux.org.uk>
+Cc: <netdev@vger.kernel.org>,
+	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
+	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
+	"'David S. Miller'" <davem@davemloft.net>,
+	"'Eric Dumazet'" <edumazet@google.com>,
+	"'Jakub Kicinski'" <kuba@kernel.org>,
+	"'Paolo Abeni'" <pabeni@redhat.com>,
+	"'Simon Horman'" <horms@kernel.org>,
+	"'Jacob Keller'" <jacob.e.keller@intel.com>,
+	"'Abdun Nihaal'" <abdun.nihaal@gmail.com>,
+	<stable@vger.kernel.org>,
+	<netdev@vger.kernel.org>,
+	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
+	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
+	"'David S. Miller'" <davem@davemloft.net>,
+	"'Eric Dumazet'" <edumazet@google.com>,
+	"'Jakub Kicinski'" <kuba@kernel.org>,
+	"'Paolo Abeni'" <pabeni@redhat.com>,
+	"'Simon Horman'" <horms@kernel.org>,
+	"'Jacob Keller'" <jacob.e.keller@intel.com>,
+	"'Abdun Nihaal'" <abdun.nihaal@gmail.com>,
+	<stable@vger.kernel.org>
+References: <D56A7C3379B4DA62+20260331071107.5414-1-jiawenwu@trustnetic.com> <acvHIpPd8BL_wFFU@shell.armlinux.org.uk>
+In-Reply-To: <acvHIpPd8BL_wFFU@shell.armlinux.org.uk>
+Subject: RE: [PATCH net] net: txgbe: fix RTNL assertion warning when remove module
+Date: Wed, 1 Apr 2026 10:16:34 +0800
+Message-ID: <076401dcc17d$905c40b0$b114c210$@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: zh-cn
+Thread-Index: AQJzBzpg8BZoKCpC0lQLuqOa6+34FQF9cQKNtJEALcA=
+X-QQ-SENDSIZE: 520
+Feedback-ID: Yeas:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: M3ZkD08p3wd5vOJbC/P1EZnZgqEl1VixJs8K5GB0PipZjcGm3zrSugpv
+	n0rf7J69Rs1eLdRswq2OuQtfdq+5dPbgOuLV9Zq7sR/7zK5ung2lz5mWaHw0YsfzzbxcU7r
+	S23Xs4l7NCERa+sUAeZ0rT0nwX0sXUxj55tyGuvoIFG+AvBbbKBStGK6Q/nAOZJ5konTJqJ
+	o/S5yM9kc/siLQSrLQ8SSWRh7Br43vXFTyc0du+PhHY7J1Rtugdszj+IImb8limmhdTRbjS
+	CFnoLut9bIcxlsyHT3uotAP0YsQFzqZ+cAnRwTJzEKNq5nRg1mvnErURc4xnTJvK0p39507
+	rv+H44AVI4O8IZ7aNIB5ttz0+ESMNA0FyjoSBhSGI6qeceZBFqQokBTdhjA5DwYmgx9O3dj
+	+6oVxH5RlyP7BYcIw2kwrDDleJTHYZWWLDOWVhcujaqUudajA0ahxOfeqnvjIF7wU+g5QmK
+	ED5dMsFGSWHUfKembPPJt1JZ+07NZVJfr5DLPOUSCkUlHvkrE403/0KUqyBDRrNgx4QfIL+
+	jZ5pyoEbkl9OMNJ1jnJes9HT+KAemD4H0l59mbrevtC5w4cHNJgXpulCdIojbGc8x47kYxK
+	8M2OG7Xdog9yxhCT6jjq1FpUEvo+cQeSu10APLu87tTH1OLPT/IjvNBziFPII3uPCTTD+mG
+	tJzvFsLnbg14lG61kOnS0QFvxxanWM+zlFGj4PiiIt98dDtgN5wxm7sUKyEyu477hBQH14y
+	iWpAvWJaw5hLVds80rElPR/ko0q5421TMdZ8AovfADgzfbHNKd1MpZaWzXGVLCB8euTC7Es
+	pA6VUl1cOoiXkAf0PgCHAwMcsxhOO1LQPsupLCwZ0Ie1iC1IYXBjv51vwsE3Eka1t4h4T0I
+	gHaX6gck7ybdMe7y1ef6TTqnOyjKqmYTiVO/F6t63zU6ParAr9Pmv0gZKUan0PlruKSBOmo
+	tGyIs4rbckxP835hWtvoLV8cWRFy27BXlH7+EXiu0nRmWXF1ZzEKDVgZkIu3/CO88vq2o2x
+	ra9VxUctS6hp3GmOIiQZeS/ltxZ+Z4gPNtCz0pbw==
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+X-QQ-RECHKSPAM: 0
 
-On Mon, 30 Mar 2026 08:00:29 +0200 Linus Walleij wrote:
-> From: Andreas Haarmann-Thiemann <eitschman@nebelreich.de>
->=20
-> Under sustained RX load (e.g. large file transfers over the network), the
-> device freezes completely and requires a hard power cycle. No kernel panic
-> or oops is produced; the system simply stops responding.
->=20
-> In gmac_rx() (drivers/net/ethernet/cortina/gemini.c), when
-> gmac_get_queue_page() returns NULL for the second page of a multi-page
-> fragment, the driver logs an error and continues =E2=80=94 but does not f=
-ree the
-> in-progress skb that was already being assembled via napi_build_skb() /
-> napi_get_frags():
->=20
->     gpage =3D gmac_get_queue_page(geth, port, mapping + PAGE_SIZE);
->     if (!gpage) {
->         dev_err(geth->dev, "could not find mapping\n");
->         /* BUG: skb leaked here */
->         port->stats.rx_dropped++;
->        continue;
->     }
->=20
-> This path is distinct from the similar block in gmac_cleanup_rxq(), which
-> correctly only logs "could not find page" without an skb in flight.
->=20
-> Each occurrence of this error path leaks one skb. Under sustained traffic
-> the leak exhausts kernel memory, causing the observed lockup.
->=20
-> Free the in-progress skb via napi_free_frags() before continuing, matching
-> the pattern already used elsewhere in the driver.
->=20
-> Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethe=
-rnet")
-> Signed-off-by: Andreas Haarmann-Thiemann <eitschman@nebelreich.de>
-> Signed-off-by: Linus Walleij <linusw@kernel.org>
+On Tue, Mar 31, 2026 9:08 PM, Russell King (Oracle) wrote:
+> On Tue, Mar 31, 2026 at 03:11:07PM +0800, Jiawen Wu wrote:
+> > For the copper NIC with external PHY, the driver called
+> > phylink_connect_phy() during probe and phylink_disconnect_phy() during
+> > remove. It caused an RTNL assertion warning in phylink_disconnect_phy()
+> > upon module remove.
+> >
+> > To fix this, move the phylink connect/disconnect PHY to ndo_open/close.
+> 
+> Wouldn't it be simpler to just wrap the phylink_disconnect_phy() in the
+> remove function with rtnl_lock()..rtnl_unlock() ?
 
-Thanks for handling (what I assume to be) an external report Linus!
-
-Not sure I'm connecting the dots here, tho.
-Apparently skb is a static variable in this function(!?) so the skb
-should be flushed on the next SOP?
-
-Also I don't see how potential memory leak squares with the first
-sentence of the commit which reads:
-
-  device freezes completely and requires a hard power cycle
-
-how can kernel mem leak cause a device to wedge?
-
-> diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet=
-/cortina/gemini.c
-> index 4824232f4890..723d90d5fdf3 100644
-> --- a/drivers/net/ethernet/cortina/gemini.c
-> +++ b/drivers/net/ethernet/cortina/gemini.c
-> @@ -1491,6 +1491,10 @@ static unsigned int gmac_rx(struct net_device *net=
-dev, unsigned int budget)
->  		gpage =3D gmac_get_queue_page(geth, port, mapping + PAGE_SIZE);
->  		if (!gpage) {
->  			dev_err(geth->dev, "could not find mapping\n");
-> +			if (skb) {
-> +				napi_free_frags(&port->napi);
-> +				skb =3D NULL;
-> +			}
->  			continue;
->  		}
->  		page =3D gpage->page;
->=20
-> ---
-> base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
-> change-id: 20260330-gemini-ethernet-fix-604c28c53da1
->=20
-> Best regards,
+This is also a solution. But I think it would be nice to unify with other drivers
+that call the functions in ndo_open/close.
 
