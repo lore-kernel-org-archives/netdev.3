@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9615A2F1FEA;
-	Wed,  1 Apr 2026 07:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A552C236B;
+	Wed,  1 Apr 2026 07:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775026801; cv=none; b=lynatfq+v2AqqHxuhnJjzPLs7RNgVFxl65FVI9E3ViT+NE2AHDXc6KvLG+l0tDOREMN/c7dS5GqQKIPRasaJ5PGi1t8GBLgp2HAn1i9/N2ZnTqGEeAHOy8Rx/mnn0xeQopAk7WgOsr2mn1MnzRXFCdpC0DV+Gz9WhC3oIunL0kg=
+	t=1775026804; cv=none; b=nVHksAdKzU3BizezJbhMbifGBU/jt/yYeRhcmNAO/QYgzgDJgUUkLFXR3ig4vHG1R7zNOHke68kExUeo3Y3VFldb3wOaUWNwGr+kOdR8pKCkfiWn4F0JMZCXD7Ze5OGXMvbB1UIQg6h7zRKN0VOj7DrYpV7SuuYxPvWr1TLzswE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775026801; c=relaxed/simple;
-	bh=4HoH/phdBrc8oyL9BAmfrv1hLzyLn1XUdnpO9xKGt0A=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=azphTUUHkDiQSM9J5n9yBad2tMAhVXsMwWdoID9swqUZKXD2A7iLEUhSPw9HZlpTJrjC5RKONqeW0HKE/MCP3JDPGGFLbUarqaqrHJvUou897Gj7BQedGjrphaMsBM8t8RdzBs9DVSCovOkvxb3tpMbGa9W+XylXXpHL88sRmQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KMHR94Dg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775026804; c=relaxed/simple;
+	bh=6pMjNZLYTRCNPh+LH/UowsTNfqvG8Ua5lTl8fcBHYIU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=tq9uIGHOTLTNV3JsjXxAyTnswNbIzZkYnef9magQLB6SY+JkIV960vwoM8PDcTqlkVFJWxJWYUQcLB2lLuYd5gdqXJP0gZ/HlErGhntjEBEuYJtetfCQEcsv0F/JXpOfx5vT3/xIn3kJoOFs7NvoYaPVEAatwUKc8E5C0AYhiAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BxeYdYnA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KMHR94Dg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DFC6C4CEF7;
-	Wed,  1 Apr 2026 06:59:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BxeYdYnA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EEC8C4CEF7;
+	Wed,  1 Apr 2026 07:00:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775026801;
-	bh=4HoH/phdBrc8oyL9BAmfrv1hLzyLn1XUdnpO9xKGt0A=;
-	h=From:Subject:Date:To:Cc:From;
-	b=KMHR94DgfRfOsfxuCdVVQP2+x0xQMgUCkKVaQ81WrDYnarnEtMItaUpDVYAYil9tF
-	 DXanx74oixguSoHPe8XgMxIpsWv2hz/L2eckJm7zW7r9couPmi8qJL4Uw1zdhDnuM9
-	 mdk/l2Lcw9gvPUrS+6JKCltA/PSW+2AERYiHyy87dq0ynJvZ7aLB5JIjJHWpaYYDoB
-	 bFHTu4EHd+hnpXEHWdQ2rSdyURSpvJV3l2I4zuMqmysnGKIaBRzrUYO/oqN6bGkXeH
-	 W4B3k5YSUEQaFzD1fbzdsVQiYsYETySEdt3NsD4tHAfrFRpXx434u71PxTmv9pc4p9
-	 aCrfz3qi1Wh8A==
+	s=k20201202; t=1775026804;
+	bh=6pMjNZLYTRCNPh+LH/UowsTNfqvG8Ua5lTl8fcBHYIU=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=BxeYdYnAlXhQpY/8acs08vQtk0+bpqd6R+lO3NfNZLpevU9bx/kY0qG8GnbXuJDZL
+	 lX8znRKoKkFyTL7bUnGLLswSqE6f87VHwl3jjvnIm1jDkOAmumEo+Ilim7iuYYoSPQ
+	 KGTwfzp2kfOvL0AlbWR3esVissCxKeiYCMXFkFmdEkJjv6miYBEfOWHlNeCyF5Yfqe
+	 7xhAZTyWX4FhF8SThVzwgzws0ZcxWhPWvYk4SRI3v1gania1MIiUbTNzDIUHZHvhjB
+	 lI2491ff5p7vHQ7BnLP19Wa5vUXzn7kRxQwMN0rWs9OkbuykyD/6lTB19ZfWNrctGo
+	 7/MPCiNk9Lj3g==
 From: Lorenzo Bianconi <lorenzo@kernel.org>
-Subject: [PATCH net-next v2 00/11] net: airoha: Support multiple
- net_devices connected to the same GDM port
-Date: Wed, 01 Apr 2026 08:59:18 +0200
-Message-Id: <20260401-airoha-eth-multi-serdes-v2-0-ac427ae4beeb@kernel.org>
+Date: Wed, 01 Apr 2026 08:59:19 +0200
+Subject: [PATCH net-next v2 01/11] dt-bindings: net: airoha: Add EN7581
+ ethernet-ports properties
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,12 +37,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WNQQ6CMBBFr0Jm7ZhSaI2uvIdhUWCgE7ElbSUYw
- t1tiFuXLy///Q0iBaYIt2KDQAtH9i6DPBXQWeNGQu4zgxRSi0rWaDh4a5CSxdd7Sow50FPEoa1
- bpTTRRWnI6znQwOtRfoCjhI7WBE02lmPy4XNcLuXhf/Xr3/pSokAhBiX7rtKiM/cnBUfT2YcRm
- n3fv5vISCTJAAAA
-X-Change-ID: 20260324-airoha-eth-multi-serdes-fb4b556ee756
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260401-airoha-eth-multi-serdes-v2-1-ac427ae4beeb@kernel.org>
+References: <20260401-airoha-eth-multi-serdes-v2-0-ac427ae4beeb@kernel.org>
+In-Reply-To: <20260401-airoha-eth-multi-serdes-v2-0-ac427ae4beeb@kernel.org>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -51,76 +49,90 @@ To: Andrew Lunn <andrew+netdev@lunn.ch>,
 Cc: Christian Marangi <ansuelsmth@gmail.com>, 
  Benjamin Larsson <benjamin.larsson@genexis.eu>, 
  linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- netdev@vger.kernel.org, devicetree@vger.kernel.org, 
- Xuegang Lu <xuegang.lu@airoha.com>
+ netdev@vger.kernel.org, devicetree@vger.kernel.org
 X-Mailer: b4 0.14.2
 
-EN7581 or AN7583 SoCs support connecting multiple external SerDes (e.g.
-Ethernet or USB SerDes) to GDM3 or GDM4 ports via a hw arbiter that
-manages the traffic in a TDM manner. As a result multiple net_devices can
-connect to the same GDM{3,4} port and there is a theoretical "1:n"
-relation between GDM ports and net_devices.
+EN7581 and AN7583 SoCs support connecting multiple external SerDes to GDM3
+or GDM4 ports via a hw arbiter that manages the traffic in a TDM manner.
+As a result multiple net_devices can connect to the same GDM{3,4} port
+and there is a theoretical "1:n" relation between GDM ports and
+net_devices.
+Introduce the ethernet-port property in order to model a given net_device
+that is connected via the external arbiter to the GDM{3,4} port (that
+is represented by the ethernet property. Please note GDM1 or GDM2 does not
+support the connection with the external arbiter and are represented
+by ethernet property.
 
-           ┌─────────────────────────────────┐
-           │                                 │    ┌──────┐
-           │                         P1 GDM1 ├────►MT7530│
-           │                                 │    └──────┘
-           │                                 │      ETH0 (DSA conduit)
-           │                                 │
-           │              PSE/FE             │
-           │                                 │
-           │                                 │
-           │                                 │    ┌─────┐
-           │                         P0 CDM1 ├────►QDMA0│
-           │  P4                     P9 GDM4 │    └─────┘
-           └──┬─────────────────────────┬────┘
-              │                         │
-           ┌──▼──┐                 ┌────▼────┐
-           │ PPE │                 │   ARB   │
-           └─────┘                 └─┬─────┬─┘
-                                     │     │
-                                  ┌──▼──┐┌─▼───┐
-                                  │ ETH ││ USB │
-                                  └─────┘└─────┘
-                                   ETH1   ETH2
-
-This series introduces support for multiple net_devices connected to the
-same Frame Engine (FE) GDM port (GDM3 or GDM4) via an external hw
-arbiter. Please note GDM1 or GDM2 does not support the connection with
-the external arbiter.
-
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
-Changes in v2:
-- Rename multiplexer in arbiter in the commit logs.
-- Rebase on top of net-next main branch.
-- Add missing PPE cpu port configuration for GDM2 when loopback is
-  enabled.
-- Link to v1: https://lore.kernel.org/r/20260329-airoha-eth-multi-serdes-v1-0-00f52dc360ca@kernel.org
+ .../devicetree/bindings/net/airoha,en7581-eth.yaml | 44 +++++++++++++++++++++-
+ 1 file changed, 43 insertions(+), 1 deletion(-)
 
----
-Lorenzo Bianconi (11):
-      dt-bindings: net: airoha: Add EN7581 ethernet-ports properties
-      net: airoha: Set PPE cpu port for GDM2 if loopback is enabled
-      net: airoha: Rely on net_device pointer in airoha_dev_setup_tc_block signature
-      net: airoha: Rely on net_device pointer in HTB callbacks
-      net: airoha: Rely on net_device pointer in ETS callbacks
-      net: airoha: Introduce airoha_gdm_dev struct
-      net: airoha: Move airoha_qdma pointer in airoha_gdm_dev struct
-      net: airoha: Rely on airoha_gdm_dev pointer in airhoa_is_lan_gdm_port()
-      net: airoha: Support multiple net_devices for a single FE GDM port
-      net: airoha: Do not stop GDM port if it is shared
-      net: airoha: Rename get_src_port_id callback in get_sport
+diff --git a/Documentation/devicetree/bindings/net/airoha,en7581-eth.yaml b/Documentation/devicetree/bindings/net/airoha,en7581-eth.yaml
+index fbe2ddcdd909cb3d853a4ab9e9fec4af1d096c52..ebbd433e9c9fbfaefd8d07c3678cabc91574d125 100644
+--- a/Documentation/devicetree/bindings/net/airoha,en7581-eth.yaml
++++ b/Documentation/devicetree/bindings/net/airoha,en7581-eth.yaml
+@@ -130,6 +130,30 @@ patternProperties:
+         maximum: 4
+         description: GMAC port identifier
+ 
++      '#address-cells':
++        const: 1
++      '#size-cells':
++        const: 0
++
++    patternProperties:
++      "^ethernet-port@[0-5]$":
++        type: object
++        unevaluatedProperties: false
++        $ref: ethernet-controller.yaml#
++        description: External ethernet port ID available on the GDM port
++
++        properties:
++          compatible:
++            const: airoha,eth-port
++
++          reg:
++            maxItems: 1
++            description: External ethernet port identifier
++
++        required:
++          - compatible
++          - reg
++
+     required:
+       - reg
+       - compatible
+@@ -191,9 +215,27 @@ examples:
+         #address-cells = <1>;
+         #size-cells = <0>;
+ 
+-        mac: ethernet@1 {
++        mac1: ethernet@1 {
+           compatible = "airoha,eth-mac";
+           reg = <1>;
+         };
++
++        mac4: ethernet@4 {
++          compatible = "airoha,eth-mac";
++          reg = <4>;
++
++          #address-cells = <1>;
++          #size-cells = <0>;
++
++          ethernet-port@0 {
++            compatible = "airoha,eth-port";
++            reg = <0>;
++          };
++
++          ethernet-port@1 {
++            compatible = "airoha,eth-port";
++            reg = <1>;
++          };
++        };
+       };
+     };
 
- .../devicetree/bindings/net/airoha,en7581-eth.yaml |  44 +-
- drivers/net/ethernet/airoha/airoha_eth.c           | 631 +++++++++++++--------
- drivers/net/ethernet/airoha/airoha_eth.h           |  30 +-
- drivers/net/ethernet/airoha/airoha_ppe.c           |  43 +-
- 4 files changed, 502 insertions(+), 246 deletions(-)
----
-base-commit: f1359c240191e686614847905fc861cbda480b47
-change-id: 20260324-airoha-eth-multi-serdes-fb4b556ee756
-
-Best regards,
 -- 
-Lorenzo Bianconi <lorenzo@kernel.org>
+2.53.0
 
