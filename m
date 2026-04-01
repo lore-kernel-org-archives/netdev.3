@@ -1,130 +1,107 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0EB223DCE
-	for <netdev@vger.kernel.org>; Wed,  1 Apr 2026 15:28:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775057281; cv=pass; b=DSaUUdY/QqbCzNJh652cqF6FIyE4YQZcp9Fx/bpIyS8JrDy6fhXUkOB80WqbrLavRGzcN3ayq+6lkT+a92ObgjWSgWVa4NXmBZYdUVGwoDTiP5qgRLRyzWImH2SFHOYFbaCS2IAHlakSpmIDrLIIE2t1qIvIQEOzB1BuTq0tkzY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775057281; c=relaxed/simple;
-	bh=4A/xg9VYn45t8YYunHBNUwIaHOOxM2gP1TF/kZTTzrA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HcMWpOdPSPjioO0xqnrJycYEYJum30uLFK9D1/5A3qR8pjl86UcfZIMYjkmcqNQHyEr0Ve1p5pQb2urQCkEx8cJ9ldnj7wTMTU0DI0l6c2jjRACpHHhpWuRkE2FQok5hHkVfjqZB5tWoIyRwNf9Irc7cUd9hPTzCzSGxY7UrGuk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qv/4tX0l; arc=pass smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F3A3272801;
+	Wed,  1 Apr 2026 15:31:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775057475; cv=none; b=ssnLMC3tui/vKio5qxcNDIGERihS17sMm8fxOTy16q5DV/QPyzOETUXL2HaM1dIetI7wZrXpjrExaJktqfZe0hVFQjQyuaSl7hgSyUS4n0UB4a2nV9vLrawoSaKdEHsvj1zG3CVg5+lcg24u1ynkKwg26jqGeJbUzLqeihlG3qY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775057475; c=relaxed/simple;
+	bh=GaJWaVTbn/UL3B4IZ3JOup4VGmfvjwuuWoZ7Ej05S78=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Ju/wXPJfnk6+xiZOXe90kUcOkhVhCazsdd5yNwSZVnhNgc3qZtg19PWOXNhMcqX7ynlfRJKl+F+92+Iv8n8lODjYa62qxJyLrr8+p4LoCrlos4cFGIm9xH02oGsrN0K6alW0prEV/lPb6mWsiXVk54HpKhJVP33RFLU8AcYbOnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ruSnJGof; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qv/4tX0l"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-486fb439299so66021855e9.0
-        for <netdev@vger.kernel.org>; Wed, 01 Apr 2026 08:27:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775057278; cv=none;
-        d=google.com; s=arc-20240605;
-        b=NiDHPL8DoujGKFIqZBZWPj0d1pChuJTAGGRNEqbygMNWSeqDx0YCUHZ4Os2e2lj7Uy
-         mqMSbNRXXceOIfv5FPCSR32Q36iHqlpIb/br6LsgaujmQBlDLq3VRK287MYAu+loCKLU
-         PNxB7HGBghFEU/MpeL6kMwbLGgwxQXhUBOpvzA/7C/RiZJ9gLMkWNXS/1RB2l4HeT0iW
-         FGHel+5mvSJTQUoQO0hxsfu+/EDc+fJciAykZ+V8uPtuA9GpEqOiCY0KRPFWI/dZG80R
-         AVUxBsUDJN9PeEQlbT9IDXEl/gX3Io34ceAujYvJpvfQSSlWr6pnACWTV2zxSOqEPIwH
-         Gc2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=vCOHypGKguo8wBkpBnEw63yLvcdsQkVdKAKwk74anwg=;
-        fh=JRWQ63YGL0Lb7gbeeF1NScIx2NJ/nSB4XGjveQQfxH4=;
-        b=LvOXVsPt5CCQHTf4U783GQ7VecawQTUqoZesA1ROPxYhWcHSKjFjIWrI+UJJMrISY0
-         eaulhKVKqVEV6L6dVW5HgiYJYEmnfvTK+G5qsPamMPsX6qAZPDwSYA6hkxyPV6UQPUND
-         WMvy8JhdWNCcpoMdHATGldAZpvAeoV7zeAGjnfC2DRmaPsaVoOjCOnh41zzjI/2t1BPC
-         jLA8P1nenJZTaMgK4/iBW8Vcr5X0r9EPrAHLzTegrMI9oTrVZokzaLE0ZHIbU+5yuCww
-         09r94SXK5e7MgVLtyAVvKbai8h5Yo3388mT1EB3ITGWMvAo0+ODlmTGLu5FJufKG7oOV
-         5vig==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775057278; x=1775662078; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vCOHypGKguo8wBkpBnEw63yLvcdsQkVdKAKwk74anwg=;
-        b=qv/4tX0l9OKhkkJH+vDrBljtZYiuCoqt+CNRC1p+kUUZkNUmGpdPGRgxuNhRGrmUWV
-         OWawQIcjEVj8SYGrwpmnmzhPeUEAXRAsVuqv4IvFHnwr51jpZ0GLVZmYY5p9pt8VX0qj
-         tS2OOjphaT0Cj2NQSYJwIi0eqGqkA9jP9W9KewXaUD8qm6EpUxkUlkC05Z79W2+AbxFY
-         igeq6svQN3ddMILocr52O5rr/sf5RWZ+j3bhk2Lar+whTrKsFxmDBEgLH/A/5V0bfSJs
-         yoL90cf2n3RqS/Evk48BBfWiLHSdCj3zpsJur787ARAog5z8+OWi2H3UpYgXbWNPNg8l
-         NcvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775057278; x=1775662078;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=vCOHypGKguo8wBkpBnEw63yLvcdsQkVdKAKwk74anwg=;
-        b=a0qnCsCD00bQiBZLZz/1/NQECEaRsIcsQdwCzERpyXXcRWD94pZGNwOo0Nl8/1gTXU
-         IxybMttpd/cw71wXnegj6vLQ2nw4SqV7Fa2BjzDk9q0u6atKsLKinhNY/QhrZcaO7qll
-         YIQFbPNxWcS2edHSfbdWqXTUTgE61JFG8TfqQ2rVFjvgwWtvHcArWQcUw8ivc4FOLCO8
-         uVX6rmVyy1151AcXnQx6tPDzdHkZwjNwJswlTxkrHJkyAR8Rh0O0MeXzZQlX4YubJbdX
-         +ERZDfx0ZqWn4YDX6nd3DOpkFdcuwfIv5GaYD1OD8ii3vPgbpVR/Uizaeh1nExbU/yzH
-         Etdw==
-X-Forwarded-Encrypted: i=1; AJvYcCWd+v3P6xZjlKsA3cop+KAfcVAyx+WpTo1576XAWJvysczDB+7nftRe4WKM6qfNi8ZI8U8937M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxK7XExk9jf1upyDbLUIOjuH71QXzY85c/p0bgvNaxtWBk6QuIO
-	fVZD6i7dQv+c+TFnCZ+hWR197ee9yJDRQeEY0i2BYk5mWYqrtGvnIu7QmI1X0Cc00hQPs/XlMno
-	OtOUop97tHuBC5ZucvdxhoBO67ZyAalo=
-X-Gm-Gg: ATEYQzxhW62HNoWccyy6rcBOWzOvEZBZIMFPf1qJsxqrSg286Ev8t6HImNrz72MlifE
-	BhYBx0FT/PFPodmqBAIFdKTRre4CISL5P83kCO+CiiX9XxeTA23s5UgDNB6Xd+2V4dU9ByPizHk
-	GBkih8Hx+AxbTcBxLABULKRLEt66IQw3fjYiZc07CtviT9UU2NBdMtuWLd3Bi+3SXgC3/FV+BiG
-	di1VAsVbCVj6FJSUCGV1i7lH8zQUys0gRtIp4MLy/E88rwbpLeVJ21eyAWq9KUg6jPGKGZCM6jv
-	HnFibBv1F1WtwNTAXg6+ocrXuCNp5i/kiUodbonqbuPmphfQtYjWjMA7C9z5DaqtTaeSkvtz7d2
-	J/WfERoP4fvWNyqAvJcodhTUSKw==
-X-Received: by 2002:a05:600c:1f11:b0:486:fd3a:fd22 with SMTP id
- 5b1f17b1804b1-48883568b21mr60612905e9.4.1775057278387; Wed, 01 Apr 2026
- 08:27:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ruSnJGof"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3A489C2BCB6;
+	Wed,  1 Apr 2026 15:31:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775057475;
+	bh=GaJWaVTbn/UL3B4IZ3JOup4VGmfvjwuuWoZ7Ej05S78=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=ruSnJGofAJWvrkz5NtIAObFjp/7vnROm9jL9nU6kHRCyJGoS6oldOcBnj5XDNXHCP
+	 SLRMpZ24Ty5xUYc9ba5+J8AmG2AVv+It1e/SdIy75C9GcuZpgt7GDVwJGT5KVuQwQL
+	 qT2Ism5sn12zx+0fB9ZqJaCND6J2oBto1Bk7jKNnI5fMq79amPkag/D2t3WvcKP0XD
+	 /AkIv6okWHUawZKiJXPGkbN9+iKsVOD5dop0bsr4cCnD11UD2C2dv8aZ8j1RTbjop+
+	 yuB9bXND5M6Nzm+74gmVe4+qzWvonRRihTZF9yIIuUHVgYBZJMz+7k57STW6i7EKbm
+	 qS+Gyv4NWatMQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1917810F6FDB;
+	Wed,  1 Apr 2026 15:31:15 +0000 (UTC)
+From: Satish Kharat via B4 Relay <devnull+satishkh.cisco.com@kernel.org>
+Date: Wed, 01 Apr 2026 08:31:12 -0700
+Subject: [PATCH net-next v4 2/6] enic: add V2 SR-IOV VF device ID
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <ac0Pr9K1Qbn1-Dn9@sirena.org.uk>
-In-Reply-To: <ac0Pr9K1Qbn1-Dn9@sirena.org.uk>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Wed, 1 Apr 2026 08:27:46 -0700
-X-Gm-Features: AQROBzC7wcHLCyA-6tldZ7Ce9lGnYrr2f0ucx0sfqhOnFZehMHR_aY88d-OhHDw
-Message-ID: <CAADnVQJdQRi+763mE8pVoYjgCzhUJNFj5b2YYOrrcLhv9s9-uQ@mail.gmail.com>
-Subject: Re: linux-next: manual merge of the bpf-next tree with the bpf tree
-To: Mark Brown <broonie@kernel.org>
-Cc: Daniel Borkmann <daniel@iogearbox.net>, Alexei Starovoitov <ast@kernel.org>, 
-	Andrii Nakryiko <andrii@kernel.org>, bpf <bpf@vger.kernel.org>, 
-	Networking <netdev@vger.kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
-	Linux Next Mailing List <linux-next@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260401-enic-sriov-v2-prep-v4-2-d5834b2ef1b9@cisco.com>
+References: <20260401-enic-sriov-v2-prep-v4-0-d5834b2ef1b9@cisco.com>
+In-Reply-To: <20260401-enic-sriov-v2-prep-v4-0-d5834b2ef1b9@cisco.com>
+To: Satish Kharat <satishkh@cisco.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775057474; l=1690;
+ i=satishkh@cisco.com; h=from:subject:message-id;
+ bh=1chUHjnI8ZuULFMfvuOuwWNT2kAEAJEGnPmXwEaCezM=;
+ b=VdARdc/68EthQ2LiE4zTo5gPesx5qdedeo65YYbauF5KIG0/QcpnXZLrXRh4wjBtI3Q7r0AE8
+ hfzhR4fDH+YDU3jZeI5hyzxYViv0CgoEwujZl/Vri0UeRIBDh18puHE
+X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
+ pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
+X-Endpoint-Received: by B4 Relay for satishkh@cisco.com/default with
+ auth_id=639
+X-Original-From: Satish Kharat <satishkh@cisco.com>
+Reply-To: satishkh@cisco.com
 
-On Wed, Apr 1, 2026 at 5:29=E2=80=AFAM Mark Brown <broonie@kernel.org> wrot=
-e:
->
-> Hi all,
->
-> Today's linux-next merge of the bpf-next tree got a conflict in:
->
->   kernel/bpf/verifier.c
->
-> between commit:
->
->   a8502a79e832b ("bpf: Fix regsafe() for pointers to packet")
->
-> from the bpf tree and commit:
->
->   022ac07508836 ("bpf: use reg->var_off instead of reg->off for pointers"=
-)
->
-> from the bpf-next tree.
->
-> I fixed it up (see below) and can carry the fix as necessary. This
-> is now fixed as far as linux-next is concerned, but any non trivial
-> conflicts should be mentioned to your upstream maintainer when your tree
-> is submitted for merging.  You may also want to consider cooperating
-> with the maintainer of the conflicting tree to minimise any particularly
-> complex conflicts.
+From: Satish Kharat <satishkh@cisco.com>
 
-thanks for headsup.
-lgtm
-we will get it resolved once bpf tree gets pulled.
+Register the V2 VF PCI device ID (0x02b7) so the driver binds to V2
+virtual functions created via sriov_configure. Update enic_is_sriov_vf()
+to recognize V2 VFs alongside the existing V1 type.
+
+Signed-off-by: Satish Kharat <satishkh@cisco.com>
+---
+ drivers/net/ethernet/cisco/enic/enic_main.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
+index e839081f9ee4..e16dfbcd2c22 100644
+--- a/drivers/net/ethernet/cisco/enic/enic_main.c
++++ b/drivers/net/ethernet/cisco/enic/enic_main.c
+@@ -66,12 +66,14 @@
+ #define PCI_DEVICE_ID_CISCO_VIC_ENET         0x0043  /* ethernet vnic */
+ #define PCI_DEVICE_ID_CISCO_VIC_ENET_DYN     0x0044  /* enet dynamic vnic */
+ #define PCI_DEVICE_ID_CISCO_VIC_ENET_VF      0x0071  /* enet SRIOV VF */
++#define PCI_DEVICE_ID_CISCO_VIC_ENET_VF_V2   0x02b7  /* enet SRIOV V2 VF */
+ 
+ /* Supported devices */
+ static const struct pci_device_id enic_id_table[] = {
+ 	{ PCI_VDEVICE(CISCO, PCI_DEVICE_ID_CISCO_VIC_ENET) },
+ 	{ PCI_VDEVICE(CISCO, PCI_DEVICE_ID_CISCO_VIC_ENET_DYN) },
+ 	{ PCI_VDEVICE(CISCO, PCI_DEVICE_ID_CISCO_VIC_ENET_VF) },
++	{ PCI_VDEVICE(CISCO, PCI_DEVICE_ID_CISCO_VIC_ENET_VF_V2) },
+ 	{ 0, }	/* end of table */
+ };
+ 
+@@ -307,7 +309,8 @@ int enic_sriov_enabled(struct enic *enic)
+ 
+ static int enic_is_sriov_vf(struct enic *enic)
+ {
+-	return enic->pdev->device == PCI_DEVICE_ID_CISCO_VIC_ENET_VF;
++	return enic->pdev->device == PCI_DEVICE_ID_CISCO_VIC_ENET_VF ||
++	       enic->pdev->device == PCI_DEVICE_ID_CISCO_VIC_ENET_VF_V2;
+ }
+ 
+ int enic_is_valid_vf(struct enic *enic, int vf)
+
+-- 
+2.43.0
+
+
