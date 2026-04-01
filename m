@@ -1,33 +1,33 @@
 Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942AA3CEBAC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9893FA5FE;
 	Wed,  1 Apr 2026 14:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.117.225.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775053232; cv=none; b=lgz1mJ2NFHbqtBmS8qYFfJWgHWh6qWf28aPouBKJM+LTuSf3J6jz0Ze5fPso/Tt3KPWvjzKucVivyNlmHOgJCs2MT0ScJS1udqHth8pNzbwHDZ7pQuZuQobYzmuUf80vRkcjp/wa6/ulWktcfxvL0jDDjpLxYBrkAz6cMdS3Mf4=
+	t=1775053232; cv=none; b=IiMM9QR2fxVL+F++/dhPhP3r6wf581/Y/99bu9BDD+zKa8GCyZCjbieAGFoVV2YFNHZPxwSyGqi594AV9BPa5AC2ikVuhJ+D3oEoAlxM8tgpdB0Sxrbd6G4R4NJJVXkOOdCGg5YKpKRKFf8yVx+r3FD37OluqFFkex5ninYUEDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775053232; c=relaxed/simple;
-	bh=pfgVGDgPPhXVTWpuZF/LlQPzPd5D5CTCfpW+uxpq64g=;
+	bh=Y89lBkw6GOJyRay/aanAeN6/ET0pVruHgeQxkGn1zhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TvFqV/bPaoIIdRSvWf1R7IvGoeWEsXi+7K9lfjHjQzSRnttGioO6s+wm8RryyFTn550tawBlbGlaIWFiK/oHNikx7/glTcK1jV5RS0OazTNP8OU/P5XpSuARvy2t5FpP4Rp1IU2Ieoeuwnp4geH8VknNWquGWRlA/aMoWkNXIF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=UM+Qowfr; arc=none smtp.client-ip=130.117.225.111
+	 MIME-Version:Content-Type; b=JU0W0sDb2nWQqQpMOn+EnnJ3I+czkqiWPCh4yNLpjV8rOLpYOiZ2IVzmyDQsV7mkpYN74oyLumt3CPdVAggMaQlE5TWRSPdknjVjgp7qgQdR/jHYsI8git+8rQmIm3ZifEOtn8GfTHgaZm3kS+NtrqC53PX2xGZnmYcpaxwx6JM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=xep1gy+O; arc=none smtp.client-ip=130.117.225.111
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="UM+Qowfr"
+	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="xep1gy+O"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=virtuozzo.com; s=relay; h=Content-Type:MIME-Version:Message-ID:Date:Subject
-	:From; bh=yx8315qT6qYcNHYrSQC5idH5MKNb4uq1YT/n0BZxwKA=; b=UM+QowfrWEtR2+h0GIe
-	mCFfsfyHARADts+LsmwvUIHndehJzPKJo8sxyf7ajXLczHJ8f2aDns1ZalPjitTUlUvdAhAUD721G
-	b9ETpd5O7OVe4O8VP82lcP3UqnnkyoJuDYSiyoNXQv/uQvsusIyGldLDSpkIhE2X3+TAcn+DL4Puz
-	LVAm4E3l1jj53PCLIZfaQxcKM/toBHWA5El3yqYqKXyjrtiTccdV/8IOyaHrA3ez2qz1R9hzwscsj
-	R2b37KmBjFZU/625RwmE1arrmho2UW94sXv8mQC88kVhXUJM+YcPtvViOJM+jicOsg2j/OPjz2Uz+
-	/4vvMng/1GgylIw==;
+	:From; bh=zBG3/kXmaNP+K9YS+sQBrQLECebEezPM1muBjpsLrCs=; b=xep1gy+Oc886ZE13JzS
+	si8c4t1u24ycYALNleliOqKxaVuXar51bYi6+acXeLHqAC3cLotJVzdI/d7AUfMAuNt+KbhrYrpBA
+	M924R9OuDVksGhlmE5jLSIWUgKksDQL1Gtex6XjwlLqLBXY3QaMnlquXPpiAXsHHEKGV3XF9BlGhO
+	F5aQtnppfl69MhwK4R9GVLdLkJDR98ND6tAD7GpoXjNYx9CfHfeXRaz7nr+LF40pgDYO9WTeEvWrB
+	w8j2MYV1GHX7pvceDGJKLbYIbdfueGGVkiV40Nm5I9SK/dfdZIN/fEg1ulXvJ5Uy9ol7xpHjwHrcT
+	PYKaf6HAIY65w2Q==;
 Received: from [130.117.225.5] (helo=finist-alma9.vzint.dev)
 	by relay.virtuozzo.com with esmtp (Exim 4.96)
 	(envelope-from <khorenko@virtuozzo.com>)
-	id 1w7wOW-00HGGD-0f;
+	id 1w7wOW-00HGGD-1F;
 	Wed, 01 Apr 2026 16:20:20 +0200
 From: Konstantin Khorenko <khorenko@virtuozzo.com>
 To: Peter Oberparleiter <oberpar@linux.ibm.com>,
@@ -48,9 +48,9 @@ Cc: Steffen Klassert <steffen.klassert@secunet.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH v3 1/4] net: fix skb_ext_total_length() BUILD_BUG_ON with CONFIG_GCOV_PROFILE_ALL
-Date: Wed,  1 Apr 2026 17:20:17 +0300
-Message-ID: <20260401142020.1434243-2-khorenko@virtuozzo.com>
+Subject: [PATCH v3 4/4] gcov: use atomic counter updates to fix concurrent access crashes
+Date: Wed,  1 Apr 2026 17:20:20 +0300
+Message-ID: <20260401142020.1434243-5-khorenko@virtuozzo.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20260401142020.1434243-1-khorenko@virtuozzo.com>
 References: <20260401142020.1434243-1-khorenko@virtuozzo.com>
@@ -63,70 +63,62 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-When CONFIG_GCOV_PROFILE_ALL=y is enabled, the kernel fails to build:
+GCC's GCOV instrumentation can merge global branch counters with loop
+induction variables as an optimization.  In inflate_fast(), the inner
+copy loops get transformed so that the GCOV counter value is loaded
+multiple times to compute the loop base address, start index, and end
+bound.  Since GCOV counters are global (not per-CPU), concurrent
+execution on different CPUs causes the counter to change between loads,
+producing inconsistent values and out-of-bounds memory writes.
 
-  In file included from <command-line>:
-  In function 'skb_extensions_init',
-      inlined from 'skb_init' at net/core/skbuff.c:5214:2:
-  ././include/linux/compiler_types.h:706:45: error: call to
-    '__compiletime_assert_1490' declared with attribute error:
-    BUILD_BUG_ON failed: skb_ext_total_length() > 255
+The crash manifests during IPComp (IP Payload Compression) processing
+when inflate_fast() runs concurrently on multiple CPUs:
 
-CONFIG_GCOV_PROFILE_ALL adds -fprofile-arcs -ftest-coverage
--fno-tree-loop-im to CFLAGS globally. GCC inserts branch profiling
-counters into the skb_ext_total_length() loop and, combined with
--fno-tree-loop-im (which disables loop invariant motion), cannot
-constant-fold the result.
-BUILD_BUG_ON requires a compile-time constant and fails.
+  BUG: unable to handle page fault for address: ffffd0a3c0902ffa
+  RIP: inflate_fast+1431
+  Call Trace:
+   zlib_inflate
+   __deflate_decompress
+   crypto_comp_decompress
+   ipcomp_decompress [xfrm_ipcomp]
+   ipcomp_input [xfrm_ipcomp]
+   xfrm_input
 
-The issue manifests in kernels with 5+ SKB extension types enabled
-(e.g., after addition of SKB_EXT_CAN, SKB_EXT_PSP). With 4 extensions
-GCC can still unroll and fold the loop despite GCOV instrumentation;
-with 5+ it gives up.
+At the crash point, the compiler generated three loads from the same
+global GCOV counter (__gcov0.inflate_fast+216) to compute base, start,
+and end for an indexed loop.  Another CPU modified the counter between
+loads, making the values inconsistent — the write went 3.4 MB past a
+65 KB buffer.
 
-Mark skb_ext_total_length() with __no_profile to prevent GCOV from
-inserting counters into this function. Without counters the loop is
-"clean" and GCC can constant-fold it even with -fno-tree-loop-im active.
-This allows BUILD_BUG_ON to work correctly while keeping GCOV profiling
-for the rest of the kernel.
+Add -fprofile-update=atomic to CFLAGS_GCOV at the global level in the
+top-level Makefile.  This tells GCC that GCOV counters may be
+concurrently accessed, causing counter updates to use atomic
+instructions (lock addq) instead of plain load/store.  This prevents
+the compiler from merging counters with loop induction variables.
 
-This also removes the CONFIG_KCOV_INSTRUMENT_ALL preprocessor guard
-introduced by d6e5794b06c0, as __no_profile handles both GCOV and KCOV
-instrumentation at the root cause level rather than just disabling the
-check.
-
-Fixes: 5d21d0a65b57 ("net: generalize calculation of skb extensions length")
-Fixes: d6e5794b06c0 ("net: avoid build bug in skb extension length calculation")
+Applying this globally rather than per-subsystem not only addresses the
+observed crash in zlib but makes GCOV coverage data more consistent
+overall, preventing similar issues in any kernel code path that may
+execute concurrently.
 
 Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
-Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
 ---
- net/core/skbuff.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 0e217041958a..47c7f0ab6e84 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -5145,7 +5145,7 @@ static const u8 skb_ext_type_len[] = {
- #endif
- };
+diff --git a/Makefile b/Makefile
+index 6b1d9fb1a6b4..a55ad668d6ba 100644
+--- a/Makefile
++++ b/Makefile
+@@ -806,7 +806,7 @@ all: vmlinux
  
--static __always_inline unsigned int skb_ext_total_length(void)
-+static __always_inline __no_profile unsigned int skb_ext_total_length(void)
- {
- 	unsigned int l = SKB_EXT_CHUNKSIZEOF(struct skb_ext);
- 	int i;
-@@ -5159,9 +5159,7 @@ static __always_inline unsigned int skb_ext_total_length(void)
- static void skb_extensions_init(void)
- {
- 	BUILD_BUG_ON(SKB_EXT_NUM > 8);
--#if !IS_ENABLED(CONFIG_KCOV_INSTRUMENT_ALL)
- 	BUILD_BUG_ON(skb_ext_total_length() > 255);
--#endif
+ CFLAGS_GCOV	:= -fprofile-arcs -ftest-coverage
+ ifdef CONFIG_CC_IS_GCC
+-CFLAGS_GCOV	+= -fno-tree-loop-im
++CFLAGS_GCOV	+= -fno-tree-loop-im -fprofile-update=atomic
+ endif
+ export CFLAGS_GCOV
  
- 	skbuff_ext_cache = kmem_cache_create("skbuff_ext_cache",
- 					     SKB_EXT_ALIGN_VALUE * skb_ext_total_length(),
 -- 
 2.43.5
 
