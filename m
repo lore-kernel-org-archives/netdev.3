@@ -1,69 +1,80 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57551331222;
-	Wed,  1 Apr 2026 02:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404EF36213D
+	for <netdev@vger.kernel.org>; Wed,  1 Apr 2026 02:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775011080; cv=none; b=CfmJn0y/T2daGyM1h720bOc83tcx16wHAhIwWrUqFjHQ+822/kcKF3ETBKVO1eFaO73LuLw0ayJnB4hmN/YMOVwVkPe0FpG7IWkLyc1UK0sVMScyBxk0UAT5rgir/rTsCBI+Gd+B+pqGUqfjreRNVZuY+cTdVb90u5jCQ3aSB9k=
+	t=1775011228; cv=none; b=NQmQSntcjh6DjN+9Dh3b57jiaAPntB/eEA0n4V501oW0X0QswRtIhlBzf1ws96KpEuK1sIFCOr5mGdDItcOcMDYHluAPVDe2UPkmCo70RcnaDpyCwj2tn/07PKrO5egHWThMtg8q0oGubgSbCrnwzMoHrZhPVHlqseofkvVj6wA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775011080; c=relaxed/simple;
-	bh=A+RB6JGUeAEBCg4Z/JBgdEUQk3yuJJc+YKKQ5mG0VL4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jUjLe7eagKZGh3gP4sX0zlSeGeLyYzSx53mA3TV2L3inObi05D2oYlXR7makw5KdtDHqkmDOnEXtHo7yE95QJVjDB/6+jrexN1lPBQ8tuvXpNQ/EtYVUQdPVA+GDea4UMw04x5tQFxzG+OkJhBa+LIpCpZGWhUsWGUAtd55dK9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o1kSCNin; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775011228; c=relaxed/simple;
+	bh=F77V0qacPu1vsT0FF1/qkJ4lDD4ex7Tvwh26H0RDfT0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=OrYHVxlPB1ME56qW5WRKxh8LVNeUCrV2vKTlC1qPLG1G/TW0prlQqBzzeLDXrdSTvcKRWMRfR1H2+I9bcUhP3g5qJaX00QNs7VEg02Dmv+GV35mekSTcZb/qA9EnhwMNGQ0Q5u0a4yoYq1un9ZgmLSECh+qROjalN55XBQ3u8/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hnDQpZyU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o1kSCNin"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47162C19424;
-	Wed,  1 Apr 2026 02:37:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hnDQpZyU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E28EC19423;
+	Wed,  1 Apr 2026 02:40:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775011079;
-	bh=A+RB6JGUeAEBCg4Z/JBgdEUQk3yuJJc+YKKQ5mG0VL4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=o1kSCNin6Ld1by/IDHyUNGG2uTJaD8EA2WloLn3jzSNk1/ysX6SvAhnGhpH8Mf/kH
-	 LioZ40bIG+ZBFkLm08vfxl2Nf2943xVxHMO5mcVSKhn9RYXldWnFRkJLpAQuZZzhfo
-	 qoAruyvNP9m64AgK4paCiBP3tuVcAibUdMo85lYXt9E8b2PSJtTtzNOB313bv4wKR0
-	 L4L1fSqPmNFWpw08geE5EoqeyzVMYl1pfhhcDbkOQkNUQ+4Gn2v0Aq6FjwOJBN79Pw
-	 YxF6XgVWZ7taJx1GilkLs/l0GpZuN2890ERz4oMMD/1rI5yM5qzbWwLmEx4gAJcgJ1
-	 8Fy4ZqE590HHA==
-Date: Tue, 31 Mar 2026 19:37:58 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: luka.gejak@linux.dev
-Cc: davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- netdev@vger.kernel.org, horms@kernel.org, fmaurer@redhat.com,
- liuhangbin@gmail.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 0/4] net: hsr: address functional and
- concurrency bugs
-Message-ID: <20260331193758.5dd027f6@kernel.org>
-In-Reply-To: <20260329112313.17164-1-luka.gejak@linux.dev>
-References: <20260329112313.17164-1-luka.gejak@linux.dev>
+	s=k20201202; t=1775011227;
+	bh=F77V0qacPu1vsT0FF1/qkJ4lDD4ex7Tvwh26H0RDfT0=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=hnDQpZyUmF5pzivLNcBWW/aekszVoClHVqiREtpV4lnfq4i87xhLVMYTx1iKb/g3Z
+	 4uDhC7DLQhaYkR3HRPy+TntSKakePRTJGutqWr30q8zaVGRoQzwJ19+gLteE90qHj/
+	 GLB+F3WSL2znt9OIf1pERFatXlA1m/V3qa8GvIcBzLCVZnP7l+8XEY4K8h+swxRe7N
+	 RjY4VK4sxHIWtYC5VXF8Fcu1+L4bMb1bz+RVzV70yPX2xS8hL6N7wi8eoNnT0Go5jf
+	 M3Pe2M65I2LR0ff10Sj+WlhbitGBVsRaFCGFzkJkygdxv1cBTv2eb312hYJhdsa4za
+	 KDc4zFeSXY8aQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA0453808203;
+	Wed,  1 Apr 2026 02:40:11 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] net: airoha: Fix typo in
+ airoha_set_gdm2_loopback
+ routine name
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177501121053.3042140.8960610979272112652.git-patchwork-notify@kernel.org>
+Date: Wed, 01 Apr 2026 02:40:10 +0000
+References: 
+ <20260330-airoha_set_gdm2_loopback-fix-typo-v1-1-a1320ff6b6cc@kernel.org>
+In-Reply-To: 
+ <20260330-airoha_set_gdm2_loopback-fix-typo-v1-1-a1320ff6b6cc@kernel.org>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
 
-On Sun, 29 Mar 2026 13:23:09 +0200 luka.gejak@linux.dev wrote:
-> This series addresses four logic bugs in the HSR/PRP implementation 
-> identified during a protocol audit.
+Hello:
+
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Mon, 30 Mar 2026 00:03:49 +0200 you wrote:
+> Rename airhoha_set_gdm2_loopback() in airoha_set_gdm2_loopback()
 > 
-> The primary change resolves a race condition in the node merging path by
-> implementing address-based lock ordering. This ensures that concurrent
-> mutations of sequence blocks do not lead to state corruption or  
-> deadlocks.
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+>  drivers/net/ethernet/airoha/airoha_eth.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> Additional fixes include correcting asymmetric VLAN error unwinding,
-> enforcing strict supervision frame TLV validation, and improving Netlink
-> error reporting for invalid interlink attributes.
+> [...]
 
-I think that patches 1 and 2 need to go to net with a Fixes tag.
-They look like run of the mill bug fixes. 3 and 4 are logical
-fixes and change behavior so net-next makes sense.
+Here is the summary with links:
+  - [net-next] net: airoha: Fix typo in airoha_set_gdm2_loopback routine name
+    https://git.kernel.org/netdev/net-next/c/a94ddc191f19
 
-FWIW AI has something to say about patch 3, I did not investigate:
-https://sashiko.dev/#/patchset/20260329112313.17164-2-luka.gejak@linux.dev
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
