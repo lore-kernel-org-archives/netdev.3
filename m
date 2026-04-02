@@ -1,271 +1,164 @@
-Received: from mail-ua1-f66.google.com (mail-ua1-f66.google.com [209.85.222.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11020110.outbound.protection.outlook.com [52.101.69.110])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09B23B9DAC
-	for <netdev@vger.kernel.org>; Thu,  2 Apr 2026 12:48:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.66
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775134139; cv=none; b=G9QJbcX1F3fxT9eqv068SZ878gIfrM+0IRw2u0Pe0DbYq+QxZg6H5E5sv1fk9dtcik2IuK01uAMtpK3eCyFsGJZeMYaGVSrAyyKhgJuyNMCxmYoqz1XRFm+6J0v76mWrJs+o8a1Gza1msLOPeDmtrHyCFZi7mChOYr9lAny+MvI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775134139; c=relaxed/simple;
-	bh=ik7uUTib9+LCz0UAAdU8wVthAJCsJQ9Tt8iu7WwCWkA=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version:Content-Type; b=fnv/6FHMH/FC3ajEWpDDPvsgzeXgu7/gnWnXDCiaxLOxw/wevkfFbNvi0NPMnPhkwcG7hm7qvlCozL9AwSYmEFmI9mUO9loPg+tSy3HQcq1NQjeQp17hjIRrd6wpM0hNOQFjwYe9rlKSPDXE4A8Zmk8NinFoByho3QqMVdYPrM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bbQ9cFSS; arc=none smtp.client-ip=209.85.222.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873FB3E122C;
+	Thu,  2 Apr 2026 12:49:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.110
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775134148; cv=fail; b=UqquiLC9MiuevUAh63YfRIfZlW2IuVeAbljCLCEnO1dPfs7qYxNA6K7ASlNKV5HnvE7oaEbNyw1EaugIEeQMT1UYa9ouGr0rCcUB7Hkg5MKRbnJgey5rRUUn0QZYumzFolI9OBTRdY16BcXxi2josmK5YcsZ9WQelyZq+Po1d34=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775134148; c=relaxed/simple;
+	bh=dZpp+v+NvnMuoL+S2UBJnuwi/HN7XgVx/7B5md9nmpQ=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Jrub+cs89UgEB/W79J6ZIoRP+zdr/yLYrrgUW1g4RKPtc5lR7B0df+sfSiPEufOGN3VX5iHtlIBScMBLGMlQIywuBEZi3fpbOC3dB/COiD4WghxXM2zpjhoD2OfMYiqn4rd3YEblZIMEN/v/fkGFPHRAOY1bQlSltAY/ilSBYu4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=xBMmrwB9; arc=fail smtp.client-ip=52.101.69.110
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bbQ9cFSS"
-Received: by mail-ua1-f66.google.com with SMTP id a1e0cc1a2514c-953ac1602f8so1347982241.1
-        for <netdev@vger.kernel.org>; Thu, 02 Apr 2026 05:48:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775134131; x=1775738931; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:subject:cc:to:from
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=f10hXx8Ya/o2nsVJSMU9jz32XKIcCmbLZ6lBcgyEWlM=;
-        b=bbQ9cFSSls6GyfWBbnjfpg4bx3I6UDLFklF/yyHHImy2dNQIf0h4TfdnUgAvGz9Ul0
-         CA2P02iji+o2VwsmYNg+8K6+/MBTCMDgptTGmGRRPtZ1keY9J47qcInI7AlAK2UnMXkc
-         haqpgr2a3hQUN4uYDBRsrARPs+s8V6DOsJVFwQjljAbqTAnNrvr4XQ7OoSJUH8o6yYEg
-         AxN2GLms2fofVgaW5yAzulG3pZrt0RPHHPsFqkKM89hE8P8739ct/F4rqqhDXevHdEQw
-         XFfCtz48TXk+oq9YvKkKr7AkbTo4vvXll939cZeqD79hwlD+Zoikj6cHrVvyg+E1Jf0g
-         Js5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775134131; x=1775738931;
-        h=content-transfer-encoding:mime-version:date:subject:cc:to:from
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=f10hXx8Ya/o2nsVJSMU9jz32XKIcCmbLZ6lBcgyEWlM=;
-        b=OLUsZl410iQ7ddBiyTokRwA9vggayHwoBqGSumUi744JzAPOmVrcrABr/I0/tHtZ6q
-         Yc5LlCwhghhBSlaUxzlc3M96Kv9OAjI/M2KbNe4sQPihcBT86c5tGmT5coyizN0lsRh2
-         KYvr9baLB8rGXMRYDI+Re+PCidWTbQzwGM68HQFrn7Uwcfk2oScANY6voJ6ygupAb12L
-         lcNYsTkTD1uwSf1HpMgk4qlNewAOqTcwcdnbX+IWjKEICteEpoxHZTCcc5qgF8rYNu3C
-         /1BlISYoKPU8a8RNiyUw7RWrkLjq6x2tDf3L4uS7h4UrPduTKKbEAoducVymWl4ZyhzB
-         COnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW9JVZpNy+Sl5LzVcEX1KDRpOhn5AFJIFfOYex3taBAoK4LVP6dsHwxAuaEQ91RfOf3STHZkg4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyzDJa3ZiB+h0pfatTn9srUF/zXshtSRT7rzNIQPBCWvEW18l4i
-	2IL3ZsfURw8rdp7HNIgqbsdkqgqXNne3UZhLA9XC129iSqRTW09H28a+0x2gOmYGqG3UNkHW
-X-Gm-Gg: ATEYQzwO0YPcDFIjDRIQ3s2TP7etpvVCkHpTK4qJkyfIGsi5D7SPE9/UL+ln+TXl+Ks
-	gAYn+DYZ808apV81QVScXwJSOt1BV5q6jP0cXpkgxkC1yAXDviO4+Bvpvf7weAtuxTfRdPUvAfx
-	TkrRxbE+PCJd+3+ov05j31eWmTeELi5cal4Yf7WI0kEuAwOq8HvZf4UwE+xQdIcMqek/I7Pz1bJ
-	vuAehFdK8yrFjYxheLPNccfbi6Dx1Plx+CVc4Io8iWTEU3h7CePtGJf0dSOdn31z+ne4xwnUyEp
-	7UXQW14FaeqH/09WJS5Z8VBR+eJ2JwhLB0D4LAXdd1IMLgw0Fq78t3PydN102FRq072IrF4N3/+
-	9FDrMIx2zVj0ghe7J5Npa/LEevk020N7F/kBMZV2NGCMbYl2EP5YOBIYj2EFPcMtNAYkHbvt8nu
-	7VsbO0ZKi9e7PHKdXgXSk=
-X-Received: by 2002:a17:90b:1f85:b0:359:8957:7285 with SMTP id 98e67ed59e1d1-35dd67257bbmr1602746a91.3.1775128030888;
-        Thu, 02 Apr 2026 04:07:10 -0700 (PDT)
-Received: from localhost ([137.132.22.254])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35dd35364edsm2447388a91.0.2026.04.02.04.07.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Apr 2026 04:07:10 -0700 (PDT)
-Message-ID: <69ce4dde.170a0220.39732d.82c2@mx.google.com>
-From: ven0mfuzzer <ven0mkernelfuzzer@gmail.com>
-To: Namjae Jeon <linkinjeon@kernel.org>,
-        Tom Talpey <tom@talpey.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Eric Dumazet <edumazet@google.com>,
-        Kuniyuki Iwashima <kuniyu@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Steve French <smfrench@gmail.com>,
-        Neal Cardwell <ncardwell@google.com>,
-        Simon Horman <horms@kernel.org>,
-        Willem de Bruijn <willemb@google.com>,
-        David Ahern <dsahern@kernel.org>
-Cc: linux-cifs@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [BUG] Linux Kernel ksmbd Multiple Memory Leaks in Session Handling
-Date: Thu, 02 Apr 2026 19:07:09 +0800
+	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="xBMmrwB9"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Jtj9WCIO+IE5LTfI9V0UHyaarjQsvDCadh0DwR4Vh9Fw85LTEq517YSZT0y/1CgxXsZun+mqMvv3QRH6D+h7/sJ8ktqMUXlfLcU7djcvJ0kg4/t7vnCmbc2ge8Bwsvap76VRcX4ky7XA9KM/EyzoQBQj8MIqmZvuj4oPlLBr7U2169dLuyiox1SFBL4glRSz23fpr5Q2yWN0nF9GegWIJ0IRj5OK23VWCR3zFrdexvhpVev1+YD0r0CGUQIZ88V9ACiEtpaN1JlCVE7gMIwL0bjZAUDNyqSLnyW2oSfbzmSy5RGTh2yw/fncH337oVUoC3W8Ii+xt35Am0WKvOq7Vw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2o3SPqTmcn3l6LGb5sFGHUQTJur8pqydZw6gS9sDwHQ=;
+ b=CNsUtxS3TyKUBprljsGuMjGrzZHEpXWeo0V2FbQJz1ep4T6ZoLujlxq/YVtPBn16ggvMVgBgw0I7a0FMh3nUa0dwxYWD7QUb4Jn7qKQ5DfMn0VxM2U6bShVJ5JKkYbjB5hP+4WN/YZbrBcvLZYitSrRzfs6rQOWSYp0cCka0608LsQLirOCNC8nsh1aUl0IOfu52tf+Q/Q6in4qKN4+bsOoSjIpBxlqQU1IKBe/no3Elyr7pJU27wcpqCgWZqIXbmSjba9FkT1Gmm3e1tT00IlUn/6cyuUTXGipzvzDB1wJvoVLpDA2yyeXJukuzsuRPo6tQVnRRivfH3k/dSYKvSg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2o3SPqTmcn3l6LGb5sFGHUQTJur8pqydZw6gS9sDwHQ=;
+ b=xBMmrwB9U9Xu8mOBivvENtUuICVj8z2r1gklgiJ+NgRL7e18Wgu/45PC0DBtwLIzL87MmS3Ai5O7saLAp/KkoauFueG8Esco3FxTeawHN88hOf8H9XvkJoBgZWevzAUpLObW+wK/yCAYJfEnGzouW8icdCWUvlSkX41Ai9xOcDsEGXoKy60mrsD8BDFaYbWqZ9ed9np68bqlp1s4VS4Y5k6rc8Qi+LW4XXdIXxZAhDutuiL9yjTX2oj6ALeI+IdlbEMsEmuo7AlOJ/DhCglehKwGhao2ckW3Bf0g9y3kWax3IThUfrE4jYmULRXVDVs7c2PP68hmorggBb2L1N/5qw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from PA6PR08MB10708.eurprd08.prod.outlook.com
+ (2603:10a6:102:3c7::20) by VI0PR08MB10942.eurprd08.prod.outlook.com
+ (2603:10a6:800:253::15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Thu, 2 Apr
+ 2026 12:48:57 +0000
+Received: from PA6PR08MB10708.eurprd08.prod.outlook.com
+ ([fe80::1999:c6db:dc55:494a]) by PA6PR08MB10708.eurprd08.prod.outlook.com
+ ([fe80::1999:c6db:dc55:494a%6]) with mapi id 15.20.9745.022; Thu, 2 Apr 2026
+ 12:48:57 +0000
+Message-ID: <3fde6bbc-09bd-4543-bbd0-8df1f7eda6a2@virtuozzo.com>
+Date: Thu, 2 Apr 2026 14:48:55 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/4] gcov: use -fprofile-update=atomic globally to fix
+ concurrent access crashes on GCOV-enabled kernels
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Peter Oberparleiter <oberpar@linux.ibm.com>,
+ Mikhail Zaslonko <zaslonko@linux.ibm.com>,
+ =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+ Steffen Klassert <steffen.klassert@secunet.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ Masahiro Yamada <masahiroy@kernel.org>, Josh Poimboeuf
+ <jpoimboe@kernel.org>, Vasileios Almpanis
+ <vasileios.almpanis@virtuozzo.com>,
+ Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Arnd Bergmann <arnd@arndb.de>
+References: <20260401142020.1434243-1-khorenko@virtuozzo.com>
+ <20260401184625.2641899d@kernel.org>
+Content-Language: en-US, ru, sr
+From: Konstantin Khorenko <khorenko@virtuozzo.com>
+In-Reply-To: <20260401184625.2641899d@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AS4PR10CA0024.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d8::16) To PA6PR08MB10708.eurprd08.prod.outlook.com
+ (2603:10a6:102:3c7::20)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Mailer: KernelStackFuzz send_email.sh
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA6PR08MB10708:EE_|VI0PR08MB10942:EE_
+X-MS-Office365-Filtering-Correlation-Id: 21a4290e-7f18-4bc5-81bf-08de90b634ad
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|18002099003|13003099007|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	WRzYTux+pHwS/6+SHmbqZV/X+h0eXFYRcjC7WpXemqKenxbi9Pr5UhBtC723v+F/FGdB/EdS3b78FJEpOBRJywtJcidRPPujhZsSfYj8+oQxlW4DkUcyDkV0SKF6H6Go/1ay0TI/R0XxYYq+Hd++u01hYU1aWD9xW5E9PghFf77oFfIbB37X5rhfc+Weg9pjmoJ/pYllChwdApFGfSPcDjfddQLiAOSrogOfAOmlUOyvHH80LLY8q9nBHt5KhLkw0cI/AUxjHLD/u2WBn8UEIbvVWD89s1fkDjtNWJNAQfXioZrh+8qFOgdgs7qMdpPnRQWUWYyBW5+Froo86VOOe4nMhnrW3uWPCWJR2qDEyJcG8tzL9NmWBFI8Dk6SU6QjzSwyUrZ14YanVxncQQLmrRn3eSe8iLwq9Xur6CgdbqctZijJDvD0zvsLGFnv7oVyHAAmZoVlwkqqZ+j6ojBbxOAVzotOnayZKLiU6mKmndHMMexTZz2wq57521XZZO+Vqg0BrI7aAa05RVG5lmybkgTdbnG/zN93XxbufmLK3SiTyADRFM6+OhOdZocPtBk984Idi/IzGtOjsOheBE/SARw+ywhyDHA4rgvfef4d33DSBrbGsoIG04mUmZ1N7/0sArxWN8nTBmmkrJ5J/YI9CQsb516JD/lML4ujuzw0G/0o7C8BTazrcysHOp/owsYR
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA6PR08MB10708.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(18002099003)(13003099007)(56012099003)(22082099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NDZVUTlmUHV5bVd5VkhwY3MxQWpOSGxNNGJnZzQzTnRiejFBeGlocmo0bmdy?=
+ =?utf-8?B?bHk1VjRTVzNFM1VmYURDdFBjTlFJRTA5Z0lhWUMrY3AzL0VSN3VITE4yUU5F?=
+ =?utf-8?B?R2M4ck1MRUFkV0dacldON0hDNkhEYm5VUklRWEtSTnI4S2hqN1ZlYVM2M3Fh?=
+ =?utf-8?B?ZEJ4K1VEYnhaSVN6dThKZFhJQ0p3SU1Ddlp5bmdKa2VRMWJpSmt0UFdyMHVu?=
+ =?utf-8?B?YkJlWFFsYlZYM0NaeVdmVjM3WXdWQWNQRmkwaWF0Nmk5dEFqWG1Qd3NBTENj?=
+ =?utf-8?B?TVhRUGxnUzltZzhxOE5RRmI1VVZUNDVzUCtuc0hUTEJjTzNDWTlTU0RISEZG?=
+ =?utf-8?B?VjVYUGRPL0lvdHo3QmN2YW1yOE02dXZwTFM3MzZXT2hzZ0NzUWZ1ays4ZHYw?=
+ =?utf-8?B?NHdmTEhPcGVqTHZWa21zemw4Sk9DVkhBSVFDYnEyRDZOdEd1eFBKVWFnaHRs?=
+ =?utf-8?B?NG5MWGc1bHo4QlplaHdubHM4eEIvTjVScnAzS3lxK3c4SHJZNmdtMFJjVXZZ?=
+ =?utf-8?B?NVF4WUcxQlFEdERpcnFFdGlKUmxUSTNjYThFNTd2UWVDY0dkRVBRUU4vSVVU?=
+ =?utf-8?B?UW5YMTJmTjYxL1lnTXBPM3I4alFvR0Rwekc1dXgvS3hYK1NhR3FiQmVUMmV6?=
+ =?utf-8?B?cXIzMW9mbzNLcGZaaW40NS92SEJ2RXRHS0NrTHhKNzZ3cVl3RnR0dTJyeEdM?=
+ =?utf-8?B?QldHYU9tVVc2U3E4T3EzSnhJdnlwWUZyak5nK3hJZEZZQVQycjZwT1B2TFVi?=
+ =?utf-8?B?UUhvUEhPbTBQUUZYWmh2dWR2bzlLYk5KRE14UFhpcHYwb1dlU1RTaXJmUmIz?=
+ =?utf-8?B?V2hmZWM0WHFTeDA1dkFiRmxUSjFwSkZOWjdxOGU3cXZ2UmdUWDdOZ1ErR0tX?=
+ =?utf-8?B?U0JkWnN0dTRjOENwVkgxSVBQeUd5RFBsbHA5L25VV0hCalBBWDRJdUhRbWkx?=
+ =?utf-8?B?cnROZlZqZm94Z00xMXN3UkhMbGJEU0pZb1d0TEp2VFk5UlZEaHFDejBEZmhy?=
+ =?utf-8?B?cEI5UjNhMUNmaS92aUhUaU5XcUp0UDdoRmNyZVB4YlVnOGgvOWw4T1lDVHY2?=
+ =?utf-8?B?d0dqcExORlA3L1RlOFQ0ZFBqRS82K2IxT1pvRXdBMSt6N2RMa255dnVFbm1q?=
+ =?utf-8?B?cDA0eEZ1Y1RXMG10a2gybmwxRlVVV1ZtTGlMckRuWEVidzJicHBjNGF2U2Rm?=
+ =?utf-8?B?TzlGZk8vZi9kMnVaamlhVWl5UzRpVW9FOElMSnpQSDc4eGNteW5YVHRPbm45?=
+ =?utf-8?B?YVJraWxVY2grOFFkNDZGek9NZVpmaTZGR0YrcGkyTnFTdDBpeUJLM1RSNTdQ?=
+ =?utf-8?B?cGpjbytnYjFBcndCK3VQL2NoeTVYTUhUYnNQV1daVzd5MkcyNWZGMXFIM2F3?=
+ =?utf-8?B?andhUmtuOStyejZramhvbDRMOEd1SHFWekRUQjNGQTZQZUZ4cmFKd0U2Y01u?=
+ =?utf-8?B?MDBzVGgvRHV4cXdpNFhsSE12b3pRYk1oMWVuaGtaTTI4dzMwRFkvRUFqTnAx?=
+ =?utf-8?B?a3NNVE93T1FDaEtvK0gzUU5KelNJbUhRVmFkdWJKNUt1cklrbkVaV3ZRUDVx?=
+ =?utf-8?B?SHJzQ0w4K0FIZ1RTak1Nc1lWU1V3dlBaQXpoMWNLNnpWbUo3RTRKbk5PMHdr?=
+ =?utf-8?B?RHMyUm9IQUdVYVVOczIvQkc2VUs1VTRhYWw5Qy9KSUYzTWFSSDRGU2h3TG5m?=
+ =?utf-8?B?c3Mva1ZjMW55Z3RUbFJpTnJ4Y3NkalRnQjAzLzVmZkJsY285NU9UYTFBWHVa?=
+ =?utf-8?B?ZWhhdjNOa2RrejdzbWZKQ3E4NlBCYzErRTJleTVUaG9OUzRCazlHQnp5cGx3?=
+ =?utf-8?B?MlZHQkFESGp1QUxRZHY5N1pQMG1lQWUwVk1UcnBkbndjTWN6M2FHY2M1NHJs?=
+ =?utf-8?B?VzdUN0c0dGlZYTZyVFdsdUg5R090Y2c1bHc4UEhHZ0szOCtjVkJYTkpjTGhL?=
+ =?utf-8?B?QVhMYXBnbkdvS3pSTGh3RisrRjFWdlBYbkZ3bmJGU2tDTmd1SjRPT05HM1Fa?=
+ =?utf-8?B?eitXenY4YU0xSGFpTnhxd2VWT05ZUXpRYXBvTkNDaUhYd21zMnZxVkdzNzdJ?=
+ =?utf-8?B?MVRUa1YrRVhOVlRyTFlTbG9YV2tSNUl0bnNadWFVVXg1VzhyVkFVanJETWtm?=
+ =?utf-8?B?WlJTb0tYV08zYzcrUmRNL05aczZPemY3NzBodFNHcWZFdDl1YVE2WHNyWFV6?=
+ =?utf-8?B?VC9rLzVyRmVXZ1RkV3JUOGNYL2JCeXVoL1JMYlA0Q0pnejZSdVN5QU9ZaVJU?=
+ =?utf-8?B?c2g4WnlVTUY5NE94RWk1TTRRdDVWL0laR3dBeGo4dGJQa0RyZFRHQjJ1QUlI?=
+ =?utf-8?B?Z2FXQmxyUElzRE5pY2pHNldHZTJWUkJoVE9neGFEMVR2VHdsZm5Tdz09?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 21a4290e-7f18-4bc5-81bf-08de90b634ad
+X-MS-Exchange-CrossTenant-AuthSource: PA6PR08MB10708.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2026 12:48:57.7040
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RtvOWWiN4Ut42/0bwgGHeRIPLSYdUn4jVES1YiMzpXx5T739lOLq5V6AMwDnsznffPRW3jIx6p2YmC1GS9OfgA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR08MB10942
 
-Linux Kernel ksmbd Multiple Memory Leaks in Session Handling
+On 4/2/26 03:46, Jakub Kicinski wrote:
+> On Wed,  1 Apr 2026 17:20:16 +0300 Konstantin Khorenko wrote:
+>> 1. Build fix for CONFIG_GCOV_PROFILE_ALL=y - skb_ext_total_length()
+>>     BUILD_BUG_ON failure:
+>>     https://lore.kernel.org/lkml/20260331165125.959833-1-khorenko@virtuozzo.com/T/#t
+>>
+>> 2. Runtime crash fix for zlib inflate_fast() - GCOV counter merging
+>>     with loop induction variables caused out-of-bounds writes on SMP:
+>>     https://lore.kernel.org/lkml/20260330143256.306326-1-khorenko@virtuozzo.com/T/#t
+> 
+> Why are you merging these? The should go via different subsystems.
+> How do you expect this series to be applied?
 
-  1. Vulnerability Title
+You are definitely right, Jakub.
 
-Linux Kernel ksmbd Server Multiple Kernel Memory Leak Vulnerability in Session Setup/Teardown
+i will create 3 different threads and note explicitly that the last commit should be applied only 
+after first 2 series are merged.
 
-  2. High-Level Overview
+Will do right now!
 
-Seven distinct kernel memory leaks exist in the ksmbd (in-kernel SMB server) session handling paths. During SMB session setup and teardown, multiple kernel objects — including socket inodes (1344 bytes), LSM security blobs (120 and 32 bytes), TCP connection structures (3264 bytes), ksmbd connection contexts (64 and 16 bytes), and network skb buffers (240 bytes) — are allocated but never freed. These leaks accumulate over time with repeated session establishment, allowing a remote attacker to exhaust kernel memory by repeatedly connecting and disconnecting SMB sessions. This constitutes a denial-of-service vulnerability.
-
-This vulnerability was discovered using ven0mfuzzer, our custom-designed MITM-based network filesystem fuzzer developed by our team. Following the common syzkaller practice, we submit the kernel crash trace as the primary reproduction artifact.
-
-  3. Affected Product and Version Information
-
-Product: Linux Kernel (upstream mainline)
-Affected Component: `fs/smb/server/` — ksmbd session setup/teardown, connection handling
-Supporting Components:
-- `fs/smb/server/transport_tcp.c` — `ksmbd_kthread_fn()`, `ksmbd_tcp_readv()`
-- `fs/smb/server/connection.c` — connection context allocation
-- `net/socket.c` — `sock_alloc_inode()`, `kernel_accept()`
-- `net/ipv4/tcp_minisocks.c` — `tcp_create_openreq_child()`
-
-  Tested Versions (confirmed vulnerable)
-- Linux kernel 6.19.0 (mainline, commit `44331bd6a610`, gcc 11.4.0, built 2026-02-13)
-- Linux kernel 6.12.74 (LTS, used in Google kernelCTF COS target)
-
-  Affected Version Range
-All kernels with ksmbd support (approximately 5.15 through 6.19) are believed affected.
-
-  Affected Distributions and Products
-
- |  Vendor / Product  |  Notes  | 
- | --- | --- | 
- |  Red Hat Enterprise Linux (RHEL 9.x)  |  Ships kernels >= 5.14 with ksmbd module  | 
- |  Ubuntu (22.04 LTS, 24.04 LTS)  |  HWE kernels 6.x include ksmbd  | 
- |  SUSE Linux Enterprise Server (SLES 15 SP5+)  |  Kernel 6.x based  | 
- |  Debian (Bookworm, Trixie)  |  Kernels 6.1+  | 
- |  Fedora (39+)  |  Kernels 6.5+  | 
- |  Amazon Linux 2023  |  Kernel 6.1 LTS based  | 
- |  Google ChromeOS / COS  |  kernelCTF target, confirmed vulnerable on 6.12.74  | 
-
-  4. Root Cause Analysis
-
-  4.a. Detailed Description
-
-The kmemleak detector identified 7 unreferenced kernel objects allocated during ksmbd session handling that are never freed. These leaks occur across multiple subsystems involved in SMB connection management:
-
-1. Socket inode (1344 bytes): Allocated by `sock_alloc_inode()` during `kernel_accept()` in `ksmbd_kthread_fn()`. The accepted socket's inode is not properly released when the connection is torn down.
-
-2. LSM security blob (120 bytes): Allocated by `security_inode_alloc()` during inode initialization for the socket. Leaked because the parent inode is leaked.
-
-3. TCP connection structure (3264 bytes): Allocated by `sk_prot_alloc()` during `tcp_create_openreq_child()` when accepting a new TCP connection. The TCP socket is not properly closed on session teardown.
-
-4. LSM security blob for socket (32 bytes): Allocated by `security_sk_alloc()` for the cloned TCP socket. Leaked with the parent TCP structure.
-
-5. ksmbd connection context (64 bytes): Allocated by `ksmbd_kthread_fn()` for per-connection state. Not freed when the connection handler exits abnormally.
-
-6. ksmbd TCP read buffer (16 bytes): Allocated by `ksmbd_tcp_readv()` for receiving SMB messages. Not freed when read is interrupted.
-
-7. SKB buffer (240 bytes): Allocated by `build_skb()` in the virtio-net receive path for incoming SMB packets. Orphaned when the associated socket is leaked.
-
-  4.b. Code Flow
-
----
-ksmbd_kthread_fn()                    [fs/smb/server/transport_tcp.c]
-  → kernel_accept()                   ← allocates socket inode (1344B) + security blob (120B)
-    → sock_alloc() → alloc_inode()
-    → security_inode_alloc()
-
-TCP SYN_RECV → ESTABLISHED:
-  → tcp_create_openreq_child()        ← allocates TCP sock (3264B) + security blob (32B)
-    → sk_prot_alloc() → sk_clone()
-    → security_sk_alloc()
-
-ksmbd_kthread_fn() continued:
-  → kmalloc (64B)                     ← ksmbd connection context
-
-ksmbd_conn_handler_loop():
-  → ksmbd_tcp_readv()
-    → kmalloc (16B)                   ← TCP read buffer
-
-[on session teardown — objects NOT freed due to missing cleanup]
----
-
-  4.c. Crash Trace
-
-This vulnerability was discovered by ven0mfuzzer. The following kmemleak output is submitted following syzkaller's common practice of providing the raw kernel trace as the primary reproduction evidence:
-
----
-unreferenced object 0xffff88810af3d180 (size 1344):
-  comm "ksmbd-eth0", pid 328, jiffies 4294901355
-  backtrace (crc 1a26ccb4):
-    kmem_cache_alloc_lru_noprof+0x3ed/0x5f0
-    sock_alloc_inode+0x25/0x1c0
-    alloc_inode+0x64/0x240
-    sock_alloc+0x40/0x280
-    sock_create_lite+0x82/0x120
-    kernel_accept+0x16b/0x380
-    ksmbd_kthread_fn+0xee/0xf30
-
-unreferenced object 0xffff888107243bd0 (size 120):
-  comm "ksmbd-eth0", pid 328, jiffies 4294901355
-  backtrace (crc 6bd3e180):
-    kmem_cache_alloc_noprof+0x3ed/0x5f0
-    security_inode_alloc+0x3b/0x140
-    inode_init_always_gfp+0xbf9/0xf20
-    alloc_inode+0x86/0x240
-    sock_alloc+0x40/0x280
-    sock_create_lite+0x82/0x120
-    kernel_accept+0x16b/0x380
-    ksmbd_kthread_fn+0xee/0xf30
-
-unreferenced object 0xffff88810fbfa980 (size 3264):
-  comm "softirq", pid 0, jiffies 4294902189
-  backtrace (crc c2de1a0c):
-    kmem_cache_alloc_noprof+0x3ed/0x5f0
-    sk_prot_alloc+0x60/0x2a0
-    sk_clone+0x79/0x14f0
-    inet_csk_clone_lock+0x2f/0x760
-    tcp_create_openreq_child+0x34/0x26a0
-    tcp_v4_syn_recv_sock+0x115/0x10e0
-
-unreferenced object 0xffff888108c514a0 (size 32):
-  comm "softirq", pid 0, jiffies 4294902189
-  backtrace (crc ea16adaf):
-    __kmalloc_noprof+0x4eb/0x760
-    lsm_blob_alloc+0x68/0x90
-    security_sk_alloc+0x2f/0xd0
-    sk_prot_alloc+0xfb/0x2a0
-    sk_clone+0x79/0x14f0
-
-unreferenced object 0xffff88810fd0b540 (size 64):
-  comm "ksmbd-eth0", pid 328, jiffies 4294902189
-  backtrace (crc f2da5eae):
-    __kmalloc_cache_noprof+0x411/0x610
-    ksmbd_kthread_fn+0x288/0xf30
-
-unreferenced object 0xffff8881063426f0 (size 16):
-  comm "ksmbd:::ffff:10", pid 434, jiffies 4294902190
-  backtrace (crc 9e6ee6c8):
-    __kmalloc_cache_noprof+0x411/0x610
-    ksmbd_tcp_readv.constprop.0+0x16d/0x700
-    ksmbd_tcp_read+0x88/0xc0
-    ksmbd_conn_handler_loop+0x5dd/0xfd0
-
-unreferenced object 0xffff88810fa94200 (size 240):
-  comm "softirq", pid 0, jiffies 4294902419
-  backtrace (crc 4367e44b):
-    kmem_cache_alloc_noprof+0x3ed/0x5f0
-    build_skb+0x46/0x370
-    page_to_skb+0x5df/0xb30
-    receive_buf+0xa3e/0x4940
-    virtnet_poll+0xfb6/0x1750
----
-
-Total leaked per session: approximately 5,080 bytes (1344 + 120 + 3264 + 32 + 64 + 16 + 240). An attacker establishing and tearing down sessions repeatedly can exhaust kernel memory.
-
-  4.d. Suggested Fix
-
-The ksmbd session teardown path (`ksmbd_sessions_deregister` / `ksmbd_conn_handler_loop` exit) must properly release all allocated resources:
-1. Close the accepted socket via `sock_release()` to free the socket inode and associated LSM blobs
-2. Properly tear down the cloned TCP socket
-3. Free the ksmbd connection context and read buffers on all exit paths, including error/abort paths
-
-  5. Discovery Method and Reproduction
-
-  5.a. Discovery
-
-This vulnerability was discovered using ven0mfuzzer, a custom-designed MITM-based network filesystem fuzzer developed by our team. The fuzzer operates by positioning an AF_PACKET/TCP transparent proxy between a Linux kernel filesystem client (VM-A) and its server (VM-B), then mutating network protocol messages in-flight.
-
-Following the common syzkaller practice, we submit the kernel kmemleak output as the primary reproduction artifact. The output above was captured with CONFIG_DEBUG_KMEMLEAK enabled on kernel 6.19.0.
-
-  5.b. Reproduction Setup
-
----
-VM-A (CIFS client) ──SMB2──► Host:44446 (MITM proxy) ──TCP──► Host:44445 ──hostfwd──► VM-B:445 (ksmbd)
----
-
-Trigger condition: Repeated SMB session establishment and teardown, especially when the MITM proxy disrupts the session setup handshake, forcing abnormal teardown paths.
-
----
-Reported-by: ven0mfuzzer <ven0mkernelfuzzer@gmail.com>
-Link: https://github.com/KernelStackFuzz/KernelStackFuzz
+--
+Konstantin Khorenko
