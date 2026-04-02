@@ -1,59 +1,58 @@
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B4D31690A;
-	Thu,  2 Apr 2026 13:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5B23DA7F3;
+	Thu,  2 Apr 2026 13:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775135624; cv=none; b=L+k6EekyIGUK8HKWDipn7pN2sKTw4QElZhBDDgKczkaC/SyfBJF2Mj8aefe27Ntw7CSEEbsBZcm13MRmo8m7WtVeDEaatJwhJ+upUKt2hQQsAebvFbeCwNd+UIKPzhirAGFvonk3S4Sm1tg7H87munJFqcJHpANRBnUgoA7Tmjg=
+	t=1775135626; cv=none; b=KY/2Hr15iNySuGd82Vq/ZiLyYNsjBI7MitCtJBduFi/LBox/xIG6QqRfdjrug0qUjCf5U/9HHh5cMKq+VV40Fo8eupWGs2Xh3wXPQlRFUbgrdo3vOBjC17E37KYHBS2Ddb1/NfaJsK00yuVhzu4vODRrM5mtPPVISQGyKxUGBW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775135624; c=relaxed/simple;
-	bh=olJG/w5hEVxAxRdsneJR6SiqNQrFbJh9xOCQLGWReYk=;
+	s=arc-20240116; t=1775135626; c=relaxed/simple;
+	bh=9J04dCwa/PtETLbw9AxUT8HLph5CiL5GvXuX5fSNofs=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JnlX4hnhX1awhabnmsIDZGZK5LgRM9/v/sTMOyAC1gLt7S6j3wjQkCdnmaHYz8FBW4J41M/6HW4wM66wrFr0EGt581CR0B6o1MhPdxiLlK1kwj98SfUM1ZnxsxAqpzhdb3lSbVWcg7eLECY+n+Ap3WLqC18PJAgAIq025nwSCPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=rrH/mWEE; arc=none smtp.client-ip=68.232.153.233
+	 MIME-Version:Content-Type; b=F14eMtEHxerFYKUU1tmlflU3rRr53LSl2wSRXF/w7c+TeUkp4m/6a49MIyIeXyaHEyx+DEokQvYP/MgqUnanmlQYillpJbEH6Q/1IAiaDjEVbP1rGkYUKpNwvMqHurQ+iE8yVdeebPKYHZ0JIqV5E/zMhLhQDWGLJaDMePYOT+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=XrbtmThY; arc=none smtp.client-ip=68.232.153.233
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="rrH/mWEE"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="XrbtmThY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1775135624; x=1806671624;
+  t=1775135625; x=1806671625;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=olJG/w5hEVxAxRdsneJR6SiqNQrFbJh9xOCQLGWReYk=;
-  b=rrH/mWEEtgRNCZ+KTewmx6gtZNCIZBfgboGhpLDNwFoRVypGsrm+BN6F
-   rn8Pnxt1MH/8tf1uSOHTS5uaEtVzffo8W1b2MmvAW1DPZUHMfmy1TrATG
-   MuOxd7ENOmHCFUSTndzcNxH2MIi5kGTZS2cJoFPYPi0VDzZ8p5mHgS3Qk
-   Sv6GUVPy91eVk+KyZ+Vx/BEBfox+7v0ffrSoYmgsY2PheorriZ95X7gBv
-   b9X983j/k7Z4k3O7jWikCywLlhaZUH/jiw0dlGyGYIN5LbKCCu/LmUAQL
-   p6u/gx4MBH3RxM6itP9wQhtuvu7+2m3wJ9lZzrleA5N/2fggWdw6W2spW
-   w==;
+  bh=9J04dCwa/PtETLbw9AxUT8HLph5CiL5GvXuX5fSNofs=;
+  b=XrbtmThYxRowp/rSReOYhEeV4rm3EyLAmm6FZOEkszIyzYPyJK34DtLm
+   KpnxK06iilTRJ1yrqz25ZKwnMmo58wVcPG19yZqLrcECQX1MlNh4444F7
+   uXXYnuqmMf6tDhCKujPby1OH8/vOyBPohh14d9FLPFd84DEdjCnYdM6w+
+   NjyygJ9JfC3mJ9ocnEFFe4CEfhYUS1bHa+e1Z28krxbrrKIcxO40UPWSK
+   l7VvJ59yqObQI633WEFTAZwHvK/hBSTZt9mxYpgXnkTS2Bb+DyKvFReuB
+   6seKegNXkg3UEJpyokLLeHil++GQIiMsXvsNRW8K3QOov78OFDbPsR+w+
+   A==;
 X-CSE-ConnectionGUID: UGofO4cJSXOAkJsSzS2N8A==
-X-CSE-MsgGUID: tLTeN27nTTi6FCeQooa60w==
+X-CSE-MsgGUID: bKgYiNHZRi2D3ah/YMRG9A==
 X-IronPort-AV: E=Sophos;i="6.23,155,1770620400"; 
-   d="scan'208";a="55583668"
+   d="scan'208";a="55583671"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
   by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2026 06:13:43 -0700
 Received: from chn-vm-ex03.mchp-main.com (10.10.87.152) by
  chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.35; Thu, 2 Apr 2026 06:13:08 -0700
+ 15.2.2562.35; Thu, 2 Apr 2026 06:13:20 -0700
 Received: from bby-cbu-swbuild03.eng.microchip.com (10.10.85.11) by
  chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Thu, 2 Apr 2026 06:13:08 -0700
+ 15.1.2507.58 via Frontend Transport; Thu, 2 Apr 2026 06:13:19 -0700
 From: Charles Perry <charles.perry@microchip.com>
 To: <netdev@vger.kernel.org>
-CC: Charles Perry <charles.perry@microchip.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH net-next v4 1/3] dt-bindings: net: document Microchip PIC64-HPSC/HX MDIO controller
-Date: Thu, 2 Apr 2026 06:12:22 -0700
-Message-ID: <20260402131229.319599-2-charles.perry@microchip.com>
+CC: Charles Perry <charles.perry@microchip.com>, Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH net-next v4 3/3] net: phy: add a PHY write barrier when disabling interrupts
+Date: Thu, 2 Apr 2026 06:12:24 -0700
+Message-ID: <20260402131229.319599-4-charles.perry@microchip.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260402131229.319599-1-charles.perry@microchip.com>
 References: <20260402131229.319599-1-charles.perry@microchip.com>
@@ -66,108 +65,74 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-This MDIO hardware is based on a Microsemi design supported in Linux by
-mdio-mscc-miim.c. However, The register interface is completely different
-with pic64hpsc, hence the need for separate documentation.
+MDIO bus controllers are not required to wait for write transactions to
+complete before returning as synchronization is often achieved by polling
+status bits.
 
-The hardware supports C22 and C45.
+This can cause issues when disabling interrupts since an interrupt could
+fire before the interrupt handler is unregistered and there's no status
+bit to poll.
 
-The documentation recommends an input clock of 156.25MHz and a prescaler
-of 39, which yields an MDIO clock of 1.95MHz.
-
-The hardware supports an interrupt pin to signal transaction completion
-which is not strictly needed as the software can also poll a "TRIGGER"
-bit for this.
+Add a phy_write_barrier() function and use it in phy_disable_interrupts()
+to fix this issue. The write barrier just reads an MII register and
+discards the value, which is enough to guarantee that previous writes have
+completed.
 
 Signed-off-by: Charles Perry <charles.perry@microchip.com>
 ---
 
 Notes:
-    Changes in v4: none
-    Changes in v3: none
-    
-    Changes in v2:
-      - Make "clocks" and "interrupts" required (Andrew)
-      - Add a default value to "clock-frequency" (Andrew)
+    Changes in v4:
+      - Add this patch (Russell, Andrew)
 
- .../net/microchip,pic64hpsc-mdio.yaml         | 68 +++++++++++++++++++
- 1 file changed, 68 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/microchip,pic64hpsc-mdio.yaml
+ drivers/net/phy/phy.c | 27 ++++++++++++++++++++++++++-
+ 1 file changed, 26 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/net/microchip,pic64hpsc-mdio.yaml b/Documentation/devicetree/bindings/net/microchip,pic64hpsc-mdio.yaml
-new file mode 100644
-index 000000000000..d690afe3d3cf
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/microchip,pic64hpsc-mdio.yaml
-@@ -0,0 +1,68 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/microchip,pic64hpsc-mdio.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index 13dd1691886d..2be0b90e9947 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -1368,14 +1368,39 @@ void phy_error(struct phy_device *phydev)
+ }
+ EXPORT_SYMBOL(phy_error);
+ 
++/**
++ * phy_write_barrier - ensure the last write completed for this PHY device
++ * @phydev: target phy_device struct
++ *
++ * MDIO bus controllers are not required to wait for write transactions to
++ * complete before returning. Calling this function ensures that the previous
++ * write has completed.
++ */
++static int phy_write_barrier(struct phy_device *phydev)
++{
++	int err;
 +
-+title: Microchip PIC64-HPSC/HX MDIO controller
++	err = phy_read(phydev, MII_PHYSID1);
++	if (err < 0)
++		return err;
 +
-+maintainers:
-+  - Charles Perry <charles.perry@microchip.com>
++	return 0;
++}
 +
-+description: |
-+  Microchip PIC64-HPSC/HX SoCs have two MDIO bus controller. This MDIO bus
-+  controller supports C22 and C45 register access. It is named "MDIO Initiator"
-+  in the documentation.
+ /**
+  * phy_disable_interrupts - Disable the PHY interrupts from the PHY side
+  * @phydev: target phy_device struct
+  */
+ int phy_disable_interrupts(struct phy_device *phydev)
+ {
++	int err;
 +
-+allOf:
-+  - $ref: mdio.yaml#
+ 	/* Disable PHY interrupts */
+-	return phy_config_interrupt(phydev, PHY_INTERRUPT_DISABLED);
++	err = phy_config_interrupt(phydev, PHY_INTERRUPT_DISABLED);
++	if (err)
++		return err;
 +
-+properties:
-+  compatible:
-+    oneOf:
-+      - const: microchip,pic64hpsc-mdio
-+      - items:
-+          - const: microchip,pic64hx-mdio
-+          - const: microchip,pic64hpsc-mdio
-+
-+  reg:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+  clock-frequency:
-+    default: 2500000
-+
-+  interrupts:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - interrupts
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    bus {
-+        #address-cells = <2>;
-+        #size-cells = <2>;
-+
-+        mdio@4000C21E000 {
-+            compatible = "microchip,pic64hpsc-mdio";
-+            reg = <0x400 0x0C21E000 0x0 0x1000>;
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+            clocks = <&svc_clk>;
-+            interrupt-parent = <&saplic0>;
-+            interrupts = <168 IRQ_TYPE_LEVEL_HIGH>;
-+
-+            phy0: ethernet-phy@0 {
-+                reg = <0>;
-+            };
-+        };
-+    };
++	return phy_write_barrier(phydev);
+ }
+ 
+ /**
 -- 
 2.47.3
 
