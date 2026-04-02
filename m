@@ -1,142 +1,142 @@
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A272314B62;
-	Thu,  2 Apr 2026 04:15:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F6A1A6823;
+	Thu,  2 Apr 2026 04:16:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775103348; cv=none; b=OYH90j6ED0aCcQBn/suhkNm1++4f69fKL13jVDSzEsNDEWPpZ++ofJ3BbKgVnP4/H8WfT7xdFJfxPt5Cruz2xIErGWi3UBcmEmaVeJh/lNGnZDITRV3J8RTnXH4VKGxWSaHq5j8e5jzKZf8LoHRD9/ur8TDPKriSAcL72RHW4FE=
+	t=1775103370; cv=none; b=e2dtUZE8mPkZeqQniDx0w5ju3LLl5ikBKc3LFQ2AQRnxXlV06sVVjr5xbaZoFjR3P27HpSpSQFqNW/6sDZrsIWXGkawTCqOR2+4yOBdTOKu93l/oVZ4CeqjnnK/GMAVzbcpOtjIwlZO9oH7f3qynNevN2RgvMEQCwmWQxtUWcCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775103348; c=relaxed/simple;
-	bh=XQJE4Gn0KfowgirQDluRqeuQqW/CPd193d46pEtgYBM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T2st7jxyNk1NIL3KWqlHvtFIbytSN/7RQmb5NTjKWohCZVfgG4vH9Y3d+tsB/r3vq/wZAsREwg6HRFkVjPJ8jr8CZSHNOjloKDAcUrv/BUG3c6+rw0qCYKKXo5Yq8TTlP3qLYEHm0qcefAZz3NZA/dRUh7OBpz+fN4cinrwBUNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=MZcgswfq; arc=none smtp.client-ip=95.215.58.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1775103370; c=relaxed/simple;
+	bh=gHIgUb+WXUUS/4MXe6/38hstFBvLQ0zEzVt64OHLivs=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=KwmkxdZrN3oktTU/LeNuIexmM15r4odo1gDCHhqJ2kTKikBBmx/q+URW96ea/B7O+gKKSxpFoabtj5lsEcH6209t3C87jjKNI68OKVqd36bkeXfvQxVzNAw3qhCdYMX2k7Nhflf+DZomWQ4kLrUB2KJK6TiKFzaQAGgyyGnpdio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=jykfM6Kg; arc=none smtp.client-ip=193.238.174.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="MZcgswfq"
-Message-ID: <ad90b2a9-0f67-4796-94bc-9dbb76a575af@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775103344;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=n5Io74XLqo3KNsgBYSXiYBVqhjr7FhR8/0nd+R5bTLU=;
-	b=MZcgswfqZ9iL6o+Q+tfn1Vy+DIC+L/Qt4TDqmK7oPt076dp+HIdN7SLrM7LbqA25ah72Up
-	V4hukdmWKqxWaJoaFvzri0feMqM+GVPcmQV5yBfPRTrJKGoaErOEcR2tEU8ikxr0cGDmSY
-	rvSkIXyEVEDsNKWWVlIO1raFA3OA8aY=
-Date: Thu, 2 Apr 2026 12:15:31 +0800
+	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="jykfM6Kg"
+Received: from mx.ssi.bg (localhost [127.0.0.1])
+	by mx.ssi.bg (Potsfix) with ESMTP id F1B2221C4C;
+	Thu, 02 Apr 2026 07:16:01 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
+	:content-type:content-type:date:from:from:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
+	 bh=njSLF/ZZEmv5OICffID2dF6iMd6nS7o+1cYNg0JfVaI=; b=jykfM6KgGIwJ
+	CHUI5nTaCL4BL4y3NYxhXSQGmAA+LkMDQhqGeyjBm9+w4EwQyKevrzi4UqLx8yMp
+	ekHJaGIs7bsBOURj+ifQvUkE6caEzIYUWs1AigGUZilhmngRqjyqO6CPgbqAE7WO
+	3Fs4ytpK4XO4nKGld5ajE+Z3RFm2EusnWSmj3zAOV2pPIRlUTCzXSNPcb2fFmr9s
+	g45je1GA2eMHUYurrHHVegg8OHKE6c3iipqzof3u7qX0AfBXJileg/hIJfrkmTnM
+	M1Slz6SfcxM7zlFGXmQpwpE3bW7x/IPrHpoHb1Kezqud96+H4+pPdidKMQJ132h4
+	2inFr9vPERA5vM8t7P37orLfhw06EL6x3zXQcRNcJE2Gas+BjRbIfDpEQBL5clp1
+	bwqsxFbyLszl+EGWv5Gvaov6aU3hZNM5QI22rE5ZllqZ4QQHIgO0Z8F0GKv7Efpg
+	gsHkYHKc1Zal/LxXx+oCNnjVJZFysdLhJtW+TsMMj3twdfpqXOwXil89Tk0N7awX
+	nyTZU48wMtfigiRw1tP3WzN3a9dqqk+h5CVegIS68X/uHyDWHtF3IEtkqyqJwPg5
+	NuGp4qIRcn1xicykLnVZrPSRbtieck7XS0K2y1LjnRUT56TSZmLumbVm21xjA9BZ
+	zTQ9CxLEV9XbdKFKh69zDMD7BJRdirk=
+Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
+	by mx.ssi.bg (Potsfix) with ESMTPS;
+	Thu, 02 Apr 2026 07:16:00 +0300 (EEST)
+Received: from ja.ssi.bg (unknown [213.16.62.126])
+	by box.ssi.bg (Potsfix) with ESMTPSA id B434B61B7F;
+	Thu,  2 Apr 2026 07:15:58 +0300 (EEST)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by ja.ssi.bg (8.18.1/8.18.1) with ESMTP id 6324Bjpk005987;
+	Thu, 2 Apr 2026 07:11:45 +0300
+Date: Thu, 2 Apr 2026 07:11:45 +0300 (EEST)
+From: Julian Anastasov <ja@ssi.bg>
+To: Yingnan Zhang <342144303@qq.com>
+cc: horms@verge.net.au, pablo@netfilter.org, fw@strlen.de, phil@nwl.cc,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, netdev@vger.kernel.org, lvs-devel@vger.kernel.org,
+        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] ipvs: fix MTU check for GSO packets in tunnel mode
+In-Reply-To: <tencent_4A3E1C339C75D359093BE4F08648AFAA6009@qq.com>
+Message-ID: <0e310bf2-0707-14d9-d8f2-18172875256d@ssi.bg>
+References: <tencent_4A3E1C339C75D359093BE4F08648AFAA6009@qq.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net v1] net: skb: fix cross-cache free of KFENCE-allocated
- skb head
-To: Eric Dumazet <edumazet@google.com>
-Cc: netdev@vger.kernel.org, Antonius <antonius@bluedragonsec.com>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Jason Xing <kerneljasonxing@gmail.com>, Kuniyuki Iwashima
- <kuniyu@google.com>, Michal Luczaj <mhal@rbox.co>,
- Mina Almasry <almasrymina@google.com>, Eric Biggers <ebiggers@google.com>,
- =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
- Soheil Hassas Yeganeh <soheil@google.com>,
- Alexander Duyck <alexanderduyck@fb.com>, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org
-References: <20260402033138.388574-1-jiayuan.chen@linux.dev>
- <CANn89iLdRZd-qO4tRpSGamHpggh=r5vM4xes5npYCnkwcNG89A@mail.gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <CANn89iLdRZd-qO4tRpSGamHpggh=r5vM4xes5npYCnkwcNG89A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=US-ASCII
 
 
-On 4/2/26 12:01 PM, Eric Dumazet wrote:
-> On Wed, Apr 1, 2026 at 8:32 PM Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
->> SKB_SMALL_HEAD_CACHE_SIZE is intentionally set to a non-power-of-2
->> value (e.g. 704 on x86_64) to avoid collisions with generic kmalloc
->> bucket sizes. This ensures that skb_kfree_head() can reliably use
->> skb_end_offset to distinguish skb heads allocated from
->> skb_small_head_cache vs. generic kmalloc caches.
->>
->> However, when KFENCE is enabled, kfence_ksize() returns the exact
->> requested allocation size instead of the slab bucket size. If a caller
->> (e.g. bpf_test_init) allocates skb head data via kzalloc() and the
->> requested size happens to equal SKB_SMALL_HEAD_CACHE_SIZE, then
->> slab_build_skb() → ksize() returns that exact value. After subtracting
->> skb_shared_info overhead, skb_end_offset ends up matching
->> SKB_SMALL_HEAD_HEADROOM, causing skb_kfree_head() to incorrectly free
->> the object to skb_small_head_cache instead of back to the original
->> kmalloc cache, resulting in a slab cross-cache free:
->>
->>    kmem_cache_free(skbuff_small_head): Wrong slab cache. Expected
->>    skbuff_small_head but got kmalloc-1k
->>
->> Fix this by adding an is_kfence_address() check in skb_kfree_head().
->> When the head is a KFENCE object, we skip the kmem_cache_free() path
->> and fall through to kfree(), which correctly handles KFENCE objects
->> via kfence_free(). The check compiles away when CONFIG_KFENCE is
->> disabled.
->>
->> Fixes: bf9f1baa279f ("net: add dedicated kmem_cache for typical/small skb->head")
->> Reported-by: Antonius <antonius@bluedragonsec.com>
->> Closes: https://lore.kernel.org/netdev/CAK8a0jxC5L5N7hq-DT2_NhUyjBxrPocoiDazzsBk4TGgT1r4-A@mail.gmail.com/
->> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
->> ---
->>   net/core/skbuff.c | 4 +++-
->>   1 file changed, 3 insertions(+), 1 deletion(-)
->>
->> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
->> index 0e217041958a..87cecd40381b 100644
->> --- a/net/core/skbuff.c
->> +++ b/net/core/skbuff.c
->> @@ -91,6 +91,7 @@
->>   #include <linux/user_namespace.h>
->>   #include <linux/indirect_call_wrapper.h>
->>   #include <linux/textsearch.h>
->> +#include <linux/kfence.h>
->>
->>   #include "dev.h"
->>   #include "devmem.h"
->> @@ -1083,7 +1084,8 @@ static int skb_pp_frag_ref(struct sk_buff *skb)
->>
->>   static void skb_kfree_head(void *head, unsigned int end_offset)
->>   {
->> -       if (end_offset == SKB_SMALL_HEAD_HEADROOM)
->> +       if (end_offset == SKB_SMALL_HEAD_HEADROOM &&
->> +           !is_kfence_address(head))
->>                  kmem_cache_free(net_hotdata.skb_small_head_cache, head);
->>          else
->>                  kfree(head);
-> Oh well, time to simply call kfree(head) ?
->
-> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> index 3d6978dd0aa83f63984b994359d0c914c6427a00..6b35aed23b8936409f6b0d4ee8d378f726c569c6
-> 100644
-> --- a/net/core/skbuff.c
-> +++ b/net/core/skbuff.c
-> @@ -1072,10 +1072,7 @@ static int skb_pp_frag_ref(struct sk_buff *skb)
->
->   static void skb_kfree_head(void *head, unsigned int end_offset)
->   {
-> -       if (end_offset == SKB_SMALL_HEAD_HEADROOM)
-> -               kmem_cache_free(net_hotdata.skb_small_head_cache, head);
-> -       else
-> -               kfree(head);
-> +       kfree(head);
->   }
->
->   static void skb_free_head(struct sk_buff *skb)
+	Hello,
 
+On Wed, 1 Apr 2026, Yingnan Zhang wrote:
 
-If we no longer care about the cost of accessing a struct page in the
-free path, which the original commit was trying to avoid, this is
-indeed the simplest fix — kfree() correctly handles objects via 
-virt_to_slab.
+> Currently, IPVS skips MTU checks for GSO packets by excluding them with
+> the !skb_is_gso(skb) condition. This creates problems when IPVS tunnel
+> mode encapsulates GSO packets with IPIP headers.
+> 
+> The issue manifests in two ways:
+> 
+> 1. MTU violation after encapsulation:
+>    When a GSO packet passes through IPVS tunnel mode, the original MTU
+>    check is bypassed. After adding the IPIP tunnel header, the packet
+>    size may exceed the outgoing interface MTU, leading to unexpected
+>    fragmentation at the IP layer.
+> 
+> 2. Fragmentation with problematic IP IDs:
+>    When net.ipv4.vs.pmtu_disc=1 and a GSO packet with multiple segments
+>    is fragmented after encapsulation, each segment gets a sequentially
+>    incremented IP ID (0, 1, 2, ...). This happens because:
+> 
+>    a) The GSO packet bypasses MTU check and gets encapsulated
+>    b) At __ip_finish_output, the oversized GSO packet is split into
+>       separate SKBs (one per segment), with IP IDs incrementing
+>    c) Each SKB is then fragmented again based on the actual MTU
+> 
+>    This sequential IP ID allocation differs from the expected behavior
+>    and can cause issues with fragment reassembly and packet tracking.
+> 
+> Fix this by removing the GSO packet exception from the MTU check and
+> properly validating GSO packets using skb_gso_validate_network_len().
+> This function correctly validates whether the GSO segments will fit
+> within the MTU after segmentation. If validation fails, send an ICMP
+> Fragmentation Needed message to enable proper PMTU discovery.
+> 
+> Fixes: 4cdd34084d53 ("netfilter: nf_conntrack_ipv6: improve fragmentation handling")
+> Signed-off-by: Yingnan Zhang <342144303@qq.com>
+> ---
+>  net/netfilter/ipvs/ip_vs_xmit.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/netfilter/ipvs/ip_vs_xmit.c b/net/netfilter/ipvs/ip_vs_xmit.c
+> index 3601eb86d..82f2e7a32 100644
+> --- a/net/netfilter/ipvs/ip_vs_xmit.c
+> +++ b/net/netfilter/ipvs/ip_vs_xmit.c
+> @@ -232,8 +232,15 @@ static inline bool ensure_mtu_is_adequate(struct netns_ipvs *ipvs, int skb_af,
+>  			return true;
+>  
+>  		if (unlikely(ip_hdr(skb)->frag_off & htons(IP_DF) &&
+> -			     skb->len > mtu && !skb_is_gso(skb) &&
+> +			     skb->len > mtu &&
+>  			     !ip_vs_iph_icmp(ipvsh))) {
+> +			if (skb_is_gso(skb)) {
+> +				if (skb_gso_validate_network_len(skb, mtu))
+> +					return true;
+> +				icmp_send(skb, ICMP_DEST_UNREACH, ICMP_FRAG_NEEDED, htonl(mtu));
+> +				IP_VS_DBG(1, "frag needed for %pI4\n", &ip_hdr(skb)->saddr);
+> +				return false;
+> +			}
+
+	Also, as we duplicate code, this can be reorganized as follows:
+
+ 		if (unlikely(ip_hdr(skb)->frag_off & htons(IP_DF) &&
+-			     skb->len > mtu && !skb_is_gso(skb) &&
+-			     !ip_vs_iph_icmp(ipvsh))) {
++			     skb->len > mtu && !ip_vs_iph_icmp(ipvsh) &&
++			     !(skb_is_gso(skb) &&
++			       skb_gso_validate_network_len(skb, mtu)))) {
+ 			icmp_send(skb, ICMP_DEST_UNREACH, ICMP_FRAG_NEEDED,
+ 				  htonl(mtu));
+ 			IP_VS_DBG(1, "frag needed for %pI4\n",
+Regards
+
+--
+Julian Anastasov <ja@ssi.bg>
 
