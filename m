@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B2333CE88
-	for <netdev@vger.kernel.org>; Thu,  2 Apr 2026 02:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9224329B78B;
+	Thu,  2 Apr 2026 02:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775095235; cv=none; b=g6s4zXthwHsmrwydU7CMDdjcoQEt5vpJlpS8Dm2uo2nvVA/RA2sGYDFMojrDUQ4kPp8+paV3A327mjRi49cJduXGbjt3RsmOMFCs5kBOruF+qq6sGaDCuN9ZlDLzBFiwcOkEz0jYrz9L0Q3LyXykFMQNvNuxy7E6EqrLVyHobYo=
+	t=1775095236; cv=none; b=lq1wfgzQJpsVQS64eaFUXeXhw+jWr9PGZkUPstvtAt3rcNruVbp71t55A5jsZzrUSAAn1p4CQe5pyaa4NHaLh8r8KA+6ymWKpGlR/ieFZNX3RqOfdmPLd5mntq/lIHhlgDnxtr60gGc3dNj5NimOcvyETCloNyaxHyd+kMMCDf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775095235; c=relaxed/simple;
-	bh=YFP4cz+J0n3OPD5rfOTT33MkldmBzNcc6QJE6R5H3g8=;
+	s=arc-20240116; t=1775095236; c=relaxed/simple;
+	bh=wx/frtVYXirsruXjkDHmEsOKYVZ0u1QIPf+L5bguvOg=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=SQfbuyu4CI2eEEpa6h98Is0StyPKShx9BEbIfGD56JBQtIlZY3qJrgKaP+VRh/A7X7pKIuAVS/C00w9VNgWXRjdnuHwzUTwwtyQ25whPPCmWFdCIL8DyQTu/fBO8BVOOcqBYLQtfpg6CdopWsbRsIjC0tkmEnjPC31y9exoKMMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M47Kjgd0; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=ejjYYdUAXKD/06el4l4QujAjkszsG4c7oQ4Cwx5kLwtpp3JynXCIDmokETj0o+YBNIBVZ37tz+vohAQlTbLBvaTCsDIuAXSne4qElyx5ZSmbzZwMeKs9NReJXN2QX9APlQnoPQbEMOeht2BR+EGaSzkixQ/qF9Rojk6s+bttpew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FnaQezIW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M47Kjgd0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9AEDC116C6;
-	Thu,  2 Apr 2026 02:00:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FnaQezIW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E56C116C6;
+	Thu,  2 Apr 2026 02:00:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775095234;
-	bh=YFP4cz+J0n3OPD5rfOTT33MkldmBzNcc6QJE6R5H3g8=;
+	s=k20201202; t=1775095236;
+	bh=wx/frtVYXirsruXjkDHmEsOKYVZ0u1QIPf+L5bguvOg=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=M47Kjgd0YDLfEHzQy5invGU8GFiQ8BA/o5JlhVcs3C1P6GOKEL6fmi+eEJPMsQJyV
-	 B9eBBv6/lActwayMjtGrliG06gFfNKzll3J8zdNq1ZyqmCUVbWOo/0ahWRJ7orajDg
-	 SXSC2uZHmQpv5cCGf+x68bDV1+qJzpAu9qsKSgpR6E5EHyLqnM7GEYgLwLUaSiSgcl
-	 LyHcAyBge8EMspYok2cbo0NsCHOpY+s4E6ZRRdgilqfXNUir6Iefw5tAddJ6Fu3oyH
-	 nBHP7OMCbA9t0aFctqD+gdIq24WZomgie+4N8UjfZm31CsVy2BPzGV6f9wT1Q/YGCo
-	 KwOslGzljWVJQ==
+	b=FnaQezIW6fP+mfRPYR6Sj9RrZn2MvpQ4m5X7POYc2oS7qWSu00CVdKo4luKZExOF8
+	 PvFBO+9FD8gKMFtMYGG1b1u1zc9hfx0Xcui7xZzwgLa+wXRb/KUdApEOI12i7nB1+6
+	 /OeIe/NFvli82T2s+V+V03wHhODE329xYqdutBEbiZIi8475l2oc5McUqabQ1SBiDb
+	 qB/lnf6CkbYdyGZtxJ6gF/WMwpcf/BJRxFcZ8A8IDuSiBBMoorYCY9zIiWQcvgx2WU
+	 V5qMw6kSvOG+LTD25V/eiW1sSREwozjUAUI4jwtphnikdlNddgiKjZE8j0qBI7OZgM
+	 pTY+4bMf0JrkQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9DBC3808203;
-	Thu,  2 Apr 2026 02:00:18 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FD633808203;
+	Thu,  2 Apr 2026 02:00:20 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,35 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 net-next] ipv6: move ip6_dst_hoplimit() to
- net/ipv6/ip6_output.c
+Subject: Re: [PATCH] ppp: dead code cleanup in Kconfig
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177509521753.3948497.7321062786779767457.git-patchwork-notify@kernel.org>
-Date: Thu, 02 Apr 2026 02:00:17 +0000
-References: <20260331174722.4128061-1-edumazet@google.com>
-In-Reply-To: <20260331174722.4128061-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- dsahern@kernel.org, netdev@vger.kernel.org, eric.dumazet@gmail.com,
- fmancera@suse.de, kuniyu@google.com
+ <177509521878.3948497.1504331290696397044.git-patchwork-notify@kernel.org>
+Date: Thu, 02 Apr 2026 02:00:18 +0000
+References: <20260330213258.13982-1-julianbraha@gmail.com>
+In-Reply-To: <20260330213258.13982-1-julianbraha@gmail.com>
+To: Julian Braha <julianbraha@gmail.com>
+Cc: andrew+netdev@lunn.ch, pabeni@redhat.com, davem@davemloft.net,
+ kuba@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 31 Mar 2026 17:47:22 +0000 you wrote:
-> Move ip6_dst_hoplimit() to net/ipv6/ip6_output.c so that compiler
-> can (auto)inline it from ip6_xmit().
+On Mon, 30 Mar 2026 22:32:58 +0100 you wrote:
+> There is already an 'if PPP' condition wrapping several config options
+> e.g. PPP_MPPE and PPPOE, making the 'depends on PPP' statement for each of
+> these a duplicate dependency (dead code).
 > 
-> $ scripts/bloat-o-meter -t vmlinux.0 vmlinux.1
-> add/remove: 0/0 grow/shrink: 0/1 up/down: 0/-11 (-11)
-> Function                                     old     new   delta
-> ip6_xmit                                    1684    1673     -11
-> Total: Before=29655407, After=29655396, chg -0.00%
+> I propose leaving the outer 'if PPP...endif' and removing the individual
+> 'depends on PPP' statement from each option.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v2,net-next] ipv6: move ip6_dst_hoplimit() to net/ipv6/ip6_output.c
-    https://git.kernel.org/netdev/net-next/c/63081dec9e37
+  - ppp: dead code cleanup in Kconfig
+    https://git.kernel.org/netdev/net-next/c/4cbcf82e26b6
 
 You are awesome, thank you!
 -- 
