@@ -1,66 +1,41 @@
-Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B007F3FBA7
-	for <netdev@vger.kernel.org>; Thu,  2 Apr 2026 09:05:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C53314A79;
+	Thu,  2 Apr 2026 09:05:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775120707; cv=none; b=vGvqritbW1Lt+zbM9ynkQ3TnB3oCqiBv171OtOWM0sPYsn2J3nsHgcFRZiEnjyfghxvUOt7ZUQjfTlgwHoOXhircQAKxa/iIYRBzlLJoN5oSsCA/y1wdzL/NPhZTfNXXhou4LlYZjz5y46LZ+vmL8NUiKi09GO2r40tcyV4mQ5U=
+	t=1775120734; cv=none; b=XG0ADEjDCktljnnWuMY6PCZMUIlYlKcsGL961vySDHFyf+NIEkjkYcxptCCdgD9Ywdg/IF6voPwutwBgCkJgRgZ23FOn06/EIywdC2AIOQ9kgMNuW/PCTOJzrmypzhE2fQCpZQA1gMdbMAFlSnTh1OtipmG44kvpeTdgmQ6WNFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775120707; c=relaxed/simple;
-	bh=WiaB3zVRkUUQVv4UOzlJHq/vmT7ModqjGOWaO0b1Qqg=;
+	s=arc-20240116; t=1775120734; c=relaxed/simple;
+	bh=ACU06XcC2AdGJPJInp/+xeayTUorb6bPBEad21OsdSA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mMFHzVjAMdmnmWx2WAepzOT5W+xJbqhzfPYd+qdexvm9BIUkn6RJrYRHPYRmuyL+9NKpB0cfdnk6xUSWvSc/PVJ7Fes21mXgWn9U8+n9UJv5xlTcUViTLJjLG2q/wOnY1x1kF2lfwEee/8ufuI817R4X3Z2uqvcTYe8CLr+LZAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ckz/j4Pf; arc=none smtp.client-ip=74.125.82.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=rq8JkwCeRV/gEdQHD2B+sutMt98BFSu4YAgfQddErgoDcBPLEQ2hkFsDc2ipbIm4nc5ss5hjQfHzLAcUdZaco5aZcN3NX5HrKkq5qqw9gxYvDkiKAlUd7DqT72N7xbVUHscxQoqpF4Tx1q0NL+rDqWYCd6pOTcWBuwbQ4aLY5FE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=j6IVug0b; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ckz/j4Pf"
-Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-2ba895adfeaso817936eec.0
-        for <netdev@vger.kernel.org>; Thu, 02 Apr 2026 02:05:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775120705; x=1775725505; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=d414RhizLHjN9Hx07kfHIITWZFpVVnfcsqLX3OJK7hI=;
-        b=ckz/j4PfPD2gmDmB7WqJmvceQX8Tdc7eeZFrc8lJ/7CMhEa4ARIgl/BlB36RAdbmFg
-         pWSeyRRNU3Ef/cO8dLIZb0aY+Qtk4ziiCxhpNkJ+TFMduhK6ucf5FYZgS5uvOS2wJlyV
-         aIaeKKaLizrV/8X/QiOiwjidqDFDlEJebk9MjIStYzvAqQi0zp7LtUyp/eamqQDE7g6P
-         w1qBSN30obL/SEw1O300sc5UjamWTlun5MLKprB495+kHjeAwby4UhpcsUburyt3gIQb
-         XNBJ0DYyzuwgAJGvLVybwhHsxzSrUuIdNbIVkkGLj+q8w+QpghZqVNE+H15I55mGkrIW
-         Y8Pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775120705; x=1775725505;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=d414RhizLHjN9Hx07kfHIITWZFpVVnfcsqLX3OJK7hI=;
-        b=jbfPKJehORerZH4QSnFgmT2UOW95rb7MT2ioEqj4Dg9YzpuuJQFo/Pu2b7fqTyAndH
-         g1Hc/4H6aULbXtKeqHw8BQA1S9C7sy2bwdswd/gXdynUMnqWPnrwJUErPW+RJ6Xnz+SG
-         ra6ccsRPyllLOqXM1YS9HWuVFaF3o3yVVW0FUABeEWZA/QFY4AsH9rHd2wR93S7mlF5o
-         UsLUzjeUqBP1bRCKwO33Vu9d7a+j98QI9ZQ0xcDVCLdXJF8WPRVzV2ZgPbYfNnp7iinQ
-         uqp2704e7D4Qf6vg8u8q581+sBfdA0Lm/hWafbyeOZfBwgJmLGRO7/gSbSN8iSaWD/YW
-         HdKw==
-X-Forwarded-Encrypted: i=1; AJvYcCUoFQ0iZUNTG2JG4PsyKqBh2XmJKDsaVRbwGudRYrHCxqpanHS5zanShGW6hTxC2Yz3cnjuLnQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxqIjVf52KgC4d9N7r5XdN8DqPhr320jJI8UZk88Nsj3rEHyBI5
-	LO64W0f7dqMH7EQ7ykCvCL8J3j4J/1NnTYWQDdfZHMTWd/JE5Oge5vrh
-X-Gm-Gg: AeBDiesaTKw32IkAY/V2luxLgWZ7UJn6RyOFYsWWjQvjdNXPVupO7XajGPE3VDrl++J
-	ic8hPKpYPI6wa8XJWfcvob8ha2oGLVXlAIMRTKRFUlBDHSg5j3NcLoxLrLCL3Qpboj8sAuoBXJD
-	O8RCZBp29jDbdt5MFHS7m+viuBO9AhVy7tFwGMLXop9F6WKouxy3AfzGlHFYgxjyZaas8M/KhRG
-	rklPw36IBKxZ7bOXVcynIzsMmhWLOqtSdHXKfWs8bl+Niqi5+h+dSbGwKP263gCFeM9bSfTpC+I
-	92R4cme4AX+4Ke0nNDMo+lQXDufVf/KsrvwdoPyjUmaaxx4HX+glFGtMRqP2Zf7Lo3kCtv4/i8B
-	d96fUVjmu8EwW25EWGaw/8PevOpI/EphoGFzC3Qf7N4fQGmL8gn+gOyqtEwtzwG0bFvVA412Vu0
-	qnzkho0FybUnzr81ZfRkoV5GXVKlMKAv/QIaV6AdtoRD+uknfT7gm0La9PA65vUvMkaU1vtGw=
-X-Received: by 2002:a05:7300:2211:b0:2c8:1d56:340c with SMTP id 5a478bee46e88-2c932aaa6a7mr3474815eec.23.1775120704687;
-        Thu, 02 Apr 2026 02:05:04 -0700 (PDT)
-Received: from ?IPV6:2620:10d:c085:21cf::147f? ([2620:10d:c090:400::5:9571])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ca7c20c0c2sm2116548eec.17.2026.04.02.02.05.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Apr 2026 02:05:04 -0700 (PDT)
-Message-ID: <8d43c17e-3372-4a26-9010-dea944d14ecb@gmail.com>
-Date: Thu, 2 Apr 2026 02:05:02 -0700
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="j6IVug0b"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1775120725; x=1775725525; i=wahrenst@gmx.net;
+	bh=ACU06XcC2AdGJPJInp/+xeayTUorb6bPBEad21OsdSA=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=j6IVug0bT9DLRaETqFs9nXoLzSu70qDN219af+Kt84NEo7g2R9T9E0nAZtbZmsgR
+	 f4f4QhSSHn5txX5EKa0vBAS64vUB7FqfMUAl413c0lQYLcDnAvS8cIOwIe6/E0sGb
+	 1Adsbxkwb/xl6rR3bWkyNG2+mPpcEfu3sAPyNsEBX0VOVfjiV5h4dwuTIy5/6Bbox
+	 jnaw1WR2bLRJTlUJLeUzafTAG3+jiKxkBPj0MPAYz3MC9wdsZ4YFNQMAPv4S37Yz6
+	 NHi523/Jwfs3cCPQI0flDU+p4JgtPq3Il8IVdRgoIY56THLLaVRumH9spULioBMmq
+	 3S4Te6cHlO7JCddSOA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from client.hidden.invalid by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M4JmT-1w8UyL49vl-007hlG; Thu, 02
+ Apr 2026 11:05:25 +0200
+Message-ID: <d5fd9dce-549c-42b9-b1d5-ffec41664e48@gmx.net>
+Date: Thu, 2 Apr 2026 11:05:21 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,621 +43,130 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 net-next 06/11] net/nebula-matrix: add common resource
- implementation
-To: "illusion.wang" <illusion.wang@nebula-matrix.com>,
- dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
- sam.chen@nebula-matrix.com, netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch, corbet@lwn.net, kuba@kernel.org,
- linux-doc@vger.kernel.org, lorenzo@kernel.org, pabeni@redhat.com,
- horms@kernel.org, vadim.fedorenko@linux.dev, lukas.bulwahn@redhat.com,
- edumazet@google.com, enelsonmoore@gmail.com, skhan@linuxfoundation.org,
- hkallweit1@gmail.com, jani.nikula@intel.com,
- open list <linux-kernel@vger.kernel.org>
-References: <20260401022318.28550-1-illusion.wang@nebula-matrix.com>
- <20260401022318.28550-7-illusion.wang@nebula-matrix.com>
+Subject: Re: [PATCH] net: qualcomm: qca_uart: report the consumed byte on RX
+ skb allocation failure
+To: Pengpeng Hou <pengpeng@iscas.ac.cn>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260402071207.4036-1-pengpeng@iscas.ac.cn>
 Content-Language: en-US
-From: Mohsin Bashir <mohsin.bashr@gmail.com>
-In-Reply-To: <20260401022318.28550-7-illusion.wang@nebula-matrix.com>
+From: Stefan Wahren <wahrenst@gmx.net>
+Autocrypt: addr=wahrenst@gmx.net; keydata=
+ xjMEZ1dOJBYJKwYBBAHaRw8BAQdA7H2MMG3q8FV7kAPko5vOAeaa4UA1I0hMgga1j5iYTTvN
+ IFN0ZWZhbiBXYWhyZW4gPHdhaHJlbnN0QGdteC5uZXQ+wo8EExYIADcWIQT3FXg+ApsOhPDN
+ NNFuwvLLwiAwigUCZ1dOJAUJB4TOAAIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEG7C8svCIDCK
+ JQ4BAP4Y9uuHAxbAhHSQf6UZ+hl5BDznsZVBJvH8cZe2dSZ6AQCNgoc1Lxw1tvPscuC1Jd1C
+ TZomrGfQI47OiiJ3vGktBc44BGdXTiQSCisGAQQBl1UBBQEBB0B5M0B2E2XxySUQhU6emMYx
+ f5QR/BrEK0hs3bLT6Hb9WgMBCAfCfgQYFggAJhYhBPcVeD4Cmw6E8M000W7C8svCIDCKBQJn
+ V04kBQkHhM4AAhsMAAoJEG7C8svCIDCKJxoA/i+kqD5bphZEucrJHw77ujnOQbiKY2rLb0pE
+ aHMQoiECAQDVbj827W1Yai/0XEABIr8Ci6a+/qZ8Vz6MZzL5GJosAA==
+In-Reply-To: <20260402071207.4036-1-pengpeng@iscas.ac.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:DkcPyauBcYW9s5QmV0CpP4fgl89q/jwK5isfxamFSyK/AbXz8YN
+ DrAruY7nUApMVi2tmPX7F1/ym2r126xdvM2nOvFL3aUSETdRhD7YF68Jyl5NNO13JApHA9/
+ Xw+8l4hkAGqNcjO3aF9fP1WzTW+9S1WjGPRypvFlxA6zQB2UAXGZL8HSHE4FC9ojExwroxw
+ YWw9YEYZ0gSR22xK1zYNg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:R8S166JxvdE=;g76k/S5eBO+M+AJqioGtrGQqzWz
+ KF057eNi8bpGLXeeluAMcb1j2YIm6fUJHSQk5h1VcRlaLyO612sWxY3G1igjiEwU9OLh7l52w
+ L9BJsjMM/Y6wH5XrtrpDeXkPhGzLCam+eJRc7e4KeY6LJJ9OwGy2tThr0PX0K0aLsIJMVjDRB
+ WgLGUWkYSQ34sEc9pssy+gGnKO/Xp4HbgGil0/BsNqeaDG0teXeCPROdvqrRCErNWw+xZsTd4
+ GwAbvw+KA2/EEes3DdT6im1pzBfqjsxke4htL85/nIqlDzE7pSYHy102+b7Pqzb70/0MUzGr+
+ lFMupts3sdpg4s3CwZqRGOsdajUpEbJlIZZzRIWolqcs4NSwE5qMVPjuDajv/MS7AHLXMaHZp
+ ftTWGO2hmV+Cd404ZtFj46FdjODsAPJwYhY0ycN+2jjEzPX3L7YRR66NfI55FHK60S2RXQi/W
+ X1sON3w6gPj8DLbsFovwkez6odfQBujXBwch/NS1ZFzaT+NyShJIdbZa/WWdBe25VL5bcWzlT
+ U63RIbJvi0tcea9EcfkKT/pzwf9LKsDanc7PCufuO7EcwPGsARH7arep3I6iXiFwgPgMD4+F9
+ zhdvDdFcopVbuPRGhBMYj5GwCuxK+ma3+ZX4/ZYyzJ5juSxp75FWdB34z2l1AkXLLEqHx2sye
+ nyNue7ggJ1O85Sl/nXzGpgif3urUbCZ01GWCH/9c1H3WfXwkRjpv+eGg9L4FR+uqlG2U1rb5Y
+ AFN7xhyRsCWUMks/tIUDaOTRaXmd3IhE7WNKSrUgkJLPJRyRZJvSNsaY7LnTjxSwXcFpDCGoz
+ 4Ri4WJ1jH2KGQaNT3f07NN3GrDbUHtURrE4InsFgFaOWjocfgQhZvMVwiqh/i1wemVoB/zf6a
+ GJUr1+fWTJysN78eX5aNLIdG0D2KV8KaVuLxL/O74DdeHWZwRi52VNYM5/LlZhbwzMIpsejEB
+ xL8pmgtRGBatXBVEekxJkigLh+OzzXax2ypUBX9uIdZUqgVbWHl5Xs/56E3ECvNiMGbIjE+MA
+ CHztcyxb0nX3+wBP8v5bTaynK3B7JwmfAJmVlv8zNOp//OTMAYTgYeR/YIisKm+fGpBU1rErC
+ SKZ19r2rMpKfjvPUqq9ehYPeF084bXJ+x2mpQDRJfQBuYFAFGtNM2au7f49eKsOBF+Dsb14iA
+ ebzsiIfU+dFrCYNjUOS1BjRNUHObnSOWA5pzAAy5btpmLumlyoB3WquIVSRwOosnKPfJE4nKm
+ HjGVaMDf3aXZKZTqk49VdYTNsbL9uv0BlnctG/640NnAEsRzrBZWJtrWk5JdPOj/7Mcq6ZXUk
+ YlcWAwiTG5H6PcDceZYC6M71dclPBUR+rtHHbDvd3Rq712id2gYOhAwoaiucADOmQwew1vQ08
+ PlsCSRgen2ufoUUMPp/Nwf+uA6EsO+I7qhPeShEGNdnFpkblx/qdPxffsAVmoq1OPF4OEsWm2
+ xf7Ln6Gh+rhUdaA5ddLbeg1AJlVZ3Yqe/agVpaQsWTaFdast2z+miXuBaUvY0/4C0AdmH8pSK
+ Y5E3E3bm7xdzKcgwa8yE9LnPvJOPr1E+EQS5ajT9dYt0TB8ywAu9IelZcMu07gPWuDa7TUpo5
+ lc4pahMntVSIEe0DbnLXRije5peNJQlgV0DN3fJ5t6pYxjcjkQIt5WkRHki+LLYf02GJOYWbk
+ TqLhTtXtWGF5a02liH83/+hv33STJTW1y1fX5kwHmzxX8HIlxD3pGRfOW6oMltOpqJYUknjxo
+ riaJmSTsjtEJy1ZlhtCDSzBC45fd47yohNIC73zZK7j+9DtomWYAZ5ZEPnp2znvXaclilQ3qX
+ plV9cC2mOGSYoy51JKf9+O/cD3UOYSf6k85ijJlZvV8DKmZvm9U1XPsc1see54SSgpE1WlWss
+ fsBFyzweSFwCw0xNCvfKDBJ7EqXCxgRSHAwH5XlvA/Uj1NHy+80VLLMcyYHvKXlIzSf47vzoN
+ gpYojzN4W2mfeHgLmMrr4vcYrWgAzfNM0eOLpFPbGAW7kfSUZYEWSpQ9zAU/DTcI2iqfHmvm8
+ xTReRcbp4nT+XL+blxYJhPC6HYvnVUbhmmlQ9oiGgX16ewy6FaE65BKnAboKuPrIa9+ER+uvC
+ ljSQaOlQkswMyz6K8rMJY6KoFMvCP4NjocxYA/wcaxzUntDcCF6+fmzBbvRUF7Ao4uchnp6ff
+ rdjJ9qNmRfT4If6ve0hBWGEwCDPA88xKfXwPiceV+PpcM3mClGcr3gDHkEGy+qpV1p0+UvOpp
+ T2pt5aeYHeUXrr810PivsBt37bbvbb2rPF+RVvNzLnH6Q+jRZFPSvTM/gG8/iBlV1GEJgnhym
+ T1cMdO7lllsSsC+tXB1Bqv+kg1Sx/wQyCML53LtncofFM1vMK4ZcSYl/NEp4+vfbUgndcAIL2
+ X6Z7H5Qw0H30HBsIYeCP0MkLtEhyMiimgB/IKE8U2AMR8tUZysWDInDBsjGaSsl4Ck69LCzdy
+ uiu5VwVSebx8LS5jPHigwES3fOhUY2+Kz01/Tmxj71g8LfXklOQmgcd070RNo3wHDQCVZmsub
+ tQcO7CjQlQelKfOLpt5qZ0k+Ev6dG4Cexls/xKl5qzSjfNbjEX4NE3Mrl8cSdKKSc4bTzBKb5
+ 3UqpZ7fRu8gHLZ2VtwJHN70G/b4ZuWiI9hmQWXl1b6yyqDJlftHR3hdCA9PT469rLabnubped
+ slW8ncohKVT7DvRAL0ED2ADkPpIj18qQYO8kbQPL74GZG3T4uYGs95cym1JgoTosEJ1BOMi+7
+ 7U1xHR3+/nB4zVZkUqGjtZtz4Zu4vrcViIiejUTOPOIpF5KET8qMxfUfEpZr3NYeu/29eFqPf
+ opAMt7P7iKvdn0bOsyrphvGUFvLNdBYHepRi9Z4rKYITQrGUnBptLFNaJR3aJRBhK1YibbzBz
+ IojzrSQBbiZfZTvyqcxs9FcVFNm4TVdTlEDgXyBkYociErkbqbtqDlNXWv7/NDttWiXJfh6gc
+ 3G2u/ZSFNXOJ19ZRY+x+/ibRhe0NduCC3tncCN3jD58Ifyo7v2L3C5J7scCOvOYzpxWiSoZ2L
+ NBb5Jz0XHMyoW/3E+kMoV50ZKRz8V8+7KVh1TxxbzX0Ip9pMlHaQKQ8qhGAZWiSyFuyfvBAnQ
+ TEC6H+LGeYijT+ViHIuqAazuUmP7efIs66K2RyOgv9gQfHMKisSok9nlKXsTKHlnWIJdGbMIo
+ z9wjQe+9b5+sfQYfS//7GGuaxDoRHzaRYxTtwpZ2Mt3f7+aTE1zqFWKBVfb3IQAtECb2m18eZ
+ QMG6mY6hzw/SBhiIGszq+gSpoQ1Q7tIBV/vbK0Rmhiy76IGgofqDUYeqT1iqVLrDmOH1hRWY3
+ GD9Fp+fVGdaDuEBo0PqYHVLcQD8ilYBsrIEgtrlktEBJEmtlQXVC5aDXb9LOhWeN1cpj7gpRM
+ logbchwEsjRDpuSSpr+ryqZbpACZxlUYHIjstUYFvbpiBvS6jecmr3dnI0SSt6LOCZafkpAnG
+ b2KxFZmnWCgEqBGKAEilC7kvKu1J5fa8MhKSwvDOUm50AY4bvmbexqhQmtkYW6pdqNYAe1GMx
+ W7uSUT5D7VeoCiQFm6KjgL4kjgwDpfyY73Zf5RKW1thb0RcONWl5RXRNTjcEMwpxLmwddq1QP
+ yMPydiTT+j5PROstNbgFwC+vNjCVn67mVRivu1WZ2EMXNHh482gpmYjrOEf5y5kbWr110yKCF
+ 055k3Isnosq3iuak1HQ1fsaRgTRfBxQX91A6HqScJJpGfLFftYEikcEHaJKpSgubL3OkhKwvL
+ z+Imr/sAB9rj0h2twrrgXwDap7coKGl3f4XZRJjCS10m7kF4hXLfvwhvHyTNn7liMQtnCLh3/
+ EKtgUPqkpuEVsun2o+qRU6DkLf89vRrJgUygbLqtq+CLuxk8/ygn7eg5HnNdqpb4b7vL2NIkH
+ LL69xXudOCE0Mt0qSyHJVKoREbKuiDNW8E8S5DHRlC2NDA+ghmUyY01zuuIT4AylA/d/69OJb
+ O6IO0K4NrWJflpbXeXzsb62t5D81OdjuVUfCjWMqi7lRFTIbtcGCSzNE2wBDTLOBh2JE37f0n
+ ijWgWRogy5f6ri4zhbhI6XB8NbT8p7t17+2hJOZFXo6atq0P5nlKfWNamewLAKko14HrrtwQl
+ rlZhD0monXqH/9Sj+djI35HRSj87YlptYq6KOKp8K/fJFwZI1hpGApJ9afp2fWmb7xYcbM9VV
+ MAfL0xtZFQHnvQoZH4MdI8zY3qaBHYth1gmT+y+8ujDnqx7hhnadvLCRAo03uCiFmjL2amYJz
+ Eo3BumQNgrc9y1ojHqwzAXMFzh6R5FPzZcM+T4kAl816Adinp+xK007q8qe9GVydF31CBnzzz
+ U8+10QR/KugiW+af2061AosNWLgQ+FWdN29+8Him4l35iMewyBZsx7XcUlEPThwLWMFhkHvk1
+ b+FhK/udD1IzjX1sandMfBMRy6YZ1Tjy1ylMIoPdG7+Rx48qhEqUEm2yI/gVkv/mKlM7/f4IM
+ p7yYGlZ0AXVB2lhCF0N4tGuz7jTDqiMLetc38LyiWgVMQTEtCzJIXcLzle7Rk6NVB6cx9xaqw
+ 8hybLROqE8Ba7u1Dy8wEgHHGmzltZc98xNVvoaxId0NB2Q+g5wBUZUcIqy8J4cpJ9nXKNYDKO
+ BQ3BYC7cAUvskMk2hcd9enfb08GQCu7BL+KQFn0mGXcm+GOr0+EZFJO5MuDCnI/aIsUGoLCvA
+ Glk5KJ1n3XZ5+zOs4X8DNXZZFCZbhXpuZPumcv4cRaWzclEZtKmunC0c99Z6NWGom6SBBbKnk
+ e1/X9g7kDcvt1A6TvUBhOILt4oh8OdRXTl86UjCNZ7awh7pVmWoV+qE+gbbL7SljxX1jFyee0
+ 2qh314mKdwAR1rybfh14dll3zmIvJsUabHHcz76LXke1CFh4X4jRZ7fhAQZ7VdgmVKrE0q4UN
+ c9dYO/symI8GZpytOSM8udFZyMsuuNBppl59TP1NaauesePwxpTuZ9mm+HMrrjS9Hyih3cNwU
+ pWwdLBxzPu64bK9XT4tTK7oh9DLgxL7By69ag6Xdjy4X61ZRh0fLqfs9BnRNwWcf6ariXtcln
+ hlky6zpzDotitvr7+E5KNq3V79k98aXdnZsJtjzuh7a8b0XRe1peeWM+4TwKU09gQV9LkpotN
+ HKAYP+TSvArDfBGw3fICHRIfn7ih3lUVHwTd3lsrfHUAQ/Lln8qLvttaNg5rX+R1a1JscVm+B
+ CJYWcDepyvkQQ4yEBHWkQUu3eiJZK01pXrdpq4qt6+TDaqR1zBMq36UhvjXBBoZHXhPRJuyuy
+ f/t/KoWbru/ro5zK3pwSBjVeKZkkG22pUZjNd2Dh2niSt+I4Nq427npybAj1XjPjppEaodmPk
+ IiKB9rFaZ5rxW2qal3cjwv3KLfuVgURYQ==
 
+Am 02.04.26 um 09:12 schrieb Pengpeng Hou:
+> qca_tty_receive() consumes each input byte before checking whether a
+> completed frame needs a fresh receive skb. When the current byte completes
+> a frame, the driver delivers that frame and then allocates a new skb for
+> the next one.
+>
+> If that allocation fails, the current code returns i even though data[i]
+> has already been consumed and may already have completed the delivered
+> frame. Since serdev interprets the return value as the number of accepted
+> bytes, this under-reports progress by one byte and can replay the final
+> byte of the completed frame into a fresh parser state on the next call.
+>
+> Return i + 1 in that failure path so the accepted-byte count matches the
+> actual receive-state progress.
+>
+> Fixes: dfc768fbe618 ("net: qualcomm: add QCA7000 UART driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
 
-
-On 3/31/26 7:23 PM, illusion.wang wrote:
-> The Resource layer processes the entries/data of various modules within
-> the processing chip to accomplish specific entry management operations,
-> this describes the module business capabilities of the chip and the data
-> it manages.
-> The resource layer comprises the following sub-modules: common,
-> interrupt, and vsi(txrx,queue not contained this time)
-> 
-> This patch provides the common part, including the conversion
-> relationships among vsi_id, func_id, eth_id, and pf_id. These
-> relationships may be utilized in the upper layer or the resource layer.
-> 
-> Signed-off-by: illusion.wang <illusion.wang@nebula-matrix.com>
-> ---
->   .../net/ethernet/nebula-matrix/nbl/Makefile   |   1 +
->   .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c  |  55 ++++++
->   .../nbl_hw_leonis/nbl_resource_leonis.c       | 157 ++++++++++++++++++
->   .../nebula-matrix/nbl/nbl_hw/nbl_resource.c   | 110 ++++++++++++
->   .../nebula-matrix/nbl/nbl_hw/nbl_resource.h   |  52 ++++++
->   .../nbl/nbl_include/nbl_def_common.h          |  15 ++
->   .../nbl/nbl_include/nbl_def_resource.h        |  16 ++
->   .../nbl/nbl_include/nbl_include.h             |   8 +
->   8 files changed, 414 insertions(+)
->   create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.c
-> 
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/Makefile b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-> index c9bc060732e7..b03c20f9988e 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-> @@ -8,6 +8,7 @@ nbl-objs +=       nbl_common/nbl_common.o \
->   				nbl_hw/nbl_hw_leonis/nbl_hw_leonis.o \
->   				nbl_hw/nbl_hw_leonis/nbl_resource_leonis.o \
->   				nbl_hw/nbl_hw_leonis/nbl_hw_leonis_regs.o \
-> +				nbl_hw/nbl_resource.o \
->   				nbl_core/nbl_dispatch.o \
->   				nbl_core/nbl_dev.o \
->   				nbl_main.o
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-> index 83a4dc584f48..4ef0d5989a76 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-> @@ -9,6 +9,18 @@
->   #include <linux/spinlock.h>
->   #include "nbl_hw_leonis.h"
->   
-> +static void nbl_hw_read_mbx_regs(struct nbl_hw_mgt *hw_mgt, u64 reg,
-> +				 u32 *data, u32 len)
-> +{
-> +	u32 i;
-> +
-> +	if (len % 4)
-> +		return;
-> +
-> +	for (i = 0; i < len / 4; i++)
-> +		data[i] = nbl_mbx_rd32(hw_mgt, reg + i * sizeof(u32));
-> +}
-> +
->   static void nbl_hw_write_mbx_regs(struct nbl_hw_mgt *hw_mgt, u64 reg,
->   				  const u32 *data, u32 len)
->   {
-> @@ -130,6 +142,14 @@ static u32 nbl_hw_get_host_pf_mask(struct nbl_hw_mgt *hw_mgt)
->   	return data;
->   }
->   
-> +static u32 nbl_hw_get_real_bus(struct nbl_hw_mgt *hw_mgt)
-> +{
-> +	u32 data;
-> +
-> +	data = nbl_hw_rd32(hw_mgt, NBL_PCIE_HOST_TL_CFG_BUSDEV);
-> +	return data >> 5;
-> +}
-> +
->   static void nbl_hw_cfg_mailbox_qinfo(struct nbl_hw_mgt *hw_mgt, u16 func_id,
->   				     u16 bus, u16 devid, u16 function)
->   {
-> @@ -144,6 +164,36 @@ static void nbl_hw_cfg_mailbox_qinfo(struct nbl_hw_mgt *hw_mgt, u16 func_id,
->   		       (u32 *)&mb_qinfo_map, sizeof(mb_qinfo_map));
->   }
->   
-> +static void nbl_hw_get_board_info(struct nbl_hw_mgt *hw_mgt,
-> +				  struct nbl_board_port_info *board_info)
-> +{
-> +	union nbl_fw_board_cfg_dw3 dw3 = { .info = { 0 } };
-> +
-> +	nbl_hw_read_mbx_regs(hw_mgt, NBL_FW_BOARD_DW3_OFFSET, (u32 *)&dw3,
-> +			     sizeof(dw3));
-> +	board_info->eth_num = dw3.info.port_num;
-> +	board_info->eth_speed = dw3.info.port_speed;
-> +	board_info->p4_version = dw3.info.p4_version;
-> +}
-> +
-> +static u32 nbl_hw_get_fw_eth_num(struct nbl_hw_mgt *hw_mgt)
-> +{
-> +	union nbl_fw_board_cfg_dw3 dw3 = { .info = { 0 } };
-> +
-> +	nbl_hw_read_mbx_regs(hw_mgt, NBL_FW_BOARD_DW3_OFFSET, (u32 *)&dw3,
-> +			     sizeof(dw3));
-> +	return dw3.info.port_num;
-> +}
-> +
-> +static u32 nbl_hw_get_fw_eth_map(struct nbl_hw_mgt *hw_mgt)
-> +{
-> +	union nbl_fw_board_cfg_dw6 dw6 = { .info = { 0 } };
-> +
-> +	nbl_hw_read_mbx_regs(hw_mgt, NBL_FW_BOARD_DW6_OFFSET, (u32 *)&dw6,
-> +			     sizeof(dw6));
-> +	return dw6.info.eth_bitmap;
-> +}
-> +
->   static struct nbl_hw_ops hw_ops = {
->   	.update_mailbox_queue_tail_ptr = nbl_hw_update_mailbox_queue_tail_ptr,
->   	.config_mailbox_rxq = nbl_hw_config_mailbox_rxq,
-> @@ -151,8 +201,13 @@ static struct nbl_hw_ops hw_ops = {
->   	.stop_mailbox_rxq = nbl_hw_stop_mailbox_rxq,
->   	.stop_mailbox_txq = nbl_hw_stop_mailbox_txq,
->   	.get_host_pf_mask = nbl_hw_get_host_pf_mask,
-> +	.get_real_bus = nbl_hw_get_real_bus,
-> +
->   	.cfg_mailbox_qinfo = nbl_hw_cfg_mailbox_qinfo,
->   
-> +	.get_fw_eth_num = nbl_hw_get_fw_eth_num,
-> +	.get_fw_eth_map = nbl_hw_get_fw_eth_map,
-> +	.get_board_info = nbl_hw_get_board_info,
->   };
->   
->   /* Structure starts here, adding an op should not modify anything below */
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
-> index 355f7ea66b88..00569aa3459a 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
-> @@ -4,9 +4,12 @@
->    */
->   #include <linux/device.h>
->   #include <linux/pci.h>
-> +#include <linux/bits.h>
->   #include "nbl_resource_leonis.h"
->   
->   static struct nbl_resource_ops res_ops = {
-> +	.get_vsi_id = nbl_res_func_id_to_vsi_id,
-> +	.get_eth_id = nbl_res_get_eth_id,
->   };
->   
->   static struct nbl_resource_mgt *
-> @@ -45,8 +48,162 @@ nbl_res_setup_ops(struct device *dev, struct nbl_resource_mgt *res_mgt)
->   	return res_ops_tbl;
->   }
->   
-> +static int nbl_res_ctrl_dev_setup_eth_info(struct nbl_resource_mgt *res_mgt)
-> +{
-> +	struct nbl_hw_ops *hw_ops = res_mgt->hw_ops_tbl->ops;
-> +	struct device *dev = res_mgt->common->dev;
-> +	struct nbl_eth_info *eth_info;
-> +	u32 eth_bitmap, eth_id;
-> +	u32 eth_num = 0;
-> +	int i;
-> +
-> +	eth_info = devm_kzalloc(dev, sizeof(*eth_info), GFP_KERNEL);
-> +	if (!eth_info)
-> +		return -ENOMEM;
-> +
-> +	res_mgt->resource_info->eth_info = eth_info;
-> +
-> +	eth_info->eth_num =
-> +		(u8)hw_ops->get_fw_eth_num(res_mgt->hw_ops_tbl->priv);
-> +	eth_bitmap = hw_ops->get_fw_eth_map(res_mgt->hw_ops_tbl->priv);
-> +	/* for 2 eth port board, the eth_id is 0, 2 */
-> +	for (i = 0; i < NBL_MAX_ETHERNET; i++) {
-> +		if ((1 << i) & eth_bitmap) {
-> +			set_bit(i, eth_info->eth_bitmap);
-> +			eth_info->eth_id[eth_num] = i;
-> +			eth_info->logic_eth_id[i] = eth_num;
-> +			eth_num++;
-> +		}
-> +	}
-> +
-> +	for (i = 0; i < res_mgt->resource_info->max_pf; i++) {
-> +		/* if pf_id < eth_num, the pf relate corresponding eth_id*/
-
-nit: /* if pf_id < eth_num, the pf relate corresponding eth_id */
-
-> +		if (i < eth_num) {
-> +			eth_id = eth_info->eth_id[i];
-> +			eth_info->pf_bitmap[eth_id] |= BIT(i);
-> +		}
-> +		/* if pf_id >= eth_num, the pf relate eth 0*/
-> +		else
-> +			eth_info->pf_bitmap[0] |= BIT(i);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int nbl_res_ctrl_dev_sriov_info_init(struct nbl_resource_mgt *res_mgt)
-> +{
-> +	struct nbl_hw_ops *hw_ops = res_mgt->hw_ops_tbl->ops;
-> +	struct nbl_hw_mgt *p = res_mgt->hw_ops_tbl->priv;
-> +	struct nbl_common_info *common = res_mgt->common;
-> +	struct nbl_sriov_info *sriov_info;
-> +	struct device *dev = common->dev;
-> +	u16 func_id, function;
-> +
-> +	sriov_info = devm_kcalloc(dev, res_mgt->resource_info->max_pf,
-> +				  sizeof(*sriov_info), GFP_KERNEL);
-> +	if (!sriov_info)
-> +		return -ENOMEM;
-> +
-> +	res_mgt->resource_info->sriov_info = sriov_info;
-> +
-> +	for (func_id = 0; func_id < res_mgt->resource_info->max_pf; func_id++) {
-> +		sriov_info = res_mgt->resource_info->sriov_info + func_id;
-> +		function = common->function + func_id;
-> +
-> +		common->hw_bus = (u8)hw_ops->get_real_bus(p);
-
-Why do we have to write to common->hw_bus in a loop? Can we do it once 
-outside the loop?
-
-> +		sriov_info->bdf = PCI_DEVID(common->hw_bus,
-> +					    PCI_DEVFN(common->devid, function));
-> +	}
-
-nit: space here
-
-> +	return 0;
-> +}
-> +
-> +static int nbl_res_ctrl_dev_vsi_info_init(struct nbl_resource_mgt *res_mgt)
-> +{
-> +	struct nbl_eth_info *eth_info = res_mgt->resource_info->eth_info;
-> +	struct nbl_common_info *common = res_mgt->common;
-> +	struct device *dev = common->dev;
-> +	struct nbl_vsi_info *vsi_info;
-> +	int i;
-> +
-> +	vsi_info = devm_kcalloc(dev, res_mgt->resource_info->max_pf,
-> +				sizeof(*vsi_info), GFP_KERNEL);
-> +	if (!vsi_info)
-> +		return -ENOMEM;
-> +
-> +	res_mgt->resource_info->vsi_info = vsi_info;
-> +	/*
-> +	 * case 1 two port(2pf)
-> +	 * pf0,pf1(NBL_VSI_SERV_PF_DATA_TYPE) vsi is 0,512
-> +
-> +	 * case 2 four port(4pf)
-> +	 * pf0,pf1,pf2,pf3(NBL_VSI_SERV_PF_DATA_TYPE) vsi is 0,256,512,768
-> +
-> +	 */
-> +
-> +	vsi_info->num = eth_info->eth_num;
-> +	for (i = 0; i < vsi_info->num; i++) {
-> +		vsi_info->serv_info[i][NBL_VSI_SERV_PF_DATA_TYPE].base_id =
-> +			i * NBL_VSI_ID_GAP(vsi_info->num);
-> +		vsi_info->serv_info[i][NBL_VSI_SERV_PF_DATA_TYPE].num = 1;
-> +	}
-
-nit: space here
-
-> +	return 0;
-> +}
-> +
-> +static int nbl_res_init_pf_num(struct nbl_resource_mgt *res_mgt)
-> +{
-> +	struct nbl_hw_ops *hw_ops = res_mgt->hw_ops_tbl->ops;
-> +	u32 pf_num = 0;
-> +	u32 pf_mask;
-> +	int i;
-> +
-> +	pf_mask = hw_ops->get_host_pf_mask(res_mgt->hw_ops_tbl->priv);
-> +	for (i = 0; i < NBL_MAX_PF; i++) {
-> +		if (!(pf_mask & (1 << i)))
-> +			pf_num++;
-> +		else
-> +			break;
-> +	}
-> +
-> +	res_mgt->resource_info->max_pf = pf_num;
-> +
-> +	if (!pf_num)
-> +		return -1;
-
-Can we have an appropriate error code here instead of raw number? How 
-about -EINVAL?
-
-> +
-> +	return 0;
-> +}
-> +
-> +static void nbl_res_init_board_info(struct nbl_resource_mgt *res_mgt)
-> +{
-> +	struct nbl_hw_ops *hw_ops = res_mgt->hw_ops_tbl->ops;
-> +
-> +	hw_ops->get_board_info(res_mgt->hw_ops_tbl->priv,
-> +			       &res_mgt->resource_info->board_info);
-> +}
-> +
->   static int nbl_res_start(struct nbl_resource_mgt *res_mgt)
->   {
-> +	struct nbl_common_info *common = res_mgt->common;
-> +	int ret = 0;
-> +
-> +	if (common->has_ctrl) {
-> +		nbl_res_init_board_info(res_mgt);
-> +
-> +		ret = nbl_res_init_pf_num(res_mgt);
-> +		if (ret)
-> +			return ret;
-> +
-> +		ret = nbl_res_ctrl_dev_sriov_info_init(res_mgt);
-> +		if (ret)
-> +			return ret;
-> +
-> +		ret = nbl_res_ctrl_dev_setup_eth_info(res_mgt);
-> +		if (ret)
-> +			return ret;
-> +
-> +		ret = nbl_res_ctrl_dev_vsi_info_init(res_mgt);
-> +		if (ret)
-> +			return ret;
-> +	}
->   	return 0;
->   }
->   
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.c
-> new file mode 100644
-> index 000000000000..2afec802b0e3
-> --- /dev/null
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.c
-> @@ -0,0 +1,110 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (c) 2025 Nebula Matrix Limited.
-> + */
-> +
-> +#include <linux/pci.h>
-> +#include "nbl_resource.h"
-> +
-> +u16 nbl_res_pfid_to_vsi_id(struct nbl_resource_mgt *res_mgt, int pfid, u16 type)
-> +{
-> +	struct nbl_vsi_info *vsi_info = res_mgt->resource_info->vsi_info;
-> +	enum nbl_vsi_serv_type dst_type = NBL_VSI_SERV_PF_DATA_TYPE;
-> +	struct nbl_common_info *common = res_mgt->common;
-> +	u16 vsi_id = U16_MAX;
-> +	u32 diff;
-> +
-> +	diff = nbl_common_pf_id_subtraction_mgtpf_id(common, pfid);
-> +	if (diff == U32_MAX)
-> +		return vsi_id;
-> +
-> +	if (diff < vsi_info->num) {
-> +		nbl_res_pf_dev_vsi_type_to_hw_vsi_type(type, &dst_type);
-> +		vsi_id = vsi_info->serv_info[diff][dst_type].base_id;
-> +	}
-> +	if (vsi_id == U16_MAX)
-> +		pr_err("convert pfid %d to vsi_id(%d) failed!\n", pfid, type);
-> +	return vsi_id;
-> +}
-> +
-> +u16 nbl_res_func_id_to_vsi_id(struct nbl_resource_mgt *res_mgt, u16 func_id,
-> +			      u16 type)
-> +{
-> +	int pfid = func_id;
-> +
-> +	return nbl_res_pfid_to_vsi_id(res_mgt, pfid, type);
-> +}
-> +
-> +int nbl_res_vsi_id_to_pf_id(struct nbl_resource_mgt *res_mgt, u16 vsi_id)
-> +{
-> +	struct nbl_vsi_info *vsi_info = res_mgt->resource_info->vsi_info;
-> +	struct nbl_common_info *common = res_mgt->common;
-> +	bool vsi_find = false;
-> +	u32 pf_id = U32_MAX;
-> +	int i, j;
-> +
-> +	for (i = 0; i < vsi_info->num; i++) {
-> +		for (j = 0; j < NBL_VSI_SERV_MAX_TYPE; j++)
-> +			if (vsi_id >= vsi_info->serv_info[i][j].base_id &&
-> +			    (vsi_id < vsi_info->serv_info[i][j].base_id +
-> +					      vsi_info->serv_info[i][j].num)) {
-> +				vsi_find = true;
-> +				break;
-> +			}
-> +
-> +		if (vsi_find)
-> +			break;
-> +	}
-> +
-> +	if (vsi_find) {
-> +		if (j == NBL_VSI_SERV_PF_DATA_TYPE)
-> +			pf_id = i + common->mgt_pf;
-> +	}
-> +
-> +	return pf_id;
-
-So we have a possible case of returning U32_MAX when the return type is int.
-> +}
-> +
-> +int nbl_res_func_id_to_bdf(struct nbl_resource_mgt *res_mgt, u16 func_id,
-> +			   u8 *bus, u8 *dev, u8 *function)
-> +{
-> +	struct nbl_common_info *common = res_mgt->common;
-> +	struct nbl_sriov_info *sriov_info;
-> +	int pfid = func_id;
-> +	u8 pf_bus, devfn;
-> +	u32 diff;
-> +
-> +	diff = nbl_common_pf_id_subtraction_mgtpf_id(common, pfid);
-> +	if (diff == U32_MAX)
-> +		return U32_MAX;
-> +	sriov_info = res_mgt->resource_info->sriov_info + diff;
-> +	pf_bus = PCI_BUS_NUM(sriov_info->bdf);
-> +	devfn = sriov_info->bdf & 0xff;
-> +	*bus = pf_bus;
-> +	*dev = PCI_SLOT(devfn);
-> +	*function = PCI_FUNC(devfn);
-
-nit: space here
-
-> +	return 0;
-> +}
-> +
-> +void nbl_res_get_eth_id(struct nbl_resource_mgt *res_mgt, u16 vsi_id,
-> +			u8 *eth_mode, u8 *eth_id, u8 *logic_eth_id)
-> +{
-> +	struct nbl_eth_info *eth_info = res_mgt->resource_info->eth_info;
-> +	u16 pf_id = nbl_res_vsi_id_to_pf_id(res_mgt, vsi_id);
-> +
-> +	*eth_mode = eth_info->eth_num;
-> +	if (pf_id < eth_info->eth_num) {
-> +		*eth_id = eth_info->eth_id[pf_id];
-> +		*logic_eth_id = pf_id;
-> +	} else {
-> +		/* if pf_id >= eth_num, use eth_id 0 */
-
-Perhaps we can elaborate this a little more
-
-> +		*eth_id = eth_info->eth_id[0];
-> +		*logic_eth_id = 0;
-> +	}
-> +}
-> +
-> +void nbl_res_pf_dev_vsi_type_to_hw_vsi_type(u16 src_type,
-> +					    enum nbl_vsi_serv_type *dst_type)
-> +{
-> +	if (src_type == NBL_VSI_DATA)
-> +		*dst_type = NBL_VSI_SERV_PF_DATA_TYPE;
-> +}
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h
-> index e08b6237da32..51b5b958cde8 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h
-> @@ -16,7 +16,48 @@
->   #include "../nbl_include/nbl_def_common.h"
->   #include "../nbl_core.h"
->   
-> +struct nbl_resource_mgt;
-> +
-> +/* --------- INFO ---------- */
-> +struct nbl_sriov_info {
-> +	unsigned int bdf;
-> +};
-> +
-> +struct nbl_eth_info {
-> +	DECLARE_BITMAP(eth_bitmap, NBL_MAX_ETHERNET);
-> +	u8 pf_bitmap[NBL_MAX_ETHERNET];
-> +	u8 eth_num;
-> +	u8 resv[3];
-> +	u8 eth_id[NBL_MAX_PF];
-> +	u8 logic_eth_id[NBL_MAX_PF];
-> +};
-> +
-> +enum nbl_vsi_serv_type {
-> +	NBL_VSI_SERV_PF_DATA_TYPE,
-> +	NBL_VSI_SERV_MAX_TYPE,
-> +};
-> +
-> +struct nbl_vsi_serv_info {
-> +	u16 base_id;
-> +	u16 num;
-> +};
-> +
-> +struct nbl_vsi_info {
-> +	u16 num;
-> +	struct nbl_vsi_serv_info serv_info[NBL_MAX_ETHERNET]
-> +					  [NBL_VSI_SERV_MAX_TYPE];
-> +};
-> +
->   struct nbl_resource_info {
-> +	/* ctrl-dev owned pfs */
-> +	DECLARE_BITMAP(func_bitmap, NBL_MAX_FUNC);
-> +	struct nbl_sriov_info *sriov_info;
-> +	struct nbl_eth_info *eth_info;
-> +	struct nbl_vsi_info *vsi_info;
-> +	u32 base_qid;
-> +	u32 max_vf_num;
-> +	u8 max_pf;
-> +	struct nbl_board_port_info board_info;
->   };
->   
->   struct nbl_resource_mgt {
-> @@ -27,4 +68,15 @@ struct nbl_resource_mgt {
->   	struct nbl_interrupt_mgt *intr_mgt;
->   };
->   
-> +int nbl_res_vsi_id_to_pf_id(struct nbl_resource_mgt *res_mgt, u16 vsi_id);
-> +u16 nbl_res_pfid_to_vsi_id(struct nbl_resource_mgt *res_mgt, int pfid,
-> +			   u16 type);
-> +u16 nbl_res_func_id_to_vsi_id(struct nbl_resource_mgt *res_mgt, u16 func_id,
-> +			      u16 type);
-> +int nbl_res_func_id_to_bdf(struct nbl_resource_mgt *res_mgt, u16 func_id,
-> +			   u8 *bus, u8 *dev, u8 *function);
-> +void nbl_res_get_eth_id(struct nbl_resource_mgt *res_mgt, u16 vsi_id,
-> +			u8 *eth_mode, u8 *eth_id, u8 *logic_eth_id);
-> +void nbl_res_pf_dev_vsi_type_to_hw_vsi_type(u16 src_type,
-> +					    enum nbl_vsi_serv_type *dst_type);
->   #endif
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h
-> index 5c532247c852..04ffc1918a46 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h
-> @@ -12,6 +12,21 @@
->   #include "nbl_include.h"
->   
->   struct nbl_hash_tbl_mgt;
-> +#define NBL_TWO_ETHERNET_PORT			2
-> +#define NBL_FOUR_ETHERNET_PORT			4
-> +#define NBL_DEFAULT_VSI_ID_GAP			1024
-> +#define NBL_TWO_ETHERNET_VSI_ID_GAP		512
-> +#define NBL_FOUR_ETHERNET_VSI_ID_GAP		256
-> +
-> +#define NBL_VSI_ID_GAP(m)					\
-> +	({							\
-> +		typeof(m) _m = (m);				\
-> +		_m == NBL_FOUR_ETHERNET_PORT ?			\
-> +			NBL_FOUR_ETHERNET_VSI_ID_GAP :		\
-> +			(_m == NBL_TWO_ETHERNET_PORT ?		\
-> +				 NBL_TWO_ETHERNET_VSI_ID_GAP :	\
-> +				 NBL_DEFAULT_VSI_ID_GAP);	\
-> +	})
->   
->   struct nbl_common_info {
->   	struct pci_dev *pdev;
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_resource.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_resource.h
-> index 16add7e25eae..249b8f633cee 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_resource.h
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_resource.h
-> @@ -6,9 +6,25 @@
->   #ifndef _NBL_DEF_RESOURCE_H_
->   #define _NBL_DEF_RESOURCE_H_
->   
-> +#include <linux/types.h>
-> +
->   struct nbl_resource_mgt;
->   struct nbl_adapter;
-> +
->   struct nbl_resource_ops {
-> +	int (*init_chip_module)(struct nbl_resource_mgt *res_mgt);
-> +	void (*deinit_chip_module)(struct nbl_resource_mgt *res_mgt);
-> +
-> +	int (*configure_msix_map)(struct nbl_resource_mgt *res_mgt, u16 func_id,
-> +				  u16 num_net_msix, u16 num_others_msix,
-> +				  bool net_msix_mask_en);
-> +	int (*destroy_msix_map)(struct nbl_resource_mgt *res_mgt, u16 func_id);
-> +	int (*enable_mailbox_irq)(struct nbl_resource_mgt *res_mgt, u16 func_id,
-> +				  u16 vector_id, bool enable_msix);
-> +	u16 (*get_vsi_id)(struct nbl_resource_mgt *res_mgt, u16 func_id,
-> +			  u16 type);
-> +	void (*get_eth_id)(struct nbl_resource_mgt *res_mgt, u16 vsi_id,
-> +			   u8 *eth_mode, u8 *eth_id, u8 *logic_eth_id);
->   };
->   
->   struct nbl_resource_ops_tbl {
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
-> index a01c32f57d84..6a0bf5e8ca32 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
-> @@ -17,11 +17,19 @@
->   		((_id) == (max) ? 0 : (_id) + 1);	\
->   	})
->   
-> +#define NBL_MAX_FUNC					520
-> +#define NBL_MAX_ETHERNET				4
-> +
->   enum nbl_product_type {
->   	NBL_LEONIS_TYPE,
->   	NBL_PRODUCT_MAX,
->   };
->   
-> +enum {
-> +	NBL_VSI_DATA = 0,
-> +	NBL_VSI_MAX,
-> +};
-> +
->   struct nbl_func_caps {
->   	u32 has_ctrl:1;
->   	u32 has_net:1;
+Thanks
 
