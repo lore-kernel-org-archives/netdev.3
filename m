@@ -1,233 +1,192 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012062.outbound.protection.outlook.com [40.93.195.62])
+Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2126.outbound.protection.partner.outlook.cn [139.219.17.126])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96B2E33F5B6;
-	Thu,  2 Apr 2026 11:11:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 831B935E95A;
+	Thu,  2 Apr 2026 11:12:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.126
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775128295; cv=fail; b=eCHmJvrf2XtKXxwAXBCjn4B5PWJEeqbaXY6RF5z4lH4jBcwgkTag8X1XM9MzYCULCx0BICRKGJrvGKA4DUrHMePefTMBU6LgxDDH2vqDXvLGS1h4ljzn8rPs+J5JDRIZ3qaSBsnbwmu0htvhGbKzFG7FXc0YXn/+zWmr1a0+JB0=
+	t=1775128325; cv=fail; b=UqHfNEzY7Wf2j/jjDpZtO2S3L4a//tF2SO3431GMAd6cnGaREW4rBnRrXfXKQv5HrYNh2JkYkLfAWNfSzp5UVQIadCg1MsV5PVY+ChwZ8FHYiCV0VbxsZnhiwsI1wpCVLAfAvzR7ck6k62f04ot2nFiTvP708guB1/cF6/LAN/s=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775128295; c=relaxed/simple;
-	bh=16h8f8tWHACA+ancKxzy6b3jFlKhDUzcKZs4oNJw1oA=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kGndOwMd5/zFEjaF9ZLBESzQGgJk9+hlHQqss/6StHUzcZaMXJi5uckKXY67axktzPJk3V0krhR2G31HHOHSm3by5OnBfNomGDbcaaK6LeGEVDCfrllT90nru4mCpup1av2mUzSg1NRJXmPnfoRoD3mQZlvw8dDRG7LJ0uJ7h9g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=PTK8rvwD; arc=fail smtp.client-ip=40.93.195.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="PTK8rvwD"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qjbF9DrqLbwPKkjvrPuy3kO9L4/2u1VEYzdBmLogl/FeIA8Mh823Hr+pYapUpt1rG9ZfJSelRLV/2BT6MYh7m/I9zPBAxtjPTUxgH2+8IMLcFIlnOsPIsy09BjR63TFuAhO6Mft+Uaz6a9Z1BagqO/iVaAlrh63mFyMMF0FwmAoHSWEvo9qn1NqMkiEnFMW065b1mxdkitFTIwLOqSFg8ifgFPMTuS3CdDAAIf7bdo4rnOGvgTMzwt/khi/7HMH25w8nU9hj5ognKvMnRG0/fnqz4ZmmFiFk6ZwGXmT/Gm1Ab+a6W7nn1hbyJM7UEN0YYugBEKGc7yGn8KvMWMqKFQ==
+	s=arc-20240116; t=1775128325; c=relaxed/simple;
+	bh=mPPvdk4MXMbbzaV1vMEtDxOyCQH+P7JX/iYGb5GSjBU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=coeztMWf5BTTltHIuUNrrVXbYh7X2o87Jn77ujr5UMlCbJQ7axOUz4/PdqblphZxitSd4a6/yksEZNc3+vC2i3UdtMe08ELcP2DJwIbvcbsyK69hVaogTrU8RCIM4uPEfFCajFcB0BrtmWtKPniRE+IWPANfVdLhQLKLlXCYBig=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.126
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hKRIvodLm7MgblSgyQPoy81wmUmIK2wXXEvX10ez+1zlUoxjtqNgcHMbP0+hmiikygpRlwZ1nIybo0U4o5H6/HTIi7/A1c4rFew0sFg9/mGLLxHGz0qfjRe5UmavQ2MOzGpNMJGVNIb+pn1ayNygS09MbGPlbPPdOHy1RfPXJMb8CEYVBRbwZNmC4NXKvD1FjrQXdW0n6YExMkpgtUunLZnbdvq0R5ZZ/ysFBpzm8eIGv0+825V1xYbn7uSMwcJ68dDe2tgPS3zSzJn9swW7YkJGiYeD0gVdWimDlrsD1D5kQvbOBCBEUslLv2z2hmxAj97o7+8+j7wWqYQlnJfGsg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
+ s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MbnOOYVtanCy4OK7WZiS98f00c1IPoLq5dVjdUSbIPs=;
- b=yQYwt+RuTib340R1BflieqaOtvYuWEpEYAxLhfp1VP1Ea2wX9v7nILpLvIuYfCsJMigRITctKUcmR4l06PplaiINYNm6OWQ5qJ48vmXqxuh+r8MwYh+2+jBXGfR8AKT5NJ002GxyryT7vegIU1UcwZk6bdWICFI5+TatGXvFQqnD6bdFOtn2a7BtozX5i1m04fFDdWCNtMm0dqxpWcxXx+aVXtRHzpAW9jQcAoj0bSpOLH2wQtli1pfwb4Q1cBPmbknSz5mpg8x00dmlLzCXDub5Baxaeb5KvwACoaUdPxXwDwePcdmO5q7NjsDG2tN7RlpXUYMrx7+agYiTYluSpQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MbnOOYVtanCy4OK7WZiS98f00c1IPoLq5dVjdUSbIPs=;
- b=PTK8rvwDj8kN4AQ13FeOTlW8gffgyxNTTHm9tBeBPdwa/ocJ29O5abYaQ0fQ7Y+OP/R+zIAlvTFP4QB224DyODLAzwP6K1qb4w+tpzVWOe8bOJl4t+WfprN4lvupVNVwwUlMPy8LUhDMkaToiMa4V91FzYtWGXD6jjU7+MPOLtl97BBMJXcDuhP54Dp4rTJPo7aUQz/3mrPCrozAnslL9LOYvgAkRSojIIYcpBn2J8DmL84ovyjj1MUsYpBHPgzwxdNj8olvf3yV2Kj0WvMwGqc6Y9Es5EAQ4O/1POMCWzDc855AVAtogYIf/hOhJRkt/kcyLOznB0t6ohGzaTMEXg==
-Received: from BL1P222CA0017.NAMP222.PROD.OUTLOOK.COM (2603:10b6:208:2c7::22)
- by DS0PR12MB8247.namprd12.prod.outlook.com (2603:10b6:8:f5::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.18; Thu, 2 Apr
- 2026 11:11:27 +0000
-Received: from BN1PEPF00004687.namprd05.prod.outlook.com
- (2603:10b6:208:2c7:cafe::af) by BL1P222CA0017.outlook.office365.com
- (2603:10b6:208:2c7::22) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9745.31 via Frontend Transport; Thu,
- 2 Apr 2026 11:11:27 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- BN1PEPF00004687.mail.protection.outlook.com (10.167.243.132) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9769.17 via Frontend Transport; Thu, 2 Apr 2026 11:11:26 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 2 Apr
- 2026 04:11:12 -0700
-Received: from c-237-113-240-247.mtl.labs.mlnx (10.126.230.35) by
- rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Thu, 2 Apr 2026 04:11:08 -0700
-From: Cosmin Ratiu <cratiu@nvidia.com>
-To: <netdev@vger.kernel.org>
-CC: Sabrina Dubroca <sd@queasysnail.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Simon
- Horman" <horms@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, David Wei
-	<dw@davidwei.uk>, Shuah Khan <shuah@kernel.org>,
-	<linux-kselftest@vger.kernel.org>, Cosmin Ratiu <cratiu@nvidia.com>, "Dragos
- Tatulea" <dtatulea@nvidia.com>
-Subject: [PATCH net v7 4/4] macsec: Support VLAN-filtering lower devices
-Date: Thu, 2 Apr 2026 14:10:34 +0300
-Message-ID: <20260402111034.1494714-5-cratiu@nvidia.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260402111034.1494714-1-cratiu@nvidia.com>
-References: <20260402111034.1494714-1-cratiu@nvidia.com>
+ bh=ZsGsxV/w7Fgx9XqfFGZEoSDxwiP2eaq5CFxLCDDdwzI=;
+ b=EqmHRoggtjSjMOQ2TekWyC3o5A/q0GSLNKoaeWdjcfy4/PRRg577YAuHJbZebocRzRYyjZAjmB6rz/dVtc8cHXhXMgtVDkWlgk3Y0lYedGKo6XF5KW4ZXJd38VGHhG91Eql/Qq90p4sVOb0VVxxgn5O8fe0s9chGFDWrc1Ohy6nKUJdOHcSu/exHVORjyj7F6B17Sore/JNJQOMhKgXLIy3rVu9Bp7bZKXABOT0mGHUbMVwudJTqaAAeuFEqn9m2vCEcbhVQWX6JrewWv0Bx/9uRULZxBQebyivZPM3TXFoKlOQnwNQ8jTo7XbP3kUE7gCnWBJCQoUe7uUUbzJrgnA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=starfivetech.com; dmarc=pass action=none
+ header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=starfivetech.com;
+Received: from ZQ0PR01MB1208.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:19::5) by ZQ0PR01MB1048.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:d::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.20; Thu, 2 Apr
+ 2026 10:56:07 +0000
+Received: from ZQ0PR01MB1208.CHNPR01.prod.partner.outlook.cn
+ ([fe80::63d1:b688:cab7:50cb]) by
+ ZQ0PR01MB1208.CHNPR01.prod.partner.outlook.cn ([fe80::63d1:b688:cab7:50cb%7])
+ with mapi id 15.20.9769.017; Thu, 2 Apr 2026 10:56:07 +0000
+From: Changhuang Liang <changhuang.liang@starfivetech.com>
+To: Michael Turquette <mturquette@baylibre.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>
+Cc: linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-hardening@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Sia Jee Heng <jeeheng.sia@starfivetech.com>,
+	Hal Feng <hal.feng@starfivetech.com>,
+	Ley Foon Tan <leyfoon.tan@starfivetech.com>,
+	Changhuang Liang <changhuang.liang@starfivetech.com>
+Subject: [PATCH v1 12/22] clk: starfive: Introduce inverter and divider
+Date: Thu,  2 Apr 2026 03:55:13 -0700
+Message-Id: <20260402105523.447523-13-changhuang.liang@starfivetech.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260402105523.447523-1-changhuang.liang@starfivetech.com>
+References: <20260402105523.447523-1-changhuang.liang@starfivetech.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: ZQ0PR01CA0028.CHNPR01.prod.partner.outlook.cn (10.2.0.210)
+ To ZQ0PR01MB1208.CHNPR01.prod.partner.outlook.cn (10.2.3.165)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF00004687:EE_|DS0PR12MB8247:EE_
-X-MS-Office365-Filtering-Correlation-Id: adb0a6f0-1101-4140-296f-08de90a89583
+X-MS-TrafficTypeDiagnostic: ZQ0PR01MB1208:EE_|ZQ0PR01MB1048:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2c48a104-c745-441e-2c70-08de90a67129
 X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|82310400026|36860700016|18002099003|56012099003|22082099003;
+	BCL:0;ARA:13230040|1800799024|7416014|52116014|376014|366016|921020|38350700014|22082099003|18002099003|56012099003;
 X-Microsoft-Antispam-Message-Info:
-	2rMx+4+BFEaFvI4N8AE2eVXkCexdBpPXeSfDd8NcnCaWrQdfTozC/ZUAV0IWlBWrIUZF6cQYnG9ck1EBLwFy1MlWN5q+xdQn/BwRtIEJqbJ5Z9id6scmy6sDuC27tsRveDZCDUw+lxrWCDpPNabzeUuDO3Md3G/arNRLTWcsyU1e0kTACKHlWh9LOayxb/dJVzaZc9KsfE+xmO/srrVs1KtyUHNp41wHkAp1A6qDncunZaPRw5GKUnNFrDtCvpRm3Wyurzz3KXXTodFqjihjkSjUokmioAQjpKkhHmNUjMrvhk3LEa5yti+BGhitHajKvxQzmsSqQPTQpTgzJtno7gpwef6O4bCk8e9w2sbEQuVnPUcEiOM73bPSDnVzREBuidtM/CZux4bb/KlBXxhoTLHS8yVqW4Ibt1SFVfqqcgrLUGSvaqUQBfgxwz8+CTABI2RLT9fJW54KNzbTdM9l4WcHvtcT1htiSzZx5F2W5Ft8xsWt93TqZmojxiI4SV+sEophdLE0xjllcxchgljW4WF0IW6E9Ei8QEqln51W1BgvANqx0XifyXcNCul35e8jRHkWiRLfgrwkWM1/sEEAEl10YTULNUK4s8RqkMHYNQlNQjELYWPg6vWZQGzRxE0eRlso1kqDSwZqu+VFXylwNTM7cI67r0fdqIFbmO17waFDcSoGCIMPrsII9lfFttdlR3D5ic0mdJKhr5kn2/MvhE2ei8sTYl/akphDyIl/mBt26OhiZYMTuPug04sAOjMplB4oQ83YIEZiIvvp/hKphQ==
+	sCTLQhow/pkVqZh+v/iEh3LFn+sBTmbkeo8KktOi6c1rMKGCUm6Z7NT7vYbDKmHU7NpYvE6CcjutsNJRPD5F8lWM7S0v4IhC/ESQG8r1w11sPOkbP4+Qz52BLZeXAl4LyGUwHKn/hn3kblbb/DqCvI0BJ4VEzbNQjMiNYEBuv8yZM4vo7tXryxaHyFxQ29STlyupgv26Ze3uOBRW1z1ieMxa4fX3MutikfuxmK/TT61XTZMXZi62A2h4uVGy8ALUTbE/cN9vHevGa7nDNA6G+dOdglEnP03zXxATx2KqArJ/C++RWuxZRLabo/sZZfsWqPkDHkngK2VUXJvd837hLAOO4sLaaJcLaABtJbDd6pgktUDhA0BNsEKZsXtS75s9pdkvq+ljFKGGsom5hcjvumRNrfijhaaxOGHnWwQ4AifE6ujxG+lpLjdHTyh+ethq5bJIlb4ps3qII6b8gcUebMWgrijc7E0AVAbX3ODZfdM25N01eJ64QAjBmZm1kAbbMZeVdblAvA3UHm9XtNScpMCo0mhIZDMQVp/VBsS7kJwlBmbT3ms1uYaXvkgIyVGknZy8XXfxH/1HJBmeVvB+h4aM8S3j96Niop+jEs+Rs1I=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(82310400026)(36860700016)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQ0PR01MB1208.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(52116014)(376014)(366016)(921020)(38350700014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	BdldeGBIkBhvv2acTAdW/wMFqxVT62gR9G7hgq4SaBCDJusdGcdNz2WwwaL1wvT3bIzJQwVKRkRoNjF+AZw/9qmF1d+PA3f8Hrp8F8cH5dGB9o8rfdj0hXzBNZgHs41ftSgwNy4sDPjQEpyZAR9uCAJf5bk8j3zgASXr/Tss78op96gF4g5AdIMPRJXY+Whg8GAjDPU9ipNL6e2xeBNIEoW/n3bxeWEM4HE8VU8+ezX1vu3G2qxUK0qVU1WyGEK8rv0gBij4GkgW0Nm2r5Mj6bOY51wBigC3Kj0o5yE/+OYk3AT225nrD0jFvNeVYPZwFFUzWbMh4vKfl21nwzY0kck8/xPilUzvxaFn+dwpKKqpWzWoPNa7rJTzY7hq0ivX8Vr0Jy45M2GzbvzCqMChItuoi08zfaZYxNfQqWoy3oHq72cUdd4xFgEwFa93pl0K
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2026 11:11:26.8603
+	=?us-ascii?Q?N1cV/2ALdFlnkB3N4ybnPPQl81j3rch7bSmRNW4jouf8dcSExMipb/9Qxtfv?=
+ =?us-ascii?Q?KlCR8gBnYERbTcLq9X4vtCqI3D+yf33iPbcaZzpMgk69ykwAqAfiGb5/pcZJ?=
+ =?us-ascii?Q?PkAtBquNYpP4fxuYxXvdUGVjZ9X3gT2sPxMv13TlpwTNG0hjPkkOE6unK8lo?=
+ =?us-ascii?Q?GYlfwUYpgo1ASGrGwukxGvS9uRaZDGtzbQkKlZ7bljVIYLkUMv7brTWdNHaP?=
+ =?us-ascii?Q?eb4k1dnsu1AS4nnm4iRVVDm5yEDnpgUDTXu+WZLwlWs3f5o+X2IN1ly6Yi/h?=
+ =?us-ascii?Q?BC7JMHs8BZOHnn8XnN/inT4R6ZKo3+MyPYN7kt1diCkpwFvUmHxIE23F83Y7?=
+ =?us-ascii?Q?F4Bhz1OiaVH7J04OLpMvz0vUCeRYxvCl4MusPWkx+y8Lf8ky3DP0fhe1AjZ7?=
+ =?us-ascii?Q?P4GasdSPLI2riphZ0Fw5rFQE++/uUs1sntQ+m0lE3TFWEweVks60Lv0gXukA?=
+ =?us-ascii?Q?W2x7R68jrZ51l7Fw1K1YTqTjC0OGClCjGwwNNNZPayKg7wPbiqTf/5IaT8Lo?=
+ =?us-ascii?Q?PDTkd60ddh7etwtwckx6OqdrWy3FSD/PDczV2dp/AJ7nPNSWhK0DJkaGHvZI?=
+ =?us-ascii?Q?N8Y3FUIaaKBPnVXUNDKiEqgXswzyMtkGliMXtI++9XpWUYNAbRWDwxu52ajp?=
+ =?us-ascii?Q?SXBtaZUh9euYpTKBzkyUvUnGhPSKSP4/LcPqWpGvpYUXPCCUplbE6nP3zN+J?=
+ =?us-ascii?Q?4+5DggRGDm6WSm/cUI4ok4ZmsuhIbzTdmi1XZEQtJ+AaqG4IXtIMlsxaVrc9?=
+ =?us-ascii?Q?l3U19WN8R7eUX6kG4Adn0xEOgOA759yXcXdhgsGJj3xB1krVUIaxXGg+hVxO?=
+ =?us-ascii?Q?sJ58TXKWBVWUIWBfWF42W+62hV70wANiC7XSsebRZijAICT9DfxSyt9izocZ?=
+ =?us-ascii?Q?37n8b9Uln1LLnJft3PRtRRQSZjj8yix2jljFD4O3heMwrWy7T6oy37oCPvVl?=
+ =?us-ascii?Q?pzER0nRX0FthmQB9eiizHkwcStB61xRbA6o3CAblUnVRjiN4Sy1/WmiTkQ2n?=
+ =?us-ascii?Q?pwUkb7PWYyz+z9uRsIiJK/HzJ3tSWzKAZlD0OCIh+D481RQDvFubqAyEhCy0?=
+ =?us-ascii?Q?ORu6zD8Gb4869CiHdgsMgjCah21GBl/XpDMReJCFmHn9gN5BaQ9d59//n7Yu?=
+ =?us-ascii?Q?u4Cic8tZmIhL0X27avFNPwHWYvLNmT/7NRf7jBKta2VfNublUZfEUSTQZ5/G?=
+ =?us-ascii?Q?HYt4S05Ei7TcGAay8J2FaiHzA6rw8BEcJvb03uUvsPeOF7DRxk6D9mPoqDff?=
+ =?us-ascii?Q?a13geo+DXw/Zt68Rr1yJE8j6sY35TbJE656Mz0LC4z6DvXUJKUzTiYXAOKRW?=
+ =?us-ascii?Q?b6p5/1YQPfoIL6L4Rt/1t4Ukvtw9KJnTpjv24klajybKiKD5miz9DkZStGmw?=
+ =?us-ascii?Q?ylPmVElHQKfvso/8P3tihvjjhkZHp6kHb+SYR6dK1czn+JLhSN4eu+UGSaVW?=
+ =?us-ascii?Q?Ih4fmcvjsBgeLK4Vn2LmzV1Sper1t/IJBqHMIhpmbxbPmy+NsXkaYhewF+qb?=
+ =?us-ascii?Q?uBR3su3dWz6k6jJKw2y7SG/mrmkgUk51aPT0VkoasAow5H9roxiUngKDODfx?=
+ =?us-ascii?Q?PY8cY9w9AiztUdND0ADTFfPplCv4turOGwxcWjJELb8+n1Kl7HubdfVPCI49?=
+ =?us-ascii?Q?wfDZwIAhoN2/LPeydfAhhxKds4Bxq/wgnveU5UyKNM+FXsKccz05LB9rwozW?=
+ =?us-ascii?Q?+X6OPdiU+/hKr6BDGLZPYtAIuRhRvNrH27/xqbkGOnBffOSAygTOJk4tGCE8?=
+ =?us-ascii?Q?RSCKtJRwtBMlTcl6KaIWj11OGzM4RfQ6g7dVYQi7a0dLJgygPZvG?=
+X-OriginatorOrg: starfivetech.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2c48a104-c745-441e-2c70-08de90a67129
+X-MS-Exchange-CrossTenant-AuthSource: ZQ0PR01MB1208.CHNPR01.prod.partner.outlook.cn
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2026 10:56:07.2062
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: adb0a6f0-1101-4140-296f-08de90a89583
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF00004687.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8247
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8Zss8ALPv8PjHiM+cPK183sw7Kcr1ErbrbGPvSS5UhnnyAzqOWNklhe+uvYSoPe4Z0/qqTNDw7X//KR7A6GLu6qH3wqaF4VZLkSz/VjBIXGSEM1y8uXLYvFcp6StYYEU
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQ0PR01MB1048
 
-VLAN-filtering is done through two netdev features
-(NETIF_F_HW_VLAN_CTAG_FILTER and NETIF_F_HW_VLAN_STAG_FILTER) and two
-netdev ops (ndo_vlan_rx_add_vid and ndo_vlan_rx_kill_vid).
+Introduce inverter and divider for starfive clocks.
 
-Implement these and advertise the features if the lower device supports
-them. This allows proper VLAN filtering to work on top of MACsec
-devices, when the lower device is capable of VLAN filtering.
-As a concrete example, having this chain of interfaces now works:
-vlan_filtering_capable_dev(1) -> macsec_dev(2) -> macsec_vlan_dev(3)
-
-Before the mentioned commit this used to accidentally work because the
-MACsec device (and thus the lower device) was put in promiscuous mode
-and the VLAN filter was not used. But after commit [1] correctly made
-the macsec driver expose the IFF_UNICAST_FLT flag, promiscuous mode was
-no longer used and VLAN filters on dev 1 kicked in. Without support in
-dev 2 for propagating VLAN filters down, the register_vlan_dev ->
-vlan_vid_add -> __vlan_vid_add -> vlan_add_rx_filter_info call from dev
-3 is silently eaten (because vlan_hw_filter_capable returns false and
-vlan_add_rx_filter_info silently succeeds).
-
-For MACsec, VLAN filters are only relevant for offload, otherwise
-the VLANs are encrypted and the lower devices don't care about them. So
-VLAN filters are only passed on to lower devices in offload mode.
-Flipping between offload modes now needs to offload/unoffload the
-filters with vlan_{get,drop}_rx_*_filter_info().
-
-To avoid the back-and-forth filter updating during rollback, the setting
-of macsec->offload is moved after the add/del secy ops. This is safe
-since none of the code called from those requires macsec->offload.
-
-Fixes: 0349659fd72f ("macsec: set IFF_UNICAST_FLT priv flag")
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Signed-off-by: Changhuang Liang <changhuang.liang@starfivetech.com>
 ---
- drivers/net/macsec.c | 44 +++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 39 insertions(+), 5 deletions(-)
+ drivers/clk/starfive/clk-starfive-common.c | 12 ++++++++++++
+ drivers/clk/starfive/clk-starfive-common.h |  8 ++++++++
+ 2 files changed, 20 insertions(+)
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index f6cad0746a02..3bdb6f3fae8e 100644
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -2616,14 +2616,22 @@ static int macsec_update_offload(struct net_device *dev, enum macsec_offload off
- 	if (!ops)
- 		return -EOPNOTSUPP;
+diff --git a/drivers/clk/starfive/clk-starfive-common.c b/drivers/clk/starfive/clk-starfive-common.c
+index 9c0eb7a50d1e..d84b326c9aed 100644
+--- a/drivers/clk/starfive/clk-starfive-common.c
++++ b/drivers/clk/starfive/clk-starfive-common.c
+@@ -298,6 +298,15 @@ static const struct clk_ops starfive_clk_inv_ops = {
+ 	.debug_init = starfive_clk_debug_init,
+ };
  
--	macsec->offload = offload;
--
- 	ctx.secy = &macsec->secy;
- 	ret = offload == MACSEC_OFFLOAD_OFF ? macsec_offload(ops->mdo_del_secy, &ctx)
- 					    : macsec_offload(ops->mdo_add_secy, &ctx);
--	if (ret) {
--		macsec->offload = prev_offload;
-+	if (ret)
- 		return ret;
++static const struct clk_ops starfive_clk_idiv_ops = {
++	.get_phase = starfive_clk_get_phase,
++	.set_phase = starfive_clk_set_phase,
++	.recalc_rate = starfive_clk_recalc_rate,
++	.determine_rate = starfive_clk_determine_rate,
++	.set_rate = starfive_clk_set_rate,
++	.debug_init = starfive_clk_debug_init,
++};
 +
-+	/* Remove VLAN filters when disabling offload. */
-+	if (offload == MACSEC_OFFLOAD_OFF) {
-+		vlan_drop_rx_ctag_filter_info(dev);
-+		vlan_drop_rx_stag_filter_info(dev);
-+	}
-+	macsec->offload = offload;
-+	/* Add VLAN filters when enabling offload. */
-+	if (prev_offload == MACSEC_OFFLOAD_OFF) {
-+		vlan_get_rx_ctag_filter_info(dev);
-+		vlan_get_rx_stag_filter_info(dev);
- 	}
- 
- 	macsec_set_head_tail_room(dev);
-@@ -3486,7 +3494,8 @@ static netdev_tx_t macsec_start_xmit(struct sk_buff *skb,
- }
- 
- #define MACSEC_FEATURES \
--	(NETIF_F_SG | NETIF_F_HIGHDMA | NETIF_F_FRAGLIST)
-+	(NETIF_F_SG | NETIF_F_HIGHDMA | NETIF_F_FRAGLIST | \
-+	 NETIF_F_HW_VLAN_STAG_FILTER | NETIF_F_HW_VLAN_CTAG_FILTER)
- 
- #define MACSEC_OFFLOAD_FEATURES \
- 	(MACSEC_FEATURES | NETIF_F_GSO_SOFTWARE | NETIF_F_SOFT_FEATURES | \
-@@ -3707,6 +3716,29 @@ static int macsec_set_mac_address(struct net_device *dev, void *p)
- 	return err;
- }
- 
-+static int macsec_vlan_rx_add_vid(struct net_device *dev,
-+				  __be16 proto, u16 vid)
-+{
-+	struct macsec_dev *macsec = netdev_priv(dev);
-+
-+	if (!macsec_is_offloaded(macsec))
-+		return 0;
-+
-+	return vlan_vid_add(macsec->real_dev, proto, vid);
-+}
-+
-+static int macsec_vlan_rx_kill_vid(struct net_device *dev,
-+				   __be16 proto, u16 vid)
-+{
-+	struct macsec_dev *macsec = netdev_priv(dev);
-+
-+	if (!macsec_is_offloaded(macsec))
-+		return 0;
-+
-+	vlan_vid_del(macsec->real_dev, proto, vid);
-+	return 0;
-+}
-+
- static int macsec_change_mtu(struct net_device *dev, int new_mtu)
+ const struct clk_ops *starfive_clk_ops(u32 max)
  {
- 	struct macsec_dev *macsec = macsec_priv(dev);
-@@ -3748,6 +3780,8 @@ static const struct net_device_ops macsec_netdev_ops = {
- 	.ndo_set_rx_mode	= macsec_dev_set_rx_mode,
- 	.ndo_change_rx_flags	= macsec_dev_change_rx_flags,
- 	.ndo_set_mac_address	= macsec_set_mac_address,
-+	.ndo_vlan_rx_add_vid	= macsec_vlan_rx_add_vid,
-+	.ndo_vlan_rx_kill_vid	= macsec_vlan_rx_kill_vid,
- 	.ndo_start_xmit		= macsec_start_xmit,
- 	.ndo_get_stats64	= macsec_get_stats64,
- 	.ndo_get_iflink		= macsec_get_iflink,
+ 	if (max & STARFIVE_CLK_DIV_MASK) {
+@@ -308,6 +317,9 @@ const struct clk_ops *starfive_clk_ops(u32 max)
+ 		}
+ 		if (max & STARFIVE_CLK_ENABLE)
+ 			return &starfive_clk_gdiv_ops;
++		else if (max & STARFIVE_CLK_INVERT)
++			return &starfive_clk_idiv_ops;
++
+ 		if (max == STARFIVE_CLK_FRAC_MAX)
+ 			return &starfive_clk_fdiv_ops;
+ 		return &starfive_clk_div_ops;
+diff --git a/drivers/clk/starfive/clk-starfive-common.h b/drivers/clk/starfive/clk-starfive-common.h
+index a03824e9e75f..fd9bf6f20152 100644
+--- a/drivers/clk/starfive/clk-starfive-common.h
++++ b/drivers/clk/starfive/clk-starfive-common.h
+@@ -103,6 +103,14 @@ struct starfive_clk_data {
+ 	.parents = { [0] = _parent },						\
+ }
+ 
++#define STARFIVE_IDIV(_idx, _name, _flags, _max, _parent)			\
++[_idx] = {									\
++	.name = _name,								\
++	.flags = _flags,							\
++	.max = STARFIVE_CLK_INVERT | (_max),					\
++	.parents = { [0] = _parent },						\
++}
++
+ struct starfive_clk {
+ 	struct clk_hw hw;
+ 	unsigned int idx;
 -- 
-2.53.0
+2.25.1
 
