@@ -1,878 +1,1538 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F593FE35E;
-	Thu,  2 Apr 2026 23:11:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA35F3FCB0C;
+	Thu,  2 Apr 2026 23:11:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775171467; cv=none; b=pSCq676X1QAwyMUMYN5ZgBa3a8dfYduC/kghyKHbTPq7sZ+zV+pP6r3A7tQPLcGDDX/XjmVaYs6cFh+H6WXE1xVe3bnmK/TserHNhnncQXOYYz7SMFRje24Evym9LTLb/qKQstDoJwh7XeAIpJYM9ral5P8eTUNzcyAMgRk7A20=
+	t=1775171468; cv=none; b=Ixbz/OWsz6pAV62qVEeQXoe4m60QE0x3wVybSwn6hFrAw9YXvHEdMPTlkbFSJUlvatyJ7NxPAJqfbjoARDaxklDQEUvkZgJmyHqsSl4KdFv/MDtXyc6lvxDmVsW9SV+4v+ReI2DEvyOXRKEP9EF/BmU//IKUDFZdNPf8iSBGex8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775171467; c=relaxed/simple;
-	bh=eJKt+MDJnq/FIC45XW0Oqu/uaqkmngm7foO+FbPFcfY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=COXB4Q63rk1wWjDuoEeiD88n1TOMjkdjDaU6Q0WZE6QWsMj/lW2PXqmH0RXhuf6E6+XL/P+saYrZ78tSkeJGuuOI01gyT9U2yfGJE2pOqAQnVWtqTxlxwu64ovyw3PuMhdLudeswwqAShYEwjORG4701M8k7pVI2iCeikfZHkeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YfaJaaGr; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1775171468; c=relaxed/simple;
+	bh=A+nMxtJOT4mlLyOj3kn1xYbDKOXV/h1eUJ5J40ShhSo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=iha/+oNMDmovG6vVyjlH5860nQaFa9YqlNwij5s3uWApWccspnLEVfqdm9xkJDpQYZ7m+ZmpQTUR9HbZbiDWi6waXTUzsC5ODTuERh/oOFyg+yDpwUS+ylYfkb7324BsrWbj6Lxrs8dh+d6ZeZwg6LI2qZmw5PfpeTWpHcD2Azs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=KBqGMXDV; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YfaJaaGr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775171466; x=1806707466;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=eJKt+MDJnq/FIC45XW0Oqu/uaqkmngm7foO+FbPFcfY=;
-  b=YfaJaaGrWdbedMOJRCFgSeELwGMJt08+LmSa8Tgh7zYXmFLpAjWhZ+TH
-   ursLD5XRrdL2HQNjY4Z+Vs4YNS1O5tYMiG61eBILtxjZSfp4qmBk34DQs
-   e0yoBQJ665T45iuXNV2l8P7ElG8F0C5simiNUFdJ6HCzuZWIcDfJ2wiPw
-   pJhj54KkS4E4qtweRkACJQzjY+JfyB4wVf5pDl4JczjxqwVwJQMD/QTyf
-   zOw//Q9SveIupUrsbLmFJYBJiM04sybsgO2exb7WfYs2clJcIQM8Qiz41
-   wCi6cSWNkC52gC6+AXJA9Y7ej0T1Wy8R62ZIvxcCTUwVjVGVhIVR1CEtJ
-   Q==;
-X-CSE-ConnectionGUID: MOq5C31mT2K+JNChHcGlNg==
-X-CSE-MsgGUID: 6xTDDDqOQSGe57wYxsRbvA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11747"; a="76123160"
-X-IronPort-AV: E=Sophos;i="6.23,156,1770624000"; 
-   d="scan'208";a="76123160"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2026 16:11:05 -0700
-X-CSE-ConnectionGUID: jzg9aZgoQMCdszq0K4VvJQ==
-X-CSE-MsgGUID: +eLAz76ASJ62DhDKQy/biw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,156,1770624000"; 
-   d="scan'208";a="227044489"
-Received: from gklab-003-001.igk.intel.com ([10.91.173.48])
-  by orviesa008.jf.intel.com with ESMTP; 02 Apr 2026 16:11:01 -0700
-From: Grzegorz Nitka <grzegorz.nitka@intel.com>
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="KBqGMXDV"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=eZnnY2IHpxNshcF6zgxzrQREFI5iOwqxnCFgrLfVug4=; b=KBqGMXDVWj2DMUa7acSd4OFwN/
+	8MPPpYTgKF72FDBwIA7gxAvM9vMtBU8B46yVedMkfqyS4QHupQQNnHMPAUCV3zk3J8gSWp2Y2l5lB
+	HEYqbGLoo3Qz2V8Hm/LNqYjwU0s+wPoBBhBK56sArbBThZ9yM/1/zYAeXiO4maJnkLKJ8CkYtHoDG
+	zq5Uco6UJuaIECDIePe7KqnpQxyEbWP3QxkPuH1oDsyzARqXLG6djpUAxDegTiqqr0KlhF038knOD
+	sn9Zl04cU251miKxTBLik1faEYCut8543aMe4cjCvPrR39Lp7BzlXSlqb1Szrf5upk9+Su4E29PsE
+	y/Aajz1A==;
+Received: from localhost ([127.0.0.1])
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1w8RBZ-0000oG-0o;
+	Fri, 03 Apr 2026 01:10:49 +0200
+From: Daniel Borkmann <daniel@iogearbox.net>
 To: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org,
-	poros@redhat.com,
-	richardcochran@gmail.com,
-	andrew+netdev@lunn.ch,
-	przemyslaw.kitszel@intel.com,
-	anthony.l.nguyen@intel.com,
-	Prathosh.Satish@microchip.com,
-	ivecera@redhat.com,
-	jiri@resnulli.us,
-	arkadiusz.kubalewski@intel.com,
-	vadim.fedorenko@linux.dev,
-	donald.hunter@gmail.com,
-	horms@kernel.org,
-	pabeni@redhat.com,
+Cc: bpf@vger.kernel.org,
 	kuba@kernel.org,
 	davem@davemloft.net,
-	edumazet@google.com,
-	Grzegorz Nitka <grzegorz.nitka@intel.com>
-Subject: [PATCH v5 net-next 8/8] ice: implement E825 TX ref clock control and TXC hardware sync status
-Date: Fri,  3 Apr 2026 01:06:26 +0200
-Message-Id: <20260402230626.3826719-9-grzegorz.nitka@intel.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20260402230626.3826719-1-grzegorz.nitka@intel.com>
-References: <20260402230626.3826719-1-grzegorz.nitka@intel.com>
+	razor@blackwall.org,
+	pabeni@redhat.com,
+	willemb@google.com,
+	sdf@fomichev.me,
+	john.fastabend@gmail.com,
+	martin.lau@kernel.org,
+	jordan@jrife.io,
+	maciej.fijalkowski@intel.com,
+	magnus.karlsson@intel.com,
+	dw@davidwei.uk,
+	toke@redhat.com,
+	yangzhenze@bytedance.com,
+	wangdongdong.6@bytedance.com
+Subject: [PATCH net-next v11 14/14] selftests/net: Add queue leasing tests with netkit
+Date: Fri,  3 Apr 2026 01:10:31 +0200
+Message-ID: <20260402231031.447597-15-daniel@iogearbox.net>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260402231031.447597-1-daniel@iogearbox.net>
+References: <20260402231031.447597-1-daniel@iogearbox.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: Clear (ClamAV 1.4.3/27959/Thu Apr  2 08:25:45 2026)
 
-Build on the previously introduced TXC DPLL framework and implement
-full TX reference clock control and hardware-backed synchronization
-status reporting for E825 devices.
+From: David Wei <dw@davidwei.uk>
 
-E825 firmware may accept or override TX reference clock requests based
-on device-wide routing constraints and link conditions. For this
-reason, TX reference selection and synchronization status must be
-observed from hardware rather than inferred from user intent.
+Add extensive selftests for netkit queue leasing, using io_uring zero
+copy test binary inside of a netns with netkit. This checks that memory
+providers can be bound against virtual queues in a netkit within a
+netns that are leasing from a physical netdev in the default netns.
+Also add various test cases around corner cases for the queue creation
+itself as well as queue info dumping and teardown in case of netkit in
+device pair and single mode.
 
-This change implements TX reference switching using a deferred worker,
-triggered by DPLL TXCLK pin operations. Pin set callbacks express
-selection intent and schedule the operation asynchronously; firmware
-commands and autonegotiation restarts are executed outside of DPLL
-context.
-
-After link-up, the effective TX reference clock is read back from
-hardware and software state is reconciled accordingly. TXCLK pin state
-reflects only the selected reference clock topology:
-- External references (SYNCE, EREF0) are represented as TXCLK pins
-- The internal ENET/TXCO clock has no pin representation; when selected,
-  all TXCLK pins are reported DISCONNECTED
-
-Actual hardware synchronization result is reported exclusively via the
-TXC DPLL lock status:
-- LOCKED when an external TX reference is in use
-- UNLOCKED when falling back to ENET/TXCO
-
-This separation allows userspace to distinguish between TX reference
-selection and successful synchronization, matching the DPLL subsystem
-model where pin state describes topology and device lock status
-describes signal quality.
-
-The implementation also tracks TX reference usage per PHY across all
-PFs to ensure shared TX clock resources are not disabled while still in
-use by peer ports.
-
-With this change, TX reference clocks on E825 devices can be reliably
-selected, verified against hardware state, and monitored for effective
-synchronization via standard DPLL interfaces.
-
-Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
+Signed-off-by: David Wei <dw@davidwei.uk>
+Co-developed-by: Daniel Borkmann <daniel@iogearbox.net>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
 ---
- drivers/net/ethernet/intel/ice/Makefile     |   2 +-
- drivers/net/ethernet/intel/ice/ice.h        |  12 +
- drivers/net/ethernet/intel/ice/ice_dpll.c   | 110 +++++++--
- drivers/net/ethernet/intel/ice/ice_dpll.h   |   4 +
- drivers/net/ethernet/intel/ice/ice_ptp.c    |  26 ++-
- drivers/net/ethernet/intel/ice/ice_ptp.h    |   7 +
- drivers/net/ethernet/intel/ice/ice_ptp_hw.c |  37 +++
- drivers/net/ethernet/intel/ice/ice_ptp_hw.h |  27 +++
- drivers/net/ethernet/intel/ice/ice_txclk.c  | 241 ++++++++++++++++++++
- drivers/net/ethernet/intel/ice/ice_txclk.h  |  38 +++
- 10 files changed, 485 insertions(+), 19 deletions(-)
- create mode 100644 drivers/net/ethernet/intel/ice/ice_txclk.c
- create mode 100644 drivers/net/ethernet/intel/ice/ice_txclk.h
+ .../testing/selftests/drivers/net/hw/Makefile |    1 +
+ .../drivers/net/hw/lib/py/__init__.py         |    4 +-
+ .../selftests/drivers/net/hw/nk_qlease.py     | 1407 +++++++++++++++++
+ 3 files changed, 1410 insertions(+), 2 deletions(-)
+ create mode 100755 tools/testing/selftests/drivers/net/hw/nk_qlease.py
 
-diff --git a/drivers/net/ethernet/intel/ice/Makefile b/drivers/net/ethernet/intel/ice/Makefile
-index 38db476ab2ec..95fd0c49800f 100644
---- a/drivers/net/ethernet/intel/ice/Makefile
-+++ b/drivers/net/ethernet/intel/ice/Makefile
-@@ -54,7 +54,7 @@ ice-$(CONFIG_PCI_IOV) +=	\
- 	ice_vf_mbx.o		\
- 	ice_vf_vsi_vlan_ops.o	\
- 	ice_vf_lib.o
--ice-$(CONFIG_PTP_1588_CLOCK) += ice_ptp.o ice_ptp_hw.o ice_dpll.o ice_tspll.o ice_cpi.o
-+ice-$(CONFIG_PTP_1588_CLOCK) += ice_ptp.o ice_ptp_hw.o ice_dpll.o ice_tspll.o ice_cpi.o ice_txclk.o
- ice-$(CONFIG_DCB) += ice_dcb.o ice_dcb_nl.o ice_dcb_lib.o
- ice-$(CONFIG_RFS_ACCEL) += ice_arfs.o
- ice-$(CONFIG_XDP_SOCKETS) += ice_xsk.o
-diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
-index eb3a48330cc1..6edafce4624a 100644
---- a/drivers/net/ethernet/intel/ice/ice.h
-+++ b/drivers/net/ethernet/intel/ice/ice.h
-@@ -1155,4 +1155,16 @@ static inline struct ice_hw *ice_get_primary_hw(struct ice_pf *pf)
- 	else
- 		return &pf->adapter->ctrl_pf->hw;
- }
-+
-+/**
-+ * ice_get_ctrl_pf - Get pointer to Control PF of the adapter
-+ * @pf: pointer to the current PF structure
-+ *
-+ * Return: A pointer to ice_pf structure which is Control PF,
-+ * NULL if it's not initialized yet.
-+ */
-+static inline struct ice_pf *ice_get_ctrl_pf(struct ice_pf *pf)
-+{
-+	return !pf->adapter ? NULL : pf->adapter->ctrl_pf;
-+}
- #endif /* _ICE_H_ */
-diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
-index ab62aac77399..201181ccd2ed 100644
---- a/drivers/net/ethernet/intel/ice/ice_dpll.c
-+++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
-@@ -4,6 +4,7 @@
- #include "ice.h"
- #include "ice_lib.h"
- #include "ice_trace.h"
-+#include "ice_txclk.h"
- #include <linux/dpll.h>
- #include <linux/property.h>
+diff --git a/tools/testing/selftests/drivers/net/hw/Makefile b/tools/testing/selftests/drivers/net/hw/Makefile
+index deeca3f8d080..28d245e11bc4 100644
+--- a/tools/testing/selftests/drivers/net/hw/Makefile
++++ b/tools/testing/selftests/drivers/net/hw/Makefile
+@@ -35,6 +35,7 @@ TEST_PROGS = \
+ 	loopback.sh \
+ 	nic_timestamp.py \
+ 	nk_netns.py \
++	nk_qlease.py \
+ 	pp_alloc_fail.py \
+ 	rss_api.py \
+ 	rss_ctx.py \
+diff --git a/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py b/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
+index df4da5078c48..84a4dab6c649 100644
+--- a/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
++++ b/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
+@@ -20,7 +20,7 @@ try:
+     # Import one by one to avoid pylint false positives
+     from net.lib.py import NetNS, NetNSEnter, NetdevSimDev
+     from net.lib.py import EthtoolFamily, NetdevFamily, NetshaperFamily, \
+-        NlError, RtnlFamily, DevlinkFamily, PSPFamily
++        NlError, RtnlFamily, DevlinkFamily, PSPFamily, Netlink
+     from net.lib.py import CmdExitFailure
+     from net.lib.py import bkg, cmd, bpftool, bpftrace, defer, ethtool, \
+         fd_read_timeout, ip, rand_port, rand_ports, wait_port_listen, \
+@@ -36,7 +36,7 @@ try:
  
-@@ -19,8 +20,6 @@
- #define ICE_DPLL_SW_PIN_INPUT_BASE_QSFP		6
- #define ICE_DPLL_SW_PIN_OUTPUT_BASE		0
- 
--#define E825_EXT_EREF_PIN_IDX			0
--#define E825_EXT_SYNCE_PIN_IDX			1
- #define E825_RCLK_PARENT_0_PIN_IDX		0
- #define E825_RCLK_PARENT_1_PIN_IDX		1
- 
-@@ -2527,6 +2526,44 @@ ice_dpll_rclk_state_on_pin_get(const struct dpll_pin *pin, void *pin_priv,
- 	return ret;
- }
- 
-+/**
-+ * ice_dpll_txclk_work - apply a pending TX reference clock change
-+ * @work: work_struct embedded in struct ice_dplls
-+ *
-+ * This worker executes an outstanding TX reference clock switch request
-+ * that was previously queued via the DPLL TXCLK pin set callback.
-+ *
-+ * The worker performs only the operational part of the switch, issuing
-+ * the necessary firmware commands to request a new TX reference clock
-+ * selection (e.g. triggering an AN restart). It does not verify whether
-+ * the requested clock was ultimately accepted by the hardware.
-+ *
-+ * Hardware verification, software state reconciliation, pin state
-+ * notification, and TXC DPLL lock-status updates are performed later,
-+ * after link-up, by ice_txclk_update_and_notify().
-+ *
-+ * Context:
-+ *   - Runs in process context on pf->dplls.wq and may sleep.
-+ *   - Serializes access to shared TXCLK state using pf->dplls.lock.
-+ */
-+static void ice_dpll_txclk_work(struct work_struct *work)
-+{
-+	struct ice_dplls *dplls =
-+		container_of(work, struct ice_dplls, txclk_work);
-+	struct ice_pf *pf = container_of(dplls, struct ice_pf, dplls);
-+	enum ice_e825c_ref_clk clk;
-+	bool do_switch;
-+
-+	mutex_lock(&pf->dplls.lock);
-+	do_switch  = pf->dplls.txclk_switch_requested;
-+	clk = pf->ptp.port.tx_clk_req;
-+	pf->dplls.txclk_switch_requested  = false;
-+	mutex_unlock(&pf->dplls.lock);
-+
-+	if (do_switch)
-+		ice_txclk_set_clk(pf, clk);
-+}
-+
- /**
-  * ice_dpll_txclk_state_on_dpll_set - set a state on TX clk pin
-  * @pin: pointer to a pin
-@@ -2538,7 +2575,9 @@ ice_dpll_rclk_state_on_pin_get(const struct dpll_pin *pin, void *pin_priv,
-  *
-  * Dpll subsystem callback, set a state of a Tx reference clock pin
-  *
-+ * Context: Acquires and releases pf->dplls.lock
-  * Return:
-+ * * 0 - success
-  * * negative - failure
-  */
- static int
-@@ -2547,11 +2586,29 @@ ice_dpll_txclk_state_on_dpll_set(const struct dpll_pin *pin, void *pin_priv,
- 				 void *dpll_priv, enum dpll_pin_state state,
- 				 struct netlink_ext_ack *extack)
- {
--	/*
--	 * TODO: set HW accordingly to selected TX reference clock.
--	 * To be added in the follow up patches.
--	 */
--	return -EOPNOTSUPP;
-+	struct ice_dpll_pin *p = pin_priv;
-+	struct ice_pf *pf = p->pf;
-+	enum ice_e825c_ref_clk new_clk;
-+
-+	if (ice_dpll_is_reset(pf, extack))
-+		return -EBUSY;
-+
-+	mutex_lock(&pf->dplls.lock);
-+	new_clk = (state == DPLL_PIN_STATE_DISCONNECTED) ? ICE_REF_CLK_ENET :
-+			p->tx_ref_src;
-+	if (new_clk == pf->ptp.port.tx_clk) {
-+		NL_SET_ERR_MSG_FMT(extack,
-+				   "pin:%u state:%u on parent device already set",
-+				   p->idx, state);
-+		goto unlock;
-+	}
-+
-+	pf->ptp.port.tx_clk_req = new_clk;
-+	pf->dplls.txclk_switch_requested = true;
-+	queue_work(pf->dplls.wq, &pf->dplls.txclk_work);
-+unlock:
-+	mutex_unlock(&pf->dplls.lock);
-+	return 0;
- }
- 
- /**
-@@ -2563,10 +2620,21 @@ ice_dpll_txclk_state_on_dpll_set(const struct dpll_pin *pin, void *pin_priv,
-  * @state: on success holds pin state on parent pin
-  * @extack: error reporting
-  *
-- * dpll subsystem callback, get a state of a TX clock reference pin.
-+ * TXCLK DPLL pin state is derived and not stored explicitly.
-+ *
-+ * Only external TX reference clocks (SYNCE, EREF0) are modeled
-+ * as DPLL pins. The internal ENET (TXCO) clock has no pin and,
-+ * when selected, all TXCLK pins are reported DISCONNECTED.
-+ *
-+ * During a pending TXCLK switch, the requested pin may be
-+ * reported as CONNECTED before hardware verification.
-+ * Hardware acceptance and synchronization are reported
-+ * exclusively via TXC DPLL lock-status.
-  *
-+ * Context: Acquires and releases pf->dplls.lock
-  * Return:
-  * * 0 - success
-+ * * negative - failure
-  */
- static int
- ice_dpll_txclk_state_on_dpll_get(const struct dpll_pin *pin, void *pin_priv,
-@@ -2575,11 +2643,21 @@ ice_dpll_txclk_state_on_dpll_get(const struct dpll_pin *pin, void *pin_priv,
- 				 enum dpll_pin_state *state,
- 				 struct netlink_ext_ack *extack)
- {
--	/*
--	 * TODO: query HW status to determine if the TX reference is selected.
--	 * To be added in the follow up patches.
--	 */
--	*state = DPLL_PIN_STATE_DISCONNECTED;
-+	struct ice_dpll_pin *p = pin_priv;
-+	struct ice_pf *pf = p->pf;
-+
-+	if (ice_dpll_is_reset(pf, extack))
-+		return -EBUSY;
-+
-+	mutex_lock(&pf->dplls.lock);
-+	if (pf->ptp.port.tx_clk_req == p->tx_ref_src)
-+		*state = DPLL_PIN_STATE_CONNECTED;
-+	else if (pf->ptp.port.tx_clk == p->tx_ref_src &&
-+		 pf->ptp.port.tx_clk_req == pf->ptp.port.tx_clk)
-+		*state = DPLL_PIN_STATE_CONNECTED;
-+	else
-+		*state = DPLL_PIN_STATE_DISCONNECTED;
-+	mutex_unlock(&pf->dplls.lock);
- 
- 	return 0;
- }
-@@ -4402,6 +4480,8 @@ static int ice_dpll_init_info_e825c(struct ice_pf *pf)
- 	if (ret)
- 		goto deinit_info;
- 
-+	INIT_WORK(&pf->dplls.txclk_work, ice_dpll_txclk_work);
-+
- 	dev_dbg(ice_pf_to_dev(pf),
- 		"%s - success, inputs: %u, outputs: %u, rclk-parents: %u\n",
- 		 __func__, d->num_inputs, d->num_outputs, d->rclk.num_parents);
-@@ -4538,6 +4618,10 @@ void ice_dpll_deinit(struct ice_pf *pf)
- 		ice_dpll_deinit_dpll(pf, &pf->dplls.txc, false);
- 
- 	ice_dpll_deinit_info(pf);
-+
-+	if (pf->hw.mac_type == ICE_MAC_GENERIC_3K_E825)
-+		flush_work(&pf->dplls.txclk_work);
-+
- 	mutex_destroy(&pf->dplls.lock);
- }
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.h b/drivers/net/ethernet/intel/ice/ice_dpll.h
-index 23f9d4da73c5..9a96b905141d 100644
---- a/drivers/net/ethernet/intel/ice/ice_dpll.h
-+++ b/drivers/net/ethernet/intel/ice/ice_dpll.h
-@@ -8,6 +8,8 @@
- 
- #define ICE_DPLL_RCLK_NUM_MAX	4
- #define ICE_DPLL_TXCLK_NUM_MAX	2
-+#define E825_EXT_EREF_PIN_IDX	0
-+#define E825_EXT_SYNCE_PIN_IDX	1
- 
- /**
-  * enum ice_dpll_pin_sw - enumerate ice software pin indices:
-@@ -152,6 +154,8 @@ struct ice_dplls {
- 	s32 output_phase_adj_max;
- 	u32 periodic_counter;
- 	bool generic;
-+	struct work_struct txclk_work;
-+	bool txclk_switch_requested;
- };
- 
- #if IS_ENABLED(CONFIG_PTP_1588_CLOCK)
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-index 094e96219f45..14c805ed2f09 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-@@ -4,6 +4,7 @@
- #include "ice.h"
- #include "ice_lib.h"
- #include "ice_trace.h"
-+#include "ice_txclk.h"
- 
- static const char ice_pin_names[][64] = {
- 	"SDP0",
-@@ -54,11 +55,6 @@ static const struct ice_ptp_pin_desc ice_pin_desc_dpll[] = {
- 	{  SDP3, {  3, -1 }, { 0, 0 }},
- };
- 
--static struct ice_pf *ice_get_ctrl_pf(struct ice_pf *pf)
--{
--	return !pf->adapter ? NULL : pf->adapter->ctrl_pf;
--}
--
- static struct ice_ptp *ice_get_ctrl_ptp(struct ice_pf *pf)
- {
- 	struct ice_pf *ctrl_pf = ice_get_ctrl_pf(pf);
-@@ -1326,6 +1322,9 @@ void ice_ptp_link_change(struct ice_pf *pf, bool linkup)
- 			}
- 		}
- 		mutex_unlock(&pf->dplls.lock);
-+
-+		if (linkup)
-+			ice_txclk_update_and_notify(pf);
- 	}
- 
- 	switch (hw->mac_type) {
-@@ -3079,6 +3078,7 @@ static int ice_ptp_setup_pf(struct ice_pf *pf)
- {
- 	struct ice_ptp *ctrl_ptp = ice_get_ctrl_ptp(pf);
- 	struct ice_ptp *ptp = &pf->ptp;
-+	u8 port_num, phy;
- 
- 	if (WARN_ON(!ctrl_ptp) || pf->hw.mac_type == ICE_MAC_UNKNOWN)
- 		return -ENODEV;
-@@ -3090,6 +3090,10 @@ static int ice_ptp_setup_pf(struct ice_pf *pf)
- 		 &pf->adapter->ports.ports);
- 	mutex_unlock(&pf->adapter->ports.lock);
- 
-+	port_num = ptp->port.port_num;
-+	phy = port_num / pf->hw.ptp.ports_per_phy;
-+	set_bit(port_num, &ctrl_ptp->tx_refclks[phy][pf->ptp.port.tx_clk]);
-+
- 	return 0;
- }
- 
-@@ -3290,6 +3294,7 @@ static void ice_ptp_init_tx_interrupt_mode(struct ice_pf *pf)
-  */
- void ice_ptp_init(struct ice_pf *pf)
- {
-+	enum ice_e825c_ref_clk tx_ref_clk;
- 	struct ice_ptp *ptp = &pf->ptp;
- 	struct ice_hw *hw = &pf->hw;
- 	int err;
-@@ -3318,6 +3323,17 @@ void ice_ptp_init(struct ice_pf *pf)
- 			goto err_exit;
- 	}
- 
-+	ptp->port.tx_clk = ICE_REF_CLK_ENET;
-+	ptp->port.tx_clk_req = ICE_REF_CLK_ENET;
-+	if (hw->mac_type == ICE_MAC_GENERIC_3K_E825) {
-+		err = ice_get_serdes_ref_sel_e825c(hw, ptp->port.port_num,
-+						   &tx_ref_clk);
-+		if (!err) {
-+			ptp->port.tx_clk = tx_ref_clk;
-+			ptp->port.tx_clk_req = tx_ref_clk;
-+		}
-+	}
-+
- 	err = ice_ptp_setup_pf(pf);
- 	if (err)
- 		goto err_exit;
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.h b/drivers/net/ethernet/intel/ice/ice_ptp.h
-index 8c44bd758a4f..8b385271ab36 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp.h
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp.h
-@@ -144,6 +144,8 @@ struct ice_ptp_tx {
-  * @link_up: indicates whether the link is up
-  * @tx_fifo_busy_cnt: number of times the Tx FIFO was busy
-  * @port_num: the port number this structure represents
-+ * @tx_clk: currently active Tx reference clock source
-+ * @tx_clk_req: requested Tx reference clock source (new target)
-  */
- struct ice_ptp_port {
- 	struct list_head list_node;
-@@ -153,6 +155,8 @@ struct ice_ptp_port {
- 	bool link_up;
- 	u8 tx_fifo_busy_cnt;
- 	u8 port_num;
-+	enum ice_e825c_ref_clk tx_clk;
-+	enum ice_e825c_ref_clk tx_clk_req;
- };
- 
- enum ice_ptp_tx_interrupt {
-@@ -236,6 +240,7 @@ struct ice_ptp_pin_desc {
-  * @info: structure defining PTP hardware capabilities
-  * @clock: pointer to registered PTP clock device
-  * @tstamp_config: hardware timestamping configuration
-+ * @tx_refclks: bitmaps table to store the information about TX reference clocks
-  * @reset_time: kernel time after clock stop on reset
-  * @tx_hwtstamp_good: number of completed Tx timestamp requests
-  * @tx_hwtstamp_skipped: number of Tx time stamp requests skipped
-@@ -261,6 +266,8 @@ struct ice_ptp {
- 	struct ptp_clock_info info;
- 	struct ptp_clock *clock;
- 	struct kernel_hwtstamp_config tstamp_config;
-+#define ICE_E825_MAX_PHYS 2
-+	unsigned long tx_refclks[ICE_E825_MAX_PHYS][ICE_REF_CLK_MAX];
- 	u64 reset_time;
- 	u64 tx_hwtstamp_good;
- 	u32 tx_hwtstamp_skipped;
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-index 61c0a0d93ea8..c0720525ac49 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-@@ -461,6 +461,43 @@ static int ice_read_phy_eth56g(struct ice_hw *hw, u8 port, u32 addr, u32 *val)
- 	return err;
- }
- 
-+/**
-+ * ice_get_serdes_ref_sel_e825c - Read current Tx ref clock source
-+ * @hw: pointer to the HW struct
-+ * @port: port number for which Tx reference clock is read
-+ * @clk: Tx reference clock value (output)
-+ *
-+ * Return: 0 on success, other error codes when failed to read from PHY
-+ */
-+int ice_get_serdes_ref_sel_e825c(struct ice_hw *hw, u8 port,
-+				 enum ice_e825c_ref_clk *clk)
-+{
-+	u8 lane = port % hw->ptp.ports_per_phy;
-+	u32 serdes_rx_nt, serdes_tx_nt;
-+	u32 val;
-+	int ret;
-+
-+	ret = ice_read_phy_eth56g(hw, port,
-+				  SERDES_IP_IF_LN_FLXM_GENERAL(lane, 0),
-+				  &val);
-+	if (ret)
-+		return ret;
-+
-+	serdes_rx_nt = FIELD_GET(CFG_ICTL_PCS_REF_SEL_RX_NT, val);
-+	serdes_tx_nt = FIELD_GET(CFG_ICTL_PCS_REF_SEL_TX_NT, val);
-+
-+	if (serdes_tx_nt == REF_SEL_NT_SYNCE &&
-+	    serdes_rx_nt == REF_SEL_NT_SYNCE)
-+		*clk = ICE_REF_CLK_SYNCE;
-+	else if (serdes_tx_nt == REF_SEL_NT_EREF0 &&
-+		 serdes_rx_nt == REF_SEL_NT_EREF0)
-+		*clk = ICE_REF_CLK_EREF0;
-+	else
-+		*clk = ICE_REF_CLK_ENET;
-+
-+	return 0;
-+}
-+
- /**
-  * ice_phy_res_address_eth56g - Calculate a PHY port register address
-  * @hw: pointer to the HW struct
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
-index cbc9693179a1..820ba953ea01 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
-@@ -381,6 +381,8 @@ int ice_stop_phy_timer_eth56g(struct ice_hw *hw, u8 port, bool soft_reset);
- int ice_start_phy_timer_eth56g(struct ice_hw *hw, u8 port);
- int ice_phy_cfg_intr_eth56g(struct ice_hw *hw, u8 port, bool ena, u8 threshold);
- int ice_phy_cfg_ptp_1step_eth56g(struct ice_hw *hw, u8 port);
-+int ice_get_serdes_ref_sel_e825c(struct ice_hw *hw, u8 port,
-+				 enum ice_e825c_ref_clk *clk);
- 
- #define ICE_ETH56G_NOMINAL_INCVAL	0x140000000ULL
- #define ICE_ETH56G_NOMINAL_PCS_REF_TUS	0x100000000ULL
-@@ -790,4 +792,29 @@ static inline u64 ice_get_base_incval(struct ice_hw *hw)
- #define PHY_PTP_1STEP_PD_DELAY_M	GENMASK(30, 1)
- #define PHY_PTP_1STEP_PD_DLY_V_M	BIT(31)
- 
-+#define SERDES_IP_IF_LN_FLXM_GENERAL(n, m) \
-+	(0x32B800 + (m) * 0x100000 + (n) * 0x8000)
-+#define CFG_RESERVED0_1                         GENMASK(1, 0)
-+#define CFG_ICTL_PCS_MODE_NT                    BIT(2)
-+#define CFG_ICTL_PCS_RCOMP_SLAVE_EN_NT          BIT(3)
-+#define CFG_ICTL_PCS_CMN_FORCE_PUP_A            BIT(4)
-+#define CFG_ICTL_PCS_RCOMP_SLAVE_VALID_A        BIT(5)
-+#define CFG_ICTL_PCS_REF_SEL_RX_NT              GENMASK(9, 6)
-+#define REF_SEL_NT_ENET                         0
-+#define REF_SEL_NT_EREF0                        1
-+#define REF_SEL_NT_SYNCE                        2
-+#define CFG_IDAT_DFX_OBS_DIG_                   GENMASK(11, 10)
-+#define CFG_IRST_APB_MEM_B                      BIT(12)
-+#define CFG_ICTL_PCS_DISCONNECT_NT              BIT(13)
-+#define CFG_ICTL_PCS_ISOLATE_NT                 BIT(14)
-+#define CFG_RESERVED15_15                       BIT(15)
-+#define CFG_IRST_PCS_TSTBUS_B_A                 BIT(16)
-+#define CFG_ICTL_PCS_REF_TERM_HIZ_EN_NT         BIT(17)
-+#define CFG_RESERVED18_19                       GENMASK(19, 18)
-+#define CFG_ICTL_PCS_SYNTHLCSLOW_FORCE_PUP_A    BIT(20)
-+#define CFG_ICTL_PCS_SYNTHLCFAST_FORCE_PUP_A    BIT(21)
-+#define CFG_RESERVED22_24                       GENMASK(24, 22)
-+#define CFG_ICTL_PCS_REF_SEL_TX_NT              GENMASK(28, 25)
-+#define CFG_RESERVED29_31                       GENMASK(31, 29)
-+
- #endif /* _ICE_PTP_HW_H_ */
-diff --git a/drivers/net/ethernet/intel/ice/ice_txclk.c b/drivers/net/ethernet/intel/ice/ice_txclk.c
-new file mode 100644
-index 000000000000..3a79e770f796
+     __all__ = ["NetNS", "NetNSEnter", "NetdevSimDev",
+                "EthtoolFamily", "NetdevFamily", "NetshaperFamily",
+-               "NlError", "RtnlFamily", "DevlinkFamily", "PSPFamily",
++               "NlError", "RtnlFamily", "DevlinkFamily", "PSPFamily", "Netlink",
+                "CmdExitFailure",
+                "bkg", "cmd", "bpftool", "bpftrace", "defer", "ethtool",
+                "fd_read_timeout", "ip", "rand_port", "rand_ports",
+diff --git a/tools/testing/selftests/drivers/net/hw/nk_qlease.py b/tools/testing/selftests/drivers/net/hw/nk_qlease.py
+new file mode 100755
+index 000000000000..2bc5ffe96c7d
 --- /dev/null
-+++ b/drivers/net/ethernet/intel/ice/ice_txclk.c
-@@ -0,0 +1,241 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright (C) 2026 Intel Corporation */
++++ b/tools/testing/selftests/drivers/net/hw/nk_qlease.py
+@@ -0,0 +1,1407 @@
++#!/usr/bin/env python3
++# SPDX-License-Identifier: GPL-2.0
 +
-+#include "ice.h"
-+#include "ice_cpi.h"
-+#include "ice_txclk.h"
++import errno
++import re
++import time
++import threading
++from os import path
++from lib.py import (
++    ksft_run,
++    ksft_exit,
++    ksft_eq,
++    ksft_ne,
++    ksft_in,
++    ksft_not_in,
++    ksft_raises,
++)
++from lib.py import (
++    NetDrvContEnv,
++    NetNS,
++    NetNSEnter,
++    EthtoolFamily,
++    NetdevFamily,
++    RtnlFamily,
++    NetdevSimDev,
++)
++from lib.py import (
++    NlError,
++    Netlink,
++    bkg,
++    cmd,
++    defer,
++    ethtool,
++    ip,
++    rand_port,
++    wait_port_listen,
++)
++from lib.py import KsftSkipEx, CmdExitFailure
 +
-+#define ICE_PHY0	0
-+#define ICE_PHY1	1
 +
-+/**
-+ * ice_txclk_get_pin - map TX reference clock to its DPLL pin
-+ * @pf: pointer to the PF structure
-+ * @ref_clk: TX reference clock selection
-+ *
-+ * Return the DPLL pin corresponding to a given external TX reference
-+ * clock. Only external TX reference clocks (SYNCE and EREF0) are
-+ * represented as DPLL pins. The internal ENET (TXCO) clock has no
-+ * associated DPLL pin and therefore yields %NULL.
-+ *
-+ * This helper is used when emitting DPLL pin change notifications
-+ * after TX reference clock transitions have been verified.
-+ *
-+ * Return: Pointer to the corresponding struct dpll_pin, or %NULL if
-+ *         the TX reference clock has no DPLL pin representation.
-+ */
-+static struct dpll_pin *
-+ice_txclk_get_pin(struct ice_pf *pf, enum ice_e825c_ref_clk ref_clk)
-+{
-+	switch (ref_clk) {
-+	case ICE_REF_CLK_SYNCE:
-+		return pf->dplls.txclks[E825_EXT_SYNCE_PIN_IDX].pin;
-+	case ICE_REF_CLK_EREF0:
-+		return pf->dplls.txclks[E825_EXT_EREF_PIN_IDX].pin;
-+	case ICE_REF_CLK_ENET:
-+	default:
-+		return NULL;
-+	}
-+}
++def set_flow_rule(cfg):
++    output = ethtool(
++        f"-N {cfg.ifname} flow-type tcp6 dst-port {cfg.port} action {cfg.src_queue}"
++    ).stdout
++    values = re.search(r"ID (\d+)", output).group(1)
++    return int(values)
 +
-+/**
-+ * ice_txclk_enable_peer - Enable required TX reference clock on peer PHY
-+ * @pf: pointer to the PF structure
-+ * @clk: TX reference clock that must be enabled
-+ *
-+ * Some TX reference clocks on E825-class devices (SyncE and EREF0) must
-+ * be enabled on both PHY complexes to allow proper routing:
-+ *
-+ *   - SyncE must be enabled on both PHYs when used by PHY0
-+ *   - EREF0 must be enabled on both PHYs when used by PHY1
-+ *
-+ * If the requested clock is not yet enabled on the peer PHY, enable it.
-+ * ENET does not require duplication and is ignored.
-+ *
-+ * Return: 0 on success or negative error code on failure.
-+ */
-+static int ice_txclk_enable_peer(struct ice_pf *pf, enum ice_e825c_ref_clk clk)
-+{
-+	struct ice_pf *ctrl_pf = ice_get_ctrl_pf(pf);
-+	u8 port_num, phy;
-+	int err;
 +
-+	if (clk == ICE_REF_CLK_ENET)
-+		return 0;
++def create_netkit(rxqueues):
++    all_links = ip("-d link show", json=True)
++    old_idxs = {
++        link["ifindex"]
++        for link in all_links
++        if link.get("linkinfo", {}).get("info_kind") == "netkit"
++    }
 +
-+	if (IS_ERR_OR_NULL(ctrl_pf)) {
-+		dev_err(ice_pf_to_dev(pf),
-+			"Can't enable tx-clk on peer: no controlling PF\n");
-+		return -EINVAL;
-+	}
++    rtnl = RtnlFamily()
++    rtnl.newlink(
++        {
++            "linkinfo": {
++                "kind": "netkit",
++                "data": {
++                    "mode": "l2",
++                    "policy": "forward",
++                    "peer-policy": "forward",
++                },
++            },
++            "num-rx-queues": rxqueues,
++        },
++        flags=[Netlink.NLM_F_CREATE, Netlink.NLM_F_EXCL],
++    )
 +
-+	port_num = pf->ptp.port.port_num;
-+	phy = port_num / pf->hw.ptp.ports_per_phy;
++    all_links = ip("-d link show", json=True)
++    nk_links = [
++        link
++        for link in all_links
++        if link.get("linkinfo", {}).get("info_kind") == "netkit"
++        and link["ifindex"] not in old_idxs
++    ]
++    nk_links.sort(key=lambda x: x["ifindex"])
++    return (
++        nk_links[1]["ifname"],
++        nk_links[1]["ifindex"],
++        nk_links[0]["ifname"],
++        nk_links[0]["ifindex"],
++    )
 +
-+	if ((clk == ICE_REF_CLK_SYNCE && phy == ICE_PHY0 &&
-+	     !ice_txclk_any_port_uses(ctrl_pf, ICE_PHY1, clk)) ||
-+	    (clk == ICE_REF_CLK_EREF0 && phy == ICE_PHY1 &&
-+	     !ice_txclk_any_port_uses(ctrl_pf, ICE_PHY0, clk))) {
-+		u8 peer_phy = phy ? ICE_PHY0 : ICE_PHY1;
 +
-+		err = ice_cpi_ena_dis_clk_ref(&pf->hw, peer_phy, clk, true);
-+		if (err) {
-+			dev_err(ice_hw_to_dev(&pf->hw),
-+				"Failed to enable the %u TX clock for the %u PHY\n",
-+				clk, peer_phy);
-+			return err;
-+		}
-+	}
++def create_netkit_single(rxqueues):
++    rtnl = RtnlFamily()
++    rtnl.newlink(
++        {
++            "linkinfo": {
++                "kind": "netkit",
++                "data": {
++                    "mode": "l2",
++                    "pairing": "single",
++                },
++            },
++            "num-rx-queues": rxqueues,
++        },
++        flags=[Netlink.NLM_F_CREATE, Netlink.NLM_F_EXCL],
++    )
 +
-+	return 0;
-+}
++    all_links = ip("-d link show", json=True)
++    nk_links = [
++        link
++        for link in all_links
++        if link.get("linkinfo", {}).get("info_kind") == "netkit"
++        and "UP" not in link.get("flags", [])
++    ]
++    return nk_links[0]["ifname"], nk_links[0]["ifindex"]
 +
-+#define ICE_REFCLK_USER_TO_AQ_IDX(x) ((x) + 1)
 +
-+/**
-+ * ice_txclk_set_clk - Set Tx reference clock
-+ * @pf: pointer to pf structure
-+ * @clk: new Tx clock
-+ *
-+ * Return: 0 on success, negative value otherwise.
-+ */
-+int ice_txclk_set_clk(struct ice_pf *pf, enum ice_e825c_ref_clk clk)
-+{
-+	struct ice_pf *ctrl_pf = ice_get_ctrl_pf(pf);
-+	struct ice_port_info *port_info;
-+	u8 port_num, phy;
-+	int err;
++def test_remove_phys(netns) -> None:
++    nsimdev = NetdevSimDev(port_count=1, queue_count=2)
++    defer(nsimdev.remove)
++    nsim = nsimdev.nsims[0]
++    ip(f"link set dev {nsim.ifname} up")
 +
-+	if (pf->ptp.port.tx_clk == clk)
-+		return 0;
++    nk_host, _, nk_guest, nk_guest_idx = create_netkit(rxqueues=2)
++    defer(cmd, f"ip link del dev {nk_host}", fail=False)
 +
-+	if (IS_ERR_OR_NULL(ctrl_pf)) {
-+		dev_err(ice_pf_to_dev(pf),
-+			"Can't set tx-clk: no controlling PF\n");
-+		return -EINVAL;
-+	}
++    ip(f"link set dev {nk_guest} netns {netns.name}")
++    ip(f"link set dev {nk_host} up")
++    ip(f"link set dev {nk_guest} up", ns=netns)
 +
-+	port_num = pf->ptp.port.port_num;
-+	phy = port_num / pf->hw.ptp.ports_per_phy;
-+	port_info = pf->hw.port_info;
++    src_queue = 1
++    with NetNSEnter(str(netns)):
++        netdevnl = NetdevFamily()
++        result = netdevnl.queue_create(
++            {
++                "ifindex": nk_guest_idx,
++                "type": "rx",
++                "lease": {
++                    "ifindex": nsim.ifindex,
++                    "queue": {"id": src_queue, "type": "rx"},
++                    "netns-id": 0,
++                },
++            }
++        )
++        nk_queue_id = result["id"]
 +
-+	/* Check if the TX clk is enabled for this PHY, if not - enable it */
-+	if (!ice_txclk_any_port_uses(ctrl_pf, phy, clk)) {
-+		err = ice_cpi_ena_dis_clk_ref(&pf->hw, phy, clk, true);
-+		if (err) {
-+			dev_err(ice_pf_to_dev(pf), "Failed to enable the %u TX clock for the %u PHY\n",
-+				clk, phy);
-+			return err;
-+		}
-+		err = ice_txclk_enable_peer(pf, clk);
-+		if (err)
-+			return err;
-+	}
++    netdevnl = NetdevFamily()
++    queue_info = netdevnl.queue_get(
++        {"ifindex": nsim.ifindex, "id": src_queue, "type": "rx"}
++    )
++    ksft_in("lease", queue_info)
++    ksft_eq(queue_info["lease"]["ifindex"], nk_guest_idx)
++    ksft_eq(queue_info["lease"]["queue"]["id"], nk_queue_id)
 +
-+	/* We are ready to switch to the new TX clk. */
-+	err = ice_aq_set_link_restart_an(port_info, true, NULL,
-+					 ICE_REFCLK_USER_TO_AQ_IDX(clk));
-+	if (err)
-+		dev_err(ice_pf_to_dev(pf),
-+			"AN restart AQ command failed with err %d\n",
-+			err);
++    nsimdev.remove()
++    time.sleep(0.1)
++    ret = cmd(f"ip link show dev {nk_host}", fail=False)
++    ksft_ne(ret.ret, 0)
 +
-+	return err;
-+}
 +
-+/**
-+ * ice_txclk_update_and_notify - Validate TX reference clock switching
-+ * @pf: pointer to PF structure
-+ *
-+ * After a link-up event, verify whether the previously requested TX reference
-+ * clock transition actually succeeded. The SERDES reference selector reflects
-+ * the effective hardware choice, which may differ from the requested clock
-+ * when Auto-Negotiation or firmware applies additional policy.
-+ *
-+ * If the hardware-selected clock differs from the requested one, update the
-+ * software state accordingly and stop further processing.
-+ *
-+ * When the switch is successful, update the per‑PHY usage bitmaps so that the
-+ * driver knows which reference clock is currently in use by this port.
-+ *
-+ * This function does not initiate a clock switch; it only validates the result
-+ * of a previously triggered transition and performs cleanup of unused clocks.
-+ */
-+void ice_txclk_update_and_notify(struct ice_pf *pf)
-+{
-+	struct ice_ptp_port *ptp_port = &pf->ptp.port;
-+	struct ice_pf *ctrl_pf = ice_get_ctrl_pf(pf);
-+	struct dpll_pin *old_pin = NULL;
-+	struct dpll_pin *new_pin = NULL;
-+	struct ice_hw *hw = &pf->hw;
-+	enum ice_e825c_ref_clk clk;
-+	int err;
-+	u8 phy;
++def test_double_lease(netns) -> None:
++    nsimdev = NetdevSimDev(port_count=1, queue_count=2)
++    defer(nsimdev.remove)
++    nsim = nsimdev.nsims[0]
++    ip(f"link set dev {nsim.ifname} up")
 +
-+	phy = ptp_port->port_num / hw->ptp.ports_per_phy;
++    nk_host, _, nk_guest, nk_guest_idx = create_netkit(rxqueues=3)
++    defer(cmd, f"ip link del dev {nk_host}")
 +
-+	mutex_lock(&pf->dplls.lock);
-+	/* no TX clock change requested */
-+	if (pf->ptp.port.tx_clk == pf->ptp.port.tx_clk_req) {
-+		mutex_unlock(&pf->dplls.lock);
-+		return;
-+	}
-+	/* verify current Tx reference settings */
-+	err = ice_get_serdes_ref_sel_e825c(hw,
-+					   ptp_port->port_num,
-+					   &clk);
-+	if (err) {
-+		mutex_unlock(&pf->dplls.lock);
-+		return;
-+	}
++    ip(f"link set dev {nk_guest} netns {netns.name}")
++    ip(f"link set dev {nk_host} up")
++    ip(f"link set dev {nk_guest} up", ns=netns)
 +
-+	if (clk != pf->ptp.port.tx_clk_req) {
-+		dev_warn(ice_pf_to_dev(pf),
-+			 "Failed to switch tx-clk for phy %d and clk %u (current: %u)\n",
-+			 phy, pf->ptp.port.tx_clk_req, clk);
-+		old_pin = ice_txclk_get_pin(pf, pf->ptp.port.tx_clk_req);
-+		new_pin = ice_txclk_get_pin(pf, clk);
-+		pf->ptp.port.tx_clk = clk;
-+		pf->ptp.port.tx_clk_req = clk;
-+		goto err_notify;
-+	}
++    src_queue = 1
++    with NetNSEnter(str(netns)):
++        netdevnl = NetdevFamily()
++        result = netdevnl.queue_create(
++            {
++                "ifindex": nk_guest_idx,
++                "type": "rx",
++                "lease": {
++                    "ifindex": nsim.ifindex,
++                    "queue": {"id": src_queue, "type": "rx"},
++                    "netns-id": 0,
++                },
++            }
++        )
++        ksft_eq(result["id"], 1)
 +
-+	old_pin = ice_txclk_get_pin(pf, pf->ptp.port.tx_clk);
-+	pf->ptp.port.tx_clk = clk;
-+	pf->ptp.port.tx_clk_req = clk;
++        with ksft_raises(NlError) as e:
++            netdevnl.queue_create(
++                {
++                    "ifindex": nk_guest_idx,
++                    "type": "rx",
++                    "lease": {
++                        "ifindex": nsim.ifindex,
++                        "queue": {"id": src_queue, "type": "rx"},
++                        "netns-id": 0,
++                    },
++                }
++            )
++        ksft_eq(e.exception.nl_msg.error, -errno.EBUSY)
 +
-+	if (IS_ERR_OR_NULL(ctrl_pf)) {
-+		dev_err(ice_pf_to_dev(pf),
-+			"Can't set tx-clk: no controlling PF\n");
-+		goto err_notify;
-+	}
 +
-+	/* update Tx reference clock usage map */
-+	for (int i = 0; i < ICE_REF_CLK_MAX; i++)
-+		(clk == i) ?
-+		 set_bit(ptp_port->port_num,
-+			 &ctrl_pf->ptp.tx_refclks[phy][i]) :
-+		 clear_bit(ptp_port->port_num,
-+			   &ctrl_pf->ptp.tx_refclks[phy][i]);
++def test_virtual_lessor(netns) -> None:
++    nk_host_a, _, nk_guest_a, nk_guest_a_idx = create_netkit(rxqueues=2)
++    defer(cmd, f"ip link del dev {nk_host_a}")
++    ip(f"link set dev {nk_host_a} up")
++    ip(f"link set dev {nk_guest_a} up")
 +
-+err_notify:
-+	mutex_unlock(&pf->dplls.lock);
++    nk_host_b, _, nk_guest_b, nk_guest_b_idx = create_netkit(rxqueues=2)
++    defer(cmd, f"ip link del dev {nk_host_b}")
 +
-+	/* Notify TX clk pins state transition */
-+	if (old_pin)
-+		dpll_pin_change_ntf(old_pin);
-+	if (new_pin)
-+		dpll_pin_change_ntf(new_pin);
++    ip(f"link set dev {nk_guest_b} netns {netns.name}")
++    ip(f"link set dev {nk_host_b} up")
++    ip(f"link set dev {nk_guest_b} up", ns=netns)
 +
-+	/* Update TXC DPLL lock status based on effective TX clk */
-+	if (!IS_ERR_OR_NULL(pf->dplls.txc.dpll)) {
-+		enum dpll_lock_status new_lock;
++    with NetNSEnter(str(netns)):
++        netdevnl = NetdevFamily()
++        with ksft_raises(NlError) as e:
++            netdevnl.queue_create(
++                {
++                    "ifindex": nk_guest_b_idx,
++                    "type": "rx",
++                    "lease": {
++                        "ifindex": nk_guest_a_idx,
++                        "queue": {"id": 0, "type": "rx"},
++                        "netns-id": 0,
++                    },
++                }
++            )
++        ksft_eq(e.exception.nl_msg.error, -errno.EINVAL)
 +
-+		new_lock = ice_txclk_lock_status(clk);
 +
-+		if (pf->dplls.txc.dpll_state != new_lock) {
-+			pf->dplls.txc.dpll_state = new_lock;
-+			dpll_device_change_ntf(pf->dplls.txc.dpll);
-+		}
-+	}
-+}
-diff --git a/drivers/net/ethernet/intel/ice/ice_txclk.h b/drivers/net/ethernet/intel/ice/ice_txclk.h
-new file mode 100644
-index 000000000000..bdf591ea8f14
---- /dev/null
-+++ b/drivers/net/ethernet/intel/ice/ice_txclk.h
-@@ -0,0 +1,38 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/* Copyright (C) 2026 Intel Corporation */
++def test_phys_lessee(_netns) -> None:
++    nsimdev_a = NetdevSimDev(port_count=1, queue_count=2)
++    defer(nsimdev_a.remove)
++    nsim_a = nsimdev_a.nsims[0]
++    ip(f"link set dev {nsim_a.ifname} up")
 +
-+#ifndef _ICE_TXCLK_H_
-+#define _ICE_TXCLK_H_
++    nsimdev_b = NetdevSimDev(port_count=1, queue_count=2)
++    defer(nsimdev_b.remove)
++    nsim_b = nsimdev_b.nsims[0]
++    ip(f"link set dev {nsim_b.ifname} up")
 +
-+/**
-+ * ice_txclk_any_port_uses - check if any port on a PHY uses this TX refclk
-+ * @ctrl_pf: control PF (owner of the shared tx_refclks map)
-+ * @phy: PHY index
-+ * @clk: TX reference clock
-+ *
-+ * Return: true if any bit (port) is set for this clock on this PHY
-+ */
-+static inline bool
-+ice_txclk_any_port_uses(const struct ice_pf *ctrl_pf, u8 phy,
-+			enum ice_e825c_ref_clk clk)
-+{
-+	return find_first_bit(&ctrl_pf->ptp.tx_refclks[phy][clk],
-+			BITS_PER_LONG) < BITS_PER_LONG;
-+}
++    netdevnl = NetdevFamily()
++    with ksft_raises(NlError) as e:
++        netdevnl.queue_create(
++            {
++                "ifindex": nsim_a.ifindex,
++                "type": "rx",
++                "lease": {
++                    "ifindex": nsim_b.ifindex,
++                    "queue": {"id": 0, "type": "rx"},
++                },
++            }
++        )
++    ksft_eq(e.exception.nl_msg.error, -errno.EINVAL)
 +
-+static inline enum dpll_lock_status
-+ice_txclk_lock_status(enum ice_e825c_ref_clk clk)
-+{
-+	switch (clk) {
-+	case ICE_REF_CLK_SYNCE:
-+	case ICE_REF_CLK_EREF0:
-+		return DPLL_LOCK_STATUS_LOCKED;
-+	case ICE_REF_CLK_ENET:
-+	default:
-+		return DPLL_LOCK_STATUS_UNLOCKED;
-+	}
-+}
 +
-+int ice_txclk_set_clk(struct ice_pf *pf, enum ice_e825c_ref_clk clk);
-+void ice_txclk_update_and_notify(struct ice_pf *pf);
-+#endif /* _ICE_TXCLK_H_ */
++def test_different_lessors(netns) -> None:
++    nsimdev_a = NetdevSimDev(port_count=1, queue_count=2)
++    defer(nsimdev_a.remove)
++    nsim_a = nsimdev_a.nsims[0]
++    ip(f"link set dev {nsim_a.ifname} up")
++
++    nsimdev_b = NetdevSimDev(port_count=1, queue_count=2)
++    defer(nsimdev_b.remove)
++    nsim_b = nsimdev_b.nsims[0]
++    ip(f"link set dev {nsim_b.ifname} up")
++
++    nk_host, _, nk_guest, nk_guest_idx = create_netkit(rxqueues=3)
++    defer(cmd, f"ip link del dev {nk_host}", fail=False)
++
++    ip(f"link set dev {nk_guest} netns {netns.name}")
++    ip(f"link set dev {nk_host} up")
++    ip(f"link set dev {nk_guest} up", ns=netns)
++
++    with NetNSEnter(str(netns)):
++        netdevnl = NetdevFamily()
++        netdevnl.queue_create(
++            {
++                "ifindex": nk_guest_idx,
++                "type": "rx",
++                "lease": {
++                    "ifindex": nsim_a.ifindex,
++                    "queue": {"id": 1, "type": "rx"},
++                    "netns-id": 0,
++                },
++            }
++        )
++
++        with ksft_raises(NlError) as e:
++            netdevnl.queue_create(
++                {
++                    "ifindex": nk_guest_idx,
++                    "type": "rx",
++                    "lease": {
++                        "ifindex": nsim_b.ifindex,
++                        "queue": {"id": 1, "type": "rx"},
++                        "netns-id": 0,
++                    },
++                }
++            )
++        ksft_eq(e.exception.nl_msg.error, -errno.EOPNOTSUPP)
++
++
++def test_queue_out_of_range(netns) -> None:
++    nsimdev = NetdevSimDev(port_count=1, queue_count=2)
++    defer(nsimdev.remove)
++    nsim = nsimdev.nsims[0]
++    ip(f"link set dev {nsim.ifname} up")
++
++    nk_host, _, nk_guest, nk_guest_idx = create_netkit(rxqueues=2)
++    defer(cmd, f"ip link del dev {nk_host}", fail=False)
++
++    ip(f"link set dev {nk_guest} netns {netns.name}")
++    ip(f"link set dev {nk_host} up")
++    ip(f"link set dev {nk_guest} up", ns=netns)
++
++    with NetNSEnter(str(netns)):
++        netdevnl = NetdevFamily()
++        with ksft_raises(NlError) as e:
++            netdevnl.queue_create(
++                {
++                    "ifindex": nk_guest_idx,
++                    "type": "rx",
++                    "lease": {
++                        "ifindex": nsim.ifindex,
++                        "queue": {"id": 2, "type": "rx"},
++                        "netns-id": 0,
++                    },
++                }
++            )
++        ksft_eq(e.exception.nl_msg.error, -errno.ERANGE)
++
++
++def test_resize_leased(netns) -> None:
++    nsimdev = NetdevSimDev(port_count=1, queue_count=2)
++    defer(nsimdev.remove)
++    nsim = nsimdev.nsims[0]
++    ip(f"link set dev {nsim.ifname} up")
++
++    nk_host, _, nk_guest, nk_guest_idx = create_netkit(rxqueues=2)
++    defer(cmd, f"ip link del dev {nk_host}", fail=False)
++
++    ip(f"link set dev {nk_guest} netns {netns.name}")
++    ip(f"link set dev {nk_host} up")
++    ip(f"link set dev {nk_guest} up", ns=netns)
++
++    with NetNSEnter(str(netns)):
++        netdevnl = NetdevFamily()
++        netdevnl.queue_create(
++            {
++                "ifindex": nk_guest_idx,
++                "type": "rx",
++                "lease": {
++                    "ifindex": nsim.ifindex,
++                    "queue": {"id": 1, "type": "rx"},
++                    "netns-id": 0,
++                },
++            }
++        )
++
++    ethnl = EthtoolFamily()
++    with ksft_raises(NlError) as e:
++        ethnl.channels_set({"header": {"dev-index": nsim.ifindex}, "combined-count": 1})
++    ksft_eq(e.exception.nl_msg.error, -errno.EINVAL)
++
++
++def test_self_lease(_netns) -> None:
++    nk_host, _, _, nk_guest_idx = create_netkit(rxqueues=2)
++    defer(cmd, f"ip link del dev {nk_host}", fail=False)
++
++    netdevnl = NetdevFamily()
++    with ksft_raises(NlError) as e:
++        netdevnl.queue_create(
++            {
++                "ifindex": nk_guest_idx,
++                "type": "rx",
++                "lease": {
++                    "ifindex": nk_guest_idx,
++                    "queue": {"id": 0, "type": "rx"},
++                },
++            }
++        )
++    ksft_eq(e.exception.nl_msg.error, -errno.EINVAL)
++
++
++def test_veth_queue_create(netns) -> None:
++    nsimdev = NetdevSimDev(port_count=1, queue_count=2)
++    defer(nsimdev.remove)
++    nsim = nsimdev.nsims[0]
++    ip(f"link set dev {nsim.ifname} up")
++
++    ip("link add veth0 type veth peer name veth1")
++    defer(cmd, "ip link del dev veth0", fail=False)
++
++    all_links = ip("-d link show", json=True)
++    veth_peer = [
++        link
++        for link in all_links
++        if link.get("ifname") == "veth1"
++    ]
++    veth_peer_idx = veth_peer[0]["ifindex"]
++
++    ip(f"link set dev veth1 netns {netns.name}")
++    ip("link set dev veth0 up")
++    ip("link set dev veth1 up", ns=netns)
++
++    with NetNSEnter(str(netns)):
++        netdevnl = NetdevFamily()
++        with ksft_raises(NlError) as e:
++            netdevnl.queue_create(
++                {
++                    "ifindex": veth_peer_idx,
++                    "type": "rx",
++                    "lease": {
++                        "ifindex": nsim.ifindex,
++                        "queue": {"id": 1, "type": "rx"},
++                        "netns-id": 0,
++                    },
++                }
++            )
++        ksft_eq(e.exception.nl_msg.error, -errno.EINVAL)
++
++
++def test_create_tx_type(netns) -> None:
++    nsimdev = NetdevSimDev(port_count=1, queue_count=2)
++    defer(nsimdev.remove)
++    nsim = nsimdev.nsims[0]
++    ip(f"link set dev {nsim.ifname} up")
++
++    nk_host, _, nk_guest, nk_guest_idx = create_netkit(rxqueues=2)
++    defer(cmd, f"ip link del dev {nk_host}", fail=False)
++
++    ip(f"link set dev {nk_guest} netns {netns.name}")
++    ip(f"link set dev {nk_host} up")
++    ip(f"link set dev {nk_guest} up", ns=netns)
++
++    with NetNSEnter(str(netns)):
++        netdevnl = NetdevFamily()
++        with ksft_raises(NlError) as e:
++            netdevnl.queue_create(
++                {
++                    "ifindex": nk_guest_idx,
++                    "type": "tx",
++                    "lease": {
++                        "ifindex": nsim.ifindex,
++                        "queue": {"id": 1, "type": "rx"},
++                        "netns-id": 0,
++                    },
++                }
++            )
++        ksft_eq(e.exception.nl_msg.error, -errno.EINVAL)
++
++
++def test_create_primary(_netns) -> None:
++    nsimdev = NetdevSimDev(port_count=1, queue_count=2)
++    defer(nsimdev.remove)
++    nsim = nsimdev.nsims[0]
++    ip(f"link set dev {nsim.ifname} up")
++
++    nk_host, nk_host_idx, _, _ = create_netkit(rxqueues=2)
++    defer(cmd, f"ip link del dev {nk_host}", fail=False)
++
++    ip(f"link set dev {nk_host} up")
++
++    netdevnl = NetdevFamily()
++    with ksft_raises(NlError) as e:
++        netdevnl.queue_create(
++            {
++                "ifindex": nk_host_idx,
++                "type": "rx",
++                "lease": {
++                    "ifindex": nsim.ifindex,
++                    "queue": {"id": 1, "type": "rx"},
++                },
++            }
++        )
++    ksft_eq(e.exception.nl_msg.error, -errno.EOPNOTSUPP)
++
++
++def test_create_limit(netns) -> None:
++    nsimdev = NetdevSimDev(port_count=1, queue_count=2)
++    defer(nsimdev.remove)
++    nsim = nsimdev.nsims[0]
++    ip(f"link set dev {nsim.ifname} up")
++
++    nk_host, _, nk_guest, nk_guest_idx = create_netkit(rxqueues=1)
++    defer(cmd, f"ip link del dev {nk_host}", fail=False)
++
++    ip(f"link set dev {nk_guest} netns {netns.name}")
++    ip(f"link set dev {nk_host} up")
++    ip(f"link set dev {nk_guest} up", ns=netns)
++
++    with NetNSEnter(str(netns)):
++        netdevnl = NetdevFamily()
++        with ksft_raises(NlError) as e:
++            netdevnl.queue_create(
++                {
++                    "ifindex": nk_guest_idx,
++                    "type": "rx",
++                    "lease": {
++                        "ifindex": nsim.ifindex,
++                        "queue": {"id": 1, "type": "rx"},
++                        "netns-id": 0,
++                    },
++                }
++            )
++        ksft_eq(e.exception.nl_msg.error, -errno.EINVAL)
++
++
++def test_link_flap_phys(netns) -> None:
++    nsimdev = NetdevSimDev(port_count=1, queue_count=2)
++    defer(nsimdev.remove)
++    nsim = nsimdev.nsims[0]
++    ip(f"link set dev {nsim.ifname} up")
++
++    nk_host, _, nk_guest, nk_guest_idx = create_netkit(rxqueues=2)
++    defer(cmd, f"ip link del dev {nk_host}")
++
++    ip(f"link set dev {nk_guest} netns {netns.name}")
++    ip(f"link set dev {nk_host} up")
++    ip(f"link set dev {nk_guest} up", ns=netns)
++
++    src_queue = 1
++    with NetNSEnter(str(netns)):
++        netdevnl = NetdevFamily()
++        result = netdevnl.queue_create(
++            {
++                "ifindex": nk_guest_idx,
++                "type": "rx",
++                "lease": {
++                    "ifindex": nsim.ifindex,
++                    "queue": {"id": src_queue, "type": "rx"},
++                    "netns-id": 0,
++                },
++            }
++        )
++        nk_queue_id = result["id"]
++
++    netdevnl = NetdevFamily()
++    queue_info = netdevnl.queue_get(
++        {"ifindex": nsim.ifindex, "id": src_queue, "type": "rx"}
++    )
++    ksft_in("lease", queue_info)
++    ksft_eq(queue_info["lease"]["queue"]["id"], nk_queue_id)
++
++    # Link flap the physical device
++    ip(f"link set dev {nsim.ifname} down")
++    ip(f"link set dev {nsim.ifname} up")
++
++    # Verify lease survives the flap
++    queue_info = netdevnl.queue_get(
++        {"ifindex": nsim.ifindex, "id": src_queue, "type": "rx"}
++    )
++    ksft_in("lease", queue_info)
++    ksft_eq(queue_info["lease"]["queue"]["id"], nk_queue_id)
++
++
++def test_queue_get_virtual(netns) -> None:
++    nsimdev = NetdevSimDev(port_count=1, queue_count=2)
++    defer(nsimdev.remove)
++    nsim = nsimdev.nsims[0]
++    ip(f"link set dev {nsim.ifname} up")
++
++    nk_host, _, nk_guest, nk_guest_idx = create_netkit(rxqueues=2)
++    defer(cmd, f"ip link del dev {nk_host}")
++
++    ip(f"link set dev {nk_guest} netns {netns.name}")
++    ip(f"link set dev {nk_host} up")
++    ip(f"link set dev {nk_guest} up", ns=netns)
++
++    src_queue = 1
++    with NetNSEnter(str(netns)):
++        netdevnl = NetdevFamily()
++        result = netdevnl.queue_create(
++            {
++                "ifindex": nk_guest_idx,
++                "type": "rx",
++                "lease": {
++                    "ifindex": nsim.ifindex,
++                    "queue": {"id": src_queue, "type": "rx"},
++                    "netns-id": 0,
++                },
++            }
++        )
++        nk_queue_id = result["id"]
++
++        # queue-get on virtual device's leased queue should not show lease
++        # info (lease info is only shown from the physical device's side)
++        queue_info = netdevnl.queue_get(
++            {"ifindex": nk_guest_idx, "id": nk_queue_id, "type": "rx"}
++        )
++        ksft_eq(queue_info["id"], nk_queue_id)
++        ksft_eq(queue_info["ifindex"], nk_guest_idx)
++        ksft_not_in("lease", queue_info)
++
++        # Default queue (not leased) also has no lease info
++        queue_info = netdevnl.queue_get(
++            {"ifindex": nk_guest_idx, "id": 0, "type": "rx"}
++        )
++        ksft_not_in("lease", queue_info)
++
++
++def test_remove_virt_first(netns) -> None:
++    nsimdev = NetdevSimDev(port_count=1, queue_count=2)
++    defer(nsimdev.remove)
++    nsim = nsimdev.nsims[0]
++    ip(f"link set dev {nsim.ifname} up")
++
++    nk_host, _, nk_guest, nk_guest_idx = create_netkit(rxqueues=2)
++
++    ip(f"link set dev {nk_guest} netns {netns.name}")
++    ip(f"link set dev {nk_host} up")
++    ip(f"link set dev {nk_guest} up", ns=netns)
++
++    src_queue = 1
++    with NetNSEnter(str(netns)):
++        netdevnl = NetdevFamily()
++        result = netdevnl.queue_create(
++            {
++                "ifindex": nk_guest_idx,
++                "type": "rx",
++                "lease": {
++                    "ifindex": nsim.ifindex,
++                    "queue": {"id": src_queue, "type": "rx"},
++                    "netns-id": 0,
++                },
++            }
++        )
++        ksft_eq(result["id"], 1)
++
++    netdevnl = NetdevFamily()
++    queue_info = netdevnl.queue_get(
++        {"ifindex": nsim.ifindex, "id": src_queue, "type": "rx"}
++    )
++    ksft_in("lease", queue_info)
++    ksft_eq(queue_info["lease"]["queue"]["id"], result["id"])
++
++    # Delete netkit (virtual device removed first, physical stays)
++    cmd(f"ip link del dev {nk_host}")
++
++    # Verify lease is cleaned up on physical device
++    queue_info = netdevnl.queue_get(
++        {"ifindex": nsim.ifindex, "id": src_queue, "type": "rx"}
++    )
++    ksft_not_in("lease", queue_info)
++
++
++def test_multiple_leases(netns) -> None:
++    nsimdev = NetdevSimDev(port_count=1, queue_count=3)
++    defer(nsimdev.remove)
++    nsim = nsimdev.nsims[0]
++    ip(f"link set dev {nsim.ifname} up")
++
++    nk_host, _, nk_guest, nk_guest_idx = create_netkit(rxqueues=4)
++    defer(cmd, f"ip link del dev {nk_host}", fail=False)
++
++    ip(f"link set dev {nk_guest} netns {netns.name}")
++    ip(f"link set dev {nk_host} up")
++    ip(f"link set dev {nk_guest} up", ns=netns)
++
++    with NetNSEnter(str(netns)):
++        netdevnl = NetdevFamily()
++        r1 = netdevnl.queue_create(
++            {
++                "ifindex": nk_guest_idx,
++                "type": "rx",
++                "lease": {
++                    "ifindex": nsim.ifindex,
++                    "queue": {"id": 1, "type": "rx"},
++                    "netns-id": 0,
++                },
++            }
++        )
++        r2 = netdevnl.queue_create(
++            {
++                "ifindex": nk_guest_idx,
++                "type": "rx",
++                "lease": {
++                    "ifindex": nsim.ifindex,
++                    "queue": {"id": 2, "type": "rx"},
++                    "netns-id": 0,
++                },
++            }
++        )
++
++    ksft_eq(r1["id"], 1)
++    ksft_eq(r2["id"], 2)
++
++    # Verify both leases visible on physical device
++    netdevnl = NetdevFamily()
++    q1 = netdevnl.queue_get(
++        {"ifindex": nsim.ifindex, "id": 1, "type": "rx"}
++    )
++    q2 = netdevnl.queue_get(
++        {"ifindex": nsim.ifindex, "id": 2, "type": "rx"}
++    )
++    ksft_in("lease", q1)
++    ksft_in("lease", q2)
++    ksft_eq(q1["lease"]["ifindex"], nk_guest_idx)
++    ksft_eq(q2["lease"]["ifindex"], nk_guest_idx)
++    ksft_eq(q1["lease"]["queue"]["id"], r1["id"])
++    ksft_eq(q2["lease"]["queue"]["id"], r2["id"])
++
++
++def test_lease_queue_tx_type(netns) -> None:
++    nsimdev = NetdevSimDev(port_count=1, queue_count=2)
++    defer(nsimdev.remove)
++    nsim = nsimdev.nsims[0]
++    ip(f"link set dev {nsim.ifname} up")
++
++    nk_host, _, nk_guest, nk_guest_idx = create_netkit(rxqueues=2)
++    defer(cmd, f"ip link del dev {nk_host}", fail=False)
++
++    ip(f"link set dev {nk_guest} netns {netns.name}")
++    ip(f"link set dev {nk_host} up")
++    ip(f"link set dev {nk_guest} up", ns=netns)
++
++    with NetNSEnter(str(netns)):
++        netdevnl = NetdevFamily()
++        with ksft_raises(NlError) as e:
++            netdevnl.queue_create(
++                {
++                    "ifindex": nk_guest_idx,
++                    "type": "rx",
++                    "lease": {
++                        "ifindex": nsim.ifindex,
++                        "queue": {"id": 1, "type": "tx"},
++                        "netns-id": 0,
++                    },
++                }
++            )
++        ksft_eq(e.exception.nl_msg.error, -errno.EINVAL)
++
++
++def test_invalid_netns(netns) -> None:
++    nk_host, _, nk_guest, nk_guest_idx = create_netkit(rxqueues=2)
++    defer(cmd, f"ip link del dev {nk_host}", fail=False)
++
++    ip(f"link set dev {nk_guest} netns {netns.name}")
++    ip(f"link set dev {nk_host} up")
++    ip(f"link set dev {nk_guest} up", ns=netns)
++
++    with NetNSEnter(str(netns)):
++        netdevnl = NetdevFamily()
++        with ksft_raises(NlError) as e:
++            netdevnl.queue_create(
++                {
++                    "ifindex": nk_guest_idx,
++                    "type": "rx",
++                    "lease": {
++                        "ifindex": 1,
++                        "queue": {"id": 0, "type": "rx"},
++                        "netns-id": 999,
++                    },
++                }
++            )
++        ksft_eq(e.exception.nl_msg.error, -errno.ENONET)
++
++
++def test_invalid_phys_ifindex(netns) -> None:
++    nk_host, _, nk_guest, nk_guest_idx = create_netkit(rxqueues=2)
++    defer(cmd, f"ip link del dev {nk_host}", fail=False)
++
++    ip(f"link set dev {nk_guest} netns {netns.name}")
++    ip(f"link set dev {nk_host} up")
++    ip(f"link set dev {nk_guest} up", ns=netns)
++
++    with NetNSEnter(str(netns)):
++        netdevnl = NetdevFamily()
++        with ksft_raises(NlError) as e:
++            netdevnl.queue_create(
++                {
++                    "ifindex": nk_guest_idx,
++                    "type": "rx",
++                    "lease": {
++                        "ifindex": 99999,
++                        "queue": {"id": 0, "type": "rx"},
++                        "netns-id": 0,
++                    },
++                }
++            )
++        ksft_eq(e.exception.nl_msg.error, -errno.ENODEV)
++
++
++def test_multi_netkit_remove_phys(netns) -> None:
++    nsimdev = NetdevSimDev(port_count=1, queue_count=3)
++    defer(nsimdev.remove)
++    nsim = nsimdev.nsims[0]
++    ip(f"link set dev {nsim.ifname} up")
++
++    # Create two netkit pairs, each leasing a different physical queue
++    nk_host_a, _, nk_guest_a, nk_guest_a_idx = create_netkit(rxqueues=2)
++    defer(cmd, f"ip link del dev {nk_host_a}", fail=False)
++
++    nk_host_b, _, nk_guest_b, nk_guest_b_idx = create_netkit(rxqueues=2)
++    defer(cmd, f"ip link del dev {nk_host_b}", fail=False)
++
++    ip(f"link set dev {nk_guest_a} netns {netns.name}")
++    ip(f"link set dev {nk_host_a} up")
++    ip(f"link set dev {nk_guest_a} up", ns=netns)
++
++    ip(f"link set dev {nk_guest_b} netns {netns.name}")
++    ip(f"link set dev {nk_host_b} up")
++    ip(f"link set dev {nk_guest_b} up", ns=netns)
++
++    with NetNSEnter(str(netns)):
++        netdevnl = NetdevFamily()
++        netdevnl.queue_create(
++            {
++                "ifindex": nk_guest_a_idx,
++                "type": "rx",
++                "lease": {
++                    "ifindex": nsim.ifindex,
++                    "queue": {"id": 1, "type": "rx"},
++                    "netns-id": 0,
++                },
++            }
++        )
++        netdevnl.queue_create(
++            {
++                "ifindex": nk_guest_b_idx,
++                "type": "rx",
++                "lease": {
++                    "ifindex": nsim.ifindex,
++                    "queue": {"id": 2, "type": "rx"},
++                    "netns-id": 0,
++                },
++            }
++        )
++
++    # Removing the physical device should take down both netkit pairs
++    nsimdev.remove()
++    time.sleep(0.1)
++    ret = cmd(f"ip link show dev {nk_host_a}", fail=False)
++    ksft_ne(ret.ret, 0)
++    ret = cmd(f"ip link show dev {nk_host_b}", fail=False)
++    ksft_ne(ret.ret, 0)
++
++
++def test_single_remove_phys(_netns) -> None:
++    nsimdev = NetdevSimDev(port_count=1, queue_count=2)
++    defer(nsimdev.remove)
++    nsim = nsimdev.nsims[0]
++    ip(f"link set dev {nsim.ifname} up")
++
++    nk_name, nk_idx = create_netkit_single(rxqueues=2)
++    defer(cmd, f"ip link del dev {nk_name}", fail=False)
++
++    ip(f"link set dev {nk_name} up")
++
++    netdevnl = NetdevFamily()
++    netdevnl.queue_create(
++        {
++            "ifindex": nk_idx,
++            "type": "rx",
++            "lease": {
++                "ifindex": nsim.ifindex,
++                "queue": {"id": 1, "type": "rx"},
++            },
++        }
++    )
++
++    # Removing the physical device should take down the single netkit device
++    nsimdev.remove()
++    time.sleep(0.1)
++    ret = cmd(f"ip link show dev {nk_name}", fail=False)
++    ksft_ne(ret.ret, 0)
++
++
++def test_link_flap_virt(netns) -> None:
++    nsimdev = NetdevSimDev(port_count=1, queue_count=2)
++    defer(nsimdev.remove)
++    nsim = nsimdev.nsims[0]
++    ip(f"link set dev {nsim.ifname} up")
++
++    nk_host, _, nk_guest, nk_guest_idx = create_netkit(rxqueues=2)
++    defer(cmd, f"ip link del dev {nk_host}")
++
++    ip(f"link set dev {nk_guest} netns {netns.name}")
++    ip(f"link set dev {nk_host} up")
++    ip(f"link set dev {nk_guest} up", ns=netns)
++
++    src_queue = 1
++    with NetNSEnter(str(netns)):
++        netdevnl = NetdevFamily()
++        result = netdevnl.queue_create(
++            {
++                "ifindex": nk_guest_idx,
++                "type": "rx",
++                "lease": {
++                    "ifindex": nsim.ifindex,
++                    "queue": {"id": src_queue, "type": "rx"},
++                    "netns-id": 0,
++                },
++            }
++        )
++        nk_queue_id = result["id"]
++
++    netdevnl = NetdevFamily()
++    queue_info = netdevnl.queue_get(
++        {"ifindex": nsim.ifindex, "id": src_queue, "type": "rx"}
++    )
++    ksft_in("lease", queue_info)
++    ksft_eq(queue_info["lease"]["queue"]["id"], nk_queue_id)
++
++    # Link flap the virtual (netkit) device
++    ip(f"link set dev {nk_guest} down", ns=netns)
++    ip(f"link set dev {nk_guest} up", ns=netns)
++
++    # Verify lease survives the virtual device flap
++    queue_info = netdevnl.queue_get(
++        {"ifindex": nsim.ifindex, "id": src_queue, "type": "rx"}
++    )
++    ksft_in("lease", queue_info)
++    ksft_eq(queue_info["lease"]["queue"]["id"], nk_queue_id)
++
++
++def test_phys_queue_no_lease(netns) -> None:
++    nsimdev = NetdevSimDev(port_count=1, queue_count=2)
++    defer(nsimdev.remove)
++    nsim = nsimdev.nsims[0]
++    ip(f"link set dev {nsim.ifname} up")
++
++    nk_host, _, nk_guest, nk_guest_idx = create_netkit(rxqueues=2)
++    defer(cmd, f"ip link del dev {nk_host}")
++
++    ip(f"link set dev {nk_guest} netns {netns.name}")
++    ip(f"link set dev {nk_host} up")
++    ip(f"link set dev {nk_guest} up", ns=netns)
++
++    with NetNSEnter(str(netns)):
++        netdevnl = NetdevFamily()
++        netdevnl.queue_create(
++            {
++                "ifindex": nk_guest_idx,
++                "type": "rx",
++                "lease": {
++                    "ifindex": nsim.ifindex,
++                    "queue": {"id": 1, "type": "rx"},
++                    "netns-id": 0,
++                },
++            }
++        )
++
++    # Physical queue 0 (not leased) should have no lease info
++    netdevnl = NetdevFamily()
++    queue_info = netdevnl.queue_get(
++        {"ifindex": nsim.ifindex, "id": 0, "type": "rx"}
++    )
++    ksft_not_in("lease", queue_info)
++
++    # Physical queue 1 (leased) should have lease info
++    queue_info = netdevnl.queue_get(
++        {"ifindex": nsim.ifindex, "id": 1, "type": "rx"}
++    )
++    ksft_in("lease", queue_info)
++
++
++def test_same_ns_lease(_netns) -> None:
++    nsimdev = NetdevSimDev(port_count=1, queue_count=2)
++    defer(nsimdev.remove)
++    nsim = nsimdev.nsims[0]
++    ip(f"link set dev {nsim.ifname} up")
++
++    nk_name, nk_idx = create_netkit_single(rxqueues=2)
++    defer(cmd, f"ip link del dev {nk_name}", fail=False)
++
++    ip(f"link set dev {nk_name} up")
++
++    netdevnl = NetdevFamily()
++    result = netdevnl.queue_create(
++        {
++            "ifindex": nk_idx,
++            "type": "rx",
++            "lease": {
++                "ifindex": nsim.ifindex,
++                "queue": {"id": 1, "type": "rx"},
++            },
++        }
++    )
++    ksft_eq(result["id"], 1)
++
++    # Same namespace: lease info should NOT have netns-id
++    queue_info = netdevnl.queue_get(
++        {"ifindex": nsim.ifindex, "id": 1, "type": "rx"}
++    )
++    ksft_in("lease", queue_info)
++    ksft_eq(queue_info["lease"]["ifindex"], nk_idx)
++    ksft_eq(queue_info["lease"]["queue"]["id"], result["id"])
++    ksft_not_in("netns-id", queue_info["lease"])
++
++
++def test_resize_after_unlease(netns) -> None:
++    nsimdev = NetdevSimDev(port_count=1, queue_count=2)
++    defer(nsimdev.remove)
++    nsim = nsimdev.nsims[0]
++    ip(f"link set dev {nsim.ifname} up")
++
++    nk_host, _, nk_guest, nk_guest_idx = create_netkit(rxqueues=2)
++
++    ip(f"link set dev {nk_guest} netns {netns.name}")
++    ip(f"link set dev {nk_host} up")
++    ip(f"link set dev {nk_guest} up", ns=netns)
++
++    with NetNSEnter(str(netns)):
++        netdevnl = NetdevFamily()
++        netdevnl.queue_create(
++            {
++                "ifindex": nk_guest_idx,
++                "type": "rx",
++                "lease": {
++                    "ifindex": nsim.ifindex,
++                    "queue": {"id": 1, "type": "rx"},
++                    "netns-id": 0,
++                },
++            }
++        )
++
++    # Resize should fail while lease is active
++    ethnl = EthtoolFamily()
++    with ksft_raises(NlError) as e:
++        ethnl.channels_set({"header": {"dev-index": nsim.ifindex}, "combined-count": 1})
++    ksft_eq(e.exception.nl_msg.error, -errno.EINVAL)
++
++    # Delete netkit, clearing the lease
++    cmd(f"ip link del dev {nk_host}")
++
++    # Resize should now succeed
++    ethnl.channels_set({"header": {"dev-index": nsim.ifindex}, "combined-count": 1})
++
++
++def test_lease_queue_zero(netns) -> None:
++    nsimdev = NetdevSimDev(port_count=1, queue_count=2)
++    defer(nsimdev.remove)
++    nsim = nsimdev.nsims[0]
++    ip(f"link set dev {nsim.ifname} up")
++
++    nk_host, _, nk_guest, nk_guest_idx = create_netkit(rxqueues=2)
++    defer(cmd, f"ip link del dev {nk_host}", fail=False)
++
++    ip(f"link set dev {nk_guest} netns {netns.name}")
++    ip(f"link set dev {nk_host} up")
++    ip(f"link set dev {nk_guest} up", ns=netns)
++
++    with NetNSEnter(str(netns)):
++        netdevnl = NetdevFamily()
++        result = netdevnl.queue_create(
++            {
++                "ifindex": nk_guest_idx,
++                "type": "rx",
++                "lease": {
++                    "ifindex": nsim.ifindex,
++                    "queue": {"id": 0, "type": "rx"},
++                    "netns-id": 0,
++                },
++            }
++        )
++        ksft_eq(result["id"], 1)
++
++    netdevnl = NetdevFamily()
++    queue_info = netdevnl.queue_get(
++        {"ifindex": nsim.ifindex, "id": 0, "type": "rx"}
++    )
++    ksft_in("lease", queue_info)
++    ksft_eq(queue_info["lease"]["queue"]["id"], result["id"])
++
++
++def test_release_and_reuse(netns) -> None:
++    nsimdev = NetdevSimDev(port_count=1, queue_count=2)
++    defer(nsimdev.remove)
++    nsim = nsimdev.nsims[0]
++    ip(f"link set dev {nsim.ifname} up")
++
++    src_queue = 1
++
++    # First lease
++    nk_host, _, nk_guest, nk_guest_idx = create_netkit(rxqueues=2)
++
++    ip(f"link set dev {nk_guest} netns {netns.name}")
++    ip(f"link set dev {nk_host} up")
++    ip(f"link set dev {nk_guest} up", ns=netns)
++
++    with NetNSEnter(str(netns)):
++        netdevnl = NetdevFamily()
++        netdevnl.queue_create(
++            {
++                "ifindex": nk_guest_idx,
++                "type": "rx",
++                "lease": {
++                    "ifindex": nsim.ifindex,
++                    "queue": {"id": src_queue, "type": "rx"},
++                    "netns-id": 0,
++                },
++            }
++        )
++
++    netdevnl = NetdevFamily()
++    queue_info = netdevnl.queue_get(
++        {"ifindex": nsim.ifindex, "id": src_queue, "type": "rx"}
++    )
++    ksft_in("lease", queue_info)
++
++    # Delete netkit, freeing the lease
++    cmd(f"ip link del dev {nk_host}")
++
++    queue_info = netdevnl.queue_get(
++        {"ifindex": nsim.ifindex, "id": src_queue, "type": "rx"}
++    )
++    ksft_not_in("lease", queue_info)
++
++    # Re-create netkit and lease the same physical queue again
++    nk_host, _, nk_guest, nk_guest_idx = create_netkit(rxqueues=2)
++    defer(cmd, f"ip link del dev {nk_host}", fail=False)
++
++    ip(f"link set dev {nk_guest} netns {netns.name}")
++    ip(f"link set dev {nk_host} up")
++    ip(f"link set dev {nk_guest} up", ns=netns)
++
++    with NetNSEnter(str(netns)):
++        netdevnl = NetdevFamily()
++        result = netdevnl.queue_create(
++            {
++                "ifindex": nk_guest_idx,
++                "type": "rx",
++                "lease": {
++                    "ifindex": nsim.ifindex,
++                    "queue": {"id": src_queue, "type": "rx"},
++                    "netns-id": 0,
++                },
++            }
++        )
++        ksft_eq(result["id"], 1)
++
++    netdevnl = NetdevFamily()
++    queue_info = netdevnl.queue_get(
++        {"ifindex": nsim.ifindex, "id": src_queue, "type": "rx"}
++    )
++    ksft_in("lease", queue_info)
++    ksft_eq(queue_info["lease"]["queue"]["id"], result["id"])
++
++
++def test_iou_zcrx(cfg) -> None:
++    cfg.require_ipver("6")
++    ethnl = EthtoolFamily()
++
++    rings = ethnl.rings_get({"header": {"dev-index": cfg.ifindex}})
++    rx_rings = rings["rx"]
++    hds_thresh = rings.get("hds-thresh", 0)
++
++    ethnl.rings_set(
++        {
++            "header": {"dev-index": cfg.ifindex},
++            "tcp-data-split": "enabled",
++            "hds-thresh": 0,
++            "rx": 64,
++        }
++    )
++    defer(
++        ethnl.rings_set,
++        {
++            "header": {"dev-index": cfg.ifindex},
++            "tcp-data-split": "unknown",
++            "hds-thresh": hds_thresh,
++            "rx": rx_rings,
++        },
++    )
++
++    ethtool(f"-X {cfg.ifname} equal {cfg.src_queue}")
++    defer(ethtool, f"-X {cfg.ifname} default")
++
++    flow_rule_id = set_flow_rule(cfg)
++    defer(ethtool, f"-N {cfg.ifname} delete {flow_rule_id}")
++
++    rx_cmd = f"ip netns exec {cfg.netns.name} {cfg.bin_local} -s -p {cfg.port} -i {cfg._nk_guest_ifname} -q {cfg.nk_queue}"
++    tx_cmd = f"{cfg.bin_remote} -c -h {cfg.nk_guest_ipv6} -p {cfg.port} -l 12840"
++    with bkg(rx_cmd, exit_wait=True):
++        wait_port_listen(cfg.port, proto="tcp", ns=cfg.netns)
++        cmd(tx_cmd, host=cfg.remote)
++
++
++def test_attrs(cfg) -> None:
++    cfg.require_ipver("6")
++    netdevnl = NetdevFamily()
++    queue_info = netdevnl.queue_get(
++        {"ifindex": cfg.ifindex, "id": cfg.src_queue, "type": "rx"}
++    )
++
++    ksft_eq(queue_info["id"], cfg.src_queue)
++    ksft_eq(queue_info["type"], "rx")
++    ksft_eq(queue_info["ifindex"], cfg.ifindex)
++
++    ksft_in("lease", queue_info)
++    lease = queue_info["lease"]
++    ksft_eq(lease["ifindex"], cfg.nk_guest_ifindex)
++    ksft_eq(lease["queue"]["id"], cfg.nk_queue)
++    ksft_eq(lease["queue"]["type"], "rx")
++    ksft_in("netns-id", lease)
++
++
++def test_attach_xdp_with_mp(cfg) -> None:
++    cfg.require_ipver("6")
++    ethnl = EthtoolFamily()
++
++    rings = ethnl.rings_get({"header": {"dev-index": cfg.ifindex}})
++    rx_rings = rings["rx"]
++    hds_thresh = rings.get("hds-thresh", 0)
++
++    ethnl.rings_set(
++        {
++            "header": {"dev-index": cfg.ifindex},
++            "tcp-data-split": "enabled",
++            "hds-thresh": 0,
++            "rx": 64,
++        }
++    )
++    defer(
++        ethnl.rings_set,
++        {
++            "header": {"dev-index": cfg.ifindex},
++            "tcp-data-split": "unknown",
++            "hds-thresh": hds_thresh,
++            "rx": rx_rings,
++        },
++    )
++
++    ethtool(f"-X {cfg.ifname} equal {cfg.src_queue}")
++    defer(ethtool, f"-X {cfg.ifname} default")
++
++    netdevnl = NetdevFamily()
++
++    rx_cmd = f"ip netns exec {cfg.netns.name} {cfg.bin_local} -s -p {cfg.port} -i {cfg._nk_guest_ifname} -q {cfg.nk_queue}"
++    with bkg(rx_cmd):
++        wait_port_listen(cfg.port, proto="tcp", ns=cfg.netns)
++
++        time.sleep(0.1)
++        queue_info = netdevnl.queue_get(
++            {"ifindex": cfg.ifindex, "id": cfg.src_queue, "type": "rx"}
++        )
++        ksft_in("io-uring", queue_info)
++
++        prog = cfg.net_lib_dir / "xdp_dummy.bpf.o"
++        with ksft_raises(CmdExitFailure):
++            ip(f"link set dev {cfg.ifname} xdp obj {prog} sec xdp.frags")
++
++    time.sleep(0.1)
++    queue_info = netdevnl.queue_get(
++        {"ifindex": cfg.ifindex, "id": cfg.src_queue, "type": "rx"}
++    )
++    ksft_not_in("io-uring", queue_info)
++
++
++def test_destroy(cfg) -> None:
++    cfg.require_ipver("6")
++    ethnl = EthtoolFamily()
++
++    rings = ethnl.rings_get({"header": {"dev-index": cfg.ifindex}})
++    rx_rings = rings["rx"]
++    hds_thresh = rings.get("hds-thresh", 0)
++
++    ethnl.rings_set(
++        {
++            "header": {"dev-index": cfg.ifindex},
++            "tcp-data-split": "enabled",
++            "hds-thresh": 0,
++            "rx": 64,
++        }
++    )
++    defer(
++        ethnl.rings_set,
++        {
++            "header": {"dev-index": cfg.ifindex},
++            "tcp-data-split": "unknown",
++            "hds-thresh": hds_thresh,
++            "rx": rx_rings,
++        },
++    )
++
++    ethtool(f"-X {cfg.ifname} equal {cfg.src_queue}")
++    defer(ethtool, f"-X {cfg.ifname} default")
++
++    rx_cmd = f"ip netns exec {cfg.netns.name} {cfg.bin_local} -s -p {cfg.port} -i {cfg._nk_guest_ifname} -q {cfg.nk_queue}"
++    rx_proc = cmd(rx_cmd, background=True)
++    wait_port_listen(cfg.port, proto="tcp", ns=cfg.netns)
++
++    netdevnl = NetdevFamily()
++    queue_info = netdevnl.queue_get(
++        {"ifindex": cfg.ifindex, "id": cfg.src_queue, "type": "rx"}
++    )
++    ksft_in("io-uring", queue_info)
++
++    # ip link del will wait for all refs to drop first, but iou-zcrx is holding
++    # onto a ref. Terminate iou-zcrx async via a thread after a delay.
++    kill_timer = threading.Timer(1, rx_proc.proc.terminate)
++    kill_timer.start()
++
++    ip(f"link del dev {cfg._nk_host_ifname}")
++    kill_timer.join()
++    cfg._nk_host_ifname = None
++    cfg._nk_guest_ifname = None
++
++    queue_info = netdevnl.queue_get(
++        {"ifindex": cfg.ifindex, "id": cfg.src_queue, "type": "rx"}
++    )
++    ksft_not_in("io-uring", queue_info)
++
++    cmd(f"tc filter del dev {cfg.ifname} ingress pref {cfg._bpf_prog_pref}")
++    cfg._tc_attached = False
++
++    flow_rule_id = set_flow_rule(cfg)
++    defer(ethtool, f"-N {cfg.ifname} delete {flow_rule_id}")
++
++    rx_cmd = f"{cfg.bin_local} -s -p {cfg.port} -i {cfg.ifname} -q {cfg.src_queue}"
++    tx_cmd = f"{cfg.bin_remote} -c -h {cfg.addr_v['6']} -p {cfg.port} -l 12840"
++    with bkg(rx_cmd, exit_wait=True):
++        wait_port_listen(cfg.port, proto="tcp")
++        cmd(tx_cmd, host=cfg.remote)
++    # Short delay since iou cleanup is async and takes a bit of time.
++    time.sleep(0.1)
++    queue_info = netdevnl.queue_get(
++        {"ifindex": cfg.ifindex, "id": cfg.src_queue, "type": "rx"}
++    )
++    ksft_not_in("io-uring", queue_info)
++
++
++def main() -> None:
++    netns = NetNS()
++    cmd("ip netns attach init 1")
++    ip("netns set init 0", ns=netns)
++    ip("link set lo up", ns=netns)
++
++    ksft_run(
++        [
++            test_remove_phys,
++            test_double_lease,
++            test_virtual_lessor,
++            test_phys_lessee,
++            test_different_lessors,
++            test_queue_out_of_range,
++            test_resize_leased,
++            test_self_lease,
++            test_create_tx_type,
++            test_create_primary,
++            test_create_limit,
++            test_link_flap_phys,
++            test_queue_get_virtual,
++            test_remove_virt_first,
++            test_multiple_leases,
++            test_lease_queue_tx_type,
++            test_invalid_netns,
++            test_invalid_phys_ifindex,
++            test_multi_netkit_remove_phys,
++            test_single_remove_phys,
++            test_link_flap_virt,
++            test_phys_queue_no_lease,
++            test_same_ns_lease,
++            test_resize_after_unlease,
++            test_lease_queue_zero,
++            test_release_and_reuse,
++            test_veth_queue_create,
++        ],
++        args=(netns,),
++    )
++
++    cmd("ip netns del init", fail=False)
++    del netns
++
++    with NetDrvContEnv(__file__, rxqueues=2) as cfg:
++        cfg.bin_local = path.abspath(
++            path.dirname(__file__) + "/../../../drivers/net/hw/iou-zcrx"
++        )
++        cfg.bin_remote = cfg.remote.deploy(cfg.bin_local)
++        cfg.port = rand_port()
++
++        ethnl = EthtoolFamily()
++        channels = ethnl.channels_get({"header": {"dev-index": cfg.ifindex}})
++        channels = channels["combined-count"]
++        if channels < 2:
++            raise KsftSkipEx("Test requires NETIF with at least 2 combined channels")
++
++        cfg.src_queue = channels - 1
++
++        with NetNSEnter(str(cfg.netns)):
++            netdevnl = NetdevFamily()
++            bind_result = netdevnl.queue_create(
++                {
++                    "ifindex": cfg.nk_guest_ifindex,
++                    "type": "rx",
++                    "lease": {
++                        "ifindex": cfg.ifindex,
++                        "queue": {"id": cfg.src_queue, "type": "rx"},
++                        "netns-id": 0,
++                    },
++                }
++            )
++            cfg.nk_queue = bind_result["id"]
++
++        # test_destroy must be last because it destroys the netkit devices
++        ksft_run(
++            [test_iou_zcrx, test_attrs, test_attach_xdp_with_mp, test_destroy],
++            args=(cfg,),
++        )
++    ksft_exit()
++
++
++if __name__ == "__main__":
++    main()
 -- 
-2.39.3
+2.43.0
 
