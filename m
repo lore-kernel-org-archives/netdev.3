@@ -1,119 +1,118 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 153ED3A0B01
-	for <netdev@vger.kernel.org>; Thu,  2 Apr 2026 13:02:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775134947; cv=pass; b=hwjDJxEe9kKTAsSqm/QiuaVlzN2N/socivCbTAWpNFKwFrcTFYMFSUYqrBuuVCxZUC3Nic4l9fagDtCwvUQe03O5h4YgVPkLJFjGPYOnfP6HG0A4Bqe6zODXxb3Y8AO7yCT7kEljmhnXMFNtVfvvGzoEeqcRM3CZ/TEZKwlBIDI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775134947; c=relaxed/simple;
-	bh=Qzc7zthmCYDmHkDV8148S1eMSVXY7cYeD7JUEBigKIw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=vAvgOmrWK02cUPHLIltXCNfe8rB6uG11UmGEISMsNcgCBj7Rv/QZkMdgHuLkdFtQfQRxgdGDs3b25UfZAYkLU3bhs276eNgfwxVlHx8PrXOrkjU8CkdKZF5M02xcygO80D5V1Ww4RCQuNZv+kXxL0U1/YKFACarIN9Okr8ZHBDU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=J+UGWKxa; arc=pass smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0EE28751B
+	for <netdev@vger.kernel.org>; Thu,  2 Apr 2026 13:02:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775134980; cv=none; b=Vj224Zz+MSxLtMf3zTP+Mxnx7Wj2J2jVjOFhAHSeJtSeMk5BTyHkaqFrnwk5pBft4JFH8nfHyG3qMlx35pi+mz2YGHjqG+CE3hLvdiBrRwiLy9n4ussN5dDtrKwZ35hxQK8J0Tek+58tQHtxqUI61ZlhekBuJRKy1ErBfhbiemY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775134980; c=relaxed/simple;
+	bh=SnKSzDltBgYBALCDwQxCA2ft7JBfIGZ6PlA2dDY4KdE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=I9aojuJ/+IiMLpnVIuNLO8XKFluKzGdSCjpL/JKbMJruawWeJvFffpAvWTBS/Xhs3YwxMLiR4M1qUieHLKR5f4VLYzQUyZAu8cmE1ErTOh5b9Ib0/74FxHLqAck419ASz1Bbd6W748/CyQDIQZoNbsVSzZ5sglTnT4yyvOdMNAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Vj/6cc1l; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=XAiazY5V; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="J+UGWKxa"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5a1307438ddso1009835e87.1
-        for <netdev@vger.kernel.org>; Thu, 02 Apr 2026 06:02:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775134939; cv=none;
-        d=google.com; s=arc-20240605;
-        b=NyoT4cXk1oeL9aRcDSWBW3jFWAtclxUqZyNbi4YShcg8xrWb/GdykOkQ71wEqPNCv2
-         oqVpB1xcQUg7waTRhlOtsBVz/bLXGQRPmgMfUiG/O0fE5z4xhc9YcdqV3T8oU9Cun5WB
-         Y0SKk5L1kYcmdkHW3eNzvL0S/UMyQh04d1Qr9xxtyFUK7vbQ493XbqR6Uhm5v7m/ymHe
-         PbrCzG6mxtCTJGXwaYAabMzMsE4paJMBdU0mVOOZiYPyZxQJGvQZp+lhjCbgpRELtOCO
-         LZR2uzzQix7IRRBJ6zej3dmi04yTGzsbwRBlX0/D7zm2Cz4sJIe88PrpHUXuRFj9jMqB
-         m/uQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Qzc7zthmCYDmHkDV8148S1eMSVXY7cYeD7JUEBigKIw=;
-        fh=4fyTB+bp/kXcY9YiDjX3Mtl5ckhzwr5O14omfg8tyms=;
-        b=az7/Xcqbh4tWFyLhQpqS2V6pWAWj0YW73noP9IGKXwbQIr7zL6V2tukOMf/mLVTEMJ
-         R65VAXTFJH3kqBA2J71efTqyD1MOlCQAiw/budsJWqebzXxLEPMwy9mzoPoxMJtpvSa7
-         nDQN1WL7LE2djysdcmqm9+0iubqQKc2ZjlaOw4q3M3xmBJiJpqLANn/RgtcQ53iCjRJx
-         4jtxhtQTiSrBwYZJY5RBQDQjUniMYvSnPNtSrNENyisXEoYJSjUmqRq1COzdW577cz5Q
-         WWfSezp6jEpcJFizOEBnDN3JR5VNMuGb5aUMQ8zrC6nE4U/jvAsOK2Rc3Sd+x9Nsly6a
-         72Nw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Vj/6cc1l";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="XAiazY5V"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775134972;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gyYBDxZ8zUQ5bRs4MjkmDO7qkbqdhTlj7yo33WH03so=;
+	b=Vj/6cc1lrcg2EWrIWaOBMTlZk9qtAJkUe0K/e9/b2L2vVrkZFWQCqKWgIuLA/X0PVQMUO1
+	2zihVGFCKOMkTgZoAcyw+rabc3WZX81TjGiHuUMcDBjFMu8GYPXdux2iJes+Ra0/4c18vM
+	Ey1v18l2TSXXJZDk7aX/usKyXWUcpSI=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-630-LKkYpoixPryInVICNxCozA-1; Thu, 02 Apr 2026 09:02:51 -0400
+X-MC-Unique: LKkYpoixPryInVICNxCozA-1
+X-Mimecast-MFC-AGG-ID: LKkYpoixPryInVICNxCozA_1775134970
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-48544725bdeso10515945e9.2
+        for <netdev@vger.kernel.org>; Thu, 02 Apr 2026 06:02:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1775134939; x=1775739739; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Qzc7zthmCYDmHkDV8148S1eMSVXY7cYeD7JUEBigKIw=;
-        b=J+UGWKxa9gFIeVOfgyYjqFc2Klnn4vVyoh+sBlmmFEQQMePK3Ksiq6BvA3AGfP2AvZ
-         yBUfl4RNIis7nOCgaWLdBChpeuNixJRSzMSKnnN9DKUEr4jlSptdvn4pmWg+EHn40pic
-         2qZhtvXQwiY0dlQ7eEareCLAnasuREFBZTrQI//E4YrZK0vaCJcjR21qo6Q1zLADVxqN
-         FzeW4SWwVt4DbERUmCxdyDkE5DPJ2EU00dDjn+UytYg7Ap+99dhDor+Npt0JT1rnf3yx
-         WOVfF36DheFQRgByGhognpg1krBLXtDwAOMxBpEfyil8xF7HW54090I8/jWI76zx2N70
-         EXcg==
+        d=redhat.com; s=google; t=1775134969; x=1775739769; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gyYBDxZ8zUQ5bRs4MjkmDO7qkbqdhTlj7yo33WH03so=;
+        b=XAiazY5VoB6IGK0LAc+DIypwnmaBuFNFbu/hjD/KxKKuCXjR34TFhdQxOsjxARR67/
+         TJs2QB6SPeis7zkGxAM0WNXWk0seujW1Aj+ih6I2TujCLWaFDzJYUbr9GP93kMPDB08x
+         YNmJDh3L+zsS/DBqpwlPvmRWnEFnpd9pRJ4JGmd+yEPNAuSqtOn7kB9OarFlucDSpN/m
+         4/Afr9SPgTyQmp3KkiZATU4CsIqkeB1V/es355100Hl1bBgS7LDPPr0PVpxcrUFZhz+i
+         /l4Wd7E/dualfoemJZZfVgmOHKJbJdaJRBY3KTqkboJ0GEEP9TVYUbiDpLhKt17OMTyB
+         naAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775134939; x=1775739739;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Qzc7zthmCYDmHkDV8148S1eMSVXY7cYeD7JUEBigKIw=;
-        b=YR1J9XlcBTrotSvaDtL0jQ4xMFh8lz0LNBkhUIM9i/Pw7y1cXAZORkXBwIzxEld126
-         ZUuEW+D9co7MOtn3Qqkx2SdUyefLJvenFHxJRWuTE4CUwXDM5KztbRX8B4EXxARXKDxL
-         AbmI9VZsjSGPRBhvXjhpAMqth+i3/kYRtN0tPMw8ygssMFKT4zyBP5OskkC4PvoYwS8C
-         Cq2Tjo4GjltnZ5dwb1aA8qRwOkQhVsgCE1MNQjq6+RF8BOJY62DSR5vejWm14NZfSaq2
-         STRKo1m2bDFvtdNF+kW89Cj3H6A087O7XTmAvXHOa4466JBnnR5aMWB7BJ+VAdpmOPnP
-         n41A==
-X-Forwarded-Encrypted: i=1; AJvYcCW7HSF+9KnhrEmdil1w0E0yKXTRuCpCdxGr7KZ5WD9dsoLoywdGMk3rWW3ZfTXQWHcVzVQi8O8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYSMAjXgbgv3jijbX8Za9aJmD7sCTB/6B7o46AXCjVXyXaIqq8
-	ySejFjxiPpbql9p27v+Di+xe9fwCW37P0PEUkCLpW5w1PqALo7j0VlfSWJusD/xg/sckb06xbui
-	2XhyYhdGNTZnR5WMVHiXq1OocVvFML2rjwp/HhB/yv2fcVaeV27oi8dM=
-X-Gm-Gg: ATEYQzzYqfINirJYibjJvJZszwNVleuwe4YtCfMVhsbq7slm0Djv/EqYUUUWMiJ9LC+
-	gnxwNBGWE6CagzEi2eio479XMkmJjBOTI/H7MKyWhk2tc3TtvhHMJlFXtLVRX4gesHzmhcBTPPG
-	F8SPFo65KqpD4z9goAwFW8wOH8Vi+iXL/QNfTc4FpDNhGTh/3Lp0YJJY/j712STBq+6YTGUAHCJ
-	AArsfN4OGWS3sNbfwW9A3Xqw9q4jeKy5EZXhKtyD5kjA3ZqkD8MJxwzZRgrXV0Wc410ewWGzaJP
-	3hIbU9lUxf5fMN7fEqau7of8BEsw9jQpLJRuiufX
-X-Received: by 2002:a05:6512:3b1f:b0:5a1:2c41:d28d with SMTP id
- 2adb3069b0e04-5a2c1ef9148mr3285986e87.19.1775134937855; Thu, 02 Apr 2026
- 06:02:17 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1775134969; x=1775739769;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gyYBDxZ8zUQ5bRs4MjkmDO7qkbqdhTlj7yo33WH03so=;
+        b=E2lwW0R2aa5rmQ8eSqUWcDUxB4pj4//QTtha5B2/DETa5A0IesT56klV9X0CaBhMXv
+         qf5QfVxOQ//H+kPsdBWLMAzBqE7F0mqFxhYj6Nw1etbCj/SrlHg+UM95CE3T5qQthntQ
+         w7ZdyZRPsviwM0d43yA+fuDCfzOl5HX9Ih+Z895A4PzekYdjveIYRqVmLTuf+F7QC4xt
+         532Gm7Fd2e3A98JkB/qkAKo3vliYv7juZyaD0qm1Mx9AKsfoaRU58UAfXGhhBbyh7olc
+         tG0Mr59rlEvOE9J/Ag3T/UNu/701s0rAwyTo/12JQOIag3pavBt1O6L2CLUSyngadAt0
+         v6tA==
+X-Gm-Message-State: AOJu0YxYnwohou1G75ZgwXhBz2v8RhtIDDdyMyFenUzs0vjeg92q+35C
+	MM8d6BzPXhmH39MsfDF6+soHNmiawFUlqNwW8EwruF5esqZX7TLMj28r3c5DHaOLTKSZalIoNqI
+	HpKyl7/U3raNYw4pwyiRto0q8qIc8NKbfGRA+CnyhPUzAUPElAfYPYe1fLsO/jLKbUA==
+X-Gm-Gg: ATEYQzz9NW+Nar+UuyFZzQExBf905pWCcX2bLsO0KaPRV5kPeapcKD3+bC65qWznVGc
+	pNQfy3EA9v7fHh8OGmDOCsY4mtQWT9MEhZWCw88cpCoMPtW9oSwypmz6bKezZpwpa1lBhCnyn/t
+	6orGPzEIfWVPYYuulve+JrFxUndNh3wtUWltNAelK53zwS1yhtB0UOnj1epWUSWUBoBp/1fVH7r
+	cXGACkqZkPJuGGFPIKuzjnIM4tUYU0Yoe5AK3eOA7yZJLWhBh6q1UrAoBB6fkkW9ebrAZ81Xbxg
+	wK++VDV++yKAAK1Id65yHpkFDPeXN1oxKI0iX3HDWt1OgLnI6xmc65p4K/bhSDOvdNUGhoR8PpL
+	QICofEfdf47mX09H58Gs/0GhlohH5ZMoSAvLQiNEQPv94u3uV5OATkd4ywg==
+X-Received: by 2002:a05:600c:c08a:b0:487:cd8:4c9 with SMTP id 5b1f17b1804b1-4888b79fbdcmr45575735e9.27.1775134968325;
+        Thu, 02 Apr 2026 06:02:48 -0700 (PDT)
+X-Received: by 2002:a05:600c:c08a:b0:487:cd8:4c9 with SMTP id 5b1f17b1804b1-4888b79fbdcmr45575195e9.27.1775134967771;
+        Thu, 02 Apr 2026 06:02:47 -0700 (PDT)
+Received: from [192.168.88.32] ([212.105.153.248])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4888a567bfasm150299115e9.0.2026.04.02.06.02.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 02 Apr 2026 06:02:46 -0700 (PDT)
+Message-ID: <9c101981-4a85-48c3-ad0c-c16a362929eb@redhat.com>
+Date: Thu, 2 Apr 2026 15:02:45 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260313150917.271086-1-marco.crivellari@suse.com> <0ca7f92b-ec4e-469c-ad2b-648d278bcfe9@intel.com>
-In-Reply-To: <0ca7f92b-ec4e-469c-ad2b-648d278bcfe9@intel.com>
-From: Marco Crivellari <marco.crivellari@suse.com>
-Date: Thu, 2 Apr 2026 15:02:05 +0200
-X-Gm-Features: AQROBzBiZA4wu4pRSlW9X59e1j0v4Yj6CRcsXbFsWbV4URy_HSPh_8aVJS8DgF8
-Message-ID: <CAAofZF4X8sOHawQD_DO2CQFDHUdNrtNE9bT_aMEHgaUmwDC-6w@mail.gmail.com>
-Subject: Re: [PATCH] idpf: Replace use of system_unbound_wq with system_dfl_wq
-To: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, Tejun Heo <tj@kernel.org>, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	Lai Jiangshan <jiangshanlai@gmail.com>, Frederic Weisbecker <frederic@kernel.org>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Michal Hocko <mhocko@suse.com>, 
-	Tony Nguyen <anthony.l.nguyen@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 04/13] net: renesas: rswitch: add register
+ definitions for vlan support
+To: Michael Dege <michael.dege@renesas.com>,
+ Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>,
+ =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+ Paul Barker <paul@pbarker.dev>
+Cc: netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260331-rswitch_add_vlans-v3-0-c37f41b1c556@renesas.com>
+ <20260331-rswitch_add_vlans-v3-4-c37f41b1c556@renesas.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260331-rswitch_add_vlans-v3-4-c37f41b1c556@renesas.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Mar 13, 2026 at 5:09=E2=80=AFPM Przemek Kitszel
-<przemyslaw.kitszel@intel.com> wrote:
-> [...]
-> this wording kinda scared me, but after reading linked commits, there is
-> nothing to worry about, as there are no functional changes in this patch
->
-> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+On 3/31/26 12:03 PM, Michael Dege wrote:
+@@ -847,6 +903,98 @@ enum rswitch_gwca_mode {
+>  #define FWMACAGC_MACAGOG	BIT(28)
+>  #define FWMACAGC_MACDESOG	BIT(29)
+>  
+> +//FWMACTL0
 
-Hi,
+Please always use /* */ for comments
 
-Sorry for the late reply. Yes, correct: there are no functional changes.
+/P
 
-Thanks!
---=20
-
-Marco Crivellari
-
-SUSE Labs
