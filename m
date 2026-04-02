@@ -1,304 +1,177 @@
-Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2119.outbound.protection.partner.outlook.cn [139.219.17.119])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010001.outbound.protection.outlook.com [52.101.56.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8BBF31283E;
-	Thu,  2 Apr 2026 11:10:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16731386453;
+	Thu,  2 Apr 2026 11:11:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.1
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775128210; cv=fail; b=gpyTHcxIRSEex4zzdT2FOOhEz7vVLCZtMYP5+lHTIFfnJhyW0muGTXbBenjKYxjXRiPozzEDVADkbZgJV9d1dQsRpfsufapqMr6pNXupR72C9PHBILCgnYnoJviF9lh2cQ9L4Z12roe9wXdTYM3iFVy5wfyum5ZvHX6ocEXooYI=
+	t=1775128286; cv=fail; b=F6tYM0CyLke5srXn3w9FzL5ShMMX1IGOBu1tsx6JH+sS+3caqjln9I/TlYtC6YUzJqfBtqg+FgIfC+jk+hopg0koUVVTxNFj2YiSPKPgcE/Hco0XhRdhcTJQ9cmcvV0Yhf9vH/huLt8oVWYl3kpRM8YooSwYwQc7UsRZEKpiPSs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775128210; c=relaxed/simple;
-	bh=rFuT2zhr26c9cj9Ivbo278KvB0wFWcP1j3atuAjYY84=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gaQReXT6C9XUnPjHOc88ZlsZK++q2s8Qzx7OLYmLNGrPPs/JmqdJQEvL+ensJfVI5ZRVxLxFJWyzujEgKY+FU+zDXhhehykHZpWyAhlb9DCADZMSjs2C/TWsU1HLa2lEDqQZpXegQxP8GZW7bC8enJYLKH+V1pJZaTNmKc+AMeU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.119
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ax4J84EG52gb3vC5Bb8XlVyqNPEs/3CLPK/UQ0L0iurVdaoCz3ga47oJfGVtA1CGh9nJ0SN9u6I5vX36T3QbdxmxLx58oFKExX1hSnV5yoqLcxdVQEVabDnl41S0hU46hdo6QWFs0CjbL3PiR7cjwSTMhVRGscK/3TBntSr9Jorm0XSScTRywwqE36Rg6n+Nz/gBqWii10PD20uRjh2Hrb+1ZfqY882Z1WEtYrfic3Rpu6sPlhtB/e8KQOvvB6fAYOpl4sEMcvKZECkcnJrpXCADmVcEFX90FYOyQl7SmI/xpRsHBSa3lRpaDSI8+8Ab+kX5inClaO5g/CfGMKlL9A==
+	s=arc-20240116; t=1775128286; c=relaxed/simple;
+	bh=fVnvIrRSAlAyBwrQ6pFdjM5aWVzsLbDZ9Mzca7qw2XU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=loMjtusVuM7w5Dyz+jXUXH+ddV/NfNvcepixNHlOdR0SEFShDb6kKftb19SACiR+8vhpZicxeJfyw1oO6e27qeYXcYJcMfWKNFJO8llyA4kXJG+T1QngYyK3jOZJ8HlSE5wHm54MA8TQsOBPBBRyBxzkhFtOnQYaJ/j6XMjqWXM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=PP4Xq2xT; arc=fail smtp.client-ip=52.101.56.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="PP4Xq2xT"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tplPPCfjp7xHz7/2aQkAhaSZ+iQG9pnXLTrT9P4OgAwK0LhW6LeWr75Sp2QFKVuz25nblj1ErZHa5vNp7pyrwX1pLBSUV3SCR6YmIZz5Ey9kF++ekiFHlV9qEUWNAkjKFyVnD8Hrm6Jw9s12KGvSCYg9TirM4m1Jx/gnG1wOEtI9Cpd7vv6mHtiQD/FyOMmyTiTUDFiRNIF+aPgLuAJA8nnX5JdRldB8UC1Nv7SeOGVrBFZEZM2cpSR7P5uzb5Z0otipKz1ynkGdaPghXTH4NIVgL0lmbXH5lyCzPY03elAcjC56NWPKNTKtmsvr6d2epMRDnqBDUjZi1EQGEEjzGQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
+ s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DKYhONsjjCPjvcgI9a6Eumr+0laaJvIfwRXxF+oP7TI=;
- b=SdbyUd1OiXiPdXyehG53Pl7zDBvOWDh+ij03aqr31NmW2k8+841vIU5+9oAOwQzhNdf4siQDXcDZ6lNrpsziaxjpaILkaIOXxqJ4ES4aslYi5bOrAcI0sKGJ2IBbSfzewNjEkyp2mP3gkqqgVQrtVzbKbvIQuuB/vv847Ebt43fItewxzNlNF2XAZqKSw53HweMwNbX5xGsVWVoIWNud5Jwa5tkceqngJR75eKK3Wnh3/H/F1HnXSmTj7ZZtiUWQ2rySP7Sz2FD+pF+OYbFaH66gn4pFKLr0SxxP0w4ri/wdHWS0ivsICRzcWUNAs0qhZ22bxPTv840a4pZ2/ME1TQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=starfivetech.com; dmarc=pass action=none
- header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=starfivetech.com;
-Received: from ZQ0PR01MB1208.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:19::5) by ZQ0PR01MB0951.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:e::8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.19; Thu, 2 Apr
- 2026 10:55:42 +0000
-Received: from ZQ0PR01MB1208.CHNPR01.prod.partner.outlook.cn
- ([fe80::63d1:b688:cab7:50cb]) by
- ZQ0PR01MB1208.CHNPR01.prod.partner.outlook.cn ([fe80::63d1:b688:cab7:50cb%7])
- with mapi id 15.20.9769.017; Thu, 2 Apr 2026 10:55:42 +0000
-From: Changhuang Liang <changhuang.liang@starfivetech.com>
-To: Michael Turquette <mturquette@baylibre.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Emil Renner Berthing <kernel@esmil.dk>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>
-Cc: linux-clk@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-hardening@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Sia Jee Heng <jeeheng.sia@starfivetech.com>,
-	Hal Feng <hal.feng@starfivetech.com>,
-	Ley Foon Tan <leyfoon.tan@starfivetech.com>,
-	Changhuang Liang <changhuang.liang@starfivetech.com>
-Subject: [PATCH v1 01/22] reset: starfive: Rename file name "jh71x0" to "common"
-Date: Thu,  2 Apr 2026 03:55:02 -0700
-Message-Id: <20260402105523.447523-2-changhuang.liang@starfivetech.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260402105523.447523-1-changhuang.liang@starfivetech.com>
-References: <20260402105523.447523-1-changhuang.liang@starfivetech.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: ZQ0PR01CA0028.CHNPR01.prod.partner.outlook.cn (10.2.0.210)
- To ZQ0PR01MB1208.CHNPR01.prod.partner.outlook.cn (10.2.3.165)
+ bh=HnlmygM/FfERX9rHvfkb8GqaKdH6iW2cgftHmTaB5rQ=;
+ b=qJ+W8Bc8zJ/nJZhCH8chsZV/x8M8vKEKvftfhXb3zyYtac/xU2jlqdZzCRUVvJC/ZPu0ePZ1+hVjjrfN50Q0Ub0W29Hg0qY1aYpWZaVOS7E5ULro6o5oOnk3MH1sJWiH4w5dySMJxpevqHWtdQJw2Ds7budy68sCDxebGR/h+bfTa2KLlTeEFV0MArYKqYIQdKSMvUDlFNGYqtB/r7M8ZV0rpaqIRmyQgCS9Fq+UiqcHIGb0wFgMaxkZeBzJPtJ2ztyjAO0lNE4agL3ijDRiOqufxV0pQH2NczAU5zzDioX1oH4HNW2/uHsqq9niMvfaOl6uYEThrt4chK0LAPs6qg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HnlmygM/FfERX9rHvfkb8GqaKdH6iW2cgftHmTaB5rQ=;
+ b=PP4Xq2xTOdH2YixQDPtZBtCD0WPEsZgdDlg92IcWyGqiwtPOqZWXWy9uh/hQnuc2bVSM4cHpBgFp0jdbqp6W+50cBDIwM6cUw1w819nEzN7obStRiOYp9EBcMrtZoTClu6AtSz8CisDuWasUD4XFznvpTPJvnOXfUkdZDS8Gg4pHCAMXN1OGn2iEYMuvN0210pgR5fZ72WJCgCvPNdgC5E/04+qnCDeeNKTDTaXWq67VQOnI5fsergzeIAJNXNiEG8VG/Eb3VuQ9EIfj4XLGtidNFbfDTSxpGx+Fdklug8O/MrXc9ClVBbbr3gNBI7eL9yOlxLmRWSsIJAJrA1AKCA==
+Received: from BY5PR16CA0027.namprd16.prod.outlook.com (2603:10b6:a03:1a0::40)
+ by SJ2PR12MB8955.namprd12.prod.outlook.com (2603:10b6:a03:542::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Thu, 2 Apr
+ 2026 11:11:15 +0000
+Received: from SJ5PEPF000001D2.namprd05.prod.outlook.com
+ (2603:10b6:a03:1a0:cafe::b5) by BY5PR16CA0027.outlook.office365.com
+ (2603:10b6:a03:1a0::40) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9745.30 via Frontend Transport; Thu,
+ 2 Apr 2026 11:11:15 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SJ5PEPF000001D2.mail.protection.outlook.com (10.167.242.54) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9769.17 via Frontend Transport; Thu, 2 Apr 2026 11:11:14 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 2 Apr
+ 2026 04:10:56 -0700
+Received: from c-237-113-240-247.mtl.labs.mlnx (10.126.230.35) by
+ rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Thu, 2 Apr 2026 04:10:53 -0700
+From: Cosmin Ratiu <cratiu@nvidia.com>
+To: <netdev@vger.kernel.org>
+CC: Sabrina Dubroca <sd@queasysnail.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Simon
+ Horman" <horms@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, David Wei
+	<dw@davidwei.uk>, Shuah Khan <shuah@kernel.org>,
+	<linux-kselftest@vger.kernel.org>, Cosmin Ratiu <cratiu@nvidia.com>, "Dragos
+ Tatulea" <dtatulea@nvidia.com>
+Subject: [PATCH net v7 0/4] macsec: Add support for VLAN filtering in offload mode
+Date: Thu, 2 Apr 2026 14:10:30 +0300
+Message-ID: <20260402111034.1494714-1-cratiu@nvidia.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: ZQ0PR01MB1208:EE_|ZQ0PR01MB0951:EE_
-X-MS-Office365-Filtering-Correlation-Id: c281e2a0-6a27-4031-5abe-08de90a6610a
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001D2:EE_|SJ2PR12MB8955:EE_
+X-MS-Office365-Filtering-Correlation-Id: 908eba36-e7e0-4bcc-4a99-08de90a88e57
 X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|52116014|7416014|38350700014|921020|22082099003|18002099003|56012099003;
+	BCL:0;ARA:13230040|82310400026|36860700016|7416014|376014|1800799024|13003099007|56012099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	ik//7JKFLVRoVbCoKCTRqpempKBgM3FTza5uSV669JvNLAaIuogloz3ybl1qvc8LK+Qx9GCEQv5Ksi22PCAcCh4B52fsmwBsVNhGBzZ8Onmgd5wUtYYtZiOkGQbd7FyY/6ucVboNxcjeZG21O2nD83uEpOeXXg0wWK3Yeg1qNfBROkEmt0mzBZHag07Q547CIXHztiW/AeM0SjCJqB29561d1OpBRzPcJfnzHIQJlNORK1CNSQAlLCFbnaCRdY/tfybm78D+FRNHai+ws3gvmpa3S+bkK7+O1IlrEuGEG+iYdxZ35916CCWWVtw1RnPq1sNI8lV44Fq6+7p/dUI1SO6xFVjfOq5zhuI4qVDjK40ujWGaZoaLrNUhOlnjj+VkvhFfPBWgQrmHm8/RpOiYW0zBBs1ogtnohIHw/iq2LSoX/JUr83Z/4JgbAmjorS73UL6cZuvXaieQPekCqH4ntWB22t5EL+p56BR7BgqFShuPfBMo63LgFfd6kQiwC/kq9q8ZSmHMefW6reLQ+12OvVhwf4cmcFe4/AqNK2hCqpHIJRWybmVPgcYuWKUFeU1V8DCjJDBmM5sGsL1pNg1AXUhFYi7EspmMvxYVTWe7oEM=
+	+5rjucn1lorQilDJkEsjS1MJLd4TbGkZHHlZxfVrCZ4UEzDb5iXp9j0buGuqW099ElDh6cK1eakN9hqoDlDIcuUEyEnjBAhXtOfaagjQLVkwgMYDeli9SF+M5W2X0s11UwSSD3ogkJzE5r8G5hAgIjXJELzb2LeUth+E1F8CnngWMtSMmLYjLqMu0/3H72DgqFQiARgJHJxMew1skxj/ShoIzEFLgtb1ainAsEnEZVF63q78Z/UpNKtX2AS0qw3Uqz86MU6u8h1Yw7zJCJiUSdlpfW65iuRhBrPioSOWFhU/YWoSDkub98NejXqDc0TDjfQ+dadfimOfnksP29VKZiNSx+DkkUK68ff3/4oXHNl7MFL7Oj+gKuilgHXNlDHNE9iYPUqXU+24cKMfXKHgnKHmuiWFNU48aWtwBjK2PZvFVyyVc5867gSPrzWhZlj6hhibkPCf1NwL9V09Bq/q3/xKC4eRnFp1phJJOp+Llhy2aEUbIkdVF5qtE7Bt4/3F1oLolGE+nhqRAeSn6RhIx+lNYo0jwVxk0PuQHXSxJV2TEPawC532g8g2KcLAhXKofIrUMYIIC/cSLRo4XS7CRiOyRuKBXEkpDJdNDfFpSdNKi5MIMKeJdcK+PbKqw6Sy6RGOhA81yTSJ9FpVPm1VzmnkIDm0ptM6YxS+TtHHR6hxRte/+1XAn/gZvJZ8inWarvLjGQtHvWTaAAQSUHS2LdwGUV6KN7cMvYgffWqoDaTwzC99nuguLczIg+ivzVyL8/dlbae0dPW4DCKeGXnufw==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQ0PR01MB1208.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(52116014)(7416014)(38350700014)(921020)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1102;
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(7416014)(376014)(1800799024)(13003099007)(56012099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?m1z14quj0Qw+Ss0Ab/L+4TnOa4Wp6yXNCz42+BNLNDYoljKoG7hHb+Q1Dt1+?=
- =?us-ascii?Q?nkrBwbULCHSY5r3gqFc2TswR7EFMnjATHFU8hnHk2vc0/eLV1roFYnp7Crp7?=
- =?us-ascii?Q?+5jX251O2ErsvkFZ2h0UjoZCX/P/hxE8RZYLPaxKdeQ7IKBfh+DFU3jfHXIm?=
- =?us-ascii?Q?ogxXLl9B7khdFpNrCQXnfu2ZQ8sPSyeMyeRafsKBhlKENGMOMTjr+eayc8Mt?=
- =?us-ascii?Q?dBZaPVpHpct9x2RUHHFR1lYQDT4MiWAFZo655ezo1j+yqWRcmjFoxY8eoC1m?=
- =?us-ascii?Q?FKLtMNqpVTKRiJbTgJlICrnsJI61N99CxTOrXdGLAxHZ4dFcXL8ZgcJ5RShi?=
- =?us-ascii?Q?HwEpdhK+Us9s6yEPaK9IlfXZQ8N5mOC7+3mQE7EFsS9R8J3gg8Eu2zSQe2jV?=
- =?us-ascii?Q?FQJR801VEWNuHCdB7xbI1+QXSFBYQDAtkTDqKHieC5SjNzxC4kq1teXRITI7?=
- =?us-ascii?Q?ry4F4k+/nFFoGPGE+egECwvP0kQxqr7nN89v8Vp60Pp119aOyICYSdSBp0hR?=
- =?us-ascii?Q?GgbwClSrfoCIebWSeK3dm8mwQh7KpxrJKAo9Bs+0CYks4IbDrRLnzx0zhj7+?=
- =?us-ascii?Q?iPWKnGd7HXxcidS2RcZJp4OOTuPOYdc+2ZoyxoAGFOHM5O6HU2XiMSj17R2S?=
- =?us-ascii?Q?vHYklKnjRY4rFrLiEy0LOTkA9xvN6++pY68lkDh9VSU06g9Oy8lrVcgsyhIr?=
- =?us-ascii?Q?3RTXLiHHcrvKED7E4coI++7Jn/rXPVUuen243geHVbsanxGhVrQSGTels+8e?=
- =?us-ascii?Q?XCWWgvVblBqVYTF0ee9IVv/saIxTLvowIPD4/U8mHcwEz6Q9fK2Ig5qsmXwP?=
- =?us-ascii?Q?iJVoD3YPhL8cnd7KMlpGtZYfLLwvYN0yYPQ/pPcK3gk6orddG9/a2JvV/7xz?=
- =?us-ascii?Q?zjBAVUeCxZ9P7/a/eFtseAssF0l3Y/vIdnACpNbeAljIHOwGvls7NcHCYeim?=
- =?us-ascii?Q?J2Z8tijkEhsFPuKxIloCyuMJOZm+EQQ6beBHIbyTmJ60H6eHH4bCva4wJbod?=
- =?us-ascii?Q?hWPkBjjG8/q1haK0qqaR1xX8cKm8++hl0IPIIHKnlX+J1SFLMyZ6wOcx/eGT?=
- =?us-ascii?Q?7EsvTyO1Whn4MnB662HL3XafgiYUxUfNilTUAyHIdD5zaQjuU6R4FH+qz8YL?=
- =?us-ascii?Q?keCuRrZisrFhDIBUM5wF/rjjnfrXhs/0/dEqujodITwcz5ruaxpDcXyPMEEe?=
- =?us-ascii?Q?dNROp+jqoAlHtYILt5nGS6PkIZ3AdYdn9/zDIlOEAOEEPTDN8sFnQrEOT3x+?=
- =?us-ascii?Q?fipWmTpJFSR93ZRDL4Q2cgqklUPxMTtV3YOKQcIwdrHB5UL7Ko8Hhtuc5Gow?=
- =?us-ascii?Q?CGR+aBsp4qV1BwwHb5/H8Xk7tt2bdl+xiF6wiw4LEjFB2KGxXG7JWfxADfKA?=
- =?us-ascii?Q?hWxmZxsQIQO3CPzm4tg0eCTpxlC/4H7ANVyMdBMoRtqqf5q6+RIhiOFlMh7f?=
- =?us-ascii?Q?fHWx3utYOPkD9/+QBy8crACFcgTzvbhKrkGFPuQ8hY5obKeuaWmJg+6a1QWm?=
- =?us-ascii?Q?hc3tlMA2fCYV6hKsyyisn4zdD4jz6BYHMidwHNmieOKJhjTQCsd1lMrtjI0b?=
- =?us-ascii?Q?e2zeKS4G3TUVvwjTqMCUpu2BC4VV+1XtNTN1joRg//uF2HdffJ7CR04xPi7x?=
- =?us-ascii?Q?BuA3hJEkPUy/D1ThHQvzd3wSkZ1HnRWuWYV783DuTlrLhHiQdNhfZBeY00LT?=
- =?us-ascii?Q?jja2n15PH7AqRzFB48pU9/r2acgyzrKzjKxvC/czOWzyQfAnPnqLJK9wtQcA?=
- =?us-ascii?Q?USvAxKflTJHXdOdNljkW5Rid3CdK9pJ9PjeOBaSPJdMcsGUli+97?=
-X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c281e2a0-6a27-4031-5abe-08de90a6610a
-X-MS-Exchange-CrossTenant-AuthSource: ZQ0PR01MB1208.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2026 10:55:41.9779
+	kMuBuSxZS7fzyDhGld8ZZZFH+zg0T1FbBe21NwCYZUNW0a93E5EuGwxt0CTlc4nWS9OlG6Yk2eDqJguHoRmJsGWSru7JtkzpFgBSjc7vhZHhIdmqnjx9DyGFPaX3Y7ES33rchdUcvBJSKGMVtSCoGl1qBkhBscFOwpV85oZRkDVHsUepFF5ViJmcvt27nuYJKRXKXP9kh6tC3ohX4xvydDwLd/ZorYvHyh1j65PKBUjfUkdtndggcHNvnlNZc3MRW3VGPZD0zS3Mg9s6nCY3ajg995XmuEs/Poq8pk7c4g8GAzB2kdf75mlX0JYILFA2rexXaTRnuy6YaokXyYntGwkxaUGi7y5Jc+18fGWB3itcXJX/oCwy4Cwkj6YC5y6zCkIEYH1YtSElI4OgBrMYJ+nzH9quYeI/RcsNUw86AGGGsPWGon5dH0/RHy+9FH5S
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2026 11:11:14.8701
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uoRMG7knW43ye/eT36mC6IB2tCVqFw8NcLXAyZR5S+OtO2oja4gH+3AFHyNrQHNaM2FVLAgW08snwQiqGrILsdXd2tlaSVXGoZJLXe/G3aaIj+xdbLtd9YvPF+48EgDA
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQ0PR01MB0951
+X-MS-Exchange-CrossTenant-Network-Message-Id: 908eba36-e7e0-4bcc-4a99-08de90a88e57
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001D2.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8955
 
-From: Sia Jee Heng <jeeheng.sia@starfivetech.com>
+This short series adds support for VLANs in MACsec devices when offload
+mode is enabled. This allows VLAN netdevs on top of MACsec netdevs to
+function, which accidentally used to be the case in the past, but was
+broken. This series adds back proper support.
 
-StarFive JHB100 shares a similar clock and reset design with JH7110.
-To facilitate the reuse of the file and its functionalities, files
-containing the "jh71x0" naming convention are renamed to use the
-"common" wording.
+As part of this, the existing nsim-only MACsec offload tests were
+translated to Python so they can run against real HW and new
+traffic-based tests were added for VLAN filter propagation, since
+there's currently no uAPI to check VLAN filters.
 
-Signed-off-by: Sia Jee Heng <jeeheng.sia@starfivetech.com>
-Reviewed-by: Ley Foon Tan <leyfoon.tan@starfivetech.com>
-Reviewed-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
-Signed-off-by: Changhuang Liang <changhuang.liang@starfivetech.com>
 ---
- drivers/clk/starfive/clk-starfive-jh7110-sys.c              | 2 +-
- drivers/reset/starfive/Kconfig                              | 6 +++---
- drivers/reset/starfive/Makefile                             | 2 +-
- .../{reset-starfive-jh71x0.c => reset-starfive-common.c}    | 4 ++--
- .../{reset-starfive-jh71x0.h => reset-starfive-common.h}    | 6 +++---
- drivers/reset/starfive/reset-starfive-jh7100.c              | 2 +-
- drivers/reset/starfive/reset-starfive-jh7110.c              | 4 ++--
- .../{reset-starfive-jh71x0.h => reset-starfive-common.h}    | 4 ++--
- 8 files changed, 15 insertions(+), 15 deletions(-)
- rename drivers/reset/starfive/{reset-starfive-jh71x0.c => reset-starfive-common.c} (97%)
- rename drivers/reset/starfive/{reset-starfive-jh71x0.h => reset-starfive-common.h} (75%)
- rename include/soc/starfive/{reset-starfive-jh71x0.h => reset-starfive-common.h} (81%)
 
-diff --git a/drivers/clk/starfive/clk-starfive-jh7110-sys.c b/drivers/clk/starfive/clk-starfive-jh7110-sys.c
-index 03c17cd2032f..edf4c45e6ff0 100644
---- a/drivers/clk/starfive/clk-starfive-jh7110-sys.c
-+++ b/drivers/clk/starfive/clk-starfive-jh7110-sys.c
-@@ -14,7 +14,7 @@
- #include <linux/platform_device.h>
- #include <linux/slab.h>
- 
--#include <soc/starfive/reset-starfive-jh71x0.h>
-+#include <soc/starfive/reset-starfive-common.h>
- 
- #include <dt-bindings/clock/starfive,jh7110-crg.h>
- 
-diff --git a/drivers/reset/starfive/Kconfig b/drivers/reset/starfive/Kconfig
-index d832339f61bc..29fbcf1a7d83 100644
---- a/drivers/reset/starfive/Kconfig
-+++ b/drivers/reset/starfive/Kconfig
-@@ -1,12 +1,12 @@
- # SPDX-License-Identifier: GPL-2.0-only
- 
--config RESET_STARFIVE_JH71X0
-+config RESET_STARFIVE_COMMON
- 	bool
- 
- config RESET_STARFIVE_JH7100
- 	bool "StarFive JH7100 Reset Driver"
- 	depends on ARCH_STARFIVE || COMPILE_TEST
--	select RESET_STARFIVE_JH71X0
-+	select RESET_STARFIVE_COMMON
- 	default ARCH_STARFIVE
- 	help
- 	  This enables the reset controller driver for the StarFive JH7100 SoC.
-@@ -15,7 +15,7 @@ config RESET_STARFIVE_JH7110
- 	bool "StarFive JH7110 Reset Driver"
- 	depends on CLK_STARFIVE_JH7110_SYS
- 	select AUXILIARY_BUS
--	select RESET_STARFIVE_JH71X0
-+	select RESET_STARFIVE_COMMON
- 	default ARCH_STARFIVE
- 	help
- 	  This enables the reset controller driver for the StarFive JH7110 SoC.
-diff --git a/drivers/reset/starfive/Makefile b/drivers/reset/starfive/Makefile
-index 7a44b66fb9d5..582e4c160bd4 100644
---- a/drivers/reset/starfive/Makefile
-+++ b/drivers/reset/starfive/Makefile
-@@ -1,5 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0
--obj-$(CONFIG_RESET_STARFIVE_JH71X0)		+= reset-starfive-jh71x0.o
-+obj-$(CONFIG_RESET_STARFIVE_COMMON)		+= reset-starfive-common.o
- 
- obj-$(CONFIG_RESET_STARFIVE_JH7100)		+= reset-starfive-jh7100.o
- obj-$(CONFIG_RESET_STARFIVE_JH7110)		+= reset-starfive-jh7110.o
-diff --git a/drivers/reset/starfive/reset-starfive-jh71x0.c b/drivers/reset/starfive/reset-starfive-common.c
-similarity index 97%
-rename from drivers/reset/starfive/reset-starfive-jh71x0.c
-rename to drivers/reset/starfive/reset-starfive-common.c
-index 29ce3486752f..d615c4a68cc0 100644
---- a/drivers/reset/starfive/reset-starfive-jh71x0.c
-+++ b/drivers/reset/starfive/reset-starfive-common.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-or-later
- /*
-- * Reset driver for the StarFive JH71X0 SoCs
-+ * Reset driver for the StarFive SoCs
-  *
-  * Copyright (C) 2021 Emil Renner Berthing <kernel@esmil.dk>
-  */
-@@ -12,7 +12,7 @@
- #include <linux/reset-controller.h>
- #include <linux/spinlock.h>
- 
--#include "reset-starfive-jh71x0.h"
-+#include "reset-starfive-common.h"
- 
- struct jh71x0_reset {
- 	struct reset_controller_dev rcdev;
-diff --git a/drivers/reset/starfive/reset-starfive-jh71x0.h b/drivers/reset/starfive/reset-starfive-common.h
-similarity index 75%
-rename from drivers/reset/starfive/reset-starfive-jh71x0.h
-rename to drivers/reset/starfive/reset-starfive-common.h
-index db7d39a87f87..266acc4b2caf 100644
---- a/drivers/reset/starfive/reset-starfive-jh71x0.h
-+++ b/drivers/reset/starfive/reset-starfive-common.h
-@@ -3,12 +3,12 @@
-  * Copyright (C) 2021 Emil Renner Berthing <kernel@esmil.dk>
-  */
- 
--#ifndef __RESET_STARFIVE_JH71X0_H
--#define __RESET_STARFIVE_JH71X0_H
-+#ifndef __RESET_STARFIVE_COMMON_H
-+#define __RESET_STARFIVE_COMMON_H
- 
- int reset_starfive_jh71x0_register(struct device *dev, struct device_node *of_node,
- 				   void __iomem *assert, void __iomem *status,
- 				   const u32 *asserted, unsigned int nr_resets,
- 				   struct module *owner);
- 
--#endif /* __RESET_STARFIVE_JH71X0_H */
-+#endif /* __RESET_STARFIVE_COMMON_H */
-diff --git a/drivers/reset/starfive/reset-starfive-jh7100.c b/drivers/reset/starfive/reset-starfive-jh7100.c
-index 2a56f7fd4ba7..546dea2e5811 100644
---- a/drivers/reset/starfive/reset-starfive-jh7100.c
-+++ b/drivers/reset/starfive/reset-starfive-jh7100.c
-@@ -8,7 +8,7 @@
- #include <linux/mod_devicetable.h>
- #include <linux/platform_device.h>
- 
--#include "reset-starfive-jh71x0.h"
-+#include "reset-starfive-common.h"
- 
- #include <dt-bindings/reset/starfive-jh7100.h>
- 
-diff --git a/drivers/reset/starfive/reset-starfive-jh7110.c b/drivers/reset/starfive/reset-starfive-jh7110.c
-index 29a43f0f2ad6..87dba01491ae 100644
---- a/drivers/reset/starfive/reset-starfive-jh7110.c
-+++ b/drivers/reset/starfive/reset-starfive-jh7110.c
-@@ -7,9 +7,9 @@
- 
- #include <linux/auxiliary_bus.h>
- 
--#include <soc/starfive/reset-starfive-jh71x0.h>
-+#include <soc/starfive/reset-starfive-common.h>
- 
--#include "reset-starfive-jh71x0.h"
-+#include "reset-starfive-common.h"
- 
- #include <dt-bindings/reset/starfive,jh7110-crg.h>
- 
-diff --git a/include/soc/starfive/reset-starfive-jh71x0.h b/include/soc/starfive/reset-starfive-common.h
-similarity index 81%
-rename from include/soc/starfive/reset-starfive-jh71x0.h
-rename to include/soc/starfive/reset-starfive-common.h
-index 47b486ececc5..56d8f413cf18 100644
---- a/include/soc/starfive/reset-starfive-jh71x0.h
-+++ b/include/soc/starfive/reset-starfive-common.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 */
--#ifndef __SOC_STARFIVE_RESET_JH71X0_H
--#define __SOC_STARFIVE_RESET_JH71X0_H
-+#ifndef __SOC_STARFIVE_RESET_COMMON_H
-+#define __SOC_STARFIVE_RESET_COMMON_H
- 
- #include <linux/auxiliary_bus.h>
- #include <linux/compiler_types.h>
+V7: 
+- Added missing ethtool feature checks.
+
+V6: https://lore.kernel.org/netdev/20260330130130.989236-1-cratiu@nvidia.com/T/#u
+- Resurrected nsim debugfs file for VLAN filters.
+- Switched to WARN_ON_ONCE in nsim, which is always compiled in.
+- Tweaked tests to check the nsim VLAN filter file on nsim.
+- Disabled ping on nsim in offload mode, data plane doesn't work.
+- Added CONFIG_VLAN_8021Q to the test config.
+
+V5: https://lore.kernel.org/netdev/20260323123633.756163-1-cratiu@nvidia.com/T/#u
+- Merged tests and macsec lib in a single file.
+- Fixed Python linter issues.
+- Added CONFIG_MACSEC to tools/testing/selftests/drivers/net/config
+
+V4: https://lore.kernel.org/netdev/20260313105227.1884391-1-cratiu@nvidia.com/T/#u
+- Migrated nsim-only macsec tests to Python, usable against real hw.
+- Ran these tests against both nsim and mlx5.
+- Gave up on nsim patches since the tests no longer use them.
+
+V3: https://lore.kernel.org/netdev/20260306151004.2862198-1-cratiu@nvidia.com/t/#u
+- Moved back to net.
+- Added proper rollback support for VLAN filters in case of failure.
+- Added VLAN as a requirement for the new macsec tests.
+
+V2: https://lore.kernel.org/netdev/20260227090227.1552512-1-cratiu@nvidia.com/
+- Sent to net-next instead of net because of apparent complexity.
+- Changed VLAN filtering to only function in offload mode.
+- Added tests.
+
+V1: https://lore.kernel.org/netdev/20260107104723.2750725-1-cratiu@nvidia.com/
+
+Cosmin Ratiu (4):
+  selftests: Migrate nsim-only MACsec tests to Python
+  nsim: Add support for VLAN filters
+  selftests: Add MACsec VLAN propagation traffic test
+  macsec: Support VLAN-filtering lower devices
+
+ drivers/net/macsec.c                          |  44 ++-
+ drivers/net/netdevsim/netdev.c                |  65 +++-
+ drivers/net/netdevsim/netdevsim.h             |   8 +
+ tools/testing/selftests/drivers/net/Makefile  |   1 +
+ tools/testing/selftests/drivers/net/config    |   2 +
+ .../selftests/drivers/net/lib/py/env.py       |   9 +
+ tools/testing/selftests/drivers/net/macsec.py | 343 ++++++++++++++++++
+ .../selftests/drivers/net/netdevsim/Makefile  |   1 -
+ .../drivers/net/netdevsim/macsec-offload.sh   | 117 ------
+ 9 files changed, 465 insertions(+), 125 deletions(-)
+ create mode 100755 tools/testing/selftests/drivers/net/macsec.py
+ delete mode 100755 tools/testing/selftests/drivers/net/netdevsim/macsec-offload.sh
+
 -- 
-2.25.1
+2.53.0
 
