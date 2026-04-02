@@ -1,75 +1,62 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8823F7A9B;
-	Thu,  2 Apr 2026 23:10:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EA693F7E90;
+	Thu,  2 Apr 2026 23:11:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775171459; cv=none; b=AG9sE4ZO3o9j3UFo/gFomrVmkv8dD6ESYAdlsf8EIMuxZPstirqBB57aiqO0fthmf6E2t+TC2jEwvqGHUa+q4Xj7ddykBQYrkYKmRigBglFK7hyN0jcYRAbRXhdJgSmHA2/WyIOc2/JYQmOLQ+GPVX56+Pfadjc0IwhmYtqfD/I=
+	t=1775171462; cv=none; b=gX2AAzjz+F81z7z5EZ+SDPB2ZHYmWao9ds6K7zXwwu+Yj5/dfPBVkvP1Vzp8KJWSdWlHiV/9XcbEo8tjoBOEJ/J6cxR+sjUyiQBNpvVnG7MPWXntcLMTkDdKxfEFPqFMSvQtaBKcj0yczE5HmKwwKqn7Ku/7xcVo0cBakIuWHyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775171459; c=relaxed/simple;
-	bh=2MZHnP/9cS14JCDWx6lZ3RRAkM3yTL2R5Dnn1mrIUqo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=W7U9jxcdHPgKBEHUBzmCTplO6nrLvnADRlRrtlK0rBVv25EaBU3LV5syJ8vNno3prek5PjPsNU9ggL0y9G96bOWsGks91lHjIJvuOvfXyosgkSJalhPDr5xrkbe7hw1Nh2F9e/zuHd2ifkUS4njM1pPkhpNRdytQYvDSKH4ZeGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e+/yFDc/; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1775171462; c=relaxed/simple;
+	bh=UpMdY1g1PfOKshR4NsIYaGtrMFgeqaGClyUlSFBlGhE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ZK5eRmuGIphx4y25YJTOXCb3SiruTCyNhIdB7ASuzuYSrrf7bAP7/4vt6adt9pSh98PiiFXebRt7r7wFUvF9WMmLsNrqkNXpRhiZSRfpPdzPMnKesmJnXGRGQzDWJVpaxETwwTVi6mxoZDJ02P0WIcAt7f5D2YKex62ugGMrZDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=OkF70cRO; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e+/yFDc/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775171458; x=1806707458;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=2MZHnP/9cS14JCDWx6lZ3RRAkM3yTL2R5Dnn1mrIUqo=;
-  b=e+/yFDc/CMNLX+knba12rDvUjHDHkVGCuh7XO1pspZ7TQyHoB7ryj448
-   gzQCieOmCabv3PcvutKuxwi6xCZIfFWzkn9l5ZhUlFMezPxRoU1gErZ1G
-   1LzcpDetSO1O/Q8k4VS9mUgNzE9qf9pfigWyaFQMuRAbzwSOZV6L8+fHa
-   jO/yV9pcNCbJght9zIKLZQP00/FAlPLG8c8vvxwFxuJTawxiGrQvfpAHu
-   A32fII4YnN9t070ceoxo+NfWu0JkAprxMEBaccN+EJZLTuJeDcIBxsf4E
-   VdS5DCQ+kzksOAuUP0Gk3AIQ8SVnHgorhOkmNLdA0qVgNXg3XxW6ztiJi
-   Q==;
-X-CSE-ConnectionGUID: UCevG/HqR3+y8mg5zMNevA==
-X-CSE-MsgGUID: mF0FQ5lxSs+kIB0ZA8AJsA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11747"; a="76123140"
-X-IronPort-AV: E=Sophos;i="6.23,156,1770624000"; 
-   d="scan'208";a="76123140"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2026 16:10:57 -0700
-X-CSE-ConnectionGUID: b08BDPBoQnGTgTdVWQH2Bg==
-X-CSE-MsgGUID: GhW3xD2mR4qwi9Nme4jaJQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,156,1770624000"; 
-   d="scan'208";a="227044466"
-Received: from gklab-003-001.igk.intel.com ([10.91.173.48])
-  by orviesa008.jf.intel.com with ESMTP; 02 Apr 2026 16:10:53 -0700
-From: Grzegorz Nitka <grzegorz.nitka@intel.com>
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="OkF70cRO"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=ntsEHhRS8sovuiOJdhvs+xFYj3ZMQ0+swZ5snRHTxsU=; b=OkF70cRORWbbNRSvnrnSpE2CXD
+	evauTNYXduhZTgx/xhAORX802sDFtOsxSnY0Pa+28UWX422XfowZumISZE6+Zgt4WEc8fhIKqajUx
+	2BdCm6DPa+kT5EX+/yCqhj9yJ21Utr/F9XBnEGQBdhtBcDfVOmQ841uqoM+eTRFU1Bm+F5Ru/iwSW
+	LwyzBXDKN2R/smAU94T8lB4ErQI7AOrXuuxG5uZ5N2oK3D/STjUpNEsjhQQyTa7U2XvMxEpdLodvz
+	cLT4hD9YAAAHgtM2QvJPDMXEFtqoJ7Frl0Sj1vlaiA/+El8zv5BDc3SXCsorXw2nSNYyRFU1Jq+b2
+	boEMhmuQ==;
+Received: from localhost ([127.0.0.1])
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1w8RBO-0000mS-03;
+	Fri, 03 Apr 2026 01:10:38 +0200
+From: Daniel Borkmann <daniel@iogearbox.net>
 To: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org,
-	poros@redhat.com,
-	richardcochran@gmail.com,
-	andrew+netdev@lunn.ch,
-	przemyslaw.kitszel@intel.com,
-	anthony.l.nguyen@intel.com,
-	Prathosh.Satish@microchip.com,
-	ivecera@redhat.com,
-	jiri@resnulli.us,
-	arkadiusz.kubalewski@intel.com,
-	vadim.fedorenko@linux.dev,
-	donald.hunter@gmail.com,
-	horms@kernel.org,
-	pabeni@redhat.com,
+Cc: bpf@vger.kernel.org,
 	kuba@kernel.org,
 	davem@davemloft.net,
-	edumazet@google.com,
-	Grzegorz Nitka <grzegorz.nitka@intel.com>
-Subject: [PATCH v5 net-next 7/8] ice: add Tx reference clock index handling to AN restart command
-Date: Fri,  3 Apr 2026 01:06:25 +0200
-Message-Id: <20260402230626.3826719-8-grzegorz.nitka@intel.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20260402230626.3826719-1-grzegorz.nitka@intel.com>
-References: <20260402230626.3826719-1-grzegorz.nitka@intel.com>
+	razor@blackwall.org,
+	pabeni@redhat.com,
+	willemb@google.com,
+	sdf@fomichev.me,
+	john.fastabend@gmail.com,
+	martin.lau@kernel.org,
+	jordan@jrife.io,
+	maciej.fijalkowski@intel.com,
+	magnus.karlsson@intel.com,
+	dw@davidwei.uk,
+	toke@redhat.com,
+	yangzhenze@bytedance.com,
+	wangdongdong.6@bytedance.com
+Subject: [PATCH net-next v11 04/14] net, ethtool: Disallow leased real rxqs to be resized
+Date: Fri,  3 Apr 2026 01:10:21 +0200
+Message-ID: <20260402231031.447597-5-daniel@iogearbox.net>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260402231031.447597-1-daniel@iogearbox.net>
+References: <20260402231031.447597-1-daniel@iogearbox.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -77,97 +64,136 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: Clear (ClamAV 1.4.3/27959/Thu Apr  2 08:25:45 2026)
 
-Extend the Restart Auto-Negotiation (AN) AdminQ command with a new
-parameter allowing software to specify the Tx reference clock index to
-be used during link restart.
+Similar to AF_XDP, do not allow queues in a physical netdev to be resized
+by ethtool -L when they are leased. Cover channel resize paths (both
+netlink and ioctl) to reject resizing when the queues would be affected.
 
-This patch:
- - adds REFCLK field definitions to ice_aqc_restart_an
- - updates ice_aq_set_link_restart_an() to take a new refclk parameter
-   and properly encode it into the command
- - keeps legacy behavior by passing REFCLK_NOCHANGE where appropriate
+Given we need to have different checks for RX vs TX, detangle the code into
+a two-loop version rather than the range of new_combined + min(new_rx, new_tx)
+to old_combined + max(old_rx, old_tx).
 
-This prepares the driver for configurations requiring dynamic selection
-of the Tx reference clock as part of the AN flow.
-
-Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Co-developed-by: David Wei <dw@davidwei.uk>
+Signed-off-by: David Wei <dw@davidwei.uk>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
 ---
- drivers/net/ethernet/intel/ice/ice_adminq_cmd.h | 2 ++
- drivers/net/ethernet/intel/ice/ice_common.c     | 5 ++++-
- drivers/net/ethernet/intel/ice/ice_common.h     | 2 +-
- drivers/net/ethernet/intel/ice/ice_lib.c        | 3 ++-
- 4 files changed, 9 insertions(+), 3 deletions(-)
+ net/ethtool/channels.c | 28 +++++++++++++++++-----------
+ net/ethtool/ioctl.c    | 21 ++++++++++++---------
+ 2 files changed, 29 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h b/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
-index 859e9c66f3e7..a24a0613d887 100644
---- a/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
-+++ b/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
-@@ -1169,6 +1169,8 @@ struct ice_aqc_restart_an {
- 	u8 cmd_flags;
- #define ICE_AQC_RESTART_AN_LINK_RESTART	BIT(1)
- #define ICE_AQC_RESTART_AN_LINK_ENABLE	BIT(2)
-+#define ICE_AQC_RESTART_AN_REFCLK_M	GENMASK(4, 3)
-+#define ICE_AQC_RESTART_AN_REFCLK_NOCHANGE 0
- 	u8 reserved2[13];
- };
+diff --git a/net/ethtool/channels.c b/net/ethtool/channels.c
+index 45232cf1c144..64ef8cff2005 100644
+--- a/net/ethtool/channels.c
++++ b/net/ethtool/channels.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
  
-diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
-index ce11fea122d0..de88aec9137c 100644
---- a/drivers/net/ethernet/intel/ice/ice_common.c
-+++ b/drivers/net/ethernet/intel/ice/ice_common.c
-@@ -4126,12 +4126,13 @@ int ice_get_link_status(struct ice_port_info *pi, bool *link_up)
-  * @pi: pointer to the port information structure
-  * @ena_link: if true: enable link, if false: disable link
-  * @cd: pointer to command details structure or NULL
-+ * @refclk: the new TX reference clock, 0 if no change
-  *
-  * Sets up the link and restarts the Auto-Negotiation over the link.
-  */
- int
- ice_aq_set_link_restart_an(struct ice_port_info *pi, bool ena_link,
--			   struct ice_sq_cd *cd)
-+			   struct ice_sq_cd *cd,  u8 refclk)
+-#include <net/xdp_sock_drv.h>
++#include <net/netdev_queues.h>
+ 
+ #include "common.h"
+ #include "netlink.h"
+@@ -109,7 +109,7 @@ ethnl_set_channels_validate(struct ethnl_req_info *req_info,
+ static int
+ ethnl_set_channels(struct ethnl_req_info *req_info, struct genl_info *info)
  {
- 	struct ice_aqc_restart_an *cmd;
- 	struct libie_aq_desc desc;
-@@ -4147,6 +4148,8 @@ ice_aq_set_link_restart_an(struct ice_port_info *pi, bool ena_link,
- 	else
- 		cmd->cmd_flags &= ~ICE_AQC_RESTART_AN_LINK_ENABLE;
+-	unsigned int from_channel, old_total, i;
++	unsigned int old_combined, old_rx, old_tx, i;
+ 	bool mod = false, mod_combined = false;
+ 	struct net_device *dev = req_info->dev;
+ 	struct ethtool_channels channels = {};
+@@ -118,8 +118,9 @@ ethnl_set_channels(struct ethnl_req_info *req_info, struct genl_info *info)
+ 	int ret;
  
-+	cmd->cmd_flags |= FIELD_PREP(ICE_AQC_RESTART_AN_REFCLK_M, refclk);
-+
- 	return ice_aq_send_cmd(pi->hw, &desc, NULL, 0, cd);
- }
+ 	dev->ethtool_ops->get_channels(dev, &channels);
+-	old_total = channels.combined_count +
+-		    max(channels.rx_count, channels.tx_count);
++	old_combined = channels.combined_count;
++	old_rx = channels.rx_count;
++	old_tx = channels.tx_count;
  
-diff --git a/drivers/net/ethernet/intel/ice/ice_common.h b/drivers/net/ethernet/intel/ice/ice_common.h
-index e700ac0dc347..9f5344212195 100644
---- a/drivers/net/ethernet/intel/ice/ice_common.h
-+++ b/drivers/net/ethernet/intel/ice/ice_common.h
-@@ -215,7 +215,7 @@ ice_cfg_phy_fec(struct ice_port_info *pi, struct ice_aqc_set_phy_cfg_data *cfg,
- 		enum ice_fec_mode fec);
- int
- ice_aq_set_link_restart_an(struct ice_port_info *pi, bool ena_link,
--			   struct ice_sq_cd *cd);
-+			   struct ice_sq_cd *cd, u8 refclk);
- int
- ice_aq_set_mac_cfg(struct ice_hw *hw, u16 max_frame_size, struct ice_sq_cd *cd);
- int
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index 689c6025ea82..c2c7f186bcc7 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -3769,7 +3769,8 @@ int ice_set_link(struct ice_vsi *vsi, bool ena)
- 	if (vsi->type != ICE_VSI_PF)
- 		return -EINVAL;
+ 	ethnl_update_u32(&channels.rx_count, tb[ETHTOOL_A_CHANNELS_RX_COUNT],
+ 			 &mod);
+@@ -169,14 +170,19 @@ ethnl_set_channels(struct ethnl_req_info *req_info, struct genl_info *info)
+ 	if (ret)
+ 		return ret;
  
--	status = ice_aq_set_link_restart_an(pi, ena, NULL);
-+	status = ice_aq_set_link_restart_an(pi, ena, NULL,
-+					    ICE_AQC_RESTART_AN_REFCLK_NOCHANGE);
+-	/* Disabling channels, query zero-copy AF_XDP sockets */
+-	from_channel = channels.combined_count +
+-		       min(channels.rx_count, channels.tx_count);
+-	for (i = from_channel; i < old_total; i++)
+-		if (xsk_get_pool_from_qid(dev, i)) {
+-			GENL_SET_ERR_MSG(info, "requested channel counts are too low for existing zerocopy AF_XDP sockets");
++	/* ensure channels are not busy at the moment */
++	for (i = channels.combined_count + channels.rx_count;
++	     i < old_combined + old_rx; i++) {
++		if (netdev_queue_busy(dev, i, NETDEV_QUEUE_TYPE_RX,
++				      info->extack))
+ 			return -EINVAL;
+-		}
++	}
++	for (i = channels.combined_count + channels.tx_count;
++	     i < old_combined + old_tx; i++) {
++		if (netdev_queue_busy(dev, i, NETDEV_QUEUE_TYPE_TX,
++				      info->extack))
++			return -EINVAL;
++	}
  
- 	/* if link is owned by manageability, FW will return LIBIE_AQ_RC_EMODE.
- 	 * this is not a fatal error, so print a warning message and return
+ 	ret = dev->ethtool_ops->set_channels(dev, &channels);
+ 	return ret < 0 ? ret : 1;
+diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
+index 3c713a91ad0d..bd97f9b9bf18 100644
+--- a/net/ethtool/ioctl.c
++++ b/net/ethtool/ioctl.c
+@@ -27,12 +27,12 @@
+ #include <linux/net.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/utsname.h>
++#include <linux/ethtool_netlink.h>
+ #include <net/devlink.h>
+ #include <net/ipv6.h>
+-#include <net/xdp_sock_drv.h>
+ #include <net/flow_offload.h>
+ #include <net/netdev_lock.h>
+-#include <linux/ethtool_netlink.h>
++#include <net/netdev_queues.h>
+ 
+ #include "common.h"
+ 
+@@ -2250,7 +2250,6 @@ static noinline_for_stack int ethtool_set_channels(struct net_device *dev,
+ 						   void __user *useraddr)
+ {
+ 	struct ethtool_channels channels, curr = { .cmd = ETHTOOL_GCHANNELS };
+-	u16 from_channel, to_channel;
+ 	unsigned int i;
+ 	int ret;
+ 
+@@ -2284,13 +2283,17 @@ static noinline_for_stack int ethtool_set_channels(struct net_device *dev,
+ 	if (ret)
+ 		return ret;
+ 
+-	/* Disabling channels, query zero-copy AF_XDP sockets */
+-	from_channel = channels.combined_count +
+-		min(channels.rx_count, channels.tx_count);
+-	to_channel = curr.combined_count + max(curr.rx_count, curr.tx_count);
+-	for (i = from_channel; i < to_channel; i++)
+-		if (xsk_get_pool_from_qid(dev, i))
++	/* Disabling channels, query busy queues (AF_XDP, queue leasing) */
++	for (i = channels.combined_count + channels.rx_count;
++	     i < curr.combined_count + curr.rx_count; i++) {
++		if (netdev_queue_busy(dev, i, NETDEV_QUEUE_TYPE_RX, NULL))
+ 			return -EINVAL;
++	}
++	for (i = channels.combined_count + channels.tx_count;
++	     i < curr.combined_count + curr.tx_count; i++) {
++		if (netdev_queue_busy(dev, i, NETDEV_QUEUE_TYPE_TX, NULL))
++			return -EINVAL;
++	}
+ 
+ 	ret = dev->ethtool_ops->set_channels(dev, &channels);
+ 	if (!ret)
 -- 
-2.39.3
+2.43.0
 
