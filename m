@@ -1,221 +1,125 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1DE83E715C;
-	Thu,  2 Apr 2026 14:11:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF4B207DF7;
+	Thu,  2 Apr 2026 14:18:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.117.225.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775139092; cv=none; b=iyrBODHKlxiRzcmZwMDJyeTT5Tee2hO5eqOWpUlGNoXkQs/ZJDhpSsOr9BHhauY/iM7F/QKNjKkEtcZjWYPpQZECKl0SyVn/YHkgQqXMQp6oDtcagZ+z/l39g+FDz5R9zhnMsBErTGxf07n7mO1eFvEX1Ng5QlFm4umgvqjJng8=
+	t=1775139521; cv=none; b=CwUccKuVXpwcDvB/6NBH7zfyUkMCXpjy7iDlpx14AnUDP7MbbYrjfzLwOgwy5YocpdTPP013hWR02WHMIaaCqtKin1fnpYwUbiI3vBHdyRNJ05mU2612wCA7J8kR9LB45LLjRTQ8NvD+ZCk9ekudD4JyhJa5uqCjeGzckOLwg/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775139092; c=relaxed/simple;
-	bh=vSvOJMywDX1Dp4g8jKCdfWkYlFrhYqz4NkTXZxOL6mM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=VrO44iXHmDk4F3u3gsIytWSLV5aASwhKpHqT9mkmCfM33bbq0R0ffPY2J6axRC+Z0Opv+CncCFNHRZaoT8fQI18p80qQtCYhFnLAE7jDcJMpX0sV648KoCZ1mqCJUv41pIHjSzVrS4Y9R5B4UsKeLog7/9dPDGYdPMX1zq10GI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=mTUnTzsy; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1775139521; c=relaxed/simple;
+	bh=bIIn3wyBhTaGlRtuKDocl//BDHKJ8AKUQ1pFkXdpTP0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tm8uRUygU/tliMquEZmIEZ/nvf3RQLvsZI8tD9MQtcXnDwRvepNl0A8yLixHSEELuY+RU4yYzIVDR5hwL20tC/Q9RMvuBeJ43c9D/Fnj8rUks59I6lJsrMf7WMsreozhkIQvZtN43Ya+ZJk37uScrn2bGCMnhxMmFbpae8khh4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=NEJMkt9u; arc=none smtp.client-ip=130.117.225.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="mTUnTzsy"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 0DF281A30FB;
-	Thu,  2 Apr 2026 14:11:27 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id CDBA95FDEB;
-	Thu,  2 Apr 2026 14:11:26 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 409F410450264;
-	Thu,  2 Apr 2026 16:11:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1775139085; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=F+1R4q8i6GJ7YHYI0qiErpl7+oF0W1MmTLsQ9Hqk7x8=;
-	b=mTUnTzsyKsL7bqQhm4KFzonWj0QwypgK7cO+GGKuk1SMX8BWV6zJmMypHbmP6/OPiUJ6Gj
-	XGV2IZvS88+SUQwKLr0g8R+58PeavkILrbVgOZ1TTDRRwQVtHJO7yPClg2ZN6RvXUYtVja
-	sPCEijf0sUCvFjD1ow0DQl+BQeV3KIlRoyPM7A1Luuy5/gvVmuDk6gg9oOq3Gto55VUMxS
-	+SPoEewMPl6RBRVee6oX4+CVYWSlkQ6hBAss+am2xJbHSj7ngcU3pPfAFGCCinKkCk+FEA
-	BpVozzZGyZRnEJyR76YRrOi4KS7Mw3qDqGN+W/kFwEl/85e93uyBi06FcAdLiA==
+	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="NEJMkt9u"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=virtuozzo.com; s=relay; h=Content-Type:MIME-Version:Message-ID:Date:Subject
+	:From; bh=5LRbehgey3k3jFMPv3TD68ZHCD/cnTWjEGBb7/+0Nas=; b=NEJMkt9u4W+CVlQ/aHM
+	uYZh+QziFfyz+Le+clFvG+X8YrxmAtIgpgUjHjrErIIRLKXqz4/R1SP6YH8hSzdaE9BSabVFRByFK
+	NgAm0fYYh7ombhRM2w1WyoYRSqLAMOsRb6eLwno5sdq4zK/q3ibua04pTKAy4xJA8eFDUprXbNWZQ
+	jfiB8pEOdchcEsgOpU4/v+4thFuLarSC9zAlOaNtRigyXliolMM6qnqlXi7o8C37GyG6Y/wu5T64Y
+	pGD0NSwtNKv22i5ZagHChq49JJmkA7PANY2fbPoO1C9x1xE1T1Fajlb6CYL+EFkt7TYRPv8W/5Wz/
+	owg1hcTm1HZnXow==;
+Received: from [130.117.225.5] (helo=finist-alma9.vzint.dev)
+	by relay.virtuozzo.com with esmtp (Exim 4.96)
+	(envelope-from <khorenko@virtuozzo.com>)
+	id 1w8IqH-003geR-2b;
+	Thu, 02 Apr 2026 16:18:30 +0200
+From: Konstantin Khorenko <khorenko@virtuozzo.com>
+To: Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Mikhail Zaslonko <zaslonko@linux.ibm.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Konstantin Khorenko <khorenko@virtuozzo.com>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Vasileios Almpanis <vasileios.almpanis@virtuozzo.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH] gcov: use atomic counter updates to fix concurrent access crashes
+Date: Thu,  2 Apr 2026 17:18:31 +0300
+Message-ID: <20260402141831.1437357-2-khorenko@virtuozzo.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20260402141831.1437357-1-khorenko@virtuozzo.com>
+References: <20260402141831.1437357-1-khorenko@virtuozzo.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 02 Apr 2026 16:11:21 +0200
-Message-Id: <DHIQAC7SA3E0.2U7L5MI8IQ4SH@bootlin.com>
-Subject: Re: [PATCH net-next 06/11] net: macb: introduce macb_context struct
- for buffer management
-Cc: "Nicolas Ferre" <nicolas.ferre@microchip.com>, "Claudiu Beznea"
- <claudiu.beznea@tuxon.dev>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>,
- "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
- "Richard Cochran" <richardcochran@gmail.com>, "Russell King"
- <linux@armlinux.org.uk>, "Paolo Valerio" <pvalerio@redhat.com>, "Conor
- Dooley" <conor@kernel.org>, "Vladimir Kondratiev"
- <vladimir.kondratiev@mobileye.com>, "Gregory CLEMENT"
- <gregory.clement@bootlin.com>, =?utf-8?q?Beno=C3=AEt_Monin?=
- <benoit.monin@bootlin.com>, "Tawfik Bayouk" <tawfik.bayouk@mobileye.com>,
- "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Maxime Chevallier"
- <maxime.chevallier@bootlin.com>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Nicolai Buchwitz" <nb@tipi-net.de>, =?utf-8?q?Th=C3=A9o_Lebrun?=
- <theo.lebrun@bootlin.com>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260401-macb-context-v1-0-9590c5ab7272@bootlin.com>
- <20260401-macb-context-v1-6-9590c5ab7272@bootlin.com>
- <70b176b84fbff4a57d7f6be5f42fc753@tipi-net.de>
-In-Reply-To: <70b176b84fbff4a57d7f6be5f42fc753@tipi-net.de>
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-On Thu Apr 2, 2026 at 1:22 PM CEST, Nicolai Buchwitz wrote:
-> On 1.4.2026 18:39, Th=C3=A9o Lebrun wrote:
->> Whenever an operation requires buffer realloc, we close the interface,
->> update parameters and reopen. To improve reliability under memory
->> pressure, we should rather alloc new buffers, reconfigure HW and free
->> old buffers. This requires MACB to support having multiple "contexts"
->> in parallel.
->>=20
->> Introduce this concept by adding the macb_context struct, which owns=20
->> all
->> queue buffers and the parameters associated. We do not yet support
->> multiple contexts in parallel, because all functions access bp->ctx
->> (the currently active context) directly.
->>=20
->> Steps:
->>=20
->>  - Introduce `struct macb_context` and its children `struct macb_rxq`
->>    and `struct macb_txq`. Context fields are stolen from `struct macb`
->>    and rxq/txq fields are from `struct macb_queue`.
->>=20
->>    Making it two separate structs per queue simplifies accesses: we=20
->> grab
->>    a txq/rxq local variable and access fields like txq->head instead of
->>    queue->tx_head. It also anecdotally improves data locality.
->>=20
->>  - macb_init_dflt() does not set bp->ctx->{rx,tx}_ring_size to default
->>    values as ctx is not allocated yet. Instead, introduce
->>    bp->configured_{rx,tx}_ring_size which get updated on user requests.
->>=20
->>  - macb_open() starts by allocating bp->ctx. It gets freed in the
->>    open error codepath or by macb_close().
->>=20
->>  - Guided by compile errors, update all codepaths. Most diff is=20
->> changing
->>    `queue->tx_*` to `txq->*` and `queue->rx_*` to `rxq->*`, with a new
->>    local variable. Also rx_buffer_size / rx_ring_size / tx_ring_size
->>    move from bp to bp->ctx.
->>=20
->>    Introduce two helpers macb_tx|rx() functions to convert macb_queue
->>    pointers.
->>=20
->> Signed-off-by: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
->> ---
->>  drivers/net/ethernet/cadence/macb.h      |  49 ++--
->>  drivers/net/ethernet/cadence/macb_main.c | 442=20
->> ++++++++++++++++++-------------
->>  2 files changed, 296 insertions(+), 195 deletions(-)
->>=20
->
->> [...]
->
->> diff --git a/drivers/net/ethernet/cadence/macb_main.c=20
->> b/drivers/net/ethernet/cadence/macb_main.c
->> index d5023fdc0756..0f63d9b89c11 100644
->> --- a/drivers/net/ethernet/cadence/macb_main.c
->> +++ b/drivers/net/ethernet/cadence/macb_main.c
->
->> [...]
->
->> @@ -3596,14 +3677,15 @@ static void macb_get_regs(struct net_device=20
->> *netdev, struct ethtool_regs *regs,
->>  			  void *p)
->>  {
->>  	struct macb *bp =3D netdev_priv(netdev);
->> +	struct macb_txq *txq =3D &bp->ctx->txq[0];
->
-> bp->ctx is NULL when the interface is down. This will crash if
-> ethtool -d is called while the interface is not running. Same
-> issue below in macb_get_ringparam().
+GCC's GCOV instrumentation can merge global branch counters with loop
+induction variables as an optimization.  In inflate_fast(), the inner
+copy loops get transformed so that the GCOV counter value is loaded
+multiple times to compute the loop base address, start index, and end
+bound.  Since GCOV counters are global (not per-CPU), concurrent
+execution on different CPUs causes the counter to change between loads,
+producing inconsistent values and out-of-bounds memory writes.
 
-Agreed. Will check if context is alive and use default values otherwise.
-Something like this for V2:
+The crash manifests during IPComp (IP Payload Compression) processing
+when inflate_fast() runs concurrently on multiple CPUs:
 
-static void macb_get_regs(struct net_device *netdev, struct ethtool_regs *r=
-egs,
-			  void *p)
-{
-	dma_addr_t tx_dma_tail =3D 0, tx_dma_head =3D 0;
-	struct macb *bp =3D netdev_priv(netdev);
-	unsigned int tail =3D 0, head =3D 0;
-	struct macb_txq *txq;
-	u32 *regs_buff =3D p;
+  BUG: unable to handle page fault for address: ffffd0a3c0902ffa
+  RIP: inflate_fast+1431
+  Call Trace:
+   zlib_inflate
+   __deflate_decompress
+   crypto_comp_decompress
+   ipcomp_decompress [xfrm_ipcomp]
+   ipcomp_input [xfrm_ipcomp]
+   xfrm_input
 
-	regs->version =3D (macb_readl(bp, MID) & ((1 << MACB_REV_SIZE) - 1))
-			| MACB_GREGS_VERSION;
+At the crash point, the compiler generated three loads from the same
+global GCOV counter (__gcov0.inflate_fast+216) to compute base, start,
+and end for an indexed loop.  Another CPU modified the counter between
+loads, making the values inconsistent — the write went 3.4 MB past a
+65 KB buffer.
 
-	if (bp->ctx) {
-		txq =3D &bp->ctx->txq[0];
-		tail =3D macb_tx_ring_wrap(bp->ctx, txq->tail);
-		head =3D macb_tx_ring_wrap(bp->ctx, txq->head);
-		tx_dma_tail =3D macb_tx_dma(&bp->queues[0], tail);
-		tx_dma_head =3D macb_tx_dma(&bp->queues[0], head);
-	}
+Add -fprofile-update=atomic to CFLAGS_GCOV at the global level in the
+top-level Makefile.  This tells GCC that GCOV counters may be
+concurrently accessed, causing counter updates to use atomic
+instructions (lock addq) instead of plain load/store.  This prevents
+the compiler from merging counters with loop induction variables.
 
-	regs_buff[0]  =3D macb_readl(bp, NCR);
-	regs_buff[1]  =3D macb_or_gem_readl(bp, NCFGR);
-	regs_buff[2]  =3D macb_readl(bp, NSR);
-	regs_buff[3]  =3D macb_readl(bp, TSR);
-	regs_buff[4]  =3D macb_readl(bp, RBQP);
-	regs_buff[5]  =3D macb_readl(bp, TBQP);
-	regs_buff[6]  =3D macb_readl(bp, RSR);
-	regs_buff[7]  =3D macb_readl(bp, IMR);
+Applying this globally rather than per-subsystem not only addresses the
+observed crash in zlib but makes GCOV coverage data more consistent
+overall, preventing similar issues in any kernel code path that may
+execute concurrently.
 
-	regs_buff[8]  =3D tail;
-	regs_buff[9]  =3D head;
-	regs_buff[10] =3D tx_dma_tail;
-	regs_buff[11] =3D tx_dma_head;
+Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
+Tested-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-	if (!(bp->caps & MACB_CAPS_USRIO_DISABLED))
-		regs_buff[12] =3D macb_or_gem_readl(bp, USRIO);
-	if (macb_is_gem(bp->caps))
-		regs_buff[13] =3D gem_readl(bp, DMACFG);
-}
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
->
->>  	unsigned int tail, head;
->>  	u32 *regs_buff =3D p;
->>=20
->>  	regs->version =3D (macb_readl(bp, MID) & ((1 << MACB_REV_SIZE) - 1))
->>  			| MACB_GREGS_VERSION;
->>=20
->> -	tail =3D macb_tx_ring_wrap(bp, bp->queues[0].tx_tail);
->> -	head =3D macb_tx_ring_wrap(bp, bp->queues[0].tx_head);
->> +	tail =3D macb_tx_ring_wrap(bp, txq->tail);
->> +	head =3D macb_tx_ring_wrap(bp, txq->head);
->>=20
->>  	regs_buff[0]  =3D macb_readl(bp, NCR);
->>  	regs_buff[1]  =3D macb_or_gem_readl(bp, NCFGR);
->> @@ -3682,8 +3764,8 @@ static void macb_get_ringparam(struct net_device=
-=20
->> *netdev,
->>  	ring->rx_max_pending =3D MAX_RX_RING_SIZE;
->>  	ring->tx_max_pending =3D MAX_TX_RING_SIZE;
->>=20
->> -	ring->rx_pending =3D bp->rx_ring_size;
->> -	ring->tx_pending =3D bp->tx_ring_size;
->> +	ring->rx_pending =3D bp->ctx->rx_ring_size;
->> +	ring->tx_pending =3D bp->ctx->tx_ring_size;
->
-> Same NULL ctx issue as above. This one could just read from
-> bp->configured_{rx,tx}_ring_size instead.
-
-Agreed with the fix, easy one.
-
-Thanks!
-
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+diff --git a/Makefile b/Makefile
+index 6b1d9fb1a6b4..a55ad668d6ba 100644
+--- a/Makefile
++++ b/Makefile
+@@ -806,7 +806,7 @@ all: vmlinux
+ 
+ CFLAGS_GCOV	:= -fprofile-arcs -ftest-coverage
+ ifdef CONFIG_CC_IS_GCC
+-CFLAGS_GCOV	+= -fno-tree-loop-im
++CFLAGS_GCOV	+= -fno-tree-loop-im -fprofile-update=atomic
+ endif
+ export CFLAGS_GCOV
+ 
+-- 
+2.43.5
 
