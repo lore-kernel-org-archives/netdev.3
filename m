@@ -1,415 +1,136 @@
-Received: from mail-m24124.xmail.ntesmail.com (mail-m24124.xmail.ntesmail.com [45.195.24.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D1E3F7885;
-	Thu,  2 Apr 2026 16:42:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.195.24.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5525B3191BA
+	for <netdev@vger.kernel.org>; Thu,  2 Apr 2026 16:45:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775148170; cv=none; b=cu0+1EiIXTTTx8FUVNne7LPh9e8j5IYb7AKCwo+/2w4VBGtbtcr8FMeMK9lcvHJG8RxbWenwkGKmWbyrFZUCodFmhpoU3OyeZpkuEI7Sb9n4hOrsOTq6e76F+PPTDOlNuTmo2HI7GxmtZUG2bPQPMyujIKwet5FPYHRZtQHQXUY=
+	t=1775148364; cv=none; b=MV3Ike4mxvAelX5oj2djzJ1vIIl5S9JD2PTIHUsouD+CrR9ukCAphtg4IglLSJsIL6ZfnSGZiouXFDIaDDYjjYmyiScoedT4htxkaOJ5CSZw6jYTwZI+acNoXSwYi3fG12Uow9fClR8Rnzc2zshDSA91hmQJsfqldKDQxeZuOLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775148170; c=relaxed/simple;
-	bh=tNI/lzfNVMFJLGZUOC7zw3RzUqFKt/DhWPHxoVwk7Zw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ebPtD+dYcAu4/S82lHjIeVTL91VS6yrrOK1CS7DupNqN41nL2c7KSmb5gH2+oFA9uqOKI/+gf780HrhUGsNR6i1X/KCyD9tPQH2l0xlPtFSmR4buOU4otPIhUJ8lEiUjtMbbMBVANxDLadFKzLppx2OXsqkLRW4VdAKwRUQTqZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ruc.edu.cn; spf=pass smtp.mailfrom=ruc.edu.cn; dkim=pass (1024-bit key) header.d=ruc.edu.cn header.i=@ruc.edu.cn header.b=UBFS7DnH; arc=none smtp.client-ip=45.195.24.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ruc.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ruc.edu.cn
+	s=arc-20240116; t=1775148364; c=relaxed/simple;
+	bh=2hpKj0W2rpZV1X/Nk0YTKGlMEGHEBv4l7AGunYq/qzo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y2cjwRW4GYUOXnSJ4T4yJ3pgYF44yl0ZdfrPqejhV0vc748XCBx1/vFvEp+Py2xEhyCmc7uh6KK9NSTvieaZIskesfLYc9AQhncAv+gdsy4tsXrZz4vYmVB1mihvH5M63O0w4yfgT/sx+pdsKcd/ZnXSRL5VOUCbXGScHKY87+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b=c9KuThKQ; arc=none smtp.client-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ruc.edu.cn header.i=@ruc.edu.cn header.b="UBFS7DnH"
-Received: from lwz.tail698a0e.ts.net (gy-adaptive-ssl-proxy-4-entmail-virt151.gy.ntes [36.112.3.244])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 3956a559a;
-	Fri, 3 Apr 2026 00:37:16 +0800 (GMT+08:00)
-From: Wenzhao Liao <wenzhaoliao@ruc.edu.cn>
-To: rust-for-linux@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Subject: [RFC PATCH 4/6] rust: net: add minimal rtnl registration and netlink tap support
-Date: Thu,  2 Apr 2026 12:36:38 -0400
-Message-Id: <20260402163640.1079056-5-wenzhaoliao@ruc.edu.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260402163640.1079056-1-wenzhaoliao@ruc.edu.cn>
-References: <20260402163640.1079056-1-wenzhaoliao@ruc.edu.cn>
+	dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b="c9KuThKQ"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c76bde70ec9so427770a12.2
+        for <netdev@vger.kernel.org>; Thu, 02 Apr 2026 09:45:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20230601.gappssmtp.com; s=20230601; t=1775148355; x=1775753155; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:mail-followup-to:message-id:subject:cc:to
+         :from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Cbhezx2WOqt+8+1TPDtVgJycu5mOCitaWwg/IVagY8o=;
+        b=c9KuThKQ0vrO0wR3O6YcONyNY+YNbu3QBk33RB5t3NIz/SQBmAhlgdJueikA8Wh8wu
+         NoX8sOPwApukUcRqtDiTyqr9NmNSk9A2pmGZrhuA9E93VTYjJYL2/HNUjRo3JrJp1uKO
+         aivSnLJ8CWC2sm6SwpqmZn18zQ5Rtv08yrV8GTHz3Zh3W61k+PjDXmNXGhXmer8qVTvc
+         AmHr61v6LNXpQ2lK89a/u2HqLuYEvHjO6QmxK3wq7eC9Y4h+YTuG3GlvmAgHYmq6VQKa
+         T7/KoVqtnlqnEt4nAhQJerPTXR2edKRd2eY1EaR/O/GQNa7MdyIh3SKagX2kXYEjhdKW
+         uhdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775148355; x=1775753155;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:mail-followup-to:message-id:subject:cc:to
+         :from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Cbhezx2WOqt+8+1TPDtVgJycu5mOCitaWwg/IVagY8o=;
+        b=W/1mppB3N/ysb1lRuWfAje/Z7Ww7d9YcERGpsCdIWaB43Rua1GHqgmzqVG8ju1W0zG
+         ENAZ2+aPwbor0Kxz91EErS/BNJUBcLGI8K4Z/XYH1pcIFTeWhUwrP5g4Mht+7h3UGWjw
+         4VYTyOIX6UFyCSVTnx7rnJZsel1TeStLcY1UTOm0uXfyLYvxEUKiKGFUSKpKyJw/An9g
+         qOn7tm2WB9XjOIVO4oVrXfT9YvJW2gAa3ohoKZ+5eaTSDDr31WFVQBHcRZM6iad8rWLQ
+         bD2vpV+YEzbitpyWqulma9tD2vR8+GRixEMjz5iIN/VRpfLI3IH9dBWTSlWgVwXnTJO1
+         4jog==
+X-Gm-Message-State: AOJu0YzZQ8ZaVrLKY7Rgc0VUUXGIfSwx2EdAo3mxzxYyOjRFtsIl0Yv+
+	EiGsGQ60ZYspxBVL+goyrR0iK5FwrV2CoGPhfN+w/UH6CGcIick4VKNtCSkaaXi8lUk=
+X-Gm-Gg: ATEYQzwwgIq0PotbtamtTH73A1Zh1/X5srUCNyZdA9m+uHOlnARzOA3ib3c2mAcVzQF
+	xKPpsgTYcdocXKF77UU4/RHgeywfs9l3j/cfKqjMSkFFHRKp1zK9l4NHzh10vxYQ2CZyWO/qWyJ
+	ZVvbW0XGkwrYys+hKdtQSq14n1cayg7BIbYhYij2M/W7xHAspWmjVZioiegXYiAGkEeMrn1n0XI
+	kzJf0q3FiVoO5UXTwyf6MeOUpAZiAdPuqvSsJBG6DmyiH3rhBT0jY542P9PMgCl+FZ9vl3p7e+O
+	DgcnBJudYFSb5hZ+JvTN0FDyC3PmignNtOlluoNZdzGiiAT9odQjSMyr7XCWqVP/MMCSBDYGfwv
+	LjP2x4sdxX51WyzfhoayqZ4SW4pE2+KQ7mstHZuXtnfvIwrvSuIzPG/w9N8GFP8wv69DHx++RsW
+	YGX+ea
+X-Received: by 2002:a05:6a21:3391:b0:39f:2c96:e0d7 with SMTP id adf61e73a8af0-39f2c96e653mr114237637.17.1775148355229;
+        Thu, 02 Apr 2026 09:45:55 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:5d::])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c76d2684b75sm22853a12.14.2026.04.02.09.45.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Apr 2026 09:45:54 -0700 (PDT)
+Date: Thu, 2 Apr 2026 09:45:53 -0700
+From: Joe Damato <joe@dama.to>
+To: Eric Dumazet <edumazet@google.com>
+Cc: netdev@vger.kernel.org, Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	horms@kernel.org, linux-kernel@vger.kernel.org, leon@kernel.org
+Subject: Re: [net-next v7 07/10] net: bnxt: Implement software USO
+Message-ID: <ac6dQa1HRrfcpBhX@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>,
+	Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
+	Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	horms@kernel.org, linux-kernel@vger.kernel.org, leon@kernel.org
+References: <20260401233745.2333858-1-joe@dama.to>
+ <20260401233745.2333858-8-joe@dama.to>
+ <CANn89i+dWeUvZW-sLU5ozZM5rHgDY1mXKOXM=EjdhJanumqVsw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9d4f0e62a503a2kunm6754def456bf48
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlDSkpCVhlCGE8fTBhPQk1NT1YeHw5VEwETFhoSFy
-	QUDg9ZV1kYEgtZQVlITVVKSklVSFVJT09ZV1kWGg8SFR0UWUFZT0tIVUpLSUhOQ0NVSktLVUtZBg
-	++
-DKIM-Signature: a=rsa-sha256;
-	b=UBFS7DnHV82/lmeO6h5lzCGpw80eIx1OJjnjmlDGIa4Ai1okxOs9FQjUqHcIVrY4CMyMT4vymR+binmd1Qjy6I17ezcsYQC0i+Ue3b0QPXgZOiiv2yZOdAx+XkQDbrpbHGV0C4NohaHJMYxOGCZjb/5vd59IbU6mFWegJFmvMR0=; c=relaxed/relaxed; s=default; d=ruc.edu.cn; v=1;
-	bh=hENdfJYTaCz+DNkQzaLUlsMdCmLD4GifK7zE2H7w848=;
-	h=date:mime-version:subject:message-id:from;
+In-Reply-To: <CANn89i+dWeUvZW-sLU5ozZM5rHgDY1mXKOXM=EjdhJanumqVsw@mail.gmail.com>
 
-Add the minimal pieces needed to register an rtnl link driver and to
-attach or detach a netlink tap from a net_device.
+On Wed, Apr 01, 2026 at 05:35:14PM -0700, Eric Dumazet wrote:
+> On Wed, Apr 1, 2026 at 4:38 PM Joe Damato <joe@dama.to> wrote:
+> >
 
-The abstractions model kernel-owned registration lifetime and keep the
-driver layer free of unsafe blocks.
+[...]
 
-Signed-off-by: Wenzhao Liao <wenzhaoliao@ruc.edu.cn>
----
- rust/kernel/net.rs             |   2 +
- rust/kernel/net/netlink_tap.rs |  89 +++++++++++++
- rust/kernel/net/rtnl.rs        | 221 +++++++++++++++++++++++++++++++++
- 3 files changed, 312 insertions(+)
- create mode 100644 rust/kernel/net/netlink_tap.rs
- create mode 100644 rust/kernel/net/rtnl.rs
+> > +       /* Zero the csum fields so tso_build_hdr will propagate zeroes into
+> > +        * every segment header. HW csum offload will recompute from scratch.
+> > +        */
+> 
+> We might need a call to skb_cow_head(skb, 0) before changing ->check
+> (or anything in skb->head)
+> 
+> Alternative would be to perform the clears after each tso_build_hdr()
+> and leave skb->head untouched.
 
-diff --git a/rust/kernel/net.rs b/rust/kernel/net.rs
-index a61bc76f4499..35459816c518 100644
---- a/rust/kernel/net.rs
-+++ b/rust/kernel/net.rs
-@@ -5,5 +5,7 @@
- #[cfg(CONFIG_RUST_PHYLIB_ABSTRACTIONS)]
- pub mod phy;
- pub mod netdevice;
-+pub mod netlink_tap;
-+pub mod rtnl;
- pub mod skbuff;
- pub mod stats;
-diff --git a/rust/kernel/net/netlink_tap.rs b/rust/kernel/net/netlink_tap.rs
-new file mode 100644
-index 000000000000..b26461937c6c
---- /dev/null
-+++ b/rust/kernel/net/netlink_tap.rs
-@@ -0,0 +1,89 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Netlink tap lifecycle helpers.
-+//!
-+//! C header: [`include/linux/netlink.h`](srctree/include/linux/netlink.h)
-+
-+use crate::{
-+    bindings,
-+    error::to_result,
-+    net::netdevice,
-+    prelude::*,
-+    types::Opaque,
-+    ThisModule,
-+};
-+
-+/// Owns a `struct netlink_tap` plus its registration state.
-+#[pin_data]
-+#[derive(Zeroable)]
-+pub struct Tap {
-+    #[pin]
-+    inner: Opaque<bindings::netlink_tap>,
-+    registered: bool,
-+}
-+
-+impl Tap {
-+    /// Creates an unregistered tap.
-+    pub const fn new() -> Self {
-+        Self {
-+            inner: Opaque::zeroed(),
-+            registered: false,
-+        }
-+    }
-+
-+    /// Returns whether the tap is currently registered.
-+    pub fn is_registered(&self) -> bool {
-+        self.registered
-+    }
-+
-+    /// Registers the tap for the provided device.
-+    pub fn add(
-+        self: Pin<&mut Self>,
-+        dev: &netdevice::Device,
-+        module: &'static ThisModule,
-+    ) -> Result {
-+        // SAFETY: The caller pinned `self`, so accessing the interior through the stable address is
-+        // valid for the duration of this method.
-+        let this = unsafe { self.get_unchecked_mut() };
-+
-+        if this.registered {
-+            return Err(EBUSY);
-+        }
-+
-+        let tap = this.inner.get();
-+
-+        // SAFETY: `tap` points to valid storage for `struct netlink_tap`.
-+        unsafe {
-+            (*tap).dev = dev.as_ptr();
-+            (*tap).module = module.as_ptr();
-+        }
-+
-+        // SAFETY: `tap` points to a valid `struct netlink_tap`.
-+        to_result(unsafe { bindings::netlink_add_tap(tap) })?;
-+        this.registered = true;
-+        Ok(())
-+    }
-+
-+    /// Unregisters the tap if it is currently active.
-+    pub fn remove(self: Pin<&mut Self>) -> Result {
-+        // SAFETY: The caller pinned `self`, so accessing the interior through the stable address is
-+        // valid for the duration of this method.
-+        let this = unsafe { self.get_unchecked_mut() };
-+
-+        if !this.registered {
-+            return Ok(());
-+        }
-+
-+        let tap = this.inner.get();
-+
-+        // SAFETY: `self.inner` contains a valid `struct netlink_tap` previously passed to
-+        // `netlink_add_tap`.
-+        to_result(unsafe { bindings::netlink_remove_tap(tap) })?;
-+        this.registered = false;
-+
-+        // SAFETY: The tap has been removed and `netlink_remove_tap` waited for in-flight users via
-+        // `synchronize_net`, so restoring the zeroed unregistered state is valid.
-+        unsafe { tap.write(core::mem::zeroed()) };
-+        Ok(())
-+    }
-+}
-diff --git a/rust/kernel/net/rtnl.rs b/rust/kernel/net/rtnl.rs
-new file mode 100644
-index 000000000000..f3bddd29874f
---- /dev/null
-+++ b/rust/kernel/net/rtnl.rs
-@@ -0,0 +1,221 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! RTNL link-type registration support.
-+//!
-+//! C headers:
-+//! - [`include/net/rtnetlink.h`](srctree/include/net/rtnetlink.h)
-+//! - [`include/uapi/linux/if_link.h`](srctree/include/uapi/linux/if_link.h)
-+
-+use crate::{
-+    bindings,
-+    error::{from_result, to_result},
-+    net::netdevice,
-+    prelude::*,
-+    types::Opaque,
-+};
-+
-+use core::{
-+    marker::PhantomData,
-+    mem::size_of,
-+};
-+
-+/// Typed link-level netlink attribute selector.
-+#[derive(Clone, Copy)]
-+pub struct LinkAttr(usize);
-+
-+impl LinkAttr {
-+    /// Equivalent to `IFLA_ADDRESS`.
-+    pub const ADDRESS: Self = Self(bindings::IFLA_ADDRESS as usize);
-+
-+    const fn as_index(self) -> usize {
-+        self.0
-+    }
-+}
-+
-+/// Typed info-level netlink attribute selector.
-+#[derive(Clone, Copy)]
-+pub struct InfoAttr(usize);
-+
-+impl InfoAttr {
-+    /// Equivalent to `IFLA_INFO_KIND`.
-+    pub const KIND: Self = Self(bindings::IFLA_INFO_KIND as usize);
-+
-+    /// Equivalent to `IFLA_INFO_DATA`.
-+    pub const DATA: Self = Self(bindings::IFLA_INFO_DATA as usize);
-+
-+    const fn as_index(self) -> usize {
-+        self.0
-+    }
-+}
-+
-+const LINK_ATTR_TABLE_LEN: usize = bindings::__IFLA_MAX as usize;
-+const INFO_ATTR_TABLE_LEN: usize = bindings::__IFLA_INFO_MAX as usize;
-+
-+/// Validation context for `rtnl_link_ops::validate`.
-+pub struct ValidateContext<'a> {
-+    link_attrs: NlAttrTable,
-+    data_attrs: NlAttrTable,
-+    extack: Option<&'a mut ExtAck>,
-+}
-+
-+impl<'a> ValidateContext<'a> {
-+    fn new(
-+        link_attrs: NlAttrTable,
-+        data_attrs: NlAttrTable,
-+        extack: Option<&'a mut ExtAck>,
-+    ) -> Self {
-+        Self {
-+            link_attrs,
-+            data_attrs,
-+            extack,
-+        }
-+    }
-+
-+    /// Returns whether a link-level netlink attribute is present.
-+    pub fn has_link_attr(&self, attr: LinkAttr) -> bool {
-+        self.link_attrs.has_attr_index(attr.as_index())
-+    }
-+
-+    /// Returns whether an info-level netlink attribute is present.
-+    pub fn has_info_attr(&self, attr: InfoAttr) -> bool {
-+        self.data_attrs.has_attr_index(attr.as_index())
-+    }
-+
-+    /// Returns the optional extack wrapper.
-+    pub fn extack(&mut self) -> Option<&mut ExtAck> {
-+        self.extack.as_deref_mut()
-+    }
-+}
-+
-+/// Safe view over the `struct nlattr *tb[]` / `data[]` arrays passed to validate callbacks.
-+#[derive(Clone, Copy)]
-+pub struct NlAttrTable {
-+    raw: *mut *mut bindings::nlattr,
-+    len: usize,
-+}
-+
-+impl NlAttrTable {
-+    fn new(raw: *mut *mut bindings::nlattr, len: usize) -> Self {
-+        Self { raw, len }
-+    }
-+
-+    /// Returns `true` if the attribute slot contains a non-null pointer.
-+    fn has_attr_index(&self, attr: usize) -> bool {
-+        if self.raw.is_null() || attr >= self.len {
-+            return false;
-+        }
-+
-+        // SAFETY: The RTNL core provides these arrays for validate callbacks. Indexing is kept in
-+        // the abstraction layer so driver code does not perform raw pointer arithmetic.
-+        unsafe { !(*self.raw.add(attr)).is_null() }
-+    }
-+
-+}
-+
-+/// Wrapper over `struct netlink_ext_ack`.
-+#[repr(transparent)]
-+pub struct ExtAck(Opaque<bindings::netlink_ext_ack>);
-+
-+impl ExtAck {
-+    /// Creates a mutable wrapper from a raw extack pointer.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The pointer must be valid for the returned lifetime.
-+    pub unsafe fn from_raw<'a>(ptr: *mut bindings::netlink_ext_ack) -> &'a mut Self {
-+        let ptr = ptr.cast::<Self>();
-+        // SAFETY: The caller guarantees validity for the returned lifetime.
-+        unsafe { &mut *ptr }
-+    }
-+}
-+
-+/// A Rust RTNL link-type driver.
-+pub trait Driver: netdevice::Operations {
-+    /// The RTNL link kind, e.g. `"nlmon"`.
-+    const KIND: &'static CStr;
-+
-+    /// Performs link-type setup.
-+    fn setup(dev: &mut netdevice::Device);
-+
-+    /// Optional netlink validation.
-+    fn validate(_ctx: &mut ValidateContext<'_>) -> Result {
-+        Ok(())
-+    }
-+}
-+
-+/// Owns an RTNL link-type registration.
-+#[pin_data(PinnedDrop)]
-+pub struct Registration<T: Driver> {
-+    #[pin]
-+    ops: Opaque<bindings::rtnl_link_ops>,
-+    _driver: PhantomData<T>,
-+}
-+
-+// SAFETY: Shared references do not expose interior mutation beyond drop semantics.
-+unsafe impl<T: Driver> Sync for Registration<T> {}
-+
-+// SAFETY: Registration and unregistration are handled by RTNL core code and can be performed from
-+// the module init/exit path.
-+unsafe impl<T: Driver> Send for Registration<T> {}
-+
-+impl<T: Driver> Registration<T> {
-+    extern "C" fn setup_callback(dev: *mut bindings::net_device) {
-+        // SAFETY: The RTNL core only calls setup with a valid `net_device`.
-+        let dev = unsafe { netdevice::Device::from_raw(dev) };
-+        dev.set_netdevice_ops::<T>();
-+        T::setup(dev);
-+    }
-+
-+    extern "C" fn validate_callback(
-+        tb: *mut *mut bindings::nlattr,
-+        data: *mut *mut bindings::nlattr,
-+        extack: *mut bindings::netlink_ext_ack,
-+    ) -> c_int {
-+        from_result(|| {
-+            let extack = if extack.is_null() {
-+                None
-+            } else {
-+                // SAFETY: The RTNL core passes a valid extack pointer when non-null.
-+                Some(unsafe { ExtAck::from_raw(extack) })
-+            };
-+            let mut ctx = ValidateContext::new(
-+                NlAttrTable::new(tb, LINK_ATTR_TABLE_LEN),
-+                NlAttrTable::new(data, INFO_ATTR_TABLE_LEN),
-+                extack,
-+            );
-+            T::validate(&mut ctx)?;
-+            Ok(0)
-+        })
-+    }
-+
-+    /// Creates a new RTNL registration object.
-+    pub fn new() -> impl PinInit<Self, Error> {
-+        build_assert!(!core::mem::needs_drop::<T::Private>());
-+        try_pin_init!(Self {
-+            ops <- Opaque::try_ffi_init(|ptr: *mut bindings::rtnl_link_ops| {
-+                // SAFETY: All-zero is a valid initial state for the opaque RTNL ops structure.
-+                unsafe { ptr.write(core::mem::zeroed()) };
-+
-+                // SAFETY: `ptr` is valid for writes for the duration of this initializer.
-+                unsafe {
-+                    (*ptr).kind = T::KIND.as_char_ptr();
-+                    (*ptr).priv_size = size_of::<T::Private>();
-+                    (*ptr).setup = Some(Self::setup_callback);
-+                    (*ptr).validate = Some(Self::validate_callback);
-+                }
-+
-+                // SAFETY: `ptr` now points to a fully initialized `rtnl_link_ops`.
-+                to_result(unsafe { bindings::rtnl_link_register(ptr) })
-+            }),
-+            _driver: PhantomData,
-+        })
-+    }
-+}
-+
-+#[pinned_drop]
-+impl<T: Driver> PinnedDrop for Registration<T> {
-+    fn drop(self: Pin<&mut Self>) {
-+        // SAFETY: The existence of `self` guarantees a successful earlier registration.
-+        unsafe { bindings::rtnl_link_unregister(self.ops.get()) };
-+    }
-+}
--- 
-2.34.1
+Thanks for the careful review; I appreciate your time and energy.
 
+I'll remove the existing clears you pointed and perform the clear after each
+tso_build_hdr() as you suggested with something like:
+
+@@ -103,6 +96,7 @@ netdev_tx_t bnxt_sw_udp_gso_xmit(struct bnxt *bp,
+                unsigned int offset;
+                dma_addr_t dma_addr;
+                struct tx_bd *txbd;
++               struct udphdr *uh;
+                void *this_hdr;
+                int bd_count;
+                __le32 csum;
+@@ -116,6 +110,17 @@ netdev_tx_t bnxt_sw_udp_gso_xmit(struct bnxt *bp,
+
+                tso_build_hdr(skb, this_hdr, &tso, seg_payload, last);
+
++               /* Zero stale csum fields copied from the original skb;
++                * HW offload recomputes from scratch.
++                */
++               uh = this_hdr + skb_transport_offset(skb);
++               uh->check = 0;
++               if (!tso.ipv6) {
++                       struct iphdr *iph = this_hdr + skb_network_offset(skb);
++
++                       iph->check = 0;
++               }
