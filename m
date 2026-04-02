@@ -1,75 +1,94 @@
-Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2123.outbound.protection.partner.outlook.cn [139.219.17.123])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBB23845CA;
-	Thu,  2 Apr 2026 11:12:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF1C3BD22C;
+	Thu,  2 Apr 2026 11:12:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775128372; cv=fail; b=gEW++/Tiqb/vh4De3aODF6yLFCMuudI19MbU8e2K8AddNaW+5RP3zyfctOcVW2u8NrQgB5cf7tYTGbS9CXoxohJ5f6pzrxouaGREwSzUF3hd6hulDls5vKTxar+ZxnHwWpJ55gyqw/CgE9Mrjro2iJFmaONdFJopbQoWcYtDiJE=
+	t=1775128377; cv=fail; b=PNuXC07wKpa/Q4aMCzrigKBPOh3SN49QgmsfMvcXfSjf1VpeITSaLZxcU4vozzuP3fqyoyBkGDCsCFv2g2tmMEk8+BHsT4MN7rmfrrRCUA5yt3yJDgU2POvwqwqlC1jjcNvvntGxYVbIwX81c/lEYz2G0s/7dxmSUgMATlib9Ok=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775128372; c=relaxed/simple;
-	bh=arARuhVPUBKwtEgKdDMxdbRgy2xuGy/O5T4CkBee3yc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gmggj3CMEmENRgpecQNlEHcXWbDD2iEfZ5w5MCB2CPCD4F0zbEwTsQoX9Y2GGsXdioV4nRFPLeUQVRHd5snHmUID5p1MupsAOoUafSxZ/OqDou+FVKb5hHecA6/rpFXJ/C/fPE5NrcsR1Iq4X0mWsejYJ9xRd2rePsv+fhUQtZM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=oE0T3Gk8jjYe/ej4K3MBnCPI85zM/eBJFZIuiVAVSQg4GX/cT7c3IyQxYvJZ4IkxfZgICmIokqg6C0xRmzPKqYzklxkP1GB5cmwDwrj19vW7Pi9qi1WPnG82YayIdYR/OKTAYaRsIjyouJFyR4oCyf5qfu9tbV1vXSZLOs8S/OD6fTp2gEauVYQtjwDrZkAmsRs+jw98bfPEPIfEC4FShqw0JneUwKtaUFZU18fIpGCv9PkgiRQM440MGOTMYAhHxhNX5/m85yRnvm9S7s/EXj6coB4LCsy1n+N/zgsvn/jrePFaX3E+rZreMg5vTZeYFPF4QF4jbd4X3DrtHvri6A==
+	s=arc-20240116; t=1775128377; c=relaxed/simple;
+	bh=tEzyAi/0oyE47kmddIYgJJzA4UCX9RTVzg0J6XB5vIQ=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=kc50tQCHh8azI+lxu1LuSwx5XXJ8+N+iERow0OIGFmaFhSTVdn/ZRTCyx6SkzJv+rPBWhj/3s7+PKayHpp97/V40TFdIhVfFZjJl370P9ZkA7RFLVYidpYhOi6ngg0RhoQzG7so0GV5w3cFBlgfFQEcaNlZkNZ8pYZcUyb6ljOg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fm+8TFVu; arc=fail smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fm+8TFVu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775128374; x=1806664374;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=tEzyAi/0oyE47kmddIYgJJzA4UCX9RTVzg0J6XB5vIQ=;
+  b=fm+8TFVuzMHpNaVVfG7suaURFkxPue9z9r/t0in/e8pPu8P3WVC9xehH
+   /Qq/d6ODwkqk7AwCIzcoYLQpq9jjG888o6Hk+i30Wss8QtYK6i3jbBRMm
+   L2C3oX/Mhjyy0NxRxPqKCQ7LiFcbnnHn/crYD0lK/XbAJx+tnZbcROOwo
+   zt/tzO86VA5s/JaG6+E23wkqgEQQ7ldvYhFpPBTwICCScbJfw/XJ1bXz9
+   ZwrXGWEuwSHgmcZwfZIjSBCi7aOMNtyRPdKGEQcZscUGadvyDI8/+OeTm
+   2rwjqADWjhVtsYHzssSe9+a1P2mP+ouY+jpl6vReGofCGlSmLHmAyOp8n
+   A==;
+X-CSE-ConnectionGUID: VjqzmIDnTQ6/KmXuasGI5w==
+X-CSE-MsgGUID: zMiJRCkQSzCCqDeT8ME1ZQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11746"; a="63735229"
+X-IronPort-AV: E=Sophos;i="6.23,155,1770624000"; 
+   d="scan'208";a="63735229"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2026 04:12:54 -0700
+X-CSE-ConnectionGUID: L2ZDNXS+SimsvPkLr/0hEg==
+X-CSE-MsgGUID: imDpeQiWTXCySPXsqRQ5eA==
+X-ExtLoop1: 1
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2026 04:12:54 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 2 Apr 2026 04:12:53 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Thu, 2 Apr 2026 04:12:53 -0700
+Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.0) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 2 Apr 2026 04:12:51 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=keLqs1zaf7wNbxEnCgcX52yxODsf4LtIbOc4GqmX0KQKYLA300A/7pleWaQeHUhHibB7zhVSfT6zYNnWMV9ncCkXTMaqzq+qe091qh2bhbXh3VaA8+FQT33awUoY13n9YnNsbEuDpte4HwMd/NYfYwa2ibA6JIJnIHm85GlgysLy34fpj78g2oKes800m+dAFccpOOUs8tPQXcylFp5W4t4PSzHnLWf3pVCy2C6xEoUjbv4Y5R3ic/fzzeDSuZfAZgAE1C0P9ku1SWam9piceXvrDt2TCK9e911ByCIpxyCsnxYfaWw/ZlEX/c4Grnhx8hBIoNXWCuJ0IG+Wjv7oJg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
+ s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iRW7sP4l6BCS3mEc4bjfFPDbRcBZYpfOnBsLGIDcj5s=;
- b=Oa5vF1V6rsNm71iLYq92FtMiQC064stc+tWx/47napjItmfFpcS3wVwzkG3dR1xeqtOJueRu7eIQeq4TRGAJ0Yd9IK7FXkHaXqu5UIc6vqEJsRmlNbw0ezQ50A6PmdSpjdve+1tX93ZGIJ9nqwoXn5OWjGS5Z18u1+Fgmtgl86xMpmCgDSY14JfUmLHGlmlXWbwxT60P3c8EFbEkJPbRFKscDLA5Dh8Ict5P+L7ns16GoW6DW3jNvu6+5sAec14ThgZXfIKJ9Zm7NyomSea4n8jLnh6JJwwpHwSmg32kP1gvKvaOqI8T5MEZBfRHNAz+8bB4ejJ8J913QQdospjN/g==
+ bh=oC2/PmtGCQdQpzYXKkhz9pJqRPPj3O64QgwKBHOt6dQ=;
+ b=bAk27fQQHqwuUVVovWxcQqFqk2cjYy6k9if/xz2fzq35ccC7/TAPM/IXhEFzL4FUk3nxngYXjKQODaeCOSly/qy45eQ6NHdzKGORqld210Pe79L9qYkdXU8bmWRRBKviR3jsDPdnpgQW8Y5kE8DMJdfTRvoET1Ex8niUZIbyuWZ+nD7VNOIKoAd62oenZ/sZMbiG99U42XIMZ4g9iqXa2qug9Aau/tc6KjZ4bwneEy+QjE+hbWJxoA4ut7F31XqjhDPAtAUq/Egs+ZLMTW4u4b67ZfzGaKR1957n5NRuh3ZgE+PKF8GLbxf0ejDbCXLZwBtavFhFVNsoXX5puuZFjA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=starfivetech.com; dmarc=pass action=none
- header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=starfivetech.com;
-Received: from ZQ0PR01MB1208.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:19::5) by ZQ0PR01MB1048.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:d::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.20; Thu, 2 Apr
- 2026 10:56:13 +0000
-Received: from ZQ0PR01MB1208.CHNPR01.prod.partner.outlook.cn
- ([fe80::63d1:b688:cab7:50cb]) by
- ZQ0PR01MB1208.CHNPR01.prod.partner.outlook.cn ([fe80::63d1:b688:cab7:50cb%7])
- with mapi id 15.20.9769.017; Thu, 2 Apr 2026 10:56:13 +0000
-From: Changhuang Liang <changhuang.liang@starfivetech.com>
-To: Michael Turquette <mturquette@baylibre.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Emil Renner Berthing <kernel@esmil.dk>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>
-Cc: linux-clk@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-hardening@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Sia Jee Heng <jeeheng.sia@starfivetech.com>,
-	Hal Feng <hal.feng@starfivetech.com>,
-	Ley Foon Tan <leyfoon.tan@starfivetech.com>,
-	Changhuang Liang <changhuang.liang@starfivetech.com>
-Subject: [PATCH v1 15/22] dt-bindings: clock: Add StarFive JHB100 Peripheral-1 clock and reset generator
-Date: Thu,  2 Apr 2026 03:55:16 -0700
-Message-Id: <20260402105523.447523-16-changhuang.liang@starfivetech.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260402105523.447523-1-changhuang.liang@starfivetech.com>
-References: <20260402105523.447523-1-changhuang.liang@starfivetech.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: ZQ0PR01CA0028.CHNPR01.prod.partner.outlook.cn (10.2.0.210)
- To ZQ0PR01MB1208.CHNPR01.prod.partner.outlook.cn (10.2.3.165)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM4PR11MB6117.namprd11.prod.outlook.com (2603:10b6:8:b3::19) by
+ DSVPR11MB9555.namprd11.prod.outlook.com (2603:10b6:8:388::11) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9769.18; Thu, 2 Apr 2026 11:12:48 +0000
+Received: from DM4PR11MB6117.namprd11.prod.outlook.com
+ ([fe80::d9b3:e942:2686:3cdd]) by DM4PR11MB6117.namprd11.prod.outlook.com
+ ([fe80::d9b3:e942:2686:3cdd%6]) with mapi id 15.20.9769.017; Thu, 2 Apr 2026
+ 11:12:48 +0000
+Date: Thu, 2 Apr 2026 13:12:42 +0200
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+To: <netdev@vger.kernel.org>
+CC: <bpf@vger.kernel.org>, <magnus.karlsson@intel.com>,
+	<stfomichev@gmail.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<horms@kernel.org>, <larysa.zaremba@intel.com>,
+	<aleksander.lobakin@intel.com>, <bjorn@kernel.org>
+Subject: Re: [PATCH v5 net 00/11] xsk: tailroom reservation and MTU validation
+Message-ID: <ac5PKvH7ZGZTT5s6@boxer>
+References: <20260331150213.550797-1-maciej.fijalkowski@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260331150213.550797-1-maciej.fijalkowski@intel.com>
+X-ClientProxiedBy: VI1PR0502CA0013.eurprd05.prod.outlook.com
+ (2603:10a6:803:1::26) To DM4PR11MB6117.namprd11.prod.outlook.com
+ (2603:10b6:8:b3::19)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -77,244 +96,159 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: ZQ0PR01MB1208:EE_|ZQ0PR01MB1048:EE_
-X-MS-Office365-Filtering-Correlation-Id: b9c7dfdb-b34b-43f5-c267-08de90a674a5
+X-MS-TrafficTypeDiagnostic: DM4PR11MB6117:EE_|DSVPR11MB9555:EE_
+X-MS-Office365-Filtering-Correlation-Id: 46f3b688-b398-4fa1-624d-08de90a8c605
 X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|52116014|376014|366016|921020|38350700014|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	0hW11raNvNvQWNsgFKXnSMhKD/+0j54vq9bmZb4JvnW4Cm5tElBfci9kxPd1wVYCMmcxAa5QhS3P4iMWjvPcqPljx99wOWiarPrhCxcw4i/DBhwIILxWQc9dQ+4Zl7c8SYqx1ZiP2WXx/5MTfkAOG4YiDhOIDvKKZDsv4g1DiHBkEPFAdMbQ5dCx7TuMV7nYxUYfBpmBrF19nQxmUceG/O3hmYhgvWXjhRX3F4LfJQsXJaP7H+kG+LNU9VHFZqBpCyW3pOV/cF3MJ9x03zNeh6Uu2+3zfkc4IGf4j0IEN5JRkwxxtE+TgKGFMqYHatpvxGqhtJ1yjexho67Tkg53lcH6DpkB2jO5pCjSQmMJImKOQA/m4hDLTxZfYgIGLiJ9nEttl/Ev+w5eYe5S9wyYgsoieZGPXV6jsxLharV7YTt26q7vZsnMuNqa60j1dBOGEK96mHKNOWvqcnybQfJEtyxYXwv1Vk08pQkLxq8l6U3mY3azFfij9oblnWt4EoQ9ATOt18Ihy63y00xuaMV0qmyEdW4UHEIakXg2PXvCx1LE5QB2AsdY610I94gYRHQ0v9jkgbx4XEk02I8RcuSiZ4nqevhnX+sdoZgGC0CEz7g=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQ0PR01MB1208.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(52116014)(376014)(366016)(921020)(38350700014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info: 8JLq6+h5iShLbRVNQt0KhShfzwwFBE+cgdS8h+O0XOaw4HRgNDyrlAur1hTNXiyIdc5ZY8Tzhf6vun6S34LJCGj0NhxMd3ya2JlMK6P7OWVwdNMp1tg2CyqCs3N0tiwj3cWHW0FK/i7yuW6oDwIcX8ZNbKlcpMrgMvzQfCnibGj6fyh6orFytqlbIpfMKnZh3B5XIbUlLZBDbjZ6td5ZtB6mQYKyrqruhw0MTwePG/XAb8BWGsAIP/D6fn7gmbRyVYEbye02kEuyU1ganirWnQ3immol/6QT/M/RyewIOXRzoe6DDxTIo1IDOLSOTaDiNdFuIZLuUcPrkaHI2taSlKti4OkMlj3rp1QgdHRwHV4OBze7h1DB0RMBH05cT99vNPdMRsJgJ1IvxUCx0Db1F0yY805KXojlT3EG8r176XaIkhmNqb2I6ya1VPNBK/D2LVk2vI1+BeJKeGzSngli+IyaHMLu9xdiAvQqoIq8izeda7cwQ7HVxtqqindVSnQILjKkJiFOzkZbhhEBQhvcu1zjuVmo66O7u9bSy8hhiYxcJMWJQn6Yf3vuA2ftI9NXcL/FlsN8BX1116tUIuuHY4X1fqjHi+LLVB/tCRwJrPWqydmpCQgrZ5Mhp/P4SNMW0dEfX99yGI13cOxTlQGcOi6NX3dQp6FX0RrlTAKxTUUc2Uk+FaXOC/I8e0jc2DXOYu4CjXspxdetV1xKpBEUe7WIYuYNu0lHHVQBqZcNZ1UB9yq4Tu0GJqZt6O1IN1ON
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB6117.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?4PoLIs67fcUBIJCH86p1wKKYWWw+RJcY1kXfWesT/XOWIALIiB1rXngCPmwN?=
- =?us-ascii?Q?nfTUtu6mT9QdVb/9g55ASBwoMsACW+1chCMycQWnFTNz+4dqi5ncfEOBpop5?=
- =?us-ascii?Q?F7ov7ZucqdJMgc0Fjt7ElA0UhVclBy/ygQ9ogdNGRrjO3oBRXPH3FEuaL7uI?=
- =?us-ascii?Q?5WbcRYarul7S7hnc+1WKtxYLGKqxsDJHW0hRXIWsusPh0Z4qnKuFeQxW/Yd6?=
- =?us-ascii?Q?TdcX/DXrlk6GNoEttz5TDqLON5aKXhsv2I5TzIevANb3vhtdbvBWC6Vz4fXG?=
- =?us-ascii?Q?XqgwOP/aOPRcG/VphndqZ1Ivh9IPq2crp+IBdl0Lz+RZrvaT6wtJnkyvCq+j?=
- =?us-ascii?Q?VWtSJxdJMcST3DLX0f0VIQHdHNitHcI7Nf8GRNun8+caQ2py6S3HYtWyIOFb?=
- =?us-ascii?Q?RELvJGfVCD18W6lXdcxgm6da+GQxVVC175bdwXKl0Z8Fu5aFbXRBf4Bc4SAY?=
- =?us-ascii?Q?L5EdAgBtvRX8Rj96Ak02RxtGVKRUmud/iatmIqShxKYS78WAsp0wUmX6+I7M?=
- =?us-ascii?Q?TIEAsn414/2Ji44VismLNTD+1Wvf274qcmKLJf0JkdVpEyzuaPjDNUlPc4gR?=
- =?us-ascii?Q?rwiNgpOI5CjQyJRUAurXf6N+ONLiwowYzNQjz/0FIn7ndxElg/F1Z4zhNaVq?=
- =?us-ascii?Q?LvlB8QLbQxUWJt8hTWT/3c6WzL3NNka7WMXNeHQC0h1IlXXYYL5DlM+wLoZb?=
- =?us-ascii?Q?A08sZ7ipfs5KQvs8jbWOw0Q0hv8qTbaYuSCGNsbj60h6ZuGRP37XH4xifYUf?=
- =?us-ascii?Q?jZyF5s0kaqS0VpOOrgIlggtgJHusgrhyez272b0Hmcc/LyuGMmT9NrD0Elxq?=
- =?us-ascii?Q?785xkb/lNb6xFqoOo92yWE0ES2GCIRgXr247PVC7VQfwIAFYr2FPXzTtuiS6?=
- =?us-ascii?Q?2lWpKpNfzekoK4qmjLXlBAST2oMrN8fEFX5/2Tc/VOjsuJzjce+ajMlTA/XO?=
- =?us-ascii?Q?Hk8lyupaLkM9JmGBKf8mTkwwnzq3apVHFCsnM1qSUG1785x2wztX0OJNkxZI?=
- =?us-ascii?Q?U9nEpcnwV9iWRxA1ThuHaAFkXwxP12bF+EIE1QOuHjTjIcWaZWtys1lH0etU?=
- =?us-ascii?Q?BP7HKhTwXZ+jqW6qi5zLFt05jQibrlh0H9wfrEyM7lplSztxeFMg/mnYpj7f?=
- =?us-ascii?Q?oYBqWrHamW1pEtP4csxr/yAMR2dW4b2CISsqBmanxrbZrd3tb+oSMmj1IuLC?=
- =?us-ascii?Q?e13eFZKMr+kJOSYRY1xg6g4xr6gVK7VW4bcIiH+FtDDFHeyHmiqSU7sCmk4d?=
- =?us-ascii?Q?1WxGgX7ng7YRNSwx9DpAlbOlUfZWjzQGwexK/vI0AgImCQB2htLs6kW5PD2X?=
- =?us-ascii?Q?Obgay8UEhQ63KQoNrfmqvIErhxANf3t01VhH8t7boLfdO0mFrn1hxYGjcbW9?=
- =?us-ascii?Q?pTzUYHbsnAqjhcQYaTbF9h+T+3+Iwj3Gkf0gBF2WbXOeuHoWPHAzZ8kp/cO/?=
- =?us-ascii?Q?42ZTsWOgUOa0WiRpe+8km0ZFhoV0ulhWhHmxhcx7NY/KdIS/c6tjMcBybcAJ?=
- =?us-ascii?Q?yv/y/wwcQ0wlHfedLYP/PhFrqyyMc8fkoHC/VontBZ30rZNa+GJIKq+1yEcx?=
- =?us-ascii?Q?GABn0if4nDikq1pkalS7kWuaj2W2dFKDblB+XKTxqj6lIup+K6CNMw1bxZKo?=
- =?us-ascii?Q?ig4OX/sgU9CDDP8Htdl0ZmoBJFNr77nWiq4L9GT8PHmFS2meWTrQHT69VNH7?=
- =?us-ascii?Q?iFunIEBNmuGo8/FROnSyIW8nC5VOkVnmes3tfAY4wlGnOdokyLbDFNBjDBVg?=
- =?us-ascii?Q?0bu+Fx++5S9HrZKdNlvaWjwWAZKXfqmOZ5z64y3u6B9x3jB5k8L9?=
-X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b9c7dfdb-b34b-43f5-c267-08de90a674a5
-X-MS-Exchange-CrossTenant-AuthSource: ZQ0PR01MB1208.CHNPR01.prod.partner.outlook.cn
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?BQ6PqoFC1UQy/KD+BLNaigs7A0R/EVmR4b6lQt8+Af1sDbqchgCdmYsNvDrC?=
+ =?us-ascii?Q?KWnRaEVmism/btBCAlXzqaq6vQOjQ65uTvjj7c2thHLLs5oCDHCif9BvRq81?=
+ =?us-ascii?Q?Xfr/qH2gt2yR+EsrI9JF1q9Tb2jFtiE364PFKl91P/luYQygv1KNTTq4BWpT?=
+ =?us-ascii?Q?cI4SEORQolre2VOjDTGrhC5YNU8SurkgFmv7T536kdo6b3PI1J7dCHOVlbOy?=
+ =?us-ascii?Q?A7nhaYVqIRPW39B9ZMT4r5gqdQ8rPl5ETE0JF1W7JnDDL0U0TcKgZ29TNZti?=
+ =?us-ascii?Q?fzINF4/cBM+43V/aWEHlDMnRygrBJuQUJFmqbx9UoEr6La50uuTloN5BSmB6?=
+ =?us-ascii?Q?32PNXbdd1RK6kYJht2+d8AzUucoxGH3ICJNmhqbO4kXByFH38RU7n7BW5uaw?=
+ =?us-ascii?Q?iW4AETKDB1pUgSOtFIV2nxVFgf+qhOyju7RDzXcGzvIm1ONK0244L47S7mBx?=
+ =?us-ascii?Q?mx9FnnkdOnAlIxlrZkvfct+TElyzD+D1cSk+j5CicmywP132DNS5ctMWPn4z?=
+ =?us-ascii?Q?eQ48Omju5v/9xqFTepddnTHAVGlwUbYSlH+F/iYrXTnz8Xr5DIqe9S1Y8kHI?=
+ =?us-ascii?Q?1c+SuQjyEMTCCM5kIz13ZoR4P1izUt2qBzlaYIAme4BC+OVzvVYOtvzAl70E?=
+ =?us-ascii?Q?QUWRyiU01gIP7NFnqtP36lBIMEODAxvxsyV1xOOK6fbKYRy4TcKhqbILk3Ud?=
+ =?us-ascii?Q?O2Zp/7U67dl3MWbmLhdeQNECdnxBLz800hiyZkOYxhyErIXY1kLFlQymx0nf?=
+ =?us-ascii?Q?0jFJFB+K47nPmM2qVEDeE58ovEDRBonYsuWzAieRcUmZPYkyYksVwAVrGGaS?=
+ =?us-ascii?Q?wEJcOEyijRWi9F2pUr4OApVFJhYguyCJtvVHxQcGyiEhdpLkgP6yiu3cxb6G?=
+ =?us-ascii?Q?SNhT6bA03QMOsniyKpRxsBXf/xiAbi+Gtt8/G/LTHGl6RRvGnq2VaJWqO6rs?=
+ =?us-ascii?Q?SjOD/DcgGsQinXpC4lNsnsHQTzUq6ScYVEdkdXDYmiV6IFkkQB00oWG4EHb0?=
+ =?us-ascii?Q?w5dM7Cl0atRXobmBordUVI3gEld3ZpKB0idQZJsSUml2kwArJA8UENRVhbnS?=
+ =?us-ascii?Q?KRv/UhgGK3phoH3rx7eUJadGkGzWA/cLzKTNHKF4QNlwO4LVWBMgctv9zazA?=
+ =?us-ascii?Q?lEPkjd35gHB9awenLdJnEXTsGrXdGNWElghzKZdNIC/ZrZHboUKOuDkppIkW?=
+ =?us-ascii?Q?/TXsUT1Ahjax11hPtNHD4MPKxUktruf+MkEjHU7oFCBWTXY0PC9Y/57jR0MB?=
+ =?us-ascii?Q?jmKzELMbt7sQf1zGApdsptHu4Hkkt6zqgt62MCcDmbHjPrhMAEBjVwW7fTtf?=
+ =?us-ascii?Q?zu53BBCPTex6l9woLZr41kpwtZ8QIiOkHmNjlgq4F6LCz2EGON64wzwS6wRn?=
+ =?us-ascii?Q?eO+rwNaEH7LP3PoZKWmCqFGQweL2xJPQ6RW3lQBgKoqEVMf6fsJ2VJtySU5P?=
+ =?us-ascii?Q?dYwtFZWWh5pWbEDtfyjmuza5ITV3UUcotALxpSGGijxHZUCDOymCjZfxiyv+?=
+ =?us-ascii?Q?ZErDR32w8NFXh3cJFDOXfldVdSy1W8jW9IPkl55nkAzf9zYUrnF/Frke5jjc?=
+ =?us-ascii?Q?zvnRMauT/TYHL8lSFY3pVCulpKOE8e36SbOsSLqthggwkrOkiUicgMzWKxpL?=
+ =?us-ascii?Q?2CFpBm/XWoiAkzfKM6SXzGdRhdVIpFs5PhkC6jxgmFx5zGfRD+uYpiYnC99a?=
+ =?us-ascii?Q?HIPwr0r/x2DMVt+U29vVMOYcac1oWFU+rz9iGDGpRLPGbn/IyUf+NrugLOkD?=
+ =?us-ascii?Q?qx9qXISASAqB2xUXRHy7PAtHf7TlKR0=3D?=
+X-Exchange-RoutingPolicyChecked: ieX3iX1BuHM1SZjcPv3ADB/2wpjpiCfw41hea2t5fRPyRKDOrEogiz/TLptUH2ib5B85KLsD7rHfqQethOm9befmkk9BUtNeZywzgpFTJrGBIDRLB3rhxGvj7EKSzbs7tXO4wgIeN68p5SnzgV5J8Wf/JFE03HxUNe2w8jO9PlshyK0OS8xedfwgVztlSpWfNhYocNyUmjrcJJQnz0x840PPNIANswr1bm8sNFPrDKfsP5S6Rs0i4cWlTmctVkVRdktCRUz5yBNJt7y3Bhhybrz5eVjKQIipZYmXavppvg1N/99mAd3biacwQorOPG3HwlM3lzqNPbhzGzP5oIoXXQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 46f3b688-b398-4fa1-624d-08de90a8c605
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6117.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2026 10:56:13.0560
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2026 11:12:48.5570
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6O2B7PuemfYpTRZlrcF+10k1S66F1nnoE9tGUpga3q8l/9iMcGA3YUROYijUdqvcecl4EOIpz+d5heYIrtl3+3HvZe2A2ZTIhEV8/fB5IrsQ2BGomtjKIf/kuzGnDoMa
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQ0PR01MB1048
+X-MS-Exchange-CrossTenant-UserPrincipalName: HECgIa7qlvl9wgaxrX9HYf8u9i4gVS0ahI3kdvMmxbFeRAuiJ/lFnJpw9pMvu9h8SxgsHvsWTd3wO+W1OV1PmO7xG3i6JYL8q/f4kRcu4D8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DSVPR11MB9555
+X-OriginatorOrg: intel.com
 
-Add bindings for the Peripheral-1 clock and reset generator (PER1CRG)
-on the JHB100 RISC-V SoC by StarFive Ltd.
+On Tue, Mar 31, 2026 at 05:02:02PM +0200, Maciej Fijalkowski wrote:
 
-Signed-off-by: Changhuang Liang <changhuang.liang@starfivetech.com>
----
- .../clock/starfive,jhb100-per1crg.yaml        | 70 +++++++++++++++++++
- .../dt-bindings/clock/starfive,jhb100-crg.h   | 60 ++++++++++++++++
- .../dt-bindings/reset/starfive,jhb100-crg.h   | 20 ++++++
- 3 files changed, 150 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/clock/starfive,jhb100-per1crg.yaml
+FWIW I'll be sending v6 as I messed up refcounting scheme on error path
+for shared umem. I'm gonna also put on shelf driver cleanups as I got fed
+up with issues reported by Sashiko. I plan to get back to it if I get to
+work on forbidding mtu change feature on interfaces loaded with xsk
+sockets.
 
-diff --git a/Documentation/devicetree/bindings/clock/starfive,jhb100-per1crg.yaml b/Documentation/devicetree/bindings/clock/starfive,jhb100-per1crg.yaml
-new file mode 100644
-index 000000000000..517c6dd2b19f
---- /dev/null
-+++ b/Documentation/devicetree/bindings/clock/starfive,jhb100-per1crg.yaml
-@@ -0,0 +1,70 @@
-+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/clock/starfive,jhb100-per1crg.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: StarFive JHB100 Peripheral-1 Clock and Reset Generator
-+
-+maintainers:
-+  - Changhuang Liang <changhuang.liang@starfivetech.com>
-+
-+properties:
-+  compatible:
-+    const: starfive,jhb100-per1crg
-+
-+  reg:
-+    maxItems: 1
-+
-+  clocks:
-+    items:
-+      - description: PLL7
-+      - description: Peripheral-1 600MHz
-+      - description: Peripheral-1 800MHz
-+      - description: Peripheral-1 200MHz
-+      - description: Peripheral-1 143MHz
-+
-+  clock-names:
-+    items:
-+      - const: pll7
-+      - const: per1_600
-+      - const: per1_800
-+      - const: per1_200
-+      - const: per1_143
-+
-+  '#clock-cells':
-+    const: 1
-+    description:
-+      See <dt-bindings/clock/starfive,jhb100-crg.h> for valid indices.
-+
-+  '#reset-cells':
-+    const: 1
-+    description:
-+      See <dt-bindings/reset/starfive-jhb100-crg.h> for valid indices.
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - clock-names
-+  - '#clock-cells'
-+  - '#reset-cells'
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    clock-controller@11b40000 {
-+      compatible = "starfive,jhb100-per1crg";
-+      reg = <0x11b40000 0x1000>;
-+      clocks = <&pll7>,
-+               <&sys0crg 68>,
-+               <&sys0crg 69>,
-+               <&sys2crg 19>,
-+               <&sys2crg 22>;
-+      clock-names = "pll7", "per1_600",
-+                    "per1_800", "per1_200",
-+                    "per1_143";
-+      #clock-cells = <1>;
-+      #reset-cells = <1>;
-+    };
-diff --git a/include/dt-bindings/clock/starfive,jhb100-crg.h b/include/dt-bindings/clock/starfive,jhb100-crg.h
-index 104f302b7103..95345d104585 100644
---- a/include/dt-bindings/clock/starfive,jhb100-crg.h
-+++ b/include/dt-bindings/clock/starfive,jhb100-crg.h
-@@ -387,4 +387,64 @@
- #define JHB100_PER0CLK_MAIN_ICG_EN_SENSORS_DMAC		339
- #define JHB100_PER0CLK_MAIN_ICG_EN_TRNG			340
- 
-+/* PER1CRG clocks */
-+#define JHB100_PER1CLK_100				0
-+#define JHB100_PER1CLK_1				1
-+#define JHB100_PER1CLK_200_DIVN0			2
-+#define JHB100_PER1CLK_200_DIVN1			3
-+#define JHB100_PER1CLK_200_DIVN2			4
-+#define JHB100_PER1CLK_200_DIVN3			5
-+#define JHB100_PER1CLK_200_CCLK_DIV			6
-+
-+#define JHB100_PER1CLK_SGPIO0_PCLK			15
-+#define JHB100_PER1CLK_SGPIO0_DCLK			16
-+#define JHB100_PER1CLK_SGPIO1_PCLK			17
-+#define JHB100_PER1CLK_SGPIO1_DCLK			18
-+
-+#define JHB100_PER1CLK_EMMC0_BCLK			22
-+
-+#define JHB100_PER1CLK_EMMC0_CCLK			25
-+
-+#define JHB100_PER1CLK_DMAC1_1CH_CORE			29
-+
-+#define JHB100_PER1CLK_DMAC1_1CH_ACLK			31
-+
-+#define JHB100_PER1CLK_DMAC2_1CH_CORE			33
-+
-+#define JHB100_PER1CLK_DMAC2_1CH_ACLK			35
-+
-+#define JHB100_PER1CLK_DMAC3_1CH_CORE			37
-+
-+#define JHB100_PER1CLK_DMAC3_1CH_ACLK			39
-+
-+#define JHB100_PER1CLK_DMAC0_2CH_CORE			41
-+
-+#define JHB100_PER1CLK_DMAC0_2CH_ACLK			43
-+
-+#define JHB100_PER1CLK_UFS_REF				45
-+#define JHB100_PER1CLK_UFS_300				46
-+#define JHB100_PER1CLK_UFS_150				47
-+#define JHB100_PER1CLK_UFS_400				48
-+#define JHB100_PER1CLK_UFS_75				49
-+#define JHB100_PER1CLK_UFS_37_5				50
-+#define JHB100_PER1CLK_UFS_7_5				51
-+#define JHB100_PER1CLK_UFS_1_875			52
-+#define JHB100_PER1CLK_UFS_7_143			53
-+#define JHB100_PER1CLK_UFS_3_5715			54
-+
-+#define JHB100_PER1CLK_MAIN_ICG_EN_SFC0			63
-+#define JHB100_PER1CLK_MAIN_ICG_EN_SFC1			64
-+#define JHB100_PER1CLK_MAIN_ICG_EN_SFC2			65
-+#define JHB100_PER1CLK_MAIN_ICG_EN_SPI0			66
-+#define JHB100_PER1CLK_MAIN_ICG_EN_SGPIO0		67
-+#define JHB100_PER1CLK_MAIN_ICG_EN_SGPIO1		68
-+#define JHB100_PER1CLK_MAIN_ICG_EN_SENSORS_PERIPH1	69
-+#define JHB100_PER1CLK_MAIN_ICG_EN_EMMC0		70
-+#define JHB100_PER1CLK_MAIN_ICG_EN_DMAC_SFC0		71
-+#define JHB100_PER1CLK_MAIN_ICG_EN_DMAC_SFC1		72
-+#define JHB100_PER1CLK_MAIN_ICG_EN_DMAC_SFC2		73
-+#define JHB100_PER1CLK_MAIN_ICG_EN_DMAC_SPI0		74
-+#define JHB100_PER1CLK_MAIN_ICG_EN_RAS			75
-+#define JHB100_PER1CLK_MAIN_ICG_EN_UFS			76
-+
- #endif /* __DT_BINDINGS_CLOCK_STARFIVE_JHB100_H__ */
-diff --git a/include/dt-bindings/reset/starfive,jhb100-crg.h b/include/dt-bindings/reset/starfive,jhb100-crg.h
-index bb5238cb02f6..57977d5b4018 100644
---- a/include/dt-bindings/reset/starfive,jhb100-crg.h
-+++ b/include/dt-bindings/reset/starfive,jhb100-crg.h
-@@ -143,4 +143,24 @@
- #define JHB100_PER0RST_GPIO_IOMUX_PRESETN				74
- #define JHB100_PER0RST_UART_MUX_REG_WRAP				75
- 
-+/* PER1CRG resets */
-+#define JHB100_PER1RST_IOMUX_PRESETN					0
-+#define JHB100_PER1RST_SYSCON_PRESETN					1
-+#define JHB100_PER1RST_MAIN_RSTN_SFC0					2
-+#define JHB100_PER1RST_MAIN_RSTN_SFC1					3
-+#define JHB100_PER1RST_MAIN_RSTN_SFC2					4
-+#define JHB100_PER1RST_MAIN_RSTN_SPI0					5
-+#define JHB100_PER1RST_MAIN_RSTN_PERIPH1_SENSORS			6
-+#define JHB100_PER1RST_MAIN_RSTN_SGPIO0					7
-+#define JHB100_PER1RST_MAIN_RSTN_SGPIO1					8
-+#define JHB100_PER1RST_MAIN_RSTN_EMMC0					9
-+
-+#define JHB100_PER1RST_MAIN_RSTN_UFS					11
-+#define JHB100_PER1RST_MAIN_RSTN_UFS_PHY				12
-+#define JHB100_PER1RST_MAIN_RSTN_DMAC_SFC0				13
-+#define JHB100_PER1RST_MAIN_RSTN_DMAC_SFC1				14
-+#define JHB100_PER1RST_MAIN_RSTN_DMAC_SFC2				15
-+#define JHB100_PER1RST_MAIN_RSTN_DMAC_SPI0				16
-+#define JHB100_PER1RST_MAIN_RSTN_PERIPH1_RAS				17
-+
- #endif /* __DT_BINDINGS_RESET_STARFIVE_JHB100_CRG_H__ */
--- 
-2.25.1
-
+> v4->v5:
+> - add further review tags from Bjorn
+> - fix ./test_progs -t xsk
+>  * do so by making the procfs reading common so test_xsk.c can use it
+> - get back to idea of relying on pool->umem->zc in
+>   xsk_pool_get_tailroom(); that is because we now call its caller
+>   (xsk_pool_get_rx_frame_size()) before getting down to driver via
+>   ndo_bpf - we do it to rule out invalid setups in terms of MTU vs xsk
+>   frame size/number of exposed segments by driver
+> - bring back explicit rejection of mbuf && segs == 1 combo
+> 
+> v3->v4:
+> - allow exact 128 bytes of space when user defined headroom is deducted
+>   from total frame size
+> - provide a routine for reading procfs entries within xskxceiver
+>   * use it to fetch cache line size and calculate skb_shared_info size
+>     on our own
+> - clean up gve and igc xsk pool enablement routines
+> - include mtu vs frame size * max zc segments validation in
+>   xp_assign_dev()
+> 
+> v2->v3:
+> - add tags from Bjorn/Stan
+> - provide at least 128 bytes instead ETH_ZLEN when validating frame
+>   headroom
+>   * this way we can get rid of i40e/ice changes
+>   * make sure xsk_pool_get_rx_frame_size() returns value 128b-aligned
+>   * and remove pre-check from idpf
+> - separate XDP_UMEM_SG_FLAG fixes from MTU validation in xsk_bind()
+> - make drop_idx a local variable in xsk's xdp drop prog
+> - adjust rx_dropped to new 128b related values
+> - move ugly placed define (Bjorn)
+> - remove READ_ONCE when fetching netdev->mtu (Bjorn)
+> 
+> v1->v2:
+> - remove xsk_pool_get_tailroom() definition for !CONFIG_XDP_SOCKETS
+>   (Stan)
+> - do not rely on pool->umem->zc when configuring tailroom (Stan, Bjorn)
+> - simplify dbuff setting in ZC drivers (Bjorn)
+> - use defines for {head,tail}room in tests (Bjorn)
+> - return EINVAL instead of EOPNOTSUPP when mtu setting is wrong (Bjorn)
+> - include vlan headers and fcs length when validating mtu (Olek)
+> - tighten umem headroom validation when registering umem (Sashiko AI)
+> - set XDP_USE_SG in xp_assign_dev_shared() (Sashiko AI)
+> - adjust rx dropped xskxceiver test
+> 
+> Hi,
+> 
+> here we fix a long-standing issue regarding multi-buffer scenario in ZC
+> mode - we have not been providing space at the end of the buffer where
+> multi-buffer XDP works on skb_shared_info. This has been brought to our
+> attention via [0].
+> 
+> Unaligned mode does not get any specific treatment, it is user's
+> responsibility to properly handle XSK addresses in queues.
+> 
+> With adjustments included here in this set against xskxceiver I have
+> been able to pass the full test suite on ice.
+> 
+> Thanks,
+> Maciej
+> 
+> [0]: https://community.intel.com/t5/Ethernet-Products/X710-XDP-Packet-Corruption-Issue-DRV-MODE-Zero-Copy-Multi-Buffer/m-p/1724208
+> 
+> 
+> Maciej Fijalkowski (11):
+>   xsk: tighten UMEM headroom validation to account for tailroom and min
+>     frame
+>   xsk: respect tailroom for ZC setups
+>   xsk: fix XDP_UMEM_SG_FLAG issues
+>   xsk: validate MTU against usable frame size on bind
+>   selftests: bpf: introduce a common routine for reading procfs
+>   selftests: bpf: fix pkt grow tests
+>   selftests: bpf: have a separate variable for drop test
+>   selftests: bpf: adjust rx_dropped xskxceiver's test to respect
+>     tailroom
+>   idpf: remove xsk frame size check against alignment
+>   igc: remove home-grown xsk's frame size validation
+>   gve: remove home-grown xsk's frame size validation
+> 
+>  drivers/net/ethernet/google/gve/gve_main.c    |  5 --
+>  drivers/net/ethernet/intel/idpf/xsk.c         | 10 ----
+>  drivers/net/ethernet/intel/igc/igc_xdp.c      | 11 ----
+>  include/net/xdp_sock.h                        |  2 +-
+>  include/net/xdp_sock_drv.h                    | 17 +++++-
+>  net/xdp/xdp_umem.c                            |  3 +-
+>  net/xdp/xsk_buff_pool.c                       | 25 ++++++++-
+>  .../selftests/bpf/prog_tests/test_xsk.c       | 55 +++++++++----------
+>  .../selftests/bpf/prog_tests/test_xsk.h       | 23 ++++++++
+>  tools/testing/selftests/bpf/prog_tests/xsk.c  | 19 +++++++
+>  .../selftests/bpf/progs/xsk_xdp_progs.c       |  4 +-
+>  tools/testing/selftests/bpf/xskxceiver.c      | 23 ++++++++
+>  12 files changed, 135 insertions(+), 62 deletions(-)
+> 
+> -- 
+> 2.43.0
+> 
