@@ -1,92 +1,85 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC8931B803;
-	Thu,  2 Apr 2026 21:58:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2879388380
+	for <netdev@vger.kernel.org>; Thu,  2 Apr 2026 22:21:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775167107; cv=none; b=k0KTnsXAl0U1zEWJXPFqqxg/0Ps3JXPapOn3I1EGDoeKTvF9US/PyIfdG+xpLI7tvChHd36X2Tl7BxvkXQId6eqjJ0CvRUFjBPnNvmh0R8aT2gMib5ftcekYMyYcmiA1YqUefTFMScCkjx1iMYXus6GRMr0nosElGxpPdOE0UK0=
+	t=1775168492; cv=none; b=anUC6lqbME12xzgL7fECgokHfTx0knjRI6tDqDaSxAnH0QYmsFF/x/apRkEDjG9zKadZxreGw4gCtSZ59T0bEV0tLPCOXMJD97bJyJDW3/mlWmwBcKclJMjJHyPppvhi5OI2hjt1+yGwW2M0GwSjtPjxkUmQNCbdqRz4mbTMofw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775167107; c=relaxed/simple;
-	bh=QvUc9vANqYsb1luDp8UYk1f8BqkeVaTMVXLV75eutnQ=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=DVJp2RZb27ELpuSXbKU4Hp/Y6oxtY4GVZi+hvh0cGpfFqwLi3iiECU8FkXW3LsP2E4BFa3lHd7gKiNOQi5H6gIaKO0hKHraIz2ZSgvjaY8pL8Nj3ueFJ33XzKXy8KKHzyLjplHoEp/PCfYJu8MKrJG/teYDsTZ/J1SYs3fWx0zQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KBJzCsq7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775168492; c=relaxed/simple;
+	bh=JO36LpQ5gVtcWZ8brznoqUIkSZhSat8fICNZkux4Jcs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=V1GZkYqd2dTJuUHVqsorMgicOeJxwGxBXu6140gO6CAteaXD/tx7vhNnvKVQ+VjFSQVfrvunh1nt5rOJvQV8Qd1rq+AsOLSkKc/Ir+u72Dlf8Fp7nFzA93WPaDAfzvehwry8BzZ2znh4loyQ/Fvfk5gGKfrI4MlAPofnP7387Qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DIdXPFjy; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KBJzCsq7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76D96C116C6;
-	Thu,  2 Apr 2026 21:58:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775167106;
-	bh=QvUc9vANqYsb1luDp8UYk1f8BqkeVaTMVXLV75eutnQ=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=KBJzCsq7TNcgHpU+TWPAd3W8YuuJXdgpviR9Ow38UzYp/E+eDMYCQdUq5+04/Mnru
-	 vF8yruBgH9Kqoxj3RdUA00tDQnEgnr1qE7AXbmqG7qka9IVu/f1eZKTg86JWT+ETrn
-	 TjxI1jdECoYVYFvAydaPvhTr0DLyOkSNS0rHhfEWArmmkmeciwTpFwX+5aQHpstoUl
-	 foXfbAlUvknuR2UINHvJ3kK1f5ozCCWUSVy6PFFL3eEN4gpoDz+keSHvFP6Ep2zvPe
-	 Ej2doeiB7lotVTyVy6ov80wS5IsFWdnGSH4WR6z1XJ7lBV9TObDwXGWdYhpggyK3MT
-	 1b1VbHt8uneOw==
-Date: Thu, 2 Apr 2026 15:58:18 -0600 (MDT)
-From: Paul Walmsley <pjw@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DIdXPFjy"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-48896199cbaso5358445e9.1
+        for <netdev@vger.kernel.org>; Thu, 02 Apr 2026 15:21:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775168489; x=1775773289; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dI/NcwHPy2CKiwxvNl8NgCnSDMnJLWJEe2Db1Alx/A0=;
+        b=DIdXPFjyvyE29tkijnDmXva+c7sPAamv1XeBVojQCohIdwx/KbzLwMcxltCGsPqDbu
+         8XFQr1wZp5xmx7VsWMj9Klk9xHq6gdbUF4P/1GWceV7Hq+NV8IYPYNGoQg5Cw4goeU72
+         UCInCS7IFd8XvTUSFNBIFqmnRQ2tPC8FliuBHt5uqUtOR1RkMJ+fUhO1NhM1pLd4N6Vq
+         LDxlQ+/0IzP7XRWsoEru2bpPo47TTyeFgEcUNke77+rA7BsL7Q7XfoDUxQ/6aMVxGmiF
+         vhvfTF6G90MpTE78Rj8Gu0NphSRBPbJ9ZwiChfHW5cfxRPGbi3Epn66ImphiXZK/JN5H
+         P0XA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775168489; x=1775773289;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=dI/NcwHPy2CKiwxvNl8NgCnSDMnJLWJEe2Db1Alx/A0=;
+        b=ZNRg37FGEBxLSADXCWgoTngQMPEgyQhn2za6sLsHTy2zLJs/3tTkLc1ROkmYuEyQ5m
+         VT6iP0gbTbGg6wfMDvGyhiU8R2rC/JYHl6+d7r3io0Tca32ZO4hObA7l+uDaHzc1Tf2Q
+         nuDVBGxVBqjXHrsOizBfMHv1zsYI08xXOFsiwq40FGGZy8NBb8EOK8YcvJbhnz7Od9U5
+         4wmJBpklz5cGdMtSFmLzPOyHlUzYStt211ShnIW7FQaEu0Nex7MupB34tqJg8rJwwiL2
+         bYgZ/0MVt/WQWPoU9YdMwNXPD9iB/u+OoOPe+PP/Bktpc6t1nBl6qnlyA5Y2U+kK+GQh
+         l+cw==
+X-Forwarded-Encrypted: i=1; AJvYcCXIYD5vlO72s0Qe6XyTUC3JRNr+pf7a1Iq8UTDsqsZlnn49OFmLf3qEX0o8ZJYOPa21z0tGKOY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxp0YP4RiDptWKpI2jk8rnWMgxjNds2S6aQzbdPskTbpql1TXs4
+	5kECSNCmxG8pUs0vhICy2bZMbCH3eHnkvLuTf2VPqlLvHQcWxC/MizY+
+X-Gm-Gg: ATEYQzyClpBSLrTTc4Xo9jDw8bLp1xcQjXATCOTixdyDhxH0dP/iRFV/QZyaL9if6WH
+	5KzzVz/1KZaEt1kaNSZRU41qDFUQ/oK+s/dB12Ix2a1sXyDFOz4+EvXzjsvyB4NYzE+pom8gBJs
+	RFLUt3aBDNHZzZacd7w15FAp/GYcsGESoMJI4v2HiNEDlRMNvYnWu0O7V8T9no6zT1lUWwrCim1
+	z+bEMKCBnpQmk2jY0Vt/OTDdyZgn2yYqAmrx+aH5Mn6eLo923ReVSZKwdwnNiOyhxGOn3Q+gxlC
+	QBY8Fdq/RuzAZT8pCQzBz4zzsVigmd8F/zj3B4HXvluK6dsaWh+lhQMobWl/5LDeR6WAdDvua8d
+	qkXuhM/MzfdLsUMoKWB7VxVd4nNb7Up7fWl+K5l88U3VPNpfWYUuctrcifQX/jY5xjzf2bm7jXo
+	Rvv2NeWfG3CWA4rdJviidCbAHzKyVtqV5iImzjK9wBH46yJND9ivUpwqi84ZD3
+X-Received: by 2002:a05:600c:a4a:b0:488:7f69:4abf with SMTP id 5b1f17b1804b1-488997426f9mr10489185e9.12.1775168488839;
+        Thu, 02 Apr 2026 15:21:28 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887e832585sm415970045e9.6.2026.04.02.15.21.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Apr 2026 15:21:28 -0700 (PDT)
+Date: Thu, 2 Apr 2026 23:21:26 +0100
+From: David Laight <david.laight.linux@gmail.com>
 To: Yury Norov <ynorov@nvidia.com>
-cc: Andrew Morton <akpm@linux-foundation.org>, 
-    "David S. Miller" <davem@davemloft.net>, 
-    "Michael S. Tsirkin" <mst@redhat.com>, Theodore Ts'o <tytso@mit.edu>, 
-    Albert Ou <aou@eecs.berkeley.edu>, Alexander Duyck <alexanderduyck@fb.com>, 
-    Alexander Gordeev <agordeev@linux.ibm.com>, 
-    Alexander Viro <viro@zeniv.linux.org.uk>, 
-    Alexandra Winter <wintera@linux.ibm.com>, 
-    Andreas Dilger <adilger.kernel@dilger.ca>, 
-    Andrew Lunn <andrew+netdev@lunn.ch>, Anna Schumaker <anna@kernel.org>, 
-    Anton Yakovlev <anton.yakovlev@opensynergy.com>, 
-    Arnaldo Carvalho de Melo <acme@kernel.org>, 
-    Aswin Karuvally <aswin@linux.ibm.com>, Borislav Petkov <bp@alien8.de>, 
-    Carlos Maiolino <cem@kernel.org>, 
-    Catalin Marinas <catalin.marinas@arm.com>, Chao Yu <chao@kernel.org>, 
-    Christian Borntraeger <borntraeger@linux.ibm.com>, 
-    Christian Brauner <brauner@kernel.org>, 
-    Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-    Dave Hansen <dave.hansen@linux.intel.com>, 
-    David Airlie <airlied@gmail.com>, 
-    Dominique Martinet <asmadeus@codewreck.org>, 
-    Dongsheng Yang <dongsheng.yang@linux.dev>, 
-    Eric Dumazet <edumazet@google.com>, 
-    Eric Van Hensbergen <ericvh@kernel.org>, 
-    Heiko Carstens <hca@linux.ibm.com>, 
-    Herbert Xu <herbert@gondor.apana.org.au>, Ingo Molnar <mingo@redhat.com>, 
-    Jaegeuk Kim <jaegeuk@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-    Jani Nikula <jani.nikula@linux.intel.com>, 
-    Janosch Frank <frankja@linux.ibm.com>, Jaroslav Kysela <perex@perex.cz>, 
-    Jens Axboe <axboe@kernel.dk>, 
-    Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, 
-    Latchesar Ionkov <lucho@ionkov.net>, Linus Walleij <linusw@kernel.org>, 
-    Madhavan Srinivasan <maddy@linux.ibm.com>, Mark Brown <broonie@kernel.org>, 
-    Michael Ellerman <mpe@ellerman.id.au>, Miklos Szeredi <miklos@szeredi.hu>, 
-    Namhyung Kim <namhyung@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-    Paolo Abeni <pabeni@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-    Paul Walmsley <pjw@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-    Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-    Sean Christopherson <seanjc@google.com>, Simona Vetter <simona@ffwll.ch>, 
-    Takashi Iwai <tiwai@suse.com>, Thomas Gleixner <tglx@kernel.org>, 
-    Trond Myklebust <trondmy@kernel.org>, 
-    Tvrtko Ursulin <tursulin@ursulin.net>, Vasily Gorbik <gor@linux.ibm.com>, 
-    Will Deacon <will@kernel.org>, Yury Norov <yury.norov@gmail.com>, 
-    Zheng Gu <cengku@gmail.com>, linux-kernel@vger.kernel.org, x86@kernel.org, 
-    linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
-    linux-riscv@lists.infradead.org, kvm@vger.kernel.org, 
-    linux-s390@vger.kernel.org, linux-block@vger.kernel.org, 
-    intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-    dm-devel@lists.linux.dev, netdev@vger.kernel.org, 
-    linux-spi@vger.kernel.org, linux-ext4@vger.kernel.org, 
-    linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org, 
-    linux-xfs@vger.kernel.org, linux-nfs@vger.kernel.org, 
-    linux-crypto@vger.kernel.org, linux-mm@kvack.org, 
-    linux-perf-users@vger.kernel.org, v9fs@lists.linux.dev, 
-    virtualization@lists.linux.dev, linux-sound@vger.kernel.org
-Subject: Re: [PATCH 8/8] arch: use rest_of_page() macro where appropriate
-In-Reply-To: <20260304012717.201797-9-ynorov@nvidia.com>
-Message-ID: <ee15482d-22a8-9686-ba64-d216b25d8e68@kernel.org>
-References: <20260304012717.201797-1-ynorov@nvidia.com> <20260304012717.201797-9-ynorov@nvidia.com>
+Cc: Luiz Angelo Daros de Luca <luizluca@gmail.com>, Andrew Lunn
+ <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Linus Walleij <linusw@kernel.org>, Alvin
+ =?UTF-8?B?xaBpcHJhZ2E=?= <alsi@bang-olufsen.dk>, Yury Norov
+ <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [net-next PATCH 04/10] bitfield.h: add FIELD_WIDTH()
+Message-ID: <20260402232126.2e74631e@pumpkin>
+In-Reply-To: <ac50sX3MZAcVSNJo@yury>
+References: <20260331-realtek_forward-v1-0-44fb63033b7e@gmail.com>
+	<20260331-realtek_forward-v1-4-44fb63033b7e@gmail.com>
+	<acx_1dOF3EjvGt4B@yury>
+	<CAJq09z7+cA9_1fWzkrJebutJD0b1BGhrC1sUyoqqb=ddKCAXcw@mail.gmail.com>
+	<20260402102717.5eb48393@pumpkin>
+	<ac50sX3MZAcVSNJo@yury>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -94,14 +87,119 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, 3 Mar 2026, Yury Norov wrote:
+On Thu, 2 Apr 2026 09:52:49 -0400
+Yury Norov <ynorov@nvidia.com> wrote:
 
-> Switch arch code to using the macro. No functional changes intended.
+> On Thu, Apr 02, 2026 at 10:27:17AM +0100, David Laight wrote:
+> > On Thu, 2 Apr 2026 01:00:20 -0300
+> > Luiz Angelo Daros de Luca <luizluca@gmail.com> wrote:
+> >   
+> > > > > +/**
+> > > > > + * FIELD_WIDTH() - return the width of a bitfield
+> > > > > + * @_mask: shifted mask defining the field's length and position
+> > > > > + *
+> > > > > + * Returns the number of contiguous bits covered by @_mask.
+> > > > > + * This corresponds to the bit width of FIELD_MAX(@_mask).
+> > > > > + */
+> > > > > +#define FIELD_WIDTH(_mask)                                           \    
+> > > >
+> > > > Please no underscored names unless necessary.    
+> > > 
+> > > I used _mask to maintain consistency with the existing public macros
+> > > in this file, such as FIELD_GET, FIELD_PREP, FIELD_MAX, and FIELD_FIT.
+> > > All of them use the underscore prefix for parameters. Should I diverge
+> > > from them?
+> > >   
+> > > > > +     ({                                                              \
+> > > > > +             __BF_FIELD_CHECK(_mask, 0ULL, 0ULL, "FIELD_WIDTH: ");   \
+> > > > > +             __bf_shf(~FIELD_MAX(_mask));                            \
+> > > > > +     })    
+> > > >
+> > > > I believe, this should be:
+> > > >
+> > > >   #define FIELD_WIDTH(mask) ({                                  \
+> > > >         __BF_FIELD_CHECK_MASK(mask, 0ULL, "FIELD_WIDTH: ");     \
+> > > >         HWEIGHT(mask);                                          \
+> > > >   })    
+> > > 
+> > > HWEIGHT() is indeed much cleaner. However, to keep bitfield.h
+> > > self-contained and avoid adding more includes, I'll try
+> > > __builtin_popcountll() in a similar way __builtin_ffsll is already
+> > > used.
+> > > 
+> > > I also noticed the suggestion to use __BF_FIELD_CHECK_MASK instead of
+> > > __BF_FIELD_CHECK. Both FIELD_MAX and FIELD_FIT currently use the full
+> > > __BF_FIELD_CHECK with 0ULL as a dummy register to ensure the mask fits
+> > > within the header's supported limits. If __BF_FIELD_CHECK_MASK is
+> > > preferred for FIELD_WIDTH, I can certainly use it, but should we also
+> > > update FIELD_MAX and FIELD_FIT for consistency?  
+> > 
+> > All of the calls with the 0ULL placeholder (especially for the register)
+> > should really be removed.
+> > Last time I looked there where some calls that only had placeholders.
+> > They just bloat the pre-processor output and slow down compilation.  
 > 
-> Signed-off-by: Yury Norov <ynorov@nvidia.com>
+> Have you any numbers? Can you send a patch?
 
-Acked-by: Paul Walmsley <pjw@kernel.org> # arch/riscv
+It was all in a patch I send a while back.
+Basically GENMASK() is a couple of hundred bytes and FIELD_PREP(GENMASK())
+hits a few thousand due to the number of times mask (in particular)
+get expanded.
+
+The problem was bit-fields...
+
+> 
+> > > I intend to send a v2 with the following implementation:
+> > > 
+> > > #define __bf_shf(x) (__builtin_ffsll(x) - 1)
+> > > +#define __bf_hweight(x) __builtin_popcountll(x)
+> > > 
+> > > #define __scalar_type_to_unsigned_cases(type)                          \
+> > >                unsigned type:  (unsigned type)0,                       \
+> > > @@ -111,6 +112,19 @@
+> > >                (typeof(_mask))((_mask) >> __bf_shf(_mask));            \
+> > >        })
+> > > 
+> > > +/**
+> > > + * FIELD_WIDTH() - return the width of a bitfield
+> > > + * @_mask: shifted mask defining the field's length and position
+> > > + *
+> > > + * Returns the number of contiguous bits covered by @_mask.
+> > > + * This corresponds to the bit width of FIELD_MAX(@_mask).
+> > > + */
+> > > +#define FIELD_WIDTH(_mask)                                             \
+> > > +       ({                                                              \  
+> > 
+> > You ought to have:
+> > 		auto _fw_mask = mask;
+> > here. While _mask has to be a constant, if it comes from GENMASK()
+> > it is very long.  
+> 
+> Yes, but what this _fw means? Here it could be just auto __mask = mask.
+> That is what the underscores are used.
+
+The problems arise when the expansions get nested.
+Using unique names is compex (and unreadable).
+Provided only different defines are nested it is enough to use
+different names in each one.
+
+> 
+> > > +               __BF_FIELD_CHECK_MASK(_mask, 0ULL, "FIELD_WIDTH: ");   \
+> > > +               (typeof(_mask))__bf_hweight(_mask);                     \  
+> > 
+> > Why the cast of the result?
+> > They are everywhere in that file, and many are pointless.
+> > But there is no point adding another one.
+> > 
+> > I'm not even sure you need the extra define.
+> > Just use __builtin_popcountll().  
+> 
+> For __BF_FIELD_CHECK_MASK() check, I guess.
+
+I meant why have __bf_hweight().
+
+	David
 
 
-- Paul
