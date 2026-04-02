@@ -1,130 +1,121 @@
-Received: from mout-y-209.mailbox.org (mout-y-209.mailbox.org [91.198.250.237])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26C43CFF70;
-	Thu,  2 Apr 2026 16:46:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.198.250.237
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775148371; cv=none; b=RCwNyu8GJHlRSIoE2mIOQSx4it6UmqvJKMfvwEs2uLJkpfNhqGxNcnLwqgk+OSrxZAYAu2TF5qM03yDNwOBSibM6DmL5+iXqPWOnyUASycxFvRE3b6iqKEInUi9hHdELbX/vc755P4fy5V4XUj9+W4q3O/kNwn1X0CFiuLT7oy4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775148371; c=relaxed/simple;
-	bh=sB67ueWqBnu1mPBMZhJBmeeNRoaU0BvbTCh73OcR71o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VALE+M3pgOnJdILYD5RwCBYB8RmcWa/SuJZXfMJAPnF+z3Jc0MI+3YNyIKO6fDE+1biz628V4esc9W4n7TmGm7zSsvWvn3Tt1ZXrkqTK49PtHbkdlGOqm/JoDAm58F9w3i+aqbUq5MJNXOtHWrr4dgFjcnvsyF7DsQenM9MizSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=VqytO2VQ; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=wAcoMQeA; arc=none smtp.client-ip=91.198.250.237
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420C036DA0C
+	for <netdev@vger.kernel.org>; Thu,  2 Apr 2026 16:53:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775148842; cv=pass; b=j2U4Xb15bMUQZ3TAOaomEyp4kYif9dvuvVZ/G9t/ysOWN9cyqErVNT5Jb17vOUy2m+NOgywh351Chi5DbLkZTltD9ds5VblKGVObNAQ78kB0OMhEsurqFi0HzboBh9UXkTzRICZiZvMVe6mWRR8i0rVBcpIdKH8ysirNiH7ZJRo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775148842; c=relaxed/simple;
+	bh=YQHOj/bnPK/nIDomsOi7P10E15gaCTUx4OYWYgBgufo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rRmuKmQE/w0dQgtyQn8cXbl6A8fY8+FmyNFF9mDq2zlz4iPdc+HppIUn0nDfCZ9MSOLfQSu0hvJzJMOG+6YVG3vkmswuoPf3wTstYquQFBYKCaCQr9moyfIomAbmB6TOeIU0ZmvEodhAQrogHcRHW/6DBbOn0DTkQClcd0Yo0bg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gQ1qS/1Y; arc=pass smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="VqytO2VQ";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="wAcoMQeA"
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-y-209.mailbox.org (Postfix) with ESMTPS id 4fmnmH6JkQzB14l;
-	Thu,  2 Apr 2026 18:45:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1775148351;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=2Y1IOn6UI1l+FnCu4bYLPIoEoDffaMMvju4NVkgxBWE=;
-	b=VqytO2VQ0/Ki8YBMMaG6LGYJTv/5fMucPNuQfco34nYc60+VSiMCsbq9Ta2DxjHjYsBCtu
-	X5/pzOlOCsnyOce2gH+VA4CmX11+DJyzA7kIS7wCvZxXw7hyAy6TdcsOGGR+dWEmzlCMLC
-	Pch7LHEn8XTkh7DwDGeJe5SBPLDDQK1sTti3GPQCAqJNyGsuDW6x85gHEMCrRS0Jx/dQdk
-	xuw0Oh6XHxXOJwA0hYQrV36xXVFegKsGI+mMlnVf/C+fX4HxmX19IeFudLjRXU9XUYW2ES
-	lb/JSoaCtSOW487ozP/HXPf1CA61thicbUFDeoIbBU/DDxV81yOWdrCQhI1i4Q==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=wAcoMQeA;
-	spf=pass (outgoing_mbo_mout: domain of mashiro.chen@mailbox.org designates 2001:67c:2050:b231:465::2 as permitted sender) smtp.mailfrom=mashiro.chen@mailbox.org
-From: Mashiro Chen <mashiro.chen@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1775148349;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=2Y1IOn6UI1l+FnCu4bYLPIoEoDffaMMvju4NVkgxBWE=;
-	b=wAcoMQeA+mzD94qdHx/bInbTRdjwdifpXj7k6d+PFCNgZNJAw6yGv6WW7oQRtJoRQP9TB8
-	5zhh7P+IsC2FMWSBdDotvfunzpmrZz2AzzJfd8eNt0JeFyU4CgB7+hR2ZTtFIVwus9/NYk
-	9FjNP+FUjLDxZsUmkteKkrEvCW5wN2GteTGKlRD5bIcoaNjlQkUMkxVn7ISQsqCWYSAxdl
-	+K4q9ITspBV+sEVPLdypZP4jPcaviUbxu8iotJqfZVVPWn50muk5dggPnDESrn8Lkv4LlM
-	z1PMT/aS8teeme1BTF8Vt3gCuzt6XvBAd8WhLyGkvCINeClSOVrwAScArHdjzg==
-To: ajk@comnets.uni-bremen.de,
-	netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-hams@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mashiro Chen <mashiro.chen@mailbox.org>,
-	syzbot+ecdb8c9878a81eb21e54@syzkaller.appspotmail.com
-Subject: [PATCH net] net: hamradio: 6pack: fix uninit-value in sixpack_receive_buf
-Date: Fri,  3 Apr 2026 00:45:25 +0800
-Message-ID: <20260402164525.134244-1-mashiro.chen@mailbox.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gQ1qS/1Y"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-43cfce3a195so713287f8f.2
+        for <netdev@vger.kernel.org>; Thu, 02 Apr 2026 09:53:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775148836; cv=none;
+        d=google.com; s=arc-20240605;
+        b=WJZBvHwEEVq3JjjYSgAOkZcw2OpGhLrHqSXSEiW46v3H7khYjga3lvWgz8YUUuze9L
+         UqWUQYIskNTOjoXfAXb3+nftlXo1nkouqs/QCBgM/4v2XTgz41RSl7Iit3l3XfCvRH24
+         5hPOFhx8J6fL1g2J423L2ih1NPbED+p8w+tFUy9NzNPZNwzU4n0nzszf6HMkRKROTHwn
+         9EKBOkgX+E5dJLMkTWLnCjz+13Z2IGXSmMonTM6DQ73X/iJzsC7uQ+OTO3euGYwnALnG
+         7uNb+DHZ0jwhXmU1c5stPobkQUfdsXGhA2M/rhxEPuJEBH+jHBfSOiW580frM0UOtHKY
+         SyRg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=YQHOj/bnPK/nIDomsOi7P10E15gaCTUx4OYWYgBgufo=;
+        fh=yPgEh7J3IKlPKqAl6V/9n5nPRq3VrU6EuE+uap665dU=;
+        b=ehbmRKornRcUFCDsbGKmHAtUt19w29TiX9VCUz3WS89rH+aOyHj66ujz2Q1t9g6Lm1
+         0oGRHr2tbPY26Ca9wOAzU8jsWdeAstKg8LRV0CNGNKYLDx/Nbqve/9rF0Y6AlzWi0bXq
+         CESNtMasfzVo0G0a4U+xJP1ti7jIFuVmFjV8ubxKDT1eSli5DMX/vKPAMjojVEGjoB0f
+         NjulQMXj+dOC3FRyHL+9bEKARd7pipZZB0Cg5TZKFt3BXITwuf82FNkK1WAlUz0bKfq8
+         M1l0Ru3xvPSliVTQw36mptOlo5t7lyv/6QzjRhSVDxUxhGZfzfVoEPqyf9WT1YBKWSla
+         DOKw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775148836; x=1775753636; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YQHOj/bnPK/nIDomsOi7P10E15gaCTUx4OYWYgBgufo=;
+        b=gQ1qS/1YA0agK+v2m6lwP9L10tKJmlyVhBVKetXJ0JKx0wwv2Rl/IvvMiYW8JbFRYW
+         luUZbAyVylQjfNUk2JzwzM2ZRxL7RaToiPHhgqhP3StSausa235cDguB+DeID9YzFnBH
+         wiEmtbfImNb4nTQKAebiGvwSe2orLHP0vhd7QaL0MqfgBIgja8iWZ5bWKtIYEetiOQ1S
+         19f3b+FGePVkW+asHcNVGhkR6d/zC8wBh8Qdo5OnmmDavKbd0T4lzFobkMJ2zVJkxXpX
+         q8eeAL/zijCI98ATxAbdjZGmrWKkmefe7tMn5bDDxj643zlB0iqA6ql8D9tVyn+rKYFS
+         16QQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775148836; x=1775753636;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=YQHOj/bnPK/nIDomsOi7P10E15gaCTUx4OYWYgBgufo=;
+        b=Clg+4GZFrlWHvDvVZxGAd7LBqbAlI7lZdIZOfC3gPrEuxY1CRL9eBhnsIX2E61sp0L
+         QyZtG+I6MxtUxB0R0Fl/H3d4i+PAdzqT8fELZ1HLxm0kj5M3LCV9/sTZjkKfbpzMxovr
+         mYo7RvFn4UfQ4kwOxD7mtEFM8BIQaRZlh5Zyv8625y+49pp27zBkZ6vjEExal4T6vfFt
+         WMKWeoM3NL/qL1oaFvms2u1Z5nmNnmjGgk+JfmEwPqL9Cex0PsX2x9groqTDqDP7j0aa
+         GAgVPU3CwPeQ7fix9hHUSwbKbdlFARL2LNX5uEtpT5HtHLh7L0au2z+4SQBt4ZqNJm1J
+         8ALw==
+X-Forwarded-Encrypted: i=1; AJvYcCWEFu2xq33KLzO0yBN9UnICJRLisVko4u9EbaNzGwtPe3pN6FVTaftZpvaAHR+XUED1dkeYhiY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJGIMfU9AZDqp0wn9bWVfp8ku0rabWYx/MFm0lWdoBRdbkLuzN
+	2NIRgUVH6I8GTDEx+gYb4xsHyaJlvO1m8wWqUrNAt1OeLyV7cYMHgpbfkRsXcJagHQJN79WOfe2
+	wVAs8dYXV/QsVIHu3jDCyjkQSfJbsc3Q=
+X-Gm-Gg: AeBDietjKlWjIGwqwx2QinctBDxm7/Jc/5utIM5BuC5IzZQOF9Sv0gwV1MRs3WLLJv3
+	8aRKPWi+AlXIRF9ACwA2yHyaHvCJ4iSFCnPidJ5KnybtoKu/lkO4JNr6j9tGZ3Rm8prna31IVMv
+	J4Ze9s358tPxGwsU2TZQIG/bHw3jBIGl1wonNdwOJD22xN8zXKzwLAVHlNQf8nPbd84pS+4nEw/
+	k3SpZaEg7Lui7eQswDWOMiBW0ZqVMyk0joqtH+Y+ZgjQTaqu3am6Wg/oJ5Z/7AuiXRCFaIwEYS+
+	kKM0XGupvREEFonAr3gE4V58zmVLswEeqmdKb74=
+X-Received: by 2002:a05:6000:15e0:b0:43d:1c75:db70 with SMTP id
+ ffacd0b85a97d-43d1c75dc44mr7692327f8f.15.1775148835462; Thu, 02 Apr 2026
+ 09:53:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MBO-RS-ID: ac0aa81cf57e890b0e5
-X-MBO-RS-META: x3ydd4ypchmbgoc4jo3e9qb719gyu155
-X-Rspamd-Queue-Id: 4fmnmH6JkQzB14l
+References: <20260401041929.12392-1-CFSworks@gmail.com> <20260402080542.293e8729@kernel.org>
+In-Reply-To: <20260402080542.293e8729@kernel.org>
+From: Sam Edwards <cfsworks@gmail.com>
+Date: Thu, 2 Apr 2026 09:53:43 -0700
+X-Gm-Features: AQROBzCjWRVG4OPIJXMJdioZXiZLwrE45OlbnJvHM-A6xPnlux3hujAChNQ6Gwo
+Message-ID: <CAH5Ym4j5peYXc5c9ycJzimy26Tv+4x18hyy+j-H4v7PyWuWhtA@mail.gmail.com>
+Subject: Re: [PATCH net v4 0/2] stmmac crash/stall fixes when under memory pressure
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, 
+	Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+	Ovidiu Panait <ovidiu.panait.rb@renesas.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, 
+	Baruch Siach <baruch@tkos.co.il>, Serge Semin <fancer.lancer@gmail.com>, 
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>, netdev@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-sixpack_receive_buf() does not properly skip bytes with TTY error flags.
-The while loop iterates through the flags buffer but never advances the
-data pointer (cp), and passes the original count including error bytes
-to sixpack_decode(). This causes sixpack_decode() to process bytes that
-should have been skipped due to TTY errors.
+On Thu, Apr 2, 2026 at 8:05=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wro=
+te:
+> I meant we need both a threshold, and a delay :(
 
-Fix this by processing bytes one at a time, advancing cp on each
-iteration, and only passing non-error bytes to sixpack_decode().
-This matches the pattern used by slip_receive_buf() and
-mkiss_receive_buf() for the same purpose.
+Hi Jakub - got it: when the critical threshold is reached, allow the
+NAPI instance to sleep and start a timer instead.
 
-Reported-by: syzbot+ecdb8c9878a81eb21e54@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ecdb8c9878a81eb21e54
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Mashiro Chen <mashiro.chen@mailbox.org>
----
- drivers/net/hamradio/6pack.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+1) We'd either have to leave interrupts masked or let them race
+against the timer. Either one is manageable, but I feel like those
+interactions carry *just* enough regression risk to bump that patch to
+-next.
 
-diff --git a/drivers/net/hamradio/6pack.c b/drivers/net/hamradio/6pack.c
-index 885992951e8a6..c8b2dc5c1becc 100644
---- a/drivers/net/hamradio/6pack.c
-+++ b/drivers/net/hamradio/6pack.c
-@@ -391,7 +391,6 @@ static void sixpack_receive_buf(struct tty_struct *tty, const u8 *cp,
- 				const u8 *fp, size_t count)
- {
- 	struct sixpack *sp;
--	size_t count1;
- 
- 	if (!count)
- 		return;
-@@ -401,16 +400,16 @@ static void sixpack_receive_buf(struct tty_struct *tty, const u8 *cp,
- 		return;
- 
- 	/* Read the characters out of the buffer */
--	count1 = count;
--	while (count) {
--		count--;
-+	while (count--) {
- 		if (fp && *fp++) {
- 			if (!test_and_set_bit(SIXPF_ERROR, &sp->flags))
- 				sp->dev->stats.rx_errors++;
-+			cp++;
- 			continue;
- 		}
-+		sixpack_decode(sp, cp, 1);
-+		cp++;
- 	}
--	sixpack_decode(sp, cp, count1);
- 
- 	tty_unthrottle(tty);
- }
--- 
-2.53.0
+2) Could you point out which NAPI driver best handles this situation?
+I'd like to replicate its approach.
 
+Thanks,
+Sam
