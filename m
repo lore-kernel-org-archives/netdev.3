@@ -1,125 +1,111 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF08384232
-	for <netdev@vger.kernel.org>; Thu,  2 Apr 2026 20:21:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4E62DEA95;
+	Thu,  2 Apr 2026 20:27:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775161290; cv=none; b=cWgAKDBZ6VIRkDyhaZFXatBhcMzkWgnms6Xisjx8wk4fl1QIiUMUADvHf9S07kEvtGcemzZa7stWbvn76KfDmh7OrqVDsd//fcVQ1BD36/yC5AvHRNuV+E1X9P785bpBRume8jZH9964TL8/gBGLlhLam6xdnIQW/lTEEIx94cI=
+	t=1775161665; cv=none; b=pntrjYWW/Hgpk+ZLKtSyPAijfjrWeuKmm18sPh++jBriUXCbW7iXOZq1VbvtsCh0cZDxyenFoLpSGBq2NabmNu9JyvMxexMa2meip6MPjIOG9OOWPGIsm44yZuxQ2Xx06a5cE0DzDahGa7OTLGKdaXjP3OipoVLhI1gRk31Nfj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775161290; c=relaxed/simple;
-	bh=oj4CR66ZVmIPJPX8Di9YwO1ydMpzm6XDBerJfg5CCiI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hSZXnW2wLSaaXt+zCXUS/hIQjNChMyJEK/y6j//BsSfFvVAIvCbtZvfFncC/+dCQ0RFIsyU6n8d/vSLYnadhvUDmxGJChhmZYY/oD6N+ZbprfbdUrG5L36YV6uYoGhHuTuNw8n6dcOT4ljgwPT+qeyhS+q3dkDpQA2BKCuUWfPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=lcf85bG2; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	s=arc-20240116; t=1775161665; c=relaxed/simple;
+	bh=R2bUXwoiNKI+i8fhmS1mEypi+5XEE/H8JRhMIiJEbro=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CPMurbJnx3AJzFrZTM9QOy07KG6Vux3i5kC+oqwsIzFUJPQyBwG5M3lvPm5bhgKE1vKOJlpX9UDVV6vO1UOq0m7ryFciUDP7Ogb76+6vjh9VPYEGAw5biaVE31XLfg+rrrUlro4vrK24Qx+K2gqzQVvonwKequAhP/Str6SLiss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cQ1JVW3k; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="lcf85bG2"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-82c70e4654eso600181b3a.2
-        for <netdev@vger.kernel.org>; Thu, 02 Apr 2026 13:21:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1775161288; x=1775766088; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Qe6c9tiANrtdfEa1pUVULMIJIY4THGoCRZXn+gDHoys=;
-        b=lcf85bG259peSzRHulCoqybg0K/Ipdfmt8zLzzMFguKeNUPwBgIist/u9fhiJ9DeaE
-         TNybCuN/SFGekfvwvmP94qBuuJUrNeE+420hDNZ8dyVcYZdLEiQM6oNZnM9TVtps6i7u
-         7rK1yv60aAIMj3pGLySG9MIeyI9eCW/DYEnXU1MrFa18w56xuBc+6ifVWWT4W1gQieIA
-         q+u1UQbGlIUnIs+M0t8LlKOkwDM9uqhJ8Dx9vgykYY+9PsLrmqC67XmQV8QjEKJCgrCs
-         RzsQ6/0OFYaNA6/KUPjDRX9zYdrSgnapwy2VEvZZlJAjV3JDqShMn/Ysja1djBWGA/Kz
-         9mRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775161288; x=1775766088;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Qe6c9tiANrtdfEa1pUVULMIJIY4THGoCRZXn+gDHoys=;
-        b=TYfM9gLXF4oSGqv5MJekOqFT5hlcsJfevA+amY6O2vlrb/L2/4oGPvg8VKH3F1cpVe
-         iq1oe7O3zPP2IzVKo4jaSkB57OvM7hm4o9PFU/vrBI5uJK34S3dhF5yY0pVJ2z7wKZqc
-         XWVJAaTwNLJZypLEx7SQU+ALWcfxZdS3P6+HUEzOK7taL+nkBoi8h3dl+e5rAd7P3pHt
-         9PJawf0kuF81yTTiyLscREG+RMWVfZprsgTL4BBbO8ldCnGQJD0kV6Ilyywb4dZW9BEB
-         2a0d7vk+yKlc0aIVuzrX1+49wbcGZcSTZUFibXkMUkNbelJlNlo/lKQrG3zNNRNob1MI
-         1Mwg==
-X-Gm-Message-State: AOJu0Yx2H6o4mlaPRnZL0I/TLjXk0fkrLaRMWF0Q/fUjJhik0tO0/Lkd
-	RAdVf8WDJfnLGp8R7o1VrSQfgtdI48wrkaRMGTuoiHlb8y+C79Dc8XPlujMSz+GP6+vxclDFv/Q
-	o9X5Y
-X-Gm-Gg: ATEYQzwsZex+UIlYf6WB8rLFO74YlrPGpGj6hTCd2DVrsjBAp5A/MB3/A83FQEcORMQ
-	U8AGYu2XOpwb3+fboju2qEiaWwNAwlJoGX9cMPyhnH2wonoOgMLTXR6zeohUCM7Jvc2mXHfJe1Z
-	6FDF2CcK6lXegkZ0+id1igjVbJG9bHuM2pklqXG+r/l3pzK1W40oweanMaSH/WMv5YVvTv/QP6a
-	CBkMQSJcUe4LMGFVSBAVjR3S65ncZ7fKgodPJkS/ayvE3H8v9GCtZVwZMgpJJj+4p/NvOeNDwY9
-	IJqbnN6F5JkB0AQLpSLQ2iYUTzcR6n8B0QIRwvv38JuJu7ntOKFZqfJB1+XKtgzVnoFRZen5do9
-	4DGCNIwPoQ3ej99Bu3bOOrEQVgP28oOy2G2p6ohaUss41HUR+fWkL8uHYnj6gJt2Pqc0YBGYmaI
-	L8tdORNKJm7nVW3Zh0wgQ1j9g5/pbpdLom
-X-Received: by 2002:a05:6a20:7346:b0:398:aaac:a079 with SMTP id adf61e73a8af0-39f2f215352mr254159637.45.1775161288372;
-        Thu, 02 Apr 2026 13:21:28 -0700 (PDT)
-Received: from phoenix.lan ([104.202.41.210])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c76c657dfb7sm3345621a12.24.2026.04.02.13.21.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Apr 2026 13:21:28 -0700 (PDT)
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: netdev@vger.kernel.org
-Cc: Stephen Hemminger <stephen@networkplumber.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	Yousuk Seung <ysseung@google.com>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net v3 7/7] net/sched: netem: fix slot delay calculation overflow
-Date: Thu,  2 Apr 2026 13:19:35 -0700
-Message-ID: <20260402202037.176299-8-stephen@networkplumber.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260402202037.176299-1-stephen@networkplumber.org>
-References: <20260402202037.176299-1-stephen@networkplumber.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cQ1JVW3k"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88DD2C116C6;
+	Thu,  2 Apr 2026 20:27:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775161664;
+	bh=R2bUXwoiNKI+i8fhmS1mEypi+5XEE/H8JRhMIiJEbro=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=cQ1JVW3kZ4q6yf/mrMXMcUmXb/SpqVqWgSGhAro2e6sakjWIO86wX+hLGyma+i3sQ
+	 zaRhaZLvr17NAdzRwaGEP+PSyz4ljYkGQtNf5OQXtI75Z+nyaA/H8bQkkSlwA2wlrV
+	 Wo8PesnE5LHxozZUlED43qosmVFTZmfwEAOSp8TEuCJh5J7ZAJ7Mnz+TsM6P45WLGT
+	 M+0j4JWhhRwjW7dRoK6F5CzU7AigiKguXJGZKt3EjrzHWe+rT3ipjNOhBesz9AYRxb
+	 H7HyqrsSyhHtW6dKYVG0oNwbTqHNRPuTCJsBK+BKS1oYCezp0qiFYW9uC5yN1he7Sp
+	 0K5mLfjwRIQFg==
+Date: Thu, 2 Apr 2026 22:27:32 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Fernando Fernandez Mancera <fmancera@suse.de>, Saeed Mahameed
+ <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq Toukan
+ <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Nikolay
+ Aleksandrov <razor@blackwall.org>, Ido Schimmel <idosch@nvidia.com>, Martin
+ KaFai Lau <martin.lau@linux.dev>, Daniel Borkmann <daniel@iogearbox.net>,
+ John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev
+ <sdf@fomichev.me>, Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko
+ <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu
+ <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, KP Singh
+ <kpsingh@kernel.org>, Hao Luo <haoluo@google.com>, Jiri Olsa
+ <jolsa@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn
+ <willemb@google.com>, David Ahern <dsahern@kernel.org>, Neal Cardwell
+ <ncardwell@google.com>, Johannes Berg <johannes@sipsolutions.net>, Pablo
+ Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>, Phil
+ Sutter <phil@nwl.cc>, Guillaume Nault <gnault@redhat.com>, Kees Cook
+ <kees@kernel.org>, Alexei Lazar <alazar@nvidia.com>, Gal Pressman
+ <gal@nvidia.com>, Paul Moore <paul@paul-moore.com>, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+ oss-drivers@corigine.com, bridge@lists.linux.dev, bpf@vger.kernel.org,
+ linux-wireless@vger.kernel.org, netfilter-devel@vger.kernel.org,
+ coreteam@netfilter.org, torvalds@linux-foundation.org,
+ jon.maddog.hall@gmail.com
+Subject: Re: [PATCH 0/6] Deprecate Legacy IP
+Message-ID: <20260402222558.6fe9bc0d@foz.lan>
+In-Reply-To: <2cb91533e22ed6cb11205dbc56b8aeedbbce0cca.camel@infradead.org>
+References: <20260401074509.1897527-1-dwmw2@infradead.org>
+	<42caa438-3854-449c-b0ee-4f40772e5c1b@suse.de>
+	<2cb91533e22ed6cb11205dbc56b8aeedbbce0cca.camel@infradead.org>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-get_slot_next() computes a random delay between min_delay and
-max_delay using:
+On Wed, 01 Apr 2026 09:25:08 +0100
+David Woodhouse <dwmw2@infradead.org> wrote:
 
-  get_random_u32() * (max_delay - min_delay) >> 32
+> On Wed, 2026-04-01 at 10:07 +0200, Fernando Fernandez Mancera wrote:
+> > =C2=A0
+> >=20
+> > Dammit, you've beaten me to it! This was my next step for 7.2.
+> >=20
+> > Fully-endorsed-by: Fernando Fernandez Mancera <fmancera@suse.de> =20
+>=20
+> Yeah. The date notwithstanding,=20
 
-This overflows signed 64-bit arithmetic when the delay range exceeds
-approximately 2.1 seconds (2^31 nanoseconds), producing a negative
-result that effectively disables slot-based pacing. This is a
-realistic configuration for WAN emulation (e.g., slot 1s 5s).
+You tricked me on this April fools day...
 
-Use mul_u64_u32_shr() which handles the widening multiply without
-overflow.
+Very funny!
 
-Fixes: 0a9fe5c375b5 ("netem: slotting with non-uniform distribution")
-Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
----
- net/sched/sch_netem.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+> I do actually think we should do most
+> of this for real.
+>=20
+> Maybe we don't get away with the actual deprecation and the warnings on
+> use *just* yet, and *maybe* we won't even get away with calling the
+> config option CONFIG_LEGACY_IP, although I would genuinely like to see
+> us moving consistently towards saying "Legacy IP" instead of "IPv4"
+> everywhere.
 
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index c82f76af41aa..d47e1b0d7942 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -660,9 +660,8 @@ static void get_slot_next(struct netem_sched_data *q, u64 now)
- 
- 	if (!q->slot_dist)
- 		next_delay = q->slot_config.min_delay +
--				(get_random_u32() *
--				 (q->slot_config.max_delay -
--				  q->slot_config.min_delay) >> 32);
-+			mul_u64_u32_shr(q->slot_config.max_delay - q->slot_config.min_delay,
-+					get_random_u32(), 32);
- 	else
- 		next_delay = tabledist(q->slot_config.dist_delay,
- 				       (s32)(q->slot_config.dist_jitter),
--- 
-2.53.0
+IPv4 is not legacy yet... Lots of configurations, service providers
+and corporations that requires the usage of VPN are IPv4 only still
+today. For instance, my paid VPN provider only grants IPv4 addresses
+(at least for those not using their proprietary software).
 
+>=20
+> But we *should* clean up the separation of CONFIG_INET and
+> CONFIG_IPV[64] and make it possible to build with either protocol
+> alone.
+
+That makes sense on my eyes.
+
+Thanks,
+Mauro
