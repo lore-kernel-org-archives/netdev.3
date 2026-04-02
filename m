@@ -1,126 +1,139 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274B526E6E1
-	for <netdev@vger.kernel.org>; Thu,  2 Apr 2026 16:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17933F211C;
+	Thu,  2 Apr 2026 16:38:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775147807; cv=none; b=VJHGNSxvJiCTQxksV77SoYpQWPitq6h3j/mJsm9BSmmNq6vPfVSZL+8kuPtdoSbQiOxX1Xoc6EMUpHN7Lsj0OpknaM4FErG8anHt/tV2gvoHFinZdJXXXL2srLNL05rKXT+IZ+6FhaDLJCet3z6YIykZWnckUbLg37KHXDeFaK8=
+	t=1775147922; cv=none; b=FbaFtfGcVj5hvu0EG91QWcIvhLRWtwJl71zVKo3h0adLC/nRqeOPpU4dAIxIztuRAyk0C42wysbW9f3CN+LZVc+aVHQjA1p6DvNQ9UXaaMr2k5zqnGieb32BIcUE3neka4AooLfCB+qZZ97KhJCLQSYUr9AHsm+O/4p853czvK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775147807; c=relaxed/simple;
-	bh=uLmS0HsUDr2BokeD+jSdwx3Xz2Gctb+uLNXQ4boAXU0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=MN45fptqyN2VOsMmNUhZYq0G6/o8MoEFoK8UNVHWkxyyXVW4vUKtT4w1/B9j6/9/Wq2kfimnSyefHKo64n+PixCvYuR8bDBJXYlSPMBumlLHVm7SfbToefT3ZItVeHmE3Gv89sJ7VtxCWMdhIJwx5/MEHTrolnz9KLeMpHukQ3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OwhXBHWn; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775147922; c=relaxed/simple;
+	bh=SS+BtVdttMvo6X20fLR3JClq/W5wC0bvQxoXCy/55dc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=ltqt2wDRJoBK05JjK+J50RfPayuCabZr4F35/tbp8WHV2iKyDBBKZ1MwYlOlmFXbKe2ZHdoNHZC10f0d3BlPCf3UjRAjjgEJuyo6E5klux5X1MqMCtbfge3LptRFCzx0jD5WpsXSi6ZI0fJ5AGQq1oegr6SenPZSJaib+qEJbhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U3vICxvM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OwhXBHWn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D028C19423;
-	Thu,  2 Apr 2026 16:36:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U3vICxvM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDE30C116C6;
+	Thu,  2 Apr 2026 16:38:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775147806;
-	bh=uLmS0HsUDr2BokeD+jSdwx3Xz2Gctb+uLNXQ4boAXU0=;
-	h=From:Date:Subject:To:Cc:From;
-	b=OwhXBHWnXxQbgi+Lr/d+FvS3AagvKuOJYOhfaXr08zbUSER3M5c3OxYjwjYv1c0Tj
-	 ZF2yShxfaOil38PS1vqkSxJnvE4VW98G385tH3yHFDyuW4QVLvnkI7oY+1zX0wS5zg
-	 hw9sCi/Ys6iEnDf6wIq55kG1f6CJQPU6PonA/mEcjhwBiuYNrf6y2pmrMvPfzPPoFW
-	 Krb47bfx+9KYhZA1PL+O/O6uO0BY2p5MFBFgTYwUbbp/cN5PjKyosdYEEccBIkFbuj
-	 w57xRsiPbM1DoOoiRjuGtpRRTujC1WyHHDN5ub32eSW8FfraqyrjDtfc/fPGKCMFUD
-	 KDfUjKtjwIyuA==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Thu, 02 Apr 2026 18:36:28 +0200
-Subject: [PATCH net] net: airoha: Add dma_rmb() and READ_ONCE() in
- airoha_qdma_rx_process()
+	s=k20201202; t=1775147922;
+	bh=SS+BtVdttMvo6X20fLR3JClq/W5wC0bvQxoXCy/55dc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=U3vICxvMqgBh7amR+oCizO3AJ7YOv3bxzO8OCsh6ZNB5XW45uHJ/8h8WJx54f1P91
+	 xDmPSvdX9WiW9SuHdR2YUbGunbzjakgfC9lpI1iEHTaYHIZ3/27UQhAdF5d8lWlB1x
+	 Pd5ZE1JHkCSZ9qd9lw5ug60ehF3zJp/hs6R1OwWeq/rWlnIZq277RkUEVs2UadCRmq
+	 K58kn3MHghtAlrqMVicW2YdHuCFzNec/LSZEHYXCPZmAh/+BkYJmoaCfBR6PS8wfU8
+	 uWou+k7OQkgxGJ5V+67qVIGW3r+gVfCohHAvry1cjRT3YXi9BZAFZ34kvNTES8g39K
+	 D+hKMQ+afiejw==
+Date: Thu, 2 Apr 2026 11:38:40 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Gerd Bayer <gbayer@linux.ibm.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	Jay Cornwall <Jay.Cornwall@amd.com>,
+	Felix Kuehling <Felix.Kuehling@amd.com>,
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Alexander Schmidt <alexs@linux.ibm.com>, linux-s390@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v7 0/3] PCI: AtomicOps: Fix
+ pci_enable_atomic_ops_to_root()
+Message-ID: <20260402163840.GA279690@bhelgaas>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260402-airoha_qdma_rx_process-fix-reordering-v1-1-53278474f062@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2N0QrCMAwAf2Xk2UCNdoq/IqPUNW55sJ2JyGDs3
- w0+Hhx3GxirsMGt20D5KyatOhwPHYxzrhOjFGegQH04B8Is2uac3uWVk65p0TayGT5lReWmxXN
- 1wgvRKVwpxkcfwVuLshv/zx0qf2DY9x9LzFK9fAAAAA==
-X-Change-ID: 20260402-airoha_qdma_rx_process-fix-reordering-722308255b65
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Xuegang Lu <xuegang.lu@airoha.com>, 
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- netdev@vger.kernel.org
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260330-fix_pciatops-v7-0-f601818417e8@linux.ibm.com>
 
-Add missing dma_rmb() in airoha_qdma_rx_process routine to make sure the
-DMA read operations are completed when the NIC reports the processing on
-the current descriptor is done. Moreover, add missing READ_ONCE() in
-airoha_qdma_rx_process() for DMA descriptor control fields in order to
-avoid any compiler reordering.
+On Mon, Mar 30, 2026 at 03:09:43PM +0200, Gerd Bayer wrote:
+> Hi Bjorn et al.
+> 
+> On s390, AtomicOp Requests are enabled on a PCI function that supports
+> them, despite the helper being ignorant about the root port's capability
+> to supporting their completion.
+> 
+> Patch 1: Do not enable AtomicOps Requests on RCiEPs
+> Patch 2: Fix the logic in pci_enable_atomic_ops_to_root()
+> Patch 3: Update references to PCIe spec in that function.
+> 
+> I did test that the issue is fixed with these patches. Also, I verified
+> that on a Mellanox/Nvidia ConnectX-6 adapter plugged straight into the
+> root port of a x86 system still gets AtomicOp Requests enabled.
+> 
+> Due to a lack of the required hardware, I did not test this with any PCIe
+> switches between root port and endpoint. So test exposure in other
+> environments is highly appreciated.
+> 
+> Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
 
-Fixes: 23020f0493270 ("net: airoha: Introduce ethernet support for EN7581 SoC")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/ethernet/airoha/airoha_eth.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+Thanks, applied to pci/atomics for v7.1 with minor rework of 2/3.
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index 95ba99b89428e4cafb91ff7813e43ffeb38e6d9b..29dea8b35f64bfdcf88bc09fd711e0d8b4f7b6fa 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -612,15 +612,17 @@ static int airoha_qdma_rx_process(struct airoha_queue *q, int budget)
- 	while (done < budget) {
- 		struct airoha_queue_entry *e = &q->entry[q->tail];
- 		struct airoha_qdma_desc *desc = &q->desc[q->tail];
--		u32 hash, reason, msg1 = le32_to_cpu(desc->msg1);
--		struct page *page = virt_to_head_page(e->buf);
--		u32 desc_ctrl = le32_to_cpu(desc->ctrl);
-+		u32 hash, reason, msg1, desc_ctrl;
- 		struct airoha_gdm_port *port;
- 		int data_len, len, p;
-+		struct page *page;
- 
-+		desc_ctrl = le32_to_cpu(READ_ONCE(desc->ctrl));
- 		if (!(desc_ctrl & QDMA_DESC_DONE_MASK))
- 			break;
- 
-+		dma_rmb();
-+
- 		q->tail = (q->tail + 1) % q->ndesc;
- 		q->queued--;
- 
-@@ -637,6 +639,7 @@ static int airoha_qdma_rx_process(struct airoha_queue *q, int budget)
- 		if (p < 0 || !eth->ports[p])
- 			goto free_frag;
- 
-+		page = virt_to_head_page(e->buf);
- 		port = eth->ports[p];
- 		if (!q->skb) { /* first buffer */
- 			q->skb = napi_build_skb(e->buf, q->buf_size);
-@@ -670,8 +673,8 @@ static int airoha_qdma_rx_process(struct airoha_queue *q, int budget)
- 			 * DMA descriptor. Report DSA tag to the DSA stack
- 			 * via skb dst info.
- 			 */
--			u32 sptag = FIELD_GET(QDMA_ETH_RXMSG_SPTAG,
--					      le32_to_cpu(desc->msg0));
-+			u32 msg0 = le32_to_cpu(READ_ONCE(desc->msg0));
-+			u32 sptag = FIELD_GET(QDMA_ETH_RXMSG_SPTAG, msg0);
- 
- 			if (sptag < ARRAY_SIZE(port->dsa_meta) &&
- 			    port->dsa_meta[sptag])
-@@ -679,6 +682,7 @@ static int airoha_qdma_rx_process(struct airoha_queue *q, int budget)
- 						  &port->dsa_meta[sptag]->dst);
- 		}
- 
-+		msg1 = le32_to_cpu(READ_ONCE(desc->msg1));
- 		hash = FIELD_GET(AIROHA_RXD4_FOE_ENTRY, msg1);
- 		if (hash != AIROHA_RXD4_FOE_ENTRY)
- 			skb_set_hash(q->skb, jhash_1word(hash, 0),
-
----
-base-commit: ec7067e661193403a7a00980bda8612db5954142
-change-id: 20260402-airoha_qdma_rx_process-fix-reordering-722308255b65
-
-Best regards,
--- 
-Lorenzo Bianconi <lorenzo@kernel.org>
-
+> ---
+> Changes in v7:
+> - Prepend series with a patch to explicitly exclude RCiEPs from
+>   enablement of AtomicOps Requests
+> - Limit the core patch 2 to enforce a full check of the entire
+>   PCIe hierarchy for support of AtomicOps capabilities.
+> - Rebase to v7.0-rc6
+> - Link to v6: https://lore.kernel.org/r/20260325-fix_pciatops-v6-0-10bf19d76dd1@linux.ibm.com
+> 
+> Changes in v6:
+> - Incorporate Ilpo's editorial comments.
+> - Correct logic in pci_is_atomicops_capable_rp() (annotated by Sashiko)
+> - Link to v5: https://lore.kernel.org/r/20260323-fix_pciatops-v5-0-fada7233aea8@linux.ibm.com
+> 
+> Changes in v5:
+> - Introduce new pcibios_connects_to_atomicops_capable_rc() so arch's can
+>   declare AtomicOps support outside of PCIe config space. Defaults to
+>   "true" - except s390.
+> - rebase to 7.0-rc5
+> - Link to v4: https://lore.kernel.org/r/20260313-fix_pciatops-v4-0-93bc70a63935@linux.ibm.com
+> 
+> Changes in v4:
+> - drop patch 1 - it will become the base of a new series
+> - previous patch 2, now 1: reword commit message
+> - add a new patch to update references to PCI spec within
+>   pci_enable_atomic_ops_to_root()
+> - rebase to latest master
+> - Link to v3: https://lore.kernel.org/r/20260306-fix_pciatops-v3-0-99d12bcafb19@linux.ibm.com
+> 
+> Changes in v3:
+> - rebase to 7.0-rc2
+> - gentle ping
+> - add netdev and rdma lists for awareness
+> - Link to v2: https://lore.kernel.org/r/20251216-fix_pciatops-v2-0-d013e9b7e2ee@linux.ibm.com
+> 
+> Changes in v2:
+> - rebase to 6.19-rc1
+> - otherwise unchanged to v1
+> - Link to v1: https://lore.kernel.org/r/20251110-fix_pciatops-v1-0-edc58a57b62e@linux.ibm.com
+> 
+> ---
+> Gerd Bayer (3):
+>       PCI: AtomicOps: Do not enable requests by RCiEPs
+>       PCI: AtomicOps: Do not enable without support in root port
+>       PCI: AtomicOps: Update references to PCIe spec
+> 
+>  drivers/pci/pci.c | 48 ++++++++++++++++++++++++++----------------------
+>  1 file changed, 26 insertions(+), 22 deletions(-)
+> ---
+> base-commit: 7aaa8047eafd0bd628065b15757d9b48c5f9c07d
+> change-id: 20251106-fix_pciatops-7e8608eccb03
+> 
+> Best regards,
+> -- 
+> Gerd Bayer <gbayer@linux.ibm.com>
+> 
