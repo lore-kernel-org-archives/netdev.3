@@ -1,142 +1,107 @@
-Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F6A1A6823;
-	Thu,  2 Apr 2026 04:16:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8428635F193;
+	Thu,  2 Apr 2026 04:21:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775103370; cv=none; b=e2dtUZE8mPkZeqQniDx0w5ju3LLl5ikBKc3LFQ2AQRnxXlV06sVVjr5xbaZoFjR3P27HpSpSQFqNW/6sDZrsIWXGkawTCqOR2+4yOBdTOKu93l/oVZ4CeqjnnK/GMAVzbcpOtjIwlZO9oH7f3qynNevN2RgvMEQCwmWQxtUWcCA=
+	t=1775103721; cv=none; b=kxJOVjbyHUl0sx7NH1+FB7r+rh4wNezGq2q2dAqR890euktMjMa7/t9xCx4EuhjN1XHuc4TckpZoGNYgMqd5P+7JxbLEZoEd98OGlncLM4rZbxA4PP3sA1gQETus4PHHsGF3LIS36odPGlw8VznVYmSFzyR3tUhAbTQbUmjkpBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775103370; c=relaxed/simple;
-	bh=gHIgUb+WXUUS/4MXe6/38hstFBvLQ0zEzVt64OHLivs=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=KwmkxdZrN3oktTU/LeNuIexmM15r4odo1gDCHhqJ2kTKikBBmx/q+URW96ea/B7O+gKKSxpFoabtj5lsEcH6209t3C87jjKNI68OKVqd36bkeXfvQxVzNAw3qhCdYMX2k7Nhflf+DZomWQ4kLrUB2KJK6TiKFzaQAGgyyGnpdio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=jykfM6Kg; arc=none smtp.client-ip=193.238.174.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="jykfM6Kg"
-Received: from mx.ssi.bg (localhost [127.0.0.1])
-	by mx.ssi.bg (Potsfix) with ESMTP id F1B2221C4C;
-	Thu, 02 Apr 2026 07:16:01 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
-	:content-type:content-type:date:from:from:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
-	 bh=njSLF/ZZEmv5OICffID2dF6iMd6nS7o+1cYNg0JfVaI=; b=jykfM6KgGIwJ
-	CHUI5nTaCL4BL4y3NYxhXSQGmAA+LkMDQhqGeyjBm9+w4EwQyKevrzi4UqLx8yMp
-	ekHJaGIs7bsBOURj+ifQvUkE6caEzIYUWs1AigGUZilhmngRqjyqO6CPgbqAE7WO
-	3Fs4ytpK4XO4nKGld5ajE+Z3RFm2EusnWSmj3zAOV2pPIRlUTCzXSNPcb2fFmr9s
-	g45je1GA2eMHUYurrHHVegg8OHKE6c3iipqzof3u7qX0AfBXJileg/hIJfrkmTnM
-	M1Slz6SfcxM7zlFGXmQpwpE3bW7x/IPrHpoHb1Kezqud96+H4+pPdidKMQJ132h4
-	2inFr9vPERA5vM8t7P37orLfhw06EL6x3zXQcRNcJE2Gas+BjRbIfDpEQBL5clp1
-	bwqsxFbyLszl+EGWv5Gvaov6aU3hZNM5QI22rE5ZllqZ4QQHIgO0Z8F0GKv7Efpg
-	gsHkYHKc1Zal/LxXx+oCNnjVJZFysdLhJtW+TsMMj3twdfpqXOwXil89Tk0N7awX
-	nyTZU48wMtfigiRw1tP3WzN3a9dqqk+h5CVegIS68X/uHyDWHtF3IEtkqyqJwPg5
-	NuGp4qIRcn1xicykLnVZrPSRbtieck7XS0K2y1LjnRUT56TSZmLumbVm21xjA9BZ
-	zTQ9CxLEV9XbdKFKh69zDMD7BJRdirk=
-Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
-	by mx.ssi.bg (Potsfix) with ESMTPS;
-	Thu, 02 Apr 2026 07:16:00 +0300 (EEST)
-Received: from ja.ssi.bg (unknown [213.16.62.126])
-	by box.ssi.bg (Potsfix) with ESMTPSA id B434B61B7F;
-	Thu,  2 Apr 2026 07:15:58 +0300 (EEST)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by ja.ssi.bg (8.18.1/8.18.1) with ESMTP id 6324Bjpk005987;
-	Thu, 2 Apr 2026 07:11:45 +0300
-Date: Thu, 2 Apr 2026 07:11:45 +0300 (EEST)
-From: Julian Anastasov <ja@ssi.bg>
-To: Yingnan Zhang <342144303@qq.com>
-cc: horms@verge.net.au, pablo@netfilter.org, fw@strlen.de, phil@nwl.cc,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, netdev@vger.kernel.org, lvs-devel@vger.kernel.org,
-        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] ipvs: fix MTU check for GSO packets in tunnel mode
-In-Reply-To: <tencent_4A3E1C339C75D359093BE4F08648AFAA6009@qq.com>
-Message-ID: <0e310bf2-0707-14d9-d8f2-18172875256d@ssi.bg>
-References: <tencent_4A3E1C339C75D359093BE4F08648AFAA6009@qq.com>
+	s=arc-20240116; t=1775103721; c=relaxed/simple;
+	bh=Ll+mejS5nwkcS0c9qW1Zj2uBUg2oi79+k8wAAp6wGS0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l8iR+tr7y3gl/JLToGaObVDJpfU2J3Yf/pV8pe5kDTb17n25cHJGPuZ+5B0bVYCuIMjsPtLP+RccvKfr5W62AyptnRKfmQeMiM0cD/BKrKalsHPZo0mmqGSnxmh+MjuTmTOplcSGmeuP385tup2CdOjGSn8Ur6qUcBWzfCx1CQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [111.196.245.197])
+	by APP-01 (Coremail) with SMTP id qwCowAAXvWjc7s1pfkzwCw--.800S2;
+	Thu, 02 Apr 2026 12:21:48 +0800 (CST)
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+To: netdev@vger.kernel.org
+Cc: Lars Poeschel <poeschel@lemonage.de>,
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Rikard Falkeborn <rikard.falkeborn@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	pengpeng@iscas.ac.cn,
+	stable@vger.kernel.org
+Subject: [PATCH] nfc: pn533: allocate rx skb before consuming bytes
+Date: Thu,  2 Apr 2026 12:21:48 +0800
+Message-ID: <20260402042148.65251-1-pengpeng@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowAAXvWjc7s1pfkzwCw--.800S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7ZryUuFWruFyxKFy5Jw43ZFb_yoW8Ar17pF
+	Z3GF1rtryUXr47JwsrCw1rWFy5Ca4kAFWrGrWvka47urn3JFW3GFWaga42vFZ5XFWkXF4a
+	vFWDXF48CFyrua7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkG14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUGVWUXwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
+	AVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
+	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkG
+	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4U
+	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JU-0eJUUU
+	UU=
+X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
 
+pn532_receive_buf() reports the number of accepted bytes to the serdev
+core. The current code consumes bytes into recv_skb and may already
+hand a complete frame to pn533_recv_frame() before allocating a fresh
+receive buffer.
 
-	Hello,
+If that alloc_skb() fails, the callback returns 0 even though it has
+already consumed bytes, and it leaves recv_skb as NULL for the next
+receive callback. That breaks the receive_buf() accounting contract and
+can also lead to a NULL dereference on the next skb_put_u8().
 
-On Wed, 1 Apr 2026, Yingnan Zhang wrote:
+Allocate the receive skb lazily before consuming the next byte instead.
+If allocation fails, return the number of bytes already accepted.
 
-> Currently, IPVS skips MTU checks for GSO packets by excluding them with
-> the !skb_is_gso(skb) condition. This creates problems when IPVS tunnel
-> mode encapsulates GSO packets with IPIP headers.
-> 
-> The issue manifests in two ways:
-> 
-> 1. MTU violation after encapsulation:
->    When a GSO packet passes through IPVS tunnel mode, the original MTU
->    check is bypassed. After adding the IPIP tunnel header, the packet
->    size may exceed the outgoing interface MTU, leading to unexpected
->    fragmentation at the IP layer.
-> 
-> 2. Fragmentation with problematic IP IDs:
->    When net.ipv4.vs.pmtu_disc=1 and a GSO packet with multiple segments
->    is fragmented after encapsulation, each segment gets a sequentially
->    incremented IP ID (0, 1, 2, ...). This happens because:
-> 
->    a) The GSO packet bypasses MTU check and gets encapsulated
->    b) At __ip_finish_output, the oversized GSO packet is split into
->       separate SKBs (one per segment), with IP IDs incrementing
->    c) Each SKB is then fragmented again based on the actual MTU
-> 
->    This sequential IP ID allocation differs from the expected behavior
->    and can cause issues with fragment reassembly and packet tracking.
-> 
-> Fix this by removing the GSO packet exception from the MTU check and
-> properly validating GSO packets using skb_gso_validate_network_len().
-> This function correctly validates whether the GSO segments will fit
-> within the MTU after segmentation. If validation fails, send an ICMP
-> Fragmentation Needed message to enable proper PMTU discovery.
-> 
-> Fixes: 4cdd34084d53 ("netfilter: nf_conntrack_ipv6: improve fragmentation handling")
-> Signed-off-by: Yingnan Zhang <342144303@qq.com>
-> ---
->  net/netfilter/ipvs/ip_vs_xmit.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/netfilter/ipvs/ip_vs_xmit.c b/net/netfilter/ipvs/ip_vs_xmit.c
-> index 3601eb86d..82f2e7a32 100644
-> --- a/net/netfilter/ipvs/ip_vs_xmit.c
-> +++ b/net/netfilter/ipvs/ip_vs_xmit.c
-> @@ -232,8 +232,15 @@ static inline bool ensure_mtu_is_adequate(struct netns_ipvs *ipvs, int skb_af,
->  			return true;
->  
->  		if (unlikely(ip_hdr(skb)->frag_off & htons(IP_DF) &&
-> -			     skb->len > mtu && !skb_is_gso(skb) &&
-> +			     skb->len > mtu &&
->  			     !ip_vs_iph_icmp(ipvsh))) {
-> +			if (skb_is_gso(skb)) {
-> +				if (skb_gso_validate_network_len(skb, mtu))
-> +					return true;
-> +				icmp_send(skb, ICMP_DEST_UNREACH, ICMP_FRAG_NEEDED, htonl(mtu));
-> +				IP_VS_DBG(1, "frag needed for %pI4\n", &ip_hdr(skb)->saddr);
-> +				return false;
-> +			}
+Fixes: c656aa4c27b1 ("nfc: pn533: add UART phy driver")
+Cc: stable@vger.kernel.org
 
-	Also, as we duplicate code, this can be reorganized as follows:
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+---
+ drivers/nfc/pn533/uart.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
- 		if (unlikely(ip_hdr(skb)->frag_off & htons(IP_DF) &&
--			     skb->len > mtu && !skb_is_gso(skb) &&
--			     !ip_vs_iph_icmp(ipvsh))) {
-+			     skb->len > mtu && !ip_vs_iph_icmp(ipvsh) &&
-+			     !(skb_is_gso(skb) &&
-+			       skb_gso_validate_network_len(skb, mtu)))) {
- 			icmp_send(skb, ICMP_DEST_UNREACH, ICMP_FRAG_NEEDED,
- 				  htonl(mtu));
- 			IP_VS_DBG(1, "frag needed for %pI4\n",
-Regards
-
---
-Julian Anastasov <ja@ssi.bg>
+diff --git a/drivers/nfc/pn533/uart.c b/drivers/nfc/pn533/uart.c
+index 6d2f520a5bc8..412d341602aa 100644
+--- a/drivers/nfc/pn533/uart.c
++++ b/drivers/nfc/pn533/uart.c
+@@ -211,14 +211,19 @@ static size_t pn532_receive_buf(struct serdev_device *serdev,
+ 
+ 	timer_delete(&dev->cmd_timeout);
+ 	for (i = 0; i < count; i++) {
++		if (!dev->recv_skb) {
++			dev->recv_skb = alloc_skb(PN532_UART_SKB_BUFF_LEN,
++						  GFP_KERNEL);
++			if (!dev->recv_skb)
++				return i;
++		}
++
+ 		skb_put_u8(dev->recv_skb, *data++);
+ 		if (!pn532_uart_rx_is_frame(dev->recv_skb))
+ 			continue;
+ 
+ 		pn533_recv_frame(dev->priv, dev->recv_skb, 0);
+-		dev->recv_skb = alloc_skb(PN532_UART_SKB_BUFF_LEN, GFP_KERNEL);
+-		if (!dev->recv_skb)
+-			return 0;
++		dev->recv_skb = NULL;
+ 	}
+ 
+ 	return i;
+-- 
+2.50.1 (Apple Git-155)
 
