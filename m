@@ -1,268 +1,878 @@
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40333EF678;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F593FE35E;
 	Thu,  2 Apr 2026 23:11:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775171467; cv=none; b=hslYLWBRO/x4eY0CBuhYh/hHoAqpHGrkgPW++C9VvNp/nTP1KhPVTQPqs/EjzuDy2V0If1GoN0UrzTj1mo9yhme1vdEEewLGqSjBFjZLpjHvz4nMO9aI/X4F0aLxiL/mmFQySnphxhFfku76pVEf6ymc2e201H9mqklNFrQXbCw=
+	t=1775171467; cv=none; b=pSCq676X1QAwyMUMYN5ZgBa3a8dfYduC/kghyKHbTPq7sZ+zV+pP6r3A7tQPLcGDDX/XjmVaYs6cFh+H6WXE1xVe3bnmK/TserHNhnncQXOYYz7SMFRje24Evym9LTLb/qKQstDoJwh7XeAIpJYM9ral5P8eTUNzcyAMgRk7A20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775171467; c=relaxed/simple;
-	bh=A0k6D5pmzfHiA0YiiKxu/g7pg9r3TMcsyLuKDKF97Ng=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hxF1h5Zs6lyTqCqWX1l0phIoryTkXLgEJydgEkIX3srAZMFGHe9NKeVy77EuQ0ixA1O+QgW1XzdhBEYEkxqwKJUktvPSVR1P0hCVJHMI67QkKMubSIYgDBx7dSC/vkQUC4RonyjjnTDNQweqTqz7vEhyQ/oHlDiTE5PUuFhi8+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=KyOBLQe+; arc=none smtp.client-ip=213.133.104.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
+	bh=eJKt+MDJnq/FIC45XW0Oqu/uaqkmngm7foO+FbPFcfY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=COXB4Q63rk1wWjDuoEeiD88n1TOMjkdjDaU6Q0WZE6QWsMj/lW2PXqmH0RXhuf6E6+XL/P+saYrZ78tSkeJGuuOI01gyT9U2yfGJE2pOqAQnVWtqTxlxwu64ovyw3PuMhdLudeswwqAShYEwjORG4701M8k7pVI2iCeikfZHkeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YfaJaaGr; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="KyOBLQe+"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=vSWNL4ZsdVyxy7lJUvZZ8boDIZ/iMqlQ5pgxpJkU0a0=; b=KyOBLQe+DH5GLv+Fw0zDZHIFLq
-	GPj4MJUhaRCJv2R0UHQ2pPSJFCL1NYfkU9zA38KVES9ZmUCdIeO0z5tzc3khCOtp5AFYZx1Ksydsy
-	8EEr0Blg3/vf5ghEXbmzDk4MUwJRkTdHQvm5bEs4UA4RTgvUEdWOAN+IBNaoJXJSA15ojhAcY8dA8
-	dPZ3/miqD9Vfcv/MWLHYZ5gGmJ1/zueZ5OnXOlHrsp6o6AS4zWTk1jSQYEOVPSxZN97GaaR6sGkOY
-	KFydSyQlP1Ax9JQ3mfVA1wBLctFcw1vP0GO4l1HGvia6s/HTAJTPpp40864dlNWqgr3okpv09VRhX
-	wQjmjeAw==;
-Received: from localhost ([127.0.0.1])
-	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1w8RBY-0000o0-0T;
-	Fri, 03 Apr 2026 01:10:48 +0200
-From: Daniel Borkmann <daniel@iogearbox.net>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YfaJaaGr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775171466; x=1806707466;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=eJKt+MDJnq/FIC45XW0Oqu/uaqkmngm7foO+FbPFcfY=;
+  b=YfaJaaGrWdbedMOJRCFgSeELwGMJt08+LmSa8Tgh7zYXmFLpAjWhZ+TH
+   ursLD5XRrdL2HQNjY4Z+Vs4YNS1O5tYMiG61eBILtxjZSfp4qmBk34DQs
+   e0yoBQJ665T45iuXNV2l8P7ElG8F0C5simiNUFdJ6HCzuZWIcDfJ2wiPw
+   pJhj54KkS4E4qtweRkACJQzjY+JfyB4wVf5pDl4JczjxqwVwJQMD/QTyf
+   zOw//Q9SveIupUrsbLmFJYBJiM04sybsgO2exb7WfYs2clJcIQM8Qiz41
+   wCi6cSWNkC52gC6+AXJA9Y7ej0T1Wy8R62ZIvxcCTUwVjVGVhIVR1CEtJ
+   Q==;
+X-CSE-ConnectionGUID: MOq5C31mT2K+JNChHcGlNg==
+X-CSE-MsgGUID: 6xTDDDqOQSGe57wYxsRbvA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11747"; a="76123160"
+X-IronPort-AV: E=Sophos;i="6.23,156,1770624000"; 
+   d="scan'208";a="76123160"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2026 16:11:05 -0700
+X-CSE-ConnectionGUID: jzg9aZgoQMCdszq0K4VvJQ==
+X-CSE-MsgGUID: +eLAz76ASJ62DhDKQy/biw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,156,1770624000"; 
+   d="scan'208";a="227044489"
+Received: from gklab-003-001.igk.intel.com ([10.91.173.48])
+  by orviesa008.jf.intel.com with ESMTP; 02 Apr 2026 16:11:01 -0700
+From: Grzegorz Nitka <grzegorz.nitka@intel.com>
 To: netdev@vger.kernel.org
-Cc: bpf@vger.kernel.org,
+Cc: linux-kernel@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org,
+	poros@redhat.com,
+	richardcochran@gmail.com,
+	andrew+netdev@lunn.ch,
+	przemyslaw.kitszel@intel.com,
+	anthony.l.nguyen@intel.com,
+	Prathosh.Satish@microchip.com,
+	ivecera@redhat.com,
+	jiri@resnulli.us,
+	arkadiusz.kubalewski@intel.com,
+	vadim.fedorenko@linux.dev,
+	donald.hunter@gmail.com,
+	horms@kernel.org,
+	pabeni@redhat.com,
 	kuba@kernel.org,
 	davem@davemloft.net,
-	razor@blackwall.org,
-	pabeni@redhat.com,
-	willemb@google.com,
-	sdf@fomichev.me,
-	john.fastabend@gmail.com,
-	martin.lau@kernel.org,
-	jordan@jrife.io,
-	maciej.fijalkowski@intel.com,
-	magnus.karlsson@intel.com,
-	dw@davidwei.uk,
-	toke@redhat.com,
-	yangzhenze@bytedance.com,
-	wangdongdong.6@bytedance.com
-Subject: [PATCH net-next v11 13/14] netkit: Add xsk support for af_xdp applications
-Date: Fri,  3 Apr 2026 01:10:30 +0200
-Message-ID: <20260402231031.447597-14-daniel@iogearbox.net>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260402231031.447597-1-daniel@iogearbox.net>
-References: <20260402231031.447597-1-daniel@iogearbox.net>
+	edumazet@google.com,
+	Grzegorz Nitka <grzegorz.nitka@intel.com>
+Subject: [PATCH v5 net-next 8/8] ice: implement E825 TX ref clock control and TXC hardware sync status
+Date: Fri,  3 Apr 2026 01:06:26 +0200
+Message-Id: <20260402230626.3826719-9-grzegorz.nitka@intel.com>
+X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20260402230626.3826719-1-grzegorz.nitka@intel.com>
+References: <20260402230626.3826719-1-grzegorz.nitka@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.4.3/27959/Thu Apr  2 08:25:45 2026)
 
-Enable support for AF_XDP applications to operate on a netkit device.
-The goal is that AF_XDP applications can natively consume AF_XDP
-from network namespaces. The use-case from Cilium side is to support
-Kubernetes KubeVirt VMs through QEMU's AF_XDP backend. KubeVirt is a
-virtual machine management add-on for Kubernetes which aims to provide
-a common ground for virtualization. KubeVirt spawns the VMs inside
-Kubernetes Pods which reside in their own network namespace just like
-regular Pods.
+Build on the previously introduced TXC DPLL framework and implement
+full TX reference clock control and hardware-backed synchronization
+status reporting for E825 devices.
 
-Raw QEMU AF_XDP backend example with eth0 being a physical device with
-16 queues where netkit is bound to the last queue (for multi-queue RSS
-context can be used if supported by the driver):
+E825 firmware may accept or override TX reference clock requests based
+on device-wide routing constraints and link conditions. For this
+reason, TX reference selection and synchronization status must be
+observed from hardware rather than inferred from user intent.
 
-  # ethtool -X eth0 start 0 equal 15
-  # ethtool -X eth0 start 15 equal 1 context new
-  # ethtool --config-ntuple eth0 flow-type ether \
-            src 00:00:00:00:00:00 \
-            src-mask ff:ff:ff:ff:ff:ff \
-            dst $mac dst-mask 00:00:00:00:00:00 \
-            proto 0 proto-mask 0xffff action 15
-  [ ... setup BPF/XDP prog on eth0 to steer into shared xsk map ... ]
-  # ip netns add foo
-  # ip link add numrxqueues 2 nk type netkit single
-  # ynl --family netdev --output-json --do queue-create \
-        --json "{"ifindex": $(ifindex nk), "type": "rx", \
-                 "lease": { "ifindex": $(ifindex eth0), \
-                            "queue": { "type": "rx", "id": 15 } } }"
-  {'id': 1}
-  # ip link set nk netns foo
-  # ip netns exec foo ip link set lo up
-  # ip netns exec foo ip link set nk up
-  # ip netns exec foo qemu-system-x86_64 \
-          -kernel $kernel \
-          -drive file=${image_name},index=0,media=disk,format=raw \
-          -append "root=/dev/sda rw console=ttyS0" \
-          -cpu host \
-          -m $memory \
-          -enable-kvm \
-          -device virtio-net-pci,netdev=net0,mac=$mac \
-          -netdev af-xdp,ifname=nk,id=net0,mode=native,queues=1,start-queue=1,inhibit=on,map-path=$dir/xsks_map \
-          -nographic
+This change implements TX reference switching using a deferred worker,
+triggered by DPLL TXCLK pin operations. Pin set callbacks express
+selection intent and schedule the operation asynchronously; firmware
+commands and autonegotiation restarts are executed outside of DPLL
+context.
 
-We have tested the above against a dual-port Nvidia ConnectX-6 (mlx5)
-100G NIC with successful network connectivity out of QEMU. An earlier
-iteration of this work was presented at LSF/MM/BPF [0] and more
-recently at LPC [1].
+After link-up, the effective TX reference clock is read back from
+hardware and software state is reconciled accordingly. TXCLK pin state
+reflects only the selected reference clock topology:
+- External references (SYNCE, EREF0) are represented as TXCLK pins
+- The internal ENET/TXCO clock has no pin representation; when selected,
+  all TXCLK pins are reported DISCONNECTED
 
-For getting to a first starting point to connect all things with
-KubeVirt, bind mounting the xsk map from Cilium into the VM launcher
-Pod which acts as a regular Kubernetes Pod while not perfect, is not
-a big problem given its out of reach from the application sitting
-inside the VM (and some of the control plane aspects are baked in
-the launcher Pod already), so the isolation barrier is still the VM.
-Eventually the goal is to have a XDP/XSK redirect extension where
-there is no need to have the xsk map, and the BPF program can just
-derive the target xsk through the queue where traffic was received
-on.
+Actual hardware synchronization result is reported exclusively via the
+TXC DPLL lock status:
+- LOCKED when an external TX reference is in use
+- UNLOCKED when falling back to ENET/TXCO
 
-The exposure through netkit is because Cilium should not act as a
-proxy handing out xsk sockets. Existing applications expect a netdev
-from kernel side and should not need to rewrite just to implement
-against a CNI's protocol. Also, all the memory should not be accounted
-against Cilium but rather the application Pod itself which is consuming
-AF_XDP. Further, on up/downgrades we expect the data plane to being
-completely decoupled from the control plane; if Cilium would own the
-sockets that would be disruptive. Another use-case which opens up and
-is regularly asked from users would be to have DPDK applications on
-top of AF_XDP in regular Kubernetes Pods.
+This separation allows userspace to distinguish between TX reference
+selection and successful synchronization, matching the DPLL subsystem
+model where pin state describes topology and device lock status
+describes signal quality.
 
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Co-developed-by: David Wei <dw@davidwei.uk>
-Signed-off-by: David Wei <dw@davidwei.uk>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://bpfconf.ebpf.io/bpfconf2025/bpfconf2025_material/lsfmmbpf_2025_netkit_borkmann.pdf [0]
-Link: https://lpc.events/event/19/contributions/2275/ [1]
+The implementation also tracks TX reference usage per PHY across all
+PFs to ensure shared TX clock resources are not disabled while still in
+use by peer ports.
+
+With this change, TX reference clocks on E825 devices can be reliably
+selected, verified against hardware state, and monitored for effective
+synchronization via standard DPLL interfaces.
+
+Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
 ---
- drivers/net/netkit.c | 86 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 86 insertions(+)
+ drivers/net/ethernet/intel/ice/Makefile     |   2 +-
+ drivers/net/ethernet/intel/ice/ice.h        |  12 +
+ drivers/net/ethernet/intel/ice/ice_dpll.c   | 110 +++++++--
+ drivers/net/ethernet/intel/ice/ice_dpll.h   |   4 +
+ drivers/net/ethernet/intel/ice/ice_ptp.c    |  26 ++-
+ drivers/net/ethernet/intel/ice/ice_ptp.h    |   7 +
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c |  37 +++
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.h |  27 +++
+ drivers/net/ethernet/intel/ice/ice_txclk.c  | 241 ++++++++++++++++++++
+ drivers/net/ethernet/intel/ice/ice_txclk.h  |  38 +++
+ 10 files changed, 485 insertions(+), 19 deletions(-)
+ create mode 100644 drivers/net/ethernet/intel/ice/ice_txclk.c
+ create mode 100644 drivers/net/ethernet/intel/ice/ice_txclk.h
 
-diff --git a/drivers/net/netkit.c b/drivers/net/netkit.c
-index 1ec21aef348f..5619209329d5 100644
---- a/drivers/net/netkit.c
-+++ b/drivers/net/netkit.c
-@@ -12,6 +12,7 @@
- #include <net/netdev_lock.h>
- #include <net/netdev_queues.h>
- #include <net/netdev_rx_queue.h>
-+#include <net/xdp_sock_drv.h>
- #include <net/netkit.h>
- #include <net/dst.h>
- #include <net/tcx.h>
-@@ -236,6 +237,86 @@ static void netkit_get_stats(struct net_device *dev,
- 	stats->tx_dropped = DEV_STATS_READ(dev, tx_dropped);
+diff --git a/drivers/net/ethernet/intel/ice/Makefile b/drivers/net/ethernet/intel/ice/Makefile
+index 38db476ab2ec..95fd0c49800f 100644
+--- a/drivers/net/ethernet/intel/ice/Makefile
++++ b/drivers/net/ethernet/intel/ice/Makefile
+@@ -54,7 +54,7 @@ ice-$(CONFIG_PCI_IOV) +=	\
+ 	ice_vf_mbx.o		\
+ 	ice_vf_vsi_vlan_ops.o	\
+ 	ice_vf_lib.o
+-ice-$(CONFIG_PTP_1588_CLOCK) += ice_ptp.o ice_ptp_hw.o ice_dpll.o ice_tspll.o ice_cpi.o
++ice-$(CONFIG_PTP_1588_CLOCK) += ice_ptp.o ice_ptp_hw.o ice_dpll.o ice_tspll.o ice_cpi.o ice_txclk.o
+ ice-$(CONFIG_DCB) += ice_dcb.o ice_dcb_nl.o ice_dcb_lib.o
+ ice-$(CONFIG_RFS_ACCEL) += ice_arfs.o
+ ice-$(CONFIG_XDP_SOCKETS) += ice_xsk.o
+diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
+index eb3a48330cc1..6edafce4624a 100644
+--- a/drivers/net/ethernet/intel/ice/ice.h
++++ b/drivers/net/ethernet/intel/ice/ice.h
+@@ -1155,4 +1155,16 @@ static inline struct ice_hw *ice_get_primary_hw(struct ice_pf *pf)
+ 	else
+ 		return &pf->adapter->ctrl_pf->hw;
+ }
++
++/**
++ * ice_get_ctrl_pf - Get pointer to Control PF of the adapter
++ * @pf: pointer to the current PF structure
++ *
++ * Return: A pointer to ice_pf structure which is Control PF,
++ * NULL if it's not initialized yet.
++ */
++static inline struct ice_pf *ice_get_ctrl_pf(struct ice_pf *pf)
++{
++	return !pf->adapter ? NULL : pf->adapter->ctrl_pf;
++}
+ #endif /* _ICE_H_ */
+diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
+index ab62aac77399..201181ccd2ed 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dpll.c
++++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+@@ -4,6 +4,7 @@
+ #include "ice.h"
+ #include "ice_lib.h"
+ #include "ice_trace.h"
++#include "ice_txclk.h"
+ #include <linux/dpll.h>
+ #include <linux/property.h>
+ 
+@@ -19,8 +20,6 @@
+ #define ICE_DPLL_SW_PIN_INPUT_BASE_QSFP		6
+ #define ICE_DPLL_SW_PIN_OUTPUT_BASE		0
+ 
+-#define E825_EXT_EREF_PIN_IDX			0
+-#define E825_EXT_SYNCE_PIN_IDX			1
+ #define E825_RCLK_PARENT_0_PIN_IDX		0
+ #define E825_RCLK_PARENT_1_PIN_IDX		1
+ 
+@@ -2527,6 +2526,44 @@ ice_dpll_rclk_state_on_pin_get(const struct dpll_pin *pin, void *pin_priv,
+ 	return ret;
  }
  
-+static bool netkit_xsk_supported_at_phys(const struct net_device *dev)
++/**
++ * ice_dpll_txclk_work - apply a pending TX reference clock change
++ * @work: work_struct embedded in struct ice_dplls
++ *
++ * This worker executes an outstanding TX reference clock switch request
++ * that was previously queued via the DPLL TXCLK pin set callback.
++ *
++ * The worker performs only the operational part of the switch, issuing
++ * the necessary firmware commands to request a new TX reference clock
++ * selection (e.g. triggering an AN restart). It does not verify whether
++ * the requested clock was ultimately accepted by the hardware.
++ *
++ * Hardware verification, software state reconciliation, pin state
++ * notification, and TXC DPLL lock-status updates are performed later,
++ * after link-up, by ice_txclk_update_and_notify().
++ *
++ * Context:
++ *   - Runs in process context on pf->dplls.wq and may sleep.
++ *   - Serializes access to shared TXCLK state using pf->dplls.lock.
++ */
++static void ice_dpll_txclk_work(struct work_struct *work)
 +{
-+	if (!dev->netdev_ops->ndo_bpf ||
-+	    !dev->netdev_ops->ndo_xdp_xmit ||
-+	    !dev->netdev_ops->ndo_xsk_wakeup)
-+		return false;
-+	return true;
++	struct ice_dplls *dplls =
++		container_of(work, struct ice_dplls, txclk_work);
++	struct ice_pf *pf = container_of(dplls, struct ice_pf, dplls);
++	enum ice_e825c_ref_clk clk;
++	bool do_switch;
++
++	mutex_lock(&pf->dplls.lock);
++	do_switch  = pf->dplls.txclk_switch_requested;
++	clk = pf->ptp.port.tx_clk_req;
++	pf->dplls.txclk_switch_requested  = false;
++	mutex_unlock(&pf->dplls.lock);
++
++	if (do_switch)
++		ice_txclk_set_clk(pf, clk);
 +}
 +
-+static int netkit_xsk(struct net_device *dev, struct netdev_bpf *xdp)
-+{
-+	struct netkit *nk = netkit_priv(dev);
-+	struct netdev_bpf xdp_lower;
-+	struct netdev_rx_queue *rxq;
-+	struct net_device *phys;
-+	bool create = false;
-+	int ret = -EBUSY;
-+
-+	switch (xdp->command) {
-+	case XDP_SETUP_XSK_POOL:
-+		if (nk->pair == NETKIT_DEVICE_PAIR)
-+			return -EOPNOTSUPP;
-+		if (xdp->xsk.queue_id >= dev->real_num_rx_queues)
-+			return -EINVAL;
-+
-+		rxq = __netif_get_rx_queue(dev, xdp->xsk.queue_id);
-+		if (!rxq->lease)
-+			return -EOPNOTSUPP;
-+
-+		phys = rxq->lease->dev;
-+		if (!netkit_xsk_supported_at_phys(phys))
-+			return -EOPNOTSUPP;
-+
-+		create = xdp->xsk.pool;
-+		memcpy(&xdp_lower, xdp, sizeof(xdp_lower));
-+		xdp_lower.xsk.queue_id = get_netdev_rx_queue_index(rxq->lease);
-+		break;
-+	case XDP_SETUP_PROG:
-+		return -EOPNOTSUPP;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	netdev_lock(phys);
-+	if (create &&
-+	    (phys->xdp_features & NETDEV_XDP_ACT_XSK) != NETDEV_XDP_ACT_XSK) {
-+		ret = -EOPNOTSUPP;
-+		goto out;
-+	}
-+	if (!create || !dev_get_min_mp_channel_count(phys))
-+		ret = phys->netdev_ops->ndo_bpf(phys, &xdp_lower);
-+out:
-+	netdev_unlock(phys);
-+	return ret;
-+}
-+
-+static int netkit_xsk_wakeup(struct net_device *dev, u32 queue_id, u32 flags)
-+{
-+	struct netdev_rx_queue *rxq, *rxq_lease;
-+	struct net_device *phys;
-+
-+	if (queue_id >= dev->real_num_rx_queues)
-+		return -EINVAL;
-+
-+	rxq = __netif_get_rx_queue(dev, queue_id);
-+	rxq_lease = READ_ONCE(rxq->lease);
-+	if (unlikely(!rxq_lease))
-+		return -EOPNOTSUPP;
-+
-+	/* netkit_xsk already validated full xsk support, hence it's
-+	 * fine to call into ndo_xsk_wakeup right away given this
-+	 * was a prerequisite to get here in the first place. The
-+	 * phys xsk support cannot change without tearing down the
-+	 * device (which clears the lease first).
-+	 */
-+	phys = rxq_lease->dev;
-+	return phys->netdev_ops->ndo_xsk_wakeup(phys,
-+			get_netdev_rx_queue_index(rxq_lease), flags);
-+}
-+
- static int netkit_init(struct net_device *dev)
+ /**
+  * ice_dpll_txclk_state_on_dpll_set - set a state on TX clk pin
+  * @pin: pointer to a pin
+@@ -2538,7 +2575,9 @@ ice_dpll_rclk_state_on_pin_get(const struct dpll_pin *pin, void *pin_priv,
+  *
+  * Dpll subsystem callback, set a state of a Tx reference clock pin
+  *
++ * Context: Acquires and releases pf->dplls.lock
+  * Return:
++ * * 0 - success
+  * * negative - failure
+  */
+ static int
+@@ -2547,11 +2586,29 @@ ice_dpll_txclk_state_on_dpll_set(const struct dpll_pin *pin, void *pin_priv,
+ 				 void *dpll_priv, enum dpll_pin_state state,
+ 				 struct netlink_ext_ack *extack)
  {
- 	netdev_lockdep_set_classes(dev);
-@@ -256,6 +337,8 @@ static const struct net_device_ops netkit_netdev_ops = {
- 	.ndo_get_peer_dev	= netkit_peer_dev,
- 	.ndo_get_stats64	= netkit_get_stats,
- 	.ndo_uninit		= netkit_uninit,
-+	.ndo_bpf		= netkit_xsk,
-+	.ndo_xsk_wakeup		= netkit_xsk_wakeup,
- 	.ndo_features_check	= passthru_features_check,
+-	/*
+-	 * TODO: set HW accordingly to selected TX reference clock.
+-	 * To be added in the follow up patches.
+-	 */
+-	return -EOPNOTSUPP;
++	struct ice_dpll_pin *p = pin_priv;
++	struct ice_pf *pf = p->pf;
++	enum ice_e825c_ref_clk new_clk;
++
++	if (ice_dpll_is_reset(pf, extack))
++		return -EBUSY;
++
++	mutex_lock(&pf->dplls.lock);
++	new_clk = (state == DPLL_PIN_STATE_DISCONNECTED) ? ICE_REF_CLK_ENET :
++			p->tx_ref_src;
++	if (new_clk == pf->ptp.port.tx_clk) {
++		NL_SET_ERR_MSG_FMT(extack,
++				   "pin:%u state:%u on parent device already set",
++				   p->idx, state);
++		goto unlock;
++	}
++
++	pf->ptp.port.tx_clk_req = new_clk;
++	pf->dplls.txclk_switch_requested = true;
++	queue_work(pf->dplls.wq, &pf->dplls.txclk_work);
++unlock:
++	mutex_unlock(&pf->dplls.lock);
++	return 0;
+ }
+ 
+ /**
+@@ -2563,10 +2620,21 @@ ice_dpll_txclk_state_on_dpll_set(const struct dpll_pin *pin, void *pin_priv,
+  * @state: on success holds pin state on parent pin
+  * @extack: error reporting
+  *
+- * dpll subsystem callback, get a state of a TX clock reference pin.
++ * TXCLK DPLL pin state is derived and not stored explicitly.
++ *
++ * Only external TX reference clocks (SYNCE, EREF0) are modeled
++ * as DPLL pins. The internal ENET (TXCO) clock has no pin and,
++ * when selected, all TXCLK pins are reported DISCONNECTED.
++ *
++ * During a pending TXCLK switch, the requested pin may be
++ * reported as CONNECTED before hardware verification.
++ * Hardware acceptance and synchronization are reported
++ * exclusively via TXC DPLL lock-status.
+  *
++ * Context: Acquires and releases pf->dplls.lock
+  * Return:
+  * * 0 - success
++ * * negative - failure
+  */
+ static int
+ ice_dpll_txclk_state_on_dpll_get(const struct dpll_pin *pin, void *pin_priv,
+@@ -2575,11 +2643,21 @@ ice_dpll_txclk_state_on_dpll_get(const struct dpll_pin *pin, void *pin_priv,
+ 				 enum dpll_pin_state *state,
+ 				 struct netlink_ext_ack *extack)
+ {
+-	/*
+-	 * TODO: query HW status to determine if the TX reference is selected.
+-	 * To be added in the follow up patches.
+-	 */
+-	*state = DPLL_PIN_STATE_DISCONNECTED;
++	struct ice_dpll_pin *p = pin_priv;
++	struct ice_pf *pf = p->pf;
++
++	if (ice_dpll_is_reset(pf, extack))
++		return -EBUSY;
++
++	mutex_lock(&pf->dplls.lock);
++	if (pf->ptp.port.tx_clk_req == p->tx_ref_src)
++		*state = DPLL_PIN_STATE_CONNECTED;
++	else if (pf->ptp.port.tx_clk == p->tx_ref_src &&
++		 pf->ptp.port.tx_clk_req == pf->ptp.port.tx_clk)
++		*state = DPLL_PIN_STATE_CONNECTED;
++	else
++		*state = DPLL_PIN_STATE_DISCONNECTED;
++	mutex_unlock(&pf->dplls.lock);
+ 
+ 	return 0;
+ }
+@@ -4402,6 +4480,8 @@ static int ice_dpll_init_info_e825c(struct ice_pf *pf)
+ 	if (ret)
+ 		goto deinit_info;
+ 
++	INIT_WORK(&pf->dplls.txclk_work, ice_dpll_txclk_work);
++
+ 	dev_dbg(ice_pf_to_dev(pf),
+ 		"%s - success, inputs: %u, outputs: %u, rclk-parents: %u\n",
+ 		 __func__, d->num_inputs, d->num_outputs, d->rclk.num_parents);
+@@ -4538,6 +4618,10 @@ void ice_dpll_deinit(struct ice_pf *pf)
+ 		ice_dpll_deinit_dpll(pf, &pf->dplls.txc, false);
+ 
+ 	ice_dpll_deinit_info(pf);
++
++	if (pf->hw.mac_type == ICE_MAC_GENERIC_3K_E825)
++		flush_work(&pf->dplls.txclk_work);
++
+ 	mutex_destroy(&pf->dplls.lock);
+ }
+ 
+diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.h b/drivers/net/ethernet/intel/ice/ice_dpll.h
+index 23f9d4da73c5..9a96b905141d 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dpll.h
++++ b/drivers/net/ethernet/intel/ice/ice_dpll.h
+@@ -8,6 +8,8 @@
+ 
+ #define ICE_DPLL_RCLK_NUM_MAX	4
+ #define ICE_DPLL_TXCLK_NUM_MAX	2
++#define E825_EXT_EREF_PIN_IDX	0
++#define E825_EXT_SYNCE_PIN_IDX	1
+ 
+ /**
+  * enum ice_dpll_pin_sw - enumerate ice software pin indices:
+@@ -152,6 +154,8 @@ struct ice_dplls {
+ 	s32 output_phase_adj_max;
+ 	u32 periodic_counter;
+ 	bool generic;
++	struct work_struct txclk_work;
++	bool txclk_switch_requested;
  };
  
-@@ -569,6 +652,9 @@ static int netkit_new_link(struct net_device *dev,
- 	nk->headroom = headroom;
- 	bpf_mprog_bundle_init(&nk->bundle);
+ #if IS_ENABLED(CONFIG_PTP_1588_CLOCK)
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
+index 094e96219f45..14c805ed2f09 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+@@ -4,6 +4,7 @@
+ #include "ice.h"
+ #include "ice_lib.h"
+ #include "ice_trace.h"
++#include "ice_txclk.h"
  
-+	if (pair == NETKIT_DEVICE_SINGLE)
-+		xdp_set_features_flag(dev, NETDEV_XDP_ACT_XSK);
+ static const char ice_pin_names[][64] = {
+ 	"SDP0",
+@@ -54,11 +55,6 @@ static const struct ice_ptp_pin_desc ice_pin_desc_dpll[] = {
+ 	{  SDP3, {  3, -1 }, { 0, 0 }},
+ };
+ 
+-static struct ice_pf *ice_get_ctrl_pf(struct ice_pf *pf)
+-{
+-	return !pf->adapter ? NULL : pf->adapter->ctrl_pf;
+-}
+-
+ static struct ice_ptp *ice_get_ctrl_ptp(struct ice_pf *pf)
+ {
+ 	struct ice_pf *ctrl_pf = ice_get_ctrl_pf(pf);
+@@ -1326,6 +1322,9 @@ void ice_ptp_link_change(struct ice_pf *pf, bool linkup)
+ 			}
+ 		}
+ 		mutex_unlock(&pf->dplls.lock);
 +
- 	err = register_netdevice(dev);
- 	if (err < 0)
- 		goto err_configure_peer;
++		if (linkup)
++			ice_txclk_update_and_notify(pf);
+ 	}
+ 
+ 	switch (hw->mac_type) {
+@@ -3079,6 +3078,7 @@ static int ice_ptp_setup_pf(struct ice_pf *pf)
+ {
+ 	struct ice_ptp *ctrl_ptp = ice_get_ctrl_ptp(pf);
+ 	struct ice_ptp *ptp = &pf->ptp;
++	u8 port_num, phy;
+ 
+ 	if (WARN_ON(!ctrl_ptp) || pf->hw.mac_type == ICE_MAC_UNKNOWN)
+ 		return -ENODEV;
+@@ -3090,6 +3090,10 @@ static int ice_ptp_setup_pf(struct ice_pf *pf)
+ 		 &pf->adapter->ports.ports);
+ 	mutex_unlock(&pf->adapter->ports.lock);
+ 
++	port_num = ptp->port.port_num;
++	phy = port_num / pf->hw.ptp.ports_per_phy;
++	set_bit(port_num, &ctrl_ptp->tx_refclks[phy][pf->ptp.port.tx_clk]);
++
+ 	return 0;
+ }
+ 
+@@ -3290,6 +3294,7 @@ static void ice_ptp_init_tx_interrupt_mode(struct ice_pf *pf)
+  */
+ void ice_ptp_init(struct ice_pf *pf)
+ {
++	enum ice_e825c_ref_clk tx_ref_clk;
+ 	struct ice_ptp *ptp = &pf->ptp;
+ 	struct ice_hw *hw = &pf->hw;
+ 	int err;
+@@ -3318,6 +3323,17 @@ void ice_ptp_init(struct ice_pf *pf)
+ 			goto err_exit;
+ 	}
+ 
++	ptp->port.tx_clk = ICE_REF_CLK_ENET;
++	ptp->port.tx_clk_req = ICE_REF_CLK_ENET;
++	if (hw->mac_type == ICE_MAC_GENERIC_3K_E825) {
++		err = ice_get_serdes_ref_sel_e825c(hw, ptp->port.port_num,
++						   &tx_ref_clk);
++		if (!err) {
++			ptp->port.tx_clk = tx_ref_clk;
++			ptp->port.tx_clk_req = tx_ref_clk;
++		}
++	}
++
+ 	err = ice_ptp_setup_pf(pf);
+ 	if (err)
+ 		goto err_exit;
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.h b/drivers/net/ethernet/intel/ice/ice_ptp.h
+index 8c44bd758a4f..8b385271ab36 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp.h
++++ b/drivers/net/ethernet/intel/ice/ice_ptp.h
+@@ -144,6 +144,8 @@ struct ice_ptp_tx {
+  * @link_up: indicates whether the link is up
+  * @tx_fifo_busy_cnt: number of times the Tx FIFO was busy
+  * @port_num: the port number this structure represents
++ * @tx_clk: currently active Tx reference clock source
++ * @tx_clk_req: requested Tx reference clock source (new target)
+  */
+ struct ice_ptp_port {
+ 	struct list_head list_node;
+@@ -153,6 +155,8 @@ struct ice_ptp_port {
+ 	bool link_up;
+ 	u8 tx_fifo_busy_cnt;
+ 	u8 port_num;
++	enum ice_e825c_ref_clk tx_clk;
++	enum ice_e825c_ref_clk tx_clk_req;
+ };
+ 
+ enum ice_ptp_tx_interrupt {
+@@ -236,6 +240,7 @@ struct ice_ptp_pin_desc {
+  * @info: structure defining PTP hardware capabilities
+  * @clock: pointer to registered PTP clock device
+  * @tstamp_config: hardware timestamping configuration
++ * @tx_refclks: bitmaps table to store the information about TX reference clocks
+  * @reset_time: kernel time after clock stop on reset
+  * @tx_hwtstamp_good: number of completed Tx timestamp requests
+  * @tx_hwtstamp_skipped: number of Tx time stamp requests skipped
+@@ -261,6 +266,8 @@ struct ice_ptp {
+ 	struct ptp_clock_info info;
+ 	struct ptp_clock *clock;
+ 	struct kernel_hwtstamp_config tstamp_config;
++#define ICE_E825_MAX_PHYS 2
++	unsigned long tx_refclks[ICE_E825_MAX_PHYS][ICE_REF_CLK_MAX];
+ 	u64 reset_time;
+ 	u64 tx_hwtstamp_good;
+ 	u32 tx_hwtstamp_skipped;
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+index 61c0a0d93ea8..c0720525ac49 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+@@ -461,6 +461,43 @@ static int ice_read_phy_eth56g(struct ice_hw *hw, u8 port, u32 addr, u32 *val)
+ 	return err;
+ }
+ 
++/**
++ * ice_get_serdes_ref_sel_e825c - Read current Tx ref clock source
++ * @hw: pointer to the HW struct
++ * @port: port number for which Tx reference clock is read
++ * @clk: Tx reference clock value (output)
++ *
++ * Return: 0 on success, other error codes when failed to read from PHY
++ */
++int ice_get_serdes_ref_sel_e825c(struct ice_hw *hw, u8 port,
++				 enum ice_e825c_ref_clk *clk)
++{
++	u8 lane = port % hw->ptp.ports_per_phy;
++	u32 serdes_rx_nt, serdes_tx_nt;
++	u32 val;
++	int ret;
++
++	ret = ice_read_phy_eth56g(hw, port,
++				  SERDES_IP_IF_LN_FLXM_GENERAL(lane, 0),
++				  &val);
++	if (ret)
++		return ret;
++
++	serdes_rx_nt = FIELD_GET(CFG_ICTL_PCS_REF_SEL_RX_NT, val);
++	serdes_tx_nt = FIELD_GET(CFG_ICTL_PCS_REF_SEL_TX_NT, val);
++
++	if (serdes_tx_nt == REF_SEL_NT_SYNCE &&
++	    serdes_rx_nt == REF_SEL_NT_SYNCE)
++		*clk = ICE_REF_CLK_SYNCE;
++	else if (serdes_tx_nt == REF_SEL_NT_EREF0 &&
++		 serdes_rx_nt == REF_SEL_NT_EREF0)
++		*clk = ICE_REF_CLK_EREF0;
++	else
++		*clk = ICE_REF_CLK_ENET;
++
++	return 0;
++}
++
+ /**
+  * ice_phy_res_address_eth56g - Calculate a PHY port register address
+  * @hw: pointer to the HW struct
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
+index cbc9693179a1..820ba953ea01 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
++++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
+@@ -381,6 +381,8 @@ int ice_stop_phy_timer_eth56g(struct ice_hw *hw, u8 port, bool soft_reset);
+ int ice_start_phy_timer_eth56g(struct ice_hw *hw, u8 port);
+ int ice_phy_cfg_intr_eth56g(struct ice_hw *hw, u8 port, bool ena, u8 threshold);
+ int ice_phy_cfg_ptp_1step_eth56g(struct ice_hw *hw, u8 port);
++int ice_get_serdes_ref_sel_e825c(struct ice_hw *hw, u8 port,
++				 enum ice_e825c_ref_clk *clk);
+ 
+ #define ICE_ETH56G_NOMINAL_INCVAL	0x140000000ULL
+ #define ICE_ETH56G_NOMINAL_PCS_REF_TUS	0x100000000ULL
+@@ -790,4 +792,29 @@ static inline u64 ice_get_base_incval(struct ice_hw *hw)
+ #define PHY_PTP_1STEP_PD_DELAY_M	GENMASK(30, 1)
+ #define PHY_PTP_1STEP_PD_DLY_V_M	BIT(31)
+ 
++#define SERDES_IP_IF_LN_FLXM_GENERAL(n, m) \
++	(0x32B800 + (m) * 0x100000 + (n) * 0x8000)
++#define CFG_RESERVED0_1                         GENMASK(1, 0)
++#define CFG_ICTL_PCS_MODE_NT                    BIT(2)
++#define CFG_ICTL_PCS_RCOMP_SLAVE_EN_NT          BIT(3)
++#define CFG_ICTL_PCS_CMN_FORCE_PUP_A            BIT(4)
++#define CFG_ICTL_PCS_RCOMP_SLAVE_VALID_A        BIT(5)
++#define CFG_ICTL_PCS_REF_SEL_RX_NT              GENMASK(9, 6)
++#define REF_SEL_NT_ENET                         0
++#define REF_SEL_NT_EREF0                        1
++#define REF_SEL_NT_SYNCE                        2
++#define CFG_IDAT_DFX_OBS_DIG_                   GENMASK(11, 10)
++#define CFG_IRST_APB_MEM_B                      BIT(12)
++#define CFG_ICTL_PCS_DISCONNECT_NT              BIT(13)
++#define CFG_ICTL_PCS_ISOLATE_NT                 BIT(14)
++#define CFG_RESERVED15_15                       BIT(15)
++#define CFG_IRST_PCS_TSTBUS_B_A                 BIT(16)
++#define CFG_ICTL_PCS_REF_TERM_HIZ_EN_NT         BIT(17)
++#define CFG_RESERVED18_19                       GENMASK(19, 18)
++#define CFG_ICTL_PCS_SYNTHLCSLOW_FORCE_PUP_A    BIT(20)
++#define CFG_ICTL_PCS_SYNTHLCFAST_FORCE_PUP_A    BIT(21)
++#define CFG_RESERVED22_24                       GENMASK(24, 22)
++#define CFG_ICTL_PCS_REF_SEL_TX_NT              GENMASK(28, 25)
++#define CFG_RESERVED29_31                       GENMASK(31, 29)
++
+ #endif /* _ICE_PTP_HW_H_ */
+diff --git a/drivers/net/ethernet/intel/ice/ice_txclk.c b/drivers/net/ethernet/intel/ice/ice_txclk.c
+new file mode 100644
+index 000000000000..3a79e770f796
+--- /dev/null
++++ b/drivers/net/ethernet/intel/ice/ice_txclk.c
+@@ -0,0 +1,241 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (C) 2026 Intel Corporation */
++
++#include "ice.h"
++#include "ice_cpi.h"
++#include "ice_txclk.h"
++
++#define ICE_PHY0	0
++#define ICE_PHY1	1
++
++/**
++ * ice_txclk_get_pin - map TX reference clock to its DPLL pin
++ * @pf: pointer to the PF structure
++ * @ref_clk: TX reference clock selection
++ *
++ * Return the DPLL pin corresponding to a given external TX reference
++ * clock. Only external TX reference clocks (SYNCE and EREF0) are
++ * represented as DPLL pins. The internal ENET (TXCO) clock has no
++ * associated DPLL pin and therefore yields %NULL.
++ *
++ * This helper is used when emitting DPLL pin change notifications
++ * after TX reference clock transitions have been verified.
++ *
++ * Return: Pointer to the corresponding struct dpll_pin, or %NULL if
++ *         the TX reference clock has no DPLL pin representation.
++ */
++static struct dpll_pin *
++ice_txclk_get_pin(struct ice_pf *pf, enum ice_e825c_ref_clk ref_clk)
++{
++	switch (ref_clk) {
++	case ICE_REF_CLK_SYNCE:
++		return pf->dplls.txclks[E825_EXT_SYNCE_PIN_IDX].pin;
++	case ICE_REF_CLK_EREF0:
++		return pf->dplls.txclks[E825_EXT_EREF_PIN_IDX].pin;
++	case ICE_REF_CLK_ENET:
++	default:
++		return NULL;
++	}
++}
++
++/**
++ * ice_txclk_enable_peer - Enable required TX reference clock on peer PHY
++ * @pf: pointer to the PF structure
++ * @clk: TX reference clock that must be enabled
++ *
++ * Some TX reference clocks on E825-class devices (SyncE and EREF0) must
++ * be enabled on both PHY complexes to allow proper routing:
++ *
++ *   - SyncE must be enabled on both PHYs when used by PHY0
++ *   - EREF0 must be enabled on both PHYs when used by PHY1
++ *
++ * If the requested clock is not yet enabled on the peer PHY, enable it.
++ * ENET does not require duplication and is ignored.
++ *
++ * Return: 0 on success or negative error code on failure.
++ */
++static int ice_txclk_enable_peer(struct ice_pf *pf, enum ice_e825c_ref_clk clk)
++{
++	struct ice_pf *ctrl_pf = ice_get_ctrl_pf(pf);
++	u8 port_num, phy;
++	int err;
++
++	if (clk == ICE_REF_CLK_ENET)
++		return 0;
++
++	if (IS_ERR_OR_NULL(ctrl_pf)) {
++		dev_err(ice_pf_to_dev(pf),
++			"Can't enable tx-clk on peer: no controlling PF\n");
++		return -EINVAL;
++	}
++
++	port_num = pf->ptp.port.port_num;
++	phy = port_num / pf->hw.ptp.ports_per_phy;
++
++	if ((clk == ICE_REF_CLK_SYNCE && phy == ICE_PHY0 &&
++	     !ice_txclk_any_port_uses(ctrl_pf, ICE_PHY1, clk)) ||
++	    (clk == ICE_REF_CLK_EREF0 && phy == ICE_PHY1 &&
++	     !ice_txclk_any_port_uses(ctrl_pf, ICE_PHY0, clk))) {
++		u8 peer_phy = phy ? ICE_PHY0 : ICE_PHY1;
++
++		err = ice_cpi_ena_dis_clk_ref(&pf->hw, peer_phy, clk, true);
++		if (err) {
++			dev_err(ice_hw_to_dev(&pf->hw),
++				"Failed to enable the %u TX clock for the %u PHY\n",
++				clk, peer_phy);
++			return err;
++		}
++	}
++
++	return 0;
++}
++
++#define ICE_REFCLK_USER_TO_AQ_IDX(x) ((x) + 1)
++
++/**
++ * ice_txclk_set_clk - Set Tx reference clock
++ * @pf: pointer to pf structure
++ * @clk: new Tx clock
++ *
++ * Return: 0 on success, negative value otherwise.
++ */
++int ice_txclk_set_clk(struct ice_pf *pf, enum ice_e825c_ref_clk clk)
++{
++	struct ice_pf *ctrl_pf = ice_get_ctrl_pf(pf);
++	struct ice_port_info *port_info;
++	u8 port_num, phy;
++	int err;
++
++	if (pf->ptp.port.tx_clk == clk)
++		return 0;
++
++	if (IS_ERR_OR_NULL(ctrl_pf)) {
++		dev_err(ice_pf_to_dev(pf),
++			"Can't set tx-clk: no controlling PF\n");
++		return -EINVAL;
++	}
++
++	port_num = pf->ptp.port.port_num;
++	phy = port_num / pf->hw.ptp.ports_per_phy;
++	port_info = pf->hw.port_info;
++
++	/* Check if the TX clk is enabled for this PHY, if not - enable it */
++	if (!ice_txclk_any_port_uses(ctrl_pf, phy, clk)) {
++		err = ice_cpi_ena_dis_clk_ref(&pf->hw, phy, clk, true);
++		if (err) {
++			dev_err(ice_pf_to_dev(pf), "Failed to enable the %u TX clock for the %u PHY\n",
++				clk, phy);
++			return err;
++		}
++		err = ice_txclk_enable_peer(pf, clk);
++		if (err)
++			return err;
++	}
++
++	/* We are ready to switch to the new TX clk. */
++	err = ice_aq_set_link_restart_an(port_info, true, NULL,
++					 ICE_REFCLK_USER_TO_AQ_IDX(clk));
++	if (err)
++		dev_err(ice_pf_to_dev(pf),
++			"AN restart AQ command failed with err %d\n",
++			err);
++
++	return err;
++}
++
++/**
++ * ice_txclk_update_and_notify - Validate TX reference clock switching
++ * @pf: pointer to PF structure
++ *
++ * After a link-up event, verify whether the previously requested TX reference
++ * clock transition actually succeeded. The SERDES reference selector reflects
++ * the effective hardware choice, which may differ from the requested clock
++ * when Auto-Negotiation or firmware applies additional policy.
++ *
++ * If the hardware-selected clock differs from the requested one, update the
++ * software state accordingly and stop further processing.
++ *
++ * When the switch is successful, update the per‑PHY usage bitmaps so that the
++ * driver knows which reference clock is currently in use by this port.
++ *
++ * This function does not initiate a clock switch; it only validates the result
++ * of a previously triggered transition and performs cleanup of unused clocks.
++ */
++void ice_txclk_update_and_notify(struct ice_pf *pf)
++{
++	struct ice_ptp_port *ptp_port = &pf->ptp.port;
++	struct ice_pf *ctrl_pf = ice_get_ctrl_pf(pf);
++	struct dpll_pin *old_pin = NULL;
++	struct dpll_pin *new_pin = NULL;
++	struct ice_hw *hw = &pf->hw;
++	enum ice_e825c_ref_clk clk;
++	int err;
++	u8 phy;
++
++	phy = ptp_port->port_num / hw->ptp.ports_per_phy;
++
++	mutex_lock(&pf->dplls.lock);
++	/* no TX clock change requested */
++	if (pf->ptp.port.tx_clk == pf->ptp.port.tx_clk_req) {
++		mutex_unlock(&pf->dplls.lock);
++		return;
++	}
++	/* verify current Tx reference settings */
++	err = ice_get_serdes_ref_sel_e825c(hw,
++					   ptp_port->port_num,
++					   &clk);
++	if (err) {
++		mutex_unlock(&pf->dplls.lock);
++		return;
++	}
++
++	if (clk != pf->ptp.port.tx_clk_req) {
++		dev_warn(ice_pf_to_dev(pf),
++			 "Failed to switch tx-clk for phy %d and clk %u (current: %u)\n",
++			 phy, pf->ptp.port.tx_clk_req, clk);
++		old_pin = ice_txclk_get_pin(pf, pf->ptp.port.tx_clk_req);
++		new_pin = ice_txclk_get_pin(pf, clk);
++		pf->ptp.port.tx_clk = clk;
++		pf->ptp.port.tx_clk_req = clk;
++		goto err_notify;
++	}
++
++	old_pin = ice_txclk_get_pin(pf, pf->ptp.port.tx_clk);
++	pf->ptp.port.tx_clk = clk;
++	pf->ptp.port.tx_clk_req = clk;
++
++	if (IS_ERR_OR_NULL(ctrl_pf)) {
++		dev_err(ice_pf_to_dev(pf),
++			"Can't set tx-clk: no controlling PF\n");
++		goto err_notify;
++	}
++
++	/* update Tx reference clock usage map */
++	for (int i = 0; i < ICE_REF_CLK_MAX; i++)
++		(clk == i) ?
++		 set_bit(ptp_port->port_num,
++			 &ctrl_pf->ptp.tx_refclks[phy][i]) :
++		 clear_bit(ptp_port->port_num,
++			   &ctrl_pf->ptp.tx_refclks[phy][i]);
++
++err_notify:
++	mutex_unlock(&pf->dplls.lock);
++
++	/* Notify TX clk pins state transition */
++	if (old_pin)
++		dpll_pin_change_ntf(old_pin);
++	if (new_pin)
++		dpll_pin_change_ntf(new_pin);
++
++	/* Update TXC DPLL lock status based on effective TX clk */
++	if (!IS_ERR_OR_NULL(pf->dplls.txc.dpll)) {
++		enum dpll_lock_status new_lock;
++
++		new_lock = ice_txclk_lock_status(clk);
++
++		if (pf->dplls.txc.dpll_state != new_lock) {
++			pf->dplls.txc.dpll_state = new_lock;
++			dpll_device_change_ntf(pf->dplls.txc.dpll);
++		}
++	}
++}
+diff --git a/drivers/net/ethernet/intel/ice/ice_txclk.h b/drivers/net/ethernet/intel/ice/ice_txclk.h
+new file mode 100644
+index 000000000000..bdf591ea8f14
+--- /dev/null
++++ b/drivers/net/ethernet/intel/ice/ice_txclk.h
+@@ -0,0 +1,38 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (C) 2026 Intel Corporation */
++
++#ifndef _ICE_TXCLK_H_
++#define _ICE_TXCLK_H_
++
++/**
++ * ice_txclk_any_port_uses - check if any port on a PHY uses this TX refclk
++ * @ctrl_pf: control PF (owner of the shared tx_refclks map)
++ * @phy: PHY index
++ * @clk: TX reference clock
++ *
++ * Return: true if any bit (port) is set for this clock on this PHY
++ */
++static inline bool
++ice_txclk_any_port_uses(const struct ice_pf *ctrl_pf, u8 phy,
++			enum ice_e825c_ref_clk clk)
++{
++	return find_first_bit(&ctrl_pf->ptp.tx_refclks[phy][clk],
++			BITS_PER_LONG) < BITS_PER_LONG;
++}
++
++static inline enum dpll_lock_status
++ice_txclk_lock_status(enum ice_e825c_ref_clk clk)
++{
++	switch (clk) {
++	case ICE_REF_CLK_SYNCE:
++	case ICE_REF_CLK_EREF0:
++		return DPLL_LOCK_STATUS_LOCKED;
++	case ICE_REF_CLK_ENET:
++	default:
++		return DPLL_LOCK_STATUS_UNLOCKED;
++	}
++}
++
++int ice_txclk_set_clk(struct ice_pf *pf, enum ice_e825c_ref_clk clk);
++void ice_txclk_update_and_notify(struct ice_pf *pf);
++#endif /* _ICE_TXCLK_H_ */
 -- 
-2.43.0
+2.39.3
 
