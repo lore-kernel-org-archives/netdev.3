@@ -1,83 +1,48 @@
-Received: from relay.smtp-ext.broadcom.com (lpdvsmtp11.broadcom.com [192.19.166.231])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2791366DC4;
-	Thu,  2 Apr 2026 21:47:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.166.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DCB1387590;
+	Thu,  2 Apr 2026 21:54:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775166456; cv=none; b=ldXFnt/KhgZsOtc94Yus2V7K/9BHh4WRj6+8jB/cljYpW3ieMt4ZtZFPf05ewDxCvNtrlQVt9E4iBOoot96wDQqWplvvmhLi5Przkhu8VIr4nnAMTMDTFGFHUS4Rtm5CAQ8ZZSTb4mbGv1hdKl5rt9jt5skFnWO3ZuDVJYp0h3o=
+	t=1775166888; cv=none; b=uoTfHy9k08jMO6tpeDVrDa91bQTwwprfjAj7H9dL0vp/D3G/qiH/ZPfwLA7VxOEaP156GvofjYusVGVnX6etuXaoXutlvG8K4YjW6rlQsUAmSauCHCAa2p2OOIIB4HOT1c6zt6i84c5cP+Qw5R9WUBsXXXnLHU/obS4SYwwcMWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775166456; c=relaxed/simple;
-	bh=NCQ2iu2oK2whClbBsYQU22HZemSxySMrHUGi3V4KUfs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lxj36KSrE3RFQe565ohjwWchHlNl29EYM7ZyjqJbC7Ik7BUYLTq2p8DqfIO/tmodbweM598504aA+PkWTeQ61MOrh3zbwEL4Hc2PyetVtinVnI1ucr0B8n2mU3xubJCYzp4P2ciqERf8Wqo+3PztEvcmZAYvpC74gU6fRgPp110=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Q47f1Lrr; arc=none smtp.client-ip=192.19.166.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1775166888; c=relaxed/simple;
+	bh=8xG47UVaicBg3PGvoKmkcXt2eBzcPg4SMCh5HpVNuIY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k1tpWK9l/GDQJ/XlN2+U/7WB44t3jSHUKgVJu1/mNV01159j239XymjiSZmW1+cxMvOP5uYxT1/kIAqWKcFuHh+eKCAz+2+4PdZyRa7DCK8Vuqm8ChxVHNbiaXHQlj0h9Z52+MX91Pps0ne+zsjJZH+aQTxusvHgN50b8V3sk3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jugfr0Nv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Q47f1Lrr"
-Received: from mail-acc-it-01.broadcom.com (mail-acc-it-01.acc.broadcom.net [10.35.36.83])
-	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 8F11BC00218E;
-	Thu,  2 Apr 2026 14:36:50 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 8F11BC00218E
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-	s=dkimrelay; t=1775165810;
-	bh=NCQ2iu2oK2whClbBsYQU22HZemSxySMrHUGi3V4KUfs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q47f1Lrr/thuuWVnUSzbZjCEG0ylDGJztlaCGz6QFF5us9vMWp+PInvkdyQsEW+jo
-	 9A5DVF24arenq2mTnyCmbmqpXeOWUheQFiXs3sK2RNT2An4+4C/G7WaaJTzVT7V+6u
-	 1JyHRAL10WEzjpRuWVGNk3yRhPtpBlx4o1mOVRj8=
-Received: from lvnvdb8054.lvn.broadcom.net (lvnvdb8054.lvn.broadcom.net [10.17.214.29])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail-acc-it-01.broadcom.com (Postfix) with ESMTPSA id 1C380AE80;
-	Thu,  2 Apr 2026 17:36:48 -0400 (EDT)
-From: "Jitendra Vegiraju" <jitendra.vegiraju@broadcom.com>
-To: netdev@vger.kernel.org
-Cc: alexandre.torgue@foss.st.com,
-	davem@davemloft.net,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jugfr0Nv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE97FC116C6;
+	Thu,  2 Apr 2026 21:54:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775166887;
+	bh=8xG47UVaicBg3PGvoKmkcXt2eBzcPg4SMCh5HpVNuIY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=jugfr0NvB1mIYoQZ/YuvrKSYo/SX+02atopM5EUi7Yv0Nmfwv0r+3n9o4nqOGgQNL
+	 mUxmXo3gaqtFN19dmH0/OPHlHcHT9Eoy11LYUUykyYdjsgkl3NMzekhqWNL0OUD7M4
+	 fhVAMNaITjHmJoDLywZ1tpxYiwM/HIOmGJcOCNSvgUyBCnwspj8E815chE8ZmgMhVB
+	 x6lZH6un8ZcW4i0CeU4niVKB5WT2DzqHQSSzUm6b9QWorQ6nEzyQ9kIqM8lyBEmjDb
+	 ux/A5YFcAgZKRn5E6rujsvb16TQtMbOYz5XyUmvIDL2BOi+Sn5l2CNbqsbyOEfFnEx
+	 KUjPDISeA8jYw==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
 	edumazet@google.com,
-	kuba@kernel.org,
 	pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com,
-	jitendra.vegiraju@broadcom.com,
-	bcm-kernel-feedback-list@broadcom.com,
-	richardcochran@gmail.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	rmk+kernel@armlinux.org.uk,
-	rohan.g.thomas@altera.com,
-	linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	bpf@vger.kernel.org,
 	andrew+netdev@lunn.ch,
 	horms@kernel.org,
-	sdf@fomichev.me,
-	me@ziyao.cc,
-	siyanteng@cqsoftware.com.cn,
-	prabhakar.mahadev-lad.rj@bp.renesas.com,
-	weishangjuan@eswincomputing.com,
-	wens@kernel.org,
-	vladimir.oltean@nxp.com,
-	lizhi2@eswincomputing.com,
-	boon.khai.ng@altera.com,
-	maxime.chevallier@bootlin.com,
-	chenchuangyu@xiaomi.com,
-	yangtiezhu@loongson.cn,
-	ovidiu.panait.rb@renesas.com,
-	chenhuacai@kernel.org,
-	florian.fainelli@broadcom.com,
-	quic_abchauha@quicinc.com
-Subject: [PATCH net-next v9 4/4] net: stmmac: Add BCM8958x driver to build system
-Date: Thu,  2 Apr 2026 14:36:29 -0700
-Message-ID: <20260402213629.1996133-5-jitendra.vegiraju@broadcom.com>
-X-Mailer: git-send-email 2.45.4
-In-Reply-To: <20260402213629.1996133-1-jitendra.vegiraju@broadcom.com>
-References: <20260402213629.1996133-1-jitendra.vegiraju@broadcom.com>
+	Jakub Kicinski <kuba@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Willem de Bruijn <willemb@google.com>,
+	Joe Damato <joe@dama.to>,
+	shuah@kernel.org,
+	petrm@nvidia.com,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH net-next v2] selftests: net: py: color the basics in the output
+Date: Thu,  2 Apr 2026 14:54:44 -0700
+Message-ID: <20260402215444.1589893-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,69 +51,74 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Jitendra Vegiraju <jitendra.vegiraju@broadcom.com>
+Sometimes it's hard to spot the ok / not ok lines in the output.
+This is especially true for the GRO tests which retries a lot
+so there's a wall of non-fatal output printed.
 
-Add PCI driver for BCM8958x to the linux build system and
-update MAINTAINERS file.
+Try to color the crucial lines green / red / yellow when running
+in a terminal.
 
-Signed-off-by: Jitendra Vegiraju <jitendra.vegiraju@broadcom.com>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Acked-by: Joe Damato <joe@dama.to>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- MAINTAINERS                                  |  8 ++++++++
- drivers/net/ethernet/stmicro/stmmac/Kconfig  | 11 +++++++++++
- drivers/net/ethernet/stmicro/stmmac/Makefile |  1 +
- 3 files changed, 20 insertions(+)
+v2:
+ - use functools instead of open coding the caching (pylint)
+v1: https://lore.kernel.org/20260401183309.378671-1-kuba@kernel.org
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 7a2ffd9d37d5..0637b8a563ae 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -5120,6 +5120,14 @@ N:	brcmstb
- N:	bcm7038
- N:	bcm7120
+CC: shuah@kernel.org
+CC: petrm@nvidia.com
+CC: linux-kselftest@vger.kernel.org
+---
+ tools/testing/selftests/net/lib/py/ksft.py | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+diff --git a/tools/testing/selftests/net/lib/py/ksft.py b/tools/testing/selftests/net/lib/py/ksft.py
+index 6cdfb8afccb5..7b8af463e35d 100644
+--- a/tools/testing/selftests/net/lib/py/ksft.py
++++ b/tools/testing/selftests/net/lib/py/ksft.py
+@@ -2,6 +2,7 @@
  
-+BROADCOM BCM8958X ETHERNET DRIVER
-+M:	Jitendra Vegiraju <jitendra.vegiraju@broadcom.com>
-+R:	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-+L:	netdev@vger.kernel.org
-+S:	Maintained
-+F:	drivers/net/ethernet/stmicro/stmmac/dw25gmac.*
-+F:	drivers/net/ethernet/stmicro/stmmac/dwmac-brcm.c
-+
- BROADCOM BCMBCA ARM ARCHITECTURE
- M:	William Zhang <william.zhang@broadcom.com>
- M:	Anand Gore <anand.gore@broadcom.com>
-diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-index c2cb530fd0a2..f6f8fa256bf5 100644
---- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
-+++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-@@ -398,6 +398,17 @@ config DWMAC_LOONGSON
- 	  This selects the LOONGSON PCI bus support for the stmmac driver,
- 	  Support for ethernet controller on Loongson-2K1000 SoC and LS7A1000 bridge.
+ import functools
+ import inspect
++import os
+ import signal
+ import sys
+ import time
+@@ -31,6 +32,17 @@ KSFT_DISRUPTIVE = True
+     pass
  
-+config DWMAC_BRCM
-+	tristate "Broadcom XGMAC support"
-+	depends on STMMAC_ETH && PCI
-+	depends on COMMON_CLK
-+	select STMMAC_LIBPCI
-+	help
-+	  Support for ethernet controllers on Broadcom BCM8958x SoCs.
-+	  This selects Broadcom XGMAC specific PCI bus support for the
-+	  stmmac driver. This driver provides the glue layer on top of the
-+	  stmmac driver required for the Broadcom BCM8958x SoC devices.
+ 
++@functools.lru_cache()
++def _ksft_supports_color():
++    if os.environ.get("NO_COLOR") is not None:
++        return False
++    if not hasattr(sys.stdout, "isatty") or not sys.stdout.isatty():
++        return False
++    if os.environ.get("TERM") == "dumb":
++        return False
++    return True
 +
- config DWMAC_MOTORCOMM
- 	tristate "Motorcomm PCI DWMAC support"
- 	depends on PCI
-diff --git a/drivers/net/ethernet/stmicro/stmmac/Makefile b/drivers/net/ethernet/stmicro/stmmac/Makefile
-index dc55aec915a2..a1e39f65cd42 100644
---- a/drivers/net/ethernet/stmicro/stmmac/Makefile
-+++ b/drivers/net/ethernet/stmicro/stmmac/Makefile
-@@ -51,4 +51,5 @@ obj-$(CONFIG_STMMAC_PCI)	+= stmmac-pci.o
- obj-$(CONFIG_DWMAC_INTEL)	+= dwmac-intel.o
- obj-$(CONFIG_DWMAC_LOONGSON)	+= dwmac-loongson.o
- obj-$(CONFIG_DWMAC_MOTORCOMM)	+= dwmac-motorcomm.o
-+obj-$(CONFIG_DWMAC_BRCM)       += dwmac-brcm.o
- stmmac-pci-objs:= stmmac_pci.o
++
+ def ksft_pr(*objs, **kwargs):
+     """
+     Print logs to stdout.
+@@ -165,6 +177,14 @@ KSFT_DISRUPTIVE = True
+         res += "." + case_name
+     if comment:
+         res += " # " + comment
++    if _ksft_supports_color():
++        if comment.startswith(("SKIP", "XFAIL")):
++            color = "\033[33m"
++        elif ok:
++            color = "\033[32m"
++        else:
++            color = "\033[31m"
++        res = color + res + "\033[0m"
+     print(res, flush=True)
+ 
+ 
 -- 
-2.34.1
+2.53.0
 
