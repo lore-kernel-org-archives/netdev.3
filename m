@@ -1,210 +1,199 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD34331A53
-	for <netdev@vger.kernel.org>; Thu,  2 Apr 2026 08:18:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F5E3314C2
+	for <netdev@vger.kernel.org>; Thu,  2 Apr 2026 08:19:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775117892; cv=none; b=Tzruk19Z29w0VGCoEARSKhZM9VkxvTbFXLYrsA4vCIpfrACvkvpVx4auh6CamY0MZPS/OlveeWxJY50n+MjNrNAZgi3YYBE0rbMwKhp79oGp9Xq15ANXJEJTap2QQc1+1qKzTj7mwY6zIs78r35ge5lr7zAAq2yEcFeEC/UmoJk=
+	t=1775117997; cv=none; b=c1AY1/DnHGqDM5gGEv0wD6ZAS8kQT3ohK0vmCBQb7MMekVM7mJuGNUbGmDyfywBiOht0OrmUl7kTatxKh/tJjnFTvtWQOqrKIrGgljaNmC3f62kVL6DU43QfZLxnjOH4+2BCfBppmBLlFm/0qCsXbq63cDk9OE1yeDS42wvvgoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775117892; c=relaxed/simple;
-	bh=NzXbQuc9ZBk4ObBGtzGs9iu2lFssJbUQBjuKFCUY22k=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KsdrFezH9EXCpFeZPb60uUbtstc3oQgmmKc4GilxUMZibZVgE8CX8X7Mk7SgDgEj3oTq/uGna4g665Mv49woXJFNvJC1lRQZfRE1zl6fGixe7FLLy8SlfCNUg1yldcJCYw/XOjFVMprShXd7K27A1uk1TtvIW4SzNlGlMGPjWDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ee+ShTDa; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=owHOynwE; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1775117997; c=relaxed/simple;
+	bh=1CNWH0RD5qB7Qw6/e0icv6lX2ZvaieGolweobAmdkbk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QJ3HtubHCT7KPEvIxEuFN5apEJkqFY2qVqmXjodCjMFebSNQEJx67lF2T66O9/ZmkkuLSCsLo07K7bGtKNiJS7wrH8HeGeE02c0chTW/6o+7XVJFot/jAFtPSi/5AncUnqhcNXUbWEefDjL82AP6BO2EjvVnJovk0OPKCOk02Fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UxkEk+bO; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=gRSjU4NF; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ee+ShTDa";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="owHOynwE"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UxkEk+bO";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="gRSjU4NF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775117890;
+	s=mimecast20190719; t=1775117995;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=eDGMK8W32A9IJKOzV8D749M8i2eS/0zQjVDT1eVv+dU=;
-	b=ee+ShTDaotIHVZmwm7wMtTBxWonWx9v8oqeRfbeMg5CHi/wOC2VTr7OJ2UeGr8lCU+scN5
-	a73bM09TEh5cvBzFSnGpnbZKPaKvg+9oNL3FxNQ5PZa9MiXsv3mKXpLDkU97hdKSqUHPJK
-	hrT5fQ75II2RGoHK1wSORNvECzsPtBg=
+	bh=yAgv/iNQwR7zFYK7CL0OQLgq1P0LTe7Yih5B8afXkEw=;
+	b=UxkEk+bO2y2C4QQNdS8JuHrTZWR+4zYilxwX2wm/xyP5pnxRkcDX36w/LJaW+HpKCW2MKZ
+	jZVGel6yaDd2XcYKMT/ZXghxnIgxjsxwZF54UxJwBJkLE/Rkzhn2DqC5fXnuFn4DFTOzZN
+	gaZn/mhmbeZqAKwZHM/iESPL+tv4NzQ=
 Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
  [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-306-APHHf8SeOBSCLAs7D2J1uA-1; Thu, 02 Apr 2026 04:18:08 -0400
-X-MC-Unique: APHHf8SeOBSCLAs7D2J1uA-1
-X-Mimecast-MFC-AGG-ID: APHHf8SeOBSCLAs7D2J1uA_1775117888
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4852ccff333so6975635e9.2
-        for <netdev@vger.kernel.org>; Thu, 02 Apr 2026 01:18:08 -0700 (PDT)
+ us-mta-515-KH-h72GFMNaVmBISE9M73g-1; Thu, 02 Apr 2026 04:19:52 -0400
+X-MC-Unique: KH-h72GFMNaVmBISE9M73g-1
+X-Mimecast-MFC-AGG-ID: KH-h72GFMNaVmBISE9M73g_1775117991
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-486fc42c83aso4988055e9.0
+        for <netdev@vger.kernel.org>; Thu, 02 Apr 2026 01:19:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1775117887; x=1775722687; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eDGMK8W32A9IJKOzV8D749M8i2eS/0zQjVDT1eVv+dU=;
-        b=owHOynwEUJ9LbR2VCRKu8Zqb4/6FAPKGGM7+a/h/FVB07tQfYUjU3kzo/8+xpypoq4
-         ljvB+IqRBc8HKl1RpuYg+/NQX69pzkh0t6oSW0NOTD/6DqO1/efgWYjcDEqLyQfCAA+9
-         Rds6+MhubGmOIqomlc6gGUPwJjCPAWXguZZrF/d9FuNb42g97zBcg5JxXqRPhl0Bx4w7
-         XeSFQVU7JR03MT63P3cYJRQEr8lUcqWyETPGWEXoOBpYF+hs+j+51ISPClsXZcHKAY/+
-         JDjxqD+EYLklHTBq2FOji5jjPSJHO72E3c8n1BSneYvlUDGb2w7nWj5R5JH0epBOi64v
-         t9yQ==
+        d=redhat.com; s=google; t=1775117991; x=1775722791; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yAgv/iNQwR7zFYK7CL0OQLgq1P0LTe7Yih5B8afXkEw=;
+        b=gRSjU4NF1ZC75IzfLe8wkVKvdXcUj3uEfCBVs12bmUIt3ACq7D8Ac7zf2WP7jJTVXo
+         L3CHKBR/B4MgSrkJNrq8DiXrtWRA1huL9HuuwuwiDLMfUApH3iWiqWPTeM4Cu9VJn8Rc
+         p54gZQLhPKeQ4SldJQCB7gXavdrIaAOyQ1fhYEk2nQ20KjlXY7YlloMmbcqMbAeOC4iq
+         9Pezqn59ALbM0UQD/LNKfaZD6adqO5QwFL1mx5YEtnx7boR3hWYMpty6Ij5F78HKMG/4
+         m7yZ7KM1LC5FFD7LIxjsOpFjJZQWlq5Hmkv2tuFAc0Lh3xymi08iTAEOGK0hkWReLvUT
+         OxKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775117887; x=1775722687;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=eDGMK8W32A9IJKOzV8D749M8i2eS/0zQjVDT1eVv+dU=;
-        b=jwB4rmtfiJQlkJhIa3wSLdESjQp+XP7AWHUbGmV9vxAytTo1NEXbAtnFTi7fW53B5I
-         3XQ05zNLhVi6WBrNl26JOrzFQnD1kdGpIbvtkD1vDPcyAWgJ0BJJi6kRjpC1Rk0MdPgq
-         BI6JmImdED5l0csxPUaEmkm3g3LJe+6MEmDltgCJz3OEo1ilzy5oQTXVx3nCdP7yNBQq
-         ihcnVaMbDXvr6Lp3cfwuNMnMbGgS0W4ju46BHAzp6WqgNPqTiMCyy6jtBTtNtYTtdVxp
-         nxhcsSAz6ggdTFknGyO+s8lQpHhudCYsJV627Y6jLmQyuIjC0loC1g9sJrPLxCKkt70O
-         8PlA==
-X-Forwarded-Encrypted: i=1; AJvYcCXCO23CB826Tta0eVFqCXvoG71TttL7oDEoQw6tNbT7tOJVC7it58C/wGirRErZx7YKAyvIbac=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx84QHZj9o7RrhFSi+VUivD7ns5Gdf9Qi19E0oe8Dmij7DiCtXL
-	1OFOZ5m6B0G6n9w1MwbD78oFo1JSE5kYjEbxzmD5JurO5r/Gm9OOMMXasTiEAQMs6liV4JjQpsE
-	X+mupeuyDKc0I3Ve/lSEqnThjOtf6se607GOzdqmQgodn1EYU3285wabhnA==
-X-Gm-Gg: ATEYQzxQHOnkLLkxOPBN1bL++xKalN4aDsUHILQ9QXiFJ+sZPey8UAkoO0gUeJBwciP
-	87K4QhUVajILrnrfkINFEG8pz8c0NqDosEozeeZmlTePLq/9J2072e731IGkUTVehJuyojr4Po9
-	wwA1ZbqJhGC9/OrYl7eRnISxjJ7ATbOcUsSiLYCuLNeA3yBI0Go69mO/IjJYb3qOr3qyaJ4g+jS
-	nAfTWDcyY4amAq8V/LLPcOgSxlG1nBf7MmnuW6tbsLaargxB0dNdD9w+JOiAPXSt8+SR9XsCw2z
-	weXQjHzNIkaEau4BkOeo8m+TYBGTSi92zgFBFMn0r6XPw6rFlqjsRD9hFtZJiu4yH2G+aVLfBUe
-	tTICxyMZ6txLFFUyFB9aRnSAYyxNX7C16BdxtQH7zQOXxfeJTBGVIElf5y4jJ
-X-Received: by 2002:a05:600c:8184:b0:483:9139:4c1d with SMTP id 5b1f17b1804b1-48883590456mr113866175e9.14.1775117887563;
-        Thu, 02 Apr 2026 01:18:07 -0700 (PDT)
-X-Received: by 2002:a05:600c:8184:b0:483:9139:4c1d with SMTP id 5b1f17b1804b1-48883590456mr113865405e9.14.1775117887065;
-        Thu, 02 Apr 2026 01:18:07 -0700 (PDT)
-Received: from lleonard-thinkpadx1carbongen13.rmtit.csb ([176.206.19.176])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887e735532sm214476005e9.0.2026.04.02.01.18.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Apr 2026 01:18:06 -0700 (PDT)
-From: Luigi Leonardi <leonardi@redhat.com>
-Date: Thu, 02 Apr 2026 10:18:02 +0200
-Subject: [PATCH net 2/2] vsock/test: add MSG_PEEK after partial recv test
+        d=1e100.net; s=20251104; t=1775117991; x=1775722791;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yAgv/iNQwR7zFYK7CL0OQLgq1P0LTe7Yih5B8afXkEw=;
+        b=YFHWXzodWTZUxYxxinJbjT3ANC8zxrGNJN15Y1ug0QoNE+T/vF9oVHEarqTmKrPWzc
+         jmZMEHl2iH/fQbtW+z+v8u9krpYbgL5pUq3PN4Xk7yKaKoCiu5ze4R9vNrMoE1CqThdM
+         yzWcc5KA2Uid8I/4gRjXurtoWeUDxdFAFgsfX4/HMWsstWGT9UAv9o1Y8bF2CBVm5Rli
+         MDmuWPduCotW1uL6wQuANiRsRwZA6Wz7W3cr+lWC2rh/bl3GqrZl2aRP2jYgHRC3gX1k
+         SBwLR8ranjSIwMqGCz/r+r+nP8ZMhYcylOFpT5yMBHP08oXLLZATOMbv8NrHg01pgGVp
+         FeDA==
+X-Forwarded-Encrypted: i=1; AJvYcCWzHucCZAUz1FqwwYB256YhPDef5F48as4GKTdneKQlRyU99ys29AI7lAEZoldvZjCxT/uu4gk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFv/n4pKTyMroOp1F9jAxKI4Th9fJy6er6+QrBLX3VDdYj/kbV
+	w3lBU1kvUzx6GjNbl9ljVFa/2t/AWwLsHIgbdAbUThLoaun3coUjqeD/+Pub/tuOKzfbZuFdMSM
+	msH2aeJ7GD5VtAzZxu91thbday8N9VvUZqmGyTED53XR2UPFieDsnHUEc+g==
+X-Gm-Gg: ATEYQzxMgx1riHj/Hbp+jyLQ7YCjdc/kLEzeB4nreKVsrznMXBSPATEE23P/H0wQ55J
+	JVs1lkoDCwjg8Fquha0rfS7AKl9W621pKzPXb+ErceNwMHQc2BkBgLBpEzVPgpRUKqtZHya/+rY
+	bilTdxgwlGD16cYC6OmERqrw6A66LSjUgjqfb9O+cLHCNWCIWv83wPj73b/un58XGt06twDYGqz
+	fHdhAX6H5cTxPKAerRvgcclEmqyjgUaDqbVwnO+GaWpAUIjzzyX5BFYVZyr7bDsvFpPK44T9wdp
+	1Nx5fdbwZv3s6LbJcYs5iiCvUoOV2qr9wUAvH4vg4TqB+BnvUueMyuNcVQytuCyASZtnpkC3sZq
+	z90ByNv3r0E3I2hQWjgyP9i+/wYeLU1KT+NbwpSb3nRJ3tpt5KX/W4tOjSA==
+X-Received: by 2002:a05:600c:34d0:b0:485:3c66:e21d with SMTP id 5b1f17b1804b1-4888355e6d5mr123196075e9.2.1775117991012;
+        Thu, 02 Apr 2026 01:19:51 -0700 (PDT)
+X-Received: by 2002:a05:600c:34d0:b0:485:3c66:e21d with SMTP id 5b1f17b1804b1-4888355e6d5mr123195415e9.2.1775117990458;
+        Thu, 02 Apr 2026 01:19:50 -0700 (PDT)
+Received: from [192.168.88.32] ([212.105.153.248])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4888a66c766sm48158205e9.8.2026.04.02.01.19.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 02 Apr 2026 01:19:49 -0700 (PDT)
+Message-ID: <d8464e0b-4622-43f8-b527-f6200bafd632@redhat.com>
+Date: Thu, 2 Apr 2026 10:19:48 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v36 3/8] eea: probe the netdevice and create
+ adminq
+To: Xuan Zhuo <xuanzhuo@linux.alibaba.com>, netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Wen Gu <guwen@linux.alibaba.com>,
+ Philo Lu <lulie@linux.alibaba.com>,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>, Dong Yibo <dong100@mucse.com>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Dust Li <dust.li@linux.alibaba.com>
+References: <20260329132222.130912-1-xuanzhuo@linux.alibaba.com>
+ <20260329132222.130912-4-xuanzhuo@linux.alibaba.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260329132222.130912-4-xuanzhuo@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260402-fix_peek-v1-2-ad274fcef77b@redhat.com>
-References: <20260402-fix_peek-v1-0-ad274fcef77b@redhat.com>
-In-Reply-To: <20260402-fix_peek-v1-0-ad274fcef77b@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>, 
- Stefano Garzarella <sgarzare@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- Arseniy Krasnov <avkrasnov@salutedevices.com>
-Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev, 
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Luigi Leonardi <leonardi@redhat.com>
-X-Mailer: b4 0.14.2
 
-Add a test that verifies MSG_PEEK works correctly after a partial
-recv().
+On 3/29/26 3:22 PM, Xuan Zhuo wrote:
+> +static int eea_adminq_submit(struct eea_net *enet, u16 cmd,
+> +			     dma_addr_t req_addr, dma_addr_t res_addr,
+> +			     u32 req_size, u32 res_size)
+> +{
+> +	struct eea_aq_cdesc *cdesc;
+> +	struct eea_aq_desc *desc;
+> +	int ret;
+> +
+> +	desc = ering_aq_alloc_desc(enet->adminq.ring);
+> +
+> +	desc->classid = cmd >> 8;
 
-This is to test a bug that was present in the `virtio_transport_stream_do_peek()`
-when computing the number of bytes to copy: After a partial read, the
-peek function didn't take into consideration the number of bytes that
-were already read. So peeking the whole buffer would cause a out-of-bounds read,
-that resulted in a -EFAULT.
+Here there are a couple of example where a reply to the AI reviews would
+have been very useful.
 
-This test does exactly this: do a partial recv on a buffer, then try to
-peek the whole buffer content.
+Sashiko says:
 
-Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
 ---
- tools/testing/vsock/vsock_test.c | 64 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 64 insertions(+)
+Is it possible for ering_aq_alloc_desc() to return NULL if the admin
+ring is full?
+If so, will this cause a NULL pointer dereference when accessing
+desc->classid?
+---
 
-diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
-index 5bd20ccd9335caafe68e8b7a5d02a4deb3d2deec..308f9f8f30d22bec5aaa282356e400d8438fe321 100644
---- a/tools/testing/vsock/vsock_test.c
-+++ b/tools/testing/vsock/vsock_test.c
-@@ -346,6 +346,65 @@ static void test_stream_msg_peek_server(const struct test_opts *opts)
- 	return test_msg_peek_server(opts, false);
- }
- 
-+#define PEEK_AFTER_RECV_LEN 100
-+
-+static void test_stream_peek_after_recv_client(const struct test_opts *opts)
-+{
-+	unsigned char buf[PEEK_AFTER_RECV_LEN];
-+	int fd;
-+	int i;
-+
-+	fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
-+	if (fd < 0) {
-+		perror("connect");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	for (i = 0; i < sizeof(buf); i++)
-+		buf[i] = (unsigned char)i;
-+
-+	control_expectln("SRVREADY");
-+
-+	send_buf(fd, buf, sizeof(buf), 0, sizeof(buf));
-+
-+	close(fd);
-+}
-+
-+static void test_stream_peek_after_recv_server(const struct test_opts *opts)
-+{
-+	unsigned char buf[PEEK_AFTER_RECV_LEN];
-+	int half = PEEK_AFTER_RECV_LEN / 2;
-+	ssize_t ret;
-+	int fd;
-+
-+	fd = vsock_stream_accept(VMADDR_CID_ANY, opts->peer_port, NULL);
-+	if (fd < 0) {
-+		perror("accept");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	control_writeln("SRVREADY");
-+
-+	/* Partial recv to advance offset within the skb */
-+	recv_buf(fd, buf, half, 0, half);
-+
-+	/* Try to peek more than what remains: should return only 'half'
-+	 * bytes. Note: we can't use recv_buf() because it loops until
-+	 * all requested bytes are returned.
-+	 */
-+	ret = recv(fd, buf, sizeof(buf), MSG_PEEK);
-+	if (ret < 0) {
-+		perror("recv");
-+		exit(EXIT_FAILURE);
-+	} else if (ret != half) {
-+		fprintf(stderr, "MSG_PEEK after partial recv returned %d (expected %d)\n",
-+			ret, half);
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	close(fd);
-+}
-+
- #define SOCK_BUF_SIZE (2 * 1024 * 1024)
- #define SOCK_BUF_SIZE_SMALL (64 * 1024)
- #define MAX_MSG_PAGES 4
-@@ -2520,6 +2579,11 @@ static struct test_case test_cases[] = {
- 		.run_client = test_stream_tx_credit_bounds_client,
- 		.run_server = test_stream_tx_credit_bounds_server,
- 	},
-+	{
-+		.name = "SOCK_STREAM MSG_PEEK after partial recv",
-+		.run_client = test_stream_peek_after_recv_client,
-+		.run_server = test_stream_peek_after_recv_server,
-+	},
- 	{},
- };
- 
+AFAICS this is allucinating, as ering_aq_alloc_desc() never returns NULL.
 
--- 
-2.53.0
+> +	desc->flags = cpu_to_le16(enet->adminq.phase);
+> +
+> +	ering_sq_commit_desc(enet->adminq.ring);
+> +
+> +	ering_kick(enet->adminq.ring);
+> +
+> +	++enet->adminq.num;
+> +
+> +	if ((enet->adminq.num % enet->adminq.ring->num) == 0)
+> +		enet->adminq.phase ^= EEA_RING_DESC_F_AQ_PHASE;
+
+Sashiko says:
+
+---
+Does this code require a lock to serialize access?
+Concurrently modifying enet->adminq.num and enet->adminq.phase from
+multiple threads could lead to data races and ring corruption if
+administrative commands are triggered simultaneously.
+---
+
+Again, AFAICS this is allucinating, as all the calls are under the rtnl
+lock. This check took a lot of time to me, because I had to go up in the
+call stack a few hops looking for any lock. A reply clarifying the
+locking would have been very helpful.
+
+> +	ret = le32_to_cpu(cdesc->status);
+> +
+> +	ering_cq_ack_desc(enet->adminq.ring, 1);
+> +
+> +	if (ret)
+> +		netdev_err(enet->netdev,
+> +			   "adminq exec failed. cmd: %d ret %d\n", cmd, ret);
+> +
+> +	return ret;
+> +}
+
+Sashiko says:
+
+---
+Are device statuses returned as positive integers?
+If this returns a positive value during eea_net_probe(), it will bubble
+up to the PCI subsystem. Since the driver model treats a return value >
+0 as a successful probe, the PCI core might believe the device is
+successfully bound even though the error path in eea_net_probe() freed
+the resources.
+Could this lead to a use-after-free during device removal?
+---
+
+This looks real to me, and was already reported in the previous
+iteration. The question is: why do you consider this invalid? Or did you
+miss the remark? A reply to this comment would have been helpful.
+
+The bottom line is please go over the comments reported by sashiko, and
+either take care of them (dropping a line in the changelog about the
+update) or reply on the ML explaining why the comment is not valid, with
+a single reply per patch touching all the relevant comments.
+
+I understand it takes a significant effort, but if you leave this
+entirely on us, the only choice we have is to unconditionally set to
+change request any patches with AI remarks due to the volume of comments
+and capacity limits.
+
+Thanks,
+
+Paolo
 
