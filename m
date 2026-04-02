@@ -1,110 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m83187.xmail.ntesmail.com (mail-m83187.xmail.ntesmail.com [156.224.83.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E87204C36;
-	Thu,  2 Apr 2026 21:08:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1413A5431;
+	Thu,  2 Apr 2026 21:13:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.224.83.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775164131; cv=none; b=k+wUSv1CYxVaenbAWOifT/jWwBT2F0GGIYNORdySiQr8+umazfVnA6iWTp4GN5g1C3r0WavaMsSiS/cUtuoYJhbLi/GZ+I49JnLZyEYmGpS/tJ8BICki0zr8FEtj5AuAl+QzwZKo75GSqRCnpyDhXlYd5JFb+dagOqQUHVo05oE=
+	t=1775164425; cv=none; b=CHCPmjGX6kFZ34O5vq9/dJ10oLR/Juu1pNN6xevDSPqbnTih/Z+Qb1WDpsHbRhTao+9YabJMJGRfTtoGz+Ar2qowCsB5cBTgp3FHunkyOAOyGxUd0A1MvhplhCJ04eWX61GynsU4NGddZMD1XJzlT26DgZCVEqmWOCSVoB7yStw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775164131; c=relaxed/simple;
-	bh=8V19yQPUf7XED54pgj6wnQOvP1KeE1ujGFv7TD0JL5o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ok7Wfsj1yY6dDFmfX2SE2TDtOLedFZcd9qqkc2b1GnussgoprURvOLxtFsMlmxWGu4GbgltmvT4jade4S+81LapFE1toCtimct2d3TeW06VaufY9QQkuU8qejTIl4vpfQGG9YDUQNmuMZ3E2wlgvAOcEXi5Pj3tFQ2Zyo+bTp9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XEe1fCc5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775164425; c=relaxed/simple;
+	bh=mq1qNMND5KoaoFkHmrroSqLwyeymKan5QEYrdceyQKw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=XmwxfICWFj6v/cForY5ErEmp//6XA1PJ51NoXCidbhQd+WcSMQd2YKJyIKvD+V/Mbaj+4t7DJ/63SH5x+fS3gyv+gO00LS1NVTwiSwBE6M0JOofbeuiP4sEYiR+pmLeqMMyWvPS+La2PdiIaBO1cnGDgNiGKaVZDNx3YhpDGAI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ruc.edu.cn; spf=pass smtp.mailfrom=ruc.edu.cn; dkim=pass (1024-bit key) header.d=ruc.edu.cn header.i=@ruc.edu.cn header.b=RFna+KE+; arc=none smtp.client-ip=156.224.83.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ruc.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ruc.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XEe1fCc5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2623FC116C6;
-	Thu,  2 Apr 2026 21:08:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775164131;
-	bh=8V19yQPUf7XED54pgj6wnQOvP1KeE1ujGFv7TD0JL5o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XEe1fCc5kDC0Fuqy72hIOi+R2xKhI3tr3kEtTfexldS5XElYXHdeRCTsfXleX/tKl
-	 7hU1+uW+ps48WvBxqnv4qgK/1QPxPTSzPqj4Uysaxvkj47mE4+zwjJuvCdx02a/gy+
-	 msCYm1QpYb2El9Em3kie6CdCFjrkzTD86dMriGn5LvVcorK5YJHLkcFrQv+Fw4zzfQ
-	 A58c7XB7804tE/jg9MWp/1sB2sWZUtAKRfpmTR6QGoD1eSevxkcJaBCb/pGI3EpUS9
-	 p+/Gs4bMTn5/naCoZcfPrlFb9bml48WDRHTVxPToGYEsBxdknych7XF7+FgDlmvJHO
-	 NE5xNoF7INy9Q==
-From: Chuck Lever <cel@kernel.org>
-To: NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>,
-	Tom Talpey <tom@talpey.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>
-Cc: Chuck Lever <chuck.lever@oracle.com>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	linux-nfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=ruc.edu.cn header.i=@ruc.edu.cn header.b="RFna+KE+"
+Received: from lwz.tail698a0e.ts.net (gy-adaptive-ssl-proxy-4-entmail-virt151.gy.ntes [36.112.3.244])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 3956a559d;
+	Fri, 3 Apr 2026 00:37:28 +0800 (GMT+08:00)
+From: Wenzhao Liao <wenzhaoliao@ruc.edu.cn>
+To: rust-for-linux@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: Re: [PATCH v2 00/13] nfsd/sunrpc: add support for netlink upcalls for mountd/exportd
-Date: Thu,  2 Apr 2026 17:08:45 -0400
-Message-ID: <177516411713.3059543.823840324914491662.b4-ty@b4>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260325-exportd-netlink-v2-0-067df016ea95@kernel.org>
-References: <20260325-exportd-netlink-v2-0-067df016ea95@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Subject: [RFC PATCH 6/6] MAINTAINERS: add Rust net and nlmon entries
+Date: Thu,  2 Apr 2026 12:36:40 -0400
+Message-Id: <20260402163640.1079056-7-wenzhaoliao@ruc.edu.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260402163640.1079056-1-wenzhaoliao@ruc.edu.cn>
+References: <20260402163640.1079056-1-wenzhaoliao@ruc.edu.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9d4f0e93eb03a2kunm6754def456bf74
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVkaTR1JVhgeSkhDThgeHRhJQ1YeHw5VEwETFhoSFy
+	QUDg9ZV1kYEgtZQVlITVVKSklVSFVJT09ZV1kWGg8SFR0UWUFZT0tIVUpLSEpOTE5VSktLVUpCS0
+	tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=RFna+KE+V472iTrrDSAC/I/BvoC/Z3mD4LVKkw/c/WUSrdG8vy7sKm+S7aOF/Mje+ldx4jb00cKodLuruv6tkQLRpp8zeb1m3nbBsh0ZNyK9EkolV9OeChsFPw+njE/xQ/TsjArlYVH9FTNgAdsPlykRVnF9vZvAvc2A/oj4cNQ=; c=relaxed/relaxed; s=default; d=ruc.edu.cn; v=1;
+	bh=0RXe8FftK9+WQ4CtVqc+7/yKc01o6MTUrQjVs8zTSg4=;
+	h=date:mime-version:subject:message-id:from;
 
-From: Chuck Lever <chuck.lever@oracle.com>
+Add scoped maintainer entries for the new Rust networking abstraction
+files and for the Rust nlmon reference driver.
 
-On Wed, 25 Mar 2026 10:40:21 -0400, Jeff Layton wrote:
-> This version should address most of Chuck's review comments. The
-> userland patch series is unchanged. I've added the netdev folks this
-> time too in order to get more experienced eyes on the netlink bits.
-> 
-> Original cover letter follows:
-> 
-> mountd/exportd use the sunrpc cache mechanism for some of its internal
-> caches that are populated by userland. These currently use some very
-> antiquated interfaces in /proc to handle upcalls and downcalls. While it
-> has worked well for decades and is relatively stable, it has some
-> problems.
-> 
-> [...]
+This keeps future changes routed to the networking and Rust mailing
+lists while also giving the new code paths a direct maintainer contact.
 
-Applied to nfsd-testing, thanks!
+Signed-off-by: Wenzhao Liao <wenzhaoliao@ruc.edu.cn>
+---
+ MAINTAINERS | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-[01/13] nfsd: move struct nfsd_genl_rqstp to nfsctl.c
-        commit: 9255d64c38df86b504fd9928c4599f506e0e9a5f
-[02/13] sunrpc: rename sunrpc_cache_pipe_upcall() to sunrpc_cache_upcall()
-        commit: 296a9a594de51e5d4f875a56ece878dab3a4afd0
-[03/13] sunrpc: rename sunrpc_cache_pipe_upcall_timeout()
-        commit: 4695f0a549afde54672311ff3b70e4a8c9f67ee4
-[04/13] sunrpc: rename cache_pipe_upcall() to cache_do_upcall()
-        commit: 9699085b61700e040ddb500828cf5430e0a9f7f3
-[05/13] sunrpc: add a cache_notify callback
-        commit: 0f2e29eb49430fba0ddcc9f0a8fb10334751e9f8
-[06/13] sunrpc: add helpers to count and snapshot pending cache requests
-        commit: d5d861c2a0340a70c869b5688c57741564956875
-[07/13] sunrpc: add a generic netlink family for cache upcalls
-        commit: 44139e2b768b1bfd9fcc8fbefdcc5a425ef448cf
-[08/13] sunrpc: add netlink upcall for the auth.unix.ip cache
-        commit: 8f056ebed4272238de8f003925d91bdb4e6726ae
-[09/13] sunrpc: add netlink upcall for the auth.unix.gid cache
-        commit: 6bfbaa6d611bcde1d62435982a2d8895ca0082e8
-[10/13] nfsd: add netlink upcall for the svc_export cache
-        commit: cfefcaec25438cc82344ac3ea22c474798e05531
-[11/13] nfsd: add netlink upcall for the nfsd.fh cache
-        commit: dbd292f2d787b7ae0d471da9783996eb8eea759e
-[12/13] sunrpc: add SUNRPC_CMD_CACHE_FLUSH netlink command
-        commit: e91b082fdae41cdeb73772aeeee2f61937d14c65
-[13/13] nfsd: add NFSD_CMD_CACHE_FLUSH netlink command
-        commit: 895a916e2c31d86a11b867c16ac0e4e167298e5e
-
---
-Chuck Lever
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 77fdfcb55f06..d1c3eb61ea46 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -18335,6 +18335,25 @@ X:	Documentation/devicetree/bindings/net/wireless/
+ X:	drivers/net/can/
+ X:	drivers/net/wireless/
+ 
++NETWORKING LINK-TYPE ABSTRACTIONS [RUST]
++M:	Wenzhao Liao <wenzhaoliao@ruc.edu.cn>
++L:	netdev@vger.kernel.org
++L:	rust-for-linux@vger.kernel.org
++S:	Maintained
++F:	rust/kernel/net.rs
++F:	rust/kernel/net/netdevice.rs
++F:	rust/kernel/net/netlink_tap.rs
++F:	rust/kernel/net/rtnl.rs
++F:	rust/kernel/net/skbuff.rs
++F:	rust/kernel/net/stats.rs
++
++NLMON DRIVER [RUST]
++M:	Wenzhao Liao <wenzhaoliao@ruc.edu.cn>
++L:	netdev@vger.kernel.org
++L:	rust-for-linux@vger.kernel.org
++S:	Maintained
++F:	drivers/net/nlmon_rust.rs
++
+ NETWORKING DRIVERS (WIRELESS)
+ M:	Johannes Berg <johannes@sipsolutions.net>
+ L:	linux-wireless@vger.kernel.org
+-- 
+2.34.1
 
