@@ -1,373 +1,415 @@
-Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2129.outbound.protection.partner.outlook.cn [139.219.17.129])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BCE299923;
-	Thu,  2 Apr 2026 10:56:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.129
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775127418; cv=fail; b=RTjnAuxebKPjJ1EdwcoA6qSvDx6oi5MxInTGtGXPODfsAz6DTQ37QhhQXsRYDp30IiccnpG4in+wXIQJi558kIWlLCftyQLbl80AMxhCK2COzMX54yFEuizoCF8T1tho8pIltgz0uVPoLCbZErZGcHGRvtqRwE3JTWcqppZcAKU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775127418; c=relaxed/simple;
-	bh=8kb9A18eVeU9BIMlAS09m+j6+D9IbFvJi+G6dom7p/w=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KOEnf+hr6F5m+1cD7skOaubvnSwqlFQG2dH2XWSjRprxxj2vPPZiYgv2Ns95Fj4J10gKGKx7WZMgB40eN2aqACrRI4GjODXeLSgwsNeOZJhh6v1keFC17MDqPbtIvlX7eTTlCXS4LeGKEwrqnYtK1lxbpLrHD9S3H0lOs6OTIjo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=l6yfnWWeATwRkZJbws/pNAWpfEzJP2rJMXrVVSZ3BNBlI/5yIeFQnU8icSBcJkd6YQxNIftbcpZ/eqx7gfQf6h8oF+4r80XQ8A8hOrPELbRcwFrSBsqjugNPrJ6Jdx57sFslCm99gQM8TQKnxPGdULy3FEXyXOPlSqkLlqy72KMXUeVFfGHMVTaeNt54JMzfTzSpuhG49lMzdUzy7o4G7XgYpajupBijEcfxcPAInMGUve/PpVU1G97dzQ/59phg27/vlmcszZ/cLSTCZw/nJnfw/SRMaN5V2F1Z8WgTR7Uv62o2gesAuWFR+w8kMheGUDSy/vj6KKZz4DrT9IfC9g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UwI5pL2oFR1vNqG+G5abCqWUhOQYnZP8zdL331PSWms=;
- b=OE/tiYXP+yuCbFcQpJ5XHjMbOBtmKZVDPXJkBRDiH11hdzyC1Qw5PqtAuwC194pP4cLrrtpf7HS73wWJkMvZegpPg+ui9ZRU3kkvJnOSXHYCMMZTUU3HuFaXHAkFmdJ9RcHpQ7UJ5HMC08AFnqCIMhgRsYM6qfmL/eqIugoSnrtRBTG6qMV04ZeHjny+/KEDlfXEIqMLB2xqusS/KJvbQ4iuTQ2hw1jrdG3olZGw1+6dYAmDviOoPRGFA2GjPs69h9yPLgo9JREt/7IkHkCYCw9ikqEFF7yVWRw5EzikrJg0l7ck6fG1TuAb/OY2GJmgGUKKAzy0fe5i7/u5p5BP7g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=starfivetech.com; dmarc=pass action=none
- header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=starfivetech.com;
-Received: from ZQ0PR01MB1208.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:19::5) by ZQ0PR01MB0951.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:e::8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.19; Thu, 2 Apr
- 2026 10:55:43 +0000
-Received: from ZQ0PR01MB1208.CHNPR01.prod.partner.outlook.cn
- ([fe80::63d1:b688:cab7:50cb]) by
- ZQ0PR01MB1208.CHNPR01.prod.partner.outlook.cn ([fe80::63d1:b688:cab7:50cb%7])
- with mapi id 15.20.9769.017; Thu, 2 Apr 2026 10:55:43 +0000
-From: Changhuang Liang <changhuang.liang@starfivetech.com>
-To: Michael Turquette <mturquette@baylibre.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Emil Renner Berthing <kernel@esmil.dk>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>
-Cc: linux-clk@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-hardening@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Sia Jee Heng <jeeheng.sia@starfivetech.com>,
-	Hal Feng <hal.feng@starfivetech.com>,
-	Ley Foon Tan <leyfoon.tan@starfivetech.com>,
-	Changhuang Liang <changhuang.liang@starfivetech.com>
-Subject: [PATCH v1 02/22] reset: starfive: Convert the word "jh71x0" to "starfive"
-Date: Thu,  2 Apr 2026 03:55:03 -0700
-Message-Id: <20260402105523.447523-3-changhuang.liang@starfivetech.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260402105523.447523-1-changhuang.liang@starfivetech.com>
-References: <20260402105523.447523-1-changhuang.liang@starfivetech.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: ZQ0PR01CA0028.CHNPR01.prod.partner.outlook.cn (10.2.0.210)
- To ZQ0PR01MB1208.CHNPR01.prod.partner.outlook.cn (10.2.3.165)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0553C1992
+	for <netdev@vger.kernel.org>; Thu,  2 Apr 2026 11:06:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775128000; cv=none; b=IABmhK2N/k5VLxGRektVu607/91Gy8fpqy9Egl8cYTBOJjJdtbani5219qecuqxnW9KhXJneK1rUofHc5mmP4bwcrJuLBnIxS/1bwRRZidIGfslga80cF7Ws5veGxwjnNP0NuoEC9DR/H6FflJooicyQveBX4ZSUWneWR0HwGes=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775128000; c=relaxed/simple;
+	bh=Yd/6Pc5loOp6q2Ae4swq/Wc1w/fliWxGIpt5pwIb6ZE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R1MQHvSoV2ITtlafbtYvkxBiNtvbNEKYpUrsKapv7Qj/N5lCffCOtTpojReL8XsrYHbStak9RVccrU80zgMVf+7Uvgv9N+k/8+dpWJ4jqVYR8cP5H85Jc+xtUWYl3V+VAw4IdUVwqCO7rtoA/UFFE+1A5JuWloQoxr65WXBuG6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1w8Fru-0004ZY-BZ; Thu, 02 Apr 2026 13:05:46 +0200
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1w8Frs-003MQs-2L;
+	Thu, 02 Apr 2026 13:05:44 +0200
+Received: from pengutronix.de (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 57352514511;
+	Thu, 02 Apr 2026 11:05:44 +0000 (UTC)
+Date: Thu, 2 Apr 2026 13:05:43 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: a0282524688@gmail.com
+Cc: tmyu0@nuvoton.com, linusw@kernel.org, brgl@kernel.org, 
+	linux@roeck-us.net, andi.shyti@kernel.org, lee@kernel.org, mailhol@kernel.org, 
+	alexandre.belloni@bootlin.com, wim@linux-watchdog.org, linux-kernel@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org, linux-can@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+	linux-rtc@vger.kernel.org, linux-usb@vger.kernel.org
+Subject: Re: [PATCH v1 2/2] mfd: Add Host Interface (HIF) support for Nuvoton
+ NCT6694
+Message-ID: <20260402-warping-chameleon-of-prowess-9df780-mkl@pengutronix.de>
+X-AI: stop_reason: "refusal"
+References: <20260402051442.1426672-1-a0282524688@gmail.com>
+ <20260402051442.1426672-3-a0282524688@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: ZQ0PR01MB1208:EE_|ZQ0PR01MB0951:EE_
-X-MS-Office365-Filtering-Correlation-Id: 286b5ed5-7356-446c-5591-08de90a66305
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|52116014|7416014|38350700014|921020|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	VizgIbI81l4rQ0OSmG2iusFO6BmEt48E+o5RWPLxR7IBZZVGwb47WK57sSsS2a8OR2E2AI2sEXZNw0aDJyLea3/aNnS6yRp9A7rWKbi1V3O/EQ0DD+qav7KlR9l8CqCC6jS3rUw97oB9Ruen460cscxOKffAHCmqryKhHIBVT9x6OBFAoGzgwKg42S32L7qeg729U5SziclFU5PExCZ0FeHF898DIHSRnxCHT/G3BOnIFiHJaIKf6gYXvgtOuWaKgE9Ysdz/Ai3P2110OR9ZAdG+sQOZkG/DwIhc44JDmCQD3oWgrYUHz+rqZv6BxMKsWZ7L+kKGSfAwYRb6i+mHQgC9m+ydLKRomb4th1uJWSZFawxbnUQKFR7WmeigETYJpnZfp3kpEEVR4VRisci53MrovAenEjuzFJ4aXYAxgEFOaZEvXkdnapcR8neJQPfKSm/4h19TNU0ETbz6iZRTY4KnRSRiaLg/YQE0LGeP9j57Uw0dEKcCpXFo0pKzM58IX41QJCjwdcOlbniU+JhktKyeJZFfo+eaoIK8Romr8IT2zAe4ZutEQPvMHCZaawqqQb+8yAQ5GLNb/qX++ZWVI0pmz7UAcNGE6CXBThUBBhI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQ0PR01MB1208.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(52116014)(7416014)(38350700014)(921020)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?/Ajso64HyHZgTlIQ7CB+ixtWnZtKzkU33Ff3crWRNd5vM8XS0UBpcZPUShBs?=
- =?us-ascii?Q?kZoybVgOO84iwm4Fvip8GS9MCZu0TqlHoStuZdwU1S/40zdw3O4IOHWtIjrf?=
- =?us-ascii?Q?a3X4KbRpsADqnbB6jZBnkkmEVNwO7qxIP5PKkAsWgO1tBfuytn1bPfjn8R/n?=
- =?us-ascii?Q?BMN4v/rWRmPUQ79kE/2tY1vecj+qyv6i1TI6C5HAL6vy8BsjP7FfiyO7Xl6p?=
- =?us-ascii?Q?yrtBu4UPiAI8iwMl4k3tiBE9WA2/50P+ppuwj268dIJv1hZP6YRpJIBVpDRG?=
- =?us-ascii?Q?nrF8H+htsLL+PXGuqCnrPdHnKGmcutaS2xhNIpVitREO2odx0ya+UzR3AXou?=
- =?us-ascii?Q?lEPD6NpE5nE0AzKCWGHEq2aaE0tPCBxYbpKltuB9Tji2OygptbzNI4L3SKFk?=
- =?us-ascii?Q?r2bt8kA61nSOEStJyt2oP9Z7HW92Q1kApFF1kc1JWVbECD+S2EddRnIU3gOo?=
- =?us-ascii?Q?SzHPcB2jvYcde8SjZGGXov6R23BAawvLW41oOcR1bO5uPKM5ykZwUOJ29ioB?=
- =?us-ascii?Q?+tLJwpf7xxLyKGXzgWdsfoCZHfsuhpzT6SmWuTHJ1BETGLOTAilGKUQBphI/?=
- =?us-ascii?Q?IULPo3XKadGSyb8OLQ4BX2jZcgZejmJ+tBnqnaTZe8rUGZx6+TbGL900CfhA?=
- =?us-ascii?Q?ABoiJwZKA6ghb8Zlt1pBi0oNvl92p2K0HcH9h1S/qdkK/D2dWSPqXCo/6mSo?=
- =?us-ascii?Q?H870T8TNGZKdIL7r+43ODrwghHbNzaj3NMFD9Sw2EaZvwiCdZiKGdYJdvzXy?=
- =?us-ascii?Q?ugerYiVB0N6gEiLBcY6ND4fM6BLde9/pflJ9hewdpqoRhF5zsOTKwDU/3Qo0?=
- =?us-ascii?Q?BwA/J6SeHm3TVxS15cHHVA5e436aqqxmrw6YJnGHJZj3DVVGdFpB0YQlIkhq?=
- =?us-ascii?Q?F/PvTp13U19I2qNIHL9SiXxZcQUZGR7sPWMEuigb7j/oK9+P/BZVfnmU3kTk?=
- =?us-ascii?Q?11YNbyXnpFhqZ954rJsZFmi8/6XvxO+LPJNRXrEZOc5xTjT/++BzJV9/Nx6M?=
- =?us-ascii?Q?88b/8ikv+2hjCsvrm0suEGO246cG0fxOBAlR+SmF0Nw2vvRnLkhE7kNWzovY?=
- =?us-ascii?Q?66bcbzWwdGyoqLOALVxRVdaUB2ad8Kq5xzZx1oLtLxiKn5zU0p2IEavpY6m+?=
- =?us-ascii?Q?ix5cMWIeArR/jBbONLTaxXh5eLJfQHkPmFUI+VUl0+6bHazdVzcRHGYCFLd5?=
- =?us-ascii?Q?EsIwtb+kiGDHdvvb9emJxBEnMcNAtvayDrp9Nlk7TsEloxO3Sf/BP14ZaZF3?=
- =?us-ascii?Q?aTZxR8KdGVWt2t2R4aQk2/QGMr6swrhaMXe6Xe2XH87pv0NUUAI7cTKl8ULN?=
- =?us-ascii?Q?eiNe0tRh9SesGw7HJ7+sNEsXZNDp7PP7Fv9jxbWhodhWzZv5st17waoAtDgg?=
- =?us-ascii?Q?qWpPywZ1/rwEp6OkhaNJS5Q0GHkQIYGmjljju5OSltagqDDwYDUVtR9UqAxp?=
- =?us-ascii?Q?Y4LA1P7eAsvPTG0lRvUu91sCFjU8N+G7K2ajN0y3kaQOTj4giK0lASv3ox6W?=
- =?us-ascii?Q?jBtLY1f0HYE/thcRrqcDt3LbDjpG2ssbYFBIUqfST+B/VGlMqLL3+C/uVpPe?=
- =?us-ascii?Q?1NQMQHJsDK7s+J7FmzrLnPgljLhY/UzLOGIVy5TTy89EdLGB5pJZy99fXAxu?=
- =?us-ascii?Q?LPKtFI1nRzGaYIUcQjokB9aXPr7beVU8Sf81AdswzwFV+2fT3aFiShDJSHoL?=
- =?us-ascii?Q?L4L+SyfW5IX8WO2mVhdiHf7y0JGP7UbBmN6nhJyhJI0qtYVPUxGUkdWz/INR?=
- =?us-ascii?Q?TPbZCp3yUPVKuNMVo+hKXJ5nErW9wYE67l95UEmJDlpYxFnlh2g2?=
-X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 286b5ed5-7356-446c-5591-08de90a66305
-X-MS-Exchange-CrossTenant-AuthSource: ZQ0PR01MB1208.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2026 10:55:43.4957
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: r+5HNnJpIHtacTAIFCqK0UNyVpUnhXry3GhPsA6Nz4mTDEbvTs7+N9sDyPW7HNJShHn1ZsLgaYh3MYKOcv4Iq/V0gjlFTgscxTtB38PXB214YCW20DQpm2M2wZBLeRNr
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQ0PR01MB0951
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="eduyjgnvxkh2zrsd"
+Content-Disposition: inline
+In-Reply-To: <20260402051442.1426672-3-a0282524688@gmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Sia Jee Heng <jeeheng.sia@starfivetech.com>
 
-Function names that consist of the 'jh71x0' naming convention are
-renamed to use the 'starfive' wording.
+--eduyjgnvxkh2zrsd
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v1 2/2] mfd: Add Host Interface (HIF) support for Nuvoton
+ NCT6694
+MIME-Version: 1.0
 
-Signed-off-by: Sia Jee Heng <jeeheng.sia@starfivetech.com>
-Reviewed-by: Ley Foon Tan <leyfoon.tan@starfivetech.com>
-Reviewed-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
-Signed-off-by: Changhuang Liang <changhuang.liang@starfivetech.com>
----
- .../clk/starfive/clk-starfive-jh7110-sys.c    |  4 +-
- .../reset/starfive/reset-starfive-common.c    | 64 +++++++++----------
- .../reset/starfive/reset-starfive-common.h    |  8 +--
- .../reset/starfive/reset-starfive-jh7100.c    |  2 +-
- .../reset/starfive/reset-starfive-jh7110.c    |  4 +-
- include/soc/starfive/reset-starfive-common.h  |  6 +-
- 6 files changed, 44 insertions(+), 44 deletions(-)
+On 02.04.2026 13:14:42, a0282524688@gmail.com wrote:
+> From: Ming Yu <a0282524688@gmail.com>
+>
+> The Nuvoton NCT6694 also provides a Host Interface (HIF) via eSPI
+> to the host to access its features.
+>
+> Sub-devices can use the common functions nct6694_read_msg() and
+> nct6694_write_msg() to issue a command. They can also request
+> interrupts that will be called when the HIF device triggers a
+> shared memory interrupt.
+>
+> To support multiple transports, the driver configuration is
+> updated to allow selecting between the USB and HIF interfaces.
+>
+> Signed-off-by: Ming Yu <a0282524688@gmail.com>
+> ---
+>  MAINTAINERS                         |   1 +
+>  drivers/gpio/gpio-nct6694.c         |   7 -
+>  drivers/hwmon/nct6694-hwmon.c       |  21 -
+>  drivers/i2c/busses/i2c-nct6694.c    |   7 -
+>  drivers/mfd/Kconfig                 |  47 +-
+>  drivers/mfd/Makefile                |   3 +-
+>  drivers/mfd/nct6694-hif.c           | 649 ++++++++++++++++++++++++++++
+>  drivers/mfd/nct6694.c               |  97 +++--
+>  drivers/net/can/usb/nct6694_canfd.c |   6 -
+>  drivers/rtc/rtc-nct6694.c           |   7 -
+>  drivers/watchdog/nct6694_wdt.c      |   7 -
+>  include/linux/mfd/nct6694.h         |  51 ++-
+>  12 files changed, 787 insertions(+), 116 deletions(-)
+>  create mode 100644 drivers/mfd/nct6694-hif.c
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index c3fe46d7c4bc..7b6241faa6df 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -18899,6 +18899,7 @@ S:	Supported
+>  F:	drivers/gpio/gpio-nct6694.c
+>  F:	drivers/hwmon/nct6694-hwmon.c
+>  F:	drivers/i2c/busses/i2c-nct6694.c
+> +F:	drivers/mfd/nct6694-hif.c
+>  F:	drivers/mfd/nct6694.c
+>  F:	drivers/net/can/usb/nct6694_canfd.c
+>  F:	drivers/rtc/rtc-nct6694.c
+> diff --git a/drivers/gpio/gpio-nct6694.c b/drivers/gpio/gpio-nct6694.c
+> index 3703a61209e6..a279510ece89 100644
+> --- a/drivers/gpio/gpio-nct6694.c
+> +++ b/drivers/gpio/gpio-nct6694.c
+> @@ -12,13 +12,6 @@
+>  #include <linux/module.h>
+>  #include <linux/platform_device.h>
+>
+> -/*
+> - * USB command module type for NCT6694 GPIO controller.
+> - * This defines the module type used for communication with the NCT6694
+> - * GPIO controller over the USB interface.
+> - */
+> -#define NCT6694_GPIO_MOD	0xFF
+> -
+>  #define NCT6694_GPIO_VER	0x90
+>  #define NCT6694_GPIO_VALID	0x110
+>  #define NCT6694_GPI_DATA	0x120
+> diff --git a/drivers/hwmon/nct6694-hwmon.c b/drivers/hwmon/nct6694-hwmon.c
+> index 6dcf22ca5018..581451875f2c 100644
+> --- a/drivers/hwmon/nct6694-hwmon.c
+> +++ b/drivers/hwmon/nct6694-hwmon.c
+> @@ -15,13 +15,6 @@
+>  #include <linux/platform_device.h>
+>  #include <linux/slab.h>
+>
+> -/*
+> - * USB command module type for NCT6694 report channel
+> - * This defines the module type used for communication with the NCT6694
+> - * report channel over the USB interface.
+> - */
+> -#define NCT6694_RPT_MOD			0xFF
+> -
+>  /* Report channel */
+>  /*
+>   * The report channel is used to report the status of the hardware monit=
+or
+> @@ -38,13 +31,6 @@
+>  #define NCT6694_TIN_STS(x)		(0x6A + (x))
+>  #define NCT6694_FIN_STS(x)		(0x6E + (x))
+>
+> -/*
+> - * USB command module type for NCT6694 HWMON controller.
+> - * This defines the module type used for communication with the NCT6694
+> - * HWMON controller over the USB interface.
+> - */
+> -#define NCT6694_HWMON_MOD		0x00
+> -
+>  /* Command 00h - Hardware Monitor Control */
+>  #define NCT6694_HWMON_CONTROL		0x00
+>  #define NCT6694_HWMON_CONTROL_SEL	0x00
+> @@ -53,13 +39,6 @@
+>  #define NCT6694_HWMON_ALARM		0x02
+>  #define NCT6694_HWMON_ALARM_SEL		0x00
+>
+> -/*
+> - * USB command module type for NCT6694 PWM controller.
+> - * This defines the module type used for communication with the NCT6694
+> - * PWM controller over the USB interface.
+> - */
+> -#define NCT6694_PWM_MOD			0x01
+> -
+>  /* PWM Command - Manual Control */
+>  #define NCT6694_PWM_CONTROL		0x01
+>  #define NCT6694_PWM_CONTROL_SEL		0x00
+> diff --git a/drivers/i2c/busses/i2c-nct6694.c b/drivers/i2c/busses/i2c-nc=
+t6694.c
+> index 7d8ad997f6d2..7ee209a04d16 100644
+> --- a/drivers/i2c/busses/i2c-nct6694.c
+> +++ b/drivers/i2c/busses/i2c-nct6694.c
+> @@ -11,13 +11,6 @@
+>  #include <linux/module.h>
+>  #include <linux/platform_device.h>
+>
+> -/*
+> - * USB command module type for NCT6694 I2C controller.
+> - * This defines the module type used for communication with the NCT6694
+> - * I2C controller over the USB interface.
+> - */
+> -#define NCT6694_I2C_MOD			0x03
+> -
+>  /* Command 00h - I2C Deliver */
+>  #define NCT6694_I2C_DELIVER		0x00
+>  #define NCT6694_I2C_DELIVER_SEL		0x00
+> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+> index 7192c9d1d268..8a715ec2f79f 100644
+> --- a/drivers/mfd/Kconfig
+> +++ b/drivers/mfd/Kconfig
+> @@ -1164,19 +1164,46 @@ config MFD_MENF21BMC
+>  	  will be called menf21bmc.
+>
+>  config MFD_NCT6694
+> -	tristate "Nuvoton NCT6694 support"
+> +	tristate
+>  	select MFD_CORE
+> +	help
+> +	  Core MFD support for the Nuvoton NCT6694 peripheral expander.
+> +	  This provides the common APIs and shared structures used by all
+> +	  interfaces (USB, HIF) to access the NCT6694 hardware features
+> +	  such as GPIO, I2C, CAN-FD, Watchdog, ADC, PWM, and RTC.
+> +
+> +	  It is selected automatically by the transport interface drivers.
+> +
+> +config MFD_NCT6694_HIF
+> +	tristate "Nuvoton NCT6694 HIF (eSPI) interface support"
+> +	depends on HAS_IOPORT && ACPI
+> +	select MFD_NCT6694
+> +	select REGMAP_MMIO
+> +	help
+> +	  This enables support for the Nuvoton NCT6694 peripheral expander
+> +	  connected via the Host Interface (HIF) using eSPI transport.
+> +
+> +	  The transport driver uses Super-I/O mapping and shared memory to
+> +	  communicate with the NCT6694 firmware. Enable this option if you
+> +	  are using the NCT6694 over an eSPI interface on an ACPI platform.
+> +
+> +	  To compile this driver as a module, choose M here: the module
+> +	  will be called nct6694-hif.
+> +
+> +config MFD_NCT6694_USB
+> +	tristate "Nuvoton NCT6694 USB interface support"
+> +	select MFD_NCT6694
+>  	depends on USB
+>  	help
+> -	  This enables support for the Nuvoton USB device NCT6694, which shares
+> -	  peripherals.
+> -	  The Nuvoton NCT6694 is a peripheral expander with 16 GPIO chips,
+> -	  6 I2C controllers, 2 CANfd controllers, 2 Watchdog timers, ADC,
+> -	  PWM, and RTC.
+> -	  This driver provides core APIs to access the NCT6694 hardware
+> -	  monitoring and control features.
+> -	  Additional drivers must be enabled to utilize the specific
+> -	  functionalities of the device.
+> +	  This enables support for the Nuvoton NCT6694 peripheral expander
+> +	  connected via the USB interface.
+> +
+> +	  The transport driver uses USB bulk and interrupt transfers to
+> +	  communicate with the NCT6694 firmware. Enable this option if you
+> +	  are using the NCT6694 via a USB connection.
+> +
+> +	  To compile this driver as a module, choose M here: the module
+> +	  will be called nct6694.
+>
+>  config MFD_OCELOT
+>  	tristate "Microsemi Ocelot External Control Support"
+> diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+> index e75e8045c28a..4cee9b74978c 100644
+> --- a/drivers/mfd/Makefile
+> +++ b/drivers/mfd/Makefile
+> @@ -124,7 +124,8 @@ obj-$(CONFIG_MFD_MC13XXX_I2C)	+=3D mc13xxx-i2c.o
+>
+>  obj-$(CONFIG_MFD_PF1550)	+=3D pf1550.o
+>
+> -obj-$(CONFIG_MFD_NCT6694)	+=3D nct6694.o
+> +obj-$(CONFIG_MFD_NCT6694_HIF)	+=3D nct6694-hif.o
+> +obj-$(CONFIG_MFD_NCT6694_USB)	+=3D nct6694.o
+>
+>  obj-$(CONFIG_MFD_CORE)		+=3D mfd-core.o
+>
+> diff --git a/drivers/mfd/nct6694-hif.c b/drivers/mfd/nct6694-hif.c
+> new file mode 100644
+> index 000000000000..a5953c951eb5
+> --- /dev/null
+> +++ b/drivers/mfd/nct6694-hif.c
+> @@ -0,0 +1,649 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2026 Nuvoton Technology Corp.
+> + *
+> + * Nuvoton NCT6694 host-interface (eSPI) transport driver.
+> + */
+> +
+> +#include <linux/acpi.h>
+> +#include <linux/bits.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/io.h>
+> +#include <linux/iopoll.h>
+> +#include <linux/irq.h>
+> +#include <linux/irqdomain.h>
+> +#include <linux/kernel.h>
+> +#include <linux/mfd/core.h>
+> +#include <linux/mfd/nct6694.h>
+> +#include <linux/module.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/regmap.h>
+> +#include <linux/unaligned.h>
+> +
+> +#define DRVNAME "nct6694-hif"
+> +
+> +#define NCT6694_POLL_INTERVAL_US	10
+> +#define NCT6694_POLL_TIMEOUT_US		10000
+> +
+> +/*
+> + * Super-I/O registers
+> + */
+> +#define SIO_REG_LDSEL		0x07	/* Logical device select */
+> +#define SIO_REG_DEVID		0x20	/* Device ID (2 bytes) */
+> +#define SIO_REG_LD_SHM		0x0F	/* Logical device shared memory control */
+> +
+> +#define SIO_REG_SHM_ENABLE	0x30	/* Enable shared memory */
+> +#define SIO_REG_SHM_BASE_ADDR	0x60	/* Shared memory base address (2 byte=
+s) */
+> +#define SIO_REG_SHM_IRQ_NR	0x70	/* Shared memory interrupt number */
+> +
+> +#define SIO_REG_UNLOCK_KEY	0x87	/* Key to enable Super-I/O */
+> +#define SIO_REG_LOCK_KEY	0xAA	/* Key to disable Super-I/O */
+> +
+> +#define SIO_NCT6694B_ID		0xD029
+> +#define SIO_NCT6694D_ID		0x5832
+> +
+> +/*
+> + * Super-I/O Shared Memory Logical Device registers
+> + */
+> +#define NCT6694_SHM_COFS_STS			0x2E
+> +#define NCT6694_SHM_COFS_STS_COFS4W		BIT(7)
+> +
+> +#define NCT6694_SHM_COFS_CTL2			0x3B
+> +#define NCT6694_SHM_COFS_CTL2_COFS4W_IE		BIT(3)
+> +
+> +#define NCT6694_SHM_INTR_STATUS			0x9C	/* Interrupt status register (4 b=
+ytes) */
+> +
+> +enum nct6694_chips {
+> +	NCT6694B =3D 0,
+> +	NCT6694D,
+> +};
+> +
+> +enum nct6694_module_id {
+> +	NCT6694_GPIO0 =3D 0,
+> +	NCT6694_GPIO1,
+> +	NCT6694_GPIO2,
+> +	NCT6694_GPIO3,
+> +	NCT6694_GPIO4,
+> +	NCT6694_GPIO5,
+> +	NCT6694_GPIO6,
+> +	NCT6694_GPIO7,
+> +	NCT6694_GPIO8,
+> +	NCT6694_GPIO9,
+> +	NCT6694_GPIOA,
+> +	NCT6694_GPIOB,
+> +	NCT6694_GPIOC,
+> +	NCT6694_GPIOD,
+> +	NCT6694_GPIOE,
+> +	NCT6694_GPIOF,
+> +	NCT6694_I2C0,
+> +	NCT6694_I2C1,
+> +	NCT6694_I2C2,
+> +	NCT6694_I2C3,
+> +	NCT6694_I2C4,
+> +	NCT6694_I2C5,
+> +	NCT6694_CAN0,
+> +	NCT6694_CAN1,
+> +};
+> +
+> +struct __packed nct6694_msg {
+> +	struct nct6694_cmd_header cmd_header;
+> +	struct nct6694_response_header response_header;
+> +	unsigned char *data;
+> +};
+> +
+> +struct nct6694_sio_data {
+> +	enum nct6694_chips chip;
+> +	int sioreg;	/* Super-I/O index port */
+> +
+> +	/* Super-I/O access functions */
+> +	int (*sio_enter)(struct nct6694_sio_data *sio_data);
+> +	void (*sio_exit)(struct nct6694_sio_data *sio_data);
+> +	void (*sio_select)(struct nct6694_sio_data *sio_data, int ld);
+> +	int (*sio_inb)(struct nct6694_sio_data *sio_data, int reg);
+> +	int (*sio_inw)(struct nct6694_sio_data *sio_data, int reg);
+> +	void (*sio_outb)(struct nct6694_sio_data *sio_data, int reg, int val);
 
-diff --git a/drivers/clk/starfive/clk-starfive-jh7110-sys.c b/drivers/clk/starfive/clk-starfive-jh7110-sys.c
-index edf4c45e6ff0..17fd061ee196 100644
---- a/drivers/clk/starfive/clk-starfive-jh7110-sys.c
-+++ b/drivers/clk/starfive/clk-starfive-jh7110-sys.c
-@@ -334,7 +334,7 @@ static void jh7110_reset_unregister_adev(void *_adev)
- static void jh7110_reset_adev_release(struct device *dev)
- {
- 	struct auxiliary_device *adev = to_auxiliary_dev(dev);
--	struct jh71x0_reset_adev *rdev = to_jh71x0_reset_adev(adev);
-+	struct starfive_reset_adev *rdev = to_starfive_reset_adev(adev);
- 
- 	kfree(rdev);
- }
-@@ -343,7 +343,7 @@ int jh7110_reset_controller_register(struct jh71x0_clk_priv *priv,
- 				     const char *adev_name,
- 				     u32 adev_id)
- {
--	struct jh71x0_reset_adev *rdev;
-+	struct starfive_reset_adev *rdev;
- 	struct auxiliary_device *adev;
- 	int ret;
- 
-diff --git a/drivers/reset/starfive/reset-starfive-common.c b/drivers/reset/starfive/reset-starfive-common.c
-index d615c4a68cc0..772bdf6763d1 100644
---- a/drivers/reset/starfive/reset-starfive-common.c
-+++ b/drivers/reset/starfive/reset-starfive-common.c
-@@ -14,7 +14,7 @@
- 
- #include "reset-starfive-common.h"
- 
--struct jh71x0_reset {
-+struct starfive_reset {
- 	struct reset_controller_dev rcdev;
- 	/* protect registers against concurrent read-modify-write */
- 	spinlock_t lock;
-@@ -23,16 +23,16 @@ struct jh71x0_reset {
- 	const u32 *asserted;
- };
- 
--static inline struct jh71x0_reset *
--jh71x0_reset_from(struct reset_controller_dev *rcdev)
-+static inline struct starfive_reset *
-+starfive_reset_from(struct reset_controller_dev *rcdev)
- {
--	return container_of(rcdev, struct jh71x0_reset, rcdev);
-+	return container_of(rcdev, struct starfive_reset, rcdev);
- }
- 
--static int jh71x0_reset_update(struct reset_controller_dev *rcdev,
--			       unsigned long id, bool assert)
-+static int starfive_reset_update(struct reset_controller_dev *rcdev,
-+				 unsigned long id, bool assert)
- {
--	struct jh71x0_reset *data = jh71x0_reset_from(rcdev);
-+	struct starfive_reset *data = starfive_reset_from(rcdev);
- 	unsigned long offset = id / 32;
- 	u32 mask = BIT(id % 32);
- 	void __iomem *reg_assert = data->assert + offset * sizeof(u32);
-@@ -61,34 +61,34 @@ static int jh71x0_reset_update(struct reset_controller_dev *rcdev,
- 	return ret;
- }
- 
--static int jh71x0_reset_assert(struct reset_controller_dev *rcdev,
--			       unsigned long id)
-+static int starfive_reset_assert(struct reset_controller_dev *rcdev,
-+				 unsigned long id)
- {
--	return jh71x0_reset_update(rcdev, id, true);
-+	return starfive_reset_update(rcdev, id, true);
- }
- 
--static int jh71x0_reset_deassert(struct reset_controller_dev *rcdev,
--				 unsigned long id)
-+static int starfive_reset_deassert(struct reset_controller_dev *rcdev,
-+				   unsigned long id)
- {
--	return jh71x0_reset_update(rcdev, id, false);
-+	return starfive_reset_update(rcdev, id, false);
- }
- 
--static int jh71x0_reset_reset(struct reset_controller_dev *rcdev,
--			      unsigned long id)
-+static int starfive_reset_reset(struct reset_controller_dev *rcdev,
-+				unsigned long id)
- {
- 	int ret;
- 
--	ret = jh71x0_reset_assert(rcdev, id);
-+	ret = starfive_reset_assert(rcdev, id);
- 	if (ret)
- 		return ret;
- 
--	return jh71x0_reset_deassert(rcdev, id);
-+	return starfive_reset_deassert(rcdev, id);
- }
- 
--static int jh71x0_reset_status(struct reset_controller_dev *rcdev,
--			       unsigned long id)
-+static int starfive_reset_status(struct reset_controller_dev *rcdev,
-+				 unsigned long id)
- {
--	struct jh71x0_reset *data = jh71x0_reset_from(rcdev);
-+	struct starfive_reset *data = starfive_reset_from(rcdev);
- 	unsigned long offset = id / 32;
- 	u32 mask = BIT(id % 32);
- 	void __iomem *reg_status = data->status + offset * sizeof(u32);
-@@ -100,25 +100,25 @@ static int jh71x0_reset_status(struct reset_controller_dev *rcdev,
- 	return !((value ^ data->asserted[offset]) & mask);
- }
- 
--static const struct reset_control_ops jh71x0_reset_ops = {
--	.assert		= jh71x0_reset_assert,
--	.deassert	= jh71x0_reset_deassert,
--	.reset		= jh71x0_reset_reset,
--	.status		= jh71x0_reset_status,
-+static const struct reset_control_ops starfive_reset_ops = {
-+	.assert		= starfive_reset_assert,
-+	.deassert	= starfive_reset_deassert,
-+	.reset		= starfive_reset_reset,
-+	.status		= starfive_reset_status,
- };
- 
--int reset_starfive_jh71x0_register(struct device *dev, struct device_node *of_node,
--				   void __iomem *assert, void __iomem *status,
--				   const u32 *asserted, unsigned int nr_resets,
--				   struct module *owner)
-+int reset_starfive_register(struct device *dev, struct device_node *of_node,
-+			    void __iomem *assert, void __iomem *status,
-+			    const u32 *asserted, unsigned int nr_resets,
-+			    struct module *owner)
- {
--	struct jh71x0_reset *data;
-+	struct starfive_reset *data;
- 
- 	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
- 	if (!data)
- 		return -ENOMEM;
- 
--	data->rcdev.ops = &jh71x0_reset_ops;
-+	data->rcdev.ops = &starfive_reset_ops;
- 	data->rcdev.owner = owner;
- 	data->rcdev.nr_resets = nr_resets;
- 	data->rcdev.dev = dev;
-@@ -131,4 +131,4 @@ int reset_starfive_jh71x0_register(struct device *dev, struct device_node *of_no
- 
- 	return devm_reset_controller_register(dev, &data->rcdev);
- }
--EXPORT_SYMBOL_GPL(reset_starfive_jh71x0_register);
-+EXPORT_SYMBOL_GPL(reset_starfive_register);
-diff --git a/drivers/reset/starfive/reset-starfive-common.h b/drivers/reset/starfive/reset-starfive-common.h
-index 266acc4b2caf..83461b22ee55 100644
---- a/drivers/reset/starfive/reset-starfive-common.h
-+++ b/drivers/reset/starfive/reset-starfive-common.h
-@@ -6,9 +6,9 @@
- #ifndef __RESET_STARFIVE_COMMON_H
- #define __RESET_STARFIVE_COMMON_H
- 
--int reset_starfive_jh71x0_register(struct device *dev, struct device_node *of_node,
--				   void __iomem *assert, void __iomem *status,
--				   const u32 *asserted, unsigned int nr_resets,
--				   struct module *owner);
-+int reset_starfive_register(struct device *dev, struct device_node *of_node,
-+			    void __iomem *assert, void __iomem *status,
-+			    const u32 *asserted, unsigned int nr_resets,
-+			    struct module *owner);
- 
- #endif /* __RESET_STARFIVE_COMMON_H */
-diff --git a/drivers/reset/starfive/reset-starfive-jh7100.c b/drivers/reset/starfive/reset-starfive-jh7100.c
-index 546dea2e5811..122ac6c3893b 100644
---- a/drivers/reset/starfive/reset-starfive-jh7100.c
-+++ b/drivers/reset/starfive/reset-starfive-jh7100.c
-@@ -51,7 +51,7 @@ static int __init jh7100_reset_probe(struct platform_device *pdev)
- 	if (IS_ERR(base))
- 		return PTR_ERR(base);
- 
--	return reset_starfive_jh71x0_register(&pdev->dev, pdev->dev.of_node,
-+	return reset_starfive_register(&pdev->dev, pdev->dev.of_node,
- 					      base + JH7100_RESET_ASSERT0,
- 					      base + JH7100_RESET_STATUS0,
- 					      jh7100_reset_asserted,
-diff --git a/drivers/reset/starfive/reset-starfive-jh7110.c b/drivers/reset/starfive/reset-starfive-jh7110.c
-index 87dba01491ae..c4dd21761e53 100644
---- a/drivers/reset/starfive/reset-starfive-jh7110.c
-+++ b/drivers/reset/starfive/reset-starfive-jh7110.c
-@@ -53,13 +53,13 @@ static int jh7110_reset_probe(struct auxiliary_device *adev,
- 			      const struct auxiliary_device_id *id)
- {
- 	struct jh7110_reset_info *info = (struct jh7110_reset_info *)(id->driver_data);
--	struct jh71x0_reset_adev *rdev = to_jh71x0_reset_adev(adev);
-+	struct starfive_reset_adev *rdev = to_starfive_reset_adev(adev);
- 	void __iomem *base = rdev->base;
- 
- 	if (!info || !base)
- 		return -ENODEV;
- 
--	return reset_starfive_jh71x0_register(&adev->dev, adev->dev.parent->of_node,
-+	return reset_starfive_register(&adev->dev, adev->dev.parent->of_node,
- 					      base + info->assert_offset,
- 					      base + info->status_offset,
- 					      NULL,
-diff --git a/include/soc/starfive/reset-starfive-common.h b/include/soc/starfive/reset-starfive-common.h
-index 56d8f413cf18..16df46a074bc 100644
---- a/include/soc/starfive/reset-starfive-common.h
-+++ b/include/soc/starfive/reset-starfive-common.h
-@@ -6,12 +6,12 @@
- #include <linux/compiler_types.h>
- #include <linux/container_of.h>
- 
--struct jh71x0_reset_adev {
-+struct starfive_reset_adev {
- 	void __iomem *base;
- 	struct auxiliary_device adev;
- };
- 
--#define to_jh71x0_reset_adev(_adev) \
--	container_of((_adev), struct jh71x0_reset_adev, adev)
-+#define to_starfive_reset_adev(_adev) \
-+	container_of((_adev), struct starfive_reset_adev, adev)
- 
- #endif
--- 
-2.25.1
+The signatures of the function look a bit strange. I expect functions
+reading/writing bytes use u8 not int, register offsets should probably
+be an unsigned int.
 
+Why do you have pointers to the access functions? Why not use them
+directly?
+
+Marc
+
+--
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--eduyjgnvxkh2zrsd
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCac5NhQAKCRDMOmT6rpmt
+0iiOAQDPnaCTCz7cHPZcUdH6WW5DKZHAXFfgb03FMRkx/xPipgD/X+mA6FYqehlp
+FMnxD26sUBwZidoKAtEpXxguwwLFGgo=
+=+i7v
+-----END PGP SIGNATURE-----
+
+--eduyjgnvxkh2zrsd--
