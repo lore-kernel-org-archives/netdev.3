@@ -1,132 +1,123 @@
-Received: from relay.smtp-ext.broadcom.com (lpdvsmtp10.broadcom.com [192.19.144.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B57C03AC0FD;
-	Thu,  2 Apr 2026 21:36:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.144.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89C23B7759
+	for <netdev@vger.kernel.org>; Thu,  2 Apr 2026 21:37:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775165813; cv=none; b=YVLQvNShYh11dcnPpJqhS+Sx4ECjgS9OlyJ+nt9fpxopmuuPWsOus7BXqIYELNF1A6uFV0Q2myhH5Am4cBEayllbFL5D36xo6Peo244MIA3DKwUoV2C27sRqWWdeQSDLmYxLyN2vVqnSI2Hry82JAReDZAWju5/VM0ZkVIsG/4s=
+	t=1775165842; cv=none; b=YQz55Qe1c08DIdbAhBZfvbo8VEFsr3gTf0WTNSQcOju6j7VKHB8TlmcZCvFu3bBbUK8rFhzT+KAP59tnV5CE1kiT9zLsyoDbadqwrXDuTvNE7RpplgDg9qcLdLs16lss8y+2oBJ6+vODmppkvOrvbZWh6gPdWkjGMY3luNGB3MU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775165813; c=relaxed/simple;
-	bh=/7pvxyjAbdC+aTRnvIOLO3AixVnSpkXmZjLfqfwJpuQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c5GLzz2XdDp0Aax9KhhF3UdTfi3pgloDQH/tWJNiFGDpttvJJCvhEMMTc8yXi9EXRJ3ynki9m1FOG4esm+4CfaREpxCxMAsyzo3NrHKrOy/jRgbS6LUbBqhFNJ+6rHi1wMk38vSHPGlCzPZhH6ourunx68A4Ruju+upeDNdL33E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=vOUmI1T4; arc=none smtp.client-ip=192.19.144.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1775165842; c=relaxed/simple;
+	bh=W3scN7dzNt1e15M5oNBsPnC7KIKxRsloBy39yk58Ja0=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=E+HeXp7tNY22gV6JYSFQOVd0gXim6siiqFggYS523tKxZ1v74j/Hbm2ylXCjV9KIzG2tAhjD4G+P2fq8+JTWO0Xc43wg/ICM8a+WHNs7hS79EouIEtpUV2Y8LazRVetYmbppuAJSpvnBoC+UhtVxZ1wfzWISdk7P2gu/GhmlCDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mTMT7GUT; arc=none smtp.client-ip=74.125.224.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="vOUmI1T4"
-Received: from mail-acc-it-01.broadcom.com (mail-acc-it-01.acc.broadcom.net [10.35.36.83])
-	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 8B81AC002831;
-	Thu,  2 Apr 2026 14:36:45 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 8B81AC002831
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-	s=dkimrelay; t=1775165805;
-	bh=/7pvxyjAbdC+aTRnvIOLO3AixVnSpkXmZjLfqfwJpuQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vOUmI1T4by8hVOXZej67/qQCr6ywynB3MwsLJD7A1olaKD0QYRlDRAQ4Zu4fQlIKz
-	 rdx7aAhxNBIZ+I+vGfhQu+bSyV8PC1PPrxEdFu9QCvFAbSkum2oXgNV5P/kbpM3W0a
-	 gNxBLTg+xderkqw8laVxDdBi0LGOef2SevTZWyc8=
-Received: from lvnvdb8054.lvn.broadcom.net (lvnvdb8054.lvn.broadcom.net [10.17.214.29])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail-acc-it-01.broadcom.com (Postfix) with ESMTPSA id 4A1C1AE80;
-	Thu,  2 Apr 2026 17:36:43 -0400 (EDT)
-From: "Jitendra Vegiraju" <jitendra.vegiraju@broadcom.com>
-To: netdev@vger.kernel.org
-Cc: alexandre.torgue@foss.st.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com,
-	jitendra.vegiraju@broadcom.com,
-	bcm-kernel-feedback-list@broadcom.com,
-	richardcochran@gmail.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	rmk+kernel@armlinux.org.uk,
-	rohan.g.thomas@altera.com,
-	linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	bpf@vger.kernel.org,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	sdf@fomichev.me,
-	me@ziyao.cc,
-	siyanteng@cqsoftware.com.cn,
-	prabhakar.mahadev-lad.rj@bp.renesas.com,
-	weishangjuan@eswincomputing.com,
-	wens@kernel.org,
-	vladimir.oltean@nxp.com,
-	lizhi2@eswincomputing.com,
-	boon.khai.ng@altera.com,
-	maxime.chevallier@bootlin.com,
-	chenchuangyu@xiaomi.com,
-	yangtiezhu@loongson.cn,
-	ovidiu.panait.rb@renesas.com,
-	chenhuacai@kernel.org,
-	florian.fainelli@broadcom.com,
-	quic_abchauha@quicinc.com
-Subject: [PATCH net-next v9 2/4] net: stmmac: Integrate dw25gmac into hwif handling
-Date: Thu,  2 Apr 2026 14:36:27 -0700
-Message-ID: <20260402213629.1996133-3-jitendra.vegiraju@broadcom.com>
-X-Mailer: git-send-email 2.45.4
-In-Reply-To: <20260402213629.1996133-1-jitendra.vegiraju@broadcom.com>
-References: <20260402213629.1996133-1-jitendra.vegiraju@broadcom.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mTMT7GUT"
+Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-6500040f128so1277174d50.0
+        for <netdev@vger.kernel.org>; Thu, 02 Apr 2026 14:37:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775165840; x=1775770640; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=A7TuW0G8B0XaMIfsGGJiYSCTzDLrTNNDB5kSjHsf114=;
+        b=mTMT7GUTpGpPoYrudzEtF2EL9iUEQGIsG9I/qg8ishfZwFKPhZNblqqaFvJOfG77dZ
+         d2zIRHRqD/r00Nh4oV+qpAJi8iyjy7bUj6Esi8PZ0XFjTQ6NVverkVGFCPQVuEf2ZEDD
+         uiVg1ioO2dWepco/opJFPbP5VBcOgtst5ut1ANMYycqcH/JIO6i4NwZx6AwhC5Ateelr
+         QkR6C07mhQXju20le9EGgSPPYj1HF1AGTIzsO6z0lIS7MslW8Bcv31C3MT1rcnb+AMA3
+         OfFH8QgHeYcpqG/aXVCfMMB6v1zKVr/1DhMZMk2EaV66AiAWRXN7O9GcEEIMmy5pCjPZ
+         97yA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775165840; x=1775770640;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=A7TuW0G8B0XaMIfsGGJiYSCTzDLrTNNDB5kSjHsf114=;
+        b=oqKDmqEpdUdYS2ed1yS1lpNYs0ihHGoOHSohO+hGRIneje6jE0PYO/T/+0WKAdcLTl
+         CzgospMgSTnQO2pz02BUje2g349MmxwcNIbLKDKmkka59fgRVYqOID5LlgS/rgsBLpJk
+         /MzgSIdgJobtQHoe78JEXqCiBWp5F+2WCrlFQVSbnrmnVWHvKHZSEB4PZ/unNuhoE1Ak
+         iQIDmWNGryvLKBIHrvw+UJrYzt9T7WH3Oq6ywjLOJa0HZvb5ZCMaFei/XqCekLdRMoEl
+         WEB9m1X7lRWF9xLiYb8bVLRNgbCnNPerXn4CVAlZLaR5jF4TaEXeUSnrMkXQKDU4xFuL
+         1GBA==
+X-Gm-Message-State: AOJu0Yxj4gtHGe9TziaQpG5bjxcJCLbgUoar7yv7bXBMPtnkk2vniDTz
+	DwPKNrE3M68Km/EqEAZvSSwfTkko37B+3AX937ILTP8bMjhAAe0AwrNy
+X-Gm-Gg: AeBDietG+x/+MKp4ESBg48cP1cVaxPlLha1yRzYfBXQdty3jLYZ3id+PmGuVISBGaUl
+	hKvsn63933xnoRSKgnbIzzZZpENe83+S86FQ/MmxH25NaZihZOS9KcDiKTECVGoi/eNtAZmOhc0
+	HiUOBDhe9trlSm+qlRPqcTQ+pTMp5z/6rXPBO1dJLPR/g0hAbVI23ZQhYe42hV57OXXiJKYfTwn
+	UIFfzEc1QfCtARuCk3yQVGRrq4WZZsJC/IPo0Lj3+LRjYchz7Mt504BfX5EWFvQEVPt9AL1aqQa
+	Ae9o8DRZd079NujAOAXCvOR0DOjWc7euNuKiPoN85IUAUN+1nYNACX7LTHxq6d4z8qufTRNOu5S
+	lQ+n4qhMsZBaPtG9OuIMaxpUF6g9o9IWpAkfPhL0Qwdj8xN+heM61HjLZWD/MVAYtL+m5DLNkOV
+	MjyqEnbdCfJVTbcOkHWot2eMp4eDbNGylKO2uZ+Y6znygKY8ZOnKWP7JIs1H+a6173xTLa7/FIR
+	q0I
+X-Received: by 2002:a05:690c:110:b0:7a3:3192:386e with SMTP id 00721157ae682-7a4d68304a8mr10511047b3.53.1775165839769;
+        Thu, 02 Apr 2026 14:37:19 -0700 (PDT)
+Received: from gmail.com (180.134.85.34.bc.googleusercontent.com. [34.85.134.180])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7a36ea27d19sm15135357b3.20.2026.04.02.14.37.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Apr 2026 14:37:19 -0700 (PDT)
+Date: Thu, 02 Apr 2026 17:37:18 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>, 
+ davem@davemloft.net
+Cc: netdev@vger.kernel.org, 
+ edumazet@google.com, 
+ pabeni@redhat.com, 
+ andrew+netdev@lunn.ch, 
+ horms@kernel.org, 
+ shuah@kernel.org, 
+ willemb@google.com, 
+ petrm@nvidia.com, 
+ anubhavsinggh@google.com, 
+ richardbgobert@gmail.com, 
+ linux-kselftest@vger.kernel.org, 
+ Jakub Kicinski <kuba@kernel.org>
+Message-ID: <willemdebruijn.kernel.1b7e7cef1d1b6@gmail.com>
+In-Reply-To: <20260402210000.1512696-1-kuba@kernel.org>
+References: <20260402210000.1512696-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v2 0/8] selftests: drv-net: gro: more test cases
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-From: Jitendra Vegiraju <jitendra.vegiraju@broadcom.com>
+Jakub Kicinski wrote:
+> Add a few more test cases for GRO.
+> 
+> First 4 patches are unchanged from v1.
+> 
+> Patches 5 and 6 are new. Willem pointed out that the defines are
+> duplicated and all these imprecise defines have been annoying me
+> for a while so I decided to clean them up.
+> 
+> With the defines cleaned up and now more precise patch 7 (was 5)
+> no longer has to play any games with the MTU for ip6ip6.
+> 
+> The last patch now sends 3 segments as requested.
+> 
+> v1: https://lore.kernel.org/20260401182625.372605-1-kuba@kernel.org
+> 
+> Jakub Kicinski (8):
+>   selftests: drv-net: gro: add data burst test case
+>   selftests: drv-net: gro: add 1 byte payload test
+>   selftests: drv-net: gro: always wait for FIN in the capacity test
+>   selftests: drv-net: gro: prepare for ip6ip6 support
+>   selftests: drv-net: gro: remove TOTAL_HDR_LEN
+>   selftests: drv-net: gro: make large packet math more precise
+>   selftests: drv-net: gro: test ip6ip6
+>   selftests: drv-net: gro: add a test for bad IPv4 csum
+> 
+>  tools/testing/selftests/net/lib/gro.c      | 207 +++++++++++++++------
+>  tools/testing/selftests/drivers/net/gro.py |   7 +-
+>  2 files changed, 157 insertions(+), 57 deletions(-)
 
-Integrate dw25gmac support into stmmac hardware interface handling.
-Added a new entry to the stmmac_hw table in hwif.c.
+For the series:
 
-Signed-off-by: Jitendra Vegiraju <jitendra.vegiraju@broadcom.com>
----
- drivers/net/ethernet/stmicro/stmmac/hwif.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.c b/drivers/net/ethernet/stmicro/stmmac/hwif.c
-index 511b0fd5e834..a69f558c0db0 100644
---- a/drivers/net/ethernet/stmicro/stmmac/hwif.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/hwif.c
-@@ -287,6 +287,26 @@ static const struct stmmac_hwif_entry {
- 		.mmc = &dwxgmac_mmc_ops,
- 		.est = &dwmac510_est_ops,
- 		.setup = dwxlgmac2_setup,
-+	}, {
-+		.core_type = DWMAC_CORE_25GMAC,
-+		.min_id = DW25GMAC_CORE_3_20,
-+		.regs = {
-+			.ptp_off = PTP_XGMAC_OFFSET,
-+			.mmc_off = MMC_XGMAC_OFFSET,
-+			.est_off = EST_XGMAC_OFFSET,
-+		},
-+		.desc = &dwxgmac210_desc_ops,
-+		.dma = &dw25gmac400_dma_ops,
-+		.mac = &dwxgmac210_ops,
-+		.vlan = &dwxgmac210_vlan_ops,
-+		.hwtimestamp = &stmmac_ptp,
-+		.ptp = &stmmac_ptp_clock_ops,
-+		.mode = NULL,
-+		.tc = &dwmac510_tc_ops,
-+		.mmc = &dwxgmac_mmc_ops,
-+		.est = &dwmac510_est_ops,
-+		.setup = dw25gmac_setup,
-+		.quirks = NULL,
- 	},
- };
- 
--- 
-2.34.1
-
+Reviewed-by: Willem de Bruijn <willemb@google.com>
