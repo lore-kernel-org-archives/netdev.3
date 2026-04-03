@@ -1,205 +1,112 @@
-Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2090.outbound.protection.partner.outlook.cn [139.219.17.90])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84CF2340280;
-	Fri,  3 Apr 2026 03:40:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.90
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE1A285406
+	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 03:41:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775187661; cv=fail; b=FMgkZwFk3mvquzMs24n6WyH9ht7qrgHaXa+B1Ry1EVo3TrGDuPEQ7rA4DWOvVUBY0XM9tmwkePaLPlOoMZ2Qc52nGLAb3pYQFJa7col8Ll1GdYzR+nG2lU/qzZlYZ5+g6kccnVrRisnOhVsZjugcCdEoIUj3c0Sb2IVVSYATGVc=
+	t=1775187688; cv=pass; b=UPZD+tDkB0TQQlI9fu6PeaINo6MJJH0A26wkFxURKpPuol7t1ZJa2EwC1oegPP1+Z3dkcc6/5KLetlFL2i8qe3NuPP/XxmRh2R3oIPeYhUhLIHjRF2eRuqPvQ9oNyAk5SLysjWd9+TqMQkEkN2dD2H9bg1KqzFOBeZZUQPJKUjw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775187661; c=relaxed/simple;
-	bh=w/PhTHOYfv/DdHGrUiQBOj4e9PBEDJOioQz5f2Mw+3E=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=fD9XvNFwU+XAki8E+VE2e39lj1LLEOFPnloPKXZsd/Xq3MQqjviTn3rff57ekZnFFrYJjCwa1viF0HF/r5h3kndvW++JMo1QOFC1mYGO+A1jv0Q4lSk+A6W1tySoRTCySOAWHZTsIzoTQliHwO9G6Yy/1TUzJnfGzcJQSK97wQk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.90
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Is96KV8aRnrq2LQKFW7dJE6st9Efyak5vevYoUzZzEBXTETyiyUzrEPLuxZ7ARPTi3gF02SBRNkpbdR9Vh2pQxpZRRxuzKtCQDJNvEG9c8GuK/dJC5EiXKRmBhbY5CwqOEA+WtUEFMJwqJ1mMNp1KOqeZ0CMH/4+ulizgyUSQTOZSidMuUyGumGPeVXgdQ8/IP9gyLczeUH8IXRbKlPjgIqFDbJgSRRr4xeMsB2hc3bqgVWBdxpw3HEb94wC9OEPv0CNT6ICpUSrN0KmJHgYY+VnUTF9HaG0XuyFMDgOe07OXbBwWrkNjYE3TbGtQ9ASfoYzjbg+IHxVqVi3jqxjTw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0P4YssrS/yDASRO+4SS5ajBlRd6hKXf3bWb/JjZJqdk=;
- b=LKhHYFv4084yjj1VMxDMe9RanAyQONr8QzBnx4d0vHpMPNDwxz+0pie6D7CG59X8LJc1LV+oRj5gSWBMIy2ryA/p63EAubziCpHyPQdJflpfLk68Mg/DVKu/iTpDBHtBTfmD69JxkGDc6wP/j14kq/qo9PcMMoeUPfAr4B5kNtyKERXgujxfFzHR33vIKePJZ/2RZ2YgICoivyHISw6jhHWlrYSfvIIxGelzgsPtwE2YL29qkrJ9Jr7kbaZ2R1y3JNi3HMYH6oqRrk/owe6LNMOTJLWiiS8aIFogoSl4SqkveDX46TYSWcgDu7Z/da/Mn9IW85+IB3VxG4ZKr4clHg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=starfivetech.com; dmarc=pass action=none
- header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
-Received: from ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:17::6) by ZQ4PR01MB1235.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:15::12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.18; Fri, 3 Apr
- 2026 01:07:48 +0000
-Received: from ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
- ([fe80::e7d4:256c:b066:850d]) by
- ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn ([fe80::e7d4:256c:b066:850d%5])
- with mapi id 15.20.9769.020; Fri, 3 Apr 2026 01:07:48 +0000
-From: Changhuang Liang <changhuang.liang@starfivetech.com>
-To: Conor Dooley <conor@kernel.org>
-CC: Michael Turquette <mturquette@baylibre.com>, Rob Herring
-	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
-	<conor+dt@kernel.org>, Stephen Boyd <sboyd@kernel.org>, Paul Walmsley
-	<pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
-	<aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Philipp Zabel
-	<p.zabel@pengutronix.de>, Emil Renner Berthing <kernel@esmil.dk>, Kees Cook
-	<kees@kernel.org>, "Gustavo A . R . Silva" <gustavoars@kernel.org>, Richard
- Cochran <richardcochran@gmail.com>, "linux-clk@vger.kernel.org"
-	<linux-clk@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-riscv@lists.infradead.org"
-	<linux-riscv@lists.infradead.org>, "linux-hardening@vger.kernel.org"
-	<linux-hardening@vger.kernel.org>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, JeeHeng Sia <jeeheng.sia@starfivetech.com>, Hal
- Feng <hal.feng@starfivetech.com>, Leyfoon Tan <leyfoon.tan@starfivetech.com>
-Subject: Re: [PATCH v1 22/22] riscv: dts: starfive: jhb100: Add clocks and
- resets nodes
-Thread-Topic: [PATCH v1 22/22] riscv: dts: starfive: jhb100: Add clocks and
- resets nodes
-Thread-Index: AQHcwo9YmfBTEkKdxUm0c+lYETzpKbXLr3UAgADX/ZA=
-Date: Fri, 3 Apr 2026 01:07:48 +0000
-Message-ID:
- <ZQ4PR01MB12025313E4A491A86580558DF25E2@ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn>
-References: <20260402105523.447523-1-changhuang.liang@starfivetech.com>
- <20260402105523.447523-23-changhuang.liang@starfivetech.com>
- <20260402-fox-overhand-9a45ec670bce@spud>
-In-Reply-To: <20260402-fox-overhand-9a45ec670bce@spud>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=starfivetech.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: ZQ4PR01MB1202:EE_|ZQ4PR01MB1235:EE_
-x-ms-office365-filtering-correlation-id: 3c69da36-b625-49c9-3e28-08de911d6bd2
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|366016|376014|7416014|38070700021|56012099003|22082099003|18002099003;
-x-microsoft-antispam-message-info:
- E/rjzM1MFY6CwaV4cRpRJBN5JpED16YzI8Ev89M3BtXeeTGPyMPDeBG4Ps74hq2HFiuhMYaq95iDz+C7zN31HKFjt4o8AbQmdbRQNt4L2Eovv5D14YE47YG1zLpNS66wR4/iRM+12FR8JuLnrQ2PgOVRUImM3h+sSJIWJEveqnvMBGSiSArADVjh2O0IuolXN1QP7SoxdUnilmTCMEsjoQcCTkMIEmLlTGELNj3/0rn4B0TZXbj7ErdNC2weIrxylRgNeyVPuBbcuxui/bVpjJ/hTdWxvXmvEYb7BQmE/Yysb90HZD+HUc7GRh/ayedrQgkgLYNCRFb7bcsNBeoTUxBcABtxWtg+4ojpVVk4x5/5UQ/X0WuyPC8PbpBwB1EknaPyEfsmyCi376WCBQIIY28edq9vBIWOhgmqQejbJG28VQ34LI1rdWWG2fKEDhGuIeOUgZn5h/PpY5dbY7NlPqYEkU2wZTDW2PC6nZ84eiIDI0zIKnYe7fmc9r9oD3Sub8c15d+kaZQRBNrw0U3v66DLsHSktMTD6dykTOzzdaOgy5xjb/90dUIe7dXWLwx3u6oY8r3pGgwv5DfrIL8NnLaLgYAJPM8iGbRvXJ6TvUY=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(38070700021)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?ntTMaczhEB/VMXHk//khsCx41PJN47jXbaFJlLv5DIgOqi6YfcZHmdXlyGfH?=
- =?us-ascii?Q?a5mhYi0UpqdQeucRy0pbYuAT6YNxFioh96nOe2QKwKS+DJuloGSfhVp7lZzv?=
- =?us-ascii?Q?4009SfwFddF+ViGt8NOUimroG81zNZJmWy1rzc8gNom8vzL/Q4rtt4VZRl1F?=
- =?us-ascii?Q?e3nA55Rc+nZpvw3wriggBer/5j6y4/xiVYL/kTZVeppUG1dK6LPoYJn21E7E?=
- =?us-ascii?Q?GH1is/tpMdYNfre3ubeNT6PsjF33b+funBjSep83Tt1tOdRs0bES+cTdt0Hs?=
- =?us-ascii?Q?IN0iim6w26pQHDtLchclGkoHUBysq9lviOWrt7eB4wfAn19Ace+xmZ2WYSGs?=
- =?us-ascii?Q?fQfvIzHVEQcyBl5yBnhOJr4IrAFnG6HSJKI/EpXcOSEShNS8pgJh/lS1marB?=
- =?us-ascii?Q?/vfswznJPQHbu77R014fwpFyv/IJ3V6p5PfKJqIcZkwp2IfJfDSAoYNFd+N6?=
- =?us-ascii?Q?Hg24JL8TM7F1nERxP4G1r6iKiY6xFYUn45SAmk+JII1NDxyPxixletdFsgH7?=
- =?us-ascii?Q?ktX9r0EWUknP4WcnjbQokCSumSQg2K39xaOJ9UGThcR2m3gu4T2JydGmO36y?=
- =?us-ascii?Q?iWoeGWwhVSUnWfmRVTSwpUb1v5+lydWMhVf3DKuNNKCjNGX1Lur9KJscFqEK?=
- =?us-ascii?Q?RFxQnUaSzelIuzOrLxY6AkuIdGAnwHGQqgdKbqweIwBVwhviJJp+MaEP0bpY?=
- =?us-ascii?Q?yIwnFKdWLIEMOgEm0DlnyZPcSu0xzrqdb2J87jFWZ01Y6t9AmMHERk1sBDjB?=
- =?us-ascii?Q?aO7vOz9BsaDC+JAELd+8Ywz9guv61cYIL8tz3zd2+q/rd6gf+J/QUW/ipJlO?=
- =?us-ascii?Q?agbEKWlr5PoTdWsTLeni//VRswcrMWVs9ooMAvWStBshXxMC1GGLSPh+lkPl?=
- =?us-ascii?Q?yD4yNwOF3pIoeZIj0JGcB6iYqWp0KiFDrjcTCt4lzXT9mW1s3Oqkau8V6QXL?=
- =?us-ascii?Q?J3z7Ix7R4jxh8lktGQmenBoGTK7LQpyRk/ogj34P+8cNfezvq8ZrXCOgJe33?=
- =?us-ascii?Q?50QOCKQiJcdqNHAnbbzbBspCC4sNTZOJewUIydKvLjDDrgKu3R2ym1OWuIFd?=
- =?us-ascii?Q?8KLEbw4B2glQaXyV+GZQO5ORG3SEgqMV5zV34ZluD0Px9bXWQWEwrD7iC+yi?=
- =?us-ascii?Q?kQYvbr3P50Rk5tkaiFM0Knz+soV12mmlKgpEeWdFOhvsVNzaLEfM8SMtVFr3?=
- =?us-ascii?Q?YEv4zSvl8Q1SiiNXOkLTvPHB4OOMq3GP4c/7kzt7HDEV9KnQNWOO5/RBCV8g?=
- =?us-ascii?Q?/35DlHGVV8/lyU063JvAGTretFsbSm8VNYwPWcanlkL4XkdQFi67YoL71g/9?=
- =?us-ascii?Q?/1A0SV01PvrKCtV2YNo87qMglCvEOxvPJthJnpjqrU/DeUpdiozJ4SI8pQ73?=
- =?us-ascii?Q?LEqTZsM/J9Kf+kXDOWJlgVNcfrC/wSuT0vNEfeW9opFyUMPK7AxnuFvDTZzN?=
- =?us-ascii?Q?C7xzPguebMTjrqMr3xPkFE9y3wYw9Ymb9zIOqtuu0Is1Kto/bNYuZ3mmAkAw?=
- =?us-ascii?Q?NQtdBvzTdCTeM/Aj2XSZuNQlxbK7JCDQwNRHcwbR9yxrQnWn9UQhFpyBuar/?=
- =?us-ascii?Q?NWA/OIpMz0VgO8o/kRj7AKMWiI3b0tSHd97pOgfVx9mc4z0/w9HCGrlhHUz5?=
- =?us-ascii?Q?yLRYkYJVNDSY0bRG05PGyp1gkUN8x1aRD3zl09Mc4g6999m25JcagzeRd3+A?=
- =?us-ascii?Q?oOjLheDstc+y42SlDzOfGx1lHsxm+wZ1nsHpweUsiGz+tus2Rc3Gsp1pDIZk?=
- =?us-ascii?Q?QgKkkC1qhp2mdU9gg9VMExZ/VWfwFaM=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1775187688; c=relaxed/simple;
+	bh=XIkHOd1FHvl3dx9BV0ITQXHH2amJU9tNkTlkcOG9bBQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ecng93lCgXKpRuUK/BgguUIDwTcSAkLOpv+OrIidkF9YQTgoxwl4WO4htYD6/jkVsSq9NTBWZU77m+Uxnhym4PDGKWQGGShnNotuv/17FqxB/OqbE1Ju57ctx4jPq4Pmd7/8pEcJoZy7vAc+3RTRPCshdBz1ju2s8vzfkVD2vf0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HPCp9rf/; arc=pass smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HPCp9rf/"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-66b0dc690bcso3956a12.1
+        for <netdev@vger.kernel.org>; Thu, 02 Apr 2026 20:41:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775187685; cv=none;
+        d=google.com; s=arc-20240605;
+        b=D+XROMbgcch8v446BvCzDlmERr9Om4SAwxrm0gFsGglyYPND0DtuXqWYnm8FJAUsg6
+         EC0fV/9wCxmCzMBoIgOyXc8JcrZIaaF8dNCpuwPA3YWVMA77wwytha2RGlSOr4fOYZoc
+         gKGqXHEos68pGgYHaYQCHr2PRFCPVir4KxM+nkgiLU3au1l50OOpfEGCmxlKTMw4+zS2
+         99LN3MIc5AK9Zq4zXv8aWOWPkw0PISm+F6iU+vOic/kuquPOx38qEhU1P+N7ViN4clpU
+         wjBQJFlxXKUvX6H65yaBdv8TYsIbvB0hBW03zEGI6X7LdgjIvb6DnS8fiGl+mOpipIpO
+         NngQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=XIkHOd1FHvl3dx9BV0ITQXHH2amJU9tNkTlkcOG9bBQ=;
+        fh=R/OcOudBg4nbAUtyO1MUBV51g8s9OCYFYO5gUy8UmUM=;
+        b=SqMpKlH/oeZ29JBv5hHwUFaaikVCkXUxU48Ah3cqw1N4ear5WiOsWO9LBv5IPO6NLQ
+         y9q++a34t6Qh2kDD8qGA9gtr3LeUrILXvyawDZAuE3araEFDGNzJXFMa50URr51ozfFw
+         tKqEhxf/d5yC/usi3kmqcBMq5lYq72xPh5MqofxBbepTvH0YcxGsp8JM4ncKNZrShhlo
+         uZ6ocLtne91IWttFrvfji0JpkvzT1mEfruKZrZERhgJJssRVgGeVZSK2ToMrvryTmp96
+         UglhaU4pGriG01+CUcjAVAu7s7M11TPabJXoRerjl2S7zbVJOubBfIdIqB0od/UPoq1O
+         siTw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775187685; x=1775792485; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XIkHOd1FHvl3dx9BV0ITQXHH2amJU9tNkTlkcOG9bBQ=;
+        b=HPCp9rf/5y/Ao+YNYzRWMMvkhwybS2QKaN8z4UGGqoAnmVhrdn0oU2pZ7eoq/sUO3H
+         f4eKKuucMyXpmgyGJs1R8XXXEM+v+6eV/WujH+vjHV8Sqfqj1NGsm6QIY0n1Qt+6P8nQ
+         nsqGCY/zy5PE9lGQvOCTkfv5AZW0UyfuYLah1OWOqr0J2kVUw9865Uy29v9L9tV6EuCL
+         Ngctj6DuE/Kr1adFN+i1cy3qt3/uowC77ODo5Y9JsQFRw+VbPXMdmvdux978jRR6Jm5K
+         UisvfMGQ3WeSZEGclBEh6py6GHzusg5rdQ7cVSkkv7Gje4b7RfLHP7xIBCvNhnfRyv3U
+         B7og==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775187685; x=1775792485;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=XIkHOd1FHvl3dx9BV0ITQXHH2amJU9tNkTlkcOG9bBQ=;
+        b=ktiVMnZpqhzhLQK32sSl1by02SW/qI1raHyqg2nc2UzShzyKUed17yBI2IqBB4YBho
+         tdlfPERW2JKTHubPgene2lhL1f5FpPawK8V8PxNv/c/TgYtFRxqNtkfLcXC3r8O2LEYb
+         FwYhf3fudG3Nyd0NCFJryPmhXQQ+oU87AbqRsoEl51JOQe1Ofrc0qBJAmZnaoHJlVYjg
+         rHHaS61uaBty03IeMMr12woEdNH/cyjOwek4bH311XOO9A1GPJhgzC5T9S4Jl80Ycai1
+         GF2dbTlqNVRLAwRaMa5ISUiHQ9sE+4MO0FMHBwgeJw1nYVEWDBT3SVauBTia8GSiExlD
+         VIog==
+X-Forwarded-Encrypted: i=1; AJvYcCWCP6tySO4QUsUv5xQK14uPYiFUJvMAuFgZW2RyzpC4oWyOjd4iLY+ahEWdt6d43vf3BTVjcxw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx98G04Vx9+iFc1BDOh+F27oqJShicgc/KfLk0BIK2pKXCoyz72
+	OQfh5sFKTcBz4wZCJPQs+kt8B52HO0jIf0g7QOe54EJm83jZn6ra6Y+q/Doa7VkMz1jsPCygyRA
+	mkz+8EvvRgQ2krUU8o5z1u9rnM+hEsAi9yGHrGmzX
+X-Gm-Gg: AeBDieviL/O9kJOKwqvvGv4bcZ/lVerSb7LdWUci0Dyo21pwF65HCdHe+coNvGtFT5m
+	OnWeGfOURcZXM2vKLb6wDy+naKzFK4IB1MuTL0yfmAM5csSYqwyJGEJdvWgCMgRgwAP62KrIqYP
+	JcvN+9tg9KUfIa88of87yq2Og7IJSaBNj6ato4zOU/8r4TgOUR+iPxeUt0YN757YcUwPYvMD9wU
+	mnAqXMVMOj84skLl6VypOoJDjIGD9HAngpNp8OYAOuEJVmHu0RIVYlt8W6D4hRGjoGtNO168yjl
+	ErKzTYJnp4kY5iNRfgpz0bW8gx9faBynDuTOt/I=
+X-Received: by 2002:aa7:c548:0:b0:664:d536:82f with SMTP id
+ 4fb4d7f45d1cf-66e43f21a8cmr5732a12.9.1775187684933; Thu, 02 Apr 2026 20:41:24
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3c69da36-b625-49c9-3e28-08de911d6bd2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Apr 2026 01:07:48.1650
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: AAZcpXpb6/c4mSFsaKzB5WZQ857rx86QT3P4wOZdnIyCaYXwEoGYGE3km23jGF4ZYRpgpBSYTeDQ4HjYgquAEOxtTG8OHcdDWuLd7XA6z8cLS6qQcMielCyykKVPoo/7
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQ4PR01MB1235
+References: <20260402-teaming-driver-internal-v3-0-e8cfdec3b5c2@google.com> <20260402074538.205e307c@kernel.org>
+In-Reply-To: <20260402074538.205e307c@kernel.org>
+From: Marc Harvey <marcharvey@google.com>
+Date: Thu, 2 Apr 2026 20:41:14 -0700
+X-Gm-Features: AQROBzAlxZy-jqAhcgQO1cYPSAVMLl07FHUvPVYLpxT2ENVW5QTeG7yBwvTOW1Q
+Message-ID: <CANkEMgkV3qAC4asCDhL7ZznK83fD4MeAD51u-7+j1+LS53pbjA@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 0/7] Decouple receive and transmit enablement
+ in team driver
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Jiri Pirko <jiri@resnulli.us>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi, Conor
+On Thu, Apr 2, 2026 at 7:45=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wro=
+te:
+>
+> Sounds like Jiri asked for changes, when you respin could you run
+> shellcheck and clean up the warnings? We ignore SC2317 SC2329 FWIW
+> selftests confuse the checker.
 
-> On Thu, Apr 02, 2026 at 03:55:23AM -0700, Changhuang Liang wrote:
-> > Add clocks and resets nodes for JHB100 RISC-V BMC SoC. They contain
-> > sys0crg/sys1crg/sys2crg/per0crg/per1crg/per2crg/per3crg.
-> >
-> > Signed-off-by: Changhuang Liang <changhuang.liang@starfivetech.com>
-> > ---
-> >  arch/riscv/boot/dts/starfive/jhb100.dtsi | 198
-> > ++++++++++++++++++++++-
-> >  1 file changed, 195 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/arch/riscv/boot/dts/starfive/jhb100.dtsi
-> > b/arch/riscv/boot/dts/starfive/jhb100.dtsi
-> > index 4d03470f78ab..700d00f800bc 100644
-> > --- a/arch/riscv/boot/dts/starfive/jhb100.dtsi
-> > +++ b/arch/riscv/boot/dts/starfive/jhb100.dtsi
-> > @@ -4,6 +4,8 @@
-> >   */
-> >
-> >  /dts-v1/;
-> > +#include <dt-bindings/clock/starfive,jhb100-crg.h>
-> > +#include <dt-bindings/reset/starfive,jhb100-crg.h>
-> >
-> >  / {
-> >  	compatible =3D "starfive,jhb100";
-> > @@ -268,12 +270,96 @@ pmu {
-> >  			<0x00 0x22 0xFFFFFFFF 0xFFFFFF22 0x00007FF8>;	/* Event
-> ID 34 */
-> >  	};
-> >
-> > -	clk_uart: clk-uart {
-> > -		compatible =3D "fixed-clock"; /* Initial clock handler for UART */
-> > +	osc: osc {
-> > +		compatible =3D "fixed-clock";
-> >  		#clock-cells =3D <0>;
-> >  		clock-frequency =3D <25000000>;
-> >  	};
->=20
-> Is this really on the SoC?
-
-This is not on the SoC.
-
->=20
-> >
-> > +	pll0: pll0 {
-> > +		compatible =3D "fixed-clock";
-> > +		#clock-cells =3D <0>;
-> > +		clock-frequency =3D <2400000000>;
-> > +	};
->=20
-> What's providing all of these PLLs? Are they all fixed-frequency on-chip =
-PLLs
-> without an off-chip reference? I find that somewhat unlikely.
->=20
-> Since devicetrees are now being imported into U-Boot, it's important to m=
-ake
-> sure that I'm not merging fixed-clocks that later get replaced by dedicat=
-ed
-> drivers that U-Boot won't have.
->=20
-> To that end, I won't apply the series this depends on without this patch =
-being
-> applied at the same time.
-
-I am preparing a PLL driver series, but PLL0 and PLL1 will still retain fix=
-ed frequencies.=20
-The reference clock for each PLL comes from the osc. Perhaps I can use "fix=
-ed-factor-clock"=20
-to indicate the relationship of the reference clock.
-
-Best Regards,
-Changhuang
+I will send v4 soon after splitting up the main functional patch, as
+Jiri requested. It appears all of the shellcheck errors are from
+SC2329. I see a bunch of other warnings in patch 5 (from
+tools/testing/selftests/net/lib.sh), but they are unrelated to the
+changes from that patch.
