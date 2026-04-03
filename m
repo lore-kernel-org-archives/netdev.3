@@ -1,50 +1,47 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44EC43ACA65;
-	Fri,  3 Apr 2026 15:16:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FCF3C6A43;
+	Fri,  3 Apr 2026 15:17:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775229381; cv=none; b=oZZ3DtEQBOvmlWZngjdtQz2wZ00uU6gpKY4qUmdq1BH7pkIZbsUwsS/OsN994JV/5F4aRRItvzlvKZfE7ZpSo+/n1hVEfp6r5hUPL0Hh5qy+rHIloPtQyfGsuzUe5XQIfJmCmwrKX0BEyR2yD0ULnM0gGpJItrSa1fFmI9vS53g=
+	t=1775229423; cv=none; b=POs27y26DxWQvX7NnRYvCswEiSSbB3v5jeyq51ujrPntbaKKSaYbeJEeuEsWOW4ghjQhwELqu1Vv18gkgIwgL1MNbpp98PrOq8rZ75Gazq4u4GKGsu5wRr1GBu2rynaLoLfXX03EWeQsFdC2OSxaWmcnyVKd+rp1C1wdsi/fHNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775229381; c=relaxed/simple;
-	bh=2ma10qab2Y1pCS8QVtU8aOcDIEzbaBnCFVvIa4dlVjU=;
+	s=arc-20240116; t=1775229423; c=relaxed/simple;
+	bh=1QQFvoKpB2XfX6yKZk+AT0LvHS6NlKPqN9M6hnJ43Fw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g0tymHo5TIUNrGE3pUfDgHIR+GduUzTSbOBQlP8Bl0lX2OepBGgUNRVhvtMNxNjNPgdNrelXWIgBy8Uvu0tJzRyCxMqn66Xg3a7JP+RCy/2JSzsf48T876e4vhK/A7yk4ynz6Zang5m9jP7MASaQV7Y8a9MBerGcJoyzW0RHJzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=v4ep86YW; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=LA4qCMqkPurCdiyU6jYAdo+jiuoDcukzOoRZuumjN9LnRbPoAbuIY1dmldWLUsn9KEKHpe0SUSr4CBTZMe7YeezJtD2sx1O+DS1f7LXLbNnec7X98C5Xm+CwN06FB1XjjlD7Ck3fDxb2XYyObli1r1bS9cJ3i9t6v3BNvBkc8WU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mle45kw2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="v4ep86YW"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=+Ekjw4WSxb7l6wGDHXPf+PWcy0BnDxxS0WaVQVeiqzI=; b=v4ep86YWb3FKNV+VOqDpszwBkf
-	oMym/+4+30Av+IGzjGATMn8fmWiDIV7kJzSnHcg141uA5+gNTfBLEJvRnj/Pq3biaBx5ljcrwmncN
-	t4czaDElNQwWuHkPFxsvdFEIob5Tvh5DsK9SQlQbPxZ510ZRH7y8YnTHf6R5naJv6Cy0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1w8gFg-00EgE4-IR; Fri, 03 Apr 2026 17:16:04 +0200
-Date: Fri, 3 Apr 2026 17:16:04 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Carlo Szelinsky <github@szelinsky.de>
-Cc: Kory Maincent <kory.maincent@bootlin.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mle45kw2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC2B5C4CEF7;
+	Fri,  3 Apr 2026 15:17:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775229423;
+	bh=1QQFvoKpB2XfX6yKZk+AT0LvHS6NlKPqN9M6hnJ43Fw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mle45kw2ZXDtkpPYYWnrA5tWz+iaxFnJTA8l99IFfQxYhs4OACwmfnxPrrGTHeo0q
+	 GPKleLrXkmSbi3NHtH5laYXPKS1xTqzy+WhtLr21b36imt7mTiYG2Vjd6BrPHpiQ7u
+	 8CPTjg+/LIKDhZ279mvghiILU+CFWmMAykyhGnwYiRK1iHp/7n0jx7G3AMqpTO4Sy/
+	 MvyTRuSm1O6CrLtwEPsLjWTYXe3b8aZXwaZ6G+fGlLzEOoltnFoBgn/TNlbX/AFnyA
+	 yEJNYmDAww6n6Wcphl3qWVoLsxkcxhWz/TuEr3c+IimHUF61FWYo0QN8RH5RA7irkY
+	 s2VvE2MP2Pm5w==
+Date: Fri, 3 Apr 2026 16:16:58 +0100
+From: Simon Horman <horms@kernel.org>
+To: Jon Hunter <jonathanh@nvidia.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 3/3] net: mdio: treat PSE EPROBE_DEFER as
- non-fatal during PHY registration
-Message-ID: <6185f9d8-dabe-4190-b020-711e3a046e64@lunn.ch>
-References: <61561526-1e8c-4d0c-a0ff-56da25ee6531@lunn.ch>
- <20260403133111.3304497-1-github@szelinsky.de>
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Thierry Reding <thierry.reding@kernel.org>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-tegra@vger.kernel.org
+Subject: Re: [PATCH V4 1/3] net: stmmac: Fix PTP ref clock for Tegra234
+Message-ID: <20260403151658.GJ113102@horms.kernel.org>
+References: <20260401102941.17466-1-jonathanh@nvidia.com>
+ <20260401102941.17466-2-jonathanh@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,34 +50,52 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260403133111.3304497-1-github@szelinsky.de>
+In-Reply-To: <20260401102941.17466-2-jonathanh@nvidia.com>
 
-On Fri, Apr 03, 2026 at 03:31:11PM +0200, Carlo Szelinsky wrote:
-> Hi Andrew,
+On Wed, Apr 01, 2026 at 11:29:39AM +0100, Jon Hunter wrote:
+> Since commit 030ce919e114 ("net: stmmac: make sure that ptp_rate is not
+> 0 before configuring timestamping") was added the following error is
+> observed on Tegra234:
 > 
-> Thx for helping me! 
-> I thought of keeping the eager path so we still catch broken DT bindings
-> early at boot instead of silently failing later on first ethtool access.
-> But you're right, dropping it would simplify things quite a bit. Do you
-> think that trade-off is worth it? I will follow your lead. 
+>  ERR KERN tegra-mgbe 6800000.ethernet eth0: Invalid PTP clock rate
+>  WARNING KERN tegra-mgbe 6800000.ethernet eth0: PTP init failed
+> 
+> It turns out that the Tegra234 device-tree binding defines the PTP ref
+> clock name as 'ptp-ref' and not 'ptp_ref' and the above commit now
+> exposes this and that the PTP clock is not configured correctly.
+> 
+> In order to update device-tree to use the correct 'ptp_ref' name, update
+> the Tegra MGBE driver to use 'ptp_ref' by default and fallback to using
+> 'ptp-ref' if this clock name is present.
+> 
+> Fixes: d8ca113724e7 ("net: stmmac: tegra: Add MGBE support")
+> Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
 
-I suppose, the real question is, are we fixing the correct thing?
+The nit below notwithstanding this looks good to me.
 
-As a general principal in Linux, you don't register a device with the
-core until it has all the resources it needs. This is what
-EPROBE_DEFFER is about. If it is not registered with the core, the
-uAPI is not available, making user space simpler.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-As i understand the problem, by deferring the probe, the regulator
-gets turned off, cutting the power?
+> ---
+>  .../net/ethernet/stmicro/stmmac/dwmac-tegra.c | 20 +++++++++++++++++--
+>  1 file changed, 18 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c
+> index b4b39e6a169e..3af2f001fada 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c
 
-So is the real problem with the regulator code? Do we need a way to
-indicate a regulator should not be turned off if it is unused?
+...
 
-Or can we change when the regulator code turns off unused regulators?
-I don't remember all the details for deferred probing, but i thought
-the driver core had a timer and would keep running the deferred probes
-until that timer expires. When does the regulator code turn off unused
-regulators relative to this timer?
+> @@ -216,6 +216,7 @@ static int tegra_mgbe_probe(struct platform_device *pdev)
+>  	struct plat_stmmacenet_data *plat;
+>  	struct stmmac_resources res;
+>  	struct tegra_mgbe *mgbe;
+> +	bool use_legacy_ptp = false;
+>  	int irq, err, i;
+>  	u32 value;
+>  
 
-	   Andrew
+nit: As this is Networking code, please retain reverse xmas tree order --
+     longest line to shortest -- for local variable declarations.
+
+...
