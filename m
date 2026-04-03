@@ -1,106 +1,113 @@
-Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB75625
-	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 23:31:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793422D5C91
+	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 23:32:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775259117; cv=none; b=me5/xR/OVqa5ex1hHFJH2qDh+EbRpYS+zPHDpBfZdmBbauqMPHadH1x7e1YLDs0oHYV7zqEKrQE85l9Yjk53P0e2/CeCy0aAh4Z6t6FHwN0rj9LIV7eXcXE5cH6mzMdMx9TnJ8cv+0ZmluY3NRws0bgPjZPkr2lQiZLw+WI5hp4=
+	t=1775259166; cv=none; b=mkJFBvtNn0CQ5tYIjNSNY8+Y9Y9BJ4Oeech/FOIZXpxcJQm2vd44bLG832ucj0JoGUVMmdGbsih8pTLZBZgl4Rqo7Uj/tygmX6DH/wRZjQ88phzKxuZ7OsI/7QjPUGOLXwnbod/sTqrsi9gESGXfgT2oIQaYVaqOAE0Hzlg/52M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775259117; c=relaxed/simple;
-	bh=EiHYEUqXbnGdg4Io2k4aazz5Cz2UWHqWKj8qDSWnN8Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rJVFtyIMUjp+yQoSypKvneD3yq0uRV5uV2gHQgw/8IogWHanaveZGg5zmGpaQOBCcDnel/an/BmG7JR8qrsWbHJlNM3+XlTsKoaPiZNzxz6PcoFtCUCqFB77BclzhVaGScyhxkY8dxImSltWDfgof5u/r2v+sTQkOSQI1WTk4To=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=ijT1Xry5; arc=none smtp.client-ip=171.64.64.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
+	s=arc-20240116; t=1775259166; c=relaxed/simple;
+	bh=yFGcPJop85wZ8cEx589GhB/V7R68vhleWngS6mZ38Gk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GjqdtZytRTr0qqH+I43u7gZRL9+YkBDBeVnu3o8+tmjc+OYKp9cQBBGwrb+ShCSarZBkvFoXbY97rsWPFTLEuWw+1upyBB45kuMBpDHg2AAY1WGlAzZ9eLl4CA/DBW031NORmINiAi8rSRHTK+Ps1pxFh4IGmFFmSjnIXY2wvpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=r4/YVtPc; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="ijT1Xry5"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:Content-Type:Cc:To:
-	Subject:Message-ID:Date:From:In-Reply-To:References:MIME-Version:Sender:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=EiHYEUqXbnGdg4Io2k4aazz5Cz2UWHqWKj8qDSWnN8Y=; t=1775259116; x=1776123116; 
-	b=ijT1Xry5p8C5qIAg3Ddv5ol5LZABZHdL0/GOtrJD6eiRpbWAkOvD1oPVUFreY1k8altq60RxlCP
-	WVnunXfQkS5X0MtaWiz3rWDydaf2ygA/Dm9clzkORW+35IugIvVrEXyo4gvvoq6waoi87mpqTlGm0
-	uXsGT+aKNDPbXa0KBCzmDxkaefbVFMjcqnqFudLYk41wU7zDg7S2Y2eNLBLsZkPJGE595bp2LECYs
-	HvmOLVZR5cDSbAhgWiH1cH46Cud3lcR0wUaVpF4/gqF4RYt9SzCyHL4AbVyAwa+1ZO4I27IYSgfxN
-	mXtO+wjHFELiw9krNg7aD+5o1A8qv5YCDq1A==;
-Received: from mail-yx1-f47.google.com ([74.125.224.47]:48298)
-	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.94.2)
-	(envelope-from <ouster@cs.stanford.edu>)
-	id 1w8nZj-0003u2-O4
-	for netdev@vger.kernel.org; Fri, 03 Apr 2026 16:05:17 -0700
-Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-65005a8840dso2372781d50.0
-        for <netdev@vger.kernel.org>; Fri, 03 Apr 2026 16:05:15 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWx77p+iEFRCdDXc1wZdjks/ecDZNpbpXSklgRjVaTvaaS8kcEZ9oNexkwMQ7eQJOcbDLm5Eu4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5WC+cxIrORMdweWQTTPmYeJt5kGyR4paVTJdjTKv9ZEkwoQBR
-	/LwNNagNsmM+6miQtkJwEOIcmebo0gUuB0SmicXRbktRLLrf5bIcHyNfRme3yrxbzDMQuKrw0GC
-	ds0DAeuQmN+2ye+9ATIJwMrJ0G1u6Gho=
-X-Received: by 2002:a05:690e:bcd:b0:649:ed08:1a01 with SMTP id
- 956f58d0204a3-650487ff730mr4238404d50.35.1775257515063; Fri, 03 Apr 2026
- 16:05:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="r4/YVtPc"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2b2503753efso18890215ad.0
+        for <netdev@vger.kernel.org>; Fri, 03 Apr 2026 16:32:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1775259164; x=1775863964; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5/xbyaX6S6fstMa5ZYhx/htsEuifHcRUa1re3mF/dzg=;
+        b=r4/YVtPcYvO2rAdN/VddGq6IHAXriK0jj8SC5Xj/F51ENj7EC5K1ZPN6rwE5f7Fm0u
+         oP0neAYv0V9q7XnuU1OWZn0ItxSXmIS6501N0oLC/C9pcNW6Uv1EgFWimVRh2b07KJQH
+         3Xm/6+1r5BY32edjKT4b0W9IikeEkxB2dlRO5IXjTwKKNhqgtbXSV24aSzbSpI40yTSX
+         GvLirQJEE7PPDQtRJszutqMscnUbMZv2yvhAN9Z51RDMLesPaMmYITeBxZND36gaAK2C
+         hx6pdLFT/ZnRxaY8z0fhh5mFJT9dvlwbAdeYS0BCQzGl+NdsbM/jqgegCGQcAszxEMRI
+         at3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775259164; x=1775863964;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5/xbyaX6S6fstMa5ZYhx/htsEuifHcRUa1re3mF/dzg=;
+        b=bFaWT3d6auVZHePOe+ffqhocxY2QBh427duf30nO56b8aktOk21GZkzrStYBD7aWk3
+         EHmYpCOKsdLIzK1r/BFBGvwSXdEOXhxLH6CEdB/iZABw83MSoGYLcWodCxZjj7trv7CS
+         IQ/xskWHxMk/Zat2qdT4Z+sGyY4BqYRTe1wY9VoFsXLYH7WrfF1y3CwfIkAuKMnKeymB
+         RGLmsgsVQJp8m9YczHUlsrAIVErCCqJcGAktPs4c3lwtm+6X+6eHep1dh/9B+32rlq7+
+         OPAwAUNYtyImvpod1Umg3EyGr29GVD4PwvhvIksQOL2jPJ5d5cBQanA4VCY5L86B3/Ps
+         b5kg==
+X-Gm-Message-State: AOJu0YznzCibT0h8Sc2dVAwvZDxV/NoPXmqIrZ/4G/B87AnaAVy3D3hU
+	vRotaEb90++2okTiqzDP1Uxaq3xNKkhaYIPXJkz7dRKqsE6DET+1fPK/0a8jtZz36Og0hKEMsoh
+	JJyoNKuE=
+X-Gm-Gg: AeBDietydF24guWYKbgjQipJpgbqxSj1kx3eL7IDZlky4tv8sj5IL8gmJpsl3lrWeGs
+	gD6XBQmOQFubtxFYtLy4w5JM/XOF0dKN46oJY4nT2IDbdpndnvX6or8W98tWOkPB+5R50m0bMfC
+	V92Yw1Rg4YregOwGmh3i6TBQDDa1+bsj6DgYN25LmfuOTiB0Q1/zmrMrkySY1oto5G0kt7+lRJW
+	vgVml6vCZim4oeoqyhShDJ5BDXm4xLB+w+Q+s2H0ctkBThOW27fpIkzqAmAeqobNydgv1OQeWBv
+	GNVEc/oEe+pQkPzJSCF7wmttqJW6P0AvdMMEmyrwMpHSfnao9RJC0YtXfiWnJRhaPC5Qq/CPx/0
+	tg1xgQs+Cb1CZWnIgoT1QGMShZc0g9nGWK2FbMs92VFNInytMdJDGJpS55YZb4rVaJXvP8ZDEgJ
+	+tKOw9
+X-Received: by 2002:a17:903:1a28:b0:2b0:cb96:9815 with SMTP id d9443c01a7336-2b2819994e2mr45703355ad.43.1775259164524;
+        Fri, 03 Apr 2026 16:32:44 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:46::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2747af6e7sm69050925ad.37.2026.04.03.16.32.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Apr 2026 16:32:44 -0700 (PDT)
+From: Joe Damato <joe@dama.to>
+To: netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	linux-kernel@vger.kernel.org,
+	willemb@google.com,
+	Joe Damato <joe@dama.to>
+Subject: [net-next 0/3] Extend packet socket selftests
+Date: Fri,  3 Apr 2026 16:32:35 -0700
+Message-ID: <20260403233240.178948-1-joe@dama.to>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260316223228.2611-9-ouster@cs.stanford.edu> <20260318072131.268946-1-pabeni@redhat.com>
- <CAGXJAmy7=A+Jc+iJ6jwddWs6x0z4pOudRs31Q41m9HMZ4yTWnw@mail.gmail.com> <6fb603dd-7bc2-4b60-bf93-7247d05f3250@redhat.com>
-In-Reply-To: <6fb603dd-7bc2-4b60-bf93-7247d05f3250@redhat.com>
-From: John Ousterhout <ouster@cs.stanford.edu>
-Date: Fri, 3 Apr 2026 16:04:39 -0700
-X-Gmail-Original-Message-ID: <CAGXJAmx6YsBYQCagvHs1DPTd-b-yHYVTN67-JCApQdG+x6-cjg@mail.gmail.com>
-X-Gm-Features: AQROBzBx-m95OVEa-wxTtrUhdXC2v216RdgAWhvgE2eouZA4aO3K02ktfILiYs0
-Message-ID: <CAGXJAmx6YsBYQCagvHs1DPTd-b-yHYVTN67-JCApQdG+x6-cjg@mail.gmail.com>
-Subject: Re: [net-next,v17,08/14] net: homa: create homa_rpc.h and homa_rpc.c
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: horms@kernel.org, netdev@vger.kernel.org, kuba@kernel.org, 
-	edumazet@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Score: -1.8
-X-Scan-Signature: 078eb853d78558c6c655f7b6c94b391a
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 24, 2026 at 1:55=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
-te:
->
-> >> [ ... ]
-> >> Paolo also suggested using deferred SKB freeing (skb_attempt_defer_fre=
-e) to
-> >> reduce the cost. While you mentioned that GRO is implemented in the fu=
-ll
-> >> Homa but was left out of the initial patch series, would it be benefic=
-ial to
-> >> include at least some of these optimizations in this initial submissio=
-n?
-> >>
-> >> Reference: https://lore.kernel.org/netdev/9209dfbb-ca3a-4fb7-a2fb-0567=
-394f8cda@redhat.com/
-> >
-> > When I asked ChatGPT about homa_attempt_defer_free it said that it
-> > only works if the skb has no dst, no destructor, and no skb_nfct. I'm
-> > a bit unsure how to proceed. Is homa_attempt_defer_free only intended
-> > for incoming packets? If so, then presumably there is no dst? But what
-> > about the other fields? Do I need to do something to clean them up
-> > before calling homa_attempt_defer_free?
-> skb_attempt_defer_free() usage is intended for the RX path only.
->
-> Incoming packets get state (dst, extensions, ct...) attached in the rx
-> path before reaching the socket. You should free/release the state, if
-> possible, before inserting the skb into the receive queue, so that you
-> could defer free them after read.
+Greetings:
 
-I have modified Homa to use skb_attempt_defer_free, and this made a
-significant difference in the throughput of the critical path copying
-data from skbs to user space. Thanks for the suggestion.
+I was looking around the packet socket code and noticed there were a few
+features that could be tested by extending the existing packet socket
+tests.
 
-However, skb_attempt_defer_free is not currently exported, so the
-patch series will now include an EXPORT_SYMBOL line for that in
-skbuff.c; hopefully that will be OK...
+I extended the test to test stats, drops, and auxdata and re-ran the tests.
+The existing and new tests passed.
 
--John-
+Thanks,
+Joe
+
+v2:
+  - patch 2: remove argument from do_tx and use global instead
+  - patch 3: add argument to do_rx to specify if the socket is a packet
+    socket. factored out the aux data check into its own function for
+    readability.
+
+Joe Damato (3):
+  selftests/net: Test PACKET_STATISTICS
+  selftests/net: Test PACKET_STATISTICS drops
+  selftests/net: Test PACKET_AUXDATA
+
+ tools/testing/selftests/net/psock_snd.c  | 137 +++++++++++++++++++++--
+ tools/testing/selftests/net/psock_snd.sh |  10 ++
+ 2 files changed, 139 insertions(+), 8 deletions(-)
+
+
+base-commit: 8b0e64d6c9e7feec5ba5643b4fa8b7fd54464778
+-- 
+2.52.0
+
