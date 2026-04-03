@@ -1,130 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C619221F0C;
-	Fri,  3 Apr 2026 01:12:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D184926E142;
+	Fri,  3 Apr 2026 01:12:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.67.55.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775178751; cv=none; b=IHv0Ghn+4qqfpoGFAqwmuVpflGjYhVLzMAqkfDC/KsGcAPSFVYEUZPRUA+TFpw8YRVXgZVTPqyG0/9Y4ywcKOmAr5ItkcSbOlhnEW8RMP0Sh3E+3PpOkoF+KFZQf5777HI1PGpWQoS9fCCI2rpcA9PVinO/Ui1Xk+n37BaXLWjE=
+	t=1775178761; cv=none; b=llFNuml7jcOdHua3bhXp1lys4FsUdAr/cbEarI/GUCoR0nVv7PvvQrP5bQPPoOwnnGfNsGWXObdlzUeHHT4eVJZIePY8kaPtaNMOsIY+fy9W6XnplrMtcH62dMWTujx86UegXjuOU46kHCEopAVJCzE8oy01z2WkoponPGymjU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775178751; c=relaxed/simple;
-	bh=WF2Jj7sBQE7zHSj1Hk6o9abcLIimmZM7K0/w+ZvzQ+E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rlu06qyIBKMsdX4xzD0wsi/2oXwc+lPqWJy9pa8D8z1lRDgIo7HzK6aOEtTVyzYKrxNL273A9tVrH5iiQn+s0rLURyCcWPSwnhsXUU2/IQR3F4BL7uZXiJLBvXmpj0OE3ThZvqfn2IDC4b5g0/+2DYoeGKjM6g7sB3OuF7lBbp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ysl8pbGK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775178761; c=relaxed/simple;
+	bh=I5JCSWcE47Vi4//k6Cj8RofOrUpNno5OWCOLUMIqerY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=lqViwWK/0q0XzcRKdrJhIOGHK64u9rLoNh+Dg1tZT10SjTv92HZAHZIstXgN6SFwUCGQfa2k9ErUvtFaeT5fsuo9MX00LxtEvSdPhcp/QV0IpphDVFSnmnzJGF+mnSkta/RTF49zeJCrL7SAGTQmZozSKI8qyzhySUj6qjW/d3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=surriel.com; spf=pass smtp.mailfrom=surriel.com; dkim=pass (2048-bit key) header.d=surriel.com header.i=@surriel.com header.b=LK6bi9Lt; arc=none smtp.client-ip=96.67.55.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=surriel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=surriel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ysl8pbGK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D219C2BCAF;
-	Fri,  3 Apr 2026 01:12:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775178750;
-	bh=WF2Jj7sBQE7zHSj1Hk6o9abcLIimmZM7K0/w+ZvzQ+E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ysl8pbGKFB352iWEa5Z7utJUlFB5z1m+IJ8S6sltC47g5/nZGaOITOE+7r+C22mvw
-	 3MGOk9U8IWwoBSg6T/bxHv0i6Oz4Pq6FOnKg2M7lg0oewE8hdM7ghY0kv+Uh98sbUb
-	 V5dhuAKMgFe3GeiJHQV1fUKBFjdGi87IKqHEgZUuHFDVCq1GQnDMcWSFQW6QttIPHp
-	 CYQQFS8gd64744F97B8MOMW7e0Fa+AmdCj8gppoW7E3ZNNf5+RmjAPRYlR6KnvskDj
-	 w+ZW+pA10h3C/P1jzAX7RJPLlgIiTmmZ9FXuvZCRH67bw5CJoXBfFaemHQC0qoW6UU
-	 d4dTwyiS4PTgg==
-From: Jakub Kicinski <kuba@kernel.org>
-To: lorenzo@kernel.org
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	ansuelsmth@gmail.com,
-	benjamin.larsson@genexis.eu,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next v2 10/11] net: airoha: Do not stop GDM port if it is shared
-Date: Thu,  2 Apr 2026 18:12:29 -0700
-Message-ID: <20260403011229.1785808-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260401-airoha-eth-multi-serdes-v2-10-ac427ae4beeb@kernel.org>
-References: <20260401-airoha-eth-multi-serdes-v2-10-ac427ae4beeb@kernel.org>
+	dkim=pass (2048-bit key) header.d=surriel.com header.i=@surriel.com header.b="LK6bi9Lt"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=I5JCSWcE47Vi4//k6Cj8RofOrUpNno5OWCOLUMIqerY=; b=LK6bi9LtFJ8g9ArdhgcBTpD2Lx
+	mZAgYqoQu7bHWMFgkn9JNXkJtW04BrcFjUWsRm/Kf38g+Cot1sZchAdWS3inhqdbm4UpWehd2YmBY
+	qt31ueCe6vwVVzMzM8BXBPnDVB0AF/yEFvuB3+7RVclYr+ueZl1BsewI+J6eubaEXXCfJ2Q8EzdLD
+	jRjNbvNh8rXquqXtNefejbj3bcjtGnFOXZd+Gk6mLnZVL3u3r3NskLbU1znQ58/3Rq2TY9EpkOMXe
+	t/AiZcFNhGj/OWmBjfghi+igOuk0iLwjXf+ILBxWG6b7Iymrh+w87paJbwF7yCjkS6YCgrygwQqph
+	BYIrMxxQ==;
+Received: from fangorn.home.surriel.com ([10.0.13.7])
+	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <riel@surriel.com>)
+	id 1w8T47-000000001SB-02vK;
+	Thu, 02 Apr 2026 21:11:15 -0400
+Message-ID: <fca2b02ce88efa3b2e2981b0ea5f836dddc3a77f.camel@surriel.com>
+Subject: Re: [PATCH v2] mm/vmpressure: skip socket pressure for costly order
+ reclaim
+From: Rik van Riel <riel@surriel.com>
+To: Shakeel Butt <shakeel.butt@linux.dev>, "JP Kobryn (Meta)"
+	 <jp.kobryn@linux.dev>
+Cc: linux-mm@kvack.org, willy@infradead.org, hannes@cmpxchg.org, 
+	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, 	mhocko@suse.com, kasong@tencent.com,
+ qi.zheng@linux.dev, baohua@kernel.org, 	axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, kuba@kernel.org, 
+	edumazet@google.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kernel-team@meta.com
+Date: Thu, 02 Apr 2026 21:11:14 -0400
+In-Reply-To: <ac8DEuZhb_aQA4ez@linux.dev>
+References: <20260402232511.17246-1-jp.kobryn@linux.dev>
+	 <ac8DEuZhb_aQA4ez@linux.dev>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-net: airoha: Do not stop GDM port if it is shared
+On Thu, 2026-04-02 at 18:03 -0700, Shakeel Butt wrote:
+>=20
+> Net not doing costly order allocations is irrelevant here. IIUC you
+> want all
+> costly order allocations (like THPs) to not raise vmpressure as those
+> don't
+> necessarily represents the memory pressure.
+>=20
+It sure will be nice to not have THP enabled=3Dalways,
+defrag=3Ddefer result in smaller network buffers, and
+reduced network performance!
 
-This patch introduces a port->users reference counter to prevent setting
-the GDM port forward configuration to FE_PSE_PORT_DROP if another net_device
-is still using the shared GDM port.
+Reviewed-by: Rik van Riel <riel@surriel.com>
 
-> diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-> index 0780fb8aacfb..3f9bce8c5370 100644
-> --- a/drivers/net/ethernet/airoha/airoha_eth.c
-> +++ b/drivers/net/ethernet/airoha/airoha_eth.c
-[ ... ]
-> @@ -1681,9 +1682,6 @@ static int airoha_dev_stop(struct net_device *netdev)
->  	for (i = 0; i < ARRAY_SIZE(qdma->q_tx); i++)
->  		netdev_tx_reset_subqueue(netdev, i);
->  
-> -	airoha_set_gdm_port_fwd_cfg(qdma->eth, REG_GDM_FWD_CFG(port->id),
-> -				    FE_PSE_PORT_DROP);
-> -
->  	if (atomic_dec_and_test(&qdma->users)) {
->  		airoha_qdma_clear(qdma, REG_QDMA_GLOBAL_CFG,
->  				  GLOBAL_CFG_TX_DMA_EN_MASK |
 
-While this patch aims to support shared GDM ports, does the remaining
-unconditional call to airoha_set_vip_for_gdm_port(dev, false) at the start
-of airoha_dev_stop() break other active devices sharing the port?
-
-static int airoha_dev_stop(struct net_device *netdev)
-{
-        ...
-        err = airoha_set_vip_for_gdm_port(dev, false);
-        ...
-}
-
-This appears to clear the REG_FE_VIP_PORT_EN and REG_FE_IFC_PORT_EN hardware
-bits for the physical port, which might instantly kill traffic for any other
-active interface using the shared port.
-
-Similarly, in airoha_dev_open() and airoha_dev_change_mtu(), the
-REG_GDM_LEN_CFG (MTU) is overwritten unconditionally. If a device with a
-smaller MTU is brought up, will it overwrite the shared port's MTU limit
-and cause the hardware to silently drop larger packets for the other device?
-
-[ ... ]
-> @@ -1697,6 +1695,11 @@ static int airoha_dev_stop(struct net_device *netdev)
->  		}
->  	}
->  
-> +	if (atomic_dec_and_test(&port->users))
-> +		airoha_set_gdm_port_fwd_cfg(qdma->eth,
-> +					    REG_GDM_FWD_CFG(port->id),
-> +					    FE_PSE_PORT_DROP);
-> +
->  	return 0;
->  }
-
-Does moving this FE_PSE_PORT_DROP configuration to the end of airoha_dev_stop()
-cause a race condition when stopping the device?
-
-In airoha_dev_open(), the driver correctly enables the QDMA engine before
-configuring the GDM port to forward packets. A safe teardown typically
-mirrors this by first stopping the packet source (setting FE_PSE_PORT_DROP)
-and then disabling the destination DMA engine.
-
-By moving airoha_set_gdm_port_fwd_cfg() after the airoha_qdma_clear() block,
-when both qdma->users and port->users reach zero, the QDMA engine and its
-queues are shut down while the GDM port is still actively forwarding packets.
-
-Could incoming packets be forwarded to a disabled DMA engine during this
-window, risking hardware lockups or buffer leaks?
+--=20
+All Rights Reversed.
