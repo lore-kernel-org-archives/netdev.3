@@ -1,303 +1,106 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E57BA38A289
-	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 23:22:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775258567; cv=pass; b=Hm8xFipbLi0M2xNa0ziw9LG4CbviQRLD583Rs0WR/nrzmButrZzF33C83GhN8f+n0IJwv9lIMg4IDI3IETiy9EWMxUJDT6IF7V+xDPPY2Y77bxLI3ZBUEff7gSBCX/44NVnChLZjohiT7ew6HjcBJGu9DSLrOp/fijIU1ElfPBA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775258567; c=relaxed/simple;
-	bh=5ha26Itsrk1we0z4g/15zsHRq/Q6+Nd3OhVvBZghBLY=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB75625
+	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 23:31:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775259117; cv=none; b=me5/xR/OVqa5ex1hHFJH2qDh+EbRpYS+zPHDpBfZdmBbauqMPHadH1x7e1YLDs0oHYV7zqEKrQE85l9Yjk53P0e2/CeCy0aAh4Z6t6FHwN0rj9LIV7eXcXE5cH6mzMdMx9TnJ8cv+0ZmluY3NRws0bgPjZPkr2lQiZLw+WI5hp4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775259117; c=relaxed/simple;
+	bh=EiHYEUqXbnGdg4Io2k4aazz5Cz2UWHqWKj8qDSWnN8Y=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oTN/Cqg8iUmfeNWdDMCcQO/cb+Q3x3fL5GWZlmtd7PiVDgglVuIrZgrnYHYH9uwfwNzn5q5t6NaMaHuoZ6dqPHCIJzMNm4B5evaIfhyLLoWDP7jctA8s+166iWfTkFOFPj/s1TjSGhz+X7QAheaK7lLXPCE8pFB5yPLrBP/qAb4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dwVdFK9u; arc=pass smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=rJVFtyIMUjp+yQoSypKvneD3yq0uRV5uV2gHQgw/8IogWHanaveZGg5zmGpaQOBCcDnel/an/BmG7JR8qrsWbHJlNM3+XlTsKoaPiZNzxz6PcoFtCUCqFB77BclzhVaGScyhxkY8dxImSltWDfgof5u/r2v+sTQkOSQI1WTk4To=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=ijT1Xry5; arc=none smtp.client-ip=171.64.64.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dwVdFK9u"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-66ba6d3dab3so15345a12.0
-        for <netdev@vger.kernel.org>; Fri, 03 Apr 2026 16:22:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775258564; cv=none;
-        d=google.com; s=arc-20240605;
-        b=FWHovICS934LSdGtxGoBvb0XUt0pkeju0lCNltAdkKky8CTeOaDD9zqVp9o7IzJ71C
-         S/VVSlIrLZP+fyHGvUSTRTUQb7tkdTesxQoB8YRh8gsFNf/Si7IWbjPIgVKyYQj7yTB5
-         4B3Rqqy8kyGQ901YAHInZ7yg6ZiAbvVBrORMSV+UpjCV88owkcG1SBbXzdoTA14Ga3gl
-         fqDE120aRvkkPamC3q/rsb1sjnvEcnNBuQ5dSVtysS0IpcArQz8cqX7m145udrOhiMXJ
-         aerbHCmwnJGP1YX6Bo+hePkxAoThF0d2FzsD8ztS6qUxfbNC29aBHawa0lR0sJZdqsAf
-         /rCg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=u3rtAvIvVBacn8fCtsxK6Q16SI3iclsRvlQKxK9ic18=;
-        fh=HHowweaUIqcFAnfVF/jWITvURVkpFtoZlwQPzfv26Gw=;
-        b=NTD+i+85iEzPvP/jBl/xHB3fZKmLsdYPHQF33m2FUDiRVsVPcsv4HmokH00jWHN3Yq
-         mSolO4TZ1/balhMr7n58YhQHvJvM/KqSJ27ADhapHIgy6wgse//FN87S3IMbXgOtUNOV
-         Fum0PSdW8pTATkGSkemsuUKZ/kF52bkpSAevVzm3wZkXRHhyBOLTAVCgZZVlSEV8n6J3
-         XSRAtnEGkwYH0YSXYqzFJ99dv5cqqQMO42aCRrOvzu+6ylHBpR3wi96vMhESFb0i4qd5
-         bzmZENHVpMQ/aUYgniBEI0Ml5vRPBFu/f8w85OMb83vBgL2WI5btm04kBafX5/4wSPf4
-         lvwg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775258564; x=1775863364; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=u3rtAvIvVBacn8fCtsxK6Q16SI3iclsRvlQKxK9ic18=;
-        b=dwVdFK9uGQM05UwOIVXgiEmwS7Gpwagus3F7nNsIWzjbkm3v1km3f3Ji8MHY3VHAPm
-         TeiJQFiH7XxLbFgdd4oH1LG30PLyWSF5nZ1kKWsSO+oB+UPMoPknGoHhIns+Nh8+kszu
-         /uTywAfN8r8SlmC6HGP2OBx/EGl93PR8QWMT4Fo4QHZighyFqHmK79nOVdlcdW69hioX
-         IQ1KG+la9br0DKAqMErIYtshg3pa6pphA+YrVQYHHDHt9GrDO+URY3PuJdzRdFmJmLm8
-         p04YDFusCpq+D2KBG1O8+4Bcmu7M7M1hXjb1ttwUem+gqDQyUrg+5Xu4V66ls8aVQOa/
-         ougA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775258564; x=1775863364;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=u3rtAvIvVBacn8fCtsxK6Q16SI3iclsRvlQKxK9ic18=;
-        b=EB2glwivkXZeM2zl7R/BUUx9KWQ8f/2NLLaxKbikIHs0RDonOcLYecK5xG5/6NUbEa
-         5FqAYcftbqLGskyY+3HzI+/GT9EZE2JvR+cRihuvmZBeLZP1e8646wq9Xc0N0jI3JviA
-         8Zf/ar1Afqj+opue3fZ+Kkh2NGTpdJZGXZqgN9lDtCNkQ6ZmV0aXeh+stHbDCDrbeR1v
-         aP04q2B1qTwBdg1SrJn61eaVQ7jeKP33HVQeowXBV1+GXbshzHyfu1VzkMwJA5EpsAnR
-         C+DaXTIKLGJqVdkjjDE29gqWVS2wQUxcQ7N3Vd84D5SPu4BVBxZ+gPhuTymDKV7ZCLjZ
-         1P7A==
-X-Forwarded-Encrypted: i=1; AJvYcCU0iqiveplVVL6HBHkYKH7NQe/FLkE+TFBld4gHS+HzlyILl/Efs4njbQEFTNnqOi0mf3gzoDQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7Ag8e5542M2ClemrfsNuy3BpYdci7EZW/6tqj8KuKZqpTyn5l
-	5YYl0qEbS5noFuPLNEk/W9b3HwbCiXEvLvg+gu/WFdK347XT04TcAZdZ0hh2NZ4yBjJYsfWVHyh
-	psv1K9sZqK2M3SUZhERPNYmP6B1lVLfvAj9QzFGLE
-X-Gm-Gg: AeBDiet+BNP3lazSWLw2tHmrxdHWMe66mdDleOG50jFQAhfchhIIpgpCE85kKwa3vi+
-	SJnIyW47GAyOAJrApXAc67tpVcthJOGi7QmjlLzEyVtCtJPxUOrKPa3LaV9xBmftU1UK/1CwM1J
-	MowHt9YLWAjB1b3G4cgTxLMf4wLVrsRBO1Sl93N1MMSVrkxdNEEANnEcXN8dWM2dNMdzptFPwOJ
-	YKdJgXrdP18Ltyh67hJUPh7eF8kOy+ahm8CsgNZjGk2zNuRaV04C/5uQRAa1gRFoQlKATKC5rZt
-	DekOaTY=
-X-Received: by 2002:aa7:cfc8:0:b0:66c:309b:243b with SMTP id
- 4fb4d7f45d1cf-66e43ce15ddmr28797a12.1.1775258563658; Fri, 03 Apr 2026
- 16:22:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="ijT1Xry5"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:Content-Type:Cc:To:
+	Subject:Message-ID:Date:From:In-Reply-To:References:MIME-Version:Sender:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=EiHYEUqXbnGdg4Io2k4aazz5Cz2UWHqWKj8qDSWnN8Y=; t=1775259116; x=1776123116; 
+	b=ijT1Xry5p8C5qIAg3Ddv5ol5LZABZHdL0/GOtrJD6eiRpbWAkOvD1oPVUFreY1k8altq60RxlCP
+	WVnunXfQkS5X0MtaWiz3rWDydaf2ygA/Dm9clzkORW+35IugIvVrEXyo4gvvoq6waoi87mpqTlGm0
+	uXsGT+aKNDPbXa0KBCzmDxkaefbVFMjcqnqFudLYk41wU7zDg7S2Y2eNLBLsZkPJGE595bp2LECYs
+	HvmOLVZR5cDSbAhgWiH1cH46Cud3lcR0wUaVpF4/gqF4RYt9SzCyHL4AbVyAwa+1ZO4I27IYSgfxN
+	mXtO+wjHFELiw9krNg7aD+5o1A8qv5YCDq1A==;
+Received: from mail-yx1-f47.google.com ([74.125.224.47]:48298)
+	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.94.2)
+	(envelope-from <ouster@cs.stanford.edu>)
+	id 1w8nZj-0003u2-O4
+	for netdev@vger.kernel.org; Fri, 03 Apr 2026 16:05:17 -0700
+Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-65005a8840dso2372781d50.0
+        for <netdev@vger.kernel.org>; Fri, 03 Apr 2026 16:05:15 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWx77p+iEFRCdDXc1wZdjks/ecDZNpbpXSklgRjVaTvaaS8kcEZ9oNexkwMQ7eQJOcbDLm5Eu4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5WC+cxIrORMdweWQTTPmYeJt5kGyR4paVTJdjTKv9ZEkwoQBR
+	/LwNNagNsmM+6miQtkJwEOIcmebo0gUuB0SmicXRbktRLLrf5bIcHyNfRme3yrxbzDMQuKrw0GC
+	ds0DAeuQmN+2ye+9ATIJwMrJ0G1u6Gho=
+X-Received: by 2002:a05:690e:bcd:b0:649:ed08:1a01 with SMTP id
+ 956f58d0204a3-650487ff730mr4238404d50.35.1775257515063; Fri, 03 Apr 2026
+ 16:05:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260402-vmscape-bhb-v9-0-94d16bc29774@linux.intel.com>
- <20260402-vmscape-bhb-v9-2-94d16bc29774@linux.intel.com> <CALMp9eSLVvr00mJ0J2f2_SPeCW-VS58kxMcxHgUW6etML+_+QA@mail.gmail.com>
- <20260403185236.sjgetnkha3o3a4d3@desk> <CALMp9eSPkMpKQELTnsaj6=gXD+EyE0n2_p93n4maDc93bPFe+w@mail.gmail.com>
- <20260403213445.xzb4rxbfbg5un7li@desk> <CALMp9eSXfJvR=PHtttbqm3q3nH436T1eH4YdpVqxQeP-cxEPsA@mail.gmail.com>
- <20260403231608.zopnhnypdclzqlx7@desk>
-In-Reply-To: <20260403231608.zopnhnypdclzqlx7@desk>
-From: Jim Mattson <jmattson@google.com>
-Date: Fri, 3 Apr 2026 16:22:28 -0700
-X-Gm-Features: AQROBzDbM3KZyF-NHHTCgXNIMcFvHYIysNjC-tVAW-RoWsiBLJTzU6zFbRUlRWk
-Message-ID: <CALMp9eT2vJBdLPY2uBYrPgVrhS_aYmfGfdXe6MZXG_gyryLHVA@mail.gmail.com>
-Subject: Re: [PATCH v9 02/10] x86/bhi: Make clear_bhb_loop() effective on
- newer CPUs
-To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>, Nikolay Borisov <nik.borisov@suse.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Josh Poimboeuf <jpoimboe@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
-	Sean Christopherson <seanjc@google.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, David Laight <david.laight.linux@gmail.com>, 
-	Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	David Ahern <dsahern@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Asit Mallick <asit.k.mallick@intel.com>, Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org, chao.gao@intel.com
+References: <20260316223228.2611-9-ouster@cs.stanford.edu> <20260318072131.268946-1-pabeni@redhat.com>
+ <CAGXJAmy7=A+Jc+iJ6jwddWs6x0z4pOudRs31Q41m9HMZ4yTWnw@mail.gmail.com> <6fb603dd-7bc2-4b60-bf93-7247d05f3250@redhat.com>
+In-Reply-To: <6fb603dd-7bc2-4b60-bf93-7247d05f3250@redhat.com>
+From: John Ousterhout <ouster@cs.stanford.edu>
+Date: Fri, 3 Apr 2026 16:04:39 -0700
+X-Gmail-Original-Message-ID: <CAGXJAmx6YsBYQCagvHs1DPTd-b-yHYVTN67-JCApQdG+x6-cjg@mail.gmail.com>
+X-Gm-Features: AQROBzBx-m95OVEa-wxTtrUhdXC2v216RdgAWhvgE2eouZA4aO3K02ktfILiYs0
+Message-ID: <CAGXJAmx6YsBYQCagvHs1DPTd-b-yHYVTN67-JCApQdG+x6-cjg@mail.gmail.com>
+Subject: Re: [net-next,v17,08/14] net: homa: create homa_rpc.h and homa_rpc.c
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: horms@kernel.org, netdev@vger.kernel.org, kuba@kernel.org, 
+	edumazet@google.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Spam-Score: -1.8
+X-Scan-Signature: 078eb853d78558c6c655f7b6c94b391a
 
-On Fri, Apr 3, 2026 at 4:16=E2=80=AFPM Pawan Gupta
-<pawan.kumar.gupta@linux.intel.com> wrote:
+On Tue, Mar 24, 2026 at 1:55=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
+te:
 >
-> On Fri, Apr 03, 2026 at 02:59:33PM -0700, Jim Mattson wrote:
-> > On Fri, Apr 3, 2026 at 2:34=E2=80=AFPM Pawan Gupta
-> > <pawan.kumar.gupta@linux.intel.com> wrote:
-> > >
-> > > On Fri, Apr 03, 2026 at 01:19:17PM -0700, Jim Mattson wrote:
-> > > > On Fri, Apr 3, 2026 at 11:52=E2=80=AFAM Pawan Gupta
-> > > > <pawan.kumar.gupta@linux.intel.com> wrote:
-> > > > >
-> > > > > On Fri, Apr 03, 2026 at 11:10:08AM -0700, Jim Mattson wrote:
-> > > > > > On Thu, Apr 2, 2026 at 5:32=E2=80=AFPM Pawan Gupta
-> > > > > > <pawan.kumar.gupta@linux.intel.com> wrote:
-> > > > > > >
-> > > > > > > As a mitigation for BHI, clear_bhb_loop() executes branches t=
-hat overwrite
-> > > > > > > the Branch History Buffer (BHB). On Alder Lake and newer part=
-s this
-> > > > > > > sequence is not sufficient because it doesn't clear enough en=
-tries. This
-> > > > > > > was not an issue because these CPUs use the BHI_DIS_S hardwar=
-e mitigation
-> > > > > > > in the kernel.
-> > > > > > >
-> > > > > > > Now with VMSCAPE (BHI variant) it is also required to isolate=
- branch
-> > > > > > > history between guests and userspace. Since BHI_DIS_S only pr=
-otects the
-> > > > > > > kernel, the newer CPUs also use IBPB.
-> > > > > > >
-> > > > > > > A cheaper alternative to the current IBPB mitigation is clear=
-_bhb_loop().
-> > > > > > > But it currently does not clear enough BHB entries to be effe=
-ctive on newer
-> > > > > > > CPUs with larger BHB. At boot, dynamically set the loop count=
- of
-> > > > > > > clear_bhb_loop() such that it is effective on newer CPUs too.=
- Use the
-> > > > > > > X86_FEATURE_BHI_CTRL feature flag to select the appropriate l=
-oop count.
-> > > > > > >
-> > > > > > > Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-> > > > > > > Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com=
->
-> > > > > > > ---
-> > > > > > >  arch/x86/entry/entry_64.S            |  8 +++++---
-> > > > > > >  arch/x86/include/asm/nospec-branch.h |  2 ++
-> > > > > > >  arch/x86/kernel/cpu/bugs.c           | 13 +++++++++++++
-> > > > > > >  3 files changed, 20 insertions(+), 3 deletions(-)
-> > > > > > >
-> > > > > > > diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry=
-_64.S
-> > > > > > > index 3a180a36ca0e..bbd4b1c7ec04 100644
-> > > > > > > --- a/arch/x86/entry/entry_64.S
-> > > > > > > +++ b/arch/x86/entry/entry_64.S
-> > > > > > > @@ -1536,7 +1536,9 @@ SYM_FUNC_START(clear_bhb_loop)
-> > > > > > >         ANNOTATE_NOENDBR
-> > > > > > >         push    %rbp
-> > > > > > >         mov     %rsp, %rbp
-> > > > > > > -       movl    $5, %ecx
-> > > > > > > +
-> > > > > > > +       movzbl    bhb_seq_outer_loop(%rip), %ecx
-> > > > > > > +
-> > > > > > >         ANNOTATE_INTRA_FUNCTION_CALL
-> > > > > > >         call    1f
-> > > > > > >         jmp     5f
-> > > > > > > @@ -1556,8 +1558,8 @@ SYM_FUNC_START(clear_bhb_loop)
-> > > > > > >          * This should be ideally be: .skip 32 - (.Lret2 - 2f=
-), 0xcc
-> > > > > > >          * but some Clang versions (e.g. 18) don't like this.
-> > > > > > >          */
-> > > > > > > -       .skip 32 - 18, 0xcc
-> > > > > > > -2:     movl    $5, %eax
-> > > > > > > +       .skip 32 - 20, 0xcc
-> > > > > > > +2:     movzbl  bhb_seq_inner_loop(%rip), %eax
-> > > > > > >  3:     jmp     4f
-> > > > > > >         nop
-> > > > > > >  4:     sub     $1, %eax
-> > > > > > > diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/=
-include/asm/nospec-branch.h
-> > > > > > > index 70b377fcbc1c..87b83ae7c97f 100644
-> > > > > > > --- a/arch/x86/include/asm/nospec-branch.h
-> > > > > > > +++ b/arch/x86/include/asm/nospec-branch.h
-> > > > > > > @@ -548,6 +548,8 @@ DECLARE_PER_CPU(u64, x86_spec_ctrl_curren=
-t);
-> > > > > > >  extern void update_spec_ctrl_cond(u64 val);
-> > > > > > >  extern u64 spec_ctrl_current(void);
-> > > > > > >
-> > > > > > > +extern u8 bhb_seq_inner_loop, bhb_seq_outer_loop;
-> > > > > > > +
-> > > > > > >  /*
-> > > > > > >   * With retpoline, we must use IBRS to restrict branch predi=
-ction
-> > > > > > >   * before calling into firmware.
-> > > > > > > diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu=
-/bugs.c
-> > > > > > > index 83f51cab0b1e..2cb4a96247d8 100644
-> > > > > > > --- a/arch/x86/kernel/cpu/bugs.c
-> > > > > > > +++ b/arch/x86/kernel/cpu/bugs.c
-> > > > > > > @@ -2047,6 +2047,10 @@ enum bhi_mitigations {
-> > > > > > >  static enum bhi_mitigations bhi_mitigation __ro_after_init =
-=3D
-> > > > > > >         IS_ENABLED(CONFIG_MITIGATION_SPECTRE_BHI) ? BHI_MITIG=
-ATION_AUTO : BHI_MITIGATION_OFF;
-> > > > > > >
-> > > > > > > +/* Default to short BHB sequence values */
-> > > > > > > +u8 bhb_seq_outer_loop __ro_after_init =3D 5;
-> > > > > > > +u8 bhb_seq_inner_loop __ro_after_init =3D 5;
-> > > > > > > +
-> > > > > > >  static int __init spectre_bhi_parse_cmdline(char *str)
-> > > > > > >  {
-> > > > > > >         if (!str)
-> > > > > > > @@ -3242,6 +3246,15 @@ void __init cpu_select_mitigations(voi=
-d)
-> > > > > > >                 x86_spec_ctrl_base &=3D ~SPEC_CTRL_MITIGATION=
-S_MASK;
-> > > > > > >         }
-> > > > > > >
-> > > > > > > +       /*
-> > > > > > > +        * Switch to long BHB clear sequence on newer CPUs (w=
-ith BHI_CTRL
-> > > > > > > +        * support), see Intel's BHI guidance.
-> > > > > > > +        */
-> > > > > > > +       if (cpu_feature_enabled(X86_FEATURE_BHI_CTRL)) {
-> > > > > > > +               bhb_seq_outer_loop =3D 12;
-> > > > > > > +               bhb_seq_inner_loop =3D 7;
-> > > > > > > +       }
-> > > > > > > +
-> > > > > >
-> > > > > > How does this work for VMs in a heterogeneous migration pool th=
-at
-> > > > > > spans the Alder Lake boundary? They can't advertise BHI_CTRL, b=
-ecause
-> > > > > > it isn't available on all hosts in the migration pool, but they=
- need
-> > > > > > the long sequence when running on Alder Lake or newer.
-> > > > >
-> > > > > As we discussed elsewhere, support for migration pool is much mor=
-e
-> > > > > involved. It should be dealt in a separate QEMU/KVM focused serie=
-s.
-> > > > >
-> > > > > A quickfix could be adding support for spectre_bhi=3Dlong that gu=
-ests in a
-> > > > > migration pool can use?
-> > > >
-> > > > The simplest solution is to add "|
-> > > > cpu_feature_enabled(X86_FEATURE_HYPERVISOR)" to the condition above=
-.
-> > > > If that is unacceptable for the performance of pre-Alder Lake
-> > >
-> > > Yes, that would be unnecessary overhead.
-> > >
-> > > > migration pools, you could define a CPUID or MSR bit that says
-> > > > explicitly, "long BHB flush sequence needed," rather than trying to
-> > > > intuit that property from the presence of BHI_CTRL. Like
-> > > > IA32_ARCH_CAPABILITIES.SKIP_L1DFL_VMENTRY, the bit would only be se=
-t
-> > > > by a hypervisor.
-> > >
-> > > I will think about this more.
-> > >
-> > > > I am still skeptical of the need for MSR_VIRTUAL_ENUMERATION and
-> > > > friends, unless there is a major guest OS out there that relies on
-> > > > them.
-> > >
-> > > If we forget about MSR_VIRTUAL_ENUMERATION for a moment, userspace VM=
-M is
-> > > in the best position to decide whether a guest needs
-> > > virtual.SPEC_CTRL[BHI_DIS_S]. Via a KVM interface userspace VMM can g=
-et
-> > > BHI_DIS_S for the guests that are in migration pool?
+> >> [ ... ]
+> >> Paolo also suggested using deferred SKB freeing (skb_attempt_defer_fre=
+e) to
+> >> reduce the cost. While you mentioned that GRO is implemented in the fu=
+ll
+> >> Homa but was left out of the initial patch series, would it be benefic=
+ial to
+> >> include at least some of these optimizations in this initial submissio=
+n?
+> >>
+> >> Reference: https://lore.kernel.org/netdev/9209dfbb-ca3a-4fb7-a2fb-0567=
+394f8cda@redhat.com/
 > >
-> > That is not possible today, since KVM does not implement Intel's
-> > IA32_SPEC_CTRL virtualization, and cedes the hardware IA32_SPEC_CTRL
-> > to the guest after the first non-zero write to the guest's MSR.
+> > When I asked ChatGPT about homa_attempt_defer_free it said that it
+> > only works if the skb has no dst, no destructor, and no skb_nfct. I'm
+> > a bit unsure how to proceed. Is homa_attempt_defer_free only intended
+> > for incoming packets? If so, then presumably there is no dst? But what
+> > about the other fields? Do I need to do something to clean them up
+> > before calling homa_attempt_defer_free?
+> skb_attempt_defer_free() usage is intended for the RX path only.
 >
-> Yes, KVM doesn't support it yet. But, adding that support to give more
-> control to userspace VMM helps this case, and probably many other in
-> the future.
+> Incoming packets get state (dst, extensions, ct...) attached in the rx
+> path before reaching the socket. You should free/release the state, if
+> possible, before inserting the skb into the receive queue, so that you
+> could defer free them after read.
 
-But didn't you tell me that Windows doesn't want the hypervisor to set
-BHI_DIS_S behind their back?
+I have modified Homa to use skb_attempt_defer_free, and this made a
+significant difference in the throughput of the critical path copying
+data from skbs to user space. Thanks for the suggestion.
 
-> I will check with Chao if he can prepare the next version of virtual
-> SPEC_CTRL series (leaving out virtual mitigation MSRs).
+However, skb_attempt_defer_free is not currently exported, so the
+patch series will now include an EXPORT_SYMBOL line for that in
+skbuff.c; hopefully that will be OK...
 
-Excellent.
+-John-
