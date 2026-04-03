@@ -1,51 +1,40 @@
 Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB4D3859CE;
-	Fri,  3 Apr 2026 09:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00753019C8
+	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 09:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775207276; cv=none; b=Ca1amWDVZKIG2TUTiTi15qiCeiuTmuQ1NEj6BZ6K/2wQPVHI472JCN52DjT8FFpGyYUP4c6cB8UoS8iXEw5/hI0WB7QGoJbSTpymbQ5AUgImfoZDiB4qQDHccMrwiABBTgF+yszCOr0DER/jvrTflEiYdgM+5QiBIhnVAD+qJX8=
+	t=1775207278; cv=none; b=RtgZbjvUX5ekZ9zOdujBGKbrVhCZISffQoSJtItW/8B8RWXQHvMAVDp1N54gbYDDT+RuErLnFais76lDzqLVcpEOtBJAAlVlZ9GDyONAhH5xY/Re/mpOOoLOkf3dLoWccrTtuRqOYe5UTrmW8UXD8gSAixxDTGKVkEj8wTezFVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775207276; c=relaxed/simple;
-	bh=Jil8SCpCHIG8fcwJ6NpAU99pU3A40fanjCMqhBKrx2w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EbJ++hTP9+PiTwVirhNi1d9jmpiiLmarHI5kA2gmUK1Wjut6tiGHuCC7ppTbOS7ixhlH7+XZjDqgj+NkzljldfVm/8920ZZ7gkFQ+4rMNaRbnK3NHqf4ECBC5qyqQyYrlTflKj/WCioss00lZ2kW44WtXLVy/dhdm152/ZlsuGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=JnJtS1st; arc=none smtp.client-ip=194.13.80.246
+	s=arc-20240116; t=1775207278; c=relaxed/simple;
+	bh=nFUtTxq3fc8Oihv8f7ZfNtEVneLNEQOaOVD8Oxiem7U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Gwpq3dqcf+iL5eZbugYDeucvGJaKrUlJjdwfPHNC/xKeNiTaIbgg3Ykda2LAhUZWxvgl7Tv+sLmcf6Kraz5S2tpqojrHe1JBKaJ++8i2zc7xgwR7o527GvFemwPPPB5ooRgIUSDp790KLLbXdG3TK2vrQom2tVVWg7vw88YJ5C4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=g+aNMFyd; arc=none smtp.client-ip=194.13.80.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="JnJtS1st"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D3601A11AE;
-	Fri,  3 Apr 2026 11:07:36 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="g+aNMFyd"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 59272A587B;
+	Fri,  3 Apr 2026 11:07:31 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1775207257; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=1XfxGKOARUvreYaAqzFmJPO+BFlwSnB7GItiL5w4+g8=;
-	b=JnJtS1stn6y37PdmtadanzFNUC669SDnO/qbNZBvqMrIfGFAGZZ6zKjBg8EGfzZYmIsTn7
-	IRb1W0s7H/Q+Gm24nkxyHpJAcH5a6fAETEPB4zglGe3o1ukDtJiiQhWFwrc/ROIN+ck7Fn
-	taACAxBp+Hjhs2QB/OxtGYQqyG6MsG4KnfzxLRQIiRSwn7OrvBSyL9mwniFV3rO1gq5F/E
-	TwE1NG6aaBLgXssJX+EE+Y9MPlzaWzy37Wlru81Ux07BpmIbz0EhWUB6WXq/VSUe2XzAkq
-	QZZ620vCsVPBHK9QoYIacTDv+clDlE3oJvX+zn9RiNqKtkTbQ5ENxJtHqgI6hA==
+	t=1775207253; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=jdRS1z504heA2CIiGPHsb37aXBB+fOgruNm848vdgYs=;
+	b=g+aNMFyd+Usx3ch0sJ39Y2GOb0IikWO3mXlAVUaWr/22nvmVbACKA8c6QFtApeZbO6fOfE
+	ED193ZGm7r3VwcBLZwVXcr9Qw7p66OhZ/IIT6yOTebbItbOlLya/s2ST00qU60mogqcYmn
+	7IAX6P8BlUd/hmBpIrx25B0bLpJ784O6yeWhvil8rj+LTZJj/Fcycl1GTOQDWX372cCLhN
+	jDuvVOTCfemwoGhtYHY0aX1JWZXESw4g4xYzoJ4w47IATLyrOmB8bzeZqgFP0eyTMN7gGr
+	u40kASuKM4u3+oH4DIdR0RHBN9OhPRb9SY3v3LA+OpeGg8BW76ZhhD6jOOOMqA==
 From: Nicolai Buchwitz <nb@tipi-net.de>
 To: netdev@vger.kernel.org
 Cc: Russell King <linux@armlinux.org.uk>,
 	Andrew Lunn <andrew@lunn.ch>,
 	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH net-next 2/3] net: phy: broadcom: implement .disable_autonomous_eee for BCM54xx
-Date: Fri,  3 Apr 2026 11:06:52 +0200
-Message-ID: <20260403090656.733985-3-nb@tipi-net.de>
+	Nicolai Buchwitz <nb@tipi-net.de>
+Subject: [RFC PATCH net-next 0/3] net: phy: add support for disabling autonomous EEE
+Date: Fri,  3 Apr 2026 11:06:50 +0200
+Message-ID: <20260403090656.733985-1-nb@tipi-net.de>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260403090656.733985-1-nb@tipi-net.de>
-References: <20260403090656.733985-1-nb@tipi-net.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,60 +44,55 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Disable AutogrEEEn mode on BCM54210E when the MAC indicates EEE support
-via phy_support_eee(). In AutogrEEEn mode the PHY manages LPI
-autonomously without forwarding LPI signaling to the MAC over the RGMII
-interface, which prevents the MAC from controlling TX LPI entry/exit.
+Some PHYs implement autonomous EEE where the PHY manages LPI signaling
+without forwarding it to the MAC. This conflicts with MACs that
+implement their own LPI control via phylink's mac_enable_tx_lpi /
+mac_disable_tx_lpi callbacks.
 
-Clearing the AutogrEEEn enable bit in MII_BUF_CNTL_0 switches the PHY
-to Native EEE mode where the MAC controls TX LPI and the PHY forwards
-received LPI on the RGMII interface.
+This series adds a .disable_autonomous_eee callback to struct phy_driver
+and calls it from phy_support_eee(). When a MAC indicates it supports
+EEE, the PHY's autonomous EEE is automatically disabled so the MAC can
+manage LPI entry/exit. The setting is persisted across suspend/resume
+by re-applying it in phy_init_hw() after soft reset, following the same
+pattern suggested by Russell King for PHY tunables [1].
 
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
----
- drivers/net/phy/broadcom.c | 7 +++++++
- include/linux/brcmphy.h    | 3 +++
- 2 files changed, 10 insertions(+)
+Patch 1 adds the phylib infrastructure.
+Patch 2 implements it for Broadcom BCM54xx (AutogrEEEn).
+Patch 3 converts the Realtek RTL8211F, which previously unconditionally
+  disabled PHY-mode EEE in config_init.
 
-diff --git a/drivers/net/phy/broadcom.c b/drivers/net/phy/broadcom.c
-index cb306f9e80cc..bf0c6a04481e 100644
---- a/drivers/net/phy/broadcom.c
-+++ b/drivers/net/phy/broadcom.c
-@@ -1452,6 +1452,12 @@ static int bcm54811_read_status(struct phy_device *phydev)
- 	return genphy_read_status(phydev);
- }
- 
-+static int bcm54xx_disable_autonomous_eee(struct phy_device *phydev)
-+{
-+	return bcm_phy_modify_exp(phydev, BCM54XX_TOP_MISC_MII_BUF_CNTL0,
-+				  BCM54XX_MII_BUF_CNTL0_AUTOGREEEN_EN, 0);
-+}
-+
- static struct phy_driver broadcom_drivers[] = {
- {
- 	PHY_ID_MATCH_MODEL(PHY_ID_BCM5411),
-@@ -1495,6 +1501,7 @@ static struct phy_driver broadcom_drivers[] = {
- 	.get_wol	= bcm54xx_phy_get_wol,
- 	.set_wol	= bcm54xx_phy_set_wol,
- 	.led_brightness_set	= bcm_phy_led_brightness_set,
-+	.disable_autonomous_eee	= bcm54xx_disable_autonomous_eee,
- }, {
- 	PHY_ID_MATCH_MODEL(PHY_ID_BCM5461),
- 	.name		= "Broadcom BCM5461",
-diff --git a/include/linux/brcmphy.h b/include/linux/brcmphy.h
-index 115a964f3006..174687c4c80a 100644
---- a/include/linux/brcmphy.h
-+++ b/include/linux/brcmphy.h
-@@ -266,6 +266,9 @@
- #define BCM54XX_TOP_MISC_IDDQ_SD		(1 << 2)
- #define BCM54XX_TOP_MISC_IDDQ_SR		(1 << 3)
- 
-+#define BCM54XX_TOP_MISC_MII_BUF_CNTL0		(MII_BCM54XX_EXP_SEL_TOP + 0x00)
-+#define  BCM54XX_MII_BUF_CNTL0_AUTOGREEEN_EN	BIT(0)
-+
- #define BCM54XX_TOP_MISC_LED_CTL		(MII_BCM54XX_EXP_SEL_TOP + 0x0C)
- #define  BCM54XX_LED4_SEL_INTR			BIT(1)
- 
+This came up while adding EEE support to the Cadence macb driver (used
+on Raspberry Pi 5 with a BCM54210PE PHY). The PHY's AutogrEEEn mode
+prevented the MAC from tracking LPI state. The Realtek RTL8211F has
+the same pattern, unconditionally disabling PHY-mode EEE with the
+comment "Disable PHY-mode EEE so LPI is passed to the MAC".
+
+Other BCM54xx PHYs likely have the same AutogrEEEn register layout,
+but I only have access to the BCM54210PE/BCM54213PE datasheets. It
+would be appreciated if Florian or others could confirm which other
+BCM54xx variants share this register so we can wire them up too.
+
+Tested on Raspberry Pi CM4 (bcmgenet + BCM54210PE),
+Raspberry Pi CM5 (Cadence GEM + BCM54210PE) and
+Raspberry Pi 5 (Cadence GEM + BCM54213PE).
+
+[1] https://lore.kernel.org/netdev/acuwvoydmJusuj9x@shell.armlinux.org.uk/
+
+Previous discussion:
+  https://lore.kernel.org/netdev/d86c53213a6328b701b8aabbde5d1c83@tipi-net.de/
+
+Nicolai Buchwitz (3):
+  net: phy: add support for disabling PHY-autonomous EEE
+  net: phy: broadcom: implement .disable_autonomous_eee for BCM54xx
+  net: phy: realtek: convert RTL8211F to .disable_autonomous_eee
+
+ drivers/net/phy/broadcom.c             |  7 +++++++
+ drivers/net/phy/phy_device.c           | 22 ++++++++++++++++++++++
+ drivers/net/phy/realtek/realtek_main.c |  7 ++++---
+ include/linux/brcmphy.h                |  3 +++
+ include/linux/phy.h                    | 18 ++++++++++++++++++
+ 5 files changed, 54 insertions(+), 3 deletions(-)
+
 -- 
 2.51.0
 
