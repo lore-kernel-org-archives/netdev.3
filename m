@@ -1,38 +1,36 @@
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83BBC36B043
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83ADC1F7569
 	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 12:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775219902; cv=none; b=KiDKIUg3M/IUNTSZniMlEaZufBAPp68b0Ss7lglE0YMGOt5MEdnDRNiIBnczMxrf5qEu4xbU+TKui/gGSppZw69/Gp4g//GO093Xy27t3MoO+LcUF0c8BtcgNCaFxxXdf4e+QXFMW0L4oVUzCpqubjo92aJXOjP3yyPK0AjiMWc=
+	t=1775219903; cv=none; b=XvQ6lghYCROfFX1rhC1qYUVP5WI5+gYgkWNT2iUtYAGiEk63oDxdl/PoQ87lR4EDmllS6D+XUOHb+sfRFqMQwW+D+nk0x3QWGcSzHC4r0CH7oXSfCATCTdIGQGSOTwEtF1RMi2RcM+tiDU/oJS9oFTuJUMSbY1lW1ar97/PS/4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775219902; c=relaxed/simple;
-	bh=Mwu6Sz64spSzf5w7YVaursjg6rG/xwr3mzJ+Nl+iHS0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EPzBxi9xMO8IhCC3LU4MuOc9nR0kl22owIbpMp1kTuOJMlLryIttxBgGitL+Y6X14uWoYOO5CT3sUISRByvMtfpBzr1JhUj61rby9yFQKHL+XYVrCcsprSBLg2fK0Fkx3FEz1GNtYD1cBIeDv+L3ecK+D07S6P1iqmHdMfEcyK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=KHe1zLR/; arc=none smtp.client-ip=185.246.84.56
+	s=arc-20240116; t=1775219903; c=relaxed/simple;
+	bh=ds34hCK/4//QihEfiYIFRbpzQKMG2S19lP2H+z/sfSI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=V4tCPEjM9xtw6+JXRNp+UXKRob85xXgi2tXF1nQcIdae8jU/BqYI1pPaJ8pKRBc2ZOUfQg9OJ46bqXrIyvXdNHo3kK36a6JUDO0fGfBVKanP6/B3/jhEAYfIuBIpYzEXBqVlhg8zA8Otid4n+bqYKjNsSBXGqg0906u0WafG9YY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=RIlLuehq; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="KHe1zLR/"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RIlLuehq"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 144551A3129;
-	Fri,  3 Apr 2026 12:38:18 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 902761A3127;
+	Fri,  3 Apr 2026 12:38:12 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id DCE16603C1;
-	Fri,  3 Apr 2026 12:38:17 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8CADB104500C7;
-	Fri,  3 Apr 2026 14:38:14 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 620BA603C1;
+	Fri,  3 Apr 2026 12:38:12 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0028A104500C4;
+	Fri,  3 Apr 2026 14:38:02 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1775219896; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=KnVPn6d3BEO3FUGVCROezak/ffHt3HCxyHVLa363FPI=;
-	b=KHe1zLR/lR3+AMP9a6ZS5YEFHXbWflAlWZ1fuWNyuDJ5C6XxTIKFiQdwDSnVzS+72QYKiQ
-	Bsb8eRxCTyCkkCEX0vzNMbhOjkE0UGcZe8xzVbYHLoum+2qj+buJ7Q3AChvgtIfzwMZArF
-	e6rrSlpFY1Om0SMDif9RLO1EStQUyZ8MZ1ZxCCZIkMuZSYjRDeBvgIKZzxldgX8PyGD/Ys
-	nxqkzdROYHd3NHOtl2oTsEkFfm7FTOodiCGagxiKV49e8z+/fI+78AOO7T9dsRXPEYJiJB
-	810D1ZOved/AVV0wAWdkn0abEV/HA9IxilDjF5rXYkqy1piELXe6LZVIlfvyRg==
+	t=1775219891; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=VdV+CaWsNSOdWbL3pvTitMcVaeTGVTjmI9tMoEkoOLY=;
+	b=RIlLuehqQitHRLaXy3kLvlOIEkZWXeksBkUdO34PKEO35G9tsBBWLq+PVd5RaM3VvnJ1ng
+	gRvnesWtldHok2K6/3YdoBvSguXOJ2UnaJWF2OmePpPrnOYJ75wEgpNU8UFgSz4Q9uaup7
+	rWajrDtc497RjWkD+szv3JG/jkoTfmU6MALsVWwIqPFqyrarzlb18SJbRZ24fnGD97DQtf
+	0fx0an/MfTe0q6/05iYgIl2FdWKeNyrS1O5FqvBxVn1Gbpm58QTRsoVhwkA0VXjWGP0lwO
+	GPUry5sa10PfeSugkrI9yEkVE88gtdAKudpAGsOfhUmdtnZiqHnkFNG3fR8vqw==
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: davem@davemloft.net,
 	Andrew Lunn <andrew@lunn.ch>,
@@ -58,12 +56,10 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Romain Gantois <romain.gantois@bootlin.com>,
 	Daniel Golle <daniel@makrotopia.org>,
 	Dimitri Fedrau <dimitri.fedrau@liebherr.com>
-Subject: [PATCH net-next v9 02/10] net: phy: phy_link_topology: Track ports in phy_link_topology
-Date: Fri,  3 Apr 2026 14:37:46 +0200
-Message-ID: <20260403123755.175742-3-maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next v9 00/10] net: phy_port: SFP modules representation and phy_port listing
+Date: Fri,  3 Apr 2026 14:37:44 +0200
+Message-ID: <20260403123755.175742-1-maxime.chevallier@bootlin.com>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20260403123755.175742-1-maxime.chevallier@bootlin.com>
-References: <20260403123755.175742-1-maxime.chevallier@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,206 +69,224 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-phy_port is aimed at representing the various physical interfaces of a
-net_device. They can be controlled by various components in the link,
-such as the Ethernet PHY, the Ethernet MAC, and SFP module, etc.
+Hello everyone,
 
-Let's therefore make so we keep track of all the ports connected to a
-netdev in phy_link_topology. The only ports added for now are phy-driven
-ports.
+Here's V9 for the phy_port netlink interface (get-only for now).
 
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
----
- drivers/net/phy/phy_link_topology.c | 53 +++++++++++++++++++++++++++++
- include/linux/phy_link_topology.h   | 18 ++++++++++
- include/linux/phy_port.h            |  2 ++
- net/core/dev.c                      |  1 +
- 4 files changed, 74 insertions(+)
+V9 addresses sashiko's issues (not all of them, as some don't make
+sense), and updates the missings parts in the doc.
 
-diff --git a/drivers/net/phy/phy_link_topology.c b/drivers/net/phy/phy_link_topology.c
-index fdfafd951905..207128303ca2 100644
---- a/drivers/net/phy/phy_link_topology.c
-+++ b/drivers/net/phy/phy_link_topology.c
-@@ -7,6 +7,7 @@
-  */
- 
- #include <linux/phy_link_topology.h>
-+#include <linux/phy_port.h>
- #include <linux/phy.h>
- #include <linux/rtnetlink.h>
- #include <linux/xarray.h>
-@@ -22,6 +23,9 @@ static int netdev_alloc_phy_link_topology(struct net_device *dev)
- 	xa_init_flags(&topo->phys, XA_FLAGS_ALLOC1);
- 	topo->next_phy_index = 1;
- 
-+	xa_init_flags(&topo->ports, XA_FLAGS_ALLOC1);
-+	topo->next_port_index = 1;
-+
- 	dev->link_topo = topo;
- 
- 	return 0;
-@@ -44,12 +48,45 @@ static struct phy_link_topology *phy_link_topo_get_or_alloc(struct net_device *d
- 	return dev->link_topo;
- }
- 
-+int phy_link_topo_add_port(struct net_device *dev, struct phy_port *port)
-+{
-+	struct phy_link_topology *topo;
-+	int ret;
-+
-+	topo = phy_link_topo_get_or_alloc(dev);
-+	if (IS_ERR(topo))
-+		return PTR_ERR(topo);
-+
-+	/* Attempt to re-use a previously allocated port_id */
-+	if (port->id)
-+		ret = xa_insert(&topo->ports, port->id, port, GFP_KERNEL);
-+	else
-+		ret = xa_alloc_cyclic(&topo->ports, &port->id, port,
-+				      xa_limit_32b, &topo->next_port_index,
-+				      GFP_KERNEL);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(phy_link_topo_add_port);
-+
-+void phy_link_topo_del_port(struct net_device *dev, struct phy_port *port)
-+{
-+	struct phy_link_topology *topo = dev->link_topo;
-+
-+	if (!topo)
-+		return;
-+
-+	xa_erase(&topo->ports, port->id);
-+}
-+EXPORT_SYMBOL_GPL(phy_link_topo_del_port);
-+
- int phy_link_topo_add_phy(struct net_device *dev,
- 			  struct phy_device *phy,
- 			  enum phy_upstream upt, void *upstream)
- {
- 	struct phy_link_topology *topo;
- 	struct phy_device_node *pdn;
-+	struct phy_port *port;
- 	int ret;
- 
- 	topo = phy_link_topo_get_or_alloc(dev);
-@@ -89,8 +126,20 @@ int phy_link_topo_add_phy(struct net_device *dev,
- 	if (ret < 0)
- 		goto err;
- 
-+	/* Add all the PHY's ports to the topology */
-+	list_for_each_entry(port, &phy->ports, head) {
-+		ret = phy_link_topo_add_port(dev, port);
-+		if (ret)
-+			goto del_ports;
-+	}
-+
- 	return 0;
- 
-+del_ports:
-+	list_for_each_entry_continue_reverse(port, &phy->ports, head)
-+		phy_link_topo_del_port(dev, port);
-+
-+	xa_erase(&topo->phys, phy->phyindex);
- err:
- 	kfree(pdn);
- 	return ret;
-@@ -102,10 +151,14 @@ void phy_link_topo_del_phy(struct net_device *dev,
- {
- 	struct phy_link_topology *topo = dev->link_topo;
- 	struct phy_device_node *pdn;
-+	struct phy_port *port;
- 
- 	if (!topo)
- 		return;
- 
-+	list_for_each_entry(port, &phy->ports, head)
-+		phy_link_topo_del_port(dev, port);
-+
- 	pdn = xa_erase(&topo->phys, phy->phyindex);
- 
- 	/* We delete the PHY from the topology, however we don't re-set the
-diff --git a/include/linux/phy_link_topology.h b/include/linux/phy_link_topology.h
-index 68a59e25821c..66bceff72b19 100644
---- a/include/linux/phy_link_topology.h
-+++ b/include/linux/phy_link_topology.h
-@@ -16,11 +16,15 @@
- 
- struct xarray;
- struct phy_device;
-+struct phy_port;
- struct sfp_bus;
- 
- struct phy_link_topology {
- 	struct xarray phys;
- 	u32 next_phy_index;
-+
-+	struct xarray ports;
-+	u32 next_port_index;
- };
- 
- struct phy_device_node {
-@@ -43,6 +47,9 @@ int phy_link_topo_add_phy(struct net_device *dev,
- 
- void phy_link_topo_del_phy(struct net_device *dev, struct phy_device *phy);
- 
-+int phy_link_topo_add_port(struct net_device *dev, struct phy_port *port);
-+void phy_link_topo_del_port(struct net_device *dev, struct phy_port *port);
-+
- static inline struct phy_device *
- phy_link_topo_get_phy(struct net_device *dev, u32 phyindex)
- {
-@@ -72,6 +79,17 @@ static inline void phy_link_topo_del_phy(struct net_device *dev,
- {
- }
- 
-+static inline int phy_link_topo_add_port(struct net_device *dev,
-+					 struct phy_port *port)
-+{
-+	return 0;
-+}
-+
-+static inline void phy_link_topo_del_port(struct net_device *dev,
-+					  struct phy_port *port)
-+{
-+}
-+
- static inline struct phy_device *
- phy_link_topo_get_phy(struct net_device *dev, u32 phyindex)
- {
-diff --git a/include/linux/phy_port.h b/include/linux/phy_port.h
-index 0ef0f5ce4709..4e2a3fdd2f2e 100644
---- a/include/linux/phy_port.h
-+++ b/include/linux/phy_port.h
-@@ -36,6 +36,7 @@ struct phy_port_ops {
- /**
-  * struct phy_port - A representation of a network device physical interface
-  *
-+ * @id: Unique identifier for the port within the topology
-  * @head: Used by the port's parent to list ports
-  * @parent_type: The type of device this port is directly connected to
-  * @phy: If the parent is PHY_PORT_PHYDEV, the PHY controlling that port
-@@ -52,6 +53,7 @@ struct phy_port_ops {
-  * @is_sfp: Indicates if this port drives an SFP cage.
-  */
- struct phy_port {
-+	u32 id;
- 	struct list_head head;
- 	enum phy_port_parent parent_type;
- 	union {
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 4519f0e59beb..9b97924ee925 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -11325,6 +11325,7 @@ static void netdev_free_phy_link_topology(struct net_device *dev)
- 
- 	if (IS_ENABLED(CONFIG_PHYLIB) && topo) {
- 		xa_destroy(&topo->phys);
-+		xa_destroy(&topo->ports);
- 		kfree(topo);
- 		dev->link_topo = NULL;
- 	}
+This work extends on the recent addition of phy_port representation to enable
+listing the front-facing ports of an interface. For now, we don't control
+these ports, we merely list their presence and their capabilities.
+
+As the most common use-case of multi-port interfaces is combo-ports that
+provide both RJ45 and SFP connectors on a single MAC, there's a lot of
+SFP stuff in this series.
+
+This series is in 2 main parts. The first one aims at representing the
+SFP cages and modules using phy_port, as combo-ports with RJ45 + SFP are
+by far the most common cases for multi-connector setups.
+
+The second part is the netlink interface to list those ports, now that
+most use-cases are covered.
+
+Let's see what we can do with some examples of the new ethtool API :
+
+- Get MII interfaces supported by an empty SFP cage :
+
+# ethtool --show-ports eth3
+
+Port for eth3:
+	Port id: 1
+	Vacant: yes
+	Supported MII interfaces : sgmii, 1000base-x, 2500base-x
+	Port type: sfp
+
+- Get Combo-ports supported modes, on each port :
+
+# ethtool --show-ports eth1
+
+Port for eth1:
+	Port id: 1
+	Vacant: no
+	Supported link modes:  10baseT/Half 10baseT/Full
+	                       100baseT/Half 100baseT/Full
+	                       1000baseT/Full
+	                       10000baseT/Full
+	                       2500baseT/Full
+	                       5000baseT/Full
+
+	Port type: mdi
+
+Port for eth1:
+	Port id: 2
+	Vacant: yes
+	Supported MII interfaces : 10gbase-r
+	Port type: sfp
+
+- Get Achievable linkmodes on a SFP module (combo port with a DAC in the
+SFP cage)
+
+# ethtool --show-ports eth1
+
+Port for eth1:
+	Port id: 1
+	Vacant: no
+	Supported link modes:  10baseT/Half 10baseT/Full
+	                       100baseT/Half 100baseT/Full
+	                       1000baseT/Full
+	                       10000baseT/Full
+	                       2500baseT/Full
+	                       5000baseT/Full
+	Port type: mdi
+
+Port for eth1:
+	Port id: 2
+	Vacant: no
+	Supported MII interfaces : 10gbase-r
+	Port type: sfp
+
+Port for eth1:
+	Port id: 3
+	Vacant: no
+	Supported link modes:  10000baseCR/Full
+	Port type: mdi
+
+Note that here, we have 3 ports :
+ - The Copper port
+ - The SFP Cage itself, marked as 'occupied'
+ - The SFP module
+
+This series builds on top of phy_port and phy_link_topology to allow
+tracking the ports of an interface. We maintain a list of supported
+linkmodes/interfaces on each port, which allows for fine-grained
+reporting of each port's capability.
+
+What this series doesn't do :
+ - We don't support selecting which port is active. This is the next step.
+ - We only support PHY-driven combo ports. The end-goal of this whole
+   journey that started with phy_link_topology is to get support for MII
+   muxes, such as the one we have on the Turris Omnia. This will eventually
+   be upstreamed as well.
+
+If you want to play around with it, here's [1] the patched ethtool that I've
+been using to produce the outputs above.
+
+Thanks !
+
+Maxime
+
+[1] : https://github.com/minimaxwell/ethtool/tree/mc/ethtool_port
+
+Changelog :
+
+Changes in V9:
+
+ - Added missing netlink doc updates for u8->u32 conversion
+ - Removed dead code with a condition that can never be true in
+   phylink's mod_port code
+ - Fixed the error path in phy_sfp_connect_phy
+
+Changes in v8:
+V8: https://lore.kernel.org/r/20260325081937.571115-1-maxime.chevallier@bootlin.com
+ - Set the new phydev.has_sfp_mod_phy field when we're sure that no
+   errors occured
+ - Fix formatting of the copyright info in ethnl port
+ - Use a policy to validate the range of port_id
+ - Use GENL_REQ_ATTR_CHECK
+ - alpha-sort headers
+ - use u32 in netlink messages
+ - return better error codes
+ - don't check the skb len, the core does that
+
+Changes in V7:
+V7: https://lore.kernel.org/all/20260309152747.702373-1-maxime.chevallier@bootlin.com/
+ - Changed the port cleanup path to use list_for_each_entry_continue_reverse
+ - Adjusted the cleanup path in phylink for the port vacant state
+ - Pass the right cmd for the netlink dump message
+
+Changes in V6:
+V6: https://lore.kernel.org/r/20260304145444.442334-1-maxime.chevallier@bootlin.com
+ - Added some comments in th mod_port cleanup
+ - changed some kmalloc to kmalloc_obj
+ - Removed some phy_link_topo_del_port that wasn't needed
+
+Changes in V5:
+V5: https://lore.kernel.org/r/20260205092317.755906-1-maxime.chevallier@bootlin.com
+ - Fixed a check on a potentially un-initialized pointer, reported by
+   Simon
+ - Fixed a documentation formatting issue
+ - Remove a stray pr_info
+ - Rebased on net-next
+
+Changes in V4:
+V4 : https://lore.kernel.org/netdev/20260203172839.548524-1-maxime.chevallier@bootlin.com/
+ - Add a cleanup patch for the of port parsing
+ - Added a match to sync the port's linkmodes with the PHY's for OF
+   ports
+ - Added RTNL assert in the port_get topo helper
+ - nullify the bus port for phylink support
+ - Fix some typos
+
+Changes in V3:
+V3: https://lore.kernel.org/netdev/20260201151249.642015-1-maxime.chevallier@bootlin.com/
+ - Remove the sfp bus ops for nophy, and use .module_start() as
+   suggested by Russell
+ - Added missing cleanup for the topology, as per AI review
+ - Fixed a few typos as per Romain's review
+ - Changed "occupied" to "vacant" as per Romain's review
+ - Added missing checks for null ports, per AI review
+
+Changes in V2:
+V2: https://lore.kernel.org/netdev/20260128204526.170927-1-maxime.chevallier@bootlin.com/
+ - Fix the cleanup path of phy_link_topo_add_phy, as per AI review
+ - Fix the cleanup path of phy_sfp_probe, as per AI review
+ - Fix the call-site of the disconnect_nophy sfp bus ops, per AI review
+ - Fix the netdev-less case uin phylink, per AI review
+ - Fix the prototype of phy_link_topo_get_port for the stubs
+ - Dropped patch 11. It ended-up breaking 'allnoconfig', so instead we
+   built a phy_interface_names array in net/ethtool/netlink.c
+ - Fix an ethool-netlink spec discrepancy with the type of an attribute
+ - Fix the size computation in the netlink port API
+ - Fix the cleanup path in the netlink port API
+
+V1: https://lore.kernel.org/netdev/20260127134202.8208-1-maxime.chevallier@bootlin.com/
+
+
+
+Maxime Chevallier (10):
+  net: phy: phy_link_topology: Add a helper for opportunistic alloc
+  net: phy: phy_link_topology: Track ports in phy_link_topology
+  net: phylink: Register a phy_port for MAC-driven SFP busses
+  net: phy: Create SFP phy_port before registering upstream
+  net: phy: Represent PHY-less SFP modules with phy_port
+  net: phylink: Represent PHY-less SFP modules with phy_port
+  net: phy: phy_port: Store information about a MII port's vacant state
+  net: phy: phy_link_topology: Add a helper to retrieve ports
+  netlink: specs: Add ethernet port listing with ethtool
+  net: ethtool: Introduce ethtool command to list ports
+
+ Documentation/netlink/specs/ethtool.yaml      |  50 +++
+ Documentation/networking/ethtool-netlink.rst  |  35 ++
+ MAINTAINERS                                   |   1 +
+ drivers/net/phy/phy-caps.h                    |   2 +
+ drivers/net/phy/phy_caps.c                    |  26 ++
+ drivers/net/phy/phy_device.c                  | 161 +++++++-
+ drivers/net/phy/phy_link_topology.c           |  82 +++-
+ drivers/net/phy/phylink.c                     | 137 ++++++-
+ include/linux/phy.h                           |   6 +
+ include/linux/phy_link_topology.h             |  39 ++
+ include/linux/phy_port.h                      |   6 +
+ .../uapi/linux/ethtool_netlink_generated.h    |  19 +
+ net/core/dev.c                                |   1 +
+ net/ethtool/Makefile                          |   2 +-
+ net/ethtool/netlink.c                         |  25 ++
+ net/ethtool/netlink.h                         |   8 +
+ net/ethtool/port.c                            | 368 ++++++++++++++++++
+ 17 files changed, 936 insertions(+), 32 deletions(-)
+ create mode 100644 net/ethtool/port.c
+
 -- 
 2.49.0
 
