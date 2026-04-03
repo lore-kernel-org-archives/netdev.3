@@ -1,110 +1,210 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72FC53A256A
-	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 12:38:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE52B39B942;
+	Fri,  3 Apr 2026 12:38:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775219906; cv=none; b=pwFt8XQjYkZCFktoZv8x/rpdtMb1HK6IRV5EH5Tw4djKOhRokvRo2W0zy59tQ7P+4ZoknKsSLQk7QSatUy91Sm8SGGfHDR1huvVs3PlMT8bPF0OULwiVvScfu3Q0+W6/i6wx1g9wrBy8pDb+KIx/EYmVZXs4wdad7RsNMvjI4Zc=
+	t=1775219910; cv=none; b=c18VPz94uV1lARn9z+yscPhJH5HdQ8WyHVVnn7xvpcW7gLCoUkofWaJQ/H1E1vBbC49OMvqjbvPJwjI123yba23PfMlld2ND68vEWhYIX7/2JIFHlmCTX11c0Z8ZA5WwI5/ulNi+IOb/KUWYPfqbcdkto3qLwhvwvgmSKGf1ubM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775219906; c=relaxed/simple;
-	bh=vtExJUQrc92Ifco2GsA0h+3adAwQZrofJkk/QL8wfVA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gx9+EN0KbqSp9D0xzhBqzr7HolgyxWLfYWyrH9KRUnRr8pqL8zosmxAntN3qXcJ/En0notdIIpB0UkPEEe9hfzIjckGqyYAa9MLxd1hHVSQKMrtNJNDXpE1e50xZTxwaU/uX2zJIemqtkx/aERwukmw/khK5Sd9yu7+GbIEtcmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=owMD2MNb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775219910; c=relaxed/simple;
+	bh=rRJ72v6wKYliD1sOn+BsxD6q3fY47+OlL6QjOuqE6OA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OUX5Cu46h+ETtBgVbdTCs0Rvh0BZO5lwEOCnYLqbOoVrFJQ+JKMVv4V2CZZTGFqcaOGNkfD+X42nxiU3Occgl4CcIwQa8ORsaoE68be/yJm80KD5Rs0HOlH0HMxRsV8Xv3e82/WdtFgCYquE+b7KNWNdD8zg98+Te2PTPhZikuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pZqw/CGE; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="owMD2MNb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09D3AC4CEF7;
-	Fri,  3 Apr 2026 12:38:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775219906;
-	bh=vtExJUQrc92Ifco2GsA0h+3adAwQZrofJkk/QL8wfVA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=owMD2MNbB8BomrEpFep2mNuubOTC0ctJo1BvryeYY809AfhdmuyBwgB5UbCkIGZkl
-	 qt6vtD9okfVecBI3ffr5iwmbvg7VBOTCnpRB0SGsMFSAcqoVfRlxe2noqkRPqQLviW
-	 PNklmfVpi9uQnSNG9yVKY8jLB7cVa3V8POR4n6fAM4oBdp7w7BgD7STTC1F7dVNc/B
-	 FXHMu7wpuw+4+unGE5pKAW4qC1hPF1SuAEPjd1gEKjqyj+V5jb4XGyOahaC89mua7N
-	 GCtgu3vPqzmreVfJuvDLK0IWn/eoJKxikUWsjjAQx0UcIAjiUm+9uHXnL8CyJam1zD
-	 vLMYgvShdYAoA==
-Date: Fri, 3 Apr 2026 13:38:22 +0100
-From: Simon Horman <horms@kernel.org>
-To: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, anthony.l.nguyen@intel.com,
-	netdev@vger.kernel.org, Paul Greenwalt <paul.greenwalt@intel.com>
-Subject: Re: [PATCH net] ice: fix ice_init_link() error return preventing
- probe
-Message-ID: <20260403123822.GA94338@horms.kernel.org>
-References: <20260327072332.130320-1-aleksandr.loktionov@intel.com>
- <20260327072332.130320-6-aleksandr.loktionov@intel.com>
- <20260403123610.GA91152@horms.kernel.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pZqw/CGE"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id A0BDE1A3128;
+	Fri,  3 Apr 2026 12:38:27 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 7593B603C1;
+	Fri,  3 Apr 2026 12:38:27 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7B5F2104500CA;
+	Fri,  3 Apr 2026 14:38:24 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1775219906; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=bOFXYj53zoGGIpSXvOyfbddgtLvAOthzQGTdXfDSQac=;
+	b=pZqw/CGERnuO1GSB2SXCacDiKoSbCUk/KSK7Y0DH17eOXIoTE36Aa6sl6RzutTBYeubai5
+	QgfqaTS2NG9xtOPnrHeG/XAGol1oMPEmJPWVhYtXBLD9bgPmI59IlMItq20XwpfgqvRMS0
+	BJlbbCgssL2oeSIjIvZ75wYOPMMi6MoXcG9RoT/C7LnI9r/Gmzel079chxHfFyHmMDVZet
+	BigNXb9kcS+ZiujOPfrDPRfAYdJ1Lyv9YDmdbQwmbHWK/6nv86vxNAOMUH4H72zCTpWh9T
+	DcRTWFWy2sHLCgBeBNLHSCEAWNSs1bhhsZMFO27dIuxZPr7Mbx+pPTcHXd2Isw==
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: davem@davemloft.net,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	thomas.petazzoni@bootlin.com,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	=?UTF-8?q?K=C3=B6ry=20Maincent?= <kory.maincent@bootlin.com>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	=?UTF-8?q?Nicol=C3=B2=20Veronese?= <nicveronese@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	mwojtas@chromium.org,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+Subject: [PATCH net-next v9 06/10] net: phylink: Represent PHY-less SFP modules with phy_port
+Date: Fri,  3 Apr 2026 14:37:50 +0200
+Message-ID: <20260403123755.175742-7-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20260403123755.175742-1-maxime.chevallier@bootlin.com>
+References: <20260403123755.175742-1-maxime.chevallier@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260403123610.GA91152@horms.kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, Apr 03, 2026 at 01:36:14PM +0100, Simon Horman wrote:
-> On Fri, Mar 27, 2026 at 08:23:29AM +0100, Aleksandr Loktionov wrote:
-> > From: Paul Greenwalt <paul.greenwalt@intel.com>
-> > 
-> > ice_init_link() can return an error status from ice_update_link_info()
-> > or ice_init_phy_user_cfg(), causing probe to fail.
-> > 
-> > An incorrect NVM update procedure can result in link/PHY errors, and
-> > the recommended resolution is to update the NVM using the correct
-> > procedure. If the driver fails probe due to link errors, the user
-> > cannot update the NVM to recover. The link/PHY errors logged are
-> > non-fatal: they are already annotated as 'not a fatal error if this
-> > fails'.
-> > 
-> > Since none of the errors inside ice_init_link() should prevent probe
-> > from completing, convert it to void and remove the error check in the
-> > caller. All failures are already logged; callers have no meaningful
-> > recovery path for link init errors.
-> > 
-> > Fixes: 5b246e533d01 ("ice: split probe into smaller functions")
+Let phylink handle the phy_port for PHY-less modules, and register it to
+the topology.
 
-Sorry, one more thing.
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+---
+ drivers/net/phy/phylink.c | 76 ++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 72 insertions(+), 4 deletions(-)
 
-I don't think this problem pre-dated the cited commit.
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index 0728dd4c4d56..8d57c95f877a 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -96,6 +96,7 @@ struct phylink {
+ 	__ETHTOOL_DECLARE_LINK_MODE_MASK(sfp_support);
+ 	u8 sfp_port;
+ 	struct phy_port *sfp_bus_port;
++	struct phy_port *mod_port;
+ 
+ 	struct eee_config eee_cfg;
+ 
+@@ -1790,10 +1791,15 @@ static int phylink_create_sfp_port(struct phylink *pl)
+ 
+ 	ret = phy_link_topo_add_port(pl->netdev, port);
+ 	if (ret)
+-		phy_port_destroy(port);
+-	else
+-		pl->sfp_bus_port = port;
++		goto out_destroy_port;
++
++	pl->sfp_bus_port = port;
++
++	return 0;
+ 
++out_destroy_port:
++	phy_port_destroy(port);
++	pl->sfp_bus_port = NULL;
+ 	return ret;
+ }
+ 
+@@ -3924,14 +3930,65 @@ static void phylink_sfp_module_remove(void *upstream)
+ 	phy_interface_zero(pl->sfp_interfaces);
+ }
+ 
++static int phylink_add_sfp_mod_port(struct phylink *pl)
++{
++	const struct sfp_module_caps *caps;
++	struct phy_port *port;
++	int ret = 0;
++
++	if (!pl->sfp_bus_port)
++		return 0;
++
++	/* Create mod port */
++	port = phy_port_alloc();
++	if (!port)
++		return -ENOMEM;
++
++	port->active = true;
++
++	caps = sfp_get_module_caps(pl->sfp_bus);
++
++	phy_caps_linkmode_filter_ifaces(port->supported, caps->link_modes,
++					pl->sfp_bus_port->interfaces);
++
++	if (pl->netdev) {
++		ret = phy_link_topo_add_port(pl->netdev, port);
++		if (ret) {
++			phy_port_destroy(port);
++			return ret;
++		}
++	}
++
++	pl->mod_port = port;
++
++	return 0;
++}
++
++static void phylink_del_sfp_mod_port(struct phylink *pl)
++{
++	if (!pl->mod_port)
++		return;
++
++	if (pl->netdev)
++		phy_link_topo_del_port(pl->netdev, pl->mod_port);
++
++	phy_port_destroy(pl->mod_port);
++	pl->mod_port = NULL;
++}
++
+ static int phylink_sfp_module_start(void *upstream)
+ {
+ 	struct phylink *pl = upstream;
++	int ret;
+ 
+ 	/* If this SFP module has a PHY, start the PHY now. */
+ 	if (pl->phydev) {
+ 		phy_start(pl->phydev);
+ 		return 0;
++	} else {
++		ret = phylink_add_sfp_mod_port(pl);
++		if (ret)
++			return ret;
+ 	}
+ 
+ 	/* If the module may have a PHY but we didn't detect one we
+@@ -3940,7 +3997,16 @@ static int phylink_sfp_module_start(void *upstream)
+ 	if (!pl->sfp_may_have_phy)
+ 		return 0;
+ 
+-	return phylink_sfp_config_optical(pl);
++	ret = phylink_sfp_config_optical(pl);
++	if (ret)
++		goto del_mod_port;
++
++	return 0;
++
++del_mod_port:
++	phylink_del_sfp_mod_port(pl);
++
++	return ret;
+ }
+ 
+ static void phylink_sfp_module_stop(void *upstream)
+@@ -3950,6 +4016,8 @@ static void phylink_sfp_module_stop(void *upstream)
+ 	/* If this SFP module has a PHY, stop it. */
+ 	if (pl->phydev)
+ 		phy_stop(pl->phydev);
++	else
++		phylink_del_sfp_mod_port(pl);
+ }
+ 
+ static void phylink_sfp_link_down(void *upstream)
+-- 
+2.49.0
 
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Paul Greenwalt <paul.greenwalt@intel.com>
-> > Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-> 
-> The nit below notwithstanding, this looks good to me.
-> 
-> Reviewed-by: Simon Horman <horms@kernel.org>
-> 
-> > ---
-> > 
-> >  drivers/net/ethernet/intel/ice/ice_main.c | 12 +++---------
-> >  1 file changed, 3 insertions(+), 9 deletions(-)
-> > 
-> > diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-> 
-> ...
-> 
-> > @@ -5043,9 +5039,7 @@ static int ice_init(struct ice_pf *pf)
-> >  
-> >  	ice_init_wakeup(pf);
-> >  
-> > -	err = ice_init_link(pf);
-> > -	if (err)
-> > -		goto err_init_link;
-> 
-> I think now would be a good time to rename the err_init_link label,
-> after what it does, rather than where it is (no longer) jumped from.
-> And perhaps others in this function too
-> 
-> > +	ice_init_link(pf);
-> >  
-> >  	err = ice_send_version(pf);
-> >  	if (err)
-> > -- 
-> > 2.52.0
-> > 
