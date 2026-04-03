@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CA23D6CB3;
-	Fri,  3 Apr 2026 19:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1898A3D7D83;
+	Fri,  3 Apr 2026 19:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775245793; cv=none; b=QFocEwN20ayio5E/ONa3mmwewsONVRrfB4LZETBg3NuSGf3lUyncBtf+8NqNLU24AYDVcn52VJVfbUWEq9o7P6VHbbjbKoMjAsUDam+N9QCKAlLMaVFLz6RkdJRVNsYlEtGBP3la06thlNEhub+0y03IPNkvdqhcsiDA9zVhpDQ=
+	t=1775245795; cv=none; b=q0mkVafYKoFCEC4N8JK+stc1tTfMElZ7Usp4wGhxHQacfJaWpsm26y1CLwxTd6cgm1iasrUkQDqE6/jlQzM0ef4p/u50LSBIQ5vsYWy2og+eXU5CIX0wO4k5EKUyB79LlvWLpdGun7nZE2nA1TjP/7Ld/SgV7x/xGOSOi3LBurM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775245793; c=relaxed/simple;
-	bh=F/UNfhq2HaMZzses2S95Yd+c38aRvIMZtcJqcwIgBa8=;
+	s=arc-20240116; t=1775245795; c=relaxed/simple;
+	bh=7FVZwDkd6z8+CJp3xNY6kwpdKoC5CJ4ZWWhuj7tkpMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IPocMBxRNkwRrWADJgz8+7pJcoZqomTZEtHikuWL8RHH1ZcosIVZ1WwPGOkBXNQjxnDlM8MNuUpGmIpUG7wcwWE8ax7uhKuDlYleE/DikqTQb+sfRgTUfVXGcqa7Q5QM2rPJJlK1MShAPYi1XLQiZEtl7TGcOnuxzaJAXj0fnZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=av3Ol3us; arc=none smtp.client-ip=192.198.163.15
+	 MIME-Version; b=nwsSkzj0gZSSBgkH4V8Hfvyk/LGeduOUTCZ+AgQIew7RP5p90Q9bC9ZTSk413efPnRXN7/CK8oblAYTlKOycdTQGcPIxeUznSkvUJsqbpAnKRER62xV7Mt6HF1icr2d6x0wDqDQ0aOAHGwS8peQnJ9SyCZ8C9GFqHXS54Jaz/mA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lyprdKMI; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="av3Ol3us"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lyprdKMI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1775245791; x=1806781791;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=F/UNfhq2HaMZzses2S95Yd+c38aRvIMZtcJqcwIgBa8=;
-  b=av3Ol3usBADqG2lpTl5EWOHliJBSAPB7k3ByAIEKJDmyO9R+yM68rAVM
-   iY31KmnUASYkLPrJ3x7QlM4Ge39DXCCPb/uwH/hmU+ZnGXvX0p3rI6YBZ
-   YOjLSlKKshGmGCLLkAu/gTgZ01bmAiJg+N8pE3eoon9yPWn5gLJv26Yay
-   fsq19UKqDLMToBzQmYT9zOMUhCglz5ky5bOW4CxMPVKIGOIOyCY9uXked
-   n5k3oguFiXHX49gEf6KUqho0CyN94bruXN5NOZGobaJfppuRHsTeKZJgP
-   WjKY2M5HeLmZQjf3OH8UfCXnaooJoK3RhJBhX74JcGNETC41GDjwWXbUA
-   g==;
-X-CSE-ConnectionGUID: 5IP8N3wiT8+Gc74HeCS/tA==
-X-CSE-MsgGUID: uwUUkeE/QwKj3s4d5EC+qw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11748"; a="76428790"
+  bh=7FVZwDkd6z8+CJp3xNY6kwpdKoC5CJ4ZWWhuj7tkpMo=;
+  b=lyprdKMI2vIHoPRuhBhv0moIKz2cOuyP2QV9feCFniDQ8e1OAzkGPx6b
+   mOYzX4Qw7pR7exmmqwwD+mPmyFpoByaBN08xnqcmB4o7rnGmqS7vvVyZb
+   26QVzFbXH7psmx+FhHSebhJizuO/b1YuC6yIHh9CDn49xHLRbV7vfU6iA
+   YDZUZy1vi1NcyFcqtJGWPMPLNIktDjWjmHcdBOgjsFG2bRE4CvAR9huFZ
+   vpIBgomTzYdxifwyDlWn36Bg3sJkB9Lvud0Bl06sBBvTBTi6KC4JJ54Um
+   8/73Pr/RgvzUZuNm1gnPwjLz0rrnUfAbmNAqXcMG7cbWy1lgBZTHUfeUt
+   w==;
+X-CSE-ConnectionGUID: PjENIP0QTUWOaBk+Si7lIA==
+X-CSE-MsgGUID: h/m1I090Ss6+NblQhhP7vg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11748"; a="76428794"
 X-IronPort-AV: E=Sophos;i="6.23,158,1770624000"; 
-   d="scan'208";a="76428790"
+   d="scan'208";a="76428794"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
   by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2026 12:49:45 -0700
-X-CSE-ConnectionGUID: VV3oiL/GRMaQDOqn9Atd3A==
-X-CSE-MsgGUID: xbcJhYtGT9yDEhoHm5KqbQ==
+X-CSE-ConnectionGUID: pGLogX5TTwuB11lMQ4CkhQ==
+X-CSE-MsgGUID: LujELlUNSzGWXRcQe3mljA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,158,1770624000"; 
-   d="scan'208";a="265266125"
+   d="scan'208";a="265266131"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by orviesa001.jf.intel.com with ESMTP; 03 Apr 2026 12:49:44 -0700
+  by orviesa001.jf.intel.com with ESMTP; 03 Apr 2026 12:49:45 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -50,7 +50,7 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Phani R Burra <phani.r.burra@intel.com>,
+Cc: Pavan Kumar Linga <madhu.chittim@intel.com>,
 	anthony.l.nguyen@intel.com,
 	larysa.zaremba@intel.com,
 	przemyslaw.kitszel@intel.com,
@@ -60,7 +60,6 @@ Cc: Phani R Burra <phani.r.burra@intel.com>,
 	michal.swiatkowski@linux.intel.com,
 	maciej.fijalkowski@intel.com,
 	emil.s.tantilov@intel.com,
-	madhu.chittim@intel.com,
 	joshua.a.hay@intel.com,
 	jacob.e.keller@intel.com,
 	jayaprakash.shanmugam@intel.com,
@@ -69,12 +68,13 @@ Cc: Phani R Burra <phani.r.burra@intel.com>,
 	corbet@lwn.net,
 	richardcochran@gmail.com,
 	linux-doc@vger.kernel.org,
-	Bharath R <bharath.r@intel.com>,
+	bhelgaas@google.com,
+	linux-pci@vger.kernel.org,
 	Samuel Salin <Samuel.salin@intel.com>,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH net-next v2 05/14] libie: add bookkeeping support for control queue messages
-Date: Fri,  3 Apr 2026 12:49:27 -0700
-Message-ID: <20260403194938.3577011-6-anthony.l.nguyen@intel.com>
+Subject: [PATCH net-next v2 07/14] idpf: refactor idpf to use libie_pci APIs
+Date: Fri,  3 Apr 2026 12:49:29 -0700
+Message-ID: <20260403194938.3577011-8-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260403194938.3577011-1-anthony.l.nguyen@intel.com>
 References: <20260403194938.3577011-1-anthony.l.nguyen@intel.com>
@@ -86,839 +86,1172 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Phani R Burra <phani.r.burra@intel.com>
+From: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
 
-All send control queue messages are allocated/freed in libie itself and
-tracked with the unique transaction (Xn) ids until they receive response or
-time out. Responses can be received out of order, therefore transactions
-are stored in an array and tracked though a bitmap.
+Use libie_pci init and MMIO APIs where possible, struct idpf_hw cannot be
+deleted for now as it also houses control queues that will be refactored
+later. Use libie_cp header for libie_ctlq_ctx that contains mmio info from
+the start in order to not increase the diff later.
 
-Pre-allocated DMA memory is used where possible. It reduces the driver
-overhead in handling memory allocation/free and message timeouts.
-
-Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Signed-off-by: Phani R Burra <phani.r.burra@intel.com>
-Co-developed-by: Victor Raj <victor.raj@intel.com>
-Signed-off-by: Victor Raj <victor.raj@intel.com>
-Co-developed-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
+Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
+Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
 Signed-off-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
 Co-developed-by: Larysa Zaremba <larysa.zaremba@intel.com>
 Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Tested-by: Bharath R <bharath.r@intel.com>
 Tested-by: Samuel Salin <Samuel.salin@intel.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/libie/controlq.c | 592 ++++++++++++++++++++
- include/linux/intel/libie/controlq.h        | 175 ++++++
- 2 files changed, 767 insertions(+)
+ drivers/net/ethernet/intel/idpf/Kconfig       |   1 +
+ drivers/net/ethernet/intel/idpf/idpf.h        |  70 +-------
+ .../net/ethernet/intel/idpf/idpf_controlq.c   |  26 ++-
+ .../net/ethernet/intel/idpf/idpf_controlq.h   |   2 -
+ drivers/net/ethernet/intel/idpf/idpf_dev.c    |  61 ++++---
+ drivers/net/ethernet/intel/idpf/idpf_idc.c    |  38 +++--
+ drivers/net/ethernet/intel/idpf/idpf_lib.c    |   7 +-
+ drivers/net/ethernet/intel/idpf/idpf_main.c   | 114 ++++++-------
+ drivers/net/ethernet/intel/idpf/idpf_vf_dev.c |  32 ++--
+ .../net/ethernet/intel/idpf/idpf_virtchnl.c   | 161 +++++++++---------
+ .../ethernet/intel/idpf/idpf_virtchnl_ptp.c   |  58 ++++---
+ 11 files changed, 271 insertions(+), 299 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/libie/controlq.c b/drivers/net/ethernet/intel/libie/controlq.c
-index 6c6324c33cc0..61f36f7a15ab 100644
---- a/drivers/net/ethernet/intel/libie/controlq.c
-+++ b/drivers/net/ethernet/intel/libie/controlq.c
-@@ -597,6 +597,598 @@ u32 libie_ctlq_recv(struct libie_ctlq_info *ctlq, struct libie_ctlq_msg *msg,
+diff --git a/drivers/net/ethernet/intel/idpf/Kconfig b/drivers/net/ethernet/intel/idpf/Kconfig
+index adab2154125b..586df3a4afe9 100644
+--- a/drivers/net/ethernet/intel/idpf/Kconfig
++++ b/drivers/net/ethernet/intel/idpf/Kconfig
+@@ -6,6 +6,7 @@ config IDPF
+ 	depends on PCI_MSI
+ 	depends on PTP_1588_CLOCK_OPTIONAL
+ 	select DIMLIB
++	select LIBIE_CP
+ 	select LIBETH_XDP
+ 	help
+ 	  This driver supports Intel(R) Infrastructure Data Path Function
+diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
+index 0d08f51be7e3..efdb58990a8b 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf.h
++++ b/drivers/net/ethernet/intel/idpf/idpf.h
+@@ -23,6 +23,7 @@ struct idpf_rss_data;
+ 
+ #include <linux/intel/iidc_rdma.h>
+ #include <linux/intel/iidc_rdma_idpf.h>
++#include <linux/intel/libie/controlq.h>
+ #include <linux/intel/virtchnl2.h>
+ 
+ #include "idpf_txrx.h"
+@@ -625,6 +626,7 @@ struct idpf_vc_xn_manager;
+  * @flags: See enum idpf_flags
+  * @reset_reg: See struct idpf_reset_reg
+  * @hw: Device access data
++ * @ctlq_ctx: controlq context
+  * @num_avail_msix: Available number of MSIX vectors
+  * @num_msix_entries: Number of entries in MSIX table
+  * @msix_entries: MSIX table
+@@ -682,6 +684,7 @@ struct idpf_adapter {
+ 	DECLARE_BITMAP(flags, IDPF_FLAGS_NBITS);
+ 	struct idpf_reset_reg reset_reg;
+ 	struct idpf_hw hw;
++	struct libie_ctlq_ctx ctlq_ctx;
+ 	u16 num_avail_msix;
+ 	u16 num_msix_entries;
+ 	struct msix_entry *msix_entries;
+@@ -870,70 +873,6 @@ static inline u8 idpf_get_min_tx_pkt_len(struct idpf_adapter *adapter)
+ 	return pkt_len ? pkt_len : IDPF_TX_MIN_PKT_LEN;
  }
- EXPORT_SYMBOL_NS_GPL(libie_ctlq_recv, "LIBIE_CP");
+ 
+-/**
+- * idpf_get_mbx_reg_addr - Get BAR0 mailbox register address
+- * @adapter: private data struct
+- * @reg_offset: register offset value
+- *
+- * Return: BAR0 mailbox register address based on register offset.
+- */
+-static inline void __iomem *idpf_get_mbx_reg_addr(struct idpf_adapter *adapter,
+-						  resource_size_t reg_offset)
+-{
+-	return adapter->hw.mbx.vaddr + reg_offset;
+-}
+-
+-/**
+- * idpf_get_rstat_reg_addr - Get BAR0 rstat register address
+- * @adapter: private data struct
+- * @reg_offset: register offset value
+- *
+- * Return: BAR0 rstat register address based on register offset.
+- */
+-static inline void __iomem *idpf_get_rstat_reg_addr(struct idpf_adapter *adapter,
+-						    resource_size_t reg_offset)
+-{
+-	reg_offset -= adapter->dev_ops.static_reg_info[1].start;
+-
+-	return adapter->hw.rstat.vaddr + reg_offset;
+-}
+-
+-/**
+- * idpf_get_reg_addr - Get BAR0 register address
+- * @adapter: private data struct
+- * @reg_offset: register offset value
+- *
+- * Based on the register offset, return the actual BAR0 register address
+- */
+-static inline void __iomem *idpf_get_reg_addr(struct idpf_adapter *adapter,
+-					      resource_size_t reg_offset)
+-{
+-	struct idpf_hw *hw = &adapter->hw;
+-
+-	for (int i = 0; i < hw->num_lan_regs; i++) {
+-		struct idpf_mmio_reg *region = &hw->lan_regs[i];
+-
+-		if (reg_offset >= region->addr_start &&
+-		    reg_offset < (region->addr_start + region->addr_len)) {
+-			/* Convert the offset so that it is relative to the
+-			 * start of the region.  Then add the base address of
+-			 * the region to get the final address.
+-			 */
+-			reg_offset -= region->addr_start;
+-
+-			return region->vaddr + reg_offset;
+-		}
+-	}
+-
+-	/* It's impossible to hit this case with offsets from the CP. But if we
+-	 * do for any other reason, the kernel will panic on that register
+-	 * access. Might as well do it here to make it clear what's happening.
+-	 */
+-	BUG();
+-
+-	return NULL;
+-}
+-
+ /**
+  * idpf_is_reset_detected - check if we were reset at some point
+  * @adapter: driver specific private structure
+@@ -945,7 +884,8 @@ static inline bool idpf_is_reset_detected(struct idpf_adapter *adapter)
+ 	if (!adapter->hw.arq)
+ 		return true;
+ 
+-	return !(readl(idpf_get_mbx_reg_addr(adapter, adapter->hw.arq->reg.len)) &
++	return !(readl(libie_pci_get_mmio_addr(&adapter->ctlq_ctx.mmio_info,
++					       adapter->hw.arq->reg.len)) &
+ 		 adapter->hw.arq->reg.len_mask);
+ }
+ 
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_controlq.c b/drivers/net/ethernet/intel/idpf/idpf_controlq.c
+index d2dde43269e9..020b08367e18 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_controlq.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_controlq.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /* Copyright (C) 2023 Intel Corporation */
+ 
+-#include "idpf_controlq.h"
++#include "idpf.h"
+ 
+ /**
+  * idpf_ctlq_setup_regs - initialize control queue registers
+@@ -34,21 +34,27 @@ static void idpf_ctlq_setup_regs(struct idpf_ctlq_info *cq,
+ static void idpf_ctlq_init_regs(struct idpf_hw *hw, struct idpf_ctlq_info *cq,
+ 				bool is_rxq)
+ {
++	struct libie_mmio_info *mmio = &hw->back->ctlq_ctx.mmio_info;
++
+ 	/* Update tail to post pre-allocated buffers for rx queues */
+ 	if (is_rxq)
+-		idpf_mbx_wr32(hw, cq->reg.tail, (u32)(cq->ring_size - 1));
++		writel((u32)(cq->ring_size - 1),
++		       libie_pci_get_mmio_addr(mmio, cq->reg.tail));
+ 
+ 	/* For non-Mailbox control queues only TAIL need to be set */
+ 	if (cq->q_id != -1)
+ 		return;
+ 
+ 	/* Clear Head for both send or receive */
+-	idpf_mbx_wr32(hw, cq->reg.head, 0);
++	writel(0, libie_pci_get_mmio_addr(mmio, cq->reg.head));
+ 
+ 	/* set starting point */
+-	idpf_mbx_wr32(hw, cq->reg.bal, lower_32_bits(cq->desc_ring.pa));
+-	idpf_mbx_wr32(hw, cq->reg.bah, upper_32_bits(cq->desc_ring.pa));
+-	idpf_mbx_wr32(hw, cq->reg.len, (cq->ring_size | cq->reg.len_ena_mask));
++	writel(lower_32_bits(cq->desc_ring.pa),
++	       libie_pci_get_mmio_addr(mmio, cq->reg.bal));
++	writel(upper_32_bits(cq->desc_ring.pa),
++	       libie_pci_get_mmio_addr(mmio, cq->reg.bah));
++	writel((cq->ring_size | cq->reg.len_ena_mask),
++	       libie_pci_get_mmio_addr(mmio, cq->reg.len));
+ }
+ 
+ /**
+@@ -326,7 +332,9 @@ int idpf_ctlq_send(struct idpf_hw *hw, struct idpf_ctlq_info *cq,
+ 	 */
+ 	dma_wmb();
+ 
+-	idpf_mbx_wr32(hw, cq->reg.tail, cq->next_to_use);
++	writel(cq->next_to_use,
++	       libie_pci_get_mmio_addr(&hw->back->ctlq_ctx.mmio_info,
++				       cq->reg.tail));
+ 
+ err_unlock:
+ 	spin_unlock(&cq->cq_lock);
+@@ -518,7 +526,9 @@ int idpf_ctlq_post_rx_buffs(struct idpf_hw *hw, struct idpf_ctlq_info *cq,
+ 
+ 		dma_wmb();
+ 
+-		idpf_mbx_wr32(hw, cq->reg.tail, cq->next_to_post);
++		writel(cq->next_to_post,
++		       libie_pci_get_mmio_addr(&hw->back->ctlq_ctx.mmio_info,
++					       cq->reg.tail));
+ 	}
+ 
+ 	spin_unlock(&cq->cq_lock);
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_controlq.h b/drivers/net/ethernet/intel/idpf/idpf_controlq.h
+index de4ece40c2ff..acf595e9265f 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_controlq.h
++++ b/drivers/net/ethernet/intel/idpf/idpf_controlq.h
+@@ -109,8 +109,6 @@ struct idpf_mmio_reg {
+  * Align to ctlq_hw_info
+  */
+ struct idpf_hw {
+-	struct idpf_mmio_reg mbx;
+-	struct idpf_mmio_reg rstat;
+ 	/* Array of remaining LAN BAR regions */
+ 	int num_lan_regs;
+ 	struct idpf_mmio_reg *lan_regs;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_dev.c b/drivers/net/ethernet/intel/idpf/idpf_dev.c
+index 1a0c71c95ef1..a9e170eb24b7 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_dev.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_dev.c
+@@ -16,7 +16,6 @@
+ static void idpf_ctlq_reg_init(struct idpf_adapter *adapter,
+ 			       struct idpf_ctlq_create_info *cq)
+ {
+-	resource_size_t mbx_start = adapter->dev_ops.static_reg_info[0].start;
+ 	int i;
+ 
+ 	for (i = 0; i < IDPF_NUM_DFLT_MBX_Q; i++) {
+@@ -25,22 +24,22 @@ static void idpf_ctlq_reg_init(struct idpf_adapter *adapter,
+ 		switch (ccq->type) {
+ 		case IDPF_CTLQ_TYPE_MAILBOX_TX:
+ 			/* set head and tail registers in our local struct */
+-			ccq->reg.head = PF_FW_ATQH - mbx_start;
+-			ccq->reg.tail = PF_FW_ATQT - mbx_start;
+-			ccq->reg.len = PF_FW_ATQLEN - mbx_start;
+-			ccq->reg.bah = PF_FW_ATQBAH - mbx_start;
+-			ccq->reg.bal = PF_FW_ATQBAL - mbx_start;
++			ccq->reg.head = PF_FW_ATQH;
++			ccq->reg.tail = PF_FW_ATQT;
++			ccq->reg.len = PF_FW_ATQLEN;
++			ccq->reg.bah = PF_FW_ATQBAH;
++			ccq->reg.bal = PF_FW_ATQBAL;
+ 			ccq->reg.len_mask = PF_FW_ATQLEN_ATQLEN_M;
+ 			ccq->reg.len_ena_mask = PF_FW_ATQLEN_ATQENABLE_M;
+ 			ccq->reg.head_mask = PF_FW_ATQH_ATQH_M;
+ 			break;
+ 		case IDPF_CTLQ_TYPE_MAILBOX_RX:
+ 			/* set head and tail registers in our local struct */
+-			ccq->reg.head = PF_FW_ARQH - mbx_start;
+-			ccq->reg.tail = PF_FW_ARQT - mbx_start;
+-			ccq->reg.len = PF_FW_ARQLEN - mbx_start;
+-			ccq->reg.bah = PF_FW_ARQBAH - mbx_start;
+-			ccq->reg.bal = PF_FW_ARQBAL - mbx_start;
++			ccq->reg.head = PF_FW_ARQH;
++			ccq->reg.tail = PF_FW_ARQT;
++			ccq->reg.len = PF_FW_ARQLEN;
++			ccq->reg.bah = PF_FW_ARQBAH;
++			ccq->reg.bal = PF_FW_ARQBAL;
+ 			ccq->reg.len_mask = PF_FW_ARQLEN_ARQLEN_M;
+ 			ccq->reg.len_ena_mask = PF_FW_ARQLEN_ARQENABLE_M;
+ 			ccq->reg.head_mask = PF_FW_ARQH_ARQH_M;
+@@ -57,13 +56,14 @@ static void idpf_ctlq_reg_init(struct idpf_adapter *adapter,
+  */
+ static void idpf_mb_intr_reg_init(struct idpf_adapter *adapter)
+ {
++	struct libie_mmio_info *mmio = &adapter->ctlq_ctx.mmio_info;
+ 	struct idpf_intr_reg *intr = &adapter->mb_vector.intr_reg;
+ 	u32 dyn_ctl = le32_to_cpu(adapter->caps.mailbox_dyn_ctl);
+ 
+-	intr->dyn_ctl = idpf_get_reg_addr(adapter, dyn_ctl);
++	intr->dyn_ctl = libie_pci_get_mmio_addr(mmio, dyn_ctl);
+ 	intr->dyn_ctl_intena_m = PF_GLINT_DYN_CTL_INTENA_M;
+ 	intr->dyn_ctl_itridx_m = PF_GLINT_DYN_CTL_ITR_INDX_M;
+-	intr->icr_ena = idpf_get_reg_addr(adapter, PF_INT_DIR_OICR_ENA);
++	intr->icr_ena = libie_pci_get_mmio_addr(mmio, PF_INT_DIR_OICR_ENA);
+ 	intr->icr_ena_ctlq_m = PF_INT_DIR_OICR_ENA_M;
+ }
+ 
+@@ -78,6 +78,7 @@ static int idpf_intr_reg_init(struct idpf_vport *vport,
+ 	struct idpf_adapter *adapter = vport->adapter;
+ 	u16 num_vecs = rsrc->num_q_vectors;
+ 	struct idpf_vec_regs *reg_vals;
++	struct libie_mmio_info *mmio;
+ 	int num_regs, i, err = 0;
+ 	u32 rx_itr, tx_itr, val;
+ 	u16 total_vecs;
+@@ -93,14 +94,17 @@ static int idpf_intr_reg_init(struct idpf_vport *vport,
+ 		goto free_reg_vals;
+ 	}
+ 
++	mmio = &adapter->ctlq_ctx.mmio_info;
++
+ 	for (i = 0; i < num_vecs; i++) {
+ 		struct idpf_q_vector *q_vector = &rsrc->q_vectors[i];
+ 		u16 vec_id = rsrc->q_vector_idxs[i] - IDPF_MBX_Q_VEC;
+ 		struct idpf_intr_reg *intr = &q_vector->intr_reg;
++		struct idpf_vec_regs *reg = &reg_vals[vec_id];
+ 		u32 spacing;
+ 
+-		intr->dyn_ctl = idpf_get_reg_addr(adapter,
+-						  reg_vals[vec_id].dyn_ctl_reg);
++		intr->dyn_ctl =	libie_pci_get_mmio_addr(mmio,
++							reg->dyn_ctl_reg);
+ 		intr->dyn_ctl_intena_m = PF_GLINT_DYN_CTL_INTENA_M;
+ 		intr->dyn_ctl_intena_msk_m = PF_GLINT_DYN_CTL_INTENA_MSK_M;
+ 		intr->dyn_ctl_itridx_s = PF_GLINT_DYN_CTL_ITR_INDX_S;
+@@ -110,22 +114,21 @@ static int idpf_intr_reg_init(struct idpf_vport *vport,
+ 		intr->dyn_ctl_sw_itridx_ena_m =
+ 			PF_GLINT_DYN_CTL_SW_ITR_INDX_ENA_M;
+ 
+-		spacing = IDPF_ITR_IDX_SPACING(reg_vals[vec_id].itrn_index_spacing,
++		spacing = IDPF_ITR_IDX_SPACING(reg->itrn_index_spacing,
+ 					       IDPF_PF_ITR_IDX_SPACING);
+ 		rx_itr = PF_GLINT_ITR_ADDR(VIRTCHNL2_ITR_IDX_0,
+-					   reg_vals[vec_id].itrn_reg,
+-					   spacing);
++					   reg->itrn_reg, spacing);
+ 		tx_itr = PF_GLINT_ITR_ADDR(VIRTCHNL2_ITR_IDX_1,
+-					   reg_vals[vec_id].itrn_reg,
+-					   spacing);
+-		intr->rx_itr = idpf_get_reg_addr(adapter, rx_itr);
+-		intr->tx_itr = idpf_get_reg_addr(adapter, tx_itr);
++					   reg->itrn_reg, spacing);
++		intr->rx_itr = libie_pci_get_mmio_addr(mmio, rx_itr);
++		intr->tx_itr = libie_pci_get_mmio_addr(mmio, tx_itr);
+ 	}
+ 
+ 	/* Data vector for NOIRQ queues */
+ 
+ 	val = reg_vals[rsrc->q_vector_idxs[i] - IDPF_MBX_Q_VEC].dyn_ctl_reg;
+-	rsrc->noirq_dyn_ctl = idpf_get_reg_addr(adapter, val);
++	rsrc->noirq_dyn_ctl =
++		libie_pci_get_mmio_addr(&adapter->ctlq_ctx.mmio_info, val);
+ 
+ 	val = PF_GLINT_DYN_CTL_WB_ON_ITR_M | PF_GLINT_DYN_CTL_INTENA_MSK_M |
+ 	      FIELD_PREP(PF_GLINT_DYN_CTL_ITR_INDX_M, IDPF_NO_ITR_UPDATE_IDX);
+@@ -143,7 +146,9 @@ static int idpf_intr_reg_init(struct idpf_vport *vport,
+  */
+ static void idpf_reset_reg_init(struct idpf_adapter *adapter)
+ {
+-	adapter->reset_reg.rstat = idpf_get_rstat_reg_addr(adapter, PFGEN_RSTAT);
++	adapter->reset_reg.rstat =
++		libie_pci_get_mmio_addr(&adapter->ctlq_ctx.mmio_info,
++					PFGEN_RSTAT);
+ 	adapter->reset_reg.rstat_m = PFGEN_RSTAT_PFR_STATE_M;
+ }
+ 
+@@ -155,11 +160,11 @@ static void idpf_reset_reg_init(struct idpf_adapter *adapter)
+ static void idpf_trigger_reset(struct idpf_adapter *adapter,
+ 			       enum idpf_flags __always_unused trig_cause)
+ {
+-	u32 reset_reg;
++	void __iomem *addr;
+ 
+-	reset_reg = readl(idpf_get_rstat_reg_addr(adapter, PFGEN_CTRL));
+-	writel(reset_reg | PFGEN_CTRL_PFSWR,
+-	       idpf_get_rstat_reg_addr(adapter, PFGEN_CTRL));
++	addr = libie_pci_get_mmio_addr(&adapter->ctlq_ctx.mmio_info,
++				       PFGEN_CTRL);
++	writel(readl(addr) | PFGEN_CTRL_PFSWR, addr);
+ }
+ 
+ /**
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_idc.c b/drivers/net/ethernet/intel/idpf/idpf_idc.c
+index 7e4f4ac92653..cdce32df64cc 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_idc.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_idc.c
+@@ -410,9 +410,12 @@ idpf_idc_init_msix_data(struct idpf_adapter *adapter)
+ int idpf_idc_init_aux_core_dev(struct idpf_adapter *adapter,
+ 			       enum iidc_function_type ftype)
+ {
++	struct libie_mmio_info *mmio = &adapter->ctlq_ctx.mmio_info;
+ 	struct iidc_rdma_core_dev_info *cdev_info;
+ 	struct iidc_rdma_priv_dev_info *privd;
+-	int err, i;
++	struct libie_pci_mmio_region *mr;
++	size_t num_mem_regions;
++	int err, i = 0;
+ 
+ 	adapter->cdev_info = kzalloc_obj(*cdev_info);
+ 	if (!adapter->cdev_info)
+@@ -430,22 +433,37 @@ int idpf_idc_init_aux_core_dev(struct idpf_adapter *adapter,
+ 	cdev_info->rdma_protocol = IIDC_RDMA_PROTOCOL_ROCEV2;
+ 	privd->ftype = ftype;
+ 
++	num_mem_regions = list_count_nodes(&mmio->mmio_list);
++	if (num_mem_regions <= IDPF_MMIO_REG_NUM_STATIC) {
++		err = -EINVAL;
++		goto err_plug_aux_dev;
++	}
++
++	num_mem_regions -= IDPF_MMIO_REG_NUM_STATIC;
+ 	privd->mapped_mem_regions =
+ 		kzalloc_objs(struct iidc_rdma_lan_mapped_mem_region,
+-			     adapter->hw.num_lan_regs);
++			     num_mem_regions);
+ 	if (!privd->mapped_mem_regions) {
+ 		err = -ENOMEM;
+ 		goto err_plug_aux_dev;
+ 	}
+ 
+-	privd->num_memory_regions = cpu_to_le16(adapter->hw.num_lan_regs);
+-	for (i = 0; i < adapter->hw.num_lan_regs; i++) {
+-		privd->mapped_mem_regions[i].region_addr =
+-			adapter->hw.lan_regs[i].vaddr;
+-		privd->mapped_mem_regions[i].size =
+-			cpu_to_le64(adapter->hw.lan_regs[i].addr_len);
+-		privd->mapped_mem_regions[i].start_offset =
+-			cpu_to_le64(adapter->hw.lan_regs[i].addr_start);
++	privd->num_memory_regions = cpu_to_le16(num_mem_regions);
++	list_for_each_entry(mr, &mmio->mmio_list, list) {
++		struct resource *static_regs = adapter->dev_ops.static_reg_info;
++		bool is_static = false;
++
++		for (uint j = 0; j < IDPF_MMIO_REG_NUM_STATIC; j++)
++			if (mr->offset == static_regs[j].start)
++				is_static = true;
++
++		if (is_static)
++			continue;
++
++		privd->mapped_mem_regions[i].region_addr = mr->addr;
++		privd->mapped_mem_regions[i].size = cpu_to_le64(mr->size);
++		privd->mapped_mem_regions[i++].start_offset =
++						cpu_to_le64(mr->offset);
+ 	}
+ 
+ 	idpf_idc_init_msix_data(adapter);
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+index d88ca59edf97..875472ae77fd 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+@@ -1847,15 +1847,14 @@ void idpf_deinit_task(struct idpf_adapter *adapter)
+ 
+ /**
+  * idpf_check_reset_complete - check that reset is complete
+- * @hw: pointer to hw struct
++ * @adapter: adapter to check
+  * @reset_reg: struct with reset registers
+  *
+  * Returns 0 if device is ready to use, or -EBUSY if it's in reset.
+  **/
+-static int idpf_check_reset_complete(struct idpf_hw *hw,
++static int idpf_check_reset_complete(struct idpf_adapter *adapter,
+ 				     struct idpf_reset_reg *reset_reg)
+ {
+-	struct idpf_adapter *adapter = hw->back;
+ 	int i;
+ 
+ 	for (i = 0; i < 2000; i++) {
+@@ -1918,7 +1917,7 @@ static void idpf_init_hard_reset(struct idpf_adapter *adapter)
+ 	}
+ 
+ 	/* Wait for reset to complete */
+-	err = idpf_check_reset_complete(&adapter->hw, &adapter->reset_reg);
++	err = idpf_check_reset_complete(adapter, &adapter->reset_reg);
+ 	if (err) {
+ 		dev_err(dev, "The driver was unable to contact the device's firmware. Check that the FW is running. Driver state= 0x%x\n",
+ 			adapter->state);
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_main.c b/drivers/net/ethernet/intel/idpf/idpf_main.c
+index 0dd741dcfcdb..d8e19d5f1647 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_main.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_main.c
+@@ -15,6 +15,8 @@
+ 
+ MODULE_DESCRIPTION(DRV_SUMMARY);
+ MODULE_IMPORT_NS("LIBETH");
++MODULE_IMPORT_NS("LIBIE_CP");
++MODULE_IMPORT_NS("LIBIE_PCI");
+ MODULE_IMPORT_NS("LIBETH_XDP");
+ MODULE_LICENSE("GPL");
+ 
+@@ -56,8 +58,16 @@ static int idpf_get_device_type(struct pci_dev *pdev)
+ static int idpf_dev_init(struct idpf_adapter *adapter,
+ 			 const struct pci_device_id *ent)
+ {
++	struct libie_mmio_info *mmio_info = &adapter->ctlq_ctx.mmio_info;
+ 	int ret;
+ 
++	ret = libie_pci_init_dev(adapter->pdev);
++	if (ret)
++		return ret;
++
++	mmio_info->pdev = adapter->pdev;
++	INIT_LIST_HEAD(&mmio_info->mmio_list);
++
+ 	if (ent->class == IDPF_CLASS_NETWORK_ETHERNET_PROGIF) {
+ 		ret = idpf_get_device_type(adapter->pdev);
+ 		switch (ret) {
+@@ -90,6 +100,15 @@ static int idpf_dev_init(struct idpf_adapter *adapter,
+ 	return 0;
+ }
  
 +/**
-+ * libie_ctlq_xn_pop_free - get a free Xn entry from the free list
-+ * @xnm: Xn transaction manager
-+ *
-+ * Retrieve a free Xn entry from the free list.
-+ *
-+ * Return: valid Xn entry pointer or NULL if there are no free Xn entries.
++ * idpf_decfg_device - deconfigure device and device specific resources
++ * @adapter: driver specific private structure
 + */
-+static struct libie_ctlq_xn *
-+libie_ctlq_xn_pop_free(struct libie_ctlq_xn_manager *xnm)
++static void idpf_decfg_device(struct idpf_adapter *adapter)
 +{
-+	struct libie_ctlq_xn *xn;
-+	u32 free_idx;
-+
-+	guard(spinlock)(&xnm->free_xns_bm_lock);
-+
-+	if (unlikely(xnm->shutdown))
-+		return NULL;
-+
-+	free_idx = find_next_bit(xnm->free_xns_bm, LIBIE_CTLQ_MAX_XN_ENTRIES,
-+				 0);
-+	if (free_idx == LIBIE_CTLQ_MAX_XN_ENTRIES)
-+		return NULL;
-+
-+	__clear_bit(free_idx, xnm->free_xns_bm);
-+	xn = &xnm->ring[free_idx];
-+	xn->cookie = xnm->cookie++;
-+
-+	return xn;
++	libie_pci_unmap_all_mmio_regions(&adapter->ctlq_ctx.mmio_info);
 +}
 +
-+/**
-+ * __libie_ctlq_xn_push_free - unsafely push a Xn entry into the free list
-+ * @xnm: Xn transaction manager
-+ * @xn: xn entry to be added into the free list
-+ */
-+static void __libie_ctlq_xn_push_free(struct libie_ctlq_xn_manager *xnm,
-+				      struct libie_ctlq_xn *xn)
-+{
-+	__set_bit(xn->index, xnm->free_xns_bm);
+ /**
+  * idpf_remove - Device removal routine
+  * @pdev: PCI device information struct
+@@ -159,6 +178,7 @@ static void idpf_remove(struct pci_dev *pdev)
+ 	mutex_destroy(&adapter->queue_lock);
+ 	mutex_destroy(&adapter->vc_buf_lock);
+ 
++	idpf_decfg_device(adapter);
+ 	pci_set_drvdata(pdev, NULL);
+ 	kfree(adapter);
+ }
+@@ -181,46 +201,45 @@ static void idpf_shutdown(struct pci_dev *pdev)
+ }
+ 
+ /**
+- * idpf_cfg_hw - Initialize HW struct
+- * @adapter: adapter to setup hw struct for
++ * idpf_cfg_device - configure device and device specific resources
++ * @adapter: driver specific private structure
+  *
+- * Returns 0 on success, negative on failure
++ * Return: %0 on success, -%errno on failure.
+  */
+-static int idpf_cfg_hw(struct idpf_adapter *adapter)
++static int idpf_cfg_device(struct idpf_adapter *adapter)
+ {
+-	resource_size_t res_start, mbx_start, rstat_start;
++	struct libie_mmio_info *mmio_info = &adapter->ctlq_ctx.mmio_info;
+ 	struct pci_dev *pdev = adapter->pdev;
+-	struct idpf_hw *hw = &adapter->hw;
+-	struct device *dev = &pdev->dev;
+-	long len;
+-
+-	res_start = pci_resource_start(pdev, 0);
++	struct resource *region;
++	bool mapped = false;
++	int err;
+ 
+ 	/* Map mailbox space for virtchnl communication */
+-	mbx_start = res_start + adapter->dev_ops.static_reg_info[0].start;
+-	len = resource_size(&adapter->dev_ops.static_reg_info[0]);
+-	hw->mbx.vaddr = devm_ioremap(dev, mbx_start, len);
+-	if (!hw->mbx.vaddr) {
+-		pci_err(pdev, "failed to allocate BAR0 mbx region\n");
+-
++	region = &adapter->dev_ops.static_reg_info[0];
++	mapped = libie_pci_map_mmio_region(mmio_info, region->start,
++					   resource_size(region));
++	if (!mapped) {
++		pci_err(pdev, "failed to map BAR0 mbx region\n");
+ 		return -ENOMEM;
+ 	}
+-	hw->mbx.addr_start = adapter->dev_ops.static_reg_info[0].start;
+-	hw->mbx.addr_len = len;
+ 
+ 	/* Map rstat space for resets */
+-	rstat_start = res_start + adapter->dev_ops.static_reg_info[1].start;
+-	len = resource_size(&adapter->dev_ops.static_reg_info[1]);
+-	hw->rstat.vaddr = devm_ioremap(dev, rstat_start, len);
+-	if (!hw->rstat.vaddr) {
+-		pci_err(pdev, "failed to allocate BAR0 rstat region\n");
++	region = &adapter->dev_ops.static_reg_info[1];
+ 
++	mapped = libie_pci_map_mmio_region(mmio_info, region->start,
++					   resource_size(region));
++	if (!mapped) {
++		pci_err(pdev, "failed to map BAR0 rstat region\n");
++		libie_pci_unmap_all_mmio_regions(mmio_info);
+ 		return -ENOMEM;
+ 	}
+-	hw->rstat.addr_start = adapter->dev_ops.static_reg_info[1].start;
+-	hw->rstat.addr_len = len;
+ 
+-	hw->back = adapter;
++	err = pci_enable_ptm(pdev, NULL);
++	if (err)
++		pci_dbg(pdev, "PCIe PTM is not supported by PCIe bus/controller\n");
 +
-+	if (likely(!xnm->shutdown))
-+		return;
++	pci_set_drvdata(pdev, adapter);
++	adapter->hw.back = adapter;
+ 
+ 	return 0;
+ }
+@@ -246,32 +265,21 @@ static int idpf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	adapter->req_rx_splitq = true;
+ 
+ 	adapter->pdev = pdev;
+-	err = pcim_enable_device(pdev);
+-	if (err)
+-		goto err_free;
+ 
+-	err = pcim_request_region(pdev, 0, pci_name(pdev));
++	err = idpf_dev_init(adapter, ent);
+ 	if (err) {
+-		pci_err(pdev, "pcim_request_region failed %pe\n", ERR_PTR(err));
+-
++		dev_err(&pdev->dev, "Unexpected dev ID 0x%x in idpf probe\n",
++			ent->device);
+ 		goto err_free;
+ 	}
+ 
+-	err = pci_enable_ptm(pdev, NULL);
+-	if (err)
+-		pci_dbg(pdev, "PCIe PTM is not supported by PCIe bus/controller\n");
+-
+-	/* set up for high or low dma */
+-	err = dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64));
++	err = idpf_cfg_device(adapter);
+ 	if (err) {
+-		pci_err(pdev, "DMA configuration failed: %pe\n", ERR_PTR(err));
+-
++		pci_err(pdev, "Failed to configure device specific resources: %pe\n",
++			ERR_PTR(err));
+ 		goto err_free;
+ 	}
+ 
+-	pci_set_master(pdev);
+-	pci_set_drvdata(pdev, adapter);
+-
+ 	adapter->init_wq = alloc_workqueue("%s-%s-init",
+ 					   WQ_UNBOUND | WQ_MEM_RECLAIM, 0,
+ 					   dev_driver_string(dev),
+@@ -279,7 +287,7 @@ static int idpf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	if (!adapter->init_wq) {
+ 		dev_err(dev, "Failed to allocate init workqueue\n");
+ 		err = -ENOMEM;
+-		goto err_free;
++		goto err_init_wq;
+ 	}
+ 
+ 	adapter->serv_wq = alloc_workqueue("%s-%s-service",
+@@ -324,20 +332,6 @@ static int idpf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	/* setup msglvl */
+ 	adapter->msg_enable = netif_msg_init(-1, IDPF_AVAIL_NETIF_M);
+ 
+-	err = idpf_dev_init(adapter, ent);
+-	if (err) {
+-		dev_err(&pdev->dev, "Unexpected dev ID 0x%x in idpf probe\n",
+-			ent->device);
+-		goto destroy_vc_event_wq;
+-	}
+-
+-	err = idpf_cfg_hw(adapter);
+-	if (err) {
+-		dev_err(dev, "Failed to configure HW structure for adapter: %d\n",
+-			err);
+-		goto destroy_vc_event_wq;
+-	}
+-
+ 	mutex_init(&adapter->vport_ctrl_lock);
+ 	mutex_init(&adapter->vector_lock);
+ 	mutex_init(&adapter->queue_lock);
+@@ -356,8 +350,6 @@ static int idpf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 
+ 	return 0;
+ 
+-destroy_vc_event_wq:
+-	destroy_workqueue(adapter->vc_event_wq);
+ err_vc_event_wq_alloc:
+ 	destroy_workqueue(adapter->stats_wq);
+ err_stats_wq_alloc:
+@@ -366,6 +358,8 @@ static int idpf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	destroy_workqueue(adapter->serv_wq);
+ err_serv_wq_alloc:
+ 	destroy_workqueue(adapter->init_wq);
++err_init_wq:
++	idpf_decfg_device(adapter);
+ err_free:
+ 	kfree(adapter);
+ 	return err;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_vf_dev.c b/drivers/net/ethernet/intel/idpf/idpf_vf_dev.c
+index a07d7e808ca9..a6127bac10a8 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_vf_dev.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_vf_dev.c
+@@ -56,13 +56,14 @@ static void idpf_vf_ctlq_reg_init(struct idpf_adapter *adapter,
+  */
+ static void idpf_vf_mb_intr_reg_init(struct idpf_adapter *adapter)
+ {
++	struct libie_mmio_info *mmio = &adapter->ctlq_ctx.mmio_info;
+ 	struct idpf_intr_reg *intr = &adapter->mb_vector.intr_reg;
+ 	u32 dyn_ctl = le32_to_cpu(adapter->caps.mailbox_dyn_ctl);
+ 
+-	intr->dyn_ctl = idpf_get_reg_addr(adapter, dyn_ctl);
++	intr->dyn_ctl = libie_pci_get_mmio_addr(mmio, dyn_ctl);
+ 	intr->dyn_ctl_intena_m = VF_INT_DYN_CTL0_INTENA_M;
+ 	intr->dyn_ctl_itridx_m = VF_INT_DYN_CTL0_ITR_INDX_M;
+-	intr->icr_ena = idpf_get_reg_addr(adapter, VF_INT_ICR0_ENA1);
++	intr->icr_ena = libie_pci_get_mmio_addr(mmio, VF_INT_ICR0_ENA1);
+ 	intr->icr_ena_ctlq_m = VF_INT_ICR0_ENA1_ADMINQ_M;
+ }
+ 
+@@ -77,6 +78,7 @@ static int idpf_vf_intr_reg_init(struct idpf_vport *vport,
+ 	struct idpf_adapter *adapter = vport->adapter;
+ 	u16 num_vecs = rsrc->num_q_vectors;
+ 	struct idpf_vec_regs *reg_vals;
++	struct libie_mmio_info *mmio;
+ 	int num_regs, i, err = 0;
+ 	u32 rx_itr, tx_itr, val;
+ 	u16 total_vecs;
+@@ -92,14 +94,17 @@ static int idpf_vf_intr_reg_init(struct idpf_vport *vport,
+ 		goto free_reg_vals;
+ 	}
+ 
++	mmio = &adapter->ctlq_ctx.mmio_info;
 +
-+	if (bitmap_full(xnm->free_xns_bm, LIBIE_CTLQ_MAX_XN_ENTRIES))
-+		complete(&xnm->can_destroy);
-+}
-+
-+/**
-+ * libie_ctlq_xn_push_free - push a Xn entry into the free list
-+ * @xnm: Xn transaction manager
-+ * @xn: xn entry to be added into the free list, not locked
+ 	for (i = 0; i < num_vecs; i++) {
+ 		struct idpf_q_vector *q_vector = &rsrc->q_vectors[i];
+ 		u16 vec_id = rsrc->q_vector_idxs[i] - IDPF_MBX_Q_VEC;
+ 		struct idpf_intr_reg *intr = &q_vector->intr_reg;
++		struct idpf_vec_regs *reg = &reg_vals[vec_id];
+ 		u32 spacing;
+ 
+-		intr->dyn_ctl = idpf_get_reg_addr(adapter,
+-						  reg_vals[vec_id].dyn_ctl_reg);
++		intr->dyn_ctl =	libie_pci_get_mmio_addr(mmio,
++							reg->dyn_ctl_reg);
+ 		intr->dyn_ctl_intena_m = VF_INT_DYN_CTLN_INTENA_M;
+ 		intr->dyn_ctl_intena_msk_m = VF_INT_DYN_CTLN_INTENA_MSK_M;
+ 		intr->dyn_ctl_itridx_s = VF_INT_DYN_CTLN_ITR_INDX_S;
+@@ -109,22 +114,21 @@ static int idpf_vf_intr_reg_init(struct idpf_vport *vport,
+ 		intr->dyn_ctl_sw_itridx_ena_m =
+ 			VF_INT_DYN_CTLN_SW_ITR_INDX_ENA_M;
+ 
+-		spacing = IDPF_ITR_IDX_SPACING(reg_vals[vec_id].itrn_index_spacing,
++		spacing = IDPF_ITR_IDX_SPACING(reg->itrn_index_spacing,
+ 					       IDPF_VF_ITR_IDX_SPACING);
+ 		rx_itr = VF_INT_ITRN_ADDR(VIRTCHNL2_ITR_IDX_0,
+-					  reg_vals[vec_id].itrn_reg,
+-					  spacing);
++					  reg->itrn_reg, spacing);
+ 		tx_itr = VF_INT_ITRN_ADDR(VIRTCHNL2_ITR_IDX_1,
+-					  reg_vals[vec_id].itrn_reg,
+-					  spacing);
+-		intr->rx_itr = idpf_get_reg_addr(adapter, rx_itr);
+-		intr->tx_itr = idpf_get_reg_addr(adapter, tx_itr);
++					  reg->itrn_reg, spacing);
++		intr->rx_itr = libie_pci_get_mmio_addr(mmio, rx_itr);
++		intr->tx_itr = libie_pci_get_mmio_addr(mmio, tx_itr);
+ 	}
+ 
+ 	/* Data vector for NOIRQ queues */
+ 
+ 	val = reg_vals[rsrc->q_vector_idxs[i] - IDPF_MBX_Q_VEC].dyn_ctl_reg;
+-	rsrc->noirq_dyn_ctl = idpf_get_reg_addr(adapter, val);
++	rsrc->noirq_dyn_ctl =
++		libie_pci_get_mmio_addr(&adapter->ctlq_ctx.mmio_info, val);
+ 
+ 	val = VF_INT_DYN_CTLN_WB_ON_ITR_M | VF_INT_DYN_CTLN_INTENA_MSK_M |
+ 	      FIELD_PREP(VF_INT_DYN_CTLN_ITR_INDX_M, IDPF_NO_ITR_UPDATE_IDX);
+@@ -142,7 +146,9 @@ static int idpf_vf_intr_reg_init(struct idpf_vport *vport,
+  */
+ static void idpf_vf_reset_reg_init(struct idpf_adapter *adapter)
+ {
+-	adapter->reset_reg.rstat = idpf_get_rstat_reg_addr(adapter, VFGEN_RSTAT);
++	adapter->reset_reg.rstat =
++		libie_pci_get_mmio_addr(&adapter->ctlq_ctx.mmio_info,
++					VFGEN_RSTAT);
+ 	adapter->reset_reg.rstat_m = VFGEN_RSTAT_VFR_STATE_M;
+ }
+ 
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+index c45a788bb9cb..a4ce1bce5e75 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -2,6 +2,7 @@
+ /* Copyright (C) 2023 Intel Corporation */
+ 
+ #include <linux/export.h>
++#include <linux/intel/libie/pci.h>
+ #include <net/libeth/rx.h>
+ 
+ #include "idpf.h"
+@@ -1018,12 +1019,46 @@ static int idpf_send_get_caps_msg(struct idpf_adapter *adapter)
+ }
+ 
+ /**
+- * idpf_send_get_lan_memory_regions - Send virtchnl get LAN memory regions msg
++ * idpf_mmio_region_non_static - Check if region is not static
++ * @mmio_info: PCI resources info
++ * @reg: region to check
 + *
-+ * Safely add a used Xn entry back to the free list.
++ * Return: %true if region can be received though virtchnl command,
++ *	   %false if region is related to mailbox or resetting
 + */
-+static void libie_ctlq_xn_push_free(struct libie_ctlq_xn_manager *xnm,
-+				    struct libie_ctlq_xn *xn)
++static bool idpf_mmio_region_non_static(struct libie_mmio_info *mmio_info,
++					struct libie_pci_mmio_region *reg)
 +{
-+	guard(spinlock)(&xnm->free_xns_bm_lock);
++	struct idpf_adapter *adapter =
++		container_of(mmio_info, struct idpf_adapter,
++			     ctlq_ctx.mmio_info);
 +
-+	__libie_ctlq_xn_push_free(xnm, xn);
-+}
-+
-+/**
-+ * libie_ctlq_xn_put - put an Xn that will not be used in the current thread
-+ * @xnm: Xn transaction manager
-+ * @xn: async xn entry to be put for now, not locked
-+ *
-+ * If the Xn manager is being shutdown, nothing will handle the related
-+ * async request.
-+ */
-+static void libie_ctlq_xn_put(struct libie_ctlq_xn_manager *xnm,
-+			      struct libie_ctlq_xn *xn)
-+{
-+	guard(spinlock)(&xnm->free_xns_bm_lock);
-+
-+	if (unlikely(xnm->shutdown))
-+		__libie_ctlq_xn_push_free(xnm, xn);
-+}
-+
-+/**
-+ * libie_ctlq_xn_deinit_dma - free the DMA memory allocated for send messages
-+ * @dev: device pointer
-+ * @xnm: pointer to the transaction manager
-+ * @num_entries: number of Xn entries to free the DMA for
-+ */
-+static void libie_ctlq_xn_deinit_dma(struct device *dev,
-+				     struct libie_ctlq_xn_manager *xnm,
-+				     u32 num_entries)
-+{
-+	for (u32 i = 0; i < num_entries; i++) {
-+		struct libie_ctlq_xn *xn = &xnm->ring[i];
-+
-+		libie_cp_free_dma_mem(dev, xn->dma_mem);
-+		kfree(xn->dma_mem);
++	for (uint i = 0; i < IDPF_MMIO_REG_NUM_STATIC; i++) {
++		if (reg->bar_idx == 0 &&
++		    reg->offset == adapter->dev_ops.static_reg_info[i].start)
++			return false;
 +	}
-+}
-+
-+/**
-+ * libie_ctlq_xn_init_dma - pre-allocate DMA memory for send messages that use
-+ * stack variables
-+ * @dev: device pointer
-+ * @xnm: pointer to transaction manager
-+ *
-+ * Return: %0 on success or error if memory allocation fails
-+ */
-+static int libie_ctlq_xn_init_dma(struct device *dev,
-+				  struct libie_ctlq_xn_manager *xnm)
-+{
-+	u32 i;
-+
-+	for (i = 0; i < LIBIE_CTLQ_MAX_XN_ENTRIES; i++) {
-+		struct libie_ctlq_xn *xn = &xnm->ring[i];
-+		struct libie_cp_dma_mem *dma_mem;
-+
-+		dma_mem = kzalloc_obj(*dma_mem);
-+		if (!dma_mem)
-+			goto dealloc_dma;
-+
-+		dma_mem->va = libie_cp_alloc_dma_mem(dev, dma_mem,
-+						     LIBIE_CTLQ_MAX_BUF_LEN);
-+		if (!dma_mem->va) {
-+			kfree(dma_mem);
-+			goto dealloc_dma;
-+		}
-+
-+		xn->dma_mem = dma_mem;
-+	}
-+
-+	return 0;
-+
-+dealloc_dma:
-+	libie_ctlq_xn_deinit_dma(dev, xnm, i);
-+
-+	return -ENOMEM;
-+}
-+
-+/**
-+ * libie_ctlq_xn_process_recv - process Xn data in receive message
-+ * @params: Xn receive param information to handle a receive message
-+ * @ctlq_msg: received control queue message
-+ *
-+ * Process a control queue receive message and send a complete event
-+ * notification.
-+ *
-+ * Return: true if a message has been processed, false otherwise.
-+ */
-+static bool
-+libie_ctlq_xn_process_recv(struct libie_ctlq_xn_recv_params *params,
-+			   struct libie_ctlq_msg *ctlq_msg)
-+{
-+	struct libie_ctlq_xn_manager *xnm = params->xnm;
-+	struct libie_ctlq_xn *xn;
-+	u16 msg_cookie, xn_index;
-+	struct kvec *response;
-+	int status;
-+	u16 data;
-+
-+	data = ctlq_msg->sw_cookie;
-+	xn_index = FIELD_GET(LIBIE_CTLQ_XN_INDEX_M, data);
-+	msg_cookie = FIELD_GET(LIBIE_CTLQ_XN_COOKIE_M, data);
-+	status = ctlq_msg->chnl_retval ? -EFAULT : 0;
-+
-+	xn = &xnm->ring[xn_index];
-+	if (ctlq_msg->chnl_opcode != xn->virtchnl_opcode ||
-+	    msg_cookie != xn->cookie)
-+		return false;
-+
-+	spin_lock(&xn->xn_lock);
-+	if (xn->state != LIBIE_CTLQ_XN_ASYNC &&
-+	    xn->state != LIBIE_CTLQ_XN_WAITING) {
-+		spin_unlock(&xn->xn_lock);
-+		return false;
-+	}
-+
-+	response = &ctlq_msg->recv_mem;
-+	if (xn->state == LIBIE_CTLQ_XN_ASYNC) {
-+		xn->resp_cb(xn->send_ctx, response, status);
-+		libie_ctlq_release_rx_buf(response);
-+		xn->state = LIBIE_CTLQ_XN_IDLE;
-+		spin_unlock(&xn->xn_lock);
-+		libie_ctlq_xn_push_free(xnm, xn);
-+
-+		return true;
-+	}
-+
-+	xn->recv_mem = *response;
-+	xn->state = status ? LIBIE_CTLQ_XN_COMPLETED_FAILED :
-+			     LIBIE_CTLQ_XN_COMPLETED_SUCCESS;
-+
-+	complete(&xn->cmd_completion_event);
-+	spin_unlock(&xn->xn_lock);
 +
 +	return true;
 +}
 +
 +/**
-+ * libie_xn_check_async_timeout - Check for asynchronous message timeouts
-+ * @xnm: Xn transaction manager
-+ *
-+ * Call the corresponding callback to notify the caller about the timeout.
++ * idpf_decfg_lan_memory_regions - Unmap non-static memory regions
++ * @adapter: Driver specific private structure
 + */
-+static void libie_xn_check_async_timeout(struct libie_ctlq_xn_manager *xnm)
++static void idpf_decfg_lan_memory_regions(struct idpf_adapter *adapter)
 +{
-+	u32 idx;
-+
-+	for_each_clear_bit(idx, xnm->free_xns_bm, LIBIE_CTLQ_MAX_XN_ENTRIES) {
-+		struct libie_ctlq_xn *xn = &xnm->ring[idx];
-+		u64 timeout_ms;
-+
-+		spin_lock(&xn->xn_lock);
-+
-+		timeout_ms = ktime_ms_delta(ktime_get(), xn->timestamp);
-+		if (xn->state != LIBIE_CTLQ_XN_ASYNC ||
-+		    timeout_ms < xn->timeout_ms) {
-+			spin_unlock(&xn->xn_lock);
-+			continue;
-+		}
-+
-+		xn->resp_cb(xn->send_ctx, NULL, -ETIMEDOUT);
-+		xn->state = LIBIE_CTLQ_XN_IDLE;
-+		spin_unlock(&xn->xn_lock);
-+		libie_ctlq_xn_push_free(xnm, xn);
-+	}
++	libie_pci_unmap_fltr_regs(&adapter->ctlq_ctx.mmio_info,
++				  idpf_mmio_region_non_static);
 +}
 +
 +/**
-+ * libie_ctlq_xn_recv - process control queue receive message
-+ * @params: Xn receive param information to handle a receive message
-+ *
-+ * Process a receive message and update the receive queue buffer.
-+ *
-+ * Return: remaining budget.
-+ */
-+u32 libie_ctlq_xn_recv(struct libie_ctlq_xn_recv_params *params)
-+{
-+	struct libie_ctlq_msg ctlq_msg;
-+	u32 budget = params->budget;
-+
-+	while (budget && libie_ctlq_recv(params->ctlq, &ctlq_msg, 1)) {
-+		budget--;
-+		if (!libie_ctlq_xn_process_recv(params, &ctlq_msg))
-+			params->ctlq_msg_handler(params->xnm->ctx, &ctlq_msg);
-+	}
-+
-+	libie_ctlq_post_rx_buffs(params->ctlq);
-+	libie_xn_check_async_timeout(params->xnm);
-+
-+	return budget;
-+}
-+EXPORT_SYMBOL_NS_GPL(libie_ctlq_xn_recv, "LIBIE_CP");
-+
-+/**
-+ * libie_cp_map_dma_mem - map a given virtual address for DMA
-+ * @dev: device information
-+ * @va: virtual address to be mapped
-+ * @size: size of the memory
-+ * @direction: DMA direction either from/to device
-+ * @dma_mem: memory for DMA information to be stored
-+ *
-+ * Return: true on success, false on DMA map failure.
-+ */
-+static bool libie_cp_map_dma_mem(struct device *dev, void *va, size_t size,
-+				 int direction,
-+				  struct libie_cp_dma_mem *dma_mem)
-+{
-+	dma_mem->pa = dma_map_single(dev, va, size, direction);
-+
-+	return dma_mapping_error(dev, dma_mem->pa) ? false : true;
-+}
-+
-+/**
-+ * libie_cp_unmap_dma_mem - unmap previously mapped DMA address
-+ * @dev: device information
-+ * @dma_mem: DMA memory information
-+ */
-+static void libie_cp_unmap_dma_mem(struct device *dev,
-+				   const struct libie_cp_dma_mem *dma_mem)
-+{
-+	dma_unmap_single(dev, dma_mem->pa, dma_mem->size,
-+			 dma_mem->direction);
-+}
-+
-+/**
-+ * libie_ctlq_xn_process_send - process and send a control queue message
-+ * @params: Xn send param information for sending a control queue message
-+ * @xn: Assigned Xn entry for tracking the control queue message
-+ *
-+ * Return: %0 on success, -%errno on failure.
-+ */
-+static
-+int libie_ctlq_xn_process_send(struct libie_ctlq_xn_send_params *params,
-+			       struct libie_ctlq_xn *xn)
-+{
-+	size_t buf_len = params->send_buf.iov_len;
-+	struct device *dev = params->ctlq->dev;
-+	void *buf = params->send_buf.iov_base;
-+	struct libie_cp_dma_mem *dma_mem;
-+	u16 cookie;
-+	int ret;
-+
-+	if (!buf || !buf_len)
-+		return -EOPNOTSUPP;
-+
-+	if (libie_cp_can_send_onstack(buf_len)) {
-+		dma_mem = xn->dma_mem;
-+		memcpy(dma_mem->va, buf, buf_len);
-+	} else {
-+		dma_mem = &xn->send_dma_mem;
-+		dma_mem->va = buf;
-+		dma_mem->size = buf_len;
-+		dma_mem->direction = DMA_TO_DEVICE;
-+
-+		if (!libie_cp_map_dma_mem(dev, buf, buf_len, DMA_TO_DEVICE,
-+					  dma_mem))
-+			return -ENOMEM;
-+	}
-+
-+	cookie = FIELD_PREP(LIBIE_CTLQ_XN_COOKIE_M, xn->cookie) |
-+		 FIELD_PREP(LIBIE_CTLQ_XN_INDEX_M, xn->index);
-+
-+	scoped_guard(spinlock, &params->ctlq->lock) {
-+		if (!params->ctlq_msg || params->resp_cb) {
-+			struct libie_ctlq_info *ctlq = params->ctlq;
-+
-+			*ctlq->tx_msg[ctlq->next_to_use] =
-+				params->ctlq_msg ? *params->ctlq_msg :
-+				(struct libie_ctlq_msg) {
-+					.opcode = LIBIE_CTLQ_SEND_MSG_TO_CP
-+				};
-+			params->ctlq_msg = ctlq->tx_msg[ctlq->next_to_use];
-+		}
-+
-+		params->ctlq_msg->sw_cookie = cookie;
-+		params->ctlq_msg->send_mem = *dma_mem;
-+		params->ctlq_msg->data_len = buf_len;
-+		params->ctlq_msg->chnl_opcode = params->chnl_opcode;
-+		ret = libie_ctlq_send(params->ctlq, params->ctlq_msg, 1);
-+	}
-+
-+	if (ret && !libie_cp_can_send_onstack(buf_len))
-+		libie_cp_unmap_dma_mem(dev, dma_mem);
-+
-+	return ret;
-+}
-+
-+/**
-+ * libie_ctlq_xn_send - Function to send a control queue message
-+ * @params: Xn send param information for sending a control queue message
-+ *
-+ * Send a control queue (mailbox or config) message.
-+ * Based on the params value, the call can be completed synchronously or
-+ * asynchronously.
-+ *
-+ * Return: %0 on success, -%errno on failure.
-+ */
-+int libie_ctlq_xn_send(struct libie_ctlq_xn_send_params *params)
-+{
-+	bool free_send = !libie_cp_can_send_onstack(params->send_buf.iov_len);
-+	struct libie_ctlq_xn *xn;
-+	int ret;
-+
-+	if (params->send_buf.iov_len > LIBIE_CTLQ_MAX_BUF_LEN) {
-+		ret = -EINVAL;
-+		goto free_buf;
-+	}
-+
-+	xn = libie_ctlq_xn_pop_free(params->xnm);
-+	/* no free transactions available */
-+	if (unlikely(!xn)) {
-+		ret = -EAGAIN;
-+		goto free_buf;
-+	}
-+
-+	spin_lock(&xn->xn_lock);
-+
-+	xn->state = params->resp_cb ? LIBIE_CTLQ_XN_ASYNC :
-+				      LIBIE_CTLQ_XN_WAITING;
-+	xn->ctlq = params->ctlq;
-+	xn->virtchnl_opcode = params->chnl_opcode;
-+
-+	if (params->resp_cb) {
-+		xn->send_ctx = params->send_ctx;
-+		xn->resp_cb = params->resp_cb;
-+		xn->timeout_ms = params->timeout_ms;
-+		xn->timestamp = ktime_get();
-+	}
-+
-+	ret = libie_ctlq_xn_process_send(params, xn);
-+	if (ret)
-+		goto release_xn;
-+	else
-+		free_send = false;
-+
-+	spin_unlock(&xn->xn_lock);
-+
-+	if (params->resp_cb) {
-+		libie_ctlq_xn_put(params->xnm, xn);
-+		return 0;
-+	}
-+
-+	wait_for_completion_timeout(&xn->cmd_completion_event,
-+				    msecs_to_jiffies(params->timeout_ms));
-+
-+	spin_lock(&xn->xn_lock);
-+	switch (xn->state) {
-+	case LIBIE_CTLQ_XN_WAITING:
-+		ret = -ETIMEDOUT;
-+		break;
-+	case LIBIE_CTLQ_XN_COMPLETED_SUCCESS:
-+		params->recv_mem = xn->recv_mem;
-+		break;
-+	default:
-+		ret = -EBADMSG;
-+		break;
-+	}
-+
-+	/* Free the receive buffer in case of failure. On timeout, receive
-+	 * buffer is not allocated.
-+	 */
-+	if (ret && ret != -ETIMEDOUT)
-+		libie_ctlq_release_rx_buf(&xn->recv_mem);
-+
-+release_xn:
-+	xn->state = LIBIE_CTLQ_XN_IDLE;
-+	reinit_completion(&xn->cmd_completion_event);
-+	spin_unlock(&xn->xn_lock);
-+	libie_ctlq_xn_push_free(params->xnm, xn);
-+free_buf:
-+	if (free_send)
-+		params->rel_tx_buf(params->send_buf.iov_base);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_NS_GPL(libie_ctlq_xn_send, "LIBIE_CP");
-+
-+/**
-+ * libie_ctlq_xn_send_clean - cleanup the send control queue message buffers
-+ * @params: Xn clean param information for send complete handling
-+ *
-+ * Cleanup the send buffers for the given control queue, if force is set, then
-+ * clear all the outstanding send messages irrespective their send status.
-+ * Force should be used during deinit or reset.
-+ *
-+ * Return: number of send buffers cleaned.
-+ */
-+u32 libie_ctlq_xn_send_clean(const struct libie_ctlq_xn_clean_params *params)
-+{
-+	struct libie_ctlq_info *ctlq = params->ctlq;
-+	struct device *dev = ctlq->dev;
-+	u32 ntc, i;
-+
-+	spin_lock(&ctlq->lock);
-+	ntc = ctlq->next_to_clean;
-+
-+	for (i = 0; i < params->num_msgs; i++) {
-+		struct libie_ctlq_msg *msg = ctlq->tx_msg[ntc];
-+		struct libie_ctlq_desc *desc;
-+		u64 qword;
-+
-+		desc = &ctlq->descs[ntc];
-+		qword = le64_to_cpu(desc->qword0);
-+
-+		if (!FIELD_GET(LIBIE_CTLQ_DESC_FLAG_DD, qword) &&
-+		    !params->force)
-+			break;
-+
-+		dma_rmb();
-+
-+		if (!libie_cp_can_send_onstack(msg->data_len)) {
-+			libie_cp_unmap_dma_mem(dev, &msg->send_mem);
-+			params->rel_tx_buf(msg->send_mem.va);
-+		}
-+
-+		memset(msg, 0, sizeof(*msg));
-+		desc->qword0 = 0;
-+
-+		if (unlikely(++ntc == ctlq->ring_len))
-+			ntc = 0;
-+	}
-+
-+	ctlq->next_to_clean = ntc;
-+	spin_unlock(&ctlq->lock);
-+
-+	return i;
-+}
-+EXPORT_SYMBOL_NS_GPL(libie_ctlq_xn_send_clean, "LIBIE_CP");
-+
-+/**
-+ * libie_ctlq_xn_shutdown - terminate control queue transactions
-+ * @xnm: pointer to the transaction manager
-+ *
-+ * Synchronously terminate existing transactions and stop accepting new ones.
-+ */
-+void libie_ctlq_xn_shutdown(struct libie_ctlq_xn_manager *xnm)
-+{
-+	bool must_wait = false;
-+	u32 i;
-+
-+	/* Should be no new clear bits after this */
-+	spin_lock(&xnm->free_xns_bm_lock);
-+	xnm->shutdown = true;
-+
-+	for_each_clear_bit(i, xnm->free_xns_bm, LIBIE_CTLQ_MAX_XN_ENTRIES) {
-+		struct libie_ctlq_xn *xn = &xnm->ring[i];
-+
-+		spin_lock(&xn->xn_lock);
-+
-+		if (xn->state == LIBIE_CTLQ_XN_WAITING ||
-+		    xn->state == LIBIE_CTLQ_XN_IDLE) {
-+			complete(&xn->cmd_completion_event);
-+			must_wait = true;
-+		} else if (xn->state == LIBIE_CTLQ_XN_ASYNC) {
-+			__libie_ctlq_xn_push_free(xnm, xn);
-+		}
-+
-+		spin_unlock(&xn->xn_lock);
-+	}
-+
-+	spin_unlock(&xnm->free_xns_bm_lock);
-+
-+	if (must_wait)
-+		wait_for_completion(&xnm->can_destroy);
-+}
-+EXPORT_SYMBOL_NS_GPL(libie_ctlq_xn_shutdown, "LIBIE_CP");
-+
-+/**
-+ * libie_ctlq_xn_deinit - deallocate and free the transaction manager resources
-+ * @xnm: pointer to the transaction manager
-+ * @ctx: controlq context structure
-+ *
-+ * All Rx processing must be stopped beforehand.
-+ */
-+void libie_ctlq_xn_deinit(struct libie_ctlq_xn_manager *xnm,
-+			  struct libie_ctlq_ctx *ctx)
-+{
-+	libie_ctlq_xn_shutdown(xnm);
-+	libie_ctlq_xn_deinit_dma(&ctx->mmio_info.pdev->dev, xnm,
-+				 LIBIE_CTLQ_MAX_XN_ENTRIES);
-+	kfree(xnm);
-+	libie_ctlq_deinit(ctx);
-+}
-+EXPORT_SYMBOL_NS_GPL(libie_ctlq_xn_deinit, "LIBIE_CP");
-+
-+/**
-+ * libie_ctlq_xn_init - initialize the Xn transaction manager
-+ * @params: Xn init param information for allocating Xn manager resources
-+ *
-+ * Return: %0 on success, -%errno on failure.
-+ */
-+int libie_ctlq_xn_init(struct libie_ctlq_xn_init_params *params)
-+{
-+	struct libie_ctlq_xn_manager *xnm;
-+	int ret;
-+
-+	ret = libie_ctlq_init(params->ctx, params->cctlq_info, params->num_qs);
-+	if (ret)
-+		return ret;
-+
-+	xnm = kzalloc_obj(*xnm);
-+	if (!xnm)
-+		goto ctlq_deinit;
-+
-+	ret = libie_ctlq_xn_init_dma(&params->ctx->mmio_info.pdev->dev, xnm);
-+	if (ret)
-+		goto free_xnm;
-+
-+	spin_lock_init(&xnm->free_xns_bm_lock);
-+	init_completion(&xnm->can_destroy);
-+	bitmap_fill(xnm->free_xns_bm, LIBIE_CTLQ_MAX_XN_ENTRIES);
-+
-+	for (u32 i = 0; i < LIBIE_CTLQ_MAX_XN_ENTRIES; i++) {
-+		struct libie_ctlq_xn *xn = &xnm->ring[i];
-+
-+		xn->index = i;
-+		init_completion(&xn->cmd_completion_event);
-+		spin_lock_init(&xn->xn_lock);
-+	}
-+	xnm->ctx = params->ctx;
-+	params->xnm = xnm;
-+
-+	return 0;
-+
-+free_xnm:
-+	kfree(xnm);
-+ctlq_deinit:
-+	libie_ctlq_deinit(params->ctx);
-+
-+	return -ENOMEM;
-+}
-+EXPORT_SYMBOL_NS_GPL(libie_ctlq_xn_init, "LIBIE_CP");
-+
- MODULE_DESCRIPTION("Control Plane communication API");
- MODULE_IMPORT_NS("LIBETH");
- MODULE_LICENSE("GPL");
-diff --git a/include/linux/intel/libie/controlq.h b/include/linux/intel/libie/controlq.h
-index a7e92744c814..64743ae7bccd 100644
---- a/include/linux/intel/libie/controlq.h
-+++ b/include/linux/intel/libie/controlq.h
-@@ -20,6 +20,8 @@
- #define LIBIE_CTLQ_SEND_MSG_TO_CP		0x801
- #define LIBIE_CTLQ_SEND_MSG_TO_PEER		0x804
- 
-+#define LIBIE_CP_TX_COPYBREAK		128
-+
- /**
-  * struct libie_ctlq_ctx - contains controlq info and MMIO region info
-  * @mmio_info: MMIO region info structure
-@@ -60,11 +62,13 @@ struct libie_ctlq_reg {
-  * @va: virtual address
-  * @pa: physical address
-  * @size: memory size
-+ * @direction: memory to device or device to memory
++ * idpf_cfg_lan_memory_regions - Send virtchnl get LAN memory regions msg
+  * @adapter: Driver specific private struct
+  *
+  * Return: 0 on success or error code on failure.
   */
- struct libie_cp_dma_mem {
- 	void		*va;
- 	dma_addr_t	pa;
- 	size_t		size;
-+	int		direction;
- };
+-static int idpf_send_get_lan_memory_regions(struct idpf_adapter *adapter)
++static int idpf_cfg_lan_memory_regions(struct idpf_adapter *adapter)
+ {
+ 	struct virtchnl2_get_lan_memory_regions *rcvd_regions __free(kfree);
+ 	struct idpf_vc_xn_params xn_params = {
+@@ -1035,7 +1070,6 @@ static int idpf_send_get_lan_memory_regions(struct idpf_adapter *adapter)
+ 		.timeout_ms = IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC,
+ 	};
+ 	int num_regions, size;
+-	struct idpf_hw *hw;
+ 	ssize_t reply_sz;
+ 	int err = 0;
+ 
+@@ -1058,86 +1092,56 @@ static int idpf_send_get_lan_memory_regions(struct idpf_adapter *adapter)
+ 	if (size > IDPF_CTLQ_MAX_BUF_LEN)
+ 		return -EINVAL;
+ 
+-	hw = &adapter->hw;
+-	hw->lan_regs = kzalloc_objs(*hw->lan_regs, num_regions);
+-	if (!hw->lan_regs)
+-		return -ENOMEM;
+-
+ 	for (int i = 0; i < num_regions; i++) {
+-		hw->lan_regs[i].addr_len =
+-			le64_to_cpu(rcvd_regions->mem_reg[i].size);
+-		hw->lan_regs[i].addr_start =
+-			le64_to_cpu(rcvd_regions->mem_reg[i].start_offset);
++		struct libie_mmio_info *mmio = &adapter->ctlq_ctx.mmio_info;
++		resource_size_t offset, len;
++
++		offset = le64_to_cpu(rcvd_regions->mem_reg[i].start_offset);
++		len = le64_to_cpu(rcvd_regions->mem_reg[i].size);
++		if (!libie_pci_map_mmio_region(mmio, offset, len)) {
++			idpf_decfg_lan_memory_regions(adapter);
++			return -EIO;
++		}
+ 	}
+-	hw->num_lan_regs = num_regions;
+ 
+ 	return err;
+ }
  
  /**
-@@ -246,4 +250,175 @@ u32 libie_ctlq_recv(struct libie_ctlq_info *ctlq, struct libie_ctlq_msg *msg,
+- * idpf_calc_remaining_mmio_regs - calculate MMIO regions outside mbx and rstat
++ * idpf_map_remaining_mmio_regs - map MMIO regions outside mbx and rstat
+  * @adapter: Driver specific private structure
+  *
+- * Called when idpf_send_get_lan_memory_regions is not supported. This will
++ * Called when idpf_cfg_lan_memory_regions is not supported. This will
+  * calculate the offsets and sizes for the regions before, in between, and
+  * after the mailbox and rstat MMIO mappings.
+  *
+  * Return: 0 on success or error code on failure.
+  */
+-static int idpf_calc_remaining_mmio_regs(struct idpf_adapter *adapter)
++static int idpf_map_remaining_mmio_regs(struct idpf_adapter *adapter)
+ {
+ 	struct resource *rstat_reg = &adapter->dev_ops.static_reg_info[1];
+ 	struct resource *mbx_reg = &adapter->dev_ops.static_reg_info[0];
+-	struct idpf_hw *hw = &adapter->hw;
+-
+-	hw->num_lan_regs = IDPF_MMIO_MAP_FALLBACK_MAX_REMAINING;
+-	hw->lan_regs = kzalloc_objs(*hw->lan_regs, hw->num_lan_regs);
+-	if (!hw->lan_regs)
+-		return -ENOMEM;
++	struct libie_mmio_info *mmio = &adapter->ctlq_ctx.mmio_info;
++	resource_size_t reg_start, size;
++	bool ok = true;
  
- int libie_ctlq_post_rx_buffs(struct libie_ctlq_info *ctlq);
+ 	/* Region preceding mailbox */
+-	hw->lan_regs[0].addr_start = 0;
+-	hw->lan_regs[0].addr_len = mbx_reg->start;
+-	/* Region between mailbox and rstat */
+-	hw->lan_regs[1].addr_start = mbx_reg->end + 1;
+-	hw->lan_regs[1].addr_len = rstat_reg->start -
+-					hw->lan_regs[1].addr_start;
+-	/* Region after rstat */
+-	hw->lan_regs[2].addr_start = rstat_reg->end + 1;
+-	hw->lan_regs[2].addr_len = pci_resource_len(adapter->pdev, 0) -
+-					hw->lan_regs[2].addr_start;
+-
+-	return 0;
+-}
++	size = mbx_reg->start;
++	ok &= !size || libie_pci_map_mmio_region(mmio, 0, size);
  
-+/* Only 8 bits are available in descriptor for Xn index */
-+#define LIBIE_CTLQ_MAX_XN_ENTRIES		256
-+#define LIBIE_CTLQ_XN_COOKIE_M			GENMASK(15, 8)
-+#define LIBIE_CTLQ_XN_INDEX_M			GENMASK(7, 0)
-+
-+/**
-+ * enum libie_ctlq_xn_state - Transaction state of a virtchnl message
-+ * @LIBIE_CTLQ_XN_IDLE: transaction is available to use
-+ * @LIBIE_CTLQ_XN_WAITING: waiting for transaction to complete
-+ * @LIBIE_CTLQ_XN_COMPLETED_SUCCESS: transaction completed with success
-+ * @LIBIE_CTLQ_XN_COMPLETED_FAILED: transaction completed with failure
-+ * @LIBIE_CTLQ_XN_ASYNC: asynchronous virtchnl message transaction type
-+ */
-+enum libie_ctlq_xn_state {
-+	LIBIE_CTLQ_XN_IDLE = 0,
-+	LIBIE_CTLQ_XN_WAITING,
-+	LIBIE_CTLQ_XN_COMPLETED_SUCCESS,
-+	LIBIE_CTLQ_XN_COMPLETED_FAILED,
-+	LIBIE_CTLQ_XN_ASYNC,
-+};
-+
-+/**
-+ * struct libie_ctlq_xn - structure representing a virtchnl transaction entry
-+ * @resp_cb: callback to handle the response of an asynchronous virtchnl message
-+ * @xn_lock: lock to protect the transaction entry state
-+ * @ctlq: send control queue information
-+ * @cmd_completion_event: signal when a reply is available
-+ * @dma_mem: DMA memory of send buffer that use stack variable
-+ * @send_dma_mem: DMA memory of send buffer
-+ * @recv_mem: receive buffer
-+ * @send_ctx: context for callback function
-+ * @timeout_ms: Xn transaction timeout in msecs
-+ * @timestamp: timestamp to record the Xn send
-+ * @virtchnl_opcode: virtchnl command opcode used for Xn transaction
-+ * @state: transaction state of a virtchnl message
-+ * @cookie: unique message identifier
-+ * @index: index of the transaction entry
-+ */
-+struct libie_ctlq_xn {
-+	void (*resp_cb)(void *ctx, struct kvec *mem, int status);
-+	spinlock_t			xn_lock;	/* protects state */
-+	struct libie_ctlq_info		*ctlq;
-+	struct completion		cmd_completion_event;
-+	struct libie_cp_dma_mem	*dma_mem;
-+	struct libie_cp_dma_mem	send_dma_mem;
-+	struct kvec			recv_mem;
-+	void				*send_ctx;
-+	u64				timeout_ms;
-+	ktime_t				timestamp;
-+	u32				virtchnl_opcode;
-+	enum libie_ctlq_xn_state	state;
-+	u8				cookie;
-+	u8				index;
-+};
-+
-+/**
-+ * struct libie_ctlq_xn_manager - structure representing the array of virtchnl
-+ *				   transaction entries
-+ * @ctx: pointer to controlq context structure
-+ * @free_xns_bm_lock: lock to protect the free Xn entries bit map
-+ * @free_xns_bm: bitmap that represents the free Xn entries
-+ * @ring: array of Xn entries
-+ * @can_destroy: completion triggered by the last returned transaction
-+ * @shutdown: shows the transactions the xnm shutdown is waiting for them
-+ * @cookie: unique message identifier
-+ */
-+struct libie_ctlq_xn_manager {
-+	struct libie_ctlq_ctx	*ctx;
-+	spinlock_t		free_xns_bm_lock;	/* get/check entries */
-+	DECLARE_BITMAP(free_xns_bm, LIBIE_CTLQ_MAX_XN_ENTRIES);
-+	struct libie_ctlq_xn	ring[LIBIE_CTLQ_MAX_XN_ENTRIES];
-+	struct completion	can_destroy;
-+	bool			shutdown;
-+	u8			cookie;
-+};
-+
-+/**
-+ * struct libie_ctlq_xn_send_params - structure representing send Xn entry
-+ * @resp_cb: callback to handle the response of an asynchronous virtchnl message
-+ * @rel_tx_buf: driver entry point for freeing the send buffer after send
-+ * @xnm: Xn manager to process Xn entries
-+ * @ctlq: send control queue information
-+ * @ctlq_msg: control queue message information
-+ * @send_buf: represents the buffer that carries outgoing information
-+ * @recv_mem: receive buffer
-+ * @send_ctx: context for call back function
-+ * @timeout_ms: virtchnl transaction timeout in msecs
-+ * @chnl_opcode: virtchnl message opcode
-+ */
-+struct libie_ctlq_xn_send_params {
-+	void (*resp_cb)(void *ctx, struct kvec *mem, int status);
-+	void (*rel_tx_buf)(const void *buf_va);
-+	struct libie_ctlq_xn_manager		*xnm;
-+	struct libie_ctlq_info			*ctlq;
-+	struct libie_ctlq_msg			*ctlq_msg;
-+	struct kvec				send_buf;
-+	struct kvec				recv_mem;
-+	void					*send_ctx;
-+	u64					timeout_ms;
-+	u32					chnl_opcode;
-+};
-+
-+/**
-+ * libie_cp_can_send_onstack - can a message be sent using a stack variable
-+ * @size: ctlq data buffer size
-+ *
-+ * Return: %true if the message size is small enough for caller to pass
-+ *	   an on-stack buffer, %false if kmalloc is needed
-+ */
-+static inline bool libie_cp_can_send_onstack(u32 size)
-+{
-+	return size <= LIBIE_CP_TX_COPYBREAK;
-+}
-+
-+/**
-+ * struct libie_ctlq_xn_recv_params - structure representing receive Xn entry
-+ * @ctlq_msg_handler: callback to handle a message originated from the peer
-+ * @xnm: Xn manager to process Xn entries
-+ * @ctlq: control queue information
-+ * @budget: maximum number of messages to process
-+ */
-+struct libie_ctlq_xn_recv_params {
-+	void (*ctlq_msg_handler)(struct libie_ctlq_ctx *ctx,
-+				 struct libie_ctlq_msg *msg);
-+	struct libie_ctlq_xn_manager		*xnm;
-+	struct libie_ctlq_info			*ctlq;
-+	u32					budget;
-+};
-+
-+/**
-+ * struct libie_ctlq_xn_clean_params - Data structure used for cleaning the
-+ * control queue messages
-+ * @rel_tx_buf: driver entry point for freeing the send buffer after send
-+ * @ctx: pointer to context structure
-+ * @ctlq: control queue information
-+ * @send_ctx: context for call back function
-+ * @num_msgs: number of messages to be cleaned
-+ * @force: clean even if DD is not yet set
-+ */
-+struct libie_ctlq_xn_clean_params {
-+	void (*rel_tx_buf)(const void *buf_va);
-+	struct libie_ctlq_ctx			*ctx;
-+	struct libie_ctlq_info			*ctlq;
-+	void					*send_ctx;
-+	u16					num_msgs;
-+	bool					force;
-+};
-+
-+/**
-+ * struct libie_ctlq_xn_init_params - Data structure used for initializing the
-+ * Xn transaction manager
-+ * @cctlq_info: control queue information
-+ * @ctx: pointer to controlq context structure
-+ * @xnm: Xn manager to process Xn entries
-+ * @num_qs: number of control queues needs to initialized
-+ */
-+struct libie_ctlq_xn_init_params {
-+	struct libie_ctlq_create_info		*cctlq_info;
-+	struct libie_ctlq_ctx			*ctx;
-+	struct libie_ctlq_xn_manager		*xnm;
-+	u32					num_qs;
-+};
-+
-+int libie_ctlq_xn_init(struct libie_ctlq_xn_init_params *params);
-+void libie_ctlq_xn_deinit(struct libie_ctlq_xn_manager *xnm,
-+			  struct libie_ctlq_ctx *ctx);
-+void libie_ctlq_xn_shutdown(struct libie_ctlq_xn_manager *xnm);
-+int libie_ctlq_xn_send(struct libie_ctlq_xn_send_params *params);
-+u32 libie_ctlq_xn_recv(struct libie_ctlq_xn_recv_params *params);
-+u32 libie_ctlq_xn_send_clean(const struct libie_ctlq_xn_clean_params *params);
-+
- #endif /* __LIBIE_CONTROLQ_H */
+-/**
+- * idpf_map_lan_mmio_regs - map remaining LAN BAR regions
+- * @adapter: Driver specific private structure
+- *
+- * Return: 0 on success or error code on failure.
+- */
+-static int idpf_map_lan_mmio_regs(struct idpf_adapter *adapter)
+-{
+-	struct pci_dev *pdev = adapter->pdev;
+-	struct idpf_hw *hw = &adapter->hw;
+-	resource_size_t res_start;
+-
+-	res_start = pci_resource_start(pdev, 0);
+-
+-	for (int i = 0; i < hw->num_lan_regs; i++) {
+-		resource_size_t start;
+-		long len;
++	/* Region between mailbox and rstat */
++	reg_start = mbx_reg->end + 1;
++	size = rstat_reg->start - reg_start;
++	ok &= !size || libie_pci_map_mmio_region(mmio, reg_start, size);
+ 
+-		len = hw->lan_regs[i].addr_len;
+-		if (!len)
+-			continue;
+-		start = hw->lan_regs[i].addr_start + res_start;
++	/* Region after rstat */
++	reg_start = rstat_reg->end + 1;
++	size = pci_resource_len(adapter->pdev, 0) - reg_start;
++	ok &= !size || libie_pci_map_mmio_region(mmio, reg_start, size);
+ 
+-		hw->lan_regs[i].vaddr = devm_ioremap(&pdev->dev, start, len);
+-		if (!hw->lan_regs[i].vaddr) {
+-			pci_err(pdev, "failed to allocate BAR0 region\n");
+-			return -ENOMEM;
+-		}
++	if (!ok) {
++		idpf_decfg_lan_memory_regions(adapter);
++		return -ENOMEM;
+ 	}
+ 
+ 	return 0;
+@@ -1411,7 +1415,7 @@ static int __idpf_queue_reg_init(struct idpf_vport *vport,
+ 				 struct idpf_q_vec_rsrc *rsrc, u32 *reg_vals,
+ 				 int num_regs, u32 q_type)
+ {
+-	struct idpf_adapter *adapter = vport->adapter;
++	struct libie_mmio_info *mmio = &vport->adapter->ctlq_ctx.mmio_info;
+ 	int i, j, k = 0;
+ 
+ 	switch (q_type) {
+@@ -1421,7 +1425,8 @@ static int __idpf_queue_reg_init(struct idpf_vport *vport,
+ 
+ 			for (j = 0; j < tx_qgrp->num_txq && k < num_regs; j++, k++)
+ 				tx_qgrp->txqs[j]->tail =
+-					idpf_get_reg_addr(adapter, reg_vals[k]);
++					libie_pci_get_mmio_addr(mmio,
++								reg_vals[k]);
+ 		}
+ 		break;
+ 	case VIRTCHNL2_QUEUE_TYPE_RX:
+@@ -1433,8 +1438,8 @@ static int __idpf_queue_reg_init(struct idpf_vport *vport,
+ 				struct idpf_rx_queue *q;
+ 
+ 				q = rx_qgrp->singleq.rxqs[j];
+-				q->tail = idpf_get_reg_addr(adapter,
+-							    reg_vals[k]);
++				q->tail = libie_pci_get_mmio_addr(mmio,
++								  reg_vals[k]);
+ 			}
+ 		}
+ 		break;
+@@ -1447,8 +1452,8 @@ static int __idpf_queue_reg_init(struct idpf_vport *vport,
+ 				struct idpf_buf_queue *q;
+ 
+ 				q = &rx_qgrp->splitq.bufq_sets[j].bufq;
+-				q->tail = idpf_get_reg_addr(adapter,
+-							    reg_vals[k]);
++				q->tail = libie_pci_get_mmio_addr(mmio,
++								  reg_vals[k]);
+ 			}
+ 		}
+ 		break;
+@@ -3518,29 +3523,22 @@ int idpf_vc_core_init(struct idpf_adapter *adapter)
+ 	}
+ 
+ 	if (idpf_is_cap_ena(adapter, IDPF_OTHER_CAPS, VIRTCHNL2_CAP_LAN_MEMORY_REGIONS)) {
+-		err = idpf_send_get_lan_memory_regions(adapter);
++		err = idpf_cfg_lan_memory_regions(adapter);
+ 		if (err) {
+-			dev_err(&adapter->pdev->dev, "Failed to get LAN memory regions: %d\n",
++			dev_err(&adapter->pdev->dev, "Failed to configure LAN memory regions: %d\n",
+ 				err);
+ 			return -EINVAL;
+ 		}
+ 	} else {
+ 		/* Fallback to mapping the remaining regions of the entire BAR */
+-		err = idpf_calc_remaining_mmio_regs(adapter);
++		err = idpf_map_remaining_mmio_regs(adapter);
+ 		if (err) {
+-			dev_err(&adapter->pdev->dev, "Failed to allocate BAR0 region(s): %d\n",
++			dev_err(&adapter->pdev->dev, "Failed to configure BAR0 region(s): %d\n",
+ 				err);
+-			return -ENOMEM;
++			return err;
+ 		}
+ 	}
+ 
+-	err = idpf_map_lan_mmio_regs(adapter);
+-	if (err) {
+-		dev_err(&adapter->pdev->dev, "Failed to map BAR0 region(s): %d\n",
+-			err);
+-		return -ENOMEM;
+-	}
+-
+ 	pci_sriov_set_totalvfs(adapter->pdev, idpf_get_max_vfs(adapter));
+ 	num_max_vports = idpf_get_max_vports(adapter);
+ 	adapter->max_vports = num_max_vports;
+@@ -3645,7 +3643,6 @@ int idpf_vc_core_init(struct idpf_adapter *adapter)
+  */
+ void idpf_vc_core_deinit(struct idpf_adapter *adapter)
+ {
+-	struct idpf_hw *hw = &adapter->hw;
+ 	bool remove_in_prog;
+ 
+ 	if (!test_bit(IDPF_VC_CORE_INIT, adapter->flags))
+@@ -3670,12 +3667,10 @@ void idpf_vc_core_deinit(struct idpf_adapter *adapter)
+ 
+ 	idpf_vport_params_buf_rel(adapter);
+ 
+-	kfree(hw->lan_regs);
+-	hw->lan_regs = NULL;
+-
+ 	kfree(adapter->vports);
+ 	adapter->vports = NULL;
+ 
++	idpf_decfg_lan_memory_regions(adapter);
+ 	clear_bit(IDPF_VC_CORE_INIT, adapter->flags);
+ }
+ 
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
+index d9bcc3f61c65..8d8fb498e092 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
+@@ -31,6 +31,7 @@ int idpf_ptp_get_caps(struct idpf_adapter *adapter)
+ 		.timeout_ms = IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC,
+ 	};
+ 	struct virtchnl2_ptp_cross_time_reg_offsets cross_tstamp_offsets;
++	struct libie_mmio_info *mmio = &adapter->ctlq_ctx.mmio_info;
+ 	struct virtchnl2_ptp_clk_adj_reg_offsets clk_adj_offsets;
+ 	struct virtchnl2_ptp_clk_reg_offsets clock_offsets;
+ 	struct idpf_ptp_secondary_mbx *scnd_mbx;
+@@ -76,19 +77,20 @@ int idpf_ptp_get_caps(struct idpf_adapter *adapter)
+ 	clock_offsets = recv_ptp_caps_msg->clk_offsets;
+ 
+ 	temp_offset = le32_to_cpu(clock_offsets.dev_clk_ns_l);
+-	ptp->dev_clk_regs.dev_clk_ns_l = idpf_get_reg_addr(adapter,
+-							   temp_offset);
++	ptp->dev_clk_regs.dev_clk_ns_l =
++		libie_pci_get_mmio_addr(mmio, temp_offset);
+ 	temp_offset = le32_to_cpu(clock_offsets.dev_clk_ns_h);
+-	ptp->dev_clk_regs.dev_clk_ns_h = idpf_get_reg_addr(adapter,
+-							   temp_offset);
++	ptp->dev_clk_regs.dev_clk_ns_h =
++		libie_pci_get_mmio_addr(mmio, temp_offset);
+ 	temp_offset = le32_to_cpu(clock_offsets.phy_clk_ns_l);
+-	ptp->dev_clk_regs.phy_clk_ns_l = idpf_get_reg_addr(adapter,
+-							   temp_offset);
++	ptp->dev_clk_regs.phy_clk_ns_l =
++		libie_pci_get_mmio_addr(mmio, temp_offset);
+ 	temp_offset = le32_to_cpu(clock_offsets.phy_clk_ns_h);
+-	ptp->dev_clk_regs.phy_clk_ns_h = idpf_get_reg_addr(adapter,
+-							   temp_offset);
++	ptp->dev_clk_regs.phy_clk_ns_h =
++		libie_pci_get_mmio_addr(mmio, temp_offset);
+ 	temp_offset = le32_to_cpu(clock_offsets.cmd_sync_trigger);
+-	ptp->dev_clk_regs.cmd_sync = idpf_get_reg_addr(adapter, temp_offset);
++	ptp->dev_clk_regs.cmd_sync =
++		libie_pci_get_mmio_addr(mmio, temp_offset);
+ 
+ cross_tstamp:
+ 	access_type = ptp->get_cross_tstamp_access;
+@@ -98,13 +100,14 @@ int idpf_ptp_get_caps(struct idpf_adapter *adapter)
+ 	cross_tstamp_offsets = recv_ptp_caps_msg->cross_time_offsets;
+ 
+ 	temp_offset = le32_to_cpu(cross_tstamp_offsets.sys_time_ns_l);
+-	ptp->dev_clk_regs.sys_time_ns_l = idpf_get_reg_addr(adapter,
+-							    temp_offset);
++	ptp->dev_clk_regs.sys_time_ns_l =
++		libie_pci_get_mmio_addr(mmio, temp_offset);
+ 	temp_offset = le32_to_cpu(cross_tstamp_offsets.sys_time_ns_h);
+-	ptp->dev_clk_regs.sys_time_ns_h = idpf_get_reg_addr(adapter,
+-							    temp_offset);
++	ptp->dev_clk_regs.sys_time_ns_h =
++		libie_pci_get_mmio_addr(mmio, temp_offset);
+ 	temp_offset = le32_to_cpu(cross_tstamp_offsets.cmd_sync_trigger);
+-	ptp->dev_clk_regs.cmd_sync = idpf_get_reg_addr(adapter, temp_offset);
++	ptp->dev_clk_regs.cmd_sync =
++		libie_pci_get_mmio_addr(mmio, temp_offset);
+ 
+ discipline_clock:
+ 	access_type = ptp->adj_dev_clk_time_access;
+@@ -115,29 +118,32 @@ int idpf_ptp_get_caps(struct idpf_adapter *adapter)
+ 
+ 	/* Device clock offsets */
+ 	temp_offset = le32_to_cpu(clk_adj_offsets.dev_clk_cmd_type);
+-	ptp->dev_clk_regs.cmd = idpf_get_reg_addr(adapter, temp_offset);
++	ptp->dev_clk_regs.cmd = libie_pci_get_mmio_addr(mmio, temp_offset);
+ 	temp_offset = le32_to_cpu(clk_adj_offsets.dev_clk_incval_l);
+-	ptp->dev_clk_regs.incval_l = idpf_get_reg_addr(adapter, temp_offset);
++	ptp->dev_clk_regs.incval_l = libie_pci_get_mmio_addr(mmio, temp_offset);
+ 	temp_offset = le32_to_cpu(clk_adj_offsets.dev_clk_incval_h);
+-	ptp->dev_clk_regs.incval_h = idpf_get_reg_addr(adapter, temp_offset);
++	ptp->dev_clk_regs.incval_h = libie_pci_get_mmio_addr(mmio, temp_offset);
+ 	temp_offset = le32_to_cpu(clk_adj_offsets.dev_clk_shadj_l);
+-	ptp->dev_clk_regs.shadj_l = idpf_get_reg_addr(adapter, temp_offset);
++	ptp->dev_clk_regs.shadj_l = libie_pci_get_mmio_addr(mmio, temp_offset);
+ 	temp_offset = le32_to_cpu(clk_adj_offsets.dev_clk_shadj_h);
+-	ptp->dev_clk_regs.shadj_h = idpf_get_reg_addr(adapter, temp_offset);
++	ptp->dev_clk_regs.shadj_h = libie_pci_get_mmio_addr(mmio, temp_offset);
+ 
+ 	/* PHY clock offsets */
+ 	temp_offset = le32_to_cpu(clk_adj_offsets.phy_clk_cmd_type);
+-	ptp->dev_clk_regs.phy_cmd = idpf_get_reg_addr(adapter, temp_offset);
++	ptp->dev_clk_regs.phy_cmd =
++		libie_pci_get_mmio_addr(mmio, temp_offset);
+ 	temp_offset = le32_to_cpu(clk_adj_offsets.phy_clk_incval_l);
+-	ptp->dev_clk_regs.phy_incval_l = idpf_get_reg_addr(adapter,
+-							   temp_offset);
++	ptp->dev_clk_regs.phy_incval_l =
++		libie_pci_get_mmio_addr(mmio, temp_offset);
+ 	temp_offset = le32_to_cpu(clk_adj_offsets.phy_clk_incval_h);
+-	ptp->dev_clk_regs.phy_incval_h = idpf_get_reg_addr(adapter,
+-							   temp_offset);
++	ptp->dev_clk_regs.phy_incval_h =
++		libie_pci_get_mmio_addr(mmio, temp_offset);
+ 	temp_offset = le32_to_cpu(clk_adj_offsets.phy_clk_shadj_l);
+-	ptp->dev_clk_regs.phy_shadj_l = idpf_get_reg_addr(adapter, temp_offset);
++	ptp->dev_clk_regs.phy_shadj_l =
++		libie_pci_get_mmio_addr(mmio, temp_offset);
+ 	temp_offset = le32_to_cpu(clk_adj_offsets.phy_clk_shadj_h);
+-	ptp->dev_clk_regs.phy_shadj_h = idpf_get_reg_addr(adapter, temp_offset);
++	ptp->dev_clk_regs.phy_shadj_h =
++		libie_pci_get_mmio_addr(mmio, temp_offset);
+ 
+ 	return 0;
+ }
 -- 
 2.47.1
 
