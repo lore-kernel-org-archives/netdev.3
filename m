@@ -1,106 +1,158 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B0FF3264C1
-	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 13:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CEB3BBA07
+	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 13:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775223577; cv=none; b=PAtex3CdbiUfmCDCNia86kcwulEJFlamdQd50pIhWIqT5he7EYWL5Fw2X64f6cAPIYA0xoVXfoC3C/Ib8XePrTNXEB0MvRAEs45zFBWM4QETf4T7iN/1l25czNv5C5dUFA8bOK0PBaCsN2rYWiCN90xpcEKeRIcWb9Be3n8t9so=
+	t=1775223665; cv=none; b=caZHTKR55ZPiG57CHFOj5vocQLx21LTvUhrDBD2CGzOZPD9BvpXNMA2VDcnX4a9nV6a/wlUWVQFrAylWtswpEUF5H66awCXj/XDQYcH+bl0Cm8hg62rPJHho//fcdJRlVFoY3XuVwEOp0wiuwCT2meFN0Bo+4LWeEgQiyyTD2AQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775223577; c=relaxed/simple;
-	bh=gzgo4J0pUZ2NR/fbaMfQmlWY0aPaw+y93UYrHkmJXi8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tFUtMaXpuEltJmeKSIwe/tL7BmQJtja3VC1eQ+fDWit+9P6IwrGevqXehURX8eU9h150MR8OMd4WBPWBkUVFCr6j9RyCUhTZGo5rTLWeomDdaeDZ1PaN9IchSQYoEB6b88PKhbl8bF6CSUKRBTuH5vp9jdj4xnlxBSat4q0JV9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IWEg59c2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775223665; c=relaxed/simple;
+	bh=6g9R2GmeiAMhntpDVU6Z92dvhCYleNtqjiM/Wc8jXvY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u1Yw2/BOqwlgHAlbVWRRzAY1IkQmo3vRD7fVLVjLiTi8Lx0E8UYiXO0Frtp7HzBSLH3B+AUFh+7Mmb+4G9WOd1Hy6bBA7n0m6HJNAVJQxDO2cZfiHTwE2KJ4MmELmxPfmutQYiHOO1wrGgGTtvKTbtIjkCcNIIALuswU+H4eIg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aDKEbgHt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IWEg59c2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CA1EC19421;
-	Fri,  3 Apr 2026 13:39:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aDKEbgHt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBBF5C4CEF7;
+	Fri,  3 Apr 2026 13:41:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775223576;
-	bh=gzgo4J0pUZ2NR/fbaMfQmlWY0aPaw+y93UYrHkmJXi8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IWEg59c2mZ0IOrx/OS73hj1Cgai8N7XixauJHLw7J0797WcGJn/9VOjVAL95G6Ocs
-	 Sz8SCS0fZ+T5oDq1nqGHnD03PSvoUAzQB1Xnyr6iLAOO3OsfC73dp4kfI7Wq2diKON
-	 3pGE7S34DW8GoDlRHHvYWfRdIPLM80OLICNK+frKoYm/KqROHBFFTsPavF30tC8x+n
-	 Dv1TXeyQoZ4XW5rBPreO1h/3cwjLjp0OgzRJvNFSlLTbsiaw7yCFkoadsTBpRokFsa
-	 XVFZpz1jNTVdC8rNgM36dFhlAda/UvU65lwS3G9NPYokXOYgeRAniWGsmLsCZAhoCl
-	 +Ed6C0wzs/Yog==
-From: Simon Horman <horms@kernel.org>
-To: aleksandr.loktionov@intel.com
-Cc: Simon Horman <horms@kernel.org>,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com
-Subject: Re: [Intel-wired-lan] [PATCH iwl-next] ixgbe: call ixgbe_setup_fc() before fc_enable() after NVM update
-Date: Fri,  3 Apr 2026 14:39:30 +0100
-Message-ID: <20260403133930.129514-1-horms@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260327073046.134085-6-aleksandr.loktionov@intel.com>
-References: <20260327073046.134085-6-aleksandr.loktionov@intel.com>
+	s=k20201202; t=1775223665;
+	bh=6g9R2GmeiAMhntpDVU6Z92dvhCYleNtqjiM/Wc8jXvY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aDKEbgHtwO03Htxu7Te0gFEyIE7S3X0OzU+6jR8id9x1tcxbx7oQlB7szyGVgVM++
+	 8hv0gQoSXTfIpRCFzOwPlc5SqASExfYZLMBSKdzJWUr57pFARA/xO9fe/VqHrmB3J9
+	 z3XBsFBk2Frzm56C5TsAqp6dqTZidHelQPtveZmEhjrEFcq+7m2BE6qqTDoEUwB529
+	 ykcvOq++MF4mKlu5NkwAKszZ+FoWBVBROGg/Zmq29nsfpq6K3Xkbfv5TuVc0te1XZF
+	 sC9VXKsEtrNhcXCN5Q3fBya2guGh3EfHEUlJcDqmYgQHXac8dvrQZ7IUWsorWXlWJC
+	 Twa4nECx+zudg==
+Date: Fri, 3 Apr 2026 15:41:03 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Xuegang Lu <xuegang.lu@airoha.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net] net: airoha: Add dma_rmb() and READ_ONCE() in
+ airoha_qdma_rx_process()
+Message-ID: <ac_Dbzfgr728lpmD@lore-desk>
+References: <20260402-airoha_qdma_rx_process-fix-reordering-v1-1-53278474f062@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="CcLH+/Yb/7WuJ8OG"
+Content-Disposition: inline
+In-Reply-To: <20260402-airoha_qdma_rx_process-fix-reordering-v1-1-53278474f062@kernel.org>
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
----
-ixgbe: call ixgbe_setup_fc() before fc_enable() after NVM update
+--CcLH+/Yb/7WuJ8OG
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-During an NVM update the PHY reset clears the Technology Ability Field
-(IEEE 802.3 clause 37 register 7.10) back to hardware defaults. When
-the driver subsequently calls only hw->mac.ops.fc_enable() the SRRCTL
-register is recalculated from the stale autonegotiated capability bits,
-which the MDD (Malicious Driver Detect) logic treats as an invalid
-change and halts traffic on the PF.
+> Add missing dma_rmb() in airoha_qdma_rx_process routine to make sure the
+> DMA read operations are completed when the NIC reports the processing on
+> the current descriptor is done. Moreover, add missing READ_ONCE() in
+> airoha_qdma_rx_process() for DMA descriptor control fields in order to
+> avoid any compiler reordering.
+>=20
+> Fixes: 23020f0493270 ("net: airoha: Introduce ethernet support for EN7581=
+ SoC")
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+>  drivers/net/ethernet/airoha/airoha_eth.c | 14 +++++++++-----
+>  1 file changed, 9 insertions(+), 5 deletions(-)
 
-Fix by calling ixgbe_setup_fc() immediately before fc_enable() in
-ixgbe_watchdog_update_link() so that flow-control autoneg and the
-PHY registers are re-programmed in the correct order after any reset.
+Please drop this version, I will post v2 to add a missing READ_ONCE() for
+airoha_qdma_get_gdm_port().
 
-> diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-> index 0bc806aaed90..96e912371d9a 100644
-> --- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-> +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-> @@ -8029,6 +8029,12 @@ static void ixgbe_watchdog_update_link(struct ixgbe_adapter *adapter)
->  	pfc_en |= !!(adapter->ixgbe_ieee_pfc->pfc_en);
->
->  	if (link_up && !((adapter->flags & IXGBE_FLAG_DCB_ENABLED) && pfc_en)) {
-> +		if (hw->mac.ops.setup_fc) {
-> +			int err = hw->mac.ops.setup_fc(hw);
+Regards,
+Lorenzo
+
+>=20
+> diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ether=
+net/airoha/airoha_eth.c
+> index 95ba99b89428e4cafb91ff7813e43ffeb38e6d9b..29dea8b35f64bfdcf88bc09fd=
+711e0d8b4f7b6fa 100644
+> --- a/drivers/net/ethernet/airoha/airoha_eth.c
+> +++ b/drivers/net/ethernet/airoha/airoha_eth.c
+> @@ -612,15 +612,17 @@ static int airoha_qdma_rx_process(struct airoha_que=
+ue *q, int budget)
+>  	while (done < budget) {
+>  		struct airoha_queue_entry *e =3D &q->entry[q->tail];
+>  		struct airoha_qdma_desc *desc =3D &q->desc[q->tail];
+> -		u32 hash, reason, msg1 =3D le32_to_cpu(desc->msg1);
+> -		struct page *page =3D virt_to_head_page(e->buf);
+> -		u32 desc_ctrl =3D le32_to_cpu(desc->ctrl);
+> +		u32 hash, reason, msg1, desc_ctrl;
+>  		struct airoha_gdm_port *port;
+>  		int data_len, len, p;
+> +		struct page *page;
+> =20
+> +		desc_ctrl =3D le32_to_cpu(READ_ONCE(desc->ctrl));
+>  		if (!(desc_ctrl & QDMA_DESC_DONE_MASK))
+>  			break;
+> =20
+> +		dma_rmb();
 > +
-> +			if (err)
-> +				e_warn(drv, "setup_fc failed: %d\n", err);
-> +		}
+>  		q->tail =3D (q->tail + 1) % q->ndesc;
+>  		q->queued--;
+> =20
+> @@ -637,6 +639,7 @@ static int airoha_qdma_rx_process(struct airoha_queue=
+ *q, int budget)
+>  		if (p < 0 || !eth->ports[p])
+>  			goto free_frag;
+> =20
+> +		page =3D virt_to_head_page(e->buf);
+>  		port =3D eth->ports[p];
+>  		if (!q->skb) { /* first buffer */
+>  			q->skb =3D napi_build_skb(e->buf, q->buf_size);
+> @@ -670,8 +673,8 @@ static int airoha_qdma_rx_process(struct airoha_queue=
+ *q, int budget)
+>  			 * DMA descriptor. Report DSA tag to the DSA stack
+>  			 * via skb dst info.
+>  			 */
+> -			u32 sptag =3D FIELD_GET(QDMA_ETH_RXMSG_SPTAG,
+> -					      le32_to_cpu(desc->msg0));
+> +			u32 msg0 =3D le32_to_cpu(READ_ONCE(desc->msg0));
+> +			u32 sptag =3D FIELD_GET(QDMA_ETH_RXMSG_SPTAG, msg0);
+> =20
+>  			if (sptag < ARRAY_SIZE(port->dsa_meta) &&
+>  			    port->dsa_meta[sptag])
+> @@ -679,6 +682,7 @@ static int airoha_qdma_rx_process(struct airoha_queue=
+ *q, int budget)
+>  						  &port->dsa_meta[sptag]->dst);
+>  		}
+> =20
+> +		msg1 =3D le32_to_cpu(READ_ONCE(desc->msg1));
+>  		hash =3D FIELD_GET(AIROHA_RXD4_FOE_ENTRY, msg1);
+>  		if (hash !=3D AIROHA_RXD4_FOE_ENTRY)
+>  			skb_set_hash(q->skb, jhash_1word(hash, 0),
+>=20
+> ---
+> base-commit: ec7067e661193403a7a00980bda8612db5954142
+> change-id: 20260402-airoha_qdma_rx_process-fix-reordering-722308255b65
+>=20
+> Best regards,
+> --=20
+> Lorenzo Bianconi <lorenzo@kernel.org>
+>=20
 
-What happens if setup_fc() fails here? The patch adds this call to fix
-MDD issues caused by stale PHY autoneg state after NVM updates.
+--CcLH+/Yb/7WuJ8OG
+Content-Type: application/pgp-signature; name=signature.asc
 
-However, if setup_fc() returns an error, the code only logs a warning
-and continues:
+-----BEGIN PGP SIGNATURE-----
 
-	if (hw->mac.ops.setup_fc) {
-		int err = hw->mac.ops.setup_fc(hw);
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCac/DbgAKCRA6cBh0uS2t
+rBFGAQDsASA4qELdeIETxjOVDrs0SEJPliW3Cdlk2di93gqB1gD+J5i5KV2KXaow
+NB6Aity+4OCEK19fVTDOFqX39VIASgA=
+=NVjB
+-----END PGP SIGNATURE-----
 
-		if (err)
-			e_warn(drv, "setup_fc failed: %d\n", err);
-	}
-	hw->mac.ops.fc_enable(hw);
-
-Since fc_enable() relies on hw->fc.current_mode being properly set by
-the autoneg process initiated by setup_fc(), calling it after a
-setup_fc failure means it operates on the same stale state the patch
-was meant to fix.
-
-Could this leave a residual bug where MDD can still trigger and halt
-traffic if setup_fc fails?
-
->  		hw->mac.ops.fc_enable(hw);
->  		ixgbe_set_rx_drop_en(adapter);
->  	}
+--CcLH+/Yb/7WuJ8OG--
