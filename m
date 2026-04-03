@@ -1,43 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62EA0358399;
-	Fri,  3 Apr 2026 23:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B389F279DAD;
+	Fri,  3 Apr 2026 23:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775258242; cv=none; b=aZvf8GU1fUivPsCHVOYq3RQ5EVLOLgAa2YtR7TLZSprRrDJC9AkIH24Kz/yl+et9VMOB5zo4Cy9wjRTVlZssrG63sl5n7Oh9U2LXi6LzjTr14mdPuUp44EuGJW5qdUZbCkMxKfQUNsVnBjTkeqO9vnXMdn19rNqFvrLfXzW+r00=
+	t=1775258300; cv=none; b=VbxKpq/em3eAixTN9SImpPC4iOQDlaAd7DZIHbT4+fsxS3PJ0aivC7F7QhoqBbR1p+PnKvhC+umh/rtNktg4mvB5yUWahiwvTIKWOL5tOEw4RPHxoLV+dmbKyMfvAHfowtnuVqFyYGzqhsUAWWgPy3y7Qbe+SKo2k2TdJE9dTWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775258242; c=relaxed/simple;
-	bh=6iwTWs8Jx9YXTAVlHhZFW2wfxcgLXAipLOSIQPlritE=;
+	s=arc-20240116; t=1775258300; c=relaxed/simple;
+	bh=p22xzdd5WFdNJOSce82DqA7KMujph7DW2LReoAWow08=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Z1rz5WfUWF5FM0TovRU8Tjzmgcy/6Z1KLZuMDZ0hh0Ol8S8GF7qmf+YpXx6rqM5spywKFZfNhqvkk+T/yPzC5Se91Osy+qyGDYwl7xbqo0qGxn4xQljqOqiQnYqvU3b8fuevfccZTwGVVpZ6/a1b2k07khJkCTYw6V92lfn2G84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vGLdJxAq; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=CTK5SHyTnG/bRFe60slmvNn6AtgdldVcxlUMJTEQm5Z2HbRNFyYxiQfogOBRiN2oC59QacjkeR+5EvlX9sQVB8WvkC5BKv/ZmOsrMiU0duicKg4PnJC7Efw6kPem0ivb/rwt0waMQSy1Uu6xqUDgShmEJgBq313FJ2luw1svGrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hPB+POND; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vGLdJxAq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 884BBC4CEF7;
-	Fri,  3 Apr 2026 23:17:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hPB+POND"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEFBFC4CEF7;
+	Fri,  3 Apr 2026 23:18:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775258242;
-	bh=6iwTWs8Jx9YXTAVlHhZFW2wfxcgLXAipLOSIQPlritE=;
+	s=k20201202; t=1775258300;
+	bh=p22xzdd5WFdNJOSce82DqA7KMujph7DW2LReoAWow08=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=vGLdJxAqk+YPCa76fqdB5PcTdDLyLhYU2wfsoWU0QbEalPN87poSMS7eJJVolTkMt
-	 xQWYAE3/J8wefWAfEGd7/R549yltdHUI+InAxQluzGmUD1mMDP3dlw0ZmXxd0HJKUf
-	 T3zzj2+RneA0mKQBxFtkh1PwpQQR3M1S/L7RCinRtlULdU+w0rmIhBvgFBCokhAr2c
-	 i41+DWPiZvbBy53WYuiNczZDEWrdS+DcZos9FGV4bAVfisNxYpj7xtF8ql8QXIS/dW
-	 3Rw8IfdVh78jTf8ycFlemoL3SzJxfAI0Cb3Mr11jeh3llYOgg7QUHvGDx4odbzAydD
-	 xPQi1vJHqHnPQ==
-Date: Fri, 3 Apr 2026 16:17:20 -0700
+	b=hPB+PONDbndSqT9kqdks0T7s1wsbaFa7LBxOhfyFoYkltYqdnIrwQsoKNwUB7tU0n
+	 QvTgmrv428N2Bd/WU3Ls9YN0MAsSq9LwMbo3oD2Rhr/dsotYXxGkyEuI72w8QRIgfK
+	 GNPFjySvKnk92f0jG0zAweqzgtu9L4y9ktm3kUUEf4OPlqmwdwCU9Ij2rvEglUwuMh
+	 y1FhkaiCcXDt9NwApsuTkpdS+ZyiUFLkzD5c6E7JKVKmwy8c/Fa0KroOc6Me6BVRqN
+	 ey29VbuyswjHO9TeoXLxxhA0yLfUpyT0wfC/GwTjjAg/U4/pTy2PmRbT2ZYMBeUe1n
+	 I97RydV6H+gmA==
+Date: Fri, 3 Apr 2026 16:18:09 -0700
 From: Jakub Kicinski <kuba@kernel.org>
 To: David Carlier <devnexen@gmail.com>
 Cc: horatiu.vultur@microchip.com, UNGLinuxDriver@microchip.com,
  andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] net: lan966x: fix page_pool error handling in
- lan966x_fdma_rx_alloc_page_pool()
-Message-ID: <20260403161720.1102898c@kernel.org>
-In-Reply-To: <20260403230714.10667-1-devnexen@gmail.com>
+Subject: Re: [PATCH v2 2/3] net: lan966x: fix page pool and resources leak
+ in error paths
+Message-ID: <20260403161809.4908a79c@kernel.org>
+In-Reply-To: <20260403230714.10667-2-devnexen@gmail.com>
 References: <20260403230714.10667-1-devnexen@gmail.com>
+	<20260403230714.10667-2-devnexen@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,39 +48,54 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat,  4 Apr 2026 00:07:12 +0100 David Carlier wrote:
-> page_pool_create() can return an ERR_PTR on failure. The return value
-> is used unconditionally in the loop that follows, passing the error
-> pointer through xdp_rxq_info_reg_mem_model() into page_pool_use_xdp_mem(),
-> which dereferences it, causing a kernel oops.
+On Sat,  4 Apr 2026 00:07:13 +0100 David Carlier wrote:
+> lan966x_fdma_rx_alloc() creates a page pool but does not destroy it if
+> the subsequent fdma_alloc_coherent() call fails, leaking the pool and
+> leaving a dangling pointer in rx->page_pool.
 > 
-> Add an IS_ERR check after page_pool_create() to return early on failure.
+> Similarly, lan966x_fdma_init() frees the coherent DMA memory when
+> lan966x_fdma_tx_alloc() fails but does not destroy the page pool that
+> was successfully created by lan966x_fdma_rx_alloc(), leaking it.
+> 
+> Add the missing page_pool_destroy() calls in both error paths and
+> NULL-out rx->page_pool after destruction to avoid a dangling pointer.
 
-Wow, that was fast, are you generating this patches with AI?
-You've written and tested this code in 40min?
+Okay...
 
-Please with at least 24h before sending v3, per:
-https://www.kernel.org/doc/html/next/process/maintainer-netdev.html
-
-You're missing a cover letter, if there's more than 2 patches the
-series must have a cover letter.
-
+> Fixes: 11871aba1974 ("net: lan96x: Use page_pool API")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Carlier <devnexen@gmail.com>
+> ---
+>  drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
 > diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-> index 7b6369e43451..34bbcae2f068 100644
+> index 34bbcae2f068..b985ce64bb50 100644
 > --- a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
 > +++ b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-> @@ -92,6 +92,9 @@ static int lan966x_fdma_rx_alloc_page_pool(struct lan966x_rx *rx)
+> @@ -120,8 +120,11 @@ static int lan966x_fdma_rx_alloc(struct lan966x_rx *rx)
+>  		return PTR_ERR(rx->page_pool);
 >  
->  	rx->page_pool = page_pool_create(&pp_params);
+>  	err = fdma_alloc_coherent(lan966x->dev, fdma);
+> -	if (err)
+> +	if (err) {
+> +		page_pool_destroy(rx->page_pool);
+> +		rx->page_pool = NULL;
+>  		return err;
+> +	}
 >  
+>  	fdma_dcbs_init(fdma, FDMA_DCB_INFO_DATAL(fdma->db_size),
+>  		       FDMA_DCB_STATUS_INTR);
+> @@ -958,6 +961,7 @@ int lan966x_fdma_init(struct lan966x *lan966x)
+>  	err = lan966x_fdma_tx_alloc(&lan966x->tx);
+>  	if (err) {
+>  		fdma_free_coherent(lan966x->dev, &lan966x->rx.fdma);
+> +		page_pool_destroy(lan966x->rx.page_pool);
 
-no empty lines between call and its error check, fix this in all
-checks you're adding
+but here the "dangling pointer" is fine?
+I don't care either way but be consistent.
 
-> +	if (unlikely(IS_ERR(rx->page_pool)))
-> +		return PTR_ERR(rx->page_pool);
-> +
->  	for (int i = 0; i < lan966x->num_phys_ports; ++i) {
->  		struct lan966x_port *port;
+>  		return err;
+>  	}
 >  
 
