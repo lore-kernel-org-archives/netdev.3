@@ -1,143 +1,71 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66DEB3BADAA
-	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 13:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D61A18AFE
+	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 13:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775223715; cv=none; b=EvOhF28vXrGNcQA0+o7rBgg+oQHfuGvmtj2SBoCG0tLTItoWIgHTOU4YUQCYCnj+/MQvNh0h4+/MBMcbnfyJFybngEEgDtYf/scj7gMQxad1Js+Rqo7WZpVEoCucYEbePI2S4tTuBqZ+e+/JUG2gv0E9O9h8nzf9ZPvYdcRNW9A=
+	t=1775224004; cv=none; b=bc9wY4SjFauAc5/kdz0eA/lZXw4DKlu7CzOtU+XUXDALLBM/SXfLvkqq1B7PTv+/bWUPIiRJygEkU2IauciJ+p+QiAgmLmIq/ijekSZsqt2/fHbg9BOKMjk98XvmMb/B5gt9uRpl3mZI5yUmn3h8K+SkF1sFAZXzibQ94jpS/Ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775223715; c=relaxed/simple;
-	bh=z4klBNTv7RwSdxS+S+yGsHyIQk+ZVEk9gn6Mday17jE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=YvNvJUETUno/lVjqpm9yhnyu59OxQi75ImQI0BNGSxqxfCq8muZRyYmUDOGNVX92CSOci65xlxfVYwoXR8yYfrydJ8tpzXrYVvc1h93VreipfCCsSjPtXx+Zq+dwoFzlzST7TccGtSv7v87hqYGqyr8ewc16+twpOJwaSFNOG74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tf4VAW4E; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775224004; c=relaxed/simple;
+	bh=dhORVKWFgjtVArpJ/zyWhD6ZCl+KA8tWqkp4buwBhVc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kRcOq6/3nt05n3fepNRxkhRhQeippXzYCBnD7Ucm9bwXWiVpKMcV821/O86aMZq0JyxQvi0WjHgDMm+Mdd+90JgNdj5t7zl4e2JddKui40bho0bGiVUEIlGMdXZM7/Blp5CyqPDSfHu7173C8QuHWGjW+vLXHrvGpo9wDofS2ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=td0Sco6p; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tf4VAW4E"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A81C4CEF7;
-	Fri,  3 Apr 2026 13:41:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="td0Sco6p"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF2F8C4CEF7;
+	Fri,  3 Apr 2026 13:46:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775223715;
-	bh=z4klBNTv7RwSdxS+S+yGsHyIQk+ZVEk9gn6Mday17jE=;
-	h=From:Date:Subject:To:Cc:From;
-	b=Tf4VAW4EuGJGRmB3Lrdh7KPxGwuRJwxKzEeLuIgFnXJyDZewHgmXRxW/7h9edC8YL
-	 5mWvjJcfk1gF9wNPdqZujBiqOg0kFK8hKY6IQxLFc1hiBYUDg4CTQ4peNbPn83lL+Y
-	 QukBYfXoLPkLKJ35pyfZeyGkuFh9GGLVPKDm/Ir7wyCQlJ4xNpTBYRvNAR4vxhhhMd
-	 /1W0vlpmAJI9gKR27nu1YGzpYj/PS4YHvYmc/5HZ9a0v2NGJLjAVAR8hc4QGkiadTh
-	 t1fz5UJU9VKQ2v7A8n4H7x7Xxkk6nUGhmcAUVlDgdzbKpZzV9pLql/Id0BsFJ29mMM
-	 OkVWazwnyPkqw==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Fri, 03 Apr 2026 15:41:31 +0200
-Subject: [PATCH net v2] net: airoha: Add dma_rmb() and READ_ONCE() in
- airoha_qdma_rx_process()
+	s=k20201202; t=1775224003;
+	bh=dhORVKWFgjtVArpJ/zyWhD6ZCl+KA8tWqkp4buwBhVc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=td0Sco6pI+LxyaIhFPmXSLmUkKKwdApeH2C2hVh83THoIuY85J2eBJ2r4F5l5UNMn
+	 F8tOC1z5zuCKJrd2ZmDV3DcJH7CV4SHKLPcMfZJnzK2qXc+319MlYKxVzt4i31O/3Q
+	 1JlmkYIre6WzEO6NbaJbSnE/Sy8M9fNKyuRhnRCGfG59f0/ZV3OC7syhptbDxYhPXv
+	 5pA8iyVmjkxqkrKRhzXpyDFRDZVJNegQuC1Tenh+Mf90FS50jqJhncnQ1ZZxkPHht4
+	 EQvtcSaJ0RQDRFNKZgyvk6z7FS0EVwlUMDllVjJvN20HvQcoKdHBUgdmXy/RDapie3
+	 eN6Oa/WwJlomA==
+Date: Fri, 3 Apr 2026 14:46:40 +0100
+From: Simon Horman <horms@kernel.org>
+To: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, anthony.l.nguyen@intel.com,
+	netdev@vger.kernel.org,
+	Marcin Szycik <marcin.szycik@linux.intel.com>
+Subject: Re: [PATCH iwl-next] ixgbe: fix cls_u32 nexthdr path returning
+ success when no entry installed
+Message-ID: <20260403134640.GG113102@horms.kernel.org>
+References: <20260327073046.134085-1-aleksandr.loktionov@intel.com>
+ <20260327073046.134085-8-aleksandr.loktionov@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260403-airoha_qdma_rx_process-fix-reordering-v2-1-181e6e23d27b@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/5WNTQqDMBBGryKz7pQ4GpWuvEcRSXXU0DaxExGLe
- PcGb9Dl98N7OwQWywFuyQ7Cqw3WuxjokkA3GTcy2j5mIEWFyhWhseIn0376t2lla2fxHYeAg91
- Q2EsfcW7EkihTFWn9KDRE1iwcH6fnDo4XaGI52bB4+Z7uNT2nPzVriinqjMoqL/NBFVQ/WRy/r
- l5GaI7j+AH3JOy34AAAAA==
-X-Change-ID: 20260402-airoha_qdma_rx_process-fix-reordering-722308255b65
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Xuegang Lu <xuegang.lu@airoha.com>, 
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- netdev@vger.kernel.org
-X-Mailer: b4 0.14.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260327073046.134085-8-aleksandr.loktionov@intel.com>
 
-Add missing dma_rmb() in airoha_qdma_rx_process routine to make sure the
-DMA read operations are completed when the NIC reports the processing on
-the current descriptor is done. Moreover, add missing READ_ONCE() in
-airoha_qdma_rx_process() for DMA descriptor control fields in order to
-avoid any compiler reordering.
+On Fri, Mar 27, 2026 at 08:30:42AM +0100, Aleksandr Loktionov wrote:
+> ixgbe_configure_clsu32() returns 0 (success) after the nexthdr loop
+> even when ixgbe_clsu32_build_input() fails for every candidate entry
+> and no jump-table slot is actually programmed.  Callers that test the
+> return value would then falsely believe the filter was installed.
+> 
+> The variable 'err' already tracks the last ixgbe_clsu32_build_input()
+> return value; if the loop completes with a successful break, err is 0.
+> If all attempts failed, err holds the last failure code.  Change the
+> unconditional 'return 0' to 'return err' so errors are propagated
+> correctly.
+> 
+> Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> Reviewed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
 
-Fixes: 23020f0493270 ("net: airoha: Introduce ethernet support for EN7581 SoC")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
-Changes in v2:
-- Use msg1 in airoha_qdma_get_gdm_port() signature to avoid missing
-  READ_ONCE().
-- Link to v1: https://lore.kernel.org/r/20260402-airoha_qdma_rx_process-fix-reordering-v1-1-53278474f062@kernel.org
----
- drivers/net/ethernet/airoha/airoha_eth.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+This feels like a bug fix that should be routed via iwl-net with
+a Fixes tag and some description of the user-visible effect
+of this bug.
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index 95ba99b89428..f1843bc5b991 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -581,10 +581,9 @@ static int airoha_qdma_fill_rx_queue(struct airoha_queue *q)
- 	return nframes;
- }
- 
--static int airoha_qdma_get_gdm_port(struct airoha_eth *eth,
--				    struct airoha_qdma_desc *desc)
-+static int airoha_qdma_get_gdm_port(struct airoha_eth *eth, u32 msg1)
- {
--	u32 port, sport, msg1 = le32_to_cpu(desc->msg1);
-+	u32 port, sport;
- 
- 	sport = FIELD_GET(QDMA_ETH_RXMSG_SPORT_MASK, msg1);
- 	switch (sport) {
-@@ -612,15 +611,17 @@ static int airoha_qdma_rx_process(struct airoha_queue *q, int budget)
- 	while (done < budget) {
- 		struct airoha_queue_entry *e = &q->entry[q->tail];
- 		struct airoha_qdma_desc *desc = &q->desc[q->tail];
--		u32 hash, reason, msg1 = le32_to_cpu(desc->msg1);
--		struct page *page = virt_to_head_page(e->buf);
--		u32 desc_ctrl = le32_to_cpu(desc->ctrl);
-+		u32 hash, reason, msg1, desc_ctrl;
- 		struct airoha_gdm_port *port;
- 		int data_len, len, p;
-+		struct page *page;
- 
-+		desc_ctrl = le32_to_cpu(READ_ONCE(desc->ctrl));
- 		if (!(desc_ctrl & QDMA_DESC_DONE_MASK))
- 			break;
- 
-+		dma_rmb();
-+
- 		q->tail = (q->tail + 1) % q->ndesc;
- 		q->queued--;
- 
-@@ -633,10 +634,12 @@ static int airoha_qdma_rx_process(struct airoha_queue *q, int budget)
- 		if (!len || data_len < len)
- 			goto free_frag;
- 
--		p = airoha_qdma_get_gdm_port(eth, desc);
-+		msg1 = le32_to_cpu(READ_ONCE(desc->msg1));
-+		p = airoha_qdma_get_gdm_port(eth, msg1);
- 		if (p < 0 || !eth->ports[p])
- 			goto free_frag;
- 
-+		page = virt_to_head_page(e->buf);
- 		port = eth->ports[p];
- 		if (!q->skb) { /* first buffer */
- 			q->skb = napi_build_skb(e->buf, q->buf_size);
-@@ -670,8 +673,8 @@ static int airoha_qdma_rx_process(struct airoha_queue *q, int budget)
- 			 * DMA descriptor. Report DSA tag to the DSA stack
- 			 * via skb dst info.
- 			 */
--			u32 sptag = FIELD_GET(QDMA_ETH_RXMSG_SPTAG,
--					      le32_to_cpu(desc->msg0));
-+			u32 msg0 = le32_to_cpu(READ_ONCE(desc->msg0));
-+			u32 sptag = FIELD_GET(QDMA_ETH_RXMSG_SPTAG, msg0);
- 
- 			if (sptag < ARRAY_SIZE(port->dsa_meta) &&
- 			    port->dsa_meta[sptag])
+Else, please clearly state in the commit message that this is not a bug.
 
----
-base-commit: ec7067e661193403a7a00980bda8612db5954142
-change-id: 20260402-airoha_qdma_rx_process-fix-reordering-722308255b65
-
-Best regards,
--- 
-Lorenzo Bianconi <lorenzo@kernel.org>
-
+...
