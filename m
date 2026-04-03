@@ -1,98 +1,74 @@
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C217178F3A
-	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 01:04:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436A122FF22;
+	Fri,  3 Apr 2026 01:10:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775178244; cv=none; b=bIVClfHzSEaGQMYwUmOd+RjLCWcjjBZXl6Kzk6LIxJEqjEkpBgSEhsJFJwaBbJKVCgyy4F9ZxSjPkjyNfGItF3NB/1eabcF8IGib4+l7Fzt+IUdT/QMAggg1M3pRMKLU+93vuy38XprJm8J9YJ1N2+J9OriiYrolyjKJgc3kw34=
+	t=1775178624; cv=none; b=RCeiqMVdhiHoV6SMUFKnPmwj8JGUOkKAcAGJ1Wm91nEgTtu6LrxUy89KKhw+ls6PwNDLaIsdDeOtXkgbYEXcN0LEIH4hbHP9JsonNicrnP3YAYEEaQn4Ya++6fo+WVkn27BjWdQ8CKkPdwZMWTmMOjvMtLPyNNQKNDQNBQuf51A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775178244; c=relaxed/simple;
-	bh=1LdY924vImLVp8wuouo5L+CLn7ldDb4dU8H3KLLBkFw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xkjrp/2v07U7GaTgok6CjLnmDBVbcB3+IEPovJEmdCVRDK72f90N9rNGCXMsmuA1hW029f8bTXywas2O9w9WsTrEebBXK7pg+6z/E3ldq42Ip8IUEocCmB1xe/+nhWG8W6Ix7wHVlPWJd2FuttDiNpab0mUqhlZ/tomBycuaDKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Z/MxJZPP; arc=none smtp.client-ip=91.218.175.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1775178624; c=relaxed/simple;
+	bh=kJMeBYBU2u7nbOPGNT4CKbku/i6jZ2oUV8sTJgxsT8I=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=bv+2HdJ0E+eR/14De+HiVII1nqsc6/PSVlEwwcRZFLbs2mJCFtWf5Sedplxe6TYSa1s1FzyhMekYQ5z6fMnqRBdH2art6tumpzpxv0Sk/UA05Cw7pu7NyJeYdafLP1E+OUWn5nHBpHEsTERuaj6YQPgZmTYpdCnuDBcinn0zjk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eFJGtB4q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Z/MxJZPP"
-Date: Thu, 2 Apr 2026 18:03:44 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775178230;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=53BQQ0sHBNvn674bx/yqTRF2ETsE2dMIOa2LRdAyEbE=;
-	b=Z/MxJZPPnsX8EwiAvUnTfqMgeFGfJRCzrXPTm8DTel/l7vcNI33UAbPJY/rnSxrwBZwfD6
-	qi+IXFa4TWtZcl70sQi+mYuc+Aupau0+ryjaj6kb9uWyJ4qmh17WH9eFz/PFvdDB0BWnZb
-	r/U5c7QJdQE+LDZMppnM17iGrgepiHw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
-Cc: linux-mm@kvack.org, willy@infradead.org, hannes@cmpxchg.org, 
-	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	kasong@tencent.com, qi.zheng@linux.dev, baohua@kernel.org, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, riel@surriel.com, kuba@kernel.org, 
-	edumazet@google.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v2] mm/vmpressure: skip socket pressure for costly order
- reclaim
-Message-ID: <ac8DEuZhb_aQA4ez@linux.dev>
-References: <20260402232511.17246-1-jp.kobryn@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eFJGtB4q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E54D6C116C6;
+	Fri,  3 Apr 2026 01:10:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775178624;
+	bh=kJMeBYBU2u7nbOPGNT4CKbku/i6jZ2oUV8sTJgxsT8I=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=eFJGtB4qs5wWDuP10UkqAiyu274o4HY1n2uyIEBRIimEJR730YM1iVKRjNL3Abs1q
+	 tt7x6+CladIyDSzEXWh59eY5WKxmSWsYz0btYL7HX82WntloK9TbFXxqY2enviin5R
+	 iG2kUgh6ZOLD+tYSOGuyIBHMluHATMJUGMlR1/xmN6ou0n38IqXLhxAwYwOZ9SNlk5
+	 NtnrwUV8hkpikQ9DWhin1bJyoeIb80zYTG8R0BTKajkiy6Nxo/RWdgqosNvQxKgw4g
+	 vLQeDH/bCbv8oxx8kRkqY7aClecL8ZB2JbAaE3umN8el4oisG/EAeVANl6s2fD0V0B
+	 txdzPjXY4sLRQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FD423809A09;
+	Fri,  3 Apr 2026 01:10:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260402232511.17246-1-jp.kobryn@linux.dev>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] MAINTAINERS: Update email for Allison Henderson
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177517860604.685228.10282111743382602079.git-patchwork-notify@kernel.org>
+Date: Fri, 03 Apr 2026 01:10:06 +0000
+References: <20260402005833.38376-1-achender@kernel.org>
+In-Reply-To: <20260402005833.38376-1-achender@kernel.org>
+To: Allison Henderson <achender@kernel.org>
+Cc: netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com,
+ rds-devel@oss.oracle.com, kuba@kernel.org, horms@kernel.org,
+ linux-rdma@vger.kernel.org
 
-On Thu, Apr 02, 2026 at 04:25:11PM -0700, JP Kobryn (Meta) wrote:
-> When kswapd reclaims at high order due to fragmentation,
+Hello:
 
-* kswapd is woken up for the higher order reclaim request
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-But this can be direct reclaim as well.
-
-> vmpressure() can
-> report poor reclaim efficiency even though the system has plenty of free
-> memory. This is because kswapd scans many pages but finds little to reclaim
-> - the pages are actively in use and don't need to be freed. The resulting
-> scan:reclaim ratio triggers socket pressure, throttling TCP throughput
-> unnecessarily.
+On Wed,  1 Apr 2026 17:58:33 -0700 you wrote:
+> Switch active email address to kernel.org alias
 > 
-> Net allocations do not exceed order 3 (PAGE_ALLOC_COSTLY_ORDER),
+> Signed-off-by: Allison Henderson <achender@kernel.org>
+> ---
+>  MAINTAINERS | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Net not doing costly order allocations is irrelevant here. IIUC you want all
-costly order allocations (like THPs) to not raise vmpressure as those don't
-necessarily represents the memory pressure.
+Here is the summary with links:
+  - MAINTAINERS: Update email for Allison Henderson
+    https://git.kernel.org/netdev/net/c/e9c9f084cd78
 
-> so high
-> order reclaim difficulty should not trigger socket pressure. The kernel
-> already treats this order as the boundary where reclaim is no longer
-> expected to succeed and compaction may take over.
-> 
-> Make vmpressure() order-aware through an additional parameter sourced from
-> scan_control at existing call sites. Socket pressure is now only asserted
-> when order <= PAGE_ALLOC_COSTLY_ORDER.
-> 
-> Memcg reclaim is unaffected since try_to_free_mem_cgroup_pages() always
-> uses order 0, which passes the filter unconditionally. Similarly,
-> vmpressure_prio() now passes order 0 internally when calling vmpressure(),
-> ensuring critical pressure from low reclaim priority is not suppressed by
-> the order filter.
-> 
-> Signed-off-by: JP Kobryn (Meta) <jp.kobryn@linux.dev>
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-The patch looks good. I think we can ask Andrew to just adjust the commit
-message and then you don't need to resend.
-
-Moving networking stack away from vmpressure in my plan for a long time and this
-tells me I should get to it sooner.
-
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
