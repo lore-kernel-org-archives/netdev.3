@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6082823E320;
-	Fri,  3 Apr 2026 23:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D382E38B129;
+	Fri,  3 Apr 2026 23:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775257855; cv=none; b=hyNIgNrZT4wWdb4nXUCAudMAbu/umQVSxPyPZwN1Gf5IjYjDMDbw8LmlLq5lOZK+AF1HB6wrViH9SKJipy/3oZD/a504cX4/IOIis9ayMuO3H48eF1QO73hArN2XLwktPSu02OpITnR1AUB7NbNiWOk9Ulo75c6IPZzZu5Ba+LU=
+	t=1775257856; cv=none; b=iNptuwUjIpjqn+gelAIS7nc6D3D4LkawWweC2t5sIKcuUC2NspKYDkiAGLaBbhkIa8XDP01yzbv63lJ+p7fsalXwmIfT9d+RPta5eHBiZsindcjvlCylc0Ubq/n9OyVwWkGD3u1AmaW3Kxki2lT4uT9bX9aAiG4GjghkUbtOtFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775257855; c=relaxed/simple;
-	bh=n3LehWgz9wnM7EuFvftUNoRlpMbwXDJqIaSXFpk9NEI=;
+	s=arc-20240116; t=1775257856; c=relaxed/simple;
+	bh=oSGoMTcOSQvAt9pNaDJn9Zh2clvLmn7UDmVHXW4LQeo=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=UHEGhpC8dm0Osb3VEr9b8qYLMGoQqGv9a5jwfS8DNKK/pAEFKYvD+XhgyMrNLz+6d9h0L/XkN8prGscja5pcFjMh6RohItbpDH8HhoMb58a3od3LlQWId92RsF0IJNT85JxAl5L+eEX+nr/2/Ne6Rr2qC27a17a6pwS5SIMGmUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jKPFRKDa; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=FnPYvuHV8MFjLZzAzdGe8tFxKXU7KcN5jPQ+2vurek2vPrZqCtqTpEULlDMaJS4p2rq4GRJkzY24mKogP+GpiaJBnKL3AgQeURKkJMfNwX1jprDFU+p/8KrWobPQAAG2LJW6MFtfT+9yqh8mwOdqRc5eB74bx/RNhVc9g/A8Qag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gqGyuTwO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jKPFRKDa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43777C19423;
-	Fri,  3 Apr 2026 23:10:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gqGyuTwO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 758C0C19423;
+	Fri,  3 Apr 2026 23:10:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775257855;
-	bh=n3LehWgz9wnM7EuFvftUNoRlpMbwXDJqIaSXFpk9NEI=;
+	s=k20201202; t=1775257856;
+	bh=oSGoMTcOSQvAt9pNaDJn9Zh2clvLmn7UDmVHXW4LQeo=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=jKPFRKDa6ASnKu0/FgjKgDVNXFPW40qQmZd2x71dXfNOoH6y9NNSEmBvC5qwBH+hq
-	 fXlXtLEhtBVmp/Fj8ziOzD1aDV2ZzpW+KUxmqSQLKnCz9+nGN2o66epCOTV4FSGgTn
-	 lP0PsLIZ9OFaJXnOsyi6+CANuin/OdQnIuuN9LcKjbPupVufAW6jexEQe47SRv1wQD
-	 ynrPNp+PyGX/OfXuLb7zOY/UN8jWwQcZJw1ZDE42Ub/HKDn39IeKEAl07qoF6TvSlF
-	 EsDNCxNYRG26RAfOpEeVVEr9w9TSsqRdR962GXw4s8iBjDkFjMo+4DVQkPbyFxDtL1
-	 NFDk9erUEmfNQ==
+	b=gqGyuTwOv93dMtcVih4m3lOwhZwgWLW8Ozjzp3/3erFqi09SYe4rYCKN0EbhXiXP3
+	 /CV4lm+8345tRPHaS/S0osUuzZqn135Q8sDRcrnxg1X7MqFRGFnurAbdm5aKI2OdNI
+	 Ygl601BdoyTx8u+CeDD+je35T4r8JeWUiQj8Y3OSZ87OnZrYuvzPZ6yO/HNg8ggZWJ
+	 o3z5tXNmKghKEIVW0aSwrYN37yYfdf6qCCShH2BWI9rWhxGcrucvGwnOvggjxDry4L
+	 sxNo9AitsU3k8k+oJRttSoM/JfQcWOoMrSfRhOd9TkBF+rRYtV00D8ez4rUcpa402Q
+	 EwHP0tiezTUkg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02DC23809A14;
-	Fri,  3 Apr 2026 23:10:38 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FC533809A14;
+	Fri,  3 Apr 2026 23:10:39 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,40 +37,52 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2] stmmac: cleanup dead dependencies on STMMAC_PLATFORM
- and
- STMMAC_ETH in Kconfig
+Subject: Re: [PATCH net-next v2 0/8] selftests: drv-net: gro: more test cases
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177525783653.1484550.883019937304044818.git-patchwork-notify@kernel.org>
-Date: Fri, 03 Apr 2026 23:10:36 +0000
-References: <20260402145858.240231-1-julianbraha@gmail.com>
-In-Reply-To: <20260402145858.240231-1-julianbraha@gmail.com>
-To: Julian Braha <julianbraha@gmail.com>
-Cc: davem@davemloft.net, peppe.cavallaro@st.com, alexandre.torgue@foss.st.com,
- mcoquelin.stm32@gmail.com, linux@armlinux.org.uk, kuba@kernel.org,
- netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, rmk+kernel@armlinux.org.uk
+ <177525783803.1484550.17902714476084600559.git-patchwork-notify@kernel.org>
+Date: Fri, 03 Apr 2026 23:10:38 +0000
+References: <20260402210000.1512696-1-kuba@kernel.org>
+In-Reply-To: <20260402210000.1512696-1-kuba@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, shuah@kernel.org,
+ willemb@google.com, petrm@nvidia.com, anubhavsinggh@google.com,
+ richardbgobert@gmail.com, linux-kselftest@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu,  2 Apr 2026 15:58:58 +0100 you wrote:
-> There are already 'if STMMAC_ETH' and 'STMMAC_PLATFORM'
-> conditions wrapping these config options, making the
-> 'depends on' statements duplicate dependencies (dead code).
+On Thu,  2 Apr 2026 13:59:52 -0700 you wrote:
+> Add a few more test cases for GRO.
 > 
-> I propose leaving the outer 'if STMMAC_PLATFORM...endif' and
-> 'if STMMAC_ETH...endif' conditions, and removing the
-> individual 'depends on' statements.
+> First 4 patches are unchanged from v1.
+> 
+> Patches 5 and 6 are new. Willem pointed out that the defines are
+> duplicated and all these imprecise defines have been annoying me
+> for a while so I decided to clean them up.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v2] stmmac: cleanup dead dependencies on STMMAC_PLATFORM and STMMAC_ETH in Kconfig
-    https://git.kernel.org/netdev/net-next/c/e2f152c822cf
+  - [net-next,v2,1/8] selftests: drv-net: gro: add data burst test case
+    https://git.kernel.org/netdev/net-next/c/30f831b44a98
+  - [net-next,v2,2/8] selftests: drv-net: gro: add 1 byte payload test
+    https://git.kernel.org/netdev/net-next/c/436ea8a1b7ed
+  - [net-next,v2,3/8] selftests: drv-net: gro: always wait for FIN in the capacity test
+    https://git.kernel.org/netdev/net-next/c/d97348474708
+  - [net-next,v2,4/8] selftests: drv-net: gro: prepare for ip6ip6 support
+    https://git.kernel.org/netdev/net-next/c/5469b695f236
+  - [net-next,v2,5/8] selftests: drv-net: gro: remove TOTAL_HDR_LEN
+    https://git.kernel.org/netdev/net-next/c/166b0cc6df8c
+  - [net-next,v2,6/8] selftests: drv-net: gro: make large packet math more precise
+    https://git.kernel.org/netdev/net-next/c/024597cc2077
+  - [net-next,v2,7/8] selftests: drv-net: gro: test ip6ip6
+    https://git.kernel.org/netdev/net-next/c/9a84a4047df7
+  - [net-next,v2,8/8] selftests: drv-net: gro: add a test for bad IPv4 csum
+    https://git.kernel.org/netdev/net-next/c/764d0833e795
 
 You are awesome, thank you!
 -- 
