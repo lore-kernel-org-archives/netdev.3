@@ -1,41 +1,63 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3DAA1D6DB5
-	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 08:41:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E0D285406
+	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 08:48:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775205717; cv=none; b=SRshGLwiG2rem+Ov2vVSdiFt0cJEfzePLHDDyUu9cjj+IXI4nEAxpEZgf0p/TqdIfw+lCIDLNxdk1S8pXOEK/nydRsE0CR+4EyNQdk+RH1Buh3hKpc7o+zgVXCDU7HDBGCTsXKyaxKLHEpDlvRV6S3B+cisl7hgjHZ5FTMw98sw=
+	t=1775206083; cv=none; b=oydtsFysCq3AQBAPzNNKEw4BnBtpM3mKdSpX590bpnklb0OOWKGrBUlXb+8gBfVn4NCVjbXTpfR2/zR1YGdhDpYBueGbWCSzL8SGhERV44jjfUgAZyVGMxqQE8ZNbwYJysuNCMcgpk8m+Qoatu5WmMBNE3n35ieXcxQS+nimtmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775205717; c=relaxed/simple;
-	bh=t4B5nxYfc/0Isd7sIgSmwbGveNKqQ2CZvNKcMjwldZo=;
+	s=arc-20240116; t=1775206083; c=relaxed/simple;
+	bh=plRNuwU/KKf4UAbM/wt+uekBoRfThkWmizP/XyhYQqs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j+1ID6FmZ+Ld5XcyYz1e/qV4fInU6ojcu+C6qU76cXoEt4b23gDLOLV3OYGrgsqesT5K7W+WDtzOnznaX5ah8nO+mYN2i/H4svLiw16cqtjdWYzD39Wxxyv8wh8VrtMBImMsKH9B3Jwwi1poYxvUuCRJPTBy+rcAKBzt/2gbAxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aR8PIdc/; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z1q2JkdoGFLoYT//qNn47V2jVL83l0vRHK3F4+G16aeAgVMfFXwP9Ah+b8puame35LIJDKf0dr/rulc0kUtfBMw55oMO0kqcLXFeJyGwUic3fHC2UlYtDS1UwwUEutfk59j1u5cU7gwEM0gsdfc9eGOe32rMsg/adQFXrqeoA2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kka+7354; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aR8PIdc/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECA4EC4CEF7;
-	Fri,  3 Apr 2026 08:41:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775205716;
-	bh=t4B5nxYfc/0Isd7sIgSmwbGveNKqQ2CZvNKcMjwldZo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aR8PIdc/0OYUWDHYLfzYOL7T+43v0LiELV1mJRUJFsno+S5We93x0eKxVC+dE5RJ9
-	 6RCEI0GiY/CQTNm/+8p65OJ11f8XQSrVHotYNBrecnRFs/qYFHn2cGeYk4/2UBs50s
-	 0Nc/ivsvphyiV7weLu/jnEQq3nMNqzXgE8cpkp1lB/QZN3zyv8h6k6WBoMesRkt91m
-	 z9hGLuPKOw2/7hE9ybpcbt1yoq+PSc98aGQi2MERu1SOen9pgBIOP/toxfmwQFbA+1
-	 kTiA1eTK9WvqcJOl57y63IkkyA71wjKttDSWyG5yk0bPffol8t/GUAhs3LzvcLcxc3
-	 oz44ZXBfHjY2A==
-Date: Fri, 3 Apr 2026 09:41:53 +0100
-From: Simon Horman <horms@kernel.org>
-To: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, anthony.l.nguyen@intel.com,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH iwl-next] ixgbe: fix integer overflow and wrong bit
- position in ixgbe_validate_rtr()
-Message-ID: <20260403084153.GA18306@horms.kernel.org>
-References: <20260327073046.134085-1-aleksandr.loktionov@intel.com>
- <20260327073046.134085-10-aleksandr.loktionov@intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kka+7354"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775206082; x=1806742082;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=plRNuwU/KKf4UAbM/wt+uekBoRfThkWmizP/XyhYQqs=;
+  b=kka+7354CykPZPTBj15qPd3LnXKmMpMbWPrbjM5cWuUYWVmAicoRKIPs
+   wCy5l7HJXFFDXEhm04YUITPgWXmQBAYoaz1jyWXitkVDV2JEVRPSzGjvT
+   NYD6vHgshfcPzf+1aJc/IJ+GFD92ESad+F1cFazrOq5Os+kC4z6aEygD7
+   OApH0g78cpZ2rZhlhHnxizHUAXOK1hVTw1wILxAJd0bWDnzOMw4Ut+eZo
+   7o0JajgJmac0i3pacP/SMnKODBv+ql4RFeiJF2Qp6FGswYeZ3YoH9DJ54
+   sNg445qpcXlwvBu37AKwIOxnDWm7GzE49XvmFo0rBJ+E3mEQGCCPQ1vCt
+   A==;
+X-CSE-ConnectionGUID: tnNUkEGsQsGodTuePYs7Cw==
+X-CSE-MsgGUID: oPVRYslZSLm0vyjM7DrTvA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11747"; a="76239386"
+X-IronPort-AV: E=Sophos;i="6.23,157,1770624000"; 
+   d="scan'208";a="76239386"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2026 01:48:02 -0700
+X-CSE-ConnectionGUID: aYnutFtgSwG9robKO913Ww==
+X-CSE-MsgGUID: PhYAdxOkRZqoBgdwxpFU3Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,157,1770624000"; 
+   d="scan'208";a="222355505"
+Received: from lkp-server01.sh.intel.com (HELO 064ad336901d) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 03 Apr 2026 01:48:00 -0700
+Received: from kbuild by 064ad336901d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w8aC5-0000000017N-0OAP;
+	Fri, 03 Apr 2026 08:47:57 +0000
+Date: Fri, 3 Apr 2026 16:47:19 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jason Xing <kerneljasonxing@gmail.com>, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+	Jason Xing <kernelxing@tencent.com>
+Subject: Re: [PATCH v3 net-next] net: advance skb_defer_disable_key check in
+ napi_consume_skb
+Message-ID: <202604031603.YyNxdorw-lkp@intel.com>
+References: <20260401033211.44463-1-kerneljasonxing@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,68 +66,115 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260327073046.134085-10-aleksandr.loktionov@intel.com>
+In-Reply-To: <20260401033211.44463-1-kerneljasonxing@gmail.com>
 
-On Fri, Mar 27, 2026 at 08:30:44AM +0100, Aleksandr Loktionov wrote:
-> Two bugs in the same loop in ixgbe_validate_rtr():
+Hi Jason,
 
-If these are bugs then they should have a Fixes tag.
-If there is more than one bug, possibly split into two patches.
-And if these are present in net, then probably they are iwl-net material.
+kernel test robot noticed the following build errors:
 
-OTOH, if they are not bugs, then please don't describe them as such.
+[auto build test ERROR on net-next/main]
 
-> 
-> 1. When extracting 3-bit traffic class values from the IXGBE_RTRUP2TC
->    register the shifted value was assigned directly to a u8, silently
->    truncating any bits above bit 7.  Mask with IXGBE_RTRUP2TC_UP_MASK
->    before the assignment so only the intended 3 bits are kept.
-> 
-> 2. When clearing an out-of-bounds entry the mask was always shifted by
->    the fixed constant IXGBE_RTRUP2TC_UP_SHIFT (== 3), regardless of
->    which loop iteration was being processed.  This means only the entry
->    at bit position 3 was ever cleared; entries at bit positions 0, 6, 9,
->    ..., 21 were left unreset.  Use i * IXGBE_RTRUP2TC_UP_SHIFT to target
->    the correct field for each iteration.
+url:    https://github.com/intel-lab-lkp/linux/commits/Jason-Xing/net-advance-skb_defer_disable_key-check-in-napi_consume_skb/20260403-115110
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20260401033211.44463-1-kerneljasonxing%40gmail.com
+patch subject: [PATCH v3 net-next] net: advance skb_defer_disable_key check in napi_consume_skb
+config: mips-cu1830-neo_defconfig (https://download.01.org/0day-ci/archive/20260403/202604031603.YyNxdorw-lkp@intel.com/config)
+compiler: mips-linux-gcc (GCC) 15.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260403/202604031603.YyNxdorw-lkp@intel.com/reproduce)
 
-This describes the effect at the register level.
-But I think it would be useful to describe the effect that
-users will experience.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202604031603.YyNxdorw-lkp@intel.com/
 
-> 
-> Also replace the hardcoded 0x7 literal with the IXGBE_RTRUP2TC_UP_MASK
-> constant for consistency with other parts of the driver.
-> 
-> Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+All errors (new ones prefixed by >>):
 
-This does seem ripe for use of FIELD_GET and FIELD_PREP.
+   In file included from include/linux/build_bug.h:5,
+                    from include/linux/container_of.h:5,
+                    from include/linux/list.h:5,
+                    from include/linux/module.h:12,
+                    from net/core/skbuff.c:37:
+   net/core/skbuff.c: In function 'napi_consume_skb':
+>> net/core/skbuff.c:1522:38: error: 'skb_defer_disable_key' undeclared (first use in this function)
+    1522 |         if (!static_branch_unlikely(&skb_defer_disable_key) &&
+         |                                      ^~~~~~~~~~~~~~~~~~~~~
+   include/linux/compiler.h:77:45: note: in definition of macro 'unlikely'
+      77 | # define unlikely(x)    __builtin_expect(!!(x), 0)
+         |                                             ^
+   include/linux/jump_label.h:515:41: note: in expansion of macro 'unlikely_notrace'
+     515 | #define static_branch_unlikely(x)       unlikely_notrace(static_key_enabled(&(x)->key))
+         |                                         ^~~~~~~~~~~~~~~~
+   include/linux/jump_label.h:515:58: note: in expansion of macro 'static_key_enabled'
+     515 | #define static_branch_unlikely(x)       unlikely_notrace(static_key_enabled(&(x)->key))
+         |                                                          ^~~~~~~~~~~~~~~~~~
+   net/core/skbuff.c:1522:14: note: in expansion of macro 'static_branch_unlikely'
+    1522 |         if (!static_branch_unlikely(&skb_defer_disable_key) &&
+         |              ^~~~~~~~~~~~~~~~~~~~~~
+   net/core/skbuff.c:1522:38: note: each undeclared identifier is reported only once for each function it appears in
+    1522 |         if (!static_branch_unlikely(&skb_defer_disable_key) &&
+         |                                      ^~~~~~~~~~~~~~~~~~~~~
+   include/linux/compiler.h:77:45: note: in definition of macro 'unlikely'
+      77 | # define unlikely(x)    __builtin_expect(!!(x), 0)
+         |                                             ^
+   include/linux/jump_label.h:515:41: note: in expansion of macro 'unlikely_notrace'
+     515 | #define static_branch_unlikely(x)       unlikely_notrace(static_key_enabled(&(x)->key))
+         |                                         ^~~~~~~~~~~~~~~~
+   include/linux/jump_label.h:515:58: note: in expansion of macro 'static_key_enabled'
+     515 | #define static_branch_unlikely(x)       unlikely_notrace(static_key_enabled(&(x)->key))
+         |                                                          ^~~~~~~~~~~~~~~~~~
+   net/core/skbuff.c:1522:14: note: in expansion of macro 'static_branch_unlikely'
+    1522 |         if (!static_branch_unlikely(&skb_defer_disable_key) &&
+         |              ^~~~~~~~~~~~~~~~~~~~~~
 
-But if these are bug fixes, then this minimalist approach looks good to me.
 
+vim +/skb_defer_disable_key +1522 net/core/skbuff.c
 
-> ---
->  drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-> index 9aec66c..53b82a5 100644
-> --- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-> +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-> @@ -9798,11 +9798,12 @@ static void ixgbe_validate_rtr(struct ixgbe_adapter *adapter, u8 tc)
->  	rsave = reg;
->  
->  	for (i = 0; i < MAX_TRAFFIC_CLASS; i++) {
-> -		u8 up2tc = reg >> (i * IXGBE_RTRUP2TC_UP_SHIFT);
-> +		u8 up2tc = IXGBE_RTRUP2TC_UP_MASK &
-> +			   (reg >> (i * IXGBE_RTRUP2TC_UP_SHIFT));
->  
->  		/* If up2tc is out of bounds default to zero */
->  		if (up2tc > tc)
-> -			reg &= ~(0x7 << IXGBE_RTRUP2TC_UP_SHIFT);
-> +			reg &= ~(IXGBE_RTRUP2TC_UP_MASK << (i * IXGBE_RTRUP2TC_UP_SHIFT));
->  	}
->  
->  	if (reg != rsave)
-> -- 
-> 2.52.0
-> 
+  1500	
+  1501	/**
+  1502	 * napi_consume_skb() - consume skb in NAPI context, try to feed skb cache
+  1503	 * @skb: buffer to free
+  1504	 * @budget: NAPI budget
+  1505	 *
+  1506	 * Non-zero @budget must come from the @budget argument passed by the core
+  1507	 * to a NAPI poll function. Note that core may pass budget of 0 to NAPI poll
+  1508	 * for example when polling for netpoll / netconsole.
+  1509	 *
+  1510	 * Passing @budget of 0 is safe from any context, it turns this function
+  1511	 * into dev_consume_skb_any().
+  1512	 */
+  1513	void napi_consume_skb(struct sk_buff *skb, int budget)
+  1514	{
+  1515		if (unlikely(!budget || !skb)) {
+  1516			dev_consume_skb_any(skb);
+  1517			return;
+  1518		}
+  1519	
+  1520		DEBUG_NET_WARN_ON_ONCE(!in_softirq());
+  1521	
+> 1522		if (!static_branch_unlikely(&skb_defer_disable_key) &&
+  1523		    skb->alloc_cpu != smp_processor_id() && !skb_shared(skb)) {
+  1524			skb_release_head_state(skb);
+  1525			return skb_attempt_defer_free(skb);
+  1526		}
+  1527	
+  1528		if (!skb_unref(skb))
+  1529			return;
+  1530	
+  1531		/* if reaching here SKB is ready to free */
+  1532		trace_consume_skb(skb, __builtin_return_address(0));
+  1533	
+  1534		/* if SKB is a clone, don't handle this case */
+  1535		if (skb->fclone != SKB_FCLONE_UNAVAILABLE) {
+  1536			__kfree_skb(skb);
+  1537			return;
+  1538		}
+  1539	
+  1540		skb_release_all(skb, SKB_CONSUMED);
+  1541		napi_skb_cache_put(skb);
+  1542	}
+  1543	EXPORT_SYMBOL(napi_consume_skb);
+  1544	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
