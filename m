@@ -1,79 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0853736B05E
-	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 12:28:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899B538AC66;
+	Fri,  3 Apr 2026 12:30:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775219311; cv=none; b=BK83iPXoyfVQE1VnGKPP+m4mL4pcEEgTvymmuawU+KehbmPz/fsgkuT55O6hx5SfObmdPoLgwy8LJGKC81oGzvyClO/z4S6yySXK6lNGOouC6qsQivtGjeyDQYwwzj7NjA75dgTEtKpX/yiZ+SSwH4zK2ua0n6JobrDw6s4Zvqo=
+	t=1775219414; cv=none; b=o5EFx3ZNWR9CkINUcoMxyJnOzPm9n0FYH9IrvDWMvKpYb9HP+T/nteatwjI49T+MDuCHTx4bEc3QZ3pKvsTviu4VFWYQNCFQ9T6cjcAe1sDGojH/otQeqXk+qQat0QuoiJBO2y4CJtjpwOnvsoDxR7ofJFr6OajFEt1QuZ0WFUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775219311; c=relaxed/simple;
-	bh=F8iAS6pGjjZT/iyWHDVcTqPA4wqEVTbdVw3IDnLF1gY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iN3bx5XlUZ7t35zS75+J2CARduaBG0SOWHYk/JG9aZa11+0291mwd+EYUJoWI4FNGJrr6N+KF3ojtLJmDfgoz/LWcmOfXoCUsOVy21Mop6U0KNrBt9ZD+99Yl6C5YDtkmcIjuh+uHVMMczbM5d2qWu8g+1hnYnHjAQ7b3H/1cP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sbmE9LQf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775219414; c=relaxed/simple;
+	bh=P36D0pir7MJhihtsq9xca0tJWBvWT/gFu4BIXWwSWpc=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=FrIr7WklpU2wYhDIalAwn4IeXGNyMGky1J0WHFtJvRZ0HlMB1mUeW6F7zro4bmq4Gibj5e4N3uYKoWeEWnT/A5i03l33gK/wtODt1K8Ch5ggASx1Ucep8VvJIVTJas/T7uQYKagLKo73EUBqJiloSgMJudcOpado7npLaGuzreI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=OEf1FwAT; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sbmE9LQf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB730C4CEF7;
-	Fri,  3 Apr 2026 12:28:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775219310;
-	bh=F8iAS6pGjjZT/iyWHDVcTqPA4wqEVTbdVw3IDnLF1gY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sbmE9LQfsSQmlOrk1+mqZopEkGj6UWlRErrTj/zoKIqPbXRnvOVtJoPvk889CM3dW
-	 K/I40NZC5kkc2UmIF9hR6uKWDoL2I36noxC86NJnHEPwSMuBOBREPiO6b663fIvvy5
-	 r8HyljcB/XAr05GemW855eifOOYWl9z27l/UiHAIzXncPBXJLo2MTDtQWS9WcdBBUK
-	 97Z2j1ppg18/H9Te41Kq49R+d4TfhHoaW8AA5e7B97phIsTImSRadc40I65fsXUKQE
-	 FcGs2rLBvhDfla91t++y1hfFo1qedsBPU8Sfe6VbRO18aKGI86IdpH2Iest4rJAuiN
-	 HE2pocYfAMkkw==
-Date: Fri, 3 Apr 2026 13:28:27 +0100
-From: Simon Horman <horms@kernel.org>
-To: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, anthony.l.nguyen@intel.com,
-	netdev@vger.kernel.org, Marcin Szycik <marcin.szycik@intel.com>
-Subject: Re: [PATCH net] ice: fix setting promisc mode while adding VID filter
-Message-ID: <20260403122827.GA85281@horms.kernel.org>
-References: <20260327072332.130320-1-aleksandr.loktionov@intel.com>
- <20260327072332.130320-5-aleksandr.loktionov@intel.com>
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="OEf1FwAT"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0BF1CA5842;
+	Fri,  3 Apr 2026 14:30:01 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1775219404; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=3IutcUR6m+dhKQLaSMXbQx2Xm49f/c8/BD6C6q4j+3w=;
+	b=OEf1FwAT0ui1jtvFVZzfawOJp4udw4sxZP8qUiippSjHqU6svXuR3pcp42JIFHDTu4btkz
+	jhbtExknKM8xzlNeBVUuAT24oSEai79VgwdpEkNsTAyaTqYLm33tK6SjMmklBpsvpW1RPe
+	bOY316JoYyOcrXZWT2qRxsWVLeAvdX2VI6Xfor9bgufFp4/AVo8dcextHt9PJnGVoDymOk
+	MJ64lU0O56GK/MHp+Dbe629FEFx6HzSjq/81Zpj3tvZfI1+kxVi3G04aWO0LcfwyOByixE
+	l3OahdY7//5KsWG4loGdMezzYZkj1U8NK4b0m9XzvLFJgqkuIMvgzvReCBuOrA==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260327072332.130320-5-aleksandr.loktionov@intel.com>
+Date: Fri, 03 Apr 2026 14:30:01 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, biju.das.jz@bp.renesas.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH net] net: phy: micrel: Fix MMD register access during SPD
+ in ksz9131_resume()
+In-Reply-To: <20260403111738.37749-1-ovidiu.panait.rb@renesas.com>
+References: <20260403111738.37749-1-ovidiu.panait.rb@renesas.com>
+Message-ID: <fbdabca34daf7eb4bdf3fbef1ceb95bc@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, Mar 27, 2026 at 08:23:28AM +0100, Aleksandr Loktionov wrote:
-> From: Marcin Szycik <marcin.szycik@intel.com>
+On 3.4.2026 13:17, Ovidiu Panait wrote:
+> During system suspend, phy_suspend() puts the PHY into Software 
+> Power-Down
+> (SPD) by setting the BMCR_PDOWN bit in MII_BMCR. According to the 
+> KSZ9131
+> datasheet, MMD register access is restricted during SPD:
 > 
-> There are at least two paths through which VSI promiscuous mode can be
-> independently configured via ice_fltr_set_vsi_promisc():
-> - ice_vlan_rx_add_vid() (netdev op)
-> - ice_service_task() -> ... -> ice_set_promisc()
+>   - Only access to the standard registers (0 through 31) is supported.
+>   - Access to MMD address spaces other than MMD address space 1 is
+>     possible if the spd_clock_gate_override bit is set.
+>   - Access to MMD address space 1 is not possible.
 > 
-> Both paths may try to program promiscuous mode concurrently. One such
-> scenario is:
+> However, ksz9131_resume() calls ksz9131_config_rgmii_delay() before
+> kszphy_resume() clears BMCR_PDOWN. This means MMD registers are 
+> accessed
+> while the PHY is still in SPD, contrary to the datasheet.
 > 
-> 1. Add ice netdev to bond
-> 2. Add the bond netdev to bridge
-> 3. ice netdev enters allmulticast mode (IFF_ALLMULTI)
-> 4. Service task programs promisc mode filter
-> 5. Bridge -> bond calls ice_vlan_rx_add_vid()
+> Additionally, on platforms where the PHY loses power during suspend
+> (e.g. RZ/G3E), all settings from ksz9131_config_init(), not just the
+> RGMII delays, are lost and need to be restored. When the MAC driver
+> sets mac_managed_pm (e.g. stmmac), mdio_bus_phy_resume() is skipped,
+> so phy_init_hw() (which calls config_init to restore all PHY settings)
+> is never invoked during resume.
 > 
-> Crucially, ice_vlan_rx_add_vid() fails if ice_fltr_set_vsi_promisc()
-> returns any error, including -EEXIST. This causes VLAN filtering setup
-> to fail on the bond interface. ice_set_promisc() already handles -EEXIST
-> correctly.
+> Fix this by replacing the RGMII delay restoration with a call to
+> phy_init_hw(), which takes the PHY out of SPD and performs full
+> reinitialization.
 > 
-> Fix by adding the same -EEXIST check to ice_vlan_rx_add_vid(): if the
-> promisc filter is already programmed, continue without returning error.
+> Fixes: f25a7eaa897f ("net: phy: micrel: Add ksz9131_resume()")
+> Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+> ---
+>  drivers/net/phy/micrel.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
 > 
-> Fixes: 1273f89578f2 ("ice: Fix broken IFF_ALLMULTI handling")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Marcin Szycik <marcin.szycik@intel.com>
-> Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+> index 2aa1dedd21b8..4236dbf4ad6b 100644
+> --- a/drivers/net/phy/micrel.c
+> +++ b/drivers/net/phy/micrel.c
+> @@ -6016,8 +6016,13 @@ static int lan8841_suspend(struct phy_device 
+> *phydev)
+> 
+>  static int ksz9131_resume(struct phy_device *phydev)
+>  {
+> -	if (phydev->suspended && phy_interface_is_rgmii(phydev))
+> -		ksz9131_config_rgmii_delay(phydev);
+> +	int ret;
+> +
+> +	if (phydev->suspended) {
+> +		ret = phy_init_hw(phydev);
+> +		if (ret)
+> +			return ret;
+> +	}
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Fix looks correct.
 
+nit: phy_init_hw() already clears PDOWN, so the PDOWN clear and
+1ms sleep in kszphy_resume() become redundant. But this is probably
+something for a future cleanup.
+
+> 
+>  	return kszphy_resume(phydev);
+>  }
+
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
