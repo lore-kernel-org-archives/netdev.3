@@ -1,64 +1,43 @@
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155A531A576
-	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 07:56:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+Received: from zg8tmja5ljk3lje4mi4ymjia.icoremail.net (zg8tmja5ljk3lje4mi4ymjia.icoremail.net [209.97.182.222])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D4D271464;
+	Fri,  3 Apr 2026 08:05:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.97.182.222
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775203017; cv=none; b=R4cairE/ZWb6CaQOq/PAIF5koODJRGyALLc2VGwMktXqRdmvGp5lPIX7ZuRYqIToshp5ihrFu0G+J/j7c72ugDpkn6GLpj2konQa2bZMtgR91iS23UVlj+1P/hhElV1BrisQIfRCie8dQUsAzIPH8+AOffXf03Xy/JUJEJCeX3E=
+	t=1775203561; cv=none; b=RB9EFWIWFe9oUD0hXOilgp56awjV761ZUFVgRFBs+Kf33KpX4zpu93WlerX7kIGZtSyTq/uYL8/lYJkDf1XMKGTZN2n669RfNATYyNcmtNAyzD9JEDTcjS9WpjpSqGPK5fafwKkzvs4CFxSidTLGPXhfbYDTpRC0/giqZ0UheT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775203017; c=relaxed/simple;
-	bh=eJafcqyShn6zsnIi/ObO6z6H4yfjUIinZ8w764X7Mu8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a+ZDNm14PVrORuydhTUlA4VL6FlsAUFv8Jx2ioN8F1Cn1UuRELZLpk/Ujl12yzfNOqPGaJ0vpO/yPMylCSWedNIR4kZvl+jiAI5oBjOI759htdO1PkOWSl+mubFYM8bDt1U3InW8T1cSPKcP4bTRyWyfHk7i5GCFnpUoJZ1VT30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=FQHQgkGD; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=FQHQgkGD; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="FQHQgkGD";
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="FQHQgkGD"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=br9d4JbUaVtQzEF7juGqsOca/+CfbUyrV9n9guaVsy4=;
-	b=FQHQgkGDnAkTfb+gFfk79Ujx1SbL3iO6MTiNA2DUpch9FnJOK+c9OPIs4PdiS0rtyQibpqUA8
-	0TL+8+kzIxlPhsAWjuHvO+uMZgOw5hr43ChdCIiCyrybGuL0TGVIErjX4QTmRVYNFmQ0jNApfGI
-	sfLssmO42Ios+PrUa7B7bHI=
-Received: from canpmsgout01.his.huawei.com (unknown [172.19.92.178])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTPS id 4fn9z60MBjz1BG77
-	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 15:56:34 +0800 (CST)
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=br9d4JbUaVtQzEF7juGqsOca/+CfbUyrV9n9guaVsy4=;
-	b=FQHQgkGDnAkTfb+gFfk79Ujx1SbL3iO6MTiNA2DUpch9FnJOK+c9OPIs4PdiS0rtyQibpqUA8
-	0TL+8+kzIxlPhsAWjuHvO+uMZgOw5hr43ChdCIiCyrybGuL0TGVIErjX4QTmRVYNFmQ0jNApfGI
-	sfLssmO42Ios+PrUa7B7bHI=
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4fn9rk5ddmz1T4Mc;
-	Fri,  3 Apr 2026 15:51:02 +0800 (CST)
-Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6DD4340569;
-	Fri,  3 Apr 2026 15:56:46 +0800 (CST)
-Received: from kwepemq100012.china.huawei.com (7.202.195.195) by
- dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 3 Apr 2026 15:56:46 +0800
-Received: from huawei.com (10.67.175.84) by kwepemq100012.china.huawei.com
- (7.202.195.195) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 3 Apr
- 2026 15:56:41 +0800
-From: Zicheng Qu <quzicheng@huawei.com>
-To: <kernel@openeuler.org>
-CC: <tanghui20@huawei.com>, <quzicheng@huawei.com>, <quzicheng315@163.com>,
-	Kui-Feng Lee <thinker.li@gmail.com>, <netdev@vger.kernel.org>, "Martin KaFai
- Lau" <martin.lau@kernel.org>, Luo Gengkun <luogengkun2@huawei.com>
-Subject: [PATCH OLK-6.6 086/451] bpf, net: validate struct_ops when updating value.
-Date: Fri, 3 Apr 2026 07:27:21 +0000
-Message-ID: <20260403073326.3096906-87-quzicheng@huawei.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260403073326.3096906-1-quzicheng@huawei.com>
-References: <20260403073326.3096906-1-quzicheng@huawei.com>
+	s=arc-20240116; t=1775203561; c=relaxed/simple;
+	bh=lNuXDaVMVTtjFpWDyGbBoy37vpqtUnAvB5VrdlJcpDc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=IF+f5zcE9tTn9xajXax7QBON/pHL07lVyiS3GB8VGwONaL0lriBmGIRO6wz9fnSaAfjtcbl81WosRxr9iMdW+04bh0OjhjEsxTLKI6esVr/3ZeEAvmR/ToLFQrVUMhp62inMiJKIrYcXN6KU/YSn9bEXNNj24b0cod26i8z4rzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=209.97.182.222
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
+Received: from enjou-Legion-Y7000P-2019.coin-barley.ts.net (unknown [172.23.56.36])
+	by app1 (Coremail) with SMTP id ygmowAAnoADQdM9pq_SiAA--.912S2;
+	Fri, 03 Apr 2026 16:05:36 +0800 (CST)
+From: Ren Wei <n05ec@lzu.edu.cn>
+To: linux-bluetooth@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: marcel@holtmann.org,
+	luiz.dentz@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	yifanwucs@gmail.com,
+	tomapufckgml@gmail.com,
+	yuantan098@gmail.com,
+	bird@lzu.edu.cn,
+	enjou1224z@gmail.com,
+	wangjiexun2025@gmail.com,
+	n05ec@lzu.edu.cn
+Subject: [PATCH v2 1/1] Bluetooth: serialize accept_q access
+Date: Fri,  3 Apr 2026 16:05:28 +0800
+Message-ID: <06a6b4549acba207847ce532dedbf1c95ab22d13.1774925231.git.wangjiexun2025@gmail.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <cover.1774454568.git.wangjiexun2025@gmail.com>
+References: <cover.1774454568.git.wangjiexun2025@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,79 +45,229 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemq100012.china.huawei.com (7.202.195.195)
+X-CM-TRANSID:ygmowAAnoADQdM9pq_SiAA--.912S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3Jw47Cr43tryxCr48JF1UJrb_yoWxXryUpF
+	yUCas8GFWkJw45ur43taykurWayw1rWr43GayFvas5Ar9agFWrt3W2yayjvr1YyFZrCrsa
+	yF4jgwnxCr4UC3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBY1xkIjI8I6I8E6xAIw20EY4v20xvaj40_JFC_Wr1l1IIY67AE
+	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
+	IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2
+	z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcV
+	Aq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j
+	6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
+	vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0E
+	n4kS14v26r1q6r43MxkIecxEwVCm-wCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6c
+	x26r48MxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
+	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6x
+	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
+	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
+	0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbGQ6JUUUUU==
+X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQQGCWnOkPwEvQABs5
 
-From: Kui-Feng Lee <thinker.li@gmail.com>
+From: Jiexun Wang <wangjiexun2025@gmail.com>
 
-mainline inclusion
-from mainline-v6.9-rc1
-commit 73e4f9e615d7b99f39663d4722dc73e8fa5db5f9
-category: feature
-bugzilla: https://atomgit.com/openeuler/kernel/issues/8335
-CVE: NA
+bt_sock_poll() walks the accept queue without synchronization, while
+child teardown can unlink the same socket and drop its last reference.
 
-Reference: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=73e4f9e615d7b99f39663d4722dc73e8fa5db5f9
+Protect accept_q with a dedicated lock for queue updates and polling.
+Also rework bt_accept_dequeue() to take temporary child references under
+the queue lock before dropping it and locking the child socket.
 
-----------------------------------------------------------------------
-
-Perform all validations when updating values of struct_ops maps. Doing
-validation in st_ops->reg() and st_ops->update() is not necessary anymore.
-However, tcp_register_congestion_control() has been called in various
-places. It still needs to do validations.
-
-Cc: netdev@vger.kernel.org
-Signed-off-by: Kui-Feng Lee <thinker.li@gmail.com>
-Link: https://lore.kernel.org/r/20240224223418.526631-2-thinker.li@gmail.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Luo Gengkun <luogengkun2@huawei.com>
+Fixes: 1da177e4c3f41524e886b7f1b8a0c1fc7321cac2 ("Linux-2.6.12-rc2")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Ren Wei <enjou1224z@gmail.com>
+Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
 ---
- kernel/bpf/bpf_struct_ops.c | 11 ++++++-----
- net/ipv4/tcp_cong.c         |  6 +-----
- 2 files changed, 7 insertions(+), 10 deletions(-)
+Changes in v2:
+- add Tested-by: Ren Wei <enjou1224z@gmail.com>
+- resend to the public Bluetooth/netdev lists
 
-diff --git a/kernel/bpf/bpf_struct_ops.c b/kernel/bpf/bpf_struct_ops.c
-index 0d7be97a2411..c244ed5114fd 100644
---- a/kernel/bpf/bpf_struct_ops.c
-+++ b/kernel/bpf/bpf_struct_ops.c
-@@ -667,13 +667,14 @@ static long bpf_struct_ops_map_update_elem(struct bpf_map *map, void *key,
- 		*(unsigned long *)(udata + moff) = prog->aux->id;
- 	}
+ include/net/bluetooth/bluetooth.h |  1 +
+ net/bluetooth/af_bluetooth.c      | 85 +++++++++++++++++++++++--------
+ 2 files changed, 66 insertions(+), 20 deletions(-)
+
+diff --git a/include/net/bluetooth/bluetooth.h b/include/net/bluetooth/bluetooth.h
+index 69eed69f7f26..3faea66b1979 100644
+--- a/include/net/bluetooth/bluetooth.h
++++ b/include/net/bluetooth/bluetooth.h
+@@ -398,6 +398,7 @@ void baswap(bdaddr_t *dst, const bdaddr_t *src);
+ struct bt_sock {
+ 	struct sock sk;
+ 	struct list_head accept_q;
++	spinlock_t accept_q_lock; /* protects accept_q */
+ 	struct sock *parent;
+ 	unsigned long flags;
+ 	void (*skb_msg_name)(struct sk_buff *, void *, int *);
+diff --git a/net/bluetooth/af_bluetooth.c b/net/bluetooth/af_bluetooth.c
+index 2b94e2077203..f44e1ecc83d8 100644
+--- a/net/bluetooth/af_bluetooth.c
++++ b/net/bluetooth/af_bluetooth.c
+@@ -154,6 +154,7 @@ struct sock *bt_sock_alloc(struct net *net, struct socket *sock,
  
-+	if (st_ops->validate) {
-+		err = st_ops->validate(kdata);
-+		if (err)
-+			goto reset_unlock;
+ 	sock_init_data(sock, sk);
+ 	INIT_LIST_HEAD(&bt_sk(sk)->accept_q);
++	spin_lock_init(&bt_sk(sk)->accept_q_lock);
+ 
+ 	sock_reset_flag(sk, SOCK_ZAPPED);
+ 
+@@ -214,6 +215,7 @@ void bt_accept_enqueue(struct sock *parent, struct sock *sk, bool bh)
+ {
+ 	const struct cred *old_cred;
+ 	struct pid *old_pid;
++	struct bt_sock *par = bt_sk(parent);
+ 
+ 	BT_DBG("parent %p, sk %p", parent, sk);
+ 
+@@ -224,9 +226,12 @@ void bt_accept_enqueue(struct sock *parent, struct sock *sk, bool bh)
+ 	else
+ 		lock_sock_nested(sk, SINGLE_DEPTH_NESTING);
+ 
+-	list_add_tail(&bt_sk(sk)->accept_q, &bt_sk(parent)->accept_q);
+ 	bt_sk(sk)->parent = parent;
+ 
++	spin_lock_bh(&par->accept_q_lock);
++	list_add_tail(&bt_sk(sk)->accept_q, &par->accept_q);
++	spin_unlock_bh(&par->accept_q_lock);
++
+ 	/* Copy credentials from parent since for incoming connections the
+ 	 * socket is allocated by the kernel.
+ 	 */
+@@ -254,45 +259,73 @@ EXPORT_SYMBOL(bt_accept_enqueue);
+  */
+ void bt_accept_unlink(struct sock *sk)
+ {
++	struct sock *parent = bt_sk(sk)->parent;
++
+ 	BT_DBG("sk %p state %d", sk, sk->sk_state);
+ 
++	spin_lock_bh(&bt_sk(parent)->accept_q_lock);
+ 	list_del_init(&bt_sk(sk)->accept_q);
+-	sk_acceptq_removed(bt_sk(sk)->parent);
++	spin_unlock_bh(&bt_sk(parent)->accept_q_lock);
++
++	sk_acceptq_removed(parent);
+ 	bt_sk(sk)->parent = NULL;
+ 	sock_put(sk);
+ }
+ EXPORT_SYMBOL(bt_accept_unlink);
+ 
++static struct sock *bt_accept_get(struct sock *parent, struct sock *sk)
++{
++	struct bt_sock *bt = bt_sk(parent);
++	struct sock *next = NULL;
++
++	/* accept_q is modified from child teardown paths too, so take a
++	 * temporary reference before dropping the queue lock.
++	 */
++	spin_lock_bh(&bt->accept_q_lock);
++
++	if (sk) {
++		if (bt_sk(sk)->parent != parent)
++			goto out;
++
++		if (!list_is_last(&bt_sk(sk)->accept_q, &bt->accept_q)) {
++			next = &list_next_entry(bt_sk(sk), accept_q)->sk;
++			sock_hold(next);
++		}
++	} else if (!list_empty(&bt->accept_q)) {
++		next = &list_first_entry(&bt->accept_q,
++					 struct bt_sock, accept_q)->sk;
++		sock_hold(next);
 +	}
 +
- 	if (st_map->map.map_flags & BPF_F_LINK) {
- 		err = 0;
--		if (st_ops->validate) {
--			err = st_ops->validate(kdata);
--			if (err)
--				goto reset_unlock;
--		}
- 		arch_protect_bpf_trampoline(st_map->image, PAGE_SIZE);
- 		/* Let bpf_link handle registration & unregistration.
- 		 *
-diff --git a/net/ipv4/tcp_cong.c b/net/ipv4/tcp_cong.c
-index 95dbb2799be4..48617d99abb0 100644
---- a/net/ipv4/tcp_cong.c
-+++ b/net/ipv4/tcp_cong.c
-@@ -145,11 +145,7 @@ EXPORT_SYMBOL_GPL(tcp_unregister_congestion_control);
- int tcp_update_congestion_control(struct tcp_congestion_ops *ca, struct tcp_congestion_ops *old_ca)
++out:
++	spin_unlock_bh(&bt->accept_q_lock);
++	return next;
++}
++
+ struct sock *bt_accept_dequeue(struct sock *parent, struct socket *newsock)
  {
- 	struct tcp_congestion_ops *existing;
--	int ret;
+-	struct bt_sock *s, *n;
+-	struct sock *sk;
++	struct sock *sk, *next;
+ 
+ 	BT_DBG("parent %p", parent);
+ 
+ restart:
+-	list_for_each_entry_safe(s, n, &bt_sk(parent)->accept_q, accept_q) {
+-		sk = (struct sock *)s;
 -
--	ret = tcp_validate_congestion_control(ca);
--	if (ret)
--		return ret;
-+	int ret = 0;
++	for (sk = bt_accept_get(parent, NULL); sk; sk = next) {
+ 		/* Prevent early freeing of sk due to unlink and sock_kill */
+-		sock_hold(sk);
+ 		lock_sock(sk);
  
- 	ca->key = jhash(ca->name, sizeof(ca->name), strlen(ca->name));
+ 		/* Check sk has not already been unlinked via
+ 		 * bt_accept_unlink() due to serialisation caused by sk locking
+ 		 */
+-		if (!bt_sk(sk)->parent) {
++		if (bt_sk(sk)->parent != parent) {
+ 			BT_DBG("sk %p, already unlinked", sk);
+ 			release_sock(sk);
+ 			sock_put(sk);
  
+-			/* Restart the loop as sk is no longer in the list
+-			 * and also avoid a potential infinite loop because
+-			 * list_for_each_entry_safe() is not thread safe.
+-			 */
+ 			goto restart;
+ 		}
+ 
++		next = bt_accept_get(parent, sk);
++
+ 		/* sk is safely in the parent list so reduce reference count */
+ 		sock_put(sk);
+ 
+@@ -310,6 +343,8 @@ struct sock *bt_accept_dequeue(struct sock *parent, struct socket *newsock)
+ 				sock_graft(sk, newsock);
+ 
+ 			release_sock(sk);
++			if (next)
++				sock_put(next);
+ 			return sk;
+ 		}
+ 
+@@ -518,18 +553,28 @@ EXPORT_SYMBOL(bt_sock_stream_recvmsg);
+ 
+ static inline __poll_t bt_accept_poll(struct sock *parent)
+ {
+-	struct bt_sock *s, *n;
++	struct bt_sock *bt = bt_sk(parent);
++	struct bt_sock *s;
+ 	struct sock *sk;
++	__poll_t mask = 0;
++
++	spin_lock_bh(&bt->accept_q_lock);
++	list_for_each_entry(s, &bt->accept_q, accept_q) {
++		int state;
+ 
+-	list_for_each_entry_safe(s, n, &bt_sk(parent)->accept_q, accept_q) {
+ 		sk = (struct sock *)s;
+-		if (sk->sk_state == BT_CONNECTED ||
+-		    (test_bit(BT_SK_DEFER_SETUP, &bt_sk(parent)->flags) &&
+-		     sk->sk_state == BT_CONNECT2))
+-			return EPOLLIN | EPOLLRDNORM;
++		state = READ_ONCE(sk->sk_state);
++
++		if (state == BT_CONNECTED ||
++		    (test_bit(BT_SK_DEFER_SETUP, &bt->flags) &&
++		     state == BT_CONNECT2)) {
++			mask = EPOLLIN | EPOLLRDNORM;
++			break;
++		}
+ 	}
++	spin_unlock_bh(&bt->accept_q_lock);
+ 
+-	return 0;
++	return mask;
+ }
+ 
+ __poll_t bt_sock_poll(struct file *file, struct socket *sock,
 -- 
 2.34.1
 
