@@ -1,64 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55E92D3ED1
-	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 21:50:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775253013; cv=none; b=W62cp86mjs37PyPERrIuRDhJH3fKp9GOlOt6/ry9PUv3D+ctT4cJNHtkJXR/rZJaM1/5hQchsymAv+yt8xUCsn64M/yIfjtQvW+3G4+R2VKgfQw+TzmeYc0Ura+roIh0rKuEbxD0Ss87EsozGPyEV8EkTGJ/plLhlullRpsEZxs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775253013; c=relaxed/simple;
-	bh=Zkb8BAM9EJJVD7jpMzXADHmaaO/bpLCU6y+vWNwWOYU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kWsR5Tv7eT5hd8P7bQ51e2k3cusw4ZN8FLApWcSKlJVRUmJUluS7rsWOqotgouGXoWmE2BKEbNVDW7O58ZJscrUH87+Ht7s2KXpJ8gqy3go3rwouy5MF671lsrEl3Y0lC+pnkQUYugkq5HBr69BD+Zq/mfPR6lw3AHM9SK0mA/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kTJv2a//; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ACE51EB5E1
+	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 21:51:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775253082; cv=pass; b=knfR6gMWCVQNQY5ENjoto9AKmq9RDT/GiESoXLj6jNGQMGJvp70CpvPm+W6i2Dg1lPOPcgK3Bd9xFC+MKDzGhL6HwhQI+CIMazptFeKYlzQYSLFfHCRegxBODdcP9bi8GWspQJLDetjxONaaqtJdZ7w7hBVi9J0eiYxneH40P6Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775253082; c=relaxed/simple;
+	bh=0x7xdB777t0lkGHvAFkQmXU7ZzNbVUfo2jSZr9bVVJo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=M8Y3UoZ5S6rEZ2Aby2PaxJrp08/PqGTwPWHiL4Q/k+nLUVB2CjQIxd2vzXTcbCk1Q5R5DSbbv5YZfdru16ikOGydJN39p6b7XsANnMPSpKhZNfmfIPIjZkca1XDSc2s29nXU7ac8v7VR8lX59SUizVj+ZJwgePV+1+iao+b6UQE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jWPBOGHG; arc=pass smtp.client-ip=209.85.219.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kTJv2a//"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C076AC4CEF7;
-	Fri,  3 Apr 2026 21:50:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775253012;
-	bh=Zkb8BAM9EJJVD7jpMzXADHmaaO/bpLCU6y+vWNwWOYU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=kTJv2a//7RTD3wyWXJdb87NsPq6q1SMHDsBzK2PcKsJOEj2PVf9HNE3xmS/WCEQJN
-	 d4uSEX+EG2l2McmPVmf1O5ICTENF7i7R3sxGs4Fy1EtDXRL++tFwnMpMalAH26m26Q
-	 myJ0WuB1Vo7MhD2GS4wrpI42uNVI6dMMJpO+TYWfoqg5Sw+hb05nGJOHQuwe0pZ3gW
-	 GEYeJFMtHdBUAHHMt7le7UrQJdIgoeEvIf9DlOqQD5CA8vqfsBHWMgeWFN2XrVoh68
-	 TkcjlewaZ7hcYxXDem5R5HG3r1OtOzjNOVqN3qvf5L48VGrguilIlQLRrtp4YWIHFL
-	 W7cgWjsYBz1vQ==
-Date: Fri, 3 Apr 2026 14:50:10 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, pabeni@redhat.com, horms@kernel.org,
- dsahern@kernel.org, netdev@vger.kernel.org, eric.dumazet@gmail.com,
- yimingqian591@gmail.com, justin.iurman@gmail.com
-Subject: Re: [PATCH net] ipv6: ioam: fix potential NULL dereferences in
- __ioam6_fill_trace_data()
-Message-ID: <20260403145010.4b4e5865@kernel.org>
-In-Reply-To: <CANn89iKUKTYZ7NVNidtdssZXUAa95LmRpTYUQ29uGE99jLmLOw@mail.gmail.com>
-References: <20260402101732.1188059-1-edumazet@google.com>
-	<20260403214418.2233266-2-kuba@kernel.org>
-	<CANn89iKUKTYZ7NVNidtdssZXUAa95LmRpTYUQ29uGE99jLmLOw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jWPBOGHG"
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-8a3970f1a0eso33290036d6.2
+        for <netdev@vger.kernel.org>; Fri, 03 Apr 2026 14:51:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775253080; cv=none;
+        d=google.com; s=arc-20240605;
+        b=RenXv3/r4fFplZXvqs/4xyl7hgwtmvmSp1wG9+wPNwRdpipbcV8bnlatQY1A/KCHZM
+         U7//kTiWN8Ru2a85O38D368baKqIgHnoSOPP/63o/8FzP3rjBcfIgGGd1yjMafmrsUo+
+         K9yHRSLgjzGmUHtRNPvHK5OI4d9xLN/jMpN7Gt7J3vmJhXtX8R0ALN0mrPYjukxL881/
+         9pHa3fvex/lrGpC3Y1aXEkmezSOFhjAgE7jOuM3pjA+WajWmcSjwcCSl5fVRF7CCAsS0
+         n7hMNcrWNAHQMS7K/QrpHo/mD+CHMJYRFGDCvlPY0DqH+PBJlKH3YFiJJC0Pjau18JqM
+         URQQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0x7xdB777t0lkGHvAFkQmXU7ZzNbVUfo2jSZr9bVVJo=;
+        fh=rLXoDT245DMUiFBHMfKqgoTBUDsgHEXu4vvsdrEkyOY=;
+        b=Eowbiz2JRI+ztKi/lk1sRafE09oJRo9L1O1S7ybrlwgJgpHLB2bmbqwBVW7rm89PBM
+         GhcCn+6BLrtssLWG5SGNMv53BDG6GhCELy6Iy/s7SiVClNl9VKGlFZ3CEDGf90b4RIEe
+         3NIr/wdeyw3+lia8FIN2MgE/EZFOk0gquzpYt+FJUwQXBm9Bod2wQxxFW/yhWgcxjKtZ
+         NugtK50HI09/deUxcDtpXE9oheWqlOmeeyeALSNizgEpDSlARYrVAfIjdYUTHm6RwW9B
+         CjukFtpKy3SBKcrdG0gjjcPynN8rENToDa883x1Yp2Rv0XPVyUnjeL32iSs9elXvtT3K
+         bwFA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775253080; x=1775857880; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0x7xdB777t0lkGHvAFkQmXU7ZzNbVUfo2jSZr9bVVJo=;
+        b=jWPBOGHGzJj4UEpFdiAsyldYqNtU7D5Cp4OOhXHxw6teb/IleAT+NuwSS15B9v1rjL
+         hMexLk1JjGKiyDXG5jDaO21OBi5p5G5BvT95M2JME12uXm4LR+9EdWq7BXvP8weOX69J
+         nNaNt8xjysi8m3dy9NZwFMW4qdjbNYceyfca0uLrIqwaFU5CLW+UcMt1EBq5jrC/u+XS
+         bfLjNxC6Z5OOcm3qykMG9TRaZpGP5eT8zKF/4D4Mnk8gXdqM7wrvAx7Ka0y3fmyZewH5
+         TPNGdQDJGCP17uthMRE3YeU5ZTsWUB4xJKIQhGlnGHy7gXqj3N3eGc858qqBmohY8OAv
+         nalg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775253080; x=1775857880;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=0x7xdB777t0lkGHvAFkQmXU7ZzNbVUfo2jSZr9bVVJo=;
+        b=NLvU8KR6ojYtJ8QZdEA3MmV5ry/ncqgczqD/BgSV02ZdAHD2mX+28dIyb6DnCOqeQD
+         jOXRnBGPeVs9mh2Fw2bToOVFlqYF0MV7lsevpNfuyT8KZaPNn7eeL/6fjaSrjsntfo9s
+         Np9aUAQ+XKkVAhI65rIGX0ukLPkEEGI2/FmXcPXOXR63eru5tM7TPlRHDghBI0loyuMO
+         riSUyMGtpXU1E+OaN5+Hk35IYMtR7b4P5YF1fyXfuVHRSsRbZNWA3amLILDkGxPzHAQP
+         oLOzXceroEOCrZCP8VLiaEm/O++nNb/Zqfdy0XjSPCQBG2NHKLjO35U5CfPCDYTfD9R3
+         H2Uw==
+X-Forwarded-Encrypted: i=1; AJvYcCWuAIcgu8eMseZNMwONPaVI6S9ADOcTZN238oh6FdC3S0wr/MLTutyOLTHeKsCec6GMlHWB87E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YysKpRBOLnlMJ2wuf924IHIMkyMy9dLa5dME+6sXENOY7rCLdFm
+	zqOP67YsOnI+8fpIw3mdJnRZJa+FWjB/+cYD+EKU6l/w5cj7H3v7YBTGot/wlGW5hP3c2c+/axl
+	mzYJQofV1EodJRItqFsoxAe4lbSBVl2zsU+y6SfsV
+X-Gm-Gg: AeBDievYHW8zS9gag0hLvLskwsPPlQ0NsRjNHLKxn6RnaxH4EReQdFkv826aTDYaoW/
+	VAYqCb7zjP7j0mctIScVpwLiIpcfu9OmSU1yf+9Nq1w/yeR4ByNBkXewVojPxLvKlC6dIQM/ydX
+	bi2mWhBuGteBUZvhE7Acxyq0MLe+JZ/2wHR7rsfsjPhFZQrJfXrBzjXSsLUizqEBwR6cFhF0VMt
+	8ERGFxJOXTftdTGlCnfk+oOGUM2RKKRK2SiFi2LsdkVT9miXmB3wlbsAlNACXsndsO82u2lAeJV
+	j0+9
+X-Received: by 2002:a05:6214:501a:b0:8a6:268e:a17d with SMTP id
+ 6a1803df08f44-8a7025b8639mr77999346d6.21.1775253079950; Fri, 03 Apr 2026
+ 14:51:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20260402101732.1188059-1-edumazet@google.com> <20260403214418.2233266-2-kuba@kernel.org>
+ <CANn89iKUKTYZ7NVNidtdssZXUAa95LmRpTYUQ29uGE99jLmLOw@mail.gmail.com> <20260403145010.4b4e5865@kernel.org>
+In-Reply-To: <20260403145010.4b4e5865@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
+Date: Fri, 3 Apr 2026 14:51:08 -0700
+X-Gm-Features: AQROBzAOqUSguDINewmd9Umqei7ztQc8LcY4tLm3CHP0XHH4Q7hXFwetUv8TVzE
+Message-ID: <CANn89iJDKPqMnJYqmp+qei8UzdmOuCoZ-T=XGrjHoZh5qDC_sA@mail.gmail.com>
+Subject: Re: [PATCH net] ipv6: ioam: fix potential NULL dereferences in __ioam6_fill_trace_data()
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, pabeni@redhat.com, horms@kernel.org, 
+	dsahern@kernel.org, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	yimingqian591@gmail.com, justin.iurman@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 3 Apr 2026 14:47:32 -0700 Eric Dumazet wrote:
-> > If the ingress device has more RX queues than the egress device (dev) has
-> > TX queues, skb_get_queue_mapping(skb) will exceed dev->num_tx_queues.
+On Fri, Apr 3, 2026 at 2:50=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wro=
+te:
+>
+> On Fri, 3 Apr 2026 14:47:32 -0700 Eric Dumazet wrote:
+> > > If the ingress device has more RX queues than the egress device (dev)=
+ has
+> > > TX queues, skb_get_queue_mapping(skb) will exceed dev->num_tx_queues.
+> > >
+> > > Since skb_get_tx_queue() does not clamp the index, will it return an
+> > > out-of-bounds pointer into the egress device's dev->_tx array, causin=
+g
+> > > dereferencing queue->qdisc to read invalid memory?
 > >
-> > Since skb_get_tx_queue() does not clamp the index, will it return an
-> > out-of-bounds pointer into the egress device's dev->_tx array, causing
-> > dereferencing queue->qdisc to read invalid memory?  
-> 
-> This seems a different bug ?
-> 
-> I mean, do we need to fix all bug in a single patch ?
+> > This seems a different bug ?
+> >
+> > I mean, do we need to fix all bug in a single patch ?
+>
+> no no, sorry, i'm just sending this out for Justin or you as a separate
+> thing.
 
-no no, sorry, i'm just sending this out for Justin or you as a separate
-thing.
+Ah ok, thanks for the clarification :)
