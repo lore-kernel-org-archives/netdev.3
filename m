@@ -1,38 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D63B3C9EC0;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A5A43C9EE2;
 	Fri,  3 Apr 2026 16:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775232380; cv=none; b=ftfPHtgEraM0XBcxFObVvXaGmgQjYKohZ+Ed/XxsL/nH5vClOMsJBjB2YsXALTGzBgyvmo6aqZ5F8DZAoCWRZUVhv8KNPjKX2o/beEPvhjAaRue+l34K3gWWcUlOHZ2D3uHIkBYVUkVxyYb8cZ58guEaxIPUZzaulMj2Nak+PJU=
+	t=1775232380; cv=none; b=J9rvWmkzy6hkDpRVjL/DPWBsm1u6qYL/++54DrJK5Gz4zfJGXC9seVU9h3Fub8ZrsbLbF+TM7/arSBEfli6GOyW7qTKuHZUc1ZAxBUkcpHeQvc96bWQpgpl6JaOH3o9Ju2ofhNO2wHbVGya/GKpkg1TFNrsj5hziGqE7kUCsUBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775232380; c=relaxed/simple;
-	bh=Ia3tPnC56tz9K91w3AqY0ZvMpakxHnNBSGZqH3L/LfI=;
+	bh=OVA9ySi2NDnxZL1XGji4sBrLrLk0Vex89+jaxSp8wgM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lUKjMzwrPqBJod020+WPrt+xiJRxXDZ+iX7z5TmbwgI28nMGomoM3axG0WnkaEGK+0fwxkwPKqptCfdHPxGr2B3Q8Qb6XM+NHXoQ2VXjT2KqqAI8dd4dSKO7AUbsb6l4yHp7S3mBvlUrh1+1bEaKicgeRQo+KMOisBtYqH4GkQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VOlmxn3H; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=oHPPR+1VcMdCrO5tg23xlZ4G+W8s0AYj8fZrg5xWjQsMMf8Qfs/Pdvu/UtvgtyvpGwsP6/bN8CldPKx90OtS6z3hWjxLi7qsO2ejt1rK7M0IQrvkfGBLmT5pvZnj1AWyfJX6Rzw5tWuamO64f75P97X+O76zEiW4LHi9EgTPrX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hMg1HUCT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VOlmxn3H"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 47088C2BCB0;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hMg1HUCT"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6ABF9C4AF0C;
 	Fri,  3 Apr 2026 16:06:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775232380;
-	bh=Ia3tPnC56tz9K91w3AqY0ZvMpakxHnNBSGZqH3L/LfI=;
+	bh=OVA9ySi2NDnxZL1XGji4sBrLrLk0Vex89+jaxSp8wgM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=VOlmxn3Hk+OoRC/P7eToZofNkcsKv4vceXjh5/L6ff7BBU+vZCO3daYkqr1Yw6Vgk
-	 561+9s9MdOvByjMDEe4Kla+Qz32mAbL/mK3BcwJPTPyg15oscnogWP6To/RvsnUrls
-	 9Y+pBtZ7wzwwN6wtfn1Sn2CQx1TxHCwrSKo3OSzShDCRGuVyp1OAz9J0XbgFMrRBTx
-	 5OY+FuFmnThW7FiJ7r9IJeuo99DJZ2vZY1UjC/QU4nFe6e9YM/sytwdq2iyxGVpBaF
-	 8Kg/Ytoaam5HSOXrnB0ig1OAtqhPTJ+S7obbmjJn3TezTMXi+sBlqlb4NBcb+0j87b
-	 ve3zzucJPNVaA==
+	b=hMg1HUCTuyDeVGx97Qv8ZxKQ+SQCQiaYkz2Z1RO1Mevkcggl6ZsJeqkevFVjVJA89
+	 IeN3kanqFQSo/2QHlS1xMNUgEOYzZ0WfEoKsVwKjXZAxzg5Kio1+pyW6sCs4q6RRUG
+	 JGRH542ieaq5WdKgoEQFXAuDH/Kg9BujQStMcTeBZjQn4xDQ5bCY/OHRgnevdU/oOr
+	 eYJrp2ihLAkhg7oJwRHb1ZkLCthbkTtD8Hlf7K4O+Dv90Qmt+OUkglSlS2uEqbST0Q
+	 oLibVpv+hJ8AqI6SDMb8btH6P7QqmYi3f+fdAXKQptl51ONySN5qoS8jOuOADrvDBI
+	 qdkkU3UuYAFFg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 332ECE8537A;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D62BE8537F;
 	Fri,  3 Apr 2026 16:06:20 +0000 (UTC)
 From: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.oss.qualcomm.com@kernel.org>
-Date: Fri, 03 Apr 2026 21:36:04 +0530
-Subject: [PATCH v2 1/5] net: qrtr: ns: Limit the maximum server
- registration per node
+Date: Fri, 03 Apr 2026 21:36:06 +0530
+Subject: [PATCH v2 3/5] net: qrtr: ns: Free the node during ctrl_cmd_bye()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,7 +40,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260403-qrtr-fix-v2-1-f88a14859c63@oss.qualcomm.com>
+Message-Id: <20260403-qrtr-fix-v2-3-f88a14859c63@oss.qualcomm.com>
 References: <20260403-qrtr-fix-v2-0-f88a14859c63@oss.qualcomm.com>
 In-Reply-To: <20260403-qrtr-fix-v2-0-f88a14859c63@oss.qualcomm.com>
 To: Manivannan Sadhasivam <mani@kernel.org>, 
@@ -50,19 +49,18 @@ To: Manivannan Sadhasivam <mani@kernel.org>,
  Simon Horman <horms@kernel.org>
 Cc: linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org, 
  linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Yiming Qian <yimingqian591@gmail.com>, 
  Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 X-Mailer: b4 0.15.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3040;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1899;
  i=manivannan.sadhasivam@oss.qualcomm.com; h=from:subject:message-id;
- bh=d3riliJXlMknVS54Ov71SzRRhSiv88e/lnkbjutnErI=;
- b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBpz+V5iWagZ44B/XtW7bzTMm3VyehS81n6rAV5x
- HloeQgFVx2JATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCac/leQAKCRBVnxHm/pHO
- 9bl6B/9U8q+zrFV+Ph4OxVYjcFNBcyIYhtED6MZXpaAi9D+8JT7Tt0mCjQ0KSvr9q03N6NYRjQD
- 8+ALUxMYQ/5Tofa835NJS0WlNXm9/cQBFVo1kIDld6M17VA1/LiKOElIZQpdMbQ2N4pXKwj0+qi
- +ARQ8JCMj+1zx9LFMYB6a12ILPKlDNTDs0mA2ysGFNdLoc8nGZtfCOoN5kXUS4EBfOCWRhEHz3e
- nP1iHVTvtjUtzwMSMyeHRuaB/sz+8MmV0fUr5tl5q428wW6sAbqFEpUxssM7o4LcU2TQO2L/8Em
- dDyjnfpDUZPEGBunp2MuqT49INb1bJNl0fQk4I/eVm5KiMFd
+ bh=/IYkRv6TPT121VtWWvMGCswFaIzLb9VKFEQbapivX0Q=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBpz+V5/dD8PbvIUlqd0cZdQwy4HKVv9WbX7+cOM
+ ACM0pPpT2iJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCac/leQAKCRBVnxHm/pHO
+ 9f3AB/474jeE5ogQivj26joZxxPOfK7BJtqUVJPmApO/uhzYcsqAwTA9TAJMgfDZNJ5yE7uHIuH
+ bpMxWSe9wPrhLeAG1sD+xg114iQAvNPyeIO9q50MYf0Q5XK3Wv4NBm9PVKg5swtbUtwhniw0UZf
+ 1YrdxMc41+yof73Kp0hOrB7RNSqxrl5Y2fppGtDYudx3oTLcGHGPhm5Yt19fPHhPZajLDDRg5op
+ VMDxwcPGsvMx1JiZufRvekQ+RyWOJf9LMSs+VbUbnEuSdcTm3EAROtejcSME000uOjTb3tx4Lia
+ OGCOuGjfEI8QRHqnfdrMljj4IklEscCQLniZ1kqCfnKSIGCT
 X-Developer-Key: i=manivannan.sadhasivam@oss.qualcomm.com; a=openpgp;
  fpr=C668AEC3C3188E4C611465E7488550E901166008
 X-Endpoint-Received: by B4 Relay for
@@ -72,101 +70,66 @@ Reply-To: manivannan.sadhasivam@oss.qualcomm.com
 
 From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-Current code does no bound checking on the number of servers added per
-node. A malicious client can flood NEW_SERVER messages and exhaust memory.
+A node sends the BYE packet when it is about to go down. So the nameserver
+should advertise the removal of the node to all remote and local observers
+and free the node finally. But currently, the nameserver doesn't free the
+node memory even after processing the BYE packet. This causes the node
+memory to leak.
 
-Fix this issue by limiting the maximum number of server registrations to
-256 per node. If the NEW_SERVER message is received for an old port, then
-don't restrict it as it will get replaced. While at it, also rate limit
-the error messages in the failure path of qrtr_ns_worker().
-
-Note that the limit of 256 is chosen based on the current platform
-requirements. If requirement changes in the future, this limit can be
-increased.
+Hence, remove the node from Xarray list and free the node memory during
+both success and failure case of ctrl_cmd_bye().
 
 Cc: stable@vger.kernel.org
 Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 ---
- net/qrtr/ns.c | 26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
+ net/qrtr/ns.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
 diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
-index 3203b2220860..63cb5861d87a 100644
+index 5b08d4d4840a..c95014673135 100644
 --- a/net/qrtr/ns.c
 +++ b/net/qrtr/ns.c
-@@ -67,8 +67,14 @@ struct qrtr_server {
- struct qrtr_node {
- 	unsigned int id;
- 	struct xarray servers;
-+	u32 server_count;
- };
- 
-+/* Max server limit is chosen based on the current platform requirements. If the
-+ * requirement changes in the future, this value can be increased.
-+ */
-+#define QRTR_NS_MAX_SERVERS 256
-+
- static struct qrtr_node *node_get(unsigned int node_id)
- {
+@@ -359,7 +359,7 @@ static int ctrl_cmd_bye(struct sockaddr_qrtr *from)
  	struct qrtr_node *node;
-@@ -229,6 +235,17 @@ static struct qrtr_server *server_add(unsigned int service,
- 	if (!service || !port)
- 		return NULL;
+ 	unsigned long index;
+ 	struct kvec iv;
+-	int ret;
++	int ret = 0;
  
-+	node = node_get(node_id);
-+	if (!node)
-+		return NULL;
-+
-+	/* Make sure the new servers per port are capped at the maximum value */
-+	old = xa_load(&node->servers, port);
-+	if (!old && node->server_count >= QRTR_NS_MAX_SERVERS) {
-+		pr_err_ratelimited("QRTR client node %u exceeds max server limit!\n", node_id);
-+		return NULL;
+ 	iv.iov_base = &pkt;
+ 	iv.iov_len = sizeof(pkt);
+@@ -374,8 +374,10 @@ static int ctrl_cmd_bye(struct sockaddr_qrtr *from)
+ 
+ 	/* Advertise the removal of this client to all local servers */
+ 	local_node = node_get(qrtr_ns.local_node);
+-	if (!local_node)
+-		return 0;
++	if (!local_node) {
++		ret = 0;
++		goto delete_node;
 +	}
+ 
+ 	memset(&pkt, 0, sizeof(pkt));
+ 	pkt.cmd = cpu_to_le32(QRTR_TYPE_BYE);
+@@ -392,10 +394,15 @@ static int ctrl_cmd_bye(struct sockaddr_qrtr *from)
+ 		ret = kernel_sendmsg(qrtr_ns.sock, &msg, &iv, 1, sizeof(pkt));
+ 		if (ret < 0 && ret != -ENODEV) {
+ 			pr_err("failed to send bye cmd\n");
+-			return ret;
++			goto delete_node;
+ 		}
+ 	}
+-	return 0;
 +
- 	srv = kzalloc_obj(*srv);
- 	if (!srv)
- 		return NULL;
-@@ -238,10 +255,6 @@ static struct qrtr_server *server_add(unsigned int service,
- 	srv->node = node_id;
- 	srv->port = port;
- 
--	node = node_get(node_id);
--	if (!node)
--		goto err;
--
- 	/* Delete the old server on the same port */
- 	old = xa_store(&node->servers, port, srv, GFP_KERNEL);
- 	if (old) {
-@@ -252,6 +265,8 @@ static struct qrtr_server *server_add(unsigned int service,
- 		} else {
- 			kfree(old);
- 		}
-+	} else {
-+		node->server_count++;
- 	}
- 
- 	trace_qrtr_ns_server_add(srv->service, srv->instance,
-@@ -292,6 +307,7 @@ static int server_del(struct qrtr_node *node, unsigned int port, bool bcast)
- 	}
- 
- 	kfree(srv);
-+	node->server_count--;
- 
- 	return 0;
++delete_node:
++	xa_erase(&nodes, from->sq_node);
++	kfree(node);
++
++	return ret;
  }
-@@ -670,7 +686,7 @@ static void qrtr_ns_worker(struct work_struct *work)
- 		}
  
- 		if (ret < 0)
--			pr_err("failed while handling packet from %d:%d",
-+			pr_err_ratelimited("failed while handling packet from %d:%d",
- 			       sq.sq_node, sq.sq_port);
- 	}
- 
+ static int ctrl_cmd_del_client(struct sockaddr_qrtr *from,
 
 -- 
 2.51.0
