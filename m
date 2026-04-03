@@ -1,56 +1,55 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72FF2D7DEA
-	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 05:59:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840092DD5F6
+	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 05:59:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775195958; cv=none; b=koPl77uQ4l/yY/OGb+snUqEtPY4V/IKvdudku7cEj6StnOG92V2q+sawYSFRucUJXUM/DimZ8MRYCZ/2vlXA1vQqmE4xTEZ8r8vInfJMOBhRJ4YN+sTmfZ3kLELfbJLZmETLlwr1RX8zQcFeDareCiKRqREk4FzVy/hcxxD7Iyw=
+	t=1775195998; cv=none; b=LSpVT3prRRM0XViJJU4O/yL+GYE2/p1DKGtwlhFssWxMU6tGQPBfy3GmKDEBgVzg2J61rWhXsLOoJfXEL6r/IoEeVOqCc2NNOSXVD7uXGzLpVdCm4ETLu6gNcb5AyzzSUmf8QVBj3UyYiSk7EbNzitCFcz6vV5oUb6Qvi/K4YQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775195958; c=relaxed/simple;
-	bh=DRP+DtgotH+uHkIjI5tTy7Oo1rAFm5KnpRPZroqjVLs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tZi+9lV4jbbscfpKeFdvi4J7OMoynVGh/nDx8s55RP7zWieuQVY7u2gJUtKkr+bq3GUPfn/crCy4dNTbPB3Vxurfbt0FjKLwhItidApkJP2FvJ2x7qScllMpLRXKTUak/CQGe4nvjk4l0Mr1o+6XkdZv+iy/8bGWKBbkUXq3WBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jxYWS/jf; arc=none smtp.client-ip=192.198.163.9
+	s=arc-20240116; t=1775195998; c=relaxed/simple;
+	bh=hkh+Nmw/K44d7gAG5USnMmol1zayw7cvyPtDXFrWDIM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fieM6XD6R+KQXIqGCSCi1r+CF7wBZMjgxBGC54i6XPKq65BwldFRmO2gL4nPVmj2swxEyppVFMGX17+NP7uiIjmg4HTWLLelpGWv8o8qQ4Vu8NzCB5mPIPpWYwqgTTLsI7H1uewCJBIlz6WL3dc/AvrFKm4zAgHgN3oNh7MIzUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VwbB2M8Y; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jxYWS/jf"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VwbB2M8Y"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775195951; x=1806731951;
+  t=1775195991; x=1806731991;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=DRP+DtgotH+uHkIjI5tTy7Oo1rAFm5KnpRPZroqjVLs=;
-  b=jxYWS/jfkh7e8hxMOnbRD8B5Ecsso/eOrSaapzYcHPk6BzsT+Oq9ezWE
-   3jRaVOiHXqoFWRSmSP2mx8s9wmRIgduAvdvhKtJx4dVmBHB6EJt8arcnd
-   L7XJGss7WV1D1vopgsFb0Tvw+CTUQpoSk/3IXgQ1tt2sgPBNJled6hYz0
-   ffgCJp5HASFiSqvv+VHapR44XeLt7wE4VJcShoVWNv7yt6Fk9rA8FF/Gx
-   KCXi0S2FKFdcwNSzCiWowDkVIKLwVwJJRINm62NhWdHo4qcToZUqZWTBB
-   vVupIkLfeUfRqdAvg/CnAh5X6oP8xsuXFKvn8LmcJn5IuUMiN8B2ge4F7
-   A==;
-X-CSE-ConnectionGUID: TFwaGGaATfWM55ZqDm0VMw==
-X-CSE-MsgGUID: LZT0PpNQQlK21+fukLuvSg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11747"; a="86964801"
+  bh=hkh+Nmw/K44d7gAG5USnMmol1zayw7cvyPtDXFrWDIM=;
+  b=VwbB2M8Yifq908KyH+Udp7D0DWj341nCv/OqBbFmn/A6IpZgvilpq19d
+   RQHdS42ixvBCTsyqPWErkZK/R64bZDfE5OHtVZHLaEV287ZjrWrGoOysp
+   uTjfxUGIalycBuu9zToU08Li3hmuvvHe8APSDwl+/JPSFHRaamRsRoFf8
+   sFDHF2AS0C8g4XvfTSzsdMC4hngKhZz6jwtHFD5JFOGNbMXb5dPT7f7ec
+   RXSAncfMFpplp4KCjst9GPVHByrHZaTSwptYZi7n471vKccvBKFlsZqs1
+   0taRVUpCYqKf/fhQPdi8e+xTVazgjQ9RjCW33HA5zj7SBudMc6/9ytRoH
+   w==;
+X-CSE-ConnectionGUID: 0gxRQQhFS+qVjq3PeXMsmA==
+X-CSE-MsgGUID: Vba0DEstSRKp/5AVxyDltQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11747"; a="87649922"
 X-IronPort-AV: E=Sophos;i="6.23,157,1770624000"; 
-   d="scan'208";a="86964801"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2026 22:59:06 -0700
-X-CSE-ConnectionGUID: 59TdPBPNQkGF9nI7N6QLsA==
-X-CSE-MsgGUID: y+8mW7HARyW9Tog33RWInw==
+   d="scan'208";a="87649922"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2026 22:59:50 -0700
+X-CSE-ConnectionGUID: BSKNbz52SEWx0SKtddhLcg==
+X-CSE-MsgGUID: vaTLvJYRTYu3CScoQu0u8Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,157,1770624000"; 
-   d="scan'208";a="250252556"
+   d="scan'208";a="227426251"
 Received: from amlin-019-225.igk.intel.com ([10.102.19.225])
-  by fmviesa002.fm.intel.com with ESMTP; 02 Apr 2026 22:59:05 -0700
+  by orviesa007.jf.intel.com with ESMTP; 02 Apr 2026 22:59:49 -0700
 From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 To: intel-wired-lan@lists.osuosl.org,
 	anthony.l.nguyen@intel.com,
 	aleksandr.loktionov@intel.com
-Cc: netdev@vger.kernel.org,
-	Anton Loktion <aloktion@cisco.com>
+Cc: netdev@vger.kernel.org
 Subject: [PATCH iwl-net] ice: fix netdev allocation with max queues instead of default
-Date: Fri,  3 Apr 2026 07:59:04 +0200
-Message-ID: <20260403055904.3800150-1-aleksandr.loktionov@intel.com>
+Date: Fri,  3 Apr 2026 07:59:48 +0200
+Message-ID: <20260403055948.3800555-1-aleksandr.loktionov@intel.com>
 X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -59,8 +58,6 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-
-From: Anton Loktion <aloktion@cisco.com>
 
 Commit ee13aa1a2c5a ("ice: use netif_get_num_default_rss_queues()")
 changed the default queue count from num_online_cpus() to
