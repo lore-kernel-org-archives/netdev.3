@@ -1,39 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2FD279358
-	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 20:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F76126F0A;
+	Fri,  3 Apr 2026 20:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775247370; cv=none; b=fgLNZBmxPThaaVywwX0hmegG/mk6zL+v6EKejgDUQNXMorlgmI6ypR5yK1JaZZuSWE7OGRpEKEeWm4kC8A1X7dV4L3VE2SnnpKe1v5XwFrtuaU6lR7RQVwwEVjh6oV9wfpMHOOAvwbnExkPwVBfwAOt6RO9OtV1mu8TFyOrNY+w=
+	t=1775247483; cv=none; b=l0+Z0LqHsKa8uK8eeKOnreyKHR9akaskNEiFFAnICpKGivO0Iu3+eKkDRemQ6t++lf4hZePQd+cBDiFFjfey3IYfzXEQQT9nWi2y7Mnz4ris6TgA6GLZn1x7t/1MMV8WjA0shZc33v35YKf8TN2e8JOOzyCuLzr9qHhGprkco2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775247370; c=relaxed/simple;
-	bh=kRsdmDX7gWtEfL1NZRFie0sO06YIDWSyDlF7Xu3tDWk=;
+	s=arc-20240116; t=1775247483; c=relaxed/simple;
+	bh=np4QvMzHzjSPV1FjKEle86q8kP2+pB1r0xtzw0nDitA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SDF0cSOzqnABeHP4E2UDMonJBJWcG3R0nqKKjJjYiNMut/xH20G+2vSnycL236Xhm+CjIRTI+VayN8AWq/hpqzzm0dDPz/a2gZqJdcNt286kWJ42xwh87jvqmffRYBuDPsZXNrx/uKKYEkqPQcObIw7shJaiUCJd0Ggzt4qnLd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RvzHTlAt; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=kMnn+lfx0ooX9TmW1T/ayHFBmVPHl9iRTLLO/x1UGl5XMKqcGnB8uwfPcaf+daPYb7B6O5kNQdORRiR7JGa523wK6Idxdn+mMIi2aaAYH3j99tb3jRJTFSAVZYPOlCPYqM3GawwgZ98XL1UVg9P49+uoeY4IkaJxk3+u8jbxHH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qhq2y9k/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RvzHTlAt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8DA9C4CEF7;
-	Fri,  3 Apr 2026 20:16:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qhq2y9k/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B0BFC4CEF7;
+	Fri,  3 Apr 2026 20:18:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775247369;
-	bh=kRsdmDX7gWtEfL1NZRFie0sO06YIDWSyDlF7Xu3tDWk=;
+	s=k20201202; t=1775247483;
+	bh=np4QvMzHzjSPV1FjKEle86q8kP2+pB1r0xtzw0nDitA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=RvzHTlAtPtAmNh71kFPkZpvTiNN0MJD5T9aQD9BS65FHMPtKOXzYpanOM/QjD0zaz
-	 AT9dc2tl2Oe2/iwh/uxivINHUKBGC/DwHxWeUOtF8lJqZs/VO95Teo9s/9IE7mCLeO
-	 0EWLc2aoXZ8jymJcDbU9vTezHRn53kwR+MItlWF+J/ngvY6P8WowCKOUHokkUfvIXG
-	 1YKAkP3XX2i+LFYG7oN7kwNIMXXplow01lln9hsuA1nsCJ1V/TzKANtP8xzDmrMJSY
-	 7I0mQOjLGzKGJnqT4ihfRh24PnO8e7Or5IBRFBQbFnCC0Tzeoww4lhxBlOy1ZCuhUW
-	 qNa5Lbh3LzpIw==
-Date: Fri, 3 Apr 2026 13:16:08 -0700
+	b=Qhq2y9k/GorufvWWtboi+BetnPdVNvqip7aZtyC4qITeYeORrpIO7QpS9ZuLISE/I
+	 Zka/n0v209uSgbn8IhLXTw71wYYtpGrb+W3ipbsuePy7+mGsazq6Y9Dd3Nb1NA072X
+	 xFZDV62N3NLvSP7vuqxw27FzvyZl6OpxemXk+jHk1+TcHEDdzEZjCw7QFP0slQYdD1
+	 Wuw+Cec8KcvMRwLlchaTL12RNP+bAI2eUYxud6ytgnGj+YGdXeuBTKVRLXePOcMb8T
+	 akReaFiPn6xWXVvjzmcjrvs3Z3klyNBWzCLfK+pgqFX3jiYG1BKntKSgzP20ZldAES
+	 DaSYu3JnPTz/Q==
+Date: Fri, 3 Apr 2026 13:18:01 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Juanlu Herrero <juanlu@fastmail.com>
-Cc: netdev@vger.kernel.org
-Subject: Re: [PATCH] selftests: net: fix checkpatch warnings in iou-zcrx.c
-Message-ID: <20260403131608.4b8fecb1@kernel.org>
-In-Reply-To: <20260403195754.10619-1-juanlu@fastmail.com>
-References: <20260403195754.10619-1-juanlu@fastmail.com>
+To: Thomas Richard <thomas.richard@bootlin.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Aaro Koskinen
+ <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, Kevin
+ Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, Tony
+ Lindgren <tony@atomide.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-omap@vger.kernel.org
+Subject: Re: [PATCH 0/2] Add USB Ethernet controller (LAN7500) node in
+ VAR-SOM-OM44 devicetree
+Message-ID: <20260403131801.359be561@kernel.org>
+In-Reply-To: <20260403-b4-var-som-om44-lan7500-v1-0-0dadde850143@bootlin.com>
+References: <20260403-b4-var-som-om44-lan7500-v1-0-0dadde850143@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,26 +53,12 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri,  3 Apr 2026 14:57:53 -0500 Juanlu Herrero wrote:
-> Subject: [PATCH] selftests: net: fix checkpatch warnings in iou-zcrx.c
+On Fri, 03 Apr 2026 21:02:22 +0200 Thomas Richard wrote:
+> The goal of this series is to add the USB Ethernet controller node in the
+> VAR-SOM-OM44 devicetree in order to allow the bootloader to patch the
+> devicetree and pass a MAC address to the smsc75xx driver. This was also a
+> good opportunity to create the schema file for LAN75XX devices.
 
-Quoting documentation:
-
-  Clean-up patches
-  ~~~~~~~~~~~~~~~~
-  
-  Netdev discourages patches which perform simple clean-ups, which are not in
-  the context of other work. For example:
-  
-  * Addressing ``checkpatch.pl``, and other trivial coding style warnings
-  * Addressing :ref:`Local variable ordering<rcs>` issues
-  * Conversions to device-managed APIs (``devm_`` helpers)
-  
-  This is because it is felt that the churn that such changes produce comes
-  at a greater cost than the value of such clean-ups.
-  
-  Conversely, spelling and grammar fixes are not discouraged.
-  
-See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#clean-up-patches
--- 
-pw-bot: reject
+But there's no driver for it yet, right?
+IDK what the best practices are here, just unusual to see a schema
+without a driver, is all.
