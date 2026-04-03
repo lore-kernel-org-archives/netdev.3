@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5055E36402C
-	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 22:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1106F269D18;
+	Fri,  3 Apr 2026 22:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775253633; cv=none; b=sFb2Rm+FXWMq/s5SDAUlIjVYsEpguAVR60zWGpOLj6mlBpgXM3z9DF0y34lqYxjTRXGe9PWpsxUq04hXSQ1Avepa01Br+JYd0Kw8EQuIwSUWV6stFjai7upZPtQECsQvzN3kmUjimVgdoDmElNwwiiJiEYLsbtfehRum42K8xWg=
+	t=1775253635; cv=none; b=mG9aDUhsDzjJhhbCFQRHFEhoWdR1mxbxYVxjOdEKQCb7Ad7Q/JcEdz0bTPvltbx/PRWUGvdwxmKjOeHauc5H17ys7D0OsWm/upaKHHIuNxk7pKC2U79yxeEwmDBjrzVkf087sqauqiIzfHRBOSL/s5XkexboQ4+QKSyPqVvCu0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775253633; c=relaxed/simple;
-	bh=wqBcj2NMo48zn6on1bQ6OXkjU7pnXL1t6MDijusiVNY=;
+	s=arc-20240116; t=1775253635; c=relaxed/simple;
+	bh=S7LoVHIaVdzAVCA2dcDM1RF7zy5gCGFKAZGv99r52rc=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Pr0wN3ZHaCisuuvvDd5awAQkNhB+nQVSRhBulkoJ3pcl69AzusuvEcCIj5sav2tVdglotHClbSlnJfInDITB8G2IsypIVHjdNlpY9yCHI/OXFCwCP/L7n9uxbxZjMx8xrw6AEReUYnlrJ0sxR1hcdQKObItmWNTNx4gz4HOIlpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uU+rq/eX; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Xw64WAW4NiMGiLG7OdwrR+G6Cg+2a3GQjDTSdGBRPe7dfuIDstW4/HEZABgj2wtJYA2dxYgzlJG3LkiCV+yOpUZ1QEu8SDY/4MoSo39T5H9v2uUJ6ZJn1iSWFqH4gJkq0PJNypz+8htAaipYvrPH+lpOmxrxhyd9K5qeYhjX8OU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nzEDwTQw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uU+rq/eX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC73EC19423;
-	Fri,  3 Apr 2026 22:00:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nzEDwTQw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B1AC19423;
+	Fri,  3 Apr 2026 22:00:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775253633;
-	bh=wqBcj2NMo48zn6on1bQ6OXkjU7pnXL1t6MDijusiVNY=;
+	s=k20201202; t=1775253634;
+	bh=S7LoVHIaVdzAVCA2dcDM1RF7zy5gCGFKAZGv99r52rc=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=uU+rq/eXmgglHQcKCI1ywp0mU9Ob5B82DEnV7AxVsucTyM+qWQSYJFLTi6PfBXA8T
-	 BOwEoCSqSvkg2w/D8EvzvqYvOPciwFY1Rouf4nFQy5UrWS6eTjLxm8PnBUwjPA0egY
-	 3raCmCDRPekUQuylQZkuywCwwrCjV0QCI1IziHuxXHYxhE9sK/nSHCX6/aXbmm8q9W
-	 fet8woaqtAUchELyI7t8Kg5ccBCMHhrm98unuIu5FaxcoZBLdjT3RE4Chr6hDcTWsn
-	 fxh9QJS0ADpOS6edURs5Ktf15BHSHbzFsqV2jem4FEYNC3WQT12GmFurLLG7XBpVVY
-	 /Z2yAEiHv8nJg==
+	b=nzEDwTQwNiupffSLW4kgerwwAcTa0T22DP5EYEwv2HY2+8E/XMv3+bTaEj4LOxQmm
+	 DyzRWrawtUPw85amKesJYK1QdgdnIKknftU4YIuSfRSd+ha9zHHHWFTT4POCDMB671
+	 4Uk2WEvEb+/YtPqjJgIs33IrnskN2h/KpeqMUG/RrMApanfzmMMG3oQq7OhUprwO65
+	 gdzqMrd+zksEWh9LNTmhI6u7wFH2ndgUoqIFQqvgmSqh5JJu3+9msgysKBs0cd7/JZ
+	 GHAps76zjFDQ6hNR/dlgb8o9iuHOo4DilaAAHhDeRfoTFrF3OHt8zs2fH6iXwBRSSB
+	 K6/fR2cN6oNbQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9F533809A14;
-	Fri,  3 Apr 2026 22:00:15 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CCF03809A14;
+	Fri,  3 Apr 2026 22:00:17 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,41 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 1/1] net: sched: act_csum: validate nested VLAN
- headers
+Subject: Re: [PATCH] net: fec: make FIXED_PHY dependency unconditional
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177525361453.1466030.17187869530232713242.git-patchwork-notify@kernel.org>
-Date: Fri, 03 Apr 2026 22:00:14 +0000
-References: 
- <22df2fcb49f410203eafa5d97963dd36089f4ecf.1774892775.git.caoruide123@gmail.com>
-In-Reply-To: 
- <22df2fcb49f410203eafa5d97963dd36089f4ecf.1774892775.git.caoruide123@gmail.com>
-To: Ren Wei <n05ec@lzu.edu.cn>
-Cc: netdev@vger.kernel.org, jhs@mojatatu.com, jiri@resnulli.us,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, elibr@mellanox.com, yifanwucs@gmail.com,
- tomapufckgml@gmail.com, yuantan098@gmail.com, bird@lzu.edu.cn,
- enjou1224z@gmail.com, caoruide123@gmail.com
+ <177525361598.1466030.8172670823884997635.git-patchwork-notify@kernel.org>
+Date: Fri, 03 Apr 2026 22:00:15 +0000
+References: <20260402141048.2713445-1-arnd@kernel.org>
+In-Reply-To: <20260402141048.2713445-1-arnd@kernel.org>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, hkallweit1@gmail.com, arnd@arndb.de,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu,  2 Apr 2026 22:46:20 +0800 you wrote:
-> From: Ruide Cao <caoruide123@gmail.com>
+On Thu,  2 Apr 2026 16:10:40 +0200 you wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
-> tcf_csum_act() walks nested VLAN headers directly from skb->data when an
-> skb still carries in-payload VLAN tags. The current code reads
-> vlan->h_vlan_encapsulated_proto and then pulls VLAN_HLEN bytes without
-> first ensuring that the full VLAN header is present in the linear area.
+> When CONFIG_FIXED_PHY is in a loadable module, the fec driver cannot be
+> built-in any more:
+> 
+> x86_64-linux-ld: vmlinux.o: in function `fec_enet_mii_probe':
+> fec_main.c:(.text+0xc4f367): undefined reference to `fixed_phy_unregister'
+> x86_64-linux-ld: vmlinux.o: in function `fec_enet_close':
+> fec_main.c:(.text+0xc59591): undefined reference to `fixed_phy_unregister'
+> x86_64-linux-ld: vmlinux.o: in function `fec_enet_mii_probe.cold':
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/1] net: sched: act_csum: validate nested VLAN headers
-    https://git.kernel.org/netdev/net/c/c842743d073b
+  - net: fec: make FIXED_PHY dependency unconditional
+    https://git.kernel.org/netdev/net/c/e16a0d36777b
 
 You are awesome, thank you!
 -- 
