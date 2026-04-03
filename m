@@ -1,117 +1,266 @@
-Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676143612EF
-	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 15:19:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775229553; cv=pass; b=JmyvDkO00zbj/+C1JVCGd7wSkFYpUDUdrC/lMfRPl4w/z4H3yxSXW2kEz85I8th2pkVabLdRrAwEOwSDJDqm0XE22hjfJaWjWzDUlBFZ6rwil5BpfZyLd+d2YUsa4dWl23dhNmUTUu3WEgeTxH0g8GK3xHE1DwXiK7KUIYnOsew=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775229553; c=relaxed/simple;
-	bh=B9ChwxIqjVPjxIdXdydUQ28VrQVd0/3Zr/7xPOZkTm0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eDn4liOksuyvejGVA21+7zJZyWhoXHsnsdD6YDSvaoPAY2UUvPaEsfuK9OPvW2UJdM+qsY+q+mjvQIJZssXUi/ZPB8mhRwq/4fHcFozcxoJKHaRFu4cLzXTRY2deGfsIpNwLM7QHjoMS4SocJqO0cJoFTjF0aUSZY4yGjUoAdGE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S/fTovq8; arc=pass smtp.client-ip=209.85.161.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648D937B011
+	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 15:26:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775229965; cv=none; b=utazRbP50JZnmuTcAfFXD3+cPSSd4rNet0icgmxHP7Cgr0N/neAkgFCHhutcCy+Djg+Eh9im2w/1MKRGV92gtVR/1rTzTAOtRhUeKKEtLys48j5fIHoXOKMwRlaXo/ttB0Gbd22zyGjH/oQ/0Uffr2qsnc/wyvB/pndMyzqCHzA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775229965; c=relaxed/simple;
+	bh=/iuUiBKd/QehSumXg68bTOYBxK/MWSEcoYlGJ5L4Wi4=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=lsQqIXEg6900Eh+p9Fqm1c5A34DXRWP2gZKj6Y/Er7/w2v96KTvV3gPeBeRE4HnPbfwjQNjSLADYC8pkUo86w5g7uYKUBDJVUvb+ac7m6s0gU1rIcYqjm5dAz94osQN43BxezM9ife+KnvT0dXNEGpxYemlVDGGWNI4vmDQmw9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hPnSFXxx; arc=none smtp.client-ip=209.85.128.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S/fTovq8"
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-6830f4f34c9so148596eaf.3
-        for <netdev@vger.kernel.org>; Fri, 03 Apr 2026 08:19:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775229551; cv=none;
-        d=google.com; s=arc-20240605;
-        b=DbyhalfxdfxQjxNcin3BRE3lheVPEZFqfgQFOzCaJsdItO6LAEZPH0EQl+2dI1YUkj
-         RAnVaB7m+7ENfoAONnHfY8RACY2H1F0TB1furrtLBIbOlbDM0yQpaH9b/Ck7K41qEg2S
-         Q7QKEOLCVHKK9IOw8H/LFIOLXaarQmzbC0EWO4XW+/HjHbThMNP2Vbp1t8dxOYra0r0z
-         LDAJkJch0qaCCa5Do68bhGzT3x0bQfNjA3Js/RMG/uw8k0yWWfTsMFt8gH3DwZcbVnPo
-         3NsMGJnT/XekmPi3OzmkVqvm9BsZIIkSt1DdrmsfhIdepy1pHRnQm5RLccOWASzigS+c
-         OlCA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Yj0csSExbiRXKyxIzdW4Y1VT9MMdIju9zbDZii7ejEg=;
-        fh=1ffhz1LCn+XjckKwJV4d58j3PNJFvGXtZYChy/J7jCo=;
-        b=k0d+wOJrgJ7PwBfELV5d3v7NEXAc06bGrCTqpUfVhRu9EyvUe6xwBaYHqa1Y/Ee3PT
-         87JK6vIXKa6mfAEBKV2IM8/HDY7MdT8u6ElGmHc89n6AKHCixuDBBFNP6zzZxdz8vMvI
-         puUfLIHz3Wc9TnUPFj1FtaqL9L+qbThdMWTm7eUef8YTh7EEL1xLcFVFBi0fvdscUd3K
-         EqGO+UqbSecl3K6oE5m0xmK8oQOnt+m5rqQ2geyEk4copChVfpOe8E4b6xgDHapBlk5J
-         5hwvJKg3Vn4HEaQA+iJmXaOOLXKeJLxN/N4Z1Wus7dGNeflAR2Z6GdE5jl7pJjp/AFSq
-         gMTg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hPnSFXxx"
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-7a43424f861so16717987b3.1
+        for <netdev@vger.kernel.org>; Fri, 03 Apr 2026 08:26:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775229551; x=1775834351; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1775229962; x=1775834762; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Yj0csSExbiRXKyxIzdW4Y1VT9MMdIju9zbDZii7ejEg=;
-        b=S/fTovq85BpNtXU19bsRHxf5dJWNxncuXbmkqE9ouurDtGI46+98rIsmInqyl+yvdo
-         O1STrRb0iaduJKx/eDpv1uOUlYJ2oMYuBIHE16ZkoRzSyfCxDNhxoOAzicXBamKG4oIe
-         EIVAwzWcKc9ClOfz3QkrycNmOUuZANh53XE9lhk3hgPBJwJdPfuLw/+YNDBEqtGqHJu6
-         MnLSp21z8aIKk79yzSYLj/mQn779J8P06vUKGsLHUxFRqdsBTx6ndHiJNasSruQkW6YF
-         oqfGk4PdfM8/TTFhO1dzJEDlPUOZD520t0gtdU5D8c86VM0R5dmHwYEON+WI2YNuws7v
-         7rEQ==
+        bh=phgEzarmetA3rPcVDi8C467Z7leoFPBcCeNvveOYnOE=;
+        b=hPnSFXxx15dfsYGWgXmJoQPNdxqnS+jk29YdsNJwJJKvnpCuyaEZBSVqXi2yVOvr7l
+         emsXExVs9Rysc4ukhZMufx5+2b5CGD5n5zJiwIyzNaDx3gCt4+TawoGbcKBeFpxlIpxP
+         CcwFnyi+SPBH3DeVIsgBth9xu1U12YiZ/L+ZgXxYHAFHmv/SR/n4HtXnSUlYlT5wPh6E
+         gppzDIigx1L4rRyjYfC2KsfTJlqUE2YfMcb9z7DBxB12EI1WnjnGZdspw1FeuA43a71G
+         rNgcA7HQxKwgVCiDiNnmN1QvcljMY3bONR12k9aoh+/IVZVY+sGyy99tt4dh7Hm+bdFS
+         +pWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775229551; x=1775834351;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Yj0csSExbiRXKyxIzdW4Y1VT9MMdIju9zbDZii7ejEg=;
-        b=IGFLYvm26m+eVaM5Q46IlBcZFcwcL8ITIRq20d6FnesRukJdBvDIwZ9iipfbxy3aq+
-         97/R0C6tXsQuhLwVp9Zsa0xlei4RrZLoVjBgr9SWmWgQ0Jsib3k8pHPIisc579uwVlyk
-         BFrNJEfE8ZUP8BbxsU0ya88rJb1oI4/yxzLb8AtcKCQsm/JaKRUHpn8PWp5lCGQPAGiq
-         n83NB6Xs5SyBCdLSvI7hlVNlrEVm4ONlPTBvLdwVKEmCo0GJxwgpDVfw7m64RqOwaOUg
-         Ct3XMuK3P9q99S23Mc0s4pZXvSQcu043/DI2TRa0iB8dxB6QvOWsx0ZceBH6seIXzJpf
-         SF9w==
-X-Gm-Message-State: AOJu0YxcmJwKkSVw778xgfjSnjvKYQW4lZ5A8W8EpIxUiDtIL/ngZS7E
-	FU0tCApXEJjRILPmx/i1+085CoFTTHn7NY44jy1UPqDMoJjalWuwJmNBb3cUFS7NQ3B/4znLaZN
-	483ggNv9mVAvElnGvcZpG+CTiFh2+Vmo=
-X-Gm-Gg: ATEYQzzc6zFnv7h4uxz/dyEbxMADk3AxzDL3/D85adwDhJLi1de7dshfeALKACrS1QB
-	mtDkYNfxjshc47P4aHiC7ZyqEiUFxDw6aGKIK9YGzX/260zZbVfcymrWP5hiR4jRYPfi0UH2IxG
-	/cC4J3BJkPhCG7JgOOvahJW2F72r3nS94Evxm1EOUVxZ8wwbSWV1sXrfc1E0SQQYgievINa+1YH
-	5tJ0HDQQtwxXpLcCZU8WNhl9paGMWyAVCLrN/8YNHmKpVfofAczotWMcvHySU3dUk7KTh3SksfS
-	UwgF4ATrKotHUNw/z9jfch7VVXE6zfLS7HppxL/dGwW5ExbLed+Q
-X-Received: by 2002:a05:6820:81e:b0:682:b064:ecf3 with SMTP id
- 006d021491bc7-682b064ef39mr887157eaf.3.1775229550943; Fri, 03 Apr 2026
- 08:19:10 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1775229962; x=1775834762;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=phgEzarmetA3rPcVDi8C467Z7leoFPBcCeNvveOYnOE=;
+        b=CF1lKDE66REvCRs6ym2BgT+nOBMGmfW5GIXbrv3uiyk5xNid2eniBn6nACeG2+9mui
+         g7g/z73veGYkD+Z9MhvAhn40UuKLt1eq/Qhsh0Ye2w1DxlrrGMo105+4JfQRWH3iejvW
+         iLQhJ/GgIk1Jwkk7zIPD+7KA/qsSejBB/0aw3iwj0RGb1B1McdgXNTMfj442wfjRkveR
+         xc/iMuoY32pIj/txTDm50PpSyGyjCC1PQiQkzqCsk4mBPK6fP6LDJgTIpOk9YeWvwlWb
+         IswG92RwKx2nE+fkLSteIs/Gm3Km2+c0zTfDeKFWrAEXXz88IlzdyFu9tZVoGeMRlddE
+         szug==
+X-Forwarded-Encrypted: i=1; AJvYcCXnnbMBUyooDT+KVNbpMCh9qERxiO2WoVYf3l+XMYUjYDhuu/6vAD6QvB52ouJrgDhnvwJNb5g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEkscAxpvBH1/vGO+aAgO5VWg77GYkD6DEffJdCkt4Rbk2ADgK
+	kMxTQTj+Aae87i7RktlLdunGPpUxzBHVr0wLurZC+L0fGZQtAOMn9ue9
+X-Gm-Gg: AeBDievCP9jLrfbTk/o+KcQDhywfvi7V++qVfJLd1f3q2RBmR+Ao3RKdHnxoTnbH8k0
+	2OsHTsi5TD4/gKlwg9nmQ86SCd4+Xu+01RouXzhuSJHAhSGAMywh8ku6V3A4ob00P9zjLRUDYmc
+	jBsr+7aqnO4NUhMxoQPSXwxP2QsUZYnejIkuQ015s4HBZG5jXI0JlP7UNn4OTVl6EOKdzAwlCvM
+	Qn6IL1hudbx2RyrLpXKPk2cISpfnxFvi71g5ptFoYHsnb3Wln20yrTt3tXXE3k1CESJArsYwp+0
+	lLHev4ejhLLRZl8mIzdQkt1yce5jLXzd+UmI29Jfuu4bulpivb2kfJ3q/tYRSe7RdXqCeYAqDej
+	nv7INbNogng0m+zvgVW/5Vl/69mo8mIUPsLDa1syk2vkPaFUMjyLHL60zV/99XAdjq66hp7J+ST
+	Uo8poHwYPUQmzR+EZlrtz3Y397eNQtELbpPmZiSJJrW/iNYdZVCzbIxNfyilq6Z166/7B1BCVUJ
+	8xO
+X-Received: by 2002:a05:690c:d96:b0:79e:8d95:7ebb with SMTP id 00721157ae682-7a4d3ac7a7fmr35626207b3.14.1775229962152;
+        Fri, 03 Apr 2026 08:26:02 -0700 (PDT)
+Received: from gmail.com (172.165.85.34.bc.googleusercontent.com. [34.85.165.172])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7a36e229135sm22909397b3.3.2026.04.03.08.26.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Apr 2026 08:26:01 -0700 (PDT)
+Date: Fri, 03 Apr 2026 11:26:01 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Joe Damato <joe@dama.to>, 
+ netdev@vger.kernel.org, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: andrew+netdev@lunn.ch, 
+ linux-kernel@vger.kernel.org, 
+ willemb@google.com, 
+ Joe Damato <joe@dama.to>, 
+ linux-kselftest@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.886450145305@gmail.com>
+In-Reply-To: <20260402232203.2004496-3-joe@dama.to>
+References: <20260402232203.2004496-1-joe@dama.to>
+ <20260402232203.2004496-3-joe@dama.to>
+Subject: Re: [net-next 2/3] selftests/net: Test PACKET_STATISTICS drops
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260402223437.109097-1-mmyangfl@gmail.com> <20260402223437.109097-4-mmyangfl@gmail.com>
- <654b51cd-fc06-4dd2-9a6e-421d7333f905@lunn.ch> <CAAXyoMP=o7P0-o6HOKi8dho8iLLV4LJT=YHae5Gj13xJ2ph4og@mail.gmail.com>
- <308c4474-3da3-41bf-af29-3a400232e029@lunn.ch>
-In-Reply-To: <308c4474-3da3-41bf-af29-3a400232e029@lunn.ch>
-From: David Yang <mmyangfl@gmail.com>
-Date: Fri, 3 Apr 2026 23:18:34 +0800
-X-Gm-Features: AQROBzCLKbnn8kS3OOOL_Rx_k7SSRVBrWqQYiEeYoD1N5JQWo7VPP_aHfJR6fNY
-Message-ID: <CAAXyoMOJ=RDzV2pGGN0yW2Q5hpM9L212J=QMsUw3MsiFcvXFxw@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 3/4] net: dsa: yt921x: Add port police support
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Apr 3, 2026 at 10:19=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> > Does it unnecessarily depend on __int128? Otherwise it's good.
->
-> Ah, it seems to be a 64 bit architecture only thing.
->
-> Shame, because it would make this code easier to understand.
->
-> For these u96 values, the masks i looked at would fit into a u64.  Are
-> there any fields which cross from bits < 64 to > 64? Could you
-> represent it as a u64+u32?
->
->           Andrew
+Joe Damato wrote:
+> Extend psock_snd to test drops by setting a tiny receive buffer and
+> sending a large burst of packets.
+> 
+> Signed-off-by: Joe Damato <joe@dama.to>
+> ---
+>  tools/testing/selftests/net/psock_snd.c  | 52 ++++++++++++++++++++----
+>  tools/testing/selftests/net/psock_snd.sh |  5 +++
+>  2 files changed, 48 insertions(+), 9 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/net/psock_snd.c b/tools/testing/selftests/net/psock_snd.c
+> index 5be481a3d2bd..7bbce274b9f0 100644
+> --- a/tools/testing/selftests/net/psock_snd.c
+> +++ b/tools/testing/selftests/net/psock_snd.c
+> @@ -39,6 +39,7 @@ static bool	cfg_use_gso;
+>  static bool	cfg_use_qdisc_bypass;
+>  static bool	cfg_use_vlan;
+>  static bool	cfg_use_vnet;
+> +static bool	cfg_drop;
+>  
+>  static char	*cfg_ifname = "lo";
+>  static int	cfg_mtu	= 1500;
+> @@ -49,6 +50,8 @@ static uint16_t	cfg_port = 8000;
+>  /* test sending up to max mtu + 1 */
+>  #define TEST_SZ	(sizeof(struct virtio_net_hdr) + ETH_HLEN + ETH_MAX_MTU + 1)
+>  
+> +#define BURST_CNT (1000)
+> +
+>  static char tbuf[TEST_SZ], rbuf[TEST_SZ];
+>  
+>  static unsigned long add_csum_hword(const uint16_t *start, int num_u16)
+> @@ -212,13 +215,14 @@ static void do_send(int fd, char *buf, int len)
+>  	if (ret != len)
+>  		error(1, 0, "write: %u %u", ret, len);
+>  
+> -	fprintf(stderr, "tx: %u\n", ret);
+> +	if (!cfg_drop)
+> +		fprintf(stderr, "tx: %u\n", ret);
+>  }
+>  
+> -static int do_tx(void)
+> +static int do_tx(bool burst)
+>  {
+>  	const int one = 1;
+> -	int fd, len;
+> +	int i, fd, len;
+>  
+>  	fd = socket(PF_PACKET, cfg_use_dgram ? SOCK_DGRAM : SOCK_RAW, 0);
+>  	if (fd == -1)
+> @@ -242,6 +246,10 @@ static int do_tx(void)
+>  
+>  	do_send(fd, tbuf, len);
+>  
+> +	if (burst)
+> +		for (i = 0; i < BURST_CNT; i++)
+> +			do_send(fd, tbuf, len);
+> +
+>  	if (close(fd))
+>  		error(1, errno, "close t");
+>  
+> @@ -290,6 +298,7 @@ static void do_rx(int fd, int expected_len, char *expected)
+>  static int setup_sniffer(void)
+>  {
+>  	struct timeval tv = { .tv_usec = 100 * 1000 };
+> +	const int one = 1;
+>  	int fd;
+>  
+>  	fd = socket(PF_PACKET, SOCK_RAW, 0);
+> @@ -299,6 +308,10 @@ static int setup_sniffer(void)
+>  	if (setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv)))
+>  		error(1, errno, "setsockopt rcv timeout");
+>  
+> +	if (cfg_drop)
+> +		if (setsockopt(fd, SOL_SOCKET, SO_RCVBUF, &one, sizeof(one)))
+> +			error(1, errno, "setsockopt SO_RCVBUF");
+> +
+>  	pair_udp_setfilter(fd);
+>  	do_bind(fd);
+>  
+> @@ -309,7 +322,7 @@ static void parse_opts(int argc, char **argv)
+>  {
+>  	int c;
+>  
+> -	while ((c = getopt(argc, argv, "bcCdgl:qt:vV")) != -1) {
+> +	while ((c = getopt(argc, argv, "bcCdDgl:qt:vV")) != -1) {
+>  		switch (c) {
+>  		case 'b':
+>  			cfg_use_bind = true;
+> @@ -323,6 +336,9 @@ static void parse_opts(int argc, char **argv)
+>  		case 'd':
+>  			cfg_use_dgram = true;
+>  			break;
+> +		case 'D':
+> +			cfg_drop = true;
+> +			break;
+>  		case 'g':
+>  			cfg_use_gso = true;
+>  			break;
+> @@ -367,11 +383,23 @@ static void check_packet_stats(int fd)
+>  	if (getsockopt(fd, SOL_PACKET, PACKET_STATISTICS, &st, &len))
+>  		error(1, errno, "getsockopt packet statistics");
+>  
+> -	if (st.tp_packets != 1)
+> -		error(1, 0, "stats: tp_packets %u != 1", st.tp_packets);
+> +	if (cfg_drop) {
+> +		/* PACKET_STATISTICS reports all packets seen (including
+> +		 * drops) in tp_packets
+> +		 */
+> +		if (st.tp_packets < st.tp_drops)
+> +			error(1, 0, "stats: tp_packets %u < tp_drops %u",
+> +			      st.tp_packets, st.tp_drops);
+>  
+> -	if (st.tp_drops != 0)
+> -		error(1, 0, "stats: tp_drops %u != 0", st.tp_drops);
+> +		if (st.tp_drops == 0)
+> +			error(1, 0, "stats: expected drops but tp_drops == 0");
+> +	} else {
+> +		if (st.tp_packets != 1)
+> +			error(1, 0, "stats: tp_packets %u != 1", st.tp_packets);
+> +
+> +		if (st.tp_drops != 0)
+> +			error(1, 0, "stats: tp_drops %u != 0", st.tp_drops);
+> +	}
+>  
+>  	/* verify clear on read */
+>  	memset(&st, 0xff, sizeof(st));
+> @@ -394,7 +422,12 @@ static void run_test(void)
+>  	fdr = setup_rx();
+>  	fds = setup_sniffer();
+>  
+> -	total_len = do_tx();
+> +	total_len = do_tx(cfg_drop);
 
-EBS crosses word #0 and #1 and CBS crosses word #1 and #2, and I
-didn't find any boundary patterns among other u96 registers.
+only if respinning: no need to pass global cfg_.. variables through
+function arguments.
 
-But maybe I could drop those multi-word register helpers and use
-manual updates, since I have to use unaligned modifications anyway.
+> +
+> +	if (cfg_drop) {
+> +		check_packet_stats(fds);
+> +		goto out;
+> +	}
+
+can this not use the check_packet_stats added in the previous patch
+right below?
+
+>  
+>  	/* BPF filter accepts only this length, vlan changes MAC */
+>  	if (cfg_payload_len == DATA_LEN && !cfg_use_vlan) {
+> @@ -405,6 +438,7 @@ static void run_test(void)
+>  
+>  	do_rx(fdr, cfg_payload_len, tbuf + total_len - cfg_payload_len);
+>  
+> +out:
+>  	if (close(fds))
+>  		error(1, errno, "close s");
+>  	if (close(fdr))
+> diff --git a/tools/testing/selftests/net/psock_snd.sh b/tools/testing/selftests/net/psock_snd.sh
+> index 1cbfeb5052ec..b6ef12fad5d5 100755
+> --- a/tools/testing/selftests/net/psock_snd.sh
+> +++ b/tools/testing/selftests/net/psock_snd.sh
+> @@ -92,4 +92,9 @@ echo "raw gso max size"
+>  echo "raw gso max size + 1 (expected to fail)"
+>  (! ./in_netns.sh ./psock_snd -v -c -g -l "${max_mss_exceeds}")
+>  
+> +# test drops statistics
+> +
+> +echo "test drops statistics"
+> +./in_netns.sh ./psock_snd -D
+> +
+>  echo "OK. All tests passed"
+> -- 
+> 2.52.0
+> 
+
+
