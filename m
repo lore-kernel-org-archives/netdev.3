@@ -1,44 +1,62 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8183CCFA3
-	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 16:26:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85D93CE48E;
+	Fri,  3 Apr 2026 16:28:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775233589; cv=none; b=Av2iWYNs6TszeS0lmWiTAxvdSfoYQRvWpCg8gfhOpyLfG8JPaGnxh9PQAYDvCLkaypIjl3UZJV2rWHqa4ySoD6iIRY6yZJhlgKoX+TswVS9lOwgAg3r5M1kBjfowyK2egVTGuwQ0vmKxmUBVmioQD5UwRbzGSIqDaRsvUWBn8Vk=
+	t=1775233717; cv=none; b=AAlJE+P626hQTI+G58zvKOgaKomHaDup48zmhh4KNXNRhfodJBjMn1pMg5dXNShEHR0rN7sK8F+InDDJZH7hzv85/P3NZDNLr8takv6EWL8QUGgcakjZBoP5Gi13Qw9bWaHY2W9fPM5wK8BAq/4Cpiitc4JOuKZVoPYAJjq6MA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775233589; c=relaxed/simple;
-	bh=PQI8hQoKKs0qI4ILdyv4HJHsJNSJoJIs4raAItgmIss=;
+	s=arc-20240116; t=1775233717; c=relaxed/simple;
+	bh=ksFgA/u2N4SRYvgJuiBxNktrLTy17CcaLr4WBoZeuwg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aW4GlCtbyxdX3lh0CEkykx38XqfEiN5I3z6jt2qLVwBSm7jweXHW/G2p9DKaF+KP9RAsgzqiFLIb8p/xYKAtnamP4R2Px6QNzWo7Ty1Mj2MXApA8FSCOLSTz7ILI6NhsCbYeyCsAWJ9zuoCiZ15ppiIhltZTZoeZeGJGfSnCaqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YaTQQxIN; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=hmOKX1eG8DqDKXO9ig0yJ1o7R/IQUq+3Fm3iTrMBNBA7Ox651zlsVZydOthBDUwzQdvoplP1JhrwSDAthFY0ZwodtVlclrhvxlDTefny9UT4Jskdrp5YXDT8vHZBFQID9+IM4j9sCAGwBpuSORn++HewQm5Z/EE74uKrdPLMd7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=POwDYbpM; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YaTQQxIN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF7EC4CEF7;
-	Fri,  3 Apr 2026 16:26:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775233588;
-	bh=PQI8hQoKKs0qI4ILdyv4HJHsJNSJoJIs4raAItgmIss=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YaTQQxINOeWP6B7PclF6HmREFfoquk3E/N9saH5emM0RPcG+eiPjU7D+QqHrv3NrU
-	 qdk7yHEq3t/uktAHhvJxshdXJTPHHfF52kAZT1XLcTguJN/dJSvDOTS1jlQCdvW8SL
-	 eqAFq2G6L4eWhnEP2rfYrE4jOE1IrC7hJXDsSIbK4f6expMEo2qGoTipy+uXc6qr/q
-	 B3Fh/R7udRHi0o4U3GYp+ebeetLUyakV4Alu/QCvOAxVf8S8xPfdV6MYy5WDHnaMQZ
-	 +4baEPmbvM/Q67TpCn4sUpLATVQ7bXJ2jClMFBpbPcx0VUpagXxnl/Ul47yaE+cmaI
-	 ik6vn2YYRXweA==
-Date: Fri, 3 Apr 2026 17:26:23 +0100
-From: Simon Horman <horms@kernel.org>
-To: Ren Wei <n05ec@lzu.edu.cn>
-Cc: netdev@vger.kernel.org, jhs@mojatatu.com, jiri@resnulli.us,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, elibr@mellanox.com, yifanwucs@gmail.com,
-	tomapufckgml@gmail.com, yuantan098@gmail.com, bird@lzu.edu.cn,
-	enjou1224z@gmail.com, caoruide123@gmail.com
-Subject: Re: [PATCH net 1/1] net: sched: act_csum: validate nested VLAN
- headers
-Message-ID: <20260403162623.GP113102@horms.kernel.org>
-References: <cover.1774892775.git.caoruide123@gmail.com>
- <22df2fcb49f410203eafa5d97963dd36089f4ecf.1774892775.git.caoruide123@gmail.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="POwDYbpM"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=hwRBDQPTngoPa9INpbm8rSrx+5HNSS1PTuzENhOG9qs=; b=POwDYbpMP11WnGNZRSng9fPF8Y
+	vbPLlLvLOPz9PNL7MHvMaF0h+/q1EDiHdn0c7bPcGzZSVPfwUvn375AgIBnY1gjAOsUChiBMaPx+i
+	oKdc0HS0oJTyxS4PGxcZ1zCC5hwDG0aIVUn5ksN68PEQLwiEgJPRa1HRQ+2wpQL0xXIbYkxcPSaiC
+	A/+1P2jBqxV18ILhBYLl5C2GqIg1SQ068W3sUakYJW9qdIBLXscZfd2cqaHIC8ECwPPzySjTZPnZI
+	QdE0F0WmdM8IUCM0Ks3yRZgHB2dWP++B+yA+8tlOCm8pE7Msvk9KyxoEnpAUR30LbN2boZ7umXY6o
+	zCdWKvog==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:57270)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1w8hNd-000000005pf-1WoV;
+	Fri, 03 Apr 2026 17:28:21 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1w8hNa-000000006t4-3itU;
+	Fri, 03 Apr 2026 17:28:18 +0100
+Date: Fri, 3 Apr 2026 17:28:18 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+Cc: "andrew@lunn.ch" <andrew@lunn.ch>,
+	"hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>
+Subject: Re: [PATCH net] net: phy: micrel: Fix MMD register access during SPD
+ in ksz9131_resume()
+Message-ID: <ac_qokUkztGRLNa0@shell.armlinux.org.uk>
+References: <20260403111738.37749-1-ovidiu.panait.rb@renesas.com>
+ <ac_Udvtrj0Bl-6wl@shell.armlinux.org.uk>
+ <TY7P301MB1984FB759690AB12AD509CD8D35EA@TY7P301MB1984.JPNP301.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,33 +65,98 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <22df2fcb49f410203eafa5d97963dd36089f4ecf.1774892775.git.caoruide123@gmail.com>
+In-Reply-To: <TY7P301MB1984FB759690AB12AD509CD8D35EA@TY7P301MB1984.JPNP301.PROD.OUTLOOK.COM>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Thu, Apr 02, 2026 at 10:46:20PM +0800, Ren Wei wrote:
-> From: Ruide Cao <caoruide123@gmail.com>
+On Fri, Apr 03, 2026 at 03:48:02PM +0000, Ovidiu Panait wrote:
+> Hi,
 > 
-> tcf_csum_act() walks nested VLAN headers directly from skb->data when an
-> skb still carries in-payload VLAN tags. The current code reads
-> vlan->h_vlan_encapsulated_proto and then pulls VLAN_HLEN bytes without
-> first ensuring that the full VLAN header is present in the linear area.
+> > 
+> > On Fri, Apr 03, 2026 at 11:17:38AM +0000, Ovidiu Panait wrote:
+> > > During system suspend, phy_suspend() puts the PHY into Software Power-
+> > Down
+> > > (SPD) by setting the BMCR_PDOWN bit in MII_BMCR. According to the
+> > KSZ9131
+> > > datasheet, MMD register access is restricted during SPD:
+> > >
+> > >   - Only access to the standard registers (0 through 31) is supported.
+> > >   - Access to MMD address spaces other than MMD address space 1 is
+> > >     possible if the spd_clock_gate_override bit is set.
+> > >   - Access to MMD address space 1 is not possible.
+> > >
+> > > However, ksz9131_resume() calls ksz9131_config_rgmii_delay() before
+> > > kszphy_resume() clears BMCR_PDOWN. This means MMD registers are accessed
+> > > while the PHY is still in SPD, contrary to the datasheet.
+> > >
+> > > Additionally, on platforms where the PHY loses power during suspend
+> > > (e.g. RZ/G3E), all settings from ksz9131_config_init(), not just the
+> > > RGMII delays, are lost and need to be restored. When the MAC driver
+> > > sets mac_managed_pm (e.g. stmmac), mdio_bus_phy_resume() is skipped,
+> > > so phy_init_hw() (which calls config_init to restore all PHY settings)
+> > > is never invoked during resume.
+> > >
+> > > Fix this by replacing the RGMII delay restoration with a call to
+> > > phy_init_hw(), which takes the PHY out of SPD and performs full
+> > > reinitialization.
+> > >
+> > > Fixes: f25a7eaa897f ("net: phy: micrel: Add ksz9131_resume()")
+> > > Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+> > > ---
+> > >  drivers/net/phy/micrel.c | 9 +++++++--
+> > >  1 file changed, 7 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+> > > index 2aa1dedd21b8..4236dbf4ad6b 100644
+> > > --- a/drivers/net/phy/micrel.c
+> > > +++ b/drivers/net/phy/micrel.c
+> > > @@ -6016,8 +6016,13 @@ static int lan8841_suspend(struct phy_device
+> > *phydev)
+> > >
+> > >  static int ksz9131_resume(struct phy_device *phydev)
+> > >  {
+> > > -	if (phydev->suspended && phy_interface_is_rgmii(phydev))
+> > > -		ksz9131_config_rgmii_delay(phydev);
+> > > +	int ret;
+> > > +
+> > > +	if (phydev->suspended) {
+> > > +		ret = phy_init_hw(phydev);
+> > > +		if (ret)
+> > > +			return ret;
+> > > +	}
+> > >
+> > >  	return kszphy_resume(phydev);
+> > >  }
+> > 
+> > mdio_bus_phy_resume():
+> > 
+> >         ret = phy_init_hw(phydev);
+> >         if (ret < 0)
+> >                 return ret;
+> > 
+> >         ret = phy_resume(phydev);
+> >         if (ret < 0)
+> >                 return ret;
+> > 
+> > where phy_resume() calls your resume function.
+> > 
+> > If a MAC driver is handling suspend/resume by setting
+> > phydev->mac_managed_pm then maybe the MAC driver should also be
+> > issuing phy_init_hw() before calling phy_resume() ?
+> > 
+> > Which MAC driver are you seeing a problem with?
+> > 
 > 
-> If only part of an inner VLAN header is linearized, accessing
-> h_vlan_encapsulated_proto reads past the linear area, and the following
-> skb_pull(VLAN_HLEN) may violate skb invariants.
+> On my board the KSZ9131RNX PHY is paired to stmmac.
 > 
-> Fix this by requiring pskb_may_pull(skb, VLAN_HLEN) before accessing and
-> pulling each nested VLAN header. If the header still is not fully
-> available, drop the packet through the existing error path.
-> 
-> Fixes: 2ecba2d1e45b ("net: sched: act_csum: Fix csum calc for tagged packets")
-> Reported-by: Yifan Wu <yifanwucs@gmail.com>
-> Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-> Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-> Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-> Suggested-by: Xin Liu <bird@lzu.edu.cn>
-> Tested-by: Ren Wei <enjou1224z@gmail.com>
-> Signed-off-by: Ruide Cao <caoruide123@gmail.com>
-> Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+> I could add phy_init_hw() before the phylink_prepare_resume() call, which
+> does the phy_resume() and remove the ksz9131_config_rgmii_delay() call from
+> ksz9131_resume(), as it is not correct/complete.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Yes, I think we should add phy_init_hw() before calling phy_resume()
+in phylink's prepare_resume() path to ensure that the PHY state is
+the same as when the PHY is resumed via the MDIO bus. Please prepare
+a patch to that end, thanks.
 
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
