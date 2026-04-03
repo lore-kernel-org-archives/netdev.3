@@ -1,202 +1,171 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013028.outbound.protection.outlook.com [52.101.83.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B0A3C5520;
-	Fri,  3 Apr 2026 14:20:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775226003; cv=none; b=cNoUNL7jZOt4w0X8TcjJQYKwJ7g0814AmuOpfHbkNL90u9p54pONWuy4IeMGfFDNHjPa3KwOZIkhaVSzfm3UybEf6QEmqR/e2k/tBQAcQYIkFTP45ZBrHAXug3dfW8ehE4vYBjBlUSPdBrIyg7P5qkxBRMvMfrjkmruyo29IseI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775226003; c=relaxed/simple;
-	bh=EiX/FE5bydmfv+PQVcJW9A9TvoaZb7yvi6+kxsWm/pU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gt4jlXWV3i8MCHlQUY/PVNziENwz+nu1F7isqliyaectvt8xvgyRbuX8JfSrgAFGpU/DZok2Zdxrc/qHaOvlRW3uT0t3VhSjFpxDE44IWftPeYBXmMUKGi5/eroijEIBfzSiePsL+9EAzo+NuGmDutlRidvU8EA5RusECV/fwHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rA+o7IYe; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B293C552F;
+	Fri,  3 Apr 2026 14:20:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.28
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775226013; cv=fail; b=QecQ4a8YwXyO7SvNb+yy6o7fD6bYHzWO9Ug1UNfmRJAAgvwwI8TdriVxKaPZkPmyrWOmlXoWiLEGj1anfR3I3LgmyOBnbzzhJXXuJ6astypcoXZjBT2XJag7BI97CGKLdg5A2PDbqvgVmGa1sSFKCCthsfB3fXnql20/pKlsT58=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775226013; c=relaxed/simple;
+	bh=odl7ByppX/Ndzsgy7xI1wyZZcmTboHehdWpZfDHnlNk=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=LojPWp0WiVDk5elvAZ3U7PTV2dvjshR7NRJt2OWTgT4fHtOvdSQjDiDl6sKsyQLHcj+i16Rqa3xjMi/UCv6KKUB9b2N4yKCLTa8FtFvZSqFW3QLeeaxuLIKvGqHtDRh6rrTleYSRFZJU8pqsjdGsEEPk2PGWZd00nOThiyPfsm0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=jGO+OSJG; arc=fail smtp.client-ip=52.101.83.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rA+o7IYe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A45CEC4CEF7;
-	Fri,  3 Apr 2026 14:20:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775226002;
-	bh=EiX/FE5bydmfv+PQVcJW9A9TvoaZb7yvi6+kxsWm/pU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=rA+o7IYeaxT8nJZWulDlWEcqrfBfaklUZQaVsm6zxYageOYaUUFAk7NDDOQ43DTZM
-	 5T3Bwh6VV82dsH4DucWjC7LoyrYy2Y+f7lX4+9Q02pnp/UCiVklQPOFDu/8WAtZLk2
-	 iF2VGnm776MRXJRG+YAXfk+eCULlza7GyFYcYZQJuv22NquiaK/GiLSj1OZZIV8X0o
-	 Vwx89VZBFIzV84RfQZhdXtgGldbMfLomoeKOgvc4jDZB6nmRQhwYQoIw4ofwKs92dW
-	 pcB/pouNYZ0jF4q0xK1BO75eurQCBNM/QJzJHltJqEQSbPrei9yFW9WNPdLtI1Yb3A
-	 Lx2B5EYwQ3Dww==
-Message-ID: <070ec312-4836-4220-b03f-07c14f1f5470@kernel.org>
-Date: Fri, 3 Apr 2026 16:19:57 +0200
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="jGO+OSJG"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NB7Cxbu2zQfodiCY/5za1nzTuRGdzS5ECJPLcQzB41i5UARS1zbpAnChR1SprDUH92HzTIWB1DIu4RbH4loQ+lXJFGCD5prvAG9hsaI5ASqbMm4tK1Jjn0bhisLZI7o1/jCgzI+hVuLk3cxYMJ+MA9HqvqHFtifKFsnTEkRsz7O/rS+PCnSxABIvJLfmr28Frs61MwgwXXD2qs5ouJr6JZqPAbJHQCZFTxjSM0D3Wbai4btg3IsdFAc/IAfz1jXHUkFpIGxvdQxfdNRRU519kUz5NU1NF3+yzVvO5Gk61fg/LO6j2wYdPvQgEOniQXCxnPIvSSnWiuZLzMTUCwpz9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rI8SLYY+HZIJiNrZfzWloQCnW4YP9hmzersuCMR+qao=;
+ b=e5ChfvDSKzev51+HBgu8Bka8sb8iK3nP4ptMErj7JcGPFNuopnJHgw1l7KapueT+00SUwDlvEN8cT5rsNmYUiRUss/GlJfs15NJdvrkRAU3FkPYTSy2KgX7/ViWG2QBc+M23LBF+OYrHbEJwEsJDsxBMGVaaNSduOcdlWCO0GOHuTeIU0Ti0pVJ8aVzXT6rk35czCPRtd5GPoQCN8edi4JKxEMrgSr92JaMCqcFk8u4SNZIixRDn6CpxS/UQG4ezscBfTCeszIZe+98yBHFGOPiUZld8dCh4fiAkarRGHOuHWYKlrhGPGbkKTfSwR62zQ+OisjpFReALPbNyKaKprQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rI8SLYY+HZIJiNrZfzWloQCnW4YP9hmzersuCMR+qao=;
+ b=jGO+OSJG23zBzQ9H7D1NSwpShCCrNHKN8kmmDDbm09skAySzfCOki/I4yqjEiVVJ0R1KgZjVsS+yB7ELwQtEwqIB8HknIXLPVaxuwNgB29J8nevByIy7qiSDCTAVr7CYon1PtCfe5cF8t4XmbVbUFxDL/x/2L+GEAdA/qMuGoFtSUp968xVMh2iWI3bXZsEIoiz2wYwDH1IQGdG0PYustDnN9fF2Bjs9gWkWtKwuuIg/3+5bpGykwo0bneZVQ5LHcqbZf9Zn/nBmTUxaz1i2eDkKIgP5X5ahffqO49cGs8f/+AIiFfuvbBa79oXd/Cz+GyoQOkK41Et6ky/dFXf9Sw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8253.eurprd04.prod.outlook.com (2603:10a6:102:1bf::7)
+ by FRWPR04MB11175.eurprd04.prod.outlook.com (2603:10a6:d10:171::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Fri, 3 Apr
+ 2026 14:20:07 +0000
+Received: from PAXPR04MB8253.eurprd04.prod.outlook.com
+ ([fe80::2b4e:8130:4419:d633]) by PAXPR04MB8253.eurprd04.prod.outlook.com
+ ([fe80::2b4e:8130:4419:d633%3]) with mapi id 15.20.9769.016; Fri, 3 Apr 2026
+ 14:20:07 +0000
+From: Ioana Ciornei <ioana.ciornei@nxp.com>
+To: netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	petrm@nvidia.com,
+	willemb@google.com,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH net-next] selftests: forwarding: lib: rewrite processing of command line arguments
+Date: Fri,  3 Apr 2026 17:19:12 +0300
+Message-Id: <20260403141912.3825693-1-ioana.ciornei@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: AS4P192CA0021.EURP192.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5e1::15) To PAXPR04MB8253.eurprd04.prod.outlook.com
+ (2603:10a6:102:1bf::7)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net-next 4/5] mptcp: pm: in-kernel: remove
- mptcp_pm_has_addr_attr_id
-Content-Language: fr
-To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev,
- linux-kernel@vger.kernel.org
-References: <20260403-net-next-mptcp-msg_eor-misc-v1-0-b0b33bea3fed@kernel.org>
- <20260403-net-next-mptcp-msg_eor-misc-v1-4-b0b33bea3fed@kernel.org>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20260403-net-next-mptcp-msg_eor-misc-v1-4-b0b33bea3fed@kernel.org>
-Content-Type: multipart/mixed; boundary="------------fcRmnfxsfsMQV0XXagR60M0V"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8253:EE_|FRWPR04MB11175:EE_
+X-MS-Office365-Filtering-Correlation-Id: f5dde869-92e0-4c24-f9e5-08de918c1b8d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|19092799006|7416014|376014|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	Pg6iXZqTYFYA53nBP9YBpKd5NmkdWju0ee7Hjg+Be+htsC+xCHxXFrhIf938bmP6fzTqnov9Sl7HNQQGcIeVnfgdjEdCUt+eSV6o3wBLhm+6w9yeIDq5XbPr1gDBUzltW8YLhRLVXrQBiRDCLtvhci0gnG8EDCXA06FIrB1S9LsjZjvfw1Ilscp+49XWzvw9Z9DH6quLnmMG+v5IlwSmxTk/dXtNEfk+T9HBadewlhlyX5wCHMdKBmLaMJBab5CuVVRnGN1ddDilqcVyXuX0aKFoNBL1w0U/PRYJVfZhCjwt7bggOrV86UyAHlKPmlf+ALjPvcV9NLf3gmj/XZ711sBU3rIoW3w2oTr/Ry3Y4/HddIJgg9NP1jibDe/h4ghYWmD8FquJbi/yOQEfDM8CfiYHOga85FbeHFCx9N4z3kEckTp1C+3C14hoXHhcmn7jsc+stzBRPxFvGz/sC2+DKWWIkT9IupWOEScfWjKIvNULkSNY2Ww2d1M7GG8fmRlIoadZ9DKnXRGlyfTo16+vhZJqbIJ6csBHioG8i0SHPnChjE7JVb+tO0+1YXINTMIkU4EgzuVDsFluyW1P8E9TQATVWZqQaLQoVtF30OHEp90wBcpasulhoqaAF6khD4trbvcBJHmUOiyKvHjWDC9uaLO02o8UXdAxps8Jsm3BrCN02mTM0MmoGmKIAw1fTi9Rfmb/gANlylqfOxDQtYmUmCJK2X7lNY5VKjOYJI5LTSc=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8253.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(7416014)(376014)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?CGnxLBGyRr7We2Drmr0vxyT1ekNJV5R5ctYNwCS9wj1dSSdc6jnzUSy1y/7w?=
+ =?us-ascii?Q?AsITSjGb3Es0kHgRwQvndpw8D3mjQ2eRSRuckmmZgkxvU/tdOVgFpTQizmoS?=
+ =?us-ascii?Q?K73jhLm4ih8+RtXGqS/K7qPrzLbmP7XwUi0K+GRQk6Mbl9ez3dB7IdWA3mc7?=
+ =?us-ascii?Q?L2wd8PRDTo36XoDqoYMN3mBkYncQXZVfLKjWfCAh4zIHBz9kKpF9WaBMuPYH?=
+ =?us-ascii?Q?mcMJxmDgI/n5Kk9o0dvT9p21gGLPvSM97c/5/uuWTwfrw47NDl1kO4Ai/e7g?=
+ =?us-ascii?Q?q4/OCLrOuyoklLWslQnxaF6kFrmWfB/1VAEb98HU21PCZgl2/9PaLHaoXb3X?=
+ =?us-ascii?Q?sfnzQ7ylJ1vHJtVRaIyvEyQ2X98h/N4uxaOgW0ZaRfOP8Amifjk2oTUwujnP?=
+ =?us-ascii?Q?mVv970G14pZOHhiWJ4SzPn8fJOUH4oOrN/RJolH+XaPFlTtzQCoqQkFJirf8?=
+ =?us-ascii?Q?uJ1QTPmnRyerxhmv7p4uBzVkXaDJdI1yhQckVwQF2If/KzcvTR2XQ7barJlT?=
+ =?us-ascii?Q?JQH9Z70iXeBy00PHZv02ojFiukBJX+DBOHfl0u9wzOUKEe10t+iv8rH13HVZ?=
+ =?us-ascii?Q?U9eqTLtms1F7ckeOIY+dwhj+8W0snTuSOg3KPI2UMgmQXoCneN37a2fgSsBI?=
+ =?us-ascii?Q?zznrqRoTjluJTEjqrf4vLzKWpu+uIOaJOXGBEf2lhHvUbA8SSvN182SBm09D?=
+ =?us-ascii?Q?FFtU0WXT/XIsUI4Y+RxSpBQe+QGzVFbpg7tP5m2tQG03X/pbZbwjWBdN2Jw8?=
+ =?us-ascii?Q?SDJBXjTp0KrepIK4rJtt5bvNH9rHelTjEhgt1yF6fl92t66dM7C/z9IOu09S?=
+ =?us-ascii?Q?qTgRMUi0+1FbzNHNkK1cXs5lr5Kv/MPMi8GoraBRPJeG786I+7RDnPqMZSO9?=
+ =?us-ascii?Q?SY/CmHCSswMUaK2POkn8cggWKNBDjWBRErtuYcQfb62+qe2x2kp9jFNdcU51?=
+ =?us-ascii?Q?mlKbxc5TbAs+3Yz7AAsVJBxBSkReHt7WGS1ksBiQcJWHbTOdUy06/D7syCcn?=
+ =?us-ascii?Q?RwyRZiCgp0VMujjvCH9EiAK244GDjgfFYUXqbo2fyl1c8fp7vwIp6nSIcDeZ?=
+ =?us-ascii?Q?S7fXpw1izu8bHmqOl2qC6bBwn8UH7EFIT7BE2OX4aD3RzFTaK0M6XW+YR09c?=
+ =?us-ascii?Q?Z2hc+1N+PQHtHIY6gB2AllPbvHyRumBvYUEo6bb6mkoixS+e8WGUhTyV+6QZ?=
+ =?us-ascii?Q?zCI8bkw1Dp+tuB9tsJK4ZQYXftQgi9vuFqhGgnWn0QbvNZPV3zgId8pzUR74?=
+ =?us-ascii?Q?oXHAIKOP9upOG8rscobJVZ9I/QjBpGqquc7keUzh+OXKX3HVcPJaoYKBsjx0?=
+ =?us-ascii?Q?s878QUt4qxgGWijGYEt0F+El7IzRYdoNixQJmUwiawW5vPeUtlUTMx+SqB5+?=
+ =?us-ascii?Q?z2np0XKm9rfGdkAKCxYDnzk3rgpf0LiniK6sYCURbUf02dgwnW6pDMVkOMGN?=
+ =?us-ascii?Q?LGtS+JBbZ2bF5VyVI1A+SgWgS5X7mFUPhTGmGYHUjQEBAThqAK/k4ka/Tj13?=
+ =?us-ascii?Q?Y31rLMBNQC5ywbSii7Bd3P26TtFabvsIGxFR2Dxq3y4jbM5WsVsGuKB8Iv+0?=
+ =?us-ascii?Q?1YjU/LpCnjXDtZmicVct6kyscmxHHXSX5IiIOKfj0OXdz5VkoijlODpYCnxq?=
+ =?us-ascii?Q?UkVLtcfYPnOtNKdCRHOw9ltDK9D59Bcc8GuMl2KIbr52Y463fCjvkKl/uyxY?=
+ =?us-ascii?Q?QofXLlQUxg3f4OS2CdlQdPz4vEmoF1hx14ueON5OEaV2xRA9sBh3I/sGx44x?=
+ =?us-ascii?Q?1tS6SHCnBg=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f5dde869-92e0-4c24-f9e5-08de918c1b8d
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8253.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Apr 2026 14:20:07.7975
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Z+i/fHt7/p6XNB/ScifhkRrZID4jXt4esg14y1ojfHug1tU3jhL4SgzwJMOuIK1mD1Rz/LB4Y3h2r8d0qDDthQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: FRWPR04MB11175
 
---------------fcRmnfxsfsMQV0XXagR60M0V
-Sig: t=p; b=
- wnsEABYIACMWIQQbhllvmed6DXRKTjh8IvDC80cKlwUCac/MjgUDAAAAAAAKCRB8IvDC80cKl+gZ
- AQDpnuBmOk32k43Eir4T7x7/P5ScoIzSe1xlUC90yzIafgD/Z8LKd8FC3T0UWW50xHLbpDxjMYlP
- jB6WDDN8jBtDbws=
-Message-ID: <070ec312-4836-4220-b03f-07c14f1f5470@kernel.org>
-Date: Fri, 3 Apr 2026 16:19:57 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net-next 4/5] mptcp: pm: in-kernel: remove
- mptcp_pm_has_addr_attr_id
-Content-Language: fr
-To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev,
- linux-kernel@vger.kernel.org
-References: <20260403-net-next-mptcp-msg_eor-misc-v1-0-b0b33bea3fed@kernel.org>
- <20260403-net-next-mptcp-msg_eor-misc-v1-4-b0b33bea3fed@kernel.org>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
- YBNdx5Xl74NLSgx6y/1NiMQGuKeu+2BmtnkiGxBNanfXcnl4L4Lzz+iXBvvbtCbynnnqDDqU
- c7SPFMpMesgpcu1xFt0F6bcxE+0ojRtSCZ5HDElKlHJNYtD1uwY4UYVGWUGCF/+cY1YLmtfb
- WdNb/SFo+Mp0HItfBC12qtDIXYvbfNUGVnA5jXeWMEyYhSNktLnpDL2gBUCsdbkov5VjiOX7
- CRTkX0UgNWRjyFZwThaZADEvAOo12M5uSBk7h07yJ97gqvBtcx45IsJwfUJE4hy8qZqsA62A
- nTRflBvp647IXAiCcwWsEgE5AXKwA3aL6dcpVR17JXJ6nwHHnslVi8WesiqzUI9sbO/hXeXw
- TDSB+YhErbNOxvHqCzZEnGAAFf6ges26fRVyuU119AzO40sjdLV0l6LE7GshddyazWZf0iac
- nEhX9NKxGnuhMu5SXmo2poIQttJuYAvTVUNwQVEx/0yY5xmiuyqvXa+XT7NKJkOZSiAPlNt6
- VffjgOP62S7M9wDShUghN3F7CPOrrRsOHWO/l6I/qJdUMW+MHSFYPfYiFXoLUZyPvNVCYSgs
- 3oQaFhHapq1f345XBtfG3fOYp1K2wTXd4ThFraTLl8PHxCn4ywARAQABzSRNYXR0aGlldSBC
- YWVydHMgPG1hdHR0YmVAa2VybmVsLm9yZz7CwZEEEwEIADsCGwMFCwkIBwIGFQoJCAsCBBYC
- AwECHgECF4AWIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZUDpDAIZAQAKCRD2t4JPQmmgcz33
- EACjROM3nj9FGclR5AlyPUbAq/txEX7E0EFQCDtdLPrjBcLAoaYJIQUV8IDCcPjZMJy2ADp7
- /zSwYba2rE2C9vRgjXZJNt21mySvKnnkPbNQGkNRl3TZAinO1Ddq3fp2c/GmYaW1NWFSfOmw
- MvB5CJaN0UK5l0/drnaA6Hxsu62V5UnpvxWgexqDuo0wfpEeP1PEqMNzyiVPvJ8bJxgM8qoC
- cpXLp1Rq/jq7pbUycY8GeYw2j+FVZJHlhL0w0Zm9CFHThHxRAm1tsIPc+oTorx7haXP+nN0J
- iqBXVAxLK2KxrHtMygim50xk2QpUotWYfZpRRv8dMygEPIB3f1Vi5JMwP4M47NZNdpqVkHrm
- jvcNuLfDgf/vqUvuXs2eA2/BkIHcOuAAbsvreX1WX1rTHmx5ud3OhsWQQRVL2rt+0p1DpROI
- 3Ob8F78W5rKr4HYvjX2Inpy3WahAm7FzUY184OyfPO/2zadKCqg8n01mWA9PXxs84bFEV2mP
- VzC5j6K8U3RNA6cb9bpE5bzXut6T2gxj6j+7TsgMQFhbyH/tZgpDjWvAiPZHb3sV29t8XaOF
- BwzqiI2AEkiWMySiHwCCMsIH9WUH7r7vpwROko89Tk+InpEbiphPjd7qAkyJ+tNIEWd1+MlX
- ZPtOaFLVHhLQ3PLFLkrU3+Yi3tXqpvLE3gO3LM7BTQRV4/npARAA5+u/Sx1n9anIqcgHpA7l
- 5SUCP1e/qF7n5DK8LiM10gYglgY0XHOBi0S7vHppH8hrtpizx+7t5DBdPJgVtR6SilyK0/mp
- 9nWHDhc9rwU3KmHYgFFsnX58eEmZxz2qsIY8juFor5r7kpcM5dRR9aB+HjlOOJJgyDxcJTwM
- 1ey4L/79P72wuXRhMibN14SX6TZzf+/XIOrM6TsULVJEIv1+NdczQbs6pBTpEK/G2apME7vf
- mjTsZU26Ezn+LDMX16lHTmIJi7Hlh7eifCGGM+g/AlDV6aWKFS+sBbwy+YoS0Zc3Yz8zrdbi
- Kzn3kbKd+99//mysSVsHaekQYyVvO0KD2KPKBs1S/ImrBb6XecqxGy/y/3HWHdngGEY2v2IP
- Qox7mAPznyKyXEfG+0rrVseZSEssKmY01IsgwwbmN9ZcqUKYNhjv67WMX7tNwiVbSrGLZoqf
- Xlgw4aAdnIMQyTW8nE6hH/Iwqay4S2str4HZtWwyWLitk7N+e+vxuK5qto4AxtB7VdimvKUs
- x6kQO5F3YWcC3vCXCgPwyV8133+fIR2L81R1L1q3swaEuh95vWj6iskxeNWSTyFAVKYYVskG
- V+OTtB71P1XCnb6AJCW9cKpC25+zxQqD2Zy0dK3u2RuKErajKBa/YWzuSaKAOkneFxG3LJIv
- Hl7iqPF+JDCjB5sAEQEAAcLBXwQYAQIACQUCVeP56QIbDAAKCRD2t4JPQmmgc5VnD/9YgbCr
- HR1FbMbm7td54UrYvZV/i7m3dIQNXK2e+Cbv5PXf19ce3XluaE+wA8D+vnIW5mbAAiojt3Mb
- 6p0WJS3QzbObzHNgAp3zy/L4lXwc6WW5vnpWAzqXFHP8D9PTpqvBALbXqL06smP47JqbyQxj
- Xf7D2rrPeIqbYmVY9da1KzMOVf3gReazYa89zZSdVkMojfWsbq05zwYU+SCWS3NiyF6QghbW
- voxbFwX1i/0xRwJiX9NNbRj1huVKQuS4W7rbWA87TrVQPXUAdkyd7FRYICNW+0gddysIwPoa
- KrLfx3Ba6Rpx0JznbrVOtXlihjl4KV8mtOPjYDY9u+8x412xXnlGl6AC4HLu2F3ECkamY4G6
- UxejX+E6vW6Xe4n7H+rEX5UFgPRdYkS1TA/X3nMen9bouxNsvIJv7C6adZmMHqu/2azX7S7I
- vrxxySzOw9GxjoVTuzWMKWpDGP8n71IFeOot8JuPZtJ8omz+DZel+WCNZMVdVNLPOd5frqOv
- mpz0VhFAlNTjU1Vy0CnuxX3AM51J8dpdNyG0S8rADh6C8AKCDOfUstpq28/6oTaQv7QZdge0
- JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20260403-net-next-mptcp-msg_eor-misc-v1-4-b0b33bea3fed@kernel.org>
-Content-Type: text/plain; charset=UTF-8; hp="clear"
-Content-Transfer-Encoding: quoted-printable
+The piece of code which processes the command line arguments and
+populates NETIFS based on them is really unobvious. Rewrite it so that
+the intention is clear and the code is easy to follow.
 
-Hello,
+Suggested-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+---
+ tools/testing/selftests/net/forwarding/lib.sh | 22 +++++++++----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-On 03/04/2026 13:29, Matthieu Baerts (NGI0) wrote:
-> There is no need to call this helper: it will check if the address ID
-> attribute is set, but this attribute has already been parsed previously=
-=2E
->=20
-> Indeed, the value has been set in 'entry->addr.id' if it was set and
-> positive, which is what we were looking at. Then only looking at this
-> already parsed value is enough, not need to re-extract all Netlink
-> attributes again.
+diff --git a/tools/testing/selftests/net/forwarding/lib.sh b/tools/testing/selftests/net/forwarding/lib.sh
+index d8cc4c64148d..922cdaf2ceb9 100644
+--- a/tools/testing/selftests/net/forwarding/lib.sh
++++ b/tools/testing/selftests/net/forwarding/lib.sh
+@@ -466,18 +466,18 @@ if [ "${DRIVER_TEST_CONFORMANT}" = "yes" ]; then
+ 	NETIFS[p2]="$remote_netif"
+ 	TARGETS[$remote_netif]="$REMOTE_TYPE:$REMOTE_ARGS"
+ else
+-	count=0
++	# Prime NETIFS from the command line, but retain if none given.
++	if [[ $# -gt 0 ]]; then
++		unset NETIFS
++		declare -A NETIFS
+ 
+-	while [[ $# -gt 0 ]]; do
+-		if [[ "$count" -eq "0" ]]; then
+-			unset NETIFS
+-			declare -A NETIFS
+-		fi
+-		count=$((count + 1))
+-		NETIFS[p$count]="$1"
+-		TARGETS[$1]="local:"
+-		shift
+-	done
++		while [[ $# -gt 0 ]]; do
++			count=$((count + 1))
++			NETIFS[p$count]="$1"
++			TARGETS[$1]="local:"
++			shift
++		done
++	fi
+ fi
+ 
+ ##############################################################################
+-- 
+2.25.1
 
-Sashiko [1] is complaining that endpoints with an ID 0 are now no longer
-supported. But they were never supposed to: "ip mptcp endpoint add id 0"
-reports an error.
-
-In fact, this patch is for 'net': from what I see, this patch reverts
-commit 584f38942626 ("mptcp: add needs_id for netlink appending addr"),
-which should not have been introduced. Other tools could happily add
-endpoints with an unexpected ID 0.
-
-If that's OK with the net maintainers, I suggest dropping only this
-patch: the rest of the series is OK and not related to it. I will send
-this exact same patch for 'net' after having adapted the commit message
-and added a "Fixes" tag.
-
-[1]
-https://sashiko.dev/#/patchset/20260403-net-next-mptcp-msg_eor-misc-v1-0-=
-b0b33bea3fed%40kernel.org
-
-Cheers,
-Matt
---=20
-Sponsored by the NGI0 Core fund.
-
-
---------------fcRmnfxsfsMQV0XXagR60M0V--
