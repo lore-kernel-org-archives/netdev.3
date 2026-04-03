@@ -1,69 +1,86 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E66F63932D9;
-	Fri,  3 Apr 2026 12:38:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D2F1F7569
+	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 12:40:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775219929; cv=none; b=e6s5OkRB/wX5kDswOWLxl9UfD6CE4B4PQYR/O4kIdOedTubVUTpEVNFpLu3VNJe/AN9DFqr5auUxgSMoM8gIaNtJsvhd11Y7XpI3sO+BA1mJeAStprVAup6/pLJGJinkFLoWlTE/G/+PsOT6zosBPsGnb2SdvvHH9GAt1SW1D/k=
+	t=1775220008; cv=none; b=fcdeue1KzVYdaoC6qjrh4xIJwRUjnTRttZlh7B8ilbsWzjAFb1g8WDr0V+gRJ1PClBKdKMNIleHSi3wruyHh5lOm823Br36OTwlju3/OVPQg7qhAIA3Qlvd33BS29UjN8hIMyD9F1IHjzktm7XXG8QY9NtazzgLpcE0leiu69vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775219929; c=relaxed/simple;
-	bh=RS8j/I2fLWkaxtVu3n/e7EArB/eNfqX9ve2JWjAA9xw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a/Ogp1eYb1KUrifNlYNUyXstpC1NeXzJLpWKEu1nvusftMX3iUQ7EVfMqcE/UKev4VknoltljL2NMVnQ23NNbI//cF8iq9fRKfrPdnqdHs5LUkpsdJGmli6mT1NglaBpT2XItO/mijwBqm/5Da+VX3zjlQ95wvNwyjzaAJK7fXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ezTnKmu7; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1775220008; c=relaxed/simple;
+	bh=/jtO4z12FS8AsW3xNtoM8KOQWRJS6+aqWycqqNLrfk0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I6uLw+u9d4Isbed9xeo6HdAQ2bphvCoU9xKaRsKwSwhMngBegeYzUqZr+9samJ/aUrxv3EB+dDuXlSgM1gGi8HU7yg0c6y6oMlKZMfRfcQIHpEPlq/Hxe419kjBwu3kbBPpz5Jo1Tk8mqo7indJK4VfJimtyI6NWGoWVxFFMLVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jFLC3bG/; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=p8v2G3xl; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=PmRGLZbR; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=IR6vwyzM; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ezTnKmu7"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id AB7B6C59F63;
-	Fri,  3 Apr 2026 12:39:18 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4A5E5603C7;
-	Fri,  3 Apr 2026 12:38:38 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0E4B8104500D1;
-	Fri,  3 Apr 2026 14:38:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1775219917; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=ywOEXZxPuwNOGsL84IOTfWlMHQSDOVg+IGk8hn6k0+w=;
-	b=ezTnKmu7HwHCk7LBxIxePnPlt3XZCSRXuQ6OAPPrbzn903tl2DWNwOHGQrYb06ICbsjzyW
-	gEUMX1RqTcfgf1cdmiZUo39tnDjEZP8p0LNV00UkDv+1Fq4xn7+/CsC/rx7LnNrbhDjU2H
-	khXXW3PWRwszVs7bq5W8wmA2Gwf3SwhumH5THgURyuXjiIEM8+fe3OYlvZgBL6ET3/hlNj
-	uqlhc0YyXwzgTCxN3BKjdVE+YkYUbd+19rSBR0RqwX9fwreT2gPZqEphw15NFFFGH9+4Y1
-	v38h9taPUeAlNe5f7VsVew7D6QaitAfox2D5G8LVLO/NQsAtB0iAQh4oxpyPjw==
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: davem@davemloft.net,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	thomas.petazzoni@bootlin.com,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	=?UTF-8?q?K=C3=B6ry=20Maincent?= <kory.maincent@bootlin.com>,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	=?UTF-8?q?Nicol=C3=B2=20Veronese?= <nicveronese@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	mwojtas@chromium.org,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Dimitri Fedrau <dimitri.fedrau@liebherr.com>
-Subject: [PATCH net-next v9 10/10] net: ethtool: Introduce ethtool command to list ports
-Date: Fri,  3 Apr 2026 14:37:54 +0200
-Message-ID: <20260403123755.175742-11-maxime.chevallier@bootlin.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20260403123755.175742-1-maxime.chevallier@bootlin.com>
-References: <20260403123755.175742-1-maxime.chevallier@bootlin.com>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jFLC3bG/";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="p8v2G3xl";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="PmRGLZbR";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="IR6vwyzM"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id D55354D2C3;
+	Fri,  3 Apr 2026 12:40:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1775220005; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=GR01uTgTC3FgLsUO0NKXWfNMhvNXhGCaofVuk7I9/Kw=;
+	b=jFLC3bG/GLNzYROq4EaQceqKM2ZJfOu7PBErmcy3ZOk5A3w+GIsCp72G/TTr2Oqy0zQxer
+	5NdI2o4LCemDnn20YiTGuF/8ZHDV9jQyQWWk3PdLlSn/Nm6KmOEbzlI/uHGJnT9p6tM2gO
+	xbhfG8G/z8OVwcTCAzIEUg2IME2dO2Q=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1775220005;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=GR01uTgTC3FgLsUO0NKXWfNMhvNXhGCaofVuk7I9/Kw=;
+	b=p8v2G3xl9KGDQZK/9hwBvtRAH95so699j3JTfplTnr5SE6DAlWsq7TJ2FzF8F3iLrjB9JA
+	GwphTMqGetExF9AA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1775220004; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=GR01uTgTC3FgLsUO0NKXWfNMhvNXhGCaofVuk7I9/Kw=;
+	b=PmRGLZbRmBwiepSDJNTBH2Oq4uqpmfDYvXiWfEW3bfc5/mvQCrXOzKKGMqusM/0h+DuGra
+	ts7Ce+ptkKrK90g4lB71ue2q/SBAg5pnOJT+ZRbDrgIC+V/tL8fijByD1EiWwNJuaghAW6
+	k16Uxd3w0v+b+OVz2t6XFOlmo9k0p7o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1775220004;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=GR01uTgTC3FgLsUO0NKXWfNMhvNXhGCaofVuk7I9/Kw=;
+	b=IR6vwyzMDPW1Rac/ENvYt5fUi5oTrR61wDvOpMfjFPypvDHJJA3AYmnDX5p0LGSqLeCBen
+	kScWZczir8ZOrwDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 093984A0A6;
+	Fri,  3 Apr 2026 12:40:03 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id GQhnOiO1z2nFdgAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Fri, 03 Apr 2026 12:40:03 +0000
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+To: netdev@vger.kernel.org
+Cc: acsjakub@amazon.de,
+	liuhangbin@gmail.com,
+	kees@kernel.org,
+	horms@kernel.org,
+	pabeni@redhat.com,
+	kuba@kernel.org,
+	edumazet@google.com,
+	davem@davemloft.net,
+	fmaurer@redhat.com,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Luka Gejak <luka.gejak@linux.dev>
+Subject: [PATCH net-next] net: hsr: emit notification for PRP slave2 changed hw addr on port deletion
+Date: Fri,  3 Apr 2026 14:39:29 +0200
+Message-ID: <20260403123928.4249-2-fmancera@suse.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,527 +88,69 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-Spam-Score: -2.80
+X-Spam-Level: 
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-0.997];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_TLS_ALL(0.00)[];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[amazon.de,gmail.com,kernel.org,redhat.com,google.com,davemloft.net,suse.de,linux.dev];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo];
+	RCVD_COUNT_TWO(0.00)[2];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com]
+X-Spam-Flag: NO
 
-Expose the phy_port information to userspace, so that we can know how
-many ports are available on a given interface, as well as their
-capabilities. For MDI ports, we report the list of supported linkmodes
-based on what the PHY that drives this port says.
-For MII ports, i.e. empty SFP cages, we report the MII linkmodes that we
-can output on this port.
+On PRP protocol, when deleting the port the MAC address change
+notification was missing. In addition to that, make sure to only perform
+the MAC address change on slave2 deletion and PRP protocol as the
+operation isn't necessary for HSR nor slave1.
 
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Note that the eth_hw_addr_set() is correct on PRP context as the slaves
+are either in promiscuous mode or forward offload enabled.
+
+Fixes: b65999e7238e ("net: hsr: sync hw addr of slave2 according to slave1 hw addr on PRP")
+Reported-by: Luka Gejak <luka.gejak@linux.dev>
+Closes: https://lore.kernel.org/netdev/DHFCZEM93FTT.1RWFBIE32K7OT@linux.dev/
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
 ---
- MAINTAINERS           |   1 +
- net/ethtool/Makefile  |   2 +-
- net/ethtool/netlink.c |  25 +++
- net/ethtool/netlink.h |   8 +
- net/ethtool/port.c    | 368 ++++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 403 insertions(+), 1 deletion(-)
- create mode 100644 net/ethtool/port.c
+Note: routed through net-next tree as the next net tree as rc6 batch is
+already out and I do not think this is worth to be included in a last
+call batch. Anyway, if maintainer thinks it is, feel free to apply it to
+net tree.
+---
+ net/hsr/hsr_slave.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c583c5478ef6..88cb4b8cb03f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -18419,6 +18419,7 @@ F:	Documentation/devicetree/bindings/net/ethernet-connector.yaml
- F:	Documentation/networking/phy-port.rst
- F:	drivers/net/phy/phy_port.c
- F:	include/linux/phy_port.h
-+F:	net/ethtool/port.c
- K:	struct\s+phy_port|phy_port_
+diff --git a/net/hsr/hsr_slave.c b/net/hsr/hsr_slave.c
+index 44f83c8c56a7..d9af9e65f72f 100644
+--- a/net/hsr/hsr_slave.c
++++ b/net/hsr/hsr_slave.c
+@@ -243,7 +243,11 @@ void hsr_del_port(struct hsr_port *port)
+ 		if (!port->hsr->fwd_offloaded)
+ 			dev_set_promiscuity(port->dev, -1);
+ 		netdev_upper_dev_unlink(port->dev, master->dev);
+-		eth_hw_addr_set(port->dev, port->original_macaddress);
++		if (hsr->prot_version == PRP_V1 &&
++		    port->type == HSR_PT_SLAVE_B) {
++			eth_hw_addr_set(port->dev, port->original_macaddress);
++			call_netdevice_notifiers(NETDEV_CHANGEADDR, port->dev);
++		}
+ 	}
  
- NETWORKING [GENERAL]
-diff --git a/net/ethtool/Makefile b/net/ethtool/Makefile
-index 629c10916670..9b5b09670008 100644
---- a/net/ethtool/Makefile
-+++ b/net/ethtool/Makefile
-@@ -9,4 +9,4 @@ ethtool_nl-y	:= netlink.o bitset.o strset.o linkinfo.o linkmodes.o rss.o \
- 		   channels.o coalesce.o pause.o eee.o tsinfo.o cabletest.o \
- 		   tunnels.o fec.o eeprom.o stats.o phc_vclocks.o mm.o \
- 		   module.o cmis_fw_update.o cmis_cdb.o pse-pd.o plca.o \
--		   phy.o tsconfig.o mse.o
-+		   phy.o tsconfig.o mse.o port.o
-diff --git a/net/ethtool/netlink.c b/net/ethtool/netlink.c
-index 5046023a30b1..7d23aba7c30d 100644
---- a/net/ethtool/netlink.c
-+++ b/net/ethtool/netlink.c
-@@ -19,6 +19,8 @@ static u32 ethnl_bcast_seq;
- 			     ETHTOOL_FLAG_OMIT_REPLY)
- #define ETHTOOL_FLAGS_STATS (ETHTOOL_FLAGS_BASIC | ETHTOOL_FLAG_STATS)
- 
-+char phy_interface_names[PHY_INTERFACE_MODE_MAX][ETH_GSTRING_LEN] __ro_after_init;
-+
- const struct nla_policy ethnl_header_policy[] = {
- 	[ETHTOOL_A_HEADER_DEV_INDEX]	= { .type = NLA_U32 },
- 	[ETHTOOL_A_HEADER_DEV_NAME]	= { .type = NLA_NUL_STRING,
-@@ -422,6 +424,7 @@ ethnl_default_requests[__ETHTOOL_MSG_USER_CNT] = {
- 	[ETHTOOL_MSG_TSCONFIG_SET]	= &ethnl_tsconfig_request_ops,
- 	[ETHTOOL_MSG_PHY_GET]		= &ethnl_phy_request_ops,
- 	[ETHTOOL_MSG_MSE_GET]		= &ethnl_mse_request_ops,
-+	[ETHTOOL_MSG_PORT_GET]		= &ethnl_port_request_ops,
- };
- 
- static struct ethnl_dump_ctx *ethnl_dump_context(struct netlink_callback *cb)
-@@ -1546,6 +1549,15 @@ static const struct genl_ops ethtool_genl_ops[] = {
- 		.policy = ethnl_mse_get_policy,
- 		.maxattr = ARRAY_SIZE(ethnl_mse_get_policy) - 1,
- 	},
-+	{
-+		.cmd	= ETHTOOL_MSG_PORT_GET,
-+		.doit	= ethnl_default_doit,
-+		.start	= ethnl_port_dump_start,
-+		.dumpit	= ethnl_port_dumpit,
-+		.done	= ethnl_port_dump_done,
-+		.policy = ethnl_port_get_policy,
-+		.maxattr = ARRAY_SIZE(ethnl_port_get_policy) - 1,
-+	},
- };
- 
- static const struct genl_multicast_group ethtool_nl_mcgrps[] = {
-@@ -1568,10 +1580,23 @@ static struct genl_family ethtool_genl_family __ro_after_init = {
- 
- /* module setup */
- 
-+static void __init ethnl_phy_names_populate(void)
-+{
-+	const char *name;
-+	int i;
-+
-+	for (i = 0; i < PHY_INTERFACE_MODE_MAX; i++) {
-+		name = phy_modes(i);
-+		strscpy(phy_interface_names[i], name, ETH_GSTRING_LEN);
-+	}
-+}
-+
- static int __init ethnl_init(void)
- {
- 	int ret;
- 
-+	ethnl_phy_names_populate();
-+
- 	ret = genl_register_family(&ethtool_genl_family);
- 	if (WARN(ret < 0, "ethtool: genetlink family registration failed"))
- 		return ret;
-diff --git a/net/ethtool/netlink.h b/net/ethtool/netlink.h
-index aaf6f2468768..8b131e53fba4 100644
---- a/net/ethtool/netlink.h
-+++ b/net/ethtool/netlink.h
-@@ -5,11 +5,14 @@
- 
- #include <linux/ethtool_netlink.h>
- #include <linux/netdevice.h>
-+#include <linux/phy.h>
- #include <net/genetlink.h>
- #include <net/sock.h>
- 
- struct ethnl_req_info;
- 
-+extern char phy_interface_names[PHY_INTERFACE_MODE_MAX][ETH_GSTRING_LEN];
-+
- u32 ethnl_bcast_seq_next(void);
- int ethnl_parse_header_dev_get(struct ethnl_req_info *req_info,
- 			       const struct nlattr *nest, struct net *net,
-@@ -444,6 +447,7 @@ extern const struct ethnl_request_ops ethnl_mm_request_ops;
- extern const struct ethnl_request_ops ethnl_phy_request_ops;
- extern const struct ethnl_request_ops ethnl_tsconfig_request_ops;
- extern const struct ethnl_request_ops ethnl_mse_request_ops;
-+extern const struct ethnl_request_ops ethnl_port_request_ops;
- 
- extern const struct nla_policy ethnl_header_policy[ETHTOOL_A_HEADER_FLAGS + 1];
- extern const struct nla_policy ethnl_header_policy_stats[ETHTOOL_A_HEADER_FLAGS + 1];
-@@ -500,6 +504,7 @@ extern const struct nla_policy ethnl_phy_get_policy[ETHTOOL_A_PHY_HEADER + 1];
- extern const struct nla_policy ethnl_tsconfig_get_policy[ETHTOOL_A_TSCONFIG_HEADER + 1];
- extern const struct nla_policy ethnl_tsconfig_set_policy[ETHTOOL_A_TSCONFIG_MAX + 1];
- extern const struct nla_policy ethnl_mse_get_policy[ETHTOOL_A_MSE_HEADER + 1];
-+extern const struct nla_policy ethnl_port_get_policy[ETHTOOL_A_PORT_ID + 1];
- 
- int ethnl_set_features(struct sk_buff *skb, struct genl_info *info);
- int ethnl_act_cable_test(struct sk_buff *skb, struct genl_info *info);
-@@ -515,6 +520,9 @@ int ethnl_tsinfo_dumpit(struct sk_buff *skb, struct netlink_callback *cb);
- int ethnl_tsinfo_done(struct netlink_callback *cb);
- int ethnl_rss_create_doit(struct sk_buff *skb, struct genl_info *info);
- int ethnl_rss_delete_doit(struct sk_buff *skb, struct genl_info *info);
-+int ethnl_port_dump_start(struct netlink_callback *cb);
-+int ethnl_port_dumpit(struct sk_buff *skb, struct netlink_callback *cb);
-+int ethnl_port_dump_done(struct netlink_callback *cb);
- 
- extern const char stats_std_names[__ETHTOOL_STATS_CNT][ETH_GSTRING_LEN];
- extern const char stats_eth_phy_names[__ETHTOOL_A_STATS_ETH_PHY_CNT][ETH_GSTRING_LEN];
-diff --git a/net/ethtool/port.c b/net/ethtool/port.c
-new file mode 100644
-index 000000000000..2b32c99e06f0
---- /dev/null
-+++ b/net/ethtool/port.c
-@@ -0,0 +1,368 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright 2026 Bootlin
-+ */
-+#include <linux/phy.h>
-+#include <linux/phy_link_topology.h>
-+#include <linux/phy_port.h>
-+#include <net/netdev_lock.h>
-+
-+#include "bitset.h"
-+#include "common.h"
-+#include "netlink.h"
-+
-+struct port_req_info {
-+	struct ethnl_req_info base;
-+	u32 port_id;
-+};
-+
-+struct port_reply_data {
-+	struct ethnl_reply_data	base;
-+	__ETHTOOL_DECLARE_LINK_MODE_MASK(supported);
-+	DECLARE_PHY_INTERFACE_MASK(interfaces);
-+	u32 port_id;
-+	bool mii;
-+	bool sfp;
-+	bool vacant;
-+};
-+
-+#define PORT_REQINFO(__req_base) \
-+	container_of(__req_base, struct port_req_info, base)
-+
-+#define PORT_REPDATA(__reply_base) \
-+	container_of(__reply_base, struct port_reply_data, base)
-+
-+const struct nla_policy ethnl_port_get_policy[ETHTOOL_A_PORT_ID + 1] = {
-+	[ETHTOOL_A_PORT_HEADER] = NLA_POLICY_NESTED(ethnl_header_policy),
-+	[ETHTOOL_A_PORT_ID] = NLA_POLICY_MIN(NLA_U32, 1),
-+};
-+
-+static int port_parse_request(struct ethnl_req_info *req_info,
-+			      const struct genl_info *info,
-+			      struct nlattr **tb,
-+			      struct netlink_ext_ack *extack)
-+{
-+	struct port_req_info *request = PORT_REQINFO(req_info);
-+
-+	if (GENL_REQ_ATTR_CHECK(info, ETHTOOL_A_PORT_ID))
-+		return -EINVAL;
-+
-+	request->port_id = nla_get_u32(tb[ETHTOOL_A_PORT_ID]);
-+
-+	return 0;
-+}
-+
-+static int port_prepare_data(const struct ethnl_req_info *req_info,
-+			     struct ethnl_reply_data *reply_data,
-+			     const struct genl_info *info)
-+{
-+	struct port_reply_data *reply = PORT_REPDATA(reply_data);
-+	struct port_req_info *request = PORT_REQINFO(req_info);
-+	struct phy_port *port;
-+
-+	/* RTNL must be held while holding a ref to the phy_port. Here, caller
-+	 * holds RTNL.
-+	 */
-+	port = phy_link_topo_get_port(req_info->dev, request->port_id);
-+	if (!port)
-+		return -ENODEV;
-+
-+	linkmode_copy(reply->supported, port->supported);
-+	phy_interface_copy(reply->interfaces, port->interfaces);
-+	reply->port_id = port->id;
-+	reply->mii = port->is_mii;
-+	reply->sfp = port->is_sfp;
-+	reply->vacant = port->vacant;
-+
-+	return 0;
-+}
-+
-+static int port_reply_size(const struct ethnl_req_info *req_info,
-+			   const struct ethnl_reply_data *reply_data)
-+{
-+	bool compact = req_info->flags & ETHTOOL_FLAG_COMPACT_BITSETS;
-+	struct port_reply_data *reply = PORT_REPDATA(reply_data);
-+	size_t size = 0;
-+	int ret;
-+
-+	/* ETHTOOL_A_PORT_ID */
-+	size += nla_total_size(sizeof(u32));
-+
-+	if (!reply->mii) {
-+		/* ETHTOOL_A_PORT_SUPPORTED_MODES */
-+		ret = ethnl_bitset_size(reply->supported, NULL,
-+					__ETHTOOL_LINK_MODE_MASK_NBITS,
-+					link_mode_names, compact);
-+		if (ret < 0)
-+			return ret;
-+
-+		size += ret;
-+	} else {
-+		/* ETHTOOL_A_PORT_SUPPORTED_INTERFACES */
-+		ret = ethnl_bitset_size(reply->interfaces, NULL,
-+					PHY_INTERFACE_MODE_MAX,
-+					phy_interface_names, compact);
-+		if (ret < 0)
-+			return ret;
-+
-+		size += ret;
-+	}
-+
-+	/* ETHTOOL_A_PORT_TYPE */
-+	size += nla_total_size(sizeof(u32));
-+
-+	/* ETHTOOL_A_PORT_VACANT */
-+	size += nla_total_size(sizeof(u32));
-+
-+	return size;
-+}
-+
-+static int port_fill_reply(struct sk_buff *skb,
-+			   const struct ethnl_req_info *req_info,
-+			   const struct ethnl_reply_data *reply_data)
-+{
-+	bool compact = req_info->flags & ETHTOOL_FLAG_COMPACT_BITSETS;
-+	struct port_reply_data *reply = PORT_REPDATA(reply_data);
-+	int ret, port_type = ETHTOOL_PORT_TYPE_MDI;
-+
-+	if (nla_put_u32(skb, ETHTOOL_A_PORT_ID, reply->port_id))
-+		return -EMSGSIZE;
-+
-+	if (!reply->mii) {
-+		ret = ethnl_put_bitset(skb, ETHTOOL_A_PORT_SUPPORTED_MODES,
-+				       reply->supported, NULL,
-+				       __ETHTOOL_LINK_MODE_MASK_NBITS,
-+				       link_mode_names, compact);
-+		if (ret < 0)
-+			return ret;
-+	} else {
-+		ret = ethnl_put_bitset(skb, ETHTOOL_A_PORT_SUPPORTED_INTERFACES,
-+				       reply->interfaces, NULL,
-+				       PHY_INTERFACE_MODE_MAX,
-+				       phy_interface_names, compact);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
-+	if (reply->mii || reply->sfp)
-+		port_type = ETHTOOL_PORT_TYPE_SFP;
-+
-+	if (nla_put_u32(skb, ETHTOOL_A_PORT_TYPE, port_type) ||
-+	    nla_put_u32(skb, ETHTOOL_A_PORT_VACANT, reply->vacant))
-+		return -EMSGSIZE;
-+
-+	return 0;
-+}
-+
-+struct port_dump_ctx {
-+	struct port_req_info	*req_info;
-+	struct port_reply_data	*reply_data;
-+	unsigned long		ifindex;
-+	unsigned long		pos_portid;
-+};
-+
-+static struct port_dump_ctx *
-+port_dump_ctx_get(struct netlink_callback *cb)
-+{
-+	return (struct port_dump_ctx *)cb->ctx;
-+}
-+
-+int ethnl_port_dump_start(struct netlink_callback *cb)
-+{
-+	const struct genl_dumpit_info *info = genl_dumpit_info(cb);
-+	struct port_dump_ctx *ctx = port_dump_ctx_get(cb);
-+	struct nlattr **tb = info->info.attrs;
-+	struct port_reply_data *reply_data;
-+	struct port_req_info *req_info;
-+	int ret;
-+
-+	BUILD_BUG_ON(sizeof(*ctx) > sizeof(cb->ctx));
-+
-+	req_info = kzalloc_obj(*req_info);
-+	if (!req_info)
-+		return -ENOMEM;
-+
-+	reply_data = kmalloc_obj(*reply_data);
-+	if (!reply_data) {
-+		ret = -ENOMEM;
-+		goto free_req_info;
-+	}
-+
-+	ret = ethnl_parse_header_dev_get(&req_info->base, tb[ETHTOOL_A_PORT_HEADER],
-+					 genl_info_net(&info->info),
-+					 info->info.extack, false);
-+	if (ret < 0)
-+		goto free_rep_data;
-+
-+	ctx->ifindex = 0;
-+
-+	/* For filtered DUMP requests, let's just store the ifindex. We'll check
-+	 * again if the netdev is still there when looping over the netdev list
-+	 * in the DUMP loop.
-+	 */
-+	if (req_info->base.dev) {
-+		ctx->ifindex = req_info->base.dev->ifindex;
-+		netdev_put(req_info->base.dev, &req_info->base.dev_tracker);
-+		req_info->base.dev = NULL;
-+	}
-+
-+	ctx->req_info = req_info;
-+	ctx->reply_data = reply_data;
-+
-+	return 0;
-+
-+free_rep_data:
-+	kfree(reply_data);
-+free_req_info:
-+	kfree(req_info);
-+
-+	return ret;
-+}
-+
-+static int port_dump_one(struct sk_buff *skb, struct net_device *dev,
-+			 struct netlink_callback *cb)
-+{
-+	struct port_dump_ctx *ctx = port_dump_ctx_get(cb);
-+	void *ehdr;
-+	int ret;
-+
-+	ehdr = ethnl_dump_put(skb, cb, ETHTOOL_MSG_PORT_GET_REPLY);
-+	if (!ehdr)
-+		return -EMSGSIZE;
-+
-+	memset(ctx->reply_data, 0, sizeof(struct port_reply_data));
-+	ctx->reply_data->base.dev = dev;
-+
-+	rtnl_lock();
-+	netdev_lock_ops(dev);
-+
-+	ret = port_prepare_data(&ctx->req_info->base, &ctx->reply_data->base,
-+				genl_info_dump(cb));
-+
-+	netdev_unlock_ops(dev);
-+	rtnl_unlock();
-+
-+	if (ret < 0)
-+		goto out;
-+
-+	ret = ethnl_fill_reply_header(skb, dev, ETHTOOL_A_PORT_HEADER);
-+	if (ret < 0)
-+		goto out;
-+
-+	ret = port_fill_reply(skb, &ctx->req_info->base, &ctx->reply_data->base);
-+
-+out:
-+	ctx->reply_data->base.dev = NULL;
-+	if (ret < 0)
-+		genlmsg_cancel(skb, ehdr);
-+	else
-+		genlmsg_end(skb, ehdr);
-+
-+	return ret;
-+}
-+
-+static int port_dump_one_dev(struct sk_buff *skb, struct netlink_callback *cb)
-+{
-+	struct port_dump_ctx *ctx = port_dump_ctx_get(cb);
-+	struct net_device *dev;
-+	struct phy_port *port;
-+	int ret;
-+
-+	dev = ctx->req_info->base.dev;
-+
-+	if (!dev->link_topo)
-+		return 0;
-+
-+	xa_for_each_start(&dev->link_topo->ports, ctx->pos_portid, port,
-+			  ctx->pos_portid) {
-+		ctx->req_info->port_id = ctx->pos_portid;
-+
-+		ret = port_dump_one(skb, dev, cb);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	ctx->pos_portid = 0;
-+
-+	return 0;
-+}
-+
-+static int port_dump_all_dev(struct sk_buff *skb, struct netlink_callback *cb)
-+{
-+	struct port_dump_ctx *ctx = port_dump_ctx_get(cb);
-+	struct net *net = sock_net(skb->sk);
-+	netdevice_tracker dev_tracker;
-+	struct net_device *dev;
-+	int ret = 0;
-+
-+	rcu_read_lock();
-+	for_each_netdev_dump(net, dev, ctx->ifindex) {
-+		netdev_hold(dev, &dev_tracker, GFP_ATOMIC);
-+		rcu_read_unlock();
-+
-+		ctx->req_info->base.dev = dev;
-+		ret = port_dump_one_dev(skb, cb);
-+
-+		rcu_read_lock();
-+		netdev_put(dev, &dev_tracker);
-+		ctx->req_info->base.dev = NULL;
-+
-+		if (ret)
-+			break;
-+
-+		ret = 0;
-+	}
-+	rcu_read_unlock();
-+
-+	return ret;
-+}
-+
-+int ethnl_port_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
-+{
-+	const struct genl_dumpit_info *info = genl_dumpit_info(cb);
-+	struct port_dump_ctx *ctx = port_dump_ctx_get(cb);
-+	int ret = 0;
-+
-+	if (ctx->ifindex) {
-+		netdevice_tracker dev_tracker;
-+		struct net_device *dev;
-+
-+		dev = netdev_get_by_index(genl_info_net(&info->info),
-+					  ctx->ifindex, &dev_tracker,
-+					  GFP_KERNEL);
-+		if (!dev)
-+			return -ENODEV;
-+
-+		ctx->req_info->base.dev = dev;
-+		ret = port_dump_one_dev(skb, cb);
-+
-+		netdev_put(dev, &dev_tracker);
-+	} else {
-+		ret = port_dump_all_dev(skb, cb);
-+	}
-+
-+	return ret;
-+}
-+
-+int ethnl_port_dump_done(struct netlink_callback *cb)
-+{
-+	struct port_dump_ctx *ctx = port_dump_ctx_get(cb);
-+
-+	kfree(ctx->req_info);
-+	kfree(ctx->reply_data);
-+
-+	return 0;
-+}
-+
-+const struct ethnl_request_ops ethnl_port_request_ops = {
-+	.request_cmd		= ETHTOOL_MSG_PORT_GET,
-+	.reply_cmd		= ETHTOOL_MSG_PORT_GET_REPLY,
-+	.hdr_attr		= ETHTOOL_A_PORT_HEADER,
-+	.req_info_size		= sizeof(struct port_req_info),
-+	.reply_data_size	= sizeof(struct port_reply_data),
-+
-+	.parse_request		= port_parse_request,
-+	.prepare_data		= port_prepare_data,
-+	.reply_size		= port_reply_size,
-+	.fill_reply		= port_fill_reply,
-+};
+ 	kfree_rcu(port, rcu);
 -- 
-2.49.0
+2.53.0
 
