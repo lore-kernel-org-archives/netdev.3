@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8643D6CBE;
-	Fri,  3 Apr 2026 19:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7F33D667E;
+	Fri,  3 Apr 2026 19:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775245790; cv=none; b=WoXRxDtUOi65vB+oJGBNHaYa0ktbXRqn9fmPQqX05azMPN6863XCLtNz/TWWnayA99QRrosrnL8ftONEBxwzXW9qqIliYRvUJY/hM3YmI+X7Sf30ICEzdTCQ7OnbbzeVilLFeN8wNQQinLoAlJEOeSWrBIKX1uUBbQBjg6Q2F9k=
+	t=1775245791; cv=none; b=rpILTVh/R5BhQuAWDKVSAermrmlBEnLQaXogQeIBhuOJHpyLHeKQIzcPkekO4Q11vCYRApUtOyrk3t+3CQeWCcS0M69QqFSCbDxbM5nXAsocsdMv0jKoX6azk9tC9/v/G7YSEHnW2hRxhps0lrbXosgyRqjTg+Ye9jO1s1QUp7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775245790; c=relaxed/simple;
-	bh=bXeEbllSUhc62/nolE52XEdol2e7UKXNWrejec72ScU=;
+	s=arc-20240116; t=1775245791; c=relaxed/simple;
+	bh=mDmSvi5f7rq7k0pVns0FS2PuX9b+yA0VP9WOnPtmpe0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DHi0e24tNu/qpe569zgDQz2KAd/GTeFrOEHrvoldnCXekNeRA/z2v66gMtvBzx6+/3mNE5TsyJiTSazobbIQuzIfeZTF87Ro89zKCr65rKieAdrlJ6RyZY78OvYDNL5SNDw/1EXyYZDEvR+6NYVmjvyw9aOn2cEX2Gj48Dp+nuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fALstElO; arc=none smtp.client-ip=192.198.163.15
+	 MIME-Version; b=ah9w2vMLM1r/9w4ELnWdW4xr1g+3GiLgC2TfKIljIpRqd/WRCeg+JCmBBxXRcopNBBHPyy5pBUo432kcxvIBapbXuGD/N7MMBPrU0x3ISFP70ZNVMHLkYZc832ONA0aIUlwHqweujMx/tdGAp1ZG2uwm+Z3ZmWePwcw5qhxEkbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZHKZVwT5; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fALstElO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZHKZVwT5"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775245788; x=1806781788;
+  t=1775245789; x=1806781789;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=bXeEbllSUhc62/nolE52XEdol2e7UKXNWrejec72ScU=;
-  b=fALstElOLcrEFkFN1dPRTVJSnh6QATgl/gbyivg4Z2r2JwooHytoA2vT
-   Eo8ngjdU7Ct6jUqehcBPVVqkkySfvICMlLpX556QsfO/jUpKuO69vU5U/
-   kKxB87eNPwRARZ3pkYBoSjFKQ+JZE2ovTRIDXFP4iDVcNEtN8jNM3+LH9
-   wRxedmsR1YvFtnqtLh187zufQ9GGP8DkroDGkVvRJI0wAJxkGQQ6EFxwy
-   JTbDBm2YfAuNTBSz8QCy1ZixvzlyU6rSCkTWg4JTgzY8GfFqKw2e2SStC
-   88ZQ+BMn5kbRV1w2I34E9LGw9rTfPk5SgVsS2s/oTdWQHhWudJ/STma1L
-   A==;
-X-CSE-ConnectionGUID: aIM2LpSCQnayXX7B89GNaA==
-X-CSE-MsgGUID: CjbTmXfmSQK9XYsgyjQl9Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11748"; a="76428769"
+  bh=mDmSvi5f7rq7k0pVns0FS2PuX9b+yA0VP9WOnPtmpe0=;
+  b=ZHKZVwT5OkakcMFavnQ+MVYL0jV+Xa/rY4f43+W04b249qffwgLiH8pw
+   c6I0CRTMunJcQzydYf/0XJX2KBS9x8K7k97iJ6P3el8V8T4xYuUoNdwVR
+   6rp2l2h6yw8WUDKw0J+paxUHXGTEKsvDGFkW+xhtuEk8AOwRsbSnRbLtp
+   yTtzxg8yRqGvL+MAXz/HCxedM80aqWkKJUoBGSet6sG8SWTIHbEq1mKPP
+   3YUZ8w31xg5toknv5QsVRGV5VN8NFn4+a1J+Q/ODdu6NKIdyEXnnMXPNm
+   pho9ibbyubbC2eubRrV1/NbZeNKLzg+Dexe3V4tJQXaSti44OvXRXc4nz
+   w==;
+X-CSE-ConnectionGUID: wXWx4FwRTXKTgc1fWqLDKQ==
+X-CSE-MsgGUID: an08lAeaTZm1w9LuhiocuQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11748"; a="76428791"
 X-IronPort-AV: E=Sophos;i="6.23,158,1770624000"; 
-   d="scan'208";a="76428769"
+   d="scan'208";a="76428791"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
   by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2026 12:49:45 -0700
-X-CSE-ConnectionGUID: bBOwlyLgRXCAMvQN7NTayg==
-X-CSE-MsgGUID: kCeEeIQZTpC2rLlXdFeO8w==
+X-CSE-ConnectionGUID: 6V99/RMARSmFxbbT3O5Qpg==
+X-CSE-MsgGUID: dV6my+btS8qJYsXOJS4nMg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,158,1770624000"; 
-   d="scan'208";a="265266116"
+   d="scan'208";a="265266128"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by orviesa001.jf.intel.com with ESMTP; 03 Apr 2026 12:49:44 -0700
+  by orviesa001.jf.intel.com with ESMTP; 03 Apr 2026 12:49:45 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -50,7 +50,7 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Phani R Burra <phani.r.burra@intel.com>,
+Cc: Pavan Kumar Linga <madhu.chittim@intel.com>,
 	anthony.l.nguyen@intel.com,
 	larysa.zaremba@intel.com,
 	przemyslaw.kitszel@intel.com,
@@ -60,7 +60,6 @@ Cc: Phani R Burra <phani.r.burra@intel.com>,
 	michal.swiatkowski@linux.intel.com,
 	maciej.fijalkowski@intel.com,
 	emil.s.tantilov@intel.com,
-	madhu.chittim@intel.com,
 	joshua.a.hay@intel.com,
 	jacob.e.keller@intel.com,
 	jayaprakash.shanmugam@intel.com,
@@ -69,14 +68,11 @@ Cc: Phani R Burra <phani.r.burra@intel.com>,
 	corbet@lwn.net,
 	richardcochran@gmail.com,
 	linux-doc@vger.kernel.org,
-	bhelgaas@google.com,
-	linux-pci@vger.kernel.org,
-	Bharath R <bharath.r@intel.com>,
 	Samuel Salin <Samuel.salin@intel.com>,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH net-next v2 02/14] libie: add PCI device initialization helpers to libie
-Date: Fri,  3 Apr 2026 12:49:24 -0700
-Message-ID: <20260403194938.3577011-3-anthony.l.nguyen@intel.com>
+Subject: [PATCH net-next v2 06/14] idpf: remove 'vport_params_reqd' field
+Date: Fri,  3 Apr 2026 12:49:28 -0700
+Message-ID: <20260403194938.3577011-7-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260403194938.3577011-1-anthony.l.nguyen@intel.com>
 References: <20260403194938.3577011-1-anthony.l.nguyen@intel.com>
@@ -88,336 +84,144 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Phani R Burra <phani.r.burra@intel.com>
+From: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
 
-Add support functions for drivers to configure PCI functionality and access
-MMIO space.
+While sending a create vport message to the device control plane, a create
+vport virtchnl message is prepared with all the required info to initialize
+the vport. This info is stored in the adapter struct but never used
+thereafter. So, remove the said field.
 
-Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Signed-off-by: Phani R Burra <phani.r.burra@intel.com>
-Co-developed-by: Victor Raj <victor.raj@intel.com>
-Signed-off-by: Victor Raj <victor.raj@intel.com>
-Co-developed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
-Signed-off-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
-Co-developed-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
 Signed-off-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
-Co-developed-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
 Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Tested-by: Bharath R <bharath.r@intel.com>
 Tested-by: Samuel Salin <Samuel.salin@intel.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/libie/Kconfig  |   6 +
- drivers/net/ethernet/intel/libie/Makefile |   4 +
- drivers/net/ethernet/intel/libie/pci.c    | 208 ++++++++++++++++++++++
- include/linux/intel/libie/pci.h           |  56 ++++++
- 4 files changed, 274 insertions(+)
- create mode 100644 drivers/net/ethernet/intel/libie/pci.c
- create mode 100644 include/linux/intel/libie/pci.h
+ drivers/net/ethernet/intel/idpf/idpf.h        |  2 --
+ drivers/net/ethernet/intel/idpf/idpf_lib.c    |  2 --
+ .../net/ethernet/intel/idpf/idpf_virtchnl.c   | 30 +++++++------------
+ 3 files changed, 10 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/libie/Kconfig b/drivers/net/ethernet/intel/libie/Kconfig
-index 70831c7e336e..500a95c944a8 100644
---- a/drivers/net/ethernet/intel/libie/Kconfig
-+++ b/drivers/net/ethernet/intel/libie/Kconfig
-@@ -23,3 +23,9 @@ config LIBIE_FWLOG
- 	  for it. Firmware logging is using admin queue interface to communicate
- 	  with the device. Debugfs is a user interface used to config logging
- 	  and dump all collected logs.
-+
-+config LIBIE_PCI
-+	tristate
-+	help
-+	  Helper functions for management of PCI resources belonging
-+	  to networking devices.
-diff --git a/drivers/net/ethernet/intel/libie/Makefile b/drivers/net/ethernet/intel/libie/Makefile
-index db57fc6780ea..a28509cb9086 100644
---- a/drivers/net/ethernet/intel/libie/Makefile
-+++ b/drivers/net/ethernet/intel/libie/Makefile
-@@ -12,3 +12,7 @@ libie_adminq-y			:= adminq.o
- obj-$(CONFIG_LIBIE_FWLOG) 	+= libie_fwlog.o
+diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
+index 3a3dc9892d16..0d08f51be7e3 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf.h
++++ b/drivers/net/ethernet/intel/idpf/idpf.h
+@@ -638,7 +638,6 @@ struct idpf_vc_xn_manager;
+  * @avail_queues: Device given queue limits
+  * @vports: Array to store vports created by the driver
+  * @netdevs: Associated Vport netdevs
+- * @vport_params_reqd: Vport params requested
+  * @vport_params_recvd: Vport params received
+  * @vport_ids: Array of device given vport identifiers
+  * @singleq_pt_lkup: Lookup table for singleq RX ptypes
+@@ -697,7 +696,6 @@ struct idpf_adapter {
+ 	struct idpf_avail_queue_info avail_queues;
+ 	struct idpf_vport **vports;
+ 	struct net_device **netdevs;
+-	struct virtchnl2_create_vport **vport_params_reqd;
+ 	struct virtchnl2_create_vport **vport_params_recvd;
+ 	u32 *vport_ids;
  
- libie_fwlog-y			:= fwlog.o
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+index cf966fe6c759..d88ca59edf97 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+@@ -1109,8 +1109,6 @@ static void idpf_vport_rel(struct idpf_vport *vport)
+ 
+ 	kfree(adapter->vport_params_recvd[idx]);
+ 	adapter->vport_params_recvd[idx] = NULL;
+-	kfree(adapter->vport_params_reqd[idx]);
+-	adapter->vport_params_reqd[idx] = NULL;
+ 
+ 	kfree(vport);
+ 	adapter->num_alloc_vports--;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+index 113ecfc16dd7..c45a788bb9cb 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -1555,14 +1555,10 @@ int idpf_send_create_vport_msg(struct idpf_adapter *adapter,
+ 	ssize_t reply_sz;
+ 
+ 	buf_size = sizeof(struct virtchnl2_create_vport);
+-	if (!adapter->vport_params_reqd[idx]) {
+-		adapter->vport_params_reqd[idx] = kzalloc(buf_size,
+-							  GFP_KERNEL);
+-		if (!adapter->vport_params_reqd[idx])
+-			return -ENOMEM;
+-	}
++	vport_msg = kzalloc(buf_size, GFP_KERNEL);
++	if (!vport_msg)
++		return -ENOMEM;
+ 
+-	vport_msg = adapter->vport_params_reqd[idx];
+ 	vport_msg->vport_type = cpu_to_le16(VIRTCHNL2_VPORT_TYPE_DEFAULT);
+ 	vport_msg->vport_index = cpu_to_le16(idx);
+ 
+@@ -1579,8 +1575,7 @@ int idpf_send_create_vport_msg(struct idpf_adapter *adapter,
+ 	err = idpf_vport_calc_total_qs(adapter, idx, vport_msg, max_q);
+ 	if (err) {
+ 		dev_err(&adapter->pdev->dev, "Enough queues are not available");
+-
+-		return err;
++		goto rel_buf;
+ 	}
+ 
+ 	if (!adapter->vport_params_recvd[idx]) {
+@@ -1588,7 +1583,7 @@ int idpf_send_create_vport_msg(struct idpf_adapter *adapter,
+ 							   GFP_KERNEL);
+ 		if (!adapter->vport_params_recvd[idx]) {
+ 			err = -ENOMEM;
+-			goto free_vport_params;
++			goto rel_buf;
+ 		}
+ 	}
+ 
+@@ -1604,13 +1599,15 @@ int idpf_send_create_vport_msg(struct idpf_adapter *adapter,
+ 		goto free_vport_params;
+ 	}
+ 
++	kfree(vport_msg);
 +
-+obj-$(CONFIG_LIBIE_PCI)		+= libie_pci.o
-+
-+libie_pci-y			:= pci.o
-diff --git a/drivers/net/ethernet/intel/libie/pci.c b/drivers/net/ethernet/intel/libie/pci.c
-new file mode 100644
-index 000000000000..7276a3533b54
---- /dev/null
-+++ b/drivers/net/ethernet/intel/libie/pci.c
-@@ -0,0 +1,208 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/* Copyright (C) 2025 Intel Corporation */
-+
-+#include <linux/intel/libie/pci.h>
-+
-+/**
-+ * libie_find_mmio_region - find MMIO region containing a range
-+ * @mmio_list: list that contains MMIO region info
-+ * @offset: range start offset
-+ * @size: range size
-+ * @bar_idx: BAR index containing the range to search
-+ *
-+ * Return: pointer to a MMIO region overlapping with the range in any way or
-+ *	   NULL if no such region is mapped.
-+ */
-+static struct libie_pci_mmio_region *
-+libie_find_mmio_region(const struct list_head *mmio_list,
-+		       resource_size_t offset, resource_size_t size,
-+		       int bar_idx)
-+{
-+	resource_size_t end_offset = offset + size;
-+	struct libie_pci_mmio_region *mr;
-+
-+	list_for_each_entry(mr, mmio_list, list) {
-+		resource_size_t mr_end = mr->offset + mr->size;
-+		resource_size_t mr_start = mr->offset;
-+
-+		if (mr->bar_idx != bar_idx)
-+			continue;
-+		if (offset < mr_end && end_offset > mr_start)
-+			return mr;
-+	}
-+
-+	return NULL;
-+}
-+
-+/**
-+ * __libie_pci_get_mmio_addr - get the MMIO virtual address
-+ * @mmio_info: contains list of MMIO regions
-+ * @offset: register offset to find
-+ * @num_args: number of additional arguments present
-+ *
-+ * This function finds the virtual address of a register offset by iterating
-+ * through the non-linear MMIO regions that are mapped by the driver.
-+ *
-+ * Return: valid MMIO virtual address or NULL.
-+ */
-+void __iomem *__libie_pci_get_mmio_addr(struct libie_mmio_info *mmio_info,
-+					resource_size_t offset,
-+					int num_args, ...)
-+{
-+	struct libie_pci_mmio_region *mr;
-+	int bar_idx = 0;
-+	va_list args;
-+
-+	if (num_args) {
-+		va_start(args, num_args);
-+		bar_idx = va_arg(args, int);
-+		va_end(args);
-+	}
-+
-+	list_for_each_entry(mr, &mmio_info->mmio_list, list)
-+		if (bar_idx == mr->bar_idx && offset >= mr->offset &&
-+		    offset < mr->offset + mr->size) {
-+			offset -= mr->offset;
-+
-+			return mr->addr + offset;
-+		}
-+
-+	return NULL;
-+}
-+EXPORT_SYMBOL_NS_GPL(__libie_pci_get_mmio_addr, "LIBIE_PCI");
-+
-+/**
-+ * __libie_pci_map_mmio_region - map PCI device MMIO region
-+ * @mmio_info: struct to store the mapped MMIO region
-+ * @offset: MMIO region start offset
-+ * @size: MMIO region size
-+ * @num_args: number of additional arguments present
-+ *
-+ * Return: true on success, false on memory map failure.
-+ */
-+bool __libie_pci_map_mmio_region(struct libie_mmio_info *mmio_info,
-+				 resource_size_t offset,
-+				 resource_size_t size, int num_args, ...)
-+{
-+	struct pci_dev *pdev = mmio_info->pdev;
-+	struct libie_pci_mmio_region *mr;
-+	resource_size_t pa;
-+	void __iomem *va;
-+	int bar_idx = 0;
-+	va_list args;
-+
-+	if (num_args) {
-+		va_start(args, num_args);
-+		bar_idx = va_arg(args, int);
-+		va_end(args);
-+	}
-+
-+	if (offset + size > pci_resource_len(pdev, bar_idx))
-+		return false;
-+
-+	mr = libie_find_mmio_region(&mmio_info->mmio_list, offset, size,
-+				    bar_idx);
-+	if (mr) {
-+		pci_warn(pdev,
-+			 "Mapping of BAR%u (offset=%llu, size=%llu) intersecting region (offset=%llu, size=%llu) already exists\n",
-+			 bar_idx, (unsigned long long)mr->offset,
-+			 (unsigned long long)mr->size,
-+			 (unsigned long long)offset, (unsigned long long)size);
-+		return mr->offset <= offset &&
-+		       mr->offset + mr->size >= offset + size;
-+	}
-+
-+	pa = pci_resource_start(pdev, bar_idx) + offset;
-+	va = ioremap(pa, size);
-+	if (!va) {
-+		pci_err(pdev, "Failed to map BAR%u region\n", bar_idx);
-+		return false;
-+	}
-+
-+	mr = kvzalloc_obj(*mr);
-+	if (!mr) {
-+		iounmap(va);
-+		return false;
-+	}
-+
-+	mr->addr = va;
-+	mr->offset = offset;
-+	mr->size = size;
-+	mr->bar_idx = bar_idx;
-+
-+	list_add_tail(&mr->list, &mmio_info->mmio_list);
-+
-+	return true;
-+}
-+EXPORT_SYMBOL_NS_GPL(__libie_pci_map_mmio_region, "LIBIE_PCI");
-+
-+/**
-+ * libie_pci_unmap_fltr_regs - unmap selected PCI device MMIO regions
-+ * @mmio_info: contains list of MMIO regions to unmap
-+ * @fltr: returns true, if region is to be unmapped
-+ */
-+void libie_pci_unmap_fltr_regs(struct libie_mmio_info *mmio_info,
-+			       bool (*fltr)(struct libie_mmio_info *mmio_info,
-+					    struct libie_pci_mmio_region *reg))
-+{
-+	struct libie_pci_mmio_region *mr, *tmp;
-+
-+	list_for_each_entry_safe(mr, tmp, &mmio_info->mmio_list, list) {
-+		if (!fltr(mmio_info, mr))
-+			continue;
-+		iounmap(mr->addr);
-+		list_del(&mr->list);
-+		kvfree(mr);
-+	}
-+}
-+EXPORT_SYMBOL_NS_GPL(libie_pci_unmap_fltr_regs, "LIBIE_PCI");
-+
-+/**
-+ * libie_pci_unmap_all_mmio_regions - unmap all PCI device MMIO regions
-+ * @mmio_info: contains list of MMIO regions to unmap
-+ */
-+void libie_pci_unmap_all_mmio_regions(struct libie_mmio_info *mmio_info)
-+{
-+	struct libie_pci_mmio_region *mr, *tmp;
-+
-+	list_for_each_entry_safe(mr, tmp, &mmio_info->mmio_list, list) {
-+		iounmap(mr->addr);
-+		list_del(&mr->list);
-+		kvfree(mr);
-+	}
-+}
-+EXPORT_SYMBOL_NS_GPL(libie_pci_unmap_all_mmio_regions, "LIBIE_PCI");
-+
-+/**
-+ * libie_pci_init_dev - enable and reserve PCI regions of the device
-+ * @pdev: PCI device information
-+ *
-+ * Return: %0 on success, -%errno on failure.
-+ */
-+int libie_pci_init_dev(struct pci_dev *pdev)
-+{
-+	int err;
-+
-+	err = pcim_enable_device(pdev);
-+	if (err)
-+		return err;
-+
-+	for (int bar = 0; bar < PCI_STD_NUM_BARS; bar++)
-+		if (pci_resource_flags(pdev, bar) & IORESOURCE_MEM) {
-+			err = pcim_request_region(pdev, bar, pci_name(pdev));
-+			if (err)
-+				return err;
-+		}
-+
-+	err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
-+	if (err)
-+		return err;
-+
-+	pci_set_master(pdev);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_NS_GPL(libie_pci_init_dev, "LIBIE_PCI");
-+
-+MODULE_DESCRIPTION("Common Ethernet PCI library");
-+MODULE_LICENSE("GPL");
-diff --git a/include/linux/intel/libie/pci.h b/include/linux/intel/libie/pci.h
-new file mode 100644
-index 000000000000..effd072c55c8
---- /dev/null
-+++ b/include/linux/intel/libie/pci.h
-@@ -0,0 +1,56 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/* Copyright (C) 2025 Intel Corporation */
-+
-+#ifndef __LIBIE_PCI_H
-+#define __LIBIE_PCI_H
-+
-+#include <linux/pci.h>
-+
-+/**
-+ * struct libie_pci_mmio_region - structure for MMIO region info
-+ * @list: used to add a MMIO region to the list of MMIO regions in
-+ *	  libie_mmio_info
-+ * @addr: virtual address of MMIO region start
-+ * @offset: start offset of the MMIO region
-+ * @size: size of the MMIO region
-+ * @bar_idx: BAR index to which the MMIO region belongs to
-+ */
-+struct libie_pci_mmio_region {
-+	struct list_head	list;
-+	void __iomem		*addr;
-+	resource_size_t		offset;
-+	resource_size_t		size;
-+	u16			bar_idx;
-+};
-+
-+/**
-+ * struct libie_mmio_info - contains list of MMIO regions
-+ * @pdev: PCI device pointer
-+ * @mmio_list: list of MMIO regions
-+ */
-+struct libie_mmio_info {
-+	struct pci_dev		*pdev;
-+	struct list_head	mmio_list;
-+};
-+
-+#define libie_pci_map_mmio_region(mmio_info, offset, size, ...)	\
-+	__libie_pci_map_mmio_region(mmio_info, offset, size,		\
-+				     COUNT_ARGS(__VA_ARGS__), ##__VA_ARGS__)
-+
-+#define libie_pci_get_mmio_addr(mmio_info, offset, ...)		\
-+	__libie_pci_get_mmio_addr(mmio_info, offset,			\
-+				   COUNT_ARGS(__VA_ARGS__), ##__VA_ARGS__)
-+
-+bool __libie_pci_map_mmio_region(struct libie_mmio_info *mmio_info,
-+				 resource_size_t offset, resource_size_t size,
-+				 int num_args, ...);
-+void __iomem *__libie_pci_get_mmio_addr(struct libie_mmio_info *mmio_info,
-+					resource_size_t offset,
-+					int num_args, ...);
-+void libie_pci_unmap_all_mmio_regions(struct libie_mmio_info *mmio_info);
-+void libie_pci_unmap_fltr_regs(struct libie_mmio_info *mmio_info,
-+			       bool (*fltr)(struct libie_mmio_info *mmio_info,
-+					    struct libie_pci_mmio_region *reg));
-+int libie_pci_init_dev(struct pci_dev *pdev);
-+
-+#endif /* __LIBIE_PCI_H */
+ 	return 0;
+ 
+ free_vport_params:
+ 	kfree(adapter->vport_params_recvd[idx]);
+ 	adapter->vport_params_recvd[idx] = NULL;
+-	kfree(adapter->vport_params_reqd[idx]);
+-	adapter->vport_params_reqd[idx] = NULL;
++rel_buf:
++	kfree(vport_msg);
+ 
+ 	return err;
+ }
+@@ -3416,8 +3413,6 @@ static void idpf_vport_params_buf_rel(struct idpf_adapter *adapter)
+ {
+ 	kfree(adapter->vport_params_recvd);
+ 	adapter->vport_params_recvd = NULL;
+-	kfree(adapter->vport_params_reqd);
+-	adapter->vport_params_reqd = NULL;
+ 	kfree(adapter->vport_ids);
+ 	adapter->vport_ids = NULL;
+ }
+@@ -3432,15 +3427,10 @@ static int idpf_vport_params_buf_alloc(struct idpf_adapter *adapter)
+ {
+ 	u16 num_max_vports = idpf_get_max_vports(adapter);
+ 
+-	adapter->vport_params_reqd = kzalloc_objs(*adapter->vport_params_reqd,
+-						  num_max_vports);
+-	if (!adapter->vport_params_reqd)
+-		return -ENOMEM;
+-
+ 	adapter->vport_params_recvd = kzalloc_objs(*adapter->vport_params_recvd,
+ 						   num_max_vports);
+ 	if (!adapter->vport_params_recvd)
+-		goto err_mem;
++		return -ENOMEM;
+ 
+ 	adapter->vport_ids = kcalloc(num_max_vports, sizeof(u32), GFP_KERNEL);
+ 	if (!adapter->vport_ids)
 -- 
 2.47.1
 
