@@ -1,44 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861FF239E7F;
-	Fri,  3 Apr 2026 12:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2658F2ED15D
+	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 12:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775220555; cv=none; b=YU5RHyAgHOmJK0TtHB/mrII8y46GJr9GKRqAK8Lqk1h436Yzg+ZTmc8lU6hjGamyKcV9qlxrrnfh75mybFD/8Q4XsEpAkXxXdU7+LDRJlnZwzoRJ2nBVR9+kM2/fmjrLVyTxWFF9RG4WEFqKtwWYmn/oFX/UcalClvu0MI8whZc=
+	t=1775220586; cv=none; b=ULMfUf7AgC9mhslWBrD+Cut0AWeC1C4CN1vxdmH/IyfVfW65TUiH732VBRgg9zNN2y4XR0ndvlpRZnecgPkRxLNjPbSAEz+/nTWExhrEYEuJ7/1w2Hx1dV22U4FPRq/azro/JcHKDKmXNljwsiXFrZTpp4jazCqKtlXHQaoX644=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775220555; c=relaxed/simple;
-	bh=+Gmps33FngXtRV+HbcVt1uHDIEW0qTrIRlrmLWpPgxU=;
+	s=arc-20240116; t=1775220586; c=relaxed/simple;
+	bh=oe1k06X8LzeLYzPSqTUn6zZwnoXsWv9v1PI95wY03zA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uzlxQStfV5n+apwSRr7zw/iSCPyFWS21TsbtQBy/ZPtXKbsTy+FZ4X3SoyXSpvXIALKZzde0GeMlC+1VGNAv61mrtNpUqql3EoJT3G0rUBAW68zKnTFzfthhksazPdEVzQHwWBuxKeizGDn9m+AzvTToGaUswtmGfam4rbQej4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j1jVQVS4; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=h5uVyVZPKbIh64UwIxI4j3NkFnliQqgWtIuNfr1xeN/AiVX8OAVJW8Xs71QdhDS7HwngpuKd0vD3GdgyyjFLp+wGNT3/ShLNyDdJwEP8DypWiMrOb0vbcRJhme1lo3KdxuwazA2Cuor4bZeCCjZn7NHM1U6fNopoYylpaHu0aGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aOStDcoy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j1jVQVS4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EDD0C4CEF7;
-	Fri,  3 Apr 2026 12:49:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775220554;
-	bh=+Gmps33FngXtRV+HbcVt1uHDIEW0qTrIRlrmLWpPgxU=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aOStDcoy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 916F8C4CEF7;
+	Fri,  3 Apr 2026 12:49:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775220585;
+	bh=oe1k06X8LzeLYzPSqTUn6zZwnoXsWv9v1PI95wY03zA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=j1jVQVS4CboefT/ydBqJV/WJLRbiSr2Vlw5cdSsqh1FRxxdaSK2DnseVCQHRn4D5c
-	 LGXeGgzVX2qO2UsbBeoejZOPYqhynBoXV/x79SoyjrXKicJNo0XRMek61VwTHH0LQj
-	 W5GLKTL4ZTM+tDLloJh4lLU0shva0G4RByG9T5QY=
-Date: Fri, 3 Apr 2026 14:49:11 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>
-Cc: "He, Guocai (CN)" <Guocai.He.CN@windriver.com>,
-	Thorsten Leemhuis <regressions@leemhuis.info>,
-	"Berg, Johannes" <johannes.berg@intel.com>,
-	Friend <netdev@vger.kernel.org>,
-	Linux kernel regressions list <regressions@lists.linux.dev>
-Subject: Re: commit 0c4f1c02d27a880b cause a deadlock issue
-Message-ID: <2026040349-chowtime-freeload-5ca4@gregkh>
-References: <CO6PR11MB5586A4475A5EEC47FC10398BCD53A@CO6PR11MB5586.namprd11.prod.outlook.com>
- <PH0PR11MB55934A1C9A8C35B1E751C247CD50A@PH0PR11MB5593.namprd11.prod.outlook.com>
- <14d65103-8809-4a1b-b115-bf5f8d7110ea@leemhuis.info>
- <CO6PR11MB5586DF3964BAB4E6131A86CDCD5EA@CO6PR11MB5586.namprd11.prod.outlook.com>
- <2026040331-evasion-walk-f572@gregkh>
- <DM3PPF63A6024A9C09C1B13E5DF46C0B72AA35EA@DM3PPF63A6024A9.namprd11.prod.outlook.com>
+	b=aOStDcoy773/nHKR3XdJisKUw/d/nD0GWcc79stsMFn2tJPJtCZRU17MdueYx1ayw
+	 F8bDzk9WbIS/Orv7/UcqFHwOFP9wZrKwCqAw4oIfWLy9sPF/YTODumbtdROmZzYX4o
+	 AtBPpX7yKh3IBwkCgbFumNBv6Z6ZVtPvRvAAsqGEla9w6Qt9CmsvLrpYrW7K/i0X5g
+	 XcmvSDgdRHmm4yK71zm3Gbo5WaaHJeObSwBW3abHpyS4VyMMO6EhBmPCsUNEyk96lo
+	 mBufMPs+HJglxHSlq1+nacLKedbPONkqztxZMgxEUW31xvqeFgUpyHGvLdB2JKM8Mz
+	 4Kphl5Oe/xS2w==
+Date: Fri, 3 Apr 2026 13:49:42 +0100
+From: Simon Horman <horms@kernel.org>
+To: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, anthony.l.nguyen@intel.com,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH iwl-next] ixgbe: increase SWFW semaphore timeout for X550
+ FW updates
+Message-ID: <20260403124942.GA103228@horms.kernel.org>
+References: <20260327073046.134085-1-aleksandr.loktionov@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,39 +43,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DM3PPF63A6024A9C09C1B13E5DF46C0B72AA35EA@DM3PPF63A6024A9.namprd11.prod.outlook.com>
+In-Reply-To: <20260327073046.134085-1-aleksandr.loktionov@intel.com>
 
-On Fri, Apr 03, 2026 at 12:44:48PM +0000, Korenblit, Miriam Rachel wrote:
+On Fri, Mar 27, 2026 at 08:30:35AM +0100, Aleksandr Loktionov wrote:
+> From: Soumen Karmakar <soumen.karmakar@intel.com>
 > 
+> According to FW documentation, the most time-consuming part of continuous
+> FW activity is Shadow RAM (SR) dump which takes up to 3.2 seconds.  For
+> X550 devices, the module-update FW command can take over 4.5 s.  Increase
+> the max Software/Firmware (SW/FW) semaphore wait time from the default
+> 200 ms to 5 s for X550 to avoid spurious semaphore timeout failures
+
+Should 200ms be 1s (200 x 5us) ?
+
+> during FW update operations.
 > 
-> > -----Original Message-----
-> > From: Greg KH <gregkh@linuxfoundation.org>
-> > Sent: Friday, April 3, 2026 2:27 PM
-> > To: He, Guocai (CN) <Guocai.He.CN@windriver.com>
-> > Cc: Thorsten Leemhuis <regressions@leemhuis.info>; Korenblit, Miriam Rachel
-> > <miriam.rachel.korenblit@intel.com>; Berg, Johannes
-> > <johannes.berg@intel.com>; Friend <netdev@vger.kernel.org>; Linux kernel
-> > regressions list <regressions@lists.linux.dev>
-> > Subject: Re: commit 0c4f1c02d27a880b cause a deadlock issue
-> > 
-> > On Fri, Apr 03, 2026 at 11:08:46AM +0000, He, Guocai (CN) wrote:
-> > > No, The mainline have no this issue.
-> > > The changes of 0c4f1c02d27a880b is not in mainline.
-> > 
-> > That does not make sense, that commit is really commit e1696c8bd005
-> > ("wifi: cfg80211: stop NAN and P2P in cfg80211_leave") which is in all of the
-> > following releases:
-> > 	5.10.252 5.15.202 6.1.165 6.6.128 6.12.75 6.18.14 6.19.4 7.0-rc1
-> > 
-> > confused,
+> Signed-off-by: Soumen Karmakar <soumen.karmakar@intel.com>
+> Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> ---
+>  drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
-> The change is indeed in mainline, but the locking situation in mainline is totally different
-> (that mutex does not even exist there)
-> Therefore, the issue is not supposed to happen in mainline.
+> diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c
+> index e67e2fe..85047ef 100644
+> --- a/drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c
+> +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c
+> @@ -577,6 +577,9 @@ int ixgbe_acquire_swfw_sync_X540(struct ixgbe_hw *hw, u32 mask)
+>  
+>  	swmask |= swi2c_mask;
+>  	fwmask |= swi2c_mask << 2;
+> +	if (hw->mac.type == ixgbe_mac_X550)
+> +		timeout = 1000;
 
-Ok, does that commit now need to be reverted from some of the stable
-branches?  If so, which ones?
+I think it would be nice to centralise the initialisation of timeout,
+to either it's default or device-specific value, here.
 
-thanks,
+And to provide a comment indicating what the values mean in terms
+of maximum delay in s or ms.
 
-greg k-h
+> +
+>  	for (i = 0; i < timeout; i++) {
+>  		/* SW NVM semaphore bit is used for access to all
+>  		 * SW_FW_SYNC bits (not just NVM)
+> -- 
+> 2.52.0
+> 
