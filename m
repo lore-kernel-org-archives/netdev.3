@@ -1,69 +1,91 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011013.outbound.protection.outlook.com [40.93.194.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f98.google.com (mail-vs1-f98.google.com [209.85.217.98])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7F2423C4F2;
-	Fri,  3 Apr 2026 07:22:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775200959; cv=fail; b=hm/1+oSXS1FECZxvlQvx8a2iJV7Nt3m8BBfOKqFXtqAgQun42Glblk7o+gb2eECcOaiE7WF2q+Un5MFGqMqWOpRdv8i3JKVvhPYNd030HSvEWAz90U3c7zu4vmbyrFLkLCsBP0BCvJVgB9ss3+3P+8Id4u8tdg9T8MKXH6i0b5E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775200959; c=relaxed/simple;
-	bh=sdwBhFk1EdWDekdkz4DPN9JznXzc/KHloA38SZEyah8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AGQEZjq9dWiw3eG9D0adcH2fa7JQe/8UbW5w/w9nQGkSbBro/AnZQ0WrTzxF4lRSlZjYCCo5gsERRkrNCE1M9SKnql6LP2eT4PNf0A6NcVz2ak5qXHf2tvQp436hQclwml7ZfR8Wv2vqfkzOEqjSNV41LiiMw81h6IKhQBJu/D0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=whScQZvq; arc=fail smtp.client-ip=40.93.194.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55FC0361DA8
+	for <netdev@vger.kernel.org>; Fri,  3 Apr 2026 07:38:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.98
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775201892; cv=none; b=iCT0dssRgsbOivVoB+vQcvdcsyYB0c679brXv25ziUriIFdhPnYaQVeMaMsz6aHRwodPhsX/B9fyMwcK/gYyM4/+8uVtiH3tTkyqZ7Cyea4yavxz677yIZpIqcNtL6uq3qDkc+GMIFh3SkLhrxwDJUj7J9E3JTH5IG8K582wppg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775201892; c=relaxed/simple;
+	bh=V1YmppFg4FnVUNz4ZeM55kmWkU2HasfKyCL0+jpNdDE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p7HT0Aa2WEkrqCpXMsHIiA3Tp5eLZjch93HgNcIzDtaJJYMxkYu5Asduix51m0PdxzdDnBlkePsQBg/cjsKAaabPT8suIH94my6Xc9VMwEtw99z7hOYdvNrq7MgYbbEBhXs5yGK4wPnLTckLcHxgQwAJsi16daCsdEOBTvQl3ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=FfZpuzHx; arc=none smtp.client-ip=209.85.217.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="whScQZvq"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g7OORHPpfj19ACqHvWONQvGKPztKt+f72l0zmQaxj+2+NbLlUAyDgymIliuZ5p1YRXzvZwDfNSO35HsgeJada064HuGBv50w2N2lKHNk3TbSWefIG0hAE39bzvcUoxBmhxH3dAxe67jYjkzgOiyuVGISEQA8p8aJtUEjpg94X46UK6vceDhhCrNK4wysn3BgW5Bt+Vi0WmprK7smPgsdL/v0EpnenqTVD/CfjKam7S2wqxjtG2hPOGy6RvGeOrQBYzkT4HcG7YMe9uMW03rhOVcBvtcX+QBbPFzzXpU2nzdHjoB91k0XE8Po7NydYgJUQDHOR/5x/EHoY3nBjkOMMQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bYtS6hTJBMm9dryCKWVSo9OXrAHJNBgdctI+DPq1r8Y=;
- b=PZE22qD9aOEpgTDoGyPpw/9EV2EgtpNGvh7C1A46KOgVxy0nxQGk5HnY3rkJOu4+3CO43KnzplXaDHEtOtWS/faCa1J+v5JD7EJRX9xegrhyJzNwW/dCnmkCcYPV1idYzl/f6QsmSaMFYJPT/bBaLD38uP97ZthCpQfu/gvkc2EDiufknhiH4Azr4effzzn64AK8lFEqMadtdL7Xv6kVMaPsF1dtQ1lzof6i9CQ8P5YLAhOotsW5OO56xFaDvEpd9qrZ013bjM8VbI3kwrEkA/fLf1Vmsyz4oWosASYxZa1XlM/05aNuArTJ/+eQrdWEEucgxG5jnj59VUx3zkc8UA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bYtS6hTJBMm9dryCKWVSo9OXrAHJNBgdctI+DPq1r8Y=;
- b=whScQZvqeRbTFdJsEgPTNZ1zysTtXcNjJwTYFOw0RzGe2AuDFFEkW7ZHU0sx65PGz8o6ADIYv901mJk/vw5FqlcvyIVSKrTRgVl35hp38ScX4YfaTk8mw1yZxF8Hu2ypDfQs/jdPXnJU0RvgvLtqdiOhR6crTcnWSwsDDuy+vg8=
-Received: from MN0PR04CA0011.namprd04.prod.outlook.com (2603:10b6:208:52d::7)
- by BL3PR12MB6380.namprd12.prod.outlook.com (2603:10b6:208:38d::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Fri, 3 Apr
- 2026 07:22:31 +0000
-Received: from BN1PEPF00006000.namprd05.prod.outlook.com
- (2603:10b6:208:52d:cafe::a1) by MN0PR04CA0011.outlook.office365.com
- (2603:10b6:208:52d::7) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.21 via Frontend Transport; Fri,
- 3 Apr 2026 07:22:31 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BN1PEPF00006000.mail.protection.outlook.com (10.167.243.232) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9769.17 via Frontend Transport; Fri, 3 Apr 2026 07:22:31 +0000
-Received: from airavat.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 3 Apr
- 2026 02:22:28 -0500
-From: Raju Rangoju <Raju.Rangoju@amd.com>
-To: <netdev@vger.kernel.org>
-CC: <linux-kernel@vger.kernel.org>, <pabeni@redhat.com>, <kuba@kernel.org>,
-	<edumazet@google.com>, <davem@davemloft.net>, <andrew+netdev@lunn.ch>,
-	<Thomas.Lendacky@amd.com>, <maxime.chevallier@bootlin.com>, Raju Rangoju
-	<Raju.Rangoju@amd.com>
-Subject: [PATCH v3 net] amd-xgbe: synchronize KR training with device operations
-Date: Fri, 3 Apr 2026 12:51:57 +0530
-Message-ID: <20260403072157.1042806-1-Raju.Rangoju@amd.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="FfZpuzHx"
+Received: by mail-vs1-f98.google.com with SMTP id ada2fe7eead31-60591ade110so971555137.1
+        for <netdev@vger.kernel.org>; Fri, 03 Apr 2026 00:38:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775201889; x=1775806689;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2BNtHqtLw5ckmEhvmlkHbzxynbSh6+tjjVefO92JXO4=;
+        b=DDhaBcURmFnigLMQRVSZtSB6szNA2PjstyKriGjuQ1SNyjSWvnOM0IUCJYVdyUnISa
+         /x6FJ4zrZwhlz1DP3F3UJE8LcfbbdZogJMixM0qdAbxzwtHveu0uP1CKOdzco1QbN+3x
+         U+J78FtDXO81rlXlTgZjDIO5rbV0Yb6jT5yO7SeyRJbSIg8Ek7qtz7nAF9Yj7wOOoji+
+         OcCx+7uzZ1SspxshYQzZ6iO7c0yyRi7WhHOCDdnd/dIK+eJew3H1G/x74RXXAoR1gr6z
+         mxd3uNOXtoot7cRbuOqTU+jTdXY59SQnWhY/Vd7z4ySLACYcAZ+nAa0t8Y0rsabBDBBm
+         +gOA==
+X-Gm-Message-State: AOJu0Yye3o9lTACx4Mx63mtesPq9QNq4j5fHxI/UVEEUd7ESdu07uDGA
+	pPdU1Z4feJeGfEeSaBUNeCXHqbn+ulgRhDXsxn8ICzAVDBqCE7kko4jMO6YNsKtF/j5gGrNFY19
+	CXy1j1yukeSxwGWJRxjBr1oHRJYnuERQdWyQWXcX5K2rCCgDJEOUd6Hufw2ro5/m4jpkBJZ8n05
+	Z3Ztf0nKNRhW8ROs1nrEafdw5aVpgP5HLBAj6rs8KtFEr762DO/M0pKfbWRuA/ZZAnL33pxoGDZ
+	mVKAxM0En448uUuXA==
+X-Gm-Gg: AeBDievigDRwXhgAjW7GxeS7rvZ9SOpz0qeYi+fbHgaFVssQ0D51s6wa5HBkk2TgbEm
+	c965LHUR7NkC7uBnPuV1JM0gHtg+wHJBY5tMUzXN2JoiCz22AD8kGKh1CGthxp2Yi7nNzzJIdbn
+	2CwkxrB7LXdQXi40m8Nyv30uQpCt3y4k6RH25AsBkzDE0G6OO7rdRirV0OwmbByCWZGOwfjbLYF
+	UGNEG2v8oQCbUYttRK8ExP042qfPNxzkz2yaTbEt4oUT7JJB3bVS6FuIpDCI2mNrRX+QO6w6SoB
+	lOelNO0MXcHy8BhSoS5tX/93FPMVZqMhrpaGV8qzkVHSB+pRItNn9AFCNuKbG+f7vG03qBCgb29
+	q8DgT0pcamsLXf99N2mLDZjvRwiVu8p02KhAcw4iVB1grmz+U/y68P0Q3oK2GaAMi3xO+GSkPBz
+	292M/nNFObss4Mj08alhf2cA8C32ZC+XCzFy6w+wyrOOJK9jxyOkv2QnueeXvwDCs=
+X-Received: by 2002:a05:6102:6043:b0:604:f640:301e with SMTP id ada2fe7eead31-605a4e0219cmr768114137.12.1775201889080;
+        Fri, 03 Apr 2026 00:38:09 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-24.dlp.protect.broadcom.com. [144.49.247.24])
+        by smtp-relay.gmail.com with ESMTPS id ada2fe7eead31-60582da96a1sm409868137.2.2026.04.03.00.38.08
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 03 Apr 2026 00:38:09 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-35da99b90f6so2043808a91.1
+        for <netdev@vger.kernel.org>; Fri, 03 Apr 2026 00:38:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1775201888; x=1775806688; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2BNtHqtLw5ckmEhvmlkHbzxynbSh6+tjjVefO92JXO4=;
+        b=FfZpuzHxv/C6yof4R5hEm/8Ewu7SSv7D9b0gp1mMjIa8A83zxVNMa3qCMQx8j4S9Bl
+         QRd7PshnTMWgT4pWLsgKcZPJ2eEGOyS3QHkq9R/WN2ml3F/d8U+a7QDNR8QzE7wYWIDA
+         2mDzvNAyaXPMGmUHfCyWCEltdpU69hQmDbANI=
+X-Received: by 2002:a17:90b:2691:b0:35b:ea35:c3d7 with SMTP id 98e67ed59e1d1-35de668a0f8mr1693747a91.0.1775201887515;
+        Fri, 03 Apr 2026 00:38:07 -0700 (PDT)
+X-Received: by 2002:a17:90b:2691:b0:35b:ea35:c3d7 with SMTP id 98e67ed59e1d1-35de668a0f8mr1693723a91.0.1775201887022;
+        Fri, 03 Apr 2026 00:38:07 -0700 (PDT)
+Received: from localhost.localdomain ([192.19.203.250])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35dbe9377b7sm13124901a91.10.2026.04.03.00.38.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Apr 2026 00:38:06 -0700 (PDT)
+From: Bhargava Marreddy <bhargava.marreddy@broadcom.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	michael.chan@broadcom.com,
+	pavan.chebbi@broadcom.com,
+	vsrama-krishna.nemani@broadcom.com,
+	vikas.gupta@broadcom.com,
+	Bhargava Marreddy <bhargava.marreddy@broadcom.com>
+Subject: [PATCH net-next v11 00/10] bng_en: add link management and statistics support
+Date: Fri,  3 Apr 2026 13:07:14 +0530
+Message-ID: <20260403073724.194360-1-bhargava.marreddy@broadcom.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,292 +93,195 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF00006000:EE_|BL3PR12MB6380:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4db7b0c4-37bc-43a6-4f8d-08de9151c507
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|1800799024|376014|82310400026|13003099007|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	I31ue+WNrGd9Za8w6CmoLqseL0wFjXfRq1INKwFF2eg7NA6E7JSmZM2mC1P2cb6eVnfPnt9qVGNzfcR3CkMnG1kal8LeRz3AKfy1tJ/4OUFgf8oB/qMEWCLPInOPYX4BKqEiBIiGWt4kBIrxR9sFWphoNAb9ielPBAQXklIQq7zsu8qjVRr388O+MJaxlOy4bMIXGKkh1YtYViWmPd+5sdSgtyOlNWTrYWv8KZ+p+lGSoRq8GCGsVuHTh5iBPM+N74YVJh5hwO82OdOK3jPZxapGZ7R95PhFdoK4FyDjHKWLNp8hGUaYYEHdy9eoVj175mNNO5EOWXaA2y+NspkXHubzs5XDee0bRInx/En0+WkLASzXZ6xpNXN6cz3/LDdM/MKJOh0z7otdSnePLVMkSqwH5+0gRi2ZW5FhzkhGj3CL7qErbipGS0e2vvfGJL/rX5G73hS9HXKGlqAoW3DqPUVM14UovFrXsb1B1R67hgeWnNAXKKNNOUpvbr0wGo8CXmMvpbRBNkqjSk6l2UJbuGEGk849+9FpNM+T9wnOR523lSJ1fpdqmdV11AQEWS8kGUSuoV/gtXiYsShYi7rxxjznM4hWP67U+BQkkkuFv2LUhGb5DprU+NC6l5yznVAw+IAKXvCi+GtwCY5aqGzFZejS/tza+aAFCtsucLbhAH/m+JTvwXwDX0vGVIUAnOZsWK+4XEcvGNy+zRX6uRXtIQ==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(376014)(82310400026)(13003099007)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	4TfWo8yPwEF+CRh4TWX6YFVLaxqYJMyIZSVMtYGS7cNVi3UvTQfvBlABP5VFURejvjBU7D8NH0Lp+xa10ETfo60QabjlehojEddjE1oNAbfjHUID7TR5z2uafK1ZxYtDJzDGd74WnjaFJlvpNpov0x/IPxVycSY09a4mfIXdaOtFAWspLrWS4kkI3L2DR/z3TI9E2AaXIr3PE/mdI4G3Fw477wfX9EjisC/1zAkAxT5JNGJcRxAN+mkmER/Mwd2u74k+c1cL7nQO/zY9xE/HD+PMhyHm77bI1PNVSuykijuCCPqmG25Q5RXMZqIG6C4CiOPIUs3ZxWan9bm05bEYW4lS4YOwAr+IjV/74TxHcSIDjUoMpzWv4HTDE6MAhcLXHqvKy3OdUkO92QqY1ziPKQ7FJRv34cyMo49zSv56d8HFQuZP6rr640mXrPWz9fEQ
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Apr 2026 07:22:31.6731
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4db7b0c4-37bc-43a6-4f8d-08de9151c507
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF00006000.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6380
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-During 10GBASE-KR link training, the PHY state machine can be corrupted
-if device stop or rate change operations are initiated while training is
-in progress. This manifests as:
+Hi,
 
-  - Link stability issues after interface down/up cycles
-  - PHY state machine lockups requiring a full driver reset
-  - Intermittent link failures on Inphi re-driver configurations
+This series enhances the bng_en driver by adding:
+1. Link/PHY support
+   a. Link query
+   b. Async Link events
+   c. Ethtool link set/get functionality
+2. Hardware statistics reporting via ethtool -S
 
-The root cause is that the firmware mailbox operations for device stop
-and rate changes can interfere with ongoing KR training sequences,
-leaving the PHY in an inconsistent state.
+This version incorporates feedback received prior to splitting the
+original series into two parts. 
 
-Add synchronization to prevent device operations from interrupting
-active KR training:
+ Addressed following comments from Andrew Lunn
+   - Apply Rev-xmas fix in several places.
+   - Correct ethtool-speed comment to reflect accurate behavior.
+   https://lore.kernel.org/netdev/49930724-74b8-41fe-8f5c-482afc976b82@lunn.ch/
+   https://lore.kernel.org/netdev/CANXQDtb5XuLKOOorCMYDUpVz6aFuQgvmQZ4pS6RJGkAgeM8n1A@mail.gmail.com/
 
-  - Introduce a mailbox mutex to serialize firmware command access
-  - Wait for KR training completion (or timeout) before proceeding
-    with stop/rate change operations
-  - Only wait when KR training is actually active (KR mode with
-    autoneg enabled or Inphi re-driver present)
-  - Use a 500ms timeout to handle hung training sequences
+ Addressed following comments from Jakub Kicinski
+   - Took care of missing mutex_init()
+   https://lore.kernel.org/netdev/20251127190855.69779791@kernel.org/#t
+   https://lore.kernel.org/netdev/CANXQDtYy2JziaaVi=Cqt+gAJNt4NjFFs8NbhrS=RBV61ORwinA@mail.gmail.com/
 
-The mailbox mutex protects the critical section of firmware command
-submission and completion checking, preventing concurrent mailbox
-access from multiple code paths.
+ Addressed following comments from ALOK TIWARI
+   - Add newline for clarity/formatting.
+   https://lore.kernel.org/netdev/CANXQDtZbLhdwEtN+kKg1OVLV+uy-gsNfX+rU4MR77QPuO6_y9A@mail.gmail.com/
 
-Testing on AMD platforms with both direct-attach and Inphi re-driver
-configurations shows this eliminates PHY state corruption during
-interface operations and link changes.
+v11:
+ Addressed the ~30% valid issues from the Sashiko AI review (Paolo Abeni)
+  https://sashiko.dev/#/patchset/20260327201343.16146-1-bhargava.marreddy%40broadcom.com
+  - Avoided kasprintf+kfree in workqueue creation
+  - Added timer_shutdown_sync() to ensure no use-after-free
+  - Clear force_link_chng conditionally in bnge_hwrm_set_pause()
+  - Fix REQ vs RESP macro for auto_pause_setting
+  - Ensured baseline (and _ext) stats are fetched even if mask query fails
+  - Persist port stats across close/open by moving allocation to probe
+  - Use u64_stats_sync for 64-bit counters to ensure atomicity on 32-bit archs
+  - Replaced RCU/flags with spin_lock_bh to protect get_stats64 and close_core
+  - Include hw drop stats on base_stats callback
+  - Added comment in hwrm_phy_qcaps() explaining why 0-speed reports are ignored
 
-Fixes: 549b32af9f7c ("amd-xgbe: Simplify mailbox interface rate change code")
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
----
-Changes since v2:
-- address the changes requested by AI review:
-  https://sashiko.dev/#/message/20260318091608.1266381-1-Raju.Rangoju%40amd.com
-Changes since v1:
-- use scoped_guard() instead of guard() for functions longer than 20
-  lines
+v10:
+ Addressed the issues reported netdev Checks
+  - Removed an unused variable.
+  - Removed inline functions from .c files.
 
- drivers/net/ethernet/amd/xgbe/xgbe-drv.c    |  7 +-
- drivers/net/ethernet/amd/xgbe/xgbe-main.c   |  1 +
- drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c | 85 ++++++++++++++++++++-
- drivers/net/ethernet/amd/xgbe/xgbe.h        | 13 ++++
- 4 files changed, 100 insertions(+), 6 deletions(-)
+ Addressed the issues reported by netdev AI 
+  - Removed an unused macros & function parameters.
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-index 23beea48ae26..67dcb72ac776 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-@@ -1312,15 +1312,18 @@ static int xgbe_start(struct xgbe_prv_data *pdata)
+ Addressed the issues reported by AI 
+    https://sashiko.dev/#/patchset/20260324200740.346029-1-bhargava.marreddy%40broadcom.com
+  - Updated the commit log to accurately reflect slow-path tasks.
+  - PAM4-112 support related issue.
+  - Sync pause autoneg during interface up. 
+
+v9:
+ Addressed the issues reported by gemini-3.1-pro-preview (Jakub Kicinski)
+  https://sashiko.dev/#/patchset/20260319055124.1350670-1-vikas.gupta%40broadcom.com
+   Patch 2:
+    - Fixed format specifier for vendor part number (%.16s).
+    - Fixed early return skipping PAM4 speed validation.
+    - Added READ_ONCE/WRITE_ONCE to prevent context races.
+   Patch 3:
+    - Added missing PHY_FL_NO_PAUSE check in nway_reset.
+    - Excluded 50G NRZ support.
+    - Fixed uninitialized advertising field.
+    - Fixed bnge_update_speed() XOR logic dropping valid speeds.
+    - Fixed 100G/200G lanes for PAM4-112 single-lane requests.
+    - Fixed SPEEDS2 fallback using wrong legacy mask.
+    - Added rollback of eth_link_info on HW failure.
+   Patch 4:
+    - Fixed missing rollback of elink_info on hwrm_set_pause failure.
+   Patch 5:
+    - Fixed big-endian async event bitmap using u32 array.
+    - Fixed data race on elink_info in softirq handler.
+    - Fixed race where LINK_CFG_CHANGE processes stale PHY caps.
+   Patch 6:
+    - Fixed BNGE_FW_CAP_EXT_HW_STATS_SUPPORTED flag mismatch.
+   Patch 8:
+    - Fixed stats drop race by reordering BNGE_STATE_OPEN and net_stats_prev.
+    - Fixed ordering of clear_bit and net_stats_prev save.
+   Patch 10:
+    - Fixed tx_nr_rings mismatch causing potential heap overrun.
+    - Fixed min_t(int,...) signedness mismatch in get_num_stats.
+
+   Items deemed invalid:
+    - Patch 3: rtnl_lock/netdev_lock interaction.
+    - Patch 7: Use-after-free during teardown.
+    - Patch 8: Port stats not saved on close (hardware retains stats).
+    - Patch 9: Teardown race in get_queue_stats_rx (held netdev_lock).
+    - Patch 9: TX queue index bounds and double-counting.
+    - Patch 10: Standard counters via ethtool -S (hardware-specific).
+
+v8:
+ - Fix the smatch warnings reported by Dan Carpenter
+    https://lore.kernel.org/r/202603180509.nOQGZrG0-lkp@intel.com/
+v7:
+ - Addressed the two valid issues reported by AI (Jakub Kicinski).
+ - Fixed minor issues reported by Alok Tiwari.
+ - Addressed the concern of statistics duplication raised by Jakub
+   Kicinski. A few statistics (discards/errors) have been made part 
+   of the standard netdev statistics and removed from ethtool -S.
+   Additionally, a few statistics that require proper implementation
+   have been removed and will be addressed in a later series, for example,
+   get_pause_stats and get_fec_stats.
+   https://lore.kernel.org/netdev/20260312192251.61243873@kernel.org/#t
+
+v6:
+ - Resending the full series due to an SMTP failure during v5
+   submission.
+ - No functional changes from v5.
+
+v5:
+ Address Jakub Kicinski's comments by holding the instance lock across
+ the entire service task (instead of flag-based locking) and checking
+ the OPEN bit under the lock to resolve the close-path deadlock. 
+
+v4:
+ Addressed comments from Jakub Kicinski:
+  - Explicitly size speed mask arrays to remove the need for manual
+    sentinels in the hardware configuration.
+  - Fix an off-by-one error in the queue index bound check.
+  - Standardize ethtool -S per-ring stat naming to "rxq$id_$name"
+    (e.g., rxq0_errors). Removed spaces and brackets to ensure
+    compatibility with parsing scripts.
+  - Exclude ethtool -S global counters (tx_err, tx_fifo_underruns,
+    tx_total_collisions) already covered by rtnl_link_stats64.
+
+v3:
+ Addressed comments from Andrew Lunn:
+  - Fix a comment and refactor bnge_hwrm_set_pause() 
+    to improve code readability.
+
+ Addressed comments from Jakub Kicinski:
+  - Switch to RCU for stats synchronization and drop the 
+    BNGE_STATE_READ_STATS state bit.
+
+ Fix checkpatch warning by switching to kzalloc_node(). 
+
+v2:
+ Addressed comments from Andrew Lunn:
+  - Add implementation for .get_pauseparam and .set_pauseparam to
+    support
+    a full flow control configuration, covering global autoneg,
+independent
+    pause autoneg, and forced RX/TX pause functionality.
+  - Move MAC, PHY, Control, Pause, and RMON statistics from
+    .get_ethtool_stats to their respective structured ethtool
+    callbacks (e.g., .get_eth_mac_stats, .get_rmon_stats).
  
- static void xgbe_stop(struct xgbe_prv_data *pdata)
- {
--	struct xgbe_hw_if *hw_if = &pdata->hw_if;
- 	struct xgbe_phy_if *phy_if = &pdata->phy_if;
--	struct xgbe_channel *channel;
- 	struct net_device *netdev = pdata->netdev;
-+	struct xgbe_hw_if *hw_if = &pdata->hw_if;
-+	struct xgbe_channel *channel;
- 	struct netdev_queue *txq;
- 	unsigned int i;
- 
- 	DBGPR("-->xgbe_stop\n");
- 
-+	/* Wait for any active KR training to complete */
-+	xgbe_wait_for_kr_training(pdata);
-+
- 	if (test_bit(XGBE_STOPPED, &pdata->dev_state))
- 		return;
- 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-main.c b/drivers/net/ethernet/amd/xgbe/xgbe-main.c
-index 7d45ea22a02e..5f3ab29707b7 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-main.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-main.c
-@@ -78,6 +78,7 @@ struct xgbe_prv_data *xgbe_alloc_pdata(struct device *dev)
- 
- 	spin_lock_init(&pdata->xpcs_lock);
- 	mutex_init(&pdata->rss_mutex);
-+	mutex_init(&pdata->mailbox_lock);
- 	spin_lock_init(&pdata->tstamp_lock);
- 	mutex_init(&pdata->i2c_mutex);
- 	init_completion(&pdata->i2c_complete);
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-index b8cf6ccfe641..ed524703dd8c 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-@@ -2095,8 +2095,75 @@ static void xgbe_phy_pll_ctrl(struct xgbe_prv_data *pdata, bool enable)
- 	usleep_range(100, 200);
- }
- 
-+static bool xgbe_phy_port_is_inphi(struct xgbe_prv_data *pdata)
-+{
-+	struct xgbe_phy_data *phy_data = pdata->phy_data;
-+
-+	/* Re-driver models 4223 && 4227 are supported Inphi models */
-+	return phy_data->redrv &&
-+	       (phy_data->redrv_model == XGBE_PHY_REDRV_MODEL_4223 ||
-+		phy_data->redrv_model == XGBE_PHY_REDRV_MODEL_4227);
-+}
-+
-+static bool xgbe_kr_training_in_progress(struct xgbe_prv_data *pdata)
-+{
-+	struct xgbe_phy_data *phy_data = pdata->phy_data;
-+	unsigned long kr_start, kr_end;
-+
-+	/* Only wait for KR training in specific conditions:
-+	 *  - Inphi re-driver is present, OR
-+	 *  - Currently in KR mode with autoneg enabled
-+	 */
-+	if (!xgbe_phy_port_is_inphi(pdata) &&
-+	    !(phy_data->cur_mode == XGBE_MODE_KR &&
-+	      pdata->phy.autoneg == AUTONEG_ENABLE))
-+		return false;
-+
-+	/* If training hasn't completed, ensure it actually started */
-+	kr_start = READ_ONCE(pdata->kr_start_time);
-+	if (!kr_start)
-+		return false;
-+
-+	/* Training is complete - no need to wait */
-+	if (READ_ONCE(pdata->an_result) == XGBE_AN_COMPLETE)
-+		return false;
-+
-+	kr_end = kr_start +
-+		msecs_to_jiffies(XGBE_AN_MS_TIMEOUT + XGBE_KRTR_TIME);
-+
-+	/* If we're already past the training window, it's not "in progress" */
-+	if (time_after(jiffies, kr_end))
-+		return false;
-+
-+	return true;
-+}
-+
-+static void xgbe_wait_for_kr_training_inprogress(struct xgbe_prv_data *pdata)
-+{
-+	unsigned long kr_end;
-+
-+	if (!xgbe_kr_training_in_progress(pdata))
-+		return;
-+
-+	/* Don't block the auto-negotiation state machine work item */
-+	if (current_work() == &pdata->an_work)
-+		return;
-+
-+	kr_end = READ_ONCE(pdata->kr_start_time) +
-+		msecs_to_jiffies(XGBE_AN_MS_TIMEOUT + XGBE_KRTR_TIME);
-+
-+	/* Poll until training completes or the training window expires */
-+	while (time_before(jiffies, kr_end)) {
-+		if (READ_ONCE(pdata->an_result) == XGBE_AN_COMPLETE)
-+			break;
-+
-+		usleep_range(10000, 11000);
-+	}
-+}
-+
- static void xgbe_phy_perform_ratechange(struct xgbe_prv_data *pdata,
--					enum xgbe_mb_cmd cmd, enum xgbe_mb_subcmd sub_cmd)
-+					enum xgbe_mb_cmd cmd,
-+					enum xgbe_mb_subcmd sub_cmd)
- {
- 	unsigned int s0 = 0;
- 	unsigned int wait;
-@@ -2104,6 +2171,13 @@ static void xgbe_phy_perform_ratechange(struct xgbe_prv_data *pdata,
- 	/* Disable PLL re-initialization during FW command processing */
- 	xgbe_phy_pll_ctrl(pdata, false);
- 
-+	/* Serialize firmware mailbox access.
-+	 * Protects entire command sequence including busy check, PLL control,
-+	 * and command execution. Uses explicit lock/unlock for compatibility
-+	 * with goto-based cleanup (per cleanup.h guidelines).
-+	 */
-+	mutex_lock(&pdata->mailbox_lock);
-+
- 	/* Log if a previous command did not complete */
- 	if (XP_IOREAD_BITS(pdata, XP_DRIVER_INT_RO, STATUS)) {
- 		netif_dbg(pdata, link, pdata->netdev,
-@@ -2115,7 +2189,7 @@ static void xgbe_phy_perform_ratechange(struct xgbe_prv_data *pdata,
- 	XP_SET_BITS(s0, XP_DRIVER_SCRATCH_0, COMMAND, cmd);
- 	XP_SET_BITS(s0, XP_DRIVER_SCRATCH_0, SUB_COMMAND, sub_cmd);
- 
--	/* Issue the command */
-+	/* Issue the firmware command */
- 	XP_IOWRITE(pdata, XP_DRIVER_SCRATCH_0, s0);
- 	XP_IOWRITE(pdata, XP_DRIVER_SCRATCH_1, 0);
- 	XP_IOWRITE_BITS(pdata, XP_DRIVER_INT_REQ, REQUEST, 1);
-@@ -2123,11 +2197,13 @@ static void xgbe_phy_perform_ratechange(struct xgbe_prv_data *pdata,
- 	/* Wait for command to complete */
- 	wait = XGBE_RATECHANGE_COUNT;
- 	while (wait--) {
--		if (!XP_IOREAD_BITS(pdata, XP_DRIVER_INT_RO, STATUS))
-+		if (!XP_IOREAD_BITS(pdata, XP_DRIVER_INT_RO, STATUS)) {
-+			mutex_unlock(&pdata->mailbox_lock);
- 			goto do_rx_adaptation;
--
-+		}
- 		usleep_range(1000, 2000);
- 	}
-+	mutex_unlock(&pdata->mailbox_lock);
- 
- 	netif_dbg(pdata, link, pdata->netdev,
- 		  "firmware mailbox command did not complete\n");
-@@ -3743,6 +3819,7 @@ void xgbe_init_function_ptrs_phy_v2(struct xgbe_phy_if *phy_if)
- 
- 	phy_impl->kr_training_pre	= xgbe_phy_kr_training_pre;
- 	phy_impl->kr_training_post	= xgbe_phy_kr_training_post;
-+	phy_impl->kr_training_inprogress = xgbe_wait_for_kr_training_inprogress;
- 
- 	phy_impl->module_info		= xgbe_phy_module_info;
- 	phy_impl->module_eeprom		= xgbe_phy_module_eeprom;
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe.h b/drivers/net/ethernet/amd/xgbe/xgbe.h
-index 438033a71523..be92f0607d28 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe.h
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe.h
-@@ -203,6 +203,9 @@
- #define XGBE_LINK_TIMEOUT		5
- #define XGBE_KR_TRAINING_WAIT_ITER	50
- 
-+/* Extra slack time beyond AN timeout to cover KR training completion */
-+#define XGBE_KRTR_TIME			100
-+
- #define XGBE_SGMII_AN_LINK_DUPLEX	BIT(1)
- #define XGBE_SGMII_AN_LINK_SPEED	(BIT(2) | BIT(3))
- #define XGBE_SGMII_AN_LINK_SPEED_10	0x00
-@@ -844,6 +847,7 @@ struct xgbe_phy_impl_if {
- 	/* Pre/Post KR training enablement support */
- 	void (*kr_training_pre)(struct xgbe_prv_data *);
- 	void (*kr_training_post)(struct xgbe_prv_data *);
-+	void (*kr_training_inprogress)(struct xgbe_prv_data *pdata);
- 
- 	/* SFP module related info */
- 	int (*module_info)(struct xgbe_prv_data *pdata,
-@@ -1015,6 +1019,9 @@ struct xgbe_prv_data {
- 	/* RSS addressing mutex */
- 	struct mutex rss_mutex;
- 
-+	/* Firmware mailbox mutex */
-+	struct mutex mailbox_lock;
-+
- 	/* Flags representing xgbe_state */
- 	unsigned long dev_state;
- 
-@@ -1252,6 +1259,12 @@ struct xgbe_prv_data {
- };
- 
- /* Function prototypes*/
-+static inline void xgbe_wait_for_kr_training(struct xgbe_prv_data *pdata)
-+{
-+	if (pdata->phy_if.phy_impl.kr_training_inprogress)
-+		pdata->phy_if.phy_impl.kr_training_inprogress(pdata);
-+}
-+
- struct xgbe_prv_data *xgbe_alloc_pdata(struct device *);
- void xgbe_free_pdata(struct xgbe_prv_data *);
- void xgbe_set_counts(struct xgbe_prv_data *);
+ Addressed comments from Jakub Kicinski:
+  - Fix potential out-of-bounds read in speed mask array by adding 
+    the missing sentinel.
+  - Simplify timer synchronization by removing the redundant intr_sem.
+  - Replace link_lock with the netdev instance lock, as it is sufficient
+    to handle the required synchronization.
+
+v1:
+https://lore.kernel.org/all/20260223163641.755200-1-bhargava.marreddy@broadcom.com/
+
+Bhargava Marreddy (10):
+  bng_en: add per-PF workqueue, timer, and slow-path task
+  bng_en: query PHY capabilities and report link status
+  bng_en: add ethtool link settings, get_link, and nway_reset
+  bng_en: implement ethtool pauseparam operations
+  bng_en: add support for link async events
+  bng_en: add HW stats infra and structured ethtool ops
+  bng_en: periodically fetch and accumulate hardware statistics
+  bng_en: implement ndo_get_stats64
+  bng_en: implement netdev_stat_ops
+  bng_en: add support for ethtool -S stats display
+
+ drivers/net/ethernet/broadcom/bnge/Makefile   |    3 +-
+ drivers/net/ethernet/broadcom/bnge/bnge.h     |   12 +
+ .../net/ethernet/broadcom/bnge/bnge_core.c    |    1 +
+ .../net/ethernet/broadcom/bnge/bnge_ethtool.c |  732 +++++++++
+ .../ethernet/broadcom/bnge/bnge_hwrm_lib.c    |  407 ++++-
+ .../ethernet/broadcom/bnge/bnge_hwrm_lib.h    |    8 +
+ .../net/ethernet/broadcom/bnge/bnge_link.c    | 1313 +++++++++++++++++
+ .../net/ethernet/broadcom/bnge/bnge_link.h    |  201 +++
+ .../net/ethernet/broadcom/bnge/bnge_netdev.c  |  675 ++++++++-
+ .../net/ethernet/broadcom/bnge/bnge_netdev.h  |   94 +-
+ .../net/ethernet/broadcom/bnge/bnge_txrx.c    |   35 +-
+ 11 files changed, 3462 insertions(+), 19 deletions(-)
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_link.c
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_link.h
+
 -- 
-2.34.1
+2.47.3
 
