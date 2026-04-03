@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B5D3191BB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6010037FF56;
 	Fri,  3 Apr 2026 13:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775224734; cv=none; b=lVXlYxm3JUxAs3MNE+77pnllL/a8M+kPnAHQYT5RAY8vHNdDBiiNq/L/bASftbopwIx2S1q04RYfCG249+cfHp0AQXS2ahaKKaugA8zPEA5xoW8HTDgsscaNsqGoodx5r4LaCcQJnhMGyvVlp+PECKpQYOqnct5dm8QfuQdymfc=
+	t=1775224734; cv=none; b=DRoos/9OORO7gzXsM+HhdKleYd1wB3nfLahcGXuDNNk/+/ED2NHUYPTHW1FIFpJaaVx44mt2NWCgKfklkSLL+jp5QUFxubP4UvVWXkM0GTYu6BeLmiNHBi8K9aZhtL3ErfUQutY4VFWAIBrHHfBMP2NJK+RBl/IPRWn1RyLURq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775224734; c=relaxed/simple;
-	bh=T/JHgdTM/dmwAldKXPlwExJ7LzH5O9sTly+8x2zWWRU=;
+	bh=rmJTbzK4IDzritBYdCx+sZj1Nkzl6sMVuKHMhZwu9Fc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=S6bTLGUw1uXMxY07TvTLgWlvtEdOAR1yODx6/7rVuMJZ45d78vdXE69akhPgelGCUnrNMeccTMWmcLdJc3W2KJ7MjOB1q4JRzVKlW3pNK+6vZ6Fs1hrdZ1PubXXhcohEoTP9qEZxYgm9MD9feUGet6qbk9DhXI27yBVvJYIsVDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kRHPsgjr; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=dyXDZEd4rCxOJOb4vFSoHzC3hhdkoK1rX7ZQT0OCDRE5YLf7dsVgxLZ9LI/hRXO0MszatOWfvurbpUttvJbTcMvVCVyrPUGgWc7NvxJRC+sNMqL+/1I7slXzVBvSUstvW45dd2fhWEih5jqkM83kc7cGQSDpDIaI772Qgs+1axI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mii2qDml; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kRHPsgjr"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E11C8C2BCB4;
-	Fri,  3 Apr 2026 13:58:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mii2qDml"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 12D14C2BCB0;
+	Fri,  3 Apr 2026 13:58:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775224734;
-	bh=T/JHgdTM/dmwAldKXPlwExJ7LzH5O9sTly+8x2zWWRU=;
+	bh=rmJTbzK4IDzritBYdCx+sZj1Nkzl6sMVuKHMhZwu9Fc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=kRHPsgjrDu+GdVl3GIgKt0Nb24qSBGIm+NoXyJITnV8na3SFCwwJTDLIb8t0mJEwe
-	 BJ1iTbk2i+BgrJpN6P14zJqK7qqC/jwfWeoahdPn/qtDmEfWAQRY0WehkQxUTgUU8V
-	 4qY3Rwp7qC/ERkvc5Nd9WPf8iCAymUe2wiTuh6LVtdyTW0hm8rayorrdc5yTqCaA6f
-	 TMkXYRcwvJEjBEc75zZYNe4wFGHMzXpADALOJAwGXLVzdg2wzC0cQlBYnY1VRkzPzX
-	 m89fVV5Ng+Nim/p1ciOW04NWp3jFq9C1Js0Ai4mAxH0f/ZJYWnX+Ce7jOjPZc0DaG0
-	 wGAkIHqKRQ8xQ==
+	b=Mii2qDmlPyKDWEa+4VtTKGhv37BX3sGEXQJrDe1dPwAwBp3HJPgZooRffYX4GRLxk
+	 KlaFxaq7dC3rP9qVYzuAIeHyJFIc5GVYQ3X/lyxWI5rrJbrwyZq+oc+sMQokgCdnwP
+	 hhalHKQWY2XcGifElkhRfqcLVUkXgP/A5F0xAg019JviwtzGFTqOBCHtL2AKfzXx14
+	 GmrDKBXFNAd5QtRH7ZUtmStPcPbtFbK0dcIaKzmut2QTecSiuy4uv9DTPjIxIcrtTg
+	 /xLaY6fXc5F65hMP81l1fzDZ1IqvANRC8bxHt0GlU+aFHLvzMeP9dVNfOuxc/lYHYc
+	 /RZBFTB0wK+pg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D1A08E85371;
-	Fri,  3 Apr 2026 13:58:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 093D3E85372;
+	Fri,  3 Apr 2026 13:58:54 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Fri, 03 Apr 2026 15:58:47 +0200
-Subject: [PATCH v3 2/5] arm64: dts: qcom: sdm845-oneplus: Enable NFC
+Date: Fri, 03 Apr 2026 15:58:49 +0200
+Subject: [PATCH v3 4/5] arm64: dts: qcom: sdm845-shift-axolotl: Enable NFC
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260403-oneplus-nfc-v3-2-fbdce57d63c1@ixit.cz>
+Message-Id: <20260403-oneplus-nfc-v3-4-fbdce57d63c1@ixit.cz>
 References: <20260403-oneplus-nfc-v3-0-fbdce57d63c1@ixit.cz>
 In-Reply-To: <20260403-oneplus-nfc-v3-0-fbdce57d63c1@ixit.cz>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -59,21 +59,21 @@ Cc: Petr Hodina <petr.hodina@protonmail.com>,
  phone-devel@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>, 
  David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2115; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1823; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=XjHS4NuCx7fAMVlZG2ITyhuQL05ri2G40fQqssoq1r0=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpz8ebutw/eNqUEQTHgvd0Dgc/Yo9d5GISqlvQC
- Loj1cKUs1CJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCac/HmwAKCRBgAj/E00kg
- cpOhEACTMnYjl+0txKZmP0qO2F1r13eawzZ+jEy/BJACx7B28uNuVatro3naOMEtw8vf33HbTf2
- dCw1QiViihzBelNqdrJQaIYah5dnhWVIETf6eTJFC9geA0HEmUFkcVMwZfl0XF0YYJXTaDBBiv3
- kjbJSuPcUcbq9d4qJcCmbmkUv9NJinNs612MCwv8uOKHzMVEKTtwFTMmafh7n8Kljj269SBFiXA
- 3zDxNHUgJ6KHpp4ARCugs64Cp+GJgOCznLmotaiMSJVG38Q/gq3g48URr5JCf8lOHT22Y1zkncT
- hCDfVhmK6jLkvvmylCuVDaxpo2lgDecfc/1T2vtkRpX0vj2x4E4fc0jtjSdazQGP2Qo2BmtQbH6
- uq4IVYe+CIt3Jv7WJk7Lx+DMBOUhG0xWpkXOXhkTDTQX7Goccqw+qj5p8GuKamuX2/mk9k4FKFO
- qutLfDko7CHqrOiciN1qg1qZk5xo3sJxP4JqmllAgbzyqXhUBJjzXUgijSLdTgBS3sbqyGIKbG8
- Q6i71mqxymUnrCvauu1PQNCVCaEPzU1OGmWcMHlhXRBBDFqlLsh2SsMYykug5rcFfLcol0e3fBv
- udNROSLEJRjVtNvqjZmjNgwGcI7uEMftRRTQw7hymIXyUDhj8HBMo6ZBh6+Ieu1G2+vGT/EasR7
- P0ges/E46aez6iA==
+ bh=s22pJ5rTEtiXwSmEEiYHretFehUi77jUBIFY7CCGWZE=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpz8eb82gH++yptm6T8ADjzBk2D5EZflA3/byGV
+ 1ebat1IbiiJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCac/HmwAKCRBgAj/E00kg
+ ci5FD/kBnCx6eNjtESPBu0C549OsGknPfQK1othvKtMzd6Z+vLl/Z1Z3ugvieA/f9w+e5w22n8f
+ ovkUW1jx7Y2+2y0w7wx6gcS6oO52HG2d4D8GlhrGUxJXXpd1/vxz1Mn3To2o0fP+DLutnQI/k4A
+ /apctd1AaoXKSmx9IG7vw6eFIYTmH/K1i9/uDIP3ZX4034FPKcqBSyeqwyw3V1oUaLkAgjrTcJ6
+ rw2zzAmdEq91c78pTFuc4Bx22pEOSmdfXRBlIuBDeSbdDytI+S+LuzMjbDA428128GouJVx9wwW
+ N9Ifaq/f26mvwNNrN7EmpuS7+H/yvIcDv48hLxInxNPr3ftqx+gsOJ4LS/Sc5VOpjnOCTBePj1X
+ Mnx0D4nEPxCIhYtxI+zMJidbAfs9kT1X6630r5r3YaPbPp7VI6+pWVzM1Mbu+kBv84BLWPy5Tl0
+ xSmFawwM+RVYYY8BON5qh17SZtwGEAcX65xxC9uVXnmPyOsqKmv3wayxazSQlJErcXqxZ/SVoNp
+ 55L/qToeWFqvELDOyUFD3tnLMqNE/BCC4WwlyDWhriCP0u9Fv0usFeb28N5jXQKa7nNw3zgmV/L
+ DGncZq8l8C9viTYjjxXPpbidGE6iGm/gIjPHEmDOqDuM6Y75vBbG6xKuecJ1zImeCIYM3KNptd9
+ /f9WSc6bLIioWEg==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
@@ -82,22 +82,19 @@ Reply-To: david@ixit.cz
 
 From: David Heidelberg <david@ixit.cz>
 
-Enable NFC controller NXP PN553, which is part of the package NXP NQ330
-(NFC + eSE).
-
-Based on work of biemster <l.j.beemster@gmail.com>.
+Enable NFC controller NXP PN553.
 
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- .../arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 57 ++++++++++++++++++++++
- 1 file changed, 57 insertions(+)
+ arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts | 52 +++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-index 6b7378cf4d493..f5a5f1fbc1fb6 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-@@ -464,6 +464,26 @@ &gpu_zap_shader {
- 	firmware-name = "qcom/sdm845/OnePlus/enchilada/a630_zap.mbn";
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
+index 783d66cf5b0f8..101597c666332 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
+@@ -431,6 +431,26 @@ &gpu_zap_shader {
+ 	firmware-name = "qcom/sdm845/SHIFT/axolotl/a630_zap.mbn";
  };
  
 +&i2c3 {
@@ -120,26 +117,13 @@ index 6b7378cf4d493..f5a5f1fbc1fb6 100644
 +	};
 +};
 +
- &i2c10 {
+ &i2c5 {
  	status = "okay";
- 	clock-frequency = <100000>;
-@@ -674,6 +694,11 @@ &qupv3_id_0 {
- 	status = "okay";
- };
  
-+&qup_i2c3_default {
-+	drive-strength = <2>;
-+	bias-disable;
-+};
-+
- &qup_i2c10_default {
- 	drive-strength = <2>;
- 	bias-disable;
-@@ -1007,6 +1032,38 @@ speaker_default: speaker-default-state {
- 		bias-pull-up;
- 		output-high;
- 	};
-+
+@@ -609,6 +629,38 @@ &slpi_pas {
+ &tlmm {
+ 	gpio-reserved-ranges = <0 4>, <81 4>;
+ 
 +	nfc_default: nfc-default-state {
 +		enable-pins {
 +			pins = "gpio12", "gpio62";
@@ -171,9 +155,10 @@ index 6b7378cf4d493..f5a5f1fbc1fb6 100644
 +			bias-pull-up;
 +		};
 +	};
- };
- 
- &venus {
++
+ 	sde_dsi_active: sde-dsi-active-state {
+ 		pins = "gpio6", "gpio11";
+ 		function = "gpio";
 
 -- 
 2.53.0
