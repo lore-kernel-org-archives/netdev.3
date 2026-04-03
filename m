@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568E3273D76;
-	Fri,  3 Apr 2026 01:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB25B1BBBE5;
+	Fri,  3 Apr 2026 01:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775179058; cv=none; b=WQCIdTLZfE4p3Qn1kZ9se9MtWggUHgsIqDBM65WIq8WFvRpIjj6dWCkaIHBtYgI3G8xT+wsdPEWEL1im5wds1ity5FYx56xi6EEx+40YWn7pB1+SaE6IBVT9+O7Qp6Wl71suLLyt4eGD/cXGd5d9vsjsnEUnOMhB/SBry9tK5jo=
+	t=1775179062; cv=none; b=FmMS839mrOlfPVV461rrZmWfDWAiyD1nqPXglFyrumbdzCoDSugbRbCA8S2GPED/mAxQFVP9y8hqCWrPkCz1vlIfqqkYgdlbBiMbIE9rirZnZx1+U2JUGMcrYu4Wlf7K2dAUwR+xvVxosnIsMWMSOdTXyYBiu9AkUqCvku7nc+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775179058; c=relaxed/simple;
-	bh=Cge0Op8XIjIL/FzyaMsXywj9bmxHOydn7s7dSUzb2ks=;
+	s=arc-20240116; t=1775179062; c=relaxed/simple;
+	bh=Qo5WYyKMeV7hp8RN7S6hSeBu5J+1l7VvgvLybc0R8cI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uchYg6YQ7USgoJazxIf+Sjg8DMSNJCqd9oJVdQ5eFflgeQhS4EDuSxsUT++9OH8/caqvttcyw0G7PTWi85NlIne6blrB23xBXJ5DHRY7xR9eOr5pFGWVG9yLvVURzly3MjZRgOFfeSvgyxHLB5rnTOwmNNFTbkNvaOXO4sJ+oK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d5kzfYmJ; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=djidv0D7yvwK+JyAfPRYjNWhhlaIrTJxHIAItREfPGUNqcMon4iARbfb+pp4k4DhrirWTg2EcDssoedDNS7zEuR1SciZB9SO+xnch6FTj9wCBP/C8nBi67UYZubZx3wdETruCfXdPv+2YK8USV951oj4ueGusmP8pncFVicflMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MeW8Fp7e; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d5kzfYmJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC915C116C6;
-	Fri,  3 Apr 2026 01:17:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MeW8Fp7e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A65CC116C6;
+	Fri,  3 Apr 2026 01:17:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775179056;
-	bh=Cge0Op8XIjIL/FzyaMsXywj9bmxHOydn7s7dSUzb2ks=;
+	s=k20201202; t=1775179060;
+	bh=Qo5WYyKMeV7hp8RN7S6hSeBu5J+1l7VvgvLybc0R8cI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d5kzfYmJPKBNdvO3nSJvsyoJ+PIyPCXGESJxAhYTppge05ohd0x0Wt2nOzWHT8HpD
-	 G/sNU1YrW1igNY4qpp3/oDubDsCWQ5VlEJNCuQ6EDkf7VCDmVu/HWtLZuf+RZ8DqMz
-	 pG3xZBdt9MPpY6CLzz/SXzaiiBW+u8IRILNPbOS54Zsc4DbVFfCW+MXe7T6oX1EoDl
-	 4cMjrv26Aj4zKWKrj6rLudiYP+3gDzLA4GmnKMNL4Fi2V4EYRDpM2shV3fyvtaR/yX
-	 VS1PRrC+gvrDGDFpS2SzA+EGwM1HEgW0Q5vA/St5Hxd4xKwe7jNAbklo1alVpWM6wC
-	 SfLNbxj5oarTw==
+	b=MeW8Fp7eYP/CuVWuq7dX7B7pzgPFmvM6dhFAaKmM3gWLSO5f10MO+Ya+UeyMCy2YF
+	 RRZQYOk8eN60TuEF8jSk08eoCCq/3IF0kk/7O61DqFW67UypRKbQbISlfYAWNZr7E9
+	 nr3FvErd9D8PQ7uME3Uq6cvez2SrwAIjs3uKBuu3XKk0pNJXhhNjkfJT7LgS3l0haC
+	 RMhTu+dCGe2kSF15x7CnfeRL2plx6wC8AsMMZ+VXNq4RFhDgBl8teFOTqGYOD39298
+	 xiNAmGPb/zcB/kITk2cuLUWYuMvQm0RaehPff/7mLMgao/b+Sc/RykYvKTArOyNW+U
+	 l48zSk6T+aIMw==
 From: Jakub Kicinski <kuba@kernel.org>
 To: wei.fang@nxp.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -51,12 +51,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-arm-kernel@lists.infradead.org,
 	imx@lists.linux.dev
-Subject: Re: [PATCH v4 net-next 07/14] net: enetc: add support for "Add" and "Delete" operations to IPFT
-Date: Thu,  2 Apr 2026 18:17:34 -0700
-Message-ID: <20260403011734.1795551-1-kuba@kernel.org>
+Subject: Re: [PATCH v4 net-next 10/14] net: dsa: netc: introduce NXP NETC switch driver for i.MX94
+Date: Thu,  2 Apr 2026 18:17:38 -0700
+Message-ID: <20260403011738.1795644-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331113025.1566878-8-wei.fang@nxp.com>
-References: <20260331113025.1566878-8-wei.fang@nxp.com>
+In-Reply-To: <20260331113025.1566878-11-wei.fang@nxp.com>
+References: <20260331113025.1566878-11-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,111 +68,176 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-net: enetc: add support for "Add" and "Delete" operations to IPFT
+net: dsa: netc: introduce NXP NETC switch driver for i.MX94
+    
+This commit introduces the initial NXP NETC switch driver for the i.MX94
+series. It supports basic probe and remove functionality for the integrated
+802.1Q Ethernet switch. The switch includes 3 user ports and 1 CPU port
+connected to an internal ENETC.
 
-This commit adds support for the "Add" and "Delete" operations to the
-ingress port filter table (IPFT). These interfaces will be used by both
-the ENETC driver and the NETC switch driver.
-
-> diff --git a/drivers/net/ethernet/freescale/enetc/ntmp.c b/drivers/net/ethernet/freescale/enetc/ntmp.c
-> index 3c59b355c142..960d5be8ec42 100644
-> --- a/drivers/net/ethernet/freescale/enetc/ntmp.c
-> +++ b/drivers/net/ethernet/freescale/enetc/ntmp.c
-
+> diff --git a/drivers/net/dsa/netc/netc_main.c b/drivers/net/dsa/netc/netc_main.c
+> new file mode 100644
+> index 000000000000..5828fd3e342e
+> --- /dev/null
+> +++ b/drivers/net/dsa/netc/netc_main.c
 [ ... ]
-
-> @@ -468,6 +471,79 @@ int ntmp_rsst_query_entry(struct ntmp_user *user, u32 *table, int count)
->  }
->  EXPORT_SYMBOL_GPL(ntmp_rsst_query_entry);
->  
-> +/**
-> + * ntmp_ipft_add_entry - add an entry into the ingress port filter table
-> + * @user: target ntmp_user struct
-> + * @entry: the entry data, entry->cfge (configuration element data) and
-> + * entry->keye (key element data) are used as input. Since the entry ID
-> + * is assigned by the hardware, so entry->entry_id is a returned value
-> + * for the driver to use, the driver can update/delete/query the entry
-> + * based on the entry_id.
-> + *
-> + * Return: 0 on success, otherwise a negative error code
-> + */
-> +int ntmp_ipft_add_entry(struct ntmp_user *user,
-> +			struct ipft_entry_data *entry)
+> +static int netc_port_create_emdio_bus(struct netc_port *np,
+> +				      struct device_node *node)
 > +{
 [ ... ]
-> +	err = ntmp_alloc_data_mem(&data, (void **)&req);
+> +	err = devm_of_mdiobus_register(dev, bus, node);
 > +	if (err)
-> +		return err;
+> +		return dev_err_probe(dev, err,
+> +				     "Cannot register EMDIO bus\n");
 > +
-> +	ntmp_fill_crd(&req->crd, user->tbl.ipft_ver, NTMP_QA_ENTRY_ID,
-> +		      NTMP_GEN_UA_CFGEU | NTMP_GEN_UA_STSEU);
-> +	req->ak.keye = entry->keye;
-> +	req->cfge = entry->cfge;
-
-The request sets NTMP_GEN_UA_STSEU to indicate statistics data is present,
-but struct ipft_req_ua does not appear to contain a match_count or STSE data
-field before cfge.
-
-Since the hardware expects STSE data before CFGE data (as seen in
-struct ipft_resp_query), will this cause the hardware to misinterpret the
-first 8 bytes of cfge as the match_count, and then read the actual filter
-configuration from out-of-bounds or uninitialized memory?
-
-> diff --git a/drivers/net/ethernet/freescale/enetc/ntmp_private.h b/drivers/net/ethernet/freescale/enetc/ntmp_private.h
-> index 7d50af7745c7..6d519d59a433 100644
-> --- a/drivers/net/ethernet/freescale/enetc/ntmp_private.h
-> +++ b/drivers/net/ethernet/freescale/enetc/ntmp_private.h
-
+> +	np->emdio = bus;
+> +
+> +	return 0;
+> +}
 [ ... ]
+> +static int netc_init_switch_id(struct netc_switch *priv)
+> +{
+> +	struct netc_switch_regs *regs = &priv->regs;
+> +	struct dsa_switch *ds = priv->ds;
+> +
+> +	/* The value of 0 is reserved for the VEPA switch and cannot
+> +	 * be used.
+> +	 */
+> +	if (ds->index > SWCR_SWID || !ds->index) {
+> +		dev_err(priv->dev, "Switch index %d out of range\n",
+> +			ds->index);
+> +		return -ERANGE;
+> +	}
 
-> +/* Ingress Port Filter Table Request Data Buffer Format of Update and
-> + * Add actions
+Does this check cause the probe to fail unconditionally for standard
+single-switch topologies?
+
+The DSA core typically assigns ds->index = 0 by default for the first switch.
+Because !ds->index evaluates to true for index 0, this setup function will
+always fail unless the dsa,member property is explicitly overridden in the
+device tree.
+
+Could the driver translate the hardware ID internally, for example by writing
+ds->index + 1 to NETC_SWCR, rather than forcing this hardware-specific
+restriction onto the software DSA index?
+
+> +
+> +	netc_base_wr(regs, NETC_SWCR, ds->index);
+> +
+> +	return 0;
+> +}
+[ ... ]
+> +static bool netc_port_is_emdio_consumer(struct device_node *node)
+> +{
+> +	struct device_node *mdio_node;
+> +
+> +	/* If the port node has phy-handle property and it does
+> +	 * not contain a mdio child node, then the port is the
+> +	 * EMDIO consumer.
+> +	 */
+> +	mdio_node = of_get_child_by_name(node, "mdio");
+> +	if (!mdio_node)
+> +		return true;
+> +
+> +	of_node_put(mdio_node);
+> +
+> +	return false;
+> +}
+> +
+> +/* Currently, phylink_of_phy_connect() is called by dsa_user_create(),
+> + * so if the switch uses the external MDIO controller (like the EMDIO
+> + * function) to manage the external PHYs. The MDIO bus may not be
+> + * created when phylink_of_phy_connect() is called, so it will return
+> + * an error and cause the switch driver to fail to probe.
+> + * This workaround can be removed when DSA phylink_of_phy_connect()
+> + * calls are moved from probe() to ndo_open().
 > + */
-> +struct ipft_req_ua {
-> +	struct ntmp_cmn_req_data crd;
-> +	union ipft_access_key ak;
-> +	struct ipft_cfge_data cfge;
-> +};
-
-Does this struct need an STSE data field before cfge to match the request
-header flags?
-
-> diff --git a/include/linux/fsl/ntmp.h b/include/linux/fsl/ntmp.h
-> index a54945dcdc61..efda35e5e22c 100644
-> --- a/include/linux/fsl/ntmp.h
-> +++ b/include/linux/fsl/ntmp.h
-
+> +static int netc_switch_check_emdio_is_ready(struct device *dev)
+> +{
 [ ... ]
-
-> @@ -66,6 +68,94 @@ struct maft_entry_data {
->  	struct maft_cfge_data cfge;
->  };
->  
-> +struct ipft_pld_byte {
-> +	u8 data;
-> +	u8 mask;
-> +};
+> +	for_each_available_child_of_node_scoped(ports, child) {
+> +		/* If the node does not have phy-handle property, then
+> +		 * the port does not connect to a PHY, so the port is
+> +		 * not the EMDIO consumer.
+> +		 */
+> +		phy_node = of_parse_phandle(child, "phy-handle", 0);
+> +		if (!phy_node)
+> +			continue;
 > +
-> +struct ipft_keye_data {
-> +	__le16 precedence;
-> +	__le16 resv0[3];
-> +	__le16 frm_attr_flags;
-> +#define IPFT_FAF_OVLAN		BIT(2)
-> +#define IPFT_FAF_IVLAN		BIT(3)
-> +#define IPFT_FAF_IP_HDR		BIT(7)
-> +#define IPFT_FAF_IP_VER6	BIT(8)
-> +#define IPFT_FAF_L4_CODE	GENMASK(11, 10)
-> +#define  IPFT_FAF_TCP_HDR	1
-> +#define  IPFT_FAF_UDP_HDR	2
-> +#define  IPFT_FAF_SCTP_HDR	3
-> +#define IPFT_FAF_WOL_MAGIC	BIT(12)
-> +	__le16 frm_attr_flags_mask;
-> +	__le16 dscp;
-> +#define IPFT_DSCP		GENMASK(5, 0)
-> +#define IPFT_DSCP_MASK		GENMASK(11, 0)
+> +		if (!netc_port_is_emdio_consumer(child)) {
+> +			of_node_put(phy_node);
+> +			continue;
+> +		}
+> +
+> +		phydev = of_phy_find_device(phy_node);
+> +		of_node_put(phy_node);
+> +		if (!phydev) {
+> +			err = -EPROBE_DEFER;
+> +			goto out;
+> +		}
 
-Does IPFT_DSCP_MASK completely overlap with IPFT_DSCP?
+Could this logic cause an infinite probe deferral loop for ports sharing an
+internal MDIO bus?
 
-If it is defined as GENMASK(11, 0) instead of GENMASK(11, 6), using
-FIELD_PREP with this mask will not shift the value into the upper bits,
-which might overwrite the actual DSCP value in bits 0-5.
+The netc_port_is_emdio_consumer() function assumes any port node without an
+mdio child is an EMDIO consumer waiting for an external controller. However,
+if multiple sibling ports on the same switch share a single internal MDIO bus
+defined under one port, the other ports will lack an mdio child node.
+
+This would cause those ports to be mistakenly treated as external EMDIO
+consumers, calling of_phy_find_device(). Because the internal MDIO bus is not
+registered until later in netc_setup(), the PHY device cannot be found, and
+the driver returns -EPROBE_DEFER.
+
+Since netc_setup() is never reached, the MDIO bus is never registered,
+causing an infinite deferral loop. Could the driver more accurately identify
+whether the PHY belongs to its own switch before deferring?
+
+> +
+> +		put_device(&phydev->mdio.dev);
+> +	}
+> +
+> +out:
+> +	of_node_put(ports);
+> +
+> +	return err;
+> +}
+> +
+> +static int netc_switch_pci_init(struct pci_dev *pdev)
+> +{
+[ ... ]
+> +	regs->base = pci_ioremap_bar(pdev, NETC_REGS_BAR);
+> +	if (!regs->base) {
+> +		err = -ENXIO;
+> +		dev_err(dev, "pci_ioremap_bar() failed\n");
+> +		goto release_mem_regions;
+> +	}
+[ ... ]
+> +static void netc_switch_pci_destroy(struct pci_dev *pdev)
+> +{
+> +	struct netc_switch *priv = pci_get_drvdata(pdev);
+> +
+> +	iounmap(priv->regs.base);
+> +	pci_release_mem_regions(pdev);
+> +	pci_disable_device(pdev);
+> +}
+
+Does unmapping the memory here introduce a use-after-unmap issue when the
+MDIO bus is unregistered?
+
+The driver registers the MDIO bus using devm_of_mdiobus_register(), meaning
+devres cleans it up asynchronously after the remove function returns or when
+probe fails.
+
+However, in netc_switch_pci_destroy(), the driver explicitly unmaps the PCI
+I/O memory via iounmap(). Since netc_switch_pci_destroy() is called
+synchronously inside the remove function and probe error paths, the memory is
+unmapped before the MDIO bus is unregistered by devres.
+
+When devres eventually unregisters the MDIO bus, it detaches PHY devices,
+which often perform MDIO transactions during removal. Because the underlying
+memory priv->regs.base is already unmapped, these MDIO read/write callbacks
+could trigger a synchronous external abort or kernel panic.
+
+Would it be better to use pcim_iomap() to tie the memory mapping lifecycle to
+devres, ensuring it outlives the MDIO bus?
