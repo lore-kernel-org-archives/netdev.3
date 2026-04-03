@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D72C1F3D56;
-	Fri,  3 Apr 2026 01:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355B423AB81;
+	Fri,  3 Apr 2026 01:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775179058; cv=none; b=ciFD1zEJRA6CxBnsYHS3ao7blnoG561dlZE/0tWP1qxXfzG+y+7n/AsK9TKWzardpca+VLseSwX7yVWi1dUqYuPh+Z9ZLtOfZvvxApWGnVOB4T+k9gOf/GEqO0PkbHgw1dmZywdXJdJr2koWpczo6/AmmZzwSnSOGwQVRmH/bnU=
+	t=1775179058; cv=none; b=jDAcjl0zd4D5g8+y92dm/24oxc/HJsQnbnRQALtrqel0URg0sVexmFYpIFpKLaagHjyt4+VQ9+qyaZt3PFsey+M4Pgl2ZdynvDOi5DRoi67Ppz2Amdic2LeLUsYkK7IOgoYt14TB/wdiWx25cHeSHnaP7wHnOdrVSQYgKvDb9Cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775179058; c=relaxed/simple;
-	bh=IjIkp8FIjKATBd7jIiPxzeFBb13nS3nzbxHI2WLxLcc=;
+	bh=kf7UcGQnEKNIFCT4+nJ9PJ/iFdOs9gmUphhDLwEs43I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=foxIq2VlkIZt7W3MgruzflSZIzFYTcqm6v5Rj+N6/x7O8zlHJzJnQTtJwU84jh457TZNlqiHiGpdF+v0MsGP9+Op0aQDbl4R99vxXbJPvxnYhARQXUjdbqR8U+A2JnzbpXKVCxvpdg1TIXJ88BytWuQonjeJWKZ/vs7xisQTAko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bhn8oIIZ; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=oHOIecvcB6T/VrT4rGvoypFE/jqgJbPs9VXmkPoFC58SPu9uMGR43yXQ4UzmY/0pmhxeM+7PeXWmy7Q3fUx/oGGqnhiYyzdXFggIfG6PZxqFWguJt1kR2PNTD2XUGqJygz4+WFtM58jBFPsTA8YA5ssQislQcgk7HQu4RhtXufE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EpOM3hIz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bhn8oIIZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBBD8C2BCB0;
-	Fri,  3 Apr 2026 01:17:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EpOM3hIz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CB46C2BCB1;
+	Fri,  3 Apr 2026 01:17:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775179053;
-	bh=IjIkp8FIjKATBd7jIiPxzeFBb13nS3nzbxHI2WLxLcc=;
+	s=k20201202; t=1775179058;
+	bh=kf7UcGQnEKNIFCT4+nJ9PJ/iFdOs9gmUphhDLwEs43I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bhn8oIIZoi0uI1nny0o2U/uU6bOCJ18EbsQFHJ0o0GygSh3+ENa6fhY3GkI0iCyrk
-	 hvVgRxi2ktGgQpzlhRDKy98XX4MVSOAfFRM+p4jch8H2GsIVb9dzK1cGJCOUi5ygf2
-	 /zOVHYommileHwaqOG+qtdlo3PjQgRKaJZmBdONj2ZpJKjMzVjNCNRSSYy7nlRanPt
-	 ephSAaiMHZ5HoXUqb6WA18U3xq4DgD7nCALIJx9ExdA/06yMAS/aIwjVovYbnsafvJ
-	 3F3sK3c3VM8Lr6N0yIRau3XhtEvyeowJ7vTYz5vsTyZehYj057yx8SK4Z0NoGIaukV
-	 n1lmuT0ONOs7A==
+	b=EpOM3hIzOgHfn6BQXuMgZDbLHnn+GT4ShSxODfekzqn5lthwCbFfoafksregEhLy4
+	 cCeTkVP8+P2uUqAlLBtV0nQ4ibPJZhB+4gbXEorFRyBI1jKWj7XzfsbPd+Pj9IeuAM
+	 sf4dcNEpyFJQ6mYLe+2XAEV3+b1oBeByK0k/DKWPJexgN0GhJmF7JXi7EOc9TvO5ql
+	 dfaDKDEZ8c5TDEzZQiqZAVhN1YZbqhogFhp/vbRRIvZBk23bZBJYv6cQEwGldeFhH4
+	 1j+y31+Kf55F59Vv2VrNs5IDW01YKEAmS3uVQd59pQhiWiazc1QsboJ6QNFljy9F7R
+	 uTy2lZeSSyX4A==
 From: Jakub Kicinski <kuba@kernel.org>
 To: wei.fang@nxp.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -51,12 +51,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-arm-kernel@lists.infradead.org,
 	imx@lists.linux.dev
-Subject: Re: [PATCH v4 net-next 06/14] net: enetc: add support for the "Update" operation to buffer pool table
-Date: Thu,  2 Apr 2026 18:17:31 -0700
-Message-ID: <20260403011731.1795517-1-kuba@kernel.org>
+Subject: Re: [PATCH v4 net-next 09/14] net: dsa: add NETC switch tag support
+Date: Thu,  2 Apr 2026 18:17:36 -0700
+Message-ID: <20260403011736.1795610-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331113025.1566878-7-wei.fang@nxp.com>
-References: <20260331113025.1566878-7-wei.fang@nxp.com>
+In-Reply-To: <20260331113025.1566878-10-wei.fang@nxp.com>
+References: <20260331113025.1566878-10-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,95 +68,86 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-Subject: net: enetc: add support for the "Update" operation to buffer pool table
+net: dsa: add NETC switch tag support
 
-This patch adds the ntmp_bpt_update_entry() helper function to support
-updating a specified entry in the buffer pool table. It provides the
-ability to update buffer pool configuration data.
+Adds support for the proprietary NXP NETC switch tag used in NXP NETC
+switches version 4.3 or later. The tag has 3 types (Forward, To_Port,
+To_Host) and supports a varying length between 6 and 14 bytes.
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/ntmp_private.h b/drivers/net/ethernet/freescale/enetc/ntmp_private.h
-> --- a/drivers/net/ethernet/freescale/enetc/ntmp_private.h
-> +++ b/drivers/net/ethernet/freescale/enetc/ntmp_private.h
-
+> diff --git a/net/dsa/tag_netc.c b/net/dsa/tag_netc.c
+> new file mode 100644
+> index 000000000000..addd41f7f1b6
+> --- /dev/null
+> +++ b/net/dsa/tag_netc.c
 [ ... ]
-
-> +/* Buffer Pool Table Request Data Buffer Format of Update action */
-> +struct bpt_req_update {
-> +	struct ntmp_req_by_eid rbe;
-> +	struct bpt_cfge_data cfge;
-> +};
-> +
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/freescale/enetc/ntmp.c b/drivers/net/ethernet/freescale/enetc/ntmp.c
-> --- a/drivers/net/ethernet/freescale/enetc/ntmp.c
-> +++ b/drivers/net/ethernet/freescale/enetc/ntmp.c
-
-[ ... ]
-
-> @@ -702,5 +708,38 @@ int ntmp_vft_add_entry(struct ntmp_user *user, u16 vid,
->  }
->  EXPORT_SYMBOL_GPL(ntmp_vft_add_entry);
->  
-> +int ntmp_bpt_update_entry(struct ntmp_user *user, u32 entry_id,
-> +			  const struct bpt_cfge_data *cfge)
+> +static void *netc_fill_common_tp_tag(struct sk_buff *skb,
+> +				     struct net_device *ndev,
+> +				     u8 subtype, int tag_len)
 > +{
-> +	struct ntmp_dma_buf data = {
-> +		.dev = user->dev,
-> +		.size = sizeof(struct bpt_req_update),
-> +	};
-> +	struct bpt_req_update *req;
-> +	union netc_cbd cbd;
-> +	int err;
+> +	struct dsa_port *dp = dsa_user_to_port(ndev);
+> +	u16 queue = skb_get_queue_mapping(skb);
+> +	u8 ipv = netdev_txq_to_tc(ndev, queue);
+
+What happens here if the interface doesn't have traffic classes configured?
+
+By default, netdev_txq_to_tc() returns -1. Because ipv is an unsigned 8-bit
+integer, this casts to 255.
+
+When this is later passed to FIELD_PREP(NETC_TAG_IPV, ipv) in
+netc_fill_common_tag(), the macro blindly masks the variable, silently
+forcing the IPV field to 7 (the maximum priority) for all default,
+unconfigured traffic. Valid TC values greater than 7 would also be silently
+truncated.
+
+Does this code bypass the intended QoS mechanisms?
+
+> +	void *tag;
 > +
-> +	err = ntmp_alloc_data_mem(&data, (void **)&req);
-> +	if (err)
-> +		return err;
+> +	skb_push(skb, tag_len);
+> +	dsa_alloc_etype_header(skb, tag_len);
 > +
-> +	ntmp_fill_crd_eid(&req->rbe, user->tbl.bpt_ver, 0,
-> +			  NTMP_GEN_UA_CFGEU | BPT_UA_BPSEU, entry_id);
+> +	tag = dsa_etype_header_pos_tx(skb);
+> +	memset(tag + NETC_TAG_CMN_LEN, 0, tag_len - NETC_TAG_CMN_LEN);
+> +	netc_fill_common_tag(tag, NETC_TAG_TO_PORT, subtype,
+> +			     dp->ds->index, dp->index, ipv);
 
-Does this update action mask match the size of the request buffer?
+Will this break communication for standard single-switch setups?
 
-The mask includes both NTMP_GEN_UA_CFGEU and BPT_UA_BPSEU, which instructs
-the hardware to update both the configuration entry and the status entry.
-However, struct bpt_req_update only contains the configuration data,
-omitting the status data.
+The driver passes dp->ds->index as the hardware switch ID here, which
+defaults to 0 for the first switch in a DSA tree. However, on the receive
+path, frames stamped with switch ID 0 are rejected.
 
-If the hardware attempts to read the missing BPSE data, could it reject
-the command due to an undersized request length, or read beyond the
-intended payload into zero-initialized DMA padding? This might overwrite
-critical buffer pool tracking variables like amount_used_hwm.
-
-If only the configuration is being updated, should the BPT_UA_BPSEU flag
-be removed?
-
-> +	req->cfge = *cfge;
-> +	ntmp_fill_request_hdr(&cbd, data.dma, NTMP_LEN(data.size, 0),
-> +			      NTMP_BPT_ID, NTMP_CMD_UPDATE, NTMP_AM_ENTRY_ID);
-> +
-> +	err = netc_xmit_ntmp_cmd(user, &cbd);
-> +	if (err)
-> +		dev_err(user->dev,
-> +			"Failed to update %s entry 0x%x, err: %pe\n",
-> +			ntmp_table_name(NTMP_BPT_ID), entry_id, ERR_PTR(err));
-> +
-> +	ntmp_free_data_mem(&data);
-
-Can this result in a DMA use-after-free if the hardware command times out?
-
-If netc_xmit_ntmp_cmd() times out waiting for the hardware to process the
-command, it returns -ETIMEDOUT without resetting the hardware ring or
-explicitly cancelling the command.
-
-The descriptor remains active in the ring, and ntmp_free_data_mem()
-unconditionally frees the DMA-mapped buffer. If the hardware eventually
-processes the descriptor, it will read from the now-freed DMA memory.
-
-Could this lead to an IOMMU fault or cause the hardware to read garbage
-data if the page has been reallocated?
+If the physical switch hardware uses an ID greater than 0, frames will fail
+the lookup in dsa_conduit_find_user() on receive because the software index
+is 0.
 
 > +
-> +	return err;
+> +	return tag;
 > +}
+[ ... ]
+> +static struct sk_buff *netc_rcv(struct sk_buff *skb,
+> +				struct net_device *ndev)
+> +{
+> +	struct netc_tag_cmn *tag_cmn;
+> +	int tag_len, sw_id, port;
+[ ... ]
+> +	if (tag_cmn->qos & NETC_TAG_QV)
+> +		skb->priority = FIELD_GET(NETC_TAG_IPV, tag_cmn->qos);
+> +
+> +	sw_id = NETC_TAG_SWITCH & tag_cmn->switch_port;
+
+This isn't a bug, but is there a reason to use a raw bitwise AND for sw_id
+instead of using FIELD_GET(NETC_TAG_SWITCH, ...) to match how the port
+field is extracted just below this?
+
+> +	/* ENETC VEPA switch ID (0) is not supported yet */
+> +	if (!sw_id) {
+> +		dev_warn_ratelimited(&ndev->dev,
+> +				     "VEPA switch ID is not supported yet\n");
+> +
+> +		return NULL;
+> +	}
+> +
+> +	port = FIELD_GET(NETC_TAG_PORT, tag_cmn->switch_port);
+> +	skb->dev = dsa_conduit_find_user(ndev, sw_id, port);
+[ ... ]
