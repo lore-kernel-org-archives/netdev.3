@@ -1,87 +1,112 @@
-Received: from szelinsky.de (szelinsky.de [85.214.127.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4B72C21C7;
-	Fri,  3 Apr 2026 13:51:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.127.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C243290AD;
+	Fri,  3 Apr 2026 13:58:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775224299; cv=none; b=gS9Ywo6YnM6jhv0eogOe6Vecx3amG1a/0T9dqnT6EdxbqQIfWmkKjfsT1FN+HSfkqtSwDZXvB8tL5VF58cqhzJo9wBEzdia3Lr+NyS/gaIA9TxZI5iOPC+GJx6R9Ru9ZNdak24EckhV+/UUqQsiA5o0Y4cag28JePRXZ45Oy9no=
+	t=1775224734; cv=none; b=Sw46Wbc6sKf4Y0KBh+tk//5JahigWcoLBsIJ8Eptec7YByEQtELWTeNTLqbl5V6g3LxzVIap0WDY/kHDCyj3GCCXA8bpbevPqsnGUzQV3HWDPkV+Q124wlurHSA6kKqTkHOK/iu9VBdTHgcvhcb6+IZOSL22rkhiT7/CjjZBpTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775224299; c=relaxed/simple;
-	bh=JtU4276nFgphg9HxLMW+Dm8FtS9A1GRUkcQTJc7sB0c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BHIKe11LM61i11gmBp3PPgxU3XcYy3KX2wdLGYaBDmnO06wXY9IsaGRHT4EB1QIu64CJAbdy+TlL9ElhxqPKt6TAL9JlkwYpPSiVu78EzRoxZvnWCKlXDMlVRqYVEyMaPQMXRWnJ+n10D7lzgD7q0sWwGbHJVzKSzPyLVN0ATgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=IUdElz1L; arc=none smtp.client-ip=85.214.127.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
+	s=arc-20240116; t=1775224734; c=relaxed/simple;
+	bh=s+dU1/g0RifyG4LIuYKHQ+oCFbdwqSv3LSZS2ks+Cb0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=dp5uXA73sHbdnfn1SEvMHkUnxa3aJF95okTlEYfnWVp/AQqeptGE764YcWWsJToSFiG38sb6YyoPKdn/0hCwsmSJ6pRlw+105O/ps3RdVpO6+TXmihXDQsE+fJWnvXINyxuiLngmCrIjE7ascWA0kyK7pJbMHd15rVp+QfBy6Co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i81/UDh8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="IUdElz1L"
-Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id 22DDEE8319A;
-	Fri,  3 Apr 2026 15:51:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1775224291;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JtU4276nFgphg9HxLMW+Dm8FtS9A1GRUkcQTJc7sB0c=;
-	b=IUdElz1LLgvkl32J24WhAZ/+TAS1sHdI8/w/yvI6/WQHYOmhe2kWIMkRhKLUvjNuFlh5Ob
-	XlK1Jy2Bbl2+QuLa8xlUMXQPdy9gorNT23kpeGHIeILrDzxY/dDpe3vVQZQpppKbdhZ41q
-	8zxN9hEHlDBEib8EezMcnF/TNsARtpY4SicyMOmOIqe9QJPJZlIYTIWTMhjGSm+ma96rAP
-	z2F4ca5H8/tR9sS/zfuOE7EdBS4TXb5z++FnFAUt5IqdigiGgKqiNl8X/PE577eqjIdwZb
-	9wNgOjXFGSlbNLPX4MPqHNA8HUU0111v5zXobcbLfsx3rMBCrkQr//mPQ6Ftxg==
-X-Virus-Scanned: Debian amavisd-new at szelinsky.de
-Received: from szelinsky.de ([127.0.0.1])
-	by localhost (szelinsky.de [127.0.0.1]) (amavisd-new, port 10025)
-	with ESMTP id Xx3uqIXaZtHS; Fri,  3 Apr 2026 15:51:31 +0200 (CEST)
-Received: from p14sgen5.fritz.box (dslb-002-205-089-102.002.205.pools.vodafone-ip.de [2.205.89.102])
-	by szelinsky.de (Postfix) with ESMTPSA;
-	Fri,  3 Apr 2026 15:51:30 +0200 (CEST)
-From: Carlo Szelinsky <github@szelinsky.de>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-leds@vger.kernel.org,
-	Carlo Szelinsky <github@szelinsky.de>
-Subject: Re: [PATCH net-next v3 1/3] dt-bindings: net: pse-pd: add poll-interval-ms property
-Date: Fri,  3 Apr 2026 15:51:21 +0200
-Message-ID: <20260403135121.3309161-1-github@szelinsky.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260330-spiritual-placid-jackal-cd4269@quoll>
-References: <20260330-spiritual-placid-jackal-cd4269@quoll>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i81/UDh8"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id CF887C19423;
+	Fri,  3 Apr 2026 13:58:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775224733;
+	bh=s+dU1/g0RifyG4LIuYKHQ+oCFbdwqSv3LSZS2ks+Cb0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=i81/UDh8mQTWjgDyfogKB3F32uFPxuSqMRDQ18i1Moy9FAVJIg+9sVaKSjI8t1Dtj
+	 OD7zSDxTQ5mj7ard7mdDt8+klAghQaWHZUPmgJhuBp9zrl0FLIFvLPgYVR8l6CZYB3
+	 Y+XbOKCxV136HNhu/Ho/fl1XvybVXHq/PIpx0fsj9YPGN7VH26k7yIwXK+m1kTb8a3
+	 s4C9g+AyMovsJ7OVzaESNrfoRAFG/acTI+jAOlznGp4kj5ngR0BmEiQoPozGFxp8z0
+	 bR8ntFEWxXqRgEZkHqbzXsN40S7Rg/SUKOHg7SM4WE59IgnTR12ByHfM1yPabr7Lmo
+	 /o+nyREP6eyxg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BC36EE8536F;
+	Fri,  3 Apr 2026 13:58:53 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Fri, 03 Apr 2026 15:58:46 +0200
+Subject: [PATCH v3 1/5] dt-bindings: nfc: nxp,nci: Document PN557
+ compatible
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260403-oneplus-nfc-v3-1-fbdce57d63c1@ixit.cz>
+References: <20260403-oneplus-nfc-v3-0-fbdce57d63c1@ixit.cz>
+In-Reply-To: <20260403-oneplus-nfc-v3-0-fbdce57d63c1@ixit.cz>
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Alexander Martinz <amartinz@shift.eco>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Casey Connolly <casey.connolly@linaro.org>, 
+ Alexander Martinz <amartinz@shiftphones.com>
+Cc: Petr Hodina <petr.hodina@protonmail.com>, 
+ biemster <l.j.beemster@gmail.com>, netdev@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, oe-linux-nfc@lists.linux.dev, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>, 
+ David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=801; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=XAr0YPSe88hbZiI1E3SbtdYUk0kg/OIc+A90H6b4IMY=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpz8ebxDmaJwjzyRUTYj1d8k6YnudHVAbaS8Z0z
+ WZS8g3mTjuJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCac/HmwAKCRBgAj/E00kg
+ ctP8D/4tH7JBKTPHlQxYPJDFWKPPaCb8sX95ulLhQltIx4eKz3/rdyOWz0DVGxLHyOCCxXY+yh1
+ vzOjvHlM1+uUlUT9fKALTgVHIdK/ekiYEWh9mvzTGp2+XYyC7nYZgu2872UpcAy+K2+4bErVOx1
+ vnlPUbSMj6EdN2g65b9zQhWzRdqwZ7b3coCjU0mtV2h4ZcFCPSfxIvGnS9B7C0NwG7D6/RW9Ut2
+ AQZoHQL0gu7+MWSV1yKGqtPsH2kqmcLEefupzPJLXArS88YX7uDL4Nev1ce3ypTeOXoEibVSTII
+ QzQo+FMLr++ILDXmsHhdjN+Fr+Zke5f/5S+Y600rSwJRr6AV08BKSYl9KY43HU3/56xBpd8/Mav
+ Z6wkL0vn1o/orT6cZ/Vqzc0Q6TWsbsLjZ/pdG7kMrgqbF2K8VBpc5OTACiWDYCu//khwO7wY1Db
+ o38e2ilcAT8DfwBsuOLPvpfIZ7gxTrYLimWc0kA/ovvliXQ6qr2sEdI9CrPEJeLQh28vcbovgaI
+ 3XtUwbjF2FG9yL304R39Xj7ALJMBvegnY2xHZxOhKgHpA+wLIL0YpnFn/IpLpmIj2jm5Im0D44p
+ BXy6Z2nBYxDge68OwsDc5MHwLJRJID7+wvxCiuPEsWOyb6KiTUVoOKZ10cTXO3aim+fnaANu56i
+ yuA0YIIcTPCechA==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-Hi Krzysztof,
+From: David Heidelberg <david@ixit.cz>
 
-Thanks for the review.
+The PN557 uses the same hardware as the PN553 but ships with
+firmware compliant with NCI 2.0.
 
-The idea was to let boards tune the poll rate in case I2C bus load
-matters, but you're right - that's a driver decision, not a hardware
-property. The controller either has an IRQ or it doesn't, and how
-often we poll is up to the driver.
+Document PN557 as a compatible device.
 
-I'll drop this patch and the of_property_read_u32() call in patch 2,
-and just hardcode the 500ms default in the driver.
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+ Documentation/devicetree/bindings/net/nfc/nxp,nci.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-Does that work for you? Happy to send v4 with that change.
+diff --git a/Documentation/devicetree/bindings/net/nfc/nxp,nci.yaml b/Documentation/devicetree/bindings/net/nfc/nxp,nci.yaml
+index 364b361511808..4f3847f64983b 100644
+--- a/Documentation/devicetree/bindings/net/nfc/nxp,nci.yaml
++++ b/Documentation/devicetree/bindings/net/nfc/nxp,nci.yaml
+@@ -18,6 +18,7 @@ properties:
+               - nxp,nq310
+               - nxp,pn547
+               - nxp,pn553
++              - nxp,pn557
+           - const: nxp,nxp-nci-i2c
+ 
+   enable-gpios:
 
-Thanks,
-Carlo
+-- 
+2.53.0
+
+
