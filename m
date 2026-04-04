@@ -1,35 +1,36 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55FB145FE0;
-	Sat,  4 Apr 2026 00:40:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59BD122068D;
+	Sat,  4 Apr 2026 00:45:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775263227; cv=none; b=qg4puIWQhF0qdLel63GK+o7BtuAcopPjO3FyaQSKtg3vIfqdJ+g30qlzpd9ApW0lhKMMtqMacbd37CE/6mEeMBUCUUdSdOlPYaKLF0OK4PRH1IG9+TM5WHQ6qM5l8vJV96mqNmGg669gUbGNqcwqey2piWOedSOS+uuQvJ9VOX4=
+	t=1775263505; cv=none; b=D0+6gk7cQ1/d+hcUGbBJhf+LCXfV8knVJ0bdl5Es+UbY346OLsRDcbMquOnWRnKZz8a5NryuxDSpEIXAFCsja0tk1h9AH7i9d7Rofzm6vtpV8HP0+LkXr/UyfwlHp6tsw8p33IHNdYRlyCYbYE5lPrxYe7mrei76seNi8Vtq4pI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775263227; c=relaxed/simple;
-	bh=fIaZP4a3RwdqR2OP6iHxwpQec3oUQSQxBcHAAO2X8aQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=JJiHVCwz+x/UwzklyJVR/QgO9JE9PukG5jvbDZQxHy24Lw/053fIc6XrG9y2F2sUeoDm8CJe3j/eo00L3RNd2E3FM4QsGx86mRuXv+n4PXccIhQOoN8JtATgBSQDDoNZL5ipovSCFHdaDXKk0HQLwAnE2iwg2vGhs9qCQMYjrTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EJ7dzl7V; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EJ7dzl7V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 513D6C4CEF7;
-	Sat,  4 Apr 2026 00:40:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775263227;
-	bh=fIaZP4a3RwdqR2OP6iHxwpQec3oUQSQxBcHAAO2X8aQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=EJ7dzl7Vvc5BM+e29VunjJf4VhD35Hzq1mY2M1Vbpw5ilVliI9IUmRDJntj0DCeHk
-	 hC27co6pow5Ijn19fuoyobRvA10UFaGOZorHYuMAd607sKQFvkrpHyb/L+WMamZPhV
-	 +tClLM83axDCaKSgI96J6vqRyhC9JIvY3WN7TA615n/hWlFFR2C6O+JU0Dtuo2P6h2
-	 sVROv0K0LMFjeLzA3gQ975QoiAfzUx6cb9S9WovxguxmD4etsGeLen8oOq+5zhEVFb
-	 tBZFd6Abp50jWEIfs3dG2kO5RdgEsBiTZl24TEMypROgrJZmygPdE+0n2XIN/7mHq6
-	 No19syzJKtbKQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02BB03809A14;
-	Sat,  4 Apr 2026 00:40:10 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1775263505; c=relaxed/simple;
+	bh=qEtUMSOCmfAZwFqHdVAupL42nP36ZiGGCJfn/oHAdTE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=EvvAbiJ2TJCtIszYUBGRY2PVPpqQAraoVZYm7jm2B+Tnv6jy+ubzCh0brok+aJeEEVC7tO9jaacZLNE/E3T2zMqs+POjgoI7JQxFP5JkSVmuGHc3hpgboQY83moPxHgmVOg0HKwDenfHo8L78iOkgwVc+GGxlRjnBkzM51fLvSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; arc=none smtp.client-ip=160.80.4.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+Received: from localhost.localdomain ([160.80.103.126])
+	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 6340iYLE026118;
+	Sat, 4 Apr 2026 02:44:40 +0200
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
+        david.lebrun@uclouvain.be, stefano.salsano@uniroma2.it,
+        paolo.lungaroni@uniroma2.it, nicolas.dichtel@6wind.com,
+        justin.iurman@gmail.com, linux-kernel@vger.kernel.org,
+        Andrea Mayer <andrea.mayer@uniroma2.it>, stable@vger.kernel.org
+Subject: [PATCH net v3 1/2] seg6: separate dst_cache for input and output paths in seg6 lwtunnel
+Date: Sat,  4 Apr 2026 02:44:04 +0200
+Message-Id: <20260404004405.4057-2-andrea.mayer@uniroma2.it>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20260404004405.4057-1-andrea.mayer@uniroma2.it>
+References: <20260404004405.4057-1-andrea.mayer@uniroma2.it>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,50 +38,119 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v4 0/3] dpll: add frequency monitoring feature
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177526320879.1506823.5178557278060663693.git-patchwork-notify@kernel.org>
-Date: Sat, 04 Apr 2026 00:40:08 +0000
-References: <20260402184057.1890514-1-ivecera@redhat.com>
-In-Reply-To: <20260402184057.1890514-1-ivecera@redhat.com>
-To: Ivan Vecera <ivecera@redhat.com>
-Cc: netdev@vger.kernel.org, arkadiusz.kubalewski@intel.com,
- davem@davemloft.net, donald.hunter@gmail.com, edumazet@google.com,
- kuba@kernel.org, jiri@resnulli.us, corbet@lwn.net, mschmidt@redhat.com,
- pabeni@redhat.com, poros@redhat.com, Prathosh.Satish@microchip.com,
- skhan@linuxfoundation.org, horms@kernel.org, vadim.fedorenko@linux.dev,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
+X-Virus-Status: Clean
 
-Hello:
+The seg6 lwtunnel uses a single dst_cache per encap route, shared
+between seg6_input_core() and seg6_output_core(). These two paths
+can perform the post-encap SID lookup in different routing contexts
+(e.g., ip rules matching on the ingress interface, or VRF table
+separation). Whichever path runs first populates the cache, and the
+other reuses it blindly, bypassing its own lookup.
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Fix this by splitting the cache into cache_input and cache_output,
+so each path maintains its own cached dst independently.
 
-On Thu,  2 Apr 2026 20:40:54 +0200 you wrote:
-> This series adds support for monitoring the measured input frequency
-> of DPLL input pins via the DPLL netlink interface.
-> 
-> Some DPLL devices can measure the actual frequency being received on
-> input pins. The approach mirrors the existing phase-offset-monitor
-> feature: a device-level attribute (DPLL_A_FREQUENCY_MONITOR) enables
-> or disables monitoring, and a per-pin attribute
-> (DPLL_A_PIN_MEASURED_FREQUENCY) exposes the measured frequency in
-> millihertz (mHz) when monitoring is enabled.
-> 
-> [...]
+Fixes: 6c8702c60b88 ("ipv6: sr: add support for SRH encapsulation and injection with lwtunnels")
+Cc: stable@vger.kernel.org
+Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
+---
+ net/ipv6/seg6_iptunnel.c | 34 +++++++++++++++++++++++-----------
+ 1 file changed, 23 insertions(+), 11 deletions(-)
 
-Here is the summary with links:
-  - [v4,1/3] dpll: add frequency monitoring to netlink spec
-    https://git.kernel.org/netdev/net-next/c/3fdea79c09d1
-  - [v4,2/3] dpll: add frequency monitoring callback ops
-    https://git.kernel.org/netdev/net-next/c/15ed91aa84ea
-  - [v4,3/3] dpll: zl3073x: implement frequency monitoring
-    https://git.kernel.org/netdev/net-next/c/bfc923b64287
-
-You are awesome, thank you!
+diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
+index 3e1b9991131a..d6a0f7df9080 100644
+--- a/net/ipv6/seg6_iptunnel.c
++++ b/net/ipv6/seg6_iptunnel.c
+@@ -48,7 +48,8 @@ static size_t seg6_lwt_headroom(struct seg6_iptunnel_encap *tuninfo)
+ }
+ 
+ struct seg6_lwt {
+-	struct dst_cache cache;
++	struct dst_cache cache_input;
++	struct dst_cache cache_output;
+ 	struct seg6_iptunnel_encap tuninfo[];
+ };
+ 
+@@ -488,7 +489,7 @@ static int seg6_input_core(struct net *net, struct sock *sk,
+ 	slwt = seg6_lwt_lwtunnel(lwtst);
+ 
+ 	local_bh_disable();
+-	dst = dst_cache_get(&slwt->cache);
++	dst = dst_cache_get(&slwt->cache_input);
+ 	local_bh_enable();
+ 
+ 	err = seg6_do_srh(skb, dst);
+@@ -504,7 +505,7 @@ static int seg6_input_core(struct net *net, struct sock *sk,
+ 		/* cache only if we don't create a dst reference loop */
+ 		if (!dst->error && lwtst != dst->lwtstate) {
+ 			local_bh_disable();
+-			dst_cache_set_ip6(&slwt->cache, dst,
++			dst_cache_set_ip6(&slwt->cache_input, dst,
+ 					  &ipv6_hdr(skb)->saddr);
+ 			local_bh_enable();
+ 		}
+@@ -564,7 +565,7 @@ static int seg6_output_core(struct net *net, struct sock *sk,
+ 	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
+ 
+ 	local_bh_disable();
+-	dst = dst_cache_get(&slwt->cache);
++	dst = dst_cache_get(&slwt->cache_output);
+ 	local_bh_enable();
+ 
+ 	err = seg6_do_srh(skb, dst);
+@@ -591,7 +592,7 @@ static int seg6_output_core(struct net *net, struct sock *sk,
+ 		/* cache only if we don't create a dst reference loop */
+ 		if (orig_dst->lwtstate != dst->lwtstate) {
+ 			local_bh_disable();
+-			dst_cache_set_ip6(&slwt->cache, dst, &fl6.saddr);
++			dst_cache_set_ip6(&slwt->cache_output, dst, &fl6.saddr);
+ 			local_bh_enable();
+ 		}
+ 
+@@ -701,11 +702,13 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
+ 
+ 	slwt = seg6_lwt_lwtunnel(newts);
+ 
+-	err = dst_cache_init(&slwt->cache, GFP_ATOMIC);
+-	if (err) {
+-		kfree(newts);
+-		return err;
+-	}
++	err = dst_cache_init(&slwt->cache_input, GFP_ATOMIC);
++	if (err)
++		goto err_free_newts;
++
++	err = dst_cache_init(&slwt->cache_output, GFP_ATOMIC);
++	if (err)
++		goto err_destroy_input;
+ 
+ 	memcpy(&slwt->tuninfo, tuninfo, tuninfo_len);
+ 
+@@ -720,11 +723,20 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
+ 	*ts = newts;
+ 
+ 	return 0;
++
++err_destroy_input:
++	dst_cache_destroy(&slwt->cache_input);
++err_free_newts:
++	kfree(newts);
++	return err;
+ }
+ 
+ static void seg6_destroy_state(struct lwtunnel_state *lwt)
+ {
+-	dst_cache_destroy(&seg6_lwt_lwtunnel(lwt)->cache);
++	struct seg6_lwt *slwt = seg6_lwt_lwtunnel(lwt);
++
++	dst_cache_destroy(&slwt->cache_input);
++	dst_cache_destroy(&slwt->cache_output);
+ }
+ 
+ static int seg6_fill_encap_info(struct sk_buff *skb,
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.43.0
 
