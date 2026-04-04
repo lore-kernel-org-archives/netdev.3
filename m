@@ -1,101 +1,83 @@
-Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 449A32F60CC;
-	Sat,  4 Apr 2026 06:47:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0308A1531E8;
+	Sat,  4 Apr 2026 07:54:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775285265; cv=none; b=kZLJG2fvB5K6udVC3YPzV+XN0MzJXGaQ2TyfJMBYz2RNgl7h1eNQCJz3IascEmfEvtnhJRlKwV8MvmUX/Aw9m2dDxqlEl9JtaMa8KN3WkZNMEPo0FquJ59IEw+K6CxwesuWwqBesDoqv+gCJTojUk731QNUB7k9+GgqG1BhhfRE=
+	t=1775289255; cv=none; b=rT6MsUg0lmSVVzK4GTdbnyuFlfQPefBPQ52w35x/+R/BMGLvXysZbCVD5ai/NDDjEm/FSxIWjtXxyglba9sHpMhEjZOHhzIVIWXrOrxqQ7nOsbwaZuh7HKGwB//SDogVM0E6U6vOWtf6nMAmzsHptTbcXq94ohQm/h3GfOX2h4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775285265; c=relaxed/simple;
-	bh=XAwJvcrO6lNB3FEqBBsjGjIoCjnUTt4u/LgkHw0Ia0w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XWduGA8AnjAvgyWJBeJcoch2zynMSyizdvWVFtn0FBOwhr0E2nkYZ15fuJ5PFO3YwzpH74k4LGrSpHGSgORsgWNIaG17A/lvi8kDP3dVXKmOmnGgM6Ho6WjdVIUrIWvbbgISBvKQy6ZIng+HrOOPc/wLR2pvuO/+Zi6vsuk3AgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=zkz/qr1g; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=vnsVlbgV; arc=none smtp.client-ip=23.88.97.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="zkz/qr1g";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="vnsVlbgV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1775285262;
-	bh=XAwJvcrO6lNB3FEqBBsjGjIoCjnUTt4u/LgkHw0Ia0w=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=zkz/qr1gkgkKLjpYUPH/ET6zhvWqP8lJY95rqeF2bEMpQl6l6z5XCmpcJK+JoADmd
-	 AX7oXFhdfc8sge3ji0U75pFowayK06aRmGSZ8TkXotyzSlPo3lq953ti6NktvNl3QW
-	 d+3KUKekmdmdiIf2HEAD8wR8TLSaaMxscNi7pPxfK/swRwMlblD5FskyIREDB9tW51
-	 sOhRDxNtyCtwICe9qYRaS8VEBPykvwXRTUlZ+EkyrhGcuDyLvIlr4MvoSYOLk7tNYn
-	 pdmPAhS1uUgZVnJCfZWZsKCtPm18shQBmhFYoMiFH01COLABCvhDQQzh3qGkHxcE3z
-	 rI3O3zBc38+1w==
-Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 8AEDD4091A; Sat,  4 Apr 2026 06:47:42 +0000 (UTC)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1775285261;
-	bh=XAwJvcrO6lNB3FEqBBsjGjIoCjnUTt4u/LgkHw0Ia0w=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=vnsVlbgV9hlDrRHZi1Gmdm8FnvykA9O8f8r7kIXxUHsOXa6el1f3/xfptvNtNdu09
-	 xHJggOUK1yCLa/oEktgckbmugoFIrkd9MnBlHQK7sS8JY2DXlmeanwT9lhe0Xci/rL
-	 kJloUYooBSfXxVNe9FLIgloyD287d+BLAT2r6PYbAwncFCVYsSmtaqgFJ8PiXTCfN5
-	 awC0CcA7krfVxjI4UqANu/r6pSXevtfpqdLbJTul/c9MykoBf+nD9H6fSdrYDel8K8
-	 TZ/54g9a32an5Kn7lKHXO4HTPzHZ0J10Ia7yxi0zoy0UIZk0SpTHjFC1XIeOjd/8OM
-	 YHUECs4JfW04A==
-Received: from [IPV6:2003:c6:9f04:eb00:ab14:e4b1:3dbb:7eb8] (p200300c69f04eb00ab14e4b13dbb7eb8.dip0.t-ipconnect.de [IPv6:2003:c6:9f04:eb00:ab14:e4b1:3dbb:7eb8])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 99B2840904;
-	Sat,  4 Apr 2026 06:47:41 +0000 (UTC)
-Message-ID: <23860a3b-5c89-42d8-bf7f-2f77f35cf14a@birger-koblitz.de>
-Date: Sat, 4 Apr 2026 08:47:40 +0200
+	s=arc-20240116; t=1775289255; c=relaxed/simple;
+	bh=YMXx3Itf1JhFfIb+aobrBUQ59FAYay00gTLdS3m6lG8=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F9eggh7CiIa52YGBzbaJMn7k1aw8u6pZhBZ4qr0ljGhEQXZgFDd4rOrpvmtM9VxHVgRwXZiRGHIPt3wVBGFfPJOGwv4aCGj2cNe1tgIVmRIn5o+6SJvXJDZQCtfduU4nyaQz23dxF5yCnCRgQiW5pFLLP6msncXX/0mK2udx+fQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B40FC19423;
+	Sat,  4 Apr 2026 07:54:10 +0000 (UTC)
+Date: Sat, 4 Apr 2026 13:24:02 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+To: Manivannan Sadhasivam <mani@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Yiming Qian <yimingqian591@gmail.com>
+Subject: Re: [PATCH v2 0/5] net: qrtr: ns: A bunch of fixs
+Message-ID: <kgoysvkrt2m4ap65p3iylgurlf7r6gdo4hczxly4letowjlic6@pf66tyhaqnil>
+References: <20260403-qrtr-fix-v2-0-f88a14859c63@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v6 0/2] r8152: Add support for the RTL8157 5Gbit
- USB Ethernet chip
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, linux-usb@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Chih Kai Hsu <hsu.chih.kai@realtek.com>
-References: <20260402-rtl8157_next-v6-0-a9b77c0931ef@birger-koblitz.de>
- <20260403160608.04f2408b@kernel.org>
- <741bde66-45b7-49e4-88be-7fb1ca8a92df@birger-koblitz.de>
- <2026040421-kite-ethanol-2e28@gregkh>
-From: Birger Koblitz <mail@birger-koblitz.de>
-Content-Language: en-US
-In-Reply-To: <2026040421-kite-ethanol-2e28@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260403-qrtr-fix-v2-0-f88a14859c63@oss.qualcomm.com>
 
-On 04/04/2026 08:27, Greg KH wrote:
-> On Sat, Apr 04, 2026 at 05:54:43AM +0200, Birger Koblitz wrote:
->> On 04/04/2026 01:06, Jakub Kicinski wrote:
->>> On Thu, 02 Apr 2026 10:28:12 +0200 Birger Koblitz wrote:
->>>> Add support for the RTL8157, which is a 5GBit USB-Ethernet adapter
->>>> chip in the RTL815x family of chips.
->>>
->>> no longer applies, please rebase & repost
->> It looks like you are letting me play out the story of the hare and the
->> hedgehog. If there is no interest in this patch series or you would like
->> it to look different, please let me know instead of playing games.
+On Fri, Apr 03, 2026 at 09:36:03PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
+> Hi,
 > 
-> "Does not apply" is not a game, you just need to rebase and resubmit as
-> others are also doing work on the same driver at the same time, so there
-> can be some conflicts that it is up to the submitter to resolve.
-> 
-> This is normal kernel development, has always been this way.
+> This series fixes a bunch of possible memory exhaustion issues in the QRTR
+> nameserver.
 > 
 
-Thanks for the feedback, Greg!
-the underlying issue is that parts of the patch I submitted are now also
-submitted by others, and that gets fast-tracked. This has now happened twice,
-and I am being told every time to re-submit, without efforts to coordinate
-this, or hints that this pattern may stop. This has somewhat made me loose
-trust in the process.
+Gosh. I messed up the cover letter. Please ignore the below: 
 
-I'll nevertheless rebase and resend, and see what happens next.
+> Manivannan Sadhasivam (2):
+>   net: qrtr: ns: Limit the maximum server registration per node
+>   net: qrtr: ns: Limit the maximum lookups per socket
+> 
+>  net/qrtr/ns.c | 38 ++++++++++++++++++++++++++++++++++----
+>  1 file changed, 34 insertions(+), 4 deletions(-)
+> 
+> --
+> 2.51.0
+> 
 
-Birger
+Until here...
+
+- Mani
+
+> ---
+> Manivannan Sadhasivam (5):
+>       net: qrtr: ns: Limit the maximum server registration per node
+>       net: qrtr: ns: Limit the maximum number of lookups
+>       net: qrtr: ns: Free the node during ctrl_cmd_bye()
+>       net: qrtr: ns: Limit the total number of nodes
+>       net: qrtr: ns: Fix use-after-free in driver remove()
+> 
+>  net/qrtr/ns.c | 71 ++++++++++++++++++++++++++++++++++++++++++++++++++---------
+>  1 file changed, 61 insertions(+), 10 deletions(-)
+> ---
+> base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+> change-id: 20260331-qrtr-fix-b502c26e5f46
+> 
+> Best regards,
+> --  
+> Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> 
+> 
+
+-- 
+மணிவண்ணன் சதாசிவம்
