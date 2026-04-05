@@ -1,89 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-y-111.mailbox.org (mout-y-111.mailbox.org [91.198.250.236])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB3123D7FF;
-	Sun,  5 Apr 2026 12:02:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730741A285;
+	Sun,  5 Apr 2026 12:59:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.198.250.236
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775390570; cv=none; b=Tiv4Eql/vzwchH3UTdgjl1SiHbDap3dYlXhYMNI/tFwCJCY/vb82+1mMxpBdtXZh96IXK7CI8i1zC1mhK7lPxfvXzFWn5OQDFtK4Jj96el+FY2dTqSfb5HsuUjQpCbZwZL9X1pXOMsGgRi3CyF8rOidKG75qN3tNGqjWPM+Qg9A=
+	t=1775393951; cv=none; b=jNHhdyw6Q/gEQHc0xj9ClNtXpuE8vpLrez13IPKBwUy2bi28dwnqGfZ6uuMYm2HEq2ivV6r1AfaK1bJzdO5OKrFnUHVfg64eKpbvaE7A8Wj4NqimLkIsqc2dN+U21ai7BbWKdM0aeReTWcegVQd7MvMtrnLFshm7uatoC0lAyg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775390570; c=relaxed/simple;
-	bh=VwXIPBbp0EIzPNtpB2Kh8OUpJCymQVJw7CRWHLQnyH0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=RqDOFt27ZNxrFENXuruO+Ekqfojuw3AoOrjtsYPmZIHOmk9qOLWGNFrMpIG3Vz6aL1uKf2naHhamaRhJoWZ0RLHscqargu0pP7lI9wWRnaY4f9EEfzApV6CUlMILuf6AuBUOk5Gyz/a690ghjPilDRrArpP1zg9nYqi6JLK+xOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qQwwCeNj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775393951; c=relaxed/simple;
+	bh=z5YtPAg8XuhKtTpTkGpA/ZcjkZXvjP1W36Qt/4mb4j4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=eQwT1oZOOq5Xur0T4fNkVwRX8kgTXxdJVtBbdCoil44TOr/H0YXjnCBfniwlfnIzAwHfzOGaF9mzDcGQyqUgvZero82brFibnp5J8wGaHf6QtOZxjDpprVu9WmqeV2SO3FKRUDELzt+wANocPGug4hdyMNdMd2LEnkk+kBeKiLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=eBVYId89; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=fOUBVYS3; arc=none smtp.client-ip=91.198.250.236
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qQwwCeNj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E64C19424;
-	Sun,  5 Apr 2026 12:02:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775390569;
-	bh=VwXIPBbp0EIzPNtpB2Kh8OUpJCymQVJw7CRWHLQnyH0=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=qQwwCeNj+saJT57yAG47jboL8X78w4/j6WpBJ1RZ4sp8PWbMz7XsL9EDbWtj55Eiv
-	 28aGEHxX84zqCSRKzt5WxDYhK2mKne18FSkXEYY++OZ6+IBYaBKFZkA86MS9bLh9Oc
-	 BYyORiDakrz6RnLk4LVZHvUx8P1LQpa7pCp8fHnA1nA9F6ZvrAlepEALLMXhhTHNG5
-	 7JaVWay0RJB3NcEhdmqtS8VF3DnUGPXm4QkCgawXIaUT/QfRxlFCiXeEIfDZt6r6xg
-	 I3uj6fM0ROLbqxk5+qZJNhPISl9Q1iNQvp6vF94UFTOtVMPHy01bKsqbxAmGzThrrM
-	 mtqWeRGNpMg3w==
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="eBVYId89";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="fOUBVYS3"
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-y-111.mailbox.org (Postfix) with ESMTPS id 4fpXb85VM2z9ysl;
+	Sun,  5 Apr 2026 14:59:00 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1775393940;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=b4R/n7ZQ/NmN+wQpB0vnCOAyagNlgla6JkWniE2SC9E=;
+	b=eBVYId89CzGEmfVIpLzuEfmYgwJHTBCyHlzqlgBQwc166S5x3Q/dwHFR/0NryLN9EnBKNx
+	DIyOQRG4TVVBUbpx5dUtrswPATnRbSw56r0vsWsY5Lvl18UrDdvPeIkmrilZmHbQuHEKid
+	CotNVEcel5WuM6QluTxJYb2AGtaZ40XxjG5CDdlQAxd8Ptb7DNbbAo/t1sIDdGMLypUB91
+	1NVNS0NgfiWZw4T6zfxUvxKNOsHyeCrNvFXMbBWtZw2kEgkN1266kDn9cjgZzd4P4jdgpV
+	ftUXrreAdpzcJa+tvjQOH2191/IivgKpCAry28C9W2gP4x/NjPcWRE5m1KE3xA==
+From: Mashiro Chen <mashiro.chen@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1775393938;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=b4R/n7ZQ/NmN+wQpB0vnCOAyagNlgla6JkWniE2SC9E=;
+	b=fOUBVYS3xL7KIcm1t+4LoGOigr2BfUwWd+dqET7D2ODOWLAQy0qeualSsjDGN4ziPbo3tM
+	rhNdMgMySYQQyFKiMrx/fs7+eNhzkhqWxeX3EN4uwhetju3TQvw1WFA1WVFpC/XJhhBT5a
+	vkAPlK2o64smJ7PiYUg4HM7WchcTfaAwdijzm43u+FAYvclMFRSAEFXXtC9so1naM3C6/W
+	KT4s57XpkVpU+s1EALA13QVaK/zWoBZrpQCwYLT9YL5thBrI/tTmqYzPZ0qdKzdDYqiT2q
+	umfYJ4+P5rf5q0v3TCHnKaIcJuWw9VRmbjIUzC5ZwxreGk6WupwKh0/xuzvZ5g==
+To: davem@davemloft.net,
+	kuba@kernel.org
+Cc: edumazet@google.com,
+	horms@kernel.org,
+	pabeni@redhat.com,
+	linux-hams@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	syzbot+abd2b69348e2d9b107a1@syzkaller.appspotmail.com,
+	Mashiro Chen <mashiro.chen@mailbox.org>
+Subject: [PATCH net v2] net: rose: stop timers before freeing neighbour in rose_neigh_put
+Date: Sun,  5 Apr 2026 20:58:30 +0800
+Message-ID: <20260405125830.89251-1-mashiro.chen@mailbox.org>
+In-Reply-To: <20260403204459.124812-1-mashiro.chen@mailbox.org>
+References: <20260403204459.124812-1-mashiro.chen@mailbox.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 05 Apr 2026 14:02:33 +0200
-Message-Id: <DHL7FCNQ20PA.2K03T8MNSO9TT@kernel.org>
-Subject: Re: [PATCH v4 0/9] driver core: Fix some race conditions
-Cc: "Douglas Anderson" <dianders@chromium.org>, "Rafael J . Wysocki"
- <rafael@kernel.org>, "Alan Stern" <stern@rowland.harvard.edu>, "Saravana
- Kannan" <saravanak@kernel.org>, "Christoph Hellwig" <hch@lst.de>, "Eric
- Dumazet" <edumazet@google.com>, "Johan Hovold" <johan@kernel.org>, "Leon
- Romanovsky" <leon@kernel.org>, "Alexander Lobakin"
- <aleksander.lobakin@intel.com>, "Alexey Kardashevskiy" <aik@ozlabs.ru>,
- "Robin Murphy" <robin.murphy@arm.com>, "Andrew Morton"
- <akpm@linux-foundation.org>, <Frank.Li@kernel.org>, "Jason Gunthorpe"
- <jgg@ziepe.ca>, <alex@ghiti.fr>, <alexander.stein@ew.tq-group.com>,
- <andre.przywara@arm.com>, <andrew@codeconstruct.com.au>, <andrew@lunn.ch>,
- <andriy.shevchenko@linux.intel.com>, <aou@eecs.berkeley.edu>,
- <ardb@kernel.org>, <bhelgaas@google.com>, <brgl@kernel.org>,
- <broonie@kernel.org>, <catalin.marinas@arm.com>, <chleroy@kernel.org>,
- <davem@davemloft.net>, <david@kernel.org>, <devicetree@vger.kernel.org>,
- <dmaengine@vger.kernel.org>, <driver-core@lists.linux.dev>,
- <gbatra@linux.ibm.com>, <gregory.clement@bootlin.com>,
- <hkallweit1@gmail.com>, <iommu@lists.linux.dev>, <jirislaby@kernel.org>,
- <joel@jms.id.au>, <joro@8bytes.org>, <kees@kernel.org>,
- <kevin.brodsky@arm.com>, <kuba@kernel.org>, <lenb@kernel.org>,
- <lgirdwood@gmail.com>, <linux-acpi@vger.kernel.org>,
- <linux-arm-kernel@lists.infradead.org>, <linux-aspeed@lists.ozlabs.org>,
- <linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-mips@vger.kernel.org>, <linux-mm@kvack.org>,
- <linux-pci@vger.kernel.org>, <linux-riscv@lists.infradead.org>,
- <linux-serial@vger.kernel.org>, <linux-snps-arc@lists.infradead.org>,
- <linux-usb@vger.kernel.org>, <linux@armlinux.org.uk>,
- <linuxppc-dev@lists.ozlabs.org>, <m.szyprowski@samsung.com>,
- <maddy@linux.ibm.com>, <mani@kernel.org>, <maz@kernel.org>,
- <miko.lenczewski@arm.com>, <mpe@ellerman.id.au>, <netdev@vger.kernel.org>,
- <npiggin@gmail.com>, <osalvador@suse.de>, <oupton@kernel.org>,
- <pabeni@redhat.com>, <palmer@dabbelt.com>, <peter.ujfalusi@gmail.com>,
- <peterz@infradead.org>, <pjw@kernel.org>, <robh@kernel.org>,
- <sebastian.hesselbarth@gmail.com>, <tglx@kernel.org>,
- <tsbogend@alpha.franken.de>, <vgupta@kernel.org>, <vkoul@kernel.org>,
- <will@kernel.org>, <willy@infradead.org>, <yangyicong@hisilicon.com>,
- <yeoreum.yun@arm.com>
-To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260404000644.522677-1-dianders@chromium.org>
- <2026040539-sponge-publisher-2b42@gregkh>
-In-Reply-To: <2026040539-sponge-publisher-2b42@gregkh>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-META: hcaqyrpieznhp65icxbjdkq5qg8a94k4
+X-MBO-RS-ID: 553ccaf378a87f060dc
 
-On Sun Apr 5, 2026 at 7:27 AM CEST, Greg Kroah-Hartman wrote:
-> Anyway, this looks great, unless there are any objections, other than
-> the "needs to be undefined", which a follow-on patch can handle, I'll
-> queue them up next week for 7.1-rc1.
+rose_neigh_put() frees the rose_neigh object when the reference count
+reaches zero, but does not stop the t0timer and ftimer beforehand.
+If a timer has been scheduled and fires after the object is freed,
+the callback will access already-freed memory, leading to a
+use-after-free.
 
-Sounds good, for the series:
+For example, this can happen when rose_timer_expiry() in ROSE_STATE_2
+calls rose_neigh_put() dropping the last reference while the
+neighbour's t0timer is still pending:
 
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+  rose_timer_expiry() (ROSE_STATE_2)
+    rose_neigh_put(rose->neighbour)   --> refcount drops to 0, kfree
+  ...
+  rose_t0timer_expiry()               --> UAF: accesses freed neigh
+
+Fix this by calling timer_delete_sync() for both t0timer and ftimer
+in rose_neigh_put() before freeing the object. This ensures any
+pending or running timer callback completes before the memory is
+released.
+
+This is safe because rose_neigh_put() is never called from the
+neigh's own timer callbacks (t0timer_expiry / ftimer_expiry), so
+timer_delete_sync() cannot deadlock.
+
+The UAF can be triggered through the following sequence:
+
+1. rose_add_node() creates a rose_neigh with refcount=2
+   (initial neigh_list reference plus one held by the new node entry)
+2. A socket connects via rose_get_neigh(), rose_neigh_hold() raises
+   refcount to 3; rose_transmit_link() arms t0timer on the neigh
+3. The routing entry is deleted: rose_del_node() drops the node
+   reference (3->2), calls rose_remove_neigh() which stops both
+   timers, then drops the neigh_list reference (2->1); the socket
+   now holds the only reference with t0timer stopped
+4. T1 expires in ROSE_STATE_1: rose_timer_expiry() sends
+   CLEAR_REQUEST via rose_transmit_link(), which sees
+   neigh->restarted=0 and !rose_t0timer_running, and re-arms
+   t0timer on the neigh (refcount still 1)
+5. T3 expires in ROSE_STATE_2: rose_timer_expiry() calls
+   rose_neigh_put(), refcount drops to 0, kfree(neigh)
+6. t0timer fires, rose_t0timer_expiry() accesses freed neigh -> UAF
+
+Fixes: d860d1faa6b2 ("net: rose: convert 'use' field to refcount_t")
+Reported-by: syzbot+abd2b69348e2d9b107a1@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=abd2b69348e2d9b107a1
+Signed-off-by: Mashiro Chen <mashiro.chen@mailbox.org>
+---
+ include/net/rose.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/include/net/rose.h b/include/net/rose.h
+index 2b5491bbf39ab..c69024e865456 100644
+--- a/include/net/rose.h
++++ b/include/net/rose.h
+@@ -160,6 +160,8 @@ static inline void rose_neigh_hold(struct rose_neigh *rose_neigh)
+ static inline void rose_neigh_put(struct rose_neigh *rose_neigh)
+ {
+ 	if (refcount_dec_and_test(&rose_neigh->use)) {
++		timer_delete_sync(&rose_neigh->t0timer);
++		timer_delete_sync(&rose_neigh->ftimer);
+ 		if (rose_neigh->ax25)
+ 			ax25_cb_put(rose_neigh->ax25);
+ 		kfree(rose_neigh->digipeat);
+-- 
+2.53.0
+
