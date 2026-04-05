@@ -1,149 +1,177 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7098FDF59
-	for <netdev@vger.kernel.org>; Sun,  5 Apr 2026 00:05:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775347511; cv=pass; b=eAT8Xw8Rywb+z/IqSUT2Y3bgyqtbUDUFAss4IEhFlTSYMqQ+0PmpMApjvDcdse3+oBG6kdt2/Qw9iVpK1PftrEup4hafB9+uOd5nPKapcQvcU2473XgIfUZzOTEXAW3d6x+WC21dbmuV+1pKFIokx4Ck13OiWwtHgGPSwzeD6xU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775347511; c=relaxed/simple;
-	bh=R23rsYH+zgP21jS79cqvnw2fqeQu7QiruRCG+NqhnIM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nDF8ln34qY3DYHVMiWMlAzAxVTZ705XMJNbszMTnuuGjmz8N33fgOB/O1nTr9gE0LIh6+uno8mPt4zgVpevziqV73a1xG1YHxSb5JIe9NRhSly1fl6snRWi9WyJbBifJ598BKwlgZ5vavXIlnsnK5R3sDQ1lvewnR7zO639iZSU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=s28tVyTJ; arc=pass smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03948F49;
+	Sun,  5 Apr 2026 01:16:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775351771; cv=none; b=MlT2LWmfL9F2ST2UTiIOObP6q0Ev2hc9JscsGTSJeeOGJlOHk63nxuEkmki1Kja38mXVqdtceacXtlobFCCQLqdDzgdmoCiO6h6fXEM2XDwxC3eVFYZm26RtiW7DEcDkO2ET48uavaOKQ8zNsz7aivDhi9olgBLxAxbpNV4SDJg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775351771; c=relaxed/simple;
+	bh=wUgAW77gLesDjJ7akGuuOi0lJVwMR3VmDH0R9wN+Zqc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SodeKMBIuMKFIj3uZrrXWop61ZixRAcWVYW66Ikpsn9wGmos0Nuc5A/PYmY//LmiXItMFWWoNi5NkOhuMREfV7mGjfS4Xv9YJTq0PwLAzswRCtT5FkcXeTio1o/p2yL5G++w16ahtXqkCnuSDHJ1+zUfPF8cY+kWD14Sd1h2ZZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=efXHlYEj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="s28tVyTJ"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2b2503753efso24020525ad.0
-        for <netdev@vger.kernel.org>; Sat, 04 Apr 2026 17:05:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775347510; cv=none;
-        d=google.com; s=arc-20240605;
-        b=WLmYdfSc83+UWejFHAnt3cWKrgOu7eM06o7s9imRJ1vx/og1XzzYGOPCL+bVC6BJu9
-         p+cWBv2GmJPLZpmmMTHDh2Wo8TBTSMPWjgS4vD0YzNInmE/2o5jzqnBeYVXY3vFp6LAK
-         DWNQQaO/aJhQottqfXqCj6JBy8RCO4bXzwy0dKlRAUWC750tCv2bAomw0xoN1M8cPoQS
-         WItqSBfIXKrnecppypDuAKauLSthSuXx/SvS3AsDDN37vKRD4woBaAtgxleglWC0CItl
-         cVeX4SHSJxr1DqbxnDDqrNxccUkYVr0bu7bSpRk3pJgfF+3OPKU+oPEeF0nCtWcm2Rod
-         ynCw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=uBdFnIwU/qogTBcIt+veH+3ao5W7MrcqdsJxPS4CqGw=;
-        fh=mc4xYpygOlnhFXWByWqe9LiqP9VDCa/v5Ox9bxhcwLM=;
-        b=EO3CpjKBk6eQCje21VP69XPSypUh5LknjX6nWLBqNkCUddZTEncvYdKvi7zQOguKMo
-         V2K1CIn5PjRXa0KyGZwrLnuHvJs7Vc6IDegbxEjYygWi+FGSkrxI7ZXfl6nuvPY5lRW2
-         eO2q++C64DkKPbXScUem6mKQq4m7+sLqYXEvhWOPZPGJ9rplAm/c1vKW5B3mjaDcEZRz
-         C160HzEXuPZBHWuRXf/VYft+TP67kTObQsiE3jJuLtWozqfMDjQVAAw22lEC6vs67Mlx
-         TfchxT/iGQ+Weg/ACyXMcYbaCtYHo5Ah8iBrnRcaZIMMmO/PVe5N+f3SrmJjSkTyLH6t
-         ItpA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=asu.edu; s=google; t=1775347510; x=1775952310; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uBdFnIwU/qogTBcIt+veH+3ao5W7MrcqdsJxPS4CqGw=;
-        b=s28tVyTJce9e88IeGAQneU2Oe9txmbZjY6CK7BXjVzh3yAWdrmxzwxzEidLo+/bjNB
-         rA9fQ3sD1Ojmz9YzpbvzRc0+JUMATKINogyCLgCDI8CXtluvX/mrVDVbJubA72iTYy3j
-         JqUKuwfZeGZsnRvpLD/VpLMPr7jaFRo8gTQSq7FSmg3S0WDwtefpAQ/q55PHBkA4SnlT
-         6S0ACU8mzusAJAKDGU1UcKPvp4W5HqCI9OToiScCynLbpItYRjabOVj+IdI5d4gJ1Liz
-         GRvJUjvlh8DuJ12Hdyotlo3//TwJd7YCxYEYAIN4pa9fLETdiOha8I9t8NBi1581xgaA
-         z4aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775347510; x=1775952310;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=uBdFnIwU/qogTBcIt+veH+3ao5W7MrcqdsJxPS4CqGw=;
-        b=OW6MXNZbqGH4Rt6tKb5mSAC1XbnrUnVZFYiQ4Olm3JZjzFbR3yfK/bOE6c42uIRmGb
-         2Vn8GRYmurOFUgw3xPEHmxinWzQbNB7PSOB/X0ImIX1yJ+HOriMwsI5gXupjVn8gdIKs
-         DrDkSnO/WrXwwIeaEOGIyOcBu8rjrm3jwIoFJDv6ozb1aCkTTrrXU9fquWDQbYLBKxMD
-         B/G2k6hI+9ydLFB0MsXYVAYysjHkxzkNVTLI7zAGM3IilgRmsq/bEbeTMLdgsR5wYVhH
-         jBDK0yl80sRnh8u4zU4oC5Mlj+Pp7ZtpTetkCVRrIfiZri9yU0eA7wgWGayPAE6TBsxi
-         0bbQ==
-X-Gm-Message-State: AOJu0Yyg/xDxQXH+E+HlF0pwHovtH5dmERbW+OzkqeJqJXLCvzXJ12Vw
-	X2qT34p0A3phQctYSVASTmKqf0qBc+jL0FkjuvSVXXm0+rLRtl76hcijIvHwl+Q7A2XPQl6a5Xk
-	jItj20ylDp8rgbBMKn9n6+AOReht0rxuUu6ux3y/3
-X-Gm-Gg: AeBDievCCFI8AFsS+7Tw9xpR2LaAcXp0ebor5r0WUlrjmY2BkonmQcbmqx7pbcur7LP
-	cK89uhyoKnTtZDpHwOb17Eu+rywCB04Cq72Yqqb3ET62glbP0sRzbgKtfb+9kZUoUxceOYBbWeb
-	GK3cJTjCU0UFpo1OnunQc8MEYiV/K5aiq30413uqfAVhZZdkB5Ee4QvPtfWZW0dwX2nJZk8ChsJ
-	7RoVuambE9fJhzKMpXJRDgzt5+H2qwuNgLMs1JOAZnR2GH3E6Y/yBhd37JF3D0X8O3x9/XnanAE
-	Wmz+qari
-X-Received: by 2002:a17:902:f54d:b0:2b2:4e1a:aff9 with SMTP id
- d9443c01a7336-2b281997e1fmr78997865ad.44.1775347509777; Sat, 04 Apr 2026
- 17:05:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="efXHlYEj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F63C19421;
+	Sun,  5 Apr 2026 01:16:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775351770;
+	bh=wUgAW77gLesDjJ7akGuuOi0lJVwMR3VmDH0R9wN+Zqc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=efXHlYEja0pThEY2fOHOyN/swby0n6ciyBLloFawRc51FOtUFPvmsiFI7hTO/TeIa
+	 IG8a34tByjKDnkVGYkI7T0N1KQ1QIPw9zERC5DYReQvNvKktwG+FYVr4scTWUfZxuw
+	 vDKp3U492MeGimClOFRSeQYZRrz5I54VerJbdlgWVxUHQNP7HvTP0ms9Sh1X9bUN/l
+	 sajcqgjmE8c8t2oc9ICQimbOx0AkrTYc/5lVZHIBlTNjbDdsxvi1speai5C/SXuPQg
+	 w9+XDGMk7MFmffsoI5fcT9uK4ISuw0gtH3RiYtRYoFWs5qhNShY2H4mNMye3hvkSdp
+	 j5mYlEf1r+LdA==
+From: Eric Biggers <ebiggers@kernel.org>
+To: netdev@vger.kernel.org,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>
+Cc: linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH ipsec-next] xfrm: Drop support for HMAC-RIPEMD-160
+Date: Sat,  4 Apr 2026 18:15:13 -0700
+Message-ID: <20260405011513.64909-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260326031957.3299500-1-xmei5@asu.edu> <20260327112056.GC567789@horms.kernel.org>
-In-Reply-To: <20260327112056.GC567789@horms.kernel.org>
-From: Xiang Mei <xmei5@asu.edu>
-Date: Sat, 4 Apr 2026 17:04:59 -0700
-X-Gm-Features: AQROBzDVrru311INQMcAH2NeVIDVm62F2BspdoCZ1Sm8hSx6TOuC6jLJ0FBtOPA
-Message-ID: <CAPpSM+TV89o-aj7SVsAWPcVVSSte5SENe8f4tGe+Y23CHza+iA@mail.gmail.com>
-Subject: Re: [PATCH net] bridge: cfm: do not reschedule TX work when interval
- is zero
-To: Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, bridge@lists.linux.dev, razor@blackwall.org, 
-	idosch@nvidia.com, davem@davemloft.net, edumazet@google.com, 
-	pabeni@redhat.com, bestswngs@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Mar 27, 2026 at 4:21=E2=80=AFAM Simon Horman <horms@kernel.org> wro=
-te:
->
-> On Wed, Mar 25, 2026 at 08:19:57PM -0700, Xiang Mei wrote:
-> > ccm_tx_work_expired() uses interval_to_us() to convert the configured
-> > exp_interval enum into a microsecond delay, then passes it to
-> > queue_delayed_work() to schedule the next iteration. The ccm_tx_dwork
-> > callback re-arms the same delayed_work struct at the end of each
-> > invocation, forming a repeating timer.
-> >
-> > interval_to_us() returns 0 for BR_CFM_CCM_INTERVAL_NONE and any
-> > out-of-range enum value. When this 0 is passed to queue_delayed_work()
-> > as the delay, the work item fires immediately and re-arms itself with
-> > zero delay again, creating an infinite tight loop. Each iteration
-> > allocates an skb via ccm_frame_build() and queues it for transmission.
-> > The skbs pile up faster than the network stack can free them because th=
-e
-> > worker never yields the CPU, rapidly exhausting all kernel memory until
-> > OOM deadlock panic.
-> >
-> > Since CC config and CCM TX are independent netlink commands that can be
-> > issued in any order, there is no single configuration entry point where
-> > rejecting interval=3D0 would cover all cases.
-> >
-> > Fix this by checking the interval at the start of ccm_tx_work_expired()
-> > and stopping transmission immediately if it is zero. Set period to 0 so
-> > that br_cfm_cc_ccm_tx() correctly sees transmission as stopped and can
-> > restart it later if a valid interval is configured. This also avoids
-> > transmitting a CCM frame with an invalid interval value.
->
-> Hi,
->
-> I think that the principle should be that code that doesn't need
-> to be in the datapath shouldn't be in the datapath.
->
-> So, with that in mind, I think it would be better to set a lower bound on
-> exp_interval when the mep is:
->
-> a) Created. It looks like that happens in br_cfm_mep_create
-> b) Configured. It looks like that can be done by setting a policy on the
->    minimum value of IFLA_BRIDGE_CFM_CC_CONFIG_EXP_INTERVAL
->
-Thanks for the suggestion. You are right, it's better to move the
-check out of the datapath. V2 has been sent, which blocks the invalid
-interval in creation/configuration.
-> >
-> > Fixes: a806ad8ee2aa ("bridge: cfm: Kernel space implementation of CFM. =
-CCM frame TX added.")
-> > Reported-by: Weiming Shi <bestswngs@gmail.com>
-> > Signed-off-by: Xiang Mei <xmei5@asu.edu>
->
-> ...
+Drop support for HMAC-RIPEMD-160 from IPsec to reduce the UAPI surface
+and simplify future maintenance.  It's almost certainly unused.
+
+RIPEMD-160 received some attention in the early 2000s when SHA-* weren't
+quite as well established.  But it never received much adoption outside
+of certain niches such as Bitcoin.
+
+It's actually unclear that Linux + IPsec + HMAC-RIPEMD-160 has *ever*
+been used, even historically.  When support for it was added in 2003, it
+was done so in a "cleanup" commit without any justification [1].  It
+didn't actually work until someone happened to fix it 5 years later [2].
+That person didn't use or test it either [3].  Finally, also note that
+"hmac(rmd160)" is by far the slowest of the algorithms in aalg_list[].
+
+Of course, today IPsec is usually used with an AEAD, such as AES-GCM.
+But even for IPsec users still using a dedicated auth algorithm, they
+almost certainly aren't using, and shouldn't use, HMAC-RIPEMD-160.
+
+Thus, let's just drop support for it.  Note: no kconfig update is
+needed, since CRYPTO_RMD160 wasn't actually being selected anyway.
+
+References:
+  [1] linux-history commit d462985fc1941a47
+      ("[IPSEC]: Clean up key manager algorithm handling.")
+  [2] linux commit a13366c632132bb9
+      ("xfrm: xfrm_algo: correct usage of RIPEMD-160")
+  [3] https://lore.kernel.org/all/1212340578-15574-1-git-send-email-rueegsegger@swiss-it.ch
+
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+---
+ net/xfrm/xfrm_algo.c                | 20 --------------------
+ tools/testing/selftests/net/ipsec.c |  8 ++------
+ 2 files changed, 2 insertions(+), 26 deletions(-)
+
+diff --git a/net/xfrm/xfrm_algo.c b/net/xfrm/xfrm_algo.c
+index 749011e031c0a..70434495f23f5 100644
+--- a/net/xfrm/xfrm_algo.c
++++ b/net/xfrm/xfrm_algo.c
+@@ -288,30 +288,10 @@ static struct xfrm_algo_desc aalg_list[] = {
+ 		.sadb_alg_ivlen = 0,
+ 		.sadb_alg_minbits = 512,
+ 		.sadb_alg_maxbits = 512
+ 	}
+ },
+-{
+-	.name = "hmac(rmd160)",
+-	.compat = "rmd160",
+-
+-	.uinfo = {
+-		.auth = {
+-			.icv_truncbits = 96,
+-			.icv_fullbits = 160,
+-		}
+-	},
+-
+-	.pfkey_supported = 1,
+-
+-	.desc = {
+-		.sadb_alg_id = SADB_X_AALG_RIPEMD160HMAC,
+-		.sadb_alg_ivlen = 0,
+-		.sadb_alg_minbits = 160,
+-		.sadb_alg_maxbits = 160
+-	}
+-},
+ {
+ 	.name = "xcbc(aes)",
+ 
+ 	.uinfo = {
+ 		.auth = {
+diff --git a/tools/testing/selftests/net/ipsec.c b/tools/testing/selftests/net/ipsec.c
+index f4afef51b9307..89c32c354c008 100644
+--- a/tools/testing/selftests/net/ipsec.c
++++ b/tools/testing/selftests/net/ipsec.c
+@@ -60,12 +60,10 @@
+ #define grchild_ip(nr)	(4*nr + 2)
+ 
+ #define VETH_FMT	"ktst-%d"
+ #define VETH_LEN	12
+ 
+-#define XFRM_ALGO_NR_KEYS 29
+-
+ static int nsfd_parent	= -1;
+ static int nsfd_childa	= -1;
+ static int nsfd_childb	= -1;
+ static long page_size;
+ 
+@@ -94,11 +92,10 @@ struct xfrm_key_entry xfrm_key_entries[] = {
+ 	{"cmac(aes)", 128},
+ 	{"xcbc(aes)", 128},
+ 	{"cbc(cast5)", 128},
+ 	{"cbc(serpent)", 128},
+ 	{"hmac(sha1)", 160},
+-	{"hmac(rmd160)", 160},
+ 	{"cbc(des3_ede)", 192},
+ 	{"hmac(sha256)", 256},
+ 	{"cbc(aes)", 256},
+ 	{"cbc(camellia)", 256},
+ 	{"cbc(twofish)", 256},
+@@ -811,11 +808,11 @@ static int do_ping(int cmd_fd, char *buf, size_t buf_len, struct in_addr from,
+ static int xfrm_fill_key(char *name, char *buf,
+ 		size_t buf_len, unsigned int *key_len)
+ {
+ 	int i;
+ 
+-	for (i = 0; i < XFRM_ALGO_NR_KEYS; i++) {
++	for (i = 0; i < ARRAY_SIZE(xfrm_key_entries); i++) {
+ 		if (strncmp(name, xfrm_key_entries[i].algo_name, ALGO_LEN) == 0)
+ 			*key_len = xfrm_key_entries[i].key_len;
+ 	}
+ 
+ 	if (*key_len > buf_len) {
+@@ -2059,12 +2056,11 @@ static int write_desc(int proto, int test_desc_fd,
+ }
+ 
+ int proto_list[] = { IPPROTO_AH, IPPROTO_COMP, IPPROTO_ESP };
+ char *ah_list[] = {
+ 	"digest_null", "hmac(md5)", "hmac(sha1)", "hmac(sha256)",
+-	"hmac(sha384)", "hmac(sha512)", "hmac(rmd160)",
+-	"xcbc(aes)", "cmac(aes)"
++	"hmac(sha384)", "hmac(sha512)", "xcbc(aes)", "cmac(aes)"
+ };
+ char *comp_list[] = {
+ 	"deflate",
+ #if 0
+ 	/* No compression backend realization */
+
+base-commit: be14d13625c9b070c33c423026b598ed65695225
+-- 
+2.53.0
+
