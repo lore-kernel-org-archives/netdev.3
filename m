@@ -1,49 +1,44 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646102DFA4A;
-	Sun,  5 Apr 2026 23:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF4B1AB6F1;
+	Sun,  5 Apr 2026 23:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775432306; cv=none; b=JRi3K65ufYsvI6KXPTXV9TIKMBNqYWvEEA0MNNXSbb2NjV1tMGUIVhLZk1/T+I4Srs5NK0L1xg+IZ4aq6dn+ISgIqujiYkbGQ8Hc6GFB6kz0FdQ9rv+ntLKRotzmkkZuQIdXwbB/Hc+zABhX+hQB7opvNREDG9Y+fVDsmlAPG2M=
+	t=1775432962; cv=none; b=Ydf6AFodc2rs7wfFQmAq0iEKn1EsmFzJUZtlGipqQre+sRCpQq9dAv49i2Z9FsVFFg9bcX2sqOQ22jrVAJ3OmTVVByhFhN13MO9vVdLmmir8AvdbEcOBVcZR8Jh51+uZpdlZUKOHK3Jqy2L/L6Jrd8NND/ZkU8LoWs7pwi8+sZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775432306; c=relaxed/simple;
-	bh=BlF4hdRKoQTwwkgj3MRbFI0zcGVQlP3zCR6cUM5//n4=;
+	s=arc-20240116; t=1775432962; c=relaxed/simple;
+	bh=ByVakQaqWOdVbTt8cRRx+RrqV7H0NZvlLdiCELhpm2c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GZzQ1MttbViw91cmdiaSGZKVQY4bkwx+vNx8wqns/hfn5Rr18fWH4Z+dAPAV5chwyaMkI3G2M5FZq1P2wgRXbCY/G9sIKmaJ4oOxBd+fDB4+scN2BylzwNHa5qdgzvgHUdBb0wruovNoD26MD9MhNO4ZONkpP1VFpqAIn57fZJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=kdx2TwJA; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=Rg1OGTsAYqoBb56OjUg6uloFZqpn3w0oEM9vhezY/r5nrsQWOQRjBs+Xzh+q4EWSfjxdaNRlIcX7ISeZePs8US4NolaDjrJUkCZkAJ5wDJOqphjvkmhRDQZruyc/lKqzJ+eqKxsyQGZqKPxk6wj5k1GAZ5534si5uuxwdt2yJlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=x+AlIvYk; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="kdx2TwJA"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="x+AlIvYk"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=frr/vyDVrkNBFv1uvWKDe7YbXUlbwouqZpZ2NnxuGxc=; b=kdx2TwJAf2hL4jzsomRnef0xpr
-	lMlVc2vd45dVY47asp8gIONMWD76CnOSlVpnm6lOuaH9v34VYPQnEB9qLaYlUZBVmPpOqpEhjPP01
-	NPzo7ocBS+lrohHL1vJSL2FGqZOPcx47DLMasrKNVGxterpBzpNbDN3jjXyzwjw9BqQU=;
+	bh=j6+gdbDZZdlGyn80LUvHgvPnYmuishTMRVpglZve2KM=; b=x+AlIvYk1zjc1NzfvxMUMcblyJ
+	p5ythXWUplKBGwLsHSKorJK8fIen5rtkoQBt9Ns9LZdeePG2UbvQJyOAL1ThnJhpx7LGz+y4Teqca
+	V+9PWGgC/kp1xwTk/SR8EnLihhioCzQgdJKCrmvV5GpV73caHrRJc1M+xQ8+PpMt+FNc=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1w9X2c-00Evj1-1S; Mon, 06 Apr 2026 01:38:06 +0200
-Date: Mon, 6 Apr 2026 01:38:06 +0200
+	id 1w9XDM-00Evl5-Or; Mon, 06 Apr 2026 01:49:12 +0200
+Date: Mon, 6 Apr 2026 01:49:12 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Petko Manolov <petkan@nucleusys.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Morduan Zang <zhangdandan@uniontech.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-usb@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+9db6c624635564ad813c@syzkaller.appspotmail.com
-Subject: Re: [PATCH] usb: rtl8150: avoid using uninitialized CSCR value
-Message-ID: <76d6b341-27d5-44aa-92fb-3b8966d609df@lunn.ch>
-References: <93FF85BB9F33CD2B+20260402070743.20641-1-zhangdandan@uniontech.com>
- <20260403154538.GA187715@horms.kernel.org>
- <20260405085212.GA8491@cabron.k.g>
+To: Oskar Ray-Frayssinet <rayfraytech@gmail.com>
+Cc: pavan.chebbi@broadcom.com, mchan@broadcom.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, lszubowi@redhat.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2] tg3: Add PowerEdge R740xd to AER quirk list
+Message-ID: <bbd6d9df-9698-41d3-808b-c751bc1c4576@lunn.ch>
+References: <20260404225023.1254-1-rayfraytech@gmail.com>
+ <975ec123-e3df-41d5-bb15-f3af8af2c340@lunn.ch>
+ <CAJioSGcBb3eRtgQXHWx+Bhw4M422dyAo-0yXO-XwU7h4hmwmEQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,28 +47,27 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260405085212.GA8491@cabron.k.g>
+In-Reply-To: <CAJioSGcBb3eRtgQXHWx+Bhw4M422dyAo-0yXO-XwU7h4hmwmEQ@mail.gmail.com>
 
-> > -	get_registers(dev, CSCR, 2, &tmp);
-> > +	if (get_registers(dev, CSCR, 2, &tmp) < 0)
-> > +		tmp = 0;
-> >  	if (tmp & CSCR_LINK_STATUS)
-> >  		netif_carrier_on(netdev);
-> >  	else
+On Sun, Apr 05, 2026 at 12:56:11PM +0200, Oskar Ray-Frayssinet wrote:
+> On Sun, Apr 05, 2026 at 01:03:00AM +0200, Andrew Lunn wrote:
+> > When you look at tg3_restart_aer_quirk_table[] they are all Dell.
+> > Are there any Dell systems which actually work? Would it make sense
+> > to mark all Dell systems as broken and enable the quirk?
 > 
-> I was wondering if calling netif_carrier_off() is the right thing to do in case
-> get_registers() fail.
-> 
-> There are multiple get_registers() calls that don't check the error and if we do
-> this in set_carrier() maybe we should do the same thing across the whole driver?
+> That's a good point. I don't know if there are Dell systems where
+> the quirk would cause harm. Do you know if it's safe to apply the
+> quirk to all Dell systems, or should we be cautious and keep the
+> per-model approach?
 
-What does it actually mean if get_registers() fails? The device is
-gone? Hot unplugged? If so, you are going to get a cascade of errors,
-and then hopefully the USB core code removes the device?
+You might want to ask on the PCI list.
 
-Are there any legitimate reasons for get_registers() to fail if the
-device is still plugged in?
+As far as i see, with 30 seconds for searching and reading
+documentation, AER, Advanced Error Reporting is an optional feature of
+PCIe. Since it is optional, it seems like disabling it during shutdown
+should not have any negative effects. Except for systems where it
+actually works, and there are real errors during shutdown and
+resume. It will be harder to debug such errors since you don't get the
+advanced error report.
 
-It seems netif_carrier_off() is unnecessary?
-
-   Andrew
+      Andrew
