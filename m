@@ -1,46 +1,49 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1A62C21EC;
-	Sun,  5 Apr 2026 23:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646102DFA4A;
+	Sun,  5 Apr 2026 23:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775431870; cv=none; b=XI+eHoUxn6rewnzmSFK4MjFUEGqEJxb+6KTQJParDeq9iFEI8DNp4WRY+XQ/+Opzgr9WQ2puH4GepndiWi+L+qa31XKlG3jGD/5Ww3OFHhp/TdB5x07OVLIDPwm2NSak2tgT22YXKHXqU9hcM8IBjZ7vSKmx2EW1lDsxeM4ru5o=
+	t=1775432306; cv=none; b=JRi3K65ufYsvI6KXPTXV9TIKMBNqYWvEEA0MNNXSbb2NjV1tMGUIVhLZk1/T+I4Srs5NK0L1xg+IZ4aq6dn+ISgIqujiYkbGQ8Hc6GFB6kz0FdQ9rv+ntLKRotzmkkZuQIdXwbB/Hc+zABhX+hQB7opvNREDG9Y+fVDsmlAPG2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775431870; c=relaxed/simple;
-	bh=bEnu8ok92svY2hpN2I5bJp/F2YqmT0V6lQgyKQBT3t8=;
+	s=arc-20240116; t=1775432306; c=relaxed/simple;
+	bh=BlF4hdRKoQTwwkgj3MRbFI0zcGVQlP3zCR6cUM5//n4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=la0EucY0RvBZVs6PIK5PAckEKGUpZ9yjk8bS9dmE4l7GhPXzLbE47boKA+NKhfu5+3ZFFI9jciCVLbahXRZ1CeA++9Xrk8Dq0EQMo7aVp1c2/D2lxpTubt8QJ4mvZPJ1tFA7S9xBNpGMf7tp1Uq3BeGwZKIonU8kR8Ta5RGcTHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=k5aOUMx+; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=GZzQ1MttbViw91cmdiaSGZKVQY4bkwx+vNx8wqns/hfn5Rr18fWH4Z+dAPAV5chwyaMkI3G2M5FZq1P2wgRXbCY/G9sIKmaJ4oOxBd+fDB4+scN2BylzwNHa5qdgzvgHUdBb0wruovNoD26MD9MhNO4ZONkpP1VFpqAIn57fZJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=kdx2TwJA; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="k5aOUMx+"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="kdx2TwJA"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=OrDPLTy8mH3lnHhLuKLAs0AzUjMCVtT4kpOecAwFjK8=; b=k5aOUMx+WcVPDxfyLDs2u4dfM1
-	9POyf2E+FahJuvnK8GnKQUBF17Q93IJw+cE1pw1kkCELgHatvNLuST5mPCkpsquv2IBTNrinlVifB
-	mZ8SbaCv3UmSH5OYUgjMAvQKbmL3A9Kzb2rqG11OStUsWzpDNT5uWZ5bE62h4Jj0kvbo=;
+	bh=frr/vyDVrkNBFv1uvWKDe7YbXUlbwouqZpZ2NnxuGxc=; b=kdx2TwJAf2hL4jzsomRnef0xpr
+	lMlVc2vd45dVY47asp8gIONMWD76CnOSlVpnm6lOuaH9v34VYPQnEB9qLaYlUZBVmPpOqpEhjPP01
+	NPzo7ocBS+lrohHL1vJSL2FGqZOPcx47DLMasrKNVGxterpBzpNbDN3jjXyzwjw9BqQU=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1w9WvQ-00Evgh-JQ; Mon, 06 Apr 2026 01:30:40 +0200
-Date: Mon, 6 Apr 2026 01:30:40 +0200
+	id 1w9X2c-00Evj1-1S; Mon, 06 Apr 2026 01:38:06 +0200
+Date: Mon, 6 Apr 2026 01:38:06 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Felix Gu <ustc.gu@gmail.com>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
+To: Petko Manolov <petkan@nucleusys.com>
+Cc: Simon Horman <horms@kernel.org>,
+	Morduan Zang <zhangdandan@uniontech.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Chris Packham <chris.packham@alliedtelesis.co.nz>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: mdio: realtek-rtl9300: use scoped
- device_for_each_child_node loop
-Message-ID: <479730d2-73a3-45ff-90f8-52f5e71c2b80@lunn.ch>
-References: <20260405-rtl9300-v1-1-08e4499cf944@gmail.com>
+	linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+9db6c624635564ad813c@syzkaller.appspotmail.com
+Subject: Re: [PATCH] usb: rtl8150: avoid using uninitialized CSCR value
+Message-ID: <76d6b341-27d5-44aa-92fb-3b8966d609df@lunn.ch>
+References: <93FF85BB9F33CD2B+20260402070743.20641-1-zhangdandan@uniontech.com>
+ <20260403154538.GA187715@horms.kernel.org>
+ <20260405085212.GA8491@cabron.k.g>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,23 +52,28 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260405-rtl9300-v1-1-08e4499cf944@gmail.com>
+In-Reply-To: <20260405085212.GA8491@cabron.k.g>
 
-On Sun, Apr 05, 2026 at 02:51:52PM +0800, Felix Gu wrote:
-> Switch to device_for_each_child_node_scoped() to auto-release fwnode
-> references on early exit.
+> > -	get_registers(dev, CSCR, 2, &tmp);
+> > +	if (get_registers(dev, CSCR, 2, &tmp) < 0)
+> > +		tmp = 0;
+> >  	if (tmp & CSCR_LINK_STATUS)
+> >  		netif_carrier_on(netdev);
+> >  	else
 > 
-> Fixes: 24e31e474769 ("net: mdio: Add RTL9300 MDIO driver")
-> Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+> I was wondering if calling netif_carrier_off() is the right thing to do in case
+> get_registers() fail.
+> 
+> There are multiple get_registers() calls that don't check the error and if we do
+> this in set_carrier() maybe we should do the same thing across the whole driver?
 
-Hi Felix
+What does it actually mean if get_registers() fails? The device is
+gone? Hot unplugged? If so, you are going to get a cascade of errors,
+and then hopefully the USB core code removes the device?
 
-Please take a read of:
+Are there any legitimate reasons for get_registers() to fail if the
+device is still plugged in?
 
-https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+It seems netif_carrier_off() is unnecessary?
 
-You need to set the subject line correctly.
-
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-
-    Andrew
+   Andrew
