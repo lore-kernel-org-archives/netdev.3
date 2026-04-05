@@ -1,133 +1,134 @@
-Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD5C3016FC;
-	Sun,  5 Apr 2026 19:32:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68CFF336EE1;
+	Sun,  5 Apr 2026 19:57:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775417532; cv=none; b=EGMA4JVQMXJ6Uzmam2/Mn4ocOq2D7a5g2MF23Y/rOY8NqEFTqKSC/7I0Xcctb9Ml1vFt7E/6yGD5dQiJ0ZbDXvdIjlQnQjArL1jjxhzVnZXBisw48JIaAspSH/MjrLPwD8ZHVkBf/iQn+zltLDFyWAYhWTjuBKpRjLuqcUws4v4=
+	t=1775419078; cv=none; b=XXHEMflj+kAX92T8Um5vfFNJsGJtqCWq1lDqEgf6Gsq/Ae9uJkBvMLiNKP42cMhOyEaYiw9iO2GeUg8M1akFCcq+tJlNwpLwwYoDCWeq0Fqx6hGqZ5xOqqFvq/GXFZZ/V/lMloksbW4AiXTf4iS0/KH8fdWj4G8RlCTsRMacEOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775417532; c=relaxed/simple;
-	bh=Mzj+bKNHKDekgtt9IVrHrL0LyZGVZTkE5+yiZv/rEgQ=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=cGVE1xnBiyZCQ59sqhNKen3VVBvyCeOdEtCi684Z4FxxeXbUTqcsRjjzORLCCGOBGd4GHZjHRe09liK0CTuth4ABdKZUryxndvX06q9bTEEBT3ft3lqGvAatHZ3n1RhJXtbopvnk0552hyOdFDGulAXnJc8bDoF35+F72UKEI7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=XOSZke6F; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=BX9fi0F5; arc=none smtp.client-ip=103.168.172.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1775419078; c=relaxed/simple;
+	bh=mr+n5Lb6V+b1/GO9pFMZU3SpjhBT4hIZrAwsX9QQqb0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GkPU1EirnFcSs6sHrl0+cguSsCGYv+eFVc0ET16RXQQ+cte51tb7kZXt5lTIJ3TAVKBTsvVLdGoTcb90wOQWrjetF46yqvnacnhfpjs1OOab7hniReMv0VhZ3PUMcrF+eb97EZXBbvRYSF3Nvb70g/YmjaLENk4aahJEtHK1o5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=YagBpdDc; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="XOSZke6F";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="BX9fi0F5"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id D4BA51400029;
-	Sun,  5 Apr 2026 15:32:09 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-04.internal (MEProxy); Sun, 05 Apr 2026 15:32:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1775417529;
-	 x=1775503929; bh=25xkYrco7rjEEztGHHRTWHWIOdtGy3UjIQU8Zg73vQk=; b=
-	XOSZke6FnjUWZXoTZxuI5RkSj7HfPikElwmlK5pN/j2Mvuc/5xXRAj5AWyO6qIFJ
-	b9nCON7zoBPJKhRvybbwbvXjfYSXbq6IDfignFfss/WSGyce3/M4OhtP6rfPQ3Ys
-	VocTA8d7WC1u6FVgtU21Gc3jJuVRiZCEqFYPXqD+9y4axBydEP7pGNtaiEAZYngl
-	pY7jVsxWlYb0SkMu8JNzegkreTZ54LxujPk+a7xIStLrljaSBMQ4+E3qimUNfGvr
-	lsjZCHqvS3Wv6CXzF5w8G8IQu0c3oTX2EOUKDQiSpOhzmL514kXxKD6enSzD6FOy
-	vyeX6R1/KEJymReptMffgw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1775417529; x=
-	1775503929; bh=25xkYrco7rjEEztGHHRTWHWIOdtGy3UjIQU8Zg73vQk=; b=B
-	X9fi0F5ZbgSRquFupWUHWL8r40d6D/mstla7tA8PzTpc9N6FdxO9CUBtvuGu6bbT
-	0ncFa3E89DU5fIX4X8IdTSCX85U9HQV+8hYYmNNllLDVvkbZqASc8y7YIxtoXKhm
-	iMF8XvRqaX/dP0T/RT9FC4/BSz/SvpQdDuJ9YloQqrFtqNkhok9Xl4qjIrRqbscC
-	pYGzTJPlzzE8NFjIlqQdfy0ShcPioJJ7cb1QsSCDsdCtqirKw8MelFvmhyre9XGn
-	tumPcWKkL4yF8+tRqy7y3jSoxvI9Ybgy2OEvyrSZvT8qM4r10aPClU/w9N2YsLIF
-	Z4lpMMf5KpZ6z+mGOhhsw==
-X-ME-Sender: <xms:ubjSaeo8ZR0lb4xpcEPJNt0ILYEeGbh7RtHamiuVXcY52ebcnifKoQ>
-    <xme:ubjSaXf_G2jic0Rt0pnf35PebjEWsbQ37MbdxIBwtwlmojDjIcnvSQnac5oaf-mgF
-    WcIa7qZ60SFVCgnJ7Z3HPmilCtyiDt2d_RRXg7uSsS6l19m7lM60gU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduheeifecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
-    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
-    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
-    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopedvtddpmhhouggvpehsmhhtphhouhht
-    pdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhope
-    grlhgvgigrnhguvghrrdhsvhgvrhgulhhinhesghhmrghilhdrtghomhdprhgtphhtthho
-    pegurghnihgvlhdriigrhhhkrgesghhmrghilhdrtghomhdprhgtphhtthhopehhrghokh
-    gvgihinhesghhmrghilhdrtghomhdprhgtphhtthhopegvughumhgriigvthesghhoohhg
-    lhgvrdgtohhmpdhrtghpthhtoheprghrnhgusehkvghrnhgvlhdrohhrghdprhgtphhtth
-    hopehhohhrmhhssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkuhgsrgeskhgvrhhn
-    vghlrdhorhhgpdhrtghpthhtoheprhhoghgvrhhqsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:ubjSacDPJ-qnuKHZIJYExUUuXJMHJvVOlM50CPTjxBKt7WWujCs9ew>
-    <xmx:ubjSacPbrYUbjP8SBpXyDCkRn8jI4uL2hlNR12oq-5d4h4Ellha5XQ>
-    <xmx:ubjSaRWuriMRJhJr4S38nhNz52jtijGz0QL5vmdMh31kMu-4_LJkuA>
-    <xmx:ubjSafS1jk7DFIY4DJ-i8cGB_xPcaGTt1KJ8U4t0sG57SU_FT4ZWuw>
-    <xmx:ubjSabyeCxHRSiOROUd7SXjWTzv7E7ChS3eXNKVuxGpRVKEEwSDCin7B>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 1C26B700069; Sun,  5 Apr 2026 15:32:09 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="YagBpdDc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Ym
+	zywPE5Lp18k1Lf7VdFqM/Ieh7Q8sd8fqBVNAE02fo=; b=YagBpdDcBhMb7OZ+Iz
+	mxqQ0VJONjQzOFlKk5Zw28o/EvwiqQl8FZXoM5RaGGaKqzERO/tGoRSxQ8OXQgTt
+	yDGra/gCpuaBXR+l06vgVzq1HH6uK9u7vifhYZhCjWLkwMq12wHwvSDeQK2w1Dy/
+	VHLbqYt3ikBOCw20pzKIM5GjE=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id PSgvCgDXn96uvtJpxrc1ZA--.25289S2;
+	Mon, 06 Apr 2026 03:57:36 +0800 (CST)
+From: CaoRuichuang <create0818@163.com>
+To: Stefano Garzarella <sgarzare@redhat.com>,
+	Shuah Khan <shuah@kernel.org>
+Cc: virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	CaoRuichuang <create0818@163.com>
+Subject: [PATCH 1/1] selftests: vsock: avoid mktemp -u for Unix socket paths
+Date: Mon,  6 Apr 2026 03:57:33 +0800
+Message-Id: <20260405195733.86043-1-create0818@163.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AxeJrQzD9Ui3
-Date: Sun, 05 Apr 2026 21:31:28 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Simon Horman" <horms@kernel.org>
-Cc: "Ilias Apalodimas" <ilias.apalodimas@linaro.org>,
- "Arnd Bergmann" <arnd@kernel.org>, Netdev <netdev@vger.kernel.org>,
- "Andrew Lunn" <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>,
- "Grygorii Strashko" <grygorii.strashko@ti.com>,
- "Murali Karicheri" <m-karicheri2@ti.com>,
- "Siddharth Vadapalli" <s-vadapalli@ti.com>,
- "Roger Quadros" <rogerq@kernel.org>,
- "Vladimir Oltean" <vladimir.oltean@nxp.com>,
- "Alexander Sverdlin" <alexander.sverdlin@gmail.com>,
- "Ioana Ciornei" <ioana.ciornei@nxp.com>,
- Linux-OMAP <linux-omap@vger.kernel.org>, "Kevin Hao" <haokexin@gmail.com>,
- "Daniel Zahka" <daniel.zahka@gmail.com>, linux-kernel@vger.kernel.org
-Message-Id: <64384fd1-edb3-4c7a-9ba8-56385a303d35@app.fastmail.com>
-In-Reply-To: <20260404091100.GT113102@horms.kernel.org>
-References: <20260402184726.3746487-1-arnd@kernel.org>
- <CAC_iWj+vjZ0WnKUuqeFfaPeSoj5ovxZiEmUD5R8hPsRfkqMihQ@mail.gmail.com>
- <4498f664-15ca-4859-a050-a593f124105f@app.fastmail.com>
- <20260404091100.GT113102@horms.kernel.org>
-Subject: Re: [PATCH 1/3] [v4, net-next] net: ethernet: ti-cpsw:: rename soft_reset()
- function
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PSgvCgDXn96uvtJpxrc1ZA--.25289S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCw1furWUtFyDXr4UGr47CFg_yoW5WrW5pF
+	ySqrWDtry0kF1avF1fCw4jkryFgan5AF47X39xZr1jyrsrGrn7Zr4xtFn8ZFnxWF4fXFWr
+	uayvgFs5ZF4UK37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRa9aDUUUUU=
+X-CM-SenderInfo: pfuht3jhqyimi6rwjhhfrp/xtbC6BDqJGnSvrA2gwAA32
 
-On Sat, Apr 4, 2026, at 11:11, Simon Horman wrote:
-> On Thu, Apr 02, 2026 at 09:16:29PM +0200, Arnd Bergmann wrote:
->> On Thu, Apr 2, 2026, at 21:13, Ilias Apalodimas wrote:
->> 
->> Before the c5013ac1dd0e1 commit, this was a 'static inline' function,
->> which is allowed to clash with other identifiers. Making it a global
->> symbol during the move was a problem.
->
->
-> If we are going to treat this as a fix then probably it should be separated
-> from the rest of the patchset and routed via net. With the rump patchset
-> re-submitted to net-next once dependencies are in place.
+The namespace tests create temporary Unix socket paths with mktemp -u and
+then hand them to socat. That only prints an unused pathname and leaves
+a race before the socket is created.
 
-I'll drop patch 1 then and send the other two when I get the next
-regression with duplicate objects in a couple of releases. I'm
-travelling at the moment and won't have time to rebase and test
-before the merge window.
+Create a private temporary directory with mktemp -d and place the Unix
+socket inside it instead. This keeps the path unique without relying on
+mktemp -u for filesystem socket names.
 
-It's no longer urgent since both cpsw and dpaa2 have been broken for
-years now since I first reported the regression.
+Signed-off-by: CaoRuichuang <create0818@163.com>
+---
+ tools/testing/selftests/vsock/vmtest.sh | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-     Arnd
+diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
+index 86e338886..91e0037d2 100755
+--- a/tools/testing/selftests/vsock/vmtest.sh
++++ b/tools/testing/selftests/vsock/vmtest.sh
+@@ -718,6 +718,7 @@ test_ns_diff_global_host_connect_to_global_vm_ok() {
+ 	local pids pid pidfile
+ 	local ns0 ns1 port
+ 	declare -a pids
++	local unixdir
+ 	local unixfile
+ 	ns0="global0"
+ 	ns1="global1"
+@@ -736,7 +737,8 @@ test_ns_diff_global_host_connect_to_global_vm_ok() {
+ 	oops_before=$(vm_dmesg_oops_count "${ns0}")
+ 	warn_before=$(vm_dmesg_warn_count "${ns0}")
+ 
+-	unixfile=$(mktemp -u /tmp/XXXX.sock)
++	unixdir=$(mktemp -d /tmp/vsock_vmtest_XXXXXX)
++	unixfile="${unixdir}/sock"
+ 	ip netns exec "${ns1}" \
+ 		socat TCP-LISTEN:"${TEST_HOST_PORT}",fork \
+ 			UNIX-CONNECT:"${unixfile}" &
+@@ -758,6 +760,7 @@ test_ns_diff_global_host_connect_to_global_vm_ok() {
+ 
+ 	terminate_pids "${pids[@]}"
+ 	terminate_pidfiles "${pidfile}"
++	rm -rf "${unixdir}"
+ 
+ 	if [[ "${rc}" -ne 0 ]] || [[ "${dmesg_rc}" -ne 0 ]]; then
+ 		return "${KSFT_FAIL}"
+@@ -814,6 +817,7 @@ test_ns_diff_global_vm_connect_to_global_host_ok() {
+ 	local ns0="global0"
+ 	local ns1="global1"
+ 	local port=12345
++	local unixdir
+ 	local unixfile
+ 	local dmesg_rc
+ 	local pidfile
+@@ -826,7 +830,8 @@ test_ns_diff_global_vm_connect_to_global_host_ok() {
+ 
+ 	log_host "Setup socat bridge from ns ${ns0} to ns ${ns1} over port ${port}"
+ 
+-	unixfile=$(mktemp -u /tmp/XXXX.sock)
++	unixdir=$(mktemp -d /tmp/vsock_vmtest_XXXXXX)
++	unixfile="${unixdir}/sock"
+ 
+ 	ip netns exec "${ns0}" \
+ 		socat TCP-LISTEN:"${port}" UNIX-CONNECT:"${unixfile}" &
+@@ -845,7 +850,7 @@ test_ns_diff_global_vm_connect_to_global_host_ok() {
+ 	if ! vm_start "${pidfile}" "${ns0}"; then
+ 		log_host "failed to start vm (cid=${cid}, ns=${ns0})"
+ 		terminate_pids "${pids[@]}"
+-		rm -f "${unixfile}"
++		rm -rf "${unixdir}"
+ 		return "${KSFT_FAIL}"
+ 	fi
+ 
+@@ -862,7 +867,7 @@ test_ns_diff_global_vm_connect_to_global_host_ok() {
+ 
+ 	terminate_pidfiles "${pidfile}"
+ 	terminate_pids "${pids[@]}"
+-	rm -f "${unixfile}"
++	rm -rf "${unixdir}"
+ 
+ 	if [[ "${rc}" -ne 0 ]] || [[ "${dmesg_rc}" -ne 0 ]]; then
+ 		return "${KSFT_FAIL}"
+-- 
+2.39.5 (Apple Git-154)
+
