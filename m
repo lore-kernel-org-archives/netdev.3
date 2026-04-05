@@ -1,138 +1,123 @@
-Received: from outbound.ms.icloud.com (p-west3-cluster5-host9-snip4-1.eps.apple.com [57.103.72.84])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3224017D2
-	for <netdev@vger.kernel.org>; Sun,  5 Apr 2026 16:42:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.72.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC06E311C32
+	for <netdev@vger.kernel.org>; Sun,  5 Apr 2026 17:09:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775407342; cv=none; b=raylt8voHQGxdy+1TDaO3SirXlQHSq3LQxF6Wu4nha7urkC0164ogm0nnn/OpfnLvGnRrHGHGyVNd6mOGCb8Guj48pj6oxCb7ibdcWkvA0QruFgcZ3YXHeygAqxVvVW/ABHCqlc4v6bKkmuLmei9HDcAh+JOTkjn7ibmnyN2soY=
+	t=1775408999; cv=none; b=uP/maXTVmVtbr4ZHCsLGqOhxkIhiSILH6OjnS5yK8Ype7PyfgxHF0nUdBDL1egpxGI9k4PrIl5OVU9HTPzkWJdkqCSjPz7LnRxWZQZy/xOQ5goU3nxSKsHbeBD3R6dRKZODmmtq+rMvNnQczeAkYlOC4095wIlf9O2jxECzKXrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775407342; c=relaxed/simple;
-	bh=Y0UQaiHmPnncAF/zZh73pPUIUWDh5M4/Wvgn6QhVFwg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FD+JiDl2snm2QPbB8/wK7k4VAZYw4qZz6pCaFY87TGiFH9ZNXKVUZadOjmFF6rLe/ZCq2BpiOtO6i/Hg8D7DNjsw3bFarjR9PRvqkwlGGoCbYjtIuJDumEn0lkyLjr/72H/BJi3rznBnzWcpt+uv5zANirF6BWxyYoLuCXQ7gCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=XrZMsvlF; arc=none smtp.client-ip=57.103.72.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+	s=arc-20240116; t=1775408999; c=relaxed/simple;
+	bh=3Utr4O8hPBuwFLLFeR8T9L20/U/xBAsHvv/5vKBxW5Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FFUSHYOJcwBtS6CsuVHuAcmKBBrQn6/u5EW4XDkGCqdnnGvRiVNB65ZWKOI2vqke0gGGB0jQtIAgimweo2085jt5bav4DHZJPjH9p+tx0c7WHu6iN46wYK9IABrYreQE2CrjE0EhBj6SJ/+haNwkoSFAYqagEQZ+N0ZxjezuXbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EG/tdmjd; arc=none smtp.client-ip=209.85.167.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="XrZMsvlF"
-Received: from outbound.ms.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-3a-10-percent-2 (Postfix) with ESMTPS id E77BF1800210;
-	Sun, 05 Apr 2026 16:42:18 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1775407340; x=1777999340; bh=Zh9QbdXIogGNv1FXpgmqUGlv02EpGeQeAagJ0ahOZdc=; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=XrZMsvlFkCZgbouqeNcqOU0tYuzgiN1cK+EVuW80QihcHbWrMI6BYhqjN96G6kv1jxlV61ZOUXoxiq/60mep7ELeZLSRUT9GnaL1dkd0lxRvlOdRlV+t478BstGoui8JxDfEzLvwrveRHZTvRRVxHz2efoLyxWUrRP59QGvUS2kaDrvjwUdSh4qZ6+grKK4kOKkhD4UrEV/aOC308uTQyDl1IkmHIjK6XtqAF+juh7kRDTG1aLNMwuDqlqLlZ7hVWxekfEJ5MwlrNHeyOCQOs7Jx7HmfnhfFyL7CBhfOhOsiyAAHhZTs2qRGNALCFJScP6TBFApLlQWYvgxjq8p0HQ==
-Received: from mainframe.tailfb0f7b.ts.net (unknown [17.57.154.37])
-	by p00-icloudmta-asmtp-us-west-3a-10-percent-2 (Postfix) with ESMTPSA id 14C1618000B4;
-	Sun, 05 Apr 2026 16:42:16 +0000 (UTC)
-From: =?UTF-8?q?Lek=C3=AB=20Hap=C3=A7iu?= <snowwlake@icloud.com>
-To: netdev@vger.kernel.org
-Cc: linux-nfc@lists.01.org,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	krzysztof.kozlowski@linaro.org,
-	stable@vger.kernel.org
-Subject: [PATCH] nfc: llcp: fix missing return after LLCP_CLOSED check in recv_hdlc and recv_disc
-Date: Sun,  5 Apr 2026 18:41:58 +0200
-Message-ID: <20260405164158.1344049-1-snowwlake@icloud.com>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EG/tdmjd"
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-47018d3416aso875464b6e.3
+        for <netdev@vger.kernel.org>; Sun, 05 Apr 2026 10:09:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775408997; x=1776013797; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Rf6fQnUDBvhchXpYYavW2XdCN8dQGkC2j51Q5ZbRMFc=;
+        b=EG/tdmjdlfaZd6MxdfJsw3+O+nJTTTvFCNGbzB1w1fAzqsyMXnCHIVsQRoPyMJKW46
+         7wMLQ5tdrS6wGrcG9Z1gUqqDT13wNdJPsM6XoOijvMrf2GYDLJ1r529bD6Jj52x+pwYP
+         3RQugIVXLdVb/Wbk9b7+ctEexpV0y9XqmnDLCsi5BpOFE5wvvoE4hnaRlS9mEBwzZVQ7
+         ozpC8t2rFHE6Asn06VxX9hWddlC/p2YhnSubQXzudorgzRwkEdChFBo4BHAECj5XMMQX
+         0p6NSEPb616Q975KfoXXTIJorg9wGCXhCch35AlN1El1wgZynoInlozyXHU7Tm8/gr4N
+         rTkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775408997; x=1776013797;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Rf6fQnUDBvhchXpYYavW2XdCN8dQGkC2j51Q5ZbRMFc=;
+        b=ELg/5BG81/8YvsmIh4+OokpZQazwsAu16rAVFPFcXOhIMrkweVpsAUM+cMVi/MjUzj
+         DT0ORk9gTvKUYSRbTNLAt/h5NBeAWnrinZwnNux7B07BjAV/OMX6yZDo6qnEJAZz/tOa
+         5qujNtQkZ4rtfCGtgsIbWJPD55avgsp/mQWNAupDjmNaG3UmSwhnkN/5lUQRDa7jNjKS
+         a0WVSMKMJ47HpVrwrwYoB2LtAFpLzMeXL00EMqB09cGp0oR4TaCfBuoYQ9NP/4VI+5Hk
+         c1KrOtHuCQepnU+uGWxrJSa2v2aGS51FjkTGECQLgGQAdtFu2RS0v5UVus3TPRVoMCnf
+         FpRg==
+X-Forwarded-Encrypted: i=1; AJvYcCWVCqB91bYU2P+w/qZDnvDRSjuBwILs1LXmNsX+WAHC8/K50OFltXM/UWBUFZI/29WzsZUlK/k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyvu36rTZEYQYynNLW1RiXAGztgGK0DQMXv2VbVdElT/bOaXZNr
+	EgQg0qTvF/po3vPRyo3/lEMfw5fAXt5SYy8fnqzvONrAykX0BTGP7Xfl
+X-Gm-Gg: AeBDieskY9xfXrXhGQE0XNC7QJfMwuSNyRVHWHiS0dumRdatOC8Nx/AGrNl2Tr4dI/h
+	qEvTfJHgclkzb6v+II82ob+hAtC6HJN7uymWRWKjysa1r09Vl9ZJA8Yl77RUgO0qZkCvqbeLuZo
+	SW1OlSN/o5tn+KfhSgTMCJMMfImoabjw+Hd4FB1fhxMAJQtxRWzOPX565hLqsez9iAwLc3n9YJU
+	V5FCVQsQ07ZDnDH6KqLrDO+TeIplcVvouK6Br0Vf0KheIFb3uETMM/23pgmWURiexSjYYLGlO2G
+	7eXdDww6Kw2crWfIxadb69XJbt8xXOKgDiKH4mVrvXJQdIZS2lhCPvv3ZvqVJJ+T+aNPGajEgQ4
+	phdY1GeOPXs2LLerCzm+MsRUDr944HZ8WIPbiKy4d093zkIG5FB7nPRktMnTIbhm52IQYfYwZ8B
+	wutkNIpjh/dPRvCNN+xSJSC0Iup9R7ojnVu35rPKvpggG45AnPxlE4EbR24EvHNfb2U+F/w9LGb
+	6Bb9e9/M3Tg53I=
+X-Received: by 2002:a05:6808:c3ec:b0:467:4939:967f with SMTP id 5614622812f47-46efbce4c33mr4572207b6e.48.1775408996659;
+        Sun, 05 Apr 2026 10:09:56 -0700 (PDT)
+Received: from ?IPV6:2601:282:1e02:1040:18c1:5de:49ee:63ea? ([2601:282:1e02:1040:18c1:5de:49ee:63ea])
+        by smtp.googlemail.com with ESMTPSA id 5614622812f47-46f0f4e16a9sm4651092b6e.4.2026.04.05.10.09.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 05 Apr 2026 10:09:56 -0700 (PDT)
+Message-ID: <a441f862-1ebe-4fd9-9ef5-aac718fb008c@gmail.com>
+Date: Sun, 5 Apr 2026 11:09:55 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 iproute2-next 0/4] Introduce FRMR pools
+Content-Language: en-US
+To: Chiara Meiohas <cmeiohas@nvidia.com>, leon@kernel.org,
+ stephen@networkplumber.org
+Cc: michaelgur@nvidia.com, jgg@nvidia.com, linux-rdma@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20260330173118.766885-1-cmeiohas@nvidia.com>
+From: David Ahern <dsahern@gmail.com>
+In-Reply-To: <20260330173118.766885-1-cmeiohas@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA1MDE3NCBTYWx0ZWRfXwaJMLvmjHcyM
- iteWLSB+zPYt1yn2ijBwWygUkQry8C4NmplEgDOVY/6FMSe98v8sslioWSv80zqZhUb54BejvOd
- 3Vx4sniSAmJc8DOCetJCPBe3/tDxiLM4Xvw7i6sAlWjhHyxoxlFD4G9G9SXcYGTdy/pScRQNAfE
- SI32/Nj0dUyEBsicw+FuPcX4Ns8F3ySav5GMxtBdXLFsGu/m5NZxxeMn6FsVDEVdnzQsTyn9CuK
- U0zxTLDjqhbJX407w8a7n4u5l40dMTTghpEKGTOpx5tF41AbYVn+ZndWr7Zsavt46lTtf67d6GM
- RjHQBaM880CH5taldXh+SIi7A3mUJF4IT0wUsAJn2YlvPqRB6JrweyqkQ9l/Fs=
-X-Proofpoint-ORIG-GUID: 5kUpoHUTrgNbkz3uJq1YuumaqrWNyYtO
-X-Proofpoint-GUID: 5kUpoHUTrgNbkz3uJq1YuumaqrWNyYtO
-X-Authority-Info-Out: v=2.4 cv=Z5nh3XRA c=1 sm=1 tr=0 ts=69d290eb
- cx=c_apl:c_pps:t_out a=qkKslKyYc0ctBTeLUVfTFg==:117 a=IkcTkHD0fZMA:10
- a=A5OVakUREuEA:10 a=M51BFTxLslgA:10 a=x7bEGLp0ZPQA:10 a=LbuW6tbUWPcA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=UqCG9HQmAAAA:8 a=aHyeSshMfSEOfJyjs9cA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-05_05,2026-04-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
- lowpriorityscore=0 malwarescore=0 clxscore=1011 phishscore=0 mlxlogscore=999
- suspectscore=0 spamscore=0 adultscore=0 bulkscore=0 mlxscore=0
- classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
- engine=8.22.0-2601150000 definitions=main-2604050174
+Content-Transfer-Encoding: 7bit
 
-From: Lekë Hapçiu <framemain@outlook.com>
+On 3/30/26 11:31 AM, Chiara Meiohas wrote:
+> From Michael: 
+> 
+> This series adds support for managing Fast Registration Memory Region
+> (FRMR) pools in rdma tool, enabling users to monitor and configure FRMR
+> pool behavior.
+> 
+> FRMR pools are used to cache and reuse Fast Registration Memory Region
+> handles to improve performance by avoiding the overhead of repeated
+> memory region creation and destruction. This series introduces commands
+> to view FRMR pool statistics and configure pool parameters such as
+> aging time and pinned handle count.
+> 
+> The 'show' command allows users to display FRMR pools created on
+> devices, their properties, and usage statistics. Each pool is identified
+> by a unique key (hex-encoded properties) for easy reference in
+> subsequent operations.
+> 
+> The aging 'set' command allows users to modify the aging time parameter,
+> which controls how long unused FRMR handles remain in the pool before
+> being released.
+> 
+> The pinned 'set' command allows users to configure the number of pinned
+> handles in a pool. Pinned handles are exempt from aging and remain
+> permanently available for reuse, which is useful for workloads with
+> predictable memory region usage patterns.
+> 
+> Command usage and examples are included in the commits and man pages.
+> 
+> These patches are complimentary to the kernel patches:
+> https://lore.kernel.org/linux-rdma/20260226-frmr_pools-v4-0-95360b54f15e@nvidia.com/
+> 
 
-nfc_llcp_recv_hdlc() and nfc_llcp_recv_disc() both call
-nfc_llcp_sock_get() (which increments the socket reference count) and
-lock_sock() before processing incoming PDUs.  When the socket is found
-to be in state LLCP_CLOSED both functions correctly call release_sock()
-and nfc_llcp_sock_put() to undo those operations, but are missing a
-return statement:
+applied after fixing up a few nits.
 
-    lock_sock(sk);
-    if (sk->sk_state == LLCP_CLOSED) {
-        release_sock(sk);
-        nfc_llcp_sock_put(llcp_sock);
-        /* ← return missing */
-    }
-    /* Falls through with lock released and reference dropped */
-    ...
-    release_sock(sk);            /* double unlock */
-    nfc_llcp_sock_put(llcp_sock); /* double put → refcount underflow */
+Please clone the ai review prompts from:
+  https://github.com/masoncl/review-prompts.git
 
-The fall-through causes three independent bugs:
-
-  1. Use-after-free: all llcp_sock field accesses after the LLCP_CLOSED
-     block occur with the socket lock released and the reference dropped;
-     another CPU may free the socket concurrently.
-
-  2. Double release_sock: sk_lock.owned is already 0 — LOCKDEP reports
-     "WARNING: suspicious unlock balance detected".
-
-  3. Double nfc_llcp_sock_put: the refcount is decremented a second time
-     at the end of the function, potentially driving it below zero
-     (refcount_t underflow), corrupting the SLUB freelist and causing a
-     subsequent use-after-free or double-free.
-
-Both functions are reachable from any NFC P2P peer within physical
-proximity (~4 cm) without hostile NFCC firmware:
-  - nfc_llcp_recv_hdlc: triggered by sending an LLCP I, RR, or RNR PDU
-    to a SAP pair whose connection has been torn down.
-  - nfc_llcp_recv_disc: triggered by sending an LLCP DISC PDU to a SAP
-    pair that is already in LLCP_CLOSED state.
-
-Fix: add the missing return statement in both functions so that the
-LLCP_CLOSED branch exits after cleanup.
-
-Fixes: Introduced with nfc_llcp_recv_hdlc / nfc_llcp_recv_disc
-Signed-off-by: Lekë Hapçiu <framemain@outlook.com>
----
- net/nfc/llcp_core.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
-index 366d75663..db5bc6a87 100644
---- a/net/nfc/llcp_core.c
-+++ b/net/nfc/llcp_core.c
-@@ -1091,6 +1091,7 @@ static void nfc_llcp_recv_hdlc(struct nfc_llcp_local *local,
- 	if (sk->sk_state == LLCP_CLOSED) {
- 		release_sock(sk);
- 		nfc_llcp_sock_put(llcp_sock);
-+		return;
- 	}
- 
- 	/* Pass the payload upstream */
-@@ -1182,6 +1183,7 @@ static void nfc_llcp_recv_disc(struct nfc_llcp_local *local,
- 	if (sk->sk_state == LLCP_CLOSED) {
- 		release_sock(sk);
- 		nfc_llcp_sock_put(llcp_sock);
-+		return;
- 	}
- 
- 	if (sk->sk_state == LLCP_CONNECTED) {
--- 
-2.51.0
-
+Run the setup scripts and have ai review patches before sending. This
+should really be part of both kernel and iproute2 development workflow now.
