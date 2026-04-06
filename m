@@ -1,60 +1,47 @@
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5AC52EAB61
-	for <netdev@vger.kernel.org>; Mon,  6 Apr 2026 03:14:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90582344DA9
+	for <netdev@vger.kernel.org>; Mon,  6 Apr 2026 03:15:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775445269; cv=none; b=gsRHSClBbyMJXR5Q0/7g8emFgkndTG9OjD/VcaFPozlAzl4EVFuvMu3gHT0ZtZMpHgDwrdzKLTTlGNYbDeQu/jTEFKlRxgOWx2X8FP8lOFeUn86a8fb5kGBgnDC0EHJxu11ZYf3yFaMe1YaFQXdsWJhqUXAGgBVXPdl95bbFo5g=
+	t=1775445340; cv=none; b=klY2MArq7IIbg0obuJhnZZAooKlhV8NcuqpSoueMRBOCgcSK1aaZ1Q91E2DHrtnYj8JzX5MeoG6GJ2yIntvDsOwAfTysj9M6jLACLfRB0aMvnXZNYovDzx7MuOU8wgObUoDGTitrL3kugcaBs3N8xWbqnpM/gPwvIGKDHdaD5rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775445269; c=relaxed/simple;
-	bh=IaQBJhZq22U/AqidD8mlM6KHpzkK9UrNrCDYgLDGXmQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YWe/rMNOgf31JAixMGFSEZ0drPKAEqMbBCvKY/swmIs9kV2WQEgnYFgK6X+WORd7MPx+5wyozvNyhq4jS/4wtRF7sq2BQIAMfqQlbqky118+PpXUnomPOFu2eSJl5GBVCUi9jn1830CD1QA3mFl9XfjH9wnfflGRpyo3q9/E6U0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qPa4Bynx; arc=none smtp.client-ip=95.215.58.171
+	s=arc-20240116; t=1775445340; c=relaxed/simple;
+	bh=VnKcRhtnXmg3esTxutvPiewGjUarJqAT10kc4eGYok4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k3hpBOuzPrtm0r7XSrrdFpSr+HrgBXQOCOcTgg9uUAwKDbpk+Fwk1s5dsU8wEXMAHNF0FySD58T637V1elJzJG7FbVJuXYHMExF8GH5fjMuN+Y8/dcImfFvYL3hKM+LoU5hJ9o1GI7yIk0VEBBUBqMfK2+f0qEh+rfbO/gB0D+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qMppkvCP; arc=none smtp.client-ip=91.218.175.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qPa4Bynx"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qMppkvCP"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775445263;
+	t=1775445324;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ikZtbZMewTqC6nCN77M39tHB8LncJ0K7vUTKUc1uO90=;
-	b=qPa4BynxA8X7czn/0YBEbkKCUidwebDq2ve+wDhpbhFP7HcBDNw6aEdDPRFhwXSPvGkxxm
-	sMHDfeNXRnTvVpygKye0W37eQUN8EtAzBx79XUoV67hi/O6GxzYRd+0+Zyyn4Zt8lKlH2O
-	gZwpxCI0apb9YLgN28R3d0XPOmhIzOA=
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=pCU31PuVLxnkqkH0Q/gfVj7NOZB8sp1JJeyWvm+opn0=;
+	b=qMppkvCPiJYh+m7P00Vul4Jo2KsY7FUMAzJ7JHiQ0AAMkRusLuXvkSBInX0nzNiYSiQzSi
+	5b+yway8muyT9Hoxbv+KK5va66DvhgtG8FHI00LQa7y1qzFsZpRn2Eb+FmaX8rQRzaDKxI
+	l/HKg/HyeNDl9AP70zAEPbpR2S9VYWo=
 From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: bpf@vger.kernel.org
+To: mptcp@lists.linux.dev
 Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
+	stable@vger.kernel.org,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH bpf v2 2/2] selftests/bpf: Add tests for sock_ops ctx access with same src/dst register
-Date: Mon,  6 Apr 2026 11:12:51 +0800
-Message-ID: <20260406031330.187630-2-jiayuan.chen@linux.dev>
-In-Reply-To: <20260406031330.187630-1-jiayuan.chen@linux.dev>
-References: <20260406031330.187630-1-jiayuan.chen@linux.dev>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v2] mptcp: fix slab-use-after-free in __inet_lookup_established
+Date: Mon,  6 Apr 2026 11:15:10 +0800
+Message-ID: <20260406031512.189159-1-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,258 +51,100 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-Add selftests to verify SOCK_OPS_GET_SK() and SOCK_OPS_GET_FIELD()
-correctly return NULL/zero when dst_reg == src_reg and is_fullsock == 0.
+The ehash table lookups are lockless and rely on
+SLAB_TYPESAFE_BY_RCU to guarantee socket memory stability
+during RCU read-side critical sections. Both tcp_prot and
+tcpv6_prot have their slab caches created with this flag
+via proto_register().
 
-Three subtests are included:
- - get_sk: ctx->sk with same src/dst register (SOCK_OPS_GET_SK)
- - get_field: ctx->snd_cwnd with same src/dst register (SOCK_OPS_GET_FIELD)
- - get_sk_diff_reg: ctx->sk with different src/dst register (baseline)
+However, MPTCP's mptcp_subflow_init() copies tcpv6_prot into
+tcpv6_prot_override during inet_init() (fs_initcall, level 5),
+before inet6_init() (module_init/device_initcall, level 6) has
+called proto_register(&tcpv6_prot). At that point,
+tcpv6_prot.slab is still NULL, so tcpv6_prot_override.slab
+remains NULL permanently.
 
-Each BPF program uses inline asm (__naked) to force specific register
-allocation, reads is_fullsock first, then loads the field using the same
-(or different) register. The test triggers TCP_NEW_SYN_RECV via a TCP
-handshake and checks that the result is NULL/zero when is_fullsock == 0.
+This causes MPTCP v6 subflow child sockets to be allocated via
+kmalloc (falling into kmalloc-4k) instead of the TCPv6 slab
+cache. The kmalloc-4k cache lacks SLAB_TYPESAFE_BY_RCU, so
+when these sockets are freed without SOCK_RCU_FREE (which is
+cleared for child sockets by design), the memory can be
+immediately reused. Concurrent ehash lookups under
+rcu_read_lock can then access freed memory, triggering a
+slab-use-after-free in __inet_lookup_established.
 
-Test:
-	./test_progs -a sock_ops_get_sk -v
-	test_sock_ops_get_sk:PASS:join_cgroup 0 nsec
-	test_sock_ops_get_sk:PASS:skel_open_load 0 nsec
-	run_sock_ops_test:PASS:prog_attach 0 nsec
-	run_sock_ops_test:PASS:start_server 0 nsec
-	run_sock_ops_test:PASS:connect_to_fd 0 nsec
-	test_sock_ops_get_sk:PASS:null_seen 0 nsec
-	test_sock_ops_get_sk:PASS:bug_not_detected 0 nsec
-	#419/1   sock_ops_get_sk/get_sk:OK
-	run_sock_ops_test:PASS:prog_attach 0 nsec
-	run_sock_ops_test:PASS:start_server 0 nsec
-	run_sock_ops_test:PASS:connect_to_fd 0 nsec
-	test_sock_ops_get_sk:PASS:field_null_seen 0 nsec
-	test_sock_ops_get_sk:PASS:field_bug_not_detected 0 nsec
-	#419/2   sock_ops_get_sk/get_field:OK
-	run_sock_ops_test:PASS:prog_attach 0 nsec
-	run_sock_ops_test:PASS:start_server 0 nsec
-	run_sock_ops_test:PASS:connect_to_fd 0 nsec
-	test_sock_ops_get_sk:PASS:diff_reg_null_seen 0 nsec
-	test_sock_ops_get_sk:PASS:diff_reg_bug_not_detected 0 nsec
-	#419/3   sock_ops_get_sk/get_sk_diff_reg:OK
-	#419     sock_ops_get_sk:OK
-	Summary: 1/3 PASSED, 0 SKIPPED, 0 FAILED
+Fix this by splitting the IPv6-specific initialization out of
+mptcp_subflow_init() into a new mptcp_subflow_v6_init(), called
+from mptcp_proto_v6_init() before protocol registration. This
+ensures tcpv6_prot_override.slab correctly inherits the
+SLAB_TYPESAFE_BY_RCU slab cache.
 
+Fixes: b19bc2945b40 ("mptcp: implement delegated actions")
+Cc: stable@vger.kernel.org
 Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 ---
- .../bpf/prog_tests/sock_ops_get_sk.c          |  77 ++++++++++++
- .../selftests/bpf/progs/sock_ops_get_sk.c     | 117 ++++++++++++++++++
- 2 files changed, 194 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/sock_ops_get_sk.c
- create mode 100644 tools/testing/selftests/bpf/progs/sock_ops_get_sk.c
+ net/mptcp/protocol.c |  2 ++
+ net/mptcp/protocol.h |  1 +
+ net/mptcp/subflow.c  | 15 +++++++++------
+ 3 files changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/sock_ops_get_sk.c b/tools/testing/selftests/bpf/prog_tests/sock_ops_get_sk.c
-new file mode 100644
-index 0000000000000..e086f7abb197e
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/sock_ops_get_sk.c
-@@ -0,0 +1,77 @@
-+// SPDX-License-Identifier: GPL-2.0
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 65c3bb8016f4..614c3f583ca0 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -4660,6 +4660,8 @@ int __init mptcp_proto_v6_init(void)
+ {
+ 	int err;
+ 
++	mptcp_subflow_v6_init();
 +
-+#include <test_progs.h>
-+#include "cgroup_helpers.h"
-+#include "network_helpers.h"
-+#include "sock_ops_get_sk.skel.h"
+ 	mptcp_v6_prot = mptcp_prot;
+ 	strscpy(mptcp_v6_prot.name, "MPTCPv6", sizeof(mptcp_v6_prot.name));
+ 	mptcp_v6_prot.slab = NULL;
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index 0bd1ee860316..ec15e503da8b 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -875,6 +875,7 @@ static inline void mptcp_subflow_tcp_fallback(struct sock *sk,
+ void __init mptcp_proto_init(void);
+ #if IS_ENABLED(CONFIG_MPTCP_IPV6)
+ int __init mptcp_proto_v6_init(void);
++void __init mptcp_subflow_v6_init(void);
+ #endif
+ 
+ struct sock *mptcp_sk_clone_init(const struct sock *sk,
+diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+index 6716970693e9..4ff5863aa9fd 100644
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -2165,7 +2165,15 @@ void __init mptcp_subflow_init(void)
+ 	tcp_prot_override.psock_update_sk_prot = NULL;
+ #endif
+ 
++	mptcp_diag_subflow_init(&subflow_ulp_ops);
 +
-+/* See progs/sock_ops_get_sk.c for the bug description. */
-+static void run_sock_ops_test(struct sock_ops_get_sk *skel, int cgroup_fd,
-+			      int prog_fd)
-+{
-+	int server_fd, client_fd, err;
-+
-+	err = bpf_prog_attach(prog_fd, cgroup_fd, BPF_CGROUP_SOCK_OPS, 0);
-+	if (!ASSERT_OK(err, "prog_attach"))
-+		return;
-+
-+	server_fd = start_server(AF_INET, SOCK_STREAM, NULL, 0, 0);
-+	if (!ASSERT_GE(server_fd, 0, "start_server"))
-+		goto detach;
-+
-+	/* Trigger TCP handshake which causes TCP_NEW_SYN_RECV state where
-+	 * is_fullsock == 0 and is_locked_tcp_sock == 0.
-+	 */
-+	client_fd = connect_to_fd(server_fd, 0);
-+	if (!ASSERT_GE(client_fd, 0, "connect_to_fd"))
-+		goto close_server;
-+
-+	close(client_fd);
-+
-+close_server:
-+	close(server_fd);
-+detach:
-+	bpf_prog_detach(cgroup_fd, BPF_CGROUP_SOCK_OPS);
++	if (tcp_register_ulp(&subflow_ulp_ops) != 0)
++		panic("MPTCP: failed to register subflows to ULP\n");
 +}
 +
-+void test_sock_ops_get_sk(void)
+ #if IS_ENABLED(CONFIG_MPTCP_IPV6)
++void __init mptcp_subflow_v6_init(void)
 +{
-+	struct sock_ops_get_sk *skel;
-+	int cgroup_fd;
-+
-+	cgroup_fd = test__join_cgroup("/sock_ops_get_sk");
-+	if (!ASSERT_GE(cgroup_fd, 0, "join_cgroup"))
-+		return;
-+
-+	skel = sock_ops_get_sk__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "skel_open_load"))
-+		goto close_cgroup;
-+
-+	/* Test SOCK_OPS_GET_SK with same src/dst register */
-+	if (test__start_subtest("get_sk")) {
-+		run_sock_ops_test(skel, cgroup_fd,
-+				  bpf_program__fd(skel->progs.sock_ops_get_sk_same_reg));
-+		ASSERT_EQ(skel->bss->null_seen, 1, "null_seen");
-+		ASSERT_EQ(skel->bss->bug_detected, 0, "bug_not_detected");
-+	}
-+
-+	/* Test SOCK_OPS_GET_FIELD with same src/dst register */
-+	if (test__start_subtest("get_field")) {
-+		run_sock_ops_test(skel, cgroup_fd,
-+				  bpf_program__fd(skel->progs.sock_ops_get_field_same_reg));
-+		ASSERT_EQ(skel->bss->field_null_seen, 1, "field_null_seen");
-+		ASSERT_EQ(skel->bss->field_bug_detected, 0, "field_bug_not_detected");
-+	}
-+
-+	/* Test SOCK_OPS_GET_SK with different src/dst register */
-+	if (test__start_subtest("get_sk_diff_reg")) {
-+		run_sock_ops_test(skel, cgroup_fd,
-+				  bpf_program__fd(skel->progs.sock_ops_get_sk_diff_reg));
-+		ASSERT_EQ(skel->bss->diff_reg_null_seen, 1, "diff_reg_null_seen");
-+		ASSERT_EQ(skel->bss->diff_reg_bug_detected, 0, "diff_reg_bug_not_detected");
-+	}
-+
-+	sock_ops_get_sk__destroy(skel);
-+close_cgroup:
-+	close(cgroup_fd);
-+}
-diff --git a/tools/testing/selftests/bpf/progs/sock_ops_get_sk.c b/tools/testing/selftests/bpf/progs/sock_ops_get_sk.c
-new file mode 100644
-index 0000000000000..3a0689f8ce7ca
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/sock_ops_get_sk.c
-@@ -0,0 +1,117 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include "vmlinux.h"
-+#include <bpf/bpf_helpers.h>
-+#include "bpf_misc.h"
-+
-+/*
-+ * Test the SOCK_OPS_GET_SK() and SOCK_OPS_GET_FIELD() macros in
-+ * sock_ops_convert_ctx_access() when dst_reg == src_reg.
-+ *
-+ * When dst_reg == src_reg, the macros borrow a temporary register to load
-+ * is_fullsock / is_locked_tcp_sock, because dst_reg holds the ctx pointer
-+ * and cannot be clobbered before ctx->sk / ctx->field is read. If
-+ * is_fullsock == 0 (e.g., TCP_NEW_SYN_RECV with a request_sock), the macro
-+ * must still zero dst_reg so the verifier's PTR_TO_SOCKET_OR_NULL /
-+ * SCALAR_VALUE type is correct at runtime. A missing clear leaves a stale
-+ * ctx pointer in dst_reg that passes NULL checks (GET_SK) or leaks a kernel
-+ * address as a scalar (GET_FIELD).
-+ *
-+ * When dst_reg != src_reg, dst_reg itself is used to load is_fullsock, so
-+ * the JEQ (dst_reg == 0) naturally leaves it zeroed on the !fullsock path.
-+ */
-+
-+int bug_detected;
-+int null_seen;
-+
-+SEC("sockops")
-+__naked void sock_ops_get_sk_same_reg(void)
-+{
-+	asm volatile (
-+		"r7 = *(u32 *)(r1 + %[is_fullsock_off]);"
-+		"r1 = *(u64 *)(r1 + %[sk_off]);"
-+		"if r7 != 0 goto 2f;"
-+		"if r1 == 0 goto 1f;"
-+		"r1 = %[bug_detected] ll;"
-+		"r2 = 1;"
-+		"*(u32 *)(r1 + 0) = r2;"
-+		"goto 2f;"
-+	"1:"
-+		"r1 = %[null_seen] ll;"
-+		"r2 = 1;"
-+		"*(u32 *)(r1 + 0) = r2;"
-+	"2:"
-+		"r0 = 1;"
-+		"exit;"
-+		:
-+		: __imm_const(is_fullsock_off, offsetof(struct bpf_sock_ops, is_fullsock)),
-+		  __imm_const(sk_off, offsetof(struct bpf_sock_ops, sk)),
-+		  __imm_addr(bug_detected),
-+		  __imm_addr(null_seen)
-+		: __clobber_all);
-+}
-+
-+/* SOCK_OPS_GET_FIELD: same-register, is_locked_tcp_sock == 0 path. */
-+int field_bug_detected;
-+int field_null_seen;
-+
-+SEC("sockops")
-+__naked void sock_ops_get_field_same_reg(void)
-+{
-+	asm volatile (
-+		"r7 = *(u32 *)(r1 + %[is_fullsock_off]);"
-+		"r1 = *(u32 *)(r1 + %[snd_cwnd_off]);"
-+		"if r7 != 0 goto 2f;"
-+		"if r1 == 0 goto 1f;"
-+		"r1 = %[field_bug_detected] ll;"
-+		"r2 = 1;"
-+		"*(u32 *)(r1 + 0) = r2;"
-+		"goto 2f;"
-+	"1:"
-+		"r1 = %[field_null_seen] ll;"
-+		"r2 = 1;"
-+		"*(u32 *)(r1 + 0) = r2;"
-+	"2:"
-+		"r0 = 1;"
-+		"exit;"
-+		:
-+		: __imm_const(is_fullsock_off, offsetof(struct bpf_sock_ops, is_fullsock)),
-+		  __imm_const(snd_cwnd_off, offsetof(struct bpf_sock_ops, snd_cwnd)),
-+		  __imm_addr(field_bug_detected),
-+		  __imm_addr(field_null_seen)
-+		: __clobber_all);
-+}
-+
-+/* SOCK_OPS_GET_SK: different-register, is_fullsock == 0 path. */
-+int diff_reg_bug_detected;
-+int diff_reg_null_seen;
-+
-+SEC("sockops")
-+__naked void sock_ops_get_sk_diff_reg(void)
-+{
-+	asm volatile (
-+		"r7 = r1;"
-+		"r6 = *(u32 *)(r7 + %[is_fullsock_off]);"
-+		"r2 = *(u64 *)(r7 + %[sk_off]);"
-+		"if r6 != 0 goto 2f;"
-+		"if r2 == 0 goto 1f;"
-+		"r1 = %[diff_reg_bug_detected] ll;"
-+		"r3 = 1;"
-+		"*(u32 *)(r1 + 0) = r3;"
-+		"goto 2f;"
-+	"1:"
-+		"r1 = %[diff_reg_null_seen] ll;"
-+		"r3 = 1;"
-+		"*(u32 *)(r1 + 0) = r3;"
-+	"2:"
-+		"r0 = 1;"
-+		"exit;"
-+		:
-+		: __imm_const(is_fullsock_off, offsetof(struct bpf_sock_ops, is_fullsock)),
-+		  __imm_const(sk_off, offsetof(struct bpf_sock_ops, sk)),
-+		  __imm_addr(diff_reg_bug_detected),
-+		  __imm_addr(diff_reg_null_seen)
-+		: __clobber_all);
-+}
-+
-+char _license[] SEC("license") = "GPL";
+ 	/* In struct mptcp_subflow_request_sock, we assume the TCP request sock
+ 	 * structures for v4 and v6 have the same size. It should not changed in
+ 	 * the future but better to make sure to be warned if it is no longer
+@@ -2204,10 +2212,5 @@ void __init mptcp_subflow_init(void)
+ 	/* Disable sockmap processing for subflows */
+ 	tcpv6_prot_override.psock_update_sk_prot = NULL;
+ #endif
+-#endif
+-
+-	mptcp_diag_subflow_init(&subflow_ulp_ops);
+-
+-	if (tcp_register_ulp(&subflow_ulp_ops) != 0)
+-		panic("MPTCP: failed to register subflows to ULP\n");
+ }
++#endif
 -- 
 2.43.0
 
