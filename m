@@ -1,49 +1,43 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D4E372667;
-	Mon,  6 Apr 2026 13:57:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E62F2DFA4A
+	for <netdev@vger.kernel.org>; Mon,  6 Apr 2026 13:59:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775483822; cv=none; b=k9kvZxEEUV2BN2j+cHzCZd5QEX54fg32cC2FE66LFcuJ8FRIIY+KwlyZbRY4FqPtuxgsmdcIBwhnLBsMIhIhDlmjUT4vizkOZhDx7jSRJotAcG0AH6EjKKzsWovY1YiDqPi67+BJyZGct65O4qQiSaYLDb8GJ5En7BQ/3ejVBhI=
+	t=1775483943; cv=none; b=b4mBrTfrekduh68/mNazl5Ah1u8LsvRVDRKuYd5+4ujcg4o8HF8kIGLuP4vwBSPwALut/0J+baKg1BN1/KNcu2KEjClw5uMMArraDhZZ96PePLesbZPpbJSUUq7PvjoVuPnPKTbEpP4DpVrwvp6Dk0+irb0dgIGCxHd8iIGWffA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775483822; c=relaxed/simple;
-	bh=xjHwG5Y+1E1d2HwBhZsmGySfm5K7EBG11H8zaiaM9cs=;
+	s=arc-20240116; t=1775483943; c=relaxed/simple;
+	bh=PeX5UkVx2rDi6O2/jL5XOx6oMr1qUDsYsbLmgLrlbj4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IDaa5acfAbfs6b87zsSqyaY9304jEcDRjEZhWSn0NTUuhYTfLcGV/esr7lgZZzbTjrjuYB5rdn1W9cKQiWVO0HIw4PCtTAChOjgEJqaEZenH/Oi0trH7H51/jdtvJ7Nlf7jCN8//zQGnFFXkTF911Kd2d+7PkaUddJBoFj+xYb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=SMgI942G; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=ESL80/51m1aeFDDAyTjauJAZldBNlRdtMBzN1Oo+DENF8IhJZAjwo/AfuUVXk7fDMt4N1KFj3FoyN9nlt7B9l3BmmIbbyJFN6pqG32lzYxlGBbj7YLyKZdAXdJU/Ud/9hF2FRVKutN0BCrkMLNwDOfj1GOQ2nRyqf6T8h//b1PA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ns5HWGtq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="SMgI942G"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=P6+ExAEXw9GKGXkRDQY+ltkonNVErp1cHtCmBK5GetU=; b=SMgI942GxUKcjBVCjiy7h8WiWZ
-	DnYPldEHZ0kb0VLRTe1Xg1IXhCsxpRnHtRzvXh5Wdx99ITNIQcUivXAAkj8bSpvRmRvvFcmEI5Isz
-	RF+DQOE9C0ijARr6bqxGhwDBGiFwb/ksIYaZQ8DxkxWW463uOLlJZEMe0pY3v1YU2XiI=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1w9kRd-00Ezh8-PC; Mon, 06 Apr 2026 15:56:49 +0200
-Date: Mon, 6 Apr 2026 15:56:49 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ns5HWGtq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EFE6C4CEF7;
+	Mon,  6 Apr 2026 13:59:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775483942;
+	bh=PeX5UkVx2rDi6O2/jL5XOx6oMr1qUDsYsbLmgLrlbj4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ns5HWGtqQJ6tmETv23q+ZfnXnaMmae4LRM/uKe/l3ezqTX0T3zFim6EqMpjm8mRVl
+	 TxhUpMN0/Y6jwyV691LHwYs9gmKjMcuk8R3CGqVi85RXs8h+SreH9J7/Yjdz+BLWSu
+	 7WuR1zkz0ZthaU5eJrVtpTO7raGQVYuqrZGmU3D7UZdjCgnuRPF40IPZq6aFWPSl2X
+	 wCW0PFAgxvHwIPorji2MO1glm6DmnMGSap4YQX/hptoLxkyYF48F05toEJt63MlwOU
+	 sleSGH3iFBXpwF2MkXzdNHU0rn4gp/rYcLRT5ou/94aV3CYFiDewjQtQTL5T4qoLc0
+	 l29TE4Sqa3eXA==
+Date: Mon, 6 Apr 2026 14:58:58 +0100
+From: Simon Horman <horms@kernel.org>
+To: Jeremy Kerr <jk@codeconstruct.com.au>
+Cc: Matt Johnston <matt@codeconstruct.com.au>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 0/3] net: phy: add support for disabling
- autonomous EEE
-Message-ID: <5298959c-12de-4992-a896-3d1371cba111@lunn.ch>
-References: <20260406-devel-autonomous-eee-v1-0-b335e7143711@tipi-net.de>
- <a1cf8f6a-b338-4dd7-aced-7e19e4d0fdb7@lunn.ch>
- <9272c5dd653039b3def8caaea3e631c5@tipi-net.de>
+	netdev@vger.kernel.org
+Subject: Re: [PATCH net-next] net: mctp: defer creation of dst after
+ source-address check
+Message-ID: <20260406135858.GB395680@kernel.org>
+References: <20260403-dev-mctp-dst-defer-v1-1-9c2c55faf9e9@codeconstruct.com.au>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,32 +46,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9272c5dd653039b3def8caaea3e631c5@tipi-net.de>
+In-Reply-To: <20260403-dev-mctp-dst-defer-v1-1-9c2c55faf9e9@codeconstruct.com.au>
 
-> "Autonomous EEE" works for me (obviously). It kinda describes what
-> happens (the PHY acts autonomously) without being tied to a specific
-> vendor's marketing name.
+On Fri, Apr 03, 2026 at 10:24:51AM +0800, Jeremy Kerr wrote:
+> Sashiko reports:
 > 
-> That said, I feel Russell's argument that it doesn't type well. But
-> even after some walks in the woods I wasn't able to come up with a
-> better name yet.
+> > mctp_dst_from_route() increments the device reference count by calling
+> > mctp_dev_hold(). When a valid route is found and dst is NULL, the
+> > structure copy is bypassed and rc is set to 0.
+> 
+> Instead of optimistically creating a dst from the final route (then
+> releasing it if the saddr is invalid), perform the saddr check first.
+> 
+> This means we don't have an unuecessary hold/release on the dev, which
+> could leak if the dst pointer is NULL. No caller passes a NULL dst at
+> present though (so the leak is not possible), but this is an intended
+> use of mctp_dst_from_route().
+> 
+> Fixes: 22cb45afd221 ("net: mctp: perform source address lookups when we populate our dst")
+> Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
 
-Yes, naming is hard.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-> I don't think there's a meaningful use case for letting users choose
-> between the two. Or is there?
-
-This has come up before, in other context. PTP is one example, where
-both the MAC and the PHY can implement it. Ideally, you want it to
-happen at the PHY, it gives higher accuracy. But there are systems
-where the PHY implementation is somewhat broken, and the MAC PTP gives
-better results. So defaulting to PHY PTP is not always the best
-option.
-
-I would expect IEEE 802.3 EEE, with both the MAC and PHY cooperating
-is better than just PHY level EEE, the system as a whole has a better
-picture of what is going on, so using 802.3 EEE should be the
-preference/default. But are we going to run into oddball systems where
-autonomous EEE is actually better than using a somewhat broke MAC?
-
-	Andrew
