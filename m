@@ -1,36 +1,36 @@
 Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199A43164A1;
-	Mon,  6 Apr 2026 07:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 210372EFDA4;
+	Mon,  6 Apr 2026 07:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775459712; cv=none; b=TiI68/yMTWu1UWcMWlP3oBM9HXUG+bAbt8vB3bY7kDViTXyX7GrN949jtt2LcixNwXNes6rPutQXbdlzGfMlBIn6paNFu5xCMreBO/by90aTiRdMugcRvngH54Y9uK9lveMXrLsl2Xu1xSW2DS1utyZSR3d26ZM325b5IId6pww=
+	t=1775459714; cv=none; b=gnU1oOtZGk1hm0z7ODhJ5vF6M9R3opHgFR+GCummzateFAcWs16pI+BsVuW4j3YamCA5X38yhrNL1Ghsj5+h5xYb4Spb5CNpPWcjn1R7Rxcab+0fnojXRjojTccX1VE0MuLHYLGn3T/54TE0CSkV6HRDc5aJ8Mcw7oXjMiMg8pU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775459712; c=relaxed/simple;
-	bh=LB3vnPpTE/TUlyjaW5iPG1lrYKniuav6TaCOcSRrGD0=;
+	s=arc-20240116; t=1775459714; c=relaxed/simple;
+	bh=Pjf1imxacRlgp7F+6sqrlta9RQxhyVo8mmvv+p5eYFI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=G7mTU1TW7IF2jlEHsarMYatMHeucffSg3qFapWiwJMnDL1EGgn+ByZtcyGZi7XroF9j635Xta5VmOk/msjEgkTclV4GNw+ZvTLagIblD9MdEmbW4xGXRXg5utTNA7b2OHB8aaHZ860lC/6xyuHxxP63umVrIMfCzrx5NBzXJxNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=P1iMrgxE; arc=none smtp.client-ip=194.13.80.246
+	 In-Reply-To:To:Cc; b=EyTcxWjhbC3mX1YY3U8azk/xD/R8mTHEauBAVf93nxOIe5eUNaKEQ/WS/DBjQukttXU9XHm1eT9I6YM0g9VTtCuhQv4GDr7dWnBpTLDBeHKrobbcouc8R2v/6XB8RQoLh15OCK5NqX6gbnPAeA9fRgKxZsVrjkrVgZYsnUUtovU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=YKSM50g2; arc=none smtp.client-ip=194.13.80.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="P1iMrgxE"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D96A2A589E;
-	Mon,  6 Apr 2026 09:15:00 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="YKSM50g2"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3BC5CA58A2;
+	Mon,  6 Apr 2026 09:15:02 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1775459701; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1775459702; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=9ViK1ay8NbI2CDWLDB9hK9WGLu5iTogx7vDteWd055Y=;
-	b=P1iMrgxEYyoL/dw3+KXa87wZXUsoT2FDek89dq5QiOKyvxsvxHc12oK1jDxVX30U+u75LS
-	EZgB5Tf7rPybU00073Eix4BUyWPZ2e39J2hSKT4YieqBWNNzL4CCHCGoaOX2ZMQcaBEFKW
-	PrLXM1HmBC5thOtPoDJlQnrwPivQMAKbDHuS+WQSvQvjDfClNnnnIeXQUDGF8v+z5ol3RU
-	JTIjarnUB6qUghWGl62pmqz/KNTv7pcHp0YNzSUE30dHZQ4IU8DHo5qll9dsfgFfOjSleT
-	guw+L269Mj6lVvafliZq0ZQz09WhG46IVRn4egSjiYzH4qL0OaDe8tBsXiKEZg==
+	bh=A8YKvQ1MvmfEeJEmpDewULi8pG3k+dSPUFy29NKHrJA=;
+	b=YKSM50g2rQlPi2Vq7oN8Nl5hjlVQDK1A0rbn/rSi4QMNhXH8RlXOPSWahkKt/rZtCuKmTm
+	mrqSirl/2pNKpIr5dRFEUIiy7N9weBqRUaOeeIkGMkudAyJRVJBtDTzktfILEDUErNpSI3
+	li/9Cg+UCWnAbNX9gYiK4UImtTtTKAw4WUiAjkfnB7XnpsTES3kVl0ocEef82BY9k9/RXo
+	mPy4/J/dlckft876irZqh3laS5yhUNy6tZB99ZJ3jIZz6hjTn5ZPygMFFrqqYeH9mCZn9H
+	zmfyigXh1iu/lq1mgss2jVDXT1zCOyRkltih9KOj0cKZYC252Mja6ex2UnAJcQ==
 From: Nicolai Buchwitz <nb@tipi-net.de>
-Date: Mon, 06 Apr 2026 09:13:07 +0200
-Subject: [PATCH net-next 1/3] net: phy: add support for disabling
- PHY-autonomous EEE
+Date: Mon, 06 Apr 2026 09:13:09 +0200
+Subject: [PATCH net-next 3/3] net: phy: realtek: convert RTL8211F to
+ .disable_autonomous_eee
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -39,7 +39,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260406-devel-autonomous-eee-v1-1-b335e7143711@tipi-net.de>
+Message-Id: <20260406-devel-autonomous-eee-v1-3-b335e7143711@tipi-net.de>
 References: <20260406-devel-autonomous-eee-v1-0-b335e7143711@tipi-net.de>
 In-Reply-To: <20260406-devel-autonomous-eee-v1-0-b335e7143711@tipi-net.de>
 To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
@@ -53,101 +53,59 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
 X-Mailer: b4 0.14.2
 X-Last-TLS-Session-Version: TLSv1.3
 
-Some PHYs (e.g. Broadcom BCM54xx, Realtek RTL8211F) implement
-autonomous EEE where the PHY manages LPI signaling without forwarding
-it to the MAC. This conflicts with MAC drivers that implement their own
-LPI control.
+The RTL8211F previously unconditionally disabled PHY-mode EEE in
+config_init. Convert this to use the new .disable_autonomous_eee
+callback so it is only disabled when the MAC indicates EEE support
+via phy_support_eee().
 
-Add a .disable_autonomous_eee callback to struct phy_driver and call it
-from phy_support_eee(). When a MAC driver indicates it supports EEE via
-phy_support_eee(), the PHY's autonomous EEE is automatically disabled so
-the MAC can manage LPI entry/exit.
+This preserves PHY-autonomous EEE for MACs that do not support EEE,
+while still disabling it when the MAC manages LPI.
 
 Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
 ---
- drivers/net/phy/phy_device.c | 22 ++++++++++++++++++++++
- include/linux/phy.h          | 14 ++++++++++++++
- 2 files changed, 36 insertions(+)
+ drivers/net/phy/realtek/realtek_main.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 0edff47478c20dd8537d4b94806be13b2409c711..cda4abf4e68cddb25b4ac69c35c8e095fac3e31c 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -1375,6 +1375,14 @@ int phy_init_hw(struct phy_device *phydev)
- 			return ret;
+diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
+index 023e47ad605bde57287d3da8b80c47d97d898b96..b7c96b020baf6f2ae8c5fe71d1fc3cbf7c6e2bc7 100644
+--- a/drivers/net/phy/realtek/realtek_main.c
++++ b/drivers/net/phy/realtek/realtek_main.c
+@@ -700,9 +700,8 @@ static int rtl8211f_config_aldps(struct phy_device *phydev)
+ 	return phy_modify(phydev, RTL8211F_PHYCR1, mask, mask);
+ }
+ 
+-static int rtl8211f_config_phy_eee(struct phy_device *phydev)
++static int rtl8211f_disable_autonomous_eee(struct phy_device *phydev)
+ {
+-	/* Disable PHY-mode EEE so LPI is passed to the MAC */
+ 	return phy_modify(phydev, RTL8211F_PHYCR2,
+ 			  RTL8211F_PHYCR2_PHY_EEE_ENABLE, 0);
+ }
+@@ -730,7 +729,7 @@ static int rtl8211f_config_init(struct phy_device *phydev)
+ 		return ret;
  	}
  
-+	/* Re-apply autonomous EEE disable after soft reset */
-+	if (phydev->autonomous_eee_disabled &&
-+	    phydev->drv->disable_autonomous_eee) {
-+		ret = phydev->drv->disable_autonomous_eee(phydev);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	return 0;
+-	return rtl8211f_config_phy_eee(phydev);
++	return 0;
  }
- EXPORT_SYMBOL(phy_init_hw);
-@@ -2898,6 +2906,20 @@ void phy_support_eee(struct phy_device *phydev)
- 	linkmode_copy(phydev->advertising_eee, phydev->supported_eee);
- 	phydev->eee_cfg.tx_lpi_enabled = true;
- 	phydev->eee_cfg.eee_enabled = true;
-+
-+	/* If the PHY supports autonomous EEE, disable it so the MAC can
-+	 * manage LPI signaling instead. The flag is stored so it can be
-+	 * re-applied after a PHY soft reset (e.g. suspend/resume).
-+	 */
-+	if (phydev->drv && phydev->drv->disable_autonomous_eee) {
-+		int ret = phydev->drv->disable_autonomous_eee(phydev);
-+
-+		if (ret)
-+			phydev_warn(phydev, "Failed to disable autonomous EEE: %pe\n",
-+				    ERR_PTR(ret));
-+		else
-+			phydev->autonomous_eee_disabled = true;
-+	}
- }
- EXPORT_SYMBOL(phy_support_eee);
  
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 5de4b172cd0ba0048039d73d049b0ff24e8b2e44..199a7aaa341bfd9b13731e996a8de7e1aea586ff 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -612,6 +612,8 @@ struct phy_oatc14_sqi_capability {
-  * @advertising_eee: Currently advertised EEE linkmodes
-  * @enable_tx_lpi: When True, MAC should transmit LPI to PHY
-  * @eee_active: phylib private state, indicating that EEE has been negotiated
-+ * @autonomous_eee_disabled: Set when autonomous EEE has been disabled,
-+ *	used to re-apply after PHY soft reset
-  * @eee_cfg: User configuration of EEE
-  * @lp_advertising: Current link partner advertised linkmodes
-  * @host_interfaces: PHY interface modes supported by host
-@@ -739,6 +741,7 @@ struct phy_device {
- 	__ETHTOOL_DECLARE_LINK_MODE_MASK(eee_disabled_modes);
- 	bool enable_tx_lpi;
- 	bool eee_active;
-+	bool autonomous_eee_disabled;
- 	struct eee_config eee_cfg;
- 
- 	/* Host supported PHY interface types. Should be ignored if empty. */
-@@ -1359,6 +1362,17 @@ struct phy_driver {
- 	void (*get_stats)(struct phy_device *dev,
- 			  struct ethtool_stats *stats, u64 *data);
- 
-+	/**
-+	 * @disable_autonomous_eee: Disable PHY-autonomous EEE
-+	 *
-+	 * Some PHYs manage EEE autonomously, preventing the MAC from
-+	 * controlling LPI signaling. This callback disables autonomous
-+	 * EEE at the PHY.
-+	 *
-+	 * Return: 0 on success, negative errno on failure.
-+	 */
-+	int (*disable_autonomous_eee)(struct phy_device *dev);
-+
- 	/* Get and Set PHY tunables */
- 	/** @get_tunable: Return the value of a tunable */
- 	int (*get_tunable)(struct phy_device *dev,
+ static int rtl821x_suspend(struct phy_device *phydev)
+@@ -2324,6 +2323,7 @@ static struct phy_driver realtek_drvs[] = {
+ 		.led_hw_is_supported = rtl8211x_led_hw_is_supported,
+ 		.led_hw_control_get = rtl8211f_led_hw_control_get,
+ 		.led_hw_control_set = rtl8211f_led_hw_control_set,
++		.disable_autonomous_eee = rtl8211f_disable_autonomous_eee,
+ 	}, {
+ 		PHY_ID_MATCH_EXACT(RTL_8211FVD_PHYID),
+ 		.name		= "RTL8211F-VD Gigabit Ethernet",
+@@ -2340,6 +2340,7 @@ static struct phy_driver realtek_drvs[] = {
+ 		.led_hw_is_supported = rtl8211x_led_hw_is_supported,
+ 		.led_hw_control_get = rtl8211f_led_hw_control_get,
+ 		.led_hw_control_set = rtl8211f_led_hw_control_set,
++		.disable_autonomous_eee = rtl8211f_disable_autonomous_eee,
+ 	}, {
+ 		.name		= "Generic FE-GE Realtek PHY",
+ 		.match_phy_device = rtlgen_match_phy_device,
 
 -- 
 2.51.0
