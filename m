@@ -1,106 +1,86 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC1F239E9B;
-	Mon,  6 Apr 2026 15:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 117DF1514E4;
+	Mon,  6 Apr 2026 15:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775489514; cv=none; b=g2jcSCQS6xl5zEiUIzBLL7eHxTlxPLsnnXSzSTerUFVLTQ3EtK9ZaLMZIUVeZDlRVWiEgmKJPEkcepjCE0I+Bv3QCETuLm6vKqRFv8mSxatB/ERTtt15BRKfjI86y80xxcm3JtMvY7QcNCt8a9PsGS7Wxhulah6SQFyQBqD6yMY=
+	t=1775489589; cv=none; b=jy125zdass/bIhaevICjs9nzfOdwjDhCFSifQZO5ufS903comPM0+2pPoveXbPFUZjrOvKzmPrq2mQMbe2Nx4viz2tqXYdeKWvAsKjlqqB260k2j0ooUYezp1jDRfQqNAO5+rpWFMvfRPH1w+zs9zwKJKLJi7dqb0fgXMdSyZfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775489514; c=relaxed/simple;
-	bh=itDLSe0giY70jGJf4kzYlywYfnF9br8CjKCgeeZ16VQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GArsugGG9xeGGRT8Uuae47mUfmymnW4ZRVodfWgQhLb0dT62SWse+7DbbGkSsKkw3/g3BSziKZTa0F8iSFLdsXWHu53JqDevBgecvzekk+bZpURgrRKTIndntKMsZ+M1UyMUnNmTQHWAwnIDTvii11i+uyruuj46rpeU4UlrU/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e6efUx+r; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775489589; c=relaxed/simple;
+	bh=cv/rpa3GqM2NidjZX23eueMStM8p/0HTp8XBZXdKvDE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VP7OEjFy+w+oDb+fGjDoWl/V6TrCZ3+DB9UoQ+lkN9mF9jXsjh6m8zhYghHd3/Ox0sp+eYOGIY1nlZJxRc01yBeIIgHANreJjPcBe3jpwCE2pVWW7sWP0bQweF8PfEt3Kvu7BVZ2NBxDIQ8fJXwWSW4gthVAPo7haThonLtRLsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RzztBOnD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e6efUx+r"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DBA0C19421;
-	Mon,  6 Apr 2026 15:31:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775489514;
-	bh=itDLSe0giY70jGJf4kzYlywYfnF9br8CjKCgeeZ16VQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=e6efUx+r7a/SlGdQCndU2a3Ll60+iodoSVWelWnpTe4hWrqOqzsbnr5rfD7+IjPaY
-	 7e2h+Pr/cNOxFp20PExgZV0uGUUgwaHdBa0V7Of0viYQ7qD0KVc83x2om4S2T2FXUK
-	 8Ea9NcN/wkJCHV1lie4HScPl4GKnglaXzdzKUkgWvy3P96A4kFtJ25efWiQwGQxq2x
-	 nYhpGgsRWdJ7gEzpvlfQeuTBphzDeNh7jZaQi+JSGI1Xt3JBJ/OF+gTIhYZHPJlxU0
-	 EcNDPFyGxqPIj4+cJL6AYFK0UYrB1ts4X4/vMihhPuLalshM8gZ9Za6dhcW9CB6IIX
-	 8xt+S45CxyU6g==
-Date: Mon, 6 Apr 2026 16:31:50 +0100
-From: Simon Horman <horms@kernel.org>
-To: Ioana Ciornei <ioana.ciornei@nxp.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RzztBOnD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F25E8C4CEF7;
+	Mon,  6 Apr 2026 15:33:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1775489588;
+	bh=cv/rpa3GqM2NidjZX23eueMStM8p/0HTp8XBZXdKvDE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=RzztBOnD2Ohi7dSt+je6+K86zp8MhEQKY8cy6sSIZFjUELtYamPJhxHYOvw/916VT
+	 1wr6Xn5DQQHr+5xMhemoikntlf0P1B8LtS5X0rsN2TzwsU41O6uLHEe+8rdyrDnDSC
+	 k/KFedzGaUN2mkJyCK2wc2JAyMu1XfyKVpXojMO4=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org, petrm@nvidia.com, willemb@google.com,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next] selftests: forwarding: lib: rewrite processing
- of command line arguments
-Message-ID: <20260406153150.GI395680@kernel.org>
-References: <20260403141912.3825693-1-ioana.ciornei@nxp.com>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Subject: [PATCH net] xfrm_user: fix info leak in build_mapping()
+Date: Mon,  6 Apr 2026 17:33:03 +0200
+Message-ID: <2026040602-shack-tamale-d8c3@gregkh>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260403141912.3825693-1-ioana.ciornei@nxp.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1356; i=gregkh@linuxfoundation.org; h=from:subject:message-id; bh=cv/rpa3GqM2NidjZX23eueMStM8p/0HTp8XBZXdKvDE=; b=kA0DAAIRMUfUDdst+ykByyZiAGnT0i7ITkEI72eGBg/c51t/a6eTNgtHCuFZedxIV7FFIThN3 IhdBAARAgAdFiEE9LYMxb94wiFKMT3LMUfUDdst+ykFAmnT0i4ACgkQMUfUDdst+ynnoACeLnV/ NJl8eBO9AKZKooBHT+jZXi4An1xhW6D44/m3ZrYGs3/T+FSjmVp7
+X-Developer-Key: i=gregkh@linuxfoundation.org; a=openpgp; fpr=F4B60CC5BF78C2214A313DCB3147D40DDB2DFB29
+Content-Transfer-Encoding: 8bit
 
-On Fri, Apr 03, 2026 at 05:19:12PM +0300, Ioana Ciornei wrote:
-> The piece of code which processes the command line arguments and
-> populates NETIFS based on them is really unobvious. Rewrite it so that
-> the intention is clear and the code is easy to follow.
-> 
-> Suggested-by: Petr Machata <petrm@nvidia.com>
-> Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-> ---
->  tools/testing/selftests/net/forwarding/lib.sh | 22 +++++++++----------
->  1 file changed, 11 insertions(+), 11 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/net/forwarding/lib.sh b/tools/testing/selftests/net/forwarding/lib.sh
-> index d8cc4c64148d..922cdaf2ceb9 100644
-> --- a/tools/testing/selftests/net/forwarding/lib.sh
-> +++ b/tools/testing/selftests/net/forwarding/lib.sh
-> @@ -466,18 +466,18 @@ if [ "${DRIVER_TEST_CONFORMANT}" = "yes" ]; then
->  	NETIFS[p2]="$remote_netif"
->  	TARGETS[$remote_netif]="$REMOTE_TYPE:$REMOTE_ARGS"
->  else
-> -	count=0
+struct xfrm_usersa_id has a one-byte padding hole after the proto
+field, which ends up never getting set to zero before copying out to
+userspace.  Fix that up by zeroing out the whole structure before
+setting individual variables.
 
-AI generated review on Sashiko.dev suggests that initialising count should
-be retained to ensure correct behaviour in the (unlikely) case that count
-is already set (to a non-zero value) in the environment.
+Fixes: 3a2dfbe8acb1 ("xfrm: Notify changes in UDP encapsulation via netlink")
+Cc: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>
+Assisted-by: gregkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+Note, I think this is correct, as I don't think a new skb has it's
+fields pre-zeroed out, or am I totally wrong here?
 
-And this seems like a good idea to me.
+ net/xfrm/xfrm_user.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> +	# Prime NETIFS from the command line, but retain if none given.
-> +	if [[ $# -gt 0 ]]; then
-> +		unset NETIFS
-> +		declare -A NETIFS
->  
-> -	while [[ $# -gt 0 ]]; do
-> -		if [[ "$count" -eq "0" ]]; then
-> -			unset NETIFS
-> -			declare -A NETIFS
-> -		fi
-> -		count=$((count + 1))
-> -		NETIFS[p$count]="$1"
-> -		TARGETS[$1]="local:"
-> -		shift
-> -	done
-> +		while [[ $# -gt 0 ]]; do
-> +			count=$((count + 1))
-> +			NETIFS[p$count]="$1"
-> +			TARGETS[$1]="local:"
-> +			shift
-> +		done
-> +	fi
->  fi
->  
->  ##############################################################################
-> -- 
-> 2.25.1
-> 
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index 8a854fa9567d..1bb8d05561df 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -4165,6 +4165,7 @@ static int build_mapping(struct sk_buff *skb, struct xfrm_state *x,
+ 
+ 	um = nlmsg_data(nlh);
+ 
++	memset(&um->id, 0, sizeof(um->id));
+ 	memcpy(&um->id.daddr, &x->id.daddr, sizeof(um->id.daddr));
+ 	um->id.spi = x->id.spi;
+ 	um->id.family = x->props.family;
+-- 
+2.53.0
+
