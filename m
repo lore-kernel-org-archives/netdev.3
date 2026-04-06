@@ -1,57 +1,150 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E8639D6CF
-	for <netdev@vger.kernel.org>; Mon,  6 Apr 2026 23:21:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5562931A072
+	for <netdev@vger.kernel.org>; Mon,  6 Apr 2026 23:25:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775517709; cv=none; b=k1wocofcPIVpumy3cT5CMh73PyM04UsHMABJxEW8dcKCEnRDl/1D7/ORJw35e0dk8AfCS9YDqXK8A0ptuI2vx39+gXvTn/CUXr2SJOHXYr12jxjj+D9tZbEFK+JRbjERMOj4KGVdUs1YUipQJRcJSSY1mTD/MwGA6KaVlh/lDfk=
+	t=1775517926; cv=none; b=WAW9Hza4Beo9coOz+Rzhm+CoeA+55cMiwF5iFEG7G+PQe17ljwFr5OcfUSfze1DodH7ZIhZg52L6z8gSkPGaTj8Xn9kUJV/stt70vMPADy7dBRInMZcJecjw5beDEWM6Ukb45mO/Mabkx5VQr1PFa24s5YggR4AKiU/etHQnWvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775517709; c=relaxed/simple;
-	bh=LoyL83Q4kP/YIk5ssgNwI9pOEK+CHoIbH+8bUYCFx5w=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=p2XaJU/C5tkjbWHjHlRL/saueXswoeqSHdWSvVmV6adwnoU75+q672n0jk+sgLsfr+cw/+pfxzuEaSI2YpJLQKdSflPhI8oeqt1KEGsebIWcP9DiAiL76izMYuUQSkKBkiCCIY+bWDrjpKN5H9d7rNdZpL6V7USbIIjnsIeVic4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lJ3zRlMG; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1775517926; c=relaxed/simple;
+	bh=a3r3KrEuJLHBWtXp3+zPQs9X4rkDOMQXRKluXAK5krI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FS3t6AgsDlJVHgb7oKagaYrpr+zg5/UDideLnu3uO7y8oRlwfXO84qq9VaLImawzSLLbyZ5kkmYoZYn0Rbcbz43pgxKNrL0KSNkZXj+/nZRZx961jKTZhg1jadIl2Mb+HkSgNdjGkTOYmbANgEB3BZJ1TEsDbYa849GVETUAI7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=C7XkuzFi; arc=none smtp.client-ip=74.125.82.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lJ3zRlMG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775517708; x=1807053708;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=LoyL83Q4kP/YIk5ssgNwI9pOEK+CHoIbH+8bUYCFx5w=;
-  b=lJ3zRlMGvFN0//w2aB1UrOgiw9dzSH1/6DLHtyQpWn9k+9nmzrJ6Rtr1
-   R++OgBkiHsO/c541Td1vatOmOXagz/4t83RBB4s3LkpH2sWFrHBv/4YE2
-   4iYQAclrFn6c0gJsy0dUlfIpax8unU3zDqof7M/jd+v1N1PVfe8Fw1Kbd
-   G6RTrslTF9oeB9esJeO1a85+dDZGr8/En8jZfCYOntTmOxFtlYyEOGMCx
-   WhJ/95w7nGTFzBt2/ukKdsB3XhBFIRT3gbwF6nrnTIgk/DgrIoXewXo1A
-   01COGMmtjvZct04kYGgcujYQmeVMAAnsKFwlLBd40U1fNxxB4Pyxmdg+q
-   A==;
-X-CSE-ConnectionGUID: Ccdq39hbQH2yNL96Lfa7WQ==
-X-CSE-MsgGUID: rA38uz4kRNiNP2iUNsry5Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11751"; a="76368985"
-X-IronPort-AV: E=Sophos;i="6.23,164,1770624000"; 
-   d="scan'208";a="76368985"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Apr 2026 16:21:45 -0700
-X-CSE-ConnectionGUID: ie146FGOS0qcepsWoRMBfA==
-X-CSE-MsgGUID: 6mnlO9qORUmQRZmMAe4jag==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,164,1770624000"; 
-   d="scan'208";a="232050500"
-Received: from dcskidmo-m40.jf.intel.com ([10.166.241.14])
-  by orviesa003.jf.intel.com with ESMTP; 06 Apr 2026 16:21:45 -0700
-From: Joshua Hay <joshua.a.hay@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org
-Subject: [Intel-wired-lan][PATCH iwl-net 2/2] idpf: fix skb datapath queue based scheduling crashes and timeouts
-Date: Mon,  6 Apr 2026 16:32:36 -0700
-Message-Id: <20260406233236.3585504-3-joshua.a.hay@intel.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20260406233236.3585504-1-joshua.a.hay@intel.com>
-References: <20260406233236.3585504-1-joshua.a.hay@intel.com>
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="C7XkuzFi"
+Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-2ce102afb0aso2630025eec.1
+        for <netdev@vger.kernel.org>; Mon, 06 Apr 2026 16:25:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1775517923; x=1776122723; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=e+LsTmUaKDUP6TtbtpmsofePBR8TWMvjJHv9+/xi4nY=;
+        b=C7XkuzFi8BgckAdjqH1TaaQYw3Cz/FCHv1Ztl4wqO9HGHtrp5tPLxmMJ2RBUDuwyb6
+         1nId1gnR0WyWEW9NAzON05hgbpeKXxc3LDDohEOOEHxXogtppLAXUM3IX8gPs03e5Hf6
+         gnQNX8eMEFVqOJ9LCFo4Mao5L28IExThf90gk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775517923; x=1776122723;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=e+LsTmUaKDUP6TtbtpmsofePBR8TWMvjJHv9+/xi4nY=;
+        b=VUVr8sSDjHEoyDUnf9LMWccU8Bz0FG+SzBDF/jDI2dN2tuv/Hb4bmsUWr9WtdE/qmd
+         eJYoew2yIBZ5oD0ikNHuA9p7S04FwJuHNJ244MHGTY/szuMeX7ZyfnV1QYKXw+Ybgg/n
+         75HJmhqO0Us1uPb7T4/79E3LX0F1re2820tqNDfZuXUWBK3f6iqoYjN6zTd3dI2vZZ8J
+         rB0SJU5bgQl8swpYquzSvoMwdXV6mKKU4jel2EOhCDgtX5yM0kqQf1HWtzOyTC2+Ll9o
+         G7JLqMbMWCRloKo2kRNlWBj8EATOo1nwv9sgS5ovX953TdMzEpUnb4ulNZk+f9QopxHz
+         e+OQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXPUZuH/IyHt3Whf5teP9a12BLi7XPX/7Sw1+sJ62TF1VXRG62+D4LEMe0P7BFKSlffRQlmypA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVjQOExPuiGhUmBtEeLhpmmrL9YC7WANZOQJOPAOfdcgGfUy3t
+	h1ku/I3FWrEsawyvVLgLtJ9bjffaKtGtCmb52ztzwGPohStNCVGETfJ0kzOujjuqJA==
+X-Gm-Gg: AeBDietziHrnupMHH44TVOSHeT3rqxsZwwXckW9jfa1CalIz2ufDChJ7xJInZUNzsrs
+	Ec5yTISGWnTb9+AB14rrGMletblp7cG/b+P7VzcOVEPTF+Fu+IMYQZ3FwXKaoegBaUZH9xhnMtE
+	S3D/YoiW6k7KcVNasLYNCFlkT1177bJYyD8tUV8/pVV6gpldbyDKWPjCq3im0/6OsYXNagcHGxL
+	OO5Jiwl5ThDh0bZsSg4OVAKNSO7QGiZCI2wXlr8U2tHhXpjdH55sfjaAokxvD17MyaYyQS+xyPz
+	+gGz98FVdAcpRoryxdMW+FB4o95SPaBO3fEziOF2CkiNdpXmXtDhn8xj56oyy+8FBPHKEcB5Ewf
+	4XbvLhtXZ0yZ/3uEhRR2M5ITodmKhQI6337X+n0dCI4Omy+nutTxjbRP++5xbrHirjK150/rSKj
+	NuvMLsJowBcQbTbvayg/F4A6hwVfqcMoGnKdmgDBCNrOWw/ucg8u/D37lWbli+oPCNkhFDFnyYh
+	WLbxswdXQsuJFYO19VN
+X-Received: by 2002:a05:7300:818c:b0:2c7:3a7:c7b1 with SMTP id 5a478bee46e88-2cbf9503916mr7679632eec.1.1775517923360;
+        Mon, 06 Apr 2026 16:25:23 -0700 (PDT)
+Received: from dianders.sjc.corp.google.com ([2a00:79e0:2e7c:8:c071:3b78:5a5:824a])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ca760b0518sm14730975eec.0.2026.04.06.16.25.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Apr 2026 16:25:22 -0700 (PDT)
+From: Douglas Anderson <dianders@chromium.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>,
+	Johan Hovold <johan@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Robin Murphy <robin.murphy@arm.com>,
+	maz@kernel.org,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Frank.Li@kernel.org,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	alex@ghiti.fr,
+	alexander.stein@ew.tq-group.com,
+	andre.przywara@arm.com,
+	andrew@codeconstruct.com.au,
+	andrew@lunn.ch,
+	andriy.shevchenko@linux.intel.com,
+	aou@eecs.berkeley.edu,
+	ardb@kernel.org,
+	astewart@tektelic.com,
+	bhelgaas@google.com,
+	brgl@kernel.org,
+	broonie@kernel.org,
+	catalin.marinas@arm.com,
+	chleroy@kernel.org,
+	davem@davemloft.net,
+	david@kernel.org,
+	devicetree@vger.kernel.org,
+	dmaengine@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	gbatra@linux.ibm.com,
+	gregory.clement@bootlin.com,
+	hkallweit1@gmail.com,
+	iommu@lists.linux.dev,
+	jirislaby@kernel.org,
+	joel@jms.id.au,
+	joro@8bytes.org,
+	kees@kernel.org,
+	kevin.brodsky@arm.com,
+	kuba@kernel.org,
+	lenb@kernel.org,
+	lgirdwood@gmail.com,
+	linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-aspeed@lists.ozlabs.org,
+	linux-cxl@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mips@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-pci@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-serial@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-usb@vger.kernel.org,
+	linux@armlinux.org.uk,
+	linuxppc-dev@lists.ozlabs.org,
+	m.szyprowski@samsung.com,
+	maddy@linux.ibm.com,
+	mani@kernel.org,
+	miko.lenczewski@arm.com,
+	mpe@ellerman.id.au,
+	netdev@vger.kernel.org,
+	npiggin@gmail.com,
+	osalvador@suse.de,
+	oupton@kernel.org,
+	pabeni@redhat.com,
+	palmer@dabbelt.com,
+	peter.ujfalusi@gmail.com,
+	peterz@infradead.org,
+	pjw@kernel.org,
+	robh@kernel.org,
+	sebastian.hesselbarth@gmail.com,
+	tglx@kernel.org,
+	tsbogend@alpha.franken.de,
+	vgupta@kernel.org,
+	vkoul@kernel.org,
+	will@kernel.org,
+	willy@infradead.org,
+	yangyicong@hisilicon.com,
+	yeoreum.yun@arm.com
+Subject: [PATCH v5 0/9] driver core: Fix some race conditions
+Date: Mon,  6 Apr 2026 16:22:53 -0700
+Message-ID: <20260406232444.3117516-1-dianders@chromium.org>
+X-Mailer: git-send-email 2.53.0.1213.gd9a14994de-goog
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,211 +153,140 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The splitq Tx resource checks were assuming that the queues were using
-flow based scheduling and checking the refillqs for free buffers.
-However, the Tx refillqs are not allocated when using queue based
-scheduling resulting in a NULL ptr dereference. Adjust the Tx resource
-checks to only check available descriptor resources when using queue
-based scheduling. Because queue based scheduling does not have any
-notion of descriptor only completions, there cannot be any packets in
-flight, meaning there is no need to check for pending completions.
+The main goal of this series is to fix the observed bug talked about
+in the first patch ("driver core: Don't let a device probe until it's
+ready"). That patch fixes a problem that has been observed in the real
+world and could land even if the rest of the patches are found
+unacceptable or need to be spun.
 
-The driver also only supported 8 byte completion descriptors in the skb
-datapath previously. However, currently the FW only supports 4 byte
-completion descriptors when using queue based scheduling. This meant we
-were skipping over completions, resulting in Tx timeouts.  Add support
-to process both 4 and 8 byte completion descriptors, depending on the
-scheduling mode. Cache the next_to_clean completion descriptor in the
-completion queue struct, and fetch this descriptor before the start of
-each cleaning loop. Access the next descriptor in the loop by
-calculating the index based on raw byte count.
+That said, during patch review Danilo correctly pointed out that many
+of the bitfield accesses in "struct device" are unsafe. I added a
+bunch of patches in the series to address each one.
 
-Fixes: 0c3f135e840d ("idpf: stop Tx if there are insufficient buffer resources")
-Fixes: 1c325aac10a8 ("idpf: configure resources for TX queues")
-Signed-off-by: Joshua Hay <joshua.a.hay@intel.com>
-Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
----
- drivers/net/ethernet/intel/idpf/idpf_txrx.c | 49 +++++++++++++--------
- drivers/net/ethernet/intel/idpf/idpf_txrx.h |  6 ++-
- 2 files changed, 36 insertions(+), 19 deletions(-)
+Danilo said he's most worried about "can_match", so I put that one
+first. After that, I tried to transition bitfields to flags in reverse
+order to when the bitfield was added.
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index f6b3b15364ff..4fc0bb14c5b1 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -270,11 +270,9 @@ static int idpf_tx_desc_alloc(const struct idpf_vport *vport,
- static int idpf_compl_desc_alloc(const struct idpf_vport *vport,
- 				 struct idpf_compl_queue *complq)
- {
--	u32 desc_size;
--
--	desc_size = idpf_queue_has(FLOW_SCH_EN, complq) ?
--		    sizeof(*complq->comp) : sizeof(*complq->comp_4b);
--	complq->size = array_size(complq->desc_count, desc_size);
-+	complq->desc_sz = idpf_queue_has(FLOW_SCH_EN, complq) ?
-+			  sizeof(*complq->comp) : sizeof(*complq->comp_4b);
-+	complq->size = array_size(complq->desc_count, complq->desc_sz);
- 
- 	complq->desc_ring = dma_alloc_coherent(complq->netdev->dev.parent,
- 					       complq->size, &complq->dma,
-@@ -284,6 +282,7 @@ static int idpf_compl_desc_alloc(const struct idpf_vport *vport,
- 
- 	complq->next_to_use = 0;
- 	complq->next_to_clean = 0;
-+	complq->ntc_desc = complq->comp;
- 	idpf_queue_set(GEN_CHK, complq);
- 
- 	idpf_xsk_setup_queue(vport, complq,
-@@ -2193,7 +2192,7 @@ static void idpf_tx_handle_rs_completion(struct idpf_tx_queue *txq,
- static bool idpf_tx_clean_complq(struct idpf_compl_queue *complq, int budget,
- 				 int *cleaned)
- {
--	struct idpf_splitq_tx_compl_desc *tx_desc;
-+	struct idpf_splitq_tx_compl_desc *tx_desc = complq->ntc_desc;
- 	s16 ntc = complq->next_to_clean;
- 	struct idpf_netdev_priv *np;
- 	unsigned int complq_budget;
-@@ -2201,7 +2200,6 @@ static bool idpf_tx_clean_complq(struct idpf_compl_queue *complq, int budget,
- 	int i;
- 
- 	complq_budget = complq->clean_budget;
--	tx_desc = &complq->comp[ntc];
- 	ntc -= complq->desc_count;
- 
- 	do {
-@@ -2257,11 +2255,12 @@ static bool idpf_tx_clean_complq(struct idpf_compl_queue *complq, int budget,
- 		u64_stats_update_end(&tx_q->stats_sync);
- 
- fetch_next_desc:
--		tx_desc++;
-+		tx_desc = (struct idpf_splitq_tx_compl_desc *)
-+				((u8 *)tx_desc + complq->desc_sz);
- 		ntc++;
- 		if (unlikely(!ntc)) {
- 			ntc -= complq->desc_count;
--			tx_desc = &complq->comp[0];
-+			tx_desc = complq->comp;
- 			idpf_queue_change(GEN_CHK, complq);
- 		}
- 
-@@ -2271,6 +2270,8 @@ static bool idpf_tx_clean_complq(struct idpf_compl_queue *complq, int budget,
- 		complq_budget--;
- 	} while (likely(complq_budget));
- 
-+	complq->ntc_desc = tx_desc;
-+
- 	/* Store the state of the complq to be used later in deciding if a
- 	 * TXQ can be started again
- 	 */
-@@ -2437,21 +2438,32 @@ static int idpf_txq_has_room(struct idpf_tx_queue *tx_q, u32 descs_needed,
-  * @tx_q: the queue to be checked
-  * @descs_needed: number of descriptors required for this packet
-  * @bufs_needed: number of buffers needed for this packet
-+ * @flow: true if queue uses flow based scheduling, false if queue based scheduling
-  *
-  * Return: 0 if stop is not needed
-  */
- static int idpf_tx_maybe_stop_splitq(struct idpf_tx_queue *tx_q,
--				     u32 descs_needed,
--				     u32 bufs_needed)
-+				     u32 descs_needed, u32 bufs_needed,
-+				     bool flow)
- {
--	/* Since we have multiple resources to check for splitq, our
-+	/* Since we have multiple resources to check for flow based splitq, our
- 	 * start,stop_thrs becomes a boolean check instead of a count
- 	 * threshold.
- 	 */
--	if (netif_subqueue_maybe_stop(tx_q->netdev, tx_q->idx,
--				      idpf_txq_has_room(tx_q, descs_needed,
--							bufs_needed),
--				      1, 1))
-+	if (flow && netif_subqueue_maybe_stop(tx_q->netdev, tx_q->idx,
-+					      idpf_txq_has_room(tx_q,
-+								descs_needed,
-+								bufs_needed),
-+					      1, 1))
-+		return 0;
-+
-+	/* For queue based splitq, there is no need to check the number of
-+	 * pending completions since we cannot reuse descriptors until we get
-+	 * completions, so we only need to check for descriptor resources.
-+	 */
-+	if (!flow && netif_subqueue_maybe_stop(tx_q->netdev, tx_q->idx,
-+					       IDPF_DESC_UNUSED(tx_q),
-+					       descs_needed, descs_needed))
- 		return 0;
- 
- 	u64_stats_update_begin(&tx_q->stats_sync);
-@@ -3021,6 +3033,7 @@ static bool idpf_tx_splitq_need_re(struct idpf_tx_queue *tx_q)
- static netdev_tx_t idpf_tx_splitq_frame(struct sk_buff *skb,
- 					struct idpf_tx_queue *tx_q)
- {
-+	bool flow = idpf_queue_has(FLOW_SCH_EN, tx_q);
- 	struct idpf_tx_splitq_params tx_params = {
- 		.prev_ntu = tx_q->next_to_use,
- 	};
-@@ -3040,7 +3053,7 @@ static netdev_tx_t idpf_tx_splitq_frame(struct sk_buff *skb,
- 
- 	/* Check for splitq specific TX resources */
- 	count += (IDPF_TX_DESCS_PER_CACHE_LINE + tso);
--	if (idpf_tx_maybe_stop_splitq(tx_q, count, buf_count)) {
-+	if (idpf_tx_maybe_stop_splitq(tx_q, count, buf_count, flow)) {
- 		idpf_tx_buf_hw_update(tx_q, tx_q->next_to_use, false);
- 
- 		return NETDEV_TX_BUSY;
-@@ -3072,7 +3085,7 @@ static netdev_tx_t idpf_tx_splitq_frame(struct sk_buff *skb,
- 		idpf_tx_set_tstamp_desc(ctx_desc, idx);
- 	}
- 
--	if (idpf_queue_has(FLOW_SCH_EN, tx_q)) {
-+	if (flow) {
- 		struct idpf_sw_queue *refillq = tx_q->refillq;
- 
- 		/* Save refillq state in case of a packet rollback.  Otherwise,
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-index 4be5b3b6d3ed..b6836e38f449 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-@@ -807,11 +807,13 @@ libeth_cacheline_set_assert(struct idpf_buf_queue, 64, 24, 32);
-  * @txq_grp: See struct idpf_txq_group
-  * @flags: See enum idpf_queue_flags_t
-  * @desc_count: Number of descriptors
-+ * @desc_sz: Descriptor size in bytes
-  * @clean_budget: queue cleaning budget
-  * @netdev: &net_device corresponding to this queue
-  * @next_to_use: Next descriptor to use. Relevant in both split & single txq
-  *		 and bufq.
-  * @next_to_clean: Next descriptor to clean
-+ * @ntc_desc: Pointer to next_to_clean descriptor for next NAPI poll
-  * @num_completions: Only relevant for TX completion queue. It tracks the
-  *		     number of completions received to compare against the
-  *		     number of completions pending, as accumulated by the
-@@ -833,6 +835,7 @@ struct idpf_compl_queue {
- 
- 	DECLARE_BITMAP(flags, __IDPF_Q_FLAGS_NBITS);
- 	u32 desc_count;
-+	u32 desc_sz;
- 
- 	u32 clean_budget;
- 	struct net_device *netdev;
-@@ -841,6 +844,7 @@ struct idpf_compl_queue {
- 	__cacheline_group_begin_aligned(read_write);
- 	u32 next_to_use;
- 	u32 next_to_clean;
-+	struct idpf_splitq_tx_compl_desc *ntc_desc;
- 
- 	aligned_u64 num_completions;
- 	__cacheline_group_end_aligned(read_write);
-@@ -853,7 +857,7 @@ struct idpf_compl_queue {
- 	struct idpf_q_vector *q_vector;
- 	__cacheline_group_end_aligned(cold);
- };
--libeth_cacheline_set_assert(struct idpf_compl_queue, 40, 16, 24);
-+libeth_cacheline_set_assert(struct idpf_compl_queue, 48, 24, 24);
- 
- /**
-  * struct idpf_sw_queue
+Even if transitioning from bitfields to flags isn't truly needed for
+correctness, it seems silly (and wasteful of space in struct device)
+to have some in bitfields and some as flags. Thus I didn't spend time
+for each bitfield showing that it's truly needed for correctness.
+
+Transition was done semi manually. Presumably someone skilled at
+coccinelle could do a better job, but I just used sed in a heavy-
+handed manner and then reviewed/fixed the results, undoing anything my
+script got wrong. My terrible/ugly script was:
+
+var=can_match
+caps="${var^^}"
+for f in $(git grep -l "[>\.]${var}[^1-9_a-zA-Z\[]"); do
+  echo $f
+  sed -i~ -e "s/\([a-zA-Z_0-9\.>()-][a-zA-Z_0-9\.>()-]*\)->${var} = true/set_bit(DEV_FLAG_${caps}, \&\\1->flags)/" "$f"
+  sed -i~ -e "s/\([a-zA-Z_0-9\.>()-][a-zA-Z_0-9\.>()-]*\)\.${var} = true/dev_set_${caps}(\&\\1)/" "$f"
+  sed -i~ -e "s/\([a-zA-Z_0-9\.>()-][a-zA-Z_0-9\.>()-]*\)->${var} = false/clear_bit(DEV_FLAG_${caps}, \&\\1->flags)/" "$f"
+  sed -i~ -e "s/\([a-zA-Z_0-9\.>()-][a-zA-Z_0-9\.>()-]*\)\.${var} = false/dev_clear_${caps}(\&\\1)/" "$f"
+  sed -i~ -e "s/\([a-zA-Z_0-9\.>()-][a-zA-Z_0-9\.>()-]*\)->${var} = \([^;]*\)/assign_bit(DEV_FLAG_${caps}, \&\\1->flags, \\2)/" "$f"
+  sed -i~ -e "s/\([a-zA-Z_0-9\.>()-][a-zA-Z_0-9\.>()-]*\)\.${var} = \([^;]*\)/dev_assign_${caps}(\&\\1, \\2)/" "$f"
+  sed -i~ -e "s/\([a-zA-Z_0-9\.>()-][a-zA-Z_0-9\.>()-]*\)->${var}\([^1-9_a-zA-Z\[]\)/test_bit(DEV_FLAG_${caps}, \&\\1->flags)\\2/" "$f"
+  sed -i~ -e "s/\([a-zA-Z_0-9\.>()-][a-zA-Z_0-9\.>()-]*\)\.${var}\([^1-9_a-zA-Z\[]\)/dev_${caps}(\&\\1)\\2/" "$f"
+done
+
+From v3 to v4, I transitioned to accessor functions with another ugly
+sed script. I had git format the old patches, then transformed them
+with:
+
+for f in *.patch; do
+  echo $f
+  sed -i~ -e "s/test_and_set_bit(DEV_FLAG_\([^,]*\), \&\(.*\)->flags)/dev_test_and_set_\\L\\1(\\2)/" "$f"
+  sed -i~ -e "s/test_and_set_bit(DEV_FLAG_\([^,]*\), \(.*\)\.flags)/dev_test_and_set_\\L\\1(\\2)/" "$f"
+  sed -i~ -e "s/test_bit(DEV_FLAG_\([^,]*\), \&\(.*\)->flags)/dev_\\L\\1(\\2)/" "$f"
+  sed -i~ -e "s/test_bit(DEV_FLAG_\([^,]*\), \(.*\)\.flags)/dev_\\L\\1(\\2)/" "$f"
+  sed -i~ -e "s/set_bit(DEV_FLAG_\([^,]*\), \&\(.*\)->flags)/dev_set_\\L\\1(\\2)/" "$f"
+  sed -i~ -e "s/set_bit(DEV_FLAG_\([^,]*\), \(.*\)\.flags)/dev_set_\\L\\1(\\2)/" "$f"
+  sed -i~ -e "s/clear_bit(DEV_FLAG_\([^,]*\), \&\(.*\)->flags)/dev_clear_\\L\\1(\\2)/" "$f"
+  sed -i~ -e "s/clear_bit(DEV_FLAG_\([^,]*\), \(.*\)\.flags)/dev_clear_\\L\\1(\\2)/" "$f"
+  sed -i~ -e "s/assign_bit(DEV_FLAG_\([^,]*\), \&\(.*\)->flags, \(.*\))/dev_assign_\\L\\1(\\2, \\3)/" "$f"
+  sed -i~ -e "s/assign_bit(DEV_FLAG_\([^,]*\), \(.*\)\.flags, \(.*\))/dev_assign_\\L\\1(\\2, \\3)/" "$f"
+done
+
+...and then did a few manual touchups for spacing.
+
+I only marked the first patch as a "Fix" since it is the only one
+fixing observed problems. Other patches could be considered fixes too
+if folks want.
+
+I tested the first patch in the series backported to kernel 6.6 on the
+Pixel phone that was experiencing the race. I added extra printouts to
+make sure that the problem was hitting / addressed. The rest of the
+patches are tested with allmodconfig with arm32, arm64, ppc, and
+x86. I boot tested on an arm64 Chromebook running mainline.
+
+Changes in v5:
+- ready_to_prove => ready_to_probe typo
+- device_lock() while calling dev_set_ready_to_probe()
+- Add comment before "can_match = true" from Danilo.
+- undef __create_dev_flag_accessors
+
+Changes in v4:
+- Use accessor functions for flags
+
+Changes in v3:
+- Use a new "flags" bitfield
+- Add missing \n in probe error message
+
+Changes in v2:
+- Instead of adjusting the ordering, use "ready_to_probe" flag
+
+Douglas Anderson (9):
+  driver core: Don't let a device probe until it's ready
+  driver core: Replace dev->can_match with dev_can_match()
+  driver core: Replace dev->dma_iommu with dev_dma_iommu()
+  driver core: Replace dev->dma_skip_sync with dev_dma_skip_sync()
+  driver core: Replace dev->dma_ops_bypass with dev_dma_ops_bypass()
+  driver core: Replace dev->state_synced with dev_state_synced()
+  driver core: Replace dev->dma_coherent with dev_dma_coherent()
+  driver core: Replace dev->of_node_reused with dev_of_node_reused()
+  driver core: Replace dev->offline + ->offline_disabled with accessors
+
+ arch/arc/mm/dma.c                             |   4 +-
+ arch/arm/mach-highbank/highbank.c             |   2 +-
+ arch/arm/mach-mvebu/coherency.c               |   2 +-
+ arch/arm/mm/dma-mapping-nommu.c               |   4 +-
+ arch/arm/mm/dma-mapping.c                     |  28 ++--
+ arch/arm64/kernel/cpufeature.c                |   2 +-
+ arch/arm64/mm/dma-mapping.c                   |   2 +-
+ arch/mips/mm/dma-noncoherent.c                |   2 +-
+ arch/powerpc/kernel/dma-iommu.c               |   8 +-
+ .../platforms/pseries/hotplug-memory.c        |   4 +-
+ arch/riscv/mm/dma-noncoherent.c               |   2 +-
+ drivers/acpi/scan.c                           |   2 +-
+ drivers/base/core.c                           |  55 +++++---
+ drivers/base/cpu.c                            |   4 +-
+ drivers/base/dd.c                             |  36 ++++--
+ drivers/base/memory.c                         |   2 +-
+ drivers/base/pinctrl.c                        |   2 +-
+ drivers/base/platform.c                       |   2 +-
+ drivers/dma/ti/k3-udma-glue.c                 |   6 +-
+ drivers/dma/ti/k3-udma.c                      |   6 +-
+ drivers/iommu/dma-iommu.c                     |   9 +-
+ drivers/iommu/iommu.c                         |   5 +-
+ drivers/net/pcs/pcs-xpcs-plat.c               |   2 +-
+ drivers/of/device.c                           |   6 +-
+ drivers/pci/of.c                              |   2 +-
+ drivers/pci/pwrctrl/core.c                    |   2 +-
+ drivers/regulator/bq257xx-regulator.c         |   2 +-
+ drivers/regulator/rk808-regulator.c           |   2 +-
+ drivers/tty/serial/serial_base_bus.c          |   2 +-
+ drivers/usb/gadget/udc/aspeed-vhub/dev.c      |   2 +-
+ include/linux/device.h                        | 122 ++++++++++++------
+ include/linux/dma-map-ops.h                   |   6 +-
+ include/linux/dma-mapping.h                   |   2 +-
+ include/linux/iommu-dma.h                     |   3 +-
+ kernel/cpu.c                                  |   4 +-
+ kernel/dma/mapping.c                          |  12 +-
+ mm/hmm.c                                      |   2 +-
+ 37 files changed, 218 insertions(+), 142 deletions(-)
+
 -- 
-2.39.2
+2.53.0.1213.gd9a14994de-goog
 
