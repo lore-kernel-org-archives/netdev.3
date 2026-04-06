@@ -1,104 +1,85 @@
-Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE15C2E6116
-	for <netdev@vger.kernel.org>; Mon,  6 Apr 2026 09:40:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97289288517
+	for <netdev@vger.kernel.org>; Mon,  6 Apr 2026 10:22:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775468416; cv=none; b=WYOv4/xyNIQ66WOEF4yNEl8IjRzsQL+JWTDm8vnflyYJHPYquhl9d79c7Tmp9Qjj8kecEEPyzsxNN+0RNtpsKCMYbz4N8J9OmkDx/VwfVRNv4NK4ToAyMGeIrne3ZoVLz7GS6vXsbHYj9CqS5/5WWMWau9jA9RrfUt9ilWJVwKs=
+	t=1775470958; cv=none; b=gzg6rTXOYINt0xYEnUSepgaX50snBG9ur0vnwtNogw0gMZ8eF4Lu44LWBK0BQwq8gcLcoyhwrmn2bpTGgkTPRtZXoRKDqt5ttdJskNknFfIaPrKocLM6i56b8e1KWRzf2JDXNejGmFIF8wUfwMv72JgSWUT2yU4+QA9yjHM1SBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775468416; c=relaxed/simple;
-	bh=guPcM/1TpLQ4xlArYto3zdkhVSpU1xI2Xk9woLUd+VQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dIMt5TyoZxGrkn235SkXjPocdYY3u6EWELDgmmhAJ3fPO5jmGtqZ1BA3OXequl6616Zg2GP4Xq5dFqzxk+pb05CijRQZL8qxik4DQBStIwuVToMjN1bhjvp84heHwCGLOgw8I8AXZqn/1ip8Ij7qk6C4HIx+dgc48uzdjNYVLlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-5637886c92aso1631582e0c.0
-        for <netdev@vger.kernel.org>; Mon, 06 Apr 2026 02:40:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775468414; x=1776073214;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3EBVPa5+SgsD0dXnuD7pGvS4tR2VULAk13x8kX/y8Fc=;
-        b=HCSre5j8D4m6bQjzP8I+P+gHh8Kcaixlv2Kc+Ftx8fyG0FjBA9AphCmaEpJS5QPGf7
-         WpIa3UfzIEgjRkE/r2gQ5/eYRgV6T2R9TXcLI6fUxs5mrXErzUBUuD0e9Doh4b/z5cj5
-         nAGL2nw/hOSMZ58v8LTb5NqxexSG8LuVNiGJZjzcVk8dyCQIINHHZ0VuuJ3bumW+CtVU
-         zXUYkPTgH+k800Mcu25LbSGJ0EpTRedRfup59fQCLdbcyfZS3QpGaopqIOjDRwuKJpBK
-         Lu6QIpsHt0hZurHOheOkb6XTfsq8x600Yx5R1vihxJHJS4dx65wNduKXBa+gtbaxHjo7
-         XUfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVJ3/j45s/ZB0rO1ffszof4HRIlHmdw89FRG9zj9G4PYy1TE+14lm4ZgUnJSt51QuqIOn1xq+o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZDWIeSZqtw1FoDDAL/NGV8nJOVN/9EA7lYqHoerXMl4DHcia7
-	yQzToXB3Wl5c/A1MQj5AA4iWvh3tZ2iskMe0YcUg+vUABNM5Gz3zwdF5q6/mY99u
-X-Gm-Gg: AeBDievyaCav6EYhHgryvjXThowIQjZgvyAEbWwgyijqpAKRg/FLwCtJYpca+2ORPn6
-	xcVQIlFf8w2WS40twIttLGNMEw5IrZVHzMnjOvLgBoiX+cd3moP7NRGOXeOgHn6ePulWTUWmSlP
-	Y7TKbcYX4d0Pzd2MQFkP9Bkjy+C4V8l6IiJvagDoUSxrSTUsm1vtgteBIvENPt8TrzQYZUJW5Nf
-	pz3Odsh8wWv5uCTKuFzFVfBO3xd6x5NBn5/HtVCTHTEXY7UGHo0wPGRncLY8+c7LmXB8I3JBR85
-	lhTo8CoWXLykQbKRreIqhOUfgUboDgX4WmhnEsyQKs+A/LYQ1c98U8xys41tl45lqrLjIUsc2ne
-	CKYq6mqbxXuae6T01NhHD8KJc4wnyQYCcN2RWqO26RXLZTHtQV6D5x65CG0bB2cDAmpi4c4RFFH
-	vqbUlB9uC8cu/iaVbHUfeHLnpXrUtdqUsumFjScz42/KkBLrPUFEZehzEOftaU
-X-Received: by 2002:a05:6122:1687:b0:56c:d58e:8c0b with SMTP id 71dfb90a1353d-56dab996dc3mr3349573e0c.10.1775468413805;
-        Mon, 06 Apr 2026 02:40:13 -0700 (PDT)
-Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com. [209.85.222.53])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-56d9bceb2e6sm15091920e0c.15.2026.04.06.02.40.13
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Apr 2026 02:40:13 -0700 (PDT)
-Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-94ac7f22d23so780382241.3
-        for <netdev@vger.kernel.org>; Mon, 06 Apr 2026 02:40:13 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWzBGgp1Ehc2K5BgAepjJ5Yts10Nsamk5CqSR2Q+dg/SNC5U+Ao+M9cKHxCHj1ogF/M3wpqdww=@vger.kernel.org
-X-Received: by 2002:a05:6102:6c3:b0:5ff:e0be:f538 with SMTP id
- ada2fe7eead31-605a50d358emr3135757137.30.1775468412939; Mon, 06 Apr 2026
- 02:40:12 -0700 (PDT)
+	s=arc-20240116; t=1775470958; c=relaxed/simple;
+	bh=4okhKjhiW8BMKJvuKtPBBQTFqcI/IxoVNzhe2b6PToM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=my4QxGsMNFXRIaOwlMz+Qw8VT1szvMSNshAggAsKzUsu7U3VC+ddA828D3NTI9upj7QWkytnF270z3L7dk0ehlUyS2TLRJSrOmboQBtuSyd+8yb9jSZw91tpx2U2PqCgJqdySXqe76Mh7wpcoYNXLBZEco1nD7lM5DNQewhdL/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1w9h67-00048b-GV; Mon, 06 Apr 2026 12:22:23 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1w9h66-003zx2-1l;
+	Mon, 06 Apr 2026 12:22:22 +0200
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1w9h66-0000000Azek-1lbr;
+	Mon, 06 Apr 2026 12:22:22 +0200
+Date: Mon, 6 Apr 2026 12:22:22 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Carlo Szelinsky <github@szelinsky.de>
+Cc: Kory Maincent <kory.maincent@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 1/3] net: pse-pd: prevent regulator cleanup
+ from disabling unclaimed PSE PIs
+Message-ID: <adOJXuyO1RT8hgxt@pengutronix.de>
+References: <20260329161014.2908509-1-github@szelinsky.de>
+ <20260330132952.2950531-1-github@szelinsky.de>
+ <20260330132952.2950531-2-github@szelinsky.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260402145858.240231-1-julianbraha@gmail.com>
- <CAMuHMdUfzVSQpadJYpEqPJ_UOBAgswnGzD_bp_U3U6jt2dy0dg@mail.gmail.com> <f914fb50-ffca-49dd-901d-0b0176e5ee93@gmail.com>
-In-Reply-To: <f914fb50-ffca-49dd-901d-0b0176e5ee93@gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 6 Apr 2026 11:40:01 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdX71HJL+krjUrDdnVLA44wxo6HfP9e4-qvFRhrc1qjigQ@mail.gmail.com>
-X-Gm-Features: AQROBzAeRHlZRx6XLNF3owpO_ayyuIljh1J_K_FbzGbRKkLMW-kjt6HUF_2Ww_w
-Message-ID: <CAMuHMdX71HJL+krjUrDdnVLA44wxo6HfP9e4-qvFRhrc1qjigQ@mail.gmail.com>
-Subject: Re: [PATCH v2] stmmac: cleanup dead dependencies on STMMAC_PLATFORM
- and STMMAC_ETH in Kconfig
-To: Julian Braha <julianbraha@gmail.com>
-Cc: davem@davemloft.net, peppe.cavallaro@st.com, alexandre.torgue@foss.st.com, 
-	mcoquelin.stm32@gmail.com, linux@armlinux.org.uk, kuba@kernel.org, 
-	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, 
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260330132952.2950531-2-github@szelinsky.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Hi Julian,
+On Mon, Mar 30, 2026 at 03:29:50PM +0200, Carlo Szelinsky wrote:
+> When a PSE controller driver is loaded as a module, its PI regulators
+> are registered before any consumer (PHY) acquires the corresponding PSE
+> control via of_pse_control_get(). The regulator framework's
+> regulator_late_cleanup then calls pse_pi_is_enabled(), which queries
+> hardware and sees the PI is enabled. Since no consumer holds it
+> (use_count == 0), regulator_late_cleanup disables it, killing PoE.
 
-On Mon, 6 Apr 2026 at 11:27, Julian Braha <julianbraha@gmail.com> wrote:
-> With the patch applied, I've attempted to configure the kernel
-> with STMMAC_PLATFORM=y while STMMAC_ETH=m but menuconfig gives this
-> error message:
-> "This feature depends on another which has been configured as a module.
-> As a result, this feature will be built as a module."
->
-> So it looks to me like this patch hasn't actually changed any kconfig
-> behavior, but let me know if I'm missing something.
-
-OK, thanks for checking!
-
-I thought there was still some difference between "if" and "depends on"
-when the symbol is a module, but apparently I was wrong...
-
-Gr{oetje,eeting}s,
-
-                        Geert
+Let's address the deferred probing issues first. The system shuts the
+current for the ports, because ports are not tracked. And ports are not
+tracked/claimed, because the first patch breaks it. Which introduces
+additional safety, diagnostic and power budget allocation issues.
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
