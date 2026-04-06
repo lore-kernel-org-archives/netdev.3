@@ -1,128 +1,153 @@
-Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ECAB2E719B
-	for <netdev@vger.kernel.org>; Mon,  6 Apr 2026 16:55:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3296933263A
+	for <netdev@vger.kernel.org>; Mon,  6 Apr 2026 17:01:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775494533; cv=none; b=LwpfpVlH58blMXVZaAqs9l6pDXp/bOiidMlZQlxT+0gAzQaB3FJPmEPelVK4KpJzFeYb5j+DNBENip9iE+yFJ3M0ZkqZG0gXTMKvkEeEqhvuk3VYqLXVMcg2vbzoSArd3v7N69eZOYpG5jzogRJC2qNqAzhIUwZj8BdrRH3WcvQ=
+	t=1775494909; cv=none; b=OdStyZZDG7LtV3lJSZz+XNvyNL5u0eCNZH9gbr+GJ7jTDbikBrxTsU9Fvj0STRTdwY4U0PLqZsNx9HWq8H8gdnG729yCQYKfd4oCgT228bZFnlvcQBlfbxFjnRzWe7P6mzxtw6QeCS9Znq4x+MCvIQJ+zqRKzhnozDfPbBe8iZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775494533; c=relaxed/simple;
-	bh=AhIcYDTZ8B/QT76YJt3d1yF9TjjC3ELrDj5iCQtiGMM=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=ZfrYi5kR0Aa+FuC+D97Vcn8nzzayzt13WNbTbzZKaBEzzsQAvL1xNa+w59YH8SktO9CycVOVYKYRrt9tMaHEQN+crtNzYIiRv8YixfxOCKgmYESrqRgZ6MHQhJmDsrSfFr/FmouboE7xRL71ERCOrMNjMydqmzS1m58OkBEaSv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zpi15DjI; arc=none smtp.client-ip=74.125.224.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1775494909; c=relaxed/simple;
+	bh=G31jsNCNAeiJPwQvK1HAqH3ppSH0aGE0KdNESKrHoMo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NeHms9lW0HpWTk2sD3VybdI1Dfq9OUs949gRnM5N9u27B3V6RRP9cB3KJ/PJsGQuklyelJzklB8oZkgi7VB9wP36zClQG/VNAllc5dBpqPXEU6yjjEE1b/p6zHX2khupfjTi1XEZeUurVunU8EHhki1bO24zGRGCMI4AHJnERrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=rqCEWiOo; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zpi15DjI"
-Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-65005a8840dso4032526d50.0
-        for <netdev@vger.kernel.org>; Mon, 06 Apr 2026 09:55:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="rqCEWiOo"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-35d932cc948so2296032a91.2
+        for <netdev@vger.kernel.org>; Mon, 06 Apr 2026 10:01:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775494531; x=1776099331; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ovA8BbQpSFAe0BomPFk/ncZI5rujFgTwrdXPr3HEHAw=;
-        b=Zpi15DjIzRYHpFn98RKFs/plI+4KWk+0Fbx77Pe+tdDMmCI9CZ2hAig+wGr/7GOqS2
-         TSlByUgYwPnWxPtJRfBsbawiWpTRNS90OikTFJrlxLMNJxWMs7qgISkmLjrKxZFpckGh
-         qQiyiSYAuBRQMKyUfU3V3tY4X5IKq1fR1c13BFUFtHgysLkfHgNVBRyf+WsKlroIg4K8
-         aWakUCr3m8CL/FCtlRuiv/NEEwZDB9huaDqHz5Oohwv7JZDMISfSP6lZbOVREQ//auAS
-         EPBaRpmQ7NvPK1M75jW1GzQRwMREFPU1+a4YPGtfWXjBQJGpG1KdjWRp6EDJqX95j9ZR
-         vefQ==
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1775494907; x=1776099707; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kUhQeD6+NwePYBxef6iQ7aiY8XQBRuy8ozLTXfPxIB4=;
+        b=rqCEWiOovz4C+DiGzHf4cc3fxgEvTS/5DMoUbFCSautu+9jcBXJHJnz49bVS6uXywB
+         7RFDt3n6uVHbTKODkof6Wv9MRwD7/lWzbZ8GY1FhJESsYMojwZMhLde4gCWYByKbim42
+         B7sGWSSnarc8fKUiaMMdUqX2vNL7OjW62tasZDGeBsXaVWiqssLKGZ/Xyct+fGjohRu4
+         beonmL3T3eHY6mVcW24PcfulFRzJ57vW/Tm6f0LNEporeu7rd4TqH1q8EFqczvFKRXPB
+         85XTUunYF48zM6gdcSFApZCydIk58JINbA+Yogc4vAY3CjMnObqBcpBMvSPGZnV+Ic8o
+         s8AA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775494531; x=1776099331;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ovA8BbQpSFAe0BomPFk/ncZI5rujFgTwrdXPr3HEHAw=;
-        b=XnSfon0UDtdfAcCgGz42paLiSMCjbGpalPALSqJJg8ExYhQApicvPCFK2ucYJ/Qbty
-         XRtUWvfXkvfobaz3KA1tHPRzM8Btd8hEN44xn7JzqMmwrWR1dRU1tKbuYtlKMnnhDTU7
-         pcqPcrX67hP0DBngA/g1IV6avcLF+vbtlmRsVY/tlt9b9ZGjgEAtjFyE9MVkpl87CUPp
-         Hjqh5hd0zlx9NnhZn9tuR9LXSvxUE6XHFoIBgFwTptZbwfm1z1plAbeto06NOljDS+L9
-         6ea6ekuw4i59ZMHc4jfmNOSEWyChuz+tVIEv8xSrkCrL3k7AIEcs8XuSz7jPkpxh2xDn
-         vKmQ==
-X-Gm-Message-State: AOJu0Ywy2+eGwW4pY/4yjI+C+qD7TupewVgt8e6yFPAF9vucBrt8dms8
-	fQI2pk+Z99a20hdVuwlUOggZVtinzgnV+9HXawlxVbTwYcOG0TjHFhJp
-X-Gm-Gg: AeBDieudaytqBFjMMhq8nez7f8FzS8u8aoHd5wAYtMXF7N3cDlIkF9nc/v87rr2DHos
-	OUjryNnt5HqjvTelOi/VXSeNaBKQeVgyzNJV4j5eOYszk611mcgyMX6qdtsVK34EBhKvPEh/cHc
-	UyHzrZKNEglHxyqhxTbtG1w8AlVKXKfdGcLoubsC3zNAAft2nntk3M5m1glPq70oW1UIJuKddDj
-	W3+tb9hmmE8rG2MMrHO5INBQS7WlaEEP3UYIZmQGOB4+TFVI0T/8/TBJaionNrJh3ARUlTp8LKq
-	8vD5ho0NmkiNxf3EkRjfEZFRHKdZKz/n/VUEx9v1bIBHsHLKXWSs4vIN2U2CQbxvk0hQBgZlTsq
-	Bl0CcpeYMFC5ErET/I6ry5hjQD1Z3aVt8oWmPHDkuH7F0a12wmiXpgoy/Xcny41Hb8FgXp6OidE
-	qnrm9EuemYHnMA4fdj41fSoKEcCs420l0Sld6ItD2IrDyZMNVBbSasRUjagSMEJYhmeiVqHs7Zm
-	72M
-X-Received: by 2002:a05:690c:338f:b0:79a:b0c8:da98 with SMTP id 00721157ae682-7a4d32e4846mr127476727b3.8.1775494531511;
-        Mon, 06 Apr 2026 09:55:31 -0700 (PDT)
-Received: from gmail.com (172.165.85.34.bc.googleusercontent.com. [34.85.165.172])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7a370902c15sm55384667b3.32.2026.04.06.09.55.30
+        d=1e100.net; s=20251104; t=1775494907; x=1776099707;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kUhQeD6+NwePYBxef6iQ7aiY8XQBRuy8ozLTXfPxIB4=;
+        b=d+7ZkvVVFHhYofj37LmVFq6WqZ98cADpJukTFesfiYZ1JRAIbAChKFnGjYccCvgfV5
+         Y9c80M6GHBDsrR1E8uiArrkjtNpDqSd6od42+LJKAFw7eh36TCm7kJ7tjrMaSN/wcRoV
+         PkDOTH60tyiT/qCXTi4Dx1CHz9Le/dH6IAXRx10KCgo2qRRagHmLSDP2mrCtTEW4sa0k
+         1Yy3sSjzh6gNe0kCCotQ8Q0zmGhjBA3hKo0Q9X/bKtLWXS5B7ypEs90LqRRQ3ue2NCTq
+         zvO75CA/TXLK5TY9wrfi0HF82fTG+FLpjYkA1JUBr+JNJzdCokYcU2tWVnPppQOIbBf4
+         1DVg==
+X-Gm-Message-State: AOJu0YzHzF3CFwd0aRXwVZFYCL0OhJkpiity7VIUeTjm16om7vVqn/Sq
+	mim9Nj1qjoMI/ZdPIvdbVnay6x5rkFhgSXs0a6yUpjSRRxDYGxZGuzXD5AKx4UIdr1o=
+X-Gm-Gg: AeBDieuZg6J2yHKLt+7cqy/o7AZcC4E4LJCgnl+7IHyet2syc5nxwiQMoLYLgZ4BMZH
+	IClxJEMUqKpyoaot6cvPqMTzWjKttiaigMvGw4VEqh815rdPglXlP80dqWDpVaoCxhtcoTqzEqS
+	ogNPfR1thO/+vJvXh8yRW6LcYRAF2juSXvJUPriAbcam710j1UIHXhyHodLTYK4gfFEzQ+7PB5q
+	6A2W/CXNvxvthIsqFGExWtXPCmWXXWzRT0mKS5zaYGJ7ENnYn0bzVyUX9x4cb3RW/VPM11d7gPb
+	4pIbgVmXxYx4xkTqETtMx6aPDTFasXEYdV3DAyBGhay7tuaJA1ZQw/izcz14XnLTnMem8m4zchI
+	rZfxqT6Jw3Z0DpOii+CC/zHVVEpC03zON44iae30IYJ67KI42MiV3SaZCK46mj9unmWwhSR6KuF
+	YpvrL3
+X-Received: by 2002:a17:90a:d2c7:b0:35b:e4d8:bb10 with SMTP id 98e67ed59e1d1-35de6941267mr12737851a91.14.1775494907434;
+        Mon, 06 Apr 2026 10:01:47 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:4f::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35dbe62f5dbsm19677009a91.8.2026.04.06.10.01.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Apr 2026 09:55:30 -0700 (PDT)
-Date: Mon, 06 Apr 2026 12:55:30 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, 
- davem@davemloft.net, 
- edumazet@google.com, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- Willem de Bruijn <willemb@google.com>
-Message-ID: <willemdebruijn.kernel.1a194b4fc6bd0@gmail.com>
-In-Reply-To: <20260406090231.63df3fac@kernel.org>
-References: <20260405014458.1038165-1-willemdebruijn.kernel@gmail.com>
- <willemdebruijn.kernel.1622322e50a5d@gmail.com>
- <20260406090231.63df3fac@kernel.org>
-Subject: Re: [PATCH net-next v2] selftests/net: convert so_txtime to drv-net
+        Mon, 06 Apr 2026 10:01:46 -0700 (PDT)
+Date: Mon, 6 Apr 2026 10:01:46 -0700
+From: Joe Damato <joe@dama.to>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	dalias@libc.org, andrew+netdev@lunn.ch,
+	linux-kernel@vger.kernel.org, willemb@google.com,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [net-next v2 3/3] selftests/net: Test PACKET_AUXDATA
+Message-ID: <adPm+n8Uw3O2S5bY@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	dalias@libc.org, andrew+netdev@lunn.ch,
+	linux-kernel@vger.kernel.org, willemb@google.com,
+	linux-kselftest@vger.kernel.org
+References: <20260403233240.178948-1-joe@dama.to>
+ <20260403233240.178948-4-joe@dama.to>
+ <willemdebruijn.kernel.400d24decd7d@gmail.com>
+ <willemdebruijn.kernel.14a8e29bbdc9a@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <willemdebruijn.kernel.14a8e29bbdc9a@gmail.com>
 
-Jakub Kicinski wrote:
-> On Sat, 04 Apr 2026 22:20:15 -0400 Willem de Bruijn wrote:
-> > > +YNL_GEN_FILES := \
-> > > +	psp_responder \
-> > > +	so_txtime  
+On Sat, Apr 04, 2026 at 11:30:09PM -0400, Willem de Bruijn wrote:
+> Willem de Bruijn wrote:
+> > Joe Damato wrote:
+
+[...]
+
+> > > -static void do_rx(int fd, int expected_len, char *expected)
+> > > +static void check_aux_data(struct cmsghdr *cmsg, int expected_len)
+> > >  {
+> > > +	struct tpacket_auxdata *adata;
+> > > +
+> > > +	if (!cmsg)
+> > > +		error(1, 0, "auxdata null");
+> > > +
+> > > +	if (cmsg->cmsg_level != SOL_PACKET)
+> > > +		error(1, 0, "cmsg_level != SOL_PACKET");
+> > > +
+> > > +	if (cmsg->cmsg_type != PACKET_AUXDATA)
+> > > +		error(1, 0, "cmsg_type != PACKET_AUXDATA");
+> > > +
+> > > +	adata = (struct tpacket_auxdata *)CMSG_DATA(cmsg);
 > > 
-> > This should just go under TEST_GEN_FILES (sashiko)
+> > Sashiko had another interesting observation that this access may be
+> > unaligned, as cmsg_buf[1024] has 1-byte alignment.
 > > 
-> > I don't quite understand the check_selftest check_new_files_makefile
-> > failure.
+> > That is not new in this patch. Indeed most tests in this dir just
+> > deference msg_control as struct cmsghdr * and CMSG_DATA as whatever
+> > domain specific type.
+> > 
+> > The man page also warns about this and suggests using memcpy to
+> > access CMSG_DATA. Not sure why it does not warn about the other
+> > cmsg_.. fields.
 > 
-> Glancing at the code you were missing the 
+> The commit that introduced that has more context
 > 
-> # end of YNL_GEN_FILES
+> https://git.kernel.org/pub/scm/docs/man-pages/man-pages.git/commit/man/man3/cmsg.3?id=36d25246b4333513fefdbec7f78f29d193cf5d9a
 > 
-> trailer.
+> It points out 32-bit platforms where cmsghdr is 12 bytes.
 > 
-> Those checkers are equally annoying and easy to run locally, they
-> take a path to the modified file and say "good" / "bad".
+> At least one example given, ptpd, uses a union to ensure alignment
+> 
+> 	union {
+> 		struct cmsghdr cm;
+> 		char	control[256];
+> 	}     cmsg_un;
+> 
+> But at least one other example, ssmping, does not. So I think not even
+> the 4B (on 32-bit archs) of cmsghdr fields can be depended on.
 
-Thanks. Indeed, I only learned about this yesterday. Ran it before v3.
-Was super easy. Sharing for anyone else new to this:
+I'm fine with adding an "__attribute__((aligned(8)))" to be safe, but FWIW, I
+think the key point from the commit message linked above is:
+ 
+  shows access to int payload via *(int *)CMSG_DATA(cmsg) (of course
+  int is safe because its alignment is <= header alignment, but this
+  is not mentioned).
 
-git format-patch -1
-mkdir /tmp/patches
-mv 000* /tmp/patches
-
-cd /tmp
-git clone https://github.com/linux-netdev/nipa.git
-cd nipa
-
-./ingest_mdir.py --mdir /tmp/patches --tree ~/src/kernel/netdev/nn -t patch/check_selftest
-
---- output
-
-Saving output and logs to: /tmp/tmp7zb9n8ka
-Tree name unknown
-  [1] selftests/net: convert so_txtime to drv-net
-
-Series level tests:
-Patch level tests:
- check_selftest                  OKAY    Good format (5); New files in Makefile checked (1)
+struct tpacket_auxdata only has u32 and u16, so 4 byte alignment seems fine
+and I don't think the issue applies in this particular case. But, as I said
+above, I am fine with adding the attribute to be defensive.
