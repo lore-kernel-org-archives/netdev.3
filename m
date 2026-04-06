@@ -1,107 +1,200 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D65F1F192E;
-	Mon,  6 Apr 2026 13:33:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807B625A2C6;
+	Mon,  6 Apr 2026 13:36:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775482433; cv=none; b=JPwU8VP0XLBfaRpCznn9rtl/WXEqGPaxfnvhRJTcbJBddNMP3+I4CxopRdj6l90wIF7Oewa4gL+7pXvnkHnFplAmI8r36pOsnXGTlA71jQpHDJSEVJ/7Yze5Q/TGegUV0Uv4+Qh2+rgHGJWU/lSoXzfUH71qGuS0NFtWVH8ySa4=
+	t=1775482605; cv=none; b=U7C4m/xhu1DTMkrnj9C8vdX4FYADI7PhvO2zTOFK02+lzDV/vI+ttkAxa1oP86ccRxOftdRTn19EjPG5FOAbAFf4IsJukv3ZxBvxxi8MYb2mlB/zkTfvub5pSm3Y+0TrBT6Fqx2Axz035+2VYaDGFQPVGHSuDh3+mRh6Vz1q3YY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775482433; c=relaxed/simple;
-	bh=rby7I+8Zk1SNZO7WH40Wj1O8cmV/OD8smQdiIDeejsw=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=RLv9wRd/8UK8RDIEifDMkXFJR7X9w4a+uVv2Uq8vYOk4J0D64FYfnFs0YJscWrZdlNxDuePveNcuFnsvE2og7iZMonaMTV/KKxKi3zSdxgGgHqvFeNFuYS+3TtkrTz2UIPnFt+Mc7Kaf6nzpMaxhimUZPa+N1EenfjtTKYbCDj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=vhLkpoeT; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="vhLkpoeT"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 16353A5888;
-	Mon,  6 Apr 2026 15:33:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1775482424; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=yEwxY8e/7wqrX1mbmXoSy1MbXgqbAyCZJyVMeKm7HOQ=;
-	b=vhLkpoeTEriohvJIdBFXLtzWp9zgDaYiSvXMvuBGaRxmw+JG1D1qTBn4PjsYcA5jazGWNP
-	3F1/AYi2K1mj7SdgIOenpL8rObxF0J4Fc3LCDuTVq4xXBNqObaJ4bRUsagooItUdE9+vgt
-	XpTxF5gu/odEkUPvhdz+qVnWQglKCT3T+8M9uKGd7Vsp5FfZm1JYWlRrxwCWeggZAJCdQw
-	OyTYPNd3uRdRkbPlETt6Lda13ZmdAxbLvSJ7Yirpao7Rgkh0vxAd7ea+6YX9fv0dZ5Pv52
-	HuiThUvXwyUPq/REhZDqseaTczoxw65geTMdaesVhxfRqGj8a45wyx4uxbYxVQ==
+	s=arc-20240116; t=1775482605; c=relaxed/simple;
+	bh=PxZQOphpBgYOkz7fuV7z4ZUSbvlqyi54EBR6UtOkDSM=;
+	h=From:Date:Message-ID:To:Cc:In-Reply-To:References:Subject; b=LYbkBRD9JrPcChTCAQh//eOkQKVYyewY9Etop1Ku8py8Mw7yYL+qrZHGdbau6764LOPtDSRfEIEocJjsp7ZJw23MmMaTez9y4r8MuXHD1J0XdJ9ZXw/SYwB32zntg+fuEoz7rkB5pMJ37ZnoCRPQt/LVc2YRsM/7Q+HwXpJaczw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from 0001-rxrpc-proc-v2.eml (unknown [111.196.245.197])
+	by APP-05 (Coremail) with SMTP id zQCowACHFQnfttNpoJu0DA--.35030S2;
+	Mon, 06 Apr 2026 21:36:32 +0800 (CST)
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Date: Mon, 6 Apr 2026 16:40:00 +0800
+Message-ID: <20260406170001.2-rxrpc-proc-v2-pengpeng@iscas.ac.cn>
+To: David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>
+Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-afs@lists.infradead.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, pengpeng@iscas.ac.cn
+In-Reply-To: <20260404190004.4-rxrpc-proc-pengpeng@iscas.ac.cn>
+References: <20260404190004.4-rxrpc-proc-pengpeng@iscas.ac.cn>
+Subject: [PATCH v2] rxrpc/proc: size address buffers for %pISpc output
+X-CM-TRANSID:zQCowACHFQnfttNpoJu0DA--.35030S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3Xw1rKryrCry7uFW3Zw13Jwb_yoW7ZFWDpa
+	nxuFW5Jr4DZF4xAr43Xa1vv34Fv3WkJw17G39Yqw4rCFn7Jr9xJF4Fka4UWrn8Gw4xJryx
+	Z3Z8KF9xCw1DAr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2jI8I6cxK6x804I0_JrC_JFyl8cAvFVAK0II2c7
+	xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE
+	2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwV
+	C2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIF
+	xwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwI
+	xGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480
+	Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7
+	IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k2
+	6cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxV
+	AFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUZYFZUUUUU=
+X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Date: Mon, 06 Apr 2026 15:33:40 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>, Russell King
- <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Florian Fainelli <florian.fainelli@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 0/3] net: phy: add support for disabling
- autonomous EEE
-In-Reply-To: <a1cf8f6a-b338-4dd7-aced-7e19e4d0fdb7@lunn.ch>
-References: <20260406-devel-autonomous-eee-v1-0-b335e7143711@tipi-net.de>
- <a1cf8f6a-b338-4dd7-aced-7e19e4d0fdb7@lunn.ch>
-Message-ID: <9272c5dd653039b3def8caaea3e631c5@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-On 6.4.2026 15:17, Andrew Lunn wrote:
-> On Mon, Apr 06, 2026 at 09:13:06AM +0200, Nicolai Buchwitz wrote:
->> Some PHYs implement autonomous EEE where the PHY manages EEE
->> independently
-> 
-> I suppose we should discuss naming. As far as i know, IEEE 802.3 does
-> not include this feature, so it does not provide a guide to how we
-> should name it.
-> 
-> In the past we have used SmartEEE, but that is Atheros's vendor
-> name. Broadcom seem to call it AutoGrEEEn.
-> 
-> Autonomous EEE seems like a reasonable name, and appears to be vendor
-> agnostic. Are we happy with this?
+The AF_RXRPC procfs helpers format local and remote socket addresses into
+fixed 50-byte stack buffers with "%pISpc".
 
-"Autonomous EEE" works for me (obviously). It kinda describes what
-happens (the PHY acts autonomously) without being tied to a specific
-vendor's marketing name.
+That is too small for the longest current-tree IPv6-with-port form the
+formatter can produce. In lib/vsprintf.c, the compressed IPv6 path uses a
+dotted-quad tail not only for v4mapped addresses, but also for ISATAP
+addresses via ipv6_addr_is_isatap().
 
-That said, I feel Russell's argument that it doesn't type well. But
-even after some walks in the woods I wasn't able to come up with a
-better name yet.
+As a result, a case such as
 
-> 
-> What i guess is unclear is what part of the network stack is acting
-> autonomously. In the context of a PHY driver op,
-> .disable_autonomous_eee is clear. But when we go further to actually
-> making use of it, do we need to report to user space if we are using
-> IEEE 802.3 EEE or "autonomous EEE". But i guess it is no worse than
-> SmartEEE or AutoGrEEEn which also make no indication where EEE is
-> happening.
+  [ffff:ffff:ffff:ffff:0:5efe:255.255.255.255]:65535
 
-I think for now it's fine to not expose this. From the user's 
-perspective,
-EEE is either on or off. Whether the PHY or MAC manages LPI is an
-implementation detail. ethtool --set-eee should just do the right thing:
+is possible with the current formatter. That is 50 visible characters, so
+51 bytes including the trailing NUL, which does not fit in the existing
+char[50] buffers used by net/rxrpc/proc.c.
 
-- MAC supports LPI: use MAC-managed EEE
-- MAC doesn't, but PHY has autonomous EEE: use that instead
-- Neither: EOPNOTSUPP
+Size the buffers from the formatter's maximum textual form and switch the
+call sites to scnprintf().
 
-I don't think there's a meaningful use case for letting users choose
-between the two. Or is there?
+Changes since v1:
+- correct the changelog to cite the actual maximum current-tree case
+  explicitly
+- frame the proof around the ISATAP formatting path instead of the earlier
+  mapped-v4 example
 
-> 
-> Thoughts?
-> 
-> 	Andrew
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+---
+ net/rxrpc/proc.c | 32 ++++++++++++++++++--------------
+ 1 file changed, 18 insertions(+), 14 deletions(-)
 
-Nicolai
+diff --git a/net/rxrpc/proc.c b/net/rxrpc/proc.c
+index 59292f7f9205..7925d4569776 100644
+--- a/net/rxrpc/proc.c
++++ b/net/rxrpc/proc.c
+@@ -10,6 +10,10 @@
+ #include <net/af_rxrpc.h>
+ #include "ar-internal.h"
+ 
++#define RXRPC_PROC_ADDRBUF_SIZE \
++	(sizeof("[xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:255.255.255.255]") + \
++	 sizeof(":12345"))
++
+ static const char *const rxrpc_conn_states[RXRPC_CONN__NR_STATES] = {
+ 	[RXRPC_CONN_UNUSED]			= "Unused  ",
+ 	[RXRPC_CONN_CLIENT_UNSECURED]		= "ClUnsec ",
+@@ -53,7 +57,7 @@ static int rxrpc_call_seq_show(struct seq_file *seq, void *v)
+ 	struct rxrpc_net *rxnet = rxrpc_net(seq_file_net(seq));
+ 	enum rxrpc_call_state state;
+ 	rxrpc_seq_t tx_bottom;
+-	char lbuff[50], rbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
+ 	long timeout = 0;
+ 
+ 	if (v == &rxnet->calls) {
+@@ -69,11 +73,11 @@ static int rxrpc_call_seq_show(struct seq_file *seq, void *v)
+ 
+ 	local = call->local;
+ 	if (local)
+-		sprintf(lbuff, "%pISpc", &local->srx.transport);
++		scnprintf(lbuff, sizeof(lbuff), "%pISpc", &local->srx.transport);
+ 	else
+ 		strcpy(lbuff, "no_local");
+ 
+-	sprintf(rbuff, "%pISpc", &call->dest_srx.transport);
++	scnprintf(rbuff, sizeof(rbuff), "%pISpc", &call->dest_srx.transport);
+ 
+ 	state = rxrpc_call_state(call);
+ 	if (state != RXRPC_CALL_SERVER_PREALLOC)
+@@ -142,7 +146,7 @@ static int rxrpc_connection_seq_show(struct seq_file *seq, void *v)
+ 	struct rxrpc_connection *conn;
+ 	struct rxrpc_net *rxnet = rxrpc_net(seq_file_net(seq));
+ 	const char *state;
+-	char lbuff[50], rbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
+ 
+ 	if (v == &rxnet->conn_proc_list) {
+ 		seq_puts(seq,
+@@ -161,8 +165,8 @@ static int rxrpc_connection_seq_show(struct seq_file *seq, void *v)
+ 		goto print;
+ 	}
+ 
+-	sprintf(lbuff, "%pISpc", &conn->local->srx.transport);
+-	sprintf(rbuff, "%pISpc", &conn->peer->srx.transport);
++	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &conn->local->srx.transport);
++	scnprintf(rbuff, sizeof(rbuff), "%pISpc", &conn->peer->srx.transport);
+ print:
+ 	state = rxrpc_is_conn_aborted(conn) ?
+ 		rxrpc_call_completions[conn->completion] :
+@@ -228,7 +232,7 @@ static int rxrpc_bundle_seq_show(struct seq_file *seq, void *v)
+ {
+ 	struct rxrpc_bundle *bundle;
+ 	struct rxrpc_net *rxnet = rxrpc_net(seq_file_net(seq));
+-	char lbuff[50], rbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
+ 
+ 	if (v == &rxnet->bundle_proc_list) {
+ 		seq_puts(seq,
+@@ -242,8 +246,8 @@ static int rxrpc_bundle_seq_show(struct seq_file *seq, void *v)
+ 
+ 	bundle = list_entry(v, struct rxrpc_bundle, proc_link);
+ 
+-	sprintf(lbuff, "%pISpc", &bundle->local->srx.transport);
+-	sprintf(rbuff, "%pISpc", &bundle->peer->srx.transport);
++	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &bundle->local->srx.transport);
++	scnprintf(rbuff, sizeof(rbuff), "%pISpc", &bundle->peer->srx.transport);
+ 	seq_printf(seq,
+ 		   "UDP   %-47.47s %-47.47s %4x %3u %3d"
+ 		   " %c%c%c %08x | %08x %08x %08x %08x %08x\n",
+@@ -279,7 +283,7 @@ static int rxrpc_peer_seq_show(struct seq_file *seq, void *v)
+ {
+ 	struct rxrpc_peer *peer;
+ 	time64_t now;
+-	char lbuff[50], rbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
+ 
+ 	if (v == SEQ_START_TOKEN) {
+ 		seq_puts(seq,
+@@ -290,9 +294,9 @@ static int rxrpc_peer_seq_show(struct seq_file *seq, void *v)
+ 
+ 	peer = list_entry(v, struct rxrpc_peer, hash_link);
+ 
+-	sprintf(lbuff, "%pISpc", &peer->local->srx.transport);
++	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &peer->local->srx.transport);
+ 
+-	sprintf(rbuff, "%pISpc", &peer->srx.transport);
++	scnprintf(rbuff, sizeof(rbuff), "%pISpc", &peer->srx.transport);
+ 
+ 	now = ktime_get_seconds();
+ 	seq_printf(seq,
+@@ -401,7 +405,7 @@ const struct seq_operations rxrpc_peer_seq_ops = {
+ static int rxrpc_local_seq_show(struct seq_file *seq, void *v)
+ {
+ 	struct rxrpc_local *local;
+-	char lbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE];
+ 
+ 	if (v == SEQ_START_TOKEN) {
+ 		seq_puts(seq,
+@@ -412,7 +416,7 @@ static int rxrpc_local_seq_show(struct seq_file *seq, void *v)
+ 
+ 	local = hlist_entry(v, struct rxrpc_local, link);
+ 
+-	sprintf(lbuff, "%pISpc", &local->srx.transport);
++	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &local->srx.transport);
+ 
+ 	seq_printf(seq,
+ 		   "UDP   %-47.47s %3u %3u %3u\n",
+-- 
+2.50.1 (Apple Git-155)
+
