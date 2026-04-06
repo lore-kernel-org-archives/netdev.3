@@ -1,219 +1,83 @@
-Received: from mout-y-111.mailbox.org (mout-y-111.mailbox.org [91.198.250.236])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3BBB38C42E;
-	Mon,  6 Apr 2026 17:02:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.198.250.236
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D4A390208;
+	Mon,  6 Apr 2026 17:10:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775494926; cv=none; b=I2GvtilCGQLvEb0ShK5CeY320Kwg3LaWAFFvf9wzT0anK9iwTDO+5dxylOT0NveHzfdg+Hwb7c+IyC+LttYAe//CMctH9draV8fVesIPme1Lu9Ex/zBctPSDYqL/ELPbfXKK+HUJeuqQYUgz+VyhR+mHoeGRjug65MeWlNFXS9Y=
+	t=1775495431; cv=none; b=VIOcB1VXauJbY8ujNiRqYHV9pEPEhsPf0rQOEKppBIaYTlUgHVvvRS4sPAUzqgL9F3TFK/CMcZlTPby4uZhZ54DQuICL5rVes87D49tfMtu9G9A/SEqsJ7ERMU64+JwNmXz+FtFcb1QTDLUzx8aWrqrXcjNR03Pu3R1gbccyHBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775494926; c=relaxed/simple;
-	bh=idElmEV9x1NEx5c7emHcqtmiAc/XCq1b9VzEMW+DVdQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SoOYlvj5ibvqEGvlTpD47h0e/ZIphwj42w9rAZHjkPrklTYYyQvG5yV/nlE7jkbDSJq7fipck4RyVcpAVXq8avztfCgbWdTiyijQGPC23TmvvPGkgeA9OW0jUqs6kjRg0GfKIMYhrQDl+w3N7vVKNjhJh44Ksf9ZLBiLFKsC3xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=a0/WVFwx; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=udBgIr8b; arc=none smtp.client-ip=91.198.250.236
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1775495431; c=relaxed/simple;
+	bh=3UsoyWHJ3l8dOHlC/7y1+W7wDzvVarAuqx2aN4bB41s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P9+slXUDyX1OhYfqZaBkMAGIaV2kiSUu1gx8U1atJuXR5zYjTK0Ew/aT+R5oek4Z+OHXMTgmQZDE/Gpi31C/GXFS4ADPk9upzU5f5HhH0bu+IcWOol2SdoZS2OztEXF+GuT5ZTAfo2Lo1D5gH1Kxonjc37gGK/0M9kLOAN5c6ZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=a7byPEq4; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="a0/WVFwx";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="udBgIr8b"
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-y-111.mailbox.org (Postfix) with ESMTPS id 4fqFwx63S9z9yMV;
-	Mon,  6 Apr 2026 19:01:53 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1775494913;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ApxqaTleQecF8TgqGnNZO60kcLr6U1Ym6AbToNAUwYU=;
-	b=a0/WVFwxGaificscFo/EGgfoxFj8099QPUpc+l65WOphpdMOdrxd893kkYSfoeFuzutunk
-	ksB5HRYmttLDdLC0ZW/QjfiSBpHtIUtSuOncqjYRGVkn+QBhzNGaSU1kJJf2rWIRyk2RYC
-	m2P2XCr/+38BrmxDOLonai6jvJm184Z2rihzMgov80G08rWspvLiU8+qbZB9A5HbVepozX
-	L0IVytpWEF7HtmETHLQK5g865rvKtNmFAi3l5SgvMWAseHL0m9iHyIuCd7kaeqCD8odjIK
-	yImu7MSe7RFVBDaGi8T6GWvXQs6xfJlIxcVSvGQNesZKyXjgtQyLi1VKy0u5gA==
-From: Mashiro Chen <mashiro.chen@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1775494911;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ApxqaTleQecF8TgqGnNZO60kcLr6U1Ym6AbToNAUwYU=;
-	b=udBgIr8bDsS6xvk8ZNP8Ibrbq8nVVvIfvdEig8eVn8ilzTLqNs+uLs7tbqwDMllv5Y7dOQ
-	Wa4POy27YUenkP9ChemVgvlIny41wL40mdlr4tvDACaAedbSLDLnUmU94s41rQv/9hjUKF
-	Lh32Vl8VmwC5VCreGfsDC7cC9vh08UAiuBAk6X2z5nBXByYhRj7tR03OzQQTBXZhsu+jp1
-	IGxn842sT6FPtNKVDyMnMFPn+bsBsOPoP3phfJcaNh2yOqipPBvuAaxORUxJI4Awj0ykIJ
-	v0DlMBtsJ5nl/WHkZ7082q0c/A2Z/YqGg5VFtoOSRrxHB9vyIme9W28GLjm65A==
-To: netdev@vger.kernel.org
-Cc: linux-hams@vger.kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+abd2b69348e2d9b107a1@syzkaller.appspotmail.com,
-	Mashiro Chen <mashiro.chen@mailbox.org>
-Subject: [PATCH net v3] net: rose: defer rose_neigh cleanup to workqueue to fix UAF
-Date: Tue,  7 Apr 2026 01:01:25 +0800
-Message-ID: <20260406170125.175258-1-mashiro.chen@mailbox.org>
-In-Reply-To: <20260405125830.89251-1-mashiro.chen@mailbox.org>
-References: <20260405125830.89251-1-mashiro.chen@mailbox.org>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="a7byPEq4"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=Jk4XmXFhA0LiPh1kFrp9UbsWbmp8+y5XTKBKpbs56n8=; b=a7byPEq4/Tlq4ytrzg6vMwewrS
+	YqoKtZmbbti8/gA7P3dqwnMVDQvOQZ+aHBe76Nk76r/JEBAw+yWQf0t/S9iks/7W/FJbL8LpJyC4i
+	73coDfWdWgro/FiSE6Q5u9uftrwdyLUwYTcsI/G8vdMMH/uyVzMiU333HQrgHrF2meUXmWKA+deq5
+	wXeEGMhFCBE+MXgH6CUeyqLDT7vwZuVADw/tlsr4XgBMq/oYuaH6qQ1imX/pzdWSjQOfkzIPBf7QB
+	4g9c3xRZ+kaeBiUCuJFGkM0Bq3F7hesLgMKIAgZ3wZs3iCPWYM8aQuv4DSUdwNYOA85hSFwvSbG+b
+	ZlExhGLQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:44910)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1w9nSu-000000008LI-3Z9N;
+	Mon, 06 Apr 2026 18:10:20 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1w9nSs-000000001Sf-2gmD;
+	Mon, 06 Apr 2026 18:10:18 +0100
+Date: Mon, 6 Apr 2026 18:10:18 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Nicolai Buchwitz <nb@tipi-net.de>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 0/3] net: phy: add support for disabling
+ autonomous EEE
+Message-ID: <adPo-o9DtxIZGDvg@shell.armlinux.org.uk>
+References: <20260406-devel-autonomous-eee-v1-0-b335e7143711@tipi-net.de>
+ <a1cf8f6a-b338-4dd7-aced-7e19e4d0fdb7@lunn.ch>
+ <9272c5dd653039b3def8caaea3e631c5@tipi-net.de>
+ <5298959c-12de-4992-a896-3d1371cba111@lunn.ch>
+ <cdef227e-9dfe-4860-aca3-5ce1f60cb838@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MBO-RS-ID: 21d1c14604bfdb8fd27
-X-MBO-RS-META: g4e9ownz6mposspsqtdm8xkthyfpk6nf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cdef227e-9dfe-4860-aca3-5ce1f60cb838@broadcom.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-rose_neigh_put() frees the rose_neigh object when the reference count
-reaches zero, but does not stop the t0timer and ftimer beforehand.
-If a timer has been scheduled and fires after the object is freed,
-the callback will access already-freed memory, leading to a
-use-after-free.
+On Mon, Apr 06, 2026 at 09:43:55AM -0700, Florian Fainelli wrote:
+> That is almost a guarantee given, there will be a broken MAC
 
-The UAF can be triggered through the following sequence:
+Well, it already exists. modern i.MX platforms use stmmac, and some
+bright spark wired lpi_intr_o together with the main stmmac interrupt
+which causes interrupt storms when the receive path exits LPI. This
+makes stmmac LPI unusable on this platform.
 
-1. rose_add_node() creates a rose_neigh with refcount=2
-   (initial neigh_list reference plus one held by the new node entry)
-2. A socket connects via rose_get_neigh(), rose_neigh_hold() raises
-   refcount to 3; rose_transmit_link() arms t0timer on the neigh
-3. The routing entry is deleted: rose_del_node() drops the node
-   reference (3->2), calls rose_remove_neigh() which stops both
-   timers, then drops the neigh_list reference (2->1); the socket
-   now holds the only reference with t0timer stopped
-4. T1 expires in ROSE_STATE_1: rose_timer_expiry() sends
-   CLEAR_REQUEST via rose_transmit_link(), which sees
-   neigh->restarted=0 and !rose_t0timer_running, and re-arms
-   t0timer on the neigh (refcount still 1)
-5. T3 expires in ROSE_STATE_2: rose_timer_expiry() calls
-   rose_neigh_put(), refcount drops to 0, kfree(neigh)
-6. t0timer fires, rose_t0timer_expiry() accesses freed neigh -> UAF
+So, if i.MX is paired with a PHY that can do its own EEE, then we
+have this exact scenaro.
 
-Calling timer_delete_sync() directly in rose_neigh_put() would fix
-the UAF but is unsafe: rose_neigh_put() can be called while holding
-spinlocks (e.g. rose_route_frame() holds rose_neigh_list_lock and
-rose_route_list_lock), and timer_delete_sync() may block waiting for
-a running callback, which is illegal in atomic context.
-
-Fix this by deferring the final cleanup to a workqueue. When the
-refcount drops to zero, schedule rose_neigh_free_work() instead of
-freeing inline. The work function runs in process context where it
-is safe to call timer_shutdown_sync() before freeing the object.
-timer_shutdown_sync() is used instead of timer_delete_sync() to
-permanently prevent the self-rearming t0timer from firing again
-after the work function starts.
-
-Fixes: d860d1faa6b2 ("net: rose: convert 'use' field to refcount_t")
-Reported-by: syzbot+abd2b69348e2d9b107a1@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=abd2b69348e2d9b107a1
-Signed-off-by: Mashiro Chen <mashiro.chen@mailbox.org>
----
-Changes in v3:
-  - Replaced timer_delete_sync() in rose_neigh_put() with a workqueue
-    to avoid calling a blocking function in atomic context
-  - Added rose_neigh_free_work() to handle cleanup in process context
-  - Added struct work_struct free_work to struct rose_neigh
-  - Used timer_shutdown_sync() to prevent the self-rearming t0timer
-    from firing again after cleanup begins
-
-Changes in v2:
-  - Stop t0timer and ftimer before freeing the object
-
- include/net/rose.h    | 10 ++++------
- net/rose/rose_route.c | 16 ++++++++++++++++
- 2 files changed, 20 insertions(+), 6 deletions(-)
-
-diff --git a/include/net/rose.h b/include/net/rose.h
-index 2b5491bbf39ab..704214e38ef1d 100644
---- a/include/net/rose.h
-+++ b/include/net/rose.h
-@@ -9,6 +9,7 @@
- #define _ROSE_H 
- 
- #include <linux/refcount.h>
-+#include <linux/workqueue.h>
- #include <linux/rose.h>
- #include <net/ax25.h>
- #include <net/sock.h>
-@@ -105,6 +106,7 @@ struct rose_neigh {
- 	struct sk_buff_head	queue;
- 	struct timer_list	t0timer;
- 	struct timer_list	ftimer;
-+	struct work_struct	free_work;
- };
- 
- struct rose_node {
-@@ -159,12 +161,8 @@ static inline void rose_neigh_hold(struct rose_neigh *rose_neigh)
- 
- static inline void rose_neigh_put(struct rose_neigh *rose_neigh)
- {
--	if (refcount_dec_and_test(&rose_neigh->use)) {
--		if (rose_neigh->ax25)
--			ax25_cb_put(rose_neigh->ax25);
--		kfree(rose_neigh->digipeat);
--		kfree(rose_neigh);
--	}
-+	if (refcount_dec_and_test(&rose_neigh->use))
-+		schedule_work(&rose_neigh->free_work);
- }
- 
- /* af_rose.c */
-diff --git a/net/rose/rose_route.c b/net/rose/rose_route.c
-index e31842e6b3c8b..8c8e09793d442 100644
---- a/net/rose/rose_route.c
-+++ b/net/rose/rose_route.c
-@@ -28,6 +28,7 @@
- #include <linux/mm.h>
- #include <linux/interrupt.h>
- #include <linux/notifier.h>
-+#include <linux/workqueue.h>
- #include <linux/init.h>
- #include <net/rose.h>
- #include <linux/seq_file.h>
-@@ -44,6 +45,19 @@ static DEFINE_SPINLOCK(rose_route_list_lock);
- 
- struct rose_neigh *rose_loopback_neigh;
- 
-+static void rose_neigh_free_work(struct work_struct *work)
-+{
-+	struct rose_neigh *rose_neigh =
-+		container_of(work, struct rose_neigh, free_work);
-+
-+	timer_shutdown_sync(&rose_neigh->t0timer);
-+	timer_shutdown_sync(&rose_neigh->ftimer);
-+	if (rose_neigh->ax25)
-+		ax25_cb_put(rose_neigh->ax25);
-+	kfree(rose_neigh->digipeat);
-+	kfree(rose_neigh);
-+}
-+
- /*
-  *	Add a new route to a node, and in the process add the node and the
-  *	neighbour if it is new.
-@@ -103,6 +117,7 @@ static int __must_check rose_add_node(struct rose_route_struct *rose_route,
- 
- 		timer_setup(&rose_neigh->ftimer, NULL, 0);
- 		timer_setup(&rose_neigh->t0timer, NULL, 0);
-+		INIT_WORK(&rose_neigh->free_work, rose_neigh_free_work);
- 
- 		if (rose_route->ndigis != 0) {
- 			rose_neigh->digipeat =
-@@ -388,6 +403,7 @@ void rose_add_loopback_neigh(void)
- 
- 	timer_setup(&sn->ftimer, NULL, 0);
- 	timer_setup(&sn->t0timer, NULL, 0);
-+	INIT_WORK(&sn->free_work, rose_neigh_free_work);
- 
- 	spin_lock_bh(&rose_neigh_list_lock);
- 	sn->next = rose_neigh_list;
 -- 
-2.53.0
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
