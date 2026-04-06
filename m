@@ -1,137 +1,108 @@
-Received: from www2881.sakura.ne.jp (www2881.sakura.ne.jp [49.212.198.91])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6412DEA86
-	for <netdev@vger.kernel.org>; Mon,  6 Apr 2026 12:30:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.198.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E0434B19A;
+	Mon,  6 Apr 2026 12:42:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775478622; cv=none; b=AXFTMUUjHZ46Bepcgxgck1O9zinr97q8SB0El0KCvHCwnlvmDrgFINYIvMJh5+Gp7Fek63oHDans1MKpZSqyABHfjtHRrMOvE3qYw/K79L5ne7/oRT9YGIlmPzSLuSlYhISBmPTP6IqN+tXCtw6g7uLFeAydWkzxJoe3uXvF3cM=
+	t=1775479360; cv=none; b=HENTrZs8wBS5MDAF1v47G/dD9FduMHAZMLlqGCN1REcS/Gvc5CIFIRdVLxkIgJMfK6PRTGAVDlgPpPh1CRS+BwS1CcnWiiteaqOWJgPs3oH5SIiJcxxREwA200BCapHqxUB6TWRbuD1TjqSDiHHxEqaWy6z+q35m1C8sxzZqMDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775478622; c=relaxed/simple;
-	bh=emRCJyacTnSloKRUbPyqntMfWZ5pD3jQ3P79nsNsgmA=;
+	s=arc-20240116; t=1775479360; c=relaxed/simple;
+	bh=Sv0A+sHdJ2RG8qbrDbw8lVNY4v8YEFz1J6FoU7pUpSk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XKZ4IGbp6C8cdfa6EH9N3wEu0IVi9AhOlLefGdfRhA7CpPXoMQ5/KSFfHRGmu5+Fj5rU/CyKT3usFK2DP8D8i3jcuwpNtr/Qey8eE9pzNFc6JkhBE2F6gTlAWqKxUwhqDvxShofixiv56GMK/M8onCzA0dQao2/78bPXkbtEOiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp; spf=pass smtp.mailfrom=enjuk.jp; dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b=exUuEimw; arc=none smtp.client-ip=49.212.198.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enjuk.jp
+	 Content-Type:Content-Disposition:In-Reply-To; b=I/GYFnPpa0VO3V0QzxcyzlLf0drxOygfKZ9+l+FWLo3+ACc/JG8FJKZFS9jUswI3j9YVpap6pParZ7lGOZIkdFdUFv6+vdDGyGWuHPDxW0UbGzEkY8t6lyxHYeZYhBr5ca4YZ2IO1QK+BRVEln0dD9RdRc7k7YOjIQmv5iovDPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=GYDQhlhR; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b="exUuEimw"
-Received: from x1 (13.3.31.150.dy.iij4u.or.jp [150.31.3.13])
-	(authenticated bits=0)
-	by www2881.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 636CTo3j080947
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Mon, 6 Apr 2026 21:29:52 +0900 (JST)
-	(envelope-from kohei@enjuk.jp)
-DKIM-Signature: a=rsa-sha256; bh=3OLGYuWueXpAxw4Xwkb7rNrd6HvEWShajiH3l89z4JE=;
-        c=relaxed/relaxed; d=enjuk.jp;
-        h=From:Message-ID:To:Subject:Date;
-        s=rs20251215; t=1775478592; v=1;
-        b=exUuEimwu+3LRSzYhW/E37U5h2mO6GNiVvGmtd5dpgX/MBhWFIRJCLhZbiiqOJDa
-         0qTY6LkjTmVPE4ycnrw8xHlErDa4Lvy/wPiI9NPbZmm7QLuh53Ji8h9boEEkZZrY
-         +8bgVkBfITYXHXECH6t6DfGXldKysJhXceZOAdcFCR5B3sNyXYkf2vTTYTwZZXKg
-         yhR6XtxA81mCXQqIQ1iN0W6C9XTvQhqs14dxL4cnl8XI13cHGjwWN0Jk954uLN7L
-         TjoH7yRrykcjXmbrOW1BOFKavYCawN7taZrMrAR7Siup5IhIzBBQWWOwHAPTl3e8
-         CvTnHpqFoo5nVy8PO9RyUA==
-Date: Mon, 6 Apr 2026 21:29:50 +0900
-From: Kohei Enju <kohei@enjuk.jp>
-To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Cc: netdev@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-        jesse.brandeburg@intel.com, anthony.l.nguyen@intel.com,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, stable@vger.kernel.org
-Subject: Re: [PATCH net 3/3] iavf: drop netdev lock while waiting for MAC
- change completion
-Message-ID: <adOjGCms-5PBuNte@x1>
-References: <20260406112057.906685-1-jtornosm@redhat.com>
- <20260406112057.906685-4-jtornosm@redhat.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="GYDQhlhR"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Pl89xt0XO0MVD2bqFFaXnKndIOOiqwaplxwOyuzmR+0=; b=GYDQhlhRXMtHU6pEEWhAabOk7O
+	tQRg/t6VCr9oMOICTIFK0m6RC3M0inSbqgDVZ66rOCkxj5n4s30nPnl2W1MYjN6OHH34E2RUPAu2v
+	sMmqKPIm9BVPQTXNIxJt2msZlgytIy1sMl2JdgS51xsqgGWn/xaR3JymsP9ZJ6Zz2ZSE=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1w9jHh-00EzCe-Qq; Mon, 06 Apr 2026 14:42:29 +0200
+Date: Mon, 6 Apr 2026 14:42:29 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Carlo Szelinsky <github@szelinsky.de>
+Cc: Kory Maincent <kory.maincent@bootlin.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 3/3] net: mdio: treat PSE EPROBE_DEFER as
+ non-fatal during PHY registration
+Message-ID: <3597433c-ce26-43c6-9a5f-e942a3db5340@lunn.ch>
+References: <6185f9d8-dabe-4190-b020-711e3a046e64@lunn.ch>
+ <20260405185730.3937952-1-github@szelinsky.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260406112057.906685-4-jtornosm@redhat.com>
+In-Reply-To: <20260405185730.3937952-1-github@szelinsky.de>
 
-On 04/06 13:20, Jose Ignacio Tornos Martinez wrote:
-> After commit ad7c7b2172c3 ("net: hold netdev instance lock during sysfs
-> operations"), iavf_set_mac() is called with the netdev instance lock
-> already held.
+On Sun, Apr 05, 2026 at 08:57:30PM +0200, Carlo Szelinsky wrote:
+> Hi Andrew,
 > 
-> The function queues a MAC address change request and then waits for
-> completion while holding this lock. However, the watchdog task that
-> processes admin queue commands (including MAC changes) also needs to
-> acquire the netdev lock to run.
+> So I went and looked at whether we can just let EPROBE_DEFER do its
+> thing here, like you suggested.
 > 
-> This creates a lock contention scenario:
-> 1. iavf_set_mac() holds netdev lock and waits for MAC change
-> 2. Watchdog needs netdev lock to process the MAC change request
-> 3. Watchdog blocks waiting for lock
-> 4. MAC change times out after 2.5 seconds
-> 5. iavf_set_mac() returns -EAGAIN
-> 
-> This particularly affects VFs during initialization when enslaved to a
-> bond. The first VF typically succeeds as it's already fully initialized,
-> but subsequent VFs fail as they're still progressing through their state
-> machine and need the watchdog to advance.
-> 
-> Fix by temporarily dropping the netdev lock before waiting for MAC change
-> completion, allowing the watchdog to run and process the request, then
-> re-acquiring the lock before returning.
-> 
-> This is safe because:
-> - The MAC change request is already queued before we drop the lock
-> - iavf_is_mac_set_handled() just checks filter state, doesn't modify it
-> - We re-acquire the lock before checking results and returning
-> 
-> Fixes: ad7c7b2172c3 ("net: hold netdev instance lock during sysfs operations")
-> cc: stable@vger.kernel.org
-> Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-> ---
->  drivers/net/ethernet/intel/iavf/iavf_main.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-> index dad001abc908..6281858e6f3c 100644
-> --- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-> +++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-> @@ -1068,10 +1068,14 @@ static int iavf_set_mac(struct net_device *netdev, void *p)
->  	if (ret)
->  		return ret;
->  
-> +	netdev_unlock(netdev);
-> +
->  	ret = wait_event_interruptible_timeout(adapter->vc_waitqueue,
->  					       iavf_is_mac_set_handled(netdev, addr->sa_data),
->  					       msecs_to_jiffies(2500));
->  
-> +	netdev_lock(netdev);
-> +
+> >From what I can tell, the issue is where it happens.
+> fwnode_mdiobus_register_phy() gets called during the MDIO bus scan in
+> __of_mdiobus_parse_phys(), and if any PHY returns -EPROBE_DEFER there,
+> the whole scan bails out - none of the PHYs on that bus get registered.
+> So you'd lose all networking on that bus just because one PHY's PSE
+> controller isn't ready yet.
 
-Hi Jose, thank you for the fix and detailed explanation.
+Something does not sounds correct here. The MDIO bus, and the devices
+on the bus should have different life cycles.
 
-I don't have a great solution for this issue, but dropping the netdev
-lock taken by the networking core in the driver callback might not look
-acceptable.
+If the MDIO bus itself is missing resources it needs, it can return
+EPROBE_DEFFER. A typical example of this would be the MDIO bus reset,
+which applies to all devices on the bus. If that GPIO is missing, the
+probe of the MDIO bus will unwind.
 
-FYI, Petr reported the same type of locking issue in
-ndo_change_mtu(), and the v1 approach was really similar to this one.
-https://lore.kernel.org/intel-wired-lan/20260202155813.3f8fbc27@kernel.org/
+I would expect PHYs on the bus to be just devices in the device
+model. They can return EPROBE_DEFER, and the driver core will probe
+them again later. This could be a per PHY reset signal, reset
+controller, etc, or the PSE. If such a resource is missing, just the
+PHY should fail probing, not the whole MDIO bus.
 
-IIUC, the issue was eventually fixed by completing the reset
-synchronously in the same context as ndo_change_mtu(), instead of
-dropping the netdev lock and waiting for reset_task.
-https://lore.kernel.org/intel-wired-lan/20260211191855.1532226-1-poros@redhat.com/
+> I also dug into the timing question you raised. Correct me if I'm
+> wrong, but from what I see the deferred probe timeout is 10s and
+> regulator_late_cleanup fires at 30s, so the ordering would actually
+> work out - the consumer would get to claim the regulator before
+> cleanup kills it. It's more the bus level collateral damage that
+> seemed like the real problem to me.
 
-If that applies here as well, maybe iavf_set_mac() needs a similar
-approach, e.g. progressing the relevant virtchnl request/completion
-synchronously with the netdev lock held, rather than dropping the lock
-here?
+Your patch 0/X says:
 
->  	/* If ret < 0 then it means wait was interrupted.
->  	 * If ret == 0 then it means we got a timeout.
->  	 * else it means we got response for set MAC from PF,
-> -- 
-> 2.53.0
-> 
+> When a PSE controller driver is built as a module, it may not be
+> probed yet when PHYs are registered on the MDIO bus. This causes
+> of_pse_control_get() to return -EPROBE_DEFER, destroying the PHY
+> device.  Later, regulator_late_cleanup disables the unclaimed PSE
+> regulators, permanently killing PoE.
+
+How are we getting to time t=30 without the PSE probing?
+
+If the PSE controller is a module, and missing from the file system,
+so cannot be loaded, then turning off the regulators actually seems
+like a good safety policy. But if the module is there, but never gets
+loaded, it sounds like we have a different sort of problem, some
+cyclic dependency we need to break?
+
+	Andrew
