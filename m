@@ -1,68 +1,117 @@
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F60258EFF;
-	Mon,  6 Apr 2026 13:36:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380632D9ED1;
+	Mon,  6 Apr 2026 13:39:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775482605; cv=none; b=KmyM/06lEQD49GtMDV4Yl0UfXF79vVcKmVv1n8hWM3lWQKt2DPR9Br+zI/KRqOle//b4ItNANe7jooaDd3nz8jLIXSDb8W2QzKp8YK3akG/632R+7Yf6yqZHq0dB82czgFvld8E+Cc4R3XZYYZZmhrRf3RiChFHDvpjiAzg30dY=
+	t=1775482746; cv=none; b=LxMFhS5LDraVrxHsMNlma/8Wiy4sVzEETt2v2Tg9W4nRHBnvoe/43UmXWCFCXj9/1s9TQc+9aZBfsBLVqXEFdMaI2yPIK0Lfcb6l85cJ3eNTZfNjFknGYDKhjwuzb8KhKpsE8LB2TYkglMd2uG7c5P2XRIeMZHNrJTIKegk9zzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775482605; c=relaxed/simple;
-	bh=SLjsyADKhvtcnlCVDagTlXHmofYOmuF5Nu9OaF/8tzs=;
-	h=From:Date:Message-ID:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ply1QsazXZiRZ0CEAdxMAyXwPrixcVJdOdTDa/ykAt6KaT/WW0y8al1s+d0BDiMQImiGLn229AV2hWJ8/AqqP/6mUvPYJcTdNQaxLo2VoQYvAYuF+uYukoUKat60BNSmVcu5UDMmdewnLOVyyTpi1Xbir4CeuE1RiAjjUrW9AUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from reply.eml (unknown [111.196.245.197])
-	by APP-05 (Coremail) with SMTP id zQCowAAntwrfttNpmJu0DA--.35068S2;
-	Mon, 06 Apr 2026 21:36:31 +0800 (CST)
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Date: Mon, 6 Apr 2026 17:00:00 +0800
-Message-ID: <20260406170000.1-rxrpc-proc-confirm-reply-pengpeng@iscas.ac.cn>
-To: David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>
-Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-afs@lists.infradead.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, pengpeng@iscas.ac.cn
-Subject: Re: [PATCH] rxrpc/proc: size address buffers for %pISpc output
-In-Reply-To: <20260404190004.4-rxrpc-proc-pengpeng@iscas.ac.cn>
-References: <20260404190004.4-rxrpc-proc-pengpeng@iscas.ac.cn>
+	s=arc-20240116; t=1775482746; c=relaxed/simple;
+	bh=APQPUocm4GOFYU4BpDaucIHnYV/RnH6hj1Z27G2TWGM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=CV1HAPDCZAANwi0BOcDru+YWo78VfMGV69q2c6rbvipQD4xCCDhFnufmd/dkSr4/RDgQx2Dk0LMxvLHBGsqKd96+x+kmS8luji3f45kZ4FX7djjh9nX9x3nXOOlBewYZrvpLW3ChtA63bawMf98am+qkx4XF6E+juHjCEhx5Uss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q6Z733oI; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q6Z733oI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14056C4CEF7;
+	Mon,  6 Apr 2026 13:39:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775482745;
+	bh=APQPUocm4GOFYU4BpDaucIHnYV/RnH6hj1Z27G2TWGM=;
+	h=Date:From:To:Cc:Subject:From;
+	b=Q6Z733oIthKhu+okUuFyVuoVBwsg+nNyHlHlWEO6O599x1tdnLHioen/4GcrI+7M7
+	 1h0hUyQivsBs5IKfZSnDHU7tXqFISxs1m7fvgzaM5JsbTY++9B1fVTCGIdQIGh9V8d
+	 FFZ5OdoDxw2fWmQX1BO+BUWXDnFiyWgX49bNC4avNd1ImrfjvrRQJ/Gd0PyfkAa+TA
+	 gw88i1e1LIyy53G7wVzhZJJQ1JzllDsBWEnAvL0BenptxDqHNUHebkFdLFL5kWFwPe
+	 yAFtY6CwJzk/4OHm+KbNprTAIeEQRjXj86I7g65B+JokhFC5CrNWY1VhruWxKg6ALg
+	 psiHBuF52mBmQ==
+Date: Mon, 6 Apr 2026 14:39:01 +0100
+From: Mark Brown <broonie@kernel.org>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Networking <netdev@vger.kernel.org>
+Cc: Fernando Fernandez Mancera <fmancera@suse.de>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Next Mailing List <linux-next@vger.kernel.org>,
+	Yiqi Sun <sunyiqixm@gmail.com>
+Subject: linux-next: manual merge of the net-next tree with the net tree
+Message-ID: <adO3dccqnr6j-BL9@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAAntwrfttNpmJu0DA--.35068S2
-X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYZ7AC8VAFwI0_Gr0_Xr1l1xkIjI8I6I8E
-	6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l87I20VAvwVCjjxC26r1F6r
-	13M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_
-	Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxV
-	W0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAa
-	Y2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4
-	A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACjI8F5VA0
-	II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l42xK82IYc2Ij64vIr41l4c
-	8EcI0Ec7CjxVAaw2AFwI0_Jw0_GFyl4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
-	67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MI
-	IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
-	14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
-	W8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUoOJ5
-	UUUUU
-X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
-
-Hi,
-
-Thanks for confirming that.
-
-That is very helpful. It matches the current-tree ISATAP case in
-lib/vsprintf.c and confirms that the formatter ends up writing 51 bytes
-including the trailing NUL into the existing 50-byte stack buffer.
-
-I'll resend the patch with the changelog corrected to frame the proof
-around the ISATAP case explicitly.
-
-Thanks,
-Pengpeng
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ft3vr1zCtKzX0w0Y"
+Content-Disposition: inline
 
 
+--ft3vr1zCtKzX0w0Y
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi all,
+
+Today's linux-next merge of the net-next tree got a conflict in:
+
+  net/ipv4/icmp.c
+
+between commit:
+
+  fde29fd934932 ("ipv4: icmp: fix null-ptr-deref in icmp_build_probe()")
+
+=66rom the net tree and commit:
+
+  d98adfbdd5c01 ("ipv4: drop ipv6_stub usage and use direct function calls")
+
+=66rom the net-next tree.
+
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
+
+diff --cc net/ipv4/icmp.c
+index 4e2a6c70dcd84,2f4fac22d1aba..0000000000000
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@@ -1345,14 -1342,7 +1342,15 @@@ bool icmp_build_probe(struct sk_buff *s
+  		case ICMP_AFI_IP6:
+  			if (iio->ident.addr.ctype3_hdr.addrlen !=3D sizeof(struct in6_addr))
+  				goto send_mal_query;
+- 			dev =3D ipv6_stub->ipv6_dev_find(net, &iio->ident.addr.ip_addr.ipv6_ad=
+dr, dev);
++ 			dev =3D ipv6_dev_find(net, &iio->ident.addr.ip_addr.ipv6_addr, dev);
+++
+ +			/*
+ +			 * If IPv6 identifier lookup is unavailable, silently
+ +			 * discard the request instead of misreporting NO_IF.
+ +			 */
+ +			if (IS_ERR(dev))
+ +				return false;
+ +
+  			dev_hold(dev);
+  			break;
+  #endif
+
+--ft3vr1zCtKzX0w0Y
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnTt3QACgkQJNaLcl1U
+h9A+5gf+NZWtn776BVXSDfhPQlejdbBeDV/j+yAQJoo0HMACAD3MYjCTid1I9BY/
+TNiqypn+U3AyrnlEx22gmtheSmPl/EscwmIRc09sG7auO5UDdtTp9lqTokJEuyej
+QhJUVA9/m/iZXXpATz0CdMIuWU1NB3kudgeeE5opwGySZU4CnG/qVXUmTnLOQ11W
+6L5oVnSeCfe/R5uh4W+oswcoQqWal5ELPSGYyY3bHTTT8TXiMjwTiTKCVaorqi/3
+Yu0sULjt80PVh9i+mphf0xqSdnbbME6CSTJyiJKg1ragTDCdL4m6aJpE4N371AWC
+FxOZJBlcpJ0uVkWfDAj6vq6WHIvSqQ==
+=0bbW
+-----END PGP SIGNATURE-----
+
+--ft3vr1zCtKzX0w0Y--
