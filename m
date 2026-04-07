@@ -1,233 +1,210 @@
-Received: from hr2.samba.org (hr2.samba.org [144.76.82.148])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B17D833ADAB;
-	Tue,  7 Apr 2026 14:55:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.82.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFFD333D505
+	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 15:05:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775573721; cv=none; b=n6WDmWr77jAfyrQII0zh/MiKnwOuhQFM0Jr57ZdPAmpJiwSgm8EZQgzOXFt5XuCehHHxI/l36F9FED8ASg1Y6sEI5/RbwZob/T1HnkIAQe8SscQ4RFjuBGWrs3VciDBfnrxiNPyL3o/A5NaWQ1Zh6BmKZ3tO8WJyyfLR0OZ+VZo=
+	t=1775574305; cv=none; b=EGVZYoiSHmFuKZ2v04uBvQAaEZ+XyFDlnrYbkZKqBlm8vodJTeURWGLPkplb3xB91SIcYywCK5vMUVFdpmbdqgrf/BaTj8PIcaceSJNQG1tv1TnCISfLgwwC0ItZmcO7Pugm2mbqaqRrq5T+jEUZfJiDxWyUVW9lU+CkLFYmpOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775573721; c=relaxed/simple;
-	bh=Vr7+Y9O6Lq0UctbS41Ypfr586Zm9YHBHCjGTcLSBDdA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=itGoXDC5r7klGlpDDiGnttCZ3q+jaWvMDvasOCkv4I7mhPFQdlgH39dUxOxJqkpxu3N8+u3pYpM4ofQvMtwdomQ+569jz6SkkkXVHABdoWJMQckSJG+aG9BI2N2AXbsMJSY/GHhF8mxdB/BQGqkC88Qnhqng6wm4kFh8W7bH8M0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org; spf=pass smtp.mailfrom=samba.org; dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b=mGSdguxW; arc=none smtp.client-ip=144.76.82.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samba.org
+	s=arc-20240116; t=1775574305; c=relaxed/simple;
+	bh=CrHC1vD81873jVQYixK/Cr+dwWyTeJpHEOcDeR5UeO0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QoB10xef0sfHm7RysIeZJMlUuDh88jxGbaLrilgexFLHGdn9fhnKoCjR0hJiMJVoUTIAy23IHXYBhOX+gnC2ZbhdrpDc53o7YmJLsm+dj17JJ4EVBgryorUbY3L+3YY0n0aLTfYnrkqRvSmyAIWI3EZuSQrFL7nNsXFaJ95OuO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GcF3yEeS; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b="mGSdguxW"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=samba.org;
-	s=42; h=Message-ID:Date:Cc:To:From;
-	bh=KWVlvf/fLA4JQzZbInCx2uw0d9Dz/WHGRPxlljy4Ttw=; b=mGSdguxWBFjgZo63d/t65P6+z9
-	pdRGYfVK8+7ziH7WzurTclyg6OtYVeUp87NfHUeBRHrLvNioM0CJKvzRLvm0BDnSFHvfKanCIjdg6
-	b5bAPDNFWNI/x3yUJqNkhvKJGj4JBdK4k0z4YzJA/KR4YWOrkJJN8za09IQv1casJmfPVsVuEJAiE
-	lndPPPtc+3kWt8Gp05pufZOZEELRbOBmALl3nTVnj+IYgZOCwhRoCBe7vhg0L9QJcf3pY4nfxpDo+
-	4pVXvxpp+1LMRmb/LlPyGKbufSU/A1nPRI5HrrUKBvVRVcglCZrvyrULSL1+VAVblQLHqpeYHg4S/
-	26dBM3RvFU/95VIQrRMMTQ8zK0THs1SqDXR9P2enZqZntZZ+nu8HbtJf4z/tuVDUAUYsmXZYBLlZf
-	+crEDXMaKSvBX0JDiI/7H7LGLNldBP+8qrzwdjv9sIN6l05JNfXnptzR9PUE99RdCJgGLrExnfSyY
-	b1qKNhG09rtB8L/5pbmSMZCW;
-Received: from [127.0.0.2] (localhost [127.0.0.1])
-	by hr2.samba.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__ECDSA_SECP256R1_SHA256__CHACHA20_POLY1305:256)
-	(Exim)
-	id 1wA7hp-00000007WOO-39uS;
-	Tue, 07 Apr 2026 14:47:05 +0000
-From: Stefan Metzmacher <metze@samba.org>
-To: linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org
-Cc: metze@samba.org,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Henrique Carvalho <henrique.carvalho@suse.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	netdev@vger.kernel.org,
-	Xin Long <lucien.xin@gmail.com>,
-	quic@lists.linux.dev,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mark Brown <broonie@kernel.org>,
-	linux-next@vger.kernel.org
-Subject: [PATCH 0/8] smb: add kernel internal IPPROTO_SMBDIRECT
-Date: Tue,  7 Apr 2026 16:46:26 +0200
-Message-ID: <cover.1775571957.git.metze@samba.org>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GcF3yEeS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775574302;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Djh8MbEYjD06cLgWg4zobo1Zy061MpN/vRaKzdCUstg=;
+	b=GcF3yEeSXtYECnQfJ3SihD8YzCWvZ2/dIua0/bRZwSdhx3oEiUsF1a8JVYIiUuThYIPoxq
+	kC8ZGQJ1nEfekFtGKqWMbgrdRFmxpzDPYLM+fjTaAzzhES8Rcaroc6REv2q10QbtFYVcHA
+	dDgfOcNbzVlu7GcFkfQSNhGJ/s2qM8c=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-248-PQ-dHuJOMduQilzCCKtqPg-1; Tue,
+ 07 Apr 2026 11:05:01 -0400
+X-MC-Unique: PQ-dHuJOMduQilzCCKtqPg-1
+X-Mimecast-MFC-AGG-ID: PQ-dHuJOMduQilzCCKtqPg_1775574300
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A7B101956068;
+	Tue,  7 Apr 2026 15:04:59 +0000 (UTC)
+Received: from thinkpad (unknown [10.44.50.90])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1C821300019F;
+	Tue,  7 Apr 2026 15:04:56 +0000 (UTC)
+Date: Tue, 7 Apr 2026 17:04:53 +0200
+From: Felix Maurer <fmaurer@redhat.com>
+To: Fernando Fernandez Mancera <fmancera@suse.de>,
+	Luka Gejak <luka.gejak@linux.dev>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, netdev@vger.kernel.org, horms@kernel.org
+Subject: Re: [PATCH net-next v4 1/2] net: hsr: require valid EOT supervision
+ TLV
+Message-ID: <adUdFTckCG7ELIra@thinkpad>
+References: <20260401092324.52266-1-luka.gejak@linux.dev>
+ <20260401092324.52266-2-luka.gejak@linux.dev>
+ <2d94a1a6-e6c5-427c-b10f-63377cb10407@suse.de>
+ <DHHZ8POWJINS.1CRKQT33EM1WW@linux.dev>
+ <4cce92eb-61a0-4869-8a30-b86d65e8a675@suse.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4cce92eb-61a0-4869-8a30-b86d65e8a675@suse.de>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Hi,
+On Thu, Apr 02, 2026 at 01:53:14AM +0200, Fernando Fernandez Mancera wrote:
+> On 4/1/26 6:59 PM, Luka Gejak wrote:
+> > On Wed Apr 1, 2026 at 4:47 PM CEST, Fernando Fernandez Mancera wrote:
+> > > On 4/1/26 11:23 AM, luka.gejak@linux.dev wrote:
+> > > > From: Luka Gejak <luka.gejak@linux.dev>
+> > > >
+> > > > Supervision frames are only valid if terminated with a zero-length EOT
+> > > > TLV. The current check fails to reject non-EOT entries as the terminal
+> > > > TLV, potentially allowing malformed supervision traffic.
+> > > >
+> > > > Fix this by strictly requiring the terminal TLV to be HSR_TLV_EOT
+> > > > with a length of zero.
+> > > >
+> > > > Reviewed-by: Felix Maurer <fmaurer@redhat.com>
+> > > > Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
+> > > > ---
+> > > >    net/hsr/hsr_forward.c | 41 ++++++++++++++++++++++-------------------
+> > > >    1 file changed, 22 insertions(+), 19 deletions(-)
+> > > >
+> > > > diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
+> > > > index 0aca859c88cb..17b705235c4a 100644
+> > > > --- a/net/hsr/hsr_forward.c
+> > > > +++ b/net/hsr/hsr_forward.c
+> > > > @@ -82,39 +82,42 @@ static bool is_supervision_frame(struct hsr_priv *hsr, struct sk_buff *skb)
+> > > >    	    hsr_sup_tag->tlv.HSR_TLV_length != sizeof(struct hsr_sup_payload))
+> > > >    		return false;
+> > > > -	/* Get next tlv */
+> > > > +	/* Advance past the first TLV payload to reach next TLV header */
+> > > >    	total_length += hsr_sup_tag->tlv.HSR_TLV_length;
+> > > > -	if (!pskb_may_pull(skb, total_length))
+> > > > +	/* Linearize next TLV header before access */
+> > > > +	if (!pskb_may_pull(skb, total_length + sizeof(struct hsr_sup_tlv)))
+> > > >    		return false;
+> > > >    	skb_pull(skb, total_length);
+> > > >    	hsr_sup_tlv = (struct hsr_sup_tlv *)skb->data;
+> > > >    	skb_push(skb, total_length);
+> > > > -	/* if this is a redbox supervision frame we need to verify
+> > > > -	 * that more data is available
+> > > > +	/* Walk through TLVs to find end-of-TLV marker, skipping any unknown
+> > > > +	 * extension TLVs to maintain forward compatibility.
+> > > >    	 */
+> > > > -	if (hsr_sup_tlv->HSR_TLV_type == PRP_TLV_REDBOX_MAC) {
+> > > > -		/* tlv length must be a length of a mac address */
+> > > > -		if (hsr_sup_tlv->HSR_TLV_length != sizeof(struct hsr_sup_payload))
+> > > > -			return false;
+> > > > +	for (;;) {
+> > > > +		if (hsr_sup_tlv->HSR_TLV_type == HSR_TLV_EOT &&
+> > > > +		    hsr_sup_tlv->HSR_TLV_length == 0)
+> > > > +			return true;
+> > >
+> > > I do not follow this approach, why a loop? From IEC 62439-3, I do not
+> > > understand that supervision frames could have multiple
+> > > PRP_TLV_REDBOX_MAC TLVs. The current code handles the TLVs correctly.
+> > >
+> > > Which makes me wonder, how are you testing this? Do you have some
+> > > hardware with HSR/PRP support that is sending these frames? If so, which
+> > > one? Are you testing this using a HSR/PRP environment with purely Linux
+> > > devices?
+> > >
+> > > Thanks,
+> > > Fernando.
+> > >
+> > > > -		/* make sure another tlv follows */
+> > > > -		total_length += sizeof(struct hsr_sup_tlv) + hsr_sup_tlv->HSR_TLV_length;
+> > > > -		if (!pskb_may_pull(skb, total_length))
+> > > > +		/* Validate known TLV types */
+> > > > +		if (hsr_sup_tlv->HSR_TLV_type == PRP_TLV_REDBOX_MAC) {
+> > > > +			if (hsr_sup_tlv->HSR_TLV_length !=
+> > > > +			    sizeof(struct hsr_sup_payload))
+> > > > +				return false;
+> > > > +		}
+> > > > +
+> > > > +		/* Advance past current TLV: header + payload */
+> > > > +		total_length += sizeof(struct hsr_sup_tlv) +
+> > > > +				hsr_sup_tlv->HSR_TLV_length;
+> > > > +		/* Linearize next TLV header before access */
+> > > > +		if (!pskb_may_pull(skb,
+> > > > +				   total_length + sizeof(struct hsr_sup_tlv)))
+> > > >    			return false;
+> > > > -		/* get next tlv */
+> > > >    		skb_pull(skb, total_length);
+> > > >    		hsr_sup_tlv = (struct hsr_sup_tlv *)skb->data;
+> > > >    		skb_push(skb, total_length);
+> > > >    	}
+> >
+> > Hi Fernando,
+> >
+> > You are right that IEC 62439-3 does not specify multiple
+> > PRP_TLV_REDBOX_MAC TLVs. My intention with the loop was not to handle
+> > multiple RedBox MACs, but rather to make the parser robust against
+> > unknown TLV types. If a future revision of the standard or a vendor
+> > extension introduces a new TLV, the loop allows the kernel to safely
+> > skip over unrecognized TLVs by reading their length, ensuring it can
+> > still validate the HSR_TLV_EOT marker at the end.
 
-as the work to unify the smbdirect code
-between cifs.ko and ksmbd.ko into an smbdirect.ko
-is in linux-next for a while this is the next
-step to also share the code with userspace
-e.g. Samba as client and server.
+Hi Fernando, Luka,
 
-The SMBDIRECT protocol, defined in [MS-SMBD] by Microsoft.
-It is used as wrapper around RDMA in order to provide a transport for SMB3,
-but Microsoft also uses it as transport for other protocols.
+> AFAIU, the TLVs must be in the right order. I don't know, it doesn't sound
+> very convincing to me that we are anticipating to new TLVs. HSR/PRP isn't a
+> very active protocol and it has few users in Kernel probably compare to
+> other protocols because it is used in a very specific industry domain.
 
-SMBDIRECT works over Infiniband, RoCE and iWarp.  RoCEv2 is based on IP/UDP
-and iWarp is based on IP/TCP, so these use IP addresses natively.
-Infiniband and RoCEv1 require IPOIB in order to be used for SMBDIRECT.
+I agree with this. IMHO, the supervision frames should look the way they
+are described in the standard, i.e., the TLVs ordered as the current
+code expects them.
 
-So instead of adding a PF_SMBDIRECT, which would only use AF_INET[6],
-we use IPPROTO_SMBDIRECT instead, this uses a number not
-allocated from IANA, as it would not appear in an IP header.
+Luka, I'm not sure what your stance is to that? On one hand, you are
+proposing a patch making the checks more strict (TLV_END && length ==
+0), on the other hand you are proposing a patch accepting supervision
+frames with random new or proprietary TLVs.
 
-This is similar to IPPROTO_SMC, IPPROTO_MPTCP and IPPROTO_QUIC,
-which are linux specific values for the socket() syscall.
+> If a new revision of the protocol specs is released we can always update our
+> implementation.
 
-  socket(AF_INET, SOCK_STREAM, IPPROTO_SMBDIRECT);
-  socket(AF_INET6, SOCK_STREAM, IPPROTO_SMBDIRECT);
+This, especially because the supervision frames have an explicit version
+number field (something we don't check at the moment, but probably
+should in the future).
 
-This will allow the existing smbdirect code used by
-cifs.ko and ksmbd.ko to be moved behind the socket layer [1],
-so that there's less special handling. Only sock_sendmsg()
-sock_recvmsg() are used, so that the main stream handling
-is done all the same for tcp, smbdirect and later also quic.
+> Anyway, since Felix reviewed the initial patch let's wait for his review.
 
-The special RDMA read/write handling will be via direct
-function calls as they are currently done for the in kernel
-consumers.
+I'll add more notes in another reply, directly to the patch.
 
-As a start __sock_create(kern=0)/sk->sk_kern_sock == 0 will
-still cause a -EPROTONOSUPPORT. So only in kernel consumers
-will be supported for now.
+> > However, if the preference for the HSR subsystem is strict adherence to
+> > only currently defined TLVs over forward compatibility, I completely
+> > understand.
+> >
+> > Furthermore, I am testing this using a purely Linux environment by
+> > using a virtual HSR environment on Arch Linux. I set up two network
+> > namespaces connected via veth pairs and instantiated HSR interfaces.
+> >
+> > The nodes successfully synchronized and maintained the connection. I
+> > confirmed this by observing the expected duplicate packets (DUP!)
+> > during ping tests between namespaces and by verifying that supervision
+> > frames were correctly parsed, allowing the nodes to populate their
+> > remote node tables.
 
-For now the core smbdirect code still supports both
-modes, direct calls in indirect via the socket layer.
-The core code uses if (sc->sk.sk_family) as indication
-for the new socket mode. Once cifs.ko and ksmbd.ko
-are converted we can remove the old mode slowly,
-but I'll deferr that to a future patchset.
+Side note: hsr exposes the node table through debugfs, that's maybe a
+better way to test/verify such things.
 
-There's still a way to go in order to make this
-as generic as tcp and quic e.g. adding MSG_SPLICE_PAGES support or
-splice_read/read_sock/read_skb.
-
-But it's a good start, which will make changes much easier.
-
-This patchset is based on top of the smbdirect.ko patches
-in ksmbd-for-next and it's also based on netdev-next
-because it needs this commit from there:
-8341c989ac77d712c7d6e2bce29e8a4bcb2eeae4
-"net: remove addr_len argument of recvmsg() handlers"
-
-Patches 1-4 are some preparation fixes for the
-existing smbdirect.ko patchset. We may
-squash them into the existing patches before
-sending them to Linus. But for now I kept
-them separately. I also don't cc the network and rdma
-people on these...
-
-Patch 5 defines IPPROTO_SMBDIRECT and SOL_SMBDIRECT
-constants (and also reserve the number 288 for SOL_QUIC
-as applications are already using that and we don't
-want to conflict)
-
-Patch 6 adds basic IPPROTO_SMBDIRECT layering
-on top of the existing smbdirect code.
-This is just enough in order to let cifs.ko
-and ksmbd.ko use it in the following commits,
-so userspace still sees -EPROTONOSUPPORT.
-
-Patch 7 converts cifs.ko to use IPPROTO_SMBDIRECT
-as much as currently possible.
-Using sock_sendmsg is not yet possible, because of the
-tcp_sock_set_cork usage, but that will change in future.
-
-Patch 8 converts ksmbd.ko to use IPPROTO_SMBDIRECT.
-
-Because of the need for netdev-next commit
-8341c989ac77d712c7d6e2bce29e8a4bcb2eeae4
-"net: remove addr_len argument of recvmsg() handlers"
-it's a bit tricky to prepare something that would not
-cause problems in linux-next.
-
-We could merge in netdev-next completely,
-but I saw commit 00f03539e3d97af925abf42992d8c46167d54243
-in next-20260406, indicates some resolved conflicts
-with (at least) the rdma tree, which comes
-just before netdev-next, while ksmbd-for-next is merged
-before all of them. So merging netdev-next into
-ksmbd-for-next changes the order of netdev-next vs. rdma.
-
-Or we add a new branch smbdirect-for-next that's
-merged into linux-next after netdev-next.
-
-Or a bit hacky but likely easier, ksmbd-for-next
-just cherry-picks 8341c989ac77d712c7d6e2bce29e8a4bcb2eeae4
-"net: remove addr_len argument of recvmsg() handlers"
-and that cherry picked commit is reverted as
-last commit in ksmbd-for-next, or only in linux-next
-right before netdev-next is merged.
-
-For now I have the patches in a branch with a
-cherry picked version of the needed commit only, see
-for-7.1/ipproto-smbdirect-20260407-v1 at commit:
-e1972e6f1fda9842c5724b7daf4a2aa7779901a5
-git fetch https://git.samba.org/metze/linux/wip.git for-7.1/ipproto-smbdirect-20260407-v1
-https://git.samba.org/?p=metze/linux/wip.git;a=shortlog;h=refs/heads/for-7.1/ipproto-smbdirect-20260407-v1
-
-It would be great to get this somehow into linux-next soon :-)
-
-Stefan Metzmacher (8):
-  smb: smbdirect: change
-    smbdirect_socket_parameters.{initiator_depth,responder_resources} to
-    __u16
-  smb: smbdirect: fix copyright header of smbdirect.h
-  smb: smbdirect: fix the logic in smbdirect_socket_destroy_sync()
-    without an error
-  smb: smbdirect: let smbdirect_connection_deregister_mr_io unlock while
-    waiting
-  net: define IPPROTO_SMBDIRECT and SOL_SMBDIRECT constants
-  smb: smbdirect: add in kernel only support for IPPROTO_SMBDIRECT
-  smb: client: make use of IPPROTO_SMBDIRECT sockets
-  smb: server: make use of IPPROTO_SMBDIRECT sockets
-
- fs/smb/client/cifs_debug.c                    |    2 +-
- fs/smb/client/cifsfs.c                        |    2 +-
- fs/smb/client/cifsglob.h                      |    7 +-
- fs/smb/client/connect.c                       |  123 +-
- fs/smb/client/file.c                          |    8 +-
- fs/smb/client/sess.c                          |    4 +-
- fs/smb/client/smb2ops.c                       |    8 +-
- fs/smb/client/smb2pdu.c                       |   10 +-
- fs/smb/client/smbdirect.c                     |  275 +--
- fs/smb/client/smbdirect.h                     |   27 +-
- fs/smb/client/transport.c                     |    2 +-
- fs/smb/common/smbdirect/Makefile              |    1 +
- fs/smb/common/smbdirect/smbdirect.h           |   69 +-
- fs/smb/common/smbdirect/smbdirect_accept.c    |   14 +-
- .../common/smbdirect/smbdirect_connection.c   |   58 +
- fs/smb/common/smbdirect/smbdirect_devices.c   |    2 +-
- fs/smb/common/smbdirect/smbdirect_internal.h  |   59 +-
- fs/smb/common/smbdirect/smbdirect_listen.c    |   49 +-
- fs/smb/common/smbdirect/smbdirect_main.c      |   45 +
- fs/smb/common/smbdirect/smbdirect_mr.c        |   18 +
- fs/smb/common/smbdirect/smbdirect_proto.c     | 1549 +++++++++++++++++
- fs/smb/common/smbdirect/smbdirect_public.h    |    3 +
- fs/smb/common/smbdirect/smbdirect_rw.c        |   29 +-
- fs/smb/common/smbdirect/smbdirect_socket.c    |  180 +-
- fs/smb/common/smbdirect/smbdirect_socket.h    |   26 +-
- fs/smb/server/transport_rdma.c                |  119 +-
- include/linux/socket.h                        |    2 +
- include/uapi/linux/in.h                       |    2 +
- 28 files changed, 2320 insertions(+), 373 deletions(-)
- create mode 100644 fs/smb/common/smbdirect/smbdirect_proto.c
-
--- 
-2.43.0
+Thanks,
+   Felix
 
