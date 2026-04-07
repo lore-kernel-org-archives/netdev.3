@@ -1,144 +1,111 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC26F27A92D
-	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 14:32:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775572326; cv=none; b=diHGZWFVOtJs72c+R05onTzc3s5MU1dbQHl39v+2HZjA8loLll2wOJBZGMhQ90pYoduxMj5aKlbvJiyKHKnQez2yhBqXRSsALqUwvbfZGOLUrUh4FDOdBdD4JNzb+bKnpH5V5+gZMvif43j6ox+7XZAtGqTxi2UKUa5s5I64cYQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775572326; c=relaxed/simple;
-	bh=L/JCFvTPVv0HlOE0c8AmntduyQpe67fTxZL7BZ7I2Dw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=gyQNKsMUlVtdpgLrbbmgca3YzgotGqXebF8RDxjvGlG4PvYrNpmADggFJ7wrl5Nt+2YVADd3OnJOj4oZosqAczMZ2rjlificoKHFzCOD1DusvINnFfDXrXhQXcVHL0Fpwy1WhUIgHoIgxks+ijS++qwNAwztMZQaMONARq6+u/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RY9p1rGe; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=QdMsowRO; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F6430BB97
+	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 14:47:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775573240; cv=pass; b=rSFIqXaaImlwmwq0FOSUwWMtVDdxsIkbVqQjWDb5RnJPxyMLVUhwWfLaRGqi7QlZwur415Mp3eX9+mp01dMyNXdgbXlefxCW7bV/6Bo6mRwSXxTQ6WpaEByqGA5J870JSAcWQqssSTqeuSTAypz+X3Cxvoc7s9BVQflgcMxFW/Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775573240; c=relaxed/simple;
+	bh=OeEj/HXgik+5b8Gkgy3jnJFzvK2dtmMqmb+r6b1XYqI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AMf7hS18WnyYYVczAdOPh9yphgjQJQTFbwp3kwTedBI2ntfDHRzi840h8YnevQhR8WoBmPo6LPmrJuE4RHvFeymjc1nK9c5bl8rtQRsIoH/uaJGVjmSQGDndSIhAVrFxTPheX+XzyRKlrdt2j7InWR57Rgms5XO9hhjoUI2YQ/8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=n8sRoLdb; arc=pass smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RY9p1rGe";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="QdMsowRO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775572324;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=wN4PMrlLhWPP7lFFAEz7bnVJ7qzQh0MFMJBBTUMTFgM=;
-	b=RY9p1rGeo6R4Nng20Bgj5IEwILBDcUlz2h27QNmJbIYv94QVH1qfs7qXvVKzbB1KbyKJ9V
-	eL+RSJiL95Zqmoz8bfNn+c1HtRmhtxdap8o6JIlPFIwGjgbXVSvdxERpnbZwxH4eDP2lCN
-	rmVtsx4gEUqBp64dzb024fh0pecF7pw=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-595-Jx7nW7eMP7SlXVpMdyRtZw-1; Tue, 07 Apr 2026 10:32:02 -0400
-X-MC-Unique: Jx7nW7eMP7SlXVpMdyRtZw-1
-X-Mimecast-MFC-AGG-ID: Jx7nW7eMP7SlXVpMdyRtZw_1775572321
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4839fc4cef6so61720015e9.0
-        for <netdev@vger.kernel.org>; Tue, 07 Apr 2026 07:32:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="n8sRoLdb"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-43d01d6b50cso4859985f8f.1
+        for <netdev@vger.kernel.org>; Tue, 07 Apr 2026 07:47:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775573235; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jLJ50XKXvREBqeJ1y8zI19qRZB4epGZTiFaTjZsAq2+/ocj8sh1tTMK1hJAWQYOeUs
+         AGhBRg76/wEDMJSKbcB+Ao+IUnbnWxfFYlXnskE5gm+XPkjojS9tWBitKjZMSmV9/Iuj
+         w+muTDJJtnLxurFKpN1pcIghws2cOnokZu4xqRONv1IlOQ1P5sw5n+gW48Qx5A+ivPBS
+         dJ78KiTx0PtzF7vOaFoHDA7IRbT7M7FvByg63EbZj4Da5VhLCiGMD+YP5mK21tLjefaG
+         oMBMwUJqnhxJEH24/eRuWD4mIQL5M5T6eJVfElYPcjF9Udf3cymckOSeEM8z+WmNtatc
+         5aZQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=OeEj/HXgik+5b8Gkgy3jnJFzvK2dtmMqmb+r6b1XYqI=;
+        fh=3HYU6NHT3q1jw7xb+wfzV1AJPFT6MUsdgJT0DeaRYb4=;
+        b=TEqBpCs9WXKyK11FOJUDcaRvOV9xuC5Gdd3wkpExSrR3F/C3Pdqlp7gQcf8XHm1jel
+         xePwoHNyc7GkkoUX23LoCsMs1fUa2cw/bRCdsJPHupB2M2/KL/iC/viRHvHK93WLywtk
+         xmCebJp9RqmVR9rdDjxXMa0nEa4Z5gjefB/HW04+arHeUm+Wy127TfL+KYWJEq4CK0A5
+         vZK4JxV4nZKA16W0NLV3iUczrUMfkVb2TrGt8UtDR/HDzjnNN8tAqRzB7w3hccpK/LCe
+         ZfvinRXG+JoWyLrfn9DCFjcZMDzsjbWHjZJpfQLqlhg3b8g7YgobY86quPIuLTnKMNsp
+         nBwg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1775572321; x=1776177121; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wN4PMrlLhWPP7lFFAEz7bnVJ7qzQh0MFMJBBTUMTFgM=;
-        b=QdMsowROYNoAk8Ar2eYrxwaau5weuVKtu7xQbxYxyhozlWgVxysgQi8NCegyd4NSl2
-         3RQUt6TDUEf7me7f9qdiAVwF1UptmYG5fvxUwODi5xdF4P/kf1VLScKzpvRDrKCK/S6g
-         2ZgFC1vqugfEdc5tLpQGwBY/1sokQkXxCXCpRGJzMi7xmq8Ag6rjmhCkzqwGT/1luFzd
-         E+VveuDqF1g8iF9bLrB0qIoVlcij7SS5QvX3wGKEljv/YjZXzX8TMLFqu7YCO07U+DhG
-         eTddPSeoicFgqRBSl67kwSqIGc/UifdAj1xXHMA+NIvDFPy8oETCgq15dR2MgM2omeyh
-         LpSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775572321; x=1776177121;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1775573235; x=1776178035; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wN4PMrlLhWPP7lFFAEz7bnVJ7qzQh0MFMJBBTUMTFgM=;
-        b=TXYNxJ3iAeNaNnvdL5coqbBM+zWidh4z8xVoJObX2sH1OF1FrRZD9U2bzsQBDbBglM
-         tibhUwDRiOFizkFaSsYtbqsa4bDVQljivBnogvapW+XCfl9+uNSat6e4wLUDZBjg0+kj
-         Ck6d6w+va9LAhLnyMyLFGeMSY9f0KPOeWWMO1tseHTA+YVR7uYWLYmNOxi7rmiZiG21P
-         dp5FQOjqTzWinIIZmE8db7QCVI0H2OrnqYPA/rbheiaUn2AkIyN05AKAwYIsqwpTAvtN
-         ZCHlyWpu42QWzpgl7Gk9i28LB/TyPlMvNsKr3H0iPiUhk+8amgHbC8IXhFVXKffi6bbG
-         mlEg==
-X-Forwarded-Encrypted: i=1; AJvYcCVggzlVe3Yj2rgvhL+7QhkCvSUUGXsK7TlkMbTRk7K/o8vAlkGmEBlRrzNu0qIEETD7OnP1Q7o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOo2PDGoti+a3CgriHTvUiPLvIYQG1yI9nRdKzm3kCqr8jDiJb
-	baWQ4Djk98+WSSVt4azU+2xHS3h2M2GDeeKQgionBe0j9BI0bPEb4rRsVq1Mf0q4IW9PXE/hnQJ
-	yL5uDTFtoQPAUerdLgMuNTgrmGc175rLAICzlFGvpnzvW9tvG2Pkbp5a7qA==
-X-Gm-Gg: AeBDietQxxShn7j4rEuArKu/jIO1cRqNF1ZPzvJ2rfQnGo68pnHPuTyxogEDQslTj4e
-	eixKCODRYmd2/pu7lJEO4SinjTKHZzw2lNaCFjvhX8sX3ZVUow04ZRVJyfv6MjqfQ0f7GSMJHW2
-	Qec2dKcDK1VYKetc5BOB0GQubGQENbo6Os+rr11Db6HbeHJbEHwqif/pbq1smFxkUULyBi1N3eY
-	dVB7ZRrqkLv0bSG/7ZCcje23LSmE+TgJRNEgGj/oC4KoLY7pVnjXj+j7TvXO86lVHk9mm/7725f
-	aubDKU90YXzgIYQSvTLhsHBWgwV75pPuJnPfGpq1Et03yMGhxi9Yz5bdGnm63p+f0hAEQ7ksqF6
-	Bl49PAuuxozyYZe0hYvaWTMJex6zxXq8WY1w/tVvDa1xvHiIa3ehX7m/YLTCi
-X-Received: by 2002:a05:600c:45cf:b0:477:9890:9ab8 with SMTP id 5b1f17b1804b1-4889945f8c3mr203346735e9.3.1775572321427;
-        Tue, 07 Apr 2026 07:32:01 -0700 (PDT)
-X-Received: by 2002:a05:600c:45cf:b0:477:9890:9ab8 with SMTP id 5b1f17b1804b1-4889945f8c3mr203346525e9.3.1775572320964;
-        Tue, 07 Apr 2026 07:32:00 -0700 (PDT)
-Received: from lleonard-thinkpadx1carbongen13.rmtit.csb ([176.206.19.176])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48897fdd2cesm146677635e9.4.2026.04.07.07.31.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Apr 2026 07:32:00 -0700 (PDT)
-From: Luigi Leonardi <leonardi@redhat.com>
-Date: Tue, 07 Apr 2026 16:31:56 +0200
-Subject: [PATCH net-next] vsock/virtio: remove unnecessary call to
- `virtio_transport_get_ops`
+        bh=OeEj/HXgik+5b8Gkgy3jnJFzvK2dtmMqmb+r6b1XYqI=;
+        b=n8sRoLdbGYa2E6FSeh4l88AhfVwsCr+GqAFcl17NRsyxrYGWHg7oGJGl4JonMKEYAM
+         Q1GCLsTeYCVZ/9tiRbp+OuJHEq52aDGGZivtBQCXFGm2+ZRslM4ods4mB0cwZZadrzCw
+         kSLg0QFY7e7gQGuwJ5FhXQIq7aUFy8nTlx/SDs7/sdznNmB+2hFknDfMq3FWEUrla71C
+         55FBPCryNoaQ47QH+LgW0cQFmC7D5e8KiZ6APEgHxg9S8+nNb4auHG0wKIRJ7MzWvTVI
+         K7XHMaVJv0JuDXXS/7RseT9Z3spfEU+16cx1m30DWtp3KjGNftSvrbygn9u1Oz+TL1kU
+         HfMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775573235; x=1776178035;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=OeEj/HXgik+5b8Gkgy3jnJFzvK2dtmMqmb+r6b1XYqI=;
+        b=ZDJXELtlBq7Fe5GN3A6G9O7twCCbuA8p0o4wUfZbXUrnuOnUmmUT2xskkMgsz1YEO0
+         AxCTLvuOcTRMdGD3A7TP1SrS/KzfoO+8VmkGuY4ppX+0CgZ/pitvfOvR1tq+JH1h36xW
+         cRK/3zZlxH7YmQHhEyFVEu2lYPhZNbRVDDdmIhF+2ezEyNgR8fnmoQYTg8DWCQX5k6SJ
+         tQZ2jlqJyqGZ4rRT0xNOM+2cvc950ejWih1sULy9nnEdIQY1DNIOy9eZ0K18tFIjPafK
+         +JjodB7OUGwZSTJRofmAkuGVgMYbFnGqMicK4hTWsayLzlLGGWTvtqteQ6h3rGdCc3RK
+         Mokg==
+X-Forwarded-Encrypted: i=1; AJvYcCUrvnqt2yx66WgZ2O8/ANcdheqyuWi1voie11ruu0n5AGFNVugBFLehT0CvcA2VnL8c4UFLmOI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YynSCYpKn+CH4BerB5egyPbny6PI5iMdMRaD+625HLHQ4Oz3SEA
+	3k75Vn1di0Ru6aBsIIATOPdh1br1uWZtmsomJOalIIQMLrqwXDvYVSZwWg1ucl8G/wCjFlfqVxQ
+	ECNh9ltN5I2jn9Azfml3+4WFeWK4yYQU=
+X-Gm-Gg: AeBDieveYejFjk795U3xgXBiDJ3IMu4OCt2EUn4OWdu0NU7pu0KlowuBPMxFDwLK5F6
+	koqIKbv8QOf7BHMZS1KMXT1Fsx9dBnbt8LU/J6tzvKthJQhTjX1u1mEfhpXHqzILELLPMg2sJYx
+	YOtSThQCB+K9KQrsAKZbnlAJdcDSUstcs5k5vdqidmp0EzXzydCx+lYqKkex271DIaTlxEM3f2M
+	SYDq4rMR0NaeNUUuLI0iD0yUiZdH8/FqYSyEUUnTZxOKOctn5H4qMrv+hnXbSqJ40TYVlYg8WGf
+	SUqp3lPqmD9iOmrwR2f7/dBQZE+YBusVXTSbT5J4rvjF975LwQp/yav3Ni8ZRZk/UR14YWhpK4i
+	ZG5RcxJMbQ1Q6QLDN+X7qQu8Aig==
+X-Received: by 2002:a05:6000:e52:b0:43d:303f:f358 with SMTP id
+ ffacd0b85a97d-43d303ff3c9mr14598152f8f.2.1775573235071; Tue, 07 Apr 2026
+ 07:47:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260407-remove_parameter-v1-1-e9729360a2be@redhat.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MSwqAMAxF0a1IxhbiB0W3IiJFXzUDq6RFBHHvF
- odncO9DASoI1GcPKS4JcviEIs9o3qxfYWRJppLLhmtujWI/LkynVbsjQo1rCluh5tl1TCk7FU7
- ufzmQRzQed6TxfT/F+e0xbAAAAA==
-X-Change-ID: 20260407-remove_parameter-f61a3e40cf90
-To: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
- Stefan Hajnoczi <stefanha@redhat.com>, 
- Stefano Garzarella <sgarzare@redhat.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- Arseniy Krasnov <avkrasnov@salutedevices.com>
-Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev, 
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Luigi Leonardi <leonardi@redhat.com>
-X-Mailer: b4 0.14.3
+References: <20260407060203.3391-1-adithalex29@gmail.com>
+In-Reply-To: <20260407060203.3391-1-adithalex29@gmail.com>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Tue, 7 Apr 2026 07:47:03 -0700
+X-Gm-Features: AQROBzDfw806rbk62zqGXz60VYbL74dh0suuu09-A-cSlhpc4P2RimlV4vGLOSY
+Message-ID: <CAADnVQJ5g8VKSiSLaN8KBSi3jZc0U4C-UEZeXrPVxF+ZMz6jZQ@mail.gmail.com>
+Subject: Re: [RFC bpf] Ingress RX queue provenance across cpumap redirect
+To: Adith-Joshua <adithalex29@gmail.com>
+Cc: bpf <bpf@vger.kernel.org>, Network Development <netdev@vger.kernel.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-`virtio_transport_send_pkt_info` gets all the transport information
-from the parameter `t_ops`. There is no need to call
-`virtio_transport_get_ops()`.
+On Mon, Apr 6, 2026 at 11:02=E2=80=AFPM Adith-Joshua <adithalex29@gmail.com=
+> wrote:
+>
+>
+> ## Follow-up
+>
+> If this aligns with intended design, I would be happy to explore a concre=
+te
+> proposal or implementation.
 
-Remove it.
-
-Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
-Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
----
-I marked this as net-next material, but honsetly I'm not sure if I
-should have targeted net. It's not a bug after all, it's just a cleanup.
----
- net/vmw_vsock/virtio_transport_common.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 8a9fb23c6e85..a152a9e208d0 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -60,8 +60,6 @@ static bool virtio_transport_can_zcopy(const struct virtio_transport *t_ops,
- 		return false;
- 
- 	/* Check that transport can send data in zerocopy mode. */
--	t_ops = virtio_transport_get_ops(info->vsk);
--
- 	if (t_ops->can_msgzerocopy) {
- 		int pages_to_send = iov_iter_npages(iov_iter, MAX_SKB_FRAGS);
- 
-
----
-base-commit: bfe62a454542cfad3379f6ef5680b125f41e20f4
-change-id: 20260407-remove_parameter-f61a3e40cf90
-
-Best regards,
--- 
-Luigi Leonardi <leonardi@redhat.com>
-
+No "follow up" please.
+STOP sending AI slop to the mailing list.
