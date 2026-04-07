@@ -1,62 +1,62 @@
-Received: from mail-oo1-f68.google.com (mail-oo1-f68.google.com [209.85.161.68])
+Received: from mail-oo1-f65.google.com (mail-oo1-f65.google.com [209.85.161.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7418936495D
-	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 15:31:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BCED3BD62C
+	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 15:31:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775575884; cv=none; b=oIXw5pwdzixWyv6u4vRSRJrDl98xd4KeM6PCADIBCkIfct8I186ruy+sQc1ncTHlWz31HajZbItqJ5gX8ThuOdI1B+vhv3PRi/cYg5B0weX8Xwhm2qHOYmhl8B14Q5hpOGALEPbNnECX7mCai1O8t4icaOvHmHWoSLfGJlTP/As=
+	t=1775575882; cv=none; b=FiHvuSqukl8fz2bDUSzNIAqWxPiabrD6KbRwdxFa65Ydeze75ArL5PcMTVGnmWMW6j5r1MmvSsuz51UviaAICPE7Q8rkMnQkaJ01RI42M/KFcGX7rJnC9i+UpUWRMsjIi70yGatxNB2dAij1mq/wXDc8QCSCZkz4mX8UjJiTWnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775575884; c=relaxed/simple;
-	bh=XjzNL86cTmetDlCo5ZgWO1I5qunlPJKgl5v0Gkj9irA=;
+	s=arc-20240116; t=1775575882; c=relaxed/simple;
+	bh=9asW6lWDXYVO+yKD6Y5kSOTC2TdZhccfYhuzT9k0VI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aDtOQ0FXb7lSuriSMsJWDYaGzFavT7BXZGHQLSsU0h8grMXW/CuefWrBodSR1mIM1iWMsP+C6sHgjf/3CoGeiS8rEjf1NYy4icKZUIBRtN4ZQk/gu8SdtRlXk8c1bVAFvOGgjyr61pyBOgye9fysaXjxBnwQh78OOfk4eWp41+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ew4uQzox; arc=none smtp.client-ip=209.85.161.68
+	 MIME-Version; b=P4oA+hrJm7+WfqUZYH2UxKhVJIw4/Zw7ApDh4hZ4NtLByhMxrnuMypmAAXbwBOiuzubzuppZa3+ue0tf+TQdgYxjbnzNwWcnjQnnzq63CaXutWNRogZeiLw+fXP1/ksGRKmm6b2+D99rcjA01ftMHgfbunqvODVQ5gj/hUYqRBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OGwvvNYB; arc=none smtp.client-ip=209.85.161.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ew4uQzox"
-Received: by mail-oo1-f68.google.com with SMTP id 006d021491bc7-679b072ed3aso2875009eaf.1
-        for <netdev@vger.kernel.org>; Tue, 07 Apr 2026 08:31:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OGwvvNYB"
+Received: by mail-oo1-f65.google.com with SMTP id 006d021491bc7-679f6ee3fb0so1878998eaf.2
+        for <netdev@vger.kernel.org>; Tue, 07 Apr 2026 08:31:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775575870; x=1776180670; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1775575868; x=1776180668; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fyhu3EgcZCuMP8qAEMeQlY7RO5W4woLQHAawT8gazWQ=;
-        b=ew4uQzoxoTIMsldMQvoLJZy58xrLKTf++pO1NT2OX8uRstMvfABZL20XAwPCuPT9zV
-         ZkSynky48F0r++pyZaqmuOipQHja/rv4fp/BIgJxLBugXQmSwvMgTbk6pyPu87aiBf2F
-         2CReYuyUZegTZCNRWKEzbXycc0OlVZjwB1n3ZL2gnL1Y2DSad6jM4IfNnl3wYJFsjucB
-         JoQm5buxZZFKuD+5Q6cvF/aiulBwpPjpMPyVu6OJyCqC/gDKraSkR2IzNJTp4Zuf3HxA
-         +P3+nbS52lze1Eq+yqlCCFoA84fN+hJ8foxHpIuA08qO98ij05RcTaq2cOeIY6gOXtGZ
-         p0/g==
+        bh=Bw+C8Lqtm6x6bdazH6cf5vOWDt3FTihCUmPzG3owqJ4=;
+        b=OGwvvNYBE05fPHw52yNXzYHZG11tgIG66ZeEnitAjo3kITuZZqkOR1BIv+uCi+X2lv
+         E3SLJUERG0ZfDCwOiVZBONmaK5hVb2i/X/9m7HXBcVRH26fS6Ag0r2MZjeV3YjucwhLs
+         pLnne6jrs87NzVX0AuW+JBNWjpGP9QPIsGHZ/1nSs8z79b5t5zMzF1k2Ie+oM1eoxunt
+         rtuJo9B93ifqlfe+uRFLrpB01/FsywEmdQFUG3vDywcAnmaD8PzYaIB9vgtCsEgTSZE9
+         L5DUm1tejc9S6Ywe4QaRTQBu53WMHCI70f9/aFRTeE6Di203eBiAztImWYPe1H3Bdpji
+         OwWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775575870; x=1776180670;
+        d=1e100.net; s=20251104; t=1775575868; x=1776180668;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=fyhu3EgcZCuMP8qAEMeQlY7RO5W4woLQHAawT8gazWQ=;
-        b=rSNVSMFcx3jTuHaVxQWMHH93NZhS1pxD/1E8bK1efGJjf62r2JJMv1mnYvz8lw/zJ5
-         uHc/WMfBRbq61ojC5EL/FIFzmFBrFAmnPQf4Hav+rcHIlwyBkkCnPdSkkjWL3imkaZmA
-         0nNO+BxvK5k5QdrNGxTevID/X4tB25kjH/zb6LXyjB6TcxGmRfuGLuWjIdcATSNHUeiX
-         avW7WHwI2XXVBuwlBl8THerZrT41bAu751G0cKGLmfuLu/GtAgFdTXdDLoMMSrpSSdgE
-         Dz4Gk+8RUkMND8mknj2Ffk3GG7fdyF22xErBrGMzydQsNBXOtFYcgl3fnSyJk/asetzz
-         NNfg==
-X-Gm-Message-State: AOJu0YxBK/Z5x27xaNrIEPmU4NjLw4r1c4drVly1ldHoo9spZKC34TwZ
-	VxvPAjs6YKqazHCfHb3CJyATn2wVGmHrKOjN+VpWma49AbYotw2K7RRBvIGUppos/Qg=
-X-Gm-Gg: AeBDieuYe7N51ABaNPSEAYK2w9wQdJqr3mZj/EjDUHJEyQpPsMwTzLjnMJTok3TJVMO
-	Wy8dw/BZ3d0EdgPhDw899+usgo79lZVkWNRS/2II61jBRQzEMfgvWs9X6bmR71+VPpr4lvReIBM
-	833SgrsGs62lMpGHEDaDfkXBGH8SbxE6gOAF1aSlDonf0iL+KbBeyAQW5oAM9X3SaucEODWZzZU
-	itco5vwex+Dq/bNQHmZBaJnMvtJsaT/eepEHbCnmUpFgrfhNK9PWgCoRoZdbWP52dkne5APMEnr
-	lq/m/CR83cPJ3uhH2m8SMtXqmpp649iWDmzM5ZpdkvMbmShNxhnVdmGUs4jX8c/fLXtfyq0xmQs
-	usvR77/A54/SKLTp/bQExEyDaC8iHcu2+PnV17GNJlEqkR6CZlOBqdRArcQ2ILy6ybCJLvKkkcq
-	H2zTnwP1OjxtD4I908jQ==
-X-Received: by 2002:a05:6820:4c11:b0:67e:3f0d:4235 with SMTP id 006d021491bc7-6821d240302mr12186771eaf.11.1775575869710;
-        Tue, 07 Apr 2026 08:31:09 -0700 (PDT)
-Received: from localhost ([2a03:2880:12ff:71::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-682ba3cbe72sm7383504eaf.11.2026.04.07.08.31.09
+        bh=Bw+C8Lqtm6x6bdazH6cf5vOWDt3FTihCUmPzG3owqJ4=;
+        b=H+aUqQATysbMIwWp8bUYyMFvwXVonYmdkDP3kFp7iLenQ2cqnn+e/U8br6nBS1f2MS
+         3mYaurxUxjkUig5BW7PpOerItnOiLWnB/Uz4jsNP/CawBCgZqM75HwB9E1yJlfnyjRM9
+         38GN0xSymIjKbBZCx6Kd3Ff5vPm/0NyzAsXGYWguweWv6MYAw8EVJ3SIaOKnaZsDxBBF
+         qwKkNxmoPRGVuypSR4/PldNxV9xnHP9KY+0ueQGQxUBIwOxAFoOJqhEpqF7ku8Mmsn+2
+         tjgSV89GdHYrFhl5xmBdctg6ZLv01W8Hvhg2Qpm8iJM0gZUw2iMIagPTGwDxu2yysS3d
+         bvVQ==
+X-Gm-Message-State: AOJu0Yxcs/cof2wbK4cYTgW6pH+1GjAtQ3bdF1maZxe6/hJRFY/i5pJy
+	d4xR8yMrdzmjQPk8QuyN72Mpktm4/riRpizBZFelkFCVO3KwxgPDuSGJCJevJam9Ia0=
+X-Gm-Gg: AeBDietpsxd3A/rAQy+bJbhIU0+CiehYcuanO+1G0NdQqszEUdXYERA0vytATFDAjW1
+	Zoj8vsh8IUIJyrlbbUVnUA21M804TQ+AsZxciRl1yKdit6Dlt//UeHERekOKRiPoC2FvrYjfXlr
+	5cFw83cl/+RjIfk6JqR9PYsdj6ob6qFvT5ItPapqNjm52h0t4umPBf2dxWWSiG5s7wmTDSi5mL3
+	DhLQ+gfyXDdHUglmJh/SL4eOZxY4Kx6//vMVwJsEM3NaoXyJ/EuQGJT//odIcFL28UMrwXkPwRz
+	vY3eVS8kp7FVQ8xfgclD+bYI0nxOxAoYUFnfcN8tHQsIUulxIlW+ZoROiegXEYjeCrjt3XZqjKT
+	I79+M59yAhAxbLSEKFEpVA2UnQ83p/FVLWxDAAX5Ara2rt1DXMhPh4U8U4wIQ4fgIRhxRC2AuBH
+	FCOVfXyn/J1bWbptrLXw==
+X-Received: by 2002:a05:6820:1b1a:b0:685:7d77:27 with SMTP id 006d021491bc7-6857d770318mr5013104eaf.33.1775575867496;
+        Tue, 07 Apr 2026 08:31:07 -0700 (PDT)
+Received: from localhost ([2a03:2880:12ff:55::])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-68791a61c56sm1584639eaf.2.2026.04.07.08.31.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Apr 2026 08:31:09 -0700 (PDT)
+        Tue, 07 Apr 2026 08:31:06 -0700 (PDT)
 From: Stanislav Fomichev <sdf.kernel@gmail.com>
 X-Google-Original-From: Stanislav Fomichev <sdf@fomichev.me>
 To: netdev@vger.kernel.org
@@ -64,13 +64,10 @@ Cc: davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH net-next v6 06/14] mlx5: convert to ndo_set_rx_mode_async
-Date: Tue,  7 Apr 2026 08:30:53 -0700
-Message-ID: <20260407153101.3694714-7-sdf@fomichev.me>
+Subject: [PATCH net-next v6 04/14] net: move promiscuity handling into netdev_rx_mode_work
+Date: Tue,  7 Apr 2026 08:30:51 -0700
+Message-ID: <20260407153101.3694714-5-sdf@fomichev.me>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260407153101.3694714-1-sdf@fomichev.me>
 References: <20260407153101.3694714-1-sdf@fomichev.me>
@@ -82,169 +79,213 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Convert mlx5 from ndo_set_rx_mode to ndo_set_rx_mode_async. The
-driver's mlx5e_set_rx_mode now receives uc/mc snapshots and calls
-mlx5e_fs_set_rx_mode_work directly instead of queueing work.
+Move unicast promiscuity tracking into netdev_rx_mode_work so it runs
+under netdev_ops_lock instead of under the addr_lock spinlock. This
+is required because __dev_set_promiscuity calls dev_change_rx_flags
+and __dev_notify_flags, both of which may need to sleep.
 
-mlx5e_sync_netdev_addr and mlx5e_handle_netdev_addr now take
-explicit uc/mc list parameters and iterate with
-netdev_hw_addr_list_for_each instead of netdev_for_each_{uc,mc}_addr.
+Change ASSERT_RTNL() to netdev_ops_assert_locked() in
+__dev_set_promiscuity, netif_set_allmulti and __dev_change_flags
+since these are now called from the work queue under the ops lock.
 
-Fallback to netdev's uc/mc in a few places and grab addr lock.
-
-Cc: Saeed Mahameed <saeedm@nvidia.com>
-Cc: Tariq Toukan <tariqt@nvidia.com>
-Cc: Cosmin Ratiu <cratiu@nvidia.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
 ---
- .../net/ethernet/mellanox/mlx5/core/en/fs.h   |  5 ++-
- .../net/ethernet/mellanox/mlx5/core/en_fs.c   | 32 ++++++++++++-------
- .../net/ethernet/mellanox/mlx5/core/en_main.c | 13 +++++---
- 3 files changed, 34 insertions(+), 16 deletions(-)
+ Documentation/networking/netdevices.rst |  4 ++
+ net/core/dev.c                          | 16 ++---
+ net/core/dev_addr_lists.c               | 82 ++++++++++++++++++-------
+ 3 files changed, 68 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/fs.h b/drivers/net/ethernet/mellanox/mlx5/core/en/fs.h
-index c3408b3f7010..091b80a67189 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/fs.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/fs.h
-@@ -201,7 +201,10 @@ int mlx5e_add_vlan_trap(struct mlx5e_flow_steering *fs, int  trap_id, int tir_nu
- void mlx5e_remove_vlan_trap(struct mlx5e_flow_steering *fs);
- int mlx5e_add_mac_trap(struct mlx5e_flow_steering *fs, int  trap_id, int tir_num);
- void mlx5e_remove_mac_trap(struct mlx5e_flow_steering *fs);
--void mlx5e_fs_set_rx_mode_work(struct mlx5e_flow_steering *fs, struct net_device *netdev);
-+void mlx5e_fs_set_rx_mode_work(struct mlx5e_flow_steering *fs,
-+			       struct net_device *netdev,
-+			       struct netdev_hw_addr_list *uc,
-+			       struct netdev_hw_addr_list *mc);
- int mlx5e_fs_vlan_rx_add_vid(struct mlx5e_flow_steering *fs,
- 			     struct net_device *netdev,
- 			     __be16 proto, u16 vid);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_fs.c
-index fdfe9d1cfe21..12492c4a5d41 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_fs.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_fs.c
-@@ -609,20 +609,26 @@ static void mlx5e_execute_l2_action(struct mlx5e_flow_steering *fs,
- }
+diff --git a/Documentation/networking/netdevices.rst b/Documentation/networking/netdevices.rst
+index 8a488c21fd7c..390537323457 100644
+--- a/Documentation/networking/netdevices.rst
++++ b/Documentation/networking/netdevices.rst
+@@ -299,6 +299,10 @@ struct net_device synchronization rules
+ 	Notes: Async version of ndo_set_rx_mode which runs in process
+ 	context. Receives snapshots of the unicast and multicast address lists.
  
- static void mlx5e_sync_netdev_addr(struct mlx5e_flow_steering *fs,
--				   struct net_device *netdev)
-+				   struct net_device *netdev,
-+				   struct netdev_hw_addr_list *uc,
-+				   struct netdev_hw_addr_list *mc)
- {
- 	struct netdev_hw_addr *ha;
- 
--	netif_addr_lock_bh(netdev);
-+	if (!uc || !mc) {
-+		netif_addr_lock_bh(netdev);
-+		mlx5e_sync_netdev_addr(fs, netdev, &netdev->uc, &netdev->mc);
-+		netif_addr_unlock_bh(netdev);
-+		return;
-+	}
- 
- 	mlx5e_add_l2_to_hash(fs->l2.netdev_uc, netdev->dev_addr);
--	netdev_for_each_uc_addr(ha, netdev)
++ndo_change_rx_flags:
++	Synchronization: rtnl_lock() semaphore. In addition, netdev instance
++	lock if the driver implements queue management or shaper API.
 +
-+	netdev_hw_addr_list_for_each(ha, uc)
- 		mlx5e_add_l2_to_hash(fs->l2.netdev_uc, ha->addr);
+ ndo_setup_tc:
+ 	``TC_SETUP_BLOCK`` and ``TC_SETUP_FT`` are running under NFT locks
+ 	(i.e. no ``rtnl_lock`` and no device instance lock). The rest of
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 23a832c9facc..d2e72fdf3dfe 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -9586,7 +9586,7 @@ int __dev_set_promiscuity(struct net_device *dev, int inc, bool notify)
+ 	kuid_t uid;
+ 	kgid_t gid;
  
--	netdev_for_each_mc_addr(ha, netdev)
-+	netdev_hw_addr_list_for_each(ha, mc)
- 		mlx5e_add_l2_to_hash(fs->l2.netdev_mc, ha->addr);
--
--	netif_addr_unlock_bh(netdev);
+-	ASSERT_RTNL();
++	netdev_ops_assert_locked(dev);
+ 
+ 	promiscuity = dev->promiscuity + inc;
+ 	if (promiscuity == 0) {
+@@ -9622,16 +9622,8 @@ int __dev_set_promiscuity(struct net_device *dev, int inc, bool notify)
+ 
+ 		dev_change_rx_flags(dev, IFF_PROMISC);
+ 	}
+-	if (notify) {
+-		/* The ops lock is only required to ensure consistent locking
+-		 * for `NETDEV_CHANGE` notifiers. This function is sometimes
+-		 * called without the lock, even for devices that are ops
+-		 * locked, such as in `dev_uc_sync_multiple` when using
+-		 * bonding or teaming.
+-		 */
+-		netdev_ops_assert_locked(dev);
++	if (notify)
+ 		__dev_notify_flags(dev, old_flags, IFF_PROMISC, 0, NULL);
+-	}
+ 	return 0;
  }
  
- static void mlx5e_fill_addr_array(struct mlx5e_flow_steering *fs, int list_type,
-@@ -724,7 +730,9 @@ static void mlx5e_apply_netdev_addr(struct mlx5e_flow_steering *fs)
+@@ -9653,7 +9645,7 @@ int netif_set_allmulti(struct net_device *dev, int inc, bool notify)
+ 	unsigned int old_flags = dev->flags, old_gflags = dev->gflags;
+ 	unsigned int allmulti, flags;
+ 
+-	ASSERT_RTNL();
++	netdev_ops_assert_locked(dev);
+ 
+ 	allmulti = dev->allmulti + inc;
+ 	if (allmulti == 0) {
+@@ -9721,7 +9713,7 @@ int __dev_change_flags(struct net_device *dev, unsigned int flags,
+ 	unsigned int old_flags = dev->flags;
+ 	int ret;
+ 
+-	ASSERT_RTNL();
++	netdev_ops_assert_locked(dev);
+ 
+ 	/*
+ 	 *	Set the flags on our device.
+diff --git a/net/core/dev_addr_lists.c b/net/core/dev_addr_lists.c
+index 88e995db15dd..49346d0cbc8a 100644
+--- a/net/core/dev_addr_lists.c
++++ b/net/core/dev_addr_lists.c
+@@ -1229,10 +1229,34 @@ static void netif_addr_lists_reconcile(struct net_device *dev,
+ 				 &dev->rx_mode_addr_cache);
  }
  
- static void mlx5e_handle_netdev_addr(struct mlx5e_flow_steering *fs,
--				     struct net_device *netdev)
-+				     struct net_device *netdev,
-+				     struct netdev_hw_addr_list *uc,
-+				     struct netdev_hw_addr_list *mc)
++/**
++ * netif_uc_promisc_update() - evaluate whether uc_promisc should be toggled.
++ * @dev: device
++ *
++ * Must be called under netif_addr_lock_bh.
++ * Return: +1 to enter promisc, -1 to leave, 0 for no change.
++ */
++static int netif_uc_promisc_update(struct net_device *dev)
++{
++	if (dev->priv_flags & IFF_UNICAST_FLT)
++		return 0;
++
++	if (!netdev_uc_empty(dev) && !dev->uc_promisc) {
++		dev->uc_promisc = true;
++		return 1;
++	}
++	if (netdev_uc_empty(dev) && dev->uc_promisc) {
++		dev->uc_promisc = false;
++		return -1;
++	}
++	return 0;
++}
++
+ static void netif_rx_mode_run(struct net_device *dev)
  {
- 	struct mlx5e_l2_hash_node *hn;
- 	struct hlist_node *tmp;
-@@ -736,7 +744,7 @@ static void mlx5e_handle_netdev_addr(struct mlx5e_flow_steering *fs,
- 		hn->action = MLX5E_ACTION_DEL;
+ 	struct netdev_hw_addr_list uc_snap, mc_snap, uc_ref, mc_ref;
+ 	const struct net_device_ops *ops = dev->netdev_ops;
++	int promisc_inc;
+ 	int err;
  
- 	if (fs->state_destroy)
--		mlx5e_sync_netdev_addr(fs, netdev);
-+		mlx5e_sync_netdev_addr(fs, netdev, uc, mc);
+ 	might_sleep();
+@@ -1246,22 +1270,39 @@ static void netif_rx_mode_run(struct net_device *dev)
+ 	if (!(dev->flags & IFF_UP) || !netif_device_present(dev))
+ 		return;
  
- 	mlx5e_apply_netdev_addr(fs);
+-	netif_addr_lock_bh(dev);
+-	err = netif_addr_lists_snapshot(dev, &uc_snap, &mc_snap,
+-					&uc_ref, &mc_ref);
+-	if (err) {
+-		netdev_WARN(dev, "failed to sync uc/mc addresses\n");
++	if (ops->ndo_set_rx_mode_async) {
++		netif_addr_lock_bh(dev);
++		err = netif_addr_lists_snapshot(dev, &uc_snap, &mc_snap,
++						&uc_ref, &mc_ref);
++		if (err) {
++			netdev_WARN(dev, "failed to sync uc/mc addresses\n");
++			netif_addr_unlock_bh(dev);
++			return;
++		}
++
++		promisc_inc = netif_uc_promisc_update(dev);
++		netif_addr_unlock_bh(dev);
++	} else {
++		netif_addr_lock_bh(dev);
++		promisc_inc = netif_uc_promisc_update(dev);
+ 		netif_addr_unlock_bh(dev);
+-		return;
+ 	}
+-	netif_addr_unlock_bh(dev);
+ 
+-	ops->ndo_set_rx_mode_async(dev, &uc_snap, &mc_snap);
++	if (promisc_inc)
++		__dev_set_promiscuity(dev, promisc_inc, false);
+ 
+-	netif_addr_lock_bh(dev);
+-	netif_addr_lists_reconcile(dev, &uc_snap, &mc_snap,
+-				   &uc_ref, &mc_ref);
+-	netif_addr_unlock_bh(dev);
++	if (ops->ndo_set_rx_mode_async) {
++		ops->ndo_set_rx_mode_async(dev, &uc_snap, &mc_snap);
++
++		netif_addr_lock_bh(dev);
++		netif_addr_lists_reconcile(dev, &uc_snap, &mc_snap,
++					   &uc_ref, &mc_ref);
++		netif_addr_unlock_bh(dev);
++	} else if (ops->ndo_set_rx_mode) {
++		netif_addr_lock_bh(dev);
++		ops->ndo_set_rx_mode(dev);
++		netif_addr_unlock_bh(dev);
++	}
  }
-@@ -820,13 +828,15 @@ static void mlx5e_destroy_promisc_table(struct mlx5e_flow_steering *fs)
- }
  
- void mlx5e_fs_set_rx_mode_work(struct mlx5e_flow_steering *fs,
--			       struct net_device *netdev)
-+			       struct net_device *netdev,
-+			       struct netdev_hw_addr_list *uc,
-+			       struct netdev_hw_addr_list *mc)
+ static void netdev_rx_mode_work(struct work_struct *work)
+@@ -1312,6 +1353,7 @@ static void netif_rx_mode_queue(struct net_device *dev)
+ void __dev_set_rx_mode(struct net_device *dev)
  {
- 	struct mlx5e_priv *priv = netdev_priv(netdev);
- 	struct mlx5e_l2_table *ea = &fs->l2;
+ 	const struct net_device_ops *ops = dev->netdev_ops;
++	int promisc_inc;
  
- 	if (mlx5e_is_uplink_rep(priv)) {
--		mlx5e_handle_netdev_addr(fs, netdev);
-+		mlx5e_handle_netdev_addr(fs, netdev, uc, mc);
- 		goto update_vport_context;
+ 	/* dev_open will call this function so the list will stay sane. */
+ 	if (!(dev->flags & IFF_UP))
+@@ -1320,20 +1362,16 @@ void __dev_set_rx_mode(struct net_device *dev)
+ 	if (!netif_device_present(dev))
+ 		return;
+ 
+-	if (ops->ndo_set_rx_mode_async) {
++	if (ops->ndo_set_rx_mode_async || ops->ndo_change_rx_flags) {
+ 		netif_rx_mode_queue(dev);
+ 		return;
  	}
  
-@@ -856,7 +866,7 @@ void mlx5e_fs_set_rx_mode_work(struct mlx5e_flow_steering *fs,
- 	if (enable_broadcast)
- 		mlx5e_add_l2_flow_rule(fs, &ea->broadcast, MLX5E_FULLMATCH);
+-	if (!(dev->priv_flags & IFF_UNICAST_FLT)) {
+-		if (!netdev_uc_empty(dev) && !dev->uc_promisc) {
+-			__dev_set_promiscuity(dev, 1, false);
+-			dev->uc_promisc = true;
+-		} else if (netdev_uc_empty(dev) && dev->uc_promisc) {
+-			__dev_set_promiscuity(dev, -1, false);
+-			dev->uc_promisc = false;
+-		}
+-	}
++	/* Legacy path for non-ops-locked HW devices. */
++
++	promisc_inc = netif_uc_promisc_update(dev);
++	if (promisc_inc)
++		__dev_set_promiscuity(dev, promisc_inc, false);
  
--	mlx5e_handle_netdev_addr(fs, netdev);
-+	mlx5e_handle_netdev_addr(fs, netdev, uc, mc);
- 
- 	if (disable_broadcast)
- 		mlx5e_del_l2_flow_rule(fs, &ea->broadcast);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 1238e5356012..45f5bacef255 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -4105,11 +4105,13 @@ static void mlx5e_nic_set_rx_mode(struct mlx5e_priv *priv)
- 	queue_work(priv->wq, &priv->set_rx_mode_work);
- }
- 
--static void mlx5e_set_rx_mode(struct net_device *dev)
-+static void mlx5e_set_rx_mode(struct net_device *dev,
-+			      struct netdev_hw_addr_list *uc,
-+			      struct netdev_hw_addr_list *mc)
- {
- 	struct mlx5e_priv *priv = netdev_priv(dev);
- 
--	mlx5e_nic_set_rx_mode(priv);
-+	mlx5e_fs_set_rx_mode_work(priv->fs, dev, uc, mc);
- }
- 
- static int mlx5e_set_mac(struct net_device *netdev, void *addr)
-@@ -5284,7 +5286,7 @@ const struct net_device_ops mlx5e_netdev_ops = {
- 	.ndo_setup_tc            = mlx5e_setup_tc,
- 	.ndo_select_queue        = mlx5e_select_queue,
- 	.ndo_get_stats64         = mlx5e_get_stats,
--	.ndo_set_rx_mode         = mlx5e_set_rx_mode,
-+	.ndo_set_rx_mode_async   = mlx5e_set_rx_mode,
- 	.ndo_set_mac_address     = mlx5e_set_mac,
- 	.ndo_vlan_rx_add_vid     = mlx5e_vlan_rx_add_vid,
- 	.ndo_vlan_rx_kill_vid    = mlx5e_vlan_rx_kill_vid,
-@@ -6269,8 +6271,11 @@ void mlx5e_set_rx_mode_work(struct work_struct *work)
- {
- 	struct mlx5e_priv *priv = container_of(work, struct mlx5e_priv,
- 					       set_rx_mode_work);
-+	struct net_device *dev = priv->netdev;
- 
--	return mlx5e_fs_set_rx_mode_work(priv->fs, priv->netdev);
-+	netdev_lock_ops(dev);
-+	mlx5e_fs_set_rx_mode_work(priv->fs, dev, NULL, NULL);
-+	netdev_unlock_ops(dev);
- }
- 
- /* mlx5e generic netdev management API (move to en_common.c) */
+ 	if (ops->ndo_set_rx_mode)
+ 		ops->ndo_set_rx_mode(dev);
 -- 
 2.52.0
 
