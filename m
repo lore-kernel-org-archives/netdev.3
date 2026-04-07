@@ -1,369 +1,223 @@
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E063AB283;
-	Tue,  7 Apr 2026 10:48:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2722C39D6F9
+	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 10:48:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775558899; cv=none; b=W/1j4zJzlkvT4/whvl3bwvMB7O/dslhCtWhzrzgchjPnRGjlV7+CbwF66yPJaGYWLmZ7uaoMdcNKm5ayNZtqUugakJHMM8M5HUTATPZlYyaHnO/wr2MuQ93d9u9zYAf52CpsY/zQ3GB1PnTkuafNMW/nB72n85/MG/v5Ycr7YQQ=
+	t=1775558937; cv=none; b=AWpPygLxpA4rQq9Zwaun5+FE4+cXcFAvfOuofWaF7dXxbcTXBuxpVkE4TPnIQ4fyWnsqOPWJFiZiJwzYMreY+eOBKuA381SXZhW15mGByXkblOw/Pu2xBa7VZQs6ku0WdO80v2EQBQPq4cApZ+MxK1Mvqc7l6djJCZt6ouGNP90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775558899; c=relaxed/simple;
-	bh=OmYlzEE+8OIRxtdH4TpR6pENdo8TjWdkgGWJVg82Wh4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=c8tNQCk74+NiC4f5jJ/qmHM3QpVltFWnHcZbG3kj5qhRtXuL/kyMC6xXuTOHyyKCNdB4DbWguJ9m69Dy3xzK+L+yR0o0/YOc0IBBMqmo13WERyZnbQwYqGvUimhsvjF3CIx+RndDRqcXIE46Gins1Rj/yfNm4Rr31MqQJAOfcY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=KLPOkIBZ; arc=none smtp.client-ip=115.124.30.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1775558937; c=relaxed/simple;
+	bh=Ytn6pR4N3uMVNtXoQo8Gr27tjtQpaIHKh+ULAxWMXXo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NXhgOTE7QgKcNHACCrHqXgEpi1dtk5Akrz5yQpgzL2ym6M3GrEYqee2mAyu1IGhL2WITUStrCLgep76SYOqb3TJtXXpzZ8mIPSN+BzraRJO09Omf93Yj3d36Ob5HBfs6uhHfeowOiuNZ5AgAsNi/XpDpjDsdKZKvZy5kyT1tOSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Jpb4PSu1; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=WIHk8h5z; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="KLPOkIBZ"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1775558888; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=jfHY2L/BBeDphqighEF+vXkegaIZ6ojc1FaKwta2Yhg=;
-	b=KLPOkIBZ9X4iysMHq9Ee1c4LBI0EzUOtvu5d9Fb3wSXzNvzjCQE7K7unkfJUGUeG1v5yJQv1dx+Mr40nZHhrnDQ2UNL+M/y9uJccaKj8Kzui4bSGtJP2bb4GceBKB1OEiojLrMrs9kimDsrySwggFBDhU2bgC+zHZCIOKxiUHpI=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=guwen@linux.alibaba.com;NM=1;PH=DS;RN=34;SR=0;TI=SMTPD_---0X0bYxbG_1775558884;
-Received: from localhost(mailfrom:guwen@linux.alibaba.com fp:SMTPD_---0X0bYxbG_1775558884 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 07 Apr 2026 18:48:06 +0800
-From: Wen Gu <guwen@linux.alibaba.com>
-To: tglx@kernel.org,
-	richardcochran@gmail.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	jstultz@google.com,
-	anna-maria@linutronix.de,
-	frederic@kernel.org,
-	daniel.lezcano@kernel.org,
-	sboyd@kernel.org,
-	dwmw2@infradead.org
-Cc: vladimir.oltean@nxp.com,
-	wei.fang@nxp.com,
-	xiaoning.wang@nxp.com,
-	jonathan.lemon@gmail.com,
-	vadim.fedorenko@linux.dev,
-	yangbo.lu@nxp.com,
-	svens@linux.ibm.com,
-	nick.shi@broadcom.com,
-	ajay.kaher@broadcom.com,
-	alexey.makhalov@broadcom.com,
-	bcm-kernel-feedback-list@broadcom.com,
-	linux-fpga@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-s390@vger.kernel.org,
-	dust.li@linux.alibaba.com,
-	xuanzhuo@linux.alibaba.com,
-	mani@kernel.org,
-	imran.shaik@oss.qualcomm.com,
-	taniya.das@oss.qualcomm.com
-Subject: [PATCH v2 1/2] ptp: move emulated/virtual clock drivers into a dedicated subdirectory
-Date: Tue,  7 Apr 2026 18:48:01 +0800
-Message-Id: <20260407104802.34429-2-guwen@linux.alibaba.com>
-X-Mailer: git-send-email 2.32.0.3.g01195cf9f
-In-Reply-To: <20260407104802.34429-1-guwen@linux.alibaba.com>
-References: <20260407104802.34429-1-guwen@linux.alibaba.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Jpb4PSu1";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="WIHk8h5z"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775558934;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fwuWWKD1gpIC79YNQto4eiR0rGIBiL3Ai2I/8/jRRlE=;
+	b=Jpb4PSu1WPp/82wKHS1A5pLSXCUK2cVZjNd0VKqy/Szrd3Kq9ZQ7MruLu8E1Vg0OhagsWN
+	a+0W6402TOADyWes7lTZdlq16TdHimkWlRpIDYOPFZEPTxUDbk41vkco+wL8bIWp2tpu+2
+	Dp5hYubL1e8wYqRMftQKXz7zZURZyFU=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-649-yOsK0nTKNdirX3nPZIDQTQ-1; Tue, 07 Apr 2026 06:48:53 -0400
+X-MC-Unique: yOsK0nTKNdirX3nPZIDQTQ-1
+X-Mimecast-MFC-AGG-ID: yOsK0nTKNdirX3nPZIDQTQ_1775558932
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-43b96365ea8so6224539f8f.2
+        for <netdev@vger.kernel.org>; Tue, 07 Apr 2026 03:48:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1775558932; x=1776163732; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fwuWWKD1gpIC79YNQto4eiR0rGIBiL3Ai2I/8/jRRlE=;
+        b=WIHk8h5zpmAfvLzEZvB7xge8JA75yeaXjpxNn5ILvi5TUdctjYSHDbW1KLPZuFZeS6
+         fOn7VN4rNJwZFIlt7kO9MGpirIMXv9+zEnZXY5YvU6og5ln86KaPU9PhVVkiEUBhKrGa
+         tvNyLxfr9+TbyOlbmVW+P/cFxSend14gY8IiH2EOelDxK468xHwgBqI0XF6L8hCFO2tI
+         yrMR+rxdism5cEwm9Xft+Px4qhFMSCIx+W3Y+PBuWbCIx4wxmTvrToDECwGQJAg34P/o
+         O21RSip3ded6sDeBfuJ6OF7egyZRYY3cuksSk7I//K5uffRAxocLlnW0yDeUDDxyar91
+         u7yA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775558932; x=1776163732;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fwuWWKD1gpIC79YNQto4eiR0rGIBiL3Ai2I/8/jRRlE=;
+        b=qzDqMDsGpCKiRlQQ9DAMpe5DmffAXnSqToD54HU0xJ4NnH/ilxIkTe6sol7RlVZPS6
+         4CadHnBD3GdHLDv9UmjygP3S1LGrSqNuODPQ/ry5N7tbIXjX3ML66WD6bGqFPWdwG27h
+         zNn3rBTbZhjKVb/Bxb9AvuQ//7r4fdt7vX7a8EyhKmPurqdBxdh/Ka0QMyDqSmUPfogU
+         wYzZem8Z3uM3vj7EqtUUTtz1nkP9ahlwkzVjvCh1jCzS2yBv2h9Lna4+3GNfI1YV0ITv
+         3PM5T47SVy4qdc+S1lhn+6yaoTZrqFx3ZpE8GdKY7GO197HkHu9fbRAGB6dbQSCMjyQ7
+         p2nQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWIdC11BuSEbPD+gKbKT6UYPcO1zVj2UXce61dzLm2j6+3z7jsSxsfMFHSZutEU4KIqjIlGffA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyyRTzJlbQFfs+VxWr2tEGLWlAQnnehf0uugcTX2OTZw7NsLWyj
+	970S5V04xvAxMiO1b8ET3iZiXmLqgIIeo9951ag74WddkFkKtMXt3Wpq9KD5TcGZG+U8mNWGQyR
+	zhv5YTrwUNH1tMw1xD1s+yg0FQ5d5BKrTP0tEVQs+neTaSyhnziq97s7souktg1ADIA==
+X-Gm-Gg: AeBDieuJMjmuBYbFBAz3y8NHS/T0j/NmgNN9uHAFpnpo9ner/bkJYMUWw9521NJ+raj
+	U5RhrHLpIdJi2hDGM2JGqmLH2recUiEf6sStlFkqzzP9ebvv2oRQFPRP0nXIEfk92vdrxT+qHuk
+	XyxDEi7aCXvTwG8Rc9bYeFwPA/I4ooDGutxPN8wWkvGqjSqhFa7AK4EgCBNHFsVfrwVA08iG+yW
+	jXuGm3wh9sI8PS0Thfbq+CcE4nDtgd6oizqIiFhGYjD/4iIYeakltzSepnzLP+HMlmb+hSfD+LI
+	YJm1lBxXlq175Ae5ifW2HzP4C9r6mVCYcB8xiW5i5oJ+oObVIa2ocltg260wmYycpM2IRZJ1QBk
+	LSqCM2hU/naODBZxupQ6awryyP3egAdyg59VQLtCqMzfaIKaC0Fqfd1FH3w==
+X-Received: by 2002:a05:600c:4743:b0:487:219e:42d with SMTP id 5b1f17b1804b1-4889970642emr229188235e9.11.1775558931654;
+        Tue, 07 Apr 2026 03:48:51 -0700 (PDT)
+X-Received: by 2002:a05:600c:4743:b0:487:219e:42d with SMTP id 5b1f17b1804b1-4889970642emr229187935e9.11.1775558931166;
+        Tue, 07 Apr 2026 03:48:51 -0700 (PDT)
+Received: from [192.168.88.32] ([212.105.153.231])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48895e19c10sm348616065e9.8.2026.04.07.03.48.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Apr 2026 03:48:50 -0700 (PDT)
+Message-ID: <ea5ba55d-c212-402a-a977-93c442610d17@redhat.com>
+Date: Tue, 7 Apr 2026 12:48:43 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 net] amd-xgbe: synchronize KR training with device
+ operations
+To: Raju Rangoju <Raju.Rangoju@amd.com>, netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, kuba@kernel.org, edumazet@google.com,
+ davem@davemloft.net, andrew+netdev@lunn.ch, Thomas.Lendacky@amd.com,
+ maxime.chevallier@bootlin.com
+References: <20260403072157.1042806-1-Raju.Rangoju@amd.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260403072157.1042806-1-Raju.Rangoju@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The PTP subsystem has grown beyond the original IEEE 1588/NIC use case
-and today contains both network-oriented PHC drivers and various
-emulated/virtual clock implementations.
+On 4/3/26 9:21 AM, Raju Rangoju wrote:
+> +static bool xgbe_kr_training_in_progress(struct xgbe_prv_data *pdata)
+> +{
+> +	struct xgbe_phy_data *phy_data = pdata->phy_data;
+> +	unsigned long kr_start, kr_end;
+> +
+> +	/* Only wait for KR training in specific conditions:
+> +	 *  - Inphi re-driver is present, OR
+> +	 *  - Currently in KR mode with autoneg enabled
+> +	 */
+> +	if (!xgbe_phy_port_is_inphi(pdata) &&
+> +	    !(phy_data->cur_mode == XGBE_MODE_KR &&
+> +	      pdata->phy.autoneg == AUTONEG_ENABLE))
+> +		return false;
+> +
+> +	/* If training hasn't completed, ensure it actually started */
+> +	kr_start = READ_ONCE(pdata->kr_start_time);
+> +	if (!kr_start)
+> +		return false;
 
-Prepare for clearer ownership and future maintenance by moving the
-emulated/virtual/non-NIC PTP clock drivers into a dedicated subdirectory,
-with its own Kconfig and Makefile.
+AFAICS kr_start_time is set to the current jiffies value at
+initialization time and 0 is a valid - even if unlikely - jiffies value.
+The above test is false-positive prone.
 
-The network/IEEE 1588 oriented drivers remain in drivers/ptp/ alongside
-the PTP core infrastructure:
+> +
+> +	/* Training is complete - no need to wait */
+> +	if (READ_ONCE(pdata->an_result) == XGBE_AN_COMPLETE)
+> +		return false;
+> +
+> +	kr_end = kr_start +
+> +		msecs_to_jiffies(XGBE_AN_MS_TIMEOUT + XGBE_KRTR_TIME);
+> +
+> +	/* If we're already past the training window, it's not "in progress" */
+> +	if (time_after(jiffies, kr_end))
+> +		return false;
 
-  - drivers/ptp/          : PTP core infrastructure and IEEE 1588 /
-                            network-oriented clock drivers.
+Sashiko notes wrap-around (32 bits systems) will lead to wrong return value.
 
-  - drivers/ptp/emulated/ : emulated/virtual/non-NIC implementations
-                            that expose high-precision time sources via
-                            the PTP interface but are not tied to the
-                            NIC/packet-timestamping pipeline.
+> +
+> +	return true;
+> +}
+> +
+> +static void xgbe_wait_for_kr_training_inprogress(struct xgbe_prv_data *pdata)
+> +{
+> +	unsigned long kr_end;
+> +
+> +	if (!xgbe_kr_training_in_progress(pdata))
+> +		return;
+> +
+> +	/* Don't block the auto-negotiation state machine work item */
+> +	if (current_work() == &pdata->an_work)
+> +		return;
+> +
+> +	kr_end = READ_ONCE(pdata->kr_start_time) +
+> +		msecs_to_jiffies(XGBE_AN_MS_TIMEOUT + XGBE_KRTR_TIME);
+> +
+> +	/* Poll until training completes or the training window expires */
+> +	while (time_before(jiffies, kr_end)) {
+> +		if (READ_ONCE(pdata->an_result) == XGBE_AN_COMPLETE)
+> +			break;
+> +
+> +		usleep_range(10000, 11000);
+> +	}
+> +}
+> +
+>  static void xgbe_phy_perform_ratechange(struct xgbe_prv_data *pdata,
+> -					enum xgbe_mb_cmd cmd, enum xgbe_mb_subcmd sub_cmd)
+> +					enum xgbe_mb_cmd cmd,
+> +					enum xgbe_mb_subcmd sub_cmd)
+>  {
+>  	unsigned int s0 = 0;
+>  	unsigned int wait;
+> @@ -2104,6 +2171,13 @@ static void xgbe_phy_perform_ratechange(struct xgbe_prv_data *pdata,
+>  	/* Disable PLL re-initialization during FW command processing */
+>  	xgbe_phy_pll_ctrl(pdata, false);
+>  
+> +	/* Serialize firmware mailbox access.
+> +	 * Protects entire command sequence including busy check, PLL control,
+> +	 * and command execution. Uses explicit lock/unlock for compatibility
+> +	 * with goto-based cleanup (per cleanup.h guidelines).
+> +	 */
+> +	mutex_lock(&pdata->mailbox_lock);
 
-No functional changes are intended; this is a refactor only.
+The comment is confusing, due the the `xgbe_phy_pll_ctrl()` invocation
+just before acquiring the lock.
 
-Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
----
- drivers/ptp/Kconfig                         | 68 ++++-----------------
- drivers/ptp/Makefile                        | 11 ++--
- drivers/ptp/emulated/Kconfig                | 61 ++++++++++++++++++
- drivers/ptp/emulated/Makefile               | 11 ++++
- drivers/ptp/{ => emulated}/ptp_kvm_arm.c    |  0
- drivers/ptp/{ => emulated}/ptp_kvm_common.c |  0
- drivers/ptp/{ => emulated}/ptp_kvm_x86.c    |  0
- drivers/ptp/{ => emulated}/ptp_s390.c       |  0
- drivers/ptp/{ => emulated}/ptp_vmclock.c    |  0
- drivers/ptp/{ => emulated}/ptp_vmw.c        |  0
- 10 files changed, 87 insertions(+), 64 deletions(-)
- create mode 100644 drivers/ptp/emulated/Kconfig
- create mode 100644 drivers/ptp/emulated/Makefile
- rename drivers/ptp/{ => emulated}/ptp_kvm_arm.c (100%)
- rename drivers/ptp/{ => emulated}/ptp_kvm_common.c (100%)
- rename drivers/ptp/{ => emulated}/ptp_kvm_x86.c (100%)
- rename drivers/ptp/{ => emulated}/ptp_s390.c (100%)
- rename drivers/ptp/{ => emulated}/ptp_vmclock.c (100%)
- rename drivers/ptp/{ => emulated}/ptp_vmw.c (100%)
+> +
+>  	/* Log if a previous command did not complete */
+>  	if (XP_IOREAD_BITS(pdata, XP_DRIVER_INT_RO, STATUS)) {
+>  		netif_dbg(pdata, link, pdata->netdev,
+> @@ -2115,7 +2189,7 @@ static void xgbe_phy_perform_ratechange(struct xgbe_prv_data *pdata,
+>  	XP_SET_BITS(s0, XP_DRIVER_SCRATCH_0, COMMAND, cmd);
+>  	XP_SET_BITS(s0, XP_DRIVER_SCRATCH_0, SUB_COMMAND, sub_cmd);
+>  
+> -	/* Issue the command */
+> +	/* Issue the firmware command */
+>  	XP_IOWRITE(pdata, XP_DRIVER_SCRATCH_0, s0);
+>  	XP_IOWRITE(pdata, XP_DRIVER_SCRATCH_1, 0);
+>  	XP_IOWRITE_BITS(pdata, XP_DRIVER_INT_REQ, REQUEST, 1);
+> @@ -2123,11 +2197,13 @@ static void xgbe_phy_perform_ratechange(struct xgbe_prv_data *pdata,
+>  	/* Wait for command to complete */
+>  	wait = XGBE_RATECHANGE_COUNT;
+>  	while (wait--) {
+> -		if (!XP_IOREAD_BITS(pdata, XP_DRIVER_INT_RO, STATUS))
+> +		if (!XP_IOREAD_BITS(pdata, XP_DRIVER_INT_RO, STATUS)) {
+> +			mutex_unlock(&pdata->mailbox_lock);
+>  			goto do_rx_adaptation;
+> -
+> +		}
+>  		usleep_range(1000, 2000);
+>  	}
+> +	mutex_unlock(&pdata->mailbox_lock);
+>  
+>  	netif_dbg(pdata, link, pdata->netdev,
+>  		  "firmware mailbox command did not complete\n");
 
-diff --git a/drivers/ptp/Kconfig b/drivers/ptp/Kconfig
-index b93640ca08b7..4cb199332546 100644
---- a/drivers/ptp/Kconfig
-+++ b/drivers/ptp/Kconfig
-@@ -20,11 +20,16 @@ config PTP_1588_CLOCK
- 	  time stamping units, it can be possible to achieve
- 	  synchronization to within a few hundred nanoseconds.
- 
--	  This driver adds support for PTP clocks as character
--	  devices. If you want to use a PTP clock, then you should
--	  also enable at least one clock driver as well.
-+	  This infrastructure adds support for PTP clocks as character
-+	  devices. It has since evolved into a general-purpose PTP
-+	  clock framework also used by high-precision clocks exposed
-+	  by platforms, hypervisors or special hardware, beyond the
-+	  traditional NIC/IEEE 1588 use case.
- 
--	  To compile this driver as a module, choose M here: the module
-+	  If you want to use any PTP clock device, enable this option
-+	  and at least one clock driver.
-+
-+	  To compile the core as a module, choose M here: the module
- 	  will be called ptp.
- 
- config PTP_1588_CLOCK_OPTIONAL
-@@ -119,35 +124,6 @@ config PTP_1588_CLOCK_PCH
- 	  To compile this driver as a module, choose M here: the module
- 	  will be called ptp_pch.
- 
--config PTP_1588_CLOCK_KVM
--	tristate "KVM virtual PTP clock"
--	depends on PTP_1588_CLOCK
--	depends on (KVM_GUEST && X86) || (HAVE_ARM_SMCCC_DISCOVERY && ARM_ARCH_TIMER)
--	default y
--	help
--	  This driver adds support for using kvm infrastructure as a PTP
--	  clock. This clock is only useful if you are using KVM guests.
--
--	  To compile this driver as a module, choose M here: the module
--	  will be called ptp_kvm.
--
--config PTP_1588_CLOCK_VMCLOCK
--	tristate "Virtual machine PTP clock"
--	depends on X86_TSC || ARM_ARCH_TIMER
--	depends on PTP_1588_CLOCK && ARCH_SUPPORTS_INT128
--	default PTP_1588_CLOCK_KVM
--	help
--	  This driver adds support for using a virtual precision clock
--	  advertised by the hypervisor. This clock is only useful in virtual
--	  machines where such a device is present.
--
--	  Unlike the KVM virtual PTP clock, the VMCLOCK device offers support
--	  for reliable timekeeping even across live migration. So this driver
--	  is enabled by default whenever the KVM PTP clock is.
--
--	  To compile this driver as a module, choose M here: the module
--	  will be called ptp_vmclock.
--
- config PTP_1588_CLOCK_IDT82P33
- 	tristate "IDT 82P33xxx PTP clock"
- 	depends on PTP_1588_CLOCK && I2C
-@@ -195,18 +171,6 @@ config PTP_1588_CLOCK_MOCK
- 	  To compile this driver as a module, choose M here: the module
- 	  will be called ptp_mock.
- 
--config PTP_1588_CLOCK_VMW
--	tristate "VMware virtual PTP clock"
--	depends on ACPI && HYPERVISOR_GUEST && X86
--	depends on PTP_1588_CLOCK
--	help
--	  This driver adds support for using VMware virtual precision
--	  clock device as a PTP clock. This is only useful in virtual
--	  machines running on VMware virtual infrastructure.
--
--	  To compile this driver as a module, choose M here: the module
--	  will be called ptp_vmw.
--
- config PTP_1588_CLOCK_OCP
- 	tristate "OpenCompute TimeCard as PTP clock"
- 	depends on PTP_1588_CLOCK
-@@ -241,18 +205,6 @@ config PTP_DFL_TOD
- 	  To compile this driver as a module, choose M here: the module
- 	  will be called ptp_dfl_tod.
- 
--config PTP_S390
--	tristate "S390 PTP driver"
--	depends on PTP_1588_CLOCK
--	depends on S390
--	help
--	  This driver adds support for S390 time steering via the PtP
--	  interface. This works by adding a in-kernel clock delta value,
--	  which is always added to time values used in the kernel. The PtP
--	  driver provides the raw clock value without the delta to
--	  userspace. That way userspace programs like chrony could steer
--	  the kernel clock.
--
- config PTP_NETC_V4_TIMER
- 	tristate "NXP NETC V4 Timer PTP Driver"
- 	depends on PTP_1588_CLOCK
-@@ -263,4 +215,6 @@ config PTP_NETC_V4_TIMER
- 	  synchronization. It also supports periodic output signal (e.g. PPS)
- 	  and external trigger timestamping.
- 
-+source "drivers/ptp/emulated/Kconfig"
-+
- endmenu
-diff --git a/drivers/ptp/Makefile b/drivers/ptp/Makefile
-index bdc47e284f14..bcea2d3d4efd 100644
---- a/drivers/ptp/Makefile
-+++ b/drivers/ptp/Makefile
-@@ -1,24 +1,21 @@
- # SPDX-License-Identifier: GPL-2.0
- #
--# Makefile for PTP 1588 clock support.
-+# Makefile for PTP clock support.
- #
- 
-+subdir-ccflags-y += -I$(srctree)/drivers/ptp
-+
- ptp-y					:= ptp_clock.o ptp_chardev.o ptp_sysfs.o ptp_vclock.o
--ptp_kvm-$(CONFIG_X86)			:= ptp_kvm_x86.o ptp_kvm_common.o
--ptp_kvm-$(CONFIG_HAVE_ARM_SMCCC)	:= ptp_kvm_arm.o ptp_kvm_common.o
- obj-$(CONFIG_PTP_1588_CLOCK)		+= ptp.o
- obj-$(CONFIG_PTP_1588_CLOCK_DTE)	+= ptp_dte.o
- obj-$(CONFIG_PTP_1588_CLOCK_INES)	+= ptp_ines.o
- obj-$(CONFIG_PTP_1588_CLOCK_PCH)	+= ptp_pch.o
--obj-$(CONFIG_PTP_1588_CLOCK_KVM)	+= ptp_kvm.o
--obj-$(CONFIG_PTP_1588_CLOCK_VMCLOCK)	+= ptp_vmclock.o
- obj-$(CONFIG_PTP_1588_CLOCK_QORIQ)	+= ptp_qoriq.o
- obj-$(CONFIG_PTP_1588_CLOCK_IDTCM)	+= ptp_clockmatrix.o
- obj-$(CONFIG_PTP_1588_CLOCK_FC3W)	+= ptp_fc3.o
- obj-$(CONFIG_PTP_1588_CLOCK_IDT82P33)	+= ptp_idt82p33.o
- obj-$(CONFIG_PTP_1588_CLOCK_MOCK)	+= ptp_mock.o
--obj-$(CONFIG_PTP_1588_CLOCK_VMW)	+= ptp_vmw.o
- obj-$(CONFIG_PTP_1588_CLOCK_OCP)	+= ptp_ocp.o
- obj-$(CONFIG_PTP_DFL_TOD)		+= ptp_dfl_tod.o
--obj-$(CONFIG_PTP_S390)			+= ptp_s390.o
- obj-$(CONFIG_PTP_NETC_V4_TIMER)		+= ptp_netc.o
-+obj-$(CONFIG_PTP_1588_CLOCK)		+= emulated/
-diff --git a/drivers/ptp/emulated/Kconfig b/drivers/ptp/emulated/Kconfig
-new file mode 100644
-index 000000000000..3e11f78dfbd8
---- /dev/null
-+++ b/drivers/ptp/emulated/Kconfig
-@@ -0,0 +1,61 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
-+# Emulated PTP clock drivers configuration
-+#
-+
-+menu "Emulated PTP clock drivers"
-+
-+config PTP_1588_CLOCK_KVM
-+	tristate "KVM virtual PTP clock"
-+	depends on PTP_1588_CLOCK
-+	depends on (KVM_GUEST && X86) || (HAVE_ARM_SMCCC_DISCOVERY && ARM_ARCH_TIMER)
-+	default y
-+	help
-+	  This driver adds support for using kvm infrastructure as a PTP
-+	  clock. This clock is only useful if you are using KVM guests.
-+
-+	  To compile this driver as a module, choose M here: the module
-+	  will be called ptp_kvm.
-+
-+config PTP_1588_CLOCK_VMCLOCK
-+	tristate "Virtual machine PTP clock"
-+	depends on X86_TSC || ARM_ARCH_TIMER
-+	depends on PTP_1588_CLOCK && ARCH_SUPPORTS_INT128
-+	default PTP_1588_CLOCK_KVM
-+	help
-+	  This driver adds support for using a virtual precision clock
-+	  advertised by the hypervisor. This clock is only useful in virtual
-+	  machines where such a device is present.
-+
-+	  Unlike the KVM virtual PTP clock, the VMCLOCK device offers support
-+	  for reliable timekeeping even across live migration. So this driver
-+	  is enabled by default whenever the KVM PTP clock is.
-+
-+	  To compile this driver as a module, choose M here: the module
-+	  will be called ptp_vmclock.
-+
-+config PTP_1588_CLOCK_VMW
-+	tristate "VMware virtual PTP clock"
-+	depends on ACPI && HYPERVISOR_GUEST && X86
-+	depends on PTP_1588_CLOCK
-+	help
-+	  This driver adds support for using VMware virtual precision
-+	  clock device as a PTP clock. This is only useful in virtual
-+	  machines running on VMware virtual infrastructure.
-+
-+	  To compile this driver as a module, choose M here: the module
-+	  will be called ptp_vmw.
-+
-+config PTP_S390
-+	tristate "S390 PTP driver"
-+	depends on PTP_1588_CLOCK
-+	depends on S390
-+	help
-+	  This driver adds support for S390 time steering via the PtP
-+	  interface. This works by adding a in-kernel clock delta value,
-+	  which is always added to time values used in the kernel. The PtP
-+	  driver provides the raw clock value without the delta to
-+	  userspace. That way userspace programs like chrony could steer
-+	  the kernel clock.
-+
-+endmenu
-diff --git a/drivers/ptp/emulated/Makefile b/drivers/ptp/emulated/Makefile
-new file mode 100644
-index 000000000000..577917df3dc9
---- /dev/null
-+++ b/drivers/ptp/emulated/Makefile
-@@ -0,0 +1,11 @@
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Makefile for emulated PTP clocks.
-+#
-+
-+ptp_kvm-$(CONFIG_X86)			:= ptp_kvm_x86.o ptp_kvm_common.o
-+ptp_kvm-$(CONFIG_HAVE_ARM_SMCCC)	:= ptp_kvm_arm.o ptp_kvm_common.o
-+obj-$(CONFIG_PTP_1588_CLOCK_KVM)	+= ptp_kvm.o
-+obj-$(CONFIG_PTP_1588_CLOCK_VMCLOCK)	+= ptp_vmclock.o
-+obj-$(CONFIG_PTP_1588_CLOCK_VMW)	+= ptp_vmw.o
-+obj-$(CONFIG_PTP_S390)			+= ptp_s390.o
-diff --git a/drivers/ptp/ptp_kvm_arm.c b/drivers/ptp/emulated/ptp_kvm_arm.c
-similarity index 100%
-rename from drivers/ptp/ptp_kvm_arm.c
-rename to drivers/ptp/emulated/ptp_kvm_arm.c
-diff --git a/drivers/ptp/ptp_kvm_common.c b/drivers/ptp/emulated/ptp_kvm_common.c
-similarity index 100%
-rename from drivers/ptp/ptp_kvm_common.c
-rename to drivers/ptp/emulated/ptp_kvm_common.c
-diff --git a/drivers/ptp/ptp_kvm_x86.c b/drivers/ptp/emulated/ptp_kvm_x86.c
-similarity index 100%
-rename from drivers/ptp/ptp_kvm_x86.c
-rename to drivers/ptp/emulated/ptp_kvm_x86.c
-diff --git a/drivers/ptp/ptp_s390.c b/drivers/ptp/emulated/ptp_s390.c
-similarity index 100%
-rename from drivers/ptp/ptp_s390.c
-rename to drivers/ptp/emulated/ptp_s390.c
-diff --git a/drivers/ptp/ptp_vmclock.c b/drivers/ptp/emulated/ptp_vmclock.c
-similarity index 100%
-rename from drivers/ptp/ptp_vmclock.c
-rename to drivers/ptp/emulated/ptp_vmclock.c
-diff --git a/drivers/ptp/ptp_vmw.c b/drivers/ptp/emulated/ptp_vmw.c
-similarity index 100%
-rename from drivers/ptp/ptp_vmw.c
-rename to drivers/ptp/emulated/ptp_vmw.c
--- 
-2.43.5
+A `xgbe_phy_rx_reset()` invocation will happen here, outside the lock.
+Can that race? will that corrupt the nic status?
+
+/P
 
