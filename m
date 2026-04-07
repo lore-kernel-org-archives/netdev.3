@@ -1,62 +1,62 @@
-Received: from mail-ot1-f66.google.com (mail-ot1-f66.google.com [209.85.210.66])
+Received: from mail-oa1-f68.google.com (mail-oa1-f68.google.com [209.85.160.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1EAB3B6C1D
-	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 15:31:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 150633859FC
+	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 15:31:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775575904; cv=none; b=Ndn7E3li0QgUa22coPYzFfkSdC+6zFlsXbJZ7ECsFy8w1GiAdBli2KzvPwsoUxtKsuw+myk8CcHSn1W8J6tHSXElp4S8Iv9k8fLjEJYwavgRkSgyEkEeoHybF99jp+32cI5WqLapydU0oXbIcj4eFqtj4Go1gBR4/DqWMLmJcUo=
+	t=1775575903; cv=none; b=BFULBPGB5rXU/MU6VDYaOG48vYR5G+WtYvVXyACBH7tWutccHRXBwpV2LP7eVi+9guRXpx6zGwqTmxSej0wTZSr9TqURYIEjyAI1qkTc+kmBpFHqxLV/d/xSn2/Jad+m3DhbiVpyFIFCiEPTudXqfY7xJ8Rq5ml/go7H6HQrUwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775575904; c=relaxed/simple;
-	bh=Ew0xXpehQz7Go7vQ6dIvOdiSol/5CKHYJVj2Y82Gw5U=;
+	s=arc-20240116; t=1775575903; c=relaxed/simple;
+	bh=o09WtNxu5Zi8a0iPWHJi+lGKxIT2tfrnM7MeAojXDEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hsXNOP407J2szTSJMchhy80Z+2DdItXOfSUgJvNTiRhG9N0ETG5QRJiTADJDsgikSjfb/in5kRqC3CWTMKrIr7ri3Vf2NObjylTGXPTn0v2oM0LD0bmbDAE0wsbHYb0G5LoU3XgPN9Y6ALn3cW4eqGbfYFFRt8hxa6qHbl1Zxk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WUxUc23/; arc=none smtp.client-ip=209.85.210.66
+	 MIME-Version; b=Qdcpy/N/HR+XVbP1jBBC0xU4GzBlL6x/HfCGmN8ekTrBZSWKgAk7B8KgIVgSgSGLBVhlVdOfVLOxMqNbeiCFla18uOzyzAlWn+D1ECf13UQ/C29yfJYqypMwTgzkaxWoTJiwmImgcyb776nW1CM12jXK+r33wFSgD52WhbGZgPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cgUKfOjE; arc=none smtp.client-ip=209.85.160.68
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WUxUc23/"
-Received: by mail-ot1-f66.google.com with SMTP id 46e09a7af769-7d86eb7c854so2640379a34.3
-        for <netdev@vger.kernel.org>; Tue, 07 Apr 2026 08:31:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cgUKfOjE"
+Received: by mail-oa1-f68.google.com with SMTP id 586e51a60fabf-415e568a7ecso1904495fac.0
+        for <netdev@vger.kernel.org>; Tue, 07 Apr 2026 08:31:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775575891; x=1776180691; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1775575889; x=1776180689; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JcG/sXIQptFMlSqk7ATax3dU8Pu1lA/HCdBKrg9gnPg=;
-        b=WUxUc23/kHEof9XFQLifC9QZzqux6ymgH8jtKVg2WmsPB+3pigbzuoC8Dq09Xqpoty
-         eCXO7O2PDLopx8IERrHOCpRqXe+EdHkcH3nW8Jpoa9GRrA3d2HYtlG14i/YsN7L1vz0y
-         wvJjlaowh6sO/USVZI82lDvsSu9J34XANFaa7IvoDOQHXFuvdJRVw7MuUo/r0uW1AHv3
-         Rj9hC/XECzugJBu15wyHEA6vvhWSoDMZOhy0KwcwCE75xis1PJj3riFyxNGVjFCWIv34
-         PC53QAvg7NMR/swUbxc4X8xZvGgPmUzi/im/Sn9RhBSZK6MZ8NuBR1SuTaO8ExoiDRAt
-         gCJg==
+        bh=7mg6drz+QVpKB5/V38R1gb2bDU9OtbCKCHb/PPel8U0=;
+        b=cgUKfOjE674QV/+ZOdN0yga3NbNB/fwsu0iawnxDxGFV52+xjKVlAumWkXdsASOykg
+         3dJetV+p6SzoBItQ0TxETl7wWuHIq/z3DEd84U/fqBMwKAKKInS6mKEuM0BeGMWLIe/R
+         +S2sP31c04CeMS1e+CPONZeZfisxBe7dYO70VSrJ0luvlrHw2vTr0pMIH/4Kjjc0MNxw
+         yS3ezkx66Gh6KIaUmdjDE79Y5/LvNm7ujh7F58K/pmcD0G7DGBMVGH+6nX9efAJJXFKV
+         COHVqUsoR2dcVAsrooaZb+03YwyzCVjZd9Uc5+i2dSC1C+r7lUPLAZfqlSTrpnEsEcVH
+         529g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775575891; x=1776180691;
+        d=1e100.net; s=20251104; t=1775575889; x=1776180689;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=JcG/sXIQptFMlSqk7ATax3dU8Pu1lA/HCdBKrg9gnPg=;
-        b=b9kF6vHboq1eFMpTE/PqKo+fN/asXikbNTqf9gmXbjdhqFrRw9J8d8wGxF1PZ5bPKN
-         GPBsOfrQljw6Q/pu4txw9cMRLVADC5QWdIcqDd7cHFLG9XyjSZVnG+tm4uMtaAdaCIqR
-         UNgIGEpfJA2VeNBjTM4wzfE//9oOOyhX4/WwR6TptlCEcPe6RYXy077xhrxqLRTA/lV+
-         2e27mvD/lLsP9jH3C1UuKXk02iKay7gfQxTYxLodOulvQtJQvwbUkSgIebgDz4SxxF9j
-         0nryOKZCjbO95Ct6fcTNRH9F9K7pYx3b3dC4Ld0lwmb6vU8ZsOPyvvoeH0FB2NWxG2KH
-         u7wg==
-X-Gm-Message-State: AOJu0Yx7K4vsxKalMzDW6HVyCBHXlWX91B6n8ZfsxQQ2xKOHY2T8i59Z
-	sNIh3egM5EgvgmCTZfj2aVjWeeqT0HIj40QvdgwQMnjdUjkkY4yir8EQKwRMu3v6qfE=
-X-Gm-Gg: AeBDieuRbH62dAJsAiouKfJ/dIoadvzG+Kiflr1e8TfccqgRql8Hsy+BfeAfDOOPMaa
-	/GETKORw2KI4NpYWTRyDUv2rWwBVuLaMFTFLHKxVzwttwl8/912VDtac70XW4nC/JdYoRL3gEdz
-	E9VR4N0sqTyA7CiYAcSUVnfB7k061TGEJf/TU6j8IWoZEmCnFTM0N/+tKeGChxhmDcPqdzfRnY4
-	+bBrPJq3YZXQ9T2RiQ9rNslWUbEyoTKeqMIdA+OTjQKOt1klydK9E6Sx+WRQqt5ubVGjDt9TPxI
-	snU5ZcLU4Tv+iDE06IlWKyp/WX6AHdq7kyKqPr4sLQQ0OvYd8CZkpuasnu2WyjIHFUTjlrB5M01
-	noVspnQvUYJSEfzKqWUR4hJ3LfibM/6LJs0gfzLa3HJRecP4jXV9s7Vydp+euxwN4rukg/UuAgq
-	rgJ94F4QJLXKOMGaLkRw==
-X-Received: by 2002:a05:6830:2aa5:b0:7db:a8b7:c565 with SMTP id 46e09a7af769-7dbb7111006mr12203050a34.20.1775575890697;
-        Tue, 07 Apr 2026 08:31:30 -0700 (PDT)
-Received: from localhost ([2a03:2880:12ff:44::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7dba7183dfesm12787183a34.9.2026.04.07.08.31.30
+        bh=7mg6drz+QVpKB5/V38R1gb2bDU9OtbCKCHb/PPel8U0=;
+        b=OInnYKFmbyuyIXn2f8mm6QudgXJivio4Sl/QPaUX+phPNR9Q3jXUDciarsXn1+X1/W
+         MrtpWPe7wyVZjhgq6z7Bw1lulD4dUCAxLzg2tz7ftYapI2sf/8YRWKTRnf2Hej01+fur
+         549B11B1ACwbmJTvloB4B1WqCrFufFGlq45FeL2IM5F4MULlU0hmI9xsbgF4LNpWVrkW
+         LqTgfQN0hvu/97olgTGB8e5Wp9aWzEukQkht0kwg4yXa8wiroubAbriIJelk5qNCktC/
+         XQjj9tYz5TmW2JRTg3tMT8Kw44ku4xQFx0CmuiM8Y28FLixJksj0NBGTjb5On869iCXw
+         VRVg==
+X-Gm-Message-State: AOJu0Yzu42A33dU3nYSfSVNDHuX0xg9mKlEymnnIJIzlmrUiq7/Fy/1a
+	i4kpA/R7StHUmvQLvM7NSEFtNgSzQzbFPF5VNv/4KtVmcme9rFryIW0TllcfkaWaACs=
+X-Gm-Gg: AeBDietPm1MAqGFtOuW/cz3R5mowqY4z1kwhqS7RPsNC087gNi0o2FcvCIvHeTCY8w5
+	E7XP7jAVMPriu/s8KyER/zymMVdcx8MePRj22XzNpqpaA26p1TQaVmB1OsXreZM/BtCjKUc0tjz
+	nZMJH49Sa4GAItwpO0AjwA93w8/XWoYyLw3vxyYDypzP/ZJdPnuOYHDZGRZ29/+A/6oUMWsRktn
+	TigqNCj2NuukneiEdF3EOH+y2rmI1s9rqSSJXOsZ13vpaXaGBVmXxcbY/p+th9Qbq6wXRDb3sNQ
+	eGUWw9QsMhnd3MIyKYz0V5AMdCGIq/LbV4buDiFh7thkCcORe2ru/5qIXFWTsvt9UX48C6EJ8BQ
+	ElPLxpPwvdutMQE/4wz62mjXwZMbT3nVPkloNZKunamNcAS0Kd2Skz8XtQkRIdJOI8yRMkZ1Ujh
+	vQZNXRJ56BS9ifjvPLyQ==
+X-Received: by 2002:a05:6870:aa05:b0:41c:9c4a:151f with SMTP id 586e51a60fabf-4230fdb45b9mr10004426fac.14.1775575873695;
+        Tue, 07 Apr 2026 08:31:13 -0700 (PDT)
+Received: from localhost ([2a03:2880:12ff:72::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4231f7712bcsm11143944fac.18.2026.04.07.08.31.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Apr 2026 08:31:30 -0700 (PDT)
+        Tue, 07 Apr 2026 08:31:13 -0700 (PDT)
 From: Stanislav Fomichev <sdf.kernel@gmail.com>
 X-Google-Original-From: Stanislav Fomichev <sdf@fomichev.me>
 To: netdev@vger.kernel.org
@@ -64,10 +64,11 @@ Cc: davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH net-next v6 11/14] dummy: convert to ndo_set_rx_mode_async
-Date: Tue,  7 Apr 2026 08:30:58 -0700
-Message-ID: <20260407153101.3694714-12-sdf@fomichev.me>
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Subject: [PATCH net-next v6 09/14] iavf: convert to ndo_set_rx_mode_async
+Date: Tue,  7 Apr 2026 08:30:56 -0700
+Message-ID: <20260407153101.3694714-10-sdf@fomichev.me>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260407153101.3694714-1-sdf@fomichev.me>
 References: <20260407153101.3694714-1-sdf@fomichev.me>
@@ -79,40 +80,66 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Convert dummy driver from ndo_set_rx_mode to ndo_set_rx_mode_async.
-The dummy driver's set_multicast_list is a no-op, so the conversion
-is straightforward: update the signature and the ops assignment.
+Convert iavf from ndo_set_rx_mode to ndo_set_rx_mode_async.
+iavf_set_rx_mode now takes explicit uc/mc list parameters and
+uses __hw_addr_sync_dev on the snapshots instead of __dev_uc_sync
+and __dev_mc_sync.
 
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+The iavf_configure internal caller passes the real lists directly.
+
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
 ---
- drivers/net/dummy.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/iavf/iavf_main.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/dummy.c b/drivers/net/dummy.c
-index d6bdad4baadd..f8a4eb365c3d 100644
---- a/drivers/net/dummy.c
-+++ b/drivers/net/dummy.c
-@@ -47,7 +47,9 @@
- static int numdummies = 1;
- 
- /* fake multicast ability */
--static void set_multicast_list(struct net_device *dev)
-+static void set_multicast_list(struct net_device *dev,
-+			       struct netdev_hw_addr_list *uc,
-+			       struct netdev_hw_addr_list *mc)
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index dad001abc908..3c1465cf0515 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -1150,14 +1150,18 @@ bool iavf_promiscuous_mode_changed(struct iavf_adapter *adapter)
+ /**
+  * iavf_set_rx_mode - NDO callback to set the netdev filters
+  * @netdev: network interface device structure
++ * @uc: snapshot of uc address list
++ * @mc: snapshot of mc address list
+  **/
+-static void iavf_set_rx_mode(struct net_device *netdev)
++static void iavf_set_rx_mode(struct net_device *netdev,
++			     struct netdev_hw_addr_list *uc,
++			     struct netdev_hw_addr_list *mc)
  {
- }
+ 	struct iavf_adapter *adapter = netdev_priv(netdev);
  
-@@ -87,7 +89,7 @@ static const struct net_device_ops dummy_netdev_ops = {
- 	.ndo_init		= dummy_dev_init,
- 	.ndo_start_xmit		= dummy_xmit,
+ 	spin_lock_bh(&adapter->mac_vlan_list_lock);
+-	__dev_uc_sync(netdev, iavf_addr_sync, iavf_addr_unsync);
+-	__dev_mc_sync(netdev, iavf_addr_sync, iavf_addr_unsync);
++	__hw_addr_sync_dev(uc, netdev, iavf_addr_sync, iavf_addr_unsync);
++	__hw_addr_sync_dev(mc, netdev, iavf_addr_sync, iavf_addr_unsync);
+ 	spin_unlock_bh(&adapter->mac_vlan_list_lock);
+ 
+ 	spin_lock_bh(&adapter->current_netdev_promisc_flags_lock);
+@@ -1210,7 +1214,9 @@ static void iavf_configure(struct iavf_adapter *adapter)
+ 	struct net_device *netdev = adapter->netdev;
+ 	int i;
+ 
+-	iavf_set_rx_mode(netdev);
++	netif_addr_lock_bh(netdev);
++	iavf_set_rx_mode(netdev, &netdev->uc, &netdev->mc);
++	netif_addr_unlock_bh(netdev);
+ 
+ 	iavf_configure_tx(adapter);
+ 	iavf_configure_rx(adapter);
+@@ -5153,7 +5159,7 @@ static const struct net_device_ops iavf_netdev_ops = {
+ 	.ndo_open		= iavf_open,
+ 	.ndo_stop		= iavf_close,
+ 	.ndo_start_xmit		= iavf_xmit_frame,
+-	.ndo_set_rx_mode	= iavf_set_rx_mode,
++	.ndo_set_rx_mode_async	= iavf_set_rx_mode,
  	.ndo_validate_addr	= eth_validate_addr,
--	.ndo_set_rx_mode	= set_multicast_list,
-+	.ndo_set_rx_mode_async	= set_multicast_list,
- 	.ndo_set_mac_address	= eth_mac_addr,
- 	.ndo_get_stats64	= dummy_get_stats64,
- 	.ndo_change_carrier	= dummy_change_carrier,
+ 	.ndo_set_mac_address	= iavf_set_mac,
+ 	.ndo_change_mtu		= iavf_change_mtu,
 -- 
 2.52.0
 
