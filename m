@@ -1,223 +1,199 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0b-00190b01.pphosted.com (mx0b-00190b01.pphosted.com [67.231.157.127])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2722C39D6F9
-	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 10:48:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0442F1FEA;
+	Tue,  7 Apr 2026 10:50:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.157.127
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775558937; cv=none; b=AWpPygLxpA4rQq9Zwaun5+FE4+cXcFAvfOuofWaF7dXxbcTXBuxpVkE4TPnIQ4fyWnsqOPWJFiZiJwzYMreY+eOBKuA381SXZhW15mGByXkblOw/Pu2xBa7VZQs6ku0WdO80v2EQBQPq4cApZ+MxK1Mvqc7l6djJCZt6ouGNP90=
+	t=1775559045; cv=none; b=IupBXU2QBH8wekmk6bEcNg0JLZBKUK3EGS4Xe+y76yo/sbMeqoqnPipS6TUn0Tje363f3GsKzPqTvnHc92iUvHFL98SccOonmLHFkcDM4cCM4Bend0E8bkCL/kgO8NEd7k5FvfAVrfq5ayLA6yOVmBRNhDgwniigQmlHBCmO0XA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775558937; c=relaxed/simple;
-	bh=Ytn6pR4N3uMVNtXoQo8Gr27tjtQpaIHKh+ULAxWMXXo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NXhgOTE7QgKcNHACCrHqXgEpi1dtk5Akrz5yQpgzL2ym6M3GrEYqee2mAyu1IGhL2WITUStrCLgep76SYOqb3TJtXXpzZ8mIPSN+BzraRJO09Omf93Yj3d36Ob5HBfs6uhHfeowOiuNZ5AgAsNi/XpDpjDsdKZKvZy5kyT1tOSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Jpb4PSu1; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=WIHk8h5z; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1775559045; c=relaxed/simple;
+	bh=LAYjhP3oZzTAOdFhvjhAKzRL1X1YUV0ed7fbUAmPlJU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=HSV7l1dDvDTQEHzD8uTbniCxFghuFl5QOC50qqgZi1HSz/wXBURaYsjekYW79fdO305iP+Z/3DCCP9JHaQrqsP72jzelvUKajROXN4HBf3zn8KIUHbQFBUhMaWzm/TVseOL8qhF31v2AdjOhtiXGm6z2esC/pwF3eD01Vm5X35A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com; spf=pass smtp.mailfrom=akamai.com; dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b=bI5WZPt4; arc=none smtp.client-ip=67.231.157.127
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=akamai.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Jpb4PSu1";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="WIHk8h5z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775558934;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fwuWWKD1gpIC79YNQto4eiR0rGIBiL3Ai2I/8/jRRlE=;
-	b=Jpb4PSu1WPp/82wKHS1A5pLSXCUK2cVZjNd0VKqy/Szrd3Kq9ZQ7MruLu8E1Vg0OhagsWN
-	a+0W6402TOADyWes7lTZdlq16TdHimkWlRpIDYOPFZEPTxUDbk41vkco+wL8bIWp2tpu+2
-	Dp5hYubL1e8wYqRMftQKXz7zZURZyFU=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-649-yOsK0nTKNdirX3nPZIDQTQ-1; Tue, 07 Apr 2026 06:48:53 -0400
-X-MC-Unique: yOsK0nTKNdirX3nPZIDQTQ-1
-X-Mimecast-MFC-AGG-ID: yOsK0nTKNdirX3nPZIDQTQ_1775558932
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-43b96365ea8so6224539f8f.2
-        for <netdev@vger.kernel.org>; Tue, 07 Apr 2026 03:48:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1775558932; x=1776163732; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fwuWWKD1gpIC79YNQto4eiR0rGIBiL3Ai2I/8/jRRlE=;
-        b=WIHk8h5zpmAfvLzEZvB7xge8JA75yeaXjpxNn5ILvi5TUdctjYSHDbW1KLPZuFZeS6
-         fOn7VN4rNJwZFIlt7kO9MGpirIMXv9+zEnZXY5YvU6og5ln86KaPU9PhVVkiEUBhKrGa
-         tvNyLxfr9+TbyOlbmVW+P/cFxSend14gY8IiH2EOelDxK468xHwgBqI0XF6L8hCFO2tI
-         yrMR+rxdism5cEwm9Xft+Px4qhFMSCIx+W3Y+PBuWbCIx4wxmTvrToDECwGQJAg34P/o
-         O21RSip3ded6sDeBfuJ6OF7egyZRYY3cuksSk7I//K5uffRAxocLlnW0yDeUDDxyar91
-         u7yA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775558932; x=1776163732;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fwuWWKD1gpIC79YNQto4eiR0rGIBiL3Ai2I/8/jRRlE=;
-        b=qzDqMDsGpCKiRlQQ9DAMpe5DmffAXnSqToD54HU0xJ4NnH/ilxIkTe6sol7RlVZPS6
-         4CadHnBD3GdHLDv9UmjygP3S1LGrSqNuODPQ/ry5N7tbIXjX3ML66WD6bGqFPWdwG27h
-         zNn3rBTbZhjKVb/Bxb9AvuQ//7r4fdt7vX7a8EyhKmPurqdBxdh/Ka0QMyDqSmUPfogU
-         wYzZem8Z3uM3vj7EqtUUTtz1nkP9ahlwkzVjvCh1jCzS2yBv2h9Lna4+3GNfI1YV0ITv
-         3PM5T47SVy4qdc+S1lhn+6yaoTZrqFx3ZpE8GdKY7GO197HkHu9fbRAGB6dbQSCMjyQ7
-         p2nQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWIdC11BuSEbPD+gKbKT6UYPcO1zVj2UXce61dzLm2j6+3z7jsSxsfMFHSZutEU4KIqjIlGffA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyyRTzJlbQFfs+VxWr2tEGLWlAQnnehf0uugcTX2OTZw7NsLWyj
-	970S5V04xvAxMiO1b8ET3iZiXmLqgIIeo9951ag74WddkFkKtMXt3Wpq9KD5TcGZG+U8mNWGQyR
-	zhv5YTrwUNH1tMw1xD1s+yg0FQ5d5BKrTP0tEVQs+neTaSyhnziq97s7souktg1ADIA==
-X-Gm-Gg: AeBDieuJMjmuBYbFBAz3y8NHS/T0j/NmgNN9uHAFpnpo9ner/bkJYMUWw9521NJ+raj
-	U5RhrHLpIdJi2hDGM2JGqmLH2recUiEf6sStlFkqzzP9ebvv2oRQFPRP0nXIEfk92vdrxT+qHuk
-	XyxDEi7aCXvTwG8Rc9bYeFwPA/I4ooDGutxPN8wWkvGqjSqhFa7AK4EgCBNHFsVfrwVA08iG+yW
-	jXuGm3wh9sI8PS0Thfbq+CcE4nDtgd6oizqIiFhGYjD/4iIYeakltzSepnzLP+HMlmb+hSfD+LI
-	YJm1lBxXlq175Ae5ifW2HzP4C9r6mVCYcB8xiW5i5oJ+oObVIa2ocltg260wmYycpM2IRZJ1QBk
-	LSqCM2hU/naODBZxupQ6awryyP3egAdyg59VQLtCqMzfaIKaC0Fqfd1FH3w==
-X-Received: by 2002:a05:600c:4743:b0:487:219e:42d with SMTP id 5b1f17b1804b1-4889970642emr229188235e9.11.1775558931654;
-        Tue, 07 Apr 2026 03:48:51 -0700 (PDT)
-X-Received: by 2002:a05:600c:4743:b0:487:219e:42d with SMTP id 5b1f17b1804b1-4889970642emr229187935e9.11.1775558931166;
-        Tue, 07 Apr 2026 03:48:51 -0700 (PDT)
-Received: from [192.168.88.32] ([212.105.153.231])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48895e19c10sm348616065e9.8.2026.04.07.03.48.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Apr 2026 03:48:50 -0700 (PDT)
-Message-ID: <ea5ba55d-c212-402a-a977-93c442610d17@redhat.com>
-Date: Tue, 7 Apr 2026 12:48:43 +0200
+	dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b="bI5WZPt4"
+Received: from pps.filterd (m0050096.ppops.net [127.0.0.1])
+	by m0050096.ppops.net-00190b01. (8.18.1.11/8.18.1.11) with ESMTP id 63760l5q890298;
+	Tue, 7 Apr 2026 11:50:18 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akamai.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=jan2016.eng; bh=tR9zlPUE9
+	OLIrT6Ka9u7VM5UW4su9y1h8WrE2pKiiKc=; b=bI5WZPt49jSUoKRvUNN+2FQFt
+	E616fmHDrtXBzd8c7O3G0A+2gOx/yECX8QVg1W9vkT+kcnHYM2uCjtD9JS/mE7xM
+	Uu1OC/3DbHjZwi1l4EINrEAwaEqzOcvOlbJne8gulA/ptp+IoTwvgHjhMEqowZ5Y
+	xFfWZW7UVEaJVbF2nTHurnyfEbq24DdmArJuaUqb+dWMaxCSU32KjR3xM9xb4c3a
+	kE9XsCeoyR1L41m127vFqoelZ+1hlCToG4IiY+AZ13NyBFO5Juib4OTRrRwNIZaJ
+	TVYpPR7c+wSeTRpz7eh6fp1W9ZLd+5qAzBBZJC6GlwrjIxU3ItEoldSmmunoQ==
+Received: from prod-mail-ppoint5 (prod-mail-ppoint5.akamai.com [184.51.33.60])
+	by m0050096.ppops.net-00190b01. (PPS) with ESMTPS id 4dau25pp6d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Apr 2026 11:50:18 +0100 (BST)
+Received: from pps.filterd (prod-mail-ppoint5.akamai.com [127.0.0.1])
+	by prod-mail-ppoint5.akamai.com (8.18.1.7/8.18.1.7) with ESMTP id 637AoHsb001173;
+	Tue, 7 Apr 2026 03:50:17 -0700
+Received: from prod-mail-relay01.akamai.com ([172.27.118.31])
+	by prod-mail-ppoint5.akamai.com (PPS) with ESMTP id 4dcmehtbc3-1;
+	Tue, 07 Apr 2026 03:50:17 -0700 (PDT)
+Received: from muc-lhvdhd.munich.corp.akamai.com (muc-lhvdhd.munich.corp.akamai.com [172.29.0.147])
+	by prod-mail-relay01.akamai.com (Postfix) with ESMTP id CAD2780;
+	Tue,  7 Apr 2026 10:50:15 +0000 (UTC)
+From: Nick Hudson <nhudson@akamai.com>
+To: bpf@vger.kernel.org, netdev@vger.kernel.org,
+        Willem de Bruijn <willemb@google.com>,
+        Martin KaFai Lau <martin.lau@linux.dev>
+Cc: Nick Hudson <nhudson@akamai.com>, Max Tottenham <mtottenh@akamai.com>,
+        Anna Glasgall <aglasgal@akamai.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Eduard Zingerman <eddyz87@gmail.com>,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org
+Subject: [PATCH bpf-next v3 4/6] bpf: allow new DECAP flags and add guard rails
+Date: Tue,  7 Apr 2026 11:50:03 +0100
+Message-Id: <20260407105005.1639815-5-nhudson@akamai.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260407105005.1639815-1-nhudson@akamai.com>
+References: <20260407105005.1639815-1-nhudson@akamai.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 net] amd-xgbe: synchronize KR training with device
- operations
-To: Raju Rangoju <Raju.Rangoju@amd.com>, netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, kuba@kernel.org, edumazet@google.com,
- davem@davemloft.net, andrew+netdev@lunn.ch, Thomas.Lendacky@amd.com,
- maxime.chevallier@bootlin.com
-References: <20260403072157.1042806-1-Raju.Rangoju@amd.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260403072157.1042806-1-Raju.Rangoju@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-07_02,2026-04-07_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ mlxscore=0 mlxlogscore=999 malwarescore=0 lowpriorityscore=0 phishscore=0
+ suspectscore=0 spamscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2604010000 definitions=main-2604070101
+X-Proofpoint-ORIG-GUID: JK9iwXZWTatNnLj4QjFY11gxv_6Zav35
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA3MDA5OSBTYWx0ZWRfX7Yw4BHstzq50
+ q9N1p14ZxlzBAS9U8hVrJxSOwhbHXvYBoBn+KMIXIeUYAu2yOQKfEBiUdzgx61YFOaoWhEOzcgq
+ 4/vwXDS48/O81s96YJv/GJzRsCWOmkg5vsnbV9Py7zUKmdJn6mbSz0FXPE3sZ/9k31bIBhngeIm
+ rlDJNiO0JFMBZ9lk5Yo5c6OpK2fG0YT296mVfT/GdG9v066+GZeVUfpydcISY/FXzx44fafO1TW
+ 8bjLnq0nzlWbIudMi/V7CI1nHWV5b1ytbSlBQvujar61CG85wt9cSflFozaU9RQ9XEfrwXPTwD2
+ +Z0MnVZClPf4niNMSyQo2OsHeEXqi83CWKgKyR/imdeN6nwJFrvACxIrJcVvdKQoA5cmnjMHRiL
+ XThCDCqSq9CP1adEpJJncDwnOcweyoQohYpZQfqRt2tvdnV4JD2OHoSlJxc20DTAj/BEeCBj1dQ
+ a+3S8ntUO0pQyBmPWMg==
+X-Proofpoint-GUID: JK9iwXZWTatNnLj4QjFY11gxv_6Zav35
+X-Authority-Analysis: v=2.4 cv=S7LpBosP c=1 sm=1 tr=0 ts=69d4e16a cx=c_pps
+ a=NpDlK6FjLPvvy7XAFEyJFw==:117 a=NpDlK6FjLPvvy7XAFEyJFw==:17
+ a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=Ifg-1AOnLHOf1gn6spyb:22
+ a=8P__5Em-pwOPtXrf4HJ0:22 a=X7Ea-ya5AAAA:8 a=Hfnf2daL9bryszF4jIsA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-07_02,2026-04-07_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
+ spamscore=0 clxscore=1015 bulkscore=0 adultscore=0 malwarescore=0
+ suspectscore=0 priorityscore=1501 impostorscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604070099
 
-On 4/3/26 9:21 AM, Raju Rangoju wrote:
-> +static bool xgbe_kr_training_in_progress(struct xgbe_prv_data *pdata)
-> +{
-> +	struct xgbe_phy_data *phy_data = pdata->phy_data;
-> +	unsigned long kr_start, kr_end;
-> +
-> +	/* Only wait for KR training in specific conditions:
-> +	 *  - Inphi re-driver is present, OR
-> +	 *  - Currently in KR mode with autoneg enabled
-> +	 */
-> +	if (!xgbe_phy_port_is_inphi(pdata) &&
-> +	    !(phy_data->cur_mode == XGBE_MODE_KR &&
-> +	      pdata->phy.autoneg == AUTONEG_ENABLE))
-> +		return false;
-> +
-> +	/* If training hasn't completed, ensure it actually started */
-> +	kr_start = READ_ONCE(pdata->kr_start_time);
-> +	if (!kr_start)
-> +		return false;
+Add checks to require shrink-only decap, reject conflicting decap flag
+combinations, and verify removed length is sufficient for claimed header
+decapsulation.
 
-AFAICS kr_start_time is set to the current jiffies value at
-initialization time and 0 is a valid - even if unlikely - jiffies value.
-The above test is false-positive prone.
+Co-developed-by: Max Tottenham <mtottenh@akamai.com>
+Signed-off-by: Max Tottenham <mtottenh@akamai.com>
+Co-developed-by: Anna Glasgall <aglasgal@akamai.com>
+Signed-off-by: Anna Glasgall <aglasgal@akamai.com>
+Signed-off-by: Nick Hudson <nhudson@akamai.com>
+---
+ net/core/filter.c | 44 +++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 43 insertions(+), 1 deletion(-)
 
-> +
-> +	/* Training is complete - no need to wait */
-> +	if (READ_ONCE(pdata->an_result) == XGBE_AN_COMPLETE)
-> +		return false;
-> +
-> +	kr_end = kr_start +
-> +		msecs_to_jiffies(XGBE_AN_MS_TIMEOUT + XGBE_KRTR_TIME);
-> +
-> +	/* If we're already past the training window, it's not "in progress" */
-> +	if (time_after(jiffies, kr_end))
-> +		return false;
-
-Sashiko notes wrap-around (32 bits systems) will lead to wrong return value.
-
-> +
-> +	return true;
-> +}
-> +
-> +static void xgbe_wait_for_kr_training_inprogress(struct xgbe_prv_data *pdata)
-> +{
-> +	unsigned long kr_end;
-> +
-> +	if (!xgbe_kr_training_in_progress(pdata))
-> +		return;
-> +
-> +	/* Don't block the auto-negotiation state machine work item */
-> +	if (current_work() == &pdata->an_work)
-> +		return;
-> +
-> +	kr_end = READ_ONCE(pdata->kr_start_time) +
-> +		msecs_to_jiffies(XGBE_AN_MS_TIMEOUT + XGBE_KRTR_TIME);
-> +
-> +	/* Poll until training completes or the training window expires */
-> +	while (time_before(jiffies, kr_end)) {
-> +		if (READ_ONCE(pdata->an_result) == XGBE_AN_COMPLETE)
-> +			break;
-> +
-> +		usleep_range(10000, 11000);
-> +	}
-> +}
-> +
->  static void xgbe_phy_perform_ratechange(struct xgbe_prv_data *pdata,
-> -					enum xgbe_mb_cmd cmd, enum xgbe_mb_subcmd sub_cmd)
-> +					enum xgbe_mb_cmd cmd,
-> +					enum xgbe_mb_subcmd sub_cmd)
->  {
->  	unsigned int s0 = 0;
->  	unsigned int wait;
-> @@ -2104,6 +2171,13 @@ static void xgbe_phy_perform_ratechange(struct xgbe_prv_data *pdata,
->  	/* Disable PLL re-initialization during FW command processing */
->  	xgbe_phy_pll_ctrl(pdata, false);
->  
-> +	/* Serialize firmware mailbox access.
-> +	 * Protects entire command sequence including busy check, PLL control,
-> +	 * and command execution. Uses explicit lock/unlock for compatibility
-> +	 * with goto-based cleanup (per cleanup.h guidelines).
-> +	 */
-> +	mutex_lock(&pdata->mailbox_lock);
-
-The comment is confusing, due the the `xgbe_phy_pll_ctrl()` invocation
-just before acquiring the lock.
-
-> +
->  	/* Log if a previous command did not complete */
->  	if (XP_IOREAD_BITS(pdata, XP_DRIVER_INT_RO, STATUS)) {
->  		netif_dbg(pdata, link, pdata->netdev,
-> @@ -2115,7 +2189,7 @@ static void xgbe_phy_perform_ratechange(struct xgbe_prv_data *pdata,
->  	XP_SET_BITS(s0, XP_DRIVER_SCRATCH_0, COMMAND, cmd);
->  	XP_SET_BITS(s0, XP_DRIVER_SCRATCH_0, SUB_COMMAND, sub_cmd);
->  
-> -	/* Issue the command */
-> +	/* Issue the firmware command */
->  	XP_IOWRITE(pdata, XP_DRIVER_SCRATCH_0, s0);
->  	XP_IOWRITE(pdata, XP_DRIVER_SCRATCH_1, 0);
->  	XP_IOWRITE_BITS(pdata, XP_DRIVER_INT_REQ, REQUEST, 1);
-> @@ -2123,11 +2197,13 @@ static void xgbe_phy_perform_ratechange(struct xgbe_prv_data *pdata,
->  	/* Wait for command to complete */
->  	wait = XGBE_RATECHANGE_COUNT;
->  	while (wait--) {
-> -		if (!XP_IOREAD_BITS(pdata, XP_DRIVER_INT_RO, STATUS))
-> +		if (!XP_IOREAD_BITS(pdata, XP_DRIVER_INT_RO, STATUS)) {
-> +			mutex_unlock(&pdata->mailbox_lock);
->  			goto do_rx_adaptation;
-> -
-> +		}
->  		usleep_range(1000, 2000);
->  	}
-> +	mutex_unlock(&pdata->mailbox_lock);
->  
->  	netif_dbg(pdata, link, pdata->netdev,
->  		  "firmware mailbox command did not complete\n");
-
-A `xgbe_phy_rx_reset()` invocation will happen here, outside the lock.
-Can that race? will that corrupt the nic status?
-
-/P
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 4e860da4381d..7f8d43420afb 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -56,6 +56,7 @@
+ #include <net/sock_reuseport.h>
+ #include <net/busy_poll.h>
+ #include <net/tcp.h>
++#include <net/gre.h>
+ #include <net/xfrm.h>
+ #include <net/udp.h>
+ #include <linux/bpf_trace.h>
+@@ -3490,6 +3491,12 @@ static u32 bpf_skb_net_base_len(const struct sk_buff *skb)
+ #define BPF_F_ADJ_ROOM_DECAP_L3_MASK	(BPF_F_ADJ_ROOM_DECAP_L3_IPV4 | \
+ 					 BPF_F_ADJ_ROOM_DECAP_L3_IPV6)
+ 
++#define BPF_F_ADJ_ROOM_DECAP_L4_MASK	(BPF_F_ADJ_ROOM_DECAP_L4_UDP | \
++					 BPF_F_ADJ_ROOM_DECAP_L4_GRE)
++
++#define BPF_F_ADJ_ROOM_DECAP_IPXIP_MASK	(BPF_F_ADJ_ROOM_DECAP_IPXIP4 | \
++					 BPF_F_ADJ_ROOM_DECAP_IPXIP6)
++
+ #define BPF_F_ADJ_ROOM_ENCAP_MASK	(BPF_F_ADJ_ROOM_ENCAP_L3_MASK | \
+ 					 BPF_F_ADJ_ROOM_ENCAP_L4_GRE | \
+ 					 BPF_F_ADJ_ROOM_ENCAP_L4_UDP | \
+@@ -3497,7 +3504,9 @@ static u32 bpf_skb_net_base_len(const struct sk_buff *skb)
+ 					 BPF_F_ADJ_ROOM_ENCAP_L2( \
+ 					  BPF_ADJ_ROOM_ENCAP_L2_MASK))
+ 
+-#define BPF_F_ADJ_ROOM_DECAP_MASK	(BPF_F_ADJ_ROOM_DECAP_L3_MASK)
++#define BPF_F_ADJ_ROOM_DECAP_MASK	(BPF_F_ADJ_ROOM_DECAP_L3_MASK | \
++					 BPF_F_ADJ_ROOM_DECAP_L4_MASK | \
++					 BPF_F_ADJ_ROOM_DECAP_IPXIP_MASK)
+ 
+ #define BPF_F_ADJ_ROOM_MASK		(BPF_F_ADJ_ROOM_FIXED_GSO | \
+ 					 BPF_F_ADJ_ROOM_ENCAP_MASK | \
+@@ -3740,6 +3749,8 @@ BPF_CALL_4(bpf_skb_adjust_room, struct sk_buff *, skb, s32, len_diff,
+ 	}
+ 
+ 	if (flags & BPF_F_ADJ_ROOM_DECAP_MASK) {
++		u32 len_decap_min = 0;
++
+ 		if (!shrink)
+ 			return -EINVAL;
+ 
+@@ -3748,6 +3759,37 @@ BPF_CALL_4(bpf_skb_adjust_room, struct sk_buff *, skb, s32, len_diff,
+ 		    BPF_F_ADJ_ROOM_DECAP_L3_MASK)
+ 			return -EINVAL;
+ 
++		if ((flags & BPF_F_ADJ_ROOM_DECAP_L4_MASK) ==
++		    BPF_F_ADJ_ROOM_DECAP_L4_MASK)
++			return -EINVAL;
++
++		if ((flags & BPF_F_ADJ_ROOM_DECAP_IPXIP_MASK) ==
++		    BPF_F_ADJ_ROOM_DECAP_IPXIP_MASK)
++			return -EINVAL;
++
++		/* Reject mutually exclusive decap tunnel type flags. */
++		if ((flags & BPF_F_ADJ_ROOM_DECAP_L4_MASK) &&
++		    (flags & BPF_F_ADJ_ROOM_DECAP_IPXIP_MASK))
++			return -EINVAL;
++
++		if (flags & BPF_F_ADJ_ROOM_DECAP_L4_MASK)
++			len_decap_min += bpf_skb_net_base_len(skb);
++
++		if (flags & BPF_F_ADJ_ROOM_DECAP_L4_UDP)
++			len_decap_min += sizeof(struct udphdr);
++
++		if (flags & BPF_F_ADJ_ROOM_DECAP_L4_GRE)
++			len_decap_min += sizeof(struct gre_base_hdr);
++
++		if (flags & BPF_F_ADJ_ROOM_DECAP_IPXIP4)
++			len_decap_min += sizeof(struct iphdr);
++
++		if (flags & BPF_F_ADJ_ROOM_DECAP_IPXIP6)
++			len_decap_min += sizeof(struct ipv6hdr);
++
++		if (len_diff_abs < len_decap_min)
++			return -EINVAL;
++
+ 		if (flags & BPF_F_ADJ_ROOM_DECAP_L3_IPV4)
+ 			len_min = sizeof(struct iphdr);
+ 
+-- 
+2.34.1
 
