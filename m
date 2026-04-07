@@ -1,72 +1,73 @@
-Received: from mail-ot1-f68.google.com (mail-ot1-f68.google.com [209.85.210.68])
+Received: from mail-oo1-f67.google.com (mail-oo1-f67.google.com [209.85.161.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19203BFE5D
-	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 15:31:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65DE73B8949
+	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 15:31:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775575904; cv=none; b=iNtnwCs/6nu0l8GMRwXu7B5w7f4XmxRwPE4aJgdXm13YEphPanhfI4d7jInEbznd+RoKBI98FerPo9J8jDjMRbkXDphacptUF8ingaO8s12ZlP+6tCgXTlpV5ERQ+tj+S0SA5dy/Me6oVufdEU4hBYjhW3UwXMbpUJu1yP+xT7g=
+	t=1775575905; cv=none; b=YfNnXMAk7JvSBbfX0Qyuayp/7HEVF+b3n1Yw+iJe2CpUK/koIXlDIazBzY573jetV7Il5NIo0GQOZ7yH71czY41/L6o8I1WEdo/DkX/4J0stca1ISz/U9seqZ72tr/FkQPaFAUBgU8hzZb2nQNnXJUTG+lqzX+4n3WjvB6or9S4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775575904; c=relaxed/simple;
-	bh=v23//E0JGII2nVxzm68+kN8cdfhFLcB/CTJGXqqcX1M=;
+	s=arc-20240116; t=1775575905; c=relaxed/simple;
+	bh=DKidY/MdYOtfevcdXyx7V0aSlum6iiFr4TrDbULjJ1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DViYC2hIH4jkkt3kcPL13n60xsZFCKtFftMaZJFNoRxKHG6cdJFLe+ASg7h2ZpiyJmb6L8JOkHvm7bnyRk+Uxasx/sSMpYStXAxKTIwsfbqoaf/5edXeflyZhuOk5JmTAawVRmPzF7v2/QS9zh72sLAffkI1Vpy3u4tD3EVMlng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sMefPmLC; arc=none smtp.client-ip=209.85.210.68
+	 MIME-Version; b=fwE4bYsNU2l+APgrLhrvQxZ0y9mPyakxvXMG9GuDQM+rMfr/veA7q4+mGLLZ9TsMjqRikQdCn/Cf0w6fZxSlj4NczRUD2H6yKLTfe2o+dKbAamRzyc7pSuRJ+k4dKE5neOdMTJTZLaft14zbwspRynoA08m7OlCwUlNUt71qXYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VcJ/x7Gm; arc=none smtp.client-ip=209.85.161.67
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sMefPmLC"
-Received: by mail-ot1-f68.google.com with SMTP id 46e09a7af769-7d1872504cbso969a34.0
-        for <netdev@vger.kernel.org>; Tue, 07 Apr 2026 08:31:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VcJ/x7Gm"
+Received: by mail-oo1-f67.google.com with SMTP id 006d021491bc7-67934c83063so1745019eaf.0
+        for <netdev@vger.kernel.org>; Tue, 07 Apr 2026 08:31:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775575890; x=1776180690; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1775575891; x=1776180691; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OAWENlI9PzRx9ggSEqs5vEqtc+nROP63EGy+XuO8Xws=;
-        b=sMefPmLCTc64ueKcTktOjzXoNycTgReyFR4JddmqxX9mXSDmZLACTvphhqDjvpL7l+
-         2yHPEafHgEHsAkyO7rjisGlwsUh9RonZvAFZxdMF//PICgg81eXcsgVhk1nupZ2lEeSb
-         RiYcsMEP4GW3jPUWFQoRxfIsW/8JeIbYoaZiEHt9MLlieuh7DZpfi0JhJPazzC4FHpqH
-         HfnHTEEVRCVMgLJAbEnu4jwF436nOn781KtyCM7ZYATMGJfHMXFXzNf9N//CPth2pMQk
-         d71E9dVrbc8HA4xRTQ97h/SrLSGUe6IgMT5B7rRcpm2fQToMBkwYkRE+crTLe3J7LUE5
-         gPPw==
+        bh=sQnMk0pGtkY3ChCrgRcgnkRgU2Rn3bzSZHSrL8+GszI=;
+        b=VcJ/x7GmzTVh2AU3gtnbyWFMm8s558scbIzPkQ5aD189XGtQzgXmQELxe0FSRK9Wds
+         U45On6oszw49DZXBJJbjYUDp3PcnuyfS9s8rjIrZsq9oWhsaddmlpiqkjzciHO7dN2Zj
+         oiL5n18OaRUwHWdLJC16UOAnm+OdNnqsKBqVF4mWBia49fpWV/vzExPtOJQnfWiDmqq/
+         ARzlZdY19IhDg55GNcOkNnf+KZK70QCSHTbdTxEfRIDeIqnhDyk/ztkYsDIA41YbYIj6
+         9nz5CRS6VytIjEAWOQSFJYwZUiFclQbYe2QFNVZrWxRLSfxoW+kNWTDcSRpuUZbMbT1Q
+         qHKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775575890; x=1776180690;
+        d=1e100.net; s=20251104; t=1775575891; x=1776180691;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=OAWENlI9PzRx9ggSEqs5vEqtc+nROP63EGy+XuO8Xws=;
-        b=N3moX/KXAMDfq/NeuQ0W/c7efglOsOQlISMObwwAdkpxZl1wFPQXJU89NYJWrZd8It
-         dK6WklsoJiPaIslrszdJ3f1J+vFD/uIqP6kL+1yWsDMs9gZzKrzy31SQEa7yu7GAtzr1
-         nEnHvkxBpPBJENlEcFpry0WTO8B24cR5d3dpL6OwQsO+X6n8s4WzcpUmp7FZSikmUgPc
-         +iKfSJDjsntb9Yc9BxliO9Xu21SsG9pYzIJeq4bD41JVMPNIHVR24lTePeQIEj0aUJ7s
-         pwJkSnDuQmCaMj25maLAQscmmCb0vDzlvN1yyhYHZrn9MiXQce+g88pOjGYRUDYUugfD
-         VOVw==
-X-Gm-Message-State: AOJu0YyMAXpdd9zY8xNKAocX7rtGcEXcBwsrjbqzz3L1Ivqk2gDN6Uen
-	4E76Svxtb+jGk7C/+6r50+Nlts89l/2IroaCVpQQdxGFFL4zAxC2ZI/Qs2XFw5VvxUs=
-X-Gm-Gg: AeBDies+Wc3mcBnV9FGDNPD3FtUYkuyztbBoC2zmfJKUOhPyaKrFbVyjwY0azK/1J/r
-	zIrNQ6do+5fdqsrcQ0rLpGh0lOl6n6hJOU9OQe8RolT/Ossxl+efbzaope2ZPwYIzZhSB0L1l9I
-	5nytR/wLklQbczuCYGCDzlEnLHQAXvHAZEsOi8O01QESv1II03UIGbW7zFKigk9RyP1FY6DbRo7
-	EHCrDtOVoI2dyP+qmDsiaISskAgFkiNz+eI9hdK03OTBECp3YyExI6zUCBHi6yUhF95OwmSQH/s
-	/l7iACe7Gq26d4hBMmonP5wAlc3FICGud6kuQe72IRantx5beA5yvB+vJeRlBUBFPF/DlR7YO9X
-	x3s2zrGIxTKPICxezOo3Ld2PG6Zi/YKMWzCqk+gforKtlynciixnODL5FcyAWbduTay6SoTKJ1+
-	t3kmBFzvq0GJAxnQ4q
-X-Received: by 2002:a05:6830:d:b0:7d7:f3d1:d701 with SMTP id 46e09a7af769-7dbabc2f75fmr8173405a34.6.1775575889650;
-        Tue, 07 Apr 2026 08:31:29 -0700 (PDT)
-Received: from localhost ([2a03:2880:12ff:5::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7dbed6c3512sm2894870a34.4.2026.04.07.08.31.29
+        bh=sQnMk0pGtkY3ChCrgRcgnkRgU2Rn3bzSZHSrL8+GszI=;
+        b=RMjMsKdmXbzAq2l4VAjWpncvPNVslhYjz+E48GjbJLf1BiEWhUbBASuy7CznJPArqf
+         0nQiFy7RMdoIP6dp016Q3LqVESE9pKJTyPvhum7T5+KVo4rZ3hTMH+bcQGLFug646Q8F
+         l5RuJe5/2HlCHXGlb+WkkwKJ6a0k7+2E4ozaJ+DHVZEhsQCaeOHfWhTY5JAd32rDEL6/
+         Tdwz2nBm6IVpnc9lnYhi6jn+ddLFQuYlHPwB/hZl58tOSIwR2EvSY0ig0Vc+kZDkdNd9
+         yBWIZh8kFLVbJ5BrBqwrWrLWkvzwULiU3rZ+7909htLOot3pQUAdxYwv9E8uWGNCclpk
+         vs/w==
+X-Gm-Message-State: AOJu0YyeEVtk2l8nyegQ9FTfM37IAFP8VQAj4hcMYaI9I574BJWHNjKL
+	XQOzlaRfWuk+GM3t/RDDFB4sBwtMx3JaTw0YvwLQOqh6PlVDJ94B05aNrnCK8d665Hs=
+X-Gm-Gg: AeBDietFhb+cwj66aAQi8Sy8kckXW/96UlRhJ5nQBY61GoixKr1ZynHMBuHLODuEc/+
+	DRGZCrlmyvp6i7bS+kDaR0FmI/tdQxxVyPGxuImYhpBNOvjZlvGXPx/qMiqULx571aD484wLJiR
+	+6D3xyqOpe+cl7udkWzJ1Sb5GW3oo/kyd6Dfp0a1JGVVJDgLcuWefWN1FRB1q9fwQ8nH+gjgvhn
+	HoNM1nJdkfeM1RmJeSkXqVF6+5YYbjetHgRknlHfsTvuks65BJ5KC3U/ihY3jIHAccpGOdYfD0r
+	h0A1DPyO6c8RheRq9rEtbFmT/Fsi/IgnqzZMxz5I+o8H7TdXDM97ZFy1ax0NXN0es5wnG++3+8F
+	yshzraOVETMSIwUFzaPQE4vfl6eDWRdbpUHeXz48cmUSJGO9P2qIv3eTba9dSGI6cIBS6FSsvIZ
+	XTvDNM96Y6aDoN11wv5w==
+X-Received: by 2002:a4a:ee0c:0:b0:682:e9ca:f810 with SMTP id 006d021491bc7-682e9cafa10mr9698902eaf.46.1775575891556;
+        Tue, 07 Apr 2026 08:31:31 -0700 (PDT)
+Received: from localhost ([2a03:2880:12ff:58::])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-680a8d1d2cfsm10111593eaf.13.2026.04.07.08.31.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Apr 2026 08:31:29 -0700 (PDT)
+        Tue, 07 Apr 2026 08:31:31 -0700 (PDT)
 From: Stanislav Fomichev <sdf.kernel@gmail.com>
 X-Google-Original-From: Stanislav Fomichev <sdf@fomichev.me>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
-	pabeni@redhat.com
-Subject: [PATCH net-next v6 10/14] netdevsim: convert to ndo_set_rx_mode_async
-Date: Tue,  7 Apr 2026 08:30:57 -0700
-Message-ID: <20260407153101.3694714-11-sdf@fomichev.me>
+	pabeni@redhat.com,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: [PATCH net-next v6 12/14] net: warn ops-locked drivers still using ndo_set_rx_mode
+Date: Tue,  7 Apr 2026 08:30:59 -0700
+Message-ID: <20260407153101.3694714-13-sdf@fomichev.me>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260407153101.3694714-1-sdf@fomichev.me>
 References: <20260407153101.3694714-1-sdf@fomichev.me>
@@ -78,48 +79,53 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Convert netdevsim from ndo_set_rx_mode to ndo_set_rx_mode_async.
-The callback is a no-op stub so just update the signature and
-ops struct wiring.
+Now that all in-tree ops-locked drivers have been converted to
+ndo_set_rx_mode_async, add a warning in register_netdevice to catch
+any remaining or newly added drivers that use ndo_set_rx_mode with
+ops locking. This ensures future driver authors are guided toward
+the async path.
 
+Also route ops-locked devices through netdev_rx_mode_work even if they
+lack rx_mode NDOs, to ensure netdev_ops_assert_locked() does not fire
+on the legacy path where only RTNL is held.
+
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
 ---
- drivers/net/netdevsim/netdev.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ net/core/dev.c            | 5 +++++
+ net/core/dev_addr_lists.c | 3 ++-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
-index c71b8d116f18..73edc4817d62 100644
---- a/drivers/net/netdevsim/netdev.c
-+++ b/drivers/net/netdevsim/netdev.c
-@@ -185,7 +185,9 @@ static netdev_tx_t nsim_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	return NETDEV_TX_OK;
- }
+diff --git a/net/core/dev.c b/net/core/dev.c
+index d2e72fdf3dfe..e66a893566e8 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -11346,6 +11346,11 @@ int register_netdevice(struct net_device *dev)
+ 		goto err_uninit;
+ 	}
  
--static void nsim_set_rx_mode(struct net_device *dev)
-+static void nsim_set_rx_mode(struct net_device *dev,
-+			     struct netdev_hw_addr_list *uc,
-+			     struct netdev_hw_addr_list *mc)
- {
- }
++	if (netdev_need_ops_lock(dev) &&
++	    dev->netdev_ops->ndo_set_rx_mode &&
++	    !dev->netdev_ops->ndo_set_rx_mode_async)
++		netdev_WARN(dev, "ops-locked drivers should use ndo_set_rx_mode_async\n");
++
+ 	ret = netdev_do_alloc_pcpu_stats(dev);
+ 	if (ret)
+ 		goto err_uninit;
+diff --git a/net/core/dev_addr_lists.c b/net/core/dev_addr_lists.c
+index 49346d0cbc8a..3bd7bd396de0 100644
+--- a/net/core/dev_addr_lists.c
++++ b/net/core/dev_addr_lists.c
+@@ -1362,7 +1362,8 @@ void __dev_set_rx_mode(struct net_device *dev)
+ 	if (!netif_device_present(dev))
+ 		return;
  
-@@ -593,7 +595,7 @@ static const struct net_shaper_ops nsim_shaper_ops = {
- 
- static const struct net_device_ops nsim_netdev_ops = {
- 	.ndo_start_xmit		= nsim_start_xmit,
--	.ndo_set_rx_mode	= nsim_set_rx_mode,
-+	.ndo_set_rx_mode_async	= nsim_set_rx_mode,
- 	.ndo_set_mac_address	= eth_mac_addr,
- 	.ndo_validate_addr	= eth_validate_addr,
- 	.ndo_change_mtu		= nsim_change_mtu,
-@@ -616,7 +618,7 @@ static const struct net_device_ops nsim_netdev_ops = {
- 
- static const struct net_device_ops nsim_vf_netdev_ops = {
- 	.ndo_start_xmit		= nsim_start_xmit,
--	.ndo_set_rx_mode	= nsim_set_rx_mode,
-+	.ndo_set_rx_mode_async	= nsim_set_rx_mode,
- 	.ndo_set_mac_address	= eth_mac_addr,
- 	.ndo_validate_addr	= eth_validate_addr,
- 	.ndo_change_mtu		= nsim_change_mtu,
+-	if (ops->ndo_set_rx_mode_async || ops->ndo_change_rx_flags) {
++	if (ops->ndo_set_rx_mode_async || ops->ndo_change_rx_flags ||
++	    netdev_need_ops_lock(dev)) {
+ 		netif_rx_mode_queue(dev);
+ 		return;
+ 	}
 -- 
 2.52.0
 
