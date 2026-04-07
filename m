@@ -1,144 +1,132 @@
-Received: from mx0a-00190b01.pphosted.com (mx0a-00190b01.pphosted.com [67.231.149.131])
+Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFDE3AD522;
-	Tue,  7 Apr 2026 11:30:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.149.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0883AE198;
+	Tue,  7 Apr 2026 11:30:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775561409; cv=none; b=apE0wk7A5DU19sxiNsqfMKIx+fLnX3pDu0aKXa0SgIzpBuZDeljkQAgx5gKS6vN/qVHIcSEwNOtD+JR6FJIuvsY8GkcE/Y304kmFV8LMfUtfncZgk5m2de0KJ6/ntMGD7ZKyvLcs9ibVkeLdwwxBGcOMUZWjxLSgTAmVKjQFvRA=
+	t=1775561415; cv=none; b=TkbImTulXmPHg2NAylZq7+OLchW4NSDszy4LIyAZndGSUNMdsfJ+Pa17L5lmmbsyXbDZeIBtHKhFeI6gRv/8Bjm7iTjkXBbb4zeHqvcBee1UoksxiatqemOMKak7gxKo202S4gq96rC9micOkVHQ8/eLwy1N19zbO6Y6GLQ+lGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775561409; c=relaxed/simple;
-	bh=KCKl5ztQqRvVLggW+dB1QE+I26Jh98Ml3MM3A41Du8I=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FSXJoPLeYOClH+Bdg98DzCisSq3EWYB7uwpMZhWmuF0E1fQQ5PsBc3XLeiC3VCatPW2Cd0welJQdNnQSvNw6z0WCoh4tPrY5Xm9Oc6/BXyO1n33cGr0XK2T1VN9MhoND6RoaPFA+s/8W9KzrojVkCu+ZwXBx/ulTe5KbwWYJHx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com; spf=pass smtp.mailfrom=akamai.com; dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b=BwHQtUyg; arc=none smtp.client-ip=67.231.149.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=akamai.com
+	s=arc-20240116; t=1775561415; c=relaxed/simple;
+	bh=zmKtGXvPPmowdh2mtbprU/pHgivD6gdZlQXXU41pyVM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RMQVJ8Z8dEZhnPD1B4sVHTyVDg05dhcpivdTs5/iAfH23w/JZ+9Da80sQRYrVjeX3diuqzlS90YLPaaWc780Rp/ksy3QezzGOApKCvIS5e7WAmcb7QdwfcAH8ePCyl2f9SCclPq9aUZ6o2vWgf0U1C+r1HIjS6/csUvGdm1PocE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=Ox8/IkIN; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ahokdZI2; arc=none smtp.client-ip=103.168.172.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b="BwHQtUyg"
-Received: from pps.filterd (m0409409.ppops.net [127.0.0.1])
-	by m0409409.ppops.net-00190b01. (8.18.1.11/8.18.1.11) with ESMTP id 6372FHPp536041;
-	Tue, 7 Apr 2026 11:50:13 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akamai.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=jan2016.eng; bh=Fm4QDEKMfHoElFxUNOQWeJg+0bZbYcXhJ
-	UHvTev2Kjk=; b=BwHQtUygfm0Fv/n1vOERuJYH5Dkb8gTmvTbQs27I5+5MO3rEW
-	Bjh8ZESvJKYtQI87LN0TRK1Oe9/MS6Y0ttFggQF+p0FjqUhHAoI9mCo6vvZSmCDF
-	YQgdAF866BYPr6glCB4z974hyTpmRI8ysqWq78Y81Vn6xdepZwq5mU21tmN0RKvy
-	uf0sMAEIpNNNzyI52MdGeUTtDWd/9DEUu0nbXxZ8G3MMbDWQrUwKzSbqnXTsle+u
-	5M6eMi7E0rN1+Eq7fEaNqdx54Vobjnqi/INI5FGHayt2CW5VBnoXy2RnnNc6tNGy
-	uP1Pst8bXw1hYZGFXx8iXmm0uGNXll4oSDRRA==
-Received: from prod-mail-ppoint5 (prod-mail-ppoint5.akamai.com [184.51.33.60])
-	by m0409409.ppops.net-00190b01. (PPS) with ESMTPS id 4dbbymrgce-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Apr 2026 11:50:12 +0100 (BST)
-Received: from pps.filterd (prod-mail-ppoint5.akamai.com [127.0.0.1])
-	by prod-mail-ppoint5.akamai.com (8.18.1.7/8.18.1.7) with ESMTP id 637AoB7B001156;
-	Tue, 7 Apr 2026 03:50:11 -0700
-Received: from prod-mail-relay01.akamai.com ([172.27.118.31])
-	by prod-mail-ppoint5.akamai.com (PPS) with ESMTP id 4dcmehtbbs-1;
-	Tue, 07 Apr 2026 03:50:11 -0700 (PDT)
-Received: from muc-lhvdhd.munich.corp.akamai.com (muc-lhvdhd.munich.corp.akamai.com [172.29.0.147])
-	by prod-mail-relay01.akamai.com (Postfix) with ESMTP id 9EE7780;
-	Tue,  7 Apr 2026 10:50:08 +0000 (UTC)
-From: Nick Hudson <nhudson@akamai.com>
-To: bpf@vger.kernel.org, netdev@vger.kernel.org,
-        Willem de Bruijn <willemb@google.com>,
-        Martin KaFai Lau <martin.lau@linux.dev>
-Cc: Nick Hudson <nhudson@akamai.com>, Max Tottenham <mtottenh@akamai.com>,
-        Anna Glasgall <aglasgal@akamai.com>
-Subject: [PATCH bpf-next v3 0/6] bpf: decap flags and GSO state updates
-Date: Tue,  7 Apr 2026 11:49:59 +0100
-Message-Id: <20260407105005.1639815-1-nhudson@akamai.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="Ox8/IkIN";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ahokdZI2"
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfout.phl.internal (Postfix) with ESMTP id 1DC57EC046B;
+	Tue,  7 Apr 2026 07:30:11 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-09.internal (MEProxy); Tue, 07 Apr 2026 07:30:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1775561411; x=
+	1775647811; bh=gFXawp+CjNeAOKeG8AkV4oa72KSKeiCRRlIhnESJsY0=; b=O
+	x8/IkINDomUK2DdnDZv92Tqe2fyR/rCFVna1Q+pd/gld0p0ocPRPSeTyB7Abtaa+
+	+bZy6aVd14++osb9OYg6DwAJ1BjYXaKfFGmth6oijf6fIe8vgCNGPCW1CcitqPj8
+	xd3WoLtj3unpMEFJ7v7Sb8tKiP+0HUOefr88+6zIPikE8HLGt70bXBIuz+l0jFm7
+	u/re0vUqamR4hN4rHnpMNQ00KRCz5Z5RwXk3f/u+5jHedWzDbYm+RNF2ozHUcKMW
+	7q+as5YP32gniEjkpEeI9GwKVEZQAFntw9bodgApidhT70O44YxNwakDLfoC+Tza
+	v3RK13TkikHj4qmZVidsA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1775561411; x=1775647811; bh=gFXawp+CjNeAOKeG8AkV4oa72KSKeiCRRlI
+	hnESJsY0=; b=ahokdZI2Twg3hSVUcTqIL37CfkP/XEzvyAjSPJEj8u3zr4USwqR
+	enqP94rddA1T/bwy4hAzojq/M+2BJM11tP2Q6MXrRGdEm7VsF0tsRbFrcxKPresd
+	CQvc8W2moY3tmoZxZIg/tbZD/vcwf29QFCc21RP3x482WDD3bUZQXcNZe76EOtD0
+	WHiLpzGXt9XjUyLiyRWhmusTSFAgx9GpaXRmCUW7C6N2/XYALYzA6GW09Wyulcvh
+	8BG/0HT512muWwRxNf+POIsjXasqnRJEMHpMqAD85/13ns8bjNMoVqgmKloztHOO
+	KdfIYZPh9Bz26djbF7UgmdM6DUotFSBgTgQ==
+X-ME-Sender: <xms:wurUaZn7dNQSk1_hbtq-SFY57811q7oeiBa5A4TDnVSgxQnsGXv6Ig>
+    <xme:wurUaZxLczwv7v5tKM_aqYAOU5v9blze_hlMsN6_h4uXOq_4Ln8CMWshn9xBFe5Nj
+    _v_SC1odU6Ghhrlg99JB56Eqc_KNJ7hw6H1FIvKysH2wpXbojZcsvM>
+X-ME-Received: <xmr:wurUaT6JVdBzoDBc1qv8NTwgJsxBOgu4MiZp8LNLZ6w1yWlHwGwMOxGyfzAb>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddvtdehvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttdejnecuhfhrohhmpefurggsrhhinhgr
+    ucffuhgsrhhotggruceoshgusehquhgvrghshihsnhgrihhlrdhnvghtqeenucggtffrrg
+    htthgvrhhnpeeuhffhfffgfffhfeeuiedugedtfefhkeegteehgeehieffgfeuvdeuffef
+    gfduffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    hsugesqhhuvggrshihshhnrghilhdrnhgvthdpnhgspghrtghpthhtohepledpmhhouggv
+    pehsmhhtphhouhhtpdhrtghpthhtoheprhgrmhguhhgrnhesshhtrghrlhgrsghsrdhsgh
+    dprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphht
+    thhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrvhgvmhesuggrvh
+    gvmhhlohhfthdrnhgvthdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgt
+    ohhmpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhope
+    hjohhhnhdrfhgrshhtrggsvghnugesghhmrghilhdrtghomhdprhgtphhtthhopehinhhf
+    ohesshhtrghrlhgrsghsrdhsghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvg
+    hrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:wurUaZXZguiCPhMPyfzR8Msu3om59RqM2TdPzzxbtKJ7aQSHVLG5fQ>
+    <xmx:wurUabJ-lSOPRtSCwcBZ53g5pAYhXFeePv6xtYfQN2duKEFvjESXOQ>
+    <xmx:wurUabvEXhbZftfpE0IRDTsigQK2Jdu6_uKvq8BrBzaQ5aQrgBbiSA>
+    <xmx:wurUaYL-I6VIcBcnmEyd510PcNpLSnty0OQpAmfV83XrRKRj1I0gpA>
+    <xmx:w-rUaXdw7I-wBLgB6prGxjjYuvQ2CyZQ1i07yBpNJ57AL7-4Or-2Mzct>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 7 Apr 2026 07:30:09 -0400 (EDT)
+Date: Tue, 7 Apr 2026 13:30:08 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
+Cc: netdev@vger.kernel.org, kuba@kernel.org, davem@davemloft.net,
+	edumazet@google.com, pabeni@redhat.com, john.fastabend@gmail.com,
+	info@starlabs.sg, stable@vger.kernel.org
+Subject: Re: [PATCH] net/tls: fix use-after-free in -EBUSY error path of
+ tls_do_encryption
+Message-ID: <adTqwMD_GBUjZnkw@krikkit>
+References: <20260403013617.2838875-1-ramdhan@starlabs.sg>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-07_02,2026-04-07_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- mlxscore=0 mlxlogscore=999 malwarescore=0 lowpriorityscore=0 phishscore=0
- suspectscore=0 spamscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2604010000 definitions=main-2604070101
-X-Authority-Analysis: v=2.4 cv=K+sS2SWI c=1 sm=1 tr=0 ts=69d4e164 cx=c_pps
- a=NpDlK6FjLPvvy7XAFEyJFw==:117 a=NpDlK6FjLPvvy7XAFEyJFw==:17
- a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=Ifg-1AOnLHOf1gn6spyb:22
- a=TTBIr9FR-UdC54aaq7Eb:22 a=X7Ea-ya5AAAA:8 a=1oy85zK9C34BhurvvrYA:9
-X-Proofpoint-ORIG-GUID: ijNFZiXVfNJ-jGjMPJPGl-nydoVvelqL
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA3MDA5OSBTYWx0ZWRfXy9nnJCfjpXMF
- CbRl83AwyEWMopRMw1A8RUNLl1Y6lSd1Odnl0VYLfG3DnLpq5G1r7kxA+4ejgUctVbbidyUA5wr
- jHMyHw4bxFsDRBPB9JoiiX1DaKDsXRTQbhJc/2NW0qhf0ChcnqgxTDYk43Yy9T5E4xLOoHUCaAi
- 9cAGPhQKN/zGmh0VP9H7z70WTgGjIWua0M/u5svuI44lMsjLAsTIC6wvFXOaHL8AMg/WSx6tKOx
- YMoGampnqgEUU5g2Trbo3FDiY1wEYRaDwqZhTOsbxSqOn50yWz/UOHoSVyyxESePUMY0/vsTsqM
- BX8gQbGG9gCNaiAE5RKdtR9vwIhl4FHmw6xRvO/3Wa1Y5CjFO11JvvEnRJoHO3xauqqmGFLOqIq
- 7Sh66UzeJXh41FSS0qQmNeFUtILruQj8F3mrkLovJ+ObEbZwmigKXVoDSwA7EH8TNIqHJUmzBoj
- cxGf5dLEQOrzyi0+8qw==
-X-Proofpoint-GUID: ijNFZiXVfNJ-jGjMPJPGl-nydoVvelqL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-07_02,2026-04-07_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
- priorityscore=1501 malwarescore=0 phishscore=0 adultscore=0 suspectscore=0
- impostorscore=0 clxscore=1015 lowpriorityscore=0 spamscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604070099
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260403013617.2838875-1-ramdhan@starlabs.sg>
 
-This series extends bpf_skb_adjust_room() with decapsulation-specific
-flags and tunnel GSO state updates for decap use cases.
+2026-04-03, 09:36:17 +0800, Muhammad Alifa Ramdhan wrote:
+> The -EBUSY handling in tls_do_encryption(), introduced by commit
+> 859054147318 ("net: tls: handle backlogging of crypto requests"), has
+> a use-after-free due to double cleanup of encrypt_pending and the
+> scatterlist entry.
+> 
+> When crypto_aead_encrypt() returns -EBUSY, the request is enqueued to
+> the cryptd backlog and the async callback tls_encrypt_done() will be
+> invoked upon completion. That callback unconditionally restores the
+> scatterlist entry (sge->offset, sge->length) and decrements
+> ctx->encrypt_pending. However, if tls_encrypt_async_wait() returns an
+> error, the synchronous error path in tls_do_encryption() performs the
+> same cleanup again, double-decrementing encrypt_pending and
+> double-restoring the scatterlist.
+> 
+> The double-decrement corrupts the encrypt_pending sentinel (initialized
+> to 1), making tls_encrypt_async_wait() permanently skip the wait for
+> pending async callbacks. A subsequent sendmsg can then free the
+> tls_rec via bpf_exec_tx_verdict() while a cryptd callback is still
+> pending, resulting in a use-after-free when the callback fires on the
+> freed record.
+> 
+> Fix this by skipping the synchronous cleanup when the -EBUSY async
+> wait returns an error, since the callback has already handled
+> encrypt_pending and sge restoration.
+> 
+> Fixes: 859054147318 ("net: tls: handle backlogging of crypto requests")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
+> ---
+>  net/tls/tls_sw.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
 
-Motivation
-----------
-
-When BPF decapsulates tunneled packets, skb GSO state needs to be updated
-to match the removed tunnel layer. This includes clearing the corresponding
-tunnel GSO type bits and resetting encapsulation state once no tunnel GSO
-flags remain.
-
-Series Overview
----------------
-
-- Name the adjust_room flag enum for CO-RE lookups.
-- Refactor adjust_room helper masks for maintainable validation logic.
-- Add new DECAP flags to UAPI.
-- Add guard rails for incompatible/invalid decap flag combinations.
-- Implement decap GSO flag clearing.
-- Add selftests to validate decap GSO state transitions.
-
-Changes v2 -> v3:
-- Add a new selftests patch to validate decap GSO state behavior.
-- Reorder the series so helper-mask refactoring precedes UAPI DECAP flag additions.
-- Refresh patch 2 and patch 3 split to keep refactoring behavior-neutral.
-- Patch 5: add decap tunnel GSO-state checks in
-  "bpf: clear decap tunnel GSO state in skb_adjust_room" (per Gemini/sashiko).
-
-Changes v1 -> v2:
-- Patch 3: decap flag acceptance intentionally remains L3-only while adding helper masks.
-- Patch 4: decap with L4/IPXIP support enabled with guard rails.
-
-Co-developed-by: Max Tottenham <mtottenh@akamai.com>
-Signed-off-by: Max Tottenham <mtottenh@akamai.com>
-Co-developed-by: Anna Glasgall <aglasgal@akamai.com>
-Signed-off-by: Anna Glasgall <aglasgal@akamai.com>
-Signed-off-by: Nick Hudson <nhudson@akamai.com>
-
-Nick Hudson (6):
-  bpf: name the enum for BPF_FUNC_skb_adjust_room flags
-  bpf: refactor masks for ADJ_ROOM flags and encap validation
-  bpf: add BPF_F_ADJ_ROOM_DECAP_* flags for tunnel decapsulation
-  bpf: allow new DECAP flags and add guard rails
-  bpf: clear decap tunnel GSO state in skb_adjust_room
-  selftests/bpf: tc_tunnel validate decap GSO state
-
- include/uapi/linux/bpf.h                      |  36 +++++-
- net/core/filter.c                             | 120 +++++++++++++++---
- tools/include/uapi/linux/bpf.h                |  36 +++++-
- .../selftests/bpf/progs/test_tc_tunnel.c      |  58 +++++++++
- 4 files changed, 227 insertions(+), 23 deletions(-)
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
 
 -- 
-2.34.1
-
+Sabrina
