@@ -1,27 +1,27 @@
-Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
+Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C2E372675
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62FAD372B26
 	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 02:57:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775530648; cv=none; b=lKyUS7U3N8tomfkV0Odqd0c7wOkS/3rC1SLd+IY6/9xjmbtSC34YnKdDZy+VnxFlshYKLYhs7SSgLM2FZZI/UCv4Y34euWGMG0rRYceLugE+YupA+n+QTHhJAQ/JB56KReHKcXVp7O1d7WpJBHLqmDmBhvIb/1f0FnVh7IVvh+Q=
+	t=1775530648; cv=none; b=cePqaLsFJbXFQgXLqnH/MOLz0+E4Y5Gd53zlxncm3GwTDirqP1K+4kg8TVWVeG/iChUd6vV+fZtGHD7n7Uy58pw/qrUMV/i7kFrgtbGPfX68SFa4U7WuT9FxGELqOeWeCWf1vmCa9c/nTwdqcx2pyqzqtRd4ty5WG+1aNab0nl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775530648; c=relaxed/simple;
-	bh=bQ1iIvjboEs1N26sVJJEBNZjYLljImHXeHO8kndxh1Q=;
+	bh=2b7f4vUUVw+Nif1beU/Mv0gX1l5DIhn/5UT+42ERHBU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VJk+TrYoz+UHrXviV3X641oXs2nLV08P9nVZcoNDckRgfiqng7fIjkZn2Jp0ueHyoH22SGxagLPfVJBuYNXOasgzIhspn7a/zOBuAJ4q6O7+oWpM7sJG8N5xkb4Cvcyyc2pp45nZ4FEtp42W7Me/c9gyMwK1s8ENDRwUqkSZqg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.92.39.34
+	 MIME-Version; b=mdoYCbCfxoVnVMtQwMXCgMo4ghGjhbj/5Xgq/jnS4qmqob8dTfOeOi+1nAjzGCB6DHE0jlw5wg+9uFiFeqMkQ/bYhCr88ljbsV3jKk4gzdqy083o/EJyTyghY+qoHeZP/B7as8z9gxfe+0mxK2h42Se/phOPVjPT+KZaW5k3z3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.207.19.206
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: zesmtpsz3t1775530602t9625de01
-X-QQ-Originating-IP: ev+yj4Vj6gZUJhjOtnbPQL3sRg46GYRleJ6zU6H/Lus=
+X-QQ-mid: zesmtpsz3t1775530595t656d93df
+X-QQ-Originating-IP: 2rWl839C35sNy4Mwak6xS9UpfuvLbb/sZNhtXCjRo1I=
 Received: from lap-jiawenwu.trustnetic.com ( [115.220.225.134])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 07 Apr 2026 10:56:40 +0800 (CST)
+	id ; Tue, 07 Apr 2026 10:56:33 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 6815522984052776672
+X-BIZMAIL-ID: 17349234110553223132
 EX-QQ-RecipientCnt: 17
 From: Jiawen Wu <jiawenwu@trustnetic.com>
 To: netdev@vger.kernel.org
@@ -41,9 +41,9 @@ Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
 	Abdun Nihaal <abdun.nihaal@gmail.com>,
 	Breno Leitao <leitao@debian.org>,
 	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v7 3/9] net: ngbe: remove redundant macros
-Date: Tue,  7 Apr 2026 10:56:10 +0800
-Message-Id: <20260407025616.33652-4-jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v7 1/9] net: ngbe: remove netdev->ethtool->wol_enabled setting
+Date: Tue,  7 Apr 2026 10:56:08 +0800
+Message-Id: <20260407025616.33652-2-jiawenwu@trustnetic.com>
 X-Mailer: git-send-email 2.21.0.windows.1
 In-Reply-To: <20260407025616.33652-1-jiawenwu@trustnetic.com>
 References: <20260407025616.33652-1-jiawenwu@trustnetic.com>
@@ -56,72 +56,51 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: MWxexosv2xAzSkQiOsNu+bhTsNsus572tdeiuHGPrfwSG3RghqlOi6Cc
-	fHG4LvVHdEse2MOpuEmppsvLAP3GPEy6tobag05odjvXJiFJeUappxXOJ+bAt8OC2TWNCiR
-	ycpld2LqC06JjzHeuRzANXav+h2Qp+mJ+rPQPHXq1ZDH/eZrenUlKt9AXGTovOd5pd/kiQs
-	LmASbJW0soItd/q8L4mM7ztB7EUlKbTgFa4njodY5Eh/EiZtcuJo8MMhwjY6rwxYkL249DR
-	yA4K99AI24C2+R7XxXtyjOl7jLGmGVzHk+ISXAvRNQR25nyd1FngoIhVJfkw48ig3VjEQQz
-	stt03S/jfzAElY6YCZyyVXnhLrps20kcRQ/tLw+wNkEGfukXEByvt4FpA+GJ+oYy+TKP/IE
-	CH89sob8bOUvUpaYW8erldPq2YklSQnMJwDtzxzbUt4wvknlrXcG6dtXIsZ1avTg/LU1gcl
-	g+h2Hv1Gz7aR5Qbl0mK1Y9tbXWn1hFspcr6x0nwccuvrpZKGM/menZrNCM7d7o4T9t/OA2C
-	TqMMwQP+uxKeFKdYdNKXgIAvkcHKFd5dSAf12nSHywwtdNztXDYVy0IAs5MtBjXNKcbBo14
-	MKaeG7rmg/0wucfxpnJFfEAEg6RUuFH1LBF3hmPhD6JlXAsPyO3JwRdhHCbhkdljphpcQX9
-	40c1bof7xcH3XKojwd7D1yq++EEc6IvqJ1VGu3tXOR3pJo+1UwJcPWzmx1a1/V6Q38VNpnS
-	JjESGYCpo9BjZfUJmSAAwiyS2zi59seLkz8wY99kSw10agOXZH7zol5wiiKdLjx5CB7nqWQ
-	f1RZUDuLd0SKCRW68pZlezNyKp1eY5KA0CqOwrOKqCupJreVDK8PgCgMw6S342ChxU1RzCh
-	Z36NqtaB+hsNBTLxHO9cBmuA+nCqS+fI+29YbiTnWvQGfwOpjyNiA5g8cLSK6nquQWLVS/O
-	BZumcFtu9KTZQuADfyxQoglyq1/myXHxu6NLQJ533CnrchNJlwtvbrZ0xvqiZMg8/qyT5t0
-	xMuW/S/djEts5LE8W5WQ3vCudTW9VsGNiC6Eg+ixwklvY7rNel+xj9jF7hjKN8MoNla2n8J
-	kdf62wR24tzRhirj1uNJv3I/cxVL8QeaMWWgcvI7Unz
+X-QQ-XMAILINFO: MPEorwW6cFo9+lFpStj350HpHlDcrnq7MvxVf3uKukjYfNrSFffeuI4T
+	M0GogEOXK/3AWdOLQl3adndP2CjbBE2d7rkQ6K9muXOsz7eJDh+HffAZ4IrhHaPlVjcEM4g
+	6mfepdcIYn7/vtgZ99pM0LMARWvg2n+MqiM+2hgMNrsVaVPMAJkCgaOFDarpwqHlnmZVsX4
+	iT0XUFMiMOotg2RYe2DX3ZNYSU7MihfrKBirjdfbRPbsV095qF6xSOzq5+6jZapUtPfDZPL
+	sX9Hj0nU+q5v5OwvcA86PTFqBbRwL7RsJJSapkq83gtpnjci/5N0UF6W73Rp63GxHZqEdpf
+	PUZ4fl7nk3RXeT9koGO+7iTXhubw9OSdadShMHYJ56ek/gbJAmrro+PjFTVDa8R492XFbUv
+	8oken+cKDesrnaiCG0xla4tQp82SlgfNB75evRAzIaY0ozCBKfGbp2uFuhHxfCe4S8hHuDT
+	BrsnhI1p73kbOHO9CSYZADvAHDbg8cR9DduUGH2AvjZA23PjU9YvJXXC/HY/q21nHkwNPJM
+	m2nfrtlmu56lYst2jF/Fo5KkIwhagudgejZspmPsfl5yw0z8/YkdbM5xTlp+ZOGArmy7JAJ
+	fi6QZyltoybArPdfLgepAlj2xGuBvWufIWaZuscdviCjPw2gpCnCobNUuvRmlFZysTv5X7L
+	xEK2wcIk0rRlPYHAcyTeJ54ckUv5QHd+SX273v68EdgiNo6m1vnFFdY9SDlwO/0jAhx9yLi
+	Sk9Olp0XR1qIT4vMnipEWx8v/Bt7bSaqpcIR7jkEzjWdTnyL1hb0ao2hQgadcMvSOM9MWad
+	6KDVwTtU36gt0CDSPnZI+nC0kD0+F85cWocVmG0VQamzTOTLKuGbTc1TkdFz+cdbmIIYFoi
+	xuCEDr++ud0Eaeu3aA+uib7ajta1v6G9azMBKmXnDAml7HpW2pX5xH89njzet2ebBtovUYp
+	MLouIWjzef6Jkx2+nAYjPD6XKFDmXrAPf3Hv9ru5mCiG3L9MNJ9E6+pOqyGH43l9x/ai6kc
+	4YIMYQDu20uMlRWqXWu/hoKfsD5gil2KgxKdJSzFXJUddsOuCCctnIdMRQcw+9PQ3kW9U3V
+	fsLj4UZ8AVt
 X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
 X-QQ-RECHKSPAM: 0
 
-NGBE_NCSI_SUP and NGBE_NCSI_MASK are duplicate-defined, they can be
-replaced by the macros defined in libwx. Just remove them.
+netdev->ethtool->wol_enabled is set in ethtool core code, so remove the
+redundant setting in ngbe_set_wol().
 
 Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reviewed-by: Breno Leitao <leitao@debian.org>
 Reviewed-by: Joe Damato <joe@dama.to>
 ---
- drivers/net/ethernet/wangxun/ngbe/ngbe_main.c | 4 ++--
- drivers/net/ethernet/wangxun/ngbe/ngbe_type.h | 3 ---
- 2 files changed, 2 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-index e28ddf684a06..8c9d505721b1 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-@@ -57,7 +57,7 @@ static void ngbe_init_type_code(struct wx *wx)
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c
+index fc04040957bf..40779fee0fdf 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c
+@@ -37,9 +37,8 @@ static int ngbe_set_wol(struct net_device *netdev,
+ 	wx->wol = 0;
+ 	if (wol->wolopts & WAKE_MAGIC)
+ 		wx->wol = WX_PSR_WKUP_CTL_MAG;
+-	netdev->ethtool->wol_enabled = !!(wx->wol);
+ 	wr32(wx, WX_PSR_WKUP_CTL, wx->wol);
+-	device_set_wakeup_enable(&pdev->dev, netdev->ethtool->wol_enabled);
++	device_set_wakeup_enable(&pdev->dev, !!(wx->wol));
  
- 	wx->mac.type = wx_mac_em;
- 	type_mask = (u16)(wx->subsystem_device_id & NGBE_OEM_MASK);
--	ncsi_mask = wx->subsystem_device_id & NGBE_NCSI_MASK;
-+	ncsi_mask = wx->subsystem_device_id & WX_NCSI_MASK;
- 	wol_mask = wx->subsystem_device_id & WX_WOL_MASK;
- 
- 	val = rd32(wx, WX_CFG_PORT_ST);
-@@ -66,7 +66,7 @@ static void ngbe_init_type_code(struct wx *wx)
- 		       em_mac_type_mdi;
- 
- 	wx->wol_hw_supported = (wol_mask == WX_WOL_SUP) ? 1 : 0;
--	wx->ncsi_enabled = (ncsi_mask == NGBE_NCSI_MASK ||
-+	wx->ncsi_enabled = (ncsi_mask == WX_NCSI_SUP ||
- 			   type_mask == NGBE_SUBID_OCP_CARD) ? 1 : 0;
- 
- 	switch (type_mask) {
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-index f1957fa0add4..7077a0da4c98 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-@@ -37,9 +37,6 @@
- 
- #define NGBE_OEM_MASK				0x00FF
- 
--#define NGBE_NCSI_SUP				0x8000
--#define NGBE_NCSI_MASK				0x8000
--
- /**************** EM Registers ****************************/
- /* chip control Registers */
- #define NGBE_MIS_PRB_CTL			0x10010
+ 	return 0;
+ }
 -- 
 2.48.1
 
