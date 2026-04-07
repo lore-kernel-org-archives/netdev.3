@@ -1,27 +1,27 @@
-Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
+Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1CA28AB0B
-	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 02:57:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.128
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1B7372B58
+	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 02:57:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775530660; cv=none; b=LPztTsKFincq4btiCvkLU/0TMJPwRky4r8qCiDpFLJqx2bLHPogoP3JPu01rVWWkhY3zll5XW1LJaPAN+CbHGjuOvkTFPAJOL0YkYMpfjHMmyrNOr0lxa/KIfOjCKGMcr/zCauBdc/fZH8HFrQO0EY0TgEE3rsPtpUafZe5NFXE=
+	t=1775530666; cv=none; b=R2WdTuhL0HKpbg0AzL5W0u9j6q159updd1UFOZiirXAumzejAjo2YmBQQG25ZFHqCQh3IB8eOVXLTcNtUpZyB1fDjbTbzmLT5C+eQpiK7ojpInsebezC4MPP8r/Iw2SAgc5FLvSODj/73F6bI1+hYjnr0HKAAjMjsOMZnvZfiPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775530660; c=relaxed/simple;
-	bh=GmpsRA5uFz9AlBF6nKTXsRWUUxGPkWDUJ/9Vifvu6JY=;
+	s=arc-20240116; t=1775530666; c=relaxed/simple;
+	bh=wgAMCwOdJzh6pDk9XzcL53HYT3MKwRlI2f8znAlIq28=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qyHrWSJUrbL1yImRZZne599od6FWw83JvZlTMvqYsQVGHQZSd11x2N2ct4SUyB9udRvV0kWv1Jt6yzXu3V3HE4yF2UWGXJotPWNM9mb7BI8UK/F8tqZU1vLlJsyoo9lmt6T1pLHZjTNbmneXns4XVPosn71tnxfXxgl9JGpvnQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.254.200.128
+	 MIME-Version; b=EGR3cYKW98evAKg9IYKc0WnF+/Fgzkp8uck4UDnSjexbDG7ArRxuFAP79iaQpzCUIkBhImOjPYwszrm1rjUeGkguj2xEZzLLGtSkQihO54+HHCT5lPur2dTyPEjSJWPPQQQDcZZ/p86z6BJiFYMKW9EumS88UD5NkA6ywQVFxRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.207.19.206
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: zesmtpsz3t1775530621tbd897b10
-X-QQ-Originating-IP: sEMVlLrI4vuwBrf+COvGwvtsxdJ0CzmP1zoTLFkOH1g=
+X-QQ-mid: zesmtpsz3t1775530614tba58799b
+X-QQ-Originating-IP: 9GPHTmA0QcnWieAP9V48Q/9RJpkSis5ZcJTAe8BgX7s=
 Received: from lap-jiawenwu.trustnetic.com ( [115.220.225.134])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 07 Apr 2026 10:56:59 +0800 (CST)
+	id ; Tue, 07 Apr 2026 10:56:52 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 877228334490993617
+X-BIZMAIL-ID: 13266829711640812409
 EX-QQ-RecipientCnt: 17
 From: Jiawen Wu <jiawenwu@trustnetic.com>
 To: netdev@vger.kernel.org
@@ -41,9 +41,9 @@ Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
 	Abdun Nihaal <abdun.nihaal@gmail.com>,
 	Breno Leitao <leitao@debian.org>,
 	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v7 9/9] net: libwx: improve flow control setting
-Date: Tue,  7 Apr 2026 10:56:16 +0800
-Message-Id: <20260407025616.33652-10-jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v7 7/9] net: wangxun: schedule hardware stats update in watchdog
+Date: Tue,  7 Apr 2026 10:56:14 +0800
+Message-Id: <20260407025616.33652-8-jiawenwu@trustnetic.com>
 X-Mailer: git-send-email 2.21.0.windows.1
 In-Reply-To: <20260407025616.33652-1-jiawenwu@trustnetic.com>
 References: <20260407025616.33652-1-jiawenwu@trustnetic.com>
@@ -56,200 +56,181 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: NBplAH1p/X/ddF3xIujw4TO9t1ms3jmiJbB7852Aej2OkPzE3PuB/+rp
-	QyLu0y2/wjNQMorgED/I36N0x8Jd17u/ufc1p+8jNM2WQ3EJVEUrkoBHJLonOjhexHwD79S
-	LCxdzm28dXkssLJWqiyh5mpQ132r1mvVRmDwPkvdRxkZw0fXh1CxRp7eBxDSsckigMYslA/
-	oH4WduH0d6HUUHmSZNJ63fhyJ+6yWF9aKQriJEMAlxepCcOq32ekXt536/8BFdFfm4rKs2/
-	TXmoI8c9VsEeU8PLKGCcNUa9jlvk6iuyfL8Aj6v/saP9oN2LxSgodmjb5VpZCAVSozF+Xxr
-	aGBNwf/yOkUNcU3hvTqYMpnOViSFu1+Fg/Q+U5r0+QjADV8fYMcrVXtYZiLruIvwmVRbAJD
-	rulHBpQ5x9CnAEGwrRIygcF2mxjXq2Fe4FzyI1lvCf1V5Rzxsb1ORFCrx4qiaGerNkSzjAD
-	Loo81s1tDPkavbokH6Av1Apyhmazix2eQlnWkFaT2c0wRN6CNoeQvHcUVc2m4W1hRekcHTf
-	GQ2jKE5tAh438G/tpVTU1hnJ3dAdU6f6Or9XdI8A/b8JqAlboGrvvrMHjgAS+UMLPSubMUX
-	jvkhBlRRJ6zJUwWWSCBGUPLyGER30x4KIbTpnCWrVRQjWrsNk1fsIBIOCLt1bBEuKmY6yiR
-	zScFUO1VlcZPainMSIHxuTX+ErvG2a2sQUFk7cfwIjV+Kl2uDxpL2md7OeGMoYNItIXDsuh
-	zE+9pBGWd7d0rH7nk/BcZPZn/W5b91LPKYcz/XdKU0Il6EvK4Ot90K/Dhrr80Fr3Q0vFRtI
-	cM90bz9+2wRHmEC2yUt/rGbNcdu5s0xt4CtjCjYQ2Fn6ajw2JdFERlDwL52BshAXQAOYbHv
-	wRAizKZi/25SEq6Kc3Kw4lOe4iLVyddnwbKUDaS8X8EBo2TiUzT2tZQZhp8VfrxzQ2XRNf7
-	fNK6W5KTfmuN6tBpiaFk+nbEaSU86MPkmisvRX6flN3fcE0m7g4pmWXb9+KlzLDPe5bTSWp
-	egyNi+FB8RDi7zTfn2H+oOmyJn6LegD5UZgw9opSAd5pacgx7eDQmHL+vJvn/UZWu6Ijz7S
-	ZOCJFfvkTfq
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
+X-QQ-XMAILINFO: MIAHdi1iQo+zSzc/nT8WSM15dBOH7aqA5uILSDr/8aFT+MDQSzQTQcEZ
+	ttDzxF3rDcN8+zNqzrtA7WCmna3o8S65CXo8T7+JtX/8EPvitOyJ7WNdsANQUI95c4wipp6
+	1rRMIPRg8NcQnd+OCHZX2gbJgdUsNKMmsxoyhnKUto32rhgp8qWAsQ9uoQredt7Nw/wizFc
+	zy7Woatr8TCE59N7mdp1rJHyTJp3RgQrjTEyZZd7JXn2hScEE/UeDUVI54BXeywtEnMGR2B
+	rV5X+kaRjn4AcGaoGdTmQCuEWgU9jPPmviXYMU2zHKT8yEPkObYggh45wssfCr1UGo8ZCip
+	XMBrqPVTrT2TBxupAkb+0ddmBA72o2lZFa7SYwE/stdJXtrYtBZ5ARVcwBg7SQ6ifD6wSV1
+	qI9d1+XbtSOQtdAfzs5cKqJ3erV58tHJg0anfZ1/bLuDarFHmuGLsIuJGAPmjplGqYR7uI6
+	5Lckk/T35XzmizP+wYWPTZ1dsn/DSaz2Xb7p7Nv8C5uMjz5czw9LeLLuu4dJNPlnxiIQZVY
+	nmnJlE6bXKGYXySJOeTvwrihAgoECMEl3lsV9li0NqoKTlmHKVy/1I/hNH6DEDMTg/tVSls
+	5tkvHIuQKgxhF/FSKixkDaw5oUJCMrrCsO9ML76ZtUVrDfFUU4y6UxuBLf3pNkKcIC9Enj3
+	GQ51XBlSMmSWY99TbU7E1oJnbCigUI8biBeRUTK/M/VHz8ioecWeMKZXFMqgPSihdBMydsy
+	GAs2lFC6FNjKRoJhQXYZaJJ5wNRCJ3SIx6w+EesDnWEbUa7l8seRWFKP+jj4bay3IXmzSjW
+	Ry3g9elqJlt0ZGqaQhJJfY3laG46Crkw9q7MGCTx0266OYbBJvyA8bBsJgo4R9NMKmH4vaR
+	6ZWE9n8TNxjIBYe6rEaaOJh0bwSKYvMThg051Y9cgOWZIOWznfaBKbgCSinSOPhaeFkJFN4
+	lpY1hBkyrdwBfdDUXaVNoMXQqlv59+FJ2+ABoXFcN3YUKy/tP6oU1C2tsmRAPUKtK/KX9v3
+	kRO+J5mhswJrYFcwx5wAlCg+rcJbDjPveMAd17vsT5mXT542TGThv6gCr4TpTqsVGzUmUDO
+	3tv+CtJM6VPNbqZlqRs5vfD2wc7dyTLnQ==
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
 X-QQ-RECHKSPAM: 0
 
-Save the current mode of flow control, and enhance the statistics of
-pause frames.
-
-The received pause frames are divided into XON and XOFF to be counted.
-And due to the hardware defect of SP devices, XON packets cannot be
-trasmitted correctly, so Tx XON pause is disabled by default for those
-devices.
+Hardware statistics should be updated periodically in the watchdog to
+prevent 32-bit registers from overflowing. This is also required for the
+upcoming pause frame accounting logic, which relies on regular statistics
+sampling.
 
 Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
 ---
- .../net/ethernet/wangxun/libwx/wx_ethtool.c   |  2 +-
- drivers/net/ethernet/wangxun/libwx/wx_hw.c    | 46 +++++++++++++++++--
- drivers/net/ethernet/wangxun/libwx/wx_type.h  | 19 +++++++-
- 3 files changed, 61 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c    |  9 +++++
+ drivers/net/ethernet/wangxun/libwx/wx_type.h  |  1 +
+ drivers/net/ethernet/wangxun/ngbe/ngbe_main.c | 36 ++++++++++++++++++-
+ .../net/ethernet/wangxun/txgbe/txgbe_main.c   |  1 +
+ 4 files changed, 46 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-index 6adb8cbcad1f..5df971aca9e3 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-@@ -211,7 +211,7 @@ void wx_get_pause_stats(struct net_device *netdev,
- 
- 	hwstats = &wx->stats;
- 	stats->tx_pause_frames = hwstats->lxontxc + hwstats->lxofftxc;
--	stats->rx_pause_frames = hwstats->lxonoffrxc;
-+	stats->rx_pause_frames = hwstats->lxonrxc + hwstats->lxoffrxc;
- }
- EXPORT_SYMBOL(wx_get_pause_stats);
- 
 diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-index 57d6671ec618..d3772d01e00b 100644
+index 05731a50d85f..31259f69c0e2 100644
 --- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
 +++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-@@ -2774,6 +2774,15 @@ int wx_fc_enable(struct wx *wx, bool tx_pause, bool rx_pause)
- 		}
+@@ -2513,6 +2513,7 @@ int wx_sw_init(struct wx *wx)
+ 		return -ENOMEM;
  	}
  
-+	if (rx_pause && tx_pause)
-+		wx->fc.mode = wx_fc_full;
-+	else if (rx_pause)
-+		wx->fc.mode = wx_fc_rx_pause;
-+	else if (tx_pause)
-+		wx->fc.mode = wx_fc_tx_pause;
-+	else
-+		wx->fc.mode = wx_fc_none;
-+
- 	/* Disable any previous flow control settings */
- 	mflcn_reg = rd32(wx, WX_MAC_RX_FLOW_CTRL);
- 	mflcn_reg &= ~WX_MAC_RX_FLOW_CTRL_RFE;
-@@ -2792,7 +2801,9 @@ int wx_fc_enable(struct wx *wx, bool tx_pause, bool rx_pause)
++	spin_lock_init(&wx->hw_stats_lock);
+ 	mutex_init(&wx->reset_lock);
+ 	bitmap_zero(wx->state, WX_STATE_NBITS);
+ 	bitmap_zero(wx->flags, WX_PF_FLAGS_NBITS);
+@@ -2845,6 +2846,12 @@ void wx_update_stats(struct wx *wx)
+ 	u64 restart_queue = 0, tx_busy = 0;
+ 	u32 i;
  
- 	/* Set up and enable Rx high/low water mark thresholds, enable XON. */
- 	if (tx_pause && wx->fc.high_water) {
--		fcrtl = (wx->fc.low_water << 10) | WX_RDB_RFCL_XONE;
-+		fcrtl = (wx->fc.low_water << 10);
-+		if (wx->mac.type != wx_mac_sp)
-+			fcrtl |= WX_RDB_RFCL_XONE;
- 		wr32(wx, WX_RDB_RFCL, fcrtl);
- 		fcrth = (wx->fc.high_water << 10) | WX_RDB_RFCH_XOFFE;
- 	} else {
-@@ -2833,6 +2844,21 @@ int wx_fc_enable(struct wx *wx, bool tx_pause, bool rx_pause)
- }
- EXPORT_SYMBOL(wx_fc_enable);
- 
-+static void wx_update_xoff_rx_lfc(struct wx *wx)
-+{
-+	struct wx_hw_stats *hwstats = &wx->stats;
-+
-+	if (wx->fc.mode != wx_fc_full &&
-+	    wx->fc.mode != wx_fc_rx_pause)
++	if (!netif_running(wx->netdev) ||
++	    test_bit(WX_STATE_RESETTING, wx->state))
 +		return;
 +
-+	if (wx->mac.type >= wx_mac_aml)
-+		hwstats->lxoffrxc += rd32_wrap(wx, WX_MAC_LXOFFRXC_AML,
-+					       &wx->last_stats.lxoffrxc);
-+	else
-+		hwstats->lxoffrxc += rd64(wx, WX_MAC_LXOFFRXC);
++	spin_lock(&wx->hw_stats_lock);
++
+ 	/* gather some stats to the wx struct that are per queue */
+ 	for (i = 0; i < wx->num_rx_queues; i++) {
+ 		struct wx_ring *rx_ring = wx->rx_ring[i];
+@@ -2913,6 +2920,8 @@ void wx_update_stats(struct wx *wx)
+ 	for (i = wx->num_vfs * wx->num_rx_queues_per_pool;
+ 	     i < wx->mac.max_rx_queues; i++)
+ 		hwstats->qmprc += rd32(wx, WX_PX_MPRC(i));
++
++	spin_unlock(&wx->hw_stats_lock);
+ }
+ EXPORT_SYMBOL(wx_update_stats);
+ 
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+index 0fbdda63b141..7831c5035be8 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
++++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+@@ -1354,6 +1354,7 @@ struct wx {
+ 	bool default_up;
+ 
+ 	struct wx_hw_stats stats;
++	spinlock_t hw_stats_lock; /* spinlock for accessing to hw stats */
+ 	u64 tx_busy;
+ 	u64 non_eop_descs;
+ 	u64 restart_queue;
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+index 8c9d505721b1..d8e3827a8b1f 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+@@ -138,6 +138,26 @@ static int ngbe_sw_init(struct wx *wx)
+ 	return 0;
+ }
+ 
++/**
++ * ngbe_service_task - manages and runs subtasks
++ * @work: pointer to work_struct containing our data
++ **/
++static void ngbe_service_task(struct work_struct *work)
++{
++	struct wx *wx = container_of(work, struct wx, service_task);
++
++	wx_update_stats(wx);
++
++	wx_service_event_complete(wx);
++}
++
++static void ngbe_init_service(struct wx *wx)
++{
++	timer_setup(&wx->service_timer, wx_service_timer, 0);
++	INIT_WORK(&wx->service_task, ngbe_service_task);
++	clear_bit(WX_STATE_SERVICE_SCHED, wx->state);
 +}
 +
  /**
-  * wx_update_stats - Update the board statistics counters.
+  * ngbe_irq_enable - Enable default interrupt generation settings
   * @wx: board private structure
-@@ -2887,6 +2913,8 @@ void wx_update_stats(struct wx *wx)
- 	wx->restart_queue = restart_queue;
- 	wx->tx_busy = tx_busy;
- 
-+	wx_update_xoff_rx_lfc(wx);
+@@ -368,6 +388,10 @@ static void ngbe_disable_device(struct wx *wx)
+ 	wx_napi_disable_all(wx);
+ 	netif_tx_stop_all_queues(netdev);
+ 	netif_tx_disable(netdev);
 +
- 	hwstats->gprc += rd32(wx, WX_RDM_PKT_CNT);
- 	hwstats->gptc += rd32(wx, WX_TDM_PKT_CNT);
- 	hwstats->gorc += rd64(wx, WX_RDM_BYTE_CNT_LSB);
-@@ -2901,7 +2929,11 @@ void wx_update_stats(struct wx *wx)
- 	hwstats->mptc += rd64(wx, WX_TX_MC_FRAMES_GOOD_L);
- 	hwstats->roc += rd32(wx, WX_RX_OVERSIZE_FRAMES_GOOD);
- 	hwstats->ruc += rd32(wx, WX_RX_UNDERSIZE_FRAMES_GOOD);
--	hwstats->lxonoffrxc += rd32(wx, WX_MAC_LXONOFFRXC);
-+	if (wx->mac.type >= wx_mac_aml)
-+		hwstats->lxonrxc += rd32_wrap(wx, WX_MAC_LXONRXC_AML,
-+					      &wx->last_stats.lxonrxc);
-+	else
-+		hwstats->lxonrxc += rd32(wx, WX_MAC_LXONRXC);
- 	hwstats->lxontxc += rd32(wx, WX_RDB_LXONTXC);
- 	hwstats->lxofftxc += rd32(wx, WX_RDB_LXOFFTXC);
- 	hwstats->o2bgptc += rd32(wx, WX_TDM_OS2BMC_CNT);
-@@ -2958,7 +2990,15 @@ void wx_clear_hw_cntrs(struct wx *wx)
- 	rd64(wx, WX_RX_LEN_ERROR_FRAMES_L);
- 	rd32(wx, WX_RDB_LXONTXC);
- 	rd32(wx, WX_RDB_LXOFFTXC);
--	rd32(wx, WX_MAC_LXONOFFRXC);
-+	if (wx->mac.type >= wx_mac_aml) {
-+		wr32(wx, WX_MAC_LXONRXC_AML, 0);
-+		wr32(wx, WX_MAC_LXOFFRXC_AML, 0);
-+		wx->last_stats.lxonrxc = 0;
-+		wx->last_stats.lxoffrxc = 0;
-+	} else {
-+		rd32(wx, WX_MAC_LXONRXC);
-+		rd64(wx, WX_MAC_LXOFFRXC);
-+	}
++	timer_delete_sync(&wx->service_timer);
++	cancel_work_sync(&wx->service_task);
++
+ 	if (wx->gpio_ctrl)
+ 		ngbe_sfp_modules_txrx_powerctl(wx, false);
+ 	wx_irq_disable(wx);
+@@ -407,6 +431,7 @@ void ngbe_up(struct wx *wx)
+ 	wx_napi_enable_all(wx);
+ 	/* enable transmits */
+ 	netif_tx_start_all_queues(wx->netdev);
++	mod_timer(&wx->service_timer, jiffies);
+ 
+ 	/* clear any pending interrupts, may auto mask */
+ 	rd32(wx, WX_PX_IC(0));
+@@ -770,9 +795,11 @@ static int ngbe_probe(struct pci_dev *pdev,
+ 	eth_hw_addr_set(netdev, wx->mac.perm_addr);
+ 	wx_mac_set_default_filter(wx, wx->mac.perm_addr);
+ 
++	ngbe_init_service(wx);
++
+ 	err = wx_init_interrupt_scheme(wx);
+ 	if (err)
+-		goto err_free_mac_table;
++		goto err_cancel_service;
+ 
+ 	/* phy Interface Configuration */
+ 	err = ngbe_mdio_init(wx);
+@@ -792,6 +819,9 @@ static int ngbe_probe(struct pci_dev *pdev,
+ 	wx_control_hw(wx, false);
+ err_clear_interrupt_scheme:
+ 	wx_clear_interrupt_scheme(wx);
++err_cancel_service:
++	timer_delete_sync(&wx->service_timer);
++	cancel_work_sync(&wx->service_task);
+ err_free_mac_table:
+ 	kfree(wx->rss_key);
+ 	kfree(wx->mac_table);
+@@ -820,6 +850,10 @@ static void ngbe_remove(struct pci_dev *pdev)
+ 	netdev = wx->netdev;
+ 	wx_disable_sriov(wx);
+ 	unregister_netdev(netdev);
++
++	timer_shutdown_sync(&wx->service_timer);
++	cancel_work_sync(&wx->service_task);
++
+ 	phylink_destroy(wx->phylink);
+ 	pci_release_selected_regions(pdev,
+ 				     pci_select_bars(pdev, IORESOURCE_MEM));
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+index 0dd128aa18da..ec32a5f422f2 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+@@ -130,6 +130,7 @@ static void txgbe_service_task(struct work_struct *work)
+ 
+ 	txgbe_module_detection_subtask(wx);
+ 	txgbe_link_config_subtask(wx);
++	wx_update_stats(wx);
+ 
+ 	wx_service_event_complete(wx);
  }
- EXPORT_SYMBOL(wx_clear_hw_cntrs);
- 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-index 3c5a351974dd..0da5565ee4ff 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -79,7 +79,10 @@
- #define WX_RX_LEN_ERROR_FRAMES_L     0x11978
- #define WX_RX_UNDERSIZE_FRAMES_GOOD  0x11938
- #define WX_RX_OVERSIZE_FRAMES_GOOD   0x1193C
--#define WX_MAC_LXONOFFRXC            0x11E0C
-+#define WX_MAC_LXOFFRXC              0x11988
-+#define WX_MAC_LXONRXC               0x11E0C
-+#define WX_MAC_LXOFFRXC_AML          0x11F80
-+#define WX_MAC_LXONRXC_AML           0x11F84
- 
- /*********************** Receive DMA registers **************************/
- #define WX_RDM_VF_RE(_i)             (0x12004 + ((_i) * 4))
-@@ -1148,9 +1151,18 @@ enum wx_isb_idx {
- 	WX_ISB_MAX
- };
- 
-+/* Flow Control Settings */
-+enum wx_fc_mode {
-+	wx_fc_none = 0,
-+	wx_fc_rx_pause,
-+	wx_fc_tx_pause,
-+	wx_fc_full
-+};
-+
- struct wx_fc_info {
- 	u32 high_water; /* Flow Ctrl High-water */
- 	u32 low_water; /* Flow Ctrl Low-water */
-+	enum wx_fc_mode mode; /* Flow Control Mode */
- };
- 
- /* Statistics counters collected by the MAC */
-@@ -1167,7 +1179,8 @@ struct wx_hw_stats {
- 	u64 mptc;
- 	u64 roc;
- 	u64 ruc;
--	u64 lxonoffrxc;
-+	u64 lxonrxc;
-+	u64 lxoffrxc;
- 	u64 lxontxc;
- 	u64 lxofftxc;
- 	u64 o2bgptc;
-@@ -1184,6 +1197,8 @@ struct wx_hw_stats {
- 
- struct wx_last_stats {
- 	u32 qmprc[128];
-+	u32 lxoffrxc;
-+	u32 lxonrxc;
- };
- 
- enum wx_state {
 -- 
 2.48.1
 
