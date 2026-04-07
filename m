@@ -1,308 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from hr2.samba.org (hr2.samba.org [144.76.82.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7F83CF03E;
-	Tue,  7 Apr 2026 15:58:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA83D370D6E;
+	Tue,  7 Apr 2026 16:03:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.82.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775577513; cv=none; b=kNR01rC6g+vuksSypFQY9Ng7n9ux0CG4iwQxNxRrki5paF17g7IFTBIhBL710KJ645asGUR4qzs62ifvvHXLKrLdBrPKbtf6n0a9by4UTOg0rIVjfqaETumFZD5DGdpXcf9gtJbeYMBdN63eZ4nfRwxJIoHI9r/psPSiTB3dWPc=
+	t=1775577826; cv=none; b=apW8F0q55B22N0hZcdpEyeueEtnadQ7IAxhpjKSasXirXwqZRhcCeN+aidyA1W/wcByUQv/CDmmQ4No+9W1P8W8H5i90nZGSfVJfh3gJYh0OqyjJtI6FA8Qda+yV6LHjKx1eFrYBzQ+m2bYG0h4qLzjrX9fI02H2HYqy9noqFoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775577513; c=relaxed/simple;
-	bh=uMKW524ItQm2huwJsii0rZz2rhbgsj5zBmrSHlUEbnU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Swd2pgkAmQN17EyoCGXoiWeTMAwv5pNPQqTBoJcufZ8Y7bt3jNxbZ5MOT9IgtfuftotaO/JQVNYqg76v+LpP1bcZoCKgB7oGwH4K6ZMLDdqG9DRDULMViTt8k5G0khmuMgv7hlMMhKpwVSWDDcFJ65v6TEDY3a5gwaaNiMq4UqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=twI1mTON; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775577826; c=relaxed/simple;
+	bh=4tzNatN0lLNbSZtg3kjtdU6xpsyEALCIiXGSM4tnjsw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=htr2q5rASAOWnsP/pS7FuOiV8BXeHcJBymsfkZvgh2l2Jx0icPu4ftD2L2ni/+If+8J20xYd7Ri+bOGdMHlKD8vT8e3vw0akqCMrg3/n7shAHHnwovu6V1Q/+CvZ3V0rkzMWJf0KjSe+/lkJtC+0kWCOVCSy9MOR1IO0krCEMLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org; spf=pass smtp.mailfrom=samba.org; dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b=E8ECd56h; arc=none smtp.client-ip=144.76.82.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samba.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="twI1mTON"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE723C116C6;
-	Tue,  7 Apr 2026 15:58:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775577512;
-	bh=uMKW524ItQm2huwJsii0rZz2rhbgsj5zBmrSHlUEbnU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=twI1mTONCtqzHlORVBPVF5XtsvsYU/GRjchbScBwnNWLlrUMP8sK8YIAsmfi91FVV
-	 a/i2ocO/jf0WOB6CWCxFsKmZSfrdcbb1GNLGjCbFHcAIp0pmgWK4A0CTRkENobuRG1
-	 fWNjcMW4VyPFKFcMqjmqqvCX5eZ9G270613UMuUI7Zdlcgsch/LOTifeZHjcuPGQRl
-	 2f0m49U7vLEjaexwkTieYcY2xeftuBh0fp0gkyRFgkfiMwv/xtcJhjOD834P70/wop
-	 PfXKC5OdhkkqlNWzoPLXEUNl0dsdgQ3SidDvBGE/GYT4SMBmRe9132QAITOikkzx1y
-	 pM+CbWVB/PfmA==
-Date: Tue, 7 Apr 2026 16:58:27 +0100
-From: Lee Jones <lee@kernel.org>
-To: Kuniyuki Iwashima <kuniyu@google.com>, stable@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
+	dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b="E8ECd56h"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=samba.org;
+	s=42; h=Message-ID:Date:Cc:To:From;
+	bh=1sWKeUoiedloG4v+5cKbhOh9byM/6fDeRhbG1bWIQbw=; b=E8ECd56hN1iYhq+ulix96lYfec
+	BSSD9n27nLPltvOqe1wKsaj1T6uNDrDUATj6RviiugjU5Nno1VV1fJElrU9eUfJpb2Zx6MvnmyoEc
+	TUaMlYuOCih63EaAJ2DIG3droMK0b1ra/DVyL2uHRGB5OqWbL1sJ4LZ8sgx/C8vpiyCtUOoKobykU
+	J02WfiwlIIx7K5Bd30TLWS2c3DI+aO4LR2xtGKllZLeD5tikhcTh4oXIQuVGAHEVc+9+gyqxdcQMS
+	rSpNKdkES8O2A6tqQFetsrGkPH7yM+AjbrEGcxZxFX/VAjnSgnGinxBs5BKB68ryi35+JKqJPr6PO
+	rcP/MfA9lzfuitNwQrLujw9FKLXIB0XKMbkKSAQxhmkUcKES65ge65e8Ee6LlSamdqIWvHGruQ1YZ
+	i0fkH+5Q3saPwdqD3H1OXCVVIomY6f0CgRiKp4HnV8Dd+QLemW+dZy/FWJscn2/xLJh6KOgO+lDvt
+	5olATBcZFV49Qfr0Xw+j1Wwj;
+Received: from [127.0.0.2] (localhost [127.0.0.1])
+	by hr2.samba.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__ECDSA_SECP256R1_SHA256__CHACHA20_POLY1305:256)
+	(Exim)
+	id 1wA8tp-00000007XiV-1Sez;
+	Tue, 07 Apr 2026 16:03:33 +0000
+From: Stefan Metzmacher <metze@samba.org>
+To: linux-kernel@vger.kernel.org
+Cc: metze@samba.org,
+	Dmitry Safonov <0x7f454c46@gmail.com>,
+	Dmitry Safonov <dima@arista.com>,
+	Francesco Ruggeri <fruggeri@arista.com>,
+	Salam Noureddine <noureddine@arista.com>,
+	David Ahern <dsahern@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Michal Luczaj <mhal@rbox.co>,
+	David Wei <dw@davidwei.uk>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Xin Long <lucien.xin@gmail.com>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuni1840@gmail.com>,
-	Linus Torvalds <torvalds@linuxfoundation.org>,
-	netdev@vger.kernel.org, Igor Ushakov <sysroot314@gmail.com>
-Subject: Re: [PATCH v3 net] af_unix: Give up GC if MSG_PEEK intervened.
-Message-ID: <20260407155827.GA1993342@google.com>
-References: <20260311054043.1231316-1-kuniyu@google.com>
+	Aleksa Sarai <cyphar@cyphar.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	netdev@vger.kernel.org,
+	linux-bluetooth@vger.kernel.org
+Subject: [PATCH 1/5] uaccess: fix ignored_trailing logic in copy_struct_to_user()
+Date: Tue,  7 Apr 2026 18:03:13 +0200
+Message-ID: <71f69442410c1186ed8ce6d5b4b9d4a5a70edbad.1775576651.git.metze@samba.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1775576651.git.metze@samba.org>
+References: <cover.1775576651.git.metze@samba.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260311054043.1231316-1-kuniyu@google.com>
 
-INTENTIONAL TOP POST
+Currently all callers pass ignored_trailing=NULL, but I have
+code that will make use of.
 
-I note that this was not sent to Stable, but it should be included please.
+Now it actually behaves like documented:
 
-> Igor Ushakov reported that GC purged the receive queue of
-> an alive socket due to a race with MSG_PEEK with a nice repro.
-> 
-> This is the exact same issue previously fixed by commit
-> cbcf01128d0a ("af_unix: fix garbage collect vs MSG_PEEK").
-> 
-> After GC was replaced with the current algorithm, the cited
-> commit removed the locking dance in unix_peek_fds() and
-> reintroduced the same issue.
-> 
-> The problem is that MSG_PEEK bumps a file refcount without
-> interacting with GC.
-> 
-> Consider an SCC containing sk-A and sk-B, where sk-A is
-> close()d but can be recv()ed via sk-B.
-> 
-> The bad thing happens if sk-A is recv()ed with MSG_PEEK from
-> sk-B and sk-B is close()d while GC is checking unix_vertex_dead()
-> for sk-A and sk-B.
-> 
->   GC thread                    User thread
->   ---------                    -----------
->   unix_vertex_dead(sk-A)
->   -> true   <------.
->                     \
->                      `------   recv(sk-B, MSG_PEEK)
->               invalidate !!    -> sk-A's file refcount : 1 -> 2
-> 
->                                close(sk-B)
->                                -> sk-B's file refcount : 2 -> 1
->   unix_vertex_dead(sk-B)
->   -> true
-> 
-> Initially, sk-A's file refcount is 1 by the inflight fd in sk-B
-> recvq.  GC thinks sk-A is dead because the file refcount is the
-> same as the number of its inflight fds.
-> 
-> However, sk-A's file refcount is bumped silently by MSG_PEEK,
-> which invalidates the previous evaluation.
-> 
-> At this moment, sk-B's file refcount is 2; one by the open fd,
-> and one by the inflight fd in sk-A.  The subsequent close()
-> releases one refcount by the former.
-> 
-> Finally, GC incorrectly concludes that both sk-A and sk-B are dead.
-> 
-> One option is to restore the locking dance in unix_peek_fds(),
-> but we can resolve this more elegantly thanks to the new algorithm.
-> 
-> The point is that the issue does not occur without the subsequent
-> close() and we actually do not need to synchronise MSG_PEEK with
-> the dead SCC detection.
-> 
-> When the issue occurs, close() and GC touch the same file refcount.
-> If GC sees the refcount being decremented by close(), it can just
-> give up garbage-collecting the SCC.
-> 
-> Therefore, we only need to signal the race during MSG_PEEK with
-> a proper memory barrier to make it visible to the GC.
-> 
-> Let's use seqcount_t to notify GC when MSG_PEEK occurs and let
-> it defer the SCC to the next run.
-> 
-> This way no locking is needed on the MSG_PEEK side, and we can
-> avoid imposing a penalty on every MSG_PEEK unnecessarily.
-> 
-> Note that we can retry within unix_scc_dead() if MSG_PEEK is
-> detected, but we do not do so to avoid hung task splat from
-> abusive MSG_PEEK calls.
-> 
-> Fixes: 118f457da9ed ("af_unix: Remove lock dance in unix_peek_fds().")
-> Reported-by: Igor Ushakov <sysroot314@gmail.com>
-> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-> ---
-> v3: Check !fpl and add spinlock in unix_peek_fpl()
-> v2: https://lore.kernel.org/all/20260309185823.3502204-1-kuniyu@google.com/
->   * Use seqcount_t for proper memory barrier
-> v1: https://lore.kernel.org/netdev/20260308030406.1825938-1-kuniyu@google.com/
-> ---
->  net/unix/af_unix.c |  2 ++
->  net/unix/af_unix.h |  1 +
->  net/unix/garbage.c | 79 ++++++++++++++++++++++++++++++----------------
->  3 files changed, 54 insertions(+), 28 deletions(-)
-> 
-> diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-> index 7eaa5b187fef..b23c33df8b46 100644
-> --- a/net/unix/af_unix.c
-> +++ b/net/unix/af_unix.c
-> @@ -1958,6 +1958,8 @@ static void unix_detach_fds(struct scm_cookie *scm, struct sk_buff *skb)
->  static void unix_peek_fds(struct scm_cookie *scm, struct sk_buff *skb)
->  {
->  	scm->fp = scm_fp_dup(UNIXCB(skb).fp);
-> +
-> +	unix_peek_fpl(scm->fp);
->  }
->  
->  static void unix_destruct_scm(struct sk_buff *skb)
-> diff --git a/net/unix/af_unix.h b/net/unix/af_unix.h
-> index c4f1b2da363d..8119dbeef3a3 100644
-> --- a/net/unix/af_unix.h
-> +++ b/net/unix/af_unix.h
-> @@ -29,6 +29,7 @@ void unix_del_edges(struct scm_fp_list *fpl);
->  void unix_update_edges(struct unix_sock *receiver);
->  int unix_prepare_fpl(struct scm_fp_list *fpl);
->  void unix_destroy_fpl(struct scm_fp_list *fpl);
-> +void unix_peek_fpl(struct scm_fp_list *fpl);
->  void unix_schedule_gc(struct user_struct *user);
->  
->  /* SOCK_DIAG */
-> diff --git a/net/unix/garbage.c b/net/unix/garbage.c
-> index 816e8fa2b062..a7967a345827 100644
-> --- a/net/unix/garbage.c
-> +++ b/net/unix/garbage.c
-> @@ -318,6 +318,25 @@ void unix_destroy_fpl(struct scm_fp_list *fpl)
->  	unix_free_vertices(fpl);
->  }
->  
-> +static bool gc_in_progress;
-> +static seqcount_t unix_peek_seq = SEQCNT_ZERO(unix_peek_seq);
-> +
-> +void unix_peek_fpl(struct scm_fp_list *fpl)
-> +{
-> +	static DEFINE_SPINLOCK(unix_peek_lock);
-> +
-> +	if (!fpl || !fpl->count_unix)
-> +		return;
-> +
-> +	if (!READ_ONCE(gc_in_progress))
-> +		return;
-> +
-> +	/* Invalidate the final refcnt check in unix_vertex_dead(). */
-> +	spin_lock(&unix_peek_lock);
-> +	raw_write_seqcount_barrier(&unix_peek_seq);
-> +	spin_unlock(&unix_peek_lock);
-> +}
-> +
->  static bool unix_vertex_dead(struct unix_vertex *vertex)
->  {
->  	struct unix_edge *edge;
-> @@ -351,6 +370,36 @@ static bool unix_vertex_dead(struct unix_vertex *vertex)
->  	return true;
->  }
->  
-> +static LIST_HEAD(unix_visited_vertices);
-> +static unsigned long unix_vertex_grouped_index = UNIX_VERTEX_INDEX_MARK2;
-> +
-> +static bool unix_scc_dead(struct list_head *scc, bool fast)
-> +{
-> +	struct unix_vertex *vertex;
-> +	bool scc_dead = true;
-> +	unsigned int seq;
-> +
-> +	seq = read_seqcount_begin(&unix_peek_seq);
-> +
-> +	list_for_each_entry_reverse(vertex, scc, scc_entry) {
-> +		/* Don't restart DFS from this vertex. */
-> +		list_move_tail(&vertex->entry, &unix_visited_vertices);
-> +
-> +		/* Mark vertex as off-stack for __unix_walk_scc(). */
-> +		if (!fast)
-> +			vertex->index = unix_vertex_grouped_index;
-> +
-> +		if (scc_dead)
-> +			scc_dead = unix_vertex_dead(vertex);
-> +	}
-> +
-> +	/* If MSG_PEEK intervened, defer this SCC to the next round. */
-> +	if (read_seqcount_retry(&unix_peek_seq, seq))
-> +		return false;
-> +
-> +	return scc_dead;
-> +}
-> +
->  static void unix_collect_skb(struct list_head *scc, struct sk_buff_head *hitlist)
->  {
->  	struct unix_vertex *vertex;
-> @@ -404,9 +453,6 @@ static bool unix_scc_cyclic(struct list_head *scc)
->  	return false;
->  }
->  
-> -static LIST_HEAD(unix_visited_vertices);
-> -static unsigned long unix_vertex_grouped_index = UNIX_VERTEX_INDEX_MARK2;
-> -
->  static unsigned long __unix_walk_scc(struct unix_vertex *vertex,
->  				     unsigned long *last_index,
->  				     struct sk_buff_head *hitlist)
-> @@ -474,9 +520,7 @@ static unsigned long __unix_walk_scc(struct unix_vertex *vertex,
->  	}
->  
->  	if (vertex->index == vertex->scc_index) {
-> -		struct unix_vertex *v;
->  		struct list_head scc;
-> -		bool scc_dead = true;
->  
->  		/* SCC finalised.
->  		 *
-> @@ -485,18 +529,7 @@ static unsigned long __unix_walk_scc(struct unix_vertex *vertex,
->  		 */
->  		__list_cut_position(&scc, &vertex_stack, &vertex->scc_entry);
->  
-> -		list_for_each_entry_reverse(v, &scc, scc_entry) {
-> -			/* Don't restart DFS from this vertex in unix_walk_scc(). */
-> -			list_move_tail(&v->entry, &unix_visited_vertices);
-> -
-> -			/* Mark vertex as off-stack. */
-> -			v->index = unix_vertex_grouped_index;
-> -
-> -			if (scc_dead)
-> -				scc_dead = unix_vertex_dead(v);
-> -		}
-> -
-> -		if (scc_dead) {
-> +		if (unix_scc_dead(&scc, false)) {
->  			unix_collect_skb(&scc, hitlist);
->  		} else {
->  			if (unix_vertex_max_scc_index < vertex->scc_index)
-> @@ -550,19 +583,11 @@ static void unix_walk_scc_fast(struct sk_buff_head *hitlist)
->  	while (!list_empty(&unix_unvisited_vertices)) {
->  		struct unix_vertex *vertex;
->  		struct list_head scc;
-> -		bool scc_dead = true;
->  
->  		vertex = list_first_entry(&unix_unvisited_vertices, typeof(*vertex), entry);
->  		list_add(&scc, &vertex->scc_entry);
->  
-> -		list_for_each_entry_reverse(vertex, &scc, scc_entry) {
-> -			list_move_tail(&vertex->entry, &unix_visited_vertices);
-> -
-> -			if (scc_dead)
-> -				scc_dead = unix_vertex_dead(vertex);
-> -		}
-> -
-> -		if (scc_dead) {
-> +		if (unix_scc_dead(&scc, true)) {
->  			cyclic_sccs--;
->  			unix_collect_skb(&scc, hitlist);
->  		}
-> @@ -577,8 +602,6 @@ static void unix_walk_scc_fast(struct sk_buff_head *hitlist)
->  		   cyclic_sccs ? UNIX_GRAPH_CYCLIC : UNIX_GRAPH_NOT_CYCLIC);
->  }
->  
-> -static bool gc_in_progress;
-> -
->  static void unix_gc(struct work_struct *work)
->  {
->  	struct sk_buff_head hitlist;
-> -- 
-> 2.53.0.473.g4a7958ca14-goog
-> 
+* If @usize < @ksize, then the kernel is trying to pass userspace a newer
+  struct than it supports. Thus we only copy the interoperable portions
+  (@usize) and ignore the rest (but @ignored_trailing is set to %true if
+  any of the trailing (@ksize - @usize) bytes are non-zero).
 
+Fixes: 424a55a4a908 ("uaccess: add copy_struct_to_user helper")
+Cc: Dmitry Safonov <0x7f454c46@gmail.com>
+Cc: Dmitry Safonov <dima@arista.com>
+Cc: Francesco Ruggeri <fruggeri@arista.com>
+Cc: Salam Noureddine <noureddine@arista.com>
+Cc: David Ahern <dsahern@kernel.org>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Michal Luczaj <mhal@rbox.co>
+Cc: David Wei <dw@davidwei.uk>
+Cc: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>
+Cc: Xin Long <lucien.xin@gmail.com>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Willem de Bruijn <willemb@google.com>
+Cc: Neal Cardwell <ncardwell@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Simon Horman <horms@kernel.org>
+Cc: Aleksa Sarai <cyphar@cyphar.com>
+Cc: Christian Brauner <brauner@kernel.org>
+CC: Kees Cook <keescook@chromium.org>
+Cc: netdev@vger.kernel.org
+Cc: linux-bluetooth@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+---
+ include/linux/uaccess.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
+index 4fe63169d5a2..1234b5fa4761 100644
+--- a/include/linux/uaccess.h
++++ b/include/linux/uaccess.h
+@@ -505,7 +505,7 @@ copy_struct_to_user(void __user *dst, size_t usize, const void *src,
+ 			return -EFAULT;
+ 	}
+ 	if (ignored_trailing)
+-		*ignored_trailing = ksize < usize &&
++		*ignored_trailing = usize < ksize &&
+ 			memchr_inv(src + size, 0, rest) != NULL;
+ 	/* Copy the interoperable parts of the struct. */
+ 	if (copy_to_user(dst, src, size))
 -- 
-Lee Jones [李琼斯]
+2.43.0
+
