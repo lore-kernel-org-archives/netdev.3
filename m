@@ -1,172 +1,77 @@
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from aib29agb123.bom1.oracleemaildelivery.com (aib29agb123.bom1.oracleemaildelivery.com [192.29.172.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F18D4C97
-	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 04:17:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775535455; cv=pass; b=XbVpUV4JBNBggVBVDRa9woQ3pwhbGTJKHnC+JtPq33tTH4a6pFsa/yWpfkj68872YcBthW9Rm9rK2aoi5z17CoL+m7rd26a/i627hvnAHHfn6cSpvrgIqpzEvW5KvFJKCzFmEnN24YdkGYGfP6oo2lKV9pkP66VREZAVh/0TdFQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775535455; c=relaxed/simple;
-	bh=Sw7ty+29veqGp5LQJRH7glKwePKiIhW+LcAyP2s9O+Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gcOdg4Dz/GAkYBIfVdMlWyx3jC2G0tN93swYt8BxhZ21gyNqzwKSioZJsPPG1td6a5b9BdkK1TAvJZkh0z7CV0u2seRviCHfTYhyoR8JeZ0pRpI63xuyKteolE9osFipb7cklT7wVSkgv1h6w2P2/g2XkCJVty3nnh8eA8ijA2E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=h7NUvK3m; arc=pass smtp.client-ip=74.125.82.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A6933DEDD
+	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 04:53:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.29.172.123
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775537601; cv=none; b=mHgRzCEYCGXgbc+FH+PjRyklfOAcIWVCkiBOVKDhEt7mvW1tF2E6HdzejkXjga/RyfM0J667WhaC1NgOFuaor18djSR+E0udYljCDdwRCS4HAqiXWf2jEaNjRJlUJ45B0bantCXgEFYSRgZ9R3TdWCfOSz07s9gQZKT8BxpA73U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775537601; c=relaxed/simple;
+	bh=DOGNxOuGnChhZQLwlrQLOpL2pK7O5LofYIVDLE+YYWc=;
+	h=From:To:Subject:Date:Message-id:MIME-version:Content-type; b=jnifdMaRFvszkxln4orAqqhxXwHvXqDSoFBGhKVimqwLy/mhqVTHKxGFs2wfGq1NDIiiIEFs2tM2ML7q+2PWPCZLKcvkBOIqg9o7uQgdyX4ylLfNW///6VHNiJ+0nRnRWAF2wHs7bKOBkRqEHtC58CtnDjEhs2WzW55jucvLx8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=linknsell.com; spf=pass smtp.mailfrom=bom1.rp.oracleemaildelivery.com; dkim=pass (2048-bit key) header.d=linknsell.com header.i=@linknsell.com header.b=HwxNa9UH; dkim=pass (2048-bit key) header.d=bom1.rp.oracleemaildelivery.com header.i=@bom1.rp.oracleemaildelivery.com header.b=egIcT8L9; arc=none smtp.client-ip=192.29.172.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=linknsell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bom1.rp.oracleemaildelivery.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="h7NUvK3m"
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-12c19d23b19so40214c88.0
-        for <netdev@vger.kernel.org>; Mon, 06 Apr 2026 21:17:34 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775535453; cv=none;
-        d=google.com; s=arc-20240605;
-        b=OdKh+39BlKw0bRQyq4cnB9j6e0KQxvf4h1+3LnAW/+5czlxdwCsoeGZiso9OyW0xlS
-         k48aC+D5Mbr8ysTyQoIfQFENw7GrTD7coADrNMJhxOk0dmb1zI6pjzfOWeoQFhJpFGwY
-         WsJ+EQNHmw4RROV0UKVtVoQd+kEYa3JNu8lW8b8Ig6tSJmIrXG9JmsRRCkMsiTFf1Pta
-         9WgqPaumjXHB/9qevgDK+P/+fxU48d4EmsHHU2kiirJqTZOwcrvqPGOo4EI20bRTVGV2
-         k6XTYWjhfYwtAi7NOxiSjfLdizsoBMtcMTPtTc4JzX5VuzyQB7sf8mR9a7xTuilZYK2K
-         qFOA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=AyYS6PCArwoFK69Ul2Lan69GZWWz4KZxx8evAz2lAUY=;
-        fh=7HfJqo4yIBpdTKM/B8vkXiFgqqNi5t65ByLUo5vMqiI=;
-        b=GNsZPoeNd0D1E2WByVbWIfwg+Bcflmpain+kdRDr+9ias4wYOj4itlodFk5Ho2bWU4
-         6rhqiypTDyO3ZIvu4JCB8bZDD8Z/ThP0ooGx1yttzvv530W1lGwQTa/C3JoQu5RJauqM
-         jnKDEuCHgD+OGSnvqq4ndgXMSjMOv15LNbWJaknjhaSreuqJoPCe2hyIlETQ56OpmX7s
-         wm10ZxNLbXISo+rK1/y0870oVxKQBJ3AqaAa4i7ubPIB6ulZ0c0UaPX41UGLNYkR9Jh5
-         eWZldP1TuZlaZTP8M4IgodDGqkJLzgna9yS/y8gw6KQ8SvCQunFlCzcxOwDHZQkiVrq/
-         yfFQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775535453; x=1776140253; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AyYS6PCArwoFK69Ul2Lan69GZWWz4KZxx8evAz2lAUY=;
-        b=h7NUvK3mG3g86hm6udSjw73qAZqrP2DFC/H4/qj3Lzn3QoeeoQbUZiipOOUiU9iJ54
-         pVb0QEl8B7sX+tQ69lZFs2D+U3iUpmvZz5v7pjZLzb6g3PoI9fDUzVk3r0qkBB+JXQzf
-         VC9oPfZpixf2SSet2b7jWdzmFqZc27I1XSZJ5sHF/xJS2s03do1Nt8DkrBE1PhFOxEV0
-         5411julxX4tA7LkAVxDDFs3qUaubJ//ooHE81tqjzrBOCV0PbYVvNFv3PB5wLS+pV0O9
-         ZHod9bza962jC75nBjA35154T1IZ2elH8oBx89Tu+cDXwzM03YjmmPdZvPWHxSJhPBSe
-         Yl9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775535453; x=1776140253;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=AyYS6PCArwoFK69Ul2Lan69GZWWz4KZxx8evAz2lAUY=;
-        b=LhO9oG0XXYGeSTq5IAHlFt+qEarv4m5rhPwttkMzJ8gmx/IRg8X2uftrzgL0Rztxk0
-         2KZalY/sIthsmQZy1Z2qDQ1YNyyDq/x57LaGg00gOCzLnCHRtecwyh76w+SU5vLgZX5S
-         KaDYLwyXAVETSM1TUPbdjXEpN+DypyeiBGJnX+vHPUOTKnpBTJKIXofAMCgVQydHleXL
-         MKxaW7YBuU+uWnD6tsh8OP2fXPHjsUED6iUNyzi9F/QFN7MYE5dEtBTjCqHh/dkHTe72
-         e9rBaJbq+mZm9znOEAZ1YRjohsGkcKL46CMbm7rZLhDIY0HM9aENlWAozN2FXv/7J63a
-         rwiQ==
-X-Gm-Message-State: AOJu0Yx/DCINasiRo3fT/TdtPfLJpEUgv7Swc6OSlazyK6JUnjhbhTwf
-	DJhSSy5sQN+3OgttV3oAHyW5L7CtNUHPQWY3PhXo5B8SV24zMwfJJ7OdB7ZKiRYEHRGTiv2p64L
-	Zf3uIn4/nDAiQgSoYcF4NhyeGavr+/Thjv0S3jBUe
-X-Gm-Gg: AeBDieulfVdrGT30epvoo4DNyP7/E5msHwvAXAjAqM1NAFXAtU6Vni6w6tr+fFOEVgN
-	GKc5e/fxMEYLwwmI79EJ5jArsO5F4bnDgbPq/iiteS8fF/JIkBLzeFhegw8SSKtMILYWtSso/pz
-	eTDpIU0lbdCejkGbVij272QYwq6QitINA8V06tyS2QiiexaIouUH+OH+xcDkDYzHT2Ww3jm49is
-	TfO3FdvGogg7oRPW1MxGVNh/u0EoKsvd+Q5SDf8N6R4JSKTShpCcdbl8cIDvGAPRpPVsDXkD7nk
-	HCP+9RRH100QsfUJDirDcrPp9Q0GpFzY/OqrDTl/MFFIoGUVlIOziLEE22ckjnpOzHZj5AxBQ0T
-	DHkAd5FU=
-X-Received: by 2002:a05:7022:e02:b0:12b:f881:d8d0 with SMTP id
- a92af1059eb24-12bfb7459f4mr7362897c88.18.1775535452787; Mon, 06 Apr 2026
- 21:17:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linknsell.com header.i=@linknsell.com header.b="HwxNa9UH";
+	dkim=pass (2048-bit key) header.d=bom1.rp.oracleemaildelivery.com header.i=@bom1.rp.oracleemaildelivery.com header.b="egIcT8L9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=smtp.linknsell.com.20250508;
+ d=linknsell.com;
+ h=Date:To:From:Subject:Message-Id:MIME-Version:Sender:List-Unsubscribe:List-Unsubscribe-Post;
+ bh=DOGNxOuGnChhZQLwlrQLOpL2pK7O5LofYIVDLE+YYWc=;
+ b=HwxNa9UHBB5iah8v0tDkibBpo2M0QUKVWU6NEmTQVS5jlBAdMyYAwRiNyutQUm3vnmUeqabiFFGm
+   cDAHkyjIlYLgA4CAWt10NvILo8x542FlPjLZQwgLmKuH7pQAhdUhchbLocaRXqGTMLWX1nBCd+bv
+   0QiDLihxZS/VpIsCf/lqX9nkXJ+nbrxnAyaA1O/hVljwYMVO10sCMopjnuDJo+6tgAAjIJKFjlKA
+   a6p+CkkZhwoPNZaJV9T3WrTUoQn9QaslAv5CP67fFi6dmgeJzodryULh1deYne+vdxx8aZp2UBaD
+   Ybk17JdYiZ56uhST3x6G23cr6oa2CVUpyGjcHA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=prod-bom-20200207;
+ d=bom1.rp.oracleemaildelivery.com;
+ h=Date:To:From:Subject:Message-Id:MIME-Version:Sender:List-Unsubscribe:List-Unsubscribe-Post;
+ bh=DOGNxOuGnChhZQLwlrQLOpL2pK7O5LofYIVDLE+YYWc=;
+ b=egIcT8L9v6h2D763F1PgBLKJnOnv/eBUgiZtwxk578Eww9o++LPYUHHl7AdoaxWsfFbo/O48ThO3
+   YINoopE+3ZubDwBu4ZEb91Owy1g3VKg+wVo1If7Ws84ilg9NYEvnRWmMFvMiWGBj+QSb3qpY+Qh9
+   w/CS7d4I3508CRX7V0igFMJ/GSTSrmxp1baL0fBkAQIku6hPl+yL7xvEx0SaRue4Tmc7tsmWhTWQ
+   RwN5w/9LJwW5BLYBJEFCBTtLCvJD9vXbVmMa+gc3zrY45tYtK2vG4TUeeh+k3E8OA5FSZV710i/y
+   nBb5eyndnb33FqalRFDls3uHrglbVFqektVomw==
+Received: by omta-ad1-fd1-402-ap-mumbai-1.omtaad1.vcndpbom.oraclevcn.com
+ (Oracle Communications Messaging Server 8.1.0.1.20260212 64bit (built Feb 12
+ 2026))
+ with ESMTPS id <0TD300EVGXKTO6A0@omta-ad1-fd1-402-ap-mumbai-1.omtaad1.vcndpbom.oraclevcn.com> for
+ netdev@vger.kernel.org; Tue, 07 Apr 2026 04:53:17 +0000 (GMT)
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+Reply-to: jisunlee@gmilweb.com
+From: Jisun Lee <NoReply@linknsell.com>
+To: netdev@vger.kernel.org
+Subject: I need your help
+Date: 7 Apr 2026 05:53:14 +0100
+Message-id: <20260407051725.A00AAA6B0435AA7A@linknsell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <cover.1775207252.git.wangjiexun2025@gmail.com> <e597de49d761fdc6961f49d638ce26bd3f74e988.1775207252.git.wangjiexun2025@gmail.com>
-In-Reply-To: <e597de49d761fdc6961f49d638ce26bd3f74e988.1775207252.git.wangjiexun2025@gmail.com>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Mon, 6 Apr 2026 21:17:21 -0700
-X-Gm-Features: AQROBzBAHphE4lXXMiSCwDLdeWnZAvHZv1I7HbyYfBZBXMGqnInJjFrg0rjys5w
-Message-ID: <CAAVpQUDe6cg4fNVHjy+EdtCUj+oEbi_2ohz5PVkNZmcTfS2kDA@mail.gmail.com>
-Subject: Re: [PATCH net 1/1] af_unix: read UNIX_DIAG_VFS data under unix_state_lock
-To: Ren Wei <n05ec@lzu.edu.cn>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, xemul@parallels.com, 
-	yifanwucs@gmail.com, tomapufckgml@gmail.com, yuantan098@gmail.com, 
-	bird@lzu.edu.cn, enjou1224z@gmail.com, wangjiexun2025@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-version: 1.0
+Content-type: text/plain;	charset="utf-8"
+Content-transfer-encoding: quoted-printable
+Reporting-Meta:
+ AAGi5cWnrTT4y34B1qvDUxR1Rsnzi/bNdivngbcgnQHx1PzWyIJmi0ji+3UCCCnp
+ D4cA0CnNMIO1lBduhQNyIeENYZguLw5sC/Fn4e1u3u+c0w88U2SjZNQMilaQpvFM
+ cA5JSBo2NuZSBmv7hdoVVjoltNoK2kFGaBP9dK0JDB/VIdTPEk1V/9Nq6JeEqHDD
+ TRyDl9hetGr+nW8bGpF5cYA0SfK0kYzMMYXIvvC3eel6lP9rJjyWzj/yXOkshkIe
+ I0BZFlCbW8crZHcPj3LvZqYDpzDS0hpT8P/TwSOOc8mvlkYOmbe+Hvd6h+N018uc
+ paRrzP0vmrUta8D7l6TjeKTYinQawYDjq1cTlJPzxr4Wtzk9rEBpAmkws0qxuAQZ
+ D7CcKAgKMWdNsKcOX3agdj4hQ5nf25xbRuoGFFeSw0sF++7s2oSAnWoFHPd3tVko
+ n6snGYkyks4/cdaRIn+zXGda8YPrIMyBqK3pXrOVMQdFPHvJPFyH6A==
 
-On Mon, Apr 6, 2026 at 6:53=E2=80=AFAM Ren Wei <n05ec@lzu.edu.cn> wrote:
->
-> From: Jiexun Wang <wangjiexun2025@gmail.com>
->
-> Exact UNIX diag lookups hold a reference to the socket, but not to
-> u->path. Meanwhile, unix_release_sock() clears u->path under
-> unix_state_lock() and drops the path reference after unlocking.
->
-> Read the inode and device numbers for UNIX_DIAG_VFS while holding
-> unix_state_lock(), then emit the netlink attribute after dropping the
-> lock.
->
-> This keeps the VFS data stable while the reply is being built.
->
-> Fixes: 5f7b0569460b ("unix_diag: Unix inode info NLA")
-> Reported-by: Yifan Wu <yifanwucs@gmail.com>
-> Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-> Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-> Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-> Suggested-by: Xin Liu <bird@lzu.edu.cn>
-> Tested-by: Ren Wei <enjou1224z@gmail.com>
-> Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
-> Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-> ---
->  net/unix/diag.c | 21 +++++++++++++--------
->  1 file changed, 13 insertions(+), 8 deletions(-)
->
-> diff --git a/net/unix/diag.c b/net/unix/diag.c
-> index ca3473026151..76b2c48137dd 100644
-> --- a/net/unix/diag.c
-> +++ b/net/unix/diag.c
-> @@ -28,18 +28,23 @@ static int sk_diag_dump_name(struct sock *sk, struct =
-sk_buff *nlskb)
->
->  static int sk_diag_dump_vfs(struct sock *sk, struct sk_buff *nlskb)
->  {
-> -       struct dentry *dentry =3D unix_sk(sk)->path.dentry;
-> +       struct dentry *dentry;
-> +       struct unix_diag_vfs uv;
-> +       bool have_vfs =3D false;
+Dear Beloved
 
-nit: Please keep the reverse xmas order.
-https://www.kernel.org/doc/html/v6.6/process/maintainer-netdev.html#local-v=
-ariable-ordering-reverse-xmas-tree-rcs
+My ex Husband Song Lee refuse to pay our divorce settlement
+funds. =E2=80=8BI need your help to recover Assets from the bank for=20
+healthcare and child support
+=E2=80=8Bpurposes, diagnosed with (bladder cancer).
 
+=E2=80=8BI need your advise and support
 
->
-> +       unix_state_lock(sk);
-> +       dentry =3D unix_sk(sk)->path.dentry;
->         if (dentry) {
-> -               struct unix_diag_vfs uv =3D {
-> -                       .udiag_vfs_ino =3D d_backing_inode(dentry)->i_ino=
-,
-> -                       .udiag_vfs_dev =3D dentry->d_sb->s_dev,
-> -               };
-> -
-> -               return nla_put(nlskb, UNIX_DIAG_VFS, sizeof(uv), &uv);
-> +               uv.udiag_vfs_ino =3D d_backing_inode(dentry)->i_ino;
-> +               uv.udiag_vfs_dev =3D dentry->d_sb->s_dev;
-> +               have_vfs =3D true;
->         }
-> +       unix_state_unlock(sk);
->
-> -       return 0;
-> +       if (!have_vfs)
-> +               return 0;
-> +
-> +       return nla_put(nlskb, UNIX_DIAG_VFS, sizeof(uv), &uv);
->  }
->
->  static int sk_diag_dump_peer(struct sock *sk, struct sk_buff *nlskb)
-> --
-> 2.34.1
->
+=E2=80=8BThank You
+Jisun Lee
