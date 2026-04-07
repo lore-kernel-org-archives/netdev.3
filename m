@@ -1,154 +1,125 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A3C397E9F;
-	Tue,  7 Apr 2026 09:40:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775554839; cv=none; b=WSOiR6ORWn3uQNiakBa6c+OKQbBMU+NF62Nd0K9o/LMCoixd+gmalTjbU2A053TRlRKaDlh17u2yON2BcMYc4FzjADWTd5gQcsy5yCpxU6DRqqO6srVyjNPRBGvMeNCQU5f05NNhxli6ittibq2jtLfMWQKO4wFEEPKy9o585tk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775554839; c=relaxed/simple;
-	bh=4lyCBGNQl/3+m1BK3GENq+afc9cSJKlavGL0IGYAg0k=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lmDiwc1q32lB7xLM8HD20UZG7lnnuV6G1pu6N7ZZ7ytpb9oTbYL20p8wi4Ehbhw3+BQWv/zb6AA2iZVRlm2LCJ3Cx5RzKPNQ4ER0OmDT5uSAHC3wv9jqQj6RNCvdfEHFa07VKCYkcpLkjp5d5Quw6mESGR08aMrSjffSvC8Ihog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=lcxnp3wZ; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51803A5E8C
+	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 09:41:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775554889; cv=pass; b=ZM47cV+Xr2z+GOBBYaMTJHQr09J+nZWfoHkCoOPZAA+I9Wz+32WHJTe77INDRtt10Ga/yCaYb9GPZG4kTe+Qti0b/R6zUXu8sY+6+tqEa1cx41GdbTYKZm9DD1OTH4bP+skAoQkcaJKK+8ZtgniNubn7YSrQzlu5DBVMYBxGd2Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775554889; c=relaxed/simple;
+	bh=9XKMsadydwDQqCY9F+DkrtsGh8JxW60RIBSvou5/6bE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IxS6/YtWT7by/X6wCmiO3JuWiH/uZy6TzbzOGDELZ81OTdU06qgDuKKEeTy1/seqyHyA9usmkr3TSr5kUD+uvFn19m0b1W68oPUAwwIo4cPyByD7UTVegfEfQMhhdW8Dlwk4hFBu7goDP72owUSb9XZz1vlF7BCdVdtQp4Yq28c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nZp7rTEz; arc=pass smtp.client-ip=209.85.219.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="lcxnp3wZ"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 228ED1A31B3;
-	Tue,  7 Apr 2026 09:40:36 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id EACA8603C7;
-	Tue,  7 Apr 2026 09:40:35 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 18AED1045017D;
-	Tue,  7 Apr 2026 11:40:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1775554835; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=7i4+STDc0ibhW0/mMo7y7QeOw6BMz3TT9b7HewYcv4E=;
-	b=lcxnp3wZXO0F6B8ALu88ruzpEAowiinyeFN8O/61TDxyAL8AaB9UhtV/2texsuYG8DVQQQ
-	wj0l/fzDMZxm7CeLar+phAveyndZUseU7XXt8BJY0qu7UdXt0vjC60MD9jNy/PIPiyJ/nY
-	zW/HcY6NkIIVhaQZLncvaF/wY8GGGBztxt3YQzGYZY+Awj4AAhR+KxerVaPGIMeKwY/h6h
-	g1Gd0sSFRP4s6RDe21GlKyAQU4de1FnxjCCwBQ29+cvIH1Y1mFuCg5KNyc3I/AFkirysnY
-	NrAKlhn4/mlZ7VwkCyQxoRdIFtCVoqW0b3Z8IbPW5I/VO8lIftMOeLkzo4c/gA==
-Date: Tue, 7 Apr 2026 11:40:30 +0200
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Andrew Lunn <andrew@lunn.ch>, Carlo Szelinsky <github@szelinsky.de>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Heiner Kallweit
- <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, Jakub
- Kicinski <kuba@kernel.org>, "David S . Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 3/3] net: mdio: treat PSE EPROBE_DEFER as
- non-fatal during PHY registration
-Message-ID: <20260407114030.4cd0d6a4@kmaincent-XPS-13-7390>
-In-Reply-To: <adO_Za-X1cMjCEEa@pengutronix.de>
-References: <6185f9d8-dabe-4190-b020-711e3a046e64@lunn.ch>
-	<20260405185730.3937952-1-github@szelinsky.de>
-	<adN9Ha5FgJ8sp6gj@pengutronix.de>
-	<1df8b470-2449-418d-a4a8-9cd929ced463@lunn.ch>
-	<adO_Za-X1cMjCEEa@pengutronix.de>
-Organization: bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nZp7rTEz"
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-89fc4147f2eso62712246d6.3
+        for <netdev@vger.kernel.org>; Tue, 07 Apr 2026 02:41:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775554883; cv=none;
+        d=google.com; s=arc-20240605;
+        b=F31yaqNo8sRETP23BmcU53cmHt01SrC6C9BBg8BCWvjKMTAK7hwSBja0vmRtKuRKP1
+         L/89qLVHO+wlqfObHs3sx4qW0M6ZRQ2u+ArxkAaKVUaBIqlWF5JZN+jfzFuUlJ2wUQbM
+         D4fatsjp565cYSZnnlAUlwsp832bcOJ3gYVnGuuljgUGcMLhxVy/VCRnkKo03/UEOm8w
+         leqxPiav2R7z2NY/OSHCoDtQQy23fFpralOjR9CQQOJkfQDizlyCU39QGHvSQzfC4pQV
+         JoKBh8Cm/vr64MwVGY+kA7+d0KAGG9riMYr+SlA0ZkzaUKw0wd4ARFiPvHO/yxy/XNj6
+         1vdw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9XKMsadydwDQqCY9F+DkrtsGh8JxW60RIBSvou5/6bE=;
+        fh=NUu01oYJ/8KdePd4eImPO/tX73eiFcB3BBlOUTYYgK0=;
+        b=dwB3/49ngylPOURFNA5mhKFYZ0S7SewgIWo8ncSpxe6uaCYowmTB04budSKbOaHsnW
+         eEsxc7WQasLzUqpO4uCN1vxHRGtk7EgusPdXd8FXg1ruilk+icTxFBRVepwLtcw+hLWh
+         RrOJ7UEeWXPRAkl1vy6f3MWfgtts4cikAEdj1C97VepGtrPL+WQFQj+Ah3cLQTKqDqKz
+         YLVWyMR4YZCYFVmJeRTqkioKnrrPeXknL+WVBCO6b+FJI+2herGjl9U5NjYYZe5OkEvY
+         syfi0vpTs9AewpFYsy3dRaXvA/fuKiE+LhZSXs8Bz+/JEDy3aXznfX+jc+kWVRXvqfXW
+         GSEw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775554883; x=1776159683; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9XKMsadydwDQqCY9F+DkrtsGh8JxW60RIBSvou5/6bE=;
+        b=nZp7rTEzIgwApXkyB4DOq1hdYaHOXy2CgZTki3CI/gAiVpeDlBXGkivctNvJ7KUkJJ
+         nvNVtLHrvwpZua9JrMUOLgOv3DR+J+8YKe5VE9JUVJBwGQKkNRt9UhNgbql8buaYu9Sa
+         dLk2Vec0G09UmG2fZqQ5oQAKWe9ZApIbtb14ZnX1sY1HMNTqk0LPVioNMdkzCOblWRIp
+         +q6v8V7cpgqSa8l5ocB3tqBdxD9ByLfknmy0dE4hqETsQJDiHrkV+Mvli53vU5KrpQ0E
+         taWTiWAQ01rHlPeiREiJ85MwR0+XnUihGjNZS8qel/Vya+3NJ6pmk5Eq8sr273f1xZEG
+         9gsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775554883; x=1776159683;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9XKMsadydwDQqCY9F+DkrtsGh8JxW60RIBSvou5/6bE=;
+        b=KMPW3gFiMUF4idQdnP3c1ZtPy8KeOqnzeGZVIFEAx6a2NOH48SjSnyIU5lKSXcyEz0
+         IKO4gpTIk8fixIYFSRdT86MXS2jtimRp6zuZ5TBaGwjyvyByiwzKYEc7y/aNbpXMkL3o
+         ovfGtu8a3O5ygO4fxVP4dqi7JFsosNOVHAPWsxLeHXPsrThmOnbBJZlW0xvHTwWJEC+1
+         /ds5E+SU9vCT5elHF9W+PtyGKNZ7h4K2I0QNAcoc4eunaoWv0QnZEWH4TdElEnYejU5Y
+         gukGW4XW69MzkMim4pe/gvfrjVHsLo7HcOF+IhqirGBjOby0Ws6T76jw//OxNqlZECNI
+         Q8zw==
+X-Gm-Message-State: AOJu0Yz5iSoIz4YJZyiwSa7zVDCmbRLi+MJOhmto6sZLAan056+SAwHm
+	MPU7HvL9931qaVVk3ed1Jvmlydud08sUw2dWG9sP30lgW5M6SgDCVECWi5Qpgs0jtPEz9tFUexp
+	Hzwlx3Ya3THvfHksV1szhWs0KKJT8qlsdNLHd7Tqx
+X-Gm-Gg: AeBDietlEvr/PiRGQziIhui1pDsjiJPxJhDYiNu8etedki4uVLJx5B6RMcQIEiZYEoP
+	bxeuotjl2EDBOc58XEUWVvGQK4nQFJULAZflop6P7ey1zP6XMIzzeTJlTbQcqBh7V16mEa5VOUh
+	FwUo0yiFAHX8607EEpT7wRFw6CIxvCpgg3frEKbYAcZF40TVMCR2iulFbekCnDPwmsdVDN76gni
+	ID3deNlo0t+KsvE/z/Rbd/qQhV/khEy10ysmCexRsq83yGTlhEV/wU+YCLCoMs7PHJzjM1HHup3
+	pMNH
+X-Received: by 2002:ad4:5e8f:0:b0:89c:4985:83e3 with SMTP id
+ 6a1803df08f44-8a704fa67a2mr262987336d6.49.1775554883096; Tue, 07 Apr 2026
+ 02:41:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20260407084219.95718-1-jiayuan.chen@linux.dev>
+In-Reply-To: <20260407084219.95718-1-jiayuan.chen@linux.dev>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 7 Apr 2026 02:41:11 -0700
+X-Gm-Features: AQROBzDxjTgngBp4Xw_lPhwbg1f-uM-3EApa_YW3WL5jzC4EuSzAvXYNieQbksQ
+Message-ID: <CANn89iLEPOh8p-KythbL1FOPW4SU4U8qhSb7A_CVvjoVUZtn=g@mail.gmail.com>
+Subject: Re: [PATCH net] net: initialize sk_rx_queue_mapping in sk_clone()
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: netdev@vger.kernel.org, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
+	Soheil Hassas Yeganeh <soheil@google.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
 
-On Mon, 6 Apr 2026 16:12:53 +0200
-Oleksij Rempel <o.rempel@pengutronix.de> wrote:
+On Tue, Apr 7, 2026 at 1:43=E2=80=AFAM Jiayuan Chen <jiayuan.chen@linux.dev=
+> wrote:
+>
+> sk_clone() initializes sk_tx_queue_mapping via sk_tx_queue_clear()
+> but does not initialize sk_rx_queue_mapping. Since this field is in
+> the sk_dontcopy region, it is neither copied from the parent socket
+> by sock_copy() nor zeroed by sk_prot_alloc() (called without
+> __GFP_ZERO from sk_clone).
+>
+> Commit 03cfda4fa6ea ("tcp: fix another uninit-value
+> (sk_rx_queue_mapping)") attempted to fix this by introducing
+> sk_mark_napi_id_set() with force_set=3Dtrue in tcp_child_process().
+> However, sk_mark_napi_id_set() -> sk_rx_queue_set() only writes
+> when skb_rx_queue_recorded(skb) is true. If the 3-way handshake
+> ACK arrives through a device that does not record rx_queue (e.g.
+> loopback or veth), sk_rx_queue_mapping remains uninitialized.
+>
+> When a subsequent data packet arrives with a recorded rx_queue,
+> sk_mark_napi_id() -> sk_rx_queue_update() reads the uninitialized
+> field for comparison (force_set=3Dfalse path), triggering KMSAN.
+>
+> This was reproduced by establishing a TCP connection over loopback
+> (which does not call skb_record_rx_queue), then attaching a BPF TC
+> program on lo ingress to set skb->queue_mapping on data packets:
 
-> On Mon, Apr 06, 2026 at 02:22:16PM +0200, Andrew Lunn wrote:
-> > > The core question, do we need PSE for PHY functionality? =20
-> >=20
-> > I don't think the PHY should require PSE in order to send/receive
-> > frames. If the PSE is not supplying power, the link peer is probably
-> > off, but that is not so different from the cable being unplugged.
-> >  =20
-> > > We can make a step back and re-evaluate - what functionality and what
-> > > order is actually required to find potentially better implementation.
-> > >=20
-> > > We have a lot of current flowing over wires, budget and port
-> > > prioritization issues, things which may damage HW if done not correct=
-ly.
-> > > With other word, if we do not have properly operational environment
-> > > providing system specific policies, it is better to run safe
-> > > configuration - all ports/regulators are off.
-> > >=20
-> > > This means:
-> > > - PSE controller driver should be registered as early as possible,
-> > >   without caring about existence of PHYs, ports or network interfaces.
-> > >   And configure ports in to default safe operation - off. Accept we
-> > >   have some controller/firmware which would care about safety. =20
-> >=20
-> > Don't most PSE have I2C or SPI interfaces? So they have a different
-> > life cycle to PHYs, ports or netdevs. Only PSEs which are embedded
-> > within a PHY, on an MDIO bus, will have a closely linked life
-> > cycle. But do such devices exist? =20
->=20
-> i'm not aware of any.
+Ok, it's a somewhat convoluted way, and no real harm but KMSAN :)
 
-Same here, but it's not impossible to have such device in the future.=20
-
-> > As soon as the PSE probes with all the resources it needs, and can
-> > impose a safe default setting. And that can be independent of PHY and
-> > netdev. I _think_ we only need the netdev for configuration, since
-> > ethtool addresses netdev's.  There would only be issues with user
-> > space listening to udev creation events, it knows the PSE exists, but
-> > it has no way to access it until the netdev is created. =20
->=20
-> Ack. netdev is for configuration as virtual representation of PSE PI. And=
- it
-> is easier to assign corresponding interface for the LLDP.
-> We do not really care about the PHY; it just happens to represent the
-> port at the farthest end described in the Device Tree.
->=20
-> > > - as soon as we have all needed components, we can start provide
-> > >   controllable interfaces to serve external consumers. =20
-> >=20
-> > Yep.
-> >  =20
-> > > If we decouple PSE and PHY registration (and we probably will need to=
- do
-> > > it some day), we would need to have own implementation of deferred
-> > > probing in the PSE core.  Event driven or by polling - which sounds n=
-ot
-> > > like very good idea. Pick your poison... =20
-> >=20
-> > I don't see why. Maybe i'm missing something. We have two cases:
-> >=20
-> > 1) PSE probes first. When the PHY looks up the PSE, it exists, and it
-> > is passed a handle to the PSE.
-> >=20
-> > 2) PHY probes first. The PSE core returns EPROBE_DEFFER, and the PHY
-> > will try again later.
-> >=20
-> > I don't think there is any chicken/egg problems. =20
->=20
-> Ack, i guess it is optimization problem.
-
-Yes, as I reply in another mail of the thread:
-We should be able to get the PSE control either at PSE register time or at =
-PHY
-(or PHY port) probe time.
-
-Maybe if the PHY can't find the PSE PI, we could save the phandle of the PS=
-E PI
-somewhere in the PHY structure. Then at PSE register time, look for each PH=
-Y to
-resolve every unresolved phandle.
-
-Regards,
---=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+Reviewed-by: Eric Dumazet <edumazet@google.com>
