@@ -1,27 +1,27 @@
-Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
+Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF0D372EDB
-	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 02:57:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D941474CC
+	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 02:57:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775530656; cv=none; b=t9p9wjvg5vUd1rao9gQLJeJJFPuhxQXcRVc9xIbmN7+shgooptaWLZlMxJSq3Fn3qStUsp25t8XRPDg1UeSEi0lMAcuxr9Zn0Pe/6kQ/vbeTHX4LwyygWxkaM75XizOQXwAg2RhPj5rMC8Xx69LlemwI6xG/qQwq5rBrTxzSZ1E=
+	t=1775530658; cv=none; b=crCwwvh/4aB+kxoloPq/VOxrE15qpkHnNhBQb+lAKbPdGjxnm/iTgQ1jxbrkBVw98r700xVXPcn3qzx7RB8v6B7yYLQQuaOLCVucUBnNxPjTab7SMlCsyIAUZ8KbUFYeTPkGOSdFkZbHGyNIik1jjDJ/S9PsgsWv0enpRniVMPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775530656; c=relaxed/simple;
-	bh=/bul4IAq3YCdfoNvSpOxlUun1WBFrt2nrvHzPkI51X0=;
+	s=arc-20240116; t=1775530658; c=relaxed/simple;
+	bh=OZAyKRLbYvnVJJ/bV1ihc1E9k+nnXy2yb4sZIaWjbAc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=u3YJ2V7/7iY2kr3HOUFQPiWriEv7rcvEKDSJgn9kJsX3L36EF4Aauj2U1+KAZL24bCJKL/O0HqkFyBhgOG7a9KJkmTqi3FAeh6k4RZ80+MaYYlnM2zzLcIcYLVssUZMDfejBPYoNYXvUGH6ejsM9M4unGhSPyZIXvQmR0SHmBbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=18.194.254.142
+	 MIME-Version; b=sSdRR8Qsab3m2WTFVrGPP4mJMJuZoBLjTv0cduSYvy1yhpVYDIQZ2K4ZGGpB7Uekieo0FiC/dJ6jjI4JugeJUmvT9VqMgWTNCEwIEjNscWX9d8cLOhXra5tRiR/pOqGKtznTK7zYfhxWSIn7Fqp/TBQ5nkGyEiv2fcW4njjXVbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.206.16.166
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: zesmtpsz3t1775530611te3fef9ec
-X-QQ-Originating-IP: R7zqD0q2kboqaClt+rLho0YuMMTBofSnj1mvc76YiwU=
+X-QQ-mid: zesmtpsz3t1775530618t4f6387af
+X-QQ-Originating-IP: oDjAHEP5ht65IJvabg3peAldcMUQvngKmvfTc1ORPLk=
 Received: from lap-jiawenwu.trustnetic.com ( [115.220.225.134])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 07 Apr 2026 10:56:49 +0800 (CST)
+	id ; Tue, 07 Apr 2026 10:56:56 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 15061125918897745960
+X-BIZMAIL-ID: 13454302501692638748
 EX-QQ-RecipientCnt: 17
 From: Jiawen Wu <jiawenwu@trustnetic.com>
 To: netdev@vger.kernel.org
@@ -41,9 +41,9 @@ Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
 	Abdun Nihaal <abdun.nihaal@gmail.com>,
 	Breno Leitao <leitao@debian.org>,
 	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v7 6/9] net: wangxun: reorder timer and work sync cancellations
-Date: Tue,  7 Apr 2026 10:56:13 +0800
-Message-Id: <20260407025616.33652-7-jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v7 8/9] net: libwx: wrap-around and reset qmprc counter
+Date: Tue,  7 Apr 2026 10:56:15 +0800
+Message-Id: <20260407025616.33652-9-jiawenwu@trustnetic.com>
 X-Mailer: git-send-email 2.21.0.windows.1
 In-Reply-To: <20260407025616.33652-1-jiawenwu@trustnetic.com>
 References: <20260407025616.33652-1-jiawenwu@trustnetic.com>
@@ -56,75 +56,109 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: M0rKEBkdLtKD8kosx2NPln47XUE8w/hmPoR5TCh1YkJzuJvR57I1gBlg
-	0HNwv9Ro7dZFvFZjb9ibK49EQwRjSsLh9fMrSpBR+BD+cW5fhL15uSzZy95KlDu/23RYTXM
-	886B+H4L7Q7jcH6Rxq6L9yaTTJx1WxfjoSSyt76aRQ6TlIUlmNJ4GHZfI5MLW59wHFWTuXK
-	aUm7jdLohntetRlMg0AzBhB+HpNpscBFN43hm9NW/Hl4Giq/mEr86AnNpDcdUQfq5Xug2gZ
-	0j0+heFQV/6AYByuvthD9fvN80roIGoGzSMDxhLSD41oiPXWRHAPlLMJ8BIiOLyXnT+d8Ry
-	zC+JCMAEqaG5lz7RJSOKZGz7cRv3UGz9/lDlBbeVpQddDamb0U8MQggWsUFvZe23L5vP/y6
-	aaf0gMsuF+9/iuzHWzPG2+UZ1qH/NiEqzHRMK+r+Nb8Tqnq9rpWXJTY3gEpj2vRqPbGPEgq
-	01627Zq5rSURJr/CaOR8YkS31MnLTBEY6l+IuU4g4ACAYqqPwNnqFUfeJdWfkLyP7eVO5Ry
-	cb34bLQp6emf8foNEErPkDTWrQjOt8Rb4l+BBI0A7RaO0Lxew0zBNKFedj9GrI3at5R28ca
-	ABEuD2ydxWh5tevGLCAEgHqOMN6ZdxbUcFSjImcksedEwPf24Pu8uo8AKvpPwJMzSxxi4iK
-	akqSJmFyuftlY544QRRFh8i0PYB7E0OMyJ7D1mGOYrWJ3lbf+jvCZQ3mhQ5XN5lT6jnqcRK
-	2KNgrDhdRf4tMMU3MByqAy+kMSsnAHJicmuxI86R9BOfQtsEfA540svlbPdU3xtnLFSN526
-	8CEq0n3klYt/ONzKE265QjDK7I7HWHRbsPh7hfmwdjY3xW1ApQiiv7f9J1/SlshAOqPS/K0
-	x8vCCUU0mhGBgwPRtxS03Y3TIQMaGSp5wXsQwmTA7+3W0X4ukRSqohO8CMjld+gCyQF8bi4
-	KDejexCJfzRQ4ulXSfThzCRFGx9K6B4rlHtjCnWSipu8r4M+D/I4ZMOr/uznKcwVEGlhRvt
-	Q5ppwO8FZ6Lg8i8LZsAyO478BQ0KN70Jt8aq1gBhrJmCUINTMzTxhTDUJCZdeJ25r6BCYES
-	wxYaKeMZbg3MttbxePR6bAQofpDnUa4WeMrRdYkE/oC
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+X-QQ-XMAILINFO: MoXwTY6T4qpUzI1+RGBUZFeTeNbZBBWzVxoimS9Oun/9LfoCEla1nU5f
+	+hxOjIId2WuLlSpV96umUiSswuDWCxg9l9Z87MOuu7zGTyoUOJa49qSF7hgWGoBnp9tzUdr
+	wbbvtpSZFyafKVCtNa2+1WTgVIPcLJZevSlqcekgDadYipnpqjWDFSudNPfe8VthWoEh7M/
+	X4Szzmc85heayw14IgclCAhc3ZSau7KfoBfSzcu8OZRTNdE6S4PcF567Qj5aT/BqRppsFSr
+	O7kcPz7PchNpGrK8PFc90qekZOXbhrKuLYb04U8wTjCYfvGgCvBfq4ZcI/teRs/8QY0qBzP
+	z1FktJ9EskSfCSKh8q+CI1fgqomaE/ZlJDgRhkqAUBQ7Aq9V4XbP65Eb+8VVc0RYsm/TNmZ
+	ociv2tMphhzi47RN+hQQVfwg/m1xdpf+GRtdK0JHfw32/5vqPbbVW+2DL+nILoo1LM+fQe9
+	xKkYis6ikwT9m4w08w4ycbm+Bc2b9PazbLlppkftCPVlJRrW3/VwujIG44c8uGB7qqiBfnc
+	rmiefaxrRdCE6q8GpaCthWHkbsA5k2yRYgd/H3nh8vhQxhSQ1xO8TLsvCmn+pznawDHS+Xh
+	Tma78HyQ4zJi0zmi8jhZqJ84OTlcEsSOON/R303/uLvzkClEyxVARxUOETeT2epKbGpCJaC
+	y+jvxWfvLXLcZbrG2gYonAgY/3dttFIks6acWERTMWN4KWZD+rz1iVilIRDpOjsTMABPCz8
+	/ALGpu0f+ozLD4HVplrAAgtoyPUVRneTWIT650qmfX5/NMLs/IbNC+z88lrjjUOe03eahpv
+	cF3L/+w1oXrhnq8ZA0wW/MAhLBnqWk6SMA1WD/evoU6pbk/rRSOlgUeorQ8jGMwM7xO7mEK
+	G8ANunG9PO8S1G1oDYSC89SjDMZwWoY7yCOl7NhRPGqdB0oAqAuSNhzU6smeOb2oZEgVdm4
+	sfMINM0EZH+0oj46mfZiBjIejzDAuN2RQ5VO7LdZW0331EAEWhI6+WJNBcjFJ8eRQW++TRY
+	IA9xi/gKsE+nQlEVCgdgJxdWpnJd5m3OLj72exAVimrxw5vGpXc/NSI9sJXBM=
+X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
 X-QQ-RECHKSPAM: 0
 
-When removing the device, timer_delete_sync(&wx->service_timer) is
-called in .ndo_stop() after cancel_work_sync(&wx->service_task). This
-may cause new work to be queued after device down.
-
-Move unregister_netdev() before cancel_work_sync(), and use
-timer_shutdown_sync() to prevent the timer from being re-armed.
+The WX_PX_MPRC registers are not clear-on-read hardware counters. The
+previous implementation directly read and accumulated these 32-bit values
+into a 64-bit software counter. Now implement a rd32_wrap() helper
+function to calculate the delta counter to correct the statistic.
 
 Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_vf_common.c | 3 ++-
- drivers/net/ethernet/wangxun/txgbe/txgbe_main.c   | 5 +++--
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c   | 10 ++++++----
+ drivers/net/ethernet/wangxun/libwx/wx_type.h | 17 +++++++++++++++++
+ 2 files changed, 23 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
-index 75a6f0898afe..29cdbed2e5ec 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
-@@ -48,9 +48,10 @@ void wxvf_remove(struct pci_dev *pdev)
- 	struct wx *wx = pci_get_drvdata(pdev);
- 	struct net_device *netdev;
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+index 31259f69c0e2..57d6671ec618 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+@@ -2915,11 +2915,10 @@ void wx_update_stats(struct wx *wx)
+ 		hwstats->fdirmiss += rd32(wx, WX_RDB_FDIR_MISS);
+ 	}
  
--	cancel_work_sync(&wx->service_task);
- 	netdev = wx->netdev;
- 	unregister_netdev(netdev);
-+	timer_shutdown_sync(&wx->service_timer);
-+	cancel_work_sync(&wx->service_task);
- 	kfree(wx->vfinfo);
- 	kfree(wx->rss_key);
- 	kfree(wx->mac_table);
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-index 00726605628b..0dd128aa18da 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-@@ -946,12 +946,13 @@ static void txgbe_remove(struct pci_dev *pdev)
- 	struct txgbe *txgbe = wx->priv;
- 	struct net_device *netdev;
+-	/* qmprc is not cleared on read, manual reset it */
+-	hwstats->qmprc = 0;
+ 	for (i = wx->num_vfs * wx->num_rx_queues_per_pool;
+ 	     i < wx->mac.max_rx_queues; i++)
+-		hwstats->qmprc += rd32(wx, WX_PX_MPRC(i));
++		hwstats->qmprc += rd32_wrap(wx, WX_PX_MPRC(i),
++					    &wx->last_stats.qmprc[i]);
  
--	cancel_work_sync(&wx->service_task);
--
- 	netdev = wx->netdev;
- 	wx_disable_sriov(wx);
- 	unregister_netdev(netdev);
+ 	spin_unlock(&wx->hw_stats_lock);
+ }
+@@ -2936,8 +2935,11 @@ void wx_clear_hw_cntrs(struct wx *wx)
+ {
+ 	u16 i = 0;
  
-+	timer_shutdown_sync(&wx->service_timer);
-+	cancel_work_sync(&wx->service_task);
+-	for (i = 0; i < wx->mac.max_rx_queues; i++)
++	for (i = wx->num_vfs * wx->num_rx_queues_per_pool;
++	     i < wx->mac.max_rx_queues; i++) {
+ 		wr32(wx, WX_PX_MPRC(i), 0);
++		wx->last_stats.qmprc[i] = 0;
++	}
+ 
+ 	rd32(wx, WX_RDM_PKT_CNT);
+ 	rd32(wx, WX_TDM_PKT_CNT);
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+index 7831c5035be8..3c5a351974dd 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
++++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+@@ -1182,6 +1182,10 @@ struct wx_hw_stats {
+ 	u64 fdirmiss;
+ };
+ 
++struct wx_last_stats {
++	u32 qmprc[128];
++};
 +
- 	txgbe_remove_phy(txgbe);
- 	wx_free_isb_resources(wx);
+ enum wx_state {
+ 	WX_STATE_RESETTING,
+ 	WX_STATE_SWFW_BUSY,
+@@ -1354,6 +1358,7 @@ struct wx {
+ 	bool default_up;
  
+ 	struct wx_hw_stats stats;
++	struct wx_last_stats last_stats;
+ 	spinlock_t hw_stats_lock; /* spinlock for accessing to hw stats */
+ 	u64 tx_busy;
+ 	u64 non_eop_descs;
+@@ -1464,6 +1469,18 @@ wr32ptp(struct wx *wx, u32 reg, u32 value)
+ 	return wr32(wx, reg + 0xB500, value);
+ }
+ 
++static inline u32
++rd32_wrap(struct wx *wx, u32 reg, u32 *last)
++{
++	u32 val, delta;
++
++	val = rd32(wx, reg);
++	delta = val - *last;
++	*last = val;
++
++	return delta;
++}
++
+ /* On some domestic CPU platforms, sometimes IO is not synchronized with
+  * flushing memory, here use readl() to flush PCI read and write.
+  */
 -- 
 2.48.1
 
