@@ -1,129 +1,116 @@
-Received: from mx5.sberdevices.ru (mx5.sberdevices.ru [95.181.183.35])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C608D3B38A1;
-	Tue,  7 Apr 2026 16:16:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.181.183.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5AD3A4F3B;
+	Tue,  7 Apr 2026 16:20:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775578606; cv=none; b=HUJrBOEIV+/kSgabGXrQvb9BA1GPSdpZi3btDZFMynj9oR+pjzqQGcLb7eyr1Wfqr4etruCA6Akcp1E/BzP2uYQufjDZ4riccbTOK0icEthbxT5+PGf8mFzu7jg9sHpkWESrEPblR3bor2js1yZ0Jit6MLfkeKX4WLGIj6fAeh8=
+	t=1775578822; cv=none; b=D75IDXV50pZp3Skf2H7m94QfNex5yZ81TrdCkS0mV6WCmqH9s6shR4iVVp2QkKLQakoU7OzVpUPUJutxfxhwNYUs4gAltlqu1LQO7CffC5LwSjLYShP3VLbirqQUfDRqE5ZR/kk40VENFYojS/GYTuy74S8ThBDfe5jVgYGtBp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775578606; c=relaxed/simple;
-	bh=gPuPGbXlWRSbfUAJ0+MAkkynvcl+h/eihdVzlKzViU0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=LazpXwVYjpTXdZLJsWQCvnUd+HZqlUc72/2AwdL2gku6mufHbxvQ8lNTj1v5Uj+aj4eZgVCIMTTTMCrERSBPljfZG5TpijLw+OkvPUrJo+DKvFzYOwkoU25RGkDAjcN6k7IolXk5kqTn3iLs7CT2S/R2cq54y96Y8kmMDdxaNqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=salutedevices.com; spf=pass smtp.mailfrom=salutedevices.com; dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b=aGNRJyx1; arc=none smtp.client-ip=95.181.183.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=salutedevices.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=salutedevices.com
+	s=arc-20240116; t=1775578822; c=relaxed/simple;
+	bh=1LkBwwUTdnp2CCjj2Qqlbef6zIfZdG9Qq2uWCyCHaoc=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VmWcMZsYA/l6ufm0BOzdVKdVZxvCZtKXtdhhd8/ojRNkKdcN9q2b8JefDNxaOSe9RVgJXG5g3zcG+1mrUJSRjpHldNzn8jFFEu9WjGna9L6Sq9Eh4bpI3SY3NMVcZPkfv9UF+D2qk69PRTXIPEY9FJIcUjQNnhPYMvqm6CYeoPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=V6l5s19C; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b="aGNRJyx1"
-Received: from p-antispam-ksmg-gc-msk01.sberdevices.ru (localhost [127.0.0.1])
-	by mx5.sberdevices.ru (Postfix) with ESMTP id 5701A240005;
-	Tue,  7 Apr 2026 19:16:31 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx5.sberdevices.ru 5701A240005
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
-	s=post; t=1775578591;
-	bh=+TUhVTfumybTv8koMfwzlnqEYgENz9VCASf0iuvfRZ0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:From;
-	b=aGNRJyx1YqKYp0w7BV/27gEzzVJa+WBVQb8dYkvfvL8wN3g2nLdHDifOyT26A8DRZ
-	 K5s885rIBMFEKpkAgtwC4IBuYQd8yig9dJmNx8/TwhKB31hv+omRNU1Ie2JE93tJuZ
-	 oa4JZxxSM+6+ox2HiA9mjt/c9H0kXf8s12N23zNElxF796YA0ubr3WCcdtIGgg/2Fy
-	 +K56t0WjQMbZqrG8hog0QqW83YrwJk+pwmxtZsT36NWyF9iv1OwB/hfNLSeLnRg3Sk
-	 zw3qvyJ7Dwn0K5k4Vm52W160oy/RSCxRe8dmE55ghCFhc7lZgX+aOK3EZtzi9Q4/aL
-	 YbXgXYtk0Qjvw==
-Received: from smtp.sberdevices.ru (p-exch-cas-a-m1.sberdevices.ru [172.24.201.216])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client CN "sberdevices.ru", Issuer "R12" (not verified))
-	by mx5.sberdevices.ru (Postfix) with ESMTPS;
-	Tue,  7 Apr 2026 19:16:30 +0300 (MSK)
-Message-ID: <a236c546-3a0f-4690-8ff7-ff8934db0539@salutedevices.com>
-Date: Tue, 7 Apr 2026 19:16:24 +0300
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="V6l5s19C"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1775578821; x=1807114821;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=1LkBwwUTdnp2CCjj2Qqlbef6zIfZdG9Qq2uWCyCHaoc=;
+  b=V6l5s19Ceo7qGxxQTfVqviHwVcg4FWpwWZKpPSqLwXWv8BGmOmTF1IL4
+   ZRjI0iciSiLC2DUwnd7W76VSw9TbIlG0pqKHb1dY5yDkoWacB6Q++3UIE
+   dwUfIK0kbvq/0ETAX/EgH/jmDNXNKZmob3nakTGOWCEPVMIPVvKmOF7r+
+   30c5JDSkgyDIoVFqrYVu/NLnb9HLw9LBuU+nITSjco5y5RN6x/G7dHoC/
+   9Xmwh8MItRSRNC742V8vFBTnYB/VK0Hjg21NYgdmKYUrVCE8LKAeE2Zv6
+   GQwrU2CVLjlerhrqJzz2nnbwwMoTK5tp3UhMmMndQzngmsspruhZXAAru
+   w==;
+X-CSE-ConnectionGUID: kE2JcDFDRDC9iquzR5ev1g==
+X-CSE-MsgGUID: EBEutfKDTD6nkrexXeavBA==
+X-IronPort-AV: E=Sophos;i="6.23,165,1770620400"; 
+   d="scan'208";a="223035680"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 09:20:20 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
+ chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.35; Tue, 7 Apr 2026 09:19:51 -0700
+Received: from bby-cbu-swbuild03.eng.microchip.com (10.10.85.11) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58 via Frontend Transport; Tue, 7 Apr 2026 09:19:50 -0700
+Date: Tue, 7 Apr 2026 09:19:49 -0700
+From: Charles Perry <charles.perry@microchip.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: "Russell King (Oracle)" <linux@armlinux.org.uk>, Charles Perry
+	<charles.perry@microchip.com>, <netdev@vger.kernel.org>, Heiner Kallweit
+	<hkallweit1@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next v4 3/3] net: phy: add a PHY write barrier when
+ disabling interrupts
+Message-ID: <adUupYuD6tM3ahaR@bby-cbu-swbuild03.eng.microchip.com>
+References: <20260402131229.319599-1-charles.perry@microchip.com>
+ <20260402131229.319599-4-charles.perry@microchip.com>
+ <6bb3aec4-1635-4287-b7ce-f15b693563ea@lunn.ch>
+ <ac6vfhsW2ThF8i2_@shell.armlinux.org.uk>
+ <b40dfafe-7e8f-4686-a743-31b097c84954@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] vsock/virtio: remove unnecessary call to
- `virtio_transport_get_ops`
-Content-Language: ru
-To: Luigi Leonardi <leonardi@redhat.com>, "Michael S. Tsirkin"
-	<mst@redhat.com>, Jason Wang <jasowang@redhat.com>, Xuan Zhuo
-	<xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
-	<eperezma@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, Stefano
- Garzarella <sgarzare@redhat.com>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-CC: <kvm@vger.kernel.org>, <virtualization@lists.linux.dev>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20260407-remove_parameter-v1-1-e9729360a2be@redhat.com>
-From: Arseniy Krasnov <avkrasnov@salutedevices.com>
-In-Reply-To: <20260407-remove_parameter-v1-1-e9729360a2be@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: p-exch-cas-a-m1.sberdevices.ru (172.24.201.216) To
- p-exch-cas-a-m1.sberdevices.ru (172.24.201.216)
-X-KSMG-AntiPhishing: NotDetected
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Envelope-From: avkrasnov@salutedevices.com
-X-KSMG-AntiSpam-Info: LuaCore: 97 0.3.97 7b9690cd8d60a5fe8bc749a93264ffd09810adc5, {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2;salutedevices.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;smtp.sberdevices.ru:7.1.1,5.0.1, FromAlignment: s
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 202063 [Apr 07 2026]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.22
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2026/04/07 08:50:00 #28379041
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-KATA-Status: Not Scanned
-X-KSMG-LinksScanning: NotDetected
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 5
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <b40dfafe-7e8f-4686-a743-31b097c84954@lunn.ch>
 
-
-
-07.04.2026 17:31, Luigi Leonardi wrote:
-
-> `virtio_transport_send_pkt_info` gets all the transport information
-> from the parameter `t_ops`. There is no need to call
-> `virtio_transport_get_ops()`.
-
-Hm, one more suggestion, but not in this patch: may be we can also remove 'struct vsock_sock *vsk' argument
-from 'virtio_transport_send_pkt_info()', because it is also included in 'virtio_vsock_pkt_info *info' ?
-
-Thanks
-
+On Thu, Apr 02, 2026 at 08:09:06PM +0200, Andrew Lunn wrote:
+> On Thu, Apr 02, 2026 at 07:03:42PM +0100, Russell King (Oracle) wrote:
+> > On Thu, Apr 02, 2026 at 03:31:52PM +0200, Andrew Lunn wrote:
+> > > > +static int phy_write_barrier(struct phy_device *phydev)
+> > > > +{
+> > > > +	int err;
+> > > > +
+> > > > +	err = phy_read(phydev, MII_PHYSID1);
+> > > > +	if (err < 0)
+> > > > +		return err;
+> > > 
+> > > There are a small number of MDIO busses which don't implement C22,
+> > > only C45. You are likely to get -EIO or maybe ENODEV, -EOPNOTSUPP,
+> > > -EINVAL for such a read. Returning the error than makes
+> > > phy_disable_interrupts() fail, etc.
+> > 
+> > If it returns -EOPNOTSUPP (meaning, at least, that bus->read is not
+> > implemented), do we want to issue a C45 read instead?
 > 
-> Remove it.
+> Maybe.
 > 
-> Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
-> Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
-> ---
-> I marked this as net-next material, but honsetly I'm not sure if I
-> should have targeted net. It's not a bug after all, it's just a cleanup.
-> ---
->  net/vmw_vsock/virtio_transport_common.c | 2 --
->  1 file changed, 2 deletions(-)
-> 
-> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> index 8a9fb23c6e85..a152a9e208d0 100644
-> --- a/net/vmw_vsock/virtio_transport_common.c
-> +++ b/net/vmw_vsock/virtio_transport_common.c
-> @@ -60,8 +60,6 @@ static bool virtio_transport_can_zcopy(const struct virtio_transport *t_ops,
->  		return false;
->  
->  	/* Check that transport can send data in zerocopy mode. */
-> -	t_ops = virtio_transport_get_ops(info->vsk);
-> -
->  	if (t_ops->can_msgzerocopy) {
->  		int pages_to_send = iov_iter_npages(iov_iter, MAX_SKB_FRAGS);
->  
-> 
-> ---
-> base-commit: bfe62a454542cfad3379f6ef5680b125f41e20f4
-> change-id: 20260407-remove_parameter-f61a3e40cf90
-> 
-> Best regards,
+> get_phy_c45_ids() first reads MDIO_MMD_PMAPMD : MII_PHYSID1. That
+> seems like a safe option.
 
+Here's where I'm at with this:
 
-Acked-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
+static void phy_write_barrier(struct phy_device *phydev)
+{
+       int err;
+ 
+       err = mdiobus_read(phydev->mdio.bus, phydev->mdio.addr, MII_PHYSID1);
+       if (err == -EOPNOTSUPP)
+               mdiobus_c45_read(phydev->mdio.bus, phydev->mdio.addr,
+                                __ffs(phydev->c45_ids.mmds_present),
+                                MII_PHYSID1);
+}
+
+In part inspired by phylink_phy_read() in phylink.c
+
+Do you think there's any way I can test this on my VSC8574 or VSC8541? It
+supports some C45 registers for EEE but not the device discovery part.
+
+Thanks,
+Charles
