@@ -1,109 +1,122 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77AA13D75DE
-	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 16:04:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775577861; cv=pass; b=jP3UkY202P0SXaBuMZyrBLDUZStTPJb0HhOKO7PKLjrBF6GzS2j98UNMTzC/4SUA0rc5XRniY0fJAQaD3jLTqzirc8WomJ6AQUKOoV8ZcHc110CKljXig2IedfXsINZWhS/1vihjr15xM/Xx4Vbho7F+NX1V5PpS6Ak8lFFTq4I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775577861; c=relaxed/simple;
-	bh=NSsE1e/PZi1yLaZLU1hnoYz7iY5RSS8H6bXaDmUQzYw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P20tl+6u7CM4vTGfSkSIyIiSqEN1afByjUQ0AD6oG/SuQB7qHY2UHdBRLhrCKEnb9dmokwdfVUNGSCzJ8ATZzJMvlMsrpXJzsN8cIo1v8Yc79IGkym33KllbdkA/XKPMqlFNp8xzYHlINUgqbKpeoTyLuGNjGO5lLv6+DTj9vEQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jc7LPtC2; arc=pass smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4909A3CF69F
+	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 16:05:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775577959; cv=none; b=SRlU1KWq+Ig7iy/pB6hlhH+DNann8DrG1WIi64Img53JQE3XlM7LGfcn5yQoYUNKdhnLXk3NR8saBNI8CS0lTkPbzNHuR+lEoFnRWkYxM8fUr9CqRmOXSPCMSb2rYth4APwjtRn7ygCJk55CKSW8WAzdmDlvHQWCRZfU4jut4hE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775577959; c=relaxed/simple;
+	bh=WftREMo1u84xLMr+6YLVGdH39LN0KbhOC3B/w0TvlxQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pqWJzG+c+Q+U4Yg3pRuNOmYv4rKVPwFl6R9mElfcqy3F2Su8yLdfql0j4lw935fYsSb0UI1dTzRVtZ2Wh+iC4WqLMp6XVzGXdsBM4D/+IWKdjWGkrNdGhK820elQdA59tRB8X1IPJMMb1j4fm6Gy1P8NbCcEmgRgA2oma+jWIbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GY4xCBGb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jc7LPtC2"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b9c04152730so823166366b.0
-        for <netdev@vger.kernel.org>; Tue, 07 Apr 2026 09:04:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775577853; cv=none;
-        d=google.com; s=arc-20240605;
-        b=l0lu4wIX2I4M4tN5ZisYPfed/0nAhinhgn86BVz1fLadKXr27tkq4c0NR5YqAPRpGe
-         JakC7xFva+StQTQT1ulYoIwvX+7+ClHxaOe3QMxqOyHOAgmuMaKS3DFmK8sy855w0EoZ
-         Nt6x/00eG5Pjme8yyMIrh8c4lW5PIcIf/Lg9Z08mlN3jir4AnGAyKOT9cYuDSGm4ggsY
-         t5ZcVO3o+3vnVOfb+LCg4Q47xkoXfyz3GYNknAjBEkk7skuTcyiblBN7763BDezZmq/C
-         4ThUqXm8vSGfZQprbSb9Njv27DKzRjdxK5P+6DNcvm/0Q57Qs90yl7VvWWYUDdBQ8W8C
-         05lQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NSsE1e/PZi1yLaZLU1hnoYz7iY5RSS8H6bXaDmUQzYw=;
-        fh=RSx0pfZ9ZLas3LSyOpCnfzlMe/aIdBoHTo55oXh7/sY=;
-        b=Roh3pFw1Kl8IOBLjcXbfz5ifxMu8Xcnla9/Ytr/oyHDyK6wpkJQd1XRJzQ9FZn0kXF
-         AYwCBQbZy6Amhg2DzRYthYQZWV0kyqcgXu/Jcouir+YmAHiGC68fUpNqJ19lxMXFgSfU
-         Rc1zDkVmoynS8vtAcj1x8qyYlZ7xD77T6pm7xfYJbLE49WXW8rDYiR5HMOmb2acVzitN
-         Ix3b2vp1Fj7TiHWTEpThWeDRt1lyj0+5TDXuf/agN/iD7SU6+0UBON4zaLkD2ujn5FYM
-         9ib55BW9+BwNZvz12WrVtof245YTV3eKPqmTw1psnW90aMp9rXINU2d7iXCTF1YnlaJr
-         8CSw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775577853; x=1776182653; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NSsE1e/PZi1yLaZLU1hnoYz7iY5RSS8H6bXaDmUQzYw=;
-        b=jc7LPtC24qwdF92hG3E1yoyIbi6ETGZAQoBz9abpWpIG+oBDPZlqk8bKxFi6SQR+RC
-         u+5U5B6rWU+yD24FkZXiFyA+xtGfLSSWlqf1NxQV33C5R6+3u9xjBe4agGpOi6qVLet1
-         WhIKXfH+DdepWUeeVD617fgTFD40kb7XLzm2DdXSHbtdGCteusNFYp5fzyB9DizCLF7J
-         yMB+rCe3+10L/jtFIBTvN1s92TXg0Vc+ydnGq0FhoSWuY+eCQ8YMkTdGBDKvFefY8Zzs
-         fiqkVtmOdf5Dceat2ofz1iS+bNm+Ss+m03QNc1CyemjfUJ1yZ+GM9Z7Aoi1Ejk8k3lWu
-         w4yQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775577853; x=1776182653;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NSsE1e/PZi1yLaZLU1hnoYz7iY5RSS8H6bXaDmUQzYw=;
-        b=DLjZEL27NgyXAIUAS5MmRWXQOBAn37Q5fw2GcyOjpMX1wrNzREJoynY2b/zLf/Wgfd
-         jTpy423vE38iE0BiJl0CiHdhMEkkufCOFHyYZvXBK6q8DhmVNyS0jd7h3TAFGh7vsNdP
-         y+KQRWGmgbQUwkAyaiuv9n4Bh7sU1vgsFg+mWrzFEKKsbiH/Txu7ypzOLOaE1ZqVn1Ko
-         1pfRTAWdWkv4l6qi9ZgVTT/W29TM69OOVylzj1769U18yd4uvnuw6Ang7UDvUNbxQanQ
-         MLbOAsjoIx3FmDguAv7PZifIom4YVaCjueFhzkjWvW0ejM19vFVjUb4+/bQHvmWCyri3
-         qb9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW/QeHZn07pYa0rJ2Vag4DaZX19HgWJ6iIv6xlmnHYMqzHWcj+BxNVCvpl1iydmnMseFKG8mFs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKwaxchH+Yru/WSl2sZtz7BVY1C/6eV7pXPxDR4+M0zc+ng/oi
-	otIUQW50l1urd7l2+Evndu0LvK3o9b+8382OVlsG1vMwW/5H3H6hVPNpRF0cNgBEy1q7gA3qE8L
-	aRrxJndSdaSQva8U+XwlqWktTXCaBho9xnaaUmIjk
-X-Gm-Gg: AeBDievOQY2aAgkWwQg9qZezGx6KdWgRB+hAqR4/0w9032bsUpTtHc0IXpjPxpv7AUY
-	bLpNnu4L2yH/5Or8xGItsoeqlPcPeVPbpC9nFg96BekzFPZFNx9sGPWeavWowQuDTV3TKSFcbCh
-	4FhWU5ekFSoAWwV4mRfpC4TbhDSV7LugggAtnfmBXzt6Mwbo8uDTr9B2jwWV4EsiPL+Gxo3QBdl
-	+vF/hag9ghnBXTuKGFr+mVRtS165RPUkbyOlsjMfLiQ1dGuvBGOYv6Mbpqhh5g+wA9md1LqmwGl
-	7pNicrKsVADUwmUHD4AWbPSj28IkNXapAgiKj9w=
-X-Received: by 2002:a17:907:1b0e:b0:b96:f329:e66 with SMTP id
- a640c23a62f3a-b9c67a26fc7mr844404066b.51.1775577852342; Tue, 07 Apr 2026
- 09:04:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GY4xCBGb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67AC9C19424;
+	Tue,  7 Apr 2026 16:05:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775577958;
+	bh=WftREMo1u84xLMr+6YLVGdH39LN0KbhOC3B/w0TvlxQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=GY4xCBGbTrz3MQyQjJvGIovIL3b8DFki2JMe0YyX/aJyHaXLmp0wD0EdRJHobRv17
+	 MmEszpcm8yOnzRPMq14WJ+Isl/3PuBJ82jp0VogQrutYGHKzW9xSFoGyyyTIKxnMCe
+	 l9MrQ84JCICzknpnhQq2B8FkEeoulfgjrQcoLVLIYarYsPgTqHQAArLmkj7NLcOrHO
+	 KhOak4aZVZXlQE/P+TFnjCLSmwqQq8F7Zalr0fLLQazio2UT7ORF7MQaGi2Lt2yS2d
+	 ICGV/WXhbYGTD/zWV4GbzDXrvE1xFV6l54h5re1wahmRkJLsKTkuFzpOd/Tod7J8X2
+	 zog+Yf7aerwEg==
+From: Simon Horman <horms@kernel.org>
+To: emil.s.tantilov@intel.com
+Cc: 'Simon Horman' <horms@kernel.org>,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	anthony.l.nguyen@intel.com,
+	aleksandr.loktionov@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	richardcochran@gmail.com,
+	milena.olech@intel.com,
+	jacob.e.keller@intel.com,
+	konstantin.ilichev@intel.com
+Subject: Re: [PATCH iwl-net] idpf: fix read_dev_clk_lock spinlock init in idpf_ptp_init()
+Date: Tue,  7 Apr 2026 17:02:43 +0100
+Message-ID: <20260407160241.470945-3-horms@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260403153538.11516-1-emil.s.tantilov@intel.com>
+References: <20260403153538.11516-1-emil.s.tantilov@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260311054043.1231316-1-kuniyu@google.com> <20260407155827.GA1993342@google.com>
-In-Reply-To: <20260407155827.GA1993342@google.com>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Tue, 7 Apr 2026 09:03:51 -0700
-X-Gm-Features: AQROBzA6sVi7ELrBaUXh4gd4681a_tixA6QGGkVr5CTQNSBqTlyyqpNo3H3caw0
-Message-ID: <CAAVpQUBnbRSUq7NDj0iEXsyKKbCUsn830iCNMvTpYTa8kNG1Zg@mail.gmail.com>
-Subject: Re: [PATCH v3 net] af_unix: Give up GC if MSG_PEEK intervened.
-To: Lee Jones <lee@kernel.org>
-Cc: stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>, 
-	Linus Torvalds <torvalds@linuxfoundation.org>, netdev@vger.kernel.org, 
-	Igor Ushakov <sysroot314@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Apr 7, 2026 at 8:58=E2=80=AFAM Lee Jones <lee@kernel.org> wrote:
->
-> INTENTIONAL TOP POST
->
-> I note that this was not sent to Stable, but it should be included please=
-.
+From: 'Simon Horman' <horms@kernel.org>
 
-It's included in 6.19.y, just a matter of time.
-https://lore.kernel.org/stable/20260323134508.596880934@linuxfoundation.org=
-/
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev
+
+Simon says: I don't agree with the regression characterisation made by
+the AI review - I think this patch is good. But I do think the issues
+flagged by the AI review warrant investigation.
+
+---
+idpf: fix read_dev_clk_lock spinlock init in idpf_ptp_init()
+
+This commit moves the initialization of read_dev_clk_lock earlier in
+idpf_ptp_init() to ensure it is initialized before the PTP auxiliary
+worker is scheduled.
+
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf_ptp.c b/drivers/net/ethernet/intel/idpf/idpf_ptp.c
+> index eec91c4f0a75a..4a51d2727547d 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf_ptp.c
+> +++ b/drivers/net/ethernet/intel/idpf/idpf_ptp.c
+> @@ -952,6 +952,8 @@ int idpf_ptp_init(struct idpf_adapter *adapter)
+>  		goto free_ptp;
+>  	}
+>  
+> +	spin_lock_init(&adapter->ptp->read_dev_clk_lock);
+> +
+>  	err = idpf_ptp_create_clock(adapter);
+
+This patch moves the lock initialization to prevent the worker from accessing
+an uninitialized lock. However, idpf_ptp_create_clock() registers the PTP
+device, and shortly after, ptp_schedule_worker() is called. Both happen
+before the hardware clock baseline and initial time are set later in
+idpf_ptp_init().
+
+Could this introduce a regression where userspace opens the PTP device and
+interacts with an uninitialized clock, or has its settings overwritten by
+the driver's delayed idpf_ptp_settime64() call?
+
+Additionally, could the scheduled worker read the uninitialized zero-time
+and overwrite the software cache after the main thread sets the real time?
+
+Moving the device registration and worker scheduling to the very end of
+idpf_ptp_init() might resolve these races and naturally fix the lock
+initialization ordering.
+
+Also, since this code manages worker synchronization, is there a regression
+when updating cached_phc_time and cached_phc_jiffies?
+
+In idpf_ptp_update_cached_phctime(), these variables are updated
+sequentially using the WRITE_ONCE() macro.
+
+Because this function can be executed concurrently by the PTP worker
+thread and ioctls, thread interleaving could result in an inconsistent
+state where one variable is from one thread and the other from another.
+
+Readers like idpf_ptp_extend_ts() load these variables using plain C
+accesses without mutual exclusion or a seqlock.
+
+Could this cause valid timestamps to be extended using an incorrect or
+outdated baseline, silently corrupting network timestamps?
+
+[ ... ]
