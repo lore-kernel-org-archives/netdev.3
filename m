@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613731A6835;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D11D1A4F3C;
 	Tue,  7 Apr 2026 00:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775522227; cv=none; b=bRfUlumCk4T/tDm8MUJfGjNYQn/ks+CTiJmaQ19571pU5jcnU0r4a+F4WFLIjruucnx8b9MXyxQZwCPvng82L60ZVGBXGCW5HNKQmm0KXDtLJmzytSQw6/HcTWr/rpwEuSKpJnczKwzzKjDusWRzPoh9l1fxFJ5BO8R15JoqwFY=
+	t=1775522227; cv=none; b=Yteq/tKwrKehHWmrYB3OjWjA5/L8SgF45KTkFivTJXRKWmGMotLmEVdaQxOsKq59h/OmoNU4CW2RHt6/k0/OAuZrKdpIJij4Q6MvRumsfe5b0L7sunZgwrKLFnwj4VuZefI6FmBXOKLxHlr5/pEdeAIU73jMbbkiYyQEuEFxKeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775522227; c=relaxed/simple;
-	bh=qoiuiRACX+7fyGd6PmgsS4FBGmhMwOSqH3IFoLmmOYA=;
+	bh=JWqtaasnuEKPR7/WgytTAsrc+MMH0s97iQTbPPqLDHA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ryZpRmo0UO7rSoEHOdhgkZ1kH1ut0/yPBJfUoJJNTDXrXosPtPkvpLzYf4RaWSXUD8ACwBwNSYFEeO1pn0lRZAWv1X3s05Y5DKxCrHGQGy8w+4CD2AyKlb3742Lxkf6b402Isz/BiEqjjBEr+5u04MOoBk03brK8tG/z5/JB7R8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G+J/eJGv; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=pn/3VhSBk12gKHZqIHAZmCee8so5eAH2UIaxqva9+25eQJz0c+Jg3qNvEfKmmHytXnsZHv4tIWhSvzERZk8wWt2bELuNHIipLJvF3lzPtP1tDfcnMZpu2eX6L53SQ26r8BhYbxZ6m3mNwZxBB0x/KFuFad/rFkiEfYbmWSgtBhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KDJs+YuN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G+J/eJGv"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3CAE5C2BCB2;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KDJs+YuN"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1FBE8C2BCB0;
 	Tue,  7 Apr 2026 00:37:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775522227;
-	bh=qoiuiRACX+7fyGd6PmgsS4FBGmhMwOSqH3IFoLmmOYA=;
+	bh=JWqtaasnuEKPR7/WgytTAsrc+MMH0s97iQTbPPqLDHA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=G+J/eJGvpbXjh7cYf8iAVwdK/x9KjQ9h2OKSPZtp+v9RxxHE2ED+RQGOxjW4hq0By
-	 GpPRURxN0QtNv/nF3yU7TaeZOnVluF8doH0NcsX/whKg7XJczMmw5rYew5c85Z9zeW
-	 SxMS27XC+p1fDTkL8Q2IM4yJo/wyVCAUr0HAeAZHsTZhCWhtQN9PdOntf55APRY4we
-	 WYyaqnpS2TbQgYYMkHkAV/xS26bi5LqWmauSl3eI2luIz8MLOLGeyk2rYi7ebSlIK7
-	 AbXJVVEd8s123PVw0yIypG1YfAM4LCZHbH5Yay5Ivwhk1aQKB7OIE0WTYcQtDG6slD
-	 SVw6pJ9ecjbTw==
+	b=KDJs+YuNrJp44NYWxMqkUu8QXLoAKLBDBuuzkysUsW/Nt1+lzACqB4Zi5htv7YQTx
+	 +/z3SrM3acuNSUz+mkV9FEBUoejOUjEKRm7KzaqDYIlmb1ZKy2H31LLOrPJNz0XVnX
+	 q12cReOUHeTRGPJuHM93YdfjzQ1sw8xemjbugpa6RqAKnwLgA30dplmwRFaEez2zpi
+	 Lt534I7KmW/1/GkH5TbFRCHcol2s1VXOysuUajV2uC8zJqJ4cwFQu87S6A2d/aC8+z
+	 Q9oRRb/HmwQ7U0ZQe6FzoHB6uzfhXT9JtGvMvykX4kBDPNxTD+9qvf5vkCL21vkvUS
+	 iQD+X72diveDw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2FB21FB517D;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0DAE1FB5175;
 	Tue,  7 Apr 2026 00:37:07 +0000 (UTC)
 From: Satish Kharat via B4 Relay <devnull+satishkh.cisco.com@kernel.org>
-Date: Mon, 06 Apr 2026 17:37:01 -0700
-Subject: [PATCH 03/10] enic: add admin RQ buffer management
+Date: Mon, 06 Apr 2026 17:36:59 -0700
+Subject: [PATCH 01/10] enic: verify firmware supports V2 SR-IOV at probe
+ time
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260406-enic-sriov-v2-admin-channel-v2-v1-3-82cc47636a78@cisco.com>
+Message-Id: <20260406-enic-sriov-v2-admin-channel-v2-v1-1-82cc47636a78@cisco.com>
 References: <20260406-enic-sriov-v2-admin-channel-v2-v1-0-82cc47636a78@cisco.com>
 In-Reply-To: <20260406-enic-sriov-v2-admin-channel-v2-v1-0-82cc47636a78@cisco.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -50,11 +51,11 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  20260401-enic-sriov-v2-prep-v4-0-d5834b2ef1b9@cisco.com, 
  Satish Kharat <satishkh@cisco.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775522225; l=3638;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775522225; l=2487;
  i=satishkh@cisco.com; h=from:subject:message-id;
- bh=ZMpfBevBZMtAG95G26rzqtWY0Kge40y6XyZgAR1yrjY=;
- b=ziH7ce5EreMXy0bLfSJ9nTBmN2dwacVTIhq+biCWLOUbwn7gYciZTZj4sLUY8dBtTRC29BLuy
- EDpU/nK7jP1C8l6jclfn2dTXD9Kb5434TRrvUlKE/gRauMNgWxvqGFY
+ bh=U+7cccRNUL3xFmQmWMuuDwvDAzXNoaVbS53PO5MaWOY=;
+ b=CW+AiksAfYFgg7FmNIrrGZRIjj6hBnMPQKaFYb5kJfWnBQHbsrFmvroXpUZieFCPiuzVTJ9W/
+ hBkPBcDaOoNCcJ5Qa5a/qJlGS2ZPkAfJab7Tgx0MMLrvutKEvmq6Ux3
 X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
  pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
 X-Endpoint-Received: by B4 Relay for satishkh@cisco.com/default with
@@ -64,127 +65,74 @@ Reply-To: satishkh@cisco.com
 
 From: Satish Kharat <satishkh@cisco.com>
 
-The admin receive queue needs pre-posted DMA buffers for incoming
-mailbox messages from VFs. Each buffer is a kmalloc'd region mapped
-for DMA (2048 bytes, sufficient for any MBOX message).
+During PF probe, query the firmware get-supported-feature interface
+to verify that the running firmware supports V2 SR-IOV. Firmware
+version 5.3(4.72) and later report VIC_FEATURE_SRIOV via
+CMD_GET_SUPP_FEATURE_VER. If the firmware does not support the
+feature, set vf_type to ENIC_VF_TYPE_NONE and log a warning so the
+admin knows a firmware upgrade is needed.
 
-Add enic_admin_rq_fill() to post buffers at open time, and
-enic_admin_rq_drain() to unmap and free them at close time.
-Wire both into the admin channel open/close paths.
+The VIC_FEATURE_SRIOV enum value (4) matches the firmware ABI. A
+placeholder entry (VIC_FEATURE_PTP at position 3) is added to keep
+the enum in sync with firmware's feature numbering.
 
 Signed-off-by: Satish Kharat <satishkh@cisco.com>
 ---
- drivers/net/ethernet/cisco/enic/enic_admin.c | 66 +++++++++++++++++++++++++++-
- 1 file changed, 64 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/cisco/enic/enic_main.c   | 18 ++++++++++++++++++
+ drivers/net/ethernet/cisco/enic/vnic_devcmd.h |  2 ++
+ 2 files changed, 20 insertions(+)
 
-diff --git a/drivers/net/ethernet/cisco/enic/enic_admin.c b/drivers/net/ethernet/cisco/enic/enic_admin.c
-index d1abe6a50095..a8fcd5f116d1 100644
---- a/drivers/net/ethernet/cisco/enic/enic_admin.c
-+++ b/drivers/net/ethernet/cisco/enic/enic_admin.c
-@@ -3,6 +3,7 @@
- 
- #include <linux/kernel.h>
- #include <linux/netdevice.h>
-+#include <linux/dma-mapping.h>
- 
- #include "vnic_dev.h"
- #include "vnic_wq.h"
-@@ -23,10 +24,63 @@ static void enic_admin_wq_buf_clean(struct vnic_wq *wq,
+diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
+index e7125b818087..3a4afd6da41f 100644
+--- a/drivers/net/ethernet/cisco/enic/enic_main.c
++++ b/drivers/net/ethernet/cisco/enic/enic_main.c
+@@ -2641,8 +2641,10 @@ static void enic_iounmap(struct enic *enic)
+ static void enic_sriov_detect_vf_type(struct enic *enic)
  {
- }
- 
--/* No-op: admin RQ buffer teardown is handled in enic_admin_channel_close */
- static void enic_admin_rq_buf_clean(struct vnic_rq *rq,
- 				    struct vnic_rq_buf *buf)
- {
-+	struct enic *enic = vnic_dev_priv(rq->vdev);
-+
-+	if (!buf->os_buf)
-+		return;
-+
-+	dma_unmap_single(&enic->pdev->dev, buf->dma_addr, buf->len,
-+			 DMA_FROM_DEVICE);
-+	kfree(buf->os_buf);
-+	buf->os_buf = NULL;
-+}
-+
-+static int enic_admin_rq_post_one(struct enic *enic)
-+{
-+	struct vnic_rq *rq = &enic->admin_rq;
-+	struct rq_enet_desc *desc;
-+	dma_addr_t dma_addr;
-+	void *buf;
-+
-+	buf = kmalloc(ENIC_ADMIN_BUF_SIZE, GFP_KERNEL);
-+	if (!buf)
-+		return -ENOMEM;
-+
-+	dma_addr = dma_map_single(&enic->pdev->dev, buf, ENIC_ADMIN_BUF_SIZE,
-+				  DMA_FROM_DEVICE);
-+	if (dma_mapping_error(&enic->pdev->dev, dma_addr)) {
-+		kfree(buf);
-+		return -ENOMEM;
-+	}
-+
-+	desc = vnic_rq_next_desc(rq);
-+	rq_enet_desc_enc(desc, (u64)dma_addr | VNIC_PADDR_TARGET,
-+			 RQ_ENET_TYPE_ONLY_SOP, ENIC_ADMIN_BUF_SIZE);
-+	vnic_rq_post(rq, buf, 0, dma_addr, ENIC_ADMIN_BUF_SIZE, 0);
-+
-+	return 0;
-+}
-+
-+static int enic_admin_rq_fill(struct enic *enic)
-+{
-+	struct vnic_rq *rq = &enic->admin_rq;
+ 	struct pci_dev *pdev = enic->pdev;
++	u64 supported_versions, a1 = 0;
+ 	int pos;
+ 	u16 vf_dev_id;
 +	int err;
+ 
+ 	if (enic_is_sriov_vf(enic) || enic_is_dynamic(enic))
+ 		return;
+@@ -2669,6 +2671,22 @@ static void enic_sriov_detect_vf_type(struct enic *enic)
+ 		enic->vf_type = ENIC_VF_TYPE_NONE;
+ 		break;
+ 	}
 +
-+	while (vnic_rq_desc_avail(rq) > 0) {
-+		err = enic_admin_rq_post_one(enic);
-+		if (err)
-+			return err;
++	if (enic->vf_type == ENIC_VF_TYPE_V2) {
++		/* A successful command means firmware recognizes
++		 * VIC_FEATURE_SRIOV; supported_versions is available
++		 * for sub-feature versioning in the future.
++		 */
++		err = vnic_dev_get_supported_feature_ver(enic->vdev,
++							 VIC_FEATURE_SRIOV,
++							 &supported_versions,
++							 &a1);
++		if (err) {
++			dev_warn(&pdev->dev,
++				 "SR-IOV V2 not supported by current firmware. Upgrade to VIC FW 5.3(4.72) or higher.\n");
++			enic->vf_type = ENIC_VF_TYPE_NONE;
++		}
 +	}
-+
-+	return 0;
-+}
-+
-+static void enic_admin_rq_drain(struct enic *enic)
-+{
-+	vnic_rq_clean(&enic->admin_rq, enic_admin_rq_buf_clean);
  }
+ #endif
  
- static int enic_admin_qp_type_set(struct enic *enic, u32 enable)
-@@ -138,6 +192,13 @@ int enic_admin_channel_open(struct enic *enic)
- 	vnic_wq_enable(&enic->admin_wq);
- 	vnic_rq_enable(&enic->admin_rq);
+diff --git a/drivers/net/ethernet/cisco/enic/vnic_devcmd.h b/drivers/net/ethernet/cisco/enic/vnic_devcmd.h
+index 605ef17f967e..7a4bce736105 100644
+--- a/drivers/net/ethernet/cisco/enic/vnic_devcmd.h
++++ b/drivers/net/ethernet/cisco/enic/vnic_devcmd.h
+@@ -734,6 +734,8 @@ enum vic_feature_t {
+ 	VIC_FEATURE_VXLAN,
+ 	VIC_FEATURE_RDMA,
+ 	VIC_FEATURE_VXLAN_PATCH,
++	VIC_FEATURE_PTP,
++	VIC_FEATURE_SRIOV,
+ 	VIC_FEATURE_MAX,
+ };
  
-+	err = enic_admin_rq_fill(enic);
-+	if (err) {
-+		netdev_err(enic->netdev,
-+			   "Failed to fill admin RQ buffers: %d\n", err);
-+		goto disable_queues;
-+	}
-+
- 	err = enic_admin_qp_type_set(enic, 1);
- 	if (err) {
- 		netdev_err(enic->netdev,
-@@ -151,6 +212,7 @@ int enic_admin_channel_open(struct enic *enic)
- 	vnic_wq_disable(&enic->admin_wq);
- 	vnic_rq_disable(&enic->admin_rq);
- 	enic_admin_qp_type_set(enic, 0);
-+	enic_admin_rq_drain(enic);
- 	enic_admin_free_resources(enic);
- 	return err;
- }
-@@ -166,7 +228,7 @@ void enic_admin_channel_close(struct enic *enic)
- 	enic_admin_qp_type_set(enic, 0);
- 
- 	vnic_wq_clean(&enic->admin_wq, enic_admin_wq_buf_clean);
--	vnic_rq_clean(&enic->admin_rq, enic_admin_rq_buf_clean);
-+	enic_admin_rq_drain(enic);
- 	vnic_cq_clean(&enic->admin_cq[0]);
- 	vnic_cq_clean(&enic->admin_cq[1]);
- 	vnic_intr_clean(&enic->admin_intr);
 
 -- 
 2.43.0
