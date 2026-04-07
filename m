@@ -1,136 +1,94 @@
-Received: from smtpbg150.qq.com (smtpbg150.qq.com [18.132.163.193])
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F241B3A3E72
-	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 08:11:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.132.163.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457C138AC9D
+	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 08:15:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775549501; cv=none; b=kOR1TWpPlZ4dZLM/j2DO3lvyN+JyYjGEelQq3cECUgsk/ml3fgQNS53m9umTVrkPFup9ZbGmdSQru/C+4i0LZVpUB3odbAAc+tbprmgLbwjXpDwdNTponzl3CjMHbK8jHwoXQcuEPcWD9cSV26eGueQoQLXjczKkiXFCdXQ9CGQ=
+	t=1775549739; cv=none; b=sQmLGm0i4sP71yrUMjv/0i69HXp1h5Vt5SvcfZlL9nBvUIkrLSn54Dn/Y5ANwaGUAlv2W1xJSB4KhRfkfGVn9STif0Q10DJfSvEBj/2NRddFMpJGDX23K+xSDlvBENcAppVh34qHVJPsCIQcrh/fUaaP0g7hmxeUX/Yk6dk6oWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775549501; c=relaxed/simple;
-	bh=Mb910JIaKwZe2patqm2uCUUaQgXoq+nhCRjppMWfnRM=;
-	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
-	 MIME-Version:Content-Type; b=tS50EDpU16Ouph27FCvFsN4q0UXsJh2Z5MyhNbmP1PRIh7XYs+JpnfCD9ijU5vG91NrfH9lMQNNrpBNf0HjQk1hSS/icJdIV3K6WD8kz6weF8MITbf5QgO0ec/yCmY7cOZ3abJgd0p+LF/wO/asmkqkeufPaM/eLCBqQu/a5cZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=18.132.163.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid:Yeas3t1775549243t653t01181
-Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [115.220.225.134])
-X-QQ-SSF:0000000000000000000000000000000
-From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
-X-BIZMAIL-ID: 11981075419421733400
-To: "'Russell King \(Oracle\)'" <linux@armlinux.org.uk>
-Cc: <netdev@vger.kernel.org>,
-	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
-	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
-	"'David S. Miller'" <davem@davemloft.net>,
-	"'Eric Dumazet'" <edumazet@google.com>,
-	"'Jakub Kicinski'" <kuba@kernel.org>,
-	"'Paolo Abeni'" <pabeni@redhat.com>,
-	"'Simon Horman'" <horms@kernel.org>,
-	"'Jacob Keller'" <jacob.e.keller@intel.com>,
-	"'Abdun Nihaal'" <abdun.nihaal@gmail.com>,
-	<stable@vger.kernel.org>,
-	<netdev@vger.kernel.org>,
-	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
-	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
-	"'David S. Miller'" <davem@davemloft.net>,
-	"'Eric Dumazet'" <edumazet@google.com>,
-	"'Jakub Kicinski'" <kuba@kernel.org>,
-	"'Paolo Abeni'" <pabeni@redhat.com>,
-	"'Simon Horman'" <horms@kernel.org>,
-	"'Jacob Keller'" <jacob.e.keller@intel.com>,
-	"'Abdun Nihaal'" <abdun.nihaal@gmail.com>,
-	<stable@vger.kernel.org>
-References: <D56A7C3379B4DA62+20260331071107.5414-1-jiawenwu@trustnetic.com> <acvHIpPd8BL_wFFU@shell.armlinux.org.uk> <076401dcc17d$905c40b0$b114c210$@trustnetic.com> <acy5evlrUesbcB46@shell.armlinux.org.uk> <096d01dcc657$9ee42b00$dcac8100$@trustnetic.com> <adS0_I_2HBH-gM19@shell.armlinux.org.uk>
-In-Reply-To: <adS0_I_2HBH-gM19@shell.armlinux.org.uk>
-Subject: RE: [PATCH net] net: txgbe: fix RTNL assertion warning when remove module
-Date: Tue, 7 Apr 2026 16:07:22 +0800
-Message-ID: <096e01dcc665$90354900$b09fdb00$@trustnetic.com>
+	s=arc-20240116; t=1775549739; c=relaxed/simple;
+	bh=5gMStqwTMeRYtxZ4GSzhuI6m+53lNT/XYFfkGB9qI6Q=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RsSltdADeSYgCxov1kgIVClAbGxLm+XuLe9Qhqmnn3EulG8JGqdxH59qndbChMiHTuDOUCd5jThhmPZLa6xt7W7s0YboENwr/bnQeaLY6zobhF0ZZcDSCB/jM/P9RtzDN5ENCQmYS6hrLG5ulmYD/bQtbidtEa8xByiDWpZWj0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=BgkC6lSB; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="BgkC6lSB"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 9F993206B0;
+	Tue,  7 Apr 2026 10:15:27 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id DLdhpX58QxDl; Tue,  7 Apr 2026 10:15:27 +0200 (CEST)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id A8BBE20190;
+	Tue,  7 Apr 2026 10:15:26 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com A8BBE20190
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1775549726;
+	bh=7WtQF7VD/R251478CG5H7Himh0AuDUSXdU5gP2lXrWk=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=BgkC6lSB4nDDFYgFMGefhI0KVznucASYwiwZgl3WZVPFvCu2siVMVQgj/CrIqKTVA
+	 bIOV1rWFE2LEc3aFI9CqwHi/3SdzExK6YW3Qa4SnqAly2J6+YYxrzunv/3JeSJoN67
+	 SX/W3axq9a+g7yY7ONeCwfCYfVpnP2X5nIiM3Ui+Mtouj4ayMXtfORfPPhP5MUh710
+	 k/suCgH++MMWLDjVKoT9gdAi8oVRBiKmodwideYvSPitxwgINEunaIr5u6zZgGfjec
+	 xli7fcb4pUSO6v67egTXbBiG/WghZx1hgKd5xgazy7nV6NICKfQ+tZNYju1SoHFbLe
+	 Q8PSMk+5H5H7Q==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 7 Apr
+ 2026 10:15:25 +0200
+Received: (nullmailer pid 1487808 invoked by uid 1000);
+	Tue, 07 Apr 2026 08:15:24 -0000
+Date: Tue, 7 Apr 2026 10:15:24 +0200
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: I Viswanath <viswanathiyyappan@gmail.com>
+CC: <nicholas@carlini.com>, <netdev@vger.kernel.org>, Herbert Xu
+	<herbert@gondor.apana.org.au>, "David S . Miller" <davem@davemloft.net>,
+	Milad Nasr <srxzr@anthropic.com>
+Subject: Re: [PATCH v2] xfrm6: fix slab-out-of-bounds write in
+ xfrm6_input_addr()
+Message-ID: <adS9HIMGWPI7R5uk@secunet.com>
+References: <act8zZGYpN9DJ4-w@secunet.com>
+ <20260401045652.1807999-1-nicholas@carlini.com>
+ <CAPrAcgNbbcLrJDBs03=CQU0VzbqaEGi_h4gsrWY693ERsuTE1A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: zh-cn
-Thread-Index: AQJzBzpg8BZoKCpC0lQLuqOa6+34FQF9cQKNAr0WQJ0BAb3yuQE9QT7jArzO0LK0XQmB0A==
-X-QQ-SENDSIZE: 520
-Feedback-ID: Yeas:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: NZpC2jeiU30MPMCVHJPMSL0FGn2NZIVERnh6aEnY7r/qVHmSQ7KVB7PY
-	raniAmkon3pKNZPZFuBVLWeSRF8ELgPgl4RlWchQ6WTtVnnI6oiSzB/AnYP5YqfXWhKnXa6
-	l42PVX9ZEzTElL7XQPAeyqPeVRz9IbUV+iIUQLP5ziTtpagv8pm5cKw73bA45TT9JYKmQ8T
-	XjGVaacbmapP9DZUxKhwt14LfSh7PwFlTbj3T5PWGj7Iq7h1+u2inbt2da50bdyK56Ccypk
-	kXlwS9N3KjI5L6p8CmeM73THc7Ee9O7iq3IDqkCJfMpoIe8JLi6ZvSJVIKb0nb9sE5CSh+I
-	tFZ7py6KWBmtitNuFbSyl12QvzOIh28i8Bmt7bRZ1kpsD9thulnP0+Gp/F9KvYL0FNCHnu0
-	O8TNXawVDV5SOaFFgulyo8ChZ3aUl8LDjsoj70ZkH7EpmNq+5QYXLf/YRmuVUbsTTK6rt83
-	DWTYvUMVdY2LfsA0PuVUyVHC+xHH6oVIanMONDIPk7tUrfAUb8tcLZyxufHu0RQ9PBcCkOO
-	hHvVZp7zK9IraXZnrEkKCgh1v+6iAm2RcOVIASP2NzMMTe8rH3+ErgDxAue2zM7KCOHrCQS
-	Zro5wZ/fzzlRP8bOaF7MYKCN3OLGGkv7k/M7jbc/BT9hzRKrPTAuc6zZrl73STSCvo3Bt/0
-	w4CKD+X+ScbBQJzYA4fhERLwmh7FWq63T12sNxy0/ly2vxajXiUu9h+BaRsrOfUrL0FEhQk
-	Yi5BH+PZ65wJsIVVlHhgw+Tyf05pFOjQt4Rshe+02S7AGttpykwQifKFjV84b0HwZAgUeIA
-	h4M3Lf9Uc9eDqqMB/MHhVjvmejxyDkdMyGj2GKDTAxQO14muuMMqV1s86SFVj2d0dzRQecQ
-	myTRpSlGPbq59ku5HTAnTM8Cux++7eSFea5jRw7X+kae+aFlwYvXglaVQ/GELdCFkx+Fp7T
-	zkb8o8oHFyYctWeSUrAGJnJwMntBHKCNusQ/N+0vmfQsP+UMrcGTxOtqs0LhjyyK3VY9YD4
-	9mM0DP7LJpbXIO8HyVVZYnV3yowwjJjutpJKiIg0HkJDsRKBQWGAqmKz0hgdVj/wZJwNLqk
-	k+Z/4kEMy4oKXH68L0IdQwerYRwZDbSSDG40NPea4UNFsy+AiQ3Nhg=
-X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <CAPrAcgNbbcLrJDBs03=CQU0VzbqaEGi_h4gsrWY693ERsuTE1A@mail.gmail.com>
+X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
+ (10.32.0.171)
 
-On Tue, Apr 7, 2026 3:41 PM, Russell King (Oracle) wrote:
-> On Tue, Apr 07, 2026 at 02:27:34PM +0800, Jiawen Wu wrote:
-> > On Wed, Apr 1, 2026 2:22 PM, Russell King (Oracle) wrote:
-> > > On Wed, Apr 01, 2026 at 10:16:34AM +0800, Jiawen Wu wrote:
-> > > > On Tue, Mar 31, 2026 9:08 PM, Russell King (Oracle) wrote:
-> > > > > On Tue, Mar 31, 2026 at 03:11:07PM +0800, Jiawen Wu wrote:
-> > > > > > For the copper NIC with external PHY, the driver called
-> > > > > > phylink_connect_phy() during probe and phylink_disconnect_phy() during
-> > > > > > remove. It caused an RTNL assertion warning in phylink_disconnect_phy()
-> > > > > > upon module remove.
-> > > > > >
-> > > > > > To fix this, move the phylink connect/disconnect PHY to ndo_open/close.
-> > > > >
-> > > > > Wouldn't it be simpler to just wrap the phylink_disconnect_phy() in the
-> > > > > remove function with rtnl_lock()..rtnl_unlock() ?
-> > > >
-> > > > This is also a solution. But I think it would be nice to unify with other drivers
-> > > > that call the functions in ndo_open/close.
-> > >
-> > > Both approaches are equally valid. Some network drivers attach the PHY
-> > > at probe time (and thus can return -EPROBE_DEFER if the PHY is specified
-> > > but not present). Others attach in .ndo_open which can only fail in this
-> > > circumstance with no retry without userspace manually implementing that.
-> > >
-> > > There are other advantages and disadvantages to each approach.
-> >
-> > Hi,
-> >
-> > So is it still recommended that add rtnl_lock()...rtnl_unlock() instead of moving it?
+On Wed, Apr 01, 2026 at 09:56:40PM +0530, I Viswanath wrote:
+> On Wed, 1 Apr 2026 at 10:26, <nicholas@carlini.com> wrote:
 > 
-> The reaosn phylink_disconnect_phy() requires the RTNL lock is because it
-> _can_ be called while the netdev is published, and the RTNL lock
-> protects the networking core from the PHY being removed from the netdev,
-> preventing ethtool ops into the PHY driver from running concurrently
-> with the PHY's disconnection and potential later destruction.
+> > -       if (1 + sp->len == XFRM_MAX_DEPTH) {
+> > +       if (1 + sp->len >= XFRM_MAX_DEPTH) {
+> >                 XFRM_INC_STATS(net, LINUX_MIB_XFRMINBUFFERERROR);
+> >                 goto drop;
+> >         }
 > 
-> Offering two APIs, one which requires the lock to provide that
-> protection and one which doesn't would over-complicate the phylink code
-> and make reviews way more difficult, as we'd now have to spot the
-> wrong function being used in the wrong code path.
+> If you look at other places where sp->len is incremented, you will
+> notice the guard condition is always (sp->len == XFRM_MAX_DEPTH). This
+> bug exists because in xfrm6_input.c, the greatest valid index is taken
+> to be XFRM_MAX_DEPTH - 2 when it should be XFRM_MAX_DEPTH - 1.
+> Therefore, The correct fix should be using the common guard not
+> changing the guard to use >=
 > 
-> It's simpler for drivers that want to connect and disconnect the PHY
-> at probe/remove time for them to just take the RTNL lock briefly over
-> the call to phylink_disconnect_phy().
-> 
-> There is no "recommendation" for connecting and disconnecting the
-> PHY at probe/remove time vs ndo_open/ndo_release. That's entirely up
-> to the driver author. As I've already said, there are advantages and
-> disadvantages of either way and that's a matter for the driver author
-> to consider and select the most appropriate choice for their driver.
+> On a tangential note, There is no guard present before the increment
+> in xfrm_output.c which is probably another OOB bug
 
-OK. I'll change it at v2 patch.
+Nicholas, please have a look if you can update your patch based
+on these comments.
 
+Thanks!
