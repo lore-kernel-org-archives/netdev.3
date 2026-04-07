@@ -1,62 +1,62 @@
-Received: from mail-oi1-f196.google.com (mail-oi1-f196.google.com [209.85.167.196])
+Received: from mail-ot1-f68.google.com (mail-ot1-f68.google.com [209.85.210.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886153947B4
-	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 15:31:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEAE03B38BD
+	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 15:31:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775575877; cv=none; b=glozJaDxYsNIjHPNWyVNNWZnm4qJO5YLfkHRRfVETo8oMgT1BDRuxgGWwmmCOerZQX92tBnDs5vbh4/kCCzeT76gTSp4ljqSsWJ+TwsjaO5P9+qXPPtaGWnSuQkAtBiPgLAG4e2yGQboGSOcuGtM7F8i0pfxMyZ5pOz/ban4h0s=
+	t=1775575880; cv=none; b=unGeAPBXEMDk8yeq43MF1em2sogBQDPUuUQS9GobiElwu/oqrZGYPQHwz0UAbbdXBb9SKBWwWY/kxTV4Kj5RXYonu8baVxpYUfpe7MQy4SGbOYW3iGs9bmGOC76I8mQnwB3wTht4LXWcEfbQdiAviN5ERIVSbuZY1XFQqqdKXJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775575877; c=relaxed/simple;
-	bh=AnRHLuiiqcS73amOAZTZA3C/Zi1pA4yAmA6lTeRwxE8=;
+	s=arc-20240116; t=1775575880; c=relaxed/simple;
+	bh=lqJf2A8LgOM52ePgcRrCnQKgeLTib9NIaemHSM8bVdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y+dXbiJZa9CAbcN1lYLNYVXyn2E5rL9w3P4d1C4ifrWx4YjkeXtnr8G9GZk9pFy1nOqpHbu84CRkQM6uDWlYf/NoqyOKj3q0OAzmniBsusSKtd0RI7ykgWRX11gGG1mAx+EYmHbk5YWps+I9nM4FiZ0wFSHR6mM/V+RsdQZMfug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JQsTFkWB; arc=none smtp.client-ip=209.85.167.196
+	 MIME-Version; b=epxju9J5nEF84lDeRrKKQZ8Bqbc0OSGAvnVuX1X2Q+xYSbVHD67BY5nyNJqhbf2bYzASm7KmKG1h6nhSbiO/yk0mHSyDsS72PmIdRMxX06DhB745Z5piyb+CtSF4dSx3DDe3mCAaonA08CYTI3gmg7FV8MguPO+cEnxLZIWx5B0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NqT2yhBN; arc=none smtp.client-ip=209.85.210.68
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JQsTFkWB"
-Received: by mail-oi1-f196.google.com with SMTP id 5614622812f47-470145d7e6fso1226432b6e.2
-        for <netdev@vger.kernel.org>; Tue, 07 Apr 2026 08:31:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NqT2yhBN"
+Received: by mail-ot1-f68.google.com with SMTP id 46e09a7af769-7d86eb7c854so2640087a34.3
+        for <netdev@vger.kernel.org>; Tue, 07 Apr 2026 08:31:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775575865; x=1776180665; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1775575869; x=1776180669; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lW7Ed7b6TwDz7pLvG1cLxTWroMj5L7OBaQvAcC2h4Eg=;
-        b=JQsTFkWB+EHUHIuxIJk7kwZPNLWaFHraFBfvuprkT6ZcCWrlFwUOaRN2G0w4nWw4XM
-         QDMbfaGpBh/dlbK2jF0tovYc/4SJr23KdKiBd6W9r/8loRe11UM/egMqnhyY0rUaq93M
-         OZwH/2q2oFEtgokYMw6bGbXJQKYv6KHy6YXbGSoxV0WEo9KhQ5Ml1LByDGlrSErxQ7ia
-         2mNb3R+X/PLU6ibd1llA5Fjj8jCJm3B3uNoqRJf9b8awuEOn5hygiamusMiscVtMfx9K
-         C5d/VIOSoymJ1ufcKXQm9M3nRkpa5VFJKbUh3RV+ZaPNmKPD5Jnu6nNoaMkVRsJKSyhK
-         Hv5g==
+        bh=USvislDHedA17UChRohdtoPvzSGeYQYcGb9R5/42pBo=;
+        b=NqT2yhBNpPlAsmXfYO6h0wCxikILHUR81iGORwUmTTtUdGpDxL0B8nOkMc36ihXoB0
+         qsatOKGlkiJob8Jb1Wmgx+V5xx0Y5zTQxIXwAiXWH96ZICN9TojTpu2MWuvAehWzu5pP
+         wJinbqqSghg9vWgwJoVaUL4b8EgKkgYWGh4cGRIlgwQ2+CoK1cD6kq4iL7OAEeDY06lr
+         q+huTAUR/gTBfNT1eWjtENKkCj7wbzsQujrrua0WrsKP2QhQn9648AmUNbuouSaApJdu
+         UvnDObEkkg9Euk2uzbqPn8VYb+Tq5zfgk5d4XQlAnO0oQfNOEYusj4bWVS1/5OQyremK
+         /tyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775575865; x=1776180665;
+        d=1e100.net; s=20251104; t=1775575869; x=1776180669;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=lW7Ed7b6TwDz7pLvG1cLxTWroMj5L7OBaQvAcC2h4Eg=;
-        b=SBhgHVVijLDl0u7kBP/h5Q93suYpw7z3C6seOz8RlFhb7Z2zbYKte3+6dHUUraouCc
-         V4xfDWmQ5FFgbSS0goeNKo4ul6IyTU28bayLKv25ZFre8ZH5tVYTJumiQ0IMJPde7sqO
-         IrssZekiPjZYNh6BxqSx0dSZ3LRdiuymrAVZ2k6+b2LdD3+pYitDhFR/o4q2F7uI70zE
-         RXpkdb0TqBo4Xzu/lq0I1cnCVBMRncxHi3rNNgk6MUB2RTuhIDvyb4JE4kvYdf2zogIV
-         BHupeRFt1mGiocrNWSv+aNUnWNX19xMw5kToBqaraSjOpsoV7sW5Yi+W/J+q7WPlxKUZ
-         rIlA==
-X-Gm-Message-State: AOJu0YwQI3a9EVdc/UjYsTQ75+G8spv2Eql0+WRTADbZk5eauQGfnLyf
-	nz1jigDscqRO+Hgj7GIqTRPM5gKSJ3NozNaEVtbzo6VVcEfbgyEiucmmqxwciKr7x6Y=
-X-Gm-Gg: AeBDieuHKzKlCzFlSdl0yvUNqmw2xoxhCgVMwXXwdkrK101LgF/G0bqG7P4538XA/J0
-	FEhToqyC96YFR+R27GOytvlM3iChHtO/jVfLD64nGWSmZRBXbJiTx7jKsSnHOuDD01LnO8D4J6k
-	L1HTg5OSRsfkdmAO0YuvjHTSwz3OfCnHLw5xvxnuB4ngkaQpDVln/OABcfZsQzsd6vg2xrR9gl7
-	w/t75UMPzr7LMua3J549kagKI8cFKGd2gyKxENw7V+wglzvuao2Tpig7QLdlvioP02JLrQqVsm9
-	nEG6obJZarVf0KV7bI5qTYZKJoYf5EMa+5XUCslunYa0m8+Fqu8Lw78dImlgol5lJFy7347OF6K
-	tlLktFhx4iYBlNFhqC9rUTSK0Quzl2+pOEnlJxetB9LdmgE+T/DKUeMJsKjmVpQ3M5HG7WwRinF
-	MT+PTmfj+HUauHAsaw
-X-Received: by 2002:a05:6808:c147:b0:467:1c6b:ee14 with SMTP id 5614622812f47-46ef7502300mr8256548b6e.33.1775575863920;
-        Tue, 07 Apr 2026 08:31:03 -0700 (PDT)
-Received: from localhost ([2a03:2880:12ff:1::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4706af49a03sm6335425b6e.8.2026.04.07.08.31.03
+        bh=USvislDHedA17UChRohdtoPvzSGeYQYcGb9R5/42pBo=;
+        b=hsegnpnJytg6627lwmkPqmkNfgibE6JmkOOZTUHtUHxNJmsbPyYNoSXtSLfJzAh6Q9
+         2K1oPa3pAu6R7SwbvecCPfUUiPQSIXsoZ4QF+FhfJOXhGjuHgPgtcnUlvFpL0a9zrVQ+
+         4xRp9vMv3purGwf4U+zChGeGbabj3e5Ml+pWOYjAVh8OL6MzzzLbz/8/JGwhipUdDV6H
+         IXw5T54R8ZktMESch6e4scpgGLhskJo4bwg+KDdlM+hVlSWK5Swc3uxh7NKRSYAtHx/o
+         jjFWzN9/t+VBziR4R7fLuFZVYsynDlwOpzdjzekU6PJ+yzij5wSw528eUF8afC6Orxaf
+         9cPw==
+X-Gm-Message-State: AOJu0YwbGmpCcbv1OYDd7LeT9rVYUDD0LbUqXMtvAyfBUL7ZqAyX2f5p
+	uz4CUlagQSu5d0jX9asiMvW1BVnC7Ps77LoxR57+CbaARpC3BjP6Z5pDttOLihCCjkc=
+X-Gm-Gg: AeBDiesO3IVT4mco1o8xOEx3gbkXmYDsEqOmqfZ+kQLmQjXJzrD2R1Nwcg9LePBABaa
+	iDh3EEngHjPEPBys9eU+Y/cnS5nWOTEPObFN73gOOT0Hthy1YkGNJ9E211uW16aRdLryoiU5U6t
+	AHOEpcpHyv6YW/C6fp3AUi/iqctYReX2mgxC+KodeNJ/MnjzB7hFZvV5aIY5J3xSKZUfw5QWDy3
+	0avi5TbGtauWDy0S0/DoIx1+YCWIs0cy/QrUIrY5LLJbskEokdWmugvUIaOa93IjdfN0LFFbASd
+	Oi7uvMU6JprQwhgbL1HMpFZe7NnvMV4SUg52Z97X2TXU4N7ijZC2Br3zvP3GkpLXKxbBpBLaH43
+	e/UUj6yG5+RkX+tC203RICBlDf6yOc7HKdz40kOYOSX2MJIH+U3T/KMyFInCVwcJT8zNB5i/wTh
+	QOfRo6SQwZJgvUqn7D
+X-Received: by 2002:a05:6830:2716:b0:7d7:f146:873a with SMTP id 46e09a7af769-7dbb6f1da50mr9729342a34.2.1775575868613;
+        Tue, 07 Apr 2026 08:31:08 -0700 (PDT)
+Received: from localhost ([2a03:2880:12ff:8::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7dbb6c02ffesm9823836a34.10.2026.04.07.08.31.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Apr 2026 08:31:03 -0700 (PDT)
+        Tue, 07 Apr 2026 08:31:08 -0700 (PDT)
 From: Stanislav Fomichev <sdf.kernel@gmail.com>
 X-Google-Original-From: Stanislav Fomichev <sdf@fomichev.me>
 To: netdev@vger.kernel.org
@@ -64,10 +64,12 @@ Cc: davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
+	Alexander Duyck <alexanderduyck@fb.com>,
+	kernel-team@meta.com,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH net-next v6 01/14] net: add address list snapshot and reconciliation infrastructure
-Date: Tue,  7 Apr 2026 08:30:48 -0700
-Message-ID: <20260407153101.3694714-2-sdf@fomichev.me>
+Subject: [PATCH net-next v6 05/14] fbnic: convert to ndo_set_rx_mode_async
+Date: Tue,  7 Apr 2026 08:30:52 -0700
+Message-ID: <20260407153101.3694714-6-sdf@fomichev.me>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260407153101.3694714-1-sdf@fomichev.me>
 References: <20260407153101.3694714-1-sdf@fomichev.me>
@@ -79,630 +81,147 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Introduce __hw_addr_list_snapshot() and __hw_addr_list_reconcile()
-for use by the upcoming ndo_set_rx_mode_async callback.
+Convert fbnic from ndo_set_rx_mode to ndo_set_rx_mode_async. The
+driver's __fbnic_set_rx_mode() now takes explicit uc/mc list
+parameters and uses __hw_addr_sync_dev() on the snapshots instead
+of __dev_uc_sync/__dev_mc_sync on the netdev directly.
 
-The async rx_mode path needs to snapshot the device's unicast and
-multicast address lists under the addr_lock, hand those snapshots
-to the driver (which may sleep), and then propagate any sync_cnt
-changes back to the real lists. Two identical snapshots are taken:
-a work copy for the driver to pass to __hw_addr_sync_dev() and a
-reference copy to compute deltas against.
+Update callers in fbnic_up, fbnic_fw_config_after_crash,
+fbnic_bmc_rpc_check and fbnic_set_mac to pass the real address
+lists calling __fbnic_set_rx_mode outside the async work path.
 
-__hw_addr_list_reconcile() walks the reference snapshot comparing
-each entry against the work snapshot to determine what the driver
-synced or unsynced. It then applies those deltas to the real list,
-handling concurrent modifications:
-
-  - If the real entry was concurrently removed but the driver synced
-    it to hardware (delta > 0), re-insert a stale entry so the next
-    work run properly unsyncs it from hardware.
-  - If the entry still exists, apply the delta normally. An entry
-    whose refcount drops to zero is removed.
-
-  # dev_addr_test_snapshot_benchmark: 1024 addrs x 1000 snapshots: 89872802 ns total, 89872 ns/iter
-  # dev_addr_test_snapshot_benchmark.speed: slow
-
+Cc: Alexander Duyck <alexanderduyck@fb.com>
+Cc: kernel-team@meta.com
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
 ---
- include/linux/netdevice.h      |   7 +
- net/core/dev.h                 |   1 +
- net/core/dev_addr_lists.c      | 109 +++++++++-
- net/core/dev_addr_lists_test.c | 363 ++++++++++++++++++++++++++++++++-
- 4 files changed, 477 insertions(+), 3 deletions(-)
+ .../net/ethernet/meta/fbnic/fbnic_netdev.c    | 20 ++++++++++++-------
+ .../net/ethernet/meta/fbnic/fbnic_netdev.h    |  4 +++-
+ drivers/net/ethernet/meta/fbnic/fbnic_pci.c   |  4 ++--
+ drivers/net/ethernet/meta/fbnic/fbnic_rpc.c   |  2 +-
+ 4 files changed, 19 insertions(+), 11 deletions(-)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index e15367373f7c..151d6f4fd9b3 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -4995,6 +4995,13 @@ void __hw_addr_unsync_dev(struct netdev_hw_addr_list *list,
- 			  int (*unsync)(struct net_device *,
- 					const unsigned char *));
- void __hw_addr_init(struct netdev_hw_addr_list *list);
-+void __hw_addr_flush(struct netdev_hw_addr_list *list);
-+int __hw_addr_list_snapshot(struct netdev_hw_addr_list *snap,
-+			    const struct netdev_hw_addr_list *list,
-+			    int addr_len);
-+void __hw_addr_list_reconcile(struct netdev_hw_addr_list *real_list,
-+			      struct netdev_hw_addr_list *work,
-+			      struct netdev_hw_addr_list *ref, int addr_len);
- 
- /* Functions used for device addresses handling */
- void dev_addr_mod(struct net_device *dev, unsigned int offset,
-diff --git a/net/core/dev.h b/net/core/dev.h
-index 781619e76b3e..acc925b7b337 100644
---- a/net/core/dev.h
-+++ b/net/core/dev.h
-@@ -69,6 +69,7 @@ void linkwatch_run_queue(void);
- void dev_addr_flush(struct net_device *dev);
- int dev_addr_init(struct net_device *dev);
- void dev_addr_check(struct net_device *dev);
-+void __hw_addr_flush(struct netdev_hw_addr_list *list);
- 
- #if IS_ENABLED(CONFIG_NET_SHAPER)
- void net_shaper_flush_netdev(struct net_device *dev);
-diff --git a/net/core/dev_addr_lists.c b/net/core/dev_addr_lists.c
-index 76c91f224886..bb4851bc55ce 100644
---- a/net/core/dev_addr_lists.c
-+++ b/net/core/dev_addr_lists.c
-@@ -11,6 +11,7 @@
- #include <linux/rtnetlink.h>
- #include <linux/export.h>
- #include <linux/list.h>
-+#include <kunit/visibility.h>
- 
- #include "dev.h"
- 
-@@ -481,7 +482,7 @@ void __hw_addr_unsync_dev(struct netdev_hw_addr_list *list,
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
+index b4b396ca9bce..c406a3b56b37 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
+@@ -183,7 +183,9 @@ static int fbnic_mc_unsync(struct net_device *netdev, const unsigned char *addr)
+ 	return ret;
  }
- EXPORT_SYMBOL(__hw_addr_unsync_dev);
  
--static void __hw_addr_flush(struct netdev_hw_addr_list *list)
-+void __hw_addr_flush(struct netdev_hw_addr_list *list)
+-void __fbnic_set_rx_mode(struct fbnic_dev *fbd)
++void __fbnic_set_rx_mode(struct fbnic_dev *fbd,
++			 struct netdev_hw_addr_list *uc,
++			 struct netdev_hw_addr_list *mc)
  {
- 	struct netdev_hw_addr *ha, *tmp;
- 
-@@ -492,6 +493,7 @@ static void __hw_addr_flush(struct netdev_hw_addr_list *list)
+ 	bool uc_promisc = false, mc_promisc = false;
+ 	struct net_device *netdev = fbd->netdev;
+@@ -213,10 +215,10 @@ void __fbnic_set_rx_mode(struct fbnic_dev *fbd)
  	}
- 	list->count = 0;
+ 
+ 	/* Synchronize unicast and multicast address lists */
+-	err = __dev_uc_sync(netdev, fbnic_uc_sync, fbnic_uc_unsync);
++	err = __hw_addr_sync_dev(uc, netdev, fbnic_uc_sync, fbnic_uc_unsync);
+ 	if (err == -ENOSPC)
+ 		uc_promisc = true;
+-	err = __dev_mc_sync(netdev, fbnic_mc_sync, fbnic_mc_unsync);
++	err = __hw_addr_sync_dev(mc, netdev, fbnic_mc_sync, fbnic_mc_unsync);
+ 	if (err == -ENOSPC)
+ 		mc_promisc = true;
+ 
+@@ -238,18 +240,21 @@ void __fbnic_set_rx_mode(struct fbnic_dev *fbd)
+ 	fbnic_write_tce_tcam(fbd);
  }
-+EXPORT_SYMBOL_IF_KUNIT(__hw_addr_flush);
  
- void __hw_addr_init(struct netdev_hw_addr_list *list)
+-static void fbnic_set_rx_mode(struct net_device *netdev)
++static void fbnic_set_rx_mode(struct net_device *netdev,
++			      struct netdev_hw_addr_list *uc,
++			      struct netdev_hw_addr_list *mc)
  {
-@@ -501,6 +503,111 @@ void __hw_addr_init(struct netdev_hw_addr_list *list)
+ 	struct fbnic_net *fbn = netdev_priv(netdev);
+ 	struct fbnic_dev *fbd = fbn->fbd;
+ 
+ 	/* No need to update the hardware if we are not running */
+ 	if (netif_running(netdev))
+-		__fbnic_set_rx_mode(fbd);
++		__fbnic_set_rx_mode(fbd, uc, mc);
  }
- EXPORT_SYMBOL(__hw_addr_init);
  
-+/**
-+ *  __hw_addr_list_snapshot - create a snapshot copy of an address list
-+ *  @snap: destination snapshot list (needs to be __hw_addr_init-initialized)
-+ *  @list: source address list to snapshot
-+ *  @addr_len: length of addresses
-+ *
-+ *  Creates a copy of @list with individually allocated entries suitable
-+ *  for use with __hw_addr_sync_dev() and other list manipulation helpers.
-+ *  Each entry is allocated with GFP_ATOMIC; must be called under a spinlock.
-+ *
-+ *  Return: 0 on success, -errno on failure.
-+ */
-+int __hw_addr_list_snapshot(struct netdev_hw_addr_list *snap,
-+			    const struct netdev_hw_addr_list *list,
-+			    int addr_len)
-+{
-+	struct netdev_hw_addr *ha, *entry;
-+
-+	list_for_each_entry(ha, &list->list, list) {
-+		entry = __hw_addr_create(ha->addr, addr_len, ha->type,
-+					 false, false);
-+		if (!entry) {
-+			__hw_addr_flush(snap);
-+			return -ENOMEM;
-+		}
-+		entry->sync_cnt = ha->sync_cnt;
-+		entry->refcount = ha->refcount;
-+
-+		list_add_tail(&entry->list, &snap->list);
-+		__hw_addr_insert(snap, entry, addr_len);
-+		snap->count++;
-+	}
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_IF_KUNIT(__hw_addr_list_snapshot);
-+
-+/**
-+ *  __hw_addr_list_reconcile - sync snapshot changes back and free snapshots
-+ *  @real_list: the real address list to update
-+ *  @work: the working snapshot (modified by driver via __hw_addr_sync_dev)
-+ *  @ref: the reference snapshot (untouched copy of original state)
-+ *  @addr_len: length of addresses
-+ *
-+ *  Walks the reference snapshot and compares each entry against the work
-+ *  snapshot to compute sync_cnt deltas. Applies those deltas to @real_list.
-+ *  Frees both snapshots when done.
-+ *  Caller must hold netif_addr_lock_bh.
-+ */
-+void __hw_addr_list_reconcile(struct netdev_hw_addr_list *real_list,
-+			      struct netdev_hw_addr_list *work,
-+			      struct netdev_hw_addr_list *ref, int addr_len)
-+{
-+	struct netdev_hw_addr *ref_ha, *tmp, *work_ha, *real_ha;
-+	int delta;
-+
-+	list_for_each_entry_safe(ref_ha, tmp, &ref->list, list) {
-+		work_ha = __hw_addr_lookup(work, ref_ha->addr, addr_len,
-+					   ref_ha->type);
-+		if (work_ha)
-+			delta = work_ha->sync_cnt - ref_ha->sync_cnt;
-+		else
-+			delta = -1;
-+
-+		if (delta == 0)
-+			continue;
-+
-+		real_ha = __hw_addr_lookup(real_list, ref_ha->addr, addr_len,
-+					   ref_ha->type);
-+		if (!real_ha) {
-+			/* The real entry was concurrently removed. If the
-+			 * driver synced this addr to hardware (delta > 0),
-+			 * re-insert it as a stale entry so the next work
-+			 * run unsyncs it from hardware.
-+			 */
-+			if (delta > 0) {
-+				rb_erase(&ref_ha->node, &ref->tree);
-+				list_del(&ref_ha->list);
-+				ref->count--;
-+				ref_ha->sync_cnt = delta;
-+				ref_ha->refcount = delta;
-+				list_add_tail_rcu(&ref_ha->list,
-+						  &real_list->list);
-+				__hw_addr_insert(real_list, ref_ha,
-+						 addr_len);
-+				real_list->count++;
-+			}
-+			continue;
-+		}
-+
-+		real_ha->sync_cnt += delta;
-+		real_ha->refcount += delta;
-+		if (!real_ha->refcount) {
-+			rb_erase(&real_ha->node, &real_list->tree);
-+			list_del_rcu(&real_ha->list);
-+			kfree_rcu(real_ha, rcu_head);
-+			real_list->count--;
-+		}
-+	}
-+
-+	__hw_addr_flush(work);
-+	__hw_addr_flush(ref);
-+}
-+EXPORT_SYMBOL_IF_KUNIT(__hw_addr_list_reconcile);
-+
- /*
-  * Device addresses handling functions
-  */
-diff --git a/net/core/dev_addr_lists_test.c b/net/core/dev_addr_lists_test.c
-index 8e1dba825e94..fba926d5ec0d 100644
---- a/net/core/dev_addr_lists_test.c
-+++ b/net/core/dev_addr_lists_test.c
-@@ -2,22 +2,31 @@
- 
- #include <kunit/test.h>
- #include <linux/etherdevice.h>
-+#include <linux/math64.h>
- #include <linux/netdevice.h>
- #include <linux/rtnetlink.h>
- 
- static const struct net_device_ops dummy_netdev_ops = {
- };
- 
-+#define ADDR_A	1
-+#define ADDR_B	2
-+#define ADDR_C	3
-+
- struct dev_addr_test_priv {
- 	u32 addr_seen;
-+	u32 addr_synced;
-+	u32 addr_unsynced;
- };
- 
- static int dev_addr_test_sync(struct net_device *netdev, const unsigned char *a)
+ static int fbnic_set_mac(struct net_device *netdev, void *p)
  {
- 	struct dev_addr_test_priv *datp = netdev_priv(netdev);
++	struct fbnic_net *fbn = netdev_priv(netdev);
+ 	struct sockaddr *addr = p;
  
--	if (a[0] < 31 && !memchr_inv(a, a[0], ETH_ALEN))
-+	if (a[0] < 31 && !memchr_inv(a, a[0], ETH_ALEN)) {
- 		datp->addr_seen |= 1 << a[0];
-+		datp->addr_synced |= 1 << a[0];
-+	}
+ 	if (!is_valid_ether_addr(addr->sa_data))
+@@ -257,7 +262,8 @@ static int fbnic_set_mac(struct net_device *netdev, void *p)
+ 
+ 	eth_hw_addr_set(netdev, addr->sa_data);
+ 
+-	fbnic_set_rx_mode(netdev);
++	if (netif_running(netdev))
++		__fbnic_set_rx_mode(fbn->fbd, &netdev->uc, &netdev->mc);
+ 
  	return 0;
  }
+@@ -551,7 +557,7 @@ static const struct net_device_ops fbnic_netdev_ops = {
+ 	.ndo_features_check	= fbnic_features_check,
+ 	.ndo_set_mac_address	= fbnic_set_mac,
+ 	.ndo_change_mtu		= fbnic_change_mtu,
+-	.ndo_set_rx_mode	= fbnic_set_rx_mode,
++	.ndo_set_rx_mode_async	= fbnic_set_rx_mode,
+ 	.ndo_get_stats64	= fbnic_get_stats64,
+ 	.ndo_bpf		= fbnic_bpf,
+ 	.ndo_hwtstamp_get	= fbnic_hwtstamp_get,
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.h b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.h
+index 9129a658f8fa..eded20b0e9e4 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.h
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.h
+@@ -97,7 +97,9 @@ void fbnic_time_init(struct fbnic_net *fbn);
+ int fbnic_time_start(struct fbnic_net *fbn);
+ void fbnic_time_stop(struct fbnic_net *fbn);
  
-@@ -26,11 +35,22 @@ static int dev_addr_test_unsync(struct net_device *netdev,
- {
- 	struct dev_addr_test_priv *datp = netdev_priv(netdev);
+-void __fbnic_set_rx_mode(struct fbnic_dev *fbd);
++void __fbnic_set_rx_mode(struct fbnic_dev *fbd,
++			 struct netdev_hw_addr_list *uc,
++			 struct netdev_hw_addr_list *mc);
+ void fbnic_clear_rx_mode(struct fbnic_dev *fbd);
  
--	if (a[0] < 31 && !memchr_inv(a, a[0], ETH_ALEN))
-+	if (a[0] < 31 && !memchr_inv(a, a[0], ETH_ALEN)) {
- 		datp->addr_seen &= ~(1 << a[0]);
-+		datp->addr_unsynced |= 1 << a[0];
-+	}
+ void fbnic_phylink_get_pauseparam(struct net_device *netdev,
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+index e3aebbe3656d..6b139cf54256 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+@@ -135,7 +135,7 @@ void fbnic_up(struct fbnic_net *fbn)
+ 
+ 	fbnic_rss_reinit_hw(fbn->fbd, fbn);
+ 
+-	__fbnic_set_rx_mode(fbn->fbd);
++	__fbnic_set_rx_mode(fbn->fbd, &fbn->netdev->uc, &fbn->netdev->mc);
+ 
+ 	/* Enable Tx/Rx processing */
+ 	fbnic_napi_enable(fbn);
+@@ -180,7 +180,7 @@ static int fbnic_fw_config_after_crash(struct fbnic_dev *fbd)
+ 	}
+ 
+ 	fbnic_rpc_reset_valid_entries(fbd);
+-	__fbnic_set_rx_mode(fbd);
++	__fbnic_set_rx_mode(fbd, &fbd->netdev->uc, &fbd->netdev->mc);
+ 
  	return 0;
  }
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_rpc.c b/drivers/net/ethernet/meta/fbnic/fbnic_rpc.c
+index 42a186db43ea..fe95b6f69646 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_rpc.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_rpc.c
+@@ -244,7 +244,7 @@ void fbnic_bmc_rpc_check(struct fbnic_dev *fbd)
  
-+static void dev_addr_test_reset(struct net_device *netdev)
-+{
-+	struct dev_addr_test_priv *datp = netdev_priv(netdev);
-+
-+	datp->addr_seen = 0;
-+	datp->addr_synced = 0;
-+	datp->addr_unsynced = 0;
-+}
-+
- static int dev_addr_test_init(struct kunit *test)
- {
- 	struct dev_addr_test_priv *datp;
-@@ -225,6 +245,339 @@ static void dev_addr_test_add_excl(struct kunit *test)
- 	rtnl_unlock();
- }
+ 	if (fbd->fw_cap.need_bmc_tcam_reinit) {
+ 		fbnic_bmc_rpc_init(fbd);
+-		__fbnic_set_rx_mode(fbd);
++		__fbnic_set_rx_mode(fbd, &fbd->netdev->uc, &fbd->netdev->mc);
+ 		fbd->fw_cap.need_bmc_tcam_reinit = false;
+ 	}
  
-+/* Snapshot test: basic sync with no concurrent modifications.
-+ * Add one address, snapshot, driver syncs it, reconcile propagates
-+ * sync_cnt delta back to real list.
-+ */
-+static void dev_addr_test_snapshot_sync(struct kunit *test)
-+{
-+	struct net_device *netdev = test->priv;
-+	struct netdev_hw_addr_list snap, ref;
-+	struct dev_addr_test_priv *datp;
-+	struct netdev_hw_addr *ha;
-+	u8 addr[ETH_ALEN];
-+
-+	datp = netdev_priv(netdev);
-+
-+	rtnl_lock();
-+
-+	memset(addr, ADDR_A, sizeof(addr));
-+	KUNIT_EXPECT_EQ(test, 0, dev_uc_add(netdev, addr));
-+
-+	/* Snapshot: ADDR_A has sync_cnt=0, refcount=1 (new) */
-+	netif_addr_lock_bh(netdev);
-+	__hw_addr_init(&snap);
-+	__hw_addr_init(&ref);
-+	KUNIT_EXPECT_EQ(test, 0,
-+			__hw_addr_list_snapshot(&snap, &netdev->uc, ETH_ALEN));
-+	KUNIT_EXPECT_EQ(test, 0,
-+			__hw_addr_list_snapshot(&ref, &netdev->uc, ETH_ALEN));
-+	netif_addr_unlock_bh(netdev);
-+
-+	/* Driver syncs ADDR_A to hardware */
-+	dev_addr_test_reset(netdev);
-+	__hw_addr_sync_dev(&snap, netdev, dev_addr_test_sync,
-+			   dev_addr_test_unsync);
-+	KUNIT_EXPECT_EQ(test, 1 << ADDR_A, datp->addr_synced);
-+	KUNIT_EXPECT_EQ(test, 0, datp->addr_unsynced);
-+
-+	/* Reconcile: delta=+1 applied to real entry */
-+	netif_addr_lock_bh(netdev);
-+	__hw_addr_list_reconcile(&netdev->uc, &snap, &ref, ETH_ALEN);
-+	netif_addr_unlock_bh(netdev);
-+
-+	/* Real entry should now reflect the sync: sync_cnt=1, refcount=2 */
-+	KUNIT_EXPECT_EQ(test, 1, netdev->uc.count);
-+	ha = list_first_entry(&netdev->uc.list, struct netdev_hw_addr, list);
-+	KUNIT_EXPECT_MEMEQ(test, ha->addr, addr, ETH_ALEN);
-+	KUNIT_EXPECT_EQ(test, 1, ha->sync_cnt);
-+	KUNIT_EXPECT_EQ(test, 2, ha->refcount);
-+
-+	/* Second work run: already synced, nothing to do */
-+	dev_addr_test_reset(netdev);
-+	__hw_addr_sync_dev(&netdev->uc, netdev, dev_addr_test_sync,
-+			   dev_addr_test_unsync);
-+	KUNIT_EXPECT_EQ(test, 0, datp->addr_synced);
-+	KUNIT_EXPECT_EQ(test, 0, datp->addr_unsynced);
-+	KUNIT_EXPECT_EQ(test, 1, netdev->uc.count);
-+
-+	rtnl_unlock();
-+}
-+
-+/* Snapshot test: ADDR_A synced to hardware, then concurrently removed
-+ * from the real list before reconcile runs. Reconcile re-inserts ADDR_A as
-+ * a stale entry so the next work run unsyncs it from hardware.
-+ */
-+static void dev_addr_test_snapshot_remove_during_sync(struct kunit *test)
-+{
-+	struct net_device *netdev = test->priv;
-+	struct netdev_hw_addr_list snap, ref;
-+	struct dev_addr_test_priv *datp;
-+	struct netdev_hw_addr *ha;
-+	u8 addr[ETH_ALEN];
-+
-+	datp = netdev_priv(netdev);
-+
-+	rtnl_lock();
-+
-+	memset(addr, ADDR_A, sizeof(addr));
-+	KUNIT_EXPECT_EQ(test, 0, dev_uc_add(netdev, addr));
-+
-+	/* Snapshot: ADDR_A is new (sync_cnt=0, refcount=1) */
-+	netif_addr_lock_bh(netdev);
-+	__hw_addr_init(&snap);
-+	__hw_addr_init(&ref);
-+	KUNIT_EXPECT_EQ(test, 0,
-+			__hw_addr_list_snapshot(&snap, &netdev->uc, ETH_ALEN));
-+	KUNIT_EXPECT_EQ(test, 0,
-+			__hw_addr_list_snapshot(&ref, &netdev->uc, ETH_ALEN));
-+	netif_addr_unlock_bh(netdev);
-+
-+	/* Driver syncs ADDR_A to hardware */
-+	dev_addr_test_reset(netdev);
-+	__hw_addr_sync_dev(&snap, netdev, dev_addr_test_sync,
-+			   dev_addr_test_unsync);
-+	KUNIT_EXPECT_EQ(test, 1 << ADDR_A, datp->addr_synced);
-+	KUNIT_EXPECT_EQ(test, 0, datp->addr_unsynced);
-+
-+	/* Concurrent removal: user deletes ADDR_A while driver was working */
-+	memset(addr, ADDR_A, sizeof(addr));
-+	KUNIT_EXPECT_EQ(test, 0, dev_uc_del(netdev, addr));
-+	KUNIT_EXPECT_EQ(test, 0, netdev->uc.count);
-+
-+	/* Reconcile: ADDR_A gone from real list but driver synced it,
-+	 * so it gets re-inserted as stale (sync_cnt=1, refcount=1).
-+	 */
-+	netif_addr_lock_bh(netdev);
-+	__hw_addr_list_reconcile(&netdev->uc, &snap, &ref, ETH_ALEN);
-+	netif_addr_unlock_bh(netdev);
-+
-+	KUNIT_EXPECT_EQ(test, 1, netdev->uc.count);
-+	ha = list_first_entry(&netdev->uc.list, struct netdev_hw_addr, list);
-+	KUNIT_EXPECT_MEMEQ(test, ha->addr, addr, ETH_ALEN);
-+	KUNIT_EXPECT_EQ(test, 1, ha->sync_cnt);
-+	KUNIT_EXPECT_EQ(test, 1, ha->refcount);
-+
-+	/* Second work run: stale entry gets unsynced from HW and removed */
-+	dev_addr_test_reset(netdev);
-+	__hw_addr_sync_dev(&netdev->uc, netdev, dev_addr_test_sync,
-+			   dev_addr_test_unsync);
-+	KUNIT_EXPECT_EQ(test, 0, datp->addr_synced);
-+	KUNIT_EXPECT_EQ(test, 1 << ADDR_A, datp->addr_unsynced);
-+	KUNIT_EXPECT_EQ(test, 0, netdev->uc.count);
-+
-+	rtnl_unlock();
-+}
-+
-+/* Snapshot test: ADDR_A was stale (unsynced from hardware by driver),
-+ * but concurrently re-added by the user. The re-add bumps refcount of
-+ * the existing stale entry. Reconcile applies delta=-1, leaving ADDR_A
-+ * as a fresh entry (sync_cnt=0, refcount=1) for the next work run.
-+ */
-+static void dev_addr_test_snapshot_readd_during_unsync(struct kunit *test)
-+{
-+	struct net_device *netdev = test->priv;
-+	struct netdev_hw_addr_list snap, ref;
-+	struct dev_addr_test_priv *datp;
-+	struct netdev_hw_addr *ha;
-+	u8 addr[ETH_ALEN];
-+
-+	datp = netdev_priv(netdev);
-+
-+	rtnl_lock();
-+
-+	memset(addr, ADDR_A, sizeof(addr));
-+	KUNIT_EXPECT_EQ(test, 0, dev_uc_add(netdev, addr));
-+
-+	/* Sync ADDR_A to hardware: sync_cnt=1, refcount=2 */
-+	dev_addr_test_reset(netdev);
-+	__hw_addr_sync_dev(&netdev->uc, netdev, dev_addr_test_sync,
-+			   dev_addr_test_unsync);
-+	KUNIT_EXPECT_EQ(test, 1 << ADDR_A, datp->addr_synced);
-+	KUNIT_EXPECT_EQ(test, 0, datp->addr_unsynced);
-+
-+	/* User removes ADDR_A: refcount=1, sync_cnt=1 -> stale */
-+	KUNIT_EXPECT_EQ(test, 0, dev_uc_del(netdev, addr));
-+
-+	/* Snapshot: ADDR_A is stale (sync_cnt=1, refcount=1) */
-+	netif_addr_lock_bh(netdev);
-+	__hw_addr_init(&snap);
-+	__hw_addr_init(&ref);
-+	KUNIT_EXPECT_EQ(test, 0,
-+			__hw_addr_list_snapshot(&snap, &netdev->uc, ETH_ALEN));
-+	KUNIT_EXPECT_EQ(test, 0,
-+			__hw_addr_list_snapshot(&ref, &netdev->uc, ETH_ALEN));
-+	netif_addr_unlock_bh(netdev);
-+
-+	/* Driver unsyncs stale ADDR_A from hardware */
-+	dev_addr_test_reset(netdev);
-+	__hw_addr_sync_dev(&snap, netdev, dev_addr_test_sync,
-+			   dev_addr_test_unsync);
-+	KUNIT_EXPECT_EQ(test, 0, datp->addr_synced);
-+	KUNIT_EXPECT_EQ(test, 1 << ADDR_A, datp->addr_unsynced);
-+
-+	/* Concurrent: user re-adds ADDR_A.  dev_uc_add finds the existing
-+	 * stale entry and bumps refcount from 1 -> 2.  sync_cnt stays 1.
-+	 */
-+	KUNIT_EXPECT_EQ(test, 0, dev_uc_add(netdev, addr));
-+	KUNIT_EXPECT_EQ(test, 1, netdev->uc.count);
-+
-+	/* Reconcile: ref sync_cnt=1 matches real sync_cnt=1, delta=-1
-+	 * applied. Result: sync_cnt=0, refcount=1 (fresh).
-+	 */
-+	netif_addr_lock_bh(netdev);
-+	__hw_addr_list_reconcile(&netdev->uc, &snap, &ref, ETH_ALEN);
-+	netif_addr_unlock_bh(netdev);
-+
-+	/* Entry survives as fresh: needs re-sync to HW */
-+	KUNIT_EXPECT_EQ(test, 1, netdev->uc.count);
-+	ha = list_first_entry(&netdev->uc.list, struct netdev_hw_addr, list);
-+	KUNIT_EXPECT_MEMEQ(test, ha->addr, addr, ETH_ALEN);
-+	KUNIT_EXPECT_EQ(test, 0, ha->sync_cnt);
-+	KUNIT_EXPECT_EQ(test, 1, ha->refcount);
-+
-+	/* Second work run: fresh entry gets synced to HW */
-+	dev_addr_test_reset(netdev);
-+	__hw_addr_sync_dev(&netdev->uc, netdev, dev_addr_test_sync,
-+			   dev_addr_test_unsync);
-+	KUNIT_EXPECT_EQ(test, 1 << ADDR_A, datp->addr_synced);
-+	KUNIT_EXPECT_EQ(test, 0, datp->addr_unsynced);
-+
-+	rtnl_unlock();
-+}
-+
-+/* Snapshot test: ADDR_A is new (synced by driver), and independent ADDR_B
-+ * is concurrently removed from the real list. A's sync delta propagates
-+ * normally; B's absence doesn't interfere.
-+ */
-+static void dev_addr_test_snapshot_add_and_remove(struct kunit *test)
-+{
-+	struct net_device *netdev = test->priv;
-+	struct netdev_hw_addr_list snap, ref;
-+	struct dev_addr_test_priv *datp;
-+	struct netdev_hw_addr *ha;
-+	u8 addr[ETH_ALEN];
-+
-+	datp = netdev_priv(netdev);
-+
-+	rtnl_lock();
-+
-+	/* Add ADDR_A and ADDR_B (will be synced then removed) */
-+	memset(addr, ADDR_A, sizeof(addr));
-+	KUNIT_EXPECT_EQ(test, 0, dev_uc_add(netdev, addr));
-+	memset(addr, ADDR_B, sizeof(addr));
-+	KUNIT_EXPECT_EQ(test, 0, dev_uc_add(netdev, addr));
-+
-+	/* Sync both to hardware: sync_cnt=1, refcount=2 */
-+	__hw_addr_sync_dev(&netdev->uc, netdev, dev_addr_test_sync,
-+			   dev_addr_test_unsync);
-+
-+	/* Add ADDR_C (new, will be synced by snapshot) */
-+	memset(addr, ADDR_C, sizeof(addr));
-+	KUNIT_EXPECT_EQ(test, 0, dev_uc_add(netdev, addr));
-+
-+	/* Snapshot: A,B synced (sync_cnt=1,refcount=2); C new (0,1) */
-+	netif_addr_lock_bh(netdev);
-+	__hw_addr_init(&snap);
-+	__hw_addr_init(&ref);
-+	KUNIT_EXPECT_EQ(test, 0,
-+			__hw_addr_list_snapshot(&snap, &netdev->uc, ETH_ALEN));
-+	KUNIT_EXPECT_EQ(test, 0,
-+			__hw_addr_list_snapshot(&ref, &netdev->uc, ETH_ALEN));
-+	netif_addr_unlock_bh(netdev);
-+
-+	/* Driver syncs snapshot: ADDR_C is new -> synced; A,B already synced */
-+	dev_addr_test_reset(netdev);
-+	__hw_addr_sync_dev(&snap, netdev, dev_addr_test_sync,
-+			   dev_addr_test_unsync);
-+	KUNIT_EXPECT_EQ(test, 1 << ADDR_C, datp->addr_synced);
-+	KUNIT_EXPECT_EQ(test, 0, datp->addr_unsynced);
-+
-+	/* Concurrent: user removes addr B while driver was working */
-+	memset(addr, ADDR_B, sizeof(addr));
-+	KUNIT_EXPECT_EQ(test, 0, dev_uc_del(netdev, addr));
-+
-+	/* Reconcile: ADDR_C's delta=+1 applied to real list.
-+	 * ADDR_B's delta=0 (unchanged in snapshot),
-+	 * so nothing to apply to ADDR_B.
-+	 */
-+	netif_addr_lock_bh(netdev);
-+	__hw_addr_list_reconcile(&netdev->uc, &snap, &ref, ETH_ALEN);
-+	netif_addr_unlock_bh(netdev);
-+
-+	/* ADDR_A: unchanged (sync_cnt=1, refcount=2)
-+	 * ADDR_B: refcount went from 2->1 via dev_uc_del (still present, stale)
-+	 * ADDR_C: sync propagated (sync_cnt=1, refcount=2)
-+	 */
-+	KUNIT_EXPECT_EQ(test, 3, netdev->uc.count);
-+	netdev_hw_addr_list_for_each(ha, &netdev->uc) {
-+		u8 id = ha->addr[0];
-+
-+		if (!memchr_inv(ha->addr, id, ETH_ALEN)) {
-+			if (id == ADDR_A) {
-+				KUNIT_EXPECT_EQ(test, 1, ha->sync_cnt);
-+				KUNIT_EXPECT_EQ(test, 2, ha->refcount);
-+			} else if (id == ADDR_B) {
-+				/* B: still present but now stale */
-+				KUNIT_EXPECT_EQ(test, 1, ha->sync_cnt);
-+				KUNIT_EXPECT_EQ(test, 1, ha->refcount);
-+			} else if (id == ADDR_C) {
-+				KUNIT_EXPECT_EQ(test, 1, ha->sync_cnt);
-+				KUNIT_EXPECT_EQ(test, 2, ha->refcount);
-+			}
-+		}
-+	}
-+
-+	/* Second work run: ADDR_B is stale, gets unsynced and removed */
-+	dev_addr_test_reset(netdev);
-+	__hw_addr_sync_dev(&netdev->uc, netdev, dev_addr_test_sync,
-+			   dev_addr_test_unsync);
-+	KUNIT_EXPECT_EQ(test, 0, datp->addr_synced);
-+	KUNIT_EXPECT_EQ(test, 1 << ADDR_B, datp->addr_unsynced);
-+	KUNIT_EXPECT_EQ(test, 2, netdev->uc.count);
-+
-+	rtnl_unlock();
-+}
-+
-+static void dev_addr_test_snapshot_benchmark(struct kunit *test)
-+{
-+	struct net_device *netdev = test->priv;
-+	struct netdev_hw_addr_list snap;
-+	u8 addr[ETH_ALEN];
-+	s64 duration = 0;
-+	ktime_t start;
-+	int i, iter;
-+
-+	rtnl_lock();
-+
-+	for (i = 0; i < 1024; i++) {
-+		memset(addr, 0, sizeof(addr));
-+		addr[0] = (i >> 8) & 0xff;
-+		addr[1] = i & 0xff;
-+		KUNIT_EXPECT_EQ(test, 0, dev_uc_add(netdev, addr));
-+	}
-+
-+	for (iter = 0; iter < 1000; iter++) {
-+		netif_addr_lock_bh(netdev);
-+		__hw_addr_init(&snap);
-+
-+		start = ktime_get();
-+		KUNIT_EXPECT_EQ(test, 0,
-+				__hw_addr_list_snapshot(&snap, &netdev->uc,
-+							ETH_ALEN));
-+		duration += ktime_to_ns(ktime_sub(ktime_get(), start));
-+
-+		netif_addr_unlock_bh(netdev);
-+		__hw_addr_flush(&snap);
-+	}
-+
-+	kunit_info(test,
-+		   "1024 addrs x 1000 snapshots: %lld ns total, %lld ns/iter",
-+		   duration, div_s64(duration, 1000));
-+
-+	rtnl_unlock();
-+}
-+
- static struct kunit_case dev_addr_test_cases[] = {
- 	KUNIT_CASE(dev_addr_test_basic),
- 	KUNIT_CASE(dev_addr_test_sync_one),
-@@ -232,6 +585,11 @@ static struct kunit_case dev_addr_test_cases[] = {
- 	KUNIT_CASE(dev_addr_test_del_main),
- 	KUNIT_CASE(dev_addr_test_add_set),
- 	KUNIT_CASE(dev_addr_test_add_excl),
-+	KUNIT_CASE(dev_addr_test_snapshot_sync),
-+	KUNIT_CASE(dev_addr_test_snapshot_remove_during_sync),
-+	KUNIT_CASE(dev_addr_test_snapshot_readd_during_unsync),
-+	KUNIT_CASE(dev_addr_test_snapshot_add_and_remove),
-+	KUNIT_CASE_SLOW(dev_addr_test_snapshot_benchmark),
- 	{}
- };
- 
-@@ -243,5 +601,6 @@ static struct kunit_suite dev_addr_test_suite = {
- };
- kunit_test_suite(dev_addr_test_suite);
- 
-+MODULE_IMPORT_NS("EXPORTED_FOR_KUNIT_TESTING");
- MODULE_DESCRIPTION("KUnit tests for struct netdev_hw_addr_list");
- MODULE_LICENSE("GPL");
 -- 
 2.52.0
 
