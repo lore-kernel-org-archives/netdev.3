@@ -1,103 +1,79 @@
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E87D238178
-	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 02:27:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
+Received: from outbound.baidu.com (jpmx.baidu.com [119.63.196.201])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id 3E0E7238178;
+	Tue,  7 Apr 2026 02:27:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=119.63.196.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775528867; cv=none; b=sw8XcJHlyd8MNk262GqLSIPrighCdAd5Ps+SH7j5eVPKOcicAAhbBf0TIduimuEsMnT2syZeT93nLQKI3XKwUiYFN3fFmU0IxahRzoOLMVxvLmptaTDMDhjPxsu3mExhLe9YVPvG7qRJ0QYpoNhuJmAExnkJbuBQTzwt3tKDqsk=
+	t=1775528876; cv=none; b=ZSF5MS+LgkaHugRtlBOlPXaCJ8cvnNJQIDoua8lxh3zZRPhVkeO9m1bRWx4n24bnqtBK3ICd8LUB77oB9jI8gFoCAInsKnIGDZ9K4ZwzRg3AiDBmy/k/lrFdk+ijolDLIqXgej3JfJaObDiSwd/KjkZh5BDzwPJngwA+yqKUaig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775528867; c=relaxed/simple;
-	bh=xr116ENgh6GConTk+CrKHjqqli2+OmQT78h7tAHpoFo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a9kMyyg+v9gvGbh9BYuRjH8jsuISd3ZWWlQ34k4oKzjwmRKh8Xj/ZGkYPQ9HJUXmQUN2cue+uLbSLkcmQZ0W99+aLOWDzfkBFhPnbsqp57bM080BtSmEQaUxuL+RMmktVJnTeKdl3M0Hv8XVQjBs9vzwN3S2Cg3cvF8VsVMebgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=pRlteTRF; arc=none smtp.client-ip=91.218.175.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1775528876; c=relaxed/simple;
+	bh=W/xxQQVyTbtVD25wXMT+RCdTuEaBRAJrbFb2CKhUJQM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WUhnPKCBNa144EoSVO8H+mLKIo7y9SN8iutDqoPqMgnKeJV0Mp3vBoN5gedYTykdfGq/KhOTkeZIMzamQqw73m88Y82AT2rwjwdTXNJmvkndV1dw2tGF3e613uD5OWcf5uXS1EOvVM2d3N8Z6YNYb7Mi3npQFNKotalYGQyj5Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com; spf=pass smtp.mailfrom=baidu.com; dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b=mlw6llIe; arc=none smtp.client-ip=119.63.196.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="pRlteTRF"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775528862;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=/BTSRSfR0uEztwllvIBtGt3uj4LQXe+9g40tIFFHvFA=;
-	b=pRlteTRFCngwuqCfB/JPjTWBX+W/RnoxhfZoknK1Mz5RfmhefF+5ylpwY6KKZSsIYGwvV2
-	ZPFBxVFOoExV/l0+Kisefx27Vx26fjtBxsSp4Gjie32VCqGcq2m1+3DCPMXTggiMfKqBlA
-	E9WnvR1wIxK+1jb/NZvvrzMI4xL0XoU=
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: bpf@vger.kernel.org
-Cc: werner@verivus.ai,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Sun Jian <sun.jian.kdev@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH bpf v3 0/2] bpf: Fix SOCK_OPS_GET_SK same-register OOB read in sock_ops and add selftest
-Date: Tue,  7 Apr 2026 10:26:26 +0800
-Message-ID: <20260407022720.162151-1-jiayuan.chen@linux.dev>
+	dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b="mlw6llIe"
+X-MD-Sfrom: lirongqing@baidu.com
+X-MD-SrcIP: 172.31.50.47
+From: lirongqing <lirongqing@baidu.com>
+To: Jiri Pirko <jiri@resnulli.us>, "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Mateusz
+ Polchlopek <mateusz.polchlopek@intel.com>, Tony Nguyen
+	<anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: Li RongQing <lirongqing@baidu.com>
+Subject: [PATCH] devlink: Fix incorrect skb socket family dumping
+Date: Mon, 6 Apr 2026 22:27:30 -0400
+Message-ID: <20260407022730.2393-1-lirongqing@baidu.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain
+X-ClientProxiedBy: bjkjy-exc11.internal.baidu.com (172.31.51.11) To
+ bjkjy-exc3.internal.baidu.com (172.31.50.47)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
+	s=selector1; t=1775528861;
+	bh=rMxAsSE1T2ENZfR5RXIKLUTCSrJJ56L2NjvuWxizi08=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type;
+	b=mlw6llIekOJTsGnqPBdavbTKtLp8BZIzuRiiwho+ELKucp3wFQryBTiZxQmTfxH41
+	 z+qlnXLD3BrZZvBmeLoVnPaTx3JVNF+mEE82Rn8n6HuxfBjbyaQIF3JHchXXljwll9
+	 i6VtEas+EQQquMRwooJF512XlFBLBXpWc3jjhEZoXsf1jc+gsT+EbK73q9hWA78wTf
+	 BuK+ejC2EwyJemfiD4QvvezN2Rn3ntIwQ14bj6i7jb9yOFaSgG06k8MQ3q5raTCp9d
+	 kgke95emH1our0obrJWtRWXv7lXDY/ZFnmyenEZ9rELaR+kweW0G8DvGQJCXM3RVxD
+	 QzHq6Y2SiEycQ==
 
-When a BPF sock_ops program accesses ctx fields with dst_reg == src_reg,
-the SOCK_OPS_GET_SK() and SOCK_OPS_GET_FIELD() macros fail to zero the
-destination register in the !fullsock / !locked_tcp_sock path, leading to
-OOB read (GET_SK) and kernel pointer leak (GET_FIELD).
+From: Li RongQing <lirongqing@baidu.com>
 
-Patch 1: Fix both macros by adding BPF_MOV64_IMM(si->dst_reg, 0) in the
-!fullsock landing pad.
-Patch 2: Add selftests covering same-register and different-register cases
-for both GET_SK and GET_FIELD.
+The devlink_fmsg_dump_skb function was incorrectly using the socket
+type (sk->sk_type) instead of the socket family (sk->sk_family)
+when filling the "family" field in the fast message dump.
 
-[1] https://lore.kernel.org/bpf/6fe1243e-149b-4d3b-99c7-fcc9e2f75787@std.uestc.edu.cn/T/#u
+This patch fixes this to properly display the socket family.
 
-Changes since v2:
-https://lore.kernel.org/bpf/20260406031330.187630-1-jiayuan.chen@linux.dev/
-- Addressed selftest review from Martin KaFai Lau: removed unused skel
-  parameter, renamed to test_ns_ for automatic netns, ASSERT_GE -> ASSERT_OK_FD
-- Add reviewed-by tags.
+Fixes: 3dbfde7f6bc7b8 ("devlink: add devlink_fmsg_dump_skb() function")
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+---
+ net/devlink/health.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Changes since v1:
-https://lore.kernel.org/bpf/20260404141010.247536-1-jiayuan.chen@linux.dev/
-- Fixed the same bug in SOCK_OPS_GET_FIELD() (pointed out by AI review)
-- Added SOCK_OPS_GET_FIELD same-register and GET_SK different-register
-  subtests
-
-Jiayuan Chen (2):
-  bpf: Fix same-register dst/src OOB read and pointer leak in sock_ops
-  selftests/bpf: Add tests for sock_ops ctx access with same src/dst
-    register
-
- net/core/filter.c                             |   6 +-
- .../bpf/prog_tests/sock_ops_get_sk.c          |  76 ++++++++++++
- .../selftests/bpf/progs/sock_ops_get_sk.c     | 117 ++++++++++++++++++
- 3 files changed, 197 insertions(+), 2 deletions(-)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/sock_ops_get_sk.c
- create mode 100644 tools/testing/selftests/bpf/progs/sock_ops_get_sk.c
-
+diff --git a/net/devlink/health.c b/net/devlink/health.c
+index 449c761..ea7a334 100644
+--- a/net/devlink/health.c
++++ b/net/devlink/health.c
+@@ -1327,7 +1327,7 @@ void devlink_fmsg_dump_skb(struct devlink_fmsg *fmsg, const struct sk_buff *skb)
+ 	if (sk) {
+ 		devlink_fmsg_pair_nest_start(fmsg, "sk");
+ 		devlink_fmsg_obj_nest_start(fmsg);
+-		devlink_fmsg_put(fmsg, "family", sk->sk_type);
++		devlink_fmsg_put(fmsg, "family", sk->sk_family);
+ 		devlink_fmsg_put(fmsg, "type", sk->sk_type);
+ 		devlink_fmsg_put(fmsg, "proto", sk->sk_protocol);
+ 		devlink_fmsg_obj_nest_end(fmsg);
 -- 
-2.43.0
+2.9.4
 
