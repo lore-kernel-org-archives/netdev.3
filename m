@@ -1,93 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BCEE2836AF;
-	Tue,  7 Apr 2026 02:10:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE5022F77B;
+	Tue,  7 Apr 2026 02:10:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775527833; cv=none; b=UawhSRnZyOhAOuaJPmgOMRcFSQBdwAz5uWdWYZ0+kGNWhHGCWu2CYh6Qw+/R2HhiQwehAnZocHRLf0jbDWfMJhdIf2wzgzxEIXk+qqi86nM3OMyXWARmQNpjmyfeQk0KUqk3ev6GDsR7HPgKaYdj2FLOYrXBR0A4wT6NULBmDsE=
+	t=1775527838; cv=none; b=jlQK8GrYIBBCshgPrgznOcNr6WrFd9DzHyBB9aQAdph2I6BpGY71ARnM5d6jVqhtCwa7OCB45wONb8jBrZlTgA74k2qSpSFChz9Em22ofygQKDsOpca2z9bbDqhr5L7UyTDGIdldh+MFkeg1er/WaLjJs8Zcd8//318Ege4XCxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775527833; c=relaxed/simple;
-	bh=27jpjNzx0cFfgKTYlxhm5WUR7kjfs0yfVFmSOEdpKPk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ZKxrtM0UpyHjbnnUrQl9xwFOs/BnOZ6g+LbvjJIEje3v2wgl8blt8qRKs/81fWOvwgPuJ4zeMnHPrUr9LAfglCNyknM36cb4oJFnJs8lR//Rk1xz/DhvZaOvNqjtpvHIOpMUlscO+dbZjU+PQ0Sq50bhApzQeMDWH8m8VsUfE70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EzXTZKaH; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EzXTZKaH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70ED4C4CEF7;
-	Tue,  7 Apr 2026 02:10:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775527833;
-	bh=27jpjNzx0cFfgKTYlxhm5WUR7kjfs0yfVFmSOEdpKPk=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=EzXTZKaHmvzWCLcXoXOtQY7cO0WXSsI1wCe83GtBzVaYOdiMRqgCIWpGZZDSd/Hlp
-	 cnCDA0gwcvLfwaGGEf9rAgooiPAjtzBaT2Npq9jPUk1hYi2lR3Qn5gA7iZkxpAtE4s
-	 G94JUAdMQHiDnKS4gAXHwEv9XCO1KwV6TYqa1ZLb5JRJ5ptDDbCO4uYKuSLVFc2Hjk
-	 Nbz4Tw1JAwiqJ+PMH9unFvclZSjc2v9pRc7w/QAXQCHrv/h/kDQJvz7ensk2MVt2ue
-	 IY52fve4m+z9//+LKNASQ+jaVbbGhM0YDnrsYi0ktHC67XPh3oZIlPLA5jeB2Eb0xV
-	 Uo4CyzXcWtEqw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02CE63809A28;
-	Tue,  7 Apr 2026 02:10:13 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1775527838; c=relaxed/simple;
+	bh=2gk/j8ec/luBQmUu0MPxwUnwBOnlSZLezzRCV4elKDM=;
+	h=From:Date:Message-ID:To:Cc:In-Reply-To:References:Subject; b=l+n/BCzrvCGGNrTRxCCQhTK48l9Z1HgB8tGhd1kNEJ0hhJ5JuTL+bO4PF9kJNFrTldo/n9wAiTC3OVBFBNFAAp4u7zviNPzv9pbClOOGusaMuLZ+/M1yNX/HglApqr2MmXawuzBH1rnZorZnCJgjisa3ffVCSi1+dgaK1SqOwzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from 0004-nfc-sensf-v2.eml (unknown [111.196.245.197])
+	by APP-01 (Coremail) with SMTP id qwCowADHM2+SZ9RpzrR2DA--.49618S2;
+	Tue, 07 Apr 2026 10:10:26 +0800 (CST)
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Date: Tue, 7 Apr 2026 09:57:36 +0800
+Message-ID: <20260407120004.4-nfc-sensf-v2-pengpeng@iscas.ac.cn>
+To: netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org, pengpeng@iscas.ac.cn
+In-Reply-To: <20260322031922.57949-1-pengpeng@iscas.ac.cn>
+References: <20260322031922.57949-1-pengpeng@iscas.ac.cn>
+Subject: [PATCH net v2] NFC: digital: bound SENSF response copy into
+ nfc_target
+X-CM-TRANSID:qwCowADHM2+SZ9RpzrR2DA--.49618S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Cw1kJFy3WFW5uryrXryrJFb_yoW8ZF18pF
+	yfC3W5A3y3XFW7tFWkAF40krsYvF1vkFZrurWxA34IywsxJFW7JF48Gr1aqF1UJFWxGw1x
+	WF4DAFyUGa1UXrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkl14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26r
+	xl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
+	6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr
+	0_Gr1lF7xvr2IY64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r1q
+	6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
+	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y
+	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1I6r4UMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
+	W8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
+	IxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbtxhJUUUU
+	U==
+X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v3 0/5] NFC support for five Qualcomm SDM845 phones
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177552781154.3342975.13085478526282398962.git-patchwork-notify@kernel.org>
-Date: Tue, 07 Apr 2026 02:10:11 +0000
-References: <20260403-oneplus-nfc-v3-0-fbdce57d63c1@ixit.cz>
-In-Reply-To: <20260403-oneplus-nfc-v3-0-fbdce57d63c1@ixit.cz>
-To: David Heidelberg <david@ixit.cz>
-Cc: andersson@kernel.org, konradybcio@kernel.org, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, amartinz@shift.eco,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, casey.connolly@linaro.org,
- amartinz@shiftphones.com, petr.hodina@protonmail.com, l.j.beemster@gmail.com,
- netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- oe-linux-nfc@lists.linux.dev, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, krzk@kernel.org
 
-Hello:
+digital_in_recv_sensf_res() copies the received SENSF response into
+struct nfc_target without bounding the copy to target.sensf_res. A full
+on-wire digital_sensf_res is 19 bytes long, while nfc_target stores 18
+bytes, so oversized or full-length frames can overwrite adjacent stack
+fields before digital_target_found() sees the target.
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Reject payloads larger than struct digital_sensf_res and clamp the copy
+into target.sensf_res so valid 19-byte responses keep working while the
+fixed destination buffer stays bounded.
 
-On Fri, 03 Apr 2026 15:58:45 +0200 you wrote:
-> - OnePlus 6 / 6T
->  - Pixel 3 / 3 XL
->  - SHIFT 6MQ
-> 
-> Verified with NFC card using neard:
-> 
-> systemctl enable --now neard
-> nfctool --device nfc0 -1
-> nfctool -d nfc0 -p
-> gdbus introspect --system --dest org.neard --object-path /org/neard/nfc0/tag0/record0
-> 
-> [...]
+Fixes: 8c0695e4998dd268ff2a05951961247b7e015651 ("NFC Digital: Add NFC-F technology support")
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+---
+Changes since v1:
+- target the net tree and use the NFC: digital: prefix
+- add the missing Fixes tag
+- preserve valid 19-byte SENSF responses by clamping the copy into
+  struct nfc_target
+- reject only payloads larger than struct digital_sensf_res
 
-Here is the summary with links:
-  - [v3,1/5] dt-bindings: nfc: nxp,nci: Document PN557 compatible
-    https://git.kernel.org/netdev/net-next/c/e72058a4bed0
-  - [v3,2/5] arm64: dts: qcom: sdm845-oneplus: Enable NFC
-    (no matching commit)
-  - [v3,3/5] arm64: dts: qcom: sdm845-shift-axolotl: Correct touchscreen sleep state
-    (no matching commit)
-  - [v3,4/5] arm64: dts: qcom: sdm845-shift-axolotl: Enable NFC
-    (no matching commit)
-  - [v3,5/5] arm64: dts: qcom: sdm845-google-common: Enable NFC
-    (no matching commit)
+net/nfc/digital_technology.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-You are awesome, thank you!
+diff --git a/net/nfc/digital_technology.c b/net/nfc/digital_technology.c
+index 63f1b721c71d..abf544d917f3 100644
+--- a/net/nfc/digital_technology.c
++++ b/net/nfc/digital_technology.c
+@@ -767,13 +767,18 @@ static void digital_in_recv_sensf_res(struct nfc_digital_dev *ddev, void *arg,
+ 	}
+ 
+ 	skb_pull(resp, 1);
++	if (resp->len > sizeof(struct digital_sensf_res)) {
++		rc = -EIO;
++		goto exit;
++	}
+ 
+ 	memset(&target, 0, sizeof(struct nfc_target));
+ 
+ 	sensf_res = (struct digital_sensf_res *)resp->data;
+ 
+-	memcpy(target.sensf_res, sensf_res, resp->len);
+-	target.sensf_res_len = resp->len;
++	target.sensf_res_len = min_t(unsigned int, resp->len,
++				     sizeof(target.sensf_res));
++	memcpy(target.sensf_res, sensf_res, target.sensf_res_len);
+ 
+ 	memcpy(target.nfcid2, sensf_res->nfcid2, NFC_NFCID2_MAXSIZE);
+ 	target.nfcid2_len = NFC_NFCID2_MAXSIZE;
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.50.1 (Apple Git-155)
 
