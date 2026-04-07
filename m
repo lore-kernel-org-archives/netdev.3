@@ -1,131 +1,125 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71EE539FCDB
-	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 11:05:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 545873A5E7B;
+	Tue,  7 Apr 2026 11:11:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775559924; cv=none; b=OEWNF+FFtO2RtHKiPI0oAnamX2CgYlH3MzCAv5JR582N4s1WcIWnCIyWfdhlzKK5VBg6JmvAd4gjabw0v4jVhC4cVjgurHDs9Q4wx0MZk8mYoiULOV8BXgrXWQb1bG4uMpaGuUVgsVENar8Rxt1nkCNFv2vnxHWWD7YeGN7u5dY=
+	t=1775560282; cv=none; b=RsQ0cCK+tNcl+rsAyNrDfGWWNGn+s7+Pc953PW/JuHg+CZgopQMks8ljQHPoAt0He93QQcFOZV0qjFIYkT7gFLAWtAFnVqORlMcBgJEEW3SJ6Ki30m6x+agy1BlSqHKeo63ad3ZEX/wiNduQjuXgnvRBb4+IUP++EdYVkoZEyAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775559924; c=relaxed/simple;
-	bh=AASHIeM6Gd/EK8pPUVGREs94mOWAxENDbLt05y2wNeM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EsTMLUypDYWg5Cb8pJcp3aTRdIkLy2Wm2ofNQpFyQmjLPYTAXdgqxfpaYK8G6xkdmlrEjT5HlCnz2Mq4o/IAA08SXZ6+vDN/YZPzv8O7yfopvB0/DvDlGHJdK5h2/mk2+F8qOdCm/KfFYCRpJAMXDHwPdFp8Bp6f/yFzHxDNn8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eIwCV8wQ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=rZcB61Kc; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1775560282; c=relaxed/simple;
+	bh=sTy9L3hIBpMoxO5LctTGAcqMB6QhIZpqGIZCpiXUhAs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mlJJGXXOrftEUCbealYVpQqFg7S8b6cCflMlX7XjNEhOcXZX7ghcIkuwFsWobpHSpbqBk8KcUyXRm6vgvuwR7voTJrxmdX2SAqEN6WZzjSylpNOMWZKLfaxgdhAY1NZ/ZQuUnOcMNRM/4amTUDjIuZharMKWTHbnEtyQhDh12I8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=jjfm56ew; arc=none smtp.client-ip=188.40.3.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eIwCV8wQ";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="rZcB61Kc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775559922;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nbK7CgYMpXwezHmMj9q3jIIWcerGUMg8y8tq/mmBKaU=;
-	b=eIwCV8wQbO7XXAOzetcW3/z0oCvl8Mo3G6fvtgvHWd4elWtleO6aSzodAHlL4BUX+FeqxM
-	3pmTad4O5mUAyjiBkr6b3tTfEsH5Um23y/purXaftoQdbv1TQs/bo62iZQ6Ad70dlwt/q4
-	gQ4/0Qp1+3mgnjcJnmbL1LA3O2eb4iY=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-595-qf-0m_8eMNaqrxeX5zuRuw-1; Tue, 07 Apr 2026 07:05:21 -0400
-X-MC-Unique: qf-0m_8eMNaqrxeX5zuRuw-1
-X-Mimecast-MFC-AGG-ID: qf-0m_8eMNaqrxeX5zuRuw_1775559920
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-488c0120047so2665305e9.0
-        for <netdev@vger.kernel.org>; Tue, 07 Apr 2026 04:05:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1775559919; x=1776164719; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=nbK7CgYMpXwezHmMj9q3jIIWcerGUMg8y8tq/mmBKaU=;
-        b=rZcB61Kc8NPGgYbMzb/JYMGXuNdvI5f5gUsLxbyal5GzR7v165QukGPFpNhy0ofZ1E
-         XDx+krKgaeJKQXA/e4Xf5jHfnabAs4abVfIi3+jtvO7sqmMKUSmIIeCDIK3QPLDVvYyT
-         pIaf7RK2m+m83coHckxLAGV22SSJ2XVKw8+gWS29ikT5+XRR9gNZPZ3nmSZj4qLu2v99
-         xoHGXI3podZuvwWKPOIzVurcOMnxeyTZfccZAV3Q0nNxYde7lo967WpRetGZQoDbC3jA
-         zO7N52JlG2tuol+Fnk1Kw6V+Bq5jeUUdYEoeRMgaJQUZCUmlcPA/fO+S+gjCniyd6TwY
-         XHvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775559919; x=1776164719;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nbK7CgYMpXwezHmMj9q3jIIWcerGUMg8y8tq/mmBKaU=;
-        b=W5HJ36DFs4yVRFOgMU1EOePH7tr5YtTjOqjrHFX7w7pQXTuCAB8IrlS7HunYgbC+hu
-         l1crDRghWUwOzcqrzIK2/UQ5FXshJUgL62kJpjgfDECn1r6zOcW+kIDW80o3aXSbel4q
-         PRFxEbbBaCcxVCmbcV2LwqZbYt2Czuizi+NKoC+phVIXwPTjrlGGAUOIap49XqBMFi3e
-         qQ4bcOeZ6J4KgemM/R4RuPzCN1hk93xLHXYZ5+ZyZloqu+7leKhgT5zSIoCPnHHJDjFt
-         WI7ARQvogO3AJjkBWfoZebcmAQF1RKZ89Q+9nXZTbu9ugqIkq5clxa1YH0Bkfxl2QP5H
-         YmbA==
-X-Forwarded-Encrypted: i=1; AJvYcCWjZet1GagwmQ+h38AqRJ9R0lwzmvD+Ddtt0v3c0yUvVTg4iM+mLZkmME5pxJMjCgc1IeZw6ZE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0DwtX/Ft4xvz8u5492joHBfbBnKgI9p+lSLO+Kc93FHHl2Z4Y
-	ffU4uZS1HOUDSjs2heyxEsmNlqWkqcNh91tmn+NCiBiu6yU2+x79kKm3ltdbXTE8mxuJI8eGvus
-	/cQIhlR2D154sHMrN//ZHb/fzDzhd/P1covpLg0nEW92MLdDlGB730W9tvA==
-X-Gm-Gg: AeBDievg9FVn8nrdbm2YPJrugyNEk2CKsCl+aJM5pr80QCWJApho8T6a60YwjTykYue
-	myKAGzlvL7xnfGGDo7cvvYp9vE2v5R5Q7/KYeLcXyjADp8RHM1GbEO2YsXKQnTxEluDyJV4fhyG
-	TncZS2B2NYaDL0WKQ/kLGVUAmfbeJR6zB8nQoLBRvNA2vIt9QiMx64eQrDwGG6/w+wSLj5VDwO1
-	J24wf6uSpG9ihI5TE1hdYGh0EZ+J8AzPoAEbK6oX/g9ZmCRV+lwRVLy0j0oFp7tZc8XB3qkajAV
-	bSANsG+X/0ADlFu0Ebj9yYA03QVzpnuwYY7iy1+dg2DON6Qg1MAaRzRs8z9K495N5AfCRW4XqFj
-	ZnkJXe1WMtZ+2ZdzPzm4Gd5miUHbU772G9pl8RO2PreiTvVd81bl6jES0FA==
-X-Received: by 2002:a05:600c:8207:b0:488:c282:e77e with SMTP id 5b1f17b1804b1-488c282e7ecmr4113895e9.28.1775559919417;
-        Tue, 07 Apr 2026 04:05:19 -0700 (PDT)
-X-Received: by 2002:a05:600c:8207:b0:488:c282:e77e with SMTP id 5b1f17b1804b1-488c282e7ecmr4113325e9.28.1775559918924;
-        Tue, 07 Apr 2026 04:05:18 -0700 (PDT)
-Received: from [192.168.88.32] ([212.105.153.231])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48899d1b19esm165793205e9.6.2026.04.07.04.05.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Apr 2026 04:05:18 -0700 (PDT)
-Message-ID: <5428a986-98f0-425d-858d-5ef766992d0e@redhat.com>
-Date: Tue, 7 Apr 2026 13:05:16 +0200
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="jjfm56ew"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=Yb4/QWDvvR9Od46TSQSvnAlNHKZgJOCDBk2seAi1Gp4=; b=jjfm56ewflFRZpwDUED85HZLa1
+	PBsN2X/GOW06QwzQDHCvIcAER6I8MbDS3FaLIUUZloszZrlB7IQed15zBeIVIp8ihsN8UOE4c/0x5
+	wy5QrtROsB/batNbzzTtGBzCOwcH1aBtmHlOifNoypSVErqPTu/HixEQhS4gLe8mHFt3ShXUV1+FU
+	/nt9eSyeajuBobakKNLpBOQZFBhhMVNv+nlUKcKYLdEMfvLlH51Bsj+QalYSMNnXb6wt3NL7bcYVm
+	u+TzlR3RhUs03ocB2Bf6NUmdXXkqnSfCgAAX7fQg2Pe4PCyyDNumWZiHdhmgOcXnxSq79cOQZRGbv
+	uH0q1eAA==;
+Received: from sslproxy04.your-server.de ([78.46.152.42])
+	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <nora.schiffer@ew.tq-group.com>)
+	id 1wA3z2-0006oy-1Z;
+	Tue, 07 Apr 2026 12:48:36 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy04.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <nora.schiffer@ew.tq-group.com>)
+	id 1wA3z1-0007uJ-1b;
+	Tue, 07 Apr 2026 12:48:35 +0200
+From: Nora Schiffer <nora.schiffer@ew.tq-group.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Nishanth Menon <nm@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Tero Kristo <kristo@kernel.org>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux@ew.tq-group.com,
+	Nora Schiffer <nora.schiffer@ew.tq-group.com>
+Subject: [PATCH net-next v4 2/2] net: ethernet: ti: am65-cpsw: add support for J722S SoC family
+Date: Tue,  7 Apr 2026 12:48:02 +0200
+Message-ID: <6118e81358d47f455e4c1dbddf3ece6f3329e184.1775558273.git.nora.schiffer@ew.tq-group.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <191e9f7e3a6c14eabe891a98c5fb646766479c0a.1775558273.git.nora.schiffer@ew.tq-group.com>
+References: <191e9f7e3a6c14eabe891a98c5fb646766479c0a.1775558273.git.nora.schiffer@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] pppoe: drop PFC frames
-To: qingfang.deng@linux.dev, Simon Horman <horms@kernel.org>
-Cc: linux-ppp@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@ozlabs.org>,
- Jaco Kroon <jaco@uls.co.za>, James Carlson <carlsonj@workingcode.com>,
- Wojciech Drewek <wojciech.drewek@intel.com>,
- Guillaume Nault <gnault@redhat.com>
-References: <20260403083926.68320-1-qingfang.deng@linux.dev>
- <20260406144828.GH395680@kernel.org>
- <e3ada3f0bb0c389d592657b37c462944e633a0d6@linux.dev>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <e3ada3f0bb0c389d592657b37c462944e633a0d6@linux.dev>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: Clear (ClamAV 1.4.3/27964/Tue Apr  7 08:24:40 2026)
 
-On 4/7/26 5:19 AM, qingfang.deng@linux.dev wrote:
-> April 6, 2026 at 10:48 PM, Simon Horman wrote:
->> I think it would be best to add/use a #define rather than
->> open coding the magic value 0x01. And perhaps expanding
->> the comment to note that skb->data[0] is the first byte
->> of the PPP protocol would be nice too.
-> 
-> The field does not have a canonical name. As per RFC1661, the LSB of the 
-> first octet is used to test if the protocol field is compressed, and the 
-> same code snippet is used in ppp_generic.c.
-> 
-> I could instead add a helper function:
-> 
-> static inline bool ppp_skb_is_compressed_proto(const struct sk_buff *skb)
-> {
-> 	return skb->data[0] & 0x01;
-> }
-> 
-> What do you think?
+The J722S CPSW3G is mostly identical to the AM64's, but additionally
+supports SGMII.
 
-The helper LGTM, and could be re-used in ppp_generic.c, too.
+Signed-off-by: Nora Schiffer <nora.schiffer@ew.tq-group.com>
+---
 
-/P
+v2: drop AM64_CPSW_QUIRK_CUT_THRU flag, which is a downstream ti-linux feature
+v3: resubmission for net-next, no changes
+v4: no changes
+
+SGMII operation also requires changes to the phy-j721e-wiz and gmii-sel drivers:
+https://lore.kernel.org/lkml/cover.1775045279.git.nora.schiffer@ew.tq-group.com/
+
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index d9400599e80a4..7ac75fc8cdcf4 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -3468,6 +3468,13 @@ static const struct am65_cpsw_pdata am64x_cpswxg_pdata = {
+ 	.fdqring_mode = K3_RINGACC_RING_MODE_RING,
+ };
+ 
++static const struct am65_cpsw_pdata j722s_cpswxg_pdata = {
++	.quirks = AM64_CPSW_QUIRK_DMA_RX_TDOWN_IRQ,
++	.ale_dev_id = "am64-cpswxg",
++	.fdqring_mode = K3_RINGACC_RING_MODE_RING,
++	.extra_modes = BIT(PHY_INTERFACE_MODE_SGMII),
++};
++
+ static const struct am65_cpsw_pdata j7200_cpswxg_pdata = {
+ 	.quirks = 0,
+ 	.ale_dev_id = "am64-cpswxg",
+@@ -3495,6 +3502,7 @@ static const struct of_device_id am65_cpsw_nuss_of_mtable[] = {
+ 	{ .compatible = "ti,am654-cpsw-nuss", .data = &am65x_sr1_0},
+ 	{ .compatible = "ti,j721e-cpsw-nuss", .data = &j721e_pdata},
+ 	{ .compatible = "ti,am642-cpsw-nuss", .data = &am64x_cpswxg_pdata},
++	{ .compatible = "ti,j722s-cpsw-nuss", .data = &j722s_cpswxg_pdata},
+ 	{ .compatible = "ti,j7200-cpswxg-nuss", .data = &j7200_cpswxg_pdata},
+ 	{ .compatible = "ti,j721e-cpswxg-nuss", .data = &j721e_cpswxg_pdata},
+ 	{ .compatible = "ti,j784s4-cpswxg-nuss", .data = &j784s4_cpswxg_pdata},
+-- 
+TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht München, HRB 105018
+Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
+https://www.tq-group.com/
 
