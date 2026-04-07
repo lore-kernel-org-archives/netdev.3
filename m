@@ -1,30 +1,30 @@
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22CFB3B2FF2
-	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 12:20:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1A13B3BE1
+	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 12:20:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775564414; cv=none; b=bKPNYnFwelkKR8txzMG15y0YCH/YWXYNi/gLRLC4g6oGu386qRbpua8X+wa/tpVXYL5g5e0JzibogndzbN8BeV0TA02PFm/MltWV+zPZZoyUX1ScLqN/C8Iw+YjLMc1ZhGGkk8OQ9FKPh82cpODEfftj3gany0QQ7OSwYolDhFI=
+	t=1775564415; cv=none; b=b5R2cc1gQfqzxCuijAlvpsATc3wp00Ih74Jc/q8pZuNcNdllDDOgQWQqUzOwNe6Np0DFMrqHBHqzxCTaYJ7yLMpaNb+Cb81rpfwXQpEaP3ZosGjbbAfSbD7FXF7hCbqd+hov33eJvyB21P4gSGZ3MT+LQYYN31gv8Bx1QY10vdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775564414; c=relaxed/simple;
-	bh=rrI+OjAjua240XMfNkd92ymDcQ6gammcdJyZHJVlNOo=;
+	s=arc-20240116; t=1775564415; c=relaxed/simple;
+	bh=eezlON0xGDZVP3g7ffiuKgF3Krbqa+hzPz5S4H9gg0o=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TiCqJ0eFQ1Vz03GseO8uTBHJKg/XNPjSremA1Fm+ZSu7ROgeG8G68z1Bjbisxkx7eW054vBEzcadBAj3f1Utxxxdht8ZISn3/Q40b5VREcPP01KAmRZonI9lSE93BrR+vNa891o75v2hDMha3zxTLFdeoaEWEF9/jR+7VaiY8jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=XDLAAvh9; arc=none smtp.client-ip=115.124.30.133
+	 MIME-Version; b=orIZ0lhGWMdBcopiTvWX4Eez1nZU65Ko2g5TdwE0SWtPgI6t+YGjuuNidvVHniMYH9KjBtnef8r+kCKhYZD5lZnMQ0LmOfpj65JYgOyisrSxfkkuVEUv+k1bIvZOhUzN9M30EyyzmvJC2Eb2Eh3X8vW6HJMnqav+GpnltSHu+3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=nLLB0/UC; arc=none smtp.client-ip=115.124.30.118
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="XDLAAvh9"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="nLLB0/UC"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1775564404; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=957TpKRCBxd0eh671iWpFhdgVWoFMikM8iEYLpTzt7c=;
-	b=XDLAAvh9t1dYzgGiabiyMY5q2n72ccxcMGzAjrzMfjoIzmvdv+zJKfs8PAwKjOzge9OctOgkjWGpAo1xD4OyT1ZHbYNe5Wa0SeB5RkpDfgrRixpCPgir3wC2MHigyJpTiOFnzpIe4rHyTwfVNAx6IZUdAKkjzLCohNmn3QDi9ZQ=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R581e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=xuanzhuo@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0X0bp-kU_1775564402;
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0X0bp-kU_1775564402 cluster:ay36)
+	t=1775564410; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=46NOu/tz5hdlvp2eNbveUSb8VYZAdN6xq+1434QMMhY=;
+	b=nLLB0/UCtyggA7c0xjlHu5nZXzxahmxKmm/0B+Ykn6tiVQOtbbyHHchELcle+e2+9zwJ2IWZXObNmVoxV+SORGIi3VTOuBnGCbYf+WnH0ZQrLGJ+L1rgYUhlmjoxGVSqDeo1dhGSJDkunH15val2BYrSldXyO3B+tnZTGlw7vAE=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R981e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=xuanzhuo@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0X0bh6He_1775564407;
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0X0bh6He_1775564407 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Tue, 07 Apr 2026 20:20:03 +0800
+          Tue, 07 Apr 2026 20:20:07 +0800
 From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 To: netdev@vger.kernel.org
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -40,9 +40,9 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	Jes Sorensen <jes@trained-monkey.org>,
 	Heiner Kallweit <hkallweit1@gmail.com>,
 	Dust Li <dust.li@linux.alibaba.com>
-Subject: [PATCH net-next v38 2/8] eea: introduce ring and descriptor structures
-Date: Tue,  7 Apr 2026 20:19:55 +0800
-Message-Id: <20260407122001.22265-3-xuanzhuo@linux.alibaba.com>
+Subject: [PATCH net-next v38 8/8] eea: introduce callback for ndo_get_stats64
+Date: Tue,  7 Apr 2026 20:20:01 +0800
+Message-Id: <20260407122001.22265-9-xuanzhuo@linux.alibaba.com>
 X-Mailer: git-send-email 2.32.0.3.g01195cf9f
 In-Reply-To: <20260407122001.22265-1-xuanzhuo@linux.alibaba.com>
 References: <20260407122001.22265-1-xuanzhuo@linux.alibaba.com>
@@ -55,514 +55,151 @@ MIME-Version: 1.0
 X-Git-Hash: 814f2b4a232c
 Content-Transfer-Encoding: 8bit
 
-Add basic driver framework for the Alibaba Elastic Ethernet Adapter(EEA).
-
-This commit introduces the ring and descriptor implementations.
-
-These structures and ring APIs are used by the RX, TX, and admin queues.
+This commit introduces ndo_get_stats64 support.
 
 Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
 Reviewed-by: Philo Lu <lulie@linux.alibaba.com>
 Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
 Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 ---
- drivers/net/ethernet/alibaba/eea/Makefile   |   3 +-
- drivers/net/ethernet/alibaba/eea/eea_desc.h | 131 +++++++++++
- drivers/net/ethernet/alibaba/eea/eea_ring.c | 243 ++++++++++++++++++++
- drivers/net/ethernet/alibaba/eea/eea_ring.h |  86 +++++++
- 4 files changed, 462 insertions(+), 1 deletion(-)
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_desc.h
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ring.c
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ring.h
+ drivers/net/ethernet/alibaba/eea/eea_net.c | 57 ++++++++++++++++++++++
+ drivers/net/ethernet/alibaba/eea/eea_net.h |  5 ++
+ 2 files changed, 62 insertions(+)
 
-diff --git a/drivers/net/ethernet/alibaba/eea/Makefile b/drivers/net/ethernet/alibaba/eea/Makefile
-index cf2acf1733fd..e5e4007810a6 100644
---- a/drivers/net/ethernet/alibaba/eea/Makefile
-+++ b/drivers/net/ethernet/alibaba/eea/Makefile
-@@ -1,3 +1,4 @@
+diff --git a/drivers/net/ethernet/alibaba/eea/eea_net.c b/drivers/net/ethernet/alibaba/eea/eea_net.c
+index bc319c4c2983..3585b5e74805 100644
+--- a/drivers/net/ethernet/alibaba/eea/eea_net.c
++++ b/drivers/net/ethernet/alibaba/eea/eea_net.c
+@@ -113,6 +113,8 @@ static void eea_bind_q_and_cfg(struct eea_net *enet,
+ 	struct eea_net_tx *tx;
+ 	int i;
  
- obj-$(CONFIG_EEA) += eea.o
--eea-y := eea_pci.o
-+eea-y :=  eea_ring.o \
-+	eea_pci.o
-diff --git a/drivers/net/ethernet/alibaba/eea/eea_desc.h b/drivers/net/ethernet/alibaba/eea/eea_desc.h
-new file mode 100644
-index 000000000000..4ce1e57c906b
---- /dev/null
-+++ b/drivers/net/ethernet/alibaba/eea/eea_desc.h
-@@ -0,0 +1,131 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * Driver for Alibaba Elastic Ethernet Adapter.
-+ *
-+ * Copyright (C) 2025 Alibaba Inc.
-+ */
++	spin_lock(&enet->stats_lock);
 +
-+#ifndef __EEA_DESC_H__
-+#define __EEA_DESC_H__
+ 	enet->cfg = ctx->cfg;
+ 	enet->rx = ctx->rx;
+ 	enet->tx = ctx->tx;
+@@ -132,6 +134,8 @@ static void eea_bind_q_and_cfg(struct eea_net *enet,
+ 
+ 		blk->rx = rx;
+ 	}
 +
-+#define EEA_DESC_TS_MASK GENMASK_ULL(47, 0)
-+#define EEA_DESC_TS(desc) (le64_to_cpu((desc)->ts) & EEA_DESC_TS_MASK)
++	spin_unlock(&enet->stats_lock);
+ }
+ 
+ static void eea_unbind_q_and_cfg(struct eea_net *enet,
+@@ -141,6 +145,8 @@ static void eea_unbind_q_and_cfg(struct eea_net *enet,
+ 	struct eea_net_rx *rx;
+ 	int i;
+ 
++	spin_lock(&enet->stats_lock);
 +
-+struct eea_aq_desc {
-+	__le16 flags;
-+	__le16 id;
-+	__le16 reserved;
-+	u8 classid;
-+	u8 command;
-+	__le64 data_addr;
-+	__le64 reply_addr;
-+	__le32 data_len;
-+	__le32 reply_len;
-+};
+ 	ctx->cfg = enet->cfg;
+ 	ctx->rx = enet->rx;
+ 	ctx->tx = enet->tx;
+@@ -157,6 +163,8 @@ static void eea_unbind_q_and_cfg(struct eea_net *enet,
+ 
+ 		blk->rx = NULL;
+ 	}
 +
-+struct eea_aq_cdesc {
-+	__le16 flags;
-+	__le16 id;
-+#define EEA_OK     0
-+#define EEA_ERR    0xffffffff
-+	__le32 status;
-+	__le32 reply_len;
-+	__le32 reserved1;
++	spin_unlock(&enet->stats_lock);
+ }
+ 
+ static void eea_free_rxtx_q_mem(struct eea_net_init_ctx *ctx)
+@@ -342,6 +350,50 @@ static int eea_netdev_open(struct net_device *netdev)
+ 	return err;
+ }
+ 
++static void eea_stats(struct net_device *netdev, struct rtnl_link_stats64 *tot)
++{
++	struct eea_net *enet = netdev_priv(netdev);
++	u64 packets, bytes;
++	u32 start;
++	int i;
 +
-+	__le64 reserved2;
-+	__le64 reserved3;
-+};
++	spin_lock(&enet->stats_lock);
 +
-+struct eea_rx_desc {
-+	__le16 flags;
-+	__le16 id;
-+	__le16 len;
-+	__le16 reserved1;
++	if (enet->rx) {
++		for (i = 0; i < enet->cfg.rx_ring_num; i++) {
++			struct eea_net_rx *rx = enet->rx[i];
 +
-+	__le64 addr;
++			do {
++				start = u64_stats_fetch_begin(&rx->stats.syncp);
++				packets = u64_stats_read(&rx->stats.packets);
++				bytes = u64_stats_read(&rx->stats.bytes);
++			} while (u64_stats_fetch_retry(&rx->stats.syncp,
++						       start));
 +
-+	__le64 hdr_addr;
-+	__le32 reserved2;
-+	__le32 reserved3;
-+};
++			tot->rx_packets += packets;
++			tot->rx_bytes   += bytes;
++		}
++	}
 +
-+#define EEA_RX_CDESC_HDR_LEN_MASK GENMASK_ULL(9, 0)
++	if (enet->tx) {
++		for (i = 0; i < enet->cfg.tx_ring_num; i++) {
++			struct eea_net_tx *tx = &enet->tx[i];
 +
-+struct eea_rx_cdesc {
-+#define EEA_DESC_F_DATA_VALID	BIT(6)
-+#define EEA_DESC_F_SPLIT_HDR	BIT(5)
-+	__le16 flags;
-+	__le16 id;
-+	__le16 len;
-+#define EEA_NET_PT_NONE      0
-+#define EEA_NET_PT_IPv4      1
-+#define EEA_NET_PT_TCPv4     2
-+#define EEA_NET_PT_UDPv4     3
-+#define EEA_NET_PT_IPv6      4
-+#define EEA_NET_PT_TCPv6     5
-+#define EEA_NET_PT_UDPv6     6
-+#define EEA_NET_PT_IPv6_EX   7
-+#define EEA_NET_PT_TCPv6_EX  8
-+#define EEA_NET_PT_UDPv6_EX  9
-+	/* [9:0] is packet type. */
-+	__le16 type;
++			do {
++				start = u64_stats_fetch_begin(&tx->stats.syncp);
++				packets = u64_stats_read(&tx->stats.packets);
++				bytes = u64_stats_read(&tx->stats.bytes);
++			} while (u64_stats_fetch_retry(&tx->stats.syncp,
++						       start));
 +
-+	/* hw timestamp [0:47]: ts */
-+	__le64 ts;
++			tot->tx_packets += packets;
++			tot->tx_bytes   += bytes;
++		}
++	}
 +
-+	__le32 hash;
++	spin_unlock(&enet->stats_lock);
++}
 +
-+	/* 0-9: hdr_len  split header
-+	 * 10-15: reserved1
+ /* resources: ring, buffers, irq */
+ int eea_reset_hw_resources(struct eea_net *enet, struct eea_net_init_ctx *ctx)
+ {
+@@ -349,7 +401,9 @@ int eea_reset_hw_resources(struct eea_net *enet, struct eea_net_init_ctx *ctx)
+ 	int err, error;
+ 
+ 	if (!netif_running(enet->netdev) || !enet->started) {
++		spin_lock(&enet->stats_lock);
+ 		enet->cfg = ctx->cfg;
++		spin_unlock(&enet->stats_lock);
+ 		return 0;
+ 	}
+ 
+@@ -597,6 +651,7 @@ static const struct net_device_ops eea_netdev = {
+ 	.ndo_stop           = eea_netdev_stop,
+ 	.ndo_start_xmit     = eea_tx_xmit,
+ 	.ndo_validate_addr  = eth_validate_addr,
++	.ndo_get_stats64    = eea_stats,
+ 	.ndo_features_check = passthru_features_check,
+ };
+ 
+@@ -630,6 +685,8 @@ static struct eea_net *eea_netdev_alloc(struct eea_device *edev, u32 pairs)
+ 		return NULL;
+ 	}
+ 
++	spin_lock_init(&enet->stats_lock);
++
+ 	return enet;
+ }
+ 
+diff --git a/drivers/net/ethernet/alibaba/eea/eea_net.h b/drivers/net/ethernet/alibaba/eea/eea_net.h
+index 84d26df79e59..9bf05088e87c 100644
+--- a/drivers/net/ethernet/alibaba/eea/eea_net.h
++++ b/drivers/net/ethernet/alibaba/eea/eea_net.h
+@@ -163,6 +163,11 @@ struct eea_net {
+ 	u32 speed;
+ 
+ 	u64 hw_ts_offset;
++
++	/* Protect the tx and rx of struct eea_net, when eea_stats accesses the
++	 * stats from rx and tx queues.
 +	 */
-+	__le16 len_ex;
-+	__le16 reserved2;
-+
-+	__le32 reserved3;
-+	__le32 reserved4;
-+};
-+
-+#define EEA_TX_GSO_NONE   0
-+#define EEA_TX_GSO_TCPV4  1
-+#define EEA_TX_GSO_TCPV6  4
-+#define EEA_TX_GSO_UDP_L4 5
-+#define EEA_TX_GSO_ECN    0x80
-+
-+struct eea_tx_desc {
-+#define EEA_DESC_F_DO_CSUM	BIT(6)
-+	__le16 flags;
-+	__le16 id;
-+	__le16 len;
-+	__le16 reserved1;
-+
-+	__le64 addr;
-+
-+	__le16 csum_start;
-+	__le16 csum_offset;
-+	u8 gso_type;
-+	u8 reserved2;
-+	__le16 gso_size;
-+	__le64 reserved3;
-+};
-+
-+struct eea_tx_cdesc {
-+	__le16 flags;
-+	__le16 id;
-+	__le16 len;
-+	__le16 reserved1;
-+
-+	/* hw timestamp [0:47]: ts */
-+	__le64 ts;
-+	__le64 reserved2;
-+	__le64 reserved3;
-+};
-+
-+#define EEA_DB_FLAGS_OFF      0
-+#define EEA_DB_IDX_OFF        (2 * 8)
-+#define EEA_DB_TX_CQ_HEAD_OFF (4 * 8)
-+#define EEA_DB_RX_CQ_HEAD_OFF (6 * 8)
-+
-+#define EEA_IDX_PRESENT   BIT(0)
-+#define EEA_IRQ_MASK      BIT(1)
-+#define EEA_IRQ_UNMASK    BIT(2)
-+#endif
-diff --git a/drivers/net/ethernet/alibaba/eea/eea_ring.c b/drivers/net/ethernet/alibaba/eea/eea_ring.c
-new file mode 100644
-index 000000000000..b5003924264c
---- /dev/null
-+++ b/drivers/net/ethernet/alibaba/eea/eea_ring.c
-@@ -0,0 +1,243 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Driver for Alibaba Elastic Ethernet Adapter.
-+ *
-+ * Copyright (C) 2025 Alibaba Inc.
-+ */
-+
-+#include "eea_pci.h"
-+#include "eea_ring.h"
-+
-+void ering_irq_active(struct eea_ring *ering, struct eea_ring *tx_ering)
-+{
-+	u64 value = 0, rx_idx, tx_idx;
-+
-+	tx_idx = (u64)tx_ering->cq.hw_idx;
-+	rx_idx = (u64)ering->cq.hw_idx;
-+
-+	value |= EEA_IRQ_UNMASK << EEA_DB_FLAGS_OFF;
-+	value |= tx_idx << EEA_DB_TX_CQ_HEAD_OFF;
-+	value |= rx_idx << EEA_DB_RX_CQ_HEAD_OFF;
-+
-+	writeq(value, (void __iomem *)ering->db);
-+}
-+
-+void *ering_cq_get_desc(const struct eea_ring *ering)
-+{
-+	u8 phase;
-+	u8 *desc;
-+
-+	desc = ering->cq.desc + (ering->cq.head << ering->cq.desc_size_shift);
-+
-+	phase = READ_ONCE(*(u8 *)(desc + ering->cq.desc_size - 1));
-+
-+	if ((phase & EEA_RING_DESC_F_CQ_PHASE) == ering->cq.phase) {
-+		dma_rmb();
-+		return desc;
-+	}
-+
-+	return NULL;
-+}
-+
-+/* sq api */
-+void *ering_sq_alloc_desc(struct eea_ring *ering, u16 id, bool is_last,
-+			  u16 flags)
-+{
-+	struct eea_ring_sq *sq = &ering->sq;
-+	struct eea_common_desc *desc;
-+
-+	if (!sq->shadow_num) {
-+		sq->shadow_idx = sq->head;
-+		sq->shadow_id = cpu_to_le16(id);
-+	}
-+
-+	if (!is_last)
-+		flags |= EEA_RING_DESC_F_MORE;
-+
-+	desc = sq->desc + (sq->shadow_idx << sq->desc_size_shift);
-+
-+	desc->flags = cpu_to_le16(flags);
-+	desc->id = sq->shadow_id;
-+
-+	if (unlikely(++sq->shadow_idx >= ering->num))
-+		sq->shadow_idx = 0;
-+
-+	++sq->shadow_num;
-+
-+	return desc;
-+}
-+
-+/* This is an allocation API for admin Q. For each call to admin Q, only one
-+ * desc will be allocated.
-+ */
-+void *ering_aq_alloc_desc(struct eea_ring *ering)
-+{
-+	struct eea_ring_sq *sq = &ering->sq;
-+	struct eea_common_desc *desc;
-+
-+	sq->shadow_idx = sq->head;
-+
-+	desc = sq->desc + (sq->shadow_idx << sq->desc_size_shift);
-+
-+	if (unlikely(++sq->shadow_idx >= ering->num))
-+		sq->shadow_idx = 0;
-+
-+	++sq->shadow_num;
-+
-+	return desc;
-+}
-+
-+void ering_sq_commit_desc(struct eea_ring *ering)
-+{
-+	struct eea_ring_sq *sq = &ering->sq;
-+	int num;
-+
-+	num = sq->shadow_num;
-+
-+	ering->num_free -= num;
-+
-+	sq->head       = sq->shadow_idx;
-+	sq->hw_idx     += num;
-+	sq->shadow_num = 0;
-+}
-+
-+void ering_sq_cancel(struct eea_ring *ering)
-+{
-+	ering->sq.shadow_num = 0;
-+}
-+
-+/* cq api */
-+void ering_cq_ack_desc(struct eea_ring *ering, u32 num)
-+{
-+	struct eea_ring_cq *cq = &ering->cq;
-+
-+	cq->head += num;
-+	cq->hw_idx += num;
-+
-+	if (unlikely(cq->head >= ering->num)) {
-+		cq->head -= ering->num;
-+		cq->phase ^= EEA_RING_DESC_F_CQ_PHASE;
-+	}
-+
-+	ering->num_free += num;
-+}
-+
-+/* notify */
-+bool ering_kick(struct eea_ring *ering)
-+{
-+	u64 value = 0, idx;
-+
-+	idx = (u64)ering->sq.hw_idx;
-+
-+	value |= EEA_IDX_PRESENT << EEA_DB_FLAGS_OFF;
-+	value |= idx << EEA_DB_IDX_OFF;
-+
-+	writeq(value, (void __iomem *)ering->db);
-+
-+	return true;
-+}
-+
-+/* ering alloc/free */
-+static void ering_free_queue(struct eea_device *edev, size_t size,
-+			     void *queue, dma_addr_t dma_handle)
-+{
-+	dma_free_coherent(edev->dma_dev, size, queue, dma_handle);
-+}
-+
-+static void *ering_alloc_queue(struct eea_device *edev, size_t size,
-+			       dma_addr_t *dma_handle)
-+{
-+	gfp_t flags = GFP_KERNEL | __GFP_NOWARN;
-+
-+	return dma_alloc_coherent(edev->dma_dev, size, dma_handle, flags);
-+}
-+
-+static int ering_alloc_queues(struct eea_ring *ering, struct eea_device *edev,
-+			      size_t num, u8 sq_desc_size, u8 cq_desc_size)
-+{
-+	dma_addr_t addr;
-+	size_t size;
-+	void *ring;
-+
-+	size = num * sq_desc_size;
-+
-+	ring = ering_alloc_queue(edev, size, &addr);
-+	if (!ring)
-+		return -ENOMEM;
-+
-+	ering->sq.desc     = ring;
-+	ering->sq.dma_addr = addr;
-+	ering->sq.dma_size = size;
-+	ering->sq.desc_size = sq_desc_size;
-+	ering->sq.desc_size_shift = fls(sq_desc_size) - 1;
-+
-+	size = num * cq_desc_size;
-+
-+	ring = ering_alloc_queue(edev, size, &addr);
-+	if (!ring)
-+		goto err_free_sq;
-+
-+	ering->cq.desc     = ring;
-+	ering->cq.dma_addr = addr;
-+	ering->cq.dma_size = size;
-+	ering->cq.desc_size = cq_desc_size;
-+	ering->cq.desc_size_shift = fls(cq_desc_size) - 1;
-+
-+	ering->num = num;
-+
-+	return 0;
-+
-+err_free_sq:
-+	ering_free_queue(ering->edev, ering->sq.dma_size,
-+			 ering->sq.desc, ering->sq.dma_addr);
-+	return -ENOMEM;
-+}
-+
-+static void ering_init(struct eea_ring *ering)
-+{
-+	ering->cq.phase = EEA_RING_DESC_F_CQ_PHASE;
-+	ering->num_free = ering->num;
-+}
-+
-+struct eea_ring *ering_alloc(u32 index, u32 num, struct eea_device *edev,
-+			     u8 sq_desc_size, u8 cq_desc_size,
-+			     const char *name)
-+{
-+	struct eea_ring *ering;
-+
-+	if (!sq_desc_size || !is_power_of_2(sq_desc_size))
-+		return NULL;
-+
-+	if (!cq_desc_size || !is_power_of_2(cq_desc_size))
-+		return NULL;
-+
-+	ering = kzalloc(sizeof(*ering), GFP_KERNEL);
-+	if (!ering)
-+		return NULL;
-+
-+	ering->edev = edev;
-+	ering->name = name;
-+	ering->index = index;
-+
-+	if (ering_alloc_queues(ering, edev, num, sq_desc_size, cq_desc_size))
-+		goto err_free;
-+
-+	ering_init(ering);
-+
-+	return ering;
-+
-+err_free:
-+	kfree(ering);
-+	return NULL;
-+}
-+
-+void ering_free(struct eea_ring *ering)
-+{
-+	ering_free_queue(ering->edev, ering->cq.dma_size,
-+			 ering->cq.desc, ering->cq.dma_addr);
-+
-+	ering_free_queue(ering->edev, ering->sq.dma_size,
-+			 ering->sq.desc, ering->sq.dma_addr);
-+
-+	kfree(ering);
-+}
-diff --git a/drivers/net/ethernet/alibaba/eea/eea_ring.h b/drivers/net/ethernet/alibaba/eea/eea_ring.h
-new file mode 100644
-index 000000000000..8e4ba3032699
---- /dev/null
-+++ b/drivers/net/ethernet/alibaba/eea/eea_ring.h
-@@ -0,0 +1,86 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * Driver for Alibaba Elastic Ethernet Adapter.
-+ *
-+ * Copyright (C) 2025 Alibaba Inc.
-+ */
-+
-+#ifndef __EEA_RING_H__
-+#define __EEA_RING_H__
-+
-+#include <linux/dma-mapping.h>
-+#include "eea_desc.h"
-+
-+#define EEA_RING_DESC_F_MORE		BIT(0)
-+#define EEA_RING_DESC_F_CQ_PHASE	BIT(7)
-+
-+struct eea_common_desc {
-+	__le16 flags;
-+	__le16 id;
-+};
-+
-+struct eea_device;
-+
-+struct eea_ring_sq {
-+	void *desc;
-+
-+	u16 head;
-+	u16 hw_idx;
-+
-+	u16 shadow_idx;
-+	__le16 shadow_id;
-+	u16 shadow_num;
-+
-+	u8 desc_size;
-+	u8 desc_size_shift;
-+
-+	dma_addr_t dma_addr;
-+	u32 dma_size;
-+};
-+
-+struct eea_ring_cq {
-+	void *desc;
-+
-+	u16 head;
-+	u16 hw_idx;
-+
-+	u8 phase;
-+	u8 desc_size_shift;
-+	u8 desc_size;
-+
-+	dma_addr_t dma_addr;
-+	u32 dma_size;
-+};
-+
-+struct eea_ring {
-+	const char *name;
-+	struct eea_device *edev;
-+	u32 index;
-+	void __iomem *db;
-+	u16 msix_vec;
-+
-+	u32 num;
-+
-+	u32 num_free;
-+
-+	struct eea_ring_sq sq;
-+	struct eea_ring_cq cq;
-+};
-+
-+struct eea_ring *ering_alloc(u32 index, u32 num, struct eea_device *edev,
-+			     u8 sq_desc_size, u8 cq_desc_size,
-+			     const char *name);
-+void ering_free(struct eea_ring *ering);
-+bool ering_kick(struct eea_ring *ering);
-+
-+void *ering_sq_alloc_desc(struct eea_ring *ering, u16 id,
-+			  bool is_last, u16 flags);
-+void *ering_aq_alloc_desc(struct eea_ring *ering);
-+void ering_sq_commit_desc(struct eea_ring *ering);
-+void ering_sq_cancel(struct eea_ring *ering);
-+
-+void ering_cq_ack_desc(struct eea_ring *ering, u32 num);
-+
-+void ering_irq_active(struct eea_ring *ering, struct eea_ring *tx_ering);
-+void *ering_cq_get_desc(const struct eea_ring *ering);
-+#endif
++	spinlock_t stats_lock;
+ };
+ 
+ int eea_net_probe(struct eea_device *edev);
 -- 
 2.32.0.3.g01195cf9f
 
