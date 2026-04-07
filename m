@@ -1,82 +1,72 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6A7EED8;
-	Tue,  7 Apr 2026 02:05:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82BCC1DE8BE;
+	Tue,  7 Apr 2026 02:06:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775527502; cv=none; b=fYo86cN88LtP6uDgHGdergqvyMn5tsPJBcThRQwwQ27+qQADtbO6jQFBH310BC6qoRiKSk0pHig7hN2Bfbqgj9zvZ/UlEgW1wvfcbQ4jKUSsMbnaqmB2AJr2xv3RnwunscSya+ksajN78DVmp5DSIhwS9MrwrlXwhDYGVd1/7V8=
+	t=1775527587; cv=none; b=dvFdiB0lmLK4p+mGfN2iPNMfwC/Q9N+gXm9bUoL88cAwmRxjooRaRN2vWUNoUTPxgN4QjA5nC8hkx+U9X6w6MkrQfSRqOPgpreYaCqJE+dEwm8luMZ2WZHOHTtWyjNdWAsZEYXilw6m0cFKOQiSsBlza4Ulzq53tyxR5JBpP63Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775527502; c=relaxed/simple;
-	bh=QAbPk6VWnQg1ID0bqbSVaZJqWzuhr7oU3u8vHAFVY3c=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A4TuzMB5xbBjkYUt9lpPbt9LNHuHXd1gWymTHprQg4FaNLMRRa6VOgeMMv+uNYZb1OkYJXQ2DAcOC+O0z889cIRelKNdYJAAlry/SCett5wbsqa8P59H2A3VmCe/wZnby1ufih2VOqZq6g10Tx+yGt7GocmIgUwpMl9ob+uFxDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V5bqUeVK; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V5bqUeVK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A9A5C4CEF7;
-	Tue,  7 Apr 2026 02:05:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775527502;
-	bh=QAbPk6VWnQg1ID0bqbSVaZJqWzuhr7oU3u8vHAFVY3c=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=V5bqUeVK7FEQTESf6if9UYiMQOfsqbgiDnPbwEKGzpMZztP8UvkT0gfb0tloi4KcB
-	 7nC1HYLzApKHl+RGixxl+vnK0N1fhxt+sF4aVRh6/ViApMBp5hs3KopqPRn+epXKoL
-	 zIAEONunhGo8J2YGpkZos6Ea1be0bTqcXNLpL7QdYssWc/C/FnGs0DZR2E+GPyF090
-	 cvv60+P/p2RHJHRe9hiLJwrkDzNAgfbN66bPhUDtOH+ojF2fQFwggEunHxCpJ5cwpS
-	 Sa6nEtUXsAYXym3O7zFCJH2aOTm2zxDrSpQ124xkuPcOfDJd1lw7XTATws4j5eYmtv
-	 aZkjZVOMMeKYw==
-Date: Mon, 6 Apr 2026 19:05:00 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: "Arnd Bergmann" <arnd@arndb.de>
-Cc: "Simon Horman" <horms@kernel.org>, "Ilias Apalodimas"
- <ilias.apalodimas@linaro.org>, "Arnd Bergmann" <arnd@kernel.org>, Netdev
- <netdev@vger.kernel.org>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S .
- Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Paolo
- Abeni" <pabeni@redhat.com>, "Grygorii Strashko" <grygorii.strashko@ti.com>,
- "Murali Karicheri" <m-karicheri2@ti.com>, "Siddharth Vadapalli"
- <s-vadapalli@ti.com>, "Roger Quadros" <rogerq@kernel.org>, "Vladimir
- Oltean" <vladimir.oltean@nxp.com>, "Alexander Sverdlin"
- <alexander.sverdlin@gmail.com>, "Ioana Ciornei" <ioana.ciornei@nxp.com>,
- Linux-OMAP <linux-omap@vger.kernel.org>, "Kevin Hao" <haokexin@gmail.com>,
- "Daniel Zahka" <daniel.zahka@gmail.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] [v4, net-next] net: ethernet: ti-cpsw:: rename
- soft_reset() function
-Message-ID: <20260406190500.21c4ec2d@kernel.org>
-In-Reply-To: <64384fd1-edb3-4c7a-9ba8-56385a303d35@app.fastmail.com>
-References: <20260402184726.3746487-1-arnd@kernel.org>
-	<CAC_iWj+vjZ0WnKUuqeFfaPeSoj5ovxZiEmUD5R8hPsRfkqMihQ@mail.gmail.com>
-	<4498f664-15ca-4859-a050-a593f124105f@app.fastmail.com>
-	<20260404091100.GT113102@horms.kernel.org>
-	<64384fd1-edb3-4c7a-9ba8-56385a303d35@app.fastmail.com>
+	s=arc-20240116; t=1775527587; c=relaxed/simple;
+	bh=+f2UOPImH35g4Dc44A84oU2dmZHo2HxTfwAD8Wjygko=;
+	h=From:Date:Message-ID:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=b6Mnecg3JR3w9xpA1AqJKWRC/5ahlVxyv6RV97usj6e9yGKpj/6SuZ5Jx+mcCGTMUBmMwPNxPKIet3/DRvgVxhesG8Xp2Wx/Spqg8+cqUfbAXm262vCQcG2g9EOIacFGVoPj5FgPbckWQ28oEauqeRX+RUrmOxUdVUeQWRrDyg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from 0004-nfc-sensf-reply.eml (unknown [111.196.245.197])
+	by APP-01 (Coremail) with SMTP id qwCowACnT2uRZtRpHZx2DA--.46852S2;
+	Tue, 07 Apr 2026 10:06:09 +0800 (CST)
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Date: Tue, 7 Apr 2026 11:30:03 +0800
+Message-ID: <20260407113003.4-nfc-sensf-reply-pengpeng@iscas.ac.cn>
+To: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org, pengpeng@iscas.ac.cn
+Subject: Re: [PATCH] net/nfc: bound SENSF response copy length
+In-Reply-To: <20260322031922.57949-1-pengpeng@iscas.ac.cn>
+References: <20260322031922.57949-1-pengpeng@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowACnT2uRZtRpHZx2DA--.46852S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7JrW5JFy8JFW7Xw4kKFy5twb_yoWxZwc_Za
+	yvywnrK3WDuFs8Aa1xCan5KrZ7ArsruF97GFW0qrn7WryjyF15C3Z3t3savr1kX34jqrZ8
+	Cr1kG3Z5CryqgjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbckFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
+	Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWUtVW8
+	ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r
+	1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij
+	64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr
+	0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF
+	0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUpwZcUUUUU=
+X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
 
-On Sun, 05 Apr 2026 21:31:28 +0200 Arnd Bergmann wrote:
-> On Sat, Apr 4, 2026, at 11:11, Simon Horman wrote:
-> > On Thu, Apr 02, 2026 at 09:16:29PM +0200, Arnd Bergmann wrote:  
-> >> On Thu, Apr 2, 2026, at 21:13, Ilias Apalodimas wrote:
-> >> 
-> >> Before the c5013ac1dd0e1 commit, this was a 'static inline' function,
-> >> which is allowed to clash with other identifiers. Making it a global
-> >> symbol during the move was a problem.  
-> >
-> > If we are going to treat this as a fix then probably it should be separated
-> > from the rest of the patchset and routed via net. With the rump patchset
-> > re-submitted to net-next once dependencies are in place.  
-> 
-> I'll drop patch 1 then and send the other two when I get the next
-> regression with duplicate objects in a couple of releases. I'm
-> travelling at the moment and won't have time to rebase and test
-> before the merge window.
-> 
-> It's no longer urgent since both cpsw and dpaa2 have been broken for
-> years now since I first reported the regression.
+Hi Simon,
 
-Seems borderline, let me take it via net-next without the Fixes tag.
+Thanks, you're right about the net targeting, the NFC: digital:
+prefix, and the missing Fixes tag.
+
+You are also right that a valid full SENSF_RES can be 19 bytes long.
+So instead of rejecting resp->len > NFC_SENSF_RES_MAXSIZE, v2 only
+rejects payloads larger than struct digital_sensf_res, then clamps the
+copy into the 18-byte sensf_res buffer inside struct nfc_target.
+
+That keeps valid 19-byte responses working while still fixing the stack
+overwrite in the target copy path. The lower-bound check remains on the
+pre-skb_pull() frame length, and v2 only adds the post-pull upper bound
+before treating the payload as struct digital_sensf_res.
+
+Thanks,
+Pengpeng
+
+
