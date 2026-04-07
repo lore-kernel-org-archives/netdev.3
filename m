@@ -1,62 +1,35 @@
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCFDD350D7D
-	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 02:28:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B5E34F497;
+	Tue,  7 Apr 2026 02:30:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775528908; cv=none; b=S6IxSJP02e0fszZDhJklFkTqiqXDnaEt8t92aMB9ydSx3hGUIGJ7YHb3VPtUx4JMG38JJc16Yo8F7nK5u0EpDmifxEFkpdEn/LJymiN6JMgYLS2CsrITC9HZgZEopse/frnyoCuUSbL9wOG25r5AK9LYcUxuQzn0pzY9Lng4L5Y=
+	t=1775529027; cv=none; b=gwu2K/M5PsLgeIyN2lIccKlXHxCzxVE53gVpXLuDNS8GNi/n8RACgbgBG5Wf+FlfE21Mo6CdYotml2vpWAICqKWyEOXLFeJPOyT3f62QD3VSb7iWUHf7NxxiiHpubyvPsTj0UmnUaC9SEEFaHqQmY1VG71/SPhr5G/mh4Sj1doQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775528908; c=relaxed/simple;
-	bh=4DLr8fmQA7w/BSu3doLzsfLae70vyzknOfPGkamv3p8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WcoeIC3zlF+w+SliiUm1PU9GQtj5s6SVxoRr+jCEnfbeZpEqnSwwg4qJqnVDdHxZYiB2uv36FXFZ8shWg4tXOGgtj3iTBGCo2RxN8yzXrPUmOAFeqc5JWJlRGnXpp07zsQx14ofdJoiOeFiAdaj6u54Npz/KxJVNT/0DA1OsxPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=EQTGaOyq; arc=none smtp.client-ip=91.218.175.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1775529027; c=relaxed/simple;
+	bh=mZ3uY486A1qHU8NVBKPstw2sALiJlVUGNsNBRlP6Usk=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=qL7hMX8BjPvG+U3qt9UmPoe8uT6pwe7xdCYxYZeVUr0CU/YzAyZQxTRdfrFVgf80Vpa8HL3Naymky7SJjbm4TUGwMOikV0QkaJF+gUVO/LMcIMX2hhEcOemXYOWurbZ3xPqbEP0o26JxA51Tlf/iECvnw4pG9No4BzL3eJk08YU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oyB9y6I1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="EQTGaOyq"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775528903;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/UCL1UTPbeTkxlCFboHUyYHOG6gkIs2lk0DovDddN4g=;
-	b=EQTGaOyqBEf+7c42TUTyU/TlGKvJFkMSr2/PR6tYezKeaL4fN5BI4N82f2srRn1IVYCYz6
-	y+leKHq6BIiJUkeVNBmmvje0i23c4gXE0X8CjKroj6EsMfryxdol3hQHqDKapDXXMcXuEY
-	99rbNaopjQmikkq2+9p1Uq39EmAxz5s=
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: bpf@vger.kernel.org
-Cc: werner@verivus.ai,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Sun Jian <sun.jian.kdev@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH bpf v3 2/2] selftests/bpf: Add tests for sock_ops ctx access with same src/dst register
-Date: Tue,  7 Apr 2026 10:26:28 +0800
-Message-ID: <20260407022720.162151-3-jiayuan.chen@linux.dev>
-In-Reply-To: <20260407022720.162151-1-jiayuan.chen@linux.dev>
-References: <20260407022720.162151-1-jiayuan.chen@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oyB9y6I1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 347F4C4CEF7;
+	Tue,  7 Apr 2026 02:30:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775529027;
+	bh=mZ3uY486A1qHU8NVBKPstw2sALiJlVUGNsNBRlP6Usk=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=oyB9y6I1L4XASOJNLu4lqmAwO/TIwqvKhllNeV6NgLL1P5EmZT+VbzAv1gO1QaQym
+	 iLCQHndfK6Xs4OYHT7qGcrMcoUKNSVEaSKcomMvnrNSOa0bLtJcuJlfP83OPUOY5Ih
+	 qXq3XsHUha8l0c7tTsz9YiM1xpEuB/sA420U6Pap+ECXOEi9smCpBZWRR4IdA1pKJT
+	 EKRqE5FeiWMyXtnu8KMYDFu5TQ0rfSOoaXgRTXiTUTfvAfUvN+cUCesBS0rfonP7vY
+	 r6opEP99DtAafedUhW8R37QC/G3xk4y/OitadWRJN+YbdDGW+uBekbclA3G/AjwTUh
+	 Q+bPYuAp5IB5Q==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9E723809A28;
+	Tue,  7 Apr 2026 02:30:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,235 +37,46 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Subject: Re: [PATCH net-next] net/mlx5: Update the list of the PCI supported
+ devices
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177552900555.3349888.9239225042307354768.git-patchwork-notify@kernel.org>
+Date: Tue, 07 Apr 2026 02:30:05 +0000
+References: <20260403091756.139583-1-tariqt@nvidia.com>
+In-Reply-To: <20260403091756.139583-1-tariqt@nvidia.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, saeedm@nvidia.com,
+ leon@kernel.org, mbloch@nvidia.com, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org, gal@nvidia.com,
+ michaelgur@nvidia.com, stable@vger.kernel.org, phaddad@nvidia.com
 
-Add selftests to verify SOCK_OPS_GET_SK() and SOCK_OPS_GET_FIELD() correctly
-return NULL/zero when dst_reg == src_reg and is_fullsock == 0.
+Hello:
 
-Three subtests are included:
- - get_sk: ctx->sk with same src/dst register (SOCK_OPS_GET_SK)
- - get_field: ctx->snd_cwnd with same src/dst register (SOCK_OPS_GET_FIELD)
- - get_sk_diff_reg: ctx->sk with different src/dst register (baseline)
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Each BPF program uses inline asm (__naked) to force specific register
-allocation, reads is_fullsock first, then loads the field using the same
-(or different) register. The test triggers TCP_NEW_SYN_RECV via a TCP
-handshake and checks that the result is NULL/zero when is_fullsock == 0.
+On Fri, 3 Apr 2026 12:17:56 +0300 you wrote:
+> From: Michael Guralnik <michaelgur@nvidia.com>
+> 
+> Add the upcoming ConnectX-10 NVLink-C2C device ID to the table of
+> supported PCI device IDs.
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
+> Reviewed-by: Patrisious Haddad <phaddad@nvidia.com>
+> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+> 
+> [...]
 
-Reviewed-by: Sun Jian <sun.jian.kdev@gmail.com>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
----
- .../bpf/prog_tests/sock_ops_get_sk.c          |  76 ++++++++++++
- .../selftests/bpf/progs/sock_ops_get_sk.c     | 117 ++++++++++++++++++
- 2 files changed, 193 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/sock_ops_get_sk.c
- create mode 100644 tools/testing/selftests/bpf/progs/sock_ops_get_sk.c
+Here is the summary with links:
+  - [net-next] net/mlx5: Update the list of the PCI supported devices
+    https://git.kernel.org/netdev/net/c/a9d4f4f6e65e
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/sock_ops_get_sk.c b/tools/testing/selftests/bpf/prog_tests/sock_ops_get_sk.c
-new file mode 100644
-index 0000000000000..343d92c4df30d
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/sock_ops_get_sk.c
-@@ -0,0 +1,76 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <test_progs.h>
-+#include "cgroup_helpers.h"
-+#include "network_helpers.h"
-+#include "sock_ops_get_sk.skel.h"
-+
-+/* See progs/sock_ops_get_sk.c for the bug description. */
-+static void run_sock_ops_test(int cgroup_fd, int prog_fd)
-+{
-+	int server_fd, client_fd, err;
-+
-+	err = bpf_prog_attach(prog_fd, cgroup_fd, BPF_CGROUP_SOCK_OPS, 0);
-+	if (!ASSERT_OK(err, "prog_attach"))
-+		return;
-+
-+	server_fd = start_server(AF_INET, SOCK_STREAM, NULL, 0, 0);
-+	if (!ASSERT_OK_FD(server_fd, "start_server"))
-+		goto detach;
-+
-+	/* Trigger TCP handshake which causes TCP_NEW_SYN_RECV state where
-+	 * is_fullsock == 0 and is_locked_tcp_sock == 0.
-+	 */
-+	client_fd = connect_to_fd(server_fd, 0);
-+	if (!ASSERT_OK_FD(client_fd, "connect_to_fd"))
-+		goto close_server;
-+
-+	close(client_fd);
-+
-+close_server:
-+	close(server_fd);
-+detach:
-+	bpf_prog_detach(cgroup_fd, BPF_CGROUP_SOCK_OPS);
-+}
-+
-+void test_ns_sock_ops_get_sk(void)
-+{
-+	struct sock_ops_get_sk *skel;
-+	int cgroup_fd;
-+
-+	cgroup_fd = test__join_cgroup("/sock_ops_get_sk");
-+	if (!ASSERT_OK_FD(cgroup_fd, "join_cgroup"))
-+		return;
-+
-+	skel = sock_ops_get_sk__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "skel_open_load"))
-+		goto close_cgroup;
-+
-+	/* Test SOCK_OPS_GET_SK with same src/dst register */
-+	if (test__start_subtest("get_sk")) {
-+		run_sock_ops_test(cgroup_fd,
-+				  bpf_program__fd(skel->progs.sock_ops_get_sk_same_reg));
-+		ASSERT_EQ(skel->bss->null_seen, 1, "null_seen");
-+		ASSERT_EQ(skel->bss->bug_detected, 0, "bug_not_detected");
-+	}
-+
-+	/* Test SOCK_OPS_GET_FIELD with same src/dst register */
-+	if (test__start_subtest("get_field")) {
-+		run_sock_ops_test(cgroup_fd,
-+				  bpf_program__fd(skel->progs.sock_ops_get_field_same_reg));
-+		ASSERT_EQ(skel->bss->field_null_seen, 1, "field_null_seen");
-+		ASSERT_EQ(skel->bss->field_bug_detected, 0, "field_bug_not_detected");
-+	}
-+
-+	/* Test SOCK_OPS_GET_SK with different src/dst register */
-+	if (test__start_subtest("get_sk_diff_reg")) {
-+		run_sock_ops_test(cgroup_fd,
-+				  bpf_program__fd(skel->progs.sock_ops_get_sk_diff_reg));
-+		ASSERT_EQ(skel->bss->diff_reg_null_seen, 1, "diff_reg_null_seen");
-+		ASSERT_EQ(skel->bss->diff_reg_bug_detected, 0, "diff_reg_bug_not_detected");
-+	}
-+
-+	sock_ops_get_sk__destroy(skel);
-+close_cgroup:
-+	close(cgroup_fd);
-+}
-diff --git a/tools/testing/selftests/bpf/progs/sock_ops_get_sk.c b/tools/testing/selftests/bpf/progs/sock_ops_get_sk.c
-new file mode 100644
-index 0000000000000..3a0689f8ce7ca
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/sock_ops_get_sk.c
-@@ -0,0 +1,117 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include "vmlinux.h"
-+#include <bpf/bpf_helpers.h>
-+#include "bpf_misc.h"
-+
-+/*
-+ * Test the SOCK_OPS_GET_SK() and SOCK_OPS_GET_FIELD() macros in
-+ * sock_ops_convert_ctx_access() when dst_reg == src_reg.
-+ *
-+ * When dst_reg == src_reg, the macros borrow a temporary register to load
-+ * is_fullsock / is_locked_tcp_sock, because dst_reg holds the ctx pointer
-+ * and cannot be clobbered before ctx->sk / ctx->field is read. If
-+ * is_fullsock == 0 (e.g., TCP_NEW_SYN_RECV with a request_sock), the macro
-+ * must still zero dst_reg so the verifier's PTR_TO_SOCKET_OR_NULL /
-+ * SCALAR_VALUE type is correct at runtime. A missing clear leaves a stale
-+ * ctx pointer in dst_reg that passes NULL checks (GET_SK) or leaks a kernel
-+ * address as a scalar (GET_FIELD).
-+ *
-+ * When dst_reg != src_reg, dst_reg itself is used to load is_fullsock, so
-+ * the JEQ (dst_reg == 0) naturally leaves it zeroed on the !fullsock path.
-+ */
-+
-+int bug_detected;
-+int null_seen;
-+
-+SEC("sockops")
-+__naked void sock_ops_get_sk_same_reg(void)
-+{
-+	asm volatile (
-+		"r7 = *(u32 *)(r1 + %[is_fullsock_off]);"
-+		"r1 = *(u64 *)(r1 + %[sk_off]);"
-+		"if r7 != 0 goto 2f;"
-+		"if r1 == 0 goto 1f;"
-+		"r1 = %[bug_detected] ll;"
-+		"r2 = 1;"
-+		"*(u32 *)(r1 + 0) = r2;"
-+		"goto 2f;"
-+	"1:"
-+		"r1 = %[null_seen] ll;"
-+		"r2 = 1;"
-+		"*(u32 *)(r1 + 0) = r2;"
-+	"2:"
-+		"r0 = 1;"
-+		"exit;"
-+		:
-+		: __imm_const(is_fullsock_off, offsetof(struct bpf_sock_ops, is_fullsock)),
-+		  __imm_const(sk_off, offsetof(struct bpf_sock_ops, sk)),
-+		  __imm_addr(bug_detected),
-+		  __imm_addr(null_seen)
-+		: __clobber_all);
-+}
-+
-+/* SOCK_OPS_GET_FIELD: same-register, is_locked_tcp_sock == 0 path. */
-+int field_bug_detected;
-+int field_null_seen;
-+
-+SEC("sockops")
-+__naked void sock_ops_get_field_same_reg(void)
-+{
-+	asm volatile (
-+		"r7 = *(u32 *)(r1 + %[is_fullsock_off]);"
-+		"r1 = *(u32 *)(r1 + %[snd_cwnd_off]);"
-+		"if r7 != 0 goto 2f;"
-+		"if r1 == 0 goto 1f;"
-+		"r1 = %[field_bug_detected] ll;"
-+		"r2 = 1;"
-+		"*(u32 *)(r1 + 0) = r2;"
-+		"goto 2f;"
-+	"1:"
-+		"r1 = %[field_null_seen] ll;"
-+		"r2 = 1;"
-+		"*(u32 *)(r1 + 0) = r2;"
-+	"2:"
-+		"r0 = 1;"
-+		"exit;"
-+		:
-+		: __imm_const(is_fullsock_off, offsetof(struct bpf_sock_ops, is_fullsock)),
-+		  __imm_const(snd_cwnd_off, offsetof(struct bpf_sock_ops, snd_cwnd)),
-+		  __imm_addr(field_bug_detected),
-+		  __imm_addr(field_null_seen)
-+		: __clobber_all);
-+}
-+
-+/* SOCK_OPS_GET_SK: different-register, is_fullsock == 0 path. */
-+int diff_reg_bug_detected;
-+int diff_reg_null_seen;
-+
-+SEC("sockops")
-+__naked void sock_ops_get_sk_diff_reg(void)
-+{
-+	asm volatile (
-+		"r7 = r1;"
-+		"r6 = *(u32 *)(r7 + %[is_fullsock_off]);"
-+		"r2 = *(u64 *)(r7 + %[sk_off]);"
-+		"if r6 != 0 goto 2f;"
-+		"if r2 == 0 goto 1f;"
-+		"r1 = %[diff_reg_bug_detected] ll;"
-+		"r3 = 1;"
-+		"*(u32 *)(r1 + 0) = r3;"
-+		"goto 2f;"
-+	"1:"
-+		"r1 = %[diff_reg_null_seen] ll;"
-+		"r3 = 1;"
-+		"*(u32 *)(r1 + 0) = r3;"
-+	"2:"
-+		"r0 = 1;"
-+		"exit;"
-+		:
-+		: __imm_const(is_fullsock_off, offsetof(struct bpf_sock_ops, is_fullsock)),
-+		  __imm_const(sk_off, offsetof(struct bpf_sock_ops, sk)),
-+		  __imm_addr(diff_reg_bug_detected),
-+		  __imm_addr(diff_reg_null_seen)
-+		: __clobber_all);
-+}
-+
-+char _license[] SEC("license") = "GPL";
+You are awesome, thank you!
 -- 
-2.43.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
