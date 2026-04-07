@@ -1,121 +1,56 @@
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC1938D6BD
-	for <netdev@vger.kernel.org>; Mon,  6 Apr 2026 23:55:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775519760; cv=pass; b=nM1zQl3aq9TXhYRC9u8pKAosk1Wkp4AYQ5XbBjHw/Dnn97h00DZb8ssOlu0fOEMqeUzfpvRbAIhPi3lgrsTbyQpKvX294NbtP3qt4TYOqTkzX1WQKARQr2bDQt4VWEXV3PqY1T0ocs/dOAyswpJbMyB765qznfNeiNCKD9zEkcs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775519760; c=relaxed/simple;
-	bh=mNC0RxOjT1rujIZKXpezvM303kVKA8rYx4fL/Vqs2EE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WW1+4TCct9oJQ+AwLiUb4xrRWMlMSa/XWco1x8WLGpR46nDE6Tvahk3zYmx5BKjkRvBHBXb23Wsv0R0wjYAfUoIlp3Ia5wipAmZ/218OpWEWLSD7vZfPO4BICBiRLIcpV1cMFnG9LgoiB9RPUgBYtgIsqmpzsSxLbx0c2aym8AM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Oo5sy47B; arc=pass smtp.client-ip=74.125.82.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56542B9A4;
+	Tue,  7 Apr 2026 00:37:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775522223; cv=none; b=nJpU9OGeoiHqy7741+9zHxEfZliiV/o7Fkenm+iUEJpZHrW0GX7lOQTjZnAW1mRMZRsRDWQRk/TtNHdaZTDcRvz809SiS/Bh8oSYGaF7CtE6EzkvzMpPZy+cDO1LxQP004s8yRxOQKdvQymEuJma7OSeq9wk7Kq0+VU44M9qSjY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775522223; c=relaxed/simple;
+	bh=XlHyAzaJklqxmNalMDD6OKRU12ck+jCq8qKnCst96gI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KOp13/D7oCLbVRspT3Zm2iGikcUYSMi5tur+hsZ/nIUWn5fWodrge7oD8+nHWiEdjZrBdKtkXO8bSqsqz8gvnqwvAZ5Z9BrHtzbuFotNCu/UoHt2JVLe/Zc4AYmJpc9z1yvx2sXisteysgxBsUMhAJzOuWVzQ3QTOoAB8kFPMOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SVp70/+t; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Oo5sy47B"
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-126ea4e9697so27940c88.1
-        for <netdev@vger.kernel.org>; Mon, 06 Apr 2026 16:55:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775519759; cv=none;
-        d=google.com; s=arc-20240605;
-        b=iHYQxktMoJHOqRZpHQCjvWQVPUYvQhGJXRGqu33HI872y80r8KG1F04OFU4/n+JMIt
-         v0OGCSqQpeAcCqF4vArMQPAFkXBPOoxNMl/ZdiEbW67QlK1Pi1pRNgX88OFiEbG+5ctY
-         PACdcYbw7aYLpNAf9oUF9WN9Z5CfNflXyEArNM7oZ1wQAutzy9fJvUM/JUAHIql8aMwn
-         FoSXKSClYrl6nuw3di7obV20ts2pbuFdzwxBCy0rs57DtvohVEPPcAHekRyXcOLY56nx
-         cW8ogJmXMl9ruJf8lKl2Q1DT1eVXrAnSzB+b+ZUsaCYhrgo/UAO8v0ilX3YjH4HqbC7i
-         PiXA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=mNC0RxOjT1rujIZKXpezvM303kVKA8rYx4fL/Vqs2EE=;
-        fh=4Qv7tXfJA5QeQc2w/CIpOfUaHxNL7pUni+9zqpskWQs=;
-        b=lD0c3HvnCC1BQV6cXDWbQiLuVC2eOJL82eqhIB2z5Y3c4bOGGFRZuPzZaaahUYNuBm
-         jH7Otjk1x69tnbub6ZC9HTd9K8bWXyawSXbjn2t+Kzt43OWG3bB7bPOzRRHvUDCfmmgk
-         CpvXUjR+OTlflAJUBLTjV8SvFZ2njaeCIZqbMPhQ7b31F8R4u6sEd//tENc8TPguIh76
-         7U571I2Pp3fY/mXe1gG9RLbRFTSOAc2YOd/+ZSs8Q/dkXRNj8PwVyDgXMcGCbly1Q6pj
-         mlSAKC8flEKMEHBr5H+Hrrh8RxWvwWsjP5BCNXOoa+t4ZUBmm5YqvZIOdgKH1SjYsaWC
-         eS5Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775519759; x=1776124559; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mNC0RxOjT1rujIZKXpezvM303kVKA8rYx4fL/Vqs2EE=;
-        b=Oo5sy47BLvycF07fAz4rdmf990675HBV/MNmCPW1Jgsr/QR9aIHJDXxOgNMcAoHX3m
-         7No0g3it9qASmaLFekeeRfzunwvkkZWhWtBI7jed0U41a3ciYw7prgw5pIaA39F8HH61
-         i1EyZ673uwV+7F57qFHqzF+Twk/sqiJkZt3EGrEwaPzuQraPeYn1Fy0SXIO5qJikstsY
-         FjiSW5XV2lySvLJPc5dtH6B0kHm0aVSWOi0njmpU2ov4ILqWwc4/WkrDo/hEf0DV49qD
-         TAsaiuNaCgD7BE/k+0bM0yVe4GTN3SwaswKxLE6+xvNxHVU7PiVaoY0gVTLSRYAKQUv8
-         PXKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775519759; x=1776124559;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=mNC0RxOjT1rujIZKXpezvM303kVKA8rYx4fL/Vqs2EE=;
-        b=N1o3sMLBL4nDLnfa44Ax2B9uVGXxey4Ws81xkZFE3a8UPCl4Zbpc6V+xYmCqk2rqjJ
-         wv5eI7r8VZe0wsrD46y1B/SDqZJfSxhMpxOZR/INSaWFDv+gl/dL+i3r4CegJ2kUCpxQ
-         SlrNaTOYhI3L72y+zt3awvJoOvlfWIWSj3/CbEtY2SV5T+ooicZ6m9e/yHzTQxNzzVSI
-         bxdcSpVr0CobITaBSmb4PdnX4Ig8sDG8aXOKU/4+1kvtLoiZTmWZuD/UY2PpLGHNZkVg
-         H2H+63EkyTNDQgz3v7ttskkB0eReTEU6hZy5eKS7YxQ76YFCa3xxvD9mE9msxobllLRw
-         8IpA==
-X-Forwarded-Encrypted: i=1; AJvYcCVdSmUmuvbckQodaaeGxGplD6Ly+NDpil06JDmGuK1P1wrgXn7xYlnMjUkRx7PEuMVaVkwoVpE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHRUogqpKY44bpGrkszWZZVxrzT6wKOmZ1mvPXhscAYQA4xg7C
-	i9hVbro2h/HUttJeS9ODft+RHvXgkH5McvomOJG5uzwoty78vNzZz3twa1N5mweFHKpjjK30Fbc
-	l3/OS2xBbKZl5XWug3+pGIftHVe/E+iskjxPS7OZF
-X-Gm-Gg: AeBDieuz8cY/A/TfRhKgHpG9KZJkdP8aAB9EUV86pkhIAwqJvG9ETp0f7lgdKl3fvUM
-	VJdILs27Hw0Wghe7Ri7+Zsocjwtvtq2KqrE/IdB3i/DGIoARTPlh84yGE+J2c0GBY0Hm1qx6MCy
-	vr+Rv7kC5KdFoD96l0CFsDuRKPlBrQjZCX0WkJxkzVffOo+6+vDr9Ena79e4xnUxW3vOlLRq3Eg
-	xRQpZTiR7DlqDYtv/tQBN7pOWChFbJ7oCPfMW72LEXMmApVA+GCYcZSsTAeZWE3u1UnOVnw/pCR
-	wyxyt35FkxkObIrH9T8YCT6gdvcRMRVv7mKwvyLs8ECVLeMDzD0=
-X-Received: by 2002:a05:7022:125:b0:128:ec96:67 with SMTP id
- a92af1059eb24-12bfc528447mr373932c88.9.1775519758166; Mon, 06 Apr 2026
- 16:55:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SVp70/+t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F58C4CEF7;
+	Tue,  7 Apr 2026 00:37:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775522223;
+	bh=XlHyAzaJklqxmNalMDD6OKRU12ck+jCq8qKnCst96gI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=SVp70/+tlQHEJnueuLtQClkQR1/+dtsCJj9DulgO1WpCNXWprnF+zoscNNJk7ZVux
+	 a7lIqu3QkET4z0bHxNT78dqjeGhEVNuyUpnV3xNo2ps6CS7/dba2r1Pm9YDWFmyta6
+	 O6biJMb8Z+jNYrQrdlKM0BDxBHCwoDxeR0s+9OqWjcz/7XaamRjeW0lGHPyQy33DGI
+	 CulDptKAPmAhC8VBZ/xiex0X7VAP9YKXcVw0rxC8T4MlkRDg93+A+MSU+Mey2SC7kL
+	 wtiSDz64hFL76ad4FoNrt1SUuqu69i30mO3OHlp+p99NYRMNRmQb9TWL2xYCH6Xj4j
+	 pcCPc/b+x61iA==
+Date: Mon, 6 Apr 2026 17:37:02 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Norbert Szetei <norbert@doyensec.com>
+Cc: Stefano Garzarella <sgarzare@redhat.com>, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ virtualization@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, John Villamil <john@doyensec.com>
+Subject: Re: [PATCH v2 net] vsock: fix buffer size clamping order
+Message-ID: <20260406173702.56239557@kernel.org>
+In-Reply-To: <69317E49-40AA-4985-8A4E-447C58665A68@doyensec.com>
+References: <523A8D3C-F4D9-43DD-A3A6-01C9EC335656@doyensec.com>
+	<acuKUpZQq6z1DY_n@sgarzare-redhat>
+	<102981F1-2CAE-481F-8FAE-4F3085E25E89@doyensec.com>
+	<69317E49-40AA-4985-8A4E-447C58665A68@doyensec.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260404001938.2425670-1-kuba@kernel.org>
-In-Reply-To: <20260404001938.2425670-1-kuba@kernel.org>
-From: Mina Almasry <almasrymina@google.com>
-Date: Mon, 6 Apr 2026 16:55:45 -0700
-X-Gm-Features: AQROBzDeOf0STIKsuYJfN8E0pCjnkdppvnvskXjFVagVWSQefcDDRfOrT1Nw3ns
-Message-ID: <CAHS8izMi+E1AcREKiRUUyAkWn8FMKCoxa+KX+VXLeM_4JvAj_w@mail.gmail.com>
-Subject: Re: [PATCH net] net: avoid nul-deref trying to bind mp to incapable device
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
-	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, sdf@fomichev.me, 
-	daniel@iogearbox.net
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Apr 3, 2026 at 5:19=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wro=
-te:
->
-> Sashiko points out that we use qops in __net_mp_open_rxq()
-> but never validate they are null. This was introduced when
-> check was moved from netdev_rx_queue_restart().
->
-> Look at ops directly instead of the locking config.
-> qops imply netdev_need_ops_lock(). We used netdev_need_ops_lock()
-> initially to signify that the real_num_rx_queues check below
-> is safe without rtnl_lock, but I'm not sure if this is actually
-> clear to most people, anyway.
->
-> Fixes: da7772a2b4ad ("net: move mp->rx_page_size validation to __net_mp_o=
-pen_rxq()")
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+On Mon, 6 Apr 2026 22:04:26 +0200 Norbert Szetei wrote:
+> v2: fix indentation/whitespace issues in the previous patch.
 
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-
-Honestly better for readability too. I was confused why we check that
-we need a lock here but never netdev_lock_ops AFAICT.
-
-FWIW I'm not sure why this branch doesn't have NL_SET_ERR_MSG, but I
-didn't look deeply. Probably doesn't matter.
+This is not a correct way to submit a patch, but please wait until
+Stefano responds with any further postings.
