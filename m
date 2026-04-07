@@ -1,93 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEEB270830;
-	Tue,  7 Apr 2026 00:43:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E834C6C
+	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 00:46:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775522606; cv=none; b=ue1fgAe3HkXp+Rmi79X8HzCn3b/OLSbl+5eKF9EQyZXYCsm04LJwLhJYjzXXm3KvUruvEBkqASoKQQGX5sJmjCLLdNxV4FueA7EDfMrvfvus5gHYqo92j/CJx1xbvs77aJL5wU2GOqjLc/DWCKr7cNCjHNzwTUSKADnQSftCLNE=
+	t=1775522773; cv=none; b=qBReh6//XK0AFzNZ8nseOQXNCKXl8R++ySfNlRZfsMSz445IaKBKEMn8TsvPRxY26SVCwuAJPaT8BJrm5SlwlEGSB8kO7iPvO8Rl8KXqsQDq6zSKcVdwkA91v7Jt1C8ATDRErXegKHt7BOh26jrnEmERIZuv9gE6Xnea9oyNmqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775522606; c=relaxed/simple;
-	bh=JY9IxlluVwlJCAKpBGKd5NaRfJ6onloYtkTR64nerzg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AM+qBPaEhWBAb0000soc8tjEThc/UdVAU5ohw6pyD9rQLbrE6b/FMMSH+gEpPNh9baflFq3XxGXqB1/OlBpvhQwzO20gp3TfhypLp7W83icc/JDAVwphPQuAt8xgGg+ykpgI+7awD18+D+dsNYY37Sk+4kfsixQ9FkuBFTbo9wI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l1msI51X; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775522773; c=relaxed/simple;
+	bh=WyhwNuIyCdlCDOdumhmrb3Ca9yjccs/vId8OlVdNMMY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=r+5xo3RIiDvT3nni/Vsu3tUQz3HO+o5+q+fL3NsMS0hhxxTN62s5QW5hu2k+hhhWpj1hxVb51Yi17NyXHDWvBDIsGU4+0VMtA4eTZ7KdmivwimB1ESMzHc8Bdiycvtfa6OiABoL1O3SZtgs3z452r5MhmkrjWUoGk30zYC0jeNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=blM9Ubte; arc=none smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l1msI51X"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AAE3C4CEF7;
-	Tue,  7 Apr 2026 00:43:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775522605;
-	bh=JY9IxlluVwlJCAKpBGKd5NaRfJ6onloYtkTR64nerzg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=l1msI51X7ofjKkDGEwZ7TwCpO6NGnXPJnQA1lhuTqtcWJfoR/UN5nciutx8NZY7x1
-	 88KESoAUzgoAVxwpeh3cqmpaVWHfK1NdIkub5nMFky1HOhcMMt6VIt9oMAliFWypky
-	 Y5CbN/7UsM5Qwo2xvW+Fb0DR4qytEphv36XqoIHIgqi1EZjg/ZmORgNyNZpby3AdNp
-	 xThrScd8bMR1/Ya+pQJEubcerHYHo2slzgW/sgvVoGuZEnVRkW+0rCI/jWtDXUlaR8
-	 76Csx3avtjyGJtd5JzmiJ/TtZo3lhSxFg+JJQrZ/BIuhFaGPJp2XXxhtMak+/6dV4J
-	 HfYV6BSzNY21w==
-Date: Mon, 6 Apr 2026 17:43:23 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: Mark Bloch <mbloch@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>,
- Tariq Toukan <tariqt@nvidia.com>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Saeed Mahameed <saeedm@nvidia.com>, Leon
- Romanovsky <leon@kernel.org>, Alexei Starovoitov <ast@kernel.org>, Daniel
- Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev
- <sdf@fomichev.me>, Cosmin Ratiu <cratiu@nvidia.com>, Simon Horman
- <horms@kernel.org>, Jacob Keller <jacob.e.keller@intel.com>, Lama Kayal
- <lkayal@nvidia.com>, Michal Swiatkowski
- <michal.swiatkowski@linux.intel.com>, Carolina Jubran <cjubran@nvidia.com>,
- Nathan Chancellor <nathan@kernel.org>, Daniel Zahka
- <daniel.zahka@gmail.com>, Rahul Rameshbabu <rrameshbabu@nvidia.com>, Raed
- Salem <raeds@nvidia.com>, netdev@vger.kernel.org,
- linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, Gal Pressman <gal@nvidia.com>
-Subject: Re: [PATCH net-next V2 4/5] net/mlx5e: XDP, Use a single linear
- page per rq
-Message-ID: <20260406174323.4597db58@kernel.org>
-In-Reply-To: <d7c247276e39d88e1cd9d86e21c74779@tipi-net.de>
-References: <20260403090927.139042-1-tariqt@nvidia.com>
-	<20260403090927.139042-5-tariqt@nvidia.com>
-	<adH5yAsPJ8rNgT0k@x13>
-	<20260406084344.5d315f01@kernel.org>
-	<e0ac9755-fd49-4620-92ce-0f5e4203a95e@nvidia.com>
-	<d7c247276e39d88e1cd9d86e21c74779@tipi-net.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="blM9Ubte"
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-89cc797547fso55243966d6.2
+        for <netdev@vger.kernel.org>; Mon, 06 Apr 2026 17:46:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775522771; x=1776127571; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=tVClSKROVTZHGAQRCCvPATSi+gjnZ5F0+pvtkkRbZBY=;
+        b=blM9UbteUt6qyPCyoSO5iMKVk8QHweBb35uXSAQl4REvdbbNim6EYzWgJhea1Yvgts
+         sXVuwAsccr0S/rIY98h0fJT8QmRhkVepspRWBapEhocHxELw/DZzqUzSeL8l7npxysJH
+         4oQBv7Qo2Ht6DyhNB9jFaOapnU6nHHzKBsRhUBtNC3VIICtMk/jvKG6Zt8NGwIBV2snK
+         DEzGkffEWxCDyCc6iCbPLg534sSbXmJFNne1v10k+bW4QSWgdqostyfJk3Z0rqF5KVJB
+         Pmd6TlPUQkyPVptX8j+booVzWJQeLyMDNCZMvojA7Jmxx4MhYEStvP5PXiaiJwxBF/lN
+         jEkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775522771; x=1776127571;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tVClSKROVTZHGAQRCCvPATSi+gjnZ5F0+pvtkkRbZBY=;
+        b=Bb1kZ9NEzckabKtXso3gugZ82uCpsrBb5Ycuxtte59cYTj+f5lPvX+wdhIz+dGeAWp
+         JfNzH1Z9velcmPJgdwB3+VXuq8KyNPxG1LaGKDg/C9LGpu9Tg3jZ0DM4BHnO9z+sORdA
+         hQK3uqYhpbRVFeqaSOAxWsX7L3MXxjyPRn0zLliNTPzsIKYtWF0l2/O5l+wi9aOopc11
+         Qq9hautiZxkUBGxQ7BzWR7Qs6bjcPnXJPaow6fZwtxBi0l1Mudclcmg2uZt7YSe/sJG7
+         FM2nDKXams00I2sT1Artmklwbbzs3ENUNf8qwNRvgmJHn0I5Q8w9pxNyf624/at0Ef85
+         ZWdw==
+X-Gm-Message-State: AOJu0YzIa+WrEaTgp2FyxKeIQ398ixYhxwc1d7GTyGdLwZ3FlnG0pNWf
+	7OleaDCeggP6TXK0z2ugwfbUESppkqVgPU/vPhm226ebqCd3SgsBWEH+
+X-Gm-Gg: AeBDiet4d5+2r9uE1D5jjd/euCNKWuH5xp3GVSoTFIV7Y8iDNNaiqwzyjroFxhHkWgV
+	ekJYBWjJfjge3JU+ToKKHSwFhZOMTj0WrLpaquqSXvUM2tP5h8yXsyMzvv33p1c14rcWd2Ums/M
+	+iT8BFoW9UrYVinxyw0UYXldAcmT3da2YXFSdLUpQlUs6obXG7hOy3kze40O9DtDjskiU6yjmkW
+	MAN92stmfFGvwQR0AgPHBpKQ4HllV5P7v5BtdQCB+9CtvBC49jtQAkIJK5wW2Q5Vbq+DhQQm09K
+	iCTRw4qADAolNWHtv/PUIs9PltBMkh1mzbQaz7bX6ECv5FWLS3ZDTdsRoctc5XzuHDV1JR480V7
+	Cv32OUAJQZ699LfCl/qvIcrOJFUeLHYO8rAS1RTAPqBxRSVDj7/ynT2/EtL/l+zpI6sWNdKYGtb
+	wYcohcsVG5l7BB8azrVTnO4nn+eIYsQal6
+X-Received: by 2002:a05:6214:4992:b0:8a6:25ee:fc53 with SMTP id 6a1803df08f44-8a7020bd406mr260799546d6.5.1775522771182;
+        Mon, 06 Apr 2026 17:46:11 -0700 (PDT)
+Received: from localhost.localdomain ([128.224.253.2])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8a5974e8e8esm134853786d6.43.2026.04.06.17.46.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Apr 2026 17:46:10 -0700 (PDT)
+From: Kevin Hao <haokexin@gmail.com>
+Date: Tue, 07 Apr 2026 08:45:39 +0800
+Subject: [PATCH net-next] net: macb: Use napi_schedule_irqoff() in IRQ
+ handler
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260407-macb-napi-irqoff-v1-1-61bec60047d7@gmail.com>
+X-B4-Tracking: v=1; b=H4sIALJT1GkC/yWMQQqDMBAAvyJ77kJMgyX9SukhiRu7gqtN0iKIf
+ 2+sx2GY2SBTYspwbzZI9OXMs1RoLw2El5OBkPvKoJXulFEGJxc8ilsYOb3nGLHV/hpNb2/Weqj
+ Zkijy+l8+QKig0FrgeZr88SOFchxh33/pNnkgfgAAAA==
+X-Change-ID: 20260404-macb-napi-irqoff-12b3f4d9799b
+To: Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
+Cc: netdev@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
+ Kevin Hao <haokexin@gmail.com>
+X-Mailer: b4 0.14.2
 
-On Mon, 06 Apr 2026 21:13:43 +0200 Nicolai Buchwitz wrote:
-> On 6.4.2026 18:31, Mark Bloch wrote:
-> > On 06/04/2026 18:43, Jakub Kicinski wrote: =20
-> >> Thanks a lot for reviewing the review! It takes a lot of maintainer=20
-> >> time =20
-> > =E2=80=9CBefore posting, authors could run a recommended baseline of re=
-view=20
-> > tools,
-> > where available, to catch obvious issues early. During review, tools=20
-> > such
-> > as review-prompts and Sashiko may be used to assist the reviewer.=E2=80=
-=9D
->=20
-> There is already https://netdev-ai.bots.linux.dev/ai-local.html which I=20
-> found really helpful.
-> If this is still the preferred approach, I could draft a patch to add it=
-=20
-> to Documentation/process/maintainer-netdev.rst
+For non-PREEMPT_RT kernels, the IRQ handler runs with interrupts
+disabled, allowing the use of napi_schedule_irqoff() to save a pair of
+local_irq_{save,restore} operations. For PREEMPT_RT kernels,
+napi_schedule_irqoff() behaves identically to napi_schedule().
 
-Right, I'd like to have something similar and a bit of time to drive
-down the number of false positives from Sashiko. Compared to the
-NIPA's ai-reviews the Sashiko comments take a lot of time to validate
-and are often alarmist. The merge window starts next week so I'll have
-more spare cycles.
+Signed-off-by: Kevin Hao <haokexin@gmail.com>
+---
+ drivers/net/ethernet/cadence/macb_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Please share if you had success running Sashiko (https://sashiko.dev/)
-"locally"!
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 6ec7b110dc7219ca337de4c6f0cbe38bb11558b5..322545b3be23f8d2c4ca2e3da61e057496458eab 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -2149,7 +2149,7 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
+ 			 */
+ 			queue_writel(queue, IDR, bp->rx_intr_mask);
+ 			macb_queue_isr_clear(bp, queue, MACB_BIT(RCOMP));
+-			napi_schedule(&queue->napi_rx);
++			napi_schedule_irqoff(&queue->napi_rx);
+ 		}
+ 
+ 		if (status & (MACB_BIT(TCOMP) |
+@@ -2162,7 +2162,7 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
+ 				wmb(); // ensure softirq can see update
+ 			}
+ 
+-			napi_schedule(&queue->napi_tx);
++			napi_schedule_irqoff(&queue->napi_tx);
+ 		}
+ 
+ 		if (unlikely(status & MACB_INT_MISC_FLAGS))
+
+---
+base-commit: 816f193dd0d95246f208590924dd962b192def78
+change-id: 20260404-macb-napi-irqoff-12b3f4d9799b
+
+Best regards,
+-- 
+Kevin Hao <haokexin@gmail.com>
+
