@@ -1,164 +1,129 @@
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78CFD3AEF36
-	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 11:39:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775561978; cv=pass; b=NBo+YKYWv5mOdEZnmNL/+iAJ+8Y/U5OEsQn6zAL/SuqzX2AvtwUN7sDcy3nUXOfuCtyZIFhCs9BEadwCtvKdf6lt1+iehpeGkcPqLMBYNk5ysxHiXX89FpOWY8tCIosh2mNOerIRcusoenmeLHLxr7hH9YqQJMkqdQbFxbqa0A0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775561978; c=relaxed/simple;
-	bh=Y+L391ccTop7JAEDFPHSUA9TtUeK9eR43E0B28a0rmM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ea1XS6TsDCOwedIYVLohw8Wq1/GME8AQklBgJkHjIpVASglvBS66PV8UZJtW5gjOC0uVdy2/EqJwgMmpRmhdTpfDHCQ6xTCbro1fm5tAUJaRJC4S1JglReT+JPp+zaVfsrGidn5Q43khlDjngrRfUr6apseBiq89YDIjyH5i0X4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=meSPw4ID; arc=pass smtp.client-ip=209.85.219.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7388022D7B5;
+	Tue,  7 Apr 2026 11:43:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775562193; cv=none; b=S5YET52PDXnWMFFOjUQo60Gxsd3Ev4keoMTlQw1G0KkVOB9m46lIikcKqfj0oIXn0GCLzx0dvylioMsn8Rbi28yUrC+BBvR0hXp8wozh/ZcSPUVk5J0xRtmZr8CWk29mWK/eFiLFHyyuuP7VLI3tCupvDRycz1VZUJMOgbFhwzw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775562193; c=relaxed/simple;
+	bh=nHrM03wRuMc4wMBBtQ8fqkoqDTyblmWSd3XLIUHzVpg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sqL0VqY1lj7mC7OxGRIgoPHIogQ6t+AOWxvYIsxJsICxVlcgR3e2mICO9QtiwZlRn9TG/02Z/rF/hqF9i7JoHkBoN4TOaFv+/wSss+IWADJ9/qNrmzy9jvzvcWJg7dWkPaWLm4QX8BYRD6h2t/X56jUf3QnK84ZO8GE5RqeS9nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=lqLvqhF3; arc=none smtp.client-ip=188.40.3.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="meSPw4ID"
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8a58057d7baso75465496d6.1
-        for <netdev@vger.kernel.org>; Tue, 07 Apr 2026 04:39:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775561976; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Yafygrb0mlw0y4MT3/XIBq9OsfCenz/OCdiVi9Sw/Nm2hjQO59P6wYF6qpWNuc0tHG
-         PtqZOq7IyfSNzF5uqO5Wezq7ezVbB0BVeKFWx7zFGyK5IyI6l+uf94XGvdVkDFOyxUtu
-         IX8C67qEsqIIH5hI91o8FWN0Mtk2svm1iFmlk/7F7WoOPvH3qrh3iX7dok1ZS62Ep0T2
-         kVTsvhgbEr27YJdgcfxp3oYV5guAzVTgrA87PLIFxebUmEt0XPQzYKjN5P2pRpViEAb1
-         ghggO/w7By0Lx0MQQocJty2ozYMKjTQQQmwMkfHNSXQJbOIltxI6XKOM2l0pfuyj/ZKY
-         UOIA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=GWsc5LreZNGCj8euVjnYrc0UrCyMHiSNMq7w4UZnThc=;
-        fh=lEkw4JlDB2DHWbvRZKGKFS7AipqtNNoSr8QkLbFGqYQ=;
-        b=WJGcwmZGB1qTc6fWBh3OUJJY3so142TTeH+Mt+HuSguVz5YZsScrJt3jH0SU6MkkpC
-         36gXS9fL12CNvy8erg4KKtJfcIA7CD4NhY6iepGmqVHASjBANKkvAlKEy1NT/DjWxunr
-         yFI8X0IkqscM8shC1xMLEZ7+FLusSKy0Neadb1yP2TVGibl33NllygKENrGCSO0DYETp
-         k+Wbr8uOKscvYnJlh4V5PMN9O1EkM0W67SUmbB8qqOuAz70RH6ChpXna4dG+/7s4B7U4
-         kzMdbO24qkxQjYRkQigUGq9aawY2lfKw/EBNyxx8ya1m72OV7vgo9WB2SJVNDndlS0jO
-         Znyg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775561976; x=1776166776; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GWsc5LreZNGCj8euVjnYrc0UrCyMHiSNMq7w4UZnThc=;
-        b=meSPw4ID2+u30GNVpWZMKxyn2VTFtw+RGNolxUS1JgTIrngZ16TwEVzHf/3f2X9aBL
-         rgaQDLV9gbyD/zjD6etqDT6xqfD4txUYwVDs0em3lU9k/bc0WNCcJgqg5WoTvdm5Xv6V
-         3MaB1J7SHuuhp+qyhqxOvZQQO+KtN+c+r9cAVd7umSKu1T8NxS14pSMbzELa0BVoovJt
-         uE/Q+Rw3h6Lcs89PmP+NsHIA/s6hN01VP98tUX0jMrgSAGjkkTxFJcS8wIxquam0eZzl
-         tFecpOw+tjrAnfQDvQZiFKqUIfGyBHXeEXAe+YcjxqVAdPa8CWDF3Y8rfYsymFlijEI+
-         JJkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775561976; x=1776166776;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GWsc5LreZNGCj8euVjnYrc0UrCyMHiSNMq7w4UZnThc=;
-        b=tGNaCvTaelJAR2Hg1yfq5ydUfYrpcRtMGnFHS7OuLBcBhe/jb0rbtWFDJmFfg5IWu8
-         VfcAnP34j9E8gixmuVLHbSGmm/nv+r+fF4ComKZZSoXGWuyGy1DCVQORo52ugB7zs96R
-         SArPHLGOfw0TtYZ1KRLJr0r8rpC/m2xcZpnhiBPIH8IY4x8OO8wz3GOnROfd9DxY2xRn
-         zsAwvLgjdmJJNsVR4MH7+91MpqBRDBRnjV3k/1VN8Utbd2xas//Re4KFiUITJ3F+aftt
-         IxgOhkJIlGuqo3+D5guHvCn/rRAlbFSGWDw/3C670PJ7L+/aOkYzOHe0QLVCgjUNiq1g
-         AS9g==
-X-Gm-Message-State: AOJu0Yz/25PE+4D1bAJtQBmme8x6Z3jD3bCtKzh+V0tXVVEMSEFXiNJH
-	k7lePDrT3sZKufR0EIMYl4zsszotmGDJAMBj1yilgUpHGqfAJ9CevK/q9RZHPM6T1MfN4L9Occ8
-	sGnSFjdUJ6PDIWUZfEuapusgIglKmERnAExW+OShc
-X-Gm-Gg: AeBDiesHl1imDNGecMpMTpT5cC1ve/pghiAfMD7nBTFsd/i8xwSTtMtXQ2uNgFqH6w2
-	aWytd9Sqcvkek5rz0JOn9aKAwEUdQTjpYzpFt72ERkrOKZZLuXwbvPwXlKIhYsTxDoW3igW9A5s
-	veIufDz3VudOCPgIHc+rW1Wmm3YjY2ynho3TfuEm9uAhLdVqnvr1ske99kuhglJg2U9Xub51ivO
-	Chw/6rdxIQwLPpwF7GKwnLd3uZuj5wqFdz0DD7LWwR0f/16VRCiESa8HbYqrxyLnNoYGV1XR8f0
-	FsOwco5iOUEKOtY=
-X-Received: by 2002:a05:6214:e6d:b0:89c:4d0f:d7d1 with SMTP id
- 6a1803df08f44-8a703f0eac7mr272931856d6.33.1775561975748; Tue, 07 Apr 2026
- 04:39:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="lqLvqhF3"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=m8+dxvmtECNtO6/nlvcPTQOUYVBF4c5AJ3AT7nnB+dY=; b=lqLvqhF3ilaOrBHq8SKJmK6IJv
+	ypuf7HzVvhUCp4JK/C6quvv7u1N0L0XY1DKGnEA1k+Ndys6s+N3Wk7jq5JErjE4ECWaiCx9p/sZ2d
+	VYVwGQNJgfLe8a6FmhdGP9TAwUHztx/BWLd0bMB6/rzoRADtoKpdVJ3P7wiThH6Q2OkKPr05rOFMO
+	hFMEeMNFS6VfhK6GJgUr17EZtyp+LVe9VxQHJXq27a8J7d9DtDwy0VEawEQJ/7gBoijtc9C0+3EZX
+	E2/q+dw/V1jczghDcQiMUlstZKNp1eJYg/nK+HgT4ZYt1lVvqZt0wDNBpBIFmHw70zsJQHRmXtZOj
+	Nb8wtueA==;
+Received: from sslproxy08.your-server.de ([78.47.166.52])
+	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <nora.schiffer@ew.tq-group.com>)
+	id 1wA4pn-000IJI-0U;
+	Tue, 07 Apr 2026 13:43:07 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy08.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <nora.schiffer@ew.tq-group.com>)
+	id 1wA4pl-000PKA-1n;
+	Tue, 07 Apr 2026 13:43:06 +0200
+From: Nora Schiffer <nora.schiffer@ew.tq-group.com>
+To: Nishanth Menon <nm@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Tero Kristo <kristo@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-phy@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux@ew.tq-group.com,
+	Nora Schiffer <nora.schiffer@ew.tq-group.com>
+Subject: [PATCH v4 0/5] J722S SGMII support
+Date: Tue,  7 Apr 2026 13:42:32 +0200
+Message-ID: <cover.1775559102.git.nora.schiffer@ew.tq-group.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CALynFi54eQj7SOmF6QNG0eqhLw7AuURzo6tSYQavvM3ZP74ikw@mail.gmail.com>
-In-Reply-To: <CALynFi54eQj7SOmF6QNG0eqhLw7AuURzo6tSYQavvM3ZP74ikw@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 7 Apr 2026 04:39:23 -0700
-X-Gm-Features: AQROBzD-S_BCgj4LW1WaAD08cZ9GJDtXH1gR3Sydyb2OsYRAgnP9YBNpVcPwKfU
-Message-ID: <CANn89iL5KKzmKF5qaQ6Sw3kUxrc1g_ysT63HGAh=jWZwStpP5A@mail.gmail.com>
-Subject: Re: [PATCH net] net: rtnetlink: zero ifla_vf_broadcast to avoid stack
- infoleak in rtnl_fill_vfinfo
-To: Kai Zen <kai.aizen.dev@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: Clear (ClamAV 1.4.3/27964/Tue Apr  7 08:24:40 2026)
 
-On Tue, Apr 7, 2026 at 4:32=E2=80=AFAM Kai Zen <kai.aizen.dev@gmail.com> wr=
-ote:
->
-> rtnl_fill_vfinfo() declares struct ifla_vf_broadcast on the stack
-> without initialisation:
->
->     struct ifla_vf_broadcast vf_broadcast;
->
-> The struct contains a single fixed 32-byte field:
->
->     /* include/uapi/linux/if_link.h */
->     struct ifla_vf_broadcast {
->             __u8 broadcast[32];
->     };
->
-> The function then copies dev->broadcast into it using dev->addr_len
-> as the length:
->
->     memcpy(vf_broadcast.broadcast, dev->broadcast, dev->addr_len);
->
-> On Ethernet devices (the overwhelming majority of SR-IOV NICs)
-> dev->addr_len is 6, so only the first 6 bytes of broadcast[] are
-> written. The remaining 26 bytes retain whatever was previously on
-> the kernel stack. The full struct is then handed to userspace via:
->
->     nla_put(skb, IFLA_VF_BROADCAST,
->             sizeof(vf_broadcast), &vf_broadcast)
->
-> leaking up to 26 bytes of uninitialised kernel stack per VF per
-> RTM_GETLINK request, repeatable.
->
-> The other vf_* structs in the same function are explicitly zeroed
-> for exactly this reason - see the memset() calls for ivi,
-> vf_vlan_info, node_guid and port_guid a few lines above.
-> vf_broadcast was simply missed when it was added.
->
-> Reachability and impact
-> -----------------------
->
-> The leak is reachable by any unprivileged local process. AF_NETLINK
-> with NETLINK_ROUTE requires no capabilities. The only environmental
-> requirement is that the host has at least one SR-IOV-capable
-> interface present, which is the common case for cloud, datacenter
-> and HPC hosts.
->
-> Trigger: send RTM_GETLINK with an IFLA_EXT_MASK attribute whose
-> value has the RTEXT_FILTER_VF bit set. The kernel will then walk
-> each VF and emit IFLA_VFINFO_LIST, including IFLA_VF_BROADCAST,
-> which carries the 26 bytes of uninitialised stack per VF.
->
-> Stack residue at this call site can include return addresses
-> (useful as a KASLR / function-pointer disclosure primitive) and
-> transient sensitive data left over by whatever ran on the same
-> kernel stack just prior. KASAN with stack instrumentation, or
-> KMSAN, will flag the nla_put() when reproduced.
+The J722S CPSW and SERDES are very similar to the variants found on the
+AM64, but they additionally support SGMII. Introduce new compatible
+strings for the J722S to add this support to the drivers.
 
-Please note:
+This is a prerequisite for the Single-Pair Ethernet interface of the
+TQ-Systems MBa67xx baseboard for the TQMa67xx SoM, which will be
+submitted separately.
 
-1) You forgot to add the Fixes: tag as mentioned earlier.
+For SGMII to actually work on the J722S, the am65-cpsw needs to be extended
+as well, which has been submitted for net-next:
+https://patchwork.kernel.org/project/netdevbpf/list/?series=1078111
 
-2) Your patch is mangled, tabulations have been replaced with spaces.
+Fallback compatible strings allow for the patches to be applied in any
+order and to go through different trees without breaking existing
+functionality.
 
-Documentation/process/applying-patches.rst
+v4:
+- remove redundant items: level from DT binding YAMLs
 
-3) Please wait ~24 hours before sending a new version.
- Documentation/process/maintainer-netdev.rst
+v3:
+- Drop am65-cpsw changes from this series, they need to go through net-next
+- Fix missing PHY_GMII_SEL_RGMII_ID_MODE and PHY_GMII_SEL_FIXED_TX_DELAY in
+  gmii-sel driver for RGMII delay mode configuration
 
-Thank you.
+v2:
+- Keep support for the AM64 compatible strings as a fallback, adjust commit
+  messages
+- Drop reference to AM64_CPSW_QUIRK_CUT_THRU flag, which only exists in the
+  TI vendor kernel
+
+Nora Schiffer (5):
+  dt-bindings: phy: ti: phy-j721e-wiz: Add ti,j722s-wiz-10g compatible
+  dt-bindings: phy: ti: phy-gmii-sel: Add ti,j722s-phy-gmii-sel
+    compatible
+  phy: ti: phy-j721e-wiz: add support for J722S SoC family
+  phy: ti: gmii-sel: add support for J722S SoC family
+  arm64: dts: ti: k3-j722s-main: use J722S compatibles for WIZ, gmii-sel
+    and CPSW3G
+
+ .../bindings/phy/ti,phy-gmii-sel.yaml         | 23 +++++++++++-------
+ .../bindings/phy/ti,phy-j721e-wiz.yaml        | 19 +++++++++------
+ arch/arm64/boot/dts/ti/k3-j722s-main.dtsi     | 12 ++++++++--
+ drivers/phy/ti/phy-gmii-sel.c                 | 13 ++++++++++
+ drivers/phy/ti/phy-j721e-wiz.c                | 24 +++++++++++++++++++
+ 5 files changed, 73 insertions(+), 18 deletions(-)
+
+-- 
+TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht München, HRB 105018
+Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
+https://www.tq-group.com/
+
