@@ -1,77 +1,97 @@
-Received: from aib29agb123.bom1.oracleemaildelivery.com (aib29agb123.bom1.oracleemaildelivery.com [192.29.172.123])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A6933DEDD
-	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 04:53:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.29.172.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC19E344D8D;
+	Tue,  7 Apr 2026 04:55:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775537601; cv=none; b=mHgRzCEYCGXgbc+FH+PjRyklfOAcIWVCkiBOVKDhEt7mvW1tF2E6HdzejkXjga/RyfM0J667WhaC1NgOFuaor18djSR+E0udYljCDdwRCS4HAqiXWf2jEaNjRJlUJ45B0bantCXgEFYSRgZ9R3TdWCfOSz07s9gQZKT8BxpA73U=
+	t=1775537702; cv=none; b=OJVZVTuFn/+V4tQi+eyjLkJZpvOlVSFElIqcZPYwdBKf0mxRksYxpDN6W7TGDneoCQKMp/5NOzDM9cuq6x5OsOBw0iyYthSLDJRxk7AgPkBYNlJXGbowpC1JglMpXTJiklrsXreHk+EqKy827Tw/eoUifxMROaR39J657Knn31E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775537601; c=relaxed/simple;
-	bh=DOGNxOuGnChhZQLwlrQLOpL2pK7O5LofYIVDLE+YYWc=;
-	h=From:To:Subject:Date:Message-id:MIME-version:Content-type; b=jnifdMaRFvszkxln4orAqqhxXwHvXqDSoFBGhKVimqwLy/mhqVTHKxGFs2wfGq1NDIiiIEFs2tM2ML7q+2PWPCZLKcvkBOIqg9o7uQgdyX4ylLfNW///6VHNiJ+0nRnRWAF2wHs7bKOBkRqEHtC58CtnDjEhs2WzW55jucvLx8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=linknsell.com; spf=pass smtp.mailfrom=bom1.rp.oracleemaildelivery.com; dkim=pass (2048-bit key) header.d=linknsell.com header.i=@linknsell.com header.b=HwxNa9UH; dkim=pass (2048-bit key) header.d=bom1.rp.oracleemaildelivery.com header.i=@bom1.rp.oracleemaildelivery.com header.b=egIcT8L9; arc=none smtp.client-ip=192.29.172.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=linknsell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bom1.rp.oracleemaildelivery.com
+	s=arc-20240116; t=1775537702; c=relaxed/simple;
+	bh=rvu7/o0Lwq7mvoGpGDMuVDAnB7mMlRjy9d5tc7U+Cb8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oPHX+qalhQLEAB2+ra1xXAjTnTBXIYGWYVyGkeJPGER6wr5dDd0CBpcVRT7EMZJDfItccG6L+Ur045mZgNf4eJQJwsfmcPPqu3J1zMP/zdcQk6UqWfVam5DLCIqhSaXWbLeKKbQbq7LYo18hB7Rae9ILxF/zNFM/g+drjXdfed8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=og8fhcTr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linknsell.com header.i=@linknsell.com header.b="HwxNa9UH";
-	dkim=pass (2048-bit key) header.d=bom1.rp.oracleemaildelivery.com header.i=@bom1.rp.oracleemaildelivery.com header.b="egIcT8L9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=smtp.linknsell.com.20250508;
- d=linknsell.com;
- h=Date:To:From:Subject:Message-Id:MIME-Version:Sender:List-Unsubscribe:List-Unsubscribe-Post;
- bh=DOGNxOuGnChhZQLwlrQLOpL2pK7O5LofYIVDLE+YYWc=;
- b=HwxNa9UHBB5iah8v0tDkibBpo2M0QUKVWU6NEmTQVS5jlBAdMyYAwRiNyutQUm3vnmUeqabiFFGm
-   cDAHkyjIlYLgA4CAWt10NvILo8x542FlPjLZQwgLmKuH7pQAhdUhchbLocaRXqGTMLWX1nBCd+bv
-   0QiDLihxZS/VpIsCf/lqX9nkXJ+nbrxnAyaA1O/hVljwYMVO10sCMopjnuDJo+6tgAAjIJKFjlKA
-   a6p+CkkZhwoPNZaJV9T3WrTUoQn9QaslAv5CP67fFi6dmgeJzodryULh1deYne+vdxx8aZp2UBaD
-   Ybk17JdYiZ56uhST3x6G23cr6oa2CVUpyGjcHA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=prod-bom-20200207;
- d=bom1.rp.oracleemaildelivery.com;
- h=Date:To:From:Subject:Message-Id:MIME-Version:Sender:List-Unsubscribe:List-Unsubscribe-Post;
- bh=DOGNxOuGnChhZQLwlrQLOpL2pK7O5LofYIVDLE+YYWc=;
- b=egIcT8L9v6h2D763F1PgBLKJnOnv/eBUgiZtwxk578Eww9o++LPYUHHl7AdoaxWsfFbo/O48ThO3
-   YINoopE+3ZubDwBu4ZEb91Owy1g3VKg+wVo1If7Ws84ilg9NYEvnRWmMFvMiWGBj+QSb3qpY+Qh9
-   w/CS7d4I3508CRX7V0igFMJ/GSTSrmxp1baL0fBkAQIku6hPl+yL7xvEx0SaRue4Tmc7tsmWhTWQ
-   RwN5w/9LJwW5BLYBJEFCBTtLCvJD9vXbVmMa+gc3zrY45tYtK2vG4TUeeh+k3E8OA5FSZV710i/y
-   nBb5eyndnb33FqalRFDls3uHrglbVFqektVomw==
-Received: by omta-ad1-fd1-402-ap-mumbai-1.omtaad1.vcndpbom.oraclevcn.com
- (Oracle Communications Messaging Server 8.1.0.1.20260212 64bit (built Feb 12
- 2026))
- with ESMTPS id <0TD300EVGXKTO6A0@omta-ad1-fd1-402-ap-mumbai-1.omtaad1.vcndpbom.oraclevcn.com> for
- netdev@vger.kernel.org; Tue, 07 Apr 2026 04:53:17 +0000 (GMT)
-List-Unsubscribe-Post: List-Unsubscribe=One-Click
-Reply-to: jisunlee@gmilweb.com
-From: Jisun Lee <NoReply@linknsell.com>
-To: netdev@vger.kernel.org
-Subject: I need your help
-Date: 7 Apr 2026 05:53:14 +0100
-Message-id: <20260407051725.A00AAA6B0435AA7A@linknsell.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="og8fhcTr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60815C116C6;
+	Tue,  7 Apr 2026 04:54:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775537702;
+	bh=rvu7/o0Lwq7mvoGpGDMuVDAnB7mMlRjy9d5tc7U+Cb8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=og8fhcTrcSW1XpExdd/a68mQ3sOlxr3SXLyjG8HBdY4XWYM29iTLx0Vs0oZzLQBYD
+	 tu/RPZiAfSuTwJv5JHbdFaiitpZ6bXxgjdlLLxffWjK89/+jrNtXEyaJ4DJU/d0LCi
+	 R6uKK10Vn0UY5G1a0lvKWQphTQ5vpl4v7DMcIZPNotI5UlcQAmshX1P/Wvpvltcgkl
+	 vD400kR01f5mLCkLuTrZxTVTIz3eLkCsqiEBguYacQ0aKOGIUaWkZrKUIb0uWeIiYs
+	 L/vTx3jbOsZk2PnifHxjEUKls3C4t+Wnbflcd+lJMRWwJLFmxogFFi7/Fue/xF+WPg
+	 BLYdUjWFdKV2w==
+Date: Tue, 7 Apr 2026 10:24:44 +0530
+From: Sumit Garg <sumit.garg@kernel.org>
+To: Bjorn Andersson <andersson@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+	linux-media@vger.kernel.org, netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+	linux-remoteproc@vger.kernel.org, konradybcio@kernel.org,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	robin.clark@oss.qualcomm.com, sean@poorly.run,
+	akhilpo@oss.qualcomm.com, lumag@kernel.org, abhinav.kumar@linux.dev,
+	jesszhan0024@gmail.com, marijn.suijten@somainline.org,
+	airlied@gmail.com, simona@ffwll.ch, vikash.garodia@oss.qualcomm.com,
+	dikshita.agarwal@oss.qualcomm.com, bod@kernel.org,
+	mchehab@kernel.org, elder@kernel.org, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, jjohnson@kernel.org, mathieu.poirier@linaro.org,
+	trilokkumar.soni@oss.qualcomm.com, mukesh.ojha@oss.qualcomm.com,
+	pavan.kondeti@oss.qualcomm.com, jorge.ramirez@oss.qualcomm.com,
+	tonyh@qti.qualcomm.com, vignesh.viswanathan@oss.qualcomm.com,
+	srinivas.kandagatla@oss.qualcomm.com,
+	amirreza.zarrabi@oss.qualcomm.com, jens.wiklander@linaro.org,
+	op-tee@lists.trustedfirmware.org, apurupa@qti.qualcomm.com,
+	skare@qti.qualcomm.com, harshal.dev@oss.qualcomm.com,
+	linux-kernel@vger.kernel.org,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>
+Subject: Re: [PATCH v3 00/15] firmware: qcom: Add OP-TEE PAS service support
+Message-ID: <adSOFCL26y5qt1Cu@sumit-xelite>
+References: <20260327131043.627120-1-sumit.garg@kernel.org>
+ <adPLx3nCBb8IHz2b@baldur>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-version: 1.0
-Content-type: text/plain;	charset="utf-8"
-Content-transfer-encoding: quoted-printable
-Reporting-Meta:
- AAGi5cWnrTT4y34B1qvDUxR1Rsnzi/bNdivngbcgnQHx1PzWyIJmi0ji+3UCCCnp
- D4cA0CnNMIO1lBduhQNyIeENYZguLw5sC/Fn4e1u3u+c0w88U2SjZNQMilaQpvFM
- cA5JSBo2NuZSBmv7hdoVVjoltNoK2kFGaBP9dK0JDB/VIdTPEk1V/9Nq6JeEqHDD
- TRyDl9hetGr+nW8bGpF5cYA0SfK0kYzMMYXIvvC3eel6lP9rJjyWzj/yXOkshkIe
- I0BZFlCbW8crZHcPj3LvZqYDpzDS0hpT8P/TwSOOc8mvlkYOmbe+Hvd6h+N018uc
- paRrzP0vmrUta8D7l6TjeKTYinQawYDjq1cTlJPzxr4Wtzk9rEBpAmkws0qxuAQZ
- D7CcKAgKMWdNsKcOX3agdj4hQ5nf25xbRuoGFFeSw0sF++7s2oSAnWoFHPd3tVko
- n6snGYkyks4/cdaRIn+zXGda8YPrIMyBqK3pXrOVMQdFPHvJPFyH6A==
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <adPLx3nCBb8IHz2b@baldur>
 
-Dear Beloved
+Hi Bjorn,
 
-My ex Husband Song Lee refuse to pay our divorce settlement
-funds. =E2=80=8BI need your help to recover Assets from the bank for=20
-healthcare and child support
-=E2=80=8Bpurposes, diagnosed with (bladder cancer).
+On Mon, Apr 06, 2026 at 10:09:27AM -0500, Bjorn Andersson wrote:
+> On Fri, Mar 27, 2026 at 06:40:28PM +0530, Sumit Garg wrote:
+> > From: Sumit Garg <sumit.garg@oss.qualcomm.com>
+> > 
+> > Qcom platforms has the legacy of using non-standard SCM calls
+> > splintered over the various kernel drivers. These SCM calls aren't
+> > compliant with the standard SMC calling conventions which is a
+> > prerequisite to enable migration to the FF-A specifications from Arm.
+> > 
+> 
+> Please get our colleagues involved in this discussion, because this
+> non-SCM interface does not match the direction we are taking.
 
-=E2=80=8BI need your advise and support
+I thought I have already involved folks from QTEE perspective (Apurupa
+and Sree) actively working on FF-A implementation aligned to this
+interface. It would have been better if you could let me know where is
+the direction mismatch here. In case there is a better alternative
+design proposal for PAS service with FF-A, I would be happy to hear
+that.
 
-=E2=80=8BThank You
-Jisun Lee
+Anyhow for the legacy SoCs like KLMT, we really don't have any
+alternative but have to stick to existing QTEE PAS design with OP-TEE
+providing as an alternative backend. Surely we want to support loading
+of existing signed firmware present in linux-firmware repo for KLMT with
+OP-TEE being the TZ.
+
+-Sumit
