@@ -1,79 +1,144 @@
-Received: from outbound.baidu.com (jpmx.baidu.com [119.63.196.201])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id 3E0E7238178;
-	Tue,  7 Apr 2026 02:27:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=119.63.196.201
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51E234F497
+	for <netdev@vger.kernel.org>; Tue,  7 Apr 2026 02:28:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775528876; cv=none; b=ZSF5MS+LgkaHugRtlBOlPXaCJ8cvnNJQIDoua8lxh3zZRPhVkeO9m1bRWx4n24bnqtBK3ICd8LUB77oB9jI8gFoCAInsKnIGDZ9K4ZwzRg3AiDBmy/k/lrFdk+ijolDLIqXgej3JfJaObDiSwd/KjkZh5BDzwPJngwA+yqKUaig=
+	t=1775528887; cv=none; b=tqs4wuPb2YXKbM+A1336pZPE9wysxQfi7gCBsU8ZhXUwNcJk9qYBq+mUQxcaN6awuOj/3AjA3byu/F2/N07ql+DYEyzmDDmUI8emtgDDGU4QOB8EMdug+AsXxMH0MLulr3AoicSqB8FJoVjdkXzrxf6IryE2zdLvbvsNKvSNLa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775528876; c=relaxed/simple;
-	bh=W/xxQQVyTbtVD25wXMT+RCdTuEaBRAJrbFb2CKhUJQM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WUhnPKCBNa144EoSVO8H+mLKIo7y9SN8iutDqoPqMgnKeJV0Mp3vBoN5gedYTykdfGq/KhOTkeZIMzamQqw73m88Y82AT2rwjwdTXNJmvkndV1dw2tGF3e613uD5OWcf5uXS1EOvVM2d3N8Z6YNYb7Mi3npQFNKotalYGQyj5Cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com; spf=pass smtp.mailfrom=baidu.com; dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b=mlw6llIe; arc=none smtp.client-ip=119.63.196.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
+	s=arc-20240116; t=1775528887; c=relaxed/simple;
+	bh=DtWCpX0Y7Wziob7R+T50C6L34Jslab04GZwvfTcdn2Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=K4YU3juT5RZKhG0MIY4XZMCUau04kJiSQXDIriZzrq9hdKJ67Khhvw+0LtXLAX91TlQUi1U3ybOSxnNiKH4CdhTQk5qTMTXjNkR8tLFqGy+9Ujits51NCXS3TZPGpoifKek0Qg1V7RmBqXFOdHPagDFopZXdYz/J8du7hsWmJ3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=lhLVsCC3; arc=none smtp.client-ip=91.218.175.185
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b="mlw6llIe"
-X-MD-Sfrom: lirongqing@baidu.com
-X-MD-SrcIP: 172.31.50.47
-From: lirongqing <lirongqing@baidu.com>
-To: Jiri Pirko <jiri@resnulli.us>, "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Mateusz
- Polchlopek <mateusz.polchlopek@intel.com>, Tony Nguyen
-	<anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Li RongQing <lirongqing@baidu.com>
-Subject: [PATCH] devlink: Fix incorrect skb socket family dumping
-Date: Mon, 6 Apr 2026 22:27:30 -0400
-Message-ID: <20260407022730.2393-1-lirongqing@baidu.com>
-X-Mailer: git-send-email 2.17.1
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="lhLVsCC3"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775528883;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BLNnb3jXRMLQyY/e94DI3Ql+r/h7olt/Wmz1vv4kMSM=;
+	b=lhLVsCC38No1vHbljGAihvS2QSvu+rHvjpQntwmCrLCf18+DEbksgjf6C18piYJEMlBCX/
+	oB/9ShLEKVEqBBvhkVpkROicVw3UdvUkCK2hxiI5JWj2plCsHB+y+aJ6liWjbDZe7pf9El
+	pMJRcmTsNRQ+OJnOAiOpasOdTTk4vks=
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: bpf@vger.kernel.org
+Cc: werner@verivus.ai,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Quan Sun <2022090917019@std.uestc.edu.cn>,
+	Yinhao Hu <dddddd@hust.edu.cn>,
+	Kaiyan Mei <M202472210@hust.edu.cn>,
+	Dongliang Mu <dzm91@hust.edu.cn>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Sun Jian <sun.jian.kdev@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH bpf v3 1/2] bpf: Fix same-register dst/src OOB read and pointer leak in sock_ops
+Date: Tue,  7 Apr 2026 10:26:27 +0800
+Message-ID: <20260407022720.162151-2-jiayuan.chen@linux.dev>
+In-Reply-To: <20260407022720.162151-1-jiayuan.chen@linux.dev>
+References: <20260407022720.162151-1-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: bjkjy-exc11.internal.baidu.com (172.31.51.11) To
- bjkjy-exc3.internal.baidu.com (172.31.50.47)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
-	s=selector1; t=1775528861;
-	bh=rMxAsSE1T2ENZfR5RXIKLUTCSrJJ56L2NjvuWxizi08=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type;
-	b=mlw6llIekOJTsGnqPBdavbTKtLp8BZIzuRiiwho+ELKucp3wFQryBTiZxQmTfxH41
-	 z+qlnXLD3BrZZvBmeLoVnPaTx3JVNF+mEE82Rn8n6HuxfBjbyaQIF3JHchXXljwll9
-	 i6VtEas+EQQquMRwooJF512XlFBLBXpWc3jjhEZoXsf1jc+gsT+EbK73q9hWA78wTf
-	 BuK+ejC2EwyJemfiD4QvvezN2Rn3ntIwQ14bj6i7jb9yOFaSgG06k8MQ3q5raTCp9d
-	 kgke95emH1our0obrJWtRWXv7lXDY/ZFnmyenEZ9rELaR+kweW0G8DvGQJCXM3RVxD
-	 QzHq6Y2SiEycQ==
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-From: Li RongQing <lirongqing@baidu.com>
+When a BPF sock_ops program accesses ctx fields with dst_reg == src_reg,
+the SOCK_OPS_GET_SK() and SOCK_OPS_GET_FIELD() macros fail to zero the
+destination register in the !fullsock / !locked_tcp_sock path.
 
-The devlink_fmsg_dump_skb function was incorrectly using the socket
-type (sk->sk_type) instead of the socket family (sk->sk_family)
-when filling the "family" field in the fast message dump.
+Both macros borrow a temporary register to check is_fullsock /
+is_locked_tcp_sock when dst_reg == src_reg, because dst_reg holds the
+ctx pointer. When the check is false (e.g., TCP_NEW_SYN_RECV state with
+a request_sock), dst_reg should be zeroed but is not, leaving the stale
+ctx pointer:
 
-This patch fixes this to properly display the socket family.
+ - SOCK_OPS_GET_SK: dst_reg retains the ctx pointer, passes NULL checks
+   as PTR_TO_SOCKET_OR_NULL, and can be used as a bogus socket pointer,
+   leading to stack-out-of-bounds access in helpers like
+   bpf_skc_to_tcp6_sock().
 
-Fixes: 3dbfde7f6bc7b8 ("devlink: add devlink_fmsg_dump_skb() function")
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
+ - SOCK_OPS_GET_FIELD: dst_reg retains the ctx pointer which the
+   verifier believes is a SCALAR_VALUE, leaking a kernel pointer.
+
+Fix both macros by:
+ - Changing JMP_A(1) to JMP_A(2) in the fullsock path to skip the
+   added instruction.
+ - Adding BPF_MOV64_IMM(si->dst_reg, 0) after the temp register
+   restore in the !fullsock path, placed after the restore because
+   dst_reg == src_reg means we need src_reg intact to read ctx->temp.
+
+Fixes: fd09af010788 ("bpf: sock_ops ctx access may stomp registers in corner case")
+Fixes: 84f44df664e9 ("bpf: sock_ops sk access may stomp registers when dst_reg = src_reg")
+Reported-by: Quan Sun <2022090917019@std.uestc.edu.cn>
+Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
+Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
+Reported-by: Dongliang Mu <dzm91@hust.edu.cn>
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+Closes: https://lore.kernel.org/bpf/6fe1243e-149b-4d3b-99c7-fcc9e2f75787@std.uestc.edu.cn/T/#u
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 ---
- net/devlink/health.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/filter.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/devlink/health.c b/net/devlink/health.c
-index 449c761..ea7a334 100644
---- a/net/devlink/health.c
-+++ b/net/devlink/health.c
-@@ -1327,7 +1327,7 @@ void devlink_fmsg_dump_skb(struct devlink_fmsg *fmsg, const struct sk_buff *skb)
- 	if (sk) {
- 		devlink_fmsg_pair_nest_start(fmsg, "sk");
- 		devlink_fmsg_obj_nest_start(fmsg);
--		devlink_fmsg_put(fmsg, "family", sk->sk_type);
-+		devlink_fmsg_put(fmsg, "family", sk->sk_family);
- 		devlink_fmsg_put(fmsg, "type", sk->sk_type);
- 		devlink_fmsg_put(fmsg, "proto", sk->sk_protocol);
- 		devlink_fmsg_obj_nest_end(fmsg);
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 78b548158fb05..53ce06ed4a88e 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -10581,10 +10581,11 @@ static u32 sock_ops_convert_ctx_access(enum bpf_access_type type,
+ 				      si->dst_reg, si->dst_reg,		      \
+ 				      offsetof(OBJ, OBJ_FIELD));	      \
+ 		if (si->dst_reg == si->src_reg)	{			      \
+-			*insn++ = BPF_JMP_A(1);				      \
++			*insn++ = BPF_JMP_A(2);				      \
+ 			*insn++ = BPF_LDX_MEM(BPF_DW, reg, si->src_reg,	      \
+ 				      offsetof(struct bpf_sock_ops_kern,      \
+ 				      temp));				      \
++			*insn++ = BPF_MOV64_IMM(si->dst_reg, 0);	      \
+ 		}							      \
+ 	} while (0)
+ 
+@@ -10618,10 +10619,11 @@ static u32 sock_ops_convert_ctx_access(enum bpf_access_type type,
+ 				      si->dst_reg, si->src_reg,		      \
+ 				      offsetof(struct bpf_sock_ops_kern, sk));\
+ 		if (si->dst_reg == si->src_reg)	{			      \
+-			*insn++ = BPF_JMP_A(1);				      \
++			*insn++ = BPF_JMP_A(2);				      \
+ 			*insn++ = BPF_LDX_MEM(BPF_DW, reg, si->src_reg,	      \
+ 				      offsetof(struct bpf_sock_ops_kern,      \
+ 				      temp));				      \
++			*insn++ = BPF_MOV64_IMM(si->dst_reg, 0);	      \
+ 		}							      \
+ 	} while (0)
+ 
 -- 
-2.9.4
+2.43.0
 
