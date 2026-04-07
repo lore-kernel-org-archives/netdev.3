@@ -1,124 +1,143 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+Received: from mx0b-00190b01.pphosted.com (mx0b-00190b01.pphosted.com [67.231.157.127])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8763ACF05;
-	Tue,  7 Apr 2026 11:11:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31FE53AC0D2;
+	Tue,  7 Apr 2026 11:19:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.157.127
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775560285; cv=none; b=fYUuhUQGTlEg3k9+nlcDf/L1oNe6hKZ5Ad/YI9+I2Sljy65t1SoQ7FArEZsgr9bRZt8rM527O+U956nopyXfrNr7ftQsoCQJ2+5QtABybmCkBBfN38VkVhO00mj4dLA1MW/gunXPvKVptomqGrC/gjOfQDDZpKczuw5JoEs+u0M=
+	t=1775560744; cv=none; b=eGf8w1b56TrvXxRZW2nZATujjJov80XgUF5xddMmtAwLeioJLnxirolhKvD+KNL2jeObn2pQePL2cGhPloDzTCU98BaPRg48rqpCLlY72fL+7iRyts2J6VCOEblyRSYt1vmej0yrHAy9vCiobFeRvKu6mqL916H+MUcRl5BoElI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775560285; c=relaxed/simple;
-	bh=TUx+zOkdIbgwvwJUIpQjeajGd8DR9V8Z0LlAjIsoAuk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pKNumkanAWTIDjJVXB7FNrVEiT8eLqy7SO8Xh5yBNo8JguHobV2k5ASCbyVszNr/jQxInvD83Cd6tqB9Lz2tGlTVQE8kLZBY0BoFi9QPphoO6ZymLDphlPNAVbwOioMHTQfHmrVgglC3lBnuBAIFmcnLh2sEdFj9OXq/xA8ubiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=GBXC6V0+; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1775560744; c=relaxed/simple;
+	bh=XFWP+yYv7Op8pTwYC7BBgS2sMG2E6wOzSttnqri0ltA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=j30otG/77E8T35eEY3KP4mwtrc/QzMuaCVT9258OPxdeo/Sznrcb0YxD269CvROhwRx/hxRCew7/wOhNJ5dMnCivys+P7VHJM+UjRE2JVj3hVBSdq5as8snDJFetQynJHVu0vWIa+i07ROwUIKpdnREn/vXuMQo5dxEAdH73uQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com; spf=pass smtp.mailfrom=akamai.com; dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b=RkBl6XZ0; arc=none smtp.client-ip=67.231.157.127
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=akamai.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="GBXC6V0+"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=QAAMci2a2IFoW4AUViSFOjWysthteAkqh5wfGRrvW6A=; b=GBXC6V0+dFiTvQA6IXOTnWtp+Z
-	HMDBgGe1y5PJ5yZivjW0OtO/7KJE9esMQ3jgtDAS7CUj86Fi+sPYX++NhGpvRTxcKhIVmYpLvs3Yu
-	66Yh5yRbo6Tm4QhZkRxdZYvHoLH+ncScWPC+Mqp8R2qwpl9uLMHH2lyKj3jdYw8VA/TMSvpSW1iih
-	n1KxTRS9eXtaGVNqf0BdI7baneLs1qlBqWSu2t4P8vc325bMOmWFUwRxSWUkm04Xm67lnAfyfHvPb
-	2tGbXaCDr5XmOmlzepdDWHXbnzDjUSPc/yjksF0f/fLj9vYJAmxq6KDuNabzatbMRj9W4cPxmO31e
-	50jitKVA==;
-Received: from sslproxy04.your-server.de ([78.46.152.42])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <nora.schiffer@ew.tq-group.com>)
-	id 1wA3z1-0006oo-2R;
-	Tue, 07 Apr 2026 12:48:35 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy04.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <nora.schiffer@ew.tq-group.com>)
-	id 1wA3z0-0007uJ-2M;
-	Tue, 07 Apr 2026 12:48:35 +0200
-From: Nora Schiffer <nora.schiffer@ew.tq-group.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Nishanth Menon <nm@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Tero Kristo <kristo@kernel.org>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux@ew.tq-group.com,
-	Nora Schiffer <nora.schiffer@ew.tq-group.com>
-Subject: [PATCH net-next v4 1/2] dt-bindings: net: ti: k3-am654-cpsw-nuss: Add ti,j722s-cpsw-nuss compatible
-Date: Tue,  7 Apr 2026 12:48:01 +0200
-Message-ID: <191e9f7e3a6c14eabe891a98c5fb646766479c0a.1775558273.git.nora.schiffer@ew.tq-group.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b="RkBl6XZ0"
+Received: from pps.filterd (m0409411.ppops.net [127.0.0.1])
+	by m0409411.ppops.net-00190b01. (8.18.1.11/8.18.1.11) with ESMTP id 6377x9qJ1499203;
+	Tue, 7 Apr 2026 11:50:12 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akamai.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=jan2016.eng; bh=QXb7xAciK
+	CGZeYHiKlYr17f4TzTjwyCF6FQFa6X5U9k=; b=RkBl6XZ0JUGI7HhrbhFWDWRDg
+	mWNWp/Z5OHtP5IcIAbyVtRPmxf8F1bm8XGUXU3WNmgenkExpzQnMtNSNbXomVjeX
+	Ii97Zxm/kY1+zp619ktmE+dSSjLiP888CxfXuJYy7wNiqQuSUScQfj+uHwqKkXbE
+	HigqvzXzl9gWT83WMGKY623kyh3L0y4jODrnchdnDN/Gsv42YHlNjE8VNIHHb60n
+	JgOseqKuvqxljUy9L6cgfxd3b+ib+JXBWgav+Gk4JFRoqw7m/m7vQaGPNn0JhmJZ
+	PO2+7z1TY161B+5dTqOWrd6VpDml6V5N6vNKChlPivtVZJk93cJDLUSdOdUUg==
+Received: from prod-mail-ppoint6 (prod-mail-ppoint6.akamai.com [184.51.33.61])
+	by m0409411.ppops.net-00190b01. (PPS) with ESMTPS id 4dbbyyxjfg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Apr 2026 11:50:12 +0100 (BST)
+Received: from pps.filterd (prod-mail-ppoint6.akamai.com [127.0.0.1])
+	by prod-mail-ppoint6.akamai.com (8.18.1.7/8.18.1.7) with ESMTP id 637Anuxn001030;
+	Tue, 7 Apr 2026 06:50:11 -0400
+Received: from prod-mail-relay01.akamai.com ([172.27.118.31])
+	by prod-mail-ppoint6.akamai.com (PPS) with ESMTP id 4dcmejac6p-1;
+	Tue, 07 Apr 2026 06:50:11 -0400 (EDT)
+Received: from muc-lhvdhd.munich.corp.akamai.com (muc-lhvdhd.munich.corp.akamai.com [172.29.0.147])
+	by prod-mail-relay01.akamai.com (Postfix) with ESMTP id E447184;
+	Tue,  7 Apr 2026 10:50:09 +0000 (UTC)
+From: Nick Hudson <nhudson@akamai.com>
+To: bpf@vger.kernel.org, netdev@vger.kernel.org,
+        Willem de Bruijn <willemb@google.com>,
+        Martin KaFai Lau <martin.lau@linux.dev>
+Cc: Nick Hudson <nhudson@akamai.com>, Max Tottenham <mtottenh@akamai.com>,
+        Anna Glasgall <aglasgal@akamai.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Eduard Zingerman <eddyz87@gmail.com>,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH bpf-next v3 1/6] bpf: name the enum for BPF_FUNC_skb_adjust_room flags
+Date: Tue,  7 Apr 2026 11:50:00 +0100
+Message-Id: <20260407105005.1639815-2-nhudson@akamai.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260407105005.1639815-1-nhudson@akamai.com>
+References: <20260407105005.1639815-1-nhudson@akamai.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.4.3/27964/Tue Apr  7 08:24:40 2026)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-07_02,2026-04-07_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=724
+ lowpriorityscore=0 mlxscore=0 bulkscore=0 malwarescore=0 suspectscore=0
+ spamscore=0 phishscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2604010000 definitions=main-2604070101
+X-Authority-Analysis: v=2.4 cv=YrE/gYYX c=1 sm=1 tr=0 ts=69d4e164 cx=c_pps
+ a=WPLAOKU3JHlOa4eSsQmUFQ==:117 a=WPLAOKU3JHlOa4eSsQmUFQ==:17
+ a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=Ifg-1AOnLHOf1gn6spyb:22
+ a=XKgOefoLEnF0tNwW78TB:22 a=X7Ea-ya5AAAA:8 a=1XWaLZrsAAAA:8
+ a=TMHggaePV_XZxh6C_gsA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA3MDA5OSBTYWx0ZWRfX58OMZhxsscVK
+ AedkSWof2myN+zA/Kuuj9IGM3xuE/x4zcAUaMyNmUsHDGKivAQRCZ1QBOKuh0nM2rh39NZ3eMvP
+ z1RB7DrxYVjULVBS/EuTzgTGKqig8VB7/fza6/v8vTRNlqVEvfaxmSIGng/hDBluFo07gqwdPxw
+ ZsRDxf56IdiGm96EPcBmOAjmXIltSVNe5bLBxM9wOvT2/3iTvSF4PZNfPLCrkMynXYMhrhdX6Yr
+ BsXL3HBZauC4/u4thl71goYrXQrhgL04/yhO9PWtkcqCAdGUivM0lgfQv0HjKPFx2hevbc4z0Ee
+ c3vzaXHZnPFFcrQDIPA5fJ73x3fp25Tj7D1HazcGT9LJiyFNA9SjOPwvyZhYvMRQWLOFL2ebv7z
+ k+Jot0mmnY9M0l0tLxvMTUmouQFBT/K8Y0SOtv7awR4nxr4BhfjJ6p5IlYhXhjDahA0+trlXHF9
+ LUpYmisIoIucu+QiuAQ==
+X-Proofpoint-ORIG-GUID: zfAH1hgxxVRYzHRCKxp_M5yURcRkxZ40
+X-Proofpoint-GUID: zfAH1hgxxVRYzHRCKxp_M5yURcRkxZ40
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-07_02,2026-04-07_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
+ priorityscore=1501 impostorscore=0 lowpriorityscore=0 adultscore=0
+ spamscore=0 bulkscore=0 suspectscore=0 clxscore=1015 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604070099
 
-The J722S CPSW3G is mostly identical to the AM64's, but additionally
-supports SGMII. The AM64 compatible ti,am642-cpsw-nuss is used as a
-fallback.
+The existing anonymous enum for BPF_FUNC_skb_adjust_room flags is
+named to enum bpf_adj_room_flags to enable CO-RE (Compile Once -
+Run Everywhere) lookups in BPF programs.
 
-Signed-off-by: Nora Schiffer <nora.schiffer@ew.tq-group.com>
+Co-developed-by: Max Tottenham <mtottenh@akamai.com>
+Signed-off-by: Max Tottenham <mtottenh@akamai.com>
+Co-developed-by: Anna Glasgall <aglasgal@akamai.com>
+Signed-off-by: Anna Glasgall <aglasgal@akamai.com>
+Signed-off-by: Nick Hudson <nhudson@akamai.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
 ---
+ include/uapi/linux/bpf.h       | 2 +-
+ tools/include/uapi/linux/bpf.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-v2: keep ti,am642-cpsw-nuss as a fallback
-v3: resubmission for net-next, no changes
-v4: remove redundant items: level
-
- .../bindings/net/ti,k3-am654-cpsw-nuss.yaml   | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/net/ti,k3-am654-cpsw-nuss.yaml b/Documentation/devicetree/bindings/net/ti,k3-am654-cpsw-nuss.yaml
-index a959c1d7e643a..c409c6310ed40 100644
---- a/Documentation/devicetree/bindings/net/ti,k3-am654-cpsw-nuss.yaml
-+++ b/Documentation/devicetree/bindings/net/ti,k3-am654-cpsw-nuss.yaml
-@@ -53,13 +53,18 @@ properties:
-   "#size-cells": true
+diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+index 552bc5d9afbd..c021ed8d7b44 100644
+--- a/include/uapi/linux/bpf.h
++++ b/include/uapi/linux/bpf.h
+@@ -6211,7 +6211,7 @@ enum {
+ };
  
-   compatible:
--    enum:
--      - ti,am642-cpsw-nuss
--      - ti,am654-cpsw-nuss
--      - ti,j7200-cpswxg-nuss
--      - ti,j721e-cpsw-nuss
--      - ti,j721e-cpswxg-nuss
--      - ti,j784s4-cpswxg-nuss
-+    oneOf:
-+      - enum:
-+          - ti,am642-cpsw-nuss
-+          - ti,am654-cpsw-nuss
-+          - ti,j7200-cpswxg-nuss
-+          - ti,j721e-cpsw-nuss
-+          - ti,j721e-cpswxg-nuss
-+          - ti,j784s4-cpswxg-nuss
-+      - items:
-+          - enum:
-+              - ti,j722s-cpsw-nuss
-+          - const: ti,am642-cpsw-nuss
+ /* BPF_FUNC_skb_adjust_room flags. */
+-enum {
++enum bpf_adj_room_flags {
+ 	BPF_F_ADJ_ROOM_FIXED_GSO	= (1ULL << 0),
+ 	BPF_F_ADJ_ROOM_ENCAP_L3_IPV4	= (1ULL << 1),
+ 	BPF_F_ADJ_ROOM_ENCAP_L3_IPV6	= (1ULL << 2),
+diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
+index 677be9a47347..ca35ed622ed5 100644
+--- a/tools/include/uapi/linux/bpf.h
++++ b/tools/include/uapi/linux/bpf.h
+@@ -6211,7 +6211,7 @@ enum {
+ };
  
-   reg:
-     maxItems: 1
+ /* BPF_FUNC_skb_adjust_room flags. */
+-enum {
++enum bpf_adj_room_flags {
+ 	BPF_F_ADJ_ROOM_FIXED_GSO	= (1ULL << 0),
+ 	BPF_F_ADJ_ROOM_ENCAP_L3_IPV4	= (1ULL << 1),
+ 	BPF_F_ADJ_ROOM_ENCAP_L3_IPV6	= (1ULL << 2),
 -- 
-TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht München, HRB 105018
-Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
-https://www.tq-group.com/
+2.34.1
 
