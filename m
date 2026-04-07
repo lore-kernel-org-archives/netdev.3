@@ -1,116 +1,116 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D5B23BD02;
-	Tue,  7 Apr 2026 08:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 918B23019BA;
+	Tue,  7 Apr 2026 08:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775551536; cv=none; b=DDyRYmWidzH78OdnAB4HKYUZyif+w8HrJNmiuwl58MN7Xf9z7mrwotc+UVWrzWb53wudTJgOUEPvDj4A9LMHFoyFzJSU0JDUljxTXL6xEtagJN8n2GdD37RRok5j2uSP+wq0w9A7pHMrCbqQ/V5Gr+C/DQPqw5SYAOVCjilmu5w=
+	t=1775551537; cv=none; b=WgqGtZJsWQagBgXVCoJFV5o3vgBJowKJMiMb244q9Qyrw+1I7QWjl8puucL236tE3WMXLa7ezEYHSTKl04UQPImO542p1tjJQ2AYWDao/kAda/e/OQsK37Rihqzb1H/rY5z6g29+aamz6v6aFgn2R4WOd7G6U92ceQrw/DPtfig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775551536; c=relaxed/simple;
-	bh=jP384dQlBm7+0SCO5ZJJaXjoRU3u3jjXCp1U5aJbLo8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pfz5cPMy2KFDq8KsyIL3paitNx0OumQLaQZZSgM1HNQSjn8TtUVs/rJjGcNcLZNBfouGUY+ylIuDq/xN131SKGtQD8GgZ0zS0Ab2JxKOnusDgJIFOj6RvjJw6xakz+gb8eeZlDROcNQr06ya1OWY9KVNrhCRoMIGiVdKHensYyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nb2iJeEd; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775551537; c=relaxed/simple;
+	bh=oSSyq82gg4+z0T2Bj9hPcbh0EZYmNYhgRVeE/ZrjDi4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j1eLFEKYKj0kyihWZCsgAPDn9YLx/8kzATsGjkwiLHsG1ZTkPIjtn3HuI7OzOU6lHfKNbbYeWrknhgJ/ltepRGAbNyYeiHs30gAJATd+uUGsK0bWxqho9fQpiQDDdkhnrBtw6mi1ulpCRZEwxxPG/3leuvpNra2Tc/c6PnC15LI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CAOQQwad; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nb2iJeEd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEF9BC2BCB0;
-	Tue,  7 Apr 2026 08:45:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775551535;
-	bh=jP384dQlBm7+0SCO5ZJJaXjoRU3u3jjXCp1U5aJbLo8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Nb2iJeEdChdUoqnpL4dn8Po8wCxct/AC3BXmA2qrr6zCu1g0XF+hiMegDWpkaykLO
-	 NHyYeRoAN9tphKjWrpP8SJtkNqcYQXsIT+WDRVtAsC0A8NSDvORu6FBshy+f6Vop0j
-	 y+9/9ZvsXq8VU6przpU/QOsjwPe1ZGpLdNSXxduQxYS/jWzFdV+MGklBiszFiTAPah
-	 wk2h1nOoSRUIs5xBcaiSXLomM5uacga4tdEx91TKcv005AJneogEzQIH6V7LgWh50d
-	 +F0BMP7GeH0KxXFTvyf0vxRzcQLCpR98dXTGcn5mNPXO92A5XBo8E8mt3PHA5LtyDj
-	 bx/YrcvmI29lQ==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Tue, 07 Apr 2026 10:45:18 +0200
-Subject: [PATCH net-next v2 2/2] mptcp: add receive queue awareness in
- tcp_rcv_space_adjust()
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CAOQQwad"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1AADC2BCB2;
+	Tue,  7 Apr 2026 08:45:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1775551537;
+	bh=oSSyq82gg4+z0T2Bj9hPcbh0EZYmNYhgRVeE/ZrjDi4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=CAOQQwad7n78Z3lS8pJeYaz+je0pxVkDDESU3pH+mXwVFpuWfLBPbG0r3D6N4Ywa2
+	 kcut2MBtiu4CaHYXnaWqlq3k0J688g86AEt15kBFaHU1fesFyAtpzdJe57T6WCnZ0F
+	 /owDW0+jMLigAcxnVku7GdnJqvMadIf6dCgW/GOs=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-hams@vger.kernel.org,
+	Yizhe Zhuang <yizhe@darknavy.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH net] netrom: do some basic forms of validation on incoming frames
+Date: Tue,  7 Apr 2026 10:45:31 +0200
+Message-ID: <2026040730-untagged-groin-bbb7@gregkh>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260407-net-next-mptcp-reduce-rbuf-v2-2-0d1d135bf6f6@kernel.org>
-References: <20260407-net-next-mptcp-reduce-rbuf-v2-0-0d1d135bf6f6@kernel.org>
-In-Reply-To: <20260407-net-next-mptcp-reduce-rbuf-v2-0-0d1d135bf6f6@kernel.org>
-To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Florian Westphal <fw@strlen.de>
-Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
- linux-kernel@vger.kernel.org, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1895; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=eOqSciaPlrzR/1urNztuxAJVnNevqkTWpXp6w0WWmR0=;
- b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDKvHFGPLnBLWsywxHa2C/tBrnq/4zfkjNR2Olr9XLqqZ
- dL50osPO0pZGMS4GGTFFFmk2yLzZz6v4i3x8rOAmcPKBDKEgYtTACbCe4+R4Zh3yXvT8sw/U+a3
- npMyXNb4U4t1ZWIfO2/Bsc93m0tqJjIyfFfadcawbNmDtARDWwOX2Uf0lsj5/d5VU1qk0rxH0/I
- XKwA=
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2298; i=gregkh@linuxfoundation.org; h=from:subject:message-id; bh=oSSyq82gg4+z0T2Bj9hPcbh0EZYmNYhgRVeE/ZrjDi4=; b=owGbwMvMwCRo6H6F97bub03G02pJDJlXjmgd/PLvkeoUldTbvF8qOA4ceNG3eHPOfZ4k9tXKV 06Uf5h0uSOWhUGQiUFWTJHlyzaeo/srDil6GdqehpnDygQyhIGLUwAm4n2OYb7jye8bT0vt0JYI V2te8N8toGTJtj0M87RqP7o1thqJfqlMu7D71vcfuxwjJgEA
+X-Developer-Key: i=gregkh@linuxfoundation.org; a=openpgp; fpr=F4B60CC5BF78C2214A313DCB3147D40DDB2DFB29
+Content-Transfer-Encoding: 8bit
 
-From: Paolo Abeni <pabeni@redhat.com>
+There is a lack of much validation of frame size coming from a
+netrom-based device.  While these devices are "trusted" doing some
+sanity checks is good to at least keep the fuzzing tools happy when they
+stumble across this ancient protocol and light up with a range of bug
+reports.
 
-This is the MPTCP counter-part of commit ea33537d8292 ("tcp: add receive
-queue awareness in tcp_rcv_space_adjust()").
-
-Prior to this commit:
-
-  ESTAB 33165568 0      192.168.255.2:5201 192.168.255.1:53380 \
-        skmem:(r33076416,rb33554432,t0,tb91136,f448,w0,o0,bl0,d0)
-
-After:
-
-  ESTAB 3279168 0      192.168.255.2:5201 192.168.255.1]:53042 \
-        skmem:(r3190912,rb3719956,t0,tb91136,f1536,w0,o0,bl0,d0)
-
-Same throughput.
-
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: linux-hams@vger.kernel.org
+Assisted-by: gregkh_clanker_2000
+Reviewed-by: Yizhe Zhuang <yizhe@darknavy.com>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ net/netrom/af_netrom.c | 6 ++++++
+ net/netrom/nr_route.c  | 6 +++---
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 70a090a95299..cf5747595259 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2159,11 +2159,13 @@ static void mptcp_rcv_space_adjust(struct mptcp_sock *msk, int copied)
- 	if (rtt_us == U32_MAX || time < (rtt_us >> 3))
- 		return;
+diff --git a/net/netrom/af_netrom.c b/net/netrom/af_netrom.c
+index b816c56124ab..b605891bf86e 100644
+--- a/net/netrom/af_netrom.c
++++ b/net/netrom/af_netrom.c
+@@ -885,6 +885,9 @@ int nr_rx_frame(struct sk_buff *skb, struct net_device *dev)
+ 	 *	skb->data points to the netrom frame start
+ 	 */
  
--	if (msk->rcvq_space.copied <= msk->rcvq_space.space)
-+	copied = msk->rcvq_space.copied;
-+	copied -= mptcp_inq_hint(sk);
-+	if (copied <= msk->rcvq_space.space)
- 		goto new_measure;
++	if (skb->len < NR_NETWORK_LEN + NR_TRANSPORT_LEN)
++		return 0;
++
+ 	src  = (ax25_address *)(skb->data + 0);
+ 	dest = (ax25_address *)(skb->data + 7);
  
- 	trace_mptcp_rcvbuf_grow(sk, time);
--	if (mptcp_rcvbuf_grow(sk, msk->rcvq_space.copied)) {
-+	if (mptcp_rcvbuf_grow(sk, copied)) {
- 		/* Make subflows follow along.  If we do not do this, we
- 		 * get drops at subflow level if skbs can't be moved to
- 		 * the mptcp rx queue fast enough (announced rcv_win can
-@@ -2177,7 +2179,7 @@ static void mptcp_rcv_space_adjust(struct mptcp_sock *msk, int copied)
- 			slow = lock_sock_fast(ssk);
- 			/* subflows can be added before tcp_init_transfer() */
- 			if (tcp_sk(ssk)->rcvq_space.space)
--				tcp_rcvbuf_grow(ssk, msk->rcvq_space.copied);
-+				tcp_rcvbuf_grow(ssk, copied);
- 			unlock_sock_fast(ssk, slow);
- 		}
- 	}
-
+@@ -963,6 +966,9 @@ int nr_rx_frame(struct sk_buff *skb, struct net_device *dev)
+ 
+ 	sk = nr_find_listener(dest);
+ 
++	if (skb->len < NR_NETWORK_LEN + NR_TRANSPORT_LEN + 1 + AX25_ADDR_LEN)
++		return 0;
++
+ 	user = (ax25_address *)(skb->data + 21);
+ 
+ 	if (sk == NULL || sk_acceptq_is_full(sk) ||
+diff --git a/net/netrom/nr_route.c b/net/netrom/nr_route.c
+index 9cc29ae85b06..bf60f5682a4f 100644
+--- a/net/netrom/nr_route.c
++++ b/net/netrom/nr_route.c
+@@ -755,10 +755,10 @@ int nr_route_frame(struct sk_buff *skb, ax25_cb *ax25)
+ 	struct sk_buff *nskb, *oskb;
+ 
+ 	/*
+-	 * Reject malformed packets early. Check that it contains at least 2
+-	 * addresses and 1 byte more for Time-To-Live
++	 * Reject malformed packets early. Check that it contains at least
++	 * the network and transport headers (20 bytes).
+ 	 */
+-	if (skb->len < 2 * sizeof(ax25_address) + 1)
++	if (skb->len < NR_NETWORK_LEN + NR_TRANSPORT_LEN)
+ 		return 0;
+ 
+ 	nr_src  = (ax25_address *)(skb->data + 0);
 -- 
 2.53.0
 
