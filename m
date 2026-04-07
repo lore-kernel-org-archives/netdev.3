@@ -1,16 +1,16 @@
 Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981062FFF9D;
-	Tue,  7 Apr 2026 17:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C08C30FF20;
+	Tue,  7 Apr 2026 17:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775583040; cv=none; b=flC5KHYDkegUniCTM5wzUCxV0seiGYU6ZCzqS4kE6+nVm8+LPRKKNAWqgsKDa/Ff19OVpwa/F/Boh50Uv79iGevXRYVxmHWHVBZk3K1/WfCF1iGiex/sSBjXdvUer7t1fRp+F8UVtLsJ7QgVqhQiUOm1DtGT+IQoG7lXocEZCOw=
+	t=1775583043; cv=none; b=dAtI+JAsK768O9It4J16dM4GxpjkZw+K17GnipPbBDTPcdKLU2PfM6cyAvL1uNMrsLlRuDscB356QlGtn8Mf26q8xoY9sauBx38DHwDkNPNbw5Qeje6HRctOalJR2s5ddQEw3lEy4/JMhreN5Upo8A5RdxEPNa96jz60CUKTfl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775583040; c=relaxed/simple;
-	bh=RuGgmeKjH02JQYKyPD4VMsY7Oa2iZ0/ts8jVV3XqkOw=;
+	s=arc-20240116; t=1775583043; c=relaxed/simple;
+	bh=Bx71B91bExZVi8hwTVvN/Q1tQ4CJ9ow2kReJr6TCmRs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F5hb8IbZ0rJcaqRZmwQCNnNcn7VTOUb/0sBx5ylztJhBpMH63pm7nd5Fb9bGY0iUSELY4LBAOjPH3HpkqlJvGTT8vbyTCSLSgy88X3/DjXctdhV+Xh5HQf4MAdGl69k4KzkV+e6Av95ErEbWcZKKGCUg69MzSPx1W22B0UQ1zMw=
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y6ES4kjNVKyOrAJ9us7mizTlPH0yXeVpC1Xyv8KV4RotVXxtK0DPkuexoUHes+Z9wmpPVU+3SGXHcZ+x2riQHsqUOBOEbA7I2GhXfA9g8Z1CXVuaKxTDJtieEMgDSy2fzB58jPuWhjHHMX2zBOkFVPxCUaofJcLzMuGHTfg8RaU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
@@ -18,9 +18,9 @@ Received: from local
 	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
 	 (Exim 4.99)
 	(envelope-from <daniel@makrotopia.org>)
-	id 1wAAFy-000000000o8-1cuP;
-	Tue, 07 Apr 2026 17:30:30 +0000
-Date: Tue, 7 Apr 2026 18:30:27 +0100
+	id 1wAAG6-000000000ob-29PF;
+	Tue, 07 Apr 2026 17:30:38 +0000
+Date: Tue, 7 Apr 2026 18:30:35 +0100
 From: Daniel Golle <daniel@makrotopia.org>
 To: Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
 	Vladimir Oltean <olteanv@gmail.com>,
@@ -36,8 +36,9 @@ Cc: Frank Wunderlich <frankwu@gmx.de>, Chad Monroe <chad@monroe.io>,
 	Jose Maria Verdu Munoz <jverdu@maxlinear.com>,
 	Avinash Jayaraman <ajayaraman@maxlinear.com>,
 	John Crispin <john@phrozen.org>
-Subject: [PATCH net-next 1/3] net: dsa: mxl862xx: reject DSA_PORT_TYPE_DSA
-Message-ID: <b686f3a22d8a6e7d470e7aa98da811a996a229b9.1775581804.git.daniel@makrotopia.org>
+Subject: [PATCH net-next 2/3] net: dsa: mxl862xx: don't skip early bridge
+ port configuration
+Message-ID: <15962aac29ebe0a6eb77565451acff880c41ef33.1775581804.git.daniel@makrotopia.org>
 References: <cover.1775581804.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -49,50 +50,37 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <cover.1775581804.git.daniel@makrotopia.org>
 
-DSA links aren't supported by the mxl862xx driver.
+mxl862xx_bridge_port_set() is currently guarded by the
+mxl8622_port->setup_done flag, as the early call to
+mxl862xx_bridge_port_set() from mxl862xx_port_stp_state_set() would
+otherwise cause a NULL-pointer dereference on unused ports which don't
+have dp->cpu_dp despite not being a CPU port.
 
-Instead of returning early from .port_setup when called for
-DSA_PORT_TYPE_DSA ports rather return -EOPNOTSUPP and show an error
-message.
+Using the setup_done flag (which is never set for unused ports),
+however, also prevents mxl862xx_bridge_port_set() from configuring
+user ports' single-port bridges early, which was unintended.
 
-The desired side-effect is that the framework will switch the port to
-DSA_PORT_TYPE_UNUSED, so we can stop caring about DSA_PORT_TYPE_DSA in
-all other places.
+Fix this by returning early from mxl862xx_bridge_port_set() in case
+dsa_port_is_unused().
 
+Fixes: 340bdf984613c ("net: dsa: mxl862xx: implement bridge offloading")
 Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 ---
- drivers/net/dsa/mxl862xx/mxl862xx.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/net/dsa/mxl862xx/mxl862xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/dsa/mxl862xx/mxl862xx.c b/drivers/net/dsa/mxl862xx/mxl862xx.c
-index e4e16c7207630..9a9714c4859b1 100644
+index 9a9714c4859b1..f65525aff5e52 100644
 --- a/drivers/net/dsa/mxl862xx/mxl862xx.c
 +++ b/drivers/net/dsa/mxl862xx/mxl862xx.c
-@@ -544,10 +544,14 @@ static int mxl862xx_port_setup(struct dsa_switch *ds, int port)
+@@ -278,7 +278,7 @@ static int mxl862xx_set_bridge_port(struct dsa_switch *ds, int port)
+ 	bool enable;
+ 	int i, idx;
  
- 	mxl862xx_port_fast_age(ds, port);
- 
--	if (dsa_port_is_unused(dp) ||
--	    dsa_port_is_dsa(dp))
+-	if (!p->setup_done)
 +	if (dsa_port_is_unused(dp))
  		return 0;
  
-+	if (dsa_port_is_dsa(dp)) {
-+		dev_err(ds->dev, "port %d: DSA links not supported\n", port);
-+		return -EOPNOTSUPP;
-+	}
-+
- 	ret = mxl862xx_configure_sp_tag_proto(ds, port, is_cpu_port);
- 	if (ret)
- 		return ret;
-@@ -591,7 +595,7 @@ static void mxl862xx_port_teardown(struct dsa_switch *ds, int port)
- 	struct mxl862xx_priv *priv = ds->priv;
- 	struct dsa_port *dp = dsa_to_port(ds, port);
- 
--	if (dsa_port_is_unused(dp) || dsa_port_is_dsa(dp))
-+	if (dsa_port_is_unused(dp))
- 		return;
- 
- 	/* Prevent deferred host_flood_work from acting on stale state.
+ 	if (dsa_port_is_cpu(dp)) {
 -- 
 2.53.0
