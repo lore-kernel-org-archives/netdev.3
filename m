@@ -1,56 +1,57 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ABEB38D008
-	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 13:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185893CCFB0
+	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 13:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775653919; cv=none; b=FO56X3QFKcbcCz8qn7XZ0CErNQNx+4DIZcHsi4BATCRLfyfW/hVWio779/THPMYsmGAW1Q8tb055gm1gYIyRSNKlViwfplNjPCxYmdE7E3oSyU/otaSo5ctg91smIwNbR2b5l6zMbBAcHco1oA3dFPD7INltHZm/QJmPfZuK/4g=
+	t=1775653921; cv=none; b=eCtbWep/IxH+D4OZjW0gyJIzSTxk+wqPFXpxD9gG+yhGA2A+T+ZVRLmq5VYy/5ZvMNSFEMxyqsdZZJnf4j77RrmAlHyrSeRAmCUGUhwWzWBGx1L9P9/E/tREHop12bPwESSIOeEf0DXDT2Wf9/nyZ+cxBMDW+QWjDWWXHY1d790=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775653919; c=relaxed/simple;
-	bh=jqWWnbeGaAloNgo2/0T0yqS/cY0f70+KgebTL+VZ8HI=;
+	s=arc-20240116; t=1775653921; c=relaxed/simple;
+	bh=6Gpm78H9t2C6etiRw2hqX9OI9lfPgYaJTQ33kuwqqOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UF3fkV5Rme3DPeDqwERc1pNiezs5yFjn8HlWXWs9XQKCifr8hp2aL8ytAY6SpEhPYPHq/n/r1ocVxceHRXP6OS++A4s9CsO7A+coJQPs+UP53sH1gCOij+ltJgPEcbLUFDHXE86S9edgagRbTd6aB2pwvCoHdYAyfGr9FYNskvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WogBYzQV; arc=none smtp.client-ip=192.198.163.7
+	 MIME-Version; b=P3p9DK2CZZFIFddR/DKPmTvMKT6YfKXPvaHAfbGI6v0iaHMNlVb1S37yXeDDd5O0GIURo5mrJllat1BT+CjQnOl9hdB3Z4AohUjIuILHMtR9CjsyjHzb4p3snoRevILQGRlH/AEwanKExIZxnWBvyRUB1eB6Umb7P0YV2k5P5Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HigbuAdB; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WogBYzQV"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HigbuAdB"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775653918; x=1807189918;
+  t=1775653920; x=1807189920;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=jqWWnbeGaAloNgo2/0T0yqS/cY0f70+KgebTL+VZ8HI=;
-  b=WogBYzQVLLLRsLbLfWYRcPYJijap9mk3Z9KRQIyTOKlwihwBtEHOvLrx
-   dIQsPe+dI29htdQnNT0CPfLHNlxnvf9hkCyFGsdNmMQxHkOy//UC4tCVZ
-   zGNjidVv0i6XWtkxjZpZ9L98tAEXvkcXAJ+wm5yaFp+9X1CKSNxAyDYUS
-   w7mgMFJ4aP5dRGr6IQvRRVie3iREdPzN0Osvq3KyGmtXSEiu83kqnPEVT
-   XtrPfgJw1RNF+xnrcdcpoTE3/gr4QTdOsxNLK+uq1mAGOOGxjkf2/eXqk
-   QE9TkZk+bpQEdh3y9YB+MD6gxt98IpdK/xalGE8RDpC8e7fxznF/nvnsn
-   g==;
-X-CSE-ConnectionGUID: XcD9/EHbR/qfXAq/gfppxA==
-X-CSE-MsgGUID: ZBcoD/NwQaOUqVfmuucatw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11752"; a="102087226"
+  bh=6Gpm78H9t2C6etiRw2hqX9OI9lfPgYaJTQ33kuwqqOU=;
+  b=HigbuAdBkW4Vv6v7C600E1vMlYMLodfhRfIyj1rKP8tmIa1T0fu8Snyy
+   iP3v5JTeOlK2eiljFkdkaAEJz6wulCi6qWDePEvbDU88X9yge7O7MMmH/
+   TL6nrig0W0HiYn1j62g1Bx0G2r7BNc64jFAw9EmMVOHVeOjxrRhfLnfCi
+   TZyltFRUAgc512jfCH9RxJe463PMYAld+rZ8e5zeQ8FCa0TbDCsZxMg3R
+   2zz4F/mq5aw/XmXyhV7dC/Moco/u+Hd3XMNPupTudRWRnSfpQlOJQK7EK
+   5GXCEkD2m3Ahi0k7zsD8Y7K+MNHyx5HbusQY6VzBJeaIFDp6kdBF1VrMi
+   A==;
+X-CSE-ConnectionGUID: syc2Kc15SZu6F3HXxRnVAw==
+X-CSE-MsgGUID: oupka7XVTliMGx0TGBflZA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11752"; a="102087229"
 X-IronPort-AV: E=Sophos;i="6.23,167,1770624000"; 
-   d="scan'208";a="102087226"
+   d="scan'208";a="102087229"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2026 06:11:58 -0700
-X-CSE-ConnectionGUID: UYU4/WfkRCy55u/s3o2AYw==
-X-CSE-MsgGUID: pcGEyYDkTQuuRSYQcN+Hdg==
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2026 06:12:00 -0700
+X-CSE-ConnectionGUID: rUHFCMYtRA2GMS7NnUPfyA==
+X-CSE-MsgGUID: 50q468FFT7aSpIcd5UV7jg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,167,1770624000"; 
-   d="scan'208";a="228714944"
+   d="scan'208";a="228714949"
 Received: from amlin-019-225.igk.intel.com ([10.102.19.225])
-  by orviesa007.jf.intel.com with ESMTP; 08 Apr 2026 06:11:57 -0700
+  by orviesa007.jf.intel.com with ESMTP; 08 Apr 2026 06:11:59 -0700
 From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 To: intel-wired-lan@lists.osuosl.org,
 	anthony.l.nguyen@intel.com,
 	aleksandr.loktionov@intel.com
-Cc: netdev@vger.kernel.org
-Subject: [PATCH iwl-net v2 1/6] ixgbe: fix SWFW semaphore timeout for X550 family
-Date: Wed,  8 Apr 2026 15:11:49 +0200
-Message-ID: <20260408131154.2661818-2-aleksandr.loktionov@intel.com>
+Cc: netdev@vger.kernel.org,
+	Paul Greenwalt <paul.greenwalt@intel.com>
+Subject: [PATCH iwl-net v2 2/6] ixgbe: add bounds check for debugfs register access
+Date: Wed,  8 Apr 2026 15:11:50 +0200
+Message-ID: <20260408131154.2661818-3-aleksandr.loktionov@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260408131154.2661818-1-aleksandr.loktionov@intel.com>
 References: <20260408131154.2661818-1-aleksandr.loktionov@intel.com>
@@ -62,56 +63,81 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-According to FW documentation, the most time-consuming FW operation is
-Shadow RAM (SR) dump which takes up to 3.2 seconds.  For X550 family
-devices the module-update FW command can take over 4.5 s.  The default
-semaphore loop runs 200 iterations with a 5 ms sleep each, giving a
-maximum wait of 1 s -- not "200 ms" as previously stated in error.
-This is insufficient for X550 family FW update operations and causes
-spurious EBUSY failures.
+From: Paul Greenwalt <paul.greenwalt@intel.com>
 
-Extend the SW/FW semaphore timeout from 1 s to 5 s (1000 iterations x
-5 ms) for all three X550 variants: ixgbe_mac_X550, ixgbe_mac_X550EM_x,
-and ixgbe_mac_x550em_a.  All three share the same FW and exhibit the
-same worst-case latency.  Use three explicit mac.type comparisons rather
-than a range check so future MAC additions are not inadvertently
-captured.
+Prevent out-of-bounds MMIO accesses triggered through user-controlled
+register offsets.  IXGBE_HFDR (0x15FE8) is the highest valid MMIO
+register in the ixgbe register map; any offset beyond it would address
+unmapped memory.
 
-The timeout variable is set immediately before the loop so the intent
-is clear, with an inline comment stating the resulting maximum delay.
+Add a defense-in-depth check at two levels:
 
-Suggested-by: Soumen Karmakar <soumen.karmakar@intel.com>
+1. ixgbe_read_reg() -- the noinline register read accessor.  A
+   WARN_ON_ONCE() guard here catches any future code path (including
+   ioctl extensions) that might inadvertently pass an out-of-range
+   offset without relying on higher layers to catch it first.
+   ixgbe_write_reg() is a static inline called from the TX/RX hot path;
+   adding WARN_ON_ONCE there would inline the check at every call site,
+   so only the read path gets this guard.
+
+2. ixgbe_dbg_reg_ops_write() -- the debugfs 'reg_ops' interface is the
+   only current path where a raw, user-supplied offset enters the driver.
+   Gating it before invoking the register accessors provides a clean,
+   user-visible failure (silent ignore with no kernel splat) for
+   deliberately malformed debugfs writes.
+
+Add a reg <= IXGBE_HFDR guard to both the read and write paths in
+ixgbe_dbg_reg_ops_write(), and a WARN_ON_ONCE + early-return guard to
+ixgbe_read_reg().
+
+Fixes: 91fbd8f081e2 ("ixgbe: added reg_ops file to debugfs")
+Signed-off-by: Paul Greenwalt <paul.greenwalt@intel.com>
 Cc: stable@vger.kernel.org
-Suggested-by: Marta Plantykow <marta.a.plantykow@intel.com>
 Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 ---
 v1 -> v2:
- - Squash with 0015 (X550EM extension); fix commit message ("200ms" was
-   wrong, actual default is 1 s); replace >= / <= range check with three
-   explicit mac.type == comparisons per Tony Nguyen.
+ - Add Fixes: tag; reroute from iwl-next to iwl-net (security-relevant
+   hardening for user-controllable out-of-bounds MMIO).
 
- drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_debugfs.c | 6 ++++--
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c    | 2 ++
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c
-index e67e2fe..a3c8f51 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c
-@@ -577,6 +577,15 @@ int ixgbe_acquire_swfw_sync_X540(struct ixgbe_hw *hw, u32 mask)
- 
- 	swmask |= swi2c_mask;
- 	fwmask |= swi2c_mask << 2;
-+	/* Extend to 5 s (1000 x 5 ms) for X550 family; default is 1 s
-+	 * (200 x 5 ms).  FW SR-dump takes up to 3.2 s; module-update up
-+	 * to 4.5 s.
-+	 */
-+	if (hw->mac.type == ixgbe_mac_X550 ||
-+	    hw->mac.type == ixgbe_mac_X550EM_x ||
-+	    hw->mac.type == ixgbe_mac_x550em_a)
-+		timeout = 1000;
-+
- 	for (i = 0; i < timeout; i++) {
- 		/* SW NVM semaphore bit is used for access to all
- 		 * SW_FW_SYNC bits (not just NVM)
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_debugfs.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_debugfs.c
+index 5b1cf49d..a6a19c0 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_debugfs.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_debugfs.c
+@@ -86,7 +86,8 @@ static ssize_t ixgbe_dbg_reg_ops_write(struct file *filp,
+ 		u32 reg, value;
+ 		int cnt;
+ 		cnt = sscanf(&ixgbe_dbg_reg_ops_buf[5], "%x %x", &reg, &value);
+-		if (cnt == 2) {
++		/* bounds-check register offset */
++		if (cnt == 2 && reg <= IXGBE_HFDR) {
+ 			IXGBE_WRITE_REG(&adapter->hw, reg, value);
+ 			value = IXGBE_READ_REG(&adapter->hw, reg);
+ 			e_dev_info("write: 0x%08x = 0x%08x\n", reg, value);
+@@ -97,7 +98,8 @@ static ssize_t ixgbe_dbg_reg_ops_write(struct file *filp,
+ 		u32 reg, value;
+ 		int cnt;
+ 		cnt = sscanf(&ixgbe_dbg_reg_ops_buf[4], "%x", &reg);
+-		if (cnt == 1) {
++		/* bounds-check register offset */
++		if (cnt == 1 && reg <= IXGBE_HFDR) {
+ 			value = IXGBE_READ_REG(&adapter->hw, reg);
+ 			e_dev_info("read 0x%08x = 0x%08x\n", reg, value);
+ 		} else {
+
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+index 210c7b9..4a1f3c2 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+@@ -354,4 +354,6 @@ u32 ixgbe_read_reg(struct ixgbe_hw *hw, u32 reg)
+ 	if (ixgbe_removed(reg_addr))
+ 		return IXGBE_FAILED_READ_REG;
++	if (WARN_ON_ONCE(reg > IXGBE_HFDR))
++		return IXGBE_FAILED_READ_REG;
+ 	if (unlikely(hw->phy.nw_mng_if_sel &
+ 		     IXGBE_NW_MNG_IF_SEL_SGMII_ENABLE)) {
 -- 
 2.52.0
