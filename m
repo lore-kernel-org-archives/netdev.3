@@ -1,99 +1,101 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92693B27C9
-	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 09:41:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503603ACA64
+	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 09:43:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775641301; cv=none; b=ImCzX174AB8BJ3YBMA9kRv3G689Z8Eb2zsmhxaqjvVKlm74FpdkUQEeHFAxbLwcKj7TL6AuLUZIbhy7s+028M2GDfaJ9LsjLqUdk0h5j72L+iOw+p+TOr+tbPai187E5AKFysPFKfhtRDjnZTrXPU84uV9h8aXdmp+X9oWNPHc0=
+	t=1775641391; cv=none; b=gRlWMh+HSVTcVVzB1lK2ncmNU8iV6m1BRFRXV2NFH8+pqh8q5nYQkWDOsF3AJvl3KWYgL4F8mHqhrK04O0MuZSxJwF7uluiY2rD0j/Q5iSvyDbriiBvLuuQ1PsaLVIn5+hXivOziybeESml3zHY+bmEqIkiyeHsAjsGAFbzbtbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775641301; c=relaxed/simple;
-	bh=GtatU7a61TbhaghBTwgqAwUFt/P6h7smjsYWzrNbhgE=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=WxF9MSIGUhrL6xFh6bbKlb/YyJLbRApvpfHDktE0+DDt3QRY6k/253+D2vdnK+cbodm+bAL5s8OxbwBv1MeEI/0apAlH557UR6fUVPGor6cZ9NeJzWK8WA27gl2+asSbERA+xuzj8ooElAhrUzLerrSL7X3Z7kJ26ta6LAQNKL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=KBRtZISk; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1775641391; c=relaxed/simple;
+	bh=m9Oo2arh0z6aXQFY+uLJpmLg1Pj1JP9yLKoNs1IT+UE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uksEfcEJvT8rNMv4BW2l/S43tHFjvcJ5pSdGMgkQWu8B50FTTvBg/yn+1NloRTu1AmQkkHRooDFgBsfC03cxTuw2vVm4WZ3X8JT+xNj+XXcivvx1ZnXjDuYF70lTfdRoMSloeLMx91NnT9lf6jCPpPWSWanFqGqg9f+/NPxoh5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=cY2pI/p6; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="KBRtZISk"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=ymap6qnTrcZjA2wjOv/aJIypsrfZm0ThDKHwcJw6fQA=; b=KBRtZISkGajYEF77tW0PaVeWQX
-	cPZnzgBxvtuhhdl0AWKtISEgdRk5ygONloyCeyvc7bShsFUU291gw31NnmZThiKumCavoDUxWZ7ht
-	cVFxKfusOkbLHw7diDcG/m/WO3KmVv7Y38vbfzTiDlCH3hIE7MQt+BAIhGaN+SOZknZvPt/nDFVer
-	nX9Wo9T5rTYa1vxaHQ/lmKiB9p4+CfBiZll05OfJ9M7/jxzZGMStDbGxzi0qdRsZw0SJavADbkyRZ
-	OUT8++lqg326oe/ePFqZ6aNhK2gp3lxLY6XKiSo7EBlX3bdqQV2MVuRQa7MzXTkTRzYo9u5SC8NNU
-	w5ecUjoQ==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:36872 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1wAPCB-0000000024F-27WA;
-	Wed, 08 Apr 2026 10:27:35 +0100
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1wAPC6-0000000F7kr-1b7i;
-	Wed, 08 Apr 2026 10:27:30 +0100
-In-Reply-To: <adYfPBHsXxQUsMyr@shell.armlinux.org.uk>
-References: <adYfPBHsXxQUsMyr@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jitendra Vegiraju <jitendra.vegiraju@broadcom.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-sunxi@lists.linux.dev,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Samuel Holland <samuel@sholland.org>
-Subject: [PATCH RFC net-next 10/10] net: stmmac: only print receive COE type
- for GMAC cores
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="cY2pI/p6"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 066B4207B3;
+	Wed,  8 Apr 2026 11:43:06 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 5MlJ_nIEBAeJ; Wed,  8 Apr 2026 11:43:05 +0200 (CEST)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id 76EA2207C6;
+	Wed,  8 Apr 2026 11:43:05 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 76EA2207C6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1775641385;
+	bh=7lHMzGTmvAk3JyW86PDPZggmH+wRhYSy+Nw4BJRjtg4=;
+	h=From:To:CC:Subject:Date:From;
+	b=cY2pI/p6SAtSWpjDALSgb3El9UQEnXW/nVaDyynO4DlnFiRiTh4FT0/zVXB9o8Wbw
+	 PdZh8lR0dXV04yMm18lUBhYRLXIaG73OjhD5xg4MfsnvKLUkSI05nrMpMhPH9KSovG
+	 utiBE+4cqIQ0bMTNi9rjmaBBe0NjDsLddZo9SlDijbN2Q/3DqTf2yaqj+z+kdozuGW
+	 KGG7TtP/RFUpoTPrscKbx17Jawr8SUeaL8aYT695lxAHdF5rs2khkojejZUv4tcLkY
+	 m+5gvzGnfAbudWccbls6ySdDYHbR0QWLeC86iy/y8khV5vBPkQAI1+K5aI5fXT/4ZN
+	 A3so6F36kxhug==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 8 Apr
+ 2026 11:43:04 +0200
+Received: (nullmailer pid 150862 invoked by uid 1000);
+	Wed, 08 Apr 2026 09:43:03 -0000
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
+	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
+Subject: [PATCH 0/2] pull request (net-next): ipsec-next 2026-04-08
+Date: Wed, 8 Apr 2026 11:42:39 +0200
+Message-ID: <20260408094258.148555-1-steffen.klassert@secunet.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1wAPC6-0000000F7kr-1b7i@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Wed, 08 Apr 2026 10:27:30 +0100
+Content-Type: text/plain
+X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
+ (10.32.0.171)
 
-As identified in the previous commit, only GMAC cores have a COE type,
-but priv->snpsver's numberspace is core specific. Change the test for
-printing this to check the core type instead of checking for the
-Synopssys IP version being < v4.0, which will incorrectly match XGMAC
-cores.
+1) Update outdated comment in xfrm_dst_check().
+   From kexinsun.
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+2) Drop support for HMAC-RIPEMD-160 from IPsec.
+   From Eric Biggers.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 93c031b3cfd5..f5fe97c1abd4 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -7461,7 +7461,7 @@ static int stmmac_hw_init(struct stmmac_priv *priv)
- 	if (priv->plat->rx_coe) {
- 		priv->hw->rx_csum = priv->plat->rx_coe;
- 		dev_info(priv->device, "RX Checksum Offload Engine supported\n");
--		if (priv->snpsver < DWMAC_CORE_4_00)
-+		if (priv->plat->core_type == DWMAC_CORE_GMAC)
- 			dev_info(priv->device, "COE Type %d\n", priv->hw->rx_csum);
- 	}
- 	if (priv->plat->tx_coe)
--- 
-2.47.3
+Please pull or let me know if there are problems.
 
+Thanks!
+
+The following changes since commit d2adf01780b8957b31f4954d56646b02de956f65:
+
+  net: freescale: ucc_geth: call of_node_put once (2026-02-24 18:26:30 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec-next.git tags/ipsec-next-2026-04-08
+
+for you to fetch changes up to 05d42dc8ab92aa54aaeb1c033927c88fd2accba4:
+
+  xfrm: Drop support for HMAC-RIPEMD-160 (2026-04-07 10:47:58 +0200)
+
+----------------------------------------------------------------
+ipsec-next-2026-04-08
+
+----------------------------------------------------------------
+Eric Biggers (1):
+      xfrm: Drop support for HMAC-RIPEMD-160
+
+kexinsun (1):
+      xfrm: update outdated comment
+
+ net/xfrm/xfrm_algo.c                | 20 --------------------
+ net/xfrm/xfrm_policy.c              |  2 +-
+ tools/testing/selftests/net/ipsec.c |  8 ++------
+ 3 files changed, 3 insertions(+), 27 deletions(-)
