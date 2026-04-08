@@ -1,118 +1,186 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011056.outbound.protection.outlook.com [52.101.65.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8B9377EBC
-	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 07:19:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775632755; cv=none; b=XZhdLgF3+nVp0ovCjIrL61UWRVcoQUYciFFWsc4RHLgtvOsyktnCZ+k43flPjjF1Hnt23K907NQQnbS3kCYUmHonppOLNL17Hoj+toPJfjL6nkEEl9Loh5AElZVcGG0qh3mi96Jyyn3jQ728APp/my98M49qwOF1RGo1XZezGVU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775632755; c=relaxed/simple;
-	bh=KXH5WS6Q40ibpj4kE0d1HhMaWRjL85bzTmnYQmsoq8Y=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=XYVgJ2R3Ec8o7n3hpG2bVYGGXpWaj7dbLm71G6Y8x8uGd1uA4jpqUCFkx8Xb9m7TB7IcnR33SNMya+WmEzPrVZ25Kz5/zc626b/W5PQD+ATCAgu183DVYsG8t+OZPAdW6j1IUS6CsCnpm9ZMKDJWsXMwv98pB48QLaa6yuLuIWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UNJmFyJV; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EAD8377EB2;
+	Wed,  8 Apr 2026 07:25:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.56
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775633133; cv=fail; b=eStm/sLHvI1PlAZ1x8IEHtwkRXOyLZPl+S52HTAkRwhl6XNDEZWBpNdghilEiXWsIdnloOpUW+Z7dE4gGJtcT9KRjw2nyOdjJ6OuYkh0djt85KdfGdFzKlbIANfJXAQfY4ht9k5Ft87kAq3mAoSbjWaVLCwgtBtcireMlBMNMFQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775633133; c=relaxed/simple;
+	bh=lZLzwn+RrbII7CQ2MRUCrwEdpnMp0GhugpbOrQG4K6E=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=XZ3ScIQ+lyGWZqG0rIvY9X2Zh3F6hsAcFlnDz1u20Os/y2CshxLAcWmJwyN5Cgx5yz1MNxZMAd17WdpWo8qCFUqlXr+OrGNzB968ExRgLNSwkbyeZcLQLDM0pyl0EX5ATsp9RUeHrTY0HVEgqG7QdebYs8DuSrF7dXzSdXDOuVA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=SrTgWgiw; arc=fail smtp.client-ip=52.101.65.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UNJmFyJV"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-35c238f1063so3610130a91.1
-        for <netdev@vger.kernel.org>; Wed, 08 Apr 2026 00:19:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775632753; x=1776237553; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hjlYOd9XXvId1/7XLc+lCyUWcW3FTaMcLCVtuzeeaQQ=;
-        b=UNJmFyJVCLDf4wPkPBBMn/eDPxeolQOIwz4Fq70YmC9KSZHULG/6N0fU39ZSkpN9PO
-         Rgk9Q3pKhVQTg5aL8DGSesmucpkWMBPgQ8b/WeiBRUaQuwiIHfcr6CymlX/MxRfF/sQQ
-         XRdLGlF/l3vN6E+LvlW2KRQNqHFLZrf2nkfDGCdxT7j5nBC8O4GnGTG+lo/OwQIFW37P
-         KLb24izmXRAgWW7l2IW6IlIM0x1W/V9hnclL6P85bdd3QCezVeTgVrWyAMmg9N6LAqG3
-         K1aDXsdkSBt9z6RLL4DKOmG6P2l/GlI5KY0JexxuZKb9vhr9qU1IesrrElE1MSgvM0cN
-         U1AQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775632753; x=1776237553;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hjlYOd9XXvId1/7XLc+lCyUWcW3FTaMcLCVtuzeeaQQ=;
-        b=QSGBtFk0dn7fuoZZ1e+zNHQzpZ0URo0LuO8Y/cGC9PSubEzuXRS8+GIOLz+wPBbRWp
-         xWF2bEO1p7xUaBTdmMnbvL64fNULX8JXwxeK45WjKnd0jR4Bk/iP1X9AqcfXhWATHNrx
-         Q1hKvyrYfm/RdHfAiyY9TnewPLN2Cmalxnb9Yb7A/OKjQeZRfY4MWtINogvhKShUuiDK
-         JTIkhp8MSqrIhiD6apv0t53ReBVYcw2L1kEFdixLkwWka2EN6uIP+sZNQ4cWaXq7JH/x
-         2vDm9stVe/0X4r52m+zJ1GAS1exxfY+AKcC9ZLDtLI8X3xipA3URlj1Nx+/seS1JyGhM
-         4wlw==
-X-Gm-Message-State: AOJu0Yzuv0UPkbC/bDwccbc232f6dgt1YwWsdbD3vaxANTlydVyPXu02
-	1MmU3VBAZf9/BM5dzBlFyL08Xx4kQK05qCT1W/pbN6AlifkSE9kXGNIp
-X-Gm-Gg: AeBDietmJOf/Z9zpPvIDqWcHD0ahD7SGqy/XZ75UaF5CxcIu2wSrAvl/mNQboEYKk3V
-	+o0jyAKp7wEVHMga9bHVzU/Y9l1vdeLOu9HY1bSPDIKspjc+opJK+cEJaZLyD0/9+HbgjctRovW
-	FIhCP/ST2YZor8PFrfXIEfHbJm9s0o2DxMUz/kES8GQx3fMHW8Ie7Gs2g8OpfIvLV9PmSCiU1jC
-	sSkf2mySc6w/gFuFDkTmp1dOOHYlFkLCxl0hir3aycf+nmG+hsDnQkhWH8iw9rP3nRUudzUbJpE
-	YjaBes9bmxEppRALI9dMwY+NJ6sukl2+AM0Q6XFPUKxWJeU+X5E+Fgm3mw9mjidY8k+Mo9xtq/i
-	jolad5LTuksK5dSx9UfLJPolzTq/X3itum6hafd4yf0lnffTphi8U+Bc3cA9Az4vxQ2MEyRb1JY
-	0ckkS+WNAaxZs5xlvpKsODz1LtVW1q4UqluX3zxRJxC1jboPvj
-X-Received: by 2002:a17:90b:6cd:b0:35b:8d89:719a with SMTP id 98e67ed59e1d1-35de6970260mr18566223a91.15.1775632752601;
-        Wed, 08 Apr 2026 00:19:12 -0700 (PDT)
-Received: from 1.0.0.127.in-addr.arpa ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2749a3af9sm183424555ad.63.2026.04.08.00.19.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Apr 2026 00:19:12 -0700 (PDT)
-From: Hangbin Liu <liuhangbin@gmail.com>
-Date: Wed, 08 Apr 2026 15:19:05 +0800
-Subject: [PATCH net-next] tools: ynl: tests: fix leading space on Makefile
- target
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="SrTgWgiw"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QHEJkJBeYxSRwjNPbk8MkdjngnFxaK7JBXiMVSsEnYfgOyUwxDFOWq+h2BGabbkTAKn9692um7oy742UXB5/+IWlK+elgZZOy9MITeZ8Q8dNYYPy6hri/k8bwyGBAMwk2yQw3GYN+ZE5hP4A6ou2/SKocW0tWhFihBj6Wg5Jwtut4TGGs0gsVp8wG/dXCLW+yUOLD7kZxd0JgfQOhdEcDtkiTXQMpzkq1VsQlkcl0p0jbWWbOq8GhiwKcOceiCI1EiUZ4HxRJqnB+6FySnebLKn0dJo1h/BtyiYs+Lr1UAM33CkC1aW4p/U99O2FB/wHAYpYPKdXLsYDLbl9JQNGzg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HvRruFTubeUXwF7018FqnGWqqNJJbdSSp9kFmoNCGJw=;
+ b=egdZYSiIb6fNgACKbui9113bmUPVpOVixynuL9XHCQvoW8nBm5EPDCKOYlZdDzH+FrXKZN31zkCkkNl92el9KwNiiva9CVeaDupv4TO7Vt10wJto11vAfWoSU4uwaB3U4jmVluvzhpJRJAQnxh3ph+OFAMppgVWuEFTOKH+rPUhqvKW7NMZLcG+QZHcox7qG02RF1LnZO/TGy9SJ0tund2pHaVBnL+3npmr2LFcIQMido0HlRhKPU7U8xIO9D8OtwhBHmHZWvmGwyhGfk99Ug57ypaYxqp0n177OEWNRlCOvwmf0Asrqh5Rx14e5xR/nmS7PLYFxxmxJNH3iixA21A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HvRruFTubeUXwF7018FqnGWqqNJJbdSSp9kFmoNCGJw=;
+ b=SrTgWgiwCB0p4Jq6liER24FSM/J+OWfr6fND7zWYW8NxA+IeH1QiJZiXt4boULUAnC9lK/Uawyu47r75IPDDWoCB3Syw3405SJZiwneIR/2nAIWOKcSKpRL/XYcn5hU5JqW5Rwi7J+ugiZEB0Q/aUpYLI05jbIk5C+T1pzTNWEHKaZENObw/WCRs+QPV7YrmYD0wzBgacfWKaAbffCfPpgeWvE2xhFtitGrw1hizSwlKOcl+FaiMm9H80qvQxK6AjYP/VK7uIZONUUvHnQyQ9levbvoOChReZC9Ny8F4l7dGMwEyYzp1iN1/bQV4R3QRyzVpgpsgfMA6FCh4haH52A==
+Received: from AM8PR04MB7284.eurprd04.prod.outlook.com (2603:10a6:20b:1dc::8)
+ by AMBPR04MB12284.eurprd04.prod.outlook.com (2603:10a6:20b:720::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.20; Wed, 8 Apr
+ 2026 07:25:30 +0000
+Received: from AM8PR04MB7284.eurprd04.prod.outlook.com
+ ([fe80::9cd6:51bd:82b:98dc]) by AM8PR04MB7284.eurprd04.prod.outlook.com
+ ([fe80::9cd6:51bd:82b:98dc%5]) with mapi id 15.20.9769.014; Wed, 8 Apr 2026
+ 07:25:30 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
+	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org"
+	<conor+dt@kernel.org>, "f.fainelli@gmail.com" <f.fainelli@gmail.com>, Frank
+ Li <frank.li@nxp.com>, "chleroy@kernel.org" <chleroy@kernel.org>,
+	"horms@kernel.org" <horms@kernel.org>, "linux@armlinux.org.uk"
+	<linux@armlinux.org.uk>, "andrew@lunn.ch" <andrew@lunn.ch>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>
+Subject: RE: [PATCH v4 net-next 06/14] net: enetc: add support for the
+ "Update" operation to buffer pool table
+Thread-Topic: [PATCH v4 net-next 06/14] net: enetc: add support for the
+ "Update" operation to buffer pool table
+Thread-Index: AQHcwQGZFwszpqrtMEiEzU4AtN1Lo7XMjUaAgAhAGZA=
+Date: Wed, 8 Apr 2026 07:25:29 +0000
+Message-ID:
+ <AM8PR04MB728420A74353D3DB9BA8182F885BA@AM8PR04MB7284.eurprd04.prod.outlook.com>
+References: <20260331113025.1566878-7-wei.fang@nxp.com>
+ <20260403011731.1795517-1-kuba@kernel.org>
+In-Reply-To: <20260403011731.1795517-1-kuba@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AM8PR04MB7284:EE_|AMBPR04MB12284:EE_
+x-ms-office365-filtering-correlation-id: c474d570-d397-4e07-ac08-08de9540034a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|7416014|1800799024|366016|19092799006|38070700021|22082099003|56012099003|18002099003;
+x-microsoft-antispam-message-info:
+ WkqwsKy/Y8Gzgvjlg5HoP6Omfj1HR8fNY9KnXaO8/KCwfn5y2krDlIF89Ocz44PLSrx1nB/izKty6uHJg9XQtKSWsR/Ee4+AgaH1ctGLXc9d79lmDwjcppNrtp8+a+8cQe9uP4do3fpYonFGCOQu5hQnkgYnFewGY6JMPnSPhruKKMs5riJjO/u7PpEiGPN+qLori3VgHFL+U10ZoPO4KVFGUGSF68NWz7n7VHgkx8EGEZ7IfNyb+daPg2yq5ZXiAOoZImYb8FbIdXB+vY46vN2suNgLe/TbNuuJHaDqIZ1lzd2cxUsi4C7h6nv83nBBPs9OiElG82qJGjVonzil4FFx4cjfzHFKQL7w2ypByBSN0tzjNt4hkSKtg0kRJ4KztA1GUkFT3JFK1foAYrKVUR7y5FMeN4DsVB3Gkjx7Rrgu9IAHeo+NVzD2EftNolFzv/LRZFC8Vxfc0erEzgqYT8gm/t7diggw/RBMsbjI1Wf+H+Y99LH9YyDmc/uAZvKWW0tHAz2GudG462q/Q1Ew6Y1LAOXGEiRHvNVguLcUU51iWV8AQF2Liua7n1IcrXQvwQEVzZnp+H8usEHZCQpPnVdVRxuuZrZrGwrcW2ydrF8TRahRCrAIDtZK2IvcB6mWeab3dXLXvcQ6cw6GUYVfaauKrvWKeqxEC+qOnYjjWYSBPkRKHpTPe4gjCa7+ULcNcffMTBzPATX25G66DGohffbN2hsxHXnu8ShI8c4veOd9Q3F0LyjI67VZI7gux5MaNdp9x0Pi+YQuphRIPRfSCvJF4mcMD9OY7Nq5oOLz4Zg=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7284.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(19092799006)(38070700021)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?cHXMnkVTsF/cegrmgQmAtmoxuuaj57tQKqHAl8YGFh7xgytf/6/gzc+AWFDP?=
+ =?us-ascii?Q?n6Q5jj4+RgRIWVr5XgWeMz5I0wFi0ZcBqf3C3BMtz0B9OaoyePZmkQUQjTLD?=
+ =?us-ascii?Q?sMZq2mgwPCOqKemkls6paQ9lUCSw+ThOV8Gxr4V8pEPKXKjYmkE34y/CTwIf?=
+ =?us-ascii?Q?vvugJ48ME3LtqT59kGzMsNZz+oNjqMWVKDEPPYCJwBRRdDA5PjWAOPVz4Q12?=
+ =?us-ascii?Q?KbC7wy259FmcaH5whP0cExfBtYR78V7wUE6t9Lzc67rncwtfkTPBpxR3l/yI?=
+ =?us-ascii?Q?vCp7gr31fniMsD5iaPU86p7jKgkYD6rpZAhOi8iyJsECYyLJO8/3UtqVQg91?=
+ =?us-ascii?Q?w+f8o4U2IhzQHisc3jsLYXUL02h8nS/Lwir8fG+9AWlzsm0oHIO2F/l3eF3a?=
+ =?us-ascii?Q?x7sdzzgjnMoQWcqA7ngjx0pzq6qrJRU6gtLqXsAHuzbWclflnT9VqEGVAuBi?=
+ =?us-ascii?Q?X/HRy2H4JpIFctAUHjMg0nbaw8id8awVlrlu/D5keh02lkvgtPURha/uhXiu?=
+ =?us-ascii?Q?fe2pNKeaBxAMsztKp1dOoog/+51hYw5/AmX9n+S05Y0qjpqY1O8T6lx9WMYu?=
+ =?us-ascii?Q?9yPuzF2WrIiyEomXOzrJkjLC4Dw4DRD2pGqmfPGAF+yaci9jgIQHsoX8/Um3?=
+ =?us-ascii?Q?u7VH9riw5tTofaXqrhAfi29m9QnLVQmmTvr37dXFe7w8dWNdDwplpU9ChsAS?=
+ =?us-ascii?Q?MlXyetpnB2j3cg+bROxoHlC4V1/u428vX5C5g/XPS/EhAAjEPfDaPLi74Wxr?=
+ =?us-ascii?Q?EYuaLNEXT9hxmPSGbr1hFFZJbRKaT1UK1K4ybc8I7kX/TGcWD0EEVABnEUEl?=
+ =?us-ascii?Q?jHGbUroo2Vt6WDBfq9ywRe6JQ1KUNMq66SI9MOyRrgebkIqyCWof0kiEQbD0?=
+ =?us-ascii?Q?Vd6M/fMiBxKTU2uqB7XiFezIGApqP+K/yamYu4rQYM/l0Xm2Rk/2ZzLqI0JL?=
+ =?us-ascii?Q?DV8OKTKpBx9/9D8khCMYld4/ePgVw+rd/xLX1zvPuscefkv5NrOU2BUJJNrS?=
+ =?us-ascii?Q?bG3AUO9ISFsIquOG5Nb7Cj/g2lh9cwe0SXOvQyP/YrL9Gu8TkSZPtU7+U6Jc?=
+ =?us-ascii?Q?ZsGdVgEAB6JL7C2U2douQdbWgYoGBnGikD3JriPkHfDXXzEH7BbQEy0W17tH?=
+ =?us-ascii?Q?aEue+P0IUMM88jUr04MPCyVMf15LitrT+y5UuNGmo3QNRyE+DRIOsKt8u8XX?=
+ =?us-ascii?Q?YMMPn44rNirdi6obG8B8+aypgX9g2bi1QHbALVRYFUdalO+Hf7XwHglzQdYg?=
+ =?us-ascii?Q?hP1uxb34xfwxFKz1iUbvoZeiWZRMJWGb3SkQpZZT/er5aj1AkwH3d+RtSHij?=
+ =?us-ascii?Q?5AvfUiQYH6eVZvnenVFbzqGozdOv7oKoJ/DWM+LW12hP8xclWKWZyr+pi3he?=
+ =?us-ascii?Q?mytVJVgguJEgvuXMc0MORTyImgfSfb2WLY391srnobo6/9SXzyawxuTJx6YN?=
+ =?us-ascii?Q?xBVyYo9q4lrOP83fAtH6kRGDP9NW8PIsY7biMujVyTxPo/CBdzR8NX9jzUdY?=
+ =?us-ascii?Q?H9q91IO7PiViNFF3myo4gNBR64R+jfAq34ONCdDnm9kW8bHFlDuw9/Rev62i?=
+ =?us-ascii?Q?h8rVmD96xlYQNUnwuZpSbrEForGYrCiEutvDdp8wjKQZQiA1M9Y2mgv77R3Z?=
+ =?us-ascii?Q?mfp1Wn9DYvdoXY5LoYEYFvBKM4nICXZBstKxI520zQ75yJeYGqJBaewV8hTH?=
+ =?us-ascii?Q?Jn/tpxmi/YtybgJf1Uz3tkApPWDhNdQQfcb7R/wztlLvRpyk?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260408-ynl_makefile-v1-1-f9624acc2ad9@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2M0QpAQBQFf0X32dYSkl+RtDi44dLuJpJ/t3mcq
- ZmHHCzDURU9ZHGy410CJHFE/WxkguIhMKU6LXSmS3XL2m5mwcgrFJBn2nRlAhgKyWGDv/5dTQK
- vBJen5n0/4zAYaWgAAAA=
-X-Change-ID: 20260408-ynl_makefile-ee540ab81eea
-To: Donald Hunter <donald.hunter@gmail.com>, 
- Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Hangbin Liu <liuhangbin@gmail.com>
-X-Mailer: b4 0.14.3
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7284.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c474d570-d397-4e07-ac08-08de9540034a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Apr 2026 07:25:29.8598
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: IQSihLcDfl4O1P2JJ9HY3QVFQiBrH/gbxZN5K1RHgf43FfQRHNVGd5lpSvQ8d4gBAuc4h2ZcLNHz23y9qIroSA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMBPR04MB12284
 
-The ../generated/protos.a rule had a spurious leading space before the
-target name. In make, target rules must start at column 0; only recipe
-lines are indented with a tab. The extra space caused make to misparse
-the rule.
+> > @@ -702,5 +708,38 @@ int ntmp_vft_add_entry(struct ntmp_user *user,
+> u16 vid,
+> >  }
+> >  EXPORT_SYMBOL_GPL(ntmp_vft_add_entry);
+> >
+> > +int ntmp_bpt_update_entry(struct ntmp_user *user, u32 entry_id,
+> > +			  const struct bpt_cfge_data *cfge)
+> > +{
+> > +	struct ntmp_dma_buf data =3D {
+> > +		.dev =3D user->dev,
+> > +		.size =3D sizeof(struct bpt_req_update),
+> > +	};
+> > +	struct bpt_req_update *req;
+> > +	union netc_cbd cbd;
+> > +	int err;
+> > +
+> > +	err =3D ntmp_alloc_data_mem(&data, (void **)&req);
+> > +	if (err)
+> > +		return err;
+> > +
+> > +	ntmp_fill_crd_eid(&req->rbe, user->tbl.bpt_ver, 0,
+> > +			  NTMP_GEN_UA_CFGEU | BPT_UA_BPSEU, entry_id);
+>=20
+> Does this update action mask match the size of the request buffer?
+>=20
+> The mask includes both NTMP_GEN_UA_CFGEU and BPT_UA_BPSEU, which
+> instructs
+> the hardware to update both the configuration entry and the status entry.
+> However, struct bpt_req_update only contains the configuration data,
+> omitting the status data.
+>=20
+> If the hardware attempts to read the missing BPSE data, could it reject
+> the command due to an undersized request length, or read beyond the
+> intended payload into zero-initialized DMA padding? This might overwrite
+> critical buffer pool tracking variables like amount_used_hwm.
+>=20
+> If only the configuration is being updated, should the BPT_UA_BPSEU flag
+> be removed?
 
-Remove the leading space to match the style of the adjacent
-../lib/ynl.a rule.
-
-Fixes: e0aa0c61758f ("tools: ynl: move samples to tests")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
----
- tools/net/ynl/tests/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tools/net/ynl/tests/Makefile b/tools/net/ynl/tests/Makefile
-index 2a02958c7039..9215e84cca05 100644
---- a/tools/net/ynl/tests/Makefile
-+++ b/tools/net/ynl/tests/Makefile
-@@ -50,7 +50,7 @@ all: $(TEST_GEN_PROGS) $(TEST_GEN_FILES)
- ../lib/ynl.a:
- 	@$(MAKE) -C ../lib
- 
-- ../generated/protos.a:
-+../generated/protos.a:
- 	@$(MAKE) -C ../generated
- 
- $(TEST_GEN_PROGS) $(TEST_GEN_FILES): %: %.c ../lib/ynl.a ../generated/protos.a
-
----
-base-commit: e65d8b6f3092398efd7c74e722cb7a516d9a0d6d
-change-id: 20260408-ynl_makefile-ee540ab81eea
-
-Best regards,
--- 
-Hangbin Liu <liuhangbin@gmail.com>
+The BPSE_DATA is a set of statistics and status records kept by the hardwar=
+e
+(internal buffer), and does not require the user to provide additional data=
+ to
+the hardware for updates. Therefore, for the 'update' operation, the reques=
+t
+buffer does not need to provide BPSE_DATA data.
 
