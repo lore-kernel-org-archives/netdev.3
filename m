@@ -1,125 +1,201 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A8C271A9A;
-	Wed,  8 Apr 2026 10:54:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F548255F28;
+	Wed,  8 Apr 2026 11:01:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775645704; cv=none; b=e1u+0M1chQwJfcajLpXiyyvDm1638zoPNoYuctjqQd7WhapL6eTYM/vOtHDcpBy/uPM+AdsOCXx7JthFbQYPim/i3ml47h1Qewn/DQXR8xcbul8CPwAumlyJblhdFvVRlUAOtoDRP/mZlkWi9D/4Rw8jITnxk9++NfEAVuUwIUI=
+	t=1775646100; cv=none; b=gHtRyaMSm0y1CSs08AOz8upjqVJvhf5J5dUKlYp4jdAkPcAR5MQpXgfMoRaEYqxbXzZ2NHNa2nwrfuA4xpF+vrp5CDX9OcEcnuhfBqccnihsYbX7qQXgITbI8HJicn1/4xAFyGlVZFV6ZDgUHaAZUN9u0IIX23Dj9co+85B/xFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775645704; c=relaxed/simple;
-	bh=K9vERO3r4Wm0Pee0HOUkFPW6kyABCG0E7jn/Bphl4iM=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=GBkAkpHnivn+LHmfxI7GVGyS7+3H8OpHFooTr8GgU9SPgPDvqn4QY3gcQnJb1i7NUMkSKPAi8X+/pik90uSpjKrWE/sf/akdsmJu8fmLbH4Dv4gKrl6huuPn0K842EJ4mB4NcZaH2GmEPxvcts5vkmHHX3ycNQ83KFrFJEWONLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=2kG8acJh; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1775646100; c=relaxed/simple;
+	bh=rqLHZkSQieoV78ujo4NYYUtMJOxEbCrP/xCVBgUgngI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=D59NQ0afA+jrBRx2wSdRPz9nRv9i3si2QkVM00hSd1FWgeQQE362QG4KS9kAkywejrdulzBF9rRrka1HVc7jEyyBzqMu9kvYMwAzNZEguWTwKH4j4YbsuArhDgctgUlNNrkg1o2E2LB+pioEz/5GM+PjfHlTTNnqYqfle/g+M34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=VAtsNXg3; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=SgWHGWbI; arc=none smtp.client-ip=202.12.124.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="2kG8acJh"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0595FA26FD;
-	Wed,  8 Apr 2026 12:54:53 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1775645696; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=ny+cR8zPTNl+JdyK7d/rOcDQJx/7poisHyXHHddlJ5k=;
-	b=2kG8acJh1RsKgyv00H4Wv28b+YILwa6bjSJQrvgtEUxuJUL15D7JbHZjs9376B28YPj6JY
-	Tj6U1D+bd3V+J6CpHlNWFPU/MzM+xQl99+/pFa4RSu2IcqZaqjYAnL2B85IN3fd0HFCCVh
-	4zFD1+UUx2R5TQEF2gRcvFY1FFOx3RthfmWjtB652UcgxdNbYvXxZqFuG5YaNTe9axC7Vq
-	qe6s6y0bpJbLJpP+LUMotnZFjlExWqN03PFRlg9XXcOus6bn6ymqJq0Y3lQYua5G1CCoYo
-	2wG0oYGo8tSPeMdgVV7WlmWYgx440HwAz/epWmTgLC0/Rlg8mj39Ypt7uxTIBg==
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="VAtsNXg3";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="SgWHGWbI"
+Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 97A2D7A0032;
+	Wed,  8 Apr 2026 07:01:35 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-07.internal (MEProxy); Wed, 08 Apr 2026 07:01:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm3;
+	 t=1775646095; x=1775732495; bh=/qAIXmolX1JlHIhJFgODJurabtwByrCp
+	4xHUFf3leGQ=; b=VAtsNXg3txGInDFnHnzZbR+duJjPTP8xBCUxFy6UK5TwmzCW
+	QYtP8cfzwzJtEe6mZdHwxHb2JFyMZWdT1sP4RUp9SLN90zjmJwIGU4LEsY4j7Eo8
+	Fb0K1npbl3jA2wD/mvhEGzgKz0vpwmxqrPHSTifaxsT2xd1K+RPnLULOobOSaIlX
+	Ag2k5eD6RhH5w5zcmQT0gttOMD36+i2UF/P0PSdrR2wt3JU64fpG70W1tudeFmeU
+	5+0MptCiGES+JYOK90ks2/XZZXZiH2pSa4RQtJw/woktwt8pahbHCY57+M51qIRo
+	4nS8gLxK7k+32lWyyVk3alzhgSu9r34JfZFLow==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1775646095; x=
+	1775732495; bh=/qAIXmolX1JlHIhJFgODJurabtwByrCp4xHUFf3leGQ=; b=S
+	gWHGWbIqd4HvGxrBHOzaFZHBz31AR8pRZozC0GChB22/UTuqFnlrOi5TDAEKzbzH
+	F7k7Z7FKO09lWV1FxwKuR4TXc5xVCC3KpxZjAnB/jWoy9fTRF70SYetSAGgZEHAb
+	X6erfBKc9tKaJeSwfdwTvan/7hkAUj33/wKiLfRef2ZqgIWAMc8rz5JAswUvuqpW
+	E+7xQTE7F47Mufx5Nx2t2yFxWwluZ7KF1ImmOFSAibzPcRLEcNd//oDiZIBuw6el
+	NCO1eJSySsErjlXg87p8pjtSxn6z/7lDJJAU4GAIaSVANwbLzqc6U2OWMc9eyE4D
+	AaBWp5j/zrCc5qmTx4T+w==
+X-ME-Sender: <xms:jjXWaab-CkdCd--7D28i_TpwLye3vTtsg6NVxk5J6CTPQzxGTBk_qQ>
+    <xme:jjXWae_NLQjG8zgTOD0E4AsX-51WzxgBMUsAITfhOerVpUa25AmnROOdoImIUTwFx
+    NWDP0o_vBoHlQD7Iew-Q9M5w2yqzA5hZ7ehG6js9mwym_ts_9akMYA>
+X-ME-Received: <xmr:jjXWaUP_YwNFDFjkyYhPx7npMBhye2IsXJQhXaMvHN32b753BihFoV4bDhyd>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddvfeegtdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepufgrsghrihhn
+    rgcuffhusghrohgtrgcuoehsugesqhhuvggrshihshhnrghilhdrnhgvtheqnecuggftrf
+    grthhtvghrnhepgfdvgeeitefffedvgfdutdelgeeihfegueehteevveegveejudelfeff
+    ieehledvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epshgusehquhgvrghshihsnhgrihhlrdhnvghtpdhnsggprhgtphhtthhopeduvddpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtoheptghrrghtihhusehnvhhiughirgdrtghomh
+    dprhgtphhtthhopegrnhgurhgvfidonhgvthguvghvsehluhhnnhdrtghhpdhrtghpthht
+    ohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopehlihhnuhigqd
+    hkshgvlhhfthgvshhtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepught
+    rghtuhhlvggrsehnvhhiughirgdrtghomhdprhgtphhtthhopehsughfsehfohhmihgthh
+    gvvhdrmhgvpdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhgpdhrtghpthht
+    ohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehprggsvghnihesrhgvug
+    hhrghtrdgtohhm
+X-ME-Proxy: <xmx:jjXWaTGzrN8lTs3pbSRn8fAX2Ps0hWkj9VFY_T1LOWrJMhbravhDCw>
+    <xmx:jjXWaaxfS94YuZ4tf3oW_eppzE5FEH9Hl71KBldjFKIJuD9A3rCu7w>
+    <xmx:jjXWacrCBgsRk69TI9PnGaOeG5b3uom1vLS4tMLs8IoraOhGX5YQSg>
+    <xmx:jjXWaYmNCgBUF0jfHi1Rxe8geeq2z97J31JOdgfSlVA50iJGl1xqvg>
+    <xmx:jzXWadc5sJc-3j4UByQQo0f_mTp0xXWxe6pD1oR_hWovyGMAGl3S5PeH>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 8 Apr 2026 07:01:33 -0400 (EDT)
+Date: Wed, 8 Apr 2026 13:01:32 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Cosmin Ratiu <cratiu@nvidia.com>
+Cc: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	"sdf@fomichev.me" <sdf@fomichev.me>,
+	"shuah@kernel.org" <shuah@kernel.org>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"horms@kernel.org" <horms@kernel.org>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: [PATCH net v6 4/4] macsec: Support VLAN-filtering lower devices
+Message-ID: <adY1jEs-oYXPosY8@krikkit>
+References: <20260330130130.989236-1-cratiu@nvidia.com>
+ <20260330130130.989236-5-cratiu@nvidia.com>
+ <ac6BsG4IhAajip1s@krikkit>
+ <e2eefeb7033caa859551834d3448a77b7af3c7d4.camel@nvidia.com>
+ <adYQ3OMfEEWFTd7X@krikkit>
+ <3aab1732c62fa8241ea91f2e26720ba47d646a3a.camel@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 08 Apr 2026 12:54:53 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Marek Vasut <marex@nabladev.com>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org, "David S. Miller"
- <davem@davemloft.net>, Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Ronald Wahl <ronald.wahl@raritan.com>, Yicong Hui
- <yiconghui@gmail.com>, linux-kernel@vger.kernel.org
-Subject: Re: [net,PATCH] net: ks8851: Reinstate disabling of BHs around IRQ
- handler
-In-Reply-To: <20260407212344.80265-1-marex@nabladev.com>
-References: <20260407212344.80265-1-marex@nabladev.com>
-Message-ID: <f4010cedaa49afc1648a73775a987ee5@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <3aab1732c62fa8241ea91f2e26720ba47d646a3a.camel@nvidia.com>
 
-On 7.4.2026 23:23, Marek Vasut wrote:
-
-> [...]
-
+2026-04-08, 10:24:28 +0000, Cosmin Ratiu wrote:
+> On Wed, 2026-04-08 at 10:25 +0200, Sabrina Dubroca wrote:
+> > 2026-04-07, 15:07:47 +0000, Cosmin Ratiu wrote:
+> > > On Thu, 2026-04-02 at 16:48 +0200, Sabrina Dubroca wrote:
+> > > > If this happens on a real device, the VLAN filters will be
+> > > > broken.
+> > > > I'm
+> > > > not sure what the right behavior would be:
+> > > > 
+> > > > 1. reject the request to enable offload
+> > > > 2. switch to promiscuous mode
+> > > 
+> > > I implemented and tested option 1. In the unlikely scenario adding
+> > > VLAN
+> > > filters prevents offloading
+> > 
+> > How unlikely is it? Resource allocation, talking to HW, device
+> > limits,
+> > anything else that could fail?
+> > 
+> > > , it's better for the driver to be explicit
+> > > and let the user turn on promisc mode themselves. Keeping track of
+> > > whether VLAN filters failed and promisc was used as a fallback adds
+> > > some extra complexity.
+> > 
+> > If it's indeed (very) unlikely, sure. There's still a bit of a
+> > regression/change of behavior for users compared to before the
+> > IFF_UNICAST_FLT patch, but I think we can wait until someone
+> > complains, and then add the tracking if that happens.
+> > 
+> > > What would be the point of IFF_UNICAST_FLT then?
+> > 
+> > The point is that this would just be a fallback.
+> > 
+> > > Please let me know if you agree with this approach, so I can send
+> > > v8
+> > > with it.
+> > 
+> > If you can confirm it's on the "very unlikely" side, yes, this
+> > approach sounds ok. Thanks.
 > 
-> diff --git a/drivers/net/ethernet/micrel/ks8851_common.c 
-> b/drivers/net/ethernet/micrel/ks8851_common.c
-> index 8048770958d60..dadedea016fac 100644
-> --- a/drivers/net/ethernet/micrel/ks8851_common.c
-> +++ b/drivers/net/ethernet/micrel/ks8851_common.c
-> @@ -316,6 +316,7 @@ static irqreturn_t ks8851_irq(int irq, void *_ks)
->  	unsigned int status;
->  	struct sk_buff *skb;
+> There are many, many drivers which implement .ndo_vlan_rx_add_vid, I
+> can't really browse them all and determine overall likelihood of
+
+Sorry, I wasn't requesting that much work, more of a "feeling" based
+on your understanding. Anyway for macsec offload we don't have to care
+about the vast majority of drivers.
+
+> failure. But presumably there are some memory allocations involved and
+> some FW communication to add the new filter.
+
+I guess if FW communication fails we're in trouble anyway [*], and memory
+allocation failure is an acceptable reason to reject offloading
+anyway.
+
+[*] rolling back the mdo_add_secy could be a problem if we had
+difficulties talking to the HW?
+
+> An AI prompt of "Explore implementations of .ndo_vlan_rx_add_vid in
+> drivers and classify potential failure sources and their likelihood of
+> failure." resulted in (edited for compactness):
+> """
+> Analyzed 24+ implementations across major drivers. Here's the
+> breakdown:  
+> Category   Likelihood Drivers                         Typical Error
+> HW/FW cmds Low        mlx4, nfp, hinic, qeth, vmxnet3 Device-specific
+> Mem alloc  Very Low   bnx2x, qede, virtio_net         -ENOMEM
+> Filter add Low-Medium mlx5, mlx4, ice, qede, ocelot   -ENOSPC, -EEXIST
+> Locking    Very Low   be2net, mlx4, nfp, hinic        -EBUSY
+> Res limit  Medium     qede (quota check)              Promisc fallback
 > 
-> +	local_bh_disable();
->  	ks8851_lock(ks, &flags);
-
-This breaks the SPI variant on non-RT. The SPI path sleeps in
-spi_sync() -> wait_for_completion_timeout(), which can't be
-done with BH disabled. Confirmed on hardware (KS8851 SPI on
-CM4S, PREEMPT non-RT):
-
-   BUG: scheduling while atomic: irq/38-eth2/708/0x00000201
-   ...
-   spi_transfer_one_message+0x518/0x770
-   __spi_pump_transfer_message+0x1dc/0x5f0
-   __spi_sync+0x2b4/0x460
-   spi_sync+0x38/0x68
-   ks8851_rdfifo_spi+0x60/0xc0
-   ks8851_irq+0x310/0x3c8
-
-The fix needs to be PAR-specific since the SPI variant doesn't
-have the deadlock problem anyway (ks8851_start_xmit_spi doesn't
-take the lock).
-
+> Three Driver Archetypes  
 > 
->  	status = ks8851_rdreg16(ks, KS_ISR);
-> @@ -381,6 +382,7 @@ static irqreturn_t ks8851_irq(int irq, void *_ks)
->  	if (status & IRQ_RXI)
->  		while ((skb = __skb_dequeue(&rxq)))
->  			netif_rx(skb);
-> +	local_bh_enable();
+> 1. Simple bitfield drivers (never fail): e1000, e1000e, ixgbe, igb —
+> just set a VFTA bit in hardware registers, always return 0.
 > 
->  	return IRQ_HANDLED;
->  }
+> 2. Complex offload drivers (can fail): mlx5 (flow steering rules), mlx4
+> (FW VLAN registration), ice (switch rules + promisc management), qede
+> (quota-aware with promisc fallback), nfp (mailbox commands), hinic (FW
+> commands with rollback).
+> 
+> 3. Delegation/passthrough drivers (inherit failures): bonding, team,
+> hsr, dsa, macvlan, ipvlan, macsec — propagate vlan_vid_add() to lower
+> devices with unwind-on-failure patterns.
+> """
+> 
+> So I guess we go with option 1 for now.
 
-In order to make this work I would propose something like this (which 
-works in my SPI setup):
+ACK
 
---- a/drivers/net/ethernet/micrel/ks8851_par.c
-+++ b/drivers/net/ethernet/micrel/ks8851_par.c
-@@ -60,12 +60,14 @@ static void ks8851_lock_par(struct ks8851_net *ks, 
-unsigned long *flags)
-  {
-  	struct ks8851_net_par *ksp = to_ks8851_par(ks);
-
-+	local_bh_disable();
-  	spin_lock_irqsave(&ksp->lock, *flags);
-  }
-
-  static void ks8851_unlock_par(struct ks8851_net *ks, unsigned long 
-*flags)
-  {
-  	struct ks8851_net_par *ksp = to_ks8851_par(ks);
-
-  	spin_unlock_irqrestore(&ksp->lock, *flags);
-+	local_bh_enable();
-  }
-
-Tested-by: Nicolai Buchwitz <nb@tipi-net.de>  # KS8851 SPI, non-RT 
-(regression + proposed fix)
+-- 
+Sabrina
