@@ -1,98 +1,175 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C370C3AE715
-	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 09:43:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38223B27FF
+	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 09:43:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775641395; cv=none; b=rFI/zm7mek3c5ps8KiKic8tbrhlorkGjchDDNDaP7JZH9v8EZz7hVMcGVEw61OVrmKwCKwsZTi/gn4q3Rg4+ITSPsGOz3xJNWlp4aViFM3J7M3skQCMSyRY0ulmdLG4bHlbbP0QCkwvWQo6TLvHYJ61eYbyrcluBu6ap5TebeWo=
+	t=1775641408; cv=none; b=PIUPWFFCxP8+YHWtFZs6dlN25EBPbh8YtcSSYODshyTwW9Mz2Olj/VY/HXS6Ca9CWWDDcsTVDFCqWjBBSRZwWZuBzz8xwtfyOfD2kjCbieAzNd5Kg5+CwpPsi5X2b4gyMfO4vKBPdurDytUfOAxoPwq9nfmrJ6Jkn1Na+5zMxAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775641395; c=relaxed/simple;
-	bh=VAR/BMRTpPoFbnpjgp6JOFdYzGK3BwRxWbSW3bzmfYc=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bMM+2Yh/vxhn0m5BQaLx4Fu7Ov+DLzKK5zGgzLudVevNrxWl/zxef2x3ceAGnyJNomQUlKgAG3hETYi/wz1Df906uRadDCEO+YfVhlr3HJP3AqbozGa33LiabCLMp89i05bfsdH6HzIvAB6Uvo/HrPSGUYb7RLbWQbdKw0N6dEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=G8otvOS8; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	s=arc-20240116; t=1775641408; c=relaxed/simple;
+	bh=42cTnhbRNXDI42kmq2UqvJhTgEsYYP6zV+heY4u/ph4=;
+	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
+	 Content-Disposition:Content-Type:Message-Id:Date; b=WwzSum77qaCZGDloSoFVyT+x+0BcgdxqVoPM/1zpVoOTs6BtuUtivDg5AR9mUJExLNARNKIEFSEhfFj7OdTLiaqutnzAWejsS8NEG8De+GFJbRyQ2NcXmhxQt7eu3zurlXutwV1aUv/dRSEiXWhy+WVHv74HBnsk3hs1rVtixmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=pMmFVqfW; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="G8otvOS8"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id B35C12065A;
-	Wed,  8 Apr 2026 11:43:09 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id tJx6vr6AEFqq; Wed,  8 Apr 2026 11:43:07 +0200 (CEST)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 5221B207C6;
-	Wed,  8 Apr 2026 11:43:07 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 5221B207C6
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1775641387;
-	bh=JJ4iNvdCNS1/fbJSGwNSfED+UdnhPnqYkNZK/EIMfW0=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=G8otvOS8RuC1rGKQ2t9/6Iqp7vv+xg8aAR6HUMlRPTvgYgcjj5fefev28OvtHNN2P
-	 zvO1QujrlBUhOzNP3Hlje0s2x9EHf0AH3OPX+ijRjTfzcuvi9X6c/2Q1vcWXYHUBgA
-	 c56m4QuIzG07DKLwTvGgIj/tCeX1Sl4KF8uSWNEHamVc8VGXHGZ4NtdOfVWX718e6o
-	 cAmjTY6tysSC3TDM7trOtp4JlDwx4ZXrsC/ykSEiL1TI143f+3NbLX/CKDtQyMIJsD
-	 6z+r/nsZhjsRSKHsp6OOMAP9bfADFXJTfDAjCH3jE/4C1o9drysKHgVUnjh+YhC4Fm
-	 S9Kueyr28Z09A==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 8 Apr
- 2026 11:43:06 +0200
-Received: (nullmailer pid 150866 invoked by uid 1000);
-	Wed, 08 Apr 2026 09:43:03 -0000
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
-CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
-	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 1/2] xfrm: update outdated comment
-Date: Wed, 8 Apr 2026 11:42:40 +0200
-Message-ID: <20260408094258.148555-2-steffen.klassert@secunet.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260408094258.148555-1-steffen.klassert@secunet.com>
-References: <20260408094258.148555-1-steffen.klassert@secunet.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="pMmFVqfW"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
+	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=dtVN72wGnZ6TO0cAYb5J7S2eJNnpZu9n4ngwxR3LA7o=; b=pMmFVqfW9d0y0Vunkjgw90tppX
+	e6SHEF9NLrmIAYbhuF6NYMuzwDOppOsK4e22goBrdIiKzvwduIXBRma6wH5ml1NdEv6wFPF46mgjY
+	ZjleLyH++ly3sn9TqN8TkvoxEpyRVEG/JnAG40jPB6MfzSIA1BCj91LVWhBomWJMcd4iaFjqmE6cF
+	6tn+0yEbovFt6d5tYDwYkcYq2HfcBD6VTd78TXwFg0EDFcrcCsX1oCgXHy24shjczrNA34YJABqLq
+	bWPkQB0TU6h7mui5mHBwDdhMZcH/sVs+TMusmJGUn/E/oJ+/eW9OAIhWiXviE4E+XFLAb9rge0YTg
+	vYTvPrrg==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:33734 helo=rmk-PC.armlinux.org.uk)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1wAPC7-00000000244-1u7L;
+	Wed, 08 Apr 2026 10:27:31 +0100
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1wAPBw-0000000F7kf-0VA5;
+	Wed, 08 Apr 2026 10:27:20 +0100
+In-Reply-To: <adYfPBHsXxQUsMyr@shell.armlinux.org.uk>
+References: <adYfPBHsXxQUsMyr@shell.armlinux.org.uk>
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jitendra Vegiraju <jitendra.vegiraju@broadcom.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-sunxi@lists.linux.dev,
+	netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Samuel Holland <samuel@sholland.org>
+Subject: [PATCH RFC net-next 08/10] net: stmmac: simplify
+ stmmac_get_ethtool_stats()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
- (10.32.0.171)
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1wAPBw-0000000F7kf-0VA5@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Wed, 08 Apr 2026 10:27:20 +0100
 
-From: kexinsun <kexinsun@smail.nju.edu.cn>
+As documented, stmmac_dma_diagnostic_fr() will return non-zero for
+all non-DWMAC_CORE_MAC100 core types.
 
-The function __xfrm4_bundle_create() was refactored into
-xfrm_bundle_create() (among others) by commit 25ee3286dcbc
-("xfrm: Merge common code into xfrm_bundle_create"). The
-responsibility for setting dst->obsolete to DST_OBSOLETE_FORCE_CHK
-now lives in xfrm_bundle_create(). Update the comment accordingly.
+However, as DWMAC_CORE_MAC100 core types do not have DMA capabilities,
+priv->dma_cap.rmon and priv->dma_cap.eee will be zero, and thus there
+is no need to make this also conditional on the
+stmmac_dma_diagnostic_fr() return value.
 
-Signed-off-by: kexinsun <kexinsun@smail.nju.edu.cn>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Remove this test and unindent the code, and remove unnecessary parens.
+
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- net/xfrm/xfrm_policy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../ethernet/stmicro/stmmac/stmmac_ethtool.c  | 60 +++++++++----------
+ 1 file changed, 28 insertions(+), 32 deletions(-)
 
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index 62486f866975..7bcb6583e84c 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -3910,7 +3910,7 @@ EXPORT_SYMBOL(__xfrm_route_forward);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+index 0caa5b992519..77cb67f4c63c 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+@@ -519,9 +519,9 @@ static void stmmac_get_ethtool_stats(struct net_device *dev,
+ 	u32 rx_queues_count = priv->plat->rx_queues_to_use;
+ 	u32 tx_queues_count = priv->plat->tx_queues_to_use;
+ 	u64 napi_poll = 0, normal_irq_n = 0;
+-	int i, j = 0, pos, ret;
+ 	unsigned long count;
+ 	unsigned int start;
++	int i, j = 0, pos;
  
- static struct dst_entry *xfrm_dst_check(struct dst_entry *dst, u32 cookie)
- {
--	/* Code (such as __xfrm4_bundle_create()) sets dst->obsolete
-+	/* Code (such as xfrm_bundle_create()) sets dst->obsolete
- 	 * to DST_OBSOLETE_FORCE_CHK to force all XFRM destinations to
- 	 * get validated by dst_ops->check on every use.  We do this
- 	 * because when a normal route referenced by an XFRM dst is
+ 	if (priv->dma_cap.asp) {
+ 		for (i = 0; i < STMMAC_SAFETY_FEAT_SIZE; i++) {
+@@ -531,42 +531,38 @@ static void stmmac_get_ethtool_stats(struct net_device *dev,
+ 		}
+ 	}
+ 
+-	/* Update the DMA HW counters for dwmac10/100 (DWMAC_CORE_MAC100),
+-	 * where this will return zero. Other core types will have a non-zero
+-	 * return value.
+-	 */
+-	ret = stmmac_dma_diagnostic_fr(priv, &priv->xstats, priv->ioaddr);
+-	if (ret) {
+-		/* If supported, for new GMAC chips expose the MMC counters */
+-		if (priv->dma_cap.rmon) {
+-			stmmac_mmc_read(priv, priv->mmcaddr, &priv->mmc);
++	/* Update the DMA HW counters for dwmac10/100 (DWMAC_CORE_MAC100). */
++	stmmac_dma_diagnostic_fr(priv, &priv->xstats, priv->ioaddr);
+ 
+-			for (i = 0; i < STMMAC_MMC_STATS_LEN; i++) {
+-				char *p;
+-				p = (char *)priv + stmmac_mmc[i].stat_offset;
++	/* If supported, for new GMAC chips expose the MMC counters */
++	if (priv->dma_cap.rmon) {
++		stmmac_mmc_read(priv, priv->mmcaddr, &priv->mmc);
+ 
+-				data[j++] = (stmmac_mmc[i].sizeof_stat ==
+-					     sizeof(u64)) ? (*(u64 *)p) :
+-					     (*(u32 *)p);
+-			}
+-		}
+-		if (priv->dma_cap.eee) {
+-			int val = phylink_get_eee_err(priv->phylink);
+-			if (val)
+-				priv->xstats.phy_eee_wakeup_error_n = val;
++		for (i = 0; i < STMMAC_MMC_STATS_LEN; i++) {
++			char *p = (char *)priv + stmmac_mmc[i].stat_offset;
++
++			data[j++] = stmmac_mmc[i].sizeof_stat == sizeof(u64) ?
++				    *(u64 *)p : *(u32 *)p;
+ 		}
++	}
+ 
+-		/* Only dwmac1000 and dwmac4 implements the MAC .debug() method.
+-		 * As there are different version spaces depending on core_type,
+-		 * make this conditional on the appropriate core type.
+-		 */
+-		if ((priv->plat->core_type == DWMAC_CORE_GMAC ||
+-		     priv->plat->core_type == DWMAC_CORE_GMAC4) &&
+-		    priv->snpsver >= DWMAC_CORE_3_50)
+-			stmmac_mac_debug(priv, priv->ioaddr,
+-					(void *)&priv->xstats,
+-					rx_queues_count, tx_queues_count);
++	if (priv->dma_cap.eee) {
++		int val = phylink_get_eee_err(priv->phylink);
++		if (val)
++			priv->xstats.phy_eee_wakeup_error_n = val;
+ 	}
++
++	/* Only dwmac1000 and dwmac4 implements the MAC .debug() method.
++	 * As there are different version spaces depending on core_type,
++	 * make this conditional on the appropriate core type.
++	 */
++	if ((priv->plat->core_type == DWMAC_CORE_GMAC ||
++	     priv->plat->core_type == DWMAC_CORE_GMAC4) &&
++	    priv->snpsver >= DWMAC_CORE_3_50)
++		stmmac_mac_debug(priv, priv->ioaddr,
++				(void *)&priv->xstats,
++				rx_queues_count, tx_queues_count);
++
+ 	for (i = 0; i < STMMAC_STATS_LEN; i++) {
+ 		char *p = (char *)priv + stmmac_gstrings_stats[i].stat_offset;
+ 		data[j++] = (stmmac_gstrings_stats[i].sizeof_stat ==
 -- 
-2.43.0
+2.47.3
 
