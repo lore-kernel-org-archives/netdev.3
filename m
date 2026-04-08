@@ -1,119 +1,140 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CA63D5256;
-	Wed,  8 Apr 2026 15:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340613D5663;
+	Wed,  8 Apr 2026 15:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775660895; cv=none; b=VLnSEdx0N/WCUk651Qx+fwsmpzNNqQUsQ/zT3dJbH9r8FyANud9moIHWzRf2EmGlD7GJme/SxM+6CKNIBpQvXGJfr/cREzcT+GQN6Yn3lXYZd6WnMJ4yC/Ykg7qmscpnPuTkeHxEyc0hjuegggZqgIzfxsyB95p+VOlbnL4Eu1g=
+	t=1775660897; cv=none; b=arRaHpmb21qXmfFR9x5QUb/dat/Rj3Kx23BScijA62OtDTnG84fflm47Ue4Vy/q/cxP7KYKaB3UxZLN9I3MI+2Ho5Dl3vBV2VlKQutonGhqbQT3OLQQv9l32nsxNYmdYv8hLrItAtAtRnff+VR1Y1ysoaArPm/Mwd47gnA2566U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775660895; c=relaxed/simple;
-	bh=WLRyeGFRl1sYe2uY24D7mS37xW1BGvN6DhhWt4TBh8k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cBu5yRH7DmAeRpwAn1vrPHSdGMM7VqUIrQ6uGK6WziijgHayU57l+XnibM/6l5VKEMoEjeKzpcKEhIkoQhJlzwFfrBKdCc44tjvdYhkgjqpj+zP0t41RqtnD9t9JTKjtIWQ6eA308bf0sglSTTFizDeuU5TMWev0FTDjVNBLJnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dX12tYbm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775660897; c=relaxed/simple;
+	bh=JWqtaasnuEKPR7/WgytTAsrc+MMH0s97iQTbPPqLDHA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=i8GeKW5iosvq38v2zVsr3YKF3/U5cSAMRlBS+sFy9NTRJ8E3h5cIvyzwK3rjgVDFxGHgrE1VCWxsDJA4o7CMMLpGopRxmY3pvkEc0IvRbY9SIaUmtnReCoR912f5OzpWPdrWtPwUIfhG+m4ycRG4Oira4DRni/rDbtHrWA3urB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bprIydXl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dX12tYbm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF76FC19424;
-	Wed,  8 Apr 2026 15:08:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bprIydXl"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 08A9BC2BCB1;
+	Wed,  8 Apr 2026 15:08:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775660894;
-	bh=WLRyeGFRl1sYe2uY24D7mS37xW1BGvN6DhhWt4TBh8k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dX12tYbmV7ekivo5RlT9KYS+rAuiZW8dAGfsObS6IeGaV4sBM/nlSrqfQY0Vzq7ZO
-	 j2QoKDPhwWV/NoJS1wUHC5wd4ZX70Ych6/rkVITnkkZeuNA37+ObuI9c2mMEvQzZox
-	 Bu2vV1Fhwh5gzyQDeTpyw6ateYRSrQbiMNXvjgR2QDJIheJx35ImNu/HIfQxSgxClO
-	 FzyzH8XGcGQlcT3ewBEMOb4JkoFRyq9ocffWSz3uXNVqKPyHEMvhDYXGnT52oXL8cu
-	 wIl+LxFI7Xgi6xS0jFUoT7DXzqbjdq/J4GVwWBFwQN36PA/ytM7cHfBlJgHVTvU5Uv
-	 /ALrZRycMPvcw==
-Date: Wed, 8 Apr 2026 16:08:09 +0100
-From: Mark Brown <broonie@kernel.org>
-To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Networking <netdev@vger.kernel.org>
-Cc: Andrea Mayer <andrea.mayer@uniroma2.it>,
-	Justin Iurman <justin.iurman@6wind.com>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Next Mailing List <linux-next@vger.kernel.org>
-Subject: Re: linux-next: manual merge of the net-next tree with the netfilter
- tree
-Message-ID: <729b748b-e00b-475e-81e0-a666eab24fc6@sirena.org.uk>
-References: <adZhwtOYfo-0ImSa@sirena.org.uk>
+	s=k20201202; t=1775660897;
+	bh=JWqtaasnuEKPR7/WgytTAsrc+MMH0s97iQTbPPqLDHA=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=bprIydXl+yKjfioIhoE2v2iFmzOGB6xRmsN/MlFu2yopveRD1BtDES7Zhx1mVS+f9
+	 4ZZAGHW/LNvl0T41e1k2iZjjTYI7hCjL77UAU/q1dSgjWaO8s4bCaNy2LUyvlpOXlB
+	 8NTjULVxYEf+MUHwCbnThMbMWJbQVEgpbCOCPXIEABeqqYEIvu88NakbwITykajYw9
+	 9SeI3O9uHfrFpytJ8O5Kn77hcRuYiWenUzTnNqq2A4eKLKMWqyc3CV4Il+Q2wDE8rp
+	 b8VefJUq3qR+uWiNRtk0qtx+AqMVqraCbH7+5GcPRobFR0dtgfh/P5YKxqKgHuyri5
+	 LXMDrodUFMmUQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 00AE510F994B;
+	Wed,  8 Apr 2026 15:08:17 +0000 (UTC)
+From: Satish Kharat via B4 Relay <devnull+satishkh.cisco.com@kernel.org>
+Date: Wed, 08 Apr 2026 08:08:11 -0700
+Subject: [PATCH net-next v2 01/10] enic: verify firmware supports V2 SR-IOV
+ at probe time
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="CQZ+yexN+gkqWo8x"
-Content-Disposition: inline
-In-Reply-To: <adZhwtOYfo-0ImSa@sirena.org.uk>
-X-Cookie: I demand IMPUNITY!
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260408-enic-sriov-v2-admin-channel-v2-v2-1-d05dd3623fd3@cisco.com>
+References: <20260408-enic-sriov-v2-admin-channel-v2-v2-0-d05dd3623fd3@cisco.com>
+In-Reply-To: <20260408-enic-sriov-v2-admin-channel-v2-v2-0-d05dd3623fd3@cisco.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ 20260401-enic-sriov-v2-prep-v4-0-d5834b2ef1b9@cisco.com, 
+ Satish Kharat <satishkh@cisco.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775660895; l=2487;
+ i=satishkh@cisco.com; h=from:subject:message-id;
+ bh=U+7cccRNUL3xFmQmWMuuDwvDAzXNoaVbS53PO5MaWOY=;
+ b=ojjFXX+8n9Aw4jr53KnkCsqac532vT1wOzk33bGXlcNYEGU2tPDvt87Ojzu1jlEWE57o8vMPX
+ 1Zi6f7c3Kq/CpzKg3MOh13YRehULRGYi/DqyYJvHA9vY5H+7D2gXLMr
+X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
+ pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
+X-Endpoint-Received: by B4 Relay for satishkh@cisco.com/default with
+ auth_id=639
+X-Original-From: Satish Kharat <satishkh@cisco.com>
+Reply-To: satishkh@cisco.com
+
+From: Satish Kharat <satishkh@cisco.com>
+
+During PF probe, query the firmware get-supported-feature interface
+to verify that the running firmware supports V2 SR-IOV. Firmware
+version 5.3(4.72) and later report VIC_FEATURE_SRIOV via
+CMD_GET_SUPP_FEATURE_VER. If the firmware does not support the
+feature, set vf_type to ENIC_VF_TYPE_NONE and log a warning so the
+admin knows a firmware upgrade is needed.
+
+The VIC_FEATURE_SRIOV enum value (4) matches the firmware ABI. A
+placeholder entry (VIC_FEATURE_PTP at position 3) is added to keep
+the enum in sync with firmware's feature numbering.
+
+Signed-off-by: Satish Kharat <satishkh@cisco.com>
+---
+ drivers/net/ethernet/cisco/enic/enic_main.c   | 18 ++++++++++++++++++
+ drivers/net/ethernet/cisco/enic/vnic_devcmd.h |  2 ++
+ 2 files changed, 20 insertions(+)
+
+diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
+index e7125b818087..3a4afd6da41f 100644
+--- a/drivers/net/ethernet/cisco/enic/enic_main.c
++++ b/drivers/net/ethernet/cisco/enic/enic_main.c
+@@ -2641,8 +2641,10 @@ static void enic_iounmap(struct enic *enic)
+ static void enic_sriov_detect_vf_type(struct enic *enic)
+ {
+ 	struct pci_dev *pdev = enic->pdev;
++	u64 supported_versions, a1 = 0;
+ 	int pos;
+ 	u16 vf_dev_id;
++	int err;
+ 
+ 	if (enic_is_sriov_vf(enic) || enic_is_dynamic(enic))
+ 		return;
+@@ -2669,6 +2671,22 @@ static void enic_sriov_detect_vf_type(struct enic *enic)
+ 		enic->vf_type = ENIC_VF_TYPE_NONE;
+ 		break;
+ 	}
++
++	if (enic->vf_type == ENIC_VF_TYPE_V2) {
++		/* A successful command means firmware recognizes
++		 * VIC_FEATURE_SRIOV; supported_versions is available
++		 * for sub-feature versioning in the future.
++		 */
++		err = vnic_dev_get_supported_feature_ver(enic->vdev,
++							 VIC_FEATURE_SRIOV,
++							 &supported_versions,
++							 &a1);
++		if (err) {
++			dev_warn(&pdev->dev,
++				 "SR-IOV V2 not supported by current firmware. Upgrade to VIC FW 5.3(4.72) or higher.\n");
++			enic->vf_type = ENIC_VF_TYPE_NONE;
++		}
++	}
+ }
+ #endif
+ 
+diff --git a/drivers/net/ethernet/cisco/enic/vnic_devcmd.h b/drivers/net/ethernet/cisco/enic/vnic_devcmd.h
+index 605ef17f967e..7a4bce736105 100644
+--- a/drivers/net/ethernet/cisco/enic/vnic_devcmd.h
++++ b/drivers/net/ethernet/cisco/enic/vnic_devcmd.h
+@@ -734,6 +734,8 @@ enum vic_feature_t {
+ 	VIC_FEATURE_VXLAN,
+ 	VIC_FEATURE_RDMA,
+ 	VIC_FEATURE_VXLAN_PATCH,
++	VIC_FEATURE_PTP,
++	VIC_FEATURE_SRIOV,
+ 	VIC_FEATURE_MAX,
+ };
+ 
+
+-- 
+2.43.0
 
 
---CQZ+yexN+gkqWo8x
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Apr 08, 2026 at 03:10:10PM +0100, Mark Brown wrote:
-> Hi all,
->=20
-> Today's linux-next merge of the net-next tree got a conflict in:
->=20
->   net/ipv6/seg6_iptunnel.c
->=20
-> between commit:
->=20
->   c3812651b522f ("seg6: separate dst_cache for input and output paths in =
-seg6 lwtunnel")
->=20
-> from the netfilter tree and commit:
->=20
->   78723a62b969a ("seg6: add per-route tunnel source address")
->=20
-> from the net-next tree.
->=20
-> I fixed it up (see below) and can carry the fix as necessary. This
-> is now fixed as far as linux-next is concerned, but any non trivial
-> conflicts should be mentioned to your upstream maintainer when your tree
-> is submitted for merging.  You may also want to consider cooperating
-> with the maintainer of the conflicting tree to minimise any particularly
-> complex conflicts.
->=20
-> diff --cc net/ipv6/seg6_iptunnel.c
-> index d6a0f7df90807,e76cc0cc481ec..0000000000000
-> --- a/net/ipv6/seg6_iptunnel.c
-> +++ b/net/ipv6/seg6_iptunnel.c
-> @@@ -48,8 -48,8 +48,9 @@@ static size_t seg6_lwt_headroom(struct=20
->   }
->  =20
->   struct seg6_lwt {
->  -	struct dst_cache cache;
->  +	struct dst_cache cache_input;
->  +	struct dst_cache cache_output;
-> + 	struct in6_addr tunsrc;
->   	struct seg6_iptunnel_encap tuninfo[];
->   };
->  =20
-
-This also needs a fixup for a new jump to the error handling paths that
-was added in seg6_build_state().
-
---CQZ+yexN+gkqWo8x
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnWb1gACgkQJNaLcl1U
-h9Balgf9HV1pIV/UTkHubWSfOV6RsiL/bwFGXH4ChoymuGcK0A7StIVJy/nK4BtC
-O2mHixWYu/uWCNdpq65+9JdJPZOSv8O4ootMqi4uDLdjjdKC63+mEHF40r7eyN4p
-nbZJOxS7FjL63wjNfv2hsEDA4WFACbd5+blNEVmTlLbVzIU6U3DVG/nchE7dmvYk
-ocQkmFDhFx/DTBzQeiCMTnZiW8EOscWesvmBUMiuusfXITrnLUhwkzM90GjWCd8K
-s4uoHM1d6Ulrq2aUV6cl9E07FYKpS4QIkIA20uGsSU8mEEc+dnFzanos1DZN8CG4
-6QKRO8+/12D4RiN04e+Ufa3zeE9gIw==
-=Y477
------END PGP SIGNATURE-----
-
---CQZ+yexN+gkqWo8x--
