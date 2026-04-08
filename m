@@ -1,45 +1,52 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB4B3B8938;
-	Wed,  8 Apr 2026 13:48:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F234335063;
+	Wed,  8 Apr 2026 13:53:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775656117; cv=none; b=VVjYlcSHZNGsTZzUD+WJesED32X+hB6ozU4kyBOFjuohIEwzayq3zcAosPt9LdUE69KaCUS5/kWlrkorbLf7p4xf8B1+L37+JkjRStSIhZN4G1nsyIdohvVFLT19LM7JMEInTPwovxhDOl/h+1JcCsTwsW5b8gFMMr9s3oZHCSE=
+	t=1775656396; cv=none; b=A/O26ApV+zNbVCPnVDs6xzrIwpFLYZB0ILoAH/xukPjBusfCE/uxih3XNJ+3RapTdljidjE7mUCUel/hCawv71MBZkUwGtqJ8A17FI5TS15K+IM5GAuivB8dsT8ytSNDODKB+RZuho0fSBnHmz39f5DtDdcb/MyhHv6NXR6ZORE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775656117; c=relaxed/simple;
-	bh=8jIO3JYBIXDzPlE2sEUxBQJr+iNNQe6e6yvNzsFvXa8=;
+	s=arc-20240116; t=1775656396; c=relaxed/simple;
+	bh=DTnM4htd2Jjkwqs+F8r4cTsjWbrzp3I5U6vPySVzAWc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ssIedPfHCkPupW8ncBIzs0Py2Zx136FxY+ZCAH3F4BPOXVv9kV+wULAIbVFGK0S/ezRe8pEcFQ3U+G1wLkbx0nibZ1O72mc7U+FMEisXaJJc5KlfqJgdqisQ1YkdH5zPpo00kcO2Ljawk1ah8+zZkX9eOMAny3vpZR84RWdO2oM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=NtilGzGE; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=HtmvQFtUnbWiJi05E3+vcweYC6XgnH3G0S+7XOPTceraYuVFctFDYdi8gPKYClAidhqFvhzrm8uoDj5LPIBpnz/AYFy61TM9sWoR8kbUewJysuxQb7ufcxyGj4ifKAnJzWbLF1Flq/oiScgS0tZkBrfP6kDrMng7ocJ364rGZoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=BsbwxuWZ; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="NtilGzGE"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=h3ol3IqNMNc9xdu0c1/y7NRd5BbJtFf8VRUSzc1d+1o=; b=NtilGzGEYPZa00MiD9rzPFUjcv
-	0Y6WT5caj+hZhTy+DBdjzKYKswOA1pg+hEzykq2BbCEKRLl9Pt+5fX0I9kOTnmuyEMdvTE0C/CbEP
-	8iCWaVNPsij88oJZgWqnTxNn9+ozG9Ze3wnhKxc7NEkbec3SiHegs2bX4+oNsOvfU3es=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wATGY-00FIXo-4G; Wed, 08 Apr 2026 15:48:22 +0200
-Date: Wed, 8 Apr 2026 15:48:22 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Charles Perry <charles.perry@microchip.com>
-Cc: netdev@vger.kernel.org, Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: phy: fix a return path in get_phy_c45_ids()
-Message-ID: <bcc4943d-137f-46d0-b5fd-385577c1259e@lunn.ch>
-References: <20260408133145.1177417-1-charles.perry@microchip.com>
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="BsbwxuWZ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=CesSAmwyidYzb8uUCTfS3iRACJpDJ6KIJkWaYpu5Tfc=; b=BsbwxuWZuch7f8xqe+sewtPCT/
+	CuQnsrKJfqcfjZvNScSy8ZOW1W+2u5zHkiNfZTX5UVZtOkfJ4beAJ+vFqK7zpkbpSXJBNhn5pTwV0
+	WWxXG3WV7msGudWrXp5hemS5xTmvnPoQmgYGit4fnw2J46zlacf+jAWTnuJl13ba+PxrabN8JOZ7p
+	tssiDQ/Nj2wlTGV8Hh707kZBJwSzxRPb/FlZPeUMIDBIaQ+6WG6UiPGMeBdRjzZBNe0fYGykyW6/T
+	DC5Thk2SJkxqr2aQnQ8v5TLSGe7PCwXk0TJwOsfwkQSuxqYJFMp/JDZGf2OFyc4rr53G4l8UpECYe
+	okYO2v9w==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wATL1-008T07-2N;
+	Wed, 08 Apr 2026 13:52:59 +0000
+Date: Wed, 8 Apr 2026 06:52:54 -0700
+From: Breno Leitao <leitao@debian.org>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn <willemb@google.com>, metze@samba.org, 
+	axboe@kernel.dk, Stanislav Fomichev <sdf@fomichev.me>, io-uring@vger.kernel.org, 
+	bpf@vger.kernel.org, netdev@vger.kernel.org, 
+	Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH net-next v3 0/4] net: move .getsockopt away from __user
+ buffers
+Message-ID: <adZcnNgxhsUjAgZW@gmail.com>
+References: <20260408-getsockopt-v3-0-061bb9cb355d@debian.org>
+ <20260408122653.295953dd@pumpkin>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,24 +55,47 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260408133145.1177417-1-charles.perry@microchip.com>
+In-Reply-To: <20260408122653.295953dd@pumpkin>
+X-Debian-User: leitao
 
-On Wed, Apr 08, 2026 at 06:31:44AM -0700, Charles Perry wrote:
-> The return value of phy_c45_probe_present() is store in "ret", not
-> "phy_reg", fix this. "phy_reg" always has a positive value if we reach
-> this return path (since it would have returned earlier otherwise), which
-> means that the original goal of the patch of not considering -ENODEV
-> fatal wasn't achieved.
-> 
-> Fixes: 17b447539408 ("net: phy: c45 scanning: Don't consider -ENODEV fatal")
-> Signed-off-by: Charles Perry <charles.perry@microchip.com>
+Hello David,
 
-Thanks for fixing this.
+On Wed, Apr 08, 2026 at 12:26:53PM +0100, David Laight wrote:
+> On Wed, 08 Apr 2026 03:30:28 -0700
+> Breno Leitao <leitao@debian.org> wrote:
+>
+> > Currently, the .getsockopt callback requires __user pointers:
+> >
+> >   int (*getsockopt)(struct socket *sock, int level,
+> >                     int optname, char __user *optval, int __user *optlen);
+> >
+> > This prevents kernel callers (io_uring, BPF) from using getsockopt on
+> > levels other than SOL_SOCKET, since they pass kernel pointers.
+> >
+> > Following Linus' suggestion [0], this series introduces sockopt_t, a
+> > type-safe wrapper around iov_iter, and a getsockopt_iter callback that
+> > works with both user and kernel buffers. AF_PACKET and CAN raw are
+> > converted as initial users, with selftests covering the trickiest
+> > conversion patterns.
+>
+> What are you doing about the cases where 'optlen' is a complete lie?
 
-The Subject line should be [PATCH net] since this is a Fix.
+Is this incorrect optlen originating from userspace, and getting into
+the .getsockopt callbacks?
 
-Otherwise:
+> IIRC there is one related to some form of async io where it is just
+> the length of the header, the actual buffer length depends on
+> data in the header.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Could you point me to the relevant code so I can examine this case?
 
-    Andrew
+> This doesn't matter with the existing code for applications, when they
+> get it wrong they just crash.
+
+Is this crash being triggered by the protocol callbacks?
+
+I tried searching for this but couldn't find it. I'd appreciate any
+hints you could provide about this case.
+
+Thanks
+--breno
