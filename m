@@ -1,382 +1,151 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4183B9DBC
-	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 10:27:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D2137F75C;
+	Wed,  8 Apr 2026 10:30:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775644075; cv=none; b=AP2hJXyT1Ws53OmnDnGYX53Qom86uOzfDfFp78ZLDN0uGRxZmumlVKMBN42oYZFu07bOvag3EMUVgwIP2J6zYk7jnBcvJ6Mao4X0j2qeYmOnefvdrjTPAodH6jaKAbalEnMCbWWcnWSZ2Q/iaJcx05JEh4Jn0A+4sCVugomvpwA=
+	t=1775644261; cv=none; b=QsqtFQc+QGwfwBbFbfiBmq7N2pMm2L8c0QqHJwKaeG9JWDu85Vi3eIdBE/RnywEtcVYS7T58lQyjzMMiCuEwPLejF1eLe63jfubXyhQ6N0PhMkg6RlzW8XNr7keGakkdKFw/lV8tYaa3KbtfgJWMtygVtNXHFcU1GQTL5feXBAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775644075; c=relaxed/simple;
-	bh=7D5gJLSOnTGkrfFfB92YGUo2051yZZyyvgcZ9zxlGLo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aF1PHW1fJqIhXPomrI1KLvTx7AMKvG7hZgKd13FHwLz9pR9u0nN7HBxc+rWOWTYcJ7WEd5VCAgD7tVpggqDYkFo9shADe175q1xquCGCylQhDhXeGaDvhgBHACqLSl06rJiuBmcQpM+8ZL22OSEwG0Omx/sM+k33aA6p2MJyAI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PkWDsHOX; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1775644261; c=relaxed/simple;
+	bh=Z3kqAGj1zvBralU1HC67R+RaKPOjxmuRHQ9FYFkUl2Q=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Kz02XTRZd1iZCweVyjuTBTerKaGcldfEzYJ1ZbWPhc59GAZ3Elro0v8o4P0tF1q7AngaCsZlEeRlznEHC8xOo+hYy6pGMeBCMNiVtSCMgNOH6LCteI6xmDhAECETYAs6sFadsE66wAMQJGqJ4oBscYLhkBBGO62jfvhYofI56GI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=JVitOMZw; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PkWDsHOX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775644069;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2bRKrB1kGm2MS3+IGO/aBi2Hg1nNdx+j3gctscWqKJg=;
-	b=PkWDsHOXYSjMbiVMKeVlN74CzLzjPy1CYT64glftcLoxcCmXPM+hSXQe92uuZKDznR3yQI
-	WB5mvhizGfk8qzBS0xac/IFh9eZIQYGSBjOR86uWLq8RF60w+lOBwaC8sDokrUlkoLI/G5
-	k73rOhSG5vwURQTkHE78U0LOGc0aAPo=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-626-4lcdZxDoMWOQkdr1vd0fIA-1; Wed,
- 08 Apr 2026 06:27:46 -0400
-X-MC-Unique: 4lcdZxDoMWOQkdr1vd0fIA-1
-X-Mimecast-MFC-AGG-ID: 4lcdZxDoMWOQkdr1vd0fIA_1775644065
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B493A195608C;
-	Wed,  8 Apr 2026 10:27:44 +0000 (UTC)
-Received: from p16v.redhat.com (unknown [10.44.48.188])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C779730001BB;
-	Wed,  8 Apr 2026 10:27:40 +0000 (UTC)
-From: Ivan Vecera <ivecera@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Petr Oros <poros@redhat.com>,
-	Prathosh Satish <Prathosh.Satish@microchip.com>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	linux-kernel@vger.kernel.org,
-	Conor Dooley <conor+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	devicetree@vger.kernel.org,
-	Pasi Vaananen <pvaanane@redhat.com>
-Subject: [PATCH net-next v3 5/5] dpll: zl3073x: add ref-sync pair support
-Date: Wed,  8 Apr 2026 12:27:16 +0200
-Message-ID: <20260408102716.443099-6-ivecera@redhat.com>
-In-Reply-To: <20260408102716.443099-1-ivecera@redhat.com>
-References: <20260408102716.443099-1-ivecera@redhat.com>
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="JVitOMZw"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description;
+	bh=HtRRkzAXU0fkc0Tx+iUTyUu5YP+MGY2ZcOBwtJyH1lk=; b=JVitOMZw8q6rQWdCtOPrdGutrk
+	YSH0+ciKG0cdOw7QJXC+kYJCbcXHaO8kP8Q0BIUCPkY5b6RlIetdT5fJmo9z5ztsDy3i6OWdEWVjA
+	+x78Qu4JIqgKuAvWtlXSXnlNzFsT3Gvx1Tg7j4rZTY+4rl7VSva3Ntaq4EoKPe7hi90JNpzpKo/AT
+	v+6i0HqxXcSPczfpL8Ee09yn2ILsgJKWfYDKobWTXWKSPLXvQedhvPOoGQvPRj7XUxXw8ZQfDnV5g
+	ueRy2683pSrIs1XQWYOXEst4z+puYmwCVeFAByRVHOHvxRo6noKtz+Zl1U9K1YniUFBxzG5gBr9RB
+	8Hw59Cag==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wAQBM-008MDm-1b;
+	Wed, 08 Apr 2026 10:30:48 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Wed, 08 Apr 2026 03:30:29 -0700
+Subject: [PATCH net-next v3 1/4] net: add getsockopt_iter callback to
+ proto_ops
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260408-getsockopt-v3-1-061bb9cb355d@debian.org>
+References: <20260408-getsockopt-v3-0-061bb9cb355d@debian.org>
+In-Reply-To: <20260408-getsockopt-v3-0-061bb9cb355d@debian.org>
+To: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Kuniyuki Iwashima <kuniyu@google.com>, 
+ Willem de Bruijn <willemb@google.com>, metze@samba.org, axboe@kernel.dk, 
+ Stanislav Fomichev <sdf@fomichev.me>
+Cc: io-uring@vger.kernel.org, bpf@vger.kernel.org, netdev@vger.kernel.org, 
+ Linus Torvalds <torvalds@linux-foundation.org>, 
+ linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+ Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.16-dev-453a6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2673; i=leitao@debian.org;
+ h=from:subject:message-id; bh=Z3kqAGj1zvBralU1HC67R+RaKPOjxmuRHQ9FYFkUl2Q=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBp1i5NHj9Xl1AjkU+gDhoHhigNX4piORFmHvHzF
+ ggEMJO/kDGJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCadYuTQAKCRA1o5Of/Hh3
+ bZSAD/9mexa9BnbBzpMw7Rr4ZVS3NFpB7NDeynnsM7sUiVPrOWAkPo7rlbcancrXJlCfNSSFMz/
+ wegWUoI5sfK1KiK624x/DnenCu1IrLLre6ZIO+sv3DStjCM1JHwMyXLlptxNHUytis6/FI+JwBl
+ 63GrFn9+9C+kIKu/5cTVJla7X4p5BZsqWV+0G94G6Efj6cX0UxdSqX+PPv7fwOPleg7ATdzY2YW
+ GNo4x11F668/k1OMm6XXkUYJhhN18yblY26UUwSZLvXDGgJ0m2lPeDwHUS3jOb8CJVjmS6YM/hf
+ g5qYCUyasNkav3spTD2jbtIKBXk/8HZ3TpZaZoE07yIQ2W81WLKYQ9IyzgNGJDrD/hlr6jbZfRJ
+ BBEfIJ349WxsyWKylxO/KuV93u6i/d8qrnT+L04Lck/XL8EpMO6aZ7PSPnRAydlmLkC/qcEpCU8
+ KQi2uWvvQM1aILFEB+xwjQ2DJtyLV2YRvg2EZd4nzddAh9NQSKw7UdKsDiFwO7BIjeqpKLhP4rB
+ YdKGKUfI8UGUm3LEuu9t1LEWl66XudjUpMd/DbpDOA36tSR8R4h2ZB6X5X+r7/gTzN8LVT7/z6C
+ 0Y0W0GHoNKs/NPS5OePYv3YTiq5z6p1kMiefLqcsEcYEMc+nOYXGu5/ncz8qR+XQ07y3WY3Xk9P
+ +RmIb6YyDfzILLg==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
 
-Add support for ref-sync pair registration using the 'ref-sync-sources'
-phandle property from device tree. A ref-sync pair consists of a clock
-reference and a low-frequency sync signal where the DPLL locks to the
-clock reference but phase-aligns to the sync reference.
+Add a new getsockopt_iter callback to struct proto_ops that uses
+sockopt_t, a type-safe wrapper around iov_iter. This provides a clean
+interface for socket option operations that works with both user and
+kernel buffers.
 
-The implementation:
-- Stores fwnode handle in zl3073x_dpll_pin during pin registration
-- Adds ref_sync_get/set callbacks to read and write the sync control
-  mode and pair registers
-- Validates ref-sync frequency constraints: sync signal must be 8 kHz
-  or less, clock reference must be 1 kHz or more and higher than sync
-- Excludes sync source from automatic reference selection by setting
-  its priority to NONE on connect; on disconnect the priority is left
-  as NONE and the user must explicitly make the pin selectable again
-- Iterates ref-sync-sources phandles to register declared pairings
-  via dpll_pin_ref_sync_pair_add()
+The sockopt_t type encapsulates an iov_iter and an optlen field.
 
-Reviewed-by: Petr Oros <poros@redhat.com>
-Reviewed-by: Prathosh Satish <Prathosh.Satish@microchip.com>
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+The optlen field, although not suggested by Linus, serves as both input
+(buffer size) and output (returned data size), allowing callbacks to
+return random values independent of the bytes written via
+copy_to_iter(), so, keep it separated from iov_iter.count.
+
+This is preparatory work for removing the SOL_SOCKET level restriction
+from io_uring getsockopt operations.
+
+Keep in mind that both iter_out and iter_in always point to the same
+data at all times, and we just have two of them to make the callback
+implementation sane.
+
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- drivers/dpll/zl3073x/dpll.c | 207 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 206 insertions(+), 1 deletion(-)
+ include/linux/net.h | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
-index dc649cf103cb4..c95e93ef3ab04 100644
---- a/drivers/dpll/zl3073x/dpll.c
-+++ b/drivers/dpll/zl3073x/dpll.c
-@@ -13,6 +13,7 @@
- #include <linux/module.h>
- #include <linux/netlink.h>
- #include <linux/platform_device.h>
-+#include <linux/property.h>
- #include <linux/slab.h>
- #include <linux/sprintf.h>
+diff --git a/include/linux/net.h b/include/linux/net.h
+index a8e818de95b33..fdd48d5c94441 100644
+--- a/include/linux/net.h
++++ b/include/linux/net.h
+@@ -23,9 +23,30 @@
+ #include <linux/fs.h>
+ #include <linux/mm.h>
+ #include <linux/sockptr.h>
++#include <linux/uio.h>
  
-@@ -30,6 +31,7 @@
-  * @dpll: DPLL the pin is registered to
-  * @dpll_pin: pointer to registered dpll_pin
-  * @tracker: tracking object for the acquired reference
-+ * @fwnode: firmware node handle
-  * @label: package label
-  * @dir: pin direction
-  * @id: pin id
-@@ -46,6 +48,7 @@ struct zl3073x_dpll_pin {
- 	struct zl3073x_dpll	*dpll;
- 	struct dpll_pin		*dpll_pin;
- 	dpll_tracker		tracker;
-+	struct fwnode_handle	*fwnode;
- 	char			label[8];
- 	enum dpll_pin_direction	dir;
- 	u8			id;
-@@ -186,6 +189,109 @@ zl3073x_dpll_input_pin_esync_set(const struct dpll_pin *dpll_pin,
- 	return zl3073x_ref_state_set(zldev, ref_id, &ref);
- }
- 
-+static int
-+zl3073x_dpll_input_pin_ref_sync_get(const struct dpll_pin *dpll_pin,
-+				    void *pin_priv,
-+				    const struct dpll_pin *ref_sync_pin,
-+				    void *ref_sync_pin_priv,
-+				    enum dpll_pin_state *state,
-+				    struct netlink_ext_ack *extack)
-+{
-+	struct zl3073x_dpll_pin *sync_pin = ref_sync_pin_priv;
-+	struct zl3073x_dpll_pin *pin = pin_priv;
-+	struct zl3073x_dpll *zldpll = pin->dpll;
-+	struct zl3073x_dev *zldev = zldpll->dev;
-+	const struct zl3073x_ref *ref;
-+	u8 ref_id, mode, pair;
-+
-+	ref_id = zl3073x_input_pin_ref_get(pin->id);
-+	ref = zl3073x_ref_state_get(zldev, ref_id);
-+	mode = zl3073x_ref_sync_mode_get(ref);
-+	pair = zl3073x_ref_sync_pair_get(ref);
-+
-+	if (mode == ZL_REF_SYNC_CTRL_MODE_REFSYNC_PAIR &&
-+	    pair == zl3073x_input_pin_ref_get(sync_pin->id))
-+		*state = DPLL_PIN_STATE_CONNECTED;
-+	else
-+		*state = DPLL_PIN_STATE_DISCONNECTED;
-+
-+	return 0;
-+}
-+
-+static int
-+zl3073x_dpll_input_pin_ref_sync_set(const struct dpll_pin *dpll_pin,
-+				    void *pin_priv,
-+				    const struct dpll_pin *ref_sync_pin,
-+				    void *ref_sync_pin_priv,
-+				    const enum dpll_pin_state state,
-+				    struct netlink_ext_ack *extack)
-+{
-+	struct zl3073x_dpll_pin *sync_pin = ref_sync_pin_priv;
-+	struct zl3073x_dpll_pin *pin = pin_priv;
-+	struct zl3073x_dpll *zldpll = pin->dpll;
-+	struct zl3073x_dev *zldev = zldpll->dev;
-+	u8 mode, ref_id, sync_ref_id;
-+	struct zl3073x_chan chan;
-+	struct zl3073x_ref ref;
-+	int rc;
-+
-+	ref_id = zl3073x_input_pin_ref_get(pin->id);
-+	sync_ref_id = zl3073x_input_pin_ref_get(sync_pin->id);
-+	ref = *zl3073x_ref_state_get(zldev, ref_id);
-+
-+	if (state == DPLL_PIN_STATE_CONNECTED) {
-+		const struct zl3073x_ref *sync_ref;
-+		u32 ref_freq, sync_freq;
-+
-+		sync_ref = zl3073x_ref_state_get(zldev, sync_ref_id);
-+		ref_freq = zl3073x_ref_freq_get(&ref);
-+		sync_freq = zl3073x_ref_freq_get(sync_ref);
-+
-+		/* Sync signal must be 8 kHz or less and clock reference
-+		 * must be 1 kHz or more and higher than the sync signal.
-+		 */
-+		if (sync_freq > 8000) {
-+			NL_SET_ERR_MSG(extack,
-+				       "sync frequency must be 8 kHz or less");
-+			return -EINVAL;
-+		}
-+		if (ref_freq < 1000) {
-+			NL_SET_ERR_MSG(extack,
-+				       "clock frequency must be 1 kHz or more");
-+			return -EINVAL;
-+		}
-+		if (ref_freq <= sync_freq) {
-+			NL_SET_ERR_MSG(extack,
-+				       "clock frequency must be higher than sync frequency");
-+			return -EINVAL;
-+		}
-+
-+		zl3073x_ref_sync_pair_set(&ref, sync_ref_id);
-+		mode = ZL_REF_SYNC_CTRL_MODE_REFSYNC_PAIR;
-+	} else {
-+		mode = ZL_REF_SYNC_CTRL_MODE_REFSYNC_PAIR_OFF;
-+	}
-+
-+	zl3073x_ref_sync_mode_set(&ref, mode);
-+
-+	rc = zl3073x_ref_state_set(zldev, ref_id, &ref);
-+	if (rc)
-+		return rc;
-+
-+	/* Exclude sync source from automatic reference selection by setting
-+	 * its priority to NONE. On disconnect the priority is left as NONE
-+	 * and the user must explicitly make the pin selectable again.
-+	 */
-+	if (state == DPLL_PIN_STATE_CONNECTED) {
-+		chan = *zl3073x_chan_state_get(zldev, zldpll->id);
-+		zl3073x_chan_ref_prio_set(&chan, sync_ref_id,
-+					  ZL_DPLL_REF_PRIO_NONE);
-+		return zl3073x_chan_state_set(zldev, zldpll->id, &chan);
-+	}
-+
-+	return 0;
-+}
-+
- static int
- zl3073x_dpll_input_pin_ffo_get(const struct dpll_pin *dpll_pin, void *pin_priv,
- 			       const struct dpll_device *dpll, void *dpll_priv,
-@@ -1147,6 +1253,8 @@ static const struct dpll_pin_ops zl3073x_dpll_input_pin_ops = {
- 	.phase_adjust_set = zl3073x_dpll_input_pin_phase_adjust_set,
- 	.prio_get = zl3073x_dpll_input_pin_prio_get,
- 	.prio_set = zl3073x_dpll_input_pin_prio_set,
-+	.ref_sync_get = zl3073x_dpll_input_pin_ref_sync_get,
-+	.ref_sync_set = zl3073x_dpll_input_pin_ref_sync_set,
- 	.state_on_dpll_get = zl3073x_dpll_input_pin_state_on_dpll_get,
- 	.state_on_dpll_set = zl3073x_dpll_input_pin_state_on_dpll_set,
- };
-@@ -1239,8 +1347,11 @@ zl3073x_dpll_pin_register(struct zl3073x_dpll_pin *pin, u32 index)
- 	if (IS_ERR(props))
- 		return PTR_ERR(props);
- 
--	/* Save package label, esync capability and phase adjust granularity */
-+	/* Save package label, fwnode, esync capability and phase adjust
-+	 * granularity.
-+	 */
- 	strscpy(pin->label, props->package_label);
-+	pin->fwnode = fwnode_handle_get(props->fwnode);
- 	pin->esync_control = props->esync_control;
- 	pin->phase_gran = props->dpll_props.phase_gran;
- 
-@@ -1285,6 +1396,8 @@ zl3073x_dpll_pin_register(struct zl3073x_dpll_pin *pin, u32 index)
- 	dpll_pin_put(pin->dpll_pin, &pin->tracker);
- 	pin->dpll_pin = NULL;
- err_pin_get:
-+	fwnode_handle_put(pin->fwnode);
-+	pin->fwnode = NULL;
- 	zl3073x_pin_props_put(props);
- 
- 	return rc;
-@@ -1314,6 +1427,9 @@ zl3073x_dpll_pin_unregister(struct zl3073x_dpll_pin *pin)
- 
- 	dpll_pin_put(pin->dpll_pin, &pin->tracker);
- 	pin->dpll_pin = NULL;
-+
-+	fwnode_handle_put(pin->fwnode);
-+	pin->fwnode = NULL;
- }
- 
- /**
-@@ -1827,6 +1943,88 @@ zl3073x_dpll_free(struct zl3073x_dpll *zldpll)
- 	kfree(zldpll);
- }
+ #include <uapi/linux/net.h>
  
 +/**
-+ * zl3073x_dpll_ref_sync_pair_register - register ref_sync pairs for a pin
-+ * @pin: pointer to zl3073x_dpll_pin structure
++ * struct sockopt - socket option value container
++ * @iter_in: iov_iter for reading optval with the content from the caller.
++ *	     Use copy_from_iter() given this iov direction is ITER_SOURCE
++ * @iter_out: iov_iter for protocols to update optval data to userspace
++ *	      Use _copy_to_iter() given iov direction is ITER_DEST
++ * @optlen: serves as both input (buffer size) and output (returned data size).
 + *
-+ * Iterates 'ref-sync-sources' phandles in the pin's firmware node and
-+ * registers each declared pairing.
++ * Type-safe wrapper for socket option data that works with both
++ * user and kernel buffers.
 + *
-+ * Return: 0 on success, <0 on error
++ * The optlen field allows callbacks to return a specific length value
++ * independent of the bytes written via copy_to_iter().
 + */
-+static int
-+zl3073x_dpll_ref_sync_pair_register(struct zl3073x_dpll_pin *pin)
-+{
-+	struct zl3073x_dev *zldev = pin->dpll->dev;
-+	struct fwnode_handle *fwnode;
-+	struct dpll_pin *sync_pin;
-+	dpll_tracker tracker;
-+	int n, rc;
++typedef struct sockopt {
++	struct iov_iter iter_in;
++	struct iov_iter iter_out;
++	int optlen;
++} sockopt_t;
 +
-+	for (n = 0; ; n++) {
-+		/* Get n'th ref-sync source */
-+		fwnode = fwnode_find_reference(pin->fwnode, "ref-sync-sources",
-+					       n);
-+		if (IS_ERR(fwnode)) {
-+			rc = PTR_ERR(fwnode);
-+			break;
-+		}
-+
-+		/* Find associated dpll pin */
-+		sync_pin = fwnode_dpll_pin_find(fwnode, &tracker);
-+		fwnode_handle_put(fwnode);
-+		if (!sync_pin) {
-+			dev_warn(zldev->dev, "%s: ref-sync source %d not found",
-+				 pin->label, n);
-+			continue;
-+		}
-+
-+		/* Register new ref-sync pair */
-+		rc = dpll_pin_ref_sync_pair_add(pin->dpll_pin, sync_pin);
-+		dpll_pin_put(sync_pin, &tracker);
-+
-+		/* -EBUSY means pairing already exists from another DPLL's
-+		 * registration.
-+		 */
-+		if (rc && rc != -EBUSY) {
-+			dev_err(zldev->dev,
-+				"%s: failed to add ref-sync source %d: %pe",
-+				pin->label, n, ERR_PTR(rc));
-+			break;
-+		}
-+	}
-+
-+	return rc != -ENOENT ? rc : 0;
-+}
-+
-+/**
-+ * zl3073x_dpll_ref_sync_pairs_register - register ref_sync pairs for a DPLL
-+ * @zldpll: pointer to zl3073x_dpll structure
-+ *
-+ * Iterates all registered input pins of the given DPLL and establishes
-+ * ref_sync pairings declared by 'ref-sync-sources' phandles in the
-+ * device tree.
-+ *
-+ * Return: 0 on success, <0 on error
-+ */
-+static int
-+zl3073x_dpll_ref_sync_pairs_register(struct zl3073x_dpll *zldpll)
-+{
-+	struct zl3073x_dpll_pin *pin;
-+	int rc;
-+
-+	list_for_each_entry(pin, &zldpll->pins, list) {
-+		if (!zl3073x_dpll_is_input_pin(pin) || !pin->fwnode)
-+			continue;
-+
-+		rc = zl3073x_dpll_ref_sync_pair_register(pin);
-+		if (rc)
-+			return rc;
-+	}
-+
-+	return 0;
-+}
-+
- /**
-  * zl3073x_dpll_register - register DPLL device and all its pins
-  * @zldpll: pointer to zl3073x_dpll structure
-@@ -1850,6 +2048,13 @@ zl3073x_dpll_register(struct zl3073x_dpll *zldpll)
- 		return rc;
- 	}
- 
-+	rc = zl3073x_dpll_ref_sync_pairs_register(zldpll);
-+	if (rc) {
-+		zl3073x_dpll_pins_unregister(zldpll);
-+		zl3073x_dpll_device_unregister(zldpll);
-+		return rc;
-+	}
-+
- 	return 0;
- }
- 
+ struct poll_table_struct;
+ struct pipe_inode_info;
+ struct inode;
+@@ -192,6 +213,8 @@ struct proto_ops {
+ 				      unsigned int optlen);
+ 	int		(*getsockopt)(struct socket *sock, int level,
+ 				      int optname, char __user *optval, int __user *optlen);
++	int		(*getsockopt_iter)(struct socket *sock, int level,
++					   int optname, sockopt_t *opt);
+ 	void		(*show_fdinfo)(struct seq_file *m, struct socket *sock);
+ 	int		(*sendmsg)   (struct socket *sock, struct msghdr *m,
+ 				      size_t total_len);
+
 -- 
 2.52.0
 
