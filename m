@@ -1,406 +1,128 @@
-Received: from mail-vs1-f69.google.com (mail-vs1-f69.google.com [209.85.217.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66331344DA2
-	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 21:21:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0400439DBDF;
+	Wed,  8 Apr 2026 21:28:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775683289; cv=none; b=MQa7V37Y1m8GcpYyVu9XLXsfll0lrrTaIzK3g2occG6ZrhuesOUa0MJq76Z2BPdJPS9m+ytwDYzvy4GaWYYrWEnvUeL1Aw45jFjtTjmoqstcKHNOXIQTH7PXQy/TUrxj4bx2pWfwnb0GXeoDws2o5eZtJdXJ0dykehUQhuNYgos=
+	t=1775683691; cv=none; b=sckh4MV9ud54V+o8wu98G3Qz/IdPBPdBotJFDe/HsvpjCxWafh+Ok/97Al+lqMrNzxkp2sDSR5VToQ72Lra6XJ2O4GmpHxkV2MrE+ZgMg2xVjymDaVRRDYAAWm3kd7QEArz8M7NEDNBCU9CgqQ885UhnHGOMUt6ycLq6hhneeWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775683289; c=relaxed/simple;
-	bh=6YQ0JH+ppPNdBJgrvxOdc8Znzvxw/WPnk/nMwdmkod4=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=YwxGRAt/BNiycVQwaoO8GvmcWIcU0i2B1Yp/Y7jCm3Wa7SJ23MGUQNoUbp0ILoCzYHwCNp8mUlYvwsRdaKw78/Y020W7+XajUWRP2tLZUIHplO6XuDt6m0HgyousVVhdSrW5itNXYivSvmaQz1mYxx5oSj1V1FLKrC7z3OMrfKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.217.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-vs1-f69.google.com with SMTP id ada2fe7eead31-6057a534ce8so472439137.0
-        for <netdev@vger.kernel.org>; Wed, 08 Apr 2026 14:21:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775683286; x=1776288086;
-        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SxaZ0G6ZIGuezWqdjpsYNlMnLQDl2Sl11e/LwXAUHmM=;
-        b=daHF6e76XSgzf/wu7T4zaj+GwIsMhl9+TlxRs/Tzp2m+rPRG8EKr7n6WKsfLq+Rcpe
-         JEcgLiV126Tok3rBWQu/tSktgewzWc2GPE09tSk7OluwPxnof4wO3i61ssakVnGR+Zgw
-         dQy8XuddFZ4JvffVYJOOSMiBPnp1yd05JcsU57Ep34SSNhmTzktu6gmPqOdZa3/NE/1e
-         w+PdtafRvxg/PXkIGNZqiJXqAuqdBlwt8nel+L8CU0IKQXiJmw1djG5NTqs3CZmID+zO
-         58a959B+2nuwomwnxYGDpfoEIfjQnyB4xiyLx7IxGW/fe2YQlH4eqBeLP5GDuUSjCxPx
-         MROg==
-X-Forwarded-Encrypted: i=1; AJvYcCXK4x+PhFbEXunC3R7sclhghVABxFm+/Xsx/O7mH05jrwXbUzEsCT/61xm+O/JSsGrPU7Aoy/k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzk643L8Ki7NMuPMKHMJzawlUZ/vI7OHYBW2+y2dUkxMbcHArIv
-	Ycjl/O0hrUpAaZA3UdbSLaMLeJ0wuOqIPqQd9Db/U5X8IT3rycjbnWSjG5igwxwnuYAdRHlOnOE
-	sn/eBIHGDkQ7JVk6bJypx6r5QzDaTCto8pIYMzp3wGOhzEStLjZ2eLhvIoNI=
+	s=arc-20240116; t=1775683691; c=relaxed/simple;
+	bh=WpE0MYfaSpWNmYLrKupwzmNe/zhoMgBoUNCb8zcFtzM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=X4E92H1KmgPzPRfFBBgFkhhracD/OIJpRRGwHQHklGmxhFWkC+CVU3u1zP8MKEdTxb0M4OGikoLqurZvRDiWjF4/t5X7E8ymLWblRlPpnqvwjwNf3WOcd9cug4VncqcuROCx1JpCbuEH4UvOa63hdeypBB6m8V8Dfbyi0u+dMfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=llybHSbR; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="llybHSbR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 255A7C19421;
+	Wed,  8 Apr 2026 21:28:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775683690;
+	bh=WpE0MYfaSpWNmYLrKupwzmNe/zhoMgBoUNCb8zcFtzM=;
+	h=Date:From:To:Cc:Subject:From;
+	b=llybHSbRhF0IyGzCiVkubRm6jznBYSJKm41Is2adPV68oSVITizRNvt4u0qfNvig0
+	 nGCGlPd2WKRsvxlirftnlfXF6UdpbKqg7y44STD3RFBepBvnQ/PmjXCbnr6J5wj+HG
+	 /T1IBIhUJA6MGraadSUCIbeGE90GXpC/ltH0Xz4atoobzu7QGhBIbTTyAAfHmiI/bH
+	 CE4V15DY/RgcqIAbqnyu3+e8Rq4JHHhF09KT6lRZKbCI2UtMH/IC64Vyi8cyuj+3nA
+	 8GO7gbEtUBA3d+4DiWzgxuiv+F6ppXJyaAoUr2ye2oMa9pIpLGFp7/w1TLEFCRODCI
+	 I2SLx2sXaWacA==
+Date: Wed, 8 Apr 2026 15:27:04 -0600
+From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH][next] netfilter: x_tables: Avoid a couple
+ -Wflex-array-member-not-at-end warnings
+Message-ID: <adbIKC0cZcK7VcCF@kspp>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:7513:b0:682:47e0:5d4e with SMTP id
- 006d021491bc7-68a68d5f842mr325617eaf.14.1775679299916; Wed, 08 Apr 2026
- 13:14:59 -0700 (PDT)
-Date: Wed, 08 Apr 2026 13:14:59 -0700
-In-Reply-To: <20260408125611.3592751-1-edumazet@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69d6b743.050a0220.d95e.0003.GAE@google.com>
-Subject: [syzbot ci] Re: net/sched: no longer acquire RTNL in qdisc dumps
-From: syzbot ci <syzbot+ci60965c6d6fd3c464@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@google.com, eric.dumazet@gmail.com, 
-	horms@kernel.org, jhs@mojatatu.com, jiri@resnulli.us, kuba@kernel.org, 
-	kuniyu@google.com, netdev@vger.kernel.org, pabeni@redhat.com, sdf@fomichev.me, 
-	toke@toke.dk
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-syzbot ci has tested the following series
+-Wflex-array-member-not-at-end was introduced in GCC-14, and we are
+getting ready to enable it, globally.
 
-[v1] net/sched: no longer acquire RTNL in qdisc dumps
-https://lore.kernel.org/all/20260408125611.3592751-1-edumazet@google.com
-* [PATCH net-next 01/15] net/sched: rename qstats_overlimit_inc() to qstats_cpu_overlimit_inc()
-* [PATCH net-next 02/15] net/sched: add qstats_cpu_drop_inc() helper
-* [PATCH net-next 03/15] net/sched: add READ_ONCE() in gnet_stats_add_queue[_cpu]
-* [PATCH net-next 04/15] net/sched: add qdisc_qlen_inc() and qdisc_qlen_dec()
-* [PATCH net-next 05/15] net/sched: annotate data-races around sch->qstats.backlog
-* [PATCH net-next 06/15] net/sched: sch_sfb: annotate data-races in sfb_dump_stats()
-* [PATCH net-next 07/15] net/sched: sch_red: annotate data-races in red_dump_stats()
-* [PATCH net-next 08/15] net/sched: sch_fq_codel: remove data-races from fq_codel_dump_stats()
-* [PATCH net-next 09/15] net/sched: sch_pie: annotate data-races in pie_dump_stats()
-* [PATCH net-next 10/15] net/sched: sch_fq_pie: annotate data-races in fq_pie_dump_stats()
-* [PATCH net-next 11/15] net_sched: sch_hhf: annotate data-races in hhf_dump_stats()
-* [PATCH net-next 12/15] net/sched: sch_choke: annotate data-races in choke_dump_stats()
-* [PATCH net-next 13/15] net/sched: sch_cake: annotate data-races in cake_dump_stats()
-* [PATCH net-next 14/15] net/sched: mq: no longer acquire qdisc spinlocks in dump operations
-* [PATCH net-next 15/15] net/sched: convert tc_dump_qdisc() to RCU
+struct compat_xt_standard_target and struct compat_xt_error_target are
+only used in xt_compat_check_entry_offsets(). Remove these structs and
+instead define the same memory layout on the stack via flexible struct
+compat_xt_entry_target and DEFINE_RAW_FLEX(). Adjust the rest of the
+code accordingly.
 
-and found the following issues:
-* WARNING: suspicious RCU usage in mq_dump_common
-* WARNING: suspicious RCU usage in mqprio_dump
-* WARNING: suspicious RCU usage in tc_fill_qdisc
+With these changes, fix the following warnings:
 
-Full report is available here:
-https://ci.syzbot.org/series/a6ab0157-80eb-4d29-ab75-31a471a9070e
+1 net/netfilter/x_tables.c:816:39: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+1 net/netfilter/x_tables.c:811:39: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
 
-***
-
-WARNING: suspicious RCU usage in mq_dump_common
-
-tree:      net-next
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net-next.git
-base:      b3e69fc3196fc421e26196e7792f17b0463edc6f
-arch:      amd64
-compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-config:    https://ci.syzbot.org/builds/f4a44029-347c-4dad-b84f-81c322454de4/config
-syz repro: https://ci.syzbot.org/findings/d5d8c727-6baf-4738-bc33-e8a42f539e21/syz_repro
-
-=============================
-WARNING: suspicious RCU usage
-syzkaller #0 Not tainted
------------------------------
-net/sched/sch_mq.c:158 suspicious rcu_dereference_check() usage!
-
-other info that might help us debug this:
-
-
-rcu_scheduler_active = 2, debug_locks = 1
-1 lock held by syz.1.18/6007:
- #0: ffffffff8fbca4c8 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_lock net/core/rtnetlink.c:80 [inline]
- #0: ffffffff8fbca4c8 (rtnl_mutex){+.+.}-{4:4}, at: rtnetlink_rcv_msg+0x722/0xbe0 net/core/rtnetlink.c:6986
-
-stack backtrace:
-CPU: 1 UID: 0 PID: 6007 Comm: syz.1.18 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- lockdep_rcu_suspicious+0x13f/0x1d0 kernel/locking/lockdep.c:6876
- mq_dump_common+0x2fa/0x5e0 net/sched/sch_mq.c:158
- mq_dump+0x7e/0x150 net/sched/sch_mq.c:181
- tc_fill_qdisc+0x663/0x11c0 net/sched/sch_api.c:937
- qdisc_notify+0x1cf/0x440 net/sched/sch_api.c:1033
- notify_and_destroy net/sched/sch_api.c:1058 [inline]
- qdisc_graft+0x114a/0x15b0 net/sched/sch_api.c:1158
- __tc_modify_qdisc net/sched/sch_api.c:1760 [inline]
- tc_modify_qdisc+0x18a4/0x2290 net/sched/sch_api.c:1816
- rtnetlink_rcv_msg+0x77e/0xbe0 net/core/rtnetlink.c:6989
- netlink_rcv_skb+0x232/0x4b0 net/netlink/af_netlink.c:2550
- netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
- netlink_unicast+0x80f/0x9b0 net/netlink/af_netlink.c:1344
- netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1894
- sock_sendmsg_nosec net/socket.c:721 [inline]
- __sock_sendmsg net/socket.c:736 [inline]
- ____sys_sendmsg+0x972/0x9f0 net/socket.c:2585
- ___sys_sendmsg+0x2a5/0x360 net/socket.c:2639
- __sys_sendmsg net/socket.c:2671 [inline]
- __do_sys_sendmsg net/socket.c:2676 [inline]
- __se_sys_sendmsg net/socket.c:2674 [inline]
- __x64_sys_sendmsg+0x1bd/0x2a0 net/socket.c:2674
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f1d3839c819
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f1d392c4028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007f1d38615fa0 RCX: 00007f1d3839c819
-RDX: 0000000000044080 RSI: 0000200000000040 RDI: 0000000000000003
-RBP: 00007f1d38432c91 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f1d38616038 R14: 00007f1d38615fa0 R15: 00007fff29960058
- </TASK>
-
-=============================
-WARNING: suspicious RCU usage
-syzkaller #0 Not tainted
------------------------------
-net/sched/sch_api.c:943 suspicious rcu_dereference_check() usage!
-
-other info that might help us debug this:
-
-
-rcu_scheduler_active = 2, debug_locks = 1
-1 lock held by syz.1.18/6007:
- #0: ffffffff8fbca4c8 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_lock net/core/rtnetlink.c:80 [inline]
- #0: ffffffff8fbca4c8 (rtnl_mutex){+.+.}-{4:4}, at: rtnetlink_rcv_msg+0x722/0xbe0 net/core/rtnetlink.c:6986
-
-stack backtrace:
-CPU: 0 UID: 0 PID: 6007 Comm: syz.1.18 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- lockdep_rcu_suspicious+0x13f/0x1d0 kernel/locking/lockdep.c:6876
- tc_fill_qdisc+0xd90/0x11c0 net/sched/sch_api.c:943
- qdisc_notify+0x1cf/0x440 net/sched/sch_api.c:1033
- notify_and_destroy net/sched/sch_api.c:1058 [inline]
- qdisc_graft+0x114a/0x15b0 net/sched/sch_api.c:1158
- __tc_modify_qdisc net/sched/sch_api.c:1760 [inline]
- tc_modify_qdisc+0x18a4/0x2290 net/sched/sch_api.c:1816
- rtnetlink_rcv_msg+0x77e/0xbe0 net/core/rtnetlink.c:6989
- netlink_rcv_skb+0x232/0x4b0 net/netlink/af_netlink.c:2550
- netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
- netlink_unicast+0x80f/0x9b0 net/netlink/af_netlink.c:1344
- netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1894
- sock_sendmsg_nosec net/socket.c:721 [inline]
- __sock_sendmsg net/socket.c:736 [inline]
- ____sys_sendmsg+0x972/0x9f0 net/socket.c:2585
- ___sys_sendmsg+0x2a5/0x360 net/socket.c:2639
- __sys_sendmsg net/socket.c:2671 [inline]
- __do_sys_sendmsg net/socket.c:2676 [inline]
- __se_sys_sendmsg net/socket.c:2674 [inline]
- __x64_sys_sendmsg+0x1bd/0x2a0 net/socket.c:2674
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f1d3839c819
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f1d392c4028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007f1d38615fa0 RCX: 00007f1d3839c819
-RDX: 0000000000044080 RSI: 0000200000000040 RDI: 0000000000000003
-RBP: 00007f1d38432c91 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f1d38616038 R14: 00007f1d38615fa0 R15: 00007fff29960058
- </TASK>
-
-
-***
-
-WARNING: suspicious RCU usage in mqprio_dump
-
-tree:      net-next
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net-next.git
-base:      b3e69fc3196fc421e26196e7792f17b0463edc6f
-arch:      amd64
-compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-config:    https://ci.syzbot.org/builds/f4a44029-347c-4dad-b84f-81c322454de4/config
-syz repro: https://ci.syzbot.org/findings/159b3573-da89-4289-89cf-85c39c62db59/syz_repro
-
-=============================
-WARNING: suspicious RCU usage
-syzkaller #0 Not tainted
------------------------------
-net/sched/sch_mqprio.c:570 suspicious rcu_dereference_check() usage!
-
-other info that might help us debug this:
-
-
-rcu_scheduler_active = 2, debug_locks = 1
-1 lock held by syz.1.18/5958:
- #0: ffffffff8fbca4c8 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_lock net/core/rtnetlink.c:80 [inline]
- #0: ffffffff8fbca4c8 (rtnl_mutex){+.+.}-{4:4}, at: rtnetlink_rcv_msg+0x722/0xbe0 net/core/rtnetlink.c:6986
-
-stack backtrace:
-CPU: 1 UID: 0 PID: 5958 Comm: syz.1.18 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- lockdep_rcu_suspicious+0x13f/0x1d0 kernel/locking/lockdep.c:6876
- mqprio_dump+0x3db/0x1370 net/sched/sch_mqprio.c:570
- tc_fill_qdisc+0x663/0x11c0 net/sched/sch_api.c:937
- qdisc_notify+0x28c/0x440 net/sched/sch_api.c:1038
- notify_and_destroy net/sched/sch_api.c:1058 [inline]
- qdisc_graft+0x114a/0x15b0 net/sched/sch_api.c:1158
- __tc_modify_qdisc net/sched/sch_api.c:1760 [inline]
- tc_modify_qdisc+0x18a4/0x2290 net/sched/sch_api.c:1816
- rtnetlink_rcv_msg+0x77e/0xbe0 net/core/rtnetlink.c:6989
- netlink_rcv_skb+0x232/0x4b0 net/netlink/af_netlink.c:2550
- netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
- netlink_unicast+0x80f/0x9b0 net/netlink/af_netlink.c:1344
- netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1894
- sock_sendmsg_nosec net/socket.c:721 [inline]
- __sock_sendmsg net/socket.c:736 [inline]
- ____sys_sendmsg+0x972/0x9f0 net/socket.c:2585
- ___sys_sendmsg+0x2a5/0x360 net/socket.c:2639
- __sys_sendmsg net/socket.c:2671 [inline]
- __do_sys_sendmsg net/socket.c:2676 [inline]
- __se_sys_sendmsg net/socket.c:2674 [inline]
- __x64_sys_sendmsg+0x1bd/0x2a0 net/socket.c:2674
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7ff019b9c819
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ff01ab3e028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007ff019e15fa0 RCX: 00007ff019b9c819
-RDX: 0000000020000000 RSI: 0000200000000200 RDI: 0000000000000005
-RBP: 00007ff019c32c91 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007ff019e16038 R14: 00007ff019e15fa0 R15: 00007ffc53020ce8
- </TASK>
-
-=============================
-WARNING: suspicious RCU usage
-syzkaller #0 Not tainted
------------------------------
-net/sched/sch_api.c:943 suspicious rcu_dereference_check() usage!
-
-other info that might help us debug this:
-
-
-rcu_scheduler_active = 2, debug_locks = 1
-1 lock held by syz.1.18/5958:
- #0: ffffffff8fbca4c8 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_lock net/core/rtnetlink.c:80 [inline]
- #0: ffffffff8fbca4c8 (rtnl_mutex){+.+.}-{4:4}, at: rtnetlink_rcv_msg+0x722/0xbe0 net/core/rtnetlink.c:6986
-
-stack backtrace:
-CPU: 1 UID: 0 PID: 5958 Comm: syz.1.18 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- lockdep_rcu_suspicious+0x13f/0x1d0 kernel/locking/lockdep.c:6876
- tc_fill_qdisc+0xd90/0x11c0 net/sched/sch_api.c:943
- qdisc_notify+0x28c/0x440 net/sched/sch_api.c:1038
- notify_and_destroy net/sched/sch_api.c:1058 [inline]
- qdisc_graft+0x114a/0x15b0 net/sched/sch_api.c:1158
- __tc_modify_qdisc net/sched/sch_api.c:1760 [inline]
- tc_modify_qdisc+0x18a4/0x2290 net/sched/sch_api.c:1816
- rtnetlink_rcv_msg+0x77e/0xbe0 net/core/rtnetlink.c:6989
- netlink_rcv_skb+0x232/0x4b0 net/netlink/af_netlink.c:2550
- netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
- netlink_unicast+0x80f/0x9b0 net/netlink/af_netlink.c:1344
- netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1894
- sock_sendmsg_nosec net/socket.c:721 [inline]
- __sock_sendmsg net/socket.c:736 [inline]
- ____sys_sendmsg+0x972/0x9f0 net/socket.c:2585
- ___sys_sendmsg+0x2a5/0x360 net/socket.c:2639
- __sys_sendmsg net/socket.c:2671 [inline]
- __do_sys_sendmsg net/socket.c:2676 [inline]
- __se_sys_sendmsg net/socket.c:2674 [inline]
- __x64_sys_sendmsg+0x1bd/0x2a0 net/socket.c:2674
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7ff019b9c819
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ff01ab3e028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007ff019e15fa0 RCX: 00007ff019b9c819
-RDX: 0000000020000000 RSI: 0000200000000200 RDI: 0000000000000005
-RBP: 00007ff019c32c91 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007ff019e16038 R14: 00007ff019e15fa0 R15: 00007ffc53020ce8
- </TASK>
-
-
-***
-
-WARNING: suspicious RCU usage in tc_fill_qdisc
-
-tree:      net-next
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net-next.git
-base:      b3e69fc3196fc421e26196e7792f17b0463edc6f
-arch:      amd64
-compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-config:    https://ci.syzbot.org/builds/f4a44029-347c-4dad-b84f-81c322454de4/config
-syz repro: https://ci.syzbot.org/findings/0dada8ec-a4b6-42a1-8516-d70ce8ccccc7/syz_repro
-
-=============================
-WARNING: suspicious RCU usage
-syzkaller #0 Not tainted
------------------------------
-net/sched/sch_api.c:943 suspicious rcu_dereference_check() usage!
-
-other info that might help us debug this:
-
-
-rcu_scheduler_active = 2, debug_locks = 1
-1 lock held by syz.0.17/5963:
- #0: ffffffff8fbca4c8 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_lock net/core/rtnetlink.c:80 [inline]
- #0: ffffffff8fbca4c8 (rtnl_mutex){+.+.}-{4:4}, at: rtnetlink_rcv_msg+0x722/0xbe0 net/core/rtnetlink.c:6986
-
-stack backtrace:
-CPU: 0 UID: 0 PID: 5963 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- lockdep_rcu_suspicious+0x13f/0x1d0 kernel/locking/lockdep.c:6876
- tc_fill_qdisc+0xd90/0x11c0 net/sched/sch_api.c:943
- qdisc_notify+0x1cf/0x440 net/sched/sch_api.c:1033
- notify_and_destroy net/sched/sch_api.c:1058 [inline]
- qdisc_graft+0x114a/0x15b0 net/sched/sch_api.c:1158
- __tc_modify_qdisc net/sched/sch_api.c:1760 [inline]
- tc_modify_qdisc+0x18a4/0x2290 net/sched/sch_api.c:1816
- rtnetlink_rcv_msg+0x77e/0xbe0 net/core/rtnetlink.c:6989
- netlink_rcv_skb+0x232/0x4b0 net/netlink/af_netlink.c:2550
- netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
- netlink_unicast+0x80f/0x9b0 net/netlink/af_netlink.c:1344
- netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1894
- sock_sendmsg_nosec net/socket.c:721 [inline]
- __sock_sendmsg net/socket.c:736 [inline]
- ____sys_sendmsg+0x972/0x9f0 net/socket.c:2585
- ___sys_sendmsg+0x2a5/0x360 net/socket.c:2639
- __sys_sendmsg net/socket.c:2671 [inline]
- __do_sys_sendmsg net/socket.c:2676 [inline]
- __se_sys_sendmsg net/socket.c:2674 [inline]
- __x64_sys_sendmsg+0x1bd/0x2a0 net/socket.c:2674
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f9e5e39c819
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f9e5f2d6028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007f9e5e615fa0 RCX: 00007f9e5e39c819
-RDX: 0000000000000000 RSI: 00002000000007c0 RDI: 0000000000000003
-RBP: 00007f9e5e432c91 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f9e5e616038 R14: 00007f9e5e615fa0 R15: 00007ffc6a25e4e8
- </TASK>
-
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 ---
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+ net/netfilter/x_tables.c | 30 +++++++++++++-----------------
+ 1 file changed, 13 insertions(+), 17 deletions(-)
 
-To test a patch for this bug, please reply with `#syz test`
-(should be on a separate line).
+diff --git a/net/netfilter/x_tables.c b/net/netfilter/x_tables.c
+index b39017c80548..a58107038a24 100644
+--- a/net/netfilter/x_tables.c
++++ b/net/netfilter/x_tables.c
+@@ -817,17 +817,6 @@ int xt_compat_match_to_user(const struct xt_entry_match *m,
+ }
+ EXPORT_SYMBOL_GPL(xt_compat_match_to_user);
+ 
+-/* non-compat version may have padding after verdict */
+-struct compat_xt_standard_target {
+-	struct compat_xt_entry_target t;
+-	compat_uint_t verdict;
+-};
+-
+-struct compat_xt_error_target {
+-	struct compat_xt_entry_target t;
+-	char errorname[XT_FUNCTION_MAXNAMELEN];
+-};
+-
+ int xt_compat_check_entry_offsets(const void *base, const char *elems,
+ 				  unsigned int target_offset,
+ 				  unsigned int next_offset)
+@@ -850,18 +839,25 @@ int xt_compat_check_entry_offsets(const void *base, const char *elems,
+ 		return -EINVAL;
+ 
+ 	if (strcmp(t->u.user.name, XT_STANDARD_TARGET) == 0) {
+-		const struct compat_xt_standard_target *st = (const void *)t;
++		DEFINE_RAW_FLEX(const struct compat_xt_entry_target, st, data,
++				sizeof(compat_uint_t));
++		compat_uint_t *verdict = (compat_uint_t *)st->data;
+ 
+-		if (COMPAT_XT_ALIGN(target_offset + sizeof(*st)) != next_offset)
++		st = (const void *)t;
++
++		if (COMPAT_XT_ALIGN(target_offset + __struct_size(st)) !=
++				next_offset)
+ 			return -EINVAL;
+ 
+-		if (!verdict_ok(st->verdict))
++		if (!verdict_ok(*verdict))
+ 			return -EINVAL;
+ 	} else if (strcmp(t->u.user.name, XT_ERROR_TARGET) == 0) {
+-		const struct compat_xt_error_target *et = (const void *)t;
++		DEFINE_RAW_FLEX(const struct compat_xt_entry_target, et, data,
++				XT_FUNCTION_MAXNAMELEN);
++		et = (const void *)t;
+ 
+-		if (!error_tg_ok(t->u.target_size, sizeof(*et),
+-				 et->errorname, sizeof(et->errorname)))
++		if (!error_tg_ok(t->u.target_size, __struct_size(et),
++				 et->data, __member_size(et->data)))
+ 			return -EINVAL;
+ 	}
+ 
+-- 
+2.43.0
 
-The patch should be attached to the email.
-Note: arguments like custom git repos and branches are not supported.
