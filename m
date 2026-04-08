@@ -1,295 +1,157 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012002.outbound.protection.outlook.com [52.101.66.2])
+Received: from CHN02-SH0-obe.outbound.protection.partner.outlook.cn (mail-sh0chn02on2105.outbound.protection.partner.outlook.cn [139.219.146.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9D637883D;
-	Wed,  8 Apr 2026 08:59:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509C833F370;
+	Wed,  8 Apr 2026 08:59:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.146.105
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775638768; cv=fail; b=dkZd2TFdVCY5sN8yn3CRtAzwB9dno0P2GwsJf5wbOCIhM8wIt0g5s/4uQUi4NXHusUOsifUyc2ot+SFW3h8u+9vlIGKbt0kj7SDmbkJAHr2v3SrPMVyJ6ckq0r+wFK0LzFfiBR+ehPnyVTl45fY50jtaEv8uzWyYoWOby4Hyj7o=
+	t=1775638779; cv=fail; b=sfYwl32lmS/iGavENJz8kTf1rpeCKUbchd8HPboNk0hpg+bZbM5aH5vRUF+Tf8xZM54jg1vxwRW1c9HV4HfCl2TfuXYkBVV7jvK6B1AzJH2ie0P0em7vsE8QRJe0Hwfq4bXNcUhA7etxYhjH0bSM+jyCN/A0UnohQDBfVw6Tp3Y=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775638768; c=relaxed/simple;
-	bh=C2Nc8PwvLNFAsL4DkRQ9WkuX41TbW0OdHI1bauC1Dy4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=GpAZZnnEdJHOs0T/GqOH9mgkKib3XYrfTrYckaCykxPhG93Qw21HDSnD6xjo1R4+/D6WpfGor7dzcP2Pl8HH27rNzzUUg/lKo2HupV+ZhY7lJT/5GnpeRx3v50Ys4j08f2L8eu/rdGQr69h9eqfrRPQd56YdTg971SXtErIrXmI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=iHWH5hbc; arc=fail smtp.client-ip=52.101.66.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="iHWH5hbc"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rj9zBnmRgM6nhiH5ODMoYG6hvkZr6985JiuCEue8odSbrdIQsiYZQuR+0sl9mJszbwXrmtaz9041+dkUG5XWMVqV0tnw5oUiWDY8fSOPidHjyN0JbGkWBcJf1PQjY3kUQEMWO29TyCicqll4ZN8I6eRQDkOOkIW3qldaZlywzgDxL/wVgBIsubtTY41pzDgwVKXdiRzJ2FT8BMtMq/PZHFuLKgZXQ7S7FtlfkRNXiAbla2nlZPGydQqSvEXT9POy7HdjX2m6cskgOPhV4kXYShXssa7LnumNY94Qv2WzlqbRgOmYnbBCgDmCBjfWyXlDQ7sHT7we9OUGVMC/l8IxTw==
+	s=arc-20240116; t=1775638779; c=relaxed/simple;
+	bh=PPsWgKmOaPYL5bXj37ENzruWd7kcnsEZKJfciS51Wrc=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Bw8yY5uSIYOXfucKk/hM3t5xtb3c2QDSGL5WfsacXp/FlOvrBXWONNG1V0jZOF9DNBTSBOMGKj0LH3w0YRkE1tMwd/QSsYw62j7XhQ+GmkojpPfmd4ma3BLxtV4f0jgH/j47ESR4WLaROWvzha51oLDHz5bJAyrD6KxeQDcKZRE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.146.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=gGzxnPytRuYJ0jFYc9mDq7zOaoGSq99J1usptsuSWtOOMyHrOVMOOYV3GoforLIoi+eXtTPzQ3RhcbGmMwTfDpfd4yq/6Af28rZNBjILAbVYLi9JpjrV0Jr1aFv64nGdXz1sNQeR5jMYP9buzhGAdj6Zw153dKHtWSh8xgMFtVR9GPhAZsjS9552eRVk2bX0oOOOnlleBBYPp61vMWUZFFuTezHWhq45761EvEU3fqi9KwIDO560dtmXgEKftnVUMl+THGF8QKI6bmeafI6E1k+0i9zS9OxEe+aaMYeo4UwNAO0I7YORLcW0bxNOyBCkg1SauQIw8a5weF9rFSifdA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
+ s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ht+rPhWyMe3UW5A+lG+keRfUcxvrk24jWY22nD6V3is=;
- b=QyQ8PrwnOLPFNgJCDuuq3TTJNrbfOJqVAU76MWUh5WaLUkj0M4J6lVVZmhh2f44lndUCaSrOLwOfoRS0g5R6D7NDYxb5H4WViZz2P+WXnVci1LLKc6QIsOM2x9QIIu8OxX9WuRXPrIslDbKSCijbbN/k8cQlQmJ1OULFMnJPWae7MQJlS68eZn0mYyaiftw+X7h8nkR7B/k2EUQkzA2QRmhAOO5aDKQeUBj0YD4yq9yxGqsAIGHLNMFFxne+q1erSFDU5oxrXJEj1BREk4vklj6Y1I7ewWTSAEFBaNq80zmVMSDnvPCjAiOpJHVQS60/SiAybzDNS6jl4+ngBgz5wA==
+ bh=+zmfhaPUQaV/qKhRRuNmokCPlmlEmTkPnSqktZOlVzo=;
+ b=FVpjRMnjKcKZemMDr8a8TFfPj65QEMh6FLtHXs3BdHnZhCGlzA3bd6wppyrLkAr3HgRfQSBMbL6RiPn0fW0QZ6JLuLLlQtcqhc2B4VTfJNZkrtZZ9zSJpvGOTt5NOY1WRqIgXz7M6i6Xwa+8lspHRZE5q0O2ff6K+EAUBLMpA6nb/TZzEUJJwJounwwJDEQtDi3Ij3UaTdblDQY+kyMEleJIrzksH3t7McQxb8/R6goHtb1aigxBZix5pzsWJbwsPGMXcN/P76IgqRR6zECED/vtvu66pvsDS5GXP8TJ+oag8uNr3dQsxo7GxwC4jEm0qAd2dScQ8P/fBy9SGip1pQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ht+rPhWyMe3UW5A+lG+keRfUcxvrk24jWY22nD6V3is=;
- b=iHWH5hbcOLH6hYwe/qMaTjB5KM40+MH1/+qLwrKTO1btAJygHXhlCyDapIKBdu4eOsw+PV6mVpCc0Dq7NCcfDPXj7HsDFmU6+TK6vz1HFByovx98N61bFzwRelF/TmkHIUwQ3s3WRGyY8OBFV0tHRQAErPaJHfLpbl/5IaDcyg91DbxgfTNBf9oNI815HM3NnadGPgjnqmGPdCfuTcBUR+iRdDKR2/Zznyd0XzXsNdbeKB3FplAvFBI/iIPr2NwMlbg0aCU58R4ivmRbp63kFXYAOKr2vbTHi7DdaIXf6IcyJ6aRDsHMykaEv14pAgY7uGlQTOoVyTd7TUK3qB1l7A==
-Received: from AM8PR04MB7284.eurprd04.prod.outlook.com (2603:10a6:20b:1dc::8)
- by AM7PR04MB7157.eurprd04.prod.outlook.com (2603:10a6:20b:118::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.18; Wed, 8 Apr
- 2026 08:59:24 +0000
-Received: from AM8PR04MB7284.eurprd04.prod.outlook.com
- ([fe80::9cd6:51bd:82b:98dc]) by AM8PR04MB7284.eurprd04.prod.outlook.com
- ([fe80::9cd6:51bd:82b:98dc%5]) with mapi id 15.20.9769.014; Wed, 8 Apr 2026
- 08:59:24 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Jakub Kicinski <kuba@kernel.org>, Vladimir Oltean
-	<vladimir.oltean@nxp.com>
-CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Clark Wang
-	<xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
-	<edumazet@google.com>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
-	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"f.fainelli@gmail.com" <f.fainelli@gmail.com>, Frank Li <frank.li@nxp.com>,
-	"chleroy@kernel.org" <chleroy@kernel.org>, "horms@kernel.org"
-	<horms@kernel.org>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-	"andrew@lunn.ch" <andrew@lunn.ch>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>
-Subject: RE: [PATCH v4 net-next 10/14] net: dsa: netc: introduce NXP NETC
- switch driver for i.MX94
-Thread-Topic: [PATCH v4 net-next 10/14] net: dsa: netc: introduce NXP NETC
- switch driver for i.MX94
-Thread-Index: AQHcwQGr6p6cQRIC50ifKdNlYVQM5LXMjU4AgAhWcVA=
-Date: Wed, 8 Apr 2026 08:59:24 +0000
-Message-ID:
- <AM8PR04MB72840DBFC7F3FD578DFF6AF8885BA@AM8PR04MB7284.eurprd04.prod.outlook.com>
-References: <20260331113025.1566878-11-wei.fang@nxp.com>
- <20260403011738.1795644-1-kuba@kernel.org>
-In-Reply-To: <20260403011738.1795644-1-kuba@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM8PR04MB7284:EE_|AM7PR04MB7157:EE_
-x-ms-office365-filtering-correlation-id: 5791bda8-1944-403c-b2a4-08de954d21c1
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|19092799006|376014|7416014|1800799024|56012099003|22082099003|18002099003|38070700021;
-x-microsoft-antispam-message-info:
- H3lByri3K01dHqYAJkes3Nceqs4YTmqCDt3PjB2y74tGOIYMl1170Ri5JOh2pJFAsAFhKwDlVMTYuULXrRDYpAbVl1/w0LwPwmzZW0hJTyCbKAKefh4NjFsM9SINlpEksJy1HepZRtld0wTmJDZF0M+lK8yWMV3NlkPwGChJlFLzDtUGdCteEX34xs+qXYMSjiY6Ylqynb/XeA6WAaBMQVBkxaVkx2AEKYETXYQdQimKsrFK1y/ZYY3IiqQrhKS+KpVluOd7etcSP2wrNIM7ss9hozVa5V4ZFzPNbFiGsCmcV07+dARm7R03M3WJ5IN8GwpMQoYz6x1OnC8R41moCYp+apAnOoqc9t2rLhKd0FkUj6SCGbhQ+QoiMYcpqH8dpBzYCIbAWuktlbbhlaIGKRixYM1SxK+7eGcM863H/KCaXlN9BB/iQ1vJ08jnO017mHypwupGh/1tkLbVgcyPIdkP7wXJiCBR+cO8nj9GqcLqmmQ7zdUvE/MiFlmR7krleu2lUs02at2qyIpLkNzY8BOng9XJd646ruF7lQVsS2clu+OJKn5rFntFw/Fq3Cvp2MssRsia2cAqF+7p/x6hx65cD2Yo8lFhmbM097VPg3KLAunzMffMoLF7Kz2H0VCIm1FE9/KATslv0PAjwXZms/IibhVSzLR5HLcLV9kuetWKlPn8AR9QXKKmJNaetB4/SBG+Yyl77CvrNUczeJ3xxny44nV/YOE0ygDFoyLm3a4vzsYnxP/Q6IVvy0L9ZCxVhexuwoAigDrP6Voe51ZyMLu5IdnInDI5RXGWqRUBwpc=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7284.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(376014)(7416014)(1800799024)(56012099003)(22082099003)(18002099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?gVqnNiy8ekPLW97cOSz16ZHD8BjO5aLP8VB5V+1Obe5mNRKi7lIMHQpg5X7S?=
- =?us-ascii?Q?bpoturLjD26QB503g+AjxCMbsrzhf6PsuqO7Y7cLqEWN0jotIlKLCxANMg++?=
- =?us-ascii?Q?vdPzDhfZuRIxml4HTpIp89ARLR9phsnhQIj52zmjjHpKnP119uMCMwwAnMjp?=
- =?us-ascii?Q?SYHaLxJLH7tW9NtLxz/9jCgaKKcfTWC0j2LtHfZiBNwdw7rG6JyAvdLgToAW?=
- =?us-ascii?Q?rvVdd+mwTWCFOR8wqTvNYNl5QhBstBH0DBQ4ye6F7JoaPLpg3+0eHWk8i1lR?=
- =?us-ascii?Q?Id1oE5rMmZL4gbgdPe+jTlb1V+7eD8mb7UqJ/UPJ72Oeb0456E1uYHAnBROR?=
- =?us-ascii?Q?oaTvSZ3Nagq0Gi/LAbnAcAXjQc7Noo/h+RE948jahsVxTZZVMXVA5Yet/jR1?=
- =?us-ascii?Q?xSc86Ia/aYvQpTIsk/zALM+/RiP2QWElN+3w4OWEeLbVZ9aHhgofMOSZWP2K?=
- =?us-ascii?Q?7T6mRCf/Sr9usqpgc9yzuJVQDaTrOsVpKJZLGfprpMeiyj8e6YrkoW2aWEnl?=
- =?us-ascii?Q?Cm1hbJ/a43XsNH/TyGa7Rx5wbdkcdTp7QlWnxJRh9h3eGe53zikncrT38GeU?=
- =?us-ascii?Q?QgDLwwzchhqU/XKyGd0xfI5U3JoaF/goTketzP/2XrucEBTFW/7Xbbvt1PNS?=
- =?us-ascii?Q?wnIMVFUheS1TxCgnwNjfEJp/VNd3Kz4So+oDDd65JxxdgyMmW3z78IWHLB9a?=
- =?us-ascii?Q?Byf0lQoaX9EnUxzIohBONo+FK5ENdb5WQ7r32EM5Y//aOMMzgMkZmwLSkIjv?=
- =?us-ascii?Q?eQiNW81ulh6nHq1uLYOY6aTICNFsXkXjKTZ5wixpcKbRoPx+n0/5Mq6I/pau?=
- =?us-ascii?Q?q6DQ0AsxBaeGQH4Y+ZRLq3mTZqBNjHOs+xgs0Nbubqlj8n3zq0mVJshWSetN?=
- =?us-ascii?Q?XJG65DbR5yc9AEcDvucrxf4w9uZdSIs9Uf4mDSHbgUVlk9iKbk1lRMZpMEGL?=
- =?us-ascii?Q?CaamZYmq9OwbKAgCu/cU6KGcLgTmpGrirEtfTh5Vxov/s1ymE9BGLAMDoDYQ?=
- =?us-ascii?Q?niNDfj608jn+P4ODXNNwo/DrAfk0OdlkLBsaEZY9wovW3Vioj8igfWo1Mcrb?=
- =?us-ascii?Q?vivwe+HUHUcpmnSC8ULlcenaSkEh8YdEFu0yadJ3IXueHAeeeY/2rYJF59po?=
- =?us-ascii?Q?SuD1BUORF9PEAkAHaw+5ZMWojeiQjz+WgbRgT+ZwrGT9ZhXNqLC28egxMaMH?=
- =?us-ascii?Q?3jrIclUAHU0QRx+G8NNfINwJLYdhc3apPqzADVQY9Ft37LYe2Rk274+vkpQj?=
- =?us-ascii?Q?rQxVaRfZfuJ3RKWB4s0fHoxXE/BjjMxAyx1H3m7eMMNNKtxndwJOldbQzODi?=
- =?us-ascii?Q?rO1u4My2ZGApIW+Jh7YDWryLoAf1mI0xeJhDjJRiYh1zrzHOrDfmUnApZwTT?=
- =?us-ascii?Q?lVtqE2rV5JhHJe/7wSh0sbKSdNb0slAXH8fKaLxB6zuCdi9p5rVW3sbsdSDI?=
- =?us-ascii?Q?WHAyg0+1bi02UyvTVL2H8AebmHrTwpX13U6zxH2xzlpNj8r+g3mOI5vAD0A9?=
- =?us-ascii?Q?nN9BGuEVzkqjogpL7c66IeJVWILkSszs7voayg+OJnlDvZ6Mw9duT9DV07J/?=
- =?us-ascii?Q?A8/5N5fTXZzHqW6dT1DZGHkWrKRnT00lkVTJiMeyVJPZHzPFc0ULxSPhaDvT?=
- =?us-ascii?Q?R5/fZgBzyHwYGUKqChsOTiCTOyTMvUa0A23/XF5qNWOBWi2uSduGvu0srGG8?=
- =?us-ascii?Q?1GzdXa4FytF+YlVFbRyGgGxS57m1vl/oZ1HRH+qnsEvmL9DU?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ smtp.mailfrom=starfivetech.com; dmarc=pass action=none
+ header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=starfivetech.com;
+Received: from SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:25::15) by SHXPR01MB0719.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:26::10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.31; Wed, 8 Apr
+ 2026 08:44:25 +0000
+Received: from SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
+ ([fe80::9b99:12dc:a115:b90f]) by
+ SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn ([fe80::9b99:12dc:a115:b90f%6])
+ with mapi id 15.20.9723.018; Wed, 8 Apr 2026 08:44:25 +0000
+From: Minda Chen <minda.chen@starfivetech.com>
+To: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor@kernel.org>,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	devicetree@vger.kernel.org,
+	Minda Chen <minda.chen@starfivetech.com>
+Subject: [net-next v1 v1 0/5] Add StarFive JHB100 soc SGMII GMAC support
+Date: Wed,  8 Apr 2026 16:44:11 +0800
+Message-Id: <20260408084416.29753-1-minda.chen@starfivetech.com>
+X-Mailer: git-send-email 2.17.1
+Content-Type: text/plain
+X-ClientProxiedBy: BJSPR01CA0012.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c211:c::24) To SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:25::15)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SHXPR01MB0863:EE_|SHXPR01MB0719:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6290ad3d-0906-4fd3-ee11-08de954b097c
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|1800799024|366016|7416014|52116014|376014|921020|56012099003|18002099003|38350700014;
+X-Microsoft-Antispam-Message-Info:
+ dA73NIAC9Nv35JIPb4lJFxaWCZaRO8EwXNAjW1ZkVNZ4S6RJnDvBB5XjGy3zlgj+NXn0X2/XCDOpkgHt+9YhDE1crbhjlUUIraTjdFiRqBGa+h/B7ZtUQliRC5AnjNUTBelNTfjbfMpzJJ1YCgTBsmEUihstpTVjqjE146Ols4mqCjFBG7tpTsy0G56JdRNKyr1uwuwlflzJUv7gOXReZNIfBVXt55uhcvnQyFsQXvWHXOqSDuIqJ9/NOwk+NBULdEvtecosfMnI+vHnUtozsDwG7bOCIRawIyunSv3t9b1QMtUi/khpkDwtiy39qD3/TH/pN9MHzak7xsza9MlNsoRJQqtj2yb9fuSURjLI8VvEDbIUQ0BDEQKI5Pg7vVSPhNFd7Y74MbfPtVk2i8kteIQcy2EZLuGczf412IiotoZnwhHr7OSKO4fUjO7cuaFYiservpwSDIsejrWwCdO6QGmSN98sU5zfFEZEHgkjvqvXAnSNBy68iqOXswP25qtQjmDB0KRig7hMOFSPhs+O9H4/8v5oOqq8bm8dA3JQgTS0MJI20d18bY1r20b/VvwAuEu6YSwr9iZ0OEIcjmzLCacISSSY9RLIfneAx9HKs9I=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(52116014)(376014)(921020)(56012099003)(18002099003)(38350700014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?ols59tiqmvVYwlZcgtyj72cvk5OxEoR2c3TVKLi5XVAge1tKWIwilIIrOfGw?=
+ =?us-ascii?Q?RV3zfhSd0WYHpg9yOwZSNO+Fj1pZ8IZyflHut0nm+MIFmCQrmFSryN/5zLfd?=
+ =?us-ascii?Q?diSevayRuU15IS0xWdL6y3tX5yX4iQ3olGWHZTg1mYXGqHKX8o3ruztPm7pU?=
+ =?us-ascii?Q?8kx+6UsY20hYuXmQaLVEOPS55mTl4ltF7QZ3UN54v3JRsJiDMPk6Z+tMQKti?=
+ =?us-ascii?Q?VnZ4225WFBXchfRSOFRXiV0h7AV1crWHUmfCxvGSpUWDnRL/KbSf1uoollJJ?=
+ =?us-ascii?Q?JvHU/79O1oZcnlVsq7uUzx48bNueB3EAKvHfEx6SST0MxEoNLoW3IwqTjnQg?=
+ =?us-ascii?Q?RHhyVtBZgW2dfIzPWB7obTPVk0oVRurJadnk0Z0wlqJuqttFOa6xpqkq3Voe?=
+ =?us-ascii?Q?PiGz3LeRCk3sYFHq0uAp52FIIlazdTdNhRRlUna6eovlNK5IiL6PSeXY7qH6?=
+ =?us-ascii?Q?HioBYIf+PsjUrvUH00ZaxLvvEF8bp8jwlHhsAfyQQEfNmdkDHD6+hJNHZyea?=
+ =?us-ascii?Q?aZdnMAHm7mI8H87I9YAytbBfyy7jWwXCL6B8bD/bSEoZDj1klTm8KjJf4K9+?=
+ =?us-ascii?Q?dSu8T6mogzsl/xTzR+QbN87l0OAkHNa9v/t3QUpWHS5W7tPQoFN43PAeUzoU?=
+ =?us-ascii?Q?5kJCBETVe4Pf6mWljbc6GuNe7k99XcEU2f9Hf8/VshyY5iuMGEsTNu8sSYGb?=
+ =?us-ascii?Q?/kBJRa6PwWh3HJJKTpnMZVZ+d8jH5VTcjNmejhObsr8iZuSrP3JLlPeKekes?=
+ =?us-ascii?Q?42k+4sTxSyVLiT6M0xJDcsc6GCwEZA+H04CxHRSKD5lEhpr7NUR+72BhUgP1?=
+ =?us-ascii?Q?7VFPBqmQEDeZdhvX74m6Gc6Fdu5yj/kvZqZlGrRan3ym9hHE/HrgAgZKyWxM?=
+ =?us-ascii?Q?8csx+Ykw9ScuydPb2Ib7RhfgYKUnmdcyi8SDLSCkD0tHKUTnssr4Ae/tPMpx?=
+ =?us-ascii?Q?ws3fGfzzVtQr70zzNoQrJwInRCaFbVE7CFcLFpKzezYxaed3Dh+Rg1BoVMOL?=
+ =?us-ascii?Q?ZTLu7BecMKPA1imNthi4pXazynnGrdAHABRkG+9vBcHSasKR6ItVmieDweAk?=
+ =?us-ascii?Q?edjrl5/xi4Gxw7OTjlVgp1mIITxxFzdY3PmWViM3cFHl9MfDiC5EqLithbW9?=
+ =?us-ascii?Q?3nIBRLnXRb1o1uKiZnzZceL59xbr8eUmPMAocBNT8f3r4PVHGEP+ciFr12N9?=
+ =?us-ascii?Q?YKN6tm963aYik4wIrg7jrhyDNsFCcECCPBOpAKav+h+LUWorY65Mw3YpP3kh?=
+ =?us-ascii?Q?1r87CKUEVRys9KrmFgXilYvyLci+pUq6c2fGetaWHmdGcXWpcs15wwm3igp5?=
+ =?us-ascii?Q?SYEn4GD91+VUpws1rh8J0GqgFyBdNIFVicllFuATagLVB1JUR4l+eNeeprGV?=
+ =?us-ascii?Q?YE5PG4RTLXBwSr67vkt4dYJEBvkvcFrmVnf94w8Ma10/jkOWxenwzWSklTyK?=
+ =?us-ascii?Q?Aq3vTS5BG4LuXM4TioN/Zr9tOfcpEjeQK6StfhjqK0TAy+RTnQfp6OalMpUF?=
+ =?us-ascii?Q?RycmM3EMjFzTREq4tRE9rlR1ctXCi+0Ka2Blw9VmU/6CmmRvIpdg4bhAwdm5?=
+ =?us-ascii?Q?40UAUxeVubXvoTLubI+jt/8EWkMHvtVIqEpR3EoDJPMpyJfqJpW96bhpYTBW?=
+ =?us-ascii?Q?A6ZNXZ8aktvPiqE0ZPA139VZTxLBYy6NVm/MXEU3nQ+RFq4m4rh8oc5aZpwV?=
+ =?us-ascii?Q?/XIhF17VWPFDLjTaLCn+/JCRPKWRvkUvYZR/yK1rY/HQCD+3vNKycotNSZGb?=
+ =?us-ascii?Q?8qbat5XsuIBOvIMB86VOb9y4/cSCJ9E=3D?=
+X-OriginatorOrg: starfivetech.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6290ad3d-0906-4fd3-ee11-08de954b097c
+X-MS-Exchange-CrossTenant-AuthSource: SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7284.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5791bda8-1944-403c-b2a4-08de954d21c1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Apr 2026 08:59:24.3946
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2026 08:44:24.9410
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: qyr/n6eqJphGwf+gh1rqMMdQhcf/yhx9r1wV2a2jtbKrmgD4Dx3maGjZKGDaTWyVh2aQhuTfZVf84i3uqRVRlQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB7157
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5gtb4gtvKDHV9uMgb6jpzZHu1/Au+WBvHOHmJOCAjme+MrxqPyJMOhBmPzb+JVzI18Tz39kqs3qT05Ob/ecjq/C0si97oNpW6Az2qFNp83w=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SHXPR01MB0719
 
-> > +static int netc_init_switch_id(struct netc_switch *priv)
-> > +{
-> > +	struct netc_switch_regs *regs =3D &priv->regs;
-> > +	struct dsa_switch *ds =3D priv->ds;
-> > +
-> > +	/* The value of 0 is reserved for the VEPA switch and cannot
-> > +	 * be used.
-> > +	 */
-> > +	if (ds->index > SWCR_SWID || !ds->index) {
-> > +		dev_err(priv->dev, "Switch index %d out of range\n",
-> > +			ds->index);
-> > +		return -ERANGE;
-> > +	}
->=20
-> Does this check cause the probe to fail unconditionally for standard
-> single-switch topologies?
->=20
-> The DSA core typically assigns ds->index =3D 0 by default for the first s=
-witch.
-> Because !ds->index evaluates to true for index 0, this setup function wil=
-l
-> always fail unless the dsa,member property is explicitly overridden in th=
-e
-> device tree.
+JHB100 is a Starfive new RISC-V SoC for datacenter BMC (BaseBoard
+Managent Controller). Similar with Aspeed 27x0.
 
-As I mentioned in another mail, we added the 'dsa,member' property to the
-netc switch DT-binding doc, specifying that the 'member' (switch index) val=
-ue
-cannot be 0. And 'dsa,member' is a required property for netc switch.
+The JHB100 minimal system upstream is in progress:
+https://patchwork.kernel.org/project/linux-riscv/cover/20260403054945.467700-1-changhuang.liang@starfivetech.com/
 
->=20
-> Could the driver translate the hardware ID internally, for example by wri=
-ting
-> ds->index + 1 to NETC_SWCR, rather than forcing this hardware-specific
-> restriction onto the software DSA index?
+JHB100 GMAC still using designware GMAC core like JH7100 and JH7110,
+and contains 2 SGMII interfaces, 1 RGMII/RMII interface, 1 RMII
+interface. In JH7100/JH7110 dwmac-starfive.c have supported RGMII/RMII
+interface. So require to add SGMII support to dwmac-starfive.c for JHB100.
 
-The current approach is based on Vladimir's suggestion. I need to confirm w=
-ith
-Vladimir which approach is better.
+SGMII serdes PHY has been intergrated in JHB100 and do not have driver
+setting.
 
-Hi Vladimir,
+In JHB100 EVB board, SGMII connect with motorcomm YT8531s external PHY
+and support RJ45 ethernet port.
 
-What are your thoughts on this suggestion? Is this approach better?
+The patch base in 7.0-rc5
 
->=20
-> [ ... ]
-> > +	for_each_available_child_of_node_scoped(ports, child) {
-> > +		/* If the node does not have phy-handle property, then
-> > +		 * the port does not connect to a PHY, so the port is
-> > +		 * not the EMDIO consumer.
-> > +		 */
-> > +		phy_node =3D of_parse_phandle(child, "phy-handle", 0);
-> > +		if (!phy_node)
-> > +			continue;
-> > +
-> > +		if (!netc_port_is_emdio_consumer(child)) {
-> > +			of_node_put(phy_node);
-> > +			continue;
-> > +		}
-> > +
-> > +		phydev =3D of_phy_find_device(phy_node);
-> > +		of_node_put(phy_node);
-> > +		if (!phydev) {
-> > +			err =3D -EPROBE_DEFER;
-> > +			goto out;
-> > +		}
->=20
-> Could this logic cause an infinite probe deferral loop for ports sharing =
-an
-> internal MDIO bus?
->=20
-> The netc_port_is_emdio_consumer() function assumes any port node without
-> an
-> mdio child is an EMDIO consumer waiting for an external controller. Howev=
-er,
-> if multiple sibling ports on the same switch share a single internal MDIO=
- bus
-> defined under one port, the other ports will lack an mdio child node.
->=20
-> This would cause those ports to be mistakenly treated as external EMDIO
-> consumers, calling of_phy_find_device(). Because the internal MDIO bus is=
- not
-> registered until later in netc_setup(), the PHY device cannot be found, a=
-nd
-> the driver returns -EPROBE_DEFER.
->=20
-> Since netc_setup() is never reached, the MDIO bus is never registered,
-> causing an infinite deferral loop. Could the driver more accurately ident=
-ify
-> whether the PHY belongs to its own switch before deferring?
+Minda Chen (5):
+  dt-bindings: net: starfive,jh7110-dwmac: Remove JH8100
+  dt-bindings: net: starfive,jh7110-dwmac: Add JHB100 support
+  dt-bindings: net: starfive,jh7110-dwmac: Add JHB100 sgmii rx clk
+  net: stmmac: starfive: Add JHB100 SGMII interface
+  net: stmmac: starfive: Add STMMAC_FLAG_SPH_DISABLE flag
 
-This case will not be true, from the hardware perspective, the switch ports
-do not support share a single internal MDIO bus defined under one port.
-The internal MDIO bus of a port can only access its own external PHY. So
-a switch port must either use EMDIO to access its PHY or its internal MDIO
-bus to access its PHY.
+ .../devicetree/bindings/net/snps,dwmac.yaml   |  1 +
+ .../bindings/net/starfive,jh7110-dwmac.yaml   | 89 +++++++++++++------
+ .../ethernet/stmicro/stmmac/dwmac-starfive.c  | 38 +++++++-
+ 3 files changed, 98 insertions(+), 30 deletions(-)
 
->=20
-> > +
-> > +		put_device(&phydev->mdio.dev);
-> > +	}
-> > +
-> > +out:
-> > +	of_node_put(ports);
-> > +
-> > +	return err;
-> > +}
-> > +
-> > +static int netc_switch_pci_init(struct pci_dev *pdev)
-> > +{
-> [ ... ]
-> > +	regs->base =3D pci_ioremap_bar(pdev, NETC_REGS_BAR);
-> > +	if (!regs->base) {
-> > +		err =3D -ENXIO;
-> > +		dev_err(dev, "pci_ioremap_bar() failed\n");
-> > +		goto release_mem_regions;
-> > +	}
-> [ ... ]
-> > +static void netc_switch_pci_destroy(struct pci_dev *pdev)
-> > +{
-> > +	struct netc_switch *priv =3D pci_get_drvdata(pdev);
-> > +
-> > +	iounmap(priv->regs.base);
-> > +	pci_release_mem_regions(pdev);
-> > +	pci_disable_device(pdev);
-> > +}
->=20
-> Does unmapping the memory here introduce a use-after-unmap issue when the
-> MDIO bus is unregistered?
->=20
-> The driver registers the MDIO bus using devm_of_mdiobus_register(), meani=
-ng
-> devres cleans it up asynchronously after the remove function returns or w=
-hen
-> probe fails.
->=20
-> However, in netc_switch_pci_destroy(), the driver explicitly unmaps the P=
-CI
-> I/O memory via iounmap(). Since netc_switch_pci_destroy() is called
-> synchronously inside the remove function and probe error paths, the memor=
-y is
-> unmapped before the MDIO bus is unregistered by devres.
->=20
-> When devres eventually unregisters the MDIO bus, it detaches PHY devices,
-> which often perform MDIO transactions during removal. Because the
-> underlying
-> memory priv->regs.base is already unmapped, these MDIO read/write callbac=
-ks
-> could trigger a synchronous external abort or kernel panic.
->=20
-> Would it be better to use pcim_iomap() to tie the memory mapping lifecycl=
-e to
-> devres, ensuring it outlives the MDIO bus?
 
-Great, I will pcim_iomap().
+base-commit: c369299895a591d96745d6492d4888259b004a9e
+-- 
+2.17.1
 
