@@ -1,43 +1,43 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C0C351C05
-	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 09:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2903AC0E4
+	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 09:27:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775640460; cv=none; b=g3KqbntdPuQ7GdEFHZWAPN/rePFZ7/70F/gRC789U/XnN/cWRgalxMhd88I7EEjppiopLqXgOwg6/iQ+8kyb3umeZt5wNztqdn6SbfB43qTeTdUV4cYlIn5MRvZ/jIzFU2jqrsfP5VjbVStb/3GBrhp+uYPH5i6DbBqi/svaZys=
+	t=1775640464; cv=none; b=kzkUCboQWwDPJl3d0qKDUs0IN9/qpWGdSqpfp2oOIx+Ov9QmGwdcOaxpkuHVOAdG9ToHurzLaDgSQpw/2moARGkzoqUFxgSY43cUnuF+cROaM2ylHCCtGLPDDjRIApzgOXwFo+WTGLw4qAZgAGtBkGI0wEknatNHeqcI3kg7zVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775640460; c=relaxed/simple;
-	bh=hl0uibg4BOewmLTlthEEI+J48Fn6/Kn7W+cNMYT/9tc=;
+	s=arc-20240116; t=1775640464; c=relaxed/simple;
+	bh=oe/JzikVxLK0wGvqcmdfL0q+oqoBvlznkBKQi6djkQE=;
 	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=CktMZr2vPwymMqZAoR4TianpbySaAtlwBDOnLg9QJcZC2dYBy5TciAKLNau4ISEITYj17FZS1LWZgRUrn1WZHvr0MFRo+DGQ5nW/q/4pSFAmWt7QVdMdqB/oE4Vj+GXE+4Sh/1sMM267NS6FRKFUAMSd/hgFTQvczoEge0eDrCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=C8O2NmSY; arc=none smtp.client-ip=78.32.30.218
+	 Content-Disposition:Content-Type:Message-Id:Date; b=q3qqyniCctShP6TqiQdvTvpWMICd8iiGtxJRlgxMVzZPWDJljSF3Ulh5bgjTuyHQy7eLXqX8qAGDyNSzNm8qYDLT7sMH/KgLJENN9deV4UmObxIba8sjhooqRE9j47YUI7zcW8Rkk41YpdwfhdsTm6w7nfHG5LMGnXVzOCkPZ0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=uH/u34qk; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="C8O2NmSY"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="uH/u34qk"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
 	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
 	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=NnhKaayKX2ym3axLouWbyDpq6J08FaMtPXyF8+AIVRQ=; b=C8O2NmSYhN3gcqt/4N8/XEsW4/
-	6LCi4AVhCwL+VBVW4gwYUj7fvUauUkWoYfqxGDbxBLMDaF57h4rqm+1+CN+5OPVdYa0LrLiaXYg/a
-	Zh/Rzp2NsVCy/qCU0GbjKtTumihSgCbkR2FA2DVXU7izrvjcbzAHc4yVqNTDAbsBU+wx8abvr1g9c
-	svIr2MjF+6UpTwuFCZkeUUj1wpxhNJ26N0HoCtRU1DLE0huxLLgpHYeVIu4f7s8JLhxvf2lkJ3jzX
-	+NVhjrfz1Sz9EQAPqrE8c9Bp4+zxHF8ndkUpEKQ56tlcNxVq/m/BE2ypKPrX5OvGhVfruBO+RQYVI
-	yz2fA7Ag==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:35142 helo=rmk-PC.armlinux.org.uk)
+	bh=uwM2BKpIP8DPPmF9GEljD2GJ7H5E0kHEdj42FXP3+Cs=; b=uH/u34qk6GM24zIbXzce3UMsVL
+	UmfldgOTD9CAxHzHo77TAr8gaP5peTsoUbEQwZL6lNORhwxQ5vHtQ9rFytveMZ3OUm8y3tP+IHhAF
+	v6EzFmNn+jToBnkiLxR4YArC/ggecfOmEVcT7BXmmhhQWYczVWMBlmhO0ZOfZUDOrEApDuaTNnAjz
+	VmGO7AXmVb2xsiDtwcrl3iHvwJjez50wAM376Ldq56NZ5FgcvL9Sj2QuceQnxgaJrmSFH5wiJXYiI
+	g2/lwRgvGK/jhujIqBkoGo79wPx6vQUq4WwpmKBQ0ZUBoEnYfVPYOR/dzxGoyr+miNsNN3tUku9YB
+	+jBEVZYg==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:33374 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rmk@armlinux.org.uk>)
-	id 1wAPBd-0000000023B-0iEH;
-	Wed, 08 Apr 2026 10:27:01 +0100
+	id 1wAPBi-0000000023N-3rkZ;
+	Wed, 08 Apr 2026 10:27:07 +0100
 Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
 	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1wAPBW-0000000F7k0-2Dr7;
-	Wed, 08 Apr 2026 10:26:54 +0100
+	id 1wAPBb-0000000F7k5-2d0y;
+	Wed, 08 Apr 2026 10:26:59 +0100
 In-Reply-To: <adYfPBHsXxQUsMyr@shell.armlinux.org.uk>
 References: <adYfPBHsXxQUsMyr@shell.armlinux.org.uk>
 From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
@@ -55,7 +55,8 @@ Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	netdev@vger.kernel.org,
 	Paolo Abeni <pabeni@redhat.com>,
 	Samuel Holland <samuel@sholland.org>
-Subject: [PATCH RFC net-next 03/10] net: stmmac: always fill in ver->userver
+Subject: [PATCH RFC net-next 04/10] net: stmmac: use ver->userver and
+ ver->snpsver to print version
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,30 +66,35 @@ MIME-Version: 1.0
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1wAPBW-0000000F7k0-2Dr7@rmk-PC.armlinux.org.uk>
+Message-Id: <E1wAPBb-0000000F7k5-2d0y@rmk-PC.armlinux.org.uk>
 Sender: Russell King <rmk@armlinux.org.uk>
-Date: Wed, 08 Apr 2026 10:26:54 +0100
+Date: Wed, 08 Apr 2026 10:26:59 +0100
 
-Always fill in ver->userver irrespective of the core type. This has no
-functional impact but tidies up the code by removing an unnecessary
-conditional.
+Rather than using FIELD_GET() twice, reorder the code to extract the
+version fields into struct stmmac_version, and then print them.
 
 Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- drivers/net/ethernet/stmicro/stmmac/hwif.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/hwif.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.c b/drivers/net/ethernet/stmicro/stmmac/hwif.c
-index 830ff816ab4f..aacf78d4a2ee 100644
+index aacf78d4a2ee..7f95a2a5be4c 100644
 --- a/drivers/net/ethernet/stmicro/stmmac/hwif.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/hwif.c
-@@ -47,8 +47,7 @@ static void stmmac_get_version(struct stmmac_priv *priv,
- 		 FIELD_GET(DWMAC_SNPSVER, version));
+@@ -42,12 +42,11 @@ static void stmmac_get_version(struct stmmac_priv *priv,
+ 		return;
+ 	}
  
+-	dev_info(priv->device, "User ID: 0x%x, Synopsys ID: 0x%x\n",
+-		 FIELD_GET(DWMAC_USERVER, version),
+-		 FIELD_GET(DWMAC_SNPSVER, version));
+-
  	ver->snpsver = FIELD_GET(DWMAC_SNPSVER, version);
--	if (core_type == DWMAC_CORE_XGMAC)
--		ver->userver = FIELD_GET(DWMAC_USERVER, version);
-+	ver->userver = FIELD_GET(DWMAC_USERVER, version);
+ 	ver->userver = FIELD_GET(DWMAC_USERVER, version);
++
++	dev_info(priv->device, "User ID: 0x%x, Synopsys ID: 0x%x\n",
++		 ver->userver, ver->snpsver);
  }
  
  static void stmmac_dwmac_mode_quirk(struct stmmac_priv *priv)
