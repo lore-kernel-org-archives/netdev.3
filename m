@@ -1,79 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F95A223339
-	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 03:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C524C29B781;
+	Wed,  8 Apr 2026 03:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775617836; cv=none; b=UtASI0b/Sq07q9LJPgeFjC8Scbhb7CkV5/HtYYRMgPaXYMoytgbSIcDYe8kRHRFV+4xdq+FnnyJkMEaUupFu8HLu3OK6+5UxXBtmIieOiNbblBQ3KD2bk+jcVSF5WYvjEshpK4hjQf7wG4T5r9z/kxUsA0yZVyZZrHlTEEtXyGw=
+	t=1775618066; cv=none; b=QTsQs6iPCo1K1Q5AyFGnGb+KXssP1WSLK51End4kRUhfQPoX5Sk7E2Ffq7+zdGLC9MEooaoXiioQcLiwj7FdaON4nFlOGF7Rf4JS0GBhbHIupfZ9iNhg32YvGyfykoVq8kTeshANmLYwJ7wq1a3HTSEDUahnNMzkJs+kvcJbVf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775617836; c=relaxed/simple;
-	bh=ie1E5fb415nv7EKjQbCmTdAI0JVIcsVP65r5OO1WdPQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=SJoelL7Ft3+erQ/jJCKVz5eVGtL+kvoHKB+PFhgrdfVYg40uKJ7USZqUAZGDHWsMZ4nzRrE9yuykLywh2isL2KJCSbYoL/82J+JpSt9x823XzQ8YF4UrOR4Z3yB/eRM5LtVp4Z2mjA6ANM/YXniKyi9SkGsB86dvOgQSHdnDQSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H6OzQN77; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775618066; c=relaxed/simple;
+	bh=obQJV6aXp3S3NHxyucEQz/cQ/FH/Acc129pdEXjDBr4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Apluv+7tmxk/9NgqAQTI2LVR1pjeQ5qFUVn26ar4as9pUiRKFeMJlzatOGAXZ+EkqDHVQBZ8mG7Dxp9lCVUWD4u0FikYyrCqnBh1c/Fa6A6OOmjSN4awwC3+A9qzjKPOM2XUGZDF5VjprBcW4tfss5pvkZqAONJFzol60Jclxns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y4wEImSH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H6OzQN77"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DB6CC116C6;
-	Wed,  8 Apr 2026 03:10:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y4wEImSH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A3EC116C6;
+	Wed,  8 Apr 2026 03:14:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775617836;
-	bh=ie1E5fb415nv7EKjQbCmTdAI0JVIcsVP65r5OO1WdPQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=H6OzQN77K2MQ0SQhGwPk7cazMAb5hkyZ1ou85kv8sQv8M1zIfMs9mjKPox1m86RMm
-	 wiEPFg8ov3fA72PNdx3J2wX9oPkiAFF3co4GemFYgc4RHFiu3LEmdQB7YlDlSKo45O
-	 0NWRPYh24m6HSE2x3blxF6Tm3lYtYVkUMbkzZ6HvnazsDcPkZG/FA+CZA+4V5tNIHo
-	 HgFMRFz8fsZgPwgw2BTkL9fbUWKy8xE9nolnM1OGFpW54hZLt7GmMja52SvTbtQe0x
-	 BTdNRVtur+mcADrmMCkce3DTUwjUIPK2NL1pcqQAtOEPmRuemVq/ilUxNTEjnZcLCw
-	 fAHimp9vTwXRw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CEA23809A29;
-	Wed,  8 Apr 2026 03:10:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1775618066;
+	bh=obQJV6aXp3S3NHxyucEQz/cQ/FH/Acc129pdEXjDBr4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Y4wEImSHtBt4l1leFwkkcA1G4Z+axvX7lgdXhTjGQyw0ExS3x5QpmxedlgtOmAtd1
+	 5mYQNzeNzNCmq8Uzqce3T4tGQq6LC15bpedfvOzlUfYTZCiIYoeszSy5BwQ8rVgon1
+	 7Bv8P0z0ml59SysqMk6nDkvvTUx3fZd8Jrjgf7re1Eg7AW42bPde5gpjljWqsOwUy5
+	 tZHwGnt5oZsOf+d8ZxxzHLkLewndlfJUia9LudYwKT0AI3AUUY/hBWjSF0duWpb6L8
+	 dhsTXK19evbp1uGH8HWQJOCzxB44Cb/1pgYo+ybNiPHvLZhhAc9oaEooCDCmwxleGL
+	 eqo8iA16mNnzg==
+Date: Tue, 7 Apr 2026 20:14:24 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Joe Damato <joe@dama.to>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, horms@kernel.org,
+ michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
+ linux-kernel@vger.kernel.org, leon@kernel.org,
+ linux-kselftest@vger.kernel.org
+Subject: Re: [net-next v9 10/10] selftests: drv-net: Add USO test
+Message-ID: <20260407201424.34c27d26@kernel.org>
+In-Reply-To: <20260407220313.3990909-11-joe@dama.to>
+References: <20260407220313.3990909-1-joe@dama.to>
+	<20260407220313.3990909-11-joe@dama.to>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 0/2] net: pull gso packet headers in core stack
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177561781329.51568.12566138936967070024.git-patchwork-notify@kernel.org>
-Date: Wed, 08 Apr 2026 03:10:13 +0000
-References: <20260403221540.3297753-1-edumazet@google.com>
-In-Reply-To: <20260403221540.3297753-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- andrew+netdev@lunn.ch, joe@dama.to, netdev@vger.kernel.org,
- eric.dumazet@gmail.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Tue,  7 Apr 2026 15:03:06 -0700 Joe Damato wrote:
+>  tools/testing/selftests/drivers/net/uso.py   | 103 +++++++++++++++++++
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+It needs to move to net/hw now that we are not planning to carry
+the netdevsim glue. Otherwise SW testing sees skips:
 
-On Fri,  3 Apr 2026 22:15:38 +0000 you wrote:
-> Most ndo_start_xmit() methods expects headers of gso packets
-> to be already in skb->head.
-> 
-> net/core/tso.c users are particularly at risk, because tso_build_hdr()
-> does a memcpy(hdr, skb->data, hdr_len);
-> 
-> qdisc_pkt_len_segs_init() already does a dissection of gso packets.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next,1/2] net: qdisc_pkt_len_segs_init() cleanup
-    https://git.kernel.org/netdev/net-next/c/30e02ec3b4b6
-  - [net-next,2/2] net: pull headers in qdisc_pkt_len_segs_init()
-    https://git.kernel.org/netdev/net-next/c/7fb4c1967011
-
-You are awesome, thank you!
+# ok 1 uso.test_uso.v4_partial # SKIP Device does not support tx-udp-segmentation
+# ok 2 uso.test_uso.v4_exact # SKIP Device does not support tx-udp-segmentation
+# ok 3 uso.test_uso.v6_partial # SKIP Device does not support tx-udp-segmentation
+# ok 4 uso.test_uso.v6_exact # SKIP Device does not support tx-udp-segmentation
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
