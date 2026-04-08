@@ -1,148 +1,110 @@
-Received: from CHN02-SH0-obe.outbound.protection.partner.outlook.cn (mail-sh0chn02on2117.outbound.protection.partner.outlook.cn [139.219.146.117])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD2837B400;
-	Wed,  8 Apr 2026 09:00:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.146.117
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775638854; cv=fail; b=iGj4iumFiVWt5WJjnY1OwfvXN/UUIa83fbiaOFaB4E6Yla8Sx+zxViSlm/qjhG/4ILMz4X5L3zL7Ixx4JPrm94QKHq0DLadBEYyj6TRN9KAa6TZ3Iwrcrj0yEiNWlvXbTy7rYZ0G5Ehg3CIwqzmB/Q6SkleOr2c8f3Kf1Ieo8nw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775638854; c=relaxed/simple;
-	bh=uL0T2Q6IGrVUwD+j15L1Yb5Pue5BgSgN+CQOpv10TKc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=LKp3BsbytxXQABnMVOl6g26izFmcGPF8eJUkWqPRe2BbKn2LxRq/w1XXZWrslcpvob2KvyvBKkiyXh6LbWTTqwZKK6UYXI2qdpU/WGbpDLOhuUKoToHgNmKhPcKqY1ela+xNA2hNMIO3vDzt3KQhmneV9ToUjXove/XMKE7Pb9k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.146.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=oCMJWjxRC/KYSG9mmvdNfJWz/pBqv9KxLM5QqN/zQvvgVruY9otDEG8AGoa0cA/GwqMPgHFe+53652kKc5VkQtScRTMmCFxq5pcgS913rjcuvREoxAiecX1oGGLvFM1w5LrZePtNuYdCHRi2LCgcVFHCBQGDIkvm+unAntUOp+xwjzknrIRU8ZTi1JjXpXtbOwdoDf1pcWD1/5HNlzP3vxhUNtxbInSGk/cJYcRPIExK5PxDCy0QVBBF2Fgv0Zlte+ngplgYU8jJHaSXJeAKyQTQzcQgl6QRZZTPoOHDO5+8CN9uaNkqOQowKR5z3orAJ0kMo+6OtpeebMoYcoDVnQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UXvusO1RjJoBXHgdf+Pq/nfY9A3xuK6ZFIb+vRfBuTw=;
- b=UThDs4I2/C4bdD3qZ0qHO/32y7FNJPpXM2f7ZoYCTv+FC1tsL1kRJg6muTPc2XOC9bIvfE4P8W49mUZkEq9je37XSTWCedukIsF6ydZWhWFOf0crOykTnKBzilcYO+Z5x6MeEF6gaK6jx5cd3daSKkSFgwpu+QPqq4pBHdpOirmfL5yo7QAEjdkSbiTl/4zCfnBa+Dhy+EFMetrEnwi0T3u0gFr0gNfOErroqXIUQ3k3nYT6grZG8U552gOI/m5Ls9YHZqGsto+0RfRbOAS5kWT42g8SUxdoaCe9qQ7b7uNu2sYBxlkhToS3FZU/UB7wRsxJQPE2O/8Lsqsd/bofag==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=starfivetech.com; dmarc=pass action=none
- header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=starfivetech.com;
-Received: from SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:25::15) by SHXPR01MB0719.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:26::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.31; Wed, 8 Apr
- 2026 08:44:32 +0000
-Received: from SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
- ([fe80::9b99:12dc:a115:b90f]) by
- SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn ([fe80::9b99:12dc:a115:b90f%6])
- with mapi id 15.20.9723.018; Wed, 8 Apr 2026 08:44:32 +0000
-From: Minda Chen <minda.chen@starfivetech.com>
-To: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor@kernel.org>,
-	netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	devicetree@vger.kernel.org,
-	Minda Chen <minda.chen@starfivetech.com>
-Subject: [net-next v1 v1 5/5] net: stmmac: starfive: Add STMMAC_FLAG_SPH_DISABLE flag
-Date: Wed,  8 Apr 2026 16:44:16 +0800
-Message-Id: <20260408084416.29753-6-minda.chen@starfivetech.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20260408084416.29753-1-minda.chen@starfivetech.com>
-References: <20260408084416.29753-1-minda.chen@starfivetech.com>
-Content-Type: text/plain
-X-ClientProxiedBy: BJSPR01CA0012.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c211:c::24) To SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:25::15)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B0E3ACF06
+	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 09:00:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775638856; cv=none; b=L/pqU0TfnTSySV7Q8omz0hBy9nfg25tyqxPjSX7zH5vOad2Z6lERrkzpXjCFkpwDQ6kcVD6ThGNatt4LhJVOoJjuWLZS3aPMZp95TUN2anDJKgYsbdPbyIoAtJeIkAsrEE2bnIb2pzJJdoWHFwAcoh6ybb0CT1j0qSW7AIL8yTU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775638856; c=relaxed/simple;
+	bh=ELi/SO9fCpI1hT2A641r7hbEx4I3MBwqp1WHI9r62rw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p4w29sa0OrEur+LFPXo97ybNkR3T+FJa2DJCoyphC67ORihbesoE+TjYYvtyNQpGrWGg5S6tw3bKZJ3Ru+ExLj9mrzqbIZsS0t0pRBxPNi2SSEqOsauCBzSG/dVL6mZfpXo04mhnbN7NuzwgKUZtwL4SqenPAXH7F4qK0cFfo0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=XN0WAFx7; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="XN0WAFx7"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-43ccda008cdso386170f8f.0
+        for <netdev@vger.kernel.org>; Wed, 08 Apr 2026 02:00:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1775638850; x=1776243650; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ELi/SO9fCpI1hT2A641r7hbEx4I3MBwqp1WHI9r62rw=;
+        b=XN0WAFx7iG2ftBhZlqE8YxdKg5MkMfcXVGxvTiQAZvedNftcT4gpsHai3OmsSWnqC6
+         oksBoua+/JA6huk1vAdcKfHnXxlrm7cR/RRY91thyWtBZ8WD3WIUW+CC2hH7k4pmbZ0W
+         QVLaElUTxH1QLJeH2TAs//CHuhlN5YZsA5Ffd2LLic9JhESvMlJLJ2PfvnHHYtdT8hq4
+         EWH39QXNg7WcP+YhBiI82SmNTJCbuxHUX01cWNORucglEV7VnOK5MYL0c2vTU0hPi8cc
+         D8cR6bRrA1g0AjI8Ucirtsp/I98dzAD4sPjv0K2Uf6+etneJVOML4BsawVcZYjXqlf1L
+         Veag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775638850; x=1776243650;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ELi/SO9fCpI1hT2A641r7hbEx4I3MBwqp1WHI9r62rw=;
+        b=M4KKZINhmDeFpGQfc3JnowSC/FQrq91+9KgAsz4gXlSdcR3NwkLLDxzlW8RN15QRjw
+         yTkHrDJNFwRBNxu3jIcLZhgC8mn9qQqJW+Fq4Zl5HLGdYhLP09uTU+z1G9wa+0wPkK+O
+         uJJFsCOo3pfM+WTe/L2NYmBnPSbJ+fKEhOPnXvqwArZZJfjQ+n9Nn1ORQ85gsi18cK8s
+         lTuaFLnIiA08mGmqPySafcZcnsdyRNHFvqRJrKOnAJLYH07Flw/zg+mNAw+VId4KwtZl
+         W4UQQCPZxuiUbTPYoEJD4GDEE0/bef3mGu8mJp7ZkKVkMq6iqJyBdNi4C7cTzY8fuFQQ
+         9kjA==
+X-Forwarded-Encrypted: i=1; AJvYcCUE5ZG1WtjXO2Ipy9GpnlU3BkqSLeBROyGvZ78JTVYYi+7PjmLgs8TX+7ouHj+MHv9BcwqT+Eo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqrkF0JV/qRhNQcv6tSzMANa/PX8gXUS4xkPXAF8JJUzXl6icC
+	5ElX7Z4zyPWDmRh4gE0l9Xmm5ZFv/yfsKTxIS8DQmMBqVIv/VagizS0eXak20mjp6hDLCraMxax
+	+hlt9
+X-Gm-Gg: AeBDiesu5JemZxyAg03Zd/Ibby8tAGriFW7Ha2KxNo+rnVwxhVEI60gUulytWeTaDSx
+	XlGIjoCFSluqi34kVrSFnv1BgvSm24XoH5Iceu3rmjKJYYp54N5b2KEBcrS68urXnklbBhncGfR
+	lrw2iDowVO0/GWt7/9z6XcsgRixfRp3UIRbvFeyN0ki+uoCZ3FhUGOzg3wv2Sn517Oeo6SN9uSx
+	Yn838F9oq7G2gQHV5Lkse/PkkYqmVbQKCrdZG7lev6tv7e4bf6OH7lIWiBIKEY79smMrTONTs9X
+	GTA0rKw9EIDB+bAPDdYubDOsmW9yeIgmeAD5hHFjYx6EFnVxVrDSTC49MkHHdEsLO75jSzhsOZc
+	xM8GBAt3II9Bfaq8uOwvmQk+S9QT8wirw68ArHj7bwSl0bvHN5i+ytt3muDYfP4ztCuXnkkqF+v
+	I8iW2lUicF8ZIApoZy8ZrRyyzozTRvv7Q=
+X-Received: by 2002:a05:6000:2384:b0:43d:384a:9e96 with SMTP id ffacd0b85a97d-43d384a9f5amr19228181f8f.4.1775638850006;
+        Wed, 08 Apr 2026 02:00:50 -0700 (PDT)
+Received: from FV6GYCPJ69 ([85.163.81.98])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e4d2738sm58262922f8f.24.2026.04.08.02.00.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Apr 2026 02:00:49 -0700 (PDT)
+Date: Wed, 8 Apr 2026 11:00:47 +0200
+From: Jiri Pirko <jiri@resnulli.us>
+To: Marc Harvey <marcharvey@google.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next v5 00/10] Decouple receive and transmit
+ enablement in team driver
+Message-ID: <iuhx4kkkftjx52y5qo7w7p6rbxqakq2eu74r66xaepd2p2khjh@kdhljd2c2bpm>
+References: <20260406-teaming-driver-internal-v5-0-e8a3f348a1c5@google.com>
+ <utlz3oebjyd4lqp5pd4qdbth2kywxo4hrlrnwcxsx3br76fwfg@vy3tx5f3lv32>
+ <CANkEMgn80UM7+mymVm21Q8yszgVeh029tvO+kHqmLGmf-2MU5g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SHXPR01MB0863:EE_|SHXPR01MB0719:EE_
-X-MS-Office365-Filtering-Correlation-Id: bf2ea31c-33c3-4f68-e4d7-08de954b0ddc
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|1800799024|366016|7416014|52116014|376014|921020|56012099003|18002099003|22082099003|38350700014;
-X-Microsoft-Antispam-Message-Info:
- iDnsiQWVfklbgTJz8deSsr3DAwRdoF36Lyw04gwGc2eJELVPV7/7Kv8PtghwVczJhrjwZxWEUGz2qq5VG4NTkSIE60gIe7niSDl17d5GqncQHWYKvnlubcjnlseuz+0H+2g7Uq1ILffMnJH3eZ2HYQ4C+1F3uDB5HiDetC4yAOdFV85vURMmq0uw0PvxVwGvFiAn6YGdM01Lvg61ojc+OlO+hPQidkQw/hLfDUngtgF2c/jowexPyoeCoqO8LdUNpNczxc7K8g1MQ3p0BmQE1DO15y9J/WiN221ElH2pG7w87Jw53CENJx7ikbhZ5BgtpRUtU8r+uYb5VvwI8vZTDm0aPhJDYilET4JeXUc0aRpAZwDaGqJsA3tpF4VVuKRuFw7TuFHbIVIcTh2xFJBZaggpj0SjrNYfsk+MW31ItAmbR8Z1g1rdWt21+l1yAEU47FZcDXHVpD/k+8KwjQPfnMSJo8Yi1T66uqMpcIDzMzTpTR+w5zrpm2vZ1qKpxEXZvSGSJa6X+aTgOdj8sD7kCa778P7dqmdDrnIBPOM45LnjRdwkmpQf98dxd+pcMBJe+8BTJJ459Go7UEaJCAd0iQm067cAZJtmqNpvI7hXzfo=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(52116014)(376014)(921020)(56012099003)(18002099003)(22082099003)(38350700014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?+xDbuokYrxo1AhG7gE1XMTXPR9XKqx1ODsZ+AH1AS6HyGODkA1Zsoo84pIAx?=
- =?us-ascii?Q?5h5G3UNQ6Ys+SX4Bh2wvVQ6ZIugYoGZ7YqPya0E4osCPo37ZMzMeN+R1mBI4?=
- =?us-ascii?Q?b3ZsWWP4MrsgJ7kQBYUptsDA3U2HzVQfgsEehTwWI0F5TzmYOCNvP53C7opB?=
- =?us-ascii?Q?YwR/hBvcoROvXn1JvuYxCmylM61XYuwSh1Sf5BAi07qwSc8l1Hk6ky/AmE2K?=
- =?us-ascii?Q?xU3r8EDLnwBIiVb80Cajua40lsBR1TSCIPjCQnipD1vOWoCZlFhjbeuWO5NT?=
- =?us-ascii?Q?sA6tjtuianbCp2g6E5O/xwn//qQTCjG746RzJNDgmun6+i/A+r45+6dEX2dM?=
- =?us-ascii?Q?AFo/2s1bSrIE1BpM9lv7Dx62ul2usTDqsqaWklw7C4w4zO5BoFi4jQs0UVNT?=
- =?us-ascii?Q?03FkzCiLVZGOrV41TTLoZHCRa5j2bJNiRgwGsspOfbJDysus9lITU5Sy5kst?=
- =?us-ascii?Q?/IiYx1esWL3CRzddzxXoxob9pDgJt0PffrGKH8LwS/H8W48rvyHNsNlYBQBa?=
- =?us-ascii?Q?7Z2nZBiw2dQr17/gDuyduZhZ/qdPbJR4cTMBdBowUb5mm4l2wybW7ochpCtB?=
- =?us-ascii?Q?ObjMfCEJFdrXudw23Ehz1tzbvkq3VxLpSLhxvle4J+07L990RMZAXh4Nbmez?=
- =?us-ascii?Q?vEVBXbZV5MFXGPtTZYpnPFu3623DyMC/s6+Eh5wV7r4mDr5aIv0Ch9dV8k+R?=
- =?us-ascii?Q?kQOUXHfZyDgTNJnUZktEdWgda51Xb1H8IF1qQCIjSL55S5VSsyswE9mtMt5x?=
- =?us-ascii?Q?lBjhAvtp0GetRfOlcYHyyaxzG448hCl9Cuqm+QGY6rpw0pztx2NY+iN49xA/?=
- =?us-ascii?Q?KfFooZxnqV/LmfaW0hrSKaQEmohraOX0BUctXtm0Sumt8cPliVR08lvOEg8F?=
- =?us-ascii?Q?hl2L7bQtk/WxHPclz8cwpnClKA8HbCyvvrEM+v1I461gQjHTs/V5rYQu76Ai?=
- =?us-ascii?Q?AWC/g3x7U2hNyA4GdQ4DoLWF5mrFJfbr8wXNjtcgfVJ2heDo9d+98A4MihQl?=
- =?us-ascii?Q?lTWEfuxVDfW0GBmWLb1OQ0BOQxcLEs/MX/G2lmResQcH91OYmQs+2Sd1H9VD?=
- =?us-ascii?Q?FrnXA2jFsreJembRtSCRtc3lKI8e92Fdhl01JHWpjrSCtZrh0BXVE6S3BFUb?=
- =?us-ascii?Q?YSj09eSAo5m54fKohsAd6vjS2+wMvfGQqqBjaIiynMG0Vcx2PIb/n1RWEv7A?=
- =?us-ascii?Q?OxKMBO9Dq+/2lSOVE2LQXBhK1wFA4q4RByajxvs0VHhUZOkEUtBGxdjb4qvv?=
- =?us-ascii?Q?9c0nypdsMBYJBMmul6759ICjNhiP2wLjCWruB3CpPVnAlq14xNodtdxeKxiO?=
- =?us-ascii?Q?EIcHdILSjkhX2ekQSRxrrPFFMiwAAbHSWudSNyv3TutK78aiHAe4MIvSfyhE?=
- =?us-ascii?Q?jZSTkwSbSqkBzMhO1K5uTnm8kEfnRNFzKIIWDvzXCVJcYDRvTEa0jsgSsIOx?=
- =?us-ascii?Q?xgfVTGragVIgoHFsaLehRxIjykHlN4+Mna8HzD96Wu9hAZv3Jh6IOG4Q8DUy?=
- =?us-ascii?Q?AghBaN3yGCa97RSR07doNrr/cOvCQUFfRIoVss9nPLydpjQUb4VUHQb/Zm9f?=
- =?us-ascii?Q?sPMMbBUPzndvo05M5XwU9FMI3e4IZbDv+hN7gpqQZcteS12kH+BfWj8iqfP7?=
- =?us-ascii?Q?mWYMoV2hgbrq5fNmcZzKdYH37rfumc0Sys8jQKsj4xWwg8N/G+KjQb108MYo?=
- =?us-ascii?Q?b4885+BxtigaIROc9X2SDnWaOr5EtoWXtCQQjJFe0z13Qr77mEfs2plJlGdE?=
- =?us-ascii?Q?xGTDNx0imQD2ls6NwRhv+Wrl00hR4gw=3D?=
-X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bf2ea31c-33c3-4f68-e4d7-08de954b0ddc
-X-MS-Exchange-CrossTenant-AuthSource: SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2026 08:44:32.2621
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Jq0evoQL/iI6WTiXPOs9yqvowV9cJxo+OYv7kuTHHYy3FURv6haFSUfu7FG10oB9aNz/k+DJM2V8NJvmVqAApld4y9Uheipmpcn4GDFEZSw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SHXPR01MB0719
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANkEMgn80UM7+mymVm21Q8yszgVeh029tvO+kHqmLGmf-2MU5g@mail.gmail.com>
 
-Add default disable split header flag in all the starfive
-soc.
+Wed, Apr 08, 2026 at 02:12:35AM +0200, marcharvey@google.com wrote:
+>On Tue, Apr 7, 2026 at 4:55 AM Jiri Pirko <jiri@resnulli.us> wrote:
+>>
+>> Mon, Apr 06, 2026 at 05:03:36AM +0200, marcharvey@google.com wrote:
+>> >Allow independent control over receive and transmit enablement states
+>> >for aggregated ports in the team driver.
+>> >
+>> >The motivation is that IEE 802.3ad LACP "independent control" can't
+>> >be implemented for the team driver currently. This was added to the
+>> >bonding driver in commit 240fd405528b ("bonding: Add independent
+>> >control state machine").
+>> >
+>> >This series also has a few patches that add tests to show that the old
+>> >coupled enablement still works and that the new decoupled enablement
+>> >works as intended (4, 5, and 10).
+>> >
+>> >There are three patches with small fixes as well, with the goal of
+>> >making the final decoupling patch clearer (1, 2, and 3).
+>>
+>> Looks fine to me now. Do you have libteam/teamd counterpart?
+>
+>I don't see a need for this to be used in any of the teamd runners.
 
-Signed-off-by: Minda Chen <minda.chen@starfivetech.com>
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c
-index df7b2fc9989d..f6e5a2c4dc27 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c
-@@ -143,7 +143,7 @@ static int starfive_dwmac_probe(struct platform_device *pdev)
- 	}
- 
- 	dwmac->dev = &pdev->dev;
--	plat_dat->flags |= STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP;
-+	plat_dat->flags |= (STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP | STMMAC_FLAG_SPH_DISABLE);
- 	plat_dat->bsp_priv = dwmac;
- 	plat_dat->dma_cfg->dche = true;
- 
--- 
-2.17.1
-
+Why do you need this then?
