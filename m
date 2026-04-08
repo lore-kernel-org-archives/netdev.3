@@ -1,178 +1,72 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346E73D6462
-	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 15:25:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C69175A63;
+	Wed,  8 Apr 2026 15:27:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775661946; cv=none; b=YwaVX1N2Lzg3rWUGsgK/98/nxHcFzOI3DBYrUGGpqZswwKJXyhgIktfTTT1H4oC1lIOvZmlxYF2WEwT10rjILQu6fpy4RtDZFM7jVJRTT4vFWGJXQsc5p2fr9F9ChSSOqn6SllkJuxvII8QjmOsYD+AFxvvJIsr4Jky1g5+P7ZQ=
+	t=1775662052; cv=none; b=WqfDcXEhEW0ceT9RVIHpBeQIeUXSanprr5t1aSeA9ZdJFLVgCoMJ1jtxWDs2ODuPHr6L1Fm+a0pMTJfNnsMOLKIgGHU3xo9YS1GZUYv3VyQJBUPqsxn2WgwbUOh8XdOHxhteBVEnGREQhMR6QBEf6LXeoyvWjBOn/5UUppFUD7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775661946; c=relaxed/simple;
-	bh=JBqXUqciZv4b19JLMXiRndX8nORamWMBphZW+vIi07Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pG347eXEEi6xghCMqsbHryHgIDFznRrZTFfC6CsjByPVyuA+31iuAdyllrc8Zm0KBpt//z9PxB0jZKSZk9DJ7nVPEm6ZXP17dQlcfYkeodX1/+vMxblSuErpQJ423np932DkT7j2xy2mSQIY8YRRVVlpy+VxTj9p/EAJhL80nJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gEvHzjyS; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1775662052; c=relaxed/simple;
+	bh=nWUmJ78jz61+1bcUgL7zyolq0FXkmqQvQJUVweRxjqM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Mbov4+cLncE96ATFaObZ+3Z/3yQorxaHEyyV+2ixs3qmckoPVT8u+4i7Dslu9q8etMxDk1PCTQCMi6jmdOu26u0FNSoravVHvxAUwOb/rK8OgXs6y1qCJ2d2Mxb4/ZuHUcZkpCJ7OksjCEX3QOCLw0a3jWQU1cjDGyBZ+qBIYpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=BKQmG4K9; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gEvHzjyS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775661944;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=QeBf626yrJDb9OP4C01ksC3WHSRSg7JlRymU/UTjqeI=;
-	b=gEvHzjySzOiedPr4n6kKAHHycn/T7SW8tglqDAcWh0UTybZ0GtrytEOI4N+4+kJ+R/nK7n
-	Vey2JRSQeHQ+EMDNRyWpbrmfZP1/VKpbFhl3zWZO85fmQtdZ93BnDD4cFhDvw06y24lEP4
-	SakdNLJYDSD5u8QGsnikJWBhrZ6SB1Q=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-617-TsovwX2bMKOrmMlPkljQxw-1; Wed,
- 08 Apr 2026 11:25:40 -0400
-X-MC-Unique: TsovwX2bMKOrmMlPkljQxw-1
-X-Mimecast-MFC-AGG-ID: TsovwX2bMKOrmMlPkljQxw_1775661938
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DF110180075A;
-	Wed,  8 Apr 2026 15:25:37 +0000 (UTC)
-Received: from dcaratti.users.ipa.redhat.com (unknown [10.44.32.176])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5783C1955D84;
-	Wed,  8 Apr 2026 15:25:34 +0000 (UTC)
-From: Davide Caratti <dcaratti@redhat.com>
-To: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="BKQmG4K9"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=op+B3ErYB5SBcGjElH6T2ek86yNhHxdxH13kWG1CBYs=; b=BKQmG4K9tJCtjhNAXG6TxT0IBN
+	Pwo4XyCDvP0dqFbMMGg5bN2g3GV1rsk+ynecpZfDpMTojaOxoOwd/NZSeTZHHQlw66eksRNuugYzL
+	Q7YvSmKjwb00aOSNcrav8Jln9k86I2MYVFd7JDLUf+++tiGHCZRsvaZDBxYXONCnpE6U=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wAUoE-00FJBU-SA; Wed, 08 Apr 2026 17:27:14 +0200
+Date: Wed, 8 Apr 2026 17:27:14 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Minda Chen <minda.chen@starfivetech.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Xiang Mei <xmei5@asu.edu>,
-	netdev@vger.kernel.org
-Cc: Victor Nogueira <victor@mojatatu.com>
-Subject: [PATCH net v3] net/sched: cls_fw: fix NULL dereference of "old" filters before change()
-Date: Wed,  8 Apr 2026 17:24:36 +0200
-Message-ID: <e39cbd3103a337f1e515d186fe697b4459d24757.1775661704.git.dcaratti@redhat.com>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	devicetree@vger.kernel.org
+Subject: Re: [net-next v1 v1 1/5] dt-bindings: net: starfive,jh7110-dwmac:
+ Remove JH8100
+Message-ID: <ad9ee916-6f8a-4cb9-8016-54a02b00c7ab@lunn.ch>
+References: <20260408084416.29753-1-minda.chen@starfivetech.com>
+ <20260408084416.29753-2-minda.chen@starfivetech.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260408084416.29753-2-minda.chen@starfivetech.com>
 
-Like pointed out by Sashiko [1], since commit ed76f5edccc9 ("net: sched:
-protect filter_chain list with filter_chain_lock mutex") TC filters are
-added to a shared block and published to datapath before their ->change()
-function is called. This is a problem for cls_fw: an invalid filter
-created with the "old" method can still classify some packets before it
-is destroyed by the validation logic added by Xiang.
-Therefore, insisting with repeated runs of the following script:
+On Wed, Apr 08, 2026 at 04:44:12PM +0800, Minda Chen wrote:
+> Remove JH8100 dt-bindings because do not support it now.
 
- # ip link add dev crash0 type dummy
- # ip link set dev crash0 up
- # mausezahn  crash0 -c 100000 -P 10 \
- > -A 4.3.2.1 -B 1.2.3.4 -t udp "dp=1234" -q &
- # sleep 1
- # tc qdisc add dev crash0 egress_block 1 clsact
- # tc filter add block 1 protocol ip prio 1 matchall \
- > action skbedit mark 65536 continue
- # tc filter add block 1 protocol ip prio 2 fw
- # ip link del dev crash0
+Could you expand on that. If there are devices out in the field, we
+don't just drop support for it because the vendor has something newer.
 
-can still make fw_classify() hit the WARN_ON() in [2]:
+If the device never made it outside of the vendors lab, then we might
+consider dropping it.
 
- WARNING: ./include/net/pkt_cls.h:88 at fw_classify+0x244/0x250 [cls_fw], CPU#18: mausezahn/1399
- Modules linked in: cls_fw(E) act_skbedit(E)
- CPU: 18 UID: 0 PID: 1399 Comm: mausezahn Tainted: G            E       7.0.0-rc6-virtme #17 PREEMPT(full)
- Tainted: [E]=UNSIGNED_MODULE
- Hardware name: Red Hat KVM, BIOS 1.16.3-2.el9 04/01/2014
- RIP: 0010:fw_classify+0x244/0x250 [cls_fw]
- Code: 5c 49 c7 45 00 00 00 00 00 41 5d 41 5e 41 5f 5d c3 cc cc cc cc 5b b8 ff ff ff ff 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc 90 <0f> 0b 90 eb a0 0f 1f 80 00 00 00 00 90 90 90 90 90 90 90 90 90 90
- RSP: 0018:ffffd1b7026bf8a8 EFLAGS: 00010202
- RAX: ffff8c5ac9c60800 RBX: ffff8c5ac99322c0 RCX: 0000000000000004
- RDX: 0000000000000001 RSI: ffff8c5b74d7a000 RDI: ffff8c5ac8284f40
- RBP: ffffd1b7026bf8d0 R08: 0000000000000000 R09: ffffd1b7026bf9b0
- R10: 00000000ffffffff R11: 0000000000000000 R12: 0000000000010000
- R13: ffffd1b7026bf930 R14: ffff8c5ac8284f40 R15: 0000000000000000
- FS:  00007fca40c37740(0000) GS:ffff8c5b74d7a000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00007fca40e822a0 CR3: 0000000005ca0001 CR4: 0000000000172ef0
- Call Trace:
-  <TASK>
-  tcf_classify+0x17d/0x5c0
-  tc_run+0x9d/0x150
-  __dev_queue_xmit+0x2ab/0x14d0
-  ip_finish_output2+0x340/0x8f0
-  ip_output+0xa4/0x250
-  raw_sendmsg+0x147d/0x14b0
-  __sys_sendto+0x1cc/0x1f0
-  __x64_sys_sendto+0x24/0x30
-  do_syscall_64+0x126/0xf80
-  entry_SYSCALL_64_after_hwframe+0x77/0x7f
- RIP: 0033:0x7fca40e822ba
- Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 f3 0f 1e fa 41 89 ca 64 8b 04 25 18 00 00 00 85 c0 75 15 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 7e c3 0f 1f 44 00 00 41 54 48 83 ec 30 44 89
- RSP: 002b:00007ffc248a42c8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
- RAX: ffffffffffffffda RBX: 000055ef233289d0 RCX: 00007fca40e822ba
- RDX: 000000000000001e RSI: 000055ef23328c30 RDI: 0000000000000003
- RBP: 000055ef233289d0 R08: 00007ffc248a42d0 R09: 0000000000000010
- R10: 0000000000000000 R11: 0000000000000246 R12: 000000000000001e
- R13: 00000000000186a0 R14: 0000000000000000 R15: 00007fca41043000
-  </TASK>
- irq event stamp: 1045778
- hardirqs last  enabled at (1045784): [<ffffffff864ec042>] __up_console_sem+0x52/0x60
- hardirqs last disabled at (1045789): [<ffffffff864ec027>] __up_console_sem+0x37/0x60
- softirqs last  enabled at (1045426): [<ffffffff874d48c7>] __alloc_skb+0x207/0x260
- softirqs last disabled at (1045434): [<ffffffff874fe8f8>] __dev_queue_xmit+0x78/0x14d0
+Please explain in detail why this is being dropped.
 
-Then, because of the value in the packet's mark, dereference on 'q->handle'
-with NULL 'q' occurs:
-
- BUG: kernel NULL  pointer dereference, address: 0000000000000038
- [...]
- RIP: 0010:fw_classify+0x1fe/0x250 [cls_fw]
- [...]
-
-Skip "old-style" classification on shared blocks, so that the NULL
-dereference is fixed and WARN_ON() is not hit anymore in the short
-lifetime of invalid cls_fw "old-style" filters.
-
-V2: avoid NULL dereference without hitting WARN_ON() anymore (Sashiko)
-V3: correct 'Fixes' tag (Jamal)
-
-[1] https://sashiko.dev/#/patchset/20260331050217.504278-1-xmei5%40asu.edu
-[2] https://elixir.bootlin.com/linux/v7.0-rc6/source/include/net/pkt_cls.h#L86
-
-Fixes: faeea8bbf6e9 ("net/sched: cls_fw: fix NULL pointer dereference on shared blocks")
-Fixes: ed76f5edccc9 ("net: sched: protect filter_chain list with filter_chain_lock mutex")
-
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Davide Caratti <dcaratti@redhat.com>
----
- net/sched/cls_fw.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/net/sched/cls_fw.c b/net/sched/cls_fw.c
-index 23884ef8b80c..646a730dca93 100644
---- a/net/sched/cls_fw.c
-+++ b/net/sched/cls_fw.c
-@@ -74,9 +74,13 @@ TC_INDIRECT_SCOPE int fw_classify(struct sk_buff *skb,
- 			}
- 		}
- 	} else {
--		struct Qdisc *q = tcf_block_q(tp->chain->block);
-+		struct Qdisc *q;
- 
- 		/* Old method: classify the packet using its skb mark. */
-+		if (tcf_block_shared(tp->chain->block))
-+			return -1;
-+
-+		q = tcf_block_q(tp->chain->block);
- 		if (id && (TC_H_MAJ(id) == 0 ||
- 			   !(TC_H_MAJ(id ^ q->handle)))) {
- 			res->classid = id;
--- 
-2.52.0
-
+	Andrew
