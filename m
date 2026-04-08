@@ -1,82 +1,95 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D783451A6;
-	Wed,  8 Apr 2026 03:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EDF62A1BF;
+	Wed,  8 Apr 2026 03:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775619034; cv=none; b=bytijNJBgL9sjlFxfJIark3fIV2UPc3lrcns9fGItsL+8/975aKX3zrPh/tVyLVNhr5vQlIThakS7MClZaKVudgpuCSDzIABtVglvzUg6oaNKjUZPybWt1Pn00CEECvDmEIEULxJbCz0akM5J5DYZOCjoacHgvkWqDRIuSlu+Ug=
+	t=1775619619; cv=none; b=fA6z673In1T1Sy/mkjgkmg5gw5pbeNgyPbZ1S62EFaRQ2g5sO47mwPyk6S3EnL4raZhnOlBoA8aDA0vH0dC6gnIIl4YmgfjqqbuWRrQxdwy1XLaVLfehdb43mCTKob2q0Ged+apjbkVJ4olvndYBF/J0E0N8QaDiyyUg+5xbAIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775619034; c=relaxed/simple;
-	bh=EfbWhKyj39ugZgWeF5Iy4d02+QbPOZ5X1hUh+gRlYOM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Y3fSHsbdnURD7WEmyegZAEc2DIDJv5Yi6AcOnkUG4YWbF7ln+7Si8Rx3ok+qyyTSBZsltgm9B2WxliMIbUu7T5eCKlWcDH4PmbKYHQr/KxA/skyb7CgP+KbP4ADTtN/iUBLrToco/GqrUI/f/ZShBfI3UkykYgRwvyelnxap0r8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JFNpSNYJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775619619; c=relaxed/simple;
+	bh=Kont0VVzsAahMjG/zU+q+EG5+sNXbz70Gz8qhvfkxRw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OmCQoO0k/KrjdZKpLci+BCH3JSSW98ZY+8smkegzHN41wbRNyP3EuqKEmoQlCXwY1FG2XkGBqWSVI81prUQ2kWRTAUyljta+O66I590ToGd89CSX1iYhyfz/EUotP3fRvLC8WHf2TlykhyjKfbhuULZdBwzdyxVsiZl4BdBY++M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oJOKc8hZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JFNpSNYJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6F13C19424;
-	Wed,  8 Apr 2026 03:30:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oJOKc8hZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 378C0C19424;
+	Wed,  8 Apr 2026 03:40:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775619033;
-	bh=EfbWhKyj39ugZgWeF5Iy4d02+QbPOZ5X1hUh+gRlYOM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=JFNpSNYJ2Hos2w1luuQSlFW4NOm/jpOHU7yR4Hko/YCzbpaICLS6tgk8xSIy0A4Yj
-	 1GI2Gn+Qizojx6NrrMkpjPLEc6VnoZJWGbFjZcOOzPWn64xHHYRKsnZv3lqtNEV1bi
-	 6FQfn3aDMPN+nk4LhueRu52j39aTjxDqkM7At3QB7+PHOMHX/z6nv2/pxjVEWCHNUD
-	 AibGxjY28rirMAVur1LQhrTAeRc+fKxhzcXSrQBDHsbY5Wk5Far+jhKoKwrA/++Jtq
-	 ks+xo9VOBsDxN+ajIbo5MjVyDGslPmtyltZXMOS3e/b2UUqbnWvrh/m6HnZWKXEQd0
-	 O2MnJWNpa+l2A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FDD83809A29;
-	Wed,  8 Apr 2026 03:30:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1775619618;
+	bh=Kont0VVzsAahMjG/zU+q+EG5+sNXbz70Gz8qhvfkxRw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=oJOKc8hZKtrQkKfA2ne1vo+IxyUKm/HeqOnoRg301KxwkNVrVAF5h7L3jr3ymPaCe
+	 5iCAR56MbDFfuOR9isRl8UJqmqvtitSvF0L+hf2RPCq/PShZZSddlRLktdTXA6Yt3T
+	 bKqdBNnQS2/GS2HXBfvq/GgB7CYRjzTnZzgW9p5uhuci8fvpAIrIdtQhAO/MhZf/Eu
+	 n+h67T3K+gOLLv2cEQceF+56bMkOpXzOiryF4XqoRF4ffeIzev88QtMhhGJ/nXPXfU
+	 4+HKO9K9nVY5UtWtoDqMIhHUFkAgUoMKGJVc3RERcDty+83CspMQO0Q1YlrJVjEwX8
+	 nvf8gn92ZzXVQ==
+Date: Tue, 7 Apr 2026 20:40:17 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Daniel Borkmann <daniel@iogearbox.net>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, davem@davemloft.net,
+ razor@blackwall.org, pabeni@redhat.com, willemb@google.com,
+ sdf@fomichev.me, john.fastabend@gmail.com, martin.lau@kernel.org,
+ jordan@jrife.io, maciej.fijalkowski@intel.com, magnus.karlsson@intel.com,
+ dw@davidwei.uk, toke@redhat.com, yangzhenze@bytedance.com,
+ wangdongdong.6@bytedance.com
+Subject: Re: [PATCH net-next v11 03/14] net: Add lease info to queue-get
+ response
+Message-ID: <20260407204017.3fc79d1b@kernel.org>
+In-Reply-To: <20260402231031.447597-4-daniel@iogearbox.net>
+References: <20260402231031.447597-1-daniel@iogearbox.net>
+	<20260402231031.447597-4-daniel@iogearbox.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] selftests: net: bridge_vlan_mcast: wait for h1 before
- querier check
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177561901079.56280.10564875913231407708.git-patchwork-notify@kernel.org>
-Date: Wed, 08 Apr 2026 03:30:10 +0000
-References: 
- <c830f130860fd2efae08bfb9e5b25fd028e58ce5.1775424423.git.daniel@makrotopia.org>
-In-Reply-To: 
- <c830f130860fd2efae08bfb9e5b25fd028e58ce5.1775424423.git.daniel@makrotopia.org>
-To: Daniel Golle <daniel@makrotopia.org>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, shuah@kernel.org, razor@blackwall.org,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, john@phrozen.org,
- alexander.sverdlin@siemens.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Fri,  3 Apr 2026 01:10:20 +0200 Daniel Borkmann wrote:
+> +struct netdev_rx_queue *
+> +__netif_get_rx_queue_lease(struct net_device **dev, unsigned int *rxq_idx,
+> +			   enum netif_lease_dir dir)
+> +{
+> +	struct net_device *orig_dev = *dev;
+> +	struct netdev_rx_queue *rxq = __netif_get_rx_queue(orig_dev, *rxq_idx);
+> +
+> +	if (rxq->lease) {
+> +		if (!netif_lease_dir_ok(orig_dev, dir))
+> +			return NULL;
+> +		rxq = rxq->lease;
+> +		*rxq_idx = get_netdev_rx_queue_index(rxq);
+> +		*dev = rxq->dev;
+> +	}
+> +	return rxq;
+> +}
+> +
+> +struct netdev_rx_queue *
+> +netif_get_rx_queue_lease_locked(struct net_device **dev, unsigned int *rxq_idx)
+> +{
+> +	struct net_device *orig_dev = *dev;
+> +	struct netdev_rx_queue *rxq;
+> +
+> +	/* Locking order is always from the virtual to the physical device
+> +	 * see netdev_nl_queue_create_doit().
+> +	 */
+> +	netdev_ops_assert_locked(orig_dev);
+> +	rxq = __netif_get_rx_queue_lease(dev, rxq_idx, NETIF_VIRT_TO_PHYS);
+> +	if (rxq && orig_dev != *dev)
+> +		netdev_lock(*dev);
+> +	return rxq;
+> +}
+> +
+> +void netif_put_rx_queue_lease_locked(struct net_device *orig_dev,
+> +				     struct net_device *dev)
+> +{
+> +	if (orig_dev != dev)
+> +		netdev_unlock(dev);
+> +}
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Sun, 5 Apr 2026 22:29:19 +0100 you wrote:
-> The querier-interval test adds h1 (currently a slave of the VRF created
-> by simple_if_init) to a temporary bridge br1 acting as an outside IGMP
-> querier. The kernel VRF driver (drivers/net/vrf.c) calls cycle_netdev()
-> on every slave add and remove, toggling the interface admin-down then up.
-> Phylink takes the PHY down during the admin-down half of that cycle.
-> Since h1 and swp1 are cable-connected, swp1 also loses its link may need
-> several seconds to re-negotiate.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net] selftests: net: bridge_vlan_mcast: wait for h1 before querier check
-    https://git.kernel.org/netdev/net/c/efaa71faf212
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Pretty sure I already complained about these ugly helpers.
+I'll try to find the time tomorrow to come up with something better.
