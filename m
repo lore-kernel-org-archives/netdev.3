@@ -1,89 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725DA1E1C11;
-	Wed,  8 Apr 2026 01:51:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E15835E927
+	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 01:51:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775613091; cv=none; b=UyfRUDMqQzZl5KmMHOsGE3LUHo5jP6bFPNXNTBpOtfRVF9X20fTwcV7bx8X51LARziOODYLnFrooDzIjLHzuGed1d6ArcDr2EZAy+pL8uDDN3i3MmzoYmtlZCz0ja9YZ9jTA6gJh5T8C5HhpWWDU7XL889sTTKa1le3zUxmrbnE=
+	t=1775613115; cv=none; b=kfDavnfoaD+USuWDKp8Wd6ENmHtz9Y8QoNT/tSYxGrsddvZchzQO40GmHXe1aynCBqXHUYfJXyQO6VUCRqw9Qb5PBItzn3zZoNX7uARJF/dmuUWQB77NaJkF3RAxP9AiKw8Jk+N3kbeFRawsLUjQhieKK7oWVgcTQAC0g28CnJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775613091; c=relaxed/simple;
-	bh=fCBSQGqMzevTkcT7LslCcxFsnnfWHpPEEY4JITLJoI8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BBk3Iq2oywvYi3LztNLnOnVIUpCv+vqrlPOkURyA8ZO/NnWpKdAj/s+t+OXd6N+R2TFXpoQDLjJTNrnALvF5vyoQBSWYXUL8O+2ScoLX1qivXbE+geFqI2GKZuVj2GUZMpPGXBcVLiJbvv0NHBDvRq9k6sryjJFyNVU8k/7wsF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rmFT+Cq7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775613115; c=relaxed/simple;
+	bh=y/3DO+ORwS5VbmuGQpenBxZoTjBDdKCHAGR259B6XoI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=aYUPAG77NKa01XD+iaDm13Z0vWeFr4a4itZWaK+1K4lh3eFN8WCCLlXQqDhGncVcTPjMxmW65eq+mPBbTSJt6bHS1B7mx78hUh804mQZHxl1LVs+5zVjZWg4x6E1aw7w8zyzlUtoDS6TE3/mS+BSurRlXMuAUxjMT1xsSsPupgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=pmYOaKOu; arc=none smtp.client-ip=91.218.175.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rmFT+Cq7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FC6EC116C6;
-	Wed,  8 Apr 2026 01:51:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775613091;
-	bh=fCBSQGqMzevTkcT7LslCcxFsnnfWHpPEEY4JITLJoI8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rmFT+Cq7dOHDzaGRk/uVDX5HCxAuPad+QD64QI+cQin3Ltrp4p9HFTqU3yloYEgLF
-	 p7FdoxIQwaY89/hwlM5EpDqSv98tk5ojAezjn0cxqMoAQFvRIzaeDz5VXmnBmdxHxi
-	 JsEX0uOoJ2oevc4aHYzF6eBWaPbu4JoT8XmZ3QEw1rA0PKKH0xpWlWsq4c8YmNC0Is
-	 87qj9fr3YYji1yDHn/FMmAs+u/QbnuolbArIEW3yLl7nDd3CgQMTbbJIzjUQtSVv7d
-	 uoQlqRYjU9o+V3yMg44SCYEhvGhsNJjVBDKR8TfrHXMclAT4KgUorGpGuVE52bLBdv
-	 hetGX8PaMDIqA==
-Date: Tue, 7 Apr 2026 18:51:28 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Alexander Lobakin <aleksander.lobakin@intel.com>
-Cc: Dipayaan Roy <dipayanroy@linux.microsoft.com>, <kys@microsoft.com>,
- <haiyangz@microsoft.com>, <wei.liu@kernel.org>, <decui@microsoft.com>,
- <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
- <pabeni@redhat.com>, <leon@kernel.org>, <longli@microsoft.com>,
- <kotaranov@microsoft.com>, <horms@kernel.org>,
- <shradhagupta@linux.microsoft.com>, <ssengar@linux.microsoft.com>,
- <ernis@linux.microsoft.com>, <shirazsaleem@microsoft.com>,
- <linux-hyperv@vger.kernel.org>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
- <stephen@networkplumber.org>, <jacob.e.keller@intel.com>,
- <dipayanroy@microsoft.com>, <leitao@debian.org>, <kees@kernel.org>
-Subject: Re: [PATCH net-next v5 0/2] net: mana: add ethtool private flag for
- full-page RX buffers
-Message-ID: <20260407185128.605dcacf@kernel.org>
-In-Reply-To: <e80b603d-8be0-4aee-8a31-c9cbb4a8ab00@intel.com>
-References: <adHaF6DloRthctRb@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-	<e80b603d-8be0-4aee-8a31-c9cbb4a8ab00@intel.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="pmYOaKOu"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775613111;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aIh3ARqFq/vGHnNpbOy4uDjZQT9ulz9JUvqqrKVvG9g=;
+	b=pmYOaKOuWVio+2g5SXSZBwPgoo2UpZiZ+T/LYffORRFfwfoeckC7Vvfsi6bgTWUR0Lg/wt
+	5liZKQ/2rJhtcl2hFnV4QqAr0PdTinNI84ZQydUyLDHYrldrUBFRvybZ2yFubYD4AzvTa7
+	TKWqqNMT330BH5wLj5dQsw8gDwQv7hg=
+From: Qingfang Deng <qingfang.deng@linux.dev>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: linux-ppp@vger.kernel.org,
+	Qingfang Deng <qingfang.deng@linux.dev>
+Subject: [PATCH net-next 2/2] pppox: convert pppox_sk() to use container_of()
+Date: Wed,  8 Apr 2026 09:51:34 +0800
+Message-ID: <20260408015138.280687-2-qingfang.deng@linux.dev>
+In-Reply-To: <20260408015138.280687-1-qingfang.deng@linux.dev>
+References: <20260408015138.280687-1-qingfang.deng@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Tue, 7 Apr 2026 15:10:45 +0200 Alexander Lobakin wrote:
-> > On some ARM64 platforms with 4K PAGE_SIZE, utilizing page_pool 
-> > fragments for allocation in the RX refill path (~2kB buffer per fragment)
-> > causes 15-20% throughput regression under high connection counts  
-> > (>16 TCP streams at 180+ Gbps). Using full-page buffers on these  
-> > platforms shows no regression and restores line-rate performance.
-> > 
-> > This behavior is observed on a single platform; other platforms
-> > perform better with page_pool fragments, indicating this is not a
-> > page_pool issue but platform-specific.
-> > 
-> > This series adds an ethtool private flag "full-page-rx" to let the
-> > user opt in to one RX buffer per page:
-> > 
-> >   ethtool --set-priv-flags eth0 full-page-rx on  
-> 
-> Sorry I may've missed the previous threads.
-> 
-> Has this approach been discussed here? Private flags are generally
-> discouraged.
-> 
-> Alternatively, you can provide Ethtool ops to change the Rx buffer size,
-> so that you'd be able to set it to PAGE_SIZE on affected platforms and
-> the result would be the same.
+Use container_of() macro instead of direct pointer casting to get the
+pppox_sock from a sock pointer. This improves type safety and removes
+the requirement that sk must be the first struct member.
 
-Actually, hm. Now that you spoke up I wonder how much this is
-an inherent ARM problem vs problem in whatever ARM Microsoft's
-management empire-built themselves into.
+Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
+---
+ include/linux/if_pppox.h | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Do you have access to any ARM servers? Google says GCP offers ARM
-instances with idpf NICs. So if idpf benefits from the same
-"tuning" we should totally push for a proper API not priv flags.
+diff --git a/include/linux/if_pppox.h b/include/linux/if_pppox.h
+index 636772693f9a..4f8d9e02cd7f 100644
+--- a/include/linux/if_pppox.h
++++ b/include/linux/if_pppox.h
+@@ -38,7 +38,6 @@ struct pptp_opt {
+ #include <net/sock.h>
+ 
+ struct pppox_sock {
+-	/* struct sock must be the first member of pppox_sock */
+ 	struct sock sk;
+ 	struct ppp_channel chan;
+ 	struct pppox_sock __rcu	*next;	  /* for hash table */
+@@ -54,7 +53,7 @@ struct pppox_sock {
+ 
+ static inline struct pppox_sock *pppox_sk(struct sock *sk)
+ {
+-	return (struct pppox_sock *)sk;
++	return container_of(sk, struct pppox_sock, sk);
+ }
+ 
+ struct module;
+-- 
+2.43.0
+
