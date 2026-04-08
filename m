@@ -1,266 +1,134 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0DAD3D8125
-	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 18:47:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4249E337B81
+	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 18:49:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674054; cv=none; b=XQm4EqXZO/lP2OjGHo65Eal4JmW4eOxwBe46+NlR3Tpo4aeE6kgiMkVlCiPmrI0s8dySu8CuDN5CP2t53Hs9JnzRDFhFLI8oSdtIpFbUB6CcGszwFhCyk0dxfjuejaedX6D+I+VE41EdEJig/SeIvcCN9pGoN8I1PLIQZa6SnTw=
+	t=1775674159; cv=none; b=VKqfaUANP2w7+ogbndWNxYwhPOGWis13zwFEEHnaJW8Pzd/KdXFTfqdDeWpxMkpeq4VjxQVLSRKhvjNT1DHa8D3d6NPXbL+DqaeoFYuhb2hVJUys1Q3je7MRU/rqe9xe/gP3yrIffqNZbG+BHLiawMeBNIwRmoaApTY7lEgXMj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674054; c=relaxed/simple;
-	bh=b9RwiRxpk38kPQPs+FH1DQizAozd96iPnz/ykGFJxI8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aKZyV7/KZT7DL5ifu4yq2+tFD/t9jaGbl1ZnXnjlEkM33URbc6yY6kFpCkf8/zmQk3hrjQtMR3erRcNhElg9TSWXJi2pXprNqkSlaupIC6NUFtLTojnXtuMwsVSolIxueap1xxgTx0UNKHAShxDFhbdynsowc+H8NR1QaWTCCXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VpPexoCG; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1775674159; c=relaxed/simple;
+	bh=9nwjvMTURmEimYoM34lgEzzFizceHlzxg1S5VFy4ta8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=V4PVTy13bYiPUaHPrECoM+RybCwy1PvrypFLLc9yFKZV4AkQ56fcZN4MXHJ38zFdVrh3/JW1Hw/NNKU9o8LC/MLsNm8+Uh/iG9eNSNHlGxGuATHkI/HhUedEJ8WehW4EF2FhKxp4+ydM8TfvkrZH9j3j73Q0AQQWq/3kEME/x4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=Gy/QgCHD; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VpPexoCG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775674053; x=1807210053;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=b9RwiRxpk38kPQPs+FH1DQizAozd96iPnz/ykGFJxI8=;
-  b=VpPexoCGQ4EJUMDMElS2OxwXhxbQl+jAW4sYv+bo4FCBB/c11LIgLrFn
-   L7H0FbvJNUmT4b+QoEci2YUEMfhB6yS6luimnP7iyqpI1WjeQMOW619C0
-   LLNh0AIaVbYYhdRcdeVA/UxO35IZYfMY4NMZQDvW6wKGx6QUAnJhzBxup
-   PArS843/FMrUBxX0B/a3Bk1h0eVMjVt4dmEHsi1SoJJcbtwUs40Pkz4Ga
-   MnsYgk64T9S6Mu9w6WJvspXU+I7TNwmjnPmuNPjjU497rClzcvX4Jzs4j
-   VA0KyiPeyEySuBuM1BESa3LT9lOnXaCVGLighrE/4A9bkdyzZMo1WRrB9
-   w==;
-X-CSE-ConnectionGUID: 6Nrb3ZwcRcedYlbxY+jVvA==
-X-CSE-MsgGUID: z0dgkumYQVyvP5sCqo2SWg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11753"; a="75841387"
-X-IronPort-AV: E=Sophos;i="6.23,168,1770624000"; 
-   d="scan'208";a="75841387"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2026 11:47:28 -0700
-X-CSE-ConnectionGUID: FRoW3OlKTziqQuFi5B+DPQ==
-X-CSE-MsgGUID: IGPAORRwQqyMVvyFrnfV7w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,168,1770624000"; 
-   d="scan'208";a="230217563"
-Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.109]) ([10.166.28.109])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2026 11:47:27 -0700
-From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Wed, 08 Apr 2026 11:46:32 -0700
-Subject: [PATCH iwl-net 2/4] ice: perform PHY soft reset for E825C ports at
- initialization
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="Gy/QgCHD"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-35d95017a68so88209a91.3
+        for <netdev@vger.kernel.org>; Wed, 08 Apr 2026 11:49:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1775674157; x=1776278957; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QgfDguXq0Z2TYsaZoeNncQSV60WxEaZyK7h7hjWHVek=;
+        b=Gy/QgCHDqT6IpztP8PICkXJJMX8G29tToLzW1lzueFRKiC0YKkG4usTXlOVV3LSyAB
+         vtltG8SaVE6t7ooJL2noHZNnjpKYYveumFcbdnV280g+tfa8SqAwH1q/jIxiu8V7nigE
+         IJ3VtDGwBsf4BjNQOGKI0gw5bhptxpJz0s4gTbJWVS9JrklOnb2aBm3wv99jXb9rizjh
+         p1A+Qbbu+HUvPMZNExoDRYdAQSvSMusYGRf3FiEFsaeNWKIv2vu5iqpRUn9nbM0LpzDu
+         XKi/JRAborsTs2ZYYFLO9BPM1s30b3zl/qEgvl+BPM5I+FJOtUEdGp+M9rViM2t23XqI
+         5wPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775674157; x=1776278957;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QgfDguXq0Z2TYsaZoeNncQSV60WxEaZyK7h7hjWHVek=;
+        b=Tm0TFWj3lZ4FWtkcMmA2r746EOKgnnCT1FJ6S9TZ2WRR9/NgziLO4u3QC+6OzZoNsP
+         vmahnKwqoUrxfo+4Z9EL8MLIuttI5UvcHVzTKcnHgmh6P+ierZVUhTA/+6PoJVEDO0E5
+         25NVzbHC2gO+B4cuxbFthhDifWbYavFRuqGl7CCQCcvn8x0werDHFbWRrciJCp405/e8
+         YnReEOYL0xCICMv7HmJCIA6Cbk9S22px4kLD/6DLeYmlbzYEkuZKqTttK6MI9rcwoqHS
+         fau7cfAwP+qCKgcVYtubgGKtA+Q/gF4N+/thr6bwcEaAXB7gDSjY2qkXCRNOl63wIdNh
+         ddAQ==
+X-Gm-Message-State: AOJu0YyNNnrIeCydKUXPF6drPIJ+9y2cJPWC5NXvDmqLdPD9RvKT/vq2
+	OUU7aN+OxQ1Y04dmrsls6mcUAjh52eCyYjudgtoVVbmeY9A5Qbq9OyyHofIow2tqTMI=
+X-Gm-Gg: AeBDieudaWeZaVkS9GdNoltEbG6sBhRfY6QI5iJz1PSipvfSDV2YV/NCywEy9hWAhm5
+	XKSdqgq2lrSCSOvtyoU5fbgeJCI2kYwmhGe/dwsDqo8cUg4VXlAkPv/BOW263sByOg1DQ7iOURp
+	hhQTiw5ImBJVcbfkis5O4/SrKakFfG1R/r598E9n+ZzJTbAHIKZbChPEF7dD+nTuwY2fVXKG7ZT
+	7Ofc5GEEDb7Lbcj2kAdo/HF0NIw8MQEZzyPKmf+AeVaYNF2Qr5b7bRmDiMHybo37p9eLsTa/MbM
+	dw4OmXfzfCa1KSC51CSUm7d4rbQZj+etY70feeSzVdd6jc8R3OIQHdqJLr8oEnrsYq+qh/us7Ll
+	8JKJJ2jR+O6GCN3JXhPe2e2brTZZBCRiCTp+Shn0/LRg6t2qzhOcXsXMBnr3dCVH5NhebLsyatO
+	Qn67c=
+X-Received: by 2002:a17:90b:37d0:b0:35b:e51a:ec77 with SMTP id 98e67ed59e1d1-35e35969b39mr332551a91.16.1775674157566;
+        Wed, 08 Apr 2026 11:49:17 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:3::])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c76c6491fe0sm17475484a12.11.2026.04.08.11.49.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Apr 2026 11:49:17 -0700 (PDT)
+Date: Wed, 8 Apr 2026 11:49:16 -0700
+From: Joe Damato <joe@dama.to>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	horms@kernel.org, linux-kernel@vger.kernel.org, leon@kernel.org
+Subject: Re: [net-next v9 07/10] net: bnxt: Implement software USO
+Message-ID: <adajLCnP2eCSBLVq@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>,
+	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+	Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	horms@kernel.org, linux-kernel@vger.kernel.org, leon@kernel.org
+References: <20260407220313.3990909-1-joe@dama.to>
+ <20260407220313.3990909-8-joe@dama.to>
+ <adWR1OiPlQCJ8idj@devvm20253.cco0.facebook.com>
+ <adaKt/VwrajKraR8@devvm20253.cco0.facebook.com>
+ <20260408110652.652e4732@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260408-jk-even-more-e825c-fixes-v1-2-b959da91a81f@intel.com>
-References: <20260408-jk-even-more-e825c-fixes-v1-0-b959da91a81f@intel.com>
-In-Reply-To: <20260408-jk-even-more-e825c-fixes-v1-0-b959da91a81f@intel.com>
-To: Anthony Nguyen <anthony.l.nguyen@intel.com>, 
- Intel Wired LAN <intel-wired-lan@lists.osuosl.org>, netdev@vger.kernel.org
-Cc: Grzegorz Nitka <grzegorz.nitka@intel.com>, 
- Timothy Miskell <timothy.miskell@intel.com>, 
- Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
- Jacob Keller <jacob.e.keller@intel.com>
-X-Mailer: b4 0.16-dev-306a9
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7639;
- i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=tvvenahFztgo1FeA+D0zmawzjSttw0Lv5ZsSN3NC/+o=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhsxri/aEeG/kuXRq0lIeWc57atOaIx/NOmCkdIAjbvql3
- tmx32ynd5SyMIhxMciKKbIoOISsvG48IUzrjbMczBxWJpAhDFycAjCRyesY/vuvUlssafVr18Mv
- ChOXLZyjzMVe+kS9bPfK4O3Zh05f0vrG8D+1I/T224XTZ+ect/zP0WfTuvgbO4fdJmmRc/Vafee
- MEzgA
-X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
- fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260408110652.652e4732@kernel.org>
 
-From: Grzegorz Nitka <grzegorz.nitka@intel.com>
+On Wed, Apr 08, 2026 at 11:06:52AM -0700, Jakub Kicinski wrote:
+> On Wed, 8 Apr 2026 10:04:55 -0700 Joe Damato wrote:
 
-In some cases the PHY timestamp block of the E825C can become stuck. This
-is known to occur if the software writes 0 to the Tx timestamp threshold,
-and with older versions of the ice driver the threshold configuration is
-buggy and can race in such that hardware briefly operates with a zero
-threshold enabled. There are no other known ways to trigger this behavior,
-but once it occurs, the hardware is not recovered by normal reset, a driver
-reload, or even a warm power cycle of the system. A cold power cycle is
-sufficient to recover hardware, but this is extremely invasive and can
-result in significant downtime on customer deployments.
+[...]
 
-The PHY for each port has a timestamping block which has its own reset
-functionality accessible by programming the PHY_REG_GLOBAL register.
-Writing to the PHY_REG_GLOBAL_SOFT_RESET_BIT triggers the hardware to
-perform a complete reset of the timestamping block of the PHY. This
-includes clearing the timestamp status for the port, clearing all
-outstanding timestamps in the memory bank, and resetting the PHY timer.
+> >    2. Or, keep the smaller buffer that we have now (BNXT_SW_USO_MAX_SEGS (64)
+> >       * 256b = 16kb per ring) and fix the try_stop like this:
+> > 
+> > +static inline u16 bnxt_inline_avail(struct bnxt_tx_ring_info *txr)
+> > +{
+> > +       return BNXT_SW_USO_MAX_SEGS -
+> > +              (u16)(txr->tx_inline_prod - READ_ONCE(txr->tx_inline_cons));
+> > +}
+> > +
+> > 
+> > -       slots = txr->tx_inline_prod - txr->tx_inline_cons;
+> > -       slots = BNXT_SW_USO_MAX_SEGS - slots;
+> > -
+> > -       if (unlikely(slots < num_segs)) {
+> > -               netif_txq_try_stop(txq, slots, num_segs);
+> > +       if (unlikely(bnxt_inline_avail(txr) < num_segs)) {
+> > +               netif_txq_try_stop(txq, bnxt_inline_avail(txr), num_segs);
+> 
+> I think option 2 makes sense. The point (which I think you got) is that
+> the condition must be evaluated after the memory barrier.
+> 
+> Since the condition is repeated in your latest snippet - you can
+> probably use netif_txq_maybe_stop() ?
 
-The new ice_ptp_phy_soft_reset_eth56g() function toggles the
-PHY_REG_GLOBAL soft reset bit with the required delays, ensuring the
-PHY is properly reinitialized without requiring a full device reset.
-The sequence clears the reset bit, asserts it, then clears it again,
-with short waits between transitions to allow hardware stabilization.
+Yea, that's better, thanks.
 
-Call this function in the new ice_ptp_init_phc_e825c(), implementing the
-E825C device specific variant of the ice_ptp_init_phc(). Note that if
-ice_ptp_init_phc() fails, PTP functionality may be disabled, but the driver
-will still load to allow basic functionality to continue.
+I'll go with the inline wrapper above and:
 
-This causes the clock owning PF driver to perform a PHY soft reset for
-every port during initialization. This ensures the driver begins life in a
-known functional state regardless of how it was previously programmed.
-
-This ensures that we properly reconfigure the hardware after a device reset
-or when loading the driver, even if it was previously misconfigured with an
-out-of-date or modified driver.
-
-Fixes: 7cab44f1c35f ("ice: Introduce ETH56G PHY model for E825C products")
-Signed-off-by: Timothy Miskell <timothy.miskell@intel.com>
-Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
----
- drivers/net/ethernet/intel/ice/ice_ptp_hw.h |  4 ++
- drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 90 ++++++++++++++++++++++++++++-
- 2 files changed, 93 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
-index 5896b346e579..9d7acc7eb2ce 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
-@@ -374,6 +374,7 @@ int ice_stop_phy_timer_eth56g(struct ice_hw *hw, u8 port, bool soft_reset);
- int ice_start_phy_timer_eth56g(struct ice_hw *hw, u8 port);
- int ice_phy_cfg_intr_eth56g(struct ice_hw *hw, u8 port, bool ena, u8 threshold);
- int ice_phy_cfg_ptp_1step_eth56g(struct ice_hw *hw, u8 port);
-+int ice_ptp_phy_soft_reset_eth56g(struct ice_hw *hw, u8 port);
- 
- #define ICE_ETH56G_NOMINAL_INCVAL	0x140000000ULL
- #define ICE_ETH56G_NOMINAL_PCS_REF_TUS	0x100000000ULL
-@@ -676,6 +677,9 @@ static inline u64 ice_get_base_incval(struct ice_hw *hw)
- #define ICE_P0_GNSS_PRSNT_N	BIT(4)
- 
- /* ETH56G PHY register addresses */
-+#define PHY_REG_GLOBAL			0x0
-+#define PHY_REG_GLOBAL_SOFT_RESET_M	BIT(11)
-+
- /* Timestamp PHY incval registers */
- #define PHY_REG_TIMETUS_L		0x8
- #define PHY_REG_TIMETUS_U		0xC
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-index 67775beb9449..441b5f10e4bb 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-@@ -377,6 +377,31 @@ static void ice_ptp_cfg_sync_delay(const struct ice_hw *hw, u32 delay)
-  * The following functions operate on devices with the ETH 56G PHY.
-  */
- 
-+/**
-+ * ice_ptp_init_phc_e825c - Perform E825C specific PHC initialization
-+ * @hw: pointer to HW struct
-+ *
-+ * Perform E825C-specific PTP hardware clock initialization steps.
-+ *
-+ * Return: 0 on success, or a negative error value on failure.
-+ */
-+static int ice_ptp_init_phc_e825c(struct ice_hw *hw)
-+{
-+	int err;
-+
-+	/* Soft reset all ports, to ensure everything is at a clean state */
-+	for (int port = 0; port < hw->ptp.num_lports; port++) {
-+		err = ice_ptp_phy_soft_reset_eth56g(hw, port);
-+		if (err) {
-+			ice_debug(hw, ICE_DBG_PTP, "Failed to soft reset port %d, err %d\n",
-+				  port, err);
-+			return err;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- /**
-  * ice_ptp_get_dest_dev_e825 - get destination PHY for given port number
-  * @hw: pointer to the HW struct
-@@ -2179,6 +2204,69 @@ int ice_ptp_read_tx_hwtstamp_status_eth56g(struct ice_hw *hw, u32 *ts_status)
- 	return 0;
- }
- 
-+/**
-+ * ice_ptp_phy_soft_reset_eth56g - Perform a PHY soft reset on ETH56G
-+ * @hw: pointer to the HW structure
-+ * @port: PHY port number
-+ *
-+ * Trigger a soft reset of the ETH56G PHY by toggling the soft reset
-+ * bit in the PHY global register. The reset sequence consists of:
-+ *   1. Clearing the soft reset bit
-+ *   2. Asserting the soft reset bit
-+ *   3. Clearing the soft reset bit again
-+ *
-+ * Short delays are inserted between each step to allow the hardware
-+ * to settle. This provides a controlled way to reinitialize the PHY
-+ * without requiring a full device reset.
-+ *
-+ * Return: 0 on success, or a negative error code on failure when
-+ *         reading or writing the PHY register.
-+ */
-+int ice_ptp_phy_soft_reset_eth56g(struct ice_hw *hw, u8 port)
-+{
-+	u32 global_val;
-+	int err;
-+
-+	err = ice_read_ptp_reg_eth56g(hw, port, PHY_REG_GLOBAL, &global_val);
-+	if (err) {
-+		ice_debug(hw, ICE_DBG_PTP, "Failed to read PHY_REG_GLOBAL for port %d, err %d\n",
-+			  port, err);
-+		return err;
-+	}
-+
-+	global_val &= ~PHY_REG_GLOBAL_SOFT_RESET_M;
-+	ice_debug(hw, ICE_DBG_PTP, "Clearing soft reset bit for port %d, val: 0x%x\n",
-+		  port, global_val);
-+	err = ice_write_ptp_reg_eth56g(hw, port, PHY_REG_GLOBAL, global_val);
-+	if (err) {
-+		ice_debug(hw, ICE_DBG_PTP, "Failed to write PHY_REG_GLOBAL for port %d, err %d\n",
-+			  port, err);
-+		return err;
-+	}
-+
-+	usleep_range(5000, 6000);
-+
-+	global_val |= PHY_REG_GLOBAL_SOFT_RESET_M;
-+	ice_debug(hw, ICE_DBG_PTP, "Set soft reset bit for port %d, val: 0x%x\n",
-+		  port, global_val);
-+	err = ice_write_ptp_reg_eth56g(hw, port, PHY_REG_GLOBAL, global_val);
-+	if (err) {
-+		ice_debug(hw, ICE_DBG_PTP, "Failed to write PHY_REG_GLOBAL for port %d, err %d\n",
-+			  port, err);
-+		return err;
-+	}
-+	usleep_range(5000, 6000);
-+
-+	global_val &= ~PHY_REG_GLOBAL_SOFT_RESET_M;
-+	ice_debug(hw, ICE_DBG_PTP, "Clear soft reset bit for port %d, val: 0x%x\n",
-+		  port, global_val);
-+	err = ice_write_ptp_reg_eth56g(hw, port, PHY_REG_GLOBAL, global_val);
-+	if (err)
-+		ice_debug(hw, ICE_DBG_PTP, "Failed to write PHY_REG_GLOBAL for port %d, err %d\n",
-+			  port, err);
-+	return err;
-+}
-+
- /**
-  * ice_get_phy_tx_tstamp_ready_eth56g - Read the Tx memory status register
-  * @hw: pointer to the HW struct
-@@ -5591,7 +5679,7 @@ int ice_ptp_init_phc(struct ice_hw *hw)
- 	case ICE_MAC_GENERIC:
- 		return ice_ptp_init_phc_e82x(hw);
- 	case ICE_MAC_GENERIC_3K_E825:
--		return 0;
-+		return ice_ptp_init_phc_e825c(hw);
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-
--- 
-2.53.0.1066.g1eceb487f285
-
+-       slots = txr->tx_inline_prod - txr->tx_inline_cons;
+-       slots = BNXT_SW_USO_MAX_SEGS - slots;
+-
+-       if (unlikely(slots < num_segs)) {
+-               netif_txq_try_stop(txq, slots, num_segs);
++       if (!netif_txq_maybe_stop(txq, bnxt_inline_avail(txr),
++                                 num_segs, num_segs))
+                return NETDEV_TX_BUSY;
