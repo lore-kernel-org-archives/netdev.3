@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33FC23D525B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DFBC3D567E;
 	Wed,  8 Apr 2026 15:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775660897; cv=none; b=Q9BlBxxI0rAshR8rYQARVmrx1ar8lvyROYP3uFaSXasEccXcqvXbUmZ13LtyZ/71/rq6zJotx2Js/mw9bNhVErl/8rxO27r+utS29J4jAykS5jDldS+T4gt/IK3wx8j98sevL3mPIeCpf12drOKGAWQtpIUH0QcOi9uwCU8lkgQ=
+	t=1775660897; cv=none; b=LgfRiyX5zidzB6I67C4F2ArciTQvadFwSWORA4C1aSgrQXBDHSBzGxXymfBMDS07B1I90+7Te3/s+4RETT4bcBANz+5ND2lZj1FAWNlwq+gFlzJ42oPmSIsEcODiyR8Yrnj9Y0854ctoBRSY7Xs8hALyMsjZ1F4EhLlpnrofYuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775660897; c=relaxed/simple;
-	bh=LXauNmGBY4MxdaBnDLIVDI3YmNsmXQJ07pq2qf1Q3Fk=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ljdIZEi1bgyGGPT/+sR7ddrQQrPvYojVxxBxHw2yBIKTeul1mwpiPrAnioaah/GfLVJItie4R/ZUwqSRL1zk1+jOIYXdFlsCP1VJYt6XTx79K5G1dp5f9sGjZ/2Ig6qr5LklYlAdsEohSC1lbZNXTZ6wEIkzouJzADjSh0bfB98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CxmXy3Wa; arc=none smtp.client-ip=10.30.226.201
+	bh=05ZM9TgEqk5dcoGAhAKAEkr6lUqgY0+lE0WtMJW32A8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=YsbWslbYZBPphd4dudU+1QaOQyNnReRqJdAaSXp2XcBCUT54MDkRrwMIfkUGo10+h1+MgbdbtDM3TubONdnYvXCunn8jnPq4mDX5n5IphQum6iM1KDwCXVdMnI0ir/MwF8dAdYbU+Xaj/fQzyxvAWzCpWN21xl/tXvVvvrXwnt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fpTTli64; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CxmXy3Wa"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E630FC2BCB2;
-	Wed,  8 Apr 2026 15:08:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fpTTli64"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1CC9DC19424;
+	Wed,  8 Apr 2026 15:08:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775660896;
-	bh=LXauNmGBY4MxdaBnDLIVDI3YmNsmXQJ07pq2qf1Q3Fk=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=CxmXy3WaNgCs3ihdLldldtiMXqm09rw2XRUWBeCHLHaoEpJ9x1nWCA6dB8T43i+vK
-	 3maVpSL7C32xowhiyX2DyzUYryX91LREcPO5di3aKx4VtS3hm8EAzXHaT5f3l1zPkq
-	 AdPQ5QODgRC80fpy+4qpd2yJYpMBEpcCMG9D5SSOXGTr9PXGRBd+lAOAXrgpOvcTIv
-	 8WqIcuOezeD1Ig6uA7vbi3OlqDAcQabiVO4yYWLcyfo46vJmbmyk/snGzVqp9UGrUj
-	 kZwN75F3vgw8Mp4gYSRkGDONAYp9qcNPkCk80ImKHnQMdJuhC7PbwQp+cskvfUe8HF
-	 BmioZboPum70g==
+	s=k20201202; t=1775660897;
+	bh=05ZM9TgEqk5dcoGAhAKAEkr6lUqgY0+lE0WtMJW32A8=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=fpTTli64h0GwB/1tCbMdeI7fdvhgdqf9U9hskzwvhqc5fRkV3XGmtRMY4XgEbxotl
+	 Ewzgw21wVg/7Q9prAnFqyd5xnQxgpgeTOX/DVwfDcK19+RGa34FVy4lQl2SwcmKJrh
+	 zayViPp1zCK9BPZfgUekwHLsM5liW1fg/4qVAPlWjrwAm4ikeS2lNqmHw60wTBCNtU
+	 ecszq1ipe+/LlkMY9Smw9dg2sdMEQTpzc8MXzXapbvlMF7gVdH6l9h8EzFJADYyTI5
+	 4KC9dPv2mdZEM1G1uSLFV5CXLV4HeeDybt/niODDeSJ1zSI1Bzd/RsaNg4FQX7itqf
+	 tg3F2NY+7YiJA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DB21110F994F;
-	Wed,  8 Apr 2026 15:08:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 147D810F9951;
+	Wed,  8 Apr 2026 15:08:17 +0000 (UTC)
 From: Satish Kharat via B4 Relay <devnull+satishkh.cisco.com@kernel.org>
-Subject: [PATCH net-next v2 00/10] enic: SR-IOV V2 admin channel and MBOX
- protocol
-Date: Wed, 08 Apr 2026 08:08:10 -0700
-Message-Id: <20260408-enic-sriov-v2-admin-channel-v2-v2-0-d05dd3623fd3@cisco.com>
+Date: Wed, 08 Apr 2026 08:08:12 -0700
+Subject: [PATCH net-next v2 02/10] enic: add admin channel open and close
+ for SR-IOV
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,10 +41,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAFpv1mkC/4WNwQqDMBBEf0X23C0xSkx76n8UD2Hd1oWalESCR
- fz3Rum9xzczzFshcRROcK1WiJwlSfAF9KkCGp1/MspQGLTSRrWqRfZCmKKEjFmjGybxuC89v/a
- AlHMNX6y1TQPl5B35IcshuIPnGT0vM/SlGSXNIX4Oc66P/icx/yS5RoVWE7WdaYzr7I0kUThTm
- KDftu0LMm6nz9YAAAA=
+Message-Id: <20260408-enic-sriov-v2-admin-channel-v2-v2-2-d05dd3623fd3@cisco.com>
+References: <20260408-enic-sriov-v2-admin-channel-v2-v2-0-d05dd3623fd3@cisco.com>
+In-Reply-To: <20260408-enic-sriov-v2-admin-channel-v2-v2-0-d05dd3623fd3@cisco.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
@@ -52,11 +51,11 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  20260401-enic-sriov-v2-prep-v4-0-d5834b2ef1b9@cisco.com, 
  Satish Kharat <satishkh@cisco.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775660895; l=2911;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775660895; l=7692;
  i=satishkh@cisco.com; h=from:subject:message-id;
- bh=LXauNmGBY4MxdaBnDLIVDI3YmNsmXQJ07pq2qf1Q3Fk=;
- b=H/hDzP8AwBJlQc2hpfJ/wn8WcoXc1vztq49p3ukyDurQv2C5Sc0XSclLoLOPJNoDXaFxqUfdr
- s8nOx7Tmj6ZBLhpcp9c1bN2dGwOd7hXRL4NKpvm2197wqq5aQnc67HB
+ bh=MSrD6SHhLimV7ZBBHtD+FMA9ZuwQh8TK6KZclm5ORVk=;
+ b=JMD1eC5QnCnsS1LtvaSOnomQ3M8rCO5J0d5mWxgAx8mMuDTv2DrX4vJLiv+f3UBu3zf1AiFnH
+ EAoRZfYuPfODFzinHCqqdQw6eHrMhz5pLwEPLzJM6NIsgOFXWbb17IM
 X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
  pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
 X-Endpoint-Received: by B4 Relay for satishkh@cisco.com/default with
@@ -64,67 +63,266 @@ X-Endpoint-Received: by B4 Relay for satishkh@cisco.com/default with
 X-Original-From: Satish Kharat <satishkh@cisco.com>
 Reply-To: satishkh@cisco.com
 
-This series adds the admin channel infrastructure and mailbox (MBOX)
-protocol needed for V2 SR-IOV support in the enic driver.
+From: Satish Kharat <satishkh@cisco.com>
 
-The V2 SR-IOV design uses a direct PF-VF communication channel built on
-dedicated WQ/RQ/CQ hardware resources and an MSI-X interrupt.
+The V2 SR-IOV design uses a dedicated admin channel (WQ/RQ/CQ/INTR
+on separate BAR resources) for PF-VF mailbox communication rather
+than firmware-proxied devcmds.
 
-Firmware capability and admin channel infrastructure (patches 1-4):
-  - Probe-time firmware feature check for V2 SR-IOV support
-  - Admin channel open/close, RQ buffer management, CQ service
-    with MSI-X interrupt and NAPI polling
+Introduce enic_admin_channel_open() and enic_admin_channel_close().
+Open allocates and initialises the admin WQ, RQ, two CQs (one per
+direction) and one SR-IOV interrupt, then issues CMD_QP_TYPE_SET to
+tell firmware the queues are admin-type. Close reverses the sequence.
 
-MBOX protocol and VF enable (patches 5-10):
-  - MBOX message types, core send/receive, PF and VF handlers
-  - V2 SR-IOV enable wiring with admin channel setup
-  - V2 VF probe with admin channel and PF registration
-
-This series depends on "enic: SR-IOV V2 resource discovery and VF
-type detection" (Series 1), which has been accepted.
-
-Depends-on: 20260401-enic-sriov-v2-prep-v4-0-d5834b2ef1b9@cisco.com
+Add CMD_QP_TYPE_SET (97) and QP_TYPE_ADMIN/DATA defines to
+vnic_devcmd.h.
 
 Signed-off-by: Satish Kharat <satishkh@cisco.com>
 ---
-Changes in v2:
-- Fix lines exceeding 80 columns (patches 4, 6, 7, 8)
-- Add __maybe_unused to enic_sriov_configure and enic_sriov_v2_enable;
-  .sriov_configure wiring deferred to a later series after devcmd
-  hardening is in place (patch 9)
-- Guard probe-time auto-enable to skip V2 VFs (patch 9)
-- Link to v1: https://lore.kernel.org/r/20260406-enic-sriov-v2-admin-channel-v2-v1-0-82cc47636a78@cisco.com
-
----
-Satish Kharat (10):
-      enic: verify firmware supports V2 SR-IOV at probe time
-      enic: add admin channel open and close for SR-IOV
-      enic: add admin RQ buffer management
-      enic: add admin CQ service with MSI-X interrupt and NAPI polling
-      enic: define MBOX message types and header structures
-      enic: add MBOX core send and receive for admin channel
-      enic: add MBOX PF handlers for VF register and capability
-      enic: add MBOX VF handlers for capability, register and link state
-      enic: wire V2 SR-IOV enable with admin channel and MBOX
-      enic: add V2 VF probe with admin channel and PF registration
-
  drivers/net/ethernet/cisco/enic/Makefile      |   3 +-
- drivers/net/ethernet/cisco/enic/enic.h        |  29 +-
- drivers/net/ethernet/cisco/enic/enic_admin.c  | 511 ++++++++++++++++++++++++
- drivers/net/ethernet/cisco/enic/enic_admin.h  |  27 ++
- drivers/net/ethernet/cisco/enic/enic_main.c   | 213 +++++++++-
- drivers/net/ethernet/cisco/enic/enic_mbox.c   | 546 ++++++++++++++++++++++++++
- drivers/net/ethernet/cisco/enic/enic_mbox.h   |  87 ++++
- drivers/net/ethernet/cisco/enic/enic_res.c    |   4 +-
- drivers/net/ethernet/cisco/enic/vnic_devcmd.h |  11 +
- drivers/net/ethernet/cisco/enic/vnic_enet.h   |   4 +-
- 10 files changed, 1421 insertions(+), 14 deletions(-)
----
-base-commit: 3e6ef4fb822c971b464d44910a1561b4e7f9efa7
-change-id: 20260404-enic-sriov-v2-admin-channel-v2-c0aa3e988833
+ drivers/net/ethernet/cisco/enic/enic_admin.c  | 175 ++++++++++++++++++++++++++
+ drivers/net/ethernet/cisco/enic/enic_admin.h  |  15 +++
+ drivers/net/ethernet/cisco/enic/vnic_devcmd.h |   9 ++
+ 4 files changed, 201 insertions(+), 1 deletion(-)
 
-Best regards,
+diff --git a/drivers/net/ethernet/cisco/enic/Makefile b/drivers/net/ethernet/cisco/enic/Makefile
+index a96b8332e6e2..7ae72fefc99a 100644
+--- a/drivers/net/ethernet/cisco/enic/Makefile
++++ b/drivers/net/ethernet/cisco/enic/Makefile
+@@ -3,5 +3,6 @@ obj-$(CONFIG_ENIC) := enic.o
+ 
+ enic-y := enic_main.o vnic_cq.o vnic_intr.o vnic_wq.o \
+ 	enic_res.o enic_dev.o enic_pp.o vnic_dev.o vnic_rq.o vnic_vic.o \
+-	enic_ethtool.o enic_api.o enic_clsf.o enic_rq.o enic_wq.o
++	enic_ethtool.o enic_api.o enic_clsf.o enic_rq.o enic_wq.o \
++	enic_admin.o
+ 
+diff --git a/drivers/net/ethernet/cisco/enic/enic_admin.c b/drivers/net/ethernet/cisco/enic/enic_admin.c
+new file mode 100644
+index 000000000000..d1abe6a50095
+--- /dev/null
++++ b/drivers/net/ethernet/cisco/enic/enic_admin.c
+@@ -0,0 +1,175 @@
++// SPDX-License-Identifier: GPL-2.0-only
++// Copyright 2025 Cisco Systems, Inc.  All rights reserved.
++
++#include <linux/kernel.h>
++#include <linux/netdevice.h>
++
++#include "vnic_dev.h"
++#include "vnic_wq.h"
++#include "vnic_rq.h"
++#include "vnic_cq.h"
++#include "vnic_intr.h"
++#include "vnic_resource.h"
++#include "vnic_devcmd.h"
++#include "enic.h"
++#include "enic_admin.h"
++#include "cq_desc.h"
++#include "wq_enet_desc.h"
++#include "rq_enet_desc.h"
++
++/* No-op: admin WQ buffers are freed inline after completion polling */
++static void enic_admin_wq_buf_clean(struct vnic_wq *wq,
++				    struct vnic_wq_buf *buf)
++{
++}
++
++/* No-op: admin RQ buffer teardown is handled in enic_admin_channel_close */
++static void enic_admin_rq_buf_clean(struct vnic_rq *rq,
++				    struct vnic_rq_buf *buf)
++{
++}
++
++static int enic_admin_qp_type_set(struct enic *enic, u32 enable)
++{
++	u64 a0 = QP_TYPE_ADMIN, a1 = enable;
++	int wait = 1000;
++	int err;
++
++	spin_lock_bh(&enic->devcmd_lock);
++	err = vnic_dev_cmd(enic->vdev, CMD_QP_TYPE_SET, &a0, &a1, wait);
++	spin_unlock_bh(&enic->devcmd_lock);
++
++	return err;
++}
++
++static int enic_admin_alloc_resources(struct enic *enic)
++{
++	int err;
++
++	err = vnic_wq_alloc_with_type(enic->vdev, &enic->admin_wq, 0,
++				      ENIC_ADMIN_DESC_COUNT,
++				      sizeof(struct wq_enet_desc),
++				      RES_TYPE_ADMIN_WQ);
++	if (err)
++		return err;
++
++	err = vnic_rq_alloc_with_type(enic->vdev, &enic->admin_rq, 0,
++				      ENIC_ADMIN_DESC_COUNT,
++				      sizeof(struct rq_enet_desc),
++				      RES_TYPE_ADMIN_RQ);
++	if (err)
++		goto free_wq;
++
++	err = vnic_cq_alloc_with_type(enic->vdev, &enic->admin_cq[0], 0,
++				      ENIC_ADMIN_DESC_COUNT,
++				      sizeof(struct cq_desc),
++				      RES_TYPE_ADMIN_CQ);
++	if (err)
++		goto free_rq;
++
++	err = vnic_cq_alloc_with_type(enic->vdev, &enic->admin_cq[1], 1,
++				      ENIC_ADMIN_DESC_COUNT,
++				      16 << enic->ext_cq,
++				      RES_TYPE_ADMIN_CQ);
++	if (err)
++		goto free_cq0;
++
++	/* PFs have dedicated SRIOV_INTR resources for admin channel.
++	 * VFs lack SRIOV_INTR; use a regular INTR_CTRL slot instead.
++	 */
++	if (vnic_dev_get_res_count(enic->vdev, RES_TYPE_SRIOV_INTR) >= 1)
++		err = vnic_intr_alloc_with_type(enic->vdev,
++						&enic->admin_intr, 0,
++						RES_TYPE_SRIOV_INTR);
++	else
++		err = vnic_intr_alloc(enic->vdev, &enic->admin_intr,
++				      enic->intr_count);
++	if (err)
++		goto free_cq1;
++
++	return 0;
++
++free_cq1:
++	vnic_cq_free(&enic->admin_cq[1]);
++free_cq0:
++	vnic_cq_free(&enic->admin_cq[0]);
++free_rq:
++	vnic_rq_free(&enic->admin_rq);
++free_wq:
++	vnic_wq_free(&enic->admin_wq);
++	return err;
++}
++
++static void enic_admin_free_resources(struct enic *enic)
++{
++	vnic_intr_free(&enic->admin_intr);
++	vnic_cq_free(&enic->admin_cq[1]);
++	vnic_cq_free(&enic->admin_cq[0]);
++	vnic_rq_free(&enic->admin_rq);
++	vnic_wq_free(&enic->admin_wq);
++}
++
++static void enic_admin_init_resources(struct enic *enic)
++{
++	vnic_wq_init(&enic->admin_wq, 0, 0, 0);
++	vnic_rq_init(&enic->admin_rq, 1, 0, 0);
++	vnic_cq_init(&enic->admin_cq[0], 0, 1, 0, 0, 1, 0, 1, 0, 0, 0);
++	vnic_cq_init(&enic->admin_cq[1], 0, 1, 0, 0, 1, 0, 1, 0, 0, 0);
++	vnic_intr_init(&enic->admin_intr, 0, 0, 1);
++}
++
++int enic_admin_channel_open(struct enic *enic)
++{
++	int err;
++
++	if (!enic->has_admin_channel)
++		return -ENODEV;
++
++	err = enic_admin_alloc_resources(enic);
++	if (err) {
++		netdev_err(enic->netdev,
++			   "Failed to alloc admin channel resources: %d\n",
++			   err);
++		return err;
++	}
++
++	enic_admin_init_resources(enic);
++
++	vnic_wq_enable(&enic->admin_wq);
++	vnic_rq_enable(&enic->admin_rq);
++
++	err = enic_admin_qp_type_set(enic, 1);
++	if (err) {
++		netdev_err(enic->netdev,
++			   "Failed to set admin QP type: %d\n", err);
++		goto disable_queues;
++	}
++
++	return 0;
++
++disable_queues:
++	vnic_wq_disable(&enic->admin_wq);
++	vnic_rq_disable(&enic->admin_rq);
++	enic_admin_qp_type_set(enic, 0);
++	enic_admin_free_resources(enic);
++	return err;
++}
++
++void enic_admin_channel_close(struct enic *enic)
++{
++	if (!enic->has_admin_channel)
++		return;
++
++	vnic_wq_disable(&enic->admin_wq);
++	vnic_rq_disable(&enic->admin_rq);
++
++	enic_admin_qp_type_set(enic, 0);
++
++	vnic_wq_clean(&enic->admin_wq, enic_admin_wq_buf_clean);
++	vnic_rq_clean(&enic->admin_rq, enic_admin_rq_buf_clean);
++	vnic_cq_clean(&enic->admin_cq[0]);
++	vnic_cq_clean(&enic->admin_cq[1]);
++	vnic_intr_clean(&enic->admin_intr);
++
++	enic_admin_free_resources(enic);
++}
+diff --git a/drivers/net/ethernet/cisco/enic/enic_admin.h b/drivers/net/ethernet/cisco/enic/enic_admin.h
+new file mode 100644
+index 000000000000..569aadeb9312
+--- /dev/null
++++ b/drivers/net/ethernet/cisco/enic/enic_admin.h
+@@ -0,0 +1,15 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/* Copyright 2025 Cisco Systems, Inc.  All rights reserved. */
++
++#ifndef _ENIC_ADMIN_H_
++#define _ENIC_ADMIN_H_
++
++#define ENIC_ADMIN_DESC_COUNT	64
++#define ENIC_ADMIN_BUF_SIZE	2048
++
++struct enic;
++
++int enic_admin_channel_open(struct enic *enic);
++void enic_admin_channel_close(struct enic *enic);
++
++#endif /* _ENIC_ADMIN_H_ */
+diff --git a/drivers/net/ethernet/cisco/enic/vnic_devcmd.h b/drivers/net/ethernet/cisco/enic/vnic_devcmd.h
+index 7a4bce736105..a1c8f522c7d7 100644
+--- a/drivers/net/ethernet/cisco/enic/vnic_devcmd.h
++++ b/drivers/net/ethernet/cisco/enic/vnic_devcmd.h
+@@ -455,8 +455,17 @@ enum vnic_devcmd_cmd {
+ 	 */
+ 	CMD_CQ_ENTRY_SIZE_SET = _CMDC(_CMD_DIR_WRITE, _CMD_VTYPE_ENET, 90),
+ 
++	/*
++	 * Set queue pair type (admin or data)
++	 * in: (u32) a0 = queue pair type (0 = admin, 1 = data)
++	 * in: (u32) a1 = enable (1) / disable (0)
++	 */
++	CMD_QP_TYPE_SET = _CMDC(_CMD_DIR_WRITE, _CMD_VTYPE_ENET, 97),
+ };
+ 
++#define QP_TYPE_ADMIN	0
++#define QP_TYPE_DATA	1
++
+ /* CMD_ENABLE2 flags */
+ #define CMD_ENABLE2_STANDBY 0x0
+ #define CMD_ENABLE2_ACTIVE  0x1
+
 -- 
-Satish Kharat <satishkh@cisco.com>
+2.43.0
 
 
