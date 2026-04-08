@@ -1,101 +1,91 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2603B33F370
-	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 09:27:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089153806C0;
+	Wed,  8 Apr 2026 09:29:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775640467; cv=none; b=TMtYn3M8kDMXP3P+zA93FFSXUSf9I+l3QYUQzh9bQAwMXh2pqc7YKE+i6eI8Qal14yELsNC/0CCeLo8qntx8f8j/QuUi8DqSUEC/+fwExRneF75nv9ANRvMl2iDKsBjBJSzedrKZ11irMhoVJdkWD16Yz4pt8WTwZfuW2qqsPs0=
+	t=1775640551; cv=none; b=uWKXech9A1+s5HQbeRwzK2iX+v4GnHpZ8E2Nq/tPj8ESg7s1sHn2xxjiemSm0dcNkBOrVuSaq1UuxildQlYf0fjpO+X/YQ5jKbMqM5ahWqqfV5N9qcxAXFgBIo9TNvsq3t1a1+jTbi0HN06N4Pnpd3P47Vo2F/JLG0EwcG5g8WY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775640467; c=relaxed/simple;
-	bh=REqXr5wLMfj26wRNRYDG7YJyazjTHsxYB64myy/nHFI=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=UvGlji8oyLhFRMTsd91Kc+8YQQU7u1w15Y0K8PTfWyoY9AWCSYIEmsjekj+ZU1ePjbpqbXJsOj1EjhNr2knNOJgK1ebgNvicnMZin0FOAfQsN1kNahhVfOpfuEUFZETxZH0+mf1cu4HONttDeUUuwxOAWFfwa+Ueo3dmtDBO4oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=eLYN5hjG; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1775640551; c=relaxed/simple;
+	bh=xM3dxI7wCCmuQrWY9tPCnY2tOlTn3ywRp7wOSjqdQcQ=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VSuocWVaEsScUuhP4WK/vvoUbhSfFiIlFSPBVpmMeFTlIwiKNMFZWP0yJ0zdXb/nWH9P7GJ2dRQdGrrTO4E8kjWNLLyW8fzbbUp0m4UfiALKd9jugKJml8LLdBtmuXrnMPuZSLdXC5a1w0lmEydr6+6n8YC8ckYVLAI8uMvcB5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=uGscwb5I; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="eLYN5hjG"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Ed7IJ5GSBXEYvfVGQN3rSQE0J19697RZGgHvSAagUwg=; b=eLYN5hjGogoHiOmFImFRlYgYhI
-	gWL4oUX5KiyAxcvm3HY91IWYJDRO1TmqUl+Uh0G8yFcB3J0BEHR1h3PcI+Eba6CTtPCathDQLDFPO
-	OYb1y926ZCokPdP6mJADhAWFaiUdCRFd1gxEajOxE55NhumnfNf11g3T9Q+CT3D/toZgsyAj2FTZP
-	c7LuDKVN/9NxKrLzD89y1UWwKSQNtlqR4VvwPxfcZrt1TyB9+O7qiDiHhm+XlRfouwDr+ElSYZsUB
-	p4SJWGt61fQsmq0OlYVhyBc57rZqpH0dav7lXKSBPuuScBTwSU8MReAMCl1JOxoRxoXzn5Ep8h6AU
-	WDdF0VVw==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:43578 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1wAPBw-0000000023h-1TcH;
-	Wed, 08 Apr 2026 10:27:20 +0100
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1wAPBl-0000000F7kT-3kSP;
-	Wed, 08 Apr 2026 10:27:09 +0100
-In-Reply-To: <adYfPBHsXxQUsMyr@shell.armlinux.org.uk>
-References: <adYfPBHsXxQUsMyr@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jitendra Vegiraju <jitendra.vegiraju@broadcom.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-sunxi@lists.linux.dev,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Samuel Holland <samuel@sholland.org>
-Subject: [PATCH RFC net-next 06/10] net: stmmac: dche is only for GMAC4 cores
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="uGscwb5I"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 249F920820;
+	Wed,  8 Apr 2026 11:29:07 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id X1dEP7LzZmgd; Wed,  8 Apr 2026 11:29:06 +0200 (CEST)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id 800A22080B;
+	Wed,  8 Apr 2026 11:29:06 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 800A22080B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1775640546;
+	bh=UWXrViHV114G3kY+hJ0t2jQTJK2BBud23h4WlYDJQww=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=uGscwb5Iq+RtmzlJqaj377uNehSoAgz+srl6QODHfzru5C4b2DGfARVf/M24IMh+4
+	 JhggxFPYXh5dM0FzNhdmiFHlCkVhRqt+fXq4K5Q/5oAfJe+sgBH3G6OyPW4vhTbDO9
+	 di0CDblT4UAX8p1ZNiao2VHe/DVCqWrH0CT/93qxke98YUgOT9eiXW4g8IdeePsDED
+	 SfPEfyF0tRZi85CCQvE6Al7CqofnXtwpBS7G/IDZs1D/FxaoJ/nCJyRP3QOZnTq/D9
+	 nGUQ5mhzNH1WKdsiNkvVBi9iVwlqQSgPOmpCjNB9tFqzz4O6qHPbNhQJlfsA0aIJ+C
+	 SuXAzcCQkT7SA==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 8 Apr
+ 2026 11:29:05 +0200
+Received: (nullmailer pid 59307 invoked by uid 1000);
+	Wed, 08 Apr 2026 09:29:05 -0000
+Date: Wed, 8 Apr 2026 11:29:05 +0200
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: Kotlyarov Mihail <mihailkotlyarow@gmail.com>
+CC: <netdev@vger.kernel.org>, <lvc-project@linuxtesting.org>,
+	<herbert@gondor.apana.org.au>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>, <fw@strlen.de>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH ipsec] xfrm: fix refcount leak in xfrm_migrate_policy_find
+Message-ID: <adYf4dQERmCeO0da@secunet.com>
+References: <20260404090525.105083-1-mihailkotlyarow@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1wAPBl-0000000F7kT-3kSP@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Wed, 08 Apr 2026 10:27:09 +0100
+In-Reply-To: <20260404090525.105083-1-mihailkotlyarow@gmail.com>
+X-ClientProxiedBy: EXCH-02.secunet.de (10.32.0.172) To EXCH-01.secunet.de
+ (10.32.0.171)
 
-dma_cfg->dche is only read by dwmac4_dma_init(), which is only called
-for the DWMAC_CORE_GMAC4 core type. Rather than having a bare IP
-version check that can match any core type, make this conditional on
-DWMAC_CORE_GMAC4 to make it clear that it's a GMAC4 feature.
+On Sat, Apr 04, 2026 at 12:05:20PM +0300, Kotlyarov Mihail wrote:
+> syzkaller reported a memory leak in xfrm_policy_alloc:
+> 
+>   BUG: memory leak
+>   unreferenced object 0xffff888114d79000 (size 1024):
+>     comm "syz.1.17", pid 931
+>     ...
+>     xfrm_policy_alloc+0xb3/0x4b0 net/xfrm/xfrm_policy.c:432
+> 
+> The root cause is a double call to xfrm_pol_hold_rcu() in
+> xfrm_migrate_policy_find(). The lookup function already returns
+> a policy with held reference, making the second call redundant.
+> 
+> Remove the redundant xfrm_pol_hold_rcu() call to fix the refcount
+> imbalance and prevent the memory leak.
+> 
+> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+> 
+> Fixes: 563d5ca93e88 ("xfrm: switch migrate to xfrm_policy_lookup_bytype")
+> Signed-off-by: Kotlyarov Mihail <mihailkotlyarow@gmail.com>
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 295d31d7b28b..e47321119c83 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -7895,9 +7895,10 @@ static int __stmmac_dvr_probe(struct device *device,
- 	if (ret)
- 		goto error_hw_init;
- 
--	/* Only DWMAC core version 5.20 onwards supports HW descriptor prefetch.
-+	/* Only DWMAC4 core version 5.20 onwards support HW descriptor prefetch.
- 	 */
--	if (priv->snpsver < DWMAC_CORE_5_20)
-+	if (priv->plat->core_type != DWMAC_CORE_GMAC4 ||
-+	    priv->snpsver < DWMAC_CORE_5_20)
- 		priv->plat->dma_cfg->dche = false;
- 
- 	stmmac_check_ether_addr(priv);
--- 
-2.47.3
-
+Applied, thanks a lot!
