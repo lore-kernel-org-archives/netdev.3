@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0910C3C1980
-	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 12:13:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB933C3BFB
+	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 12:13:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775650439; cv=none; b=SZfoDIEBJ0sOjDJz9iJ9UjD1bHzsyjwykV07VALGgW0dF2yVvIxAvtrgXQ1eKEyo3BYVD5fhHr8YJb6pOyYC7gjYVEI1ks0WDCyvaX3P/dQ9qFbt006QZ9hs0sS5EZJ20Ahxkdp20z3pTQPBVk/lcNy/Zy01O2xncBtE+5IVekw=
+	t=1775650443; cv=none; b=q2x7S9YAAbCjJozkVkH0ohYETaWUBS6sgxzu7EeyJfkZoL9YR/qwdU1hisMtlAOMs+T2PxZRAf8rXXah+5qg2liWIEOadS5SwChA1CHdf7WwRecs/MBf3ODsmwxmIKz/h3giJjKb3DfUhW+sjUjigTwlK5dOhxll53SllcAfSuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775650439; c=relaxed/simple;
-	bh=0SwzPQiq0K33AI2cjVS+euTUF2s1lCsvoeohpqkDfZM=;
+	s=arc-20240116; t=1775650443; c=relaxed/simple;
+	bh=c65U58IymmhFs6mm6gCyGxJ220gcEnGj2kP2z0DZZkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ID9hbZ0aOzn4PQxwh1kWMrvd/5DUFuH4+lmXLY4cClIeXXFZg9M3LKXXGwi5tnoBgijrJQ62DUMjNj9EsQak+DGJsSi4JxgQBBu2yxhKKEewoo/rCbMGucO2kUPlXoFgjfS3hi6oy0xmRcUwgVJFODBdh5bwKFaUF5DKdiiyptQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GyrZ6cSs; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=LdflnDLnuwNcdKu55jEJ0Kxw9zfSlBAYbVJtBswBVNlSEXs1peDlQvlFTZqqdp8Pz6unXct3BMswomtHD7PfegWjpiUZib6X0TJHQ3FkrNGThtzsRRbHCNuxbuPXzOrEFctbBXMVQQna4+lJ1onAhjVdV9DuisvLxkFkHXk8csE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hxnZbWJ6; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GyrZ6cSs"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hxnZbWJ6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775650430;
+	s=mimecast20190719; t=1775650436;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JdpppyRA5L+XT2V7G6SjlP5WRQLvmrVCKEV5uP5VLSc=;
-	b=GyrZ6cSstmjAO+X2d2IEpLbmak8cWO4fKbq3XtAlznAmuqY2iGHUfnGZYgCR+BZt5fx4Mj
-	6IePIe+OwlaFH7vIP/ZWAVsRJ0BD7gTzeX80IiWclNhwqwk1XPO0jfxEGZGXiLTjhK3XhD
-	ouhvekt26FdqkefFKEWxQRPICjryr20=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+	bh=G0naaNtpjzkU1+nfEy3HMUBkaru1VrZvHmnSx79IMDc=;
+	b=hxnZbWJ6MlFEZdOhMv2KYEagRQ5hj5K2sk71PdDLp7VcRwF2iUyjOTcdc0xqQURxGBha+J
+	3KUsjAlIImJw3TOfZ2Y7RioJbGnJiHPsxbaMu7mqIBNahA56oQ1Sj+rJWYss3mbq8DnjnQ
+	8o/BYN5XDqx7Qd3FHQfHewz5obYdaaA=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-480-bwaO0MSsPI6-ik3rVQQh9g-1; Wed,
- 08 Apr 2026 08:13:47 -0400
-X-MC-Unique: bwaO0MSsPI6-ik3rVQQh9g-1
-X-Mimecast-MFC-AGG-ID: bwaO0MSsPI6-ik3rVQQh9g_1775650425
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-631-ae_G_KntNge-9qT3XoGwhA-1; Wed,
+ 08 Apr 2026 08:13:51 -0400
+X-MC-Unique: ae_G_KntNge-9qT3XoGwhA-1
+X-Mimecast-MFC-AGG-ID: ae_G_KntNge-9qT3XoGwhA_1775650427
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 11F6D1955E75;
-	Wed,  8 Apr 2026 12:13:45 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id ABDA91955DBB;
+	Wed,  8 Apr 2026 12:13:46 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.44.32.94])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 48C5F1800762;
-	Wed,  8 Apr 2026 12:13:41 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4D9DF1955D84;
+	Wed,  8 Apr 2026 12:13:18 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: netdev@vger.kernel.org
 Cc: David Howells <dhowells@redhat.com>,
@@ -52,13 +52,13 @@ Cc: David Howells <dhowells@redhat.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	linux-afs@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Anderson Nascimento <anderson@allelesecurity.com>,
 	Jeffrey Altman <jaltman@auristor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Simon Horman <horms@kernel.org>,
 	stable@kernel.org
-Subject: [PATCH net v5 08/21] rxrpc: Fix key reference count leak from call->key
-Date: Wed,  8 Apr 2026 13:12:36 +0100
-Message-ID: <20260408121252.2249051-9-dhowells@redhat.com>
+Subject: [PATCH net v5 04/21] rxrpc: Fix call removal to use RCU safe deletion
+Date: Wed,  8 Apr 2026 13:12:32 +0100
+Message-ID: <20260408121252.2249051-5-dhowells@redhat.com>
 In-Reply-To: <20260408121252.2249051-1-dhowells@redhat.com>
 References: <20260408121252.2249051-1-dhowells@redhat.com>
 Precedence: bulk
@@ -68,33 +68,30 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-From: Anderson Nascimento <anderson@allelesecurity.com>
+Fix rxrpc call removal from the rxnet->calls list to use list_del_rcu()
+rather than list_del_init() to prevent stuffing up reading
+/proc/net/rxrpc/calls from potentially getting into an infinite loop.
 
-When creating a client call in rxrpc_alloc_client_call(), the code obtains
-a reference to the key.  This is never cleaned up and gets leaked when the
-call is destroyed.
+This, however, means that list_empty() no longer works on an entry that's
+been deleted from the list, making it harder to detect prior deletion.  Fix
+this by:
 
-Fix this by freeing call->key in rxrpc_destroy_call().
+Firstly, make rxrpc_destroy_all_calls() only dump the first ten calls that
+are unexpectedly still on the list.  Limiting the number of steps means
+there's no need to call cond_resched() or to remove calls from the list
+here, thereby eliminating the need for rxrpc_put_call() to check for that.
 
-Before the patch, it shows the key reference counter elevated:
+rxrpc_put_call() can then be fixed to unconditionally delete the call from
+the list as it is the only place that the deletion occurs.
 
-$ cat /proc/keys | grep afs@54321
-1bffe9cd I--Q--i 8053480 4169w 3b010000  1000  1000 rxrpc     afs@54321: ka
-$
-
-After the patch, the invalidated key is removed when the code exits:
-
-$ cat /proc/keys | grep afs@54321
-$
-
-Fixes: f3441d4125fc ("rxrpc: Copy client call parameters into rxrpc_call earlier")
-Signed-off-by: Anderson Nascimento <anderson@allelesecurity.com>
-Co-developed-by: David Howells <dhowells@redhat.com>
+Fixes: 2baec2c3f854 ("rxrpc: Support network namespacing")
+Closes: https://sashiko.dev/#/patchset/20260319150150.4189381-1-dhowells%40redhat.com
 Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
 cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeffrey Altman <jaltman@auristor.com>
+cc: Linus Torvalds <torvalds@linux-foundation.org>
 cc: Eric Dumazet <edumazet@google.com>
 cc: "David S. Miller" <davem@davemloft.net>
 cc: Jakub Kicinski <kuba@kernel.org>
@@ -104,19 +101,71 @@ cc: linux-afs@lists.infradead.org
 cc: netdev@vger.kernel.org
 cc: stable@kernel.org
 ---
- net/rxrpc/call_object.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/trace/events/rxrpc.h |  2 +-
+ net/rxrpc/call_object.c      | 24 +++++++++---------------
+ 2 files changed, 10 insertions(+), 16 deletions(-)
 
+diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
+index 869f97c9bf73..a826cd80007b 100644
+--- a/include/trace/events/rxrpc.h
++++ b/include/trace/events/rxrpc.h
+@@ -347,7 +347,7 @@
+ 	EM(rxrpc_call_see_release,		"SEE release ") \
+ 	EM(rxrpc_call_see_userid_exists,	"SEE u-exists") \
+ 	EM(rxrpc_call_see_waiting_call,		"SEE q-conn  ") \
+-	E_(rxrpc_call_see_zap,			"SEE zap     ")
++	E_(rxrpc_call_see_still_live,		"SEE !still-l")
+ 
+ #define rxrpc_txqueue_traces \
+ 	EM(rxrpc_txqueue_await_reply,		"AWR") \
 diff --git a/net/rxrpc/call_object.c b/net/rxrpc/call_object.c
-index 59329cfe1532..f035f486c139 100644
+index 918f41d97a2f..59329cfe1532 100644
 --- a/net/rxrpc/call_object.c
 +++ b/net/rxrpc/call_object.c
-@@ -692,6 +692,7 @@ static void rxrpc_destroy_call(struct work_struct *work)
- 	rxrpc_put_bundle(call->bundle, rxrpc_bundle_put_call);
- 	rxrpc_put_peer(call->peer, rxrpc_peer_put_call);
- 	rxrpc_put_local(call->local, rxrpc_local_put_call);
-+	key_put(call->key);
- 	call_rcu(&call->rcu, rxrpc_rcu_free_call);
- }
+@@ -654,11 +654,9 @@ void rxrpc_put_call(struct rxrpc_call *call, enum rxrpc_call_trace why)
+ 	if (dead) {
+ 		ASSERTCMP(__rxrpc_call_state(call), ==, RXRPC_CALL_COMPLETE);
  
+-		if (!list_empty(&call->link)) {
+-			spin_lock(&rxnet->call_lock);
+-			list_del_init(&call->link);
+-			spin_unlock(&rxnet->call_lock);
+-		}
++		spin_lock(&rxnet->call_lock);
++		list_del_rcu(&call->link);
++		spin_unlock(&rxnet->call_lock);
+ 
+ 		rxrpc_cleanup_call(call);
+ 	}
+@@ -730,24 +728,20 @@ void rxrpc_destroy_all_calls(struct rxrpc_net *rxnet)
+ 	_enter("");
+ 
+ 	if (!list_empty(&rxnet->calls)) {
+-		spin_lock(&rxnet->call_lock);
++		int shown = 0;
+ 
+-		while (!list_empty(&rxnet->calls)) {
+-			call = list_entry(rxnet->calls.next,
+-					  struct rxrpc_call, link);
+-			_debug("Zapping call %p", call);
++		spin_lock(&rxnet->call_lock);
+ 
+-			rxrpc_see_call(call, rxrpc_call_see_zap);
+-			list_del_init(&call->link);
++		list_for_each_entry(call, &rxnet->calls, link) {
++			rxrpc_see_call(call, rxrpc_call_see_still_live);
+ 
+ 			pr_err("Call %p still in use (%d,%s,%lx,%lx)!\n",
+ 			       call, refcount_read(&call->ref),
+ 			       rxrpc_call_states[__rxrpc_call_state(call)],
+ 			       call->flags, call->events);
+ 
+-			spin_unlock(&rxnet->call_lock);
+-			cond_resched();
+-			spin_lock(&rxnet->call_lock);
++			if (++shown >= 10)
++				break;
+ 		}
+ 
+ 		spin_unlock(&rxnet->call_lock);
 
