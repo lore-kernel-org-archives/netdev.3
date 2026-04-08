@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6191F3D330A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CBAB3D1CCC;
 	Wed,  8 Apr 2026 16:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775666185; cv=none; b=e2078aqvLgIqvU2YlyQ5VkdAxJZaI1jDgn+tmEmsH2ZYGRwdZPoZ/bgvMC6JuwVH2EItZiLAhwhk0aeee7hUBnE/HAHzArj3L9I48YfR6tesdts32UcAgbUAR/T7oIpK8M4ZpH0SwoVZsRKm6hNm7yY4DXaWLhOXmXTRazxskmA=
+	t=1775666185; cv=none; b=isCCNmE1L/4LBfs8AMvprnZtps2dg5PUycOCqnAljoekXe2MxVdMVfufqN284dVdK0VWyx4I9KV+dOLTHW7MAaVvU3WyizWbsCdLc/bxkfaGSnRINew5cdj2ba2Ik+PjI+2wy1yA1b/FvnJBSQEtdO88bbKXlXpV0H55n38JsZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775666185; c=relaxed/simple;
-	bh=CHD2sGmHFADoajsajVO5DHFLgnLfs7K8NFH7Cqwp6P0=;
+	bh=pSMej5vYrEDi0xh0yV9bJSxjZFllzDT7LgVuembtc00=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Qujb0f0vFK8UEGWw6ej77R5WTgZXex6Op8D3Ua2rCUf4YPs22lMDYBGLUF2ej+umL9YRM7gUjfd1qZHT23KKHgAtc9e6viCpncxCdiTlgQavYlYLfaswn6+IgaDegtAcnUKjYKTjB6F5XVgD+1HwUV68Xp51YVj3yUatFaNo4cE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=br93QB4w; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=TolLPFgT5nl66RrTAdKudTwofkwGJyk2MoFFDqdkTQb/m+LTsnAXtsAV7Fo5Hm2mXE7MzxZ7xKmhF2nY/c1Rv/v7mpZYzciVJUXpzbSYV66usaGkW57Ekj1DZXJYx/IaFxna9xHv/T4Ftqo8kECYPpN1Ix9uV/TgwWy7pyvXlsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BPSrBdTy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="br93QB4w"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3A35DC2BCB3;
-	Wed,  8 Apr 2026 16:36:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BPSrBdTy"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E9E89C2BC87;
+	Wed,  8 Apr 2026 16:36:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775666185;
-	bh=CHD2sGmHFADoajsajVO5DHFLgnLfs7K8NFH7Cqwp6P0=;
+	bh=pSMej5vYrEDi0xh0yV9bJSxjZFllzDT7LgVuembtc00=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=br93QB4wPPcCTGCQohh1vNcaVPGpGAAcKgV9ppFnv76FJuuVzvOAigF+8Yn6kkJmV
-	 GhxIMGhVTM3tXYEh8hobSnsA+u6QLJXGON/pvVhqJ2IT7LXhef2dqQS3jgWB6+vZ9F
-	 poplavooEfTB1LeTM6Zv+KKjvflBLpzRUeX8ESL1wX0QlD+qUFL5cKa0otQtwF7NVY
-	 ukHw2GF60yvI//uIObLOtoqfwanqBzf8hxS1mT5ySr30469GTnhIRao4BDHXOEor/D
-	 aKbF4/s9pDbIG/mx2HbaMYapo7VrmwJ2kFoZJypqc/M+co7wm3QGZFrKm7BFnUUHT7
-	 YVn6flI+4Z0QA==
+	b=BPSrBdTyeMOdN5RwOGdJ+dqI3d3sDEKuAiYw3KbgWmoGzpHgzhCKoFWruHZmiJB5o
+	 bhiQ5ajM0xN4VF44Cqt7dNs/Bev8SKQMmG+y3xqt6v72MQp+zGc09OeH1kuYzRzTxo
+	 K0CxSR7rIEVLt9p5U8j2EU6MCZTV+yv4PS4f/DjV34/LEEDwOZLVuvA6Ypn+qsjif4
+	 CgAoUTnIQSzah8urRJUzTi+Drru9mp3Rmqufdmr7Au6K/KHdoKoh9wvmsknDjpPR2Q
+	 5/hX67h2BuPZUDkh7QAsI7PzYsE1Weil2ceDlVy1UGpbM4vDW/zFTxIzEKEGkrXDJg
+	 j83cvMtVq8PFA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 30A8110F9940;
-	Wed,  8 Apr 2026 16:36:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D7E4E10F995A;
+	Wed,  8 Apr 2026 16:36:24 +0000 (UTC)
 From: Satish Kharat via B4 Relay <devnull+satishkh.cisco.com@kernel.org>
-Date: Wed, 08 Apr 2026 09:36:26 -0700
-Subject: [PATCH net-next v3 05/10] enic: define MBOX message types and
- header structures
+Date: Wed, 08 Apr 2026 09:36:22 -0700
+Subject: [PATCH net-next v3 01/10] enic: verify firmware supports V2 SR-IOV
+ at probe time
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260408-enic-sriov-v2-admin-channel-v2-v3-5-1d4999a03cec@cisco.com>
+Message-Id: <20260408-enic-sriov-v2-admin-channel-v2-v3-1-1d4999a03cec@cisco.com>
 References: <20260408-enic-sriov-v2-admin-channel-v2-v3-0-1d4999a03cec@cisco.com>
 In-Reply-To: <20260408-enic-sriov-v2-admin-channel-v2-v3-0-1d4999a03cec@cisco.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -49,13 +49,13 @@ To: Andrew Lunn <andrew+netdev@lunn.ch>,
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
  20260401-enic-sriov-v2-prep-v4-0-d5834b2ef1b9@cisco.com, 
- Satish Kharat <satishkh@cisco.com>
+ Satish Kharat <satishkh@cisco.com>, Breno Leitao <leitao@debian.org>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775666183; l=2895;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775666183; l=2531;
  i=satishkh@cisco.com; h=from:subject:message-id;
- bh=QgPYsFppAoUswndbEnI+khJeTR1Tn6EJVQstlZ2VNn8=;
- b=wbFVX58mgC2mEBBKrresmbtehjaE0Wqtq6Mu2jHbTdLvGxTbeVheo5fuPBp53Hsv+yIf8EPHC
- YEgVTMv5J7rDOwuHVpJUYEV0qAsAv2rO2yhEBl5ILgMumyNhm6QCV9o
+ bh=bW4tqPiVbykt8E1AO6HaOo6t5TPoHN2weYduT38tfLQ=;
+ b=BMNnaZ78N7AlI2U108Y696+XyXFqqWeHsVyxu6SqMvOcdqegR3lkpRcrnspKQnjD95N+LfPIg
+ 50OoVSRuI9ACvfyQNNsRPzCqUolFkxVU9ejE/lDFXTsw8a7cnoGpWYk
 X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
  pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
 X-Endpoint-Received: by B4 Relay for satishkh@cisco.com/default with
@@ -65,104 +65,76 @@ Reply-To: satishkh@cisco.com
 
 From: Satish Kharat <satishkh@cisco.com>
 
-Define the mailbox protocol used for PF-VF communication over the
-admin channel. The protocol uses request/reply pairs where even
-message types are requests and odd are replies.
+During PF probe, query the firmware get-supported-feature interface
+to verify that the running firmware supports V2 SR-IOV. Firmware
+version 5.3(4.72) and later report VIC_FEATURE_SRIOV via
+CMD_GET_SUPP_FEATURE_VER. If the firmware does not support the
+feature, set vf_type to ENIC_VF_TYPE_NONE and log a warning so the
+admin knows a firmware upgrade is needed.
 
-Initial message types cover the core SR-IOV handshake:
-  - VF_CAPABILITY: version negotiation
-  - VF_REGISTER/UNREGISTER: VF lifecycle management
-  - PF_LINK_STATE_NOTIF: PF-initiated link state changes
+The VIC_FEATURE_SRIOV enum value (4) matches the firmware ABI. A
+placeholder entry (VIC_FEATURE_PTP at position 3) is added to keep
+the enum in sync with firmware's feature numbering.
 
-Each message carries a common header (src/dst vnic ID, type,
-length, sequence number) followed by a type-specific payload.
-
+Suggested-by: Breno Leitao <leitao@debian.org>
 Signed-off-by: Satish Kharat <satishkh@cisco.com>
 ---
- drivers/net/ethernet/cisco/enic/enic_mbox.h | 75 +++++++++++++++++++++++++++++
- 1 file changed, 75 insertions(+)
+ drivers/net/ethernet/cisco/enic/enic_main.c   | 19 +++++++++++++++++++
+ drivers/net/ethernet/cisco/enic/vnic_devcmd.h |  2 ++
+ 2 files changed, 21 insertions(+)
 
-diff --git a/drivers/net/ethernet/cisco/enic/enic_mbox.h b/drivers/net/ethernet/cisco/enic/enic_mbox.h
-new file mode 100644
-index 000000000000..84cb6bbc1ead
---- /dev/null
-+++ b/drivers/net/ethernet/cisco/enic/enic_mbox.h
-@@ -0,0 +1,75 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/* Copyright 2025 Cisco Systems, Inc.  All rights reserved. */
+diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
+index e7125b818087..73bb59eef7a0 100644
+--- a/drivers/net/ethernet/cisco/enic/enic_main.c
++++ b/drivers/net/ethernet/cisco/enic/enic_main.c
+@@ -2641,8 +2641,10 @@ static void enic_iounmap(struct enic *enic)
+ static void enic_sriov_detect_vf_type(struct enic *enic)
+ {
+ 	struct pci_dev *pdev = enic->pdev;
++	u64 supported_versions, a1 = 0;
+ 	int pos;
+ 	u16 vf_dev_id;
++	int err;
+ 
+ 	if (enic_is_sriov_vf(enic) || enic_is_dynamic(enic))
+ 		return;
+@@ -2669,6 +2671,23 @@ static void enic_sriov_detect_vf_type(struct enic *enic)
+ 		enic->vf_type = ENIC_VF_TYPE_NONE;
+ 		break;
+ 	}
 +
-+#ifndef _ENIC_MBOX_H_
-+#define _ENIC_MBOX_H_
++	if (enic->vf_type != ENIC_VF_TYPE_V2)
++		return;
 +
-+/*
-+ * Mailbox protocol for PF-VF communication over the admin channel.
-+ *
-+ * Even numbers are requests, odd numbers are replies/acks.
-+ * The prefix indicates the initiator: VF_ = VF-initiated, PF_ = PF-initiated.
-+ */
-+enum enic_mbox_msg_type {
-+	ENIC_MBOX_VF_CAPABILITY_REQUEST		= 0,
-+	ENIC_MBOX_VF_CAPABILITY_REPLY		= 1,
-+	ENIC_MBOX_VF_REGISTER_REQUEST		= 2,
-+	ENIC_MBOX_VF_REGISTER_REPLY		= 3,
-+	ENIC_MBOX_VF_UNREGISTER_REQUEST		= 4,
-+	ENIC_MBOX_VF_UNREGISTER_REPLY		= 5,
-+	ENIC_MBOX_PF_LINK_STATE_NOTIF		= 6,
-+	ENIC_MBOX_PF_LINK_STATE_ACK		= 7,
-+	ENIC_MBOX_MAX
-+};
-+
-+struct enic_mbox_hdr {
-+	__le16 src_vnic_id;
-+	__le16 dst_vnic_id;
-+	u8 msg_type;
-+	u8 flags;
-+	__le16 msg_len;
-+	__le64 msg_num;
-+};
-+
-+struct enic_mbox_generic_reply {
-+	__le16 ret_major;
-+	__le16 ret_minor;
-+};
-+
-+#define ENIC_MBOX_ERR_GENERIC		BIT(0)
-+#define ENIC_MBOX_ERR_VF_NOT_REGISTERED	BIT(1)
-+#define ENIC_MBOX_ERR_MSG_NOT_SUPPORTED	BIT(2)
-+
-+/* ENIC_MBOX_VF_CAPABILITY_REQUEST / _REPLY */
-+#define ENIC_MBOX_CAP_VERSION_0		0
-+#define ENIC_MBOX_CAP_VERSION_1		1
-+
-+struct enic_mbox_vf_capability_msg {
-+	__le32 version;
-+	__le32 reserved[32];
-+};
-+
-+struct enic_mbox_vf_capability_reply_msg {
-+	struct enic_mbox_generic_reply reply;
-+	__le32 version;
-+	__le32 reserved[32];
-+};
-+
-+/* ENIC_MBOX_VF_REGISTER / _UNREGISTER */
-+struct enic_mbox_vf_register_reply_msg {
-+	struct enic_mbox_generic_reply reply;
-+};
-+
-+/* ENIC_MBOX_PF_LINK_STATE_NOTIF / _ACK */
-+#define ENIC_MBOX_LINK_STATE_DISABLE	0
-+#define ENIC_MBOX_LINK_STATE_ENABLE	1
-+
-+struct enic_mbox_pf_link_state_notif_msg {
-+	__le32 link_state;
-+};
-+
-+struct enic_mbox_pf_link_state_ack_msg {
-+	struct enic_mbox_generic_reply ack;
-+};
-+
-+#endif /* _ENIC_MBOX_H_ */
++	/* A successful command means firmware recognizes
++	 * VIC_FEATURE_SRIOV; supported_versions is available
++	 * for sub-feature versioning in the future.
++	 */
++	err = vnic_dev_get_supported_feature_ver(enic->vdev,
++						 VIC_FEATURE_SRIOV,
++						 &supported_versions,
++						 &a1);
++	if (err) {
++		dev_warn(&pdev->dev,
++			 "SR-IOV V2 not supported by current firmware. Upgrade to VIC FW 5.3(4.72) or higher.\n");
++		enic->vf_type = ENIC_VF_TYPE_NONE;
++	}
+ }
+ #endif
+ 
+diff --git a/drivers/net/ethernet/cisco/enic/vnic_devcmd.h b/drivers/net/ethernet/cisco/enic/vnic_devcmd.h
+index 605ef17f967e..7a4bce736105 100644
+--- a/drivers/net/ethernet/cisco/enic/vnic_devcmd.h
++++ b/drivers/net/ethernet/cisco/enic/vnic_devcmd.h
+@@ -734,6 +734,8 @@ enum vic_feature_t {
+ 	VIC_FEATURE_VXLAN,
+ 	VIC_FEATURE_RDMA,
+ 	VIC_FEATURE_VXLAN_PATCH,
++	VIC_FEATURE_PTP,
++	VIC_FEATURE_SRIOV,
+ 	VIC_FEATURE_MAX,
+ };
+ 
 
 -- 
 2.43.0
