@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DB53D6699;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74FA83D6480;
 	Wed,  8 Apr 2026 15:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775660897; cv=none; b=hPlsOOJIr6UNbQaVnHUnjvXgIHR/HvbSdqzntQ2To5Z3FChBmSkgguwVFuG0hGAas4O9CITs40dP5lff2IMI1pm9b7eWxPIHiXSFm7f8MVvsfPtLthPm5yokarcb6TgI5x6b54tOeOrvPQpAtMyghTKbRH77Vqc9bW0cTVKrX0Q=
+	t=1775660897; cv=none; b=GJYm6cyt1DMDK4SmNnejeYerKHEoecTESGaUas/3URqmMbG+ZL/jaGwTSXYE0HWMiuqfYSAYSDjCkx0idAyXIvGshpUo7pMYCKZl19Kjqx6Ohu0yZwG7QJqhny9MSFZ3H0RX1ijeSSnEU2T8i35ZL8ydNdQf65Oj2AaR/cdOOGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775660897; c=relaxed/simple;
-	bh=WnPbClikheKS1cP6LYnVH7gH5YA3Dp1xVhULpCUXpDc=;
+	bh=CHD2sGmHFADoajsajVO5DHFLgnLfs7K8NFH7Cqwp6P0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Apfwez4raUjRSnM2HGka21NG79ZNHOt6mEdjqEkFW6AY64XaLFeppXface4KkEJJNz2QfNKk7IpLt6yBaUijMQj2LPTHACao1EtzozixeHwog4LL1V+Qs6fVgik4pVBtKORZmShZHv85mY7zccIBGoUFfKo8/ejrMqX+vu6NMSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mzjzM1vX; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=mXuyOrK3rTq4zBSUuaTm8s/yJ1Ga4NMdf/i+3W/QGiaghr7d/Jan7OFz81ivCWDwv5Eiu7u4nMiyORfqa8VTmvbWqzF/awJiHvrqbjRLERVmLsl8/qcJQobKwOqZtl1/aCSJSSfrLvrRH73np4XWPg+J4FrTJ35WAD13v19Hd50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hm8bZtwV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mzjzM1vX"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A4205C2BC87;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hm8bZtwV"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 57139C2BC9E;
 	Wed,  8 Apr 2026 15:08:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775660897;
-	bh=WnPbClikheKS1cP6LYnVH7gH5YA3Dp1xVhULpCUXpDc=;
+	bh=CHD2sGmHFADoajsajVO5DHFLgnLfs7K8NFH7Cqwp6P0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=mzjzM1vXubXUFEogO/BteQnTu9d46+14MTiyvdWU3lZkwXftDD/0tH7ECgJ/TzV0o
-	 SPtYeBTk5NAFs2vq0iDMe1DY6DUS7J7cD3wkzp2i+q2azTjHaucnLEsePlSVw0e1tM
-	 r9igt9U3KPdkn1N5GtuAqzaeQD2RIGU7Sb4q1ZfkRBAROAaomV7Ish0tyjtjvD1iD0
-	 VGMfA764ycpRp9SAZu9MQcnMTMOlJ3zUxJHlRqVB6nOv2jup2Zuj76gk5d2dNJZJOj
-	 8kVhCPdOl6YTaZb9MzXjq2Y3y1qJDX1nl8rjRShx20jxkTNBPvZDEkIBPQpQ3/eRq9
-	 pFK3wRzyAtOKA==
+	b=hm8bZtwVEAxaLpGXkYBwgnyZqYf28O7SJkVdXxvUsQ8b37CnAWxYHa+kepdUkdZP0
+	 8B1iFmI7hU8U7TAC+Uhuxx47YUEgCTUxQlwHmJ4vQ8SPbdvMcnAnPt2HWEYeHzh9fz
+	 pUcHvABXmWIlWkJtNzoEXGiZk55qgiIxei4O0bUBknQ8tX859ruGHyOCTmq8b0Y8PZ
+	 3hkDacjWlAKOvrYz4pGm+e8AtISwfdTFcI4Gf7Q0SRxKXNmVNr+RJuD94L+pO6/Aje
+	 DqZZMJ5YaDlTzzmDi0q5adFQ4avNi6Ns9UqWKo0xToK3VK62xEp04jheWuJYET1D5r
+	 vwvtpllsaq+Tw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B83D10F9955;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FDC910F9951;
 	Wed,  8 Apr 2026 15:08:17 +0000 (UTC)
 From: Satish Kharat via B4 Relay <devnull+satishkh.cisco.com@kernel.org>
-Date: Wed, 08 Apr 2026 08:08:19 -0700
-Subject: [PATCH net-next v2 09/10] enic: wire V2 SR-IOV enable with admin
- channel and MBOX
+Date: Wed, 08 Apr 2026 08:08:15 -0700
+Subject: [PATCH net-next v2 05/10] enic: define MBOX message types and
+ header structures
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260408-enic-sriov-v2-admin-channel-v2-v2-9-d05dd3623fd3@cisco.com>
+Message-Id: <20260408-enic-sriov-v2-admin-channel-v2-v2-5-d05dd3623fd3@cisco.com>
 References: <20260408-enic-sriov-v2-admin-channel-v2-v2-0-d05dd3623fd3@cisco.com>
 In-Reply-To: <20260408-enic-sriov-v2-admin-channel-v2-v2-0-d05dd3623fd3@cisco.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -51,11 +51,11 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  20260401-enic-sriov-v2-prep-v4-0-d5834b2ef1b9@cisco.com, 
  Satish Kharat <satishkh@cisco.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775660895; l=6935;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775660895; l=2895;
  i=satishkh@cisco.com; h=from:subject:message-id;
- bh=0Zp148iTdgKUk7HjYvB2gUm0XG1uGsH31sXpO9CD+ik=;
- b=quOaxKFxf+A3HUKuR/jfaHep3haE5vVowegc5xi9ApzAklmC+Q0yq743quNrQDpZ8xlbHjghc
- ILRAzm51K3eAWZzUhu5jdxo0ndhiJ/rfhHzzaR0uskQgmiPHeKUeyWE
+ bh=QgPYsFppAoUswndbEnI+khJeTR1Tn6EJVQstlZ2VNn8=;
+ b=SvcPPF0rDJm5105r42W0Nqh0xzJqjTabA2xP9zdHaIFdMUKYNv/7RZ3LyRu/DIc+ILZwlKa4b
+ fqoXXRD4tAfAqmg5IGGKYIbJjTaE0IRWyn/1Fzw2ngAcEErcH9WCBn4
 X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
  pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
 X-Endpoint-Received: by B4 Relay for satishkh@cisco.com/default with
@@ -65,237 +65,104 @@ Reply-To: satishkh@cisco.com
 
 From: Satish Kharat <satishkh@cisco.com>
 
-Extend enic_sriov_configure() to handle V2 SR-IOV VFs. When the PF
-detects V2 VF device IDs, the enable path allocates per-VF MBOX state,
-opens the admin channel, initializes the MBOX protocol, and then calls
-pci_enable_sriov(). The admin channel must be ready before VFs are
-created so that VF drivers can immediately begin the MBOX capability
-and registration handshake during their probe.
+Define the mailbox protocol used for PF-VF communication over the
+admin channel. The protocol uses request/reply pairs where even
+message types are requests and odd are replies.
 
-The disable path reverses this order: pci_disable_sriov() first (so VF
-drivers unregister via MBOX), then the admin channel is closed and
-per-VF state is freed.
+Initial message types cover the core SR-IOV handshake:
+  - VF_CAPABILITY: version negotiation
+  - VF_REGISTER/UNREGISTER: VF lifecycle management
+  - PF_LINK_STATE_NOTIF: PF-initiated link state changes
 
-The existing V1/USNIC SR-IOV paths are unchanged.
+Each message carries a common header (src/dst vnic ID, type,
+length, sequence number) followed by a type-specific payload.
 
 Signed-off-by: Satish Kharat <satishkh@cisco.com>
 ---
- drivers/net/ethernet/cisco/enic/enic_main.c | 137 ++++++++++++++++++++++++++--
- drivers/net/ethernet/cisco/enic/enic_res.c  |   1 +
- drivers/net/ethernet/cisco/enic/vnic_enet.h |   4 +-
- 3 files changed, 134 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/cisco/enic/enic_mbox.h | 75 +++++++++++++++++++++++++++++
+ 1 file changed, 75 insertions(+)
 
-diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
-index 3a4afd6da41f..48c38347d6ce 100644
---- a/drivers/net/ethernet/cisco/enic/enic_main.c
-+++ b/drivers/net/ethernet/cisco/enic/enic_main.c
-@@ -60,6 +60,8 @@
- #include "enic_clsf.h"
- #include "enic_rq.h"
- #include "enic_wq.h"
-+#include "enic_admin.h"
-+#include "enic_mbox.h"
- 
- #define ENIC_NOTIFY_TIMER_PERIOD	(2 * HZ)
- 
-@@ -2688,6 +2690,120 @@ static void enic_sriov_detect_vf_type(struct enic *enic)
- 		}
- 	}
- }
+diff --git a/drivers/net/ethernet/cisco/enic/enic_mbox.h b/drivers/net/ethernet/cisco/enic/enic_mbox.h
+new file mode 100644
+index 000000000000..84cb6bbc1ead
+--- /dev/null
++++ b/drivers/net/ethernet/cisco/enic/enic_mbox.h
+@@ -0,0 +1,75 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/* Copyright 2025 Cisco Systems, Inc.  All rights reserved. */
 +
-+static int __maybe_unused
-+enic_sriov_v2_enable(struct enic *enic, int num_vfs)
-+{
-+	int err;
++#ifndef _ENIC_MBOX_H_
++#define _ENIC_MBOX_H_
 +
-+	if (!enic->has_admin_channel) {
-+		netdev_err(enic->netdev,
-+			   "V2 SR-IOV requires admin channel resources\n");
-+		return -EOPNOTSUPP;
-+	}
++/*
++ * Mailbox protocol for PF-VF communication over the admin channel.
++ *
++ * Even numbers are requests, odd numbers are replies/acks.
++ * The prefix indicates the initiator: VF_ = VF-initiated, PF_ = PF-initiated.
++ */
++enum enic_mbox_msg_type {
++	ENIC_MBOX_VF_CAPABILITY_REQUEST		= 0,
++	ENIC_MBOX_VF_CAPABILITY_REPLY		= 1,
++	ENIC_MBOX_VF_REGISTER_REQUEST		= 2,
++	ENIC_MBOX_VF_REGISTER_REPLY		= 3,
++	ENIC_MBOX_VF_UNREGISTER_REQUEST		= 4,
++	ENIC_MBOX_VF_UNREGISTER_REPLY		= 5,
++	ENIC_MBOX_PF_LINK_STATE_NOTIF		= 6,
++	ENIC_MBOX_PF_LINK_STATE_ACK		= 7,
++	ENIC_MBOX_MAX
++};
 +
-+	enic->vf_state = kcalloc(num_vfs, sizeof(*enic->vf_state), GFP_KERNEL);
-+	if (!enic->vf_state)
-+		return -ENOMEM;
++struct enic_mbox_hdr {
++	__le16 src_vnic_id;
++	__le16 dst_vnic_id;
++	u8 msg_type;
++	u8 flags;
++	__le16 msg_len;
++	__le64 msg_num;
++};
 +
-+	err = enic_admin_channel_open(enic);
-+	if (err) {
-+		netdev_err(enic->netdev,
-+			   "Failed to open admin channel: %d\n", err);
-+		goto free_vf_state;
-+	}
++struct enic_mbox_generic_reply {
++	__le16 ret_major;
++	__le16 ret_minor;
++};
 +
-+	enic_mbox_init(enic);
++#define ENIC_MBOX_ERR_GENERIC		BIT(0)
++#define ENIC_MBOX_ERR_VF_NOT_REGISTERED	BIT(1)
++#define ENIC_MBOX_ERR_MSG_NOT_SUPPORTED	BIT(2)
 +
-+	enic->num_vfs = num_vfs;
++/* ENIC_MBOX_VF_CAPABILITY_REQUEST / _REPLY */
++#define ENIC_MBOX_CAP_VERSION_0		0
++#define ENIC_MBOX_CAP_VERSION_1		1
 +
-+	err = pci_enable_sriov(enic->pdev, num_vfs);
-+	if (err) {
-+		netdev_err(enic->netdev,
-+			   "pci_enable_sriov failed: %d\n", err);
-+		goto close_admin;
-+	}
++struct enic_mbox_vf_capability_msg {
++	__le32 version;
++	__le32 reserved[32];
++};
 +
-+	enic->priv_flags |= ENIC_SRIOV_ENABLED;
-+	return num_vfs;
++struct enic_mbox_vf_capability_reply_msg {
++	struct enic_mbox_generic_reply reply;
++	__le32 version;
++	__le32 reserved[32];
++};
 +
-+close_admin:
-+	enic->num_vfs = 0;
-+	enic_admin_channel_close(enic);
-+free_vf_state:
-+	kfree(enic->vf_state);
-+	enic->vf_state = NULL;
-+	return err;
-+}
++/* ENIC_MBOX_VF_REGISTER / _UNREGISTER */
++struct enic_mbox_vf_register_reply_msg {
++	struct enic_mbox_generic_reply reply;
++};
 +
-+static void enic_sriov_v2_disable(struct enic *enic)
-+{
-+	pci_disable_sriov(enic->pdev);
-+	enic_admin_channel_close(enic);
-+	kfree(enic->vf_state);
-+	enic->vf_state = NULL;
-+	enic->num_vfs = 0;
-+	enic->priv_flags &= ~ENIC_SRIOV_ENABLED;
-+}
++/* ENIC_MBOX_PF_LINK_STATE_NOTIF / _ACK */
++#define ENIC_MBOX_LINK_STATE_DISABLE	0
++#define ENIC_MBOX_LINK_STATE_ENABLE	1
 +
-+static int __maybe_unused
-+enic_sriov_configure(struct pci_dev *pdev, int num_vfs)
-+{
-+	struct net_device *netdev = pci_get_drvdata(pdev);
-+	struct enic *enic = netdev_priv(netdev);
-+	struct enic_port_profile *pp;
-+	int err;
++struct enic_mbox_pf_link_state_notif_msg {
++	__le32 link_state;
++};
 +
-+	if (num_vfs > 0) {
-+		if (enic->config.mq_subvnic_count) {
-+			netdev_err(netdev,
-+				   "SR-IOV not supported with multi-queue sub-vnics\n");
-+			return -EOPNOTSUPP;
-+		}
++struct enic_mbox_pf_link_state_ack_msg {
++	struct enic_mbox_generic_reply ack;
++};
 +
-+		if (enic->vf_type == ENIC_VF_TYPE_NONE) {
-+			netdev_err(netdev,
-+				   "SR-IOV not supported on this firmware version\n");
-+			return -EOPNOTSUPP;
-+		}
-+
-+		if (enic->vf_type == ENIC_VF_TYPE_V2)
-+			return enic_sriov_v2_enable(enic, num_vfs);
-+
-+		pp = kcalloc(num_vfs, sizeof(*pp), GFP_KERNEL);
-+		if (!pp)
-+			return -ENOMEM;
-+
-+		err = pci_enable_sriov(pdev, num_vfs);
-+		if (err) {
-+			kfree(pp);
-+			return err;
-+		}
-+
-+		kfree(enic->pp);
-+		enic->pp = pp;
-+		enic->num_vfs = num_vfs;
-+		enic->priv_flags |= ENIC_SRIOV_ENABLED;
-+		return num_vfs;
-+	}
-+
-+	if (!enic_sriov_enabled(enic))
-+		return 0;
-+
-+	if (enic->vf_type == ENIC_VF_TYPE_V2) {
-+		enic_sriov_v2_disable(enic);
-+		return 0;
-+	}
-+
-+	pci_disable_sriov(pdev);
-+	enic->num_vfs = 0;
-+	enic->priv_flags &= ~ENIC_SRIOV_ENABLED;
-+
-+	kfree(enic->pp);
-+	enic->pp = kzalloc(sizeof(*enic->pp), GFP_KERNEL);
-+
-+	return 0;
-+}
- #endif
- 
- static int enic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
-@@ -2786,12 +2902,18 @@ static int enic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		goto err_out_vnic_unregister;
- 
- #ifdef CONFIG_PCI_IOV
--	/* Get number of subvnics */
-+	enic_sriov_detect_vf_type(enic);
-+
-+	/* Auto-enable SR-IOV if VFs were pre-configured (e.g. at boot).
-+	 * V2 VFs require the admin channel, which is not yet set up at probe
-+	 * time; use sysfs (enic_sriov_configure) to enable V2 SR-IOV instead.
-+	 */
- 	pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_SRIOV);
- 	if (pos) {
- 		pci_read_config_word(pdev, pos + PCI_SRIOV_TOTAL_VF,
- 			&enic->num_vfs);
--		if (enic->num_vfs) {
-+		if (enic->num_vfs &&
-+		    enic->vf_type != ENIC_VF_TYPE_V2) {
- 			err = pci_enable_sriov(pdev, enic->num_vfs);
- 			if (err) {
- 				dev_err(dev, "SRIOV enable failed, aborting."
-@@ -2803,7 +2925,6 @@ static int enic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 			num_pps = enic->num_vfs;
- 		}
- 	}
--	enic_sriov_detect_vf_type(enic);
- #endif
- 
- 	/* Allocate structure for port profiles */
-@@ -3032,14 +3153,16 @@ static void enic_remove(struct pci_dev *pdev)
- 		cancel_work_sync(&enic->reset);
- 		cancel_work_sync(&enic->change_mtu_work);
- 		unregister_netdev(netdev);
--		enic_dev_deinit(enic);
--		vnic_dev_close(enic->vdev);
- #ifdef CONFIG_PCI_IOV
- 		if (enic_sriov_enabled(enic)) {
--			pci_disable_sriov(pdev);
--			enic->priv_flags &= ~ENIC_SRIOV_ENABLED;
-+			if (enic->vf_type == ENIC_VF_TYPE_V2)
-+				enic_sriov_v2_disable(enic);
-+			else
-+				pci_disable_sriov(pdev);
- 		}
- #endif
-+		enic_dev_deinit(enic);
-+		vnic_dev_close(enic->vdev);
- 		kfree(enic->pp);
- 		vnic_dev_unregister(enic->vdev);
- 		enic_iounmap(enic);
-diff --git a/drivers/net/ethernet/cisco/enic/enic_res.c b/drivers/net/ethernet/cisco/enic/enic_res.c
-index 2b7545d6a67f..436326ace049 100644
---- a/drivers/net/ethernet/cisco/enic/enic_res.c
-+++ b/drivers/net/ethernet/cisco/enic/enic_res.c
-@@ -59,6 +59,7 @@ int enic_get_vnic_config(struct enic *enic)
- 	GET_CONFIG(intr_timer_usec);
- 	GET_CONFIG(loop_tag);
- 	GET_CONFIG(num_arfs);
-+	GET_CONFIG(mq_subvnic_count);
- 	GET_CONFIG(max_rq_ring);
- 	GET_CONFIG(max_wq_ring);
- 	GET_CONFIG(max_cq_ring);
-diff --git a/drivers/net/ethernet/cisco/enic/vnic_enet.h b/drivers/net/ethernet/cisco/enic/vnic_enet.h
-index 9e8e86262a3f..519d2969990b 100644
---- a/drivers/net/ethernet/cisco/enic/vnic_enet.h
-+++ b/drivers/net/ethernet/cisco/enic/vnic_enet.h
-@@ -21,7 +21,9 @@ struct vnic_enet_config {
- 	u16 loop_tag;
- 	u16 vf_rq_count;
- 	u16 num_arfs;
--	u8 reserved[66];
-+	u8 reserved1[32];
-+	u16 mq_subvnic_count;
-+	u8 reserved2[32];
- 	u32 max_rq_ring;	// MAX RQ ring size
- 	u32 max_wq_ring;	// MAX WQ ring size
- 	u32 max_cq_ring;	// MAX CQ ring size
++#endif /* _ENIC_MBOX_H_ */
 
 -- 
 2.43.0
