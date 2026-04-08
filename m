@@ -1,57 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C0F233149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E6737FF5E
 	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 09:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775642379; cv=none; b=b7KpmzzOJcoYlDtkZlp0TTBJuV1lqEZjLmHPXd7cEAjw+AMl4niRuYNNRCmmsX5W+xM+DGRx2+3KLdTj7sggKvNWoSWbLf/jk88UbWKaxFdALQRTGvFg0OXSVsr9UknrqqFP+CAV2KoRLkE4MIP1PP3GtXFswewVVi10hh+iSxY=
+	t=1775642381; cv=none; b=dB4yogkl3LxQDXucKVvsNgo98JKsOtFeCexfpmjzrRaY3UX33d1UfFznEOcAnkVF4j7lemPGpz2O1O4vgZfoX1C0PK9UMoHJCsSIXa51KojmA/PtwA/27ETXxx4ROKMqduTEOR0yLF3aBQRLr8AgEHhEu+C7R34g+nLRIshShmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775642379; c=relaxed/simple;
-	bh=2uak8dpO0m6K1gym7vC9uPJrYDMB1eT7r3dGEWQlRcI=;
+	s=arc-20240116; t=1775642381; c=relaxed/simple;
+	bh=nc4unUoZuX+NxoUvhh2BBp028x0C9vJRGdwy3kePh0M=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vD/b4nEsR5mCrjnZa0P5Lw6ZhfPyZA8ZUfIKQp5r59TvDWZxpRnm/3WTKWeVV5GxRLh99Ul3eiX6Wxcy+NnxMfaqsdD86ePJZu+c7vFEpVbzB5mkaEZTBghnMMX623XdlH9KsFPx6fkQdJAEoj55lTrbFAN803rwy4mm1wel1y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=nRlfTEBB; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=skb87h2iy7aWRLc/aMAVxRgzEtralgYdr7/7/RD85sLjs4FlkpOvJs062WtwUcA5M1nx/F78MDY5FBYJkZI8wSu41CwIlSa6SuHEvtBgD+1VB/CJpbhnNDJCy2AtLPwEdBc6ITCEcYUp2aVf4cgdQd41YrCaLCNk+P6hpOwH7U8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=rk0DHaVd; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="nRlfTEBB"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="rk0DHaVd"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 7AC56207C6;
-	Wed,  8 Apr 2026 11:59:31 +0200 (CEST)
+	by mx1.secunet.com (Postfix) with ESMTP id 1697C20660;
+	Wed,  8 Apr 2026 11:59:32 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id ymguo1uEIldB; Wed,  8 Apr 2026 11:59:29 +0200 (CEST)
+ with ESMTP id qlPMoIZq0rYK; Wed,  8 Apr 2026 11:59:31 +0200 (CEST)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id C75FD20660;
-	Wed,  8 Apr 2026 11:59:29 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com C75FD20660
+	by mx1.secunet.com (Postfix) with ESMTPS id 4F946207BE;
+	Wed,  8 Apr 2026 11:59:31 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 4F946207BE
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1775642369;
-	bh=/iUxxM8YhehbLU1z91gQi75+VTKsxpVJQKgjBCQl1kE=;
+	s=202301; t=1775642371;
+	bh=J7x51wTTBQy2Mro/W6TofaS075Y+cJiHESvEOX1fwHM=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=nRlfTEBBlzOnKmh0yM1NIp3FOY2MiGbSjCzx4lPE4qmOVBj/I02v62TWgMbj1XVvO
-	 CgC75oyHg9o+rzBJBK9zmKysbNU/S6bJhlrjOMyGBYHp0DS5F5qZVRwTimBWILf47L
-	 BF9aM8JTsGZ6aYS1dJWu7JCJnKEx6UOEHNpGv1wy70T7C5OVGL/Eal6QLMhFTH7u+f
-	 MRkGeEZBc8RFzLksXn9IlRJ8183G7q1N9inpKyLsEv1cgHveoE0gpB5bbGx9UiVqTc
-	 k2rg94t2kJdReCg8fXri8jAikeqjFw8LVFYJ6xxRsNUsUHtKY0AdPrhSZudF0BNWwL
-	 hAEnnAxyh08Ag==
+	b=rk0DHaVd7K7EN86OGkwRRiU7QXcdxZwTrOrZE0nHN9i2xnFd9wtCe2SBbgeXNj9Rn
+	 gKkT6B127n6gP3KBVpONWQa1fiaHCbOniAkRgIOi39wbIe3bPeWOC2HnZ39oXbWKZH
+	 5kFCrd3OI5QFVaMrxGR6finSFEB0+DVwLyyzTR7fk42R+CsJUc+5xAINagicmzmMcc
+	 nIoXwXmc0XIdkCiWIDo6IlxeRl/rl8hofd3LaFOID6b7npkJPluFEi7qws9ROIvG0e
+	 PLF+xE/stoejbUj/qa9ialuxSMq03tHIXtFHcTq/FhVazv1NdYdcDYae+Qb2Myld7B
+	 QXoDO7nGn5/5A==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 8 Apr
- 2026 11:59:29 +0200
-Received: (nullmailer pid 257136 invoked by uid 1000);
-	Wed, 08 Apr 2026 09:59:28 -0000
+ 2026 11:59:30 +0200
+Received: (nullmailer pid 256909 invoked by uid 1000);
+	Wed, 08 Apr 2026 09:59:27 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 7/8] xfrm_user: fix info leak in build_report()
-Date: Wed, 8 Apr 2026 11:59:03 +0200
-Message-ID: <20260408095925.253681-8-steffen.klassert@secunet.com>
+Subject: [PATCH 4/8] xfrm: hold dev ref until after transport_finish NF_HOOK
+Date: Wed, 8 Apr 2026 11:59:00 +0200
+Message-ID: <20260408095925.253681-5-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260408095925.253681-1-steffen.klassert@secunet.com>
 References: <20260408095925.253681-1-steffen.klassert@secunet.com>
@@ -63,43 +63,151 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EXCH-02.secunet.de (10.32.0.172) To EXCH-01.secunet.de
+X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
  (10.32.0.171)
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Qi Tang <tpluszz77@gmail.com>
 
-struct xfrm_user_report is a __u8 proto field followed by a struct
-xfrm_selector which means there is three "empty" bytes of padding, but
-the padding is never zeroed before copying to userspace.  Fix that up by
-zeroing the structure before setting individual member variables.
+After async crypto completes, xfrm_input_resume() calls dev_put()
+immediately on re-entry before the skb reaches transport_finish.
+The skb->dev pointer is then used inside NF_HOOK and its okfn,
+which can race with device teardown.
 
-Cc: stable <stable@kernel.org>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>
-Assisted-by: gregkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Remove the dev_put from the async resumption entry and instead
+drop the reference after the NF_HOOK call in transport_finish,
+using a saved device pointer since NF_HOOK may consume the skb.
+This covers NF_DROP, NF_QUEUE and NF_STOLEN paths that skip
+the okfn.
+
+For non-transport exits (decaps, gro, drop) and secondary
+async return points, release the reference inline when
+async is set.
+
+Suggested-by: Florian Westphal <fw@strlen.de>
+Fixes: acf568ee859f ("xfrm: Reinject transport-mode packets through tasklet")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qi Tang <tpluszz77@gmail.com>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- net/xfrm/xfrm_user.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/xfrm4_input.c |  5 ++++-
+ net/ipv6/xfrm6_input.c |  5 ++++-
+ net/xfrm/xfrm_input.c  | 18 ++++++++++++++----
+ 3 files changed, 22 insertions(+), 6 deletions(-)
 
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index baa43c325da2..d56450f61669 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -4125,6 +4125,7 @@ static int build_report(struct sk_buff *skb, u8 proto,
- 		return -EMSGSIZE;
+diff --git a/net/ipv4/xfrm4_input.c b/net/ipv4/xfrm4_input.c
+index f28cfd88eaf5..c2eac844bcdb 100644
+--- a/net/ipv4/xfrm4_input.c
++++ b/net/ipv4/xfrm4_input.c
+@@ -50,6 +50,7 @@ int xfrm4_transport_finish(struct sk_buff *skb, int async)
+ {
+ 	struct xfrm_offload *xo = xfrm_offload(skb);
+ 	struct iphdr *iph = ip_hdr(skb);
++	struct net_device *dev = skb->dev;
  
- 	ur = nlmsg_data(nlh);
-+	memset(ur, 0, sizeof(*ur));
- 	ur->proto = proto;
- 	memcpy(&ur->sel, sel, sizeof(ur->sel));
+ 	iph->protocol = XFRM_MODE_SKB_CB(skb)->protocol;
  
+@@ -73,8 +74,10 @@ int xfrm4_transport_finish(struct sk_buff *skb, int async)
+ 	}
+ 
+ 	NF_HOOK(NFPROTO_IPV4, NF_INET_PRE_ROUTING,
+-		dev_net(skb->dev), NULL, skb, skb->dev, NULL,
++		dev_net(dev), NULL, skb, dev, NULL,
+ 		xfrm4_rcv_encap_finish);
++	if (async)
++		dev_put(dev);
+ 	return 0;
+ }
+ 
+diff --git a/net/ipv6/xfrm6_input.c b/net/ipv6/xfrm6_input.c
+index 9005fc156a20..699a001ac166 100644
+--- a/net/ipv6/xfrm6_input.c
++++ b/net/ipv6/xfrm6_input.c
+@@ -43,6 +43,7 @@ static int xfrm6_transport_finish2(struct net *net, struct sock *sk,
+ int xfrm6_transport_finish(struct sk_buff *skb, int async)
+ {
+ 	struct xfrm_offload *xo = xfrm_offload(skb);
++	struct net_device *dev = skb->dev;
+ 	int nhlen = -skb_network_offset(skb);
+ 
+ 	skb_network_header(skb)[IP6CB(skb)->nhoff] =
+@@ -68,8 +69,10 @@ int xfrm6_transport_finish(struct sk_buff *skb, int async)
+ 	}
+ 
+ 	NF_HOOK(NFPROTO_IPV6, NF_INET_PRE_ROUTING,
+-		dev_net(skb->dev), NULL, skb, skb->dev, NULL,
++		dev_net(dev), NULL, skb, dev, NULL,
+ 		xfrm6_transport_finish2);
++	if (async)
++		dev_put(dev);
+ 	return 0;
+ }
+ 
+diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
+index dc1312ed5a09..f65291eba1f6 100644
+--- a/net/xfrm/xfrm_input.c
++++ b/net/xfrm/xfrm_input.c
+@@ -506,7 +506,6 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 		/* An encap_type of -1 indicates async resumption. */
+ 		if (encap_type == -1) {
+ 			async = 1;
+-			dev_put(skb->dev);
+ 			seq = XFRM_SKB_CB(skb)->seq.input.low;
+ 			spin_lock(&x->lock);
+ 			goto resume;
+@@ -659,8 +658,11 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 			dev_hold(skb->dev);
+ 
+ 			nexthdr = x->type->input(x, skb);
+-			if (nexthdr == -EINPROGRESS)
++			if (nexthdr == -EINPROGRESS) {
++				if (async)
++					dev_put(skb->dev);
+ 				return 0;
++			}
+ 
+ 			dev_put(skb->dev);
+ 			spin_lock(&x->lock);
+@@ -695,9 +697,11 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 		XFRM_MODE_SKB_CB(skb)->protocol = nexthdr;
+ 
+ 		err = xfrm_inner_mode_input(x, skb);
+-		if (err == -EINPROGRESS)
++		if (err == -EINPROGRESS) {
++			if (async)
++				dev_put(skb->dev);
+ 			return 0;
+-		else if (err) {
++		} else if (err) {
+ 			XFRM_INC_STATS(net, LINUX_MIB_XFRMINSTATEMODEERROR);
+ 			goto drop;
+ 		}
+@@ -734,6 +738,8 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 			sp->olen = 0;
+ 		if (skb_valid_dst(skb))
+ 			skb_dst_drop(skb);
++		if (async)
++			dev_put(skb->dev);
+ 		gro_cells_receive(&gro_cells, skb);
+ 		return 0;
+ 	} else {
+@@ -753,6 +759,8 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 				sp->olen = 0;
+ 			if (skb_valid_dst(skb))
+ 				skb_dst_drop(skb);
++			if (async)
++				dev_put(skb->dev);
+ 			gro_cells_receive(&gro_cells, skb);
+ 			return err;
+ 		}
+@@ -763,6 +771,8 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ drop_unlock:
+ 	spin_unlock(&x->lock);
+ drop:
++	if (async)
++		dev_put(skb->dev);
+ 	xfrm_rcv_cb(skb, family, x && x->type ? x->type->proto : nexthdr, -1);
+ 	kfree_skb(skb);
+ 	return 0;
 -- 
 2.43.0
 
