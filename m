@@ -1,53 +1,62 @@
-Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50ED2E8B8A;
-	Wed,  8 Apr 2026 11:03:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8EC37BE71
+	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 11:08:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775646200; cv=none; b=ge1OKy/mVSw+gl9gP2iPY6c4Pe8nU8/6dW2j+v6yj9sT6gNsRz9PpGVKaX7FGAwlMnZvSWNCK7W9mXVKX6F7RlZ+oi+5GbZZ2wZg4QeRMD+Fcimvtx2/Rd+pGBXspTduD8aaF2gM/oLlZv2vyz89Ff75QKOffbbdV3iA0/krJEk=
+	t=1775646499; cv=none; b=HMXzaSQSsaPjHeAYlm7hBHxou9x40dMoe/WAfNuEh4Nvb1DtrASa1SMx/6qUVoqdOjRU6JIMvF6g3n2qeHB/9Dcq+Dg2g1YeYw/TNlsY6q6driKRN8W+QX3LzBoVs0UHoedPIIIfkCL/Z+nGK3vuQIQxRqw8VkAihLtOqAwQ6fY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775646200; c=relaxed/simple;
-	bh=08Q1dMV/7+KzD4lHA2fx/meL9kTyGNMncxHMHrZ4U7o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bdylxe6UWxhG5XJw0z9JhLGsI7klwIycHdJYo9ccFx6numWLzXVP8i/MG5ul5LpQan91EbiWKb4hs0jH23JPV6FZ6gTUUnLiT1YJoE/QVB7BhJgDMd2cJ61zQTlYBHdvwL/fs7kGYE1cSKR0leBfhr6fu4qdKPUiX/UZ/9/bqoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=Dyy+MT5O; arc=none smtp.client-ip=23.88.38.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
+	s=arc-20240116; t=1775646499; c=relaxed/simple;
+	bh=XIo/YwY1I7tCOlr+w5JwdgVzbYG6CBoE7ZT3BId8Gns=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M2D3gU9aDmaHxCwTwjNbsCFa3XvuJT8DhkCINuZGQUAucMMwfhaSI58e9mvpm+/1icU9GqysJ13MwEX6w+cpqdeuUowUzXBsJqcqP83U3lcgS2zGCmIluwK/WxDPj7DfAM3qvPJHDLZN/IkwUW5OamSDkV+O8upPD4sCQv6G6qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f/OFrS5V; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="Dyy+MT5O"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1775646195;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f/OFrS5V"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775646497;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yp6I7b0bf/KYoASlU+siFF3CuLzV71ZDF6eOe3F2lZ0=;
-	b=Dyy+MT5O8I06JJDfM9g8RSY3afbY86g6g1TSm9gQMXsApj5EdkcpxRFpUSqXKclZDKJeU1
-	AK7O1Lx2BdJx3AntN2RMFtWCply21IeRCH4mQySBn5ouTtrt0VFK8IyeQNygnnujH5IejI
-	jAfpqsNB3GfcW9GVXn2B3/16OVi6W6PKF3pR8Jz6v3w89zJlNZYSXOyLW/u7ptmjAafqJp
-	PLCFjs6KOiH9zidQ/wcXxkiuSEjiWoMeK8fke4Ube2y24RrTVazmvAsZ9mq7KfLXrXr19f
-	G34Epqe/2UMDzd9T/x8I/S+H46k6eByth7sIVj4b3vV1UbeVJaV8cDBvRAyegA==
-From: Simon Wunderlich <sw@simonwunderlich.de>
-To: davem@davemloft.net,
-	kuba@kernel.org
-Cc: netdev@vger.kernel.org,
-	b.a.t.m.a.n@lists.open-mesh.org,
-	Haoze Xie <royenheart@gmail.com>,
-	stable@vger.kernel.org,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ao Zhou <n05ec@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net 2/2] batman-adv: hold claim backbone gateways by reference
-Date: Wed,  8 Apr 2026 13:02:55 +0200
-Message-ID: <20260408110255.976389-3-sw@simonwunderlich.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260408110255.976389-1-sw@simonwunderlich.de>
-References: <20260408110255.976389-1-sw@simonwunderlich.de>
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=eHfeMlveuGcx7hW6Gtzk+PwguxJpEiOHLrc6d7D9JwM=;
+	b=f/OFrS5VA9qaymRI1I0oU0aMz1maC6OtW5psMhhyX74u9wdkZ+gmescfmNeqxwvSl9ZQsa
+	N05vZJQIF/w8zooptsF8QoxRH6SgliFjF1QsznaZxhZAYzMCYvNjF7xQIIrUdwpqaNepYD
+	qqnROZ86XLb5vLP6ewyFulmTSLYEOHI=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-29-uv3yoqhQMdeNODp07RMQCA-1; Wed,
+ 08 Apr 2026 07:08:12 -0400
+X-MC-Unique: uv3yoqhQMdeNODp07RMQCA-1
+X-Mimecast-MFC-AGG-ID: uv3yoqhQMdeNODp07RMQCA_1775646490
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 36615195605C;
+	Wed,  8 Apr 2026 11:08:10 +0000 (UTC)
+Received: from ShadowPeak.redhat.com (unknown [10.44.48.174])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 45FF81955D84;
+	Wed,  8 Apr 2026 11:08:05 +0000 (UTC)
+From: Petr Oros <poros@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Petr Oros <poros@redhat.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	intel-wired-lan@lists.osuosl.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH iwl-net v2] ice: fix SMA and U.FL pin state changes affecting paired pin
+Date: Wed,  8 Apr 2026 13:05:04 +0200
+Message-ID: <20260408110504.1032879-1-poros@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,117 +64,139 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-From: Haoze Xie <royenheart@gmail.com>
+SMA and U.FL pins share physical signal paths in pairs (SMA1/U.FL1 and
+SMA2/U.FL2) controlled by the PCA9575 GPIO expander.  Each pair can
+only have one active pin at a time: SMA1 output and U.FL1 output share
+the same CGU output, SMA2 input and U.FL2 input share the same CGU
+input.  The PCA9575 register bits determine which connector in each
+pair owns the signal path.
 
-batadv_bla_add_claim() can replace claim->backbone_gw and drop the old
-gateway's last reference while readers still follow the pointer.
+The driver does not account for this pairing in two places:
 
-The netlink claim dump path dereferences claim->backbone_gw->orig and
-takes claim->backbone_gw->crc_lock without pinning the underlying
-backbone gateway. batadv_bla_check_claim() still has the same naked
-pointer access pattern.
+ice_dpll_ufl_pin_state_set() modifies PCA9575 bits and disables the
+backing CGU pin without checking whether the U.FL pin is currently
+active.  Disconnecting an already inactive U.FL pin flips bits that
+the paired SMA pin relies on, breaking its connection.
 
-Reuse batadv_bla_claim_get_backbone_gw() in both readers so they operate
-on a stable gateway reference until the read-side work is complete.
-This keeps the dump and claim-check paths aligned with the lifetime
-rules introduced for the other BLA claim readers.
+ice_dpll_sma_direction_set() does not propagate direction changes to
+the paired U.FL pin.  For SMA2/U.FL2 the ICE_SMA2_UFL2_RX_DIS bit is
+never managed, so U.FL2 stays disconnected after SMA2 switches to
+output.  For both pairs the backing CGU pin of the U.FL side is never
+enabled when a direction change activates it, so userspace sees the
+pin as disconnected even though the routing is correct.
 
-Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
-Fixes: 04f3f5bf1883 ("batman-adv: add B.A.T.M.A.N. Dump BLA claims via netlink")
-Cc: stable@vger.kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Haoze Xie <royenheart@gmail.com>
-Signed-off-by: Ao Zhou <n05ec@lzu.edu.cn>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Fix by guarding the U.FL disconnect path against inactive pins and by
+updating the paired U.FL pin fully on SMA direction changes: manage
+ICE_SMA2_UFL2_RX_DIS for the SMA2/U.FL2 pair and enable the backing
+CGU pin whenever the peer becomes active.
+
+Fixes: 2dd5d03c77e2 ("ice: redesign dpll sma/u.fl pins control")
+Signed-off-by: Petr Oros <poros@redhat.com>
 ---
- net/batman-adv/bridge_loop_avoidance.c | 27 +++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+v2:
+ - fix ice_dpll_sma_direction_set() to manage ICE_SMA2_UFL2_RX_DIS
+   when SMA2 direction changes
+ - enable paired U.FL backing CGU pin when direction change makes
+   it active, so it reports as connected immediately
+ - (both reported by Intel test on the SMA init and notification
+   patch threads)
+v1: https://lore.kernel.org/all/20260325151050.2081977-1-poros@redhat.com/
+---
+ drivers/net/ethernet/intel/ice/ice_dpll.c | 50 ++++++++++++++++++++++-
+ 1 file changed, 49 insertions(+), 1 deletion(-)
 
-diff --git a/net/batman-adv/bridge_loop_avoidance.c b/net/batman-adv/bridge_loop_avoidance.c
-index 3dc791c15bf72..648fa97ea913f 100644
---- a/net/batman-adv/bridge_loop_avoidance.c
-+++ b/net/batman-adv/bridge_loop_avoidance.c
-@@ -2130,6 +2130,7 @@ batadv_bla_claim_dump_entry(struct sk_buff *msg, u32 portid,
- 			    struct batadv_bla_claim *claim)
+diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
+index 498ec2c045f384..3f8cd5b8298b57 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dpll.c
++++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+@@ -1171,6 +1171,8 @@ static int ice_dpll_sma_direction_set(struct ice_dpll_pin *p,
+ 				      enum dpll_pin_direction direction,
+ 				      struct netlink_ext_ack *extack)
  {
- 	const u8 *primary_addr = primary_if->net_dev->dev_addr;
-+	struct batadv_bla_backbone_gw *backbone_gw;
- 	u16 backbone_crc;
- 	bool is_own;
- 	void *hdr;
-@@ -2145,32 +2146,35 @@ batadv_bla_claim_dump_entry(struct sk_buff *msg, u32 portid,
++	struct ice_dplls *d = &p->pf->dplls;
++	struct ice_dpll_pin *peer;
+ 	u8 data;
+ 	int ret;
  
- 	genl_dump_check_consistent(cb, hdr);
- 
--	is_own = batadv_compare_eth(claim->backbone_gw->orig,
--				    primary_addr);
-+	backbone_gw = batadv_bla_claim_get_backbone_gw(claim);
-+
-+	is_own = batadv_compare_eth(backbone_gw->orig, primary_addr);
- 
--	spin_lock_bh(&claim->backbone_gw->crc_lock);
--	backbone_crc = claim->backbone_gw->crc;
--	spin_unlock_bh(&claim->backbone_gw->crc_lock);
-+	spin_lock_bh(&backbone_gw->crc_lock);
-+	backbone_crc = backbone_gw->crc;
-+	spin_unlock_bh(&backbone_gw->crc_lock);
- 
- 	if (is_own)
- 		if (nla_put_flag(msg, BATADV_ATTR_BLA_OWN)) {
- 			genlmsg_cancel(msg, hdr);
--			goto out;
-+			goto put_backbone_gw;
+@@ -1189,8 +1191,9 @@ static int ice_dpll_sma_direction_set(struct ice_dpll_pin *p,
+ 	case ICE_DPLL_PIN_SW_2_IDX:
+ 		if (direction == DPLL_PIN_DIRECTION_INPUT) {
+ 			data &= ~ICE_SMA2_DIR_EN;
++			data |= ICE_SMA2_UFL2_RX_DIS;
+ 		} else {
+-			data &= ~ICE_SMA2_TX_EN;
++			data &= ~(ICE_SMA2_TX_EN | ICE_SMA2_UFL2_RX_DIS);
+ 			data |= ICE_SMA2_DIR_EN;
  		}
+ 		break;
+@@ -1202,6 +1205,34 @@ static int ice_dpll_sma_direction_set(struct ice_dpll_pin *p,
+ 		ret = ice_dpll_pin_state_update(p->pf, p,
+ 						ICE_DPLL_PIN_TYPE_SOFTWARE,
+ 						extack);
++	if (ret)
++		return ret;
++
++	/* When a direction change activates the paired U.FL pin, enable
++	 * its backing CGU pin so the pin reports as connected. Without
++	 * this the U.FL routing is correct but the CGU pin stays disabled
++	 * and userspace sees the pin as disconnected.  Do not disable the
++	 * backing pin when U.FL becomes inactive because the SMA pin may
++	 * still be using it.
++	 */
++	peer = &d->ufl[p->idx];
++	if (peer->active) {
++		struct ice_dpll_pin *target;
++		enum ice_dpll_pin_type type;
++
++		if (peer->output) {
++			target = peer->output;
++			type = ICE_DPLL_PIN_TYPE_OUTPUT;
++		} else {
++			target = peer->input;
++			type = ICE_DPLL_PIN_TYPE_INPUT;
++		}
++		ret = ice_dpll_pin_enable(&p->pf->hw, target,
++					  d->eec.dpll_idx, type, extack);
++		if (!ret)
++			ret = ice_dpll_pin_state_update(p->pf, target,
++							type, extack);
++	}
  
- 	if (nla_put(msg, BATADV_ATTR_BLA_ADDRESS, ETH_ALEN, claim->addr) ||
- 	    nla_put_u16(msg, BATADV_ATTR_BLA_VID, claim->vid) ||
- 	    nla_put(msg, BATADV_ATTR_BLA_BACKBONE, ETH_ALEN,
--		    claim->backbone_gw->orig) ||
-+		    backbone_gw->orig) ||
- 	    nla_put_u16(msg, BATADV_ATTR_BLA_CRC,
- 			backbone_crc)) {
- 		genlmsg_cancel(msg, hdr);
--		goto out;
-+		goto put_backbone_gw;
- 	}
- 
- 	genlmsg_end(msg, hdr);
- 	ret = 0;
- 
-+put_backbone_gw:
-+	batadv_backbone_gw_put(backbone_gw);
- out:
  	return ret;
  }
-@@ -2448,6 +2452,7 @@ int batadv_bla_backbone_dump(struct sk_buff *msg, struct netlink_callback *cb)
- bool batadv_bla_check_claim(struct batadv_priv *bat_priv,
- 			    u8 *addr, unsigned short vid)
- {
-+	struct batadv_bla_backbone_gw *backbone_gw;
- 	struct batadv_bla_claim search_claim;
- 	struct batadv_bla_claim *claim = NULL;
- 	struct batadv_hard_iface *primary_if = NULL;
-@@ -2470,9 +2475,13 @@ bool batadv_bla_check_claim(struct batadv_priv *bat_priv,
- 	 * return false.
- 	 */
- 	if (claim) {
--		if (!batadv_compare_eth(claim->backbone_gw->orig,
-+		backbone_gw = batadv_bla_claim_get_backbone_gw(claim);
-+
-+		if (!batadv_compare_eth(backbone_gw->orig,
- 					primary_if->net_dev->dev_addr))
- 			ret = false;
-+
-+		batadv_backbone_gw_put(backbone_gw);
- 		batadv_claim_put(claim);
- 	}
- 
+@@ -1253,6 +1284,14 @@ ice_dpll_ufl_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
+ 			data &= ~ICE_SMA1_MASK;
+ 			enable = true;
+ 		} else if (state == DPLL_PIN_STATE_DISCONNECTED) {
++			/* Skip if U.FL1 is not active, setting TX_EN
++			 * while DIR_EN is set would also deactivate
++			 * the paired SMA1 output.
++			 */
++			if (data & (ICE_SMA1_DIR_EN | ICE_SMA1_TX_EN)) {
++				ret = 0;
++				goto unlock;
++			}
+ 			data |= ICE_SMA1_TX_EN;
+ 			enable = false;
+ 		} else {
+@@ -1267,6 +1306,15 @@ ice_dpll_ufl_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
+ 			data &= ~ICE_SMA2_UFL2_RX_DIS;
+ 			enable = true;
+ 		} else if (state == DPLL_PIN_STATE_DISCONNECTED) {
++			/* Skip if U.FL2 is not active, setting
++			 * UFL2_RX_DIS could also disable the paired
++			 * SMA2 input.
++			 */
++			if (!(data & ICE_SMA2_DIR_EN) ||
++			    (data & ICE_SMA2_UFL2_RX_DIS)) {
++				ret = 0;
++				goto unlock;
++			}
+ 			data |= ICE_SMA2_UFL2_RX_DIS;
+ 			enable = false;
+ 		} else {
 -- 
-2.47.3
+2.52.0
 
