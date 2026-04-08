@@ -1,100 +1,148 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3556839DBD6;
-	Wed,  8 Apr 2026 08:12:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F87139D6F9
+	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 08:12:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775635950; cv=none; b=Jk6rFGoOIx6NFDuVoSSGv0/XlXFsdzzbWTveRh8fc6AErJe3neK6lA9COcALwitrji4FI176ndMs3vkZ6J/LqM5xhdmX3Y1TFE5yxLwVt+0Mkf75HUC0sR4MbYR6jvl0pHvhYFrS5nbkSu4tgF9H0jKVjfA6E37csYGt+7e/zh4=
+	t=1775635967; cv=none; b=cY6D2L4xo9YV2S/nDN8SFFX98pCyomRLfs7PTEoKjybbLNse+Hjvh6rxSkPGQD4cFxn/Z4SpsPLwm04I5O7OWw/tPqL8wYg50wLzqqsL7+s2VrcKCIMjSHVSjAU2WvwiB8E5fJpucPeAezUUzFXIthOYulOk8EFeBDXbC+A8BE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775635950; c=relaxed/simple;
-	bh=cAblTvQfwrotJoILLpnjbyoJmMO6glz2n0yN/cJtnZE=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p24g0JofDtEuObeAz7K5UaHOsd3KWSkD9KWJirh28J2086Cn1yrT2lO1me/sI5RZ8fsQJHNmDFYIuACBnIOwwLZCrQytXD0MAcSBXekoYvGGifm+fs8V7hyRN221Gzo+oEVyHQOBx/B+D7/ClaH1yJFlZzP1ZYjABPvtQ3d9Ybg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=S2KMUohG; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1775635967; c=relaxed/simple;
+	bh=RiCBBjqJ6U8+nG7CHcXztQnXvaUlmfGwoy/fj7EupJ8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nFA2bIfZvSgF25RdxPS7lBLKvQY9v0E38G9RMsFce+AhCLrEhmTPtPBAbEETUL9/SktTN6LdyTMx1xVkDyx3DfwzHEieJnfYWM7fNiEXKg/u1NlIxWEKv4Jo3XXvGL9tcXppa2zFNFYf2GFSXQP/RthpRbCo0qClqnP/IFMqYoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iZekJZRM; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=LYAyfwzY; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="S2KMUohG"
-Received: by linux.microsoft.com (Postfix, from userid 1173)
-	id 157A620B6F0C; Wed,  8 Apr 2026 01:12:29 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 157A620B6F0C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1775635949;
-	bh=7xleirn6TKgFbh1dpbQPh3EcS+3Dv0bVGkF4Fei2rj8=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=S2KMUohGQUxFJtNmEAdkooSWBwa+qgNuIg2btyITta5FyfOsbRiS37Qo1kTNnHSi+
-	 QxaP4U6ynsvnsfcDaICs+Ebg/d8hmVMiF0Ee3S7+jZpQjXu49JuzYi5iSpxX6gqU4G
-	 UwNB+hgEkZE0SXdE/AI152/XJNF0yxsbCQP9UOLI=
-From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-To: kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	longli@microsoft.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	ernis@linux.microsoft.com,
-	ssengar@linux.microsoft.com,
-	dipayanroy@linux.microsoft.com,
-	gargaditya@linux.microsoft.com,
-	shradhagupta@linux.microsoft.com,
-	kees@kernel.org,
-	kotaranov@microsoft.com,
-	yury.norov@gmail.com,
-	linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net 2/2] net: mana: Move current_speed debugfs file to mana_init_port()
-Date: Wed,  8 Apr 2026 01:12:20 -0700
-Message-ID: <20260408081224.302308-3-ernis@linux.microsoft.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260408081224.302308-1-ernis@linux.microsoft.com>
-References: <20260408081224.302308-1-ernis@linux.microsoft.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iZekJZRM";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="LYAyfwzY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775635963;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J3Abwh6EeEcrZMTQmkJv8CKYZpVXeikipJN0c4fSKWE=;
+	b=iZekJZRM3zKNAIIaSBRoy376AIUXEWZToNvK8/doUu8Q+TNZWNFgu2jflWbgtfqi8C1/DN
+	QVQxf7MNwz9rzutsF8gSkcI8GqdyjD99Q7TeWoc7w1kAk7oSZmaXnsSqHHomhsqjNGXe4j
+	p4ym3uI7FHj1/j/nirrk3TC54vRT+jU=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-130-FkuJsWUaP0aS-eRovORkBw-1; Wed, 08 Apr 2026 04:12:42 -0400
+X-MC-Unique: FkuJsWUaP0aS-eRovORkBw-1
+X-Mimecast-MFC-AGG-ID: FkuJsWUaP0aS-eRovORkBw_1775635961
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-43b99add7f3so423869f8f.1
+        for <netdev@vger.kernel.org>; Wed, 08 Apr 2026 01:12:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1775635961; x=1776240761; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=J3Abwh6EeEcrZMTQmkJv8CKYZpVXeikipJN0c4fSKWE=;
+        b=LYAyfwzYzM4jrthJZ/lY7ufkbH5zV9GFY2vZ4YcPwwy6Pd7qfBP6gt/sbkZ5FlDMvD
+         unULd31vEeE+nSPhaamL5XiN1mIVnKQYpdNOpLmQtI/qdC1ptA2RxY97bxVCHvj9h3uf
+         jC/dDfE+Y1tBaPpkH/pl7cmFvv8dOH20uzptHKcqAIu3DtR2RP4bkZpE9WwX6+h431m8
+         kr6Jq3lVE7Z/0wV2R1H/15yhzRQXHNswl/ymF05c2V7RgV2/dS9H2WJ0VRMtb7nCniO7
+         c33NOftGYvVmJy09enFLeODEuAvl0jkif6DEsK0pyrA+79wEIvjhJu2Eo6OQFJPAVkjd
+         B1tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775635961; x=1776240761;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=J3Abwh6EeEcrZMTQmkJv8CKYZpVXeikipJN0c4fSKWE=;
+        b=fOasXL4p/9rCvDejS3g+It2Tp4heTuNqUXWDjyWgdZma156nVtXrajbqjNe/lqh88G
+         c+NXD8coyjETtmBbwiRJCL8aRn+ZZ7+47d/0R4yI6fhfEftUCXT4JbqZwiQQcKXHPjoc
+         GuORDLoV3800a5LxGfz4DdHG+wCgYFIypS+MCT/QpUiS4Der25LYBNINXmaHoj28494N
+         Garf7dIlAmGfUaGDnV79XMI7nliCmchRmPeRL43I4UJZa2rIxVm6Ny3M0uYgzfnIocXW
+         rtqiJBT+BztQOUAMnAsd4w2SZBO7Kp/jvYlENNHNmnofvS3PCkhZ93j2U8cPJtE0aiuF
+         XsoA==
+X-Forwarded-Encrypted: i=1; AJvYcCW5HqnUWqKL2y5+1FPNvN+8Duo9rP7aXiUsmm/ue+jOyD9AvVutqznJ3dfe9EZu548Wd8pLjZc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YygoW1gz1gZT/ALFnP1LeqeO4MrpQy34cuth2O11NMp1vNDSJ5j
+	6YBUWzJijhik0kiZo+myUSpnrpCFM9jNDT+gZF0WQKk6ebKTi3CZFU8uFUorIIRSkiaXsWf9DF6
+	J+oCBXD1Hklq4utCfzAhoWkTdHFFK0QvLgmnA76x0547dapjuzeTDjDA7CQ==
+X-Gm-Gg: AeBDietw4B8H/NCB9dGek47gHm//JIzzl31SNa0DbR5ZsbY58sZh6oO5q9iWoF4Ngxa
+	60JwOUF2z+jf0wPqXtGRs5soXy9k0aUO4gsz2nbz2OZBaoUkwxQIwMeHhqCp+spSCMOWtGp3XWT
+	rDgsUet6VQCTEvlQoRetepNE4E6a//PBnH5QsWbKV6ypz4HUS8KQ9K5T1z5MjdB9RM7kztyxf2z
+	bA9sldm5kmF/YrquxTZ8GiBf/CoaUPxp+x4rnlFSgrTB2SCuUMtRQfvmUan+Ucb51R8lMc6uU/w
+	LAxg1io/+Y+rV3FfnmIuvWKd29tXVjaufMVLxF1/H8nMqtbFU2cUVXQivE9MsTV/v9ODJuqBp5f
+	EvWGgAkEjWCau6mHFxCJXzHserezxOHMx13whM/jw7W4vBTGdL936wHF5WOIe+bMNdvfiquadJQ
+	==
+X-Received: by 2002:a05:6000:41f6:b0:43b:a16b:ee69 with SMTP id ffacd0b85a97d-43d2124e1f5mr31165865f8f.24.1775635961035;
+        Wed, 08 Apr 2026 01:12:41 -0700 (PDT)
+X-Received: by 2002:a05:6000:41f6:b0:43b:a16b:ee69 with SMTP id ffacd0b85a97d-43d2124e1f5mr31165826f8f.24.1775635960583;
+        Wed, 08 Apr 2026 01:12:40 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-45-205-236.retail.telecomitalia.it. [79.45.205.236])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d214f2b63sm50930205f8f.28.2026.04.08.01.12.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Apr 2026 01:12:39 -0700 (PDT)
+Date: Wed, 8 Apr 2026 10:11:59 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Luigi Leonardi <leonardi@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
+	Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Arseniy Krasnov <avkrasnov@salutedevices.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] vsock/virtio: remove unnecessary call to
+ `virtio_transport_get_ops`
+Message-ID: <adYNUs3pmVmQe7pk@sgarzare-redhat>
+References: <20260407-remove_parameter-v1-1-e9729360a2be@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260407-remove_parameter-v1-1-e9729360a2be@redhat.com>
 
-Move the current_speed debugfs file creation from mana_probe_port() to
-mana_init_port(). The file was previously created only during initial
-probe, but mana_cleanup_port_context() removes the entire vPort debugfs
-directory during detach/attach cycles. Since mana_init_port() recreates
-the directory on re-attach, moving current_speed here ensures it survives
-these cycles.
+On Tue, Apr 07, 2026 at 04:31:56PM +0200, Luigi Leonardi wrote:
+>`virtio_transport_send_pkt_info` gets all the transport information
+>from the parameter `t_ops`. There is no need to call
+>`virtio_transport_get_ops()`.
+>
+>Remove it.
+>
+>Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
+>Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
+>---
+>I marked this as net-next material, but honsetly I'm not sure if I
+>should have targeted net. It's not a bug after all, it's just a cleanup.
 
-Fixes: 75cabb46935b ("net: mana: Add support for net_shaper_ops")
-Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
----
- drivers/net/ethernet/microsoft/mana/mana_en.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+The patch LGTM, but as Michael and Jakub pointed out, better to remove 
+Fixes tag if this is not a bug fix.
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 07630322545f..6302432b9bf6 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -3154,6 +3154,8 @@ static int mana_init_port(struct net_device *ndev)
- 	eth_hw_addr_set(ndev, apc->mac_addr);
- 	sprintf(vport, "vport%d", port_idx);
- 	apc->mana_port_debugfs = debugfs_create_dir(vport, gc->mana_pci_debugfs);
-+	debugfs_create_u32("current_speed", 0400, apc->mana_port_debugfs,
-+			   &apc->speed);
- 	return 0;
- 
- reset_apc:
-@@ -3432,8 +3434,6 @@ static int mana_probe_port(struct mana_context *ac, int port_idx,
- 
- 	netif_carrier_on(ndev);
- 
--	debugfs_create_u32("current_speed", 0400, apc->mana_port_debugfs, &apc->speed);
--
- 	return 0;
- 
- free_indir:
--- 
-2.34.1
+Thanks,
+Stefano
+
+>---
+> net/vmw_vsock/virtio_transport_common.c | 2 --
+> 1 file changed, 2 deletions(-)
+>
+>diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+>index 8a9fb23c6e85..a152a9e208d0 100644
+>--- a/net/vmw_vsock/virtio_transport_common.c
+>+++ b/net/vmw_vsock/virtio_transport_common.c
+>@@ -60,8 +60,6 @@ static bool virtio_transport_can_zcopy(const struct virtio_transport *t_ops,
+> 		return false;
+>
+> 	/* Check that transport can send data in zerocopy mode. */
+>-	t_ops = virtio_transport_get_ops(info->vsk);
+>-
+> 	if (t_ops->can_msgzerocopy) {
+> 		int pages_to_send = iov_iter_npages(iov_iter, MAX_SKB_FRAGS);
+>
+>
+>---
+>base-commit: bfe62a454542cfad3379f6ef5680b125f41e20f4
+>change-id: 20260407-remove_parameter-f61a3e40cf90
+>
+>Best regards,
+>-- 
+>Luigi Leonardi <leonardi@redhat.com>
+>
 
