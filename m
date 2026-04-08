@@ -1,43 +1,43 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C922537A498
-	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 09:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92693B27C9
+	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 09:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775641155; cv=none; b=CjGrasVbMIchUIWV8HvalaRID1pP/dD1RGQAzQZxg3y1Dahq2B1xYPBcorYXLV/BUF07bfjnDvtSYjbFMuGvH3JEv2YwBGg38uf9JDZJd5nrZxcqk6fkzOxptdrK2cn4hQ+2jbf/+MoQqD5Y3UbzKgzltMXNILbG5KkRIAdH5CI=
+	t=1775641301; cv=none; b=ImCzX174AB8BJ3YBMA9kRv3G689Z8Eb2zsmhxaqjvVKlm74FpdkUQEeHFAxbLwcKj7TL6AuLUZIbhy7s+028M2GDfaJ9LsjLqUdk0h5j72L+iOw+p+TOr+tbPai187E5AKFysPFKfhtRDjnZTrXPU84uV9h8aXdmp+X9oWNPHc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775641155; c=relaxed/simple;
-	bh=kW+XIOa0p1Pv+wOMyQbVRtwv7Ps4FjolTbA8qTfsLVU=;
+	s=arc-20240116; t=1775641301; c=relaxed/simple;
+	bh=GtatU7a61TbhaghBTwgqAwUFt/P6h7smjsYWzrNbhgE=;
 	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=u2V+s3UvY1IfKwLVxfmjdT3arHO2ZTdxH74BAVMlSjN0ZI6+CCR/HHZVP5p4WHsggmNGhKEncbGIzoaT509yitigZb7ThGTDlIiH/GIAA2YnK30i6xmz97woy/X7OdEczu3ZAIRvLYUzgW3EpGTKVMYvHQN44KIoqFHAGnvRnr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=ixWTzvp4; arc=none smtp.client-ip=78.32.30.218
+	 Content-Disposition:Content-Type:Message-Id:Date; b=WxF9MSIGUhrL6xFh6bbKlb/YyJLbRApvpfHDktE0+DDt3QRY6k/253+D2vdnK+cbodm+bAL5s8OxbwBv1MeEI/0apAlH557UR6fUVPGor6cZ9NeJzWK8WA27gl2+asSbERA+xuzj8ooElAhrUzLerrSL7X3Z7kJ26ta6LAQNKL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=KBRtZISk; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="ixWTzvp4"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="KBRtZISk"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
 	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
 	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=1HKasakdQPn3aMFJOmu7e2iJDfqBG60iaErJHrMCkJA=; b=ixWTzvp4f+t4GhuXFYTrdH/aRd
-	3FOKn/IkoHkbFk+C3776O3PX94GwUOmeacik8WLrjYYwBNbDmfMV00pd4hTmlTfGPNDDml1HlupgV
-	uG88xMNXQGMrQFcrtf3jrvoXXH8j7LM3BRalWNTvuEofLcGzekrUAniQ9n/7ZlA2zaALx2cHogePZ
-	fiZvPfiKO85jm1il2ByWPSNfmc0p6VGplrZOB7KtH8Q4XN2zg515QJfiiOiiJv6aAUhUR+CXpugjx
-	FJigfk2Qg64/M4BfcWBsiMSwYXe5UPArYKR7M0Iyf1spmVIFgfYLxwNKLIUVUa/+bTyXDCCLetmxA
-	pPTTWNUQ==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:43584 helo=rmk-PC.armlinux.org.uk)
+	bh=ymap6qnTrcZjA2wjOv/aJIypsrfZm0ThDKHwcJw6fQA=; b=KBRtZISkGajYEF77tW0PaVeWQX
+	cPZnzgBxvtuhhdl0AWKtISEgdRk5ygONloyCeyvc7bShsFUU291gw31NnmZThiKumCavoDUxWZ7ht
+	cVFxKfusOkbLHw7diDcG/m/WO3KmVv7Y38vbfzTiDlCH3hIE7MQt+BAIhGaN+SOZknZvPt/nDFVer
+	nX9Wo9T5rTYa1vxaHQ/lmKiB9p4+CfBiZll05OfJ9M7/jxzZGMStDbGxzi0qdRsZw0SJavADbkyRZ
+	OUT8++lqg326oe/ePFqZ6aNhK2gp3lxLY6XKiSo7EBlX3bdqQV2MVuRQa7MzXTkTRzYo9u5SC8NNU
+	w5ecUjoQ==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:36872 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rmk@armlinux.org.uk>)
-	id 1wAPC1-0000000023p-3pgt;
-	Wed, 08 Apr 2026 10:27:27 +0100
+	id 1wAPCB-0000000024F-27WA;
+	Wed, 08 Apr 2026 10:27:35 +0100
 Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
 	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1wAPBr-0000000F7ka-032o;
-	Wed, 08 Apr 2026 10:27:15 +0100
+	id 1wAPC6-0000000F7kr-1b7i;
+	Wed, 08 Apr 2026 10:27:30 +0100
 In-Reply-To: <adYfPBHsXxQUsMyr@shell.armlinux.org.uk>
 References: <adYfPBHsXxQUsMyr@shell.armlinux.org.uk>
 From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
@@ -55,8 +55,8 @@ Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	netdev@vger.kernel.org,
 	Paolo Abeni <pabeni@redhat.com>,
 	Samuel Holland <samuel@sholland.org>
-Subject: [PATCH RFC net-next 07/10] net: stmmac: limit MAC .debug() to
- dwmac1000 and dwmac4
+Subject: [PATCH RFC net-next 10/10] net: stmmac: only print receive COE type
+ for GMAC cores
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,51 +66,34 @@ MIME-Version: 1.0
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1wAPBr-0000000F7ka-032o@rmk-PC.armlinux.org.uk>
+Message-Id: <E1wAPC6-0000000F7kr-1b7i@rmk-PC.armlinux.org.uk>
 Sender: Russell King <rmk@armlinux.org.uk>
-Date: Wed, 08 Apr 2026 10:27:15 +0100
+Date: Wed, 08 Apr 2026 10:27:30 +0100
 
-Avoid a bare test against snpsver which has multiple different number
-spaces depending on the core type by testing for core types that
-implement the .debug() method. This documents that these statistics
-are only available on dwmac1000 and dwmac4 cores.
+As identified in the previous commit, only GMAC cores have a COE type,
+but priv->snpsver's numberspace is core specific. Change the test for
+printing this to check the core type instead of checking for the
+Synopssys IP version being < v4.0, which will incorrectly match XGMAC
+cores.
 
 Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- .../net/ethernet/stmicro/stmmac/stmmac_ethtool.c    | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-index 343cf903c0bf..0caa5b992519 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-@@ -531,7 +531,10 @@ static void stmmac_get_ethtool_stats(struct net_device *dev,
- 		}
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 93c031b3cfd5..f5fe97c1abd4 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -7461,7 +7461,7 @@ static int stmmac_hw_init(struct stmmac_priv *priv)
+ 	if (priv->plat->rx_coe) {
+ 		priv->hw->rx_csum = priv->plat->rx_coe;
+ 		dev_info(priv->device, "RX Checksum Offload Engine supported\n");
+-		if (priv->snpsver < DWMAC_CORE_4_00)
++		if (priv->plat->core_type == DWMAC_CORE_GMAC)
+ 			dev_info(priv->device, "COE Type %d\n", priv->hw->rx_csum);
  	}
- 
--	/* Update the DMA HW counters for dwmac10/100 */
-+	/* Update the DMA HW counters for dwmac10/100 (DWMAC_CORE_MAC100),
-+	 * where this will return zero. Other core types will have a non-zero
-+	 * return value.
-+	 */
- 	ret = stmmac_dma_diagnostic_fr(priv, &priv->xstats, priv->ioaddr);
- 	if (ret) {
- 		/* If supported, for new GMAC chips expose the MMC counters */
-@@ -553,7 +556,13 @@ static void stmmac_get_ethtool_stats(struct net_device *dev,
- 				priv->xstats.phy_eee_wakeup_error_n = val;
- 		}
- 
--		if (priv->snpsver >= DWMAC_CORE_3_50)
-+		/* Only dwmac1000 and dwmac4 implements the MAC .debug() method.
-+		 * As there are different version spaces depending on core_type,
-+		 * make this conditional on the appropriate core type.
-+		 */
-+		if ((priv->plat->core_type == DWMAC_CORE_GMAC ||
-+		     priv->plat->core_type == DWMAC_CORE_GMAC4) &&
-+		    priv->snpsver >= DWMAC_CORE_3_50)
- 			stmmac_mac_debug(priv, priv->ioaddr,
- 					(void *)&priv->xstats,
- 					rx_queues_count, tx_queues_count);
+ 	if (priv->plat->tx_coe)
 -- 
 2.47.3
 
