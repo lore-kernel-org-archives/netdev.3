@@ -1,57 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935D239EF1E
-	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 09:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36693ACF17
+	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 09:59:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775642385; cv=none; b=b2np7Vvp5cMw7Bm8VWDUclyey/End3EJFfxZis/ql/gYW5ktqJgV7Mbx7UHYJIb1gWNXD6ef4ENrvzB4m+m/Z6UNdkgWlS5Xt7hWrOmhkOjAO+2CXQt3zg1szcyb2Ikv4XQAXehTRv3xPdsyuk15C+Y99Pw3d7V5+tYKW56BVDg=
+	t=1775642387; cv=none; b=IXLYAAJq0unaKwKm/AJ4jhw99zwxw1FJTy2uB9phZe5gbpCMYVzEq0GtlDhn7ckwmYgh4Op0oHtlanB8SUmKsgA8Al1awhfcw5uP212/fWKtDG4PsnvWo4+MP1EsHy2Q1mFlxc6jWdtSs8tyhO4nSB1L8b1yRJSTE92x/3QNBKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775642385; c=relaxed/simple;
-	bh=gQxUSQCbOCVRy/U0Mk5nZDFEIAyHtJsr0tGa/b9phao=;
+	s=arc-20240116; t=1775642387; c=relaxed/simple;
+	bh=fijbk9r2y+9s/pgjwj9jL/NqCmTtmVeAXUSUjqIUsXw=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SzjO99IAYA9StiLkDVgWot0IvXe/PtlfbF5QUP/gk0+RHgq8Ifnl7rcbtAraHyhEOEGwFNIdjtw6kEnThlovSmPnA9feSYZk4TMxUppQxHEJXMhl3rJWGzj0i6JKpeAPS9CgOF0EUKoP9he6zwamtkMtzo5pzbTEywndTatUOAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=YjaT7mp1; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=rURgdxAL9yC4mQmkST6jsOtyxVk59X4aaPaIL67QN0ZZbdm4pO2MH7BBSwqf77trmHWrfDNhwhNLlE4y4lQoj2Bt5oCQrd96f+fQo5nNosOVC9Jaz8l5i1c7r1DRLuR3w3FE+ER1rEYrRVyOQLu0P2rBQDnmqfC19UTDdpiPyW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=eWBqbu4p; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="YjaT7mp1"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="eWBqbu4p"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id AD141207BE;
-	Wed,  8 Apr 2026 11:59:34 +0200 (CEST)
+	by mx1.secunet.com (Postfix) with ESMTP id A026A207D1;
+	Wed,  8 Apr 2026 11:59:35 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id YxEWqn4MJWBF; Wed,  8 Apr 2026 11:59:34 +0200 (CEST)
+ with ESMTP id L7mPl7jpELvM; Wed,  8 Apr 2026 11:59:35 +0200 (CEST)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 2480F2080B;
-	Wed,  8 Apr 2026 11:59:34 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 2480F2080B
+	by mx1.secunet.com (Postfix) with ESMTPS id 1BEDE207C1;
+	Wed,  8 Apr 2026 11:59:35 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 1BEDE207C1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1775642374;
-	bh=JlyyLZVtng1xN5YXmew8a27LPdVRcpLmBOhugxBOMfM=;
+	s=202301; t=1775642375;
+	bh=f9Fj+WubamJQDHKnkQFWg0AzRmyApfWKDDRRjzULtqk=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=YjaT7mp1JSoiJhYs8gYAyGrcj45mWaZoZpNy7OMrHBTtEVoj8171iCqEt12L7YovB
-	 ksEph6wB6uSO91L12z3yuAQ6oUfIWV50NgLmm82gJN6uFf7Xw/f2P1HTOeoAbBz293
-	 4NHwOspT8P4RcWA+9BzOgy2OBMVAIisoy2xtY7dXxyKl7KEZNIbe+Kehh0trOj4Y8B
-	 RWv9LEfHhuHJrOmkiULYfkyoKuEoKPLiL6xMAdyiVKGhs4COs/zMKfWummCArkYW2x
-	 CfbcZNCp9ag1H0PZohVdvr291Dje5nibzjLmBwYzaiR//rXSBCiITrmkx5IfDj7QkM
-	 kCraaHD/XSF9w==
+	b=eWBqbu4p7JoW7AJnaVY+fylrauJnfczmNG69IFFBNxDof/sZoddwzEVC+nO1VwmWf
+	 J8MzFPwhhGtujJb6UbWTs5wvOj1DdMszWEBeI9SXL6kE0veQjifrTkKaPKv8Dmk2AQ
+	 LHWNB6V++m7EjIaqT7ElEhbWfVPM1OsWzVVTcAc9mJGYt4LbZWpb5m8SUh4i/5P26R
+	 smNDPIcjBAO955GNmhdn0Dc4Pka0iS2uUIx2bY4cMRe5hZ4zX1nJRztjshbewJJuld
+	 4mQ3IxSDPAvNj2N55q4+QIFGrJHXkEDYSF/Oi0/zAGcU+zODrT0IhNIqKVl27sX/Dd
+	 WEBcOUgMf4GvQ==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 8 Apr
- 2026 11:59:33 +0200
-Received: (nullmailer pid 256748 invoked by uid 1000);
+ 2026 11:59:34 +0200
+Received: (nullmailer pid 256673 invoked by uid 1000);
 	Wed, 08 Apr 2026 09:59:27 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 2/8] xfrm: account XFRMA_IF_ID in aevent size calculation
-Date: Wed, 8 Apr 2026 11:58:58 +0200
-Message-ID: <20260408095925.253681-3-steffen.klassert@secunet.com>
+Subject: [PATCH 1/8] xfrm: clear trailing padding in build_polexpire()
+Date: Wed, 8 Apr 2026 11:58:57 +0200
+Message-ID: <20260408095925.253681-2-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260408095925.253681-1-steffen.klassert@secunet.com>
 References: <20260408095925.253681-1-steffen.klassert@secunet.com>
@@ -63,59 +63,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
+X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
  (10.32.0.171)
 
-From: Keenan Dong <keenanat2000@gmail.com>
+From: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
 
-xfrm_get_ae() allocates the reply skb with xfrm_aevent_msgsize(), then
-build_aevent() appends attributes including XFRMA_IF_ID when x->if_id is
-set.
+build_expire() clears the trailing padding bytes of struct
+xfrm_user_expire after setting the hard field via memset_after(),
+but the analogous function build_polexpire() does not do this for
+struct xfrm_user_polexpire.
 
-xfrm_aevent_msgsize() does not include space for XFRMA_IF_ID. For states
-with if_id, build_aevent() can fail with -EMSGSIZE and hit BUG_ON(err < 0)
-in xfrm_get_ae(), turning a malformed netlink interaction into a kernel
-panic.
+The padding bytes after the __u8 hard field are left
+uninitialized from the heap allocation, and are then sent to
+userspace via netlink multicast to XFRMNLGRP_EXPIRE listeners,
+leaking kernel heap memory contents.
 
-Account XFRMA_IF_ID in the size calculation unconditionally and replace
-the BUG_ON with normal error unwinding.
+Add the missing memset_after() call, matching build_expire().
 
-Fixes: 7e6526404ade ("xfrm: Add a new lookup key to match xfrm interfaces.")
-Reported-by: Keenan Dong <keenanat2000@gmail.com>
-Signed-off-by: Keenan Dong <keenanat2000@gmail.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Breno Leitao <leitao@debian.org>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- net/xfrm/xfrm_user.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ net/xfrm/xfrm_user.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index 5d59c11fc01e..a779590c985a 100644
+index 1656b487f833..5d59c11fc01e 100644
 --- a/net/xfrm/xfrm_user.c
 +++ b/net/xfrm/xfrm_user.c
-@@ -2677,7 +2677,8 @@ static inline unsigned int xfrm_aevent_msgsize(struct xfrm_state *x)
- 	       + nla_total_size(4) /* XFRM_AE_RTHR */
- 	       + nla_total_size(4) /* XFRM_AE_ETHR */
- 	       + nla_total_size(sizeof(x->dir)) /* XFRMA_SA_DIR */
--	       + nla_total_size(4); /* XFRMA_SA_PCPU */
-+	       + nla_total_size(4) /* XFRMA_SA_PCPU */
-+	       + nla_total_size(sizeof(x->if_id)); /* XFRMA_IF_ID */
- }
+@@ -3960,6 +3960,8 @@ static int build_polexpire(struct sk_buff *skb, struct xfrm_policy *xp,
+ 		return err;
+ 	}
+ 	upe->hard = !!hard;
++	/* clear the padding bytes */
++	memset_after(upe, 0, hard);
  
- static int build_aevent(struct sk_buff *skb, struct xfrm_state *x, const struct km_event *c)
-@@ -2789,7 +2790,12 @@ static int xfrm_get_ae(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	c.portid = nlh->nlmsg_pid;
- 
- 	err = build_aevent(r_skb, x, &c);
--	BUG_ON(err < 0);
-+	if (err < 0) {
-+		spin_unlock_bh(&x->lock);
-+		xfrm_state_put(x);
-+		kfree_skb(r_skb);
-+		return err;
-+	}
- 
- 	err = nlmsg_unicast(xfrm_net_nlsk(net, skb), r_skb, NETLINK_CB(skb).portid);
- 	spin_unlock_bh(&x->lock);
+ 	nlmsg_end(skb, nlh);
+ 	return 0;
 -- 
 2.43.0
 
