@@ -1,66 +1,65 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE163DB622
-	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 20:31:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17E6339853
+	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 20:31:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775680286; cv=none; b=Vza8yRimjJmUPNfefgd1gAW4wVXaA+Ivo72wAfpdYsBj2IvF+lC690tQJlAjLKMVBKBZseit3bTMmmcNEsSpz8tl/G4CgCPYRVpePRPLGjt3c/ReU8odug55yyts3tXBLvrdrDHjYyzXEoMIwROnm6p/LUGD++wUYyqxOkbB3PM=
+	t=1775680289; cv=none; b=f83B3ecPsgodypxeeZSNb/xPyDo3la2BmP5bu4PYwcbYHHgGn/BBrmVPIWbiQxGa5tG0qAxmwX5LxfIwPhTGKlLoi0VCni6wBbIH1SV0oB22CLZQOb7XqVXQWQPoWu4i0FjcxueqfBs4OTyv7Ckc7un3+lLOM9QwRAAbuIkKq28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775680286; c=relaxed/simple;
-	bh=QGij33wJFhH6BDsZbp1EjU0Ee4dTRv8svV4bvtTfqWU=;
+	s=arc-20240116; t=1775680289; c=relaxed/simple;
+	bh=0Lnk5yYR4Jeq9L9QdpulP898oS7mVURTig5G98MTirM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=WHeaRC6KrUZ96UhLBknRhH6mTT+vNAIN54zENPtPwKsVkmxIJRXUIy2StLqLukBjolnSuemYi8JldIF4ovckU16/puOIUuFWbBUnHONN5XVye6RBwIlqefnVOfnwmJQrdpIAU/S/ejySkbQ5wxsrftF3Pid0egEB+FYvKpcoXRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M6feco9E; arc=none smtp.client-ip=209.85.214.181
+	 In-Reply-To:To:Cc; b=aSeQ596Or9kW8qYwINiuUCSefUJNrn+LGK5o5pfWR9CsKfy3rxssTRrc7vYlcnfnQhj8RlP2if8BjXjMK0o0rJRjuNsjd17nEAzZbjP75Dos1x3Aa/K+fXWjC/z8zRz1YpTi3nZbb3BvHfRzfh37mHmEnme4k9r9/woAxTbhJkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hHdZK38O; arc=none smtp.client-ip=209.85.216.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M6feco9E"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2b2589c26e3so2136135ad.1
-        for <netdev@vger.kernel.org>; Wed, 08 Apr 2026 13:31:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hHdZK38O"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-35d8e548a05so202951a91.1
+        for <netdev@vger.kernel.org>; Wed, 08 Apr 2026 13:31:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775680283; x=1776285083; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1775680288; x=1776285088; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=NAHM66Ym2oGH+/cDJZYepjZly6TJiBADgwKTb2PsNjY=;
-        b=M6feco9EH1P0rYDBAGglmWXGDbATO7+QsGMMo1+V6tttHwGtouTG+81HN+eZSbgqnU
-         xwZIxMVVIzi9aSCm/Rk3Dtrz9GwZVsW3xrZBLyzzEAmJ8c0rm+E/pWi6G+uDNV7lD/n8
-         /9TZVXz8weJXX/d+u/tzXb2DhAoC3AtD7+rcn19OEJBkYxo778A72t8dyFm1qAl2FKDU
-         49JRI2Dlzio9nJ4Lvajs2ue14vM2rqemihJ3iPcbuCaudSnfWkzNNTeKeUC+wtmIYyYD
-         xvDQBAI7RnJ/Nyw20CcnNtxBPcN+chuwF+XLiAe661kDYREz0akVy/Au1l1P/1Ye6f8S
-         8jVg==
+        bh=5ZYke3O/zC0G+KGI4eNcYA6PyLtyQl46QT4L47XXVX8=;
+        b=hHdZK38O2Z0FLLq3YS37w9kMQp727onqxh63meCiyK6mvH5LRHeiiJk4IBhXtQXblJ
+         OiXRCEMiu/8sDut4nnFsxOXBHlxUKunAKg0tnckuQxcGmhW1LxIAUtvrMRRYw6GDtL+A
+         08VIo5JfMQznAR4ZRqPQLdF72c46QbAjz3a84P2lWEGEklJ/cMN5PotgclKmX9n6o6Nc
+         B9JBwZRbTnS8q34uG7qlaqk/4WQdu4042xQ+b8X79Tg0K1shXMmITYBBhk79cde/Ek0e
+         4IS5LFN6TURLtXOToih+qFwf2dO+Bj9ItC19zttIm0Cas37mCNZno0R9K//5YfksJ96X
+         bGPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775680283; x=1776285083;
+        d=1e100.net; s=20251104; t=1775680288; x=1776285088;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=NAHM66Ym2oGH+/cDJZYepjZly6TJiBADgwKTb2PsNjY=;
-        b=Ry06uHmBB+XceNUYaHqpU/QnCZPNxYkiZxKQBch3dBmKp9EZ5DGBfppWXqpLJuL6iw
-         bxtznafkl1lBTCVEQNB0CCFlmtO/V1WYA5PghTavXoZVojbKVnjx9GEjREOoRwkEcOKi
-         9PK+E5jAD0Zn7h7RqFx6oEUrDWhqux5BGvAVasQ48qDUUtCXyR/Sqbq8/MGqopdiYLlB
-         8uIJvmqj4hhRdX1LrcbNYUYvZj4kaGTj3txxdzVp0EfYMLpwvHtX3hDiWSSnAv5lwtQt
-         /HBQX/B1K52JgqWtsic1qzM+XrLzCJHl7rlKueWefCyAl5tTUVrOBX5odfR1bt0HR2gI
-         22+g==
-X-Gm-Message-State: AOJu0YzxEm4N1iaxIQbLUokStpLX7eihTebw2EMvpNcx4e8A9xnzNxOL
-	pc7XxeYojQhsYkIRDGf3T7WaB7Q5jusk3YZMO5HXqoEtDe5wr2ZyUkv8
-X-Gm-Gg: AeBDietR11kc3gXRqoqyGDHMwGjZk/tfV8cqYRnyyOUNwyKd+MOSN9nxgtsrCxofaj2
-	hsrpj5qJaf7dAIUKXSEyVfXlk4NuH2kzOTKdKoXlGU+fq0aaoEe1hXaSe6ejjWhvt4XP35/dC+0
-	hrgjwRnqd2I9QJNpEg0QWP98hTOzZS8WNz8U0IkGru3sFkiQc00P0u6w8L2dfd4Jv7pEc3WOvgW
-	nvvwtyCptKqO23lSHvBecSqNtJZm0TsIK0+FxhkNfEO+ma1kHy40kkgr+0MFQe0HRnpwhcFy3c9
-	iH80B4YgBspOrTmhJ+L9Tanncf7kJnLIDjuANqElpKJCvNBcllfb0kO16EINjO3HhYaIf6C0aof
-	JZmcK58MgM0O0xWisJaOBq/Kpejxw5251+Ga5drhNTOma3Y7Fq+/N/sWfPI4ILrjIFLr/E6UUh3
-	vMQzKdNnsLBsS7Fgqbcv8H5ERjO3uq6vFDqXjl2g==
-X-Received: by 2002:a05:7301:4090:b0:2c8:6361:ab58 with SMTP id 5a478bee46e88-2cbfaaaaf92mr11577252eec.13.1775680282474;
-        Wed, 08 Apr 2026 13:31:22 -0700 (PDT)
+        bh=5ZYke3O/zC0G+KGI4eNcYA6PyLtyQl46QT4L47XXVX8=;
+        b=qWpuSHzoWkj3nNlgBb4OVGExJiCQaJuoUi9+2v43Nhw3kTEtadzrVhkCeBwqPIHrWo
+         PyzUX1A4byCIWGuBR6NrXzi+WI5BKY6F/mFmadyxQS61jGQ2sKqimclfrA/aVzyFAREW
+         zhQST69VRu1CmN4tKQyjU24Sq8oBbu0VLH6kUzY/5FWR0bbG0YSmYXdBRYmbu3sAshe9
+         iFInT4w+2rfc6yYCB758KKNNPQUz0TulIIbJ6oO1DOfHrgQ+CHTLmTAengtN6iyXShx1
+         0C6rNRkjTGJIKcdD09HQa6cbHkIWn/IqXYvbTze3gCAj0kqzpyLCOsb7dZNOq9c1/6pX
+         cBmQ==
+X-Gm-Message-State: AOJu0YzFN7ItaCCi77h0uiYWvw0hipirFboTwHVSB4Aif1t49dM7akR0
+	wMof/o+IOteKI2gpwhVGfmfjStLcSwPfPz5gt5MOl77it0f2C48chE62
+X-Gm-Gg: AeBDietCYI6C5rN8wF7sdmEZ8F7SxY6Ga8kf3jUJTsf2u/NQx6bhP0ZGvS7XDnpC6dP
+	k+kbtU6BctY0o1RvQrpdf7Uc9OQudLnS5ILYGLDZoCnYHBoVMO38YOAdL+oRy53junFAEwcoHiv
+	8i84Y2vYeP/+MHrLfk0mlxb1gBQK9AKOuiQPPr1yhQY9+kurnpBGJlt4zICVT4PYIenQA0pwx1m
+	m5G/Sk4Axpd/QrRCWd21qbaMhrsT3dloo6IQNNVXoRtJVhnGBuuk+ds8W/smd6NvTEcTpaS6lOP
+	Q6tHFahKP6lKLTZW/vbUOVhn9vWXavUAmjxrr1H5ybW5IH3AMSd8EdSqI4Ftj7txiu57QXiatBx
+	EmofPkViO6uYds1pYh+CAjh4ZcefsRx22kgrjFQWj/h+20i1eVxX+x2jP1+f7t3+eCO1g6i7f2v
+	DF6oYJ1NnuHBRfb5Y786IdaHAS9YEEJQftz22ACA==
+X-Received: by 2002:a05:7301:6097:b0:2d3:1b7f:9273 with SMTP id 5a478bee46e88-2d40e6dd37bmr610184eec.21.1775680287991;
+        Wed, 08 Apr 2026 13:31:27 -0700 (PDT)
 Received: from tresc054937.tre-sc.gov.br ([187.65.210.13])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2d16d115c00sm9556512eec.12.2026.04.08.13.31.17
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2d16d115c00sm9556512eec.12.2026.04.08.13.31.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Apr 2026 13:31:21 -0700 (PDT)
+        Wed, 08 Apr 2026 13:31:26 -0700 (PDT)
 From: Luiz Angelo Daros de Luca <luizluca@gmail.com>
-Date: Wed, 08 Apr 2026 17:31:01 -0300
-Subject: [net-next PATCH 1/2] net: dsa: tag_rtl8_4: update format
- description
+Date: Wed, 08 Apr 2026 17:31:02 -0300
+Subject: [net-next PATCH 2/2] net: dsa: tag_rtl8_4: set KEEP flag
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,7 +68,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260408-realtek_fixes-v1-1-915ff1404d56@gmail.com>
+Message-Id: <20260408-realtek_fixes-v1-2-915ff1404d56@gmail.com>
 References: <20260408-realtek_fixes-v1-0-915ff1404d56@gmail.com>
 In-Reply-To: <20260408-realtek_fixes-v1-0-915ff1404d56@gmail.com>
 To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
@@ -82,70 +81,46 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  Linus Walleij <linusw@kernel.org>
 X-Mailer: b4 0.15.1
 
-From: Alvin Šipraga <alsi@bang-olufsen.dk>
-
-Document the updated tag layout fields (EFID, VSEL/VIDX) and clarify
-which bits are set/cleared when emitting tags.
+KEEP=1 is needed because we should respect the format of the packet as
+the kernel sends it to us. Unless tx forward offloading is used, the
+kernel is giving us the packet exactly as it should leave the specified
+port on the wire. Until now this was not needed because the ports were
+always functioning in a standalone mode in a VLAN-unaware way, so the
+switch would not tag or untag frames anyway. But arguably it should have
+been KEEP=1 all along.
 
 Co-developed-by: Alvin Šipraga <alsi@bang-olufsen.dk>
 Signed-off-by: Alvin Šipraga <alsi@bang-olufsen.dk>
 Signed-off-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
 Reviewed-by: Linus Walleij <linusw@kernel.org>
 ---
- net/dsa/tag_rtl8_4.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ net/dsa/tag_rtl8_4.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/net/dsa/tag_rtl8_4.c b/net/dsa/tag_rtl8_4.c
-index 2464545da4d2..b7ed39c5419f 100644
+index b7ed39c5419f..852c6b88079a 100644
 --- a/net/dsa/tag_rtl8_4.c
 +++ b/net/dsa/tag_rtl8_4.c
-@@ -17,8 +17,8 @@
-  *  |              (8-bit)              |              (8-bit)              |
-  *  |          Protocol [0x04]          |              REASON               | b
-  *  |-----------------------------------+-----------------------------------| y
-- *  |   (1)  | (1) | (2) |   (1)  | (3) | (1)  | (1) |    (1)    |   (5)    | t
-- *  | FID_EN |  X  | FID | PRI_EN | PRI | KEEP |  X  | LEARN_DIS |    X     | e
-+ *  |   (1)   |   (3)  |   (1)  |  (3)  | (1)  | (1)  |    (1)     |  (5)   | t
-+ *  | EFID_EN |  EFID  | PRI_EN |  PRI  | KEEP | VSEL | LEARN_DIS  |  VIDX  | e
-  *  |-----------------------------------+-----------------------------------| s
-  *  |   (1)  |                       (15-bit)                               | |
-  *  |  ALLOW |                        TX/RX                                 | v
-@@ -32,19 +32,22 @@
-  *     EtherType |         note that Realtek uses the same EtherType for
-  *               |         other incompatible tag formats (e.g. tag_rtl4_a.c)
-  *    Protocol   | 0x04: indicates that this tag conforms to this format
-- *    X          | reserved
-  *   ------------+-------------
-  *    REASON     | reason for forwarding packet to CPU
-  *               | 0: packet was forwarded or flooded to CPU
-  *               | 80: packet was trapped to CPU
-- *    FID_EN     | 1: packet has an FID
-- *               | 0: no FID
-- *    FID        | FID of packet (if FID_EN=1)
-+ *    EFID_EN    | 1: packet has an EFID
-+ *               | 0: no EFID
-+ *    EFID       | Extended filter ID (EFID) of packet (if EFID_EN=1)
-  *    PRI_EN     | 1: force priority of packet
-  *               | 0: don't force priority
-  *    PRI        | priority of packet (if PRI_EN=1)
-  *    KEEP       | preserve packet VLAN tag format
-+ *    VSEL       | 0: switch should classify packet according to VLAN tag
-+ *               | 1: switch should classify packet according to VLAN membership
-+ *               |    configuration with index VIDX
-  *    LEARN_DIS  | don't learn the source MAC address of the packet
-+ *    VIDX       | index of a VLAN membership configuration to use with VSEL
-  *    ALLOW      | 1: treat TX/RX field as an allowance port mask, meaning the
-  *               |    packet may only be forwarded to ports specified in the
-  *               |    mask
-@@ -111,7 +114,7 @@ static void rtl8_4_write_tag(struct sk_buff *skb, struct net_device *dev,
+@@ -99,6 +99,7 @@
+ #define   RTL8_4_REASON_TRAP		80
+ 
+ #define RTL8_4_LEARN_DIS		BIT(5)
++#define RTL8_4_KEEP			BIT(7)
+ 
+ #define RTL8_4_TX			GENMASK(3, 0)
+ #define RTL8_4_RX			GENMASK(10, 0)
+@@ -114,8 +115,9 @@ static void rtl8_4_write_tag(struct sk_buff *skb, struct net_device *dev,
  	/* Set Protocol; zero REASON */
  	tag16[1] = htons(FIELD_PREP(RTL8_4_PROTOCOL, RTL8_4_PROTOCOL_RTL8365MB));
  
--	/* Zero FID_EN, FID, PRI_EN, PRI, KEEP; set LEARN_DIS */
-+	/* Zero EFID_EN, EFID, PRI_EN, PRI, VSEL, VIDX, KEEP; set LEARN_DIS */
- 	tag16[2] = htons(FIELD_PREP(RTL8_4_LEARN_DIS, 1));
+-	/* Zero EFID_EN, EFID, PRI_EN, PRI, VSEL, VIDX, KEEP; set LEARN_DIS */
+-	tag16[2] = htons(FIELD_PREP(RTL8_4_LEARN_DIS, 1));
++	/* Zero EFID_EN, EFID, PRI_EN, PRI, VSEL, VIDX; set KEEP, LEARN_DIS */
++	tag16[2] = htons(FIELD_PREP(RTL8_4_LEARN_DIS, 1) |
++			 FIELD_PREP(RTL8_4_KEEP, 1));
  
  	/* Zero ALLOW; set RX (CPU->switch) forwarding port mask */
+ 	tag16[3] = htons(FIELD_PREP(RTL8_4_RX, dsa_xmit_port_mask(skb, dev)));
 
 -- 
 2.53.0
