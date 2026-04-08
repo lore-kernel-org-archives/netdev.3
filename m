@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588803BF699
-	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 12:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220623BF69D
+	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 12:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775650411; cv=none; b=TJhuYM79HGlcc7DINGWgCjV09ctj88LujYAqxHx5DcqYoanTroU0pJsIxwNiGSHrDXmJODrYlqbqwPTtAjnkJg/8v8ve9Fd60G36sPA5n0lchM3DA7rQe5w53lizYINGuuHCkF5L8wa+i+X0jzQaLU0YDOPdT6QL0cRAa2UZHqY=
+	t=1775650418; cv=none; b=IkRSj/MPL3RgAQa9lFrWEkJ0dqmnyzy5kLg8Edn9RwK5l7zKJY4GSUMQfv/2Xc1SQ+xZ+WWPNXt2ACuLwSofN48vXW54RP2VM8Q7AA01io/DpmmKJUEtm6bst8ag/lv/XgtwdhsTVQxTH8vKwjrX/e8kSUT3Il9k8DVzTRDyD/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775650411; c=relaxed/simple;
-	bh=GTDitVkkmcP3pmQfGjjQNmdx/6Cfdn8ljMrl4GlS00k=;
+	s=arc-20240116; t=1775650418; c=relaxed/simple;
+	bh=i2+6T5laS6iXW24MjsOpSAQSe/11jAwSQhKVgP6EJWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ct4ppEItMfj1vPnjeejKg1hWB7ANu/mdJpiTg4BGZMWMsIqqOUVBWElSdhL2uPFwF8TbaWupMmqPJG7T7DfkCiMYCFe4DWayK9Gy0EV+fXvrzxT0rBgg61XuO5X5dEVisZXunTa5jEJTRPuRLbhH5WPpFjfD62/fNhKsyC4Xzsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=P1KYYCri; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=INP2gGq/kSs1QEO4+b+qhMaO1p3OWu5IB5SHLYcbulZP6Nhj6vriiBYxA/kTTZKmeGtGk5LC2oHXsvOHjfuY2ZANwFHR2PHsrun5484CynQDsOBDD8t1aipqyL8IEtZRgv/JoxAYQVLEP3RTjdzwJvdTUIDyGs+u3UHjmK6ux70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NST89sBF; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="P1KYYCri"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NST89sBF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775650403;
+	s=mimecast20190719; t=1775650413;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=P4apLx2lQf8nhrvynIjV3RMW+ZpNX1GtOZdWeDq74IM=;
-	b=P1KYYCriCbIOxMgMT4MDez+4BLMPr/d9T5fGvIbKSeh0PYT0Q348U4RLBslWVgqWWGV2Co
-	7mJny0W9yCQW1AoByJ95RAbKx5RURyur/hS9Hu70PL3WHt5X2PyHA5lTj2MeG5ahPaCfXH
-	LPmOj+69T5nOHQ+/Qjkfe9GMkJSG82s=
+	bh=5LLb+kvWly++E+vGdyFSJ+eIakQ89ZsZ0xRogJGUpqc=;
+	b=NST89sBFn5K9dcRt+KiNsDGaZ+Qk/BPl8DolA6NKpw8lo21RAZP+G1yqzB1NUVN41DyXyH
+	/8TgAB4YpwXcR/JEgzGC4dxCjbm/WiWpcZ00AOkSzGunhno1AJPCHIhiG+4B/R0Qg+m8un
+	4c/nYCHHxXQPRAqREm7rNIN+HHKxpeY=
 Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-616-8rqjp-J6NcOG-6kpM2zStg-1; Wed,
- 08 Apr 2026 08:13:18 -0400
-X-MC-Unique: 8rqjp-J6NcOG-6kpM2zStg-1
-X-Mimecast-MFC-AGG-ID: 8rqjp-J6NcOG-6kpM2zStg_1775650396
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-444-xpHPACY4M-K3zM1GdCYF_g-1; Wed,
+ 08 Apr 2026 08:13:29 -0400
+X-MC-Unique: xpHPACY4M-K3zM1GdCYF_g-1
+X-Mimecast-MFC-AGG-ID: xpHPACY4M-K3zM1GdCYF_g_1775650407
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7ECF61955D9C;
-	Wed,  8 Apr 2026 12:13:16 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BFBC919560A3;
+	Wed,  8 Apr 2026 12:13:27 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.44.32.94])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D6121300019F;
-	Wed,  8 Apr 2026 12:13:12 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DACA019560A6;
+	Wed,  8 Apr 2026 12:13:23 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: netdev@vger.kernel.org
 Cc: David Howells <dhowells@redhat.com>,
@@ -52,12 +52,13 @@ Cc: David Howells <dhowells@redhat.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	linux-afs@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
+	Oleh Konko <security@1seal.org>,
 	Jeffrey Altman <jaltman@auristor.com>,
 	Simon Horman <horms@kernel.org>,
 	stable@kernel.org
-Subject: [PATCH net v5 03/21] rxrpc: Fix anonymous key handling
-Date: Wed,  8 Apr 2026 13:12:31 +0100
-Message-ID: <20260408121252.2249051-4-dhowells@redhat.com>
+Subject: [PATCH net v5 05/21] rxrpc: Fix RxGK token loading to check bounds
+Date: Wed,  8 Apr 2026 13:12:33 +0100
+Message-ID: <20260408121252.2249051-6-dhowells@redhat.com>
 In-Reply-To: <20260408121252.2249051-1-dhowells@redhat.com>
 References: <20260408121252.2249051-1-dhowells@redhat.com>
 Precedence: bulk
@@ -67,28 +68,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-In rxrpc_new_client_call_for_sendmsg(), a key with no payload is meant to
-be substituted for a NULL key pointer, but the variable this is done with
-is subsequently not used.
+From: Oleh Konko <security@1seal.org>
 
-Fix this by using "key" rather than "rx->key" when filling in the
-connection parameters.
+rxrpc_preparse_xdr_yfs_rxgk() reads the raw key length and ticket length
+from the XDR token as u32 values and passes each through round_up(x, 4)
+before using the rounded value for validation and allocation.  When the raw
+length is >= 0xfffffffd, round_up() wraps to 0, so the bounds check and
+kzalloc both use 0 while the subsequent memcpy still copies the original
+~4 GiB value, producing a heap buffer overflow reachable from an
+unprivileged add_key() call.
 
-Note that this only affects direct use of AF_RXRPC; the kAFS filesystem
-doesn't use sendmsg() directly and so bypasses the issue.  Further,
-AF_RXRPC passes a NULL key in if no key is set, so using an anonymous key
-in that manner works.  Since this hasn't been noticed to this point, it
-might be better just to remove the "key" variable and the code that sets it
-- and, arguably, rxrpc_init_client_call_security() would be a better place
-to handle it.
+Fix this by:
 
-Fixes: 19ffa01c9c45 ("rxrpc: Use structs to hold connection params and protocol info")
-Closes: https://sashiko.dev/#/patchset/20260319150150.4189381-1-dhowells%40redhat.com
+ (1) Rejecting raw key lengths above AFSTOKEN_GK_KEY_MAX and raw ticket
+     lengths above AFSTOKEN_GK_TOKEN_MAX before rounding, consistent with
+     the caps that the RxKAD path already enforces via AFSTOKEN_RK_TIX_MAX.
+
+ (2) Sizing the flexible-array allocation from the validated raw key
+     length via struct_size_t() instead of the rounded value.
+
+ (3) Caching the raw lengths so that the later field assignments and
+     memcpy calls do not re-read from the token, eliminating a class of
+     TOCTOU re-parse.
+
+The control path (valid token with lengths within bounds) is unaffected.
+
+Fixes: 0ca100ff4df6 ("rxrpc: Add YFS RxGK (GSSAPI) security class")
+Signed-off-by: Oleh Konko <security@1seal.org>
 Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
 cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
 cc: Eric Dumazet <edumazet@google.com>
 cc: "David S. Miller" <davem@davemloft.net>
 cc: Jakub Kicinski <kuba@kernel.org>
@@ -98,20 +109,89 @@ cc: linux-afs@lists.infradead.org
 cc: netdev@vger.kernel.org
 cc: stable@kernel.org
 ---
- net/rxrpc/sendmsg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/rxrpc/key.c | 30 +++++++++++++++++-------------
+ 1 file changed, 17 insertions(+), 13 deletions(-)
 
-diff --git a/net/rxrpc/sendmsg.c b/net/rxrpc/sendmsg.c
-index 04f9c5f2dc24..c35de4fd75e3 100644
---- a/net/rxrpc/sendmsg.c
-+++ b/net/rxrpc/sendmsg.c
-@@ -637,7 +637,7 @@ rxrpc_new_client_call_for_sendmsg(struct rxrpc_sock *rx, struct msghdr *msg,
- 	memset(&cp, 0, sizeof(cp));
- 	cp.local		= rx->local;
- 	cp.peer			= peer;
--	cp.key			= rx->key;
-+	cp.key			= key;
- 	cp.security_level	= rx->min_sec_level;
- 	cp.exclusive		= rx->exclusive | p->exclusive;
- 	cp.upgrade		= p->upgrade;
+diff --git a/net/rxrpc/key.c b/net/rxrpc/key.c
+index 26d4336a4a02..77237a82be3b 100644
+--- a/net/rxrpc/key.c
++++ b/net/rxrpc/key.c
+@@ -13,6 +13,7 @@
+ #include <crypto/skcipher.h>
+ #include <linux/module.h>
+ #include <linux/net.h>
++#include <linux/overflow.h>
+ #include <linux/skbuff.h>
+ #include <linux/key-type.h>
+ #include <linux/ctype.h>
+@@ -171,7 +172,7 @@ static int rxrpc_preparse_xdr_yfs_rxgk(struct key_preparsed_payload *prep,
+ 	size_t plen;
+ 	const __be32 *ticket, *key;
+ 	s64 tmp;
+-	u32 tktlen, keylen;
++	size_t raw_keylen, raw_tktlen, keylen, tktlen;
+ 
+ 	_enter(",{%x,%x,%x,%x},%x",
+ 	       ntohl(xdr[0]), ntohl(xdr[1]), ntohl(xdr[2]), ntohl(xdr[3]),
+@@ -181,18 +182,22 @@ static int rxrpc_preparse_xdr_yfs_rxgk(struct key_preparsed_payload *prep,
+ 		goto reject;
+ 
+ 	key = xdr + (6 * 2 + 1);
+-	keylen = ntohl(key[-1]);
+-	_debug("keylen: %x", keylen);
+-	keylen = round_up(keylen, 4);
++	raw_keylen = ntohl(key[-1]);
++	_debug("keylen: %zx", raw_keylen);
++	if (raw_keylen > AFSTOKEN_GK_KEY_MAX)
++		goto reject;
++	keylen = round_up(raw_keylen, 4);
+ 	if ((6 * 2 + 2) * 4 + keylen > toklen)
+ 		goto reject;
+ 
+ 	ticket = xdr + (6 * 2 + 1 + (keylen / 4) + 1);
+-	tktlen = ntohl(ticket[-1]);
+-	_debug("tktlen: %x", tktlen);
+-	tktlen = round_up(tktlen, 4);
++	raw_tktlen = ntohl(ticket[-1]);
++	_debug("tktlen: %zx", raw_tktlen);
++	if (raw_tktlen > AFSTOKEN_GK_TOKEN_MAX)
++		goto reject;
++	tktlen = round_up(raw_tktlen, 4);
+ 	if ((6 * 2 + 2) * 4 + keylen + tktlen != toklen) {
+-		kleave(" = -EKEYREJECTED [%x!=%x, %x,%x]",
++		kleave(" = -EKEYREJECTED [%zx!=%x, %zx,%zx]",
+ 		       (6 * 2 + 2) * 4 + keylen + tktlen, toklen,
+ 		       keylen, tktlen);
+ 		goto reject;
+@@ -206,7 +211,7 @@ static int rxrpc_preparse_xdr_yfs_rxgk(struct key_preparsed_payload *prep,
+ 	if (!token)
+ 		goto nomem;
+ 
+-	token->rxgk = kzalloc(sizeof(*token->rxgk) + keylen, GFP_KERNEL);
++	token->rxgk = kzalloc(struct_size_t(struct rxgk_key, _key, raw_keylen), GFP_KERNEL);
+ 	if (!token->rxgk)
+ 		goto nomem_token;
+ 
+@@ -221,9 +226,9 @@ static int rxrpc_preparse_xdr_yfs_rxgk(struct key_preparsed_payload *prep,
+ 	token->rxgk->enctype	= tmp = xdr_dec64(xdr + 5 * 2);
+ 	if (tmp < 0 || tmp > UINT_MAX)
+ 		goto reject_token;
+-	token->rxgk->key.len	= ntohl(key[-1]);
++	token->rxgk->key.len	= raw_keylen;
+ 	token->rxgk->key.data	= token->rxgk->_key;
+-	token->rxgk->ticket.len = ntohl(ticket[-1]);
++	token->rxgk->ticket.len = raw_tktlen;
+ 
+ 	if (token->rxgk->endtime != 0) {
+ 		expiry = rxrpc_s64_to_time64(token->rxgk->endtime);
+@@ -236,8 +241,7 @@ static int rxrpc_preparse_xdr_yfs_rxgk(struct key_preparsed_payload *prep,
+ 	memcpy(token->rxgk->key.data, key, token->rxgk->key.len);
+ 
+ 	/* Pad the ticket so that we can use it directly in XDR */
+-	token->rxgk->ticket.data = kzalloc(round_up(token->rxgk->ticket.len, 4),
+-					   GFP_KERNEL);
++	token->rxgk->ticket.data = kzalloc(tktlen, GFP_KERNEL);
+ 	if (!token->rxgk->ticket.data)
+ 		goto nomem_yrxgk;
+ 	memcpy(token->rxgk->ticket.data, ticket, token->rxgk->ticket.len);
 
