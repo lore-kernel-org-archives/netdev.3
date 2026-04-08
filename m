@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 963B5372684;
-	Wed,  8 Apr 2026 07:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01D12222AC;
+	Wed,  8 Apr 2026 07:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775632020; cv=none; b=QLKnH1ftWzLosqNOIi8Yq9SSnybWnL4ixIfct/AN2AvIaPTWU3SMzlRYOXFx87b73MEKr0e1Lo3csaKdrsWIezD1lf2Jw9cAK89ZhSFny1WAhermGz9oZ23gH5VKGTREQ8/KRsnzCOWVJVZ1nsd+ZzALoqKJm0AnxheMqGVLZeQ=
+	t=1775632041; cv=none; b=TWBmJHJXrsXW1g2u5VsRAcgJGvnsHPWFL1csAfGcpoe1SatlHYQXY7n0rAM7xWIWw/xzKzsoZrEZwLkoJqF/mauPQYLMwxVRT9O+gz8+VYF211rDOpGtYHMqsIBu3AYv6mUm3DEiWbaVPyEenhCJQoG4H/kgdRpq4MKHeoyVLw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775632020; c=relaxed/simple;
-	bh=VAqtM596fTkblqBx3Tz9ML/ae1nqwvaQNrNp6yDtM8c=;
+	s=arc-20240116; t=1775632041; c=relaxed/simple;
+	bh=/EreH6nnagSd63yl+aXKbpFWDULrFRnaJw1l/DUx2v4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bVIoNZssO+oJNOje0sFHjpDKjhEcizJLgzw5j/sX9dFigtH4oqGx74YSGyGrwqjYZQxATOQRWAIgUJE6TxjiwdSzvWTpCXieg4XVL1cy0bnrGy6s12pehMQ568nuL8T6Ro1ybz8pL5Ah9scyRRO9kf1K5lloDSnnjrLHTNLWYJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f7WioZIT; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=oUtlA/BBrI4vC2wAS+uGEzVLBPjhdD76im5uEKje33qILW4CSVMi4KIs2yC5pTPC5effg/iCM+EwXuo/iyYeB/A0CkZmAiLGp+iX5+RzN7/5/1mpYFuibnR+ND8rNOKFcFSSc3tQL+H7qEGsGSQRwtgtLUUtfntemjR6lwsKoss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FBu5Jew5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f7WioZIT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 593A0C19424;
-	Wed,  8 Apr 2026 07:06:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FBu5Jew5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A3D8C19424;
+	Wed,  8 Apr 2026 07:07:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775632020;
-	bh=VAqtM596fTkblqBx3Tz9ML/ae1nqwvaQNrNp6yDtM8c=;
+	s=k20201202; t=1775632041;
+	bh=/EreH6nnagSd63yl+aXKbpFWDULrFRnaJw1l/DUx2v4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=f7WioZITLb7TUZbaCmvNgfZSxzDFscADhCwHweiyBI0mPDleF+9+FkGbAzTd0+ofx
-	 0+8wBQvAqIDQaMiWAgnaHBz9uq7NBPBbCXloOBIeMILNX3UQc63pe4dYt2v40c7caX
-	 gk7JYjJuubcWlaxnz5o6FMNS2bWRaeA5qgGPjedDbJy+n5JcsUqtqAyx/Aoy8IckCk
-	 xi7iqEFGH1z7mCpkYS7NXtcv2SKVe8+463vgmf25N44cd18QWCqkkkiHZtx01popOi
-	 0oNvwcywv0QZP1TLrqa85k30ofyobzeFQE4VUyMwHBTSsqTxqBdywv9sCafepZDzf9
-	 /Hb0h7ngh2czQ==
-Date: Wed, 8 Apr 2026 09:06:57 +0200
+	b=FBu5Jew5BsdtPd/yMzktEyMWyEczIiAPASbp0PGr2s0AjLYzxUrnvpW6uYGSh9+rf
+	 kd4VGvl6+5GevSmpjdl4q/9e2ZTUg0BrwFf7yEWpwsRtmHnETZ52FxwuIpdHp5kkJV
+	 2B4wbfPgKNvyj5gVTkSeW4rJAtVlNyltUuQ8eG/G64WAsd6WyuIVn2sRh2Dl3qcRpc
+	 Ug5hhoamdKHbaI4ivMZxpJj8wmqYSXcJeNrwhpOC8RBjX9KP0XJn8eDJK0knhic/lW
+	 DOsiTagWejpMx8uSVxNosXWaAdm88LwCYlJMOzuPLzF8Oma7ZnpK49HgVGVvFpSYqd
+	 v0LD0WQTN+P7A==
+Date: Wed, 8 Apr 2026 09:07:17 +0200
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Nora Schiffer <nora.schiffer@ew.tq-group.com>
 Cc: Nishanth Menon <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>, 
@@ -38,11 +38,11 @@ Cc: Nishanth Menon <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org, 
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org, 
 	linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com
-Subject: Re: [PATCH v4 2/5] dt-bindings: phy: ti: phy-gmii-sel: Add
- ti,j722s-phy-gmii-sel compatible
-Message-ID: <20260408-umber-boa-of-expression-09a29c@quoll>
+Subject: Re: [PATCH v4 1/5] dt-bindings: phy: ti: phy-j721e-wiz: Add
+ ti,j722s-wiz-10g compatible
+Message-ID: <20260408-faithful-stalwart-mosquito-cee89d@quoll>
 References: <cover.1775559102.git.nora.schiffer@ew.tq-group.com>
- <b67c8b0bc9cc918667e9329d79f617d033d025d5.1775559102.git.nora.schiffer@ew.tq-group.com>
+ <1ef8adf850f2fd41b6c4e3c89e4f4e6e0f469a0e.1775559102.git.nora.schiffer@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,17 +51,16 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <b67c8b0bc9cc918667e9329d79f617d033d025d5.1775559102.git.nora.schiffer@ew.tq-group.com>
+In-Reply-To: <1ef8adf850f2fd41b6c4e3c89e4f4e6e0f469a0e.1775559102.git.nora.schiffer@ew.tq-group.com>
 
-On Tue, Apr 07, 2026 at 01:42:34PM +0200, Nora Schiffer wrote:
-> The J722S gmii-sel is mostly identical to the AM64's, but additionally
-> supports SGMII. The AM64 compatible ti,am654-phy-gmii-sel is used as a
-> fallback.
+On Tue, Apr 07, 2026 at 01:42:33PM +0200, Nora Schiffer wrote:
+> The J722S WIZ is mostly identical to the AM64's, but additionally supports
+> SGMII. The AM64 compatible ti,am64-wiz-10g is used as a fallback.
 > 
 > Signed-off-by: Nora Schiffer <nora.schiffer@ew.tq-group.com>
 > ---
->  .../bindings/phy/ti,phy-gmii-sel.yaml         | 23 +++++++++++--------
->  1 file changed, 14 insertions(+), 9 deletions(-)
+>  .../bindings/phy/ti,phy-j721e-wiz.yaml        | 19 ++++++++++++-------
+>  1 file changed, 12 insertions(+), 7 deletions(-)
 
 Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
