@@ -1,64 +1,64 @@
-Received: from mail-lj1-f228.google.com (mail-lj1-f228.google.com [209.85.208.228])
+Received: from mail-lj1-f226.google.com (mail-lj1-f226.google.com [209.85.208.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0259F3D3CF6
-	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 15:23:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.228
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CFC535B632
+	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 15:23:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775661840; cv=none; b=AsM0zCPI0Lq1WTJSxfEO1uQftNv1kY6tXr+b0Guif8RsQO4v4HAV0jllIE4hXyFIubwKrjvUSEdEL+OQLCpVV5nsmnrOHjDzydGePb9iUDBkS52erSGHuzEteRTBM+B7GO1GCKrxj6Sx2ncTc8l+yo05mGR7+xxFVZyKwAyZgYc=
+	t=1775661840; cv=none; b=VDPmNsjcDJX+IwLZ3tEVi4KzxjExzAS4ZEGGHgxNJbf5qOulHxFunehcSLXnCx67bJ3vvlHh4suC2Xw0NIkR3WUSWJvgqRdRm+eH2zmpbTyNf1SgfdexS7ELioFpdsQDL918SB1grLg42Yf2LUR8Vco8rkpF09w9QbeI5MKlyM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775661840; c=relaxed/simple;
-	bh=97AUclMQLtRzFwFoOxnQsLuecfk1+SrlI3T+bK+uXm4=;
+	bh=uVGoIlzFJy5JBQa6/+GwI5i+LjXHkEcgmnfPmPTmzLk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FaWLkGbFNq6TLYxRrRRkDmbmqur/a8oomaMKYgUQ/BHa9RsG4u+tgS2D2s09vYV/5e2+5yLWkh58y5IEzkuzYEYKToRrhRYV1I/eIM7Vn5frYOdlP7uhjLTewqS5LDi02nfwNHDUhHsAdtsnZv7o6i4wfKXGmoqAVGfgQI7zEtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=dwXvOGpJ; arc=none smtp.client-ip=209.85.208.228
+	 MIME-Version; b=o19FpA0Kse6gXIziCJVSssJT6TOSsENq0GAEdLJu3WSkojifOHGEgYQ7RkeP3z0LENUZ7IaQMuDVLJ2ltq/7lDhxEPN8fX0VSNV9C+EGTYwxXlKfJi2Fnge2b5sz3pL1MTwye8lUkhft82J9xp0r5P7AT+lxVQEdoK/04mZva0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=H748oafY; arc=none smtp.client-ip=209.85.208.226
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="dwXvOGpJ"
-Received: by mail-lj1-f228.google.com with SMTP id 38308e7fff4ca-38df27b25e3so352991fa.0
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="H748oafY"
+Received: by mail-lj1-f226.google.com with SMTP id 38308e7fff4ca-38e0ef48ac0so122831fa.3
         for <netdev@vger.kernel.org>; Wed, 08 Apr 2026 08:23:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=6wind.com; s=google; t=1775661837; x=1776266637; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KD5D8brxCmuzBKqAnv0UgR0asFaOJvhZvK86/nmy4G0=;
-        b=dwXvOGpJLCy6hZqqGQbtkqT779fVRluRYV+vhLfclsSHE/OtoqfjHCxf4nfhRByatM
-         NBNPn2V0M7m/NDd8bkvMyliSpdb2sCQBRuP0Ps9YDWFH3YSz4RHz7VufhJlwQBypP0Rd
-         xQTgUs/SlMGhnZ5P5QeuzxP1Wsw1mCyL+8+OcAzGkTMHNcqnwO7ZdlhjRYrA9E+JHZtJ
-         hBjPXS+dJs9/5Kp0VEr7Gs+BLF4ugOVZgRV9HiEiPGphHCUPEKVchQ/yPN6Z44gDq5L9
-         lxLrSGpU7i1uYsAysu2RYtsJzqRPG56B/pvb4/fi6oZlgC2fypx0ifzNnIg/3MoSwnl+
-         YlUA==
+        bh=CN/GTjLSzraxY8cJ12mi96G5hr8DHvRwtBAQqpyKJOk=;
+        b=H748oafYlnz5HZ/XiLWYe7n8KfGuhL9pCSFf+ltTkW/b4RXSI/evcQhv1ryTZFL3fE
+         k3CBBNOU2IR4uZZyTrRr4wMjdOxaUmKEFZS3R60GM42iHaqqUwPIZr0vlrzmDCAnDn1v
+         p97lzdh0ulgqEd5mwfNT63oyhlkFRDyzFkuMUhZHn1JejTHT9dRBI4ALYk6w+DyWgpND
+         j4yEcqDMuGC0SCa6lHp25j83mUUASJzyNxOsBKlySo6af9DaEDpG9Nc9yxRcRcnFHNZk
+         q8u9OTpcXVfqfNmY+AE/cxzbEjT/m2NCimj+AA+0f/9gyQEg464DzkWjhK5psXhbVF3V
+         MwdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1775661837; x=1776266637;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=KD5D8brxCmuzBKqAnv0UgR0asFaOJvhZvK86/nmy4G0=;
-        b=iiXXJTM15aRoXgkce7dVE0yCaYl3FwE+/C7IMGQVOjFPVOGBZEhfm3dub7fiOgFCgz
-         dYZFUm6BGDkUU+n6EaDWPiEl+y2TKLqB6yuB6kFPciDk7zRN0xclzm+HuvPFrb3iI3aq
-         s998OlUptJimdzUf8bJ50ndcpzmy1Iyxxs6ZgQvZsux6rYVyEL9FQbEq1sE95R4xe1wW
-         GSlNhHOBKPTEivGlz3sOSVHY+qZZpovqjx0UXQB7XVQWprhpYr4EnabeBSq4pRYiA+6S
-         fNRlzsYI8oBGdYVlagVXcTT2wk30ov6mK+vHzapMwHi1nX4EcHH7KtjTOseO58GnFPpH
-         D9jg==
-X-Gm-Message-State: AOJu0Yz5hJj7/sIirfsSmFds1SL8KFwjQEgnW5B7XLk0L+Jr3C5rdadH
-	K4FUUmw4D8moHmX8DFm1kQJ2k1VlgpJKfXyjLUIu9dXnu+d6dK9p8p6sG+r3yeE4rmgpwOqc5jo
-	dmO6JpZPTr0nIGfBwqKoymwQXRupFSylBm6gD
-X-Gm-Gg: AeBDiesYWW5gk4yX/YiObg2+3x8peC6fDXhkWvkBIJ41X9EBUSLue70F+TH7XHLNPlD
-	NKuqE8nx53oYWzE5qOqe1P6gKdLQjOqJSYuYBUYKbcPmURS8buRF5i0An7G2byI/J/Bncxgdc2i
-	lTjYI7KRE0X3Kvd93gMo10lxS7zvQp6sIwykiAiAsSI6+jmQA0vPcfWsXf2F0yhJQy9IsIfUOes
-	RhB9g6Nm1RQfV/VXDDaf9J85uU/rEbzSjqybMeSXVvG4FMrYLoOKBndzCKcVHCAuaKgEilqcZpu
-	YsQ8mOREdzUzdMGlzLnGp+D3Ci4uUcjcTeAl6yUScaphI5Sk4/4XPSvRaS0YcPcoqNQJbBzTDjU
-	dipdgNN7Ymuj0trlAOtjFakOMyx10FDuyq/yDXGOR3evOMQ7+pYS7
-X-Received: by 2002:a2e:bc14:0:b0:38e:1304:d2bb with SMTP id 38308e7fff4ca-38e337675bamr298251fa.35.1775661837006;
+        bh=CN/GTjLSzraxY8cJ12mi96G5hr8DHvRwtBAQqpyKJOk=;
+        b=Xl/72HE8kefnZR6t0jMRtZpb1HG8I1FarGtlQSkbM1LKeouaze2FCtT+BEZfxt8Syp
+         xMF0GUX8FoHqFZv5BZuReuvFqbwcQfUWgxeuDcFnFoirxrQusFbBqlBxL26E0NEBBQJ0
+         5wUVwJiezvSfMCqqEeTNp5SmQgeZ8FHA6XKzjIwYanq9NNNFXVR9y8s7mu/E6fa/lJuV
+         F3/75W4mDkub7DH8izwBSYwK6vbvTaopZ0Ta+izz0gpZUhygB3p75/sGxCNhKstwbm9T
+         CbRX/v1Fo1GysTQo/R6tz1ReZDkZf7tSH7kXtHXwmfaFFiL/90d7gNkVdb8Rk5u6oRRu
+         fhsA==
+X-Gm-Message-State: AOJu0YwkiZA//MidDvt3c2v3GoWC6dV4ljlm6p4JhOMp5/LW0tqbSPcI
+	D8xb4q6n/4KIP5dJnl+Q7pwG0/mH6Vadbx+q9xHgopJ6RU0LMt+VEAUS/0DE5Zpr3d8BsAXuKpS
+	5KvCmXVjnN1lSMsJLgxK6Rn5GMekPPxw/fkD9
+X-Gm-Gg: AeBDieucpld5cdsTa8EE2btcOLxe3lTL/o2LZoshsOMTIEhPT6FNt1rP7PFowL3B/WZ
+	uwc2yoeLLUzU7oyS2jEPFZSnydmtE2uDj+HjYu5qXvVChV/uo+vt5FgciQSu6nf61gEqouQuRZl
+	U8UG7hSM08IOaM4QFA9otuyGqIdOQnUqJo6KNTaWTSHbt+pa7RMR/KNKOXNifjqu52DbimGKlF5
+	qkumK9vPx0DaYB1O6JwSgsGwVd2XNmAKZCgVn1edjJK3ItNefQdNHLZhEw/Zj16ldjMEuxrFduG
+	ibByDZ8UwLzdm71y3tON72BaCYMiCKmxLipJB3snA+0FjU7n12chs3430Msm1PHn3Mje0V/s1a6
+	5sAst/4eudC4QXsquoNWFh0/+FWFfs4X48fmZB0sj2k+TQY8H4BXe
+X-Received: by 2002:a05:651c:f09:b0:38e:2183:2282 with SMTP id 38308e7fff4ca-38e336c6bcfmr362581fa.23.1775661837328;
         Wed, 08 Apr 2026 08:23:57 -0700 (PDT)
 Received: from smtpservice.6wind.com ([185.13.181.2])
-        by smtp-relay.gmail.com with ESMTP id 38308e7fff4ca-38cd212d1b3sm17315841fa.13.2026.04.08.08.23.56;
+        by smtp-relay.gmail.com with ESMTP id 38308e7fff4ca-38cd1e159c9sm17305551fa.0.2026.04.08.08.23.57;
         Wed, 08 Apr 2026 08:23:57 -0700 (PDT)
 X-Relaying-Domain: 6wind.com
 Received: from stryper.dev.6wind.com (stryper.dev.6wind.com [10.17.2.5])
-	by smtpservice.6wind.com (Postfix) with ESMTP id A8D2327053;
+	by smtpservice.6wind.com (Postfix) with ESMTP id C746F27056;
 	Wed,  8 Apr 2026 17:23:56 +0200 (CEST)
 From: Louis Scalbert <louis.scalbert@6wind.com>
 To: netdev@vger.kernel.org
@@ -72,9 +72,9 @@ Cc: andrew+netdev@lunn.ch,
 	shemminger@vyatta.com,
 	maheshb@google.com,
 	Louis Scalbert <louis.scalbert@6wind.com>
-Subject: [PATCH net v3 2/5] bonding: 3ad: fix carrier when no valid slaves
-Date: Wed,  8 Apr 2026 17:23:50 +0200
-Message-Id: <20260408152353.276204-3-louis.scalbert@6wind.com>
+Subject: [PATCH net v3 5/5] selftests: bonding: add test for fallback mode
+Date: Wed,  8 Apr 2026 17:23:53 +0200
+Message-Id: <20260408152353.276204-6-louis.scalbert@6wind.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20260408152353.276204-1-louis.scalbert@6wind.com>
 References: <20260408152353.276204-1-louis.scalbert@6wind.com>
@@ -86,90 +86,332 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Apply the "lacp_fallback" configuration from the previous commit.
+Add a test for the bonding legacy and strict LACP fallback modes.
 
-"lacp_fallback" mode "strict" asserts that the bonding master carrier
-only when at least 'min_links' slaves are in the collecting/distributing
-state (or collecting only if the coupled_control default behavior is
-disabled).
-
-Fixes: 655f8919d549 ("bonding: add min links parameter to 802.3ad")
 Signed-off-by: Louis Scalbert <louis.scalbert@6wind.com>
 ---
- drivers/net/bonding/bond_3ad.c     | 26 ++++++++++++++++++++++++--
- drivers/net/bonding/bond_options.c |  1 +
- 2 files changed, 25 insertions(+), 2 deletions(-)
+ .../selftests/drivers/net/bonding/Makefile    |   1 +
+ .../drivers/net/bonding/bond_lacp_fallback.sh | 299 ++++++++++++++++++
+ 2 files changed, 300 insertions(+)
+ create mode 100755 tools/testing/selftests/drivers/net/bonding/bond_lacp_fallback.sh
 
-diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad.c
-index af7f74cfdc08..b79a76296966 100644
---- a/drivers/net/bonding/bond_3ad.c
-+++ b/drivers/net/bonding/bond_3ad.c
-@@ -745,6 +745,22 @@ static void __set_agg_ports_ready(struct aggregator *aggregator, int val)
- 	}
- }
- 
-+static int __agg_valid_ports(struct aggregator *agg)
+diff --git a/tools/testing/selftests/drivers/net/bonding/Makefile b/tools/testing/selftests/drivers/net/bonding/Makefile
+index 6c5c60adb5e8..a117bf2e483b 100644
+--- a/tools/testing/selftests/drivers/net/bonding/Makefile
++++ b/tools/testing/selftests/drivers/net/bonding/Makefile
+@@ -7,6 +7,7 @@ TEST_PROGS := \
+ 	bond-eth-type-change.sh \
+ 	bond-lladdr-target.sh \
+ 	bond_ipsec_offload.sh \
++	bond_lacp_fallback.sh \
+ 	bond_lacp_prio.sh \
+ 	bond_macvlan_ipvlan.sh \
+ 	bond_options.sh \
+diff --git a/tools/testing/selftests/drivers/net/bonding/bond_lacp_fallback.sh b/tools/testing/selftests/drivers/net/bonding/bond_lacp_fallback.sh
+new file mode 100755
+index 000000000000..a983a2c2ea17
+--- /dev/null
++++ b/tools/testing/selftests/drivers/net/bonding/bond_lacp_fallback.sh
+@@ -0,0 +1,299 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++#
++# Testing if bond lacp_fallback works
++#
++#          Partner (p_ns)
++#  +-------------------------+
++#  |          bond0          |
++#  |            +            |
++#  |      eth0  |  eth1      |
++#  |        +---+---+        |
++#  |        |       |        |
++#  +-------------------------+
++#           |       |
++#  +--------------------------+
++#  |        |       |         |
++#  |        +---+---+         |
++#  |      eth0  |  eth1       |
++#  |            +             |
++#  |          bond0           |
++#  +--------------------------+
++#         Dut (d_ns)
++
++lib_dir=$(dirname "$0")
++# shellcheck disable=SC1090
++source "$lib_dir"/../../../net/lib.sh
++
++COLLECTING_DISTRIBUTING_MASK=48
++COLLECTING_DISTRIBUTING=48
++FAILED=0
++
++setup_links()
 +{
-+	struct port *port;
-+	int valid = 0;
++	# shellcheck disable=SC2154
++	ip -n "${d_ns}" link add eth0 type veth peer name eth0 netns "${p_ns}"
++	ip -n "${d_ns}" link add eth1 type veth peer name eth1 netns "${p_ns}"
 +
-+	for (port = agg->lag_ports; port;
-+	     port = port->next_port_in_aggregator) {
-+		if (port->actor_oper_port_state & LACP_STATE_COLLECTING &&
-+		    (!port->slave->bond->params.coupled_control ||
-+		     port->actor_oper_port_state & LACP_STATE_DISTRIBUTING))
-+			valid++;
-+	}
++	ip -n "${d_ns}" link add bond0 type bond mode 802.3ad miimon 100 \
++		lacp_rate fast min_links 1
++	ip -n "${p_ns}" link add bond0 type bond mode 802.3ad miimon 100 \
++		lacp_rate fast min_links 1
 +
-+	return valid;
++	ip -n "${d_ns}" link set eth0 master bond0
++	ip -n "${d_ns}" link set eth1 master bond0
++	ip -n "${p_ns}" link set eth0 master bond0
++	ip -n "${p_ns}" link set eth1 master bond0
++
++	ip -n "${d_ns}" link set bond0 up
++	ip -n "${p_ns}" link set bond0 up
 +}
 +
- static int __agg_active_ports(struct aggregator *agg)
- {
- 	struct port *port;
-@@ -2120,6 +2136,7 @@ static void ad_enable_collecting_distributing(struct port *port,
- 			  port->actor_port_number,
- 			  port->aggregator->aggregator_identifier);
- 		__enable_port(port);
-+		bond_3ad_set_carrier(port->slave->bond);
- 		/* Slave array needs update */
- 		*update_slave_arr = true;
- 		/* Should notify peers if possible */
-@@ -2141,6 +2158,7 @@ static void ad_disable_collecting_distributing(struct port *port,
- 			  port->actor_port_number,
- 			  port->aggregator->aggregator_identifier);
- 		__disable_port(port);
-+		bond_3ad_set_carrier(port->slave->bond);
- 		/* Slave array needs an update */
- 		*update_slave_arr = true;
- 	}
-@@ -2819,8 +2837,12 @@ int bond_3ad_set_carrier(struct bonding *bond)
- 	}
- 	active = __get_active_agg(&(SLAVE_AD_INFO(first_slave)->aggregator));
- 	if (active) {
--		/* are enough slaves available to consider link up? */
--		if (__agg_active_ports(active) < bond->params.min_links) {
-+		/* are enough slaves in collecting (and distributing) state to consider
-+		 * link up?
-+		 */
-+		if ((bond->params.lacp_fallback ? __agg_valid_ports(active)
-+					: __agg_active_ports(active)) <
-+		    bond->params.min_links) {
- 			if (netif_carrier_ok(bond->dev)) {
- 				netif_carrier_off(bond->dev);
- 				goto out;
-diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
-index b672b8a881bb..d64a5d2f80b6 100644
---- a/drivers/net/bonding/bond_options.c
-+++ b/drivers/net/bonding/bond_options.c
-@@ -1706,6 +1706,7 @@ static int bond_option_lacp_fallback_set(struct bonding *bond,
- 	netdev_dbg(bond->dev, "Setting LACP fallback to %s (%llu)\n",
- 		   newval->string, newval->value);
- 	bond->params.lacp_fallback = newval->value;
-+	bond_3ad_set_carrier(bond);
- 
- 	return 0;
- }
++test_master_carrier() {
++	local expected=$1
++	local mode_name=$2
++	local carrier
++
++	carrier=$(ip netns exec "${d_ns}" cat /sys/class/net/bond0/carrier)
++	[ "$carrier" == "1" ] && carrier="up" || carrier="down"
++
++	[ "$carrier" == "$expected" ] && return
++
++	echo "FAIL: Expected carrier $expected in $mode_name mode, got $carrier"
++
++	RET=1
++
++}
++
++compare_state() {
++	local actual_state=$1
++	local expected_state=$2
++	local iface=$3
++	local last_attempt=$4
++
++    [ $((actual_state & COLLECTING_DISTRIBUTING_MASK)) -eq "$expected_state" ] \
++		&& return 0
++
++	[ "$last_attempt" -ne 1 ] && return 1
++
++	printf "FAIL: Expected LACP %s actor state to " "$iface"
++	if [ "$expected_state" -eq $COLLECTING_DISTRIBUTING ]; then
++		echo "be in Collecting/Distributing state"
++	else
++		echo "have neither Collecting nor Distributing set."
++	fi
++
++	return 1
++}
++
++_test_lacp_port_state() {
++	local interface=$1
++	local expected=$2
++	local last_attempt=$3
++	local eth0_actor_state eth1_actor_state
++	local ret=0
++
++	# shellcheck disable=SC2016
++	while IFS='=' read -r k v; do
++		printf -v "$k" '%s' "$v"
++	done < <(
++		ip netns exec "${d_ns}" awk '
++		/^Slave Interface: / { iface=$3 }
++		/details actor lacp pdu:/ { ctx="actor" }
++		/details partner lacp pdu:/ { ctx="partner" }
++		/^[[:space:]]+port state: / {
++			if (ctx == "actor") {
++				gsub(":", "", iface)
++				printf "%s_%s_state=%s\n", iface, ctx, $3
++			}
++		}
++		' /proc/net/bonding/bond0
++	)
++
++	if [ "$interface" == "eth0" ] || [ "$interface" == "both" ]; then
++		compare_state "$eth0_actor_state" "$expected" eth0 "$last_attempt" || ret=1
++	fi
++
++	if [ "$interface" == "eth1" ] || [ "$interface" == "both" ]; then
++		compare_state "$eth1_actor_state" "$expected" eth1 "$last_attempt" || ret=1
++	fi
++
++	return $ret
++}
++
++test_lacp_port_state() {
++	local interface=$1
++	local expected=$2
++	local retry=$3
++	local last_attempt=0
++	local attempt=1
++	local ret=1
++
++	while [ $attempt -le $((retry + 1)) ]; do
++		[ $attempt -eq $((retry + 1)) ] && last_attempt=1
++		_test_lacp_port_state "$interface" "$expected" "$last_attempt" && return
++		((attempt++))
++		sleep 1
++	done
++
++	RET=1
++}
++
++
++trap cleanup_all_ns EXIT
++setup_ns d_ns p_ns
++setup_links
++
++# Initial state
++RET=0
++mode=legacy
++test_lacp_port_state both $COLLECTING_DISTRIBUTING 3
++test_master_carrier up $mode
++log_test "bond LACP" "$mode fallback - eth0 and eth1 up"
++
++# partner eth0 down, eth1 up
++RET=0
++ip -n "${p_ns}" link set eth0 down
++test_lacp_port_state eth0 $FAILED 5
++test_lacp_port_state eth1 $COLLECTING_DISTRIBUTING 1
++test_master_carrier up $mode
++log_test "bond LACP" "$mode fallback - eth0 down"
++
++# partner eth0 and eth1 down
++RET=0
++ip -n "${p_ns}" link set eth1 down
++test_lacp_port_state both $FAILED 5
++test_master_carrier down $mode # down because of min_links
++log_test "bond LACP" "$mode fallback - eth0 and eth1 down"
++
++# partner eth0 up, eth1 down
++RET=0
++ip -n "${p_ns}" link set eth0 up
++test_lacp_port_state eth0 $COLLECTING_DISTRIBUTING 60
++test_lacp_port_state eth1 $FAILED 1
++test_master_carrier up $mode
++log_test "bond LACP" "$mode fallback - eth0 up, eth1 down"
++
++# partner eth0 and eth1 up
++RET=0
++ip -n "${p_ns}" link set eth1 up
++test_lacp_port_state both $COLLECTING_DISTRIBUTING 60
++test_master_carrier up $mode
++log_test "bond LACP" "$mode fallback - eth0 and eth1 up"
++
++# partner eth0 stops LACP and eth1 up
++RET=0
++ip netns exec "${p_ns}" tc qdisc add dev eth0 root netem loss 100%
++test_lacp_port_state eth0 $FAILED 5
++test_lacp_port_state eth1 $COLLECTING_DISTRIBUTING 1
++test_master_carrier up $mode
++log_test "bond LACP" "$mode fallback - eth0 stopped sending LACP"
++
++# partner eth0 and eth1 stop LACP
++RET=0
++ip netns exec "${p_ns}" tc qdisc add dev eth1 root netem loss 100%
++test_lacp_port_state both $FAILED 5
++test_master_carrier up $mode
++log_test "bond LACP" "$mode fallback - eth0 and eth1 stopped sending LACP"
++
++# switch to lacp_fallback strict
++RET=0
++mode=strict
++ip -n "${d_ns}" link set dev bond0 type bond lacp_fallback $mode
++test_lacp_port_state both $FAILED 1
++test_master_carrier down $mode 5
++log_test "bond LACP" "$mode fallback - eth0 and eth1 stopped sending LACP"
++
++# switch back to lacp_fallback legacy mode
++RET=0
++mode=legacy
++ip -n "${d_ns}" link set dev bond0 type bond lacp_fallback $mode
++test_lacp_port_state both $FAILED 1
++test_master_carrier up $mode
++log_test "bond LACP" "$mode fallback - eth0 and eth1 stopped sending LACP"
++
++# eth0 recovers LACP
++RET=0
++ip netns exec "${p_ns}" tc qdisc del dev eth0 root
++test_lacp_port_state eth0 $COLLECTING_DISTRIBUTING 60
++test_lacp_port_state eth1 $FAILED 1
++test_master_carrier up $mode
++log_test "bond LACP" "$mode fallback - eth0 recovered and eth1 stopped sending LACP"
++
++# eth1 recovers LACP
++RET=0
++ip netns exec "${p_ns}" tc qdisc del dev eth1 root
++test_lacp_port_state both $COLLECTING_DISTRIBUTING 60
++test_master_carrier up $mode
++log_test "bond LACP" "$mode fallback - eth0 and eth1 recovered LACP"
++
++# switch to lacp_fallback strict
++RET=0
++mode=strict
++ip -n "${d_ns}" link set dev bond0 type bond lacp_fallback $mode
++test_lacp_port_state both $COLLECTING_DISTRIBUTING 1
++test_master_carrier up $mode
++log_test "bond LACP" "$mode fallback - eth0 and eth1 up"
++
++# partner eth0 down, eth1 up
++RET=0
++ip -n "${p_ns}" link set eth0 down
++test_lacp_port_state eth0 $FAILED 5
++test_lacp_port_state eth1 $COLLECTING_DISTRIBUTING 1
++test_master_carrier up $mode
++log_test "bond LACP" "$mode fallback - eth0 down"
++
++# partner eth0 and eth1 down
++RET=0
++ip -n "${p_ns}" link set eth1 down
++test_lacp_port_state both $FAILED 5
++test_master_carrier down $mode # down because of min_links
++log_test "bond LACP" "$mode fallback - eth0 and eth1 down"
++
++# partner eth0 up, eth1 down
++RET=0
++ip -n "${p_ns}" link set eth0 up
++test_lacp_port_state eth0 $COLLECTING_DISTRIBUTING 60
++test_lacp_port_state eth1 $FAILED 1
++test_master_carrier up $mode
++log_test "bond LACP" "$mode fallback - eth0 up, eth1 down"
++
++# partner eth0 and eth1 up
++RET=0
++ip -n "${p_ns}" link set eth1 up
++test_lacp_port_state both $COLLECTING_DISTRIBUTING 60
++test_master_carrier up $mode
++log_test "bond LACP" "$mode fallback - eth0 and eth1 up"
++
++# partner eth0 stops LACP and eth1 up
++RET=0
++ip netns exec "${p_ns}" tc qdisc add dev eth0 root netem loss 100%
++test_lacp_port_state eth0 $FAILED 5
++test_lacp_port_state eth1 $COLLECTING_DISTRIBUTING 1
++test_master_carrier up $mode
++log_test "bond LACP" "$mode fallback - eth0 stopped sending LACP"
++
++# partner eth0 and eth1 stop LACP
++RET=0
++ip netns exec "${p_ns}" tc qdisc add dev eth1 root netem loss 100%
++test_lacp_port_state both $FAILED 5
++test_master_carrier down $mode
++log_test "bond LACP" "$mode fallback - eth0 and eth1 stopped sending LACP"
++
++# eth0 recovers LACP
++RET=0
++ip netns exec "${p_ns}" tc qdisc del dev eth0 root
++test_lacp_port_state eth0 $COLLECTING_DISTRIBUTING 60
++test_lacp_port_state eth1 $FAILED 1
++test_master_carrier up $mode
++log_test "bond LACP" "$mode fallback - eth0 recovered and eth1 stopped sending LACP"
++
++# eth1 recovers LACP
++# shellcheck disable=SC2034
++RET=0
++ip netns exec "${p_ns}" tc qdisc del dev eth1 root
++test_lacp_port_state both $COLLECTING_DISTRIBUTING 60
++test_master_carrier up $mode
++log_test "bond LACP" "$mode fallback - eth0 and eth1 recovered LACP"
++
++exit "${EXIT_STATUS}"
 -- 
 2.39.2
 
