@@ -1,74 +1,80 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB10140DFD4;
-	Wed,  8 Apr 2026 02:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5E76BB5B
+	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 02:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775613949; cv=none; b=s9ePOlGi9dq+AGlx7zB8t+kx2zTEnhHX/Kjd/qSwOY28gY79FnhjU7eEMMzvzizUTxMCUknTCxS8Peo9vRAjhRAM2BImOAfg3ArPWk4W+us6sd4XPHnSPph52w2IDpnW32HChh4GfOfDE1Vj7pvnFUaA36t/ZfTyQ/Jsj6VwCJE=
+	t=1775614228; cv=none; b=ffhJcO2LcW61fzIGcy6u/8X69HlYIm0nfXunTwmkga9gjUeic1CuUQ2MI/ba3wLNxbkSas/jK4vjGQqFy5OsYnzzynbTtPmCDSB5n1QCo7cQ4US8BzJv4+pL0s0yKNnnAMnE9YSD0NBFoLTm5e4xKo8RDBhPcAARrlH9bJlGB9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775613949; c=relaxed/simple;
-	bh=+S192f3QP9XZqLQ97QB/j90cy/1VAHKN3hjjmXLtlec=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UXqhc7rc+OgP+/HtHWm0XbY6qjvym9Xk0BeFghGC/97R36skRyDWyBLcjTnd4FxN/GMewF2YJmdumTZ+OYj2/ot6vOh3ssWp4XsYX1vk+tR6/pvlrjfQZ38mjHJwEMrlC06qlCZWp6mrVXWLnXgZx1k2RkHZfsuXx+OshSN45Bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DxHrx0il; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775614228; c=relaxed/simple;
+	bh=QGzb3TvC2braq/ZHHqMKVMEInY5gAWpgk5WdrntQf+I=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=ncpSDlNd5GvPmjYks0fH3HUY2GEIF3l6TYhd3jOPua7ykFnDC/tJ3OBhm8vfwl8VUx3q5J1fqUVk0tqn8cyy0uuJ0nZAMmC89/3hYWU+Tv4sPvbknZbbftgwqnmiRCN//viwEItJ2G/yGTVy9UBBC3pS6WEIkvcfXjIQR6MGHvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S8DBnFAd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DxHrx0il"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE4DC116C6;
-	Wed,  8 Apr 2026 02:05:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S8DBnFAd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FC96C116C6;
+	Wed,  8 Apr 2026 02:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775613949;
-	bh=+S192f3QP9XZqLQ97QB/j90cy/1VAHKN3hjjmXLtlec=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DxHrx0ilVSVXvTlIo6hw6GCfdCU+tBKVSvENWmSBsMsWA2WyI9ojKwN13y4mfwm+0
-	 /1wH0WtcpTZWQQXp13Rk9EA286PWYBs2/vfFDXPiQos2hPSmzVmVOnJeQq7CmOZ4ob
-	 3L9UjKXaAaAFd5kdZpMzqZWGkYxMBcmt4L4UYBy31rIcQ9KYyP8lFbp6G/uMP4Fzlt
-	 Q65j4B+GtRto17SA6i22B5+cMLcllJNtjG+5ZFmI/IaEP0/DYMTMmVa8VIOqm3ShPS
-	 295Uq4WXLZndRJzxcg1zdi1NTNNPrXTbrtwBioHoR+VOprM8+1pcfmpwZmK+UrpuEN
-	 yISSkyKKEeV7Q==
-Date: Tue, 7 Apr 2026 19:05:47 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Chris J Arges <carges@cloudflare.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
- kernel-team@cloudflare.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: Add net_cookie to Dead loop messages
-Message-ID: <20260407190547.4225c1f4@kernel.org>
-In-Reply-To: <20260403221352.186383-1-carges@cloudflare.com>
-References: <20260403221352.186383-1-carges@cloudflare.com>
+	s=k20201202; t=1775614227;
+	bh=QGzb3TvC2braq/ZHHqMKVMEInY5gAWpgk5WdrntQf+I=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=S8DBnFAdXKr/0KBTlaK0WDrD8M00rtHco1F/Qmb1QRwwxoeVvNhrm7R1OPWTsWsIl
+	 JcbofvMPkbLSCJu3/EQ6gGTqf+lAF6s0dJb5qM0PvE2gWYlx5kCFSk7sbrcQsn/2ko
+	 hDDTgGQ/O/YCkzQ46UVhZa/p2pDXUpGwYDTThzD62Z9fgSSmOmg0TRRWKQImFA/rtp
+	 odPhQAjJdBnbrGpR6uTMJ2iSkCBC+Nf9PW58A4oB3niqnPjDcSWOSt6ZFD0Jz4H6Xi
+	 CImqdQyfXz5+ySNkBqZbWcplAZaiwTbOawD254ZBFyB9ysrmpWHCj/OTVRhouMwN1y
+	 RgpI2UCIa969A==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02BB43809A3D;
+	Wed,  8 Apr 2026 02:10:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: avoid nul-deref trying to bind mp to incapable
+ device
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177561420483.39088.16493247026502045434.git-patchwork-notify@kernel.org>
+Date: Wed, 08 Apr 2026 02:10:04 +0000
+References: <20260404001938.2425670-1-kuba@kernel.org>
+In-Reply-To: <20260404001938.2425670-1-kuba@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, sdf@fomichev.me,
+ almasrymina@google.com, daniel@iogearbox.net
 
-On Fri,  3 Apr 2026 17:13:39 -0500 Chris J Arges wrote:
-> Network devices can have the same name within different network namespaces.
-> To help distinguish these devices, add the net_cookie value which can be
-> used to identify the netns.
+Hello:
 
-Doesn't apply, please respin?
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Applying: net: Add net_cookie to Dead loop messages
-Using index info to reconstruct a base tree...
-M	net/core/dev.c
-M	net/ipv4/ip_tunnel_core.c
-Falling back to patching base and 3-way merge...
-Auto-merging net/core/dev.c
-CONFLICT (content): Merge conflict in net/core/dev.c
-Auto-merging net/ipv4/ip_tunnel_core.c
-Recorded preimage for 'net/core/dev.c'
-error: Failed to merge in the changes.
-hint: Use 'git am --show-current-patch=diff' to see the failed patch
-hint: When you have resolved this problem, run "git am --continue".
-hint: If you prefer to skip this patch, run "git am --skip" instead.
-hint: To restore the original branch and stop patching, run "git am --abort".
-hint: Disable this message with "git config set advice.mergeConflict false"
-Patch failed at 0001 net: Add net_cookie to Dead loop messages
+On Fri,  3 Apr 2026 17:19:38 -0700 you wrote:
+> Sashiko points out that we use qops in __net_mp_open_rxq()
+> but never validate they are null. This was introduced when
+> check was moved from netdev_rx_queue_restart().
+> 
+> Look at ops directly instead of the locking config.
+> qops imply netdev_need_ops_lock(). We used netdev_need_ops_lock()
+> initially to signify that the real_num_rx_queues check below
+> is safe without rtnl_lock, but I'm not sure if this is actually
+> clear to most people, anyway.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net] net: avoid nul-deref trying to bind mp to incapable device
+    https://git.kernel.org/netdev/net/c/944b3b734cfb
+
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
