@@ -1,175 +1,326 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from out28-145.mail.aliyun.com (out28-145.mail.aliyun.com [115.124.28.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38223B27FF
-	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 09:43:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED803793BE;
+	Wed,  8 Apr 2026 09:43:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775641408; cv=none; b=PIUPWFFCxP8+YHWtFZs6dlN25EBPbh8YtcSSYODshyTwW9Mz2Olj/VY/HXS6Ca9CWWDDcsTVDFCqWjBBSRZwWZuBzz8xwtfyOfD2kjCbieAzNd5Kg5+CwpPsi5X2b4gyMfO4vKBPdurDytUfOAxoPwq9nfmrJ6Jkn1Na+5zMxAI=
+	t=1775641414; cv=none; b=Of9lB9JHsep07HCvzcYojBqcGbaoJNm0vdnpBPS4MK0dw6Wm2fW0U5nLgPWOqDngDPspWTVHkXdKEJzIQ2RZxghnOVoPIIQEV4U4aWd0Caty5L8gh+2zPxsJSSwfBFBULxZXkzNz271yTiy0Rt/OHBUThTH9NfFoAGR9CqjXW84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775641408; c=relaxed/simple;
-	bh=42cTnhbRNXDI42kmq2UqvJhTgEsYYP6zV+heY4u/ph4=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=WwzSum77qaCZGDloSoFVyT+x+0BcgdxqVoPM/1zpVoOTs6BtuUtivDg5AR9mUJExLNARNKIEFSEhfFj7OdTLiaqutnzAWejsS8NEG8De+GFJbRyQ2NcXmhxQt7eu3zurlXutwV1aUv/dRSEiXWhy+WVHv74HBnsk3hs1rVtixmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=pMmFVqfW; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="pMmFVqfW"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=dtVN72wGnZ6TO0cAYb5J7S2eJNnpZu9n4ngwxR3LA7o=; b=pMmFVqfW9d0y0Vunkjgw90tppX
-	e6SHEF9NLrmIAYbhuF6NYMuzwDOppOsK4e22goBrdIiKzvwduIXBRma6wH5ml1NdEv6wFPF46mgjY
-	ZjleLyH++ly3sn9TqN8TkvoxEpyRVEG/JnAG40jPB6MfzSIA1BCj91LVWhBomWJMcd4iaFjqmE6cF
-	6tn+0yEbovFt6d5tYDwYkcYq2HfcBD6VTd78TXwFg0EDFcrcCsX1oCgXHy24shjczrNA34YJABqLq
-	bWPkQB0TU6h7mui5mHBwDdhMZcH/sVs+TMusmJGUn/E/oJ+/eW9OAIhWiXviE4E+XFLAb9rge0YTg
-	vYTvPrrg==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:33734 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1wAPC7-00000000244-1u7L;
-	Wed, 08 Apr 2026 10:27:31 +0100
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1wAPBw-0000000F7kf-0VA5;
-	Wed, 08 Apr 2026 10:27:20 +0100
-In-Reply-To: <adYfPBHsXxQUsMyr@shell.armlinux.org.uk>
-References: <adYfPBHsXxQUsMyr@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jitendra Vegiraju <jitendra.vegiraju@broadcom.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-sunxi@lists.linux.dev,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Samuel Holland <samuel@sholland.org>
-Subject: [PATCH RFC net-next 08/10] net: stmmac: simplify
- stmmac_get_ethtool_stats()
+	s=arc-20240116; t=1775641414; c=relaxed/simple;
+	bh=3lzBQ/rO60vuv11LtCc51sIVP0MITKgaiYEKz87xmRM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qCpQx1XJwTaaNnjZrIgDrby/HShEC7n2Jz934Qh7d0TAZY6MQkQzUrx8LOE5xbK40MRqW1X1J73Xk8oC6c+QC7dkqEWBe85zU81QNbZleOijJxT1Exzv/rZNGDz4aesVskSVLswfQS9pZb69hIW1efUkeZZfXcBvBlplbFmX9LY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=115.124.28.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06712908|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.096439-0.0193839-0.884177;FP=17472118401953956852|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037022039;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=19;RT=19;SR=0;TI=SMTPD_---.h7LIHsB_1775641077;
+Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.h7LIHsB_1775641077 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Wed, 08 Apr 2026 17:37:58 +0800
+From: "illusion.wang" <illusion.wang@nebula-matrix.com>
+To: dimon.zhao@nebula-matrix.com,
+	illusion.wang@nebula-matrix.com,
+	alvin.wang@nebula-matrix.com,
+	sam.chen@nebula-matrix.com,
+	netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	corbet@lwn.net,
+	kuba@kernel.org,
+	linux-doc@vger.kernel.org,
+	lorenzo@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	vadim.fedorenko@linux.dev,
+	lukas.bulwahn@redhat.com,
+	edumazet@google.com,
+	enelsonmoore@gmail.com,
+	skhan@linuxfoundation.org,
+	hkallweit1@gmail.com,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v11 net-next 04/11] net/nebula-matrix: channel msg value and msg struct
+Date: Wed,  8 Apr 2026 17:37:28 +0800
+Message-ID: <20260408093739.56001-5-illusion.wang@nebula-matrix.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260408093739.56001-1-illusion.wang@nebula-matrix.com>
+References: <20260408093739.56001-1-illusion.wang@nebula-matrix.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1wAPBw-0000000F7kf-0VA5@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Wed, 08 Apr 2026 10:27:20 +0100
 
-As documented, stmmac_dma_diagnostic_fr() will return non-zero for
-all non-DWMAC_CORE_MAC100 core types.
+For compatibility, the msg id value is fixed, and each msg struct can
+only have fields added (not removed), new fields must be  added at
+the end.
 
-However, as DWMAC_CORE_MAC100 core types do not have DMA capabilities,
-priv->dma_cap.rmon and priv->dma_cap.eee will be zero, and thus there
-is no need to make this also conditional on the
-stmmac_dma_diagnostic_fr() return value.
-
-Remove this test and unindent the code, and remove unnecessary parens.
-
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: illusion.wang <illusion.wang@nebula-matrix.com>
 ---
- .../ethernet/stmicro/stmmac/stmmac_ethtool.c  | 60 +++++++++----------
- 1 file changed, 28 insertions(+), 32 deletions(-)
+ .../nbl/nbl_include/nbl_def_channel.h         | 249 ++++++++++++++++++
+ 1 file changed, 249 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-index 0caa5b992519..77cb67f4c63c 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-@@ -519,9 +519,9 @@ static void stmmac_get_ethtool_stats(struct net_device *dev,
- 	u32 rx_queues_count = priv->plat->rx_queues_to_use;
- 	u32 tx_queues_count = priv->plat->tx_queues_to_use;
- 	u64 napi_poll = 0, normal_irq_n = 0;
--	int i, j = 0, pos, ret;
- 	unsigned long count;
- 	unsigned int start;
-+	int i, j = 0, pos;
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h
+index ff03a53b9f5d..99e1d8455e0e 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h
+@@ -8,6 +8,255 @@
  
- 	if (priv->dma_cap.asp) {
- 		for (i = 0; i < STMMAC_SAFETY_FEAT_SIZE; i++) {
-@@ -531,42 +531,38 @@ static void stmmac_get_ethtool_stats(struct net_device *dev,
- 		}
- 	}
- 
--	/* Update the DMA HW counters for dwmac10/100 (DWMAC_CORE_MAC100),
--	 * where this will return zero. Other core types will have a non-zero
--	 * return value.
--	 */
--	ret = stmmac_dma_diagnostic_fr(priv, &priv->xstats, priv->ioaddr);
--	if (ret) {
--		/* If supported, for new GMAC chips expose the MMC counters */
--		if (priv->dma_cap.rmon) {
--			stmmac_mmc_read(priv, priv->mmcaddr, &priv->mmc);
-+	/* Update the DMA HW counters for dwmac10/100 (DWMAC_CORE_MAC100). */
-+	stmmac_dma_diagnostic_fr(priv, &priv->xstats, priv->ioaddr);
- 
--			for (i = 0; i < STMMAC_MMC_STATS_LEN; i++) {
--				char *p;
--				p = (char *)priv + stmmac_mmc[i].stat_offset;
-+	/* If supported, for new GMAC chips expose the MMC counters */
-+	if (priv->dma_cap.rmon) {
-+		stmmac_mmc_read(priv, priv->mmcaddr, &priv->mmc);
- 
--				data[j++] = (stmmac_mmc[i].sizeof_stat ==
--					     sizeof(u64)) ? (*(u64 *)p) :
--					     (*(u32 *)p);
--			}
--		}
--		if (priv->dma_cap.eee) {
--			int val = phylink_get_eee_err(priv->phylink);
--			if (val)
--				priv->xstats.phy_eee_wakeup_error_n = val;
-+		for (i = 0; i < STMMAC_MMC_STATS_LEN; i++) {
-+			char *p = (char *)priv + stmmac_mmc[i].stat_offset;
+ struct nbl_channel_mgt;
+ struct nbl_adapter;
++enum nbl_chan_msg_type {
++	NBL_CHAN_MSG_ACK,
++	NBL_CHAN_MSG_ADD_MACVLAN,
++	NBL_CHAN_MSG_DEL_MACVLAN,
++	NBL_CHAN_MSG_ADD_MULTI_RULE,
++	NBL_CHAN_MSG_DEL_MULTI_RULE,
++	NBL_CHAN_MSG_SETUP_MULTI_GROUP,
++	NBL_CHAN_MSG_REMOVE_MULTI_GROUP,
++	NBL_CHAN_MSG_REGISTER_NET,
++	NBL_CHAN_MSG_UNREGISTER_NET,
++	NBL_CHAN_MSG_ALLOC_TXRX_QUEUES,
++	NBL_CHAN_MSG_FREE_TXRX_QUEUES,
++	NBL_CHAN_MSG_SETUP_QUEUE,
++	NBL_CHAN_MSG_REMOVE_ALL_QUEUES,
++	NBL_CHAN_MSG_CFG_DSCH,
++	NBL_CHAN_MSG_SETUP_CQS,
++	NBL_CHAN_MSG_REMOVE_CQS,
++	NBL_CHAN_MSG_CFG_QDISC_MQPRIO,
++	NBL_CHAN_MSG_CONFIGURE_MSIX_MAP,
++	NBL_CHAN_MSG_DESTROY_MSIX_MAP,
++	NBL_CHAN_MSG_MAILBOX_ENABLE_IRQ,
++	NBL_CHAN_MSG_GET_GLOBAL_VECTOR,
++	NBL_CHAN_MSG_GET_VSI_ID,
++	NBL_CHAN_MSG_SET_PROSISC_MODE,
++	NBL_CHAN_MSG_GET_FIRMWARE_VERSION,
++	NBL_CHAN_MSG_GET_QUEUE_ERR_STATS,
++	NBL_CHAN_MSG_GET_COALESCE,
++	NBL_CHAN_MSG_SET_COALESCE,
++	NBL_CHAN_MSG_SET_SPOOF_CHECK_ADDR,
++	NBL_CHAN_MSG_SET_VF_SPOOF_CHECK,
++	NBL_CHAN_MSG_GET_RXFH_INDIR_SIZE,
++	NBL_CHAN_MSG_GET_RXFH_INDIR,
++	NBL_CHAN_MSG_GET_RXFH_RSS_KEY,
++	NBL_CHAN_MSG_GET_RXFH_RSS_ALG_SEL,
++	NBL_CHAN_MSG_GET_HW_CAPS,
++	NBL_CHAN_MSG_GET_HW_STATE,
++	NBL_CHAN_MSG_REGISTER_RDMA,
++	NBL_CHAN_MSG_UNREGISTER_RDMA,
++	NBL_CHAN_MSG_GET_REAL_HW_ADDR,
++	NBL_CHAN_MSG_GET_REAL_BDF,
++	NBL_CHAN_MSG_GRC_PROCESS,
++	NBL_CHAN_MSG_SET_SFP_STATE,
++	NBL_CHAN_MSG_SET_ETH_LOOPBACK,
++	NBL_CHAN_MSG_CHECK_ACTIVE_VF,
++	NBL_CHAN_MSG_GET_PRODUCT_FLEX_CAP,
++	NBL_CHAN_MSG_ALLOC_KTLS_TX_INDEX,
++	NBL_CHAN_MSG_FREE_KTLS_TX_INDEX,
++	NBL_CHAN_MSG_CFG_KTLS_TX_KEYMAT,
++	NBL_CHAN_MSG_ALLOC_KTLS_RX_INDEX,
++	NBL_CHAN_MSG_FREE_KTLS_RX_INDEX,
++	NBL_CHAN_MSG_CFG_KTLS_RX_KEYMAT,
++	NBL_CHAN_MSG_CFG_KTLS_RX_RECORD,
++	NBL_CHAN_MSG_ADD_KTLS_RX_FLOW,
++	NBL_CHAN_MSG_DEL_KTLS_RX_FLOW,
++	NBL_CHAN_MSG_ALLOC_IPSEC_TX_INDEX,
++	NBL_CHAN_MSG_FREE_IPSEC_TX_INDEX,
++	NBL_CHAN_MSG_ALLOC_IPSEC_RX_INDEX,
++	NBL_CHAN_MSG_FREE_IPSEC_RX_INDEX,
++	NBL_CHAN_MSG_CFG_IPSEC_TX_SAD,
++	NBL_CHAN_MSG_CFG_IPSEC_RX_SAD,
++	NBL_CHAN_MSG_ADD_IPSEC_TX_FLOW,
++	NBL_CHAN_MSG_DEL_IPSEC_TX_FLOW,
++	NBL_CHAN_MSG_ADD_IPSEC_RX_FLOW,
++	NBL_CHAN_MSG_DEL_IPSEC_RX_FLOW,
++	NBL_CHAN_MSG_NOTIFY_IPSEC_HARD_EXPIRE,
++	NBL_CHAN_MSG_GET_MBX_IRQ_NUM,
++	NBL_CHAN_MSG_CLEAR_FLOW,
++	NBL_CHAN_MSG_CLEAR_QUEUE,
++	NBL_CHAN_MSG_GET_ETH_ID,
++	NBL_CHAN_MSG_SET_OFFLOAD_STATUS,
++	NBL_CHAN_MSG_INIT_OFLD,
++	NBL_CHAN_MSG_INIT_CMDQ,
++	NBL_CHAN_MSG_DESTROY_CMDQ,
++	NBL_CHAN_MSG_RESET_CMDQ,
++	NBL_CHAN_MSG_INIT_FLOW,
++	NBL_CHAN_MSG_DEINIT_FLOW,
++	NBL_CHAN_MSG_OFFLOAD_FLOW_RULE,
++	NBL_CHAN_MSG_GET_ACL_SWITCH,
++	NBL_CHAN_MSG_GET_VSI_GLOBAL_QUEUE_ID,
++	NBL_CHAN_MSG_INIT_REP,
++	NBL_CHAN_MSG_GET_LINE_RATE_INFO,
++	NBL_CHAN_MSG_REGISTER_NET_REP,
++	NBL_CHAN_MSG_UNREGISTER_NET_REP,
++	NBL_CHAN_MSG_REGISTER_ETH_REP,
++	NBL_CHAN_MSG_UNREGISTER_ETH_REP,
++	NBL_CHAN_MSG_REGISTER_UPCALL_PORT,
++	NBL_CHAN_MSG_UNREGISTER_UPCALL_PORT,
++	NBL_CHAN_MSG_GET_PORT_STATE,
++	NBL_CHAN_MSG_SET_PORT_ADVERTISING,
++	NBL_CHAN_MSG_GET_MODULE_INFO,
++	NBL_CHAN_MSG_GET_MODULE_EEPROM,
++	NBL_CHAN_MSG_GET_LINK_STATE,
++	NBL_CHAN_MSG_NOTIFY_LINK_STATE,
++	NBL_CHAN_MSG_GET_QUEUE_CXT,
++	NBL_CHAN_MSG_CFG_LOG,
++	NBL_CHAN_MSG_INIT_VDPAQ,
++	NBL_CHAN_MSG_DESTROY_VDPAQ,
++	NBL_CHAN_MSG_GET_UPCALL_PORT,
++	NBL_CHAN_MSG_NOTIFY_ETH_REP_LINK_STATE,
++	NBL_CHAN_MSG_SET_ETH_MAC_ADDR,
++	NBL_CHAN_MSG_GET_FUNCTION_ID,
++	NBL_CHAN_MSG_GET_CHIP_TEMPERATURE,
++	NBL_CHAN_MSG_DISABLE_HW_FLOW,
++	NBL_CHAN_MSG_ENABLE_HW_FLOW,
++	NBL_CHAN_MSG_SET_UPCALL_RULE,
++	NBL_CHAN_MSG_UNSET_UPCALL_RULE,
++	NBL_CHAN_MSG_GET_REG_DUMP,
++	NBL_CHAN_MSG_GET_REG_DUMP_LEN,
++	NBL_CHAN_MSG_CFG_LAG_HASH_ALGORITHM,
++	NBL_CHAN_MSG_CFG_LAG_MEMBER_FWD,
++	NBL_CHAN_MSG_CFG_LAG_MEMBER_LIST,
++	NBL_CHAN_MSG_CFG_LAG_MEMBER_UP_ATTR,
++	NBL_CHAN_MSG_ADD_LAG_FLOW,
++	NBL_CHAN_MSG_DEL_LAG_FLOW,
++	NBL_CHAN_MSG_SWITCHDEV_INIT_CMDQ,
++	NBL_CHAN_MSG_SWITCHDEV_DEINIT_CMDQ,
++	NBL_CHAN_MSG_SET_TC_FLOW_INFO,
++	NBL_CHAN_MSG_UNSET_TC_FLOW_INFO,
++	NBL_CHAN_MSG_INIT_ACL,
++	NBL_CHAN_MSG_UNINIT_ACL,
++	NBL_CHAN_MSG_CFG_LAG_MCC,
++	NBL_CHAN_MSG_REGISTER_VSI2Q,
++	NBL_CHAN_MSG_SETUP_Q2VSI,
++	NBL_CHAN_MSG_REMOVE_Q2VSI,
++	NBL_CHAN_MSG_SETUP_RSS,
++	NBL_CHAN_MSG_REMOVE_RSS,
++	NBL_CHAN_MSG_GET_REP_QUEUE_INFO,
++	NBL_CHAN_MSG_CTRL_PORT_LED,
++	NBL_CHAN_MSG_NWAY_RESET,
++	NBL_CHAN_MSG_SET_INTL_SUPPRESS_LEVEL,
++	NBL_CHAN_MSG_GET_ETH_STATS,
++	NBL_CHAN_MSG_GET_MODULE_TEMPERATURE,
++	NBL_CHAN_MSG_GET_BOARD_INFO,
++	NBL_CHAN_MSG_GET_P4_USED,
++	NBL_CHAN_MSG_GET_VF_BASE_VSI_ID,
++	NBL_CHAN_MSG_ADD_LLDP_FLOW,
++	NBL_CHAN_MSG_DEL_LLDP_FLOW,
++	NBL_CHAN_MSG_CFG_ETH_BOND_INFO,
++	NBL_CHAN_MSG_CFG_DUPPKT_MCC,
++	NBL_CHAN_MSG_ADD_ND_UPCALL_FLOW,
++	NBL_CHAN_MSG_DEL_ND_UPCALL_FLOW,
++	NBL_CHAN_MSG_GET_BOARD_ID,
++	NBL_CHAN_MSG_SET_SHAPING_DPORT_VLD,
++	NBL_CHAN_MSG_SET_DPORT_FC_TH_VLD,
++	NBL_CHAN_MSG_REGISTER_RDMA_BOND,
++	NBL_CHAN_MSG_UNREGISTER_RDMA_BOND,
++	NBL_CHAN_MSG_RESTORE_NETDEV_QUEUE,
++	NBL_CHAN_MSG_RESTART_NETDEV_QUEUE,
++	NBL_CHAN_MSG_RESTORE_HW_QUEUE,
++	NBL_CHAN_MSG_KEEP_ALIVE,
++	NBL_CHAN_MSG_GET_BASE_MAC_ADDR,
++	NBL_CHAN_MSG_CFG_BOND_SHAPING,
++	NBL_CHAN_MSG_CFG_BGID_BACK_PRESSURE,
++	NBL_CHAN_MSG_ALLOC_KT_BLOCK,
++	NBL_CHAN_MSG_FREE_KT_BLOCK,
++	NBL_CHAN_MSG_GET_USER_QUEUE_INFO,
++	NBL_CHAN_MSG_GET_ETH_BOND_INFO,
++	NBL_CHAN_MSG_CLEAR_ACCEL_FLOW,
++	NBL_CHAN_MSG_SET_BRIDGE_MODE,
++	NBL_CHAN_MSG_GET_VF_FUNCTION_ID,
++	NBL_CHAN_MSG_NOTIFY_LINK_FORCED,
++	NBL_CHAN_MSG_SET_PMD_DEBUG,
++	NBL_CHAN_MSG_REGISTER_FUNC_MAC,
++	NBL_CHAN_MSG_SET_TX_RATE,
++	NBL_CHAN_MSG_REGISTER_FUNC_LINK_FORCED,
++	NBL_CHAN_MSG_GET_LINK_FORCED,
++	NBL_CHAN_MSG_REGISTER_FUNC_VLAN,
++	NBL_CHAN_MSG_GET_FD_FLOW,
++	NBL_CHAN_MSG_GET_FD_FLOW_CNT,
++	NBL_CHAN_MSG_GET_FD_FLOW_ALL,
++	NBL_CHAN_MSG_GET_FD_FLOW_MAX,
++	NBL_CHAN_MSG_REPLACE_FD_FLOW,
++	NBL_CHAN_MSG_REMOVE_FD_FLOW,
++	NBL_CHAN_MSG_CFG_FD_FLOW_STATE,
++	NBL_CHAN_MSG_REGISTER_FUNC_RATE,
++	NBL_CHAN_MSG_NOTIFY_VLAN,
++	NBL_CHAN_MSG_GET_XDP_QUEUE_INFO,
++	NBL_CHAN_MSG_STOP_ABNORMAL_SW_QUEUE,
++	NBL_CHAN_MSG_STOP_ABNORMAL_HW_QUEUE,
++	NBL_CHAN_MSG_NOTIFY_RESET_EVENT,
++	NBL_CHAN_MSG_ACK_RESET_EVENT,
++	NBL_CHAN_MSG_GET_VF_VSI_ID,
++	NBL_CHAN_MSG_CONFIGURE_QOS,
++	NBL_CHAN_MSG_GET_PFC_BUFFER_SIZE,
++	NBL_CHAN_MSG_SET_PFC_BUFFER_SIZE,
++	NBL_CHAN_MSG_GET_VF_STATS,
++	NBL_CHAN_MSG_REGISTER_FUNC_TRUST,
++	NBL_CHAN_MSG_NOTIFY_TRUST,
++	NBL_CHAN_MSG_CHECK_VF_IS_ACTIVE,
++	NBL_CHAN_MSG_GET_ETH_ABNORMAL_STATS,
++	NBL_CHAN_MSG_GET_ETH_CTRL_STATS,
++	NBL_CHAN_MSG_GET_PAUSE_STATS,
++	NBL_CHAN_MSG_GET_ETH_MAC_STATS,
++	NBL_CHAN_MSG_GET_FEC_STATS,
++	NBL_CHAN_MSG_CFG_MULTI_MCAST_RULE,
++	NBL_CHAN_MSG_GET_LINK_DOWN_COUNT,
++	NBL_CHAN_MSG_GET_LINK_STATUS_OPCODE,
++	NBL_CHAN_MSG_GET_RMON_STATS,
++	NBL_CHAN_MSG_REGISTER_PF_NAME,
++	NBL_CHAN_MSG_GET_PF_NAME,
++	NBL_CHAN_MSG_CONFIGURE_RDMA_BW,
++	NBL_CHAN_MSG_SET_RATE_LIMIT,
++	NBL_CHAN_MSG_SET_TC_WGT,
++	NBL_CHAN_MSG_REMOVE_QUEUE,
++	NBL_CHAN_MSG_GET_MIRROR_TABLE_ID,
++	NBL_CHAN_MSG_CONFIGURE_MIRROR,
++	NBL_CHAN_MSG_CONFIGURE_MIRROR_TABLE,
++	NBL_CHAN_MSG_CLEAR_MIRROR_CFG,
++	NBL_CHAN_MSG_MIRROR_OUTPUTPORT_NOTIFY,
++	NBL_CHAN_MSG_CHECK_FLOWTABLE_SPEC,
++	NBL_CHAN_MSG_CHECK_VF_IS_VDPA,
++	NBL_CHAN_MSG_GET_VDPA_VF_STATS,
++	NBL_CHAN_MSG_SET_RX_RATE,
++	NBL_CHAN_MSG_GET_UVN_PKT_DROP_STATS,
++	NBL_CHAN_MSG_GET_USTORE_PKT_DROP_STATS,
++	NBL_CHAN_MSG_GET_USTORE_TOTAL_PKT_DROP_STATS,
++	NBL_CHAN_MSG_SET_WOL,
++	NBL_CHAN_MSG_INIT_VF_MSIX_MAP,
++	NBL_CHAN_MSG_GET_ST_NAME,
++	NBL_CHAN_MSG_MTU_SET = 501,
++	NBL_CHAN_MSG_SET_RXFH_INDIR = 506,
++	NBL_CHAN_MSG_SET_RXFH_RSS_ALG_SEL = 508,
++	/* mailbox msg end */
++	NBL_CHAN_MSG_MAILBOX_MAX,
++};
 +
-+			data[j++] = stmmac_mmc[i].sizeof_stat == sizeof(u64) ?
-+				    *(u64 *)p : *(u32 *)p;
- 		}
-+	}
- 
--		/* Only dwmac1000 and dwmac4 implements the MAC .debug() method.
--		 * As there are different version spaces depending on core_type,
--		 * make this conditional on the appropriate core type.
--		 */
--		if ((priv->plat->core_type == DWMAC_CORE_GMAC ||
--		     priv->plat->core_type == DWMAC_CORE_GMAC4) &&
--		    priv->snpsver >= DWMAC_CORE_3_50)
--			stmmac_mac_debug(priv, priv->ioaddr,
--					(void *)&priv->xstats,
--					rx_queues_count, tx_queues_count);
-+	if (priv->dma_cap.eee) {
-+		int val = phylink_get_eee_err(priv->phylink);
-+		if (val)
-+			priv->xstats.phy_eee_wakeup_error_n = val;
- 	}
++struct nbl_chan_param_cfg_msix_map {
++	u16 num_net_msix;
++	u16 num_others_msix;
++	u16 msix_mask_en;
++};
 +
-+	/* Only dwmac1000 and dwmac4 implements the MAC .debug() method.
-+	 * As there are different version spaces depending on core_type,
-+	 * make this conditional on the appropriate core type.
-+	 */
-+	if ((priv->plat->core_type == DWMAC_CORE_GMAC ||
-+	     priv->plat->core_type == DWMAC_CORE_GMAC4) &&
-+	    priv->snpsver >= DWMAC_CORE_3_50)
-+		stmmac_mac_debug(priv, priv->ioaddr,
-+				(void *)&priv->xstats,
-+				rx_queues_count, tx_queues_count);
++struct nbl_chan_param_enable_mailbox_irq {
++	u16 vector_id;
++	bool enable_msix;
++};
 +
- 	for (i = 0; i < STMMAC_STATS_LEN; i++) {
- 		char *p = (char *)priv + stmmac_gstrings_stats[i].stat_offset;
- 		data[j++] = (stmmac_gstrings_stats[i].sizeof_stat ==
++struct nbl_chan_param_get_vsi_id {
++	u16 vsi_id;
++	u16 type;
++};
++
++struct nbl_chan_param_get_eth_id {
++	u16 vsi_id;
++	u8 eth_mode;
++	u8 eth_id;
++	u8 logic_eth_id;
++};
++
+ enum nbl_channel_type {
+ 	NBL_CHAN_TYPE_MAILBOX,
+ 	NBL_CHAN_TYPE_MAX
 -- 
 2.47.3
 
