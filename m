@@ -1,154 +1,166 @@
-Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699F52FF17A
-	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 11:45:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B2A377003
+	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 11:51:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775648742; cv=none; b=a+K3rtpNGetnVrwsIAj9PyjoQGzDPCq08FhhvDMlmKH6moum3ENMI/HWaZ+QdTFWqpaZAW2PHe9RydOoxLlllC0u8ViKfPV+ldQTXtdtPGZFFe03kUYNpGPsH1s/COJI/Mox02h0lA8sqydC1Sip6DYu5m4Upn6+lo2jZ0nA6Wk=
+	t=1775649069; cv=none; b=T76gIrplf+32eNJUmlSAe9iQBW090P9CRf9k+YTlwHtd2WhJy8hwRaB0Gy7jcWlqGDLTCIo/0nDv0S2Uow8V0h5xwLKrL2uca0PoTabJG2w7JI7WpRCcWFYglIJtTUeU4N25h8dWzeqw/C86KQrnQ+TrSy5SeFdVYNCwA/MQcsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775648742; c=relaxed/simple;
-	bh=tMoYbEmWbo19OX+Xq3VZmzh7ETPBDAACXNQrrg9Kxr0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=a23IhkHiCqr6eaJ3qE4uJpwPWK+fRffdCEjsjPpBc69voq/b2X8pPTMw96ZO+ibyy2VxQ+1RbRn7a/j+pWKpYSVjCFJf61aeJljeSKsCfk/iJfAQpY+G4TfncPnpuBNhp1UzQgvBsk1aXVOvUTqktxRc1+C8ggIYTib74SsiYVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+	s=arc-20240116; t=1775649069; c=relaxed/simple;
+	bh=X58ciQKprArFwD51+U6hqe12tyByg+hkvzjFAJm9gMU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KabpA/IkNce3VCEG0tkyzYGT7uvPHoxeO8+CZX7gsoa1GtF7P2xRpuVkU/3omcZ7eqVVhAjgWMdtm4TlRVYAOb5MXMwhPEqG8C/oZGIaF8957aUVY6Af3i/bXk/f1w/sEcy5hGMWaTzNKCKZgQUDzC8e1zf/Oku4S28oF+ZeyAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J95HISEd; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-953a2a4761cso3478203241.1
-        for <netdev@vger.kernel.org>; Wed, 08 Apr 2026 04:45:40 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J95HISEd"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-488a14c31eeso32633845e9.0
+        for <netdev@vger.kernel.org>; Wed, 08 Apr 2026 04:51:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775649067; x=1776253867; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BW6UoyfUV2pgEC2VeAz88BmtH42V9gawKLQgrG0Az5I=;
+        b=J95HISEdWw6t+iJ+mITeniNClchl/Jyfb0sagdeL6341DO3/HKthy1wJYZGyP2DL1I
+         jqIdE49s0hTSXXFefU5wVgC5Z+ojL8aQ3T85Pze3nyhYGWbHq6PV1d/yjiVqj7J2Hn1Z
+         SI2qyOi0G1RsD2K8lrEC5uoOoqYbJOoTrBeBhIXeL8yGDnDDSJXpM04I8kdr4DjNmx1S
+         9ZWF5RGMik1Sx28zvKSrdn0YDE57fZAf3LUkauB0/IALjWiM0F99IRIOJI6fhWEgyUZK
+         uL4jT6/6jazUT6h5k/iixHGDP2t6UfkDs55qH30FJJet8b/pEm5FJoZefi8E41hIU+I2
+         oRew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775648739; x=1776253539;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wsFx8UqI7O7MvtKnezUqmqXPysfihd7yNwHTW94peVE=;
-        b=e7juV4bwMvttOvxjp10d/1AMEil6ltjRg+miFDo+cFyRKq1phpASVKrapSc+uz9plV
-         6eC8d6wFZzB3IFSxR/gzUXOl1+AiQCYUQq2DOVjmmLR4EaK1WYlJcpoNzmTZlXgL1chz
-         NwzOL2xB/pzIeuBcACW3z7aeB2MregsAT4/+fZiIFMMUUOMYzlWM1xvL9FaQMWbbPwlt
-         WCVrAXp6ncx/EaLjwkJDqN/sDtviXW6MsgfkbzhnuFJz7lP8MY3ojlMaUUuUUCu0e6iJ
-         DZ/mX449ZjzK329bINdHjFpIdyXo3fbhdfkDz85LaPCF2JFNn+MKTu0sPSAvveIfuFoG
-         cbvg==
-X-Forwarded-Encrypted: i=1; AJvYcCVJW7gXPfifZX8WH9ApL8cXY7pmol6rvGSY2BQ4UTwG0fhKBsg7Fn/dljmXWNwvfOP3ofpDFzk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzzwihk+JCtGOWoXG1mTjHGsX306ellz83cx1swhXsVNQ5Lf7NI
-	ljuTSWJ2b1VFszujCKwBzLPsNCIWiGLDr05xE4Edkf2XiJIbMjrmEFZDvqBPu+JJ
-X-Gm-Gg: AeBDiev0KNAxyIqjcUB+G6g3kBRHuHg3SKgerXnPDKM3aE5WSHVCt9YMoX3ETTv/pQo
-	vDVzfgI70D1eoHCFpvuQKP/emAOqwy+ITdUKz6ji4eOo+qv7f6nGAlZh0T+CxSrkGmZCn3NcZxb
-	FowYV5RXaErv5PKLaMKABP2wDZTMbXcyJIe8cBjOkbVTjcvqfNl9FqKD55URLiMfM14tIk62f40
-	pIoXqEBFnkLVgJHOELrk/rgdqp+Iu2cCRMi9NJ8CqVR3GI04TUosC7u1XifgK5EbR87to4MaBur
-	P7E53+LcusHBrrP+H1MvF54IdTEVzR7JjijYEfObn4ckRbXIxCfKPNn5xme+Y3TJn/s0xfgXHMB
-	TB+MRLA6Q7g42h9ILmjRwybf9AmaeI7ufTxZQz1c596vMI6EGNAP0riIs5kmF+H4ysZ+RYGrA1m
-	xzYYnWODZX/ABvfWo6zpYcVRcT2sl2f5kd56EvspHOvRlrh03SVqkPet2WLPUz2E+K
-X-Received: by 2002:a05:6102:4190:b0:603:1a8a:c84a with SMTP id ada2fe7eead31-605a4d81af1mr8380152137.2.1775648739336;
-        Wed, 08 Apr 2026 04:45:39 -0700 (PDT)
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com. [209.85.221.170])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-60582b562bfsm20466049137.0.2026.04.08.04.45.38
-        for <netdev@vger.kernel.org>
+        d=1e100.net; s=20251104; t=1775649067; x=1776253867;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BW6UoyfUV2pgEC2VeAz88BmtH42V9gawKLQgrG0Az5I=;
+        b=gncmONALXhSlpVN+7qCj1awttQPU/hhCoQtlo0pq+ITA213dyW1cWzAiJ3zWcBkbFK
+         VABDaknqX7OoWympw3DZlQ5u9tR52CQXvCQpA+7SAF6v/AART94kSY6Z4DqLcckKY6Oj
+         bjHvRnhiurknwZBqhZsi8Vn8dCdPpU6Wk9drcdErjmwASH/8zrhPtUektiAUwR0ZRfg4
+         OMag+nvkXGKq4mixyWwLrL5+UnPxuwYewQbXKRiDDm7q5mERlzaU9EoN+N+3/QWJsu86
+         QewS8jmR9fqAlU0hw/4KPsAmEFKRnLWBqfRr3Q+y/vz9AbM7DvmZd1Ifjc/cWRjmIciS
+         f64A==
+X-Forwarded-Encrypted: i=1; AJvYcCXaXZTxokASfhPRVy8tsbYTz4OcklT3BIGIhqjzxkU46BRYXpJi72KU/vKMXy+/iV+1YCMAUV4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJLkrhUKCZpf1brh1Xbe6OQVv41S0wNSCI9W6I9JMK6UgL3VVq
+	GWKJDNSyPwjwe8c1xUbyOTti9dK8Bu/4UbITdaoKd+RjTH8rPt0fITzl
+X-Gm-Gg: AeBDieugXZciafEx0HJ0XejGWF1YchRSMBi9nVxXJGv4WoUOUBInRFTH0ESqf3o2E6J
+	96DymTkaEDZ6OEKbg2QokyV0o/c3kXLkpv0aEmPZ4nWSo5s4sRof8X6Ir16kbEiQuS6tlw2/2IA
+	4zQpGuUsfLecI+ne/ht3v8yzkPElN98l4KiaAHFO6dzZlcBmBx84m2H42OPE/Q4lAPWT3YSa3OB
+	9wbb+zzNr0Y2wpcr5oZH205e3Qav42CmpsFR+y/qzkRyAhSqWrbjbRiD3vBvAkM4kCCyXyf//Kh
+	OYuZPMhGH6577ZDxePk/c9v01Xhb2iV8NLhKrYnVpsVCLpQyx0WWfwEN05h/eBSU3XEaxX3slVr
+	wTzZZ+FxGF6szsaOva/FMeefVHnXkviIUSTzQ9X/xuMWDq3aFQOuMcBSiRNuktK3Khg116sxdX1
+	+PuhGzkrbqnrFAHAdlXUYNl/Q68pXRNURq6GmsLMlgUy9cFF73CP+bTSDchZBO2rJnprqShucvl
+	iyVONZb2A==
+X-Received: by 2002:a05:600c:3549:b0:485:41c4:e2e4 with SMTP id 5b1f17b1804b1-488997d2ccemr267423825e9.23.1775649066543;
+        Wed, 08 Apr 2026 04:51:06 -0700 (PDT)
+Received: from [10.1.4.108] (cust-east-par-46-193-119-166.cust.wifirst.net. [46.193.119.166])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488c5dd1c81sm17369545e9.33.2026.04.08.04.51.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Apr 2026 04:45:38 -0700 (PDT)
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-56dfd007d31so3076363e0c.3
-        for <netdev@vger.kernel.org>; Wed, 08 Apr 2026 04:45:38 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXh6urHvkTYKzjZGfp8vBFcDdExHlA2jRspYHQeMZc4Euj1py0cN4FCUOCfkIYr0M/Mdi7pWtI=@vger.kernel.org
-X-Received: by 2002:a05:6122:1687:b0:56c:d582:42d3 with SMTP id
- 71dfb90a1353d-56dab9f0300mr8497547e0c.14.1775648738222; Wed, 08 Apr 2026
- 04:45:38 -0700 (PDT)
+        Wed, 08 Apr 2026 04:51:05 -0700 (PDT)
+Message-ID: <1296ca80-f783-4584-b953-f92f6594c39f@gmail.com>
+Date: Wed, 8 Apr 2026 13:50:54 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260403111738.37749-1-ovidiu.panait.rb@renesas.com>
-In-Reply-To: <20260403111738.37749-1-ovidiu.panait.rb@renesas.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 8 Apr 2026 13:45:25 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdWQiRpCVMuimOMo4Mz2EAG+gbnKyXY7oSXh7mL_fkdGSQ@mail.gmail.com>
-X-Gm-Features: AQROBzB8CD0KWn3WV3oznk3HkPNWE_QHm1fcpz8CRur8WDBn-SeBp0BUAOGU0qs
-Message-ID: <CAMuHMdWQiRpCVMuimOMo4Mz2EAG+gbnKyXY7oSXh7mL_fkdGSQ@mail.gmail.com>
-Subject: Re: [PATCH net] net: phy: micrel: Fix MMD register access during SPD
- in ksz9131_resume()
-To: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	biju.das.jz@bp.renesas.com, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	=?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] net: dsa: microchip: implement KSZ87xx Module 3
+ low-loss cable errata
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com,
+ Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Marek Vasut <marex@denx.de>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Fidelio Lawson <fidelio.lawson@exotec.com>
+References: <20260326-ksz87xx_errata_low_loss_connections-v1-0-79a698f43626@exotec.com>
+ <20260326-ksz87xx_errata_low_loss_connections-v1-3-79a698f43626@exotec.com>
+ <ab6a06c1-2d7d-4032-8d38-063470cd45c0@lunn.ch>
+ <fe14415a-52fa-42cc-9e4c-e3876588d513@gmail.com>
+ <c235ee5c-6057-4c10-9960-9c5a3527bf22@lunn.ch>
+Content-Language: en-US
+From: Fidelio LAWSON <lawson.fidelio@gmail.com>
+In-Reply-To: <c235ee5c-6057-4c10-9960-9c5a3527bf22@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Ovidiu,
+On 4/4/26 16:45, Andrew Lunn wrote:
+> On Fri, Apr 03, 2026 at 11:43:24AM +0200, Fidelio LAWSON wrote:
+>> On 3/26/26 13:18, Andrew Lunn wrote:
+>>>> +	mutex_lock(&dev->alu_mutex);
+>>>> +
+>>>> +	ret = ksz_write8(dev, regs[REG_IND_CTRL_0], 0xA0);
+>>>> +
+>>>> +	if (!ret)
+>>>> +		ret = ksz_write8(dev, 0x6F, indir_reg);
+>>>> +
+>>>> +	if (!ret)
+>>>> +		ret = ksz_write8(dev, regs[REG_IND_BYTE], indir_val);
+>>>> +
+>>>> +	mutex_unlock(&dev->alu_mutex);
+>>>
+>>> What address space are these registers in? Normally workarounds for a
+>>> PHY would be in the PHY driver. But that assumes the registers are
+>>> accessible from the PHY driver.
+>>>
+>>> 	   Andrew
+>>
+>> Hi Andrew,
+>> These registers belong to the KSZ87xx switch address space, accessed through
+>> the switch’s indirect access mechanism. In particular, the offsets used here
+>> correspond to entries within the TABLE_LINK_MD_V indirect table of the
+>> KSZ8-family switches.
+> 
+> So this errata is for ksz87xx only?
+> 
+> For this PHY, do all PHY register reads and writes go through
+> 
+> https://elixir.bootlin.com/linux/v6.19.11/source/drivers/net/dsa/microchip/ksz8.c#L957
+> ksz8_r_phy()
+> 
+> and
+> 
+> https://elixir.bootlin.com/linux/v6.19.11/source/drivers/net/dsa/microchip/ksz8.c#L1221
+> ksz8_w_phy()?
+> 
+> We already have some "interesting" things going on in these
+> functions. PHY_REG_LINK_MD and PHY_REG_PHY_CTRL are not standard C22
+> PHY registers. They take the values 0x1d and 0x1f. The 802.3 standard
+> defines 0x10-0x1f as vendor specific, so this is O.K.
+> 
+> So you could define 2 bits in say register 0x1c to indicate the errata
+> mode. You can have a PHY tunable which does reads/writes to these two
+> bits, and ksz8_w_phy/ksz8_r_phy which translates them to indirect
+> register accesses?
+> 
+> It is not even really violating the layering.
+> 
+> 	 Andrew
 
-On Fri, 3 Apr 2026 at 13:18, Ovidiu Panait <ovidiu.panait.rb@renesas.com> wrote:
-> During system suspend, phy_suspend() puts the PHY into Software Power-Down
-> (SPD) by setting the BMCR_PDOWN bit in MII_BMCR. According to the KSZ9131
-> datasheet, MMD register access is restricted during SPD:
->
->   - Only access to the standard registers (0 through 31) is supported.
->   - Access to MMD address spaces other than MMD address space 1 is
->     possible if the spd_clock_gate_override bit is set.
->   - Access to MMD address space 1 is not possible.
->
-> However, ksz9131_resume() calls ksz9131_config_rgmii_delay() before
-> kszphy_resume() clears BMCR_PDOWN. This means MMD registers are accessed
-> while the PHY is still in SPD, contrary to the datasheet.
->
-> Additionally, on platforms where the PHY loses power during suspend
-> (e.g. RZ/G3E), all settings from ksz9131_config_init(), not just the
-> RGMII delays, are lost and need to be restored. When the MAC driver
-> sets mac_managed_pm (e.g. stmmac), mdio_bus_phy_resume() is skipped,
-> so phy_init_hw() (which calls config_init to restore all PHY settings)
-> is never invoked during resume.
->
-> Fix this by replacing the RGMII delay restoration with a call to
-> phy_init_hw(), which takes the PHY out of SPD and performs full
-> reinitialization.
->
-> Fixes: f25a7eaa897f ("net: phy: micrel: Add ksz9131_resume()")
-> Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+Hi Andrew,
 
-Thanks for your patch!
+Thanks a lot for the feedback, it was very helpful.
 
-> --- a/drivers/net/phy/micrel.c
-> +++ b/drivers/net/phy/micrel.c
-> @@ -6016,8 +6016,13 @@ static int lan8841_suspend(struct phy_device *phydev)
->
->  static int ksz9131_resume(struct phy_device *phydev)
->  {
-> -       if (phydev->suspended && phy_interface_is_rgmii(phydev))
-> -               ksz9131_config_rgmii_delay(phydev);
-> +       int ret;
-> +
-> +       if (phydev->suspended) {
-> +               ret = phy_init_hw(phydev);
-> +               if (ret)
-> +                       return ret;
-> +       }
->
->         return kszphy_resume(phydev);
->  }
+Yes, the erratum affects KSZ87xx devices only, and all accesses to the 
+embedded PHYs indeed go through ksz8_r_phy() / ksz8_w_phy(), as you 
+pointed out.
+I followed your suggestion and reworked the implementation accordingly: 
+the errata selection is now modeled as a vendor‑specific Clause 22 PHY 
+register (0x1c), handled entirely in ksz8_r_phy() / ksz8_w_phy(), which 
+translate reads and writes into the appropriate indirect TABLE_LINK_MD_V 
+accesses. This keeps the PHY‑facing API clean without breaking the layering.
+I’ve dropped the DT approach and adjusted the implementation based on 
+the review comments. I’m sending a v2 with these changes shortly.
 
-This function is now no longer KSZ9131-specific.
-I am wondering if this should be done for other Micrel PHYs, too,
-e.g. by moving the phy_init_hw() call into kszphy_resume()?
+Thanks again for the guidance.
+Best regards,
+Fidelio
 
-Ethernet after resume has always been flaky on Salvator-X with KSZ9031
-and R-Car M3-W ES1.0 (this seems to be specific to R-Car M3-W, as
-boards with R-Car H3 or M3-N do not seem to suffer from this; don't
-ask me why).
-
-I have just tried:
-
--       .resume         = kszphy_resume,
-+       .resume         = ksz9131_resume,
-
-in the KSZ9031 entry, and ... surprise! Ethernet on R-Car M3-W now
-works much better after resume!
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
