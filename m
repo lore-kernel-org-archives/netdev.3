@@ -1,64 +1,64 @@
 Received: from mail-lf1-f99.google.com (mail-lf1-f99.google.com [209.85.167.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5520137C0F9
-	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 15:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8EF63D1CA7
+	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 15:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775661841; cv=none; b=ANy9okzborD3fjSblAR+5Bi7xQ7KTaIRP3WEVXxViEj3yZSDEp48t4EkaeUL+glxxithLvDR/VI9G8XixWRrRs6uiIdcsqWBeqaurbnDa6XXgDMyA0iZgSf8WJ+CAAVSQFfd/u2lBWqJSFTqAC0Tr3sCs5xC0VRuiJvE97GW6c8=
+	t=1775661841; cv=none; b=dgQX3VTld5ps/caJL6zsxYStWCTHkzHYqFRD2n/vE0cnd6R5ZRVJQcAkvAst/WhvqdCA2yANsNb0W7x0tJmTf1I+o2zrXTbi7Gc8sEPy/FQb2ogDhKCrusvBFtApLIiuRkCdHUUs38uXh8kXHU9VPE5S8JuDUpRj5hTwtNe/cO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775661841; c=relaxed/simple;
-	bh=6j8AQsAkg8Iwdb8t8Nk+Z6TRfvnCRlmaKOgJJsuYYDg=;
+	bh=ug9SkTwdmJIGwXBOudO4MGLkwAXB1GxtwYmjzlHY0LA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=o+b/KuHGwV9QLDZ0QnVJ8KjwjaXlG69XIdyFbzYa8FuV98e+lOlLsf3ER+rLxoaRHgGhBfO5YsDKefZTHdrQmY+FMAUr9aXHEZDk6cWHqHCEwMfHlljzgGHHyjJry4P8vJS96/3mp+pZkEb30nAjTdHstrAYATGFsjMcMBChTuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=XstqB58S; arc=none smtp.client-ip=209.85.167.99
+	 MIME-Version; b=VDm4mC39j42qKPyNAzYSl2aXdH0G44F7tuVtczkXGhj46nuCfJeE/RY5RfZFCmePDcPSXiNiFRPNsxT/ReVnd9nqaAUxmt2oYfg/VsKjkHbtn19ZenLB2BYDRs6JKcGK1g8G2YtUtZHPR0H3853HMBOR01hVIlm4zyI0mUBejlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=V+ZsL1Yl; arc=none smtp.client-ip=209.85.167.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="XstqB58S"
-Received: by mail-lf1-f99.google.com with SMTP id 2adb3069b0e04-5a0faa0d15cso7248652e87.0
-        for <netdev@vger.kernel.org>; Wed, 08 Apr 2026 08:23:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="V+ZsL1Yl"
+Received: by mail-lf1-f99.google.com with SMTP id 2adb3069b0e04-5a3d42263e4so4068809e87.2
+        for <netdev@vger.kernel.org>; Wed, 08 Apr 2026 08:23:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=6wind.com; s=google; t=1775661837; x=1776266637; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iiwGajaEehHYwwjcP14ZyBoW5z0ODgT7HmmzAmYOqhk=;
-        b=XstqB58S2RDm93OVVzshrFsaYv7t43YzrPbCiVeGA2ma4GWWmgMhEbLqT0QUM9pZeD
-         a/Li5+ruzy6p3c/r/JxI9mk1L8l/0E5IGpzVxgb+yGT4R76n7vcj43dXF44XQ+2YzWhH
-         IzYMuiVseRXqPxUwEERHn+YnKT35SoKUGfMSKaJkBMA0kqlobnNOngaSKOZhDp+NGV5k
-         mSJJhi5SFfE7rktsAsPlVQTdTvA6I/YpSI3nrnyvFd0772UApMfTjlioUmIrhjkCQ80k
-         0w8zMRxMAmbuHFhhBmZHRMirWr9PEWPFPw4eB3TgnVsZ4fPkp3x1jrSUVHwO9yAb47HS
-         tBpQ==
+        bh=n6kxlTr6EjrNQ4AAJ4E/hmiBtgz1iziJqa4twM/hv4A=;
+        b=V+ZsL1YltQRR+YEiyN/cSS64or4+j2lu/MwVeqlDkB1vUvhzYloUDV9njs1DwZez5o
+         Moum8Wase/2yPydCy6coimxS+aJF2lkOdB0sl+IOqEdLFcgWSSRHDqqi3Ke2gJpLfTs1
+         MtLeidbSYMn+quD78ZMBPhEOcm0BmfXKYcdZiU2x0nP77PhTp96XjsPtlgn7NHYy1r18
+         LacJyrRv6eOSBg42dQfY6VriG1qAjR8pANkVDnX14nlr2EKninQhywYjmirAgCcZOKyr
+         AXiNwiHNX68cmuFdq2F8gGF2+7yhaDMuEsZlhBRxGOXC2p3tCaIefGutvLVVAFq/cxVB
+         ZO4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1775661837; x=1776266637;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=iiwGajaEehHYwwjcP14ZyBoW5z0ODgT7HmmzAmYOqhk=;
-        b=jlTXvW+VSKomZ9xzU9IdzSiU7Cqa6eOWHmQEddJrRMnyEXdd5nTh8VyyA/ZehrQOBo
-         9pnAhQulq1xOqNkdOtRzJwg9UYi09jLHC5hBnlts0YbB7dJ63m+Ryc55ui+akW3ySEco
-         bJjOhSkTd41tdma8mIoDItFaXDq7JxURJf0CicuF2nU+yWv+VlJOqK5NKnjlAnOMvNrv
-         rWO28hJAYoCtRGjstveTPJsANoZFilHNLfv0reK5aKPHySEh4aiyS/w4m4oSr9z0wxrc
-         hQALSgUaIIgf/s/OfqeggK1c/h2Y44Y9Lvp9pCeVzuZSo8lcCOnky2IwK70O5Y010g9u
-         pP9w==
-X-Gm-Message-State: AOJu0YxuZvVtoYSWxhVEOgPdEdAm8rRyokOpSTrkhZ1rP5ET+K7jTg2E
-	U0ZEjCTe69fZmOfFZpD74x20GVCbsXT6Xh9u2NIQmIyXP3K2KMzLlJKpuMD7ela8Mpt3aaWjrKe
-	ATvcfFlNpNAeveLS71nHOCIeEKGTaLnqn8Wa4
-X-Gm-Gg: AeBDietlwgNfCg4S/r5Fu02RVEO5vLXwAR3rQvf6JUhRYtvCbyoQzsk47e8nGVwcbQB
-	8NQY6RuZxtdMeYTOR7nLmZtGIzgqp24BfEg7ZYDbM65AjetrGgAhTV+5al+cdsIO3EcR8LQx+Zf
-	PBk1i2JlhHUxbHpWV1582jpYE3PU214esi/nKjDTBnsNet6EbYm0uOfDYfy4pqQ1APNp61BZIFH
-	ASxjNM1GiZxzFpsCdtw8l7PvmkroHO15OuCbVhpMhEiRiweJS2eQvF5fWdV3ocvZtIeDGHsiXvv
-	IWs83yyBQXGFXvYBpcaGNZDukyECKjTkLBpduWFPuXKiPWnAhBSPMXlu8zhVpT9osXnFFj+CeJt
-	t3MMuBPCmQv4EHEvh887UIQ8So8efjCKzdhvIVVJVtW6NCj42IcHk
-X-Received: by 2002:a05:6512:6d0:b0:5a2:c05c:118e with SMTP id 2adb3069b0e04-5a337559925mr8176073e87.11.1775661836970;
-        Wed, 08 Apr 2026 08:23:56 -0700 (PDT)
+        bh=n6kxlTr6EjrNQ4AAJ4E/hmiBtgz1iziJqa4twM/hv4A=;
+        b=MWiuvXIPeMH2V/frAfIDTXSEcVrqkjk1qgX5rr/SGUR3dhAYXoOhuAVx1z+89g9hT3
+         K3bX5qG3G3chPpyeTelB1ni390CuV8pH79amei+EpwZ5Z/FUerlFDyeo+ytxj7EgWYOZ
+         N0fLbuXUKEMEh2SDQGO/SvSZhOusaUyubRLzfhkOaYBEMxJDw8CEvtXn2o2REEomwpy7
+         7vnV0DY/vZW0B5Axo/q8zpyEq0Jx3w+f2wOT0EOlO7+8vt/PTwtH6wqxc1ML41TKj6nO
+         PRen2VpmafrWwwZI8y4woJqWnknTJqhcLJfA6edLRI4LVrmtZ0RcB2vwxHJ8gLwbOUaa
+         Vc0g==
+X-Gm-Message-State: AOJu0YyumHJdRIwy15zHObzivlX0HR9K/AFIvreVvHv9auqAUx//Pc03
+	12s0u4OoRd8SM32Sg+1pbBS5aGnjoWv0tgQWeHmqMjk9pWphF+Mh6RqxCBF33aEp86HDKr8Zmu5
+	qGuGDqgDM13x6tO0E9zV+5bv1x9edWoRtbE2o
+X-Gm-Gg: AeBDievL1//fgdt3bQtcgGkSnmVoNjg0VmAr7BAY0w7KEstoIyjlCQJLpdVzg1SHjXA
+	HN++++uD/Z6MulJ3OcO0xes7IKaWSlfmUXGWoGq1OZ9CzsOrXMmQdsxAEiTG7W5cGVJ3u1umS1e
+	BwiFzuvaDD5NQBSVcVJ8IdL/SwSVLd1P2rVduTyC8dmXDSdCMPrJWzpCaT8LKYqfFzh583XnuUD
+	07E9+eLi0OxHRuWUR+GGyTlCZsm1ggttZ4As+KFTsOBixg4RQuQ0zX9Oii448V8OTI3kQ91Zlqg
+	Jo3yTCRaRrt+SozQ1/3CI8pz+/BA29sC2OR2dN9GvuhpeFteJHIEu0GbKkGdZ22fnQj3LT1sR7H
+	bEZTr3ECM3a1oSpyHJfEwS+k8poZ8tP7LF5BcRFkxizRHkQt6Xa4i
+X-Received: by 2002:a19:520e:0:b0:5a3:7528:6da1 with SMTP id 2adb3069b0e04-5a375286e2emr4416373e87.0.1775661837116;
+        Wed, 08 Apr 2026 08:23:57 -0700 (PDT)
 Received: from smtpservice.6wind.com ([185.13.181.2])
-        by smtp-relay.gmail.com with ESMTP id 2adb3069b0e04-5a2c6c9684fsm1926632e87.1.2026.04.08.08.23.56;
-        Wed, 08 Apr 2026 08:23:56 -0700 (PDT)
+        by smtp-relay.gmail.com with ESMTP id 2adb3069b0e04-5a2c6c9e93fsm1914794e87.19.2026.04.08.08.23.57;
+        Wed, 08 Apr 2026 08:23:57 -0700 (PDT)
 X-Relaying-Domain: 6wind.com
 Received: from stryper.dev.6wind.com (stryper.dev.6wind.com [10.17.2.5])
-	by smtpservice.6wind.com (Postfix) with ESMTP id A137627052;
+	by smtpservice.6wind.com (Postfix) with ESMTP id B023D27054;
 	Wed,  8 Apr 2026 17:23:56 +0200 (CEST)
 From: Louis Scalbert <louis.scalbert@6wind.com>
 To: netdev@vger.kernel.org
@@ -72,9 +72,9 @@ Cc: andrew+netdev@lunn.ch,
 	shemminger@vyatta.com,
 	maheshb@google.com,
 	Louis Scalbert <louis.scalbert@6wind.com>
-Subject: [PATCH net v3 1/5] bonding: 3ad: add lacp_fallback configuration knob
-Date: Wed,  8 Apr 2026 17:23:49 +0200
-Message-Id: <20260408152353.276204-2-louis.scalbert@6wind.com>
+Subject: [PATCH net v3 3/5] bonding: 3ad: fix mux port state on oper down
+Date: Wed,  8 Apr 2026 17:23:51 +0200
+Message-Id: <20260408152353.276204-4-louis.scalbert@6wind.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20260408152353.276204-1-louis.scalbert@6wind.com>
 References: <20260408152353.276204-1-louis.scalbert@6wind.com>
@@ -86,235 +86,59 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When an 802.3ad (LACP) bonding interface has no slaves in the
-collecting/distributing state, the bonding master still reports
-carrier as up as long as at least 'min_links' slaves have carrier.
+When the bonding interface has carrier down due to the absence of
+valid slaves and a slave transitions from down to up, the bonding
+interface briefly goes carrier up, then down again, and finally up
+once LACP negotiates collecting and distributing on the port.
 
-In this situation, only one slave is effectively used for TX/RX,
-while traffic received on other slaves is dropped. Upper-layer
-daemons therefore consider the interface operational, even though
-traffic may be blackholed if the lack of LACP negotiation means
-the partner is not ready to deal with traffic.
+The interface should not transition to carrier up until LACP
+negotiation is complete.
 
-Introduce a configuration knob to control this behavior. It allows
-the bonding master to assert carrier only when at least 'min_links'
-slaves are in collecting/distributing state (or collecting only
-when coupled_control is disabled).
+This happens because the actor and partner port states remain in
+collecting (and distributing) when the port goes down. When the port
+comes back up, it temporarily remains in this state until LACP
+renegotiation occurs.
 
-The default mode preserves the current (legacy) behavior. This
-patch only introduces the knob; its behavior is implemented in
-the subsequent commit.
+Previously this was mostly cosmetic, but since the bonding carrier
+state now depends on the LACP negotiation state, it causes the
+interface to flap.
+
+Fix this by unsetting the SELECTED flag when a port goes down so that
+the mux state machine transitions through ATTACHED and DETACHED,
+which clears the actor collecting and distributing flags. Do not
+attempt to set the SELECTED flag if the port is still disabled.
 
 Fixes: 655f8919d549 ("bonding: add min links parameter to 802.3ad")
 Signed-off-by: Louis Scalbert <louis.scalbert@6wind.com>
 ---
- Documentation/networking/bonding.rst | 33 ++++++++++++++++++++++++++++
- drivers/net/bonding/bond_main.c      |  1 +
- drivers/net/bonding/bond_netlink.c   | 16 ++++++++++++++
- drivers/net/bonding/bond_options.c   | 26 ++++++++++++++++++++++
- include/net/bond_options.h           |  1 +
- include/net/bonding.h                |  1 +
- include/uapi/linux/if_link.h         |  1 +
- 7 files changed, 79 insertions(+)
+ drivers/net/bonding/bond_3ad.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/Documentation/networking/bonding.rst b/Documentation/networking/bonding.rst
-index e700bf1d095c..465d06aead27 100644
---- a/Documentation/networking/bonding.rst
-+++ b/Documentation/networking/bonding.rst
-@@ -619,6 +619,39 @@ min_links
- 	aggregator cannot be active without at least one available link,
- 	setting this option to 0 or to 1 has the exact same effect.
+diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad.c
+index b79a76296966..3a94fbcbf721 100644
+--- a/drivers/net/bonding/bond_3ad.c
++++ b/drivers/net/bonding/bond_3ad.c
+@@ -1570,6 +1570,12 @@ static void ad_port_selection_logic(struct port *port, bool *update_slave_arr)
+ 	struct slave *slave;
+ 	int found = 0;
  
-+lacp_fallback
++	/* Disabled ports cannot be SELECTED.
++	 * Do not attempt to set the SELECTED flag if the port is still disabled.
++	 */
++	if (!port->is_enabled)
++		return;
 +
-+	Specifies the fallback behavior of a bonding when LACP negotiation fails on
-+	all slave links, i.e. when no slave is in the Collecting/Distributing state
-+	(or only in Collecting state when coupled_control is disabled), while at
-+	least `min_links` link still reports carrier up.
-+
-+	This option is only applicable to 802.3ad mode (mode 4).
-+
-+	Valid values are:
-+
-+	legacy or 0
-+		In this situation, the bonding master remains carrier up and
-+		randomly selects a single slave to transmit and receive traffic.
-+		Traffic received on other slaves is dropped.
-+
-+		This mode is deprecated, as it may lead to traffic blackholing
-+		when the absence of LACP negotiation means the partner is not
-+		ready to collect and distribute traffic.
-+
-+		This is the legacy default behavior.
-+
-+	strict or 1
-+		In this situation, the bonding master reports carrier down, allowing
-+		upper-layer processes to detect that the interface is not usable for
-+		collecting and distributing traffic.
-+
-+		The master transitions to carrier up only when at least
-+		`min_links` slaves reach the Collecting(/Distributing) state,
-+		allowing traffic to flow.
-+
-+	The default value is 0 (legacy).
-+
- mode
- 
- 	Specifies one of the bonding policies. The default is
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index a5484d11553d..02cba0560a39 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -6440,6 +6440,7 @@ static int __init bond_check_params(struct bond_params *params)
- 	params->ad_user_port_key = ad_user_port_key;
- 	params->coupled_control = 1;
- 	params->broadcast_neighbor = 0;
-+	params->lacp_fallback = 0;
- 	if (packets_per_slave > 0) {
- 		params->reciprocal_packets_per_slave =
- 			reciprocal_value(packets_per_slave);
-diff --git a/drivers/net/bonding/bond_netlink.c b/drivers/net/bonding/bond_netlink.c
-index 286f11c517f7..1f92ad786b51 100644
---- a/drivers/net/bonding/bond_netlink.c
-+++ b/drivers/net/bonding/bond_netlink.c
-@@ -130,6 +130,7 @@ static const struct nla_policy bond_policy[IFLA_BOND_MAX + 1] = {
- 	[IFLA_BOND_NS_IP6_TARGET]	= { .type = NLA_NESTED },
- 	[IFLA_BOND_COUPLED_CONTROL]	= { .type = NLA_U8 },
- 	[IFLA_BOND_BROADCAST_NEIGH]	= { .type = NLA_U8 },
-+	[IFLA_BOND_LACP_FALLBACK]	= { .type = NLA_U8 },
- };
- 
- static const struct nla_policy bond_slave_policy[IFLA_BOND_SLAVE_MAX + 1] = {
-@@ -586,6 +587,16 @@ static int bond_changelink(struct net_device *bond_dev, struct nlattr *tb[],
- 			return err;
+ 	/* if the port is already Selected, do nothing */
+ 	if (port->sm_vars & AD_PORT_SELECTED)
+ 		return;
+@@ -2794,6 +2800,7 @@ void bond_3ad_handle_link_change(struct slave *slave, char link)
+ 		/* link has failed */
+ 		port->is_enabled = false;
+ 		ad_update_actor_keys(port, true);
++		port->sm_vars &= ~AD_PORT_SELECTED;
  	}
- 
-+	if (data[IFLA_BOND_LACP_FALLBACK]) {
-+		int fallback_mode = nla_get_u8(data[IFLA_BOND_LACP_FALLBACK]);
-+
-+		bond_opt_initval(&newval, fallback_mode);
-+		err = __bond_opt_set(bond, BOND_OPT_LACP_FALLBACK, &newval,
-+				     data[IFLA_BOND_LACP_FALLBACK], extack);
-+		if (err)
-+			return err;
-+	}
-+
- 	return 0;
- }
- 
-@@ -658,6 +669,7 @@ static size_t bond_get_size(const struct net_device *bond_dev)
- 		nla_total_size(sizeof(struct in6_addr)) * BOND_MAX_NS_TARGETS +
- 		nla_total_size(sizeof(u8)) +	/* IFLA_BOND_COUPLED_CONTROL */
- 		nla_total_size(sizeof(u8)) +	/* IFLA_BOND_BROADCAST_NEIGH */
-+		nla_total_size(sizeof(u8)) +	/* IFLA_BOND_LACP_FALLBACK */
- 		0;
- }
- 
-@@ -825,6 +837,10 @@ static int bond_fill_info(struct sk_buff *skb,
- 		       bond->params.broadcast_neighbor))
- 		goto nla_put_failure;
- 
-+	if (nla_put_u8(skb, IFLA_BOND_LACP_FALLBACK,
-+		       bond->params.lacp_fallback))
-+		goto nla_put_failure;
-+
- 	if (BOND_MODE(bond) == BOND_MODE_8023AD) {
- 		struct ad_info info;
- 
-diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
-index 7380cc4ee75a..b672b8a881bb 100644
---- a/drivers/net/bonding/bond_options.c
-+++ b/drivers/net/bonding/bond_options.c
-@@ -68,6 +68,8 @@ static int bond_option_lacp_active_set(struct bonding *bond,
- 				       const struct bond_opt_value *newval);
- static int bond_option_lacp_rate_set(struct bonding *bond,
- 				     const struct bond_opt_value *newval);
-+static int bond_option_lacp_fallback_set(struct bonding *bond,
-+					 const struct bond_opt_value *newval);
- static int bond_option_ad_select_set(struct bonding *bond,
- 				     const struct bond_opt_value *newval);
- static int bond_option_queue_id_set(struct bonding *bond,
-@@ -162,6 +164,12 @@ static const struct bond_opt_value bond_lacp_rate_tbl[] = {
- 	{ NULL,   -1,           0},
- };
- 
-+static const struct bond_opt_value bond_lacp_fallback_tbl[] = {
-+	{ "legacy", 0, BOND_VALFLAG_DEFAULT},
-+	{ "strict",  1, 0},
-+	{ NULL, -1, 0 }
-+};
-+
- static const struct bond_opt_value bond_ad_select_tbl[] = {
- 	{ "stable",          BOND_AD_STABLE,    BOND_VALFLAG_DEFAULT},
- 	{ "bandwidth",       BOND_AD_BANDWIDTH, 0},
-@@ -363,6 +371,14 @@ static const struct bond_option bond_opts[BOND_OPT_LAST] = {
- 		.values = bond_lacp_rate_tbl,
- 		.set = bond_option_lacp_rate_set
- 	},
-+	[BOND_OPT_LACP_FALLBACK] = {
-+		.id = BOND_OPT_LACP_FALLBACK,
-+		.name = "lacp_fallback",
-+		.desc = "Define the LACP fallback mode when no slaves have negotiated",
-+		.unsuppmodes = BOND_MODE_ALL_EX(BIT(BOND_MODE_8023AD)),
-+		.values = bond_lacp_fallback_tbl,
-+		.set = bond_option_lacp_fallback_set
-+	},
- 	[BOND_OPT_MINLINKS] = {
- 		.id = BOND_OPT_MINLINKS,
- 		.name = "min_links",
-@@ -1684,6 +1700,16 @@ static int bond_option_lacp_rate_set(struct bonding *bond,
- 	return 0;
- }
- 
-+static int bond_option_lacp_fallback_set(struct bonding *bond,
-+					 const struct bond_opt_value *newval)
-+{
-+	netdev_dbg(bond->dev, "Setting LACP fallback to %s (%llu)\n",
-+		   newval->string, newval->value);
-+	bond->params.lacp_fallback = newval->value;
-+
-+	return 0;
-+}
-+
- static int bond_option_ad_select_set(struct bonding *bond,
- 				     const struct bond_opt_value *newval)
- {
-diff --git a/include/net/bond_options.h b/include/net/bond_options.h
-index e6eedf23aea1..5eb64c831f54 100644
---- a/include/net/bond_options.h
-+++ b/include/net/bond_options.h
-@@ -79,6 +79,7 @@ enum {
- 	BOND_OPT_COUPLED_CONTROL,
- 	BOND_OPT_BROADCAST_NEIGH,
- 	BOND_OPT_ACTOR_PORT_PRIO,
-+	BOND_OPT_LACP_FALLBACK,
- 	BOND_OPT_LAST
- };
- 
-diff --git a/include/net/bonding.h b/include/net/bonding.h
-index 395c6e281c5f..d8cb02643f8b 100644
---- a/include/net/bonding.h
-+++ b/include/net/bonding.h
-@@ -132,6 +132,7 @@ struct bond_params {
- 	int peer_notif_delay;
- 	int lacp_active;
- 	int lacp_fast;
-+	int lacp_fallback;
- 	unsigned int min_links;
- 	int ad_select;
- 	char primary[IFNAMSIZ];
-diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
-index e9b5f79e1ee1..7ad3fc600c71 100644
---- a/include/uapi/linux/if_link.h
-+++ b/include/uapi/linux/if_link.h
-@@ -1539,6 +1539,7 @@ enum {
- 	IFLA_BOND_NS_IP6_TARGET,
- 	IFLA_BOND_COUPLED_CONTROL,
- 	IFLA_BOND_BROADCAST_NEIGH,
-+	IFLA_BOND_LACP_FALLBACK,
- 	__IFLA_BOND_MAX,
- };
- 
+ 	agg = __get_first_agg(port);
+ 	ad_agg_selection_logic(agg, &dummy);
 -- 
 2.39.2
 
