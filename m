@@ -1,57 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36693ACF17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F0D2F5328
 	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 09:59:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775642387; cv=none; b=IXLYAAJq0unaKwKm/AJ4jhw99zwxw1FJTy2uB9phZe5gbpCMYVzEq0GtlDhn7ckwmYgh4Op0oHtlanB8SUmKsgA8Al1awhfcw5uP212/fWKtDG4PsnvWo4+MP1EsHy2Q1mFlxc6jWdtSs8tyhO4nSB1L8b1yRJSTE92x/3QNBKA=
+	t=1775642388; cv=none; b=P9/XIktYzNBoWnmBD6lXSDuFhLcKme7+4CFWBb5XJm54YSJvv5XuxZa50qFwvsW0nVa8f70HiUQ6papR56/lmRn8XglQcIY9fT5NqfINk1v3YxmjwWiKd5hfWwN3gDE7XSqNGywHHOlxJ+ZXzkQfPlsjlZ/nMIMBJa41IF4rgEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775642387; c=relaxed/simple;
-	bh=fijbk9r2y+9s/pgjwj9jL/NqCmTtmVeAXUSUjqIUsXw=;
+	s=arc-20240116; t=1775642388; c=relaxed/simple;
+	bh=siB0CSXF/ttVkJ0lmU96WnSbAVyPdrEI8RxHjdqvUBo=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rURgdxAL9yC4mQmkST6jsOtyxVk59X4aaPaIL67QN0ZZbdm4pO2MH7BBSwqf77trmHWrfDNhwhNLlE4y4lQoj2Bt5oCQrd96f+fQo5nNosOVC9Jaz8l5i1c7r1DRLuR3w3FE+ER1rEYrRVyOQLu0P2rBQDnmqfC19UTDdpiPyW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=eWBqbu4p; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=TEG8O5xYAXDvMYGgOFWc94rwb9BuLlBIIOG4HDMG0EtaglTjmkiKXyl9H/y/YxwjEMxJ+xXQC2dki0usrdZI/Fw95Xu/22/lf6z++A34dhJUfh/WTTkmJ+j1xoWEWPR5dcSUKhUuvSx6mN31xBZBcqvwb3Wtmba9UKOrjSvpcvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=cHr8qpW+; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="eWBqbu4p"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="cHr8qpW+"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id A026A207D1;
-	Wed,  8 Apr 2026 11:59:35 +0200 (CEST)
+	by mx1.secunet.com (Postfix) with ESMTP id 4979E207FC;
+	Wed,  8 Apr 2026 11:59:37 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id L7mPl7jpELvM; Wed,  8 Apr 2026 11:59:35 +0200 (CEST)
+ with ESMTP id ZhU67dHIQyPH; Wed,  8 Apr 2026 11:59:36 +0200 (CEST)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 1BEDE207C1;
-	Wed,  8 Apr 2026 11:59:35 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 1BEDE207C1
+	by mx1.secunet.com (Postfix) with ESMTPS id 895D5207C1;
+	Wed,  8 Apr 2026 11:59:36 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 895D5207C1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1775642375;
-	bh=f9Fj+WubamJQDHKnkQFWg0AzRmyApfWKDDRRjzULtqk=;
+	s=202301; t=1775642376;
+	bh=H8zkoPJdc/VPnfmuWAwl4Z9DTJDYsqhA1pKt9T1Utts=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=eWBqbu4p7JoW7AJnaVY+fylrauJnfczmNG69IFFBNxDof/sZoddwzEVC+nO1VwmWf
-	 J8MzFPwhhGtujJb6UbWTs5wvOj1DdMszWEBeI9SXL6kE0veQjifrTkKaPKv8Dmk2AQ
-	 LHWNB6V++m7EjIaqT7ElEhbWfVPM1OsWzVVTcAc9mJGYt4LbZWpb5m8SUh4i/5P26R
-	 smNDPIcjBAO955GNmhdn0Dc4Pka0iS2uUIx2bY4cMRe5hZ4zX1nJRztjshbewJJuld
-	 4mQ3IxSDPAvNj2N55q4+QIFGrJHXkEDYSF/Oi0/zAGcU+zODrT0IhNIqKVl27sX/Dd
-	 WEBcOUgMf4GvQ==
+	b=cHr8qpW+FQ5FX58yoiu95fgSPtruvH+14UsUXjYaD9hl7oFGjpp8mdqfNvmnK2BM0
+	 HO3NFZA8KBchovJ0SLrzw5xhcQlal/QNWCcTKdUIip8ja48ZBA3EDgdXFhxhCF7k90
+	 tLJ+IK0nsdIOraKJx6mKfavFrGXjJpmbTCmpvgDDIWYP5U2YniOdjSGIUCpvzLFQyx
+	 JmZ+ucHie+13iLRJjOFj9vwyKUnNWGIhaqpNc04HYGFiWHSPH5XNyQe1YhAh53M4KN
+	 M53rSNaE8qQeGJxIZ5o2wgGc6HpKjFrnvKpM0OMWVhtHcucHMLxSV8O+bp3tNKnMgD
+	 I8N8qNG1DicdA==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 8 Apr
- 2026 11:59:34 +0200
-Received: (nullmailer pid 256673 invoked by uid 1000);
-	Wed, 08 Apr 2026 09:59:27 -0000
+ 2026 11:59:35 +0200
+Received: (nullmailer pid 257223 invoked by uid 1000);
+	Wed, 08 Apr 2026 09:59:28 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 1/8] xfrm: clear trailing padding in build_polexpire()
-Date: Wed, 8 Apr 2026 11:58:57 +0200
-Message-ID: <20260408095925.253681-2-steffen.klassert@secunet.com>
+Subject: [PATCH 8/8] net: af_key: zero aligned sockaddr tail in PF_KEY exports
+Date: Wed, 8 Apr 2026 11:59:04 +0200
+Message-ID: <20260408095925.253681-9-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260408095925.253681-1-steffen.klassert@secunet.com>
 References: <20260408095925.253681-1-steffen.klassert@secunet.com>
@@ -63,46 +63,143 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
+X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
  (10.32.0.171)
 
-From: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
+From: Zhengchuan Liang <zcliangcn@gmail.com>
 
-build_expire() clears the trailing padding bytes of struct
-xfrm_user_expire after setting the hard field via memset_after(),
-but the analogous function build_polexpire() does not do this for
-struct xfrm_user_polexpire.
+PF_KEY export paths use `pfkey_sockaddr_size()` when reserving sockaddr
+payload space, so IPv6 addresses occupy 32 bytes on the wire. However,
+`pfkey_sockaddr_fill()` initializes only the first 28 bytes of
+`struct sockaddr_in6`, leaving the final 4 aligned bytes uninitialized.
 
-The padding bytes after the __u8 hard field are left
-uninitialized from the heap allocation, and are then sent to
-userspace via netlink multicast to XFRMNLGRP_EXPIRE listeners,
-leaking kernel heap memory contents.
+Not every PF_KEY message is affected. The state and policy dump builders
+already zero the whole message buffer before filling the sockaddr
+payloads. Keep the fix to the export paths that still append aligned
+sockaddr payloads with plain `skb_put()`:
 
-Add the missing memset_after() call, matching build_expire().
+  - `SADB_ACQUIRE`
+  - `SADB_X_NAT_T_NEW_MAPPING`
+  - `SADB_X_MIGRATE`
+
+Fix those paths by clearing only the aligned sockaddr tail after
+`pfkey_sockaddr_fill()`.
 
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Breno Leitao <leitao@debian.org>
+Fixes: 08de61beab8a ("[PFKEYV2]: Extension for dynamic update of endpoint address(es)")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Xiao Liu <lx24@stu.ynu.edu.cn>
+Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- net/xfrm/xfrm_user.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/key/af_key.c | 52 +++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 34 insertions(+), 18 deletions(-)
 
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index 1656b487f833..5d59c11fc01e 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -3960,6 +3960,8 @@ static int build_polexpire(struct sk_buff *skb, struct xfrm_policy *xp,
- 		return err;
- 	}
- 	upe->hard = !!hard;
-+	/* clear the padding bytes */
-+	memset_after(upe, 0, hard);
- 
- 	nlmsg_end(skb, nlh);
+diff --git a/net/key/af_key.c b/net/key/af_key.c
+index 72ac2ace419d..5d480ae39405 100644
+--- a/net/key/af_key.c
++++ b/net/key/af_key.c
+@@ -757,6 +757,22 @@ static unsigned int pfkey_sockaddr_fill(const xfrm_address_t *xaddr, __be16 port
  	return 0;
+ }
+ 
++static unsigned int pfkey_sockaddr_fill_zero_tail(const xfrm_address_t *xaddr,
++						  __be16 port,
++						  struct sockaddr *sa,
++						  unsigned short family)
++{
++	unsigned int prefixlen;
++	int sockaddr_len = pfkey_sockaddr_len(family);
++	int sockaddr_size = pfkey_sockaddr_size(family);
++
++	prefixlen = pfkey_sockaddr_fill(xaddr, port, sa, family);
++	if (sockaddr_size > sockaddr_len)
++		memset((u8 *)sa + sockaddr_len, 0, sockaddr_size - sockaddr_len);
++
++	return prefixlen;
++}
++
+ static struct sk_buff *__pfkey_xfrm_state2msg(const struct xfrm_state *x,
+ 					      int add_keys, int hsc)
+ {
+@@ -3206,9 +3222,9 @@ static int pfkey_send_acquire(struct xfrm_state *x, struct xfrm_tmpl *t, struct
+ 	addr->sadb_address_proto = 0;
+ 	addr->sadb_address_reserved = 0;
+ 	addr->sadb_address_prefixlen =
+-		pfkey_sockaddr_fill(&x->props.saddr, 0,
+-				    (struct sockaddr *) (addr + 1),
+-				    x->props.family);
++		pfkey_sockaddr_fill_zero_tail(&x->props.saddr, 0,
++					      (struct sockaddr *)(addr + 1),
++					      x->props.family);
+ 	if (!addr->sadb_address_prefixlen)
+ 		BUG();
+ 
+@@ -3221,9 +3237,9 @@ static int pfkey_send_acquire(struct xfrm_state *x, struct xfrm_tmpl *t, struct
+ 	addr->sadb_address_proto = 0;
+ 	addr->sadb_address_reserved = 0;
+ 	addr->sadb_address_prefixlen =
+-		pfkey_sockaddr_fill(&x->id.daddr, 0,
+-				    (struct sockaddr *) (addr + 1),
+-				    x->props.family);
++		pfkey_sockaddr_fill_zero_tail(&x->id.daddr, 0,
++					      (struct sockaddr *)(addr + 1),
++					      x->props.family);
+ 	if (!addr->sadb_address_prefixlen)
+ 		BUG();
+ 
+@@ -3421,9 +3437,9 @@ static int pfkey_send_new_mapping(struct xfrm_state *x, xfrm_address_t *ipaddr,
+ 	addr->sadb_address_proto = 0;
+ 	addr->sadb_address_reserved = 0;
+ 	addr->sadb_address_prefixlen =
+-		pfkey_sockaddr_fill(&x->props.saddr, 0,
+-				    (struct sockaddr *) (addr + 1),
+-				    x->props.family);
++		pfkey_sockaddr_fill_zero_tail(&x->props.saddr, 0,
++					      (struct sockaddr *)(addr + 1),
++					      x->props.family);
+ 	if (!addr->sadb_address_prefixlen)
+ 		BUG();
+ 
+@@ -3443,9 +3459,9 @@ static int pfkey_send_new_mapping(struct xfrm_state *x, xfrm_address_t *ipaddr,
+ 	addr->sadb_address_proto = 0;
+ 	addr->sadb_address_reserved = 0;
+ 	addr->sadb_address_prefixlen =
+-		pfkey_sockaddr_fill(ipaddr, 0,
+-				    (struct sockaddr *) (addr + 1),
+-				    x->props.family);
++		pfkey_sockaddr_fill_zero_tail(ipaddr, 0,
++					      (struct sockaddr *)(addr + 1),
++					      x->props.family);
+ 	if (!addr->sadb_address_prefixlen)
+ 		BUG();
+ 
+@@ -3474,15 +3490,15 @@ static int set_sadb_address(struct sk_buff *skb, int sasize, int type,
+ 	switch (type) {
+ 	case SADB_EXT_ADDRESS_SRC:
+ 		addr->sadb_address_prefixlen = sel->prefixlen_s;
+-		pfkey_sockaddr_fill(&sel->saddr, 0,
+-				    (struct sockaddr *)(addr + 1),
+-				    sel->family);
++		pfkey_sockaddr_fill_zero_tail(&sel->saddr, 0,
++					      (struct sockaddr *)(addr + 1),
++					      sel->family);
+ 		break;
+ 	case SADB_EXT_ADDRESS_DST:
+ 		addr->sadb_address_prefixlen = sel->prefixlen_d;
+-		pfkey_sockaddr_fill(&sel->daddr, 0,
+-				    (struct sockaddr *)(addr + 1),
+-				    sel->family);
++		pfkey_sockaddr_fill_zero_tail(&sel->daddr, 0,
++					      (struct sockaddr *)(addr + 1),
++					      sel->family);
+ 		break;
+ 	default:
+ 		return -EINVAL;
 -- 
 2.43.0
 
