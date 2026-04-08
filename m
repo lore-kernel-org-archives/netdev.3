@@ -1,175 +1,117 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB23361DDD;
-	Wed,  8 Apr 2026 19:52:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17708339853
+	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 20:31:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775677961; cv=none; b=JCzMULcuN7/dvHDuoP/9/5MpaKLXIjvKgyFfpQYmSNqJ2PkSZbDGgJLfM0fevonOoQn1a9/763Km10ohUXmLgAEfo3E9HU28eIKQnzuJcHJZ6TDkTPaV16LjhbMRWBPOZmthcCzHk3GHa3EY5Zl+yPnXJWDmuMNoWyqqYFwkFA4=
+	t=1775680279; cv=none; b=HbSJcgkcfdSkVvM19P0io9hecrXCQj3KJJZAnzzY3X1nGs4JljCupU2YcH7q2DBh3lFk+l8T2vwKs5mnP96Ow6ev22tH7RqZrMEotidzRatWe8MZJ/TiqlkrH4y0TDLcxg4GxiTPUblGm2823uI2V9A1YAF6R/2tdAqczcEoXes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775677961; c=relaxed/simple;
-	bh=9mqb4UmtbkwxmOKBN82oecxyPuZOukRhEtgO/Lh2Y5g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FDo9s905hzWgZuZy70ZR41oKp/qpLrpLGVcGxqDIyZBB1RmGZ3vSsnMurXy6crx1eKky+2+oPFpgtF/ZUMIlB+vA9BP9MabxayeRXmKHN7efcGWRve+Vf2/IV0ABxzb8WS7N8H68l0PaNlcE59zvqPINUFzssLI86ZlAIe/2mCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=HbONVFG6; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1775680279; c=relaxed/simple;
+	bh=h8ZIAXsO1O6Av4gmoYRDT4j/bjB3v1Wytys4FQ2Y5Iw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Qtw0HM8cyWFCbXtn88edsWJZSeCSBdP+g+yAkT5pAK3s+m8ucG5Zvrxfm5i0loT9V/5hwAtxhH7U0H+7yBJvXkic/FGRhjZ7n4fGXiPzQ0gnsYiRfBWlPVf2+P+hNL6xGzuunFKP4JEeKbFjIAyL7Zeh6fSVPD+0BDxdmvPVjiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UzA7DMNw; arc=none smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="HbONVFG6"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=siH4dWUpa1bG3+ZxEQfIrP5wIqLbPeNz587asx6iEtM=; b=HbONVFG6DRgrSygkw950meAgfH
-	FLTLo7BxXvMxVYn1N3O9aPUiz3woyCupXzqlJQWKrMvzQLmTmBdI6FEku+H9GKYgnuT3VLPpCo9f+
-	6UDXAtge8QqbJsZepg2gz1o0r8ZWvTGoK5cuNO5b+6T7SGJHaGQ1dJN34J2aho4Bw1hyZTnIeNaC4
-	Poq5/q05n5j5v6Xxsm05218oh5ixACNea6eFktDlpcOoW2BJjsL2Wd0AjuMGd6wqOP2v1ksNxubFr
-	y9J3KuLltt3yfobkIvJuBFwB/mpTyjhKQzrWzf7bSihFoYIWM5TQZmnfgoZQm6ZHigZ83vVG3EqUO
-	pkUdBNyg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:44908)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1wAYx1-000000002jw-3Ojf;
-	Wed, 08 Apr 2026 20:52:35 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1wAYwy-000000003cC-3cPP;
-	Wed, 08 Apr 2026 20:52:32 +0100
-Date: Wed, 8 Apr 2026 20:52:32 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
-	linux-ext4@vger.kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	dmaengine@vger.kernel.org,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Theodore Ts'o <tytso@mit.edu>,
-	Andreas Dilger <adilger.kernel@dilger.ca>,
-	Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>
-Subject: Re: BUG: net-next (7.0-rc6 based and later) fails to boot on Jetson
- Xavier NX
-Message-ID: <adayAMR_dEA6W5vW@shell.armlinux.org.uk>
-References: <adZTGOjjJrVJOcT8@shell.armlinux.org.uk>
- <adZfTi3R6jtsjXx-@shell.armlinux.org.uk>
- <adZ9grUg71f518Fg@shell.armlinux.org.uk>
- <adZ_ZmjcE8S22vR1@shell.armlinux.org.uk>
- <3a1d0520-3402-47b2-9d7b-4e14a3cd07a4@arm.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UzA7DMNw"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c76af7b0f94so106865a12.1
+        for <netdev@vger.kernel.org>; Wed, 08 Apr 2026 13:31:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775680277; x=1776285077; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=99FF02REYBGZGd3XmZSOdGpqAG1Mt1bdn2Q0CmrbSjc=;
+        b=UzA7DMNwVcH5Se7VSqYva5YrCxttmwSXDGUA7Hj6d/1BFsoYgO4g5+EuXwgPyQKlLK
+         /HunzYtkhj/f4xxKWpTTMoX9T1+7nMoDbrJa0NSM/XLAXRHaNiqKHw8Y59s1Y/jF/Qi8
+         nELDt0a/+k6DuCXedh67m6ExWquHFqI7TAUxY4iCmL5gs8m3gXK002rDiSC5JFB/B2fa
+         cWgyrXjdqPU55sCLjPTCqNZw7tcaGC8+NB3AzZIp+WeYQhOoO5sQLvhldvGmSUkvdY0F
+         tWXhenSNnYbnPRYEGnadoIMKWq/ZaddIU3M2KXSwdmc3+ifEAIj6yVtPujk6boz7iXKt
+         5YLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775680277; x=1776285077;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=99FF02REYBGZGd3XmZSOdGpqAG1Mt1bdn2Q0CmrbSjc=;
+        b=WsblM0OB2GqEpn4lAHS/tImHEb/wbeOz61YB0MVKmK1yDihl9lcm8HS0keRQhq2kRK
+         IaxA2LrhPGp4ajFnn6jP86D93uDCKOyJ0zGeQP2pztBvftUpClvuxYvf8+OhkcBLsTGf
+         L/7hUmN9wiwA6WWSYRV9U3xQXVAQ1CBqHk9kVvyaVHoeJ1b0UBH2kxnm6kazA7OYVODc
+         jXtYNzAFQ8d9K65X/X/GEB/aYACRy3LkxCN/uCjecLJnBSG1IRMFjkxRDNINJaMxLt+x
+         6WrSCJg6Nh8abp2myzaf0IBLFpDIZbQmyam1Ci4d/MkQ6GqLd8OoBkVO04LLaScrNaFK
+         ClVQ==
+X-Gm-Message-State: AOJu0YxTE538UrGOejyzCwnMB0AJKmMhEhWGT+UMjWsFBJJl1UJvqPjL
+	Znydkm80yMWZ/pFAJ9nHcUp3tzq83OkRaoifyohyabBBBDtjhCisD+rJ
+X-Gm-Gg: AeBDievlTQXPe1C1Z+gS7iUK6OAQxBWMIPhWkU+OlVcDdUTYb4SEF/kySjKmtIs/wqZ
+	Sk3t55Kqzx4huhVAnMOT2fBX9EfNSj7xWhoO/je3gmiXXbllkNi7onlqC4vllfaJ9SjTANuYDXo
+	rwzQfNSvuHD1t1qwBGIk/8BiGlVPIRgRflyTdL3UM1Mli0U4hnRkgnthHtltlZTtDiPbtTBLuZj
+	uC9BD8aQz6diPegTR/uO8eGKf12CjhFVPIkEB+xWbUb9GtjH0G+BuWHvsi1ABTW8ts7gWmcnVf5
+	oXts+0ROo7vtn4x4oMu1LZhCXF5kJZShobCwySugL2tN0JrWD722f081YSZe67QiNXgETfHoKx2
+	rGOJBn0npP90ewNwmo/b5P2lMdtpJtFBDsaIw8dMHRPrW3bWp7Z+3LisnI90RD3gXRIZDni1UKY
+	8/lHDQ36r5zgktqr+XkJ+dxFH3nTKOSrWjV5lQTA==
+X-Received: by 2002:a05:7300:3b0c:b0:2d2:c60d:4fe5 with SMTP id 5a478bee46e88-2d2c60d581emr2996224eec.6.1775680277332;
+        Wed, 08 Apr 2026 13:31:17 -0700 (PDT)
+Received: from tresc054937.tre-sc.gov.br ([187.65.210.13])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2d16d115c00sm9556512eec.12.2026.04.08.13.31.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Apr 2026 13:31:16 -0700 (PDT)
+From: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+Subject: [net-next PATCH 0/2] net: dsa: tag_rtl8_4: fixes doc and set keep
+Date: Wed, 08 Apr 2026 17:31:00 -0300
+Message-Id: <20260408-realtek_fixes-v1-0-915ff1404d56@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3a1d0520-3402-47b2-9d7b-4e14a3cd07a4@arm.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAS71mkC/yWMQQrCMBQFr1Le2kBSSiNeRUSS+NSvEiU/SqH07
+ qa6HIaZGcoiVOy6GYUfUXnmBm7TIV1DvtDIqTF62492sN4Uhkfl/XiWiWrowtZx8D7FiNa8Cn+
+ iJXtkVpM5VRz+Rt/xxlTXHZblCw79CDx7AAAA
+X-Change-ID: 20260407-realtek_fixes-e1a81e477cbb
+To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Luiz Angelo Daros de Luca <luizluca@gmail.com>, 
+ =?utf-8?q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>, 
+ Linus Walleij <linusw@kernel.org>
+X-Mailer: b4 0.15.1
 
-On Wed, Apr 08, 2026 at 05:40:48PM +0100, Robin Murphy wrote:
-> On 2026-04-08 5:16 pm, Russell King (Oracle) wrote:
-> > On Wed, Apr 08, 2026 at 05:08:34PM +0100, Russell King (Oracle) wrote:
-> > > The rebase is still progressing, but it's landed on:
-> > > 
-> > > c7d812e33f3e dmaengine: xilinx: xilinx_dma: Fix unmasked residue subtraction
-> 
-> FWIW I don't see a Tegra having the Xilinx IP in it anyway - judging by the
-> DT it has their own tegra-gpcdma engine...
-> 
-> There's a fair chance this could be 90c5def10bea ("iommu: Do not call
-> drivers for empty gathers"), which JonH also reported causing boot issues on
-> Tegras - in short, SMMU TLB maintenance may not be completed properly which
-> could lead to recycled DMA addresses causing exactly this kind of random
-> memory corruption. I CC'd you on a patch:
-> 
-> https://lore.kernel.org/linux-iommu/20260408162846.GE3357077@nvidia.com/T/#t
+This small series addresses two points in the rtl8_4 tagger used by the
+realtel rtl8365mb driver.
 
-Okay, bisect complete, and... no idea. It seems to suggest that 7.0-rc6
-is actually fine - it ended up blaming Linus' tagging of 7.0-rc6 which
-only changed the makefile. So, my assumption that because rc6 was merged
-into net-next last Thursday which fails, net-next+rc7 fails, rc7 also
-fails, that rc6 would also fail seems to be false.
+The first patch updates the documentation of the tag format while the
+second patch sets the KEEP flag bit, ensuring that the switch
+respects the frame's VLAN format as provided by the kernel.
 
-Right, rc7 built with the same .config that rc6 was built with
-definitely fails, this time with:
+These patches were previously part of a larger series but are being 
+submitted independently as they are self-contained and already 
+received review.
 
-Root device found: PARTUUID=741c0777-391a-4bce-a222-455e180ece2a
-depmod: ERROR: could not open directory /lib/modules/7.0.0-rc7-bisect: No such file or directory
-depmod: FATAL: could not search modules: No such file or directory
-usb 2-3: new SuperSpeed Plus Gen 2x1 USB device number 2 using tegra-xusb
-hub 2-3:1.0: USB hub found
-hub 2-3:1.0: 4 ports detected
-usb 1-3: new full-speed USB device number 3 using tegra-xusb
-EXT4-fs (mmcblk0p1): VFS: Can't find ext4 filesystem
-mount: /mnt: wrong fs type, bad option, bad superblock on /dev/mmcblk0p1, missing codepage or helper program, or other error.
-mount: /mnt/: can't find PARTUUID=741c0777-391a-4bce-a222-455e180ece2a.
-get_swap_device: Bad swap file entry 1800c00008
-get_swap_device: Bad swap file entry 1800c00008
-get_swap_device: Bad swap file entry 1800c00008
+Changes in v1:
+- Resubmitted as a standalone series from the previous larger set.
+- Kept Reviewed-by tags from Linus Walleij.
 
-So, it seems rc6 -> rc7 => fails
-net-next with rc5 -> net-next with rc6 => fails
+Link: https://patch.msgid.link/CAD++jLmX31KfhGXA6SMAPXb14dHSC1t4JQZ=PQvjh-3hUcnzJA@mail.gmail.com
+Signed-off-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+---
+Alvin Šipraga (1):
+      net: dsa: tag_rtl8_4: update format description
 
-However, before I test anything else, I've just built the same rc7
-which failed above with your patch applied - and that boots fine.
+Luiz Angelo Daros de Luca (1):
+      net: dsa: tag_rtl8_4: set KEEP flag
 
-Now, each Thursday, net-next gets updated as that's the day that the
-net tree gets sent for merging into mainline. This causes net-next's
-version to increase. So something in current net-next plus in rc7 is
-causing this problem.
+ net/dsa/tag_rtl8_4.c | 21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
+---
+base-commit: 1a8dd88469bf742fd5eda91cd8e0f720a983ec5a
+change-id: 20260407-realtek_fixes-e1a81e477cbb
 
-The commit you claim needs fixing is:
+Best regards,
+--  
+Luiz Angelo Daros de Luca <luizluca@gmail.com>
 
-$ git describe --contains 90c5def10bea
-v7.0-rc7~29^2~2
-
-which I had assumed wouldn't be in net-next.
-
-Now, mainline had this on Thursday:
-
-commit f8f5627a8aeab15183eef8930bf75ba88a51622f
-Merge: 4c2c526b5adf ec7067e66119
-Author: Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Thu Apr 2 09:57:06 2026 -0700
-
-    Merge tag 'net-7.0-rc7' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
-
-commit 4c2c526b5adfb580bd95316bf179327d5ee26da8
-Merge: 2ec9074b28a0 8b72aa5704c7
-Author: Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Thu Apr 2 09:53:16 2026 -0700
-
-    Merge tag 'iommu-fixes-v7.0-rc6' of git://git.kernel.org/pub/scm/linux/kernel/git/iommu/linux
-
-and merging iommu-fixes-v7.0-rc6 introduced the buggy 90c5def10bea
-commit into -rc7.
-
-However, as soon as Linus merged net-7.0-rc7, netdev maintainers merged
-that exact commit back into net-next:
-
-commit 8ffb33d7709b59ff60560f48960a73bd8a55be95
-Merge: 269389ba5398 f8f5627a8aea
-Author: Jakub Kicinski <kuba@kernel.org>
-Date:   Thu Apr 2 10:57:09 2026 -0700
-
-    Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
-
-Thereby bringing in that buggy commit into net-next, but with net-next
-identifying itself as 7.0-rc6.
-
-That's... confusing, but explains why current net-next which reports
-itself as 7.0-rc6 _and_ rc7 both fail, but rc6 itself does not. It
-also means I've wasted an entire afternoon running a useless bisect
-between rc5 and rc6 due to the version numbers in net-next being
-meaningless.
-
-What's the status on the iommu fix? Is it merged into mainline yet?
-If it isn't already, that means net-next remains unbootable going
-into the merge window without manually carrying the fix locally.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
