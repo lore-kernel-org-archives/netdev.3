@@ -1,94 +1,84 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE1A313520;
-	Wed,  8 Apr 2026 13:32:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823E83CF665;
+	Wed,  8 Apr 2026 13:40:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775655125; cv=none; b=nt5CEdyWMFAP7WRV4qpD6iNlTRFSR0HyvN27/lqILm3AOdfSNVvhvTerXzQ3PQozVn4PjQxS1vW4FOjlUqt4oDjW/X+jrUkqRse37yzNaY5Mh7gjeaoZGupIFUwURvTJC8tbED6e3MDyg/9vSBSSvUS38qDJbQKw0+uCPKbd8eQ=
+	t=1775655644; cv=none; b=cp3moIUu1+cpHV7WsjESzv4/fHEB+Lfgu+mU/jQLPGlr0z2Qz5qmIWaXserWORSs7uQyFnSIEcd6NRwgzL45IAdcbKJUV//dit6h+06Mi47+WTVpX/eobKQQDk5LrDM9TLolckg1tRcJBym/XcVS13KmJB4GSFS4aXVojep4PZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775655125; c=relaxed/simple;
-	bh=08JCyzj5Xrn7/aFHZXRR/0nwsBlACnLkG+LycSzml4s=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uGenI4fCEt3CIkwy5BqukWGUqOpEM4npKhyZelToX4PxsGtmLWAiWaDDq8WVlvLtfhr/R3JcRhhM0lUcEWu9eRZ/Mf5ntecyYo2I+la2lNtpNp1+cqPLZul776Z573rftMYMHwdX+xo3XAJ95U5kcSkt4cgIJ0m999XssiuNniQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=K/IHY/+k; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1775655644; c=relaxed/simple;
+	bh=+0oydsix3eqfdw2Aq3Jilu/jZTS1qQw8+lp0nii5wyA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nE/SMH1rel0XB8Bd6npOf+2PIxPXyEeJcbAUlyQY9WtP9BuwteUkh4H289/mzlfY4xgZEXIWhmSWJiClCj66xBLwLkgWHKhNPGTjrwLLjTPyDA7rvxfTmCdnr9elYWtdO/A+31kR5fOSJ6QkVBzd/kZw+9Hfn9iycCqQXmpYkng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aohr4wmM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="K/IHY/+k"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1775655124; x=1807191124;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=08JCyzj5Xrn7/aFHZXRR/0nwsBlACnLkG+LycSzml4s=;
-  b=K/IHY/+k18lcV0rTT+20Dxx3DtFLsCv0Q8w/TWuGz1Hm0BNrCb8Y9BAu
-   FJyHDWJQ337PZKq0EibzW1ZRSP7IV0o10l9FfORqKdXMLOKksA/4ov9NE
-   ucza28Gw9HbnDyzmlz/VSFrrSR4bhfK0HOwTyre64wZYpIyj3U4wNcyd0
-   v0jLov0+lOrFLhILQ5z543U3pW0JM7rp4w3/NOOhhAU1ZBLfqSgene4sy
-   Du8qGjNZJwqZAMDvEgL4G4J7Ck3ioa2W7QCCHGh8uOW6OlXqAoMNxorwv
-   YUYmf3m5kGWJiRLCxUDe+haMNtgq/fhd5bOBq+BBofJ9D8jLpun7pPgvO
-   g==;
-X-CSE-ConnectionGUID: fPwiRt5YSsWuk0jJwaLkzQ==
-X-CSE-MsgGUID: J92zM7G1QaeEpkDIyn8h+Q==
-X-IronPort-AV: E=Sophos;i="6.23,167,1770620400"; 
-   d="scan'208";a="56242933"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 08 Apr 2026 06:32:03 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Wed, 8 Apr 2026 06:31:55 -0700
-Received: from bby-cbu-swbuild03.eng.microchip.com (10.10.85.11) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Wed, 8 Apr 2026 06:31:54 -0700
-From: Charles Perry <charles.perry@microchip.com>
-To: <netdev@vger.kernel.org>
-CC: Charles Perry <charles.perry@microchip.com>, Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Florian
- Fainelli" <florian.fainelli@broadcom.com>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH net-next] net: phy: fix a return path in get_phy_c45_ids()
-Date: Wed, 8 Apr 2026 06:31:44 -0700
-Message-ID: <20260408133145.1177417-1-charles.perry@microchip.com>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aohr4wmM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECFAAC19421;
+	Wed,  8 Apr 2026 13:40:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775655644;
+	bh=+0oydsix3eqfdw2Aq3Jilu/jZTS1qQw8+lp0nii5wyA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aohr4wmM+rkXMNtTgbWcQxOdPABsfIvSLaiIxSuvA/Fa8w9jq4e8zeL57njW4E/Zn
+	 1WmGBU1a5jmW5+6caOUtHvg5bYtc+mflLu56N2stGp6vaOUTOzZRdMoI/mbpkHA1p5
+	 nmJeRbq+sjtnoNIyAC1LPL99XGKtLIJoSrdODO68A6rM6UZjHROd3q0ujEOGRh0h7s
+	 bA6TZb9Uoc6BJqyuwlIlc8juqpaH9G1nzEkHvzWujtWq2we0nAAfepTL22yIhKmUOc
+	 /oeV9xf98fewJR0OCIknbua+MEcBDQSk8uoy215juMx8bqtDRxHtG74XC7kn2EPLUq
+	 h943YSSVcZFIQ==
+Date: Wed, 8 Apr 2026 08:40:42 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: claudiu.manoil@nxp.com, kuba@kernel.org, andrew@lunn.ch,
+	linux@armlinux.org.uk, davem@davemloft.net, frank.li@nxp.com,
+	edumazet@google.com, imx@lists.linux.dev, pabeni@redhat.com,
+	devicetree@vger.kernel.org, horms@kernel.org, conor+dt@kernel.org,
+	netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	andrew+netdev@lunn.ch, f.fainelli@gmail.com,
+	linux-kernel@vger.kernel.org, xiaoning.wang@nxp.com,
+	krzk+dt@kernel.org, vladimir.oltean@nxp.com,
+	linux-arm-kernel@lists.infradead.org, chleroy@kernel.org
+Subject: Re: [PATCH v4 net-next 01/14] dt-bindings: net: dsa: update the
+ description of 'dsa,member' property
+Message-ID: <177565564199.1953964.14327421234664978113.robh@kernel.org>
+References: <20260331113025.1566878-1-wei.fang@nxp.com>
+ <20260331113025.1566878-2-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260331113025.1566878-2-wei.fang@nxp.com>
 
-The return value of phy_c45_probe_present() is store in "ret", not
-"phy_reg", fix this. "phy_reg" always has a positive value if we reach
-this return path (since it would have returned earlier otherwise), which
-means that the original goal of the patch of not considering -ENODEV
-fatal wasn't achieved.
 
-Fixes: 17b447539408 ("net: phy: c45 scanning: Don't consider -ENODEV fatal")
-Signed-off-by: Charles Perry <charles.perry@microchip.com>
----
- drivers/net/phy/phy_device.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On Tue, 31 Mar 2026 19:30:12 +0800, Wei Fang wrote:
+> The current description indicates that the 'dsa,member' property cannot
+> be set for a switch that is not part of any cluster. Vladimir thinks
+> that this is a case where the actual technical limitation was poorly
+> transposed into words when this restriction was first documented, in
+> commit 8c5ad1d6179d ("net: dsa: Document new binding").
+> 
+> The true technical limitation is that many DSA tagging protocols are
+> topology-unaware, and always call dsa_conduit_find_user() with a
+> switch_id of 0. Specifying a custom "dsa,member" property with a
+> non-zero switch_id would break them.
+> 
+> Therefore, for topology-aware switches, it is fine to specify this
+> property for them, even if they are not part of any cluster. Our NETC
+> switch is a good example which is topology-aware, the switch_id is
+> carried in the switch tag, but the switch_id 0 is reserved for VEPA
+> switch and cannot be used, so we need to use this property to assign
+> a non-zero switch_id for it.
+> 
+> Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> ---
+>  Documentation/devicetree/bindings/net/dsa/dsa.yaml | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 81984d4ebb7c..810327fa886a 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -973,8 +973,8 @@ static int get_phy_c45_ids(struct mii_bus *bus, int addr,
- 				/* returning -ENODEV doesn't stop bus
- 				 * scanning
- 				 */
--				return (phy_reg == -EIO ||
--					phy_reg == -ENODEV) ? -ENODEV : -EIO;
-+				return (ret == -EIO ||
-+					ret == -ENODEV) ? -ENODEV : -EIO;
- 
- 			if (!ret)
- 				continue;
--- 
-2.47.3
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
