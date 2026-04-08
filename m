@@ -1,46 +1,35 @@
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4689C35E958
-	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 01:52:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E1C9463;
+	Wed,  8 Apr 2026 02:00:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775613121; cv=none; b=Iqs7g5f6QuzD4a1lUVjktzo5dJ32r6hvW5IePoHe0G3NAs/sj/npAYnPLZo8SMAy2D448bByU/x0cwKdTSv7jG5QlwL3W8TNA/4KJi6+UxNm1sl2a82AvfwiIa2chmnzTJaJori3Y11zyynXm9UsTGYLDev7/Tx2MEsVGo/Zhto=
+	t=1775613631; cv=none; b=QI6n70Lay5TBvr3wBto53LdeIrxvAyucTW2b8UhgOkZImN0MWqItzaK9kFmFnj2lnsPvv0mckavjdsCykFvvMZg2mbn3o71SDKYoeI0jbIHt7wuSy7Zr26jzMJPOrZ711EAF0amrVS4fjOlM0TA8DYrc9Y9xKX2ixM+HSRwKHkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775613121; c=relaxed/simple;
-	bh=Ta6AbvpaQKsB+xbANDMPvvgsDTmaP0zw1a4aSz+TAlo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i61ryFX9gPZuijb7mveOYqGsdr96KnM4wzA/+wbYm/3oSdesQw5U+G5rq3Sm3dsoTZ29efbog32A9xdYsD1NB2JDZ//KfkoJMoS5RA9wMxcI5WNUdWAHFjwZ2Z0G/MHs/l+dClRFURb382ZuHWaX54nZKFIja7YQUsd2cfJPJss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=EjZvaDfd; arc=none smtp.client-ip=91.218.175.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1775613631; c=relaxed/simple;
+	bh=xpV5ixxVNwIs1y77Krx9Aw0xFffIlWQdYpziGdQvjT0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Vy3IY+W9JHH1R7QX5k/j6sEGmqdkkrJpr2ljdKT7G25ItU/meWKmos7NXYVTEfoud9/r4lV1c7wMaEBivt/1Z5mS+QMAWu3kZzk79KA4obpkFD6gSNbhRWi196kFIazAD1thuAOG0obH5SGSn9jtF3LI034rvKbcLqgJjRgc4pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jz6rWChH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="EjZvaDfd"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775613108;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Iml5tzxAij83Kcy1JFiKcagKYg83tbdrbaf1N6ZaV+E=;
-	b=EjZvaDfdWhvhMHNkEgJrN6DKVIyz4OgrB4R2CZdmSy5qp67zQf/fXra9qaoxxuPOt6YCmz
-	h4LUbBgyioUPdGCoQl6Dh0f/JoGDj1IlI1UiE6PR3Ivs4j/YhHwQnquk6LW9nF7aNmiNiB
-	cxZS81Hg49lZUHvz2Jatb27DFL5uiTo=
-From: Qingfang Deng <qingfang.deng@linux.dev>
-To: Michal Ostrowski <mostrows@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Kees Cook <kees@kernel.org>,
-	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
-	Qingfang Deng <qingfang.deng@linux.dev>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: linux-ppp@vger.kernel.org
-Subject: [PATCH net-next 1/2] pppox: remove sk_pppox() helper
-Date: Wed,  8 Apr 2026 09:51:33 +0800
-Message-ID: <20260408015138.280687-1-qingfang.deng@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jz6rWChH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3AF4C116C6;
+	Wed,  8 Apr 2026 02:00:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775613630;
+	bh=xpV5ixxVNwIs1y77Krx9Aw0xFffIlWQdYpziGdQvjT0=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=jz6rWChHWltA5p5musO1I6Gf+5DZ/ZLP7T26s7WoOhoXESkDDK9gs5LQ3vI1se7A2
+	 d1T+7kgCuyRtUq5rR+Sc26k/I3Lmo08iKVWMHzn4xgTdkYevGz5nn2z92H8m8WZhV+
+	 Y+ViSkJ8w/jVHQgFDiDIBR2N6zyaX47PhD77Pt8hk7Y7nxzVev3y1ccdTZoJCYEGWg
+	 t4eQh4gugKplL3aeIULZ1Jau8snwcxvDzSzbbctc0HPZbuda8NQ9OT/xWFaPctHU+J
+	 MQiJnnI1/aE0hV4lpoPE3MUBPHIpLEjxjg01r3fNL6leYthDu83i0Cwc/jSA7BKNOx
+	 LFLFpPwpWia5w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FCBB3809A3D;
+	Wed,  8 Apr 2026 02:00:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,115 +37,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Subject: Re: [PATCH net-next] selftests: drv-net: adjust to socat changes
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177561360779.36273.6873126268378400690.git-patchwork-notify@kernel.org>
+Date: Wed, 08 Apr 2026 02:00:07 +0000
+References: <20260404230103.2719103-1-kuba@kernel.org>
+In-Reply-To: <20260404230103.2719103-1-kuba@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ leitao@debian.org, shuah@kernel.org, hawk@kernel.org,
+ john.fastabend@gmail.com, sdf@fomichev.me, linux-kselftest@vger.kernel.org
 
-The sk member can be directly accessed from struct pppox_sock without
-relying on type casting. Remove the sk_pppox() helper and update all
-call sites to use po->sk directly.
+Hello:
 
-Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
----
- drivers/net/ppp/pppoe.c  | 10 +++++-----
- drivers/net/ppp/pptp.c   |  6 +++---
- include/linux/if_pppox.h |  5 -----
- 3 files changed, 8 insertions(+), 13 deletions(-)
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
-index 1ac61c273b28..d546a7af0d54 100644
---- a/drivers/net/ppp/pppoe.c
-+++ b/drivers/net/ppp/pppoe.c
-@@ -231,7 +231,7 @@ static inline struct pppox_sock *get_item(struct pppoe_net *pn, __be16 sid,
- 	struct pppox_sock *po;
- 
- 	po = __get_item(pn, sid, addr, ifindex);
--	if (po && !refcount_inc_not_zero(&sk_pppox(po)->sk_refcnt))
-+	if (po && !refcount_inc_not_zero(&po->sk.sk_refcnt))
- 		po = NULL;
- 
- 	return po;
-@@ -273,7 +273,7 @@ static void pppoe_flush_dev(struct net_device *dev)
- 			if (!po)
- 				break;
- 
--			sk = sk_pppox(po);
-+			sk = &po->sk;
- 
- 			/* We always grab the socket lock, followed by the
- 			 * hash_lock, in that order.  Since we should hold the
-@@ -413,7 +413,7 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
- 	if (!po)
- 		goto drop;
- 
--	return __sk_receive_skb(sk_pppox(po), skb, 0, 1, false);
-+	return __sk_receive_skb(&po->sk, skb, 0, 1, false);
- 
- drop:
- 	kfree_skb(skb);
-@@ -425,7 +425,7 @@ static void pppoe_unbind_sock_work(struct work_struct *work)
- {
- 	struct pppox_sock *po = container_of(work, struct pppox_sock,
- 					     proto.pppoe.padt_work);
--	struct sock *sk = sk_pppox(po);
-+	struct sock *sk = &po->sk;
- 
- 	lock_sock(sk);
- 	if (po->pppoe_dev) {
-@@ -469,7 +469,7 @@ static int pppoe_disc_rcv(struct sk_buff *skb, struct net_device *dev,
- 	po = get_item(pn, ph->sid, eth_hdr(skb)->h_source, dev->ifindex);
- 	if (po)
- 		if (!schedule_work(&po->proto.pppoe.padt_work))
--			sock_put(sk_pppox(po));
-+			sock_put(&po->sk);
- 
- abort:
- 	kfree_skb(skb);
-diff --git a/drivers/net/ppp/pptp.c b/drivers/net/ppp/pptp.c
-index b18acd810561..cc8c102122d8 100644
---- a/drivers/net/ppp/pptp.c
-+++ b/drivers/net/ppp/pptp.c
-@@ -62,7 +62,7 @@ static struct pppox_sock *lookup_chan(u16 call_id, __be32 s_addr)
- 		if (opt->dst_addr.sin_addr.s_addr != s_addr)
- 			sock = NULL;
- 		else
--			sock_hold(sk_pppox(sock));
-+			sock_hold(&sock->sk);
- 	}
- 	rcu_read_unlock();
- 
-@@ -164,7 +164,7 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
- 	struct iphdr  *iph;
- 	int    max_headroom;
- 
--	if (sk_pppox(po)->sk_state & PPPOX_DEAD)
-+	if (po->sk.sk_state & PPPOX_DEAD)
- 		goto tx_drop;
- 
- 	rt = pptp_route_output(po, &fl4);
-@@ -375,7 +375,7 @@ static int pptp_rcv(struct sk_buff *skb)
- 	if (po) {
- 		skb_dst_drop(skb);
- 		nf_reset_ct(skb);
--		return sk_receive_skb(sk_pppox(po), skb, 0);
-+		return sk_receive_skb(&po->sk, skb, 0);
- 	}
- drop:
- 	kfree_skb(skb);
-diff --git a/include/linux/if_pppox.h b/include/linux/if_pppox.h
-index 8bbf676c2a85..636772693f9a 100644
---- a/include/linux/if_pppox.h
-+++ b/include/linux/if_pppox.h
-@@ -57,11 +57,6 @@ static inline struct pppox_sock *pppox_sk(struct sock *sk)
- 	return (struct pppox_sock *)sk;
- }
- 
--static inline struct sock *sk_pppox(struct pppox_sock *po)
--{
--	return (struct sock *)po;
--}
--
- struct module;
- 
- struct pppox_proto {
+On Sat,  4 Apr 2026 16:01:03 -0700 you wrote:
+> socat v1.8.1.0 now defaults to shut-null, it sends an extra
+> 0-length UDP packet when sender disconnects. This breaks
+> our tests which expect the exact packet sequence.
+> 
+> Add shut-none which was the old default where necessary.
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next] selftests: drv-net: adjust to socat changes
+    https://git.kernel.org/netdev/net-next/c/e65d8b6f3092
+
+You are awesome, thank you!
 -- 
-2.43.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
