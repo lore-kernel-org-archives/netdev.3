@@ -1,66 +1,65 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790F23793C0
-	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 07:09:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE3137702E
+	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 07:09:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775632154; cv=none; b=TpOC6omMhbrwcrY3aoLZgSWkWTGNC6bX8LX6HaSUkHvZ8DB3Jp+vMsnThYm6WQ8OujiSDcJoGmXRdCVrjnYdhWb4qJqk0WL7h1Rd0bz2FIEZfv+h/nTG4BjprAREvTCdCBGDnEuw24L740woAtKcfHFsqiue+8JlKKRgqbPMOiw=
+	t=1775632159; cv=none; b=Q4EejCtsP/R/s+AEcrhSWxXXyk7vuFq1cxrPBWtxcbDx3MrHz8jPIz8aUbfEnVQZVL5PgnJwQcA5UfHl+KtdZ3mEGHYwqgQ7Zm0Z1iWeuIleCx4tW0TWBa0o+YhpUY5iRTpiioEazvXoGat0+Bd4upSNZNZ9C97hWt9uopS++LI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775632154; c=relaxed/simple;
-	bh=yW0EWQ0S7fZHnKrZijNI45+Zh8pLiM3aDw1H/YYr77Q=;
+	s=arc-20240116; t=1775632159; c=relaxed/simple;
+	bh=arnp7gczBQAyyQIAMvp6Am0+WUL06koxo245kjp/MoA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AKv3eGuGeMxMOKoPCT/w8EZZtQs3JeScQij9QLIXbDbIbvWui2pSmp+9cz3JDDyoM4ByILMRmcu6yJdlUw8DCbDLSNMhyfCRllT4vuKj0qsEGK75ksM2X5H0e4gMAPo7jK8uWfCHzbIlHOBeXDXO3Y1NrZdqsSFXB8/8kDFOnsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d0WRbAgp; arc=none smtp.client-ip=209.85.214.178
+	 In-Reply-To:To:Cc; b=PCiHzsSaGJhqgy8iyFOdBCDH7KbwTQr/2SGYY0TZ1njoM0Fbt8TG2gMhTW8syrwAtdpjRzWX7UHLNFHfZ4DQ2q9u/tVoGmtmF5WTlQF4mtdYo1nw55me7JKFybtNMxcWmOmSjP4F4fTGpqaWvfYwiWI0XmqfTSQVyZpLTrEX+h0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fLI+YVNh; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d0WRbAgp"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2ad4d639db3so26593595ad.0
-        for <netdev@vger.kernel.org>; Wed, 08 Apr 2026 00:09:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fLI+YVNh"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2b0ba3bfe16so5639595ad.1
+        for <netdev@vger.kernel.org>; Wed, 08 Apr 2026 00:09:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775632153; x=1776236953; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1775632157; x=1776236957; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=sjikhea0j9xNgvdUdw09l94z78mqVFteQ985sCMSLyI=;
-        b=d0WRbAgpYGUxKB4zVy5Etr77inb6L1y6hF0T7XTkz0EB11idWu5FTjeyCXiucAgnAS
-         PeBX08/mOWQc3DlmRIqWuKAYplddVsvajdK1ZtDwSfTvZ8pl7bM29YJhKcKSWsCSQER7
-         9wgCFhvab+aAzLPqbZ8QQJvCFa2uuwTHbLxcv1GiUmERzR6DcPJOyJrZb2ia0vhzk6bJ
-         6d5zgHqYpEKSzj8Ii9x5n9kILz3Sr3O4RjDg7cVHObYpfOggz2YgWRMSGxwd23L9vK12
-         MzCdz+LGAhtA1O+1iud0uPv34Z7YD2ATuU4KqgNxJ9DuN66QBPC+tXiIbJVaFD3FLBeb
-         e5nQ==
+        bh=SHfInxTMO4F5kmKiIP6zRL2QqGxjyp1w4ES+9lythuw=;
+        b=fLI+YVNhEyUhuDmcXkH5El4vGdT5dg8cfhPn8N/J2Z/xWn/sw3NePx7sZSZEpRblRv
+         xe4TKBPpj4rUtNO3FHr8f52DICz4unSqOOnSfPl/bibcHhRiQKxknK9tEjuft21DZ1Ko
+         zI2h9Ux1v5fU/HIkzYmJHf8NY/xYeJuHzKVqrWVz063H2SuGur9JJOUqaOp/ODlue0V3
+         d2sbyUiVcb9gGG/1yMIIq6kjwYIeoKX0VUYqd6XP/aU4bwhGXRTIsdlen4FIY/leuZcR
+         bfGIuAwAtOB1rRmvKhgO5DCx2GDzUfJQh/Hi5ZjUnrGP0uIAkEQM04QjEPTwt4pP3o4x
+         tB1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775632153; x=1776236953;
+        d=1e100.net; s=20251104; t=1775632157; x=1776236957;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=sjikhea0j9xNgvdUdw09l94z78mqVFteQ985sCMSLyI=;
-        b=MMqViLYIdr4NyguEjqTb5dLT9yTrtnKuqn1tV8ryRSniSrjad0ZhigMY9hLGegKfE7
-         qgFzCFJ7buQ1X3BgG7Y8vX3WFey9NPJ8SUrkIqCgzqcuE7BFwsqaZlFpqWpzyNmWw4jg
-         cKHcstvAt80wBn6Lr8308POpzszw+w64zsLvNIe1qpNJzeMJ9mb1C+WVe+fKgofpNVSa
-         e+Wa977WbQvg9Qp7UT8enG5ozT8emT7AhM3xAU+yx8opccobgnkWs/gtAyZ9DPvZSjWy
-         muoCcXtH0Ul6loAvwHH2lPnGTpI/DHli6huX9h6q4hbQ4+gjRnRcC1ktKSdjcIyj27sC
-         gh7Q==
-X-Gm-Message-State: AOJu0YzDvtn+HemQZ+3810mRcT4OkMBnCwCCMxV8BJw+F2gumeVAO1UW
-	X+nYJ4QT+QKRoZ2gy7eHqIAvyw3TDJN36C/zOq6ZpkJg2YT8y1DTp78Z
-X-Gm-Gg: AeBDiev2/tVviQF8f87KPFXoRtptua0F058APOklav5gUBt30UUhxKkNXVJOdxKTXjf
-	0cMYu3yrbG8VOQzBt829v0stsurM7+dZ9yCXZaUCbiWb+hrOkTYwjaHDzP/YYMtbgZkB+q4V66p
-	/HlJrOSCDtcWdjtxSzivTC+Thgjl8x22c423w/0tP0C9/b6ARMSCKFOFsmwSCA5TzwrSoN0kB0X
-	N2imlA0dZ8ARM42tQ/N8GCEPCenOWg+B4jMRlhZVt0wa63SBkJmO2VIrYzoUQGC75f0NZM3m+Dw
-	BjuT26uip8GpkiBP3QXEUKzhfmiqC/2w5QA+kJl34SZCoNeWhwN3YBfuhBrxhdyMZIo65ZBMIYh
-	f6XeKEvBrstUl63rFDH1sjIzqwzktRfQ+MQ9D0vJaXsV1dFCfR5OkQywBU8rMr1Cns4BchFWSY7
-	g4o7NAkKkQlnCFD+kswJNj0JXDugjyyfOejBWlZodyEG+3nyiS7TCEngsXcyY=
-X-Received: by 2002:a17:903:2c07:b0:2b2:67ca:5ff1 with SMTP id d9443c01a7336-2b2818afe20mr216067485ad.31.1775632152759;
-        Wed, 08 Apr 2026 00:09:12 -0700 (PDT)
+        bh=SHfInxTMO4F5kmKiIP6zRL2QqGxjyp1w4ES+9lythuw=;
+        b=X11XfeGUMHFBp674X2qpuRYGv7ahugYucNAMo+Z1H5iPxDszQIJ5Bnw76Yyynt2Er6
+         6PC7vyGRIRBzp79sBXpxj3zLtHljWqRSatYoTX9srOxbNtrzCWzzqN5saEr0zbcTpEiA
+         aWYg26WKN9UJ5zdGLOtt2blxpKin5Eujd+fbJ773cOzkpWiJKHPkLaTfShzl88j31z7y
+         Osy6yUkhQzTAFeSaaULiUS17TOgi86gBj8sddm+YOQqCJyFYp20hdbFZPfimGe2SpWV2
+         RkWSVbSs17YIW9k/GX79KhyNvldslQ/xbl2FlNTBaK/rJirlKCs3T8VDtKgrNqVWnGrC
+         L71g==
+X-Gm-Message-State: AOJu0YyHArRlPUcNm0NzPFdH4+DSSvjrOZ5SIoaoa4TGvvlh0iwe/0sH
+	X1WGDcvay5//GipPuDzphRXa5dOkQ+V77N4qXm909n+92lBEa8pzX1zQSxp9boclOwA=
+X-Gm-Gg: AeBDieshtPaKCzNh0pEoN/NRzt02xNfodU8BfzAHJFlLDBxjJ887rukT0+8IlrFDkhj
+	BEaaXhBvJm92IroLzBF6pT5wIc6FsoJUQ66H/wG7F/fF84QelDg6b8nk2o6JFkUqkahHkwD542z
+	BRG9kNkfyNEOxRMAs+We+Ct19tTJ515I06z9icJtlLjTI/BW1iWDW1/pBabprrR2kU7rWM54M4g
+	DQixYPVl09KhnWUNn3xFKXWq3vUfnO44n7k4Ge0A/bo9XiqdE4/HjUfLXsKm3WVxNZB1taqLyWZ
+	VevDdlzL2Wu/CEgVf5ZHGKbCxBPNksdixoA7neH8OJVdeLThgxtod2QauVP+VS/nPYZdjG+mSbx
+	2u56xmNxMC5ZpRAdrnW+xX23l2ph4eEMmI62I4KhLWTI2qpAmPspsmH8NkMxJyx4pmDprjGpHtq
+	wrs1KrcstCBjMoZPvVSlaTxDWp7YQQKixsAtt+AHMRMsOEDeid
+X-Received: by 2002:a17:902:e78f:b0:2b0:b258:2a57 with SMTP id d9443c01a7336-2b277e7ebf0mr202325165ad.27.1775632157316;
+        Wed, 08 Apr 2026 00:09:17 -0700 (PDT)
 Received: from 1.0.0.127.in-addr.arpa ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2749b66aasm202917785ad.68.2026.04.08.00.09.08
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2749b66aasm202917785ad.68.2026.04.08.00.09.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Apr 2026 00:09:12 -0700 (PDT)
+        Wed, 08 Apr 2026 00:09:16 -0700 (PDT)
 From: Hangbin Liu <liuhangbin@gmail.com>
-Date: Wed, 08 Apr 2026 15:08:51 +0800
-Subject: [PATCH net-next v2 3/5] tools: ynl: ethtool: add --dbg-small-recv
- option
+Date: Wed, 08 Apr 2026 15:08:52 +0800
+Subject: [PATCH net-next v2 4/5] netlink: add a nla_nest_end_safe() helper
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,7 +68,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260408-b4-ynl_ethtool-v2-3-7623a5e8f70b@gmail.com>
+Message-Id: <20260408-b4-ynl_ethtool-v2-4-7623a5e8f70b@gmail.com>
 References: <20260408-b4-ynl_ethtool-v2-0-7623a5e8f70b@gmail.com>
 In-Reply-To: <20260408-b4-ynl_ethtool-v2-0-7623a5e8f70b@gmail.com>
 To: Donald Hunter <donald.hunter@gmail.com>, 
@@ -80,40 +79,49 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  Hangbin Liu <liuhangbin@gmail.com>
 X-Mailer: b4 0.14.3
 
-Add a --dbg-small-recv debug option to control the recv() buffer size
-used by YNL, matching the same option already present in cli.py. This
-is useful if user need to get large netlink message.
+The nla_len field in struct nlattr is a __u16, which can only hold
+values up to 65535. If a nested attribute grows beyond this limit,
+nla_nest_end() silently truncates the length, producing a corrupted
+netlink message with no indication of the problem.
+
+Since nla_nest_end() is used everywhere and this issue rarely happens,
+let's add a new helper to check the length.
 
 Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
 ---
- tools/net/ynl/tests/ethtool.py | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ include/net/netlink.h | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/tools/net/ynl/tests/ethtool.py b/tools/net/ynl/tests/ethtool.py
-index 63854d21818c..db3b62c652e7 100755
---- a/tools/net/ynl/tests/ethtool.py
-+++ b/tools/net/ynl/tests/ethtool.py
-@@ -166,12 +166,19 @@ def main():
-     parser.add_argument('device', metavar='device', type=str)
-     parser.add_argument('args', metavar='args', type=str, nargs='*')
+diff --git a/include/net/netlink.h b/include/net/netlink.h
+index 1a8356ca4b78..546d10586576 100644
+--- a/include/net/netlink.h
++++ b/include/net/netlink.h
+@@ -2264,6 +2264,25 @@ static inline int nla_nest_end(struct sk_buff *skb, struct nlattr *start)
+ 	return skb->len;
+ }
  
-+    dbg_group = parser.add_argument_group('Debug options')
-+    dbg_group.add_argument('--dbg-small-recv', default=0, const=4000,
-+                           action='store', nargs='?', type=int, metavar='INT',
-+                           help="Length of buffers used for recv()")
++/**
++ * nla_nest_end_safe - Validate and finalize nesting of attributes
++ * @skb: socket buffer the attributes are stored in
++ * @start: container attribute
++ *
++ * Corrects the container attribute header to include all appended
++ * attributes.
++ *
++ * Returns: the total data length of the skb, or -EMSGSIZE if the
++ * nested attribute length exceeds U16_MAX.
++ */
++static inline int nla_nest_end_safe(struct sk_buff *skb, struct nlattr *start)
++{
++	if (skb_tail_pointer(skb) - (unsigned char *)start > U16_MAX)
++		return -EMSGSIZE;
 +
-     args = parser.parse_args()
- 
-     spec = os.path.join(spec_dir(), 'ethtool.yaml')
-     schema = os.path.join(schema_dir(), 'genetlink-legacy.yaml')
- 
--    ynl = YnlFamily(spec, schema)
-+    ynl = YnlFamily(spec, schema, recv_size=args.dbg_small_recv)
-+    if args.dbg_small_recv:
-+        ynl.set_recv_dbg(True)
- 
-     if args.set_priv_flags:
-         # TODO: parse the bitmask
++	return nla_nest_end(skb, start);
++}
++
+ /**
+  * nla_nest_cancel - Cancel nesting of attributes
+  * @skb: socket buffer the message is stored in
 
 -- 
 Git-155)
