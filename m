@@ -1,52 +1,52 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DAEF2641FC
-	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 18:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2AB3B19A3
+	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 18:47:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674049; cv=none; b=Bk7La0Pg711LvBIlupqgyDRbNfjKj0hsP19BjpepsCu0IHq1f/osraIp9oNclESTfXR9O76vI4yQXa9RenLrODPs2Del/4aDiNAWz1QneSomFU03WhTy1TZj6c0hRjNAu4Eng0yzrKTld+zHwrsJ1SSlbbesrp8NWFCZcPmjc6g=
+	t=1775674052; cv=none; b=idOAM3eiIviRTaj0+3WQjwdGid+dbkM08xjJ5VNvXcKCtfnnbRu02v4cp4E6kzS+FB9WRj+jY5kCSnv0aMD7k/k8HU/wl0UnksvG0cZyP6MF0XU28CXsjh1YKo7MhXHOh6lD61UC4zJ8Wk/JbO1Kj3rQJFSq6v/Nu0eNoTnJttQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674049; c=relaxed/simple;
-	bh=DmanvA9tHclxyhu+ESIggN6Ege+JBj0Mde5bEHp/2x4=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=XsfGmgrHoIt5hENWkNcEagOU68nDIZNTnrATOHwdHR+DsKdCab+7GPxLXPrgNgukVn1VNKnaqCElzOrOx9oZRoMdZCVgZqaQpd2GoIqtQxHemY0xYrxtmNlMMBPc96nHY9YCm1Y4La4Xobq/jKmVnp0deOEigVebgO2kV0h5r8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dnNFVpDG; arc=none smtp.client-ip=192.198.163.18
+	s=arc-20240116; t=1775674052; c=relaxed/simple;
+	bh=R6AxwX9GU8IMz9cc9hHesk4hswO49vClh2NXD0wCyaU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=rgXoO71ng8DFiBjy8KpbED4L8U71RBSq71cWJoQoee8Uk1WCHkFfaSuSSZC3AXqzGe02t93yC7OktiQbWWpjwuRFG5VceY0JXt0i4Cxx0SVFobdKiGWDHQvVXQwAD/sMp0D7AThz1OyKfTAop4YLzlvtf8me8xCPCiyelUOWzSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cTTXaxbN; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dnNFVpDG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cTTXaxbN"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775674048; x=1807210048;
-  h=from:subject:date:message-id:mime-version:
-   content-transfer-encoding:to:cc;
-  bh=DmanvA9tHclxyhu+ESIggN6Ege+JBj0Mde5bEHp/2x4=;
-  b=dnNFVpDGQxWyStU46fIMsG5aB/yjiwCWM6Y2m+FbqRWsYnoiZao/rC8D
-   zjvUaGaK8tF3s1j06iztpsK1lmgb03vc0rYGnHAe2CIN1CzDjCZXZdi/4
-   0WdrkXKRZMxJrET5KZto9vhxW4WvGIP9dtcRyrYnlMo3LI1rMNtx91Dcn
-   N+CRfX8hpEYHsBRxjMTLrP8F0ISoeNHiZCTxGZ2bNAVpxSw49/mvhZHUn
-   EOxL7bJo7474wV4RIYAWp4IK88NmN9gNpNWG1pYiRbZgKpf0NviwCRRqq
-   MziXdUsSMTELnHr6HnBM2YUXVmjsOxUZqX+PcfXtYvT3ZswuNuLwr5yJN
-   A==;
-X-CSE-ConnectionGUID: KiK7EuFmQDKt5I50mqbpuA==
-X-CSE-MsgGUID: spVNKoa4STKDWDSJIlXOxw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11753"; a="75841379"
+  t=1775674050; x=1807210050;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:references:in-reply-to:to:cc;
+  bh=R6AxwX9GU8IMz9cc9hHesk4hswO49vClh2NXD0wCyaU=;
+  b=cTTXaxbNC8AzQUu2bUTcTDupHG3Q5nUZM4wckBo0gj/nB1Xt1IbDoEs6
+   G+0RBsfO9melaM85kgNQE/3Z7HrJw+efaposUY8jKj+cfTHhVsL3rb1Qu
+   Om/kNxdKaEIKEkQiBiNlCddyNe5dF7prWwcq9ITB3abAeY8gJtYWBh0Cf
+   noq8ry2sUthCA9GTg6xdpM6QL9W7xaD/fMonOLFv6CdVaNc71riEwW7lz
+   RyUNBUatPeZHrzq8YWD/JbWtFR4kG/vRk8MUyY9ATwwWs0/mI6FGCn1hS
+   yEnfuZBbPFxVpA8m90kzoxMlJ2maex2ZBvPfD+HJlWzsxTY+9MlhNwsrJ
+   Q==;
+X-CSE-ConnectionGUID: mkggA0o2QHyM/KogPZbfGg==
+X-CSE-MsgGUID: xiULt5UITGiSHiMBvJMLCQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11753"; a="75841381"
 X-IronPort-AV: E=Sophos;i="6.23,168,1770624000"; 
-   d="scan'208";a="75841379"
+   d="scan'208";a="75841381"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
   by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2026 11:47:28 -0700
-X-CSE-ConnectionGUID: ADitm5EzSh2dIfByfIqpTw==
-X-CSE-MsgGUID: w1xbCf5STdaCnn9GT/g1+w==
+X-CSE-ConnectionGUID: 8hAv3SWVTB6eEHvfPYVAnA==
+X-CSE-MsgGUID: clAReoAlSWaVf9ZvYM4epA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,168,1770624000"; 
-   d="scan'208";a="230217556"
+   d="scan'208";a="230217570"
 Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.109]) ([10.166.28.109])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2026 11:47:26 -0700
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2026 11:47:27 -0700
 From: Jacob Keller <jacob.e.keller@intel.com>
-Subject: [PATCH iwl-net 0/4] ice: E825C missing PHY timestamp interrupt
- fixes
-Date: Wed, 08 Apr 2026 11:46:30 -0700
-Message-Id: <20260408-jk-even-more-e825c-fixes-v1-0-b959da91a81f@intel.com>
+Date: Wed, 08 Apr 2026 11:46:34 -0700
+Subject: [PATCH iwl-net 4/4] ice: fix
+ ice_ptp_read_tx_hwtstamp_status_eth56g
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,10 +55,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMwQ6CMBAFf4Xs2U3aqhX9FeMB2qcuaiFdRBPCv
- 1v1OJnMzKTIAqVDNVPGJCp9KmBXFYVrky5giYXJGefNxtTc3RgTEj/6DEbttoHP8obyvvEx7tb
- WttFTyYeMnyj1keR154SRTn+hz7ZDGL9jWpYPd7f0hYUAAAA=
-X-Change-ID: 20260408-jk-even-more-e825c-fixes-9a6dd7311bd6
+Message-Id: <20260408-jk-even-more-e825c-fixes-v1-4-b959da91a81f@intel.com>
+References: <20260408-jk-even-more-e825c-fixes-v1-0-b959da91a81f@intel.com>
+In-Reply-To: <20260408-jk-even-more-e825c-fixes-v1-0-b959da91a81f@intel.com>
 To: Anthony Nguyen <anthony.l.nguyen@intel.com>, 
  Intel Wired LAN <intel-wired-lan@lists.osuosl.org>, netdev@vger.kernel.org
 Cc: Grzegorz Nitka <grzegorz.nitka@intel.com>, 
@@ -66,118 +65,62 @@ Cc: Grzegorz Nitka <grzegorz.nitka@intel.com>,
  Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
  Jacob Keller <jacob.e.keller@intel.com>
 X-Mailer: b4 0.16-dev-306a9
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5658;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1919;
  i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=DmanvA9tHclxyhu+ESIggN6Ege+JBj0Mde5bEHp/2x4=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhsxri9Y2zNOprTy0fNsH8WWHGr5d2lfzKzEqbdL8A4cXv
- 9Oy/7m9rqOUhUGMi0FWTJFFwSFk5XXjCWFab5zlYOawMoEMYeDiFICJtDxhZFj3nL9eqvp45pY7
- 04rfzf5RWT910+u0k6zLO1xe15w+r7qS4X9AtWrVQlnp2zlyiX5s3pE8h4VePQnpVtMoeiCrqHh
- vDzcA
+ bh=R6AxwX9GU8IMz9cc9hHesk4hswO49vClh2NXD0wCyaU=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhsxri/Y+bSrduCnDdYNNGJPPVBP12JaMpDUuKV9mhBSf5
+ lS/e6Gmo5SFQYyLQVZMkUXBIWTldeMJYVpvnOVg5rAygQxh4OIUgIncn87wiyl3veh+2e1PH3JP
+ NFr6wmrN072BHdc+fVv19YBH3oOvmr8YGd6s//mjPfNjgKXMGqG9XYfnMcSslPmd8VlFflkDC3N
+ EECcA
 X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
  fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-We recently ran into a nasty corner case issue with a customer operating
-E825C cards seeing some strange behavior with missing Tx timestamps. During
-the course of debugging. This series contains a few fixes found during this
-debugging process.
+The ice_ptp_read_tx_hwtstamp_status_eth56g function calls
+ice_read_phy_eth56g with a PHY index. However the function actually expects
+a port index. This causes the function to read the wrong PHY_PTP_INT_STATUS
+registers, and effectively makes the status wrong for the second set of
+ports from 4 to 7.
 
-The primary issue discovered in the investigation is a misconfiguration of
-the E825C PHY timestamp interrupt register, PHY_REG_TS_INT_CONFIG. This
-register is responsible for programming the Tx timestamp behavior of a PHY
-port. The driver programs two values here: a threshold for when to
-interrupt and whether the interrupt is enabled.
+The ice_read_phy_eth56g function uses the provided port index to determine
+which PHY device to read. We could refactor the entire chain to take a PHY
+index, but this would impact many code sites. Instead, multiply the PHY
+index by the number of ports, so that we read from the first port of each
+PHY.
 
-The threshold value is used by hardware to determine when to trigger a Tx
-timestamp interrupt. The interrupt cause for the port is raised when the
-number of outstanding timestamps in the PHY port timestamp memory meets the
-threshold. The interrupt cause is not cleared until the number of
-outstanding timestamps drops *below* the threshold.
-
-It is considered a misconfiguration if the threshold is programmed to 0. If
-the interrupt is enabled while the threshold is zero, hardware will raise
-the interrupt cause at the next time it checks. Once raised, the interrupt
-cause for the port will never lower, since you cannot have fewer than zero
-outstanding timestamps.
-
-Worse, the timestamp status for the port will remain high even if the
-PHY_REG_TS_INT_CONFIG is reprogrammed with a new threshold. The PHY is a
-separate hardware block from the MAC, and thus the interrupt status for the
-port will remain high even if you reset the device MAC with a PF reset,
-CORE reset, or GLOBAL reset.
-
-PHY ports are connected together into quads. Each quad muxes the PHY
-interrupt status for the 4 ports on the quad together before connecting
-that to the MACs miscellaneous interrupt vector. As a result, if a single
-PHY port in the quad is stuck, no timestamp interrupts will be generated
-for any timestamp on any port on that quad.
-
-The ice driver never directly writes a value of 0 for the threshold.
-Indeed, the desired behavior is to set the threshold to 1, so that
-interrupts are generated as soon as a single timestamp is captured.
-Unfortunately, it turns out that for the E825C PHY, programming the
-threshold and enable bit in the same write may cause a race in the PHY
-timestamp block. The PHY may "see" the interrupt as enabled first before it
-sees the threshold value. If the previous threshold value is zero (such as
-when the register is initialized to zero at a cold power on), the hardware
-may race with programming the threshold and set the PHY interrupt status to
-high as described above.
-
-The first patch in this series corrects that programming order, ensuring
-that the threshold is always written first in a separate transaction from
-enabling the interrupt bit. Additionally, an explicit check against writing
-a 0 is added to make it clear to future readers that writing 0 to the
-threshold while enabling the interrupt is not safe.
-
-The PHY timestamp block does not reset with the MAC, and seems to only
-reset during cold power on. This makes recovery from the faulty
-configuration difficult. To address this, perform an explicit reset of the
-PHY PTP block during initialization. This is achieved by writing the
-PHY_REG_GLOBAL register. This performs a PHY soft reset, which completely
-resets the timestamp block. This includes clearing the timestamp memory,
-the PHY timestamp interrupt status, and the PHY PTP counter. A soft reset
-of all ports on the device is done as part of ice_ptp_init_phc() during
-early initialization of the PTP functionality by the PTP clock owner, prior
-to programming each PHY. The ice_ptp_init_phc() function is called at
-driver init and during reinitialization after all forms of device reset.
-This ensures that the driver begins operation at a clean slate, rather than
-carrying over the stale and potentially buggy configuration of a previous
-driver.
-
-While attempting to root cause the issue with the PHY timestamp interrupt,
-we also discovered that the driver incorrectly assumes that it is operating
-on E822 hardware when reading the PHY timestamp memory status registers in
-a few places. This includes the check at the end of the interrupt handler,
-as well as the check done inside the PTP auxiliary function. This prevented
-the driver from detecting waiting timestamps on ports other than the first
-two.
-
-Finally, the ice_ptp_read_tx_hwstamp_status_eth56g() function was
-discovered to only read the timestamp interrupt status value from the first
-quad due to mistaking the port index for a PHY quad index. This resulted in
-reporting the timestamp status for the second quad as identical to the
-first quad instead of properly reporting its value. This is a minor fix
-since the function currently is only used for diagnostic purposes and does
-not impact driver decision logic.
-
+Fixes: 7cab44f1c35f ("ice: Introduce ETH56G PHY model for E825C products")
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 ---
-Grzegorz Nitka (2):
-      ice: fix timestamp interrupt configuration for E825C
-      ice: perform PHY soft reset for E825C ports at initialization
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-Jacob Keller (2):
-      ice: fix ready bitmap check for non-E822 devices
-      ice: fix ice_ptp_read_tx_hwtstamp_status_eth56g
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+index 64ad5ed5c688..672218e5d1f9 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+@@ -2219,13 +2219,19 @@ int ice_ptp_read_tx_hwtstamp_status_eth56g(struct ice_hw *hw, u32 *ts_status)
+ 	*ts_status = 0;
+ 
+ 	for (phy = 0; phy < params->num_phys; phy++) {
++		u8 port;
+ 		int err;
+ 
+-		err = ice_read_phy_eth56g(hw, phy, PHY_PTP_INT_STATUS, &status);
++		/* ice_read_phy_eth56g expects a port index, so use the first
++		 * port of the PHY
++		 */
++		port = phy * hw->ptp.ports_per_phy;
++
++		err = ice_read_phy_eth56g(hw, port, PHY_PTP_INT_STATUS, &status);
+ 		if (err)
+ 			return err;
+ 
+-		*ts_status |= (status & mask) << (phy * hw->ptp.ports_per_phy);
++		*ts_status |= (status & mask) << port;
+ 	}
+ 
+ 	ice_debug(hw, ICE_DBG_PTP, "PHY interrupt err: %x\n", *ts_status);
 
- drivers/net/ethernet/intel/ice/ice_ptp_hw.h |   5 +
- drivers/net/ethernet/intel/ice/ice_ptp.c    |  40 ++---
- drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 253 +++++++++++++++++++++++++++-
- 3 files changed, 265 insertions(+), 33 deletions(-)
----
-base-commit: e3b6e4778608889866917014b7dfe88425073fe5
-change-id: 20260408-jk-even-more-e825c-fixes-9a6dd7311bd6
-
-Best regards,
---  
-Jacob Keller <jacob.e.keller@intel.com>
+-- 
+2.53.0.1066.g1eceb487f285
 
