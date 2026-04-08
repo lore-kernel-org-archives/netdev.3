@@ -1,68 +1,67 @@
-Received: from mail-ed1-f100.google.com (mail-ed1-f100.google.com [209.85.208.100])
+Received: from mail-lj1-f225.google.com (mail-lj1-f225.google.com [209.85.208.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECF93CE4AD
-	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 15:23:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551C03D47B3
+	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 15:24:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775661841; cv=none; b=sK5rzZMq/V/2Lbu7CUr4kEotwZcwjip/TXLT+20TmNT9Ch2cdP9FEz7+5kZh/5HqbScAAMwMwypKA0uTg2lzebZ83+ztJbff0+PQSG4QwaumXMpuwNwagTMHk1zt3+wZnFGDZeR3KvcNlJy65yP+Unv8Qkxx3W/rI1E3WOaJXAw=
+	t=1775661854; cv=none; b=rxzhE6EX/LB2DMweAEoNfSPNHHTns/0gpcz3Q6EJJ9dAcTl+rIxm5zlx4fL1oJCnNRedNvOcfVSOHDhJ960tSlBBpKzeQcOJVN6mvVZ7Y3tqfBit8aSNB8ULvnTY6/30sgyq2ra8CAhK9avMNcpxdfInENro8NRIwS54gY4u9LY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775661841; c=relaxed/simple;
-	bh=30OvjWsNCA4kEn6IQCw1xbygL0FmnukdjrMNb2ZwLpg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=crCqlT6KIIXC6IoyQHk3LZzo0HYFu3mJBdhISrwWw1Njoh0nEckiSw4bVIurSeuFv2n4OOzyGWSBeuUSW39/6C0FB8159EkyjiZqIEYmoVFHFedEQL3kVcQwx3AKUJJSf6zwZ7Cs3/2cciw1om4krBnEdRApTmfs9H+tA5FY4Ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=cDdXN9+9; arc=none smtp.client-ip=209.85.208.100
+	s=arc-20240116; t=1775661854; c=relaxed/simple;
+	bh=K1dKURet3J0/M3usaAl++UniLgcowsoxxi0g23wCoHA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=iN/YH32dYbPMQ8bQXs0aE6OYb5kZLB8RDxbw/lrHGg5mLu3IM4eekcBARWJfCHvT0mXzDA4bG6YZIaXhNxLMHwwGzpenrrl5d5ImFFaBRwjh4REfi4VNP80PDDcgfbpF2z8hfITlPLFD2jeXK+7sOOxlLUgSwMVyMwy311UzQKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=dlmGXuS+; arc=none smtp.client-ip=209.85.208.225
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="cDdXN9+9"
-Received: by mail-ed1-f100.google.com with SMTP id 4fb4d7f45d1cf-66bd4f7b2d3so7627913a12.3
-        for <netdev@vger.kernel.org>; Wed, 08 Apr 2026 08:23:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="dlmGXuS+"
+Received: by mail-lj1-f225.google.com with SMTP id 38308e7fff4ca-38e0ef48ac0so125231fa.3
+        for <netdev@vger.kernel.org>; Wed, 08 Apr 2026 08:24:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=6wind.com; s=google; t=1775661837; x=1776266637; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4xU+L+O7h8OUEui4yRIoAOnKuRGwhBznyLcr7vPwWTQ=;
-        b=cDdXN9+96xsKzT9GG8Lp+B55Czq3otwEnK3UNNEGVYxfA7Qh7UDWgNX34T4YGHkuCW
-         RYPJGby38yoFFQWmPPnVihXPJ4pGs9gKFUvwhpkYrXfDLhpI5CiGdjcFYMjTVutNXt7i
-         TBMZJ1v+Nh748Y700Su+5C15cMRK5tiZEWANt5+ZJZg36i1e46Cn+Id6C0FUQzlK0fMJ
-         ZnhDBQUKefpOZfYs+enh5mZnEO1BA2Mthx7Jw3irknjea3E9hbkZfF1OwguDcYyzKA7V
-         sCzdTuZR38qxvZmtIxcAE7t/MZLWbI9mmBjr9YQ6rPoJc1OuSGWTJfHdlVVVppEq6I+6
-         WMCw==
+        d=6wind.com; s=google; t=1775661852; x=1776266652; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=tUlY4X31eB+kAELbhntPD+zzJcIcCma3OFMBAfgwm6U=;
+        b=dlmGXuS+VVUH0jxElkoN7l73W4Al991D6jy6xWtrDD++/mk0jqduCoKlABRZk9ddYn
+         tuQWrcZqsLxd2nPDVHyCink4SbIh0EJDPOL9QKJY4BEo2oX8X9RqhaE4TnsiO1+B6YFf
+         1Zq0N78dUoMKrp6A0jJXCgC0X7/GXN3YPqhuCghzO9I6b1A9KuRwYgaX83PrJLVbkZ2z
+         x46DqV52PSMGQGtxknMU0Kcl/tXLSwqgkuNaYeLs/f9F46N1/AsRAxyFDmrohzrhPhvN
+         xJ4e5mg9g5tnaH5MGGr/FX8jiAklkYTny90trc8t6saahDY8LVdquDQQo6vEYYXFuEM9
+         neWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775661837; x=1776266637;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4xU+L+O7h8OUEui4yRIoAOnKuRGwhBznyLcr7vPwWTQ=;
-        b=ACbqaSkRD2j1aHmdZYcjMJUvZm1L+bU4BSHQ4AGASdn0L3xgz0cSux8JSqbnesRAtR
-         yX3iLPNzy8KUsJWgmpgPJcVHJD5c9DjJAEZ6e+SXkPa6r0yC0ef+7NcuzhOovpfXXxcE
-         pw/2qY5QQeZkH0EWMhdH6Z/gM1ElFwOXQwuKYmF7qrWqtSbU95oImwfEW2OcJNn6xYo4
-         hJU+3oTEaqS23xKEZmO89mk9UGuBVjsczJJa583efqC/hndIjKqH8cwwsMLFewzcb+z3
-         COgVeaYbRUbG191UqwwwGB8b/Et37zamRuKuidz3wYe+982aI0bj/JdA5twsMx7mFqyg
-         FrHQ==
-X-Gm-Message-State: AOJu0YyUgvOmzDahwRRiZ9rUkQlvQBex2U08nIWSnp9KDJgMPIJOKLIK
-	TfclLhuhoqWVYkcafhT2r+iRO+127c0w7bwQ2qXJJbBFMnO6qZBA5jdyHnYNMPpSWi6u1s5/Wa+
-	pgPdNVkl0Dm9jvHUTZNe/5o6VjHuCcBG1xA8W
-X-Gm-Gg: AeBDiev1ArLmez8J6u4MQONxR3YDZGQTsTSqIPuJz7g523fH7WQ87hKkj7ma8tok0iw
-	fyiQ9ZmNXqrXJanmk+qq+rL9pMkHw76IfcnnGnNkuOaCQ0fl127hJYsx67Rf9mrPN+3YPaYOicD
-	3Z34wX3Ec2z/kiLPRPhRmfuUAM38koGOf4uROmaOEWMIf37B1/S2jWXLWNgWY7xoqz3Wuv0fvsM
-	CVzaPKQLCWBPDPcGQ5VbTy4b6HGMCt/nBRP/05e+qJutqdav7nKoRoJM4D57PqOnKf7TYNNyl9t
-	XZsxnc31gyayLT6H/PesjGTH5CcYhyWrsNbbZuQ1UY/8kv3+KN6Yr/YJ37QGqF88eTZsgJ/YItb
-	8nWygQuQdOThYykdBYCGU+EC+cmcHHcokJBC+OHnIfwaWAXUezJc8
-X-Received: by 2002:a05:6402:50ce:b0:66c:17d5:c18f with SMTP id 4fb4d7f45d1cf-66e3f86ed59mr10366361a12.21.1775661836948;
-        Wed, 08 Apr 2026 08:23:56 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1775661852; x=1776266652;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tUlY4X31eB+kAELbhntPD+zzJcIcCma3OFMBAfgwm6U=;
+        b=Om7SFmU7WicivTCIs8MhN41UOTNq0XSJkHUb235OqqfRPhB7RNLhCJKo1ZG7H5Qudk
+         CYIjCwtX3+2wwnEvfGLLnp1Pu7huxZll25JmuQlVbepIfHWwP0ttPafuY0/cppWzefFn
+         oLrCdwMvXg0ISytY2C1Jl7f9e4gWmKwZiM6YOWerAeW6h7L7nxTFZuYvwsUZbgpP2vvu
+         xOiEUBk8+XFZXlNLMZHh/YtsqjpH/vmGUC+JbbLCoYlAPTVGCMkSI5bcv3tHveEC2gqH
+         rbUkhR+Vjml3bblQn4jYjqJxvbvY959kx542PrPXyZTNTeRYySYTTwk/p9Dcr5dWfLS/
+         yeeQ==
+X-Gm-Message-State: AOJu0Yz7TISCn5p9QAF1VyGKqaYqiBIOcswLbX+whj9lm1ZeFYyCnNyM
+	qs4DwtGD6J2MgJPckEoawuaY5FkECM6M3+g7L1CcewbLhN1foT239PsjBAox5lPzoUKhwwqH07f
+	4aUuAwO1ZwYwOSO2s3tf48nWcTwGzZOcNMnMK
+X-Gm-Gg: AeBDiesBvz3DKCRgZNfNfn7trrDyujB+WIh+CD7hY4su3xFcXP6UeyDnoUCc+rAkDV8
+	Ycabii+FUt4PbzjQTd+llyGe3HkpeZvSncNNKMMhvLV0qxx2qrZu7jEIGNBHqZFzPUukNT7Zg/D
+	OnTqJt2cwyDdyJvzsvdYzAvkljSoG1PVObDoB8NpVsv9MMMnIa4s6rz7S1Tdol2+UPLxjMKFGvn
+	shgQC+FPpY7fKqWFNmXD5lG8djjVWBNfpxKwW18dHpI0vDB+vFnQ7+D8bDGstZPLRji27dtCSws
+	Dh/W964i6zsnzZymywQHCFrdFLFY9smT0aUOr3/dD3SlA2KQyyy6L2hZQ4HHhq6iLoG5PsJTBGN
+	mBQ2CxsCmN438NyKlYKjcwK3epL37Vi/k+1zM0glXE60d1kqdHjED
+X-Received: by 2002:a2e:b889:0:b0:38d:eb82:d7f9 with SMTP id 38308e7fff4ca-38e3369925bmr321311fa.20.1775661851593;
+        Wed, 08 Apr 2026 08:24:11 -0700 (PDT)
 Received: from smtpservice.6wind.com ([185.13.181.2])
-        by smtp-relay.gmail.com with ESMTP id 4fb4d7f45d1cf-66e02d31c16sm905970a12.2.2026.04.08.08.23.56;
-        Wed, 08 Apr 2026 08:23:56 -0700 (PDT)
+        by smtp-relay.gmail.com with ESMTP id 38308e7fff4ca-38cd21e4fd1sm16687451fa.22.2026.04.08.08.24.11;
+        Wed, 08 Apr 2026 08:24:11 -0700 (PDT)
 X-Relaying-Domain: 6wind.com
 Received: from stryper.dev.6wind.com (stryper.dev.6wind.com [10.17.2.5])
-	by smtpservice.6wind.com (Postfix) with ESMTP id C246327055;
-	Wed,  8 Apr 2026 17:23:56 +0200 (CEST)
+	by smtpservice.6wind.com (Postfix) with ESMTP id 45F3A27058;
+	Wed,  8 Apr 2026 17:24:11 +0200 (CEST)
 From: Louis Scalbert <louis.scalbert@6wind.com>
 To: netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch,
+Cc: stephen@networkplumber.org,
+	andrew+netdev@lunn.ch,
 	jv@jvosburgh.net,
 	edumazet@google.com,
 	kuba@kernel.org,
@@ -72,12 +71,10 @@ Cc: andrew+netdev@lunn.ch,
 	shemminger@vyatta.com,
 	maheshb@google.com,
 	Louis Scalbert <louis.scalbert@6wind.com>
-Subject: [PATCH net v3 4/5] bonding: 3ad: fix stuck negotiation on recovery
-Date: Wed,  8 Apr 2026 17:23:52 +0200
-Message-Id: <20260408152353.276204-5-louis.scalbert@6wind.com>
+Subject: [RFC PATCH iproute2] ip/bond: add lacp_fallback support
+Date: Wed,  8 Apr 2026 17:24:09 +0200
+Message-Id: <20260408152409.276358-1-louis.scalbert@6wind.com>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20260408152353.276204-1-louis.scalbert@6wind.com>
-References: <20260408152353.276204-1-louis.scalbert@6wind.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,67 +83,106 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The previous commit introduced a side effect caused by clearing the
-SELECTED flag on disabled ports. After all ports in an aggregator go
-down, if only a subset of ports comes back up, those ports can no
-longer renegotiate LACP unless all aggregator ports come back up.
+lacp_fallback defines the behavior of a LACP bonding interface
+when no slaves are in collecting(/distributing) state while at least
+'min_links' slaves have carrier.
 
-1. All aggregator ports go down
-  - The SELECTED flag is cleared on all of them.
-2. One port comes back up
-  - Its SELECTED flag is set again.
-  - It enters the WAITING state and gets its READY_N flag.
-  - The remaining ports stay UNSELECTED. Because of that, they cannot
-  enter the WAITING state and therefore never get READY_N.
-  - __agg_ports_are_ready() returns 0 because it finds a port without
-  READY_N.
-  - As a result, __set_agg_ports_ready() keeps the READY flag cleared on
-  all ports.
-  - The port that came back up is therefore not marked READY and cannot
-  transition to ATTACHED.
-  - LACP negotiation becomes stuck, and the port cannot be used.
-3. All aggregator ports come back up
-  - They all regain SELECTED and READY_N.
-  - __agg_ports_are_ready() now returns 1.
-  - __set_agg_ports_ready() sets READY on all ports.
-  - They can then transition to ATTACHED.
-  - Negotiation resumes and the aggregator becomes operational again.
+In the default (legacy) mode, the bonding master remains up and a
+single slave is selected for TX/RX, while traffic received on other
+slaves is dropped. This preserves the existing behavior.
 
-Consider only ports currently in the WAITING mux state for READY_N in
-order to avoid __agg_ports_are_ready() to return 0 because of a disabled
-port. That matches 802.3ad, which states: "The Selection Logic asserts
-Ready TRUE when the values of Ready_N for all ports that are waiting to
-attach to a given Aggregator are TRUE.".
+In strict mode, the bonding master reports carrier down in this
+situation.
 
-Fixes: 655f8919d549 ("bonding: add min links parameter to 802.3ad")
 Signed-off-by: Louis Scalbert <louis.scalbert@6wind.com>
 ---
- drivers/net/bonding/bond_3ad.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/uapi/linux/if_link.h |  1 +
+ ip/iplink_bond.c             | 25 +++++++++++++++++++++++++
+ 2 files changed, 26 insertions(+)
 
-diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad.c
-index 3a94fbcbf721..3f56d892b101 100644
---- a/drivers/net/bonding/bond_3ad.c
-+++ b/drivers/net/bonding/bond_3ad.c
-@@ -700,7 +700,8 @@ static void __update_ntt(struct lacpdu *lacpdu, struct port *port)
+diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
+index 2037afbc..1588d520 100644
+--- a/include/uapi/linux/if_link.h
++++ b/include/uapi/linux/if_link.h
+@@ -1537,6 +1537,7 @@ enum {
+ 	IFLA_BOND_NS_IP6_TARGET,
+ 	IFLA_BOND_COUPLED_CONTROL,
+ 	IFLA_BOND_BROADCAST_NEIGH,
++	IFLA_BOND_LACP_FALLBACK,
+ 	__IFLA_BOND_MAX,
+ };
+ 
+diff --git a/ip/iplink_bond.c b/ip/iplink_bond.c
+index 714fe7bd..f33252e8 100644
+--- a/ip/iplink_bond.c
++++ b/ip/iplink_bond.c
+@@ -87,6 +87,12 @@ static const char *lacp_rate_tbl[] = {
+ 	NULL,
+ };
+ 
++static const char *lacp_fallback_tbl[] = {
++	"legacy",
++	"strict",
++	NULL,
++};
++
+ static const char *ad_select_tbl[] = {
+ 	"stable",
+ 	"bandwidth",
+@@ -155,6 +161,7 @@ static void print_explain(FILE *f)
+ 		"                [ ad_user_port_key PORTKEY ]\n"
+ 		"                [ ad_actor_sys_prio SYSPRIO ]\n"
+ 		"                [ ad_actor_system LLADDR ]\n"
++		"                [ lacp_fallback LACP_FALLBACK ]\n"
+ 		"                [ arp_missed_max MISSED_MAX ]\n"
+ 		"\n"
+ 		"BONDMODE := balance-rr|active-backup|balance-xor|broadcast|802.3ad|balance-tlb|balance-alb\n"
+@@ -168,6 +175,7 @@ static void print_explain(FILE *f)
+ 		"AD_SELECT := stable|bandwidth|count\n"
+ 		"COUPLED_CONTROL := off|on\n"
+ 		"BROADCAST_NEIGHBOR := off|on\n"
++		"LACP_FALLBACK := legacy|strict\n"
+ 	);
  }
  
- /**
-- * __agg_ports_are_ready - check if all ports in an aggregator are ready
-+ * __agg_ports_are_ready - check if all ports in an aggregator that are in
-+ * the WAITING state are ready
-  * @aggregator: the aggregator we're looking at
-  *
-  */
-@@ -716,6 +717,8 @@ static int __agg_ports_are_ready(struct aggregator *aggregator)
- 		for (port = aggregator->lag_ports;
- 		     port;
- 		     port = port->next_port_in_aggregator) {
-+			if (port->sm_mux_state != AD_MUX_WAITING)
-+				continue;
- 			if (!(port->sm_vars & AD_PORT_READY_N)) {
- 				retval = 0;
- 				break;
+@@ -188,6 +196,7 @@ static int bond_parse_opt(struct link_util *lu, int argc, char **argv,
+ 	__u32 packets_per_slave;
+ 	__u8 missed_max;
+ 	__u8 broadcast_neighbor;
++	__u8 lacp_fallback;
+ 	unsigned int ifindex;
+ 	int ret;
+ 
+@@ -417,6 +426,13 @@ static int bond_parse_opt(struct link_util *lu, int argc, char **argv,
+ 				return -1;
+ 			addattr_l(n, 1024, IFLA_BOND_AD_ACTOR_SYSTEM,
+ 				  abuf, len);
++		} else if (matches(*argv, "lacp_fallback") == 0) {
++			NEXT_ARG();
++			if (get_index(lacp_fallback_tbl, *argv) < 0)
++				invarg("invalid lacp_rate", *argv);
++
++			lacp_fallback = get_index(lacp_fallback_tbl, *argv);
++			addattr8(n, 1024, IFLA_BOND_LACP_FALLBACK, lacp_fallback);
+ 		} else if (matches(*argv, "tlb_dynamic_lb") == 0) {
+ 			NEXT_ARG();
+ 			if (get_u8(&tlb_dynamic_lb, *argv, 0)) {
+@@ -642,6 +658,15 @@ static void bond_print_opt(struct link_util *lu, FILE *f, struct rtattr *tb[])
+ 			   "all_slaves_active %u ",
+ 			   rta_getattr_u8(tb[IFLA_BOND_ALL_SLAVES_ACTIVE]));
+ 
++	if (tb[IFLA_BOND_LACP_FALLBACK]) {
++		const char *lacp_fallback = get_name(lacp_fallback_tbl,
++						 rta_getattr_u8(tb[IFLA_BOND_LACP_FALLBACK]));
++		print_string(PRINT_ANY,
++			     "lacp_fallback",
++			     "lacp_fallback %s ",
++			     lacp_fallback);
++	}
++
+ 	if (tb[IFLA_BOND_MIN_LINKS])
+ 		print_uint(PRINT_ANY,
+ 			   "min_links",
 -- 
 2.39.2
 
