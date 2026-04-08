@@ -1,57 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2843B4EA8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA18A3B4E88
 	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 09:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775642391; cv=none; b=oliMJQm2AZYd1Wy41Hurcu2w7u4d0UneU/EUWKt47EHdD5+DmPLOf1FFzistJzYzfYkPqplINcV6KK9L4VKPt6oBcwUdjZRRZATXMEvZ+0vBhTiovz/fu1REtNOoTzGJ3yem3GzWwmLz6p3Z7OG/be9VvzonkYn3vdeIDWh3pRc=
+	t=1775642392; cv=none; b=D9O+vtpPby12/s9cAEA6yF0mt64BsEksT2/XGian1YohTCeMxl90OGLBFRVarZE4Ua7HrFiSAgtwczaEo9HooFTxkzG7rSPFfck6uBChdB10dQSVXLs9CIcGfJGHj70C8TA1lsUQgeGhJyRLq3k3jM5ZNhLjRGfXdGBPM8kE/Tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775642391; c=relaxed/simple;
-	bh=Fsw5CjXrJ2bEM768nNozzrWwSoiyPTGGVLZxmHHFSNA=;
+	s=arc-20240116; t=1775642392; c=relaxed/simple;
+	bh=bDxOZ0zM5+klnauIdYg95u9ZO2WJMcPgdcQOPoZXDp4=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lwsGPUKug2z9jUkBYq0K8LADBU3V41nqF04ezHERlJh1ki9aXlWvZ4UC6cQtyhU1DwLpBaisHN13e7h2+F84esabOXd2rHckTZZUSiri7jbyVEuoVBFv+EswHJZ6xk8trDDHVw14mc039yDvdqLMU0ZodSZIHjEujehsSJETovg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=hs8CL5wP; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=D8Ha9TCGwW8HkCpjHYF5riYuOXONK1ui8fDhAqSI+Uq68TvYVyVb7ZVWvYINMuFyZbmpNRezZU5JMUmkmKTrBp9UxcL2HVj3KgNukFnrLbWLCIFwiU+2kn8Y18iTvyRU+2aCgf2uQAniVjHD0orGswXFzrnB1d2gCU5vPR4fIgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=dBrkl3R/; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="hs8CL5wP"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="dBrkl3R/"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 48FC02082B;
-	Wed,  8 Apr 2026 11:59:39 +0200 (CEST)
+	by mx1.secunet.com (Postfix) with ESMTP id BDC22207C1;
+	Wed,  8 Apr 2026 11:59:37 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id EQwg4kYMOUd8; Wed,  8 Apr 2026 11:59:38 +0200 (CEST)
+ with ESMTP id wRt0Gh3D5sSB; Wed,  8 Apr 2026 11:59:37 +0200 (CEST)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id B1ECB207FB;
-	Wed,  8 Apr 2026 11:59:38 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com B1ECB207FB
+	by mx1.secunet.com (Postfix) with ESMTPS id 2F914207E4;
+	Wed,  8 Apr 2026 11:59:37 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 2F914207E4
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1775642378;
-	bh=InBvTIaZ3P+uElTO0bHo9EL/21NdgQNfV3li6eFj2G8=;
+	s=202301; t=1775642377;
+	bh=QQEx/TeDulHabv6WxyTGUJZWBZKu6glfPpJRL95T2N8=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=hs8CL5wPQoOOizU9hB5YuZmarNgqCljfxCxunYD1w95Z6RmhGuBQq/BvurV48V3Ds
-	 Fr3xMltTo9m33Xvubd4W/HFBZQC1yLW/Cg9l5SZ9HbxcyRC0fo1WfG5BVEFTHLfygL
-	 m/lD4BaaOAPnMkmzlR540w8E4JdG92ATLe0atfH3v4jpPgZqd7mrq59DRfkWRrmjYu
-	 mi1OrzIIrHS0dKO/VCnTjvGuHHBwAKwpNpFlEnJ+JaTqNVax5B+gnHLOEDrIR1anFT
-	 AlHH7PiTHCv6pqo1lyuxdvF9bWX8ccxFnyKJebtKzmKLO8cS5LNhaOPWeqtSQFoYnB
-	 JIcnh1L3LlMxA==
+	b=dBrkl3R/FoqqWdqd3DTx70OSKPw7i/XPzwkv7/X5JWu48eymJwGMU2Cpj8LYV9Ozx
+	 SVJuiiTn+5ZdD/bqUUsORW2Z42cm7psrYmco7Y5InUGz0siVWjBM4tQKZxg6nOmb+b
+	 PXLiB3tL0SxeDVHgL2L9etFGMDsEoN/VsthFjgJDR7lAoH8mHKf07w/zXUNEQ70lkU
+	 alkGmATZgB6KK0sXy07hiEIkUkR7CFyZDxk+kwcMuLdKq4c1WNPXLUIKVl02qmhtBr
+	 IjYjuvCRUDeS6LCl5p9GpDDTyuCiQa/Iup+gHKRpk/IcC3xqZ0jFnTbrOtuhXvQmyi
+	 VCl2QlyQapKHg==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 8 Apr
- 2026 11:59:37 +0200
-Received: (nullmailer pid 256831 invoked by uid 1000);
-	Wed, 08 Apr 2026 09:59:27 -0000
+ 2026 11:59:36 +0200
+Received: (nullmailer pid 257059 invoked by uid 1000);
+	Wed, 08 Apr 2026 09:59:28 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 3/8] xfrm: Wait for RCU readers during policy netns exit
-Date: Wed, 8 Apr 2026 11:58:59 +0200
-Message-ID: <20260408095925.253681-4-steffen.klassert@secunet.com>
+Subject: [PATCH 6/8] xfrm_user: fix info leak in build_mapping()
+Date: Wed, 8 Apr 2026 11:59:02 +0200
+Message-ID: <20260408095925.253681-7-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260408095925.253681-1-steffen.klassert@secunet.com>
 References: <20260408095925.253681-1-steffen.klassert@secunet.com>
@@ -63,39 +63,43 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
+X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
  (10.32.0.171)
 
-xfrm_policy_fini() frees the policy_bydst hash tables after flushing the
-policy work items and deleting all policies, but it does not wait for
-concurrent RCU readers to leave their read-side critical sections first.
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-The policy_bydst tables are published via rcu_assign_pointer() and are
-looked up through rcu_dereference_check(), so netns teardown must also
-wait for an RCU grace period before freeing the table memory.
+struct xfrm_usersa_id has a one-byte padding hole after the proto
+field, which ends up never getting set to zero before copying out to
+userspace.  Fix that up by zeroing out the whole structure before
+setting individual variables.
 
-Fix this by adding synchronize_rcu() before freeing the policy hash tables.
-
-Fixes: e1e551bc5630 ("xfrm: policy: prepare policy_bydst hash for rcu lookups")
+Fixes: 3a2dfbe8acb1 ("xfrm: Notify changes in UDP encapsulation via netlink")
+Cc: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>
+Assisted-by: gregkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Reviewed-by: Florian Westphal <fw@strlen.de>
 ---
- net/xfrm/xfrm_policy.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/xfrm/xfrm_user.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index 362939aa56cf..8f0188e763c7 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -4290,6 +4290,8 @@ static void xfrm_policy_fini(struct net *net)
- #endif
- 	xfrm_policy_flush(net, XFRM_POLICY_TYPE_MAIN, false);
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index a779590c985a..baa43c325da2 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -4172,6 +4172,7 @@ static int build_mapping(struct sk_buff *skb, struct xfrm_state *x,
  
-+	synchronize_rcu();
-+
- 	WARN_ON(!list_empty(&net->xfrm.policy_all));
+ 	um = nlmsg_data(nlh);
  
- 	for (dir = 0; dir < XFRM_POLICY_MAX; dir++) {
++	memset(&um->id, 0, sizeof(um->id));
+ 	memcpy(&um->id.daddr, &x->id.daddr, sizeof(um->id.daddr));
+ 	um->id.spi = x->id.spi;
+ 	um->id.family = x->props.family;
 -- 
 2.43.0
 
