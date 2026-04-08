@@ -1,43 +1,56 @@
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C9439DBFE;
-	Wed,  8 Apr 2026 08:18:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6939939C00F
+	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 08:19:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775636288; cv=none; b=Oa2auQSPc/li2di8jt8Bs9zmBzy4Xp/OaMZ6kQBPAXlWDZnDqrUobuOpKTBN4ZdRsIGlwDW3eBbu11rszyAwDnMMDTCxARHKPkZPGuUBTNCsBDdRVZLxfjI3Afkof7wEQMwexZ+lEqN9BwFSLmMpdGx1GunXGqxY3zw/P+btq18=
+	t=1775636357; cv=none; b=GJy+yswHNhLmmY/cZT7JwgJCwfihpfHD8YsQ3PW0EnyQglgWFtn7EebQ2zIjxT/cbmfvZOPYiqH4eooCBtb7hYqXAPkxZ6Me4X6Yp1XazlIZdvY/OdHPqsTV1YksDl8961o82TnQmcxyoFMPM72zVNDK6DcIxB0X8Xqqhm84C6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775636288; c=relaxed/simple;
-	bh=DK2b0kacowsLuuoSHVuu4eiVQul1MLLSibd37kth9bA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=T6CbORK92oUloHo3AJIQqUdRrC2b8ZJyFlHz6SFZ0SdXlVCUPzGsXkwLZIAVjGcfWnlqVAus9o2Z+JdLuGBqezaPVDS+wqGRNOqgEXljfEMvygNBQRf40l3QQ0eAsw+GEPNSS3zt98Vz4UbT11+s5z6rt9Xe7kW94o8/C7v83DM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Cmz4e1ys; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+	s=arc-20240116; t=1775636357; c=relaxed/simple;
+	bh=Ap85XTAbnvigCwiU4GMC+VmIAjFDpqkTrV4E8h+d4ys=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=T4dDLonqABK/36nGeVAUBhH7B5/UODYoU2e+XTveCLf/dnyee1cRsMtOBZnr9DpeyHgQ4l8PkBwVhYy+sqgtW8ImkFzvkHJy2j+m5699iNl6yyTxcsOLmY/rlaSogjXaBDQ8MrFMCTcBSZibjLrx4+LHjGZPb9n7UlHUcNMHXPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=IDN8nLvc; arc=none smtp.client-ip=54.207.22.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Cmz4e1ys"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=SHqqadEHJrEyHEOAj4yPw2THkIgptJaY7D6Refxd3lE=; t=1775636287; x=1776845887; 
-	b=Cmz4e1ysg5Lps5VaZn/0+OZnjjhfrsloe7NBttQP1uf9qRnU3n/30EBbBhgUkCr+wgtuqSu54ZS
-	y6BXXoQ2D8YQufS2okHo2AKOaOowNG5DDleGSwPeYDtnsOckjF/FvYTtvrfLFkERWVmFAaeZQXvVa
-	F00RRsi3duJk/atPplYZxs9sNdPKNoAI/Mb45bQ/iJyGezuqoFUHyjv+uRzt0pqOTkIM15Sj5JcG1
-	PL0Rx4D/Y7+mZOrl08+IGh5uU0Mlqbf4cr8Xa6QRIxtxzYT+RW6xUvSrEjsI+D2h0G0XrRrkpPjWX
-	L6mKm3g9Jy7TD+Th+Beg98khijIlkWY6JeKQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wAO6v-0000000EAyC-07f8;
-	Wed, 08 Apr 2026 10:18:05 +0200
-From: Johannes Berg <johannes@sipsolutions.net>
-To: netdev@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [GIT PULL] wireless-2026-04-08
-Date: Wed,  8 Apr 2026 10:15:25 +0200
-Message-ID: <20260408081802.111623-3-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="IDN8nLvc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1775636347;
+	bh=TXy8b4hc5WuVMNGkdYLoKmL6iPX+8CVFMd9n5KSSOqg=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=IDN8nLvcbIKVWfPy27UWd+rY4va3OWy95+hlYghpoEUqUxEiFrxc+Da4ugm1pSWby
+	 nhqLcGKrdkE9qIzXwUz9AYgSMcpQhrnRWxjzxQYYkkqjR33lhI6wJDi5BUNrlyGYsH
+	 oKVxkqgxX/S4DxzCrhwNxAk9s9RxOUM5e9CWkdSQ=
+X-QQ-mid: zesmtpip3t1775636334t7b87affe
+X-QQ-Originating-IP: Hp4eiQ4ycRFMfB+gGBu2PJpZNA9LajrBXTInIfiiwoU=
+Received: from uos-PC ( [localhost])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 08 Apr 2026 16:18:52 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 13218983909469976630
+EX-QQ-RecipientCnt: 12
+From: Morduan Zang <zhangdandan@uniontech.com>
+To: horms@kernel.org
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	petkan@nucleusys.com,
+	syzbot+9db6c624635564ad813c@syzkaller.appspotmail.com,
+	zhangdandan@uniontech.com
+Subject: Re: [PATCH] usb: rtl8150: avoid using uninitialized CSCR value
+Date: Wed,  8 Apr 2026 16:18:51 +0800
+Message-ID: <4A9247C80F1D1581+20260408081851.159023-1-zhangdandan@uniontech.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260403154538.GA187715@horms.kernel.org>
+References: <20260403154538.GA187715@horms.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,55 +58,52 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: MfQnJH+7WKv6ti+pp3v5hf4t/KKAwfKYQ6sdfriP8g9Wbcw7Cp8DpnTt
+	0zSqbKAwwk2JfOEswBFCcjs2BR1aC+GlMRdJOG9TIeQKaQswEIxUNMHg2LEM9gvx6I2qUHj
+	UgeGEf8SDo3SMaanF6YVnnFaHoB9LrSxi6q6MQl8pdbeeYSqwWQ6YM+yJvRabF1U3Tw1bb3
+	yfR09gWIfYC/skka7qTwV3S1HTB8TYJXZ8IRjT8aMzkfWtEjXg809E4DGnPfmsAri3zKmOC
+	mQyq0REe/JxjvXnnzVEdQDcIpa9xp3H+MyiZz3MDenii+K8J7qvblrFF+l6RkG2MtKNb1ln
+	vjBcjnoZT3u0sY9THDyh9qI58Kc9NPpFaiH1JGKe55KlY6lVEzYfsd2do37LaASaR3LhOaC
+	aeeLqe2rkzoFp87RNIExXyVYfhp4WlDYqbWhM3D9UTt9NQ80V3cAT1dzQyGxNYjHMfAtZ8X
+	eUKbw4SwygaPuFq9SvWuZpKPsKrToCevsmRU2WSko9eZbn3EONF7COBUWfgKSFak7QkYzBo
+	FhTsfkXd9FbL0cWqzC2fDF7Z15/LBDjKoAT5uzzPiEDPaSQokOmG7mzCPTVWi8YXycF/3IX
+	6LY2q92tlL0+DrD4LYlhyqAuC9ZjHiH8tCfSs23SIqvV8SNty/jr7ONVUhJuJcorQERaTK9
+	wbAYsoWigoWQhNwacr8bmCHxFVVecmkepUUGylZt7SPGLfu/eW2XDRjy81dmMtRJN6ateEW
+	EYyj0Jk3IWZhEUgsaz8IoQel/OkBcrC7n/mOJfZOT24nb9YOIGAhCpHbgX6d44Xf3ynXQfm
+	dF3h217BzF5y9ZSqgbX5OBY4KktcK7awp48NunDPviOFOV2mPHNFXODAjh8ncRbo5v4dnrB
+	jKMQHlODLmnWWiN+BM63nktVfXmyCIWaWgn5na8dlC1IgzXHtHq4Qll2p0a95a5/LabMOyf
+	2gAAo4WMV+TLRCUH7pLUdICGGhyTmr/5+dRoJ8LpafTQRvTieTXe2VyOY6UaM/OPUx9tN8r
+	XJbFnQgw==
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+X-QQ-RECHKSPAM: 0
 
-Hi,
+> I wonder if we can handle this a bit more succinctly,
+> while still making it clear that the error is handled.
+> Something like this:
+> 
+> diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
+> index 4cda0643afb6..816759ced56c 100644
+> --- a/drivers/net/usb/rtl8150.c
+> +++ b/drivers/net/usb/rtl8150.c
+> @@ -722,7 +722,8 @@ static void set_carrier(struct net_device *netdev)
+>   rtl8150_t *dev = netdev_priv(netdev);
+>   short tmp;
+>  
+> - get_registers(dev, CSCR, 2, &tmp);
+> + if (get_registers(dev, CSCR, 2, &tmp) < 0)
+> + tmp = 0;
+>   if (tmp & CSCR_LINK_STATUS)
+>   netif_carrier_on(netdev);
+>   else
+Thanks for your suggestion.
+I agree that errors should be handled explicitly, but I prefer not to force the carrier off
+when CSCR read fails. The control transfer error here may be transient, and treating it
+as a link break would cause the carrier state to toggle frequently.
+Therefore, if the get_registers() call fails, should we keep the previous carrier state and
+return directly? (Perhaps with a rate-limited warning as an option), while still avoiding
+the use of uninitialized stack values.
 
-So in a way I'd hoped it wouldn't come to this, but while I
-was out last week a couple of things came in that seemed
-relevant enough to squeeze in now. I guess it wouldn't be
-much of an issue if not, but I figured I'd try anyway :)
-
-Please pull and let us know if there's any problem.
-
-Thanks,
-johannes
-
-
-
-The following changes since commit f8f5627a8aeab15183eef8930bf75ba88a51622f:
-
-  Merge tag 'net-7.0-rc7' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-04-02 09:57:06 -0700)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2026-04-08
-
-for you to fetch changes up to ea245d78dec594372e27d8c79616baf49e98a4a1:
-
-  net: rfkill: prevent unlimited numbers of rfkill events from being created (2026-04-07 12:35:04 +0200)
-
-----------------------------------------------------------------
-A few last-minute fixes:
- - rfkill: prevent boundless event list
- - rt2x00: fix USB resource management
- - brcmfmac: validate firmware IDs
- - brcmsmac: fix DMA free size
-
-----------------------------------------------------------------
-Greg Kroah-Hartman (1):
-      net: rfkill: prevent unlimited numbers of rfkill events from being created
-
-Johan Hovold (1):
-      wifi: rt2x00usb: fix devres lifetime
-
-Pengpeng Hou (1):
-      wifi: brcmfmac: validate bsscfg indices in IF events
-
-Thomas Fourier (1):
-      wifi: brcmsmac: Fix dma_free_coherent() size
-
- .../wireless/broadcom/brcm80211/brcmfmac/fweh.c    |  5 ++++
- .../net/wireless/broadcom/brcm80211/brcmsmac/dma.c |  2 +-
- drivers/net/wireless/ralink/rt2x00/rt2x00usb.c     |  2 +-
- net/rfkill/core.c                                  | 35 +++++++++++++++-------
- 4 files changed, 31 insertions(+), 13 deletions(-)
+If agreed, I will send a v2 incorporating the suggestions. 
+ 
