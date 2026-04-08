@@ -1,124 +1,222 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4288E3A1CE9
-	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 23:06:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4BF3378D9A
+	for <netdev@vger.kernel.org>; Wed,  8 Apr 2026 23:14:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775689601; cv=none; b=FJbeMaUcKag+FToo0xOdUs6rACM1Qhnp5YQm3Vh+bWBwi+/h9V+C/68QakG2ZJ/QQ4FRZNIBsJRYKNB7gnyw7Mw3NdLCYDkyqEHJRThktBUFfQ16K0VQdwr9KNKvUMkR7B6FvNjakXKOtBcBwTmyK3Eja7cypw6iILae2Tn9pY8=
+	t=1775690062; cv=none; b=SS26jQyJM+mtPz39veSWcNTx23PC6RCdfF2sDNSxrTxxyMMQsthTVgnqrmmd1CGdvst1qvrOli2NtrvXauGjx/QNtQ+lFFDiwKGWFscfcFByxtAkaUzo5jblrF50zbvu3Jyjx1q1650ZRKtTszDb4RgITq8Yiki22ZwkexSHSao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775689601; c=relaxed/simple;
-	bh=ZEmHHdgCIKjmFksdw5ABxjeqzQWen/sEYMEcE4ycvlo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uTLUPMk4FYqLmkOR8X3N3MZ6120AoOdwNgBbCEItgxGEnH2oCHewgR+jNZCCSTh8d6cI4FpDjgqAGOIbDHzgyDF+0Iw0QqGmY+pNpokhet9VVT3xknA3BbmuREDZtXowmbzJHKRrZbV840gsz5Hm8fXGNqoLVvBmmnoqNpWMSBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=qc1S/qEH; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	s=arc-20240116; t=1775690062; c=relaxed/simple;
+	bh=4DI3UTKWXa45k7rBshGYEhy3rIJS3jWdTiqXInXk/7s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=D1S0443CG2wRIR8S+LWrsauaBc1nZG7ipncMKshcs5xLlzAwgcC3w21i96VVLAFyiQyFmm2QWOcVV5Wkef8iQqZcAxuKposfiGIcxt7GgnWrkUQh2dKORsXZuQul6DqCNyC3DDR10gtyZR+6jykgq1HLlY6j70KvikGTtnIQQPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dm9pxzfL; arc=none smtp.client-ip=209.85.128.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="qc1S/qEH"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2b23f90f53aso3338505ad.0
-        for <netdev@vger.kernel.org>; Wed, 08 Apr 2026 16:06:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dm9pxzfL"
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-79cb99982c4so357667b3.0
+        for <netdev@vger.kernel.org>; Wed, 08 Apr 2026 16:14:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1775689590; x=1776294390; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V8bNxSkLagGjMoaapqryA9wYOiBX4DR7keg4lmWMnD8=;
-        b=qc1S/qEH6ySpkEXXLMh0uPY5aq1ZTBmF7V3y9dSYb/GdRIUFA7SiqD9lvY+FH9MXmY
-         98VonNh6Q96Zb69zwB4YN3DiYB+MfklS6SK0Eu7LgQcQZEgsWJ7V85fvqBUwqRgGDCfV
-         z8qE7WVbHFJr95p71YzgOXIwVGj2CP/HkwzjM+kOcNBKlAnki9sweh0uhfrpbB+8xjm9
-         5CBSH+W3kYhCIlpUPGp2F/6cwr6TWh3DqhivcKl0XTu1d5Pgl5mHbU+lsEH9FVnxxTMS
-         XJBqVn2oNwY2DTnclBNbO6eYY23deTWhkI8Pb2R12qOX+cXDEwn7/87Nj3ESdXfHgDy7
-         rrQQ==
+        d=gmail.com; s=20251104; t=1775690060; x=1776294860; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kH4c94FA49c0TJy55eoQY3vUARS3b82OuNqc8fcj3KI=;
+        b=dm9pxzfLO2x8fqYlVTirBbj2+VcY0NTYLObYM0yWRtfD+MYDj3kM0JOClrN7vnBqjM
+         yg7KasQFlFv+l743SPbxGpcXEYr9Hu+SQWPLr5csV32I9DeEmWO+lJptZzPlFHbNHfJe
+         BGTQTeU/ysh2RiyzCCi+H5YPmGm8XB7ZDGKtrtcLJBYQbivvWJKGzzl1/O06nbNzCBSX
+         1mVkxCJVh5co5OmhmdT+EFnm0fhMZGGeGRjPCS3lzIWEBUsKLLyuOKNHVUchSXmkMcyY
+         dKI/YN9AqCCaRb6pSo+KwrKnrGXNzIHiZl1Ub6/F+5t5hK8dYqdc9gyPWuVRFQMU2aa5
+         wlFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775689590; x=1776294390;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=V8bNxSkLagGjMoaapqryA9wYOiBX4DR7keg4lmWMnD8=;
-        b=H36WOPXjJAkZ51WF5YH3ks9+cTyuuSrSvcMUDo3cCmM/YsF6XuH19IhaTob7U5VTIS
-         KmU2cYoZXugfaJfj2kQlzqM2uCdDDzr/5s6TWR3rTIRr6Xj8mPG+D2Xy16HrTh/Xdreh
-         YbKof5Mcl3erAnl//xpLs70Xm8zyIZsAb8QIydMJpAjAM+y8ujm3ihzsuImFPL/6AzxO
-         T23rhzQHnoXFQUR9vNXF4FgDs5X9fPb6uUfOl5iomcAy+y3Ko1KDX7Okdqihb5akjaOG
-         sb/M9nezDyNl4V7nGVch0oHmD5JBfhoRejj9KiJjzqx0N0f78rGjIKKP6luF+d9tkMnM
-         PNaw==
-X-Gm-Message-State: AOJu0YyWsAhslqPn5V9OQQUeb5B6xWxOglnoCORZbggxoFGHbpPwUpvm
-	FNxwugQH+A5zSSi65Mdc1O6bkShAi4Jf8VZcWvPourBAbKn27RNZaFQdQVo3kuP2WlwGMkCNm12
-	ErYu2dLI=
-X-Gm-Gg: AeBDiev92bYN9RvpLtgHCclqfFOpUSKwUDQAA68BoB8Pn+1lYshEvrjP7hyGUwoBgWp
-	cvLc7+Iy6wIrfuinlJd6gvC/v6011wtecHNl6UNRo3wSjQCrT3FkknzC4m28ce5/GW1PbOhppzW
-	i1Izl5yH+SJRvZA7pLrygIK5floPGYcyk5/56Xe0s83tdgw0QtGAWu8vfaQiyf8wLoRCvD+0ldf
-	pdX3aCWuOsdbylO0Od5wEcYwOh6LG9PajWQhxMm2B8tBWDx6Ta3fR0emAqRKif/+59VD4LehPZG
-	/JcVqPpnjjyJiLEOjETzhBWeYdshDKlz7cRSTeV0bSlG/11tdt+BynjMs4pDZA/cPObbzlxaqxo
-	L6BUuH5+YSJegV8i5X0G290tACrFGv5LZ178hM0quMdMUPXmn2UrYGcJ73FTvCBVBWNHqALLDqn
-	l51RSlnIosJwW/sBs=
-X-Received: by 2002:a17:902:ccc9:b0:2b2:42da:25c4 with SMTP id d9443c01a7336-2b2816ca44emr266937355ad.14.1775689590308;
-        Wed, 08 Apr 2026 16:06:30 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:5f::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2749cbd9fsm211336425ad.75.2026.04.08.16.06.29
+        d=1e100.net; s=20251104; t=1775690060; x=1776294860;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kH4c94FA49c0TJy55eoQY3vUARS3b82OuNqc8fcj3KI=;
+        b=AA4Z1WOmvM89OZ9QdN+pqLI3C/eRBtifmI/xK/Xp3+32P+tG/GAEXkTqTyODfTU0kn
+         RH4whk1yu8TRsPekK7B/1M+4Mtu/pAsLYz1QDv9Q+fXuSBbtfOZ7XTpLmzHDQpAe1pQX
+         lgjauw5iIKJqw/f9BPAXbNvTV2d0XEF3dKLog+fiZBmH18fPAf100jACoFKMUgx5neiy
+         xwkPm6Cy4ESrgI+KfTk9DvoetXtv4S4tfbJb6/g+wn0TZyr4gXFxprJtPmoh/wi+iTaO
+         0fZcsc9k00JlePOE3lXv1BQD8MxvnFh8SCqBHrvlRn78Gi4/87mRow1rXnEWdQCclPGo
+         XtPA==
+X-Gm-Message-State: AOJu0YyGkPaB5onHlrSsje0zzfszCJPheVWfmDRWn1HUahT+gygIKiCU
+	6jxfe0pVFCzaKgiGUkrp5ehpbcWzG2oZgsCKNacgeORsP3+AHT4K66/u18pFz7+1
+X-Gm-Gg: AeBDiesskwIbrCKA8FZ6SN/91V7sDVwCH5Pn3VMpBPitfxY8YkiP7pGJIPYSbCDNyxE
+	WgDclSYnHgLCyQJmgewr+NAnuaIYC11DjOzFrMeWKtqUDRquFIlDlH7ly/LcI8jUi2YjkZtnXVd
+	KIS7GKL7JWPOwrfM4P/c9QM1ebnSe9SnH2TCaDpky6UzA3AHG1e264MlHTlUnJbqvd6IrjsFGn1
+	DKjuuZDLcuZzCOoWN4Gg67nR89lIo08roq8oNNv+2DkZzvK96bxJ0MYvRsLLlj7LtwkwgMn0HPN
+	jQiNGMDe4yJeKPp0YyGQJZOHl+zLJTVF4hsGRUg08kd5eClyLFt3LBbBishYyhDDaevBMwoPYsM
+	4ncPl36Q7u7Jp4w2jnq1/rCdI57ZtbehMTbWWCJuGrRzYPCubEDTXcIfd49D5TL9fhBooJ/rI7I
+	/xSfKD5iRyxCMU9kHHO+aU10k=
+X-Received: by 2002:a05:690c:660f:b0:79a:649e:2686 with SMTP id 00721157ae682-7a4d5c5ace2mr138009047b3.5.1775690059488;
+        Wed, 08 Apr 2026 16:14:19 -0700 (PDT)
+Received: from localhost ([2a03:2880:21ff:b::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7a36e320670sm90710897b3.2.2026.04.08.16.14.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Apr 2026 16:06:29 -0700 (PDT)
-From: Joe Damato <joe@dama.to>
+        Wed, 08 Apr 2026 16:14:18 -0700 (PDT)
+From: Wei Wang <weibunny.kernel@gmail.com>
 To: netdev@vger.kernel.org,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	leon@kernel.org,
-	Joe Damato <joe@dama.to>
-Subject: [net-next v10 09/10] net: bnxt: Dispatch to SW USO
-Date: Wed,  8 Apr 2026 16:05:58 -0700
-Message-ID: <20260408230607.2019402-10-joe@dama.to>
+	Daniel Zahka <daniel.zahka@gmail.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	David Wei <dw@davidwei.uk>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>
+Cc: Wei Wang <weibunny@fb.com>
+Subject: [PATCH v11 net-next 0/5] psp: Add support for dev-assoc/disassoc 
+Date: Wed,  8 Apr 2026 16:14:09 -0700
+Message-ID: <20260408231415.522691-1-weibunny.kernel@gmail.com>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260408230607.2019402-1-joe@dama.to>
-References: <20260408230607.2019402-1-joe@dama.to>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Wire in the SW USO path added in preceding commits when hardware USO is
-not possible.
+From: Wei Wang <weibunny@fb.com>
 
-When a GSO skb with SKB_GSO_UDP_L4 arrives and the NIC lacks HW USO
-capability, redirect to bnxt_sw_udp_gso_xmit() which handles software
-segmentation into individual UDP frames submitted directly to the TX
-ring.
+The main purpose of this feature is to associate virtual devices like
+veth or netkit with a real PSP device, so we could provide PSP
+functionality to the application running with virtual devices.
 
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Signed-off-by: Joe Damato <joe@dama.to>
----
- v5:
-   - Added Pavan's Reviewed-by. No functional changes.
+A typical deployment that works with this feature is as follows:
+     Host Namespace:
+     psp_dev_local  ←──physically linked──→ psp_dev_peer
+	  (PSP device)
+	       │
+	       │ BPF on psp_dev_local ingress: bpf_redirect_peer() to nk_guest
+	       │
+	  nk_host / veth_host
+	       │
+	       │ BPF on nk_host ingress: bpf_redirect_neigh() to psp_dev_local
+	       │
+      Guest Namespace (netns):
+	       │
+	  nk_guest / veth_guest
+	  ★ PSP application run here
 
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 5 +++++
- 1 file changed, 5 insertions(+)
+      Remote Namespace (_netns):
+	  psp_dev_peer
+	  ★ PSP server application runs here
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 26aae48a7d0e..2715632115a5 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -508,6 +508,11 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 		}
- 	}
- #endif
-+	if (skb_is_gso(skb) &&
-+	    (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4) &&
-+	    !(bp->flags & BNXT_FLAG_UDP_GSO_CAP))
-+		return bnxt_sw_udp_gso_xmit(bp, txr, txq, skb);
-+
- 	free_size = bnxt_tx_avail(bp, txr);
- 	if (unlikely(free_size < skb_shinfo(skb)->nr_frags + 2)) {
- 		/* We must have raced with NAPI cleanup */
+Note:
+The general requirement for this feature to work:
+For PSP to work correctly, the egress device at validate_xmit_skb()
+time must have psp_dev matching the association's psd. Any device
+stacking or traffic redirection that changes the egress device will
+cause either:
+1. TX validation failure (SKB_DROP_REASON_PSP_OUTPUT) - fail-safe
+2. RX policy failure after tx-assoc - packets without PSP extension
+   are rejected by receiver expecting encrypted traffic
+
+Here are a few examples that this feature would not work:
+- Bonding with load balancing in round-robin, XOR, 802.3ad mode across
+  multiple PSP devices, or mixed PSP and non-PSP devices
+- Bonding with active-backup mode might work without PSP migration for
+  failover case.
+- ipvlan/macvlan in bridge mode would not work given packets are
+  loopbacked locally without going through the PSP device.
+
+Changes since v10:
+- Corrected typo on patch 1
+- Removed the kdoc style comments, Use goto style in
+  psp_nl_dev_assoc_doit() clean up code, Resolved "TOCTOU" issue in
+  psp_assoc_device_get_locked() in patch 2
+- Replaced psp_devs_lock with a new mutex in
+  psp_attach_netdev_notifier(), Fixed kdoc style comments in patch 3
+
+Changes since v9:
+- Added comments for psp_device_get_locked(), fixed lint issue, fixed
+  rcu warning in patch 2
+- Return error if register_netdevice_notifier() fails in
+  psp_device_get_locked_dev_assoc() in patch 3
+- Removed psp version and ip version for unnecessary tests cases in
+  patch 5
+
+Changes since v8:
+- Rebase
+
+Changes since v7:
+- Refactor in patch 1 to have a common helper for
+  psp_device_get_locked_admin() and psp_device_get_locked()
+- Take psd->lock in psp_assoc_device_get_locked() before
+  psp_dev_check_access() in patch 2
+- Use cmpxchg() for assoc_dev->psp_dev assignment when doing dev-assoc
+  in patch 2
+- Check for err for register_netdevice_notifier() in patch 3
+- Call psp_attach_netdev_notifier() in pre_doit handler for dev-assoc to
+  avoid releasing of psd->lock in patch 3
+
+Changes since v6:
+- Remove the unused remote_addr, nk_guest_addr and import cmd in patch 5
+
+Changes since v5:
+- Remove module_exit() in patch 3
+
+Changes since v4:
+- Address compilation warning in patch 3
+- Removed the call to psp_nl_has_listeners_any_ns() and check listeners
+  when looping through netns in psp_nl_notify_dev() in patch 2. This
+  makes sure we only send notification to netns that has listeners.
+
+Changes since v3:
+- Make nsid optional for dev-assoc/dev-disassoc operation, and use
+  the ns user is in when it's not specified. Also added a test for this.
+- Fix psp_nl_notify_dev() to compute the correct nsid relative to the
+  listener's netns.
+- Only register the new netdev event for psp dev cleanup upon the first
+  successful dev-assoc operation.
+- Change the following in selftest:
+  - Add CONFIG_NETKIT to driver/net's config
+  - Fall back to NetDrvEpEnv and run basic test cases if NetDrvContEnv
+    does not load
+  - Use ksft_variants instead of psp_ip_ver_test_builder
+
+Changes since v2:
+- Change the newly added parameter to psp_device_get_and_lock() to
+  admin in patch 1. Introduce 2 device check functions:
+  - psp_device_get_locked_admin() for dev-set and key-rotate
+  - psp_device_get_locked() for all other operations
+  Flip the logic for checking the dev_assoc_list accordingly in patch 2.
+- Move psp_nl_notify_dev() before removing the dev from assoc_dev_list
+  in psp_nl_dev_disassoc_doit() and correct the typo in commit msg in
+  patch 2.
+- Remove the threading and subprocess and some comment updates in patch 5. 
+
+Changes since v1:
+- Update the first 4 patches to reflect the latest changes in
+  https://lore.kernel.org/netdev/20260302053315.1919859-1-dw@davidwei.uk/
+- Update patch 9 to add a param to NetDrvContEnv to control the loading
+  of the tx forwarding bpf program
+
+Wei Wang (5):
+  psp: add admin/non-admin version of psp_device_get_locked
+  psp: add new netlink cmd for dev-assoc and dev-disassoc
+  psp: add a new netdev event for dev unregister
+  selftests/net: Add bpf skb forwarding program
+  selftest/net: psp: Add test for dev-assoc/disassoc
+
+ Documentation/netlink/specs/psp.yaml          |  71 ++-
+ include/net/psp/types.h                       |  15 +
+ include/uapi/linux/psp.h                      |  13 +
+ net/psp/psp-nl-gen.c                          |  36 +-
+ net/psp/psp-nl-gen.h                          |   7 +
+ net/psp/psp.h                                 |   3 +-
+ net/psp/psp_main.c                            | 102 +++-
+ net/psp/psp_nl.c                              | 374 +++++++++++++-
+ tools/testing/selftests/drivers/net/config    |   1 +
+ .../drivers/net/hw/nk_redirect.bpf.c          |  60 +++
+ .../selftests/drivers/net/lib/py/env.py       |  54 ++-
+ tools/testing/selftests/drivers/net/psp.py    | 457 ++++++++++++++++--
+ 12 files changed, 1132 insertions(+), 61 deletions(-)
+ create mode 100644 tools/testing/selftests/drivers/net/hw/nk_redirect.bpf.c
+
 -- 
 2.52.0
 
