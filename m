@@ -1,146 +1,207 @@
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24EF239525E
-	for <netdev@vger.kernel.org>; Thu,  9 Apr 2026 22:36:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775774189; cv=pass; b=ILU4948kMPjkK0OaiH+SY7CdI8k5WxPjULqM0ydp+oARfR5AsUX7RVZJa2tv2zZiEYqouOZDKcudC9tuJn7EEcpBa4bf4Jt078smJlEr1xgAMSul92OhHGJqTLxIQe0wL3dcBWbYmfsPa9x7FcuDNSGrkh4VE0Aw/vQzu3FJqLs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775774189; c=relaxed/simple;
-	bh=6NF9qUHWoX8c5iTn1fP1XAU18pMiHwpiI3ney0IRLJ8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OJrbgGVxRJoc/CZ0PHqLtEcQ6GIUeF4u/JQQ9VLr+HCEAh1DDI707TLbMh7P/f4+vXJnk3HedAp3Vh2Qx8Ct+q1c8zCwTZQhdLSri5tNCh3DxdVntf6+OQU6uoJIO8YWRB6hpkInjEjpActfm455YCY+icuq61bgYJHNtIDfo7E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=htUMGIBs; arc=pass smtp.client-ip=209.85.128.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FCF128689B
+	for <netdev@vger.kernel.org>; Thu,  9 Apr 2026 22:51:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775775063; cv=none; b=njlVskaXzBYA1ghjDzzUKveWQHxfz25yPFcyxpzEmRKsijbbNMxEkw9Gw+Cpo0+uSrq+EqVM/YVMR+E4CdqGMTPvS07ysUYwMyZGVlvdV0Me3PQbVlXnPer1dSiZQY98ZjtYi0R8B4ycsJ5MJh94Y9XJmbsExE7zxsFGQkuEsfk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775775063; c=relaxed/simple;
+	bh=a9nqqF3cbT99XNXj3eld8jCUHw47zPb1gSym/lslr2c=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=UkUX9k5BmbCYEFEYghR3D3S9P8PDOC434mIe3uZljybRpCjdbByZPLCnv/ohisPuszftGbVqHNsmQkwAvQWpHES1AUAXizQEti1LFCDZO1IiTkDtuKa/F1L/cbLaRFQ7QMfYhvMyPGu/5jVaBG+gQ7/ofHmqZuZB+B7DxwyyLLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=2U1hd/Pu; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=+0l6Pcim; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=BcQsimcN; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=hypLwHmZ; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="htUMGIBs"
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-7a2b6adbfa6so15334187b3.0
-        for <netdev@vger.kernel.org>; Thu, 09 Apr 2026 15:36:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775774187; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Ub5ERqtAE8V/EFq4UYTAU08iomiSECAZbXEN2OW2DC89d10eStCNxxEg1l42QkfRJN
-         A6aOeFGipwipwv/Sb8/qpjEoqNtc3w/CtHupELrYP30DCltF8kv+d2uuhwk2kMxSrjb9
-         eVJGmyAToHhd7XcdQdQzPySDevnRmLGNylYTUfJ8xbySmlPmNXYjTLe+mVIY9VWlf/2i
-         LwR8pIkGv7IG6qZZsDmdanw1sb72GxC1NWMIE7j4QnZmHkWoYTpBnm5r1sWLhLK9o6gS
-         UE2cGuGz9JXXbHTgL6K2ub+vx2Ny++I1jbk3HFiBs85ppJkABdrlZf+LovlAb1+snVUd
-         gxqA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=0zJo9ruiyA89gxojsKY5mJ/fYqCxgS4MIEe9tTJdKnk=;
-        fh=ksB/biwoyM2AHeLX2zAYAcqwX+Da935sruhwRgNQ2LY=;
-        b=RwLm48Dqrvvv3BpIdUo031AuVdFyVypR5fdVCAaxwetyYOfZOzXrYBqC5isB7XYS3w
-         BL2s5Afk+yOAL2A9NFQ0nVvPY1xyRHfnZFFcsPVhZIDeufXxZhRvMzvXp7D9G5zhv4f9
-         mRO2PGFEOnydZaklIQ++4GSrjRrQ86OXlJ66tdX5+0RQREQOu/T8waZFXw218eHzxEPO
-         32JCPBGIFu4J4rylTO1A+0oHoTiD1B1mg1XjHX2Iqbg+gzmjfvUHaThnQf7iOAPsuVvF
-         qDBzoXTv06jc6ty+GQZSsBrMrRddEjjf10LMJuah/pEN9Xo3mct8HrL9PL2m2aNnmf2k
-         pkQg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775774187; x=1776378987; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0zJo9ruiyA89gxojsKY5mJ/fYqCxgS4MIEe9tTJdKnk=;
-        b=htUMGIBs93MLw9dTl6z7Y4zoZEl8ED2ObstL/6yx4HTAUkzi7UpN0YXNGlGde7lG/U
-         EZlNRu/M9KAPqJixydH/Jexc5AIHg1s1gV0m/ZvEmsb/PUXGgUua0oqH5kL5mpIHKpTF
-         JumN3ACLN7hTGfF4491i6Sk1QxDzo/MU6qCrMv8WasS9bL6x0+2hOVtSPGvrHF6SENjP
-         NMh52khOv6xxyTG11pW1S1Ic+fq0idCgW9917NPN817XqRcORCtUf7iP5HVlGSkA6bi3
-         lGkTdWjKRhJywhG9BvDO0+DELJRMWFr0iI+C97YiFEhenCwOAlIm9jopdieGVIPciq4s
-         jExg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775774187; x=1776378987;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=0zJo9ruiyA89gxojsKY5mJ/fYqCxgS4MIEe9tTJdKnk=;
-        b=DDOXDUhwgcJkrzKJqAexvgMFgFCShLAgbAyZ3maxao/1vezElZJfE0Z2PfIHC2QMGX
-         UC74sJVPEsMDeYuN9sa94zIDAIpBZPA9I1i5hVwW5qnKUut4ap9Q3N7DSPnEn13w7k7E
-         dDcFfHYTJaBna/8XRmmUXmBloc+lbxYsaoeW8XHDnZQxYbW+/xDELf1HL6/Y/gtBa384
-         q0/0QY3jFVohzwhtsYMiVkXx7GSg0eHTFnTpkskzwlBrdr/fVVHaxISiqTdKGn27S3b4
-         go6aYoEXZd7WsZkiTrSRPYdG8HvERjnHiqMkVvarQZdCkXDcUjfQZqfg/sgppzaRKE6C
-         0nfg==
-X-Forwarded-Encrypted: i=1; AJvYcCVOptyWtiqs6SR4KC1C6qC1wUeHlE0o2lwwr/ZqmaQ5gnaycBqIfa/uYY7MDZ7SSUmLSJsaJZ8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxoikjQBi7ZftHTAB2t4gM/I3QRDGJP+8MDsW+L0oKo1aK2zqmU
-	eIiP3wOB9F6WNR+1bkDO8WYK+QYnUzZBuXFmPFiby8KCk7Pih7YvEjo5MSlHfgbKe6DzPLOtzEk
-	P/IL5rXQI5n9LgJOe0hoQ3P4GRmr1Muge5aFN9NQ+
-X-Gm-Gg: AeBDietSPPRbAExX6wE6t4O0acleuDZn29dtjZFtS4MfDaZDoY0XUDWDTWbqcGBTbOx
-	76vVOegJ7qC3FGkEjNThsQT2r/9GV5Q9vrGDEGxh2zsCAJy3tgzRYxC1Xk/Ceu3hFXIxfxdjjT7
-	Sbl9mA04Owm/F3Hs6+BYNCzjaGctw+PWrRCBHh7iNXHwZxdJLNZEOpDxNkoBQ0chu+RiRqzLyFs
-	pVFQECo9l7TFKWPHhulJPQV85gM8jsiU+CTKxJ6wDNrL8Fh3ekLBpoKBBfgKXCMObrVTQWYxRYf
-	2Cd0s82byz5qltPMfg==
-X-Received: by 2002:a05:690c:e651:b0:798:6f0b:86b4 with SMTP id
- 00721157ae682-7af71282bd6mr6430907b3.25.1775774186532; Thu, 09 Apr 2026
- 15:36:26 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="2U1hd/Pu";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="+0l6Pcim";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="BcQsimcN";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="hypLwHmZ"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E4C385BCEF;
+	Thu,  9 Apr 2026 22:50:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1775775060; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BZIvNUgCDmRlFAZnyamiK0OY31cYxHzsJq9pG9ZWk6g=;
+	b=2U1hd/Pu5xWHVcmSXv9z0TiD+cCA5E1CKtWZQQXjELoWQXq9fVh2ML40GvHeddsgsY79yI
+	Cqg8lJIaHxLp8YH5SOZ+EE94RGDN2scR3VtQu+cDDGvkAEDbTjQmlT8PDRDGuXQK4YZCoE
+	QCP+e1e86vIpZPG4J41X4d+8dZlQVUc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1775775060;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BZIvNUgCDmRlFAZnyamiK0OY31cYxHzsJq9pG9ZWk6g=;
+	b=+0l6Pcimh3pJvEXBzAHH7XNfuXGzhfJ8JxE9cn7cvlIzjw7IGXfYUDTV8Fe/hsb4EpiEl1
+	PwZuimTvXs4k1HDA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=BcQsimcN;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hypLwHmZ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1775775059; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BZIvNUgCDmRlFAZnyamiK0OY31cYxHzsJq9pG9ZWk6g=;
+	b=BcQsimcN5nrBhrO8B/inHezMDCSu5xYHVGYgTxMs6iWbfxo/WiehpX0956za+SheUMYOC1
+	C/m+q7l6Na/MlIk5LZfJ+pPHJu0lH65DpncyD+bHbF3bMGplwz70Agca4TqMlnm3QUQorf
+	rfkBd9XHXMpgmP/K/kTze3ZNmreL3Lc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1775775059;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BZIvNUgCDmRlFAZnyamiK0OY31cYxHzsJq9pG9ZWk6g=;
+	b=hypLwHmZtqdHShpazzBoy8gENVL/ewqXe8okFqpTKSg2MQbAedRZHjezJN9mqul+Qo8bFr
+	DqREBoIGIGfoFJBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 949F64A0B3;
+	Thu,  9 Apr 2026 22:50:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id /F6kGFMt2GkIXgAAD6G6ig
+	(envelope-from <krisman@suse.de>); Thu, 09 Apr 2026 22:50:59 +0000
+From: Gabriel Krisman Bertazi <krisman@suse.de>
+To: Eric Dumazet <edumazet@google.com>
+Cc: willemdebruijn.kernel@gmail.com,  davem@davemloft.net,
+  dsahern@kernel.org,  kuba@kernel.org,  pabeni@redhat.com,
+  kuniyu@google.com,  horms@kernel.org,  netdev@vger.kernel.org
+Subject: Re: [PATCH] udp: Force compute_score to always inline
+In-Reply-To: <CANn89iKQhLOdtn-_viyDN8ytjJtR-4p0gteXL6gGSHoUYZp5Hw@mail.gmail.com>
+	(Eric Dumazet's message of "Thu, 9 Apr 2026 15:36:15 -0700")
+Organization: SUSE
+References: <20260409221532.69090-1-krisman@suse.de>
+	<CANn89iKQhLOdtn-_viyDN8ytjJtR-4p0gteXL6gGSHoUYZp5Hw@mail.gmail.com>
+Date: Thu, 09 Apr 2026 18:50:53 -0400
+Message-ID: <87v7dzoiia.fsf@mailhost.krisman.be>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260409221532.69090-1-krisman@suse.de>
-In-Reply-To: <20260409221532.69090-1-krisman@suse.de>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 9 Apr 2026 15:36:15 -0700
-X-Gm-Features: AQROBzAT3PQFf6C26sinAG1EjRodcD85MGUAwIDp1lQ2qIllAgAW5RbjOLrVSZY
-Message-ID: <CANn89iKQhLOdtn-_viyDN8ytjJtR-4p0gteXL6gGSHoUYZp5Hw@mail.gmail.com>
-Subject: Re: [PATCH] udp: Force compute_score to always inline
-To: Gabriel Krisman Bertazi <krisman@suse.de>
-Cc: willemdebruijn.kernel@gmail.com, davem@davemloft.net, dsahern@kernel.org, 
-	kuba@kernel.org, pabeni@redhat.com, kuniyu@google.com, horms@kernel.org, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	HAS_ORG_HEADER(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[gmail.com,davemloft.net,kernel.org,redhat.com,google.com,vger.kernel.org];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	TAGGED_RCPT(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,mailhost.krisman.be:mid,vmlinux.new:url,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
+X-Rspamd-Action: no action
+X-Spam-Flag: NO
+X-Spam-Score: -3.01
+X-Spam-Level: 
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: E4C385BCEF
 
-On Thu, Apr 9, 2026 at 3:16=E2=80=AFPM Gabriel Krisman Bertazi <krisman@sus=
-e.de> wrote:
->
-> Back in 2024 I reported a 7-12% regression on an iperf3 UDP loopback
-> thoughput test that we traced to the extra overhead of calling
-> compute_score on two places, introduced by commit f0ea27e7bfe1 ("udp:
-> re-score reuseport groups when connected sockets are present").  At the
-> time, I pointed out the overhead was caused by the multiple calls,
-> associated with cpu-specific mitigations, and merged commit
-> 50aee97d1511 ("udp: Avoid call to compute_score on multiple sites") to
-> jump back explicitly, to force the rescore call in a single place.
->
-> Recently though, we got another regression report against a newer distro
-> version, which a team colleague traced back to the same root-cause.
-> Turns out that once we updated to gcc-13, the compiler got smart enough
-> to unroll the loop, undoing my previous mitigation.  Let's bite the
-> bullet and __always_inline compute_score on both ipv4 and ipv6 to
-> prevent gcc from de-optimizing it again in the future.  These functions
-> are only called in two places each, udpX_lib_lookup1 and
-> udpX_lib_lookup2, so the extra size shouldn't be a problem and it is hot
-> enough to be very visible in profilings.  In fact, with gcc13, forcing
-> the inline will prevent gcc from unrolling the fix from commit
-> 50aee97d1511, so we don't end up increasing udpX_lib_lookup2 at all.
->
-> I haven't recollected the results myself, as I don't have access to the
-> machine at the moment.  But the same colleague reported 4.67%
-> inprovement with this patch in the loopback benchmark, solving the
-> regression report within noise margins.
+Eric Dumazet <edumazet@google.com> writes:
 
-You could include scripts/bloat-o-meter results, so that we can sense
-the cost of such a change.
+> On Thu, Apr 9, 2026 at 3:16=E2=80=AFPM Gabriel Krisman Bertazi <krisman@s=
+use.de> wrote:
+>
+>>
+>> Back in 2024 I reported a 7-12% regression on an iperf3 UDP loopback
+>> thoughput test that we traced to the extra overhead of calling
+>> compute_score on two places, introduced by commit f0ea27e7bfe1 ("udp:
+>> re-score reuseport groups when connected sockets are present").  At the
+>> time, I pointed out the overhead was caused by the multiple calls,
+>> associated with cpu-specific mitigations, and merged commit
+>> 50aee97d1511 ("udp: Avoid call to compute_score on multiple sites") to
+>> jump back explicitly, to force the rescore call in a single place.
+>>
+>> Recently though, we got another regression report against a newer distro
+>> version, which a team colleague traced back to the same root-cause.
+>> Turns out that once we updated to gcc-13, the compiler got smart enough
+>> to unroll the loop, undoing my previous mitigation.  Let's bite the
+>> bullet and __always_inline compute_score on both ipv4 and ipv6 to
+>> prevent gcc from de-optimizing it again in the future.  These functions
+>> are only called in two places each, udpX_lib_lookup1 and
+>> udpX_lib_lookup2, so the extra size shouldn't be a problem and it is hot
+>> enough to be very visible in profilings.  In fact, with gcc13, forcing
+>> the inline will prevent gcc from unrolling the fix from commit
+>> 50aee97d1511, so we don't end up increasing udpX_lib_lookup2 at all.
+>>
+>> I haven't recollected the results myself, as I don't have access to the
+>> machine at the moment.  But the same colleague reported 4.67%
+>> inprovement with this patch in the loopback benchmark, solving the
+>> regression report within noise margins.
+>
+> You could include scripts/bloat-o-meter results, so that we can sense
+> the cost of such a change.
+>
+> $ scripts/bloat-o-meter -t vmlinux.old vmlinux.new
+> add/remove: 0/2 grow/shrink: 6/1 up/down: 622/-410 (212)
+> Function                                     old     new   delta
+> __udp6_lib_lookup                            797    1007    +210
+> __udp4_lib_lookup                            838     984    +146
+> udp6_lib_lookup2                             404     536    +132
+> udp4_lib_lookup2                             396     498    +102
+> udpv6_rcv                                   3018    3034     +16
+> udp_init_sock                                244     260     +16
+> bpf_iter_udp_batch                           953     937     -16
+> __pfx_compute_score                           32       -     -32
+> compute_score                                362       -    -362
+> Total: Before=3D30269687, After=3D30269899, chg +0.00%
+>
+> No change for clang.
+>
+> Reviewed-by: Eric Dumazet <edumazet@google.com>
 
-$ scripts/bloat-o-meter -t vmlinux.old vmlinux.new
-add/remove: 0/2 grow/shrink: 6/1 up/down: 622/-410 (212)
+Apologies, I wasn't aware of that tool. I did some calculations by hand
+and found something like 200 bytes extra in udp6_lib_lookup2.
+
+For gcc-13:
+
+scripts/bloat-o-meter vmlinux vmlinux-inline
+add/remove: 0/2 grow/shrink: 4/0 up/down: 616/-416 (200)
 Function                                     old     new   delta
-__udp6_lib_lookup                            797    1007    +210
-__udp4_lib_lookup                            838     984    +146
-udp6_lib_lookup2                             404     536    +132
-udp4_lib_lookup2                             396     498    +102
-udpv6_rcv                                   3018    3034     +16
-udp_init_sock                                244     260     +16
-bpf_iter_udp_batch                           953     937     -16
+udp6_lib_lookup2                             762     949    +187
+__udp6_lib_lookup                            810     975    +165
+udp4_lib_lookup2                             757     906    +149
+__udp4_lib_lookup                            871     986    +115
 __pfx_compute_score                           32       -     -32
-compute_score                                362       -    -362
-Total: Before=3D30269687, After=3D30269899, chg +0.00%
+compute_score                                384       -    -384
+Total: Before=3D35011784, After=3D35011984, chg +0.00%
 
-No change for clang.
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+
+--=20
+Gabriel Krisman Bertazi
