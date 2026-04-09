@@ -1,118 +1,186 @@
-Received: from smtp134-31.sina.com.cn (smtp134-31.sina.com.cn [180.149.134.31])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC622379EEF
-	for <netdev@vger.kernel.org>; Thu,  9 Apr 2026 07:29:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.149.134.31
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775719745; cv=none; b=ZbEJ2QhEk61/jpypM1+PaeYO6746tulTqDTmV0+Uk7CJETTrPwptWOSAcBhKCX/NUiN0UuWpKyF1ThQZCJpNQPm9YKxtU99KHECfWCxj6IEjgMrbGML1n++FLz7b/aGNRpcknlqPzWzlVpLQq3H3m4S2SrBQRe+MsPBGSUdB1Jg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775719745; c=relaxed/simple;
-	bh=IBKDApS8cl9ptSAnQtUs+GTa1DVVnMGBPGv+drTGiIU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VCnKzdoYLUfBvdUE7+0azvw654vht34omIaR72J8WuRJXOD7s7WiyGVcA3wbDaymr8OkFAmXpJ9vn+Y29v0sW8kCYhENOXoK6TelwGxgCbhi+M8OvOq1Kz23OHDqkK25f3yzdXYXJYUCsiFwvuH5fo5ZNpn9W6lsVk9me5zpFyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=0JIuvQF1; arc=none smtp.client-ip=180.149.134.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0025E3081BE
+	for <netdev@vger.kernel.org>; Thu,  9 Apr 2026 07:35:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775720139; cv=pass; b=ezrdgIq1eyEpBd6tXN/79ZuYzbfD5fUjIWy6dztGI4fnesriOJlBP+PA6T1DUBcgCjNfD4sPAON4yTrF5csNDav0U4O3sZcJAITfLCbtgOMvJAxcXB/66ZF/O8tk4pWBOliZ9MIm5MhhYns2G/zi1jirDmi2iG6YotqHuEW+wGg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775720139; c=relaxed/simple;
+	bh=3bKzmQkJyzTKRjTvOy7kcrmqjRaQYYlocQzym2zd+o0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fTzV1DdanfppOiOn//gygHK7FUoZou49SqTFETrhrFElfdY8NqW1S7Jkp2UX2t2NWAwzf9ij5KyFJ6x33t3M72LAma6UBIIE98aOlTTerz8yY0rVF+EMmroLycCaCfknyfRNiFtaPDk58QH8nIBX+i9AQO3M/Y4l8ZfRBQEDtxQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=W6h5G+iw; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=UVMLO6RZ; arc=pass smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="0JIuvQF1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1775719741;
-	bh=B9Ky8dM7FipFI/IZO7wupdIYKTEbpR7DFPjKqs0Wqbs=;
-	h=From:Subject:Date:Message-Id;
-	b=0JIuvQF1wk5S91AyN3uFM+B9Kz6rZGHZOFHN1G8H1CDD79jKVQTsrLg8QyMfRT/NE
-	 HFYyTWrt954sVsZkEjuqPTkjc1celxhiS1237co53f/DuY8MFJevwGJ/S4XbaCP0UE
-	 aeD2YWPmyGTxS4mM3HC+ULc9qgFeX/JUxYKJ6toI=
-X-SMAIL-HELO: NTT-kernel-dev
-Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
-	by sina.cn (10.185.250.21) with ESMTP
-	id 69D754A500005FD3; Thu, 9 Apr 2026 15:26:34 +0800 (CST)
-X-Sender: jianqkang@sina.cn
-X-Auth-ID: jianqkang@sina.cn
-Authentication-Results: sina.cn;
-	 spf=none smtp.mailfrom=jianqkang@sina.cn;
-	 dkim=none header.i=none;
-	 dmarc=none action=none header.from=jianqkang@sina.cn
-X-SMAIL-MID: 6621113408540
-X-SMAIL-UIID: BA6D2CF94FC24441B027FD2B1276A3BE-20260409-152634-1
-From: Jianqiang kang <jianqkang@sina.cn>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	imv4bel@gmail.com
-Cc: patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	marcel@holtmann.org,
-	johan.hedberg@gmail.com,
-	luiz.dentz@gmail.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	linux-bluetooth@vger.kernel.org,
-	netdev@vger.kernel.org,
-	luiz.von.dentz@intel.com
-Subject: [PATCH 5.15.y] Bluetooth: SCO: Fix use-after-free in sco_recv_frame() due to missing sock_hold
-Date: Thu,  9 Apr 2026 15:26:29 +0800
-Message-Id: <20260409072629.621981-1-jianqkang@sina.cn>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="W6h5G+iw";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="UVMLO6RZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775720137;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NxtWQLaJiuu9KyqZaZcyJ40xxhis3WZ4fBy4ddMBb0c=;
+	b=W6h5G+iwFbVZGa8sngnB6fzE3kyPnOXF/lOOCHLe8fcDzMprKf50lEnHwaY/z0nbpNpwK4
+	Is07DahaTS34YXQpISbUyF5I3GdV9j0BwCK1kC3tZrt7Qt3QPw0rMxwcrnvXTl61fjaomu
+	aUX8SEjyuOzfjW8iBWUqQtU5kI/XXbI=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-212-UNOp_iSeNqKIUEBQjk659Q-1; Thu, 09 Apr 2026 03:35:35 -0400
+X-MC-Unique: UNOp_iSeNqKIUEBQjk659Q-1
+X-Mimecast-MFC-AGG-ID: UNOp_iSeNqKIUEBQjk659Q_1775720134
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-66dd1d75657so650899a12.3
+        for <netdev@vger.kernel.org>; Thu, 09 Apr 2026 00:35:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775720134; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Rl9W3BN4naOoMO6+9BmKlOJy3XJg7zq6IfWOGioO6yyw+aJ8UzBN7lQVi4pqH+2oQh
+         vtr84eQSaunSkiAXZUoCC9RIfT7so12tLU1Fn35ciyzyEfSTq4n2bSPxVwBi/SGy/DXO
+         OvMkFo/6OskdHii1RaIsIvG1I1ZGheo+0KL7tgHvTWzEJtFmsCRJAvpSl7r7HTglLFX3
+         LaH/rKoBlo1Y0KHq6PY9f4T/1k7cAIfeyNKV71LSXt9u1oAcfEmCm3gjZIUObyr1Tbgf
+         MZB0PsD/2trW+Vq9q/XsGkuFmFYmbErScaSlUn3w5cfcZjF+/VYNVX0XFBskqmvOy8pk
+         q0FQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=NxtWQLaJiuu9KyqZaZcyJ40xxhis3WZ4fBy4ddMBb0c=;
+        fh=Ef/XBhyuJJ4fZ2c9NQUo2an1kv4hMc8Mu3I66oIeFcI=;
+        b=ldUwdSaluZn/WfgCEPkwU9Gl5mggV3Z1FVdPQHxa4HK1aLstJKJ/oLhchTPm4ptMNJ
+         NHbCslpUwjYUnw8nNwDjWRTgcCy+QG914RDlm1XvYoQEhRr5V9o6MMbBZ8M+YljRUvbP
+         uZ+DfNqkKykdbi7GD22VofR5rOVTZc19zIZ9Dsyciuih/V6R8P9EJDTOTe69PmG2pUF3
+         XOcAFzCwaZQL3o3a4zulHOWHM3RMrCpNL3LLeKw/JFJKYHXL1R4JX4EGlmhyb2LU5FaB
+         eDrX2K99BwOnAjTvODpH7q9BxGAeG8SDH/b6QgajQK+5eNkW2hc0YTHaOEvmc1MdQZYg
+         S99w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1775720134; x=1776324934; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NxtWQLaJiuu9KyqZaZcyJ40xxhis3WZ4fBy4ddMBb0c=;
+        b=UVMLO6RZ7AeSFRtb+JXO9dysuvsD7uxN+nM88UbMMa0UrIp8NqmjB0jNCbujaDN90F
+         46XU2nkV38mYZD7pOH1POirbt+HJUQCySSKA40ZDVAoq3m9+fEWuD84uxaq6tspPzvKV
+         DjNiK686rH2q1h2fMd2d9ksFNZiXuaicCrWIyFuuaTPulPhml/6iUB1hLisNoxdTAUkw
+         Psd7H2g6FhkX7ot944sGgQ8bqIWLagOEMxvl3n7xfikkoWNBgc6EXQ6Rs1Sl7qHsKtU1
+         E6Eufh3MPCCM8FdUbuNiUvUx+pE3hRRT67cfmUEr3xcPQrg7m6u3N29QKBns5gsn+tr7
+         lkUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775720134; x=1776324934;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=NxtWQLaJiuu9KyqZaZcyJ40xxhis3WZ4fBy4ddMBb0c=;
+        b=kbdcvHPrz4ZUmf92kbcg8LQYXhGMGuNM+kqh7RIqPkiF5T34G91fCLZN1CFHu4djyJ
+         raNe8CrSxqrKX94am6aiu3Si5uchXKA+7qPfG+7bwgah4E/xilENo9M8wG4B138O3sJH
+         w+du+/E7UXVZB/gCDG00ZaOm1Lfh5BI4xGcywA1hnxuaE/t13XQTBJui3C3NMrpIzV8k
+         1f2B2r9NorAJn6PboAzu21WMDG+xMY2RdED6bD6u0X+bt0Y3+AuNyUDYYMwpaYBGIi0t
+         pifls3tI1LUngoMcSmmbPl/mH0HlcD/NjahacCpNY4bXNrvLXece3QKq8t9e7ZlftDOw
+         1vLA==
+X-Forwarded-Encrypted: i=1; AJvYcCWlG3BWSOZQ9OQHdb7ypmon6TZKLxwKz9ZOPxOK/xfRo6rW+aAi5pgnq+iE1NTNa+gNjw7iXRw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+5K343fxnvAZrwcXTqfppTjPEBCiwUSbvyx2frrqCGIF974fI
+	TAFO6LN7GxZ60NIEdul3S1IJjVEAtxjTHqSqkWS2pz44WN99ahu9TrhROOl24GILwm9ioJ4xQR4
+	A6e3AOoiJTY2zAqD1WsvZ2q8yb5z7EGG6PJK19CzpTMmoqdAqLjVf6uvrSUBFkrdNBwVdjUJPC5
+	dr5YA/u23LGsa6cuZueT9uWWwakafS6wll
+X-Gm-Gg: AeBDiev6ZTKmAbetANV3CcEz5Is/1Su03rScjWj6yH36lzHYJJf7JsX50ydwhbIJC5a
+	lGibknwxnMCP5gRQCpMz2FhVs55OhGvQR9I8I1Ead52O0Ni7J1hLNoUNwt6q87QLikA+hhvS7xX
+	Lx+QeW9MY58fbbKQHdq9HojBpSfciEeQTpf/ezKasAedIKGXwQX3R/IzZpu60VJxP5/tG5ZWdQE
+	DhvWF0=
+X-Received: by 2002:a05:6402:1d49:b0:66f:b3cb:502b with SMTP id 4fb4d7f45d1cf-66fb3cb5118mr2434363a12.23.1775720134355;
+        Thu, 09 Apr 2026 00:35:34 -0700 (PDT)
+X-Received: by 2002:a05:6402:1d49:b0:66f:b3cb:502b with SMTP id
+ 4fb4d7f45d1cf-66fb3cb5118mr2434344a12.23.1775720133842; Thu, 09 Apr 2026
+ 00:35:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1775527362.git.xudu@redhat.com> <b65f95793e03c1cb3ed3af4e1b2bee89fcf7e648.1775527362.git.xudu@redhat.com>
+ <20260407080844.35368eaa@kernel.org> <CAA92KxmXOpH=CUqEdVV2948XhU1oFh8PBYLUt=ktSsK3sOh40g@mail.gmail.com>
+ <20260408172741.39e65ab3@kernel.org>
+In-Reply-To: <20260408172741.39e65ab3@kernel.org>
+From: Xu Du <xudu@redhat.com>
+Date: Thu, 9 Apr 2026 15:35:21 +0800
+X-Gm-Features: AQROBzCSiYIn_6eIL4l8IyUTl83-XelT37kb_7xCVKSrMKxgPHpsrqohje2yz8Q
+Message-ID: <CAA92Kxmka9=GEvNwxOy7pSEuudqsaF3WGJttyQpYEkTyyYhgLg@mail.gmail.com>
+Subject: Re: [RFC net-next 2/4] selftests: drv-net: tso: add helpers for
+ double tunneling GSO
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, 
+	horms@kernel.org, shuah@kernel.org, netdev@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+On Thu, Apr 9, 2026 at 8:27=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wro=
+te:
+>
+> On Wed, 8 Apr 2026 10:04:09 +0800 Xu Du wrote:
+> > On Tue, Apr 7, 2026 at 11:08=E2=80=AFPM Jakub Kicinski <kuba@kernel.org=
+> wrote:
+> > >
+> > > On Tue,  7 Apr 2026 10:45:09 +0800 Xu Du wrote:
+> > > > As the YNL Python module cannot be invoked across different devices=
+ or
+> > > > environments directly in its current form, the helper abstracts the
+> > > > YNL CLI calls to ensure proper configuration of the tunneling devic=
+e
+> > > > features.
+> > >
+> > > Can you explain more? Why can't you use class RtnlFamily?
+> >
+> > I want to test the gro-hint parameter functionality of the GENEVE tunne=
+l,
+> > so I intend to use YNL for the testing. I am conducting the test betwee=
+n
+> > two machines using SSH type. I want to add the gro-hint parameter on
+> > both the local and remote nodes; however, I am unable to invoke class
+> > RtnlFamily on the remote node via SSH.
+>
+> Oh. But that's not really what you're doing:
+>
+> +def ynlcli(family, args, json=3DNone, ns=3DNone, host=3DNone):
+> +    if (KSFT_DIR / "kselftest-list.txt").exists():
+> +        cli =3D KSFT_DIR / "net/lib/ynl/pyynl/cli.py"
+> +        spec =3D KSFT_DIR / f"net/lib/specs/{family}.yaml"
+> +    else:
+> +        cli =3D KSRC / "tools/net/ynl/pyynl/cli.py"
+> +        spec =3D KSRC / f"Documentation/netlink/specs/{family}.yaml"
+> +    if not cli.exists():
+> +        raise FileNotFoundError(f"cli not found at {cli}")
+> +    args =3D f"--spec {spec} --no-schema {args}"
+> +    return tool(cli.as_posix(), args, json=3Djson, ns=3Dns, host=3Dhost,=
+ shell=3DTrue)
+>
+> You're not deploying anything to the remote system.
+> Are you assuming that the remote system magically has the same
+> filesystem layout?
+>
+> You can use the ynl CLI but it has to be whatever version is on
+> the remote system. Just call ynl --family rt-link, don't dig
+> around for the spec paths etc.
+>
 
-[ Upstream commit 598dbba9919c5e36c54fe1709b557d64120cb94b ]
+In fact, I have tested this from two different locations. The first is in
+tools/testing/selftests/drivers/net/hw/ using python3 tso.py,
+which utilizes the specs located in Documentation/netlink/specs/.
+The second follows the testing methodology described in the
+README.rst of tools/testing/selftests/drivers/net/, which uses the specs
+in net/lib/specs/. Based on this, I include that different processes utiliz=
+e
+different spec locations.
+I also referred to the implementation in net/lib/py/ynl.py, which employs
+a similar handling logic. Both using the source code repository and
+installing the package can meet the requirements for remote testing.
 
-sco_recv_frame() reads conn->sk under sco_conn_lock() but immediately
-releases the lock without holding a reference to the socket. A concurrent
-close() can free the socket between the lock release and the subsequent
-sk->sk_state access, resulting in a use-after-free.
+--=20
 
-Other functions in the same file (sco_sock_timeout(), sco_conn_del())
-correctly use sco_sock_hold() to safely hold a reference under the lock.
+Regards,
 
-Fix by using sco_sock_hold() to take a reference before releasing the
-lock, and adding sock_put() on all exit paths.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
----
- net/bluetooth/sco.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
-index d98648bcc1a8..d0ef74c45914 100644
---- a/net/bluetooth/sco.c
-+++ b/net/bluetooth/sco.c
-@@ -311,7 +311,7 @@ static void sco_recv_frame(struct sco_conn *conn, struct sk_buff *skb)
- 	struct sock *sk;
- 
- 	sco_conn_lock(conn);
--	sk = conn->sk;
-+	sk = sco_sock_hold(conn);
- 	sco_conn_unlock(conn);
- 
- 	if (!sk)
-@@ -320,11 +320,15 @@ static void sco_recv_frame(struct sco_conn *conn, struct sk_buff *skb)
- 	BT_DBG("sk %p len %u", sk, skb->len);
- 
- 	if (sk->sk_state != BT_CONNECTED)
--		goto drop;
-+		goto drop_put;
- 
--	if (!sock_queue_rcv_skb(sk, skb))
-+	if (!sock_queue_rcv_skb(sk, skb)) {
-+		sock_put(sk);
- 		return;
-+	}
- 
-+drop_put:
-+	sock_put(sk);
- drop:
- 	kfree_skb(skb);
- }
--- 
-2.34.1
+Xu
 
