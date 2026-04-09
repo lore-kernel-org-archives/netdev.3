@@ -1,60 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699AB30AABE
-	for <netdev@vger.kernel.org>; Thu,  9 Apr 2026 03:13:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7008835F191
+	for <netdev@vger.kernel.org>; Thu,  9 Apr 2026 03:14:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775704423; cv=none; b=GTU3wVN4iBhLArJpqv8RkdjGiu71fK5+aXUpL0G9/g5MXB8aByzNUPhS9H6bZ/Ebj63UfOparFBEHyiWrTxFDegCnSY8Vs1ze/aWhIF/VLPGJT9p0SJMFIWbwGDraemteuF1oTGCBzY9ybMO0/qZ7jwFuhxgl2dfk7zRrukWM/o=
+	t=1775704459; cv=none; b=HTyAdE7W8jlQScGVSqm0aiT5Ub3uelx07as0qHTKr0zX6su/0XnAwMdsefnw5DFBatQ9vQZByJvCW+X25+sikN4CWvklncHnKg+xNRSCnH3pEpPf8c+EnmWg5s9+6PqAz12D3zMJmc0Cmsl1kN41qxQ8lpEa7xoyjVREzFHHvog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775704423; c=relaxed/simple;
-	bh=WdHbPodKdp11GGlUGgi0bX6m31nOEGTKa2NRrA4PuJw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g0ndxzQ1jYHfpBeH+/Vkj55OvI98Y0orE643x3CYMxOtqh0PsVPrj/I6zst2M1DD6RhakrgYIZonKpvLy+0lYXQhsse7oRuhYbV6PwIOrthhSM/yzrs4OudCFZdmhocXLq3RpTEvsttzO4bmY2uMB9xf1Bw+c1yy/lJxjdWnzjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=thY2AZoL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775704459; c=relaxed/simple;
+	bh=nDfsUA45wFoPkPBfScB8oTXEdZ9+qmyp6FIjTUlaVSg=;
+	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=e6qZhHrQSGDsnswwRzg22ROUG3PoKoyuJsfjpZx/Qe6hxTlrr+fEAb6ctE48HwXzzsoGV/sl0c2OpDnJQL6G5oBPXwgvr+v9IkNxkWwVANiomqKMLGdQEZEWNTZuJAL0ukcTBcPyAZN3hwAn4leFLgpzn1VY05muSSKYc0MgMQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=t08EX32L; arc=none smtp.client-ip=113.46.200.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="thY2AZoL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E50BC2BC87;
-	Thu,  9 Apr 2026 03:13:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775704423;
-	bh=WdHbPodKdp11GGlUGgi0bX6m31nOEGTKa2NRrA4PuJw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=thY2AZoLbzVe3yfk2v20AUpxW1dYpLcr5x9tcWLBVe9mQo1D3doArgBjPTi/iG3PT
-	 +2eDji5Aufnh9yWhiQq8gl+XvVDJ3VwrgskYnFZLUj/1/j/HGIYBSNVztELXLRkGa7
-	 T2IKDJKc06fKqgOG2ryV8A/Lgw6aKKgPIHrf4NLLtO0digSTyGWWa422TK3WeuBt/4
-	 ngJ1lfJIhBEJJ56/aeycw+HS3QFVMJMB0Q2DtuDJA32mz5TWf1h5e2VBXd/71gjxVC
-	 dQb0KogwcPieb2w1+fMxiv5QyT8jKcatDh8tKtu5RibzEcv1+KpkAXm5fPP4rOW0DI
-	 NJ5bSEfYQhKug==
-Date: Wed, 8 Apr 2026 20:13:41 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Louis Scalbert <louis.scalbert@6wind.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, jv@jvosburgh.net,
- edumazet@google.com, pabeni@redhat.com, fbl@redhat.com, andy@greyhouse.net,
- shemminger@vyatta.com, maheshb@google.com
-Subject: Re: [PATCH net v3 0/5] bonding: 3ad: fix carrier state with no
- valid slaves
-Message-ID: <20260408201341.68f31247@kernel.org>
-In-Reply-To: <20260408152353.276204-1-louis.scalbert@6wind.com>
-References: <20260408152353.276204-1-louis.scalbert@6wind.com>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="t08EX32L"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=IR3T7npias+PsiUSGbKlWZG++VR5swnJgvsp72zprLk=;
+	b=t08EX32Lbf4CRiVWMLmWpccVenjrLNY7KRrVlH596/MFEr+yulLqZXh/MRdu2eJA5Jv09B2C1
+	yyYJuxtCIt8vxkGyDEq6WqWU4Xaj2n9+5Gue7MCE/lzGEDo7M5T/cxd4ytwez0iq8ik/ji2nYUF
+	0ZYQa1sp/i4i27aXQIGC+SY=
+Received: from mail.maildlp.com (unknown [172.19.163.127])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4frlH93SLGzmVCK;
+	Thu,  9 Apr 2026 11:07:49 +0800 (CST)
+Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 769FB40573;
+	Thu,  9 Apr 2026 11:14:05 +0800 (CST)
+Received: from [10.67.120.192] (10.67.120.192) by
+ kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Thu, 9 Apr 2026 11:14:04 +0800
+Message-ID: <de742f5c-b3df-498b-9611-88c0ed06799a@huawei.com>
+Date: Thu, 9 Apr 2026 11:14:03 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+CC: <shaojijie@huawei.com>, <salil.mehta@opnsrc.net>, <shenjian15@huawei.com>
+Subject: Re: [PATCH] MAINTAINERS: Remove Salil Mehta as HiSilicon HNS3/HNS
+ Ethernet maintainer
+To: Salil Mehta <salil.mehta@huawei.com>, <davem@davemloft.net>,
+	<netdev@vger.kernel.org>, <kuba@kernel.org>
+References: <20260409000430.7217-1-salil.mehta@huawei.com>
+From: Jijie Shao <shaojijie@huawei.com>
+In-Reply-To: <20260409000430.7217-1-salil.mehta@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemk100013.china.huawei.com (7.202.194.61)
 
-On Wed,  8 Apr 2026 17:23:48 +0200 Louis Scalbert wrote:
-> The current behavior is not compliant with the LACP standard. This
-> patchset introduces a working behavior that is not strictly
-> standard-compliant either, but is widely adopted across the industry.
-> It consists of bringing the bonding master interface down to signal to
-> upper-layer processes that it is not usable.
 
-Is the only problem the compliance? If so I don't think this qualifies
-as a fix. Please drop the Fixes tags and repost for net-next. Please
-keep in mind the 24h reposting period (also I need some time tomorrow
-to queue your patch to the CI so that the selftest passes when v4 is
-posted :()
+on 2026/4/9 8:04, Salil Mehta wrote:
+> From: Salil Mehta <salil.mehta@opnsrc.net>
+>
+> Closing this chapter and a long wonderful journey with my team, I sign off one
+> last time with my Huawei email address. Remove my maintainer entry for the
+> HiSilicon HNS and HNS3 10G/100G Ethernet drivers, and add a CREDITS entry for
+> my co-authorship and maintenance contributions to these drivers.
+
+Salil, Thank you for your hard work over the years.
+Acked-by: Jijie Shao <shaojijie@huawei.com>
+
+note: Sorry, the previous email reply was rejected because it contained HTML part.
+
+>
+> Link: https://lore.kernel.org/netdev/259cd032-2ccb-452b-8524-75bc7162e138@huawei.com/
+> Cc: Jian Shen <shenjian15@huawei.com>
+> Cc: Jijie Shao <shaojijie@huawei.com>
+> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+> ---
+>   CREDITS     | 10 ++++++++++
+>   MAINTAINERS |  2 --
+>   2 files changed, 10 insertions(+), 2 deletions(-)
+>
+> diff --git a/CREDITS b/CREDITS
+> index 9091bac3d2da..a03b00452a1e 100644
+> --- a/CREDITS
+> +++ b/CREDITS
+> @@ -3592,6 +3592,16 @@ E: wsalamon@tislabs.com
+>   E: wsalamon@nai.com
+>   D: portions of the Linux Security Module (LSM) framework and security modules
+>   
+> +N: Salil Mehta
+> +E: salil.mehta@opnsrc.net
+> +D: Co-authored Huawei/HiSilicon Kunpeng 920 SoC HNS3 PF and VF 100G
+> +D: Ethernet driver
+> +D: Co-authored Huawei/HiSilicon Kunpeng 916 SoC HNS 10G Ethernet
+> +D: driver enhancements
+> +D: Maintained Huawei/HiSilicon HNS and HNS3 10G/100G Ethernet drivers
+> +D: for Kunpeng 916 family, 920 family of SoCs
+> +S: Cambridge, Cambridgeshire, United Kingdom
+> +
+>   N: Robert Sanders
+>   E: gt8134b@prism.gatech.edu
+>   D: Dosemu
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 9d1e6d3acbac..97d0bc3108de 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -11530,7 +11530,6 @@ F:	drivers/bus/hisi_lpc.c
+>   
+>   HISILICON NETWORK SUBSYSTEM 3 DRIVER (HNS3)
+>   M:	Jian Shen <shenjian15@huawei.com>
+> -M:	Salil Mehta <salil.mehta@huawei.com>
+>   M:	Jijie Shao <shaojijie@huawei.com>
+>   L:	netdev@vger.kernel.org
+>   S:	Maintained
+> @@ -11545,7 +11544,6 @@ F:	drivers/net/ethernet/hisilicon/hibmcge/
+>   
+>   HISILICON NETWORK SUBSYSTEM DRIVER
+>   M:	Jian Shen <shenjian15@huawei.com>
+> -M:	Salil Mehta <salil.mehta@huawei.com>
+>   L:	netdev@vger.kernel.org
+>   S:	Maintained
+>   W:	http://www.hisilicon.com
