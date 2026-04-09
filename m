@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED733CFF4D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E13463CB2E6;
 	Thu,  9 Apr 2026 17:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775756056; cv=none; b=HJn2GZp7jcdcXllGy1TKB3LFR0omHc2BY8vywsLQIq82xjI+tpeGVAdT60/s6IER/YontU8gkUhIqyBYZ+fDK9uF+68PZQMqjBG0mxRuPMpUiRiRbmI1Iwn8LTCHftkFxn37YAe73bL+4HJ3TPGlS6z+3MH8psm+eYwmgXEBHw8=
+	t=1775756056; cv=none; b=QmKZhu9RbsMx2AGYGBONtsSdYSwiCflvjRUL9C2y2FKOOnl2sU19J7ww5wPSh7py+8kSU5/k5zueMu28SJsVVKWct7EssC6co3qe/nb8rhRAJV7lwW8SQYuDISzW37Tx67nH0CbF+paDfgdeczKNZXWJP9q1dkYbJOohIncVPlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775756056; c=relaxed/simple;
-	bh=jAsDVJQ8oQe6T+jEbjyp6AmnCBcgc0szzgwGRqjH3gw=;
+	bh=BHh+d7/Sb5UOlzv7Cvr4u0mLHw6JKjDkoYi8T5hayBk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=iF/7Ppfhg4ImiL7gXiJrO8v7iZHNpA/BHctXliBEQkpQPH6Wsm4e+Vt7nFYg9QQqN9B0iMmp7FGj1ZwlWXOXo8RzDKhy2ymKYDfj7GSBVrY7RBRJzohreX7NTz75BLBh28uh6L/81MJMQdjzHqxGZf2zpJRnA6bN1c8qXK0V+Ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A3wbfSa2; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=UAsd5aooLiF/FJi9GW2Y+J9JwDzfLnu0foeJAaCqFMTFyvX5h0BDt5w72tLx2ABbnutSY9/YV8wCNZhMMOiuBhC9tMqfWeeOQzNI6RX+tpbS5JIx0y+UX1lHiv4YueMS4ewjwZu+FCWeTVhKa6PKpNsckM0vuN84gzNsTMiLZsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QGAkYqJq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A3wbfSa2"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id ACED1C116C6;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QGAkYqJq"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9F4BBC2BCB2;
 	Thu,  9 Apr 2026 17:34:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775756055;
-	bh=jAsDVJQ8oQe6T+jEbjyp6AmnCBcgc0szzgwGRqjH3gw=;
+	bh=BHh+d7/Sb5UOlzv7Cvr4u0mLHw6JKjDkoYi8T5hayBk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=A3wbfSa2bhg26atLrWC6YMom5uCnH1XBSRiwqkXXJiluM2a8XwobrjEe7n+lM4EjG
-	 B54FMYcGZe7/BUDi6k8LoQtYlVm7geRq40tFa7ySZ1vpoPm7Jjv3iR/X8rUsBQJRzI
-	 IxnP1vH87afSlojXO3q0fCUKu6Oqp7EakJPgAxmiaC8q2ndlkVZ/j/jqo+b7Ansi7S
-	 YKIvTzpgauHHltz7LmuSOs9uoJT6IrKmRjO5M1LqJLheHKfAd5gmGrF6FOUYdzjZTk
-	 QPKaIqiecEDqtmPzF/C6cRvm6uWNzV1jcD0mc+7W4tzPYfrSq+iJIxbwDTgb+bK2u6
-	 iAXPXTXAi3cYg==
+	b=QGAkYqJq4a724iYzgqfkkLJr2JvL43bRUs0fk4+g/eLwUgKwMPITjJROJx7Nh6Kz0
+	 6n/QclVjv64OyBadDFWgZ8IfNqi3SEgBxFfMZq53EvExFPWHu1n3IMb5eyfM4T8q7G
+	 yZ/37rtYs9FPkJpp//53GiAzVA+eC5xVC4nr6ZfgbDz2m1Q4m42RrfbZc2OsWGXoEz
+	 o1Va3+6cES25khjcDIs4WnQQJwWKfAjSSmY3rwcDKHr30KmHcUjy0xiiI1eiNprH+r
+	 14UNZjH+Y9XNoyjyFyvqleflwG+liQNKqb5pLmPJFM6dN4H9WlBeg2BikigaQNpiqJ
+	 uhxYC6BTNLQRQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A3B5EF364A8;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 94060F364A6;
 	Thu,  9 Apr 2026 17:34:15 +0000 (UTC)
 From: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.oss.qualcomm.com@kernel.org>
-Date: Thu, 09 Apr 2026 23:04:15 +0530
-Subject: [PATCH v3 4/5] net: qrtr: ns: Limit the total number of nodes
+Date: Thu, 09 Apr 2026 23:04:14 +0530
+Subject: [PATCH v3 3/5] net: qrtr: ns: Free the node during ctrl_cmd_bye()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260409-qrtr-fix-v3-4-00a8a5ff2b51@oss.qualcomm.com>
+Message-Id: <20260409-qrtr-fix-v3-3-00a8a5ff2b51@oss.qualcomm.com>
 References: <20260409-qrtr-fix-v3-0-00a8a5ff2b51@oss.qualcomm.com>
 In-Reply-To: <20260409-qrtr-fix-v3-0-00a8a5ff2b51@oss.qualcomm.com>
 To: Manivannan Sadhasivam <mani@kernel.org>, 
@@ -51,16 +51,16 @@ Cc: linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
  Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 X-Mailer: b4 0.15.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2122;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1941;
  i=manivannan.sadhasivam@oss.qualcomm.com; h=from:subject:message-id;
- bh=8Z7zm8D//7k5Avg5HWQBlF08Jj61fVMYPl3P8cP1MWk=;
- b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBp1+MV1XPr83Nla9ublSdPz04N4bvw4OBEX49ZU
- D74mOz5HwSJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCadfjFQAKCRBVnxHm/pHO
- 9dUWB/9k0KOKftyg7XvdSKNaFZ9Hd6d+D3IDBh3mV8Tqizh6fQceyo+ck4NbE4/Df0Dr2H+v0W7
- S13eMeZa/shDshMU+AdEo7hMOZRjMPP/4BS4FUC7rPmt2bNfpfgAISo9boKhZb84Wiendde/f0A
- Zq6njJo4mL9fOWsKJoKjwBZ3cUCqUad2GBjCY9al9/h/kVTfLngNIWAZxy1If/iDtb1ctA/MqUI
- lbz3+se9aOTH/0MGw4HG9z3toFap7ogLxSspG5Z10VFt86va8EjBylaDHUso9IRyjeRaJ8XtmYG
- DJQrVyG+QkiESiYWIwWBstMcREpyNoFlrO0iZxw+sID622Kp
+ bh=Hpdkeym1qdOfTUQpvcFhEQaJ9E/0TNA+gVCrKHkmuGc=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBp1+MV1Scrz7Ru2f3Zgr16UT/xdCYro5A7okqoa
+ SKNH13jIp6JATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCadfjFQAKCRBVnxHm/pHO
+ 9fwTB/4pCyuDCwNyuUrR8VcPom9D2zdQ/CtJIadItu625PSyjcL4WhMbCSugzcdXRhaGH407x8o
+ wN4kXNfUS2QyRgyDn3Qqdx+TPiaLOezWSkWOUZKZGwrIJzoNx3QysRH+e5jwWZAwyyA1+DXRm6s
+ 6lNa7EEfBhO+Zj9jqAlzIHUhWobkVkbWsK9L/GePhVxq1QduJgLLQwH+qtiIRXUSwfdj+j0ad4z
+ u//jo8qEPlKRvUbteSwwVw+Efvtq2CcFiXHDruPUqg2bueQVRaLLpar4mmNOuDGnzmVlRz6QrN6
+ +rww7B7ImX3XPDJj3aOpLRV7u0UMYd9OpVU5QqZpzjY7qXPb
 X-Developer-Key: i=manivannan.sadhasivam@oss.qualcomm.com; a=openpgp;
  fpr=C668AEC3C3188E4C611465E7488550E901166008
 X-Endpoint-Received: by B4 Relay for
@@ -70,73 +70,69 @@ Reply-To: manivannan.sadhasivam@oss.qualcomm.com
 
 From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-Currently, the nameserver doesn't limit the number of nodes it handles.
-This can be an attack vector if a malicious client starts registering
-random nodes, leading to memory exhaustion.
+A node sends the BYE packet when it is about to go down. So the nameserver
+should advertise the removal of the node to all remote and local observers
+and free the node finally. But currently, the nameserver doesn't free the
+node memory even after processing the BYE packet. This causes the node
+memory to leak.
 
-Hence, limit the maximum number of nodes to 64. Note that, limit of 64 is
-chosen based on the current platform requirements. If requirement changes
-in the future, this limit can be increased.
+Hence, remove the node from Xarray list and free the node memory during
+both success and failure case of ctrl_cmd_bye().
 
 Cc: stable@vger.kernel.org
 Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
 Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 ---
- net/qrtr/ns.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ net/qrtr/ns.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
 diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
-index 1b9a90240a68..c0418764470b 100644
+index 5b08d4d4840a..1b9a90240a68 100644
 --- a/net/qrtr/ns.c
 +++ b/net/qrtr/ns.c
-@@ -71,12 +71,16 @@ struct qrtr_node {
- 	u32 server_count;
- };
- 
--/* Max server, lookup limits are chosen based on the current platform requirements.
-- * If the requirement changes in the future, these values can be increased.
-+/* Max nodes, server, lookup limits are chosen based on the current platform
-+ * requirements. If the requirement changes in the future, these values can be
-+ * increased.
-  */
-+#define QRTR_NS_MAX_NODES   64
- #define QRTR_NS_MAX_SERVERS 256
- #define QRTR_NS_MAX_LOOKUPS 64
- 
-+static u8 node_count;
-+
- static struct qrtr_node *node_get(unsigned int node_id)
- {
+@@ -359,7 +359,7 @@ static int ctrl_cmd_bye(struct sockaddr_qrtr *from)
  	struct qrtr_node *node;
-@@ -85,6 +89,11 @@ static struct qrtr_node *node_get(unsigned int node_id)
- 	if (node)
- 		return node;
+ 	unsigned long index;
+ 	struct kvec iv;
+-	int ret;
++	int ret = 0;
  
-+	if (node_count >= QRTR_NS_MAX_NODES) {
-+		pr_err_ratelimited("QRTR clients exceed max node limit!\n");
-+		return NULL;
+ 	iv.iov_base = &pkt;
+ 	iv.iov_len = sizeof(pkt);
+@@ -374,8 +374,10 @@ static int ctrl_cmd_bye(struct sockaddr_qrtr *from)
+ 
+ 	/* Advertise the removal of this client to all local servers */
+ 	local_node = node_get(qrtr_ns.local_node);
+-	if (!local_node)
+-		return 0;
++	if (!local_node) {
++		ret = 0;
++		goto delete_node;
 +	}
-+
- 	/* If node didn't exist, allocate and insert it to the tree */
- 	node = kzalloc_obj(*node);
- 	if (!node)
-@@ -98,6 +107,8 @@ static struct qrtr_node *node_get(unsigned int node_id)
- 		return NULL;
+ 
+ 	memset(&pkt, 0, sizeof(pkt));
+ 	pkt.cmd = cpu_to_le32(QRTR_TYPE_BYE);
+@@ -392,10 +394,18 @@ static int ctrl_cmd_bye(struct sockaddr_qrtr *from)
+ 		ret = kernel_sendmsg(qrtr_ns.sock, &msg, &iv, 1, sizeof(pkt));
+ 		if (ret < 0 && ret != -ENODEV) {
+ 			pr_err("failed to send bye cmd\n");
+-			return ret;
++			goto delete_node;
+ 		}
  	}
- 
-+	node_count++;
+-	return 0;
 +
- 	return node;
++	/* Ignore -ENODEV */
++	ret = 0;
++
++delete_node:
++	xa_erase(&nodes, from->sq_node);
++	kfree(node);
++
++	return ret;
  }
  
-@@ -404,6 +415,7 @@ static int ctrl_cmd_bye(struct sockaddr_qrtr *from)
- delete_node:
- 	xa_erase(&nodes, from->sq_node);
- 	kfree(node);
-+	node_count--;
- 
- 	return ret;
- }
+ static int ctrl_cmd_del_client(struct sockaddr_qrtr *from,
 
 -- 
 2.51.0
