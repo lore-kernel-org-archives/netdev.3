@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BB83CBE8B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03BD03DA5A9;
 	Thu,  9 Apr 2026 17:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775756056; cv=none; b=HhQpCp6izO5Gp3flHmxYhq/AaTGeSvV/EkE061sdADdHi+qF+eMRJNxwAHB7oyLFLUpZZwzmLUq5KQxRXd/OcEX8H5Wnv1T9GXH962lg6OFLAWECB2lHV3YVjAvFO/UUgtmLzDsMxtu/JqTH0r8JcL0dddWOSniwxa48jLY0lf4=
+	t=1775756056; cv=none; b=HFdp6QCT/J3iKn9OBeJXbxaD34TZWXmlWiXCKl1SH3aMUpYW7WG7qe0B5zTzf1WiG0cYy1EAA4rK2lDdVPJ9Xcu3atI77ZG4JOXKi33qXRNeQtO8+4l4Q9pyY7aW8F8GFczk5SJrA/emrIa6i1a/p4nDeUM+dsR7JUccVB8EgDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775756056; c=relaxed/simple;
-	bh=FkZrOYd4SIthvtaubjUizQIoOvRP4US5d2YU8l/XfTc=;
+	bh=N2UehBHwD0b+vXSAniQeYmjabyJSqrbaO6Ihq79PUqk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QDjhbamqQudJuVtEHD+obV4c7KrtiKmJuHtVuCkujO/fTDoNpt9yMiLG/0njw4snZqHi31Uj/EzjfUsVhgdsamMjjq9SQ3nlSQHckXcWhutHB5kdqgWMJATBNhHbbBtWW3K9r5jtqAkuGkLOmTZtNYO+SEy5aT91QVuNdfbNCJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c8C39kya; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=MB80SW/VxD8r4EMTXNlU/givhU4INrtkdI1vTE+5usU4zusW+B+LKqzdsLEU/m8wRNrMjKVa/1guMK635PdJc5sbal1pKRSudvJaKYngyBVCLHAVYmOZZpI3Pcoe93lMQHpkLg++lOOxtOU4IwZwcIOAAD8Xr+45Jx8SZ6AiZ4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TM1vo6yM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c8C39kya"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 94FDCC2BCAF;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TM1vo6yM"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BEBB6C2BCB8;
 	Thu,  9 Apr 2026 17:34:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775756055;
-	bh=FkZrOYd4SIthvtaubjUizQIoOvRP4US5d2YU8l/XfTc=;
+	bh=N2UehBHwD0b+vXSAniQeYmjabyJSqrbaO6Ihq79PUqk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=c8C39kyaN7AObs4Mvha5j6Y13B8byb5Zta8I1oGL9Oz+Vl3JoLx0h8hOnqwl6T3rj
-	 Z1ueQKP1wV2QrDTcXlFwq7P2aaM7gV3+cO6nDPEtu4p9Jy1EBKYAd7IxFo1tn6GFrq
-	 9lbQAKPOulqQY45AuuU6+cG9CKDlnyE0/Pq6m+njgSPUJgEfPXP0O9+WC87/GwVCfd
-	 RrR79vaZSd3eLjMRbcgirA6BLIIdYSoF0AdFh1kOJQoWfJIW2hQd9oYnPZDrKN+eYI
-	 BgkzSn2N/61MrClGzRD2OmkBAN+NNxWk8twBLslfberRP3JRAzcQropmTR9TIJDOOB
-	 WRDK3AqD6HJow==
+	b=TM1vo6yMBmYlwaV09HmXkFIhYUlGg8werx667FxcV3ieXu4HCLHcgMJ1GSXQ1hKgV
+	 SpLh6wM5TC4po8GAVGEWda0fR+ddl8OLRHdNaOWIaZbWFQzOiM+v+mJ9N6Mif5HffF
+	 vNVEJFgjvS1m8RhBmgXppRFvfdx1hHPuov/1AKCB1/BdVYP41bcPMJesxRli6j1ePD
+	 TdRJ6HgjVRnM+qzyggj7DwIPOiQChECVQRNU23EVkV2iI0DRSo+od9qPdhO42NHu7A
+	 eIHWndf70OKFzyGz8k4uxkX5IX2WAufbhxWdQyerLhHZUS1pcHKQ9/S1rb1lWa+zkX
+	 fK7tSiPKgvgNA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8425CF364AB;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B3E20F364AB;
 	Thu,  9 Apr 2026 17:34:15 +0000 (UTC)
 From: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.oss.qualcomm.com@kernel.org>
-Date: Thu, 09 Apr 2026 23:04:13 +0530
-Subject: [PATCH v3 2/5] net: qrtr: ns: Limit the maximum number of lookups
+Date: Thu, 09 Apr 2026 23:04:16 +0530
+Subject: [PATCH v3 5/5] net: qrtr: ns: Fix use-after-free in driver
+ remove()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260409-qrtr-fix-v3-2-00a8a5ff2b51@oss.qualcomm.com>
+Message-Id: <20260409-qrtr-fix-v3-5-00a8a5ff2b51@oss.qualcomm.com>
 References: <20260409-qrtr-fix-v3-0-00a8a5ff2b51@oss.qualcomm.com>
 In-Reply-To: <20260409-qrtr-fix-v3-0-00a8a5ff2b51@oss.qualcomm.com>
 To: Manivannan Sadhasivam <mani@kernel.org>, 
@@ -51,16 +52,16 @@ Cc: linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
  Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 X-Mailer: b4 0.15.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2866;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2278;
  i=manivannan.sadhasivam@oss.qualcomm.com; h=from:subject:message-id;
- bh=IhZvm8cwMMv2YMLHez1GlQYA3ZymEM0NuV9RTHrTenE=;
- b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBp1+MV6OOS+sE0Q6zOPdpJZF2nE6VonDdOb+TxP
- hrY1Ji3OLWJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCadfjFQAKCRBVnxHm/pHO
- 9WXLB/9S7FKGRYTtolf8iR5ePF1KEB2WQk1Qpp5SGBNW/iXpRv9hyvuz3I62myAwFIa3S0sLKB/
- OYTpOcNZUA45tWNTYDmK53WCvPzdzW9K9AAMdGY4uO3ie/n/BI+5jV1DSB92aio+96tyCwPrhqk
- LGc5CP1E/4PQP3XyDDMky2+B046uh2RG8PWddHTJZPrxnZj2O3xV+njwNhHBeIKGKWENWSGTZbf
- LvAYfaRTqrWeHlhsCUybfJhjDRpxzsTMbrryTAqL6mbZU1acXjnViczU/1l3Y7rs1S4PdDhOFAm
- 4QdcXmZ6Ug6MSqfAzjv8EcT0SxWnAKIYDGV60JHvKTYxlkEm
+ bh=V/lNXK246ObIRyadcl4o0mX29UnERYEL429gbGnbvt4=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBp1+MVFmkz3GrDM1VqrwI42KBiIO7BWLpIpODKV
+ oobcMdu7pWJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCadfjFQAKCRBVnxHm/pHO
+ 9bIeB/9ukjNf14yQzyuXLftfQliy2vooFgxNwaNzjdTiAARnXiRD+7S7cZpIGbe5ESd5uCHrbo5
+ 29tR2KpOjgkcgImZiPFVLg+gKmdczsj4USWqRFhCutPfaFIMpiKGa147FzqXkRt8UkbsNLrGtVI
+ pjj8hLUT21okm3/YKKxvwDOfSsdB+P7KUH8NbMAntUekbw1M8o+JKwdCkEWjOtR3NPcaLaYpY73
+ uIsc+5/IYdBLzOUOoBKxr0Kva6M0lBTlDEwxApY7HejF+P4j/eqbi+jN33FPVAq+GxSDfSRKoig
+ Qiq9yIX5Lm7ah6lCe/7g/6/OhMGUkGZZfYMdVReK8VVI3PkC
 X-Developer-Key: i=manivannan.sadhasivam@oss.qualcomm.com; a=openpgp;
  fpr=C668AEC3C3188E4C611465E7488550E901166008
 X-Endpoint-Received: by B4 Relay for
@@ -70,88 +71,70 @@ Reply-To: manivannan.sadhasivam@oss.qualcomm.com
 
 From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-Current code does no bound checking on the number of lookups a client can
-perform. Though the code restricts the lookups to local clients, there is
-still a possibility of a malicious local client sending a flood of
-NEW_LOOKUP messages over the same socket.
+In the remove callback, if a packet arrives after destroy_workqueue() is
+called, but before sock_release(), the qrtr_ns_data_ready() callback will
+try to queue the work, causing use-after-free issue.
 
-Fix this issue by limiting the maximum number of lookups to 64 globally.
-Since the nameserver allows only atmost one local observer, this global
-lookup count will ensure that the lookups stay within the limit.
+Fix this issue by saving the default 'sk_data_ready' callback during
+qrtr_ns_init() and use it to replace the qrtr_ns_data_ready() callback at
+the start of remove(). This ensures that even if a packet arrives after
+destroy_workqueue(), the work struct will not be dereferenced.
 
-Note that, limit of 64 is chosen based on the current platform
-requirements. If requirement changes in the future, this limit can be
-increased.
+Note that it is also required to ensure that the RX threads are completed
+before destroying the workqueue, because the threads could be using the
+qrtr_ns_data_ready() callback.
 
 Cc: stable@vger.kernel.org
 Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
 Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 ---
- net/qrtr/ns.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ net/qrtr/ns.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
-index 63cb5861d87a..5b08d4d4840a 100644
+index c0418764470b..b3f9bbcf9ab9 100644
 --- a/net/qrtr/ns.c
 +++ b/net/qrtr/ns.c
-@@ -22,6 +22,7 @@ static struct {
- 	struct socket *sock;
- 	struct sockaddr_qrtr bcast_sq;
- 	struct list_head lookups;
-+	u32 lookup_count;
+@@ -25,6 +25,7 @@ static struct {
+ 	u32 lookup_count;
  	struct workqueue_struct *workqueue;
  	struct work_struct work;
++	void (*saved_data_ready)(struct sock *sk);
  	int local_node;
-@@ -70,10 +71,11 @@ struct qrtr_node {
- 	u32 server_count;
- };
+ } qrtr_ns;
  
--/* Max server limit is chosen based on the current platform requirements. If the
-- * requirement changes in the future, this value can be increased.
-+/* Max server, lookup limits are chosen based on the current platform requirements.
-+ * If the requirement changes in the future, these values can be increased.
-  */
- #define QRTR_NS_MAX_SERVERS 256
-+#define QRTR_NS_MAX_LOOKUPS 64
- 
- static struct qrtr_node *node_get(unsigned int node_id)
- {
-@@ -433,6 +435,7 @@ static int ctrl_cmd_del_client(struct sockaddr_qrtr *from,
- 
- 		list_del(&lookup->li);
- 		kfree(lookup);
-+		qrtr_ns.lookup_count--;
+@@ -757,6 +758,7 @@ int qrtr_ns_init(void)
+ 		goto err_sock;
  	}
  
- 	/* Remove the server belonging to this port but don't broadcast
-@@ -550,6 +553,11 @@ static int ctrl_cmd_new_lookup(struct sockaddr_qrtr *from,
- 	if (from->sq_node != qrtr_ns.local_node)
- 		return -EINVAL;
++	qrtr_ns.saved_data_ready = qrtr_ns.sock->sk->sk_data_ready;
+ 	qrtr_ns.sock->sk->sk_data_ready = qrtr_ns_data_ready;
  
-+	if (qrtr_ns.lookup_count >= QRTR_NS_MAX_LOOKUPS) {
-+		pr_err_ratelimited("QRTR client node exceeds max lookup limit!\n");
-+		return -ENOSPC;
-+	}
+ 	sq.sq_port = QRTR_PORT_CTRL;
+@@ -797,6 +799,10 @@ int qrtr_ns_init(void)
+ 	return 0;
+ 
+ err_wq:
++	write_lock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
++	qrtr_ns.sock->sk->sk_data_ready = qrtr_ns.saved_data_ready;
++	write_unlock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
 +
- 	lookup = kzalloc_obj(*lookup);
- 	if (!lookup)
- 		return -ENOMEM;
-@@ -558,6 +566,7 @@ static int ctrl_cmd_new_lookup(struct sockaddr_qrtr *from,
- 	lookup->service = service;
- 	lookup->instance = instance;
- 	list_add_tail(&lookup->li, &qrtr_ns.lookups);
-+	qrtr_ns.lookup_count++;
+ 	destroy_workqueue(qrtr_ns.workqueue);
+ err_sock:
+ 	sock_release(qrtr_ns.sock);
+@@ -806,7 +812,12 @@ EXPORT_SYMBOL_GPL(qrtr_ns_init);
  
- 	memset(&filter, 0, sizeof(filter));
- 	filter.service = service;
-@@ -598,6 +607,7 @@ static void ctrl_cmd_del_lookup(struct sockaddr_qrtr *from,
+ void qrtr_ns_remove(void)
+ {
++	write_lock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
++	qrtr_ns.sock->sk->sk_data_ready = qrtr_ns.saved_data_ready;
++	write_unlock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
++
+ 	cancel_work_sync(&qrtr_ns.work);
++	synchronize_net();
+ 	destroy_workqueue(qrtr_ns.workqueue);
  
- 		list_del(&lookup->li);
- 		kfree(lookup);
-+		qrtr_ns.lookup_count--;
- 	}
- }
- 
+ 	/* sock_release() expects the two references that were put during
 
 -- 
 2.51.0
