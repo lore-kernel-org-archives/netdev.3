@@ -1,81 +1,118 @@
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+Received: from smtp134-31.sina.com.cn (smtp134-31.sina.com.cn [180.149.134.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB2E34C815
-	for <netdev@vger.kernel.org>; Thu,  9 Apr 2026 07:38:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5023E37C939
+	for <netdev@vger.kernel.org>; Thu,  9 Apr 2026 07:44:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.149.134.31
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775720318; cv=none; b=lS1mapfmEus/z/V1sB/bN7gsQY5cNjAwK0bhPy8VAptF9XAMTjoKXxjumb8dP9QPmiALQI4GfupQMHJKy06Y7TfgMxGj4hnk8iYTjojNuzTUjGv8KrXuCsxqmKtHcm59QFjBGIQswg+7GjCHcDDDlUX3UNw86qcv+jk9Ffi8xkI=
+	t=1775720681; cv=none; b=j7hvCgGKIsaYegRUFoiJjd3oTjS+wi78KhndlmxwQD3vxGa6mXPfeMo1vw8SZkrqHQw8zA8GnNkmkWrdy2f1UfFYP1iacDLg1N3HpNknsAgcQmeahmYa3qn5V1P5ZS5ZO9Ii6bjmwR5G5Xi/ASuTziHQbB7IpC5ligPRXrzkCow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775720318; c=relaxed/simple;
-	bh=jUVCD18qBj55kiQf5LCb0CfnXhvlUgd5d4yqTC7/xCg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GvdRhCZk2p/GhdOi56VgEg1DBRaUka8muQVNAhVb35lZzaEuFquSlL0UJ0/tLQcjz+8Gxbl4TeMkGaLqVclW6Qp6sHf8BLIn5nuNtOOCPPlya45syTkQwqPadCSv/bJcw0r0HYP8PXouClgpN+uLStkAesNONSXdfxES6oOANcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ZOJUrxfH; arc=none smtp.client-ip=95.215.58.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1775720681; c=relaxed/simple;
+	bh=f0DDryUDANCVJdeh2y1ARDxV4C4xuBi4Rc6Sb9agruM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=unbXQrxDSMzUJ56jgKgP/wmzJGyP6TkPdQYl80YQrh+PSj66w0lwug9b+XFWsp6xMwT0Z+rytaPrkN7jEkjdURvcsvNIZLZBcGKEkKLSRZuYHbd1GHafTsKDFOF0IbszC8j7QXlGR80AaeCcS/ivV+esa1EO3TaRktG8iGCPOjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=NWP66BLk; arc=none smtp.client-ip=180.149.134.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ZOJUrxfH"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775720315;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AiTN0Mif+OlOP/8EPg85nSXf7Y5Nv8jHlAvMHMDCs20=;
-	b=ZOJUrxfHxIiSMG4KLG5gzEWNzkptjlTg0dGlAbWcYpARzsszbaCh6rjBSg2l/hpxn74yun
-	gcigbuZOgomb074+8LBZV6iYejbJjvrq9A1ZKjnHKcMjpND++QW/XOuyta5B/nJB/zjEwB
-	HUJWB8BVcNjOggS16UcsgqU02Kj8uVU=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: David Howells <dhowells@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	netdev@vger.kernel.org,
-	keyrings@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="NWP66BLk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1775720674;
+	bh=N6N2PGq6dFDonMyCZBS+lQxmTRjyaDG+D6z3I54ANUk=;
+	h=From:Subject:Date:Message-Id;
+	b=NWP66BLkow3gCDFwmvzk0+7NWVQbHUsjNJTSeucOSjG8lPzfGM/eoi9xQ5fel0I/u
+	 8GG5SAOQKMYnFSSB+9z5npqyuVHab60tNz4of8ZJdQdV2Nh/tyeMCvUaAQfQ2Nuwgs
+	 Mg2jfBlA7UACCkQdoDrI4eZphU+Op7oGsYCgSoNI=
+X-SMAIL-HELO: NTT-kernel-dev
+Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
+	by sina.cn (10.185.250.21) with ESMTP
+	id 69D758DD00006C49; Thu, 9 Apr 2026 15:44:31 +0800 (CST)
+X-Sender: jianqkang@sina.cn
+X-Auth-ID: jianqkang@sina.cn
+Authentication-Results: sina.cn;
+	 spf=none smtp.mailfrom=jianqkang@sina.cn;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=jianqkang@sina.cn
+X-SMAIL-MID: 6999273408359
+X-SMAIL-UIID: 7E8DE10F63EF47689E1EDF482DBA0A2B-20260409-154431-1
+From: Jianqiang kang <jianqkang@sina.cn>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	imv4bel@gmail.com
+Cc: patches@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: [PATCH RESEND net-next 2/2] KEYS: annotate struct user_key_payload with __counted_by
-Date: Thu,  9 Apr 2026 09:37:13 +0200
-Message-ID: <20260409073711.57020-6-thorsten.blum@linux.dev>
-In-Reply-To: <20260409073711.57020-4-thorsten.blum@linux.dev>
-References: <20260409073711.57020-4-thorsten.blum@linux.dev>
+	marcel@holtmann.org,
+	johan.hedberg@gmail.com,
+	luiz.dentz@gmail.com,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	linux-bluetooth@vger.kernel.org,
+	netdev@vger.kernel.org,
+	luiz.von.dentz@intel.com
+Subject: [PATCH 5.10.y] Bluetooth: SCO: Fix use-after-free in sco_recv_frame() due to missing sock_hold
+Date: Thu,  9 Apr 2026 15:44:29 +0800
+Message-Id: <20260409074429.740279-1-jianqkang@sina.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=930; i=thorsten.blum@linux.dev; h=from:subject; bh=jUVCD18qBj55kiQf5LCb0CfnXhvlUgd5d4yqTC7/xCg=; b=owGbwMvMwCUWt7pQ4caZUj3G02pJDJnXw9WXpfasVXvPK1hQdNRTsS/H/d9hIaVFq3ZMXxEoc eSmUtHNjlIWBjEuBlkxRZYHs37M8C2tqdxkErETZg4rE8gQBi5OAZhISw0jw436jQL9uVbnEyP2 NLP3affN2rMyLKG1To9TTvuA9W9hSYb/Ecfy1XQne6aeS/D/uVBHtKVurui6qkOBlkWsuxSctzR zAgA=
-X-Developer-Key: i=thorsten.blum@linux.dev; a=openpgp; fpr=1D60735E8AEF3BE473B69D84733678FD8DFEEAD4
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-Add the __counted_by() compiler attribute to the flexible array member
-'data' to improve access bounds-checking via CONFIG_UBSAN_BOUNDS and
-CONFIG_FORTIFY_SOURCE.
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+[ Upstream commit 598dbba9919c5e36c54fe1709b557d64120cb94b ]
+
+sco_recv_frame() reads conn->sk under sco_conn_lock() but immediately
+releases the lock without holding a reference to the socket. A concurrent
+close() can free the socket between the lock release and the subsequent
+sk->sk_state access, resulting in a use-after-free.
+
+Other functions in the same file (sco_sock_timeout(), sco_conn_del())
+correctly use sco_sock_hold() to safely hold a reference under the lock.
+
+Fix by using sco_sock_hold() to take a reference before releasing the
+lock, and adding sock_put() on all exit paths.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
 ---
-Resending this because patch 2/2 didn't go to netdev@ (Jakub)
-Cc: netdev@vger.kernel.org
----
- include/keys/user-type.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/bluetooth/sco.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/include/keys/user-type.h b/include/keys/user-type.h
-index 386c31432789..2305991f4fcd 100644
---- a/include/keys/user-type.h
-+++ b/include/keys/user-type.h
-@@ -27,7 +27,8 @@
- struct user_key_payload {
- 	struct rcu_head	rcu;		/* RCU destructor */
- 	unsigned short	datalen;	/* length of this data */
--	char		data[] __aligned(__alignof__(u64)); /* actual data */
-+	char		data[]		/* actual data */
-+			__aligned(__alignof__(u64)) __counted_by(datalen);
- };
+diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
+index ce084a184a1c..c441e5225458 100644
+--- a/net/bluetooth/sco.c
++++ b/net/bluetooth/sco.c
+@@ -305,7 +305,7 @@ static void sco_recv_frame(struct sco_conn *conn, struct sk_buff *skb)
+ 	struct sock *sk;
  
- extern struct key_type key_type_user;
+ 	sco_conn_lock(conn);
+-	sk = conn->sk;
++	sk = sco_sock_hold(conn);
+ 	sco_conn_unlock(conn);
+ 
+ 	if (!sk)
+@@ -314,11 +314,15 @@ static void sco_recv_frame(struct sco_conn *conn, struct sk_buff *skb)
+ 	BT_DBG("sk %p len %d", sk, skb->len);
+ 
+ 	if (sk->sk_state != BT_CONNECTED)
+-		goto drop;
++		goto drop_put;
+ 
+-	if (!sock_queue_rcv_skb(sk, skb))
++	if (!sock_queue_rcv_skb(sk, skb)) {
++		sock_put(sk);
+ 		return;
++	}
+ 
++drop_put:
++	sock_put(sk);
+ drop:
+ 	kfree_skb(skb);
+ }
+-- 
+2.34.1
+
