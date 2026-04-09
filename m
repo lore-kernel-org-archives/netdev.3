@@ -1,24 +1,24 @@
 Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC9343B6C00;
-	Thu,  9 Apr 2026 09:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5003F3B637E;
+	Thu,  9 Apr 2026 09:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775728625; cv=none; b=rLhuDcKZoxfXFWkTD5Iu68CSpM324ZTQsA4Ivm6TzOE037mYLHBJ/PDXIJ4vr+F2TfMNIM3iNA4ag3yRlmaVFpTsotLh15cNPKbpm/KK+QtyH+QHWXBip70uvvuKjCI/4edEX3XwXZOBDRdxQ9/WiiG83Pra+O+RZLiyLT2YHy4=
+	t=1775728629; cv=none; b=Z6R6FtqRMXfW3gnJ1OmZqBEfqosV07WN6P3TUnLQXwP58r/kvFykiRY06OJecmKouUy6PfEvjn0bEFRO12xKI8PJVFr/tzuhE6sok5uYNwV1k8YryM6i2omc8+J6cU6CtZcsbaFQkPkQvVF/4LKFU119TIZ+ZASrYcdASB954OI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775728625; c=relaxed/simple;
-	bh=GZBta3BQ/b5aL28vR3RYgBxHpNPSzqNcDqldZ4xdGuY=;
+	s=arc-20240116; t=1775728629; c=relaxed/simple;
+	bh=A/0hopx7RPUOgvgY6Q+Yk+HyBJYbhqsMarxcVlu9wHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D/giwGvajAiGt9F79wrr4eHb9KU9lImlNojen7IOuRKqN1HmG1lwc0XuLY8tHMPbPjCpCLHNKpX6wyUvF223EYUAthPIq7BCz7tcVNMA4TaSfxNbTGABZoNPdX/zk39/S2gS11+z+qOaaLHE7dO5kcVxLm3p6diA9P2P/+VqXic=
+	 MIME-Version; b=YgiNuXbflICb3lhRkbtlIH6SH0Ga1RjFBnQ6ZPg62DgHbetJSHrl95IisopBiVxjZ+71Ysr6LSjyVEPrZuraml2D60xEu+qAtXfxiOzS70aYxE4iQpFmGAvSXL8vn2l4vAazavpuAuG5UbvZI9KBvAPbdBGzv1obnrRfKVfdPts=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; arc=none smtp.client-ip=210.160.252.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
-X-CSE-ConnectionGUID: wJJDMafHR0GL1ViU3APETQ==
-X-CSE-MsgGUID: H4iSYUz/Sm6uA4KKukD4LQ==
+X-CSE-ConnectionGUID: 9ku+z2odQZu7eLVk11Y5zA==
+X-CSE-MsgGUID: w1tZX8T8RuOCt4IKL2A0dQ==
 Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie5.idc.renesas.com with ESMTP; 09 Apr 2026 18:57:02 +0900
+  by relmlie5.idc.renesas.com with ESMTP; 09 Apr 2026 18:57:07 +0900
 Received: from vm01.adwin.renesas.com (unknown [10.226.92.4])
-	by relmlir6.idc.renesas.com (Postfix) with ESMTP id D8E894173838;
-	Thu,  9 Apr 2026 18:56:58 +0900 (JST)
+	by relmlir6.idc.renesas.com (Postfix) with ESMTP id 31D434173838;
+	Thu,  9 Apr 2026 18:57:02 +0900 (JST)
 From: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
 To: andrew@lunn.ch,
 	hkallweit1@gmail.com,
@@ -32,9 +32,9 @@ Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-renesas-soc@vger.kernel.org,
 	Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-Subject: [PATCH net v2 1/2] net: phylink: call phy_init_hw() in phylink resume path
-Date: Thu,  9 Apr 2026 09:56:32 +0000
-Message-ID: <20260409095633.70973-2-ovidiu.panait.rb@renesas.com>
+Subject: [PATCH net v2 2/2] net: phy: micrel: remove ksz9131_resume()
+Date: Thu,  9 Apr 2026 09:56:33 +0000
+Message-ID: <20260409095633.70973-3-ovidiu.panait.rb@renesas.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260409095633.70973-1-ovidiu.panait.rb@renesas.com>
 References: <20260409095633.70973-1-ovidiu.panait.rb@renesas.com>
@@ -46,58 +46,61 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When mac_managed_pm flag is set, mdio_bus_phy_resume() is skipped,
-so phy_init_hw(), which performs soft_reset and config_init, is not
-called during resume.
+ksz9131_resume() was added to restore RGMII delays on resume for platforms
+where the PHY loses power during suspend to RAM. However, for s2idle, the
+PHY stays in Software Power-Down (SPD) during resume. In that case,
+ksz9131_config_rgmii_delay() accesses MMD registers before kszphy_resume()
+clears BMCR_PDOWN. The KSZ9131 datasheet states that during SPD, access to
+the MMD registers is restricted:
 
-This is inconsistent with the non-mac_managed_pm path, where
-mdio_bus_phy_resume() calls phy_init_hw() before phy_resume()
-on every resume.
+  - Only access to the standard registers (0 through 31) is supported.
+  - Access to MMD address spaces other than MMD address space 1 is
+    possible if the spd_clock_gate_override bit is set.
+  - Access to MMD address space 1 is not possible.
 
-Add phy_init_hw() calls in both phylink_prepare_resume() and
-phylink_resume(), to ensure that the PHY state is the same as
-when the PHY is resumed via the MDIO bus.
+Additionally, only RGMII delays were restored, while other settings
+from ksz9131_config_init() were not.
 
+Now that the preceding commit ("net: phylink: call phy_init_hw() in
+phylink resume path") performs a phy_init_hw() during phylink resume,
+ksz9131_resume() is no longer needed.
+
+Remove it and use kszphy_resume() directly.
+
+Fixes: f25a7eaa897f ("net: phy: micrel: Add ksz9131_resume()")
 Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
 ---
- drivers/net/phy/phylink.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/phy/micrel.c | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index 087ac63f9193..c302126009f6 100644
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -2669,8 +2669,10 @@ void phylink_prepare_resume(struct phylink *pl)
- 	 * then resume the PHY. Note that 802.3 allows PHYs 500ms before
- 	 * the clock meets requirements. We do not implement this delay.
- 	 */
--	if (pl->config->mac_requires_rxc && phydev && phydev->suspended)
-+	if (pl->config->mac_requires_rxc && phydev && phydev->suspended) {
-+		phy_init_hw(phydev);
- 		phy_resume(phydev);
-+	}
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index 2aa1dedd21b8..f2513109865a 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -6014,14 +6014,6 @@ static int lan8841_suspend(struct phy_device *phydev)
+ 	return kszphy_generic_suspend(phydev);
  }
- EXPORT_SYMBOL_GPL(phylink_prepare_resume);
  
-@@ -2683,6 +2685,8 @@ EXPORT_SYMBOL_GPL(phylink_prepare_resume);
-  */
- void phylink_resume(struct phylink *pl)
- {
-+	struct phy_device *phydev = pl->phydev;
-+
- 	ASSERT_RTNL();
+-static int ksz9131_resume(struct phy_device *phydev)
+-{
+-	if (phydev->suspended && phy_interface_is_rgmii(phydev))
+-		ksz9131_config_rgmii_delay(phydev);
+-
+-	return kszphy_resume(phydev);
+-}
+-
+ #define LAN8842_PTP_GPIO_NUM 16
  
- 	if (phylink_phy_pm_speed_ctrl(pl))
-@@ -2712,6 +2716,9 @@ void phylink_resume(struct phylink *pl)
- 		/* Re-enable and re-resolve the link parameters */
- 		phylink_enable_and_run_resolve(pl, PHYLINK_DISABLE_MAC_WOL);
- 	} else {
-+		if (phydev && phydev->suspended)
-+			phy_init_hw(phydev);
-+
- 		phylink_start(pl);
- 	}
- }
+ static int lan8842_ptp_probe_once(struct phy_device *phydev)
+@@ -6929,7 +6921,7 @@ static struct phy_driver ksphy_driver[] = {
+ 	.get_strings	= kszphy_get_strings,
+ 	.get_stats	= kszphy_get_stats,
+ 	.suspend	= kszphy_suspend,
+-	.resume		= ksz9131_resume,
++	.resume		= kszphy_resume,
+ 	.cable_test_start	= ksz9x31_cable_test_start,
+ 	.cable_test_get_status	= ksz9x31_cable_test_get_status,
+ 	.get_features	= ksz9477_get_features,
 -- 
 2.34.1
 
