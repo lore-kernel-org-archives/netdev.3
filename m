@@ -1,165 +1,140 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF9134CFC6
-	for <netdev@vger.kernel.org>; Thu,  9 Apr 2026 07:01:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775718088; cv=none; b=cu7HjAi3ZCMi1up0RPDiVVbFpaHUXqVvRAMgtqr9Rsl0NFNoMF5KpwVx7iJKvMNKln/+H7s2lkmHEBSNpE/KugfIyKhQaQ41ZMjKu9RksSiH9tjXjpKvm3WfyRISqDh6RdKJDO4pJBejum8iasr85Sz8gJI7zEBqJRjMDwtuVnA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775718088; c=relaxed/simple;
-	bh=HC0z3AjOAJIWLdmgIAhd2wWiJAFJS5oyoyGLy0gtNCs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a+z+eEPJUK633O9pr3TkXxosGr2H0UVNXUf0M002rKZiJFSxVbWV3nVSCO1Wawb7Hl1VRR8fMDqMIAsjTEhNhKTUrMq9AIOheARhVHh5P+Y8WLpPdJyFV+wqWgiKRhpPtpQrzZs7tLPY5mtKDsyMqIwo8LiT/NItfpAqQsIdO+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gcMu0ljX; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4214E36EAAB
+	for <netdev@vger.kernel.org>; Thu,  9 Apr 2026 07:08:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775718524; cv=pass; b=S+bGBmSBNdLwcQQci7WpfjT21vGbxM84qg1PvLvG3EhtfFpXRu1QP+8/26QuuGbCOvjY7/nKuXahWmfVg357M3DKlpbwSHeAe+su+aUjOil4HTnh/v0Na7CQQTaOf5uag6ywnJI3JzDrdM3ChvXKw9hAuLCK7GMKujt3F6k0OOM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775718524; c=relaxed/simple;
+	bh=PRFayrKxPdZ1mTEyp14s0b1w0yWwkt+Ou1Wuz12o2xg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Wi3Tu7miCTJhYq8G/wgeJvK0q8CDJm7brSmZGnvkzv60Kfuf+u3J48pBC35O/U6oq0ho+vCGRP5eRPt44G3/A1Tj3/meZkVqmiI8Ut+pnoTC47xQiw45haYlSlfU0oqsOt4PhSdbcl2DWCmPb2Ox5N5oz9PKiEVmGmeuOrHg2pQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SkXwV87S; arc=pass smtp.client-ip=209.85.219.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gcMu0ljX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775718087; x=1807254087;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=HC0z3AjOAJIWLdmgIAhd2wWiJAFJS5oyoyGLy0gtNCs=;
-  b=gcMu0ljXQBC5JR9BzJt/OfnyucwLgqnd6cyzuOc5t91HVPyyToplV8Wg
-   ArZpgeaYUX/w7/NNJSBoQT5pIMWzJYku0tf+92Yo19UGffXolFUTZGM8v
-   GhCTgX1d3Z89RYMM3Kwb7Plk6Ceo2kVe2wdQHVMLEIP6Znmhs+zFaHXMU
-   o0kbAAyMQIgSxymUn+dMTbeYwsCKrrFvOsCPuwkKCF9LQQjNXZtfpEb7O
-   W3SfcBfov8d7maTFptAxOGro1PUkAwvjvUlyrJdo91A+ZdozyZqHOLHi3
-   Nj26JyOZJVxuF5UKlL+P3Ehdm2KGBYi0eceXm2aVgTKpmVWU+b2ts+Kug
-   A==;
-X-CSE-ConnectionGUID: vHhqixf5Rb2ebAUddMlJFA==
-X-CSE-MsgGUID: ekN0yE5gTLeVjrT4kz9YEw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11753"; a="76836488"
-X-IronPort-AV: E=Sophos;i="6.23,169,1770624000"; 
-   d="scan'208";a="76836488"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2026 00:01:27 -0700
-X-CSE-ConnectionGUID: ktDHjhy9RwecRw5MbbFxig==
-X-CSE-MsgGUID: GKnqbfbFQFCBkfnc1vu71w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,169,1770624000"; 
-   d="scan'208";a="233576579"
-Received: from rtauro-desk.iind.intel.com ([10.190.238.50])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2026 00:01:22 -0700
-From: Riana Tauro <riana.tauro@intel.com>
-To: intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	netdev@vger.kernel.org
-Cc: aravind.iddamsetty@linux.intel.com,
-	anshuman.gupta@intel.com,
-	rodrigo.vivi@intel.com,
-	joonas.lahtinen@linux.intel.com,
-	simona.vetter@ffwll.ch,
-	airlied@gmail.com,
-	pratik.bari@intel.com,
-	joshua.santosh.ranjan@intel.com,
-	ashwin.kumar.kulkarni@intel.com,
-	shubham.kumar@intel.com,
-	ravi.kishore.koppuravuri@intel.com,
-	raag.jadav@intel.com,
-	anvesh.bakwad@intel.com,
-	maarten.lankhorst@linux.intel.com,
-	Riana Tauro <riana.tauro@intel.com>
-Subject: [PATCH v2 2/2] drm/xe/xe_drm_ras: Add support for clear-error-counter in XE drm_ras
-Date: Thu,  9 Apr 2026 13:03:20 +0530
-Message-ID: <20260409073318.2909379-6-riana.tauro@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20260409073318.2909379-4-riana.tauro@intel.com>
-References: <20260409073318.2909379-4-riana.tauro@intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SkXwV87S"
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-8a1e1817db6so4915036d6.2
+        for <netdev@vger.kernel.org>; Thu, 09 Apr 2026 00:08:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775718522; cv=none;
+        d=google.com; s=arc-20240605;
+        b=KPqvheu6TmnJtmeHWMq+CEdclDy7Yyl0DLf7n/XzifxZzdoMgjKxr8/TOA2d20+R5Y
+         FPBtk0GmaUJj1olJISz57UwNX9l4QNZr+86LBfvGD/F4FrRZ8hJhlJ2YxSYNIYrZnA7a
+         bbA8kq7z0lhvB/qBirL9xyy+Se4vfXMuXKHX0wuJDyjSRsN/btL7qK5EBnByWPW2XFPF
+         hUKCPS7AeDoa6kOas3v+58J8fgrXvXq5XxgN4jaz9Ee0Epf47uZQE5bG9x1ZC+K5LIdl
+         8JpA0+3Z7JT4OzvY+zCApT9VjYNWiRd9gAwJzlWX0UcPJNEmlOfLY/V4wEnnVJIdyHlc
+         tLXQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=G11Ctve6TNDq0sGTdIs3vggtNtTBmZS/FVmEfytylFI=;
+        fh=RiyrFOGqRSbGf5FxcD64CKq9STLxTvT8waRJmqs3vT0=;
+        b=jh8hGRoLsZc/S1Lf3ot3IHyNGlrcX+FYzcncKY7TsGAs0HPSIed1HnkqQXcBGoPK4p
+         tovfBrL++JZPvh/JPSiLX3DiaBDzvqTjdOv+iEzl5LFRtw6q0YugyMQcDk2pRc4B55EJ
+         SANhfE8oLna2UJoxvC+/IlNtoeVldgOT551w/wQICptGzVrI3hgG8GK7L+VsbVMi8bRc
+         J0ckBEBLAYqzTSDlKw/G71WTByb/PAPHiLmUom0d5tjLMuihybF4i2isA4B7CxsYGHof
+         h8r8qz+YEyj8ShdCp+c/3uc6o2wCj9zoYwneMVJdC5Ph1sCkxJtSH6RJIld3dclndH83
+         zCdA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775718522; x=1776323322; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=G11Ctve6TNDq0sGTdIs3vggtNtTBmZS/FVmEfytylFI=;
+        b=SkXwV87SzkRVc316HffeN6yld2hUkvgQIU1HS0s7U/PKLvBX3doCUIVCiE7avZATQP
+         rsBu8tsD72kB8jSXWGIBVVCTmoecZ/V+0/+ZBqw1Yo/B+ilFML8pqUuKR5sflqy/qtj5
+         dtYqNjDGQd9MD5suBpCgmtsirK/8wFWvIFoxW5jW/r19ZhL42rzBjKTnmjwEGI9of1wl
+         pVQStgEyYX2ZmDmyj4A0uA+XwRD9ziBDfdODSPbqyDqjeKS5HWEuzc6irrJXfnM504e6
+         5vhnRgKkQoYmNp/Cy2bJpDCZPKt4z0v8BGsxTq72ot5jVcR6ZASaKp760XXsMQ6Pf0i/
+         +BrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775718522; x=1776323322;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=G11Ctve6TNDq0sGTdIs3vggtNtTBmZS/FVmEfytylFI=;
+        b=gWFpreIDitoEKehLYEj4VUIsA7//iOGdi0uj3ntM1pBmRkq1U17G8kmJrtN09kW+G4
+         1xbgKY4hZ8L+Q6eMiTuqmFXM+EQgOfhXcVLPqXGOiZFRa7OIBqq+cGBNZASy5Nmfxfag
+         zlOzeOjMidKx28fiFwc+3i3xMZXlZHxReiiqanTnwENzgo4/oL5zj58W38MyZ0A9/bLF
+         yFT0+a9QYLYCIHWWooa9zEvEuAeAidnx6KopgKeyL+/DsNpfpLWt+uxlU6E2W02PLoux
+         6D7dOj4G/70Bc3baCwODFUgF2utg9cgzbf8UvLRF8WzGCH0bcWhTsnxYL/+mG76kb8n6
+         1bSA==
+X-Gm-Message-State: AOJu0YwGF9r7yHH4RjVJsJCo16BeEDUq6SjEcmhfLmTyNX5VhnPTwUd4
+	g2IZ1LBYv7OmovlM8mo4B8tDmJJOuKGLOS/YA03NfVTV2HsnTC2iUhJoX1UXSzKheZQEQxZ6k2L
+	yGg0t1RxtpSoy+JzXF23QgSucheAR2gcwnxvddQGO
+X-Gm-Gg: AeBDietT0SIZBprPAIWNegATy0gQQ+HSRaU+FgJjUnMwKT4mGyUpwsjUBanpFjy1w4h
+	7EInxWRSz0Lq5APppxR9bcV1gklCdSuePhJKfdiN4k0Z4vc0jSzm89CjSYHNctv4vOQJIUwMuOZ
+	47PJJPJd514Ip0w7ZA/DM4qhuSKghb+8OQ1aSRqwx5z4yhQ876BBRj1ldV1fbPv9D+3mGe6v8nq
+	Izw8Jn4lNS6KTDiei9rjWHPM6g4+r4s0DHR9dNIYfQR4tZpbYvIrbuRf6/cuXIitjwXOr7TPB1U
+	4qEcsOs=
+X-Received: by 2002:a05:6214:4985:b0:8a7:1745:c50a with SMTP id
+ 6a1803df08f44-8a71745c752mr399083816d6.41.1775718521778; Thu, 09 Apr 2026
+ 00:08:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260409012235.2049389-1-ashutoshdesai993@gmail.com>
+In-Reply-To: <20260409012235.2049389-1-ashutoshdesai993@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 9 Apr 2026 00:08:29 -0700
+X-Gm-Features: AQROBzCFLDmd8uWNsPBZtfGSuu8peKqgi5AWIUFx7ssHDeVE3xo0QX7B-xKT5B0
+Message-ID: <CANn89iK7bzV0VpPsP5nu0mV3GCsN5MOZJgc_s8a3B2X6Ui6mxg@mail.gmail.com>
+Subject: Re: [PATCH] ax25: fix OOB read after address header strip in ax25_rcv().
+To: Ashutosh Desai <ashutoshdesai993@gmail.com>
+Cc: netdev@vger.kernel.org, linux-hams@vger.kernel.org, jreuter@yaina.de, 
+	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add support for clear-error-counter command in XE drm_ras
-This resets the counter value.
+On Wed, Apr 8, 2026 at 6:22=E2=80=AFPM Ashutosh Desai
+<ashutoshdesai993@gmail.com> wrote:
+>
+> ax25_rcv() calls skb_pull(skb, ax25_addr_size(&dp)) to strip the
+> address header, then immediately reads skb->data[0] and skb->data[1]
+> without verifying the buffer still contains at least 2 bytes.
+>
+> A crafted 15-byte KISS frame (1 KISS byte + 14 address bytes with
+> EBIT set in the source address, no control/PID bytes) passes
+> ax25_addr_parse() which only requires len >=3D 14, and passes the KISS
+> byte check (low nibble =3D=3D 0). After skb_pull(1) in ax25_kiss_rcv()
+> and skb_pull(14) in ax25_rcv(), skb->len is 0 and the subsequent
+> reads of skb->data[0] (control byte) and skb->data[1] (PID byte)
+> are out of bounds.
+>
+> Add a check that at least 2 bytes remain after stripping the address
+> header, freeing the skb and returning on malformed input.
+>
+> Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
+> ---
+>  net/ax25/ax25_in.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/net/ax25/ax25_in.c b/net/ax25/ax25_in.c
+> index d75b3e9ed..92baac77f 100644
+> --- a/net/ax25/ax25_in.c
+> +++ b/net/ax25/ax25_in.c
+> @@ -217,6 +217,11 @@ static int ax25_rcv(struct sk_buff *skb, struct net_=
+device *dev,
+>          */
+>         skb_pull(skb, ax25_addr_size(&dp));
+>
+> +       if (skb->len < 2) {
+> +               kfree_skb(skb);
+> +               return 0;
+> +       }
+> +
 
-Usage:
+Are you aware of pskb_may_pull() ?
 
-$ sudo ynl --family drm_ras  --do clear-error-counter --json \
-'{"node-id":1, "error-id":1}'
-None
+Testing skb->len is not enough.
 
-Signed-off-by: Riana Tauro <riana.tauro@intel.com>
-Reviewed-by: Raag Jadav <raag.jadav@intel.com>
----
- drivers/gpu/drm/xe/xe_drm_ras.c | 35 +++++++++++++++++++++++++++++++--
- 1 file changed, 33 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/gpu/drm/xe/xe_drm_ras.c b/drivers/gpu/drm/xe/xe_drm_ras.c
-index e07dc23a155e..c21c8b428de6 100644
---- a/drivers/gpu/drm/xe/xe_drm_ras.c
-+++ b/drivers/gpu/drm/xe/xe_drm_ras.c
-@@ -27,6 +27,16 @@ static int hw_query_error_counter(struct xe_drm_ras_counter *info,
- 	return 0;
- }
- 
-+static int hw_clear_error_counter(struct xe_drm_ras_counter *info, u32 error_id)
-+{
-+	if (!info || !info[error_id].name)
-+		return -ENOENT;
-+
-+	atomic_set(&info[error_id].counter, 0);
-+
-+	return 0;
-+}
-+
- static int query_uncorrectable_error_counter(struct drm_ras_node *ep, u32 error_id,
- 					     const char **name, u32 *val)
- {
-@@ -37,6 +47,15 @@ static int query_uncorrectable_error_counter(struct drm_ras_node *ep, u32 error_
- 	return hw_query_error_counter(info, error_id, name, val);
- }
- 
-+static int clear_uncorrectable_error_counter(struct drm_ras_node *node, u32 error_id)
-+{
-+	struct xe_device *xe = node->priv;
-+	struct xe_drm_ras *ras = &xe->ras;
-+	struct xe_drm_ras_counter *info = ras->info[DRM_XE_RAS_ERR_SEV_UNCORRECTABLE];
-+
-+	return hw_clear_error_counter(info, error_id);
-+}
-+
- static int query_correctable_error_counter(struct drm_ras_node *ep, u32 error_id,
- 					   const char **name, u32 *val)
- {
-@@ -47,6 +66,15 @@ static int query_correctable_error_counter(struct drm_ras_node *ep, u32 error_id
- 	return hw_query_error_counter(info, error_id, name, val);
- }
- 
-+static int clear_correctable_error_counter(struct drm_ras_node *node, u32 error_id)
-+{
-+	struct xe_device *xe = node->priv;
-+	struct xe_drm_ras *ras = &xe->ras;
-+	struct xe_drm_ras_counter *info = ras->info[DRM_XE_RAS_ERR_SEV_CORRECTABLE];
-+
-+	return hw_clear_error_counter(info, error_id);
-+}
-+
- static struct xe_drm_ras_counter *allocate_and_copy_counters(struct xe_device *xe)
- {
- 	struct xe_drm_ras_counter *counter;
-@@ -92,10 +120,13 @@ static int assign_node_params(struct xe_device *xe, struct drm_ras_node *node,
- 	if (IS_ERR(ras->info[severity]))
- 		return PTR_ERR(ras->info[severity]);
- 
--	if (severity == DRM_XE_RAS_ERR_SEV_CORRECTABLE)
-+	if (severity == DRM_XE_RAS_ERR_SEV_CORRECTABLE) {
- 		node->query_error_counter = query_correctable_error_counter;
--	else
-+		node->clear_error_counter = clear_correctable_error_counter;
-+	} else {
- 		node->query_error_counter = query_uncorrectable_error_counter;
-+		node->clear_error_counter = clear_uncorrectable_error_counter;
-+	}
- 
- 	return 0;
- }
--- 
-2.47.1
-
+I suspect all net/ax25 is expecting linear skbs and never considered fragme=
+nts.
