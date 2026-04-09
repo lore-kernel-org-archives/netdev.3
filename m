@@ -1,153 +1,124 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94DEB3876AB
-	for <netdev@vger.kernel.org>; Thu,  9 Apr 2026 07:59:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678F438B7DD;
+	Thu,  9 Apr 2026 08:00:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775721554; cv=none; b=o2saNjrSXnJ0Wfd7lLI/wlC/zEpUEMyFWb44+bnjJNb+xUZi5m55LO8002lws8SBXEu0aJnArc8fAHsqXtiSiykyntHOonf2OIVIpvhI6CuULuryce4i6RQ8RZ5k9aYBsLzOfrmJz4Qnw/GOyY+dMSkTBYzJrTJ1S0TLxkW7+AY=
+	t=1775721622; cv=none; b=ewdnygpWhPRUMy8Y9bnKloKh693lLrx4mdrHwwKI4uQLmOLTr4XDgIoz22jECzZHPgcKpcIHvC4FNWPKJX0lJ64R0k1DzogMATEi7ixYJfCC6SYRsMveQyhvKycEuxSzyPwfkeN518LnY70Qr9buOIkWMM9kl4gXLpbZLhFzZuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775721554; c=relaxed/simple;
-	bh=OycfU7u+U/NNYT4DdlI9EJeDZgT32WOWQNZ8vocbWHA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mKjWGDYHerfM0vHfw4yS+BsRKTRQgWOG5sMJ8X+hDhsOboy7zOk2PTZ2vqq4wehrQIae/Ij3nO+DCPFfLZMXTtwfCsy1Rm/euVb6w0ZAtH7/3QtWNGyF92BoQnLHe1GOrmlcbNbf4dQHaaOnil9l1HbVmuycV+aghh1MCk7MtJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Lx7MZtNQ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1775721622; c=relaxed/simple;
+	bh=gfcWm/69pMrJeysPnCF9/j2c3veqr0j9baajcwH82uA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rhTUgrVim/67oDy3GPrBlUKLvktI94obm+GGlZ9k3MiEXNI3rPrvSr8IqfM3xnCJiMauQRu02ORfa4Zk7vDJjb0rUosZHKoa2bcSybifvKVPV/kt6jKPcGMxSYqZnxHL8m6aoqh4TWonU7ORV5m0l3fUmHXJ0UvIcw3d4eYlaN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fnELb0TC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Lx7MZtNQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775721552;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MRrmBnYMXTNU9GdbPVrYhlAGHmJY6Atzwlyad3mHaKo=;
-	b=Lx7MZtNQFsW99xoUvOuNdOwD0xWLwEHJ7nuPvtMeaBwDlJ1W6b760JbP0kWcffrrIJV2zc
-	Lglyy+MbDi1DnOroZ+JY1HMEiw0KRymK0G5VtI7iPF6WEzOt3VzK8pvDz3g174RN2uZOsI
-	sQvcF0qnic/ORZQz/J+LHEGCWD71wgE=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-221-g5s87ZHXPC6VOWTzEJ9IvQ-1; Thu,
- 09 Apr 2026 03:59:09 -0400
-X-MC-Unique: g5s87ZHXPC6VOWTzEJ9IvQ-1
-X-Mimecast-MFC-AGG-ID: g5s87ZHXPC6VOWTzEJ9IvQ_1775721546
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 97A9C1956095;
-	Thu,  9 Apr 2026 07:59:06 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.44.32.181])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 952271800357;
-	Thu,  9 Apr 2026 07:59:00 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: luca.weiss@fairphone.com
-Cc: pabeni@redhat.com,
-	krzk+dt@kernel.org,
-	akoskovich@pm.me,
-	konradybcio@kernel.org,
-	linux-kernel@vger.kernel.org,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org,
-	andersson@kernel.org,
-	netdev@vger.kernel.org,
-	kuba@kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	robh@kernel.org,
-	edumazet@google.com,
-	~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
-	elder@kernel.org
-Subject: Re: [5/6] arm64: dts: qcom: milos: Add IPA node
-Date: Thu,  9 Apr 2026 09:58:54 +0200
-Message-ID: <20260409075854.308955-1-pabeni@redhat.com>
-In-Reply-To: <20260403-milos-ipa-v1-5-01e9e4e03d3e@fairphone.com>
-References: <20260403-milos-ipa-v1-5-01e9e4e03d3e@fairphone.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fnELb0TC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 113B3C4CEF7;
+	Thu,  9 Apr 2026 08:00:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775721622;
+	bh=gfcWm/69pMrJeysPnCF9/j2c3veqr0j9baajcwH82uA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=fnELb0TCGtSOZ/HOETFtwkiyR7MURsH3Kr8cSPsLZIRPlYcM9ynWP2E4CCO0Tx1mR
+	 BUUeV8MrlEoiADsbABFmj4Dest4g4e6X/8LYZW5D89jsHBp0CYVo23Kr2rtXqF6s3X
+	 eSEpQ/flQUvbd4fSZVPODBf5rq8rFdx8A+zbG7KwpnaXA7YdqPMbWJD/DzanmEvI7n
+	 mJGjCSYd4ljH9R20/RUjuijBkahuL1IgNhWLwXPn7orOFnMHEmwIUKDAFdiTs69VZ2
+	 k9Vh7GU6chDsPjvADYn/mR+jp4h/kZc+uW7gorn61/HUsb6RZfg3bTaabP0XHrEivH
+	 Jk8dkNogz+M+A==
+Message-ID: <26fa97ad-1e87-4b0b-9b31-c20f24a0a5ce@kernel.org>
+Date: Thu, 9 Apr 2026 10:00:16 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+User-Agent: Mozilla Thunderbird
+Subject: Re: [5/6] arm64: dts: qcom: milos: Add IPA node
+To: Paolo Abeni <pabeni@redhat.com>, luca.weiss@fairphone.com
+Cc: krzk+dt@kernel.org, akoskovich@pm.me, konradybcio@kernel.org,
+ linux-kernel@vger.kernel.org, conor+dt@kernel.org,
+ devicetree@vger.kernel.org, andersson@kernel.org, netdev@vger.kernel.org,
+ kuba@kernel.org, linux-arm-msm@vger.kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, robh@kernel.org, edumazet@google.com,
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ elder@kernel.org
+References: <20260403-milos-ipa-v1-5-01e9e4e03d3e@fairphone.com>
+ <20260409075854.308955-1-pabeni@redhat.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20260409075854.308955-1-pabeni@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+On 09/04/2026 09:58, Paolo Abeni wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> 
+> For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+> ---
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
----
-arm64: dts: qcom: milos: Add IPA node
+...
 
-Add the description of the IPA block in the Milos SoC.
+>> +
+>> +			qcom,smem-states = <&smp2p_ipa_out 0>,
+>> +					   <&smp2p_ipa_out 1>;
+>> +			qcom,smem-state-names = "ipa-clock-enabled-valid",
+>> +						"ipa-clock-enabled";
+>> +
+>> +			sram = <&ipa_modem_tables>;
+>>                                ^^^^^^^^^^^^^^^^^^
+> 
+> Is the ipa_modem_tables label defined anywhere? The Device Tree Compiler
+> will fail with "Reference to non-existent node or label
+> 'ipa_modem_tables'" if this label doesn't exist.
 
-> diff --git a/arch/arm64/boot/dts/qcom/milos.dtsi b/arch/arm64/boot/dts/qcom/milos.dtsi
-> index e1a51d43943f..a244e136a877 100644
-> --- a/arch/arm64/boot/dts/qcom/milos.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/milos.dtsi
-> @@ -1281,6 +1281,50 @@ adreno_smmu: iommu@3da0000 {
->  			dma-coherent;
->  		};
->
-> +		ipa: ipa@3f40000 {
-> +			compatible = "qcom,milos-ipa";
-> +
-> +			reg = <0x0 0x03f40000 0x0 0x10000>,
-> +			      <0x0 0x03f50000 0x0 0x5000>,
-> +			      <0x0 0x03e04000 0x0 0xfc000>;
-> +			reg-names = "ipa-reg",
-> +				    "ipa-shared",
-> +				    "gsi";
-> +
-> +			interrupts-extended = <&intc GIC_SPI 654 IRQ_TYPE_EDGE_RISING 0>,
-> +					      <&intc GIC_SPI 432 IRQ_TYPE_LEVEL_HIGH 0>,
-> +					      <&smp2p_ipa_in 0 IRQ_TYPE_EDGE_RISING>,
-> +					      <&smp2p_ipa_in 1 IRQ_TYPE_EDGE_RISING>;
-> +			interrupt-names = "ipa",
-> +					  "gsi",
-> +					  "ipa-clock-query",
-> +					  "ipa-setup-ready";
-> +
-> +			clocks = <&rpmhcc RPMH_IPA_CLK>;
-> +			clock-names = "core";
-> +
-> +			interconnects = <&aggre2_noc MASTER_IPA QCOM_ICC_TAG_ALWAYS
-> +					 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
-> +					<&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ACTIVE_ONLY
-> +					 &cnoc_main SLAVE_IPA_CFG QCOM_ICC_TAG_ACTIVE_ONLY>;
-> +			interconnect-names = "memory",
-> +					     "config";
-> +
-> +			iommus = <&apps_smmu 0x4a0 0x0>,
-> +				 <&apps_smmu 0x4a2 0x0>;
-> +
-> +			qcom,qmp = <&aoss_qmp>;
-> +
-> +			qcom,smem-states = <&smp2p_ipa_out 0>,
-> +					   <&smp2p_ipa_out 1>;
-> +			qcom,smem-state-names = "ipa-clock-enabled-valid",
-> +						"ipa-clock-enabled";
-> +
-> +			sram = <&ipa_modem_tables>;
->                                ^^^^^^^^^^^^^^^^^^
+Paul, please ignore all of such review from AI tools. It is completely
+wrong and pointless.
 
-Is the ipa_modem_tables label defined anywhere? The Device Tree Compiler
-will fail with "Reference to non-existent node or label
-'ipa_modem_tables'" if this label doesn't exist.
-
-The sram property is optional according to the qcom,ipa.yaml binding, and
-other similar Qualcomm SoCs like SM8350, SM8550, and SM8650 don't include
-this property in their IPA nodes. Should this line be removed, or does the
-ipa_modem_tables node need to be added to the reserved-memory section?
-
-> +
-> +			status = "disabled";
-> +		};
-> +
-
-[ ... ]
-
+Best regards,
+Krzysztof
