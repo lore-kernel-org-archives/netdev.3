@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4411C35DA6F;
-	Thu,  9 Apr 2026 01:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BEA72BB13
+	for <netdev@vger.kernel.org>; Thu,  9 Apr 2026 02:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775699479; cv=none; b=W2dOz5YbaXmvrZ9lmjz1c7x6X5CuVs9YqlSJw2hkXrLOMPi7XskNX5uB0luch9R5R+0qJR+RqNiXZS3sllgC+uyMM9uOy5uNo+vaQHZrZEvHSSBA8GvSzk2jHTD8BR9i0Pvx881naW6UF0bWjTBsapLFhsaPkQLYNGxBoXerdLA=
+	t=1775700046; cv=none; b=Xc6gqWvFvo7YYoP9kujkuDd7WkV3ufOCz3xZTzuoTxzX0ZEQjQNncTOVzYKJih+/Zk4CUz3lp3G1h80Rzbk5jiVxHvHAjb6EHALA+eCTCgAw5n1KNotTCrYEF75nWWy60IRRpp7lQbFgMoGAdjXDtWLgbVPv8LjUZas7zf4axOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775699479; c=relaxed/simple;
-	bh=g8kM9obhYUhsvgUzgPX26/J9c7OD7ksgHWmYeRSruCg=;
+	s=arc-20240116; t=1775700046; c=relaxed/simple;
+	bh=NqCqoxTlJGUsqP6wQX+3pm+KUwSuwEiblLkFYcUEGJQ=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=sHSGcPNG6xk6k6EEQVu3QpgZIYW93ZC1AF+NKZG2Ng/dDFxshfIn3FQnlz7MvpT32aNcBuWe+Ix2sbG45vDgUCIlqq9WB+JCVlYoLY5z/5yLc5RrPUENbBFuFg1zLabwU8sVCEDQPDGw9KkKF4xS/YUwhLlRLu85G2QpRduSR04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=suQRx5v5; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=aFBCuTkU9pLQNk0YAuDvuTbNgeqDrAjVbmlBhtN1TK7dVP+oPkctImXq6gLtvdmA+UPZaXMDZkBHLPt3cZAuu5fLH55Y2MUt0T6j8ZQ1eitaBUwJkyvZ0KGq0uoDQdNvWX4K+rou5ePVO/Mf2A2ks6XMoGYjKjYeNSUOQUbaERw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CLAewpr5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="suQRx5v5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F4D8C2BC9E;
-	Thu,  9 Apr 2026 01:51:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CLAewpr5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C68CC19421;
+	Thu,  9 Apr 2026 02:00:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775699478;
-	bh=g8kM9obhYUhsvgUzgPX26/J9c7OD7ksgHWmYeRSruCg=;
+	s=k20201202; t=1775700046;
+	bh=NqCqoxTlJGUsqP6wQX+3pm+KUwSuwEiblLkFYcUEGJQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=suQRx5v5hSguUXuVsM/aReZ6uG2S7Ma1r/nU8uucB5HwJNJBjnfEQhO94qxJHmvv3
-	 M1Yf1uugKUUwuU+WnJEHPCzOKy/cGUqNMk/rCkeiZC8G5gatAMtlNPxFWvnH18CtfK
-	 gmp5nr3sjxxT/ugI6lOAv+/p4+nAIu7Z7sJFlpP7ny1sb3TXohgX0oSzv51lwyK9HX
-	 7Vp0hR+hbYzVQBV4rqILckl+u5CXot9yjHJFM+p1N1Yk8RtAH4h+3vr6bHyjUOhyaP
-	 /3u2wR84783dccVq47Fl5MizlVtLRCZRNq0uGPom+laCJi+537GIQiqPCBnv14fh1Y
-	 2VcBeNNprDCSg==
+	b=CLAewpr5ErzebWhIt4H88iKvyj1yYnnrzsVRzfitdBP2sFcXEO6mxFRcxmolx//AE
+	 vhp7vd+63DmO0y88qhcZulJQd00e9Qv4hZbYthGvP9CNrO+6NphkW8ZC/lgc0eRj8U
+	 TmDXzd2tImSCLr/65dV7Nmr2Jg2SICOMgNpNowOWD5kWa86axxkNig8z0udWrL/05t
+	 VyAMtQFg2bfU3+VxxN17WN44lKgzX8dEuWMahPpbLnT5xHSASbOHmLBlPWHYJdjMa1
+	 KLpIMI6Jy6fCf60QoGliZwj1bsVy5e12GP2ir4hypMiNICH2o9byfz3iehHw5wo3Zm
+	 uZuiflgz2V3Uw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02D063930793;
-	Thu,  9 Apr 2026 01:50:56 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CE163930793;
+	Thu,  9 Apr 2026 02:00:23 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,40 +37,49 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: mdio: realtek-rtl9300: use scoped
- device_for_each_child_node loop
+Subject: Re: [PATCH 1/8] xfrm: clear trailing padding in build_polexpire()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177569945454.949482.8646117097386693287.git-patchwork-notify@kernel.org>
-Date: Thu, 09 Apr 2026 01:50:54 +0000
-References: <20260405-rtl9300-v1-1-08e4499cf944@gmail.com>
-In-Reply-To: <20260405-rtl9300-v1-1-08e4499cf944@gmail.com>
-To: Felix Gu <ustc.gu@gmail.com>
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- chris.packham@alliedtelesis.co.nz, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ <177570002230.953143.9369644013047810016.git-patchwork-notify@kernel.org>
+Date: Thu, 09 Apr 2026 02:00:22 +0000
+References: <20260408095925.253681-2-steffen.klassert@secunet.com>
+In-Reply-To: <20260408095925.253681-2-steffen.klassert@secunet.com>
+To: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: davem@davemloft.net, kuba@kernel.org, herbert@gondor.apana.org.au,
+ netdev@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+This series was applied to netdev/net.git (main)
+by Steffen Klassert <steffen.klassert@secunet.com>:
 
-On Sun, 05 Apr 2026 14:51:52 +0800 you wrote:
-> Switch to device_for_each_child_node_scoped() to auto-release fwnode
-> references on early exit.
+On Wed, 8 Apr 2026 11:58:57 +0200 you wrote:
+> From: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
 > 
-> Fixes: 24e31e474769 ("net: mdio: Add RTL9300 MDIO driver")
-> Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-> ---
->  drivers/net/mdio/mdio-realtek-rtl9300.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+> build_expire() clears the trailing padding bytes of struct
+> xfrm_user_expire after setting the hard field via memset_after(),
+> but the analogous function build_polexpire() does not do this for
+> struct xfrm_user_polexpire.
 > 
 > [...]
 
 Here is the summary with links:
-  - net: mdio: realtek-rtl9300: use scoped device_for_each_child_node loop
-    https://git.kernel.org/netdev/net/c/c09ea768bdb9
+  - [1/8] xfrm: clear trailing padding in build_polexpire()
+    https://git.kernel.org/netdev/net/c/71a98248c63c
+  - [2/8] xfrm: account XFRMA_IF_ID in aevent size calculation
+    https://git.kernel.org/netdev/net/c/7081d46d3231
+  - [3/8] xfrm: Wait for RCU readers during policy netns exit
+    https://git.kernel.org/netdev/net/c/069daad4f2ae
+  - [4/8] xfrm: hold dev ref until after transport_finish NF_HOOK
+    https://git.kernel.org/netdev/net/c/1c428b038400
+  - [5/8] xfrm: fix refcount leak in xfrm_migrate_policy_find
+    https://git.kernel.org/netdev/net/c/83317cce60a0
+  - [6/8] xfrm_user: fix info leak in build_mapping()
+    https://git.kernel.org/netdev/net/c/1beb76b2053b
+  - [7/8] xfrm_user: fix info leak in build_report()
+    https://git.kernel.org/netdev/net/c/d10119968d0e
+  - [8/8] net: af_key: zero aligned sockaddr tail in PF_KEY exports
+    https://git.kernel.org/netdev/net/c/426c355742f0
 
 You are awesome, thank you!
 -- 
