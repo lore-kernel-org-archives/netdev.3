@@ -1,28 +1,28 @@
-Received: from outbound.pv.icloud.com (pv-2002c-snip4-4.eps.apple.com [57.103.64.235])
+Received: from outbound.pv.icloud.com (p-west1-cluster6-host1-snip4-1.eps.apple.com [57.103.67.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E64126FA5A
-	for <netdev@vger.kernel.org>; Thu,  9 Apr 2026 19:00:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.64.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442D2330D43
+	for <netdev@vger.kernel.org>; Thu,  9 Apr 2026 19:01:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.67.24
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775761278; cv=none; b=dRLdlvgpjl0JGNa/pCFVsRw9VbHT4AIRCDEcwyoNtHk8jeYykuMXBAYLYVWDOfv4/jpo/OgCZ2oJyGTmpelW7OjDwrFDju4AEfWDONqvgiBNePYEyDjas63wgg1lDIkiY+K/9/UtUyBZjXKVZbaTC5YbaF9CrM6TPN2+7biIjJI=
+	t=1775761278; cv=none; b=pkf2U6s1C/DufOfxgew/4QLoXwLL3kFb/9N5bby5GfO/IUvYgImMo74XT4whBVlxHLKEZ6TNbkfYlKSKU/VRXk8VjCs3bqyMSIaiHAkZhUaQYklHsR3IKnymsZpf0h9BENVt/qLGJFAMXhBNgCLqamNCgPfn+o9Tmcrtn6JqS9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775761278; c=relaxed/simple;
-	bh=WhQn1TLvWU9St4DjkQSJMyWRghH/FuKKWoY7mLcBaZs=;
+	bh=vPGgef9aLQxni1nXn6YUCevYHZq9qzBbbpi73isvh88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kAp1qqq8LkTg2F8bnhx+wIEje4SUceUjXWxvTAuGYJmGupGrRGTEMMUiy8dr4hbxOeyj5R8QTBAkzAcsQCPvPtCh+e1W7pW4ElyQ6TTSfiZjcDW6GHVoQMdXYm1YcvmcDJ0dTn5o6SfO9wIRmOLm2Xy2652fmRTCumwCCy/E8vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=cn/lKCN/; arc=none smtp.client-ip=57.103.64.235
+	 MIME-Version:Content-Type; b=DxNSoGOljMTg3eZTFAqq717lofmxJyo9Huk0tCVDNgu6JU7QlxNosL/hDY9u98i8xLi2xbYvTez723tJX+hKUjwvgKbpEhEwus1P2ADgJA0lNfnuF6TfO1ipZlZYmhSmVRDZn3WZ3HXtlsUzexI5OZnvV1d77AWnxxeKWtmNXCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=wyTYmw4m; arc=none smtp.client-ip=57.103.67.24
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="cn/lKCN/"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="wyTYmw4m"
 Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-1a-60-percent-0 (Postfix) with ESMTPS id B71991800959;
-	Thu, 09 Apr 2026 19:00:42 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1775761244; x=1778353244; bh=18rHgE4FglA26qFEIVxOeI4LQgCwxHIBAtnvSWPcjZY=; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=cn/lKCN/1RsXcIAEU3qG/bX21efwKaDof4Lho2XlWWigNrl7UqJJo1VI+Wb/0bpluwoZrgEcIi9V2fo6x/bA274Gn/p1MZh2mNNiFx7aN2bt6LN0jKYKjINnOk0cBREbkrnn8YgpIV4GmZcIQKAg/YhUh3ktHUaJvneud5JjgbfGANatOHRqMysFo+NevQpnmnAHCnnA6VS1abIBZaA7IDnjYl1hM2mTJQwh6gK0UpX39xuDr8qWPRMRnTsJuomUeKKfIy+F0DQ8lVrjsvv9MSLsD2YA4eoOHb8ljl4Di5HbELIAV3QtLQ6bjBrqpcYOtyk5+8KOAI1l1jQIs2KJfg==
+	by p00-icloudmta-asmtp-us-west-1a-60-percent-0 (Postfix) with ESMTPS id 41CCF180097C;
+	Thu, 09 Apr 2026 19:00:59 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1775761260; x=1778353260; bh=iX7m0e68m8rGvVRNTzaWuccLGp3V1QlVU1TsthtLfIg=; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=wyTYmw4mg0A2Lnd7X3ct/V8doD/4JvwiF/XHgLgNDmYKN+FXotHKoUtdlzQvgX9KVkWVSqxYvNXbCFpYF+rZUIas7gG9LqM8zudbtunVBXQHhcRE7ANQ8e0ABzpCzVm4s1zDDQCU45nlEsxDMGewPSZxtTH0vPlCFwJtJFKqSqZ4/9/Hsv/dtSALo2+t5CTx8BNeAvFdtwgneYZ5mvu83Vw4TDQm7l7PKuT19PQTa3lGj98sXAQVcQcjxG643/HFodt09e2+EnIgW0a0Li5lfxhZrK+O6uR8v5hcy3zZlR/SGR+ziWU30tW3Wxj93J5ufT9iLQnKGMthFSyiKtwEtQ==
 Received: from mainframe.tailfb0f7b.ts.net (unknown [17.56.9.36])
-	by p00-icloudmta-asmtp-us-west-1a-60-percent-0 (Postfix) with ESMTPSA id 4485B18000B2;
-	Thu, 09 Apr 2026 19:00:40 +0000 (UTC)
+	by p00-icloudmta-asmtp-us-west-1a-60-percent-0 (Postfix) with ESMTPSA id 548F11800BC9;
+	Thu, 09 Apr 2026 19:00:52 +0000 (UTC)
 From: =?UTF-8?q?Lek=C3=AB=20Hap=C3=A7iu?= <snowwlake@icloud.com>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -33,9 +33,9 @@ Cc: davem@davemloft.net,
 	stable@vger.kernel.org,
 	horms@kernel.org,
 	=?UTF-8?q?Lek=C3=AB=20Hap=C3=A7iu?= <framemain@outlook.com>
-Subject: [PATCH net v2 1/3] nfc: nci: fix u8 underflow in nci_store_general_bytes_nfc_dep
-Date: Thu,  9 Apr 2026 20:59:56 +0200
-Message-ID: <20260409185958.1821242-2-snowwlake@icloud.com>
+Subject: [PATCH net v2 3/3] nfc: llcp: fix TLV parsing OOB and length underflow in nfc_llcp_recv_snl
+Date: Thu,  9 Apr 2026 20:59:58 +0200
+Message-ID: <20260409185958.1821242-4-snowwlake@icloud.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260409185958.1821242-1-snowwlake@icloud.com>
 References: <20260409164129.GO469338@kernel.org>
@@ -48,116 +48,137 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: Biu2_1VQzktoXvwo8mm14jMhHIViS6PD
-X-Authority-Info-Out: v=2.4 cv=BPa+bVQG c=1 sm=1 tr=0 ts=69d7f75b
+X-Proofpoint-GUID: 8s_-UT2knZ1a1875Aa0F42z9IQhatXoM
+X-Proofpoint-ORIG-GUID: 8s_-UT2knZ1a1875Aa0F42z9IQhatXoM
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA5MDE3NSBTYWx0ZWRfXzTeXj3euZ6UX
+ bzZz+0tZXKy7OHWf4E8wfwFImtS+9tGIhwTYND77vytvUK/niQeEChEin3JG5NC6MDcxidq63VW
+ FHupYWwhujAKXhuz8X2dE8/agWjmFtwSdKWpoGiEr9B6R7wsbLa6ptVQR7ui9ITlQ4B9B7wXYtv
+ UEZSyv6M50+qfg8ij+bsZo0OMQmCEiP11bcxTMp1Yzo2/YpwSVCGp02Y90oU419lUGFsSZB5tu4
+ kWE8Qs/E6c181rA5+Di67EYGfbRk4BmA94G5I3ri23dYtq48KfRwENt/24aUDUqvu1mNhRvw0l/
+ 8/ZZI5ZxOzDqa6nA9HlubzURSS1N+lDfpc2B7VY8BckuscE+Xe5eKr/09b12bg=
+X-Authority-Info-Out: v=2.4 cv=WIFyn3sR c=1 sm=1 tr=0 ts=69d7f76b
  cx=c_apl:c_pps:t_out a=azHRBMxVc17uSn+fyuI/eg==:117
  a=azHRBMxVc17uSn+fyuI/eg==:17 a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10
  a=M51BFTxLslgA:10 a=x7bEGLp0ZPQA:10 a=LbuW6tbUWPcA:10
  a=VkNPw1HP01LnGYTKEx00:22 a=UqCG9HQmAAAA:8 a=VwQbUJbxAAAA:8
- a=P3KuyvigeCtTAzkl2O8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=h198WebNHr3hihf7tCMA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
  a=JKcXVnpmuwdQ7RL0mgk_:22 a=zesNzv29S0FE4YlguZl3:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA5MDE3NCBTYWx0ZWRfX6WUe6deqVUvB
- KY5yTXZozmXHbFuBkTsZt9xjZcZ87CIt88cTjb9+HogERkO031Nf3L4K7mvl1cBPtIKU8gjMrvP
- bwoQz9AhiZizcEPh/Uj2nYdkJWKtkkJn+ELSpuH2/+IAKMCtxaoGubGKuN1ZGkkbSC67tfT52l2
- XneckRBkc8kxuWFWiUBGzuikT2RJ+3rg6BA5RhiYX7B5YY/bq3W2fJ1evzaUbGY15sNNvIR3+Ly
- fp0MxLBoq8Ww7JycQ6teB2Tn2iXSTok4Y7ehCLs/szVPuJhCNB2IhkNbCOWDtL9UqCJYnEGBWQk
- 6PCZIuRP8+/IWZIW8osMeSP/JMu5ShlrssfNZZ/CqpYiZx8pBjJCjvkEgvtca8=
-X-Proofpoint-GUID: Biu2_1VQzktoXvwo8mm14jMhHIViS6PD
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-04-09_04,2026-04-09_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
- lowpriorityscore=0 spamscore=0 suspectscore=0 adultscore=0 phishscore=0
- mlxscore=0 clxscore=1015 malwarescore=0 bulkscore=0 mlxlogscore=936
+ lowpriorityscore=0 bulkscore=0 mlxscore=0 adultscore=0 suspectscore=0
+ clxscore=1015 mlxlogscore=999 spamscore=0 phishscore=0 malwarescore=0
  classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
- engine=8.22.0-2601150000 definitions=main-2604090174
+ engine=8.22.0-2601150000 definitions=main-2604090175
 
 From: Lekë Hapçiu <framemain@outlook.com>
 
-nci_store_general_bytes_nfc_dep() computes the number of General Bytes
-to copy from an ATR_RES or ATR_REQ frame by subtracting a fixed header
-offset from the peer-supplied length field:
+nfc_llcp_recv_snl() contains four distinct vulnerabilities.
 
-  ndev->remote_gb_len = min_t(__u8,
-      (atr_res_len - NFC_ATR_RES_GT_OFFSET),   /* offset = 15 */
-      NFC_ATR_RES_GB_MAXSIZE);
+Issue 1 - missing minimum-length guard on skb:
 
-Both length fields are __u8.  When a malicious NFC-DEP target (POLL mode)
-or initiator (LISTEN mode) sends an ATR_RES/ATR_REQ whose length field is
-smaller than the fixed offset (< 15 or < 14 respectively), the subtraction
-wraps in unsigned u8 arithmetic:
+  nfc_llcp_dsap() and nfc_llcp_ssap() access pdu->data[0] and pdu->data[1]
+  unconditionally.  The subsequent computation:
 
-  e.g. atr_res_len = 0 -> (u8)(0 - 15) = 241
+    tlv_len = skb->len - LLCP_HEADER_SIZE;   /* LLCP_HEADER_SIZE = 2 */
 
-min_t(__u8, 241, 47) then yields 47, so the subsequent memcpy reads
-47 bytes from beyond the end of the valid activation parameter data into
-ndev->remote_gb[].  This buffer is later passed to nfc_llcp_parse_gb_tlv()
-as a TLV array, feeding directly into the TLV parser hardened by the
-companion patch.
+  truncates to u16.  If skb->len < 2, the unsigned subtraction wraps at
+  unsigned int width and the truncation to u16 yields up to 65534, causing
+  the while loop to iterate far beyond the skb data.  No guard exists at
+  the dispatch path to prevent this.
 
-Fix: add an explicit lower-bound check on each length field before the
-subtraction.  If the length is smaller than the required offset the frame
-is malformed; leave remote_gb_len at zero and skip the memcpy.
+  Fix: add `if (skb->len < LLCP_HEADER_SIZE) return;` before any skb->data
+  access, matching the pattern already used in nfc_llcp_recv_agf().
 
-Both the POLL (atr_res_len / NFC_ATR_RES_GT_OFFSET = 15) and the LISTEN
-(atr_req_len / NFC_ATR_REQ_GT_OFFSET = 14) paths are affected; both are
-fixed symmetrically.
+Issue 2 - missing per-iteration TLV header guard:
 
-Reachability: the ATR_RES is sent by an NFC-DEP target during RF
-activation, before any authentication or pairing.  The bug is therefore
-reachable from any NFC peer within ~4 cm.
+  The loop reads tlv[0] and tlv[1] with no prior check that two bytes
+  remain.  When one byte remains, tlv[1] is one byte past the array end.
 
-Fixes: a99903ec4566 ("NFC: NCI: Handle Target mode activation")
+  Fix: `if (tlv_len - offset < 2) break;`
+
+Issue 3 - peer-controlled `length` field advances tlv past skb end:
+
+  `length` (tlv[1]) is advanced unconditionally into `offset` and `tlv`
+  without verifying that `length` bytes of TLV value exist.  A malicious
+  peer sets `length` large enough that `offset` remains below `tlv_len` on
+  the next iteration while `tlv` points into adjacent kernel heap.
+
+  Fix: `if (tlv_len - offset - 2 < length) break;`
+
+Issue 4 - per-type minimum-length hazards:
+
+  LLCP_TLV_SDREQ: `service_name_len = length - 1` is u8 arithmetic.  When
+  length == 0 this wraps to 255, causing a 255-byte kernel memory scan via
+  strncmp.  tlv[2] (tid) is also accessed unconditionally.
+  Fix: require length >= 1 before the tid/service_name access.
+
+  LLCP_TLV_SDRES: tlv[2] and tlv[3] are accessed without verifying
+  length >= 2.  Unlike the GB/connection parsers, SDREQ/SDRES are not
+  processed via llcp_tlv8/16, so the llcp_tlv_length[] table provides no
+  protection here.
+  Fix: require length >= 2 before the tlv[2]/tlv[3] accesses.
+
+  In both cases a `break` from the inner switch falls through to the
+  unconditional `offset += length + 2; tlv += length + 2` at the loop
+  tail, correctly advancing past the malformed TLV.  The outer two guards
+  break from the while loop entirely.
+
+Reachability: SNL PDUs are processed during LLCP service discovery, before
+any connection is established, from any NFC peer within ~4 cm with no
+authentication or pairing.
+
+Fixes: 19cfe5843e86 ("NFC: Initial SNL support")
 Cc: stable@vger.kernel.org
 Signed-off-by: Lekë Hapçiu <framemain@outlook.com>
 ---
- net/nfc/nci/ntf.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ net/nfc/llcp_core.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/net/nfc/nci/ntf.c b/net/nfc/nci/ntf.c
-index c96512bb8..8eb295580 100644
---- a/net/nfc/nci/ntf.c
-+++ b/net/nfc/nci/ntf.c
-@@ -631,25 +631,31 @@ static int nci_store_general_bytes_nfc_dep(struct nci_dev *ndev,
- 	switch (ntf->activation_rf_tech_and_mode) {
- 	case NCI_NFC_A_PASSIVE_POLL_MODE:
- 	case NCI_NFC_F_PASSIVE_POLL_MODE:
-+		if (ntf->activation_params.poll_nfc_dep.atr_res_len <
-+		    NFC_ATR_RES_GT_OFFSET)
-+			break;
- 		ndev->remote_gb_len = min_t(__u8,
--			(ntf->activation_params.poll_nfc_dep.atr_res_len
--						- NFC_ATR_RES_GT_OFFSET),
-+			ntf->activation_params.poll_nfc_dep.atr_res_len
-+						- NFC_ATR_RES_GT_OFFSET,
- 			NFC_ATR_RES_GB_MAXSIZE);
- 		memcpy(ndev->remote_gb,
--		       (ntf->activation_params.poll_nfc_dep.atr_res
--						+ NFC_ATR_RES_GT_OFFSET),
-+		       ntf->activation_params.poll_nfc_dep.atr_res
-+						+ NFC_ATR_RES_GT_OFFSET,
- 		       ndev->remote_gb_len);
- 		break;
+diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
+index db5bc6a87..16acf7c2b 100644
+--- a/net/nfc/llcp_core.c
++++ b/net/nfc/llcp_core.c
+@@ -1284,6 +1284,11 @@ static void nfc_llcp_recv_snl(struct nfc_llcp_local *local,
+ 	size_t sdres_tlvs_len;
+ 	HLIST_HEAD(nl_sdres_list);
  
- 	case NCI_NFC_A_PASSIVE_LISTEN_MODE:
- 	case NCI_NFC_F_PASSIVE_LISTEN_MODE:
-+		if (ntf->activation_params.listen_nfc_dep.atr_req_len <
-+		    NFC_ATR_REQ_GT_OFFSET)
-+			break;
- 		ndev->remote_gb_len = min_t(__u8,
--			(ntf->activation_params.listen_nfc_dep.atr_req_len
--						- NFC_ATR_REQ_GT_OFFSET),
-+			ntf->activation_params.listen_nfc_dep.atr_req_len
-+						- NFC_ATR_REQ_GT_OFFSET,
- 			NFC_ATR_REQ_GB_MAXSIZE);
- 		memcpy(ndev->remote_gb,
--		       (ntf->activation_params.listen_nfc_dep.atr_req
--						+ NFC_ATR_REQ_GT_OFFSET),
-+		       ntf->activation_params.listen_nfc_dep.atr_req
-+						+ NFC_ATR_REQ_GT_OFFSET,
- 		       ndev->remote_gb_len);
- 		break;
++	if (skb->len < LLCP_HEADER_SIZE) {
++		pr_err("Malformed SNL PDU\n");
++		return;
++	}
++
+ 	dsap = nfc_llcp_dsap(skb);
+ 	ssap = nfc_llcp_ssap(skb);
  
+@@ -1300,11 +1305,17 @@ static void nfc_llcp_recv_snl(struct nfc_llcp_local *local,
+ 	sdres_tlvs_len = 0;
+ 
+ 	while (offset < tlv_len) {
++		if (tlv_len - offset < 2)
++			break;
+ 		type = tlv[0];
+ 		length = tlv[1];
++		if (tlv_len - offset - 2 < length)
++			break;
+ 
+ 		switch (type) {
+ 		case LLCP_TLV_SDREQ:
++			if (length < 1)
++				break;
+ 			tid = tlv[2];
+ 			service_name = (char *) &tlv[3];
+ 			service_name_len = length - 1;
+@@ -1369,6 +1380,8 @@ static void nfc_llcp_recv_snl(struct nfc_llcp_local *local,
+ 			break;
+ 
+ 		case LLCP_TLV_SDRES:
++			if (length < 2)
++				break;
+ 			mutex_lock(&local->sdreq_lock);
+ 
+ 			pr_debug("LLCP_TLV_SDRES: searching tid %d\n", tlv[2]);
 -- 
 2.51.0
 
