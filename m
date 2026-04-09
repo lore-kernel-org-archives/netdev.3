@@ -1,492 +1,153 @@
-Received: from mail-dy1-f202.google.com (mail-dy1-f202.google.com [74.125.82.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2136.outbound.protection.partner.outlook.cn [139.219.17.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD1E637883C
-	for <netdev@vger.kernel.org>; Thu,  9 Apr 2026 02:59:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.202
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775703602; cv=none; b=stR7Q9Jw3b+8uj8zjplbNwtcOjExkZRjkxZ+zHUqySwjyXmnZbw93o0eZ/eot+FbE2TmpLdiRs5ukCCMPgFQ0lLX5byFk+hJlv3fLol9nLwY8DE72eG9Y0Go2xDK/MLi68wC2bz5pgTFdX9ND88kDrLMEFTPUOT4UbfrqkwNkJw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775703602; c=relaxed/simple;
-	bh=zRiZ3F9ixViqIp/oVJOs2Dr/NZnvNeO1TEoDMXNAr2A=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=AKm3Gej4oImSLLH3Ei5Y6fSza4rZ46VQu21BI8/cVire/rvodYOfwStn6vE0ZhgxHz+LNfSfEDa8eU4wp8R3FBc4GI866OXO+sv0MhZQx2LRSgz4V36XArZjwml1Yty8R8Ac00girzBZ8RN+GAinTTwrDtJM9jUIYye+RHa4WGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--marcharvey.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WZlVghXE; arc=none smtp.client-ip=74.125.82.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--marcharvey.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WZlVghXE"
-Received: by mail-dy1-f202.google.com with SMTP id 5a478bee46e88-2cc9118dc2eso879014eec.0
-        for <netdev@vger.kernel.org>; Wed, 08 Apr 2026 19:59:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775703598; x=1776308398; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y/WKVEqvyJ50tKFvDYgDShsP7HGazqsCCeHuDA2/e0s=;
-        b=WZlVghXE8e08CxxH0KkF9SMDL8G3NgJGcG3kg4vbKVyWxwEpeR3+UB4IBBE8GPCAWX
-         DtC6mrK2sHFGdjJ924oRmlsBn65qWpEoimWBl6B1A5XqxaRqSj/DOZ8lM329+W/Nr715
-         xxpDHqrVtAMCQir3kZ+7b3BSAai8v15MwsTCEHgZ5kxnRYgW+0bEIU0T4pZzHUNKQc0J
-         ZOCRmciMx+N3jS5BlVL5mpqk5vQ7tcM2VfEeVCICicrMKHKilY9yR0J82SniAzOi+KMC
-         wNKMr5oQHwlOrv1ufVTf3YOF+Dyu0fLJKHp1TB5lOFN4EMnRfCek4Eu/OA1rFMiHew2h
-         06dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775703598; x=1776308398;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y/WKVEqvyJ50tKFvDYgDShsP7HGazqsCCeHuDA2/e0s=;
-        b=UjQXXRoZVBDP0Y/dYYD30yTpxPSmfqSoEWxcDUkN/63ml079XnqK2YNWVz0wvL2J0+
-         e4tspXJIfTcH99JZUgHIAuMoVSYs/Br3A+bocu1igFw2l/vfNYwh7fK419NxGVb9jXig
-         9+8L0XchZNKcCX6mWmzHYgsBzjmZHHjuvw6CdYrWI4v8A/I4NefB+zOPphsQsTt+VDPP
-         5YPmRJe0iTupAYDcNudFhVV45cXSQbh/XR5NhEcro84CUcfTNiUvl0O2/AEM16EQP+dN
-         u0ftZpxAzzC4nwnQ2REaUksDO8hUpl7FjXLYY6oNFxZU5rBmjFdtv+KWqJBOecLZPBcy
-         0jQw==
-X-Gm-Message-State: AOJu0YywzBYSQPT/CE4NKPzIR6Kc8jbmV6t7X+FHXksLz8HxEi/+PUX+
-	zwS8VMnL3sNbrWjJ7AgvnjbLpDDSvVSWfXUXJJfwoPBgnsYPWzhYiDJS3wjFrPcpTm3y4HcyLn6
-	ndRABrRKcIM+Ffri1mQOWrw==
-X-Received: from dyls29.prod.google.com ([2002:a05:7300:6a9d:b0:2ca:8036:2e7e])
- (user=marcharvey job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7301:5793:b0:2b0:571a:28a5 with SMTP id 5a478bee46e88-2cbfba8dc09mr13572189eec.18.1775703597703;
- Wed, 08 Apr 2026 19:59:57 -0700 (PDT)
-Date: Thu, 09 Apr 2026 02:59:32 +0000
-In-Reply-To: <20260409-teaming-driver-internal-v7-0-f47e7589685d@google.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5D71DD525;
+	Thu,  9 Apr 2026 03:00:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.136
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775703662; cv=fail; b=XX2d/iGZQ6euYALI6lxCLxjOjineCq9mk9qJMWXxFvhg6V4jcS/ecPOkEGNF+uOOHgOyqNJf+vvg95JgtlHtxQRqPvSmZtrywyQBSklc+571uwy71tdndxGQRUOsFAV/DRYsLdOvEw1OzXRLiiGd5ESvTxvwbGMooqCGsB8+BNY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775703662; c=relaxed/simple;
+	bh=a8CfgxYXFxb96y4Ja9jLW+WhTgYhsXgrcPCeNspksx0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=oF/LG2TlfMzWL0YdlepRAw1+Jo3fyrcsqMJWbS1pr8lus9/PCm6QEgIoTzMcgJd+U1QBEYNI5Nn0LUdpiBvAA2uN3Akg9ZvGnrneezgVv7a0FascsvTVf/LFfkg/VWldJHudhnp0z/TuTHmVzlc2Cwj4CFeFnHX5rnMcs+LY+QY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hVpaNoWYCAXZS9+oPjIa3+houfHc+C3M0vT5xqzfsXazZotzHSXW5u4jC7PJ3w7+qaFeiZbkqoo7+LyMxHy1YXVP3DqzmgtHTCzCH5YsV/kJisy4prYzfHhdgbgA34PfYrA+JQk/0ht7kf6FNLrfERBgsQLoS1qqw77M0TS/jurBMVj85OX/ZeSoECx2akjjFO5n2z8f6+E5b875y/XS7+xfY57d0ML5CbpBfK5a2rplBgo/ifHC8BP0EwzxTjqnzjfRwgoYwEderejBjdczrEoioyzH6Fzsmp/0ie5LzjkW39fWJuUtzEODM83UVziIWZboUsXjKA/0AUZND/+zxg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rvvOCjNra76HwJkjKUJtOT2vW6llbn+hOHZphbudmqE=;
+ b=dUnEN87swffJMRO03o5sjMZaGLQd7w12N9RQuUzJ/629dzn0lw8aZJqAY/LL9oZWRig860xz5tdkLjKrfjnCth28wfgZCgw7WbWq5vzj7uJ6nWy2bIZ1hdFyA4F5oxPeRQvHFd8lID+15QvKT06Z8MwnG6k550tcJx0uSbN37IvuKvhpCLjBo8rl/v0l/DmRLBHCz1Q+gRUAyXeAufAWriSy5u3M25SY9XwmZ+UUtXSkU0apzxaz+/YED66XuMpKWTszXcf1ppDJJS4U1UDsz5TZ0VHMQVaQrAIHn+VZtsgW4r3JVXQN+3zLLt006T88IYO+Sz2upAYxK0ZkXsOIGg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=starfivetech.com; dmarc=pass action=none
+ header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
+Received: from SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:25::15) by SHXPR01MB0701.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:26::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Thu, 9 Apr
+ 2026 02:44:53 +0000
+Received: from SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
+ ([fe80::9b99:12dc:a115:b90f]) by
+ SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn ([fe80::9b99:12dc:a115:b90f%6])
+ with mapi id 15.20.9723.018; Thu, 9 Apr 2026 02:44:53 +0000
+From: Minda Chen <minda.chen@starfivetech.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: Alexandre Torgue <alexandre.torgue@foss.st.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Emil Renner
+ Berthing <emil.renner.berthing@canonical.com>, Rob Herring
+	<robh+dt@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-stm32@st-md-mailman.stormreply.com"
+	<linux-stm32@st-md-mailman.stormreply.com>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>
+Subject: Re: [net-next v1 v1 1/5] dt-bindings: net: starfive,jh7110-dwmac:
+ Remove JH8100
+Thread-Topic: [net-next v1 v1 1/5] dt-bindings: net: starfive,jh7110-dwmac:
+ Remove JH8100
+Thread-Index: AQHcxzPnhJ0ZnP1MSE6q+NOcDWTMF7XVSfIAgAC9VPA=
+Date: Thu, 9 Apr 2026 02:44:53 +0000
+Message-ID:
+ <SHXPR01MB086305E0C766E8BB17AF18DCE6582@SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn>
+References: <20260408084416.29753-1-minda.chen@starfivetech.com>
+ <20260408084416.29753-2-minda.chen@starfivetech.com>
+ <ad9ee916-6f8a-4cb9-8016-54a02b00c7ab@lunn.ch>
+In-Reply-To: <ad9ee916-6f8a-4cb9-8016-54a02b00c7ab@lunn.ch>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=starfivetech.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SHXPR01MB0863:EE_|SHXPR01MB0701:EE_
+x-ms-office365-filtering-correlation-id: 57dbd915-6a69-4f25-001b-08de95e1fa5f
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|376014|7416014|366016|38070700021|56012099003|22082099003|18002099003;
+x-microsoft-antispam-message-info:
+ vcxIKflegYIss7+Myn1yZuAVvEPUN4rQ1Zq02pwEBrOIq/7eEI5LKWhq6b/Zscrc4TOV3bciieR1UsXyOwPMRlaaYJqZTfPJ3ReM6ZBlceuRRqaTTqA8PFbLSH+96HhaDaZ3fZJ1Up+BvsLe21vt1CgQIwbV3r6zOgty/WQYnyIc0oJM4EjGPhQ7XA24BQbpnNcM6ihpyQ6zgEtgYQKnfAhIvklSbu+FydWAQWm0POIY3WSRCVEGHipcLtXNHHGZhN96YJXCkOUWOnZdFa3CVwotddPHJ5R7+Knb8z1/fLu3zWjUv6IrFk3RiG2QFyFSrlNe9BTuSnLm3FD0Qq+uhOJOig22glspQJgwgEjCTPwedi0eGyEpKwZ3vH+1pJ24HLW4OuXZ8c11HxZURcmPhDiBHW+MqWBdEbKtGaag2bk5nSE5jTqZp5HCPZn3TFjW0dj43rGEHp/6gKjJsiZmjIxTGobFMsT1UgoiA+vZpZ0/cgrkDiqwHp7k2V7QQXAEB9lE5uc0dkON9DI1bMntE7+g5zQYM8Ydsv8X2A6/789yY3dBtNCNAxvKp1HylAVnU+U4zkTm/emLOrwFebQCbJxMZ8kf8bfUfzbeWO4cbZU=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(38070700021)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?tywBFK0sT/KI9IcCy1ZbOYxYOWrtW+meFNdngwFY3S2/tkoSAKl1qF+WkSlF?=
+ =?us-ascii?Q?nCfkmPOWhBZxhmZoEeu5A+WUC/QJYj7+3weGZFz5e0jtkglE4YuBqmjTqtzm?=
+ =?us-ascii?Q?ct7h4DLydc2NLP9a7fq2KllcHghZAbCGiPFTmZHx4jacwb8tpTYUnLaKoYzt?=
+ =?us-ascii?Q?agAkX3p1tJVZs/XSKY/EVgQu/7nsT/tjbxy7aO3dzbXZNL8lguiXrH/UUsyO?=
+ =?us-ascii?Q?6CVjmGhtuJs0uIIsTpZryeg8ZbM40vsObIYtwEw6vFgtQ6SFT6tamesOeCrN?=
+ =?us-ascii?Q?UDzBAVmoJU+rsb/oGIDe7QDYKpByrrgT6PItwz8pzfJuDzD1uSmLQBaMFfdB?=
+ =?us-ascii?Q?57cXVUWix2BP+euMU0QSSzfFMZWj3XB2pTCw0i5DJrO8aNV4NOn4g52GyFll?=
+ =?us-ascii?Q?7Oe+ozbP0kIdIsK2U2Iyvh+wyRaJbGgm7q2XZ1RA6lI0H3fIGwOOp7sF9MSA?=
+ =?us-ascii?Q?83zgHE1HacJ5AtV8BkYWGVSCbGcjZy+NHDH3kr+V2oFEVtU7BmYfp7lPg42z?=
+ =?us-ascii?Q?ZXvpNWcixA0oIcWkD6irWVoa3Zx1Tbknr5hDm3rWHnfmmYxPM4tfJvfB3nEI?=
+ =?us-ascii?Q?QdKGAGrBf5ZTrPk8BH6bGUkes6hOLqWsH4sNbrBdAIMWH0EDljvb/5qmGdsO?=
+ =?us-ascii?Q?TvddlgxJT40Yj7nMqDHLGNRxx+eyeS6MIaKHNhXGa1TCNSelgXCPC6eLMBN+?=
+ =?us-ascii?Q?JCrbpP/aHhUx38mgdcU8B5nKiNXRjc3xmMQd5r+vRCNtvJMu2zEFb8Q2b+Za?=
+ =?us-ascii?Q?P0iDijpvivUZV5PtBflrZhl8MSV03dsETWX1EkgdSF7+MhaBLQgTJmv631/8?=
+ =?us-ascii?Q?um3cZSaUgW514Cjfq4ueeAJMWpnW/AG7exai4bMf/17AyYr6FGNmPUU/wlak?=
+ =?us-ascii?Q?OHC7ziX38nj4bNKPEeuJJJ5VfjK869eopIr1TheQTXAaFX/+3QNSLQ0MSgje?=
+ =?us-ascii?Q?/iaHJCH1avxsQ+aNVP6dYFbxsvBw53NjbUIGSWfZ8JKTYlx5bG/8TxhiMTnm?=
+ =?us-ascii?Q?V+/XbcCSSXpTgZkRWq6SxO4dCgl8QSjN6wf7a1sVo8W4sE7B54hQzphRSEHa?=
+ =?us-ascii?Q?++JiYnmVtjGb5LKMdVNtl4tYoCAjM2cdi1e+4VwAxFJLxW0JLQEmSK0ze47S?=
+ =?us-ascii?Q?p+B5tpfDlIWLQz4PwmZR7WsdZZhNNA/JduZR19yq+iRgqDwUPUz5R53wpZ6I?=
+ =?us-ascii?Q?1+DxLbb7WapMDQdQv/zXihpcQo7bKNxt48y81F4IR+SW3vEnk8GSSFbsGPEe?=
+ =?us-ascii?Q?fI6NXix+8PHmwq/25tU59FV/hrIVL+jZE2Cs5trhhm8nT+jW6tSfA3PCkFmG?=
+ =?us-ascii?Q?9rv2/HDGOeQ3t6kNPggcLUHGyGRhvSMJxO8sXYvpLTAqWmwomkQDNtPihDlS?=
+ =?us-ascii?Q?LMXgpgs0GypMRlcbBNA/eapCLMNvI+CQDSFSkDs77iwOT7kR16wEGbhwikhY?=
+ =?us-ascii?Q?pIvussjavXdwvW8CeS/AX49lcAZOf06DR79LZX12/6IxKGwQLTHAQ47Wod9g?=
+ =?us-ascii?Q?Q7vGVHstrPV7wAGEWQzvwWqUzsmpQ7X1bPOytZlkhUtWX+G90pXU1bKcx0rO?=
+ =?us-ascii?Q?ZM6KkbxHnEa09hIMuOA1xRXRv0FR873TE19XhUOyLAi3Mk27OwocdT9L/wri?=
+ =?us-ascii?Q?srj54JMb+Oa0cu+veUwfC+ceESMGfkEi+6/2rrz0ltdWvK9heVTXgEVjG+xp?=
+ =?us-ascii?Q?pwdrcSDoF7QLuuYSJz06Bbl++I3pe5oefEL99Gf1s1Qamk3lNH0KUCsNo+Y2?=
+ =?us-ascii?Q?kGpqebYTTROKtWdXbQ3VPpyA7ajLDCQ=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260409-teaming-driver-internal-v7-0-f47e7589685d@google.com>
-X-Developer-Key: i=marcharvey@google.com; a=ed25519; pk=OzOeciadbfF5Bug/4/hyEAwfrruSY4tn0Q0LocyYUL0=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775703578; l=13006;
- i=marcharvey@google.com; s=20260401; h=from:subject:message-id;
- bh=zRiZ3F9ixViqIp/oVJOs2Dr/NZnvNeO1TEoDMXNAr2A=; b=wteN2Jls5wdG9M+xIE2MrK3DUMaXUKJ2x6wQOEIB8kccJ6FkjZRhqkY3PcfbMWux7fMoKz+8t
- +iprkKLPHWrBs+031S1GLrguycHQCELK5umZSFrGMirBqMApUvG+9Ny
-X-Mailer: b4 0.14.3
-Message-ID: <20260409-teaming-driver-internal-v7-10-f47e7589685d@google.com>
-Subject: [PATCH net-next v7 10/10] selftests: net: Add tests for team driver
- decoupled tx and rx control
-From: Marc Harvey <marcharvey@google.com>
-To: Jiri Pirko <jiri@resnulli.us>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, 
-	Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Marc Harvey <marcharvey@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+X-OriginatorOrg: starfivetech.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
+X-MS-Exchange-CrossTenant-Network-Message-Id: 57dbd915-6a69-4f25-001b-08de95e1fa5f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Apr 2026 02:44:53.3800
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: WTbNO4gYCuqvLF/1xS1pU1QyTEBNQ8S/62nF/IV+Bstj5di94BSUipt5qkFbhzMp7oA+BuVZmin0474hAG8Lr7VNwCiNyT+n2Ao0KmHRZu4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SHXPR01MB0701
 
-Use ping and tcpdump to verify that independent rx and tx enablement
-of team driver member interfaces works as intended.
 
-Signed-off-by: Marc Harvey <marcharvey@google.com>
----
-Changes in v5:
-- Minor typo fixes in both test files.
-- Link to v4: https://lore.kernel.org/netdev/20260403-teaming-driver-internal-v4-10-d3032f33ca25@google.com/
 
-Changes in v2:
-- Fix shellcheck failures.
-- Link to v1: https://lore.kernel.org/all/20260331053353.2504254-8-marcharvey@google.com/
----
- tools/testing/selftests/drivers/net/team/Makefile  |   1 +
- .../drivers/net/team/decoupled_enablement.sh       | 249 +++++++++++++++++++++
- .../testing/selftests/drivers/net/team/options.sh  |  99 +++++++-
- 3 files changed, 348 insertions(+), 1 deletion(-)
+>=20
+> On Wed, Apr 08, 2026 at 04:44:12PM +0800, Minda Chen wrote:
+> > Remove JH8100 dt-bindings because do not support it now.
+>=20
+> Could you expand on that. If there are devices out in the field, we don't=
+ just drop
+> support for it because the vendor has something newer.
+>=20
+> If the device never made it outside of the vendors lab, then we might con=
+sider
+> dropping it.
+>=20
+> Please explain in detail why this is being dropped.
+>=20
+> 	Andrew
+Yes.=20
+We (StarFive) stop developing on JH8100 now, And do NOT release the SoC out=
+side.
 
-diff --git a/tools/testing/selftests/drivers/net/team/Makefile b/tools/testing/selftests/drivers/net/team/Makefile
-index dab922d7f83d..7c58cf82121e 100644
---- a/tools/testing/selftests/drivers/net/team/Makefile
-+++ b/tools/testing/selftests/drivers/net/team/Makefile
-@@ -2,6 +2,7 @@
- # Makefile for net selftests
- 
- TEST_PROGS := \
-+	decoupled_enablement.sh \
- 	dev_addr_lists.sh \
- 	non_ether_header_ops.sh \
- 	options.sh \
-diff --git a/tools/testing/selftests/drivers/net/team/decoupled_enablement.sh b/tools/testing/selftests/drivers/net/team/decoupled_enablement.sh
-new file mode 100755
-index 000000000000..0d3d9c98e9f5
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/team/decoupled_enablement.sh
-@@ -0,0 +1,249 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+# These tests verify the decoupled RX and TX enablement of team driver member
-+# interfaces.
-+#
-+# Topology
-+#
-+#  +---------------------+  NS1
-+#  |      test_team1     |
-+#  |          |          |
-+#  |        eth0         |
-+#  |          |          |
-+#  |          |          |
-+#  +---------------------+
-+#             |
-+#  +---------------------+  NS2
-+#  |          |          |
-+#  |          |          |
-+#  |        eth0         |
-+#  |          |          |
-+#  |      test_team2     |
-+#  +---------------------+
-+
-+export ALL_TESTS="
-+	team_test_tx_enablement
-+	team_test_rx_enablement
-+"
-+
-+test_dir="$(dirname "$0")"
-+# shellcheck disable=SC1091
-+source "${test_dir}/../../../net/lib.sh"
-+# shellcheck disable=SC1091
-+source "${test_dir}/team_lib.sh"
-+
-+NS1=""
-+NS2=""
-+export NODAD="nodad"
-+PREFIX_LENGTH="64"
-+NS1_IP="fd00::1"
-+NS2_IP="fd00::2"
-+NS1_IP4="192.168.0.1"
-+NS2_IP4="192.168.0.2"
-+MEMBERS=("eth0")
-+PING_COUNT=5
-+PING_TIMEOUT_S=1
-+PING_INTERVAL=0.1
-+
-+while getopts "4" opt; do
-+	case $opt in
-+		4)
-+			echo "IPv4 mode selected."
-+			export NODAD=
-+			PREFIX_LENGTH="24"
-+			NS1_IP="${NS1_IP4}"
-+			NS2_IP="${NS2_IP4}"
-+			;;
-+		\?)
-+			echo "Invalid option: -$OPTARG" >&2
-+			exit 1
-+			;;
-+	esac
-+done
-+
-+# This has to be sourced after opts are gathered...
-+export REQUIRE_MZ=no
-+export NUM_NETIFS=0
-+# shellcheck disable=SC1091
-+source "${test_dir}/../../../net/forwarding/lib.sh"
-+
-+# Create the network namespaces, veth pair, and team devices in the specified
-+# mode.
-+# Globals:
-+#   RET - Used by test infra, set by `check_err` functions.
-+# Arguments:
-+#   mode - The team driver mode to use for the team devices.
-+environment_create()
-+{
-+	trap cleanup_all_ns EXIT
-+	setup_ns ns1 ns2
-+	NS1="${NS_LIST[0]}"
-+	NS2="${NS_LIST[1]}"
-+
-+	# Create the interfaces.
-+	ip -n "${NS1}" link add eth0 type veth peer name eth0 netns "${NS2}"
-+	ip -n "${NS1}" link add test_team1 type team
-+	ip -n "${NS2}" link add test_team2 type team
-+
-+	# Set up the receiving network namespace's team interface.
-+	setup_team "${NS2}" test_team2 roundrobin "${NS2_IP}" \
-+			"${PREFIX_LENGTH}" "${MEMBERS[@]}"
-+}
-+
-+# Set a particular option value for team or team port.
-+# Arguments:
-+#   namespace - The namespace name that has the team.
-+#   option_name - The option name to set.
-+#   option_value - The value to set the option to.
-+#   team_name - The name of team to set the option for.
-+#   member_name - The (optional) optional name of the member port.
-+set_option_value()
-+{
-+	local namespace="$1"
-+	local option_name="$2"
-+	local option_value="$3"
-+	local team_name="$4"
-+	local member_name="$5"
-+	local port_flag="--port=${member_name}"
-+
-+	ip netns exec "${namespace}" teamnl "${team_name}" setoption \
-+			"${option_name}" "${option_value}" "${port_flag}"
-+	return $?
-+}
-+
-+# Send some pings and return the ping command return value.
-+try_ping()
-+{
-+	ip netns exec "${NS1}" ping -i "${PING_INTERVAL}" -c "${PING_COUNT}" \
-+			"${NS2_IP}" -W "${PING_TIMEOUT_S}"
-+}
-+
-+# Checks tcpdump output from net/forwarding lib, and checks if there are any
-+# ICMP(4 or 6) packets.
-+# Arguments:
-+#   interface - The interface name to search for.
-+#   ip_address - The destination IP address (4 or 6) to search for.
-+did_interface_receive_icmp()
-+{
-+	local interface="$1"
-+	local ip_address="$2"
-+	local packet_count
-+
-+	packet_count=$(tcpdump_show "$interface" | grep -c \
-+			"> ${ip_address}: ICMP")
-+	echo "Packet count for ${interface} was ${packet_count}"
-+
-+	if [[ "$packet_count" -gt 0 ]]; then
-+		true
-+	else
-+		false
-+	fi
-+}
-+
-+# Test JUST tx enablement with a given mode.
-+# Globals:
-+#   RET - Used by test infra, set by `check_err` functions.
-+# Arguments:
-+#   mode - The mode to set the team interfaces to.
-+team_test_mode_tx_enablement()
-+{
-+	local mode="$1"
-+	export RET=0
-+
-+	# Set up the sender team with the correct mode.
-+	setup_team "${NS1}" test_team1 "${mode}" "${NS1_IP}" \
-+			"${PREFIX_LENGTH}" "${MEMBERS[@]}"
-+	check_err $? "Failed to set up sender team"
-+
-+	### Scenario 1: Member interface initially enabled.
-+	# Expect ping to pass
-+	try_ping
-+	check_err $? "Ping failed when TX enabled"
-+
-+	### Scenario 2: One tx-side interface disabled.
-+	# Expect ping to fail.
-+	set_option_value "${NS1}" tx_enabled false test_team1 eth0
-+	check_err $? "Failed to disable TX"
-+	tcpdump_start eth0 "${NS2}"
-+	try_ping
-+	check_fail $? "Ping succeeded when TX disabled"
-+	tcpdump_stop eth0
-+	# Expect no packets to be transmitted, since TX is disabled.
-+	did_interface_receive_icmp eth0 "${NS2_IP}"
-+	check_fail $? "eth0 IS transmitting when TX disabled"
-+	tcpdump_cleanup eth0
-+
-+	### Scenario 3: The interface has tx re-enabled.
-+	# Expect ping to pass.
-+	set_option_value "${NS1}" tx_enabled true test_team1 eth0
-+	check_err $? "Failed to reenable TX"
-+	try_ping
-+	check_err $? "Ping failed when TX reenabled"
-+
-+	log_test "TX failover of '${mode}' test"
-+}
-+
-+# Test JUST rx enablement with a given mode.
-+# Globals:
-+#   RET - Used by test infra, set by `check_err` functions.
-+# Arguments:
-+#   mode - The mode to set the team interfaces to.
-+team_test_mode_rx_enablement()
-+{
-+	local mode="$1"
-+	export RET=0
-+
-+	# Set up the sender team with the correct mode.
-+	setup_team "${NS1}" test_team1 "${mode}" "${NS1_IP}" \
-+			"${PREFIX_LENGTH}" "${MEMBERS[@]}"
-+	check_err $? "Failed to set up sender team"
-+
-+	### Scenario 1: Member interface initially enabled.
-+	# Expect ping to pass
-+	try_ping
-+	check_err $? "Ping failed when RX enabled"
-+
-+	### Scenario 2: One rx-side interface disabled.
-+	# Expect ping to fail.
-+	set_option_value "${NS1}" rx_enabled false test_team1 eth0
-+	check_err $? "Failed to disable RX"
-+	tcpdump_start eth0 "${NS2}"
-+	try_ping
-+	check_fail $? "Ping succeeded when RX disabled"
-+	tcpdump_stop eth0
-+	# Expect packets to be transmitted, since only RX is disabled.
-+	did_interface_receive_icmp eth0 "${NS2_IP}"
-+	check_err $? "eth0 not transmitting when RX disabled"
-+	tcpdump_cleanup eth0
-+
-+	### Scenario 3: The interface has rx re-enabled.
-+	# Expect ping to pass.
-+	set_option_value "${NS1}" rx_enabled true test_team1 eth0
-+	check_err $? "Failed to reenable RX"
-+	try_ping
-+	check_err $? "Ping failed when RX reenabled"
-+
-+	log_test "RX failover of '${mode}' test"
-+}
-+
-+team_test_tx_enablement()
-+{
-+	team_test_mode_tx_enablement broadcast
-+	team_test_mode_tx_enablement roundrobin
-+	team_test_mode_tx_enablement random
-+}
-+
-+team_test_rx_enablement()
-+{
-+	team_test_mode_rx_enablement broadcast
-+	team_test_mode_rx_enablement roundrobin
-+	team_test_mode_rx_enablement random
-+}
-+
-+require_command teamnl
-+require_command tcpdump
-+require_command ping
-+environment_create
-+tests_run
-+exit "${EXIT_STATUS}"
-diff --git a/tools/testing/selftests/drivers/net/team/options.sh b/tools/testing/selftests/drivers/net/team/options.sh
-index 44888f32b513..66c0cb896dad 100755
---- a/tools/testing/selftests/drivers/net/team/options.sh
-+++ b/tools/testing/selftests/drivers/net/team/options.sh
-@@ -11,10 +11,14 @@ if [[ $# -eq 0 ]]; then
-         exit $?
- fi
- 
--ALL_TESTS="
-+export ALL_TESTS="
-         team_test_options
-+        team_test_enabled_implicit_changes
-+        team_test_rx_enabled_implicit_changes
-+        team_test_tx_enabled_implicit_changes
- "
- 
-+# shellcheck disable=SC1091
- source "${test_dir}/../../../net/lib.sh"
- 
- TEAM_PORT="team0"
-@@ -176,12 +180,105 @@ team_test_options()
-         team_test_option mcast_rejoin_count 0 5
-         team_test_option mcast_rejoin_interval 0 5
-         team_test_option enabled true false "${MEMBER_PORT}"
-+        team_test_option rx_enabled true false "${MEMBER_PORT}"
-+        team_test_option tx_enabled true false "${MEMBER_PORT}"
-         team_test_option user_linkup true false "${MEMBER_PORT}"
-         team_test_option user_linkup_enabled true false "${MEMBER_PORT}"
-         team_test_option priority 10 20 "${MEMBER_PORT}"
-         team_test_option queue_id 0 1 "${MEMBER_PORT}"
- }
- 
-+team_test_enabled_implicit_changes()
-+{
-+        export RET=0
-+
-+        attach_port_if_specified "${MEMBER_PORT}"
-+        check_err $? "Couldn't attach ${MEMBER_PORT} to master"
-+
-+        # Set enabled to true.
-+        set_and_check_get enabled true "--port=${MEMBER_PORT}"
-+        check_err $? "Failed to set 'enabled' to true"
-+
-+        # Show that both rx enabled and tx enabled are true.
-+        get_and_check_value rx_enabled true "--port=${MEMBER_PORT}"
-+        check_err $? "'Rx_enabled' wasn't implicitly set to true"
-+        get_and_check_value tx_enabled true "--port=${MEMBER_PORT}"
-+        check_err $? "'Tx_enabled' wasn't implicitly set to true"
-+
-+        # Set enabled to false.
-+        set_and_check_get enabled false "--port=${MEMBER_PORT}"
-+        check_err $? "Failed to set 'enabled' to false"
-+
-+        # Show that both rx enabled and tx enabled are false.
-+        get_and_check_value rx_enabled false "--port=${MEMBER_PORT}"
-+        check_err $? "'Rx_enabled' wasn't implicitly set to false"
-+        get_and_check_value tx_enabled false "--port=${MEMBER_PORT}"
-+        check_err $? "'Tx_enabled' wasn't implicitly set to false"
-+
-+        log_test "'Enabled' implicit changes"
-+}
-+
-+team_test_rx_enabled_implicit_changes()
-+{
-+	export RET=0
-+
-+	attach_port_if_specified "${MEMBER_PORT}"
-+	check_err $? "Couldn't attach ${MEMBER_PORT} to master"
-+
-+	# Set enabled to true.
-+	set_and_check_get enabled true "--port=${MEMBER_PORT}"
-+	check_err $? "Failed to set 'enabled' to true"
-+
-+	# Set rx_enabled to false.
-+	set_and_check_get rx_enabled false "--port=${MEMBER_PORT}"
-+	check_err $? "Failed to set 'rx_enabled' to false"
-+
-+	# Show that enabled is false.
-+	get_and_check_value enabled false "--port=${MEMBER_PORT}"
-+	check_err $? "'enabled' wasn't implicitly set to false"
-+
-+	# Set rx_enabled to true.
-+	set_and_check_get rx_enabled true "--port=${MEMBER_PORT}"
-+	check_err $? "Failed to set 'rx_enabled' to true"
-+
-+	# Show that enabled is true.
-+	get_and_check_value enabled true "--port=${MEMBER_PORT}"
-+	check_err $? "'enabled' wasn't implicitly set to true"
-+
-+	log_test "'Rx_enabled' implicit changes"
-+}
-+
-+team_test_tx_enabled_implicit_changes()
-+{
-+	export RET=0
-+
-+	attach_port_if_specified "${MEMBER_PORT}"
-+	check_err $? "Couldn't attach ${MEMBER_PORT} to master"
-+
-+	# Set enabled to true.
-+	set_and_check_get enabled true "--port=${MEMBER_PORT}"
-+	check_err $? "Failed to set 'enabled' to true"
-+
-+	# Set tx_enabled to false.
-+	set_and_check_get tx_enabled false "--port=${MEMBER_PORT}"
-+	check_err $? "Failed to set 'tx_enabled' to false"
-+
-+	# Show that enabled is false.
-+	get_and_check_value enabled false "--port=${MEMBER_PORT}"
-+	check_err $? "'enabled' wasn't implicitly set to false"
-+
-+	# Set tx_enabled to true.
-+	set_and_check_get tx_enabled true "--port=${MEMBER_PORT}"
-+	check_err $? "Failed to set 'tx_enabled' to true"
-+
-+	# Show that enabled is true.
-+	get_and_check_value enabled true "--port=${MEMBER_PORT}"
-+	check_err $? "'enabled' wasn't implicitly set to true"
-+
-+	log_test "'Tx_enabled' implicit changes"
-+}
-+
-+
- require_command teamnl
- setup
- tests_run
-
--- 
-2.53.0.1213.gd9a14994de-goog
-
+Hi Krzysztof
+ Could you review this series patch 1 -3 which is dt -binding doc  changes?=
+ I sorry
+I have sent you to old e-mail address.
