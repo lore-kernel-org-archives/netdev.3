@@ -1,220 +1,80 @@
-Received: from outbound.pv.icloud.com (pv-2002l-snip4-8.eps.apple.com [57.103.64.169])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77AAE307AC6
-	for <netdev@vger.kernel.org>; Thu,  9 Apr 2026 19:00:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.64.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59B730E0D4;
+	Thu,  9 Apr 2026 19:03:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775761278; cv=none; b=SQforj/hT/dLMrfy0vUaYBnviItNN75ficLpK5MF9K/f1RWzuk0VdFHRxS4sebuFXeE+nIaxbE08RqruPljc8extSNIaoIm3bkiimz1Bn14Fhwp3CXi4YZ27TE+9mePFZhcYsSKM7vQBnb6NlUJsJVHJXwA3tD3ULonAmO0JNAc=
+	t=1775761412; cv=none; b=MWuurrFHacC35Wl5NdDam/xRd5xLXNSjauUmhewZtafWwL5mNCuXcNJoghJzZ6b+erNr52pydIn7yt1a6kbqduKf9s1Rldz3/rFfgRsCMhP5QipE3pbgusdD+O56zeixQetT+m13b+Rjt9zxDPhAba1mjz0PKDIMzfYLWvrRNsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775761278; c=relaxed/simple;
-	bh=Cu6nP4nJcqFR6ZHUeGb8Qgl6vJU1b+WPHlOIdIfhE+s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sN4IgMyvSNxZZbYHN54bW+di48j4q9o7cNyKRT3851Js+iv5EsZEFYhqKLKJ2rnXkpPnVLM1eRXbO35jl6hJmN3UyNplLlgEl4EPqoShOJuB+A9FH1ey+xBTY7KiGTBS2p+rva/7UONGwkcppypIrdAvDX6YvJIvlQ/yFL0fmcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=q+Iu5rIp; arc=none smtp.client-ip=57.103.64.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+	s=arc-20240116; t=1775761412; c=relaxed/simple;
+	bh=YwOkPrRz58qVrT4iAwNpRE3lExF4h4WkvL4s+eVv7sU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WNr6xVzjQFFfGK1yB/iZdGA+oQdRbuwxcPScfJuYgsiZetoZdYRqloc8gTIhpLiH5we4eDsLRr8MuN6JIX936sucQV0kywNZ87h04db57mQcWRAVtjEII5+m7C73xbXpXUBOM/eYTJCCwhfeLFnlpyd1VxHvUfZ9u7KZML3c47U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tk2BzVsq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="q+Iu5rIp"
-Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-1a-60-percent-0 (Postfix) with ESMTPS id C5A451800244;
-	Thu, 09 Apr 2026 19:00:47 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1775761249; x=1778353249; bh=kHYiEm+Ioqbrf9u37UGaWfjubqZGzJqVa/wjFOedTOo=; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=q+Iu5rIpKSwUm5VbkhiOsSuVWFvclmC65n3BbeQ7Ztmsa89gsWq4I5Zneeq7/gJ44h+FDFFwKHTz182QvRYxsMoiCVrlinCLe8jwIyHJ9l9/p3fWraydkhUOI1eGiOdLPs1Ji2FD2I7ejz5+IaL4Kc2NakJq7IJwbb97UsMbh84/ZPQ4CrZv+J0/wdKJUVioUN6XDD2uRRXMdhm0gdsVpYY8YBJKJLxMU/CC5MVbIZSpgXkaq/t4kuWdsbb84Pl01xlnNBVVSS7G5NRW7pBINW7fv3FM5h2XRAgiiK+zKw1sPXkdGjsNvIQdID8fC8hr/uq9EYifCS7DSwWeV5I+gQ==
-Received: from mainframe.tailfb0f7b.ts.net (unknown [17.56.9.36])
-	by p00-icloudmta-asmtp-us-west-1a-60-percent-0 (Postfix) with ESMTPSA id 443471800979;
-	Thu, 09 Apr 2026 19:00:45 +0000 (UTC)
-From: =?UTF-8?q?Lek=C3=AB=20Hap=C3=A7iu?= <snowwlake@icloud.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-nfc@lists.01.org,
-	stable@vger.kernel.org,
-	horms@kernel.org,
-	=?UTF-8?q?Lek=C3=AB=20Hap=C3=A7iu?= <framemain@outlook.com>
-Subject: [PATCH net v2 2/3] nfc: llcp: add TLV length bounds checks in parse_gb_tlv and parse_connection_tlv
-Date: Thu,  9 Apr 2026 20:59:57 +0200
-Message-ID: <20260409185958.1821242-3-snowwlake@icloud.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260409185958.1821242-1-snowwlake@icloud.com>
-References: <20260409164129.GO469338@kernel.org>
- <20260409185958.1821242-1-snowwlake@icloud.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tk2BzVsq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66721C4CEF7;
+	Thu,  9 Apr 2026 19:03:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775761412;
+	bh=YwOkPrRz58qVrT4iAwNpRE3lExF4h4WkvL4s+eVv7sU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tk2BzVsq5K66LQj5lSzTXPGxJEwFNDlwXC4Bsh4aDJoNRaO54kTtnBOAaAEOoefYw
+	 rPCWOlfSj8qt65VMbfI4vvljNO/PxuVmKM0Bo5tB3t9K6dwqhfUE+y6x/aOUqkfaqr
+	 K51mphn1hDtib0tFZUDFsfNo3j3LxaB4yHu87OwlNIwlA7G//UlVNDCiMSI9iytrdx
+	 XRaWGxMeyJZ90wv00aiW+2fjMkzk6aCKUVqRq7Fk9CP/6tLnVhGJ1R9EQAAsCd7HDs
+	 qEeplxn/S5fdqTUYTrD0A25SF5zUPIDCqx+mMEutKGEfuS5376VtTNxvbgNg99z5cz
+	 ao8HcbA3Wrx4A==
+Date: Thu, 9 Apr 2026 20:03:28 +0100
+From: Simon Horman <horms@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-hams@vger.kernel.org, Yizhe Zhuang <yizhe@darknavy.com>,
+	stable <stable@kernel.org>
+Subject: Re: [PATCH net] netrom: do some basic forms of validation on
+ incoming frames
+Message-ID: <20260409190328.GS469338@kernel.org>
+References: <2026040730-untagged-groin-bbb7@gregkh>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: cQDNo1pIe9AOiYTuf_BS5aPPuBbhE8Y0
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA5MDE3NSBTYWx0ZWRfX7sMM7JS7ESjs
- ETCQVmMMO1y4YbsYUaMZsS/lCal3lMrK98lZ0fGVw7ao6NdFsO1V15yQ5nt+uI6RABoAb+kFAM8
- iG9UDc7hQdAvraq2L8RQxTwqTUuFcGXNGpK+J4K1JwGdnDDKHGag7svbWhcx4vEvVPp8Hau+zGB
- hOnRtXIfRbAhR+rd/mG25oQVDQseNPPq5ZP1uald6ph4/yDRiAlHbfoJHxa0F+ZZ1SJSjceuPvr
- cyX+qouKKiOw1etXZAMphojevEj8oWsInA4NHbMV26sUcWy0O0uUz+Tr6eOoUJLiRnJrtfq0ct1
- 3wdRouKBd0tcrCZO46EQYQPX9mzcxyRdmq/4SlzLOd92phTmAjEHdgc6Nx/HWg=
-X-Proofpoint-ORIG-GUID: cQDNo1pIe9AOiYTuf_BS5aPPuBbhE8Y0
-X-Authority-Info-Out: v=2.4 cv=M45A6iws c=1 sm=1 tr=0 ts=69d7f760
- cx=c_apl:c_pps:t_out a=azHRBMxVc17uSn+fyuI/eg==:117
- a=azHRBMxVc17uSn+fyuI/eg==:17 a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10
- a=M51BFTxLslgA:10 a=x7bEGLp0ZPQA:10 a=LbuW6tbUWPcA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=UqCG9HQmAAAA:8 a=VwQbUJbxAAAA:8
- a=HT8XlELXz0Cu0VbjAesA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=JKcXVnpmuwdQ7RL0mgk_:22 a=zesNzv29S0FE4YlguZl3:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-09_04,2026-04-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxlogscore=999 phishscore=0 malwarescore=0
- mlxscore=0 adultscore=0 suspectscore=0 bulkscore=0 classifier=spam
- authscore=0 adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2604090175
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2026040730-untagged-groin-bbb7@gregkh>
 
-From: Lekë Hapçiu <framemain@outlook.com>
+On Tue, Apr 07, 2026 at 10:45:31AM +0200, Greg Kroah-Hartman wrote:
+> There is a lack of much validation of frame size coming from a
+> netrom-based device.  While these devices are "trusted" doing some
+> sanity checks is good to at least keep the fuzzing tools happy when they
+> stumble across this ancient protocol and light up with a range of bug
+> reports.
+> 
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Eric Dumazet <edumazet@google.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Cc: Simon Horman <horms@kernel.org>
+> Cc: linux-hams@vger.kernel.org
+> Assisted-by: gregkh_clanker_2000
+> Reviewed-by: Yizhe Zhuang <yizhe@darknavy.com>
+> Cc: stable <stable@kernel.org>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-v1 of this fix promoted `offset` from u8 to u16 in both TLV parsers,
-preventing the infinite loop when a connection TLV array exceeds 255 bytes.
-During review, Simon Horman identified two additional issues that the u16
-promotion alone does not address.
+Hi Greg 2000!
 
-Issue 1 - truncated TLV header:
+I expect that checking skb->len isn't sufficient here
+and pskb_may_pull needs to be used to ensure that
+the data is also available in the linear section of the skb.
 
-  The loop guard `offset < tlv_array_len` is not sufficient to guarantee
-  that reading tlv[0] (type) and tlv[1] (length) is safe.  When exactly
-  one byte remains (offset == tlv_array_len - 1) the loop body reads
-  tlv[1] one byte past the end of the array.
+Also, although I'm all for incremental enhancements,
+I do suspect that similar problems exist in the call
+chain of these functions.
 
-Issue 2 - peer-controlled `length` field:
-
-  `length` is read from peer-supplied frame data and is not checked against
-  the remaining array space before advancing `tlv` and `offset`:
-
-    offset += length + 2;   /* always */
-    tlv    += length + 2;   /* may now point past buffer end */
-
-  A crafted `length` advances `tlv` past the array boundary; the following
-  iteration reads tlv[0]/tlv[1] from adjacent kernel memory.
-
-  For nfc_llcp_parse_gb_tlv() this is particularly impactful: its input is
-  &local->remote_gb[3], a field within nfc_llcp_local.  A large `length`
-  can walk `tlv` into adjacent struct fields including sdreq_timer and
-  sdreq_timeout_work which contain kernel function pointers at approximately
-  +176 and +216 bytes past remote_gb[].  The parsed `type` byte at those
-  positions may match a recognized TLV type causing the parser to store
-  bytes from the function pointer into local->remote_miu, which is
-  subsequently readable via getsockopt().
-
-Issue 3 - zero-length TLV value:
-
-  The llcp_tlv8() and llcp_tlv16() accessor helpers read tlv[2] and
-  tlv[2..3] respectively.  The outer guard guarantees `length` bytes of
-  value are available past the two-byte header, but when length == 0 it
-  only guarantees offset+2 <= tlv_array_len (non-strict), leaving tlv[2]
-  out of bounds.  Per-type minimum-length checks are required before each
-  accessor call.  Note: llcp_tlv8/16 additionally validate against the
-  llcp_tlv_length[] table, providing a second safety layer; the per-type
-  checks here make the rejection explicit and avoid silent zero-defaults.
-
-Fix: add two loop-level guards inside each parsing loop:
-
-  if (tlv_array_len - offset < 2)            /* need type + length */
-      break;
-  [read type, length]
-  if (tlv_array_len - offset - 2 < length)   /* need length value bytes */
-      break;
-
-Both subtractions are safe: the loop condition guarantees offset <
-tlv_array_len; the first guard then guarantees the difference is >= 2,
-making the second subtraction non-negative.
-
-Add per-type minimum-length checks before each accessor call:
-  - tlv8-based (VERSION, LTO, OPT, RW): require length >= 1
-  - tlv16-based (MIUX, WKS):            require length >= 2
-
-Reachability: nfc_llcp_parse_connection_tlv() is reached on receipt of a
-CONNECT or CC PDU before any connection is established.
-nfc_llcp_parse_gb_tlv() is reached during ATR_RES processing.  Both are
-triggerable from any NFC peer within ~4 cm with no authentication.
-
-Reported-by: Simon Horman <horms@kernel.org>
-Fixes: 7a06e586b9bf ("NFC: Move LLCP receiver window value to socket structure")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lekë Hapçiu <framemain@outlook.com>
----
- net/nfc/llcp_commands.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
-
-diff --git a/net/nfc/llcp_commands.c b/net/nfc/llcp_commands.c
-index 6937dcb3b..7cc237a6d 100644
---- a/net/nfc/llcp_commands.c
-+++ b/net/nfc/llcp_commands.c
-@@ -202,25 +202,39 @@ int nfc_llcp_parse_gb_tlv(struct nfc_llcp_local *local,
- 		return -ENODEV;
- 
- 	while (offset < tlv_array_len) {
-+		if (tlv_array_len - offset < 2)
-+			break;
- 		type = tlv[0];
- 		length = tlv[1];
-+		if (tlv_array_len - offset - 2 < length)
-+			break;
- 
- 		pr_debug("type 0x%x length %d\n", type, length);
- 
- 		switch (type) {
- 		case LLCP_TLV_VERSION:
-+			if (length < 1)
-+				break;
- 			local->remote_version = llcp_tlv_version(tlv);
- 			break;
- 		case LLCP_TLV_MIUX:
-+			if (length < 2)
-+				break;
- 			local->remote_miu = llcp_tlv_miux(tlv) + 128;
- 			break;
- 		case LLCP_TLV_WKS:
-+			if (length < 2)
-+				break;
- 			local->remote_wks = llcp_tlv_wks(tlv);
- 			break;
- 		case LLCP_TLV_LTO:
-+			if (length < 1)
-+				break;
- 			local->remote_lto = llcp_tlv_lto(tlv) * 10;
- 			break;
- 		case LLCP_TLV_OPT:
-+			if (length < 1)
-+				break;
- 			local->remote_opt = llcp_tlv_opt(tlv);
- 			break;
- 		default:
-@@ -253,16 +267,24 @@ int nfc_llcp_parse_connection_tlv(struct nfc_llcp_sock *sock,
- 		return -ENOTCONN;
- 
- 	while (offset < tlv_array_len) {
-+		if (tlv_array_len - offset < 2)
-+			break;
- 		type = tlv[0];
- 		length = tlv[1];
-+		if (tlv_array_len - offset - 2 < length)
-+			break;
- 
- 		pr_debug("type 0x%x length %d\n", type, length);
- 
- 		switch (type) {
- 		case LLCP_TLV_MIUX:
-+			if (length < 2)
-+				break;
- 			sock->remote_miu = llcp_tlv_miux(tlv) + 128;
- 			break;
- 		case LLCP_TLV_RW:
-+			if (length < 1)
-+				break;
- 			sock->remote_rw = llcp_tlv_rw(tlv);
- 			break;
- 		case LLCP_TLV_SN:
--- 
-2.51.0
-
+...
