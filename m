@@ -1,251 +1,95 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB9E3CE48C;
-	Thu,  9 Apr 2026 12:46:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F93940DFA6;
+	Thu,  9 Apr 2026 12:53:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775738812; cv=none; b=HVEWqkd7ew4s8VUQlBN4kqjejtkxUYJYZK7X3qf7Vql4y5Msh94p/hIGCKsFloP/EaLJ7nNhAC293MjQM63dWaF5jojYmMfu28KpIdTTaFocfcVokKx9db4lmiEW8ANsMR5MJKKezeiMkE2aDhXzWlQH9GTqiz4lwPhMQ94nvCU=
+	t=1775739202; cv=none; b=kI3jGuQBPfJzFHiAaP5q1CsMQgKaMC3NtP3dEl6gImOtEvspn8ecowfx9lA0nwVihslfq5HMzWpg1LQp+ByxXDgv18vcmubZZJ3otOACM6h90qYPAp0tf5iMZDtZdkGZaky+4t5PtgRLqheTJiSau9JYQPC2MB0MzC3uqnVi0FM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775738812; c=relaxed/simple;
-	bh=2L6LKGM//lOCZObxlxh84VVtVUTrFvbwgQHqvFakwo4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DN9fnZDDuhQ2iq80/7b/7OfXbNN1sQcq0Me0ZqMGv1+IwU0f7V7mh1FX64MjBqvMTTOkYlGSgKmFLCh6wraNb1HNmkGgE0KFSZ+P71GnW9BpyafExGmd1EES619c/ifZRCxaAFhJwCk4B2YCCcKmXet6hmKvfiDo16870OMTZGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=EYWgZCsG; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1775739202; c=relaxed/simple;
+	bh=LW61lYCpkysaz5n8/6MOvuMhnwcPHyK1fg7J+XtCC3Y=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dEQx7wuZHgQhCqttumHYfw4XYeErZyN05LzWlofRrVPFJZ6Gkhct+42QXKSOOxiZ4cUx9KsejKe3Mjm8ND4Q5WPUKzc6D5uwLf95O3Q5N7dwsqgrS8KRG4zoJIrZn6trCYJ5ob3gWinjwWpnXqxkTmx3Dx/KJpVWN2NEq5dQtkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=SAtXMcKD; arc=none smtp.client-ip=220.197.31.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="EYWgZCsG"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=LzBWU5lPTgaIQwywPaNh1ueqepBz9byfm3c/htVgcPM=; b=EYWgZCsGZu1QCHFNahcoR94fBw
-	CmCWfpDniiWFgHRTQXcYrGVkgixrT4c9d/cv5V8wUxYO7pfeHwLi6Yf5nKpn8CO9ZmrW+TfU+SAok
-	J8wsI5mHiPLjhCX4h3A4Y3ijTnSC8TUf3yyNo8R6cZ8u5RCD1YA0KB1itpFhDOIthNjI=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wAomQ-00FQtj-Lq; Thu, 09 Apr 2026 14:46:42 +0200
-Date: Thu, 9 Apr 2026 14:46:42 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Josua Mayer <josua@solid-run.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Yazan Shhady <yazan.shhady@solid-run.com>,
-	Mikhail Anikin <mikhail.anikin@solid-run.com>,
-	Alexander Dahl <ada@thorsis.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>, netdev@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] arm64: dts: imx8dxl: Add SolidRun SoM and
- HummingBoard
-Message-ID: <8efbafe3-0a8a-4005-960c-e8fe62cee719@lunn.ch>
-References: <20260409-imx8dxl-sr-som-v2-0-83ff20629ba0@solid-run.com>
- <20260409-imx8dxl-sr-som-v2-3-83ff20629ba0@solid-run.com>
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="SAtXMcKD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=wZ
+	wwe4DyHbtAi+hv3AkRv/sNWKzP3XaahlaurKiPisk=; b=SAtXMcKD2BusVhXfH5
+	9p8a9l4uHwsBoyDnpSw1kOY0YZmB6aE8ocRuNoqvL54/JS7Jx2UBOKmzHQdXYbpV
+	Dj+g9+t3m82nFnMLPuzrs/QpkvvNABUOu7qayDbOzfLFxC04TkZtZJojbomsjGpE
+	+nu0bsDj/GOfgI94kz+xOC4ok=
+Received: from YUANZM2-F4WK0J3.lenovo.com (unknown [])
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wD3f+XVoNdpEK1KBQ--.47655S2;
+	Thu, 09 Apr 2026 20:51:34 +0800 (CST)
+From: wit_yuan <yuanzhaoming901030@126.com>
+To: jk@codeconstruct.com.au
+Cc: yuanzhaoming901030@126.com,
+	yuanzm2@lenovo.com,
+	matt@codeconstruct.com.au,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] net:mctp: split mctp hdr version to ver and rsvd
+Date: Thu,  9 Apr 2026 20:51:29 +0800
+Message-Id: <20260409125129.9210-1-yuanzhaoming901030@126.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260409-imx8dxl-sr-som-v2-3-83ff20629ba0@solid-run.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3f+XVoNdpEK1KBQ--.47655S2
+X-Coremail-Antispam: 1Uf129KBjvdXoW7Jw17CFyrury7Jr17tF1DZFb_yoWDCwb_A3
+	4xWrWku3y8uFn7t3y7JFsIy3yFk3y8Cry09wsxtrsFqFnYyF1UuFn7Xw1IvF9agFn7u3y5
+	XFn5JFyUCr13WjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRuNtIDUUUUU==
+X-CM-SenderInfo: h1xd065kdrzxtqjziiqqtqqiyswou0bp/xtbBsBatuGnXoNZtHwAA3J
 
-> +&eqos {
-> +	/* delays are added by connected ethernet-switch cpu port */
-> +	phy-mode = "rgmii";
-> +	pinctrl-0 = <&eqos_pins>;
-> +	pinctrl-names = "default";
-> +	status = "okay";
-> +
-> +	fixed-link {
-> +		full-duplex;
-> +		speed = <1000>;
-> +	};
-> +};
+From: yuanzhaoming <yuanzm2@lenovo.com>
 
+from spec dsp0236_1.2.1.pdf page 26, the mctp header contains the
+RSVD(4bit) and Hdr version(4 bit).
 
-> +	ethernet-switch@0 {
-> +		compatible = "nxp,sja1110a";
-> +		reg = <0>;
-> +		reset-gpios = <&lsio_gpio4 3 GPIO_ACTIVE_LOW>;
-> +		spi-max-frequency = <4000000>;
-> +
-> +		ethernet-ports {
-> +			#address-cells = <1>;
-> +			#size-cells = <0>;
-> +
-> +			/* 100Base-TX on connector J26 */
-> +			port@1 {
-> +				reg = <0x1>;
-> +				label = "lan1";
-> +				phy-handle = <&switch_port1_base_tx_phy>;
-> +				phy-mode = "internal";
-> +				status = "okay";
-> +			};
-> +
-> +			/* CPU */
-> +			port@2 {
-> +				reg = <0x2>;
-> +				ethernet = <&eqos>;
-> +				label = "cpu";
-> +				phy-mode = "rgmii-id";
-> +				rx-internal-delay-ps = <2000>;
-> +				tx-internal-delay-ps = <2000>;
-> +				status = "okay";
-> +
-> +				fixed-link {
-> +					full-duplex;
-> +					speed = <1000>;
-> +				};
-> +			};
-> +
-> +			/* sgmii on addon board connector J21 */
-> +			port@3 {
-> +				reg = <0x3>;
-> +				label = "lan3";
-> +				status = "disabled";
-> +			};
-> +
-> +			/* sgmii on addon board connector J21 */
-> +			port@4 {
-> +				reg = <0x4>;
-> +				label = "lan4";
-> +				status = "disabled";
-> +			};
-> +
-> +			/* 100base-t1 on addon board connector J21 */
-> +			port@5 {
-> +				reg = <0x5>;
-> +				label = "trx1";
-> +				phy-handle = <&switch_port5_base_t1_phy>;
-> +				phy-mode = "internal";
-> +				status = "disabled";
-> +			};
-> +
-> +			/* 100base-t1 on addon board connector J21 */
-> +			port@6 {
-> +				reg = <0x6>;
-> +				label = "trx2";
-> +				phy-handle = <&switch_port6_base_t1_phy>;
-> +				phy-mode = "internal";
-> +				status = "disabled";
-> +			};
-> +
-> +			/* 100base-t1 on addon board connector J21 */
-> +			port@7 {
-> +				reg = <0x7>;
-> +				label = "trx3";
-> +				phy-handle = <&switch_port7_base_t1_phy>;
-> +				phy-mode = "internal";
-> +				status = "disabled";
-> +			};
-> +
-> +			/* 100base-t1 on addon board connector J21 */
-> +			port@8 {
-> +				reg = <0x8>;
-> +				label = "trx4";
-> +				phy-handle = <&switch_port8_base_t1_phy>;
-> +				phy-mode = "internal";
-> +				status = "disabled";
-> +			};
-> +
-> +			/* 100base-t1 on addon board connector J21 */
-> +			port@9 {
-> +				reg = <0x9>;
-> +				label = "trx5";
-> +				phy-handle = <&switch_port9_base_t1_phy>;
-> +				phy-mode = "internal";
-> +				status = "disabled";
-> +			};
-> +
-> +			/* 100Base-T1 on connector J26 */
-> +			port@a {
-> +				reg = <0xa>;
-> +				label = "trx6";
-> +				phy-handle = <&switch_port10_base_t1_phy>;
-> +				phy-mode = "internal";
-> +				status = "okay";
-> +			};
-> +		};
-> +
-> +		mdios {
-> +			#address-cells = <1>;
-> +			#size-cells = <0>;
-> +
-> +			mdio@0 {
-> +				compatible = "nxp,sja1110-base-t1-mdio";
-> +				reg = <0>;
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +
-> +				/* 100base-t1 on addon board connector J21 */
-> +				switch_port5_base_t1_phy: ethernet-phy@1 {
-> +					compatible = "ethernet-phy-ieee802.3-c45";
-> +					reg = <0x1>;
-> +					status = "disabled";
-> +				};
-> +
-> +				/* 100base-t1 on addon board connector J21 */
-> +				switch_port6_base_t1_phy: ethernet-phy@2 {
-> +					compatible = "ethernet-phy-ieee802.3-c45";
-> +					reg = <0x2>;
-> +					status = "disabled";
-> +				};
-> +
-> +				/* 100base-t1 on addon board connector J21 */
-> +				switch_port7_base_t1_phy: ethernet-phy@3 {
-> +					compatible = "ethernet-phy-ieee802.3-c45";
-> +					reg = <0x3>;
-> +					status = "disabled";
-> +				};
-> +
-> +				/* 100base-t1 on addon board connector J21 */
-> +				switch_port8_base_t1_phy: ethernet-phy@4 {
-> +					compatible = "ethernet-phy-ieee802.3-c45";
-> +					reg = <0x4>;
-> +					status = "disabled";
-> +				};
-> +
-> +				/* 100base-t1 on addon board connector J21 */
-> +				switch_port9_base_t1_phy: ethernet-phy@5 {
-> +					compatible = "ethernet-phy-ieee802.3-c45";
-> +					reg = <0x5>;
-> +					status = "disabled";
-> +				};
-> +
-> +				/* 100Base-T1 on connector J26 */
-> +				switch_port10_base_t1_phy: ethernet-phy@6 {
-> +					compatible = "ethernet-phy-ieee802.3-c45";
-> +					reg = <0x6>;
-> +				};
-> +			};
-> +
-> +			mdio@1 {
-> +				compatible = "nxp,sja1110-base-tx-mdio";
-> +				reg = <1>;
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +
-> +				/* 100Base-TX on connector J26 */
-> +				switch_port1_base_tx_phy: ethernet-phy@1 {
-> +					reg = <0x1>;
-> +				};
-> +			};
+mctp_pkttype_receive invoke mctp_hdr, and get mh->ver whole byte 
+compare the MCTP_VER_MIN, MCTP_VER_MAX. the reserver bits may be
+by misleading used.
 
-For these nodes only:
+Signed-off-by: yuanzhaoming <yuanzm2@lenovo.com>
+---
+ include/net/mctp.h | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+diff --git a/include/net/mctp.h b/include/net/mctp.h
+index e1e0a69afdce..80cc9c63f6ba 100644
+--- a/include/net/mctp.h
++++ b/include/net/mctp.h
+@@ -14,10 +14,17 @@
+ #include <linux/netdevice.h>
+ #include <net/net_namespace.h>
+ #include <net/sock.h>
++#include <asm/byteorder.h>
+ 
+ /* MCTP packet definitions */
+ struct mctp_hdr {
+-	u8	ver;
++#if defined(__LITTLE_ENDIAN_BITFIELD)
++	u8	ver:4, rsvd: 4;
++#elif defined(__BIG_ENDIAN_BITFIELD)
++	u8	rsvd:4, ver: 4;
++#else
++#error	"Please fix <asm/byteorder.h>"
++#endif
+ 	u8	dest;
+ 	u8	src;
+ 	u8	flags_seq_tag;
+-- 
+2.49.0
 
-    Andrew
