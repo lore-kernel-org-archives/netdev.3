@@ -1,42 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C8F1D5CD1
-	for <netdev@vger.kernel.org>; Thu,  9 Apr 2026 02:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF71D2D5937;
+	Thu,  9 Apr 2026 02:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775702301; cv=none; b=K6zFfCqQ/gf+WrDJXw2/OMub+3zPXbbvEKoJWl+S3iO3PiqAAaE+m+dGBoS/TPD/Nb1KTCgOuRwVZ+6OJsTS6feNsM0p+1TSvbPlNpUu8+Ccwv4uVxSQUq9tEr2EUXRon/IWwKcD5p+bmsaS02W5USjk3BqnKzb/HJFIQbBSGaA=
+	t=1775702395; cv=none; b=QEZi9crd5EsyvRtEobeWcRWWJtMytFFTymAhPSPHVspIM67NS113ReN25T9EmvrP9urC6AYXTBF3jwxi1Asf7sM6GcCEKj8HPff8ZhToOVHbOQfpHknMu/ycy7Cs9Qw+lMIGJYYPmuud3MC2Z1EBJkTq0SIIO4VQbse5ZlCattI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775702301; c=relaxed/simple;
-	bh=XbvmYxYToqOM+Ve4KTW+qEPJth2RCNBiqg1hn8bMxqc=;
+	s=arc-20240116; t=1775702395; c=relaxed/simple;
+	bh=xQJJE8QvmgVGNOhD8sQ6ckx/Dcp6WCc+xBwXwcaYVwQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EB4NtLMtSpNvhRYlZ//4oL1sytaK0ij6N/pCS+VV3flSdwE7wpgNzp/zfjpfduCsbeOGZ7fOXKwdmouy+ImbISpADIaPX3VbdQyke/BpGe6+6EB5iyROl26BB7ZHQyZc3SXlER+nLP9aO/0MuAsCgxjDCgIyL0mtYNy6sS9oPko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=liPC04BF; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=Ah2Ut/booru7NKj61sgOsaVlvHQBc7hqR+XL5cDb14kEQpsw+Vz5+4qH/xSLrhHjLRmKPBkPy3K+wB20oL/SJ5qP3KgaesgASbM6lhwhQ63PBBxR/h2CZnrytn9xbcjHCrX2FmUAmCdd6AS2+klQt68rfOk0Zfp1YDrsYmn090U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BgpGW6R+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="liPC04BF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88793C19421;
-	Thu,  9 Apr 2026 02:38:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BgpGW6R+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB8AC19421;
+	Thu,  9 Apr 2026 02:39:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775702300;
-	bh=XbvmYxYToqOM+Ve4KTW+qEPJth2RCNBiqg1hn8bMxqc=;
+	s=k20201202; t=1775702395;
+	bh=xQJJE8QvmgVGNOhD8sQ6ckx/Dcp6WCc+xBwXwcaYVwQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=liPC04BFK8CxlL1psh4kemN3baKgd6BtQcJXqKqJzm4pSgK8MT+pZ8UplZM/s9Jg8
-	 nKmfPib8Lv88EBWgnADj8xA0CdLX67C8r9UhFjd49DVLmhp2IIxnISAST3ZfF3mIxV
-	 vMskZTUc+5uU/1hnsrfW228qp43fH5Z8eN9EUzlXVk9dN63VsAfeBKXkd3SZ7SyipX
-	 HKNaltxvS3B+EvSr0jnWm4STR2GCnYE0ziqy9vrwN4tga/5NTW6Hg5Ff9HHG2l1z4B
-	 Hvx+tlzIG0LC39maYkipaQyXCU04A342cncX3UeFkXJHIxzJS1mqv8co2GpTvwLEAX
-	 VeXUVxKvUoQRg==
-Date: Wed, 8 Apr 2026 19:38:19 -0700
+	b=BgpGW6R+ik0WazZL+C8To5nK1E2zWtC4NsRmz99Pf62FOnjDQteZMPzAHu5/1PcD+
+	 CR1QaSwzqsxpDBSIZ9GsaUEXZUtms3JbaiDYDK2QPmayElVE+s2C0uM9TUslGwWazg
+	 qzYNDeF01NVX9lAQ4kc1almnFSOBgOm9IKYrnNEA2KwwVU/Of+NLXSVfxbQZGbgMHx
+	 ctkeI1EA1uZTTInMRR7qRF9B0AxCZpgKGU5V/+xaY3j1Wb1SXnL+LRTuBd9vmjra0b
+	 6fBsjbhrGfse3F3mqXcLzfExQ5AgbSf1udJJzyNn5hQfncLO0aoYCawNnIbuL/l66M
+	 uZ5cXOqutPc0Q==
+Date: Wed, 8 Apr 2026 19:39:54 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, Andrew Lunn <andrew@lunn.ch>
-Subject: Re: [PATCH net-next 1/4] net: dsa: remove struct platform_data
-Message-ID: <20260408193819.11be1526@kernel.org>
-In-Reply-To: <20260406212158.721806-2-vladimir.oltean@nxp.com>
-References: <20260406212158.721806-1-vladimir.oltean@nxp.com>
-	<20260406212158.721806-2-vladimir.oltean@nxp.com>
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Tim Bird <tim.bird@sony.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 1/2] keys, dns: drop unused upayload->data NUL
+ terminator
+Message-ID: <20260408193954.6e69be8d@kernel.org>
+In-Reply-To: <20260406175810.1018681-3-thorsten.blum@linux.dev>
+References: <20260406175810.1018681-3-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,10 +47,9 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue,  7 Apr 2026 00:21:55 +0300 Vladimir Oltean wrote:
->  - ``dsa_switch_tree``: structure assigned to the conduit network device under
->    ``dsa_ptr``, this structure references a dsa_platform_data structure as well as
->    the tagging protocol supported by the switch tree, and which receive/transmit
+On Mon,  6 Apr 2026 19:58:09 +0200 Thorsten Blum wrote:
+> Subject: [PATCH net-next 1/2] keys, dns: drop unused upayload->data NUL terminator
 
-AIs point out struct dsa_switch_tree still contains a pointer to struct
-dsa_platform_data and the doc above mentions it. Please follow up.
+This says net-next but patch 2 never reached netdev@
+-- 
+pw-bot: cr
