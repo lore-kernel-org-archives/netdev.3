@@ -1,51 +1,51 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99743A7F69
-	for <netdev@vger.kernel.org>; Thu,  9 Apr 2026 13:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80AE3CF670
+	for <netdev@vger.kernel.org>; Thu,  9 Apr 2026 13:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775739633; cv=none; b=ECNcbTLx4G1tQEY7W/JG4QeaDucEXz0lVwCae+JBMiiNR0VeumFZWHN/CKTBJJyjwv3UnTGdG+SpgVnPRFsEugfikXZHfb70UAQ0VRj72ZnkuvT9cqbD7DKWsAzwDJimxYqXobq00PglX6+2K2J5m4vGBJ+SqAD9WzezgDmMRBo=
+	t=1775739635; cv=none; b=JOyHXL4B/FB4tRkMYvJ221OyRGZq7QcUbPBlcXyPWspPjrHZNZOGccywofmnTBAU4iK5a5nKomk5o9oSGc9t0G0iWwch2wZl5xrSzMQZkoXZ6hQ0yHBb/VAbNAq6Px4tzkaztH0v5Z3GwTfHRSDDLMGKGM7OvVQjm8UVIVpCRuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775739633; c=relaxed/simple;
-	bh=c4eMOXyp2LN1lLk+Z9r8zAZxvsRhHPYKFvwJeeR8GBk=;
+	s=arc-20240116; t=1775739635; c=relaxed/simple;
+	bh=RMRl9YrSm+l/Tb6MM0krI2qwrH8y6HxojXkgpB/gqE8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OPytxLQI85AbN5S+cmiBnODHMor1/Y0nZF+E0Z2w4ZRafc90rAQLSl8fDcUjzpaQ1iI+LIC2nsIKAzs+ODUJhGFfhK272cyY5265jlBd8NJLRpxdcDocqlIxSj2tUjEPmDUdI5B/Ptk1m7Sj2ivl52wy765pZ377teh3Tl9w+CM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YtvJML6T; arc=none smtp.client-ip=192.198.163.19
+	 MIME-Version; b=QLqLRGZbkA10I74VhSTZZzbHxWJkBSNMScN4q+/6em/LONxWO43L6cZ8r32PhCDpYu8mC8O5e8Z0K5VAwXHhWRgafLcnsZZ4i/PWzL89cBycPMENg5zNRn4rG2oRbKjic8Bqzhol6DI4vVfiPEyH1ALuQdFuibfP88vqKe8a0h8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Su3uIQPW; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YtvJML6T"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Su3uIQPW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775739631; x=1807275631;
+  t=1775739634; x=1807275634;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=c4eMOXyp2LN1lLk+Z9r8zAZxvsRhHPYKFvwJeeR8GBk=;
-  b=YtvJML6Tn7+y09t3M8KX+gXyMbZKO6fgaQMOLh7GIntMAL0h3dhEdSWM
-   gtd8PoLlE4G2YA4OZPv+ePvsSXKsA8hpuDn7eIt96tniWIcW6rJ1noNDP
-   gcvU2I0Oak9s4DqP9ZN6kI26lfKOXcL3weETIomDPd1X5hG8LqL443Yti
-   6Y4UYF6pJJWIky58doVtPjbe3aNwlzS7woWCp0RmgUWoqGgGCRyBg6/zX
-   Dw1ArVao12KvvHudB1dLboibMXtTLDaGd1p88JHg0L2Xm3LEj4MHXIVTm
-   6nKm1jJmXP9RcfHRmmDhZJSSMtRy+PP7QmL+vSQcZ1EwhuEQHxkE96xlx
-   g==;
-X-CSE-ConnectionGUID: 9c4oKfr7RwSoDarLbzJafA==
-X-CSE-MsgGUID: iyzS6hYYTCab3aysupFJ9A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11753"; a="75777531"
+  bh=RMRl9YrSm+l/Tb6MM0krI2qwrH8y6HxojXkgpB/gqE8=;
+  b=Su3uIQPWXVDchaSvA5CdlefJBBdjuVbNwh8EfvfKi06MOAZvHc41I4Sk
+   xjr+xd58n8aPwEHUMmgeCCR7OMiT9444SgWQfGArGueXJ/qy0AbL3xJtp
+   szxUfTTSdLTS+s+yCFlg5rP6hwfbn2HWwz//18KigwuoExSyk0bDscYtM
+   vV36SVYLx9CD46EoIJoVgOXYRoSzUcTP3eT3wmsJZdLvx4OgrOOhpoZtq
+   aZIQZeJH1g5JRaYTn3M8+ixnKN7KsbmNxXjgFypgHmuKnuI4yZPbBvN02
+   E3VA1bw19HX0GCGQ2jGG3iW3UXzQ16N//fXf7/xNoM7k+mkTbIUvxhFrK
+   A==;
+X-CSE-ConnectionGUID: wajoi6C1TOqXDcYWxEf1/g==
+X-CSE-MsgGUID: LzMoOFxNQ/WOlgAnWngCSw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11753"; a="75777542"
 X-IronPort-AV: E=Sophos;i="6.23,169,1770624000"; 
-   d="scan'208";a="75777531"
+   d="scan'208";a="75777542"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2026 06:00:20 -0700
-X-CSE-ConnectionGUID: JB6NToD0QTCrCi1paQZ4IQ==
-X-CSE-MsgGUID: VZ7qTrlfQqGQ3btSdzSN7g==
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2026 06:00:22 -0700
+X-CSE-ConnectionGUID: OPdIi8ZhTM+KRWyRyxHrtw==
+X-CSE-MsgGUID: JnYADzj5TticgxMhHSKKEQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,169,1770624000"; 
-   d="scan'208";a="259208131"
+   d="scan'208";a="259208144"
 Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by orviesa002.jf.intel.com with ESMTP; 09 Apr 2026 06:00:14 -0700
+  by orviesa002.jf.intel.com with ESMTP; 09 Apr 2026 06:00:19 -0700
 Received: from gond.igk.intel.com (gond.igk.intel.com [10.123.220.52])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id 307172FC61;
-	Thu,  9 Apr 2026 14:00:13 +0100 (IST)
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id AF41E2FC57;
+	Thu,  9 Apr 2026 14:00:18 +0100 (IST)
 From: Marcin Szycik <marcin.szycik@linux.intel.com>
 To: intel-wired-lan@lists.osuosl.org
 Cc: netdev@vger.kernel.org,
@@ -53,12 +53,11 @@ Cc: netdev@vger.kernel.org,
 	ananth.s@intel.com,
 	alexander.duyck@gmail.com,
 	Marcin Szycik <marcin.szycik@linux.intel.com>,
-	Chinh Cao <chinh.t.cao@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH iwl-next v2 03/10] ice: initialize ACL scenario
-Date: Thu,  9 Apr 2026 13:59:56 +0200
-Message-ID: <20260409120003.2719-4-marcin.szycik@linux.intel.com>
+Subject: [PATCH iwl-next v2 10/10] ice: use ACL for ntuple rules that conflict with FDir
+Date: Thu,  9 Apr 2026 14:00:03 +0200
+Message-ID: <20260409120003.2719-11-marcin.szycik@linux.intel.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20260409120003.2719-1-marcin.szycik@linux.intel.com>
 References: <20260409120003.2719-1-marcin.szycik@linux.intel.com>
@@ -70,1082 +69,220 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Real Valiquette <real.valiquette@intel.com>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-Complete initialization of the ACL table by programming the table with an
-initial scenario. The scenario stores the data for the filtering rules.
-Adjust reporting of ntuple filters to include ACL filters.
+Flow Director can keep only one input set per flow type. After ACL
+support was added for ethtool ntuple rules, the driver still only
+selected ACL for rules with partial masks.
 
-Co-developed-by: Chinh Cao <chinh.t.cao@intel.com>
-Signed-off-by: Chinh Cao <chinh.t.cao@intel.com>
-Signed-off-by: Real Valiquette <real.valiquette@intel.com>
-Co-developed-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+That leaves a gap for rules with full masks that still require a
+different input set than the one already programmed for Flow Director.
+Such rules go through the FDir path, build a different extraction
+sequence and then fail because the existing FDir profile cannot be
+reused.
+
+Detect this case before programming the rule. Build the candidate IP
+flow segment, compare it with the active non-tunneled FDir profile and,
+when the input sets differ, offload the rule through ACL if ACL is
+available.
+
+Refactor the IP flow segment setup into a helper so the same logic can
+be used both by the extraction-sequence configuration path and by the
+conflict check.
+
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
 Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 ---
 v2:
-* Add unroll in ice_init_acl() in case of ice_acl_create_scen() failure
+* Add this patch
 ---
- drivers/net/ethernet/intel/ice/ice.h          |   1 +
- drivers/net/ethernet/intel/ice/ice_acl.h      |   8 +
- .../net/ethernet/intel/ice/ice_adminq_cmd.h   |  29 +
- drivers/net/ethernet/intel/ice/ice_fdir.h     |   6 +-
- drivers/net/ethernet/intel/ice/ice_flow.h     |   7 +
- drivers/net/ethernet/intel/ice/ice_type.h     |   2 +
- drivers/net/ethernet/intel/ice/ice_acl.c      | 116 ++++
- drivers/net/ethernet/intel/ice/ice_acl_ctrl.c | 558 ++++++++++++++++++
- drivers/net/ethernet/intel/ice/ice_ethtool.c  |   4 +-
- .../ethernet/intel/ice/ice_ethtool_ntuple.c   |  45 +-
- drivers/net/ethernet/intel/ice/ice_fdir.c     |  12 +-
- drivers/net/ethernet/intel/ice/ice_main.c     |  17 +-
- 12 files changed, 789 insertions(+), 16 deletions(-)
+ .../ethernet/intel/ice/ice_ethtool_ntuple.c   | 154 ++++++++++++------
+ 1 file changed, 107 insertions(+), 47 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
-index 3a51a033296c..e064323d983c 100644
---- a/drivers/net/ethernet/intel/ice/ice.h
-+++ b/drivers/net/ethernet/intel/ice/ice.h
-@@ -1024,6 +1024,7 @@ void ice_vsi_manage_fdir(struct ice_vsi *vsi, bool ena);
- int ice_add_ntuple_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd);
- int ice_del_ntuple_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd);
- int ice_get_ethtool_fdir_entry(struct ice_hw *hw, struct ethtool_rxnfc *cmd);
-+u32 ice_ntuple_get_max_fltr_cnt(struct ice_hw *hw);
- int
- ice_get_fdir_fltr_ids(struct ice_hw *hw, struct ethtool_rxnfc *cmd,
- 		      u32 *rule_locs);
-diff --git a/drivers/net/ethernet/intel/ice/ice_acl.h b/drivers/net/ethernet/intel/ice/ice_acl.h
-index bb836f23d65e..d4e6f0e25a12 100644
---- a/drivers/net/ethernet/intel/ice/ice_acl.h
-+++ b/drivers/net/ethernet/intel/ice/ice_acl.h
-@@ -101,6 +101,8 @@ struct ice_acl_alloc_tbl {
- 
- int ice_acl_create_tbl(struct ice_hw *hw, struct ice_acl_tbl_params *params);
- int ice_acl_destroy_tbl(struct ice_hw *hw);
-+int ice_acl_create_scen(struct ice_hw *hw, u16 match_width, u16 num_entries,
-+			u16 *scen_id);
- int ice_aq_alloc_acl_tbl(struct ice_hw *hw, struct ice_acl_alloc_tbl *tbl,
- 			 struct ice_sq_cd *cd);
- int ice_aq_dealloc_acl_tbl(struct ice_hw *hw, u16 alloc_id,
-@@ -113,5 +115,11 @@ int ice_aq_program_actpair(struct ice_hw *hw, u8 act_mem_idx, u16 act_entry_idx,
- 			   struct ice_aqc_actpair *buf, struct ice_sq_cd *cd);
- int ice_aq_alloc_acl_scen(struct ice_hw *hw, u16 *scen_id,
- 			  struct ice_aqc_acl_scen *buf, struct ice_sq_cd *cd);
-+int ice_aq_dealloc_acl_scen(struct ice_hw *hw, u16 scen_id,
-+			    struct ice_sq_cd *cd);
-+int ice_aq_update_acl_scen(struct ice_hw *hw, u16 scen_id,
-+			   struct ice_aqc_acl_scen *buf, struct ice_sq_cd *cd);
-+int ice_aq_query_acl_scen(struct ice_hw *hw, u16 scen_id,
-+			  struct ice_aqc_acl_scen *buf, struct ice_sq_cd *cd);
- 
- #endif /* _ICE_ACL_H_ */
-diff --git a/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h b/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
-index 87f215f47072..46d2675baa4e 100644
---- a/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
-+++ b/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
-@@ -2070,6 +2070,33 @@ struct ice_aqc_acl_generic {
- 	u8 act_mem[ICE_AQC_MAX_ACTION_MEMORIES];
- };
- 
-+/* Allocate ACL scenario (indirect 0x0C14). This command doesn't have separate
-+ * response buffer since original command buffer gets updated with
-+ * 'scen_id' in case of success
-+ */
-+struct ice_aqc_acl_alloc_scen {
-+	union {
-+		struct {
-+			u8 reserved[8];
-+		} cmd;
-+		struct {
-+			__le16 scen_id;
-+			u8 reserved[6];
-+		} resp;
-+	} ops;
-+	__le32 addr_high;
-+	__le32 addr_low;
-+};
-+
-+/* De-allocate ACL scenario (direct 0x0C15). This command doesn't need
-+ * separate response buffer since nothing to be returned as a response
-+ * except status.
-+ */
-+struct ice_aqc_acl_dealloc_scen {
-+	__le16 scen_id;
-+	u8 reserved[14];
-+};
-+
- /* Update ACL scenario (direct 0x0C1B)
-  * Query ACL scenario (direct 0x0C23)
-  */
-@@ -2850,6 +2877,8 @@ enum ice_adminq_opc {
- 	/* ACL commands */
- 	ice_aqc_opc_alloc_acl_tbl			= 0x0C10,
- 	ice_aqc_opc_dealloc_acl_tbl			= 0x0C11,
-+	ice_aqc_opc_alloc_acl_scen			= 0x0C14,
-+	ice_aqc_opc_dealloc_acl_scen			= 0x0C15,
- 	ice_aqc_opc_update_acl_scen			= 0x0C1B,
- 	ice_aqc_opc_program_acl_actpair			= 0x0C1C,
- 	ice_aqc_opc_program_acl_entry			= 0x0C20,
-diff --git a/drivers/net/ethernet/intel/ice/ice_fdir.h b/drivers/net/ethernet/intel/ice/ice_fdir.h
-index 26d79b1364e7..4d802b6be0ee 100644
---- a/drivers/net/ethernet/intel/ice/ice_fdir.h
-+++ b/drivers/net/ethernet/intel/ice/ice_fdir.h
-@@ -198,6 +198,8 @@ struct ice_ntuple_fltr {
- 	u32 fltr_id;
- 	u8 fdid_prio;
- 	u8 comp_report;
-+
-+	bool acl_fltr;
- };
- 
- /* Dummy packet filter definition structure */
-@@ -227,7 +229,7 @@ bool ice_fdir_is_dup_fltr(struct ice_hw *hw, struct ice_ntuple_fltr *input);
- bool ice_fdir_has_frag(enum ice_fltr_ptype flow);
- struct ice_ntuple_fltr *
- ice_fdir_find_fltr_by_idx(struct ice_hw *hw, u32 fltr_idx);
--void
--ice_fdir_update_cntrs(struct ice_hw *hw, enum ice_fltr_ptype flow, bool add);
-+void ice_fdir_update_cntrs(struct ice_hw *hw, enum ice_fltr_ptype flow,
-+			   bool acl_fltr, bool add);
- void ice_fdir_list_add_fltr(struct ice_hw *hw, struct ice_ntuple_fltr *input);
- #endif /* _ICE_FDIR_H_ */
-diff --git a/drivers/net/ethernet/intel/ice/ice_flow.h b/drivers/net/ethernet/intel/ice/ice_flow.h
-index 7323e26afc0b..a20ef320e1f9 100644
---- a/drivers/net/ethernet/intel/ice/ice_flow.h
-+++ b/drivers/net/ethernet/intel/ice/ice_flow.h
-@@ -482,6 +482,13 @@ struct ice_flow_prof {
- 	DECLARE_BITMAP(vsis, ICE_MAX_VSI);
- 
- 	bool symm; /* Symmetric Hash for RSS */
-+
-+	union {
-+		/* struct sw_recipe */
-+		struct ice_acl_scen *scen;
-+		/* struct fd */
-+		u32 data;
-+	} cfg;
- };
- 
- struct ice_rss_raw_cfg {
-diff --git a/drivers/net/ethernet/intel/ice/ice_type.h b/drivers/net/ethernet/intel/ice/ice_type.h
-index 161acd1cf095..8ee8eeb7679b 100644
---- a/drivers/net/ethernet/intel/ice/ice_type.h
-+++ b/drivers/net/ethernet/intel/ice/ice_type.h
-@@ -1011,6 +1011,8 @@ struct ice_hw {
- 	struct udp_tunnel_nic_info udp_tunnel_nic;
- 
- 	struct ice_acl_tbl *acl_tbl;
-+	struct ice_fd_hw_prof **acl_prof;
-+	u16 acl_fltr_cnt[ICE_FLTR_PTYPE_MAX];
- 
- 	/* dvm boost update information */
- 	struct ice_dvm_table dvm_upd;
-diff --git a/drivers/net/ethernet/intel/ice/ice_acl.c b/drivers/net/ethernet/intel/ice/ice_acl.c
-index 3d963c6071dc..81bddac8d0a2 100644
---- a/drivers/net/ethernet/intel/ice/ice_acl.c
-+++ b/drivers/net/ethernet/intel/ice/ice_acl.c
-@@ -134,3 +134,119 @@ int ice_aq_program_actpair(struct ice_hw *hw, u8 act_mem_idx, u16 act_entry_idx,
- 
- 	return ice_aq_send_cmd(hw, &desc, buf, sizeof(*buf), cd);
- }
-+
-+/**
-+ * ice_aq_alloc_acl_scen - allocate ACL scenario
-+ * @hw: pointer to the HW struct
-+ * @scen_id: memory location to receive allocated scenario ID
-+ * @buf: address of indirect data buffer
-+ * @cd: pointer to command details structure or NULL
-+ *
-+ * Allocate ACL scenario (indirect 0x0C14)
-+ *
-+ * Return: 0 on success, negative on error
-+ */
-+int ice_aq_alloc_acl_scen(struct ice_hw *hw, u16 *scen_id,
-+			  struct ice_aqc_acl_scen *buf, struct ice_sq_cd *cd)
-+{
-+	struct ice_aqc_acl_alloc_scen *cmd;
-+	struct libie_aq_desc desc;
-+	int err;
-+
-+	ice_fill_dflt_direct_cmd_desc(&desc, ice_aqc_opc_alloc_acl_scen);
-+	desc.flags |= cpu_to_le16(LIBIE_AQ_FLAG_RD);
-+	cmd = libie_aq_raw(&desc);
-+
-+	err = ice_aq_send_cmd(hw, &desc, buf, sizeof(*buf), cd);
-+	if (!err)
-+		*scen_id = le16_to_cpu(cmd->ops.resp.scen_id);
-+
-+	return err;
-+}
-+
-+/**
-+ * ice_aq_dealloc_acl_scen - deallocate ACL scenario
-+ * @hw: pointer to the HW struct
-+ * @scen_id: scen_id to be deallocated (input and output field)
-+ * @cd: pointer to command details structure or NULL
-+ *
-+ * Deallocate ACL scenario (direct 0x0C15)
-+ *
-+ * Return: 0 on success, negative on error
-+ */
-+int ice_aq_dealloc_acl_scen(struct ice_hw *hw, u16 scen_id,
-+			    struct ice_sq_cd *cd)
-+{
-+	struct ice_aqc_acl_dealloc_scen *cmd;
-+	struct libie_aq_desc desc;
-+
-+	ice_fill_dflt_direct_cmd_desc(&desc, ice_aqc_opc_dealloc_acl_scen);
-+	cmd = libie_aq_raw(&desc);
-+	cmd->scen_id = cpu_to_le16(scen_id);
-+
-+	return ice_aq_send_cmd(hw, &desc, NULL, 0, cd);
-+}
-+
-+/**
-+ * ice_aq_update_query_scen - update or query ACL scenario
-+ * @hw: pointer to the HW struct
-+ * @opcode: AQ command opcode for either query or update scenario
-+ * @scen_id: scen_id to be updated or queried
-+ * @buf: address of indirect data buffer
-+ * @cd: pointer to command details structure or NULL
-+ *
-+ * Calls update or query ACL scenario
-+ *
-+ * Return: 0 on success, negative on error
-+ */
-+static int ice_aq_update_query_scen(struct ice_hw *hw, u16 opcode, u16 scen_id,
-+				    struct ice_aqc_acl_scen *buf,
-+				    struct ice_sq_cd *cd)
-+{
-+	struct ice_aqc_acl_update_query_scen *cmd;
-+	struct libie_aq_desc desc;
-+
-+	ice_fill_dflt_direct_cmd_desc(&desc, opcode);
-+	if (opcode == ice_aqc_opc_update_acl_scen)
-+		desc.flags |= cpu_to_le16(LIBIE_AQ_FLAG_RD);
-+	cmd = libie_aq_raw(&desc);
-+	cmd->scen_id = cpu_to_le16(scen_id);
-+
-+	return ice_aq_send_cmd(hw, &desc, buf, sizeof(*buf), cd);
-+}
-+
-+/**
-+ * ice_aq_update_acl_scen - update ACL scenario
-+ * @hw: pointer to the HW struct
-+ * @scen_id: scen_id to be updated
-+ * @buf: address of indirect data buffer
-+ * @cd: pointer to command details structure or NULL
-+ *
-+ * Update ACL scenario (indirect 0x0C1B)
-+ *
-+ * Return: 0 on success, negative on error
-+ */
-+int ice_aq_update_acl_scen(struct ice_hw *hw, u16 scen_id,
-+			   struct ice_aqc_acl_scen *buf, struct ice_sq_cd *cd)
-+{
-+	return ice_aq_update_query_scen(hw, ice_aqc_opc_update_acl_scen,
-+					scen_id, buf, cd);
-+}
-+
-+/**
-+ * ice_aq_query_acl_scen - query ACL scenario
-+ * @hw: pointer to the HW struct
-+ * @scen_id: scen_id to be queried
-+ * @buf: address of indirect data buffer
-+ * @cd: pointer to command details structure or NULL
-+ *
-+ * Query ACL scenario (indirect 0x0C23)
-+ *
-+ * Return: 0 on success, negative on error
-+ */
-+int ice_aq_query_acl_scen(struct ice_hw *hw, u16 scen_id,
-+			  struct ice_aqc_acl_scen *buf, struct ice_sq_cd *cd)
-+{
-+	return ice_aq_update_query_scen(hw, ice_aqc_opc_query_acl_scen,
-+					scen_id, buf, cd);
-+}
-diff --git a/drivers/net/ethernet/intel/ice/ice_acl_ctrl.c b/drivers/net/ethernet/intel/ice/ice_acl_ctrl.c
-index d821b2c923d5..c6148192dc6e 100644
---- a/drivers/net/ethernet/intel/ice/ice_acl_ctrl.c
-+++ b/drivers/net/ethernet/intel/ice/ice_acl_ctrl.c
-@@ -6,6 +6,80 @@
- /* Determine the TCAM index of entry 'e' within the ACL table */
- #define ICE_ACL_TBL_TCAM_IDX(e) ((e) / ICE_AQC_ACL_TCAM_DEPTH)
- 
-+/**
-+ * ice_acl_init_entry - initialize ACL entry
-+ * @scen: pointer to the scenario struct
-+ *
-+ * Initialize the scenario control structure.
-+ */
-+static void ice_acl_init_entry(struct ice_acl_scen *scen)
-+{
-+	/* low priority: start from the highest index, 25% of total entries
-+	 * normal priority: start from the highest index, 50% of total entries
-+	 * high priority: start from the lowest index, 25% of total entries
-+	 */
-+	scen->first_idx[ICE_ACL_PRIO_LOW] = scen->num_entry - 1;
-+	scen->first_idx[ICE_ACL_PRIO_NORMAL] = scen->num_entry -
-+		scen->num_entry / 4 - 1;
-+	scen->first_idx[ICE_ACL_PRIO_HIGH] = 0;
-+
-+	scen->last_idx[ICE_ACL_PRIO_LOW] = scen->num_entry -
-+		scen->num_entry / 4;
-+	scen->last_idx[ICE_ACL_PRIO_NORMAL] = scen->num_entry / 4;
-+	scen->last_idx[ICE_ACL_PRIO_HIGH] = scen->num_entry / 4 - 1;
-+}
-+
-+/**
-+ * ice_acl_tbl_calc_end_idx - get end ACL entry index
-+ * @start: start index of the TCAM entry of this partition
-+ * @num_entries: number of entries in this partition
-+ * @width: width of a partition in number of TCAMs
-+ *
-+ * Calculate the end entry index for a partition with starting entry index
-+ * 'start', entries 'num_entries', and width 'width'.
-+ *
-+ * Returns: end entry index
-+ */
-+static u16 ice_acl_tbl_calc_end_idx(u16 start, u16 num_entries, u16 width)
-+{
-+	u16 end_idx, add_entries = 0;
-+
-+	end_idx = start + (num_entries - 1);
-+
-+	/* In case that our ACL partition requires cascading TCAMs */
-+	if (width > 1) {
-+		u16 num_stack_level;
-+
-+		/* Figure out the TCAM stacked level in this ACL scenario */
-+		num_stack_level = (start % ICE_AQC_ACL_TCAM_DEPTH) +
-+			num_entries;
-+		num_stack_level = DIV_ROUND_UP(num_stack_level,
-+					       ICE_AQC_ACL_TCAM_DEPTH);
-+
-+		/* In this case, each entries in our ACL partition span
-+		 * multiple TCAMs. Thus, we will need to add
-+		 * ((width - 1) * num_stack_level) TCAM's entries to
-+		 * end_idx.
-+		 *
-+		 * For example : In our case, our scenario is 2x2:
-+		 *	[TCAM 0]	[TCAM 1]
-+		 *	[TCAM 2]	[TCAM 3]
-+		 * Assuming that a TCAM will have 512 entries. If "start"
-+		 * is 500, "num_entries" is 3 and "width" = 2, then end_idx
-+		 * should be 1024 (belongs to TCAM 2).
-+		 * Before going to this if statement, end_idx will have the
-+		 * value of 512. If "width" is 1, then the final value of
-+		 * end_idx is 512. However, in our case, width is 2, then we
-+		 * will need add (2 - 1) * 1 * 512. As result, end_idx will
-+		 * have the value of 1024.
-+		 */
-+		add_entries = (width - 1) * num_stack_level *
-+			ICE_AQC_ACL_TCAM_DEPTH;
-+	}
-+
-+	return end_idx + add_entries;
-+}
-+
- /**
-  * ice_acl_init_tbl - initialize ACL table
-  * @hw: pointer to the hardware structure
-@@ -274,6 +348,452 @@ ice_acl_create_tbl(struct ice_hw *hw, struct ice_acl_tbl_params *params)
- 	return 0;
- }
- 
-+/**
-+ * ice_acl_alloc_partition - Allocate a partition from the ACL table
-+ * @hw: pointer to the hardware structure
-+ * @req: info of partition being allocated
-+ *
-+ * Returns: 0 on success, negative on error
-+ */
-+static int ice_acl_alloc_partition(struct ice_hw *hw, struct ice_acl_scen *req)
-+{
-+	u16 start = 0, cnt = 0, off = 0;
-+	u16 width, r_entries, row;
-+	bool done = false;
-+	int dir;
-+
-+	/* Determine the number of TCAMs each entry overlaps */
-+	width = DIV_ROUND_UP(req->width, ICE_AQC_ACL_KEY_WIDTH_BYTES);
-+
-+	/* Check if we have enough TCAMs to accommodate the width */
-+	if (width > hw->acl_tbl->last_tcam - hw->acl_tbl->first_tcam + 1)
-+		return -ENOSPC;
-+
-+	/* Number of entries must be multiple of ICE_ACL_ENTRY_ALLOC_UNIT's */
-+	r_entries = ALIGN(req->num_entry, ICE_ACL_ENTRY_ALLOC_UNIT);
-+
-+	/* To look for an available partition that can accommodate the request,
-+	 * the process first logically arranges available TCAMs in rows such
-+	 * that each row produces entries with the requested width. It then
-+	 * scans the TCAMs' available bitmap, one bit at a time, and
-+	 * accumulates contiguous available 64-entry chunks until there are
-+	 * enough of them or when all TCAM configurations have been checked.
-+	 *
-+	 * For width of 1 TCAM, the scanning process starts from the top most
-+	 * TCAM, and goes downward. Available bitmaps are examined from LSB
-+	 * to MSB.
-+	 *
-+	 * For width of multiple TCAMs, the process starts from the bottom-most
-+	 * row of TCAMs, and goes upward. Available bitmaps are examined from
-+	 * the MSB to the LSB.
-+	 *
-+	 * To make sure that adjacent TCAMs can be logically arranged in the
-+	 * same row, the scanning process may have multiple passes. In each
-+	 * pass, the first TCAM of the bottom-most row is displaced by one
-+	 * additional TCAM. The width of the row and the number of the TCAMs
-+	 * available determine the number of passes. When the displacement is
-+	 * more than the size of width, the TCAM row configurations will
-+	 * repeat. The process will terminate when the configurations repeat.
-+	 *
-+	 * Available partitions can span more than one row of TCAMs.
-+	 */
-+	if (width == 1) {
-+		row = hw->acl_tbl->first_tcam;
-+		dir = 1;
-+	} else {
-+		/* Start with the bottom-most row, and scan for available
-+		 * entries upward
-+		 */
-+		row = hw->acl_tbl->last_tcam + 1 - width;
-+		dir = -1;
-+	}
-+
-+	do {
-+		/* Scan all 64-entry chunks, one chunk at a time, in the
-+		 * current TCAM row
-+		 */
-+		for (u16 i = 0;
-+		     i < ICE_AQC_MAX_TCAM_ALLOC_UNITS && cnt < r_entries;
-+		     i++) {
-+			bool avail = true;
-+			u16 p;
-+
-+			/* Compute the cumulative available mask across the
-+			 * TCAM row to determine if the current 64-entry chunk
-+			 * is available.
-+			 */
-+			p = dir > 0 ? i : ICE_AQC_MAX_TCAM_ALLOC_UNITS - i - 1;
-+			for (u16 w = row; w < row + width && avail; w++) {
-+				u16 b;
-+
-+				b = (w * ICE_AQC_MAX_TCAM_ALLOC_UNITS) + p;
-+				avail &= test_bit(b, hw->acl_tbl->avail);
-+			}
-+
-+			if (!avail) {
-+				cnt = 0;
-+			} else {
-+				/* Compute the starting index of the newly
-+				 * found partition. When 'dir' is negative, the
-+				 * scan processes is going upward. If so, the
-+				 * starting index needs to be updated for every
-+				 * available 64-entry chunk found.
-+				 */
-+				if (!cnt || dir < 0)
-+					start = (row * ICE_AQC_ACL_TCAM_DEPTH) +
-+						(p * ICE_ACL_ENTRY_ALLOC_UNIT);
-+				cnt += ICE_ACL_ENTRY_ALLOC_UNIT;
-+			}
-+		}
-+
-+		if (cnt >= r_entries) {
-+			req->start = start;
-+			req->num_entry = r_entries;
-+			req->end = ice_acl_tbl_calc_end_idx(start, r_entries,
-+							    width);
-+			break;
-+		}
-+
-+		row = dir > 0 ? row + width : row - width;
-+		if (row > hw->acl_tbl->last_tcam ||
-+		    row < hw->acl_tbl->first_tcam) {
-+			/* All rows have been checked. Increment 'off' that
-+			 * will help yield a different TCAM configuration in
-+			 * which adjacent TCAMs can be alternatively in the
-+			 * same row.
-+			 */
-+			off++;
-+
-+			/* However, if the new 'off' value yields previously
-+			 * checked configurations, then exit.
-+			 */
-+			if (off >= width)
-+				done = true;
-+			else
-+				row = dir > 0 ? off :
-+					hw->acl_tbl->last_tcam + 1 - off -
-+					width;
-+		}
-+	} while (!done);
-+
-+	return cnt >= r_entries ? 0 : -ENOSPC;
-+}
-+
-+/**
-+ * ice_acl_fill_tcam_select - fill key byte selection for scenario's TCAM
-+ * @scen_buf: Pointer to the scenario buffer that needs to be populated
-+ * @scen: Pointer to the available space for the scenario
-+ * @tcam_idx: Index of the TCAM used for this scenario
-+ * @tcam_idx_in_cascade: Local index of the TCAM in the cascade scenario
-+ *
-+ * For all TCAM that participate in this scenario, fill out the tcam_select
-+ * value.
-+ */
-+static void ice_acl_fill_tcam_select(struct ice_aqc_acl_scen *scen_buf,
-+				     struct ice_acl_scen *scen, u16 tcam_idx,
-+				     u16 tcam_idx_in_cascade)
-+{
-+	u16 cascade_cnt, idx;
-+
-+	idx = tcam_idx_in_cascade * ICE_AQC_ACL_KEY_WIDTH_BYTES;
-+	cascade_cnt = DIV_ROUND_UP(scen->width, ICE_AQC_ACL_KEY_WIDTH_BYTES);
-+
-+	/* For each scenario, we reserved last three bytes of scenario width for
-+	 * profile ID, range checker, and packet direction. Thus, the last three
-+	 * bytes of the last cascaded TCAMs will have value of 1st, 31st and
-+	 * 32nd byte location of BYTE selection base.
-+	 *
-+	 * For other bytes in the TCAMs:
-+	 * For non-cascade mode (1 TCAM wide) scenario, TCAM[x]'s Select {0-1}
-+	 * select indices 0-1 of the Byte Selection Base
-+	 * For cascade mode, the leftmost TCAM of the first cascade row selects
-+	 * indices 0-4 of the Byte Selection Base; the second TCAM in the
-+	 * cascade row selects indices starting with 5-n
-+	 */
-+	for (int j = 0; j < ICE_AQC_ACL_KEY_WIDTH_BYTES; j++) {
-+		/* PKT DIR uses the 1st location of Byte Selection Base: + 1 */
-+		u8 val = ICE_AQC_ACL_BYTE_SEL_BASE + 1 + idx;
-+
-+		if (tcam_idx_in_cascade == cascade_cnt - 1) {
-+			if (j == ICE_ACL_SCEN_RNG_CHK_IDX_IN_TCAM)
-+				val = ICE_AQC_ACL_BYTE_SEL_BASE_RNG_CHK;
-+			else if (j == ICE_ACL_SCEN_PID_IDX_IN_TCAM)
-+				val = ICE_AQC_ACL_BYTE_SEL_BASE_PID;
-+			else if (j == ICE_ACL_SCEN_PKT_DIR_IDX_IN_TCAM)
-+				val = ICE_AQC_ACL_BYTE_SEL_BASE_PKT_DIR;
-+		}
-+
-+		/* In case that scenario's width is greater than the width of
-+		 * the Byte selection base, we will not assign a value to the
-+		 * tcam_select[j]. As a result, the tcam_select[j] will have
-+		 * default value which is zero.
-+		 */
-+		if (val > ICE_AQC_ACL_BYTE_SEL_BASE_RNG_CHK)
-+			continue;
-+
-+		scen_buf->tcam_cfg[tcam_idx].tcam_select[j] = val;
-+
-+		idx++;
-+	}
-+}
-+
-+/**
-+ * ice_acl_set_scen_chnk_msk - set entries chunk masks
-+ * @scen_buf: Pointer to the scenario buffer that needs to be populated
-+ * @scen: pointer to the available space for the scenario
-+ *
-+ * Set the chunk mask for the entries that will be used by this scenario
-+ */
-+static void ice_acl_set_scen_chnk_msk(struct ice_aqc_acl_scen *scen_buf,
-+				      struct ice_acl_scen *scen)
-+{
-+	u16 tcam_idx, num_cscd, units;
-+	u8 chnk_offst;
-+
-+	/* Determine the starting TCAM index and offset of the start entry */
-+	tcam_idx = ICE_ACL_TBL_TCAM_IDX(scen->start);
-+	chnk_offst = (u8)((scen->start % ICE_AQC_ACL_TCAM_DEPTH) /
-+			  ICE_ACL_ENTRY_ALLOC_UNIT);
-+
-+	/* Entries are allocated and tracked in multiple of 64's */
-+	units = scen->num_entry / ICE_ACL_ENTRY_ALLOC_UNIT;
-+
-+	/* Determine number of cascaded TCAMs */
-+	num_cscd = scen->width / ICE_AQC_ACL_KEY_WIDTH_BYTES;
-+
-+	for (u16 cnt = 0; cnt < units; cnt++) {
-+		/* Set the corresponding bitmap of individual 64-entry
-+		 * chunk spans across a cascade of 1 or more TCAMs
-+		 * For each TCAM, there will be (ICE_AQC_ACL_TCAM_DEPTH
-+		 * / ICE_ACL_ENTRY_ALLOC_UNIT) or 8 chunks.
-+		 */
-+		for (u16 i = tcam_idx; i < tcam_idx + num_cscd; i++)
-+			scen_buf->tcam_cfg[i].chnk_msk |= BIT(chnk_offst);
-+
-+		chnk_offst = (chnk_offst + 1) % ICE_AQC_MAX_TCAM_ALLOC_UNITS;
-+		if (!chnk_offst)
-+			tcam_idx += num_cscd;
-+	}
-+}
-+
-+/**
-+ * ice_acl_assign_act_mem_for_scen - associate action memories to new TCAM
-+ * @tbl: pointer to ACL table structure
-+ * @scen: pointer to the scenario struct
-+ * @scen_buf: pointer to the available space for the scenario
-+ * @current_tcam_idx: theoretical index of the TCAM that we associated those
-+ *		      action memory banks with, at the table creation time
-+ * @target_tcam_idx: index of the TCAM that we want to associate those action
-+ *		     memory banks with
-+ */
-+static void ice_acl_assign_act_mem_for_scen(struct ice_acl_tbl *tbl,
-+					    struct ice_acl_scen *scen,
-+					    struct ice_aqc_acl_scen *scen_buf,
-+					    u8 current_tcam_idx,
-+					    u8 target_tcam_idx)
-+{
-+	for (int i = 0; i < ICE_AQC_MAX_ACTION_MEMORIES; i++) {
-+		struct ice_acl_act_mem *p_mem = &tbl->act_mems[i];
-+
-+		if (p_mem->act_mem == ICE_ACL_ACT_MEM_ACT_MEM_INVAL ||
-+		    p_mem->member_of_tcam != current_tcam_idx)
-+			continue;
-+
-+		scen_buf->act_mem_cfg[i] = target_tcam_idx;
-+		scen_buf->act_mem_cfg[i] |= ICE_AQC_ACL_SCE_ACT_MEM_EN;
-+		set_bit(i, scen->act_mem_bitmap);
-+	}
-+}
-+
-+/**
-+ * ice_acl_commit_partition - Indicate if the specified partition is active
-+ * @hw: pointer to the hardware structure
-+ * @scen: pointer to the scenario struct
-+ * @commit: true if the partition is being commit
-+ */
-+static void ice_acl_commit_partition(struct ice_hw *hw,
-+				     struct ice_acl_scen *scen, bool commit)
-+{
-+	u16 tcam_idx, off, num_cscd, units;
-+
-+	/* Determine the starting TCAM index and offset of the start entry */
-+	tcam_idx = ICE_ACL_TBL_TCAM_IDX(scen->start);
-+	off = (scen->start % ICE_AQC_ACL_TCAM_DEPTH) /
-+		ICE_ACL_ENTRY_ALLOC_UNIT;
-+
-+	/* Entries are allocated and tracked in multiple of 64's */
-+	units = scen->num_entry / ICE_ACL_ENTRY_ALLOC_UNIT;
-+
-+	/* Determine number of cascaded TCAM */
-+	num_cscd = scen->width / ICE_AQC_ACL_KEY_WIDTH_BYTES;
-+
-+	for (u16 cnt = 0; cnt < units; cnt++) {
-+		/* Set/clear the corresponding bitmap of individual 64-entry
-+		 * chunk spans across a row of 1 or more TCAMs
-+		 */
-+		for (u16 w = 0; w < num_cscd; w++) {
-+			u16 b;
-+
-+			b = ((tcam_idx + w) * ICE_AQC_MAX_TCAM_ALLOC_UNITS) +
-+				off;
-+			if (commit)
-+				set_bit(b, hw->acl_tbl->avail);
-+			else
-+				clear_bit(b, hw->acl_tbl->avail);
-+		}
-+
-+		off = (off + 1) % ICE_AQC_MAX_TCAM_ALLOC_UNITS;
-+		if (!off)
-+			tcam_idx += num_cscd;
-+	}
-+}
-+
-+/**
-+ * ice_acl_create_scen - create ACL scenario
-+ * @hw: pointer to the hardware structure
-+ * @match_width: number of bytes to be matched in this scenario
-+ * @num_entries: number of entries to be allocated for the scenario
-+ * @scen_id: holds returned scenario ID if successful
-+ *
-+ * Return: 0 on success, negative on error
-+ */
-+int ice_acl_create_scen(struct ice_hw *hw, u16 match_width, u16 num_entries,
-+			u16 *scen_id)
-+{
-+	u8 cascade_cnt, first_tcam, last_tcam, i, k;
-+	struct ice_aqc_acl_scen scen_buf = {};
-+	struct ice_acl_scen *scen;
-+	int err;
-+
-+	scen = devm_kzalloc(ice_hw_to_dev(hw), sizeof(*scen), GFP_KERNEL);
-+	if (!scen)
-+		return -ENOMEM;
-+
-+	scen->start = hw->acl_tbl->first_entry;
-+	scen->width = ICE_AQC_ACL_KEY_WIDTH_BYTES *
-+		DIV_ROUND_UP(match_width, ICE_AQC_ACL_KEY_WIDTH_BYTES);
-+	scen->num_entry = num_entries;
-+
-+	err = ice_acl_alloc_partition(hw, scen);
-+	if (err)
-+		goto out;
-+
-+	/* Determine the number of cascade TCAMs, given the scenario's width */
-+	cascade_cnt = DIV_ROUND_UP(scen->width, ICE_AQC_ACL_KEY_WIDTH_BYTES);
-+	first_tcam = ICE_ACL_TBL_TCAM_IDX(scen->start);
-+	last_tcam = ICE_ACL_TBL_TCAM_IDX(scen->end);
-+
-+	/* For each scenario, we reserved last three bytes of scenario width for
-+	 * packet direction flag, profile ID and range checker. Thus, we want to
-+	 * return back to the caller the eff_width, pkt_dir_idx, rng_chk_idx and
-+	 * pid_idx.
-+	 */
-+	scen->eff_width = cascade_cnt * ICE_AQC_ACL_KEY_WIDTH_BYTES -
-+		ICE_ACL_SCEN_MIN_WIDTH;
-+	scen->rng_chk_idx = (cascade_cnt - 1) * ICE_AQC_ACL_KEY_WIDTH_BYTES +
-+		ICE_ACL_SCEN_RNG_CHK_IDX_IN_TCAM;
-+	scen->pid_idx = (cascade_cnt - 1) * ICE_AQC_ACL_KEY_WIDTH_BYTES +
-+		ICE_ACL_SCEN_PID_IDX_IN_TCAM;
-+	scen->pkt_dir_idx = (cascade_cnt - 1) * ICE_AQC_ACL_KEY_WIDTH_BYTES +
-+		ICE_ACL_SCEN_PKT_DIR_IDX_IN_TCAM;
-+
-+	/* set the chunk mask for the tcams */
-+	ice_acl_set_scen_chnk_msk(&scen_buf, scen);
-+
-+	/* set the TCAM select and start_cmp and start_set bits */
-+	k = first_tcam;
-+	/* set the START_SET bit at the beginning of the stack */
-+	scen_buf.tcam_cfg[k].start_cmp_set |= ICE_AQC_ACL_ALLOC_SCE_START_SET;
-+	while (k <= last_tcam) {
-+		u8 last_tcam_idx_cascade = cascade_cnt + k - 1;
-+
-+		/* set start_cmp for the first cascaded TCAM */
-+		scen_buf.tcam_cfg[k].start_cmp_set |=
-+			ICE_AQC_ACL_ALLOC_SCE_START_CMP;
-+
-+		/* cascade TCAMs up to the width of the scenario */
-+		for (i = k; i < cascade_cnt + k; i++) {
-+			ice_acl_fill_tcam_select(&scen_buf, scen, i, i - k);
-+			ice_acl_assign_act_mem_for_scen(hw->acl_tbl, scen,
-+							&scen_buf, i,
-+							last_tcam_idx_cascade);
-+		}
-+
-+		k = i;
-+	}
-+
-+	/* We need to set the start_cmp bit for the unused TCAMs. */
-+	i = 0;
-+	while (i < first_tcam)
-+		scen_buf.tcam_cfg[i++].start_cmp_set =
-+					ICE_AQC_ACL_ALLOC_SCE_START_CMP;
-+
-+	i = last_tcam + 1;
-+	while (i < ICE_AQC_ACL_SLICES)
-+		scen_buf.tcam_cfg[i++].start_cmp_set =
-+					ICE_AQC_ACL_ALLOC_SCE_START_CMP;
-+
-+	err = ice_aq_alloc_acl_scen(hw, scen_id, &scen_buf, NULL);
-+	if (err) {
-+		ice_debug(hw, ICE_DBG_ACL, "AQ allocation of ACL scenario failed. status: %d\n",
-+			  err);
-+		goto out;
-+	}
-+
-+	scen->id = *scen_id;
-+	ice_acl_commit_partition(hw, scen, false);
-+	ice_acl_init_entry(scen);
-+	list_add(&scen->list_entry, &hw->acl_tbl->scens);
-+
-+out:
-+	if (err)
-+		devm_kfree(ice_hw_to_dev(hw), scen);
-+
-+	return err;
-+}
-+
-+/**
-+ * ice_acl_destroy_scen - destroy an ACL scenario
-+ * @hw: pointer to the HW struct
-+ * @scen_id: ID of the remove scenario
-+ *
-+ * Return: 0 on success, negative on error
-+ */
-+static int ice_acl_destroy_scen(struct ice_hw *hw, u16 scen_id)
-+{
-+	struct ice_acl_scen *scen, *tmp_scen;
-+	struct ice_flow_prof *p, *tmp;
-+	int err;
-+
-+	/* Remove profiles that use "scen_id" scenario */
-+	list_for_each_entry_safe(p, tmp, &hw->fl_profs[ICE_BLK_ACL], l_entry)
-+		if (p->cfg.scen && p->cfg.scen->id == scen_id) {
-+			err = ice_flow_rem_prof(hw, ICE_BLK_ACL, p->id);
-+			if (err) {
-+				ice_debug(hw, ICE_DBG_ACL, "ice_flow_rem_prof failed. status: %d\n",
-+					  err);
-+				return err;
-+			}
-+		}
-+
-+	err = ice_aq_dealloc_acl_scen(hw, scen_id, NULL);
-+	if (err) {
-+		ice_debug(hw, ICE_DBG_ACL, "AQ de-allocation of scenario failed. status: %d\n",
-+			  err);
-+		return err;
-+	}
-+
-+	/* Remove scenario from hw->acl_tbl->scens */
-+	list_for_each_entry_safe(scen, tmp_scen, &hw->acl_tbl->scens,
-+				 list_entry)
-+		if (scen->id == scen_id) {
-+			list_del(&scen->list_entry);
-+			devm_kfree(ice_hw_to_dev(hw), scen);
-+		}
-+
-+	return 0;
-+}
-+
- /**
-  * ice_acl_destroy_tbl - Destroy a previously created LEM table for ACL
-  * @hw: pointer to the HW struct
-@@ -282,12 +802,50 @@ ice_acl_create_tbl(struct ice_hw *hw, struct ice_acl_tbl_params *params)
-  */
- int ice_acl_destroy_tbl(struct ice_hw *hw)
- {
-+	struct ice_acl_scen *pos_scen, *tmp_scen;
- 	struct ice_aqc_acl_generic resp_buf;
-+	struct ice_aqc_acl_scen buf;
- 	int err;
- 
- 	if (!hw->acl_tbl)
- 		return -ENOENT;
- 
-+	/* Mark all the created scenario's TCAM to stop the packet lookup and
-+	 * delete them afterward
-+	 */
-+	list_for_each_entry_safe(pos_scen, tmp_scen, &hw->acl_tbl->scens,
-+				 list_entry) {
-+		err = ice_aq_query_acl_scen(hw, pos_scen->id, &buf, NULL);
-+		if (err) {
-+			ice_debug(hw, ICE_DBG_ACL, "ice_aq_query_acl_scen() failed. status: %d\n",
-+				  err);
-+			return err;
-+		}
-+
-+		for (int i = 0; i < ICE_AQC_ACL_SLICES; i++) {
-+			buf.tcam_cfg[i].chnk_msk = 0;
-+			buf.tcam_cfg[i].start_cmp_set =
-+					ICE_AQC_ACL_ALLOC_SCE_START_CMP;
-+		}
-+
-+		for (int i = 0; i < ICE_AQC_MAX_ACTION_MEMORIES; i++)
-+			buf.act_mem_cfg[i] = 0;
-+
-+		err = ice_aq_update_acl_scen(hw, pos_scen->id, &buf, NULL);
-+		if (err) {
-+			ice_debug(hw, ICE_DBG_ACL, "ice_aq_update_acl_scen() failed. status: %d\n",
-+				  err);
-+			return err;
-+		}
-+
-+		err = ice_acl_destroy_scen(hw, pos_scen->id);
-+		if (err) {
-+			ice_debug(hw, ICE_DBG_ACL, "deletion of scenario failed. status: %d\n",
-+				  err);
-+			return err;
-+		}
-+	}
-+
- 	err = ice_aq_dealloc_acl_tbl(hw, hw->acl_tbl->id, &resp_buf, NULL);
- 	if (err) {
- 		ice_debug(hw, ICE_DBG_ACL, "AQ de-allocation of ACL failed. status: %d\n",
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index 1495d96b5c98..6683a16c888a 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -3151,8 +3151,8 @@ ice_get_rxnfc(struct net_device *netdev, struct ethtool_rxnfc *cmd,
- 	switch (cmd->cmd) {
- 	case ETHTOOL_GRXCLSRLCNT:
- 		cmd->rule_cnt = hw->fdir_active_fltr;
--		/* report total rule count */
--		cmd->data = ice_get_fdir_cnt_all(hw);
-+		/* report max rule count */
-+		cmd->data = ice_ntuple_get_max_fltr_cnt(hw);
- 		ret = 0;
- 		break;
- 	case ETHTOOL_GRXCLSRULE:
 diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c b/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c
-index a6136e640418..053d6b7a66bd 100644
+index 21d4f4e3a1d0..13073387376e 100644
 --- a/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c
 +++ b/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c
-@@ -228,6 +228,24 @@ int ice_get_ethtool_fdir_entry(struct ice_hw *hw, struct ethtool_rxnfc *cmd)
- 	return ret;
- }
- 
-+/**
-+ * ice_ntuple_get_max_fltr_cnt - get max number of allowed filters
-+ * @hw: hardware structure containing filter information
-+ *
-+ * Return: maximum number of allowed filters
-+ */
-+u32 ice_ntuple_get_max_fltr_cnt(struct ice_hw *hw)
-+{
-+	int acl_cnt;
-+
-+	if (hw->dev_caps.num_funcs < 8)
-+		acl_cnt = ICE_AQC_ACL_TCAM_DEPTH / ICE_ACL_ENTIRE_SLICE;
-+	else
-+		acl_cnt = ICE_AQC_ACL_TCAM_DEPTH / ICE_ACL_HALF_SLICE;
-+
-+	return ice_get_fdir_cnt_all(hw) + acl_cnt;
-+}
-+
- /**
-  * ice_get_fdir_fltr_ids - fill buffer with filter IDs of active filters
-  * @hw: hardware structure containing the filter list
-@@ -244,8 +262,8 @@ ice_get_fdir_fltr_ids(struct ice_hw *hw, struct ethtool_rxnfc *cmd,
- 	unsigned int cnt = 0;
- 	int val = 0;
- 
--	/* report total rule count */
--	cmd->data = ice_get_fdir_cnt_all(hw);
-+	/* report max rule count */
-+	cmd->data = ice_ntuple_get_max_fltr_cnt(hw);
- 
- 	mutex_lock(&hw->fdir_fltr_lock);
- 
-@@ -346,6 +364,9 @@ void ice_fdir_rem_adq_chnl(struct ice_hw *hw, u16 vsi_idx)
- static struct ice_fd_hw_prof *
- ice_fdir_get_hw_prof(struct ice_hw *hw, enum ice_block blk, int flow)
- {
-+	if (blk == ICE_BLK_ACL && hw->acl_prof)
-+		return hw->acl_prof[flow];
-+
- 	if (blk == ICE_BLK_FD && hw->fdir_prof)
- 		return hw->fdir_prof[flow];
- 
-@@ -1635,8 +1656,10 @@ void ice_fdir_del_all_fltrs(struct ice_vsi *vsi)
- 	struct ice_hw *hw = &pf->hw;
- 
- 	list_for_each_entry_safe(f_rule, tmp, &hw->fdir_list_head, fltr_node) {
--		ice_fdir_write_all_fltr(pf, f_rule, false);
--		ice_fdir_update_cntrs(hw, f_rule->flow_type, false);
-+		if (!f_rule->acl_fltr)
-+			ice_fdir_write_all_fltr(pf, f_rule, false);
-+		ice_fdir_update_cntrs(hw, f_rule->flow_type, f_rule->acl_fltr,
-+				      false);
- 		list_del(&f_rule->fltr_node);
- 		devm_kfree(ice_pf_to_dev(pf), f_rule);
- 	}
-@@ -1671,6 +1694,12 @@ void ice_vsi_manage_fdir(struct ice_vsi *vsi, bool ena)
- 			if (hw->fdir_prof[flow])
- 				ice_fdir_rem_flow(hw, ICE_BLK_FD, flow);
- 
-+	if (hw->acl_prof)
-+		for (flow = ICE_FLTR_PTYPE_NONF_NONE; flow < ICE_FLTR_PTYPE_MAX;
-+		     flow++)
-+			if (hw->acl_prof[flow])
-+				ice_fdir_rem_flow(hw, ICE_BLK_ACL, flow);
-+
- release_lock:
- 	mutex_unlock(&hw->fdir_fltr_lock);
- }
-@@ -1730,7 +1759,7 @@ ice_ntuple_update_list_entry(struct ice_pf *pf, struct ice_ntuple_fltr *input,
- 		err = ice_fdir_write_all_fltr(pf, old_fltr, false);
- 		if (err)
- 			return err;
--		ice_fdir_update_cntrs(hw, old_fltr->flow_type, false);
-+		ice_fdir_update_cntrs(hw, old_fltr->flow_type, false, false);
- 		/* update sb-filters count, specific to ring->channel */
- 		ice_update_per_q_fltr(vsi, old_fltr->orig_q_index, false);
- 		if (!input && !hw->fdir_fltr_cnt[old_fltr->flow_type])
-@@ -1746,7 +1775,7 @@ ice_ntuple_update_list_entry(struct ice_pf *pf, struct ice_ntuple_fltr *input,
- 	ice_fdir_list_add_fltr(hw, input);
- 	/* update sb-filters count, specific to ring->channel */
- 	ice_update_per_q_fltr(vsi, input->orig_q_index, true);
--	ice_fdir_update_cntrs(hw, input->flow_type, true);
-+	ice_fdir_update_cntrs(hw, input->flow_type, input->acl_fltr, true);
+@@ -1425,6 +1425,102 @@ ice_set_fdir_vlan_seg(struct ice_flow_seg_info *seg,
  	return 0;
  }
  
-@@ -2017,7 +2046,7 @@ int ice_add_ntuple_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd)
- 	if (ret)
- 		return ret;
- 
--	max_location = ice_get_fdir_cnt_all(hw);
-+	max_location = ice_ntuple_get_max_fltr_cnt(hw);
- 	if (fsp->location >= max_location) {
- 		dev_err(dev, "Failed to add filter. The number of ntuple filters or provided location exceed max %d.\n",
- 			max_location);
-@@ -2068,7 +2097,7 @@ int ice_add_ntuple_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd)
- 	goto release_lock;
- 
- remove_sw_rule:
--	ice_fdir_update_cntrs(hw, input->flow_type, false);
-+	ice_fdir_update_cntrs(hw, input->flow_type, false, false);
- 	/* update sb-filters count, specific to ring->channel */
- 	ice_update_per_q_fltr(vsi, input->orig_q_index, false);
- 	list_del(&input->fltr_node);
-diff --git a/drivers/net/ethernet/intel/ice/ice_fdir.c b/drivers/net/ethernet/intel/ice/ice_fdir.c
-index 5b25f6414b58..e55d6a91f03a 100644
---- a/drivers/net/ethernet/intel/ice/ice_fdir.c
-+++ b/drivers/net/ethernet/intel/ice/ice_fdir.c
-@@ -1179,18 +1179,24 @@ void ice_fdir_list_add_fltr(struct ice_hw *hw, struct ice_ntuple_fltr *fltr)
-  * ice_fdir_update_cntrs - increment / decrement filter counter
-  * @hw: pointer to hardware structure
-  * @flow: filter flow type
-+ * @acl_fltr: true indicates an ACL filter
-  * @add: true implies filters added
-  */
--void
--ice_fdir_update_cntrs(struct ice_hw *hw, enum ice_fltr_ptype flow, bool add)
-+void ice_fdir_update_cntrs(struct ice_hw *hw, enum ice_fltr_ptype flow,
-+			   bool acl_fltr, bool add)
- {
- 	int incr;
- 
- 	incr = add ? 1 : -1;
- 	hw->fdir_active_fltr += incr;
- 
--	if (flow == ICE_FLTR_PTYPE_NONF_NONE || flow >= ICE_FLTR_PTYPE_MAX)
-+	if (flow == ICE_FLTR_PTYPE_NONF_NONE || flow >= ICE_FLTR_PTYPE_MAX) {
- 		ice_debug(hw, ICE_DBG_SW, "Unknown filter type %d\n", flow);
-+		return;
++/**
++ * ice_set_fdir_ip_flow_seg - set IP flow segment based on ethtool flow type
++ * @fsp: pointer to ethtool Rx flow specification
++ * @seg: flow segment for programming
++ * @perfect_fltr: valid on success; returns true if perfect fltr, false if not
++ *
++ * Return: 0 on success and errno in case of error.
++ */
++static int ice_set_fdir_ip_flow_seg(struct ethtool_rx_flow_spec *fsp,
++				    struct ice_flow_seg_info *seg,
++				    bool *perfect_fltr)
++{
++	switch (fsp->flow_type & ~FLOW_EXT) {
++	case TCP_V4_FLOW:
++		return ice_set_fdir_ip4_seg(seg, &fsp->m_u.tcp_ip4_spec,
++					    ICE_FLOW_SEG_HDR_TCP, perfect_fltr);
++	case UDP_V4_FLOW:
++		return ice_set_fdir_ip4_seg(seg, &fsp->m_u.tcp_ip4_spec,
++					    ICE_FLOW_SEG_HDR_UDP, perfect_fltr);
++	case SCTP_V4_FLOW:
++		return ice_set_fdir_ip4_seg(seg, &fsp->m_u.tcp_ip4_spec,
++					    ICE_FLOW_SEG_HDR_SCTP,
++					    perfect_fltr);
++	case IPV4_USER_FLOW:
++		return ice_set_fdir_ip4_usr_seg(seg, &fsp->m_u.usr_ip4_spec,
++						perfect_fltr);
++	case TCP_V6_FLOW:
++		return ice_set_fdir_ip6_seg(seg, &fsp->m_u.tcp_ip6_spec,
++					    ICE_FLOW_SEG_HDR_TCP, perfect_fltr);
++	case UDP_V6_FLOW:
++		return ice_set_fdir_ip6_seg(seg, &fsp->m_u.tcp_ip6_spec,
++					    ICE_FLOW_SEG_HDR_UDP, perfect_fltr);
++	case SCTP_V6_FLOW:
++		return ice_set_fdir_ip6_seg(seg, &fsp->m_u.tcp_ip6_spec,
++					    ICE_FLOW_SEG_HDR_SCTP,
++					    perfect_fltr);
++	case IPV6_USER_FLOW:
++		return ice_set_fdir_ip6_usr_seg(seg, &fsp->m_u.usr_ip6_spec,
++						perfect_fltr);
++	default:
++		return -EOPNOTSUPP;
++	}
++}
++
++/**
++ * ice_fdir_has_input_set_conflict - Check conflict with existing FD filters
++ * @pf: PF structure
++ * @fsp: pointer to ethtool Rx flow specification
++ *
++ * Checks if adding this filter to Flow Director would cause an input set
++ * mismatch with existing filters for the same flow type by building
++ * the segment and comparing with existing profiles.
++ *
++ * Return: true if there's a conflict (use ACL), false otherwise (can use FD)
++ */
++static bool ice_fdir_has_input_set_conflict(struct ice_pf *pf,
++					    struct ethtool_rx_flow_spec *fsp)
++{
++	struct ice_flow_seg_info *test_seg, *old_seg;
++	bool perfect_fltr, conflict = false;
++	struct ice_fd_hw_prof *hw_prof;
++	struct ice_hw *hw = &pf->hw;
++	enum ice_fltr_ptype flow;
++	int err;
++
++	flow = ice_ethtool_flow_to_fltr(fsp->flow_type & ~FLOW_EXT);
++	if (flow >= ICE_FLTR_PTYPE_MAX || !hw->fdir_prof ||
++	    !hw->fdir_prof[flow]) {
++		return false;
 +	}
 +
-+	if (acl_fltr)
-+		hw->acl_fltr_cnt[flow] += incr;
- 	else
- 		hw->fdir_fltr_cnt[flow] += incr;
- }
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 1cdb49cd42c3..23d6b8311ff9 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -4336,6 +4336,8 @@ static int ice_init_acl(struct ice_pf *pf)
- 	struct ice_acl_tbl_params params = {};
- 	struct ice_hw *hw = &pf->hw;
- 	int divider;
-+	u16 scen_id;
-+	int err;
- 
- 	/* Creates a single ACL table that consist of src_ip(4 byte),
- 	 * dest_ip(4 byte), src_port(2 byte) and dst_port(2 byte) for a total
-@@ -4354,7 +4356,20 @@ static int ice_init_acl(struct ice_pf *pf)
- 	params.entry_act_pairs = 1;
- 	params.concurr = false;
- 
--	return ice_acl_create_tbl(hw, &params);
-+	err = ice_acl_create_tbl(hw, &params);
-+	if (err)
-+		return err;
++	hw_prof = hw->fdir_prof[flow];
++	old_seg = hw_prof->fdir_seg[ICE_FD_HW_SEG_NON_TUN];
 +
-+	err = ice_acl_create_scen(hw, params.width, params.depth, &scen_id);
-+	if (err)
-+		goto destroy_table;
++	if (!old_seg || hw->fdir_fltr_cnt[flow] == 0)
++		return false;
 +
-+	return 0;
++	test_seg = kzalloc_obj(*test_seg);
++	if (!test_seg)
++		return false;
 +
-+destroy_table:
-+	ice_acl_destroy_tbl(hw);
++	err = ice_set_fdir_ip_flow_seg(fsp, test_seg, &perfect_fltr);
++	if (err) {
++		kfree(test_seg);
++		return false;
++	}
 +
-+	return err;
- }
- 
++	/* Compare the test segment with the existing segment */
++	if (memcmp(old_seg, test_seg, sizeof(*test_seg)) != 0)
++		conflict = true;
++
++	kfree(test_seg);
++
++	return conflict;
++}
++
  /**
+  * ice_cfg_fdir_xtrct_seq - Configure extraction sequence for the given filter
+  * @pf: PF structure
+@@ -1455,57 +1551,16 @@ ice_cfg_fdir_xtrct_seq(struct ice_pf *pf, struct ethtool_rx_flow_spec *fsp,
+ 		return -ENOMEM;
+ 	}
+ 
+-	switch (fsp->flow_type & ~FLOW_EXT) {
+-	case TCP_V4_FLOW:
+-		ret = ice_set_fdir_ip4_seg(seg, &fsp->m_u.tcp_ip4_spec,
+-					   ICE_FLOW_SEG_HDR_TCP,
+-					   &perfect_filter);
+-		break;
+-	case UDP_V4_FLOW:
+-		ret = ice_set_fdir_ip4_seg(seg, &fsp->m_u.tcp_ip4_spec,
+-					   ICE_FLOW_SEG_HDR_UDP,
+-					   &perfect_filter);
+-		break;
+-	case SCTP_V4_FLOW:
+-		ret = ice_set_fdir_ip4_seg(seg, &fsp->m_u.tcp_ip4_spec,
+-					   ICE_FLOW_SEG_HDR_SCTP,
+-					   &perfect_filter);
+-		break;
+-	case IPV4_USER_FLOW:
+-		ret = ice_set_fdir_ip4_usr_seg(seg, &fsp->m_u.usr_ip4_spec,
+-					       &perfect_filter);
+-		break;
+-	case TCP_V6_FLOW:
+-		ret = ice_set_fdir_ip6_seg(seg, &fsp->m_u.tcp_ip6_spec,
+-					   ICE_FLOW_SEG_HDR_TCP,
+-					   &perfect_filter);
+-		break;
+-	case UDP_V6_FLOW:
+-		ret = ice_set_fdir_ip6_seg(seg, &fsp->m_u.tcp_ip6_spec,
+-					   ICE_FLOW_SEG_HDR_UDP,
+-					   &perfect_filter);
+-		break;
+-	case SCTP_V6_FLOW:
+-		ret = ice_set_fdir_ip6_seg(seg, &fsp->m_u.tcp_ip6_spec,
+-					   ICE_FLOW_SEG_HDR_SCTP,
+-					   &perfect_filter);
+-		break;
+-	case IPV6_USER_FLOW:
+-		ret = ice_set_fdir_ip6_usr_seg(seg, &fsp->m_u.usr_ip6_spec,
+-					       &perfect_filter);
+-		break;
+-	case ETHER_FLOW:
++	if ((fsp->flow_type & ~FLOW_EXT) == ETHER_FLOW) {
+ 		ret = ice_set_ether_flow_seg(dev, seg, &fsp->m_u.ether_spec);
+ 		if (!ret && (fsp->m_ext.vlan_etype || fsp->m_ext.vlan_tci)) {
+-			if (!ice_fdir_vlan_valid(dev, fsp)) {
++			if (!ice_fdir_vlan_valid(dev, fsp))
+ 				ret = -EINVAL;
+-				break;
+-			}
+-			ret = ice_set_fdir_vlan_seg(seg, &fsp->m_ext);
++			else
++				ret = ice_set_fdir_vlan_seg(seg, &fsp->m_ext);
+ 		}
+-		break;
+-	default:
+-		ret = -EINVAL;
++	} else {
++		ret = ice_set_fdir_ip_flow_seg(fsp, seg, &perfect_filter);
+ 	}
+ 	if (ret)
+ 		goto err_exit;
+@@ -2241,6 +2296,11 @@ int ice_add_ntuple_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd)
+ 	if (pf->hw.acl_tbl && ice_is_acl_filter(fsp))
+ 		return ice_acl_add_rule_ethtool(vsi, cmd);
+ 
++	/* Check if this would cause input set conflict with existing FD filters
++	 */
++	if (pf->hw.acl_tbl && ice_fdir_has_input_set_conflict(pf, fsp))
++		return ice_acl_add_rule_ethtool(vsi, cmd);
++
+ 	ret = ice_cfg_fdir_xtrct_seq(pf, fsp, &userdata);
+ 	if (ret)
+ 		return ret;
 -- 
 2.49.0
 
