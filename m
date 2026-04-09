@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C692E7635;
-	Thu,  9 Apr 2026 02:51:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6108F36EA8F;
+	Thu,  9 Apr 2026 02:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775703077; cv=none; b=G/zpI/ybJlb3khwOuNGJoifDULm886gn+v9O3lbxJ3TMZrGzWCD/RVe3RpqLFr2+OqC9XUD1OyCI9pO+8hUUSaMhPNmlBwCbcmjwJuAQwVc/5Q59rDH/ZRCb3UUR24RI26juGQxQXM9EVfNld4GLuNt4R54VBc+20Q8wNhn6Xv4=
+	t=1775703078; cv=none; b=hPrQAQy5n+CfvONg3FttUDvh3PX59mMefZ8wl+xBpbCHbox8lRhv70dDSuQ4Xvi21/KC/A2TOP2mvPLKVFGDM81Al4S4PMj2AL9HpoYHKOzHSFOsWGljDmaKK0eRpNmnlduFcicDaHhcm6yCBX9zyS8uBmTj7kvxT/Vi/iDQg4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775703077; c=relaxed/simple;
-	bh=l761m6M4jniye5UOO409lZQC2OC6qzOOlcdE2iqViK8=;
+	s=arc-20240116; t=1775703078; c=relaxed/simple;
+	bh=tcfDya9MYNNiDKrZlg8HsEmnKPVeUFjzwubY5+gbTFM=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Mwe0e0JQs9UbxMXlfk9O3PQNEJrLYGMZ0DVNUeAFVVeAW5wl7PGCAILXFHyR+/0puThZp0qss9wrwSAQ+CrrpCMaYnCltBce3z161k0Kon6QVAeqm82Kum0P4iUbYvI8FB+8U2szO/0Z53YPTg7ws7AiQQg1Co21M5SB/7OgcPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eqC6Lk6v; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=oNt6Ru7Xiq7Nc3hAKwPDu9RaRteVr2GFfz1AQArYMYEauP4IpzFGjeatA9m94TZuuaHMT1ovzyQCpmT9Rdgke8HEq3XS8b2fRpH3Bihq+osbxw+0WP7h+SprqW/Z4aVdmbCsLsLDoTPFf5HiTDZ0HX7n5D5szKecLbwfox0OK0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kl7VHVcr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eqC6Lk6v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2034C2BCAF;
-	Thu,  9 Apr 2026 02:51:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kl7VHVcr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181E2C2BC9E;
+	Thu,  9 Apr 2026 02:51:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775703076;
-	bh=l761m6M4jniye5UOO409lZQC2OC6qzOOlcdE2iqViK8=;
+	s=k20201202; t=1775703078;
+	bh=tcfDya9MYNNiDKrZlg8HsEmnKPVeUFjzwubY5+gbTFM=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=eqC6Lk6v4FDXp3Aw3mrHVmt2R1huI/8cix5V2SASVegzP5oz0MUpHX05i2NwkbSrX
-	 6I7N4wcBZgfJEXcz8Ls0ni7h/rFk1om6/Ics/P9gMDGRv8FcHFqVt+stuMKstT3dlz
-	 1bzAccWUe/9ZrxLzPFsS2wR0IYlX5Ny8EJ4+QIx1hbTWDe7xlOq00HPa1KcuMRGMzK
-	 oKXL1y64ukPQwf+FCTJu/2npvWT1AOJfwqi2IBCM2TC2CAk0NrbylW71aoI/hDb7SJ
-	 LYfKo9+YkVQHVo2paXbh/O8Vf9kLgoB1UtgZqGSZVDBMP026cQRTKOGlo/Iqp9Hs/2
-	 u1qrnY/6kSs+A==
+	b=Kl7VHVcr1JyqWb1Z1fexDnvGjkAOnEmQsa5UPZx/a4e5EKArWPfrvGoDZA80sJ8FU
+	 mhYJqTCSE8zpvvOBqXbb9pVSoJHORH8W6u1/WS11f67tEp/60uYFstknCMfMivpz7R
+	 91DnTXgd0lCgL1ka4Nk45/dd2Cmls5i0JUfAlE6HGCrCykuWDV4V3F/Ii2mZliY0Y0
+	 kQ7e5cnDhE8Iu8xLESsTqnT2XrjdVAbygp0Wyek01/PGA3w3L6RvPRliivHZE3k5/c
+	 f2dBSd8ofN3OFuV++0TFV3x0x+m6gAceJcXj4QGNgS9xn+TnMbARMMleqPxuf45vOC
+	 yjYNGa5TcVbaw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FD043930793;
-	Thu,  9 Apr 2026 02:50:54 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CE763930793;
+	Thu,  9 Apr 2026 02:50:55 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] devlink: Fix incorrect skb socket family dumping
+Subject: Re: [PATCH net v2] Revert "mptcp: add needs_id for netlink appending
+ addr"
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177570305304.968772.16983350750493132581.git-patchwork-notify@kernel.org>
-Date: Thu, 09 Apr 2026 02:50:53 +0000
-References: <20260407022730.2393-1-lirongqing@baidu.com>
-In-Reply-To: <20260407022730.2393-1-lirongqing@baidu.com>
-To: lirongqing <lirongqing@baidu.com>
-Cc: jiri@resnulli.us, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- mateusz.polchlopek@intel.com, anthony.l.nguyen@intel.com,
- przemyslaw.kitszel@intel.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ <177570305429.968772.9148300524372539778.git-patchwork-notify@kernel.org>
+Date: Thu, 09 Apr 2026 02:50:54 +0000
+References: 
+ <20260407-net-mptcp-revert-pm-needs-id-v2-1-7a25cbc324f8@kernel.org>
+In-Reply-To: 
+ <20260407-net-mptcp-revert-pm-needs-id-v2-1-7a25cbc324f8@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 6 Apr 2026 22:27:30 -0400 you wrote:
-> From: Li RongQing <lirongqing@baidu.com>
+On Tue, 07 Apr 2026 10:41:41 +0200 you wrote:
+> This commit was originally adding the ability to add MPTCP endpoints
+> with ID 0 by accident. The in-kernel PM, handling MPTCP endpoints at the
+> net namespace level, is not supposed to handle endpoints with such ID,
+> because this ID 0 is reserved to the initial subflow, as mentioned in
+> the MPTCPv1 protocol [1], a per-connection setting.
 > 
-> The devlink_fmsg_dump_skb function was incorrectly using the socket
-> type (sk->sk_type) instead of the socket family (sk->sk_family)
-> when filling the "family" field in the fast message dump.
-> 
-> This patch fixes this to properly display the socket family.
+> Note that 'ip mptcp endpoint add id 0' stops early with an error, but
+> other tools might still request the in-kernel PM to create MPTCP
+> endpoints with this restricted ID 0.
 > 
 > [...]
 
 Here is the summary with links:
-  - devlink: Fix incorrect skb socket family dumping
-    https://git.kernel.org/netdev/net/c/0006c6f1091b
+  - [net,v2] Revert "mptcp: add needs_id for netlink appending addr"
+    https://git.kernel.org/netdev/net/c/8e2760eaab77
 
 You are awesome, thank you!
 -- 
