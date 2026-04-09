@@ -1,35 +1,57 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7A5283C89;
-	Thu,  9 Apr 2026 03:11:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F7A2BD030;
+	Thu,  9 Apr 2026 03:11:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775704268; cv=none; b=dyfXBlnJwl0unJX/Y5UyQZ8H80/F7SzPnJDSYvOC+SCA5cP0myAFjXZrGMiKmFbNL2U7deJ8t0dFLn9MtnPXLTECPmME11GCTV567SfbobkpBMLcF8OMRsoRsqH86uJZCqHkJFQfUn8SSmlBhxx0nfvwPdtE7c+g92Fre6NvA8Y=
+	t=1775704290; cv=none; b=CaJ+AUHCf0WEkEQOwD+2L6P5O86pfUrOoQHN9ST3kQJDPMntKu4Lgd5kH6ei7FygfQ8zDk+lt4n+0iUgbZFGZjlMgupyo34AhqMo5FWbPhZN7o8dm1L4DaR9dh/PDVWpiRtsusnvX4tUI2xJyVm1H3YDq6W9uZ1z/EhrQz5rXN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775704268; c=relaxed/simple;
-	bh=vhO89C65ftvx49gMiDTfTu64UlsVk0MtZwfzqWwu/SY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=NzmXT8ZPbm4FcegNCYvUDsRUX2cFw64b/YTb2g49bexQNnG6m8bKwZM2yEUTdi1P9mGENLehYebX7ukRHK5cwKg3YmDMMcUAw86dc/MYfFJF/y9+K9LCVqlBcIGiY1D9RntrB/oftM4xQrnm56XcCKxRicXGwfSE7LekWtchG/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U52Z5gYZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775704290; c=relaxed/simple;
+	bh=u+ofVgFYlIIA4dK5MTz51iYII9YuqUbVQmVZ8NyRVdo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hNmMqfSB0jRnb2qHfm8ECfIyZAo3N4TjLzAxcWNifCpTeeL/jQoUNnD6hwRbs+/Ua+kbOpWCQHW6FjElE+MdJTYDzufggzXMbEPfy/99MpGQStfbMP0eBmIsg0q3Vx7PwDtU8o+8h7aShEywVUUSa/xo0oFztElOX5eo8dxcae4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=t0MXfqE6; arc=none smtp.client-ip=91.218.175.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U52Z5gYZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52281C19421;
-	Thu,  9 Apr 2026 03:11:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775704268;
-	bh=vhO89C65ftvx49gMiDTfTu64UlsVk0MtZwfzqWwu/SY=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=U52Z5gYZLbQr3xZbqtBvdfG8lbDCtSkapzDqQ0KNfg2sXHcM+pdygFjz1edaxjrop
-	 y+FYpFl8C1vFI6GIMQH+UWPPnmuqTslMMeZnM1rFCaUi5xvDThZ1GI20fBtS2yaxvp
-	 dyXW5XJ97JfvU9HONqOr0woLDq6P9eZNbTa0AUjgaaGekWTxdjBlwK9zGSURMnGZ0K
-	 AVX5DemHpG1pbfjzT9YjKDZg11yutCOwmPI+pYL1hqDc5Co6Emh5IQi9TgBO3OM7mW
-	 kyxVLNM57K7/0GiaTXl0N+TpWdBxpvtaFSR7DUK+0bpN3HJkYrwUNk5ftatTwW3Z9d
-	 bg6xFi0gkQB8w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9FF2393079A;
-	Thu,  9 Apr 2026 03:10:45 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="t0MXfqE6"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775704286;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IVxHTlgXIaRT3RCJ9lceVoj0EL96Eiqshlb13XnKKOI=;
+	b=t0MXfqE6DPvuAFDmNTAZYrZ+dGdbeddzNP/B5sNG1ijdwWwvJl0jjRkcNL7z+L1LWaF3oB
+	c0Vsj1xlfL6pWz6ojyprO3wGmqxYTjQNXvcI6xin945bgWk7mLwxoTRO5wtfEdOCrClBqY
+	KDryxb4zTnUz0LxPu8kET4j65TEd3kI=
+From: Qingfang Deng <qingfang.deng@linux.dev>
+To: linux-ppp@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Michal Ostrowski <mostrows@gmail.com>,
+	Qingfang Deng <qingfang.deng@linux.dev>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Kees Cook <kees@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Paul Mackerras <paulus@ozlabs.org>,
+	Jaco Kroon <jaco@uls.co.za>,
+	James Carlson <carlsonj@workingcode.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Marcin Szycik <marcin.szycik@linux.intel.com>,
+	Guillaume Nault <gnault@redhat.com>
+Subject: [PATCH net v3 2/2] pppoe: drop PFC frames
+Date: Thu,  9 Apr 2026 11:11:02 +0800
+Message-ID: <20260409031107.616630-2-qingfang.deng@linux.dev>
+In-Reply-To: <20260409031107.616630-1-qingfang.deng@linux.dev>
+References: <20260409031107.616630-1-qingfang.deng@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,72 +59,105 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next V5 00/12] devlink: add per-port resource support
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177570424453.975519.14430257685849148487.git-patchwork-notify@kernel.org>
-Date: Thu, 09 Apr 2026 03:10:44 +0000
-References: <20260407194107.148063-1-tariqt@nvidia.com>
-In-Reply-To: <20260407194107.148063-1-tariqt@nvidia.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, horms@kernel.org,
- donald.hunter@gmail.com, jiri@resnulli.us, corbet@lwn.net,
- skhan@linuxfoundation.org, saeedm@nvidia.com, leon@kernel.org,
- mbloch@nvidia.com, shuah@kernel.org, matttbe@kernel.org,
- chuck.lever@oracle.com, cjubran@nvidia.com, ohartoov@nvidia.com,
- moshe@nvidia.com, dtatulea@nvidia.com, daniel.zahka@gmail.com,
- shshitrit@nvidia.com, cratiu@nvidia.com, jacob.e.keller@intel.com,
- parav@nvidia.com, ajayachandra@nvidia.com, shayd@nvidia.com, kees@kernel.org,
- danielj@nvidia.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-kselftest@vger.kernel.org, gal@nvidia.com
+X-Migadu-Flow: FLOW_OUT
 
-Hello:
+RFC 2516 Section 7 states that Protocol Field Compression (PFC) is NOT
+RECOMMENDED for PPPoE. In practice, pppd does not support negotiating
+PFC for PPPoE sessions, and the current PPPoE driver assumes an
+uncompressed (2-byte) protocol field. However, the generic PPP layer
+function ppp_input() is not aware of the negotiation result, and still
+accepts PFC frames.
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+If a peer with a broken implementation or an attacker sends a frame with
+a compressed (1-byte) protocol field, the subsequent PPP payload is
+shifted by one byte. This causes the network header to be 4-byte
+misaligned, which may trigger unaligned access exceptions on some
+architectures.
 
-On Tue, 7 Apr 2026 22:40:55 +0300 you wrote:
-> Hi,
-> 
-> This series by Or adds devlink per-port resource support.
-> See detailed description by Or below [1].
-> 
-> Regards,
-> Tariq
-> 
-> [...]
+To reduce the attack surface, drop PPPoE PFC frames. Introduce
+ppp_skb_is_compressed_proto() helper function to be used in both
+ppp_generic.c and pppoe.c to avoid open-coding.
 
-Here is the summary with links:
-  - [net-next,V5,01/12] devlink: Refactor resource functions to be generic
-    https://git.kernel.org/netdev/net-next/c/7be3163c49b2
-  - [net-next,V5,02/12] devlink: Add port-level resource registration infrastructure
-    https://git.kernel.org/netdev/net-next/c/6f38acfed5ed
-  - [net-next,V5,03/12] net/mlx5: Register SF resource on PF port representor
-    https://git.kernel.org/netdev/net-next/c/4be8326d817e
-  - [net-next,V5,04/12] netdevsim: Add devlink port resource registration
-    https://git.kernel.org/netdev/net-next/c/085b234b28cc
-  - [net-next,V5,05/12] devlink: Add dump support for device-level resources
-    https://git.kernel.org/netdev/net-next/c/11636b550eea
-  - [net-next,V5,06/12] devlink: Include port resources in resource dump dumpit
-    https://git.kernel.org/netdev/net-next/c/810b76394d69
-  - [net-next,V5,07/12] devlink: Add port-specific option to resource dump doit
-    https://git.kernel.org/netdev/net-next/c/7511ff14f30d
-  - [net-next,V5,08/12] selftest: netdevsim: Add devlink port resource doit test
-    https://git.kernel.org/netdev/net-next/c/396135377104
-  - [net-next,V5,09/12] devlink: Document port-level resources and full dump
-    https://git.kernel.org/netdev/net-next/c/170e160a0e7c
-  - [net-next,V5,10/12] devlink: Add resource scope filtering to resource dump
-    https://git.kernel.org/netdev/net-next/c/1bc45341a6ea
-  - [net-next,V5,11/12] selftest: netdevsim: Add resource dump and scope filter test
-    https://git.kernel.org/netdev/net-next/c/2a8e91235254
-  - [net-next,V5,12/12] devlink: Document resource scope filtering
-    https://git.kernel.org/netdev/net-next/c/78c327c1728d
+Fixes: 224cf5ad14c0 ("ppp: Move the PPP drivers")
+Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
+---
+Changes in v3:
+ Fix kdoc warning
+ Link to v2: https://lore.kernel.org/netdev/20260408024245.312732-1-qingfang.deng@linux.dev/
 
-You are awesome, thank you!
+ drivers/net/ppp/ppp_generic.c |  2 +-
+ drivers/net/ppp/pppoe.c       |  8 +++++++-
+ include/linux/ppp_defs.h      | 16 ++++++++++++++++
+ 3 files changed, 24 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
+index cb29a6968c63..eb1503b389ef 100644
+--- a/drivers/net/ppp/ppp_generic.c
++++ b/drivers/net/ppp/ppp_generic.c
+@@ -2251,7 +2251,7 @@ ppp_do_recv(struct ppp *ppp, struct sk_buff *skb, struct channel *pch)
+  */
+ static void __ppp_decompress_proto(struct sk_buff *skb)
+ {
+-	if (skb->data[0] & 0x01)
++	if (ppp_skb_is_compressed_proto(skb))
+ 		*(u8 *)skb_push(skb, 1) = 0x00;
+ }
+ 
+diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
+index 1ac61c273b28..4cd10c908711 100644
+--- a/drivers/net/ppp/pppoe.c
++++ b/drivers/net/ppp/pppoe.c
+@@ -393,7 +393,7 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	if (skb_mac_header_len(skb) < ETH_HLEN)
+ 		goto drop;
+ 
+-	if (!pskb_may_pull(skb, sizeof(struct pppoe_hdr)))
++	if (!pskb_may_pull(skb, PPPOE_SES_HLEN))
+ 		goto drop;
+ 
+ 	ph = pppoe_hdr(skb);
+@@ -403,6 +403,12 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	if (skb->len < len)
+ 		goto drop;
+ 
++	/* skb->data points to the PPP protocol header after skb_pull_rcsum.
++	 * Drop PFC frames.
++	 */
++	if (ppp_skb_is_compressed_proto(skb))
++		goto drop;
++
+ 	if (pskb_trim_rcsum(skb, len))
+ 		goto drop;
+ 
+diff --git a/include/linux/ppp_defs.h b/include/linux/ppp_defs.h
+index 45c0947fa404..6e9587ce651c 100644
+--- a/include/linux/ppp_defs.h
++++ b/include/linux/ppp_defs.h
+@@ -8,8 +8,24 @@
+ #define _PPP_DEFS_H_
+ 
+ #include <linux/crc-ccitt.h>
++#include <linux/skbuff.h>
+ #include <uapi/linux/ppp_defs.h>
+ 
+ #define PPP_FCS(fcs, c) crc_ccitt_byte(fcs, c)
+ 
++/**
++ * ppp_skb_is_compressed_proto - checks if PPP protocol in a skb is compressed
++ * @skb: skb to check
++ *
++ * Check if the PPP protocol field is compressed (the least significant
++ * bit of the most significant octet is 1). skb->data must point to the PPP
++ * protocol header.
++ *
++ * Return: Whether the PPP protocol field is compressed.
++ */
++static inline bool ppp_skb_is_compressed_proto(const struct sk_buff *skb)
++{
++	return unlikely(skb->data[0] & 0x01);
++}
++
+ #endif /* _PPP_DEFS_H_ */
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.43.0
 
