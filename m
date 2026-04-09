@@ -1,82 +1,78 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C3C3D34A8
-	for <netdev@vger.kernel.org>; Thu,  9 Apr 2026 15:07:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77F13DD52A
+	for <netdev@vger.kernel.org>; Thu,  9 Apr 2026 15:08:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775747269; cv=none; b=lSWozjSkxyhrYw/QKqfQEM3PBSHHqWNbhSzwyXX0wl2qRO//duFHDpeDfE0Qj0II30Vu4j3/GCK1bb0Skixu9wpc2BVM4DGD8UkiDH1RPBzh+nQP/03NnRjPnqiWxMyMeVrjzDa6btMKCh5RtBahg7LHeZeKn/57L2BBpNfqDIw=
+	t=1775747310; cv=none; b=C+4ya/yyOP+hu/L/YOYvlQFgshgm/hb603jynNYOXO/QqMFD2pxcNc1IVRBndXFTAhyGyuzrZfPpKIoOWvZrE/hkO/9EjvOyvVVh/PFZ97GOalzrdbs/RiuImLiRpeGFUc2qG74bmiZp4dqQphxlP1VS+OBowHTX1RfXlfK19pY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775747269; c=relaxed/simple;
-	bh=Tzx1JoLPABShYM1Pm3RTCn9DyXuxVz/UCK8Zh9PzwWQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UnYMkFTYd7dBTZh5W5+W4wqZYpI/g7tH+14ii8+sp+gdaHpHA+u1in/aoOO3aSH62wUOyqNpr5jF9aXWjGLBIPgPW2piOTgTmXkTcwJTw7C86nhCaeB6tggj6dSw0S5EqC7m5d4pbSSMswthyGYVkzVImIxsFDnQKBQYBa8DkWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K1NYr8nc; arc=none smtp.client-ip=209.85.215.170
+	s=arc-20240116; t=1775747310; c=relaxed/simple;
+	bh=tsWV9xKNk8ZRfQF0qdjf8bnZvwJ4yjJqcyzT5DpB9KQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=he4RA8VYI4DRP1QFcNADAYVRMO+lUidshdT5usAOT1CEiiB1x4c4Wn8yYbZ/TY+YCFVVKGZ3m8nILeZAmeLPsu/RfuCpBazkk33eJC8QwFlgCYyE6gpol3fYKJ90UfM8Mk8deBg1Rvoyi0yMLJnteFOCQX+hQv2Y0m768u98Uvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H+dHj5FT; arc=none smtp.client-ip=74.125.224.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K1NYr8nc"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c76864f4e58so373844a12.1
-        for <netdev@vger.kernel.org>; Thu, 09 Apr 2026 08:07:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H+dHj5FT"
+Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-65009bfdcfdso1121825d50.2
+        for <netdev@vger.kernel.org>; Thu, 09 Apr 2026 08:08:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775747267; x=1776352067; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=PrEq8JFBlKt4BxwmLLBZiPMRBW9tfYXXYLLd/dH/SyE=;
-        b=K1NYr8ncZ7rDgEspHQQy3QHmOK2zePYvr1Y/8hWeYphQM8gDSZO73Px+8E7JCfZ+8f
-         5pb+QBGtVyQX0HJgArVXV7MhpjCIqfnNYR3s71h5cEfxiOK4FhQXnJV0Qhsn6dJrSzQv
-         gYq7DUaLSop3GgBGksn7MEJdEJ0ZPnjJ4DHpSUGRJLyTn4qg1qg6leTAzcSppzGctOJq
-         VHVpqtmqyBbPUdToOPr/EcVfgGpFlU4CM10/CctapHwjpbatQ2ScoZ1ka3lOwwPmsg45
-         LzP8wLgXIxF+qYEbSEvoNUvEMsR9xFpdwaKFWhflad4bC4ogrQuy+/CHd6mMKrMPD4O8
-         RivA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775747267; x=1776352067;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1775747308; x=1776352108; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PrEq8JFBlKt4BxwmLLBZiPMRBW9tfYXXYLLd/dH/SyE=;
-        b=Z6vAiKUjP4dnUj/C9vd9l9uui97armhQ8V9xKCWKjQIvrnJKyLEwUHVWp3SeSwlksU
-         7gIqlmwroIF2dCVTxyKwhlnVGtkWyWbup2s6oeLQb09ZnpG47s3Bq5t4uF+rPafFntaM
-         pAVEKCACzA8x5NjLLSz35MG1+ZW7cl0YqJSdeF0CsJNL+pPkW8YzlkLml+xmC0OUZDXf
-         okEERCjVuqDewpDXj0f268fnnOBWPr5uxelH1pKfGaxEjYgpaVLT0vNMhPm7RKfKc2kl
-         kVAGb/UtBGQWWu5AIxGEcaB/phi7O66HXF1d3tXBNsQISojPRRZmQcMO57GiG4qrlAbe
-         wunA==
-X-Forwarded-Encrypted: i=1; AJvYcCUYevsuvqLl32/X81U0u+c9ha1ylZ392YBck2a9wU6TgvU3CT3aQr7vZXbc61cavOgUNgXlKOI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YznWSSK9slWfXlQ0N0OvEvr1s7GhhhMKyYP+Tyxwt/6jbFnkBHy
-	dDPzfF7O1PGLbhrs5b5Z1vJCpD0xx6+3LLDyacoOHlrV+kB2cCm+NejI
-X-Gm-Gg: AeBDieu3wr8Q1PCGqrv+p/JPGYFqrIwW9pUJTFtqpQ94UuF4/xBQ7aSSfS3CJzw0ddm
-	IWWnUVhCX+xH0DIBKHz2YszSlzJz44LLD7tLgUQyu9mBjqyiINSBAz8FGGC0/fb8l0xvJbEo7BK
-	cLKEiBf4WTeek/dCKu9RJojQACZH5DxOPtGG0/9oYVuAPu2a/gMBBT85I0gvAYJqHdRCXIA8IFo
-	OF4+v9RbY2/psFG2o7rVQbVVC+V3xUO+VzTmeKe3FDeZlSQ/dh3BEeSjvRLOeFxhh/GqcnAlGN4
-	1CxSxro5yqSa0oRuYlbUQPwdtbPjEl0+ARTlKa9r9sYgqcBGXFp5fQXIWyLZLMYX7anbFUd0BpX
-	3g89k7LUmgcD7t16oTwD4llPf5FfsZjLH97s7HMpq4/WdRMNFkwjMS0ZBBgC+lcN29JXSDV15YE
-	qyKmd/BcYQsF3DaLOpy+UXKXtAfkKxNwGhEJ13tY47p9GyPV6kd09k6PHTbOOuZe1rNF3xR8Clk
-	Iv/02Xr4cCR5cl8PuEX/Ng=
-X-Received: by 2002:a17:903:22c6:b0:2ae:3b9b:db34 with SMTP id d9443c01a7336-2b28188da6amr269183375ad.42.1775747267056;
-        Thu, 09 Apr 2026 08:07:47 -0700 (PDT)
-Received: from SLSGDTSWING002.tail0ac356.ts.net ([129.126.109.177])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b27497af47sm312363305ad.42.2026.04.09.08.07.43
+        bh=0zmbdYu+fcv9A3MvczPkc6WO3ccIW1T8auH+a7GvTMc=;
+        b=H+dHj5FTl48dyFoew8YjzvftvoX11yYQ6COMIaw9Ty/8SUnZ6PFN9D12dnkqNICO/r
+         04IKT7XqsyJhzEvY3VZcktHvYIL1IRwWNN9MpBNptCq43sWJrpgM3rbwo27EutOsaLZf
+         50DqpSqH+nYJBLv23ZcY/3qHv2n7tzvI4Hjam7HfolJiJs8svUc+wiUNWNy6DC1yFV+5
+         PspPIB8D7zIBUHD0GKg8KnxDtaWYHrMYBBhkDBB5DNHqaH1UdwEc8nQwvApKeFsHJeSR
+         b5AOdtzIXoCIiqPkzPtc7WtChexzc6kkqYKPgTeJS6L9nJGSwDnXdD0QbuQAsqh2HSKU
+         GrBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775747308; x=1776352108;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=0zmbdYu+fcv9A3MvczPkc6WO3ccIW1T8auH+a7GvTMc=;
+        b=dXNEXEcUcfXzprvantj73PD3IcwleJdwG8ab/5bfkNs5QQkHPpOgxGVXfbOLz3wY2S
+         Smkbqzg41Deg3IRtrdJ8NOtgDuhGynQrPiY79Xu9ntL2BqShOG7iRM5ZqIL5AHStaXu+
+         xMs9KOcvpTfrXFTZ+MTfdO6/Rv4AyCNknB3Eqbz3e3IKHffCZR61FobDyqIdOngwtuXp
+         R2DFqBlircMHCfn8bD64/NX4X76OW+Pu39TH0Bom2fm3tGFea89da2cvqjtvAmzZ8Rq+
+         ltBYAt5C6iugjrSY+Dr6ShXsfOF4ZhI+3gEbMcxICinawhEQ0/c35D8zU0hjnM3SLJhp
+         HxsA==
+X-Gm-Message-State: AOJu0YyBatoDYLyduvNmuKspjRUW8gOSYgr2yif2jVlHzvtCW9ZrBcFn
+	4OfEYx+uk4TgTy6FHi2mb2BRr2dbqEvCg6740RLoLb/eYxUBaMbK4z/tspZiqft7d9iIWw==
+X-Gm-Gg: AeBDiev5hCYcbIZ9+X5YbrEdjv9JCP2URul9yMJ1mXcGISBfwMQUET54Ld5cHl0TtUf
+	dLyQr3gUqN0X2fW0Am6XttI2amCjpedf6xgOEt0N4fBM8/te0LlWG59nIb0lOCztsVEToPHAHUx
+	jc4OUeD/bUqkCnXSwb716YcZMYuEACE/+IzHr0XRvIkRDfV4ppwrBdVJx+UI0O77zF0BLHflCog
+	86PtbY/Ie+htcjIkgjT9vcSHHIwsbGgtDPJOSPwOiWjffH29S3LdR8oiK4nkH+n1KB05hObZ6ja
+	5xN5ZbWGaMu4jlOUvtfb8S3r33+zz7HDk0DCu0jokAo7n23y/u3q+sMR7uwslJGsbnRmj0uXYlB
+	t+wH26et+fNZlqBc0PmFHTSTzXdxjmiag3DmGYk3bJbB0BhA9nFPyhaFLFlK140fjyfvz/tJJAB
+	YEeS9sHlp/tOmzGixcyzvkTDlg7bNKgDU6JRS/a0ALmoHglFHHYwHb5Yc+psu3a+dihhckOvsWK
+	RKs58mnnJLwqzg/6sylqRl/C1RS
+X-Received: by 2002:a05:690e:4841:b0:650:15ad:33cf with SMTP id 956f58d0204a3-6504883dc62mr17719652d50.50.1775747307656;
+        Thu, 09 Apr 2026 08:08:27 -0700 (PDT)
+Received: from TDC4045031631.e0cglfehwr0e5gttmepj3hi3hf.ux.internal.cloudapp.net ([20.63.37.123])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6503a828f3csm11157265d50.3.2026.04.09.08.08.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Apr 2026 08:07:46 -0700 (PDT)
-From: Weiming Shi <bestswngs@gmail.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Phil Sutter <phil@nwl.cc>,
-	Simon Horman <horms@kernel.org>,
-	Patrick McHardy <kaber@trash.net>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
+        Thu, 09 Apr 2026 08:08:27 -0700 (PDT)
+From: Ashutosh Desai <ashutoshdesai993@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Eric Dumazet <edumazet@google.com>,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
 	linux-kernel@vger.kernel.org,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>
-Subject: [PATCH nf] netfilter: nf_conntrack_sip: fix OOB read in epaddr_len and ct_sip_parse_header_uri
-Date: Thu,  9 Apr 2026 17:50:57 +0800
-Message-ID: <20260409095056.706441-2-bestswngs@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	Ashutosh Desai <ashutoshdesai993@gmail.com>
+Subject: [PATCH v2] nfc: hci: fix OOB heap read on short HCP frames
+Date: Thu,  9 Apr 2026 15:08:25 +0000
+Message-Id: <20260409150825.2217133-1-ashutoshdesai993@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CANn89iKq=oQOmvDtK-Vtr7r9yrD29cURgv8VOJ15mFHyJ0kXmw@mail.gmail.com>
+References: <CANn89iKq=oQOmvDtK-Vtr7r9yrD29cURgv8VOJ15mFHyJ0kXmw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -85,52 +81,81 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In epaddr_len() and ct_sip_parse_header_uri(), after sip_parse_addr()
-successfully parses an IP address, the code checks whether the next
-character is ':' to determine if a port number follows. However,
-neither function verifies that the pointer is still within bounds
-before dereferencing it.
+Both nfc_hci_recv_from_llc() and nfc_hci_msg_rx_work() cast skb->data
+to struct hcp_packet and read the message header byte without verifying
+the data is present in the linear sk_buff area. The same issue exists in
+the NCI HCI path via nci_hci_data_received_cb() and nci_hci_msg_rx_work().
 
-When a SIP header URI contains an IP address that extends to the last
-byte of the packet data, in4_pton() or in6_pton() consumes all
-available bytes and returns with the end pointer equal to limit. The
-subsequent dereference reads one byte past the valid SIP message data.
+The initial fix checked skb->len, but that counts bytes in non-linear
+fragments too. skb->data only covers the linear head, so a fragmented
+skb with len >= 2 but the payload in a fragment would still result in
+an out-of-bounds read. Eric Dumazet pointed this out.
 
-ct_sip_parse_request() already handles this correctly:
+Switch to pskb_may_pull() which validates that the requested bytes are
+available and pulls fragment data into the linear area if needed, which
+is the correct approach here.
 
-    if (end < limit && *end == ':') {
-
-Apply the same bounds check to the two functions that are missing it.
-
-Fixes: 9fafcd7b2032 ("[NETFILTER]: nf_conntrack/nf_nat: add SIP helper port")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
 ---
- net/netfilter/nf_conntrack_sip.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/nfc/hci/core.c | 9 +++++++++
+ net/nfc/nci/hci.c  | 9 +++++++++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/net/netfilter/nf_conntrack_sip.c b/net/netfilter/nf_conntrack_sip.c
-index 939502ff7c87..83741901c6fb 100644
---- a/net/netfilter/nf_conntrack_sip.c
-+++ b/net/netfilter/nf_conntrack_sip.c
-@@ -194,7 +194,7 @@ static int epaddr_len(const struct nf_conn *ct, const char *dptr,
- 	}
+diff --git a/net/nfc/hci/core.c b/net/nfc/hci/core.c
+index 0d33c81a1..b8fe59f44 100644
+--- a/net/nfc/hci/core.c
++++ b/net/nfc/hci/core.c
+@@ -134,6 +134,10 @@ static void nfc_hci_msg_rx_work(struct work_struct *work)
+ 	u8 instruction;
  
- 	/* Port number */
--	if (*dptr == ':') {
-+	if (dptr < limit && *dptr == ':') {
- 		dptr++;
- 		dptr += digits_len(ct, dptr, limit, shift);
- 	}
-@@ -520,7 +520,7 @@ int ct_sip_parse_header_uri(const struct nf_conn *ct, const char *dptr,
+ 	while ((skb = skb_dequeue(&hdev->msg_rx_queue)) != NULL) {
++		if (!pskb_may_pull(skb, NFC_HCI_HCP_HEADER_LEN)) {
++			kfree_skb(skb);
++			continue;
++		}
+ 		pipe = skb->data[0];
+ 		skb_pull(skb, NFC_HCI_HCP_PACKET_HEADER_LEN);
+ 		message = (struct hcp_message *)skb->data;
+@@ -904,6 +908,11 @@ static void nfc_hci_recv_from_llc(struct nfc_hci_dev *hdev, struct sk_buff *skb)
+ 	 * unblock waiting cmd context. Otherwise, enqueue to dispatch
+ 	 * in separate context where handler can also execute command.
+ 	 */
++	if (!pskb_may_pull(hcp_skb, NFC_HCI_HCP_HEADER_LEN)) {
++		kfree_skb(hcp_skb);
++		return;
++	}
++
+ 	packet = (struct hcp_packet *)hcp_skb->data;
+ 	type = HCP_MSG_GET_TYPE(packet->message.header);
+ 	if (type == NFC_HCI_HCP_RESPONSE) {
+diff --git a/net/nfc/nci/hci.c b/net/nfc/nci/hci.c
+index 40ae8e5a7..4243ca9b1 100644
+--- a/net/nfc/nci/hci.c
++++ b/net/nfc/nci/hci.c
+@@ -412,6 +412,10 @@ static void nci_hci_msg_rx_work(struct work_struct *work)
  
- 	if (!sip_parse_addr(ct, dptr + *matchoff, &c, addr, limit, true))
- 		return -1;
--	if (*c == ':') {
-+	if (c < limit && *c == ':') {
- 		c++;
- 		p = simple_strtoul(c, (char **)&c, 10);
- 		if (p < 1024 || p > 65535)
+ 	for (; (skb = skb_dequeue(&hdev->msg_rx_queue)); kcov_remote_stop()) {
+ 		kcov_remote_start_common(skb_get_kcov_handle(skb));
++		if (!pskb_may_pull(skb, NCI_HCI_HCP_HEADER_LEN)) {
++			kfree_skb(skb);
++			continue;
++		}
+ 		pipe = NCI_HCP_MSG_GET_PIPE(skb->data[0]);
+ 		skb_pull(skb, NCI_HCI_HCP_PACKET_HEADER_LEN);
+ 		message = (struct nci_hcp_message *)skb->data;
+@@ -482,6 +486,11 @@ void nci_hci_data_received_cb(void *context,
+ 	 * unblock waiting cmd context. Otherwise, enqueue to dispatch
+ 	 * in separate context where handler can also execute command.
+ 	 */
++	if (!pskb_may_pull(hcp_skb, NCI_HCI_HCP_HEADER_LEN)) {
++		kfree_skb(hcp_skb);
++		return;
++	}
++
+ 	packet = (struct nci_hcp_packet *)hcp_skb->data;
+ 	type = NCI_HCP_MSG_GET_TYPE(packet->message.header);
+ 	if (type == NCI_HCI_HCP_RESPONSE) {
 -- 
-2.43.0
+2.34.1
 
