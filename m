@@ -1,51 +1,51 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A090277029
-	for <netdev@vger.kernel.org>; Thu,  9 Apr 2026 13:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5EC3CEBB6
+	for <netdev@vger.kernel.org>; Thu,  9 Apr 2026 13:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775739629; cv=none; b=d2T8BuaIAYm3JIeCjnIPHIpT5rn+p6H699sH6wN6zVgTt3JpRdh5B4RRIEpvXnoglePab223rROQ1qfiljI3dTL3B4ZdnZogBAKDAJBKDKVe3y9OqD6MkMpXjlcvV5QjxOVCmroGdEzXQnQ9I/wgROBTAUkiQkWRAobnC7Y17Q4=
+	t=1775739629; cv=none; b=qrCQn7kPLw8aCKi5i7/sms/tV82Rj95IfrVnRbtp9DRKioJl4rwO7eFSio0d8SFkiubZtrZ4l5kf4OHx9yZNHqxr0QnMmOG4rAN5tGrP1iTmAWwppiY/ZmtBpxDZKfUCv2e04Y8Q1UybFv8ILpR5iYfZ1RVENkJ3swI0XBWZxVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775739629; c=relaxed/simple;
-	bh=QbkLmemqcjIzQYZ1I3jo72JD1NJSaQSWGsXhf58eP50=;
+	bh=bBbnnIzfb8m+qy0omERvBIWpootbQKRVNSRImW14udE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gW8AkkBSjLO+T8+q4F4YAm8+xXE3eNV6uHGa9SQ6codINnkltP8k/5Lh5KXg1wDGHnt6aG4bGESusj/emZysLZo3KTCSADs9Ro03UjUU9nUn78Bgyts+u/ApTxMSukAbFSTC0bk7EnwyvIGvBnILW6GU9MCbJpoVPVKFDvTvOQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hJVfmLhi; arc=none smtp.client-ip=192.198.163.19
+	 MIME-Version; b=XpwxT7hXnObf1aEcGrXtgShA5rS+bEmnlT5n7R5zdOYGB2fTljkHqO6GTCRsNrGhNzrra0DIHhZyUDzeA9SeW5UClVs7VjNYQa9ZD93IxRbFZnRAYInNgQ6nPmoq6GFBoQq7PojsUn731iF4HyyZmxr3Q4DvcP01UGPVGoeE+9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ntV6S3Ah; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hJVfmLhi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ntV6S3Ah"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775739627; x=1807275627;
+  t=1775739628; x=1807275628;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=QbkLmemqcjIzQYZ1I3jo72JD1NJSaQSWGsXhf58eP50=;
-  b=hJVfmLhibcAD4JIPhcJbzf387nT2UrDyluwAHRH+IzZ2mLqogX9MXnz2
-   H7yQ1e4z4fva3YylvWB50hn6gU7ABzYwr2toLTz2tL6s89cCmNlmzTpta
-   OzvRtYYhCnmGzXW529XJmIDKftHCHVDi7gnu3PgxS8zVY/L3qSMzZ+BRp
-   7Xgfclx40pIlXmhIJsI4ovdEmFr03ghqOM/wgO51l3DHHSpejtvqjl2us
-   mcaf8EvnXu8HgYLWd531nhPSFcgcv4C28KtrKPUYY9Ta5VxhS/m7Sl4Mc
-   BDulCtrE0UU9dzLMJNZOi240aGYkcAMGyZd/8EZU8qE3JZvoWI9EDzw7F
+  bh=bBbnnIzfb8m+qy0omERvBIWpootbQKRVNSRImW14udE=;
+  b=ntV6S3AhjS+IFI9cUdeHRO2vN2TWVZf5l9jcEXmUlAQ4Bmr8dEvBm9o3
+   HPSlH/2Qmr7JdNoAcBiKg662315f7BM00IL6NrYFaI4MYMxVTOfdW1vIA
+   RMWz/9/F1yRR6dPdqsFiDYOWzyYkb4wL3XPm1eBPyUlahmuaYX77Mra8D
+   HvdxdoVXOggnoDLdIzQopYhhtlYiEMhOnrpqKOad7tuR/GdyYkaqa3CNv
+   XrfHn3qi93NSmWWJFAsqiNviLSO4t9zcRldQH04aWvBawVWMzooKbzGQG
+   +hCWX5XyElEYVF3ihsFFxSZJSN/4Z1AzAE1LWUz/lCP7R7PJ2YTNxNw7f
    w==;
-X-CSE-ConnectionGUID: 7b3aew8fRtC4g8EFg3eStA==
-X-CSE-MsgGUID: aCaMuR/4SIayrMA8DISjng==
-X-IronPort-AV: E=McAfee;i="6800,10657,11753"; a="75777517"
+X-CSE-ConnectionGUID: Otx2QPmmRRiQuUiSSuLN2Q==
+X-CSE-MsgGUID: 2+vDXRjZRF64LVb/R4Ijlg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11753"; a="75777525"
 X-IronPort-AV: E=Sophos;i="6.23,169,1770624000"; 
-   d="scan'208";a="75777517"
+   d="scan'208";a="75777525"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2026 06:00:17 -0700
-X-CSE-ConnectionGUID: eeD5CAlaTjO+w9AKnhjLWg==
-X-CSE-MsgGUID: r+aOWgxxQ+2J8mq9DYLhuA==
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2026 06:00:18 -0700
+X-CSE-ConnectionGUID: 36SONYIFQQGixnFsTayVkQ==
+X-CSE-MsgGUID: R2QTIDzeSCyXuiGqqOje3g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,169,1770624000"; 
-   d="scan'208";a="259208101"
+   d="scan'208";a="259208113"
 Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by orviesa002.jf.intel.com with ESMTP; 09 Apr 2026 06:00:12 -0700
+  by orviesa002.jf.intel.com with ESMTP; 09 Apr 2026 06:00:16 -0700
 Received: from gond.igk.intel.com (gond.igk.intel.com [10.123.220.52])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id 7431C2FC5C;
-	Thu,  9 Apr 2026 14:00:11 +0100 (IST)
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id A5B2B2FC58;
+	Thu,  9 Apr 2026 14:00:15 +0100 (IST)
 From: Marcin Szycik <marcin.szycik@linux.intel.com>
 To: intel-wired-lan@lists.osuosl.org
 Cc: netdev@vger.kernel.org,
@@ -53,11 +53,10 @@ Cc: netdev@vger.kernel.org,
 	ananth.s@intel.com,
 	alexander.duyck@gmail.com,
 	Marcin Szycik <marcin.szycik@linux.intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH iwl-next v2 01/10] ice: rename shared Flow Director functions and structs
-Date: Thu,  9 Apr 2026 13:59:54 +0200
-Message-ID: <20260409120003.2719-2-marcin.szycik@linux.intel.com>
+Subject: [PATCH iwl-next v2 06/10] ice: use plain alloc/dealloc for ice_ntuple_fltr
+Date: Thu,  9 Apr 2026 13:59:59 +0200
+Message-ID: <20260409120003.2719-7-marcin.szycik@linux.intel.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20260409120003.2719-1-marcin.szycik@linux.intel.com>
 References: <20260409120003.2719-1-marcin.szycik@linux.intel.com>
@@ -69,540 +68,60 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
+Change struct ice_ntuple_fltr allocation from devm_ to plain alloc,
+since its lifetime is not tied to the device. All such objects are being
+removed on device remove via ice_deinit_features() -> ice_deinit_fdir()
+-> ice_vsi_manage_fdir() -> ice_fdir_del_all_fltrs()
 
-Rename shared Flow Director functions and structs. These entities are
-currently used to add Flow Director filters, however, they will be
-expanded to also add ACL filters. Rename the functions and struct,
-replacing 'fdir' to 'ntuple', to reflect that they are being used for
-ntuple filters and are not solely used for Flow Director.
-
-Rename the file to also reflect this change.
-
-Co-developed-by: Paul M Stillwell Jr <paul.m.stillwell.jr@intel.com>
-Signed-off-by: Paul M Stillwell Jr <paul.m.stillwell.jr@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Co-developed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
 Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 ---
 v2:
-* Also rename struct ice_fdir_fltr and file
+* Add this patch
 ---
- drivers/net/ethernet/intel/ice/Makefile       |  2 +-
- drivers/net/ethernet/intel/ice/ice.h          |  6 +-
- drivers/net/ethernet/intel/ice/ice_arfs.h     |  2 +-
- drivers/net/ethernet/intel/ice/ice_fdir.h     | 12 ++--
- drivers/net/ethernet/intel/ice/ice_arfs.c     |  8 +--
- drivers/net/ethernet/intel/ice/ice_ethtool.c  |  4 +-
- ...ce_ethtool_fdir.c => ice_ethtool_ntuple.c} | 58 ++++++++++---------
- drivers/net/ethernet/intel/ice/ice_fdir.c     | 18 +++---
- drivers/net/ethernet/intel/ice/virt/fdir.c    | 28 ++++-----
- 9 files changed, 70 insertions(+), 68 deletions(-)
- rename drivers/net/ethernet/intel/ice/{ice_ethtool_fdir.c => ice_ethtool_ntuple.c} (97%)
+ drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/Makefile b/drivers/net/ethernet/intel/ice/Makefile
-index 5b2c666496e7..c310c209bc7d 100644
---- a/drivers/net/ethernet/intel/ice/Makefile
-+++ b/drivers/net/ethernet/intel/ice/Makefile
-@@ -24,7 +24,7 @@ ice-y := ice_main.o	\
- 	 ice_vsi_vlan_ops.o \
- 	 ice_vsi_vlan_lib.o \
- 	 ice_fdir.o	\
--	 ice_ethtool_fdir.o \
-+	 ice_ethtool_ntuple.o \
- 	 ice_vlan_mode.o \
- 	 ice_flex_pipe.o \
- 	 ice_flow.o	\
-diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
-index 804f5aa8e9f5..ea1bddfa739d 100644
---- a/drivers/net/ethernet/intel/ice/ice.h
-+++ b/drivers/net/ethernet/intel/ice/ice.h
-@@ -1015,11 +1015,11 @@ void ice_deinit_rdma(struct ice_pf *pf);
- bool ice_is_wol_supported(struct ice_hw *hw);
- void ice_fdir_del_all_fltrs(struct ice_vsi *vsi);
- int
--ice_fdir_write_fltr(struct ice_pf *pf, struct ice_fdir_fltr *input, bool add,
-+ice_fdir_write_fltr(struct ice_pf *pf, struct ice_ntuple_fltr *input, bool add,
- 		    bool is_tun);
- void ice_vsi_manage_fdir(struct ice_vsi *vsi, bool ena);
--int ice_add_fdir_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd);
--int ice_del_fdir_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd);
-+int ice_add_ntuple_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd);
-+int ice_del_ntuple_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd);
- int ice_get_ethtool_fdir_entry(struct ice_hw *hw, struct ethtool_rxnfc *cmd);
- int
- ice_get_fdir_fltr_ids(struct ice_hw *hw, struct ethtool_rxnfc *cmd,
-diff --git a/drivers/net/ethernet/intel/ice/ice_arfs.h b/drivers/net/ethernet/intel/ice/ice_arfs.h
-index 9706293128c3..7393254b7e0a 100644
---- a/drivers/net/ethernet/intel/ice/ice_arfs.h
-+++ b/drivers/net/ethernet/intel/ice/ice_arfs.h
-@@ -13,7 +13,7 @@ enum ice_arfs_fltr_state {
- };
- 
- struct ice_arfs_entry {
--	struct ice_fdir_fltr fltr_info;
-+	struct ice_ntuple_fltr fltr_info;
- 	struct hlist_node list_entry;
- 	u64 time_activated;	/* only valid for UDP flows */
- 	u32 flow_id;
-diff --git a/drivers/net/ethernet/intel/ice/ice_fdir.h b/drivers/net/ethernet/intel/ice/ice_fdir.h
-index 820023c0271f..26d79b1364e7 100644
---- a/drivers/net/ethernet/intel/ice/ice_fdir.h
-+++ b/drivers/net/ethernet/intel/ice/ice_fdir.h
-@@ -160,7 +160,7 @@ struct ice_fdir_extra {
- 	__be16 vlan_tag;	/* VLAN tag info */
- };
- 
--struct ice_fdir_fltr {
-+struct ice_ntuple_fltr {
- 	struct list_head fltr_node;
- 	enum ice_fltr_ptype flow_type;
- 
-@@ -216,18 +216,18 @@ int ice_free_fd_res_cntr(struct ice_hw *hw, u16 cntr_id);
- int ice_alloc_fd_guar_item(struct ice_hw *hw, u16 *cntr_id, u16 num_fltr);
- int ice_alloc_fd_shrd_item(struct ice_hw *hw, u16 *cntr_id, u16 num_fltr);
- void
--ice_fdir_get_prgm_desc(struct ice_hw *hw, struct ice_fdir_fltr *input,
-+ice_fdir_get_prgm_desc(struct ice_hw *hw, struct ice_ntuple_fltr *input,
- 		       struct ice_fltr_desc *fdesc, bool add);
- int
--ice_fdir_get_gen_prgm_pkt(struct ice_hw *hw, struct ice_fdir_fltr *input,
-+ice_fdir_get_gen_prgm_pkt(struct ice_hw *hw, struct ice_ntuple_fltr *input,
- 			  u8 *pkt, bool frag, bool tun);
- int ice_get_fdir_cnt_all(struct ice_hw *hw);
- int ice_fdir_num_avail_fltr(struct ice_hw *hw, struct ice_vsi *vsi);
--bool ice_fdir_is_dup_fltr(struct ice_hw *hw, struct ice_fdir_fltr *input);
-+bool ice_fdir_is_dup_fltr(struct ice_hw *hw, struct ice_ntuple_fltr *input);
- bool ice_fdir_has_frag(enum ice_fltr_ptype flow);
--struct ice_fdir_fltr *
-+struct ice_ntuple_fltr *
- ice_fdir_find_fltr_by_idx(struct ice_hw *hw, u32 fltr_idx);
- void
- ice_fdir_update_cntrs(struct ice_hw *hw, enum ice_fltr_ptype flow, bool add);
--void ice_fdir_list_add_fltr(struct ice_hw *hw, struct ice_fdir_fltr *input);
-+void ice_fdir_list_add_fltr(struct ice_hw *hw, struct ice_ntuple_fltr *input);
- #endif /* _ICE_FDIR_H_ */
-diff --git a/drivers/net/ethernet/intel/ice/ice_arfs.c b/drivers/net/ethernet/intel/ice/ice_arfs.c
-index 53b6e2b09eb9..e0335f5e18fe 100644
---- a/drivers/net/ethernet/intel/ice/ice_arfs.c
-+++ b/drivers/net/ethernet/intel/ice/ice_arfs.c
-@@ -302,7 +302,7 @@ ice_arfs_build_entry(struct ice_vsi *vsi, const struct flow_keys *fk,
- 		     u16 rxq_idx, u32 flow_id)
- {
- 	struct ice_arfs_entry *arfs_entry;
--	struct ice_fdir_fltr *fltr_info;
-+	struct ice_ntuple_fltr *fltr_info;
- 	u8 ip_proto;
- 
- 	arfs_entry = devm_kzalloc(ice_pf_to_dev(vsi->back),
-@@ -392,8 +392,8 @@ ice_arfs_is_perfect_flow_set(struct ice_hw *hw, __be16 l3_proto, u8 l4_proto)
-  * * false	- fltr_info and fk refer to different flows.
-  */
- static bool
--ice_arfs_cmp(const struct ice_fdir_fltr *fltr_info, const struct flow_keys *fk,
--	     __be16 n_proto, u8 ip_proto)
-+ice_arfs_cmp(const struct ice_ntuple_fltr *fltr_info,
-+	     const struct flow_keys *fk, __be16 n_proto, u8 ip_proto)
- {
- 	/* Determine if the filter is for IPv4 or IPv6 based on flow_type,
- 	 * which is one of ICE_FLTR_PTYPE_NONF_IPV{4,6}_{TCP,UDP}.
-@@ -485,7 +485,7 @@ ice_rx_flow_steer(struct net_device *netdev, const struct sk_buff *skb,
- 	spin_lock_bh(&vsi->arfs_lock);
- 	hlist_for_each_entry(arfs_entry, &vsi->arfs_fltr_list[idx],
- 			     list_entry) {
--		struct ice_fdir_fltr *fltr_info;
-+		struct ice_ntuple_fltr *fltr_info;
- 
- 		/* keep searching for the already existing arfs_entry flow */
- 		if (arfs_entry->flow_id != flow_id)
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index ba4def92c3e8..1495d96b5c98 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -3106,9 +3106,9 @@ static int ice_set_rxnfc(struct net_device *netdev, struct ethtool_rxnfc *cmd)
- 
- 	switch (cmd->cmd) {
- 	case ETHTOOL_SRXCLSRLINS:
--		return ice_add_fdir_ethtool(vsi, cmd);
-+		return ice_add_ntuple_ethtool(vsi, cmd);
- 	case ETHTOOL_SRXCLSRLDEL:
--		return ice_del_fdir_ethtool(vsi, cmd);
-+		return ice_del_ntuple_ethtool(vsi, cmd);
- 	default:
- 		break;
- 	}
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c b/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c
-similarity index 97%
-rename from drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
-rename to drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c
-index aceec184e89b..a6136e640418 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c b/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c
+index eca15cb2665e..b5a841732b58 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c
 +++ b/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c
-@@ -120,7 +120,7 @@ static bool ice_is_mask_valid(u64 mask, u64 field)
- int ice_get_ethtool_fdir_entry(struct ice_hw *hw, struct ethtool_rxnfc *cmd)
- {
- 	struct ethtool_rx_flow_spec *fsp;
--	struct ice_fdir_fltr *rule;
-+	struct ice_ntuple_fltr *rule;
- 	int ret = 0;
- 	u16 idx;
- 
-@@ -240,7 +240,7 @@ int
- ice_get_fdir_fltr_ids(struct ice_hw *hw, struct ethtool_rxnfc *cmd,
- 		      u32 *rule_locs)
- {
--	struct ice_fdir_fltr *f_rule;
-+	struct ice_ntuple_fltr *f_rule;
- 	unsigned int cnt = 0;
- 	int val = 0;
- 
-@@ -1487,10 +1487,10 @@ static void ice_update_per_q_fltr(struct ice_vsi *vsi, u32 q_index, bool inc)
-  * @add: true adds filter and false removed filter
-  * @is_tun: true adds inner filter on tunnel and false outer headers
-  *
-- * returns 0 on success and negative value on error
-+ * Return: 0 on success and negative value on error
-  */
- int
--ice_fdir_write_fltr(struct ice_pf *pf, struct ice_fdir_fltr *input, bool add,
-+ice_fdir_write_fltr(struct ice_pf *pf, struct ice_ntuple_fltr *input, bool add,
- 		    bool is_tun)
- {
- 	struct device *dev = ice_pf_to_dev(pf);
-@@ -1557,10 +1557,10 @@ ice_fdir_write_fltr(struct ice_pf *pf, struct ice_fdir_fltr *input, bool add,
-  * @input: filter structure
-  * @add: true adds filter and false removed filter
-  *
-- * returns 0 on success and negative value on error
-+ * Return: 0 on success and negative value on error
-  */
- static int
--ice_fdir_write_all_fltr(struct ice_pf *pf, struct ice_fdir_fltr *input,
-+ice_fdir_write_all_fltr(struct ice_pf *pf, struct ice_ntuple_fltr *input,
- 			bool add)
- {
- 	u16 port_num;
-@@ -1585,7 +1585,7 @@ ice_fdir_write_all_fltr(struct ice_pf *pf, struct ice_fdir_fltr *input,
-  */
- void ice_fdir_replay_fltrs(struct ice_pf *pf)
- {
--	struct ice_fdir_fltr *f_rule;
-+	struct ice_ntuple_fltr *f_rule;
- 	struct ice_hw *hw = &pf->hw;
- 
- 	list_for_each_entry(f_rule, &hw->fdir_list_head, fltr_node) {
-@@ -1630,7 +1630,7 @@ int ice_fdir_create_dflt_rules(struct ice_pf *pf)
-  */
- void ice_fdir_del_all_fltrs(struct ice_vsi *vsi)
- {
--	struct ice_fdir_fltr *f_rule, *tmp;
-+	struct ice_ntuple_fltr *f_rule, *tmp;
- 	struct ice_pf *pf = vsi->back;
- 	struct ice_hw *hw = &pf->hw;
- 
-@@ -1701,18 +1701,18 @@ ice_fdir_do_rem_flow(struct ice_pf *pf, enum ice_fltr_ptype flow_type)
+@@ -1748,7 +1748,7 @@ void ice_fdir_del_all_fltrs(struct ice_vsi *vsi)
+ 		ice_fdir_update_cntrs(hw, f_rule->flow_type, f_rule->acl_fltr,
+ 				      false);
+ 		list_del(&f_rule->fltr_node);
+-		devm_kfree(ice_pf_to_dev(pf), f_rule);
++		kfree(f_rule);
+ 	}
  }
  
- /**
-- * ice_fdir_update_list_entry - add or delete a filter from the filter list
-+ * ice_ntuple_update_list_entry - add or delete a filter from the filter list
-  * @pf: PF structure
-  * @input: filter structure
-  * @fltr_idx: ethtool index of filter to modify
-  *
-- * returns 0 on success and negative on errors
-+ * Return: 0 on success and negative on errors
-  */
- static int
--ice_fdir_update_list_entry(struct ice_pf *pf, struct ice_fdir_fltr *input,
--			   int fltr_idx)
-+ice_ntuple_update_list_entry(struct ice_pf *pf, struct ice_ntuple_fltr *input,
-+			     int fltr_idx)
- {
--	struct ice_fdir_fltr *old_fltr;
-+	struct ice_ntuple_fltr *old_fltr;
- 	struct ice_hw *hw = &pf->hw;
- 	struct ice_vsi *vsi;
- 	int err = -ENOENT;
-@@ -1751,13 +1751,13 @@ ice_fdir_update_list_entry(struct ice_pf *pf, struct ice_fdir_fltr *input,
- }
+@@ -1855,7 +1855,7 @@ ice_ntuple_update_list_entry(struct ice_pf *pf, struct ice_ntuple_fltr *input,
+ 			 */
+ 			ice_fdir_do_rem_flow(pf, old_fltr->flow_type);
+ 		list_del(&old_fltr->fltr_node);
+-		devm_kfree(ice_hw_to_dev(hw), old_fltr);
++		kfree(old_fltr);
+ 	}
+ 	if (!input)
+ 		return err;
+@@ -2206,7 +2206,7 @@ int ice_add_ntuple_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd)
+ 		return -ENOSPC;
+ 	}
  
- /**
-- * ice_del_fdir_ethtool - delete Flow Director filter
-+ * ice_del_ntuple_ethtool - delete Flow Director or ACL filter
-  * @vsi: pointer to target VSI
-- * @cmd: command to add or delete Flow Director filter
-+ * @cmd: command to add or delete the filter
-  *
-- * Returns 0 on success and negative values for failure
-+ * Return: 0 on success and negative values for failure
-  */
--int ice_del_fdir_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd)
-+int ice_del_ntuple_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd)
- {
- 	struct ethtool_rx_flow_spec *fsp =
- 		(struct ethtool_rx_flow_spec *)&cmd->fs;
-@@ -1778,7 +1778,7 @@ int ice_del_fdir_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd)
- 		return -EBUSY;
- 
- 	mutex_lock(&hw->fdir_fltr_lock);
--	val = ice_fdir_update_list_entry(pf, NULL, fsp->location);
-+	val = ice_ntuple_update_list_entry(pf, NULL, fsp->location);
- 	mutex_unlock(&hw->fdir_fltr_lock);
- 
- 	return val;
-@@ -1818,14 +1818,16 @@ ice_update_ring_dest_vsi(struct ice_vsi *vsi, u16 *dest_vsi, u32 *ring)
- }
- 
- /**
-- * ice_set_fdir_input_set - Set the input set for Flow Director
-+ * ice_ntuple_set_input_set - Set the input set for Flow Director
-  * @vsi: pointer to target VSI
-  * @fsp: pointer to ethtool Rx flow specification
-  * @input: filter structure
-+ *
-+ * Return: 0 on success, negative on failure
-  */
- static int
--ice_set_fdir_input_set(struct ice_vsi *vsi, struct ethtool_rx_flow_spec *fsp,
--		       struct ice_fdir_fltr *input)
-+ice_ntuple_set_input_set(struct ice_vsi *vsi, struct ethtool_rx_flow_spec *fsp,
-+			 struct ice_ntuple_fltr *input)
- {
- 	s16 q_index = ICE_FDIR_NO_QUEUE_IDX;
- 	u16 orig_q_index = 0;
-@@ -1968,17 +1970,17 @@ ice_set_fdir_input_set(struct ice_vsi *vsi, struct ethtool_rx_flow_spec *fsp,
- }
- 
- /**
-- * ice_add_fdir_ethtool - Add/Remove Flow Director filter
-+ * ice_add_ntuple_ethtool - Add/Remove Flow Director or ACL filter
-  * @vsi: pointer to target VSI
-- * @cmd: command to add or delete Flow Director filter
-+ * @cmd: command to add or delete the filter
-  *
-- * Returns 0 on success and negative values for failure
-+ * Return: 0 on success and negative values for failure
-  */
--int ice_add_fdir_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd)
-+int ice_add_ntuple_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd)
- {
- 	struct ice_rx_flow_userdef userdata;
- 	struct ethtool_rx_flow_spec *fsp;
--	struct ice_fdir_fltr *input;
-+	struct ice_ntuple_fltr *input;
- 	struct device *dev;
- 	struct ice_pf *pf;
- 	struct ice_hw *hw;
-@@ -2034,7 +2036,7 @@ int ice_add_fdir_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd)
+-	input = devm_kzalloc(dev, sizeof(*input), GFP_KERNEL);
++	input = kzalloc_obj(*input);
  	if (!input)
  		return -ENOMEM;
  
--	ret = ice_set_fdir_input_set(vsi, fsp, input);
-+	ret = ice_ntuple_set_input_set(vsi, fsp, input);
+@@ -2250,7 +2250,7 @@ int ice_add_ntuple_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd)
+ 	mutex_unlock(&hw->fdir_fltr_lock);
+ free_input:
  	if (ret)
- 		goto free_input;
+-		devm_kfree(dev, input);
++		kfree(input);
  
-@@ -2055,7 +2057,7 @@ int ice_add_fdir_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd)
- 	input->comp_report = ICE_FXD_FLTR_QW0_COMP_REPORT_SW_FAIL;
- 
- 	/* input struct is added to the HW filter list */
--	ret = ice_fdir_update_list_entry(pf, input, fsp->location);
-+	ret = ice_ntuple_update_list_entry(pf, input, fsp->location);
- 	if (ret)
- 		goto release_lock;
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_fdir.c b/drivers/net/ethernet/intel/ice/ice_fdir.c
-index b29fbdec9442..5b25f6414b58 100644
---- a/drivers/net/ethernet/intel/ice/ice_fdir.c
-+++ b/drivers/net/ethernet/intel/ice/ice_fdir.c
-@@ -648,7 +648,7 @@ ice_set_fd_desc_val(struct ice_fd_fltr_desc_ctx *ctx,
-  * @add: if add is true, this is an add operation, false implies delete
-  */
- void
--ice_fdir_get_prgm_desc(struct ice_hw *hw, struct ice_fdir_fltr *input,
-+ice_fdir_get_prgm_desc(struct ice_hw *hw, struct ice_ntuple_fltr *input,
- 		       struct ice_fltr_desc *fdesc, bool add)
- {
- 	struct ice_fd_fltr_desc_ctx fdir_fltr_ctx = { 0 };
-@@ -855,7 +855,7 @@ static void ice_pkt_insert_mac_addr(u8 *pkt, u8 *addr)
-  * @tun: true implies generate a tunnel packet
-  */
- int
--ice_fdir_get_gen_prgm_pkt(struct ice_hw *hw, struct ice_fdir_fltr *input,
-+ice_fdir_get_gen_prgm_pkt(struct ice_hw *hw, struct ice_ntuple_fltr *input,
- 			  u8 *pkt, bool frag, bool tun)
- {
- 	enum ice_fltr_ptype flow;
-@@ -1138,10 +1138,10 @@ bool ice_fdir_has_frag(enum ice_fltr_ptype flow)
-  *
-  * Returns pointer to filter if found or null
-  */
--struct ice_fdir_fltr *
-+struct ice_ntuple_fltr *
- ice_fdir_find_fltr_by_idx(struct ice_hw *hw, u32 fltr_idx)
- {
--	struct ice_fdir_fltr *rule;
-+	struct ice_ntuple_fltr *rule;
- 
- 	list_for_each_entry(rule, &hw->fdir_list_head, fltr_node) {
- 		/* rule ID found in the list */
-@@ -1158,9 +1158,9 @@ ice_fdir_find_fltr_by_idx(struct ice_hw *hw, u32 fltr_idx)
-  * @hw: hardware structure
-  * @fltr: filter node to add to structure
-  */
--void ice_fdir_list_add_fltr(struct ice_hw *hw, struct ice_fdir_fltr *fltr)
-+void ice_fdir_list_add_fltr(struct ice_hw *hw, struct ice_ntuple_fltr *fltr)
- {
--	struct ice_fdir_fltr *rule, *parent = NULL;
-+	struct ice_ntuple_fltr *rule, *parent = NULL;
- 
- 	list_for_each_entry(rule, &hw->fdir_list_head, fltr_node) {
- 		/* rule ID found or pass its spot in the list */
-@@ -1215,7 +1215,7 @@ static int ice_cmp_ipv6_addr(__be32 *a, __be32 *b)
-  * Returns true if the filters match
-  */
- static bool
--ice_fdir_comp_rules(struct ice_fdir_fltr *a,  struct ice_fdir_fltr *b)
-+ice_fdir_comp_rules(struct ice_ntuple_fltr *a,  struct ice_ntuple_fltr *b)
- {
- 	enum ice_fltr_ptype flow_type = a->flow_type;
- 
-@@ -1275,9 +1275,9 @@ ice_fdir_comp_rules(struct ice_fdir_fltr *a,  struct ice_fdir_fltr *b)
-  *
-  * Returns true if the filter is found in the list
-  */
--bool ice_fdir_is_dup_fltr(struct ice_hw *hw, struct ice_fdir_fltr *input)
-+bool ice_fdir_is_dup_fltr(struct ice_hw *hw, struct ice_ntuple_fltr *input)
- {
--	struct ice_fdir_fltr *rule;
-+	struct ice_ntuple_fltr *rule;
- 	bool ret = false;
- 
- 	list_for_each_entry(rule, &hw->fdir_list_head, fltr_node) {
-diff --git a/drivers/net/ethernet/intel/ice/virt/fdir.c b/drivers/net/ethernet/intel/ice/virt/fdir.c
-index 4f1f3442e52c..eca9eda04f31 100644
---- a/drivers/net/ethernet/intel/ice/virt/fdir.c
-+++ b/drivers/net/ethernet/intel/ice/virt/fdir.c
-@@ -38,7 +38,7 @@ enum ice_fdir_tunnel_type {
- };
- 
- struct virtchnl_fdir_fltr_conf {
--	struct ice_fdir_fltr input;
-+	struct ice_ntuple_fltr input;
- 	enum ice_fdir_tunnel_type ttype;
- 	u64 inset_flag;
- 	u32 flow_id;
-@@ -567,12 +567,12 @@ static bool
- ice_vc_fdir_has_prof_conflict(struct ice_vf *vf,
- 			      struct virtchnl_fdir_fltr_conf *conf)
- {
--	struct ice_fdir_fltr *desc;
-+	struct ice_ntuple_fltr *desc;
- 
- 	list_for_each_entry(desc, &vf->fdir.fdir_rule_list, fltr_node) {
- 		struct virtchnl_fdir_fltr_conf *existing_conf;
- 		enum ice_fltr_ptype flow_type_a, flow_type_b;
--		struct ice_fdir_fltr *a, *b;
-+		struct ice_ntuple_fltr *a, *b;
- 
- 		existing_conf = to_fltr_conf_from_desc(desc);
- 		a = &existing_conf->input;
-@@ -748,7 +748,7 @@ static int
- ice_vc_fdir_config_input_set(struct ice_vf *vf, struct virtchnl_fdir_add *fltr,
- 			     struct virtchnl_fdir_fltr_conf *conf, int tun)
- {
--	struct ice_fdir_fltr *input = &conf->input;
-+	struct ice_ntuple_fltr *input = &conf->input;
- 	struct device *dev = ice_pf_to_dev(vf->pf);
- 	struct ice_flow_seg_info *seg;
- 	enum ice_fltr_ptype flow;
-@@ -924,8 +924,8 @@ ice_vc_fdir_parse_pattern(struct ice_vf *vf, struct virtchnl_fdir_add *fltr,
- 	struct virtchnl_proto_hdrs *proto = &fltr->rule_cfg.proto_hdrs;
- 	enum virtchnl_proto_hdr_type l3 = VIRTCHNL_PROTO_HDR_NONE;
- 	enum virtchnl_proto_hdr_type l4 = VIRTCHNL_PROTO_HDR_NONE;
-+	struct ice_ntuple_fltr *input = &conf->input;
- 	struct device *dev = ice_pf_to_dev(vf->pf);
--	struct ice_fdir_fltr *input = &conf->input;
- 	int i;
- 
- 	if (proto->count > VIRTCHNL_MAX_NUM_PROTO_HDRS) {
-@@ -1150,8 +1150,8 @@ ice_vc_fdir_parse_action(struct ice_vf *vf, struct virtchnl_fdir_add *fltr,
- 			 struct virtchnl_fdir_fltr_conf *conf)
- {
- 	struct virtchnl_filter_action_set *as = &fltr->rule_cfg.action_set;
-+	struct ice_ntuple_fltr *input = &conf->input;
- 	struct device *dev = ice_pf_to_dev(vf->pf);
--	struct ice_fdir_fltr *input = &conf->input;
- 	u32 dest_num = 0;
- 	u32 mark_num = 0;
- 	int i;
-@@ -1249,8 +1249,8 @@ static bool
- ice_vc_fdir_comp_rules(struct virtchnl_fdir_fltr_conf *conf_a,
- 		       struct virtchnl_fdir_fltr_conf *conf_b)
- {
--	struct ice_fdir_fltr *a = &conf_a->input;
--	struct ice_fdir_fltr *b = &conf_b->input;
-+	struct ice_ntuple_fltr *a = &conf_a->input;
-+	struct ice_ntuple_fltr *b = &conf_b->input;
- 
- 	if (conf_a->ttype != conf_b->ttype)
- 		return false;
-@@ -1288,7 +1288,7 @@ ice_vc_fdir_comp_rules(struct virtchnl_fdir_fltr_conf *conf_a,
- static bool
- ice_vc_fdir_is_dup_fltr(struct ice_vf *vf, struct virtchnl_fdir_fltr_conf *conf)
- {
--	struct ice_fdir_fltr *desc;
-+	struct ice_ntuple_fltr *desc;
- 	bool ret;
- 
- 	list_for_each_entry(desc, &vf->fdir.fdir_rule_list, fltr_node) {
-@@ -1317,7 +1317,7 @@ static int
- ice_vc_fdir_insert_entry(struct ice_vf *vf,
- 			 struct virtchnl_fdir_fltr_conf *conf, u32 *id)
- {
--	struct ice_fdir_fltr *input = &conf->input;
-+	struct ice_ntuple_fltr *input = &conf->input;
- 	int i;
- 
- 	/* alloc ID corresponding with conf */
-@@ -1341,7 +1341,7 @@ static void
- ice_vc_fdir_remove_entry(struct ice_vf *vf,
- 			 struct virtchnl_fdir_fltr_conf *conf, u32 id)
- {
--	struct ice_fdir_fltr *input = &conf->input;
-+	struct ice_ntuple_fltr *input = &conf->input;
- 
- 	idr_remove(&vf->fdir.fdir_rule_idr, id);
- 	list_del(&input->fltr_node);
-@@ -1367,7 +1367,7 @@ ice_vc_fdir_lookup_entry(struct ice_vf *vf, u32 id)
- static void ice_vc_fdir_flush_entry(struct ice_vf *vf)
- {
- 	struct virtchnl_fdir_fltr_conf *conf;
--	struct ice_fdir_fltr *desc, *temp;
-+	struct ice_ntuple_fltr *desc, *temp;
- 
- 	list_for_each_entry_safe(desc, temp,
- 				 &vf->fdir.fdir_rule_list, fltr_node) {
-@@ -1390,7 +1390,7 @@ static int ice_vc_fdir_write_fltr(struct ice_vf *vf,
- 				  struct virtchnl_fdir_fltr_conf *conf,
- 				  bool add, bool is_tun)
- {
--	struct ice_fdir_fltr *input = &conf->input;
-+	struct ice_ntuple_fltr *input = &conf->input;
- 	struct ice_vsi *vsi, *ctrl_vsi;
- 	struct ice_fltr_desc desc;
- 	struct device *dev;
-@@ -2315,7 +2315,7 @@ int ice_vc_del_fdir_fltr(struct ice_vf *vf, u8 *msg)
- 	struct virtchnl_fdir_fltr_conf *conf;
- 	struct ice_vf_fdir *fdir = &vf->fdir;
- 	enum virtchnl_status_code v_ret;
--	struct ice_fdir_fltr *input;
-+	struct ice_ntuple_fltr *input;
- 	enum ice_fltr_ptype flow;
- 	struct device *dev;
- 	struct ice_pf *pf;
+ 	return ret;
+ }
 -- 
 2.49.0
 
