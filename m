@@ -1,63 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 792EE2C027C;
-	Thu,  9 Apr 2026 15:52:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045DB3BED1B;
+	Thu,  9 Apr 2026 16:08:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775749928; cv=none; b=auf+v1XDLfCCU5en4imluXUH7GX/0OF1MhzpnMTxqrcJX4E4PFW8oKHTGxAbO4TaH05FymySc/YIfqmNqHdUpQjSKgR883RLSxYOGqaYHaB6IXEQoEbZv2Inzd8J9tbGWdPyD19uPFOkSSZGcbivOxsbshXxfElyuRLj7s4JxCM=
+	t=1775750933; cv=none; b=Xh9+GAOH192AHbCeEFmcZyvg/who6vWTlWJePvWy9HFK/q8f+NE0uj95EmBpYzLZ9T9460eTvTolDOEzKqek/8FZkMeqGYUbUBZUqfQtdrJpTm6YDPuiyXmAVonVmkkfkhyDY1L7xGCBvpB9Pv9I8RLsysO36MustZJZvmQnNKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775749928; c=relaxed/simple;
-	bh=XUnp5KXSWx68sIpIEYzrg3KYEexlITMdS0Ff00KI95k=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=LpC2zLpi4JBteAEqgkklITMovvNqW9EWxg0BozkwT8/kVlKKEe3Hh8AqUOOt74Iuk7zlx7Sh+MXyaOWHeg8jAvEMRzdLpQOe0FJLDrkXDzrcz/S5MzhALcd5pCuQbpzyA/uybgl7rsS2xZV/F5FKioMJgU3kaJclrlRyKhzEMx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=riZz5TH4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775750933; c=relaxed/simple;
+	bh=WA6er+L7tcKu1ERt+VsfyBeUxbqgQH966wC6HI41ICs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ijiCRKLB5ff3jF0n16LRqvgOb7TG4PWOUZXr4+YsLMI3OZxleBIxAklH7wDkqxugwQQjysfHteE8EoPiojbQq3G+8TVVienVLo5CsIFt9sKb3mSoIDnCoWTWa1UA2WC3AfQiuqmDTlPY+7Qw3/Nlfy02zz9o+SLb2fPcovyvwuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=IU+WP6P5; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="riZz5TH4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA183C4CEF7;
-	Thu,  9 Apr 2026 15:52:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775749927;
-	bh=XUnp5KXSWx68sIpIEYzrg3KYEexlITMdS0Ff00KI95k=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=riZz5TH4+WW/JDo7DSk1mc+dkIHjWZIM6CbBD+VChOKfxz/cKGPKVMldgC2RkD6Fn
-	 makr9yF+7lCLkuz7oDfUittdevGiqGXF39I6l17yZlL0Wg6kliQGsSVWcOX0eR7k75
-	 JfQCnQb+kBnPmxqwCAkqr6OsjljIN1z449qMcbRE1Np4s6TF865wmPd69vVcd2y+lw
-	 HIZMH7CENhI8wZ5J3TOyM1WBW5nP37/3WsX3oCHjW7VeB9lAns3KlXYy89BLWAckg7
-	 jETvqSguzj4Uf3h5IX9kf/X2/bKcLiXdeTsbTjTxrOCdjNVySh4UZ5hjp2itj+rKzd
-	 QfgpKYsd7Tscg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA0C439308AD;
-	Thu,  9 Apr 2026 15:51:44 +0000 (UTC)
-Subject: Re: [GIT PULL] Networking for v7.0-rc8
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20260409143217.456564-1-pabeni@redhat.com>
-References: <20260409143217.456564-1-pabeni@redhat.com>
-X-PR-Tracked-List-Id: <netdev.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20260409143217.456564-1-pabeni@redhat.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git net-7.0-rc8
-X-PR-Tracked-Commit-Id: b4afe3fa76a88ee7d3d8802b43fde89aa02f8e0d
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: a55f7f5f29b32c2c53cc291899cf9b0c25a07f7c
-Message-Id: <177574990336.1627667.183796140525083179.pr-tracker-bot@kernel.org>
-Date: Thu, 09 Apr 2026 15:51:43 +0000
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: torvalds@linux-foundation.org, kuba@kernel.org, davem@davemloft.net, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="IU+WP6P5"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=C2w4HJcFkA7Cjp8k/+Uquu+XivyVEouhPg9KdrXMdlg=; b=IU+WP6P5fgDwsFVSgqTUz3+3Il
+	OWCLIebrGt6/8+Gax3+TsPs+VDEuDyrVV+bHnNvQ7XQU8Hwm8c0MQ5NkXLridka9rOd3zxySbyOLW
+	eHnADi7eFssO6jQANO37fs1XJPraZnTwqqpWqjEpHaPDUb6nY8f2g1J3LMBtOcBu0WaNqmWLfV9j2
+	lI7I7cuZbEIosACGv0nKtsMZ387jZvJ+Xxi+iYkSp1SB7cpVQyODLFq6+03g60lxQjaSwK7JyQ+my
+	e2ftxudIzhteGxvG+lV6s15RZda8ysYMFrYee3KZAA7lkPYy/QvROeexed0JRw1rvNeHPsw54EQKk
+	V4QNFnEg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:50808)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1wArvp-000000003qn-0m12;
+	Thu, 09 Apr 2026 17:08:37 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1wArvl-000000004Wg-3x7V;
+	Thu, 09 Apr 2026 17:08:33 +0100
+Date: Thu, 9 Apr 2026 17:08:33 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Kory Maincent <kory.maincent@bootlin.com>,
+	Carlo Szelinsky <github@szelinsky.de>, o.rempel@pengutronix.de,
+	andrew+netdev@lunn.ch, hkallweit1@gmail.com, kuba@kernel.org,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	horms@kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 3/3] net: mdio: treat PSE EPROBE_DEFER as
+ non-fatal during PHY registration
+Message-ID: <adfPAQDiYX6eIjrT@shell.armlinux.org.uk>
+References: <8e12f0ac-be0d-4664-a533-df3bd1efb34a@lunn.ch>
+ <20260408210711.439068-1-github@szelinsky.de>
+ <841e0a96-5e5c-4225-a426-24726163699f@lunn.ch>
+ <20260409150922.74d82c39@kmaincent-XPS-13-7390>
+ <908a84be-d403-4f59-8d8e-aa9de35bccbb@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <908a84be-d403-4f59-8d8e-aa9de35bccbb@lunn.ch>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-The pull request you sent on Thu,  9 Apr 2026 16:32:17 +0200:
+On Thu, Apr 09, 2026 at 05:34:56PM +0200, Andrew Lunn wrote:
+> I still think we should be deferring probe until we have all the parts
+> available. The question is, how do we actually do that?
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git net-7.0-rc8
+Indeed...
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/a55f7f5f29b32c2c53cc291899cf9b0c25a07f7c
+> We could insist that MACs being used with PSE need to call
+> phylink_connect() in probe, so we can return EPROBE_DEFER. We might
+> actually need a new API method, phylink_connect_probe(). That can call
+> down into phylib, maybe again new API methods, which will not bind
+> genphy, but return EPROBE_DEFER.
 
-Thank you!
+How would MACs know whether they should call phylink_connect_probe()
+or phylink_connect_phy() ?
+
+What do we do about MAC drivers that are a single driver and device,
+but are made up of several network devices (like Marvell PP2) ?
+
+We also have network drivers that provide a MDIO bus for a different
+network device, which makes connecting the PHY harder in the probe
+path.
+
+Lastly, what do we do where a PHY driver hasn't been configured or
+doesn't exist for the PHY?
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
