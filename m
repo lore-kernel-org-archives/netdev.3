@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0EA63C8728;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED733CFF4D;
 	Thu,  9 Apr 2026 17:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775756056; cv=none; b=q3R+FKADF9Mvhz62DPQju+K0jHC3TnaZK9DbtMH+KZI3YO06SegqgUFrrTyDnWoBE4B43oreWlkw1TTmc16ggRcy6eh+KlaKsZPG42e1nM2++GmiVr5eLTDX22ZYLlWgzrAf/9bVx7Kj5hYbvSMpqQAv+vR6Q5IlxYhzyMRGGhE=
+	t=1775756056; cv=none; b=HJn2GZp7jcdcXllGy1TKB3LFR0omHc2BY8vywsLQIq82xjI+tpeGVAdT60/s6IER/YontU8gkUhIqyBYZ+fDK9uF+68PZQMqjBG0mxRuPMpUiRiRbmI1Iwn8LTCHftkFxn37YAe73bL+4HJ3TPGlS6z+3MH8psm+eYwmgXEBHw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775756056; c=relaxed/simple;
-	bh=Gj136g/kwa38w+/k4mfmIaV2zPHIHZSBmkO4GwE8mh0=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=gWGQPLVb83gRwNp9i7sNaIYDVFcoKlikDRiJlB08HXXytQkN6YJu3E19HAXJ+74pB4XnEP1METriGhpY5DAZVTTRjA4k1C86ZsWNe3Cc3N2eREZ5ErvEZe9YB8Kdsj9Trn2W/9rMYYARph3Pt30/q2vIdvFeCSCJRlRv+M16g5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LwAnZbz7; arc=none smtp.client-ip=10.30.226.201
+	bh=jAsDVJQ8oQe6T+jEbjyp6AmnCBcgc0szzgwGRqjH3gw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=iF/7Ppfhg4ImiL7gXiJrO8v7iZHNpA/BHctXliBEQkpQPH6Wsm4e+Vt7nFYg9QQqN9B0iMmp7FGj1ZwlWXOXo8RzDKhy2ymKYDfj7GSBVrY7RBRJzohreX7NTz75BLBh28uh6L/81MJMQdjzHqxGZf2zpJRnA6bN1c8qXK0V+Ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A3wbfSa2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LwAnZbz7"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7303AC4CEF7;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A3wbfSa2"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id ACED1C116C6;
 	Thu,  9 Apr 2026 17:34:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775756055;
-	bh=Gj136g/kwa38w+/k4mfmIaV2zPHIHZSBmkO4GwE8mh0=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=LwAnZbz7kLjfhAYbCLyIhuPpnoma3Cg8ewiptOI8XjjNfII5XbnopoK5uE1lMjTDQ
-	 MwV56q2WIQyZERKL5RC+hllnY0CKnsKbxjKG+Ih4poNyism4K2eZogpS4uFYQWqmW0
-	 B43q38CsBBQGPF2ehaeSPWtKfvqIppgCxrc7wDrhAEimUJbovVpI2PEJXvwcKslzXi
-	 ggTBXzAi41+fL6RJUXMMH4GAOcsIjxppumSxzV6q7k7o30HCg0z5du76WCacC2c3An
-	 Ozoe4URuEuJfqPUl8GZ3Y138IebjGeZSQGmOB/VpuD+E+rYgvWaenYlOMtUaLvTL77
-	 ciSy6pIEjIY6Q==
+	bh=jAsDVJQ8oQe6T+jEbjyp6AmnCBcgc0szzgwGRqjH3gw=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=A3wbfSa2bhg26atLrWC6YMom5uCnH1XBSRiwqkXXJiluM2a8XwobrjEe7n+lM4EjG
+	 B54FMYcGZe7/BUDi6k8LoQtYlVm7geRq40tFa7ySZ1vpoPm7Jjv3iR/X8rUsBQJRzI
+	 IxnP1vH87afSlojXO3q0fCUKu6Oqp7EakJPgAxmiaC8q2ndlkVZ/j/jqo+b7Ansi7S
+	 YKIvTzpgauHHltz7LmuSOs9uoJT6IrKmRjO5M1LqJLheHKfAd5gmGrF6FOUYdzjZTk
+	 QPKaIqiecEDqtmPzF/C6cRvm6uWNzV1jcD0mc+7W4tzPYfrSq+iJIxbwDTgb+bK2u6
+	 iAXPXTXAi3cYg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 60DC8F364A9;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A3B5EF364A8;
 	Thu,  9 Apr 2026 17:34:15 +0000 (UTC)
 From: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.oss.qualcomm.com@kernel.org>
-Subject: [PATCH v3 0/5] net: qrtr: ns: A bunch of fixs
-Date: Thu, 09 Apr 2026 23:04:11 +0530
-Message-Id: <20260409-qrtr-fix-v3-0-00a8a5ff2b51@oss.qualcomm.com>
+Date: Thu, 09 Apr 2026 23:04:15 +0530
+Subject: [PATCH v3 4/5] net: qrtr: ns: Limit the total number of nodes
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,30 +40,27 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIABPj12kC/02OSw6CMBCGr2K6dkiZtqS68h7GRamDVIXqFIjGc
- HeLLnQzyTf5Xy+RiAMlsV29BNMUUoh9BrVeCd+6/kQQjpkFSqykUiXceWBowgNqI9FjRabRlcj
- yG1N+f6L2hy+nsT6THxb/omg4djC0TO4vEjeYc40u0JYGrYYSLmPtdhfinq5F5NNibUMaIj8/M
- ydcKr52LdVv0YQgobHWldqaja/ULqZU3Ed39bHrinzEYZ7nNxs5c970AAAA
-X-Change-ID: 20260331-qrtr-fix-b502c26e5f46
+Message-Id: <20260409-qrtr-fix-v3-4-00a8a5ff2b51@oss.qualcomm.com>
+References: <20260409-qrtr-fix-v3-0-00a8a5ff2b51@oss.qualcomm.com>
+In-Reply-To: <20260409-qrtr-fix-v3-0-00a8a5ff2b51@oss.qualcomm.com>
 To: Manivannan Sadhasivam <mani@kernel.org>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
  Simon Horman <horms@kernel.org>
 Cc: linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org, 
  linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Yiming Qian <yimingqian591@gmail.com>, 
  Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 X-Mailer: b4 0.15.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=949;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2122;
  i=manivannan.sadhasivam@oss.qualcomm.com; h=from:subject:message-id;
- bh=Gj136g/kwa38w+/k4mfmIaV2zPHIHZSBmkO4GwE8mh0=;
- b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBp1+MUJAogw19JAzFEh47vDzrMQ1OW1lrxzap1O
- SpdPxnd5bKJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCadfjFAAKCRBVnxHm/pHO
- 9bAMB/9lerWH44bHX4s2xq30YdjVETr4NMjyYm+h7jlQDLvEUlhGRvDlkkAo/MesNCdkAHmS6n8
- kmnCD+AgovjwjpP9rN23JQ7VH4/qCX/togkVa1lXKFe6Kr5L4zJrn63ns8EaniqsaLUO+pTliI3
- SlhJ+y6+MXOoJfA0zYWf5xBw6FSvAeKic5luupbgYaXdiqJknM40BzmufTzyeaiXuRHVjRB6HQK
- BWW+1wZh8oUFmMZc0fpAtBmmEgGYlC+PWBYZzOSjyK16fNSEm5rguhmwz+yvzaVAe1tKpw0TG2o
- q5Xxpsq0jBj409/ihH6rDYvypeTVF7heOnJL6ao8tODvKMfP
+ bh=8Z7zm8D//7k5Avg5HWQBlF08Jj61fVMYPl3P8cP1MWk=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBp1+MV1XPr83Nla9ublSdPz04N4bvw4OBEX49ZU
+ D74mOz5HwSJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCadfjFQAKCRBVnxHm/pHO
+ 9dUWB/9k0KOKftyg7XvdSKNaFZ9Hd6d+D3IDBh3mV8Tqizh6fQceyo+ck4NbE4/Df0Dr2H+v0W7
+ S13eMeZa/shDshMU+AdEo7hMOZRjMPP/4BS4FUC7rPmt2bNfpfgAISo9boKhZb84Wiendde/f0A
+ Zq6njJo4mL9fOWsKJoKjwBZ3cUCqUad2GBjCY9al9/h/kVTfLngNIWAZxy1If/iDtb1ctA/MqUI
+ lbz3+se9aOTH/0MGw4HG9z3toFap7ogLxSspG5Z10VFt86va8EjBylaDHUso9IRyjeRaJ8XtmYG
+ DJQrVyG+QkiESiYWIwWBstMcREpyNoFlrO0iZxw+sID622Kp
 X-Developer-Key: i=manivannan.sadhasivam@oss.qualcomm.com; a=openpgp;
  fpr=C668AEC3C3188E4C611465E7488550E901166008
 X-Endpoint-Received: by B4 Relay for
@@ -71,32 +68,77 @@ X-Endpoint-Received: by B4 Relay for
 X-Original-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 Reply-To: manivannan.sadhasivam@oss.qualcomm.com
 
-Hi,
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-This series fixes a bunch of possible memory exhaustion issues in the QRTR
-nameserver.
+Currently, the nameserver doesn't limit the number of nodes it handles.
+This can be an attack vector if a malicious client starts registering
+random nodes, leading to memory exhaustion.
 
+Hence, limit the maximum number of nodes to 64. Note that, limit of 64 is
+chosen based on the current platform requirements. If requirement changes
+in the future, this limit can be increased.
+
+Cc: stable@vger.kernel.org
+Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 ---
-Changes in v3:
-- Fixed the issues in remove() callback and other places reported by Sashiko
-- Link to v2: https://patch.msgid.link/20260403-qrtr-fix-v2-0-f88a14859c63@oss.qualcomm.com
+ net/qrtr/ns.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
----
-Manivannan Sadhasivam (5):
-      net: qrtr: ns: Limit the maximum server registration per node
-      net: qrtr: ns: Limit the maximum number of lookups
-      net: qrtr: ns: Free the node during ctrl_cmd_bye()
-      net: qrtr: ns: Limit the total number of nodes
-      net: qrtr: ns: Fix use-after-free in driver remove()
+diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
+index 1b9a90240a68..c0418764470b 100644
+--- a/net/qrtr/ns.c
++++ b/net/qrtr/ns.c
+@@ -71,12 +71,16 @@ struct qrtr_node {
+ 	u32 server_count;
+ };
+ 
+-/* Max server, lookup limits are chosen based on the current platform requirements.
+- * If the requirement changes in the future, these values can be increased.
++/* Max nodes, server, lookup limits are chosen based on the current platform
++ * requirements. If the requirement changes in the future, these values can be
++ * increased.
+  */
++#define QRTR_NS_MAX_NODES   64
+ #define QRTR_NS_MAX_SERVERS 256
+ #define QRTR_NS_MAX_LOOKUPS 64
+ 
++static u8 node_count;
++
+ static struct qrtr_node *node_get(unsigned int node_id)
+ {
+ 	struct qrtr_node *node;
+@@ -85,6 +89,11 @@ static struct qrtr_node *node_get(unsigned int node_id)
+ 	if (node)
+ 		return node;
+ 
++	if (node_count >= QRTR_NS_MAX_NODES) {
++		pr_err_ratelimited("QRTR clients exceed max node limit!\n");
++		return NULL;
++	}
++
+ 	/* If node didn't exist, allocate and insert it to the tree */
+ 	node = kzalloc_obj(*node);
+ 	if (!node)
+@@ -98,6 +107,8 @@ static struct qrtr_node *node_get(unsigned int node_id)
+ 		return NULL;
+ 	}
+ 
++	node_count++;
++
+ 	return node;
+ }
+ 
+@@ -404,6 +415,7 @@ static int ctrl_cmd_bye(struct sockaddr_qrtr *from)
+ delete_node:
+ 	xa_erase(&nodes, from->sq_node);
+ 	kfree(node);
++	node_count--;
+ 
+ 	return ret;
+ }
 
- net/qrtr/ns.c | 79 +++++++++++++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 69 insertions(+), 10 deletions(-)
----
-base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
-change-id: 20260331-qrtr-fix-b502c26e5f46
-
-Best regards,
---  
-Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+-- 
+2.51.0
 
 
