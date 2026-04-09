@@ -1,52 +1,56 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A8B73033CB;
-	Thu,  9 Apr 2026 12:04:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304503AB264;
+	Thu,  9 Apr 2026 12:14:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775736263; cv=none; b=G62KME2NurEjYY1Jvc9B0PAkr1aJNaOqpnYqHXn9vHC4xniQ9kg7HLbgJkgYusmkHbZp3qvCvu/MzwD1Wtd5UW6/OtGG9ABQKUyAygRWFEzoGDyq2emJn2OsT/nbvWQGc8cgCrb0MMJZDYHxIr1IlliSlO5GoZavwXH0MFQqbps=
+	t=1775736847; cv=none; b=ndeiZgFsvn+yUGaw/xpVIu1UI44AAgZrlmlbiBhdA3h/McEhic93SSc5t57jsDEuhsA8++mxo9COoREXN9CKhv2ug0Ih/4RHJgNzKd929Mzvt1aXstGy2uqjP8pJQarrrGOmWc4M5ObkpEAeghbx6ny4hYUtQIvmcBUcv2iTgss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775736263; c=relaxed/simple;
-	bh=G/ay3tEaFHjwK7ia51ZNouAZfQhcoggXMm0N8BsIcwU=;
+	s=arc-20240116; t=1775736847; c=relaxed/simple;
+	bh=yaFtFQ2qho+zR+7FCX6Swr0g6KvEOxRChoGcBTZdc8U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZYTw9N29Zl+K3iUGXL0ag2j6eFGOuXrbCiNI2cwWFrqFUD1q3dbxPUdt1ZtOAhKbpxxaIj1u8bvDN7AsMFN/Ea7122P2SrB3QcdfKFR4AKpIb3qgP96prnLztEZ+sKB4z2/xQ1n+1lW2nFmka8ga4B2G+yxC0W6qI3Ob111DYdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZfPMl7+i; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=u9cBQQ4V5pymdQvHzoxrKqEmlAIJrPw1iRlfcUsMQ3c8mDofLQcuIgqqhd1hCaYvzvJhaoEz1RM4uXpZCBahgjUTFEJ0vbn8if8qytsdfed45B+poKkm7b6y8xs8H0WemNUnIFKXfVRD7F/eay/yciglnFjv+i1vZcQrHSUegzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=a+32BEin; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZfPMl7+i"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA7BC2BC9E;
-	Thu,  9 Apr 2026 12:04:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775736262;
-	bh=G/ay3tEaFHjwK7ia51ZNouAZfQhcoggXMm0N8BsIcwU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZfPMl7+iL3vOhEXSU+Aq9hVIsplbGHKLlwtR/ABoHcMLvMGWw0874KFC9D5E9LSys
-	 lsLrOwbum6ynlKAR+KkIWnePLFrG5xO8yJ6I7eP/AoeNKOz/K3QKxQ5vZTOuejmY+2
-	 yKCk4Jl52X4QD4S+WPKCWyWqZUlemWl8/oQRfeqG6feHLK11KB+WCZbhzfHM9zUtbJ
-	 OLRm8NsBrliLji9tDVcMftFeGU06pb63Uemi5Jk2/OGN7PjdzwNZjF9FsSpvwjXasG
-	 hOo3pBbjX4oP/wvBvGCOQgPR6+Tu1s1xeAepm7KHx3adpZ6uoOk9VdGQ7BLSDGlUku
-	 QSQ4xu30TdMew==
-Date: Thu, 9 Apr 2026 15:04:15 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Keith Busch <kbusch@kernel.org>
-Cc: Zhiping Zhang <zhipingz@meta.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Bjorn Helgaas <bhelgaas@google.com>, linux-rdma@vger.kernel.org,
-	linux-pci@vger.kernel.org, netdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, Yochai Cohen <yochai@nvidia.com>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Bjorn Helgaas <helgaas@kernel.org>
-Subject: Re: [RFC v2 1/2] vfio: add callback to get tph info for dmabuf
-Message-ID: <20260409120415.GF86584@unreal>
-References: <20260325082534.GN814676@unreal>
- <acW2BwQKaUbS3eL9@kbusch-mbp>
- <20260331083758.GA814676@unreal>
- <acvFV8c5QVxnt3Em@kbusch-mbp>
- <20260331132942.GC814676@unreal>
- <acvNsvS5ShlQlrox@kbusch-mbp>
- <20260331140309.GH814676@unreal>
- <acvWplw67b3Gwlkc@kbusch-mbp>
- <20260331190220.GI814676@unreal>
- <acwkAo2k41xaxdTS@kbusch-mbp>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="a+32BEin"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=9ehBZ2aD/9lNOYtyFLKz65mllx6XG726DMrd4UFMMzk=; b=a+32BEin6Dyh4EGcC3YooCOhUJ
+	oFrf3MTW0RL8h7l/m6TPXTrtRPmwN5B0joICH6yHKkmGeFC6Ci8eCNwk7KhEkvEfvZ/smEcYU//PO
+	eYvK+gHjyldsICJv8FlweATmoDyCGhquQLwIKuu8ZwnGTXZOv39a21mfMnp/No4YJ2+o=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wAoGZ-00FQWZ-Le; Thu, 09 Apr 2026 14:13:47 +0200
+Date: Thu, 9 Apr 2026 14:13:47 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Minda Chen <minda.chen@starfivetech.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor@kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-stm32@st-md-mailman.stormreply.com" <linux-stm32@st-md-mailman.stormreply.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: Re: [net-next v1 v1 1/5] dt-bindings: net: starfive,jh7110-dwmac:
+ Remove JH8100
+Message-ID: <e022dd47-4dd2-4ade-aeac-0398b081ce23@lunn.ch>
+References: <20260408084416.29753-1-minda.chen@starfivetech.com>
+ <20260408084416.29753-2-minda.chen@starfivetech.com>
+ <ad9ee916-6f8a-4cb9-8016-54a02b00c7ab@lunn.ch>
+ <SHXPR01MB086305E0C766E8BB17AF18DCE6582@SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,97 +59,12 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <acwkAo2k41xaxdTS@kbusch-mbp>
+In-Reply-To: <SHXPR01MB086305E0C766E8BB17AF18DCE6582@SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn>
 
-On Tue, Mar 31, 2026 at 01:44:02PM -0600, Keith Busch wrote:
-> On Tue, Mar 31, 2026 at 10:02:20PM +0300, Leon Romanovsky wrote:
-> > 
-> > Right, what about adding TPH fields to struct vfio_region_dma_range
-> > instead of struct vfio_device_feature_dma_buf?
-> 
-> You might have to show me with code what you're talking about because I
-> can't see any way we can add fields to any struct here without breaking
-> backward compatibility.
-> 
-> If we can't claim bits out of the unused "flags" field for this feature,
-> then my initial reply is the only sane approach: we can introduce a new
-> feature and struct for it that closely mirrors the existing one, but
-> with the extra hint fields.
+> Yes. 
+> We (StarFive) stop developing on JH8100 now, And do NOT release the SoC outside.
 
-Something like that, on top of this proposal:
+Please add that to the commit message as the justification of removing
+support.
 
-diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
-index 3961afa640391..70d5ee1e3ef7b 100644
---- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-+++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-@@ -241,9 +241,7 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
- 		return -EFAULT;
- 
- 	if (!get_dma_buf.nr_ranges ||
--	    (get_dma_buf.flags & ~(VFIO_DMABUF_FL_TPH |
--				   VFIO_DMABUF_TPH_PH_MASK |
--				   VFIO_DMABUF_TPH_ST_MASK)))
-+	    (get_dma_buf.flags & ~VFIO_DMABUF_FLAG_TPH))
- 		return -EINVAL;
- 
- 	/*
-@@ -300,13 +298,10 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
- 		ret = PTR_ERR(priv->dmabuf);
- 		goto err_dev_put;
- 	}
--	if (get_dma_buf.flags & VFIO_DMABUF_FL_TPH) {
--		priv->steering_tag = (get_dma_buf.flags &
--				      VFIO_DMABUF_TPH_ST_MASK) >>
--				     VFIO_DMABUF_TPH_ST_SHIFT;
--		priv->ph = (get_dma_buf.flags &
--			    VFIO_DMABUF_TPH_PH_MASK) >>
--			   VFIO_DMABUF_TPH_PH_SHIFT;
-+	if (get_dma_buf.flags & VFIO_DMABUF_FLAG_TPH) {
-+		priv->steering_tag =
-+			dma_ranges[get_dma_buf.nr_ranges + 1].tph.tag;
-+		priv->ph = dma_ranges[get_dma_buf.nr_ranges + 1].tph.ph;
- 	}
- 	/* dma_buf_put() now frees priv */
- 	INIT_LIST_HEAD(&priv->dmabufs_elm);
-diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
-index e2a8962641d2c..a8b8d8b1a3278 100644
---- a/include/uapi/linux/vfio.h
-+++ b/include/uapi/linux/vfio.h
-@@ -1497,20 +1497,30 @@ struct vfio_device_feature_bus_master {
-  */
- #define VFIO_DEVICE_FEATURE_DMA_BUF 11
- 
-+struct vfio_region_dma_tph {
-+	u16 tag;
-+	u8 ph;
-+};
-+
- struct vfio_region_dma_range {
--	__u64 offset;
--	__u64 length;
-+	union {
-+		__u64 offset;
-+		struct vfio_region_dma_tph tph;
-+	};
-+	union {
-+		__u64 length;
-+		__u64 reserved;
-+	};
-+};
-+
-+enum {
-+	VFIO_DMABUF_FLAG_TPH = 1 << 0,
- };
- 
- struct vfio_device_feature_dma_buf {
- 	__u32	region_index;
- 	__u32	open_flags;
- 	__u32	flags;
--#define VFIO_DMABUF_FL_TPH		(1U << 0) /* TPH info is present */
--#define VFIO_DMABUF_TPH_PH_SHIFT	1         /* bits 1-2: PH (2-bit) */
--#define VFIO_DMABUF_TPH_PH_MASK	0x6U
--#define VFIO_DMABUF_TPH_ST_SHIFT	16        /* bits 16-31: steering tag */
--#define VFIO_DMABUF_TPH_ST_MASK		0xffff0000U
- 	__u32	nr_ranges;
- 	struct vfio_region_dma_range dma_ranges[] __counted_by(nr_ranges);
- };
+	Andrew
