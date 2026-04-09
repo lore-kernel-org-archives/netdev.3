@@ -1,67 +1,35 @@
-Received: from mout-y-209.mailbox.org (mout-y-209.mailbox.org [91.198.250.237])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38EF28686;
-	Thu,  9 Apr 2026 02:50:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.198.250.237
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD0E36AB5A;
+	Thu,  9 Apr 2026 02:51:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775703049; cv=none; b=WwNQgbkTI2OqKODtcSXOf8HBUZsz+IQP2zSMfN92Bv+SbTDjjy8udrNc7sr870+3pwPxTOWYlEO/sjxVoltMphZS1WQaHRIi7w3f9HQmjKKjig64P9bQxrRpEjCVi7ckf/eu0nVWuRZ/DpHuyVRoDIMt4CVznvsv14LuhhRtNTw=
+	t=1775703074; cv=none; b=pwbDMej5GQDvm2B83aDPzbz4S8twSVz8aQ23uMyEhZ0dDSBOoyUXE6bxU3IPKeGk8C3iPCZBa4d17KDMHJbtL4ggu1Ab6wnE0eJrcxJi+6CCaf3mqvnnn1jA6w5unGyLBLSwa8udQGFvSWvz3l78MJtgI+VZJKcYqXNFkJFJyoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775703049; c=relaxed/simple;
-	bh=5J5ZO6fBKGSx8kRLsewuIHgetXG4DNnuNKeDnEdeSL8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J6cQP3XWUQwNRVLusYwfmGIlf/BcYvv5h4qkf+dqVzCH72qBSFCsC4iNhvjTqACZLl5MuhcsUfMrQWP0jkNbcNNVwx4IY6b3cVEQvQdYfEvmEFBhc7wp7QrZA0+kNF3DcDEg1O8kk8wwDgxZALarAuXNzCI4nxjd01JMK5u1oCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=G60PAVWB; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=YaK8ZsWs; arc=none smtp.client-ip=91.198.250.237
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1775703074; c=relaxed/simple;
+	bh=uxreZopNNdkf+5l4WGyB8d1qFwXSiZYyfTnqUiaaRQ0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Y9+4cdJP5Qujb1UGP/IRAG6B+7oqMyNBLX0oEODc7BgMGvvqpK02l2qk44AN9ha2e6EElbCGIpjR7esDbKOrfkGRnyIye4PG3hhSg2wpTZkovTwQ0Ktnxe3NjzWO4K/0glnCBg2U6wXGWdPNN7PLVKaXuZJiGfxTqXUyjJQWhGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LO+zZ4Ew; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="G60PAVWB";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="YaK8ZsWs"
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-y-209.mailbox.org (Postfix) with ESMTPS id 4frkvV17YzzB12V;
-	Thu,  9 Apr 2026 04:50:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1775703046;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=pffMbmSi5wWfzvmmZ19zBe3ASxdB2Pb24bLa/ZO63cc=;
-	b=G60PAVWB3rClMPUhUvDATFIeEh/6a7M2W3xxyTpXiSQRNtSedWXDdMALE93vjyzhgeFPqa
-	1ka/WBaO3K+Pra0mo62yblLLQyBRLHuFAG4hY85L1BovUvRh8RcxTRXta9XPRhmo7fJcEk
-	QHen7Hxb8WCfuqkPP7lJF2Ix+VsNkhmWzBihZccXHOa+JkQ3w0QRNLJ+wmEgvO82ej7N0x
-	X5wEndRXaMdNTIFauPbSeaUOVJWVfhjjGhUtDgT4aeq7O7ithWMemV73Weagsq+NuLyDsZ
-	UGavlouYcnhVFrTJrqaxLzN7u3N1uds/lAfoY/dShTeaRI+DtnCF3kBJB0IOLg==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=YaK8ZsWs;
-	spf=pass (outgoing_mbo_mout: domain of mashiro.chen@mailbox.org designates 2001:67c:2050:b231:465::2 as permitted sender) smtp.mailfrom=mashiro.chen@mailbox.org
-From: Mashiro Chen <mashiro.chen@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1775703044;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=pffMbmSi5wWfzvmmZ19zBe3ASxdB2Pb24bLa/ZO63cc=;
-	b=YaK8ZsWs+GlKI8nrLchTNB+pHwLAAgMMHDUP9oaM7X3I2WWwFT17fW3m7d9tp+Nl6YZbHh
-	mU0lETsHpZtbMTNfVoo7NI7QxdxO2tGRGfu5cJSqGzXZMatKEDvJHrA5ktpv0kcAddNR6G
-	w33mj9etJJEhaSYwxFW5Z4kdSE8Acrcs46P3mcm2YByVD2zoxB9URCtzmN1OjZainoeiOZ
-	56ga7f0bCpQeiRsLSiqV7P4e1VDZXkt9uVmg75C2iaGK0VFenftYF5knKbviY7JD400ZI1
-	MBRHUDnoiNzGqM0vFpgeguqO1NIw3vQ06ZIPPwPdYCzULeJQjhKnWonmEbdI4A==
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	jreuter@yaina.de,
-	linux-hams@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mashiro Chen <mashiro.chen@mailbox.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 net] net: ax25: fix integer overflow in ax25_rx_fragment()
-Date: Thu,  9 Apr 2026 10:50:26 +0800
-Message-ID: <20260409025026.24575-1-mashiro.chen@mailbox.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LO+zZ4Ew"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C71EC19421;
+	Thu,  9 Apr 2026 02:51:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775703074;
+	bh=uxreZopNNdkf+5l4WGyB8d1qFwXSiZYyfTnqUiaaRQ0=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=LO+zZ4Ew7hBkZhdDH4oyr1iYA6oHPH0xIsBdFrhMvAgH0y1UtL03hY5zlNlIIqpIk
+	 fJ4EM1lcV+t80V9gUCEjJsGVTdpDrXd7HfdOjMoqtlgYwAhNMmknV2RGGJTEwLTcsG
+	 YDqBb+H8jn6xvcrt9m85i9a6zbvsKTeFjl4nemuckIrTKQ/TKz/Wq1H2JPmyXZGfdk
+	 jReGBpmxNxFxoJXCp41eBTW3nL9lvknBwNFjaYRTTNAAR9K4oS0ydgU30APamsRSfg
+	 ZtlfSnPASBjZ7HwXiZt8gHMQNf12AP/ql8mQvXR703DGFphTCBjghAaQhkhWB0chUY
+	 jsmxZ4HoMAsGQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CF0B3930793;
+	Thu,  9 Apr 2026 02:50:51 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,62 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MBO-RS-META: 35ib8kudtt1jz7rqdyz1rkbsa6k8ye6u
-X-MBO-RS-ID: 5f4dc865e5cefd5ceb9
-X-Rspamd-Queue-Id: 4frkvV17YzzB12V
+Subject: Re: [PATCH] MAINTAINERS: Add Prashanth as additional maintainer for
+ amd-xgbe driver
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177570305030.968772.14804179031968447185.git-patchwork-notify@kernel.org>
+Date: Thu, 09 Apr 2026 02:50:50 +0000
+References: <20260406073816.3218387-1-Raju.Rangoju@amd.com>
+In-Reply-To: <20260406073816.3218387-1-Raju.Rangoju@amd.com>
+To: Raju Rangoju <Raju.Rangoju@amd.com>
+Cc: linux-kernel@vger.kernel.org, pabeni@redhat.com, kuba@kernel.org,
+ edumazet@google.com, davem@davemloft.net, andrew+netdev@lunn.ch,
+ netdev@vger.kernel.org, PrashanthKumar.K.R@amd.com
 
-The ax25_cb fragmentation reassembly accumulator:
+Hello:
 
-  ax25->fraglen += skb->len;
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-operates on the unsigned short field 'fraglen' declared in ax25_cb:
+On Mon, 6 Apr 2026 13:08:16 +0530 you wrote:
+> Add Prashanth as an additional maintainer for the amd-xgbe Ethernet
+> driver to help with ongoing development and maintenance.
+> 
+> Cc: Prashanth Kumar K R <PrashanthKumar.K.R@amd.com>
+> Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+> ---
+>  MAINTAINERS | 1 +
+>  1 file changed, 1 insertion(+)
 
-  unsigned short  paclen, fragno, fraglen;
+Here is the summary with links:
+  - MAINTAINERS: Add Prashanth as additional maintainer for amd-xgbe driver
+    https://git.kernel.org/netdev/net/c/30f3b767aed4
 
-When fragments accumulate with a combined payload exceeding 65535
-bytes, fraglen wraps to near zero.  The subsequent allocation:
-
-  skb = alloc_skb(AX25_MAX_HEADER_LEN + ax25->fraglen, GFP_ATOMIC);
-
-then allocates a tiny buffer.  Every skb_put() call in the copy loop
-that follows writes far beyond the allocated headroom, corrupting
-the kernel heap.
-
-An attacker on an AX.25 link that supports multi-fragment I-frames
-(AX25_SEG_FIRST / AX25_SEG_REM mechanism) can trigger this by
-sending enough continuation fragments to wrap the 16-bit counter.
-With AX.25 segment numbers limited to 7 bits (max 127 continuation
-fragments), a fragment payload of ~516 bytes per fragment is
-sufficient to overflow.
-
-Fix mirrors the identical bug fixed in NET/ROM (nr_in.c): check for
-overflow before adding skb->len to fraglen, and abort fragment
-reassembly cleanly if the limit would be exceeded.
-
-Cc: stable@vger.kernel.org
-Cc: linux-hams@vger.kernel.org
-Acked-by: Joerg Reuter <jreuter@yaina.de>
-Signed-off-by: Mashiro Chen <mashiro.chen@mailbox.org>
----
- net/ax25/ax25_in.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/net/ax25/ax25_in.c b/net/ax25/ax25_in.c
-index d75b3e9ed93de8..68202c19b19e3f 100644
---- a/net/ax25/ax25_in.c
-+++ b/net/ax25/ax25_in.c
-@@ -41,6 +41,11 @@ static int ax25_rx_fragment(ax25_cb *ax25, struct sk_buff *skb)
- 				/* Enqueue fragment */
- 				ax25->fragno = *skb->data & AX25_SEG_REM;
- 				skb_pull(skb, 1);	/* skip fragno */
-+				if ((unsigned int)ax25->fraglen + skb->len > USHRT_MAX) {
-+					skb_queue_purge(&ax25->frag_queue);
-+					ax25->fragno = 0;
-+					return 1;
-+				}
- 				ax25->fraglen += skb->len;
- 				skb_queue_tail(&ax25->frag_queue, skb);
- 
+You are awesome, thank you!
 -- 
-2.53.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
