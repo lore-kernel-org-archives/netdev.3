@@ -1,131 +1,120 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5253B0AD0
-	for <netdev@vger.kernel.org>; Thu,  9 Apr 2026 16:34:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF328BE9;
+	Thu,  9 Apr 2026 16:41:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775752468; cv=none; b=gWg8hstQMljHuxx+CNz5cIhIQS+Co1q/3gpZAzEJmUzYRRZsvJNKWuFyXKQLri3raBHmoToLewnCI/f0EoaKogrh1YhV2ecJHAQoLFxqzL9kOytt/Xmdbl9fmiT+1bI7r7v8RHIsgmCKaeJezrUTumfl9SPZrv7Zbkbm4Wqu9ic=
+	t=1775752894; cv=none; b=fhR1iGhzNTS2V3W2PkRNi+0zg7eOvCwCcOkL3D3V//NQ6zkTOnNtAusLWvORPqe7dC3WHLcXb099Vlcx9IiwdwAvnW6fzypj7b4t0Xfiyc2d2ftWM4c4rBhK6xX37G6hjrxj4DpwPFuO3L8TkeTtClekJhimyh0k3RZNLlyVX+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775752468; c=relaxed/simple;
-	bh=5HPjyCGIUcS+XZxwOq7su4bREXkMRa1byoy+Frp53Po=;
-	h=From:Content-Type:Mime-Version:Date:Subject:Cc:To:Message-Id; b=UBmyvMG3uHgZPS1IM7fRvi8eNNsHVpTohMy+AapXRZ12CJf81jm9PGK3h4sz8hS8OhzCyDHBQyczVi/bcEjvRmbKrzrAm7hDO9n0uT2IraWidH9/1iLNOg0BelMm6wK+2NN0w0w6o9sxZRIfeo9WhorpcdgBhBNXqvD4XrAGi+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com; spf=pass smtp.mailfrom=doyensec.com; dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b=aH6o9YBl; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=doyensec.com
+	s=arc-20240116; t=1775752894; c=relaxed/simple;
+	bh=6zXW+2vpDaE6dfJoCWrlfA9JjKulqRk76elU+i487DQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sk+5pI0eoeCYV/hatSnind+KOGB8RxO1EPgwBS1+CQHfmSLobl3Ig4/JDPA6aANngnWRoS8Ps7EWlwdNjBvtB3mjFGXTtPBUSI1tJBaLTj1hkD8fSkN//jUcurEyywZ4XkczyHukwAaIZIIhEageGuobTcoKV4uxHdg5/HFVcf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u+4u6DaF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b="aH6o9YBl"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-66feeb8ff41so1967185a12.3
-        for <netdev@vger.kernel.org>; Thu, 09 Apr 2026 09:34:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=doyensec.com; s=google; t=1775752465; x=1776357265; darn=vger.kernel.org;
-        h=message-id:to:cc:subject:date:mime-version
-         :content-transfer-encoding:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yvD6iQG1O/I+/j+ks+GogJBSWRhUCp/c6DPnLqjhUYs=;
-        b=aH6o9YBltKABjgEBzu/nAhJP6F+ofom9cYSXrXN4aaDfOUPGiaZrCKPx64PfJ/GcvU
-         zUE8AKS3H2E3OetHTZPleDT130VdpSpbGC9gRiC6/QKayxa30X+ePVnaxKI+05kMXeS2
-         hj3QQG7FQQCtq/mekkWUN4lFdWqr5IlEQ7tBC4WBNUdO08rzgS816SlSNVJ54iKmhjVj
-         /qcLjovbuvRO864kRgMiFxf4tfi+QlhF7IJeTNRXG/7z7tutOH1zXpvq3qbfb8NvuAQu
-         iYi7KTChBm8nLQC9Jt1jMn9O2ezdAjgEQzjGrHOe6fKCZwKbovd5KhswuT6GZaeFjeGs
-         Hrxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775752465; x=1776357265;
-        h=message-id:to:cc:subject:date:mime-version
-         :content-transfer-encoding:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=yvD6iQG1O/I+/j+ks+GogJBSWRhUCp/c6DPnLqjhUYs=;
-        b=lgdT7cgmhZ4KDsPB1LBMDgYbZgm2PVA8B8M/07WcU62Z0D5kxFljvTE3ixEBpV7xLM
-         QDcEa6rFyEs5bChLQCY9ciSVMysPNL3OXkviu9W6pwdfmrL+RPDtiu88tDuiL97L+Inx
-         GVBv2Vj3oQiBxuQhK7UaM1b0Nu/Ska1k9kS7foLdq4N7zSlDiLoRE08cyukNA9E5R5M4
-         +ThuVZtVorJTU4uwrAtUEjxzu6nFaTQPpCAA1bNDJ/JzHAJe/oIB9nfyhA2UyX6pT2zl
-         fW4We9Vqq1jkit9y9yn4ELs2Fg3Li+Jd4oToc905IQT/cs5Pp82F3jt7ZqsOFwZiBtXW
-         ssAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV1igsf0e3E81kNUKdYEcfGRU7Uarv9Eh3xSEqoui0ui1uFNKHd+ocOc0+XbESY6dKUMMcug44=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0+aAUbGLF4TFTZ5bXJp2troWTv3feLtRIcoAB+3+JJG4wrgfy
-	lNG8zwjr8zjq3c/q2CmfmvmpoYh+OepKtIN4p4Gr3IKZrv+T3qZuBlE6OPymqW8LvpjyBNIW/H7
-	RXpxbv0EWNA==
-X-Gm-Gg: AeBDietCy5iBpJU50oRIiPx94NKlk3RT09VzObMoRTb6N3wHo2lnsi06YT9vqDuSkI0
-	tv2oYMACKvSdwDoDqM31dadHqAxywjjL2kUZNJjYtH/mb3Auh6sygxMFUB2cHm68f1EO8CsTTx7
-	Lx4DFXY+gZswh7nX3jtConW/D01eSa2nBHkNL11U629BR/cCFaapEvboyS0NzPcOs+8U3SiqRv7
-	Q3jXz74Z8KCe4/WE7YKHJCIoc5ZKSUuqDZgXjr1CnhrEBMwBudG32BUpgTG6oCA/dqTSJmDwnFe
-	a9TJi2DdweAFdozo8QaDj9H3NN0fMeLZhBYq2fw/nitoBR9SVCKPVgggxulRd7q3q7LLIzupiI/
-	KE9PyxZDQh1IMf8UqdeZVz3xlAuImCE6ErSC53rpsRbUFDfqjoY9/z8ln4ffIo0SUGO1Mii3wB9
-	w+wyh+vMlL+qDkqgE7u17XzQeqRgmQ/JKTlcBZCfC4ef07dAx8IHjtjbe5ovihDuLN7Xcvf9Dy9
-	VqS
-X-Received: by 2002:a05:6402:504a:b0:66e:df52:7ce0 with SMTP id 4fb4d7f45d1cf-66edf527d86mr8235560a12.17.1775752465513;
-        Thu, 09 Apr 2026 09:34:25 -0700 (PDT)
-Received: from smtpclient.apple (83.10.27.44.ipv4.supernova.orange.pl. [83.10.27.44])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-66e033a787fsm5984074a12.14.2026.04.09.09.34.23
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 09 Apr 2026 09:34:24 -0700 (PDT)
-From: Norbert Szetei <norbert@doyensec.com>
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u+4u6DaF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BB77C4CEF7;
+	Thu,  9 Apr 2026 16:41:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775752894;
+	bh=6zXW+2vpDaE6dfJoCWrlfA9JjKulqRk76elU+i487DQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=u+4u6DaFYCpzAqCDLI9SEyluDVB91upu7RsV0LOFyCY07e2cMR0gzlGn7a2YevSlX
+	 hO4CGlFY6EnEP+kERjeY29oLnAjYwACjlhZ72Q3UbzPs7W6SkYMsqAGIsI9vfkza3/
+	 jiCTto8ZhPWhZ/e8PhUR8ygVp6xstejMsAP9kQY3YyJzUuc9SvoEw7PIjAWu26oMxK
+	 Z/WnReJ5IJwcMnIbmUnym2LdZfC1vOuIe6tDGSIDswMyrsco8NzduTMOMSmUHc7Ie1
+	 y6kCFKmHBZgJB3GmnJVAS85NoSLJ/ckabVG6Puh01d1C2yayzvi72I814h/vsT5lt7
+	 tTiEUv+hnRbzQ==
+Date: Thu, 9 Apr 2026 17:41:29 +0100
+From: Simon Horman <horms@kernel.org>
+To: =?utf-8?B?TGVrw6sgSGFww6dpdQ==?= <snowwlake@icloud.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	=?utf-8?B?TGVrw6sgSGFww6dpdQ==?= <framemain@outlook.com>
+Subject: Re: [PATCH] nfc: llcp: fix u8 offset truncation in LLCP TLV parsers
+Message-ID: <20260409164129.GO469338@kernel.org>
+References: <20260405105938.1334488-1-snowwlake@icloud.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.4\))
-Date: Thu, 9 Apr 2026 18:34:12 +0200
-Subject: [PATCH v3 net] vsock: fix buffer size clamping order
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>,
- virtualization@lists.linux.dev,
- netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-To: Stefano Garzarella <sgarzare@redhat.com>
-Message-Id: <180118C5-8BCF-4A63-A305-4EE53A34AB9C@doyensec.com>
-X-Mailer: Apple Mail (2.3826.700.81.1.4)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260405105938.1334488-1-snowwlake@icloud.com>
 
-In vsock_update_buffer_size(), the buffer size was being clamped to the
-maximum first, and then to the minimum. If a user sets a minimum buffer
-size larger than the maximum, the minimum check overrides the maximum
-check, inverting the constraint.
+On Sun, Apr 05, 2026 at 12:59:38PM +0200, Lekë Hapçiu wrote:
+> From: Lekë Hapçiu <framemain@outlook.com>
+> 
+> nfc_llcp_parse_gb_tlv() and nfc_llcp_parse_connection_tlv() declare
+> 'offset' as u8, but compare it against a u16 tlv_array_len:
+> 
+>     u8 type, length, offset = 0;
+>     while (offset < tlv_array_len) {   /* tlv_array_len is u16 */
+>         ...
+>         offset += length + 2;          /* wraps at 256 */
+>         tlv    += length + 2;
+>     }
+> 
+> When tlv_array_len > 255 -- possible in nfc_llcp_parse_connection_tlv()
+> when the peer has negotiated MIUX = 0x7FF (MIU = 2175 bytes), so that
+> a CONNECT PDU can carry a TLV array of up to 2173 bytes -- the u8
+> offset wraps back below tlv_array_len after every 128 zero-length TLV
+> entries and the loop never terminates.  The 'tlv' pointer meanwhile
+> advances without bound into adjacent kernel heap, causing:
+> 
+>   * an OOB read of kernel heap content past the skb end;
+>   * a kernel page fault / oops once 'tlv' leaves mapped memory.
 
-This breaks the intended socket memory boundaries by allowing the
-vsk->buffer_size to grow beyond the configured vsk->buffer_max_size.
+Is the more general explanation of this problem that the length of packet
+data is used as the tlv_array_len parameter, and that length is not
+verified to be within the expected bound?
 
-Fix this by checking the minimum first, and then the maximum. This
-ensures the buffer size never exceeds the buffer_max_size.
+I am also concerned that the packet data needs to be pulled
+before it can be safely accessed.
 
-Fixes: b9f2b0ffde0c ("vsock: handle buffer_size sockopts in the core")
-Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Norbert Szetei <norbert@doyensec.com>
----
-v3:=20
- - Added Fixes and Suggested-by tags.
+> 
+> This is reachable from any NFC P2P peer device within ~4 cm without
+> requiring compromised NFCC firmware.
 
- net/vmw_vsock/af_vsock.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+I think some further explanation is warranted here if that is the case.
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index d912ed2f012a..08f4dfb9782c 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -1951,12 +1951,12 @@ static void vsock_update_buffer_size(struct =
-vsock_sock *vsk,
- 				     const struct vsock_transport =
-*transport,
- 				     u64 val)
- {
--	if (val > vsk->buffer_max_size)
--		val =3D vsk->buffer_max_size;
--
- 	if (val < vsk->buffer_min_size)
- 		val =3D vsk->buffer_min_size;
-=20
-+	if (val > vsk->buffer_max_size)
-+		val =3D vsk->buffer_max_size;
-+
- 	if (val !=3D vsk->buffer_size &&
- 	    transport && transport->notify_buffer_size)
- 		transport->notify_buffer_size(vsk, &val);
---=20
-2.53.0
+> Fix: promote 'offset' from u8 to u16 in both parsers, matching the
+> type of their tlv_array_len parameter.
+> 
+> nfc_llcp_parse_gb_tlv() takes GB bytes from the ATR_RES (max 44 bytes),
+> so the wrap cannot occur in practice there.  Change it anyway for
+> correctness and to prevent copy-paste reintroduction.
 
+In the case of both nfc_llcp_parse_gb_tlv() it seems to me that wrap-around
+can occur because the value of length, which is used to increment the value
+of offset, is read from unverified packet data. Is the data validate
+somewhere, or known to be correct?
+
+If so, I expect this can also result in an overrun of tlv.
+
+And I think the same problem exists in nfc_llcp_parse_gb_tlv().
+
+> 
+> Cc: stable@vger.kernel.org
+
+A fixes tag is needed here.
+
+> Signed-off-by: Lekë Hapçiu <framemain@outlook.com>
+
+The patch should be targeted at net-next like this:
+
+Subject: [PATCH net] ...
+
+And please group together related patches - I see several for nfc -
+in a patchset.
+
+More on the Netdev development process can be found here
+https://docs.kernel.org/process/maintainer-netdev.html
+
+-- 
+pw-bot: changes-requested
