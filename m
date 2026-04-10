@@ -1,62 +1,62 @@
-Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
+Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B433D9DB8
-	for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 15:10:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F95C3D9045
+	for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 15:10:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775833827; cv=none; b=Hk0omNUV91Hvccb7FMOySSfEnUd3UrN/XO/e6do5Jpu77pFkRzrDBrAM7YfR7uGhUDhjyALluIiQijx86zLh6f/pxeAJHB6pQMfPmP0tXIctZy0NkotGYQtFX28WsqL2NRh8kZ2o898P4sOQ2wjP/fv3FDHIUUzHhzjxUxpgPnY=
+	t=1775833830; cv=none; b=dKElE3LtsrMyY0E3NFj09sbdzmtNDJ1Zwo0MRg0DEcITChR7gbZkiUhU8nukJk4wCEKzwX+XBzv/RRw0N3U3WgsvWpvBNnuFxp1WMj+O5+hYyn6NlryLu8MNMGZNSuzv8nWX1evwUd8wRHbpGzEJAsI6LZEHY7Gxuxw0/m4fOS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775833827; c=relaxed/simple;
-	bh=LS15Xu4zsM2P2cbnJH9QXzxKg+QCuDTxe5Jn5c55cq4=;
+	s=arc-20240116; t=1775833830; c=relaxed/simple;
+	bh=yyogxbT3uqjIPJpgPrATyaEUWuKvPKtOJtRblUwskWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e36tauAHpEhmu7qspoH4JDW1omVeT83TglazOvr6+MAHS5qAy8i3s9edodzeH0qxgX9rnsjvxN5XM9h4Fnr1/23jFPPfa6ckQqQeoPt3xXH2vVtq3tD0y+bLwQOOnKxQ1z4imkS0AdXu58WIJQrDDyFSSOkaQLaRU6uXIl+7dyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=QRnIadx+; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=SdtdeTkT; arc=none smtp.client-ip=103.168.172.152
+	 MIME-Version; b=orhJrMRf2+T2xEQJFsRc4+VeE4awJOub7Tqvgz70yYMtJoZ2hhSXOubioc+vR53pqlLccaeMPt/nxq0zbMmiDgnJowDrIP2+xUtN8MXsNstcxG3iRF2saKOa4WAPMb0+1SVEHhc3YtPY9Ik7nVo/ngXwWSmiLM/a27QahcgtiL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=NcUpW2cK; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=W77vvWFa; arc=none smtp.client-ip=103.168.172.150
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.im
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="QRnIadx+";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="SdtdeTkT"
+	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="NcUpW2cK";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="W77vvWFa"
 Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id E67041400265;
-	Fri, 10 Apr 2026 11:10:25 -0400 (EDT)
+	by mailfout.phl.internal (Postfix) with ESMTP id 6DD60EC03FF;
+	Fri, 10 Apr 2026 11:10:28 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Fri, 10 Apr 2026 11:10:25 -0400
+  by phl-compute-02.internal (MEProxy); Fri, 10 Apr 2026 11:10:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.im; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1775833825; x=
-	1775920225; bh=5S8qt1e78cR8wCsoHJgfBEraa//yXwr+TQS7xLGFo00=; b=Q
-	RnIadx+zFeOVbuh2SSi/h0iS7LPomalSk32y4Rz5aSGk8P7J2515GieFN9ue5/OM
-	yCHVR3f9je5ThgB2BkHvMfshsJC4NWjEaoCtOlQo4QjYwAMFKWh/N2CCkhO3SDXl
-	V12V51TlvkEY++7C0uF59OYz2eQczi6Lpr3ckoxsC2YlEGY7s5VmlK18JAapq8IE
-	WDannqO2Rvo6lVMCZ55mfOKPCemUhuTNC/Di8bN5G0Nbyy/0+v35GNJJLKysZtIQ
-	tAfoMmORRx6I5YnYEy+39Z+SjI0ctCFP1DWxNmktKutvdovzMry0IuWdmjcDr4/X
-	1vYa9XFbz3Vsyhv0jss7A==
+	:reply-to:subject:subject:to:to; s=fm2; t=1775833828; x=
+	1775920228; bh=xBnWklu2CitrGSblqUuOa2vd6K+9ZC5Ncr6eMpirYFg=; b=N
+	cUpW2cKRJE8Krq3YfeQu042j2pP2eyxrWhUch7CKrj/BHqbqpP2xfbcjSaTvjF8i
+	h1ds1yfrko5a1oMTXP97FSVWuLjGGqr1ivyPsyw+vXm1L8KQlOHvi9PKN6aVvLkc
+	lllgk6D2F1wPO1ime1Qet75/Pfg0E7jqCsFCwRQZ/djjg1mQKM/c1p6hy8dYQJLP
+	u5Mwux23TjUubxoVWlizMNfzGUx0bYDNlh6u5xIxRb86xiFdH7jD64qRpmTS4auN
+	716jIkg1FIhBSvFQMdcDISFxlU3gYkflqKmeFVl74Vp1QT3ZI1R8+1nkxoN1KvIK
+	hsporgPvn/O3LuXbM5iMg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1775833825; x=1775920225; bh=5
-	S8qt1e78cR8wCsoHJgfBEraa//yXwr+TQS7xLGFo00=; b=SdtdeTkTwq9bKD2DH
-	0aWta4wNK9UKKAIsilFXnBb5fwuAoQeiUEobaN3La8sM2oSqh/vzksjCbqp76dyE
-	nd4IxFcn8mV9bT0ZFgZBZIAlGG9T7wVYy7Lypbqt0MfiS50LHUsnSbe4/FDgLiWe
-	cPOi0mZwpvBzs+gSSZvEU7ylWFnUBZF6S6ftYUNEXHNAcub32kVAXA13RX62KCqw
-	SbCdg57SIlFkMsq/zxnV5MzH/6oHaqIkOE9Lo49yxNBAftoYeIEj70Kz/4uPN7ag
-	6p46Na7ps/W6VvT25b725T4NtfoUg1vDtaNeyrBXd4JjmBsoYEXN3vTRE7LpF3Ie
-	7iItA==
-X-ME-Sender: <xms:4RLZaUrM880VXrg-Be0-rWL6E99XSVLfwpM9oiCVmvMdA1sdqafmyw>
-    <xme:4RLZabHqOm5wn4Y3jEe_Y2aqZ8TrvhmMdO72pofqk10oKkfBf2nl-jpQxW3k1ZHLt
-    V6BhrCmM6ywRtu0NusTBZPTz6opgJn531AyD91Ad8XwDlj1nfqVRoEJ>
-X-ME-Received: <xmr:4RLZaY9jABgxFej52PQmdJUCfEMcsPBrswZuU_JyvsBssard56dMmCBNbL_z_Q>
+	:x-me-sender:x-sasl-enc; s=fm2; t=1775833828; x=1775920228; bh=x
+	BnWklu2CitrGSblqUuOa2vd6K+9ZC5Ncr6eMpirYFg=; b=W77vvWFapWD7+Bn5X
+	D4hB4YIqqhNFZhtTKe0vS8lAErOxNSEdm+UTPvGxsd6hGh37xu3FXmaF1HBCTijW
+	qs16orgDZcacm5D1L4jJDkFSJXgwV6aC0yNTuv5uM+S5cItVPn5zKD6cInU1sWTf
+	XpiANuWmtBm23VySUy5VOjkK6mTqAdIfU/7DJGzyz8ow+2fH0ipcnEvQW0JR/It/
+	erhE2UDQlJvJA9bX9lkblyA1a+VCaiF5OLTi3jrDHA2IyHEUOVvVdomU6jTrFyq9
+	5x7ixNFH7k/OqeSojmE9g2u0ogleZRFTzAossr6SVedZzv4a8g1wKViaPDN199XH
+	yXKHg==
+X-ME-Sender: <xms:5BLZaRGckN1bRXQKY0JGAsO-RFNhcbleLZPdbsHoYu74Qwbwf0iPVA>
+    <xme:5BLZaWwsIBRR5TOfhiS5vYgzKRw_z0hw1vvD-z-9DY9jRsbBN_KsA2rVK6X_Fitka
+    FUPZUMfRJdIpvpICtmKeQtpArnbBQVQNYkyVyqbLXyN742BQhixBZWy>
+X-ME-Received: <xmr:5BLZaS5iD3a6wjZp5LLsYYtMo0Qn3FO3cthb59Md__X0DenhmLPY2VHgz72O0A>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddvleejfecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
     hrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeetlhhitggvucfo
     ihhkihhthigrnhhskhgruceorghlihgtvgdrkhgvrhhnvghlsehfrghsthhmrghilhdrih
     hmqeenucggtffrrghtthgvrhhnpeetffeljeefvdfhheeijeelgfekleejveeugeegveet
-    hffguefhudffgeekvddttdenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepmh
+    hffguefhudffgeekvddttdenucevlhhushhtvghrufhiiigvpeefnecurfgrrhgrmhepmh
     grihhlfhhrohhmpegrlhhitggvrdhkvghrnhgvlhesfhgrshhtmhgrihhlrdhimhdpnhgs
     pghrtghpthhtohepudeipdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegurghnih
     gvlhesihhoghgvrghrsghogidrnhgvthdprhgtphhtthhopegurghvvghmsegurghvvghm
@@ -66,14 +66,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddvleejfecutefuodetgg
     hilhdrtghomhdprhgtphhtthhopeifihhllhgvmhguvggsrhhuihhjnhdrkhgvrhhnvghl
     sehgmhgrihhlrdgtohhmpdhrtghpthhtohepughsrghhvghrnheskhgvrhhnvghlrdhorh
     hgpdhrtghpthhtoheprhgriihorhessghlrggtkhifrghllhdrohhrgh
-X-ME-Proxy: <xmx:4RLZaYStArLPvs9verwjcfaOM9pfY7Y-toxG8zZGZSCGpyIDnZlk3g>
-    <xmx:4RLZadqDY7vlhAeE0YJYjuXTGt7jOkMm5TASuw7BFCllSKzd3nt-ew>
-    <xmx:4RLZaVNfgH5Tl7LzMu3E0eSCqhcelwsWkKWQlEmJnXdzYoHgRWdJZA>
-    <xmx:4RLZaTywIiGsMf9E1-lsjtw2jTUenlHkKbhk9-T_CXRzc5HIjNabng>
-    <xmx:4RLZaQAnZjlKVrighfMNJLbVYcPVm71DWJkZzwtWOYgzUvemoKg1ESvC>
+X-ME-Proxy: <xmx:5BLZaTfxu9M1QsNG_r47YuNUmKYQxiIJmEej4rArjT761WoMrIeX1A>
+    <xmx:5BLZaREpHC1fM7LCTtQHXKpFwL0Yl9dxfdctYhKC0Kka-3yWZu7dRQ>
+    <xmx:5BLZab4hQs9lDlyE-HmSNQGwkgXHGBQQrUtI_f3A-KTK6YApvFDEjw>
+    <xmx:5BLZacuZ8pyOiWIei01SHOZ_RyNtgg1BUQp7ufxyLVhDb8DlcR-Q2g>
+    <xmx:5BLZaQz-KHBbZCd6BhJUPUda_DtSsT1RJPP6v0JR8mTrJleAZADbPThw>
 Feedback-ID: i559e4809:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 10 Apr 2026 11:10:25 -0400 (EDT)
+ 10 Apr 2026 11:10:27 -0400 (EDT)
 From: Alice Mikityanska <alice.kernel@fastmail.im>
 To: Daniel Borkmann <daniel@iogearbox.net>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -91,9 +91,9 @@ Cc: Shuah Khan <shuah@kernel.org>,
 	Florian Westphal <fw@strlen.de>,
 	netdev@vger.kernel.org,
 	Alice Mikityanska <alice@isovalent.com>
-Subject: [PATCH net-next v3 08/12] udp: Validate UDP length in udp_gro_receive
-Date: Fri, 10 Apr 2026 18:09:39 +0300
-Message-ID: <20260410150943.993350-9-alice.kernel@fastmail.im>
+Subject: [PATCH net-next v3 09/12] udp: Set length in UDP header to 0 for big GSO packets
+Date: Fri, 10 Apr 2026 18:09:40 +0300
+Message-ID: <20260410150943.993350-10-alice.kernel@fastmail.im>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260410150943.993350-1-alice.kernel@fastmail.im>
 References: <20260410150943.993350-1-alice.kernel@fastmail.im>
@@ -107,52 +107,44 @@ Content-Transfer-Encoding: 8bit
 
 From: Alice Mikityanska <alice@isovalent.com>
 
-In the previous commit we started using uh->len = 0 as a marker of a GRO
-packet bigger than 65536 bytes. To prevent abuse by maliciously crafted
-packets, check the length in the UDP header in udp_gro_receive.
-
-Note that a similar check was present in udp_gro_receive_segment, but
-not in the UDP socket gro_receive flow. By adding an early check to
-udp_gro_receive, the check in udp_gro_receive_segment can be dropped.
+skb->len may be bigger than 65535 in UDP-based tunnels that have BIG TCP
+enabled. If GSO aggregates packets that large, set the length in the UDP
+header to 0, so that tcpdump can print such packets properly (treating
+them as RFC 2675 jumbograms). Later in the pipeline, __udp_gso_segment
+will set uh->len to the size of individual packets.
 
 Signed-off-by: Alice Mikityanska <alice@isovalent.com>
 ---
- net/ipv4/udp_offload.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ net/ipv4/udp_tunnel_core.c | 2 +-
+ net/ipv6/ip6_udp_tunnel.c  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index 23653872ca65..4bb37c8d234f 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -704,12 +704,8 @@ static struct sk_buff *udp_gro_receive_segment(struct list_head *head,
- 		return NULL;
- 	}
+diff --git a/net/ipv4/udp_tunnel_core.c b/net/ipv4/udp_tunnel_core.c
+index 18f789d9383e..8c586dc08f3b 100644
+--- a/net/ipv4/udp_tunnel_core.c
++++ b/net/ipv4/udp_tunnel_core.c
+@@ -184,7 +184,7 @@ void udp_tunnel_xmit_skb(struct rtable *rt, struct sock *sk, struct sk_buff *skb
  
--	/* Do not deal with padded or malicious packets, sorry ! */
- 	ulen = udp_get_len_short(uh);
--	if (ulen <= sizeof(*uh) || ulen != skb_gro_len(skb)) {
--		NAPI_GRO_CB(skb)->flush = 1;
--		return NULL;
--	}
-+
- 	/* pull encapsulating udp header */
- 	skb_gro_pull(skb, sizeof(struct udphdr));
+ 	uh->dest = dst_port;
+ 	uh->source = src_port;
+-	udp_set_len_short(uh, skb->len);
++	udp_set_len(uh, skb->len);
  
-@@ -779,8 +775,14 @@ struct sk_buff *udp_gro_receive(struct list_head *head, struct sk_buff *skb,
- 	struct sk_buff *p;
- 	struct udphdr *uh2;
- 	unsigned int off = skb_gro_offset(skb);
-+	unsigned int ulen;
- 	int flush = 1;
+ 	memset(&(IPCB(skb)->opt), 0, sizeof(IPCB(skb)->opt));
  
-+	/* Do not deal with padded or malicious packets, sorry! */
-+	ulen = udp_get_len_short(uh);
-+	if (ulen <= sizeof(*uh) || ulen != skb_gro_len(skb))
-+		goto out;
-+
- 	/* We can do L4 aggregation only if the packet can't land in a tunnel
- 	 * otherwise we could corrupt the inner stream. Detecting such packets
- 	 * cannot be foolproof and the aggregation might still happen in some
+diff --git a/net/ipv6/ip6_udp_tunnel.c b/net/ipv6/ip6_udp_tunnel.c
+index 43e94a3efb26..03c9e55f575e 100644
+--- a/net/ipv6/ip6_udp_tunnel.c
++++ b/net/ipv6/ip6_udp_tunnel.c
+@@ -93,7 +93,7 @@ void udp_tunnel6_xmit_skb(struct dst_entry *dst, struct sock *sk,
+ 	uh->dest = dst_port;
+ 	uh->source = src_port;
+ 
+-	udp_set_len_short(uh, skb->len);
++	udp_set_len(uh, skb->len);
+ 
+ 	skb_dst_set(skb, dst);
+ 
 -- 
 2.53.0
 
