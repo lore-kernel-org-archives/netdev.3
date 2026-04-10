@@ -1,179 +1,148 @@
-Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11011016.outbound.protection.outlook.com [40.107.74.16])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4143A1A2D;
-	Fri, 10 Apr 2026 15:38:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.74.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B22029E0FD
+	for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 15:39:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775835523; cv=fail; b=QMv4kXEb3rHHwY+zQX5ypvIBmAHDBBLw9RnB1c3K/tC6jRDnC0+NG4pUhX/sO4HKN5NsRsV89ngnUuHuqBbrkOSLNlbXqJasBiqIDj7Zxka7uFK18qOFcj9U6xHvFT7TY1PSxQGeLJMDSqL75ssV9++XChA0oWwbh9upr5Wt9wI=
+	t=1775835593; cv=pass; b=CwNV1N+LjNSJMrsPs4xrEQqy0jS669WlMW4hGoKPHhQu47f8Ppe0XwQMlYYLF49/dLcc1VwlzVROGSkOgtovVbQx8GRuP2FOD5tuk/xwDcRr8/eTU6dbrtZOsxcPDPZJW5Ki05NxNizPKo8FgKea02yAyQq/JLwXMXSLJf9IXwc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775835523; c=relaxed/simple;
-	bh=xG6/ZZua5di7ivDUIgczWoZIfhbnBckOg/kxRWa/+Cc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=NO/zWalmgXAkzgbaDeeKizHo7+d4ze6DnD7s6wfb9G8CGjGA09n699EVtgefn9k3k/MYCclA4GGUG39PQqL8oMBEWe66thWnG2z6bP32/zQj0NdJGEjeR9t9qaG7Gp1naqSrqMscRi6E2wEN3QSSxEfYDmaV0CAYUMELdDPOrEg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b=wx7E3oi/; arc=fail smtp.client-ip=40.107.74.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
+	s=arc-20240116; t=1775835593; c=relaxed/simple;
+	bh=DRDrS5BtebjLrZvKyYg9CtDSHneZfFIZ0LuXNF7vq94=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u+1Fu4dUxLaEBU+6CplV4Q9Fq/uOpiXbUnyTYv8foXxcmRJUSWFXboaOFoKx6c+Vc3tRN+ppVem1/dbkyXK5paWe/H0JVmpKGcF/VlhrWLrOwc7djE/t3H3+jZ4DJggYuBNEnssgMnbrK7gwATm5fe7baj5PdMV5OyFMl/Dz5co=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=D9/f5HtB; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=tGOV9S38; arc=pass smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b="wx7E3oi/"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XEUL81Lp7AnpQgXEdtE1e6tHnKJvNiNaiXqUTwZQsDyrTo5Uk+v16R6PBSvQqQpP2SkTmF+hmIFO/RevhnUXG5BPHIphWbYrbWwVzv68Nrq32/KLBHMMLF3rRBVVdbjyyS9G5VGhjyTd4SEyGyUvjxWZBq0F3OaPpCB7gZPDI6Kisw/dhVXcgp/m8aHqOSRVbIlaqiKkW0bPZl038cGLpAkZi8IeWTbcEVTvzK0NHlabNUkTeFqe358b0X1xGRLBTEgrcgNQwoyXQHcGCGpH9YGIxScrQZk5D6zvRnGuNO26pbnQOPcQBqAU/z/LxmwXTo6bLuKZcKJUyLjZcNIyqw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dCJKfS65xAtKr94K1LM4crG/BE1kEuxoZ3hvhJD2Z/s=;
- b=Ol152a9g1hfilzP6SEA0/MDocEjHiP9Dc/GvsQD4WT3A69CLAcQbdZCAMG66D18G01LMkSmVcOf3KYeM2KSysnCObJaDn2A7kzRH3MDFALpYIFAX5sslvLGQ3xBso8EzKmpBib1ODLe51/iiRWwWRsc7dawbJjBxg/qNE13cnFU46hXTjBxAKhNMSd89IO+82RDuWPPChUsHecgiGg/CFp9RWrCPNqzESm+DVDGOrwJosmDq+A4UUVhYf/F7qiB0aBAluHfEi4vScpOv9cFcOhdsYsyP/KTZYvLZFyfINW2Nqr50Ar6HZaC4F1YF3+ronXzCM96BGgij48Oc6Km6dQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
- header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dCJKfS65xAtKr94K1LM4crG/BE1kEuxoZ3hvhJD2Z/s=;
- b=wx7E3oi/aLvnafOiR9C+z1DjyyZNwvmn7i84YaMUk9RQi1djUSfCwP0ChSey75Um1admd7Wk7EPmD9B2xv0SKk1qLtzo7jMnj6iGmSC5sVlzLAeN4D0SNY7wb50tojGKI2enEaham6vUL9vqM3Uyjhu/RZBdNOh7IedUBZH0z50=
-Received: from TY3PR01MB11346.jpnprd01.prod.outlook.com (2603:1096:400:3d0::7)
- by TYYPR01MB12337.jpnprd01.prod.outlook.com (2603:1096:405:f6::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.42; Fri, 10 Apr
- 2026 15:38:38 +0000
-Received: from TY3PR01MB11346.jpnprd01.prod.outlook.com
- ([fe80::87d1:4928:d55:97de]) by TY3PR01MB11346.jpnprd01.prod.outlook.com
- ([fe80::87d1:4928:d55:97de%4]) with mapi id 15.20.9769.043; Fri, 10 Apr 2026
- 15:38:31 +0000
-From: Biju Das <biju.das.jz@bp.renesas.com>
-To: Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>
-CC: biju.das.au <biju.das.au@gmail.com>, Heiner Kallweit
-	<hkallweit1@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Geert
- Uytterhoeven <geert+renesas@glider.be>, Prabhakar Mahadev Lad
-	<prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>
-Subject: RE: [PATCH net-next] net: phy: call phy_init_hw() in phy resume path
-Thread-Topic: [PATCH net-next] net: phy: call phy_init_hw() in phy resume path
-Thread-Index: AQHcyPZnBK/SG6spWkirTeqviN9wXLXYYQwAgAAGuICAAAH3gIAAA7nA
-Date: Fri, 10 Apr 2026 15:38:31 +0000
-Message-ID:
- <TY3PR01MB113461216CB9D880244ED824B86592@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-References: <20260410142904.439666-1-biju.das.jz@bp.renesas.com>
- <adkOZl4gt5UoGv-0@shell.armlinux.org.uk>
- <839fec66-5ec0-4cc0-a0c4-ae2de6902188@lunn.ch>
- <adkVr0mMzDsXile1@shell.armlinux.org.uk>
-In-Reply-To: <adkVr0mMzDsXile1@shell.armlinux.org.uk>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=bp.renesas.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: TY3PR01MB11346:EE_|TYYPR01MB12337:EE_
-x-ms-office365-filtering-correlation-id: 98a4f449-0d31-41e2-9e54-08de97173847
-x-ld-processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|376014|7416014|1800799024|38070700021|56012099003|18002099003|22082099003;
-x-microsoft-antispam-message-info:
- pRQSwzZKzLs2BiSG7ARhMs9JSZk95ouc8gRq9abAghWk7kjJThDNUli+kmkcOyw8jjylbVTx3NRvrZHSRRsTR57KqjmETD/CTFPH2m8ehtqiObuK1BajyVUZHcoxmrCuCElaMoPleWOk99IX4c5vuvVTXkL6ykcNMJnek2DLwJXode7PgPy6reg4xw+7mEZ+P5dPwLwAWe5PGvgW/rfkViA0Jcstz3/tZFZnUzvEfxi76JBF02US58ErlLkMd4Y4RoLBlAg3/ss+s9rHOIHUSN0I4qKoUFrZFiAxb52puggzNA5+hSGj+/uXy1EoTqO3ag1QmmLsJ5CKtU3zXjOcS6RjrSlF2NmwKmYJig1MZQevTM/LDF3qFtV4YSI1tVYeOErAb2v6RCYjkIAgXpwr+XdJzIWfOICa1jVuvLr2d0dSGXnHhdN7Av+gytVrC8uAhSXqNpBl5DVGaF97pKZhXrKDdRkv/uOTUg08h0dogmhnfTy7uPUrDwX9ga2w6VqMQOMNuIkSbIie1IUDlTPfMRxxijzGZzU6LUEq/8Wes7qoABqQRAf/3DcPNCpYOhdNNizmv2uNPCDdnUFb36JQUo4ZIHrWOx+zb9aK0mlpZQHVG5m/cEfUm26Vo0Q2BvulV4lNwnfQWu9D5pZqDR9rI3ZAk9OEb89MoqNGOPrt6eTxCpCxnu5HR2urY3/fsUN3Taz1NcTKwetRGHlL5bzhtfIrZo03ypjsurQFzPX0xyX0ytaGjFeH0KEtUt5moUZvy0unqqw4RnsLqTidn8SWZk7FD/0YSzy0wyULv9RB0MI=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY3PR01MB11346.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(38070700021)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?XerLgn5gSfcCieMFpJX24cIq3OZrcxOhW4jWxc/PgiGpe/rr0StjCC4hTy9x?=
- =?us-ascii?Q?mqKZCVlNiKemAm8wgpfIcg1HM5PbHVWaURR52UyJS2+qx/+52j5uuTPRc2FI?=
- =?us-ascii?Q?G/6Ee0KQd0tvGLJA3saqa3YbQ1I1gQQBjE5HTlk8jaLJpBJh2a6OJLE4WKqd?=
- =?us-ascii?Q?E0b7sSE1huwkkSQtP/LgXGxwsWEB5qQOEuDXvaKpIWcmIauNWn8xHH3awoFb?=
- =?us-ascii?Q?7XIVLlHm0FBmhGCbLiEXs8LtGyn6gHQxllXcRdV+e4OFzGvi6Z18VXt9pXAv?=
- =?us-ascii?Q?RFwYNIb+dZw/tDc4/RG8cUoh43W9mDBdDUPdwr5iiWTwPlkh5vDbjQxJR7Rp?=
- =?us-ascii?Q?v3iGwgO2q+K7XfLS0owBmqSUmS6KocRiX2/S5KN0BuPwGE9e/TNNM2ooQto2?=
- =?us-ascii?Q?xEWnwt0dH5DGQlB9YAW7SrDD9ybill9SBWmG8F9fd9pzWqBeXzJmAp9pQNPR?=
- =?us-ascii?Q?GwA6exWbaKu1Eq8TYvdUgt0T4R3VulqAttn6i0Gnl1DMEPlL1qHyunGmi6CG?=
- =?us-ascii?Q?ky2hbGUAe5JwkqdSg0tAKqA9fdsqTUOjzVjCxUMvRBNe2Y/sAoVj3ZsAMCDg?=
- =?us-ascii?Q?vJfXcDI394rJ/VPffHYXZo+Htt+1Kb/L77SwK62Aax5XT+BEyFpxP9QLB7XU?=
- =?us-ascii?Q?7+HcFmM3TH6O1FZtMo5xU4GOg6RTEmjG289NPqNWGtnevpcgOBLGKtUSkUzf?=
- =?us-ascii?Q?K7X+sUqJ9U+CyKRjIrfzpJxy1g2mVsEbnxRNez5dYOQpq8FBBALSfAizz/tN?=
- =?us-ascii?Q?DiVlQMIPhPZYQGGs6uB3FxlVMj+wiR8dE64SIvHRSY7e/K30pXq8JjcLfkyQ?=
- =?us-ascii?Q?FiAxdubZRTEtseP033ZmfNBb1SOQuaAtU4pcmAU2bZkRR9eQB6/sSevIV2p/?=
- =?us-ascii?Q?EESnSxVXr0RlYch386HdJN0mRakPOacCjXP54dklIAERUNMlUw2s/lo3F41i?=
- =?us-ascii?Q?kv6c6Q9dY8kPcMcJdAqMkY5K5YTH0RvBfBIFwoZa3RQMvckiSp67dRUGHBNn?=
- =?us-ascii?Q?8gTmEsyColpDT7BZAJV9NC/KHAza0/vbDsgsoKhy6bsUffL5Pl0svUBsUqgI?=
- =?us-ascii?Q?hEhoAfCc6J8QFOCLxKvhb+gyEfno0TjqbfQCJN480JZH94XEgA1/CLLfFJZa?=
- =?us-ascii?Q?mQVo9Ft3x8s6U/xsY6IH2glDOCYCYwgspW4VggQHgSvzOI0PBfjaaECK6G25?=
- =?us-ascii?Q?dfXFcC3l4wMS+pSu8PdTPFn2xNAX4pbiGIkJXZtVEXqcgCjUMHFMsDOFAr8R?=
- =?us-ascii?Q?WMe+u6jgqV5GV+2RuB+qW1zoMWrv9U4IBzytpHgH/Uj6aorP6wXnYnt0iXsz?=
- =?us-ascii?Q?81lO2ks0Eq115eBT2SYl3jsO9PPPI3Jo/bsjK892rgruwjy9Pew03BRsB5It?=
- =?us-ascii?Q?DYgRcFnyysKwt+jkctjAdoCXRLYmAiIp6VlythgdVKgrPBg9htLiYYxgagi1?=
- =?us-ascii?Q?bQmvcP+MeYa7rh55rH9B/ThVS+bn8eIPu2olDUxGNowqBvYTfDdNn107IHKr?=
- =?us-ascii?Q?JPrZ504lCe8+Xu8VUNJPXq9t6sKm33VwwezQeOM3PbmyjCFFTcRrbP+0HSkA?=
- =?us-ascii?Q?DUUx+IQHB/+qOQ8ZQBD8SDqO8FXE45+tzNBVhgNlz1nUTdtDQvlEbGPdTl1c?=
- =?us-ascii?Q?gnMyPvMzFG7R45CRF8mtLjKlHBqYgAbE0yQ2XLsYr4XFjw4wz1KDXT2B7jf/?=
- =?us-ascii?Q?D8rFouQefsXmYWfqDixQ2A7RuJe7UL0IxxXHd0PBT9vyCrXItCcldDrVWJFj?=
- =?us-ascii?Q?8vjaNYcDFA=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="D9/f5HtB";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="tGOV9S38"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775835591;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rw4ClkJoKu7XLdQ0/ZAr5GODLCC8+pa3jHNrQEQFMAk=;
+	b=D9/f5HtBzWGyr0t9Ls9CLFTIYcPEYp5xfquEWLmEVqnaJxEqo83AjoJ1hnGq5rK9z43LkK
+	ANYwx1so/LmhDDZzFwkLUnYv+tU1otSIyGF1FfQnWXC7QxzCsoM6Ev92ekP7hxbSNrCOE3
+	H8JN9uQyOit5tf+iGnlnl78YQdRezBA=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-140-aXJjpntwMreEK-jTsFuyrg-1; Fri, 10 Apr 2026 11:39:50 -0400
+X-MC-Unique: aXJjpntwMreEK-jTsFuyrg-1
+X-Mimecast-MFC-AGG-ID: aXJjpntwMreEK-jTsFuyrg_1775835589
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-35c1107da15so2708613a91.2
+        for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 08:39:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775835589; cv=none;
+        d=google.com; s=arc-20240605;
+        b=he7W95J6QnaoSafLVvDzi7/bxtlF/zONAsA2zqCvWA+GhfnKNhj6zUpmWxLY7eEfJQ
+         3+/fP35A51jExjQ2ZY5ZzqzLG40aR9ENbgJPJ9Lq6kzl1eM0gmTotOwsQnfgIrzeQ5v3
+         iyF6wCnDfg5yGY6A0AyvQAzOs2K9USQUWj+FTqE2jxtLF8/Ml0JIV5faTuZs/DvTlml6
+         XB6I086rG5Nc03CEejLkgdmYjfv7nJ5RvGRAqc2b6eL/zBZ1IF2lmYvJOo3of2OdYWJT
+         wZCdG4YORzPz25kq9D2Hb7Z/dONDtiNaHnzL37piAorb8pKWn9+NuuWYCT8ZkrdtQLyj
+         8DFw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=rw4ClkJoKu7XLdQ0/ZAr5GODLCC8+pa3jHNrQEQFMAk=;
+        fh=H0GBWGDu2oUe2WM4opdQUvWuXjt8LjYGbLiJpVP8ak4=;
+        b=GiZ+w/Sp28jeCt3NYe/wb5JyzbTXoFVLq4b52Ca218l6fp+mAB6m5mm88zIWCApIYd
+         RVKDrnhHsg3C34r0hJGKUBPUpb0f58j8iK9F1DDUXp+XlhvG0MgVlI8y/lLToEgI1Pbe
+         knmjmdeIBnMiDF8rpCZA7t/7q4+jfHl7j6rA0z6he0n7svqNjnU42DOapcVMMNW/REA4
+         KU04bhI3pH3bv7LOVtcSPnwg0APUkk0xqG/EFmjWEJtv/Hac0VHqUut5GwRKKRYKF8QU
+         VUnU8qWbWQETQ3fBXkDfl1ZZfYRWaNWAGxq2AOgCorwdTjsixJeoGhUhmQ6NX4WpVZtY
+         ccDw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1775835589; x=1776440389; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rw4ClkJoKu7XLdQ0/ZAr5GODLCC8+pa3jHNrQEQFMAk=;
+        b=tGOV9S38NwApj8X3kbJOz83683hIjMz+lExDTocqffkFfcOfUmcNr3zj13KGFFtFgA
+         6vGAvjSCTi5v/A5mfK68MA+nFeLyvFYQSCxEsWXRB7lDy4nSBjdVqQZpm+VVCIUqGIpq
+         KHckAyfjXDD0uSR9swTT1SGMtxuup9pg5+UhfHfGVBs8mnomD2xTbPZK31+/BYG7s5/p
+         QGdghtrubBmNkxfsn4S5s1G3aQLn2UdJilUl1uYBnc1lCpvyTV+vASVHGxXA4BXmRXG7
+         2xiDNNN+Gupui4sQZ3NEQIEzEZ7JrOAnpzVKlpa9mkYdK4NyB1I5rLjKloMQOkajd8W/
+         drlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775835589; x=1776440389;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=rw4ClkJoKu7XLdQ0/ZAr5GODLCC8+pa3jHNrQEQFMAk=;
+        b=J+UgV2wkipwKiYUWRRaHHz6h+W/YBjRy4MyE0X6WurePvmWzpka8dxlyxq/UP9J7yz
+         EpuCgmM8A2NspG4Dxiuvo2/1xke8SfV4/4vP1q7d5xWioyhF9BB9UTAbpi4YhgvBH/Kj
+         apuA3Z4eXo5wTP9mCkm0E3FfCNUXBNJyiXXaB+o4gYYzlemFbnc64gLFYwaH7l2n4v9R
+         1Y13P0RlFSwRdvSND97oKSslf25DkR3NTLUiYt7PUlzY1rY8uDBR1GT7vLxhgrUzPwxw
+         vPiHRFmTSNz7CY/sDJlmmxgI5p+18ZvEp3hyYPpHuFlQmemhdTrjKN1MhiJnP8jVvlJ+
+         vw3A==
+X-Forwarded-Encrypted: i=1; AJvYcCUJAw+71Yx47C8pC53zKz2V+P5u37qURYtNNVpkNJdfiVEpzk9yMgms1imnvr3zOXNfWOxD7OY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNkw+FnPCk1KntBa9tUCQACfAIkwOcJoWYCLfWY3wc+XIy0w+j
+	NoMc0guW4bVzzMh/d8xClPTVJmpbRB7+8fFvvjOlBUDpndzSbnaamns+ErhPfobjBUbHbf35MnU
+	Avqps2kJqtwMTJzGLuy+MQ5Luj6lsGaNVF6pz3FPqep+W5tKZs7PZ4QMpB67Iv4GR+c0wWO6yJS
+	xU9LEqRllelfoc1jCKrBdoh5nLfhEKGWQs7l7ghOo5xyE=
+X-Gm-Gg: AeBDieuOE365eQh1Pfph1X2QyEZiDAawCu/ohuhcO+rMzDEEkHOZCT2GV7jJ/cAOlCN
+	+HNAM8HqGaNDwVzLBSq5c8s6jpeLBEn6Fv6goi3NlvJnNlEhKj54HYD0sMFNuTAeAqvHBOCmFWe
+	CXo+Gmai+4MkQub6DQxdEnZdlUtjsjkL/a7S1zMW8/Rf7laGJ5mtu5x/Tg+U76xsBubQSwjrAD7
+	gyJiQY9SIteMeVS6WEZbhQH8oJaah6bmzrjeQ==
+X-Received: by 2002:a17:90b:2b4e:b0:35d:a6eb:197f with SMTP id 98e67ed59e1d1-35e4241b186mr3732043a91.0.1775835588559;
+        Fri, 10 Apr 2026 08:39:48 -0700 (PDT)
+X-Received: by 2002:a17:90b:2b4e:b0:35d:a6eb:197f with SMTP id
+ 98e67ed59e1d1-35e4241b186mr3732017a91.0.1775835588010; Fri, 10 Apr 2026
+ 08:39:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: bp.renesas.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TY3PR01MB11346.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 98a4f449-0d31-41e2-9e54-08de97173847
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Apr 2026 15:38:31.6974
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: lA9p/O16jt/udaclK7/gE5pIm/0LyQh8RSWB1DWA1xEqMpPYBwJZPw22Oua6+m3ZJ694hdA/wRssLf1E9YpkP8gfua0Jr1QgKZPXVc8eS3o=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYYPR01MB12337
+References: <20260410150943.993350-1-alice.kernel@fastmail.im> <20260410150943.993350-2-alice.kernel@fastmail.im>
+In-Reply-To: <20260410150943.993350-2-alice.kernel@fastmail.im>
+From: Davide Caratti <dcaratti@redhat.com>
+Date: Fri, 10 Apr 2026 17:39:36 +0200
+X-Gm-Features: AQROBzDtQyqB3LMZX5oorEB39jVhp9Xr8A7jZnQghpz53dK0Dog-7B--ytVSytI
+Message-ID: <CAKa-r6vk3oXiVR_a967KhHybW-Vo4M2p3B4R4ZfU4zOhVfkZ4Q@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 01/12] net/sched: act_csum: don't mangle UDP
+ tunnel GSO packets
+To: Alice Mikityanska <alice.kernel@fastmail.im>
+Cc: Daniel Borkmann <daniel@iogearbox.net>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Xin Long <lucien.xin@gmail.com>, Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+	David Ahern <dsahern@kernel.org>, Nikolay Aleksandrov <razor@blackwall.org>, Shuah Khan <shuah@kernel.org>, 
+	Stanislav Fomichev <stfomichev@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Simon Horman <horms@kernel.org>, Florian Westphal <fw@strlen.de>, netdev@vger.kernel.org, 
+	Alice Mikityanska <alice@isovalent.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Russell King,
+On Fri, Apr 10, 2026 at 5:15=E2=80=AFPM Alice Mikityanska
+<alice.kernel@fastmail.im> wrote:
+>
+> From: Alice Mikityanska <alice@isovalent.com>
+>
+> Similar to commit add641e7dee3 ("sched: act_csum: don't mangle TCP and
+> UDP GSO packets"), UDP tunnel GSO packets going through act_csum
+> shouldn't have their checksum calculated at this point, because it will
+> be done after segmentation. Setting the checksum in act_csum modifies
+> skb->ip_summed and prevents inner IP csum offload from kicking in,
+> resulting in a packet with a bad checksum.
+>
+> Add UDP tunnel GSO packets to the exceptions, and also add UDP GSO
+> (SKB_GSO_UDP_L4), as the same logic as in the commit mentioned above
+> applies to UDP GSO too.
+>
+> Signed-off-by: Alice Mikityanska <alice@isovalent.com>
+> ---
+>  net/sched/act_csum.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
 
-> -----Original Message-----
-> From: Russell King <linux@armlinux.org.uk>
-> Sent: 10 April 2026 16:22
-> Subject: Re: [PATCH net-next] net: phy: call phy_init_hw() in phy resume =
-path
->=20
-> On Fri, Apr 10, 2026 at 05:15:21PM +0200, Andrew Lunn wrote:
-> > > Apart from that, looks fine to me - it seems some paths call
-> > > phy_init_hw() can be called with or without phydev->lock held, and
-> > > this one will call it with the lock held which seems to be okay.
-> >
-> > Haven't we had deadlocks in this area before?
->=20
-> If we have a problem calling phy_init_hw() with phydev->lock held, then:
->=20
-> phy_state_machine():
->         mutex_lock(&phydev->lock);
->         state_work =3D _phy_state_machine(phydev);
->=20
-> _phy_state_machine():
-> 	switch (phydev->state) {
-> ...
->         case PHY_CABLETEST:
->                 err =3D phydev->drv->cable_test_get_status(phydev, &finis=
-hed);
->                 if (err) {
->                         phy_abort_cable_test(phydev);
->=20
-> phy_abort_cable_test():
->         err =3D phy_init_hw(phydev);
->=20
-> that path has a problem and needs fixing.
+Reviewed-by: Davide Caratti <dcaratti@redhat.com>
 
-These 3 Phy drivers are using the same lock, and it can lead to dead lock.
+Thanks!
+--=20
+davide
 
-drivers/net/phy/microchip_t1.c
-drivers/net/phy/marvell-88x2222.c
-drivers/net/phy/mscc/mscc_main.c
-
-Maybe as you said earlier, moving to phy_resume() will be safer solution.
-
-Cheers,
-Biju
