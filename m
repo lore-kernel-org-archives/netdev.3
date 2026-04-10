@@ -1,109 +1,111 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CEAA2E717B;
-	Fri, 10 Apr 2026 01:05:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 936DF298991;
+	Fri, 10 Apr 2026 01:10:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775783126; cv=none; b=KAzAg1mMHCO/3Qh2UmJTemwM3WNR5CtGgnr7Ng1gS947lrXvWKEmR+06IF1zEDHB8Z99CZ27S2w7JHuZOA1/CRvfVX+sGB7Fd6N2blpIZCk9pfThLA4SEYFZIKfqRwcskiYmvOD3is1em+dH9VsqhPLpkFlATMdDhd47m7gX0TY=
+	t=1775783443; cv=none; b=rOIDA6m4d3+io05CYUuMpu/xEjzZCcBYYQ++XiIqg1GQdRXsfTeKQndUXHNLnhPbUiNWGsITbsGl7zIMgxMgsD1tKd6mbtarbWZVUw2m694dhRT5hS+ZdC9LDJ8MgSEJsUZxgtVozmETJFozRE+ReB03sOadZfdzKTEUJus0290=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775783126; c=relaxed/simple;
-	bh=qdgssJRMwz1d2TGXRBVH2TXjsMcaKk+grK57WDmuzlo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f2t4MA/F5ntKC063b1p8Qw+qMT74wltb5LRS1zyDZvVZpEq2e3oehTqS2GkO1/OBCJspvhLMNZzPTgKk48HbskfFZ090gUx7uduNcqandiP41y/3yw+4sDaNqJ7PB2wuCAMQPGvN6IVmdVhCDbKvyHZghZOYvc+Z5pE6QWOEmhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=KnNqZkcF; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	s=arc-20240116; t=1775783443; c=relaxed/simple;
+	bh=bOsL/5Ai9nkE51jkRZmv54YIfdu2zvaWVlpTurET71Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LtR9HUkOJlgFf/uVihjmf+p5CCk84xJh4C5N5jKXQTXjNxrLX/+KZ4MYkjw9xW5G2OsEjw0XX6EDcQzStFrACyKY6YdcgaDTo1H/ucCwq2Wcl62a9Dt8Jk7TABGBaLd0RLsWI1t9YA7DdRKwLTrHdUVditsVDsOcZaBe6sgML7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eqlNT4PP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="KnNqZkcF"
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id A4C3360272;
-	Fri, 10 Apr 2026 03:05:20 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1775783120;
-	bh=D8yT3WK1RCLIZ7KuYQ/Z4fBg4zEVaxOQdKATrK3a1Z0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KnNqZkcFJc3H9nGytG+6AN3L893XjWFjU0aVFPZrgtY5fNXmdtfufa1MfCY4RqOOT
-	 /yZyEhwzJqCOVPZTcRzvs6QCPbtyv6cZqLQdw3G79ccgvwKyzY73wLYZq9vU1zHRgn
-	 HnBodWADDbejEmkkNKpqzrOpOHgNUZBNLSqbu09iF3MEs6Ii1CxyrqH8KDs6FuII0l
-	 CsztsFy50ErvPQUOBvPfjX2wFYsP6dhWj9ekcaDvU2mnuPv/QjvaQBdP7ad/kNGkn4
-	 QU1UPg2sPUAHJtcjqJtrJhKD1bH111et9pSRCqB93ySDnKF/EpyehsLp5UorV9p7T/
-	 a8Pxz7AI8ipDA==
-Date: Fri, 10 Apr 2026 03:05:18 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: David Baum <davidbaum461@gmail.com>
-Cc: fw@strlen.de, phil@nwl.cc, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH] netfilter: ipset: harden payload calculation in call_ad()
-Message-ID: <adhMzvFhTcmTMZTV@chamomile>
-References: <20260313180132.75655-1-davidbaum461@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eqlNT4PP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55413C4CEF7;
+	Fri, 10 Apr 2026 01:10:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775783443;
+	bh=bOsL/5Ai9nkE51jkRZmv54YIfdu2zvaWVlpTurET71Q=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=eqlNT4PPbX5lYdH6cHK1Sb/ADvhscQaQLrSaA4bf1TWnsvM1Ms0SDiNYXziLykA4Y
+	 YiOvTOJ1CZBsmI34XvT2jH24hf7sfroANf9GVOkSizLCn9rp4ke6E3blQKliphchlF
+	 j81dQzdXslxdBuAi1wY3hJsXy94yApGjSVjaZ6sxwgJYAmNJl9c4TRbJAF78vDsiSR
+	 giueZKc2SKTmeJf4BQ8NI63DE0NvHHfackHzGwwjUcAfvSOaVaYuVrdejxeqy7dtIQ
+	 T3eJdfK6qrv0Nm4MuZwGGsJ6guP6xaSzE1l0uGU+OivfzAdfGW2G8K4ApSBZhAVF8M
+	 V4soj1S/G6aHg==
+Date: Thu, 9 Apr 2026 18:10:41 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: "Nitka, Grzegorz" <grzegorz.nitka@intel.com>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+ "Oros, Petr" <poros@redhat.com>, "richardcochran@gmail.com"
+ <richardcochran@gmail.com>, "andrew+netdev@lunn.ch"
+ <andrew+netdev@lunn.ch>, "Kitszel, Przemyslaw"
+ <przemyslaw.kitszel@intel.com>, "Nguyen, Anthony L"
+ <anthony.l.nguyen@intel.com>, "Prathosh.Satish@microchip.com"
+ <Prathosh.Satish@microchip.com>, "Vecera, Ivan" <ivecera@redhat.com>,
+ "jiri@resnulli.us" <jiri@resnulli.us>, "Kubalewski, Arkadiusz"
+ <arkadiusz.kubalewski@intel.com>, "vadim.fedorenko@linux.dev"
+ <vadim.fedorenko@linux.dev>, "donald.hunter@gmail.com"
+ <donald.hunter@gmail.com>, "horms@kernel.org" <horms@kernel.org>,
+ "pabeni@redhat.com" <pabeni@redhat.com>, "davem@davemloft.net"
+ <davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>
+Subject: Re: [PATCH v5 net-next 0/8] dpll/ice: Add TXC DPLL type and full TX
+ reference clock control for E825
+Message-ID: <20260409181041.395a0c37@kernel.org>
+In-Reply-To: <IA1PR11MB621925C1718B838147404DC492582@IA1PR11MB6219.namprd11.prod.outlook.com>
+References: <20260402230626.3826719-1-grzegorz.nitka@intel.com>
+	<20260406192312.0f7a2760@kernel.org>
+	<IA1PR11MB621925C1718B838147404DC492582@IA1PR11MB6219.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260313180132.75655-1-davidbaum461@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 13, 2026 at 01:01:32PM -0500, David Baum wrote:
-> call_ad() computes the netlink error payload size with
-> min(SIZE_MAX, sizeof(*errmsg) + nlmsg_len(nlh)), but min(SIZE_MAX, x)
-> is always x, so the guard is a no-op.
-> 
-> Replace it with an explicit negative-length check and
-> check_add_overflow() so the addition is validated before being passed
-> to nlmsg_new().
-> 
-> Signed-off-by: David Baum <davidbaum461@gmail.com>
-> ---
->  net/netfilter/ipset/ip_set_core.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
-> index a2fe711cb5e3..11d3854d9b11 100644
-> --- a/net/netfilter/ipset/ip_set_core.c
-> +++ b/net/netfilter/ipset/ip_set_core.c
-> @@ -10,6 +10,7 @@
->  #include <linux/module.h>
->  #include <linux/moduleparam.h>
->  #include <linux/ip.h>
-> +#include <linux/overflow.h>
->  #include <linux/skbuff.h>
->  #include <linux/spinlock.h>
->  #include <linux/rculist.h>
-> @@ -1763,13 +1764,18 @@ call_ad(struct net *net, struct sock *ctnl, struct sk_buff *skb,
->  		struct nlmsghdr *rep, *nlh = nlmsg_hdr(skb);
->  		struct sk_buff *skb2;
->  		struct nlmsgerr *errmsg;
-> -		size_t payload = min(SIZE_MAX,
-> -				     sizeof(*errmsg) + nlmsg_len(nlh));
-> +		int nlmsg_payload_len = nlmsg_len(nlh);
-> +		size_t payload;
->  		int min_len = nlmsg_total_size(sizeof(struct nfgenmsg));
->  		struct nlattr *cda[IPSET_ATTR_CMD_MAX + 1];
->  		struct nlattr *cmdattr;
->  		u32 *errline;
->  
-> +		if (nlmsg_payload_len < 0 ||
+On Thu, 9 Apr 2026 11:21:35 +0000 Nitka, Grzegorz wrote:
+> > On Fri,  3 Apr 2026 01:06:18 +0200 Grzegorz Nitka wrote: =20
+> > > This series adds TX reference clock support for E825 devices and expo=
+ses
+> > > TX clock selection and synchronization status via the Linux DPLL
+> > > subsystem.
+> > > E825 hardware contains a dedicated Tx clock (TXC) domain that is
+> > > distinct
+> > > from PPS and EEC. TX reference clock selection is device=E2=80=91wide=
+, shared
+> > > across ports, and mediated by firmware as part of the link bring=E2=
+=80=91up
+> > > process. As a result, TX clock selection intent may differ from the
+> > > effective hardware configuration, and software must verify the outcome
+> > > after link=E2=80=91up.
+> > > To support this, the series introduces TXC support incrementally acro=
+ss
+> > > the DPLL core and the ice driver:
+> > >
+> > > - add a new DPLL type (TXC) to represent transmit clock generators; =
+=20
+> >=20
+> > I'm not grasping why this is needed, isn't it part of any EEC system
+> > that the DPLL can drive the TXC? Is your system going to expose multiple
+> > DPLLs now for one NIC?
+>=20
+> Hello Jakub,
+> For E825 device, the short answer is yes. We have platform EEC now and
+> we want to add:
+> - TXC DPLLs per port, and
+> - PPS DPLL for TSPLL config purposes (in the near future)
+>=20
+> EEC (Ethernet Equipment Clock) type DPLL is designed to control multiple
+> source signals (internal-NIC or external), where one drives the dpll devi=
+ce,
+> where multiple outputs are possible, each could drive various components
+> as well as propagate signal to external devices.
+> TXC is specific dpll device that associated with single ETH port to contr=
+ol it's source,
+> there is no need to declare any outputs as the single output is already d=
+etermined.
+> Basically, having TXC DPLL indicates per port control over SyncE (or some=
+ external)
+> clock source.=C2=A0
 
-Hm, nlh was already sanitized by nfnetlink?
-
-> +		    check_add_overflow(sizeof(*errmsg),
-> +				       (size_t)nlmsg_payload_len, &payload))
-
-Maybe cap this to int:
-
-                int payload = sizeof(struct nlmsgerr);
-                ...
-        
-                if (check_add_overflow(payload, nlmsg_payload_len, &payload))
-
-> +			return -ENOMEM;
-> +
->  		skb2 = nlmsg_new(payload, GFP_KERNEL);
->  		if (!skb2)
->  			return -ENOMEM;
+Could you share a diagram of how things are wired up?
+DPLL can have multiple outputs and multiple inputs. I'm not getting why
+a single device would have to have multiple actual DPLLs (which makes
+me worried this is just some "convenient use of the uAPI")
