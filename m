@@ -1,47 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192593DBD66;
-	Fri, 10 Apr 2026 21:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C7D3DA7D4
+	for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 21:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775856645; cv=none; b=gfOk3y4ZEUt3fDifAt/jAOwAHgCfcvX8HxPj/dfCBYLBkOhMgp4TdM3o05gX3sdkW4K1XzsXBL+EDs0rNjxs11na68P1G5qpZ8peaN5cOgrmA4R/5tPxnVutY42uHgRpaUwqdwKhRm5UXHHatPUvS3CDB6y1UlHbK1nzuwkCKGE=
+	t=1775857421; cv=none; b=LMEsVG7aowwuElVGB96B73Od3YV8IMI5MFQ5fqDAhz+W9hUxFWS8/tRjiSWfsujp97NZNoSvxRQvLaXcI7R5kLmWQnMx7KD9XbECnMFpnfT3PqLVM+Eh4dYDcBz3TBBQ8nKmNUaqrFDseUK18w38p7IWKwnrkL3rnkhyf5RkXls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775856645; c=relaxed/simple;
-	bh=G2dtzdVuZ0FFm6ylWyUaMhhph1il2Hr0GyFl+vJtWEA=;
+	s=arc-20240116; t=1775857421; c=relaxed/simple;
+	bh=MdJPtW/AiFGu719sINGZALkLv1UoDWrGatNqiCqq9K0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZtNv7RzDwpFrATpFQS6ugS7eWyw3bl6K3JHiPmY5rFuYBhvdG8fvPUopgkl4oaL7yjfl2Be4nWuskc7wNzzhviMdCXFoYSKKCnktjdURZmUaE9T3BA99M/16S0vD3FQezUJJFnkKygpEnsFnRmxKIyMkhIJfT6zBO06kGZHqDoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dkL9qfeo; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=jcUWa5dsRmcX0KiH/E9cY7hD2UhbpemtfAJ7U+DW2OJqZzhwBfs9IhjTbWOCJV9O4AuUpPMPzeQj73ZfFz0JRgCM4AOcFelgTfPicFmwboLlPGQ9LatI83TErxtJfkrjir4E83nV+HkP2MLVQzqUp3XW8Tf+G89JQJt2kpCkKwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KQDsB1+T; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dkL9qfeo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0680EC19421;
-	Fri, 10 Apr 2026 21:30:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KQDsB1+T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B150FC19421;
+	Fri, 10 Apr 2026 21:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775856644;
-	bh=G2dtzdVuZ0FFm6ylWyUaMhhph1il2Hr0GyFl+vJtWEA=;
+	s=k20201202; t=1775857420;
+	bh=MdJPtW/AiFGu719sINGZALkLv1UoDWrGatNqiCqq9K0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=dkL9qfeok2m3mrx4KQdDEonhwk1uQihgVpFPyXJZxOrqKcmq/6tLf3XYRMCbzcZ2K
-	 U3NYbfad0BEPJj2k2IY7306IYfocTvv1eMnmmFHCkkre5Jb9qDfEFT7D4wH++IEvXg
-	 LPbnjge77WoZ7qEPatEw1jdnA8jq2Drnr/18uEI7Hsp+RlvnyEHrTSRs1sC34MM1b0
-	 lYPzuKk9FrikoF2Kqtj2UdjXDVmfvhVp44O6WLJQ/OYwIRe3DouM7QiQZY6lndenEH
-	 gZlpQl2Iq7t7aSN6qP0rPh4agoolG9QT89JbOYF6knKSBFhC5Zuqzho2P983bUoA76
-	 s47NMBwiRr8hg==
-Date: Fri, 10 Apr 2026 14:30:42 -0700
+	b=KQDsB1+TPNipJhw9FB/pmXBtD5bnB5fRvQNm0Jfrknz2R0nQJ+pWETHihGPqjLaaH
+	 hoJBaCZ2T5Dp4F1yMlwhVSmnGDlcp8ts4N+b6IHi46M/iiwGtB1HKcrU8HBJoSsRpO
+	 OzXyOlejIWHAakQkYDKRATVOmYHwnU4URFzDBMLnaNFmWNGNNQSo6ZTCK9ZQrS/qrT
+	 ZLVgOGJRCKMMF12ANICgFVJOKIBOYfw7XEzcz8TSaakCdheoZjBm99EBqOFviZrgKx
+	 YusifpBrocPmGTyI7eOcISofzmHkshxczbIIX9YpaxXK3CPX/WuldAE7Z2CyB0yMBY
+	 PzgN7/gklnZOA==
+Date: Fri, 10 Apr 2026 14:43:39 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- linux-hams@vger.kernel.org, Yizhe Zhuang <yizhe@darknavy.com>, stable
- <stable@kernel.org>
-Subject: Re: [PATCH net] netrom: do some basic forms of validation on
- incoming frames
-Message-ID: <20260410143042.1d4436de@kernel.org>
-In-Reply-To: <2026041026-excuse-slashing-c4ee@gregkh>
-References: <2026040730-untagged-groin-bbb7@gregkh>
-	<20260409190328.GS469338@kernel.org>
-	<20260409203235.6b9329f0@kernel.org>
-	<2026041026-excuse-slashing-c4ee@gregkh>
+To: wit_yuan <yuanzhaoming901030@126.com>
+Cc: netdev@vger.kernel.org, Yuan Zhaoming <yuanzm2@lenovo.com>
+Subject: Re: [PATCH next-next v2] net:mctp: fix setting mctp hdr ver
+ reserved field cause  data dropped
+Message-ID: <20260410144339.0d1b289a@kernel.org>
+In-Reply-To: <20260410063334.7531-2-yuanzhaoming901030@126.com>
+References: <20260410060957.1336-2-yuanzhaoming901030@126.com>
+	<20260410063334.7531-1-yuanzhaoming901030@126.com>
+	<20260410063334.7531-2-yuanzhaoming901030@126.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,33 +46,29 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 10 Apr 2026 07:24:36 +0200 Greg Kroah-Hartman wrote:
-> On Thu, Apr 09, 2026 at 08:32:35PM -0700, Jakub Kicinski wrote:
-> > On Thu, 9 Apr 2026 20:03:28 +0100 Simon Horman wrote:  
-> > > I expect that checking skb->len isn't sufficient here
-> > > and pskb_may_pull needs to be used to ensure that
-> > > the data is also available in the linear section of the skb.  
-> > 
-> > Or for simplicity we could also be testing against skb_headlen()
-> > since we don't expect any legit non-linear frames here? Dunno.  
+On Fri, 10 Apr 2026 14:33:34 +0800 wit_yuan wrote:
+> From: Yuan Zhaoming <yuanzm2@lenovo.com>
 > 
-> I'll be glad to change this either way, your call.  Given that this is
-> an obsolete protocol that seems to only be a target for drive-by fuzzers
-> to attack, whatever the simplest thing to do to quiet them up I'll be
-> glad to implement.
+> from spec dsp0236_1.2.1.pdf page 26, the mctp header contains the
+> RSVD(4bit) and Hdr version(4 bit).
 > 
-> Or can we just delete this stuff entirely?  :)
+> mctp_pkttype_receive invoke mctp_hdr, and get mh->ver whole byte 
+> compare the MCTP_VER_MIN, MCTP_VER_MAX. the reserver bits may be by 
+> misleading used.
+> 
+> one type hba card will set pcie vdm header Pad Len the same with RSVD
+> bit, this will not work on mctp kernel solution.
 
-Yes.
+We ask that:
+ - new patches are not posted in reply to old ones
+ - at least 24h passes before new version is posted
 
-My thinking is to delete hamradio, nfc, atm, caif.. [more to come]
-Create GH repos which provide them as OOT modules.
-Hopefully we can convince any existing users to switch to that.
 
-The only thing stopping me is the concern that this is just the softest
-target and the LLMs will find something else to focus on which we can't
-delete. I suspect any PCIe driver can be flooded with "aren't you
-trusting the HW to provide valid responses here?" bullshit.
+> +	if (((mh->ver & MCTP_HDR_VER_MASK)) < MCTP_VER_MIN || (mh->ver & MCTP_HDR_VER_MASK) > MCTP_VER_MAX)
+>  		goto out;
 
-But hey, let's try. I'll post a patch nuking all of hamradio later
-today.
+Please save the masked version to a variable and compare that extracted
+variable. This line is unnecessarily long (max line length is 80 in
+networking).
+-- 
+pw-bot: cr
