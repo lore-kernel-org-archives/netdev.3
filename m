@@ -1,47 +1,47 @@
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A34E30BF5C;
-	Fri, 10 Apr 2026 05:50:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F93A1A304A
+	for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 05:50:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775800216; cv=none; b=FU16IV+47rdXmcROT0lWWAi77U0+sNZLm52osX5E1KS2xwKa2AOMUvwZYdPthoOl4rdt59RWeMhKgQKCbiZDtGFTybmlUmE3X3zRphlRu4pemuVyRdM1SUOY7pknUKp2Mk7t86VwH3yy7wZQo5RYPOVBc7PSDlXUhKnN9MReb98=
+	t=1775800224; cv=none; b=OzrVnpLIAnJmYS6NYgJsDQHRkPP0oOJ9BVVv+zgk855UHOgZcCbCdgd8Q0ye6x7CPPt39v61U/XQ8fZepXhGHgK++5LFYkCdVpa7Ywwc7vJsmOxeicFg1pu2XbvaGUa5khV23kWqr9i0CufRJffDWBLQFZGPoecejkrt1eW4uwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775800216; c=relaxed/simple;
-	bh=zPqjh1z6xmTB9lPHSqZ2VvUqMptfElhRPcqqbSlPndQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JaAlLMjnew56bnKnAZnGtVzkOnaRMXIF9Q+nuGF3Y1EkNPiXzG+tMvTJS4NBlJPSMbjpuZmYoa0YGuXJhYfFOcTOeY/jpU6JTS5NKS1lcL7lva67ERZdkj8TdKIifqqbPyKECjRVVOB/5JqqJp6EgxZGi3epuwHsIfYLAWbTen4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=X0V4Gu/z; arc=none smtp.client-ip=95.215.58.170
+	s=arc-20240116; t=1775800224; c=relaxed/simple;
+	bh=lJY14HAgjlbDC5MMgj0Y9Z8jZCb6/15Ltu9d7vK6pco=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZSutYBS0f4fejwOy5NLtf5NDsg4FfdK3vdtdiaFVywjYLZivf1L6p+mycKbfwASM+MGWZQwS5rx39KhJ+b4dLSLrBSGeKu95o5MyK6avXduQJ7a0svwsmxKGx5kpxxzjQbD3n3DZ9E5w+EfF8WKDYppn+MbAbp5tqsABiCYSBDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=N8sAclcM; arc=none smtp.client-ip=95.215.58.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="X0V4Gu/z"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="N8sAclcM"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775800213;
+	t=1775800209;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sY29MFK4dUmAkfKCpdegdk2ruSANehnlXZ1ZNUYSz+o=;
-	b=X0V4Gu/zGLKPs5pkelr9HzGpJ3vdwcz042miYoIDaT/CvPRZPseWrJ/tXAstif7IdSsqWH
-	eWi56Pw+f+6Z+kEcIh+91TktD6U+krgqLmMZCUIK+i/Gr2vKgeZnXo1yhv4AhkpuPtu55O
-	9C01GO2fY9U4/LFJoKlSLz408dMM30E=
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=aXAjkhsgn8oMAhQg8wQ1MCqTT2QGwagc/KA0hb1OpXU=;
+	b=N8sAclcMYqNkU9hC+N3b6T/pvE3OyrA3cR+86pu/K7A5gXhql9qGKB9AgaarHZpPsbv92/
+	v/qffi4SLSg0iugkMFWTMABIlm26HTc9NXhPGcJKdTlPJcAsD0eJU8WBFi1IEz3GsGktEy
+	Kd6W/uf5yFF8g5HUdSraqnL71hzKcO4=
 From: Qingfang Deng <qingfang.deng@linux.dev>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
+	Qingfang Deng <qingfang.deng@linux.dev>,
+	Kees Cook <kees@kernel.org>,
+	Guillaume Nault <gnault@redhat.com>,
+	Eric Woudstra <ericwouds@gmail.com>,
+	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Cc: linux-ppp@vger.kernel.org,
-	Qingfang Deng <qingfang.deng@linux.dev>
-Subject: [PATCH net-next v2 2/2] pppox: convert pppox_sk() to use container_of()
-Date: Fri, 10 Apr 2026 13:49:50 +0800
-Message-ID: <20260410054954.114031-2-qingfang.deng@linux.dev>
-In-Reply-To: <20260410054954.114031-1-qingfang.deng@linux.dev>
-References: <20260410054954.114031-1-qingfang.deng@linux.dev>
+Cc: linux-ppp@vger.kernel.org
+Subject: [PATCH net-next v2 1/2] pppox: remove sk_pppox() helper
+Date: Fri, 10 Apr 2026 13:49:49 +0800
+Message-ID: <20260410054954.114031-1-qingfang.deng@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,33 +51,116 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-Use container_of() macro instead of direct pointer casting to get the
-pppox_sock from a sock pointer.
+The sk member can be directly accessed from struct pppox_sock without
+relying on type casting. Remove the sk_pppox() helper and update all
+call sites to use po->sk directly.
 
 Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
 ---
-Changes in v2:
- Do not remove the comment, as the struct is allocated from sk_alloc and
- still require sock to be the first member.
+Changes in v2: none
+ Link to v1: https://lore.kernel.org/r/20260408015138.280687-1-qingfang.deng@linux.dev
 
- Link to v1: https://lore.kernel.org/r/20260408015138.280687-2-qingfang.deng@linux.dev
+ drivers/net/ppp/pppoe.c  | 10 +++++-----
+ drivers/net/ppp/pptp.c   |  6 +++---
+ include/linux/if_pppox.h |  5 -----
+ 3 files changed, 8 insertions(+), 13 deletions(-)
 
- include/linux/if_pppox.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
+diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
+index 1ac61c273b28..d546a7af0d54 100644
+--- a/drivers/net/ppp/pppoe.c
++++ b/drivers/net/ppp/pppoe.c
+@@ -231,7 +231,7 @@ static inline struct pppox_sock *get_item(struct pppoe_net *pn, __be16 sid,
+ 	struct pppox_sock *po;
+ 
+ 	po = __get_item(pn, sid, addr, ifindex);
+-	if (po && !refcount_inc_not_zero(&sk_pppox(po)->sk_refcnt))
++	if (po && !refcount_inc_not_zero(&po->sk.sk_refcnt))
+ 		po = NULL;
+ 
+ 	return po;
+@@ -273,7 +273,7 @@ static void pppoe_flush_dev(struct net_device *dev)
+ 			if (!po)
+ 				break;
+ 
+-			sk = sk_pppox(po);
++			sk = &po->sk;
+ 
+ 			/* We always grab the socket lock, followed by the
+ 			 * hash_lock, in that order.  Since we should hold the
+@@ -413,7 +413,7 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	if (!po)
+ 		goto drop;
+ 
+-	return __sk_receive_skb(sk_pppox(po), skb, 0, 1, false);
++	return __sk_receive_skb(&po->sk, skb, 0, 1, false);
+ 
+ drop:
+ 	kfree_skb(skb);
+@@ -425,7 +425,7 @@ static void pppoe_unbind_sock_work(struct work_struct *work)
+ {
+ 	struct pppox_sock *po = container_of(work, struct pppox_sock,
+ 					     proto.pppoe.padt_work);
+-	struct sock *sk = sk_pppox(po);
++	struct sock *sk = &po->sk;
+ 
+ 	lock_sock(sk);
+ 	if (po->pppoe_dev) {
+@@ -469,7 +469,7 @@ static int pppoe_disc_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	po = get_item(pn, ph->sid, eth_hdr(skb)->h_source, dev->ifindex);
+ 	if (po)
+ 		if (!schedule_work(&po->proto.pppoe.padt_work))
+-			sock_put(sk_pppox(po));
++			sock_put(&po->sk);
+ 
+ abort:
+ 	kfree_skb(skb);
+diff --git a/drivers/net/ppp/pptp.c b/drivers/net/ppp/pptp.c
+index b18acd810561..cc8c102122d8 100644
+--- a/drivers/net/ppp/pptp.c
++++ b/drivers/net/ppp/pptp.c
+@@ -62,7 +62,7 @@ static struct pppox_sock *lookup_chan(u16 call_id, __be32 s_addr)
+ 		if (opt->dst_addr.sin_addr.s_addr != s_addr)
+ 			sock = NULL;
+ 		else
+-			sock_hold(sk_pppox(sock));
++			sock_hold(&sock->sk);
+ 	}
+ 	rcu_read_unlock();
+ 
+@@ -164,7 +164,7 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
+ 	struct iphdr  *iph;
+ 	int    max_headroom;
+ 
+-	if (sk_pppox(po)->sk_state & PPPOX_DEAD)
++	if (po->sk.sk_state & PPPOX_DEAD)
+ 		goto tx_drop;
+ 
+ 	rt = pptp_route_output(po, &fl4);
+@@ -375,7 +375,7 @@ static int pptp_rcv(struct sk_buff *skb)
+ 	if (po) {
+ 		skb_dst_drop(skb);
+ 		nf_reset_ct(skb);
+-		return sk_receive_skb(sk_pppox(po), skb, 0);
++		return sk_receive_skb(&po->sk, skb, 0);
+ 	}
+ drop:
+ 	kfree_skb(skb);
 diff --git a/include/linux/if_pppox.h b/include/linux/if_pppox.h
-index 636772693f9a..594d6dc3f4c9 100644
+index 8bbf676c2a85..636772693f9a 100644
 --- a/include/linux/if_pppox.h
 +++ b/include/linux/if_pppox.h
-@@ -54,7 +54,7 @@ struct pppox_sock {
- 
- static inline struct pppox_sock *pppox_sk(struct sock *sk)
- {
--	return (struct pppox_sock *)sk;
-+	return container_of(sk, struct pppox_sock, sk);
+@@ -57,11 +57,6 @@ static inline struct pppox_sock *pppox_sk(struct sock *sk)
+ 	return (struct pppox_sock *)sk;
  }
  
+-static inline struct sock *sk_pppox(struct pppox_sock *po)
+-{
+-	return (struct sock *)po;
+-}
+-
  struct module;
+ 
+ struct pppox_proto {
 -- 
 2.43.0
 
