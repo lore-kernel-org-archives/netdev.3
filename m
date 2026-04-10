@@ -1,53 +1,52 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF69A3BBA0F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B163BA233;
 	Fri, 10 Apr 2026 11:49:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775821767; cv=none; b=HZRmIHA7CszovdmvGT6kzs82TyOzdTowEHJYGMKVJtUdhRN2uhf4QcHSVF9ZU3oX82h1C7XEELPqpfqKeCXOEyGyBUAOoMkEZXY3pmwPZOJNyg6tzn6M5Szids+Je4O0Y/iRjQFbpBGWDDQD+TLvJhN+Qr7hNmbyBdnD+ZnVBPs=
+	t=1775821767; cv=none; b=HLnmGFSsjG3uUAZBV4QBmGKvtH9B3pgrFtfVDRZYpVkhc1+M0fBYAWgyYcsFnxPMKOvlfN3vnEFIFW0N2mPrLsvwF0oTSPBRryDMcTTM9tey8g4v75lFXm6DJWoUiS0PBpHkssKJB8bKYan/i2NAAFYqpDFywpY7cfzNhVSDjI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775821767; c=relaxed/simple;
-	bh=Oz9dxz6+acdfuCyWGl0QzPYfRClY6c4nuZEiX8MbXpg=;
+	bh=29SWqrmkDVKmLXORBuPdxl0lpzOzIUudQnsyRclMPqo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=Eh2nHSczEJMcgiEQumU0LpFOpCHh91IryLyPRikx+WLsy4/6RrWaN7EmT3pdrEIalnnf4PLwpawMrtF+4C0Kak6faxgkhzoj/JhTED4QxwJ3dpPW5SwH9c9EBf9fr21bCF5XyOmuEQ95r89bMn341xW00h0d5yJ6li36IkZhNyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=R89pqqf7; arc=none smtp.client-ip=68.232.154.123
+	 In-Reply-To:To:CC; b=ke0MyRIpOr9HXENyRzHrS5/XyBgWnWzoF6rZn2oN0yv7LdpbT1AXBkVJrqgF6lcBtUSavQsZOYUh5USygzuIHzQjZEIOxIlMfJBCFkyA3OeqAxtHoItJCA0sxPrR2ykWW0aoV9rsZbnNLWwJbyYEoZcxR6SvASfo4Qcmt/80kuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=osAXJt0p; arc=none smtp.client-ip=68.232.153.233
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="R89pqqf7"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="osAXJt0p"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1775821764; x=1807357764;
+  t=1775821765; x=1807357765;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=Oz9dxz6+acdfuCyWGl0QzPYfRClY6c4nuZEiX8MbXpg=;
-  b=R89pqqf7VWlJXJMiosfIYLvyWGfV7BAU07KdH87WYljKoNKB91j9egOd
-   1MCKSidKibpY5OV1pg7KkmfN48CwzbNxgdtlKS5tDGs5tKu54nvXQKklL
-   Glx804b725bVTFiBxhr2RXcxxgHZQxBDncNHX790bO/dV0kbB9wnfALTo
-   xH2+zKExP4I6IYEpPxZLzQi0Jqn0fgoMbkytbSxRZEJpS2HdbwMybh/uC
-   q1RufUG3wg+B2NHwo7sr3QVAAb6KldGkmPNkA5D/x7kRB7/0YCT6LXMsE
-   NGF4RipbCmkeAvgMHZ1dDeI8G5/AaWEzGQ6iZ7+Q9KMWge4xIU/6ezTK9
-   A==;
-X-CSE-ConnectionGUID: 5wKV5KtcSz++ZxUXM42HNw==
-X-CSE-MsgGUID: YDJ5pKvLQbydLCHrTjqjnQ==
+  bh=29SWqrmkDVKmLXORBuPdxl0lpzOzIUudQnsyRclMPqo=;
+  b=osAXJt0pnAU4JGd/NgOXHYI0ZC94DMTnnRbTlVD0VGCvj0NaXZ8LfWZS
+   ueFgn02sfGlRGONmMMZmGnjR/uYG40To/S+bR2mcg5MuBMUcfpnzx8AuV
+   aVRpGNyqG1g8iMYIFMfQOh3OnsION19cnbc2kVf9U/WgGFt7I2jSSg9Mt
+   81VpRmgZZsGeRb8rKnDdLfgPzQtrzez7eZukSIuYdlgBcGLj8cgMyzNqM
+   P900MFGwPsUiyeYtnEFwanghZy5UrhbvYffUlLPslvlxVv6yEgK3XCTSP
+   veLyJoUYyiPBTedLsdsyJ7kcqM5KVydN2iwcfUdK84waht82t8Iz0QUam
+   Q==;
+X-CSE-ConnectionGUID: BHpI0wJ4S4yyXknv5qJUmg==
+X-CSE-MsgGUID: h9JC4UjtRDaF7TyAYpLWPw==
 X-IronPort-AV: E=Sophos;i="6.23,171,1770620400"; 
-   d="scan'208";a="223180543"
+   d="scan'208";a="287293946"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 10 Apr 2026 04:49:21 -0700
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 10 Apr 2026 04:49:24 -0700
 Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Fri, 10 Apr 2026 04:48:54 -0700
+ 15.1.2507.58; Fri, 10 Apr 2026 04:49:04 -0700
 Received: from [127.0.0.1] (10.10.85.11) by chn-vm-ex04.mchp-main.com
  (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Fri, 10 Apr 2026 04:48:50 -0700
+ Transport; Fri, 10 Apr 2026 04:49:01 -0700
 From: =?utf-8?q?Jens_Emil_Schulz_=C3=98stergaard?=
 	<jensemil.schulzostergaard@microchip.com>
-Date: Fri, 10 Apr 2026 13:48:38 +0200
-Subject: [PATCH net-next v3 2/9] dt-bindings: net: lan9645x: add LAN9645X
- switch bindings
+Date: Fri, 10 Apr 2026 13:48:41 +0200
+Subject: [PATCH net-next v3 5/9] net: dsa: lan9645x: add bridge support
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,7 +55,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-ID: <20260410-dsa_lan9645x_switch_driver_base-v3-2-aadc8595306d@microchip.com>
+Message-ID: <20260410-dsa_lan9645x_switch_driver_base-v3-5-aadc8595306d@microchip.com>
 References: <20260410-dsa_lan9645x_switch_driver_base-v3-0-aadc8595306d@microchip.com>
 In-Reply-To: <20260410-dsa_lan9645x_switch_driver_base-v3-0-aadc8595306d@microchip.com>
 To: <UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew@lunn.ch>, "Vladimir
@@ -72,161 +71,420 @@ CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
 	<jensemil.schulzostergaard@microchip.com>
 X-Mailer: b4 0.15-dev
 
-Add bindings for LAN9645X switch. We use a fallback compatible for the
-smallest SKU microchip,lan96455s-switch.
+Add support for hardware offloading of the bridge. We support a single
+bridge device.
 
 Reviewed-by: Steen Hegelund <Steen.Hegelund@microchip.com>
 Signed-off-by: Jens Emil Schulz Østergaard <jensemil.schulzostergaard@microchip.com>
 ---
 Changes in v3:
-- remove additionalProperties: true
-- remove unnecessary | from description
-- change top level $ref to dsa.yaml#/$defs/ethernet-ports
-- use ethernet-ports and ethernet-port
-- move ethernet-ports under properties instead of patternProperties
-- move unevaluatedProperties: false after $ref
-- update example to use ethernet-ports and ethernet-port
+- allow disabling aging with explicit zero parameters.
+- fix non-forwarding stp states
+- fix restore host_flood requests on bridge leave
 
 Changes in v2:
-- rename file to microchip,lan96455s-switch.yaml
-- remove led vendor property
-- add {rx,tx}-internal-delay-ps for rgmii delay
-- remove labels from example
-- remove container node from example
+- variable name consistency
+- port_set_learning use stp_state before writing to hw
+- add set_host_flood for selftests, which need promic/all_multi on
+standalone interfaces
 ---
- .../net/dsa/microchip,lan96455s-switch.yaml        | 111 +++++++++++++++++++++
- MAINTAINERS                                        |   1 +
- 2 files changed, 112 insertions(+)
+ drivers/net/dsa/microchip/lan9645x/lan9645x_main.c | 296 +++++++++++++++++++++
+ drivers/net/dsa/microchip/lan9645x/lan9645x_main.h |  18 ++
+ 2 files changed, 314 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/net/dsa/microchip,lan96455s-switch.yaml b/Documentation/devicetree/bindings/net/dsa/microchip,lan96455s-switch.yaml
-new file mode 100644
-index 000000000000..043fb48922b4
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/dsa/microchip,lan96455s-switch.yaml
-@@ -0,0 +1,111 @@
-+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/dsa/microchip,lan96455s-switch.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Microchip LAN9645x Ethernet switch
-+
-+maintainers:
-+  - Jens Emil Schulz Østergaard <jensemil.schulzostergaard@microchip.com>
-+
-+description:
-+  The LAN9645x switch is a multi-port Gigabit AVB/TSN Ethernet switch with
-+  five integrated 10/100/1000Base-T PHYs. In addition to the integrated PHYs,
-+  it supports up to 2 RGMII/RMII, up to 2 BASE-X/SERDES/2.5GBASE-X and one
-+  Quad-SGMII interfaces.
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - enum:
-+          - microchip,lan96455s-switch
-+      - items:
-+          - enum:
-+              - microchip,lan96455f-switch
-+              - microchip,lan96457f-switch
-+              - microchip,lan96459f-switch
-+              - microchip,lan96457s-switch
-+              - microchip,lan96459s-switch
-+          - const: microchip,lan96455s-switch
-+
-+  reg:
-+    maxItems: 1
-+
-+  ethernet-ports:
-+    type: object
-+    patternProperties:
-+      "^ethernet-port@[0-8]$":
-+        type: object
-+        description: Ethernet switch ports
-+
-+        $ref: dsa-port.yaml#
-+        unevaluatedProperties: false
-+
-+        properties:
-+          rx-internal-delay-ps:
-+            const: 2000
-+
-+          tx-internal-delay-ps:
-+            const: 2000
-+
-+$ref: dsa.yaml#/$defs/ethernet-ports
-+
-+required:
-+  - compatible
-+  - reg
-+  - ethernet-ports
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    ethernet-switch@4000 {
-+        compatible = "microchip,lan96459f-switch", "microchip,lan96455s-switch";
-+        reg = <0x4000 0x244>;
-+
-+        ethernet-ports {
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+
-+            ethernet-port@0 {
-+                reg = <0>;
-+                phy-mode = "gmii";
-+                phy-handle = <&cuphy0>;
-+            };
-+
-+            ethernet-port@1 {
-+                reg = <1>;
-+                phy-mode = "gmii";
-+                phy-handle = <&cuphy1>;
-+            };
-+
-+            ethernet-port@2 {
-+                reg = <2>;
-+                phy-mode = "gmii";
-+                phy-handle = <&cuphy2>;
-+            };
-+
-+            ethernet-port@3 {
-+                reg = <3>;
-+                phy-mode = "gmii";
-+                phy-handle = <&cuphy3>;
-+            };
-+
-+            ethernet-port@7 {
-+                reg = <7>;
-+                phy-mode = "rgmii";
-+                ethernet = <&cpu_host_port>;
-+                rx-internal-delay-ps = <2000>;
-+                tx-internal-delay-ps = <2000>;
-+
-+                fixed-link {
-+                    speed = <1000>;
-+                    full-duplex;
-+                    pause;
-+                };
-+            };
-+        };
-+    };
-+...
-+
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a8e4b5f5da3c..eeb67eed905c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17283,6 +17283,7 @@ M:	Jens Emil Schulz Østergaard <jensemil.schulzostergaard@microchip.com>
- M:	UNGLinuxDriver@microchip.com
- L:	netdev@vger.kernel.org
- S:	Maintained
-+F:	Documentation/devicetree/bindings/net/dsa/microchip,lan96455s-switch.yaml
- F:	include/linux/dsa/lan9645x.h
- F:	net/dsa/tag_lan9645x.c
+diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
+index 3e68542ba81d..e709396c2298 100644
+--- a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
++++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
+@@ -28,6 +28,14 @@ static const char *lan9645x_resource_names[NUM_TARGETS + 1] = {
+ 	[NUM_TARGETS]         = NULL,
+ };
  
++struct lan9645x_host_flood_work {
++	struct work_struct work;
++	struct lan9645x *lan9645x;
++	int port;
++	bool uc;
++	bool mc;
++};
++
+ static int lan9645x_tag_npi_setup(struct dsa_switch *ds)
+ {
+ 	struct dsa_port *dp, *first_cpu_dp = NULL;
+@@ -61,7 +69,9 @@ static void lan9645x_teardown(struct dsa_switch *ds)
+ {
+ 	struct lan9645x *lan9645x = ds->priv;
+ 
++	destroy_workqueue(lan9645x->owq);
+ 	lan9645x_npi_port_deinit(lan9645x, lan9645x->npi);
++	mutex_destroy(&lan9645x->fwd_domain_lock);
+ }
+ 
+ static int lan9645x_change_mtu(struct dsa_switch *ds, int port, int new_mtu)
+@@ -145,6 +155,8 @@ static int lan9645x_setup(struct dsa_switch *ds)
+ 		return err;
+ 	}
+ 
++	mutex_init(&lan9645x->fwd_domain_lock);
++
+ 	/* Link Aggregation Mode: NETDEV_LAG_HASH_L2 */
+ 	lan_wr(ANA_AGGR_CFG_AC_SMAC_ENA |
+ 	       ANA_AGGR_CFG_AC_DMAC_ENA,
+@@ -242,6 +254,11 @@ static int lan9645x_setup(struct dsa_switch *ds)
+ 
+ 	lan9645x_port_set_tail_drop_wm(lan9645x);
+ 
++	lan9645x->owq = alloc_ordered_workqueue("%s-owq", 0,
++						dev_name(lan9645x->dev));
++	if (!lan9645x->owq)
++		return -ENOMEM;
++
+ 	ds->mtu_enforcement_ingress = true;
+ 	ds->assisted_learning_on_cpu_port = true;
+ 	ds->fdb_isolation = true;
+@@ -260,6 +277,276 @@ static void lan9645x_port_phylink_get_caps(struct dsa_switch *ds, int port,
+ 	lan9645x_phylink_get_caps(ds->priv, port, config);
+ }
+ 
++static int lan9645x_set_ageing_time(struct dsa_switch *ds, unsigned int msecs)
++{
++	u32 age_secs = max(1, msecs / MSEC_PER_SEC / 2);
++	struct lan9645x *lan9645x = ds->priv;
++
++	/* Entry is must suffer two aging scans before it is removed, so it is
++	 * aged after 2*AGE_PERIOD, and the unit is in seconds.
++	 * An age period of 0 disables automatic aging.
++	 */
++	lan_rmw(ANA_AUTOAGE_AGE_PERIOD_SET(msecs ? age_secs : 0),
++		ANA_AUTOAGE_AGE_PERIOD,
++		lan9645x, ANA_AUTOAGE);
++	return 0;
++}
++
++static int lan9645x_port_pre_bridge_flags(struct dsa_switch *ds, int port,
++					  struct switchdev_brport_flags flags,
++					  struct netlink_ext_ack *extack)
++{
++	if (flags.mask &
++	    ~(BR_LEARNING | BR_FLOOD | BR_MCAST_FLOOD | BR_BCAST_FLOOD))
++		return -EINVAL;
++
++	return 0;
++}
++
++static void lan9645x_port_pgid_set(struct lan9645x *lan9645x, u16 pgid,
++				   int chip_port, bool enabled)
++{
++	u32 reg_msk, port_msk;
++
++	WARN_ON(chip_port > CPU_PORT);
++
++	port_msk = ANA_PGID_PGID_SET(enabled ? BIT(chip_port) : 0);
++	reg_msk = ANA_PGID_PGID_SET(BIT(chip_port));
++
++	lan_rmw(port_msk, reg_msk, lan9645x, ANA_PGID(pgid));
++}
++
++static void lan9645x_port_set_learning(struct lan9645x *lan9645x, int port,
++				       bool enabled)
++{
++	struct lan9645x_port *p = lan9645x_to_port(lan9645x, port);
++
++	p->learn_ena = enabled;
++
++	enabled = enabled && (p->stp_state == BR_STATE_LEARNING ||
++			      p->stp_state == BR_STATE_FORWARDING);
++
++	lan_rmw(ANA_PORT_CFG_LEARN_ENA_SET(enabled), ANA_PORT_CFG_LEARN_ENA,
++		lan9645x, ANA_PORT_CFG(port));
++}
++
++static int lan9645x_port_bridge_flags(struct dsa_switch *ds, int port,
++				      struct switchdev_brport_flags f,
++				      struct netlink_ext_ack *extack)
++{
++	struct lan9645x *lan9645x = ds->priv;
++
++	if (WARN_ON(port == lan9645x->npi))
++		return -EINVAL;
++
++	if (f.mask & BR_LEARNING)
++		lan9645x_port_set_learning(lan9645x, port,
++					   !!(f.val & BR_LEARNING));
++
++	if (f.mask & BR_FLOOD)
++		lan9645x_port_pgid_set(lan9645x, PGID_UC, port,
++				       !!(f.val & BR_FLOOD));
++
++	if (f.mask & BR_MCAST_FLOOD) {
++		bool ena = !!(f.val & BR_MCAST_FLOOD);
++
++		lan9645x_port_pgid_set(lan9645x, PGID_MC, port, ena);
++		lan9645x_port_pgid_set(lan9645x, PGID_MCIPV4, port, ena);
++		lan9645x_port_pgid_set(lan9645x, PGID_MCIPV6, port, ena);
++	}
++
++	if (f.mask & BR_BCAST_FLOOD)
++		lan9645x_port_pgid_set(lan9645x, PGID_BC, port,
++				       !!(f.val & BR_BCAST_FLOOD));
++
++	return 0;
++}
++
++static void lan9645x_update_fwd_mask(struct lan9645x *lan9645x)
++{
++	struct lan9645x_port *p;
++	struct dsa_port *dp;
++
++	lockdep_assert_held(&lan9645x->fwd_domain_lock);
++
++	/* Updates the source port PGIDs, making sure frames from p
++	 * are only forwarded to ports q != p, where q is relevant to forward
++	 */
++	dsa_switch_for_each_available_port(dp, lan9645x->ds) {
++		u32 mask = 0;
++
++		p = lan9645x_to_port(lan9645x, dp->index);
++
++		if (lan9645x_port_is_bridged(p) &&
++		    (lan9645x->bridge_fwd_mask & BIT(dp->index))) {
++			mask = lan9645x->bridge_mask &
++			       lan9645x->bridge_fwd_mask & ~BIT(dp->index);
++		}
++
++		lan_wr(mask, lan9645x, ANA_PGID(PGID_SRC + dp->index));
++	}
++}
++
++static void __lan9645x_port_mark_host_flood(struct lan9645x *lan9645x, int port,
++					    bool uc, bool mc)
++{
++	lockdep_assert_held(&lan9645x->fwd_domain_lock);
++
++	if (uc)
++		lan9645x->host_flood_uc_mask |= BIT(port);
++	else
++		lan9645x->host_flood_uc_mask &= ~BIT(port);
++
++	if (mc)
++		lan9645x->host_flood_mc_mask |= BIT(port);
++	else
++		lan9645x->host_flood_mc_mask &= ~BIT(port);
++}
++
++static void __lan9645x_port_set_host_flood(struct lan9645x *lan9645x, int port)
++{
++	bool mc_ena, uc_ena;
++	u16 unbridged;
++
++	lockdep_assert_held(&lan9645x->fwd_domain_lock);
++
++	/* We want promiscuous and all_multi to affect standalone ports, for
++	 * debug and test purposes.
++	 *
++	 * However, the linux bridge is incredibly eager to put bridged ports in
++	 * promiscuous mode.
++
++	 * This is unfortunate since lan9645x flood masks are global and not per
++	 * ingress port. When some port triggers unknown uc/mc to the CPU, the
++	 * traffic from any port is forwarded to the CPU.
++	 *
++	 * If the host CPU is weak, this can cause tremendous stress. Therefore,
++	 * we compromise by ignoring this host flood request for bridged ports.
++	 */
++	unbridged = ~lan9645x->bridge_mask & GENMASK(NUM_PHYS_PORTS - 1, 0);
++
++	uc_ena = !!(lan9645x->host_flood_uc_mask & unbridged);
++	lan9645x_port_pgid_set(lan9645x, PGID_UC, CPU_PORT, uc_ena);
++
++	mc_ena = !!(lan9645x->host_flood_mc_mask & unbridged);
++	lan9645x_port_pgid_set(lan9645x, PGID_MC, CPU_PORT, mc_ena);
++	lan9645x_port_pgid_set(lan9645x, PGID_MCIPV4, CPU_PORT, mc_ena);
++	lan9645x_port_pgid_set(lan9645x, PGID_MCIPV6, CPU_PORT, mc_ena);
++}
++
++static void lan9645x_host_flood_work_fn(struct work_struct *work)
++{
++	struct lan9645x_host_flood_work *w =
++		container_of(work, struct lan9645x_host_flood_work, work);
++
++	mutex_lock(&w->lan9645x->fwd_domain_lock);
++	__lan9645x_port_mark_host_flood(w->lan9645x, w->port, w->uc, w->mc);
++	__lan9645x_port_set_host_flood(w->lan9645x, w->port);
++	mutex_unlock(&w->lan9645x->fwd_domain_lock);
++	kfree(w);
++}
++
++/* Called in atomic context */
++static void lan9645x_port_set_host_flood(struct dsa_switch *ds, int port,
++					 bool uc, bool mc)
++{
++	struct lan9645x *lan9645x = ds->priv;
++	struct lan9645x_host_flood_work *w;
++
++	w = kzalloc_obj(*w, GFP_ATOMIC);
++	if (!w)
++		return;
++
++	INIT_WORK(&w->work, lan9645x_host_flood_work_fn);
++	w->lan9645x = lan9645x;
++	w->port = port;
++	w->uc = uc;
++	w->mc = mc;
++	queue_work(lan9645x->owq, &w->work);
++}
++
++static int lan9645x_port_bridge_join(struct dsa_switch *ds, int port,
++				     struct dsa_bridge bridge,
++				     bool *tx_fwd_offload,
++				     struct netlink_ext_ack *extack)
++{
++	struct lan9645x *lan9645x = ds->priv;
++	struct lan9645x_port *p;
++
++	p = lan9645x_to_port(lan9645x, port);
++
++	if (lan9645x->bridge && lan9645x->bridge != bridge.dev) {
++		NL_SET_ERR_MSG_MOD(extack, "Only one bridge supported");
++		return -EBUSY;
++	}
++
++	mutex_lock(&lan9645x->fwd_domain_lock);
++	/* First bridged port sets bridge dev */
++	if (!lan9645x->bridge_mask)
++		lan9645x->bridge = bridge.dev;
++
++	lan9645x->bridge_mask |= BIT(p->chip_port);
++	__lan9645x_port_set_host_flood(lan9645x, port);
++
++	mutex_unlock(&lan9645x->fwd_domain_lock);
++
++	/* Later: stp_state_set updates forwarding */
++
++	return 0;
++}
++
++static void lan9645x_port_bridge_stp_state_set(struct dsa_switch *ds, int port,
++					       u8 state)
++{
++	struct lan9645x *lan9645x;
++	struct lan9645x_port *p;
++	bool learn_ena;
++
++	lan9645x = ds->priv;
++	p = lan9645x_to_port(lan9645x, port);
++
++	mutex_lock(&lan9645x->fwd_domain_lock);
++
++	p->stp_state = state;
++
++	if (state == BR_STATE_FORWARDING)
++		lan9645x->bridge_fwd_mask |= BIT(p->chip_port);
++	else
++		lan9645x->bridge_fwd_mask &= ~BIT(p->chip_port);
++
++	learn_ena = (state == BR_STATE_LEARNING ||
++		     state == BR_STATE_FORWARDING) && p->learn_ena;
++
++	lan_rmw(ANA_PORT_CFG_LEARN_ENA_SET(learn_ena),
++		ANA_PORT_CFG_LEARN_ENA, lan9645x,
++		ANA_PORT_CFG(p->chip_port));
++
++	lan9645x_update_fwd_mask(lan9645x);
++	mutex_unlock(&lan9645x->fwd_domain_lock);
++}
++
++static void lan9645x_port_bridge_leave(struct dsa_switch *ds, int port,
++				       struct dsa_bridge bridge)
++{
++	struct lan9645x *lan9645x = ds->priv;
++	struct lan9645x_port *p;
++
++	p = lan9645x_to_port(lan9645x, port);
++
++	mutex_lock(&lan9645x->fwd_domain_lock);
++
++	lan9645x->bridge_mask &= ~BIT(p->chip_port);
++
++	/* Last port leaving clears bridge dev */
++	if (!lan9645x->bridge_mask)
++		lan9645x->bridge = NULL;
++
++	__lan9645x_port_set_host_flood(lan9645x, port);
++	lan9645x_update_fwd_mask(lan9645x);
++
++	mutex_unlock(&lan9645x->fwd_domain_lock);
++}
++
+ static const struct dsa_switch_ops lan9645x_switch_ops = {
+ 	.get_tag_protocol		= lan9645x_get_tag_protocol,
+ 
+@@ -273,6 +560,15 @@ static const struct dsa_switch_ops lan9645x_switch_ops = {
+ 	/* MTU  */
+ 	.port_change_mtu		= lan9645x_change_mtu,
+ 	.port_max_mtu			= lan9645x_get_max_mtu,
++
++	/* Bridge integration */
++	.set_ageing_time		= lan9645x_set_ageing_time,
++	.port_pre_bridge_flags		= lan9645x_port_pre_bridge_flags,
++	.port_bridge_flags		= lan9645x_port_bridge_flags,
++	.port_bridge_join		= lan9645x_port_bridge_join,
++	.port_bridge_leave		= lan9645x_port_bridge_leave,
++	.port_stp_state_set		= lan9645x_port_bridge_stp_state_set,
++	.port_set_host_flood		= lan9645x_port_set_host_flood,
+ };
+ 
+ static int lan9645x_request_target_regmaps(struct lan9645x *lan9645x)
+diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.h b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.h
+index d8bdcb8a92ed..22576bb8dd52 100644
+--- a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.h
++++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.h
+@@ -155,6 +155,11 @@ struct lan9645x {
+ 	struct dsa_switch *ds;
+ 	struct regmap *rmap[NUM_TARGETS];
+ 
++	u16 host_flood_uc_mask;
++	u16 host_flood_mc_mask;
++
++	struct workqueue_struct *owq;
++
+ 	int shared_queue_sz;
+ 
+ 	/* NPI chip_port */
+@@ -163,6 +168,12 @@ struct lan9645x {
+ 	u8 num_phys_ports;
+ 	struct lan9645x_port **ports;
+ 
++	/* Forwarding Database */
++	struct net_device *bridge; /* Only support single bridge */
++	u16 bridge_mask; /* Mask for bridged ports */
++	u16 bridge_fwd_mask; /* Mask for forwarding bridged ports */
++	struct mutex fwd_domain_lock; /* lock forwarding configuration */
++
+ 	int num_port_dis;
+ 	bool dd_dis;
+ 	bool tsn_dis;
+@@ -172,6 +183,8 @@ struct lan9645x_port {
+ 	struct lan9645x *lan9645x;
+ 
+ 	u8 chip_port;
++	u8 stp_state;
++	bool learn_ena;
+ 
+ 	bool rx_internal_delay;
+ 	bool tx_internal_delay;
+@@ -224,6 +237,11 @@ static inline struct lan9645x_port *lan9645x_to_port(struct lan9645x *lan9645x,
+ 	return lan9645x->ports[port];
+ }
+ 
++static inline bool lan9645x_port_is_bridged(struct lan9645x_port *p)
++{
++	return p && (p->lan9645x->bridge_mask & BIT(p->chip_port));
++}
++
+ static inline struct regmap *lan_tgt2rmap(struct lan9645x *lan9645x,
+ 					  enum lan9645x_target t, int tinst)
+ {
 
 -- 
 2.52.0
