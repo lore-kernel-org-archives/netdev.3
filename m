@@ -1,123 +1,80 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B850F37EFFB;
-	Fri, 10 Apr 2026 22:34:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4713E0C69;
+	Fri, 10 Apr 2026 22:41:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775860448; cv=none; b=fzUCqJTLYa2/tbYpyiVgTPHhrBL4z5f8ZlZ9i0mIaQBr63firmfzeyi26ozeyW7u3jscezQq0U3r6jFg8JStr06FWQSxDZGcE269N77KMdVB13MXNaFdnbBsEG5TbJ/NNbyxPK9d0V/HWr0vvyCOy4NZlTA0mLqk0Ijb/rGE2Qc=
+	t=1775860861; cv=none; b=UGgBQnblCOQfsVHycXarL5F4D+smHrCZl+gn31L5cu7H18ywTl6DaE6IF8hZXPnV/ecDcV0kJn++8wXK4JvcUUvpZu7dXjLI/kDsXNSETZxlKKypQlmfjU/Dn/n70ggp4xIWXOH+0QGJp5Qn9ybfoa7Rm3uHvnSVb7KiJ5SkQ6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775860448; c=relaxed/simple;
-	bh=ZKxZ4njLYnfL7S8OY+6Nyg/oNaGyFz+nROkAWiP7ulE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dwtiBhgSIsYevVpJ6ShWfy1etc7q02FLmGT57l4OsudXmv1wEmOrSfoV8fj2Q2nn1fij6q3hafgiQiraHnNzflbHXGucxBardkpEN3tP9JPgqdvCxLaa3ksS/EgVQ6lwbclFZa7/NdtJWFae2XAsH2MWqXtN1/ukn9bUdAORGHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blemings.org; spf=pass smtp.mailfrom=blemings.org; dkim=pass (2048-bit key) header.d=blemings.org header.i=@blemings.org header.b=k7yuMwNY; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blemings.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blemings.org
+	s=arc-20240116; t=1775860861; c=relaxed/simple;
+	bh=aIGzIaRL80ycn6DIDQoQBN+qIuaLMvNA3XN2zlYbL44=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=XPy4ATSbLvwV5cDiMv0ebfIo9Ku698Cll2EFhtNPfKgs2SDb2Qg0VW0LYDnaQe5d4ehf9y73kf8qjG5mVMKskFWaY1GokJTsv1a3jcZvLC+7tebN9de/b6siNaLMkYDqp/N6T0H07wRTdnhX+wC2QROV0Qutsgbx+cpYvrAnM7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XFL4VLPp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blemings.org header.i=@blemings.org header.b="k7yuMwNY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=blemings.org;
-	s=202501; t=1775859922;
-	bh=Ml2NiUFr3OBP/pDdG9YSyFIyDdWC84XGS41hKvRh/5A=;
-	h=Date:Reply-To:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=k7yuMwNY8iuPYduMVX9FKYKQyR+IavrAee2JzubjYxosX4REhf5usgDYN//XZdPxo
-	 /7bG+Vbipno4s5i4m3TsvXaxhGX2rijp75dNJuTALAfefW4lY9RQGkWq5uKAE1hvXZ
-	 9E2EDAtrxIbOxGUUpMipgg5CIb2S7dmsVE3vfdpMrNTSpGTqi1kFKwl7EZuTNukgCX
-	 gMpDmnlNBLfbNM9+iN76uVWPiXsKKPIbBYfV/DwuAzgzCyh5wYHIK548MvmdIrkbKR
-	 ukcf6Oo24C/6xyI8uo9VfP8/XeQq+9z+kHbs6aO+gTBJ8FaNu/uU+yTN18+3CqZFMp
-	 hnZkGYXBovNow==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4fsrwJ682mz4wpy;
-	Sat, 11 Apr 2026 08:25:20 +1000 (AEST)
-Message-ID: <4f5810a7-c792-4d6b-9f7c-6c6b289def19@blemings.org>
-Date: Sat, 11 Apr 2026 08:25:19 +1000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XFL4VLPp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DD9BC19421;
+	Fri, 10 Apr 2026 22:41:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775860861;
+	bh=aIGzIaRL80ycn6DIDQoQBN+qIuaLMvNA3XN2zlYbL44=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=XFL4VLPpr5fbzpjWGXENqia1JwgF+o6VIJ+xsjlcxyDgdUSQp+HbpmTMO8r3Glpv2
+	 3Rt1yihcqnbiedAWv2EvyvEtIoEFjU/JH0WYHkL0MM7+UkLbGLW4yW9OQORIGKu+fB
+	 25U+gP5ERboYXRPe/g2HBp5mBOM7Xk8mlUPtz1HOG3rFhkhgKPFPY5fhi5yT9wjT+h
+	 Twl0nyKSzB9Hh1R43OE8LMvpimpQ+AeUWtBYFCYsPQEfH0f+mqUiSER8AZKCjqxMR2
+	 +7wYmMclnzBBVbMWOUd2FsSTNAJP1rLhhK2Dzmcd/m1D52f73/koHcDSFfNmBbtEvp
+	 cmJMIh0kDYNZw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02D673809A88;
+	Fri, 10 Apr 2026 22:40:37 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: hugh@blemings.id.au
-Subject: Re: [PATCH net] netrom: do some basic forms of validation on incoming
- frames
-To: Kuniyuki Iwashima <kuniyu@google.com>, kuba@kernel.org
-Cc: davem@davemloft.net, edumazet@google.com, gregkh@linuxfoundation.org,
- horms@kernel.org, linux-hams@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, pabeni@redhat.com, stable@kernel.org,
- workflows@vger.kernel.org, yizhe@darknavy.com
-References: <20260410145448.38253e3c@kernel.org>
- <20260410221220.1708137-1-kuniyu@google.com>
-Content-Language: en-US
-From: Hugh Blemings <hugh@blemings.org>
-In-Reply-To: <20260410221220.1708137-1-kuniyu@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next 0/2] Add selftests for ntuple (NFC) rules
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177586083553.2670415.5524532409783816468.git-patchwork-notify@kernel.org>
+Date: Fri, 10 Apr 2026 22:40:35 +0000
+References: <20260407164954.2977820-1-dimitri.daskalakis1@gmail.com>
+In-Reply-To: <20260407164954.2977820-1-dimitri.daskalakis1@gmail.com>
+To: Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>
+Cc: davem@davemloft.net, andrew+netdev@lunn.ch, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, shuah@kernel.org, willemb@google.com,
+ petrm@nvidia.com, dw@davidwei.uk, carges@cloudflare.com, cjubran@nvidia.com,
+ daskald@meta.com, netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
 
+Hello:
 
-On 11/4/2026 08:11, Kuniyuki Iwashima wrote:
-> From: Jakub Kicinski <kuba@kernel.org>
-> Date: Fri, 10 Apr 2026 14:54:48 -0700
->> On Fri, 10 Apr 2026 14:30:42 -0700 Jakub Kicinski wrote:
->>> On Fri, 10 Apr 2026 07:24:36 +0200 Greg Kroah-Hartman wrote:
->>>> On Thu, Apr 09, 2026 at 08:32:35PM -0700, Jakub Kicinski wrote:
->>>>> Or for simplicity we could also be testing against skb_headlen()
->>>>> since we don't expect any legit non-linear frames here? Dunno.
->>>> I'll be glad to change this either way, your call.  Given that this is
->>>> an obsolete protocol that seems to only be a target for drive-by fuzzers
->>>> to attack, whatever the simplest thing to do to quiet them up I'll be
->>>> glad to implement.
->>>>
->>>> Or can we just delete this stuff entirely?  :)
->>> Yes.
->>>
->>> My thinking is to delete hamradio, nfc, atm, caif.. [more to come]
->>> Create GH repos which provide them as OOT modules.
->>> Hopefully we can convince any existing users to switch to that.
->>>
->>> The only thing stopping me is the concern that this is just the softest
->>> target and the LLMs will find something else to focus on which we can't
->>> delete. I suspect any PCIe driver can be flooded with "aren't you
->>> trusting the HW to provide valid responses here?" bullshit.
->>>
->>> But hey, let's try. I'll post a patch nuking all of hamradio later
->>> today.
->> Well, either we "expunge" this code to OOT repos, or we mark it
->> as broken and tell everyone that we don't take security fixes
->> for anything that depends on BROKEN. I'd personally rather expunge.
-> +1 for "expunge" to prevent LLM-based patch flood.
->
-> IIRC, we did that recently for one driver only used by OpenWRT ?
->
->
-If the main concern here is ongoing maintenance of these Ham Radio 
-related protocols/drivers, can we pause for a moment on anything as 
-dramatic as removing from the tree entirely ?
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-There is a good cohort of capable kernel folks that either are or were 
-ham radio operators who I believe, upon realising that things have got 
-to this point, will be happy to redouble efforts to ensure this code 
-maintained and tested to a satisfactory standard.
+On Tue,  7 Apr 2026 09:49:52 -0700 you wrote:
+> From: Dimitri Daskalakis <daskald@meta.com>
+> 
+> Thoroughly testing a device's NFC implementation can be tedious. The more
+> features a device supports, the more combinations to validate.
+> 
+> This series aims to ease that burden, validating the most common NFC rule
+> combinations.
+> 
+> [...]
 
-Or, alternatively, as a technical community it may be that the Ham Radio 
-interested folks conclude that out of tree or user space solutions are a 
-better way forward as others have proposed.
+Here is the summary with links:
+  - [net-next,1/2] selftests: drv-net: Add ntuple (NFC) flow steering test
+    https://git.kernel.org/netdev/net-next/c/18589df9344c
+  - [net-next,2/2] selftests: drv-net: ntuple: Add dst-ip, src-port, dst-port fields
+    https://git.kernel.org/netdev/net-next/c/a66374a3eb02
 
-Give us a few days, please, for the word to be put around that we need 
-to pull ourselves together a bit as a technical group :)
-
-Cheers/73
-Hugh
-VK3YYZ/AD5RV/Lapsed Kernel Maintainer... ;)
-
-
->> cc: workflows, we can't be the only ones still nursing Linux 2.2 code
-
+You are awesome, thank you!
 -- 
-I am slowly moving to hugh@blemings.id.au as my main email address.
-If you're using hugh@blemings.org please update your address book accordingly.
-Thank you :)
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
