@@ -1,58 +1,168 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA7327456
-	for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 03:35:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E0430AACB;
+	Fri, 10 Apr 2026 03:36:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775792140; cv=none; b=lWYiB4Da/0D28nrIxSqP7QL5Vv6rEEMU+6GlmDsefQG/UIBf5YuWcEbT3Y/6t1T7SA3q9SQ53dPPY1OGCtx+tkZC72ni03p/D8Z/ExzdBq0rEK9Ox6kf/+UBF+n53I/2yS2Joz6wxKCvNiI5JN7rS8MnzHGzs5lTspD8XuPcCUw=
+	t=1775792219; cv=none; b=psqu0vWU/gNwIIQddeQuluahjV/gVOljf7OaZNavjiAwSt40PjQoJEjtwxwzVc6ktXR/liM7yqHOBcXg1KVItZ7GZsXH6ixRJFjoCyY6pWYM2vLDYbIkc5oRMwacSHjbn7Hxl68XO80OkO2d8xFMMHmKdfkVpZys7RZ8zb4/7Ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775792140; c=relaxed/simple;
-	bh=7bklhLbfR1ys8v8hxfDXtHey8Rp/a8UoInTCx1wqcss=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h7mxJmYP9nzEcpcXrlLFIFDvsBE9wykH6JUKaqwuDDFKL3tx2owuZ+9qkTG9SaYJM0IpgznPax5Q5tPz89La0nxReIsZ6oVV3Gbi8IgkwTrv9h0IDMLsGopRmDh7kMkyDjY8RUrM/8QPT8idPgowogWkgE78hBZojhwXoC+rfgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RezecpH5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775792219; c=relaxed/simple;
+	bh=qOvRNxr5Cs+kIujf5Omcxxoc0SIvL5nuVH71WgX7zAQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tvTIwv17/SVyxlWldZBt050XuC1uIy+W98fU4nBGyow1Z3VJza/SKpIFHZdazTLs7mRXYJ4ZY9vk1daVjV7sAGghTYpIf5oEPO9CouhYJwABUxnV+nuubobZtwzQz8Cgkal+G9upUtOZbfqlZzXCP+7hFOWiRHk5eCp56yNz3Vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=OPUBEwGz; arc=none smtp.client-ip=91.218.175.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RezecpH5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A14C19421;
-	Fri, 10 Apr 2026 03:35:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775792139;
-	bh=7bklhLbfR1ys8v8hxfDXtHey8Rp/a8UoInTCx1wqcss=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=RezecpH5XGi6zJlQAcDlO/E+mA+cVXKG+mfp4mZiDMciX5ragKG48onb2lUJFpC7E
-	 KGSRkd5LAKOSD4RYXygMWLdnLmAqszsTX4am9u0XjwdhDmlzClAyrL+VVNTWy7wzbh
-	 VsS262mEGEoEC09+dmOqb088xofYlVpOgomWGLAgEJFSMfva2/AR4DQUNEAZAQ8o0o
-	 LH+broIy0AV4uYEPLkHjKtRBIWboIAqbhkVPCOKA6loQA/cG+Q4Bb5yLtu+eQ1IlcL
-	 uAKwZnM/PaTIRISkqinYNhPOxfl7VKkfPx7zbjdzf4Gm92IKp75/bBkAgSsGvKqota
-	 ZeBqf8vbco5wQ==
-Date: Thu, 9 Apr 2026 20:35:38 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Xuegang Lu <xuegang.lu@airoha.com>, Simon Horman
- <horms@kernel.org>, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net v3] net: airoha: Add dma_rmb() and READ_ONCE() in
- airoha_qdma_rx_process()
-Message-ID: <20260409203538.35337631@kernel.org>
-In-Reply-To: <20260407-airoha_qdma_rx_process-fix-reordering-v3-1-91c36e9da31f@kernel.org>
-References: <20260407-airoha_qdma_rx_process-fix-reordering-v3-1-91c36e9da31f@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="OPUBEwGz"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775792215;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QAJ9K4xL9oDCb2SK19yKakNMeycMiF95YjwaYyavShE=;
+	b=OPUBEwGzY2co+p0AEcBKlsjfkOhx0y6rAbqhwI5SI7d2Yzrp+zBVHIdNpqUM1CsMF7zwgO
+	KfWQCchMFxI11y9sAdp0JQ00Er7Osfn42U19WWQfxnf9pr25iTYftgHwybXa9cMveKmHI1
+	z1lBoy8WtH0fKIq3DfVWYSt2PLIPhKw=
+From: Qingfang Deng <qingfang.deng@linux.dev>
+To: linux-ppp@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Qingfang Deng <qingfang.deng@linux.dev>,
+	Guillaume Nault <gnault@redhat.com>,
+	Breno Leitao <leitao@debian.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Kees Cook <kees@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Eric Woudstra <ericwouds@gmail.com>,
+	Sam Protsenko <semen.protsenko@linaro.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Paul Mackerras <paulus@ozlabs.org>,
+	Jaco Kroon <jaco@uls.co.za>,
+	James Carlson <carlsonj@workingcode.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Marcin Szycik <marcin.szycik@linux.intel.com>
+Subject: [PATCH net v4 2/2] pppoe: drop PFC frames
+Date: Fri, 10 Apr 2026 11:36:21 +0800
+Message-ID: <20260410033627.93786-2-qingfang.deng@linux.dev>
+In-Reply-To: <20260410033627.93786-1-qingfang.deng@linux.dev>
+References: <20260410033627.93786-1-qingfang.deng@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Tue, 07 Apr 2026 08:48:04 +0200 Lorenzo Bianconi wrote:
-> Add missing dma_rmb() in airoha_qdma_rx_process routine to make sure the
-> DMA read operations are completed when the NIC reports the processing on
-> the current descriptor is done. Moreover, add missing READ_ONCE() in
-> airoha_qdma_rx_process() for DMA descriptor control fields in order to
-> avoid any compiler reordering.
+RFC 2516 Section 7 states that Protocol Field Compression (PFC) is NOT
+RECOMMENDED for PPPoE. In practice, pppd does not support negotiating
+PFC for PPPoE sessions, and the current PPPoE driver assumes an
+uncompressed (2-byte) protocol field. However, the generic PPP layer
+function ppp_input() is not aware of the negotiation result, and still
+accepts PFC frames.
 
-Sashiko seems to have more orthogonal complaints FWIW
+If a peer with a broken implementation or an attacker sends a frame with
+a compressed (1-byte) protocol field, the subsequent PPP payload is
+shifted by one byte. This causes the network header to be 4-byte
+misaligned, which may trigger unaligned access exceptions on some
+architectures.
+
+To reduce the attack surface, drop PPPoE PFC frames. Introduce
+ppp_skb_is_compressed_proto() helper function to be used in both
+ppp_generic.c and pppoe.c to avoid open-coding.
+
+Fixes: 7fb1b8ca8fa1 ("ppp: Move PFC decompression to PPP generic layer")
+Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
+---
+Changes in v4:
+ Update Fixes tag as suggested by AI review
+ Link to v3: https://lore.kernel.org/r/20260409031107.616630-2-qingfang.deng@linux.dev
+Changes in v3:
+ Fix kdoc warning
+ Link to v2: https://lore.kernel.org/r/20260408024245.312732-1-qingfang.deng@linux.dev
+
+ drivers/net/ppp/ppp_generic.c |  2 +-
+ drivers/net/ppp/pppoe.c       |  8 +++++++-
+ include/linux/ppp_defs.h      | 16 ++++++++++++++++
+ 3 files changed, 24 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
+index b097d1b38ac9..853da966ad46 100644
+--- a/drivers/net/ppp/ppp_generic.c
++++ b/drivers/net/ppp/ppp_generic.c
+@@ -2242,7 +2242,7 @@ ppp_do_recv(struct ppp *ppp, struct sk_buff *skb, struct channel *pch)
+  */
+ static void __ppp_decompress_proto(struct sk_buff *skb)
+ {
+-	if (skb->data[0] & 0x01)
++	if (ppp_skb_is_compressed_proto(skb))
+ 		*(u8 *)skb_push(skb, 1) = 0x00;
+ }
+ 
+diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
+index 1ac61c273b28..4cd10c908711 100644
+--- a/drivers/net/ppp/pppoe.c
++++ b/drivers/net/ppp/pppoe.c
+@@ -393,7 +393,7 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	if (skb_mac_header_len(skb) < ETH_HLEN)
+ 		goto drop;
+ 
+-	if (!pskb_may_pull(skb, sizeof(struct pppoe_hdr)))
++	if (!pskb_may_pull(skb, PPPOE_SES_HLEN))
+ 		goto drop;
+ 
+ 	ph = pppoe_hdr(skb);
+@@ -403,6 +403,12 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	if (skb->len < len)
+ 		goto drop;
+ 
++	/* skb->data points to the PPP protocol header after skb_pull_rcsum.
++	 * Drop PFC frames.
++	 */
++	if (ppp_skb_is_compressed_proto(skb))
++		goto drop;
++
+ 	if (pskb_trim_rcsum(skb, len))
+ 		goto drop;
+ 
+diff --git a/include/linux/ppp_defs.h b/include/linux/ppp_defs.h
+index 45c0947fa404..6e9587ce651c 100644
+--- a/include/linux/ppp_defs.h
++++ b/include/linux/ppp_defs.h
+@@ -8,8 +8,24 @@
+ #define _PPP_DEFS_H_
+ 
+ #include <linux/crc-ccitt.h>
++#include <linux/skbuff.h>
+ #include <uapi/linux/ppp_defs.h>
+ 
+ #define PPP_FCS(fcs, c) crc_ccitt_byte(fcs, c)
+ 
++/**
++ * ppp_skb_is_compressed_proto - checks if PPP protocol in a skb is compressed
++ * @skb: skb to check
++ *
++ * Check if the PPP protocol field is compressed (the least significant
++ * bit of the most significant octet is 1). skb->data must point to the PPP
++ * protocol header.
++ *
++ * Return: Whether the PPP protocol field is compressed.
++ */
++static inline bool ppp_skb_is_compressed_proto(const struct sk_buff *skb)
++{
++	return unlikely(skb->data[0] & 0x01);
++}
++
+ #endif /* _PPP_DEFS_H_ */
+-- 
+2.43.0
+
