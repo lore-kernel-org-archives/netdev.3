@@ -1,55 +1,65 @@
-Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63BEB3C5558;
-	Fri, 10 Apr 2026 16:22:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.117.225.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0C83BAD8F
+	for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 16:25:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775838125; cv=none; b=UdtLh3rWM00YIOHV4YQ4QwYZilfX3In/6tNYhfpLGfNrkzKGN4Sx69Zj3dlmQOfSaD86VPrLnoOX7uqwuvHc8epgA2//mxi+WCxXBWhpO2UmHwSDWZH/15OFB4OXjZC575JCOpdg0tYtlgCjc4iAKa3YQltwJLT0h6Fm9XcxC3M=
+	t=1775838357; cv=none; b=Dg+dxe2cSVc016P4Wknz01F8GUkWrMVR3krKtTUlo9zoBzpZRMSaF79OIdhfBoB/1sX3yHepwzH+0YCVXjpltqsoqWS7ISyvtAQwgE4gfYJ8a+FpDzLCirX3uCdu5lwVjo54XGa+LkSJQ9LBKpxAlRVYP7i+F+7Y0DUgnEaEv1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775838125; c=relaxed/simple;
-	bh=083Yf144VWbPRHyeRJ/AIazNk4dh1okyt2V5yIbeQpY=;
+	s=arc-20240116; t=1775838357; c=relaxed/simple;
+	bh=WIgf06YVrt3i8IDBeTEXTOVKt6Ma5XHOJR3hB7Q6upw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mfi3hQRlsarydZbBmRIaBIEfSZpVr9QfmH6BM5YaP+S4Urp12CxKfEjsIz5eSls5OY3yJ99cEjCPDUMmJEEu3T8DHG5rLBEQnTqpf2qsCRk4uYXtYFKauEkn1Xmm/0ftwWWKS45M1LZiR7Q/IVnE7u/rUSNL4vpazdTf7cv2lfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=Vgt8xUIj; arc=none smtp.client-ip=130.117.225.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
+	 MIME-Version; b=kFlndl1TCGKDlBlK/EjgMEeNlCehMU3Uc7GQPYB7pa8NaTaYf9z1e5DQ87nbVJwI5RZd1kk2rYDjisA1gBEAYJZ+EbUuSAJk2IDSqhVNXpGISWJribWyt7iui9NGpR5TseP3jAA9dc8AfZa+eA8CQvuPGKB/M6TuV0+UHsMYFSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZUWY9QP5; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="Vgt8xUIj"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
-	Content-Type; bh=E6hszI/c1bD+hzDzidJhqVuyKAFnFEK/D750TXafDAI=; b=Vgt8xUIjvSuz
-	mRT5MvWPF6lnWJDOxF6mxaiaIXrDfSd0ioOeTfQeYeOpLvsNAnQsvSMOHrvm228OPvhlhfJf/C8+A
-	qJGHyF8kwcNGncji+biKEVs/GBP4f1mXK4t3jQg3oQSeSterVfuStSAx8Yx29qXmIdzLnsy1sbkbA
-	qD8ngOqHMNqvQcnXgPKhaEumh7335XodZaZAxSk3NYvRgkvl1Nm+wmD9K9Q8fygPH3bs9c3QA0gU1
-	2cRYaPcal0tI68W199SNoh8SoAWzGrs1LBbVewAzI9iWyuyXA5eNXdrcKH36h68/dQZwItDclcnDq
-	bOGLvU+Pfn4JqdqvMGWMdA==;
-Received: from [130.117.225.5] (helo=finist-alma9.vzint.dev)
-	by relay.virtuozzo.com with esmtp (Exim 4.96)
-	(envelope-from <khorenko@virtuozzo.com>)
-	id 1wBEZo-00FvwO-2B;
-	Fri, 10 Apr 2026 18:21:47 +0200
-From: Konstantin Khorenko <khorenko@virtuozzo.com>
-To: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Mikhail Zaslonko <zaslonko@linux.ibm.com>,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZUWY9QP5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775838355;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WIgf06YVrt3i8IDBeTEXTOVKt6Ma5XHOJR3hB7Q6upw=;
+	b=ZUWY9QP5sqAKGspnAAQah7D9Z83TIThQ3v1TOqqnunmxx8mDyNiPKnavfCjBOqH7zJH9pW
+	J0OB3sCE3SocIdlvZhtYdNDsUYP2+UYgjEoorEo5Zd/KfH+9vRvCJKw9FS6BwHgMPWPgRO
+	pgvwrIEhKpIQW6ju6WfKdXOStZ6NtDg=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-651-uRPQk7QlOeyjSGPY8gCZmA-1; Fri,
+ 10 Apr 2026 12:25:50 -0400
+X-MC-Unique: uRPQk7QlOeyjSGPY8gCZmA-1
+X-Mimecast-MFC-AGG-ID: uRPQk7QlOeyjSGPY8gCZmA_1775838348
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A82C3183EED1;
+	Fri, 10 Apr 2026 16:25:48 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.44.32.88])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3F5B01800B7F;
+	Fri, 10 Apr 2026 16:25:43 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: przemyslaw.kitszel@intel.com
+Cc: anthony.l.nguyen@intel.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	intel-wired-lan@lists.osuosl.org,
+	jacob.e.keller@intel.com,
+	jtornosm@redhat.com,
+	kohei.enju@gmail.com,
+	kuba@kernel.org,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
-	Vasileios Almpanis <vasileios.almpanis@virtuozzo.com>,
-	Konstantin Khorenko <khorenko@virtuozzo.com>
-Subject: [PATCH v3 0/2] net: fix skb_ext BUILD_BUG_ON failures with GCOV
-Date: Fri, 10 Apr 2026 19:21:48 +0300
-Message-ID: <20260410162150.3105738-1-khorenko@virtuozzo.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20260409214736.2651198-1-khorenko@virtuozzo.com>
-References: <20260409214736.2651198-1-khorenko@virtuozzo.com>
+	pabeni@redhat.com,
+	stable@vger.kernel.org
+Subject: Re: [Intel-wired-lan] [PATCH net v2 3/4] iavf: send MAC change request synchronously
+Date: Fri, 10 Apr 2026 18:25:42 +0200
+Message-ID: <20260410162542.209743-1-jtornosm@redhat.com>
+In-Reply-To: <30d48647-8c1d-4683-ae9d-becb33cf8d4f@intel.com>
+References: <30d48647-8c1d-4683-ae9d-becb33cf8d4f@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,69 +67,16 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-This mini-series fixes build failures in net/core/skbuff.c when the
-kernel is built with CONFIG_GCOV_PROFILE_ALL=y.
+Hello Przemek,
 
-This is part of a larger effort to add -fprofile-update=atomic to
-global CFLAGS_GCOV (posted earlier as a combined series):
-  https://lore.kernel.org/lkml/20260401142020.1434243-1-khorenko@virtuozzo.com/T/#t
+Thank you again for your comments.
+I will try to include the new ones too in the next version.
+In addition, I will analyze the suggested integration with existing
+iavf_poll_virtchnl_msg() and possibly iavf_virtchnl_completion, but maybe
+better in a new patch of the series as a refactoring.
 
-That combined series was split per subsystem as requested by Jakub.
-The companion patches are:
+Best regards
+Jose Ignacio
 
- - iommu: use __always_inline for amdv1pt_install_leaf_entry()
-   (sent to iommu maintainers)
- - gcov: add -fprofile-update=atomic globally (sent to gcov/kbuild
-   maintainers, depends on this series and the iommu patch)
-
-Patch 1/2 fixes a pre-existing build failure with CONFIG_GCOV_PROFILE_ALL:
-GCOV counters prevent GCC from constant-folding the skb_ext_total_length()
-loop.  It also removes the CONFIG_KCOV_INSTRUMENT_ALL preprocessor guard
-from d6e5794b06c0: that guard was a precaution in case KCOV instrumentation
-also prevented constant folding, but KCOV's -fsanitize-coverage=trace-pc
-does not interfere with GCC's constant folding (verified experimentally
-with GCC 14.2 and GCC 16.0.1), so the guard is unnecessary.
-
-Patch 2/2 is an additional fix needed when -fprofile-update=atomic is
-added to CFLAGS_GCOV: __no_profile on the __always_inline function alone
-is insufficient because after inlining, the code resides in the caller's
-profiled body.  The caller (skb_extensions_init) needs __no_profile and
-noinline to prevent re-exposure to GCOV instrumentation.
-
-Changes v2 -> v3:
- - Patch 2/2: added __init since skb_extensions_init() is only called
-   from __init skb_init() - without it noinline would keep the function
-   in permanent .text, wasting memory after boot.
-
-Changes v1 -> v2:
- - Patch 1/2: expanded the commit message to explain why removing the
-   CONFIG_KCOV_INSTRUMENT_ALL guard is safe (KCOV's
-   -fsanitize-coverage=trace-pc does not inhibit constant folding,
-   unlike GCOV's -fprofile-arcs + -fno-tree-loop-im).
-   Changed Fixes tag to point at the commit that introduced the 5th
-   SKB extension type which triggered the failure.
-   Removed empty lines in tags area.
- - Patch 2/2: added noinline to skb_extensions_init() to prevent
-   the compiler from inlining it into skb_init(), which would
-   re-expose the function body to GCOV instrumentation.
-
-v2: https://lore.kernel.org/lkml/20260402140558.1437002-1-khorenko@virtuozzo.com/T/#t
-v1: https://lore.kernel.org/lkml/20260401142020.1434243-1-khorenko@virtuozzo.com/T/#t
-
-Tested with:
- - GCC 14.2.1, CONFIG_GCOV_PROFILE_ALL=y
- - GCC 14.2.1, CONFIG_KCOV_INSTRUMENT_ALL=y (GCOV disabled)
- - GCC 16.0.1 20260327 (experimental), CONFIG_GCOV_PROFILE_ALL=y
-
-Konstantin Khorenko (2):
-  net: fix skb_ext_total_length() BUILD_BUG_ON with
-    CONFIG_GCOV_PROFILE_ALL
-  net: add noinline __init __no_profile to skb_extensions_init() for
-    GCOV compatibility
-
- net/core/skbuff.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
--- 
-2.43.5
