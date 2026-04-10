@@ -1,143 +1,85 @@
-Received: from mail-ot1-f67.google.com (mail-ot1-f67.google.com [209.85.210.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3AEC3D902C
-	for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 15:11:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556043D88FC;
+	Fri, 10 Apr 2026 15:14:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775833893; cv=none; b=alRhUxdW+lBnY25KNvltl5o6mVaU2mE2m0Wq3Lphjextx7ZvQreSKsdeKzj2oCdOs7WiqU9y6Ou0r2fxuU4c6ZW3jforsRcqNvs3Iu1kg19uPoAAxh+6RomI1nQsiVDYsF2x7d6UM+8ESjMlgjz6eAiLGnSBdGHWNRYHd2f4Cd8=
+	t=1775834044; cv=none; b=gpgr7lzb9spY3gOIdofgYgwK0Kd6i0ZJPNyZgpAirXSmn/VjDcVjDXVZIXeJDOIDy8wCnYlsQ+tN/DSIc2bd05qaYN+EKsaKaW2PQ54kvnkMvR3PBOYnurqyqPFtWJ9255SgA7l4CCP1B0w0DmP49ZFsCHTVuhZ4aG8Pwl76RFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775833893; c=relaxed/simple;
-	bh=xjJORM7tfy7vWxsh2geZIlFRt9OGr4V1D2nhCg5EtZo=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k/Rmvqu1Fe8oBsAuinkawWZravgWpmiinrRvhQB+MZIg0joT33/p+VEBQ0scjJHiwma3de6rqPxNoT+lYkNcOJ2dUu61fn3xE0iQOv5nXybwycV24qNz8NARM1LaKI5N9dHXLmIvsC+zF1cPL7xHFy+45FjKGyDc+Llq+ILyTV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dPdqteGM; arc=none smtp.client-ip=209.85.210.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1775834044; c=relaxed/simple;
+	bh=ZX44VkA/oGGdYrqGVtHG3BQ09eU0s5TAD8UsmKEvOJ4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=AGz1vUoP8MTPzs+DH82yzUzCMeLVsUA8E9ihpsA94W30Pvzvmxpz6htpnzLWbOEQjfR1BZgD3Qw14EGnUUHYMqghdv4RAVArscyIJ+QCTikQ3yBG/ieYHQVo38XmP0V1Vr8v593YS5ziaQtFjMwPg3EwpOBmXFL/PBc/WQNcCPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DQRfv3hP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dPdqteGM"
-Received: by mail-ot1-f67.google.com with SMTP id 46e09a7af769-7d9e22176a7so1115982a34.1
-        for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 08:11:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775833891; x=1776438691; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zvG0lUmWvJDVV9hH9ZMs4QcX1z2+NpKGjl8rKX6kmfA=;
-        b=dPdqteGMXfG9ncp72tu6tdueyp/AzdW32IBzu6cumBfqWtkJtTdQqEgnjTAVuex0S+
-         QuFNDU9ssuG/62+F8yM3RQ6kkXWfGRSMwVysrJ0LxqxOyOFCwvoCt86l9f+e86cSe8JY
-         050LQYdBO5WkXT3AGlpY3DwrBz9vayRg70SAFUcg4cO0nIHwTXWpGsa0K3oX0eGEILnK
-         L3qIRGC23ocvMPhxcT2kWbjSRwoDKlbL31bwVVZRVCfjQgN3PgKvK9i5RTbgV4sw0C4E
-         q7tHilimkIdtE1jgeb8CqgoEpUkD2xXF5rPGFaF5PMQI6BJ0VIRZXAQ6PuEu4rvFH7j8
-         JUiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775833891; x=1776438691;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zvG0lUmWvJDVV9hH9ZMs4QcX1z2+NpKGjl8rKX6kmfA=;
-        b=IyWtFpLidBv008HdXX+rLIRbn6IOr9qXJWl6urbNfU3EoEJc1qeFqHehknf/ZKJos+
-         Y4OtnXQ/vpOH7xG4P8TlXc2NudTIA8PFbA7XcebRswsp5aWHr8yfp7uGEU/I5SLhmTvj
-         ZTP6dJzAJsyiJzHShvFPRrGGP/z5xoxgFNBFw9eYOLqyD2eLblpcIxLFUR8D5Xgu5VQ5
-         e4yqK66pfbcrLZPkeTdhn0ezT7J2/bjeU/zZ22XwTSpEHepmkrBX2EKevGR2gtRILbBz
-         Fnfz24ui2YWNoQDTnxJ8wAM6XjLj7DBRNJBCDOuQn+Xbgy3zONBzPFRs400RsX5Mmuk9
-         VggQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUWkG4AifuHNifhCFfIV1pcsparPh0x4Yx8ekfiM0WArqnc6yqwnd/pbVJFPZFwGOJ+fRvSiZs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4xoHKxDzEdS6Dmgtu/URGNW1zPZ8Y1pg4GLb1d/u7/KMJJDo9
-	WCrpNGsc5RqVE4zx1pfKUo1BZxrJdd0f7GYDkqv/rRheJN3KNW9Swh/f
-X-Gm-Gg: AeBDieviSMCVoWCvDjHM8lgCj4Ys9SVC7YCsuW7ulpww3Gq5KCEwldPAfFtKsUyuSMU
-	ROx5eH3BlXEbxltCrGQXMwXNyTvYOrIQWLJ1ndKUWLaEFpz5FG3jJ7uxkiCMdh/27ca6YKGT4cI
-	H6RNc3BVFGV/X4jbmBiqZDHOtRbzUc310MPW8eW1hz71RvWS/G5xaXmqxl3xDCswcI2SQ54g8sG
-	A2mCE7i2yF1lmqFfAi9OMuw8mmiFxvyUPxDK2fBdp95IlSeGBNWMYc6Gm/Psu1VKQM8LjofHQwW
-	JNTphyGyI3ryijOeYZOiYj5zrdjaXsIEGVOwTZblSKaTJBUmF+QveO9paHwrMJeOWh9ksFhiy03
-	s2ASogtc2+zcuqeB0k4Ab7stsOEqfglaex5fPiACdrYLU3iKYVheq3HWydqmqLcasJ96U7iiOCx
-	bFX/HduPksH5IF8BHy
-X-Received: by 2002:a05:6830:488e:b0:7d7:fb0f:3e56 with SMTP id 46e09a7af769-7dc27f74436mr1889260a34.26.1775833890725;
-        Fri, 10 Apr 2026 08:11:30 -0700 (PDT)
-Received: from localhost ([2a03:2880:12ff:4::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7dc323b3366sm472507a34.9.2026.04.10.08.11.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Apr 2026 08:11:30 -0700 (PDT)
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-X-Google-Original-From: Stanislav Fomichev <stfomichev@gmail.com>
-Date: Fri, 10 Apr 2026 08:11:29 -0700
-To: Breno Leitao <leitao@debian.org>
-Cc: Stanislav Fomichev <sdf.kernel@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn <willemb@google.com>, metze@samba.org, 
-	axboe@kernel.dk, Stanislav Fomichev <sdf@fomichev.me>, io-uring@vger.kernel.org, 
-	bpf@vger.kernel.org, netdev@vger.kernel.org, 
-	Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH net-next v3 0/4] net: move .getsockopt away from __user
- buffers
-Message-ID: <adkSnyihmD1Atfcf@devvm17672.vll0.facebook.com>
-References: <20260408-getsockopt-v3-0-061bb9cb355d@debian.org>
- <adaJqy6Q4L7c-eTs@devvm17672.vll0.facebook.com>
- <adjvoD9f7QaQMu5K@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DQRfv3hP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA7DC19421;
+	Fri, 10 Apr 2026 15:14:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775834044;
+	bh=ZX44VkA/oGGdYrqGVtHG3BQ09eU0s5TAD8UsmKEvOJ4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=DQRfv3hPFw/TKa/ZakF0C/CvhlLPEsVqQv+2r4uwxdObvOGMMWr2s346gixb/wzYP
+	 kH3jI1VGrMbPCg8bbeliLsWsv0WorMVV9pr65pzZbqt3ANfLMAZ3WpCzHo7EbPC0aw
+	 sFqvG5W5Zh5Zl9hqpd/S10vk3SPDt4AvvXdP7MWFAVnJ1yy95RtrFN5r3P/n0YzraC
+	 K1ddeqgVvP6yW3cqrHOPD+5bbhJuKzxhUEtkBkREvZCz2D1PF358eBsZtX1OaLotF8
+	 mIrAdKqmlNIgawRmNAF5mT5jG8tytmCXBJPCuscrYjON8tMw7soKn19X1CoLhvhPBR
+	 sIA/Sxe0F1CKA==
+From: Thomas Gleixner <tglx@kernel.org>
+To: Baolu Lu <baolu.lu@linux.intel.com>, LKML <linux-kernel@vger.kernel.org>
+Cc: baolu.lu@linux.intel.com, x86@kernel.org, iommu@lists.linux.dev, Arnd
+ Bergmann <arnd@arndb.de>, Michael Grzeschik <m.grzeschik@pengutronix.de>,
+ netdev@vger.kernel.org, linux-wireless@vger.kernel.org, Herbert Xu
+ <herbert@gondor.apana.org.au>, linux-crypto@vger.kernel.org, Vlastimil
+ Babka <vbabka@kernel.org>, linux-mm@kvack.org, David Woodhouse
+ <dwmw2@infradead.org>, Bernie Thompson <bernie@plugable.com>,
+ linux-fbdev@vger.kernel.org, Theodore Tso <tytso@mit.edu>,
+ linux-ext4@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, Andrey
+ Ryabinin <ryabinin.a.a@gmail.com>, Thomas Sailer
+ <t.sailer@alumni.ethz.ch>, linux-hams@vger.kernel.org, "Jason A.
+ Donenfeld" <Jason@zx2c4.com>, Richard Henderson
+ <richard.henderson@linaro.org>, linux-alpha@vger.kernel.org, Russell King
+ <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org, Catalin
+ Marinas <catalin.marinas@arm.com>, Huacai Chen <chenhuacai@kernel.org>,
+ loongarch@lists.linux.dev, Geert Uytterhoeven <geert@linux-m68k.org>,
+ linux-m68k@lists.linux-m68k.org, Dinh Nguyen <dinguyen@kernel.org>, Jonas
+ Bonn <jonas@southpole.se>, linux-openrisc@vger.kernel.org, Helge Deller
+ <deller@gmx.de>, linux-parisc@vger.kernel.org, Michael Ellerman
+ <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org, Paul Walmsley
+ <pjw@kernel.org>, linux-riscv@lists.infradead.org, Heiko Carstens
+ <hca@linux.ibm.com>, linux-s390@vger.kernel.org, "David S. Miller"
+ <davem@davemloft.net>, sparclinux@vger.kernel.org
+Subject: Re: [patch 09/38] iommu/vt-d: Use sched_clock() instead of
+ get_cycles()
+In-Reply-To: <9db9515b-08e8-47bd-aced-206ac183195a@linux.intel.com>
+References: <20260410120044.031381086@kernel.org>
+ <20260410120318.187521447@kernel.org>
+ <9db9515b-08e8-47bd-aced-206ac183195a@linux.intel.com>
+Date: Fri, 10 Apr 2026 17:14:00 +0200
+Message-ID: <87y0iuzw3r.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <adjvoD9f7QaQMu5K@gmail.com>
+Content-Type: text/plain
 
-On 04/10, Breno Leitao wrote:
-> Hello Stanislav,
-> 
-> On Wed, Apr 08, 2026 at 10:02:36AM -0700, Stanislav Fomichev wrote:
-> > On 04/08, Breno Leitao wrote:
-> >
-> > LGTM! Not sure what's your plan for the selftest? You wanna keep it
-> > outside or maybe repost v4 with it?
-> 
-> I'd be glad to include a selftest. I've already developed one covering both
-> protocols in this series and can respin with it if you'd like.
-> 
-> Test available at:
-> https://github.com/leitao/linux/commit/2d9311947061f1baa43858f597dd6c54d7ccc5d2
-> 
-> > Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-> 
-> Thanks for the review and guidance.
+On Fri, Apr 10 2026 at 21:45, Baolu Lu wrote:
+> On 4/10/2026 8:19 PM, Thomas Gleixner wrote:
+>> Calculating the timeout from get_cycles() is a historical leftover without
+>> any functional requirement.
+>> 
+>> Use ktime_get() instead.
+>
+> The subject line says "Use sched_clock() ...", but the implementation
+> actually uses ktime_get(). Is it a typo or anything I misunderstood?
 
-Yes, yes, I did see the test, so let's add it? I'm thinking that we should
-already have a lot of coverage from packetdrill tests, but things like
-you convert (packet/can) are probably less covered.
- 
-> > I'm also not sure your unconditional 'copy-optlen-back' will work for every
-> > proto, but I think we can put something into sockopt_t to make it avoid
-> > the copy if needed in the future.
-> 
-> Good point. I'd prefer not to over-engineer this now, but keep it
-> straightforward to add later if needed. This could be easily achieved with
-> something like:
-> 
->   typedef struct sockopt {
->         struct iov_iter iter_in;
->         struct iov_iter iter_out;
->         int optlen;
-> +       bool optlen_dirty;      /* set by callback when optlen should be written back */
->   } sockopt_t;
-> 
-> Wrapper becomes:
-> 
->   if (opt.optlen_dirty &&
->       copy_to_sockptr(optlen, &opt.optlen, sizeof(int)))
->         return -EFAULT;
-> 
-> and the protocol callback would need to set
-> 
->    opt->optlen_dirty = true;
-> 
-> I don't think this is needed yet, and if we do need it, it would be better
-> to review and commit them together, making the rationale clearer for
-> future developers/LLM agents.
-> 
-> What do you think?
+Indeed. Leftover from an earlier version.
 
-Agreed, I was thinking along the same lines. We can add it when/if
-needed. Since you wrap everything in sockopt_t it should be really
-easy to extend later.
+Thanks,
+
+        tglx
