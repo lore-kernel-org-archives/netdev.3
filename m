@@ -1,102 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01F52BCF4C;
-	Fri, 10 Apr 2026 02:23:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C05625A354;
+	Fri, 10 Apr 2026 02:32:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775787802; cv=none; b=XoSHMtANImNeaeiThNt5oyfoRb3wN2dvS6VBA6j3DRXY0Op/7UZ85X2thybDcTc+6z3A4eRc2H5jzg6HgALUTHMxqUpJTTnz84qfgRa4bgSbkQPo8/1240SDr9jg9KMhnQ+jidULvRrGZC+zNCVJN49pFgGibJ7cBwY8rkrhtwk=
+	t=1775788350; cv=none; b=tkg2p8G+tij3V+1NQCB/zvN3p4voIKsvPMacA5J0vbGQWKO2c2kdRME4iwylXCFt6dwI/2cd/TSMKwZo1Kyidk/9adAPRxDiMtKTncEJSq9J7EZfiF3D5gImNgxxSBR21BR7HX1QZAWCdFv0PNDH6NalBcFvDK0zPaK1ugfdS5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775787802; c=relaxed/simple;
-	bh=YwNw2G4QEfrLK8XwvDWLLP6/jGzcHPp5ZDH4ieyn/uM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GsAsGEsgeZ8qub9REKzBLOhH6YI8ezCghBlLthHUQHSugvXF62Lz2mvWS2VXDpwPGcB6e8KgmAqGXgROhThEpKt0vCSNaWDZPW5QLHo9TSq7nBOb9Kk/e8FjFjA+ErnEZCC0WlPi5G3Vq+djs0DubxS8OfE3DRFnryS41eHW+Vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g1lnH9As; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775788350; c=relaxed/simple;
+	bh=wVncFe7SIQwq8Kgb0H/3/ttZShv2kknMzmQX3tCdVuU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QehGQhz3+GrWttNkjwvqDNFGd26bQHAyLtJSWrDI+ajByXCWxmoBZ0Y5BAuxBds5FfkUrx6dvY2vsxAYjCKtpAfOP82ixOoXJiE+HmHun4y9VSyGM/t19wWzTkWU0/wzQSohcFlNCyJTd5Z6L98UA2NiqkPEvU/zpd7PnwcwPq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O96eZuXQ; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g1lnH9As"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA733C4CEF7;
-	Fri, 10 Apr 2026 02:23:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775787802;
-	bh=YwNw2G4QEfrLK8XwvDWLLP6/jGzcHPp5ZDH4ieyn/uM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=g1lnH9AswsGS7fwu5XH5eBh0GQWNQyG+Yz0PFZkOvjp+YoR8iJp/E2CHVjHlb3JP/
-	 WTh1ptirI1bgsRQ5LINki1kxSBJCfcIA74lMc0u5Crgv/oj0tGl+Udont2szv9li08
-	 jVrkMAAb+05FC7s5z1WGC3pbY2ehmW1vQtiqEyR9Sbf5uSnA2trGbINffcGl9VRkS2
-	 E5BbeRQRKFeicH9UkEwiPxXrcbN5Hp3AD4WQXxe1T2j5a6lAz2mzUpXz7ay8tcjhyS
-	 UPa6W1iElrWK0l79WjvdxkGMcZPhlf5cT7XbCBGag9A3HIT25YW1Q1u1jYF7aNUic4
-	 4Sq84QNVvFSEw==
-Date: Thu, 9 Apr 2026 19:23:20 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Xu Du <xudu@redhat.com>
-Cc: davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- horms@kernel.org, shuah@kernel.org, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC net-next 2/4] selftests: drv-net: tso: add helpers for
- double tunneling GSO
-Message-ID: <20260409192320.1b0a90be@kernel.org>
-In-Reply-To: <CAA92Kxmka9=GEvNwxOy7pSEuudqsaF3WGJttyQpYEkTyyYhgLg@mail.gmail.com>
-References: <cover.1775527362.git.xudu@redhat.com>
-	<b65f95793e03c1cb3ed3af4e1b2bee89fcf7e648.1775527362.git.xudu@redhat.com>
-	<20260407080844.35368eaa@kernel.org>
-	<CAA92KxmXOpH=CUqEdVV2948XhU1oFh8PBYLUt=ktSsK3sOh40g@mail.gmail.com>
-	<20260408172741.39e65ab3@kernel.org>
-	<CAA92Kxmka9=GEvNwxOy7pSEuudqsaF3WGJttyQpYEkTyyYhgLg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O96eZuXQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775788349; x=1807324349;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=wVncFe7SIQwq8Kgb0H/3/ttZShv2kknMzmQX3tCdVuU=;
+  b=O96eZuXQ4WoWFxii+Cc35shDxCb6J+BkIBC44vnp8O5rVO3F3Wjzmk6m
+   73bKqpd/AkdBkyb4Yj3vw8PSVG/vt/pbO0vh7I4a+BVlClJUNmah89jQB
+   nfzIYwm2UxfjjuKBzGdR6TIx8E1MPiaLRQMLcIOp0n5bxtoFDYUzjQZNN
+   q6+BC5d6SGQR/fVNMUMM/lbOpA0AZCTz0a6Zp6eIm1FrLkZPem3K1ExgF
+   FZ3j3f7pa7c5aEwc0CekQhlGeUxsBzAkTi/q3YFKlagwgAcvfaKHbuQ/J
+   deuJkVkv/nvUFdRryONBQdfmGbQLJdWEUrQPEq0w4QxQra/IwtcDh8Ywc
+   w==;
+X-CSE-ConnectionGUID: TxVF/OT8SWWPJ1AIJLQb5w==
+X-CSE-MsgGUID: ooqHPET5Teyka51qHOnbHg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11754"; a="76988412"
+X-IronPort-AV: E=Sophos;i="6.23,170,1770624000"; 
+   d="scan'208";a="76988412"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2026 19:32:28 -0700
+X-CSE-ConnectionGUID: /Q0DNbedQzm+3Gr5cJESAw==
+X-CSE-MsgGUID: Z2bwjH9kRGqDrIYeAmS7xA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,170,1770624000"; 
+   d="scan'208";a="224214256"
+Received: from unknown (HELO localhost.png.intel.com) ([10.107.255.31])
+  by fmviesa006.fm.intel.com with ESMTP; 09 Apr 2026 19:32:24 -0700
+From: KhaiWenTan <khai.wen.tan@linux.intel.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	rmk+kernel@armlinux.org.uk,
+	maxime.chevallier@bootlin.com,
+	ovidiu.panait.rb@renesas.com,
+	vladimir.oltean@nxp.com
+Cc: netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	yoong.siang.song@intel.com,
+	hong.aun.looi@intel.com,
+	khai.wen.tan@intel.com,
+	KhaiWenTan <khai.wen.tan@linux.intel.com>
+Subject: [PATCH net 1/1] net: stmmac: Update default_an_inband before passing value to phylink_config
+Date: Fri, 10 Apr 2026 10:07:35 +0800
+Message-ID: <20260410020735.327590-1-khai.wen.tan@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, 9 Apr 2026 15:35:21 +0800 Xu Du wrote:
-> > > I want to test the gro-hint parameter functionality of the GENEVE tunnel,
-> > > so I intend to use YNL for the testing. I am conducting the test between
-> > > two machines using SSH type. I want to add the gro-hint parameter on
-> > > both the local and remote nodes; however, I am unable to invoke class
-> > > RtnlFamily on the remote node via SSH.  
-> >
-> > Oh. But that's not really what you're doing:
-> >
-> > +def ynlcli(family, args, json=None, ns=None, host=None):
-> > +    if (KSFT_DIR / "kselftest-list.txt").exists():
-> > +        cli = KSFT_DIR / "net/lib/ynl/pyynl/cli.py"
-> > +        spec = KSFT_DIR / f"net/lib/specs/{family}.yaml"
-> > +    else:
-> > +        cli = KSRC / "tools/net/ynl/pyynl/cli.py"
-> > +        spec = KSRC / f"Documentation/netlink/specs/{family}.yaml"
-> > +    if not cli.exists():
-> > +        raise FileNotFoundError(f"cli not found at {cli}")
-> > +    args = f"--spec {spec} --no-schema {args}"
-> > +    return tool(cli.as_posix(), args, json=json, ns=ns, host=host, shell=True)
-> >
-> > You're not deploying anything to the remote system.
-> > Are you assuming that the remote system magically has the same
-> > filesystem layout?
-> >
-> > You can use the ynl CLI but it has to be whatever version is on
-> > the remote system. Just call ynl --family rt-link, don't dig
-> > around for the spec paths etc.
-> >  
-> 
-> In fact, I have tested this from two different locations. The first is in
-> tools/testing/selftests/drivers/net/hw/ using python3 tso.py,
-> which utilizes the specs located in Documentation/netlink/specs/.
-> The second follows the testing methodology described in the
-> README.rst of tools/testing/selftests/drivers/net/, which uses the specs
-> in net/lib/specs/. Based on this, I include that different processes utilize
-> different spec locations.
-> I also referred to the implementation in net/lib/py/ynl.py, which employs
-> a similar handling logic. Both using the source code repository and
-> installing the package can meet the requirements for remote testing.
+get_interfaces() will update both the plat->phy_interfaces and
+mdio_bus_data->default_an_inband based on reading a SERDES register.
 
-On the local system you have Python bindings.
-On the remote system you can't assume KSFT_DIR or KSRC exist.
+Therefore, we moved the priv->plat->get_interfaces() to be executed
+first before assigning mdio_bus_data->default_an_inband to
+config->default_an_inband to ensure default_an_inband is in correct
+value during PHY setup.
 
-You can use ynl CLI on the remote system, like we use ip, tc etc.
-But then just use --family rt-link, don't try to find the filesystem
-path to the spec.
+Fixes: ca732e990fc8 ("net: stmmac: add get_interfaces() platform method")
+Signed-off-by: KhaiWenTan <khai.wen.tan@linux.intel.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Is this clear now? Am I misunderstanding your misunderstanding?
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 13d3cac056be..c92054648a7e 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -1345,10 +1345,6 @@ static int stmmac_phylink_setup(struct stmmac_priv *priv)
+ 	priv->tx_lpi_clk_stop = priv->plat->flags &
+ 				STMMAC_FLAG_EN_TX_LPI_CLOCKGATING;
+ 
+-	mdio_bus_data = priv->plat->mdio_bus_data;
+-	if (mdio_bus_data)
+-		config->default_an_inband = mdio_bus_data->default_an_inband;
+-
+ 	/* Get the PHY interface modes (at the PHY end of the link) that
+ 	 * are supported by the platform.
+ 	 */
+@@ -1356,6 +1352,10 @@ static int stmmac_phylink_setup(struct stmmac_priv *priv)
+ 		priv->plat->get_interfaces(priv, priv->plat->bsp_priv,
+ 					   config->supported_interfaces);
+ 
++	mdio_bus_data = priv->plat->mdio_bus_data;
++	if (mdio_bus_data)
++		config->default_an_inband = mdio_bus_data->default_an_inband;
++
+ 	/* Set the platform/firmware specified interface mode if the
+ 	 * supported interfaces have not already been provided using
+ 	 * phy_interface as a last resort.
+-- 
+2.43.0
+
