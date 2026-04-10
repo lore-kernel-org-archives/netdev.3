@@ -1,63 +1,88 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 748DF3009D6;
-	Fri, 10 Apr 2026 02:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE27175A75;
+	Fri, 10 Apr 2026 03:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775789992; cv=none; b=GVIfEhg1GOJm1/CYjnDxPaq+EU97797Owv5NaVQ7Av24pQEX/+NwxQ3Bc42MoKxcJP09pjr9dmFX9tfJScEvnYZjG6J5xhP8WLM6riTWFhYVgovdewRLLXU9usQw5nWt8Li8sOgTVXqcoZeyK+oV5702OpewnG9b+Rc/pkhOYys=
+	t=1775790636; cv=none; b=gHM4PEp4BNt0mjKlMSJQ1Q2nd9vB5WpIBmt2RZgFZreBfvJB1OdXj6MSnDFAT4LcYJfeNt2t/XGqh6Nfi5M+0l5zdyT+wPp+XtzsJLqSqrU3NOG84w2NaIfCvEaWfhAjHXsuN6KVDawBmS8VztZ5crQuBX43/n7jZtHYtX4oFjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775789992; c=relaxed/simple;
-	bh=MLXmBUt+5y/LI0drG1RByAqBpv7xchmUlLNdG+XBJsQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mzVFk6I/YrN73B5QbTqjZMNXfsISdCdRC8pIoFA0qSuOe6ak8gp6Z35rwBQ52TcTuFPGn4v7PoQGQwezlTlQFbgGfDfuHb4fCiymsWLZZNyXOovFvV6cVLAESBBRaJYYNnAr0KoH/4FNaCGClkzLWqmuDDfekwt14L2pwEFfqzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ET+FxGEv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775790636; c=relaxed/simple;
+	bh=4j2eh4mER1CzK18+0czj/YEhVEMELQyD7wyOSgyhEOE=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=UUEDQyoBkEdKvwge83F8yIeYMKf2g4dN4gUlx2Jq1DpcAHsB5T9mtTZNvMQpTbuDcLWnrJ5M4qpDlM91YcEAqTrG9oTsoRXaImNOv0zNxnzQms+BvFYm+wGGG9bf7qapThWfR4AzJvI/5I5IWo7MKNe+9wZDLom8IbSTlRJO5ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kKvmwDqv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ET+FxGEv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 401BEC4CEF7;
-	Fri, 10 Apr 2026 02:59:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kKvmwDqv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F0D0C4CEF7;
+	Fri, 10 Apr 2026 03:10:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775789992;
-	bh=MLXmBUt+5y/LI0drG1RByAqBpv7xchmUlLNdG+XBJsQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ET+FxGEvFyK5aaK+ipK1ANSh6vQiJyeax0/cD9WmrzLEe2QVyFmRKPWqSObyd+qTJ
-	 QSzcUj6m9S1xblsfE44tUvjCAFeYDYC9srazHTj/qsl1mlRTo8vOed9ZeIdSZq6j7D
-	 pudl4tcKOjQ2p5tL1gDhD9kNHYDRC4/08SXGsCQlPrs2owo9yVSh3EjVx2JgOqXO5M
-	 ajsOf01oae4IUhmEzFaTSw25ZjdD4mYq3oljBQ4Ou3QbodLrpUdlGjyZgIb6Z5XONz
-	 IqOPpMtRgIKjzB4McPOuCK5kiTFI53fID9YsKYugOxt2j3/HAkavSgktmlQwtn39rz
-	 fVv4wwHryhw8A==
-Date: Thu, 9 Apr 2026 19:59:50 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Christian Marangi
- <ansuelsmth@gmail.com>, Benjamin Larsson <benjamin.larsson@genexis.eu>,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- netdev@vger.kernel.org, devicetree@vger.kernel.org, Xuegang Lu
- <xuegang.lu@airoha.com>
-Subject: Re: [PATCH net-next v3 00/12] net: airoha: Support multiple
- net_devices connected to the same GDM port
-Message-ID: <20260409195950.74e4bc97@kernel.org>
-In-Reply-To: <20260406-airoha-eth-multi-serdes-v3-0-ab6ea49d59ff@kernel.org>
-References: <20260406-airoha-eth-multi-serdes-v3-0-ab6ea49d59ff@kernel.org>
+	s=k20201202; t=1775790636;
+	bh=4j2eh4mER1CzK18+0czj/YEhVEMELQyD7wyOSgyhEOE=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=kKvmwDqvDHnuKb5vFuZQDbZlGDueKqx69jc/Tu9krEn3Vd0uIUfeYRCnko7LdB0B7
+	 ngh3CHtxa2/t8LhOvgahnX9mxahp2/YN+99wZU0yBHblS2YVzGif5zVOMWcC4cfP+C
+	 2hgqrYUGnFIFyLQAaXUKOKbqmfAE7SVLTofpBsao7ApNwfrLU2dd7+aKiquB5WLPxD
+	 2BwAb81H74sC0zcPviPAz5yRTU7Iz6Ir2/2HPYG2+Dii5jvNN5aZU/qrJnQ2k2sN1e
+	 OpE74XfvtIgHos2cDVmX0fN7aIUxCV93dfFcq+rfBuQ5IZb4latSRfxMtBvn55DDcr
+	 uV4mNTvNh1j7Q==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CE593809A22;
+	Fri, 10 Apr 2026 03:10:12 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v8 0/4] macsec: Add support for VLAN filtering in
+ offload
+ mode
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177579061105.1844106.11250785795431819587.git-patchwork-notify@kernel.org>
+Date: Fri, 10 Apr 2026 03:10:11 +0000
+References: <20260408115240.1636047-1-cratiu@nvidia.com>
+In-Reply-To: <20260408115240.1636047-1-cratiu@nvidia.com>
+To: Cosmin Ratiu <cratiu@nvidia.com>
+Cc: netdev@vger.kernel.org, sd@queasysnail.net, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, sdf@fomichev.me, dw@davidwei.uk, shuah@kernel.org,
+ linux-kselftest@vger.kernel.org, dtatulea@nvidia.com
 
-On Mon, 06 Apr 2026 12:34:05 +0200 Lorenzo Bianconi wrote:
-> EN7581 or AN7583 SoCs support connecting multiple external SerDes (e.g.
-> Ethernet or USB SerDes) to GDM3 or GDM4 ports via a hw arbiter that
-> manages the traffic in a TDM manner. As a result multiple net_devices can
-> connect to the same GDM{3,4} port and there is a theoretical "1:n"
-> relation between GDM ports and net_devices.
+Hello:
 
-Looks like this driver uses page pool.
-If you're sharing the same page pool across multiple netdevs
-it must not be linked to a netdev.
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Wed, 8 Apr 2026 14:52:36 +0300 you wrote:
+> This short series adds support for VLANs in MACsec devices when offload
+> mode is enabled. This allows VLAN netdevs on top of MACsec netdevs to
+> function, which accidentally used to be the case in the past, but was
+> broken. This series adds back proper support.
+> 
+> As part of this, the existing nsim-only MACsec offload tests were
+> translated to Python so they can run against real HW and new
+> traffic-based tests were added for VLAN filter propagation, since
+> there's currently no uAPI to check VLAN filters.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v8,1/4] selftests: Migrate nsim-only MACsec tests to Python
+    https://git.kernel.org/netdev/net/c/e1ab601bb230
+  - [net,v8,2/4] nsim: Add support for VLAN filters
+    https://git.kernel.org/netdev/net/c/c89f194b6b8e
+  - [net,v8,3/4] selftests: Add MACsec VLAN propagation traffic test
+    https://git.kernel.org/netdev/net/c/26555673bc78
+  - [net,v8,4/4] macsec: Support VLAN-filtering lower devices
+    https://git.kernel.org/netdev/net/c/a363b1c8be87
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
