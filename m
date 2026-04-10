@@ -1,133 +1,83 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B312206A7
-	for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 05:43:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775799792; cv=pass; b=czd8QveUM6zIkKwAfn0ioos4mJ2biYjc3uRYE+ISREfvVubQEbl2QRUOFIMynTxXcGAs8/gFAVZozwkvkf8TlzmUkTzAMNDJ5VurEufA3ZmAA1mF96WRIWKhe+HeTgVIgKHanh7hugYA2sBrkFWEr5V9X//dNn5fQlEhdt+RoR4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775799792; c=relaxed/simple;
-	bh=rklJJS3t0AHyQ4VzOjeh+EUsSSkGxZFW3T222h2Zcd4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X0zZj/UI8ZzuMeDQHwMJDuFSREReq9nFxTOg1zfHgi7ViCYdS8PPuG/BmxvKox7AFolw4Xpq4xnjPB/jN4ZHdBKqjrWCsu4MJcTBMeZvqubsDfi2YRcbUwH0WvpLqtckV0pVWt560o7DrqzfflstSc/Q1hXbYeQNoWeGWr0gmqY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LpnP5sWD; arc=pass smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A34E30BF5C;
+	Fri, 10 Apr 2026 05:50:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775800216; cv=none; b=FU16IV+47rdXmcROT0lWWAi77U0+sNZLm52osX5E1KS2xwKa2AOMUvwZYdPthoOl4rdt59RWeMhKgQKCbiZDtGFTybmlUmE3X3zRphlRu4pemuVyRdM1SUOY7pknUKp2Mk7t86VwH3yy7wZQo5RYPOVBc7PSDlXUhKnN9MReb98=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775800216; c=relaxed/simple;
+	bh=zPqjh1z6xmTB9lPHSqZ2VvUqMptfElhRPcqqbSlPndQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=JaAlLMjnew56bnKnAZnGtVzkOnaRMXIF9Q+nuGF3Y1EkNPiXzG+tMvTJS4NBlJPSMbjpuZmYoa0YGuXJhYfFOcTOeY/jpU6JTS5NKS1lcL7lva67ERZdkj8TdKIifqqbPyKECjRVVOB/5JqqJp6EgxZGi3epuwHsIfYLAWbTen4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=X0V4Gu/z; arc=none smtp.client-ip=95.215.58.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LpnP5sWD"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-43cf5ad500fso1322382f8f.0
-        for <netdev@vger.kernel.org>; Thu, 09 Apr 2026 22:43:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775799790; cv=none;
-        d=google.com; s=arc-20240605;
-        b=MF7X/zfzxdi+1Cn9nvun7T+FHZRq6t7E4UnaAxbpm+3YsTooIMN4/mrjJbYN8HpKqS
-         rcjDbJdtBnt+isL6QiPPOZfrkA1cruMTGTncZOfubQkvOP8fI613o0nrFZ50W4JnvsRJ
-         VCLaCihi2FVczbKs7H40b7CwKQrlLdz4pj/xmUW+0gijoM7epVElY1qsxyBhMogR+bRR
-         lxhyF7BvbJEVwnUMGpVS9Sboq311ax/f+yuDh19D7XgdUNvU2wTltqVX+tPNyC1er5NR
-         jM0IuH32GB4ngX7tymO/DZbon6bAvTeOQhO5JsgfWd24W4JGf8ZCjNBPO/QFKsUVddYg
-         2TIg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=U1pt5x+EZNVQ/9L2esCcdERqDp98YgPBmh2Q0zovV4k=;
-        fh=W2GGfhWzd/L5MFflZMKO1UayyzNkv6aAXzP61V/XEE0=;
-        b=YpK1cL50BbjRkscQObVrEBVVYQrSvIlH8l2pJkL4nKNyP2MExev0qpNNOcNvBw4kia
-         L313lxyXZp4d/0bCaoXP7HFtvnTm3CK7Z6+vzDfszcEeXNGIADMWD3O5ZMhpL2MW2Son
-         WLDfp+jjqjVI/GPaSAwsEKsxbzm9rOpEBTfhrsuaMEEVEEQ/KDz/xAgtkd5wkz9++omR
-         kzke+DAx7Z6gCuJrz/5/uQaU0Zy0KObwjKWf0oPKfIO7CzULwtlF534Fap9wuPhqVTIc
-         GvHHyQ2tM0erPKkVjl2ZFAqWp/DgYP42k0ZA7aRuV2/j03LoRUE9Kt+GmmhXOGzYQSJF
-         EUpw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775799790; x=1776404590; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=U1pt5x+EZNVQ/9L2esCcdERqDp98YgPBmh2Q0zovV4k=;
-        b=LpnP5sWDaSoNsUiasi5E9KniRmzzBItM0KsLGn1QFlpiY9/HtV73Bj4z/DpaAlkxee
-         4Az9kAcG8e6dSfBJyDqRGOYcKBRTzzlJoW8tyNRFS4/xZdgKh2+AmsIa/VlkH8AWYjql
-         kM3De+g1Zgftgyp2zzaYtS52ihZgyO01mA3u0nczU6qcrLUKbL4cIcz+nbuCJlYQweJg
-         n16HCQumAGeGrc8BCaMH8eG0JIrxz22MxkTlt0ZEJYy8P+7F8YVoxSCA8cmmROl7H7wG
-         sDN7iEm8bMKQw2+l4lB/go5/iCMg0+PpAGI/v7wo1WdeCZLwDyoVCXz5sw2A0pegVnqf
-         lrJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775799790; x=1776404590;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=U1pt5x+EZNVQ/9L2esCcdERqDp98YgPBmh2Q0zovV4k=;
-        b=q00ANooM58pULZk8m+WGm22X5ZgYo6zWjCFp1OkTxccqngi04KKdNcdvkopr/YqZGq
-         w7Aog4DfmfYfVdHUP17NUkXvgzNIg+mUGg1LiMHfD+nEZ3rFM4saGjJRzlLz4DAwYeF8
-         WTt13FJoa5iBhGL30GvtxUCXdWT380CqRvEJ+9E8SaGJbBZQSbiH89CNifxeEWY1ST53
-         W31GP6KoP5+lmK+fW5Tt5j/w+qq3Bhw+P5UEA8isTQHg1DXLZqQUVqZHrc+nH/Flm8oJ
-         UufkOpXGhF36KbDGA3sPTFoF3ATBmgK3YSXUGNvg6UW/U5mgCkVz6z/ilosythpI+Wds
-         FHgA==
-X-Forwarded-Encrypted: i=1; AJvYcCVqNEHyWdP5OLpdxohlQrpjrarNVw71luuDxSn2T/ko4FScN79W94tmgJi2X7p6Uq6mbbGQxSU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLK2LooCVQDr5agv5yskG/5bWXrhIlCVCoH3Qwo5LIRy0EZp9O
-	88PVpVTYy2ZsOpPla//MGyV5FMWVWziIRRrwC1NClUdYfW+HIC+64lfHN0oLyMejPUhbzS7Y7xg
-	SLKnoqez4Kkk3lWqMKZ47BfUdxmG1L7TUSJxBKwlu
-X-Gm-Gg: AeBDiesxCCtSbZqFETHn3CXwPW6oviEdESg+a4xlg9qusamvS7N23Xx+MDpUVgw6oA9
-	oBDHIsdWwQB9jVpUL3VpR5QzTqYfcJmgkVJnv2RF6tjiqt39IjR2jGthUd1X5JLf3vkySfWBUrX
-	COxIMouLWwa7rhqcgOYyqVueXQpTLCDgbiGZvIReIi5b9/GY/jtacTlRYaGP3R9cYFFiE52Uyd8
-	B+4oC8eAvTrbeHEFv1Rqpr+3tMRpTsGqcSVjYS8MxwtdtJ+Meoxhl4yujDsiF8LsWiEVsrPvgX5
-	gHWnEYw9OifVK77thpq6SZ9rIkjM4FD/30U1sWhyC0b9wVHvIkO9keUSSI8=
-X-Received: by 2002:a5d:5d0b:0:b0:439:b59e:5e65 with SMTP id
- ffacd0b85a97d-43d6427b770mr2432728f8f.6.1775799789589; Thu, 09 Apr 2026
- 22:43:09 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="X0V4Gu/z"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775800213;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sY29MFK4dUmAkfKCpdegdk2ruSANehnlXZ1ZNUYSz+o=;
+	b=X0V4Gu/zGLKPs5pkelr9HzGpJ3vdwcz042miYoIDaT/CvPRZPseWrJ/tXAstif7IdSsqWH
+	eWi56Pw+f+6Z+kEcIh+91TktD6U+krgqLmMZCUIK+i/Gr2vKgeZnXo1yhv4AhkpuPtu55O
+	9C01GO2fY9U4/LFJoKlSLz408dMM30E=
+From: Qingfang Deng <qingfang.deng@linux.dev>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: linux-ppp@vger.kernel.org,
+	Qingfang Deng <qingfang.deng@linux.dev>
+Subject: [PATCH net-next v2 2/2] pppox: convert pppox_sk() to use container_of()
+Date: Fri, 10 Apr 2026 13:49:50 +0800
+Message-ID: <20260410054954.114031-2-qingfang.deng@linux.dev>
+In-Reply-To: <20260410054954.114031-1-qingfang.deng@linux.dev>
+References: <20260410054954.114031-1-qingfang.deng@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260408-binder-netlink-v2-0-c0d327d15435@google.com>
- <20260408-binder-netlink-v2-1-c0d327d15435@google.com> <a12cc023-629e-457d-af02-4c481024dda0@lunn.ch>
-In-Reply-To: <a12cc023-629e-457d-af02-4c481024dda0@lunn.ch>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 10 Apr 2026 07:42:57 +0200
-X-Gm-Features: AQROBzDO1-pXW1WE9egnGqp-vaAZUj57O5qVLNjOBzOqwnHEiR-EFGeoLY8CTpg
-Message-ID: <CAH5fLgii7gkjpn5bkj-dd8VWkFGr_uTHjc292+GM9OA5qUJ+PQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] rust: netlink: add raw netlink abstraction
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Donald Hunter <donald.hunter@gmail.com>, Jakub Kicinski <kuba@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Thu, Apr 9, 2026 at 11:50=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> > +__rust_helper void rust_helper_genlmsg_cancel(struct sk_buff *skb, voi=
-d *hdr)
-> > +{
-> > +     return genlmsg_cancel(skb, hdr);
-> > +}
-> > +
-> > +__rust_helper void rust_helper_genlmsg_end(struct sk_buff *skb, void *=
-hdr)
-> > +{
-> > +     return genlmsg_end(skb, hdr);
-> > +}
-> > +
-> > +__rust_helper void rust_helper_nlmsg_free(struct sk_buff *skb)
-> > +{
-> > +     return nlmsg_free(skb);
-> > +}
->
-> It is a bit odd for a void function to call return like this,
-> especially when the functions they are calling are also void
-> functions.
+Use container_of() macro instead of direct pointer casting to get the
+pppox_sock from a sock pointer.
 
-Oh you're right. I think that's what we call a copy-paste mistake.
-I'll fix it up in the next version.
+Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
+---
+Changes in v2:
+ Do not remove the comment, as the struct is allocated from sk_alloc and
+ still require sock to be the first member.
 
-Alice
+ Link to v1: https://lore.kernel.org/r/20260408015138.280687-2-qingfang.deng@linux.dev
+
+ include/linux/if_pppox.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux/if_pppox.h b/include/linux/if_pppox.h
+index 636772693f9a..594d6dc3f4c9 100644
+--- a/include/linux/if_pppox.h
++++ b/include/linux/if_pppox.h
+@@ -54,7 +54,7 @@ struct pppox_sock {
+ 
+ static inline struct pppox_sock *pppox_sk(struct sock *sk)
+ {
+-	return (struct pppox_sock *)sk;
++	return container_of(sk, struct pppox_sock, sk);
+ }
+ 
+ struct module;
+-- 
+2.43.0
+
