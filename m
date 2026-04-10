@@ -1,226 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FBFB345725;
-	Fri, 10 Apr 2026 20:12:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62EC2392828
+	for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 20:13:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775851946; cv=none; b=bvsK9DkHcqd66dDvzaoXvHy36qDpgmZ05TZPp6Q3ZfjTVjbb1GQJrzIlXjdQqs0DAf1T/pde1pfj3sVqgX/5w4zvFCzESCxrwGXjA9Ac3pFbfsfw50+ZGp+qXY+r2XXyade/VrrosG2/W/bCJxw5KDgIMIH9BayjyAmIE83XcEs=
+	t=1775852000; cv=none; b=bP3Z0QoJzxou1EMOvmrfGPXYMVgUnZ2ExHaYaLmPvDTTMQQ6BXHUeknSOqEIFGhfI+sabQ+8MS8s5yEwL55YaSG2uYvtVyu6Ac2vSoOOJk4fTbSIHIJ8F4NN5RBp2SWkD7docvT7JbdJ/4k60lBpdK0lPHQiWtbhqBwxBUduntk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775851946; c=relaxed/simple;
-	bh=zJENbdJF3J8/i0rEsNUS4/irSrpTd9hqFECXcs7Qcos=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HtKDGDrQA17smjnv7/p4bQ8jRJGePH7KJQgtSnRPsx0F7ObSDh42Tu6QutE+R0VuZFmQl7aeCCSx0BW7Txy6uDBmmolthfphHz9jA8/E3i9LW4HitOOKVnT321wAR/E7GPBn+p+W0ahccq+G4O6F8UVpS4caAr8+QNCque0bt4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UAhC5VmT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775852000; c=relaxed/simple;
+	bh=qiRcrLqgsly/sA58JHzcA1Yo5JF3HlyznqHytmQzUDg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=B+Pk5r5InnOfOHmWS1nb4GM3/H8VvOMGBR8fdiphlhkXa0YMv3jAGDN3Dn/w7m0oluhCAZFgmmT2r4Bzvtk7BjFKBKSkJPBs9P9tePD6dVuLDimh+F6IWKfeYQfxRf+NwyBDO1w9/w3A4pZJzUhCbZ30hrfs1UDp2j1Rn8uHgrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i4fUbZAM; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UAhC5VmT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B298C19421;
-	Fri, 10 Apr 2026 20:12:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775851945;
-	bh=zJENbdJF3J8/i0rEsNUS4/irSrpTd9hqFECXcs7Qcos=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UAhC5VmThF6Xn0bJcBm3XoWuvLFehrmwCCVh8/pBq51dJFadCd3MmwBLZuJ/+Esuy
-	 yAaIxmi+LknCLKqbqRfZKhki0iImduT3VzjUsiyF8CJohdLB1DLu6cRojlFP3cb6sE
-	 aGprfqeW2cf5ZpIWjo68etmwJgyaQeRnQBC3Kx+Fp8c2pDmMXUaehg04a9GRfXeb82
-	 LKKy4zyoVCmHc1TrP4h+iy9LeAPIxFDHJbJyijQCTWeXElHREIIS+M/FSSqPeG11WG
-	 BRzU4qLsZ3YVf1uZoa8OH/07M8TfEl3uCf5E3Yw7qSRgzKrTjsROVmWOU2/TbfOshj
-	 WLY9DE2MjJ7uQ==
-From: Simon Horman <horms@kernel.org>
-To: gongfan1@huawei.com
-Cc: Simon Horman <horms@kernel.org>,
-	edumazet@google.com,
-	zhengjiezhen@h-partners.com,
-	guoxin09@huawei.com,
-	netdev@vger.kernel.org,
-	andrew+netdev@lunn.ch,
-	maxime.chevallier@bootlin.com,
-	zhoushuai28@huawei.com,
-	mohsin.bashr@gmail.com,
-	ioana.ciornei@nxp.com,
-	zhuyikai1@h-partners.com,
-	luosifu@huawei.com,
-	linux-kernel@vger.kernel.org,
-	kuba@kernel.org,
-	davem@davemloft.net,
-	linux-doc@vger.kernel.org,
-	pabeni@redhat.com,
-	shijing34@huawei.com,
-	wulike1@huawei.com
-Subject: Re: [PATCH net-next v04 3/6] hinic3: Add ethtool coalesce ops
-Date: Fri, 10 Apr 2026 21:12:09 +0100
-Message-ID: <20260410201209.651627-1-horms@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <f9f5c1239d17675283a2da8b307f5aca8f46864c.1775618798.git.zhuyikai1@h-partners.com>
-References: <f9f5c1239d17675283a2da8b307f5aca8f46864c.1775618798.git.zhuyikai1@h-partners.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i4fUbZAM"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82c7ec40f92so2408832b3a.0
+        for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 13:13:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775851998; x=1776456798; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UqaTGJhN3710wR5/WAiTwoeY86F0ZEdJtqmdan8PJQE=;
+        b=i4fUbZAMBg2oMhovLkuQUnpFBUg9ncYy3OvbraDRvVBSKUPNheT1KRiuwZtEmcrHit
+         PvZskVxzLb4sk6FbzQeHDwI39gDp1kGJd//ibEyxRysIXCoL+HMsPLY5ThskxIM4DdpS
+         RyxnPYg82SRSzp8JUDH9UabM/RRm5kmFMv55BhFhXXGg7MnlwP6Qoq6ex7o/M9PMej3Q
+         q4Nu9Hu1OpPtFbjCF29XGSPoA1NN9dj8fLRty15EBX8/yMulq0jKKHT6SQMfJyBEVNvR
+         oozGOdi3NZjEtB8cmbUBY2x0m97w1i+fj4ahbZn3gvKHviNOBLd5zDA1GI54BFWdVALn
+         39Xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775851998; x=1776456798;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UqaTGJhN3710wR5/WAiTwoeY86F0ZEdJtqmdan8PJQE=;
+        b=DIWkWyu4nAb7xThbvgIBvtt0i7AUPVUb0QuK1p5BoXQYAyrw8+DGCcVTP2sNSJWnFH
+         GNvQtISPE53d+Mn9T1U+ChEERQBStcHprqn0ce+uIbzyvzs6YrWi+9PgUeIGc/TBdYWC
+         m/xhQZBLw6lunzTMh697BqxjqhPQ6Rb9FkGyZ+QDSQ614sQh3NkFy4cI3oWl37FALPn2
+         vK1YN3uXI+9KNNuDQYpMDuDzpkMEIH1PKqVERfIxWKTbQAxgK8OwsOr2YZMDAB0Xc/JP
+         zP1nOoei/QzFVViR4pt88HuQ89dbUOpYicLLlSgIrk50oneHDX8Sj525FBSvkzcNzmJn
+         2H/g==
+X-Forwarded-Encrypted: i=1; AJvYcCVqK9+BW0Yfbbw4i7UuTGXkk9RAUbMR2QD4tkcCHqD6aslp4Zi0iAwQqBqmftOAHAiEM9YpMCY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3yLrLDz50l+PzTBCAt9KAP0vzW6Jc2BkgrPi0r1ka7kj7J7PP
+	2wKnvlsXvUqh6IYrb2Bss51nX0AUbGVntaM9LrtEWoW4L+FrTfDv7Q/WHRjMqFdj72yzIvGgPh9
+	0PC6xnQ==
+X-Received: from pfbbj3.prod.google.com ([2002:a05:6a00:3183:b0:82c:e71a:ff8e])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a217:b0:82d:1faf:7748
+ with SMTP id d2e1a72fcca58-82f0c2a7399mr5178809b3a.33.1775851997377; Fri, 10
+ Apr 2026 13:13:17 -0700 (PDT)
+Date: Fri, 10 Apr 2026 20:06:21 +0000
+In-Reply-To: <f6cbbc8da90e95584847b5ceb60aae830d1631c2.1775731983.git.wangjiexun2025@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <f6cbbc8da90e95584847b5ceb60aae830d1631c2.1775731983.git.wangjiexun2025@gmail.com>
+X-Mailer: git-send-email 2.53.0.1213.gd9a14994de-goog
+Message-ID: <20260410201315.1573403-1-kuniyu@google.com>
+Subject: Re: [PATCH net 1/1] af_unix: Hold receive queue lock in ioctl(SIOCATMARK)
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: n05ec@lzu.edu.cn
+Cc: bird@lzu.edu.cn, davem@davemloft.net, edumazet@google.com, 
+	enjou1224z@gmail.com, horms@kernel.org, kuba@kernel.org, kuniyu@google.com, 
+	netdev@vger.kernel.org, pabeni@redhat.com, rao.shoaib@oracle.com, 
+	tomapufckgml@gmail.com, wangjiexun2025@gmail.com, yifanwucs@gmail.com, 
+	yuantan098@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+From: Ren Wei <n05ec@lzu.edu.cn>
+Date: Fri, 10 Apr 2026 14:31:57 +0800
+> From: Jiexun Wang <wangjiexun2025@gmail.com>
+> 
+> unix_ioctl() peeks at the receive queue and may check both the head skb
+> and its successor while deciding whether SIOCATMARK should report the
+> mark. However, u->iolock does not stabilize receive-queue element
+> lifetime. Queue teardown paths can purge or splice the queue under
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
----
-hinic3: Add ethtool coalesce ops
+Please be more specific here.
 
-This patch implements ethtool .get_coalesce and .set_coalesce callback
-functions to allow users to configure and monitor RX coalesce settings.
 
-> diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c b/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c
-> index be26698fc658..a4b2d5ba81f8 100644
-> --- a/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c
-> +++ b/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c
+> sk->sk_receive_queue.lock and free the skb while unix_ioctl() still
+> uses it.
+> 
+> Take sk->sk_receive_queue.lock while inspecting the queue so the skb
+> and next_skb stay alive for the whole decision.
+> 
+> Fixes: 314001f0bf92 ("af_unix: Add OOB support")
+> Reported-by: Yifan Wu <yifanwucs@gmail.com>
+> Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+> Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+> Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+> Suggested-by: Xin Liu <bird@lzu.edu.cn>
+> Tested-by: Ren Wei <enjou1224z@gmail.com>
+> Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
+> Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+> ---
+>  net/unix/af_unix.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+> index b23c33df8b46..54f12d5cda37 100644
+> --- a/net/unix/af_unix.c
+> +++ b/net/unix/af_unix.c
+> @@ -3301,6 +3301,8 @@ static int unix_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+>  			int answ = 0;
+>  
+>  			mutex_lock(&u->iolock);
+> +			/* The receive queue lock keeps skb and next_skb alive. */
+> +			spin_lock(&sk->sk_receive_queue.lock);
 
-[ ... ]
+I think this is not the correct fix.
 
-> @@ -985,9 +990,230 @@ static void hinic3_get_pause_stats(struct net_device *netdev,
->  	kfree(ps);
->  }
->
-> +static int hinic3_set_queue_coalesce(struct net_device *netdev, u16 q_id,
-> +				     struct hinic3_intr_coal_info *coal)
-> +{
-> +	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-> +	struct hinic3_intr_coal_info *intr_coal;
-> +	struct hinic3_interrupt_info info = {};
-> +	int err;
-> +
-> +	intr_coal = &nic_dev->intr_coalesce[q_id];
-> +
-> +	intr_coal->coalesce_timer_cfg = coal->coalesce_timer_cfg;
-> +	intr_coal->pending_limit = coal->pending_limit;
-> +	intr_coal->rx_pending_limit_low = coal->rx_pending_limit_low;
-> +	intr_coal->rx_pending_limit_high = coal->rx_pending_limit_high;
-> +
-> +	if (!test_bit(HINIC3_INTF_UP, &nic_dev->flags) ||
-> +	    q_id >= nic_dev->q_params.num_qps || nic_dev->adaptive_rx_coal)
-> +		return 0;
-> +
-> +	info.msix_index = nic_dev->q_params.irq_cfg[q_id].msix_entry_idx;
-> +	info.interrupt_coalesc_set = 1;
-> +	info.coalesc_timer_cfg = intr_coal->coalesce_timer_cfg;
-> +	info.pending_limit = intr_coal->pending_limit;
-> +	info.resend_timer_cfg = intr_coal->resend_timer_cfg;
-> +	err = hinic3_set_interrupt_cfg(nic_dev->hwdev, info);
-> +	if (err) {
-> +		netdev_warn(netdev, "Failed to set queue%u coalesce\n", q_id);
-> +		return err;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int is_coalesce_exceed_limit(struct net_device *netdev,
-> +				    const struct ethtool_coalesce *coal)
-> +{
-> +	const struct {
-> +		const char *name;
-> +		u32 value;
-> +		u32 limit;
-> +	} coalesce_limits[] = {
-> +		{"rx_coalesce_usecs",
-> +		 coal->rx_coalesce_usecs,
-> +		 COALESCE_MAX_TIMER_CFG},
-> +		{"rx_max_coalesced_frames",
-> +		 coal->rx_max_coalesced_frames,
-> +		 COALESCE_MAX_PENDING_LIMIT},
-> +		{"rx_max_coalesced_frames_low",
-> +		 coal->rx_max_coalesced_frames_low,
-> +		 COALESCE_MAX_PENDING_LIMIT},
-> +		{"rx_max_coalesced_frames_high",
-> +		 coal->rx_max_coalesced_frames_high,
-> +		 COALESCE_MAX_PENDING_LIMIT},
-> +	};
-> +
-> +	for (int i = 0; i < ARRAY_SIZE(coalesce_limits); i++) {
-> +		if (coalesce_limits[i].value > coalesce_limits[i].limit) {
-> +			netdev_err(netdev, "%s out of range %d-%d\n",
-> +				   coalesce_limits[i].name, 0,
-> +				   coalesce_limits[i].limit);
-> +			return -ERANGE;
-> +		}
-> +	}
-> +	return 0;
-> +}
-> +
-> +static int is_coalesce_legal(struct net_device *netdev,
-> +			     const struct ethtool_coalesce *coal)
-> +{
-> +	int err;
-> +
-> +	err = is_coalesce_exceed_limit(netdev, coal);
-> +	if (err)
-> +		return err;
-> +
-> +	if (coal->rx_max_coalesced_frames_low >
-> +	    coal->rx_max_coalesced_frames_high) {
-> +		netdev_err(netdev, "invalid coalesce frame high %u, low %u, unit %d\n",
-> +			   coal->rx_max_coalesced_frames_high,
-> +			   coal->rx_max_coalesced_frames_low,
-> +			   COALESCE_PENDING_LIMIT_UNIT);
-> +		return -EINVAL;
-> +	}
-> +
-> +	return 0;
-> +}
+SIOCATMARK is apparently for MSG_OOB,
 
-Does this validation allow non-zero low with zero high? For example, if
-rx_max_coalesced_frames_low=10 and rx_max_coalesced_frames_high=0, the
-condition 'low > high' would be true and return -EINVAL, which is correct.
+  $ man 3 sockatmark
 
-However, this validation still accepts the case where low equals high, including
-when both are zero. In v03, a reviewer asked: "So this would allow non-zero low
-and zero high. For example, low = 10, high = 0. Is this expected?" The original
-v03 logic was 'low >= high && high > 0' which rejected the case where low
-equals high. In v04, this was changed to 'low > high' only, but the reviewer's
-concern about whether allowing low=high (including low=0, high=0) is expected
-behavior was not directly addressed.
+and non SOCK_STREAM sockets do not support MSG_OOB
+and should not abuse SIOCATMARK.
 
-Reference: https://lore.kernel.org/netdev/18d5a9b7-9c8d-4fc4-9332-fab27449dc58@gmail.com/
-
-> +
-> +static void check_coalesce_align(struct net_device *netdev,
-> +				 u32 item, u32 unit, const char *str)
-> +{
-> +	if (item % unit)
-> +		netdev_warn(netdev, "%s in %d units, change to %u\n",
-> +			    str, unit, item - item % unit);
-> +}
-
-[ ... ]
-
-> @@ -1003,6 +1229,8 @@ static const struct ethtool_ops hinic3_ethtool_ops = {
->  	.get_eth_ctrl_stats             = hinic3_get_eth_ctrl_stats,
->  	.get_rmon_stats                 = hinic3_get_rmon_stats,
->  	.get_pause_stats                = hinic3_get_pause_stats,
-> +	.get_coalesce                   = hinic3_get_coalesce,
-> +	.set_coalesce                   = hinic3_set_coalesce,
->  };
->
->  void hinic3_set_ethtool_ops(struct net_device *netdev)
-
-[ ... ]
-
-> @@ -985,9 +990,230 @@ static void hinic3_get_pause_stats(struct net_device *netdev,
->
->  static const struct ethtool_ops hinic3_ethtool_ops = {
-> -	.supported_coalesce_params      = ETHTOOL_COALESCE_USECS |
-> -					  ETHTOOL_COALESCE_PKT_RATE_RX_USECS,
-> +	.supported_coalesce_params      = ETHTOOL_COALESCE_RX_USECS |
-> +					  ETHTOOL_COALESCE_RX_MAX_FRAMES |
-> +					  ETHTOOL_COALESCE_USE_ADAPTIVE_RX |
-> +					  ETHTOOL_COALESCE_RX_MAX_FRAMES_LOW |
-> +					  ETHTOOL_COALESCE_RX_MAX_FRAMES_HIGH,
-
-Was the removal of ETHTOOL_COALESCE_TX_USECS intentional? In v02, the code
-included 'ETHTOOL_COALESCE_USECS | ETHTOOL_COALESCE_PKT_RATE_RX_USECS', but
-v03 and v04 changed this to only RX-specific parameters. A reviewer asked if
-this was intentional, but there was no response from the author and the v04
-changelog does not mention this concern.
-
-Reference: https://lore.kernel.org/netdev/18d5a9b7-9c8d-4fc4-9332-fab27449dc58@gmail.com/
+---8<---
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index eebabf0bd850..868b26c963ab 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -3299,6 +3299,9 @@ static int unix_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+ 			struct sk_buff *skb;
+ 			int answ = 0;
+ 
++			if (sk->sk_type != SOCK_STREAM)
++				return -EOPNOTSUPP;
++
+ 			mutex_lock(&u->iolock);
+ 
+ 			skb = skb_peek(&sk->sk_receive_queue);
+---8<---
