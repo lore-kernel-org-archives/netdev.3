@@ -1,166 +1,120 @@
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F93A1A304A
-	for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 05:50:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1288E30BF5C
+	for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 05:52:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775800224; cv=none; b=OzrVnpLIAnJmYS6NYgJsDQHRkPP0oOJ9BVVv+zgk855UHOgZcCbCdgd8Q0ye6x7CPPt39v61U/XQ8fZepXhGHgK++5LFYkCdVpa7Ywwc7vJsmOxeicFg1pu2XbvaGUa5khV23kWqr9i0CufRJffDWBLQFZGPoecejkrt1eW4uwE=
+	t=1775800365; cv=none; b=f/TmF3pSo51xpDHL1Rx6zMkDX5izq8A02LKsNNQGzVftcmZgRBjATqM8z8N6Xh+7eaMb5VNQEMUcua0ufQeMci2F+fEXqgElk0rwnGiOj8QBNg9puNJnpLLz6D68eOKdfuRladowmuZ37kgEenyJoRq115VClWdNoEak1Rc7TG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775800224; c=relaxed/simple;
-	bh=lJY14HAgjlbDC5MMgj0Y9Z8jZCb6/15Ltu9d7vK6pco=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZSutYBS0f4fejwOy5NLtf5NDsg4FfdK3vdtdiaFVywjYLZivf1L6p+mycKbfwASM+MGWZQwS5rx39KhJ+b4dLSLrBSGeKu95o5MyK6avXduQJ7a0svwsmxKGx5kpxxzjQbD3n3DZ9E5w+EfF8WKDYppn+MbAbp5tqsABiCYSBDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=N8sAclcM; arc=none smtp.client-ip=95.215.58.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1775800365; c=relaxed/simple;
+	bh=jOrMnUOwvBwjlbxJixNglQdUH6IxJgtmoIal9APnk0I=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=EWl0OjtccQ2cOVG7O1MuUiSwc2ieYd8d6D5HyF4uKOpQQ2rOyjK94Et5bO7Uo5vFRoAR6ClTOFDYOCkdVWPabJf85oITKuofsH6yrpFbQswVzQmYxzuamYk3Jcik33XJzH6zPfwl15BR54Sffk8XjaEYAcGxg6ABPWCDpyNmvUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GXMH2I81; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="N8sAclcM"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775800209;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=aXAjkhsgn8oMAhQg8wQ1MCqTT2QGwagc/KA0hb1OpXU=;
-	b=N8sAclcMYqNkU9hC+N3b6T/pvE3OyrA3cR+86pu/K7A5gXhql9qGKB9AgaarHZpPsbv92/
-	v/qffi4SLSg0iugkMFWTMABIlm26HTc9NXhPGcJKdTlPJcAsD0eJU8WBFi1IEz3GsGktEy
-	Kd6W/uf5yFF8g5HUdSraqnL71hzKcO4=
-From: Qingfang Deng <qingfang.deng@linux.dev>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Qingfang Deng <qingfang.deng@linux.dev>,
-	Kees Cook <kees@kernel.org>,
-	Guillaume Nault <gnault@redhat.com>,
-	Eric Woudstra <ericwouds@gmail.com>,
-	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: linux-ppp@vger.kernel.org
-Subject: [PATCH net-next v2 1/2] pppox: remove sk_pppox() helper
-Date: Fri, 10 Apr 2026 13:49:49 +0800
-Message-ID: <20260410054954.114031-1-qingfang.deng@linux.dev>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GXMH2I81"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-43ccda008cdso874431f8f.0
+        for <netdev@vger.kernel.org>; Thu, 09 Apr 2026 22:52:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775800362; x=1776405162; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6HL3c8AI6LLtjFPcFdJwVliBGJh0YRgS/cUAL+4flsM=;
+        b=GXMH2I81Nxhp8YfpkhyBhbF/ooQLIbq2x44AvxBtK19CKF8lzjhnBS2QOsCAnVIa0s
+         G/uQMw8JIyIEn+QforkSlBzpa3M40n8dmGhwqlQdgKPtagWct1AwnVWSL1bryVzKmeyO
+         SWrYP0PveFf6fbfONPYl51r49AYlhlmDIx33/Csh61TtBSRTnaDnvvLw+s9q0oVP1nis
+         qLHC4IYF6AIPLecxHWufjMygVo4xyoMPeAkFtIOOeoRHRTjBGj2I6EwWUhrdAfLCEKRv
+         +N1Xa8dKkytPhx0Zuxm6z4ve6KrC62BgjM0/xrz6oTYJpIDodWMzigvWULTE/FxZn0L5
+         dpvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775800362; x=1776405162;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6HL3c8AI6LLtjFPcFdJwVliBGJh0YRgS/cUAL+4flsM=;
+        b=quAsbDFVvmTN806UrwTTToyCV4m40ah3+ZK/+lHqZZaIH4KobfBcqiyUKdfUdgcSYf
+         TYF68vR1gqRGirZYNNpTJ/leIA4KJS57W/uLl0YA1trGZfG2dhDPA1dXuDvPbPrI1CDr
+         pMsDznbmIF5AUlPrBVbFKH9AvSTHAhaxC2Wk/9/DTF8Ke3fUzaFIp4Tpi0y7L2eNgI4s
+         F48VtE+AOyaI+VF0k7Po/WeRQD8Sek6nIeFnrVaiUmCneu8pGi4lKoZGg6xU/YY3VqeJ
+         NKip+ZwBT1w7gl5a3G6VnCFAHKg8bO0EFw8ojitb1cPi4+ORSmjon96FwyKmv/B5iJuT
+         jHuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWirOTpK0kVW+VMfuYyIyTqv0krQsit9goqHOaoM/YWglDkwLQgqUkMMTMRqT+VqjnuJoNdwdw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxHS3qrVPjCPdq7gcLGmUdBLwk//rnNeMdIN1cNCnG6ZbcShe4l
+	2PifkB+l8gSN7hxGnz1glL+SoLsNy8cOu52yFoT3tSxeegpdnhiLWPiw
+X-Gm-Gg: AeBDiesfTuWGATE33y12jj2M/pWKYMEGxDoULB8d2rPQPwXuNmg50fg8J5Wu5CQZYpJ
+	x14xGiabeJOepj0lP8Q8n7AcSRfBkm0L4yC0acBwzAJKMLAuoO6xJV50mrJGmBj/3AIrTyo8VyN
+	KwWeaaRpRWsKYsvkm6zZzdsPb9wZxjHna8pdMuEhD2eUIvwh7w01yIpiiGYAmcO/GIXwCQCw1Xh
+	vNOYp+vAird+Ppvly3uyXr3BgsOfMhJRQ/20CvO1kG/jCaflDAN3OnCEj9LIP67J6ph9lIT9qoL
+	MYb9a0uv2J3u1rzyj+DwjOj/eb70FmnwZJKSJlhgcDhf9b24rVeNS3h+ngyFl2Zmk9+/TpxQATD
+	P49nve3tqwfkbYzqdCFkTIwaGbWdrhW1TqEI7iuGNPt3fravgTE/tD6zkSqIwM3Z3XZrEUtlA/b
+	xx2ZZhqkUKtdiMn//yA/0=
+X-Received: by 2002:a5d:4385:0:b0:43d:6655:8ce6 with SMTP id ffacd0b85a97d-43d66558f68mr623766f8f.0.1775800362309;
+        Thu, 09 Apr 2026 22:52:42 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d63deba9esm5087814f8f.10.2026.04.09.22.52.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Apr 2026 22:52:41 -0700 (PDT)
+Date: Fri, 10 Apr 2026 08:52:38 +0300
+From: Dan Carpenter <error27@gmail.com>
+To: Suman Ghosh <sumang@marvell.com>
+Cc: Ratheesh Kannoth <rkannoth@marvell.com>,
+	Suman Ghosh <sumang@marvell.com>, netdev@vger.kernel.org
+Subject: [bug report] octeontx2-af: npc: cn20k: Use common APIs
+Message-ID: <adiQJvuKlEhq2ILx@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-The sk member can be directly accessed from struct pppox_sock without
-relying on type casting. Remove the sk_pppox() helper and update all
-call sites to use po->sk directly.
+Hello Suman Ghosh,
 
-Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
----
-Changes in v2: none
- Link to v1: https://lore.kernel.org/r/20260408015138.280687-1-qingfang.deng@linux.dev
+Commit 6d1e70282f76 ("octeontx2-af: npc: cn20k: Use common APIs")
+from Feb 24, 2026 (linux-next), leads to the following Smatch static
+checker warning:
 
- drivers/net/ppp/pppoe.c  | 10 +++++-----
- drivers/net/ppp/pptp.c   |  6 +++---
- include/linux/if_pppox.h |  5 -----
- 3 files changed, 8 insertions(+), 13 deletions(-)
+	drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c:1065 npc_cn20k_config_mcam_entry()
+	error: uninitialized symbol 'kw_type'.
 
-diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
-index 1ac61c273b28..d546a7af0d54 100644
---- a/drivers/net/ppp/pppoe.c
-+++ b/drivers/net/ppp/pppoe.c
-@@ -231,7 +231,7 @@ static inline struct pppox_sock *get_item(struct pppoe_net *pn, __be16 sid,
- 	struct pppox_sock *po;
- 
- 	po = __get_item(pn, sid, addr, ifindex);
--	if (po && !refcount_inc_not_zero(&sk_pppox(po)->sk_refcnt))
-+	if (po && !refcount_inc_not_zero(&po->sk.sk_refcnt))
- 		po = NULL;
- 
- 	return po;
-@@ -273,7 +273,7 @@ static void pppoe_flush_dev(struct net_device *dev)
- 			if (!po)
- 				break;
- 
--			sk = sk_pppox(po);
-+			sk = &po->sk;
- 
- 			/* We always grab the socket lock, followed by the
- 			 * hash_lock, in that order.  Since we should hold the
-@@ -413,7 +413,7 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
- 	if (!po)
- 		goto drop;
- 
--	return __sk_receive_skb(sk_pppox(po), skb, 0, 1, false);
-+	return __sk_receive_skb(&po->sk, skb, 0, 1, false);
- 
- drop:
- 	kfree_skb(skb);
-@@ -425,7 +425,7 @@ static void pppoe_unbind_sock_work(struct work_struct *work)
- {
- 	struct pppox_sock *po = container_of(work, struct pppox_sock,
- 					     proto.pppoe.padt_work);
--	struct sock *sk = sk_pppox(po);
-+	struct sock *sk = &po->sk;
- 
- 	lock_sock(sk);
- 	if (po->pppoe_dev) {
-@@ -469,7 +469,7 @@ static int pppoe_disc_rcv(struct sk_buff *skb, struct net_device *dev,
- 	po = get_item(pn, ph->sid, eth_hdr(skb)->h_source, dev->ifindex);
- 	if (po)
- 		if (!schedule_work(&po->proto.pppoe.padt_work))
--			sock_put(sk_pppox(po));
-+			sock_put(&po->sk);
- 
- abort:
- 	kfree_skb(skb);
-diff --git a/drivers/net/ppp/pptp.c b/drivers/net/ppp/pptp.c
-index b18acd810561..cc8c102122d8 100644
---- a/drivers/net/ppp/pptp.c
-+++ b/drivers/net/ppp/pptp.c
-@@ -62,7 +62,7 @@ static struct pppox_sock *lookup_chan(u16 call_id, __be32 s_addr)
- 		if (opt->dst_addr.sin_addr.s_addr != s_addr)
- 			sock = NULL;
- 		else
--			sock_hold(sk_pppox(sock));
-+			sock_hold(&sock->sk);
- 	}
- 	rcu_read_unlock();
- 
-@@ -164,7 +164,7 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
- 	struct iphdr  *iph;
- 	int    max_headroom;
- 
--	if (sk_pppox(po)->sk_state & PPPOX_DEAD)
-+	if (po->sk.sk_state & PPPOX_DEAD)
- 		goto tx_drop;
- 
- 	rt = pptp_route_output(po, &fl4);
-@@ -375,7 +375,7 @@ static int pptp_rcv(struct sk_buff *skb)
- 	if (po) {
- 		skb_dst_drop(skb);
- 		nf_reset_ct(skb);
--		return sk_receive_skb(sk_pppox(po), skb, 0);
-+		return sk_receive_skb(&po->sk, skb, 0);
- 	}
- drop:
- 	kfree_skb(skb);
-diff --git a/include/linux/if_pppox.h b/include/linux/if_pppox.h
-index 8bbf676c2a85..636772693f9a 100644
---- a/include/linux/if_pppox.h
-+++ b/include/linux/if_pppox.h
-@@ -57,11 +57,6 @@ static inline struct pppox_sock *pppox_sk(struct sock *sk)
- 	return (struct pppox_sock *)sk;
- }
- 
--static inline struct sock *sk_pppox(struct pppox_sock *po)
--{
--	return (struct sock *)po;
--}
--
- struct module;
- 
- struct pppox_proto {
--- 
-2.43.0
+drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
+    1045 void npc_cn20k_config_mcam_entry(struct rvu *rvu, int blkaddr, int index,
+    1046                                  u8 intf, struct cn20k_mcam_entry *entry,
+    1047                                  bool enable, u8 hw_prio, u8 req_kw_type)
+    1048 {
+    1049         struct npc_mcam *mcam = &rvu->hw->mcam;
+    1050         int mcam_idx = index % mcam->banksize;
+    1051         int bank = index / mcam->banksize;
+    1052         int kw = 0;
+    1053         u8 kw_type;
+    1054 
+    1055         /* Disable before mcam entry update */
+    1056         npc_cn20k_enable_mcam_entry(rvu, blkaddr, index, false);
+    1057 
+    1058         npc_mcam_idx_2_key_type(rvu, index, &kw_type);
 
+No error checking?
+
+    1059         /* CAM1 takes the comparison value and
+    1060          * CAM0 specifies match for a bit in key being '0' or '1' or 'dontcare'.
+    1061          * CAM1<n> = 0 & CAM0<n> = 1 => match if key<n> = 0
+    1062          * CAM1<n> = 1 & CAM0<n> = 0 => match if key<n> = 1
+    1063          * CAM1<n> = 0 & CAM0<n> = 0 => always match i.e dontcare.
+    1064          */
+--> 1065         if (kw_type == NPC_MCAM_KEY_X2) {
+                     ^^^^^^^
+Uninitialized
+
+    1066                 /* Clear mcam entry to avoid writes being suppressed by NPC */
+    1067                 npc_cn20k_clear_mcam_entry(rvu, blkaddr, bank, mcam_idx);
+    1068                 npc_cn20k_config_kw_x2(rvu, mcam, blkaddr,
+
+This email is a free service from the Smatch-CI project [smatch.sf.net].
+
+regards,
+dan carpenter
