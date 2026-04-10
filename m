@@ -1,95 +1,106 @@
-Received: from trinity3.trinnet.net (trinity.trinnet.net [96.78.144.185])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81EB93E0C57;
-	Fri, 10 Apr 2026 17:15:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.78.144.185
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3409D3DE438
+	for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 17:21:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775841324; cv=none; b=kWzntigof6bsMqsytGZM8WDY/vMUuu1JGQNOzz9y/FDsIdAemkoAX1csnf78emyQJe1Xg6z4MEJiwLVYYc0k4JFHq4Z51SLJHCNRA0/Y7Xno2UtxASKeAqQHFWVEk/WB2OschRs/T7FcIj3bHFODNa7KlTImyZJLvRQqF8/Jf/Q=
+	t=1775841677; cv=none; b=l/2P5WF3QfGVpEiFUTwow2RiKqGFy47gH2bPlVaw6k7DQtttqWvkOPXYx5xyAttnqYIpiIN8ZQFXct4WyMtmlvFR5EZ7ldF80gglYzjgqK4IeMr1srHV00SeagTXCYbWhWSMdmfoaNzakl/bv69NDrYhyqK6ZLFRpqTRRsf0eIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775841324; c=relaxed/simple;
-	bh=jCIgsDRilv7KIqAd1L2z7WRRBTaNL4Em2+kHrNaLTG0=;
-	h=Subject:To:References:Cc:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=EyzxGgfC/fvKb4Hu+kd4G61nZttmGbSk+/yL82L5HR+3sXMyYt8eaOJ8p6via8Mh1abQ7OG5fbVGXyk+rRzkP1izc8NZhBByRZ4a3FDHViGbwN+gHV+6cHhy2r28Jm+ign8UDVBT9bvGPlAnVbdytjk4fhuGpTH9NVWJcmzFw7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=trinnet.net; spf=pass smtp.mailfrom=trinnet.net; arc=none smtp.client-ip=96.78.144.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=trinnet.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trinnet.net
-Received: from trinity4.trinnet.net (trinity4.trinnet.net [192.168.0.11])
-	by trinity3.trinnet.net (TrinityOS hardened/8.15.2) with ESMTP id 63AGcPw0019678;
-	Fri, 10 Apr 2026 09:38:25 -0700
-Subject: Re: [PATCH net] netrom: do some basic forms of validation on incoming
- frames
-To: jj <ve1jot@eastlink.ca>, Simon Horman <horms@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	s=arc-20240116; t=1775841677; c=relaxed/simple;
+	bh=e5lYK1lUQ/L5Rl4sT1OV4Fll/kUwcFB9V9XGt/BjVdM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mkZJ6KLRW64QrE5/wfBNrDwq9ST8ZnsxFokfr3IbIloYkCsrWUF9Vr9vrLKnsJAMts0tarR+OkU306slRipGEhPlb/uR0h+cWN0VLAla3u9NWGng9XuWBLswfpKEy0Rx229mzS8LxKMQKMXhCfBMLY9bEDhtyfIFsOJqFEVe62I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ht9xxqQM; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ht9xxqQM"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-43d572f7437so1591959f8f.1
+        for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 10:21:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775841674; x=1776446474; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=88cVBJSy5xjvF8idw86suZ9TuCLtWrP4zxfv/X+nnUo=;
+        b=ht9xxqQMDwX2q8PTmKKT5f7zBwxlazJUr0fduHyFe7jBUcZ5pQG/sXDXHExJ/sxZdJ
+         68xP33sBAyd6DFJDRRknja0X+yZmBlXPaJHuc9eBu+X5eyaESGCbmTRt2ToPC04axXlf
+         vP0A9LnZZW3TzGKGjNnCreMX9QrPo5pYKArtqxYcm4l7wf3aGi9GtNzHlu25DwNQHH2i
+         oPYx5X8G1KPJKyykczgIqgsQGnNUhVXmMo6MlWvtPr3U0Ltu5HgeVwIhMr1+fdYnQxBC
+         2J0AFUcrfopTT3voWQkIoYwE0YJpUH+eK2lBEMFIqo7RkRZeZcsQs/pVOeAzv+aVJWpY
+         wQ5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775841674; x=1776446474;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=88cVBJSy5xjvF8idw86suZ9TuCLtWrP4zxfv/X+nnUo=;
+        b=MdQc9MB7XruiZpAfmUfLd7ZS37xjdqrt79nPDMVI00VyGt7iGOm5JSsOzlrUf9v92R
+         XAfSEogQacV6i+RroyQ+UR4x8sGM0ZkDs4ePrxfAZB8xWQKGqEd+8PwBNdeO2Sf2AdRw
+         rwvH3HewXoD7lehi1JjhpdP6pseWbijmO44KsUWhWIuolkSEN6vIQt09VzyqF2qQFqgc
+         esf/QC45gjlpCE/Pm1Umr8Ci6juqNDP+MhppQKj2cI0ZKOpNdooZyxPI5v+vXIk3DoP2
+         uzCGJuxfhfMseN2Sra3o92tnEw+bul4VkTqLTV73cRDlYSJdFcPSgR/ciI6uzj7g3Gq4
+         lasA==
+X-Forwarded-Encrypted: i=1; AJvYcCUTwqHXWsX1oQR+dBv/GNLBdFoiP8kGhyN8c1E0Yz50nri2xuw2GPqmqvnzcLOS0HgyeuYH7PM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRY1Q53OG9AKtRHLr6UPPDmuZnMXgEc3fILOU4iyVKKSyZQr5I
+	SB/F5Z73ogEAMdBqj0jqFWv0fkycrtf8LXlnwD1ag0+VwP+LFVktMja+
+X-Gm-Gg: AeBDies2xnD8LQ2U0WUTijo2CP9dBfXs+jwZGw7PUJCVpnJjOWKlQ8U1OXi40sOoMXd
+	6V/qW0SfN48tvTI2XKuAYtsm2xyM+uJ2zJGYFEwSirJ/WdMvaxz5L/T0re9sczUAu47l0ZvW+4Z
+	fUmzH4U/19Iw9JGad/bkWwxBY8tr/6snxmJNIzmRLlPaS1+CsjuTaxCdPJri2cNP2LHw9rtKMha
+	wno3KsayBu5Rnzb34INpV9wKPSxWMl7KQpKuF4PPUkExa3QymbJZM8Fndn3aSSzVHmWe25kbbxP
+	bIgUXa2pHuFEEwgWltD5TwTSAdKwNI1Zr8USXpanydTjwg5cfnvcEiUzm4UccMUa+gbc3Hx5BLU
+	MSZbq+WJgoJGh8aM+d81Rc9PFppKBDhaWCrKb49nASckNDmojgCycQmplS4HuLcuUi13JUshyCY
+	7pr8dZF1O7CW7LT1hqpFM=
+X-Received: by 2002:a05:6000:1ac5:b0:43c:fa96:d939 with SMTP id ffacd0b85a97d-43d6429c737mr6098789f8f.22.1775841674404;
+        Fri, 10 Apr 2026 10:21:14 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d63e5062fsm8350116f8f.31.2026.04.10.10.21.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Apr 2026 10:21:13 -0700 (PDT)
+Date: Fri, 10 Apr 2026 20:21:10 +0300
+From: Dan Carpenter <error27@gmail.com>
+To: David Ranch <linux-hams@trinnet.net>
+Cc: jj <ve1jot@eastlink.ca>, Simon Horman <horms@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	linux-hams@vger.kernel.org, Yizhe Zhuang <yizhe@darknavy.com>,
+	stable <stable@kernel.org>, "Bernard, f6bvp" <f6bvp@free.fr>
+Subject: Re: [PATCH net] netrom: do some basic forms of validation on
+ incoming frames
+Message-ID: <adkxhrzY1T5ZERiq@stanley.mountain>
 References: <2026040730-untagged-groin-bbb7@gregkh>
- <20260409190328.GS469338@kernel.org> <20260409203235.6b9329f0@kernel.org>
- <2026041026-excuse-slashing-c4ee@gregkh> <20260410102827.GT469338@kernel.org>
+ <20260409190328.GS469338@kernel.org>
+ <20260409203235.6b9329f0@kernel.org>
+ <2026041026-excuse-slashing-c4ee@gregkh>
+ <20260410102827.GT469338@kernel.org>
  <18e3df62-34f9-4de0-903b-19919d7ae2ca@eastlink.ca>
-Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-        linux-hams@vger.kernel.org, Yizhe Zhuang <yizhe@darknavy.com>,
-        stable <stable@kernel.org>, "Bernard, f6bvp" <f6bvp@free.fr>
-From: David Ranch <linux-hams@trinnet.net>
-Message-ID: <2e0f1dca-56dc-d6e6-f4d4-1de3160e0179@trinnet.net>
-Date: Fri, 10 Apr 2026 09:38:25 -0700
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+ <2e0f1dca-56dc-d6e6-f4d4-1de3160e0179@trinnet.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <18e3df62-34f9-4de0-903b-19919d7ae2ca@eastlink.ca>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2e0f1dca-56dc-d6e6-f4d4-1de3160e0179@trinnet.net>
 
+On Fri, Apr 10, 2026 at 09:38:25AM -0700, David Ranch wrote:
+> 
+> I agree with John VE1JOT that amateur radio protocols such as AX25, NETROM,
+> and ROSE are still very active in the Linux kernel.  This discussion makes
+> me wonder how the Linux kernel community judges how "active" a given feature
+> / driver / etc is being used in the real world before considering
+> deprecation.  If there is an official mechanism to get metrics sent from
+> users back to the kernel developer community, please let us know and we'll
+> try to get you some one-off or periodic metrics.
+> 
 
-I agree with John VE1JOT that amateur radio protocols such as AX25, 
-NETROM, and ROSE are still very active in the Linux kernel.  This 
-discussion makes me wonder how the Linux kernel community judges how 
-"active" a given feature / driver / etc is being used in the real world 
-before considering deprecation.  If there is an official mechanism to 
-get metrics sent from users back to the kernel developer community, 
-please let us know and we'll try to get you some one-off or periodic 
-metrics.
+We've had times where it felt like users weren't testing new kernels.
 
---David
-KI6ZHD
-Avid AX.25 and NETROM packet radio on X86 and ARM-based Raspberry Pi
-https://www.trinityos.com/HAM/index-ham.html
-
-
-On 04/10/2026 08:12 AM, jj wrote:
-> This is NOT an obsolete protocol..this is in use by amateur radio 
-> operators world-wide...we use it for RF comms usually, because what 
-> happens if the internet goes "down", we can still provide comms over 
-> slower RF links....(plus it's a fun mode)please PLEASE do not 
-> drop...and sorry for the noise...
->
-> de John VE1JOT
->
-> On 2026-04-10 07:28, Simon Horman wrote:
->> On Fri, Apr 10, 2026 at 07:24:36AM +0200, Greg Kroah-Hartman wrote:
->>> On Thu, Apr 09, 2026 at 08:32:35PM -0700, Jakub Kicinski wrote:
->>>> On Thu, 9 Apr 2026 20:03:28 +0100 Simon Horman wrote:
->>>>> I expect that checking skb->len isn't sufficient here
->>>>> and pskb_may_pull needs to be used to ensure that
->>>>> the data is also available in the linear section of the skb.
->>>> Or for simplicity we could also be testing against skb_headlen()
->>>> since we don't expect any legit non-linear frames here? Dunno.
->> Sure, that's find by me if it leads to simpler code than
->> using pskb_may_pull(). Else I'd lean towards pskb_may_pull()
->> as it is a more general approach that feels worth proliferating.
->>
->>> I'll be glad to change this either way, your call.  Given that this is
->>> an obsolete protocol that seems to only be a target for drive-by 
->>> fuzzers
->>> to attack, whatever the simplest thing to do to quiet them up I'll be
->>> glad to implement.
->>>
->>> Or can we just delete this stuff entirely?  :)
->> Deleting sounds good to me.
->> But we likely need a deprecation process.
->> In which case fixing these bugs still makes sense for the short term.
->>
+regards,
+dan carpenter
 
