@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868F820B22;
-	Fri, 10 Apr 2026 02:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9F1302750;
+	Fri, 10 Apr 2026 02:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775789842; cv=none; b=ScdDEMufcj+nSD/tYVJRjpZMJnCZz2UEa3RHwb2YlUM179RAOz++FKSZd+CDbNMFqZEevBifn1uAaXf5ajTFgkQ3zv0xOVxDqZecybFUzba7Q8yGhQvS6E73zdpnwUFs2cSE7iI6sOVYxebeJb5+Qt9vuoG2RjnAXUpPwdYT62I=
+	t=1775789844; cv=none; b=GDrw4W+SBdMav3hMLHJhq1fJCsjt78MQbydo9uJyUE42qwv9mE+2c1VBClKaJhUSm1LrBLvt665j1B1kb5m62SNl8YAw4bhGfNY1z9waNt7uMFBkQXmYVBolK2HlRfwX5gsPhMgi9JpEvj5IqvEYffI3NVFxdjTUuDcbQoqNN2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775789842; c=relaxed/simple;
-	bh=L6wszwS8qFkzeqIRGzk3Bj9pcAOHKFzChEeUvPEdrVU=;
+	s=arc-20240116; t=1775789844; c=relaxed/simple;
+	bh=SOtsO1H4hBhJ7UgGNQF2cWoATJZ7lwtCCm/KkSB8iFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jnwPpP25wzHN4bKH+n0f+/1QbfTxT71mMlkXHNetlV5sz9gBdlooOYo3YG9cVfIVx95ODtt4YxrH/cR0jTQFG7mj6L0a0cVFb2p/6tj6yRDnUVzxwIH9q0/gLj3tHyPubPk+Fm+S2hTrTwLqX65GGeNfutQJKyf68dmPQQ13td8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=unC8irle; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=pIOkowdM4HacEvZ4BYHT7OL4KwNoPjRGO6MSJGn0bmWn+QuI7b8PBUilNJyFXTh+/WdyjfFBPxMwWpDY7UPk0+liDedRXEHbcmJoBGgYzGkSy3bo6+oJ8X69uQkWxKi5qVVdYPd8UvpvNp2ucrYQ3QOWIbU3RlLn8CpRPZ6FadU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gnFOYfpo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="unC8irle"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 743D1C4CEF7;
-	Fri, 10 Apr 2026 02:57:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gnFOYfpo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 690A3C4CEF7;
+	Fri, 10 Apr 2026 02:57:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775789842;
-	bh=L6wszwS8qFkzeqIRGzk3Bj9pcAOHKFzChEeUvPEdrVU=;
+	s=k20201202; t=1775789844;
+	bh=SOtsO1H4hBhJ7UgGNQF2cWoATJZ7lwtCCm/KkSB8iFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=unC8irle7Z3WU/wQW+tQG3kvvhONwihsBJSpZ61ZtOgJMg9y5hpsgn9k+vJYEcT+c
-	 HYnfv4g5AcYBdjEkZdN/iLtFLVzOfn3zTaOYEjxRj1RKujkw18nUmpDqnYRS+C4msc
-	 cuh9JKjZta34u229RaBwakIw166xI1ktxuAkvyLaSNYGIfYh9yFd4oe5pKhUm5eyqI
-	 Byl9p1++5upj/hfB36VMkud/RZJ0jr9TG70WXdJi6q9pIyE/4v0SKCnmWr8e08WRjv
-	 LWTkLaANz/OuTlTanVHD2TpMaUj3nL5RqWBeGHwF4cv6faXsaVtlN155Li1VR129D2
-	 2CbU6tOPE5cuA==
+	b=gnFOYfpo9b+bO1fznuRTZ5Iv+akaYDbstDHVouFywHRepUoqYUoE/tDWcklCZeo4j
+	 ZfPGDK/tulUNrULmUueq4RLzPIiq6mA8ZIW7sgVtREWz+EXGkqrsF9d8A6RgPwW02I
+	 6skMAUB3KXLd7tB71Tuq253H5VmfSapnc/DsPKO9STrfKScrhkTzjEQwz7ng889dZB
+	 p9JlE0VCy4qQAei9coPoxl/2Wf/rcz0vrlH9RojTh6+XuGShXDeqjYZEGylfIwgyU6
+	 n7qVIcmNJ81sCJReDg+zIFbm4NwXjzTJVPrMWzfpTHh74r0x5ytgnp0xetXNW0e6rn
+	 IpG7M3Kr+qW+w==
 From: Jakub Kicinski <kuba@kernel.org>
 To: lorenzo@kernel.org
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -42,12 +42,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	linux-mediatek@lists.infradead.org,
 	netdev@vger.kernel.org,
 	devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next v3 02/12] net: airoha: Set PPE cpu port for GDM2 if loopback is enabled
-Date: Thu,  9 Apr 2026 19:57:20 -0700
-Message-ID: <20260410025720.1809934-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v3 04/12] net: airoha: Rely on net_device pointer in HTB callbacks
+Date: Thu,  9 Apr 2026 19:57:22 -0700
+Message-ID: <20260410025722.1809973-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260406-airoha-eth-multi-serdes-v3-2-ab6ea49d59ff@kernel.org>
-References: <20260406-airoha-eth-multi-serdes-v3-2-ab6ea49d59ff@kernel.org>
+In-Reply-To: <20260406-airoha-eth-multi-serdes-v3-4-ab6ea49d59ff@kernel.org>
+References: <20260406-airoha-eth-multi-serdes-v3-4-ab6ea49d59ff@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,75 +59,72 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email says "For your consideration."
 ---
-net: airoha: Move airoha_qdma pointer in airoha_gdm_dev struct
+net: airoha: Introduce WAN device flag
 
-This commit moves the airoha_qdma pointer from the airoha_gdm_port struct
-to the airoha_gdm_dev struct. This ensures the QDMA block used depends on
-the specific net_device WAN/LAN configuration.
+This commit introduces a WAN flag to specify whether a device is used to
+transmit or receive WAN or LAN traffic. It enables specifying multiple LAN
+devices but limits the configuration to a single WAN device.
 
-[ ... ]
-
+> diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+> index 5b0cd37b155e4..9988011dca53f 100644
 > --- a/drivers/net/ethernet/airoha/airoha_eth.c
 > +++ b/drivers/net/ethernet/airoha/airoha_eth.c
+> @@ -1796,36 +1796,77 @@ static int airoha_set_gdm2_loopback(struct airoha_gdm_dev *dev)
 
 [ ... ]
 
-> @@ -1497,9 +1498,10 @@ static void airoha_qdma_stop_napi(struct airoha_qdma *qdma)
->  	}
->  }
->  
-> -static void airoha_update_hw_stats(struct airoha_gdm_port *port)
-> +static void airoha_update_hw_stats(struct airoha_gdm_dev *dev)
->  {
-> -	struct airoha_eth *eth = port->qdma->eth;
+> +static int airoha_dev_init(struct net_device *netdev)
+> +{
+> +	struct airoha_gdm_dev *dev = netdev_priv(netdev);
 > +	struct airoha_gdm_port *port = dev->port;
-> +	struct airoha_eth *eth = dev->eth;
->  	u32 val, i = 0;
 >  
->  	spin_lock(&port->stats.lock);
+>  	switch (port->id) {
+>  	case AIROHA_GDM3_IDX:
+> -	case AIROHA_GDM4_IDX:
+> -		/* If GDM2 is active we can't enable loopback */
+> -		if (!eth->ports[1]) {
+> -			int err;
+> +	case AIROHA_GDM4_IDX: {
+> +		struct airoha_eth *eth = dev->eth;
+>  
+> -			err = airoha_set_gdm2_loopback(dev);
+> -			if (err)
+> -				return err;
+> -		}
+> +		if (eth->ports[1] || airoha_get_wan_gdm_dev(eth))
+> +			break;
 
-This isn't a bug introduced by this patch, but does this spin_lock()
-carry a deadlock risk?
+If a board's Device Tree enables both GDM3 and GDM4, and GDM2 is not present,
+does this sequence permanently assign the WAN role to GDM3 since it is
+initialized first? Is there a Device Tree property or fallback configuration
+mechanism to allow users to specify GDM4 as the WAN port instead?
 
-Because ndo_get_stats64() can be called from atomic context (e.g., from a
-softirq), if a process context caller holds port->stats.lock and is
-interrupted by a softirq on the same CPU that also triggers dev_get_stats(),
-the softirq could spin forever waiting for the lock.
+> +		fallthrough;
+> +	}
+> +	case AIROHA_GDM2_IDX:
+> +		/* GDM2 is always used as wan */
+> +		dev->flags |= PRIV_FLAG_WAN;
+>  		break;
+>  	default:
+>  		break;
+>  	}
+>  
+> -	for (i = 0; i < eth->soc->num_ppe; i++)
+> -		airoha_ppe_set_cpu_port(dev, i, airoha_get_fe_port(dev));
+> +	airoha_dev_set_qdma(dev);
+> +	airoha_set_macaddr(dev, netdev->dev_addr);
 
-Should this be upgraded to spin_lock_bh() to ensure local softirqs are
-disabled during the critical section?
+Since the commit message notes it is possible to specify multiple LAN
+devices, does unconditionally calling airoha_set_macaddr() for each
+device overwrite the single shared hardware LAN MAC register?
+
+If so, could this cause only the last initialized LAN device to have its MAC
+correctly programmed into the hardware, leading to dropped unicast
+packets for the other LAN interfaces?
+
+> +
+> +	if (!airoha_is_lan_gdm_dev(dev) &&
+> +	    (port->id == AIROHA_GDM3_IDX || port->id == AIROHA_GDM4_IDX)) {
+> +		int err;
 
 [ ... ]
-
-> --- a/drivers/net/ethernet/airoha/airoha_eth.h
-> +++ b/drivers/net/ethernet/airoha/airoha_eth.h
-> @@ -534,12 +534,12 @@ struct airoha_qdma {
->  
->  struct airoha_gdm_dev {
->  	struct airoha_gdm_port *port;
-> +	struct airoha_qdma *qdma;
->  	struct net_device *dev;
->  	struct airoha_eth *eth;
->  };
->  
->  struct airoha_gdm_port {
-> -	struct airoha_qdma *qdma;
->  	struct airoha_gdm_dev *dev;
->  	int id;
-
-This isn't a bug introduced by this patch, but since the qdma pointer
-is being moved to better align with the hardware structure, should 
-qos_sq_bmap, cpu_tx_packets, and fwd_tx_packets be moved to 
-struct airoha_qdma as well?
-
-Because QDMA1 is shared by all WAN ports (GDM 2, 3, 4) and qos_sq_bmap
-is currently tracked per-port instead of per-QDMA, each WAN port 
-independently allocates QDMA1 channels starting from index 0. Does this 
-cause different ports to overwrite each other's hardware QoS configurations 
-in the shared QDMA1 block?
-
-Furthermore, cpu_tx_packets and fwd_tx_packets cache per-channel ETS
-hardware counters but are single u64 scalar variables in the port structure.
-When querying stats for multiple channels, do these scalar caches get
-overwritten with values from completely different channels, resulting in
-incorrect delta calculations?
