@@ -1,97 +1,90 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4BA3A4522
-	for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 07:49:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695782DA749;
+	Fri, 10 Apr 2026 07:50:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775807381; cv=none; b=aZfUEM+FrleFRYs49CnsRLysc/mM1gYcZNi91iN5mG+mvKNQcdWG11tsCeljZNhK6RggC2bm10daon3FRXGkGYy14gvRKtUuQqjA4L/E3fze/STVNc0fXhSg9rhNLuwoiqdFyQfQfgfgS74GRPzdcfxv1z/GfuKfadMhi7HN/5k=
+	t=1775807430; cv=none; b=I0VBed52eR1yNN1mMLn+klrTqahWbCkLYZ8D4ZhOKD+7DNYqYyUN8vQL4pRVzgiMjdgjNiZB/FV27M756W0AUaQmjjwAlsSjBblVlQ96uSZSpwRsp4OSfc6LO0gtd4IomDp3Eucfd09i0UsssqcjJt5z9KiI1jtK5vkGFGGklYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775807381; c=relaxed/simple;
-	bh=PNmvSsiYs6voba6SHGZCYMS5ecS2d3YIYMk9i1Eb4ws=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FcSkacbO9oIz8/G2dJJv702aMHfL02E1/3tpAniTpMwpIqum0Ij/kZReGFw4uLGdGXeZumcN8D+4ee5vM/fcHSWVu0yP5xlSRx5VK3nFLkRvr6DkN/99qG6DpBncIPuaS3wf02S3T4BhRBrp1cKMo2IG7PDpTDNMMlhemlWhDUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GGinrlyO; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1775807430; c=relaxed/simple;
+	bh=hWfMUrd3Kjb8PtQWZzix6P6/YWd6UH2YL5UcraBYBIc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=edJUz3IFmD9CWH9HZuXa5AFJgy0KrV3+Kd5cpjmkQ0S75uRsGw9dWJYLgRayhdFbA/rQrPPeWmFgijDLZ7mwPVyAdwDT6VmcaS0mcW2LIl7XT6xv+6fS946vQEj1W2Mzuv9Ce1Cf/fJ2ECWMKhxLTpUwPylpR7mWg8iZNldvvy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=a4Olywbl; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GGinrlyO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775807380; x=1807343380;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=PNmvSsiYs6voba6SHGZCYMS5ecS2d3YIYMk9i1Eb4ws=;
-  b=GGinrlyOSsnNCPiawLo9aXbPPLCMZWFwkpi3GNtVF/7+QopaUwVMsyjm
-   YakjuNG5JFjQ3BPwX8JFcaHAhYxjqz4GF0bNwB6K8k5nH3Dp0xCmVcNmB
-   I0qkW53cQVDs2zC4B0A7Fnk+2hp87EuhSioos0hcY601dgmwx3HyXAI8u
-   cpb829gMlky3YfW7Y6WCnbwNU/D0vx6RrD/A6Nbjl21AiNFrsEknVE1Vl
-   t6eGwKaHe7MQlJA/s1JdJ+W690wsi76lLRo3hqfc/YGwppSipzg+BnEcZ
-   lGMc6f38FhgU2xuCg9rQbFN7Jrd8AqG2awvom27Awr9qAV41IFuqKieWc
-   A==;
-X-CSE-ConnectionGUID: B2CemfdLRuqt8KDhMXcNbQ==
-X-CSE-MsgGUID: eKc9lgNMSmqsw4UtVzWv1Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11754"; a="77007950"
-X-IronPort-AV: E=Sophos;i="6.23,171,1770624000"; 
-   d="scan'208";a="77007950"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2026 00:49:40 -0700
-X-CSE-ConnectionGUID: ZbZsCUP1S1C+llfhrU/NsQ==
-X-CSE-MsgGUID: SJArTDoyT1CCCo9FeWjQLg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,171,1770624000"; 
-   d="scan'208";a="228941914"
-Received: from amlin-019-225.igk.intel.com ([10.102.19.225])
-  by orviesa008.jf.intel.com with ESMTP; 10 Apr 2026 00:49:38 -0700
-From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-To: intel-wired-lan@lists.osuosl.org,
-	anthony.l.nguyen@intel.com,
-	aleksandr.loktionov@intel.com
-Cc: netdev@vger.kernel.org,
-	Jacob Keller <jacob.e.keller@intel.com>
-Subject: [PATCH iwl-next 10/10] ice: promote Tx FIFO drain timeout message from dev_dbg to dev_warn
-Date: Fri, 10 Apr 2026 09:49:21 +0200
-Message-ID: <20260410074921.1254213-11-aleksandr.loktionov@intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260410074921.1254213-1-aleksandr.loktionov@intel.com>
-References: <20260410074921.1254213-1-aleksandr.loktionov@intel.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="a4Olywbl"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=B1BxrsFUKX6jqT453u4B/bslW6vUL7jkrbnkrOn6egc=; b=a4OlywblGMI3RLpc/SxnvAjiYp
+	hBQ2RFziq7gw7crLvOQT4/8c9Ml8bV/Kajls5SLyyMa9plyXZWrLAvg4Dlcd5085D1sFMVb+m+egg
+	utCpC0dSxe+lM1a77OsHX8XgstoACYu+DYpHq4n5MgTMULv7kcS5Y87ZKs7DjZS94Z0DuO3kQPwak
+	WBm8Zw3yKG6PVMKwCl3iChgH6AKDnBVNaXA2c/56nJL3Qka2zqCT+kbxbMZM70iAOls+gtCAgGn7W
+	c77RGstUTegUNzrhum9gFYjKQtlt8NjmpP97w8w5A1Zdpz0TeoTFRrNgwqUj9/urh+DTKzTEP1PJM
+	XnZQvAVw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:36062)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1wB6d2-000000004bi-0CC0;
+	Fri, 10 Apr 2026 08:50:12 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1wB6cv-000000005S9-3wXl;
+	Fri, 10 Apr 2026 08:50:05 +0100
+Date: Fri, 10 Apr 2026 08:50:05 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: KhaiWenTan <khai.wen.tan@linux.intel.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com, maxime.chevallier@bootlin.com,
+	ovidiu.panait.rb@renesas.com, vladimir.oltean@nxp.com,
+	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	yoong.siang.song@intel.com, hong.aun.looi@intel.com,
+	khai.wen.tan@intel.com
+Subject: Re: [PATCH net 1/1] net: stmmac: Update default_an_inband before
+ passing value to phylink_config
+Message-ID: <adirrTJujEsrsK4F@shell.armlinux.org.uk>
+References: <20260410020735.327590-1-khai.wen.tan@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260410020735.327590-1-khai.wen.tan@linux.intel.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-The message emitted when the Tx FIFO fails to drain within the
-timeout period is currently at dev_dbg level, making it invisible
-unless debug logging is enabled. Promote it to dev_warn so that
-users and administrators can detect Tx timestamp path issues
-without enabling extra logging.
+On Fri, Apr 10, 2026 at 10:07:35AM +0800, KhaiWenTan wrote:
+> get_interfaces() will update both the plat->phy_interfaces and
+> mdio_bus_data->default_an_inband based on reading a SERDES register.
+> 
+> Therefore, we moved the priv->plat->get_interfaces() to be executed
+> first before assigning mdio_bus_data->default_an_inband to
+> config->default_an_inband to ensure default_an_inband is in correct
+> value during PHY setup.
+> 
+> Fixes: ca732e990fc8 ("net: stmmac: add get_interfaces() platform method")
+> Signed-off-by: KhaiWenTan <khai.wen.tan@linux.intel.com>
 
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
----
- drivers/net/ethernet/intel/ice/ice_ptp.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Patch looks good, but the blamed commit is wrong.
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-index 801a6e66..841c999 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-@@ -1108,9 +1108,9 @@ static int ice_ptp_check_tx_fifo(struct ice_ptp_port *port)
- 		port->tx_fifo_busy_cnt, port->port_num);
- 
- 	if (port->tx_fifo_busy_cnt == ICE_PTP_FIFO_NUM_CHECKS) {
--		dev_dbg(ice_pf_to_dev(pf),
--			"Port %d Tx FIFO still not empty; resetting quad %d\n",
--			port->port_num, quad);
-+		dev_warn(ice_pf_to_dev(pf),
-+			 "Port %d Tx FIFO still not empty; resetting quad %d\n",
-+			 port->port_num, quad);
- 		ice_ptp_reset_ts_memory_quad_e82x(hw, quad);
- 		port->tx_fifo_busy_cnt = FIFO_OK;
- 		return 0;
+d3836052fe09 ("net: stmmac: intel: convert speed_mode_2500() to get_interfaces()")
+
+introduced the problem.
+
+The commit message could also do with mentioning that dwmac-intel
+regressed result of that commit.
+
 -- 
-2.52.0
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
