@@ -1,90 +1,68 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6C829BDBB;
-	Fri, 10 Apr 2026 01:22:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12B92165EA;
+	Fri, 10 Apr 2026 01:31:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775784141; cv=none; b=u544YynQ5PCMcz+UNcP2/81ODrQEi4gdsbaprauIEJZtE572zednLlaSJiske52WP0v3Us0Xdi+JzaJj8JgV8nY2YZBaw2SdSDw+AIEpb8VBMpA1xhiVfA2eN1m/mFlJI3XWQ4PAxI73iQxRrl+DMxXOYbzscWfeNs9FNnzu2WA=
+	t=1775784702; cv=none; b=tjXDf+66Fa8cOMmWEwEMbWB5YsUMZyprGJtgqYsnmQ0VdL3j850f9LEs02a2ObTXh7rK9VDgbmZDpeywH8FSmCAnxTl7un/HeFGigK/l5VxfEzFuLpPCjAZa4FQBH1fI2Q/6glkIsD5lK32vNj04jaL6A8g+Ov5Os9wwPypfHhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775784141; c=relaxed/simple;
-	bh=OtdwFEyEb8se/ithYk2UGLo+hYsxtwasy+75+RvYfiU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HSsd1rsviBCyWsY/gsR96Ce9Re8n4d+v6Y7oVtDlfn9+1L0TPUOjwmV+Ip0gCavZB3b/EyYCpx30pDwiOPD/nsEjKWItj0tJ5T7nXAMjDOJ/zGLwJdxQ3MtHmACOdldyBU7KtmJ84yWIJpjli4gCaA+eHXtOwkShGCexcrP8pzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=T4Ia0eYl; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	s=arc-20240116; t=1775784702; c=relaxed/simple;
+	bh=V0eqrfPC3DyKnqyGvHgxN/vCb+mIQ/W9mLgpRYvLZK0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=T2E+jBJ9hDvY6HSopfY/CegwWqlojxHG3b8Uu0QD/zAVpxMDGY8BD2+i1YCr/Qvs31MMlbTFBmrEYw/WURABQxIIvrLXkf3uJjEmRGDaBkAzHnKiyTkSsR5L55gXRpv3YiBH/Jj4QMJaAnPv4/AFmkY0I8I+S4GxkFa5EMDyLsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tUXREq/X; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="T4Ia0eYl"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D305B113855;
-	Fri, 10 Apr 2026 03:22:13 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1775784136;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=xpNGb4YWB4vk5Fw9+AtiAS5mIPWhtfd3tfy+j6rlEZM=;
-	b=T4Ia0eYl5boquXW4npr40FUzcytcAIKE9lyrtAdx3591Gky2aF40mU8Af3gv8NpgEvKgsN
-	lAbBE1viTgoH/4YBwzufngSIc86vujOxg+mCyzFYxl8/pbhgTXTJb4Jcd0ea0hYVLaI8XF
-	vSNPpIekHTKkG04pQRUpb4S7G6R6JLE80XSSJpCqUbtLJJW+jAZCeIBx18NySBQXTLVITx
-	lh3cZUZs5ukSFjFhgK3EwX6CS4ntZYCZAhNWA6J7jo2A1twBJjmyf8EfcpR9uGpzcJmhR4
-	Gc6bo/dVicGoP6cBoe7zCNkkSMwJkQCBHrxqUkIK8wJRI2Owk7rV083dgkG2Sg==
-Message-ID: <1665242a-2298-4e76-9618-effdb88c2ad4@nabladev.com>
-Date: Thu, 9 Apr 2026 17:26:13 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tUXREq/X"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5A28C4CEF7;
+	Fri, 10 Apr 2026 01:31:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775784702;
+	bh=V0eqrfPC3DyKnqyGvHgxN/vCb+mIQ/W9mLgpRYvLZK0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=tUXREq/X2eYZdLsQKWGrxmhXLYU+Ng54OdB84rAAPq+MJKSxY5pGTgoNiHr4h+Ptx
+	 J//XZykRuzcT27xrCe3BfrdedUsfuraN4n+2cyI/KZfOyntOAiuKoCj3xJznNvRsNA
+	 mkt5FdAXM0FJgP63Se67CS0YdB5CrlvA6MDzE2wCwQbWFzmPbzzDzwUeQ6r/nnHozd
+	 5ocx8ZP/1PYUIOtalXkII1oBakDeksdkWnAGP7OepHIKnPphxz2ERDxp0bvcyGUrem
+	 pxRV1VYH1q1jmYZM0maIoBLi/qoQGXpWn3K2TP95Du3lRPU6W3+lQrjVuLYrsLua7R
+	 kFNe0kubHofsw==
+Date: Thu, 9 Apr 2026 18:31:40 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Paolo Abeni <pabeni@redhat.com>, Alex Elder <elder@kernel.org>, Andrew
+ Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Bjorn
+ Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>,
+ Alexander Koskovich <akoskovich@pm.me>,
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH 0/6] IPA v5.2 support for Milos and Fairphone (Gen. 6)
+Message-ID: <20260409183140.56b99b89@kernel.org>
+In-Reply-To: <48464d44-1fac-47a2-839a-c963e9421615@redhat.com>
+References: <20260403-milos-ipa-v1-0-01e9e4e03d3e@fairphone.com>
+	<48464d44-1fac-47a2-839a-c963e9421615@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net,PATCH v2] net: ks8851: Reinstate disabling of BHs around IRQ
- handler
-To: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
- "David S. Miller" <davem@davemloft.net>, Andrew Lunn
- <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Ronald Wahl <ronald.wahl@raritan.com>, Yicong Hui <yiconghui@gmail.com>,
- linux-kernel@vger.kernel.org
-References: <20260408162535.98108-1-marex@nabladev.com>
- <6391ee36b7d9c66d33c734650ebfb7fe@tipi-net.de>
-Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <6391ee36b7d9c66d33c734650ebfb7fe@tipi-net.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 4/9/26 8:52 AM, Nicolai Buchwitz wrote:
+On Thu, 9 Apr 2026 09:46:31 +0200 Paolo Abeni wrote:
+> On 4/3/26 6:43 PM, Luca Weiss wrote:
+> > First, two fixes that unbreak IPA v5.0+, which can be applied
+> > independently.
+> > 
+> > Then add support for IPA v5.2 which can be found in the Milos SoC. And
+> > finally enable it on Fairphone (Gen. 6) so that mobile data (4G/5G/..)
+> > starts working.  
+> 
+> You should have probably split the series in 2, with patches 1 & 2
+> targeting net and the following ones targeting net-next. It looks like
+> patch 5 needs some adjustment. I'm applying the first 2.
 
-Hello Nicolai,
-
->> @@ -408,7 +426,9 @@ static int ks8851_net_open(struct net_device *dev)
->>      unsigned long flags;
->>      int ret;
->>
->> -    ret = request_threaded_irq(dev->irq, NULL, ks8851_irq,
->> +    ret = request_threaded_irq(dev->irq, NULL,
->> +                   ks->no_bh_in_irq_handler ?
->> +                   ks8851_irq_nobh : ks8851_irq,
-> 
-> This works, but wouldn't it be simpler to put the BH disable
-> into the PAR lock/unlock directly?
-> 
->    static void ks8851_lock_par(...)
->    {
->        local_bh_disable();
->        spin_lock_irqsave(&ksp->lock, *flags);
->    }
-> 
->    static void ks8851_unlock_par(...)
->    {
->        spin_unlock_irqrestore(&ksp->lock, *flags);
->        local_bh_enable();
->    }
-> 
-> No flag, no wrapper, no conditional in request_threaded_irq.
-> And it protects all PAR lock/unlock callsites, not just the
-> IRQ handler.
-That is exactly why I wrapped the IRQ handler, because the BH should be 
-disabled ONLY around the IRQ handler, not around the other call sites.
+1 & 2 have now propagated to net-next, please repost 3 & 4.
