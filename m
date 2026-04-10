@@ -1,38 +1,38 @@
 Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6201B3859E1
-	for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 20:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF68383C95
+	for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 20:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775851429; cv=none; b=Ic4N+Li7Kipy2abJ8iWUNrGrwbbekAith79N65bYFBVPgvqVcabMY//bdoCorutdVIcpCuBonoZBLcS5n2+6Xz5s7ozl3LYt967UMVGO8khrAqwjpn2QA3INSr3lKIMpihzKUMB3UH1Gb/1Mk6qmUEtV8rkcazGHe/eufcz2Rvw=
+	t=1775851430; cv=none; b=H987KgmgzWYK3mV1MXMxLDKO8a6gqskqEONvuSstcXkSyXDckFY2M5Yq+sMH1nhG9giZdky88Lliwyfo9/Lev/J9/mtBR9ygGBg61G04iMWRqabr0P3qJzx+rT3fldRNG7hO0JAEGvw28YN0yuVJcYRN7OnCNUTh8ZGvmJEOOQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775851429; c=relaxed/simple;
-	bh=MKjNutxxOhZhRHppjTicIi16Kn2vGmEmoZTMrIj07fE=;
+	s=arc-20240116; t=1775851430; c=relaxed/simple;
+	bh=GumcoS5kfDmCV7IhtjjVKoJ8qU8WrUDhhTf0U1nY4yw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F0U0JWmSJPH6Yt15BXRjv2q8CyPM35OxWXxh821me25Zkv6OBEbOgw8JI0pL536YZVyG9d4AExPheba0NwJGnBtbf8dW5dj94XmL/yDpf754F4bOI9XTEbWHHVtppvX353G9p8luFxFLSjFIi3TCxoMKfY28cjPZ3WpYuj4hlhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=gqj30+nX; arc=none smtp.client-ip=171.64.64.25
+	 MIME-Version; b=Rh+XRTAzkFE1GPRTHo7+3TKnoOeNX8um0Lv3E6G+qX5COD06XrflDWExhZ6tAzXgqNf6RfJXz1VLcNCxrA1Ot/bqPEuayzGZfHNA6Yzl9NkYJWm/u4Q05+3lMg5YruoVsc/Yj9Glqo2a/Oaax3A9A45PfReYSU54O2WvWQ5IUvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=iJ4PGtMw; arc=none smtp.client-ip=171.64.64.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="gqj30+nX"
+	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="iJ4PGtMw"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=px6A8ncmH95lh9xNQ2ZuLHA4b9oRWDfYH8fjkNpOPY4=; t=1775851421; x=1776715421; 
-	b=gqj30+nXgi6+gX22IOy9XHs7yKoojJwz4G4BkDDyCAUnn5LpRzAxFCJI10GNdHfWvpOJxkIQFGC
-	q8MkSsgEEMa693hNaXGXp+s4tAvTVc1QB1p4KJG0tsy3567OwA8inCyrdDLprgHgaPP13eEOxzSzf
-	tXd92Yw7zGRKoEJVkwSR+TIEPT+fLw3ZujncXfFlEswpd/afz2BcNkqZc2clX97AOE2cetqhcisLw
-	SulRtuYecsJYVuzq89IE6ChmkjfW5VZFXTEa9vbiXF6Nz0NXAfUOJ7rTKdFfJtMaiEcIL2c3Dg/iO
-	gRFNwjWQvZajzDS7c4ToIWQIwzEWfWxwOPyQ==;
+	bh=39xQvFIUaRK+CwqaFSMnopKSqxJSluBdDz26bv58JcE=; t=1775851426; x=1776715426; 
+	b=iJ4PGtMwC683norHW6tK5iMm2nKwJsZsCSUs4Xvpwbwe34xNV8D7YDC5S6ji1mwNfguayx9kmSQ
+	KyX5PeEiDoeHDHan+4XnT1ublznMu1TxvuZ91k59V5PIyHdFV9cerq0Tl1KBMrrJrDE6ETp3rZEmK
+	4W1cyGoaaX+V+JxajQLm9RfnDbz0xsZgT46YkepFFi4TVL4XTSgMcL9s1SmRQF6O2LFq2Kz9wW5GI
+	A6yaE4EPbNxDiWAHA9c3wbw2V9ILuMeAPyLHVq5lILytfAOGuHgeAyP1liayT08uDTqPIMh0lq4bM
+	8ZBbOBeaVmcXMmKo841Y+gtzbWHP/nPuo1vQ==;
 Received: from ouster448.stanford.edu ([172.24.72.71]:51553 helo=ouster2022)
 	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ouster@cs.stanford.edu>)
-	id 1wBI4o-0003MV-N2; Fri, 10 Apr 2026 13:03:41 -0700
+	id 1wBI4s-0003MV-9P; Fri, 10 Apr 2026 13:03:45 -0700
 From: John Ousterhout <ouster@cs.stanford.edu>
 To: netdev@vger.kernel.org
 Cc: pabeni@redhat.com,
@@ -40,9 +40,9 @@ Cc: pabeni@redhat.com,
 	horms@kernel.org,
 	kuba@kernel.org,
 	John Ousterhout <ouster@cs.stanford.edu>
-Subject: [PATCH net-next v18 12/15] net: homa: create homa_incoming.c
-Date: Fri, 10 Apr 2026 13:03:06 -0700
-Message-ID: <20260410200310.1915-13-ouster@cs.stanford.edu>
+Subject: [PATCH net-next v18 14/15] net: homa: create homa_plumbing.c
+Date: Fri, 10 Apr 2026 13:03:08 -0700
+Message-ID: <20260410200310.1915-15-ouster@cs.stanford.edu>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260410200310.1915-1-ouster@cs.stanford.edu>
 References: <20260410200310.1915-1-ouster@cs.stanford.edu>
@@ -54,1029 +54,1406 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Score: -101.0
-X-Scan-Signature: bcb763d6d017077cd90934e2f471761e
+X-Scan-Signature: d72df6ceca274ff4dc3eac72695b0066
 
-This file contains most of the code for handling incoming packets,
-including top-level dispatching code plus specific handlers for each
-pack type. It also contains code for dispatching fully-received
-messages to waiting application threads.
+homa_plumbing.c contains functions that connect Homa to the rest of
+the Linux kernel, such as dispatch tables used by Linux and the
+top-level functions that Linux invokes from those dispatch tables.
 
 Signed-off-by: John Ousterhout <ouster@cs.stanford.edu>
 
+---
 Changes for v18:
-* Create new function homa_consume_rx_skb (which uses skb_attempt_defer_free)
-  and use that function instead of consume_skb.
-* Make sure unused fields of outgoing packets are zeroes.
-* Improve error handling in homa_ack_pkt.
+* Add missing RCU locks.
+* Cleanup homa_socket (eliminate redundant error handling)
 
 Changes for v16:
-* Use kfree_skb_reason and consume_skb instead of kfree_skb
-* Use set_bit/clear_bit/test_bit
-* Simplify handling of acks; eliminate akcs and num_acks variables
-  in homa_dispatch_pkts
-* Check for wmem in homa_dispatch_pkts (fixes deadlock over wmem)
-* Use new homa_lock_preempt() function
+* Implement HOMAIOCINFO ioctl
+* Set hsk->error_msg (for HOMAIOCINFO)
+* Use consume_skb and kfree_skb_reason instead of kfree_skb
+* Use set_bit, clear_bit, etc. for flag bits
+* Remove global_homa variable
 
-Changes for v14:
-* Use new homa_rpc_tx_end function
-* Fix race in homa_wait_shared (an RPC could get lost if it became
-  ready at the same time that homa_interest_wait returned with an error)
-* Handle nonblocking behavior here, rather than in homa_interest.c
-* Change API for homa_wait_private to distinguish errors in an RPC from
-  errors that prevented the wait operation from completing.
+Changes for v13:
+* Fix bug in is_homa_pkt: didn't properly handle packets where the
+  network header hadn't yet been set.
+
+Changes for v12:
+* Fix deadlock in homa_recvmsg (homa_rpc_reap was invoked while holding
+  an RPC lock).
 
 Changes for v11:
+* Move link_mbps variable from struct homa_pacer back to struct homa.
+* Clean up error handing in homa_load.
 * Cleanup and simplify use of RPC reference counts.
-* Cleanup sparse annotations.
-* Rework the mechanism for waking up RPCs that stalled waiting for
-  buffer pool space.
+* Add explicit padding to struct homa_recvmsg_args to fix problems compiling
+  on 32-bit machines.
 
 Changes for v10:
-* Revise sparse annotations to eliminate __context__ definition
-* Refactor resend mechanism (new function homa_request_retrans replaces
-  homa_gap_retry)
-* Remove log messages after alloc errors
-* Fix socket cleanup race
+* Use the destroy function from struct proto properly (fixes bugs in
+  socket cleanup)
+* Fix issues from sparse, xmastree, etc.
+* Replace __u16 with u16, __u8 with u8, etc.
 
 Changes for v9:
 * Add support for homa_net objects
-* Use new homa_clock abstraction layer
 * Various name improvements (e.g. use "alloc" instead of "new" for functions
   that allocate memory)
+* Add BUILD_BUG_ON statements to replace _Static_asserts removed from
+  header files
+* Remove unnecessary/unused functions such as homa_get_port, homa_disconnect,
+  and homa_backlog_rcv.
+
+Changes for v8:
+* Accommodate homa_pacer and homa_pool refactorings
 
 Changes for v7:
-* API change for homa_rpc_handoff
+* Remove extraneous code
+* Make Homa a pernet subsystem
+* Block Homa senders if insufficient tx buffer memory
+* Check for missing buffer pool in homa_recvmsg
 * Refactor waiting mechanism for incoming packets: simplify wait
-  criteria and use standard Linux mechanisms for waiting, use
-  new homa_interest struct
-* Reject unauthorized incoming request messages
-* Improve documentation for code that spins (and reduce spin length)
-* Use RPC reference counts, eliminate RPC_HANDING_OFF flag
-* Replace erroneous use of "safe" list iteration with "rcu" version
+  criteria and use standard Linux mechanisms for waiting
+* Implement SO_HOMA_SERVER option for setsockopt
+* Rename UNKNOWN packet type to RPC_UNKNOWN
 * Remove locker argument from locking functions
-* Check incoming messages against HOMA_MAX_MESSAGE_LENGTH
 * Use u64 and __u64 properly
+* Use new homa_make_header_avl function
 ---
- net/homa/homa_impl.h     |  16 +
- net/homa/homa_incoming.c | 906 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 922 insertions(+)
- create mode 100644 net/homa/homa_incoming.c
+ net/homa/homa_impl.h     |   28 +
+ net/homa/homa_plumbing.c | 1254 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 1282 insertions(+)
+ create mode 100644 net/homa/homa_plumbing.c
 
 diff --git a/net/homa/homa_impl.h b/net/homa/homa_impl.h
-index e997f1f6cb3b..b1ca8b25fb9a 100644
+index 4a8df43003de..9f11ec49e2fe 100644
 --- a/net/homa/homa_impl.h
 +++ b/net/homa/homa_impl.h
-@@ -359,22 +359,38 @@ static inline bool homa_make_header_avl(struct sk_buff *skb)
- 
- extern unsigned int homa_net_id;
- 
-+void     homa_ack_pkt(struct sk_buff *skb, struct homa_sock *hsk,
-+		      struct homa_rpc *rpc);
-+void     homa_add_packet(struct homa_rpc *rpc, struct sk_buff *skb);
-+void     homa_consume_rx_skb(struct sk_buff *skb);
-+int      homa_copy_to_user(struct homa_rpc *rpc);
-+void     homa_data_pkt(struct sk_buff *skb, struct homa_rpc *rpc);
+@@ -362,28 +362,54 @@ extern unsigned int homa_net_id;
+ void     homa_ack_pkt(struct sk_buff *skb, struct homa_sock *hsk,
+ 		      struct homa_rpc *rpc);
+ void     homa_add_packet(struct homa_rpc *rpc, struct sk_buff *skb);
++int      homa_bind(struct socket *sk, struct sockaddr_unsized *addr,
++		   int addr_len);
++void     homa_close(struct sock *sock, long timeout);
+ void     homa_consume_rx_skb(struct sk_buff *skb);
+ int      homa_copy_to_user(struct homa_rpc *rpc);
+ void     homa_data_pkt(struct sk_buff *skb, struct homa_rpc *rpc);
  void     homa_destroy(struct homa *homa);
-+void     homa_dispatch_pkts(struct sk_buff *skb);
+ void     homa_dispatch_pkts(struct sk_buff *skb);
++int      homa_err_handler_v4(struct sk_buff *skb, u32 info);
++int      homa_err_handler_v6(struct sk_buff *skb,
++			     struct inet6_skb_parm *opt, u8 type,  u8 code,
++			     int offset, __be32 info);
  int      homa_fill_data_interleaved(struct homa_rpc *rpc,
  				    struct sk_buff *skb, struct iov_iter *iter);
-+struct homa_gap *homa_gap_alloc(struct list_head *next, int start, int end);
+ struct homa_gap *homa_gap_alloc(struct list_head *next, int start, int end);
++int      homa_getsockopt(struct sock *sk, int level, int optname,
++			 char __user *optval, int __user *optlen);
++int      homa_hash(struct sock *sk);
++enum hrtimer_restart homa_hrtimer(struct hrtimer *timer);
  int      homa_init(struct homa *homa);
++int      homa_ioc_info(struct socket *sock, unsigned long arg);
++int      homa_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg);
++int      homa_load(void);
  int      homa_message_out_fill(struct homa_rpc *rpc,
  			       struct iov_iter *iter, int xmit);
  void     homa_message_out_init(struct homa_rpc *rpc, int length);
-+void     homa_need_ack_pkt(struct sk_buff *skb, struct homa_sock *hsk,
-+			   struct homa_rpc *rpc);
+ void     homa_need_ack_pkt(struct sk_buff *skb, struct homa_sock *hsk,
+ 			   struct homa_rpc *rpc);
  void     homa_net_destroy(struct homa_net *hnet);
++void     homa_net_exit(struct net *net);
  int      homa_net_init(struct homa_net *hnet, struct net *net,
  		       struct homa *homa);
-+void     homa_request_retrans(struct homa_rpc *rpc);
-+void     homa_resend_pkt(struct sk_buff *skb, struct homa_rpc *rpc,
-+			 struct homa_sock *hsk);
++int      homa_net_start(struct net *net);
++__poll_t homa_poll(struct file *file, struct socket *sock,
++		   struct poll_table_struct *wait);
++int      homa_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
++		      int flags);
+ void     homa_request_retrans(struct homa_rpc *rpc);
+ void     homa_resend_pkt(struct sk_buff *skb, struct homa_rpc *rpc,
+ 			 struct homa_sock *hsk);
  void     homa_rpc_handoff(struct homa_rpc *rpc);
  int      homa_rpc_tx_end(struct homa_rpc *rpc);
++int      homa_sendmsg(struct sock *sk, struct msghdr *msg, size_t len);
++int      homa_setsockopt(struct sock *sk, int level, int optname,
++			 sockptr_t optval, unsigned int optlen);
++int      homa_shutdown(struct socket *sock, int how);
++int      homa_socket(struct sock *sk);
++int      homa_softirq(struct sk_buff *skb);
  void     homa_spin(int ns);
+ void     homa_timer(struct homa *homa);
+ void     homa_timer_check_rpc(struct homa_rpc *rpc);
+@@ -391,7 +417,9 @@ int      homa_timer_main(void *transport);
  struct sk_buff *homa_tx_data_pkt_alloc(struct homa_rpc *rpc,
  				       struct iov_iter *iter, int offset,
  				       int length, int max_seg_data);
-+void     homa_rpc_unknown_pkt(struct sk_buff *skb, struct homa_rpc *rpc);
-+int      homa_wait_private(struct homa_rpc *rpc, int nonblocking);
-+struct homa_rpc *homa_wait_shared(struct homa_sock *hsk, int nonblocking);
++void     homa_unhash(struct sock *sk);
+ void     homa_rpc_unknown_pkt(struct sk_buff *skb, struct homa_rpc *rpc);
++void     homa_unload(void);
+ int      homa_wait_private(struct homa_rpc *rpc, int nonblocking);
+ struct homa_rpc *homa_wait_shared(struct homa_sock *hsk, int nonblocking);
  int      homa_xmit_control(enum homa_packet_type type, void *contents,
- 			   size_t length, struct homa_rpc *rpc);
- int      __homa_xmit_control(void *contents, size_t length,
-diff --git a/net/homa/homa_incoming.c b/net/homa/homa_incoming.c
+diff --git a/net/homa/homa_plumbing.c b/net/homa/homa_plumbing.c
 new file mode 100644
-index 000000000000..7cb9a096cbec
+index 000000000000..67cc5bd347b0
 --- /dev/null
-+++ b/net/homa/homa_incoming.c
-@@ -0,0 +1,906 @@
++++ b/net/homa/homa_plumbing.c
+@@ -0,0 +1,1254 @@
 +// SPDX-License-Identifier: BSD-2-Clause or GPL-2.0+
 +
-+/* This file contains functions that handle incoming Homa messages. */
++/* This file consists mostly of "glue" that hooks Homa into the rest of
++ * the Linux kernel. The guts of the protocol are in other files.
++ */
 +
 +#include "homa_impl.h"
-+#include "homa_interest.h"
 +#include "homa_peer.h"
 +#include "homa_pool.h"
 +
-+/**
-+ * homa_message_in_init() - Constructor for homa_message_in.
-+ * @rpc:          RPC whose msgin structure should be initialized. The
-+ *                msgin struct is assumed to be zeroes.
-+ * @length:       Total number of bytes in message.
-+ * Return:        Zero for successful initialization, or a negative errno
-+ *                if rpc->msgin could not be initialized.
++/* Identifier for retrieving Homa-specific data for a struct net. */
++unsigned int homa_net_id;
++
++/* This structure defines functions that allow Homa to be used as a
++ * pernet subsystem.
 + */
-+int homa_message_in_init(struct homa_rpc *rpc, int length)
-+	__must_hold(rpc->bucket->lock)
++static struct pernet_operations homa_net_ops = {
++	.init = homa_net_start,
++	.exit = homa_net_exit,
++	.id = &homa_net_id,
++	.size = sizeof(struct homa_net)
++};
++
++/* Global data for Homa. Avoid referencing directly except when there is
++ * no alternative (instead, use a homa pointer stored in a struct or
++ * passed via a parameter). This allows overriding during unit tests.
++ */
++static struct homa homa_data;
++
++/* This structure defines functions that handle various operations on
++ * Homa sockets. These functions are relatively generic: they are called
++ * to implement top-level system calls. Many of these operations can
++ * be implemented by PF_INET6 functions that are independent of the
++ * Homa protocol.
++ */
++static const struct proto_ops homa_proto_ops = {
++	.family		   = PF_INET,
++	.owner		   = THIS_MODULE,
++	.release	   = inet_release,
++	.bind		   = homa_bind,
++	.connect	   = inet_dgram_connect,
++	.socketpair	   = sock_no_socketpair,
++	.accept		   = sock_no_accept,
++	.getname	   = inet_getname,
++	.poll		   = homa_poll,
++	.ioctl		   = homa_ioctl,
++	.listen		   = sock_no_listen,
++	.shutdown	   = homa_shutdown,
++	.setsockopt	   = sock_common_setsockopt,
++	.getsockopt	   = sock_common_getsockopt,
++	.sendmsg	   = inet_sendmsg,
++	.recvmsg	   = inet_recvmsg,
++	.mmap		   = sock_no_mmap,
++	.set_peek_off	   = sk_set_peek_off,
++};
++
++static const struct proto_ops homav6_proto_ops = {
++	.family		   = PF_INET6,
++	.owner		   = THIS_MODULE,
++	.release	   = inet6_release,
++	.bind		   = homa_bind,
++	.connect	   = inet_dgram_connect,
++	.socketpair	   = sock_no_socketpair,
++	.accept		   = sock_no_accept,
++	.getname	   = inet6_getname,
++	.poll		   = homa_poll,
++	.ioctl		   = homa_ioctl,
++	.listen		   = sock_no_listen,
++	.shutdown	   = homa_shutdown,
++	.setsockopt	   = sock_common_setsockopt,
++	.getsockopt	   = sock_common_getsockopt,
++	.sendmsg	   = inet_sendmsg,
++	.recvmsg	   = inet_recvmsg,
++	.mmap		   = sock_no_mmap,
++	.set_peek_off	   = sk_set_peek_off,
++};
++
++/* This structure also defines functions that handle various operations
++ * on Homa sockets. However, these functions are lower-level than those
++ * in homa_proto_ops: they are specific to the PF_INET or PF_INET6
++ * protocol family, and in many cases they are invoked by functions in
++ * homa_proto_ops. Most of these functions have Homa-specific implementations.
++ */
++static struct proto homa_prot = {
++	.name		   = "HOMA",
++	.owner		   = THIS_MODULE,
++	.close		   = homa_close,
++	.connect	   = ip4_datagram_connect,
++	.init		   = homa_socket,
++	.destroy	   = homa_sock_destroy,
++	.setsockopt	   = homa_setsockopt,
++	.getsockopt	   = homa_getsockopt,
++	.sendmsg	   = homa_sendmsg,
++	.recvmsg	   = homa_recvmsg,
++	.hash		   = homa_hash,
++	.unhash		   = homa_unhash,
++	.obj_size	   = sizeof(struct homa_sock),
++	.no_autobind       = 1,
++};
++
++static struct proto homav6_prot = {
++	.name		   = "HOMAv6",
++	.owner		   = THIS_MODULE,
++	.close		   = homa_close,
++	.connect	   = ip6_datagram_connect,
++	.init		   = homa_socket,
++	.destroy	   = homa_sock_destroy,
++	.setsockopt	   = homa_setsockopt,
++	.getsockopt	   = homa_getsockopt,
++	.sendmsg	   = homa_sendmsg,
++	.recvmsg	   = homa_recvmsg,
++	.hash		   = homa_hash,
++	.unhash		   = homa_unhash,
++	.obj_size	   = sizeof(struct homa_v6_sock),
++	.ipv6_pinfo_offset = offsetof(struct homa_v6_sock, inet6),
++	.no_autobind       = 1,
++};
++
++/* Top-level structure describing the Homa protocol. */
++static struct inet_protosw homa_protosw = {
++	.type              = SOCK_DGRAM,
++	.protocol          = IPPROTO_HOMA,
++	.prot              = &homa_prot,
++	.ops               = &homa_proto_ops,
++	.flags             = INET_PROTOSW_REUSE,
++};
++
++static struct inet_protosw homav6_protosw = {
++	.type              = SOCK_DGRAM,
++	.protocol          = IPPROTO_HOMA,
++	.prot              = &homav6_prot,
++	.ops               = &homav6_proto_ops,
++	.flags             = INET_PROTOSW_REUSE,
++};
++
++/* This structure is used by IP to deliver incoming Homa packets to us. */
++static struct net_protocol homa_protocol = {
++	.handler =	homa_softirq,
++	.err_handler =	homa_err_handler_v4,
++	.no_policy =     1,
++};
++
++static struct inet6_protocol homav6_protocol = {
++	.handler =	homa_softirq,
++	.err_handler =	homa_err_handler_v6,
++	.flags =        INET6_PROTO_NOPOLICY | INET6_PROTO_FINAL,
++};
++
++/* Sizes of the headers for each Homa packet type, in bytes. */
++static u16 header_lengths[] = {
++	sizeof(struct homa_data_hdr),
++	0,
++	sizeof(struct homa_resend_hdr),
++	sizeof(struct homa_rpc_unknown_hdr),
++	sizeof(struct homa_busy_hdr),
++	0,
++	0,
++	sizeof(struct homa_need_ack_hdr),
++	sizeof(struct homa_ack_hdr)
++};
++
++/* Thread that runs timer code to detect lost packets and crashed peers. */
++static struct task_struct *timer_kthread;
++static DECLARE_COMPLETION(timer_thread_done);
++
++/* Used to wakeup timer_kthread at regular intervals. */
++static struct hrtimer hrtimer;
++
++/* Nonzero is an indication to the timer thread that it should exit. */
++static int timer_thread_exit;
++
++/**
++ * homa_load() - invoked when this module is loaded into the Linux kernel
++ * Return: 0 on success, otherwise a negative errno.
++ */
++int __init homa_load(void)
 +{
-+	int err;
++	struct homa *homa = &homa_data;
++	bool init_protocol6 = false;
++	bool init_protosw6 = false;
++	bool init_protocol = false;
++	bool init_protosw = false;
++	bool init_net_ops = false;
++	bool init_proto6 = false;
++	bool init_proto = false;
++	bool init_homa = false;
++	int status;
 +
-+	if (length > HOMA_MAX_MESSAGE_LENGTH)
-+		return -EINVAL;
++	/* Compile-time validations that no packet header is longer
++	 * than HOMA_MAX_HEADER.
++	 */
++	BUILD_BUG_ON(sizeof(struct homa_data_hdr) > HOMA_MAX_HEADER);
++	BUILD_BUG_ON(sizeof(struct homa_resend_hdr) > HOMA_MAX_HEADER);
++	BUILD_BUG_ON(sizeof(struct homa_rpc_unknown_hdr) > HOMA_MAX_HEADER);
++	BUILD_BUG_ON(sizeof(struct homa_busy_hdr) > HOMA_MAX_HEADER);
++	BUILD_BUG_ON(sizeof(struct homa_need_ack_hdr) > HOMA_MAX_HEADER);
++	BUILD_BUG_ON(sizeof(struct homa_ack_hdr) > HOMA_MAX_HEADER);
 +
-+	rpc->msgin.length = length;
-+	__skb_queue_head_init(&rpc->msgin.packets);
-+	INIT_LIST_HEAD(&rpc->msgin.gaps);
-+	rpc->msgin.bytes_remaining = length;
-+	err = homa_pool_alloc_msg(rpc);
-+	if (err != 0) {
-+		rpc->msgin.length = -1;
-+		return err;
++	/* Extra constraints on data packets:
++	 * - Ensure minimum header length so Homa doesn't have to worry about
++	 *   padding data packets.
++	 * - Make sure data packet headers are a multiple of 4 bytes (needed
++	 *   for TCP/TSO compatibility).
++	 */
++	BUILD_BUG_ON(sizeof(struct homa_data_hdr) < HOMA_MIN_PKT_LENGTH);
++	BUILD_BUG_ON((sizeof(struct homa_data_hdr) -
++		      sizeof(struct homa_seg_hdr)) & 0x3);
++
++	/* Detect size changes in uAPI structs. */
++	BUILD_BUG_ON(sizeof(struct homa_sendmsg_args) != 24);
++	BUILD_BUG_ON(sizeof(struct homa_recvmsg_args) != 88);
++
++	status = homa_init(homa);
++	if (status)
++		goto error;
++	init_homa = true;
++
++	status = proto_register(&homa_prot, 1);
++	if (status != 0) {
++		pr_err("proto_register failed for homa_prot: %d\n", status);
++		goto error;
++	}
++	init_proto = true;
++
++	status = proto_register(&homav6_prot, 1);
++	if (status != 0) {
++		pr_err("proto_register failed for homav6_prot: %d\n", status);
++		goto error;
++	}
++	init_proto6 = true;
++
++	inet_register_protosw(&homa_protosw);
++	init_protosw = true;
++
++	status = inet6_register_protosw(&homav6_protosw);
++	if (status != 0) {
++		pr_err("inet6_register_protosw failed in %s: %d\n", __func__,
++		       status);
++		goto error;
++	}
++	init_protosw6 = true;
++
++	status = inet_add_protocol(&homa_protocol, IPPROTO_HOMA);
++	if (status != 0) {
++		pr_err("inet_add_protocol failed in %s: %d\n", __func__,
++		       status);
++		goto error;
++	}
++	init_protocol = true;
++
++	status = inet6_add_protocol(&homav6_protocol, IPPROTO_HOMA);
++	if (status != 0) {
++		pr_err("inet6_add_protocol failed in %s: %d\n",  __func__,
++		       status);
++		goto error;
++	}
++	init_protocol6 = true;
++
++	status = register_pernet_subsys(&homa_net_ops);
++	if (status != 0) {
++		pr_err("Homa got error from register_pernet_subsys: %d\n",
++		       status);
++		goto error;
++	}
++	init_net_ops = true;
++
++	timer_kthread = kthread_run(homa_timer_main, homa, "homa_timer");
++	if (IS_ERR(timer_kthread)) {
++		status = PTR_ERR(timer_kthread);
++		pr_err("couldn't create Homa timer thread: error %d\n",
++		       status);
++		timer_kthread = NULL;
++		goto error;
++	}
++
++	return 0;
++
++error:
++	if (timer_kthread) {
++		timer_thread_exit = 1;
++		wake_up_process(timer_kthread);
++		wait_for_completion(&timer_thread_done);
++	}
++	if (init_net_ops)
++		unregister_pernet_subsys(&homa_net_ops);
++	if (init_homa)
++		homa_destroy(homa);
++	if (init_protocol)
++		inet_del_protocol(&homa_protocol, IPPROTO_HOMA);
++	if (init_protocol6)
++		inet6_del_protocol(&homav6_protocol, IPPROTO_HOMA);
++	if (init_protosw)
++		inet_unregister_protosw(&homa_protosw);
++	if (init_protosw6)
++		inet6_unregister_protosw(&homav6_protosw);
++	if (init_proto)
++		proto_unregister(&homa_prot);
++	if (init_proto6)
++		proto_unregister(&homav6_prot);
++	return status;
++}
++
++/**
++ * homa_unload() - invoked when this module is unloaded from the Linux kernel.
++ */
++void __exit homa_unload(void)
++{
++	struct homa *homa = &homa_data;
++
++	pr_notice("Homa module unloading\n");
++
++	if (timer_kthread) {
++		timer_thread_exit = 1;
++		wake_up_process(timer_kthread);
++		wait_for_completion(&timer_thread_done);
++	}
++	unregister_pernet_subsys(&homa_net_ops);
++	inet_del_protocol(&homa_protocol, IPPROTO_HOMA);
++	inet_unregister_protosw(&homa_protosw);
++	inet6_del_protocol(&homav6_protocol, IPPROTO_HOMA);
++	inet6_unregister_protosw(&homav6_protosw);
++	proto_unregister(&homa_prot);
++	proto_unregister(&homav6_prot);
++	homa_destroy(homa);
++}
++
++module_init(homa_load);
++module_exit(homa_unload);
++
++/**
++ * homa_net_start() - Initialize Homa for a new network namespace.
++ * @net:    The net that Homa will be associated with.
++ * Return:  0 on success, otherwise a negative errno.
++ */
++int homa_net_start(struct net *net)
++{
++	pr_notice("Homa attaching to net namespace\n");
++	return homa_net_init(homa_net(net), net, &homa_data);
++}
++
++/**
++ * homa_net_exit() - Perform Homa cleanup needed when a network namespace
++ * is destroyed.
++ * @net:    The net from which Homa should be removed.
++ */
++void homa_net_exit(struct net *net)
++{
++	pr_notice("Homa detaching from net namespace\n");
++	homa_net_destroy(homa_net(net));
++}
++
++/**
++ * homa_bind() - Implements the bind system call for Homa sockets: associates
++ * a well-known service port with a socket. Unlike other AF_INET6 protocols,
++ * there is no need to invoke this system call for sockets that are only
++ * used as clients.
++ * @sock:     Socket on which the system call was invoked.
++ * @addr:     Contains the desired port number.
++ * @addr_len: Number of bytes in uaddr.
++ * Return:    0 on success, otherwise a negative errno. Sets hsk->error_msg
++ *            on errors.
++ */
++int homa_bind(struct socket *sock, struct sockaddr_unsized *addr, int addr_len)
++{
++	union sockaddr_in_union *addr_in = (union sockaddr_in_union *)addr;
++	struct homa_sock *hsk = homa_sk(sock->sk);
++	int port = 0;
++
++	if (unlikely(addr->sa_family != sock->sk->sk_family)) {
++		hsk->error_msg = "address family in bind address didn't match socket";
++		return -EAFNOSUPPORT;
++	}
++	if (addr_in->in6.sin6_family == AF_INET6) {
++		if (addr_len < sizeof(struct sockaddr_in6)) {
++			hsk->error_msg = "ipv6 address too short";
++			return -EINVAL;
++		}
++		port = ntohs(addr_in->in4.sin_port);
++	} else if (addr_in->in4.sin_family == AF_INET) {
++		if (addr_len < sizeof(struct sockaddr_in)) {
++			hsk->error_msg = "ipv4 address too short";
++			return -EINVAL;
++		}
++		port = ntohs(addr_in->in6.sin6_port);
++	}
++	return homa_sock_bind(hsk->hnet, hsk, port);
++}
++
++/**
++ * homa_close() - Invoked when close system call is invoked on a Homa socket.
++ * @sk:      Socket being closed
++ * @timeout: ??
++ */
++void homa_close(struct sock *sk, long timeout)
++{
++	struct homa_sock *hsk = homa_sk(sk);
++
++	homa_sock_shutdown(hsk);
++	sk_common_release(sk);
++}
++
++/**
++ * homa_shutdown() - Implements the shutdown system call for Homa sockets.
++ * @sock:    Socket to shut down.
++ * @how:     Ignored: for other sockets, can independently shut down
++ *           sending and receiving, but for Homa any shutdown will
++ *           shut down everything.
++ *
++ * Return: 0 on success, otherwise a negative errno.
++ */
++int homa_shutdown(struct socket *sock, int how)
++{
++	homa_sock_shutdown(homa_sk(sock->sk));
++	return 0;
++}
++
++/**
++ * homa_ioc_info() - The top-level function that implements the
++ * HOMAIOCINFO ioctl for Homa sockets.
++ * @sock:  Socket for this request
++ * @arg:   The address in user space of the argument to ioctl, which
++ *          is a homa_info struct.
++ *
++ * Return:  0 on success, otherwise a negative errno. Sets hsk->error_msg
++ *          on errors.
++ */
++int homa_ioc_info(struct socket *sock, unsigned long arg)
++{
++	struct homa_sock *hsk = homa_sk(sock->sk);
++	struct homa_rpc_info rinfo;
++	struct homa_info hinfo;
++	struct homa_rpc *rpc;
++	int bytes_avl;
++	char *dst;
++
++	if (unlikely(copy_from_user(&hinfo, (void __user *)arg,
++				    sizeof(hinfo)))) {
++		hsk->error_msg = "invalid address for homa_info";
++		return -EFAULT;
++	}
++
++	if (!homa_protect_rpcs(hsk)) {
++		hsk->error_msg = "socket has been shut down";
++		return -ESHUTDOWN;
++	}
++	rcu_read_lock();
++	hinfo.bpool_avail_bytes = homa_pool_avail_bytes(hsk->buffer_pool);
++	hinfo.port = hsk->port;
++	dst = (char *)hinfo.rpc_info;
++	bytes_avl = hinfo.rpc_info_length;
++	hinfo.num_rpcs = 0;
++	list_for_each_entry_rcu(rpc, &hsk->active_rpcs, active_links) {
++		homa_rpc_lock(rpc);
++		if (rpc->state == RPC_DEAD) {
++			homa_rpc_unlock(rpc);
++			continue;
++		}
++		homa_rpc_get_info(rpc, &rinfo);
++		homa_rpc_unlock(rpc);
++		if (dst && bytes_avl >= sizeof(rinfo)) {
++			if (copy_to_user((void __user *)dst, &rinfo,
++					 sizeof(rinfo))) {
++				rcu_read_unlock();
++				homa_unprotect_rpcs(hsk);
++				hsk->error_msg = "couldn't copy homa_rpc_info to user space: invalid or read-only address?";
++				return -EFAULT;
++			}
++			dst += sizeof(rinfo);
++			bytes_avl -= sizeof(rinfo);
++		}
++		hinfo.num_rpcs++;
++	}
++	rcu_read_unlock();
++	homa_unprotect_rpcs(hsk);
++
++	if (hsk->error_msg)
++		snprintf(hinfo.error_msg, HOMA_ERROR_MSG_SIZE, "%s",
++			 hsk->error_msg);
++	else
++		hinfo.error_msg[0] = 0;
++
++	if (copy_to_user((void __user *)arg, &hinfo, sizeof(hinfo))) {
++		hsk->error_msg = "couldn't copy homa_info to user space: read-only address?";
++		return -EFAULT;
 +	}
 +	return 0;
 +}
 +
 +/**
-+ * homa_gap_alloc() - Allocate a new gap and add it to a gap list.
-+ * @next:   Add the new gap just before this list element.
-+ * @start:  Offset of first byte covered by the gap.
-+ * @end:    Offset of byte just after the last one covered by the gap.
-+ * Return:  Pointer to the new gap, or NULL if memory couldn't be allocated
-+ *          for the gap object.
++ * homa_ioctl() - Implements the ioctl system call for Homa sockets.
++ * @sock:  Socket on which the system call was invoked.
++ * @cmd:   Identifier for a particular ioctl operation.
++ * @arg:   Operation-specific argument; typically the address of a block
++ *         of data in user address space.
++ *
++ * Return: 0 on success, otherwise a negative errno. Sets hsk->error_msg
++ *         on errors.
 + */
-+struct homa_gap *homa_gap_alloc(struct list_head *next, int start, int end)
++int homa_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
 +{
-+	struct homa_gap *gap;
-+
-+	gap = kmalloc_obj(*gap, GFP_ATOMIC);
-+	if (!gap)
-+		return NULL;
-+	gap->start = start;
-+	gap->end = end;
-+	gap->time = homa_clock();
-+	list_add_tail(&gap->links, next);
-+	return gap;
++	if (cmd == HOMAIOCINFO)
++		return homa_ioc_info(sock, arg);
++	homa_sk(sock->sk)->error_msg = "ioctl opcode isn't supported by Homa";
++	return -EINVAL;
 +}
 +
 +/**
-+ * homa_request_retrans() - The function is invoked when it appears that
-+ * data packets for a message have been lost. It issues RESEND requests
-+ * as appropriate and may modify the state of the RPC.
-+ * @rpc:     RPC for which incoming data is delinquent; must be locked by
-+ *           caller.
++ * homa_socket() - Implements the socket(2) system call for sockets.
++ * @sk:    Socket on which the system call was invoked. The non-Homa
++ *         parts have already been initialized.
++ *
++ * Return: always 0 (success).
 + */
-+void homa_request_retrans(struct homa_rpc *rpc)
-+	__must_hold(rpc->bucket->lock)
++int homa_socket(struct sock *sk)
 +{
-+	struct homa_resend_hdr resend;
-+	struct homa_gap *gap;
-+	int offset, length;
++	return homa_sock_init(homa_sk(sk));
++}
 +
-+	if (rpc->msgin.length >= 0) {
-+		/* Issue RESENDS for any gaps in incoming data. */
-+		list_for_each_entry(gap, &rpc->msgin.gaps, links) {
-+			resend.offset = htonl(gap->start);
-+			resend.length = htonl(gap->end - gap->start);
-+			homa_xmit_control(RESEND, &resend, sizeof(resend), rpc);
++/**
++ * homa_setsockopt() - Implements the getsockopt system call for Homa sockets.
++ * @sk:      Socket on which the system call was invoked.
++ * @level:   Level at which the operation should be handled; will always
++ *           be IPPROTO_HOMA.
++ * @optname: Identifies a particular setsockopt operation.
++ * @optval:  Address in user space of information about the option.
++ * @optlen:  Number of bytes of data at @optval.
++ * Return:   0 on success, otherwise a negative errno. Sets hsk->error_msg
++ *           on errors.
++ */
++int homa_setsockopt(struct sock *sk, int level, int optname,
++		    sockptr_t optval, unsigned int optlen)
++{
++	struct homa_sock *hsk = homa_sk(sk);
++	int ret;
++
++	if (level != IPPROTO_HOMA) {
++		hsk->error_msg = "homa_setsockopt invoked with level not IPPROTO_HOMA";
++		return -ENOPROTOOPT;
++	}
++
++	if (optname == SO_HOMA_RCVBUF) {
++		struct homa_rcvbuf_args args;
++
++		if (optlen != sizeof(struct homa_rcvbuf_args)) {
++			hsk->error_msg = "invalid optlen argument: must be sizeof(struct homa_rcvbuf_args)";
++			return -EINVAL;
 +		}
 +
-+		/* Issue a RESEND for any granted data after the last gap. */
-+		offset = rpc->msgin.recv_end;
-+		length = rpc->msgin.length - rpc->msgin.recv_end;
-+		if (length <= 0)
-+			return;
-+	} else {
-+		/* No data has been received for the RPC. Ask the sender to
-+		 * resend everything it has sent so far.
++		if (copy_from_sockptr(&args, optval, optlen)) {
++			hsk->error_msg = "invalid address for homa_rcvbuf_args";
++			return -EFAULT;
++		}
++
++		/* Do a trivial test to make sure we can at least write the
++		 * first page of the region.
 +		 */
-+		offset = 0;
-+		length = -1;
-+	}
-+
-+	resend.offset = htonl(offset);
-+	resend.length = htonl(length);
-+	homa_xmit_control(RESEND, &resend, sizeof(resend), rpc);
-+}
-+
-+/**
-+ * homa_add_packet() - Add an incoming packet to the contents of a
-+ * partially received message.
-+ * @rpc:   Add the packet to the msgin for this RPC.
-+ * @skb:   The new packet. This function takes ownership of the packet
-+ *         (the packet will either be freed or added to rpc->msgin.packets).
-+ */
-+void homa_add_packet(struct homa_rpc *rpc, struct sk_buff *skb)
-+	__must_hold(rpc->bucket->lock)
-+{
-+	struct homa_data_hdr *h = (struct homa_data_hdr *)skb->data;
-+	struct homa_gap *gap, *dummy, *gap2;
-+	int start = ntohl(h->seg.offset);
-+	int length = homa_data_len(skb);
-+	enum skb_drop_reason reason;
-+	int end = start + length;
-+
-+	if ((start + length) > rpc->msgin.length) {
-+		reason = SKB_DROP_REASON_PKT_TOO_BIG;
-+		goto discard;
-+	}
-+
-+	if (start == rpc->msgin.recv_end) {
-+		/* Common case: packet is sequential. */
-+		rpc->msgin.recv_end += length;
-+		goto keep;
-+	}
-+
-+	if (start > rpc->msgin.recv_end) {
-+		/* Packet creates a new gap. */
-+		if (!homa_gap_alloc(&rpc->msgin.gaps,
-+				    rpc->msgin.recv_end, start)) {
-+			reason = SKB_DROP_REASON_NOMEM;
-+			goto discard;
-+		}
-+		rpc->msgin.recv_end = end;
-+		goto keep;
-+	}
-+
-+	/* Must now check to see if the packet fills in part or all of
-+	 * an existing gap.
-+	 */
-+	list_for_each_entry_safe(gap, dummy, &rpc->msgin.gaps, links) {
-+		/* Is packet at the start of this gap? */
-+		if (start <= gap->start) {
-+			if (end <= gap->start)
-+				continue;
-+			if (start < gap->start) {
-+				reason = SKB_DROP_REASON_DUP_FRAG;
-+				goto discard;
-+			}
-+			if (end > gap->end) {
-+				reason = SKB_DROP_REASON_DUP_FRAG;
-+				goto discard;
-+			}
-+			gap->start = end;
-+			if (gap->start >= gap->end) {
-+				list_del(&gap->links);
-+				kfree(gap);
-+			}
-+			goto keep;
++		if (copy_to_user(u64_to_user_ptr(args.start), &args,
++				 sizeof(args))) {
++			hsk->error_msg = "receive buffer region is not writable";
++			return -EFAULT;
 +		}
 +
-+		/* Is packet at the end of this gap? BTW, at this point we know
-+		 * the packet can't cover the entire gap.
-+		 */
-+		if (end >= gap->end) {
-+			if (start >= gap->end)
-+				continue;
-+			if (end > gap->end) {
-+				reason = SKB_DROP_REASON_DUP_FRAG;
-+				goto discard;
-+			}
-+			gap->end = start;
-+			goto keep;
++		ret = homa_pool_set_region(hsk, u64_to_user_ptr(args.start),
++					   args.length);
++	} else if (optname == SO_HOMA_SERVER) {
++		int arg;
++
++		if (optlen != sizeof(arg)) {
++			hsk->error_msg = "invalid optlen argument: must be sizeof(int)";
++			return -EINVAL;
 +		}
 +
-+		/* Packet is in the middle of the gap; must split the gap. */
-+		gap2 = homa_gap_alloc(&gap->links, gap->start, start);
-+		if (!gap2) {
-+			reason = SKB_DROP_REASON_NOMEM;
-+			goto discard;
-+		}
-+		gap2->time = gap->time;
-+		gap->start = end;
-+		goto keep;
-+	}
-+	/* Packet doesn't overlap any gap, so it is a duplicate. */
-+	reason = SKB_DROP_REASON_DUP_FRAG;
-+
-+discard:
-+	kfree_skb_reason(skb, reason);
-+	return;
-+
-+keep:
-+	__skb_queue_tail(&rpc->msgin.packets, skb);
-+	rpc->msgin.bytes_remaining -= length;
-+}
-+
-+/**
-+ * homa_consume_rx_skb() - Invoked to free an incoming skb that has been
-+ * processed normally. Contains optimizations to minimize overhead during
-+ * the execution of this function.
-+ * @skb:    Buffer to free. Should be for an incoming skb, which was
-+ *          processed normally.
-+ */
-+void homa_consume_rx_skb(struct sk_buff *skb)
-+{
-+	skb_orphan(skb);
-+	skb_attempt_defer_free(skb);
-+}
-+
-+/**
-+ * homa_copy_to_user() - Copy as much data as possible from incoming
-+ * packet buffers to buffers in user space.
-+ * @rpc:     RPC for which data should be copied. Must be locked by caller.
-+ * Return:   Zero for success or a negative errno if there is an error.
-+ *           It is possible for the RPC to be freed while this function
-+ *           executes (it releases and reacquires the RPC lock). If that
-+ *           happens, -EINVAL will be returned and the state of @rpc
-+ *           will be RPC_DEAD. Clears the RPC_PKTS_READY bit in @rpc->flags
-+ *           if all available packets have been copied out.
-+ */
-+int homa_copy_to_user(struct homa_rpc *rpc)
-+	__must_hold(rpc->bucket->lock)
-+{
-+#define MAX_SKBS 20
-+	struct sk_buff *skbs[MAX_SKBS];
-+	int error = 0;
-+	int n = 0;             /* Number of filled entries in skbs. */
-+	int i;
-+
-+	/* Tricky note: we can't hold the RPC lock while we're actually
-+	 * copying to user space, because (a) it's illegal to hold a spinlock
-+	 * while copying to user space and (b) we'd like for homa_softirq
-+	 * to add more packets to the RPC while we're copying these out.
-+	 * So, collect a bunch of packets to copy, then release the lock,
-+	 * copy them, and reacquire the lock.
-+	 */
-+	while (true) {
-+		struct sk_buff *skb;
-+
-+		if (rpc->state == RPC_DEAD) {
-+			error = -EINVAL;
-+			break;
++		if (copy_from_sockptr(&arg, optval, optlen)) {
++			hsk->error_msg = "invalid address for SO_HOMA_SERVER value";
++			return -EFAULT;
 +		}
 +
-+		skb = __skb_dequeue(&rpc->msgin.packets);
-+		if (skb) {
-+			skbs[n] = skb;
-+			n++;
-+			if (n < MAX_SKBS)
-+				continue;
-+		}
-+		if (n == 0) {
-+			clear_bit(RPC_PKTS_READY, &rpc->flags);
-+			break;
-+		}
-+
-+		/* At this point we've collected a batch of packets (or
-+		 * run out of packets); copy any available packets out to
-+		 * user space.
-+		 */
-+		homa_rpc_unlock(rpc);
-+
-+		/* Each iteration of this loop copies out one skb. */
-+		for (i = 0; i < n; i++) {
-+			struct homa_data_hdr *h = (struct homa_data_hdr *)
-+					skbs[i]->data;
-+			int pkt_length = homa_data_len(skbs[i]);
-+			int offset = ntohl(h->seg.offset);
-+			int buf_bytes, chunk_size;
-+			struct iov_iter iter;
-+			int copied = 0;
-+			char __user *dst;
-+
-+			/* Each iteration of this loop copies to one
-+			 * user buffer.
-+			 */
-+			while (copied < pkt_length) {
-+				chunk_size = pkt_length - copied;
-+				dst = homa_pool_get_buffer(rpc, offset + copied,
-+							   &buf_bytes);
-+				if (buf_bytes < chunk_size) {
-+					if (buf_bytes == 0) {
-+						/* skb has data beyond message
-+						 * end?
-+						 */
-+						break;
-+					}
-+					chunk_size = buf_bytes;
-+				}
-+				error = import_ubuf(READ, dst, chunk_size,
-+						    &iter);
-+				if (error)
-+					goto free_skbs;
-+				error = skb_copy_datagram_iter(skbs[i],
-+							       sizeof(*h) +
-+							       copied,  &iter,
-+							       chunk_size);
-+				if (error)
-+					goto free_skbs;
-+				copied += chunk_size;
-+			}
-+		}
-+
-+free_skbs:
-+		for (i = 0; i < n; i++)
-+			homa_consume_rx_skb(skbs[i]);
-+		n = 0;
-+		homa_rpc_lock_preempt(rpc);
-+		if (error)
-+			break;
-+	}
-+	return error;
-+}
-+
-+/**
-+ * homa_dispatch_pkts() - Top-level function that processes a batch of packets,
-+ * all related to the same RPC.
-+ * @skb:       First packet in the batch, linked through skb->next.
-+ */
-+void homa_dispatch_pkts(struct sk_buff *skb)
-+{
-+#define MAX_ACKS 10
-+	const struct in6_addr saddr = skb_canonical_ipv6_saddr(skb);
-+	struct homa_data_hdr *h = (struct homa_data_hdr *)skb->data;
-+	u64 id = homa_local_id(h->common.sender_id);
-+	int dport = ntohs(h->common.dport);
-+	struct homa_rpc *rpc = NULL;
-+	struct homa_sock *hsk;
-+	struct homa_net *hnet;
-+	struct sk_buff *next;
-+
-+	/* Find the appropriate socket.*/
-+	hnet = homa_net(dev_net(skb->dev));
-+	hsk = homa_sock_find(hnet, dport);
-+	if (!hsk || (!homa_is_client(id) && !hsk->is_server)) {
-+		if (skb_is_ipv6(skb))
-+			icmp6_send(skb, ICMPV6_DEST_UNREACH,
-+				   ICMPV6_PORT_UNREACH, 0, NULL, IP6CB(skb));
++		if (arg)
++			hsk->is_server = true;
 +		else
-+			icmp_send(skb, ICMP_DEST_UNREACH,
-+				  ICMP_PORT_UNREACH, 0);
-+		while (skb) {
-+			next = skb->next;
-+			kfree_skb(skb);
-+			skb = next;
-+		}
-+		if (hsk)
-+			sock_put(&hsk->sock);
-+		return;
++			hsk->is_server = false;
++		ret = 0;
++	} else {
++		hsk->error_msg = "setsockopt option not supported by Homa";
++		ret = -ENOPROTOOPT;
++	}
++	return ret;
++}
++
++/**
++ * homa_getsockopt() - Implements the getsockopt system call for Homa sockets.
++ * @sk:      Socket on which the system call was invoked.
++ * @level:   Selects level in the network stack to handle the request;
++ *           must be IPPROTO_HOMA.
++ * @optname: Identifies a particular setsockopt operation.
++ * @optval:  Address in user space where the option's value should be stored.
++ * @optlen:  Number of bytes available at optval; will be overwritten with
++ *           actual number of bytes stored.
++ * Return:   0 on success, otherwise a negative errno. Sets hsk->error_msg
++ *           on errors.
++ */
++int homa_getsockopt(struct sock *sk, int level, int optname,
++		    char __user *optval, int __user *optlen)
++{
++	struct homa_sock *hsk = homa_sk(sk);
++	struct homa_rcvbuf_args rcvbuf_args;
++	int is_server;
++	void *result;
++	int len;
++
++	if (copy_from_sockptr(&len, USER_SOCKPTR(optlen), sizeof(int))) {
++		hsk->error_msg = "invalid address for optlen argument to getsockopt";
++		return -EFAULT;
 +	}
 +
-+	/* Each iteration through the following loop processes one packet. */
-+	for (; skb; skb = next) {
-+		h = (struct homa_data_hdr *)skb->data;
-+		next = skb->next;
-+
-+		/* Relinquish the RPC lock temporarily if it's needed
-+		 * elsewhere.
-+		 */
-+		if (rpc) {
-+			if (test_bit(APP_NEEDS_LOCK, &rpc->flags)) {
-+				homa_rpc_unlock(rpc);
-+
-+				/* This short spin is needed to ensure that the
-+				 * other thread gets the lock before this thread
-+				 * grabs it again below (the need for this
-+				 * was confirmed experimentally in 2/2025;
-+				 * without it, the handoff fails 20-25% of the
-+				 * time). Furthermore, the call to homa_spin
-+				 * seems to allow the other thread to acquire
-+				 * the lock more quickly.
-+				 */
-+				homa_spin(100);
-+				homa_rpc_lock(rpc);
-+			}
-+		}
-+
-+		/* If we don't already have an RPC, find it, lock it,
-+		 * and create a reference on it.
-+		 */
-+		if (!rpc) {
-+			if (!homa_is_client(id)) {
-+				/* We are the server for this RPC. */
-+				if (h->common.type == DATA) {
-+					int created;
-+
-+					/* Create a new RPC if one doesn't
-+					 * already exist.
-+					 */
-+					rpc = homa_rpc_alloc_server(hsk, &saddr,
-+								    h,
-+								    &created);
-+					if (IS_ERR(rpc)) {
-+						rpc = NULL;
-+						goto discard;
-+					}
-+				} else {
-+					rpc = homa_rpc_find_server(hsk, &saddr,
-+								   id);
-+				}
-+			} else {
-+				rpc = homa_rpc_find_client(hsk, id);
-+			}
-+			if (rpc)
-+				homa_rpc_hold(rpc);
-+		}
-+		if (unlikely(!rpc)) {
-+			if (h->common.type != NEED_ACK &&
-+			    h->common.type != ACK &&
-+			    h->common.type != RESEND)
-+				goto discard;
-+		} else {
-+			if (h->common.type == DATA ||
-+			    h->common.type == BUSY)
-+				rpc->silent_ticks = 0;
-+			rpc->peer->outstanding_resends = 0;
-+		}
-+
-+		switch (h->common.type) {
-+		case DATA:
-+			homa_data_pkt(skb, rpc);
-+			break;
-+		case RESEND:
-+			homa_resend_pkt(skb, rpc, hsk);
-+			break;
-+		case RPC_UNKNOWN:
-+			homa_rpc_unknown_pkt(skb, rpc);
-+			break;
-+		case BUSY:
-+			/* Nothing to do for these packets except reset
-+			 * silent_ticks, which happened above.
-+			 */
-+			goto discard;
-+		case NEED_ACK:
-+			homa_need_ack_pkt(skb, hsk, rpc);
-+			break;
-+		case ACK:
-+			homa_ack_pkt(skb, hsk, rpc);
-+			break;
-+		default:
-+			goto discard;
-+		}
-+		continue;
-+
-+discard:
-+		kfree_skb(skb);
++	if (level != IPPROTO_HOMA) {
++		hsk->error_msg = "homa_getsockopt invoked with level not IPPROTO_HOMA";
++		return -ENOPROTOOPT;
 +	}
-+	if (rpc) {
++	if (optname == SO_HOMA_RCVBUF) {
++		if (len < sizeof(rcvbuf_args)) {
++			hsk->error_msg = "invalid optlen argument: must be sizeof(struct homa_rcvbuf_args)";
++			return -EINVAL;
++		}
++
++		homa_sock_lock(hsk);
++		homa_pool_get_rcvbuf(hsk->buffer_pool, &rcvbuf_args);
++		homa_sock_unlock(hsk);
++		len = sizeof(rcvbuf_args);
++		result = &rcvbuf_args;
++	} else if (optname == SO_HOMA_SERVER) {
++		if (len < sizeof(is_server)) {
++			hsk->error_msg = "invalid optlen argument: must be sizeof(int)";
++			return -EINVAL;
++		}
++
++		is_server = hsk->is_server;
++		len = sizeof(is_server);
++		result = &is_server;
++	} else {
++		hsk->error_msg = "getsockopt option not supported by Homa";
++		return -ENOPROTOOPT;
++	}
++
++	if (copy_to_sockptr(USER_SOCKPTR(optlen), &len, sizeof(int))) {
++		hsk->error_msg = "couldn't update optlen argument to getsockopt: read-only?";
++		return -EFAULT;
++	}
++
++	if (copy_to_sockptr(USER_SOCKPTR(optval), result, len)) {
++		hsk->error_msg = "couldn't update optval argument to getsockopt: read-only?";
++		return -EFAULT;
++	}
++
++	return 0;
++}
++
++/**
++ * homa_sendmsg() - Send a request or response message on a Homa socket.
++ * @sk:     Socket on which the system call was invoked.
++ * @msg:    Structure describing the message to send; the msg_control
++ *          field points to additional information.
++ * @length: Number of bytes of the message.
++ * Return:  0 on success, otherwise a negative errno. Sets hsk->error_msg
++ *          on errors.
++ */
++int homa_sendmsg(struct sock *sk, struct msghdr *msg, size_t length)
++{
++	DECLARE_SOCKADDR(union sockaddr_in_union *, addr, msg->msg_name);
++	struct homa_sock *hsk = homa_sk(sk);
++	struct homa_sendmsg_args args;
++	struct homa_rpc *rpc = NULL;
++	int result = 0;
++
++	if (!addr) {
++		hsk->error_msg = "no msg_name passed to sendmsg";
++		result = -EINVAL;
++		goto error;
++	}
++
++	if (unlikely(!msg->msg_control_is_user)) {
++		hsk->error_msg = "msg_control argument for sendmsg isn't in user space";
++		result = -EINVAL;
++		goto error;
++	}
++	if (unlikely(copy_from_user(&args, (void __user *)msg->msg_control,
++				    sizeof(args)))) {
++		hsk->error_msg = "invalid address for msg_control argument to sendmsg";
++		result = -EFAULT;
++		goto error;
++	}
++	if (args.flags & ~HOMA_SENDMSG_VALID_FLAGS ||
++	    args.reserved != 0) {
++		hsk->error_msg = "reserved fields in homa_sendmsg_args must be zero";
++		result = -EINVAL;
++		goto error;
++	}
++
++	if (!homa_sock_wmem_avl(hsk)) {
++		result = homa_sock_wait_wmem(hsk,
++					     msg->msg_flags & MSG_DONTWAIT);
++		if (result != 0)
++			goto error;
++	}
++
++	if (addr->sa.sa_family != sk->sk_family) {
++		hsk->error_msg = "address family in sendmsg address must match the socket";
++		result = -EAFNOSUPPORT;
++		goto error;
++	}
++	if (msg->msg_namelen < sizeof(struct sockaddr_in) ||
++	    (msg->msg_namelen < sizeof(struct sockaddr_in6) &&
++	     addr->in6.sin6_family == AF_INET6)) {
++		hsk->error_msg = "msg_namelen too short";
++		result = -EINVAL;
++		goto error;
++	}
++
++	if (!args.id) {
++		/* This is a request message. */
++		rpc = homa_rpc_alloc_client(hsk, addr);
++		if (IS_ERR(rpc)) {
++			result = PTR_ERR(rpc);
++			rpc = NULL;
++			goto error;
++		}
++		homa_rpc_hold(rpc);
++		if (args.flags & HOMA_SENDMSG_PRIVATE)
++			set_bit(RPC_PRIVATE, &rpc->flags);
++		rpc->completion_cookie = args.completion_cookie;
++		result = homa_message_out_fill(rpc, &msg->msg_iter, 1);
++		if (result)
++			goto error;
++		args.id = rpc->id;
++		homa_rpc_unlock(rpc); /* Locked by homa_rpc_alloc_client. */
++
++		if (unlikely(copy_to_user((void __user *)msg->msg_control,
++					  &args, sizeof(args)))) {
++			homa_rpc_lock(rpc);
++			hsk->error_msg = "couldn't update homa_sendmsg_args argument to sendmsg: read-only?";
++			result = -EFAULT;
++			goto error;
++		}
 +		homa_rpc_put(rpc);
-+		homa_rpc_unlock(rpc);
-+	}
++	} else {
++		/* This is a response message. */
++		struct in6_addr canonical_dest;
 +
-+	/* We need to reap dead RPCs here under two conditions:
-+	 * 1. The socket has hit its limit on tx buffer space and threads are
-+	 *    blocked waiting for skbs to be released.
-+	 * 2. A large number of dead RPCs have accumulated, and it seems
-+	 *    that the reaper isn't keeping up when invoked only at
-+	 *    "convenient" times (see "RPC Reaping Strategy" in homa_rpc_reap
-+	 *    code for details).
-+	 */
-+	if (hsk->dead_skbs > 0) {
-+		int waiting_for_wmem = test_bit(SOCK_NOSPACE,
-+						&hsk->sock.sk_socket->flags);
-+		if (waiting_for_wmem ||
-+		    hsk->dead_skbs >= 2 * hsk->homa->dead_buffs_limit)
-+			homa_rpc_reap(hsk, waiting_for_wmem);
-+	}
-+	sock_put(&hsk->sock);
-+}
-+
-+/**
-+ * homa_data_pkt() - Handler for incoming DATA packets
-+ * @skb:     Incoming packet; size known to be large enough for the header.
-+ *           This function now owns the packet.
-+ * @rpc:     Information about the RPC corresponding to this packet.
-+ *           Must be locked by the caller.
-+ */
-+void homa_data_pkt(struct sk_buff *skb, struct homa_rpc *rpc)
-+	__must_hold(rpc->bucket->lock)
-+{
-+	struct homa_data_hdr *h = (struct homa_data_hdr *)skb->data;
-+
-+	if (h->ack.client_id) {
-+		const struct in6_addr saddr = skb_canonical_ipv6_saddr(skb);
-+
-+		homa_rpc_unlock(rpc);
-+		homa_rpc_acked(rpc->hsk, &saddr, &h->ack);
-+		homa_rpc_lock(rpc);
-+		if (rpc->state == RPC_DEAD)
-+			goto discard;
-+	}
-+
-+	if (rpc->state != RPC_INCOMING && homa_is_client(rpc->id)) {
-+		if (unlikely(rpc->state != RPC_OUTGOING))
-+			goto discard;
-+		rpc->state = RPC_INCOMING;
-+		if (homa_message_in_init(rpc, ntohl(h->message_length)) != 0)
-+			goto discard;
-+	} else if (rpc->state != RPC_INCOMING) {
-+		/* Must be server; note that homa_rpc_alloc_server already
-+		 * initialized msgin and allocated buffers.
-+		 */
-+		if (unlikely(rpc->msgin.length >= 0))
-+			goto discard;
-+	}
-+
-+	if (rpc->msgin.num_bpages == 0)
-+		/* Drop packets that arrive when we can't allocate buffer
-+		 * space. If we keep them around, packet buffer usage can
-+		 * exceed available cache space, resulting in poor
-+		 * performance.
-+		 */
-+		goto discard;
-+
-+	homa_add_packet(rpc, skb);
-+
-+	if (skb_queue_len(&rpc->msgin.packets) != 0 &&
-+	    !test_bit(RPC_PKTS_READY, &rpc->flags)) {
-+		set_bit(RPC_PKTS_READY, &rpc->flags);
-+		homa_rpc_handoff(rpc);
-+	}
-+
-+	return;
-+
-+discard:
-+	kfree_skb(skb);
-+}
-+
-+/**
-+ * homa_resend_pkt() - Handler for incoming RESEND packets
-+ * @skb:     Incoming packet; size already verified large enough for header.
-+ *           This function now owns the packet.
-+ * @rpc:     Information about the RPC corresponding to this packet; must
-+ *           be locked by caller, but may be NULL if there is no RPC matching
-+ *           this packet
-+ * @hsk:     Socket on which the packet was received.
-+ */
-+void homa_resend_pkt(struct sk_buff *skb, struct homa_rpc *rpc,
-+		     struct homa_sock *hsk)
-+	__must_hold(rpc->bucket->lock)
-+{
-+	struct homa_resend_hdr *h = (struct homa_resend_hdr *)skb->data;
-+	int offset = ntohl(h->offset);
-+	int length = ntohl(h->length);
-+	int end = offset + length;
-+	struct homa_busy_hdr busy;
-+	int tx_end;
-+
-+	if (!rpc) {
-+		homa_xmit_unknown(skb, hsk);
-+		goto done;
-+	}
-+
-+	tx_end = homa_rpc_tx_end(rpc);
-+	if (!homa_is_client(rpc->id) && rpc->state != RPC_OUTGOING) {
-+		/* We are the server for this RPC and don't yet have a
-+		 * response message, so send BUSY to keep the client
-+		 * waiting.
-+		 */
-+		homa_xmit_control(BUSY, &busy, sizeof(busy), rpc);
-+		goto done;
-+	}
-+
-+	if (length == -1)
-+		end = tx_end;
-+
-+	homa_resend_data(rpc, offset, (end > tx_end) ? tx_end : end);
-+
-+	if (offset >= tx_end) {
-+		/* We have chosen not to transmit any of the requested data;
-+		 * send BUSY so the receiver knows we are alive.
-+		 */
-+		homa_xmit_control(BUSY, &busy, sizeof(busy), rpc);
-+		goto done;
-+	}
-+
-+done:
-+	homa_consume_rx_skb(skb);
-+}
-+
-+/**
-+ * homa_rpc_unknown_pkt() - Handler for incoming RPC_UNKNOWN packets.
-+ * @skb:     Incoming packet; size known to be large enough for the header.
-+ *           This function now owns the packet.
-+ * @rpc:     Information about the RPC corresponding to this packet. Must
-+ *           be locked by caller.
-+ */
-+void homa_rpc_unknown_pkt(struct sk_buff *skb, struct homa_rpc *rpc)
-+	__must_hold(rpc->bucket->lock)
-+{
-+	if (homa_is_client(rpc->id)) {
-+		if (rpc->state == RPC_OUTGOING) {
-+			int tx_end = homa_rpc_tx_end(rpc);
-+
-+			/* It appears that everything we've already transmitted
-+			 * has been lost; retransmit it.
-+			 */
-+			homa_resend_data(rpc, 0, tx_end);
-+			goto done;
++		if (args.completion_cookie != 0) {
++			hsk->error_msg = "completion_cookie must be zero when sending responses";
++			result = -EINVAL;
++			goto error;
 +		}
-+	} else {
-+		homa_rpc_end(rpc);
++		canonical_dest = canonical_ipv6_addr(addr);
++
++		rpc = homa_rpc_find_server(hsk, &canonical_dest, args.id);
++		if (!rpc) {
++			/* Return without an error if the RPC doesn't exist;
++			 * this could be totally valid (e.g. client is
++			 * no longer interested in it).
++			 */
++			return 0;
++		}
++		homa_rpc_hold(rpc);
++		if (rpc->error) {
++			hsk->error_msg = "RPC has failed, so can't send response";
++			result = rpc->error;
++			goto error;
++		}
++		if (rpc->state != RPC_IN_SERVICE) {
++			hsk->error_msg = "RPC is not in a state where a response can be sent";
++			result = -EINVAL;
++			goto error_dont_end_rpc;
++		}
++		rpc->state = RPC_OUTGOING;
++
++		result = homa_message_out_fill(rpc, &msg->msg_iter, 1);
++		if (result && rpc->state != RPC_DEAD)
++			goto error;
++		homa_rpc_put(rpc);
++		homa_rpc_unlock(rpc); /* Locked by homa_rpc_find_server. */
 +	}
-+done:
-+	homa_consume_rx_skb(skb);
-+}
++	return 0;
 +
-+/**
-+ * homa_need_ack_pkt() - Handler for incoming NEED_ACK packets
-+ * @skb:     Incoming packet; size already verified large enough for header.
-+ *           This function now owns the packet.
-+ * @hsk:     Socket on which the packet was received.
-+ * @rpc:     The RPC named in the packet header, or NULL if no such
-+ *           RPC exists. The RPC has been locked by the caller.
-+ */
-+void homa_need_ack_pkt(struct sk_buff *skb, struct homa_sock *hsk,
-+		       struct homa_rpc *rpc)
-+	__must_hold(rpc->bucket->lock)
-+{
-+	struct homa_common_hdr *h = (struct homa_common_hdr *)skb->data;
-+	const struct in6_addr saddr = skb_canonical_ipv6_saddr(skb);
-+	u64 id = homa_local_id(h->sender_id);
-+	struct homa_ack_hdr ack;
-+	struct homa_peer *peer;
-+
-+	/* Don't ack if it's not safe for the peer to purge its state
-+	 * for this RPC (the RPC still exists and we haven't received
-+	 * the entire response), or if we can't find peer info.
-+	 */
-+	if (rpc && (rpc->state != RPC_INCOMING ||
-+		    rpc->msgin.bytes_remaining)) {
-+		homa_request_retrans(rpc);
-+		goto done;
-+	} else {
-+		peer = homa_peer_get(hsk, &saddr);
-+		if (IS_ERR(peer))
-+			goto done;
-+	}
-+
-+	/* Send an ACK for this RPC. At the same time, include all of the
-+	 * other acks available for the peer. Note: can't use rpc below,
-+	 * since it may be NULL.
-+	 */
-+	memset(&ack, 0, sizeof(ack));
-+	ack.common.type = ACK;
-+	ack.common.sport = h->dport;
-+	ack.common.dport = h->sport;
-+	ack.common.sender_id = cpu_to_be64(id);
-+	ack.num_acks = htons(homa_peer_get_acks(peer,
-+						HOMA_MAX_ACKS_PER_PKT,
-+						ack.acks));
-+	__homa_xmit_control(&ack, sizeof(ack), peer, hsk);
-+	homa_peer_release(peer);
-+
-+done:
-+	homa_consume_rx_skb(skb);
-+}
-+
-+/**
-+ * homa_ack_pkt() - Handler for incoming ACK packets
-+ * @skb:     Incoming packet; size already verified large enough for header.
-+ *           This function now owns the packet.
-+ * @hsk:     Socket on which the packet was received.
-+ * @rpc:     The RPC named in the packet header, or NULL if no such
-+ *           RPC exists. The RPC lock will be dead on return.
-+ */
-+void homa_ack_pkt(struct sk_buff *skb, struct homa_sock *hsk,
-+		  struct homa_rpc *rpc)
-+	__must_hold(rpc->bucket->lock)
-+{
-+	const struct in6_addr saddr = skb_canonical_ipv6_saddr(skb);
-+	struct homa_ack_hdr *h = (struct homa_ack_hdr *)skb->data;
-+	int i, count;
-+
++error:
 +	if (rpc)
 +		homa_rpc_end(rpc);
 +
-+	count = ntohs(h->num_acks);
-+	if (count > HOMA_MAX_ACKS_PER_PKT)
-+		count = HOMA_MAX_ACKS_PER_PKT;
-+	if (count > 0) {
-+		if (rpc) {
-+			/* Must temporarily release rpc's lock because
-+			 * homa_rpc_acked needs to acquire RPC locks.
-+			 */
-+			homa_rpc_unlock(rpc);
-+			for (i = 0; i < count; i++)
-+				homa_rpc_acked(hsk, &saddr, &h->acks[i]);
-+			homa_rpc_lock(rpc);
-+		} else {
-+			for (i = 0; i < count; i++)
-+				homa_rpc_acked(hsk, &saddr, &h->acks[i]);
-+		}
++error_dont_end_rpc:
++	if (rpc) {
++		homa_rpc_put(rpc);
++
++		/* Locked by homa_rpc_find_server or homa_rpc_alloc_client. */
++		homa_rpc_unlock(rpc);
 +	}
-+	homa_consume_rx_skb(skb);
++	return result;
 +}
 +
 +/**
-+ * homa_wait_private() - Waits until the response has been received for
-+ * a specific RPC or the RPC has failed with an error.
-+ * @rpc:          RPC to wait for; an error will be returned if the RPC is
-+ *                not a client RPC or not private. Must be locked by caller.
-+ * @nonblocking:  Nonzero means return immediately if @rpc not ready.
-+ * Return:        0 means that @rpc is ready for attention: either its response
-+ *                has been received or it has an unrecoverable error such as
-+ *                ETIMEDOUT (in rpc->error). Nonzero means some other error
-+ *                (such as EINTR or EINVAL) occurred before @rpc became ready
-+ *                for attention; in this case the return value is a negative
-+ *                errno.
++ * homa_recvmsg() - Receive a message from a Homa socket.
++ * @sk:          Socket on which the system call was invoked.
++ * @msg:         Controlling information for the receive.
++ * @len:         Total bytes of space available in msg->msg_iov; not used.
++ * @flags:       Flags from system call; only MSG_DONTWAIT is used.
++ * Return:       The length of the message on success, otherwise a negative
++ *               errno. Sets hsk->error_msg on errors.
 + */
-+int homa_wait_private(struct homa_rpc *rpc, int nonblocking)
-+	__must_hold(rpc->bucket->lock)
++int homa_recvmsg(struct sock *sk, struct msghdr *msg, size_t len, int flags)
 +{
-+	struct homa_interest interest;
++	struct homa_sock *hsk = homa_sk(sk);
++	struct homa_recvmsg_args control;
++	struct homa_rpc *rpc = NULL;
++	int nonblocking;
 +	int result;
 +
-+	if (!test_bit(RPC_PRIVATE, &rpc->flags))
-+		return -EINVAL;
-+
-+	/* Each iteration through this loop waits until rpc needs attention
-+	 * in some way (e.g. packets have arrived), then deals with that need
-+	 * (e.g. copy to user space). It may take many iterations until the
-+	 * RPC is ready for the application.
-+	 */
-+	while (1) {
-+		result = 0;
-+		if (!rpc->error)
-+			rpc->error = homa_copy_to_user(rpc);
-+		if (rpc->error)
-+			break;
-+		if (rpc->msgin.length >= 0 &&
-+		    rpc->msgin.bytes_remaining == 0 &&
-+		    skb_queue_len(&rpc->msgin.packets) == 0)
-+			break;
-+
-+		if (nonblocking) {
-+			result = -EAGAIN;
-+			break;
-+		}
-+
-+		result = homa_interest_init_private(&interest, rpc);
-+		if (result != 0)
-+			break;
-+
-+		homa_rpc_unlock(rpc);
-+		result = homa_interest_wait(&interest);
-+
-+		homa_rpc_lock_preempt(rpc);
-+		homa_interest_unlink_private(&interest);
-+
-+		/* Abort on error, but if the interest actually got ready
-+		 * in the meantime the ignore the error (loop back around
-+		 * to process the RPC).
++	if (unlikely(!msg->msg_control)) {
++		/* This test isn't strictly necessary, but it provides a
++		 * hook for testing kernel call times.
 +		 */
-+		if (result != 0 && atomic_read(&interest.ready) == 0)
-+			break;
++		hsk->error_msg = "no msg_control passed to recvmsg";
++		return -EINVAL;
++	}
++	if (msg->msg_controllen != sizeof(control)) {
++		hsk->error_msg = "invalid msg_controllen in recvmsg";
++		return -EINVAL;
++	}
++	if (unlikely(copy_from_user(&control, (void __user *)msg->msg_control,
++				    sizeof(control)))) {
++		hsk->error_msg = "invalid address for msg_control argument to recvmsg";
++		return -EFAULT;
++	}
++	control.completion_cookie = 0;
++
++	if (control.num_bpages > HOMA_MAX_BPAGES) {
++		hsk->error_msg = "num_pages exceeds HOMA_MAX_BPAGES";
++		result = -EINVAL;
++		goto done;
++	}
++	if (control.reserved != 0) {
++		hsk->error_msg = "reserved fields in homa_recvmsg_args must be zero";
++		result = -EINVAL;
++		goto done;
++	}
++	if (!hsk->buffer_pool) {
++		hsk->error_msg = "SO_HOMA_RECVBUF socket option has not been set";
++		result = -EINVAL;
++		goto done;
++	}
++	result = homa_pool_free_bufs(hsk->buffer_pool, control.num_bpages,
++				     control.bpage_offsets);
++	control.num_bpages = 0;
++	if (result != 0) {
++		hsk->error_msg = "error while releasing buffer pages";
++		goto done;
++	}
++
++	nonblocking = flags & MSG_DONTWAIT;
++	if (control.id != 0) {
++		rpc = homa_rpc_find_client(hsk, control.id); /* Locks RPC. */
++		if (!rpc) {
++			hsk->error_msg = "invalid RPC id passed to recvmsg";
++			result = -EINVAL;
++			goto done;
++		}
++		homa_rpc_hold(rpc);
++		result = homa_wait_private(rpc, nonblocking);
++		if (result != 0) {
++			hsk->error_msg = "error while waiting for private RPC to complete";
++			control.id = 0;
++			goto done;
++		}
++	} else {
++		rpc = homa_wait_shared(hsk, nonblocking);
++		if (IS_ERR(rpc)) {
++			/* If we get here, it means there was an error that
++			 * prevented us from finding an RPC to return. Errors
++			 * in the RPC itself are handled below.
++			 */
++			hsk->error_msg = "error while waiting for shared RPC to complete";
++			result = PTR_ERR(rpc);
++			rpc = NULL;
++			goto done;
++		}
++	}
++	if (rpc->error) {
++		hsk->error_msg = "RPC failed";
++		result = rpc->error;
++	} else {
++		result = rpc->msgin.length;
++	}
++
++	/* Collect result information. */
++	control.id = rpc->id;
++	control.completion_cookie = rpc->completion_cookie;
++	if (likely(rpc->msgin.length >= 0)) {
++		control.num_bpages = rpc->msgin.num_bpages;
++		memcpy(control.bpage_offsets, rpc->msgin.bpage_offsets,
++		       sizeof(rpc->msgin.bpage_offsets));
++	}
++	if (msg->msg_name) {
++		if (sk->sk_family == AF_INET6) {
++			DECLARE_SOCKADDR(struct sockaddr_in6 *, in6,
++					 msg->msg_name);
++
++			in6->sin6_family = AF_INET6;
++			in6->sin6_port = htons(rpc->dport);
++			in6->sin6_addr = rpc->peer->addr;
++			msg->msg_namelen = sizeof(*in6);
++		} else {
++			DECLARE_SOCKADDR(struct sockaddr_in *, in4,
++					 msg->msg_name);
++
++			in4->sin_family = AF_INET;
++			in4->sin_port = htons(rpc->dport);
++			in4->sin_addr.s_addr = ipv6_to_ipv4(rpc->peer->addr);
++			msg->msg_namelen = sizeof(*in4);
++		}
++	}
++
++	/* This indicates that the application now owns the buffers, so
++	 * we won't free them in homa_rpc_end.
++	 */
++	rpc->msgin.num_bpages = 0;
++
++	if (homa_is_client(rpc->id)) {
++		homa_peer_add_ack(rpc);
++		homa_rpc_end(rpc);
++	} else {
++		if (result < 0)
++			homa_rpc_end(rpc);
++		else
++			rpc->state = RPC_IN_SERVICE;
++	}
++
++done:
++	/* Note: must release the RPC lock before calling homa_rpc_reap
++	 * or copying results to user space.
++	 */
++	if (rpc) {
++		homa_rpc_put(rpc);
++
++		/* Locked by homa_rpc_find_client or homa_wait_shared. */
++		homa_rpc_unlock(rpc);
++	}
++
++	if (test_bit(SOCK_NOSPACE, &hsk->sock.sk_socket->flags)) {
++		/* There are tasks waiting for tx memory, so reap
++		 * immediately.
++		 */
++		homa_rpc_reap(hsk, true);
++	}
++
++	if (unlikely(copy_to_user((__force void __user *)msg->msg_control,
++				  &control, sizeof(control)))) {
++		hsk->error_msg = "couldn't update homa_recvmsg_args argument to recvmsg: read-only?";
++		result = -EFAULT;
 +	}
 +
 +	return result;
 +}
 +
 +/**
-+ * homa_wait_shared() - Wait for the completion of any non-private
-+ * incoming message on a socket.
-+ * @hsk:          Socket on which to wait. Must not be locked.
-+ * @nonblocking:  Nonzero means return immediately if no RPC is ready.
-+ *
-+ * Return:    Pointer to an RPC with a complete incoming message or nonzero
-+ *            error field, or a negative errno (usually -EINTR). If an RPC
-+ *            is returned it will be locked and referenced; the caller
-+ *            must release the lock and the reference.
++ * homa_hash() - Not needed for Homa.
++ * @sk:    Socket for the operation
++ * Return: ??
 + */
-+struct homa_rpc *homa_wait_shared(struct homa_sock *hsk, int nonblocking)
-+	__cond_acquires(nonnull, rpc->bucket->lock)
++int homa_hash(struct sock *sk)
 +{
-+	struct homa_interest interest;
-+	struct homa_rpc *rpc;
-+	int result;
-+
-+	INIT_LIST_HEAD(&interest.links);
-+	init_waitqueue_head(&interest.wait_queue);
-+	/* Each iteration through this loop waits until an RPC needs attention
-+	 * in some way (e.g. packets have arrived), then deals with that need
-+	 * (e.g. copy to user space). It may take many iterations until an
-+	 * RPC is ready for the application.
-+	 */
-+	while (1) {
-+		homa_sock_lock(hsk);
-+		if (hsk->shutdown) {
-+			rpc = ERR_PTR(-ESHUTDOWN);
-+			homa_sock_unlock(hsk);
-+			goto done;
-+		}
-+		if (!list_empty(&hsk->ready_rpcs)) {
-+			rpc = list_first_entry(&hsk->ready_rpcs,
-+					       struct homa_rpc,
-+					       ready_links);
-+			homa_rpc_hold(rpc);
-+			list_del_init(&rpc->ready_links);
-+			if (!list_empty(&hsk->ready_rpcs)) {
-+				/* There are still more RPCs available, so
-+				 * let Linux know.
-+				 */
-+				hsk->sock.sk_data_ready(&hsk->sock);
-+			}
-+			homa_sock_unlock(hsk);
-+		} else if (nonblocking) {
-+			rpc = ERR_PTR(-EAGAIN);
-+			homa_sock_unlock(hsk);
-+
-+			/* This is a good time to cleanup dead RPCS. */
-+			homa_rpc_reap(hsk, false);
-+			goto done;
-+		} else {
-+			homa_interest_init_shared(&interest, hsk);
-+			homa_sock_unlock(hsk);
-+			result = homa_interest_wait(&interest);
-+
-+			if (result != 0) {
-+				int ready;
-+
-+				/* homa_interest_wait returned an error, so we
-+				 * have to do two things. First, unlink the
-+				 * interest from the socket. Second, check to
-+				 * see if in the meantime the interest received
-+				 * a handoff. If so, ignore the error. Very
-+				 * important to hold the socket lock while
-+				 * checking, in order to eliminate races with
-+				 * homa_rpc_handoff.
-+				 */
-+				homa_sock_lock(hsk);
-+				homa_interest_unlink_shared(&interest);
-+				ready = atomic_read(&interest.ready);
-+				homa_sock_unlock(hsk);
-+				if (ready == 0) {
-+					rpc = ERR_PTR(result);
-+					goto done;
-+				}
-+			}
-+
-+			rpc = interest.rpc;
-+			if (!rpc) {
-+				rpc = ERR_PTR(-ESHUTDOWN);
-+				goto done;
-+			}
-+		}
-+
-+		homa_rpc_lock_preempt(rpc);
-+		if (!rpc->error)
-+			rpc->error = homa_copy_to_user(rpc);
-+		if (rpc->error) {
-+			if (rpc->state != RPC_DEAD)
-+				break;
-+		} else if (rpc->msgin.bytes_remaining == 0 &&
-+		    skb_queue_len(&rpc->msgin.packets) == 0)
-+			break;
-+		homa_rpc_put(rpc);
-+		homa_rpc_unlock(rpc);
-+	}
-+
-+done:
-+	return rpc;
++	return 0;
 +}
 +
 +/**
-+ * homa_rpc_handoff() - This function is called when the input message for
-+ * an RPC is ready for attention from a user thread. It notifies a waiting
-+ * reader and/or queues the RPC, as appropriate.
-+ * @rpc:                RPC to handoff; must be locked.
++ * homa_unhash() - Not needed for Homa.
++ * @sk:    Socket for the operation
 + */
-+void homa_rpc_handoff(struct homa_rpc *rpc)
-+	__must_hold(rpc->bucket->lock)
++void homa_unhash(struct sock *sk)
 +{
-+	struct homa_sock *hsk = rpc->hsk;
-+	struct homa_interest *interest;
-+
-+	if (test_bit(RPC_PRIVATE, &rpc->flags)) {
-+		homa_interest_notify_private(rpc);
-+		return;
-+	}
-+
-+	/* Shared RPC; if there is a waiting thread, hand off the RPC;
-+	 * otherwise enqueue it.
-+	 */
-+	homa_sock_lock(hsk);
-+	if (hsk->shutdown) {
-+		homa_sock_unlock(hsk);
-+		return;
-+	}
-+	if (!list_empty(&hsk->interests)) {
-+		interest = list_first_entry(&hsk->interests,
-+					    struct homa_interest, links);
-+		list_del_init(&interest->links);
-+		interest->rpc = rpc;
-+		homa_rpc_hold(rpc);
-+		atomic_set_release(&interest->ready, 1);
-+		wake_up(&interest->wait_queue);
-+	} else if (list_empty(&rpc->ready_links)) {
-+		list_add_tail(&rpc->ready_links, &hsk->ready_rpcs);
-+		hsk->sock.sk_data_ready(&hsk->sock);
-+	}
-+	homa_sock_unlock(hsk);
 +}
 +
++/**
++ * homa_softirq() - This function is invoked at SoftIRQ level to handle
++ * incoming packets.
++ * @skb:   The incoming packet.
++ * Return: Always 0
++ */
++int homa_softirq(struct sk_buff *skb)
++{
++	struct sk_buff *packets, *other_pkts, *next;
++	struct sk_buff **prev_link, **other_link;
++	enum skb_drop_reason reason;
++	struct homa_common_hdr *h;
++	int header_offset;
++
++	/* skb may actually contain many distinct packets, linked through
++	 * skb_shinfo(skb)->frag_list by the Homa GRO mechanism. Make a
++	 * pass through the list to process all of the short packets,
++	 * leaving the longer packets in the list. Also, perform various
++	 * prep/cleanup/error checking functions.
++	 */
++	skb->next = skb_shinfo(skb)->frag_list;
++	skb_shinfo(skb)->frag_list = NULL;
++	packets = skb;
++	prev_link = &packets;
++	for (skb = packets; skb; skb = next) {
++		next = skb->next;
++
++		/* Make the header available at skb->data, even if the packet
++		 * is fragmented. One complication: it's possible that the IP
++		 * header hasn't yet been removed (this happens for GRO packets
++		 * on the frag_list, since they aren't handled explicitly by IP.
++		 */
++		if (!homa_make_header_avl(skb)) {
++			reason = SKB_DROP_REASON_HDR_TRUNC;
++			goto discard;
++		}
++		header_offset = skb_transport_header(skb) - skb->data;
++		if (header_offset)
++			__skb_pull(skb, header_offset);
++
++		/* Reject packets that are too short or have bogus types. */
++		h = (struct homa_common_hdr *)skb->data;
++		if (unlikely(skb->len < sizeof(struct homa_common_hdr) ||
++			     h->type < DATA || h->type > MAX_OP ||
++			     skb->len < header_lengths[h->type - DATA])) {
++			reason = SKB_DROP_REASON_PKT_TOO_SMALL;
++			goto discard;
++		}
++
++		/* Process the packet now if it is a control packet or
++		 * if it contains an entire short message.
++		 */
++		if (h->type != DATA || ntohl(((struct homa_data_hdr *)h)
++				->message_length) < 1400) {
++			*prev_link = skb->next;
++			skb->next = NULL;
++			homa_dispatch_pkts(skb);
++		} else {
++			prev_link = &skb->next;
++		}
++		continue;
++
++discard:
++		*prev_link = skb->next;
++		kfree_skb_reason(skb, reason);
++	}
++
++	/* Now process the longer packets. Each iteration of this loop
++	 * collects all of the packets for a particular RPC and dispatches
++	 * them (batching the packets for an RPC allows more efficient
++	 * generation of grants).
++	 */
++	while (packets) {
++		struct in6_addr saddr, saddr2;
++		struct homa_common_hdr *h2;
++		struct sk_buff *skb2;
++
++		skb = packets;
++		prev_link = &skb->next;
++		saddr = skb_canonical_ipv6_saddr(skb);
++		other_pkts = NULL;
++		other_link = &other_pkts;
++		h = (struct homa_common_hdr *)skb->data;
++		for (skb2 = skb->next; skb2; skb2 = next) {
++			next = skb2->next;
++			h2 = (struct homa_common_hdr *)skb2->data;
++			if (h2->sender_id == h->sender_id) {
++				saddr2 = skb_canonical_ipv6_saddr(skb2);
++				if (ipv6_addr_equal(&saddr, &saddr2)) {
++					*prev_link = skb2;
++					prev_link = &skb2->next;
++					continue;
++				}
++			}
++			*other_link = skb2;
++			other_link = &skb2->next;
++		}
++		*prev_link = NULL;
++		*other_link = NULL;
++		homa_dispatch_pkts(packets);
++		packets = other_pkts;
++	}
++
++	return 0;
++}
++
++/**
++ * homa_err_handler_v4() - Invoked by IP to handle an incoming error
++ * packet, such as ICMP UNREACHABLE.
++ * @skb:    The incoming packet; skb->data points to the byte just after
++ *          the ICMP header (the first byte of the embedded packet IP header).
++ * @skb:   The incoming packet.
++ * @info:  Information about the error that occurred?
++ *
++ * Return: zero, or a negative errno if the error couldn't be handled here.
++ */
++int homa_err_handler_v4(struct sk_buff *skb, u32 info)
++{
++	struct homa *homa = homa_net(dev_net(skb->dev))->homa;
++	const struct icmphdr *icmp = icmp_hdr(skb);
++	struct in6_addr daddr;
++	int type = icmp->type;
++	int code = icmp->code;
++	struct iphdr *iph;
++	int error = 0;
++	int port = 0;
++
++	iph = (struct iphdr *)(skb->data);
++	ipv6_addr_set_v4mapped(iph->daddr, &daddr);
++	if (type == ICMP_DEST_UNREACH && code == ICMP_PORT_UNREACH) {
++		struct homa_common_hdr *h = (struct homa_common_hdr *)(skb->data
++				+ iph->ihl * 4);
++
++		port = ntohs(h->dport);
++		error = -ENOTCONN;
++	} else if (type == ICMP_DEST_UNREACH) {
++		if (code == ICMP_PROT_UNREACH)
++			error = -EPROTONOSUPPORT;
++		else
++			error = -EHOSTUNREACH;
++	} else {
++		pr_notice("%s invoked with info %x, ICMP type %d, ICMP code %d\n",
++			  __func__, info, type, code);
++	}
++	if (error != 0)
++		homa_abort_rpcs(homa, &daddr, port, error);
++	return 0;
++}
++
++/**
++ * homa_err_handler_v6() - Invoked by IP to handle an incoming error
++ * packet, such as ICMP UNREACHABLE.
++ * @skb:    The incoming packet; skb->data points to the byte just after
++ *          the ICMP header (the first byte of the embedded packet IP header).
++ * @opt:    Not used.
++ * @type:   Type of ICMP packet.
++ * @code:   Additional information about the error.
++ * @offset: Not used.
++ * @info:   Information about the error that occurred?
++ *
++ * Return: zero, or a negative errno if the error couldn't be handled here.
++ */
++int homa_err_handler_v6(struct sk_buff *skb, struct inet6_skb_parm *opt,
++			u8 type,  u8 code,  int offset,  __be32 info)
++{
++	const struct ipv6hdr *iph = (const struct ipv6hdr *)skb->data;
++	struct homa *homa = homa_net(dev_net(skb->dev))->homa;
++	int error = 0;
++	int port = 0;
++
++	if (type == ICMPV6_DEST_UNREACH && code == ICMPV6_PORT_UNREACH) {
++		const struct homa_common_hdr *h;
++
++		h = (struct homa_common_hdr *)(skb->data + sizeof(*iph));
++		port = ntohs(h->dport);
++		error = -ENOTCONN;
++	} else if (type == ICMPV6_DEST_UNREACH && code == ICMPV6_ADDR_UNREACH) {
++		error = -EHOSTUNREACH;
++	} else if (type == ICMPV6_PARAMPROB && code == ICMPV6_UNK_NEXTHDR) {
++		error = -EPROTONOSUPPORT;
++	}
++	if (error != 0)
++		homa_abort_rpcs(homa, &iph->daddr, port, error);
++	return 0;
++}
++
++/**
++ * homa_poll() - Invoked by Linux as part of implementing select, poll,
++ * epoll, etc.
++ * @file:  Open file that is participating in a poll, select, etc.
++ * @sock:  A Homa socket, associated with @file.
++ * @wait:  This table will be registered with the socket, so that it
++ *         is notified when the socket's ready state changes.
++ *
++ * Return: A mask of bits such as EPOLLIN, which indicate the current
++ *         state of the socket.
++ */
++__poll_t homa_poll(struct file *file, struct socket *sock,
++		   struct poll_table_struct *wait)
++{
++	struct homa_sock *hsk = homa_sk(sock->sk);
++	__poll_t mask;
++
++	mask = 0;
++	sock_poll_wait(file, sock, wait);
++	if (homa_sock_wmem_avl(hsk))
++		mask |= EPOLLOUT | EPOLLWRNORM;
++	else
++		set_bit(SOCK_NOSPACE, &hsk->sock.sk_socket->flags);
++
++	if (hsk->shutdown)
++		mask |= EPOLLIN;
++
++	if (!list_empty(&hsk->ready_rpcs))
++		mask |= EPOLLIN | EPOLLRDNORM;
++	return mask;
++}
++
++/**
++ * homa_hrtimer() - This function is invoked by the hrtimer mechanism to
++ * wake up the timer thread. Runs at IRQ level.
++ * @timer:   The timer that triggered; not used.
++ *
++ * Return:   Always HRTIMER_NORESTART.
++ */
++enum hrtimer_restart homa_hrtimer(struct hrtimer *timer)
++{
++	wake_up_process(timer_kthread);
++	return HRTIMER_NORESTART;
++}
++
++/**
++ * homa_timer_main() - Top-level function for the timer thread.
++ * @transport:  Pointer to struct homa.
++ *
++ * Return:         Always 0.
++ */
++int homa_timer_main(void *transport)
++{
++	struct homa *homa = (struct homa *)transport;
++	ktime_t tick_interval;
++	u64 nsec;
++
++	hrtimer_setup(&hrtimer, homa_hrtimer, CLOCK_MONOTONIC,
++		      HRTIMER_MODE_REL);
++	nsec = 1000000;                   /* 1 ms */
++	tick_interval = ns_to_ktime(nsec);
++	while (1) {
++		set_current_state(TASK_UNINTERRUPTIBLE);
++		if (!timer_thread_exit) {
++			hrtimer_start(&hrtimer, tick_interval,
++				      HRTIMER_MODE_REL);
++			schedule();
++		}
++		__set_current_state(TASK_RUNNING);
++		if (timer_thread_exit)
++			break;
++		homa_timer(homa);
++	}
++	hrtimer_cancel(&hrtimer);
++	kthread_complete_and_exit(&timer_thread_done, 0);
++	return 0;
++}
++
++MODULE_LICENSE("Dual BSD/GPL");
++MODULE_AUTHOR("John Ousterhout <ouster@cs.stanford.edu>");
++MODULE_DESCRIPTION("Homa transport protocol");
++MODULE_VERSION("1.0");
++
++/* Arrange for this module to be loaded automatically when a Homa socket is
++ * opened. Apparently symbols don't work in the macros below, so must use
++ * numeric values for IPPROTO_HOMA (146) and SOCK_DGRAM(2).
++ */
++MODULE_ALIAS_NET_PF_PROTO_TYPE(PF_INET, 146, 2);
++MODULE_ALIAS_NET_PF_PROTO_TYPE(PF_INET6, 146, 2);
 -- 
 2.43.0
 
