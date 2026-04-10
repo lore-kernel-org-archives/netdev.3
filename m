@@ -1,54 +1,54 @@
-Received: from mail-yx1-f73.google.com (mail-yx1-f73.google.com [74.125.224.73])
+Received: from mail-qk1-f202.google.com (mail-qk1-f202.google.com [209.85.222.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2CD33E2758
-	for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 18:23:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6D178F29
+	for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 18:23:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775845401; cv=none; b=WRVU235pzKKvtV6ggpU42iDBfn0anG7cBufE7F71teNP2CLCO/0e913fgyUzJcRbb+tJIdmFtOH40+TnCffcuqZ6WhACKa7qcJwTUhu9XVu5HYO4b7h+brDX+9VqmqZzY7M135pUt0Qm8NcGYDbLkYP0DwClxr4sEUuoaRL87Ow=
+	t=1775845406; cv=none; b=aUkAXAyYJ3j/PkswX7WiWFlzALIJl/2d8pW5nQTTV9ZDNQweVg/lSgintDVmsjbfW4zS2dWYKdFpDiDd2SqA2NRy+uISQVX07gbmlXHM9AVkaI/XO9JzUaK0fc4qSTQ0JkIMqj85+XrmonRXnpEPHrHAes6aBaWGJ2pIQTzkxMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775845401; c=relaxed/simple;
-	bh=pDCZY5ZoCU2KpvGwpyol+n3OHp48m/POByjEHiCAj3Y=;
+	s=arc-20240116; t=1775845406; c=relaxed/simple;
+	bh=T9tmsoNDi9EwJ9IudjdOmWW1iLs+gy8wbVDhf+VDlTA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=AMMisn+g7VeJhTq4/N338SQHm9zqnbMGcNYN/duaZkSwMW+IjgEOGGXSnU7QvJX3zl5EgSPA0oy85l6byQ5k40+UcnDaSjCfg88EvrAgvVVHAx4qSK2FGa54qvIVE9kI5dyoqfaVSWwVT/8pcbbmYqvwFamM0RfQuofLEH7V/tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mUXFqwXp; arc=none smtp.client-ip=74.125.224.73
+	 To:Cc:Content-Type; b=WZ6ry2avLa4ua9eIalvt/zGMEe3haXjMgDTw9j2oxJszpAc8HbPs5Wiz4GwvhwYB/TtCjGJzOxUz4WkbK299DGXmgoi4re4P/J1j7NRRZINpc6pcyq4TVy9GuJqe/7tn/L2p/G+WclSO5tfDwO2kfjXJHamHCzz95WKlj8LUkNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G+epxBNY; arc=none smtp.client-ip=209.85.222.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mUXFqwXp"
-Received: by mail-yx1-f73.google.com with SMTP id 956f58d0204a3-649f0d26e5eso3602342d50.0
-        for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 11:23:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G+epxBNY"
+Received: by mail-qk1-f202.google.com with SMTP id af79cd13be357-8d57516c889so128799085a.2
+        for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 11:23:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775845399; x=1776450199; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1775845404; x=1776450204; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hoauGp/7txP/5885ISwwYzf3YpJqXBJ3wQBs1AuOuAo=;
-        b=mUXFqwXpnt4FKSsD1eHvYbSNqsANICAoN0p2VyUKhLM7nCmoYzaMTZWMi++pDIABDw
-         XQez6uo+n+WpRnzpZlYw2AGrGG8I8uzKfQUN3Mv95QyGXIktMYdW7eyhBwqpF3XHKi4e
-         V2AH3fzHWm/Ya2Pi85psHnX5OXAg44tVVDCIh5/PiYa89wWUFXaq8sEd1j8Q5c+SEbjN
-         hIJgQh03lbZOZh4x40WPLNb0q9q1oIxVFPRJMixPclVSr9/BW25xPbuztsE75bqXcTtK
-         nR4TW124VVSWY04oAmdd7UQlmm1S0k85rDljKRulIy63F5GyuPa0c1KF2Gu9/9Fvbyh9
-         8cUg==
+        bh=SYfIeb29DIYWv7AbwoDoluUX/yJHqHXJP8AnpkO+hKw=;
+        b=G+epxBNYK57zdd7buzWVqD+aSjctY1+gLmb4ck4JEtcpPDjeLshCqnG9lhnZhsHH6R
+         kkAB9Q/XsLo/NNcV5kZ2oPeNqIK6E6Eo40TjPZE614lSUTOXEXNixgaIn7Up+WkVszAN
+         VEnmDzo+ip9neOGqmuxCtDC5Hmg/F4muPNpeJ2/yidC0qcmIfhesK80FX/CR7qSdwwwL
+         gCDjIQPQTiYM4insOXzNOFTMjxYA9Rnwf8rp8EkVFRBg2gB6bshN3NHmnb/M2HKBOkwB
+         W7dUbdxe02MQj62c63cvnA79medCemr/zPDN8gde50eBCzouzYZMsulrKCOiODt59ohy
+         Qatg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775845399; x=1776450199;
+        d=1e100.net; s=20251104; t=1775845404; x=1776450204;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hoauGp/7txP/5885ISwwYzf3YpJqXBJ3wQBs1AuOuAo=;
-        b=KOwIpTa8oGPA6+aojoIs4+0fEpuIgq9N7f+SSW6/WfDPOmPjnuGxaguUOFaU0dHJBP
-         GUzr2pXTh6wHPnJjj7kVcVFf7/M1Ur84u8uU3apfC/7piU7eTDQcTcK0qfR24iQX3SoB
-         4s8e5rzFgAjBwraTEgQt1rESjS9vFFasLc2LeR+qCNfqSuKiJUYkJcobGPvft+dT0hdH
-         8SNhuObaoRt14i4TXIQEpSQbBJIt3ZNjZvUVH42lRge585zcNv448CNdMsbkz7+PvGRe
-         cnIQxD9UCBbGgFU2IuO6/QbzPhKbkxCoo7gPT+XDmxZnzuHUD99gcZFDuDGSxs6IhGhM
-         Pnag==
-X-Forwarded-Encrypted: i=1; AJvYcCX65ObFECQATiYYlAuBFp77BBNR8O6J7K4xsP1meO60pWWB4J9UI+hxXBZSS4K4s63BTAyfn2s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8TyuVUUWCuwRPZPSjN23WXg7iTWG+baUFrfpVMFMu1AWWWzx0
-	4YRcVnoQpEQfHmo26NQVVUDDRLfjWtmTWI9zTmqLYoV/EMXM/9B3daPCI9StrChbYK01ZDiOQxD
-	phcLvcNlcmERqUw==
-X-Received: from yxuo2.prod.google.com ([2002:a53:dac2:0:b0:64e:b46e:f25d])
+        bh=SYfIeb29DIYWv7AbwoDoluUX/yJHqHXJP8AnpkO+hKw=;
+        b=sEqYl3FN1r9qQHBocQh9TFwd/1z/MtEfMZCEVFlxobgBd4RuXnJXOKLH6idJZ3Oyrs
+         /R1xbnbaWE50/JvCa6YeVia0hgNopqfgKuYJnf3RRJxcG0jWWqIHbwRhuY93VSM1htnN
+         BBt888/qHnWvr1VBkMtGpjTePWhplRuRo+8E4FztRVlEBPlX4QOciQB4Fgmn/IaLN5JL
+         ubcCswwMODtzHZkqjbFnOSBvS2uiuZ9ovFsYsXaUIpeQB263pj0408pBENKKrPs73yJS
+         T/rl1NVrVcZrYQh7XLoXa0ix92rtrYHMJGGDM2VsqHR4lyFurP+qRH1qVhFd+GnNxa7a
+         WFWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXDRyb2KfhmsjsDBtKx/nsBGeRJgXJd3RvYn23uGNopfBwYgsfjyDsR/J6nTbLGMm6sDnKiPws=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxJQwshvkYGnc8h+2B6x8b5MLF/IrOPbb9v9LAMMAve/m8xzBI
+	l7mMlxUd/+AO9eF7nqxrYu7Bh8ANRUDAVy/zqQUoPmvjDJnN/s4idKPBKwGUA3uUZENuoFVuzX8
+	PItFrp4HAUNUWuQ==
+X-Received: from qkag9.prod.google.com ([2002:a05:620a:2189:b0:8cd:8684:7bad])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a53:a0c3:0:b0:650:19e5:860 with SMTP id 956f58d0204a3-65198c1a531mr2995962d50.46.1775845398578;
- Fri, 10 Apr 2026 11:23:18 -0700 (PDT)
-Date: Fri, 10 Apr 2026 18:22:50 +0000
+ 2002:a05:620a:2953:b0:8cd:c01f:fd25 with SMTP id af79cd13be357-8ddcd5ff659mr582266985a.14.1775845403716;
+ Fri, 10 Apr 2026 11:23:23 -0700 (PDT)
+Date: Fri, 10 Apr 2026 18:22:53 +0000
 In-Reply-To: <20260410182257.774311-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -58,9 +58,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260410182257.774311-1-edumazet@google.com>
 X-Mailer: git-send-email 2.53.0.1213.gd9a14994de-goog
-Message-ID: <20260410182257.774311-9-edumazet@google.com>
-Subject: [PATCH v3 net-next 08/15] net/sched: sch_fq_codel: remove data-races
- from fq_codel_dump_stats()
+Message-ID: <20260410182257.774311-12-edumazet@google.com>
+Subject: [PATCH v3 net-next 11/15] net_sched: sch_hhf: annotate data-races in hhf_dump_stats()
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -69,37 +68,82 @@ Cc: Simon Horman <horms@kernel.org>, Jamal Hadi Salim <jhs@mojatatu.com>, Jiri P
 	Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-fq_codel_dump_stats() acquires the qdisc spinlock a bit too late.
+hhf_dump_stats() only runs with RTNL held,
+reading fields that can be changed in qdisc fast path.
 
-Move this acquisition before we fill st.qdisc_stats with live data.
+Add READ_ONCE()/WRITE_ONCE() annotations.
 
 Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- net/sched/sch_fq_codel.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/sched/sch_hhf.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
-index 3a348be18551033dcf41ce632eb4b563221040fa..95769b19a04fb392e14a48353e94fb2ee299565a 100644
---- a/net/sched/sch_fq_codel.c
-+++ b/net/sched/sch_fq_codel.c
-@@ -586,6 +586,8 @@ static int fq_codel_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+diff --git a/net/sched/sch_hhf.c b/net/sched/sch_hhf.c
+index 69b6f0a5471cb9a3b7b760144683f2b249091d89..1e25b75daae2e5de31bd212dfa1f6d7aea927174 100644
+--- a/net/sched/sch_hhf.c
++++ b/net/sched/sch_hhf.c
+@@ -198,7 +198,8 @@ static struct hh_flow_state *seek_list(const u32 hash,
+ 				return NULL;
+ 			list_del(&flow->flowchain);
+ 			kfree(flow);
+-			q->hh_flows_current_cnt--;
++			WRITE_ONCE(q->hh_flows_current_cnt,
++				   q->hh_flows_current_cnt - 1);
+ 		} else if (flow->hash_id == hash) {
+ 			return flow;
+ 		}
+@@ -226,7 +227,7 @@ static struct hh_flow_state *alloc_new_hh(struct list_head *head,
+ 	}
+ 
+ 	if (q->hh_flows_current_cnt >= q->hh_flows_limit) {
+-		q->hh_flows_overlimit++;
++		WRITE_ONCE(q->hh_flows_overlimit, q->hh_flows_overlimit + 1);
+ 		return NULL;
+ 	}
+ 	/* Create new entry. */
+@@ -234,7 +235,7 @@ static struct hh_flow_state *alloc_new_hh(struct list_head *head,
+ 	if (!flow)
+ 		return NULL;
+ 
+-	q->hh_flows_current_cnt++;
++	WRITE_ONCE(q->hh_flows_current_cnt, q->hh_flows_current_cnt + 1);
+ 	INIT_LIST_HEAD(&flow->flowchain);
+ 	list_add_tail(&flow->flowchain, head);
+ 
+@@ -309,7 +310,7 @@ static enum wdrr_bucket_idx hhf_classify(struct sk_buff *skb, struct Qdisc *sch)
+ 			return WDRR_BUCKET_FOR_NON_HH;
+ 		flow->hash_id = hash;
+ 		flow->hit_timestamp = now;
+-		q->hh_flows_total_cnt++;
++		WRITE_ONCE(q->hh_flows_total_cnt, q->hh_flows_total_cnt + 1);
+ 
+ 		/* By returning without updating counters in q->hhf_arrays,
+ 		 * we implicitly implement "shielding" (see Optimization O1).
+@@ -404,7 +405,7 @@ static int hhf_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		return NET_XMIT_SUCCESS;
+ 
+ 	prev_backlog = sch->qstats.backlog;
+-	q->drop_overlimit++;
++	WRITE_ONCE(q->drop_overlimit, q->drop_overlimit + 1);
+ 	/* Return Congestion Notification only if we dropped a packet from this
+ 	 * bucket.
+ 	 */
+@@ -687,10 +688,10 @@ static int hhf_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ {
+ 	struct hhf_sched_data *q = qdisc_priv(sch);
+ 	struct tc_hhf_xstats st = {
+-		.drop_overlimit = q->drop_overlimit,
+-		.hh_overlimit	= q->hh_flows_overlimit,
+-		.hh_tot_count	= q->hh_flows_total_cnt,
+-		.hh_cur_count	= q->hh_flows_current_cnt,
++		.drop_overlimit = READ_ONCE(q->drop_overlimit),
++		.hh_overlimit	= READ_ONCE(q->hh_flows_overlimit),
++		.hh_tot_count	= READ_ONCE(q->hh_flows_total_cnt),
++		.hh_cur_count	= READ_ONCE(q->hh_flows_current_cnt),
  	};
- 	struct list_head *pos;
  
-+	sch_tree_lock(sch);
-+
- 	st.qdisc_stats.maxpacket = q->cstats.maxpacket;
- 	st.qdisc_stats.drop_overlimit = q->drop_overlimit;
- 	st.qdisc_stats.ecn_mark = q->cstats.ecn_mark;
-@@ -594,7 +596,6 @@ static int fq_codel_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- 	st.qdisc_stats.memory_usage  = q->memory_usage;
- 	st.qdisc_stats.drop_overmemory = q->drop_overmemory;
- 
--	sch_tree_lock(sch);
- 	list_for_each(pos, &q->new_flows)
- 		st.qdisc_stats.new_flows_len++;
- 
+ 	return gnet_stats_copy_app(d, &st, sizeof(st));
 -- 
 2.53.0.1213.gd9a14994de-goog
 
