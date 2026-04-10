@@ -1,154 +1,104 @@
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta02.eastlink.ca (mta02.eastlink.ca [24.224.136.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7783D29E0FD;
-	Fri, 10 Apr 2026 15:42:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066FD35DD1C
+	for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 15:44:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=24.224.136.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775835740; cv=none; b=Kz/JbSf3Uvm+bWGB6FRdq9xT8DCtrv/xDucOPCiWd8UqtM+80o/aHeQxLcSLo3mXVOeZgyWzMvzW/8sTVZU8fHTMvjPpjNa9SFUbifnMGANEEqGWbFxhs+pshrnVxx3Ziae3gbuREITVWl5StQDizJqTDD/2Xul5JfchO9kyglU=
+	t=1775835874; cv=none; b=MMqClH2bcLSjQC7WYyzLUS+qY9/+50LBvi34jg5JovBPXD21wqMR6ZBzGUSLjyww3md7Jsi9S11G7kQv98o3ShdRhYtbuvFCOp6SVSnKZoAkKjuQIjTUU/lP2rqiLrBYUSG89yURpbWdln9nh4mgKyertMk8yVQi6hd0wWTOheg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775835740; c=relaxed/simple;
-	bh=VuY9d8ya7ZrkRA3+pPycZwzLoPi050/HBpC+KjlPqTg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=q98TqSlQvKhiiC6gasRWQXnHmk+WLeT1kEsAOLCgaqgzzMbhsy7NgkT8DegXdFywAP9+P2fdbsFVL1y9QSF4qZ8IiAwHCFccWu0G/V/i+JkOmndLANZ8fcmeI80zXFlqec7a7dOkLMJuCUdNGDSLsYxpRZ0i2KkQl/3NPMVKjHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=LI1mzWP+; arc=none smtp.client-ip=213.133.104.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
+	s=arc-20240116; t=1775835874; c=relaxed/simple;
+	bh=ys2qIIDim0m/Ax57bmDxe1wwI+RnRcMDUobY+/LAZUI=;
+	h=Message-id:Date:MIME-version:Subject:To:Cc:References:From:
+	 In-reply-to:Content-type; b=ejYjcpIplJbVAzYk7zrGX0Lxws0ZjDtYIZzKjSo/fMVtkV6zTmoh1uP223apMOd5Ep/GUXQ/FyleWUdaIJ9s5qka7WBKARNk8KF9fz4mWk2qzif7F3bbuOGnBmD4Wz9prvu5pUdihinzKsq+A2qBLIn240Ci9RNUCL/xvjLX1ZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eastlink.ca; spf=pass smtp.mailfrom=eastlink.ca; dkim=pass (2048-bit key) header.d=eastlink.ca header.i=@eastlink.ca header.b=v25u0Dct; arc=none smtp.client-ip=24.224.136.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eastlink.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=eastlink.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="LI1mzWP+"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=stCxWmUrNp14+9hxFJqDr/4fYw51ho1P6q+Qw6AaXnE=; b=LI1mzWP+o8s7lU/ie+it1x4JBI
-	b2IhfwevYYFMRrmZCxdNcvuFfJX4xJLrbz9lYw8H/KBFCbK7ZOGul/ocX6Ks+i8bdLvTpwAqNA/pM
-	Kps+wq/OiO5xrC23HXcYQFti3DGPA96HyESSHzw+StOELt0IOl+d4UV8Vx1VgBtjR2ABBTcAHf15r
-	Q97b7rreNKIGXwr/3YJA1qFTDSYscBsQDYFWtgc5NZVH6XUPr9t07wo/gvGe4HN/D7ivKgm6TdkVR
-	RPEtEI3AtmkCu5Wyq56c8vkVo1RGrJyFSEBl/h/j71VdioxWilHpGveSS/6OpEIDv47ukEbvo32RH
-	CXKNuEMA==;
-Received: from sslproxy05.your-server.de ([78.46.172.2])
-	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1wBDzp-000BpZ-0c;
-	Fri, 10 Apr 2026 17:42:13 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy05.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1wBDzo-000Eua-0e;
-	Fri, 10 Apr 2026 17:42:11 +0200
-Message-ID: <917b37eb-af81-41fc-bc60-ce37642f4bd9@iogearbox.net>
-Date: Fri, 10 Apr 2026 17:42:10 +0200
+	dkim=pass (2048-bit key) header.d=eastlink.ca header.i=@eastlink.ca header.b="v25u0Dct"
+Received: from mail-cms03.eastlink.ca ([71.7.199.167])
+ by mta02.eastlink.ca ([24.224.136.13])
+ with ESMTPS id <0TDA0EJL7A8HEAE0@mta02.eastlink.ca> for
+ netdev@vger.kernel.org; Fri, 10 Apr 2026 12:12:17 -0300 (ADT)
+Sun-Java-System-SMTP-Warning: Lines longer than SMTP allows found and wrapped.
+Received: from [192.168.1.239] ([24.222.238.48])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 256/256 bits)
+ (Client did not present a certificate) by mail-cms03.eastlink.ca
+ ([71.7.199.167]) with ESMTPSA id BDWpw66Glkg7aBDWpwNj31; Fri,
+ 10 Apr 2026 12:12:16 -0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=eastlink.ca;
+	s=elelff16; t=1775833936;	bh=I61OpNNSxa7QfezN65BTggmQKaC1Ej3sLTFHrfX+cUw=;
+	h=Date:Subject:To:From:From:To:Subject:Date:Sender:Reply-to;
+	b=v25u0DctURMmtCg5wwJ3G0L8bhfCZeIkhepPK6zNTOhef52hNMloTvu+sy+C8Z2rO
+ RzmaDBR59RcpSde58d4nxxt0r3BJHkH40ZK5rQPZDcpUD6pITkEZ1YLkuEYx5w9GUf
+ eM59M/EgIh0+cZk5oO5Tn4c0L54Y7A39NRpHEbSeQhVGr+bYEf4fjHwPxlE0j5e48L
+ mxuYdRpLfpMdmbWTwmK5m9LN8jga/4/NBaq5jVh4qJbIrdvZHcXoKljt+blRJR0JFA
+ rbbmdp585VXLEMekdNO5ddDvUSoaSYESA76wwM1pTgF8NIao+0aVOoRQXwz4GOFm/0
+ qZMby6wU97w4Q==
+X-Authority-Analysis: v=2.4 cv=e6xUSrp/ c=1 sm=1 tr=0 ts=69d91350 cx=c_est
+ a=ien09DawV0SQ461Yvz+7bQ==:117 a=ien09DawV0SQ461Yvz+7bQ==:17 a=IkcTkHD0fZMA:10
+ a=21JHI6EMHx3ttOpXyVYA:9 a=QEXdDO2ut3YA:10
+X-Vade-Cause:
+ gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddvleejgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfgtefuvffnkffpmfenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpehjjhcuoehvvgdujhhothesvggrshhtlhhinhhkrdgtrgeqnecuggftrfgrthhtvghrnhepheduffejhfehkedvfeeikeegvefhjefgffdvffdtudekteehiefggefhieeuvdeinecukfhppedvgedrvddvvddrvdefkedrgeeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdegrddvvddvrddvfeekrdegkedphhgvlhhopegludelvddrudeikedruddrvdeflegnpdhmrghilhhfrhhomhepvhgvudhjohhtsegvrghsthhlihhnkhdrtggrpdhnsggprhgtphhtthhopeduvddprhgtphhtthhopeerredprhgtphhtthhopehhohhrmhhssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtp
+ hhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhm
+X-Vade-Score: -100
+X-Vade-State: 0
+X-EL-AUTH: ve1jot@eastlink.ca
+Message-id: <18e3df62-34f9-4de0-903b-19919d7ae2ca@eastlink.ca>
+Date: Fri, 10 Apr 2026 12:12:16 -0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+MIME-version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v6 1/2] net, bpf: fix null-ptr-deref in
- xdp_master_redirect() for down master
-To: Jiayuan Chen <jiayuan.chen@linux.dev>, netdev@vger.kernel.org
-Cc: syzbot+80e046b8da2820b6ba73@syzkaller.appspotmail.com,
- Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
- Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman
- <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>,
- John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
- Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
- Jiri Olsa <jolsa@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Jesper Dangaard Brouer <hawk@kernel.org>, Shuah Khan <shuah@kernel.org>,
- Jussi Maki <joamaki@gmail.com>, bpf@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- Nikolay Aleksandrov <razor@blackwall.org>
-References: <20260410113726.368111-1-jiayuan.chen@linux.dev>
- <20260410113726.368111-2-jiayuan.chen@linux.dev>
-Content-Language: en-US
-From: Daniel Borkmann <daniel@iogearbox.net>
-Autocrypt: addr=daniel@iogearbox.net; keydata=
- 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
-In-Reply-To: <20260410113726.368111-2-jiayuan.chen@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: Clear (ClamAV 1.4.3/27967/Fri Apr 10 08:24:45 2026)
+Subject: Re: [PATCH net] netrom: do some basic forms of validation on incoming
+ frames
+To: Simon Horman <horms@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ linux-hams@vger.kernel.org, Yizhe Zhuang <yizhe@darknavy.com>,
+ stable <stable@kernel.org>
+References: <2026040730-untagged-groin-bbb7@gregkh>
+ <20260409190328.GS469338@kernel.org> <20260409203235.6b9329f0@kernel.org>
+ <2026041026-excuse-slashing-c4ee@gregkh> <20260410102827.GT469338@kernel.org>
+Content-language: en-US
+From: jj <ve1jot@eastlink.ca>
+In-reply-to: <20260410102827.GT469338@kernel.org>
+Content-type: text/plain; charset=UTF-8; format=flowed
+Content-transfer-encoding: 7bit
 
-On 4/10/26 1:37 PM, Jiayuan Chen wrote:
-> syzkaller reported a kernel panic in bond_rr_gen_slave_id() reached via
-> xdp_master_redirect(). Full decoded trace:
-> 
->    https://syzkaller.appspot.com/bug?extid=80e046b8da2820b6ba73
-> 
-> bond_rr_gen_slave_id() dereferences bond->rr_tx_counter, a per-CPU
-> counter that bonding only allocates in bond_open() when the mode is
-> round-robin. If the bond device was never brought up, rr_tx_counter
-> stays NULL.
-> 
-> The XDP redirect path can still reach that code on a bond that was
-> never opened: bpf_master_redirect_enabled_key is a global static key,
-> so as soon as any bond device has native XDP attached, the
-> XDP_TX -> xdp_master_redirect() interception is enabled for every
-> slave system-wide. The path xdp_master_redirect() ->
-> bond_xdp_get_xmit_slave() -> bond_xdp_xmit_roundrobin_slave_get() ->
-> bond_rr_gen_slave_id() then runs against a bond that has no
-> rr_tx_counter and crashes.
-> 
-> Fix this in the generic xdp_master_redirect() by refusing to call into
-> the master's ->ndo_xdp_get_xmit_slave() when the master device is not
-> up. IFF_UP is only set after ->ndo_open() has successfully returned,
-> so this reliably excludes masters whose XDP state has not been fully
-> initialized. Drop the frame with XDP_ABORTED so the exception is
-> visible via trace_xdp_exception() rather than silently falling through.
-> This is not specific to bonding: any current or future master that
-> defers XDP state allocation to ->ndo_open() is protected.
-> 
-> Fixes: 879af96ffd72 ("net, core: Add support for XDP redirection to slave device")
-> Reported-by: syzbot+80e046b8da2820b6ba73@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/all/698f84c6.a70a0220.2c38d7.00cc.GAE@google.com/T/
-> Suggested-by: Daniel Borkmann <daniel@iogearbox.net>
-> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+This is NOT an obsolete protocol..this is in use by amateur radio 
+operators world-wide...we use it for RF comms usually, because what 
+happens if the internet goes "down", we can still provide comms over 
+slower RF links....(plus it's a fun mode)please PLEASE do not drop...and 
+sorry for the noise...
+
+de John VE1JOT
+
+On 2026-04-10 07:28, Simon Horman wrote:
+> On Fri, Apr 10, 2026 at 07:24:36AM +0200, Greg Kroah-Hartman wrote:
+>> On Thu, Apr 09, 2026 at 08:32:35PM -0700, Jakub Kicinski wrote:
+>>> On Thu, 9 Apr 2026 20:03:28 +0100 Simon Horman wrote:
+>>>> I expect that checking skb->len isn't sufficient here
+>>>> and pskb_may_pull needs to be used to ensure that
+>>>> the data is also available in the linear section of the skb.
+>>> Or for simplicity we could also be testing against skb_headlen()
+>>> since we don't expect any legit non-linear frames here? Dunno.
+> Sure, that's find by me if it leads to simpler code than
+> using pskb_may_pull(). Else I'd lean towards pskb_may_pull()
+> as it is a more general approach that feels worth proliferating.
+>
+>> I'll be glad to change this either way, your call.  Given that this is
+>> an obsolete protocol that seems to only be a target for drive-by fuzzers
+>> to attack, whatever the simplest thing to do to quiet them up I'll be
+>> glad to implement.
+>>
+>> Or can we just delete this stuff entirely?  :)
+> Deleting sounds good to me.
+> But we likely need a deprecation process.
+> In which case fixing these bugs still makes sense for the short term.
+>
