@@ -1,179 +1,120 @@
-Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
+Received: from mail-ua1-f74.google.com (mail-ua1-f74.google.com [209.85.222.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC913E3C4E
-	for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 18:24:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775845456; cv=pass; b=B6Kvbd+mWpahlSpZlT1DrZHFEODdB0Kmo3XoJrF9Gs5xs2dA+rPM9b9xf9sYWWmHth1gkcKRVT9/FrlBWDnRy2+53ytzEuuJnhMhJf9P29hwzWowFeNZibcVP6kQdA/4EGhyv3HKJwpOKUjFMO/+1S5XZzEynormzDuC3Q2Lh7g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775845456; c=relaxed/simple;
-	bh=EPE5zIbtuB9mtkemOydEeLuD7X/WZ572Yk/Mfjs+cuU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lZaJ9CEvcC08P8QS9AF9jY2fwXq4wqx7sZSGHCC96YqQu3vKnYbZ3kcGQ6jF7kmWgLAYolubi6x1JbEC6FryQlZixToAWHjETJLdZMUcLIRbOWcT9XHNNqIhye3rI2hi1b1bVPsQNSzG2ay/X6O0njSiHttBOlS1LeTppFNonEc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iIcbLRko; arc=pass smtp.client-ip=74.125.224.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F7D3DA7DF
+	for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 18:30:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775845857; cv=none; b=ujS8xW0vSJWzs5Jpb0u3de2fazfYjPfICjT0iyBR9YsX+2jyfeewWaj0WthtbXu1VJBTyLtBUbY3a4y8mPztu4dmJKYTOFLKXGzg0+PE3X3A0BidfT522dXvM4jImfWxFwknZGG6BKEPCIm230YcZitBSz0HJvJjyuJ7Lgl+efQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775845857; c=relaxed/simple;
+	bh=C3lB+1f0qaR30gLOF4c1HLoWdHCA1gdjUjWrDfHvPAQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=XfPgcYAaiPo2enAUptoBnfTt5xffxAGKq211Q8mvd5/fo5jfQmLonnEbIUFUGs7Shrd0ae3MtQr74Tq9q8NEvpzBYzrioE8W6yE5wBvyIEjI/pygo0HRluQZFynTDAwg6oiV1k92R+R/ExCh++5KhVNqHrWMvV3m9f+Te50CY7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tvWinTmj; arc=none smtp.client-ip=209.85.222.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iIcbLRko"
-Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-64edf260b49so3649700d50.0
-        for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 11:24:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775845454; cv=none;
-        d=google.com; s=arc-20240605;
-        b=drwSvObwmHmWeT20FYsagHzj559KQyIWnWn+Aje7tVtO4qbpKjIwmDwM9OIafrCK+k
-         9hb8bg1ZXvFYRSOuHtp6waVsEC3EJyckflvEsl7Wd2m4m9cXInFrJfp04OBa4wproFjQ
-         GGXXBy4/5BYfkYAzP3k3HOFCgjmaFMxk2LJqR/NrunKZ+GFACUeES12NK5aU5t0tWO+X
-         K6TWpuplIhqzZdVUmvKyrhP3XsPfGgTFUaCrajufOAPM8DC6YD8TiFv0IsiBoWLyxuai
-         CpegMFHCnE/5MbetHhqyHnVRSCAmwGgL3PoqwBP9Eq4H5EwM1gWtGfPzfyEfvESJLG8Y
-         4zag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=OJal6zY8DzVlZERvT/baHzRbKlhu4zXHBYN1HlP+LdY=;
-        fh=1auwjbI2VGBKUWmJpibQ56VZ22+lMVm/0B0UMGePahE=;
-        b=Ax/9GTtGQJZDO+mYbV2ZAfQANP76hqUk1CNhO3Sg5flL2OPQC/8nptFlAOFCk70fZ9
-         hfBCpuqyvthUvIg377VVeROSIpkflK82o0SYjrcH+Cr2hAlgaSBxZPpv0O9V5u71Z877
-         Tyf6+E4LLIArjobFf3pLGHnnB1RQuWRqwz7P8LKfVq6tHB2v564IN0MnsOijHZpRU1VK
-         KCimxaRd4ok+AmAvXkW6AH116tqUJuPYgXi8MQHmnoTrODOttD2MMUY8B1kPkjMDwPhc
-         oSukhRShJ7J3mPI8/PO/rx31BU5cyvzTkhA9+CGAvZ7ISucavBL5QToCM97ThGWvaTjr
-         ceww==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tvWinTmj"
+Received: by mail-ua1-f74.google.com with SMTP id a1e0cc1a2514c-94ad0ada31bso3441635241.0
+        for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 11:30:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775845454; x=1776450254; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OJal6zY8DzVlZERvT/baHzRbKlhu4zXHBYN1HlP+LdY=;
-        b=iIcbLRkol0GjO2Vqg4DjEfXCRn5IDJj2/Yx7mI+yyOyET1qhmx0rsx9JHhPayC0YoH
-         jbhegpPGr6enzOM6JDxizowcArjzxCD1zdh0k0ykSUOdPcjhhfJOD5H3tI8c94DHUi5u
-         XVQmnE1wq+RucEqzJecrBrjAvrrjKScBh/NY/XhlgAatnwD5UnQfEDAef2EuMjR5Uip/
-         m3Iur6YKmcouXwih3JSeUYin1ciFcQ4J2rDyTUfTArJ+FM1ht7MlQurmc+Gd0ZmcnXsM
-         9GpgaHVIcByC78OOjZEC9cmcXQVP4HQZRJQ2TqY9/hETX6emysvJfBSCm60VnOLXNKMC
-         FhLA==
+        d=google.com; s=20251104; t=1775845855; x=1776450655; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8lRHl8je5D2ZkoXYt/ZWfeFEvt0P0M+HOlaF2F0zd1Y=;
+        b=tvWinTmjgC3bGPfK7qpWPPyUDpOyHYIuWuMJqOnE+8sKfTcn9rF12PkoWHpdppYKAN
+         jClJgNJ9c77MOzjuY683twYFxHmNu33gt6I2CTt+zks+NrmgbLno9iqltrZA2CnCb2lb
+         USmdZBMQq8U9AGEExSdT9gKBa7I/Tt+jOX8IY7NE0qy6/iPoniz2ZkGiG/SkpnNxZk0R
+         xH+CIBWTc9G1/iT8pZLzO70VRjhgNsEcT2vVqkJ0BsyRbgov4o/9v8AsWKSwfv3juSOC
+         PZiq9ADOyBZ+DghfzmJFQux/aaBq8Hp00bsw/Bc19mO4mXTgkF29DJojUneY/X/No/2z
+         t/7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775845454; x=1776450254;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=OJal6zY8DzVlZERvT/baHzRbKlhu4zXHBYN1HlP+LdY=;
-        b=SvS7xi/EdH3NWygJuvoABqlV9D0Xg7am+JnnSwcrSyl8OZyTQUE60mLleQVNX/ygGD
-         QD3uw1xdZgZQAVzfSn/lGMSQWuBxD15DmNQ5+z2XNXFohUTdqvQAcGDnAhwP354UB0QH
-         ColLcQMe5ftAa145xtKc2JsJ6tXau0gBe5j8kUBq01r7bL2ZFCh/o3gThe91eanfi+BK
-         fQ32oSC/Nhmx0p4qsuL9QG70eUKxg1QqvuyBNWDHdjH4SyBGl/FDtMwjQcJ1vrbXMhaH
-         /HdAuL8EctKB32Bu5U87Yh1U6hxsghCpJ1lzi+g3wRCXDvUKhKnUcr6fHoL48XGcCZlX
-         yOPA==
-X-Forwarded-Encrypted: i=1; AJvYcCXazEYWKNexAVwFrLJzFTMNZ9lh/LXWqA4Sa0JQVYTLvnOZhaz9FShT5S0uHTzr4gq3lTFDjSk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxqdHAozfDJRbdJV/4HUOgJuoXIiTqEtV6o9HgnltMxVL2Rg3Gs
-	izr1tB+c49VaWaDMDQ+bPQQCQi7tURsVBrTIJ2umLOs/MawlzUGPWxMbogMvwqGnXdYa5ruI/xY
-	93f33FCwEWO7dAHYFSQRUu4JUV0mOsllgz8o6
-X-Gm-Gg: AeBDiesmzJF9JKJaka1br7a7q9U8T/GvvNPmLkjus1Bxu0PhapjzQ5Jnf0GIcw8np77
-	yS0Qp+kMZp08GJPswCDJZH5SP0bsWb83vH1OKkVQ9VHPmAVdnONJFEgTre6MVhFy8tzCxgSquPc
-	7U7GCiUqQlusFTKgc/NJ30v8mykrtANWiup2saWA9bKl7cWbifR5lLFNHH1weeYar0jSyQn380z
-	feTEkyQybsbBfN4rSOmhB3r/6fzzrnJx1QJpC+hKUYQ7MMYXU1PLzT5BvJXjXgVTL2vOtGEQUlU
-	s3VNrOSUKbUfiRCzEk1sNUrY6AapnJ9ArBRCqnyQbsI3mfo0u37H6oMSP3GEXYHYt41zyleToOe
-	qQwwIUY0PBPAurAXSwg6YcZeoGXKGgX8T4WzV
-X-Received: by 2002:a05:690e:151b:b0:650:3124:b8c9 with SMTP id
- 956f58d0204a3-6519905ad2emr2529277d50.20.1775845453876; Fri, 10 Apr 2026
- 11:24:13 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1775845855; x=1776450655;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8lRHl8je5D2ZkoXYt/ZWfeFEvt0P0M+HOlaF2F0zd1Y=;
+        b=D3qtrPDToGtvZnTA+RP60KhXe6bOQryrPV55z36jlrWmgu+djA0eO73H+ccjbB9sUg
+         jygqGvFuLCImIAUIsAbwrqwvSUZ7IvryY3WOXbnBySetSDieSL2s+l1+CDUOB8NxXlid
+         p3EjxdpuMcF62sG6C4WiNFrFJGSowz4vgb1SPCL5u/T8ly904DlgLk6RC3Zum/LuWXFQ
+         y8MiSsLRzujYSxKFdXrYgBR/cR+XngkJAbrZRLwiGhj8pJxa7iFVWBQ4xvEShMEYI1Dg
+         lDUvIeudqcvMsSAj41hLl8/JWDjfLZbnfR7a50DW5kVlgGWO6gHtNWPCGq1rJF7alRNR
+         X0Gw==
+X-Forwarded-Encrypted: i=1; AJvYcCULKv3pC60DyT6CrFwoIoxmo2W/eHtsn8ZGBMGbn8b6yqdxBjdwzdMKeVZYlErx7sKkYQkjU0E=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxxqt9Yk8UxB/qJwB3ID0hpqu9IW58O2f6EpTG9sEozeubrFejl
+	75nsFk/btjXv1ZReCV6XTcI2f4qj+9m/rB9QRp8AqD8fvzTPF//pUGlMq03+Jfu2liRL4PKxWyX
+	2wMRy9u1glWQihg==
+X-Received: from qtpp5-n1.prod.google.com ([2002:a05:622a:9c5:10b0:50d:b6bd:a750])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:622a:1187:b0:50d:a142:7ce4 with SMTP id d75a77b69052e-50dd6c2b4fbmr49819151cf.31.1775845390367;
+ Fri, 10 Apr 2026 11:23:10 -0700 (PDT)
+Date: Fri, 10 Apr 2026 18:22:45 +0000
+In-Reply-To: <20260410182257.774311-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <2026040730-untagged-groin-bbb7@gregkh> <20260409190328.GS469338@kernel.org>
- <20260409203235.6b9329f0@kernel.org> <2026041026-excuse-slashing-c4ee@gregkh>
- <20260410102827.GT469338@kernel.org> <18e3df62-34f9-4de0-903b-19919d7ae2ca@eastlink.ca>
-In-Reply-To: <18e3df62-34f9-4de0-903b-19919d7ae2ca@eastlink.ca>
-From: Dan Cross <crossd@gmail.com>
-Date: Fri, 10 Apr 2026 14:23:38 -0400
-X-Gm-Features: AQROBzBxfq16lsxWS4FbNmSiSUcjbWC2_Z2j86CJK6UrfqmFioX4ACM672Jt4CI
-Message-ID: <CAEoi9W5HOmH3AdCEjQqDo8f7=525k9HbvByiFhiWSmG1LmsAzg@mail.gmail.com>
-Subject: Re: [PATCH net] netrom: do some basic forms of validation on incoming frames
-To: jj <ve1jot@eastlink.ca>
-Cc: Simon Horman <horms@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, linux-hams@vger.kernel.org, 
-	Yizhe Zhuang <yizhe@darknavy.com>, stable <stable@kernel.org>
+Mime-Version: 1.0
+References: <20260410182257.774311-1-edumazet@google.com>
+X-Mailer: git-send-email 2.53.0.1213.gd9a14994de-goog
+Message-ID: <20260410182257.774311-4-edumazet@google.com>
+Subject: [PATCH v3 net-next 03/15] net/sched: add READ_ONCE() in gnet_stats_add_queue[_cpu]
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, 
+	netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 10, 2026 at 11:49=E2=80=AFAM jj <ve1jot@eastlink.ca> wrote:
-> This is NOT an obsolete protocol..this is in use by amateur radio
-> operators world-wide...we use it for RF comms usually, because what
-> happens if the internet goes "down", we can still provide comms over
-> slower RF links....(plus it's a fun mode)please PLEASE do not drop...and
-> sorry for the noise...
+Stats are read locklessly, add READ_ONCE() to prevent load-stearing.
 
-There are at least three separable issues being conflated here.
+Write side will be handled in separate patches.
 
-One is whether amateur radio operators are using AX.25, NET/ROM, and
-ROSE.  They are; that's indisputable.
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+ net/core/gen_stats.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-Another is whether those operators are using the implementation in the
-Linux kernel.  Some are (myself included), though many fewer than are
-using the protocols generally.
+diff --git a/net/core/gen_stats.c b/net/core/gen_stats.c
+index b71ccaec0991461333dbe465ee619bca4a06e75b..1a2380e74272de8eaf3d4ef453e56105a31e9edf 100644
+--- a/net/core/gen_stats.c
++++ b/net/core/gen_stats.c
+@@ -345,11 +345,11 @@ static void gnet_stats_add_queue_cpu(struct gnet_stats_queue *qstats,
+ 	for_each_possible_cpu(i) {
+ 		const struct gnet_stats_queue *qcpu = per_cpu_ptr(q, i);
+ 
+-		qstats->qlen += qcpu->qlen;
+-		qstats->backlog += qcpu->backlog;
+-		qstats->drops += qcpu->drops;
+-		qstats->requeues += qcpu->requeues;
+-		qstats->overlimits += qcpu->overlimits;
++		qstats->qlen += READ_ONCE(qcpu->qlen);
++		qstats->backlog += READ_ONCE(qcpu->backlog);
++		qstats->drops += READ_ONCE(qcpu->drops);
++		qstats->requeues += READ_ONCE(qcpu->requeues);
++		qstats->overlimits += READ_ONCE(qcpu->overlimits);
+ 	}
+ }
+ 
+@@ -360,11 +360,11 @@ void gnet_stats_add_queue(struct gnet_stats_queue *qstats,
+ 	if (cpu) {
+ 		gnet_stats_add_queue_cpu(qstats, cpu);
+ 	} else {
+-		qstats->qlen += q->qlen;
+-		qstats->backlog += q->backlog;
+-		qstats->drops += q->drops;
+-		qstats->requeues += q->requeues;
+-		qstats->overlimits += q->overlimits;
++		qstats->qlen += READ_ONCE(q->qlen);
++		qstats->backlog += READ_ONCE(q->backlog);
++		qstats->drops += READ_ONCE(q->drops);
++		qstats->requeues += READ_ONCE(q->requeues);
++		qstats->overlimits += READ_ONCE(q->overlimits);
+ 	}
+ }
+ EXPORT_SYMBOL(gnet_stats_add_queue);
+-- 
+2.53.0.1213.gd9a14994de-goog
 
-The third is whether preserving the implementation of these in the
-kernel is the best mechanism for using those protocols on Linux-based
-systems.  For that, I would argue that no, it is not.
-
-Taking just AX.25, the current implementation has known deficiencies:
-it is buggy, implements an older version of the protocol, and at best
-receives nominal maintenance: notably, the newer networking tools
-(`ip`, `ss`, etc) meant as replacements for `netstat`, `route`, and
-`ifconfig` have not been updated to incorporate information about the
-amateur radio protocols, and recent changes have left them broken for
-long stretches of time.  More details are available online, such as at
-https://blog.habets.se/2021/11/AX25-user-space.html
-
-There is very little to recommend the kernel implementations, and any
-unique functionality they once provided, such as IP over AX.25, can be
-done via other means in userspace; e.g., one can use TAP/TUN for IP
-over AX.25.
-
-Therefore, it would be better to remove these from the kernel, and
-implement them in userspace instead, or use an existing userspace
-implementation (e.g., LinBPQ or similar).  Backwards compatibility
-with existing Linux applications that expect to use the sockets API
-with amateur radio could `LD_PRELOAD` a shim compatibility library
-that simulates the current programming interface.  There is simply no
-reason to preserve these in the kernel, and bluntly, the
-implementation is pure drag at this point.
-
-Note that this doesn't preclude anyone from using AX.25 et al on
-Linux, or force dependency on the Internet: it just moves the
-implementation of those protocols out of the kernel and into a normal
-userspace program, which is arguably easier to maintain and iterate on
-for the ham community, anyway.
-
-        - Dan C.
-          (KZ2X)
-
-> On 2026-04-10 07:28, Simon Horman wrote:
-> > On Fri, Apr 10, 2026 at 07:24:36AM +0200, Greg Kroah-Hartman wrote:
-> >> On Thu, Apr 09, 2026 at 08:32:35PM -0700, Jakub Kicinski wrote:
-> >>> On Thu, 9 Apr 2026 20:03:28 +0100 Simon Horman wrote:
-> >>>> I expect that checking skb->len isn't sufficient here
-> >>>> and pskb_may_pull needs to be used to ensure that
-> >>>> the data is also available in the linear section of the skb.
-> >>> Or for simplicity we could also be testing against skb_headlen()
-> >>> since we don't expect any legit non-linear frames here? Dunno.
-> > Sure, that's find by me if it leads to simpler code than
-> > using pskb_may_pull(). Else I'd lean towards pskb_may_pull()
-> > as it is a more general approach that feels worth proliferating.
-> >
-> >> I'll be glad to change this either way, your call.  Given that this is
-> >> an obsolete protocol that seems to only be a target for drive-by fuzze=
-rs
-> >> to attack, whatever the simplest thing to do to quiet them up I'll be
-> >> glad to implement.
-> >>
-> >> Or can we just delete this stuff entirely?  :)
-> > Deleting sounds good to me.
-> > But we likely need a deprecation process.
-> > In which case fixing these bugs still makes sense for the short term.
-> >
->
