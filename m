@@ -1,52 +1,52 @@
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B163BA233;
-	Fri, 10 Apr 2026 11:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B4F3BD64E;
+	Fri, 10 Apr 2026 11:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775821767; cv=none; b=HLnmGFSsjG3uUAZBV4QBmGKvtH9B3pgrFtfVDRZYpVkhc1+M0fBYAWgyYcsFnxPMKOvlfN3vnEFIFW0N2mPrLsvwF0oTSPBRryDMcTTM9tey8g4v75lFXm6DJWoUiS0PBpHkssKJB8bKYan/i2NAAFYqpDFywpY7cfzNhVSDjI0=
+	t=1775821769; cv=none; b=ZOdzendNKljGCq+TmHyRukfDJeiFEoHfLQZKzJFrib6+p0x+KwaRxSyg6h3oiorNzDIV62Zu8L5I2OjsViXkD9UDVeoonY8qu0xUxpT9oXvNkPyhtOy4hHHU3U6ofBRszVT7YiXTHo9Eq5f6DVT0K1hm+dj5UsGgL3CHlE88esc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775821767; c=relaxed/simple;
-	bh=29SWqrmkDVKmLXORBuPdxl0lpzOzIUudQnsyRclMPqo=;
+	s=arc-20240116; t=1775821769; c=relaxed/simple;
+	bh=WhVphgIaCH3V+qpqMJ3gMJDsP4a1jnk8IHhtrZJ/aGM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=ke0MyRIpOr9HXENyRzHrS5/XyBgWnWzoF6rZn2oN0yv7LdpbT1AXBkVJrqgF6lcBtUSavQsZOYUh5USygzuIHzQjZEIOxIlMfJBCFkyA3OeqAxtHoItJCA0sxPrR2ykWW0aoV9rsZbnNLWwJbyYEoZcxR6SvASfo4Qcmt/80kuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=osAXJt0p; arc=none smtp.client-ip=68.232.153.233
+	 In-Reply-To:To:CC; b=OE7b7PipUezK8gRZ2Zt8XEn978QEpDHPrC4X5Wo49sk82ebwj8Z0h0t/U1lE59RRw7UGk8FBiRPadPSpgm5fA1jGXUTQF1nS+ncSww+9s3/Cm35vUt6heKA/65W81r5Pc4cepUoFXQ+a+knj+ARaah6TK2R5z3IaF6vzBrQe/e4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=qWPg8zSt; arc=none smtp.client-ip=68.232.153.233
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="osAXJt0p"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="qWPg8zSt"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1775821765; x=1807357765;
+  t=1775821767; x=1807357767;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=29SWqrmkDVKmLXORBuPdxl0lpzOzIUudQnsyRclMPqo=;
-  b=osAXJt0pnAU4JGd/NgOXHYI0ZC94DMTnnRbTlVD0VGCvj0NaXZ8LfWZS
-   ueFgn02sfGlRGONmMMZmGnjR/uYG40To/S+bR2mcg5MuBMUcfpnzx8AuV
-   aVRpGNyqG1g8iMYIFMfQOh3OnsION19cnbc2kVf9U/WgGFt7I2jSSg9Mt
-   81VpRmgZZsGeRb8rKnDdLfgPzQtrzez7eZukSIuYdlgBcGLj8cgMyzNqM
-   P900MFGwPsUiyeYtnEFwanghZy5UrhbvYffUlLPslvlxVv6yEgK3XCTSP
-   veLyJoUYyiPBTedLsdsyJ7kcqM5KVydN2iwcfUdK84waht82t8Iz0QUam
-   Q==;
+  bh=WhVphgIaCH3V+qpqMJ3gMJDsP4a1jnk8IHhtrZJ/aGM=;
+  b=qWPg8zStuC3EEfou9bMaCOpgo0iIj2NWg3q1aBY8q0k7qRwdkNdId4Bv
+   M39SVJtL3pH0p0Au+sK8WiRoLhKN3aNx6R7juOyeWtOQ3N1CpKkYoVkh+
+   P5u0WsSZbYH4NaFQlyr+S/StLnHHgmD2tO9frCbulVwjssMn4k/5GJuo1
+   0ND50x/jlVSt9Z8AIOuFQiBDv8YiBIGQvr+EpbnUbpkglUkNhvGwWOOk3
+   5MP23uCiAoTB3BmlN9ziaoHP2M1GS6grfCGypULNnayi/xSL70cMsR3cu
+   xwYs1/gGX6D8OZKrToidl214Ua9L+Oh7+KO64ftHSfOi9KmTztrdj0Bp2
+   w==;
 X-CSE-ConnectionGUID: BHpI0wJ4S4yyXknv5qJUmg==
-X-CSE-MsgGUID: h9JC4UjtRDaF7TyAYpLWPw==
+X-CSE-MsgGUID: RXZAta2jSfWNEAf06AwAlg==
 X-IronPort-AV: E=Sophos;i="6.23,171,1770620400"; 
-   d="scan'208";a="287293946"
+   d="scan'208";a="287293947"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 10 Apr 2026 04:49:24 -0700
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 10 Apr 2026 04:49:25 -0700
 Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
  chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Fri, 10 Apr 2026 04:49:04 -0700
+ 15.1.2507.58; Fri, 10 Apr 2026 04:49:15 -0700
 Received: from [127.0.0.1] (10.10.85.11) by chn-vm-ex04.mchp-main.com
  (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Fri, 10 Apr 2026 04:49:01 -0700
+ Transport; Fri, 10 Apr 2026 04:49:11 -0700
 From: =?utf-8?q?Jens_Emil_Schulz_=C3=98stergaard?=
 	<jensemil.schulzostergaard@microchip.com>
-Date: Fri, 10 Apr 2026 13:48:41 +0200
-Subject: [PATCH net-next v3 5/9] net: dsa: lan9645x: add bridge support
+Date: Fri, 10 Apr 2026 13:48:44 +0200
+Subject: [PATCH net-next v3 8/9] net: dsa: lan9645x: add mdb management
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-ID: <20260410-dsa_lan9645x_switch_driver_base-v3-5-aadc8595306d@microchip.com>
+Message-ID: <20260410-dsa_lan9645x_switch_driver_base-v3-8-aadc8595306d@microchip.com>
 References: <20260410-dsa_lan9645x_switch_driver_base-v3-0-aadc8595306d@microchip.com>
 In-Reply-To: <20260410-dsa_lan9645x_switch_driver_base-v3-0-aadc8595306d@microchip.com>
 To: <UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew@lunn.ch>, "Vladimir
@@ -71,420 +71,678 @@ CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
 	<jensemil.schulzostergaard@microchip.com>
 X-Mailer: b4 0.15-dev
 
-Add support for hardware offloading of the bridge. We support a single
-bridge device.
+Add support for dsa mdb callbacks. L2 multicast and IP multicast is
+handled differently. IP multicast stores the port group mask inline in
+the mac table. L2 multicast points to a PGID index, which encodes the
+port group mask.
 
 Reviewed-by: Steen Hegelund <Steen.Hegelund@microchip.com>
 Signed-off-by: Jens Emil Schulz Østergaard <jensemil.schulzostergaard@microchip.com>
 ---
 Changes in v3:
-- allow disabling aging with explicit zero parameters.
-- fix non-forwarding stp states
-- fix restore host_flood requests on bridge leave
+- avoid mdb add/del dealloc when mac table writes fail
+- dealloc mdb entries on deinit
 
 Changes in v2:
-- variable name consistency
-- port_set_learning use stp_state before writing to hw
-- add set_host_flood for selftests, which need promic/all_multi on
-standalone interfaces
+- New file: selftests required implementation of the mdb callbacks.
 ---
- drivers/net/dsa/microchip/lan9645x/lan9645x_main.c | 296 +++++++++++++++++++++
- drivers/net/dsa/microchip/lan9645x/lan9645x_main.h |  18 ++
- 2 files changed, 314 insertions(+)
+ drivers/net/dsa/microchip/lan9645x/Makefile        |   1 +
+ drivers/net/dsa/microchip/lan9645x/lan9645x_mac.c  |  14 +
+ drivers/net/dsa/microchip/lan9645x/lan9645x_main.c |  61 ++++
+ drivers/net/dsa/microchip/lan9645x/lan9645x_main.h |  21 ++
+ drivers/net/dsa/microchip/lan9645x/lan9645x_mdb.c  | 383 +++++++++++++++++++++
+ drivers/net/dsa/microchip/lan9645x/lan9645x_port.c |   8 +
+ include/linux/dsa/lan9645x.h                       |  11 +
+ net/dsa/tag_lan9645x.c                             |  19 +-
+ 8 files changed, 516 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/net/dsa/microchip/lan9645x/Makefile b/drivers/net/dsa/microchip/lan9645x/Makefile
+index 70815edca5b9..2413d11fe849 100644
+--- a/drivers/net/dsa/microchip/lan9645x/Makefile
++++ b/drivers/net/dsa/microchip/lan9645x/Makefile
+@@ -4,6 +4,7 @@ obj-$(CONFIG_NET_DSA_MICROCHIP_LAN9645X) += mchp-lan9645x.o
+ mchp-lan9645x-objs := \
+ 	lan9645x_mac.o \
+ 	lan9645x_main.o \
++	lan9645x_mdb.o \
+ 	lan9645x_npi.o \
+ 	lan9645x_phylink.o \
+ 	lan9645x_port.o \
+diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_mac.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_mac.c
+index f516979225ae..0bd97cc8e42c 100644
+--- a/drivers/net/dsa/microchip/lan9645x/lan9645x_mac.c
++++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_mac.c
+@@ -215,6 +215,20 @@ int lan9645x_mact_learn(struct lan9645x *lan9645x, int port,
+ 	return err;
+ }
+ 
++int lan9645x_mact_learn_cpu_copy(struct lan9645x *lan9645x, int port,
++				 const unsigned char *addr, u16 vid,
++				 enum macaccess_entry_type type, bool cpu_copy)
++{
++	int err;
++
++	mutex_lock(&lan9645x->mact_lock);
++	err = __lan9645x_mact_learn_cpu_copy(lan9645x, port, addr, vid, type,
++					     cpu_copy);
++	mutex_unlock(&lan9645x->mact_lock);
++
++	return err;
++}
++
+ int lan9645x_mact_flush(struct lan9645x *lan9645x, int port)
+ {
+ 	int err;
 diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
-index 3e68542ba81d..e709396c2298 100644
+index 764f4d6c0571..8f63729ff55d 100644
 --- a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
 +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
-@@ -28,6 +28,14 @@ static const char *lan9645x_resource_names[NUM_TARGETS + 1] = {
- 	[NUM_TARGETS]         = NULL,
- };
- 
-+struct lan9645x_host_flood_work {
-+	struct work_struct work;
-+	struct lan9645x *lan9645x;
-+	int port;
-+	bool uc;
-+	bool mc;
-+};
-+
- static int lan9645x_tag_npi_setup(struct dsa_switch *ds)
- {
- 	struct dsa_port *dp, *first_cpu_dp = NULL;
-@@ -61,7 +69,9 @@ static void lan9645x_teardown(struct dsa_switch *ds)
- {
- 	struct lan9645x *lan9645x = ds->priv;
- 
-+	destroy_workqueue(lan9645x->owq);
+@@ -72,6 +72,7 @@ static void lan9645x_teardown(struct dsa_switch *ds)
+ 	destroy_workqueue(lan9645x->owq);
  	lan9645x_npi_port_deinit(lan9645x, lan9645x->npi);
-+	mutex_destroy(&lan9645x->fwd_domain_lock);
+ 	lan9645x_mac_deinit(lan9645x);
++	lan9645x_mdb_deinit(lan9645x);
+ 	mutex_destroy(&lan9645x->fwd_domain_lock);
  }
  
- static int lan9645x_change_mtu(struct dsa_switch *ds, int port, int new_mtu)
-@@ -145,6 +155,8 @@ static int lan9645x_setup(struct dsa_switch *ds)
+@@ -161,6 +162,7 @@ static int lan9645x_setup(struct dsa_switch *ds)
+ 	if (err)
  		return err;
- 	}
+ 	lan9645x_mac_init(lan9645x);
++	lan9645x_mdb_init(lan9645x);
  
-+	mutex_init(&lan9645x->fwd_domain_lock);
-+
  	/* Link Aggregation Mode: NETDEV_LAG_HASH_L2 */
  	lan_wr(ANA_AGGR_CFG_AC_SMAC_ENA |
- 	       ANA_AGGR_CFG_AC_DMAC_ENA,
-@@ -242,6 +254,11 @@ static int lan9645x_setup(struct dsa_switch *ds)
- 
- 	lan9645x_port_set_tail_drop_wm(lan9645x);
- 
-+	lan9645x->owq = alloc_ordered_workqueue("%s-owq", 0,
-+						dev_name(lan9645x->dev));
-+	if (!lan9645x->owq)
-+		return -ENOMEM;
-+
- 	ds->mtu_enforcement_ingress = true;
- 	ds->assisted_learning_on_cpu_port = true;
- 	ds->fdb_isolation = true;
-@@ -260,6 +277,276 @@ static void lan9645x_port_phylink_get_caps(struct dsa_switch *ds, int port,
- 	lan9645x_phylink_get_caps(ds->priv, port, config);
+@@ -680,6 +682,61 @@ static int lan9645x_fdb_del(struct dsa_switch *ds, int port,
+ 	return err;
  }
  
-+static int lan9645x_set_ageing_time(struct dsa_switch *ds, unsigned int msecs)
++static int lan9645x_mdb_add(struct dsa_switch *ds, int port,
++			    const struct switchdev_obj_port_mdb *mdb,
++			    struct dsa_db db)
 +{
-+	u32 age_secs = max(1, msecs / MSEC_PER_SEC / 2);
++	struct net_device *bridge_dev = lan9645x_db2bridge(db);
 +	struct lan9645x *lan9645x = ds->priv;
 +
-+	/* Entry is must suffer two aging scans before it is removed, so it is
-+	 * aged after 2*AGE_PERIOD, and the unit is in seconds.
-+	 * An age period of 0 disables automatic aging.
-+	 */
-+	lan_rmw(ANA_AUTOAGE_AGE_PERIOD_SET(msecs ? age_secs : 0),
-+		ANA_AUTOAGE_AGE_PERIOD,
-+		lan9645x, ANA_AUTOAGE);
-+	return 0;
++	dev_dbg(lan9645x->dev, "port=%d addr=%pM vid=%u\n", port, mdb->addr,
++		mdb->vid);
++
++	if (IS_ERR(bridge_dev))
++		return PTR_ERR(bridge_dev);
++
++	if (dsa_is_cpu_port(ds, port) && !bridge_dev &&
++	    dsa_mdb_present_in_other_db(ds, port, mdb, db))
++		return 0;
++
++	if (port == lan9645x->npi)
++		port = CPU_PORT;
++
++	return lan9645x_mdb_port_add(lan9645x, port, mdb, bridge_dev);
 +}
 +
-+static int lan9645x_port_pre_bridge_flags(struct dsa_switch *ds, int port,
-+					  struct switchdev_brport_flags flags,
-+					  struct netlink_ext_ack *extack)
++static int lan9645x_mdb_del(struct dsa_switch *ds, int port,
++			    const struct switchdev_obj_port_mdb *mdb,
++			    struct dsa_db db)
 +{
-+	if (flags.mask &
-+	    ~(BR_LEARNING | BR_FLOOD | BR_MCAST_FLOOD | BR_BCAST_FLOOD))
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
-+static void lan9645x_port_pgid_set(struct lan9645x *lan9645x, u16 pgid,
-+				   int chip_port, bool enabled)
-+{
-+	u32 reg_msk, port_msk;
-+
-+	WARN_ON(chip_port > CPU_PORT);
-+
-+	port_msk = ANA_PGID_PGID_SET(enabled ? BIT(chip_port) : 0);
-+	reg_msk = ANA_PGID_PGID_SET(BIT(chip_port));
-+
-+	lan_rmw(port_msk, reg_msk, lan9645x, ANA_PGID(pgid));
-+}
-+
-+static void lan9645x_port_set_learning(struct lan9645x *lan9645x, int port,
-+				       bool enabled)
-+{
-+	struct lan9645x_port *p = lan9645x_to_port(lan9645x, port);
-+
-+	p->learn_ena = enabled;
-+
-+	enabled = enabled && (p->stp_state == BR_STATE_LEARNING ||
-+			      p->stp_state == BR_STATE_FORWARDING);
-+
-+	lan_rmw(ANA_PORT_CFG_LEARN_ENA_SET(enabled), ANA_PORT_CFG_LEARN_ENA,
-+		lan9645x, ANA_PORT_CFG(port));
-+}
-+
-+static int lan9645x_port_bridge_flags(struct dsa_switch *ds, int port,
-+				      struct switchdev_brport_flags f,
-+				      struct netlink_ext_ack *extack)
-+{
++	struct net_device *bridge_dev = lan9645x_db2bridge(db);
 +	struct lan9645x *lan9645x = ds->priv;
++	int err;
 +
-+	if (WARN_ON(port == lan9645x->npi))
-+		return -EINVAL;
++	dev_dbg(lan9645x->dev, "port=%d addr=%pM vid=%u\n", port, mdb->addr,
++		mdb->vid);
 +
-+	if (f.mask & BR_LEARNING)
-+		lan9645x_port_set_learning(lan9645x, port,
-+					   !!(f.val & BR_LEARNING));
++	if (IS_ERR(bridge_dev))
++		return PTR_ERR(bridge_dev);
 +
-+	if (f.mask & BR_FLOOD)
-+		lan9645x_port_pgid_set(lan9645x, PGID_UC, port,
-+				       !!(f.val & BR_FLOOD));
++	if (dsa_is_cpu_port(ds, port) && !bridge_dev &&
++	    dsa_mdb_present_in_other_db(ds, port, mdb, db))
++		return 0;
 +
-+	if (f.mask & BR_MCAST_FLOOD) {
-+		bool ena = !!(f.val & BR_MCAST_FLOOD);
++	if (port == lan9645x->npi)
++		port = CPU_PORT;
 +
-+		lan9645x_port_pgid_set(lan9645x, PGID_MC, port, ena);
-+		lan9645x_port_pgid_set(lan9645x, PGID_MCIPV4, port, ena);
-+		lan9645x_port_pgid_set(lan9645x, PGID_MCIPV6, port, ena);
++	err = lan9645x_mdb_port_del(lan9645x, port, mdb, bridge_dev);
++	if (err == -ENOENT) {
++		dev_dbg(lan9645x->dev,
++			"mdb not found port=%d addr=%pM vid=%u\n", port,
++			mdb->addr, mdb->vid);
++		return 0;
 +	}
 +
-+	if (f.mask & BR_BCAST_FLOOD)
-+		lan9645x_port_pgid_set(lan9645x, PGID_BC, port,
-+				       !!(f.val & BR_BCAST_FLOOD));
-+
-+	return 0;
-+}
-+
-+static void lan9645x_update_fwd_mask(struct lan9645x *lan9645x)
-+{
-+	struct lan9645x_port *p;
-+	struct dsa_port *dp;
-+
-+	lockdep_assert_held(&lan9645x->fwd_domain_lock);
-+
-+	/* Updates the source port PGIDs, making sure frames from p
-+	 * are only forwarded to ports q != p, where q is relevant to forward
-+	 */
-+	dsa_switch_for_each_available_port(dp, lan9645x->ds) {
-+		u32 mask = 0;
-+
-+		p = lan9645x_to_port(lan9645x, dp->index);
-+
-+		if (lan9645x_port_is_bridged(p) &&
-+		    (lan9645x->bridge_fwd_mask & BIT(dp->index))) {
-+			mask = lan9645x->bridge_mask &
-+			       lan9645x->bridge_fwd_mask & ~BIT(dp->index);
-+		}
-+
-+		lan_wr(mask, lan9645x, ANA_PGID(PGID_SRC + dp->index));
-+	}
-+}
-+
-+static void __lan9645x_port_mark_host_flood(struct lan9645x *lan9645x, int port,
-+					    bool uc, bool mc)
-+{
-+	lockdep_assert_held(&lan9645x->fwd_domain_lock);
-+
-+	if (uc)
-+		lan9645x->host_flood_uc_mask |= BIT(port);
-+	else
-+		lan9645x->host_flood_uc_mask &= ~BIT(port);
-+
-+	if (mc)
-+		lan9645x->host_flood_mc_mask |= BIT(port);
-+	else
-+		lan9645x->host_flood_mc_mask &= ~BIT(port);
-+}
-+
-+static void __lan9645x_port_set_host_flood(struct lan9645x *lan9645x, int port)
-+{
-+	bool mc_ena, uc_ena;
-+	u16 unbridged;
-+
-+	lockdep_assert_held(&lan9645x->fwd_domain_lock);
-+
-+	/* We want promiscuous and all_multi to affect standalone ports, for
-+	 * debug and test purposes.
-+	 *
-+	 * However, the linux bridge is incredibly eager to put bridged ports in
-+	 * promiscuous mode.
-+
-+	 * This is unfortunate since lan9645x flood masks are global and not per
-+	 * ingress port. When some port triggers unknown uc/mc to the CPU, the
-+	 * traffic from any port is forwarded to the CPU.
-+	 *
-+	 * If the host CPU is weak, this can cause tremendous stress. Therefore,
-+	 * we compromise by ignoring this host flood request for bridged ports.
-+	 */
-+	unbridged = ~lan9645x->bridge_mask & GENMASK(NUM_PHYS_PORTS - 1, 0);
-+
-+	uc_ena = !!(lan9645x->host_flood_uc_mask & unbridged);
-+	lan9645x_port_pgid_set(lan9645x, PGID_UC, CPU_PORT, uc_ena);
-+
-+	mc_ena = !!(lan9645x->host_flood_mc_mask & unbridged);
-+	lan9645x_port_pgid_set(lan9645x, PGID_MC, CPU_PORT, mc_ena);
-+	lan9645x_port_pgid_set(lan9645x, PGID_MCIPV4, CPU_PORT, mc_ena);
-+	lan9645x_port_pgid_set(lan9645x, PGID_MCIPV6, CPU_PORT, mc_ena);
-+}
-+
-+static void lan9645x_host_flood_work_fn(struct work_struct *work)
-+{
-+	struct lan9645x_host_flood_work *w =
-+		container_of(work, struct lan9645x_host_flood_work, work);
-+
-+	mutex_lock(&w->lan9645x->fwd_domain_lock);
-+	__lan9645x_port_mark_host_flood(w->lan9645x, w->port, w->uc, w->mc);
-+	__lan9645x_port_set_host_flood(w->lan9645x, w->port);
-+	mutex_unlock(&w->lan9645x->fwd_domain_lock);
-+	kfree(w);
-+}
-+
-+/* Called in atomic context */
-+static void lan9645x_port_set_host_flood(struct dsa_switch *ds, int port,
-+					 bool uc, bool mc)
-+{
-+	struct lan9645x *lan9645x = ds->priv;
-+	struct lan9645x_host_flood_work *w;
-+
-+	w = kzalloc_obj(*w, GFP_ATOMIC);
-+	if (!w)
-+		return;
-+
-+	INIT_WORK(&w->work, lan9645x_host_flood_work_fn);
-+	w->lan9645x = lan9645x;
-+	w->port = port;
-+	w->uc = uc;
-+	w->mc = mc;
-+	queue_work(lan9645x->owq, &w->work);
-+}
-+
-+static int lan9645x_port_bridge_join(struct dsa_switch *ds, int port,
-+				     struct dsa_bridge bridge,
-+				     bool *tx_fwd_offload,
-+				     struct netlink_ext_ack *extack)
-+{
-+	struct lan9645x *lan9645x = ds->priv;
-+	struct lan9645x_port *p;
-+
-+	p = lan9645x_to_port(lan9645x, port);
-+
-+	if (lan9645x->bridge && lan9645x->bridge != bridge.dev) {
-+		NL_SET_ERR_MSG_MOD(extack, "Only one bridge supported");
-+		return -EBUSY;
-+	}
-+
-+	mutex_lock(&lan9645x->fwd_domain_lock);
-+	/* First bridged port sets bridge dev */
-+	if (!lan9645x->bridge_mask)
-+		lan9645x->bridge = bridge.dev;
-+
-+	lan9645x->bridge_mask |= BIT(p->chip_port);
-+	__lan9645x_port_set_host_flood(lan9645x, port);
-+
-+	mutex_unlock(&lan9645x->fwd_domain_lock);
-+
-+	/* Later: stp_state_set updates forwarding */
-+
-+	return 0;
-+}
-+
-+static void lan9645x_port_bridge_stp_state_set(struct dsa_switch *ds, int port,
-+					       u8 state)
-+{
-+	struct lan9645x *lan9645x;
-+	struct lan9645x_port *p;
-+	bool learn_ena;
-+
-+	lan9645x = ds->priv;
-+	p = lan9645x_to_port(lan9645x, port);
-+
-+	mutex_lock(&lan9645x->fwd_domain_lock);
-+
-+	p->stp_state = state;
-+
-+	if (state == BR_STATE_FORWARDING)
-+		lan9645x->bridge_fwd_mask |= BIT(p->chip_port);
-+	else
-+		lan9645x->bridge_fwd_mask &= ~BIT(p->chip_port);
-+
-+	learn_ena = (state == BR_STATE_LEARNING ||
-+		     state == BR_STATE_FORWARDING) && p->learn_ena;
-+
-+	lan_rmw(ANA_PORT_CFG_LEARN_ENA_SET(learn_ena),
-+		ANA_PORT_CFG_LEARN_ENA, lan9645x,
-+		ANA_PORT_CFG(p->chip_port));
-+
-+	lan9645x_update_fwd_mask(lan9645x);
-+	mutex_unlock(&lan9645x->fwd_domain_lock);
-+}
-+
-+static void lan9645x_port_bridge_leave(struct dsa_switch *ds, int port,
-+				       struct dsa_bridge bridge)
-+{
-+	struct lan9645x *lan9645x = ds->priv;
-+	struct lan9645x_port *p;
-+
-+	p = lan9645x_to_port(lan9645x, port);
-+
-+	mutex_lock(&lan9645x->fwd_domain_lock);
-+
-+	lan9645x->bridge_mask &= ~BIT(p->chip_port);
-+
-+	/* Last port leaving clears bridge dev */
-+	if (!lan9645x->bridge_mask)
-+		lan9645x->bridge = NULL;
-+
-+	__lan9645x_port_set_host_flood(lan9645x, port);
-+	lan9645x_update_fwd_mask(lan9645x);
-+
-+	mutex_unlock(&lan9645x->fwd_domain_lock);
++	return err;
 +}
 +
  static const struct dsa_switch_ops lan9645x_switch_ops = {
  	.get_tag_protocol		= lan9645x_get_tag_protocol,
  
-@@ -273,6 +560,15 @@ static const struct dsa_switch_ops lan9645x_switch_ops = {
- 	/* MTU  */
- 	.port_change_mtu		= lan9645x_change_mtu,
- 	.port_max_mtu			= lan9645x_get_max_mtu,
+@@ -713,6 +770,10 @@ static const struct dsa_switch_ops lan9645x_switch_ops = {
+ 	.port_fdb_dump			= lan9645x_fdb_dump,
+ 	.port_fdb_add			= lan9645x_fdb_add,
+ 	.port_fdb_del			= lan9645x_fdb_del,
 +
-+	/* Bridge integration */
-+	.set_ageing_time		= lan9645x_set_ageing_time,
-+	.port_pre_bridge_flags		= lan9645x_port_pre_bridge_flags,
-+	.port_bridge_flags		= lan9645x_port_bridge_flags,
-+	.port_bridge_join		= lan9645x_port_bridge_join,
-+	.port_bridge_leave		= lan9645x_port_bridge_leave,
-+	.port_stp_state_set		= lan9645x_port_bridge_stp_state_set,
-+	.port_set_host_flood		= lan9645x_port_set_host_flood,
++	/* Multicast database */
++	.port_mdb_add			= lan9645x_mdb_add,
++	.port_mdb_del			= lan9645x_mdb_del,
  };
  
  static int lan9645x_request_target_regmaps(struct lan9645x *lan9645x)
 diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.h b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.h
-index d8bdcb8a92ed..22576bb8dd52 100644
+index a5e64218d783..1c3c9899ed07 100644
 --- a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.h
 +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.h
-@@ -155,6 +155,11 @@ struct lan9645x {
- 	struct dsa_switch *ds;
- 	struct regmap *rmap[NUM_TARGETS];
+@@ -218,6 +218,14 @@ struct lan9645x {
+ 	/* VLAN entries */
+ 	struct lan9645x_vlan vlans[VLAN_N_VID];
  
-+	u16 host_flood_uc_mask;
-+	u16 host_flood_mc_mask;
-+
-+	struct workqueue_struct *owq;
-+
- 	int shared_queue_sz;
- 
- 	/* NPI chip_port */
-@@ -163,6 +168,12 @@ struct lan9645x {
- 	u8 num_phys_ports;
- 	struct lan9645x_port **ports;
- 
-+	/* Forwarding Database */
-+	struct net_device *bridge; /* Only support single bridge */
-+	u16 bridge_mask; /* Mask for bridged ports */
-+	u16 bridge_fwd_mask; /* Mask for forwarding bridged ports */
-+	struct mutex fwd_domain_lock; /* lock forwarding configuration */
++	/* Multicast Forwarding Database */
++	struct list_head mdb_entries;
++	struct list_head pgid_entries;
++	/* lock for mdb_entries and pgid_entries. Must be taken before mact_lock
++	 * if both are taken.
++	 */
++	struct mutex mdb_lock;
 +
  	int num_port_dis;
  	bool dd_dis;
  	bool tsn_dis;
-@@ -172,6 +183,8 @@ struct lan9645x_port {
- 	struct lan9645x *lan9645x;
+@@ -422,5 +430,18 @@ int lan9645x_mact_entry_del(struct lan9645x *lan9645x, int pgid,
+ 			    const unsigned char *mac, u16 vid);
+ int lan9645x_mact_entry_add(struct lan9645x *lan9645x, int pgid,
+ 			    const unsigned char *mac, u16 vid);
++int lan9645x_mact_learn_cpu_copy(struct lan9645x *lan9645x, int port,
++				 const unsigned char *addr, u16 vid,
++				 enum macaccess_entry_type type, bool cpu_copy);
++
++/* Multicast Database lan9645x_mdb.c */
++int lan9645x_mdb_port_add(struct lan9645x *lan9645x, int port,
++			  const struct switchdev_obj_port_mdb *mdb,
++			  struct net_device *bridge);
++int lan9645x_mdb_port_del(struct lan9645x *lan9645x, int port,
++			  const struct switchdev_obj_port_mdb *mdb,
++			  struct net_device *bridge);
++void lan9645x_mdb_init(struct lan9645x *lan9645x);
++void lan9645x_mdb_deinit(struct lan9645x *lan9645x);
  
- 	u8 chip_port;
-+	u8 stp_state;
-+	bool learn_ena;
- 
- 	bool rx_internal_delay;
- 	bool tx_internal_delay;
-@@ -224,6 +237,11 @@ static inline struct lan9645x_port *lan9645x_to_port(struct lan9645x *lan9645x,
- 	return lan9645x->ports[port];
- }
- 
-+static inline bool lan9645x_port_is_bridged(struct lan9645x_port *p)
+ #endif /* __LAN9645X_MAIN_H__ */
+diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_mdb.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_mdb.c
+new file mode 100644
+index 000000000000..24e02aa1fd6f
+--- /dev/null
++++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_mdb.c
+@@ -0,0 +1,383 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (C) 2026 Microchip Technology Inc.
++ */
++
++#include "lan9645x_main.h"
++
++/* HW ignores dest_idx for IPv4/IPv6 types, so we use this dummy index */
++#define IP_ENTRY_PGID		0
++#define PGID_INDEX(pgid)	((pgid) ? (pgid)->index : IP_ENTRY_PGID)
++
++struct lan9645x_pgid_entry {
++	struct list_head list;
++	int index;
++	refcount_t refcount;
++	u16 ports;
++};
++
++struct lan9645x_mdb_entry {
++	struct list_head list;
++	unsigned char mac[ETH_ALEN];
++	u16 vid;
++	u16 ports;
++	struct lan9645x_pgid_entry *pgid;
++};
++
++void lan9645x_mdb_init(struct lan9645x *lan9645x)
 +{
-+	return p && (p->lan9645x->bridge_mask & BIT(p->chip_port));
++	INIT_LIST_HEAD(&lan9645x->mdb_entries);
++	INIT_LIST_HEAD(&lan9645x->pgid_entries);
++	mutex_init(&lan9645x->mdb_lock);
++
++	/* Use CPU queues to communicate frame classification to the CPU */
++	lan_rmw(ANA_CPUQ_CFG_CPUQ_IGMP_SET(LAN9645X_CPUQ_IGMP) |
++		ANA_CPUQ_CFG_CPUQ_MLD_SET(LAN9645X_CPUQ_MLD) |
++		ANA_CPUQ_CFG_CPUQ_IPMC_CTRL_SET(LAN9645X_CPUQ_IPMC_CTRL),
++		ANA_CPUQ_CFG_CPUQ_IGMP |
++		ANA_CPUQ_CFG_CPUQ_MLD |
++		ANA_CPUQ_CFG_CPUQ_IPMC_CTRL,
++		lan9645x, ANA_CPUQ_CFG);
 +}
 +
- static inline struct regmap *lan_tgt2rmap(struct lan9645x *lan9645x,
- 					  enum lan9645x_target t, int tinst)
++static enum macaccess_entry_type lan9645x_mdb_classify(const unsigned char *mac)
++{
++	if (ether_addr_is_ipv4_mcast(mac))
++		return ENTRYTYPE_MACV4;
++	if (ether_addr_is_ipv6_mcast(mac))
++		return ENTRYTYPE_MACV6;
++	return ENTRYTYPE_LOCKED;
++}
++
++static struct lan9645x_mdb_entry *
++lan9645x_mdb_entry_lookup(struct lan9645x *lan9645x, const unsigned char *mac,
++			  u16 vid)
++{
++	struct lan9645x_mdb_entry *mdb;
++
++	list_for_each_entry(mdb, &lan9645x->mdb_entries, list) {
++		if (ether_addr_equal(mdb->mac, mac) && mdb->vid == vid)
++			return mdb;
++	}
++
++	return NULL;
++}
++
++static struct lan9645x_mdb_entry *
++lan9645x_mdb_entry_alloc(struct lan9645x *lan9645x,
++			 const unsigned char addr[ETH_ALEN], u16 vid)
++{
++	struct lan9645x_mdb_entry *mdb_entry;
++
++	mdb_entry = kzalloc_obj(*mdb_entry);
++	if (!mdb_entry)
++		return ERR_PTR(-ENOMEM);
++
++	ether_addr_copy(mdb_entry->mac, addr);
++	mdb_entry->vid = vid;
++
++	list_add_tail(&mdb_entry->list, &lan9645x->mdb_entries);
++
++	dev_dbg(lan9645x->dev, "vid=%u addr=%pM\n", mdb_entry->vid,
++		mdb_entry->mac);
++
++	return mdb_entry;
++}
++
++static void lan9645x_mdb_encode_mac(unsigned char *dst, unsigned char *mac,
++				    u16 ports, enum macaccess_entry_type type)
++{
++	ether_addr_copy(dst, mac);
++
++	/* The HW encodes the portmask in the high bits of the mac for ip
++	 * multicast entries, to save on the limited PGID resources.
++	 *
++	 * IPv4 Multicast DMAC: 0x01005Exxxxxx
++	 * IPv6 Multicast DMAC: 0x3333xxxxxxxx
++	 *
++	 * which gives us 24 or 16 bits to encode the portmask.
++	 */
++	if (type == ENTRYTYPE_MACV4) {
++		dst[0] = 0;
++		dst[1] = ports >> 8;
++		dst[2] = ports & 0xff;
++	} else if (type == ENTRYTYPE_MACV6) {
++		dst[0] = ports >> 8;
++		dst[1] = ports & 0xff;
++	}
++}
++
++static void lan9645x_pgid_entry_put(struct lan9645x *lan9645x,
++				    struct lan9645x_pgid_entry *pgid_entry)
++{
++	if (!pgid_entry)
++		return;
++
++	if (!refcount_dec_and_test(&pgid_entry->refcount))
++		return;
++
++	dev_dbg(lan9645x->dev, "pgid=%d ports=0x%x", pgid_entry->index,
++		pgid_entry->ports);
++	/* We leave the PGID written in HW, as no entry is pointing to it. */
++	list_del(&pgid_entry->list);
++	kfree(pgid_entry);
++}
++
++static void lan9645x_mdb_entry_dealloc(struct lan9645x *lan9645x,
++				       struct lan9645x_mdb_entry *mdb_entry)
++{
++	dev_dbg(lan9645x->dev, "vid=%u addr=%pM\n", mdb_entry->vid,
++		mdb_entry->mac);
++	list_del(&mdb_entry->list);
++	lan9645x_pgid_entry_put(lan9645x, mdb_entry->pgid);
++	kfree(mdb_entry);
++}
++
++static struct lan9645x_pgid_entry *
++lan9645x_mdb_pgid_entry_lookup(struct lan9645x *lan9645x, u16 ports)
++{
++	struct lan9645x_pgid_entry *pgid_entry;
++
++	list_for_each_entry(pgid_entry, &lan9645x->pgid_entries, list) {
++		if (pgid_entry->ports == ports &&
++		    refcount_inc_not_zero(&pgid_entry->refcount))
++			return pgid_entry;
++	}
++
++	return NULL;
++}
++
++static struct lan9645x_pgid_entry *
++lan9645x_pgid_entry_alloc(struct lan9645x *lan9645x, int index, u16 ports)
++{
++	struct lan9645x_pgid_entry *pgid_entry;
++
++	pgid_entry = kzalloc_obj(*pgid_entry);
++	if (!pgid_entry)
++		return ERR_PTR(-ENOMEM);
++
++	pgid_entry->ports = ports;
++	pgid_entry->index = index;
++	refcount_set(&pgid_entry->refcount, 1);
++
++	list_add_tail(&pgid_entry->list, &lan9645x->pgid_entries);
++
++	dev_dbg(lan9645x->dev, "index=%d ports=0x%x", pgid_entry->index,
++		pgid_entry->ports);
++
++	lan_rmw(ANA_PGID_PGID_SET(pgid_entry->ports),
++		ANA_PGID_PGID, lan9645x,
++		ANA_PGID(pgid_entry->index));
++
++	return pgid_entry;
++}
++
++static struct lan9645x_pgid_entry *
++lan9645x_mdb_pgid_entry_create(struct lan9645x *lan9645x, u16 ports)
++{
++	struct lan9645x_pgid_entry *pgid_entry = NULL;
++	int index;
++
++	for (index = PGID_GP_START; index < PGID_GP_END; index++) {
++		bool used = false;
++
++		list_for_each_entry(pgid_entry, &lan9645x->pgid_entries, list) {
++			if (pgid_entry->index == index) {
++				used = true;
++				break;
++			}
++		}
++
++		if (!used)
++			return lan9645x_pgid_entry_alloc(lan9645x, index,
++							 ports);
++	}
++
++	return ERR_PTR(-ENOSPC);
++}
++
++static struct lan9645x_pgid_entry *
++lan9645x_mdb_pgid_entry_get(struct lan9645x *lan9645x, u16 ports,
++			    enum macaccess_entry_type type)
++{
++	struct lan9645x_pgid_entry *pgid_entry;
++	u16 pgid_ports;
++
++	if (type == ENTRYTYPE_MACV4 || type == ENTRYTYPE_MACV6 || !ports)
++		return NULL;
++
++	/* CPU_PORT forwarding is handled by cpu_copy flag on mac table entry.
++	 * So we can strip CPU_PORT here to allow better PGID sharing.
++	 */
++	pgid_ports = ports & ~BIT(CPU_PORT);
++
++	pgid_entry = lan9645x_mdb_pgid_entry_lookup(lan9645x, pgid_ports);
++	if (!pgid_entry)
++		return lan9645x_mdb_pgid_entry_create(lan9645x, pgid_ports);
++
++	return pgid_entry;
++}
++
++static int lan9645x_mdb_update_dest(struct lan9645x *lan9645x,
++				    struct lan9645x_mdb_entry *mdb_entry,
++				    enum macaccess_entry_type type,
++				    struct lan9645x_pgid_entry *new_pgid,
++				    u16 new_ports)
++{
++	struct lan9645x_pgid_entry *old_pgid;
++	unsigned char mac[ETH_ALEN];
++	int err, pgid_index;
++	bool cpu_copy;
++
++	old_pgid = mdb_entry->pgid;
++	lan9645x_mdb_encode_mac(mac, mdb_entry->mac, new_ports, type);
++	cpu_copy = !!(new_ports & BIT(CPU_PORT));
++	pgid_index = PGID_INDEX(new_pgid);
++
++	err = lan9645x_mact_learn_cpu_copy(lan9645x, pgid_index, mac,
++					   mdb_entry->vid, type, cpu_copy);
++	if (err) {
++		lan9645x_pgid_entry_put(lan9645x, new_pgid);
++		return err;
++	}
++	mdb_entry->pgid = new_pgid;
++	mdb_entry->ports = new_ports;
++	lan9645x_pgid_entry_put(lan9645x, old_pgid);
++	return 0;
++}
++
++static int __lan9645x_mdb_add(struct lan9645x *lan9645x, int chip_port,
++			      const unsigned char addr[ETH_ALEN], u16 vid,
++			      enum macaccess_entry_type type)
++{
++	struct lan9645x_pgid_entry *new_pgid;
++	struct lan9645x_mdb_entry *mdb_entry;
++	u16 new_ports;
++
++	mdb_entry = lan9645x_mdb_entry_lookup(lan9645x, addr, vid);
++	if (!mdb_entry) {
++		mdb_entry = lan9645x_mdb_entry_alloc(lan9645x, addr, vid);
++		if (IS_ERR(mdb_entry))
++			return PTR_ERR(mdb_entry);
++	}
++
++	if (mdb_entry->ports & BIT(chip_port))
++		return 0;
++
++	new_ports = mdb_entry->ports | BIT(chip_port);
++
++	/* Update PGID ptr for non-IP entries (L2 multicast) */
++	new_pgid = lan9645x_mdb_pgid_entry_get(lan9645x, new_ports, type);
++	if (IS_ERR(new_pgid)) {
++		/* Out of PGIDs or mem. Continue forwarding to old port
++		 * group, or remove if fresh mdb_entry.
++		 */
++		if (!mdb_entry->ports)
++			lan9645x_mdb_entry_dealloc(lan9645x, mdb_entry);
++
++		return PTR_ERR(new_pgid);
++	}
++
++	return lan9645x_mdb_update_dest(lan9645x, mdb_entry, type, new_pgid,
++					new_ports);
++}
++
++static int __lan9645x_mdb_del(struct lan9645x *lan9645x, int chip_port,
++			      const unsigned char addr[ETH_ALEN], u16 vid,
++			      enum macaccess_entry_type type)
++{
++	struct lan9645x_pgid_entry *new_pgid;
++	struct lan9645x_mdb_entry *mdb_entry;
++	u16 new_ports;
++	int err;
++
++	mdb_entry = lan9645x_mdb_entry_lookup(lan9645x, addr, vid);
++	if (!mdb_entry)
++		return -ENOENT;
++
++	if (!(mdb_entry->ports & BIT(chip_port)))
++		return 0;
++
++	new_ports = mdb_entry->ports & ~BIT(chip_port);
++
++	if (!new_ports) {
++		err = lan9645x_mact_forget(lan9645x, mdb_entry->mac,
++					   mdb_entry->vid, type);
++		if (err)
++			return err;
++		lan9645x_mdb_entry_dealloc(lan9645x, mdb_entry);
++		return 0;
++	}
++
++	/* Update PGID ptr for non-IP entries (L2 multicast) */
++	new_pgid = lan9645x_mdb_pgid_entry_get(lan9645x, new_ports, type);
++	if (IS_ERR(new_pgid))
++		/* Continue forwarding to old port group. */
++		return PTR_ERR(new_pgid);
++
++	return lan9645x_mdb_update_dest(lan9645x, mdb_entry, type, new_pgid,
++					new_ports);
++}
++
++static int lan9645x_mdb_add(struct lan9645x *lan9645x, int chip_port,
++			    const unsigned char addr[ETH_ALEN], u16 vid,
++			    enum macaccess_entry_type type)
++{
++	int err;
++
++	mutex_lock(&lan9645x->mdb_lock);
++	err = __lan9645x_mdb_add(lan9645x, chip_port, addr, vid, type);
++	mutex_unlock(&lan9645x->mdb_lock);
++	return err;
++}
++
++static int lan9645x_mdb_del(struct lan9645x *lan9645x, int chip_port,
++			    const unsigned char addr[ETH_ALEN], u16 vid,
++			    enum macaccess_entry_type type)
++{
++	int err;
++
++	mutex_lock(&lan9645x->mdb_lock);
++	err = __lan9645x_mdb_del(lan9645x, chip_port, addr, vid, type);
++	mutex_unlock(&lan9645x->mdb_lock);
++	return err;
++}
++
++int lan9645x_mdb_port_add(struct lan9645x *lan9645x, int port,
++			  const struct switchdev_obj_port_mdb *mdb,
++			  struct net_device *bridge)
++{
++	enum macaccess_entry_type type;
++	u16 vid = mdb->vid;
++
++	type = lan9645x_mdb_classify(mdb->addr);
++
++	if (!vid)
++		vid = lan9645x_vlan_unaware_pvid(!!bridge);
++
++	return lan9645x_mdb_add(lan9645x, port, mdb->addr, vid, type);
++}
++
++int lan9645x_mdb_port_del(struct lan9645x *lan9645x, int port,
++			  const struct switchdev_obj_port_mdb *mdb,
++			  struct net_device *bridge)
++{
++	enum macaccess_entry_type type;
++	u16 vid = mdb->vid;
++
++	type = lan9645x_mdb_classify(mdb->addr);
++
++	if (!vid)
++		vid = lan9645x_vlan_unaware_pvid(!!bridge);
++
++	return lan9645x_mdb_del(lan9645x, port, mdb->addr, vid, type);
++}
++
++void lan9645x_mdb_deinit(struct lan9645x *lan9645x)
++{
++	struct lan9645x_mdb_entry *mdb, *tmp;
++
++	list_for_each_entry_safe(mdb, tmp, &lan9645x->mdb_entries, list)
++		lan9645x_mdb_entry_dealloc(lan9645x, mdb);
++
++	mutex_destroy(&lan9645x->mdb_lock);
++}
+diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_port.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_port.c
+index 661cd00465e2..5dee92940f89 100644
+--- a/drivers/net/dsa/microchip/lan9645x/lan9645x_port.c
++++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_port.c
+@@ -189,6 +189,14 @@ int lan9645x_port_setup(struct dsa_switch *ds, int port)
+ 		ANA_PORT_CFG_PORTID_VAL,
+ 		lan9645x, ANA_PORT_CFG(p->chip_port));
+ 
++	lan_rmw(ANA_CPU_FWD_CFG_IGMP_REDIR_ENA_SET(true) |
++		ANA_CPU_FWD_CFG_MLD_REDIR_ENA_SET(true) |
++		ANA_CPU_FWD_CFG_IPMC_CTRL_COPY_ENA_SET(true),
++		ANA_CPU_FWD_CFG_IGMP_REDIR_ENA |
++		ANA_CPU_FWD_CFG_MLD_REDIR_ENA |
++		ANA_CPU_FWD_CFG_IPMC_CTRL_COPY_ENA,
++		lan9645x, ANA_CPU_FWD_CFG(p->chip_port));
++
+ 	if (p->chip_port != lan9645x->npi)
+ 		lan9645x_vlan_set_hostmode(p);
+ 
+diff --git a/include/linux/dsa/lan9645x.h b/include/linux/dsa/lan9645x.h
+index 34c18bf975d0..ac0e70c704a5 100644
+--- a/include/linux/dsa/lan9645x.h
++++ b/include/linux/dsa/lan9645x.h
+@@ -131,4 +131,15 @@
+ #define IFH_DUPL_DISC_ENA_SZ		1
+ #define IFH_RCT_AVAIL_SZ		1
+ 
++/* Chip has 8 cpu queues. The cpu queues used by a frame is passed as a mask in
++ * the IFH on extraction. We use this to avoid classifying IGMP and MLD frames
++ * in the tag driver.
++ */
++enum {
++	LAN9645X_CPUQ_DEF = 0,
++	LAN9645X_CPUQ_IGMP = 1,
++	LAN9645X_CPUQ_MLD = 2,
++	LAN9645X_CPUQ_IPMC_CTRL = 3,
++};
++
+ #endif /* _NET_DSA_TAG_LAN9645X_H_ */
+diff --git a/net/dsa/tag_lan9645x.c b/net/dsa/tag_lan9645x.c
+index 6dae3b9ec240..86d67426bf04 100644
+--- a/net/dsa/tag_lan9645x.c
++++ b/net/dsa/tag_lan9645x.c
+@@ -153,6 +153,20 @@ static void lan9645x_xmit_get_vlan_info(struct sk_buff *skb,
+ 					     LAN9645X_IFH_TAG_TYPE_C;
+ }
+ 
++static void lan9645x_offload_fwd_mark(struct sk_buff *skb, u32 cpuq)
++{
++	u32 cpu_redir;
++
++	/* IGMP/MLD are trapped to CPU, and must be forwarded by the stack */
++	cpu_redir = BIT(LAN9645X_CPUQ_IGMP) | BIT(LAN9645X_CPUQ_MLD);
++	if (cpuq & cpu_redir) {
++		skb->offload_fwd_mark = 0;
++		return;
++	}
++
++	return dsa_default_offload_fwd_mark(skb);
++}
++
+ static struct sk_buff *lan9645x_xmit(struct sk_buff *skb,
+ 				     struct net_device *ndev)
  {
+@@ -193,7 +207,7 @@ static struct sk_buff *lan9645x_xmit(struct sk_buff *skb,
+ static struct sk_buff *lan9645x_rcv(struct sk_buff *skb,
+ 				    struct net_device *ndev)
+ {
+-	u32 src_port, qos_class, vlan_tci, tag_type, popcnt, etype_ofs;
++	u32 src_port, qos_class, vlan_tci, tag_type, popcnt, etype_ofs, cpuq;
+ 	struct dsa_port *dp;
+ 	u32 ifh_gap_len = 0;
+ 	u16 vlan_tpid;
+@@ -216,6 +230,7 @@ static struct sk_buff *lan9645x_rcv(struct sk_buff *skb,
+ 	tag_type = lan9645x_ifh_get(ifh, IFH_TAG_TYPE, IFH_TAG_TYPE_SZ);
+ 	vlan_tci = lan9645x_ifh_get(ifh, IFH_TCI, IFH_TCI_SZ);
+ 	qos_class = lan9645x_ifh_get(ifh, IFH_QOS_CLASS, IFH_QOS_CLASS_SZ);
++	cpuq = lan9645x_ifh_get(ifh, IFH_CPUQ, IFH_CPUQ_SZ);
+ 
+ 	/* Set skb->data at start of real header
+ 	 *
+@@ -252,7 +267,7 @@ static struct sk_buff *lan9645x_rcv(struct sk_buff *skb,
+ 		return NULL;
+ 	}
+ 
+-	dsa_default_offload_fwd_mark(skb);
++	lan9645x_offload_fwd_mark(skb, cpuq);
+ 
+ 	skb->priority = qos_class;
+ 
 
 -- 
 2.52.0
