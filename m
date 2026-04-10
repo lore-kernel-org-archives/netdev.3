@@ -1,45 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F01247280;
-	Fri, 10 Apr 2026 03:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA7327456
+	for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 03:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775791957; cv=none; b=ROoBmWrI3aojf5scUbvkt3wQmn+YVbT5pS4fUDun2Lt2bWKJ5TQFuR2tOiBcNxqpIOJb+0tQr23LpFhUtm1DocFt/oHsE3xoMc9OMK2ULtr1JEvyAoArtIbdI3NiI5cCUv30K1LsiAGGz9lOcNBGuKXCB4yYKSh2qplR7Cwx7JI=
+	t=1775792140; cv=none; b=lWYiB4Da/0D28nrIxSqP7QL5Vv6rEEMU+6GlmDsefQG/UIBf5YuWcEbT3Y/6t1T7SA3q9SQ53dPPY1OGCtx+tkZC72ni03p/D8Z/ExzdBq0rEK9Ox6kf/+UBF+n53I/2yS2Joz6wxKCvNiI5JN7rS8MnzHGzs5lTspD8XuPcCUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775791957; c=relaxed/simple;
-	bh=GpakvOgwTza8dL+Os94zM7yKdqCnyPqtnqh8xzlXhIQ=;
+	s=arc-20240116; t=1775792140; c=relaxed/simple;
+	bh=7bklhLbfR1ys8v8hxfDXtHey8Rp/a8UoInTCx1wqcss=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gL225LYdn85YB7IPqJuX0mNyupp8ulNmGT2RkXTvkmctUubDtkLsgmzvEE8zq9oPfFU0nL43TfWRBrnZRfkupLhkO5XTuQsYOiQO4s6iWeHgDbNPw8guL7CmMUy/S1BXTZ0r9gaTJyDc+MST9ABKw1PQPWO4bcaGr6XkW76yYf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IRq/dWoO; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=h7mxJmYP9nzEcpcXrlLFIFDvsBE9wykH6JUKaqwuDDFKL3tx2owuZ+9qkTG9SaYJM0IpgznPax5Q5tPz89La0nxReIsZ6oVV3Gbi8IgkwTrv9h0IDMLsGopRmDh7kMkyDjY8RUrM/8QPT8idPgowogWkgE78hBZojhwXoC+rfgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RezecpH5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IRq/dWoO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0B01C2BC9E;
-	Fri, 10 Apr 2026 03:32:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RezecpH5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A14C19421;
+	Fri, 10 Apr 2026 03:35:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775791957;
-	bh=GpakvOgwTza8dL+Os94zM7yKdqCnyPqtnqh8xzlXhIQ=;
+	s=k20201202; t=1775792139;
+	bh=7bklhLbfR1ys8v8hxfDXtHey8Rp/a8UoInTCx1wqcss=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=IRq/dWoOIdP59UQxZ8pKvDeDwHc4vPT+1AF+vA3AYSI82Y1VCB6z58aKY/oaBx40g
-	 TbNiv5HEiAOpQNOHWHYQIDb/PEOOZalF0Duu10fcP9Z7pUbx4WWXNlzAL5p/p6LPBu
-	 ja/VPxyEVQONGcnHc4gayqDl+QSKfc0ea8pTS1VTivQ/Tl5iu9oljOhwLRgjIIG9JQ
-	 0ipwbRd/TTkJkezz7HUTfTFyl7fEg+Zr9DDyjr+rcqLLPUGeUWCGchGONl3DS5icYc
-	 CI8cpi8/dpO/Qg3kWTuKNOxBMJOE1pc6oukxMooViTBvnYQYH3rNu6fD4AYwSdUCtL
-	 NlM2Kbj8wcBPw==
-Date: Thu, 9 Apr 2026 20:32:35 -0700
+	b=RezecpH5XGi6zJlQAcDlO/E+mA+cVXKG+mfp4mZiDMciX5ragKG48onb2lUJFpC7E
+	 KGSRkd5LAKOSD4RYXygMWLdnLmAqszsTX4am9u0XjwdhDmlzClAyrL+VVNTWy7wzbh
+	 VsS262mEGEoEC09+dmOqb088xofYlVpOgomWGLAgEJFSMfva2/AR4DQUNEAZAQ8o0o
+	 LH+broIy0AV4uYEPLkHjKtRBIWboIAqbhkVPCOKA6loQA/cG+Q4Bb5yLtu+eQ1IlcL
+	 uAKwZnM/PaTIRISkqinYNhPOxfl7VKkfPx7zbjdzf4Gm92IKp75/bBkAgSsGvKqota
+	 ZeBqf8vbco5wQ==
+Date: Thu, 9 Apr 2026 20:35:38 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Simon Horman <horms@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- linux-hams@vger.kernel.org, Yizhe Zhuang <yizhe@darknavy.com>, stable
- <stable@kernel.org>
-Subject: Re: [PATCH net] netrom: do some basic forms of validation on
- incoming frames
-Message-ID: <20260409203235.6b9329f0@kernel.org>
-In-Reply-To: <20260409190328.GS469338@kernel.org>
-References: <2026040730-untagged-groin-bbb7@gregkh>
-	<20260409190328.GS469338@kernel.org>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Xuegang Lu <xuegang.lu@airoha.com>, Simon Horman
+ <horms@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net v3] net: airoha: Add dma_rmb() and READ_ONCE() in
+ airoha_qdma_rx_process()
+Message-ID: <20260409203538.35337631@kernel.org>
+In-Reply-To: <20260407-airoha_qdma_rx_process-fix-reordering-v3-1-91c36e9da31f@kernel.org>
+References: <20260407-airoha_qdma_rx_process-fix-reordering-v3-1-91c36e9da31f@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,10 +48,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 9 Apr 2026 20:03:28 +0100 Simon Horman wrote:
-> I expect that checking skb->len isn't sufficient here
-> and pskb_may_pull needs to be used to ensure that
-> the data is also available in the linear section of the skb.
+On Tue, 07 Apr 2026 08:48:04 +0200 Lorenzo Bianconi wrote:
+> Add missing dma_rmb() in airoha_qdma_rx_process routine to make sure the
+> DMA read operations are completed when the NIC reports the processing on
+> the current descriptor is done. Moreover, add missing READ_ONCE() in
+> airoha_qdma_rx_process() for DMA descriptor control fields in order to
+> avoid any compiler reordering.
 
-Or for simplicity we could also be testing against skb_headlen()
-since we don't expect any legit non-linear frames here? Dunno.
+Sashiko seems to have more orthogonal complaints FWIW
