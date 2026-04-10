@@ -1,54 +1,54 @@
-Received: from mail-oa1-f74.google.com (mail-oa1-f74.google.com [209.85.160.74])
+Received: from mail-ot1-f73.google.com (mail-ot1-f73.google.com [209.85.210.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE743358A7
-	for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 18:31:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D843358A7
+	for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 18:31:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775845865; cv=none; b=ow8qyLNZQnRYa4UvbWnG8y7Fay78jpkTmWvwGThC9xn7UEarR9797Dplx3buxN+ITTWH6G6TmwKjbsiGRrM2ljG1gxC86IDd5TtjSQT10DLit6oULUSeNwShdGc21i05hrcwCGVkeEhAYCgVGQrGnx+l2PzuO2fdwbSEAudX1eg=
+	t=1775845892; cv=none; b=DEkMP13zmd8XjbEpD9+FILOr33ShUvm1uTuVIn7/o4DAsdpbwtIC8RUEjIMFmN3eChM18IP6L9PM4t9Co2vmVlJmwmqzn5FdmONwUibyxhpBQ7Lkz87k6LL3j/lV+9nuEYqiRtDf3LqGYNgx7tqTNfdbqKLcP+WzisIxHhjl/gE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775845865; c=relaxed/simple;
-	bh=0Jv6SGfcpVsacEPF5QjrL9dxNpST2BQZr4Zs+hKmyxw=;
+	s=arc-20240116; t=1775845892; c=relaxed/simple;
+	bh=pFKKj8F843iNchIlexWbcxgO53tqGPS6FEt3DXfbJe0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=L6jqDGL+fioSN1Q59prQfoiSlFZ1kaxkaagoOQE8pjVB8kq6ck9AQGULPGtX0cjXEzl9Q5QiYFmH6joDocnI0eI9NvKrbbJ5AGKrXXxadKj6JxFe5KTMsuuGVgBt1y9nBa/tvjEYLDnlYsNB/ULZHwiJoUKQ6fatDGkuXsw/Tck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QdMdZiVK; arc=none smtp.client-ip=209.85.160.74
+	 To:Cc:Content-Type; b=KYjsBCAslgnWETRE61vu3366PVgn8JDi2O0Nd0f8YB8vHM0WtkFTDdnDsKvcScoL26+RfoKLH/RDHyFy0KztB35PXSVdcHwSXjGwS7L7JfDZ3aGHZzPOPsWQc6dtdN/10T5mHAkz171cQT+AE1dW4QKPNYta9PxS50eEHP+A04s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=klyetVHT; arc=none smtp.client-ip=209.85.210.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QdMdZiVK"
-Received: by mail-oa1-f74.google.com with SMTP id 586e51a60fabf-41c4709dd9dso4779662fac.3
-        for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 11:31:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="klyetVHT"
+Received: by mail-ot1-f73.google.com with SMTP id 46e09a7af769-7dbe11b1f03so5224718a34.0
+        for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 11:31:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775845863; x=1776450663; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1775845890; x=1776450690; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bh5JuSys2IuP+a3de4iHUe+dP0hDPALryouBLYyDnpY=;
-        b=QdMdZiVKo/RUwGOQBp24hmHkwR0NQEld+tA8NbHxnJFbZoXmIvQeiGMxuCwrgxXCss
-         +yby6GT1jCkWF9xmc+5nO2aNo9QKCvzL/hnI7sIuC8eLv/u7OtPE1qV/kAvhRa71WoLg
-         iZJ3gXfA4UE+bJrgSNFJ8ONodfOxIDHJv6MQtdu4SBfRIPnHRaVjjrGESXjvgZ3tsdqt
-         Wiy5kqGwSTka2q6DDCB7qxsN88XL8EkcVPrD/IMyLQNzWoMdkml4LxoMvB2I44pGDKTZ
-         VIu6/M9pgE5ltzlmo15yowDxeYR19n7drpHuGN9jwvpyusXOhJ7HF7Mwr3/mlVdgvp/B
-         eu9Q==
+        bh=z9TuYwDDvZ5LhJpRr9/4FggHwKX+GQWobJYxYIfXlSI=;
+        b=klyetVHTDwSLJFBwPh6E70q6i0XcyWg11dmhmOQ2ye9vMTrL5LVQYZOSLZieunPJXF
+         S+rlU2UXrdAeDsTN9dFsWfJcMLqYhMPz7bBb//CRstBAoC2b8nCugkrlA9YOp9ZhznaX
+         P5rwyTDQu0Z7vvpkaFudAAWW0APobLXTlOb8h3ey/aIYqwJ8hFwNGRiTW331kHYHKJA5
+         mrOOplIDwUifnxupnQopiUHW/knTxUEAmS76gUMmxAMQ9f9GZ04S67ZbRQHHTn/w+bce
+         /JCjTSnb4lcZ5KGIgCXW3gPgxxdZUqFFwMs1BcCqImvMJhFbEmczNaTyREUCStj/IGwn
+         XPDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775845863; x=1776450663;
+        d=1e100.net; s=20251104; t=1775845890; x=1776450690;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bh5JuSys2IuP+a3de4iHUe+dP0hDPALryouBLYyDnpY=;
-        b=Q3Q12kdXzDuVOg0aUFdJ31SwljsPnsh50J0s6NEpYb8hOmlAZrhyGHMEfSZr+zazrd
-         rPwmT00GhkNXTEyEe000mh4VBIxWWiOxImONU//qC2fpW5vcTGKZg+2Oxzvs6iktzutL
-         f0j44fgP98aL/DJrWD0BIKLWwHtfK0YyHRBOpYvUI5KtEZ3xdzDiT1p3ekeF/b1TMZR1
-         S1D2m5hDWeu3j4b57ZcR5+y8nJYVGkM3W5E/vx3/MovsKIfmwI7LlrgatvPUFAWZvOyE
-         +a3kdb8P1pDBlywiLMuiNKpbv6uYis6lclgrx/gZlAYMe133og5tFpoSACAgTi83/K1C
-         PRlw==
-X-Forwarded-Encrypted: i=1; AJvYcCUWFpPxUOo7wu+6+Jkq0q2BQ/Ax+3zgcpiZsfd2mQbxkiTKpAZKmbERM+X4FD5NJWoE9+KGNFY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YymNWr55GrXRjxv8S9kQPz7FxPWq3VrB2O7mbSg6OLt5lOy6Int
-	KcLMQp4ZKrVCN8wYgHjeEHkjMR6mQ0dakDj4lfPSYCr79ZSP0D7ZB9TwO7YEbe258ylig9NS8kC
-	phLURa5A0MzAWnA==
-X-Received: from qteb8.prod.google.com ([2002:ac8:4f08:0:b0:50d:b612:e1f0])
+        bh=z9TuYwDDvZ5LhJpRr9/4FggHwKX+GQWobJYxYIfXlSI=;
+        b=OU4j6iWdB//g8PUs0+DY0/OT2oqXcN7BknYYOAnZoTIi80SgzhU5XRkE5C6/eSt6gg
+         MydWRCFBj+tFHOtzOLhnDMwTfGGdAMVKz6eRGx7GjJOZAzz0pNkc0ow5jF5B71LXO3Fr
+         aQisQmwU3vDVBwunGjEf//4/RxWl7HJ5pEQxuuqeusaVv0zMMQY+rPdUt79ISiorIeOc
+         SMDs+25cQlHEv+ctwFasPELpSXwmOLTHxElBBG2Uhsw48QkZoldRid6+svyPJYllwnYK
+         vqKTfIj48+x5jwh9BE7lzuJrs0QstUsgMcAwSepjCbOVW6RfTMxVVzlVcI9I//+1dbvC
+         c4ZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXv1NuenxEWSYGy5Am6DG0FFJy8ka5JGKeGwKZp2IYy6307CxV2nONfs6CCBNZe8KJwO1vgHPI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5+Uxd8fSyboD4XEO1qdOgy0DvHsVD80jELH3bBJHZs5Rk4pHh
+	BMZaO6p66A/zwKBqKm9JCoiMaRUEAx4+wnM3DtDBuoo4BycWS5/IAJIPEo0XGmSO+Gu3timKxaf
+	RytRloM57/SOyWQ==
+X-Received: from qtod19.prod.google.com ([2002:ac8:5353:0:b0:50d:cf83:e5b7])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:134c:b0:50d:7f91:6bd5 with SMTP id d75a77b69052e-50dd5ad88f6mr68631411cf.18.1775845399982;
- Fri, 10 Apr 2026 11:23:19 -0700 (PDT)
-Date: Fri, 10 Apr 2026 18:22:51 +0000
+ 2002:ac8:7fcf:0:b0:50d:5f34:9a with SMTP id d75a77b69052e-50dd5b51ce1mr63518011cf.28.1775845387146;
+ Fri, 10 Apr 2026 11:23:07 -0700 (PDT)
+Date: Fri, 10 Apr 2026 18:22:43 +0000
 In-Reply-To: <20260410182257.774311-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -58,8 +58,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260410182257.774311-1-edumazet@google.com>
 X-Mailer: git-send-email 2.53.0.1213.gd9a14994de-goog
-Message-ID: <20260410182257.774311-10-edumazet@google.com>
-Subject: [PATCH v3 net-next 09/15] net/sched: sch_pie: annotate data-races in pie_dump_stats()
+Message-ID: <20260410182257.774311-2-edumazet@google.com>
+Subject: [PATCH v3 net-next 01/15] net/sched: rename qstats_overlimit_inc() to qstats_cpu_overlimit_inc()
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -68,150 +68,121 @@ Cc: Simon Horman <horms@kernel.org>, Jamal Hadi Salim <jhs@mojatatu.com>, Jiri P
 	Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-pie_dump_stats() only runs with RTNL held,
-reading fields that can be changed in qdisc fast path.
+qstats_overlimit_inc() is only used to increment per cpu overlimits.
 
-Add READ_ONCE()/WRITE_ONCE() annotations.
+It can use this_cpu_inc() to avoid this_cpu_ptr() extra cost
+and avoid potential store tearing.
 
-Alternative would be to acquire the qdisc spinlock, but our long-term
-goal is to make qdisc dump operations lockless as much as we can.
+Change qstats_overlimit_inc() name and its argument type.
 
-tc_pie_xstats fields don't need to be latched atomically,
-otherwise this bug would have been caught earlier.
+Also add a WRITE_ONCE() in qdisc_qstats_overlimit() to prevent
+store tearing.
 
-Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
+$ scripts/bloat-o-meter -t vmlinux.0 vmlinux.1
+add/remove: 0/0 grow/shrink: 0/5 up/down: 0/-72 (-72)
+Function                                     old     new   delta
+tcf_skbmod_act                               772     764      -8
+tcf_police_act                               733     725      -8
+tcf_mirred_to_dev                           1126    1114     -12
+tcf_ife_act                                 1077    1061     -16
+tcf_mirred_act                              1324    1296     -28
+Total: Before=29610901, After=29610829, chg -0.00%
+
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- include/net/pie.h   |  2 +-
- net/sched/sch_pie.c | 38 +++++++++++++++++++-------------------
- 2 files changed, 20 insertions(+), 20 deletions(-)
+ include/net/act_api.h     | 2 +-
+ include/net/sch_generic.h | 6 +++---
+ net/sched/act_ife.c       | 4 ++--
+ net/sched/act_police.c    | 2 +-
+ net/sched/act_skbmod.c    | 2 +-
+ 5 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/include/net/pie.h b/include/net/pie.h
-index 01cbc66825a40bd21c0a044b1180cbbc346785df..1f3db0c355149b41823a891c9156cac625122031 100644
---- a/include/net/pie.h
-+++ b/include/net/pie.h
-@@ -104,7 +104,7 @@ static inline void pie_vars_init(struct pie_vars *vars)
- 	vars->dq_tstamp = DTIME_INVALID;
- 	vars->accu_prob = 0;
- 	vars->dq_count = DQCOUNT_INVALID;
--	vars->avg_dq_rate = 0;
-+	WRITE_ONCE(vars->avg_dq_rate, 0);
+diff --git a/include/net/act_api.h b/include/net/act_api.h
+index d11b791079302f50c47e174979767e0b24afc59a..2ec4ef9a5d0c8e9110f92f135cc3c31a38af0479 100644
+--- a/include/net/act_api.h
++++ b/include/net/act_api.h
+@@ -250,7 +250,7 @@ static inline void tcf_action_inc_drop_qstats(struct tc_action *a)
+ static inline void tcf_action_inc_overlimit_qstats(struct tc_action *a)
+ {
+ 	if (likely(a->cpu_qstats)) {
+-		qstats_overlimit_inc(this_cpu_ptr(a->cpu_qstats));
++		qstats_cpu_overlimit_inc(a->cpu_qstats);
+ 		return;
+ 	}
+ 	atomic_inc(&a->tcfa_overlimits);
+diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
+index 5af262ec4bbd2d5021904df127a849e52c26178a..3ee383c6fc3f66f1aecd9ebc675fbd143852c150 100644
+--- a/include/net/sch_generic.h
++++ b/include/net/sch_generic.h
+@@ -1004,9 +1004,9 @@ static inline void qstats_drop_inc(struct gnet_stats_queue *qstats)
+ 	qstats->drops++;
  }
  
- static inline struct pie_skb_cb *get_pie_cb(const struct sk_buff *skb)
-diff --git a/net/sched/sch_pie.c b/net/sched/sch_pie.c
-index 16f3f629cb8e4be71431f7e50a278e3c7fdba8d0..fb53fbf0e328571be72b66ba4e75a938e1963422 100644
---- a/net/sched/sch_pie.c
-+++ b/net/sched/sch_pie.c
-@@ -90,7 +90,7 @@ static int pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	bool enqueue = false;
+-static inline void qstats_overlimit_inc(struct gnet_stats_queue *qstats)
++static inline void qstats_cpu_overlimit_inc(struct gnet_stats_queue __percpu *qstats)
+ {
+-	qstats->overlimits++;
++	this_cpu_inc(qstats->overlimits);
+ }
  
- 	if (unlikely(qdisc_qlen(sch) >= sch->limit)) {
--		q->stats.overlimit++;
-+		WRITE_ONCE(q->stats.overlimit, q->stats.overlimit + 1);
- 		goto out;
+ static inline void qdisc_qstats_drop(struct Qdisc *sch)
+@@ -1021,7 +1021,7 @@ static inline void qdisc_qstats_cpu_drop(struct Qdisc *sch)
+ 
+ static inline void qdisc_qstats_overlimit(struct Qdisc *sch)
+ {
+-	sch->qstats.overlimits++;
++	WRITE_ONCE(sch->qstats.overlimits, sch->qstats.overlimits + 1);
+ }
+ 
+ static inline int qdisc_qstats_copy(struct gnet_dump *d, struct Qdisc *sch)
+diff --git a/net/sched/act_ife.c b/net/sched/act_ife.c
+index d5e8a91bb4eb9f1f1f084e199b5ada4e7f7e7205..e1b825e14900d6f46bbfd1b7f72ab6cd554d8a73 100644
+--- a/net/sched/act_ife.c
++++ b/net/sched/act_ife.c
+@@ -750,7 +750,7 @@ static int tcf_ife_decode(struct sk_buff *skb, const struct tc_action *a,
+ 			 */
+ 			pr_info_ratelimited("Unknown metaid %d dlen %d\n",
+ 					    mtype, dlen);
+-			qstats_overlimit_inc(this_cpu_ptr(ife->common.cpu_qstats));
++			qstats_cpu_overlimit_inc(ife->common.cpu_qstats);
+ 		}
  	}
  
-@@ -104,7 +104,7 @@ static int pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		/* If packet is ecn capable, mark it if drop probability
- 		 * is lower than 10%, else drop it.
+@@ -814,7 +814,7 @@ static int tcf_ife_encode(struct sk_buff *skb, const struct tc_action *a,
+ 		/* abuse overlimits to count when we allow packet
+ 		 * with no metadata
  		 */
--		q->stats.ecn_mark++;
-+		WRITE_ONCE(q->stats.ecn_mark, q->stats.ecn_mark + 1);
- 		enqueue = true;
+-		qstats_overlimit_inc(this_cpu_ptr(ife->common.cpu_qstats));
++		qstats_cpu_overlimit_inc(ife->common.cpu_qstats);
+ 		return action;
+ 	}
+ 	/* could be stupid policy setup or mtu config
+diff --git a/net/sched/act_police.c b/net/sched/act_police.c
+index 12ea9e5a600536b603ea73cc99b4c00381287219..8060f43e4d11c0a26e1475db06b76426f50c5975 100644
+--- a/net/sched/act_police.c
++++ b/net/sched/act_police.c
+@@ -307,7 +307,7 @@ TC_INDIRECT_SCOPE int tcf_police_act(struct sk_buff *skb,
  	}
  
-@@ -114,15 +114,15 @@ static int pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		if (!q->params.dq_rate_estimator)
- 			pie_set_enqueue_time(skb);
+ inc_overlimits:
+-	qstats_overlimit_inc(this_cpu_ptr(police->common.cpu_qstats));
++	qstats_cpu_overlimit_inc(police->common.cpu_qstats);
+ inc_drops:
+ 	if (ret == TC_ACT_SHOT)
+ 		qstats_drop_inc(this_cpu_ptr(police->common.cpu_qstats));
+diff --git a/net/sched/act_skbmod.c b/net/sched/act_skbmod.c
+index 23ca46138f040d38de37684439873921bc9c86af..a464b0a3c1b81dba6c28c1141aa38c5c7cad3acb 100644
+--- a/net/sched/act_skbmod.c
++++ b/net/sched/act_skbmod.c
+@@ -87,7 +87,7 @@ TC_INDIRECT_SCOPE int tcf_skbmod_act(struct sk_buff *skb,
+ 	return p->action;
  
--		q->stats.packets_in++;
-+		WRITE_ONCE(q->stats.packets_in, q->stats.packets_in + 1);
- 		if (qdisc_qlen(sch) > q->stats.maxq)
--			q->stats.maxq = qdisc_qlen(sch);
-+			WRITE_ONCE(q->stats.maxq, qdisc_qlen(sch));
- 
- 		return qdisc_enqueue_tail(skb, sch);
- 	}
- 
- out:
--	q->stats.dropped++;
-+	WRITE_ONCE(q->stats.dropped, q->stats.dropped + 1);
- 	q->vars.accu_prob = 0;
- 	return qdisc_drop_reason(skb, sch, to_free, reason);
+ drop:
+-	qstats_overlimit_inc(this_cpu_ptr(d->common.cpu_qstats));
++	qstats_cpu_overlimit_inc(d->common.cpu_qstats);
+ 	return TC_ACT_SHOT;
  }
-@@ -267,11 +267,11 @@ void pie_process_dequeue(struct sk_buff *skb, struct pie_params *params,
- 			count = count / dtime;
  
- 			if (vars->avg_dq_rate == 0)
--				vars->avg_dq_rate = count;
-+				WRITE_ONCE(vars->avg_dq_rate, count);
- 			else
--				vars->avg_dq_rate =
-+				WRITE_ONCE(vars->avg_dq_rate,
- 				    (vars->avg_dq_rate -
--				     (vars->avg_dq_rate >> 3)) + (count >> 3);
-+				     (vars->avg_dq_rate >> 3)) + (count >> 3));
- 
- 			/* If the queue has receded below the threshold, we hold
- 			 * on to the last drain rate calculated, else we reset
-@@ -381,7 +381,7 @@ void pie_calculate_probability(struct pie_params *params, struct pie_vars *vars,
- 	if (delta > 0) {
- 		/* prevent overflow */
- 		if (vars->prob < oldprob) {
--			vars->prob = MAX_PROB;
-+			WRITE_ONCE(vars->prob, MAX_PROB);
- 			/* Prevent normalization error. If probability is at
- 			 * maximum value already, we normalize it here, and
- 			 * skip the check to do a non-linear drop in the next
-@@ -392,7 +392,7 @@ void pie_calculate_probability(struct pie_params *params, struct pie_vars *vars,
- 	} else {
- 		/* prevent underflow */
- 		if (vars->prob > oldprob)
--			vars->prob = 0;
-+			WRITE_ONCE(vars->prob, 0);
- 	}
- 
- 	/* Non-linear drop in probability: Reduce drop probability quickly if
-@@ -403,7 +403,7 @@ void pie_calculate_probability(struct pie_params *params, struct pie_vars *vars,
- 		/* Reduce drop probability to 98.4% */
- 		vars->prob -= vars->prob / 64;
- 
--	vars->qdelay = qdelay;
-+	WRITE_ONCE(vars->qdelay, qdelay);
- 	vars->backlog_old = backlog;
- 
- 	/* We restart the measurement cycle if the following conditions are met
-@@ -502,21 +502,21 @@ static int pie_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- 	struct pie_sched_data *q = qdisc_priv(sch);
- 	struct tc_pie_xstats st = {
- 		.prob		= q->vars.prob << BITS_PER_BYTE,
--		.delay		= ((u32)PSCHED_TICKS2NS(q->vars.qdelay)) /
-+		.delay		= ((u32)PSCHED_TICKS2NS(READ_ONCE(q->vars.qdelay))) /
- 				   NSEC_PER_USEC,
--		.packets_in	= q->stats.packets_in,
--		.overlimit	= q->stats.overlimit,
--		.maxq		= q->stats.maxq,
--		.dropped	= q->stats.dropped,
--		.ecn_mark	= q->stats.ecn_mark,
-+		.packets_in	= READ_ONCE(q->stats.packets_in),
-+		.overlimit	= READ_ONCE(q->stats.overlimit),
-+		.maxq		= READ_ONCE(q->stats.maxq),
-+		.dropped	= READ_ONCE(q->stats.dropped),
-+		.ecn_mark	= READ_ONCE(q->stats.ecn_mark),
- 	};
- 
- 	/* avg_dq_rate is only valid if dq_rate_estimator is enabled */
- 	st.dq_rate_estimating = q->params.dq_rate_estimator;
- 
- 	/* unscale and return dq_rate in bytes per sec */
--	if (q->params.dq_rate_estimator)
--		st.avg_dq_rate = q->vars.avg_dq_rate *
-+	if (st.dq_rate_estimating)
-+		st.avg_dq_rate = READ_ONCE(q->vars.avg_dq_rate) *
- 				 (PSCHED_TICKS_PER_SEC) >> PIE_SCALE;
- 
- 	return gnet_stats_copy_app(d, &st, sizeof(st));
 -- 
 2.53.0.1213.gd9a14994de-goog
 
