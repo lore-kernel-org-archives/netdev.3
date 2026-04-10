@@ -1,38 +1,38 @@
 Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 315E538C2DF
-	for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 20:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6562F342CBD
+	for <netdev@vger.kernel.org>; Fri, 10 Apr 2026 20:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775851409; cv=none; b=HgSKO4KbVEHF487KzNkfEC16nlD6Ggommt4+mrc+ImDzT8gFuXC0gv5Y7g88wKNHdA/2LwgWI0sRG+Avmim/Ys2rKx3xsrgcPElXYVWdO9QskZyDnKYifvql7K3O4C44Bx0Ad/XN9DMjTgqNeHkLxlJMoM2ZdP5ke+sETV6NvwA=
+	t=1775851411; cv=none; b=AEDmpgFJEEXn+rcQWKsRdXB11mknxq5GRci6ryaGgejURxlPH1kVd6ob863TMXADU4ni9iTbQP9XYh/OkILQtK6sAQKGPVvgxtXSKb1cJ0zI61CK7ugbxO2kmK8y2n5fbTi1xZ+qZtsoKmPqQHzsY7wV89NLodEBzutSK1EuO7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775851409; c=relaxed/simple;
-	bh=4Jxl6WVQVCPF3QaPrefv5TKsiBzeL9wAi4O86pEgQhU=;
+	s=arc-20240116; t=1775851411; c=relaxed/simple;
+	bh=iDswwT3clHQTQBfR/yoZCpcnk+BFvbbrYCPtzMksATM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mxljy+gYdk+b5RFsXripMVpzIIREJPAMnhueyGSyW5T3S+rzeQtSYcLQomG/4DBon+WQYPQFLMLabEp2FOfH+AyaeHVb3EyMgbOICUahApaz8Oewl19+hggoz6wWSAZkdWtyKeExBa+vdkpl0TdPmMdqGCA6BUpylpm/Bi5V5Yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=djASYmMh; arc=none smtp.client-ip=171.64.64.25
+	 MIME-Version; b=FvjCwT7tOqXV8meG3wfIocm/aloB35tjV9w99JogSzHMCV7Qej8i8xjblEVFVMeB6IGJm3W7E5dRoS+yjEsJk3GSSjl+zN1Noy4IjcrN8QbUy3w6+L9JKDwWVriCzzCKsmDBkZDa2zlZNB41f0ccsycQZrvMtQe/wJmtSLV103U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=omJMbPZz; arc=none smtp.client-ip=171.64.64.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="djASYmMh"
+	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="omJMbPZz"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=+8hjccQDWXLJICOGr9FA6rE44HC21yPQLnwwtymAGBY=; t=1775851407; x=1776715407; 
-	b=djASYmMhbrrsf2doXhsyyj9kvqWqv0rMJklNOKxpK0AHAGrwdZA2edWVKi3u0vwBMKuEqIJB4GW
-	Vz9GD2Zc1XjR3p3HjFuSoQonCt+/zr+LVukZRb0ah/o4doS6DC9JjlPIJFWP8Nt0PqH1SoXGuo+tA
-	xCfU+UeEhj0MUzZEHCeVT5bFMbUc6kJ6sHG5jRc3tw8WRnV3zlzOX7dDizcLOXZqoabNSAM9ZSFLE
-	bea5l+jrtxZac6noKJu9Kg3ZPWoN1pTI3umCXveszHCUnN5XSOVEdvIRASf8CYgufgKUWjFXnimy3
-	kCk5wY739L60IbWDpsuCKnTz/azURU+WTScA==;
+	bh=/VJEs7qO7sxhZXFTMIqLHnB9ABotoBGpKhW10h7yyMA=; t=1775851408; x=1776715408; 
+	b=omJMbPZzjOMjsvwpBRZ8sy5dfTRii6cYrPAxiRl1k2LA1/jHYEojNOa4+gVrEzibyAIDhqFB+qg
+	F+2tV6dJmpw1R4cSKEt+PTbwav4zThY1TPuBXqbUpjNUi753/QMEOLh9doqGrbBGU9k+xqguZBNgJ
+	d9r6ebAlwIJWfxLFPFdfcPp9P/oy6Zm0RDhoQkqEYABh5NnbNsctoVNR4m83b55/j8zsX7ANqQtmt
+	Zna9ZFXaMcqSm8mciFzzuCnvI1tHcoIwOihlyAL5MaSFpQg7pZ6G7T49s3ja0Nnhr/GAjy5HkGonG
+	VgCFHy00kCY0dU5kV34BtjfK8OukgKHp8JUw==;
 Received: from ouster448.stanford.edu ([172.24.72.71]:51553 helo=ouster2022)
 	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ouster@cs.stanford.edu>)
-	id 1wBI4V-0003MV-WB; Fri, 10 Apr 2026 13:03:21 -0700
+	id 1wBI4b-0003MV-G1; Fri, 10 Apr 2026 13:03:27 -0700
 From: John Ousterhout <ouster@cs.stanford.edu>
 To: netdev@vger.kernel.org
 Cc: pabeni@redhat.com,
@@ -40,9 +40,9 @@ Cc: pabeni@redhat.com,
 	horms@kernel.org,
 	kuba@kernel.org,
 	John Ousterhout <ouster@cs.stanford.edu>
-Subject: [PATCH net-next v18 02/15] net: homa: create homa_wire.h
-Date: Fri, 10 Apr 2026 13:02:56 -0700
-Message-ID: <20260410200310.1915-3-ouster@cs.stanford.edu>
+Subject: [PATCH net-next v18 05/15] net: homa: create homa_peer.h and homa_peer.c
+Date: Fri, 10 Apr 2026 13:02:59 -0700
+Message-ID: <20260410200310.1915-6-ouster@cs.stanford.edu>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260410200310.1915-1-ouster@cs.stanford.edu>
 References: <20260410200310.1915-1-ouster@cs.stanford.edu>
@@ -54,401 +54,993 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Score: -101.0
-X-Scan-Signature: 0daa1865d72ba2ecc48ad35b34724420
+X-Scan-Signature: 9687720847559c38a08088b6946742cf
 
-This file defines the on-the-wire packet formats for Homa.
+Homa needs to keep a small amount of information for each peer that
+it has communicated with. These files define that state and provide
+functions for storing and accessing it.
 
 Signed-off-by: John Ousterhout <ouster@cs.stanford.edu>
 
 ---
+Changes for v18:
+* Fix 2 synchronization issues related to reclamation
+* Simplify reclamation (eliminate gc_stop_count).
+
+Changes for v16:
+* Clean up and simplify reference counting mechanism (use refcount_t
+  instead of atomic_t, eliminate dead_peers mechanism)
+* Fix synchronization bugs in homa_dst_refresh (use RCU properly)
+* Remove addr field of struct homa_peer
+* Create separate header file for murmurhash hash function
+
 Changes for v11:
-* Rework the mechanism for waking up RPCs that stalled waiting for
-  buffer pool space
+* Clean up sparse annotations
 
 Changes for v10:
-* Replace __u16 with u16, __u8 with u8, etc.
-* Refactor resend mechanism
+* Use kzalloc instead of __GFP_ZERO
+* Remove log messages after alloc errors
+* Fix issues found by sparse, xmastree.py, etc.
+* Add missing initialization for peertab->lock
 
 Changes for v9:
-* Eliminate use of _Static_assert
-* Various name improvements (e.g. use "alloc" instead of "new" for functions
-  that allocate memory, Replace BOGUS in enum homa_packet_type with MAX_OP)
-* Remove HOMA_IPV6_HEADER_LENGTH and similar defs, use sizeof(ipv6hdr) instead
+* Add support for homa_net objects
+* Implement limits on the number of active homa_peer objects. This includes
+  adding reference counts in homa_peers and adding code to release peers
+  where there are too many.
+* Switch to using rhashtable to store homa_peers; the table is shared
+  across all network namespaces, though individual peers are namespace-
+  specific
+* Invoke dst->ops->check in addition to checking the obsolete flag
+* Various name improvements
+* Remove the homa_peertab_gc_dsts mechanism, which is unnecessary
 
 Changes for v7:
-* Rename UNKNOWN packet type to RPC_UNKNOWN
+* Remove homa_peertab_get_peers
+* Remove "lock_slow" functions, which don't add functionality in this
+  patch
+* Remove unused fields from homa_peer structs
 * Use u64 and __u64 properly
+* Add lock annotations
+* Refactor homa_peertab_get_peers
+* Use __GFP_ZERO in kmalloc calls
 ---
- net/homa/homa_wire.h | 360 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 360 insertions(+)
- create mode 100644 net/homa/homa_wire.h
+ net/homa/homa_peer.c   | 563 +++++++++++++++++++++++++++++++++++++++++
+ net/homa/homa_peer.h   | 303 ++++++++++++++++++++++
+ net/homa/murmurhash3.h |  44 ++++
+ 3 files changed, 910 insertions(+)
+ create mode 100644 net/homa/homa_peer.c
+ create mode 100644 net/homa/homa_peer.h
+ create mode 100644 net/homa/murmurhash3.h
 
-diff --git a/net/homa/homa_wire.h b/net/homa/homa_wire.h
+diff --git a/net/homa/homa_peer.c b/net/homa/homa_peer.c
 new file mode 100644
-index 000000000000..01d4a2b74fbf
+index 000000000000..1ff4325ca512
 --- /dev/null
-+++ b/net/homa/homa_wire.h
-@@ -0,0 +1,360 @@
-+/* SPDX-License-Identifier: BSD-2-Clause or GPL-2.0+ */
++++ b/net/homa/homa_peer.c
+@@ -0,0 +1,563 @@
++// SPDX-License-Identifier: BSD-2-Clause or GPL-2.0+
 +
-+/* This file defines the on-the-wire format of Homa packets. */
-+
-+#ifndef _HOMA_WIRE_H
-+#define _HOMA_WIRE_H
-+
-+#include <linux/skbuff.h>
-+#include <net/tcp.h>
-+
-+/* Defines the possible types of Homa packets.
-+ *
-+ * See the xxx_header structs below for more information about each type.
++/* This file provides functions related to homa_peer and homa_peertab
++ * objects.
 + */
-+enum homa_packet_type {
-+	DATA               = 0x10,
-+	RESEND             = 0x12,
-+	RPC_UNKNOWN        = 0x13,
-+	BUSY               = 0x14,
-+	NEED_ACK           = 0x17,
-+	ACK                = 0x18,
-+	MAX_OP             = 0x18,
-+	/* If you add a new type here, you must also do the following:
-+	 * 1. Change MAX_OP so it is the highest valid opcode
-+	 * 2. Add support for the new opcode in homa_print_packet,
-+	 *    homa_print_packet_short, homa_symbol_for_type, and mock_skb_alloc.
-+	 * 3. Add the header length to header_lengths in homa_plumbing.c.
-+	 */
++
++#include "homa_impl.h"
++#include "homa_peer.h"
++#include "homa_rpc.h"
++#include "murmurhash3.h"
++
++static const struct rhashtable_params ht_params = {
++	.key_len     = sizeof(struct homa_peer_key),
++	.key_offset  = offsetof(struct homa_peer, ht_key),
++	.head_offset = offsetof(struct homa_peer, ht_linkage),
++	.nelem_hint = 10000,
++	.hashfn = murmurhash3,
++	.obj_cmpfn = homa_peer_compare
 +};
 +
 +/**
-+ * define HOMA_SKB_EXTRA - How many bytes of additional space to allow at the
-+ * beginning of each sk_buff, before the Homa header. This includes room for
-+ * either an IPV4 or IPV6 header, Ethernet header, VLAN header, etc. This is
-+ * a bit of an overestimate, since it also includes space for a TCP header.
-+ */
-+#define HOMA_SKB_EXTRA MAX_TCP_HEADER
-+
-+/**
-+ * define HOMA_ETH_FRAME_OVERHEAD - Additional overhead bytes for each
-+ * Ethernet packet that are not included in the packet header (preamble,
-+ * start frame delimiter, CRC, and inter-packet gap).
-+ */
-+#define HOMA_ETH_FRAME_OVERHEAD 24
-+
-+/**
-+ * define HOMA_ETH_OVERHEAD - Number of bytes per Ethernet packet for Ethernet
-+ * header, CRC, preamble, and inter-packet gap.
-+ */
-+#define HOMA_ETH_OVERHEAD (18 + HOMA_ETH_FRAME_OVERHEAD)
-+
-+/**
-+ * define HOMA_MIN_PKT_LENGTH - Every Homa packet must be padded to at least
-+ * this length to meet Ethernet frame size limitations. This number includes
-+ * Homa headers and data, but not IP or Ethernet headers.
-+ */
-+#define HOMA_MIN_PKT_LENGTH 26
-+
-+/**
-+ * define HOMA_MAX_HEADER - Number of bytes in the largest Homa header.
-+ */
-+#define HOMA_MAX_HEADER 90
-+
-+/**
-+ * struct homa_common_hdr - Wire format for the first bytes in every Homa
-+ * packet. This must (mostly) match the format of a TCP header to enable
-+ * Homa packets to actually be transmitted as TCP packets (and thereby
-+ * take advantage of TSO and other features).
-+ */
-+struct homa_common_hdr {
-+	/**
-+	 * @sport: Port on source machine from which packet was sent.
-+	 * Must be in the same position as in a TCP header.
-+	 */
-+	__be16 sport;
-+
-+	/**
-+	 * @dport: Port on destination that is to receive packet. Must be
-+	 * in the same position as in a TCP header.
-+	 */
-+	__be16 dport;
-+
-+	/**
-+	 * @sequence: corresponds to the sequence number field in TCP headers;
-+	 * used in DATA packets to hold the offset in the message of the first
-+	 * byte of data. However, when TSO is used without TCP hijacking, this
-+	 * value will only be correct in the first segment of a GSO packet.
-+	 */
-+	__be32 sequence;
-+
-+	/**
-+	 * @ack: Corresponds to the high-order bits of the acknowledgment
-+	 * field in TCP headers; not used by Homa.
-+	 */
-+	char ack[3];
-+
-+	/**
-+	 * @type: Homa packet type (one of the values of the homa_packet_type
-+	 * enum). Corresponds to the low-order byte of the ack in TCP.
-+	 */
-+	u8 type;
-+
-+	/**
-+	 * @doff: High order 4 bits correspond to the Data Offset field of a
-+	 * TCP header. In DATA packets they hold the number of 4-byte chunks
-+	 * in a homa_data_hdr; used by TSO to determine where the replicated
-+	 * header portion ends. For other packets the offset is always 5
-+	 * (standard TCP header length); other values may cause some NICs
-+	 * (such as Intel E810-C) to drop outgoing data packets when TCP
-+	 * hijacking is enabled. The low-order bits are always 0.
-+	 */
-+	u8 doff;
-+
-+	/** @reserved1: Not used (corresponds to TCP flags). */
-+	u8 reserved1;
-+
-+	/**
-+	 * @window: Corresponds to the window field in TCP headers. Not used
-+	 * by HOMA.
-+	 */
-+	__be16 window;
-+
-+	/**
-+	 * @checksum: Not used by Homa, but must occupy the same bytes as
-+	 * the checksum in a TCP header (TSO may modify this?).
-+	 */
-+	__be16 checksum;
-+
-+	/** @reserved2: Not used (corresponds to TCP urgent field). */
-+	__be16 reserved2;
-+
-+	/**
-+	 * @sender_id: the identifier of this RPC as used on the sender (i.e.,
-+	 * if the low-order bit is set, then the sender is the server for
-+	 * this RPC).
-+	 */
-+	__be64 sender_id;
-+} __packed;
-+
-+/**
-+ * struct homa_ack - Identifies an RPC that can be safely deleted by its
-+ * server. After sending the response for an RPC, the server must retain its
-+ * state for the RPC until it knows that the client has successfully
-+ * received the entire response. An ack indicates this. Clients will
-+ * piggyback acks on future data packets, but if a client doesn't send
-+ * any data to the server, the server will eventually request an ack
-+ * explicitly with a NEED_ACK packet, in which case the client will
-+ * return an explicit ACK.
-+ */
-+struct homa_ack {
-+	/**
-+	 * @client_id: The client's identifier for the RPC. 0 means this ack
-+	 * is invalid.
-+	 */
-+	__be64 client_id;
-+
-+	/** @server_port: The server-side port for the RPC. */
-+	__be16 server_port;
-+} __packed;
-+
-+/* struct homa_data_hdr - Contains data for part or all of a Homa message.
-+ * An incoming packet consists of a homa_data_hdr followed by message data.
-+ * An outgoing packet can have this simple format as well, or it can be
-+ * structured as a GSO packet with the following format:
++ * homa_peer_alloc_peertab() - Allocate and initialize a homa_peertab.
 + *
-+ *    |-----------------------|
-+ *    |                       |
-+ *    |     data_header       |
-+ *    |                       |
-+ *    |---------------------- |
-+ *    |                       |
-+ *    |                       |
-+ *    |     segment data      |
-+ *    |                       |
-+ *    |                       |
-+ *    |-----------------------|
-+ *    |      seg_header       |
-+ *    |-----------------------|
-+ *    |                       |
-+ *    |                       |
-+ *    |     segment data      |
-+ *    |                       |
-+ *    |                       |
-+ *    |-----------------------|
-+ *    |      seg_header       |
-+ *    |-----------------------|
-+ *    |                       |
-+ *    |                       |
-+ *    |     segment data      |
-+ *    |                       |
-+ *    |                       |
-+ *    |-----------------------|
-+ *
-+ * TSO will not adjust @homa_common_hdr.sequence in the segments, so Homa
-+ * sprinkles correct offsets (in homa_seg_hdrs) throughout the segment data;
-+ * TSO/GSO will include a different homa_seg_hdr in each generated packet.
++ * Return:    A pointer to the new homa_peertab, or ERR_PTR(-errno) if there
++ *            was a problem.
 + */
-+
-+struct homa_seg_hdr {
-+	/**
-+	 * @offset: Offset within message of the first byte of data in
-+	 * this segment.
-+	 */
-+	__be32 offset;
-+} __packed;
-+
-+struct homa_data_hdr {
-+	struct homa_common_hdr common;
-+
-+	/** @message_length: Total #bytes in the message. */
-+	__be32 message_length;
-+
-+	__be32 reserved1;
-+
-+	/** @ack: If the @client_id field of this is nonzero, provides info
-+	 * about an RPC that the recipient can now safely free. Note: in
-+	 * TSO packets this will get duplicated in each of the segments;
-+	 * in order to avoid repeated attempts to ack the same RPC,
-+	 * homa_gro_receive will clear this field in all segments but the
-+	 * first.
-+	 */
-+	struct homa_ack ack;
-+
-+	__be16 reserved2;
-+
-+	/**
-+	 * @retransmit: 1 means this packet was sent in response to a RESEND
-+	 * (it has already been sent previously).
-+	 */
-+	u8 retransmit;
-+
-+	char pad[3];
-+
-+	/** @seg: First of possibly many segments. */
-+	struct homa_seg_hdr seg;
-+} __packed;
-+
-+/**
-+ * homa_data_len() - Returns the total number of bytes in a DATA packet
-+ * after the homa_data_hdr. Note: if the packet is a GSO packet, the result
-+ * may include metadata as well as packet data.
-+ * @skb:   Incoming data packet
-+ * Return: see above
-+ */
-+static inline int homa_data_len(struct sk_buff *skb)
++struct homa_peertab *homa_peer_alloc_peertab(void)
 +{
-+	return skb->len - skb_transport_offset(skb) -
-+			sizeof(struct homa_data_hdr);
++	struct homa_peertab *peertab;
++	int err;
++
++	peertab = kzalloc_obj(*peertab, GFP_KERNEL);
++	if (!peertab)
++		return ERR_PTR(-ENOMEM);
++
++	spin_lock_init(&peertab->lock);
++	err = rhashtable_init(&peertab->ht, &ht_params);
++	if (err) {
++		kfree(peertab);
++		return ERR_PTR(err);
++	}
++	peertab->ht_valid = true;
++	rhashtable_walk_enter(&peertab->ht, &peertab->ht_iter);
++	peertab->gc_threshold = 5000;
++	peertab->net_max = 10000;
++	peertab->idle_secs_min = 10;
++	peertab->idle_secs_max = 120;
++
++	homa_peer_update_sysctl_deps(peertab);
++	return peertab;
 +}
 +
 +/**
-+ * struct homa_resend_hdr - Wire format for RESEND packets.
-+ *
-+ * A RESEND is sent by the receiver when it believes that message data may
-+ * have been lost in transmission (or if it is concerned that the sender may
-+ * have crashed). The receiver should resend the specified portion of the
-+ * message, even if it already sent it previously.
++ * homa_peer_free_net() - Garbage collect all of the peer information
++ * associated with a particular network namespace.
++ * @hnet:    Network namespace whose peers should be freed. There must not
++ *           be any active sockets or RPCs for this namespace.
 + */
-+struct homa_resend_hdr {
-+	/** @common: Fields common to all packet types. */
-+	struct homa_common_hdr common;
++void homa_peer_free_net(struct homa_net *hnet)
++{
++	struct homa_peertab *peertab = hnet->homa->peertab;
++	struct rhashtable_iter iter;
++	struct homa_peer *peer;
++
++	spin_lock_bh(&peertab->lock);
++	rhashtable_walk_enter(&peertab->ht, &iter);
++	rhashtable_walk_start(&iter);
++	while (1) {
++		peer = rhashtable_walk_next(&iter);
++		if (!peer)
++			break;
++		if (IS_ERR(peer))
++			continue;
++		if (peer->ht_key.hnet != hnet)
++			continue;
++		if (rhashtable_remove_fast(&peertab->ht, &peer->ht_linkage,
++					   ht_params) == 0) {
++			homa_peer_release(peer);
++			hnet->num_peers--;
++			peertab->num_peers--;
++		}
++	}
++	rhashtable_walk_stop(&iter);
++	rhashtable_walk_exit(&iter);
++	WARN(hnet->num_peers != 0, "%s ended up with hnet->num_peers %d",
++	     __func__, hnet->num_peers);
++	spin_unlock_bh(&peertab->lock);
++}
++
++/**
++ * homa_peer_release_fn() - This function is invoked for each entry in
++ * the peer hash table by the rhashtable code when the table is being
++ * deleted. It frees its argument.
++ * @object:     homa_peer to free.
++ * @dummy:      Not used.
++ */
++void homa_peer_release_fn(void *object, void *dummy)
++{
++	struct homa_peer *peer = object;
++
++	homa_peer_release(peer);
++}
++
++/**
++ * homa_peer_free_peertab() - Destructor for homa_peertabs.
++ * @peertab:  The table to destroy. Caller must ensure that it will never
++ *            be accessed again.
++ */
++void homa_peer_free_peertab(struct homa_peertab *peertab)
++{
++	if (peertab->ht_valid) {
++		rhashtable_walk_exit(&peertab->ht_iter);
++		rhashtable_free_and_destroy(&peertab->ht, homa_peer_release_fn,
++					    NULL);
++	}
++	kfree(peertab);
++}
++
++/**
++ * homa_peer_prefer_evict() - Given two peers, determine which one is
++ * a better candidate for eviction.
++ * @peertab:    Overall information used to manage peers.
++ * @peer1:      First peer.
++ * @peer2:      Second peer.
++ * Return:      True if @peer1 is a better candidate for eviction than @peer2.
++ */
++int homa_peer_prefer_evict(struct homa_peertab *peertab,
++			   struct homa_peer *peer1,
++			   struct homa_peer *peer2)
++{
++	/* Prefer a peer whose homa-net is over its limit; if both are either
++	 * over or under, then prefer the peer with the longest idle time.
++	 */
++	if (peer1->ht_key.hnet->num_peers > peertab->net_max) {
++		if (peer2->ht_key.hnet->num_peers <= peertab->net_max)
++			return true;
++		else
++			return peer1->access_jiffies < peer2->access_jiffies;
++	}
++	if (peer2->ht_key.hnet->num_peers > peertab->net_max)
++		return false;
++	else
++		return peer1->access_jiffies < peer2->access_jiffies;
++}
++
++/**
++ * homa_peer_pick_victims() - Select a few peers that can be freed.
++ * @peertab:      Choose peers that are stored here.
++ * @victims:      Return addresses of victims here.
++ * @max_victims:  Limit on how many victims to choose (and size of @victims
++ *                array).
++ * Return:        The number of peers stored in @victims; may be zero.
++ */
++int homa_peer_pick_victims(struct homa_peertab *peertab,
++			   struct homa_peer *victims[], int max_victims)
++{
++	struct homa_peer *peer;
++	int num_victims = 0;
++	int to_scan;
++	int i, idle;
++
++	/* Scan 2 peers for every potential victim and keep the "best"
++	 * peers for removal.
++	 */
++	rhashtable_walk_start(&peertab->ht_iter);
++	for (to_scan = 2 * max_victims; to_scan > 0; to_scan--) {
++		peer = rhashtable_walk_next(&peertab->ht_iter);
++		if (!peer) {
++			/* Reached the end of the table; restart at
++			 * the beginning.
++			 */
++			rhashtable_walk_stop(&peertab->ht_iter);
++			rhashtable_walk_exit(&peertab->ht_iter);
++			rhashtable_walk_enter(&peertab->ht, &peertab->ht_iter);
++			rhashtable_walk_start(&peertab->ht_iter);
++			peer = rhashtable_walk_next(&peertab->ht_iter);
++			if (!peer)
++				break;
++		}
++		if (IS_ERR(peer)) {
++			/* rhashtable decided to restart the search at the
++			 * beginning.
++			 */
++			peer = rhashtable_walk_next(&peertab->ht_iter);
++			if (!peer || IS_ERR(peer))
++				break;
++		}
++
++		/* Has this peer been idle long enough to be candidate for
++		 * eviction?
++		 */
++		idle = jiffies - peer->access_jiffies;
++		if (idle < peertab->idle_jiffies_min)
++			continue;
++		if (idle < peertab->idle_jiffies_max &&
++		    peer->ht_key.hnet->num_peers <= peertab->net_max)
++			continue;
++
++		/* Sort the candidate into the existing list of victims. */
++		for (i = 0; i < num_victims; i++) {
++			if (peer == victims[i]) {
++				/* This can happen if there aren't very many
++				 * peers and we wrapped around in the hash
++				 * table.
++				 */
++				peer = NULL;
++				break;
++			}
++			if (homa_peer_prefer_evict(peertab, peer, victims[i])) {
++				struct homa_peer *tmp;
++
++				tmp = victims[i];
++				victims[i] = peer;
++				peer = tmp;
++			}
++		}
++
++		if (num_victims < max_victims && peer) {
++			victims[num_victims] = peer;
++			num_victims++;
++		}
++	}
++	rhashtable_walk_stop(&peertab->ht_iter);
++	return num_victims;
++}
++
++/**
++ * homa_peer_gc() - This function is invoked by Homa at regular intervals;
++ * its job is to ensure that the number of peers stays within limits.
++ * If the number grows too large, it selectively deletes peers to get
++ * back under the limit.
++ * @peertab:   Structure whose peers should be considered for garbage
++ *             collection.
++ */
++void homa_peer_gc(struct homa_peertab *peertab)
++{
++#define EVICT_BATCH_SIZE 5
++	struct homa_peer *victims[EVICT_BATCH_SIZE];
++	int num_victims;
++	int i;
++
++	spin_lock_bh(&peertab->lock);
++	if (peertab->num_peers < peertab->gc_threshold)
++		goto done;
++	num_victims = homa_peer_pick_victims(peertab, victims,
++					     EVICT_BATCH_SIZE);
++	if (num_victims == 0)
++		goto done;
++
++	for (i = 0; i < num_victims; i++) {
++		struct homa_peer *peer = victims[i];
++
++		if (rhashtable_remove_fast(&peertab->ht, &peer->ht_linkage,
++					   ht_params) == 0) {
++			homa_peer_release(peer);
++			peertab->num_peers--;
++			peer->ht_key.hnet->num_peers--;
++		}
++	}
++done:
++	spin_unlock_bh(&peertab->lock);
++}
++
++/**
++ * homa_peer_alloc() - Allocate and initialize a new homa_peer object.
++ * @hsk:        Socket for which the peer will be used.
++ * @addr:       Address of the desired host: IPv4 addresses are represented
++ *              as IPv4-mapped IPv6 addresses.
++ * Return:      The peer associated with @addr, or a negative errno if an
++ *              error occurred. On a successful return the reference count
++ *              will be incremented for the returned peer. Sets hsk->error_msg
++ *              on errors.
++ */
++struct homa_peer *homa_peer_alloc(struct homa_sock *hsk,
++				  const struct in6_addr *addr)
++{
++	struct homa_peer *peer;
++	int status;
++
++	peer = kzalloc_obj(*peer, GFP_ATOMIC);
++	if (!peer) {
++		hsk->error_msg = "couldn't allocate memory for homa_peer";
++		return (struct homa_peer *)ERR_PTR(-ENOMEM);
++	}
++	peer->ht_key.addr = *addr;
++	peer->ht_key.hnet = hsk->hnet;
++	refcount_set(&peer->refs, 1);
++	peer->access_jiffies = jiffies;
++	spin_lock_init(&peer->lock);
++	peer->current_ticks = -1;
++
++	status = homa_peer_reset_dst(peer, hsk);
++	if (status != 0) {
++		hsk->error_msg = "couldn't find route for peer";
++		kfree(peer);
++		return ERR_PTR(status);
++	}
++	return peer;
++}
++
++/**
++ * homa_peer_free() - Release any resources in a peer and free the homa_peer
++ * struct. Invoked by the RCU mechanism via homa_peer_release.
++ * @head:   Pointer to the rcu_head field of the peer to free.
++ */
++void homa_peer_free(struct rcu_head *head)
++{
++	struct homa_peer *peer;
++
++	peer = container_of(head, struct homa_peer, rcu_head);
++	dst_release(rcu_dereference_protected(peer->dst, 1));
++	kfree(peer);
++}
++
++/**
++ * homa_peer_get() - Returns the peer associated with a given host; creates
++ * a new homa_peer if one doesn't already exist.
++ * @hsk:        Socket where the peer will be used.
++ * @addr:       Address of the desired host: IPv4 addresses are represented
++ *              as IPv4-mapped IPv6 addresses.
++ *
++ * Return:      The peer associated with @addr, or a negative errno if an
++ *              error occurred. On a successful return the reference count
++ *              will be incremented for the returned peer. The caller must
++ *              eventually call homa_peer_release to release the reference.
++ */
++struct homa_peer *homa_peer_get(struct homa_sock *hsk,
++				const struct in6_addr *addr)
++{
++	struct homa_peertab *peertab = hsk->homa->peertab;
++	struct homa_peer *peer, *other;
++	struct homa_peer_key key;
++
++	key.addr = *addr;
++	key.hnet = hsk->hnet;
++	rcu_read_lock();
++	peer = rhashtable_lookup(&peertab->ht, &key, ht_params);
++	if (peer && refcount_inc_not_zero(&peer->refs)) {
++		peer->access_jiffies = jiffies;
++		rcu_read_unlock();
++		return peer;
++	}
++
++	/* No existing entry, so we have to create a new one. */
++	peer = homa_peer_alloc(hsk, addr);
++	if (IS_ERR(peer)) {
++		rcu_read_unlock();
++		return peer;
++	}
++	spin_lock_bh(&peertab->lock);
++	other = rhashtable_lookup_get_insert_fast(&peertab->ht,
++						  &peer->ht_linkage, ht_params);
++	if (IS_ERR(other)) {
++		/* Couldn't insert; return the error info. */
++		homa_peer_release(peer);
++		peer = other;
++	} else if (other) {
++		/* Someone else already created the desired peer; use that
++		 * one instead of ours.
++		 */
++		homa_peer_release(peer);
++		refcount_inc(&other->refs);
++		peer = other;
++		peer->access_jiffies = jiffies;
++	} else {
++		refcount_inc(&peer->refs);
++		peertab->num_peers++;
++		key.hnet->num_peers++;
++	}
++	spin_unlock_bh(&peertab->lock);
++	rcu_read_unlock();
++	return peer;
++}
++
++/**
++ * homa_get_dst() - Returns destination information associated with a peer,
++ * updating it if the cached information is stale.
++ * @peer:   Peer whose destination information is desired.
++ * @hsk:    Homa socket with which the dst will be used; needed by lower-level
++ *          code to recreate the dst.
++ * Return:  Up-to-date destination for peer; a reference has been taken
++ *          on this dst_entry, which the caller must eventually release.
++ */
++struct dst_entry *homa_get_dst(struct homa_peer *peer, struct homa_sock *hsk)
++{
++	struct dst_entry *dst;
++	int pass;
++
++	rcu_read_lock();
++	for (pass = 0; ; pass++) {
++		do {
++			/* This loop repeats only if we happen to fetch
++			 * the dst right when it is being reset.
++			 */
++			dst = rcu_dereference(peer->dst);
++		} while (!dst_hold_safe(dst));
++
++		/* After the first pass it's OK to return an obsolete dst
++		 * (we're basically giving up; continuing could result in
++		 * an infinite loop if homa_dst_refresh can't create a new dst).
++		 */
++		if (dst_check(dst, peer->dst_cookie) || pass > 0)
++			break;
++		dst_release(dst);
++		homa_peer_reset_dst(peer, hsk);
++	}
++	rcu_read_unlock();
++
++	/* This code is needed to handle situations where the same peer
++	 * is used by multiple sockets, some of which use TCP hijacking
++	 * and some of which don't (e.g. the peer is created for a socket
++	 * without hijacking, then hijacking is enabled and a new socket
++	 * uses the same peer). flowi_proto determines the IP protocol
++	 * that will be stored in IP headers for IPv6; sk_protocol is
++	 * IPPROTO_TCP if hijacking is being used, IPPROTO_HOMA if not.
++	 */
++	peer->flow.flowi_proto = hsk->sock.sk_protocol;
++	return dst;
++}
++
++/**
++ * homa_peer_reset_dst() - Find an appropriate dst_entry for a peer and
++ * store it in the peer's dst field. If the field is already set, the
++ * current value is assumed to be stale and will be discarded if a new
++ * dst_entry can be created.
++ * @peer:   The peer whose dst field should be reset.
++ * @hsk:    Socket that will be used for sending packets.
++ * Return:  Zero for success, or a negative errno if there was an error
++ *          (in which case the existing value for the dst field is left
++ *          in place).
++ */
++int homa_peer_reset_dst(struct homa_peer *peer, struct homa_sock *hsk)
++{
++	struct dst_entry *dst;
++	int result = 0;
++
++	homa_peer_lock(peer);
++	memset(&peer->flow, 0, sizeof(peer->flow));
++	if (hsk->sock.sk_family == AF_INET) {
++		struct rtable *rt;
++
++		flowi4_init_output(&peer->flow.u.ip4, hsk->sock.sk_bound_dev_if,
++				   hsk->sock.sk_mark, hsk->inet.tos,
++				   RT_SCOPE_UNIVERSE, hsk->sock.sk_protocol, 0,
++				   ipv6_to_ipv4(peer->addr),
++				   hsk->inet.inet_saddr, 0, 0,
++				   hsk->sock.sk_uid);
++		security_sk_classify_flow(&hsk->sock,
++					  &peer->flow.u.__fl_common);
++		rt = ip_route_output_flow(sock_net(&hsk->sock),
++					  &peer->flow.u.ip4, &hsk->sock);
++		if (IS_ERR(rt)) {
++			result = PTR_ERR(rt);
++			goto done;
++		}
++		dst = &rt->dst;
++		peer->dst_cookie = 0;
++	} else {
++		/* This code is derived from code in tcp_v6_connect. */
++		peer->flow.u.ip6.flowi6_proto = hsk->sock.sk_protocol;
++		peer->flow.u.ip6.daddr = peer->addr;
++		peer->flow.u.ip6.saddr = hsk->inet.pinet6->saddr;
++		peer->flow.u.ip6.flowlabel = ip6_make_flowinfo(hsk->inet.tos,
++							       0);
++		peer->flow.u.ip6.flowi6_oif = hsk->sock.sk_bound_dev_if;
++		peer->flow.u.ip6.flowi6_mark = hsk->sock.sk_mark;
++		peer->flow.u.ip6.fl6_dport = 0;
++		peer->flow.u.ip6.fl6_sport = 0;
++		peer->flow.u.ip6.flowi6_uid = hsk->sock.sk_uid;
++		security_sk_classify_flow(&hsk->sock,
++					  &peer->flow.u.__fl_common);
++		dst = ip6_dst_lookup_flow(sock_net(&hsk->sock), &hsk->sock,
++					  &peer->flow.u.ip6, NULL);
++		if (IS_ERR(dst)) {
++			result = PTR_ERR(dst);
++			goto done;
++		}
++		peer->dst_cookie = rt6_get_cookie(dst_rt6_info(dst));
++	}
++
++	/* From the standpoint of homa_get_dst, peer->dst is not updated
++	 * atomically with peer->dst_cookie, which means homa_get_dst could
++	 * use a new cookie with an old dest. Fortunately, this is benign; at
++	 * worst, it might cause an obsolete dst to be reused (resulting in
++	 * a lost packet) or a valid dst to be replaced (resulting in
++	 * unnecessary work).
++	 */
++	dst_release(rcu_replace_pointer(peer->dst, dst, true));
++
++done:
++	homa_peer_unlock(peer);
++	return result;
++}
++
++/**
++ * homa_peer_add_ack() - Add a given RPC to the list of unacked
++ * RPCs for its server. Once this method has been invoked, it's safe
++ * to delete the RPC, since it will eventually be acked to the server.
++ * @rpc:    Client RPC that has now completed.
++ */
++void homa_peer_add_ack(struct homa_rpc *rpc)
++{
++	struct homa_peer *peer = rpc->peer;
++	struct homa_ack_hdr ack;
++
++	homa_peer_lock(peer);
++	if (peer->num_acks < HOMA_MAX_ACKS_PER_PKT) {
++		peer->acks[peer->num_acks].client_id = cpu_to_be64(rpc->id);
++		peer->acks[peer->num_acks].server_port = htons(rpc->dport);
++		peer->num_acks++;
++		homa_peer_unlock(peer);
++		return;
++	}
++
++	/* The peer has filled up; send an ACK message to empty it. The
++	 * RPC in the message header will also be considered ACKed.
++	 */
++	memcpy(ack.acks, peer->acks, sizeof(peer->acks));
++	ack.num_acks = htons(peer->num_acks);
++	peer->num_acks = 0;
++	homa_peer_unlock(peer);
++	homa_xmit_control(ACK, &ack, sizeof(ack), rpc);
++}
++
++/**
++ * homa_peer_get_acks() - Copy acks out of a peer, and remove them from the
++ * peer.
++ * @peer:    Peer to check for possible unacked RPCs.
++ * @count:   Maximum number of acks to return.
++ * @dst:     The acks are copied to this location.
++ *
++ * Return:   The number of acks extracted from the peer (<= count).
++ */
++int homa_peer_get_acks(struct homa_peer *peer, int count, struct homa_ack *dst)
++{
++	/* Don't waste time acquiring the lock if there are no ids available. */
++	if (peer->num_acks == 0)
++		return 0;
++
++	homa_peer_lock(peer);
++
++	if (count > peer->num_acks)
++		count = peer->num_acks;
++	memcpy(dst, &peer->acks[peer->num_acks - count],
++	       count * sizeof(peer->acks[0]));
++	peer->num_acks -= count;
++
++	homa_peer_unlock(peer);
++	return count;
++}
++
++/**
++ * homa_peer_update_sysctl_deps() - Update any peertab fields that depend
++ * on values set by sysctl. This function is invoked anytime a peer sysctl
++ * value is updated.
++ * @peertab:   Struct to update.
++ */
++void homa_peer_update_sysctl_deps(struct homa_peertab *peertab)
++{
++	peertab->idle_jiffies_min = peertab->idle_secs_min * HZ;
++	peertab->idle_jiffies_max = peertab->idle_secs_max * HZ;
++}
++
+diff --git a/net/homa/homa_peer.h b/net/homa/homa_peer.h
+new file mode 100644
+index 000000000000..c6af84abf2b9
+--- /dev/null
++++ b/net/homa/homa_peer.h
+@@ -0,0 +1,303 @@
++/* SPDX-License-Identifier: BSD-2-Clause or GPL-2.0+ */
++
++/* This file contains definitions related to managing peers (homa_peer
++ * and homa_peertab).
++ */
++
++#ifndef _HOMA_PEER_H
++#define _HOMA_PEER_H
++
++#include "homa_wire.h"
++#include "homa_sock.h"
++
++#include <linux/rhashtable.h>
++
++struct homa_rpc;
++
++/**
++ * struct homa_peertab - Stores homa_peer objects, indexed by IPv6
++ * address. There is one of these per struct homa.
++ */
++struct homa_peertab {
++	/**
++	 * @lock: Used to synchronize updates to @ht as well as other
++	 * operations on this object.
++	 */
++	spinlock_t lock;
++
++	/** @ht: Hash table that stores all struct peers. */
++	struct rhashtable ht;
++
++	/** @ht_iter: Used to scan ht to find peers to garbage collect. */
++	struct rhashtable_iter ht_iter;
++
++	/** @num_peers: Total number of peers currently in @ht. */
++	int num_peers;
 +
 +	/**
-+	 * @offset: Offset within the message of the first byte of data that
-+	 * should be retransmitted.
++	 * @ht_valid: True means ht and ht_iter have been initialized and must
++	 * eventually be destroyed.
 +	 */
-+	__be32 offset;
++	bool ht_valid;
++
++	/** @rcu_head: Holds state of a pending call_rcu invocation. */
++	struct rcu_head rcu_head;
 +
 +	/**
-+	 * @length: Number of bytes of data to retransmit. -1 means no data
-+	 * has been received for the message, so everything sent previously
-+	 * should be retransmitted.
++	 * @gc_stop_count: Nonzero means that peer garbage collection
++	 * should not be performed (conflicting state changes are underway).
 +	 */
-+	__be32 length;
++	int gc_stop_count;
 +
-+} __packed;
++	/**
++	 * @gc_threshold: If @num_peers is less than this, don't bother
++	 * doing any peer garbage collection. Set externally via sysctl.
++	 */
++	int gc_threshold;
++
++	/**
++	 * @net_max: If the number of peers for a homa_net exceeds this number,
++	 * work aggressively to reclaim peers for that homa_net. Set
++	 * externally via sysctl.
++	 */
++	int net_max;
++
++	/**
++	 * @idle_secs_min: A peer will not be considered for garbage collection
++	 * under any circumstances if it has been idle less than this many
++	 * seconds. Set externally via sysctl.
++	 */
++	int idle_secs_min;
++
++	/**
++	 * @idle_jiffies_min: Same as idle_secs_min except in units
++	 * of jiffies.
++	 */
++	unsigned long idle_jiffies_min;
++
++	/**
++	 * @idle_secs_max: A peer that has been idle for less than
++	 * this many seconds will not be considered for garbage collection
++	 * unless its homa_net has more than @net_threshold peers. Set
++	 * externally via sysctl.
++	 */
++	int idle_secs_max;
++
++	/**
++	 * @idle_jiffies_max: Same as idle_secs_max except in units
++	 * of jiffies.
++	 */
++	unsigned long idle_jiffies_max;
++
++};
 +
 +/**
-+ * struct homa_rpc_unknown_hdr - Wire format for RPC_UNKNOWN packets.
-+ *
-+ * An RPC_UNKNOWN packet is sent by either server or client when it receives a
-+ * packet for an RPC that is unknown to it. When a client receives an
-+ * RPC_UNKNOWN packet it will typically restart the RPC from the beginning;
-+ * when a server receives an RPC_UNKNOWN packet it will typically discard its
-+ * state for the RPC.
++ * struct homa_peer_key - Used to look up homa_peer structs in an rhashtable.
 + */
-+struct homa_rpc_unknown_hdr {
-+	/** @common: Fields common to all packet types. */
-+	struct homa_common_hdr common;
-+} __packed;
++struct homa_peer_key {
++	/**
++	 * @addr: Address of the desired host. IPv4 addresses are represented
++	 * with IPv4-mapped IPv6 addresses. Must be the first variable in
++	 * the struct, because of union in homa_peer.
++	 */
++	struct in6_addr addr;
++
++	/** @hnet: The network namespace in which this peer is valid. */
++	struct homa_net *hnet;
++};
 +
 +/**
-+ * struct homa_busy_hdr - Wire format for BUSY packets.
-+ *
-+ * These packets tell the recipient that the sender is still alive (even if
-+ * it isn't sending data expected by the recipient).
++ * struct homa_peer - One of these objects exists for each machine that we
++ * have communicated with (either as client or server).
 + */
-+struct homa_busy_hdr {
-+	/** @common: Fields common to all packet types. */
-+	struct homa_common_hdr common;
-+} __packed;
++struct homa_peer {
++	union {
++		/**
++		 * @addr: IPv6 address for the machine (IPv4 addresses are
++		 * stored as IPv4-mapped IPv6 addresses).
++		 */
++		struct in6_addr addr;
 +
-+/**
-+ * struct homa_need_ack_hdr - Wire format for NEED_ACK packets.
-+ *
-+ * These packets ask the recipient (a client) to return an ACK message if
-+ * the packet's RPC is no longer active.
-+ */
-+struct homa_need_ack_hdr {
-+	/** @common: Fields common to all packet types. */
-+	struct homa_common_hdr common;
-+} __packed;
++		/** @ht_key: The hash table key for this peer in peertab->ht. */
++		struct homa_peer_key ht_key;
++	};
 +
-+/**
-+ * struct homa_ack_hdr - Wire format for ACK packets.
-+ *
-+ * These packets are sent from a client to a server to indicate that
-+ * a set of RPCs is no longer active on the client, so the server can
-+ * free any state it may have for them.
-+ */
-+struct homa_ack_hdr {
-+	/** @common: Fields common to all packet types. */
-+	struct homa_common_hdr common;
++	/**
++	 * @refs: Number of outstanding references to this peer. Includes
++	 * one reference for the entry in peertab->ht, plus one for each
++	 * call to homa_peer_get that has not been canceled by a call to
++	 * homa_peer_release; the peer gets freed when this value becomes
++	 * zero.
++	 */
++	refcount_t refs;
 +
-+	/** @num_acks: Number of (leading) elements in @acks that are valid. */
-+	__be16 num_acks;
++	/**
++	 * @access_jiffies: Time in jiffies of most recent access to this
++	 * peer.
++	 */
++	unsigned long access_jiffies;
 +
-+#define HOMA_MAX_ACKS_PER_PKT 5
-+	/** @acks: Info about RPCs that are no longer active. */
++	/**
++	 * @ht_linkage: Used by rashtable implement to link this peer into
++	 * peertab->ht.
++	 */
++	struct rhash_head ht_linkage;
++
++	/**
++	 * @lock: used to synchronize access to fields in this struct, such
++	 * as @num_acks, @acks, @dst, and @dst_cookie.
++	 */
++	spinlock_t lock ____cacheline_aligned_in_smp;
++
++	/**
++	 * @num_acks: the number of (initial) entries in @acks that
++	 * currently hold valid information.
++	 */
++	int num_acks;
++
++	/**
++	 * @acks: info about client RPCs whose results have been completely
++	 * received.
++	 */
 +	struct homa_ack acks[HOMA_MAX_ACKS_PER_PKT];
-+} __packed;
 +
-+/**
-+ * homa_local_id(): given an RPC identifier from an input packet (which
-+ * is network-encoded), return the decoded id we should use for that
-+ * RPC on this machine.
-+ * @sender_id:  RPC id from an incoming packet, such as h->common.sender_id
-+ * Return: see above
-+ */
-+static inline u64 homa_local_id(__be64 sender_id)
-+{
-+	/* If the client bit was set on the sender side, it needs to be
-+	 * removed here, and conversely.
++	/**
++	 * @dst: Used to route packets to this peer; this object owns a
++	 * reference that must eventually be released.
 +	 */
-+	return be64_to_cpu(sender_id) ^ 1;
++	struct dst_entry __rcu *dst;
++
++	/**
++	 * @dst_cookie: Used to check whether dst is still valid. This is
++	 * accessed without synchronization, which is racy, but the worst
++	 * that can happen is using an obsolete dst.
++	 */
++	u32 dst_cookie;
++
++	/**
++	 * @flow: Addressing info used to create @dst and also required
++	 * when transmitting packets.
++	 */
++	struct flowi flow;
++
++	/**
++	 * @outstanding_resends: the number of resend requests we have
++	 * sent to this server (spaced @homa.resend_interval apart) since
++	 * we received a packet from this peer.
++	 */
++	int outstanding_resends;
++
++	/**
++	 * @most_recent_resend: @homa->timer_ticks when the most recent
++	 * resend was sent to this peer.
++	 */
++	int most_recent_resend;
++
++	/**
++	 * @least_recent_rpc: of all the RPCs for this peer scanned at
++	 * @current_ticks, this is the RPC whose @resend_timer_ticks
++	 * is farthest in the past.
++	 */
++	struct homa_rpc *least_recent_rpc;
++
++	/**
++	 * @least_recent_ticks: the @resend_timer_ticks value for
++	 * @least_recent_rpc.
++	 */
++	u32 least_recent_ticks;
++
++	/**
++	 * @current_ticks: the value of @homa->timer_ticks the last time
++	 * that @least_recent_rpc and @least_recent_ticks were computed.
++	 * Used to detect the start of a new homa_timer pass.
++	 */
++	u32 current_ticks;
++
++	/**
++	 * @resend_rpc: the value of @least_recent_rpc computed in the
++	 * previous homa_timer pass. This RPC will be issued a RESEND
++	 * in the current pass, if it still needs one.
++	 */
++	struct homa_rpc *resend_rpc;
++
++	/** @rcu_head: Holds state of a pending call_rcu invocation. */
++	struct rcu_head rcu_head;
++};
++
++void     homa_dst_refresh(struct homa_peertab *peertab,
++			  struct homa_peer *peer, struct homa_sock *hsk);
++struct dst_entry
++	*homa_get_dst(struct homa_peer *peer, struct homa_sock *hsk);
++void     homa_peer_add_ack(struct homa_rpc *rpc);
++struct homa_peer
++	*homa_peer_alloc(struct homa_sock *hsk, const struct in6_addr *addr);
++struct homa_peertab
++	*homa_peer_alloc_peertab(void);
++int      homa_peer_dointvec(const struct ctl_table *table, int write,
++			    void *buffer, size_t *lenp, loff_t *ppos);
++void     homa_peer_free(struct rcu_head *head);
++void     homa_peer_free_net(struct homa_net *hnet);
++void     homa_peer_free_peertab(struct homa_peertab *peertab);
++void     homa_peer_gc(struct homa_peertab *peertab);
++struct homa_peer
++	*homa_peer_get(struct homa_sock *hsk, const struct in6_addr *addr);
++int      homa_peer_get_acks(struct homa_peer *peer, int count,
++			    struct homa_ack *dst);
++int      homa_peer_pick_victims(struct homa_peertab *peertab,
++				struct homa_peer *victims[], int max_victims);
++int      homa_peer_prefer_evict(struct homa_peertab *peertab,
++				struct homa_peer *peer1,
++				struct homa_peer *peer2);
++void     homa_peer_release_fn(void *object, void *dummy);
++int      homa_peer_reset_dst(struct homa_peer *peer, struct homa_sock *hsk);
++void     homa_peer_update_sysctl_deps(struct homa_peertab *peertab);
++
++/**
++ * homa_peer_lock() - Acquire the lock for a peer.
++ * @peer:    Peer to lock.
++ */
++static inline void homa_peer_lock(struct homa_peer *peer)
++	__acquires(peer->lock)
++{
++	spin_lock_bh(&peer->lock);
 +}
 +
 +/**
-+ * homa_get_offset() - Returns the offset within message of the first byte
-+ * of data in a Homa DATA packet (the offset is stored in different places
-+ * in different situations).
-+ * @h:       Header for DATA packet
-+ * Return:   See above
++ * homa_peer_unlock() - Release the lock for a peer.
++ * @peer:   Peer to lock.
 + */
-+static inline int homa_get_offset(struct homa_data_hdr *h)
++static inline void homa_peer_unlock(struct homa_peer *peer)
++	__releases(peer->lock)
 +{
-+	return ntohl(h->seg.offset);
++	spin_unlock_bh(&peer->lock);
 +}
 +
-+#endif /* _HOMA_WIRE_H */
++/**
++ * homa_peer_release() - Release a reference on a peer (cancels the effect of
++ * a previous call to homa_peer_hold). If the reference count becomes zero
++ * then the peer may be deleted at any time.
++ * @peer:      Object to release.
++ */
++static inline void homa_peer_release(struct homa_peer *peer)
++{
++	if (refcount_dec_and_test(&peer->refs))
++		call_rcu(&peer->rcu_head, homa_peer_free);
++}
++
++/**
++ * homa_peer_compare() - Comparison function for entries in @peertab->ht.
++ * @arg:   Contains one of the keys to compare.
++ * @obj:   homa_peer object containing the other key to compare.
++ * Return: 0 means the keys match, 1 means mismatch.
++ */
++static inline int homa_peer_compare(struct rhashtable_compare_arg *arg,
++				    const void *obj)
++{
++	const struct homa_peer_key *key = arg->key;
++	const struct homa_peer *peer = obj;
++
++	return !(ipv6_addr_equal(&key->addr, &peer->ht_key.addr) &&
++		 peer->ht_key.hnet == key->hnet);
++}
++
++#endif /* _HOMA_PEER_H */
+diff --git a/net/homa/murmurhash3.h b/net/homa/murmurhash3.h
+new file mode 100644
+index 000000000000..1ed1f0b67a93
+--- /dev/null
++++ b/net/homa/murmurhash3.h
+@@ -0,0 +1,44 @@
++/* SPDX-License-Identifier: BSD-2-Clause or GPL-2.0+ */
++
++/* This file contains a limited implementation of MurmurHash3; it is
++ * used for rhashtables instead of the default jhash because it is
++ * faster (25 ns. vs. 40 ns as of May 2025)
++ */
++
++/**
++ * murmurhash3() - Hash function.
++ * @data:    Pointer to key for which a hash is desired.
++ * @len:     Length of the key; must be a multiple of 4.
++ * @seed:    Seed for the hash.
++ * Return:   A 32-bit hash value for the given key.
++ */
++static inline u32 murmurhash3(const void *data, u32 len, u32 seed)
++{
++	const u32 c1 = 0xcc9e2d51;
++	const u32 c2 = 0x1b873593;
++	const u32 *key = data;
++	u32 h = seed;
++
++	len = len >> 2;
++	for (size_t i = 0; i < len; i++) {
++		u32 k = key[i];
++
++		k *= c1;
++		k = (k << 15) | (k >> (32 - 15));
++		k *= c2;
++
++		h ^= k;
++		h = (h << 13) | (h >> (32 - 13));
++		h = h * 5 + 0xe6546b64;
++	}
++
++	/* Total number of input bytes */
++	h ^= len * 4;
++
++	h ^= h >> 16;
++	h *= 0x85ebca6b;
++	h ^= h >> 13;
++	h *= 0xc2b2ae35;
++	h ^= h >> 16;
++	return h;
++}
 -- 
 2.43.0
 
