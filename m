@@ -1,43 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3565C37FF67
-	for <netdev@vger.kernel.org>; Sun, 12 Apr 2026 14:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9CB313E24;
+	Sun, 12 Apr 2026 15:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776005938; cv=none; b=tBXmSu5MNzMrT8iNUO8u0eOj1DEOXgSrjM1mnc1iazwj6Lpi33GwXY9RU9RU9dKPqX6XFNy7o5aac+o+CC9KY5MgMA0nvo6VrIdnc1VaTZtRxevQAnEIhOmrL/VN/MZRA1qfW08+QcyssISzBtVLO83r7aqVT61jIuUlON2t2DI=
+	t=1776006593; cv=none; b=th+d1/8J6dQf7QVJ0bd0FT1NV52LBSgyRPiSpd/Ks6ufBbJQMkElU769zxMXkmsbUU3HDIuZCzI29K574iX9O88HEOaGrtAXnf84EuZtINPgtYqcH1wsEHArgP+jGoLS0KuSuzeuwciTsvk2YtPs6FIg6U9lsaT9tqOb3aaV4TE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776005938; c=relaxed/simple;
-	bh=ydsPDjVGsCeHWbPEKbjjI2nmQTicYsIGs2BIxAuK4rg=;
+	s=arc-20240116; t=1776006593; c=relaxed/simple;
+	bh=6Q9TrAexH6j3xFRDHRXi/lQBR7mf/rF1oo/tXG0V7sU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=otmCsin3M9dH2W8+qdlRAnfk17cxJTXoaMTd0GjCOPEO0stAOeRKE9lgTYQ/LO6johXPpG9/rlAvfxk4DDeySSKuNIF7grDEOlTFWA15FB+QY7z2CxxUFD2ghcqyWo04Rp0+a3fh257LhIrGsju3w4f8WnjdW+nKk1aEJaLYnzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cF51XSf9; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=N6Gs4K3RjZUS5vgtbsYJEPHJqz1D+M6ZdgAN4+sb5ZVyXa7mPOhAwvURba34reDpGjCQpW4I3hPast4Da7QPV/i8Wm1TKSKckNc2BUOXC6G5AlkZKs04cEfs7x2uyGRnzOQ24TpgRo0BQfwfVadWJ5Wo1kzS3l0t4HgI9PADfzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RNrEXUME; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cF51XSf9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 516E5C19424;
-	Sun, 12 Apr 2026 14:58:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RNrEXUME"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FFD4C19424;
+	Sun, 12 Apr 2026 15:09:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776005937;
-	bh=ydsPDjVGsCeHWbPEKbjjI2nmQTicYsIGs2BIxAuK4rg=;
+	s=k20201202; t=1776006593;
+	bh=6Q9TrAexH6j3xFRDHRXi/lQBR7mf/rF1oo/tXG0V7sU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=cF51XSf9mm39l0tm+vr+8OmSdquGgjfXemm0L2iBO1InNmg+lKjgouwRaiBv7X/Dc
-	 hzY5GQ7lKb3bdScjh7KEl7fxTemcxcyge3sZY3NX55rOi/wXyiF/y7W6XYoRn6Xej4
-	 D12Rcxs1YTHSjyMqgqbjQgrPtfUMq0QuD/F5EiC6SVckjopxP7Y35n9GJk7zsetGxq
-	 A1DDwOH4MuW/lXcyosSkJOBDRJJkFCIbaWtrL59f9SxTOqw1ZFZOPaTuc+OBVA4C3u
-	 rLcsMIzsxxbaT60nqUp8QH8qBRC4IAJbmfsZZywy7CyaBM2fT428rDSO7vZ4UfpoAO
-	 oOsE8fg/J9LLA==
-Date: Sun, 12 Apr 2026 07:58:56 -0700
+	b=RNrEXUMEwkOz/JD+fxWpOSKO7SKZ4MF2mAAXrBLylXadrhPRJCVMHbT9eDMPS+nRM
+	 xwMS4XzdK4VvCPzcjo98aRfARQi5D7LEtI9m0fdNAQO+F5234Oya2kuQos1DDBXCEn
+	 w34rDtPdnGQrxanRIUiWPSe2pGZfVBQCZ5Z+HOEUSsG1LGshBDaoBpb0vjU92jBIDv
+	 LcDaX2kHLJT9MWtVypoRHTF+gocDKfe5fiQFYR8ZS7SVYoGuLUlEi65elMGi1ijPTZ
+	 fMy2Y4pODvk0GOXlWiTLNND8A1lGczsYS2qakajtgp1eJFY7+BiqAE1eBszUh4SXH0
+	 VHFNVdQ5fnTIA==
+Date: Sun, 12 Apr 2026 08:09:51 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, David Ahern
- <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Kuniyuki Iwashima
- <kuni1840@gmail.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH v2 net-next 00/15] ip6mr: No RTNL for RTNL_FAMILY_IP6MR
- rtnetlink.
-Message-ID: <20260412075856.68f37eb6@kernel.org>
-In-Reply-To: <20260410211726.1668756-1-kuniyu@google.com>
-References: <20260410211726.1668756-1-kuniyu@google.com>
+To: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Cc: Manivannan Sadhasivam <mani@kernel.org>, Richard Cochran
+ <richardcochran@gmail.com>, mhi@lists.linux.dev,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, Vivek Pernamitta
+ <vivek.pernamitta@oss.qualcomm.com>, Sivareddy Surasani
+ <sivareddy.surasani@oss.qualcomm.com>, Vivek Pernamitta
+ <quic_vpernami@quicinc.com>, Imran Shaik <imran.shaik@oss.qualcomm.com>,
+ Taniya Das <taniya.das@oss.qualcomm.com>
+Subject: Re: [PATCH v2 0/6] bus: mhi: host: mhi_phc: Add support for PHC
+ over MHI
+Message-ID: <20260412080951.723295fa@kernel.org>
+In-Reply-To: <20260411-tsc_timesync-v2-0-6f25f72987b3@oss.qualcomm.com>
+References: <20260411-tsc_timesync-v2-0-6f25f72987b3@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,39 +51,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 10 Apr 2026 21:16:56 +0000 Kuniyuki Iwashima wrote:
-> This series is the IPv6 version of
-> 
->   https://lore.kernel.org/netdev/20260228221800.1082070-1-kuniyu@google.com/
-> 
-> and removes RTNL from ip6mr rtnetlink handlers.
-> 
-> After this series, there are a few RTNL left in net/ipv6/ipmr.c
-> and such users will be converted to per-netns RTNL in another
-> series.
-> 
-> Patch 1 extends the ipmr selftest to exercise most of the RTNL
->  paths in net/ipv6/ipmr.c
-> 
-> Patch 2 - 6 converts RTM_GETROUTE handlers to RCU.
-> 
-> Patch 7 removes struct fib_dump_filter.rtnl_held.
-> 
-> Patch 8 - 9 use RCU for mr_table for CONFIG_IP_MROUTE_MULTIPLE_TABLES=n
->  and CONFIG_IPV6_MROUTE_MULTIPLE_TABLES=n for ->exit_rtnl().
-> 
-> Patch 10 - 12 converts ->exit_batch() to ->exit_rtnl() to
->  save one RTNL in cleanup_net().
-> 
-> Patch 13 - 14 removes unnecessary RTNL during setup_net()
->  failure.
-> 
-> Patch 15 drops RTNL for MRT6_(ADD|DEL)_MFC(_PROXY)?.
+On Sat, 11 Apr 2026 13:42:00 +0530 Krishna Chaitanya Chundru wrote:
+> - User space applications use the standard Linux PTP interface.
+> - The PTP subsystem routes IOCTLs to the MHI PHC driver.
+> - The MHI PHC driver communicates with the MHI core to fetch timestamps.
+> - The MHI core interacts with the device to retrieve accurate time data.
 
-Hitting a bunch of:
-
-  SKIP      no netlink MFC interface
-
-on the new test here. Do we need to add something to .../config ?
-Current effective config for the net target is here:
-https://netdev-ctrl.bots.linux.dev/logs/vmksft/forwarding/results/597761/config
+Nack, stop adding functionality under the mhi "bus".
+Bus is supposed to be an abstraction into which real drivers plug in.
