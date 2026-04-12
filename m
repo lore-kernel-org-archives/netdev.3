@@ -1,45 +1,55 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36BC0BA3D
-	for <netdev@vger.kernel.org>; Sun, 12 Apr 2026 16:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B1F150997;
+	Sun, 12 Apr 2026 16:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776012451; cv=none; b=hoII4rfGwqQA8cqce9qaFfSdnmLrJbFRDerAyPOiR8KIDUR4x9ntPTkhxPNGpVUKr1Z0ZivfexAY1EjieKaMhtOZqT7olQPZQZrzFtodrK1euD+sfcZGIdd96gm3EQ+tdTd0imQxdM15ffD2Y7/hq6jDjs0Cf/ilAH/mec+2UVE=
+	t=1776012784; cv=none; b=mYcol6bAaUUoOp1PmQ9vqeEw81o0bZasgi+4bnh2ZkfKm/Pakux588nymHSNB4r8KRclI/glNN01m9d3uJSxiHO7ESUh7i92YjMJEemeHgECKHmWvsEOlpgMOdnrXRwK0OUly77+NzOha6LkQwJl3YKjYYggVZNM1tPdNDgtlPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776012451; c=relaxed/simple;
-	bh=lmtVsM9hxNNbEPBCSyNIncwBgC0pZ/vdTkfaKgaZScY=;
+	s=arc-20240116; t=1776012784; c=relaxed/simple;
+	bh=g5poCvQcWA/xbkpNMF1O1j2MyXDRI+9MIN54+M9oWpc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t94yqnrnEheRi+YNAI1LKzTMnpFoek/0VJ4Vp/Aa8ZJOPl9i0DsQqU2ZmNN7v/jcHTU0kbXvC3V8IZS3tRfmVUa5g3VGQXlBvBQFHuwCRyJhA491o60RjDKdWm77s4l/rFbGDxEEraSWeQL0103LFrWJsVOT38NcNTpPSvphkO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rSFr2Gkw; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=QlNvzBvE2aYdj4wjso9yCAe1WaaOOyNWpK/rKoVJcs5eTqGmqpfGtcv1xk9tvJTvWaKYMV8vUcWC3vRIC5KQCVP0PhV32MlLyRNCbHAq2E6AJgfvWxyt3XeY/UnRia4i4+GlvMkNkBovLNaixnm4Zr+si9CqJ+23sz9CMLEoK0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P+lT/ZRL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rSFr2Gkw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36F0AC19424;
-	Sun, 12 Apr 2026 16:47:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P+lT/ZRL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A32D1C19424;
+	Sun, 12 Apr 2026 16:53:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776012450;
-	bh=lmtVsM9hxNNbEPBCSyNIncwBgC0pZ/vdTkfaKgaZScY=;
+	s=k20201202; t=1776012784;
+	bh=g5poCvQcWA/xbkpNMF1O1j2MyXDRI+9MIN54+M9oWpc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rSFr2GkwkYbwrKTUO3mYlShyoU0rlEIqAkL/paGQ3GXn0krCwAZnTh1HPRQ5d9XII
-	 lM2YP76Cvx11LGMiWNAYPv/ifeyvK3mEL40pObmQhloXQgD79BgOxd3TSC5p8DNrW6
-	 f1wtiw4V8tfSgJF/NcJmow1xZzOP1Qi9XXnA7Utz1fus8R5ltAaz9l5dZ8LgGmEGg1
-	 Oj+6D/ImHfFYcM/J1P3HbcZBxkWdcFFuywMFOaToTIBrWZDZpnO05SxuZzCoZk24Xd
-	 pnmkdIblpXAcVlarU6sn6lCkvHJOMDlVE2K+qGrgUFQRS1TJ+PlGrNosqWSGEo0F4M
-	 acKFax/m69fug==
-Date: Sun, 12 Apr 2026 09:47:29 -0700
+	b=P+lT/ZRL7FLKTG/gOLIjYcotU2QOfltOQ0inwPC9VbLQ/1zLQt+1IRB6wLHaMzZL4
+	 48DpP2AIud3qlMgPu/8lcnKERUeEelj+pU1I2cA+NYEPiTphXEWxw77ote8JOLZisS
+	 WF97g96fb6mkJUo2Ewd4hAaAicQbPP78mcvm9SiXcx2ARuj72WkqikDibRo/CeP/Df
+	 gapbNyMvb/Z4WNPi/YvJJtHUj1QZtCEPjtskwTg5Bsfe0fIvCTefSOub+aHfYrlShq
+	 oDlLcIovcgRF2adsTx/3jMxXGBYe2dqxjsXh4Hf50p/V8OUq8v22IlXsnQ+opptd0q
+	 aUAh19GyuRfxg==
+Date: Sun, 12 Apr 2026 09:53:01 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Willem de Bruijn
- <willemb@google.com>, Mahesh Bandewar <maheshb@google.com>, Kuniyuki
- Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH v1 net-next] selftest: net: Use port outside of the
- default ip_local_ports in csum.c.
-Message-ID: <20260412094729.334b8890@kernel.org>
-In-Reply-To: <willemdebruijn.kernel.15ccd7e646278@gmail.com>
-References: <20260410215420.1698033-1-kuniyu@google.com>
-	<willemdebruijn.kernel.15ccd7e646278@gmail.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Wen Gu <guwen@linux.alibaba.com>, tglx@kernel.org,
+ richardcochran@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, jstultz@google.com, anna-maria@linutronix.de,
+ frederic@kernel.org, daniel.lezcano@kernel.org, sboyd@kernel.org,
+ vladimir.oltean@nxp.com, wei.fang@nxp.com, xiaoning.wang@nxp.com,
+ jonathan.lemon@gmail.com, vadim.fedorenko@linux.dev, yangbo.lu@nxp.com,
+ svens@linux.ibm.com, nick.shi@broadcom.com, ajay.kaher@broadcom.com,
+ alexey.makhalov@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
+ linux-fpga@vger.kernel.org, imx@lists.linux.dev,
+ linux-s390@vger.kernel.org, dust.li@linux.alibaba.com,
+ xuanzhuo@linux.alibaba.com, mani@kernel.org, imran.shaik@oss.qualcomm.com,
+ taniya.das@oss.qualcomm.com
+Subject: Re: [PATCH v2 2/2] MAINTAINERS: update PTP maintainer entries after
+ directory split
+Message-ID: <20260412095301.4fe1fe65@kernel.org>
+In-Reply-To: <4B889ED5-D1F6-401D-B753-89AE2037F316@infradead.org>
+References: <20260407104802.34429-1-guwen@linux.alibaba.com>
+	<20260407104802.34429-3-guwen@linux.alibaba.com>
+	<20260412084704.743482ad@kernel.org>
+	<4B889ED5-D1F6-401D-B753-89AE2037F316@infradead.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,19 +59,27 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 11 Apr 2026 15:18:56 -0400 Willem de Bruijn wrote:
-> > diff --git a/tools/testing/selftests/net/lib/csum.c b/tools/testing/selftests/net/lib/csum.c
-> > index e28884ce3ab3..4e044689bc37 100644
-> > --- a/tools/testing/selftests/net/lib/csum.c
-> > +++ b/tools/testing/selftests/net/lib/csum.c
-> > @@ -105,9 +105,9 @@ static char *cfg_mac_src;
-> >  static int cfg_proto = IPPROTO_UDP;
-> >  static int cfg_payload_char = 'a';
-> >  static int cfg_payload_len = 100;
-> > -static uint16_t cfg_port_dst = 34000;  
+On Sun, 12 Apr 2026 17:32:22 +0100 David Woodhouse wrote:
+> On 12 April 2026 16:47:04 BST, Jakub Kicinski <kuba@kernel.org> wrote:
+> >On Tue,  7 Apr 2026 18:48:02 +0800 Wen Gu wrote:  
+> >> +PTP EMULATED CLOCK SUPPORT
+> >> +M:	David Woodhouse <dwmw2@infradead.org>
+> >> +M:	Wen Gu <guwen@linux.alibaba.com>
+> >> +M:	Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+> >> +L:	linux-kernel@vger.kernel.org
+> >> +S:	Maintained
+> >> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git timers/core  
+> >
+> >Hi David,
+> >
+> >Do you have a tree to route the patches thru? Or do you really have
+> >access to the tip tree?  
 > 
-> This is paired with wait_port_listen(3400, .. in
-> tools/testing/selftests/drivers/net/hw/csum.py
+> I do not have access to the tip tree. I can make a shared tree on
+> git.infradead.org if the other two maintainers would like to send me
+> a SSH pubkey and preferred username...
 
-FWIW I can confirm that this caused the HW testing in NIPA to fail
-the csum test since Friday.
+Honestly I'd love for you to be the only M here, and the other two 
+to be reviewers. Xuan Zhuo is currently at v40 trying to upstream 
+an Ethernet driver. Some growth needed there to become a subsystem
+maintainer IMO.
