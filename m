@@ -1,46 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99CB2EAD1B;
-	Sun, 12 Apr 2026 14:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3565C37FF67
+	for <netdev@vger.kernel.org>; Sun, 12 Apr 2026 14:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776005643; cv=none; b=Jui7OLfHGuMaLYplZ746TS3eq7ZJNOwz6Lc2r0qmkpWBlZdCNtL43CjuFJxD/ZECELs4ebkNAghprhn7xs3lAP2ieZDwSZlgPFWVIY7xjFrOR9fhTb1AIhxV+UjFpcpggynfPmsq95ucvKEoEaSDu+Ie6fTcILSEfjZPXo/ufrY=
+	t=1776005938; cv=none; b=tBXmSu5MNzMrT8iNUO8u0eOj1DEOXgSrjM1mnc1iazwj6Lpi33GwXY9RU9RU9dKPqX6XFNy7o5aac+o+CC9KY5MgMA0nvo6VrIdnc1VaTZtRxevQAnEIhOmrL/VN/MZRA1qfW08+QcyssISzBtVLO83r7aqVT61jIuUlON2t2DI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776005643; c=relaxed/simple;
-	bh=hYhMNiSVMu9YWHVhPVRMrBFQV3jTqJLs7Miosi0BkO8=;
+	s=arc-20240116; t=1776005938; c=relaxed/simple;
+	bh=ydsPDjVGsCeHWbPEKbjjI2nmQTicYsIGs2BIxAuK4rg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VGlOY1RTduEVJQMMYIYXJ/KYj+tm8Iv7nQlg8oY1F2hcGtwxkFWwlephtO1T1J3YQ6KmcIeXbZIZAr0rFNDD/O1CIo/kvMGECGdDSf3MMMlhIVw6k2lI9Fe6xsYQ2u71kSF4KoAhiNZxcgUigaoCXQqCdnsj/y6fUxNqrAzu/Fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EHZqcMBi; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=otmCsin3M9dH2W8+qdlRAnfk17cxJTXoaMTd0GjCOPEO0stAOeRKE9lgTYQ/LO6johXPpG9/rlAvfxk4DDeySSKuNIF7grDEOlTFWA15FB+QY7z2CxxUFD2ghcqyWo04Rp0+a3fh257LhIrGsju3w4f8WnjdW+nKk1aEJaLYnzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cF51XSf9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EHZqcMBi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBA3EC19424;
-	Sun, 12 Apr 2026 14:54:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cF51XSf9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 516E5C19424;
+	Sun, 12 Apr 2026 14:58:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776005643;
-	bh=hYhMNiSVMu9YWHVhPVRMrBFQV3jTqJLs7Miosi0BkO8=;
+	s=k20201202; t=1776005937;
+	bh=ydsPDjVGsCeHWbPEKbjjI2nmQTicYsIGs2BIxAuK4rg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=EHZqcMBirrWaPT/iTHH9lRJ1HuoNL7HHSQ2OL+IqM7wS/+NLv3apgcvkdnptpAjuQ
-	 p/IGAA+sZId7dLLetl9wvsKafKzT9VDzD1QzoBywR6lcYF8E8/uXwck/P5Euhm1pUU
-	 /lyqs4pcbGUpfxZt9tR/+utQSd9EfAlkvjsWM/rAa6RHX89Tczpw5FpgyzTc0n+8rC
-	 chu3QNPwWDNCgAK5ZmSdKcW2baBeqO+t6agKhHAFWNjbttFeflGtWPqak7i23BKd8a
-	 S7voKNK0fff1r/yhQ0Pvmnk3MGKxxlEbwlSUQiSYp8nwlgyLA8FmFORigpvnhkkQcv
-	 uIhCbLULAfOrg==
-Date: Sun, 12 Apr 2026 07:54:02 -0700
+	b=cF51XSf9mm39l0tm+vr+8OmSdquGgjfXemm0L2iBO1InNmg+lKjgouwRaiBv7X/Dc
+	 hzY5GQ7lKb3bdScjh7KEl7fxTemcxcyge3sZY3NX55rOi/wXyiF/y7W6XYoRn6Xej4
+	 D12Rcxs1YTHSjyMqgqbjQgrPtfUMq0QuD/F5EiC6SVckjopxP7Y35n9GJk7zsetGxq
+	 A1DDwOH4MuW/lXcyosSkJOBDRJJkFCIbaWtrL59f9SxTOqw1ZFZOPaTuc+OBVA4C3u
+	 rLcsMIzsxxbaT60nqUp8QH8qBRC4IAJbmfsZZywy7CyaBM2fT428rDSO7vZ4UfpoAO
+	 oOsE8fg/J9LLA==
+Date: Sun, 12 Apr 2026 07:58:56 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Frank Wunderlich <frank-w@public-files.de>
-Cc: linux@fw-web.de, nbd@nbd.name, sean.wang@mediatek.com,
- lorenzo@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, matthias.bgg@gmail.com,
- angelogioacchino.delregno@collabora.com, linux@armlinux.org.uk,
- daniel@makrotopia.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org
-Subject: Re: [RFC net-next v5 0/3] Add RSS and LRO support
-Message-ID: <20260412075402.2eda04d3@kernel.org>
-In-Reply-To: <trinity-1304ecb5-9a3f-4e37-b2c6-bcd7f35c2921-1775995067670@trinity-msg-rest-gmx-gmx-live-579dcf886d-nkpds>
-References: <20251219151219.77115-1-linux@fw-web.de>
-	<trinity-1304ecb5-9a3f-4e37-b2c6-bcd7f35c2921-1775995067670@trinity-msg-rest-gmx-gmx-live-579dcf886d-nkpds>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, David Ahern
+ <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Kuniyuki Iwashima
+ <kuni1840@gmail.com>, netdev@vger.kernel.org
+Subject: Re: [PATCH v2 net-next 00/15] ip6mr: No RTNL for RTNL_FAMILY_IP6MR
+ rtnetlink.
+Message-ID: <20260412075856.68f37eb6@kernel.org>
+In-Reply-To: <20260410211726.1668756-1-kuniyu@google.com>
+References: <20260410211726.1668756-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,9 +47,39 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 12 Apr 2026 11:57:47 +0000 Frank Wunderlich wrote:
-> some time has passed without a single comment, so i just send a friendly reminder ;)
+On Fri, 10 Apr 2026 21:16:56 +0000 Kuniyuki Iwashima wrote:
+> This series is the IPv6 version of
+> 
+>   https://lore.kernel.org/netdev/20260228221800.1082070-1-kuniyu@google.com/
+> 
+> and removes RTNL from ip6mr rtnetlink handlers.
+> 
+> After this series, there are a few RTNL left in net/ipv6/ipmr.c
+> and such users will be converted to per-netns RTNL in another
+> series.
+> 
+> Patch 1 extends the ipmr selftest to exercise most of the RTNL
+>  paths in net/ipv6/ipmr.c
+> 
+> Patch 2 - 6 converts RTM_GETROUTE handlers to RCU.
+> 
+> Patch 7 removes struct fib_dump_filter.rtnl_held.
+> 
+> Patch 8 - 9 use RCU for mr_table for CONFIG_IP_MROUTE_MULTIPLE_TABLES=n
+>  and CONFIG_IPV6_MROUTE_MULTIPLE_TABLES=n for ->exit_rtnl().
+> 
+> Patch 10 - 12 converts ->exit_batch() to ->exit_rtnl() to
+>  save one RTNL in cleanup_net().
+> 
+> Patch 13 - 14 removes unnecessary RTNL during setup_net()
+>  failure.
+> 
+> Patch 15 drops RTNL for MRT6_(ADD|DEL)_MFC(_PROXY)?.
 
-You have a lot of people in the To:
-Could you clarify who you expect to action these patches?
-Patches are an RFC and I suppose ain't nobody got much comments?
+Hitting a bunch of:
+
+  SKIP      no netlink MFC interface
+
+on the new test here. Do we need to add something to .../config ?
+Current effective config for the net target is here:
+https://netdev-ctrl.bots.linux.dev/logs/vmksft/forwarding/results/597761/config
