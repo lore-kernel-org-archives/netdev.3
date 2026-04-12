@@ -1,49 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABEE6125A9;
-	Sun, 12 Apr 2026 14:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99CB2EAD1B;
+	Sun, 12 Apr 2026 14:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776005536; cv=none; b=VLFIbUrIcqHBK+z1UHe4bYj5coZ71cjLSuIhVFTwhhZ5ZFqxVJ36zXO07L7vGGJ0CNyQxh7THZw9vaWu0e9QK9TvOv0Z50ekLxu71ljWXIARmE5PCejjtAa08KJyvIaVTHO3C7W/Ty/jBetAUQB4KtCWrHQEwzRUIpklzD3GoiM=
+	t=1776005643; cv=none; b=Jui7OLfHGuMaLYplZ746TS3eq7ZJNOwz6Lc2r0qmkpWBlZdCNtL43CjuFJxD/ZECELs4ebkNAghprhn7xs3lAP2ieZDwSZlgPFWVIY7xjFrOR9fhTb1AIhxV+UjFpcpggynfPmsq95ucvKEoEaSDu+Ie6fTcILSEfjZPXo/ufrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776005536; c=relaxed/simple;
-	bh=9m1OPLncfn29O6rzvkC43n0KxhQdSV1Gi/0mQAATyCA=;
+	s=arc-20240116; t=1776005643; c=relaxed/simple;
+	bh=hYhMNiSVMu9YWHVhPVRMrBFQV3jTqJLs7Miosi0BkO8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u0yeEM0IPHwoFiS7f0+Itw9mW+hHsycM5DA3GozOlpvl2VKgbPICc+GwjCQD0hD/o+1uvJKuaSVaDBpOK2d9kN4aEnQ2fsiw6H1qGRQSuMa9M36Lh0BH2m9kyyZYl17/+F8/QhX9tGQHiHQPdBXDNrEF0jFkW7Ab0lnbCGraRYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uctA/RbY; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=VGlOY1RTduEVJQMMYIYXJ/KYj+tm8Iv7nQlg8oY1F2hcGtwxkFWwlephtO1T1J3YQ6KmcIeXbZIZAr0rFNDD/O1CIo/kvMGECGdDSf3MMMlhIVw6k2lI9Fe6xsYQ2u71kSF4KoAhiNZxcgUigaoCXQqCdnsj/y6fUxNqrAzu/Fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EHZqcMBi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uctA/RbY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3467C19424;
-	Sun, 12 Apr 2026 14:52:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EHZqcMBi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBA3EC19424;
+	Sun, 12 Apr 2026 14:54:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776005536;
-	bh=9m1OPLncfn29O6rzvkC43n0KxhQdSV1Gi/0mQAATyCA=;
+	s=k20201202; t=1776005643;
+	bh=hYhMNiSVMu9YWHVhPVRMrBFQV3jTqJLs7Miosi0BkO8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=uctA/RbY5QPDddBTqYEBenaPzrCCVEDEzPU2fxZVji9bGIWtV7VzWBDAaKXn07TzQ
-	 nER9SjRjgTfsmh1mXpDLrvvHnQUhGB4Ajr56Ihf94az3LKpud8EAT8wa7f+HJjB9xS
-	 deN8F9N4HwiFC//nMeMh3E9e4sb/ZmzmMAInpyq7LFJE8M/4LyKkI1XJwHUAgBSG7d
-	 deOH/Y+34rOvM6QdDXs9it4YGagNUCHOBl5IyQR9Tht5JSAyX/uhSITqBhQE4Mw4/Q
-	 YUq75PifVlbPmx0dcIX2Lx9TPJ+HZwteG93pE/2OEi2UM6PHARUbcn78Mmj/Y5lJgo
-	 AOQCf/Nzjd6OQ==
-Date: Sun, 12 Apr 2026 07:52:14 -0700
+	b=EHZqcMBirrWaPT/iTHH9lRJ1HuoNL7HHSQ2OL+IqM7wS/+NLv3apgcvkdnptpAjuQ
+	 p/IGAA+sZId7dLLetl9wvsKafKzT9VDzD1QzoBywR6lcYF8E8/uXwck/P5Euhm1pUU
+	 /lyqs4pcbGUpfxZt9tR/+utQSd9EfAlkvjsWM/rAa6RHX89Tczpw5FpgyzTc0n+8rC
+	 chu3QNPwWDNCgAK5ZmSdKcW2baBeqO+t6agKhHAFWNjbttFeflGtWPqak7i23BKd8a
+	 S7voKNK0fff1r/yhQ0Pvmnk3MGKxxlEbwlSUQiSYp8nwlgyLA8FmFORigpvnhkkQcv
+	 uIhCbLULAfOrg==
+Date: Sun, 12 Apr 2026 07:54:02 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Allen Hubbe <allen.hubbe@amd.com>
-Cc: Abhijit Gangurde <abhijit.gangurde@amd.com>, jgg@ziepe.ca,
- leon@kernel.org, brett.creeley@amd.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- nikhil.agarwal@amd.com, linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/4] net: ionic: Add PHC state page for user space
- access
-Message-ID: <20260412075214.3e87ace0@kernel.org>
-In-Reply-To: <69c189b7-9896-41cf-b28f-5ed4c7b80d6a@amd.com>
-References: <20260401102501.3395305-1-abhijit.gangurde@amd.com>
-	<20260401102501.3395305-3-abhijit.gangurde@amd.com>
-	<20260401170600.312a23d1@kernel.org>
-	<52cee89f-50e2-4569-a622-b03e711ab26b@amd.com>
-	<20260410134311.785683cd@kernel.org>
-	<69c189b7-9896-41cf-b28f-5ed4c7b80d6a@amd.com>
+To: Frank Wunderlich <frank-w@public-files.de>
+Cc: linux@fw-web.de, nbd@nbd.name, sean.wang@mediatek.com,
+ lorenzo@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, linux@armlinux.org.uk,
+ daniel@makrotopia.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org
+Subject: Re: [RFC net-next v5 0/3] Add RSS and LRO support
+Message-ID: <20260412075402.2eda04d3@kernel.org>
+In-Reply-To: <trinity-1304ecb5-9a3f-4e37-b2c6-bcd7f35c2921-1775995067670@trinity-msg-rest-gmx-gmx-live-579dcf886d-nkpds>
+References: <20251219151219.77115-1-linux@fw-web.de>
+	<trinity-1304ecb5-9a3f-4e37-b2c6-bcd7f35c2921-1775995067670@trinity-msg-rest-gmx-gmx-live-579dcf886d-nkpds>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,31 +50,9 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 10 Apr 2026 19:44:18 -0400 Allen Hubbe wrote:
-> On 4/10/2026 4:43 PM, Jakub Kicinski wrote:
-> > On Fri, 10 Apr 2026 09:10:09 -0400 Allen Hubbe wrote:  
-> >> The simple answer is just following the same approach as an existing
-> >> implementation.  See struct mlx5_ib_clock_info and
-> >> mlx5_update_clock_info_page().
-> >>
-> >> Making this common might risk presuming that other implementations will
-> >> be a similar design.  Compare these to the sfc driver.  The clock is
-> >> quite different from ionic and mlx5, not using timecounter, because
-> >> instead of a free-running cycle counter the hardware itself provides an
-> >> adjustable clock for timestamping.  
-> > 
-> > So your augment is basically that drivers which don't use sw timecounter
-> > exist so we shouldn't bother creating common definitions for drivers
-> > that do? Why do we have common implementation of timecounter in the
-> > kernel at all then?
-> > 
-> > These are rhetorical questions.  
-> 
-> There is no suggestion to get rid of timecounter in the kernel.
-> 
-> Maybe I've been overthinking this and misunderstood your first reply. 
-> Did you mean, just, why not move this to ib_user_verbs.h, struct 
-> ib_uverbs_phc_state, and use it from the vendor driver?
+On Sun, 12 Apr 2026 11:57:47 +0000 Frank Wunderlich wrote:
+> some time has passed without a single comment, so i just send a friendly reminder ;)
 
-I think so, just drop the ionic from the names and pop it into a header
-that won't be awkward to reuse by other vendors.
+You have a lot of people in the To:
+Could you clarify who you expect to action these patches?
+Patches are an RFC and I suppose ain't nobody got much comments?
