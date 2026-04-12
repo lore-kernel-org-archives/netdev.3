@@ -1,48 +1,67 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70BC430C60D;
-	Sun, 12 Apr 2026 12:52:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FDD9378D7F;
+	Sun, 12 Apr 2026 12:55:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775998360; cv=none; b=ILDyzbCIKcp77ZguQG1kS66WkCXHTWh1tWgZ3UfRDmHTN7Kmle+UJMH3Q+D9dxIbBUdnI7/FS5UmvqyhqhKlASqfDopnwaLiYcH5rV6uYszVb4qBHVE4kICx0mR7jseKC9BopeKS0X3t1GQtPuctbDQUFgHCxBeCxxOd85K88Ro=
+	t=1775998541; cv=none; b=g2b69tvsQIjEm6Hg75ne8Ekmp+6dUFRHSDC9RLXzsGBwZ10GieiU2fqE3NjNqY95cBvJi01f8bni6IreAE7KXUySwBb9wN9wHZcWztRfmR9G+n3dFjaos1jw3CPPLPzPXAizvttap0lrvEGbhrNfeCpkXITJcdDtv/bpbFXxQhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775998360; c=relaxed/simple;
-	bh=9o3Hq+Ry7zzts5Yree8zlYDr+AWyfx6JLoCAFtbLDaE=;
+	s=arc-20240116; t=1775998541; c=relaxed/simple;
+	bh=8aqoUgkgMnL/rfQaOiW/yvifnWm8LCEzfPAsmS6+7fs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TTs2RnEgw/Y1u9AO1Rxff0MHHaA72+OIJvWqTBw9aVKfF/MScLvhoUZriYWu69kJnmWoaAbiYqaqmg6FVoZnRVrax7zmG9K88fMqeV5b342JRH0mFObTDa/6TM7XbXHquwO2AOaF6YJNrJePIFyg3Q1UWc8HQNoWj1P7e8YL82Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PKUPdAHP; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=TCf7BuKDv4dB9a8WwRLJfhoFhvmUuu1rENoo5SzL3fpSRZTgYD6wtc2xQIyN8gLe46xiFz2rPhu/ZqHmxCJHRetDUyOyExltMw0GR9wT01aHxKIOYQ5ew8yJ9eJ67aM/2SHywsZJuP1gJgJ2FXBdMAxqraSdedG+wDZBKvI5kpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=BFafhgai; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PKUPdAHP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48D1BC19424;
-	Sun, 12 Apr 2026 12:52:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775998360;
-	bh=9o3Hq+Ry7zzts5Yree8zlYDr+AWyfx6JLoCAFtbLDaE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PKUPdAHP+meFD/SmJIe8PLjCuo/N5Fj8UgmD4+tANFLOZ7/9ZaduQXw+ucFqkxrYv
-	 LPfkrCyEXYrdbQxvM0Xi0WuvsKuLt48lHPkA2VBIVTsqcjv8tQHLT40uVLDXLFJq/8
-	 QNasOgfhBpdjwLjoymOen4fMiTD1GsN6mucwqrRJvX4K4LHfiVeLsPjjeHpuhRb4HS
-	 /WbblF2DWL8FBbcZEHoP0F+7OIXg2kIRWI4rN3NqltIRGkHDgNUdiE+PgHcvkyWZJ2
-	 NC7E5H/y8iWCwcQ93xIDzKpw5kFdWW5NbvzDD548wbyv3lP77PI+LS4pIDcCllcQE6
-	 +JZ1EmxcMXuvw==
-Date: Sun, 12 Apr 2026 13:52:33 +0100
-From: Simon Horman <horms@kernel.org>
-To: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-	decui@microsoft.com, longli@microsoft.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, ssengar@linux.microsoft.com,
-	dipayanroy@linux.microsoft.com, gargaditya@linux.microsoft.com,
-	shradhagupta@linux.microsoft.com, kees@kernel.org,
-	kotaranov@microsoft.com, yury.norov@gmail.com,
-	linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 2/2] net: mana: Move current_speed debugfs file to
- mana_init_port()
-Message-ID: <20260412125233.GJ469338@kernel.org>
-References: <20260408081224.302308-1-ernis@linux.microsoft.com>
- <20260408081224.302308-3-ernis@linux.microsoft.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="BFafhgai"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=lIrD1D+dKpaZQCC7K3254VfBImGAiwEwjpTLSfZY37o=; b=BFafhgaiXC9tlQQYgRhCn6kJI+
+	9BkDR7pOjjFyNZAYUJUbHXaWr5marxJZ952sgzPmrRgxbINsysMusVosweR+Mp83gR8uORbpBwAD/
+	tgtyxKYxrma9CTxIOQ1qgV/IcI8JQ3e13gm4rZaBJEegywty6LF1xYNA2vjmf6tdQVk3h61ql6Yg+
+	31Nv06q4U44W2011n6v1KOmDGQPNImlZWZkwrg6oOnWu6qDkSE6Alsl9Cn5gE5hZNIQO7ZmXweBUh
+	5WcCrgJ21RqCmwNVNw5HqPGqR71pmxlAwEsbwQ6ehL5jigQUUTcJTF9kosrz2OXdtDII6JpvQx8Nr
+	IHdAcPsg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:33926)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1wBuLZ-000000007Ci-2ijC;
+	Sun, 12 Apr 2026 13:55:29 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1wBuLW-000000007ex-2G2M;
+	Sun, 12 Apr 2026 13:55:26 +0100
+Date: Sun, 12 Apr 2026 13:55:26 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Biju Das <biju.das.jz@bp.renesas.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, "biju.das.au" <biju.das.au@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>
+Subject: Re: [PATCH net-next] net: phy: call phy_init_hw() in phy resume path
+Message-ID: <aduWPn0cMWjeIyt-@shell.armlinux.org.uk>
+References: <20260410142904.439666-1-biju.das.jz@bp.renesas.com>
+ <adkOZl4gt5UoGv-0@shell.armlinux.org.uk>
+ <839fec66-5ec0-4cc0-a0c4-ae2de6902188@lunn.ch>
+ <TY3PR01MB11346B6680E5952BD7B7078CA86592@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+ <admMethCSjOQhu8g@shell.armlinux.org.uk>
+ <dedab35c-39f4-469b-9227-cb8925d83b8e@lunn.ch>
+ <adp6-wElGOOijZRG@shell.armlinux.org.uk>
+ <TY3PR01MB11346F78B929EA7F377BB5B4A86272@TY3PR01MB11346.jpnprd01.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,18 +70,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260408081224.302308-3-ernis@linux.microsoft.com>
+In-Reply-To: <TY3PR01MB11346F78B929EA7F377BB5B4A86272@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Wed, Apr 08, 2026 at 01:12:20AM -0700, Erni Sri Satya Vennela wrote:
-> Move the current_speed debugfs file creation from mana_probe_port() to
-> mana_init_port(). The file was previously created only during initial
-> probe, but mana_cleanup_port_context() removes the entire vPort debugfs
-> directory during detach/attach cycles. Since mana_init_port() recreates
-> the directory on re-attach, moving current_speed here ensures it survives
-> these cycles.
+On Sun, Apr 12, 2026 at 12:05:06PM +0000, Biju Das wrote:
+> Hi Russell King,
 > 
-> Fixes: 75cabb46935b ("net: mana: Add support for net_shaper_ops")
-> Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+> > -----Original Message-----
+> > From: Russell King <linux@armlinux.org.uk>
+> > Sent: 11 April 2026 17:47
+> > Subject: Re: [PATCH net-next] net: phy: call phy_init_hw() in phy resume path
+> > 
+> > On Sat, Apr 11, 2026 at 03:50:13PM +0200, Andrew Lunn wrote:
+> > > > So, I question whether any of the functions in this driver actually
+> > > > have a valid reason to take phydev->lock - looks to me like a not
+> > > > very well written driver.
+> > > >
+> > > > In cases like this, I don't think we should make things more
+> > > > difficult in the core just because we have a lockdep splat when that
+> > > > can be avoided by killing off unnecessary locking.
+> > >
+> > > Agreed. This patchset should cleanup these locks.
+> > >
+> > > We also need to look at lan937x_dsp_workaround(). I also don't see
+> > > what that mutex lock/unlock is protecting. Accessing bank registers
+> > > need to be protected, so doing one additional access within that
+> > > should not need additional protection.
+> > 
+> > Looking at access_ereg(), shouldn't it be taking the MDIO bus lock and using the __phy_* accessors
+> > anyway because it's writing various registers which determine what is being read via the
+> > LAN87XX_EXT_REG_RD_DATA register or the value written via the LAN87XX_EXT_REG_WR_DATA register.
+> > 
+> > Also, as it has access_ereg_modify_changed(), that entire sequence needs to take the MDIO bus lock to
+> > safely do the read-modify-write.
+> > 
+> > Then there's lan87xx_config_rgmii_delay() which is a large open coded read-modify-write for the
+> > PHYACC_ATTR_BANK_MISC, LAN87XX_CTRL_1 register.
+> > 
+> > To me, this looks like a racy driver, and it also looks like it's using the wrong lock to try and
+> > protect hardware accesses.
+> 
+> OK, will replace it with MDIO bus lock.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Remember that the phy_* accessors will take the MDIO bus lock, so will
+need to be changed to their __phy_* counterparts.
 
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
