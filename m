@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF80021CC71;
-	Sun, 12 Apr 2026 21:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB5830F7FB
+	for <netdev@vger.kernel.org>; Sun, 12 Apr 2026 21:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776030636; cv=none; b=isnLeXAX+qqpwirFT+spy0en5K/bu/gc2S1EYDdYHH4q6qBeXYsbspcf1dZc+jKuN+h4w2ZC/6MrPU7ctCIhpywZLq9QyD7TbZiDVycGRPYfwZ262AS21GHsRQH3Wv1833qLZEBW0skCDxbzrX9LAZifcgMVAfZ+lOh81FQK4wY=
+	t=1776030655; cv=none; b=odHmRtI+T7gG2G1Pg5+yn5mX2OpNJkGqSfTQyviHOhk6mShUGiZT0A8w0r8hMc5iTmS6Hs1uISfYkm+cNRJWiz/7UzQtbSZG4CDF374J0MlghCykjlIjoLDgBA1z0y6KILi9XsZJWJN0w3BduyRvTKzYMTAc+Ok2NhQcg6xO/LI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776030636; c=relaxed/simple;
-	bh=ttZYdveUkveKhhd9BkfJxk7vHZmSLGfhZwk5jjz6iZw=;
+	s=arc-20240116; t=1776030655; c=relaxed/simple;
+	bh=/t4l+0PSDew4xSp+1nWnF+ozTJBLyCV/73ecjT9pj6E=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=TzWSe/hCyLmmyLvt9tG1xScdAoXagoBoqU6yHak/KQqYFdFYxz7ZORwcgcDQSow8yjWcTibAMQqHJuCAxM+3SfZCpHPxE0QAluqXfGcJDk4CjNtp4t7jL2INxk81heDh7FiDaOaok2xFqDwsv8aaf8WOtxaq2rvGZh/F2Vrqnl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sqZRdoLy; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=gPIvAuEr8/3eBK7+rnCyCF3yuduXeAhdUJf7KUPFYNViXa3bV+8eRWTWiWeD/4lw7oRLR4uArbCYnX3aJOi/5Vjd70YL2UDCgLbpaS69LUdKEUBWI1pzLGG0JN18/s/FLnWGRdobLLzIJXacSmlpt1jTeM0BULRHghGt0yw1rQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L91UO+LU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sqZRdoLy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C9A0C19424;
-	Sun, 12 Apr 2026 21:50:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L91UO+LU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE235C19424;
+	Sun, 12 Apr 2026 21:50:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776030636;
-	bh=ttZYdveUkveKhhd9BkfJxk7vHZmSLGfhZwk5jjz6iZw=;
+	s=k20201202; t=1776030655;
+	bh=/t4l+0PSDew4xSp+1nWnF+ozTJBLyCV/73ecjT9pj6E=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=sqZRdoLyhrfTuFHPPUUabfF4ZopFWT+G20EXEBzkzGDWABhVkBofsnCVcN5HXsRC2
-	 z0aprpmx080mPMdrQRADKU8+g5Ze2hpEUUtjdS7X0Q6zgeW+0/lUo82vWHg9HjqpvI
-	 fPFuwtstBfGmbW+dxmsv6tWPRFbXFigOpgoqbTbypOhtkmVlFADDbaFvyZBMlcU3lz
-	 j+tIUIJKjddvs8TWbnqFYszI5/maQ8riyADTV4ndZLYotyBHetCGK7Zm6jFqYGBbxi
-	 hWqhzoBTznMr7kFdgCDPeOl8UlqSS32zV/CfRrXkesn9qnECsQ0z3hkrQlL+RXtT1x
-	 iWqAvE/SwfRew==
+	b=L91UO+LU2i0DbAIc3UzaL2Udk+VMasy6a84kHuaQe/FTv0/NMfZzz5rtDsNNL54Wx
+	 FxuqzeOApwESKjQ/En7hxODFjMmvmtJd+OzaQRI/MyAqXdfy1oLvAKPdWa1qRBJAcw
+	 1MT3H9z9KntrgUSzdIKSkMO9jT709eRfpTG2NQ+UvZnsjEYZXgvDKtl6ZkRVuU7yjp
+	 VlBL8zKTw/f9QpsXrQ904dw71UlOo5Utt7toZBzXLZuKn3QseloFew58EkwWtdGQol
+	 zm/t+bXOPKQ5EAqkTTajRq2r83GwTp3dPd3C78yOONwovPZFg8zQ23P6gdmfYxVExF
+	 7H6swc5x6gevA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02D2F3809A8C;
-	Sun, 12 Apr 2026 21:50:10 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FC743809A8C;
+	Sun, 12 Apr 2026 21:50:29 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,43 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/2] mlx5 misc fixes 2026-04-09
+Subject: Re: [PATCH net-next 0/5] net: reduce sk_filter() (and friends) bloat
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177603060880.3833036.16496161564678609068.git-patchwork-notify@kernel.org>
-Date: Sun, 12 Apr 2026 21:50:08 +0000
-References: <20260409202852.158059-1-tariqt@nvidia.com>
-In-Reply-To: <20260409202852.158059-1-tariqt@nvidia.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, borisp@nvidia.com,
- saeedm@nvidia.com, leon@kernel.org, mbloch@nvidia.com, jianbol@nvidia.com,
- kees@kernel.org, lkayal@nvidia.com, michal.swiatkowski@linux.intel.com,
- gal@nvidia.com, royno@nvidia.com, roid@nvidia.com, raeds@nvidia.com,
- netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org, dtatulea@nvidia.com
+ <177603062803.3833036.5244809516542083212.git-patchwork-notify@kernel.org>
+Date: Sun, 12 Apr 2026 21:50:28 +0000
+References: <20260409145625.2306224-1-edumazet@google.com>
+In-Reply-To: <20260409145625.2306224-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 9 Apr 2026 23:28:50 +0300 you wrote:
-> Hi,
+On Thu,  9 Apr 2026 14:56:19 +0000 you wrote:
+> Some functions return an error by value, and a drop_reason
+> by an output parameter. This extra parameter can force stack canaries.
 > 
-> This small patchset provides misc bug fixes from Gal to the mlx5 Eth
-> driver.
+> A drop_reason is enough and more efficient.
 > 
-> Thanks,
-> Tariq.
+> This series reduces bloat by 678 bytes on x86_64:
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/2] net/mlx5e: Fix features not applied during netdev registration
-    https://git.kernel.org/netdev/net/c/9994ad4df82d
-  - [net,2/2] net/mlx5e: IPsec, fix ASO poll timeout with read_poll_timeout_atomic()
-    https://git.kernel.org/netdev/net/c/edccdd1eb947
+  - [net-next,1/5] net: change sock_queue_rcv_skb_reason() to return a drop_reason
+    https://git.kernel.org/netdev/net-next/c/900f27fb797c
+  - [net-next,2/5] net: always set reason in sk_filter_trim_cap()
+    https://git.kernel.org/netdev/net-next/c/734ea7e324ad
+  - [net-next,3/5] net: change sk_filter_reason() to return the reason by value
+    https://git.kernel.org/netdev/net-next/c/c78bcbd51976
+  - [net-next,4/5] tcp: change tcp_filter() to return the reason by value
+    https://git.kernel.org/netdev/net-next/c/97449a5f1a58
+  - [net-next,5/5] net: change sk_filter_trim_cap() to return a drop_reason by value
+    https://git.kernel.org/netdev/net-next/c/fb37aea2a00e
 
 You are awesome, thank you!
 -- 
