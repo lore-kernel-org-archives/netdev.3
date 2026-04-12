@@ -1,58 +1,85 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A0C43147;
-	Sun, 12 Apr 2026 22:31:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CB51A681D;
+	Sun, 12 Apr 2026 22:40:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776033116; cv=none; b=EjhG/8NCqWdiCXrk2l4Djn0c44FD7XYmtlv/HiiiNOetK9GaI/kyyBa9snOrQaDQ2P9q7y1HpAOywsELuw95HO/EDfS2FuZAE3k+fQH2udS9ofGppjDO3k9ej6Mc8PQc0kyBpHXDntXQ6eypyZmxJqTnR6t9mst7q6LCGzq/uHk=
+	t=1776033640; cv=none; b=M7Dz3/VFpCO9Au8R6GUXUyBiVnMF9cvhxwVYuRfMqyWc2Op4o+pwCmc5nv9txSP8JEfSE7rcpt33JONdmhWTF9XdLCE+VNI6JiI/obTXpt8iS7j7OMTRMUYGyJbIfHqakJncfFDtWwHFs5TBfZiTxOmltcl4MmCfPdFEYHN7ORs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776033116; c=relaxed/simple;
-	bh=VQ0E2CPHBAKyPinm9SCfzHRTKJ0Or0lZ8hhPAVGSE4w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YUaxzral1olVn2uwJejoaMq2YCiwZE9S6vJpjRpwn9j8Jgd5W/XtdLgAG7YYMpQRYzxShHvHR/1Vl7rOULDzA+Kvg0XGo7d/KP1bS0d8YMRl8ACJnB+EW+GT+CHQuM0wYcyjhuLT1Y4610h7K9rlvp/IHxm1LEnJtGqOO2bDgI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id E057F60491; Mon, 13 Apr 2026 00:31:51 +0200 (CEST)
-Date: Mon, 13 Apr 2026 00:31:51 +0200
-From: Florian Westphal <fw@strlen.de>
-To: Marko Jevtic <marko.jevtic@codereflect.io>
-Cc: pablo@netfilter.org, netfilter-devel@vger.kernel.org, phil@nwl.cc,
-	coreteam@netfilter.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v3] netfilter: nft_set_rbtree: fix use count leak on
- transaction abort
-Message-ID: <adwdV0qGeRhSNLuz@strlen.de>
-References: <20260412222801.34965-1-marko.jevtic@codereflect.io>
+	s=arc-20240116; t=1776033640; c=relaxed/simple;
+	bh=f9+QkuOQSxfqFHi5THmDbOofB97kseZs53WdRc4K/3Y=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=YAi9rvwu+rsT+yhSHCvqGjOiGhjJrSGAxyVOq1SAZElcU2XdbZabFEGpaL5SnZawllyaBGSMic4/uPBfnbkXMG6MKTtS1q5avTN/0y74E+OMtVX7O41Qc4gr/SdEaO3Gm+EbArS741kktnDY5ScunubqAkhf2o9gHcbeKR6yQ/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oDA7KYQ1; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oDA7KYQ1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9D25C19424;
+	Sun, 12 Apr 2026 22:40:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776033639;
+	bh=f9+QkuOQSxfqFHi5THmDbOofB97kseZs53WdRc4K/3Y=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=oDA7KYQ1Oh4blR4MCycwS8BEji4z8JMJ5rVMJ/IOIzrLxu8tG42j0TK4I5rXCqJ2U
+	 9TVYp6XqMeQUPRMRo0UPhiDZ3xQKbewWukhZU5oDl6YOwZeuq1B52LE8GR9JWuPvFe
+	 g9EB00UktrO4hwZbFb2r7MQIVVbLz5gc83gfSN6qYeHhWKq6Y1hpwUw4vFzggGyIpR
+	 szeUD+dbCHpW5bICEhkzEoj0N0nOEtpy2zzfMeTPkoW97hPTIO7Zbw2kQ9IOUOSAjy
+	 uHuxncAcp01fgCjwtu3/EsBviitZ9BcmWuiDmAeX8Wj2rtPTdFk78NMre76xPAhnZe
+	 58cCq5iRqKnWA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FC823809A8C;
+	Sun, 12 Apr 2026 22:40:13 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260412222801.34965-1-marko.jevtic@codereflect.io>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v2 0/2] IPA v5.2 support
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177603361205.3843927.9903704326605588051.git-patchwork-notify@kernel.org>
+Date: Sun, 12 Apr 2026 22:40:12 +0000
+References: <20260410-ipa-v5-2-v2-0-778422a05060@fairphone.com>
+In-Reply-To: <20260410-ipa-v5-2-v2-0-778422a05060@fairphone.com>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, elder@kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, krzysztof.kozlowski@oss.qualcomm.com,
+ horms@kernel.org
 
-Marko Jevtic <marko.jevtic@codereflect.io> wrote:
-> nft_rbtree_abort() does not handle elements moved to the expired list
-> by inline GC during __nft_rbtree_insert(). When inline GC encounters
-> expired elements during overlap detection, it calls
-> nft_rbtree_gc_elem_move() which deactivates element data (decrementing
-> chain/object use counts), removes the element from the rbtree, and
-> queues it for deferred freeing. On commit, these elements are freed
-> via nft_rbtree_gc_queue(). On abort, however, the expired list is
-> ignored entirely.
+Hello:
+
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Fri, 10 Apr 2026 09:40:06 +0200 you wrote:
+> Add support for IPA v5.2 which can be found in the Milos SoC.
 > 
-> This leaves use counts permanently decremented after abort.
+> Note: This series has been split up into two, one for net(-next), one
+> for the qcom dts bits.
+> 
+> Changes in v2:
+> - Split the series, drop applied IPA fixes, mark as net-next
+> - Pick up tags
+> - Link to v1: https://patch.msgid.link/20260403-milos-ipa-v1-0-01e9e4e03d3e@fairphone.com
+> 
+> [...]
 
-I have not seen a reason/answer why this needs to be rolled back.
-GC is an implementation detail, its not part of the transaction.
+Here is the summary with links:
+  - [net-next,v2,1/2] dt-bindings: net: qcom,ipa: add Milos compatible
+    https://git.kernel.org/netdev/net-next/c/d471d70cc964
+  - [net-next,v2,2/2] net: ipa: add IPA v5.2 configuration data
+    https://git.kernel.org/netdev/net-next/c/4bf38bac1b2e
 
-It could also be done from work queue, for example, not just from insert
-or commit.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-I see no reason to change the existing approach.
+
