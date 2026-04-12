@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0892D2EB5B8
-	for <netdev@vger.kernel.org>; Sun, 12 Apr 2026 17:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E359308F3E
+	for <netdev@vger.kernel.org>; Sun, 12 Apr 2026 17:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776014017; cv=none; b=Eh8WU77mYIFshP8ynjI3YoCwRgFkZX5PygKpN9KG9ck5xxUFWB9WXpNP8fyuJ8icdmhhxXhIlZgIWp+pTVLb60BQQowONZUwsoPM25F/h21nd40H9GvzMIXTx25S/yiwmzxP0T0gHEteE0jjiV019YmFgiClyvLtlsrfx6Bg/DQ=
+	t=1776014019; cv=none; b=ZQyMy872/ZzHTt6vBdWyQQc1ChdY251iEZRJ9r/KBhwrrJr6HHMZFkAFycCg/NYRDSzUURcdnjIaGI83Mr4MpPrPQJf/U9Z9uJglhrEbOWQt23riPcj+3QtmGKDqAzKyApMKqxCGt4vLNPCOXbLuy1OeaSUBOBQ7hl23M2Ayl6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776014017; c=relaxed/simple;
-	bh=hjHOgP42jyOjhXmhZDTRmIeJi3voOL/RA+RDlx4s1zU=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=rSh7/yZCfzlHVGxT2nQrNQ7xR9/6+9UkiOjMRGBImx/untUtmhyIQ/rQX8NZZixCm/DwxQprW+gyxxnKAibeikuRl2XLtBNdJbe+dI37jAEFJUZjIb1EYA9drqLPpzWjaE6iCEbpjbDbS7CIIV3rV1pCiB1QWD3ToyZwFv6dF1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r7vkhePs; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776014019; c=relaxed/simple;
+	bh=A4vZOYrBFXrwCZ6XgUhSyRpm2VWlm0ssITNmstnf8Mc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=CwT/xom4+yHYF7sw6oFX+rNTZGPZh7ABYgsOZO1TUv1/v2QqaeEN7N2qWqGfVKtn6mA0o5TlVd6eaPj9d1+oZZd23raGfEFTMuAsvxV+bvaLWLIXRK6IpUqcjeK2Wq6RIqMAPKJTF/SYygS/CgqqUGUSkhuThOPxohqDkGxsN/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gcy7Czmu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r7vkhePs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21E4BC19424;
-	Sun, 12 Apr 2026 17:13:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gcy7Czmu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC9BBC19424;
+	Sun, 12 Apr 2026 17:13:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776014016;
-	bh=hjHOgP42jyOjhXmhZDTRmIeJi3voOL/RA+RDlx4s1zU=;
-	h=From:Subject:Date:To:Cc:From;
-	b=r7vkhePsh0GW6/snUukc7DyFTROM4JYNdyCPBtLdgMDtL5PiqrJlPLN7EAWUGPkkq
-	 7i5FpwagNNMgUNoVTdFDy45v5zniq2fp7IQWKfGJJrAz1o52n/jYz28TSlgxQ3g311
-	 MuX73X1nSdu0kYLtUxaKa+s3UZJ0r9DKLipcpEyk/Gn+ftdoserAUi1BfLwZZbljsh
-	 7um0WjYQE44XuiKpXPi42tynykh2e7eR5WEfRKYvRbX7IIyT0Fg8ZV3RwGAMJAhreR
-	 Xoi8H+SKuzBSrbPr+aS6HMaoFppKeeW347J/o82HkTG7cGj8eNdnV99u2URiqQJ+1d
-	 9+pvizHR8kcWw==
+	s=k20201202; t=1776014019;
+	bh=A4vZOYrBFXrwCZ6XgUhSyRpm2VWlm0ssITNmstnf8Mc=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=Gcy7CzmuqisLOIAuH949XOiGosGD7HaGaJ027XCTpQjl8BKqBEMuIi1RqPjaE4diK
+	 blxLgrGXCj66PBP/XpCJfhKQ+AFB5WCeIydywpgAzAWDntsytdndL/SVh7EO6uzCbk
+	 /RJDNvXKFbBFf7O/p5nv5Q79973ual5VAZ0h3xO6okEskj7JKiHbE+lzMPpn/sJFwJ
+	 l+KVVO6YgYFNT3wGDCbxDSxZG20BVlbI2BfNjYKusp0KFCkivDEvk6Ne2tposaeLAm
+	 jLDn44I9bEtg1nXJss1aGg5HYFt1cZ+tuHI1TMND/nrj5Sk9h86IUBj2KH/Y5ptBsw
+	 qt6t/u7xTaqdw==
 From: Lorenzo Bianconi <lorenzo@kernel.org>
-Subject: [PATCH net-next 0/3] net: airoha: Preliminary series to support
- multiple net_devices connected to the same GDM port
-Date: Sun, 12 Apr 2026 19:13:11 +0200
-Message-Id: <20260412-airoha-multi-serdes-preliminary-patch-v1-0-08d5b670ca8f@kernel.org>
+Date: Sun, 12 Apr 2026 19:13:12 +0200
+Subject: [PATCH net-next 1/3] net: airoha: Rely on net_device pointer in
+ airoha_dev_setup_tc_block signature
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,10 +38,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2N0QrCMAxFf2Xk2cBarKi/Ij7ELrWBrRtpJ5Oxf
- zf4eOCee3aorMIV7t0Oyh+pMhcDd+ogZipvRhmMwff+0p+dRxKdM+G0jk3Q5IErLsqjTFJIv7h
- QixlvIbmYwitcXQD7skWS7d95QOGGhbcGz+P4AV0z2KOBAAAA
-X-Change-ID: 20260412-airoha-multi-serdes-preliminary-patch-95f1cf5b5815
+Message-Id: <20260412-airoha-multi-serdes-preliminary-patch-v1-1-08d5b670ca8f@kernel.org>
+References: <20260412-airoha-multi-serdes-preliminary-patch-v1-0-08d5b670ca8f@kernel.org>
+In-Reply-To: <20260412-airoha-multi-serdes-preliminary-patch-v1-0-08d5b670ca8f@kernel.org>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
@@ -50,26 +49,65 @@ Cc: linux-arm-kernel@lists.infradead.org,
  Xuegang Lu <xuegang.lu@airoha.com>, Lorenzo Bianconi <lorenzo@kernel.org>
 X-Mailer: b4 0.14.3
 
-EN7581 or AN7583 SoCs support connecting multiple external SerDes (e.g.
-Ethernet or USB SerDes) to GDM3 or GDM4 ports via a hw arbiter that
-manages the traffic in a TDM manner.
-This series introduces some preliminary changes necessary to introduce
-support for multiple net_devices connected to the same Frame Engine (FE)
-GDM port (GDM3 or GDM4).
+Remove airoha_gdm_port dependency in airoha_dev_setup_tc_block routine
+signature and rely on net_device pointer instead. Please note this patch
+does not introduce any logical change and it is a preliminary patch to
+support multiple net_devices connected to the GDM3 or GDM4 ports via an
+external hw arbiter.
 
+Tested-by: Xuegang Lu <xuegang.lu@airoha.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
-Lorenzo Bianconi (3):
-      net: airoha: Rely on net_device pointer in airoha_dev_setup_tc_block signature
-      net: airoha: Rely on net_device pointer in HTB callbacks
-      net: airoha: Rely on net_device pointer in ETS callbacks
+ drivers/net/ethernet/airoha/airoha_eth.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
- drivers/net/ethernet/airoha/airoha_eth.c | 85 ++++++++++++++++----------------
- 1 file changed, 43 insertions(+), 42 deletions(-)
----
-base-commit: 118cbd428e434bc1b8aac92a74b4992c7683f0fe
-change-id: 20260412-airoha-multi-serdes-preliminary-patch-95f1cf5b5815
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index 8e4b043af4bc..a98512e963b5 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -2687,7 +2687,7 @@ static int airoha_dev_setup_tc_block_cb(enum tc_setup_type type,
+ 	}
+ }
+ 
+-static int airoha_dev_setup_tc_block(struct airoha_gdm_port *port,
++static int airoha_dev_setup_tc_block(struct net_device *dev,
+ 				     struct flow_block_offload *f)
+ {
+ 	flow_setup_cb_t *cb = airoha_dev_setup_tc_block_cb;
+@@ -2700,12 +2700,12 @@ static int airoha_dev_setup_tc_block(struct airoha_gdm_port *port,
+ 	f->driver_block_list = &block_cb_list;
+ 	switch (f->command) {
+ 	case FLOW_BLOCK_BIND:
+-		block_cb = flow_block_cb_lookup(f->block, cb, port->dev);
++		block_cb = flow_block_cb_lookup(f->block, cb, dev);
+ 		if (block_cb) {
+ 			flow_block_cb_incref(block_cb);
+ 			return 0;
+ 		}
+-		block_cb = flow_block_cb_alloc(cb, port->dev, port->dev, NULL);
++		block_cb = flow_block_cb_alloc(cb, dev, dev, NULL);
+ 		if (IS_ERR(block_cb))
+ 			return PTR_ERR(block_cb);
+ 
+@@ -2714,7 +2714,7 @@ static int airoha_dev_setup_tc_block(struct airoha_gdm_port *port,
+ 		list_add_tail(&block_cb->driver_list, &block_cb_list);
+ 		return 0;
+ 	case FLOW_BLOCK_UNBIND:
+-		block_cb = flow_block_cb_lookup(f->block, cb, port->dev);
++		block_cb = flow_block_cb_lookup(f->block, cb, dev);
+ 		if (!block_cb)
+ 			return -ENOENT;
+ 
+@@ -2813,7 +2813,7 @@ static int airoha_dev_tc_setup(struct net_device *dev, enum tc_setup_type type,
+ 		return airoha_tc_setup_qdisc_htb(port, type_data);
+ 	case TC_SETUP_BLOCK:
+ 	case TC_SETUP_FT:
+-		return airoha_dev_setup_tc_block(port, type_data);
++		return airoha_dev_setup_tc_block(dev, type_data);
+ 	default:
+ 		return -EOPNOTSUPP;
+ 	}
 
-Best regards,
 -- 
-Lorenzo Bianconi <lorenzo@kernel.org>
+2.53.0
 
