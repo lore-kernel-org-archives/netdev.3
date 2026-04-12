@@ -1,334 +1,116 @@
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6EB73783AF
-	for <netdev@vger.kernel.org>; Sun, 12 Apr 2026 11:11:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3839019067C;
+	Sun, 12 Apr 2026 11:13:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775992297; cv=none; b=B37LOb80tFUFr7UZtxeAKbdZcAZ+ZYvZZi+Z3tpTmGKsKlq5O8RVVPkMLq7appL8yT1UvIx0s2ps6K7vIucDcNx5SsL4uFQvTHAjqF9hiZQheRRPHxZ/skfcs+ph5fcwpGUFvVLB3tnn+zpIDSLDovqsYz3sN3Zv6uTKXyUMx8c=
+	t=1775992438; cv=none; b=myjhudreM05jpv8xnePeEIUbdHYdkQobLJ/csfsVp8RUAO8ftkHuvQUAzDtPPfNF1LYJsojx8bTvb7ZIv0w2W2nFbeZwC2xWYUG6MHVluJUmQqh146iHfYOClrys1E5imbqxVN1LGKQj8c7HGx0XqQ0TjYQdkjRHalYu4IYe1qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775992297; c=relaxed/simple;
-	bh=Komn/jtzHBJBVBAbBcG1/JcOKIK4WPmcOOz8EffA+vs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lqXMRpab2As++UQdU9baHXM1bSTdo0VyiGjmxOTa5JAMkTmArQz12aB5BAv8KU0MPooYIEHYdpYEWhvPlArbon/7Cu5r9VqEoqbsDNczqGxL0N5b1FhrNSk5y5v/pf2hwVsO9nusD8cVcymtO6fIm6sGGLCqUGZfIcDrwB0PQ+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TAEocMP/; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1775992438; c=relaxed/simple;
+	bh=njpPzO0I4NINQuUd3TXRel4fUwi8HQxwuXkW+uQWdmw=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SZVRgkHm4yBRPEEGH0Y4CSQvylrFXhCH2pdOViB2T/IwNX3eSPKmnazDzHQh2Iw+3cMCuGpFytYnjV8Dm8IRvvNqIrhDQJOZ33/TuuB9rjHDhU6JL68EGhLTw9Ih4Qfq144lEnZLOf79wfe9zkGWdKNE9sVH1NbiZ/eRlUqu24Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=0ErTPBcw; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TAEocMP/"
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-c76c067bc51so1218032a12.0
-        for <netdev@vger.kernel.org>; Sun, 12 Apr 2026 04:11:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775992295; x=1776597095; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jVGxqOACJLFxmxnpIjWVVcYX7bPeWpPr5Ieb+rKdDo4=;
-        b=TAEocMP/TMAbOHKlmoXbvyqbBlK4/n/xdaiUVfApKz4ZrrhGQTw2OG2N+i/cDRKlfh
-         aERSjb6cEfOrD0P4VlQvuUzQgtb/uCgfD/HgjQZu+2tis1UQTKioofaWwN3E3uypKtgL
-         JK8Udjav8lcxjRe1AOHpTz3xA+hgzzetK3kOgrfvcPkHLbjUMmYY6dVEXHDKv+/9Z/7d
-         YA/GSwCMvB+7C0S7jtmrOnS6aYw1ZHT/hYQ3PKJeqB9j8taMZtbBXZv5xUvbafuMWqV/
-         FfIWXJG3nJifZqjEtBCthp0PLj9vlYnl5JYd8gJtJ/EOhhKOPvbQzJ21oeE/ivmbWmA6
-         rdWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775992295; x=1776597095;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jVGxqOACJLFxmxnpIjWVVcYX7bPeWpPr5Ieb+rKdDo4=;
-        b=VoPEhj+6YxUovdRPRLU2fS0t2qqF4/G7wK1//26uL2s5krq3cQ0vfcf7Yrz/HpSbgE
-         UDa6KrJM9nmmCkhMQF2SMvMRBKXkZaVNIhXppBPYNgQrl0zyBblD3aEmVqSU/tRTFJYg
-         npp9w4+G2CQ2US6RKCwR0Q4W5PXGp/RCJxDe6Rzr3bJltqXXTghXQc6H6zRAPB8TgJ83
-         /4+O4kGmCg42CnVXKoMoI+0c467yrqmq9BYlBbixEcSo92zq+Mm2Nv+NcB1KF+OBfz40
-         Penh4EYuc6hQ0Vrya/3PL4VfxSWgQSvl/eENNMkHVig5qEscrZsmTEiNTXJXg/ExLEQX
-         UC8w==
-X-Forwarded-Encrypted: i=1; AJvYcCXZobTaN0x1IZQ1wc84Kcs19WziJJqWAA/qOAM7LZ0i6SbA0K3hETAccrRaXCvgJ+3Sd05WlDk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8cNCZFf/3zxjFODmPOCKQ1mhEnjk9vg+bATQLdW+gHM4jFShX
-	TqhJhY2ZE95I5AAC/UtGeJvSeb1j9pUhUILNczY3uqiGorZbF/2eV6Kn
-X-Gm-Gg: AeBDievDLuiWOYowsDH2q2bkNTgJ2ZclcViGiR2zBPHNFylsfSEEBHjnLbmMl/xE0SC
-	oMVuVNyi8kUZydiVYp/S35324127r+VUCxnPGJxikuly869UR7KmmjhZ4ig7eQheezYlLthdmLM
-	3eZwNAylJou5ACRcNsMgtwL+PrWp4IXk/VFff5r4tUzYyyXjNKc3hhpsVytM4lC2lOsHrPKibRs
-	ozWHUKEkV4R+qSDvbxF1h+s29zLKfQ5WVK25iVf+dnyZNMj3VyjUD4hdo2Pn/3pdW7XR5howsiA
-	KDFMSzJWvhN+M9N7KNxU20zsWylP/NIn61QRkF+uH6NiHbCxPXe3hc5liJUc5tGORzJLAxgqCFH
-	oBZkCvi2Y8znK8J1bVR4aeTqmhewyWd7Z1QUDAHMRkOMxlNS3dMThVoFzgfUv61MYyTJNYktKrS
-	UZzZYD718AGeY6nEVm9WBFa6zz+BXP+HTI5MN2Ae+K
-X-Received: by 2002:a05:6a21:3284:b0:39f:94cb:1bc with SMTP id adf61e73a8af0-39fe3c64c48mr10313543637.1.1775992295009;
-        Sun, 12 Apr 2026 04:11:35 -0700 (PDT)
-Received: from DESKTOP-82PPU4A.localdomain ([202.8.116.169])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7934c9ef38sm2522981a12.12.2026.04.12.04.11.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Apr 2026 04:11:34 -0700 (PDT)
-From: Ujjal Roy <royujjal@gmail.com>
-To: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	David Ahern <dsahern@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Andy Roulin <aroulin@nvidia.com>,
-	Yong Wang <yongwang@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>
-Cc: Ujjal Roy <ujjal@alumnux.com>,
-	bridge@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH net-next v4 5/5] selftests: net: bridge: add MRC and QQIC field encoding tests
-Date: Sun, 12 Apr 2026 11:10:47 +0000
-Message-ID: <20260412111047.1326-6-royujjal@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260412111047.1326-1-royujjal@gmail.com>
-References: <20260412111047.1326-1-royujjal@gmail.com>
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="0ErTPBcw"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 2769320799;
+	Sun, 12 Apr 2026 13:13:54 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id oeHULxhk0E0v; Sun, 12 Apr 2026 13:13:53 +0200 (CEST)
+Received: from EXCH-02.secunet.de (rl2.secunet.de [10.32.0.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id 6ED412084B;
+	Sun, 12 Apr 2026 13:13:53 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 6ED412084B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1775992433;
+	bh=6rlJRpiY9QKBK7+Qr9FGrYyMXsvCl5MBxOaLAwh5Ptc=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
+	b=0ErTPBcwNXl+dbptndupjkB6b69ATU3XdhM7O6GcfTnttJkWwTszTSdgvrhCTMg/1
+	 srGjbrEf9xwHiN3NGYhIhK5Vbwa/yVUxWofI6s3zr4RK10srqZyDeNXAb709PltE7B
+	 kgi6Dfk4xHL6rUoHHhxKgsi09022UZliNBa6XtFXzdfBub7deLFvoBDQDByKFwsOZT
+	 4H+uJyvzZBG26Zh9jqDU64TufwE5Cm1yYxlutC9xtDpzUk4CwOxFOFG9JMPaXhWwLz
+	 0G/6VXTDscEngyTJi9iQoA6xRqvYIvdL2aEzAqVSCcZPK9xHtoIWPuMkHMGC5YYIcw
+	 lG7p47+b0PaBg==
+Received: from moon.secunet.de (172.18.149.1) by EXCH-02.secunet.de
+ (10.32.0.172) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Sun, 12 Apr
+ 2026 13:13:51 +0200
+From: Antony Antony <antony.antony@secunet.com>
+To: Antony Antony <antony.antony@secunet.com>, Steffen Klassert
+	<steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon
+ Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, Masahide
+ NAKAMURA <nakam@linux-ipv6.org>, Paul Moore <paul@paul-moore.com>, Stephen
+ Smalley <stephen.smalley.work@gmail.com>, Ondrej Mosnacek
+	<omosnace@redhat.com>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+	<skhan@linuxfoundation.org>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<selinux@vger.kernel.org>, <linux-doc@vger.kernel.org>, Chiachang Wang
+	<chiachangwang@google.com>, Yan Yan <evitayan@google.com>,
+	<devel@linux-ipsec.org>
+Subject: [PATCH ipsec-next v7 01/14] xfrm: remove redundant assignments
+Date: Sun, 12 Apr 2026 13:13:41 +0200
+Message-ID: <migrate-state-v7-1-44eb2440b91c@secunet.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <migrate-state-v7-0-44eb2440b91c@secunet.com>
+References: <migrate-state-v7-0-44eb2440b91c@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Mailer: b4 0.15-dev
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-02.secunet.de
+ (10.32.0.172)
 
-Enhance vlmc_query_intvl_test and vlmc_query_response_intvl_test in
-bridge_vlan_mcast.sh to validate IGMPv3/MLDv2 protocol compliance for
-MRC and QQIC field encoding across both linear and exponential ranges.
+These assignments are overwritten within the same function further down
 
-TEST: Vlan multicast snooping enable                                [ OK ]
-TEST: Vlan mcast_query_interval global option default value         [ OK ]
-INFO: Vlan 10 mcast_query_interval (QQIC) test cases:
-TEST: Number of tagged IGMPv2 general query                         [ OK ]
-TEST: IGMPv3 QQIC linear value 60                                   [ OK ]
-TEST: MLDv2 QQIC linear value 60                                    [ OK ]
-TEST: IGMPv3 QQIC non linear value 160                              [ OK ]
-TEST: MLDv2 QQIC non linear value 160                               [ OK ]
-TEST: Vlan mcast_query_response_interval global option default value   [ OK ]
-INFO: Vlan 10 mcast_query_response_interval (MRC) test cases:
-TEST: IGMPv3 MRC linear value 60                                    [ OK ]
-TEST: IGMPv3 MRC non linear value 160                               [ OK ]
-TEST: MLDv2 MRC linear value 30000                                  [ OK ]
-TEST: MLDv2 MRC non linear value 60000                              [ OK ]
+commit e8961c50ee9cc ("xfrm: Refactor migration setup
+during the cloning process")
+x->props.family = m->new_family;
 
-Signed-off-by: Ujjal Roy <royujjal@gmail.com>
+Which actually moved it in the
+commit e03c3bba351f9 ("xfrm: Fix xfrm migrate issues when address family changes")
+
+And the initial
+commit 80c9abaabf428 ("[XFRM]: Extension for dynamic update of endpoint address(es)")
+
+added x->props.saddr = orig->props.saddr; and
+memcpy(&xc->props.saddr, &m->new_saddr, sizeof(xc->props.saddr));
+
+Signed-off-by: Antony Antony <antony.antony@secunet.com>
 ---
- .../net/forwarding/bridge_vlan_mcast.sh       | 150 +++++++++++++++++-
- 1 file changed, 142 insertions(+), 8 deletions(-)
+v1->v2: remove extra saddr copy, previous line
+---
+ net/xfrm/xfrm_state.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/tools/testing/selftests/net/forwarding/bridge_vlan_mcast.sh b/tools/testing/selftests/net/forwarding/bridge_vlan_mcast.sh
-index e8031f68200a..9f9f33d58286 100755
---- a/tools/testing/selftests/net/forwarding/bridge_vlan_mcast.sh
-+++ b/tools/testing/selftests/net/forwarding/bridge_vlan_mcast.sh
-@@ -162,14 +162,27 @@ vlmc_query_cnt_setup()
- {
- 	local type=$1
- 	local dev=$2
-+	local match=$3
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index 98b362d51836..3ee92f93dbd2 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -1980,8 +1980,6 @@ static struct xfrm_state *xfrm_state_clone_and_setup(struct xfrm_state *orig,
+ 	x->props.mode = orig->props.mode;
+ 	x->props.replay_window = orig->props.replay_window;
+ 	x->props.reqid = orig->props.reqid;
+-	x->props.family = orig->props.family;
+-	x->props.saddr = orig->props.saddr;
  
- 	if [[ $type == "igmp" ]]; then
--		tc filter add dev $dev egress pref 10 prot 802.1Q \
-+		# This matches: IP Protocol 2 (IGMP)
-+		tc filter add dev "$dev" egress pref 10 prot 802.1Q \
- 			flower vlan_id 10 vlan_ethtype ipv4 dst_ip 224.0.0.1 ip_proto 2 \
-+			action continue
-+		# AND Type 0x11 (Query) at offset 24 after IP
-+		# IP (20 byte IP + 4 bytes Option)
-+		match=(match u8 0x11 0xff at 24 $match)
-+		tc filter add dev "$dev" egress pref 20 prot 802.1Q u32 "${match[@]}" \
- 			action pass
- 	else
--		tc filter add dev $dev egress pref 10 prot 802.1Q \
-+		# This matches: ICMPv6
-+		tc filter add dev "$dev" egress pref 10 prot 802.1Q \
- 			flower vlan_id 10 vlan_ethtype ipv6 dst_ip ff02::1 ip_proto icmpv6 \
-+			action continue
-+		# AND Type 0x82 (Query) at offset 48 after IPv6
-+		# IPv6 (40 bytes IPv6 + 2 bytes next HDR + 4 bytes Option + 2 byte pad)
-+		match=(match u8 0x82 0xff at 48 $match)
-+		tc filter add dev "$dev" egress pref 20 prot 802.1Q u32 "${match[@]}" \
- 			action pass
- 	fi
- 
-@@ -181,7 +194,53 @@ vlmc_query_cnt_cleanup()
- 	local dev=$1
- 
- 	ip link set dev br0 type bridge mcast_stats_enabled 0
--	tc filter del dev $dev egress pref 10
-+	tc filter del dev "$dev" egress pref 20
-+	tc filter del dev "$dev" egress pref 10
-+}
-+
-+vlmc_query_get_intvl_match()
-+{
-+	local type=$1
-+	local version=$2
-+	local test=$3
-+	local interval=$4
-+
-+	if [ "$test" = "qqic" ]; then
-+		# QQIC is 8-bit floating point encoding for IGMPv3 and MLDv2
-+		if [ "${type}v${version}" = "igmpv3" ]; then
-+			# IP 20 bytes + 4 bytes Option + IGMPv3[9]
-+			if [[ $interval -lt 128 ]]; then
-+				echo "match u8 0x3c 0xff at 33"
-+			else
-+				echo "match u8 0x84 0xff at 33"
-+			fi
-+		elif [ "${type}v${version}" = "mldv2" ]; then
-+			# IPv6 40 + 2 next HDR + 4 Option + 2 pad + MLDv2[25]
-+			if [[ $interval -lt 128 ]]; then
-+				echo "match u8 0x3c 0xff at 73"
-+			else
-+				echo "match u8 0x84 0xff at 73"
-+			fi
-+		fi
-+	elif [ "$test" = "mrc" ]; then
-+		if [ "${type}v${version}" = "igmpv3" ]; then
-+			# MRC is 8-bit floating point encoding for IGMPv3
-+			# IP 20 bytes + 4 bytes Option + IGMPv3[1]
-+			if [[ $interval -lt 128 ]]; then
-+				echo "match u8 0x3c 0xff at 25"
-+			else
-+				echo "match u8 0x84 0xff at 25"
-+			fi
-+		elif [ "${type}v${version}" = "mldv2" ]; then
-+			# MRC is 16-bit floating point encoding for MLDv2
-+			# IPv6 40 + 2 next HDR + 4 Option + 2 pad + MLDv2[4]
-+			if [[ $interval -lt 32768 ]]; then
-+				echo "match u16 0x7530 0xffff at 52"
-+			else
-+				echo "match u16 0x8d4c 0xffff at 52"
-+			fi
-+		fi
-+	fi
- }
- 
- vlmc_check_query()
-@@ -191,9 +250,13 @@ vlmc_check_query()
- 	local dev=$3
- 	local expect=$4
- 	local time=$5
-+	local test=$6
-+	local interval=$7
-+	local intvl_match=""
- 	local ret=0
- 
--	vlmc_query_cnt_setup $type $dev
-+	intvl_match="$(vlmc_query_get_intvl_match "$type" "$version" "$test" "$interval")"
-+	vlmc_query_cnt_setup "$type" "$dev" "$intvl_match"
- 
- 	local pre_tx_xstats=$(vlmc_query_cnt_xstats $type $version $dev)
- 	bridge vlan global set vid 10 dev br0 mcast_snooping 1 mcast_querier 1
-@@ -201,7 +264,7 @@ vlmc_check_query()
- 	if [[ $ret -eq 0 ]]; then
- 		sleep $time
- 
--		local tcstats=$(tc_rule_stats_get $dev 10 egress)
-+		local tcstats=$(tc_rule_stats_get "$dev" 20 egress)
- 		local post_tx_xstats=$(vlmc_query_cnt_xstats $type $version $dev)
- 
- 		if [[ $tcstats != $expect || \
-@@ -441,6 +504,7 @@ vlmc_query_intvl_test()
- 	check_err $? "Wrong default mcast_query_interval global vlan option value"
- 	log_test "Vlan mcast_query_interval global option default value"
- 
-+	log_info "Vlan 10 mcast_query_interval (QQIC) test cases:"
- 	RET=0
- 	bridge vlan global set vid 10 dev br0 mcast_snooping 1 mcast_startup_query_count 0
- 	bridge vlan global set vid 10 dev br0 mcast_snooping 1 mcast_query_interval 200
-@@ -448,8 +512,42 @@ vlmc_query_intvl_test()
- 	# 1 is sent immediately, then 2 more in the next 5 seconds
- 	vlmc_check_query igmp 2 $swp1 3 5
- 	check_err $? "Wrong number of tagged IGMPv2 general queries sent"
--	log_test "Vlan 10 mcast_query_interval option changed to 200"
-+	log_test "Number of tagged IGMPv2 general query"
- 
-+	RET=0
-+	bridge vlan global set vid 10 dev br0 mcast_snooping 1 mcast_igmp_version 3
-+	check_err $? "Could not set mcast_igmp_version in vlan 10"
-+	bridge vlan global set vid 10 dev br0 mcast_snooping 1 mcast_mld_version 2
-+	check_err $? "Could not set mcast_mld_version in vlan 10"
-+	bridge vlan global set vid 10 dev br0 mcast_snooping 1 mcast_query_interval 6000
-+	check_err $? "Could not set mcast_query_interval in vlan 10"
-+	# 1 is sent immediately, IGMPv3 QQIC should match with linear value 60s
-+	vlmc_check_query igmp 3 $swp1 1 1 qqic 60
-+	check_err $? "Wrong QQIC in generated IGMPv3 general queries"
-+	log_test "IGMPv3 QQIC linear value 60"
-+
-+	RET=0
-+	# 1 is sent immediately, MLDv2 QQIC should match with linear value 60s
-+	vlmc_check_query mld 2 $swp1 1 1 qqic 60
-+	check_err $? "Wrong QQIC in generated MLDv2 general queries"
-+	log_test "MLDv2 QQIC linear value 60"
-+
-+	RET=0
-+	bridge vlan global set vid 10 dev br0 mcast_snooping 1 mcast_query_interval 16000
-+	check_err $? "Could not set mcast_query_interval in vlan 10"
-+	# 1 is sent immediately, IGMPv3 QQIC should match with non linear value 160s
-+	vlmc_check_query igmp 3 $swp1 1 1 qqic 160
-+	check_err $? "Wrong QQIC in generated IGMPv3 general queries"
-+	log_test "IGMPv3 QQIC non linear value 160"
-+
-+	RET=0
-+	# 1 is sent immediately, MLDv2 QQIC should match with non linear value 160s
-+	vlmc_check_query mld 2 $swp1 1 1 qqic 160
-+	check_err $? "Wrong QQIC in generated MLDv2 general queries"
-+	log_test "MLDv2 QQIC non linear value 160"
-+
-+	bridge vlan global set vid 10 dev br0 mcast_snooping 1 mcast_igmp_version 2
-+	bridge vlan global set vid 10 dev br0 mcast_snooping 1 mcast_mld_version 1
- 	bridge vlan global set vid 10 dev br0 mcast_snooping 1 mcast_startup_query_count 2
- 	bridge vlan global set vid 10 dev br0 mcast_snooping 1 mcast_query_interval 12500
- }
-@@ -468,11 +566,47 @@ vlmc_query_response_intvl_test()
- 	check_err $? "Wrong default mcast_query_response_interval global vlan option value"
- 	log_test "Vlan mcast_query_response_interval global option default value"
- 
-+	log_info "Vlan 10 mcast_query_response_interval (MRC) test cases:"
-+	RET=0
-+	bridge vlan global set vid 10 dev br0 mcast_snooping 1 mcast_startup_query_count 0
-+	bridge vlan global set vid 10 dev br0 mcast_snooping 1 mcast_igmp_version 3
-+	check_err $? "Could not set mcast_igmp_version in vlan 10"
-+	bridge vlan global set vid 10 dev br0 mcast_snooping 1 mcast_query_response_interval 600
-+	check_err $? "Could not set mcast_query_response_interval in vlan 10"
-+	# 1 is sent immediately, IGMPv3 MRC should match with linear value 60 units of 1/10s
-+	vlmc_check_query igmp 3 $swp1 1 1 mrc 60
-+	check_err $? "Wrong MRC in generated IGMPv3 general queries"
-+	log_test "IGMPv3 MRC linear value 60"
-+
-+	RET=0
-+	bridge vlan global set vid 10 dev br0 mcast_snooping 1 mcast_query_response_interval 1600
-+	check_err $? "Could not set mcast_query_response_interval in vlan 10"
-+	# 1 is sent immediately, IGMPv3 MRC should match with non linear value 160 unit of 1/10s
-+	vlmc_check_query igmp 3 $swp1 1 1 mrc 160
-+	check_err $? "Wrong MRC in generated IGMPv3 general queries"
-+	log_test "IGMPv3 MRC non linear value 160"
-+
-+	RET=0
-+	bridge vlan global set vid 10 dev br0 mcast_snooping 1 mcast_mld_version 2
-+	check_err $? "Could not set mcast_mld_version in vlan 10"
-+	bridge vlan global set vid 10 dev br0 mcast_snooping 1 mcast_query_response_interval 3000
-+	check_err $? "Could not set mcast_query_response_interval in vlan 10"
-+	# 1 is sent immediately, MLDv2 MRC should match with linear value 30000(ms)
-+	vlmc_check_query mld 2 $swp1 1 1 mrc 30000
-+	check_err $? "Wrong MRC in generated MLDv2 general queries"
-+	log_test "MLDv2 MRC linear value 30000"
-+
- 	RET=0
--	bridge vlan global set vid 10 dev br0 mcast_snooping 1 mcast_query_response_interval 200
-+	bridge vlan global set vid 10 dev br0 mcast_snooping 1 mcast_query_response_interval 6000
- 	check_err $? "Could not set mcast_query_response_interval in vlan 10"
--	log_test "Vlan 10 mcast_query_response_interval option changed to 200"
-+	# 1 is sent immediately, MLDv2 MRC should match with non linear value 60000(ms)
-+	vlmc_check_query mld 2 $swp1 1 1 mrc 60000
-+	check_err $? "Wrong MRC in generated MLDv2 general queries"
-+	log_test "MLDv2 MRC non linear value 60000"
- 
-+	bridge vlan global set vid 10 dev br0 mcast_snooping 1 mcast_igmp_version 2
-+	bridge vlan global set vid 10 dev br0 mcast_snooping 1 mcast_mld_version 1
-+	bridge vlan global set vid 10 dev br0 mcast_snooping 1 mcast_startup_query_count 2
- 	bridge vlan global set vid 10 dev br0 mcast_snooping 1 mcast_query_response_interval 1000
- }
- 
+ 	if (orig->aalg) {
+ 		x->aalg = xfrm_algo_auth_clone(orig->aalg);
+
 -- 
-2.43.0
+2.47.3
 
