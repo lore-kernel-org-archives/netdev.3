@@ -1,189 +1,112 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C320611E;
-	Sun, 12 Apr 2026 11:22:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA0CE3793DF
+	for <netdev@vger.kernel.org>; Sun, 12 Apr 2026 11:30:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775992961; cv=none; b=Dpb42ZRWVo3aC76+kQMv6mgAVCzbvbwVYigYw2ByVRwmJ0mvZOTr5xaop9Ghtf8FRTcw7K0RWJmNrfHFZTPV/9gPC6l20yY/+Di2ManpqhlyLVeR9NnDt0iCUnBoqNHO1ChfiLKZo/ob+NNV6fp/vhr8z3Hkpu4MqluxDQ1/5aA=
+	t=1775993407; cv=none; b=Z8MwWqayzYDCpDzzxkGiZ3pDw2idsBv5TjZuE9h5UWr8vtsknnGCVyTQ1DrSdC2vq+Op6d1jhbRovjmqCPhUCRo1oEZbuh5b5gSYfcNT3Ao2xZqHTGrA0TnQ1UwwmekDvjBsyRsN2TXTmknBdCWi6guFAIPabs973H7DtVQqkYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775992961; c=relaxed/simple;
-	bh=iBNjYsOrio//Ay0V6xwTccoGVXeBWtCDF2/0I6PEsfw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Fl896e0hTI8LguwxAil3zb0KWNzsaWkVUIJ8cWmu95Nuox+yMHZV1mAyChcv2pDYwzf6d2c/x+enS5Sqf/Mab5DoAmxHK7wtsxWbUrrLPx0NLkYY8hSMXXJmyYExTFuol6N/P57b5Klby4SGcX2cie+ifpahLEOaDCtQSuDzDXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=Pz2d5ngx; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	s=arc-20240116; t=1775993407; c=relaxed/simple;
+	bh=bVLOIjrrUsUnbk1fhwzRyD1mIsunyx4T5oK8UP2HQxQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=S9g1HrpTtVELZierda78p4qhZ7izB82XWxME1+iEHtC9S7vpdNDmUaA+6bXowGv+vR8CuYVXeZagktzYev4jiYo/1UT1mvezHy9/0OgcKj++toOVxANI2jUvWrEchvmTm8tveCXW3hGy3DaPfH7C9Tig20b9ABlRhQ0osfrC0dQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hh9CIAp/; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="Pz2d5ngx"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id E8DC82074B;
-	Sun, 12 Apr 2026 13:13:42 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id gvTCIENBFBg1; Sun, 12 Apr 2026 13:13:41 +0200 (CEST)
-Received: from EXCH-02.secunet.de (rl2.secunet.de [10.32.0.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id BFEA0206D0;
-	Sun, 12 Apr 2026 13:13:41 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com BFEA0206D0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1775992421;
-	bh=gZJ7GNYkUq6UaGxnX5FoViWKc0OegygDesbAYyGRBqU=;
-	h=From:To:CC:Subject:Date:From;
-	b=Pz2d5ngxjbqS3jln5dUIzy8HRab5BS7dRBrJRilq0/kSvo1YRfYB+aoZE3jswcHuw
-	 w2NEAxZFToODLQHfrgfPI4KEfrMtMro5hyceM4I9SDJkzUGwCID0GEvQSw5eBIiv45
-	 4Y2rqbSQ+XfLdsjpXn8DBJP7+GRwjfhLiHM0F/q/V+vjBPP4wRIrF9g0Xesxg9pSCt
-	 I3uyo21/ZDozsTS3MGJ96kTjo1qxLLlKNXhbOXhQw3fU/fc1WTxLPUcyzlpcQgeW9W
-	 ZstNrS/0/RhsE9XhQ5NxrQuJxMc9jObaxIIpatMklFsw8l8RTUrdhT/0a+uBD6CfFH
-	 ZgzamxLk5970w==
-Received: from moon.secunet.de (172.18.149.1) by EXCH-02.secunet.de
- (10.32.0.172) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Sun, 12 Apr
- 2026 13:13:40 +0200
-From: Antony Antony <antony.antony@secunet.com>
-To: Antony Antony <antony.antony@secunet.com>, Steffen Klassert
-	<steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, Masahide
- NAKAMURA <nakam@linux-ipv6.org>, Paul Moore <paul@paul-moore.com>, Stephen
- Smalley <stephen.smalley.work@gmail.com>, Ondrej Mosnacek
-	<omosnace@redhat.com>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
-	<skhan@linuxfoundation.org>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<selinux@vger.kernel.org>, <linux-doc@vger.kernel.org>, Chiachang Wang
-	<chiachangwang@google.com>, Yan Yan <evitayan@google.com>,
-	<devel@linux-ipsec.org>
-Subject: [PATCH ipsec-next v7 00/14] xfrm: XFRM_MSG_MIGRATE_STATE new netlink message
-Date: Sun, 12 Apr 2026 13:13:21 +0200
-Message-ID: <migrate-state-v7-0-44eb2440b91c@secunet.com>
-X-Mailer: git-send-email 2.39.5
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hh9CIAp/"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-488b8bc6bc9so24617385e9.3
+        for <netdev@vger.kernel.org>; Sun, 12 Apr 2026 04:30:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775993404; x=1776598204; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lwus+O9c1GdfyFp5uZba+e/DkD2g+5jrtF9z2A1ucdw=;
+        b=Hh9CIAp/xoEby4xnmokJB9FKtNXCjIAqq4Caq8DB1IP/MOBJiSM7S2EMDRSfNmo20x
+         AKdFto4zwhKi8pxVXWyFK9/9nYzmLdyWx5MP0pGDPF+wKyidAdRIJYWPwFLHp5LgCiti
+         V76uEZNdxg3memsfFbtl+QBd2TgmQfWEgmRfpseVyCj0bXON0XCyY7t11oUTOVzTbXiW
+         RrZDz8XnApKdO1eIhkpfVY1zMfgIuCssO7Af8K5CoCwYr6puf8EKCfR9eVA1dSYt1Hqm
+         ebQJZm1EldKVjEWcWaJdjhJitd/DbSl9Ntnvtk36v+Ip+aLRTOxDY6zqYDVSdbkG+SRV
+         uiXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775993404; x=1776598204;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lwus+O9c1GdfyFp5uZba+e/DkD2g+5jrtF9z2A1ucdw=;
+        b=KqI6vbdcE+e4SDOq0h7vMjrv/wBHYDZNsIMt7seL/1ESCJ926RIopGPZyORkmszWsu
+         tz8fzcdPKTZaM3/jkMKJhnNk7Os201cAV65GCJUKaCA0c6zLhdAAnYcqXZ2Qx5DYURsD
+         Dce0joPRCXjLOQ24VLAHhD/E4QfBKArSF9JaaKyDO5LId82qiWUiIMAJkSHxDH8EgHcQ
+         XCipKjNHLaq0XdbzvuR5szBXQUTPK7BAH3lDQUiPkO+zciKa5DoucPufMEQEc1x0f7oh
+         i26NNu29SjPpzt2+YrxOWvZohfdjBuHAddtxj5x09Fa6tt/ED1pGksWEcJCCa2DLJb4x
+         k17A==
+X-Forwarded-Encrypted: i=1; AJvYcCVO25iqx8jeO6ybZB3dPvz/5n1gf6TC/kuvoh53ms1zlRPNLRwcJr+zmkMrNoi5hAdNv3+yfNU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7Qb58nlise/lxaz1jUDmxnDe/LHVCPkKpI4KV7YHpDpIBAyG3
+	hAbxOc17kXfCEwhdkyoOcYRe3TEcP8j4+TeNk0JzPZBKlp6WI9aN9JyS
+X-Gm-Gg: AeBDievLNGGSMRVmukrW47CoQGPC2w2U8yMflclo5AlinCVmdYxhjpt+FlTaJiCrde1
+	XzzHoSg+93QnHeTNgYWMGGbzVLbqCKgQzQhJ3hjE/KbrqLB2xstvMrRMm7RtIa4mak88wXaE8dC
+	X1aLkUak1l+rCAiJ3svkagyc/g22l/uTVbSxJGT/wYrEsTahXO56mARtroG2M8gLOakYxN/GKu5
+	LEItnejPB1Wu3pVjqP2AYVQuzI8dqOpvBFgujNx0RhFGEtGfsdNtuQ9dkQvEXU0HvyXbZwubtpP
+	REJqEFlOuJFzi0HsGYA7Kamx2BYDZlm9XvxBf1eAyU8nHSLs0RqHs1R3TjvFXKl9Wy+rhxHqaqi
+	0WOaw10EbdZPrZ7d/9kVGz4mo1mO6bP0hURnA0F8OyJkcEjWgbpXg4LBSv1wJJ1yjAyN/CDHOrA
+	yzTeQDCSLc9qBxfOwEL3ZTDAVodoPFpMAJEmZA303aT4o1feioP+EH6jzyP2f0lYFjvoGsak27Q
+	Vn1Hq4rIMQ75pJtPmTRlinAh3y0/seIoYSHDx7MiKzDfF/H3VTmSxq+ye33rhY=
+X-Received: by 2002:a05:600c:450a:b0:488:a882:b7 with SMTP id 5b1f17b1804b1-488d6ad17e6mr125276955e9.29.1775993403889;
+        Sun, 12 Apr 2026 04:30:03 -0700 (PDT)
+Received: from ?IPV6:2003:ea:8f46:8d00:509:2813:3a95:e5b2? (p200300ea8f468d00050928133a95e5b2.dip0.t-ipconnect.de. [2003:ea:8f46:8d00:509:2813:3a95:e5b2])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d53807d7sm330792645e9.10.2026.04.12.04.30.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 12 Apr 2026 04:30:03 -0700 (PDT)
+Message-ID: <d0e1bab5-3476-4b58-834c-6e742e89539d@gmail.com>
+Date: Sun, 12 Apr 2026 13:30:02 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Change-ID: migrate-state-063ee0342680
-X-Mailer: b4 0.15-dev
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-02.secunet.de
- (10.32.0.172)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2] r8169: Use napi_schedule_irqoff()
+To: Matt Vollrath <tactii@gmail.com>, netdev@vger.kernel.org
+Cc: edumazet@google.com, pabeni@redhat.com, kuba@kernel.org,
+ andrew+netdev@lunn.ch, nic_swsd@realtek.com
+References: <20260412014031.525061-1-tactii@gmail.com>
+Content-Language: en-US
+From: Heiner Kallweit <hkallweit1@gmail.com>
+In-Reply-To: <20260412014031.525061-1-tactii@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The current XFRM_MSG_MIGRATE interface is tightly coupled to policy and
-SA migration, and it lacks the information required to reliably migrate
-individual SAs. This makes it unsuitable for IKEv2 deployments,
-dual-stack setups (IPv4/IPv6), and scenarios where policies are managed
-externally (e.g., by daemons other than the IKE daemon).
+On 12.04.2026 03:40, Matt Vollrath wrote:
+> napi_schedule() masks hard interrupts while doing its work, which is
+> redundant when called from an interrupt handler where hard interrupts
+> are already masked. Use napi_schedule_irqoff() instead to bypass this
+> redundant masking. This is an optimization.
+> 
+> Tested on a Lenovo RTL8168h/8111h.
+> 
+> Signed-off-by: Matt Vollrath <tactii@gmail.com>
+> ---
+>  drivers/net/ethernet/realtek/r8169_main.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+> index 791277e750ba..4c0ad0de3410 100644
+> --- a/drivers/net/ethernet/realtek/r8169_main.c
+> +++ b/drivers/net/ethernet/realtek/r8169_main.c
+> @@ -4873,7 +4873,7 @@ static irqreturn_t rtl8169_interrupt(int irq, void *dev_instance)
+>  		phy_mac_interrupt(tp->phydev);
+>  
+>  	rtl_irq_disable(tp);
+> -	napi_schedule(&tp->napi);
+> +	napi_schedule_irqoff(&tp->napi);
+>  out:
+>  	rtl_ack_events(tp, status);
+>  
 
-Mandatory SA selector list
-The current API requires a non-empty SA selector list, which does not
-reflect the IKEv2 use case.
-A single Child SA may correspond to multiple policies,
-and SA discovery already occurs via address and reqid matching. With
-dual-stack Child SAs this leads to excessive churn: the current method
-would have to be called up to six times (in/out/fwd × v4/v6) on SA,
-while the new method only requires two calls.
-
-Selectors lack SPI (and marks)
-XFRM_MSG_MIGRATE cannot uniquely identify an SA when multiple SAs share
-the same policies (per-CPU SAs, SELinux label-based SAs, etc.). Without
-the SPI, the kernel may update the wrong SA instance.
-
-Reqid cannot be changed
-Some implementations allocate reqids based on traffic selectors. In
-host-to-host or selector-changing scenarios, the reqid must change,
-which the current API cannot express.
-
-Because strongSwan and other implementations manage policies
-independently of the kernel, an interface that updates only a specific
-SA - with complete and unambiguous identification - is required.
-
-SA Selector, x->sel, can't be changed, especially Transport mode.
-
-XFRM_MSG_MIGRATE_STATE provides that interface. It supports migration
-of a single SA via xfrm_usersa_id (including SPI) and we fix
-encap removal in this patch set, reqid updates, address changes,
-and other SA-specific parameters. It avoids the structural limitations
-of XFRM_MSG_MIGRATE and provides a simpler, extensible mechanism for
-precise per-SA migration without involving policies.
-This method also allows migtrating SA selectors typically used with
-host-to-host in Transport mode.
-
-New migration steps: first install block policy, remove the old policy,
-call XFRM_MSG_MIGRATE_STATE for each state, then re-install the
-policies and remove the block policy.
-
-If the target SA tuple (daddr, SPI, proto, family) is already
-occupied, the operation returns -EEXIST. In this case the original
-SA is not preserved. Userspace must handle -EEXIST by
-re-establishing the SA at the IKE level and manage policies.
-
----
-v6->v7: - add SA selectoor migration
-	- fixes to commit messages
-	- white space removal
-
-Link to v6: https://lore.kernel.org/r/migrate-state-v6-0-9df9764ddb9e@secunet.com
-v5->v6: - add mark to look up SA.
-	- restrict netlink attributes in new method
-	- address review feedback from Sabrina
-	- add new patch to fix existing inter-family address comparison
-	- add extack xfrm_state_init()
-	- Feedback from Yan : omit-to-inherit add migrating marks
-	- Drop missing __rcu annotation on nlsk, Sabrina has a better patch
-
-Link to v5: https://lore.kernel.org/all/cover.1769509130.git.antony.antony@secunet.com/
-v4->v5: add synchronize after migrate and delete it inside a lock
-	- split xfrm_state_migrate into create and install functions
-Link to v4: https://lore.kernel.org/all/cover.1768811736.git.antony.antony@secunet.com/
-
-v3->v4: add patch to fix pre-existing missing __rcu annotation on nlsk
-
-v2->v3: - fix commit message formatting
-
-v1->v2: dropped 6/6. That check is already there where the func is called
-	- merged patch 4/6 and 5/6, to fix use uninitialized value
-	- fix commit messages
-
----
-Antony Antony (14):
-      xfrm: remove redundant assignments
-      xfrm: add extack to xfrm_init_state
-      xfrm: allow migration from UDP encapsulated to non-encapsulated ESP
-      xfrm: fix NAT-related field inheritance in SA migration
-      xfrm: rename reqid in xfrm_migrate
-      xfrm: split xfrm_state_migrate into create and install functions
-      xfrm: check family before comparing addresses in migrate
-      xfrm: add state synchronization after migration
-      xfrm: add error messages to state migration
-      xfrm: move encap and xuo into struct xfrm_migrate
-      xfrm: refactor XFRMA_MTIMER_THRESH validation into a helper
-      xfrm: add XFRM_MSG_MIGRATE_STATE for single SA migration
-      xfrm: restrict netlink attributes for XFRM_MSG_MIGRATE_STATE
-      xfrm: add documentation for XFRM_MSG_MIGRATE_STATE
-
- Documentation/networking/xfrm/index.rst            |   1 +
- .../networking/xfrm/xfrm_migrate_state.rst         | 230 ++++++++++++++
- include/net/xfrm.h                                 |  78 ++++-
- include/uapi/linux/xfrm.h                          |  21 ++
- net/ipv4/ipcomp.c                                  |   2 +-
- net/ipv6/ipcomp6.c                                 |   2 +-
- net/key/af_key.c                                   |  12 +-
- net/xfrm/xfrm_device.c                             |   2 +-
- net/xfrm/xfrm_policy.c                             |  27 +-
- net/xfrm/xfrm_state.c                              | 144 +++++----
- net/xfrm/xfrm_user.c                               | 344 ++++++++++++++++++++-
- security/selinux/nlmsgtab.c                        |   3 +-
- 12 files changed, 769 insertions(+), 97 deletions(-)
----
-base-commit: be14d13625c9b070c33c423026b598ed65695225
-change-id: migrate-state-063ee0342680
-
-Best regards,
---  
-Antony Antony <antony.antony@secunet.com>
+Not using napi_schedule_irqoff() here is intentional,
+see 2734a24e6e5d18522fbf599135c59b82ec9b2c9e.
 
