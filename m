@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA37E32F749;
-	Sun, 12 Apr 2026 22:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7783E3242B1;
+	Sun, 12 Apr 2026 22:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776033641; cv=none; b=HKdNX0K/DFgtVIMR+j2abuv9mcj0madsnYTJDRZ59BR/kiw/mhY48suc1g+4KBWUoJM6VZvDaKaBPMnvTUIa3v98mqgKw5VEq1qFcogrXCT9d7W252aZa6N0BXeULyXCWEvHWGkEmBoYNNqnhfyt9E6e2u9tzJIMBNsxzXzOSj8=
+	t=1776034241; cv=none; b=YbntT3+eZ5SIy7MtC6cs5n8E/IVNamjSggo35poB3cwqEI4BPxfQ5b+83JHCkNBf3Ga1g5B4FiopScLz1lFsxeMWP4/8wYMHqk4Moy0T0zSoVM7/klhGgYWsNP/D2L9I+y8C2UsDLekDwJuJ6zrVDfFdoRJbG8EsYNv8/SlhY7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776033641; c=relaxed/simple;
-	bh=GXdN7jTrrduyQmOFR+m7AesTNuvOtu/a3aJi1iIQzHY=;
+	s=arc-20240116; t=1776034241; c=relaxed/simple;
+	bh=AE0Trs61tSgDh/Pcbu51eZL5ciMR9aruQTmqkMMl/ow=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=JzeNY7GsSrE0kKqsO3JVZ4yJ9M/HBmAZ2jFS4niYSAuC10mVljpxChQN1A4ErXf7ZTU/CJre2pESEJM0QPlc48CVEjri1KTVVuJC3gzjquCocVSj2y9VtSfCvQnnUOrwogvPJxa+CMIvn512lh2E5htmFn3PYq9IrE38WTMBF8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ebDziDiD; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=pHzzScz500slOa04U7c2LfB3mnwpaTUjvOBR9wOvJgky80oe40XkMxMTe/fsVswiZHI3bCLZwMo7OyT7n/f2Ys9Te05WFTd+KtrF93R220/nh5UmJqY3wBoBCmmkd2M0auROVntQsyHMC1G8fvVxjVig7Qe+K3AUUZBK+ODJgsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hEHhfQpI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ebDziDiD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42588C19424;
-	Sun, 12 Apr 2026 22:40:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hEHhfQpI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 061B6C19424;
+	Sun, 12 Apr 2026 22:50:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776033641;
-	bh=GXdN7jTrrduyQmOFR+m7AesTNuvOtu/a3aJi1iIQzHY=;
+	s=k20201202; t=1776034241;
+	bh=AE0Trs61tSgDh/Pcbu51eZL5ciMR9aruQTmqkMMl/ow=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=ebDziDiDOi2SDQdtT4fgiNXpKPKpvdGzodLWJ24+z20dD9DKJKg04VNEYUkq3X284
-	 fsgJ6BiPXw5Q7zDOSI0VttrfhxzyyUX6Vf/fHDELuwCUrhymY4KgxRNlMl1nJw+v+P
-	 +R3jNDdF3cUmBh3SeDgAsrDOjsJ1HfIEB+GFt8lOSWSpayzYe3FZBmeyFnsREcJfW9
-	 7JK+hwm03QjaB1xr5HUqvafKofbrZMe5WyOPRFSLsXa3JX7atAqphG3JU3puJZxI9y
-	 gqIcwV0fBsWLrzWi34dc4h8Dp3OkElW3nFbNLwa5HAds7TWpn0p61zf92JU4ubZJ/i
-	 0yBjSWYPl0bbQ==
+	b=hEHhfQpIiSimgI0j1P026Zhb4fbwCrZue/ATOd2O++mwNJ3er4H6VA/YTaWeEPWZA
+	 H/JrvZgbScF6Ar4rGoqmkbfH619UGqje6hx7LmMh/F6UodISTh2EAmYMo6e3TwHgOh
+	 wYdY4mY0122EqSO8P/gGb631vZLQV1WI8aQ1QvR5yDW6Gc5BJDye3WrK4WylalsPii
+	 XfMDdmx1O77onsvgv+96gHRbi++YQ5Of52js6Lfb0xBE2bsa8yVtEM/8NPwVQNJubn
+	 GoWNEaD1KmaAEHJSiy2nSHZ9HX9Hs1hBUAFFcuS8LDky68BuZvIIHxMPpLOgTZKjeh
+	 HagBA3dx2fNWg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9E4B3809A8C;
-	Sun, 12 Apr 2026 22:40:14 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CD6A3809A8C;
+	Sun, 12 Apr 2026 22:50:14 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,40 +37,46 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v3 0/2] net: fix skb_ext BUILD_BUG_ON failures with GCOV
+Subject: Re: [PATCH bpf v4 0/2] bpf: fix short IPv4/IPv6 handling in
+ test_run_skb
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177603361329.3843927.10796670149393156892.git-patchwork-notify@kernel.org>
-Date: Sun, 12 Apr 2026 22:40:13 +0000
-References: <20260410162150.3105738-1-khorenko@virtuozzo.com>
-In-Reply-To: <20260410162150.3105738-1-khorenko@virtuozzo.com>
-To: Konstantin Khorenko <khorenko@virtuozzo.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, linux@weissschuh.net, arnd@arndb.de,
- oberpar@linux.ibm.com, zaslonko@linux.ibm.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, ptikhomirov@virtuozzo.com,
- vasileios.almpanis@virtuozzo.com
+ <177603421329.3846122.3103968416452888308.git-patchwork-notify@kernel.org>
+Date: Sun, 12 Apr 2026 22:50:13 +0000
+References: <20260408034623.180320-1-sun.jian.kdev@gmail.com>
+In-Reply-To: <20260408034623.180320-1-sun.jian.kdev@gmail.com>
+To: sun jian <sun.jian.kdev@gmail.com>
+Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ shuah@kernel.org, martin.lau@linux.dev, eddyz87@gmail.com, song@kernel.org,
+ yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
+ sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, horms@kernel.org,
+ syzbot+619b9ef527f510a57cfc@syzkaller.appspotmail.com, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+This series was applied to bpf/bpf-next.git (master)
+by Alexei Starovoitov <ast@kernel.org>:
 
-On Fri, 10 Apr 2026 19:21:48 +0300 you wrote:
-> This mini-series fixes build failures in net/core/skbuff.c when the
-> kernel is built with CONFIG_GCOV_PROFILE_ALL=y.
+On Wed,  8 Apr 2026 11:46:21 +0800 you wrote:
+> bpf_prog_test_run_skb() may access IPv4/IPv6 network headers based on
+> skb->protocol even when the provided test input only contains an
+> Ethernet header.
 > 
-> This is part of a larger effort to add -fprofile-update=atomic to
-> global CFLAGS_GCOV (posted earlier as a combined series):
->   https://lore.kernel.org/lkml/20260401142020.1434243-1-khorenko@virtuozzo.com/T/#t
+> Fix it by rejecting such short IPv4/IPv6 inputs before accessing the
+> L3 headers, and add a selftest that exercises the reported
+> bpf_skb_adjust_room() path on ETH_HLEN-sized IPv4/IPv6 EtherType
+> inputs.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v3,1/2] net: fix skb_ext_total_length() BUILD_BUG_ON with CONFIG_GCOV_PROFILE_ALL
-    https://git.kernel.org/netdev/net-next/c/c0b4382c86e3
-  - [v3,2/2] net: add noinline __init __no_profile to skb_extensions_init() for GCOV compatibility
-    https://git.kernel.org/netdev/net-next/c/29b1ee8788c5
+  - [bpf,v4,1/2] bpf: reject short IPv4/IPv6 inputs in bpf_prog_test_run_skb
+    https://git.kernel.org/bpf/bpf-next/c/12bec2bd4b76
+  - [bpf,v4,2/2] selftests/bpf: cover short IPv4/IPv6 inputs with adjust_room
+    https://git.kernel.org/bpf/bpf-next/c/f1cc94665df9
 
 You are awesome, thank you!
 -- 
