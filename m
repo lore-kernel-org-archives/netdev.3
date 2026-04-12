@@ -1,61 +1,86 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55212364028;
-	Sun, 12 Apr 2026 20:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C489818B0F;
+	Sun, 12 Apr 2026 20:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776025073; cv=none; b=eimkVsiVGEV98ryefWMNDE5Y3D7qe/2TGDX7K3oaJOjpXioZxRn67M/AFplCbtFEcHrJ4Lo4s/Sh/ixLW/ER9jbqb9erRal4wEF9tFii+q4fhdTRz9aJJfaWETNuY/UOw7NBeZE256+21ffzfkUZQkDorPXq2LPsx1xDfUQwqoU=
+	t=1776025237; cv=none; b=R/3eoqeZx07a/VWy/TVEIaRNsL+MQI3my+24nCzCkIwWv9G5sAse60lQT3ZOsiMgYk2b2yTJYPG42Oj2fSDDE0Kwg4WqPqrXEgINjLofDLYiwwg7Thj/mwKwp+zQnrwTk7dKMNyXIuFYLayxpbpwF6dgPiSaTgHaz9Z8CWOLFcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776025073; c=relaxed/simple;
-	bh=+GQ2w14XZKFOtmHTRbBaPgP6q1+SXe9xjwyp5/qjVzk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s5w5aQ7NB6FFm5Ll7aKFTuWUQ8Z9dUFVJefc+lbGGID3aDVuye8ygnZa84WL3MLHdqwo0tXBdAu6FmzyMiqYPZSR9n7idoIqvn/O0vaH7ShyFXeDHdWs9ep2jIJh4x37UYvfmon6/KO6yWbPCatuif5HHLhH2Glab9NREwL4HME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ooUifqCP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776025237; c=relaxed/simple;
+	bh=jryuqrjGAu240c9yLVNycnyI2OE92hyePx6bd/iOniI=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=hW/a+iTXbQznNBmCdxZyxmMUGFLJRlRUmrqIOu9o8wER5Ux2B0ApTgZJyym3JiEbQtOfhO9r7ErVchInXrvYIsH6c+/7ZRPqDIK1IFeiJMxWNk3w/rz8cyzJqlIZrDS+j5sZ58lvmuECek2U1YyUGaVDQrfZcQ6FXaV6S9bKI5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ox6+DH6J; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ooUifqCP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8AAAC19424;
-	Sun, 12 Apr 2026 20:17:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ox6+DH6J"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68092C19424;
+	Sun, 12 Apr 2026 20:20:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776025073;
-	bh=+GQ2w14XZKFOtmHTRbBaPgP6q1+SXe9xjwyp5/qjVzk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ooUifqCPoVPQ4RAl4uE1Go3evrVTnRZ+OrSXMGEvOdabVYx7YKdbkuwrVE7b/CrWv
-	 /4d+fbV3g53P0UqcW8EIgWbDSoVssmgGaoFtec42HGEk7Ih17mr48a3cPH1UVtbe7L
-	 GX9LbDZcP86dzHnBrE2Ttm6S/zKhjF8FXfvENlL3lHgtN0X1lE5iDMLFR/C+bgCNKZ
-	 HtzCNbp5AjXhVuo9G+gAA0HM6UZcvysb7MCGgmChscyEqdiv0//HDBi5Q65l9pzTHm
-	 mxyvVNyKOhVK5/UpAfzP2lINlmoAAGGgp/u6Ao1RdrqNF5nn+8ytMMF+P1iVxo8gDv
-	 KROYlGRHOA9VA==
-Date: Sun, 12 Apr 2026 13:17:51 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Mashiro Chen <mashiro.chen@mailbox.org>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, horms@kernel.org, jreuter@yaina.de,
- linux-hams@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH v2 net] net: ax25: fix integer overflow in
- ax25_rx_fragment()
-Message-ID: <20260412131751.0e90a053@kernel.org>
-In-Reply-To: <20260409025026.24575-1-mashiro.chen@mailbox.org>
-References: <20260409025026.24575-1-mashiro.chen@mailbox.org>
+	s=k20201202; t=1776025237;
+	bh=jryuqrjGAu240c9yLVNycnyI2OE92hyePx6bd/iOniI=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=ox6+DH6JYC/EwulA9ij6sUWgR/jS5AFTeXxETcPYmdaxHPWGTqfGwA7+ue3pv3EhK
+	 zpWMiegQNQ6rd9KotZtOQ1LuPN0M+QSy1DACyxhwJbrDF/8jHS56gk12r4eeXBpzFB
+	 UiYwI4bHwySXyhZf7uKIH/iIPDDWHOeDiSQxEwMNLbUdBfFgCUzxFS9nYMmnf8DhJj
+	 B48UQi+iSSuDAnFUV861ff8WBurnWrIPQ50Qhe4AOZv1E+NF9L48MEavTjKCpjf6tu
+	 fGromhvp76QYqKLK3JIQQxre442GfHgC1kNRfxeEx2p3VraV/uJ+czj/MrOTOr8ifv
+	 g6e3PXHOi6nzA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02D223809A8C;
+	Sun, 12 Apr 2026 20:20:11 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: rose: reject truncated CLEAR_REQUEST frames in
+ state
+ machines
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177602520954.3398432.9861431630028064654.git-patchwork-notify@kernel.org>
+Date: Sun, 12 Apr 2026 20:20:09 +0000
+References: <20260408172551.281486-1-mashiro.chen@mailbox.org>
+In-Reply-To: <20260408172551.281486-1-mashiro.chen@mailbox.org>
+To: Mashiro Chen <mashiro.chen@mailbox.org>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ linux-hams@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
 
-On Thu,  9 Apr 2026 10:50:26 +0800 Mashiro Chen wrote:
-> Fix mirrors the identical bug fixed in NET/ROM (nr_in.c): check for
-> overflow before adding skb->len to fraglen, and abort fragment
-> reassembly cleanly if the limit would be exceeded.
+Hello:
 
-Same problem as reported by Simon on the netrom patch applies here.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-nit: I don't think you need to cast ax25->fraglen to unsigned int
-in the comparison. since it's added with skb->len it should get
-auto-prompted to unsigned int.
+On Thu,  9 Apr 2026 01:25:51 +0800 you wrote:
+> All five ROSE state machines (states 1-5) handle ROSE_CLEAR_REQUEST
+> by reading the cause and diagnostic bytes directly from skb->data[3]
+> and skb->data[4] without verifying that the frame is long enough:
+> 
+>   rose_disconnect(sk, ..., skb->data[3], skb->data[4]);
+> 
+> The entry-point check in rose_route_frame() only enforces
+> ROSE_MIN_LEN (3 bytes), so a remote peer on a ROSE network can
+> send a syntactically valid but truncated CLEAR_REQUEST (3 or 4
+> bytes) while a connection is open in any state.  Processing such a
+> frame causes a one- or two-byte out-of-bounds read past the skb
+> data, leaking uninitialized heap content as the cause/diagnostic
+> values returned to user space via getsockopt(ROSE_GETCAUSE).
+> 
+> [...]
+
+Here is the summary with links:
+  - [net] net: rose: reject truncated CLEAR_REQUEST frames in state machines
+    https://git.kernel.org/netdev/net/c/2835750dd647
+
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
